@@ -19,7 +19,7 @@ Functions may be declared to be
 @code{nary}.  If @code{declare(j,nary);} is done, this tells the simplifier to
 simplify, e.g. @code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
 
-See also @code{syntax}.
+See also @code{Syntax}.
 
 @node nofix, postfix, nary, Operators
 @section nofix
@@ -30,7 +30,7 @@ corresponding function to be evaluated.  For example, when one types
 @code{nofix} operator.  The function @code{nofix("x")} is a syntax extension
 function which declares @code{x} to be a @code{nofix} operator. 
 
-See also @code{syntax}.
+See also @code{Syntax}.
 
 @node postfix, prefix, nofix, Operators
 @section postfix
@@ -40,7 +40,7 @@ precedes an occurrence of the operator in the input string, e.g. 3! .
 The @code{postfix("x")} function is a syntax extension function to declare @code{x}
 to be a @code{postfix} operator.
 
-See also @code{syntax}.
+See also @code{Syntax}.
 
 @node prefix, Arithmetic operators, postfix, Operators
 @section prefix
@@ -49,7 +49,7 @@ argument, which argument immediately follows an occurrence of the
 operator.  @code{prefix("x")} is a syntax extension function to declare @code{x} to
 be a @code{prefix} operator.
 
-See also @code{syntax}.
+See also @code{Syntax}.
 
 @node Arithmetic operators, Relational operators, prefix, Operators
 @section Arithmetic operators
@@ -534,8 +534,8 @@ and
 @end ifinfo
 Assignment operator.
 
-When the left-hand side is an atom or subscripted variable,
-@code{:} evaluates its right-hand side (but not the left-hand side)
+When the left-hand side is a simple variable (not subscripted),
+@code{:} evaluates its right-hand side
 and associates that value with the left-hand side.
 
 When the left-hand side is a subscripted element of a list, matrix, declared Maxima array, or Lisp array,
@@ -547,8 +547,8 @@ When the left-hand side is a subscripted element of an undeclared Maxima array,
 the right-hand side is assigned to that element, if it already exists,
 or a new element is allocated, if it does not already exist.
 
-When the left-hand side is a list of atoms and/or subscripted variables,
-the right-hand must evaluate to a list,
+When the left-hand side is a list of simple and/or subscripted variables,
+the right-hand side must evaluate to a list,
 and the elements of the right-hand side are assigned to the elements of the left-hand side,
 in parallel.
 
@@ -557,7 +557,7 @@ which undo the association between the left-hand side and its value.
 
 Examples:
 
-Assignment to a symbol.
+Assignment to a simple variable.
 
 @c ===beg===
 @c a;
