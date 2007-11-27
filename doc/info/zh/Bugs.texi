@@ -1,0 +1,55 @@
+
+@menu
+*Bug发现与上报的函数与变量::
+@end menu
+
+@node Bug发现与上报的函数与变量
+@section  Bug发现与上报的函数与变量
+@deffn {Function} run_testsuite ()
+@deffnx {Function} run_testsuite (@var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+运行Maxima测试包,那些得到预期结果的测试认为是通过的,??"是那些测试没有得到预期结果但是已经知道的bug
+@c 这一句话没看懂
+@code{run_testsuite ()} 只显示那些没有通过的测试.
+
+@code{run_testsuite (true)} 显示那些已知bug的测试.
+
+@code{run_testsuite (true, true)} 显示所有的测试.
+
+如果给出可选的第三参数,一些子类测试将被进行.
+子类将作为测试名称被给出.完整的测试可以通过
+@code{testsuite_files}指定.
+
+@code{run_testsuite} 改变Maxima环境.
+典型的如执行@code{kill}脚本将建立一个已知环境(即没有用户自定义的函数与变量),然后定义一些适合测试的函数与变量.
+
+@code{run_testsuite} 将返回 @code{done}.
+@end deffn
+
+@defvr {Option variable} testsuite_files
+
+@code{testsuite_files} 是一系列通过运行@code{run_testsuite}的测试.
+它是包含测试文件名的列表.如果一个文件里的测试是已知的失败测试,列表是文件名与测试数字是失败用到的. 
+
+例如,下面是的一部分初始测试
+
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+这表明这个测试包包含了"rtest13s"与"rtest14"文件,但是"rtest14"包含两个失败的测试,57与63.
+@end defvr
+
+@deffn {Function} bug_report ()
+显示Maxima与Lisp版本信息,并给出一个指向Maxima项目报告bug网页的链接,版本信息同@code{build_info}报告的一样.
+当一个bug被报告,复制Maxima与Lisp版本信息到报告里将很有帮助.
+
+@code{bug_report} 返回一个空字符串@code{""}.
+@end deffn
+
+@deffn {Function} build_info ()
+显示构建Maxima的一个总结参数.
+@code{build_info}返回一个空字符串@code{""}.
+@end deffn
