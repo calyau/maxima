@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.14 2007-11-26 23:34:24 villate Exp $
+#       $Id: Plot2d.tcl,v 1.15 2007-11-27 00:01:59 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -41,7 +41,7 @@ set plot2dOptions {
     {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
-    {file "" "A filename where the graph will be saved in PostScript."}
+    {psfile "" "A filename where the graph will be saved in PostScript."}
     {nobox 0 "if not zero, do not draw the box around the plot."}
     {noaxes 0 "if not zero, do not draw the axes."}
     {nolegend 0 "if not zero, do not write down the legend."}
@@ -337,7 +337,7 @@ proc plot2d {args } {
 
 proc replot2d {win } {
     global printOption axisGray plot2dOptions
-    linkLocal $win xfundata data file nobox noaxes
+    linkLocal $win xfundata data psfile nobox noaxes
     foreach v $data {
 	if { "[assq [lindex $v 0] $plot2dOptions notthere]" != "notthere" } {
 	    oset $win [lindex $v 0] [lindex $v 1]
@@ -408,6 +408,13 @@ proc replot2d {win } {
 	           -text [oget $win yaxislabel] -font {helvetica 20 normal}
     $c create text [expr {$x2 - 20}] [expr {$y2 + 30}] -anchor ne \
                    -text [oget $win xaxislabel] -font {helvetica 20 normal}
+
+    # Create a PostScript file, if requested
+    if { $psfile != "" } {
+	set printOption(psfilename) $psfile
+	writePostscript $win
+	$c delete printoptions
+    }
 }
 
 
