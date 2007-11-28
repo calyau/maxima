@@ -80,5 +80,8 @@ Rows tried 71
 Note only the elements 1 thru 20 of this array @code{%o8} are meaningful.
 @code{table[1][4] = 7} indicates coset4.var1 = coset7
 
+@opencatbox
+@category{Group theory}
+@closecatbox
 @end deffn
 

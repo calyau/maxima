@@ -74,6 +74,9 @@ Examples:
                   /
 @end example
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @deffn {Function} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
@@ -138,6 +141,9 @@ Examples:
                   /
 @end example
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
@@ -147,6 +153,9 @@ Examples:
 This property is assigned by @code{gradef}.
 
 @c NEED EXAMPLE HERE
+@opencatbox
+@category{Differential calculus}
+@closecatbox
 @end defvr
 
 @deffn {Function} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
@@ -217,6 +226,9 @@ Examples:
                                          !x = 0, y = 1
 @end example
 
+@opencatbox
+@category{Differential equations} @category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @c LOOKS LIKE cartan IS THE NAME OF A PACKAGE AND NOT A FUNCTION OR VARIABLE
@@ -235,6 +247,9 @@ description of these commands along with examples.
 
 @code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
 
+@opencatbox
+@category{Differential geometry}
+@closecatbox
 @end deffn
 
 @deffn {Function} del (@var{x})
@@ -262,6 +277,9 @@ Examples:
 (%o3)         x y del(z) + x z del(y) + y z del(x)
 @end example
 
+@opencatbox
+@category{Differential calculus}
+@closecatbox
 @end deffn
 
 @deffn {Function} delta (@var{t})
@@ -280,6 +298,9 @@ p;
 (%o1)                   sin(a b) %e
 @end example
 
+@opencatbox
+@category{Mathematical functions} @category{Laplace transform}
+@closecatbox
 @end deffn
 
 @defvr {System variable} dependencies
@@ -291,6 +312,10 @@ The @code{dependencies} list is cumulative:
 each call to @code{depends} or @code{gradef} appends additional items.
 
 See @code{depends} and @code{gradef}.
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
 
 @end defvr
 
@@ -366,6 +391,9 @@ unless explicitly represented as @code{integrate (f(x), x)}.
                                 du dt
 @end example
 
+@opencatbox
+@category{Differential calculus} @category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} derivabbrev
@@ -376,6 +404,10 @@ symbolic derivatives (that is, @code{diff} nouns) are displayed as subscripts.
 Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Differential calculus} @category{Global flags}
+@closecatbox
+
 @end defvr
 
 @c SEEMS LIKE THIS STATEMENT COULD BE LESS CLUMSY
@@ -399,6 +431,9 @@ Example:
 (%o2)                           2
 @end example
 
+@opencatbox
+@category{Differential calculus} @category{Expressions}
+@closecatbox
 @end deffn
 
 @c I HAVE NO IDEA WHAT THIS DOES
@@ -406,6 +441,9 @@ Example:
 Causes only differentiations with respect to
 the indicated variables, within the @code{ev} command.
 
+@opencatbox
+@category{Differential calculus} @category{Evaluation}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} derivsubst
@@ -413,6 +451,10 @@ Default value: @code{false}
 
 When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
 @code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
+
+@opencatbox
+@category{Differential calculus} @category{Expressions}
+@closecatbox
 
 @end defvr
 
@@ -499,6 +541,9 @@ not been assigned a value, then the variables will be treated as in (1)
 above.
 
 @c NEED EXAMPLES FOR TENSOR STUFF
+@opencatbox
+@category{Differential calculus}
+@closecatbox
 @end deffn
 
 @c MERGE THIS INTO @defun diff
@@ -536,6 +581,9 @@ Applies the scalar d'Alembertian to the scalar function @var{f}.
 @c                              2 r
 @c @end example
 
+@opencatbox
+@category{Differential calculus} @category{Package ctensor}
+@closecatbox
 @end deffn
 
 @deffn {Function} express (@var{expr})
@@ -623,6 +671,9 @@ Examples:
 (%o15)          [b z - c y, c x - a z, a y - b x]
 @end example
 
+@opencatbox
+@category{Differential calculus} @category{Vectors} @category{Operators}
+@closecatbox
 @end deffn
 
 @c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
@@ -688,6 +739,9 @@ explicitly but its first derivatives are and it is desired to obtain
 higher order derivatives.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Differential calculus} @category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @defvr {System variable} gradefs
@@ -697,6 +751,10 @@ Default value: @code{[]}
 for which partial derivatives have been defined by @code{gradef}.
 @code{gradefs} does not include any variables
 for which partial derivatives have been defined by @code{gradef}.
+
+@opencatbox
+@category{Differential calculus} @category{Declarations and inferences}
+@closecatbox
 
 @end defvr
 
@@ -762,4 +820,7 @@ Examples:
                             !t = 0
 @end example
 
+@opencatbox
+@category{Laplace transform} @category{Differential equations}
+@closecatbox
 @end deffn

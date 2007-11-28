@@ -32,6 +32,10 @@ The statement @code{showtime: all} tells Maxima to set the @code{showtime} varia
 The @code{maxima-init.mac} file can contain any other assignments or
 other Maxima statements.
 
+@opencatbox
+@category{Session management}
+@closecatbox
+
 @node Interrupts, Functions and Variables for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
 @section Interrupts
 
@@ -60,6 +64,10 @@ On Unix systems, the character ^Z (control-Z) causes Maxima
 to stop altogether, and control is returned to the shell prompt.
 The @code{fg} command causes Maxima
 to resume from the point at which it was stopped.
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
 
 @c end concepts Runtime Environment
 @node Functions and Variables for Runtime Environment,  , Interrupts, Runtime Environment
@@ -98,6 +106,9 @@ See also @code{declare} and @code{features}.
 (%o2)                           true
 @end example
 
+@opencatbox
+@category{Predicate functions} @category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @defvr {System variable} maxima_tempdir
@@ -109,6 +120,10 @@ The initial value of @code{maxima_tempdir} is the user's home directory,
 if Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
 
 @code{maxima_tempdir} may be assigned a string which names a directory.
+
+@opencatbox
+@category{Global variables}
+@closecatbox
 
 @end defvr
 
@@ -125,6 +140,10 @@ if Maxima can locate it; otherwise Maxima makes a guess about a suitable directo
 However, assigning to @code{maxima_userdir} does not automatically change
 @code{file_search_maxima} and @code{file_search_lisp};
 those variables must be changed separately.
+
+@opencatbox
+@category{Global variables}
+@closecatbox
 
 @end defvr
 
@@ -144,6 +163,9 @@ the same name.
 @code{room (false)} prints out a terse description.
 @end itemize
 
+@opencatbox
+@category{Debugging}
+@closecatbox
 @end deffn
 
 @deffn {Function} status (feature)
@@ -173,6 +195,9 @@ it is unclear if this list has additional significance.
 The variable @code{features} contains a list of features which apply to 
 mathematical expressions. See @code{features} and @code{featurep} for more information.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @deffn {Function} time (%o1, %o2, %o3, ...)
@@ -185,6 +210,9 @@ returns @code{unknown}.
 Set @code{showtime: true} to make Maxima print out the computation time 
 and elapsed time with each output line.
 
+@opencatbox
+@category{Debugging}
+@closecatbox
 @end deffn
 
 @deffn {Function} timedate ()
@@ -206,6 +234,9 @@ Example:
 timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 @end example
 
+@opencatbox
+@category{Time and date functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} absolute_real_time ()
@@ -228,6 +259,9 @@ Example:
 (%o2)                   2007.265612087104
 @end example
 
+@opencatbox
+@category{Time and date functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} elapsed_real_time ()
@@ -253,6 +287,9 @@ Example:
 (%o3)                       7.552087
 @end example
 
+@opencatbox
+@category{Time and date functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} elapsed_run_time ()
@@ -278,4 +315,7 @@ Example:
 (%o3)                         1.26
 @end example
 
+@opencatbox
+@category{Time and date functions}
+@closecatbox
 @end deffn

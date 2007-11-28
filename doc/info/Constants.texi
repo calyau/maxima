@@ -15,6 +15,9 @@
 @code{%e} represents the base of the natural logarithm, also known as Euler's number.
 The numeric value of @code{%e} is the double-precision floating-point value 2.718281828459045d0.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} %i
@@ -24,12 +27,18 @@ The numeric value of @code{%e} is the double-precision floating-point value 2.71
 @end ifinfo
 @code{%i} represents the imaginary unit, @math{sqrt(- 1)}.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} false
 @code{false} represents the Boolean constant of the same name.
 Maxima implements @code{false} by the value @code{NIL} in Lisp.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} inf
@@ -38,6 +47,9 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 @end ifinfo
 @code{inf} represents real positive infinity.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant}  infinity
@@ -46,6 +58,9 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 @end ifinfo
 @code{infinity} represents complex infinity.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} minf
@@ -55,6 +70,9 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 @end ifinfo
 @code{minf} represents real minus (i.e., negative) infinity.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} %phi
@@ -131,6 +149,9 @@ After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 (%o5)                           0
 @end example
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} %pi
@@ -140,11 +161,17 @@ After evaluating @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 @code{%pi} represents the ratio of the perimeter of a circle to its diameter.
 The numeric value of @code{%pi} is the double-precision floating-point value 3.141592653589793d0.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} true
 @code{true} represents the Boolean constant of the same name.
 Maxima implements @code{true} by the value @code{T} in Lisp.
 
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 

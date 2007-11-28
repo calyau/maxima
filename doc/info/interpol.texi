@@ -9,9 +9,11 @@
 Package @code{interpol} defines de Lagrangian, the linear and the cubic 
 splines methods for polynomial interpolation.
 
-
-
 For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT xunta DOT es'}.
+
+@opencatbox
+@category{Numerical methods} @category{Share packages} @category{Package interpol}
+@closecatbox
 
 @node Functions and Variables for interpol,  , Introduction to interpol, interpol
 @section Functions and Variables for interpol
@@ -80,11 +82,20 @@ Examples:
               420     210       420      105      5
 @end example
 
+@opencatbox
+@category{Package interpol}
+@closecatbox
+
 @end deffn
 
 
 @deffn {Function} charfun2 (@var{x}, @var{a}, @var{b})
 Returns @code{true} if number @var{x} belongs to the interval @math{[a, b)}, and @code{false} otherwise.
+
+@opencatbox
+@category{Package interpol}
+@closecatbox
+
 @end deffn
 
 
@@ -153,6 +164,10 @@ Examples:
  + (--- - 3) charfun2(s, 3, 6)
      3
 @end example
+
+@opencatbox
+@category{Package interpol}
+@closecatbox
 
 @end deffn
 
@@ -256,5 +271,9 @@ Examples:
         key        = "Sample points",
         points(p))$
 @end example
+
+@opencatbox
+@category{Package interpol}
+@closecatbox
 
 @end deffn

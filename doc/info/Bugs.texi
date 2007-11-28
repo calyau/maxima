@@ -30,6 +30,10 @@ Typically a test script executes @code{kill} to establish a known environment
 and then defines functions and variables appropriate to the test.
 
 @code{run_testsuite} returns @code{done}.
+
+@opencatbox
+@category{Debugging}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} testsuite_files
@@ -49,6 +53,11 @@ For example, this is a part of the default set of tests:
 This specifies the testsuite consists of the files "rtest13s" and
 "rtest14", but "rtest14" contains two tests that are known to fail: 57
 and 63.
+
+@opencatbox
+@category{Debugging} @category{Global variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} bug_report ()
@@ -60,10 +69,18 @@ When a bug is reported, it is helpful to copy the Maxima
 and Lisp version information into the bug report.
 
 @code{bug_report} returns an empty string @code{""}.
+
+@opencatbox
+@category{Debugging}
+@closecatbox
 @end deffn
 
 @deffn {Function} build_info ()
 Prints out a summary of the parameters of the Maxima build.
 
 @code{build_info} returns an empty string @code{""}.
+
+@opencatbox
+@category{Debugging}
+@closecatbox
 @end deffn

@@ -1,8 +1,20 @@
 @menu
+* Introduction to lsquares::
 * Functions and Variables for lsquares::
 @end menu
 
-@node Functions and Variables for lsquares,  , lsquares, lsquares
+@node Introduction to lsquares, Functions and Variables for lsquares, lsquares, lsquares
+@section Introduction to lsquares
+
+@code{lsquares} is a collection of functions to implement the method of least squares
+to estimate parameters for a model from numerical data.
+
+@opencatbox
+@category{Statistical estimation} @category{Share packages} @category{Package lsquares}
+@closecatbox
+
+
+@node Functions and Variables for lsquares,  , Introduction to lsquares, lsquares
 @section Functions and Variables for lsquares
 
 @deffn {Function} lsquares_estimates (@var{D}, @var{x}, @var{e}, @var{a})
@@ -116,6 +128,10 @@ so @code{lsquares_estimates} resorts to numerical approximation.
                                         c = - .4142705622439105]]
 @end example
 
+@opencatbox
+@category{Package lsquares} @category{Numerical methods}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} lsquares_estimates_exact (@var{MSE}, @var{a})
@@ -178,6 +194,10 @@ Example:
 (%o4)     [[A = - --, B = - --, C = -----, D = - ---]]
                   16        16      1024         32
 @end example
+
+@opencatbox
+@category{Package lsquares}
+@closecatbox
 
 @end deffn
 
@@ -255,6 +275,10 @@ Example:
 (%o4) [[A = - 3.67850494740174, B = - 1.683070351177813, 
                  C = 10.63469950148635, D = - 3.340357993175206]]
 @end example
+
+@opencatbox
+@category{Package lsquares} @category{Numerical methods}
+@closecatbox
 
 @end deffn
 
@@ -340,6 +364,10 @@ Example:
  + ((D + 1)  - C - B - A) )/5
 @end example
 
+@opencatbox
+@category{Package lsquares}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} lsquares_residuals (@var{D}, @var{x}, @var{e}, @var{a})
@@ -404,6 +432,10 @@ Example:
 (%o4)                      [--, - --, - --, --, --]
                             64    64    32  64  64
 @end example
+
+@opencatbox
+@category{Package lsquares}
+@closecatbox
 
 @end deffn
 
@@ -472,6 +504,10 @@ Example:
 (%o4)                         ----
                               2560
 @end example
+
+@opencatbox
+@category{Package lsquares}
+@closecatbox
 
 @end deffn
 
@@ -547,5 +583,10 @@ _Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
 @end example
 
 To use this function write first @code{load("lsquares")}.
+
+@opencatbox
+@category{Package lsquares} @category{Numerical methods}
+@closecatbox
+
 @end deffn
 

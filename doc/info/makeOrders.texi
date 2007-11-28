@@ -24,5 +24,10 @@ Returns a list of all powers for a polynomial up to and including the arguments.
 where @code{[0, 1]} is associated with the term @math{b} and @code{[2, 3]} with @math{a^2 b^3}.
 
 To use this function write first @code{load("makeOrders")}.
+
+@opencatbox
+@category{Polynomials} @category{Share packages} @category{Package makeOrders}
+@closecatbox
+
 @end deffn
 

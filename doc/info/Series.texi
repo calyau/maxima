@@ -49,6 +49,10 @@ Example:
                  i1 = 0 i2 = 0
 @end example
 
+@opencatbox
+@category{Sums and products}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
@@ -84,6 +88,9 @@ Example:
                      2     18432     307200
 @end example
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} maxtayorder
@@ -93,6 +100,10 @@ Default value: @code{true}
 When @code{maxtayorder} is @code{true}, then during algebraic
 manipulation of (truncated) Taylor series, @code{taylor} tries to retain
 as many terms as are known to be correct.
+
+@opencatbox
+@category{Power series}
+@closecatbox
 
 @end defvr
 
@@ -132,6 +143,9 @@ Example:
                           k = 1
 @end example
 
+@opencatbox
+@category{Sums and products}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} niceindicespref
@@ -164,6 +178,10 @@ Example:
                     q = 1 ====
                           p = 1
 @end example
+
+@opencatbox
+@category{Sums and products}
+@closecatbox
 
 @end defvr
 
@@ -221,6 +239,9 @@ Dependent equations eliminated:  (2 3)
                           i = 1
 @end example
 
+@opencatbox
+@category{Sums and products}
+@closecatbox
 @end deffn
 
 @c THIS ITEM NEEDS SERIOUS WORK
@@ -290,6 +311,9 @@ in order to have enough unknown coefficients to solve.
  + 2856700692480 x  + 3370143559680 x + 2386516803584)]
 @end example
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} powerdisp
@@ -303,6 +327,10 @@ with the constant term first and the highest power last.
 By default, terms of a sum are displayed in order of decreasing power.
 
 @c NEED AN EXAMPLE HERE
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} powerseries (@var{expr}, @var{x}, @var{a})
@@ -344,6 +372,9 @@ in the first simplification we have returned:
                                       2
 @end example
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} psexpand
@@ -360,6 +391,10 @@ a multivariate expression is displayed just as in the rational function package.
 @c TERMS OF WHAT ??
 When @code{psexpand} is  @code{multi},
 then terms with the same total degree in the variables are grouped together.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -405,6 +440,9 @@ Examples:
                          4    3    2
 @end example
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @deffn {Function} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
@@ -585,6 +623,9 @@ Examples:
           x + y     6                   360
 @end example
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} taylordepth
@@ -594,6 +635,10 @@ Default value: 3
 If there are still no nonzero terms, @code{taylor} doubles the
 degree of the expansion of @code{@var{g}(@var{x})}
 so long as the degree of the expansion is less than or equal to @code{@var{n} 2^taylordepth}.
+
+@opencatbox
+@category{Power series}
+@closecatbox
 
 @end defvr
 
@@ -624,12 +669,18 @@ Example:
 (%o2)               [[y, a, inf], [x, 0, 3]]
 @end example
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @deffn {Function} taylorp (@var{expr})
 Returns @code{true} if @var{expr} is a Taylor series,
 and @code{false} otherwise.
 
+@opencatbox
+@category{Predicate functions} @category{Power series}
+@closecatbox
 @end deffn
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -648,6 +699,10 @@ When @code{taylor_logexpand} is set to @code{false}, then the only expansion of 
 that occur is that necessary to obtain a formal power series.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Power series} @category{Exponential and logarithm functions}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} taylor_order_coefficients
@@ -662,12 +717,19 @@ coefficients of taylor series are ordered canonically.
 @c AND WHAT HAPPENS WHEN IT IS FALSE ??
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Power series}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} taylor_simplifier (@var{expr})
 Simplifies coefficients of the power series @var{expr}.
 @code{taylor} calls this function.
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} taylor_truncate_polynomials
@@ -681,12 +743,19 @@ Otherwise,
 polynomials input to @code{taylor} are considered to have infinite precison.
 @c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
+@opencatbox
+@category{Power series}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} taytorat (@var{expr})
 Converts @var{expr} from @code{taylor} form to canonical rational expression (CRE) form.
 The effect is the same as @code{rat (ratdisrep (@var{expr}))}, but faster.
 
+@opencatbox
+@category{Power series} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} trunc (@var{expr})
@@ -707,6 +776,9 @@ Example:
 (%o3)                         true
 @end example
 
+@opencatbox
+@category{Power series}
+@closecatbox
 @end deffn
 
 @deffn {Function} unsum (@var{f}, @var{n})
@@ -745,6 +817,9 @@ Examples:
                         binomial(2 n, n)
 @end example
 
+@opencatbox
+@category{Sums and products}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} verbose
@@ -752,5 +827,9 @@ Default value: @code{false}
 
 When @code{verbose} is @code{true},
 @code{powerseries} prints progress messages.
+
+@opencatbox
+@category{Power series}
+@closecatbox
 
 @end defvr

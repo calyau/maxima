@@ -53,6 +53,9 @@ general expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields
 
 Do @code{example(append);} for an example.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -66,6 +69,9 @@ operand if the @code{key} is found.  If the @code{key} is not found it
 either returns the @var{default} value.  @var{default} is optional
 and defaults to @code{false}.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @c REPHRASE
@@ -75,6 +81,9 @@ Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
 @code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and @code{atom(sin(x))} are
 @code{false} (asuming @code{a[1]} and @code{x} are unbound).
 
+@opencatbox
+@category{Expressions} @category{Predicate functions}
+@closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
@@ -84,11 +93,17 @@ Returns a new list constructed of the element @var{expr} as
 its first element, followed by the elements of @var{list}.  @code{cons} also works
 on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} copylist (@var{list})
 Returns a copy of the list @var{list}.
 
+@opencatbox
+@category{Lists}
+@closecatbox
 @end deffn
 
 @deffn {Function} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
@@ -128,6 +143,9 @@ upper bounds for the iteration.
 Note that the limits or list for the @code{j} variable can
 depend on the current value of @code{i}.
 
+@opencatbox
+@category{Lists}
+@closecatbox
 @end deffn
 
 @deffn {Function} delete (@var{expr_1}, @var{expr_2})
@@ -161,12 +179,18 @@ occurrences of @var{expr_1} in @var{expr_2} then all occurrences will be deleted
 
 @end example
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} eighth (@var{expr})
 Returns the 8'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
@@ -176,12 +200,18 @@ Returns a new list consisting of the elements of
 @code{list} followed by @var{expr}.  @code{endcons} also works on general expressions, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} fifth (@var{expr})
 Returns the 5'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -197,12 +227,18 @@ is @code{true} and @code{y} if @code{inflag} is @code{false} (@code{first(y+x)} 
 results).  The functions @code{second} .. @code{tenth} yield the second through the
 tenth part of their input argument.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} fourth (@var{expr})
 Returns the 4'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} get (@var{a}, @var{i})
@@ -247,6 +283,9 @@ x is not numeric.
 
 @end example
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @deffn {Function} join (@var{l}, @var{m})
@@ -274,6 +313,9 @@ Examples:
 (%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
 @end example
 
+@opencatbox
+@category{Lists}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -281,6 +323,9 @@ Examples:
 @deffn {Function} last (@var{expr})
 Returns the last part (term, row, element, etc.) of the @var{expr}.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -295,6 +340,9 @@ The @code{length} command is affected by the
 @code{inflag} is @code{false} (Assuming @code{exptdispflag} is @code{true}), but 3 if @code{inflag} is
 @code{true} (the internal representation is essentially @code{a*b^-1*c^-1}).
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} listarith
@@ -304,11 +352,18 @@ contagious causing lists to be converted to matrices yielding a result
 which is always a matrix.  However, list-list operations should return
 lists.
 
+@opencatbox
+@category{Lists} @category{Global flags}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} listp (@var{expr})
 Returns @code{true} if @var{expr} is a list else @code{false}.
 
+@opencatbox
+@category{Lists} @category{Predicate functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
@@ -338,6 +393,9 @@ Examples:
 
 @end example
 
+@opencatbox
+@category{Lists}
+@closecatbox
 @end deffn
 
 @deffn {Function} member (@var{expr_1}, @var{expr_2})
@@ -388,12 +446,18 @@ Examples:
 (%o8)                         true
 @end example
 
+@opencatbox
+@category{Lists} @category{Expressions} @category{Predicate functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} ninth (@var{expr})
 Returns the 9'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} unique (@var{L})
@@ -424,6 +488,9 @@ Returns @var{expr} with its first @var{n} elements removed if @var{n} is
 positive and its last @code{- @var{n}} elements removed if @var{n} is negative.  If @var{n} is 1
 it may be omitted.  @var{expr} may be a list, matrix, or other expression.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
@@ -433,24 +500,36 @@ Reverses the order of the members of the @var{list} (not
 the members themselves).  @code{reverse} also works on general expressions,
 e.g.  @code{reverse(a=b);} gives @code{b=a}.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} second (@var{expr})
 Returns the 2'nd item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} seventh (@var{expr})
 Returns the 7'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} sixth (@var{expr})
 Returns the 6'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} sublist_indices (@var{L}, @var{P})
@@ -490,17 +569,26 @@ Examples:
 (%o6)                          [2]
 @end example
 
+@opencatbox
+@category{Lists}
+@closecatbox
 @end deffn
 
 @deffn {Function} tenth (@var{expr})
 Returns the 10'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} third (@var{expr})
 Returns the 3'rd item of expression or list @var{expr}.
 See @code{first} for more details.
 
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
 @end deffn
 

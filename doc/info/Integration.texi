@@ -85,6 +85,9 @@ higher degree function.  E.g.,
                         n = - 2
 @end example
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
@@ -135,6 +138,9 @@ magnitude speed improvement over interpreted code in many cases!
 @c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT. !!!
 @c @code{demo (dblint_1)} executes another demonstration.
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @deffn {Function} defint (@var{expr}, @var{x}, @var{a}, @var{b})
@@ -148,6 +154,9 @@ Thus from the user's point of view, it is sufficient to call @code{integrate}.
 either the computed integral or the noun form of the integral.
 See @code{quad_qag} and related functions for numerical approximation of definite integrals.
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
@@ -163,6 +172,10 @@ Default value: @code{true}
 When @code{erfflag} is @code{false}, prevents @code{risch} from introducing the
 @code{erf} function in the answer if there were none in the integrand to
 begin with.
+
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 
 @end defvr
 
@@ -212,6 +225,9 @@ pos;
                                                a  b  - 2 a  b + a
 @end example
 
+@opencatbox
+@category{Laplace transform}
+@closecatbox
 @end deffn
 
 @deffn {Function} integrate (@var{expr}, @var{x})
@@ -401,6 +417,9 @@ and the result becomes the body of @code{f_2}.
 @end example
 @end itemize
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @defvr {System variable} integration_constant
@@ -433,6 +452,10 @@ Examples:
 (%o3)                      -- = x + k2
                            3
 @end example
+
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 
 @end defvr
 
@@ -478,6 +501,10 @@ Examples:
 (%o5)                     -- = x + %c1
                           3
 @end example
+
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 
 @end defvr
 
@@ -532,6 +559,10 @@ e.g., @code{1/((x - a)*(x - b)*(x - c))} or @code{1/((x^2 - (a+b)*x + a*b)*(x - 
 if the denominator is a cubic polynomial.
 Sometimes this will help Maxima obtain a more useful result.
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
+
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -548,6 +579,9 @@ so executing @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a 
 @code{ldefint} always uses the same method to evaluate the definite integral,
 while @code{integrate} may employ various heuristics and may recognize some special cases.
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @c UMM, IS THERE SOME TEXT MISSING HERE ???
@@ -587,6 +621,9 @@ for @var{expr}.
                                 6
 @end example
 
+@opencatbox
+@category{Integral calculus} @category{Complex variables}
+@closecatbox
 @end deffn
 
 @deffn {Function} risch (@var{expr}, @var{x})
@@ -613,12 +650,18 @@ with.
 (%o2)                       x  erf(x)
 @end example
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Function} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 
+@opencatbox
+@category{Integral calculus}
+@closecatbox
 @end deffn
 
 @footnotestyle end
@@ -703,6 +746,10 @@ The strategy is globally adaptive, and modified
 Clenshaw-Curtis integration is used on the subranges
 which contain the point @math{x = c}.
 @end table
+
+@opencatbox
+@category{Integral calculus} @category{Numerical methods} @category{Share packages} @category{Package quadpack}
+@closecatbox
 
 @node Functions and Variables for QUADPACK, , Introduction to QUADPACK, Integration
 @section Functions and Variables for QUADPACK
@@ -789,6 +836,11 @@ Examples:
 (%o2)                           -
                                 9
 @end example
+
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
+
 @end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
@@ -865,6 +917,10 @@ Examples:
 @end example
 
 Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} for this integrand.
+
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
 
 @end deffn
 
@@ -977,6 +1033,10 @@ Examples:
                                32
 @end example
 
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
+
 @end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
@@ -1068,6 +1128,10 @@ Principal Value
 (%i3) ev (%, alpha=5, numer);
 (%o3)                    - 3.130120337415917
 @end example
+
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
 
 @end deffn
 
@@ -1169,6 +1233,10 @@ Examples:
 (%i3) ev (%, numer);
 (%o3)                   .6901942235215714
 @end example
+
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
 
 @end deffn
 
@@ -1272,6 +1340,10 @@ Examples:
 (%i3) ev (%, alpha=2, numer);
 (%o3)                     1.376043390090716
 @end example
+
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
 
 @end deffn
 
@@ -1377,6 +1449,10 @@ pos;
 (%i3) ev (%, alpha=4, numer);
 (%o3)                     8.750097361672829
 @end example
+
+@opencatbox
+@category{Numerical methods} @category{Package quadpack}
+@closecatbox
 
 @end deffn
 

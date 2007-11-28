@@ -15,6 +15,10 @@ should be noted that the @code{radcan} command also does this transformation,
 and more complicated transformations of this ilk as well.
 The @code{logcontract} command "contracts" expressions containing @code{log}.
 
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} li [@var{s}] (@var{z})
@@ -90,6 +94,9 @@ Examples:
  - .7546938285978846 %i]
 @end example
 
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} log (@var{x})
@@ -123,6 +130,9 @@ will also be converted to their absolute value.
 does this transformation, and more complicated transformations of this ilk as well.
 The @code{logcontract} command "contracts" expressions containing @code{log}.
 
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} logabs
@@ -134,6 +144,10 @@ terms of @code{log(abs(...))} if @code{logabs} is @code{true}, but in terms of @
 @code{logabs} is @code{false}.  For definite integration, the @code{logabs:true} setting is
 used, because here "evaluation" of the indefinite integral at the
 endpoints is often needed.
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Integral calculus} @category{Global flags}
+@closecatbox
 
 @end defvr
 
@@ -150,6 +164,10 @@ The function @code{logarc(@var{expr})} carries out that replacement for
 an expression @var{expr}
 without setting the global variable @code{logarc}.
 
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Simplification functions}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} logconcoeffp
@@ -161,6 +179,10 @@ predicate function of one argument.  E.g. if you like to generate
 SQRTs, you can do @code{logconcoeffp:'logconfun$
 logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -191,6 +213,9 @@ SQRTs, you can do @code{logconcoeffp:'logconfun$
 logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
 
+@opencatbox
+@category{Exponential and logarithm functions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} logexpand
@@ -203,6 +228,10 @@ rational numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for integer @code{b}
 simplifies.)  If it is set to @code{false}, all of these simplifications will
 be turned off.
 
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} lognegint
@@ -210,6 +239,10 @@ Default value: @code{false}
 
 If @code{true} implements the rule
 @code{log(-n)} -> @code{log(n)+%i*%pi} for @code{n} a positive integer.
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -221,6 +254,10 @@ arguments to @code{log} will always be converted to their absolute value
 before the @code{log} is taken.  If @code{numer} is also @code{true}, then negative integer
 arguments to @code{log} will also be converted to their absolute value.
 
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables} @category{Numerical evaluation}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} logsimp
@@ -229,11 +266,18 @@ Default value: @code{true}
 If @code{false} then no simplification of @code{%e} to a
 power containing @code{log}'s is done.
 
+@opencatbox
+@category{Exponential and logarithm functions} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} plog (@var{x})
 Represents the principal branch of the complex-valued natural
 logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
+@opencatbox
+@category{Exponential and logarithm functions} @category{Complex variables}
+@closecatbox
 @end deffn
 

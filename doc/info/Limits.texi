@@ -13,6 +13,10 @@ Default: 4
 rule is used in @code{limit}.  This prevents infinite looping in cases like
 @code{limit (cot(x)/csc(x), x, 0)}.
 
+@opencatbox
+@category{Limits}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
@@ -49,6 +53,9 @@ for example, @code{limit (inf-1)}.
 For the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
 Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 
+@opencatbox
+@category{Limits}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} limsubst
@@ -56,6 +63,10 @@ default value: @code{false} - prevents @code{limit} from attempting substitution
 unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
 giving 1.  Setting @code{limsubst} to @code{true} will allow such
 substitutions.
+
+@opencatbox
+@category{Limits}
+@closecatbox
 
 @end defvr
 
@@ -65,6 +76,9 @@ substitutions.
 Take the limit of the Taylor series expansion of @code{expr} in @code{x}
 at @code{val} from direction @code{dir}.
 
+@opencatbox
+@category{Limits}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} tlimswitch
@@ -75,6 +89,10 @@ use a Taylor series expansion if the limit of the input expression cannot be com
 This allows evaluation of limits such as @code{limit(x/(x-1)-1/log(x),x,1,plus)}.
 When @code{tlimswitch} is @code{false} and the limit of input expression 
 cannot be computed directly, @code{limit} will return an unevaluated limit expression.
+
+@opencatbox
+@category{Limits}
+@closecatbox
 
 @end defvr
 

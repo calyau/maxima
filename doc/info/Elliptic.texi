@@ -124,6 +124,10 @@ Support for elliptic functions and integrals was written by Raymond
 Toy.  It is placed under the terms of the General Public License (GPL)
 that governs the distribution of Maxima.
 
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
+
 @node Functions and Variables for Elliptic Functions, Functions and Variables for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, top
 @comment  node-name,  next,  previous,  up
 
@@ -131,98 +135,194 @@ that governs the distribution of Maxima.
 
 @deffn {Function} jacobi_sn (@var{u}, @var{m})
 The Jacobian elliptic function @math{sn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_cn (@var{u}, @var{m})
 The Jacobian elliptic function @math{cn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_dn (@var{u}, @var{m})
 The Jacobian elliptic function @math{dn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_ns (@var{u}, @var{m})
 The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_sc (@var{u}, @var{m})
 The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_sd (@var{u}, @var{m})
 The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_nc (@var{u}, @var{m})
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_cs (@var{u}, @var{m})
 The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_cd (@var{u}, @var{m})
 The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_nd (@var{u}, @var{m})
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_ds (@var{u}, @var{m})
 The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} jacobi_dc (@var{u}, @var{m})
 The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_sn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_cn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_dn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{dn(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_ns (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{ns(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_sc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sc(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_sd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sd(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_nc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_cs (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cs(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_cd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cd(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_nd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_ds (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{ds(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} inverse_jacobi_dc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{dc(u,m)}.
+
+@opencatbox
+@category{Elliptic functions}
+@closecatbox
 @end deffn
 
 
@@ -248,6 +348,9 @@ $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 
 See also @ref{elliptic_e} and @ref{elliptic_kc}.
 
+@opencatbox
+@category{Elliptic integrals}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_e}
@@ -266,6 +369,9 @@ $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 
 See also @ref{elliptic_e} and @ref{elliptic_ec}.
 
+@opencatbox
+@category{Elliptic integrals}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_eu}
@@ -299,6 +405,9 @@ $$E(u,m) = E(\phi, m)$$
 where $\phi = \sin^{-1} {\rm sn}(u, m)$
 @end tex
 See also @ref{elliptic_e}.
+@opencatbox
+@category{Elliptic integrals}
+@closecatbox
 @end deffn
 
 @deffn {Function} elliptic_pi (@var{n}, @var{phi}, @var{m})
@@ -315,6 +424,10 @@ $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
 Only the derivative with respect to @math{phi} is known by Maxima.
+
+@opencatbox
+@category{Elliptic integrals}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_kc}
@@ -333,6 +446,10 @@ $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 For certain values of @math{m}, the value of the integral is known in
 terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
+
+@opencatbox
+@category{Elliptic integrals}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_ec}
@@ -351,5 +468,9 @@ $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 For certain values of @math{m}, the value of the integral is known in
 terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
+
+@opencatbox
+@category{Elliptic integrals}
+@closecatbox
 @end deffn
 

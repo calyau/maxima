@@ -1,9 +1,20 @@
 @menu
+* Introduction to mnewton::
 * Functions and Variables for mnewton::
 @end menu
 
+@node Introduction to mnewton, Functions and Variables for mnewton, mnewton, mnewton
+@section Introduction to mnewton
 
-@node Functions and Variables for mnewton,  , mnewton, mnewton
+@code{mnewton} is an implementation of Newton's method for solving nonlinear equations
+in one or more variables.
+
+@opencatbox
+@category{Numerical methods} @category{Share packages} @category{Package mnewton}
+@closecatbox
+
+
+@node Functions and Variables for mnewton,  , Introduction to mnewton, mnewton
 @section Functions and Variables for mnewton
 
 @defvr {Option variable} newtonepsilon
@@ -12,6 +23,11 @@ Default value: @code{10.0^(-fpprec/2)}
 Precision to determine when the @code{mnewton} function has converged towards the solution.
 
 See also @code{mnewton}.
+
+@opencatbox
+@category{Package mnewton}
+@closecatbox
+
 @end defvr
 
 
@@ -22,6 +38,11 @@ Maximum number of iterations to stop the @code{mnewton} function
 if it does not converge or if it converges too slowly.
 
 See also @code{mnewton}.
+
+@opencatbox
+@category{Package mnewton}
+@closecatbox
+
 @end defvr
 
 
@@ -49,5 +70,10 @@ This function is controlled by global variables @code{newtonepsilon} and @code{n
 @end example
 
 To use this function write first @code{load("mnewton")}. See also @code{newtonepsilon} and @code{newtonmaxiter}.
+
+@opencatbox
+@category{Package mnewton}
+@closecatbox
+
 @end deffn
 

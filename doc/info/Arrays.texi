@@ -40,6 +40,9 @@ function can be used to transform an undeclared array into a declared
 array.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
+@opencatbox
+@category{Arrays}
+@closecatbox
 @end deffn
 
 @deffn {Function} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
@@ -48,6 +51,9 @@ where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
 
 This is reminiscent of @code{apply}, except the first argument is an array instead of a function.
 
+@opencatbox
+@category{Expressions} @category{Arrays}
+@closecatbox
 @end deffn
 
 @deffn {Function} arrayinfo (@var{A})
@@ -178,6 +184,9 @@ Examples:
 (%o5)      [lambda([y], y     ), lambda([y], y     )]
 @end example
 
+@opencatbox
+@category{Arrays}
+@closecatbox
 @end deffn
 
 @deffn {Function} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
@@ -243,6 +252,9 @@ Examples:
 (%o14)                          9
 @end example
 
+@opencatbox
+@category{Expressions} @category{Arrays}
+@closecatbox
 @end deffn
 
 @defvr {System variable} arrays
@@ -284,6 +296,10 @@ Examples:
 (%o5)                     [aa, bb, cc]
 @end example
 
+@opencatbox
+@category{Arrays} @category{Global variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} bashindices (@var{expr})
@@ -294,6 +310,9 @@ the unique index is @code{j@var{number}}. The quantity @var{number} is determine
 referring to @code{gensumnum}, which can be changed by the user.  For
 example, @code{gensumnum:0$} resets it.
 
+@opencatbox
+@category{Sums and products}
+@closecatbox
 @end deffn
 
 @deffn {Function} fillarray (@var{A}, @var{B})
@@ -372,6 +391,9 @@ Multple-dimension arrays are filled in row-major order.
 (%o4)     @{Array:  #2A((1 2) (3 4) (5 6) (7 8) (9 10))@}
 @end example
 
+@opencatbox
+@category{Arrays}
+@closecatbox
 @end deffn
 
 @deffn {Function} listarray (@var{A})
@@ -497,6 +519,9 @@ Examples:
 (%o5)             [hashed, 1, [b + a], [v - u]]
 @end example
 
+@opencatbox
+@category{Arrays}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -570,6 +595,9 @@ Examples:
 (%o12)                         12
 @end example
 
+@opencatbox
+@category{Arrays}
+@closecatbox
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
@@ -582,6 +610,9 @@ the remaining elements are filled with
 depending on the type of the array.  The type of the array cannot be
 changed.
 
+@opencatbox
+@category{Arrays}
+@closecatbox
 @end deffn
 
 @deffn {Function} remarray (@var{A_1}, ..., @var{A_n})
@@ -598,6 +629,9 @@ desired to redefine the values in a hashed array.
 
 @code{remarray} returns the list of arrays removed.
 
+@opencatbox
+@category{Arrays}
+@closecatbox
 @end deffn
 
 @deffn {Function} subvar (@var{x}, @var{i})
@@ -638,6 +672,9 @@ Examples:
 (%o7)                          cc
 @end example
 
+@opencatbox
+@category{Expressions} @category{Arrays}
+@closecatbox
 @end deffn
 
 @c THIS IS REALLY CONFUSING
@@ -666,5 +703,9 @@ well.  The Hash_table type also uses less consing and is more efficient
 than the old type of Maxima hashar.  To obtain consistent behaviour in
 translated and compiled code set @code{translate_fast_arrays} to be
 @code{true}.
- 
+
+@opencatbox
+@category{Arrays} @category{Global flags}
+@closecatbox
+
 @end defvr

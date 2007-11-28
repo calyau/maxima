@@ -49,4 +49,9 @@ the function gamma:
 @end example
 
 To use this function write first @code{load("stirling")}.
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Share packages} @category{Package stirling}
+@closecatbox
+
 @end deffn

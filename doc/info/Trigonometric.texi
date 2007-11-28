@@ -23,6 +23,10 @@ packages extend the simplification rules built into Maxima,
 @code{ntrig} and @code{atrig1}.  Do @code{describe(@var{command})}
 for details.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
+
 @node Functions and Variables for Trigonometric,  , Introduction to Trigonometric, Trigonometric
 @section Functions and Variables for Trigonometric
 
@@ -104,6 +108,10 @@ Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by a
 (%o2)                  [0, 1, 0, (- 1)   ]
 @end example
 
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} %iargs
@@ -161,72 +169,115 @@ Even when the argument is demonstrably real, the simplification is applied.
 (%o3)                      %i sinh(x)
 @end example
 
+@opencatbox
+@category{Trigonometric functions} @category{Hyperbolic functions} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} acos (@var{x})
  - Arc Cosine.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} acosh (@var{x})
  - Hyperbolic Arc Cosine.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} acot (@var{x})
  - Arc Cotangent.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} acoth (@var{x})
  - Hyperbolic Arc Cotangent.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} acsc (@var{x})
  - Arc Cosecant.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} acsch (@var{x})
  - Hyperbolic Arc Cosecant.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} asec (@var{x})
  - Arc Secant.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} asech (@var{x})
  - Hyperbolic Arc Secant.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} asin (@var{x})
  - Arc Sine.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} asinh (@var{x})
  - Hyperbolic Arc Sine.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} atan (@var{x})
  - Arc Tangent.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} atan2 (@var{y}, @var{x})
 - yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi} to
 @code{%pi}.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} atanh (@var{x})
  - Hyperbolic Arc Tangent.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @c IS THIS DESCRIPTION ACCURATE ??
@@ -239,36 +290,57 @@ already known to Maxima, the following angles are fully implemented:
 Corresponding angles in the other three quadrants are also available.  
 Do @code{load(atrig1);} to use them.
 
+@opencatbox
+@category{Trigonometric functions} @category{Package atrig1}
+@closecatbox
 @end defvr
 
 @deffn {Function} cos (@var{x})
  - Cosine.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} cosh (@var{x})
  - Hyperbolic Cosine.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} cot (@var{x})
  - Cotangent.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} coth (@var{x})
  - Hyperbolic Cotangent.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} csc (@var{x})
  - Cosecant.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} csch (@var{x})
  - Hyperbolic Cosecant.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} halfangles
@@ -301,6 +373,10 @@ Examples:
                             sqrt(2)
 @end example
 
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @c IS THIS DESCRIPTION ACCURATE ??
@@ -312,36 +388,57 @@ used to simplify trigonometric function whose arguments are of the form
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
+@opencatbox
+@category{Trigonometric functions} @category{Package ntrig}
+@closecatbox
 @end defvr
 
 @deffn {Function} sec (@var{x})
  - Secant.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} sech (@var{x})
  - Hyperbolic Secant.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} sin (@var{x})
  - Sine.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} sinh (@var{x})
  - Hyperbolic Sine.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} tan (@var{x})
  - Tangent.
 
+@opencatbox
+@category{Trigonometric functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} tanh (@var{x})
  - Hyperbolic Tangent.
 
+@opencatbox
+@category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -387,6 +484,9 @@ Examples:
 
 @end example
 
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} trigexpandplus
@@ -398,6 +498,10 @@ Default value: @code{true}
 (e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is 
 @code{true}.
 
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} trigexpandtimes
@@ -407,6 +511,10 @@ Default value: @code{true}
 @code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
 @code{trigexpand} switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
 will take place only if @code{trigexpandtimes} is @code{true}.
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -427,6 +535,10 @@ If @code{false}, both the
 @code{@var{arcfun}(@var{fun}(@var{x}))} and 
 @code{@var{fun}(@var{arcfun}(@var{x}))}
 simplifications are turned off.
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -468,6 +580,9 @@ used as follows, e.g.
 
 @end example
 
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} trigsign
@@ -476,6 +591,10 @@ Default value: @code{true}
 When @code{trigsign} is @code{true}, it permits simplification of negative
 arguments to trigonometric functions. E.g., @code{sin(-x)} will become
 @code{-sin(x)} only if @code{trigsign} is @code{true}.
+
+@opencatbox
+@category{Trigonometric functions} @category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -490,6 +609,9 @@ able to further simplify the result.
 @code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
 
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -570,5 +692,8 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 
 @end example
 
+@opencatbox
+@category{Trigonometric functions} @category{Simplification functions}
+@closecatbox
 @end deffn
 

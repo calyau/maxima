@@ -32,6 +32,11 @@ Example:
 @end example
 
 To use this function write first @code{load("diag")}.
+
+@opencatbox
+@category{Matrices} @category{Share packages} @category{Package diag}
+@closecatbox
+
 @end deffn
 
 
@@ -59,6 +64,11 @@ Example:
 @end example
 
 To use this function write first @code{load("diag")}.
+
+@opencatbox
+@category{Package diag}
+@closecatbox
+
 @end deffn
 
 
@@ -101,6 +111,11 @@ Example:
 @end example
 
 To use this function write first @code{load("diag")}. See also @code{dispJordan} and @code{minimalPoly}.
+
+@opencatbox
+@category{Package diag}
+@closecatbox
+
 @end deffn
 
 
@@ -132,6 +147,11 @@ Example:
 @end example
 
 To use this function write first @code{load("diag")}. See also @code{jordan} and @code{minimalPoly}.
+
+@opencatbox
+@category{Package diag}
+@closecatbox
+
 @end deffn
 
 
@@ -155,6 +175,11 @@ Example:
 @end example
 
 To use this function write first @code{load("diag")}. See also @code{jordan} and @code{dispJordan}.
+
+@opencatbox
+@category{Package diag}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} ModeMatrix (@var{A},@var{l})
@@ -191,6 +216,11 @@ Example:
 Note that @code{dispJordan(%o3)} is the Jordan form of matrix @code{a}.
 
 To use this function write first @code{load("diag")}. See also @code{jordan} and @code{dispJordan}.
+
+@opencatbox
+@category{Package diag}
+@closecatbox
+
 @end deffn
 
 
@@ -418,6 +448,11 @@ Example 3:
 @end example
 
 To use this function write first @code{load("diag")}.
+
+@opencatbox
+@category{Package diag}
+@closecatbox
+
 @end deffn
 
 

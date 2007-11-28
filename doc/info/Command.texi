@@ -130,6 +130,10 @@ The single quote does not prevent simplification.
 (%o2)                          - 1
 @end example
 
+@opencatbox
+@category{Evaluation} @category{Operators}
+@closecatbox
+
 @end deffn
 
 @deffn {Operator} ''
@@ -322,6 +326,10 @@ such as in function definitions, lambda expressions, and expressions quoted by s
                     3    3    2    2    1    1
 @end example
 
+@opencatbox
+@category{Evaluation} @category{Operators}
+@closecatbox
+
 @end deffn
 
 @c end concepts Command Line
@@ -334,6 +342,9 @@ provides an
 alternate name for a (user or system) function, variable, array, etc.
 Any even number of arguments may be used.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} debugmode
@@ -346,6 +357,10 @@ through Maxima code, and so on. See @code{debugging} for a list of debugger comm
 Enabling @code{debugmode} will not catch Lisp errors.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
+
+@opencatbox
+@category{Debugging} @category{Global flags}
+@closecatbox
 
 @end defvr
 
@@ -533,6 +548,9 @@ Solution
 (%o11)                               true
 @end example
 
+@opencatbox
+@category{Evaluation}
+@closecatbox
 @end deffn
 
 @defvr {Property} evflag
@@ -635,6 +653,10 @@ Examples:
 (%o12)                         YES
 @end example
 
+@opencatbox
+@category{Evaluation flags} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Property} evfun
@@ -735,6 +757,9 @@ Examples:
 (%o15)                      G(F(cc))
 @end example
 
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
 @end defvr
 @c NEEDS WORK
 @defvr {Option variable} infeval
@@ -744,6 +769,9 @@ variable, say @code{X}, from being evaluated away in this mode, simply
 include @code{X='X} as an argument to @code{ev}.  Of course expressions such as
 @code{ev (X, X=X+1, infeval)} will generate an infinite loop.
 
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
 @end defvr
 
 @c REVIEW FOR ACCURACY AND COMPLETENESS
@@ -811,6 +839,9 @@ unbind a specific property.
 
 @code{kill} always returns @code{done}, even if an argument has no binding.
 
+@opencatbox
+@category{Evaluation} @category{Console interaction} @category{Session management}
+@closecatbox
 @end deffn
 
 @deffn {Function} labels (@var{symbol})
@@ -845,11 +876,19 @@ Some other functions, such as @code{ldisplay}, always generate intermediate expr
 
 See also @code{inchar}, @code{outchar}, @code{linechar}, and @code{infolists}.
 
+@opencatbox
+@category{Display functions} @category{Display flags and variables} @category{Console interaction}
+@closecatbox
+
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
 @defvr {System variable} linenum
 The line number of the current pair of input and output expressions.
+
+@opencatbox
+@category{Display flags and variables} @category{Console interaction}
+@closecatbox
 
 @end defvr
 
@@ -859,6 +898,10 @@ Default value: @code{[]}
 
 @code{myoptions} is the list of all options ever reset by the user,
 whether or not they get reset to their default value.
+
+@opencatbox
+@category{Global variables} @category{Session management} @category{Console interaction}
+@closecatbox
 
 @end defvr
 
@@ -883,6 +926,10 @@ intermediate expression labels are bound and appended to the @code{labels} list.
 
 See also @code{batch}, @code{load}, and @code{labels}.
 
+@opencatbox
+@category{Global flags} @category{Session management}
+@closecatbox
+
 @end defvr
 
 @c NEEDS WORK
@@ -893,6 +940,10 @@ When @code{optionset} is @code{true}, Maxima prints out a
 message whenever a Maxima option is reset.  This is useful if the
 user is doubtful of the spelling of some option and wants to make sure
 that the variable he assigned a value to was truly an option variable.
+
+@opencatbox
+@category{Global flags} @category{Session management} @category{Console interaction}
+@closecatbox
 
 @end defvr
 
@@ -951,6 +1002,10 @@ Arguments may be combined, e.g.,
 @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
+@opencatbox
+@category{Display functions} @category{Console interaction}
+@closecatbox
+
 @end deffn
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
@@ -965,6 +1020,10 @@ used.  For example, @code{printprops ([f, g], atvalue)}.  @code{printprops} is f
 properties that cannot otherwise be displayed, i.e. for
 @code{atvalue}, @code{atomgrad}, @code{gradef}, and @code{matchdeclare}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Display functions}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} prompt
@@ -972,6 +1031,10 @@ Default value: @code{_}
 
 @code{prompt} is the prompt symbol of the @code{demo} function,
 @code{playback (slow)} mode, and the Maxima break loop (as invoked by @code{break}).
+
+@opencatbox
+@category{Global variables} @category{Console interaction}
+@closecatbox
 
 @end defvr
 
@@ -987,6 +1050,9 @@ If @code{*debugger-hook*} is @code{nil},
 @code{control-C} opens the Lisp debugger.
 See also @code{debugging}.
 
+@opencatbox
+@category{Console interaction}
+@closecatbox
 @end deffn
 
 @deffn {Function} remfunction (@var{f_1}, ..., @var{f_n})
@@ -1005,6 +1071,9 @@ or macro functions (created by @code{::=}).
 @code{remfunction} does not apply to array functions or subscripted functions.
 @code{remarray} applies to those types of functions.
 
+@opencatbox
+@category{Function definition}
+@closecatbox
 @end deffn
 
 @deffn {Function} reset ()
@@ -1014,6 +1083,10 @@ Resets many global variables and options, and some other variables, to their def
 The Lisp macro @code{defmvar} puts variables on this list (among other actions).
 Many, but not all, global variables and options are defined by @code{defmvar},
 and some variables defined by @code{defmvar} are not global variables or options.
+
+@opencatbox
+@category{Session management}
+@closecatbox
 
 @end deffn
 
@@ -1029,6 +1102,10 @@ even when @code{showtime} is @code{false}.
 
 See also @code{timer}.
 
+@opencatbox
+@category{Display flags and variables} @category{Debugging}
+@closecatbox
+
 @end defvr
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
@@ -1040,11 +1117,19 @@ After @code{sstatus (@var{feature}, @var{package})} is executed,
 This can be useful for package writers, to
 keep track of what features they have loaded in.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end deffn
 
 @c NEEDS EXPANSION, EXAMPLES
 @deffn {Function} to_lisp ()
 Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
 
 @end deffn
 
@@ -1053,5 +1138,9 @@ Initial value: @code{[]}
 
 @code{values} is a list of all bound user variables (not Maxima options or switches).
 The list comprises symbols bound by @code{:} , @code{::}, or @code{:=}.
+
+@opencatbox
+@category{Evaluation} @category{Global variables}
+@closecatbox
 
 @end defvr

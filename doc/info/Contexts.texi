@@ -15,6 +15,9 @@ The facts in these contexts are not listed by @code{facts ()}.
 The variable @code{activecontexts} is the list
 of contexts which are active by way of the @code{activate} function.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @defvr {System variable} activecontexts
@@ -23,6 +26,10 @@ Default value: @code{[]}
 @code{activecontexts} is a list of the contexts which are active
 by way of the @code{activate} function, as opposed to being active because
 they are subcontexts of the current context.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 
 @end defvr
 
@@ -96,6 +103,9 @@ Examples:
 (%o10)                       unknown
 @end example
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} assumescalar
@@ -122,6 +132,10 @@ expressions will behave like non-scalars.
 When @code{assumescalar} is @code{all},
 such expressions will behave like scalars for all the operators listed
 above.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 
 @end defvr
 
@@ -155,6 +169,10 @@ even when @code{assume_pos} is @code{true} and @code{assume_pos_pred} is
 a function which returns @code{true} for all arguments.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end defvr
 
 
@@ -241,6 +259,10 @@ p;
 (%o11)                         neg
 @end example
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end defvr
 
 
@@ -258,6 +280,10 @@ it is created automatically by a call to @code{newcontext}.
 The specified context is activated automatically.
 
 See @code{contexts} for a general description of the context mechanism.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 
 @end defvr
 
@@ -292,11 +318,18 @@ context called @code{initial}, which has @code{global} as a subcontext.
 See also @code{facts}, @code{newcontext},
 @code{supcontext}, @code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, and @code{forget}.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} deactivate (@var{context_1}, ..., @var{context_n})
 Deactivates the specified contexts @var{context_1}, ..., @var{context_n}.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @deffn {Function} facts (@var{item})
@@ -311,6 +344,9 @@ context.  Facts that are active, but in a different context, are not listed.
 
 @code{facts ()} (i.e., without an argument) lists the current context.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @defvr {Declaration} features
@@ -341,6 +377,10 @@ plus any user-defined features.
 @code{features} is a list of mathematical features.
 There is also a list of non-mathematical, system-dependent features. See @code{status}.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} forget (@var{pred_1}, ..., @var{pred_n})
@@ -352,6 +392,9 @@ those previously assumed.
 @code{forget (@var{L})}, where @var{L} is a list of predicates,
 forgets each item on the list.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @deffn {Function} killcontext (@var{context_1}, ..., @var{context_n})
@@ -370,6 +413,9 @@ context, or by use of the function @code{activate}.
 @code{killcontext} evaluates its arguments.
 @code{killcontext} returns @code{done}.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @deffn {Function} newcontext (@var{name})
@@ -380,6 +426,9 @@ becomes the currently active context.
 @code{newcontext} evaluates its argument.
 @code{newcontext} returns @var{name}.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @deffn {Function} supcontext (@var{name}, @var{context})
@@ -390,4 +439,7 @@ which has @var{context} as a subcontext.
 
 If @var{context} is not specified, the current context is assumed.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn

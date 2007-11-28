@@ -233,6 +233,10 @@ in a given set that do not depend on a variable @code{z}, use
 The section @ref{Functions and Variables for Sets} has a complete list of
 the set functions in Maxima.
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @subsection Set Member Iteration
 
 There two ways to to iterate over set members. One way is the use
@@ -441,6 +445,10 @@ Examples:
 (%o2)                        @{a, b@}
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{belln}
@@ -485,6 +493,10 @@ Examples:
 (%o1)        [belln(x), belln(sqrt(3)), belln(- 9)]
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{cardinality}
@@ -514,6 +526,10 @@ Examples:
 (%o4)                           3
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{cartesian_product}
@@ -542,6 +558,11 @@ Examples:
 (%i4) cartesian_product (@{x@}, @{-1, 0, 1@});
 (%o4)              @{[x, - 1], [x, 0], [x, 1]@}
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 
@@ -572,6 +593,10 @@ Examples:
 (%o3)                  @{5, %pi, b + a, z@}
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{disjointp}
@@ -592,6 +617,10 @@ Examples:
 (%i2) disjointp (@{a, b, 3@}, @{1, 2, 3@});
 (%o2)                         false
 @end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
 
 @end deffn
 
@@ -658,6 +687,11 @@ yields the divisors without reevaluating @code{divisors(8)}.
 (%i4) divisors (@{a, b, c@});
 (%o4)        @{divisors(a), divisors(b), divisors(c)@}
 @end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end deffn
 
 @anchor{elementp}
@@ -680,6 +714,10 @@ Examples:
 (%o2)                         false
 @end example
 
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
 @end deffn
 
 @anchor{emptyp}
@@ -699,6 +737,11 @@ Examples:
 (%i2) map (emptyp, [a + b, @{@{@}@}, %pi]);
 (%o2)                 [false, false, false]
 @end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
 @end deffn
        
 @anchor{equiv_classes}
@@ -755,6 +798,11 @@ The equivalence classes are numbers which differ by a multiple of 3.
                      lambda ([x, y], remainder (x - y, 3) = 0));
 (%o1)              @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{every}
@@ -852,6 +900,10 @@ are governed by the global flag @code{prederror}.
 (%o5)                         false
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
  
 @anchor{extremal_subset}
@@ -878,6 +930,11 @@ Examples:
 (%i2) extremal_subset (@{sqrt(2), 1.57, %pi/2@}, sin, min);
 (%o2)                       @{sqrt(2)@}
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{flatten}
@@ -969,6 +1026,11 @@ of arguments differs from the declared arguments for an operator;
 Wrong number of arguments to mod
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
 @end deffn
 
 @anchor{full_listify}
@@ -992,6 +1054,10 @@ Examples:
 (%i2) full_listify (F (G (@{a, b, H(@{c, d, e@})@})));
 (%o2)              F(G([a, b, H([c, d, e])]))
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
 
 @end deffn
 
@@ -1018,6 +1084,10 @@ because the main operator of @code{f([b])} isn't a list.
 (%i2) fullsetify ([a, f([b])]);
 (%o2)                      @{a, f([b])@}
 @end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
 
 @end deffn
 
@@ -1103,12 +1173,20 @@ here is an example that finds all partitions of 10 that consist of prime numbers
 (%o4) @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7, 3]@}
 @end example
 
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end deffn
 
 @anchor{intersect}
 @deffn {Function} intersect (@var{a_1}, ..., @var{a_n})
 
 @code{intersect} is the same as @code{intersection}, which see.
+
+@opencatbox
+@category{Sets}
+@closecatbox
 
 @end deffn
 
@@ -1149,6 +1227,10 @@ Examples:
 (%i8) intersection (S_1, S_2, S_3, S_4);
 (%o8)                          @{@}
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
 
 @end deffn
 
@@ -1332,6 +1414,10 @@ Examples:
 (%o2)                    F(@{a, b, c, d@})
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{lreduce}
@@ -1392,6 +1478,10 @@ Examples:
                               b c d
 @end example
 
+@opencatbox
+@category{Lists}
+@closecatbox
+
 @end deffn
 
 @anchor{makeset}
@@ -1442,6 +1532,11 @@ Examples:
 (%i5) makeset (sin(x), [x], @{[1], [2], [3]@});
 (%o5)               @{sin(1), sin(2), sin(3)@}
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{moebius}
@@ -1492,6 +1587,10 @@ Examples:
 (%o9)                      @{- 1, 0, 1@}
 @end example
 
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end deffn
  
 @anchor{multinomial_coeff}
@@ -1534,6 +1633,11 @@ Examples:
 (%i4) minfactorial (%);
 (%o4)                          10
 @end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end deffn
 
 @anchor{num_distinct_partitions}
@@ -1566,6 +1670,10 @@ Examples:
 (%i3) num_distinct_partitions (n);
 (%o3)              num_distinct_partitions(n)
 @end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
 
 @end deffn
 
@@ -1600,6 +1708,10 @@ Examples:
 (%o3)                   num_partitions(n)
 @end example
 
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end deffn
 
 
@@ -1632,6 +1744,11 @@ Examples:
                      lambda ([x], ratp(x)));
 (%o2)/R/              [@{1, x@}, @{y, y + z@}]
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{permutations}
@@ -1659,6 +1776,10 @@ Examples:
 (%i2) permutations ([a, a, b]);
 (%o2)           @{[a, a, b], [a, b, a], [b, a, a]@}
 @end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
 
 @end deffn
 
@@ -1702,6 +1823,10 @@ Examples:
 (%o6)                         @{@{@}@}
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} random_permutation (@var{a})
@@ -1731,6 +1856,10 @@ Examples:
 (%i4) random_permutation (@{x + 1, y + 2, z + 3@});
 (%o4)                 [x + 1, y + 2, z + 3]
 @end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
 
 @end deffn
 
@@ -1794,6 +1923,10 @@ Examples:
                                b d
 @end example
 
+@opencatbox
+@category{Lists}
+@closecatbox
+
 @end deffn
 
 @anchor{setdifference}
@@ -1832,6 +1965,10 @@ Examples:
 (%o7)                          @{@}
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{setequalp}
@@ -1862,6 +1999,10 @@ Examples:
 (%o3)                         false
 @end example
 
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
+
 @end deffn
 
 @anchor{setify}
@@ -1888,6 +2029,10 @@ Examples:
 (%i3) setify ([7, 13, 11, 1, 3, 9, 5]);
 (%o3)                @{1, 3, 5, 7, 9, 11, 13@}
 @end example
+
+@opencatbox
+@category{Lists}
+@closecatbox
 
 @end deffn
 
@@ -1918,6 +2063,10 @@ Examples:
 (%i3) setp (%);
 (%o3)                         true
 @end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
 
 @end deffn
 
@@ -1999,6 +2148,11 @@ equal @code{s}; again let's check.
 (%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
 (%i4) map (lambda ([x], apply (union, listify (x))), p);
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{some}
@@ -2099,6 +2253,11 @@ are governed by the global flag @code{prederror}.
 (%i7) some ("<", [x, y, z], [x^2, y^2, z + 1]);
 (%o7)                         true
 @end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
 @end deffn
 
 @anchor{stirling1}
@@ -2184,6 +2343,11 @@ Maxima applies identities to @code{stirling1}.
 (%i4) stirling1 (n + 1, 1);
 (%o4)                          n!
 @end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end deffn
 
 @anchor{stirling2}
@@ -2278,6 +2442,11 @@ Maxima applies identities to @code{stirling2}.
                               n
 (%o4)                        2  - 1
 @end example
+
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end deffn
 
 @anchor{subset}
@@ -2306,6 +2475,10 @@ Examples:
 (%o2)                      @{2, 8, 14@}
 @end example
 
+@opencatbox
+@category{Sets}
+@closecatbox
+
 @end deffn
 
 @anchor{subsetp}
@@ -2327,6 +2500,10 @@ Examples:
 (%i2) subsetp (@{a, 1, b, 2, c, 3@}, @{1, 2, 3@});
 (%o2)                         false
 @end example
+
+@opencatbox
+@category{Sets} @category{Predicate functions}
+@closecatbox
 
 @end deffn
 
@@ -2371,6 +2548,10 @@ Examples:
 (%i8) symmdifference (@{@}, S_1, S_2, S_3);
 (%o8)                        @{1, z@}
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
 
 @end deffn
 
@@ -2420,6 +2601,10 @@ Examples:
 (%o1)               f(f(f(a, b), f(c, d)), e)
 @end example
 
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
+
 @end deffn
 
 @anchor{union}
@@ -2460,6 +2645,10 @@ Examples:
 (%i8) union (@{@}, S_1, S_2, S_3);
 (%o8)       @{17, 29, 1729, %e, %i, %pi, a, b, d + c@}
 @end example
+
+@opencatbox
+@category{Sets}
+@closecatbox
 
 @end deffn
 
@@ -2523,6 +2712,10 @@ Examples:
 (%i3) lreduce (G, [a, b, c, d, e]);
 (%o3)                 [[[[a, b], c], d], e]
 @end example
+
+@opencatbox
+@category{Sets} @category{Lists}
+@closecatbox
 
 @end deffn
 

@@ -61,6 +61,10 @@ If only one ODE is given, @code{plotdf} will implicitly admit
 @code{x=t}, and @code{G(x,y)=1}, transforming the non-autonomous
 equation into a system of two autonomous equations.
 
+@opencatbox
+@category{Differential equations} @category{Share packages} @category{Package plotdf}
+@closecatbox
+
 @node Functions and Variables for plotdf,  , Introduction to plotdf, plotdf
 @section Functions and Variables for plotdf
 
@@ -276,6 +280,10 @@ the two state variables as a function of time:
 @end ifnotinfo
 
 @end itemize
+
+@opencatbox
+@category{Package plotdf} @category{Plotting} @category{Numerical methods}
+@closecatbox
 
 @end deffn
 

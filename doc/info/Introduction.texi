@@ -191,3 +191,7 @@ functions:
 @c of the plot.  (By default, the file is placed in your home directory.)
 @c You can rotate a 3D plot.
 
+@opencatbox
+@category{Help}
+@closecatbox
+

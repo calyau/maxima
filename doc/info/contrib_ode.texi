@@ -208,6 +208,11 @@ For second order ODEs @code{contrib_ode} calls @code{ode2} then @code{odelin}.
 Extensive debugging traces and messages are displayed if the command
 @code{put('contrib_ode,true,'verbose)} is executed.
 
+@opencatbox
+@category{Differential equations} @category{Share packages} @category{Package contrib_ode}
+@closecatbox
+
+
 @node Functions and Variables for contrib_ode, Possible improvements to contrib_ode, Introduction to contrib_ode, contrib_ode
 @section Functions and Variables for contrib_ode
 
@@ -215,6 +220,10 @@ Extensive debugging traces and messages are displayed if the command
 
 Returns a list of solutions of the ODE @var{eqn} with 
 independent variable @var{x} and dependent variable @var{y}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
 
 @end deffn
 
@@ -255,6 +264,10 @@ special functions.
                    x                            x
 
 @end example
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
 
 @end deffn
 
@@ -297,30 +310,50 @@ zero if @var{soln} is a solution of @var{eqn}.
 (%o4)                           0
 @end example
 
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
-@defvr {System variable} @code{method}
+@defvr {System variable} method
 
 The variable @code{method} is set to the successful solution
 method. 
 
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end defvr
 
-@defvr {Variable} @code{%c}
+@defvr {Variable} %c
 
 @code{%c} is the integration constant for first order ODEs.
 
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end defvr
 
-@defvr {Variable} @code{%k1}
+@defvr {Variable} %k1
 
 @code{%k1} is the first integration constant for second order ODEs.
 
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end defvr
 
-@defvr {Variable} @code{%k2}
+@defvr {Variable} %k2
 
 @code{%k2} is the second integration constant for second order ODEs.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
 
 @end defvr
 
@@ -337,18 +370,37 @@ functions may change in future releases of Maxima.
 
 See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
 
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 See @code{gauss_a}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 
@@ -362,6 +414,11 @@ The only use of this function is in solutions of ODEs returned by
 function may change in future releases of Maxima.
 
 See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} kummer_u (@var{a}, @var{b}, @var{x})
@@ -370,14 +427,29 @@ Kummer's U function, as defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3.
 
 See @code{kummer_m}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
 The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{x})}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
 The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{x})}.
+
+@opencatbox
+@category{Package contrib_ode}
+@closecatbox
+
 @end deffn
 
 

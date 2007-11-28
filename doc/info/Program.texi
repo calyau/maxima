@@ -71,6 +71,9 @@ functions, including the currently active function.
 @end example
 @end itemize
 
+@opencatbox
+@category{Debugging}
+@closecatbox
 @end deffn
 
 @deffn {Special operator} do
@@ -286,6 +289,9 @@ non-atomic expression, and successive parts are taken.)
 (%o4)                             0.78539816
 @end example
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @deffn {Function} errcatch (@var{expr_1}, ..., @var{expr_n})
@@ -299,6 +305,9 @@ returns the empty list @code{[]} without evaluating any more arguments.
 is useful in @code{batch} files where one suspects an error might occur which
 would terminate the @code{batch} if the error weren't caught.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @deffn {Function} error (@var{expr_1}, ..., @var{expr_n})
@@ -315,6 +324,9 @@ and the remaining elements are the values of any non-string arguments.
 @code{errormsg()} formats and prints @code{error}.
 This is effectively reprinting the most recent error message.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @deffn {Function} errormsg ()
@@ -322,6 +334,9 @@ Reprints the most recent error message.
 The variable @code{error} holds the message,
 and @code{errormsg} formats and prints it.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @c REPHRASE
@@ -330,6 +345,9 @@ and @code{errormsg} formats and prints it.
 Used in iterations. See @code{do} for a description of
 Maxima's iteration facilities.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @deffn {Function} go (@var{tag})
@@ -346,6 +364,9 @@ The argument to @code{go} must be the name of a tag appearing in the same
 @code{block}.  One cannot use @code{go} to transfer to tag in a @code{block} other than the
 one containing the @code{go}.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
@@ -403,6 +424,9 @@ or                   or          logical infix
 not                  not         logical prefix
 @end example
 
+@opencatbox
+@category{Programming} @category{Predicate functions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -447,6 +471,10 @@ exhaustion of list storage space in the course of the computation.
 
 
 @end example
+
+@opencatbox
+@category{Function application}
+@closecatbox
 @end deffn
 
 @deffn {Function} mapatom (@var{expr})
@@ -455,6 +483,9 @@ routines as an atom.  "Mapatoms" are atoms, numbers
 (including rational numbers), and subscripted variables.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 
+@opencatbox
+@category{Predicate functions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -475,6 +506,10 @@ not all the same type of object.
 If @code{maperror} is @code{true} then an error message
 is displayed in the above two instances.
 
+@opencatbox
+@category{Function application}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} mapprint
@@ -486,6 +521,11 @@ situations.  These include situations where @code{map} would use
 @code{apply}, or @code{map} is truncating on the shortest list.
 
 If @code{mapprint} is @code{false}, these messages are suppressed.
+
+@opencatbox
+@category{Function application}
+@closecatbox
+
 @end defvr
 
 @c NEEDS CLARIFICATION
@@ -498,6 +538,9 @@ to the parts of the expressions @var{expr_1}, ..., @var{expr_n}.
 which returns an expression with the same main operator as @var{expr_i} has
 (except for simplifications and the case where @code{map} does an @code{apply}).
 
+@opencatbox
+@category{Function application}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -515,12 +558,19 @@ however, @code{maybe} is supported in translated code.
 
 See also @code{is} and @code{maybe}.
 
+@opencatbox
+@category{Programming} @category{Predicate functions}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} return (@var{value})
 May be used to exit explicitly from a block, bringing
 its argument.  See @code{block} for more information.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -573,6 +623,9 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 In this case, you get the same answer both
 ways.
 
+@opencatbox
+@category{Function application}
+@closecatbox
 @end deffn
 
 @deffn {Function} throw (@var{expr})
@@ -580,6 +633,9 @@ Evaluates @var{expr} and throws the value back to the most recent
 @code{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @c NEED MORE HERE !!
@@ -587,6 +643,9 @@ mechanism.
 @deffn {Special operator} while
 See @code{do}.
 
+@opencatbox
+@category{Programming}
+@closecatbox
 @end deffn
 
 @deffn {Function} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
@@ -743,4 +802,7 @@ while @code{cartesian_product} does not.
 (%o4)                         true
 @end example
 
+@opencatbox
+@category{Function application}
+@closecatbox
 @end deffn

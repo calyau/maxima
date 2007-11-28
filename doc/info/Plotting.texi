@@ -47,6 +47,10 @@ Examples:
 (%i7) contour_plot (F, [u, -4, 4], [v, -4, 4]);
 @end example
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 @c INSPECTING src/plot.lisp AND TRYING SOME EXAMPLES,
@@ -327,6 +331,10 @@ the color (1 corresponds to blue).
 See also @code{plot_options}, which describes plotting options and has
 more examples.
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} xgraph_curves (@var{list})
@@ -394,6 +402,10 @@ to plot two possibly different such bar graphs:
 @noindent
 
 A temporary file @file{xgraph-out} is used.
+
+@opencatbox
+@category{Plotting}
+@closecatbox
 
 @end deffn
 
@@ -947,6 +959,10 @@ A plot where the z-axis is represented by color only.
 @image{figures/plotting18,8cm}
 @end ifnotinfo
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
@@ -1070,6 +1086,10 @@ difficult, and it is just easier to make a function.
 
 See @code{plot_options} for more examples.
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 
@@ -1080,6 +1100,11 @@ with the plot option @code{transform_xy}.
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
 is a transformation to polar coordinates.
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} set_plot_option (@var{option})
@@ -1139,6 +1164,10 @@ with lines 7]], [gnuplot_default_term_command, ],
 eps enhanced color solid 24]]
 @end example
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 @subsection Functions for working with the gnuplot_pipes format
@@ -1149,6 +1178,10 @@ Opens the pipe to gnuplot used for plotting with the
 @code{gnuplot_pipes} format. Is not necessary to manually open the
 pipe before plotting.
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} gnuplot_close ()
@@ -1156,12 +1189,20 @@ pipe before plotting.
 Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
 format.
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} gnuplot_restart ()
 
 Closes the pipe to gnuplot which is used with the @code{gnuplot_pipes}
 format and opens a new pipe.
+
+@opencatbox
+@category{Plotting}
+@closecatbox
 
 @end deffn
 
@@ -1172,6 +1213,10 @@ Updates the gnuplot window. If @code{gnuplot_replot} is called with a
 gnuplot command in a string @var{s}, then @code{s} is sent to gnuplot
 before reploting the window.
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} gnuplot_reset ()
@@ -1179,6 +1224,10 @@ before reploting the window.
 Resets the state of gnuplot used with the @code{gnuplot_pipes}
 format. To update the gnuplot window call @code{gnuplot_replot} after
 @code{gnuplot_reset}.
+
+@opencatbox
+@category{Plotting}
+@closecatbox
 
 @end deffn
 

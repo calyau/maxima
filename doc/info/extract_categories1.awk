@@ -10,10 +10,11 @@ END {
     print " f.write (\"@b{Category: \" + key + \"}\\n\\n\")"
     print " items = categories [key]"
     print " if len (items) == 0: continue"
-    print " f.write (\"@ref{Item: \" + items[0] + \"}\\n\")"
+    print " items.sort ()"
+    print " f.write (\"@ref{Item: \" + items[0][0] + \", \" + items[0][1] + \"}\\n\")"
     print " for item in items [1:]:"
-    print "  f.write (\"@html\\n&sdot;\\n@end html\\n\")"
-    print "  f.write (\"@ref{Item: \" + item + \"}\\n\")"
+    print "  f.write (\"@html\\n&middot;\\n@end html\\n\")"
+    print "  f.write (\"@ref{Item: \" + item[0] + \", \" + item[1] + \"}\\n\")"
     print " f.write (\"@closecatbox\")"
     print }
 

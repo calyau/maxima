@@ -24,7 +24,9 @@ Follow this link for more elaborated examples of this package:
 
 You need Gnuplot 4.2 to run this program.
 
-
+@opencatbox
+@category{Plotting} @category{Share packages} @category{Package draw}
+@closecatbox
 
 
 @node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw
@@ -54,6 +56,11 @@ Example:
 @end example
 
 See also @code{yrange} and @code{zrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -80,6 +87,11 @@ Example:
 @end example
 
 See also @code{xrange} and @code{zrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -107,6 +119,10 @@ Example:
 @end example
 
 See also @code{xrange} and @code{yrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
 @end defvr
 
 
@@ -129,6 +145,11 @@ Example:
 @end example
 
 See also @code{logy} and @code{logz}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -151,6 +172,11 @@ Example:
 @end example
 
 See also @code{logx} and @code{logz}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -173,6 +199,11 @@ Example:
 @end example
 
 See also @code{logx} and @code{logy}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -229,6 +260,11 @@ Option @code{delay} is only active in animated gif's; it is ignored in
 any other case.
 
 See also @code{file_name}, @code{pic_width}, @code{pic_height} and @code{delay}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -248,6 +284,11 @@ Example:
 (%i2) draw2d(grid = true,
              explicit(exp(u),u,-2,2))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -268,6 +309,11 @@ Example:
 (%i2) draw2d(explicit(exp(u),u,-2,2),
              title = "Exponential function")$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -291,6 +337,11 @@ Example:
 @end example
 
 See also @code{ylabel}, and @code{zlabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -314,6 +365,11 @@ Example:
 @end example
 
 See also @code{xlabel}, and @code{zlabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -338,6 +394,11 @@ Example:
 @end example
 
 See also @code{xlabel}, and @code{ylabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -416,6 +477,11 @@ Labeled tics.
 @end example
 
 See also @code{ytics}, and @code{ztics}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -426,6 +492,11 @@ Default value: @code{auto}
 This graphic option controls the way tic marks are drawn on the @var{y} axis.
 
 See @code{xtics} for a complete description.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -436,6 +507,11 @@ Default value: @code{auto}
 This graphic option controls the way tic marks are drawn on the @var{z} axis.
 
 See @code{xtics} for a complete description.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -447,6 +523,11 @@ If @code{xtics_rotate} is @code{true}, tic marks on the @var{x} axis are rotated
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -458,6 +539,11 @@ If @code{ytics_rotate} is @code{true}, tic marks on the @var{y} axis are rotated
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -469,6 +555,11 @@ If @code{ztics_rotate} is @code{true}, tic marks on the @var{z} axis are rotated
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -480,6 +571,11 @@ along the @var{x} axis, if it is @code{false} tics are plotted on the border.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Graphic option} ytics_axis
@@ -490,6 +586,11 @@ along the @var{y} axis, if it is @code{false} tics are plotted on the border.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Graphic option} ztics_axis
@@ -500,6 +601,11 @@ along the @var{z} axis, if it is @code{false} tics are plotted on the border.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -521,6 +627,11 @@ Example:
 @end example
 
 See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -544,6 +655,11 @@ Example:
 @end example
 
 See also @code{xaxis}, @code{xaxis_type} and @code{xaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -567,6 +683,11 @@ Example:
 @end example
 
 See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -590,6 +711,11 @@ Example:
 @end example
 
 See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -612,6 +738,11 @@ Example:
 @end example
 
 See also @code{yaxis_width}, @code{yaxis_type} and @code{yaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -635,6 +766,11 @@ Example:
 @end example
 
 See also @code{yaxis}, @code{yaxis_type} and @code{yaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -658,6 +794,11 @@ Example:
 @end example
 
 See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -681,6 +822,11 @@ Example:
 @end example
 
 See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -705,6 +851,11 @@ Example:
 @end example
 
 See also @code{zaxis_width}, @code{zaxis_type} and @code{zaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -729,6 +880,11 @@ Example:
 @end example
 
 See also @code{zaxis}, @code{zaxis_type} and @code{zaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -753,6 +909,11 @@ Example:
 @end example
 
 See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -778,6 +939,11 @@ Example:
 @end example
 
 See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -802,6 +968,11 @@ Example:
 @end example
 
 See also @code{rot_horizontal}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -827,6 +998,11 @@ Example:
 @end example
 
 See also @code{rot_vertical}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -840,6 +1016,11 @@ no coordinates are saved.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -866,6 +1047,11 @@ but it is possible to set it by making use of option @code{user_preamble},
              parametric(cos(u),sin(u),u,0,2*%pi),
              user_preamble="set terminal dumb")$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -889,6 +1075,11 @@ Example:
 @end example
 
 See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Graphic option} delay
@@ -918,6 +1109,11 @@ Option @code{delay} is only active in animated gif's; it is ignored in
 any other case.
 
 See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Graphic option} pic_width
@@ -939,6 +1135,11 @@ Example:
 @end example
 
 See also @code{terminal}, @code{file_name}, and @code{pic_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -962,6 +1163,11 @@ Example:
 @end example
 
 See also @code{terminal}, @code{file_name}, and @code{pic_width}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -986,6 +1192,11 @@ Example:
 @end example
 
 See also @code{terminal}, @code{file_name}, and @code{eps_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1010,6 +1221,11 @@ Example:
 @end example
 
 See also @code{terminal}, @code{file_name}, and @code{eps_width}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1031,6 +1247,11 @@ Example:
 @end example
 
 See also @code{axis_left},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1052,6 +1273,11 @@ Example:
 @end example
 
 See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and @code{axis_3d}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1073,6 +1299,11 @@ Example:
 @end example
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axis_3d}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1094,6 +1325,11 @@ Example:
 @end example
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_3d}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1115,6 +1351,11 @@ Example:
 @end example
 
 See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1169,6 +1410,11 @@ Examples:
 @end example
 
 See also @code{colorbox}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1194,6 +1440,11 @@ Example:
 @end example
 
 See also @code{palette}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1215,6 +1466,11 @@ Example:
              palette      = gray,
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1242,6 +1498,11 @@ Example:
         point_size = 5,
         points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1292,6 +1553,11 @@ Example:
              point_type = filled_diamant,
              points([[1,9],[5,9],[9,9]]) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1329,6 +1595,11 @@ Example:
              line_width    = 7,
              points([[1,3],[5,3],[9,3]]) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1368,6 +1639,11 @@ defined by option @code{filled_func}. Note that the variable in
 @end example
 
 See also @code{fill_color} and @code{explicit}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1393,6 +1669,11 @@ Example:
              color       = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1420,6 +1701,11 @@ Example:
              fill_color  = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1445,6 +1731,11 @@ Example:
 @end example
 
 See also @code{head_length}, @code{head_angle}, and @code{head_type}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1472,6 +1763,11 @@ Example:
 @end example
 
 See also @code{head_both}, @code{head_angle}, and @code{head_type}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1512,6 +1808,11 @@ Example:
 @end example
 
 See also @code{head_both}, @code{head_length}, and @code{head_type}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1540,6 +1841,11 @@ Example:
 @end example
 
 See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1564,6 +1870,11 @@ Example:
              color        = red,
              vector([0,3],[5,2]))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1593,6 +1904,11 @@ Example:
 @end example
 
 See also @code{label_orientation}, and @code{color}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1623,6 +1939,11 @@ Package @code{draw} needs always data to draw an scene.
 @end example
 
 See also @code{label_alignment} and @code{color}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1674,6 +1995,11 @@ Example:
 @end example
 
 See also @code{fill_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1685,6 +2011,11 @@ Default value: @code{"red"}
 2d @code{explicit} functions.
 
 See @code{color} to learn how colors are specified.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1729,6 +2060,11 @@ Example:
 @end example
 
 See also @code{line_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1761,6 +2097,11 @@ Example:
 @end example
 
 See also @code{line_width}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1788,6 +2129,11 @@ Example:
              nticks = 5,
              ellipse(0,0,4,2,180,180) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1798,6 +2144,11 @@ Default value: 10
 @code{adapt_depth} is the maximum number of splittings used by the adaptive plotting routine.
 
 This option is relevant only for 2d @code{explicit} functions.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1830,6 +2181,11 @@ Example:
              color = red,
              explicit(cos(x),x,0,10) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1857,6 +2213,11 @@ Example:
 @end example
 
 See also @code{yv_grid}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1884,6 +2245,11 @@ Example:
 @end example
 
 See also @code{xu_grid}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1905,6 +2271,11 @@ Example:
            gr3d(surface_hide = true,
                 explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1952,6 +2323,11 @@ Example:
              contour        = both,
              surface_hide   = true) $
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2018,6 +2394,11 @@ Isolines at levels -7, -6, 0.8 and 5.
 @end example
 
 See also @code{contour}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2042,6 +2423,10 @@ Example:
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
 
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2052,6 +2437,11 @@ Default value: @code{[50, 50]}
 @code{ip_grid} sets the grid for the first sampling in implicit plots.
 
 This option is relevant only for @code{implicit} objects.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2062,6 +2452,11 @@ Default value: @code{[5, 5]}
 @code{ip_grid_in} sets the grid for the second sampling in implicit plots.
 
 This option is relevant only for @code{implicit} objects.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Graphic option} x_voxel
@@ -2120,6 +2515,11 @@ See also the following global @i{graphic options}: @code{xrange}, @code{yrange},
 and @code{axis_right}.
 
 To make use of this function, write first @code{load(draw)}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2152,6 +2552,11 @@ See also the following global @i{graphic options}: @code{xrange}, @code{yrange},
 and @code{enhanced3d}.
 
 To make use of this function, write first @code{load(draw)}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2235,6 +2640,11 @@ Two tridimensional samples,
          key        = "Sample from stations 1, 4 and 5",
          points(args(submatrix (s2, 2, 3))) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2263,6 +2673,11 @@ Example:
              fill_color  = yellow,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2295,6 +2710,11 @@ Example:
              xrange      = [-3,10],
              yrange      = [-3,4.5] )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2364,6 +2784,11 @@ Example:
              xrange      = [-3,6],
              yrange      = [2,9] )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2408,6 +2833,11 @@ Example:
              color = blue,
              label(["DOWN 1",2,0,-3]) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2456,6 +2886,11 @@ Example:
              vector([0,0,0],[1,-1,0]/sqrt(2)),
              vector([0,0,0],[1,1,-2]/sqrt(6)) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2509,6 +2944,11 @@ Example:
 @end example
 
 See also @code{filled_func} for filled functions.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2562,6 +3002,10 @@ Example:
                  x,-1,1,y,-1.2,2.3,z,-1,1),
         surface_hide=true);
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
 @end deffn
 
 
@@ -2591,6 +3035,11 @@ Example:
              title         = "Hyperbolic Spiral",
              polar(10/theta,theta,1,10*%pi) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2613,6 +3062,11 @@ Example:
 (%i1) load(draw)$
 (%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2635,6 +3089,11 @@ Example:
 (%i1) load(draw)$
 (%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2680,6 +3139,11 @@ Example:
              surface_hide = true,
              title = "Surface & curves" )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2778,6 +3242,11 @@ See also @code{make_level_picture}, @code{make_rgb_picture} and @code{read_xpm}.
 
 URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
 contains more elaborated examples.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2791,6 +3260,11 @@ Each component of @code{boundaries_array} is an array of floating
 point quantities, the coordinates of a polygonal segment or map boundary.
 
 See also @code{geomap}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2935,6 +3409,11 @@ the northern and southern cones are tangent to sphere.
 
 See also @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
 for more elaborated examples.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2972,6 +3451,11 @@ Example:
                            u*sin(v) - ((u+3)/8*%pi)^2 - 20,
                            u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3034,6 +3518,10 @@ End of animation sequence
 @end example
 
 See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
+
+@opencatbox
+@category{Package draw} @category{File output}
+@closecatbox
 @end deffn
 
 @deffn {Function} draw2d (@var{option}, @var{graphic_object}, ...)
@@ -3046,6 +3534,10 @@ It can be used to plot a unique scene in 2d.
 To make use of this function, write first @code{load(draw)}.
 
 See also @code{draw} and @code{gr2d}.
+
+@opencatbox
+@category{Package draw} @category{File output}
+@closecatbox
 @end deffn
 
 
@@ -3059,6 +3551,10 @@ It can be used to plot a unique scene in 3d.
 To make use of this function, write first @code{load(draw)}.
 
 See also @code{draw} and @code{gr3d}.
+
+@opencatbox
+@category{Package draw} @category{File output}
+@closecatbox
 @end deffn
 
 
@@ -3105,17 +3601,32 @@ Level picture from numeric list.
 (%i2) make_level_picture([-2,0,54,%pi],2,2);
 (%o2)            picture(level, 2, 2, @{Array:  #(0 0 54 3)@})
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Function} picturep (@var{x})
 Returns @code{true} if the argument is a well formed image,
 and @code{false} otherwise.
+
+@opencatbox
+@category{Package draw} @category{Predicate functions}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Function} picture_equalp (@var{x},@var{y})
 Returns @code{true} in case of equal pictures, and @code{false} otherwise.
+
+@opencatbox
+@category{Package draw} @category{Predicate functions}
+@closecatbox
+
 @end deffn
 
 
@@ -3149,6 +3660,11 @@ Example:
 (%o5) picture(rgb, 2, 2, 
               @{Array:  #(3 54 123 2 23 82 7 73 45 255 0 33)@})
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3172,28 +3688,52 @@ Example:
 (%i6) take_channel(%,'green);  /* simple quote!!! */
 (%o6)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Function} negative_picture (@var{pic})
 Returns the negative of a (@var{level} or @var{rgb}) picture.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
 @end deffn
 
 
 @deffn  {Function} rgb2level (@var{pic})
 Transforms an @var{rgb} picture into a @var{level} one by
 averaging the red, green and blue channels.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Function} get_pixel (@var{pic},@var{x},@var{y})
 Returns pixel from picture. Coordinates @var{x} and @var{y} range from 0 to
 @code{width-1} and @code{height-1}, respectively.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Function} read_xpm (@var{xpm_file})
 Reads a file in xpm and returns a picture object.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3222,6 +3762,11 @@ Returns segment numbers for plotting southern Italy.
 (%o3)                [1846, 1863, 1864, 1881, 1888, 1894]
 (%i4) draw2d(geomap(%))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3241,6 +3786,11 @@ Map of Europe labeling borders with their component number in
            region_boundaries(-31.81,74.92,49.84,32.06)$
 (%i4) numbered_boundaries(european_borders)$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3301,6 +3851,11 @@ polygon can be drawn.
 (%i7) Bhutan_polygon: make_polygon([171,173,1143])$
 (%i8) draw2d(Bhutan_polygon)$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3317,6 +3872,11 @@ Example:
 (%i3) make_poly_country(India)$
 (%i4) apply(draw2d, %)$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3337,6 +3897,11 @@ Example:
       make_poly_continent([Germany,Denmark,Poland])$
 (%i6) apply(draw2d, %)$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end deffn
 
 

@@ -43,6 +43,10 @@ Examples:
 (%o5)                        xyz + 1
 @end example
 
+@opencatbox
+@category{Syntax}
+@closecatbox
+
 
 @node Files, Functions and Variables for Input and Output, Comments, Input and Output
 @section Files
@@ -116,6 +120,10 @@ Current input expression = --------------
                              ee + dd
 @end example
 
+@opencatbox
+@category{Global variables}
+@closecatbox
+
 @end defvr
 
 @defvr {System variable} _
@@ -182,6 +190,10 @@ Examples:
 (%o10)                         42
 @end example
 
+@opencatbox
+@category{Console interaction} @category{Global variables}
+@closecatbox
+
 @end defvr
 
 @defvr {System variable} %
@@ -201,6 +213,10 @@ or in a batch file;
 @code{%} is not bound to output expressions in the file being processed.
 
 See also @code{_}, @code{%%}, and @code{%th}.
+
+@opencatbox
+@category{Console interaction} @category{Global variables}
+@closecatbox
 
 @end defvr
 
@@ -251,6 +267,10 @@ and it has the same meaning as at the interactive prompt.
 
 See also @code{%}.
 
+@opencatbox
+@category{Global variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} %edispflag
@@ -259,6 +279,10 @@ Default value: @code{false}
 When @code{%edispflag} is @code{true},
 Maxima displays @code{%e} to a negative exponent as a quotient.
 For example, @code{%e^-x} is displayed as @code{1/%e^x}.
+
+@opencatbox
+@category{Exponential and logarithm functions} @category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -289,6 +313,10 @@ or in a batch file;
 
 See also @code{%}.
 
+@opencatbox
+@category{Console interaction}
+@closecatbox
+
 @end deffn
 
 @deffn {Special symbol} ?
@@ -305,6 +333,10 @@ is equivalent to @code{describe("word")}.
 The question mark must occur at the beginning of an input line;
 otherwise it is not recognized as a request for documentation.
 
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+
 @end deffn
 
 @deffn {Special symbol} ??
@@ -317,6 +349,10 @@ is equivalent to @code{describe("word", inexact)}.
 The question mark must occur at the beginning of an input line;
 otherwise it is not recognized as a request for documentation.
 
+@opencatbox
+@category{Help} @category{Console interaction}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} absboxchar
@@ -324,6 +360,10 @@ Default value: @code{!}
 
 @code{absboxchar} is the character used to draw absolute value
 signs around expressions which are more than one line tall.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -342,6 +382,10 @@ In particular, plotting and translation functions always truncate their output f
 and @code{tex} and @code{appendfile} always append.
 @c WHAT ABOUT WRITEFILE ??
 
+@opencatbox
+@category{File output} @category{Global flags}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} appendfile (@var{filename})
@@ -350,6 +394,10 @@ Appends a console transcript to @var{filename}.
 except that the transcript file, if it exists, is always appended.
 
 @code{closefile} closes the transcript file opened by @code{appendfile} or @code{writefile}.
+
+@opencatbox
+@category{File output} @category{Console interaction}
+@closecatbox
 
 @end deffn
 
@@ -396,6 +444,10 @@ or to help organize one's thinking in solving complex problems.
 
 See also @code{load}, @code{batchload}, and @code{demo}.
 
+@opencatbox
+@category{Session management} @category{File input}
+@closecatbox
+
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF batchload
@@ -417,10 +469,18 @@ The file cannot include @code{:lisp} constructs.
 See also @code{batch} and @code{load}.
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
 
+@opencatbox
+@category{Session management} @category{File input}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} closefile ()
 Closes the transcript file opened by @code{writefile} or @code{appendfile}.
+
+@opencatbox
+@category{File output} @category{Console interaction}
+@closecatbox
 
 @end deffn
 
@@ -435,6 +495,9 @@ together by using @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarl
 collapse the elements of the array @code{A} by doing
 @code{collapse (listarray ('A))}.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} concat (@var{arg_1}, @var{arg_2}, ...)
@@ -481,6 +544,9 @@ Note that although @code{concat (1, 2)} looks like a number, it is a string.
 (%o10)                       12 + 3
 @end example
 
+@opencatbox
+@category{Expressions} @category{Strings}
+@closecatbox
 @end deffn
 
 @deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, ...)
@@ -493,6 +559,9 @@ Unlike @code{concat}, the arguments do @i{not} need to be atoms.
 (%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
 @end example
 
+@opencatbox
+@category{Expressions} @category{Strings}
+@closecatbox
 @end deffn
 
 @c AFTER REVIEWING src/displa.lisp, IT LOOKS LIKE THIS VARIABLE HAS NO EFFECT
@@ -517,6 +586,10 @@ arguments are displayed rather than equations.  This is useful for
 complicated arguments which don't have names or where only the value
 of the argument is of interest and not the name.
 
+@opencatbox
+@category{Display functions}
+@closecatbox
+
 @end deffn
 
 @c HMM, THIS NEXT ITEM IS DEFINED IN A SHARE FILE (itensor.lisp); 
@@ -526,6 +599,10 @@ of the argument is of interest and not the name.
 Displays the contraction properties of
 its arguments as were given to @code{defcon}.  @code{dispcon (all)} displays all the
 contraction properties which were defined.
+
+@opencatbox
+@category{Display functions}
+@closecatbox
 
 @end deffn
 
@@ -546,6 +623,10 @@ function calls.  See also @code{disp}.
 (%o1)                            done
 @end example
 
+@opencatbox
+@category{Display functions}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} display2d
@@ -554,6 +635,10 @@ Default value: @code{true}
 When @code{display2d} is @code{false},
 the console display is a string (1-dimensional) form rather than a display
 (2-dimensional) form.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -582,6 +667,10 @@ X*4/3;    ---        - X
            3         3
 @end example
 
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+
 @end defvr
 
 @c IS THIS FUNCTION STILL USEFUL ???
@@ -598,6 +687,10 @@ trying to display @code{P1 + P2 + ...}  all at once.  However,
 using @code{dispterms}, if an exponential expression is too wide to be
 displayed as @code{A^B} it appears as @code{expt (A, B)} (or as @code{ncexpt (A, B)} in
 the case of @code{A^^B}).
+
+@opencatbox
+@category{Display functions}
+@closecatbox
 
 @end deffn
 
@@ -654,6 +747,10 @@ Example expression is --------------
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
+@opencatbox
+@category{Debugging} @category{Display flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} error_syms
@@ -671,6 +768,10 @@ symbols are constructed automatically,
 with the @var{n}-th symbol equivalent to @code{concat ('errexp, @var{n})}.
 
 See also @code{error} and @code{error_size}.
+
+@opencatbox
+@category{Debugging} @category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -691,6 +792,10 @@ Default value: @code{true}
 When @code{exptdispflag} is @code{true}, Maxima displays expressions
 with negative exponents using quotients, e.g., @code{X^(-1)} as @code{1/X}.
 
+@opencatbox
+@category{Expressions} @category{Display flags and variables}
+@closecatbox
+
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -701,6 +806,11 @@ the component is replaced with @code{@var{filename}.@var{something}}.
 Otherwise, the final component is simply replaced by @var{filename}.
 
 The result is a Lisp pathname object.
+
+@opencatbox
+@category{File input} @category{File output}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} file_search (@var{filename})
@@ -741,6 +851,10 @@ The user may modify the default search directories. See @code{file_search_maxima
 
 @code{file_search} is invoked by @code{load} with @code{file_search_maxima} and @code{file_search_lisp}
 as the search directories.
+
+@opencatbox
+@category{File input}
+@closecatbox
 
 @end deffn
 
@@ -786,6 +900,10 @@ For example, supposing the sought-after name is @code{neumann},
 
 expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
 
+@opencatbox
+@category{File input} @category{Global variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} file_type (@var{filename})
@@ -798,6 +916,10 @@ The return value is a symbol, either @code{object}, @code{lisp}, or @code{maxima
 If the extension starts with @code{m} or @code{d}, @code{file_type} returns @code{maxima}.
 If the extension starts with @code{l}, @code{file_type} returns @code{lisp}.
 If none of the above, @code{file_type} returns @code{object}.
+
+@opencatbox
+@category{File input}
+@closecatbox
 
 @end deffn
 
@@ -927,6 +1049,10 @@ t(0,i,1,length(A))],for i thru n do (for j from i thru n do (x:L\
 n do (for j from i+1 thru n do L[i,j]:0),L)
 @end example
 
+@opencatbox
+@category{Display functions} @category{Display flags and variables}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} ibase
@@ -949,6 +1075,10 @@ comprise 0 through 9 and A through Y.
 See also @code{obase}.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Console interaction}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} inchar
@@ -969,6 +1099,10 @@ by concatenating @code{inchar} and @code{linenum}.
 @end example
 
 See also @code{labels}.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1002,6 +1136,10 @@ See also @code{disp}.
                      3        2      2      3
 (%o5)               b  + 3 a b  + 3 a  b + a
 @end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
 
 @end deffn
 
@@ -1040,6 +1178,10 @@ See also @code{display}.
 (%o5)             f = b  + 3 a b  + 3 a  b + a
 @end example
 
+@opencatbox
+@category{Display functions}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} linechar
@@ -1053,6 +1195,10 @@ by concatenating @code{linechar} and @code{linenum}.
 Intermediate expressions might or might not be displayed.
 See @code{programmode} and @code{labels}.
 
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} linel
@@ -1064,6 +1210,10 @@ for the purpose of displaying expressions.
 although very small or very large values may be impractical.
 Text printed by built-in Maxima functions, such as error messages and the output of @code{describe},
 is not affected by @code{linel}.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1091,6 +1241,10 @@ Examples:
 (%i4) ?foo + ?bar;
 (%o4)                      ?foo + ?bar
 @end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1123,6 +1277,10 @@ See @code{file_search} for more detail about the file search mechanism.
 
 @code{load} evaluates its argument.
 
+@opencatbox
+@category{Session management} @category{File input}
+@closecatbox
+
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
@@ -1133,6 +1291,10 @@ the file extension and as much of the path as needed to find the file.
 
 @code{loadfile} can process files created by @code{save}, @code{translate_file}, and @code{compile_file}.
 The user may find it more convenient to use @code{load} instead of @code{loadfile}.
+
+@opencatbox
+@category{Session management} @category{File input}
+@closecatbox
 
 @end deffn
 
@@ -1157,6 +1319,10 @@ See @code{setup_autoload}.
 When @code{loadprint} is @code{false}, never print a message.
 @end itemize
 
+@opencatbox
+@category{File input} @category{Global flags}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} obase
@@ -1174,6 +1340,10 @@ comprise 0 through 9, and A through Y.
 See also @code{ibase}.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Display flags and variables} @category{Console interaction}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} outchar
@@ -1195,6 +1365,10 @@ by concatenating @code{outchar} and @code{linenum}.
 
 See also @code{labels}.
 
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+
 @end defvr
 
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
@@ -1212,6 +1386,10 @@ solve the problem of possible name conflicts.  Also note that
 the flag simply affects what is output to the package file.
 Setting the flag to @code{true} is also useful for creating Maxima
 init files.
+
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1239,6 +1417,10 @@ is displayed as a leading multiplicative term @code{1/n}.
 (%i6) (a+b)/8;
 (%o6)                      1/8 (b + a)
 @end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1276,6 +1458,10 @@ To display the contents of a file, see @code{printfile}.
 
                        10 log(a) - log(b)
 @end example
+
+@opencatbox
+@category{Display functions}
+@closecatbox
 
 @end deffn
 
@@ -1355,6 +1541,10 @@ foo is 42  -- enter new value.
 (%o3)                         (b + a)
 @end example
 
+@opencatbox
+@category{Console interaction}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} readonly (@var{expr_1}, ..., @var{expr_n})
@@ -1376,6 +1566,10 @@ Enter an expression:
 @end example
 
 See also @code{read}.
+
+@opencatbox
+@category{Console interaction}
+@closecatbox
 
 @end deffn
 
@@ -1443,6 +1637,10 @@ Example:
                     2 %e      + %e    + %e
 @end example
 
+@opencatbox
+@category{Expressions} @category{Display functions}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} rmxchar
@@ -1451,6 +1649,10 @@ Default value: @code{]}
 @code{rmxchar} is the character drawn on the right-hand side of a matrix.
 
 See also @code{lmxchar}.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1509,6 +1711,10 @@ see @code{myoptions}.
 
 @code{save} evaluates @var{filename} and quotes all other arguments.
 
+@opencatbox
+@category{Session management} @category{File output}
+@closecatbox
+
 @end deffn
 
 @c NEEDS MORE WORK !!!
@@ -1523,6 +1729,10 @@ be edited.
 When @code{savedef} is @code{false}, the names of translated functions are
 removed from the @code{functions} list.
 
+@opencatbox
+@category{Translation flags and variables}
+@closecatbox
+
 @end defvr
 
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
@@ -1533,12 +1743,20 @@ having covariant indices as subscripts, contravariant indices as
 superscripts.  The derivative indices are displayed as subscripts,
 separated from the covariant indices by a comma.
 
+@opencatbox
+@category{Package itensor} @category{Display functions}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} showratvars (@var{expr})
 Returns a list of the canonical rational expression (CRE) variables in expression @code{expr}.
 
 See also @code{ratvars}.
+
+@opencatbox
+@category{Rational expressions} @category{Display functions}
+@closecatbox
 
 @end deffn
 
@@ -1547,6 +1765,10 @@ Default value: @code{false}
 
 When @code{stardisp} is @code{true}, multiplication is
 displayed with an asterisk @code{*} between operands.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1558,6 +1780,9 @@ just as if it had been typed in.
 The return value of @code{string} is a string,
 and thus it cannot be used in a computation.
 
+@opencatbox
+@category{Strings}
+@closecatbox
 @end deffn
 
 @c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
@@ -1594,6 +1819,10 @@ Examples:
 (%i5) "This is an example string.";
 (%o5)             "This is an example string."
 @end example
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1639,6 +1868,10 @@ to the file. Each variable is printed as an
 assignment statement, with the name of the variable, a colon, and its
 value. Note that the general form of @code{stringout} does not print 
 variables as assignment statements.
+
+@opencatbox
+@category{Session management} @category{File output}
+@closecatbox
 
 @end deffn
 
@@ -1706,6 +1939,10 @@ $$-\cos x$$
 (%i2) S;
 (%o2) $$x\,y\,z$$
 @end example
+
+@opencatbox
+@category{TeX output} @category{File output}
+@closecatbox
 
 @end deffn
 
@@ -1884,6 +2121,10 @@ $$ \langle a \, | \,b \rangle $$
 (%o7)                         false
 @end example
 
+@opencatbox
+@category{TeX output}
+@closecatbox
+
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -1921,6 +2162,10 @@ Output expressions are still computed and assigned labels. See @code{labels}.
 
 Text printed by built-in Maxima functions, such as error messages and the output of @code{describe},
 is not affected by @code{ttyoff}.
+
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1970,6 +2215,10 @@ See also @code{writefile}.
 10 ! yields 3628800
 @end example
 
+@opencatbox
+@category{File output}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} writefile (@var{filename})
@@ -1996,5 +2245,9 @@ any output generated by a print statement in a function
 (as opposed to a return value) is not displayed by @code{playback}.
 
 @code{closefile} closes the transcript file opened by @code{writefile} or @code{appendfile}.
+
+@opencatbox
+@category{File output} @category{Console interaction}
+@closecatbox
 
 @end deffn

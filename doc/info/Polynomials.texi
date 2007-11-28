@@ -51,6 +51,10 @@ to and is a generalization of CRE form, but carries additional
 information such as the degree of truncation.  As with CRE form, the
 symbol /T/ follows the line label of such expressions.
 
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
+
 @c end concepts Polynomials
 @node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynomials
 @section Functions and Variables for Polynomials
@@ -61,6 +65,10 @@ Default value: @code{false}
 @code{algebraic} must be set to @code{true} in order for the
 simplification of algebraic integers to take effect.
 
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} berlefact
@@ -70,6 +78,10 @@ When @code{berlefact} is @code{false} then the Kronecker factoring
 algorithm will be used otherwise the Berlekamp algorithm, which is the
 default, will be used.
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
+
 @end defvr
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -77,6 +89,9 @@ default, will be used.
 an alternative to the @code{resultant} command.  It
 returns a matrix. @code{determinant} of this matrix is the desired resultant.
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @c REWORD THIS ITEM -- COULD BE MORE CONCISE
@@ -101,6 +116,9 @@ Example:
 (%o2)                         true
 @end example
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @deffn {Function} coeff (@var{expr}, @var{x}, @var{n})
@@ -123,6 +141,9 @@ Examples:
 (%o2)                         y + 1
 @end example
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @deffn {Function} combine (@var{expr})
@@ -130,6 +151,9 @@ Simplifies the sum @var{expr} by combining terms with the same
 denominator into a single term.
 
 @c NEED EXAMPLE HERE
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
@@ -150,11 +174,17 @@ Examples:
 (%o1)                   [2 x, 2 x y  + y]
 @end example
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @deffn {Function} denom (@var{expr})
 Returns the denominator of the rational expression @var{expr}.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
@@ -181,6 +211,9 @@ Examples:
 @noindent
 Note that @code{y} is the main variable in the second example.
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @deffn {Function} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
@@ -216,6 +249,9 @@ Example:
                             - 5154 x  - 1291 x  + 7688 x + 15376]
 @end example
 
+@opencatbox
+@category{Polynomials} @category{Algebraic equations}
+@closecatbox
 @end deffn
 
 @deffn {Function} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
@@ -224,6 +260,9 @@ the polynomials @var{p_1}, @var{p_2}, @var{p_3}, ...  and whose remaining elemen
 polynomials divided by the g.c.d.  This always uses the @code{ezgcd}
 algorithm.
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} facexpand
@@ -232,6 +271,10 @@ Default value: @code{true}
 @code{facexpand} controls whether the irreducible factors
 returned by @code{factor} are in expanded (the default) or recursive (normal
 CRE) form.
+
+@opencatbox
+@category{Polynomials}
+@closecatbox
 
 @end defvr
 
@@ -249,6 +292,9 @@ applied after a @code{factcomb}.
 @c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
 @c (n + 1)^b*n!^b;
 @c factcomb (%);
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
 @end deffn
 
 @deffn {Function} factor (@var{expr})
@@ -399,6 +445,9 @@ Examples:
  - x   - x   + x   + x   - x   - x  + x  + 1)
 @end example
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} factorflag
@@ -408,6 +457,10 @@ Default value: @code{false}
 When @code{factorflag} is @code{false}, suppresses the factoring of
 integer factors of rational expressions.
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
@@ -416,6 +469,9 @@ terms of the form @code{f (@var{x_1}, @var{x_2}, ...)*g} where @code{g} is a pro
 expressions not containing any @var{x_i} and @code{f} is factored.
 @c NEED EXAMPLE HERE
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} factorsum (@var{expr})
@@ -441,6 +497,9 @@ Example:
 (%o2)            (x + 1) (a (z + w)  + (v + u) )
 @end example
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} fasttimes (@var{p_1}, @var{p_2})
@@ -452,6 +511,9 @@ multiplication is of order @code{n_1 n_2} where
 and @code{n_2} is the degree of @code{p_2}.
 @code{fasttimes} is of order @code{max (n_1, n_2)^1.585}.
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @deffn {Function} fullratsimp (@var{expr})
@@ -500,6 +562,9 @@ Example:
                              x  - 1
 @end example
 
+@opencatbox
+@category{Simplification functions} @category{Rational expressions}
+@opencatbox
 @end deffn
 
 @c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
@@ -589,6 +654,9 @@ equation as first argument.
 *** - Lisp stack overflow. RESET
 @end example
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @c GCD IS A VARIABLE AND A FUNCTION
@@ -611,6 +679,9 @@ form.  This will sometimes speed the calculation if gcds are not
 required.
 @c NEEDS EXAMPLES HERE
 
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @c IN NEED OF SERIOUS CLARIFICATION HERE
@@ -661,6 +732,9 @@ since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[
                              y  - 1
 @end example
 
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 
@@ -672,6 +746,9 @@ numbers of the form @code{@var{a} + @var{b} @code{%i}} where @var{a} and @var{b}
 non-negative.
 @c NEED EXAMPLES HERE
 
+@opencatbox
+@category{Integers}
+@closecatbox
 @end deffn
 
 @c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
@@ -690,6 +767,9 @@ Example:
 (%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
 @end example
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @c DESCRIBE THIS INDEPENDENTLY OF factorsum
@@ -698,6 +778,9 @@ Example:
 is similar to @code{factorsum} but applies @code{gfactor} instead
 of @code{factor}.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} hipow (@var{expr}, @var{x})
@@ -726,8 +809,12 @@ Examples:
 (%o5)                           0
 @end example
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
+@c I SUSPECT THE FOLLOWING TEXT IS OUTDATED DUE TO CHANGES IN INTEGER FACTORING CODE
 @defvr {Option variable} intfaclim
 Default value: true
 
@@ -747,6 +834,10 @@ Internal calls to @code{factor} respect the user-specified value of
 the time spent factoring large integers.
 @c NEED EXAMPLES HERE
 
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} keepfloat
@@ -756,6 +847,10 @@ When @code{keepfloat} is @code{true}, prevents floating
 point numbers from being rationalized when expressions which contain
 them are converted to canonical rational expression (CRE) form.
 @c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
 
 @end defvr
 
@@ -805,6 +900,9 @@ equation may be given as first argument.
 (%o4)                          a b
 @end example
 
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} modulus
@@ -833,6 +931,10 @@ Maxima will allow zero or a negative integer to be assigned to @code{modulus},
 although it is not clear if that has any useful consequences.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Integers}
+@closecatbox
+
 @end defvr
 
 @c APPARENTLY OBSOLETE: ONLY EFFECT OF $newfac COULD BE TO CAUSE NONEXISTENT FUNCTION NMULTFACT
@@ -854,6 +956,9 @@ If @var{expr} is not a ratio, @var{expr} is returned.
 @code{num} evaluates its argument.
 
 @c NEED SOME EXAMPLES HERE
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} polydecomp (@var{p}, @var{x})
@@ -934,6 +1039,9 @@ necessarily return @code{[@var{p_1}, ..., @var{p_n}]}:
                        4       2
 @end example
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @deffn {Function} quotient (@var{p_1}, @var{p_2})
@@ -944,6 +1052,9 @@ The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
 @code{quotient} returns the first element of the two-element list returned by @code{divide}.
 
 @c NEED SOME EXAMPLES HERE
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @c THIS ITEM CAN PROBABLY BE IMPROVED
@@ -1008,6 +1119,9 @@ Examples:
                              x + 2 y
 @end example
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} ratalgdenom
@@ -1016,6 +1130,10 @@ Default value: @code{true}
 When @code{ratalgdenom} is @code{true}, allows rationalization of
 denominators with respect to radicals to take effect.
 @code{ratalgdenom} has an effect only when canonical rational expressions (CRE) are used in algebraic mode.
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -1059,6 +1177,9 @@ Example:
 @end example
 @c NEED MORE EXAMPLES HERE
 
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} ratdenom (@var{expr})
@@ -1078,6 +1199,9 @@ and thus some expressions which are considered ratios by @code{ratdenom}
 are not considered ratios by @code{denom}.
 
 @c NEEDS AN EXAMPLE HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} ratdenomdivide
@@ -1126,6 +1250,10 @@ Examples:
                               2
                              b  + 3
 @end example
+
+@opencatbox
+@category{Simplification flags and variables} @category{Rational expressions}
+@closecatbox
 
 @end defvr
 
@@ -1187,6 +1315,9 @@ Example:
 (%o6)            3 b  + (6 a + 2) b + 3 a  + 2 a
 @end example
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} ratdisrep (@var{expr})
@@ -1201,6 +1332,9 @@ use rational functions in non-rational contexts.
 
 See also @code{totaldisrep}.
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} ratepsilon
@@ -1210,6 +1344,10 @@ Default value: 2.0e-8
 of floating point numbers to rational numbers.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Numerical evaluation} @category{Rational expressions}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} ratexpand (@var{expr})
@@ -1270,6 +1408,9 @@ Examples:
                 x  + x  - x - 1   x  + x  - x - 1
 @end example
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} ratfac
@@ -1296,6 +1437,9 @@ The @code{ratfac} and @code{ratweight} schemes are incompatible and may not
 both be used at the same time.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end defvr
 
 @deffn {Function} ratnumer (@var{expr})
@@ -1315,12 +1459,18 @@ and thus some expressions which are considered ratios by @code{ratnumer}
 are not considered ratios by @code{num}.
 
 @c NEEDS AN EXAMPLE HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} ratnump (@var{expr})
 Returns @code{true} if @var{expr} is a literal integer or ratio of literal integers,
 otherwise @code{false}.
 
+@opencatbox
+@category{Predicate functions} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} ratp (@var{expr})
@@ -1330,6 +1480,9 @@ otherwise @code{false}.
 CRE are created by @code{rat} and related functions.
 Extended CRE are created by @code{taylor} and related functions.
 
+@opencatbox
+@category{Predicate functions} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} ratprint
@@ -1339,6 +1492,9 @@ When @code{ratprint} is @code{true},
 a message informing the user of the conversion of floating point numbers
 to rational numbers is displayed.
 
+@opencatbox
+@category{Rational expressions} @category{Numerical evaluation} @category{Console interaction}
+@closecatbox
 @end defvr
 
 @deffn {Function} ratsimp (@var{expr})
@@ -1398,6 +1554,9 @@ Examples:
 (%o5)                        x
 @end example
 
+@opencatbox
+@category{Simplification functions} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} ratsimpexpons
@@ -1407,6 +1566,9 @@ When @code{ratsimpexpons} is @code{true},
 @code{ratsimp} is applied to the exponents of expressions during simplification.
 
 @c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
+@opencatbox
+@category{Simplification flags and variables} @category{Rational expressions}
+@closecatbox
 @end defvr
 
 @deffn {Function} ratsubst (@var{a}, @var{b}, @var{c})
@@ -1458,6 +1620,9 @@ Examples:
 (%o8)                          u
 @end example
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} ratvars (@var{x_1}, ..., @var{x_n})
@@ -1481,6 +1646,9 @@ Each call to the function @code{ratvars} resets the list.
 @code{ratvars ()} clears the list.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
@@ -1519,6 +1687,9 @@ Examples:
 (%o5)/R/                  2 b + 2 a + 1
 @end example
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @defvr {System variable} ratweights
@@ -1531,6 +1702,9 @@ each call to @code{ratweight} places additional items in the list.
 @c DO WE REALLY NEED TO MENTION THIS ??
 @code{kill (ratweights)} and @code{save (ratweights)} both work as expected.
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end defvr
 
 @defvr {Option variable} ratwtlvl
@@ -1540,6 +1714,9 @@ Default value: @code{false}
 function to control the truncation of canonical rational expressions (CRE).
 For the default value of @code{false}, no truncation occurs.
 
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end defvr
 
 @deffn {Function} remainder (@var{p_1}, @var{p_2})
@@ -1551,6 +1728,9 @@ The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
 of the two-element list returned by @code{divide}.
 
 @c NEED SOME EXAMPLES HERE
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @c CAN PROBABLY BE CLARIFIED
@@ -1579,6 +1759,9 @@ The function @code{bezout} takes the same arguments as @code{resultant} and retu
 a matrix.  The determinant of the return value is the desired resultant.
 
 @c NEED AN EXAMPLE HERE
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} savefactors
@@ -1590,6 +1773,9 @@ expression which is a product of factors to be saved by certain
 functions in order to speed up later factorizations of expressions
 containing some of the same factors.
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end defvr
 
 @c I CAN'T TELL WHAT THIS IS SUPPOSED TO BE ABOUT
@@ -1613,6 +1799,9 @@ Example:
 (%o1)                  (2 x + 1)  (x  - 1)
 @end example
 
+@opencatbox
+@category{Polynomials}
+@closecatbox
 @end deffn
 
 @c THIS ITEM STILL NEEDS WORK
@@ -1685,6 +1874,9 @@ Examples:
 (%o6)                 [y  - x , a  + a + 1]
 @end example
 
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} totaldisrep (@var{expr})
@@ -1698,10 +1890,16 @@ ratdisrepping expressions such as equations, lists, matrices, etc., which
 have some subexpressions in CRE form.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Rational expressions}
+@closecatbox
 @end deffn
 
 @deffn {Function} untellrat (@var{x_1}, ..., @var{x_n})
 Removes @code{tellrat} properties from @var{x_1}, ..., @var{x_n}.
 
 @c NEED EXAMPLES HERE
+@opencatbox
+@category{Polynomials} @category{Rational expressions}
+@closecatbox
 @end deffn

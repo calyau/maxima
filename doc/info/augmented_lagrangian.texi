@@ -81,5 +81,9 @@ Example:
                                  %lambda = [- 1.333337940892525]]
 @end example
 
+@opencatbox
+@category{Numerical methods} @category{Share packages} @category{Package augmented_lagrangian}
+@closecatbox
+
 @end deffn
 

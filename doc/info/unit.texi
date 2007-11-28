@@ -72,6 +72,10 @@ TODO : dimension functionality, handling of temperature,
 showabbr and friends.  Show examples with addition of quantities containing
 units.
 
+@opencatbox
+@category{Physical units} @category{Share packages} @category{Package unit}
+@closecatbox
+
 
 @node Functions and Variables for Units,  , Introduction to Units, unit
 @section Functions and Variables for Units
@@ -190,6 +194,11 @@ This would have worked equally well with @code{uforget(N)} or
 @code{uforget(%force)}.
 
 See also @code{uforget}. To use this function write first @code{load("unit")}.
+
+@opencatbox
+@category{Package unit}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} uforget (@var{list})
@@ -220,6 +229,11 @@ not units, so any unit of a particular dimension will work.  The
 dimension itself is also a legal argument.
 
 See also @code{setunits}. To use this function write first @code{load("unit")}.
+
+@opencatbox
+@category{Package unit} 
+@closecatbox
+
 @end deffn
 
 @deffn {Function} convert (@var{expr}, @var{list})
@@ -291,6 +305,11 @@ simplify to a Derived Dimension.
 @end example
 
 See also @code{setunits} and @code{uforget}. To use this function write first @code{load("unit")}.
+
+@opencatbox
+@category{Package unit} 
+@closecatbox
+
 @end deffn
 
 
@@ -481,6 +500,10 @@ control over their working environment.
 @c symbols for normal work and have units labeled in some other fasion. 
 @c @code{setunitprefix} is provided for this case.  Here is an example of its use:
 
+@opencatbox
+@category{Package unit}
+@closecatbox
+
 @end defvr
 
 
@@ -503,6 +526,11 @@ very large number of units, but @code{metricexpandall} can be used to
 rebuild the list in a more or less complete fashion. The relevant variable
 in the @emph{unit.mac} file is @var{%unitexpand}.
 @c This should be made configurable as a maxima-init.mac controllable option.
+
+@opencatbox
+@category{Package unit} 
+@closecatbox
+
 @end deffn
 
 @defvr {Variable} %unitexpand
@@ -510,6 +538,10 @@ Default value: @code{2}
 
 This is the value supplied to @code{metricexpandall} during the initial loading
 of @emph{unit}.
+
+@opencatbox
+@category{Package unit}
+@closecatbox
 
 @end defvr
 

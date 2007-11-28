@@ -31,4 +31,8 @@ Example:
 @image{figures/implicit_plot,8cm}
 @end ifnotinfo
 
+@opencatbox
+@category{Plotting} @category{Share packages} @category{Package implicit_plot}
+@closecatbox
+
 @end deffn

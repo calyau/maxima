@@ -42,5 +42,10 @@ necessarily a good example upon which to base other language
 translations.
 
 To use this function write first @code{load("f90")}.
+
+@opencatbox
+@category{Translation and compilation} @category{Share packages} @category{Package f90}
+@closecatbox
+
 @end deffn
 

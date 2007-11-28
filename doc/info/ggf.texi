@@ -21,6 +21,11 @@ computation accurate enough.
 
 
 See also @code{ggf}.
+
+@opencatbox
+@category{Package ggf}
+@closecatbox
+
 @end defvr
 
 
@@ -38,6 +43,11 @@ exit. Put freely a greater value for more complicated
 generating functions.
 
 See also @code{ggf}.
+
+@opencatbox
+@category{Package ggf}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} ggf (@var{l})
@@ -51,4 +61,9 @@ If no solution has been found, it returns with @code{done}.
 This function is controlled by global variables @var{GGFINFINITY} and @var{GGFCFMAX}. See also @var{GGFINFINITY} and @var{GGFCFMAX}.
 
 To use this function write first @code{load("ggf")}.
+
+@opencatbox
+@category{Generating functions} @category{Share packages} @category{Package ggf}
+@closecatbox
+
 @end deffn

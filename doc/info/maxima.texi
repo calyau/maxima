@@ -35,7 +35,7 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
-@c @include category-macros.texi
+@include category-macros.texi
 
 @titlepage
 @sp 10
@@ -154,6 +154,7 @@ Additional packages
 * impdiff::                     Implicit derivatives.
 * implicit_plot::               Implicit plots package.
 * interpol::                    Interpolation package.
+* lapack::                      LAPACK functions for linear algebra.
 * lbfgs::                       L-BFGS unconstrained minimization package.
 * lindstedt::                   Lindstedt package.
 * linearalgebra::               Functions for linear algebra.
@@ -291,10 +292,10 @@ Differential Equations
 
 Numerical
 
-* Introduction to Numerical::   
-* Fourier packages::                     
-* Functions and Variables for Numerical::   
-* Functions and Variables for Fourier Series::
+* Introduction to fast Fourier transform::                     
+* Functions and Variables for fast Fourier transform::
+* Introduction to Fourier series::
+* Functions and Variables for Fourier series::
 
 Arrays
 
@@ -310,6 +311,7 @@ Matrices and Linear Algebra
 
 Affine
 
+* Introduction to Affine::
 * Functions and Variables for Affine::      
 
 itensor
@@ -338,6 +340,7 @@ Number Theory
 
 Symmetries
 
+* Introduction to Symmetries::
 * Functions and Variables for Symmetries::  
 
 Groups
@@ -465,6 +468,11 @@ interpol
 * Introduction to interpol::
 * Functions and Variables for interpol::
 
+lapack
+
+* Introduction to lapack::
+* Functions and Variables for lapack::
+
 lbfgs
 
 * Introduction to lbfgs::
@@ -481,6 +489,7 @@ linearalgebra
 
 lsquares
 
+* Introduction to lsquares
 * Functions and Variables for lsquares::
 
 makeOrders
@@ -489,6 +498,7 @@ makeOrders
 
 mnewton
 
+* Introduction to mnewton::
 * Functions and Variables for mnewton::
 
 numericalio
@@ -522,7 +532,13 @@ simplex
 simplification
 
 * Introduction to simplification::
-* Functions and Variables for simplification::
+* Package absimp::
+* Package facexp::
+* Package functs::
+* Package ineq::
+* Package rducon::
+* Package scifac::
+* Package sqdnst::
 
 solve_rec
 
@@ -787,11 +803,15 @@ zeilberger
 @chapter implicit_plot
 @include implicit_plot.texi
 
-@node interpol, lbfgs, implicit_plot, Top
+@node interpol, lapack, implicit_plot, Top
 @chapter interpol
 @include interpol.texi
 
-@node lbfgs, lindstedt, interpol, Top
+@node lapack, lbfgs, interpol, Top
+@chapter lapack
+@include lapack.texi
+
+@node lbfgs, lindstedt, lapack, Top
 @chapter lbfgs
 @include lbfgs.texi
 

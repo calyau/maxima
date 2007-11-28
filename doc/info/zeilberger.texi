@@ -17,6 +17,10 @@ summation.
 
 @code{load (zeilberger)} loads this package.
 
+@opencatbox
+@category{Sums and products} @category{Share packages} @category{Package zeilberger}
+@closecatbox
+
 @subsubsection The indefinite summation problem
 
 @code{zeilberger} implements Gosper's algorithm
@@ -68,6 +72,11 @@ For example:
 Returns the hypergeometric anti-difference
 of @var{F_k}, if it exists.
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} Gosper (@var{F_k}, @var{k})
@@ -78,6 +87,11 @@ a rational function such that
  
 if it exists.
 Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
@@ -138,6 +152,11 @@ Dependent equations eliminated:  (1)
 (%i8) GosperSum (1 / ((a - k)!*k!), k, 1, n);
 (%o8)                  nonGosper_summable
 @end example
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
@@ -150,6 +169,11 @@ Each solution has the form
 @math{[R(n, k), [a_0, a_1, ..., a_d]]}
 
 @code{parGosper} returns @code{[]} if it fails to find a recurrence.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
@@ -169,6 +193,11 @@ Each solution has the form
 @code{Zeilberger} returns @code{[]} if it fails to find a solution.
 
 @code{Zeilberger} invokes @code{Gosper} only if @code{gosper_in_zeilberger} is @code{true}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end deffn
 
 @section General global variables
@@ -177,6 +206,11 @@ Each solution has the form
 Default value: 5
 
 @code{MAX_ORD} is the maximum recurrence order attempted by @code{Zeilberger}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} simplified_output
@@ -185,6 +219,11 @@ Default value: @code{false}
 When @code{simplified_output} is @code{true},
 functions in the @code{zeilberger} package attempt
 further simplification of the solution.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} linear_solver
@@ -192,6 +231,11 @@ Default value: @code{linsolve}
 
 @code{linear_solver} names the solver which is used to solve the system
 of equations in Zeilberger's algorithm.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} warnings
@@ -200,6 +244,11 @@ Default value: @code{true}
 When @code{warnings} is @code{true},
 functions in the @code{zeilberger} package print
 warning messages during execution.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} gosper_in_zeilberger
@@ -208,6 +257,11 @@ Default value: @code{true}
 When @code{gosper_in_zeilberger} is @code{true},
 the @code{Zeilberger} function calls @code{Gosper} before calling @code{parGosper}.
 Otherwise, @code{Zeilberger} goes immediately to @code{parGosper}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} trivial_solutions
@@ -216,6 +270,11 @@ Default value: @code{true}
 When @code{trivial_solutions} is @code{true},
 @code{Zeilberger} returns solutions
 which have certificate equal to zero, or all coefficients equal to zero.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @section Variables related to the modular test
@@ -226,12 +285,22 @@ Default value: @code{false}
 When @code{mod_test} is @code{true},
 @code{parGosper} executes a
 modular test for discarding systems with no solutions.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} modular_linear_solver
 Default value: @code{linsolve}
 
 @code{modular_linear_solver} names the linear solver used by the modular test in @code{parGosper}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} ev_point
@@ -239,12 +308,22 @@ Default value: @code{big_primes[10]}
 
 @code{ev_point} is the value at which the variable @var{n} is evaluated
 when executing the modular test in @code{parGosper}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} mod_big_prime
 Default value: @code{big_primes[1]}
 
 @code{mod_big_prime} is the modulus used by the modular test in @code{parGosper}.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 
 @defvr {Global variable} mod_threshold
@@ -252,5 +331,10 @@ Default value: 4
 
 @code{mod_threshold} is the
 greatest order for which the modular test in @code{parGosper} is attempted.
+
+@opencatbox
+@category{Package zeilberger}
+@closecatbox
+
 @end defvr
 

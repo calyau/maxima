@@ -34,6 +34,10 @@ Barton Willis of the University of Nebraska at Kearney (UNK) wrote
 the @code{orthopoly} package and its documentation. The package 
 is released under the GNU General Public License (GPL).
 
+@opencatbox
+@category{Orthogonal polynomials} @category{Share packages} @category{Package orthopoly}
+@closecatbox
+
 @subsection Getting Started with orthopoly
 
 @code{load (orthopoly)} loads the @code{orthopoly} package.
@@ -553,6 +557,11 @@ a Legendre polynomial.
 The @i{entire} expression @code{legendre_p (5, x)} is quoted; this is 
 different than just quoting the function name using @code{'legendre_p (5, @var{x})}.
 
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+
 @subsection Miscellaneous Functions
 
 The @code{orthopoly} package defines the
@@ -683,40 +692,75 @@ The associated Legendre function of the first kind.
 
 Reference: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
 (second equation), page 334, and 8.2.5, page 333.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} assoc_legendre_q (@var{n}, @var{m}, @var{x})
 The associated Legendre function of the second kind.
 
 Reference: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} chebyshev_t (@var{n}, @var{x})
 The Chebyshev function of the first kind.
 
 Reference: Abramowitz and Stegun, equation 22.5.47, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} chebyshev_u (@var{n}, @var{x})
 The Chebyshev function of the second kind.
 
 Reference: Abramowitz and Stegun, equation 22.5.48, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
 The generalized Laguerre polynomial.
 
 Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} hermite (@var{n}, @var{x})
 The Hermite polynomial.
 
 Reference: Abramowitz and Stegun, equation 22.5.55, page 780.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} intervalp (@var{e})
 Return @code{true} if the input is an interval and return false if it isn't. 
+
+@opencatbox
+@category{Package orthopoly} @category{Predicate functions}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
@@ -728,24 +772,44 @@ weight @code{(1 - @var{x})^@var{a} (1 + @var{x})^@var{b}} isn't integrable for @
 @code{@var{b} <= -1}. 
 
 Reference: Abramowitz and Stegun, equation 22.5.42, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} laguerre (@var{n}, @var{x})
 The Laguerre polynomial.
 
 Reference: Abramowitz and Stegun, equations 22.5.16 and 22.5.54, page 780.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} legendre_p (@var{n}, @var{x})
 The Legendre polynomial of the first kind.
 
 Reference: Abramowitz and Stegun, equations 22.5.50 and 22.5.51, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} legendre_q (@var{n}, @var{x})
 The Legendre polynomial of the first kind.
 
 Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} orthopoly_recur (@var{f}, @var{args})
@@ -790,6 +854,11 @@ families of orthogonal polynomials, an error is signalled.
 A recursion relation for foo isn't known to Maxima
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @defvr {Variable} orthopoly_returns_intervals
@@ -799,6 +868,11 @@ When @code{orthopoly_returns_intervals} is @code{true}, floating point results a
 the form @code{interval (@var{c}, @var{r})}, where @var{c} is the center of an interval
 and @var{r} is its radius. The center can be a complex number; in that
 case, the interval is a disk in the complex plane.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} orthopoly_weight (@var{f}, @var{args})
@@ -824,6 +898,10 @@ of the interval of orthogonality. For example,
 
 The main variable of @var{f} must be a symbol; if it isn't, Maxima
 signals an error. 
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
 
 @end deffn
 
@@ -873,6 +951,11 @@ is symbolic, @code{pochhammer} returns a noun form.
 (%o1)                         (x)
                                  n
 @end example
+
+@opencatbox
+@category{Package orthopoly} @category{Gamma and factorial functions}
+@closecatbox
+
 @end deffn
 
 @defvr {Variable} pochhammer_max_index
@@ -896,18 +979,33 @@ Examples:
 @end example
 
 Reference: Abramowitz and Stegun, equation 6.1.16, page 256.
+
+@opencatbox
+@category{Package orthopoly} @category{Gamma and factorial functions}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} spherical_bessel_j (@var{n}, @var{x})
 The spherical Bessel function of the first kind.
 
 Reference: Abramowitz and Stegun, equations 10.1.8, page 437 and 10.1.15, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} spherical_bessel_y (@var{n}, @var{x})
 The spherical Bessel function of the second kind. 
 
 Reference: Abramowitz and Stegun, equations 10.1.9, page 437 and 10.1.15, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} spherical_hankel1 (@var{n}, @var{x})
@@ -915,18 +1013,33 @@ The spherical Hankel function of the
 first kind.
 
 Reference: Abramowitz and Stegun, equation 10.1.36, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} spherical_hankel2 (@var{n}, @var{x})
 The spherical Hankel function of the second kind.
 
 Reference: Abramowitz and Stegun, equation 10.1.17, page 439.
+
+@opencatbox
+@category{Package orthopoly} @category{Bessel functions}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
 The spherical harmonic function.
 
 Reference: Merzbacher 9.64.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} unit_step (@var{x})
@@ -936,10 +1049,20 @@ The left-continuous unit step function; thus
 
 If you want a unit step function that
 takes on the value 1/2 at zero, use @code{(1 + signum (@var{x}))/2}.
+
+@opencatbox
+@category{Package orthopoly} @category{Mathematical functions}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
 The ultraspherical polynomial (also known as the Gegenbauer polynomial).
 
 Reference: Abramowitz and Stegun, equation 22.5.46, page 779.
+
+@opencatbox
+@category{Package orthopoly}
+@closecatbox
+
 @end deffn

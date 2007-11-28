@@ -1,0 +1,116 @@
+@menu
+* Introduction to lapack::
+* Functions and Variables for lapack::
+@end menu
+
+@node Introduction to lapack, Functions and Variables for lapack, lapack, lapack
+@section Introduction to lapack
+
+@code{lapack} is a Common Lisp translation (via the program @code{f2c}) of the Fortran library LAPACK,
+as obtained from the SLATEC project.
+
+@opencatbox
+@category{Numerical methods} @category{Share packages} @category{Package lapack}
+@closecatbox
+
+
+@node Functions and Variables for lapack, , Introduction to lapack, lapack
+@section Functions and Variables for lapack
+
+@deffn {Function} dgeev (@var{A})
+@deffnx {Function} dgeev (@var{A}, @var{right_p}, @var{left_p})
+
+Computes the eigenvalues and, optionally, the eigenvectors
+of a square matrix @var{A}, which may or may not be symmetric.
+All elements of @var{A} must be numbers.
+
+@code{dgeev(@var{A})} computes only the eigenvalues of @var{A}.
+@code{dgeev(@var{A}, @var{right_p}, @var{left_p})} computes the eigenvalues of @var{A}
+and the right eigenvectors of @var{A} when @math{@var{right_p} = @code{true}}
+and the left eigenvectors of @var{A} when @math{@var{left_p} = @code{true}}.
+
+The right eigenvector v(j) of A satisfies
+                 A * v(j) = lambda(j) * v(j)
+where lambda(j) is its eigenvalue.
+The left eigenvector u(j) of A satisfies
+              u(j)**H * A = lambda(j) * u(j)**H
+where u(j)**H denotes the conjugate transpose of u(j).
+
+The computed eigenvectors are normalized to have Euclidean norm
+equal to 1 and largest component real.
+
+A list of three items is returned.  The first item is a list of the
+eigenvectors.  The second item is false or the matrix of right
+eigenvectors.  The last itme is false or the matrix of left
+eigenvectors.
+
+Example:
+@example
+@end example
+
+@opencatbox
+@category{Package lapack}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} dgesvd (@var{A}, @var{job_u}, @var{job_vt})
+
+Computes the singular value decomposition (SVD) of a real M-by-N matrix A,
+optionally computing the left and/or right singular vectors.
+
+Let @var{A} by an @math{m}-by-@math{n} matrix,
+in which all elements are numbers.
+@code{dgesvd} returns a list of three items,
+@var{U}, @var{sigma}, and @var{V^T},
+such that
+
+@math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
+
+where @var{U} is an @math{m}-by-@math{m} unitary matrix,
+@var{Sigma} is an @math{m}-by-@math{n} matrix which is all zeros except for
+the diagonal elements, for which @math{@var{Sigma}[i, i] = @var{sigma}[i]},
+and @var{V^T} is an @math{n}-by-@math{n} unitary matrix.
+
+The elements @math{@var{sigma}[i]} are the so-called singular values of @var{A};
+these are real and nonnegative, and returned in descending order.
+The first @math{min(m, n)} columns of @var{U} and @var{V} are
+the left and right singular vectors of @var{A}.
+Note that @code{dgesvd} returns the transpose of @var{V}, not @var{V} itself.
+
+Example:
+@example
+@end example
+
+@opencatbox
+@category{Package lapack}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} dlange (@var{norm}, @var{A})
+@deffnx {Function} zlange (@var{norm}, @var{A})
+
+Computes a norm or norm-like function of the matrix @var{A}.
+
+@table @code
+@item max
+Compute @math{max(abs(A(i, j)))} where @math{i} and @math{j} range over
+the rows and columns, respectively, of @var{A}.
+Note that this function is not a proper matrix norm.
+@item one_norm
+Compute the @math{L[1]} norm of @var{A},
+that is, the maximum of the sum of the absolute value of elements in each column.
+@item inf_norm
+Compute the @math{L[inf]} norm of @var{A},
+that is, the maximum of the sum of the absolute value of elements in each row.
+@item frobenius
+Compute the Frobenius norm of @var{A},
+that is, the square root of the sum of squares of the matrix elements.
+@end table
+
+@opencatbox
+@category{Package lapack}
+@closecatbox
+
+@end deffn

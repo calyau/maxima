@@ -91,8 +91,8 @@ div.image
 div.categorybox
 {
     border: 1px solid gray;
-    padding-top: 1em;
-    padding-bottom: 1em;
+    padding-top: 0px;
+    padding-bottom: 0px;
     padding-left: 1em;
     padding-right: 1em;
     background: rgb(247,242,220);

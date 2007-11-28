@@ -34,6 +34,11 @@ Default value: @code{[]}
 @code{aliases} is the list of atoms which have a user defined alias (set up by
 the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring the atom a
 @code{noun} with @code{declare}).
+
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+
 @end defvr
 
 
@@ -63,6 +68,9 @@ Example:
 (%o4)                  [@@yy`xx, `xx@@@@yy~]
 @end example
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 
 @end defvr
 
@@ -76,6 +84,10 @@ and functions which have @code{exp} as part of their names, such as @code{expand
 of something you can use this command to find the rest of the name.
 Similarly, you could say @code{apropos (tr_)} to find a list of many of the
 switches relating to the translator, most of which begin with @code{tr_}.
+
+@opencatbox
+@category{Help}
+@closecatbox
 
 @end deffn
 
@@ -92,6 +104,10 @@ The order of the items in the list may depend on the global flag @code{inflag}.
 See also @code{substpart}, and @code{op}.
 
 @c NEEDS EXAMPLES
+@opencatbox
+@category{Expressions}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} genindex
@@ -99,6 +115,10 @@ Default value: @code{i}
 
 @code{genindex} is the alphabetic prefix used to generate the
 next variable of summation when necessary.
+
+@opencatbox
+@category{Sums and products}
+@closecatbox
 
 @end defvr
 
@@ -109,18 +129,9 @@ Default value: 0
 of summation.  If it is set to @code{false} then the index will consist only
 of @code{genindex} with no numeric suffix.
 
-@end defvr
-
-@c NEEDS EXPANSION AND EXAMPLES
-@defvr {Constant} inf
-Real positive infinity.
-
-@end defvr
-
-@c NEEDS EXPANSION AND EXAMPLES
-@defvr {Constant} infinity
-Complex infinity, an infinite magnitude of arbitrary phase
-angle.  See also @code{inf} and @code{minf}.
+@opencatbox
+@category{Sums and products}
+@closecatbox
 
 @end defvr
 
@@ -172,6 +183,10 @@ plus the special package @code{default_let_rule_package}.
 one is not explicitly set by the user.)
 @end table
 
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} integerp (@var{expr})
@@ -203,6 +218,10 @@ Examples:
 (%o9)                         false
 @end example
 
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+
 @end deffn
 
 @defvr {Option variable} m1pbranch
@@ -224,6 +243,10 @@ m1pbranch:false          m1pbranch:true
 (-1)^(1/3)               1/2+%i*sqrt(3)/2
 (-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
 @end example
+
+@opencatbox
+@category{Expressions} @category{Global flags}
+@closecatbox
 
 @end defvr
 
@@ -257,6 +280,10 @@ Examples:
 (%o7) [false, false, false, false, false, false, false, false]
 @end example
 
+@opencatbox
+@category{Predicate functions}
+@closecatbox
+
 @end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
@@ -264,6 +291,10 @@ Examples:
 @deffn {Function} properties (@var{a})
 Returns a list of the names of all the
 properties associated with the atom @var{a}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 
 @end deffn
 
@@ -275,6 +306,10 @@ properties associated with the atom @var{a}.
 mentioned in @code{infolists}, such as specified by @code{atvalue}, @code{matchdeclare}, etc., 
 as well as properties specified in the @code{declare} function.
 
+@opencatbox
+@category{Declarations and inferences} @category{Global variables}
+@closecatbox
+
 @end defvr
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
@@ -283,6 +318,10 @@ as well as properties specified in the @code{declare} function.
 Returns a list of those atoms on the @code{props} list which
 have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
 returns a list of atoms which have atvalues.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 
 @end deffn
 
@@ -314,6 +353,10 @@ Examples:
 (%o5)                         Hello
 @end example
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
@@ -341,6 +384,10 @@ Example:
 (%o9)                          bar
 @end example
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
@@ -349,6 +396,10 @@ Example:
 @c HOW IS THIS DIFFERENT FROM remove ??
 @deffn {Function} rem (@var{atom}, @var{indicator})
 Removes the property indicated by @var{indicator} from @var{atom}.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 
 @end deffn
 
@@ -395,6 +446,10 @@ This behavior is unlike the more specific remove functions
 @code{remvalue}, @code{remarray}, @code{remfunction}, and @code{remrule}.
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -409,6 +464,9 @@ the list of all variables given names by the user
 
 See also @code{values}.
 
+@opencatbox
+@category{Evaluation}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -424,6 +482,10 @@ additional step of cross-multiplying numerical denominator factors.
 This results in neater forms, and the possibility of recognizing some
 cancellations.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
+
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -431,6 +493,10 @@ cancellations.
 Returns @code{true} if @var{expr} is a number, constant, or variable
 declared @code{scalar} with @code{declare}, or composed entirely of numbers, constants, and such
 variables, but not containing matrices or lists.
+
+@opencatbox
+@category{Predicate functions} @category{Vectors} @category{Matrices}
+@closecatbox
 
 @end deffn
 
@@ -474,5 +540,9 @@ Warning - you are redefining the Macsyma function legendre_p
 (%o5)                 ---------------- - 1
                              2
 @end example
+
+@opencatbox
+@category{Function definition} @category{File input}
+@closecatbox
 
 @end deffn

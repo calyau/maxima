@@ -15,7 +15,7 @@ Categories:
 @end ifinfo
 @ifhtml
 @html
-&sdot;
+&middot;
 @end html
 @ref{Category: \name\}
 @end ifhtml

@@ -16,6 +16,11 @@ When @code{asksign} is called,
 
 At one time, it was possible for a user to inspect @code{askexp}
 by entering a Maxima break with control-A.
+
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
+
 @end defvr
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
@@ -34,6 +39,9 @@ and attempt to install the information in the database if possible.
 @code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
 likewise attempt to determine if @var{expr} is an even integer or odd integer, respectively.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
@@ -45,6 +53,9 @@ answer is recorded in the data base for the duration of the current
 computation. The return value of @code{asksign} is one of @code{pos}, @code{neg},
 or @code{zero}.
 
+@opencatbox
+@category{Declarations and inferences}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -66,6 +77,9 @@ The default value of @code{demoivre} is @code{false}.
 @code{demoivre} and @code{exponentialize} cannot
 both be true at the same time.
 
+@opencatbox
+@category{Complex variables} @category{Trigonometric functions} @category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 
@@ -78,6 +92,10 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 @c PRESERVE EDITORIAL COMMENT -- MAY HAVE SOME SIGNIFICANCE NOT YET UNDERSTOOD !!!
 @c The notion of a "domain" of simplification is still in its infancy,
 @c and controls little more than this at the moment.
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -126,6 +144,9 @@ expressions by controlled expansion.
 Brief function descriptions are available in @file{simplification/facexp.usg}.
 A demo is available by doing @code{demo("facexp")}.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -143,6 +164,9 @@ means of the switch @code{expandwrt_denom}.
 This function is autoloaded from
 @file{simplification/stopex.mac}.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 
@@ -154,6 +178,10 @@ expressions by @code{expandwrt}.  If @code{true}, then both the numerator and
 denominator of the expression will be expanded according to the
 arguments of @code{expandwrt}, but if @code{expandwrt_denom} is @code{false}, then only the
 numerator will be expanded in that way.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
 
 @end defvr
 
@@ -167,6 +195,9 @@ that contain the variables @var{x_1}, ..., @var{x_n}.
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
 This function is autoloaded from @file{simplification/stopex.mac}.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 
@@ -177,6 +208,10 @@ Default value: 0
 is automatically expanded (independent of calls to @code{expand}).  For
 example, if @code{expon} is 4 then @code{(x+1)^(-5)} will not be automatically
 expanded.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
 
 @end defvr
 
@@ -196,6 +231,9 @@ The default value is @code{false}.
 @code{exponentialize} and @code{demoivre} cannot
 both be true at the same time.
 
+@opencatbox
+@category{Complex variables} @category{Trigonometric functions} @category{Hyperbolic functions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -210,6 +248,10 @@ If it is desired to have @code{(x + 1)^n} expanded where @code{n} is greater tha
 @code{expop} then executing @code{expand ((x + 1)^n)} will work only if @code{maxposex} is
 not less than n.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
+
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -218,6 +260,10 @@ Default value: -1
 
 @code{factlim} specifies the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
 
 @end defvr
 
@@ -234,6 +280,9 @@ does not remove this property, it only bypasses it.
 In some cases,
 a @code{scanmap (multthru, @var{expr})} may be necessary before the @code{intosum}.
 
+@opencatbox
+@category{Expressions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -242,6 +291,9 @@ a @code{scanmap (multthru, @var{expr})} may be necessary before the @code{intosu
 Maxima simplifier that @code{g} is left-associative.  E.g., @code{g (g (a, b), g (c, d))} will
 simplify to @code{g (g (g (a, b), c), d)}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Operators} @category{Simplification}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -258,6 +310,9 @@ for @code{a} and @code{b} free of @code{x}.
 @code{linear} is equivalent to @code{additive} and @code{outative}.
 See also @code{opproperties}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Operators} @category{Simplification}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -272,6 +327,9 @@ expression in which @code{x} is a @code{mainvar} from one in which @code{x} isn'
 necessary if cancellation is to occur.  Also, if you save an
 expression in which @code{x} is a @code{mainvar}, you probably should also save @code{x}.)
 
+@opencatbox
+@category{Declarations and inferences} @category{Expressions}
+@closecatbox
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -280,6 +338,10 @@ Default value: 10000
 
 @code{maxapplydepth} is the maximum depth to which @code{apply1}
 and @code{apply2} will delve.
+
+@opencatbox
+@category{Function application}
+@closecatbox
 
 @end defvr
 
@@ -290,6 +352,10 @@ Default value: 10000
 @code{maxapplyheight} is the maximum height to which @code{applyb1}
 will reach before giving up.
 
+@opencatbox
+@category{Function application}
+@closecatbox
+
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -299,6 +365,10 @@ Default value: 1000
 @code{maxnegex} is the largest negative exponent which will
 be expanded by the @code{expand} command (see also @code{maxposex}).
 
+@opencatbox
+@category{Expressions}
+@closecatbox
+
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -307,6 +377,10 @@ Default value: 1000
 
 @code{maxposex} is the largest exponent which will be
 expanded with the @code{expand} command (see also @code{maxnegex}).
+
+@opencatbox
+@category{Expressions}
+@closecatbox
 
 @end defvr
 
@@ -328,6 +402,9 @@ defined as multiplicativity in the first argument to @code{f}, e.g.,
 This simplification does not occur when @code{f} is applied to expressions of
 the form @code{product (x[i], i, m, n)}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Expressions} @category{Simplification}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -341,6 +418,10 @@ but be very careful: like the @code{simp} flag, this is one flag you do not
 want to set to @code{false} as a matter of course or necessarily for other
 than local use in your Maxima.
 
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -353,6 +434,10 @@ display for the difference of two expressions to not be done.  One
 application is that thus @code{a + %i*b} and @code{a - %i*b} may both be displayed the
 same way.
 
+@opencatbox
+@category{Display flags and variables}
+@closecatbox
+
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -362,6 +447,9 @@ same way.
 conjunction with other switches and in causing expressions      
 to be resimplified without being reevaluated.
 
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -370,6 +458,9 @@ to be resimplified without being reevaluated.
 function so declared a "noun", meaning that it won't be evaluated
 automatically.
 
+@opencatbox
+@category{Nouns and verbs}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -380,6 +471,10 @@ When @code{noundisp} is @code{true}, nouns display with
 a single quote.  This switch is always @code{true} when displaying function
 definitions.
 
+@opencatbox
+@category{Display flags and variables} @category{Nouns and verbs}
+@closecatbox
+
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -389,6 +484,9 @@ definitions.
 "noun" forms occurring in the expression being @code{ev}'d to "verbs", i.e.,
 evaluates them.  See also @code{noun}, @code{nounify}, @code{verb}, and @code{verbify}.
 
+@opencatbox
+@category{Evaluation flags} @category{Nouns and verbs}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -401,6 +499,9 @@ with numerical arguments to be evaluated in floating point. It causes
 variables in @code{expr} which have been given numerals to be replaced by
 their values.  It also sets the @code{float} switch on.
 
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
 @end defvr
 
 
@@ -415,6 +516,11 @@ in any expressions in which the variable occurs if the @code{numer} flag is
 
 The expressions @code{expr_1}, ..., @code{expr_n} can be any expressions,
 not necessarily numeric.
+
+@opencatbox
+@category{Declarations and inferences} @category{Numerical evaluation}
+@closecatbox
+
 @end deffn
 
 
@@ -426,6 +532,10 @@ the Maxima simplifier:
 @code{oddfun}, @code{commutative}, @code{symmetric}, @code{antisymmetric}, @code{nary}, 
 @code{lassociative}, @code{rassociative}.
 
+@opencatbox
+@category{Global variables} @category{Operators}
+@closecatbox
+
 @end defvr
 
 
@@ -436,6 +546,10 @@ Default value: @code{true}
 When @code{opsubst} is @code{false}, @code{subst} does not attempt to
 substitute into the operator of an expression.  E.g., 
 @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
+
+@opencatbox
+@category{Expressions}
+@closecatbox
 
 @end defvr
 
@@ -459,6 +573,9 @@ to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 
 @code{sum}, @code{integrate}, and @code{limit} are all @code{outative}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -466,6 +583,9 @@ to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 @code{declare (f, posfun)} declares @code{f} to be a positive function.
 @code{is (f(x) > 0)} yields @code{true}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
 @end defvr
 
 @deffn {Function} radcan (@var{expr})
@@ -497,6 +617,9 @@ and is not simplified to @code{x - 1}.
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (radcan)} displays some examples.
 
+@opencatbox
+@category{Simplification functions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -526,6 +649,10 @@ If @code{radexpand} is @code{false}, or @code{radexpand} is @code{true} and @cod
 @c CORRECT STATEMENT HERE ???
 Note that @code{domain} only matters when @code{radexpand} is @code{true}.
 
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 
@@ -535,6 +662,10 @@ Default value: @code{false}
 @code{radsubstflag}, if @code{true}, permits @code{ratsubst} to make
 substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -543,6 +674,9 @@ substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 simplifier that @code{g} is right-associative.  E.g.,
 @code{g(g(a, b), g(c, d))} simplifies to @code{g(a, g(b, g(c, d)))}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -557,6 +691,9 @@ the original answer.
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (scsimp)} displays some examples.
 
+@opencatbox
+@category{Simplification functions}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -568,6 +705,10 @@ simplified.  This simplification may sometimes be able to produce a
 closed form.  If @code{simpsum} is @code{false} or if the quoted form @code{'sum} is used, the value is a
 sum noun form which is a representation of the sigma notation used in
 mathematics.
+
+@opencatbox
+@category{Sums and products} @category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -584,6 +725,9 @@ reasonable index if it cannot use any supplied.
 @c WHEN IS intosum NECESSARY BEFORE sumcontract ??
 It may be necessary to do an @code{intosum (@var{expr})} before the @code{sumcontract}.
 
+@opencatbox
+@category{Sums and products}
+@closecatbox
 @end deffn
 
 
@@ -617,6 +761,10 @@ Examples:
                     i3 = 0 i4 = 0
 @end example
 
+@opencatbox
+@category{Sums and products} @category{Simplification flags and variables}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} sumsplitfact
@@ -625,6 +773,10 @@ Default value: @code{true}
 When @code{sumsplitfact} is @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
 @code{minfactorial} is applied after a @code{factcomb}.
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Simplification flags and variables}
+@closecatbox
 
 @end defvr
 
@@ -636,6 +788,9 @@ simplifies to @code{h (x, y, z)}.
 
 @code{commutative} is synonymous with @code{symmetric}.
 
+@opencatbox
+@category{Declarations and inferences} @category{Operators}
+@closecatbox
 @end defvr
 
 
@@ -643,4 +798,7 @@ simplifies to @code{h (x, y, z)}.
 Returns @code{true} if and only if @var{expr} contains an operator or function
 not recognized by the Maxima simplifier.
 
+@opencatbox
+@category{Predicate functions} @category{Simplification functions}
+@closecatbox
 @end deffn

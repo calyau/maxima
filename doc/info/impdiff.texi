@@ -12,5 +12,10 @@ This subroutine computes implicit derivatives of multivariable functions.
 @var{depvar} is the dependent variable.
 
 To use this function write first @code{load("impdiff")}.
+
+@opencatbox
+@category{Differential calculus} @category{Share packages} @category{Package impdiff}
+@closecatbox
+
 @end deffn
 

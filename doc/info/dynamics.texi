@@ -35,6 +35,10 @@ should only specify the variable name, and the minimum and maximum
 values; the number of steps can now be changed with the option
 @var{nticks}.
 
+@opencatbox
+@category{Dynamical systems} @category{Share packages} @category{Package dynamics}
+@closecatbox
+
 @node Functions and Variables for dynamics,  , Introduction to dynamics, dynamics
 @section Functions and Variables for dynamics
 
@@ -47,6 +51,10 @@ will be selected at random. The next point plotted will be on the
 segment from the previous point plotted to the point chosen randomly, at a
 distance from the random point which will be @var{b} times that segment's
 length. The procedure is repeated @var{n} times.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
 
 @end deffn
 
@@ -70,6 +78,10 @@ expression that depends only on one variable (in the example, it
 depend on @var{y}, but any other variable can be used),
 @var{y0} must be a real number and @var{n} must be a positive integer.
 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} evolution2d (@code{[}@var{F}, @var{G}@code{]}, @code{[}@var{u}, @var{v}@code{]}, @code{[}@var{u0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
@@ -90,6 +102,10 @@ With initial values @var{u0} and @var{v0}. @var{F} and @var{G} must be
 two expressions that depend only on two variables, @var{u} and
 @var{v}, which must be named explicitely in a list. 
 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} ifs (@code{[}@var{r1}, ..., @var{rm}@code{]}, @code{[}@var{A1}, ..., @var{Am}@code{]}, @code{[[}@var{x1}, @var{y1}@code{]}, ..., @code{[}@var{xm}, @var{ym}@code{]]}, @code{[}@var{x0}, @var{y0}@code{]}, @var{n}, ..., options, ...);
@@ -104,6 +120,10 @@ The random choice of one of the @var{m} attractive points can be made with
 a non-uniform probability distribution defined by the weights
 @var{r1},...,@var{rm}. Those weights are given in cumulative form; for instance if there are 3 points with probabilities 0.2, 0.5 and
 0.3, the weights @var{r1}, @var{r2} and @var{r3} could be 2, 7 and 10.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
 
 @end deffn
 
@@ -132,6 +152,10 @@ hue angles distributed uniformly between @var{hue} and (@var{hue} +
 @var{options} is an optional sequence of options. The list of accepted
 options is given in a section below.
 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} mandelbrot (@var{options})
@@ -158,6 +182,10 @@ different hue angles distributed uniformly between @var{hue} and
 @var{options} is an optional sequence of options. The list of accepted
 options is given in a section below.
 
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} orbits (@var{F}, @var{y0}, @var{n1}, @var{n2}, [@var{x}, @var{x0}, @var{xf}, @var{xstep}], ...options...);
@@ -175,6 +203,10 @@ take values in the interval from @var{x0} to @var{xf} with increments of
 horizontal axis. The vertical axis will show the @var{n2} values
 of the sequence @var{y(n1+1)},..., @var{y(n1+n2+1)} obtained after letting
 the sequence evolve @var{n1} iterations.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
 
 @end deffn
 
@@ -220,6 +252,10 @@ iterations made. Each element in the results list is itself another list
 with @var{m}+1 elements: the value of the independent variable, followed
 by the values of the dependent variables corresponding to that point.
 
+@opencatbox
+@category{Package dynamics} @category{Differential equations} @category{Numerical methods}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} staircase (@var{F}, @var{y0}, @var{n}, ...options...);
@@ -244,6 +280,10 @@ intersects the function @var{F}. From that point a horizontal segment is
 drawn until it reaches the point (@var{y1}, @var{y1}) on the line, and
 the procedure is repeated @var{n} times until the point (@var{yn}, @var{yn})
 is reached.
+
+@opencatbox
+@category{Package dynamics} @category{Plotting}
+@closecatbox
 
 @end deffn
 

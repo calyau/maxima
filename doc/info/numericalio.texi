@@ -25,6 +25,10 @@ No continuation character (to join broken lines) is recognized.
 @var{separator_flag} tells which character separates elements.
 It is an optional argument for all read and write functions.
 
+@opencatbox
+@category{File input} @category{File output} @category{Share packages} @category{Package numericalio}
+@closecatbox
+
 @subsection Separator flag values for input
 
 For input, these values of @var{separator_flag} are recognized:
@@ -68,6 +72,10 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 Each line of the file becomes one row of the matrix.
 If some lines have different lengths, @code{read_matrix} complains.
 
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} read_lisp_array (@var{file_name}, @var{A})
@@ -86,6 +94,10 @@ dimensions, which could be a problem for arrays with multiple dimensions.)
 @code{read_lisp_array} does not check to see that the 
 input file conforms in some way to the array dimensions; the input
 is read as a flat list, then the array is filled using @code{fillarray}.
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
 
 @end deffn
 
@@ -106,6 +118,10 @@ dimensions, which could be a hassle for arrays with multiple dimensions.)
 input file conforms in some way to the array dimensions; the input
 is read as a flat list, then the array is filled using @code{fillarray}.
 
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} read_hashed_array (@var{file_name}, @var{A})
@@ -122,6 +138,10 @@ For example,
 the line @code{567 12 17 32 55} is equivalent to @code{A[567]: [12, 17, 32, 55]$}.
 Lines need not have the same numbers of elements.
 
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} read_nested_list (@var{file_name})
@@ -136,6 +156,10 @@ If @var{separator_flag} is not specified, the file is assumed space-delimited.
 line of input. Lines need not have the same numbers of elements.
 Empty lines are @i{not} ignored: an empty line yields an empty sublist.
 
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
+
 @end deffn
 
 @deffn {Function} read_list (@var{file_name})
@@ -145,6 +169,10 @@ Empty lines are @i{not} ignored: an empty line yields an empty sublist.
 
 Reads the file @var{file_name} or file stream @var{S} and returns its entire content as a flat list.
 If @var{separator_flag} is not specified, the file is assumed space-delimited.
+
+@opencatbox
+@category{Package numericalio} @category{File input}
+@closecatbox
 
 @end deffn
 
@@ -176,6 +204,10 @@ whether the output file is appended or truncated.
 No special action concerning appending or truncating
 is taken when @code{write_data} writes to a file stream.
 The file stream is not closed by @code{write_data}.
+
+@opencatbox
+@category{Package numericalio} @category{File output}
+@closecatbox
 
 @end deffn
 

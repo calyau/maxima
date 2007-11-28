@@ -24,6 +24,9 @@ it's a good idea to request a couple of extra.
 
 @code{load ("bffac")} loads this function.
 
+@opencatbox
+@category{Gamma and factorial functions} @category{Numerical evaluation}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} algepsilon
@@ -31,6 +34,10 @@ Default value: 10^8
 
 @c WHAT IS algepsilon, EXACTLY ??? describe ("algsys") IS NOT VERY INFORMATIVE !!!
 @code{algepsilon} is used by @code{algsys}.
+
+@opencatbox
+@category{Algebraic equations}
+@closecatbox
 
 @end defvr
 
@@ -42,10 +49,17 @@ When @code{float2bf} is @code{false} a warning message is printed when
 a floating point number is converted into a bigfloat number (since
 this may lead to loss of precision).
 
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
 @end deffn
 
 @deffn {Function} bfloatp (@var{expr})
 Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
+
+@opencatbox
+@category{Numerical evaluation} @category{Predicate functions}
+@closecatbox
 
 @end deffn
 
@@ -64,6 +78,9 @@ These functions return bigfloat values.
 
 @code{load ("bffac")} loads these functions.
 
+@opencatbox
+@category{Gamma and factorial functions} @category{Numerical evaluation}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} bftorat
@@ -79,6 +96,10 @@ When @code{bftorat} is @code{true},
 the rational number generated will
 accurately represent the bfloat.
 
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+
 @end defvr
 
 @defvr {Option variable} bftrunc
@@ -89,6 +110,10 @@ numbers not to be displayed.  Thus, if @code{bftrunc} is @code{false}, @code{bfl
 displays as @code{1.000000000000000B0}. Otherwise, this is displayed as
 @code{1.0B0}.
 
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} cbffac (@var{z}, @var{fpprec})
@@ -96,6 +121,9 @@ Complex bigfloat factorial.
 
 @code{load ("bffac")} loads this function.
 
+@opencatbox
+@category{Gamma and factorial functions} @category{Complex variables} @category{Numerical evaluation}
+@closecatbox
 @end deffn
 
 @deffn {Function} float (@var{expr})
@@ -104,6 +132,9 @@ to floating point numbers.  It is also an @code{evflag}, @code{float} causes
 non-integral rational numbers and bigfloat numbers to be converted to
 floating point.
 
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
 @end deffn
 
 @defvr {Option variable} float2bf
@@ -113,10 +144,18 @@ When @code{float2bf} is @code{false}, a warning message is printed when
 a floating point number is converted into a bigfloat number (since
 this may lead to loss of precision).
 
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
+
 @end defvr
 
 @deffn {Function} floatnump (@var{expr})
 Returns @code{true} if @var{expr} is a floating point number, otherwise @code{false}.
+
+@opencatbox
+@category{Numerical evaluation} @category{Predicate functions}
+@closecatbox
 
 @end deffn
 
@@ -127,6 +166,10 @@ Default value: 16
 @code{fpprec} does not affect computations on ordinary floating point numbers.
 
 See also @code{bfloat} and @code{fpprintprec}.
+
+@opencatbox
+@category{Numerical evaluation}
+@closecatbox
 
 @end defvr
 
@@ -148,5 +191,9 @@ Otherwise, @code{fpprintprec} is 0, or greater than @code{fpprec},
 and the number of digits printed is equal to @code{fpprec}.
 
 @code{fpprintprec} cannot be 1.
+
+@opencatbox
+@category{Numerical evaluation} @category{Display flags and variables}
+@closecatbox
 
 @end defvr

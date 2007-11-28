@@ -1,23 +1,31 @@
-TARGET_TEXI=$1
-if [ "x$TARGET_TEXI" = "x" ]; then
-  echo USAGE: sh $0 '<TARGET_TEXI>'
+TARGET=$1
+if [ "x$TARGET" = "x" ]; then
+  echo USAGE: sh $0 '<TARGET>'
   exit 1
 fi
 
 set -x
+
+TARGET_TEXI=$TARGET.texi
+
 WORKING_DIRECTORY=`mktemp -d /tmp/maxima-texinfo-categories-XXXXXX`
 cp -a *.texi figures $WORKING_DIRECTORY
 d=`pwd`
 pushd $WORKING_DIRECTORY
 
 for f in *.texi; do
-  sed 's/^@def\(fn\|vr\) {[^}]*} \([^[:blank:]]*\).*/@anchor{Item: \2}\
+  if [ $f = "maxima.texi" ]
+    then echo SKIP OVER $f
+    else
+      sed 's/^@def\(fn\|vr\)  *{[^}]*}  *\([^[:blank:]]*\).*/@anchor{Item: \2}\
+\0/; s/^@node  *\([^,]*\).*/@anchor{Item: \1}\
 \0/' "$f" > tmp.texi
-  mv tmp.texi "$f"
+      mv tmp.texi "$f"
+    fi
 done
 
 cat *.texi\
-  | awk '!/^@def(fn|vr)x/ && (/^@deffn/||/^@defvr/||/^@end deffn/||/^@end defvr/ || /@category/)'\
+  | awk '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)'\
   | sed -f $d/extract_categories1.sed \
   | awk -F '$' -f $d/extract_categories1.awk \
   > tmp-make-categories.py
@@ -41,7 +49,7 @@ do
     grep -q '<a href=".*">Category: .*</a>' $f
     if [ $? = 0 ]; then
         echo FIX UP CATEGORY BOXES IN $f
-        sed 's/^&sdot;$//; s/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' $f > tmp.html
+        sed 's/^&middot;$//; s/<p>\(<a href=".*">Category: .*<\/a>\)/<p>Categories:\&nbsp;\&nbsp;\1/' $f > tmp.html
         mv tmp.html $f
     fi
 done
@@ -65,6 +73,8 @@ do
         mv tmp.html $f
     fi
 done
+
+mv *.html $d
 
 popd
 set +x

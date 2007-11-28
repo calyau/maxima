@@ -23,6 +23,10 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 
 [2] @url{http://netlib.org/opt/lbfgs_um.shar}
 
+@opencatbox
+@category{Numerical methods} @category{Share packages} @category{Package lbfgs}
+@closecatbox
+
 @node Functions and Variables for lbfgs, , Introduction to lbfgs, Top
 @section Functions and Variables for lbfgs
 
@@ -334,6 +338,10 @@ I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
 (%o8) 
 @end example
 
+@opencatbox
+@category{Package lbfgs}
+@closecatbox
+
 @end deffn
 
 @defvr {Variable} lbfgs_nfeval_max
@@ -343,6 +351,10 @@ Default value: 100
 When @code{lbfgs_nfeval_max} is reached,
 @code{lbfgs} returns the result of the last successful line search.
 
+@opencatbox
+@category{Package lbfgs}
+@closecatbox
+
 @end defvr
 
 @defvr {Variable} lbfgs_ncorrections
@@ -350,5 +362,9 @@ Default value: 25
 
 @code{lbfgs_ncorrections} is the number of corrections applied
 to the approximate inverse Hessian matrix which is maintained by @code{lbfgs}.
+
+@opencatbox
+@category{Package lbfgs}
+@closecatbox
 
 @end defvr

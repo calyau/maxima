@@ -29,6 +29,9 @@ form.
 
 See @code{ode2} for an example of its usage.
 
+@opencatbox
+@category{Differential equations}
+@closecatbox
 @end deffn
 
 
@@ -99,6 +102,9 @@ calling @code{desolve} by using @code{atvalue}.
 
 If @code{desolve} cannot obtain a solution, it returns @code{false}.
 
+@opencatbox
+@category{Differential equations} @category{Laplace transform}
+@closecatbox
 @end deffn
 
 @deffn {Function} ic1 (@var{solution}, @var{xval}, @var{yval})
@@ -111,6 +117,9 @@ initial value for the dependent variable in the form @code{@var{y} =
 
 See @code{ode2} for an example of its usage.
 
+@opencatbox
+@category{Differential equations}
+@closecatbox
 @end deffn
 
 @deffn {Function} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
@@ -126,6 +135,9 @@ variable, in the form @code{diff(@var{y},@var{x}) = @var{dy0}}
 
 See @code{ode2} for an example of its usage.
 
+@opencatbox
+@category{Differential equations}
+@closecatbox
 @end deffn
 
 @deffn {Function} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
@@ -216,4 +228,7 @@ Example:
 
 @end example
 
+@opencatbox
+@category{Differential equations}
+@closecatbox
 @end deffn
