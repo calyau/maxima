@@ -343,7 +343,7 @@
                         (merror "User preamble ~M should be a string" st))
                     (setf str (concatenate 'string
                                             str
-                                            (format nil (if (string= str "") "~a" "~%~a") val)))))
+                                            (format nil (if (string= str "") "~a" "~%~a") st)))))
                 (t (merror "Illegal user preamble especification")))
               (setf (gethash opt *gr-options*) str))  )
       (($xrange $yrange $zrange) ; defined as a Maxima list with two numbers in increasing order
