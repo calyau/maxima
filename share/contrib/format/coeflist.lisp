@@ -144,7 +144,7 @@
 	((null (cdr l))				; single term, trivial
 	 `((,(power (caar l) n) ,@(mapcar #'(lambda (p)($expand (mul p n)))(cdar l)))))
 	(t (let ((l^i l) (l^n (if (logtest n 1) l)))
-	     (do ((bits (lsh n -1)(lsh bits -1)))
+	     (do ((bits (ash n -1)(ash bits -1)))
 		 ((zerop bits) l^n)
 	       (do ((sq nil)			; Square l^i
 		    (ll (reverse l^i) (cdr ll)))
@@ -293,7 +293,7 @@
 	    ((and (null (cdr cos))(null sin)) (pow1 (caar cos)(cdar cos) nil))	; cos^n
 	    ((and (null (cdr sin))(null cos)) (pow1 (caar sin)(cdar sin) t))	; sin^n
 	    (t (let (l^i l^n)			; Compute using "binary expansion" method.
-		 (do ((bits n (lsh bits -1)))
+		 (do ((bits n (ash bits -1)))
 		     ((zerop bits) l^n)
 		   (setq l^i (if l^i (tlist-mul l^i l^i) l))
 		   (when (oddp bits)
