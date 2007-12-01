@@ -243,7 +243,7 @@ archimedianTopologyVerbose(pol,isolAlg,x,y,verbosity) :=
   block([sRes,sSR,sSRCoeff,discr,isolDiscr,i,j,jList,epsList,flag,rootSign,degP,
          numOfRoots,rootsAtDiscr,numAbove,rootsAtDiscrAboveCr,taQ,
          numBetween,rootsBetween,res,
-         coSys,generic,crity,multi],
+         coSys,generic,critY,multi],
 
   pol : expand(pol), 
 
