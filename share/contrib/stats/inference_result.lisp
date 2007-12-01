@@ -169,7 +169,7 @@
 	(setq m (append m `(((mlist simp) ,(build-eq (nth i values)))))))
       (setq m (cons `((mlist simp) ,name) m))
       (setq m (cons '($matrix simp inference) m))
-      (wxxml m l r 'mparen 'mparen))))
+      (funcall 'wxxml m l r 'mparen 'mparen))))
 
 (defprop $inference_result wxxml-inference wxxml)
 
