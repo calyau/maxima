@@ -125,18 +125,16 @@ forget(a>0);
 (pn_(383),ans:contrib_ode(eqn:x^7*'diff(y,x)+5*x^3*y^2+2*(1+x^2)*y^3=0,y,x));
 false;
 
-/* 385 Riccati - CHECK ME */
+/* 385 Riccati */
 (pn_(385),ans:contrib_ode(eqn:x^n*'diff(y,x)=x^(2*n-1)-y^2,y,x));
-[y = x^(n-1)*((-%c*(bessel_y(n-2,2*sqrt(-x))
-                          -bessel_y(n,2*sqrt(-x)))
-                    /sqrt(-x)
-                    -(bessel_j(n-2,2*sqrt(-x))-bessel_j(n,2*sqrt(-x)))
-                     /sqrt(-x))
-                    *x
-                    +n*(-%c*bessel_y(n-1,2*sqrt(-x))
-                       -bessel_j(n-1,2*sqrt(-x)))
-                    +%c*bessel_y(n-1,2*sqrt(-x))+bessel_j(n-1,2*sqrt(-x)))
-          /(2*%c*bessel_y(n-1,2*sqrt(-x))+2*bessel_j(n-1,2*sqrt(-x)))];
+[y = -(((%c*'bessel_y(n,2*sqrt(-x))+'bessel_j(n,2*sqrt(-x))
+                                  -%c*'bessel_y(n-2,2*sqrt(-x))
+                                  -'bessel_j(n-2,2*sqrt(-x)))
+   *sqrt(-x)
+   +n*(%c*'bessel_y(n-1,2*sqrt(-x))+'bessel_j(n-1,2*sqrt(-x)))
+   -%c*'bessel_y(n-1,2*sqrt(-x))-'bessel_j(n-1,2*sqrt(-x)))
+   *x^(n-1)
+   /(2*%c*'bessel_y(n-1,2*sqrt(-x))+2*'bessel_j(n-1,2*sqrt(-x))))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
