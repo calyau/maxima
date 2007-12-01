@@ -1433,9 +1433,10 @@
     ; initialize first layer
     (loop for i to nx do
       (loop for j to ny do
-        (setf (aref oldval i j) (funcall fcn (aref px i) (aref py j) (aref pz 0)))
-        (when (not (floatp (aref oldval i j)))
-          (merror "draw3d (implicit): non real value")) ))
+        (let ((fxy (funcall fcn (aref px i) (aref py j) (aref pz 0))))
+          (if (floatp fxy)
+            (setf (aref oldval i j) fxy)
+            (merror "draw3d (implicit): non real value")))))
 
     ; begin triangularization process
     (loop for k from 1 to nz do
@@ -1443,9 +1444,10 @@
       ; calculate node values in new layer
       (loop for i to nx do
         (loop for j to ny do
-          (setf (aref newval i j) (funcall fcn (aref px i) (aref py j) (aref pz k)))
-          (when (not (floatp (aref oldval i j)))
-            (merror "draw3d (implicit): check surface definition; non real value")) ))
+          (let ((fxy (funcall fcn (aref px i) (aref py j) (aref pz k))))
+            (if (floatp fxy)
+              (setf (aref newval i j) fxy)
+              (merror "draw3d (implicit): check surface definition; non real value")))))
 
       ; analyze voxels in this slide
       (loop for i below nx do
