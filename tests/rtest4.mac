@@ -196,3 +196,9 @@ gfactor(x^4+y^4);
 /* sf bug 696804 */
 factor(expand((35*x*y^2+19*x^2+25) * (35*x*y^2+25*x^2+19)));
 (35*x*y^2+19*x^2+25) * (35*x*y^2+25*x^2+19)$
+
+/* bug reported on mailing list circa 2007-11-27; bignum in exponent */
+
+is (errcatch (rat (x^(2^128))) = []);
+false;
+

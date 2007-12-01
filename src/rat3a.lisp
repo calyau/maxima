@@ -154,7 +154,6 @@
 
 (defmfun pcoefadd (e c x)
   (cond ((pzerop c) x)
-	((bignump e) (merror "Exponent out of range"))
 	(t (cons e (cons c x)))))
 
 (defmfun pplus (x y)
