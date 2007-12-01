@@ -602,20 +602,23 @@ solveSys(mat,vec,solver) :=
 
 
 
-newtonFromPoly(pol,var) :=
-  array2singleList(newtonArrFromPoly(pol,var));
+newtonFromPoly(pol,var,len) :=
+  array2singleList(newtonArrFromPoly(pol,var,len));
 
-newtonArrFromPoly(pol,var) :=
+newtonArrFromPoly(pol,var,len) :=
   block([newtonRes,degPol,i,j],
     degPol : degree(pol,var),
-    newtonRes : make_array('any,degPol+1),
+    newtonRes : make_array('any,len+1),
 
     newtonRes[0] : degPol,
 
-    for i : 1 thru degPol do
+    for i : 1 thru len do
       (
+
       newtonRes[i] : (degPol-i)*ratcoeff(pol,var,degPol-i)-
-                     sum(ratcoeff(pol,var,degPol-j)*newtonRes[i-j],j,1,i)
+                     sum(ratcoeff(pol,var,degPol-j)*
+                     newtonRes[i-j],j,1,
+                     min(i,degPol))
       ),
     return(newtonRes)
     );
@@ -659,7 +662,7 @@ matrixProdArray(a,b) :=
     print("matrixProd) incompatible matrices"),
     print("matrixProd) a : ", a),
     print("matrixProd) b : ", b),
-    return(false)
+    return(FALSE)
     )
   else
     (

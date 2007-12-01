@@ -147,7 +147,7 @@ deCasteljauBivariateFindRootsVerbose(pol,var,x,polyInX,rootInX,threshold,verbosi
 
 
 bivariateSSubResSignChanges(seq,x,polyInX,rootInX) :=
-  sSubResSignChanges(map(lambda([arg],signAtRoot(arg,x,polyInX,rootInX)),seq));
+  genPermMVar(map(lambda([arg],signAtRoot(arg,x,polyInX,rootInX)),seq));
 
 
 bivariateSSubResTarskiQuery(q,p,var,x,polyInX,rootInX) :=
@@ -243,7 +243,7 @@ archimedianTopologyVerbose(pol,isolAlg,x,y,verbosity) :=
   block([sRes,sSR,sSRCoeff,discr,isolDiscr,i,j,jList,epsList,flag,rootSign,degP,
          numOfRoots,rootsAtDiscr,numAbove,rootsAtDiscrAboveCr,taQ,
          numBetween,rootsBetween,res,
-         coSys,generic,critY,multi],
+         coSys,generic,crity,multi],
 
   pol : expand(pol), 
 
@@ -382,7 +382,7 @@ archimedianTopologyVerbose(pol,isolAlg,x,y,verbosity) :=
             numOfRoots : sSubResTarskiQueryVerbose(1,expand(subst(isolDiscr[i][1],x,pol)),
                                                    y,verbosity-1),
                                                  */
-            numOfRoots : sSubResSignChanges(subst(isolDiscr[i][1],x,sSRCoeff)),
+            numOfRoots : genPermMVar(subst(isolDiscr[i][1],x,sSRCoeff)),
             if verbosity>=VERY then
                print("topology) numOfRoots : ", numOfRoots),
             rootsAtDiscr : endcons(numOfRoots,rootsAtDiscr),
@@ -492,7 +492,7 @@ if length(isolDiscr)>0 then
     /*
   rootsBetween : [sSubResTarskiQuery(1,subst(isolDiscr[1][1]-1,x,pol),y)],
 */
-  rootsBetween : [sSubResSignChanges(subst(isolDiscr[1][1]-1,x,sSRCoeff))],
+  rootsBetween : [genPermMVar(subst(isolDiscr[1][1]-1,x,sSRCoeff))],
 
   for i : 1 thru length(isolDiscr)-1 do
     (
@@ -503,7 +503,7 @@ if length(isolDiscr)>0 then
                            rootsBetween)
                          */
 
-    rootsBetween : endcons(sSubResSignChanges(
+    rootsBetween : endcons(genPermMVar(
                               subst(intermidiatePoint(isolDiscr[i],isolDiscr[i+1],discr,x),
                                     x,sSRCoeff)),
                           rootsBetween)
@@ -514,7 +514,7 @@ if length(isolDiscr)>0 then
   rootsBetween : endcons(sSubResTarskiQueryVerbose(1,subst(last(last(isolDiscr))+1,x,pol),
                                                   y,verbosity-1),rootsBetween),
 */
-  rootsBetween : endcons(sSubResSignChanges(subst(last(last(isolDiscr))+1,x,sSRCoeff)),rootsBetween),
+  rootsBetween : endcons(genPermMVar(subst(last(last(isolDiscr))+1,x,sSRCoeff)),rootsBetween),
   i : 1,
   res : [rootsBetween[1] ],
   while i<=length(isolDiscr) do
@@ -667,6 +667,7 @@ getTopologyPoints(tpg) :=
       ptsOnCritProj : getPointsOnCrit(tpg[i][1],tpg[i][2],i*PLOT_SPACING,PLOT_HEIGHT),
       jump : length(newNonCritPts)-(tpg[i][1]-1),
 
+
       
       for j : 1 thru length(ptsOnCritProj[3]) do
           (        
@@ -724,7 +725,7 @@ drawTopology(tpg) :=
 
 drawTopologyVerbose(tpg,verbosity) :=
   block([nonCritPoints,critPoints,topologyPoints,style,preamble,i,
-         leftMost,rightMost,top,bottom],
+         leftMost,rightMost,top,bottom,ptsAtInf],
     topologyPoints : getTopologyPoints(tpg),
     if topologyPoints=false then
       (
@@ -741,8 +742,9 @@ drawTopologyVerbose(tpg,verbosity) :=
 /*
 nonCritPoints : append(nonCritPoints,topologyPoints[4]),
 */
-lineSegs : append(lineSegs,topologyPoints[5]),
+     lineSegs : append(lineSegs,topologyPoints[5]),
 
+     ptsAtInf : topologyPoints[4],
 
      if verbosity>= VERY then
        (
@@ -769,42 +771,47 @@ lineSegs : append(lineSegs,topologyPoints[5]),
 
      if not(PS_OUTPUT) then 
        if critPoints=[] then
-         plot2d(append([ [discrete,float(nonCritPoints)]],
-                  lineSegs),
+         plot2d(append([[discrete,float(nonCritPoints)]],
+                       lineSegs),
                   cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL],style)),
                   [gnuplot_preamble, preamble])
        else
          if nonCritPoints = [] then
             plot2d(append([[discrete,float(critPoints)]],
-                   lineSegs),
+                          lineSegs),
                    cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL],style)),
                    [gnuplot_preamble,preamble])
          else
-         plot2d(append([ [discrete,float(nonCritPoints)],
-                  [discrete,float(critPoints)]],lineSegs),
-                  cons('style,append([[points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL], [points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL]],style)),
+         plot2d(append([[discrete,float(nonCritPoints)],
+                        [discrete,float(critPoints)]],
+                       lineSegs),
+                  cons('style,append([[points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL], 
+                                      [points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL]],style)),
                   [gnuplot_preamble,preamble])
      else
        if critPoints=[] then
-         plot2d(append([ [discrete,float(nonCritPoints)]],
-                  lineSegs),
+         plot2d(append([[discrete,float(nonCritPoints)]],
+                       lineSegs),
                   cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL],style)),  
                   [gnuplot_preamble, preamble],
                   [gnuplot_term, ps], [gnuplot_out_file, PS_OUTPUT_FILE_NAME])
        else
          if nonCritPoints = [] then
             plot2d(append([[discrete,float(critPoints)]],
-                   lineSegs),
+                          lineSegs),
                    cons('style,cons([points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL],style)),
                    [gnuplot_preamble,preamble],
                    [gnuplot_term, ps], [gnuplot_out_file, PS_OUTPUT_FILE_NAME])
          else
-         plot2d(append([ [discrete,float(nonCritPoints)],
-                  [discrete,float(critPoints)]],lineSegs),
-                  cons('style,append([[points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL], [points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL]],style)),
+         plot2d(append([[discrete,float(nonCritPoints)],
+                        [discrete,float(critPoints)]],
+                       lineSegs),
+                  cons('style,append([[points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_NONCRITICAL], 
+                                      [points, SARAG_POINT_SIZE, SARAG_POINT_STYLE_CRITICAL]],style)),
                   [gnuplot_preamble,preamble],
                   [gnuplot_term, ps], [gnuplot_out_file, PS_OUTPUT_FILE_NAME])
      ),
 
 return(true)
 );
+

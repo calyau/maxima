@@ -104,16 +104,18 @@ sSubResCoeff(a,b,var) :=
   sSubResCoeffVerbose(a,b,var,DEFAULT_VERBOSITY);
 
 sSubResCoeffVerbose(a,b,var,verbosity) :=
-  subResCoeffGenStructVerbose(a,b,var,true,verbosity);
+  sSubResCoeffGenStructVerbose(a,b,var,true,verbosity);
 
-subResCoeff(a,b,var) :=
-  subResCoeffVerbose(a,b,var,DEFAULT_VERBOSITY);
-
-subResCoeffVerbose(a,b,var,verbosity) :=
-  subResCoeffGenStructVerbose(a,b,var,false,verbosity);
+/*
+sSubResCoeff(a,b,var) :=
+  sSubResCoeffVerbose(a,b,var,DEFAULT_VERBOSITY);
 
 
-subResCoeffGenStructVerbose(a,b,var,signed_flag,verbosity) :=
+sSubResCoeffVerbose(a,b,var,verbosity) :=
+  sSubResCoeffGenStructVerbose(a,b,var,false,verbosity);
+*/
+
+sSubResCoeffGenStructVerbose(a,b,var,signed_flag,verbosity) :=
   block([degA,degB,i,j,k,h,lcA,lcB,delta,h,
          s,sOld,
          currentSR,previousSR,newSR],
@@ -137,10 +139,11 @@ subResCoeffGenStructVerbose(a,b,var,signed_flag,verbosity) :=
     lcB : leadCoeff(b,var),
 
     previousSR : a,    
-
+/*
     if signed_flag then
       s[degA] : sgn(lcA)
     else
+*/
       s[degA] : 1,
     
     sOld[degA] : s[degA],
@@ -201,6 +204,8 @@ subResCoeffGenStructVerbose(a,b,var,signed_flag,verbosity) :=
       if k>=1 and verbosity>= NORMAL then
         print("sSubResCoeff) SR[", k-1,"] : ",newSR)
       ),
+  if signed_flag then
+    s[degA]:lcA,
 
   return(padWithZeros(makelist( s[degA-i],i,0,degA-j),degA+1))  
   ); 
@@ -211,16 +216,17 @@ sSubResExtLast(a,b,var) :=
 
 
 sSubResExtLastVerbose(a,b,var,verbosity) :=
-  subResExtLastGenStructVerbose(a,b,var,true,verbosity);
+  sSubResExtLastGenStructVerbose(a,b,var,true,verbosity);
 
-subResExtLast(a,b,var) :=
-  subResExtLastVerbose(a,b,var,DEFAULT_VERBOSITY);
+/*
+sSubResExtLast(a,b,var) :=
+  sSubResExtLastVerbose(a,b,var,DEFAULT_VERBOSITY);
 
-subResExtLastVerbose(a,b,var,verbosity) :=
-  subResExtLastGenStructVerbose(a,b,var,false,verbosity);
+sSubResExtLastVerbose(a,b,var,verbosity) :=
+  sSubResExtLastGenStructVerbose(a,b,var,false,verbosity);
+*/
 
-
-subResExtLastGenStructVerbose(a,b,var,signed_flag,verbosity) :=
+sSubResExtLastGenStructVerbose(a,b,var,signed_flag,verbosity) :=
    block([q,degA,degB,i,j,k,lcA,lcB,delta,
           SR,s,sOld,u,v,
           previousSR,currentSR,newSR,
@@ -248,9 +254,11 @@ subResExtLastGenStructVerbose(a,b,var,signed_flag,verbosity) :=
 
    previousSR : a,
 
+/*
    if signed_flag then
      s[degA] : sgn(lcA)
    else
+*/
      s[degA] : 1,
      
    sOld[degA] : s[degA],
@@ -343,7 +351,13 @@ for h : 0 thru j-2 do
    v[h] : 0
    ),
 
-return([previousSR,s[j],currentU,currentV])
+if signed_flag then
+  s[degA] : lcA,
+/*
+  return([previousSR,cons(lcA,rest(s[j])),currentU,currentV])
+else
+*/
+  return([previousSR,s[j],currentU,currentV])
 );
 
 
@@ -351,16 +365,17 @@ sSubRes(a,b,var) :=
   sSubResVerbose(a,b,var,DEFAULT_VERBOSITY);
 
 sSubResVerbose(a,b,var,verbosity) :=
-  subResGenStructVerbose(a,b,var,true,verbosity);
+  sSubResGenStructVerbose(a,b,var,true,verbosity);
 
-subRes(a,b,var) :=
-  subResVerbose(a,b,var,DEFAULT_VERBOSITY);
+/*
+sSubRes(a,b,var) :=
+  sSubResVerbose(a,b,var,DEFAULT_VERBOSITY);
 
-subResVerbose(a,b,var,verbosity) :=
-  subResGenStructVerbose(a,b,var,false,verbosity);
+sSubResVerbose(a,b,var,verbosity) :=
+  sSubResGenStructVerbose(a,b,var,false,verbosity);
+*/
 
-
-subResGenStructVerbose(a,b,var,signed_flag,verbosity) :=
+sSubResGenStructVerbose(a,b,var,signed_flag,verbosity) :=
   block([degA,degB,i,j,k,h,lcA,lcB,delta,h,
          SR,s,sOld],
     
@@ -383,10 +398,11 @@ subResGenStructVerbose(a,b,var,signed_flag,verbosity) :=
     lcA : leadCoeff(a,var),
     lcB : leadCoeff(b,var),
     SR[degA] : a,
-
+/*
     if signed_flag then
       s[degA] : sgn(lcA)
     else
+*/
       s[degA] : 1,
       
     sOld[degA] : s[degA],
@@ -445,6 +461,9 @@ subResGenStructVerbose(a,b,var,signed_flag,verbosity) :=
       if k>= 1 and verbosity>= NORMAL then
         print("sSubRes) SR[", k-1,"] : ", SR[k-1])
       ),
+  
+     if signed_flag then
+       s[degA]:lcA,   
      
      return([padWithZeros(makelist(SR[degA-i],i,0,degA-j),degA+1),
              padWithZeros(makelist( s[degA-i],i,0,degA-j),degA+1)])  
@@ -461,15 +480,17 @@ sSubResExt(a,b,var) :=
   sSubResExtVerbose(a,b,var,DEFAULT_VERBOSITY);
 
 sSubResExtVerbose(a,b,var,verbosity) :=
-  subResExtGenStructVerbose(a,b,var,true,verbosity);
+  sSubResExtGenStructVerbose(a,b,var,true,verbosity);
 
-subResExt(a,b,var) :=
-  subResExtVerbose(a,b,var,DEFAULT_VERBOSITY);
+/*
+sSubResExt(a,b,var) :=
+  sSubResExtVerbose(a,b,var,DEFAULT_VERBOSITY);
 
-subResExtVerbose(a,b,var,verbosity) :=
-  subResExtGenStructVerbose(a,b,var,false,verbosity);
+sSubResExtVerbose(a,b,var,verbosity) :=
+  sSubResExtGenStructVerbose(a,b,var,false,verbosity);
+*/
 
-subResExtGenStructVerbose(a,b,var,signed_flag,verbosity) :=
+sSubResExtGenStructVerbose(a,b,var,signed_flag,verbosity) :=
    block([q,degA,degB,i,j,k,lcA,lcB,delta,
           SR:make_array('any),s:make_array('any),sOld:make_array('any),
           u:make_array('any),v:make_array('any)],
@@ -497,9 +518,12 @@ subResExtGenStructVerbose(a,b,var,signed_flag,verbosity) :=
    lcB : leadCoeff(b,var),
 
    SR[degA] : a,
+
+/*
    if signed_flag then
       s[degA] : sgn(lcA)
    else
+*/
       s[degA] : 1,
       
    sOld[degA] : s[degA],
@@ -597,6 +621,8 @@ for h : 0 thru j-2 do
    v[h+1] : 0
    ),
 
+if signed_flag then
+  s[degA]:lcA,
 return([padWithZeros(makelist(SR[degA-i],i,0,degA-j),degA+1),
         padWithZeros(makelist(s[degA-i],i,0,degA-j),degA+1),
         makelist(u[degA-i+1],i,0,degA-j+1),
@@ -609,7 +635,7 @@ return([padWithZeros(makelist(SR[degA-i],i,0,degA-j),degA+1),
 
 
 lastNonZero(seq) :=
-  lastNonZeroAux(seq,length(seq));
+  lastNonZeroAux(seq,Length(seq));
 
 lastNonZeroAux(seq,res) :=
   if seq = [] then
@@ -651,7 +677,7 @@ gcdFreePartVerbose(p,q,var,verbosity) :=
       print("gcdFreePart) q : ", q)
       ),
 
-    sExtSR : subResExtLastVerbose(p,q,var,verbosity-1),
+    sExtSR : sSubResExtLastVerbose(p,q,var,verbosity-1),
    
     gcdRes : first(sExtSR),
     gcdFree : third(sExtSR),
@@ -688,7 +714,7 @@ gcdFreePartWithZVerbose(p,q,var,verbosity) :=
       print("gcdFreePart) q : ", q)
       ),
 
-    sExtSR : subResExtLastVerbose(p,q,var,verbosity-1),
+    sExtSR : sSubResExtLastVerbose(p,q,var,verbosity-1),
    
     gcdRes : first(sExtSR),
     gcdFree : third(sExtSR),
@@ -705,10 +731,10 @@ gcdFreePartInZ(p,q,var) :=
 */
 
 
-subResCoeffLast(p,q,var) :=
-  last(subResCoeff(p,q,var));
+sSubResCoeffLast(p,q,var) :=
+  last(sSubResCoeff(p,q,var));
 /*
- second(subResExtLast(p,q,var));
+ second(sSubResExtLast(p,q,var));
 */
 
 sylvesterResultant(p,q,var) :=
@@ -716,7 +742,7 @@ sylvesterResultant(p,q,var) :=
     p : expandIf(p),
     q : expandIf(q),
     if degree(p,var)>degree(q,var) then
-      return(epsilon(degree(p,var))*subResCoeffLast(p,q,var))
+      return(epsilon(degree(p,var))*sSubResCoeffLast(p,q,var))
     else
       if degree(p,var)<degree(q,var) then
         return((-1)^(degree(q,var)*degree(p,var))*sylvesterResultant(q,p,var))
@@ -724,7 +750,7 @@ sylvesterResultant(p,q,var) :=
         (
         aux : expand(leadCoeff(p,var)*q-leadCoeff(q,var)*p),
        
-        return(expand(subResCoeffLast(p,aux,var)/leadCoeff(p,var)^degree(aux,var)))
+        return(expand(sSubResCoeffLast(p,aux,var)/leadCoeff(p,var)^degree(aux,var)))
         )
       );
 
@@ -736,12 +762,12 @@ discriminant(p,var) :=
 
 /*
 subDiscr(p,var) :=
-  expand(first(subRes(p,diff(p,var),var))
+  expand(first(sSubRes(p,diff(p,var),var))
          /leadCoeff(p,var));
 */
 subDiscr(p,var) :=
   block([pcRes,pRes,cRes],
-    pcRes : subRes(p,diff(p,var),var),
+    pcRes : sSubRes(p,diff(p,var),var),
     pRes : first(pcRes),
     pRes : cons(first(pRes),expand(rest(pRes)/leadCoeff(p,var))),
     cRes : second(pcRes),
@@ -751,7 +777,7 @@ subDiscr(p,var) :=
 
 subDiscrCoeff(p,var) :=
   block([cRes],
-  cRes : subResCoeff(p,diff(p,var),var),
+  cRes : sSubResCoeff(p,diff(p,var),var),
   cRes : cons(first(cRes),expand(rest(cRes)/leadCoeff(p,var))),
   return(cRes)
   );
@@ -895,10 +921,13 @@ trimZeroCount(seq,count) :=
 trimZero(seq) :=
   trimZeroCount(seq,0);
 
+
+
+
 /* Notation 9.4 ("D(s)") */
 /* When there are no zeros this gives the difference between */
 /* the sign permanencies and the number of sign changes */ 
-sSubResSignChanges(seq) :=
+genPermMVar(seq) :=
    block([trimRes,trimmed,count],
    
      if seq = [] then
@@ -914,11 +943,11 @@ sSubResSignChanges(seq) :=
      if oddp(count+1) then
         
         
-        return(sSubResSignChanges(trimmed)+
+        return(genPermMVar(trimmed)+
                epsilon(count+1)*sgn(first(seq)*first(trimmed)))
         
      else
-        return(sSubResSignChanges(trimmed))
+        return(genPermMVar(trimmed))
      
    );
    
@@ -944,7 +973,7 @@ sSubResCauchyIndexVerbose(q,p,var,verbosity) :=
   degP : degree(p,var),
   degQ : degree(q,var),
   if degQ < degP then
-     return(sSubResSignChanges(sSubResVerbose(p,q,var,verbosity-1)[2]))
+     return(genPermMVar(sSubResVerbose(p,q,var,verbosity-1)[2]))
   else
      (
      if verbosity >= VERY then
@@ -953,7 +982,7 @@ sSubResCauchyIndexVerbose(q,p,var,verbosity) :=
      if(oddp(sgnExp)) then
        sgnExp : sgnExp+1,
      newQ : remainder(leadCoeff(p,x)^sgnExp * q,p,var),
-     return(sSubResSignChanges(sSubResVerbose(p,newQ,var,verbosity-1)[2]))
+     return(genPermMVar(sSubResVerbose(p,newQ,var,verbosity-1)[2]))
      )
   );
 
@@ -989,7 +1018,7 @@ sSubResTarskiQueryVerbose(q,p,var,verbosity) :=
 
     coeffSeq : sSubResCoeffVerbose(p,diff(p,var),var,verbosity-1),
 
-    return(sgn(leadCoeff(q,var))*sSubResSignChanges(coeffSeq)) 
+    return(sgn(leadCoeff(q,var))*genPermMVar(coeffSeq)) 
     )
   else
     if degQ = 1 then
@@ -1005,7 +1034,7 @@ sSubResTarskiQueryVerbose(q,p,var,verbosity) :=
 
       coeffSeq : sSubResCoeffVerbose(p,Rbar,var,verbosity-1),
 
-      return(sSubResSignChanges(coeffSeq))
+      return(genPermMVar(coeffSeq))
       )
     else
       (
@@ -1015,9 +1044,9 @@ sSubResTarskiQueryVerbose(q,p,var,verbosity) :=
       coeffSeq : sSubResCoeffVerbose(NORM_ALGORITHM(-diff(p,var)*q),p,var,verbosity-1),
 
       if oddp(degQ-1) then
-         return(sSubResSignChanges(coeffSeq) + sgn(leadCoeff(q,var)))
+         return(genPermMVar(coeffSeq) + sgn(leadCoeff(q,var)))
       else
-         return(sSubResSignChanges(coeffSeq))
+         return(genPermMVar(coeffSeq))
       )
   );
 
@@ -1133,7 +1162,7 @@ hankelSignature(seq) :=
   hankelSignatureVerbose(seq,DEFAULT_VERBOSITY);
 
 hankelSignatureVerbose(seq,verbosity) :=
-  block([n,sLen,trimRes,trimmed,count,c,p,q,t,i,SR,j],
+  block([m,n,sLen,trimRes,trimmed,count,c,p,q,t,i,SR,j],
    sLen : length(seq),
    if evenp(sLen) then
      (
@@ -1185,7 +1214,7 @@ hankelSignatureVerbose(seq,verbosity) :=
               else 
                  j : j-1,
 
-           return(sSubResSignChanges(
+           return(genPermMVar(
                    makelist(SR[2][i+1],
                      i,0,m-j))) 
 
@@ -1235,14 +1264,14 @@ lienardChipartConditions(pol,var) :=
   if evenp(degP) then
     (
     m = p/2,
-    SR : subResCoeff(F,G,var),
+    SR : sSubResCoeff(F,G,var),
 
     return(setify(append(poly2list(pol,var),SR)))
     )
   else
     (
     m = (p-1)/2,
-    SR : subResCoeff(var*G,F,var),
+    SR : sSubResCoeff(var*G,F,var),
 
     return(setify(append(poly2list(pol,var),SR)))
     )
@@ -1295,7 +1324,10 @@ posNegDiffVerbose(p,var,verbosity) :=
             var,-inf,+inf,verbosity-1))
      )
   );
+  
+  /* New name for Horner evaluation */
 
+hornerEval(pol,var,value) :=saragHorner(pol,var,value) ;
 
 saragHorner(pol,var,value) :=
   block([res,i,degP],

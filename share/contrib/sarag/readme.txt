@@ -4,7 +4,7 @@
 
        SOME ALGORITHMS IN REAL ALGEBRAIC GEOMETRY
 
-                    BETA Version 0.3
+                    BETA Version 0.4
 
 ---------------------------------------------------------------
 developed by Fabrizio Caruso 

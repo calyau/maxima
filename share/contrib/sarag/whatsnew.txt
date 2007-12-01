@@ -1,4 +1,13 @@
-SARAG v3.0
+SARAG beta 0.4
+
+(1) newtonFromPoly(pol,var,len) now takes three arguments:
+it computes a sequence of Newton sums of length "len"
+
+(2) code clean up ("subRes"-> "sSubRes", "sSubResSignChanges"-> "genPermMVar")
+
+
+---------------------------------------------------
+SARAG beta 0.3
 
 (1) bug fixes
 - drawTopology: 

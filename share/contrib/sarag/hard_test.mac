@@ -6,26 +6,6 @@
 
 
 /* -------------------------------------- */
-/* Chapter                              8 */
-
-gaussDet(
- makelist(makelist(1/(i+j-1),i,1,30),j,1,30));
-det(apply(matrix,
- makelist(makelist(1/(i+j-1),i,1,30),j,1,30)));
-
-bareissDet(
- makelist(makelist(1/(i+j-1),i,1,30),j,1,30));
-det(apply(matrix,
- makelist(makelist(1/(i+j-1),i,1,30),j,1,30)));
-
-
-babyGiantCharPol(
- makelist(makelist(1/(i+j-1),i,1,8),j,1,8),x);
-gaussCharPol(
- makelist(makelist(1/(i+j-1),i,1,8),j,1,8),x);
-
-
-/* -------------------------------------- */
 /* Chapter                              9 */
 
 
