@@ -156,13 +156,13 @@ mode_declare ([a%, b%, c%, d%], boolean);
 
 /* Example from mailing list 2006/05/04, tnx Barton */
 
-(kill(f), f(x) := if x < 0 then -1 else 1, 0);
+(kill(blurf), blurf(x) := if x < 0 then -1 else 1, 0);
 0;
 
-f(a);
+blurf(a);
 'if a < 0 then -1 else 1;
 
-(translate(f), f(a));
+(translate(blurf), blurf(a));
 'if a < 0 then -1 else 1;
 
 /* Other examples of translated functions */
