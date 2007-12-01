@@ -354,6 +354,16 @@ limit( (3^(1/x) + 5^(1/x))^x, x, 0, plus);
 limit( (3^(1/x) + 5^(1/x))^x, x, 0);
 und;
 
+/* tex(t[1]) shouldn't change t to true */
+tex (t[1], false);
+"$$t_{1}$$
+"; /* tex output contains embedded newline */
+
+/* tex(x[1]^2) shouldn't get confused by debug info in expression CAR */
+(foo : x[1]^2, tex (foo, false));
+"$$x_{1}^2$$
+"; /* tex output contains embedded newline */
+
 
 end;
 end$
