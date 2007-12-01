@@ -107,6 +107,7 @@
 ;;  in Maxima at this moment, since I haven't checked it; in fact, the R 
 ;;  function 'shapiro.test' doesn't make use of this second argument (I don't know why).
 (defun $test_normality (x &optional n1)
+  (declare (special $stats_numer))
    (if (not ($listp x))
       (merror "First argument of 'test_normality' must be a Maxima list"))
    (setf x (sort (map 'list #'$float (rest x)) #'<))
