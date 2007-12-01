@@ -204,7 +204,7 @@ xformtoconstcoeff;
 
 /* Kamke 2. 229  */ 
 (pn_(229),ans:contrib_ode(eqn:(x^2+1)*'diff(y,x,2)+4*x*'diff(y,x,1)+2*y-2*cos(x)+2*x,y,x));
-[y=-(6*cos(x)+x^3)/(3*x^2+3)+%k1*x/(x^2+1)+%k2/(x^2+1)];
+[y=-((6*cos(x)+x^3)/(3*x^2+3))+%k1*x/(x^2+1)+%k2/(x^2+1)];
 ode_check(eqn,ans[1]);
 0;
 method;
@@ -234,7 +234,8 @@ false;
 
 /* Kamke 2. 234  */ 
 (pn_(234),ans:contrib_ode(eqn:(x^2-1)*'diff(y,x,2)+x*'diff(y,x,1)+2,y,x));
-[y=-log(2*sqrt(x^2-1)+2*x)^2+%k1*log(2*sqrt(x^2-1)+2*x)+%k2];
+[y = -2*log(2*sqrt(x^2-1)+2*x)^2+2*log(2*sqrt(x^2-1)+2*x)^2/2
+    +%k1*log(2*sqrt(x^2-1)+2*x)+%k2];
 ode_check(eqn,ans[1]);
 0;
 method;

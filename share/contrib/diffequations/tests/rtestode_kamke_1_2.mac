@@ -268,7 +268,7 @@ false;
 (pn_(136),ans:contrib_ode(eqn:x^2*'diff(y,x,1)+y^2+x*y+x^2,y,x));
 [%c*x=%e^(x/(y+x))];
 solve(ans[1],y);
-[y=-(x*log(%c*x)-x)/log(%c*x)];
+[y=-((x*log(%c*x)-x)/log(%c*x))];
 [method,ode_check(eqn,%[1])];
 [homogeneous,0];
 

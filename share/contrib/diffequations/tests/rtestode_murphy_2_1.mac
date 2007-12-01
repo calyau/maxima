@@ -447,7 +447,10 @@ lagrange;
 
 /* 67 */
 (pn_(67),ans:contrib_ode(eqn:'diff(y,x)^2-(1+4*y)*'diff(y,x)-(1+4*y)*y=0,y,x));
-[[x=%c-(-asinh(%t/abs(%t)-1/(4*abs(%t)))+2*asinh((64*%t-8)/8)/sqrt(2)+log(%t))/2,y=-(sqrt(32*%t^2-8*%t+1)+4*%t+1)/8],[x=%c-(asinh(%t/abs(%t)-1/(4*abs(%t)))-2*asinh((64*%t-8)/8)/sqrt(2)+log(%t))/2,y = (sqrt(32*%t^2-8*%t+1)-4*%t-1)/8]];
+[[x=%c-((-asinh(%t/abs(%t)-1/(4*abs(%t)))+8*asinh((64*%t-8)/8)/2^(5/2)+log(%t))/2),
+  y=-((sqrt(32*%t^2-8*%t+1)+4*%t+1)/8)],
+ [x=%c-((asinh(%t/abs(%t)-1/(4*abs(%t)))-8*(asinh((64*%t-8)/8)/2^(5/2))+log(%t))/2),
+  y = ((sqrt(32*%t^2-8*%t+1)-4*%t-1)/8)]];
 method;
 lagrange;
 /* CHECKME */

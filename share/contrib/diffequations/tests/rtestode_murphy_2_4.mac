@@ -83,7 +83,9 @@ forget(u>0,x<0);
 
 /* 382 FIXME - check second solution */
 (pn_(382),ans:contrib_ode(eqn:sqrt(a+2*b*'diff(y,x)+c*'diff(y,x)^2)+(x*'diff(y,x)-y)*sqrt(a*c-b^2)=0,y,x));
-[y=(%c*sqrt(a*c-b^2)*x+sqrt(%c^2*c+2*%c*b+a))/sqrt(a*c-b^2),[-sqrt(a*c-b^2)*y+sqrt(a*c-b^2)*%t*x+sqrt(c*%t^2+2*b*%t+a)=0,(sqrt(a*c-b^2)*sqrt(c*%t^2+2*b*%t+a)*x+c*%t+b)/sqrt(c*%t^2+2*b*%t+a)=0]];
+[y=(%c*sqrt(a*c-b^2)*x+sqrt(%c^2*c+2*%c*b+a))/sqrt(a*c-b^2),
+  [sqrt(a*c-b^2)*(%t*x-y)+sqrt(%t^2*c+2*%t*b+a)=0,
+   (sqrt(a*c-b^2)*sqrt(c*%t^2+2*b*%t+a)*x+c*%t+b)/sqrt(c*%t^2+2*b*%t+a)=0]];
 [method,ode_check(eqn,ans[1])];
 [clairault,0];
 
@@ -117,6 +119,8 @@ y=x*asin(x)+sqrt(1-x^2);
 
 /* 397 FIXME - check second solution */
 (pn_(397),ans:contrib_ode(eqn:'diff(y,x)*(acos('diff(y,x))-x)+sqrt(1-'diff(y,x)^2)+y=0,y,x));
-[y=%c*x-%c*acos(%c)-sqrt(1-%c^2),[y-%t*x+%t*acos(%t)+sqrt(1-%t^2)=0,(sqrt(1-%t^2)*(acos(%t)-x)-2*%t)/sqrt(1-%t^2)=0]];
+[y=%c*x-%c*acos(%c)-sqrt(1-%c^2),
+  [y+%t*(acos(%t)-x)+sqrt(1-%t^2)=0,
+  (sqrt(1-%t^2)*(acos(%t)-x)-2*%t)/sqrt(1-%t^2)=0]];
 [method,ode_check(eqn,ans[1])];
 [clairault,0];
