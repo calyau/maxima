@@ -1204,7 +1204,7 @@
 	(output-file "")
         plot-format gnuplot-term gnuplot-out-file file plot-name
         log-x log-y xmin xmax ymin ymax styles style legend
-        xlabel ylabel box)
+        xlabel ylabel box psfile)
  
     (when (and (consp fun) (eq (cadr fun) '$parametric))
       (or range (setq range (nth 4 fun)))
@@ -1262,6 +1262,10 @@
                 ($set_plot_option `((mlist) $y ,ymin ,ymax))))
           ($style (setf styles (cddr v)))
           ($legend (setf legend (cddr v)))
+	  ($psfile
+	   (progn ($set_plot_option '((MLIST SIMP) $GNUPLOT_TERM $PS))
+	      ($set_plot_option `((MLIST SIMP) $GNUPLOT_OUT_FILE ,(third v)))
+	      (setf psfile t)))
           (t ($set_plot_option v)))
         (merror "Option ~M should be a list" v)))
     (when (and xlabel log-x) (setf xlabel (format nil "log(~a)" xlabel)))
@@ -1286,12 +1290,14 @@
           (st)
           (cond ($show_openplot (format st "plot2d -data {~%"))
                 (t (format st "{plot2d ")))
+	  (when psfile (format st " {psfile \"~a\"}"
+			       (get-plot-option-string '$gnuplot_out_file)))
+	  (when (and legend (not (first legend))) (format st " {nolegend 1}"))
+	  (when (and box (not (first box))) (format st " {nobox 1}"))
           (when (and xmin xmax) (format st " {xrange ~g ~g}" xmin xmax))
           (when (and ymin ymax) (format st " {yrange ~g ~g}" ymin ymax))
           (when xlabel (format st " {xaxislabel \"~a\"}" xlabel))
           (when ylabel (format st " {yaxislabel \"~a\"}" ylabel))
-	  (when (and legend (not (first legend)))
-	    (format st " {labelposition {-100000000 1000000000}}"))
           (format st "~%")
           (dolist (f (cdr fun))
             (if styles
