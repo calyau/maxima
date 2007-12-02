@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.30 2007-05-29 00:44:47 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.31 2007-12-02 22:23:06 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -513,7 +513,8 @@ proc doShowPlot { w data } {
     eval $command
     #	return
     set e [$w index end]
-    set view [ShowPlotWindow $w $name  "$e $e" "$e $e"  ""]
+    if { [catch {set view [ShowPlotWindow $w $name  "$e $e" "$e $e"  ""] }]} {
+    return }
     if { "$view" == "" } { return }
     append view " -1 line"
     set tem [$w dump -window $view end]
