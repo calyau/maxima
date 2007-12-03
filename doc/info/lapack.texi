@@ -99,7 +99,8 @@ Example:
 
 @end deffn
 
-@deffn {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
+@deffn {Function} dgesvd (@var{A})
+@deffnx {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
 
 Computes the singular value decomposition (SVD) of a matrix @var{A},
 comprising the singular values and, optionally, the left and right singular vectors.
