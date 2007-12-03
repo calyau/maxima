@@ -1,4 +1,4 @@
-@c english version 1.4
+@c english version 1.5
 @menu
 * Introducci@'on a simplex::
 * Funciones y variables para simplex::
@@ -61,16 +61,13 @@ Ejemplo:
 @c linear_program(A, b, c);
 @c ===end===
 @example
-(%i1) A: matrix([1,1,-1,0], [2,-3,0,-1], [4,-5,0,0])$
-(%i2) b: [1,1,6]$
-(%i3) c: [1,-2,0,0]$
-(%i4) linear_program(A, b, c);
-                     [ 1   1   - 1   0  ]
-                     [                  ]
-(%o4) linear_program([ 2  - 3   0   - 1 ], [1, 1, 6], 
-                     [                  ]
-                     [ 4  - 5   0    0  ]
-                                                  [1, - 2, 0, 0])
+(%i2) A: matrix([1,1,-1,0], [2,-3,0,-1], [4,-5,0,0])$
+(%i3) b: [1,1,6]$
+(%i4) c: [1,-2,0,0]$
+(%i5) linear_program(A, b, c);
+                   13     19        3
+(%o5)            [[--, 4, --, 0], - -]
+                   2      2         2
 @end example
 
 V@'eanse tambi@'en @code{minimize_lp}, @code{scale_lp} y @code{epsilon_lp}.
@@ -123,13 +120,15 @@ Ejemplos:
 @c ===end===
 @example
 (%i1) minimize_lp(x+y, [3*x+y=0, x+2*y>2]);
-(%o1)    minimize_lp(y + x, [y + 3 x = 0, 2 y + x > 2])
+                      4       6        2
+(%o1)                [-, [y = -, x = - -]]
+                      5       5        5
 (%i2) minimize_lp(x+y, [3*x+y>0, x+2*y>2]), nonegative_lp=true;
-(%o2)    minimize_lp(y + x, [y + 3 x > 0, 2 y + x > 2])
+(%o2)                [1, [y = 1, x = 0]]
 (%i3) minimize_lp(x+y, [3*x+y=0, x+2*y>2]), nonegative_lp=true;
-(%o3)    minimize_lp(y + x, [y + 3 x = 0, 2 y + x > 2])
+(%o3)                Problem not feasible!
 (%i4) minimize_lp(x+y, [3*x+y>0]);
-(%o4)           minimize_lp(y + x, [y + 3 x > 0])
+(%o4)                Problem not bounded!
 @end example
 
 
