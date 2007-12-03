@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.15 2007-11-27 00:01:59 villate Exp $
+#       $Id: Plot2d.tcl,v 1.16 2007-12-03 00:16:37 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -414,6 +414,7 @@ proc replot2d {win } {
 	set printOption(psfilename) $psfile
 	writePostscript $win
 	$c delete printoptions
+	eval [$win.menubar.close cget -command]
     }
 }
 
