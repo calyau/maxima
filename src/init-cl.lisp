@@ -318,6 +318,7 @@
 	 "contrib/fractals"
 	 "contrib/gentran"
 	 "contrib/gentran/test"
+     "contrib/gf"
      "contrib/graphs"
 	 "contrib/Grobner"
      "contrib/levin"

@@ -253,6 +253,9 @@ contrib/gentran/test/type.mac\
 contrib/gentran/test/type.output\
 contrib/gentran/vaxinit.lisp\
 contrib/gentran/vaxlsp.lisp\
+contrib/gf/gf.mac\
+contrib/gf/gf_roots.mac\
+contrib/gf/gf_roots_test.mac\
 contrib/ggf.mac\
 contrib/graph2d.lisp\
 contrib/graphs/cgraphs.mac\

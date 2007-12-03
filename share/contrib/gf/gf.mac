@@ -1,0 +1,733 @@
+/*
+------------------------------------------------------------------------
+Efficient Galois Fields in Maxima
+
+by Alasdair McAndrew
+and later extended by Fabrizio Caruso and Jacopo Daurizio
+
+it is distribuited together with gf_roots by Jacopo Daurizio
+
+Authors:
+
+Fabrizio Caruso (optimizations)
+Jacopo Daurizio (optimizations and the "gf_roots" subpackage)
+Alasdair McAndrew (original version of the package, pohlig-helman log, etc... )
+------------------------------------------------------------------------
+*/
+
+/* Released under terms of the GNU General Public License, version 2,
+ * by permission of the authors to Robert Dodier circa 2007-12-02.
+ */
+
+/* Defines a flag for dealing with large fields.  If it is set to "false",
+then lookup tables are used for exponentiation and logarithms.  Otherwise
+other algorithms are used */
+
+define_variable(largefield,true,bool)$
+define_variable(gf_char,0,integer)$
+define_variable(gf_exp,0,integer)$
+define_variable (gf_irr, 'gf_irr, any_check)$
+remvalue(x,z,gf_char,gf_exp,binaries,gf_irr,pg,gp,lg,pe)$
+
+/* Verbosity */
+GF_VERBOSE:false;
+
+
+SMALL_OMEGA_THRESHOLD: 3;
+
+/* So far it seems that the simple repeated squaring aproach wins over the
+factorizing one as long as "gf_fasttimes" is used */
+FACT_BIN_ALG : false; /* factorizing algorithm */
+FACT_BIN_LOWER_THRESHOLD:3+1; /* Factoriz. bin. alg: 3 is the miniminum since it has been proved that for Hamming norm < 3 the bin alg is optimal */
+FACT_BIN_UPPER_THRESHOLD:10^20;
+
+
+CHECK_IRREDUCIBILITY:false;
+
+
+gf_fasttimes(lhs,rhs):=
+  if atom(lhs) or atom(rhs) then /* fasttimes gives an errors for fasttimes(rat(1),rat(x^(...)+...)) */
+    rat(lhs)*rat(rhs)
+  else
+    fasttimes(rat(lhs),rat(rhs));
+
+
+/* It defines a new current field with gf_char=b, min. pol.= p of deg= e*/
+gf_set(b,e,p):=block([gj],
+  gf_char:b,
+  gf_exp:e,
+  gf_irr:p,
+     
+if not(primep(b)) then error("ERROR: Gf_Char must be a prime number.")
+  else
+    modulus:b,
+    if CHECK_IRREDUCIBILITY and
+       hipow(args(factor(p))[1],x)#hipow(rat(p),x) then 
+      error("ERROR: Polynomial is not irreducible"),
+    
+
+      if not(largefield) then (
+        pg:mkpowers(),
+        lg:mklogs()
+        )
+      else
+        (
+        if GF_VERBOSE then
+           print("finding a primitive element..."),
+                
+
+        pe:gf_findprim(),
+        if GF_VERBOSE then
+           print("...primitive element found.")
+        
+        ),
+  modulus:false, /* it resets the modulus */
+  return(true)
+  )$
+
+
+/* Prints out information about the field */
+gf_info():=block(
+  print("Prime gf_char value: ",gf_char),
+  print("Exponent: ", gf_exp),
+  print("Multiplicative order: ",gf_char^gf_exp-1),
+  print("Irreducible polynomial: ",gf_irr),
+  print("Primitive element: ",pe),
+  if (largefield) then
+    print("Largefield flag is true; powers and logarithms not computed.")
+    else
+    print("Largefield flag is false; powers and logarithms computed."),
+  disp()
+)$
+
+
+/* Tests to see if a polynomial is primitive */ 
+/* There is a faster version now */
+isprimitive(p):=block([power:gf_char^gf_exp-1,flag1:false,flag2:false,f,fl,m],
+  if remainder(x^power-1,p)=0 then flag1:true,
+  f:ifactors(power),
+  fl:makelist(f[i][1],i,1,length(f)),
+  m:makelist(remainder(x^(power/fl[i])-1,p),i,1,length(f)),
+  if not(member(0,m)) then flag2:true,
+  return(flag1 and flag2)
+  )$
+
+
+/* Returns all coefficients of a polynomial, as a list of designated length.
+The elements of the list are values in the range 0, 1, 2, ..., gf_char-1. */
+
+coeffs(poly,n):=block([m:makelist(coeff(poly,x,n-i),i,0,n)],
+  return(maplist(lambda([x],mod(x,gf_char)),m))
+  )$
+
+/* Turns a list into a number, by treating the elements of the list as
+coefficients of a polynomial */ 
+
+list2num(l,n):=block([ln:length(l)],sum(l[i]*n^(ln-i),i,1,ln))$
+
+/* Turns a polynomial into a number by evaluating it for the gf_char value */
+
+poly2num(p):=subst(gf_char,x,p);
+
+/* Turns a number into a list, where the elements of the list are the "digits"
+of the number in gf_char b */
+
+num2list(n,b):=block([lst:[],a:n],
+  for i:1 while a#0 do (
+    lst:cons(mod(a,b),lst),
+    a:(a-lst[1])/b
+    ),
+  return(lst)
+)$
+
+/* Returns a polynomial in x whose coefficients are given by the list */
+list2poly(l):=block([s:length(l)],
+  return(sum(l[i]*x^(s-i),i,1,s)))$
+
+poly2list(poly):=block([i,s:hipow(poly,x)],
+  return(makelist(coeff(poly,x,s-i),i,0,s)))$
+
+
+/* Turns a number into a polynomial - this is the inverse of the poly2num command */
+num2poly(n):=list2poly(num2list(n,gf_char))$
+
+/* Creates a power table for the field, where the i-th element is the numerical
+equivalent of the field element e^i, where e is a primitive element */
+mkpowers():=block([order:gf_char^gf_exp-1,poly],
+  if not(largefield) then
+    pe:gf_findprim(),
+  gp:makelist(0,i,1,order),
+  gp[1]:1,
+  poly:1,
+  for i:2 thru order do
+    (
+    poly:gf_eval(gf_fasttimes(pe,poly)),
+    gp[i]:poly2num(list2poly(coeffs(poly,gf_exp)))
+    ),
+  return(gp)
+  )$
+
+/* Creates a log table: the inverse lookup of the power table */
+mklogs():=block([lg:makelist(0,i,1,gf_char^gf_exp-1)],
+  for i:2 thru gf_char^gf_exp-1 do lg[gp[i]]:i-1,
+  return(lg)
+  )$
+
+/* Calculates powers using the standard "repeated squaring" algorithm */
+gf_binpower(p,n):=block([b:num2list(n,2),t:rat(1)],
+  for i:1 thru length(b) do (
+    if b[i]=1 then t:gf_eval(gf_fasttimes(t,t)*p)
+    else t:gf_eval(gf_fasttimes(t,t)) /* fasttimes ???? */
+    ),
+  return(t)
+  )$
+
+
+gf_binpower_list(p,b):=block([t:rat(1)],
+  for i:1 thru length(b) do (
+    if b[i]=1 then t:gf_eval(gf_fasttimes(t,t)*p)
+    else t:gf_eval(gf_fasttimes(t,t)) /* fasttimes ???? */
+    ),
+  return(t)
+  )$
+
+
+gf_adaptivepower(p,n) :=
+  block([hamm,blist],
+  if not(FACT_BIN_ALG) or n<=14 then
+    return(gf_binpower(p,n))
+  else
+    (
+    blist:num2list(n,2),
+    hamm:hamming(blist),
+    if hamm<=FACT_BIN_LOWER_THRESHOLD or hamm>FACT_BIN_UPPER_THRESHOLD then
+      return(gf_binpower(p,blist))
+    else
+      return(gf_factpower(p,n))
+    )
+  );
+
+gf_power(p,n) :=
+  gf_binpower(p,n);
+
+
+/* Creates an array of couples [a!, 1/(a!)] mod p */
+fact_array(p):=block([i,v2],
+v2:make_array(fixnum,p,2),
+for i:0 thru (p-2) do (v2[i,0]:1,v2[i,1]:1),
+v2[p-1,0]:-1,v2[p-1,1]:-1,
+if (p>3) then (
+ for i:2 thru (p-1) do v2[i,0]: mod(i*v2[i-1,0],p),
+ for i:2 thru (p-2) do v2[i,1]: mod(((-1)^(p-i))*v2[p-i-1,0],p)
+),
+return(v2) 
+)$
+
+
+/* Calculates the product a(a+1)(a+2)...(b-1)b in Z_p */
+p_prod(a,b,p):=block([i,j,k,s],
+if ((a=1) and (b=0)) then return(1),
+if (a=b) then return(mod(a,p)),
+if ((a=1) and (b=p-1)) then return(p-1),
+if ((a=2) and (b=p-1)) then return(p-1),
+s:1,
+for i:a thru b do s:mod(s*i,p),
+return(s)
+)$
+
+/* Calculates (n!)^(-1) in Z_p using Wilson Theorem                 */
+/* This algorithm DOES NOT require explicit inversion through gcd() */
+
+inverse_fact(n,p):=block([i,j,k],
+if ((n=0) or (n=1)) then return(1),
+if (n=p-1) then return(p-1),
+return(mod(-p_prod(n+1,p-1,p),p))
+)$
+
+
+/* Calculates the maximum exponent s for which p^s divides n! */
+max_pow(n,p):= block([i,j,k,s],
+if (n<p) then return(0),
+k:length(num2list(n,p))-1,
+s:0,
+for i:1 thru k do s:s+floor(n/(p^i)),
+return(s)
+)$
+
+
+/* Calculates binomial(m,n) in Z_p using Wilson Theorem and fast inversions of k! */ 
+p_nomial(m,n,p):=block([a,b,c,d,na,nb,nc,nd,i,j,sign,q],
+if (m<n) then return(0),
+if (m<2*n) then n:m-n,
+if (n=0) then return(1),
+if (n=1) then return(mod(m,p)),
+if ((max_pow(m,p)-max_pow(m-n,p))>max_pow(n,p)) then return(0),
+a:mod(n,p), na:mod(floor(n/p),2),
+b:mod(m,p), nb:mod(floor(m/p),2),
+c:mod(m-n,p), nc:mod(floor((m-n)/p),2),
+return(mod(p_prod(1,b,p)*inverse_fact(a,p)*inverse_fact(c,p)*(-1)^(na+nb+nc),p))
+)$
+
+
+/* p_powers(p)[a+1][b+1] = a^b in Z_p */
+p_powers(p):=block([i,j,k,l,v2:makelist(makelist(1,i,1,p),i,1,p)],
+for i:1 thru p do v2[i][1]:1,
+for i:1 thru p do v2[i][2]:i-1,
+for i:1 thru p do v2[i][p]:1,
+v2[1][1]:0,
+v2[1][p]:0,
+if (p>4) then (
+ for j:3 thru p-1 do (
+  for i:1 thru p do v2[i][j]:mod((i-1)*v2[i][j-1],p)
+ )
+),
+return(v2) 
+)$
+
+
+/* p_thagora[a+1][b+1] = a*b in Z_p */
+p_thagora(p):=block([i,j,k,l,v3:makelist(makelist(1,i,1,p),i,1,p)],
+ for j:1 thru p do v3[1][j]:0,
+ for j:1 thru p do v3[j][1]:0,
+ for j:1 thru p do v3[2][j]:j-1,
+ for j:1 thru p do v3[j][2]:j-1,
+ if (p>3) then
+  for j:3 thru p do (
+   for i:3 thru p do v3[i][j]:mod((i-1)+v3[i][j-1],p)
+  ),
+return(v3) 
+)$
+
+
+
+
+/* Creates an array of polynomials x^(gf_char^h) with 0<=h<gf_exp in GF=Zp/(gf_irr) */
+mainpowers():=block([i,j,k,vector,kp,q],
+if GF_VERBOSE then
+  print("computing x^",gf_char," ..."),
+q:rat(gf_binpower(rat(x),gf_char)),
+
+kp:make_array(any,gf_exp),
+kp[0]:rat(1), kp[1]:rat(q),
+
+for i:2 thru (gf_exp-1)do 
+  kp[i]:gf_eval(fasttimes(q,kp[i-1])),
+vector:make_array(any,gf_exp), vector[0]:rat(x),
+for i:1 thru (gf_exp-1) do 
+  vector[i]:polymod(sum(fasttimes(kp[j],rat(coeff(vector[i-1],x,j))),
+                    j,0,gf_exp-1),gf_char),
+kp:false,
+return(vector)
+)$
+
+
+
+/* Factorizing exponentiation p^(ab)=(p^a)^b, useful to test if p is a primitive element or not*/
+gf_factpower(p,n):=block([f,g:[],i,j],
+  if n=0 then
+    rat(1)
+  else
+    (
+    f:ifactors(n),
+    for i:1 thru length(f) do for j:1 thru f[i][2] do g:endcons(f[i][1],g), 
+    for i:1 thru length(g) do p:gf_binpower(p,(reverse(g))[i]),
+    return(p)
+    )
+  )$
+
+
+/* It removes zeros from a list */
+trimZeros(seq) :=
+  if seq = [] then
+    []
+  else
+    if first(seq) = 0 then
+      trimZeros(rest(seq))
+    else
+      cons(first(seq),trimZeros(rest(seq)));
+
+
+gen_log(arg,base) :=
+  float(log(arg)/log(base));
+
+
+gf_exp_less(lhs,rhs) :=
+    is(
+     product(lhs[1][i],i,1,length(lhs[1]))<=
+     product(rhs[1][i],i,1,length(rhs[1]))
+    );
+
+
+hamming(seq) :=
+  sum(seq[i],i,1,length(seq));
+
+/* Finds a primitive element in the field */
+gf_findprim():=
+  block([f,fastf,slowf,found:false,fastCase,
+         lf,lfastf,lslowf,decomp,main_powers,q,elt,leng,i,test,fast_test,j,blist],
+
+  fastf : ifactors(gf_char-1), /* "fast" factors of gf_char-1 */
+  fastf : makelist(fastf[i][1],i,1, length(fastf)),
+ 
+  slowf:ifactors((gf_char^gf_exp-1)/(gf_char-1)), /* "slow" factors of 1+gf_char+gf_char^2+... */
+  slowf :  makelist(slowf[i][1],i,1, length(slowf)),
+
+  lfastf : length(fastf),
+  
+  slowf : setdifference(setify(slowf),setify(fastf)),  
+  lslowf : length(slowf),
+
+  f : append(listify(fastf),listify(slowf)),
+
+  f : makelist([f[i],1],i,1,length(f)),
+  
+  lf:length(f),  /* omega(gf_char^gf_exp-1) */
+
+  if GF_VERBOSE then
+    print("number of easy factors: ", lfastf),
+
+  if GF_VERBOSE then
+    print("factors : ", f),
+ 
+  if GF_VERBOSE then
+   print("number of factors: ", lf),
+  if GF_VERBOSE then
+     print("--small omega : ", lf),
+
+  if lf > SMALL_OMEGA_THRESHOLD then /* when small_omega(n) is too small, the
+    precomputation does not pay off */
+    (
+    if GF_VERBOSE then
+
+     print("--precomputing elements in the form x^(",gf_char,"^ h ) , 
+            h bounded by 0 and ",gf_exp-1,"..."),
+    main_powers:mainpowers(),
+    if GF_VERBOSE then
+     print("--...precomputation done. ")
+    ),
+
+  if gf_exp=1 then
+     elt:2
+  else
+     elt:gf_char,
+
+  while not(found) do
+    (    
+    fastCase:rat(1),
+    for j : 1 thru gf_exp do          
+       (
+       fastCase:gf_eval(gf_fasttimes(gf_eval(fastCase),
+                gf_eval(elt-gf_char+main_powers[mod(j-1,gf_exp)])))
+       ),
+    if (elt<gf_char or first(num2list(elt,gf_char))=1) then 
+      (
+      failure:false,
+      i:1,
+      if GF_VERBOSE then 
+         print("divisor : no.:",i,"---", f[i][1]), 
+
+
+      while not(failure) and i<=lf do 
+        (  
+  
+        if (elt<2*gf_char) then 
+           ( /* linear candidates */
+
+           if i<=lfastf then
+              (
+              if GF_VERBOSE then
+                 print("common exponent : ", (gf_char-1)/f[i][1]), 
+              q : gf_binpower(fastCase,(gf_char-1)/f[i][1])
+              )
+           else
+              (          
+
+              decomp:reverse(num2list((gf_char^gf_exp-1)/f[i][1],gf_char)),
+
+              leng:length(decomp),
+
+              for j:1 thru leng do 
+                decomp[j]:gf_binpower(elt-gf_char+
+                                      main_powers[mod(j-1,gf_exp)],
+                                      decomp[j]),
+              q:rat(1),
+              for j:1 thru leng do
+                q:gf_fasttimes(gf_eval(q),decomp[j])
+
+              ),
+              q:gf_eval(q),
+
+              if q=1 then 
+                 failure:true 
+              else 
+                (
+                i:i+1,
+                if GF_VERBOSE and i<= lf then 
+                   print("divisor : no.:",i,"---", f[i][1])
+                ),
+             found:not(failure)
+             )
+
+        else 
+          ( /* non-linear candidates */
+          q:gf_factpower(rat(num2poly(elt)),(gf_char^gf_exp-1)/f[i][1]),
+          if (q=1) then 
+             failure:true 
+          else
+            (
+            i:i + 1,        
+            if GF_VERBOSE and i<= lf then 
+              print("divisor : no.:",i,"---", f[i][1])
+            ),
+          found:not(failure)
+          )
+        ) /* end inner while */
+      ), /* end if */ 
+    elt:elt+1
+
+    ), /* end outer while */
+  return(num2poly(elt-1))
+  )$
+
+/* Tests if an element is primitive in the field */
+
+gf_primep(p):=block([f:ifactors(gf_char^gf_exp-1),lf,i],
+  lf:length(f), i:1,
+  while i<=lf and gf_binpower(rat(p),(gf_char^gf_exp-1)/f[i][1])#1 do i:i+1,
+  if i=lf+1 then return(true) else return(false)
+  )$
+
+/* Dot-product */
+
+gf_dotprod(lst1,lst2):=block([n1:length(lst1),n2:length(lst2),s:0],
+  if n1#n2 then error("ERROR: Lists are of different lengths."),
+  s:0,
+  for i:1 thru n1 do s:gf_add(s,gf_mul(lst1[i],lst2[i])),
+  return(s)
+  )$
+
+/* Tests to see if an element is normal */
+
+gf_normp(p):=block([m:makelist(p,i,1,gf_exp)],
+   for i:2 thru gf_exp do m[i]:gf_binpower(m[i-1],gf_char),
+   M:genmatrix(lambda([i,j],coeffs(m[i],gf_exp-1)[j]),gf_exp,gf_exp),
+   return(is(rank(M)=gf_exp))
+   )$
+ 
+/* Finds a normal element e in the field; that is, an element for which the list
+[e, e^p, e^(p^2), ... , e^(p^(n-1))] is a basis */
+
+gf_sfindnorm():=block([found:false],
+  for i:gf_char^gf_exp-1 step -1 while not(found) do
+  (
+    p:num2poly(i),
+    if gf_normp(p) then found:true
+    ),
+  return(p)
+  )$
+
+/* Finds a normal element e in the field by producing random elements and checking
+if each one is normal */
+
+gf_findnorm():=block([found:false],
+  for i:1 while not(found) do
+  (
+    p:gf_rand(),
+    if gf_normp(p) then found:true
+    ),
+  return(p)
+  )$
+
+/* Produces a normal basis as a matrix; the rows are the coefficients of the
+powers e^(p^i) of the normal element */
+
+gf_normbasis([u]):=block(
+  if (length(u)=0) then pn:gf_findnorm() else (
+    pn:u[1],
+    if not(gf_normp(pn)) then error("ERROR: Not a normal element")
+    ),
+  m:makelist(pn,i,1,gf_exp),
+  for i:2 thru gf_exp do m[i]:gf_binpower(m[i-1],gf_char),
+  M:genmatrix(lambda([i,j],coeffs(m[i],gf_exp-1)[j]),gf_exp,gf_exp),
+  return(M)
+  )$
+
+/* Produces the normal representation of an element as a list of
+coefficients */
+
+gf_nbrep(p,M):=block([m:(coeffs(p,gf_exp-1).gf_matinv(M))[1]],
+  m:maplist(lambda([z],gf_eval(z)),m),
+  return(reverse(m))
+  )$
+
+/* Evaluates any polynomial as an element of a field, by taking the remainder
+modulo the irreducible polynomial, and fixing the resulting coefficients so
+they are all in the range 0 to p-1 */
+
+/*gf_eval(p):=block([r:ev(ratdisrep(rat(p)),algebraic),n:hipow(expand(p),x)],*/
+
+/* Normalization */
+gf_eval(p):=block([u],
+return(polymod(rat(remainder(p,gf_irr)),gf_char))
+)$
+
+/* The next few commands add, subtract, multiply, invert and divide elements
+in the field, using the "gf_eval" command to produce coefficients in the
+range 0 to p-1 */
+
+gf_add(p1,p2):=gf_eval(polymod(p1+p2,gf_char))$
+
+gf_sub(p1,p2):=gf_eval(polymod(p1-p2,gf_char))$
+
+gf_inv(p1):=gf_eval(gcdex(p1,gf_irr)[1])$
+
+gf_mul(p1,p2):=gf_eval(gf_fasttimes(rat(p1),rat(p2)))$
+
+gf_div(p1,p2):=gf_eval(gf_mul(p1,gf_inv(p2)))$
+
+/* Finds the discrete logarithm with respect to the primitive element used to
+create the power and logarithm tables */
+
+gf_ind(p):=block(
+  if largefield then return(gf_phlog(p,pe))
+  else return(lg[poly2num(p)])
+  )$
+
+/* Exponentiation by lookup: using the power and logarithm tables, unless
+the flag largefield is set to "true" in which case gf_binpower is used */
+
+gf_exp(p,n):=block(
+  if (largefield) then return(gf_binpower(p,n))
+  else return(num2poly(pg[mod(lg[poly2num(p)]*n,gf_char^gf_exp-1)+1]))
+  )$
+  
+/* Finds the lowest value m for which p^m = 1 */
+
+gf_ord(p):=block([order:gf_char^gf_exp-1],
+  if (largefield) then pi:gf_phlog(p,pe)
+  else pi:gf_ind(p),
+  return(order/?gcd(order,pi))
+  )$
+
+/* Finds the lowest value d for which p^(gf_char^d) = p */
+
+gf_deg(p):=block([flag:false],
+  a:p,
+  for i:1 while not(flag) do (
+    a:gf_binpower(a,gf_char),
+    if (a=p) then (
+      flag:true,
+      return(i)
+      )
+    )
+  )$
+
+/* Produces the minimal polynomial */
+
+gf_minpoly(p):=block([d:gf_deg(p),c:[1,-p]],
+  for i:1 thru d-1 do (
+    t1:append(c,[0]),
+    t2:append([0],c),
+    c:makelist(gf_add(t1[j],gf_mul(t2[j],-gf_binpower(p,gf_char^i))),j,1,i+2)
+    ),
+  return(sum(c[i]*z^(d+1-i),i,1,d+1))
+  )$
+ 
+/* Produces a random element of the field */
+
+gf_rand():=block(
+  r:random(gf_char^gf_exp),
+  if r=0 then return(0)
+  else
+  return(list2poly(num2list(r,gf_char)))
+  )$
+
+/* Finds the log of p with respect to q, if it exists.  If largefield is set to
+"true" the the Pohlig-Hellman algorithm is used */
+
+gf_log(p,q):=block([order:gf_char^gf_exp-1],
+  if (largefield) then return(gf_phlog(p,q))
+  else block([pi,qi,g],
+    pi:gf_ind(p),
+    qi:gf_ind(q),
+    g:?gcd(?gcd(pi,qi),order),
+    return(mod(inv_mod(qi/g,order/g)*pi/g,order/g))
+    )
+  )$
+
+gf_mateval(M):=block([rows:length(args(M)),cols:length(args(M)[1])],
+  N:zeromatrix(rows,cols),
+  for i:1 thru rows do (
+    for j:1 thru cols do (
+      a:args(M[i,j]),
+      la:length(a),
+      N[i,j]:gf_eval(sum(a[k],k,1,la))
+      )
+    ),
+  return(N)
+  )$
+
+/* Multiplies two matrices with elements in the field */
+
+gf_matmul(M1,M2):=matrixmap(lambda([x],gf_eval(x)),M1.M2)$
+
+/* Inverts a matrix with elements in the field*/
+
+gf_matinv(M):=block([dM:gf_inv(gf_eval(determinant(M))),
+  aM:matrixmap(lambda([a],gf_eval(a)),adjoint(M))],
+  return(matrixmap(lambda([a],gf_mul(a,dM)),aM))
+  )$
+
+/* The Chinese Remainder Theorem, used by the Pohlig-Hellman algorithm */
+
+chrem(a,m):=block([n:length(m)],
+  mp:product(m[i],i,1,n),
+  M:makelist(mp/m[i],i,1,n),
+  M1:makelist(inv_mod(M[i],m[i]),i,1,n),
+  return(mod(sum(a[i]*M[i]*M1[i],i,1,n),mp))
+  )$
+
+/* Finds the discrete logarithm of p to the gf_char a using the Pohlig-Hellman
+algorithm.  Note: this algorithm will return incorrect results if a is not a
+primitive element */
+
+gf_phlog(p,a):=block([f:ifactors(gf_char^gf_exp-1)],
+  order:gf_char^gf_exp-1,
+  nf:length(f),
+  ps:makelist(f[i][1],i,1,nf),
+  alpha:makelist(f[i][2],i,1,nf),
+  max:1,
+  for i:1 thru nf do if (ps[i]>max) then max:ps[i],
+  rmatrix:zeromatrix(nf,max),
+  for i:1 thru nf do
+  (
+    for j:1 thru ps[i] do
+      rmatrix[i,j]:gf_binpower(a,(j-1)*order/ps[i])
+    ),
+  as:makelist(0,i,1,nf),
+  ms:makelist(0,i,1,nf),
+  for i:1 thru nf do
+  (
+    b:makelist(p,j,1,alpha[i]),
+    xs:makelist(0,j,1,alpha[i]),
+    sum:0,
+    for j:1 thru alpha[i] do
+    (
+      b[j]:gf_div(p,gf_binpower(a,sum)),
+      power:gf_binpower(b[j],order/(ps[i])^j),
+      for k:1 thru ps[i] do if(rmatrix[i,k]=power) then xs[j]:k-1,
+      sum:sum+xs[j]*ps[i]^(j-1)
+      ),
+    as[i]:sum,
+    ms[i]:ps[i]^alpha[i]
+    ),
+  return(chrem(as,ms))
+  )$
+  
+
+
+/* Routines related to polynomials over finite fields */
+
+polygf_eval(gf_elem,varname) :=
+  sum(gf_eval(ratcoeff(rat(gf_elem,varname),varname,i))*varname^i,
+      i,0,hipow(gf_elem,varname));
