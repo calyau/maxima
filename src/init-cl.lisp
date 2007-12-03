@@ -316,6 +316,7 @@
 	 "contrib/ezunits"
 	 "contrib/format"
 	 "contrib/fractals"
+     "contrib/fresnel"
 	 "contrib/gentran"
 	 "contrib/gentran/test"
      "contrib/gf"
