@@ -1,7 +1,4 @@
 @macro opencatbox {}
-@ifinfo
-Categories:
-@end ifinfo
 @ifhtml
 @html
 <div class=categorybox>
@@ -10,9 +7,6 @@ Categories:
 @end macro
 
 @macro category {name}
-@ifinfo
-\name\
-@end ifinfo
 @ifhtml
 @html
 &middot;
