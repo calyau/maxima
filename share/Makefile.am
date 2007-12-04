@@ -473,6 +473,7 @@ contrib/tex2ooo.lisp\
 contrib/tocl.lisp\
 contrib/multiadditive.lisp\
 contrib/tocl.lisp\
+contrib/unwind_protect.lisp\
 diff_form/cartan_new.lisp\
 diff_form/curvture2.mac\
 diff_form/diff_form.mac\
@@ -924,7 +925,6 @@ trigonometry/spangl.mac\
 trigonometry/spangl.usg\
 trigonometry/trgsmp.mac\
 trigonometry/trigrat.lisp\
-unwind_protect.lisp\
 utils/mactex-utilities.lisp\
 vector/vect.dem\
 vector/vect.mac\
