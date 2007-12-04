@@ -924,6 +924,7 @@ trigonometry/spangl.mac\
 trigonometry/spangl.usg\
 trigonometry/trgsmp.mac\
 trigonometry/trigrat.lisp\
+unwind_protect.lisp\
 utils/mactex-utilities.lisp\
 vector/vect.dem\
 vector/vect.mac\
