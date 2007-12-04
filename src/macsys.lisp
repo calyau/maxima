@@ -394,8 +394,7 @@
   #+gcl (format t " (aka GCL)")
   (format t "~%Distributed under the GNU Public License. See the file COPYING.~%")
   (format t "Dedicated to the memory of William Schelter.~%")
-  (format t "This is a development version of Maxima. The function bug_report()~%")
-  (format t "provides bug reporting information.~%"))
+  (format t "The function bug_report() provides bug reporting information.~%"))
 
 #+kcl
 (si::putprop :t 'throw-macsyma-top 'si::break-command)
