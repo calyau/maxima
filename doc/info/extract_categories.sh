@@ -11,7 +11,7 @@ TARGET_TEXI=$TARGET.texi
 WORKING_DIRECTORY=`mktemp -d /tmp/maxima-texinfo-categories-XXXXXX`
 cp -a *.texi figures $WORKING_DIRECTORY
 d=`pwd`
-pushd $WORKING_DIRECTORY
+cd $WORKING_DIRECTORY
 
 for f in *.texi; do
   if [ $f = "maxima.texi" ]
@@ -76,5 +76,5 @@ done
 
 mv *.html $d
 
-popd
+cd $d
 set +x
