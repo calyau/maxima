@@ -176,6 +176,8 @@ contrib/floatproperties.lisp\
 contrib/topoly.lisp\
 contrib/topoly_solver.mac\
 contrib/f90.lisp\
+contrib/fourier_elim/fourier_elim.lisp\
+contrib/fourier_elim/rtest_fourier_elim.mac\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
 contrib/format/autoload-mp.macsyma\
