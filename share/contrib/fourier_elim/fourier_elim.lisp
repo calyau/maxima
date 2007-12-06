@@ -292,9 +292,7 @@
     (cond ((member sgn '(">=" ">") :test 'equal) t)
 	  ((equal sgn "<") nil)
 	  (t (opcons 'mor (m> a b  t) (m= a b))))))
-	  	    
-(defun $s (e) (standardize-inequality e))
-     
+
 (defun standardize-inequality (e)
   (let ((a) (b))
     (cond ((op-equalp e 'mand)
