@@ -38,10 +38,10 @@ radcan(exp2);
 
 /* It's not easy to test reveal. Let's not worry about it too much. */
 expand(reveal(exp1,2),0,0);
-"negterm" + 2 * "quotient"$
+Negterm + 2 * Quotient$
 
-/* reveal(exp1,3); answers ok but the check program doesn't like "product"(2)
--"quotient"+atan/"product"(2)+log/"product"(2))$ */
+expand(reveal(exp1,3),0,0);
+log/Product(2)+atan/Product(2)-Quotient$
 
 g(l):=catch(map(lambda([x],if x < 0 then throw(x) else f(x)),l));
 g(l):=catch(map(lambda([x],if x < 0 then throw(x) else f(x)),l))$

@@ -1579,17 +1579,17 @@ with descriptive summaries.
 
 @itemize @bullet
 @item
-Sums and differences are replaced by @code{sum(@var{n})}
+Sums and differences are replaced by @code{Sum(@var{n})}
 where @var{n} is the number of operands of the sum.
 @item
-Products are replaced by @code{product(@var{n})}
+Products are replaced by @code{Product(@var{n})}
 where @var{n} is the number of operands of the product.
 @item
-Exponentials are replaced by @code{expt}. 
+Exponentials are replaced by @code{Expt}. 
 @item
-Quotients are replaced by @code{quotient}.
+Quotients are replaced by @code{Quotient}.
 @item
-Unary negation is replaced by @code{negterm}.
+Unary negation is replaced by @code{Negterm}.
 @end itemize
 
 When @var{depth} is greater than or equal to the maximum depth of @var{expr},
@@ -1608,26 +1608,26 @@ Example:
                         b + a     2 b     2 a
                     2 %e      + %e    + %e
 (%i2) reveal (e, 1);
-(%o2)                       quotient
+(%o2)                       Quotient
 (%i3) reveal (e, 2);
-                             sum(3)
+                             Sum(3)
 (%o3)                        ------
-                             sum(3)
+                             Sum(3)
 (%i4) reveal (e, 3);
-                     expt + negterm + expt
+                     Expt + Negterm + Expt
 (%o4)               ------------------------
-                    product(2) + expt + expt
+                    Product(2) + Expt + Expt
 (%i5) reveal (e, 4);
                        2                 2
-                      b  - product(3) + a
+                      b  - Product(3) + a
 (%o5)         ------------------------------------
-                         product(2)     product(2)
-              2 expt + %e           + %e
+                         Product(2)     Product(2)
+              2 Expt + %e           + %e
 (%i6) reveal (e, 5);
                          2            2
                         b  - 2 a b + a
 (%o6)              --------------------------
-                       sum(2)     2 b     2 a
+                       Sum(2)     2 b     2 a
                    2 %e       + %e    + %e
 (%i7) reveal (e, 6);
                           2            2
