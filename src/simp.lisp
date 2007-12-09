@@ -1537,22 +1537,23 @@
 		  (mget gr '$numer)))
 		((eq gr '$%e)
 		 ;; Numerically evaluate if the power is a double-float.
-		 (let ((val (double-float-eval '$exp pot)))
-		   (when val
-		     (return val)))
-		 ;; Numerically evaluate if the power is a (complex)
-		 ;; big-float.  (This is basically the guts of
-		 ;; big-float-eval, but we can't use big-float-eval.)
-		 (when (and (not (memq 'simp (car x)))
-			    (complex-number-p pot 'bigfloat-or-number-p))
-		   (let ((x ($realpart pot))
-			 (y ($imagpart pot)))
-		     (cond ((and ($bfloatp x) (like 0 y))
-			    (return ($bfloat `((mexpt simp) $%e ,pot))))
-			   ((or ($bfloatp x) ($bfloatp y))
-			    (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
-			      (setq z ($rectform `((mexpt simp) $%e ,z)))
-			      (return ($bfloat z)))))))
+		 (when $%emode
+		   (let ((val (double-float-eval '$exp pot)))
+		     (when val
+		       (return val)))
+		   ;; Numerically evaluate if the power is a (complex)
+		   ;; big-float.  (This is basically the guts of
+		   ;; big-float-eval, but we can't use big-float-eval.)
+		   (when (and (not (memq 'simp (car x)))
+			      (complex-number-p pot 'bigfloat-or-number-p))
+		     (let ((x ($realpart pot))
+			   (y ($imagpart pot)))
+		       (cond ((and ($bfloatp x) (like 0 y))
+			      (return ($bfloat `((mexpt simp) $%e ,pot))))
+			     ((or ($bfloatp x) ($bfloatp y))
+			      (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
+				(setq z ($rectform `((mexpt simp) $%e ,z)))
+				(return ($bfloat z))))))))
 		 (cond ;; (($bfloatp pot) (return ($bfloat (list '(mexpt) '$%e pot))))
 		       ;; ((or (floatp pot) (and $numer (integerp pot)))
 		       ;;	(return (exp pot)))
@@ -1759,7 +1760,7 @@
 		;; We have a^m*a^k.
 		(setq temp (list '(mexpt) (car x) (add w expo)))
 		;; Set fm to have 1/denom term.
-		(setf fm (rplaca fm (mul (div numerator (power (car x) expo))
+		(setf fm (rplaca fm (div (div numerator (power (car x) expo))
 					 denom)))
 		;; Add in the a^(m+k) term.
 		(rplacd fm (cons temp (cdr fm)))

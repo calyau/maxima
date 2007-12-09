@@ -89,11 +89,17 @@ rectform(log(3+4*%i));
 log(5)+%i*atan(4/3)$
 polarform(%);
 sqrt(log(5)^2+atan(4/3)^2)*%e^(%i*atan(atan(4/3)/log(5)))$
+
+%emode:false;
+false;
 ev(rectform((2+3.5*%i)^0.25),numer);
 0.3682587918166914*%i+1.368266274774369;
-/* tops 20 : 0.368258808*%i+1.36826627 */
 polarform(%);
-1.416956998795383*%\e^(0.2629125531370934*%\i);
-/* tops 20 :  1.416957*%e^(0.262912527*%i)$ */
+1.416956998795383*%e^(0.2629125531370934*%i);
+/* %emode:false is needed to keep above answer from being converted out of polar form 
+   before being compared to result of polarform() */
+%emode:true;
+true;
+
 delete(sin(x),x+sin(x)+y);
 y+x$

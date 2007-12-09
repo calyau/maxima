@@ -119,3 +119,5 @@ maplist(numfactor,%);
 [1,-5/2,5/3,-1/6]$
 apply(min,%);
 -5/2$
+factcomb(3*x/(2*3^x*x!));
+3^(1-x)/(2*(x-1)!)$

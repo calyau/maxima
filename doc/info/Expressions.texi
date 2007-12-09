@@ -1259,7 +1259,7 @@ When @code{%emode} is @code{true},
 @code{%e^(%pi %i x)} is simplified as
 follows.
 
-@code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if @code{x} is an integer or
+@code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if @code{x} is a floating point number, an integer, or
 a multiple of 1/2, 1/3, 1/4, or 1/6, and then further simplified.
 
 For other numerical @code{x},
