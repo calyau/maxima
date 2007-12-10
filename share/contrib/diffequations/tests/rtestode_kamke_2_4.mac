@@ -446,7 +446,7 @@ xformtoconstcoeff;
 
 /* Kamke 2. 368  */ 
 (pn_(368),ans:contrib_ode(eqn:'diff(y,x,2)=-a*x*'diff(y,x,1)/(x^2+1)-b*y/(x^2+1)^2,y,x));
-[y = %k2*gauss_b(-((a-2)/2,a/2),(sqrt(4*b+a^2-4*a+4)+2)/2,-((%i*x-1)/2)
+[y = %k2*gauss_b(-((a-2)/2),a/2,(sqrt(4*b+a^2-4*a+4)+2)/2,-((%i*x-1)/2)
                *(1-%i*x)^((sqrt(4*b+a^2-4*a+4)+2)/4)
           /((-%i*x-1)^(sqrt(4*b+a^2-4*a+4)/4-1/2)*(x^2+1)^(a/4)))
           +%k1*gauss_a(-((a-2)/2),a/2,(sqrt(4*b+a^2-4*a+4)+2)/2,-((%i*x-1)/2)
@@ -474,10 +474,10 @@ xformtoconstcoeff;
 (pn_(371),ans:contrib_ode(eqn:'diff(y,x,2)=-y*(-(x^2-1)*lambda-a^2)/(x^2-1)^2-2*x*'diff(y,x,1)/(x^2-1),y,x));
 [y = %k2*(x-1)^(a/2)
                *gauss_b((sqrt(4*lambda+1)+1)/2,-((sqrt(4*lambda+1)-1)/2),a+1,
-                        -((x-1)/2)/(x+1)^(a/2))
+                        -((x-1)/2))/(x+1)^(a/2)
      +%k1*(x-1)^(a/2)
               *gauss_a((sqrt(4*lambda+1)+1)/2,-((sqrt(4*lambda+1)-1)/2),a+1,
-                       -((x-1)/2)/(x+1)^(a/2))];
+                       -((x-1)/2))/(x+1)^(a/2)];
 [method,ode_check(eqn,ans[1])];
 [odelin,0];
 

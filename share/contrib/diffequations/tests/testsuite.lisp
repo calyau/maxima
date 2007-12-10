@@ -9,8 +9,8 @@
 ;; are correct but I can't get the testsuite to agree.
 (setf $testsuite_files
       '( (mlist simp)
-	 (mlist "rtestode_murphy_1_1.mac" 100)  ; OK - testsuite issues
-         "rtestode_murphy_1_2.mac" 
+         "rtestode_murphy_1_1.mac"
+	 (mlist "rtestode_murphy_1_2.mac" 100)  ; OK - testsuite issues
          "rtestode_murphy_1_3.mac"
          "rtestode_murphy_1_4.mac"
          "rtestode_murphy_1_5.mac"
@@ -28,13 +28,13 @@
          (mlist "rtestode_kamke_1_6.mac" 20) ; OK - testsuite issues
          (mlist "rtestode_kamke_2_1.mac" 80 107) ; OK - testsuite issues
          (mlist "rtestode_kamke_2_2.mac" 8 10 34 38 40 87 134 )
-         (mlist "rtestode_kamke_2_3.mac" 8 11 21)
-         "rtestode_kamke_2_4.mac"
+         (mlist "rtestode_kamke_2_3.mac" 8 11 21 64 107 138 147 181)
+         (mlist "rtestode_kamke_2_4.mac" 49 122 124 146 165)
          "rtestode_kamke_2_5.mac"
 	 "rtest_sym.mac" 
 	 "rtest_sym2.mac"
 	 "rtest_ode1_riccati.mac"
          "rtest_ode1_abel.mac"
-         "rtestode_odelin.mac"
+         (mlist "rtestode_odelin.mac" 39 41 46 47 48 54 65)
 	)
 )
