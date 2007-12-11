@@ -164,8 +164,8 @@
 					b2)))
 		    1
 		    nil))
-     (and (equal r 0) (go l0))
      (setq r (simpnrt r 2))
+     (and (equal r 0) (go l0))
      (and (complicated r) (setq r (adispline r)))
      (and (complicated tr2) (setq tr2 (adispline tr2)))
      (setq tr1
