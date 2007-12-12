@@ -154,6 +154,9 @@ alias(FORMAL,NOUN);
 /* LST is an alternating list of operators and associated functions.
    OP_FCN_LIST is used to pass LST to recursive calls to OPMAP. */
 
+/* The change from ampersand symbols to CL strings breaks opmap (the call to
+?getf in particular).
+
 opmap(exp,lst) :=
   if atom(exp)
   then exp
@@ -162,6 +165,19 @@ opmap(exp,lst) :=
     then block([op_fcn_list:lst],
       apply(fun,[exp]))
     else exp)$
+*/
+
+opmap(exp, lst) := block([op_fcn_list : lst, e_op, x, fun : false, inflag : true],
+  if mapatom(exp) then exp
+  else (
+    e_op : op(exp),
+    while lst # [ ] do (
+      x : first(lst),
+      lst : rest(lst),
+      if x = e_op and lst # [ ] then (
+        fun : first(lst),
+        lst : [ ])),
+      if fun = false then exp else apply(fun, [exp])))$
 
 iflopmap(op,fun,exp) :=
   if op="*"
