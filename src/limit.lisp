@@ -250,7 +250,7 @@ It appears in LIMIT and DEFINT.......")
 	  ((eq val '$inf)
 	   `(,(assume `((mgreaterp) ,var 1d+8)) ,@new-assumptions))
 	  ((eq val '$minf)
-	   `(,(assume `((mgreaterp) 1d+8 ,var)) ,@new-assumptions))
+	   `(,(assume `((mgreaterp) -1d+8 ,var)) ,@new-assumptions))
 	  ((eq direction '$plus)
 	   `(,(assume `((mgreaterp) ,var 0)) ,@new-assumptions)) ;All limits around 0
 	  ((eq direction '$minus)
