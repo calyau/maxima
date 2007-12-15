@@ -60,7 +60,7 @@
 
     (setq p (meqhk p))
     (setq q ($ratdenom p))
-    (if (not ($constantp q)) (mtell "Assuming that ~:M " `((mnotequal) ,q 0)))
+    (if (not ($constantp q)) (mtell "Assuming that ~:M~%" `((mnotequal) ,q 0)))
    
     ;; It's OK to send every expression through convert-from-max-min-to-abs.
     ;; I put in the conditional to skip the ratsimp for expressions that don't
