@@ -205,9 +205,9 @@
 			(among var ll))
 		    (setq var (stripdollar var))
 		    (setq exp ($substitute var orig-var exp))))
-	     (cond ((not (equal ($ratsimp ($imagpart ll)) 0))
+	     (cond ((not (equal (sratsimp ($imagpart ll)) 0))
 		    (merror "Defint: Lower limit of integration must be real."))
-		   ((not (equal ($ratsimp ($imagpart ul)) 0))
+		   ((not (equal (sratsimp ($imagpart ul)) 0))
 		    (merror
 		     "Defint: Upper limit of integration must be real.")))
 
@@ -378,7 +378,7 @@
 	   ans))))
 
 (defun intcv3 (d ind nv)
-  (setq nn* ($ratsimp (sdiff d var)))
+  (setq nn* (sratsimp (sdiff d var)))
   (setq exp1 (subst 'yx nv exp))
   (setq exp1 (m* nn* (cond (ind exp)
 			   (t (subst d var exp1)))))
@@ -1104,7 +1104,7 @@
     (cond ((not (or (polyinx d var nil)
 		    (and (setq grand (%einvolve d))
 			 (among '$%i grand)
-			 (polyinx (setq d ($ratsimp (m// d (m^t '$%e grand))))
+			 (polyinx (setq d (sratsimp (m// d (m^t '$%e grand))))
 				  var
 				  nil)
 			 (setq n (m// n (m^t '$%e grand))))))  nil)
@@ -1144,7 +1144,7 @@
 			(t ($ratsubst (m- var) var e))))))
     (cond ((zerop1 temp)
 	   t)
-	  ((zerop1 ($ratsimp temp))
+	  ((zerop1 (sratsimp temp))
 	   t)
 	  (t nil))))
 
@@ -1154,7 +1154,7 @@
 			  (t ($ratsubst (m- var) var e))))))
     (cond ((zerop1 temp)
 	   t)
-	  ((zerop1 ($ratsimp temp))
+	  ((zerop1 (sratsimp temp))
 	   t)
 	  (t nil))))
 
@@ -1198,7 +1198,7 @@
 		 (eq (ask-integer r '$integer) '$yes)
 		 (setq test-var (bxm d s))
 		 (setq ans (apply 'fan (cons (m+ 1. r) test-var))))
-	    (return (m* (m// nc dc) ($ratsimp ans))))
+	    (return (m* (m// nc dc) (sratsimp ans))))
 	   ((and (ratp grand var)
 		 (setq ans (zmtorat n (cond ((mtimesp d) d)
 					    (t ($sqfr d)))
@@ -1388,10 +1388,10 @@
 ;;;diff down to linear.
 			(setq lc (sdiff linpart var))
 ;;;all the way to constant.
-			(setq linpart ($ratsimp (m// linpart lc)))
-			(setq lc ($ratsimp (m// lc `((mfactorial) ,deg))))
+			(setq linpart (sratsimp (m// linpart lc)))
+			(setq lc (sratsimp (m// lc `((mfactorial) ,deg))))
 ;;;get rid of factorial from differentiation.
-			(setq c ($ratsimp (m+ exp (m* (m- lc)
+			(setq c (sratsimp (m+ exp (m* (m- lc)
 						      (m^ linpart deg)))))))
 ;;;Sees if can be expressed as (a*x+b)^n + part freeof x.
 	       (cond ((not (among var c))
@@ -1475,7 +1475,7 @@
      (setq varlist (list var))
      (setq *mtoinf* t)
      (cond ((and (setq expo (%einvolve e))
-		 (polyp (setq poly ($ratsimp (m// e (m^t '$%e expo)))))
+		 (polyp (setq poly (sratsimp (m// e (m^t '$%e expo)))))
 		 (setq l (catch 'ggrm (ggr (m^t '$%e expo) nil))))
 	    (setq *mtoinf* nil)
 	    (setq mb (m- (subin 0. (cadr l))))
@@ -2246,7 +2246,7 @@
       `((%gamma) ,c)))
 
 (defun zto%pi2 (grand var)
-  (let ((result (unitcir ($ratsimp (m// grand var)) var)))
+  (let ((result (unitcir (sratsimp (m// grand var)) var)))
     (cond (result (sratsimp (m* (m- '$%i) result)))
 	  (t nil))))
 
@@ -2354,7 +2354,7 @@
 		(eq ($sign (m+ s (m+ 1 (deg b))))
 		    '$pos)
 		(evenfn b var)
-		(setq a (lognxp ($ratsimp (m// a b)))))
+		(setq a (lognxp (sratsimp (m// a b)))))
 	   (list b a)))))
 
 (defun lognxp (a)
@@ -2774,7 +2774,7 @@
        (cond ((and (eq ul '$inf)
 		   (equal ll 0.)
 		   (eq arg var)
-		   (equal 1 ($ratsimp (m// exp (m* (m- (subin (m^t var -1)
+		   (equal 1 (sratsimp (m// exp (m* (m- (subin (m^t var -1)
 							       exp))
 						    (m^t var -2))))))
 	      ;; Make the substitution y=1/x.  If the integrand has
@@ -3076,7 +3076,7 @@
 	   (setq m nn*)
 	   (setq r dn*)
 	   (cond
-	     ((and (setq r (bx**n+a ($ratsimp r)))
+	     ((and (setq r (bx**n+a (sratsimp r)))
 		   (not (among var (setq m (m// m (m* (cadr r) (caddr r)
 						      (m^t var (m+t -1 (cadr r))))))))
 		   (setq e (m// (subin 0. e) (m^t (car r) m))))
@@ -3218,7 +3218,7 @@
 	(den-conj nil))
     (cond ((among '$%i denom)
 	   (setq den-conj (maxima-substitute (m- '$%i) '$%i denom))
-	   (setq exp (m* den-conj ($ratsimp (m// exp den-conj))))
+	   (setq exp (m* den-conj (sratsimp (m// exp den-conj))))
 	   (setq exp (simplify ($multthru  (sratsimp exp)))))
 	  (t exp))))
 
@@ -3229,7 +3229,7 @@
 	   ;; %i.
 	   (let* ((den-conj (maxima-substitute (m- '$%i) '$%i denom))
 		  (num ($num exp))
-		  (new-denom ($ratsimp (m* denom den-conj))))
+		  (new-denom (sratsimp (m* denom den-conj))))
 	     ;; If the new denominator still contains %i, just give
 	     ;; up.  Otherwise, multiply the numerator by the
 	     ;; conjugate and divide by the new denominator.
