@@ -76,7 +76,6 @@
                          "set term dumb 79 22")
                         ((mlist) $gnuplot_ps_term_command
                          "set size 1.5, 1.5;set term postscript eps enhanced color solid 24")
-                        ((mlist) $gnuplot_pipes_term "x11")
                         ((mlist) $plot_realpart nil)
                         ))
 
@@ -152,7 +151,7 @@
 (defun $gnuplot_reset ()
   (send-gnuplot-command "unset output")
   (send-gnuplot-command (format nil "set term ~a" 
-                                (get-plot-option-string '$gnuplot_pipes_term)))
+                                (get-plot-option-string '$gnuplot_term)))
   (send-gnuplot-command "reset"))
 
 (defun $gnuplot_replot (&optional s)
@@ -239,7 +238,6 @@
           ($gnuplot_ps_term_command value)
           ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
           ($plot_realpart value)
-          ($gnuplot_pipes_term value)
           (t
            (merror "Unknown plot option specified:  ~M" name))))
   (loop for v on (cdr $plot_options)
