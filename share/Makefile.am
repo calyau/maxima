@@ -109,6 +109,12 @@ contrib/Zeilberger/zb_prover.mac\
 contrib/Zeilberger/zeilberger_algorithm.mac\
 contrib/Zeilberger/zeilberger_linear_algebra.mac\
 contrib/Zeilberger/zeilberger.mac\
+contrib/amatrix/amatrix.lisp\
+contrib/amatrix/amatrix.mac\
+contrib/amatrix/README\
+contrib/amatrix/rtest_amatrix.mac\
+contrib/amatrix/rtest_wilcoxon.mac\
+contrib/amatrix/wilcoxon.mac\
 contrib/augmented_lagrangian.mac\
 contrib/bode.mac\
 contrib/boolsimp/boolsimp.lisp\
