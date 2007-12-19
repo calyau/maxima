@@ -247,15 +247,14 @@
      ;; Apply the linear substitution y = f*x+e.  That is x = (y-e)/f.
      ;; Then use INTIRA to integrate this.  The integrand becomes
      ;; something like p(y)*y^m and other terms.
-     (setq expr
-	   (mul (inv f)
-		(intira (distrexpandroot
+     (setq expr (intira (distrexpandroot
 			 (cdr ($substitute
 			       (mul (inv f)
 				    (add (setq met (make-symbol (symbol-name '#:yannis)))
 					 (mul -1 e)))
 			       x funct)))
-			met)))
+			met))
+     (setq expr (and expr (mul (inv f) expr)))
      (return ($expand ($substitute (add (mul f x) e) met expr)))))
 
 (defun distrexpandroot (expr)
