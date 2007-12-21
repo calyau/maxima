@@ -94,9 +94,12 @@
 	 (l2 (copy-tree arg-l2))
 	 ($exponentialize nil)
 	 (res (hgfsimp l1 l2 arg)))
-    (if (or (numberp res) (not (atom res)))
-	res
-	(fpqform l1 l2 arg))))
+    ;; I think hgfsimp returns FAIL and UNDEF for cases where it
+    ;; couldn't reduce the function.  In this case return the Fpq
+    ;; form.
+    (if (member res '(fail undef))
+	(fpqform l1 l2 arg)
+	res)))
 
 (defun hgfsimp (arg-l1 arg-l2 var)
   (prog (resimp listcmdiff)
