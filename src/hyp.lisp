@@ -9,9 +9,6 @@
 
 (declare-top (special var *par* checkcoefsignlist $exponentialize $bestriglim $radexpand))
 
-;; Why is this needed?
-(setq checkcoefsignlist nil)
-
 ;; I (rtoy) don't know what the default should be. but $hgfred sets it
 ;; to 3.  But we also need to define it because some of the specint
 ;; demos need it set.
@@ -24,8 +21,6 @@
     #+gcl (eval compile)
     #-gcl (:execute :compile-toplevel)
     (defmacro fixp (x) `(typep ,x 'fixnum))
-
-    (setq checkcoefsignlist '())
 
     (defmacro simp (x) `(simplifya ,x ()))
 
@@ -89,7 +84,8 @@
   ;; until we can verify all of the test cases are correct.
   (let (;;($radexpand '$all)
 	(var arg)
-	(*par* arg))
+	(*par* arg)
+	(checkcoefsignlist nil))
     (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
 
 
