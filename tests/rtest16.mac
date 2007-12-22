@@ -354,6 +354,10 @@ limit( (3^(1/x) + 5^(1/x))^x, x, 0, plus);
 limit( (3^(1/x) + 5^(1/x))^x, x, 0);
 und;
 
+/* [ 1852415 ] limit(sqrt(1-%e^(-x^2)), x, inf) = 0 */
+limit(sqrt(1-%e^(-x^2)), x, inf);
+1;
+
 /* tex(t[1]) shouldn't change t to true */
 tex (t[1], false);
 "$$t_{1}$$
