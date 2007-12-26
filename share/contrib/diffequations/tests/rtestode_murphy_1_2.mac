@@ -610,9 +610,9 @@ y = -x/(x^2+%c);
 
 /* 181 Riccati */
 (pn_(181),assume(a>0,b>0),ans:contrib_ode(eqn:x*'diff(y,x)+b*x+(2+a*x*y)*y=0,y,x),forget(a>0,b>0),ans);
-[y = (x*(%c*sqrt(a)*sqrt(-b)*%e^(2*sqrt(a)*sqrt(-b)*x)
-     -sqrt(a)*sqrt(-b))-%c*%e^(2*sqrt(a)*sqrt(-b)*x)-1)
-    /(a*x*(%c*%e^(2*sqrt(a)*sqrt(-b)*x)+1))];
+[y = (sqrt(a)*sqrt(b)*x*(%i*%c*%e^(2*%i*sqrt(a)*sqrt(b)*x)-%i)
+          -%c*%e^(2*%i*sqrt(a)*sqrt(b)*x)-1)
+          /(a*x*(%c*%e^(2*%i*sqrt(a)*sqrt(b)*x)+1))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 

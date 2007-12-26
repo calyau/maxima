@@ -36,9 +36,9 @@
     (and 
      (every #'mequalp (cdr sol))
      (every #'(lambda (s) (variablep ($lhs s))) (cdr sol))
-     (every #'(lambda (s) (like 0 s)) (cdr ($ratsimp ($substitute sol eqs))))
+     (every #'(lambda (s) (like 0 s)) (cdr (sratsimp ($substitute sol eqs))))
      (every #'(lambda (s) (not (like 0 s)))
-	    (cdr ($ratsimp ($substitute sol nz)))))))
+	    (cdr (sratsimp ($substitute sol nz)))))))
 
 ;; The function 'checkedalgsys' tries to return the "simplest" solution.
 ;; it uses this simple-minded measure of simple.
@@ -99,9 +99,9 @@
     (and 
      (every #'mequalp (cdr sol))
      (every #'(lambda (s) (variablep ($lhs s))) (cdr sol))
-     (every #'(lambda (s) (like 0 s)) (cdr ($ratsimp ($substitute sol eqs))))
+     (every #'(lambda (s) (like 0 s)) (cdr (sratsimp ($substitute sol eqs))))
      (every #'(lambda (s) (not (like 0 s)))
-	    (cdr ($ratsimp ($substitute sol nz)))))))
+	    (cdr (sratsimp ($substitute sol nz)))))))
 
 (defun unks-in-eq (eq unks)
   (let (($listconstvars nil))

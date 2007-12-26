@@ -160,9 +160,7 @@ solve(map(log,ans[1]/%c),y);
 
 /* 15 This is a Riccati eqn */
 (pn_(15),ans:contrib_ode(eqn:'diff(y,x) + y^2 - 2*x^2*y + x^4 -2*x-1,y,x));
-[y = (x^2*(%c*%e^(x*(x^2+3)/3)+%e^(x*(x^2-3)/3))
-         +%c*%e^(x*(x^2+3)/3)-%e^(x*(x^2-3)/3))
-         /(%c*%e^(x*(x^2+3)/3)+%e^(x*(x^2-3)/3))];
+ [y = (x^2*(%c*%e^(2*x)+1)+%c*%e^(2*x)-1)/(%c*%e^(2*x)+1)];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
@@ -182,11 +180,11 @@ solve(map(exp,ans[1]*5),y);
 
 /* 18 */
 (pn_(18),ans:contrib_ode(eqn:'diff(y,x)-y^2-x*y-x+1,y,x));
-[y = -%e^-(2*x)*(2*%i*%e^(x^2/2+2)
-                      +(sqrt(2)*sqrt(%pi)*erf(%i*(x-2)/sqrt(2))
-                       +sqrt(2)*%e^2*sqrt(%pi)*%c)
-                       *%e^(2*x))
-         /(sqrt(2)*sqrt(%pi)*erf(%i*(x-2)/sqrt(2))+sqrt(2)*%e^2*sqrt(%pi)*%c)];
+[y = -(%e^-(2*x)*(%e^(2*x)*(sqrt(2)*sqrt(%pi)*%c
+                                         *erf((%i*x-2*%i)/sqrt(2))
+                                 +sqrt(2)*%e^2*sqrt(%pi))
+                       +2*%i*%c*%e^(x^2/2+2))
+ /(sqrt(2)*sqrt(%pi)*%c*erf((%i*x-2*%i)/sqrt(2))+sqrt(2)*%e^2*sqrt(%pi)))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 

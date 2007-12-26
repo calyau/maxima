@@ -18,7 +18,7 @@ true;
 
 /*  201  */ 
 (pn_(201),ans:contrib_ode(eqn:2*f(x)*'diff(y,x,1)+2*f(x)*y^2-'diff(f(x),x,1)*y-2*f(x)^2,y,x));
-[y=sqrt(f(x))*(%c*sinh('integrate(sqrt(f(x)),x))+%i*cosh('integrate(sqrt(f(x)),x)))/(%i*sinh(integrate(sqrt(f(x)),x))+%c*cosh('integrate(sqrt(f(x)),x)))];
+[y=sqrt(f(x))*(%c*sinh('integrate(sqrt(f(x)),x))+%i*cosh('integrate(sqrt(f(x)),x)))/(%i*sinh('integrate(sqrt(f(x)),x))+%c*cosh('integrate(sqrt(f(x)),x)))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
 
