@@ -525,11 +525,14 @@ xformtoconstcoeff;
 forget(a>0);
 [a>0];
 
-/* Kamke 2. 377  */ 
-/* Error "quotient is not exact"
+/* Kamke 2. 377  */
 (pn_(377),ans:contrib_ode(eqn:'diff(y,x,2)=-b^2*y/(x^2+a^2)^2,y,x));
-false;
-*/
+[y = %k2*sqrt(x^2+a^2)*%e^(sqrt(-b^2-a^2)*atan(x/a)/a)
+              *'integrate(1/(x^2*%e^(2*sqrt(-b^2-a^2)*atan(x/a)/a)
+                            +a^2*%e^(2*sqrt(-b^2-a^2)*atan(x/a)/a)),x)
+    +%k1*sqrt(x^2+a^2)*%e^(sqrt(-b^2-a^2)*atan(x/a)/a)];
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 378  */ 
 (pn_(378),ans:contrib_ode(eqn:'diff(y,x,2)=-2*(x^2-1)*'diff(y,x,1)/((x-1)^2*x)-(-2*x^2+2*x+2)*y/((x-1)^2*x^2),y,x));
