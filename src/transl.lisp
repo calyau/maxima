@@ -1060,7 +1060,7 @@ APPLY means like APPLY.")
               ~%Try to use value cell and the Use_fast_arrays:true
               ~%if this is for arrays.  For functions, local definitions are~
                ~%not advised so use lambda expression")
-  (cons nil (cons 'mlocal (cdr form))))
+  (cons nil `(mapply 'mlocal ',(cdr form) '$local)))
 
 
 (def%tr mquote (form)
