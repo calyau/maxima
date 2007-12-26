@@ -41,7 +41,7 @@
 ;;; avoid indirection through the property list to get to the
 ;;; array.
 
-(defvar $translate_fast_arrays t )
+(defvar $translate_fast_arrays nil)
 ;;When $translate_fast_arrays and $use_fast_arrays are true
 ;;there should only be two types of arrays and they should be stored on
 ;;the value cell of the symbol.  These should be the equivalent of the

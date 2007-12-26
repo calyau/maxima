@@ -265,13 +265,17 @@ a replacement form. Translating anyway though.")))
 	(specp (assoc (cadr form)
 		     '(($complete . t) ($integer . fixnum) ($fixnum . fixnum)
 		       ($float . flonum) ($flonum . flonum)) :test #'eq)))
-    (cond (specp
-	   `($any . (apply '$array (list ',name
-				    ',(cadr form)
-				    ,@(tr-args (cddr form))))))
+    (cond
+      (specp
+        `($any . (mapply
+                   '$array
+                   (list ',name ',(cadr form) ,@(tr-args (cddr form)))
+                   '$array)))
 	  (t
-	   `($any . (apply '$array (list ',name
-				    ,@(tr-args (cdr form)))))))))
+        `($any . (mapply
+                   '$array
+                   (list ',name ,@(tr-args (cdr form)))
+                   '$array))))))
 
 
 (def%tr $define (form)

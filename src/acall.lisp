@@ -124,8 +124,8 @@
 	    ;; is a GENSYM with a lisp array property, don't
 	    ;; ask me why.
 	    (if (null inds)
-		(setf (aref ap ind1) val)
-		(setf (apply #'aref ap all-inds) val)))
+		(setf (aref (symbol-array ap) ind1) val)
+		(setf (apply #'aref (symbol-array ap) all-inds) val)))
 	   ((setq ap (mget aarray 'hashar))
 	    (arrstore `((,aarray ,'array)
 			,@(mapcar #'(lambda (u) `((mquote simp) ,u)) all-inds))
