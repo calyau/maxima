@@ -471,7 +471,6 @@ exp(x)$
 taylor(rat(factor(1+x)),x,0,1);
 1+x$
 
-
-
-
-
+/* [ 807275 ] Taylor Illegal log kernel: log(cos(th)) @ %pi/2 */
+taylor(log(cos(th)),th,%pi/2,2);
+log((2*th-%pi)/2)+log(-1)-(th-%pi/2)^2/6$

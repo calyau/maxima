@@ -330,8 +330,8 @@ limit(x*gamma(x), x, 0);
 1;
 
 /* [ 744679 ] limit overflows memory? */
-(assume(x>1), limit((x^(1/n)+1)^n/2^n, n, inf));
-'sqrt(x);
+(assume(a>1), limit((a^(1/n)+1)^n/2^n, n, inf));
+'sqrt(a);
 
 /* [ 702512 ] limit(1/(1/a*2^(%i*a)+1),a,inf) =&gt; UND */
 limit(1/(1/a*2^(%i*a)+1),a,inf);
@@ -357,6 +357,16 @@ und;
 /* [ 1852415 ] limit(sqrt(1-%e^(-x^2)), x, inf) = 0 */
 limit(sqrt(1-%e^(-x^2)), x, inf);
 1;
+
+/* [ 1515712 ] tlimit (x*atan(x)/(x+1),x,inf) => 3 %pi/2, etc */
+tlimit(x*atan(x)/(x+1),x,inf);
+%pi/2;
+
+tlimit(x*(atan(x)-%pi/2),x,inf);
+-1;
+
+tlimit(atan(x^-1), x, 0, minus);
+-%pi/2;
 
 /* tex(t[1]) shouldn't change t to true */
 tex (t[1], false);

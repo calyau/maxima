@@ -1318,7 +1318,7 @@
 				    (exch v1 v2) (exch e1 e2) (setq reverse? (not reverse?)))
 				  (if (eq (caar v1) '%log)
 				      (cond ((eq (caar v2) '%log)
-					     (stronger-var? (log-abs-tvar v1) (log-abs-tvar v2)))
+					     (stronger-var? (cadr v1) (cadr v2)))
 					    ((and (eq (caar v2) 'mexpt) (eq (cadr v2) '$%e))
 					     (stronger-var? `((%log) ,v1) (caddr v2)))
 					    (t (break "Unhandled var in stronger-var?")))
@@ -1331,11 +1331,6 @@
 (defun neg-monom? (exp)
    (and (mtimesp exp) (equal (cadr exp) -1) (null (cdddr exp))
 	(caddr exp)))
-
-(defun log-abs-tvar (var)
-   (cond ((or (tvar? (cadr var)) (eq (caar (cadr var)) '%log)) (cadr var))
-	 ((neg-monom? (cadr var)) )
-	 (t (break "Illegal logarithmic tvar"))))
 
 (defun order-vars-by-strength (vars)
    (do ((vars* vars (cdr vars*)) (ordvars () ))
@@ -1413,18 +1408,7 @@
 			     (facs (cddr kernel) (cdr facs)))
 			    ((null facs) ans)))
 		       ((eq (caar kernel) '%log)
-			;; Assume all log's are of the form log(x+a),
-			;; log(-log(x+a)),... First type go to minf; all
-			;; others to inf.
-			;(lim-log (tvar-lim (cadr kernel)))
-			(if (tvar? (cadr kernel))
-			    (let ((pt (exp-pt (get-datum (cadr kernel)))))
-			       (if (member pt '($inf $minf) :test #'eq) (lim-log pt)
-				  '$minf))
-			   (cond ((eq (caar (cadr kernel)) 'mplus) '$minf)
-				 ((eq (caar (cadr kernel)) '%log) '$inf)
-				 ((neg-monom? (cadr kernel)) '$inf)
-				 (t (break "Illegal log kernel")))))
+			(lim-log (datum-lim (get-datum (cadr kernel) t))))
 		       ((member (caar kernel) '(%sin %cos) :test #'eq)
 			(unless (lim-infp (tvar-lim (cadr kernel)))
 			   (break "Invalid trig kernel in tvar-lim"))
@@ -2293,7 +2277,21 @@
      (setq exp (prep1 exp)))		;; exp must be a rational integer
   (let ((temp (get-datum var 't)))
      (cond ((null temp) (merror "Invalid call to var-expand"))
-	   ((switch 'multi temp)
+	   ((member (exp-pt temp) '($inf $minf $infinity) :test #'eq)
+	    (cond ((switch '$asymp temp)
+		     (merror
+		      "Cannot create an asymptotic expansion at infinity"))
+		    ((e> (setq exp (rcminus exp)) (current-trunc temp))
+		     (rczero))
+		    (t (make-ps (int-var temp)
+				(ncons (if exact-poly (inf) (current-trunc temp)))
+				(ncons (term exp
+					     (if (eq (exp-pt temp) '$minf)
+						 (rcmone)
+					       (rcone))))))))
+	   ;; multivar expansion does not work at infinity, so
+	   ;; expansion at infinity is handled by above clause even if doing multivar.
+	   ((switch 'multi temp)	;; multivar expansion
 	    (psexpt (psplus
 		     ;; The reason we call var-expand below instead of taylor2
 		     ;; is that we must be sure the call is not truncated to
@@ -2324,19 +2322,7 @@
 			   (ncons (term (if (switch '$asymp temp) (rcminus exp)
 					   exp)
 					(rcone)))))))
-	     ((member (exp-pt temp) '($inf $minf $infinity) :test #'eq)
-	      (cond ((switch '$asymp temp)
-		     (merror
-		      "Cannot create an asymptotic expansion at infinity"))
-		    ((e> (setq exp (rcminus exp)) (current-trunc temp))
-		     (rczero))
-		    (t (make-ps (int-var temp)
-				(ncons (if exact-poly (inf) (current-trunc temp)))
-				(ncons (term exp
-					     (if (eq (exp-pt temp) '$minf)
-						 (rcmone)
-						 (rcone))))))))
-	     (t (psexpt (psplus
+	   (t (psexpt (psplus
 			 (make-ps (int-var temp)
 				  (ncons (if exact-poly (inf) (current-trunc temp)))
 				  (ncons (term (if (switch '$asymp temp)
@@ -2387,8 +2373,8 @@
 		  (go begin-expansion)))
 	     (t
 	      (if (and (eq funame '%atan)
-		       (eq (asksign-p-or-n (term-disrep (ps-lt psarg) psarg)) '$pos))
-		  (return (psplus (atrigh arg func) (taylor2 '$%pi)))
+		       (eq (asksign-p-or-n (term-disrep (ps-lt psarg) psarg)) '$neg))
+		  (return (psplus (atrigh arg func) (taylor2 (m- '$%pi))))
 		  (return (atrigh arg func))))))
      (setq temp (t-o-var (gvar psarg)))
      (when (e> (e* funord argord) temp) (return (rczero)))
