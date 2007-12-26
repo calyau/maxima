@@ -77,12 +77,12 @@
 ;; This macro returns the number of trivial equations.  It counts up the
 ;; number of zeros in a list.
 
-(defmacro nzlist (llist)
-  `(do ((l ,llist (cdr l))
-	(zcount 0))
-    ((null l) zcount)
-    (if (and (integerp (car l)) (zerop (car l)))
-	(incf zcount))))
+;(defmacro nzlist (llist)
+;  `(do ((l ,llist (cdr l))
+;	(zcount 0))
+;       ((null l) zcount)
+;     (if (and (integerp (car l)) (zerop (car l)))
+;	 (incf zcount))))
 
 ;; This is only called on a variable.
 
@@ -99,6 +99,7 @@
 	 $keepfloat $ratfac	       ;In case the user has set these
 	 *roots *failures ;*roots gets solutions, *failures "roots of"
 	 broken-not-freeof) ;Has something to do with spliting up roots
+
      (setq eql
 	   (cond ((atom *eql) (ncons *eql))
 		 ((eq (g-rep-operator *eql) 'mlist)
@@ -111,11 +112,7 @@
      (cond ((null varl-p)	 ;If the variable list wasn't supplied
 	    (setq varl		      ;we have to supply it ourselves.
 		  (let (($listconstvars nil))
-		    (cdr ($listofvars
-					;If some trivial then use original equations
-					;(primarily for case of X=X etc.)
-			  (cond ((zerop (nzlist eql)) *eql)
-				(t eql)))))) ;Usually throw trivia out!
+		    (cdr ($listofvars *eql))))
 	    (if varl (setq varl (remc varl)))) ;Remove all constants
 	   (t (setq varl
 		    (cond (($listp varl) (mapcar #'meval (cdr varl)))
