@@ -1,0 +1,66 @@
+/* A nice test of the translator would be to translate the entire test suite ...
+ * In the meantime here are some tests to verify some specific bugs are fixed.
+ */
+
+(kill (all), 0);
+0;
+
+/* SF [ 1728888 ] translator bugs: no mnot mprogn */
+
+(foo (e,v) := block([vi], for vi in v while not(emptyp(e)) do (print(vi), e : rest(e)), e),
+ foo ([1, 2, 3], [a, b]));
+[3];
+
+(translate (foo), ?funcall (foo, [1, 2, 3], [a, b]));
+[3];
+
+/* simpler function featuring mprogn and mnot */
+
+(bar (x) := (x : 2*x, x : 3*x, not (x < 100)), bar (3));
+false;
+
+(translate (bar), ?funcall (bar, 3));
+false;
+
+/* SF [ 1646525 ] no function mdoin */
+
+(try_me(x) := block([acc : 0], for i in x while i > 5 do acc : acc + i, acc),
+ try_me ([10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
+40;
+
+(translate (try_me), ?funcall (try_me, [10, 9, 8, 7, 6, 5, 4, 5, 6, 7, 8, 9, 10]));
+40;
+
+/* SF [ 1818645 ] Compiled maxima code containing $ARRAY gets a Lisp error. */
+
+(test_array_comp (x) :=
+  block ([abc, i],
+    array (abc, 3),
+    for i thru 3 do (abc[i]: i*i),
+    abc[3] : x, 
+    [abc, abc[3], abc[2]]),
+  test_array_comp (100));
+[abc, 100, 4];
+
+(translate (test_array_comp), ?funcall (test_array_comp, 100));
+[abc, 100, 4];
+
+/* SF [ 545794 ] Local Array does not compile properly */
+
+(trial (a) :=
+  block ([myvar, i],
+    local(myvar),
+    array (myvar, 7),
+    for i : 0 thru 7 do myvar [i] : a^i,
+    [member (myvar, arrays), listarray (myvar)]),
+ trial (2));
+[true, [1, 2, 4, 8, 16, 32, 64, 128]];
+
+(translate (trial), ?funcall (trial, 2));
+[true, [1, 2, 4, 8, 16, 32, 64, 128]];
+
+/* Next test fails because local(myvar) in translated code doesn't clean up properties ... */
+
+[member (myvar, arrays), errcatch (listarray (myvar))];
+[false, []];
+
