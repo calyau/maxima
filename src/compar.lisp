@@ -302,9 +302,10 @@ relational knowledge is contained in the default context GLOBAL."
       a
       `((,(caar x) simp) ,a))))
 
-(defmfun $is (pat)
+(defmspec $is (form)
   (let*
-    ((x (mevalp1 pat))
+    ((pat (cadr form))
+     (x (mevalp1 pat))
      (ans (car x))
      (patevalled (cadr x)))
     (cond
@@ -313,8 +314,10 @@ relational knowledge is contained in the default context GLOBAL."
       ($prederror (pre-err patevalled))
       (t '$unknown))))
 
-(defmfun $maybe (pat)
-  (let* ((x (let (($prederror nil)) (mevalp1 pat)))
+(defmspec $maybe (form)
+  (let*
+    ((pat (cadr form))
+     (x (let (($prederror nil)) (mevalp1 pat)))
 	 (ans (car x)))
     (if (member ans '(t nil) :test #'eq)
 	ans

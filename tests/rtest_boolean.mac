@@ -374,3 +374,26 @@ expr : charfun (x > 0 or y > 0);
 
 [ev (expr, x = 1/2), ev (expr, x = -3/2), ev (expr, x = -3/2, y = -3/4)];
 [1, '(charfun (y > 0)), 0];
+
+/* ensure that arguments to is and maybe are evaluated exactly once */
+
+(kill (aa, bb, cc),
+ aa : bb : cc,
+ cc : 1234,
+ is (aa = bb));
+true;
+
+is (aa = 'cc and bb = 'cc);
+true;
+
+is ('aa = 'bb);
+false;
+
+maybe (aa = bb);
+true;
+
+maybe (aa = 'cc and bb = 'cc);
+true;
+
+maybe ('aa = 'bb);
+false;
