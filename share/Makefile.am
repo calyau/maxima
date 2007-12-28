@@ -182,8 +182,6 @@ contrib/floatproperties.lisp\
 contrib/topoly.lisp\
 contrib/topoly_solver.mac\
 contrib/f90.lisp\
-contrib/fourier_elim/fourier_elim.lisp\
-contrib/fourier_elim/rtest_fourier_elim.mac\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
 contrib/format/autoload-mp.macsyma\
@@ -197,6 +195,8 @@ contrib/format/format.mac\
 contrib/format/format.ps\
 contrib/format/pois2.demo\
 contrib/format/pois2m.ps\
+contrib/fourier_elim/fourier_elim.lisp\
+contrib/fourier_elim/rtest_fourier_elim.mac\
 contrib/fractals/fractals.mac\
 contrib/fractals/fractals.texi\
 contrib/fractals/rtest_fractals.mac\
@@ -323,7 +323,11 @@ contrib/mcclim/listeneroutput.png\
 contrib/mcclim/maxima-repl-mcclim.lisp\
 contrib/mcclim/postscriptoutput.png\
 contrib/meijer_gv2.mac\
+contrib/meijer_g.tex\
 contrib/mnewton.mac\
+contrib/namespaces/namespaces.lisp\
+contrib/namespaces/rtest_namespaces.mac\
+contrib/namespaces/foo.mac\
 contrib/nset/README\
 contrib/nset/announce-1.2.txt\
 contrib/nset/changes_1.0_to_1.2.txt\
