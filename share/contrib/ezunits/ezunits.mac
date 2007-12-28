@@ -186,7 +186,7 @@ known_unit_conversions :
 
     /* "English" units --> SI */
 
-    ft = m/(3218/1000),
+    ft = m/(328083/100000),
     lbm = kg/(2205/1000),
     min = 60*s,
     Btu = 1055*J,
