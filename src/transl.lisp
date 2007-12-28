@@ -1424,7 +1424,7 @@ APPLY means like APPLY.")
        (setq init (dtranslate (caddr form)))
        (cond ((or (cadr (cddddr form)) (caddr (cddddr form)))
 	      (tunbind 'mdo) (tunbind (cadr form))
-	      (return `($any simplify (mdoin . ,(cdr form))))))
+	      (return `($any meval '((mdoin) . ,(cdr form))))))
        (setq action (translate (cadddr (cddddr form)))
 	     mode (cond ((null returns) '$any)
 			(t
