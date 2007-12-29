@@ -148,9 +148,9 @@
          idx)
     (setf idx
           (case chn
-            ('$red   0)
-            ('$green 1)
-            ('$blue  2)))
+            ($red   0)
+            ($green 1)
+            ($blue  2)))
     (loop for i from 0 below dim do
       (setf (aref img i) (aref (nth 4 pic) (+ (* 3 i) idx))))
     (list '(picture simp) '$level width height img) ))
@@ -209,8 +209,8 @@
                   (< y (nth 3 pic))))
     (merror "Pixel coordinates out of range"))
   (case (nth 1 pic)
-    ('$level (aref (nth 4 pic) (+ x (* y (nth 2 pic)))))
-    ('$rgb   (let ((pos (* 3 (+ x (* y (nth 2 pic))))))
+    ($level (aref (nth 4 pic) (+ x (* y (nth 2 pic)))))
+    ($rgb   (let ((pos (* 3 (+ x (* y (nth 2 pic))))))
                (list
                  '(mlist simp)
                  (aref (nth 4 pic) pos)
