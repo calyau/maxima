@@ -9,7 +9,7 @@ set -x
 TARGET_TEXI=$TARGET.texi
 
 WORKING_DIRECTORY=`mktemp -d /tmp/maxima-texinfo-categories-XXXXXX`
-cp -a *.texi figures $WORKING_DIRECTORY
+cp -R *.texi figures $WORKING_DIRECTORY
 d=`pwd`
 cd $WORKING_DIRECTORY
 
