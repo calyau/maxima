@@ -385,5 +385,11 @@ tex (t[1], false);
 hgfred([5],[5],1);
 %e;
 
+/*
+ * Bug [ 1858964 ] hgfred([7],[-1], x) --/--> error
+ */
+hgfred([7],[-1],x);
+und;
+
 end;
 end$
