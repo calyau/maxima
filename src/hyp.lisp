@@ -78,6 +78,14 @@
 ;;
 ;; L1 is a (maxima) list of an's, L2 is a (maxima) list of bn's.
 (defun $hgfred (arg-l1 arg-l2 arg)
+  (flet ((arg-ok (a)
+	   (and (listp a)
+		(eq (caar a) 'mlist))))
+    (unless (arg-ok arg-l1)
+      (merror "First argument must be a Maxima list"))
+    (unless (arg-ok arg-l2)
+      (merror "Second argument must be a Maxima list")))
+  
   ;; Do we really want $radexpand set to '$all?  This is probably a
   ;; bad idea in general, but we'll leave this in for now until we can
   ;; verify find all of the code that does or does not need this and
