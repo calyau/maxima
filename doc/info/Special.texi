@@ -15,8 +15,8 @@ bessel_i (index, expr)         Modified Bessel function, 1st kind
 bessel_k (index, expr)         Modified Bessel function, 2nd kind
 %he[n] (z)                     Hermite polynomial (Nota bene: @code{he},
                                not @code{h}. See A&S 22.5.18)
-%p[u,v] (z)                    Legendre function
-%q[u,v] (z)                    Legendre function, 2nd kind
+assoc_legendre_p[v,u] (z)      Legendre function of degree v and order u 
+assoc_legendre_q[v,u] (z)      Legendre function, 2nd kind
 hstruve[n] (z)                 Struve H function
 lstruve[n] (z)                 Struve L function
 %f[p,q] ([], [], expr)         Generalized Hypergeometric function
@@ -720,4 +720,63 @@ Examples:
 @opencatbox
 @category{Laplace transform}
 @closecatbox
+@end deffn
+
+@deffn {Function} hgfred (@var{a}, @var{b}, @var{t})
+
+Simplify the generalized hypergeometric function in terms of other,
+simpler, forms.  @var{a} is a list of numerator parameters and @var{b}
+is a list of the denominator parameters. 
+
+If @code{hgfred} cannot simplify the hypergeometric function, it returns
+an expression of the form @code{%f[p,q]([a], [b], x)} where @var{p} is
+the number of elements in @var{a}, and @var{q} is the number of elements
+in @var{b}.  This is the usual @code{pFq} generalized hypergeometric
+function. 
+
+@example
+(%i1) assume(not(equal(z,0)));
+(%o1)                          [notequal(z, 0)]
+(%i2) hgfred([v+1/2],[2*v+1],2*%i*z);
+
+                     v/2                               %i z
+                    4    bessel_j(v, z) gamma(v + 1) %e
+(%o2)               ---------------------------------------
+                                       v
+                                      z
+(%i3) hgfred([1,1],[2],z);
+
+                                   log(1 - z)
+(%o3)                            - ----------
+                                       z
+(%i4) hgfred([a,a+1/2],[3/2],z^2);
+
+                               1 - 2 a          1 - 2 a
+                        (z + 1)        - (1 - z)
+(%o4)                   -------------------------------
+                                 2 (1 - 2 a) z
+
+@end example
+
+It can be beneficial to load orthopoly too as the following example
+shows.  Note that @var{L} is the generalized Laguerre polynomial.
+
+@example
+(%i5) load(orthopoly)$
+(%i6) hgfred([-2],[a],z);
+
+                                    (a - 1)
+                                 2 L       (z)
+                                    2
+(%o6)                            -------------
+                                   a (a + 1)
+(%i7) ev(%);
+
+                                  2
+                                 z        2 z
+(%o7)                         --------- - --- + 1
+                              a (a + 1)    a
+
+@end example
+
 @end deffn
