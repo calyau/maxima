@@ -1,0 +1,250 @@
+@c english version 1.5
+@menu
+* Introducci@'on a lapack::
+* Funciones y variables para lapack::
+@end menu
+
+@node Introducci@'on a lapack, Funciones y variables para lapack, lapack, lapack
+@section Introducci@'on a lapack
+
+@code{lapack} es una traducci@'on autom@'atica a Common Lisp (con el programa @code{f2c})  
+de la librer@'{@dotless{i}}a LAPACK escrita en Fortran.
+
+
+@node Funciones y variables para lapack, , Introducci@'on a lapack, lapack
+@section Funciones y variables para lapack
+
+@deffn {Funci@'on} dgeev (@var{A})
+@deffnx {Funci@'on} dgeev (@var{A}, @var{right_p}, @var{left_p})
+
+Calcula los autovalores y, opcionalmente, tambi@'en los autovectores de la matriz @var{A}.
+Todos los elementos de @var{A} deben ser enteros o n@'umeros decimales en coma flotante.
+Adem@'as, @var{A} debe ser cuadrada (igual n@'umero de filas que de columnas) y puede
+ser o no sim@'etrica.
+
+@code{dgeev(@var{A})} calcula s@'olo los autovalores de @var{A}. 
+@code{dgeev(@var{A}, @var{right_p}, @var{left_p})} calcula los autovalores de @var{A}
+y los autovectores por la derecha cuando @math{@var{right_p} = @code{true}}, y
+los autovectores por la izquierda cuando @math{@var{left_p} = @code{true}}.
+
+La funci@'on devuelve una lista de tres elementos.
+El primer elemento es una lista con los autovalores.
+El segundo elemento es @code{false} o la matriz de autovectores por la derecha.
+El tercer elemento es @code{false} o la matriz de autovectores por la izquierda.
+
+El autovector por la derecha @math{v(j)} (la @math{j}-@'esima columna de la matriz de
+autovectores por la derecha) satisface
+
+@math{A . v(j) = lambda(j) . v(j)}
+
+donde @math{lambda(j)} es su autovalor asociado.
+
+El autovector por la izquierda @math{u(j)} (la @math{j}-@'esima columna de la matriz de
+autovectores por la izquierda) satisface
+
+@math{u(j)**H . A = lambda(j) . u(j)**H}
+
+donde @math{u(j)**H} denota la transpuesta conjugada de @math{u(j)}.
+
+La funci@'on de Maxima @code{ctranspose} calcula la transpuesta conjugada.
+
+Los autovectores calculados est@'an normalizados para que su norma
+eucl@'{@dotless{i}}dea valga 1 y su componente mayor tenga su parte
+imaginaria igual a cero.
+
+Ejemplo:
+
+@c ===beg===
+@c load (lapack)$
+@c fpprintprec : 6;
+@c M : matrix ([9.5, 1.75], [3.25, 10.45]);
+@c dgeev (M);
+@c [L, v, u] : dgeev (M, true, true);
+@c D : apply (diag_matrix, L);
+@c M . v - v . D;
+@c transpose (u) . M - D . transpose (u);
+@c ===end===
+@example
+(%i1) load (lapack)$
+(%i2) fpprintprec : 6;
+(%o2)                           6
+(%i3) M : matrix ([9.5, 1.75], [3.25, 10.45]);
+                         [ 9.5   1.75  ]
+(%o3)                    [             ]
+                         [ 3.25  10.45 ]
+(%i4) dgeev (M);
+(%o4)          [[7.54331, 12.4067], false, false]
+(%i5) [L, v, u] : dgeev (M, true, true);
+                           [ - .666642  - .515792 ]
+(%o5) [[7.54331, 12.4067], [                      ], 
+                           [  .745378   - .856714 ]
+                                        [ - .856714  - .745378 ]
+                                        [                      ]]
+                                        [  .515792   - .666642 ]
+(%i6) D : apply (diag_matrix, L);
+                      [ 7.54331     0    ]
+(%o6)                 [                  ]
+                      [    0     12.4067 ]
+(%i7) M . v - v . D;
+                [      0.0       - 8.88178E-16 ]
+(%o7)           [                              ]
+                [ - 8.88178E-16       0.0      ]
+(%i8) transpose (u) . M - D . transpose (u);
+                     [ 0.0  - 4.44089E-16 ]
+(%o8)                [                    ]
+                     [ 0.0       0.0      ]
+@end example
+
+
+
+@end deffn
+
+@deffn {Funci@'on} dgesvd (@var{A})
+@deffnx {Funci@'on} dgesvd (@var{A}, @var{left_p}, @var{right_p})
+
+Calcula la descomposici@'on singular (SVD, en ingl@'es) de la matriz @var{A},
+que contiene los valores singulares y, opcionalmente, los vectores singulares por
+la derecha o por la izquierda. Todos los elementos de @var{A} deben ser enteros o 
+n@'umeros decimales en coma flotante. La matriz @var{A} puede ser cuadrada o no 
+(igual n@'umero de filas que de columnas).
+
+Sea @math{m} el n@'umero de filas y @math{n} el de columnas de @var{A}.
+La descomposici@'on singular de @var{A} consiste en calcular tres matrices: 
+@var{U}, @var{Sigma} y @var{V^T}, tales que
+
+@c @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
+@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
+
+donde @var{U} es una matriz unitaria @math{m}-por-@math{m},
+@var{Sigma} es una matriz diagonal @math{m}-por-@math{n} y
+@var{V^T} es una matriz unitaria @math{n}-por-@math{n}.
+
+Sea @math{sigma[i]} un elemento diagonal de @math{Sigma}, esto es,
+@math{@var{Sigma}[i, i] = @var{sigma}[i]}. Los elementos @math{sigma[i]}
+se llaman valores singulares de @var{A}, los cuales son reales y no negativos,
+siendo devueltos por la funci@'on @code{dgesvd} en orden descendente. 
+
+Las primeras @math{min(m, n)} columnas de @var{U} y @var{V} son los vectores
+singulares izquierdo y derecho de @var{A}. N@'otese que @code{dgesvd}
+devuelve la transpuesta de @var{V}, no la propia matriz @var{V}.
+
+@code{dgesvd(@var{A})} calcula @'unicamente los valores singulares de @var{A}.
+@code{dgesvd(@var{A}, @var{left_p}, @var{right_p})} calcula los valores singulares
+de @var{A} y los vectores sigulares por la izquierda cuando @math{@var{left_p} = @code{true}},
+y los vectores sigulares por la derecha cuando @math{@var{right_p} = @code{true}}.
+
+La funci@'on devuelve una lista de tres elementos.
+El primer elemento es una lista con los valores singulares.
+El segundo elemento es @code{false} o la matriz de vectores singulares por la izquierda.
+El tercer elemento es @code{false} o la matriz de vectores singulares por la derecha.
+
+Ejemplo:
+
+@c ===beg===
+@c load (lapack)$
+@c fpprintprec : 6;
+@c M: matrix([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
+@c dgesvd (M);
+@c [sigma, U, VT] : dgesvd (M, true, true);
+@c m : length (U);
+@c n : length (VT);
+@c Sigma:
+@c   genmatrix(lambda ([i, j], if i=j then sigma[i] else 0),
+@c             m, n);
+@c U . Sigma . VT - M;
+@c transpose (U) . U;
+@c VT . transpose (VT);
+@c ===end===
+@example
+(%i1) load (lapack)$
+(%i2) fpprintprec : 6;
+(%o2)                           6
+(%i3) M: matrix([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
+                        [  1    2    3  ]
+                        [               ]
+                        [ 3.5  0.5   8  ]
+(%o3)                   [               ]
+                        [ - 1   2   - 3 ]
+                        [               ]
+                        [  4    9    7  ]
+(%i4) dgesvd (M);
+(%o4)      [[14.4744, 6.38637, .452547], false, false]
+(%i5) [sigma, U, VT] : dgesvd (M, true, true);
+(%o5) [[14.4744, 6.38637, .452547], 
+[ - .256731  .00816168   .959029    - .119523 ]
+[                                             ]
+[ - .526456   .672116   - .206236   - .478091 ]
+[                                             ], 
+[  .107997   - .532278  - .0708315  - 0.83666 ]
+[                                             ]
+[ - .803287  - .514659  - .180867    .239046  ]
+[ - .374486  - .538209  - .755044 ]
+[                                 ]
+[  .130623   - .836799   0.5317   ]]
+[                                 ]
+[ - .917986   .100488    .383672  ]
+(%i6) m : length (U);
+(%o6)                           4
+(%i7) n : length (VT);
+(%o7)                           3
+(%i8) Sigma:
+        genmatrix(lambda ([i, j], if i=j then sigma[i] else 0),
+                  m, n);
+                  [ 14.4744     0        0    ]
+                  [                           ]
+                  [    0     6.38637     0    ]
+(%o8)             [                           ]
+                  [    0        0     .452547 ]
+                  [                           ]
+                  [    0        0        0    ]
+(%i9) U . Sigma . VT - M;
+          [  1.11022E-15        0.0       1.77636E-15 ]
+          [                                           ]
+          [  1.33227E-15    1.66533E-15       0.0     ]
+(%o9)     [                                           ]
+          [ - 4.44089E-16  - 8.88178E-16  4.44089E-16 ]
+          [                                           ]
+          [  8.88178E-16    1.77636E-15   8.88178E-16 ]
+(%i10) transpose (U) . U;
+       [     1.0      5.55112E-17    2.498E-16     2.77556E-17  ]
+       [                                                        ]
+       [ 5.55112E-17      1.0       5.55112E-17    4.16334E-17  ]
+(%o10) [                                                        ]
+       [  2.498E-16   5.55112E-17       1.0       - 2.08167E-16 ]
+       [                                                        ]
+       [ 2.77556E-17  4.16334E-17  - 2.08167E-16       1.0      ]
+(%i11) VT . transpose (VT);
+          [      1.0           0.0      - 5.55112E-17 ]
+          [                                           ]
+(%o11)    [      0.0           1.0       5.55112E-17  ]
+          [                                           ]
+          [ - 5.55112E-17  5.55112E-17       1.0      ]
+@end example
+
+
+@end deffn
+
+@deffn {Funci@'on} dlange (@var{norm}, @var{A})
+@deffnx {Funci@'on} zlange (@var{norm}, @var{A})
+
+Calcula una norma o seudonorma de la matriz @var{A}.
+
+@table @code
+@item max
+Calcula @math{max(abs(A(i, j)))}, siendo @math{i} y @math{j} n@'umeros de filas
+y columnas, respectivamente, de @var{A}.
+N@'otese que esta funci@'on no es una norma matricial.
+@item one_norm
+Calcula la norma @math{L[1]} de @var{A},
+esto es, el m@'aximo de la suma de los valores absolutos de los elementos de cada columna.
+@item inf_norm
+Calcula la norma @math{L[inf]} de @var{A},
+esto es, el m@'aximo de la suma de los valores absolutos de los elementos de cada fila.
+@item frobenius
+Calcula la norma de Frobenius de @var{A},
+esto es, la ra@'{@dotless{i}}z cuadrada de la suma de los cuadrados de los elementos de
+la matriz.
+@end table
+
+
+@end deffn

@@ -157,6 +157,7 @@ Paquetes adicionales
 * grobner::                     Funciones para trabajar con bases de Groebner.
 * impdiff::                     Derivadas impl@'{@dotless{i}}citas.
 * interpol::                    Interpolaci@'on.
+* lapack::                      Paquete LAPACK para @'algebra lineal.
 * lbfgs::                       Paquete L-BFGS para minimizaci@'on sin restricciones.
 * lindstedt::                   Paquete Lindstedt.
 * linearalgebra::               Funciones de @'algebra lineal.
@@ -471,6 +472,11 @@ interpol
 
 * Introducci@'on a interpol::
 * Funciones y variables para interpol::
+
+lapack
+
+* Introducci@'on a lapack::
+* Funciones y variables para lapack::
 
 lbfgs
 
@@ -791,11 +797,15 @@ zeilberger
 @chapter impdiff
 @include impdiff.texi
 
-@node interpol, lbfgs, impdiff, Top
+@node interpol, lapack, impdiff, Top
 @chapter interpol
 @include interpol.texi
 
-@node lbfgs, lindstedt, interpol, Top
+@node lapack, lbfgs, interpol, Top
+@chapter lapack
+@include lapack.texi
+
+@node lbfgs, lindstedt, lapack, Top
 @chapter lbfgs
 @include lbfgs.texi
 
