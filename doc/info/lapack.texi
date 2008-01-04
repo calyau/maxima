@@ -32,8 +32,8 @@ and the left eigenvectors when @math{@var{left_p} = @code{true}}.
 
 A list of three items is returned.
 The first item is a list of the eigenvalues.
-The second item is false or the matrix of right eigenvectors.
-The third item is false or the matrix of left eigenvectors.
+The second item is @code{false} or the matrix of right eigenvectors.
+The third item is @code{false} or the matrix of left eigenvectors.
 
 The right eigenvector @math{v(j)} (the @math{j}-th column of the right eigenvector matrix) satisfies
 
@@ -112,7 +112,8 @@ The singular value decomposition of @var{A} comprises three matrices,
 @var{U}, @var{Sigma}, and @var{V^T},
 such that
 
-@math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
+@c this code breaks texi2pdf: @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
+@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
 
 where @var{U} is an @math{m}-by-@math{m} unitary matrix,
 @var{Sigma} is an @math{m}-by-@math{n} diagonal matrix,
@@ -133,20 +134,22 @@ and the right singular vectors when @math{@var{right_p} = @code{true}}.
 
 A list of three items is returned.
 The first item is a list of the singular values.
-The second item is false or the matrix of left singular vectors.
-The third item is false or the matrix of right singular vectors.
+The second item is @code{false} or the matrix of left singular vectors.
+The third item is @code{false} or the matrix of right singular vectors.
 
 Example:
 
 @c ===beg===
 @c load (lapack)$
 @c fpprintprec : 6;
-@c M : matrix ([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
+@c M: matrix([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
 @c dgesvd (M);
 @c [sigma, U, VT] : dgesvd (M, true, true);
 @c m : length (U);
 @c n : length (VT);
-@c Sigma : genmatrix (lambda ([i, j], if i=j then sigma[i] else 0), m, n);
+@c Sigma:
+@c   genmatrix(lambda ([i, j], if i=j then sigma[i] else 0),
+@c             m, n);
 @c U . Sigma . VT - M;
 @c transpose (U) . U;
 @c VT . transpose (VT);
@@ -155,7 +158,7 @@ Example:
 (%i1) load (lapack)$
 (%i2) fpprintprec : 6;
 (%o2)                           6
-(%i3) M : matrix ([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
+(%i3) M: matrix([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
                         [  1    2    3  ]
                         [               ]
                         [ 3.5  0.5   8  ]
@@ -183,7 +186,9 @@ Example:
 (%o6)                           4
 (%i7) n : length (VT);
 (%o7)                           3
-(%i8) Sigma : genmatrix (lambda ([i, j], if i=j then sigma[i] else 0), m, n);
+(%i8) Sigma:
+        genmatrix(lambda ([i, j], if i=j then sigma[i] else 0),
+                  m, n);
                   [ 14.4744     0        0    ]
                   [                           ]
                   [    0     6.38637     0    ]
