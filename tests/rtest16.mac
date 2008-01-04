@@ -391,5 +391,11 @@ hgfred([5],[5],1);
 hgfred([7],[-1],x);
 und;
 
+/*
+ * Bug [ 1858939 ] hgfred([-1],[-2],x) --> error
+ */
+hgfred([-1],[-2],x);
+-gen_laguerre(1,-3,x)/2;
+
 end;
 end$
