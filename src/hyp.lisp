@@ -273,10 +273,26 @@
 	   ;;
 	   ;; Or hgfred([-n],[alpha],x) =
 	   ;; gen_laguerre(n,alpha-1,x)/binomial(n+alpha-1,n)
-	   (mul (factorial n)
-		(gm c)
-		(inv (gm (add c n)))
-		(lagpol n (sub c 1) var))))))
+	   ;;
+	   ;; But 1/binomial(n+alpha-1,n) = n!*(alpha-1)!/(n+alpha-1)!
+	   ;;    = n! / (alpha * (alpha + 1) * ... * (alpha + n - 1)
+	   ;;    = n! / poch(alpha, n)
+	   ;;
+	   ;; See Bug 1858939.
+	   ;;
+	   ;; However, if c is not a number leave the result in terms
+	   ;; of gamma functions.  I (rtoy) think this makes for a
+	   ;; simpler result, especially if n is rather large.  If the
+	   ;; user really wants the answer expanded out, makefact and
+	   ;; minfactorial will do that.
+	   (if (numberp c)
+	       (mul (factorial n)
+		    (inv (factf c n))
+		    (lagpol n (sub c 1) var))
+	       (mul (factorial n)
+		    (gm c)
+		    (inv (gm (add c n)))
+		    (lagpol n (sub c 1) var)))))))
 
 ;; Hermite polynomial.  Note: The Hermite polynomial used here is the
 ;; He polynomial, defined as (A&S 22.5.18, 22.5.19)
