@@ -162,10 +162,14 @@
 	   ;; A negative integer in the first series means we have a
 	   ;; polynomial.
 	   (create-poly arg-l1 arg-l2 n))
-	  ((or (zerop-in-l arg-l2)
-	       (hyp-negp-in-l arg-l2))
+	  ((and (or (zerop-in-l arg-l2)
+		    (hyp-negp-in-l arg-l2))
+		(every #'mnump arg-l1)
+		(every #'mnump arg-l2))
 	   ;; A zero or negative number in the second index means we
-	   ;; eventually divide by zero, so we're undefined.
+	   ;; eventually divide by zero, so we're undefined.  But only
+	   ;; do this if both indices contain numbers.  See Bug
+	   ;; 1858964 for discussion.
 	   'undef)
 	  (t
 	   ;; We failed so more complicated stuff needs to be done.
