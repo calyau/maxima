@@ -153,8 +153,6 @@
   convenience for writers of packages and users of the macsyma->lisp
   translator."
 
-  (if (symbolp filename)
-    (setq filename (string-downcase (symbol-name (stripdollar filename)))))
   (let ((searched-for
 	 ($file_search1 filename
 			'((mlist) $file_search_maxima $file_search_lisp  )))
