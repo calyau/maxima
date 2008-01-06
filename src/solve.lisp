@@ -115,7 +115,7 @@
 		    (cdr ($listofvars *eql))))
 	    (if varl (setq varl (remc varl)))) ;Remove all constants
 	   (t (setq varl
-		    (cond (($listp varl) (mapcar #'meval (cdr varl)))
+		    (cond (($listp varl) (remove-duplicates (mapcar #'meval (cdr varl))))
 			  (t (list varl))))))
 
      (if (and (null varl) $solvenullwarn)

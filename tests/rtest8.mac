@@ -219,3 +219,11 @@ block ([expr],
  block ([float_approx_equal_tolerance : 1e-12],
     float_approx_equal (find_root (expr, x, 0, 4), 3.127271310605426)));
 true;
+
+/* SF bug report [ 607079 ] solve with repeated variable
+ */
+solve ('[x = 1], '[x, x]);
+[x = 1];
+
+solve ('[u = v], '[u, u, u, u]);
+[u = v];
