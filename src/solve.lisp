@@ -95,60 +95,103 @@
 
 (defmfun $solve (*eql &optional (varl nil varl-p))
   (setq $multiplicities (make-mlist))
-  (prog (eql		       ;Expressions and variables being solved
-	 $keepfloat $ratfac	       ;In case the user has set these
-	 *roots *failures ;*roots gets solutions, *failures "roots of"
-	 broken-not-freeof) ;Has something to do with spliting up roots
-
+  (prog (eql                            ; Equations to solve
+         $keepfloat $ratfac             ; In case user has set these
+         *roots                         ; *roots gets solutions,
+         *failures                      ; *failures "roots of"
+         broken-not-freeof) ;Has something to do with splitting up roots
+     
+     ;; Create the equation list (this is a lisp list, not 'MLIST)
      (setq eql
-	   (cond ((atom *eql) (ncons *eql))
-		 ((eq (g-rep-operator *eql) 'mlist)
-		  (mapcar 'meqhk (mapcar 'meval (cdr *eql))))
-		 ((member (g-rep-operator *eql)
-			'(mnotequal mgreaterp mlessp mgeqp mleqp) :test #'eq)
-		  (merror "Cannot solve inequalities. -`solve'"))
-		 (t (ncons (meqhk *eql)))))
+           (cond
+             ;; If an atom, cons it.
+             ((atom *eql) (ncons *eql))
+             ;; If we have a list of equations, move everything over
+             ;; to one side, so x=5 -> x-5=0.
+             ((eq (g-rep-operator *eql) 'mlist)
+              (mapcar 'meqhk (mapcar 'meval (cdr *eql))))
+             ;; We can't solve inequalities
+             ((member (g-rep-operator *eql)
+                      '(mnotequal mgreaterp mlessp mgeqp mleqp) :test #'eq)
+              (merror "Cannot solve inequalities. -`solve'"))
+             ;; Finally, assume we have just one equation, and put it
+             ;; on one side again.
+             (t (ncons (meqhk *eql)))))
 
-     (cond ((null varl-p)	 ;If the variable list wasn't supplied
-	    (setq varl		      ;we have to supply it ourselves.
-		  (let (($listconstvars nil))
-		    (cdr ($listofvars *eql))))
-	    (if varl (setq varl (remc varl)))) ;Remove all constants
-	   (t (setq varl
-		    (cond (($listp varl) (remove-duplicates (mapcar #'meval (cdr varl))))
-			  (t (list varl))))))
+     (cond
+       ;; If the variable list wasn't supplied we have to supply it
+       ;; ourselves. Also remove constants like $%pi from the list.
+       ((null varl-p)
+        (setq varl
+              (let (($listconstvars nil))
+                (cdr ($listofvars *eql))))
+        (if varl (setq varl (remc varl)))) ; Remove all constants
 
-     (if (and (null varl) $solvenullwarn)
-	 (mtell "~&Got a null variable list, continuing - `solve'~%"))
-     (if (and (null eql) $solvenullwarn)
-	 (mtell "~&Got a null equation list, continuing - `solve'~%"))
-     (if (some #'mnump varl)
-	 (merror "A number was found where a variable was expected -`solve'"))
+       ;; If we have got a variable list then if it's a list apply
+       ;; meval to each entry and then weed out duplicates. Else, just
+       ;; cons it.
+       (t
+        (setq varl
+              (cond (($listp varl) (remove-duplicates
+                                    (mapcar #'meval (cdr varl))))
+                    (t (list varl))))))
 
-     (cond ((equal eql '(0)) (return '$all))
-	   ((or (null varl) (null eql)) (return (make-mlist-simp)))
-	   ((and (null (cdr varl)) (null (cdr eql)))
-	    (return (ssolve (car eql) (car varl))))
-	   ((or varl-p (= (length varl) (length eql)))
-	    (setq eql (solvex eql varl (not $programmode) t))
-	    (return (cond ((and (cdr eql) (not ($listp (cadr eql))))
-			   (make-mlist eql))
-			  (t eql)))))
+     ;; Some sanity checks and warning messages.
+     (when (and (null varl) $solvenullwarn)
+       (mtell "~&Got a null variable list, continuing - `solve'~%"))
+
+     (when (and (null eql) $solvenullwarn)
+       (mtell "~&Got a null equation list, continuing - `solve'~%"))
+
+     (when (some #'mnump varl)
+       (merror
+        "A number was found where a variable was expected -`solve'"))
+     
+     ;; Deal with special cases.
+     (cond
+       ;; Trivially true equations for any set of variables.
+       ((equal eql '(0))
+        (return '$all))
+
+       ;; Trivially false equations: return []
+       ((or (null varl) (null eql))
+        (return (make-mlist-simp)))
+
+       ;; One equation in one variable: SSOLVE
+       ((and (null (cdr varl)) (null (cdr eql)))
+        (return (ssolve (car eql) (car varl))))
+
+       ;; We were given a variable list, or there are same # of eqns
+       ;; as unknowns: SOLVEX.
+       ((or varl-p
+            (= (length varl) (length eql)))
+        (setq eql (solvex eql varl (not $programmode) t))
+        (return
+          (cond ((and (cdr eql)
+                      (not ($listp (cadr eql))))
+                 (make-mlist eql))
+                (t eql)))))
+
+     ;; We don't know what to do, so complain. The let sets u to varl
+     ;; but as an MLIST list and e to the original eqns coerced to a
+     ;; list.
      (let ((u (make-mlist-l varl))
-	   (e (cond (($listp *eql) *eql)
-		    (t (make-mlist *eql)))))
+           (e (cond (($listp *eql) *eql)
+                    (t (make-mlist *eql)))))
        ;; MFORMAT doesn't have ~:[~] yet, so I just change this to
        ;; make one of two possible calls to MERROR. Smaller codesize
        ;; then what was here before anyway.
        (if (> (length varl) (length eql))
-	   (merror "More unknowns than equations - `solve'~
+	   (merror
+      "More unknowns than equations - `solve'~
 		  ~%Unknowns given :  ~%~M~
 		  ~%Equations given:  ~%~M"
-		   u e)
-	   (merror "More equations than unknowns - `solve'~
+      u e)
+	   (merror
+      "More equations than unknowns - `solve'~
 		  ~%Unknowns given :  ~%~M~
 		  ~%Equations given:  ~%~M"
-		   u e)))))
+      u e)))))
 
 
 ;; Removes anything from its list arg which solve considers not to be a
