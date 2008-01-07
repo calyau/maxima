@@ -688,7 +688,8 @@ the half-integer Bessel functions are evaluated using the SLATEC code.
 @section Functions and Variables for orthogonal polynomials
 
 @deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
-The associated Legendre function of the first kind. 
+The associated Legendre function of the first kind of degree @var{n} and
+order @var{m}.
 
 Reference: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
 (second equation), page 334, and 8.2.5, page 333.
@@ -700,7 +701,8 @@ Reference: Abramowitz and Stegun, equations 22.5.37, page 779, 8.6.6
 @end deffn
 
 @deffn {Function} assoc_legendre_q (@var{n}, @var{m}, @var{x})
-The associated Legendre function of the second kind.
+The associated Legendre function of the second kind of degree @var{n}
+and order @var{m}.
 
 Reference: Abramowitz and Stegun, equation 8.5.3 and 8.1.8.
 
@@ -733,7 +735,7 @@ Reference: Abramowitz and Stegun, equation 22.5.48, page 779.
 @end deffn
 
 @deffn {Function} gen_laguerre (@var{n}, @var{a}, @var{x})
-The generalized Laguerre polynomial.
+The generalized Laguerre polynomial of degree @var{n}.
 
 Reference: Abramowitz and Stegun, equation 22.5.54, page 780.
 
