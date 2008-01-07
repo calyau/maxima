@@ -18,7 +18,7 @@ THIS ITEM NEEDS TO BE TRANSLATED.
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 
-@deffn {Function} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Function} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 THIS ITEM NEEDS TO BE TRANSLATED.
 @end deffn
 

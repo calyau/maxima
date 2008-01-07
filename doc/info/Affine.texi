@@ -80,7 +80,7 @@ the weights of individual variables.
 @closecatbox
 @end deffn
 
-@deffn {Function} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Function} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Assigns weights @var{w_1}, ..., @var{w_n} to @var{x_1}, ..., @var{x_n}, respectively.
 These are the weights used in computing @code{nc_degree}.
 

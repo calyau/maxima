@@ -64,7 +64,7 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 
 @end deffn
 
-@deffn {Функция} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Функция} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Присваивает веса @var{w_1}, ..., @var{w_n} переменным @var{x_1}, ..., @var{x_n}.
 Эти веса используются при вычислении @code{nc_degree}.
 

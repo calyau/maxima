@@ -56,7 +56,7 @@ de las variables individuales.
 
 @end deffn
 
-@deffn {Funci@'on} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Funci@'on} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Asigna los pesos @var{w_1}, ..., @var{w_n} a @var{x_1}, ..., @var{x_n}, respectivamente.
 Estos pesos son los utilizados en el c@'alculo de @code{nc_degree}.
 

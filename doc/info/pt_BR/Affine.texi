@@ -62,7 +62,7 @@ pesos das vari@'{a}veis individuais.
 
 @end deffn
 
-@deffn {Fun@value{cedilha}@~{a}o} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffn {Fun@value{cedilha}@~{a}o} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Atribui pesos @var{w_1}, ..., @var{w_n} to @var{x_1}, ..., @var{x_n}, respectivamente.
 Esses s@~{a}o pesos usados em c@'{a}lculos @code{nc_degree}.
 
