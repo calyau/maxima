@@ -969,10 +969,17 @@
 	(t (cons (subst2s (car ex) pat)
 		 (subst2s (cdr ex) pat)))))
 
+;; Helper for simple-trig-arg
+(defun simple-trig-arg->=1 (x)
+  (and ($numberp x)
+       (or (great x 1)
+	   (alike1 x 1))))
+
 ;; Match (c*x+b), where c and b are free of x and c is a number
+;; greater than or equal to 1.
 (defun simple-trig-arg (exp)
   (m2 exp '((mplus) ((mtimes)
-		     ((coefftt) (c $numberp))
+		     ((coefftt) (c simple-trig-arg->=1))
 		     ((coefftt) (v varp)))
 	    ((coeffpp) (b freevar)))
       nil))
