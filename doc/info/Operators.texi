@@ -95,7 +95,7 @@ See also @code{Syntax}.
 
 The symbols @code{+} @code{*} @code{/} and @code{^} represent
 addition, multiplication, division, and exponentiation, respectively.
-The name of these operators are @code{"+"} @code{"*"} @code{"/"} and @code{"^"},
+The names of these operators are @code{"+"} @code{"*"} @code{"/"} and @code{"^"},
 which may appear where the name of a function or operator is required.
 
 The symbols @code{+} and @code{-} represent unary addition and negation, respectively,
@@ -349,10 +349,79 @@ Examples:
 @fnindex Greater than
 @end ifinfo
 
+The symbols @code{<} @code{<=} @code{>=} and @code{>} represent
+less than, less than or equal, greater than or equal, and greater than, respectively.
+The names of these operators are @code{"<"} @code{"<="} @code{">="} and @code{">"},
+which may appear where the name of a function or operator is required.
+
+These relational operators are all binary operators;
+constructs such as @code{a < b < c} are not recognized by Maxima.
+
+Relational expressions are evaluated to Boolean values
+by the functions @code{is} and @code{maybe},
+and the programming constructs @code{if}, @code{while}, and @code{unless}.
+Relational expressions are not otherwise evaluated or simplified to Boolean values,
+although the arguments of relational expressions are evaluated
+(when evaluation is not otherwise prevented by quotation).
+
+When a relational expression cannot be evaluated to @code{true} or @code{false},
+the behavior of @code{is} and @code{if} are governed by the global flag @code{prederror}.
+When @code{prederror} is @code{true},
+@code{is} and @code{if} trigger an error.
+When @code{prederror} is @code{false},
+@code{is} returns @code{unknown},
+and @code{if} returns a partially-evaluated conditional expression.
+
+@code{maybe} always behaves as if @code{prederror} were @code{false},
+and @code{while} and @code{unless} always behave as if @code{prederror} were @code{true}.
+
+Relational operators do not distribute over lists or other aggregates.
+
+See also @code{=} @code{#} @code{equal} and @code{notequal}.
+
+Examples:
+
+Relational expressions are evaluated to Boolean values by some functions and programming constructs.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c is (x < y);
+@c maybe (y > z);
+@c if x >= z then 1 else 0;
+@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+@c ===end===
+@example
+(%i1) [x, y, z] : [123, 456, 789];
+(%o1)                    [123, 456, 789]
+(%i2) is (x < y);
+(%o2)                         true
+(%i3) maybe (y > z);
+(%o3)                         false
+(%i4) if x >= z then 1 else 0;
+(%o4)                           0
+(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+(%o5)                         5050
+@end example
+
+Relational expressions are not otherwise evaluated or simplified to Boolean values,
+although the arguments of relational expressions are evaluated.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c [x < y, y <= z, z >= y, y > z];
+@c map (is, %);
+@c ===end===
+@example
+(%o1)                    [123, 456, 789]
+(%i2) [x < y, y <= z, z >= y, y > z];
+(%o2)    [123 < 456, 456 <= 789, 789 >= 456, 456 > 789]
+(%i3) map (is, %);
+(%o3)               [true, true, true, false]
+@end example
+
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
 @node General operators, , Relational operators, Operators

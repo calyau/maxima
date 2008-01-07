@@ -41,6 +41,26 @@ Maxima implements @code{false} by the value @code{NIL} in Lisp.
 @closecatbox
 @end defvr
 
+@defvr {Constant} ind
+@ifinfo
+@vrindex Indeterminate
+@end ifinfo
+
+@code{ind} represents a bounded, indefinite result.
+
+See also @code{limit}.
+
+Example:
+
+@c ===beg===
+@c limit (sin(1/x), x, 0);
+@c ===end===
+@example
+(%i1) limit (sin(1/x), x, 0);
+(%o1)                          ind
+@end example
+@end defvr
+
 @defvr {Constant} inf
 @ifinfo
 @vrindex Real infinity
@@ -175,3 +195,22 @@ Maxima implements @code{true} by the value @code{T} in Lisp.
 @closecatbox
 @end defvr
 
+@defvr {Constant} und
+@ifinfo
+@vrindex Undefined
+@end ifinfo
+
+@code{und} represents an undefined result.
+
+See also @code{limit}.
+
+Example:
+
+@c ===beg===
+@c limit (1/x, x, 0);
+@c ===end===
+@example
+(%i1) limit (1/x, x, 0);
+(%o1)                          und
+@end example
+@end defvr

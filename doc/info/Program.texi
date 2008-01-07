@@ -641,6 +641,7 @@ mechanism.
 @c NEED MORE HERE !!
 @c AT LEAST SHOULD LIST ACCEPTABLE VARIANTS
 @deffn {Special operator} while
+@deffnx {Special operator} unless
 See @code{do}.
 
 @opencatbox

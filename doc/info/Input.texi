@@ -1465,6 +1465,27 @@ To display the contents of a file, see @code{printfile}.
 
 @end deffn
 
+@deffn {Function} printfile (@var{path})
+
+Prints the file named by @var{path} to the console.
+@var{path} may be a string or a symbol;
+if it is a symbol, it is converted to a string.
+
+If @var{path} names a file which is accessible from the current working directory,
+that file is printed to the console.
+Otherwise,
+@code{printfile} attempts to locate the file by appending @var{path}
+to each of the elements of @code{file_search_usage}
+via @code{filename_merge}.
+
+@code{printfile} returns @var{path} if it names an existing file,
+or otherwise the result of a successful filename merge.
+
+@opencatbox
+@category{File input} @category{Console interaction}
+@closecatbox
+@end deffn
+
 @c RECOMMEND CUTTING THIS ITEM AND CUTTING $tcl_output IN src/plot.lisp
 @c THIS REALLY, REALLY SEEMS LIKE CRUFT:
 @c $tcl_output IS NEVER CALLED WITHIN MAXIMA SOURCE,
