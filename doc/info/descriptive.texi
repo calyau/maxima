@@ -1933,6 +1933,10 @@ A simple histogram with eight classes.
         fill_color   = grey,
         fill_density = 0.6)$
 @end example
+
+@opencatbox
+@category{Package descriptive} @category{Plotting}
+@closecatbox
 @end deffn
 
 
