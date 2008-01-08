@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=stirling.texi
-@c OriginalRevision=1.2
+@c OriginalRevision=1.3
 @c TranslatedBy: (c) 2007-09-04 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -56,4 +56,9 @@
 
 
 Для использования этой функции сначала напишите @code{load("stirling")}.
+
+@opencatbox
+@category{Гамма-функция и факториал} @category{Пакеты библиотеки share} @category{Пакет stirling}
+@closecatbox
+
 @end deffn
