@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.55
+@c OriginalRevision=1.56
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -41,7 +41,7 @@ END-INFO-DIR-ENTRY
 @end macro
 @end ifinfo
 
-@c @include ../category-macros.texi
+@include ../category-macros.texi
 
 @titlepage
 @sp 10
@@ -167,6 +167,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * impdiff::                       Implicit derivatives.
 * implicit_plot::                 Implicit plots package.
 * interpol::                      Interpolation package.
+* lapack::                        LAPACK functions for linear algebra.
 * lbfgs::                         L-BFGS unconstrained minimization package.
 * lindstedt::                     Lindstedt package.
 * linearalgebra::                 Functions for linear algebra.
@@ -478,6 +479,11 @@ interpol
 
 * Introduction to interpol::
 * Definitions for interpol::
+
+lapack
+
+* Introduction to lapack::
+* Functions and Variables for lapack::
 
 lbfgs
 
@@ -801,11 +807,15 @@ zeilberger
 @chapter implicit_plot
 @include implicit_plot.texi
 
-@node interpol, lbfgs, implicit_plot, Top
+@node interpol, lapack, implicit_plot, Top
 @chapter interpol
 @include interpol.texi
 
-@node lbfgs, lindstedt, interpol, Top
+@node lapack, lbfgs, interpol, Top
+@chapter lapack
+@include lapack.texi
+
+@node lbfgs, lindstedt, lapack, Top
 @chapter lbfgs
 @include lbfgs.texi
 
