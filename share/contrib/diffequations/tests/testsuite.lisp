@@ -10,25 +10,25 @@
 (setf $testsuite_files
       '( (mlist simp)
          "rtestode_murphy_1_1.mac"
-	 (mlist "rtestode_murphy_1_2.mac" 100)  ; OK - testsuite issues
+	 ((mlist) "rtestode_murphy_1_2.mac" 100)  ; OK - testsuite issues
          "rtestode_murphy_1_3.mac"
          "rtestode_murphy_1_4.mac"
          "rtestode_murphy_1_5.mac"
          "rtestode_murphy_1_6.mac"
-         (mlist "rtestode_murphy_2_1.mac" 141 143) ; OK - testsuite issues
+         ((mlist) "rtestode_murphy_2_1.mac" 141 143) ; OK - testsuite issues
          "rtestode_murphy_2_2.mac"
          "rtestode_murphy_2_3.mac"
          "rtestode_murphy_2_4.mac"
          "rtestode_murphy_2_5.mac"
          "rtestode_kamke_1_1.mac"
-         (mlist "rtestode_kamke_1_2.mac" 9)  ; OK - testsuite issues
+         ((mlist) "rtestode_kamke_1_2.mac" 9)  ; OK - testsuite issues
          "rtestode_kamke_1_3.mac"
          "rtestode_kamke_1_4.mac" 
          "rtestode_kamke_1_5.mac"
-         (mlist "rtestode_kamke_1_6.mac" 20) ; OK - testsuite issues
-         (mlist "rtestode_kamke_2_1.mac" 80) ; OK - testsuite issues
-         (mlist "rtestode_kamke_2_2.mac" 134 ) ; OK - testsuite issues
-         (mlist "rtestode_kamke_2_3.mac" 64 107 140 181) ; OK - testsuite issues
+         ((mlist) "rtestode_kamke_1_6.mac" 20) ; OK - testsuite issues
+         ((mlist) "rtestode_kamke_2_1.mac" 80) ; OK - testsuite issues
+         ((mlist) "rtestode_kamke_2_2.mac" 134 ) ; OK - testsuite issues
+         ((mlist) "rtestode_kamke_2_3.mac" 64 107 140 181) ; OK - testsuite issues
          "rtestode_kamke_2_4.mac"
          "rtestode_kamke_2_5.mac"
 	 "rtest_sym.mac" 
