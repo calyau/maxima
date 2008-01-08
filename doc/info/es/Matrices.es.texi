@@ -1,4 +1,4 @@
-@c english version 1.30
+@c english version 1.33
 @menu
 * Introducci@'on a las matrices y el @'algebra lineal::
 * Funciones y variables para las matrices y el @'algebra lineal::
@@ -709,13 +709,23 @@ Si un elemento @code{i,j} del arreglo no est@'a definido, se le asignar@'a el el
 @end deffn
 
 @deffn {Funci@'on} gramschmidt (@var{x})
-@deffnx {Funci@'on} gschmit (@var{x})
+@deffnx {Funci@'on} gramschmidt (@var{x}, @var{F})
 
-Ejecuta el algoritmo de ortogonalizaci@'on de Gram-Schmidt sobre @var{x}, que puede ser una matriz o una lista de listas. La funci@'on @code{gramschmidt} no altera el valor de @var{x}.
+Ejecuta el algoritmo de ortogonalizaci@'on de Gram-Schmidt sobre @var{x},
+que puede ser una matriz o una lista de listas. La funci@'on 
+@code{gramschmidt} no altera el valor de @var{x}.
+El producto interno por defecto empleado en @code{gramschmidt} es
+@code{innerproduct}, o @var{F}, si se ha hecho uso de esta opci@'on.
 
-Si @var{x} es una matriz, el algoritmo se aplica a las filas de @var{x}. Si  @var{x} es una lista de listas, el algoritmo se aplica a las sublistas, las cuales deben tener el mismo n@'umero de miembros. En cualquier caso, el valor devuelto es una lista de listas, cuyas sublistas son ortogonales. @c FALTA COMPLETAR ESTE PARRAFO
+Si @var{x} es una matriz, el algoritmo se aplica a las filas de @var{x}. Si
+@var{x} es una lista de listas, el algoritmo se aplica a las sublistas,
+las cuales deben tener el mismo n@'umero de miembros. En cualquier caso,
+el valor devuelto es una lista de listas, cuyas sublistas son ortogonales.
+@c Falta completar este p'arrafo
 
-La funci@'on @code{factor} es invocada  en cada paso del algoritmo para simplificar resultados intermedios. Como consecuencia, el valor retornado puede contener enteros factorizados.
+La funci@'on @code{factor} es invocada  en cada paso del algoritmo para 
+simplificar resultados intermedios. Como consecuencia, el valor retornado 
+puede contener enteros factorizados.
 
 El nombre @code{gschmit} es sin@'onimo de @code{gramschmidt}.
 
@@ -723,10 +733,16 @@ Es necesario cargar la funci@'on haciendo @code{load ("eigen")}.
 
 Ejemplo:
 
+Algoritmo de Gram-Schmidt utilizando el producto interno por defecto.
+
+@c ===beg===
+@c load (eigen)$
+@c x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
+@c y: gramschmidt (x);
+@c map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
+@c ===end===
 @example
-(%i1) load ("eigen")$
-Warning - you are redefining the Macsyma function eigenvalues
-Warning - you are redefining the Macsyma function eigenvectors
+(%i1) load (eigen)$
 (%i2) x: matrix ([1, 2, 3], [9, 18, 30], [12, 48, 60]);
                          [ 1   2   3  ]
                          [            ]
@@ -738,9 +754,29 @@ Warning - you are redefining the Macsyma function eigenvectors
                       3      3   3 5      2  3  2  3
 (%o3)  [[1, 2, 3], [- ---, - --, ---], [- ----, ----, 0]]
                       2 7    7   2 7       5     5
-(%i4) i: innerproduct$
-(%i5) [i (y[1], y[2]), i (y[2], y[3]), i (y[3], y[1])];
-(%o5)                       [0, 0, 0]
+(%i4) map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
+(%o4)                       [0, 0, 0]
+@end example
+
+Algoritmo de Gram-Schmidt utilizando un producto interno especificado
+por el usuario.
+
+@c ===beg===
+@c load (eigen)$
+@c ip (f, g) := integrate (f * g, u, a, b);
+@c y : gramschmidt ([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
+@c map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
+@c ===end===
+@example
+(%i1) load (eigen)$
+(%i2) ip (f, g) := integrate (f * g, u, a, b);
+(%o2)          ip(f, g) := integrate(f g, u, a, b)
+(%i3) y : gramschmidt ([1, sin(u), cos(u)], ip), a= -%pi/2, b=%pi/2;
+                               %pi cos(u) - 2
+(%o3)              [1, sin(u), --------------]
+                                    %pi
+(%i4) map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
+(%o4)                       [0, 0, 0]
 @end example
 
 @end deffn

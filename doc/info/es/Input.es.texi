@@ -1,4 +1,4 @@
-@c english version 1.63
+@c english version 1.66
 @menu
 * Comentarios::
 * Archivos::
@@ -1099,6 +1099,25 @@ Para mostrar el contenido de un archivo v@'ease @code{printfile}.
 
 @end deffn
 
+
+
+@deffn {Funci@'on} printfile (@var{path})
+
+Env@'{@dotless{i}}a el fichero al que hace referncia la ruta @var{path}
+a la consola. @var{path} puede ser una cadena o un s@'{@dotless{i}}mbolo,
+en cuyo caso se convertir@'a en una cadena.
+
+Si @var{path} hace referencia a un fichero accesible desde el directorio
+actual de trabajo, entonces se enviar@'a a la consola; en caso contrario,
+@code{printfile} intentar@'a localizar el fichero a@~nadi@'endole @var{path}
+a cada uno de los elementos de @code{file_search_usage} a trav@'es de 
+@code{filename_merge}.
+
+@code{printfile} devuelve la ruta del fichero encontado.
+
+@end deffn
+
+
 @deffn {Funci@'on} read (@var{expr_1}, ..., @var{expr_n})
 Imprime @var{expr_1}, ..., @var{expr_n} y a continuaci@'on lee una expresi@'on desde la consola y devuelve la expresi@'on evaluada. La expresi@'on termina con un punto y coma @code{;} o con el s@'{@dotless{i}}mbolo de d@'olar @code{$}.
 
@@ -1141,17 +1160,17 @@ Reemplaza partes de @var{expr} al @var{nivel} especificado y las sutituye por de
 
 @itemize @bullet
 @item
-Las sumas y restas se reemplazan por @code{sum(@var{n})},
+Las sumas y restas se reemplazan por @code{Sum(@var{n})},
 siendo @var{n} el n@'umero de t@'erminos de la suma.
 @item
-Los productos se reemplazan por @code{product(@var{n})},
+Los productos se reemplazan por @code{Product(@var{n})},
 siendo @var{n} el n@'umero de factores del producto.
 @item
-Las potencias se reemplazan por @code{expt}. 
+Las potencias se reemplazan por @code{Expt}. 
 @item
-Los cocientes se reemplazan por @code{quotient}.
+Los cocientes se reemplazan por @code{Quotient}.
 @item
-El s@'{@dotless{i}}mbolo negativo se reemplaza por @code{negterm}.
+El s@'{@dotless{i}}mbolo negativo se reemplaza por @code{Negterm}.
 @end itemize
 
 Si el entero  @var{depth} es mayor o igual que la profundidad m@'axima de @var{expr},
@@ -1169,26 +1188,26 @@ Ejemplo:
                         b + a     2 b     2 a
                     2 %e      + %e    + %e
 (%i2) reveal (e, 1);
-(%o2)                       quotient
+(%o2)                       Quotient
 (%i3) reveal (e, 2);
-                             sum(3)
+                             Sum(3)
 (%o3)                        ------
-                             sum(3)
+                             Sum(3)
 (%i4) reveal (e, 3);
-                     expt + negterm + expt
+                     Expt + Negterm + Expt
 (%o4)               ------------------------
-                    product(2) + expt + expt
+                    Product(2) + Expt + Expt
 (%i5) reveal (e, 4);
                        2                 2
-                      b  - product(3) + a
+                      b  - Product(3) + a
 (%o5)         ------------------------------------
-                         product(2)     product(2)
-              2 expt + %e           + %e
+                         Product(2)     Product(2)
+              2 Expt + %e           + %e
 (%i6) reveal (e, 5);
                          2            2
                         b  - 2 a b + a
 (%o6)              --------------------------
-                       sum(2)     2 b     2 a
+                       Sum(2)     2 b     2 a
                    2 %e       + %e    + %e
 (%i7) reveal (e, 6);
                           2            2

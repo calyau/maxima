@@ -1,4 +1,4 @@
-@c english version 1.45
+@c english version 1.48
 @menu
 * n-arios::
 * no-fijos::
@@ -13,17 +13,17 @@
 
 @section n-arios
 
-Un operador de tipo @code{nary}(@code{n}-ario, en Maxima nary) es usado para denotar una funci@'on cuyo n@'umero de argumentos es arbitrario; los argumentos se separa por el s@'{@dotless{i}}mbolo del operador, como en A+B o A+B+C. La funci@'on @code{nary("x")} es una extensi@'on de la funci@'on @code{syntax} para declarar a @code{x} como un operador @code{n}-ario. Las funciones pueden ser declaradas para ser @code{nary}. Si se hace @code{declare(J,nary);}, se esta diciendo al simplificador que haga la reducci@'on de @code{j(j(a,b),j(c,d))} a @code{j(a, b, c, d)}.
+Un operador de tipo @code{nary}(@code{n}-ario, en Maxima nary) es usado para denotar una funci@'on cuyo n@'umero de argumentos es arbitrario; los argumentos se separa por el s@'{@dotless{i}}mbolo del operador, como en A+B o A+B+C. La funci@'on @code{nary("x")} es una extensi@'on de la funci@'on @code{Syntax} para declarar a @code{x} como un operador @code{n}-ario. Las funciones pueden ser declaradas para ser @code{nary}. Si se hace @code{declare(J,nary);}, se esta diciendo al simplificador que haga la reducci@'on de @code{j(j(a,b),j(c,d))} a @code{j(a, b, c, d)}.
 
-V@'ease tambi@'en @code{syntax}.
+V@'ease tambi@'en @code{Syntax}.
 
 @node no-fijos, postfijos, n-arios, Operadores
 
 @section no-fijos
 
-Los operadores de tipo @code{nofix} (no-fijos, en Maxima nofix) son usados para denotar funciones que no reciben argumentos. La mera presencia de tal operador en un comando causar@'a que la correspondiente funci@'on sea evaluada. Por ejemplo, cuando se escribe "exit;" para salir de una interrupci@'on de Maxima, "exit" se est@'a comportando de forma similar a un operador no-fijo (@code{nofix}). La funci@'on @code{nofix("x")} es una extensi@'on de la funci@'on @code{syntax}, la cual declara a @code{x} como un operador @code{nofix}. 
+Los operadores de tipo @code{nofix} (no-fijos, en Maxima nofix) son usados para denotar funciones que no reciben argumentos. La mera presencia de tal operador en un comando causar@'a que la correspondiente funci@'on sea evaluada. Por ejemplo, cuando se escribe "exit;" para salir de una interrupci@'on de Maxima, "exit" se est@'a comportando de forma similar a un operador no-fijo (@code{nofix}). La funci@'on @code{nofix("x")} es una extensi@'on de la funci@'on @code{Syntax}, la cual declara a @code{x} como un operador @code{nofix}. 
 
-V@'ease tambi@'en @code{syntax}.
+V@'ease tambi@'en @code{Syntax}.
 
 
 @node postfijos, prefijos, no-fijos, Operadores
@@ -31,13 +31,13 @@ V@'ease tambi@'en @code{syntax}.
 
 Un operador de tipo @code{postfix} (postfijo), al contrario de los de tipo @code{prefix}, denota funciones de un solo argumento, pero en este caso el argumento precede inmediatamente la ocurrencia del operador en la cadena de entrada, como en @code{3!}. La funci@'on @code{postfix("x")} es una extensi@'on de la funci@'on syntax para declarar a @code{x} como un operador @code{postfix}. 
 
-V@'ease tambi@'en @code{syntax}.   
+V@'ease tambi@'en @code{Syntax}.   
 
 @node prefijos, Operadores aritm@'eticos, postfijos, Operadores
 @section prefijos
-Un operador de tipo @code{prefix} (prefijo, en Maxima prefix) indica una funci@'on de un (1) argumento, dicho argumento viene inmediatamente despu@'es de una ocurrencia del operador. La funci@'on @code{prefix("x")} es una extensi@'on de la funci@'on @code{syntax} para declarar a @code{x} como un operador de @code{prefix}. 
+Un operador de tipo @code{prefix} (prefijo, en Maxima prefix) indica una funci@'on de un (1) argumento, dicho argumento viene inmediatamente despu@'es de una ocurrencia del operador. La funci@'on @code{prefix("x")} es una extensi@'on de la funci@'on @code{Syntax} para declarar a @code{x} como un operador de @code{prefix}. 
 
-V@'ease tambi@'en @code{syntax}.
+V@'ease tambi@'en @code{Syntax}.
 
 
 
@@ -333,7 +333,80 @@ Ejemplos:
 @fnindex Mayor que
 @end ifinfo
 
+Los s@'{@dotless{i}}mbolos @code{<}, @code{<=}, @code{>=} y @code{>}
+representan menor que, menor o igual que, mayor o igual que y mayor que, respectivamente.
+Los nombres de estos operadores son @code{"<"} @code{"<="} @code{">="} y @code{">"},
+que pueden aparecer all@'a donde se requiera el nombre de una funci@'on u operador.
+
+Estos operadores relacionales son todos operadores binarios. Maxima
+no reconoce expresiones del estilo @code{a < b < c}.
+
+Las expresiones relacionales devuelven valores booleanos haciendo uso 
+de las funciones @code{is} o @code{maybe}, as@'{@dotless{i}} como de las
+sentencias condicionales @code{if}, @code{while} y @code{unless}.
+Las expresiones relacionales no se eval@'uan de otra manera, aunque sus
+argumentos s@'{@dotless{i}} sean evaluados.
+
+Cuando una expresi@'on relacional no pueda ser evaluada a @code{true} o @code{false},
+el comportamiento de @code{is} y de @code{if} estar@'a controlado por la variable
+global @code{prederror}. Si @code{prederror} toma el valor @code{true}, @code{is} y
+@code{if} emiten un mensaje de error. Si @code{prederror} toma el valor @code{false},
+@code{is} devuelve @code{unknown} y @code{if} devuelve una expresi@'on condicional
+parcialmente evaluada.
+
+@code{maybe} se comporta siempre como si @code{prederror} fuese @code{false},
+al tiempo que @code{while} y @code{unless} se comportan siempre como si
+@code{prederror} fuese @code{true}.
+
+Los operadores relacionales no se distribuyen sobre listas ni sobre cualesquiera
+otros tipos de estructuras de datos.
+
+V@'eanse tambi@'en @code{=}, @code{#}, @code{equal} y @code{notequal}.
+
+Ejemplos:
+
+Las expresiones relacionales se reducen a valores booleanos a trav@'es de ciertas
+funciones y sentencias condicionales.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c is (x < y);
+@c maybe (y > z);
+@c if x >= z then 1 else 0;
+@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+@c ===end===
+@example
+(%i1) [x, y, z] : [123, 456, 789];
+(%o1)                    [123, 456, 789]
+(%i2) is (x < y);
+(%o2)                         true
+(%i3) maybe (y > z);
+(%o3)                         false
+(%i4) if x >= z then 1 else 0;
+(%o4)                           0
+(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+(%o5)                         5050
+@end example
+
+Las expresiones relacionales no se eval@'uan de otra manera, aunque sus
+argumentos s@'{@dotless{i}} sean evaluados.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c [x < y, y <= z, z >= y, y > z];
+@c map (is, %);
+@c ===end===
+@example
+(%o1)                    [123, 456, 789]
+(%i2) [x < y, y <= z, z >= y, y > z];
+(%o2)    [123 < 456, 456 <= 789, 789 >= 456, 456 > 789]
+(%i3) map (is, %);
+(%o3)               [true, true, true, false]
+@end example
+
 @end deffn
+
+
 
 @node Operadores generales, , Operadores relacionales, Operadores
 @section Operadores generales
@@ -556,8 +629,8 @@ y
 @end ifinfo
 Operador de asignaci@'on.
 
-Cuando el miembro de la izquierda es un @'atomo o variable subindicada,
-@code{:} eval@'ua la expresi@'on de la derecha (pero no la izquierda) y asigna ese
+Cuando el miembro de la izquierda es una variable simple (no subindicada),
+@code{:} eval@'ua la expresi@'on de la derecha y asigna ese
 valor a la variable del lado izquierdo.
 
 Cuando en el lado izquierdo hay un elemento subindicado correspondiente a
@@ -580,7 +653,7 @@ hechas por el operador @code{:}.
 
 Ejemplos:
 
-Asignaci@'on a un s@'{@dotless{i}}mbolo.
+Asignaci@'on a una variable simple.
 
 @c ===beg===
 @c a;
