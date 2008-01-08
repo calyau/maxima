@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Bugs.texi
-@c OriginalRevision=1.11
+@c OriginalRevision=1.12
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
@@ -37,6 +37,11 @@
 необходимые для теста.
 
 @code{run_testsuite} возвращает @code{done}.
+
+@opencatbox
+@category{Отладка}
+@closecatbox
+
 @end deffn
 
 @defvr {Управляющая переменная} testsuite_files
@@ -56,6 +61,11 @@
 которая состоит из тестов находящихся в файлах "rtest13s" и
 "rtest14". При этом "rtest14" содержит два заведомо ошибочных теста с
 номерами 57 и 63.
+
+@opencatbox
+@category{Отладка} @category{Глобальные переменные}
+@closecatbox
+
 @end defvr
 
 @deffn {Функция} bug_report ()
@@ -66,11 +76,21 @@
 ошибке желательно указать данную информацию.
 
 @code{bug_report} возвращает пустую строку @code{""}.
+
+@opencatbox
+@category{Отладка}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} build_info ()
 Печатает информацию о сборке Maxima.
 
 @code{build_info} возвращает пустую строку @code{""}.
+
+@opencatbox
+@category{Отладка}
+@closecatbox
+
 @end deffn
 
