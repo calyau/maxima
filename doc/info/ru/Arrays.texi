@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Arrays.texi
-@c OriginalRevision=1.15
+@c OriginalRevision=1.16
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
@@ -47,6 +47,10 @@
 в объявленный.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
+@opencatbox
+@category{Массивы}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
@@ -55,6 +59,10 @@
 
 Данная функция похожа на @code{apply}, только первый аргумент является
 массивом а не функцией.
+
+@opencatbox
+@category{Выражения} @category{Массивы}
+@closecatbox
 
 @end deffn
 
@@ -187,6 +195,10 @@
 (%o5)      [lambda([y], y     ), lambda([y], y     )]
 @end example
 
+@opencatbox
+@category{Массивы}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
@@ -253,6 +265,10 @@
 (%o14)                          9
 @end example
 
+@opencatbox
+@category{Выражения} @category{Массивы}
+@closecatbox
+
 @end deffn
 
 @defvr {Системная переменная} arrays
@@ -294,6 +310,10 @@
 (%o5)                     [aa, bb, cc]
 @end example
 
+@opencatbox
+@category{Массивы} @category{Глобальные переменные} 
+@closecatbox
+
 @end defvr
 
 @deffn {Функция} bashindices (@var{expr})
@@ -303,6 +323,11 @@
 значением переменной @code{gensumnum}, которое может быть установлено
 пользователем.  Например @code{gensumnum:0$}, инициализирует
 эту переменную.
+
+@opencatbox
+@category{Суммы и произведения} 
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} fillarray (@var{A}, @var{B})
@@ -381,6 +406,10 @@
 (%i4) fillarray (a4, a3);
 (%o4)     @{Array:  #2A((1 2) (3 4) (5 6) (7 8) (9 10))@}
 @end example
+
+@opencatbox
+@category{Массивы} 
+@closecatbox
 
 @end deffn
 
@@ -508,6 +537,10 @@
 (%o5)             [hashed, 1, [b + a], [v - u]]
 @end example
 
+@opencatbox
+@category{Массивы} 
+@closecatbox
+
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -585,6 +618,10 @@
 (%o12)                         12
 @end example
 
+@opencatbox
+@category{Массивы} 
+@closecatbox
+
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
@@ -593,6 +630,10 @@
 старого построчно.  Если исходный массив слишком мал, тогда
 остаток заполняется @code{false}, @code{0.0} или @code{0},
 в зависимости от типа массива.  Тип массива не может быть изменен.
+
+@opencatbox
+@category{Массивы} 
+@closecatbox
 
 @end deffn
 
@@ -611,6 +652,10 @@
 необъявленного (хеш) массива.
 
 @code{remarray} возвращает список удаленных массивов.
+
+@opencatbox
+@category{Массивы} 
+@closecatbox
 
 @end deffn
 
@@ -652,6 +697,10 @@
 (%o7)                          cc
 @end example
 
+@opencatbox
+@category{Выражения} @category{Массивы} 
+@closecatbox
+
 @end deffn
 
 @c THIS IS REALLY CONFUSING
@@ -684,6 +733,10 @@
 одинакового поведения в интерпретируемом и компилируемом коде
 необходимо установить значение @code{translate_fast_arrays} равным
 @code{true}.
+
+@opencatbox
+@category{Массивы} @category{Глобальные флаги} 
+@closecatbox
 
 @end defvr
 
