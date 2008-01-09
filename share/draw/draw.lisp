@@ -2674,7 +2674,7 @@
                            (get-option '$pic_height)
                            (get-option '$delay)
                            (get-option '$file_name)))
-      ($wxt (format cmdstorage "set terminal wxt~%" ))  )
+      ($wxt (format cmdstorage "set terminal wxt~%" )) )
 
     ; compute some parameters for multiplot
     (when (not isanimatedgif)
@@ -2812,7 +2812,9 @@
                 (t  ; non windows operating system
                    (setf $gnuplot_command $draw_command)
                    (check-gnuplot-process)
-                   ($gnuplot_reset)
+                   (send-gnuplot-command "unset output")
+                   (send-gnuplot-command "set term x11")
+                   (send-gnuplot-command "reset")
                    (send-gnuplot-command (format nil "load '~a'" (plot-temp-file "maxout.gnuplot"))) ))))
 
     ; the output is a simplified description of the scene(s)
