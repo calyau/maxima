@@ -315,7 +315,8 @@
 	((or (floatp y) (and $numer (integerp y))) (erf (float y)))
 	((eq y '$inf) 1)
 	((eq y '$minf) -1)
-	((and $trigsign (mminusp* y)) (neg (list '(%erf simp) (neg y))))
+	;;((and $trigsign (mminusp* y)) (neg (list '(%erf simp) (neg y))))
+	((and $trigsign (great (neg y) y)) (neg (take '(%erf) (neg y))))
 	(t (eqtest (list '(%erf) y) x))))
 
 
