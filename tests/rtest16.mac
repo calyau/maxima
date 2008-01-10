@@ -421,5 +421,19 @@ p1;
 kill(all);
 done$
 
+/* Bug [ 1860250 ] erf(-inf) --> -erf(inf) */
+
+erf(-inf);
+-1$
+
+erf(inf);
+1$
+
+erf(-x) + erf(x);
+0$
+
+erf(a-b) + erf(b-a);
+0$
+
 end;
 end$
