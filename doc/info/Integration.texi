@@ -756,8 +756,8 @@ which contain the point @math{x = c}.
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.
 @code{quad_qag} implements a simple globally adaptive integrator using the strategy of Aind (Piessens, 1973).
@@ -791,9 +791,18 @@ The numerical integration is done adaptively by subdividing the
 integration region into sub-intervals until the desired accuracy is
 achieved.
 
-The optional arguments @var{epsrel} and @var{limit} are the desired
-relative error and the maximum number of subintervals, respectively.
-@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
+
+@table @var
+@item epsrel
+Desired relative error of approximation.  Default is 1d-10.
+@item epsabs
+Desired absolute error of approximation.  Default is 0.
+@item limit
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+maximum number of subintervals to use.  Default is 200.
+@end table
 
 @code{quad_qag} returns a list of four elements:
 
@@ -829,7 +838,7 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3);
+(%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
 (%o1)    [.4444444444492108, 3.1700968502883E-9, 961, 0]
 (%i2) integrate (x^(1/2)*log(1/x), x, 0, 1);
                                 4
@@ -845,8 +854,8 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over a finite interval.
 @code{quad_qags} implements globally adaptive interval subdivision with extrapolation
@@ -871,9 +880,18 @@ between the limits @var{a} and @var{b}.
 The integrand may be specified as the name of a Maxima or Lisp function or operator,
 a Maxima lambda expression, or a general Maxima expression.
 
-The optional arguments @var{epsrel} and @var{limit} are the desired
-relative error and the maximum number of subintervals, respectively.
-@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
+
+@table @var
+@item epsrel
+Desired relative error of approximation.  Default is 1d-10.
+@item epsabs
+Desired absolute error of approximation.  Default is 0.
+@item limit
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+maximum number of subintervals to use.  Default is 200.
+@end table
 
 @code{quad_qags} returns a list of four elements:
 
@@ -912,7 +930,7 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qags (x^(1/2)*log(1/x), x, 0 ,1);
+(%i1) quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
 (%o1)   [.4444444444444448, 1.11022302462516E-15, 315, 0]
 @end example
 
@@ -926,8 +944,8 @@ Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} f
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of a general function over an infinite or semi-infinite interval.
 The interval is mapped onto a finite interval and
@@ -983,9 +1001,18 @@ The interval is from negative infinity to @var{a}.
 The interval is the entire real line.
 @end table
 
-The optional arguments @var{epsrel} and @var{limit} are the desired
-relative error and the maximum number of subintervals, respectively.
-@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
+
+@table @var
+@item epsrel
+Desired relative error of approximation.  Default is 1d-10.
+@item epsabs
+Desired absolute error of approximation.  Default is 0.
+@item limit
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+maximum number of subintervals to use.  Default is 200.
+@end table
 
 @code{quad_qagi} returns a list of four elements:
 
@@ -1025,7 +1052,7 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf);
+(%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
 (%o1)        [0.03125, 2.95916102995002E-11, 105, 0]
 (%i2) integrate (x^2*exp(-4*x), x, 0, inf);
                                1
@@ -1041,8 +1068,8 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
-@deffnx {Function} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Computes the Cauchy principal value of @math{f(x)/(x - c)} over a finite interval.
 The strategy is globally adaptive, and modified
@@ -1068,9 +1095,18 @@ is to be integrated over the interval @var{a} to @var{b}.
 The integrand may be specified as the name of a Maxima or Lisp function or operator,
 a Maxima lambda expression, or a general Maxima expression.
 
-The optional arguments @var{epsrel} and @var{limit} are the desired
-relative error and the maximum number of subintervals, respectively.
-@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
+
+@table @var
+@item epsrel
+Desired relative error of approximation.  Default is 1d-10.
+@item epsabs
+Desired absolute error of approximation.  Default is 0.
+@item limit
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+maximum number of subintervals to use.  Default is 200.
+@end table
 
 @code{quad_qawc} returns a list of four elements:
 
@@ -1104,7 +1140,7 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
+(%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5, 'epsrel=1d-7);
 (%o1)    [- 3.130120337415925, 1.306830140249558E-8, 495, 0]
 (%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
       x, 0, 5);
@@ -1137,8 +1173,8 @@ Principal Value
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Function} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Function} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
 Calculates a Fourier cosine or Fourier sine transform on a semi-infinite interval
 using the Quadpack QAWF function.
@@ -1170,7 +1206,8 @@ The weight function @math{w} is selected by @var{trig}:
 The integrand may be specified as the name of a Maxima or Lisp function or operator,
 a Maxima lambda expression, or a general Maxima expression.
 
-The optional arguments are:
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
 
 @table @var
 @item epsabs
@@ -1185,11 +1222,6 @@ is 100.
 Upper bound on the number of cycles.  Must be greater than or equal to
 3.  Default is 10.
 @end table
-
-@c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} and @var{limit} are the desired
-relative error and the maximum number of subintervals, respectively.
-@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
 @code{quad_qawf} returns a list of four elements:
 
@@ -1223,7 +1255,7 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos);
+(%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
 (%o1)   [.6901942235215714, 2.84846300257552E-11, 215, 0]
 (%i2) integrate (exp(-x^2)*cos(x), x, 0, inf);
                           - 1/4
@@ -1242,8 +1274,8 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
 Integration of @math{cos(omega x) f(x)} or @math{sin(omega x) f(x)} over a finite interval,
 where @math{omega} is a constant.
@@ -1275,11 +1307,14 @@ The weight function @math{w} is selected by @var{trig}:
 The integrand may be specified as the name of a Maxima or Lisp function or operator,
 a Maxima lambda expression, or a general Maxima expression.
 
-The optional arguments are:
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
 
 @table @var
+@item epsrel
+Desired relative error of approximation.  Default is 1d-10.
 @item epsabs
-Desired absolute error of approximation.  Default is 1d-10.
+Desired absolute error of approximation.  Default is 0.
 @item limit
 Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
 maximum number of subintervals to use.  Default is 200.
@@ -1290,11 +1325,6 @@ is 100.
 Upper bound on the number of cycles.  Must be greater than or equal to
 3.  Default is 10.
 @end table
-
-@c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} and @var{limit} are the desired
-relative error and the maximum number of subintervals, respectively.
-@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
 @code{quad_qawo} returns a list of four elements:
 
@@ -1349,8 +1379,8 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
-@deffnx {Function} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@deffn {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Function} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 
 Integration of @math{w(x) f(x)} over a finite interval,
 where @math{w(x)} is a certain algebraic or logarithmic function.
@@ -1387,20 +1417,18 @@ The weight function @math{w} is selected by @var{wfun}:
 The integrand may be specified as the name of a Maxima or Lisp function or operator,
 a Maxima lambda expression, or a general Maxima expression.
 
-The optional arguments are:
+The keyword arguments are optional and may be specified in any order.
+They all take the form @code{key=val}.  The keyword arguments are:
 
 @table @var
+@item epsrel
+Desired relative error of approximation.  Default is 1d-10.
 @item epsabs
-Desired absolute error of approximation.  Default is 1d-10.
+Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+Size of internal work array.  @var{limit}is the
 maximum number of subintervals to use.  Default is 200.
 @end table
-
-@c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} and @var{limit} are the desired
-relative error and the maximum number of subintervals, respectively.
-@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
 @code{quad_qaws} returns a list of four elements:
 
@@ -1434,7 +1462,7 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1);
+(%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1, 'epsabs=1d-9);
 (%o1)     [8.750097361672832, 1.24321522715422E-10, 170, 0]
 (%i2) integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
        alpha

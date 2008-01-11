@@ -10,7 +10,38 @@
 (defmacro get-integrand (fun var)
   `(coerce-float-fun ,fun `((mlist) ,,var)))
 
-(defun $quad_qag (fun var a b key &optional (epsrel 1d-8) (limit 200))
+(defun lispify-maxima-keyword-options (options &optional valid-keywords)
+  ;; options looks like (((mequal) $opt1 val1) ((mequal) $opt2 val2) ...)
+  ;;
+  ;; Convert to a new list that looks like ($opt1 val1 $opt2 val2 ...)
+  ;;
+  (unless (listp options)
+    (merror "Invalid Maxima keyword options: ~M" options))
+  (when (every #'(lambda (o)
+		   ;; Make sure every option has the right form.
+		   (let ((ok (and (listp o)
+				  (= (length o) 3)
+				  (eq (caar o) 'mequal))))
+		     (unless ok
+		       (merror "Badly formed keyword option: ~M" o))
+		     ok))
+		 options)
+    (mapcan #'(lambda (o)
+	      (destructuring-bind (mequal opt val)
+		  o
+		(declare (ignore mequal))
+		(if (or (null valid-keywords)
+			(member opt valid-keywords))
+		    (flet ((keywordify (x)
+			     (intern (subseq (symbol-name x) 1) :keyword)))
+		      (list (keywordify opt) val))
+		    (merror "Unrecognized keyword: ~M" opt))))
+	  options)))
+
+(defun quad-qag (fun var a b key &key
+		 (epsrel 1d-8)
+		 (limit 200)
+		 (epsabs 0d0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
@@ -22,14 +53,17 @@
 			  (float (funcall f x) 1d0))
 		      ($float a)
 		      ($float b)
-		      0d0
+		      ($float epsabs)
 		      ($float epsrel) key
 		      0d0 0d0 0 0
 		      limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-epsabs z-epsrel z-key z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
-  
-(defun $quad_qags (fun var a b &optional (epsrel 1d-8) (limit 200))
+
+(defun quad-qags (fun var a b &key
+		  (epsrel 1d-8)
+		  (limit 200)
+		  (epsabs 0d0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
@@ -41,14 +75,17 @@
 			   (float (funcall f x) 1d0))
 		       ($float a)
 		       ($float b)
-		       0d0
+		       ($float epsabs)
 		       ($float epsrel)
 		       0d0 0d0 0 0
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
-(defun $quad_qagi (fun var bound inf-type  &optional (epsrel 1d-8) (limit 200))
+(defun quad-qagi (fun var bound inf-type &key
+		  (epsrel 1d-8)
+		  (limit 200)
+		  (epsabs 0d0))
   (quad_argument_check fun var bound inf-type) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
@@ -70,14 +107,17 @@
 			   (float (funcall f x) 1d0))
 	       ($float bound)
 		       infinity
-		       0d0
+		       ($float epsabs)
 		       ($float epsrel)
 		       0d0 0d0 0 0
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-bound z-inf z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
-(defun $quad_qawc (fun var c a b &optional (epsrel 1d-8) (limit 200))
+(defun quad-qawc (fun var c a b &key
+		  (epsrel 1d-8)
+		  (limit 200)
+		  (epsabs 0d0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
@@ -90,16 +130,18 @@
 		       ($float a)
 		       ($float b)
 		       ($float c)
-		       0d0
+		       ($float epsabs)
 		       ($float epsrel)
 		       0d0 0d0 0 0
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-c z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
-(defun $quad_qawf (fun var a omega trig &optional (epsabs 1d-10) (limit 200)
-		       (maxp1 100) (limlst 10))
-  (quad_argument_check fun var a omega) 
+(defun quad-qawf (fun var a omega trig &key
+		  (epsabs 1d-10)
+		  (limit 200)
+		  (maxp1 100)
+		  (limlst 10))
   (let* ((leniw limit)
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
 	 (work (make-array lenw :element-type 'double-float))
@@ -123,8 +165,11 @@
 		       z-leniw z-maxp1 z-lenw))
       (list '(mlist) result abserr neval ier))))
 
-(defun $quad_qawo (fun var a b omega trig &optional (epsrel 1d-10) (limit 200)
-		       (maxp1 100))
+(defun quad-qawo (fun var a b omega trig &key
+		  (epsrel 1d-10)
+		  (limit 200)
+		  (maxp1 100)
+		  (epsabs 0d0))
   (quad_argument_check fun var a b) 
   (let* ((leniw limit)
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
@@ -143,7 +188,7 @@
 		       ($float b)
 		       ($float omega)
 		       integr
-		       0d0
+		       ($float epsabs)
 		       ($float epsrel)
 		       0d0 0d0 0 0
 		       leniw maxp1 lenw 0 iwork work)
@@ -151,7 +196,10 @@
 		       z-lst z-leniw z-maxp1 z-lenw))
       (list '(mlist) result abserr neval ier))))
 
-(defun $quad_qaws (fun var a b alfa beta wfun &optional (epsrel 1d-10) (limit 200))
+(defun quad-qaws (fun var a b alfa beta wfun &key
+		  (epsrel 1d-10)
+		  (limit 200)
+		  (epsabs 0d0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
 	 (work (make-array lenw :element-type 'double-float))
@@ -167,7 +215,7 @@
 		       ($float alfa)
 		       ($float beta)
 		       wfun
-		       0d0
+		       ($float epsabs)
 		       ($float epsrel)
 		       0d0 0d0 0 0
 		       limit lenw 0 iwork work)
@@ -195,6 +243,21 @@
 	 (merror
 	  "Upper limit of integration must be real."))))
 
+(macrolet
+    ((frob (mname iname args valid-keys)
+       (let* ((keylist (gensym "KEY-LIST-"))
+	      (options (gensym "OPTIONS-")))
+	 `(defun ,mname (,@args &rest ,options)
+	    (let ((,keylist (lispify-maxima-keyword-options ,options ',valid-keys)))
+	      (apply ',iname ,@args ,keylist))))))
+  (frob $quad_qag quad-qag (fun var a b key) ($epsrel $limit $epsabs))
+  (frob $quad_qags quad-qags (fun var a b) ($epsrel $limit $epsabs))
+  (frob $quad_qagi quad-qagi (fun var bound inf-type) ($epsrel $limit $epsabs))
+  (frob $quad_qawc quad-qawc (fun var c a b) ($epsrel $limit $epsabs))
+  (frob $quad_qawf quad-qawf (fun var a omega trig) ($limit $epsabs $maxp1 $limlst))
+  (frob $quad_qawo quad-qawo (fun var a b omega trig) ($epsrel $limit $epsabs $maxp1))
+  (frob $quad_qaws quad-qaws (fun var a b alfa beta wfun) ($epsrel $limit $epsabs)))
+  
 ;; Tests
 ;;
 ;; These tests were taken from the QUADPACK book.
@@ -273,6 +336,7 @@
 ;;
 ;; DQNG, DQAGS, DQAG (key = 6)
 ;;
+;; for alpha : 0.0 thru 10 step 1 do print(alpha, float(%pi * bessel_j(0,2^alpha)), quad_qags(cos(2^alpha*sin(x)),x,0,float(%pi),3));
 ;; Failures:
 ;; DQNG: alpha >= 7 (ier = 1)
 
@@ -283,6 +347,8 @@
 ;; alpha = -0.8(0.1)2.1
 ;; DQAGS, DQAGP (point of singularity supplied)
 ;;
+;; 
+;; for alpha : -8 thru 21 do print(float(alpha/10), float(((2/3)^(alpha/10 + 1) + (1/3)^(alpha/10 + 1))/(alpha/10 + 1)), quad_qags(abs(x-1/3)^(alpha/10), x, 0, 1));
 ;; No failures.
 
 ;; Test 8
@@ -293,6 +359,7 @@
 ;;
 ;; DQAGS, DQAGP
 ;;
+;; for alpha : -8 thru 21 do print(float(alpha/10), float(((1-%pi/4)^(alpha/10+1) + (%pi/4)^(alpha/10 + 1))/(alpha/10 + 1)), quad_qags(abs(x-%pi/4)^(alpha/10), x, 0, 1));
 ;; Failures:
 ;; DQAGS: alpha <= -0.5 (ier = 3)
 
@@ -303,7 +370,7 @@
 ;;
 ;; alpha = 1(1)20
 ;;
-;; quad_qaws(1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1)
+;; for alpha : 1 thru 20 do print(alpha, float(%pi*((1+2^(-alpha))^2-1)^(-1/2)),quad_qaws(1/(x+1+2^(-alpha)), x, -1, 1, -0.5, -0.5, 1));
 
 ;; Test 10
 ;; integrate((sin(x))^(alpha - 1), x, 0, %pi/2) =
@@ -315,6 +382,9 @@
 ;; DQAGS, DQAWS
 ;; Failures:
 ;; None.
+;; for alpha : 1 thru 20 do print(alpha/10.0, float(2^(alpha/10 - 2)*(gamma(alpha/20))^2/gamma(alpha/10)),quad_qags((sin(x))^(alpha/10 - 1), x, 0, %pi/2));
+;;
+;; for alpha : 1 thru 20 do print(alpha/10.0, float(2^(alpha/10 - 2)*(gamma(alpha/20))^2/gamma(alpha/10)),quad_qaws(if equal(x,0.0) then 1 else (sin(x)/x)^(alpha/10 - 1), x, 0, %pi/2, alpha/10-1, 0, 1));
 
 ;; Test 11
 ;; integrate((log(1/x))^(alpha-1), x, 0, 1) =
@@ -324,6 +394,10 @@
 ;; alpha = 0.1(0.1)2
 ;;
 ;; DQAGS, DQAWS
+;; for alpha : 1 thru 20 do print(alpha/10.0, float(gamma(alpha/10)),quad_qags(log(1/x)^(alpha/10-1),x,0,1));
+;;
+;; for alpha : 1 thru 20 do print(alpha/10.0, float(gamma(alpha/10)),quad_qaws(if equal(x,1) then 1 else (log(1/x)/(1-x))^(alpha/10-1),x,0,1,0,alpha/10-1,1));
+
 
 ;; Test 12
 ;; integrate(exp(20*(x-1))*sin(2^alpha*x), x, 0, 1) 
@@ -332,9 +406,13 @@
 ;; alpha = 0(1)9
 ;;
 ;; DQAG (key = 6), DQAWO
-;;
 ;; Failures:
 ;; None
+;;
+;; for alpha : 0 thru 9 do print(alpha, float((20*sin(2^alpha) - 2^alpha*cos(2^alpha) + 2^alpha*exp(-20))/(400 + 4^alpha)), quad_qag(exp(20*(x-1))*sin(2^alpha*x), x, 0, 1, 6));
+;;
+;; for alpha : 0 thru 9 do print(alpha, float((20*sin(2^alpha) - 2^alpha*cos(2^alpha) + 2^alpha*exp(-20))/(400 + 4^alpha)), quad_qawo(exp(20*(x-1)), x, 0, 1, 2^alpha, 'sin));
+;;
 
 ;; Test 13
 ;; integrate((x*(1-x))^(-1/2)*cos(2^alpha*x), x, 0, 1)
@@ -346,7 +424,13 @@
 ;;
 ;; Failures:
 ;; DQAGS: alpha = 4 (ier = 5)
-
+;;
+;; for alpha : 0 thru 8 do print(alpha, float(cos(2^(alpha-1))*bessel_j(0,2^(alpha - 1))), quad_qags((x*(1-x))^(-1/2)*cos(2^alpha*x), x, 0, 1));
+;;
+;; This doesn't work:
+;; for alpha : 0 thru 8 do print(alpha, float(cos(2^(alpha-1))*bessel_j(0,2^(alpha - 1))), quad_qawo(if equal(x,0) or equal(x,1) then 0 else (x*(1-x))^(-1/2), x, 0, 1, 2^alpha, 'cos));
+;;
+;; for alpha : 0 thru 8 do print(alpha, float(cos(2^(alpha-1))*bessel_j(0,2^(alpha - 1))), quad_qaws(cos(2^alpha*x), x, 0, 1, -1/2, -1/2, 1));
 
 ;; Test 14
 ;;
@@ -366,16 +450,9 @@
 ;; alpha = 0(1)5
 ;;
 ;; quad_qagi(x^2*exp(-2^(-alpha)*x), x, 0, inf)
-;; Test 16
-;; integral 0 to infinity x^(alpha - 1)/(1+10*x)^2 =
-;; 10^(-alpha)*(1-alpha)*pi/sin(pi*alpha)
-;; if alpha /= 1.  Otherwise result = 1/10 when alpha = 1.
 ;;
-;; alpha = 0.1(0.1)1.9
+;; for alpha : 0 thru 5 do print(alpha, float(2^(3*alpha+1)), quad_qagi(x^2*exp(-2^(-alpha)*x), x, 0, inf));
 ;;
-;; DQAGI
-;;
-;; Failures: None
 
 ;; Test 16
 ;; integrate(x^(alpha - 1)/(1+10*x)^2, 0, inf)
@@ -387,6 +464,8 @@
 ;; DQAGI
 ;;
 ;; Failures: None
+;;
+;; for alpha : 1 thru 19 do print(alpha/10.0, float(10^(-alpha/10)*(1-alpha/10)*%pi/sin(%pi*alpha/10)), quad_qagi(x^(alpha/10 - 1)/(1+10*x)^2, x, 0, inf));
 
 ;; Test 17
 ;;
@@ -398,3 +477,5 @@
 ;; alpha = 0(1)10
 ;;
 ;; quad_qawc(2^(-alpha)*((x-1)^2 + 4^(-alpha))^(-1), 2, 0, 5)
+;;
+;; for alpha : 0 thru 10 do print(alpha, float((2^(-alpha)*log(3/2) - 2^(-alpha-1)*log((16 + 4^(-alpha))/(1+4^(-alpha))) - atan(2^(alpha +  2)) - atan(2^alpha))/(1 + 4^(-alpha))), quad_qawc(2^(-alpha)*((x-1)^2 + 4^(-alpha))^(-1), x, 2, 0, 5));
