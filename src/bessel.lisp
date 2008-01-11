@@ -953,9 +953,11 @@ Perhaps you meant to enter `~a'.~%"
 	 ((mexpt simp) ((%gamma simp) ((mplus simp) 1 $%k n)) -1)
 	 ((mexpt simp) ((mtimes simp) x x ((rat simp) 1 4)) $%k))
 	$%k 0 $inf)))
-     ((mplus)
-      ((%bessel_i) ((mplus) -1 n) x)
-      ((mtimes) -1 n ((%bessel_i) n x) ((mexpt) x -1))))
+     ;; Derivative wrt to x.  A&S 9.1.27.  Changed from 9.1.30 so that taylor works.
+     ((mtimes)
+      ((mplus) ((%bessel_i) ((mplus) -1 n) x)
+       ((mtimes) -1 ((%bessel_i) ((mplus) 1 n) x)))
+      ((rat) 1 2)))
   grad)
 
 (defun bessel-i-simp (exp ignored z)
@@ -964,7 +966,13 @@ Perhaps you meant to enter `~a'.~%"
   (let ((order (simpcheck (cadr exp) z))
 	(rat-order nil))
     (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
+      (cond ((and (numberp arg) (zerop arg)
+		  (numberp order))
+	     ;; I[v](0) = 1 if v = 0, Otherwise 0
+	     (if (zerop order)
+		 1
+		 0))
+	    ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
 	     (bessel-i (float order) (complex ($realpart arg) ($imagpart arg))))
 	    ((and (integerp order) (minusp order))
 	     ;; Some special cases when the order is an integer
@@ -1010,10 +1018,11 @@ Perhaps you meant to enter `~a'.~%"
 	((%derivative simp) ((%bessel_i simp) ((mtimes simp) -1 n) x) n 1)
 	((mtimes simp) -1
 	 ((%derivative simp) ((%bessel_i simp) n x) n 1)))))
-     ((mplus simp)
-      ((mtimes) -1 ((%bessel_k) ((mplus) -1 n) x))
-      ((mtimes) -1 n ((mexpt) x -1)
-       ((%bessel_k) n x))))
+     ;; Derivative wrt to x.  A&S 9.1.27.  Changed from 9.1.30 so that taylor works.
+     ((mtimes)
+      ((mplus) ((%bessel_i) ((mplus) -1 n) x)
+       ((mtimes) -1 ((%bessel_i) ((mplus) 1 n) x)))
+      ((rat) 1 2)))
   grad)
 
 (defun bessel-k-simp (exp ignored z)
