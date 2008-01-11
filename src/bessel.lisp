@@ -953,10 +953,10 @@ Perhaps you meant to enter `~a'.~%"
 	 ((mexpt simp) ((%gamma simp) ((mplus simp) 1 $%k n)) -1)
 	 ((mexpt simp) ((mtimes simp) x x ((rat simp) 1 4)) $%k))
 	$%k 0 $inf)))
-     ;; Derivative wrt to x.  A&S 9.1.27.  Changed from 9.1.30 so that taylor works.
+     ;; Derivative wrt to x.  A&S 9.6.29.
      ((mtimes)
       ((mplus) ((%bessel_i) ((mplus) -1 n) x)
-       ((mtimes) -1 ((%bessel_i) ((mplus) 1 n) x)))
+               ((%bessel_i) ((mplus) 1 n) x))
       ((rat) 1 2)))
   grad)
 
@@ -1018,10 +1018,10 @@ Perhaps you meant to enter `~a'.~%"
 	((%derivative simp) ((%bessel_i simp) ((mtimes simp) -1 n) x) n 1)
 	((mtimes simp) -1
 	 ((%derivative simp) ((%bessel_i simp) n x) n 1)))))
-     ;; Derivative wrt to x.  A&S 9.1.27.  Changed from 9.1.30 so that taylor works.
+     ;; Derivative wrt to x.  A&S 9.6.29.
      ((mtimes)
       ((mplus) ((%bessel_i) ((mplus) -1 n) x)
-       ((mtimes) -1 ((%bessel_i) ((mplus) 1 n) x)))
+               ((%bessel_i) ((mplus) 1 n) x))
       ((rat) 1 2)))
   grad)
 
