@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Rules.texi 
-@c OriginalRevision=1.34
+@c OriginalRevision=1.35
 @c TranslatedBy: (c) 2007-09-11 Valery Pipin <pip@iszf.irk.ru>
 
 
@@ -35,6 +35,10 @@
 работе с полиномами в процедуре @code{tellrat}, и для коммутативной и
 некоммутативной алгебры в пакете  @code{affine}.  
 
+@opencatbox
+@category{Упрощение} @category{Правила преобразования и шаблоны}
+@closecatbox
+
 @c end concepts Rules and Patterns
 @node Функции и переменные для правил преобразования и шаблонов,  , Введение в правила преобразований и шаблоны, Правила преобразования и шаблоны
 @section Функции и переменные для правил преобразования и шаблонов
@@ -54,6 +58,9 @@
 
 См. также @var{applyb1}, @code{apply2} и @code{let}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -72,6 +79,9 @@
 
 См. также @code{apply1} и @code{let}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -92,6 +102,9 @@
 
 См. также @code{apply1}, @code{apply2} и @code{let}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} current_let_rule_package
@@ -108,6 +121,9 @@
 действия, при этом  значение переменной @code{current_let_rule_package}
 остается неизменным.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} default_let_rule_package
@@ -119,6 +135,9 @@
 пакет правил не был задан в явном виде при вызове @code{let} или через
 изменение значения переменной @code{current_let_rule_package}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end defvr
 
 @deffn {Функция} defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
@@ -254,7 +273,9 @@
 (%o9)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
 @end example
 
-
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -269,6 +290,9 @@
 одной операции сопоставления с шаблоном и подстановки. 
 При неудаче сопоставления, функция правила преобразования возвращает @code{false}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -315,6 +339,9 @@
      +rule1 : y + x -> special_add(x, y), quux : mumble(x) -> []]
 @end example
 
+@opencatbox
+@category{Правила преобразования и шаблоны} @category{Функции вывода}
+@closecatbox
 @end deffn
 
 @deffn {Функция} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
@@ -402,6 +429,10 @@ arg_n')} дает @code{true}, где @var{arg_i'} есть значение, сопоставленное  @var{
 @end example
 
 @c NEEDS ADDITIONAL EXAMPLES
+
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} letrat
@@ -428,6 +459,9 @@ arg_n')} дает @code{true}, где @var{arg_i'} есть значение, сопоставленное  @var{
 (%o6)                       (a - 1)!
 @end example
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end defvr
 
 @c NEEDS EXAMPLES
@@ -447,6 +481,9 @@ arg_n')} дает @code{true}, где @var{arg_i'} есть значение, сопоставленное  @var{
 путем @code{tellsimp} и @code{tellsimpafter}.
 @c WHAT ABOUT defmatch AND defrule ??
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @deffn {Функция} letsimp (@var{expr})
@@ -466,6 +503,9 @@ arg_n')} дает @code{true}, где @var{arg_i'} есть значение, сопоставленное  @var{
 затем @code{letsimp (%, @var{package_name_2})} и так далее.
 
 @c NEEDS EXAMPLES
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} let_rule_packages
@@ -474,6 +514,9 @@ arg_n')} дает @code{true}, где @var{arg_i'} есть значение, сопоставленное  @var{
 @code{let_rule_packages} - список определенных пользователем пакетов
 правил вместе с пакетом @code{default_let_rule_package}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end defvr
 
 @deffn {Функция} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
@@ -685,6 +728,9 @@ bb aa partitions `product'
                       integerp(dd), atom(cc), atom(bb), atom(aa)]
 @end example
 
+@opencatbox
+@category{Правила преобразования и шаблоны} @category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @deffn {Функция} matchfix (@var{ldelimiter}, @var{rdelimiter})
@@ -815,6 +861,9 @@ bb aa partitions `product'
                                 15
 @end example
 
+@opencatbox
+@category{Синтаксис} @category{Операторы}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -841,6 +890,9 @@ bb aa partitions `product'
 См. также функцию @code{remrule}, которая удаляет правила
 определенные функцией  @code{tellsimp} или @code{tellsimpafter}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @deffn {Функция} remrule (@var{op}, @var{rulename})
@@ -907,6 +959,9 @@ bb aa partitions `product'
                                          quux(%e, %pi)]
 @end example
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
@@ -971,6 +1026,9 @@ bb aa partitions `product'
 (%o17)                     1 - cos (y)
 @end example
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @deffn {Функция} tellsimpafter (@var{pattern}, @var{replacement})
@@ -1243,6 +1301,9 @@ Error: bb was declared mode boolean, has value: %e
             9    8    7    6    5    4    3    2    1    0
 @end example
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
 
 @deffn {Функция} clear_rules ()
@@ -1250,4 +1311,7 @@ Error: bb was declared mode boolean, has value: %e
 будет иметь номер @code{1} вслед за встроенными правилами для операторов суммы
 @code{+}, умножения  @code{*} и степени @code{^}.
 
+@opencatbox
+@category{Правила преобразования и шаблоны}
+@closecatbox
 @end deffn
