@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Differential.texi
-@c OriginalRevision=1.12
+@c OriginalRevision=1.13
 @c TranslatedBy: (c) 2007-09-05 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -34,6 +34,9 @@
 
 Пример использования см. в @code{ode2}.
 
+@opencatbox
+@category{Дифференциальные уравнения}
+@closecatbox
 @end deffn
 
 
@@ -103,6 +106,9 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 Если @code{desolve} не может получить решение, возвращается @code{false}.
 
+@opencatbox
+@category{Дифференциальные уравнения} @category{Преобразование Лапласа}
+@closecatbox
 @end deffn
 
 @deffn {Функция} ic1 (@var{solution}, @var{xval}, @var{yval})
@@ -115,6 +121,9 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 Пример использования см. в @code{ode2}.
 
+@opencatbox
+@category{Дифференциальные уравнения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
@@ -129,6 +138,9 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 Пример использования см. в @code{ode2}.
 
+@opencatbox
+@category{Дифференциальные уравнения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
@@ -218,4 +230,7 @@ desolve([eqn_1, eqn_2], [f(x),g(x)]);
 
 @end example
 
+@opencatbox
+@category{Дифференциальные уравнения}
+@closecatbox
 @end deffn
