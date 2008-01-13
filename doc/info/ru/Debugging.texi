@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Debugging.texi 
-@c OriginalRevision=1.19
+@c OriginalRevision=1.20
 @c TranslatedBy: (c) 2007-05 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @c end concepts Debugging
@@ -125,6 +125,10 @@ M-x dbl
 Существуют еще дополнительные команды, доступные в таком окне,
 такие как вычисление функций Maxima при нажатии @code{Alt-Control-x}.
 
+@opencatbox
+@category{Отладка}
+@closecatbox
+
 @node Специальные команды, Функции и переменные для отладки, Отладка исходного кода, Отладка
 @section Специальные команды
 
@@ -191,6 +195,9 @@ M-x dbl
 завершения вычислений
 @end table 
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 
 @node Функции и переменные для отладки, , Специальные команды, Отладка
 @section Функции и переменные для отладки
@@ -202,6 +209,9 @@ M-x dbl
 каждый раз как имеющая значение переменная используется в вычислении
 первый раз.
 
+@opencatbox
+@category{Вычисление} @category{Работа в консоли} @category{Глобальные флаги}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} setcheck
@@ -234,6 +244,9 @@ setcheck: ['x, 'y, 'z]$
 Сообщение не выводится, если переменной, включенной в список @code{setcheck},
 присваивается значение равное ей самой, например,  @code{X: 'X}.
 
+@opencatbox
+@category{Работа в консоли} @category{Глобальные флаги}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} setcheckbreak
@@ -249,6 +262,9 @@ setcheck: ['x, 'y, 'z]$
 
 См. также @code{setcheck} и @code{setval}.
 
+@opencatbox
+@category{Работа в консоли} @category{Глобальные флаги}
+@closecatbox
 @end defvr
 
 @defvr {Системная переменная} setval
@@ -259,6 +275,9 @@ setcheck: ['x, 'y, 'z]$
 
 См. также @code{setcheck} и @code{setcheckbreak}.
 
+@opencatbox
+@category{Работа в консоли} @category{Глобальные переменные}
+@closecatbox
 @end defvr
 
 @deffn {Функция} timer (@var{f_1}, ..., @var{f_n})
@@ -290,7 +309,11 @@ Maxima сохраняет информацию о времени выполнения контролируемых функций.
 
 См. также @code{timer_devalue}.
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
+
 @deffn {Функция} untimer (@var{f_1}, ..., @var{f_n})
 @deffnx {Функция} untimer ()
 Удаляет функции @var{f_1}, ..., @var{f_n} из списка 
@@ -305,6 +328,9 @@ Maxima сохраняет информацию о времени выполнения контролируемых функций.
 Вызов @code{timer (f)} обнуляет всю предыдущую статистику и снова
 добавляет @code{f} к списку тайминг-контроля.
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} timer_devalue
@@ -319,6 +345,9 @@ Maxima сохраняет информацию о времени выполнения контролируемых функций.
 
 См. также @code{timer} и @code{timer_info}.
 
+@opencatbox
+@category{Отладка} @category{Глобальные флаги} 
+@closecatbox
 @end defvr
 
 @deffn {Функция} timer_info (@var{f_1}, ..., @var{f_n})
@@ -342,6 +371,9 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 
 См. также @code{timer}.
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
 
 @deffn {Функция} trace (@var{f_1}, ..., @var{f_n})
@@ -374,6 +406,9 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 Если действует @code{timer (f)}, то @code{trace (f)} не работает; 
 т.к. @code{trace} и @code{timer} не могут действовать одновременно.
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
 
 @deffn {Функция} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
@@ -442,6 +477,9 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 (%i7) ff(6);
 @end example
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
 
 @deffn {Функция} untrace (@var{f_1}, ..., @var{f_n})
@@ -453,4 +491,7 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 Функция @code{untrace} возвращает список функций, для которых
 была отменена трассировка.
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
