@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Miscellaneous.texi 
-@c OriginalRevision=1.23
+@c OriginalRevision=1.24
 @c TranslatedBy: (c) 2007-06 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -42,6 +42,10 @@ Maxima директория "share" содержит программы и другие полезные для
 @code{aliases} -- список всех атомов, котрые имеют определенные пользователем алиасы (определяются
 функциями @code{alias}, @code{ordergreat}, @code{orderless} или при декларации атома @code{noun} 
 при помощи @code{declare}).
+
+@opencatbox
+@category{Факты и выводы} @category{Глобальные переменные}
+@closecatbox
 @end defvr
 
 
@@ -72,6 +76,9 @@ Maxima директория "share" содержит программы и другие полезные для
 @end example
 
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end defvr
 
 @c REPHRASE
@@ -87,6 +94,9 @@ Maxima директория "share" содержит программы и другие полезные для
 список переключателей, влияющих на работу транслятора, т.к. 
 имена большинства из них начинаются с @code{tr_}.
 
+@opencatbox
+@category{Справка}
+@closecatbox
 @end deffn
 
 @deffn {Функция} args (@var{expr})
@@ -102,6 +112,9 @@ Maxima директория "share" содержит программы и другие полезные для
 См. также @code{substpart} и @code{op}.
 
 @c NEEDS EXAMPLES
+@opencatbox
+@category{Выражения}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} genindex
@@ -110,6 +123,9 @@ Maxima директория "share" содержит программы и другие полезные для
 @code{genindex} -- буквенный префикс, используемый для создания
 новой переменной суммирования.
 
+@opencatbox
+@category{Суммы и произведения}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} gensumnum
@@ -119,19 +135,9 @@ Maxima директория "share" содержит программы и другие полезные для
 Если равна @code{false}, то индекс будет состоять только из @code{genindex} 
 без числового суффикса.
 
-@end defvr
-
-@c NEEDS EXPANSION AND EXAMPLES
-@defvr {Константа} inf
-Вещественная положительная бесконечность.
-
-@end defvr
-
-@c NEEDS EXPANSION AND EXAMPLES
-@defvr {Константа} infinity
-Комплексная бесконечность, бесконечная абсолютная величина с произвольным фазовым углом.
-См. также @code{inf} и @code{minf}.
-
+@opencatbox
+@category{Суммы и произведения}
+@closecatbox
 @end defvr
 
 @defvr {Системная переменная} infolists
@@ -183,6 +189,9 @@ Maxima директория "share" содержит программы и другие полезные для
 если иной не объявлен пользователем явно.)
 @end table
 
+@opencatbox
+@category{Факты и выводы} @category{Глобальные переменные}
+@closecatbox
 @end defvr
 
 @deffn {Функция} integerp (@var{expr})
@@ -215,6 +224,9 @@ Maxima директория "share" содержит программы и другие полезные для
 (%o9)                         false
 @end example
 
+@opencatbox
+@category{Функции предикаты}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} m1pbranch
@@ -238,6 +250,9 @@ m1pbranch:false          m1pbranch:true
 (-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
 @end example
 
+@opencatbox
+@category{Выражения} @category{Глобальные флаги}
+@closecatbox
 @end defvr
 
 @deffn {Функция} numberp (@var{expr})
@@ -270,6 +285,9 @@ m1pbranch:false          m1pbranch:true
 (%o7) [false, false, false, false, false, false, false, false]
 @end example
 
+@opencatbox
+@category{Функции предикаты}
+@closecatbox
 @end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
@@ -278,6 +296,9 @@ m1pbranch:false          m1pbranch:true
 Возвращает список имен всех свойств, ассоциированных
 с атомом @var{a}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
@@ -288,6 +309,9 @@ m1pbranch:false          m1pbranch:true
 перечислены в @code{infolists}, такие как, свойства, задаваемые @code{atvalue}, 
 @code{matchdeclare} и т.п., а также свойства, задаваемые функцией @code{declare}.
 
+@opencatbox
+@category{Факты и выводы} @category{Глобальные переменные} 
+@closecatbox
 @end defvr
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
@@ -297,6 +321,9 @@ m1pbranch:false          m1pbranch:true
 свойство, обозначаемое @var{prop}.  Т.е. @code{propvars (atvalue)}
 возвращает список атомов, имеющих свойство @code{atvalue}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
@@ -328,6 +355,9 @@ m1pbranch:false          m1pbranch:true
 (%o5)                         Hello
 @end example
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @deffn {Функция} qput (@var{atom}, @var{value}, @var{indicator})
@@ -354,6 +384,9 @@ m1pbranch:false          m1pbranch:true
 (%o9)                          bar
 @end example
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
@@ -363,6 +396,9 @@ m1pbranch:false          m1pbranch:true
 @deffn {Функция} rem (@var{atom}, @var{indicator})
 Удаляет свойство @var{indicator} у атома @var{atom}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
@@ -408,6 +444,9 @@ m1pbranch:false          m1pbranch:true
 @code{remvalue}, @code{remarray}, @code{remfunction} и @code{remrule}.
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -422,6 +461,9 @@ Maxima).
 
 См. также @code{values}.
 
+@opencatbox
+@category{Вычисление}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -436,6 +478,9 @@ Maxima).
 дополнительный шаг, перемножая численные множители знаменателей.
 Это приводит к более ясной форме и возможности распознать сокращения.
 
+@opencatbox
+@category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -444,6 +489,9 @@ Maxima).
 объявленной @code{scalar} при помощи @code{declare}, или выражением, полностью состоящим
 из чисел, констант и скалярных переменных, но не содержащим матрицы или списки.
 
+@opencatbox
+@category{Функции предикаты} @category{Векторы} @category{Матрицы}
+@closecatbox
 @end deffn
 
 @deffn {Функция} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
@@ -487,5 +535,8 @@ Warning - you are redefining the Macsyma function legendre_p
                              2
 @end example
 
+@opencatbox
+@category{Определение функций} @category{Ввод файлов}
+@closecatbox
 @end deffn
 
