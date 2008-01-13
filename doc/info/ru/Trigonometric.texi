@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Trigonometric.texi
-@c OriginalRevision=1.19
+@c OriginalRevision=1.20
 @c TranslatedBy: (c) 2007-09-22 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -24,6 +24,10 @@
 @code{trigexpand}, @code{trigreduce} и @code{trigsign}. Два встроенных пакета
 расширяют правила упрощения Maxima: @code{ntrig} и @code{atrig1}. Для подробностей
 запустите @code{describe(@var{command})}.
+
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 
 @node Функции и переменные для тригонометрии,  , Тригонометрия в Maxima, Тригонометрия
 @section Функции и переменные для тригонометрии
@@ -101,6 +105,9 @@ Maxima использует некоторые тождества, применимые, если @math{%pi} домножается
 (%o2)                  [0, 1, 0, (- 1)   ]
 @end example
 
+@opencatbox
+@category{Тригонометрические функции} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} %iargs
@@ -157,72 +164,114 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 (%o3)                      %i sinh(x)
 @end example
 
+@opencatbox
+@category{Тригонометрические функции} @category{Гиперболические функции} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @deffn {Функция} acos (@var{x})
  - Арккосинус.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} acosh (@var{x})
  - Ареакосинус (гиперболический арккосинус).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} acot (@var{x})
  - Арккотангенс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} acoth (@var{x})
  - Ареакотангенс (гиперболический арккотангенс).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} acsc (@var{x})
  - Арккосеканс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} acsch (@var{x})
  - Ареакосеканс (гиперболический арккосеканс).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} asec (@var{x})
  - Арксеканс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} asech (@var{x})
  - Ареасеканс (гиперболический арксеканс).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} asin (@var{x})
  - Арксинус.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} asinh (@var{x})
  - Ареасинус (гиперболический арксинус).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} atan (@var{x})
  - Арктангенс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} atan2 (@var{y}, @var{x})
  - соответствует значению @code{atan(@var{y}/@var{x})} на интервале
 (@code{-%pi}, @code{%pi}).
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} atanh (@var{x})
  - Ареатангенс (гиперболический арктангенс).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @c IS THIS DESCRIPTION ACCURATE ??
@@ -234,36 +283,57 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 @code{%pi/3} и @code{%pi/2}, а также соответствующими углами в трех других четвертях.
 Для использования пакета выполните @code{load(atrig1);}.
 
+@opencatbox
+@category{Тригонометрические функции} @category{Пакет atrig1}
+@closecatbox
 @end defvr
 
 @deffn {Функция} cos (@var{x})
  - Косинус.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} cosh (@var{x})
  - Ареакосинус (гиперболический арккосинус).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} cot (@var{x})
  - Котангенс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} coth (@var{x})
  - Ареакотангенс (гиперболический арккотангенс).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} csc (@var{x})
  - Косеканс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} csch (@var{x})
  - Ареакосеканс (гиперболический арккосеканс).
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} halfangles
@@ -295,6 +365,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
                             sqrt(2)
 @end example
 
+@opencatbox
+@category{Тригонометрические функции} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @c IS THIS DESCRIPTION ACCURATE ??
@@ -305,36 +378,57 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 функций @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} и @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
+@opencatbox
+@category{Тригонометрические функции} @category{Пакет ntrig}
+@closecatbox
 @end defvr
 
 @deffn {Функция} sec (@var{x})
  - Секанс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} sech (@var{x})
  - Гиперболический секанс.
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} sin (@var{x})
  - Синус.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} sinh (@var{x})
  - Гиперболический синус.
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} tan (@var{x})
  - Тангенс.
 
+@opencatbox
+@category{Тригонометрические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} tanh (@var{x})
  - Гиперболический тангенс.
 
+@opencatbox
+@category{Гиперболические функции}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -373,6 +467,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 
 @end example
 
+@opencatbox
+@category{Тригонометрические функции} @category{Функции упрощения}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} trigexpandplus
@@ -382,6 +479,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 (если @code{trigexpand} равно @code{true}, либо в функции @code{trigexpand}), например,
 @code{sin(x+y)}. Упрощение производится, только если @code{trigexpandplus} равно @code{true}.
 
+@opencatbox
+@category{Тригонометрические функции} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} trigexpandtimes
@@ -392,6 +492,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 например, @code{sin(2*x)}. Упрощение производится, только если @code{trigexpandtimes} равно
 @code{true}.
 
+@opencatbox
+@category{Тригонометрические функции} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} triginverses
@@ -408,6 +511,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 Если @code{false}, то ни @code{@var{arcfun}(@var{fun}(@var{x}))}, ни
 @code{@var{fun}(@var{arcfun}(@var{x}))} не будет упрощено.
 
+@opencatbox
+@category{Тригонометрические функции} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @deffn {Функция} trigreduce (@var{expr}, @var{x})
@@ -447,6 +553,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 
 @end example
 
+@opencatbox
+@category{Тригонометрические функции} @category{Функции упрощения}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} trigsign
@@ -455,6 +564,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 Если @code{trigsign} равно @code{true}, допускается упрощение отрицательных аргументов
 тригонометрических функций. Например, @code{sin(-x)} раскроется в @code{-sin(x)}.
 
+@opencatbox
+@category{Тригонометрические функции} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @deffn {Функция} trigsimp (@var{expr})
@@ -467,6 +579,9 @@ Maxima лишь проверяет, просматривается ли явно в аргументе множитель @math{%i}.
 @code{demo ("trgsmp.dem")} показывает несколько примеров для @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
 
+@opencatbox
+@category{Тригонометрические функции} @category{Функции упрощения}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -546,5 +661,8 @@ Tournier, @i{Calcul Formel}, изд-во Masson (английский перевод - Addison-Wesley)
 
 @end example
 
+@opencatbox
+@category{Тригонометрические функции} @category{Функции упрощения}
+@closecatbox
 @end deffn
 
