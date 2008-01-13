@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Command.texi
-@c OriginalRevision=1.45
+@c OriginalRevision=1.46
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
@@ -140,6 +140,9 @@
 (%o2)                          - 1
 @end example
 
+@opencatbox
+@category{Вычисление} @category{Операторы}
+@closecatbox
 @end deffn
 
 @deffn {Оператор} ''
@@ -332,6 +335,9 @@
                     3    3    2    2    1    1
 @end example
 
+@opencatbox
+@category{Вычисление} @category{Операторы}
+@closecatbox
 @end deffn
 
 @c end concepts Command Line
@@ -344,6 +350,9 @@
 функции, переменной, массива и т.п.
 Данная функция может иметь любое число парных аргументов.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} debugmode
@@ -360,6 +369,9 @@
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
+@opencatbox
+@category{Отладка} @category{Глобальные флаги}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION
@@ -556,6 +568,9 @@ Solution
 (%o11)                               true
 @end example
 
+@opencatbox
+@category{Вычисление}
+@closecatbox
 @end deffn
 
 @defvr {Свойство} evflag
@@ -658,6 +673,9 @@ Solution
 (%o12)                         YES
 @end example
 
+@opencatbox
+@category{Флаги вычисления} @category{Флаги и переменные упрощения}
+@closecatbox
 @end defvr
 
 @defvr {Свойство} evfun
@@ -758,6 +776,9 @@ Solution
 (%o15)                      G(F(cc))
 @end example
 
+@opencatbox
+@category{Флаги вычисления}
+@closecatbox
 @end defvr
 @c NEEDS WORK
 @defvr {Управляющая переменная} infeval
@@ -768,6 +789,9 @@ Solution
 аргумента @code{ev}.  Разумеется, выражения вроде
 @code{ev (X, X=X+1, infeval)} приводят к бесконечному циклу.
 
+@opencatbox
+@category{Флаги вычисления}
+@closecatbox
 @end defvr
 
 @c REVIEW FOR ACCURACY AND COMPLETENESS
@@ -840,6 +864,9 @@ Solution
 @code{kill} всегда возвращает @code{done} даже если аргументы не имели
 значения.
 
+@opencatbox
+@category{Вычисление} @category{Управление сессией} @category{Работа в консоли}
+@closecatbox
 @end deffn
 
 @deffn {Функция} labels (@var{symbol})
@@ -880,12 +907,19 @@ Solution
 
 См. также @code{inchar}, @code{outchar}, @code{linechar} и @code{infolists}.
 
+@opencatbox
+@category{Функции вывода} @category{Флаги и переменные вывода} @category{Работа в консоли}
+@closecatbox
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
 @defvr {Системная переменная} linenum
 Порядковый номер текущей пары входного и результирующего выражений.
 
+
+@opencatbox
+@category{Флаги и переменные вывода} @category{Работа в консоли}
+@closecatbox
 @end defvr
 
 @c NEEDS WORK
@@ -896,6 +930,9 @@ Solution
 пользователем вне зависимости от того имеет ли в данный момент
 переключатель значение по умолчанию или нет.
 
+@opencatbox
+@category{Глобальные переменные} @category{Управление сессией} @category{Работа в консоли}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} nolabels
@@ -922,6 +959,9 @@ Solution
 
 См. также @code{batch}, @code{load} и @code{labels}.
 
+@opencatbox
+@category{Глобальные флаги} @category{Управление сессией}
+@closecatbox
 @end defvr
 
 @c NEEDS WORK
@@ -934,6 +974,9 @@ Solution
 названия опции и хочет быть уверен, что он переопределил
 значение правильной переменной.
 
+@opencatbox
+@category{Глобальные флаги} @category{Управление сессией} @category{Работа в консоли}
+@closecatbox
 @end defvr
 
 @deffn {Функция} playback ()
@@ -993,6 +1036,9 @@ Solution
 например @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
+@opencatbox
+@category{Функции вывода} @category{Работа в консоли}
+@closecatbox
 @end deffn
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
@@ -1008,6 +1054,9 @@ Solution
 отображены другим способом, например для
 @code{atvalue}, @code{atomgrad}, @code{gradef} и @code{matchdeclare}.
 
+@opencatbox
+@category{Факты и выводы} @category{Функции вывода}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} prompt
@@ -1017,6 +1066,9 @@ Solution
 @code{playback (slow)} и диалога прерывания Maxima (break loop)
 (см. @code{break}).
 
+@opencatbox
+@category{Глобальные переменные} @category{Работа в консоли}
+@closecatbox
 @end defvr
 
 @deffn {Функция} quit ()
@@ -1031,6 +1083,9 @@ Solution
 тогда нажатие @code{control-C} запускает Lisp отладчик.
 См. также @code{debugging}.
 
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
 @end deffn
 
 @deffn {Функция} remfunction (@var{f_1}, ..., @var{f_n})
@@ -1054,6 +1109,9 @@ Solution
 Функция @code{remfunction} не применима к функциям массивам и переменным с индексом,
 к этим типам функций применима @code{remarray}.
 
+@opencatbox
+@category{Определение функций}
+@closecatbox
 @end deffn
 
 @deffn {Функция} reset ()
@@ -1068,6 +1126,9 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 некоторые, определенные с помощью @code{defmvar} переменные, не
 являются глобальными переменными или опциями.
 
+@opencatbox
+@category{Управление сессией}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} showtime
@@ -1080,8 +1141,11 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 @code{time} и @code{playback} могут показать
 это время даже если @code{showtime} равно @code{false}.
 
-См. также @code{playback}.
+См. также @code{timer}.
 
+@opencatbox
+@category{Флаги и переменные вывода} @category{Отладка}
+@closecatbox
 @end defvr
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
@@ -1093,6 +1157,9 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 Этот механизм может быть полезен при работе с пакетами для того, чтобы
 иметь возможность проверять какие опции пакета загружены.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @c NEEDS EXPANSION, EXAMPLES
@@ -1101,6 +1168,9 @@ Lisp макрос @code{defmvar} добавляет переменные в этот список
 Lisp функция @code{(to-maxima)} возвращает на уровень командной
 строки Maxima.
 
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
 @end deffn
 
 @defvr {Системная переменная} values
@@ -1111,5 +1181,8 @@ Lisp функция @code{(to-maxima)} возвращает на уровень командной
 Этот список состоит из символов, которым было присвоено значение при
 помощи операторов @code{:}, @code{::} или @code{:=}.
 
+@opencatbox
+@category{Вычисление} @category{Глобальные переменные} 
+@closecatbox
 @end defvr
 
