@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Help.texi 
-@c OriginalRevision=1.24
+@c OriginalRevision=1.25
 @c TranslatedBy: (c) 2007-02 Andrey Siver <ihep-2005@yandex.ru>
 
 @menu
@@ -139,6 +139,9 @@ Lisp функция @code{mfuncall} вызывает Maxima функцию.
 @code{break}
 и @code{gcd}.
 
+@opencatbox
+@category{Программирование}
+@closecatbox
 
 @node Сборка мусора, Документация, Lisp и Maxima, Справка
 @section Сборка мусора
@@ -191,6 +194,10 @@ Lisp, установка (setq si::*notify-gbc* t) поможет вам определить, какие области
 @end example
 
 и дополнительный вывод.
+
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
 
 @node Справочная система,  , Документация, Справка
 @section Справочная система
@@ -282,6 +289,10 @@ _
 (%i13) 
 @end example
 
+@opencatbox
+@category{Работа в консоли} @category{Ввод файлов}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} describe (@var{string})
@@ -353,7 +364,9 @@ Enter space-separated numbers, `all' or `none': 7 8
 Все элементы или ни один из элементов могут быть выбраны при помощи @code{all} 
 или @code{none}, что можно также сократить до @code{a} и @code{n} соотвественно.
 
-@pxref{Запрос подсказки из Maxima сессии}
+@opencatbox
+@category{Работа в консоли} @category{Справка}
+@closecatbox
 
 @end deffn
 
@@ -385,6 +398,10 @@ Enter space-separated numbers, `all' or `none': 7 8
 (%o5)                         y + 1
 (%o5)                         done
 @end example
+
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
 
 @end deffn
 

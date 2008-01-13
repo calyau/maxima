@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Introduction.texi 
-@c OriginalRevision=1.8
+@c OriginalRevision=1.9
 @c TranslatedBy: (c) 2007-01 Andrey Siver <ihep-2005@yandex.ru>
 
 Запустите Maxima с помощью команды "maxima". Maxima покажет информацию о версии 
@@ -202,4 +202,8 @@ Maxima может строить графики одной и более функций:
 @c a menu that will, among other things, let you generate a PostScript file
 @c of the plot.  (By default, the file is placed in your home directory.)
 @c You can rotate a 3D plot.
+
+@opencatbox
+@category{Справка}
+@closecatbox
 
