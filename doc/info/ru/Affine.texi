@@ -1,14 +1,25 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Affine.texi 
-@c OriginalRevision=1.13
+@c OriginalRevision=1.15
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
-* Функции и переменные пакета affine::
+* Введение в пакет affine::      
+* Функции и переменные пакета affine::      
 @end menu
 
-@node Функции и переменные пакета affine,  , Пакет affine, Пакет affine
+@node Введение в пакет affine, Функции и переменные пакета affine, Пакет affine, Пакет affine
+@section Введение в пакет affine
+
+Пакет @code{affine} предназначен для работы с группами многочленов.
+
+@opencatbox
+@category{Многочлены} @category{Базисы Гребнера} @category{Пакеты библиотеки share} @category{Пакет affine}
+@closecatbox
+
+
+@node Функции и переменные пакета affine,  , Введение в пакет affine, Пакет affine
 @section Функции и переменные пакета affine
 
 @deffn {Функция} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
@@ -23,6 +34,9 @@
 
 @code{fast_linsolve} более быстрый чем @code{linsolve} для разреженных систем.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
@@ -42,6 +56,9 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 когда @var{f} является полиномиальной комбинацией элементов
 @var{expr_1}, ..., @var{expr_m}.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
@@ -62,18 +79,27 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 Здесь степень определяется с помощью @code{nc_degree} и зависит от
 весов отдельных переменных.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} declare_weights (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 Присваивает веса @var{w_1}, ..., @var{w_n} переменным @var{x_1}, ..., @var{x_n}.
 Эти веса используются при вычислении @code{nc_degree}.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} nc_degree (@var{p})
 Возвращает степень некоммутативного полинома @var{p}.
 См. также @code{declare_weights}.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
@@ -82,6 +108,9 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 тогда и только тогда, когда @var{f} является полиномиальной
 комбинацией элементов уравнений.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
@@ -96,6 +125,9 @@ fast_central_elements ([x, y], 2);
 [y.y, x.x];
 @end example
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @c THIS IS NOT AT ALL CLEAR
@@ -111,17 +143,26 @@ fast_central_elements ([x, y], 2);
 Необязательный третий аргумент @code{reset}, @code{false} означает --
 не следует спрашивать о переопределении объектов.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
 Возвращает список независимых мономов по отношению к текущим
 упрощениям степени @var{n} по переменным @var{x_1}, ..., @var{x_n}.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} monomial_dimensions (@var{n})
 Вычисляет ряд Гильберта до степени @var{n} для текущей алгебры.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
@@ -130,6 +171,9 @@ fast_central_elements ([x, y], 2);
 Коэффициенты должны быть скалярными.  Для получения списка мономов
 используется @code{list_nc_monomials}.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @deffn {Функция} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
@@ -137,6 +181,9 @@ fast_central_elements ([x, y], 2);
 Возвращает список некоммутативных мономов полинома @var{p}
 или списка полиномов @var{p_1}, ..., @var{p_n}.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end deffn
 
 @c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
@@ -187,6 +234,9 @@ fast_central_elements ([x, y], 2);
 
 По умолчанию @code{dotsimp} не собирает числители.
 
+@opencatbox
+@category{Пакет affine}
+@closecatbox
 @end defvr
 
 

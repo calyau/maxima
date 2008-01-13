@@ -325,6 +325,7 @@ Matrices and Linear Algebra
 
 Пакет affine
 
+* Введение в пакет affine::      
 * Функции и переменные пакета affine::      
 
 Пакет itensor
