@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Runtime.texi 
-@c OriginalRevision=1.22
+@c OriginalRevision=1.23
 @c TranslatedBy: (c) 2007-06 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -35,6 +35,10 @@ showtime:all;
 
 Команда @code{showtime: all} устанавливает значение переменной @code{showtime}.
 Файл @code{maxima-init.mac} может содержать любые присваивания и другие команды Maxima.
+
+@opencatbox
+@category{Управление сессией}
+@closecatbox
 
 @node Прерывания, Функции и переменные времени выполнения, Введение в окружение времени выполнения, Окружение времени выполнения
 @section Прерывания
@@ -79,6 +83,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 
 @code{feature} само по себе не является именем функции или переменной.
 
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
@@ -101,6 +108,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 (%o2)                           true
 @end example
 
+@opencatbox
+@category{Функции предикаты} @category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @defvr {Системная переменная} maxima_tempdir
@@ -115,6 +125,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 
 Переменной @code{maxima_tempdir} можно присвоить строку с именем директории.
 
+@opencatbox
+@category{Глобальные переменные}
+@closecatbox
 @end defvr
 
 @defvr {Системная переменная} maxima_userdir
@@ -132,6 +145,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 @code{file_search_maxima} и @code{file_search_lisp}.
 Значение этих переменных нужно менять отдельно.
 
+@opencatbox
+@category{Глобальные переменные}
+@closecatbox
 @end defvr
 
 @deffn {Функция} room ()
@@ -149,6 +165,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 @code{room (false)} выводит краткое описание.
 @end itemize
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
 
 @deffn {Функция} status (feature)
@@ -178,6 +197,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 Переменная @code{features} содержит список свойств, применимых к математическим
 выражениям. См. @code{features} и @code{featurep} по поводу дополнительной информации.
 
+@opencatbox
+@category{Программирование}
+@closecatbox
 @end deffn
 
 @deffn {Функция} time (%o1, %o2, %o3, ...)
@@ -189,6 +211,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 Установка @code{showtime: true} заставляет Maxima печатать внутренее время вычисления и время по реальным
 часам для каждого результата.
 
+@opencatbox
+@category{Отладка}
+@closecatbox
 @end deffn
 
 @deffn {Функция} timedate ()
@@ -210,6 +235,9 @@ Maxima понимает два различных типа свойств: системные свойства и свойства,
 timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 @end example
 
+@opencatbox
+@category{Функции времени и даты}
+@closecatbox
 @end deffn
 
 @deffn {Функция} absolute_real_time ()
@@ -232,6 +260,9 @@ timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 (%o2)                   2007.265612087104
 @end example
 
+@opencatbox
+@category{Функции времени и даты}
+@closecatbox
 @end deffn
 
 @deffn {Функция} elapsed_real_time ()
@@ -257,6 +288,9 @@ timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 (%o3)                       7.552087
 @end example
 
+@opencatbox
+@category{Функции времени и даты}
+@closecatbox
 @end deffn
 
 @deffn {Функция} elapsed_run_time ()
@@ -282,5 +316,8 @@ timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
 (%o3)                         1.26
 @end example
 
+@opencatbox
+@category{Функции времени и даты}
+@closecatbox
 @end deffn
 
