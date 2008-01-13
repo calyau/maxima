@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Contexts.texi
-@c OriginalRevision=1.13
+@c OriginalRevision=1.14
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
@@ -20,6 +20,10 @@
 Переменная @code{activecontexts} содержит список активных контекстов,
 активированных с помощью @code{activate}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end deffn
 
 @defvr {Системная переменная} activecontexts
@@ -28,6 +32,10 @@
 @code{activecontexts} -- список активных контекстов, активизированных
 при помощи функции @code{activate}, в отличии от контекстов, которые
 являются активными как подконтексты текущего контекста.
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end defvr
 
@@ -99,6 +107,10 @@
 (%o10)                       unknown
 @end example
  
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end deffn
 
 @defvr {Управляющая переменная} assumescalar
@@ -124,6 +136,10 @@
 Когда @code{assumescalar} равно @code{all}, такие выражения
 трактуются как скаляры для всех перечисленных выше операций,
 включая некоммутативное умножение.
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end defvr
 
@@ -156,6 +172,11 @@
 есть функция, возвращающая @code{true} для всех аргументов.
 
 @c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end defvr
 
 
@@ -242,6 +263,10 @@ p;
 (%o11)                         neg
 @end example
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end defvr
 
 
@@ -261,6 +286,10 @@ p;
 Указанный контекст автоматически активируется.
 
 См. @code{contexts} для общего описания механизма контекстов.
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end defvr
 
@@ -297,10 +326,18 @@ Maxima нужную некоторым функциям.  Когда мы находимся в определенном
 @code{supcontext}, @code{killcontext}, @code{activate},
 @code{deactivate}, @code{assume} и @code{forget}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end defvr
 
 @deffn {Функция} deactivate (@var{context_1}, ..., @var{context_n})
 Деактивирует все указанные контексты @var{context_1}, ..., @var{context_n}.
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end deffn
 
@@ -317,6 +354,10 @@ Maxima нужную некоторым функциям.  Когда мы находимся в определенном
 
 @code{facts ()} (т.е. без аргументов) отображает все факты
 текущего контекста.
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end deffn
 
@@ -349,6 +390,10 @@ Maxima "распознает" некоторые математические свойства (features)
 Существует также список нематематических, системо-зависимых свойств.
 См. @code{status}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end defvr
 
 @deffn {Функция} forget (@var{pred_1}, ..., @var{pred_n})
@@ -360,6 +405,10 @@ Maxima "распознает" некоторые математические свойства (features)
 
 @code{forget (@var{L})}, где @var{L} есть список предикатов,
 удаляет все предикаты из данного списка.
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end deffn
 
@@ -379,6 +428,10 @@ Maxima "распознает" некоторые математические свойства (features)
 @code{killcontext} вычисляет свои аргументы.
 @code{killcontext} возвращает @code{done}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} newcontext (@var{name})
@@ -389,6 +442,10 @@ Maxima "распознает" некоторые математические свойства (features)
 @code{newcontext} вычисляет свои аргумент.
 @code{newcontext} возвращает @var{name}.
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} supcontext (@var{name}, @var{context})
@@ -398,5 +455,9 @@ Maxima "распознает" некоторые математические свойства (features)
 @var{context} должен существовать.
 
 Если @var{context} не указан, тогда подразумевается текущий контекст.
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end deffn
