@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Number.texi
-@c OriginalRevision=1.25
+@c OriginalRevision=1.26
 @c TranslatedBy: (c) 2007-09-07 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -31,10 +31,17 @@
             2  6    30  66    2730  6    510    798
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
+@deffn {Функция} bernpoly (@var{x}, @var{n})
 Возвращает значение многочлена Бернулли порядка @var{n} в точке @var{x}.
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} bfzeta (@var{s}, @var{n})
@@ -45,6 +52,9 @@
 
 Функцию загружает команда @code{load ("bffac")}.
 
+@opencatbox
+@category{Теория чисел} @category{Численное вычисление}
+@closecatbox
 @end deffn
 
 @deffn {Функция} bfhzeta (@var{s}, @var{h}, @var{n})
@@ -61,6 +71,9 @@ sum ((k+h)^-s, k, 0, inf)
 
 Функцию загружает команда @code{load ("bffac")}.
 
+@opencatbox
+@category{Теория чисел} @category{Численное вычисление}
+@closecatbox
 @end deffn
 
 @deffn {Функция} binomial (@var{x}, @var{y})
@@ -96,6 +109,9 @@ sum ((k+h)^-s, k, 0, inf)
 (%o5)                    binomial(11, y)
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} burn (@var{n})
@@ -109,6 +125,9 @@ sum ((k+h)^-s, k, 0, inf)
 
 Функцию загружает команда @code{load ("bffac")}.
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} cf (@var{expr})
@@ -182,6 +201,10 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 @end example
 
 @end itemize
+
+@opencatbox
+@category{Цепные дроби}
+@closecatbox
 @end deffn
 
 @deffn {Функция} cfdisrep (@var{list})
@@ -201,6 +224,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
                                       2
 @end example
 
+@opencatbox
+@category{Цепные дроби}
+@closecatbox
 @end deffn
 
 @deffn {Функция} cfexpand (@var{x})
@@ -220,6 +246,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o3)                   3.141592653011902
 @end example
 
+@opencatbox
+@category{Цепные дроби}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} cflength
@@ -240,6 +269,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
 @end example
 
+@opencatbox
+@category{Цепные дроби}
+@closecatbox
 @end defvr
 
 @deffn {Функция} divsum (@var{n}, @var{k})
@@ -261,6 +293,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o4)                          210
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} euler (@var{n})
@@ -272,6 +307,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @defvr {Константа} %gamma
@@ -280,12 +318,18 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 @end ifinfo
 Постоянная Эйлера-Маскерони, 0.5772156649015329 ....
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @deffn {Функция} factorial (@var{x})
 Представляет факториал @var{x}. Maxima работает с @code{factorial (@var{x})}
 аналогично @code{@var{x}!}. См. @code{!}.
 
+@opencatbox
+@category{Гамма функция и факториал}
+@closecatbox
 @end deffn
 
 @deffn {Функция} fib (@var{n})
@@ -302,6 +346,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} fibtophi (@var{expr})
@@ -338,6 +385,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o4)                           0
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} ifactors (@var{n})
@@ -356,6 +406,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o2)                        51575319651600
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} inrt (@var{x}, @var{n})
@@ -368,6 +421,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} inv_mod (@var{n}, @var{m})
@@ -384,6 +440,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o3)                          false
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} jacobi (@var{p}, @var{q})
@@ -395,6 +454,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} lcm (@var{expr_1}, ..., @var{expr_n})
@@ -403,6 +465,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 
 Функцию загружает @code{load ("functs")}.
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} minfactorial (@var{expr})
@@ -420,6 +485,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
                          (n + 1) (n + 2)
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} next_prime (@var{n})
@@ -430,6 +498,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o1)                       29
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} partfrac (@var{expr}, @var{var})
@@ -456,6 +527,10 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
                     x + 2   x + 1          2
                                     (x + 1)
 @end example
+
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} power_mod (@var{a}, @var{n}, @var{m})
@@ -474,6 +549,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o4)                          3
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} primep (@var{n})
@@ -490,12 +568,19 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 умолчанию 25 переменной @code{primep_number_of_tests} вероятность того, что @var{n}
 будет составным, много меньше 10^-15.
 
+@opencatbox
+@category{Теория чисел} @category{Функции предикаты}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} primep_number_of_tests
 Значение по умолчанию: 25
 
 Число тестов Миллера-Рабина, используемых в @code{primep}.
+
+@opencatbox
+@category{Теория чисел} @category{Функции предикаты}
+@closecatbox
 @end defvr
 
 @deffn {Функция} prev_prime (@var{n})
@@ -505,6 +590,10 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%i1) prev_prime(27);
 (%o1)                       23
 @end example
+
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} qunit (@var{n})
@@ -518,11 +607,17 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o2)                           1
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @deffn {Функция} totient (@var{n})
 Возвращает число целых чисел, меньших или равных @var{n}, которые взаимно просты с @var{n}.
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} zerobern
@@ -531,6 +626,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 Если @code{zerobern} равно @code{false}, @code{bern} исключает числа Бернулли, равные нулю.
 См. @code{bern}.
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end defvr
 
 @deffn {Функция} zeta (@var{n})
@@ -549,6 +647,9 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
           120       12    2        6              90
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} zeta%pi
@@ -573,4 +674,7 @@ Maxima не работает с операциями над цепными дробями вне @code{cf}.
 (%o4)                        zeta(4)
 @end example
 
+@opencatbox
+@category{Теория чисел}
+@closecatbox
 @end defvr
