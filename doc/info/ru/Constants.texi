@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Constants.texi
-@c OriginalRevision=1.19
+@c OriginalRevision=1.22
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
@@ -20,6 +20,9 @@
 @code{%e} представляет основание натурального логарифма, также известное как число Эйлера.
 Численное значение @code{%e} является числом с плавающей точкой двойной точности 2.718281828459045d0.
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} %i
@@ -29,12 +32,42 @@
 @end ifinfo
 @code{%i} представляет мнимую единицу, @math{sqrt(-1)}.
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} false
 @code{false} -- логическая константа "ложь".
 В Maxima @code{false} представляется значением @code{NIL} в Lisp.
 
+@opencatbox
+@category{Константы}
+@closecatbox
+@end defvr
+
+@defvr {Константа} ind
+@ifinfo
+@vrindex Неопределенный
+@end ifinfo
+
+@code{ind} представляет конечный, неопределенный результат.
+
+См. также @code{limit}.
+
+Пример:
+
+@c ===beg===
+@c limit (sin(1/x), x, 0);
+@c ===end===
+@example
+(%i1) limit (sin(1/x), x, 0);
+(%o1)                          ind
+@end example
+
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} inf
@@ -43,6 +76,9 @@
 @end ifinfo
 @code{inf} представляет вещественную положительную бесконечность.
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} infinity
@@ -51,6 +87,9 @@
 @end ifinfo
 @code{infinity} представляет комплексную бесконечность.
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} minf
@@ -60,6 +99,9 @@
 @end ifinfo
 @code{minf} представляет вещественную минус (т.е. отрицательную) бесконечность.
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} %phi
@@ -136,6 +178,9 @@
 (%o5)                           0
 @end example
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} %pi
@@ -145,11 +190,40 @@
 @code{%pi} представляет отношение длины окружности к ее диаметру.
 Численное значение @code{%pi} является числом с плавающей точкой двойной точности 3.141592653589793d0.
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
 @defvr {Константа} true
 @code{true} -- логическая константа "истина".
 В Maxima @code{true} представляется значением @code{T} в Lisp.
 
+@opencatbox
+@category{Константы}
+@closecatbox
 @end defvr
 
+@defvr {Константа} und
+@ifinfo
+@vrindex Неопределенный
+@end ifinfo
+
+@code{und} представляет неопределенный результат.
+
+См. также @code{limit}.
+
+Пример:
+
+@c ===beg===
+@c limit (1/x, x, 0);
+@c ===end===
+@example
+(%i1) limit (1/x, x, 0);
+(%o1)                          und
+@end example
+
+@opencatbox
+@category{Константы}
+@closecatbox
+@end defvr
