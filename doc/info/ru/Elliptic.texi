@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Elliptic.texi
-@c OriginalRevision=1.10
+@c OriginalRevision=1.11
 @c TranslatedBy: (c) 2007-09-23 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -123,6 +123,10 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 ѕоддержку эллиптических функций и интегралов реализовал –еймонд “ой, и его код
 доступен под лицензии GPL, как и весь код Maxima.
 
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
+
 @node ‘ункции и переменные дл€ эллиптических функций, ‘ункции и переменные дл€ эллиптических интегралов, Ёллиптические функции и интегралы в Maxima, top
 @comment  node-name,  next,  previous,  up
 
@@ -130,98 +134,194 @@ $$m = k^2$$ и $$k = \sin\alpha $$
 
 @deffn {‘ункци€} jacobi_sn (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{sn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_cn (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{cn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_dn (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{dn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_ns (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{ns(u,m) = 1/sn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_sc (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{sc(u,m) = sn(u,m)/cn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_sd (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{sd(u,m) = sn(u,m)/dn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_nc (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{nc(u,m) = 1/cn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_cs (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{cs(u,m) = cn(u,m)/sn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_cd (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{cd(u,m) = cn(u,m)/dn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_nd (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{nc(u,m) = 1/cn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_ds (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{ds(u,m) = dn(u,m)/sn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} jacobi_dc (@var{u}, @var{m})
 Ёллиптическа€ функци€ якоби @math{dc(u,m) = dn(u,m)/cn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_sn (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{sn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_cn (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{cn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_dn (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{dn(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_ns (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{ns(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_sc (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{sc(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_sd (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{sd(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_nc (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{nc(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_cs (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{cs(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_cd (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{cd(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_nd (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{nc(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_ds (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{ds(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} inverse_jacobi_dc (@var{u}, @var{m})
 ќбратна€ эллиптическа€ функци€ якоби дл€ @math{dc(u,m)}.
+
+@opencatbox
+@category{Ёллиптические функции}
+@closecatbox
 @end deffn
 
 
@@ -247,6 +347,9 @@ $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 
 —м. также @ref{elliptic_e} и @ref{elliptic_kc}.
 
+@opencatbox
+@category{Ёллиптические интегралы}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_e}
@@ -265,6 +368,9 @@ $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 
 —м. также @ref{elliptic_e} и @ref{elliptic_ec}.
 
+@opencatbox
+@category{Ёллиптические интегралы}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_eu}
@@ -298,6 +404,10 @@ $$E(u,m) = E(\phi, m)$$
 где $\phi = \sin^{-1} {\rm sn}(u, m)$
 @end tex
 —м. также @ref{elliptic_e}.
+
+@opencatbox
+@category{Ёллиптические интегралы}
+@closecatbox
 @end deffn
 
 @deffn {‘ункци€} elliptic_pi (@var{n}, @var{phi}, @var{m})
@@ -314,6 +424,10 @@ $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
 ƒл€ Maxima известна только производна€ по @math{phi}.
+
+@opencatbox
+@category{Ёллиптические интегралы}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_kc}
@@ -332,6 +446,10 @@ $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 ƒл€ конкретных значений @math{m} значение интеграла выражаетс€ через гамма-функцию.
 ƒл€ вычислени€ используйте @code{makegamma}.
+
+@opencatbox
+@category{Ёллиптические интегралы}
+@closecatbox
 @end deffn
 
 @anchor{elliptic_ec}
@@ -350,5 +468,9 @@ $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 ƒл€ конкретных значений @math{m} значение интеграла выражаетс€ через гамма-функцию.
 ƒл€ вычислени€ используйте @code{makegamma}.
+
+@opencatbox
+@category{Ёллиптические интегралы}
+@closecatbox
 @end deffn
 
