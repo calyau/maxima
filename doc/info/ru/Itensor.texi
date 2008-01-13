@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Itensor.texi
-@c OriginalRevision=1.42    
+@c OriginalRevision=1.43    
 @c TranslatedBy: (c) 2005-12 Valery Pipin <pip@iszf.irk.ru>
 
 @menu
@@ -52,6 +52,10 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 время, индексное представление тензоров в этом пакете создает
 определенные трудности при определении метрики, функций
 и вычислении дифференцируемых объектов.
+
+@opencatbox
+@category{Тензоры} @category{Пакеты библиотеки share} @category{Пакет itensor}
+@closecatbox
 
 @subsection Новые соглашения для обозначения тензорных индексов
 
@@ -252,6 +256,9 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 Отдельный индекс или список индексов (возможно пустой) считаются
 допустимым вводом (см. пример в секции @code{covdiff}).
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} changename (@var{old}, @var{new}, @var{expr})
@@ -263,6 +270,9 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 с именем @var{name} с @var{m} ковариантным и @var{n}
 контравариантным индексами.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} listoftens (@var{expr})
@@ -283,6 +293,9 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} ishow (@var{expr})
@@ -293,6 +306,9 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 ковариантных индексов и отделены запятой (примеры вывода данной
 функции можно найти практически в любой части этого документа).
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -319,6 +335,9 @@ ii) В силу специфики способа, при котором тензора и операции над ними
 встречается более чем два раза является синтаксически
 неправильным. При работе с ним Maxima выдаст ошибку.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} rename (@var{expr})
@@ -388,6 +407,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
                           %1 %3      %2 %6      %4 r      %5 %7
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} flipflag
@@ -404,6 +426,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 немой индекс в списке переименовывается в  @code{%1}, следующий в
 @code{%2} и т.д.). Затем индексы сортируются (см. пример в  @code{rename()}).
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -426,6 +451,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @code{contractions}  содержит список индексных объектов с заданными,
 посредством @code{defcon}, правилами  свертки.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -434,6 +462,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @code{remcon(all)} удаляет все правила свертки для всех
 индексных объектов.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -450,6 +481,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 @code{false}, чтобы программа не пыталась искать сокращение
 множителей, используя GCD алгоритмы.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -463,6 +497,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 тензор кривизны Римана @code{icurvature}. См. пример в
 пункте @code{icurvature}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -568,7 +605,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @end example
 
-
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -577,6 +616,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 Удаляет из системы значения компонент тензора
 @code{tensor}, присвоенных при помощи функции @code{components}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @c NEED LIST OF ARGUMENTS HERE
@@ -627,6 +669,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 Функция @code{showcomps} может также печатать компоненты тензоров
 ранга выше чем 2.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -638,6 +683,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 текущем выражении? не будут конфликтовать с уже использованными
 (см. пример в секции @code{indices}).
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -647,6 +695,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 Данная переменная задает приставку (префикс) для генерируемых немых индексов
 (см. пример в секции @code{indices}).
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 @defvr {Управляющая переменная} icounter
@@ -655,6 +706,10 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 Определяет численный суффикс для генерируемого
 немого индекса. Приставка (префикс) определяется
 переменной @code{idummyx}
+
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 @deffn {Функция} kdelta (@var{l1}, @var{l2})
@@ -670,6 +725,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 Будьте готовы,что при операциях с @code{kdelta([i,j],[])} Maxima может
 пожаловаться на неправильный индексный объект и отказаться от дальнейших вычислений.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} kdels (@var{l1}, @var{l2})
@@ -696,6 +754,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} levi_civita (@var{l})
@@ -703,6 +764,9 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 является четной перестановкой целых чисел, -1 для нечетной
 перестановки, и 0 когда встречаются повторяющиеся индексы.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -781,6 +845,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -809,6 +876,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} lc_u
@@ -818,6 +888,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 использует свойства антисимметрии перестановочного тензора
 (см. пример в секции  @code{lc_l}).
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} canten (@var{expr})
@@ -827,6 +900,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 и не встречаются символы Леви-Чивита. Ввиду этих ограничений, следует избегать
 ее использования. Вместо нее рекомендуется применять  @code{canform}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} concan (@var{expr})
@@ -834,6 +910,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 Аналогична @code{canten} но дополнительно производит
 свертку индексов.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -849,6 +928,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 пока симметрии не будут объявлены. Индексы производной предполагаются симметричными,
 до тех пор пока не объявлено, что @code{iframe_flag} равен @code{true}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -907,6 +989,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -915,6 +1000,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 Удаляет все свойства симметрии тензора @var{tensor}, имеющего @var{m}
 ковариантных и @var{n} контравариантных индексов.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -934,6 +1022,10 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 всегда приводит выражение к простейшей форме.
 В тоже время @code{canform} всегда возвращает математически
 корректный результат.
+
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @subsection Операции над индексами тензоров
@@ -954,6 +1046,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 имен типа @code{x[1]}, @code{x[2]}, в качестве переменных
 дифференцирования.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -972,6 +1067,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @code{2*determinant(g)*ichr2([%i,k],[%i])}, где немой индекс @code{%i}
 пробегает соответствующие значения.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -997,6 +1095,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1005,6 +1106,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 Вычисляет все команды @code{idiff} в выражении @var{ten}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1018,6 +1122,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 объектах. После этого дифференцирование выполняется при помощи
 @code{ev(@var{expr}, idiff)}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1084,6 +1191,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1091,6 +1201,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 Обнуляет в @var{expr} все объекты  @var{tensor_i}, не имеющие индексов
 производной.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1098,6 +1211,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 Обнуляет в @var{expr} все объекты  @var{tensor_i}, имеющие индексы
 производной.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} flushnd (@var{expr}, @var{tensor}, @var{n})
@@ -1117,6 +1233,10 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 (%t3)                               a
                                      i,k r
 @end example
+
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1128,6 +1248,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @code{coord(x)}, тогда  вычисление @code{idiff(x([],[i]),j)} дает @code{kdelta([i],[j])}.
 @code{coord} это список всех индексных объектов имеющих это свойство.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} remcoord (@var{tensor_1}, @var{tensor_2}, ...)
@@ -1136,6 +1259,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @code{remcoord(all)} удаляет свойства координатного дифференцирования
 для всех индексных объектов.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1145,6 +1271,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 Например, @code{[]p([m],[n])} представляет сокращение для
 @code{g([],[i,j])*p([m],[n],i,j)}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} conmetderiv (@var{expr}, @var{tensor})
@@ -1169,6 +1298,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1258,6 +1390,9 @@ errexp1 has improper indices
 См. также @code{weyl.dem}, для примера совместного применения @code{simpmetderiv}
 и @code{conmetderiv} для упрощения тензора Вейля.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1265,6 +1400,9 @@ errexp1 has improper indices
 
 Обнуляет все производные первого порядка от @var{tensor} в @var{expr}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1280,6 +1418,9 @@ errexp1 has improper indices
 @code{defcon(@var{g})}, @code{defcon(@var{g},@var{g},kdelta)}.
 По умолчанию переменная @code{imetric} не имеет значения.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1295,6 +1436,9 @@ errexp1 has improper indices
 необходимо определить имя метрического тензора, присвоив соответствующее
 значение переменной @code{imetric}, см. пример ниже в разделе @code{covdiff}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @deffn {Функция} ichr2 ([@var{i}, @var{j}],[@var{k}])
@@ -1305,6 +1449,10 @@ errexp1 has improper indices
    ichr2([i,j],[k]) = g    (g      + g      - g     )/2
                              is,j     js,i     ij,s
 @end example
+
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1319,6 +1467,10 @@ errexp1 has improper indices
                      + ichr2      ichr2
                             %1 k       i j
 @end example
+
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1372,6 +1524,9 @@ Enter a list of the derivative indices: [];
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1380,6 +1535,9 @@ Enter a list of the derivative indices: [];
 приравнивая к нулю те, в которых индекс производной совпадает с
 одним из контравариантных индексов.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1426,6 +1584,9 @@ Enter a list of the derivative indices: [];
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 @subsection Вычисления в подвижном базисе
@@ -1514,6 +1675,9 @@ Maxima использует  поле дуального базиса (@code{ifri})
 @code{ifri}, а также (@code{ifb}) определены всегда, то
 данная функция не выполняет никаких действий.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -1555,6 +1719,9 @@ ifb    = (ifr    ifr    - ifr    ifr   ) ifri
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1577,6 +1744,9 @@ icc1    = ichr1    - ikt1    - inmc1
 Наконец, если @code{inonmet_flag} равен @code{false}, то
 @code{inmc1}, также опускается при вычислениях.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1600,6 +1770,9 @@ icc2   = ichr2   - ikt2   - inmc2
 Наконец, если @code{inonmet_flag} равен @code{false}, то
 @code{inmc2}, также опускается при вычислениях.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1619,6 +1792,9 @@ ifc1    = --------------------------------
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1635,6 +1811,9 @@ ifc2   = ifg   ifc1
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1643,6 +1822,9 @@ ifc2   = ifg   ifc1
 Базис тетрады. Произведение с дуальным базисом (@code{ifri}) дает
 метрику тетрады.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1652,6 +1834,9 @@ ifc2   = ifg   ifc1
 Вместе с тензором тетрадной метрики @code{ifg} образует основу тетрадного
 формализма реализованного в @code{itensor}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1660,6 +1845,9 @@ ifc2   = ifg   ifc1
 Тензор тетрадной метрики. По умолчанию равен @code{kdelta}. Пользователь может
 определить свой, используя @code{components}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1667,6 +1855,9 @@ ifc2   = ifg   ifc1
 
 Обратная тетрадная метрика. Свертка с @code{ifg} дает  @code{kdelta}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1675,6 +1866,9 @@ ifc2   = ifg   ifc1
 
 Определяет метод вычисления скобки тетрады @code{ifb}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 @subsection Кручение и неметричность
@@ -1699,6 +1893,9 @@ g     =- g  inm
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1717,6 +1914,9 @@ inmc1    = ------------------------------
 
 В тетрадном формализме вместо @code{g} используется @code{ifg}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1739,6 +1939,9 @@ inmc2   = -------------------------------------------
 
 В тетрадном формализме вместо @code{g} используется @code{ifg}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1758,6 +1961,10 @@ ikt1    = ----------------------------------
 @end example
 
 В тетрадном формализме вместо @code{g} используется @code{ifg}.
+
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1776,6 +1983,9 @@ ikt2   = g   ikt1
 
 В тетрадном формализме вместо @code{g} используется @code{ifg}.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -1836,6 +2046,9 @@ ikt2   = g   ikt1
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 @subsection Внешняя алгебра
@@ -1931,6 +2144,9 @@ A       /\ B       = ----- D              A       B
                            i j  k    i  j k    i k  j
 @end example
 
+@opencatbox
+@category{Пакет itensor} @category{Операторы}
+@closecatbox
 @end defvr
 
 
@@ -1967,6 +2183,9 @@ A       /\ B       = ----- D              A       B
 Заметим, что "внутренняя" свертка определена только для  полностью
 антисимметричных объектов. В противном случае результат вычисления будет неправильным.
 
+@opencatbox
+@category{Пакет itensor} @category{Операторы}
+@closecatbox
 @end defvr
 
 @deffn {Функция} extdiff (@var{expr}, @var{ind})
@@ -2002,6 +2221,9 @@ A       /\ B       = ----- D              A       B
                             j k,i    i k,j    i j,k
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -2046,6 +2268,9 @@ A       /\ B       = ----- D              A       B
 
 @end example
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end deffn
 
 
@@ -2058,6 +2283,9 @@ A       /\ B       = ----- D              A       B
 полностью антисимметричному ковариантному тензорному полю.
 В противном случае внешняя форма будет согласована с понятием элемента объема.
 
+@opencatbox
+@category{Пакет itensor}
+@closecatbox
 @end defvr
 
 
@@ -2102,6 +2330,9 @@ $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
 
 ЗАМЕЧАНИЕ: Текущая версия @code{tentex} является экспериментальной.
 
+@opencatbox
+@category{Пакет itensor} @category{Вывод в формате TeX}
+@closecatbox
 @end deffn
 
 @subsection Взаимодействие с пакетом @code{ctensor}
@@ -2156,6 +2387,9 @@ $$\Gamma_@{j\,k@}^@{m_1@}\,\Gamma_@{l\,m_1@}^@{i@}-\Gamma_@{j\,l@}^@{m_1@}\,
    l, m
 @end example
 
+@opencatbox
+@category{Пакет itensor} @category{Пакет ctensor}
+@closecatbox
 @end deffn
 
 @subsection Зарезервированные имена переменных

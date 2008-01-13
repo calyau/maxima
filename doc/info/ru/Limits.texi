@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Limits.texi 
-@c OriginalRevision=1.13
+@c OriginalRevision=1.14
 @c TranslatedBy: (c) 2007-05-23 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -18,6 +18,9 @@
 @code{limit}. Это предотвращает зацикливание в случаях вроде 
 @code{limit (cot(x)/csc(x), x, 0)}.
 
+@opencatbox
+@category{Пределы}
+@closecatbox
 @end defvr
 
 @deffn {Функция} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
@@ -52,6 +55,9 @@
 Относительно метода см. Wang, P., "Evaluation of Definite Integrals by Symbolic
 Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 
+@opencatbox
+@category{Пределы}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} limsubst
@@ -59,6 +65,9 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 позволяет избежать ошибок, когда выражение вида @code{limit (f(n)/f(n+1), n, inf)}
 дает 1. Подобные подстановки будут использоваться, если @code{limsubst} равно @code{true}.
 
+@opencatbox
+@category{Пределы}
+@closecatbox
 @end defvr
 
 @deffn {Функция} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
@@ -67,7 +76,9 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 Вычисляет предел разложения выражения @code{expr} в ряд Тейлора в точке @code{x}
 равной @code{val} с направления @code{dir}.
 
-
+@opencatbox
+@category{Пределы}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} tlimswitch
@@ -80,5 +91,8 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 Если значение @code{tlimswitch} равно @code{false} и предел выражения не может быть вычислен
 непосредственно, то @code{limit} возвращает исходное выражение предела невычисленным.
 
+@opencatbox
+@category{Пределы}
+@closecatbox
 @end defvr
 
