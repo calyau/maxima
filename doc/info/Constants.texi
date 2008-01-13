@@ -59,6 +59,10 @@ Example:
 (%i1) limit (sin(1/x), x, 0);
 (%o1)                          ind
 @end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
 
 @defvr {Constant} inf
@@ -213,4 +217,8 @@ Example:
 (%i1) limit (1/x, x, 0);
 (%o1)                          und
 @end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
 @end defvr
