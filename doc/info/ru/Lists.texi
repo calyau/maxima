@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Lists.texi 
-@c OriginalRevision=1.33
+@c OriginalRevision=1.34
 @c TranslatedBy: (c) 2007-06 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -55,6 +55,9 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 См. @code{example(append);} для примера.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -68,6 +71,9 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 В противном случае возвращается значение @var{default}.  Параметр @var{default} не
 обязателен и по умолчанию равен @code{false}.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c REPHRASE
@@ -77,6 +83,9 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 в противном случае.  Т.е. @code{atom(5)} равно @code{true}, тогда как @code{atom(a[1])} и @code{atom(sin(x))} 
 равны @code{false} (предполагая, что @code{a[1]} и @code{x} не имеют значения).
 
+@opencatbox
+@category{Функции предикаты} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
@@ -86,11 +95,17 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 элементами @var{list}.  Функция @code{cons} работает и с произвольными выражениями,
 например, @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} copylist (@var{list})
 Возвращает копию списка @var{list}.
 
+@opencatbox
+@category{Списки}
+@closecatbox
 @end deffn
 
 @deffn {Функция} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
@@ -127,6 +142,9 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 Отметим, что пределы для переменной @code{j} могут зависеть от @code{i}.
 
+@opencatbox
+@category{Списки}
+@closecatbox
 @end deffn
 
 @deffn {Функция} delete (@var{expr_1}, @var{expr_2})
@@ -160,12 +178,18 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 
 @end example
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} eighth (@var{expr})
 Возвращает восьмой элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
@@ -175,12 +199,18 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 Функция @code{endcons} работает и с общими выражениями, например,
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} fifth (@var{expr})
 Возвращает пятый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -197,12 +227,18 @@ Maxima тоже имеет свои собственные списки, которые печатаются как
 результат в обоих случаях).  Функции @code{second} .. @code{tenth} дают со второго по десятый
 элемент выражения.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} fourth (@var{expr})
 Возвращает четвертый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} get (@var{a}, @var{i})
@@ -247,6 +283,9 @@ x is not numeric.
 
 @end example
 
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 @end deffn
 
 @deffn {Функция} join (@var{l}, @var{m})
@@ -274,6 +313,9 @@ x is not numeric.
 (%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
 @end example
 
+@opencatbox
+@category{Списки}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -281,6 +323,9 @@ x is not numeric.
 @deffn {Функция} last (@var{expr})
 Возвращает последний элемент @var{expr} (элемент, слагаемое, множитель, строку и т.п.).
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -294,6 +339,9 @@ x is not numeric.
 (предполагается, что @code{exptdispflag} равна @code{true}), и дает 3, если @code{inflag} 
 равен @code{true}, т.к. внутренние представление есть @code{a*b^-1*c^-1}.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @defvr {Управляющая переменная} listarith
@@ -303,11 +351,17 @@ x is not numeric.
 в матрицы и дают результат матричного типа.  Однако, операции список-список
 продолжают давать списки.
 
+@opencatbox
+@category{Списки} @category{Глобальные флаги}
+@closecatbox
 @end defvr
 
 @deffn {Функция} listp (@var{expr})
 Возвращает @code{true}, если @var{expr} является списком и @code{false} в противном случае.
 
+@opencatbox
+@category{Списки} @category{Функции предикаты}
+@closecatbox
 @end deffn
 
 @deffn {Функция} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
@@ -337,6 +391,9 @@ x is not numeric.
 
 @end example
 
+@opencatbox
+@category{Списки}
+@closecatbox
 @end deffn
 
 @deffn {Функция} member (@var{expr_1}, @var{expr_2})
@@ -388,12 +445,18 @@ x is not numeric.
 (%o8)                         true
 @end example
 
+@opencatbox
+@category{Списки} @category{Выражения} @category{Функции предикаты}
+@closecatbox
 @end deffn
 
 @deffn {Функция} ninth (@var{expr})
 Возвращает девятый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 
@@ -416,6 +479,10 @@ x is not numeric.
 (%i1) unique ([1, %pi, a + b, 2, 1, %e, %pi, a + b, [1]]);
 (%o1)              [1, 2, %e, %pi, [1], b + a]
 @end example
+
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -426,6 +493,9 @@ x is not numeric.
 Если @var{n} равен 1, то он может быть опущен.  
 Выражение @var{expr} может быть списком, матрицей или выражением.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
@@ -435,24 +505,36 @@ x is not numeric.
 Функция @code{reverse} также работает с выражениями общего вида,
 например,  @code{reverse(a=b);} дает @code{b=a}.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} second (@var{expr})
 Возвращает второй элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} seventh (@var{expr})
 Возвращает седьмой элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} sixth (@var{expr})
 Возвращает шестой элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} sublist_indices (@var{L}, @var{P})
@@ -493,17 +575,26 @@ x is not numeric.
 (%o6)                          [2]
 @end example
 
+@opencatbox
+@category{Списки}
+@closecatbox
 @end deffn
 
 @deffn {Функция} tenth (@var{expr})
 Возвращает десятый элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
 @deffn {Функция} third (@var{expr})
 Возвращает третий элемент выражения или списка @var{expr}.
 См. @code{first} по поводу подробностей.
 
+@opencatbox
+@category{Списки} @category{Выражения}
+@closecatbox
 @end deffn
 
