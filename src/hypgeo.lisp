@@ -1652,8 +1652,8 @@
 ;;
 ;; I11 and I21 are for the Hankel functions.
 (defun fractest (r a1 a2 i1 i11 i2 i21 flg)
-  (cond ((or (and (equal (caar i1) 'rat)
-		  (equal (caar i2) 'rat))
+  (cond ((or (and (listp i1) (equal (caar i1) 'rat)
+		  (listp i2) (equal (caar i2) 'rat))
 	     (eq flg '2htjory))
 	 ;; Why do we only execute this for 2htjory, but the code
 	 ;; below checks for 2ytj, ktiytj and 2kti?  Shouldn't we
