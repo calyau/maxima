@@ -197,6 +197,8 @@
 	(t (tex-function x l r nil))))
 
 (defun tex-atom (x l r)	;; atoms: note: can we lose by leaving out {}s ?
+  (if (symbolp x)
+    (setq x (or (get x 'reversealias) x)))
   (append l
 	  (list (cond ((numberp x) (texnumformat x))
 		      ((and (symbolp x) (get x 'texword)))
