@@ -280,7 +280,7 @@
 	   (cond ((eq sgn t) `((,yy simp) ,e))
 		 ((eq sgn '$neg) ub)
 		 ((eq sgn '$pos) lb)
-		 ((eq lb ub) lb) ;; For floats that are integers, this can happen. Maybe featurep should catch this.
+		 ((alike lb ub) lb) ;; For floats that are integers, this can happen. Maybe featurep should catch this.
 		 ((and (eq sgn '$zero) ($featurep lb '$even)) lb)
 		 ((and (eq sgn '$zero) ($featurep ub '$even)) ub)
 		 ((apply-reflection-simp yy e t))
