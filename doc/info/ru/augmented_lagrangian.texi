@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=augmented_lagrangian.texi 
-@c OriginalRevision=1.8
+@c OriginalRevision=1.9
 @c TranslatedBy: (c) 2007-07 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -84,6 +84,10 @@ BFGS с ограничением пам€ти (LBFGS), €вл€ющимс€ квази-нюьтоновым алгоритмом.
 (%o7) [[x = 0.66665984108002, y = 0.33334027245545], 
                                  %lambda = [- 1.333337940892525]]
 @end example
+
+@opencatbox
+@category{„исленные методы} @category{ѕакеты библиотеки share} @category{ѕакет augmented_lagrangian}
+@closecatbox
 
 @end deffn
 
