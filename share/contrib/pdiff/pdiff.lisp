@@ -171,28 +171,24 @@
 	   `((lambda simp) ((mlist) ,@gen-args) ,e)))))	 
   
 ;; Modified mapply1 ---  added evaluation stuff for %pderivop 
+;; Updated to MAPPLY1 from r1.60 src/mlisp.lisp.
+;; Probably share packages should not clobber core functions; oh well.
 
 (defmfun mapply1 (fn args fnname form)
   (declare (special aryp))
-  ;;(print `(fn = ,fn args = ,args fnname =,fnname form = ,form))
-  
-  (cond		   ;((and $operators (mnump fn)) (mul2 fn (car args)))
-    ((atom fn) 
-     (cond ((atom fn) 
-	    (cond ((functionp fn)
-		   (apply fn args))
-		  ((fboundp fn)
-		   (if (macro-function fn)
-		       (progn (merror "~:M is a lisp level macro and cannot be applied at maxima level" fn) (eval (cons fn  args)))
-		       (mapply1 (symbol-function fn) args fn form)))
-       
-		  ((symbol-array fn)
-		   (mapply1 (symbol-array fn) args fn form))
-		  (t
-		   (setq fn (getopr fn)) (badfunchk fnname fn nil)
-		   (let ((noevalargs t)) (meval (cons (ncons fn) args)))))
-	    )))
-
+  (cond ((atom fn)
+	 (cond ((atom fn)
+		(cond ((functionp fn)
+		       (apply fn args))
+              ((and (symbolp fn) (fboundp fn) (not (macro-function fn)))
+               (mapply1 (symbol-function fn) args fn form))
+		      ((and (symbolp fn) (symbol-array fn))
+		       (mapply1 (symbol-array fn) args fn form))
+		      (t
+		       (setq fn (getopr fn))
+		       (badfunchk fnname fn nil)
+		       (let ((noevalargs t))
+			 (meval (cons (ncons fn) args))))))))
     ;;---------start pdiff stuff  -----------------------
     ((and $use_pdiff (eq (caar fn) '%pderivop))
 					;(print `(fn = ,fn args = ,args fnname = ,fnname form = ,form))
@@ -200,26 +196,30 @@
 	    `((mqapply simp) ,fn ,@args))
 	   (t
 	    (merror "The function ~:M expected ~:M argument(s), but it received ~:M" (cadr fn) (length (cddr fn)) (length args)))))
-	 
     ;;-------- end pdiff stuff --------------------------
-
-    ((functionp fn)
-     (apply fn args))
-    ((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
-    ((eq (caar fn) 'mquote) (cons (cdr fn) args))
-    ((and aryp (member (caar fn) '(mlist $matrix) :test #'eq))
-     (if (not (or (= (length args) 1)
-		  (and (eq (caar fn) '$matrix) (= (length args) 2))))
-	 (merror "wrong number of indices:~%~:M" (cons '(mlist) args)))
-     (do ((args1 args (cdr args1)))
-	 ((null args1) (let (($piece $piece) ($partswitch 'mapply))
-			 (apply #'$inpart (cons fn args))))
-       (unless (fixnump (car args1))
-	 (if evarrp (throw 'evarrp 'notexist))
-	 (merror "subscript must be an integer:~%~:M" (car args1)))))
-    (aryp (cons '(mqapply array) (cons fn args)))
-    ((member 'array (cdar fn) :test #'eq) (cons '(mqapply) (cons fn args)))
-    (t (badfunchk fnname fn t))))
+	((eq (car fn) 'lambda)
+	 (apply (coerce fn 'function) args))
+	((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
+	((eq (caar fn) 'mquote) (cons (cdr fn) args))
+	((and aryp (member (caar fn) '(mlist $matrix) :test #'eq))
+	 (if (not (or (= (length args) 1)
+		      (and (eq (caar fn) '$matrix) (= (length args) 2))))
+	     (merror "Wrong number of indices:~%~M" (cons '(mlist) args)))
+	 (if (member 0 args :test #'eq)
+	     (merror "No such ~M element: ~M~%" (if (eq (caar fn) 'mlist) "list" "matrix")
+		     `((mlist) ,@args)))
+	 (do ((args1 args (cdr args1)))
+	     ((null args1) (let (($piece $piece) ($partswitch 'mapply))
+			     (apply #'$inpart (cons fn args))))
+	   (unless (fixnump (car args1))
+	     (if evarrp (throw 'evarrp 'notexist))
+	     (merror "Subscript must be an integer:~%~M" (car args1)))))
+	(aryp
+	 (cons '(mqapply array) (cons fn args)))
+	((member 'array (cdar fn) :test #'eq)
+	 (cons '(mqapply) (cons fn args)))
+	(t
+	 (badfunchk fnname fn t))))
 
 (defun pderivop (f x n)
   `((mqapply) ((%pderivop) ,f ,@n) ,@x))
@@ -237,11 +237,13 @@
     (setf (nth i q) (add 1 k))
     q))
 	     
+;; Updated to SDIFFGRAD from r1.27 src/comm.lisp.
+
 (defun sdiffgrad (e x)
   (let ((fun (caar e)) grad args)
     (cond ((and (eq fun 'mqapply) (oldget (caaadr e) 'grad))
-	   (sdiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e))) x))
-
+	   (sdiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
+		      x))
 	  ;; ---- start pdiff stuff-----------------------------
 
 	  ((and $use_pdiff (eq fun 'mqapply) (eq (caaadr e) '%pderivop))
@@ -269,13 +271,10 @@
 				     (pderivop fun args (i-list i n))))))))
 
 	  ;; --- end  pdiff stuff------------------------------------
-
 	  ((or (eq fun 'mqapply) (null (setq grad (oldget fun 'grad))))
 	   (if (not (depends e x)) 0 (diff%deriv (list e x 1))))
-
 	  ((not (= (length (cdr e)) (length (car grad))))
-	   (merror "wrong number of arguments for ~:M" fun))
-	  
+	   (merror "Wrong number of arguments for ~:M" fun))
 	  (t (setq args (sdiffmap (cdr e) x))
 	     (addn (mapcar
 		    #'mul2
@@ -456,9 +455,10 @@
 
 ;; This is a (very) slightly modified tex-mexpt function -- %pderivop 
 ;; was added to the list of disallowed % functions.
+;; Updated to TEX-MEXPT from r1.58 src/mactex.lisp.
 
 (defun tex-mexpt (x l r)
-  (let ((nc (eq (caar x) 'mncexpt)))	; true if a^^b rather than a^b
+  (let((nc (eq (caar x) 'mncexpt)))	; true if a^^b rather than a^b
     ;; here is where we have to check for f(x)^b to be displayed
     ;; as f^b(x), as is the case for sin(x)^2 .
     ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2.
@@ -468,42 +468,46 @@
       ;; should be deleted if this hack is unwanted and/or the
       ;; time it takes is of concern.
       ;; it shouldn't be too expensive.
-    
-      ((and  (eq (caar x) 'mexpt)     ; don't do this hack for mncexpt
-	     (let*
-		 ((fx (cadr x))		; this is f(x)
-		  (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
-		  (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
-		  (expon (caddr x))	    ;; this is the exponent
-		  (doit (and
-			 f		; there is such a function
-			 (member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
-			 (not (member f '(%sum %product %derivative %integral %at %pderivop) :test #'eq)) ;; what else? what a hack...
-			 (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
-			     (and (atom expon) (numberp expon) (> expon 0))))))
+      ((and (eq (caar x) 'mexpt)      ; don't do this hack for mncexpt
+	    (let*
+		((fx (cadr x))		; this is f(x)
+		 (f (and (not (atom fx)) (atom (caar fx)) (caar fx))) ; this is f [or nil]
+		 (bascdr (and f (cdr fx))) ; this is (x) [maybe (x,y..), or nil]
+		 (expon (caddr x)) ;; this is the exponent
+		 (doit (and
+			f		; there is such a function
+			(member (getchar f 1) '(% $) :test #'eq) ;; insist it is a % or $ function
+            (not (member 'array (cdar fx) :test #'eq))	; fix for x[i]^2
+					; Jesper Harder <harder@ifa.au.dk>
+			(not (member f '(%sum %product %derivative %integrate %at %pderivop ;; THIS LINE CHANGED FOR PDIFF
+				       %lsum %limit) :test #'eq)) ;; what else? what a hack...
+			(or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
+			    (and (atom expon) (numberp expon) (> expon 0))))))
 					; f(x)^3 is ok, but not f(x)^-1, which could
 					; inverse of f, if written f^-1 x
 					; what else? f(x)^(1/2) is sqrt(f(x)), ??
-
-	  
-
-	       (cond (doit
-		     
-		      (setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
-		      (setq r (tex
-			       (if (and (null (cdr bascdr)) (eq (get f 'tex) 'tex-prefix))
-				   (car bascdr) (cons '(mprogn) bascdr))
-			       nil r f rop)))
-		     (t nil)))))	; won't doit. fall through
-      (t (setq l (tex (cadr x) l nil lop (caar x))
+	      (cond (doit
+		     (setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
+		     (if (and (null (cdr bascdr))
+			      (eq (get f 'tex) 'tex-prefix))
+			 (setq r (tex (car bascdr) nil r f 'mparen))
+			 (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen))))
+		    (t nil)))))		; won't doit. fall through
+      (t (setq l (cond ((or ($bfloatp (cadr x)) (and (numberp (cadr x))
+			     (numneedsparen (cadr x))))
+            ; ACTUALLY THIS TREATMENT IS NEEDED WHENEVER (CAAR X) HAS GREATER BINDING POWER THAN MTIMES ...
+			(tex (cadr x) (append l '("\\left(")) '("\\right)") lop
+			     (caar x)))
+		       (t (tex (cadr x) l nil lop (caar x))))
 	       r (if (mmminusp (setq x (nformat (caddr x))))
 		     ;; the change in base-line makes parens unnecessary
 		     (if nc
 			 (tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
-			 (tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
+             (tex (cadr x) '("^ {- ") (cons " }" r) 'mminus 'mparen))
 		     (if nc
-			 (tex x (list "^{\\langle ") (cons "\\rangle}" r) 'mparen 'mparen)
-			 (if (and (numberp x) (< x 10)) ;; was (< x 10)..  blw
+			 (tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
+			 (if (and (integerp x) (< x 10))
 			     (tex x (list "^")(cons "" r) 'mparen 'mparen)
-			     (tex x (list "^{")(cons "}" r) 'mparen 'mparen)))))))
+			     (tex x (list "^{")(cons "}" r) 'mparen 'mparen))
+			 )))))
     (append l r)))
