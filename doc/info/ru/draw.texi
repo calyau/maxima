@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=draw.texi 
-@c OriginalRevision=1.22
+@c OriginalRevision=1.25
 @c TranslatedBy: (c) 2007-11 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 
@@ -32,7 +32,9 @@
 
 Для работы программы требуется Gnuplot 4.2.
 
-
+@opencatbox
+@category{Графика} @category{Пакеты библиотеки share} @category{Пакет draw}
+@closecatbox
 
 
 @node Функции и переменные пакета draw, Функции и переменные для картин, Введение в пакет draw, Пакет draw
@@ -61,6 +63,11 @@
 @end example
 
 См. @code{yrange} и @code{zrange}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -86,6 +93,11 @@
 @end example
 
 См. @code{xrange} и @code{zrange}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -112,6 +124,11 @@
 @end example
 
 См. @code{xrange} и @code{yrange}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -133,6 +150,11 @@
 @end example
 
 См. @code{logy} и @code{logz}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -154,6 +176,11 @@
 @end example
 
 См. @code{logx} и @code{logz}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -175,6 +202,11 @@
 @end example
 
 См. @code{logx} и @code{logy}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -230,6 +262,11 @@ End of animation sequence
 Опция @code{delay} возможна тоько для анимированного gif. В других случаях она игнорируется.
 
 См. @code{file_name}, @code{pic_width}, @code{pic_height} и @code{delay}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -249,6 +286,11 @@ End of animation sequence
 (%i2) draw2d(grid = true,
              explicit(exp(u),u,-2,2))$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -269,6 +311,11 @@ End of animation sequence
 (%i2) draw2d(explicit(exp(u),u,-2,2),
              title = "Exponential function")$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -292,6 +339,11 @@ End of animation sequence
 @end example
 
 См. @code{ylabel} и @code{zlabel}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -315,6 +367,11 @@ End of animation sequence
 @end example
 
 См. @code{xlabel} и @code{zlabel}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -339,6 +396,11 @@ End of animation sequence
 @end example
 
 См. @code{xlabel} и @code{ylabel}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -412,6 +474,11 @@ End of animation sequence
 @end example
 
 См. @code{ytics} и @code{ztics}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -422,6 +489,11 @@ End of animation sequence
 Управляет методом изображения делений на оси @var{y}.
 
 См. @code{xtics} для полного описания.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -432,6 +504,11 @@ End of animation sequence
 Управляет методом изображения делений на оси @var{z}.
 
 См. @code{xtics} для полного описания.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -441,6 +518,10 @@ End of animation sequence
 Если @code{xtics_rotate} равно @code{true}, то деления на оси @var{x} поворачиваются на 90 градусов.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
 
 @end defvr
 
@@ -452,6 +533,10 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -461,6 +546,10 @@ End of animation sequence
 Если @code{ztics_rotate} равно @code{true}, то деления на оси @var{z} поворачиваются на 90 градусов.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
 
 @end defvr
 
@@ -473,6 +562,10 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Графическая опция} ytics_axis
@@ -483,6 +576,10 @@ End of animation sequence
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
 
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Графическая опция} ztics_axis
@@ -492,6 +589,10 @@ End of animation sequence
 если @code{false}, то деления изображаются на границе.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
 
 @end defvr
 
@@ -514,6 +615,11 @@ End of animation sequence
 @end example
 
 См. @code{xaxis_width}, @code{xaxis_type} и @code{xaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -537,6 +643,11 @@ End of animation sequence
 @end example
 
 См. @code{xaxis}, @code{xaxis_type} и @code{xaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -560,6 +671,11 @@ End of animation sequence
 @end example
 
 См. @code{xaxis}, @code{xaxis_width} и @code{xaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -583,6 +699,11 @@ End of animation sequence
 @end example
 
 См. @code{xaxis}, @code{xaxis_width} и @code{xaxis_type}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -605,6 +726,11 @@ End of animation sequence
 @end example
 
 См. @code{yaxis_width}, @code{yaxis_type} и @code{yaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -628,6 +754,11 @@ End of animation sequence
 @end example
 
 См. @code{yaxis}, @code{yaxis_type} и @code{yaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -651,6 +782,11 @@ End of animation sequence
 @end example
 
 См. @code{yaxis}, @code{yaxis_width} и @code{yaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -674,6 +810,11 @@ End of animation sequence
 @end example
 
 См. @code{yaxis}, @code{yaxis_width} и @code{yaxis_type}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -698,6 +839,11 @@ End of animation sequence
 @end example
 
 См. @code{zaxis_width}, @code{zaxis_type} и @code{zaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -723,6 +869,11 @@ End of animation sequence
 @end example
 
 См. @code{zaxis}, @code{zaxis_type} и @code{zaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -747,6 +898,11 @@ End of animation sequence
 @end example
 
 См. @code{zaxis}, @code{zaxis_width} и @code{zaxis_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -772,6 +928,11 @@ End of animation sequence
 @end example
 
 См. @code{zaxis}, @code{zaxis_width} и @code{zaxis_type}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -796,6 +957,11 @@ End of animation sequence
 @end example
 
 См. @code{rot_horizontal}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -821,6 +987,11 @@ End of animation sequence
 @end example
 
 См. @code{rot_vertical}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -832,6 +1003,10 @@ End of animation sequence
 клавиши 'x'. По умолчанию координаты не сохраняются.
 
 Поскольку это глобальная графическая опция, ее расположение в описании сцены не имеет значения.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
 
 @end defvr
 
@@ -859,6 +1034,11 @@ End of animation sequence
              parametric(cos(u),sin(u),u,0,2*%pi),
              user_preamble="set terminal dumb")$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -882,6 +1062,11 @@ End of animation sequence
 @end example
 
 См. @code{terminal}, @code{pic_width} и @code{pic_height}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Графическая опция} delay
@@ -911,6 +1096,11 @@ End of animation sequence
 Для других случаев она игнорируется.
 
 См. @code{terminal}, @code{pic_width} и @code{pic_height}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Графическая опция} pic_width
@@ -932,6 +1122,11 @@ End of animation sequence
 @end example
 
 См. @code{terminal}, @code{file_name} и @code{pic_height}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -955,6 +1150,11 @@ End of animation sequence
 @end example
 
 См. @code{terminal}, @code{file_name} и @code{pic_width}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -979,6 +1179,11 @@ End of animation sequence
 @end example
 
 См. @code{terminal}, @code{file_name} и @code{eps_height}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1003,6 +1208,11 @@ End of animation sequence
 @end example
 
 См. @code{terminal}, @code{file_name} и @code{eps_width}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1025,6 +1235,11 @@ End of animation sequence
 @end example
 
 См. @code{axis_left},  @code{axis_top}, @code{axis_right} и @code{axis_3d}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1046,6 +1261,11 @@ End of animation sequence
 @end example
 
 См. @code{axis_bottom},  @code{axis_top}, @code{axis_right} и @code{axis_3d}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1067,6 +1287,11 @@ End of animation sequence
 @end example
 
 См. @code{axis_bottom},  @code{axis_left}, @code{axis_right} и @code{axis_3d}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1088,6 +1313,11 @@ End of animation sequence
 @end example
 
 См. @code{axis_bottom},  @code{axis_left}, @code{axis_top} и @code{axis_3d}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1110,6 +1340,11 @@ End of animation sequence
 @end example
 
 См. @code{axis_bottom},  @code{axis_left}, @code{axis_top} и @code{axis_right} для двух измерений.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1164,6 +1399,11 @@ End of animation sequence
 @end example
 
 См. @code{colorbox}. 
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1189,6 +1429,11 @@ End of animation sequence
 @end example
 
 См. @code{palette}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1210,6 +1455,11 @@ End of animation sequence
              palette      = gray,
              explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1237,6 +1487,11 @@ End of animation sequence
         point_size = 5,
         points(makelist(k,k,1,20),makelist(random(30),k,1,20)))$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1287,6 +1542,11 @@ End of animation sequence
              point_type = filled_diamant,
              points([[1,9],[5,9],[9,9]]) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1324,6 +1584,11 @@ End of animation sequence
              line_width    = 7,
              points([[1,3],[5,3],[9,3]]) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1362,6 +1627,11 @@ End of animation sequence
 @end example
 
 См. @code{fill_color} и @code{explicit}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1387,6 +1657,11 @@ End of animation sequence
              color       = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1414,6 +1689,11 @@ End of animation sequence
              fill_color  = blue,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1439,6 +1719,11 @@ End of animation sequence
 @end example
 
 См. @code{head_length}, @code{head_angle} и @code{head_type}. 
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1466,6 +1751,11 @@ End of animation sequence
 @end example
 
 См. @code{head_both}, @code{head_angle} и @code{head_type}. 
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1505,6 +1795,11 @@ End of animation sequence
 @end example
 
 См. @code{head_both}, @code{head_length} и @code{head_type}. 
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1533,6 +1828,11 @@ End of animation sequence
 @end example
 
 См. @code{head_both}, @code{head_angle} и @code{head_length}. 
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1557,6 +1857,11 @@ End of animation sequence
              color        = red,
              vector([0,3],[5,2]))$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1586,6 +1891,11 @@ End of animation sequence
 @end example
 
 См. @code{label_orientation} и @code{color}. 
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1616,6 +1926,11 @@ End of animation sequence
 @end example
 
 См. @code{label_alignment} и @code{color}. 
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1666,6 +1981,11 @@ End of animation sequence
 @end example
 
 См. @code{fill_color}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1676,6 +1996,11 @@ End of animation sequence
 @code{fill_color} определяет цвет для заполнения многоугольников и двумерных @code{explicit} функций.
 
 См. @code{color} для способа задания цвета.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1687,6 +2012,11 @@ End of animation sequence
 цвета @code{fill_color} в объектах @code{bars}.
 
 См. @code{bars} для примеров.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1720,6 +2050,11 @@ End of animation sequence
 @end example
 
 См. @code{line_type}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1752,6 +2087,11 @@ End of animation sequence
 @end example
 
 См. @code{line_width}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1779,6 +2119,11 @@ End of animation sequence
              nticks = 5,
              ellipse(0,0,4,2,180,180) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1789,6 +2134,11 @@ End of animation sequence
 @code{adapt_depth} -- максимальное число разбиений, используемое в адаптивных графиках.
 
 Эта опция влияет только на двумерные @code{explicit} функции.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1820,6 +2170,11 @@ End of animation sequence
              color = red,
              explicit(cos(x),x,0,10) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1847,6 +2202,11 @@ End of animation sequence
 @end example
 
 См. @code{yv_grid}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1874,6 +2234,11 @@ End of animation sequence
 @end example
 
 См. @code{xu_grid}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1895,6 +2260,11 @@ End of animation sequence
            gr3d(surface_hide = true,
                 explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -1942,6 +2312,11 @@ End of animation sequence
              contour        = both,
              surface_hide   = true) $
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2006,6 +2381,11 @@ End of animation sequence
 @end example
 
 См. @code{contour}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2030,6 +2410,10 @@ End of animation sequence
 (%i4) draw(scene1, scene2, columns = 2)$
 @end example
 
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2040,6 +2424,11 @@ End of animation sequence
 @code{ip_grid} задает решетку для первой пробной выборки для неявных графиков.
 
 Эта опция влияет только на объекты типа @code{implicit}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2050,6 +2439,48 @@ End of animation sequence
 @code{ip_grid_in} задает решетку для второй пробной выборки для неявных графиков.
 
 Эта опция влияет только на объекты типа @code{implicit}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
+@end defvr
+
+
+@defvr {Графическая опция} x_voxel
+Значение по умолчанию: 10
+
+@code{x_voxel} есть число вокселей в направлении x, используемых в
+@i{алгоритме марширующих кубов}, реализованном лоя трехмерных @code{implicit} объектов.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
+@end defvr
+
+@defvr {Графическая опция} y_voxel
+Значение по умолчанию: 10
+
+@code{y_voxel} есть число вокселей в направлении y, используемых в
+@i{алгоритме марширующих кубов}, реализованном лоя трехмерных @code{implicit} объектов.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
+@end defvr
+ 
+@defvr {Графическая опция} z_voxel
+Значение по умолчанию: 10
+
+@code{z_voxel} есть число вокселей в направлении z, используемых в
+@i{алгоритме марширующих кубов}, реализованном лоя трехмерных @code{implicit} объектов.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2078,6 +2509,11 @@ End of animation sequence
 и @code{axis_right}.
 
 Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2089,8 +2525,8 @@ End of animation sequence
 неположенные справа от них. Некоторые @i{графические опции} глобально влияют на вид сцены.
 
 Это список @i{графических объектов}, доступных для сцены в трех измерениях:
-@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{parametric},
-@code{parametric_surface} и @code{geomap}.
+@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{implicit},
+@code{parametric}, @code{parametric_surface} и @code{geomap}.
 
 См. следующие @i{графические опции}: @code{xrange}, @code{yrange}, 
 @code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
@@ -2110,6 +2546,11 @@ End of animation sequence
 и @code{enhanced3d}.
 
 Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2126,7 +2567,7 @@ End of animation sequence
 @deffnx {Графический объект} points (@var{matrix})
 Строит точки в двух и трех измерениях.
 
-Этот объект зависит от следующих @i{графических опций}: @code{point_size}, 
+Следующие @i{графические опции} влияют на этот объект: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
 @code{line_type} и @code{color}.
 
@@ -2194,6 +2635,11 @@ End of animation sequence
          key        = "Sample from stations 1, 4 and 5",
          points(args(submatrix (s2, 2, 3))) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2207,7 +2653,7 @@ End of animation sequence
 @code{polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])}:
 строит на плоскости многоугольник с вершинами @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, и т.д.
 
-Этот объект зависит от следующих @i{графических опций}: @code{transparent}, 
+Следующие @i{графические опции} влияют на этот объект: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
 @code{line_type} и @code{color}.
 
@@ -2222,6 +2668,11 @@ End of animation sequence
              fill_color  = yellow,
              polygon([[5,2],[9,2],[7,5]]) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2233,7 +2684,7 @@ End of animation sequence
 @code{rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])} строит прямоугольник с противоположными вершинами
 @code{[@var{x1},@var{y1}]} и @code{[@var{x2},@var{y2}]}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{transparent}, 
+Следующие @i{графические опции} влияют на этот объект: @code{transparent}, 
 @code{fill_color}, @code{border}, @code{line_width}, @code{key},
 @code{line_type} и @code{color}.
 
@@ -2254,6 +2705,11 @@ End of animation sequence
              xrange      = [-3,10],
              yrange      = [-3,4.5] )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2267,7 +2723,7 @@ End of animation sequence
 Строит полоски с центрами на @var{x1}, @var{x2}, ... с высотами @var{h1}, @var{h2}, ...
 и ширинами @var{w1}, @var{w2}, ...
 
-Этот объект зависит от следующих @i{графических опций}: @code{key}, 
+Следующие @i{графические опции} влияют на этот объект: @code{key}, 
 @code{fill_color}, @code{fill_density} и @code{line_width}.
 
 Пример:
@@ -2286,6 +2742,11 @@ End of animation sequence
        bars([1.2,4,0.4],[2.2,-2,0.4],[3.2,5,0.4]),
        xaxis = true);
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2301,7 +2762,7 @@ End of animation sequence
 полу-осями @var{a} и @var{b} соответственно от угла @var{ang1} до угла
 @var{ang2}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
 @code{line_type}, @code{key} и @code{color}.
 
@@ -2323,6 +2784,11 @@ End of animation sequence
              xrange      = [-3,6],
              yrange      = [2,9] )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2330,7 +2796,7 @@ End of animation sequence
 @deffnx {Графический объект} label ([@var{string},@var{x},@var{y},@var{z}],...)
 Изображает текстовую метку в двух или трех измерениях.
 
-Этот объект зависит от следующих @i{графических опций}: @code{label_alignment}, 
+Следующие @i{графические опции} влияют на этот объект: @code{label_alignment}, 
 @code{label_orientation} и @code{color}.
 
 @b{Два измерения}
@@ -2367,6 +2833,11 @@ End of animation sequence
              color = blue,
              label(["DOWN 1",2,0,-3]) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2375,7 +2846,7 @@ End of animation sequence
 @deffnx {Графический объект} vector ([@var{x},@var{y},@var{z}], [@var{dx},@var{dy},@var{dz}])
 Строит вектор в двух или трех измерениях.
 
-Этот объект зависит от следующих @i{графических опций}: @code{head_both}, 
+Следующие @i{графические опции} влияют на этот объект: @code{head_both}, 
 @code{head_length}, @code{head_angle}, @code{head_type}, @code{line_width}, 
 @code{line_type}, @code{key} и @code{color}.
 
@@ -2415,6 +2886,11 @@ End of animation sequence
              vector([0,0,0],[1,-1,0]/sqrt(2)),
              vector([0,0,0],[1,1,-2]/sqrt(6)) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2427,7 +2903,7 @@ End of animation sequence
 @code{explicit(@var{fcn},@var{var},@var{minval},@var{maxval})} строит явную функцию @var{fcn}
 переменной @var{var}, принимающей значения от @var{minval} до @var{maxval}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
 @code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
 @code{filled_func}, @code{fill_color} и @code{color}.
 
@@ -2450,7 +2926,7 @@ End of animation sequence
 от @var{minval1} до @var{maxval1}, и переменной @var{var2} в пределах
 от @var{minval2} до @var{maxval2}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
 
 Пример:
@@ -2468,20 +2944,25 @@ End of animation sequence
 @end example
 
 См. @code{filled_func} по поводу функций с заполнением.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
-
-@deffn  {Графический объект} implicit (@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})
-Строит неявную функцию в двух измерениях.
+@deffn  {Графический объект} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
+@deffnx {Графический объект} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+Строит неявную функцию в двух и трех измерениях.
 
 @b{Два измерения}
 
-@code{implicit(@var{fcn},@var{xvar},@var{xminval},@var{xmaxval},@var{yvar},@var{yminval},@var{ymaxval})}
-строит неявную функцию, определенную @var{fcn} с переменной @var{xvar}, имеющей значения 
-от  @var{xminval} до @var{xmaxval}, и переменной @var{yvar}, имеющей значения
-от @var{yminval} до @var{ymaxval}.
+@code{implicit(@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}
+строит неявную функцию, определенную @var{fcn} с переменной @var{x}, принимающей значения
+от @var{xmin} до @var{xmax}, и переменной @var{y}, принимающей значения
+от @var{ymin} до @var{ymax}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{ip_grid}, 
+Следующие @i{графические опции} влияют на этот объект: @code{ip_grid}, 
 @code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} и @code{color}.
 
 Пример:
@@ -2498,6 +2979,34 @@ End of animation sequence
              implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
              title     = "Two implicit functions" )$
 @end example
+
+
+@b{Три измерения}
+
+@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}
+строит неявную поверхность, определенную @var{fcn}, с переменной @var{x}, принимающей значения
+от @var{xmin} до @var{xmax}, переменной @var{y}, принимающей значения
+от @var{ymin} до @var{ymax} и переменной @var{z}, принимающей значения
+от @var{zmin} до @var{zmax}. Для построения используется @i{алгоритм марширующих кубов}.
+
+Следующие @i{графические опции} влияют на этот объект: @code{x_voxel}, 
+@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} и @code{color}.
+
+Пример:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        color=blue,
+        implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
+                 x,-1,1,y,-1.2,2.3,z,-1,1),
+        surface_hide=true);
+@end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2510,7 +3019,7 @@ End of animation sequence
 @code{@var{radius}(@var{ang})} в полярных координатах переменной  
 @var{ang} в пределах от @var{minang} до @var{maxang}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key} и @code{color}.
 
 Пример:
@@ -2526,6 +3035,11 @@ End of animation sequence
              title         = "Hyperbolic Spiral",
              polar(10/theta,theta,1,10*%pi) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2539,7 +3053,7 @@ End of animation sequence
 @var{azi} в пределах от @var{minazi} до @var{maxazi} и @i{возвышением} @var{zen} в пределах от
 @var{minzen} до @var{maxzen}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
 
 Пример:
@@ -2548,6 +3062,11 @@ End of animation sequence
 (%i1) load(draw)$
 (%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2561,7 +3080,7 @@ End of animation sequence
 @var{z} в пределах от @var{minz} до @var{maxz} и @i{азимутом} @var{azi} в пределах от
 @var{minazi} до @var{maxazi}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
 
 Пример:
@@ -2570,6 +3089,11 @@ End of animation sequence
 (%i1) load(draw)$
 (%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2577,7 +3101,7 @@ End of animation sequence
 @deffnx {Графический объект} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
 Строит параметрическую функцию в двух и трех переменных.
 
-Этот объект зависит от следующих @i{графических опций}: @code{nticks}, 
+Следующие @i{графические опции} влияют на этот объект: @code{nticks}, 
 @code{line_width}, @code{line_type}, @code{key} и @code{color}.
 
 @b{Два измерения}
@@ -2615,6 +3139,11 @@ End of animation sequence
              surface_hide = true,
              title = "Surface & curves" )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2714,6 +3243,11 @@ End of animation sequence
 
 По ссылке URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
 находятся более развернутые примеры.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2727,6 +3261,11 @@ End of animation sequence
 координат многоугольного сегмента или границы карты.
 
 См. @code{geomap}.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end defvr
 
 
@@ -2748,7 +3287,7 @@ End of animation sequence
 Функция @code{geomap (@var{numlist})} проецирует свои аргументы на плоскость и
 строит соответствующую границу из @code{boundaries_array}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{line_width}, 
+Следующие @i{графические опции} влияют на этот объект: @code{line_width}, 
 @code{line_type} и @code{color}.
 
 Примеры:
@@ -2871,6 +3410,11 @@ End of animation sequence
 
 См. @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
 для более сложных примеров.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2890,7 +3434,7 @@ End of animation sequence
 принимающем значения от @var{par1min} до @var{par1max} и параметром @var{par2},
 принимающем значения от @var{par2min} до @var{par2max}.
 
-Этот объект зависит от следующих @i{графических опций}: @code{xu_grid}, 
+Следующие @i{графические опции} влияют на этот объект: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{key} и @code{color}.
 
 Пример:
@@ -2908,6 +3452,11 @@ End of animation sequence
                            u*sin(v) - ((u+3)/8*%pi)^2 - 20,
                            u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -2969,6 +3518,11 @@ End of animation sequence
 @end example
 
 См. @code{gr2d}, @code{gr3d}, @code{draw2d} и @code{draw3d}.
+
+@opencatbox
+@category{Пакет draw} @category{Вывод файлов}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} draw2d (@var{option}, @var{graphic_object}, ...)
@@ -2981,6 +3535,11 @@ End of animation sequence
 Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
 
 См. также @code{draw} и @code{gr2d}.
+
+@opencatbox
+@category{Пакет draw} @category{Вывод файлов}
+@closecatbox
+
 @end deffn
 
 
@@ -2994,6 +3553,11 @@ End of animation sequence
 Для того, чтобы использовать эту функцию, ее следует загрузить командой @code{load(draw)}.
 
 См. также @code{draw} и @code{gr3d}.
+
+@opencatbox
+@category{Пакет draw} @category{Вывод файлов}
+@closecatbox
+
 @end deffn
 
 
@@ -3038,17 +3602,32 @@ End of animation sequence
 (%i2) make_level_picture([-2,0,54,%pi],2,2);
 (%o2)            picture(level, 2, 2, @{Array:  #(0 0 54 3)@})
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Функция} picturep (@var{x})
 Возвращает @code{true}, если аргумент является правильно сформированной картиной,
 и @code{false} в противном случае.
+
+@opencatbox
+@category{Пакет draw} @category{Функции предикаты}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Функция} picture_equalp (@var{x},@var{y})
 Возвращает @code{true}, если картины совпадают, и @code{false} в противном случае.
+
+@opencatbox
+@category{Пакет draw} @category{Функции предикаты}
+@closecatbox
+
 @end deffn
 
 
@@ -3081,6 +3660,11 @@ End of animation sequence
 (%o5) picture(rgb, 2, 2, 
               @{Array:  #(3 54 123 2 23 82 7 73 45 255 0 33)@})
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3103,28 +3687,53 @@ End of animation sequence
 (%i6) take_channel(%,'green);  /* simple quote!!! */
 (%o6)           picture(level, 2, 2, @{Array:  #(54 23 73 0)@})
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Функция} negative_picture (@var{pic})
 Возвращает негатив картины (@var{уровней} или @var{rgb}).
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Функция} rgb2level (@var{pic})
 Преобразует @var{rgb} картину в картину @var{уровней}
 усреднением красного, зеленого и синего каналов.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Функция} get_pixel (@var{pic},@var{x},@var{y})
 Возвращает пиксел из картины. Координаты @var{x} и @var{y} должны быть от 0 до
 @code{width-1} и @code{height-1} соответственно.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
 @deffn  {Функция} read_xpm (@var{xpm_file})
 Читает файл в формате xpm и возвращает объект типа картина.
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3153,6 +3762,11 @@ End of animation sequence
 (%o3)                [1846, 1863, 1864, 1881, 1888, 1894]
 (%i4) draw2d(geomap(%))$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3171,6 +3785,11 @@ End of animation sequence
            region_boundaries(-31.81,74.92,49.84,32.06)$
 (%i4) numbered_boundaries(european_borders)$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3229,6 +3848,11 @@ End of animation sequence
 (%i7) Bhutan_polygon: make_polygon([171,173,1143])$
 (%i8) draw2d(Bhutan_polygon)$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3244,6 +3868,11 @@ End of animation sequence
 (%i3) make_poly_country(India)$
 (%i4) apply(draw2d, %)$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
@@ -3264,6 +3893,11 @@ End of animation sequence
       make_poly_continent([Germany,Denmark,Poland])$
 (%i6) apply(draw2d, %)$
 @end example
+
+@opencatbox
+@category{Пакет draw}
+@closecatbox
+
 @end deffn
 
 
