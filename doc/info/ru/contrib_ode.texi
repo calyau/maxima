@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=contrib_ode.texi 
-@c OriginalRevision=1.9
+@c OriginalRevision=1.10
 @c TranslatedBy: (c) 2007-07 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -208,6 +208,10 @@
 Если выполнена команда @code{put('contrib_ode,true,'verbose)}, то 
 печатается подробная отладочная информация.
 
+@opencatbox
+@category{Дифференциальные уравнения} @category{Пакеты библиотеки share} @category{Пакет contrib_ode}
+@closecatbox
+
 @node Функции и переменные пакета contrib_ode, Возможные улучшения пакета contrib_ode, Введение в пакет contrib_ode, Пакет contrib_ode
 @section Функции и переменные пакета contrib_ode
 
@@ -215,6 +219,10 @@
 
 Возвращает список решение ОДУ @var{eqn} с независимой переменной 
 @var{x} и зависимой переменной @var{y}.
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 
 @end deffn
 
@@ -253,6 +261,10 @@
                    x                            x
 
 @end example
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 
 @end deffn
 
@@ -295,29 +307,49 @@
 (%o4)                           0
 @end example
 
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
+
 @end deffn
 
-@defvr {Системная переменная} @code{method}
+@defvr {Системная переменная} method
 
 Переменной @code{method} присваивается название метода успешного решения ОДУ. 
 
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
+
 @end defvr
 
-@defvr {Переменная} @code{%c}
+@defvr {Переменная} %c
 
 @code{%c} -- константа интегрирования для ОДУ первого порядка.
 
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
+
 @end defvr
 
-@defvr {Переменная} @code{%k1}
+@defvr {Переменная} %k1
 
 @code{%k1} -- первая константа интегрирования для ОЛУ второго порядка.
 
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
+
 @end defvr
 
-@defvr {Переменная} @code{%k2}
+@defvr {Переменная} %k2
 
 @code{%k2} -- вторая константа интегрирования для ОЛУ второго порядка.
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 
 @end defvr
 
@@ -334,18 +366,34 @@
 
 См. также @code{gauss_b}, @code{dgauss_a} и @code{gauss_b}.
 
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 См. @code{gauss_a}.
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 @end deffn
 
 @deffn {Функция} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 Производная @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 @end deffn
 
 @deffn {Функция} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
 Производная @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})} по @var{x}.
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 @end deffn
 
 
@@ -367,6 +415,10 @@ U-функция Куммера, как она определена в Abramowitz и Stegun,
 @i{Handbook of Mathematical Functions}, Section 13.1.3.
 
 См. @code{kummer_m}.
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 @end deffn
 
 @deffn {Функция} dkummer_m (@var{a}, @var{b}, @var{x})
@@ -375,6 +427,10 @@ U-функция Куммера, как она определена в Abramowitz и Stegun,
 
 @deffn {Функция} dkummer_u (@var{a}, @var{b}, @var{x})
 Производная @code{kummer_u(@var{a}, @var{b}, @var{x})} по @var{x}.
+
+@opencatbox
+@category{Пакет contrib_ode}
+@closecatbox
 @end deffn
 
 
