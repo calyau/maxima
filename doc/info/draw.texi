@@ -2465,6 +2465,11 @@ Default value: 10
 @code{x_voxel} is the number of voxels in the x direction to
 be used by the @i{marching cubes algorithm} implemented
 by the 3d @code{implicit} object.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Graphic option} y_voxel
@@ -2473,6 +2478,11 @@ Default value: 10
 @code{y_voxel} is the number of voxels in the y direction to
 be used by the @i{marching cubes algorithm} implemented
 by the 3d @code{implicit} object.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 @defvr {Graphic option} z_voxel
@@ -2481,6 +2491,11 @@ Default value: 10
 @code{z_voxel} is the number of voxels in the z direction to
 be used by the @i{marching cubes algorithm} implemented
 by the 3d @code{implicit} object.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
 @end defvr
 
 
