@@ -97,7 +97,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Справка::                          Справочная система в сессии Maxima.
 * Командная строка::                 Синтаксис командной строки Maxima.
 * Операторы::                        Операторы, используемые в выражениях Maxima.
-* Expressions::                      Expressions in Maxima.
+* Выражения::                        Выражения в Maxima.
 * Simplification::                   Simplifying expressions.
 * Plotting::                         2D and 3D graphical output.
 * Input and Output::                 File input and output.
@@ -219,17 +219,19 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Операторы postfix::                     
 * Операторы prefix::                      
 * Арифметические операторы::   
-* Операторы сравнения::   
+* Операторы отношения::   
 * Общие операторы::   
 
-Expressions
+Выражения
 
-* Introduction to Expressions::  
-* Assignment::                  
-* Complex::                     
-* Inequality::                  
-* Syntax::                      
-* Definitions for Expressions::  
+* Основные сведения о выражениях::  
+* Комплексные выражения::                     
+* Невычисляемые и вычисляемые формы::
+* Идентификаторы::
+* Строки::
+* Неравенства::                  
+* Синтаксис::                      
+* Функции и переменные для выражений::  
 
 Simplification
 
