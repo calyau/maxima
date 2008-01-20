@@ -38,6 +38,17 @@ control : "~:(~r~) bird~p ~[is~;are~] singing.";
 printf(false, control, n, n, if n = 1 then 0 else 1), n = 2;
 "Two birds are singing."$
 
+fpprec:100;
+100$
+bprintf(false,2.b0^-64);
+"0.0000000000000000000542101086242752217003726400434970855712890625"$
+bprintf(false,1.23456789012345678901234567890b9,false,17,true);
+"1234567890.12345678901234568b0"$
+bprintf(false,2.b0^64,50);
+"                            18446744073709551616.0"$
+fpprec:16;
+16$
+
 block([res:{},tmp],for n from 0 thru 255 do (tmp : ascii(n), if alphacharp(tmp) then res : adjoin (tmp, res)), subsetp ({"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"}, res));
 true;
 
