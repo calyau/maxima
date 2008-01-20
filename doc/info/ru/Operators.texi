@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Operators.texi 
-@c OriginalRevision=1.45
+@c OriginalRevision=1.48
 @c TranslatedBy: (c) 2007-11-06 Andrey Siver <ihep-2005@yandex.ru>
 
 
@@ -11,10 +11,12 @@
 * Операторы postfix::                     
 * Операторы prefix::                      
 * Арифметические операторы::   
-* Операторы сравнения::   
+* Операторы отношения::   
 * Общие операторы::   
 @end menu
 
+@c FOLLOWING @NODES SHOULD BE CHANGED TO @DEFFN
+@c SINCE NARY, NOFIX, POSTFIX, AND PREFIX ARE ALL MAXIMA FUNCTIONS
 
 @node Операторы nary, Операторы nofix, Операторы, Операторы
 @section Операторы nary
@@ -25,7 +27,11 @@
 Если @code{declare(j,nary);} выполнено, это указывает упрощателю (simplifier) то, 
 что требуется упрощение, то есть, например, @code{j(j(a,b),j(c,d))} упростится до @code{j(a, b, c, d)}.
 
-См. также @code{syntax}.
+См. также @code{Синтаксис}.
+
+@opencatbox
+@category{Операторы} @category{Синтаксис}
+@closecatbox
 
 @node Операторы nofix, Операторы postfix, Операторы nary, Операторы
 @section Операторы nofix
@@ -36,7 +42,11 @@
 @code{nofix} оператору. Функция @code{nofix("x")} - это функция расширения,
  которая объявляет @code{x} как оператор @code{nofix}. 
 
-См. также @code{syntax}.
+См. также @code{Синтаксис}.
+
+@opencatbox
+@category{Операторы} @category{Синтаксис}
+@closecatbox
 
 @node Операторы postfix, Операторы prefix, Операторы nofix, Операторы
 @section Операторы postfix
@@ -45,7 +55,11 @@
 предшествует появлению этого оператора в входной строке, например 3!.
 Функция @code{postfix("x")} - это функция синтаксического расширения, которая объявлять @code{x} как @code{postfix} оператор.
 
-См. также @code{syntax}.
+См. также @code{Синтаксис}.
+
+@opencatbox
+@category{Операторы} @category{Синтаксис}
+@closecatbox
 
 @node Операторы prefix, Арифметические операторы, Операторы postfix, Операторы
 @section Операторы prefix
@@ -53,9 +67,13 @@
 аргумента, который непосредственно идет за вхождением оператора.  
 @code{prefix("x")} это функция синтаксического расширения, которая объявляет @code{x} как @code{prefix} оператор.
 
-См. также @code{syntax}.
+См. также @code{Синтаксис}.
 
-@node Арифметические операторы, Операторы сравнения, Операторы prefix, Операторы 
+@opencatbox
+@category{Операторы} @category{Синтаксис}
+@closecatbox
+
+@node Арифметические операторы, Операторы отношения, Операторы prefix, Операторы 
 @section Арифметические операторы
 
 @deffn {Оператор} +
@@ -277,6 +295,10 @@ Maxima сортирует операнды для того, чтобы сконструировать каноническое представл
 (%o8)                   [a , c , m , t ]
 @end example
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
 @deffn {Оператор} **
@@ -309,10 +331,14 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 (%o4)                         done
 @end example
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
-@node Операторы сравнения, Общие операторы, Арифметические операторы, Операторы
-@section Операторы сравнения
+@node Операторы отношения, Общие операторы, Арифметические операторы, Операторы
+@section Операторы отношения
 
 @deffn {Оператор} <
 @ifinfo
@@ -331,9 +357,83 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 @fnindex Больше
 @end ifinfo
 
+Символы @code{<} , @code{<=} , @code{>=} и @code{>} представляют отношения
+меньше, меньше или равно, больше или равно и больше, соответственно.
+Имена этих операторов есть @code{"<"} , @code{"<="} , @code{">="} и @code{">"}.
+Эти имена могут применяться в случае, если требуется имя функции или оператора.
+
+Данные операторы отношения являются бинарными. 
+Конструкции типа @code{a < b < c} недопустимы в Maxima.
+
+Операторы отношения вычисляются до логических значений функциями @code{is} и @code{maybe},
+и программными конструкциями @code{if}, @code{while} и @code{unless}.
+В других случаях операторы отношения не вычисляются или упрощаются до логических значений,
+хотя аргументы операторов отношения вычисляются
+(если вычисление не блокировано при помощи оператора кавычка).
+
+Если выражение отношения не может быть вычислено до логического значения @code{true} или @code{false},
+то поведение @code{is} и @code{if} управляется глобальным флагом @code{prederror}.
+Если значение @code{prederror} равно @code{true},
+то @code{is} и @code{if} вызывает ошибку.
+Если значение @code{prederror} равно @code{false},
+то @code{is} возвращает @code{unknown} 
+а @code{if} возвращает частично-вычисленное условное выражение.
+
+@code{maybe} всегда ведет себя так, если бы @code{prederror} равнялось @code{false},
+а @code{while} и @code{unless} всегда ведут себя так, если бы @code{prederror} равнялось @code{true}.
+
+Операторы отношения не дистрибутивны по отношению к спискам и другим конструкциям.
+
+См. также @code{=} , @code{#} , @code{equal} и @code{notequal}.
+
+Примеры:
+
+Операторы отношения вычисляются до логических значений некоторыми функциями 
+и программными конструкциями.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c is (x < y);
+@c maybe (y > z);
+@c if x >= z then 1 else 0;
+@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+@c ===end===
+@example
+(%i1) [x, y, z] : [123, 456, 789];
+(%o1)                    [123, 456, 789]
+(%i2) is (x < y);
+(%o2)                         true
+(%i3) maybe (y > z);
+(%o3)                         false
+(%i4) if x >= z then 1 else 0;
+(%o4)                           0
+(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+(%o5)                         5050
+@end example
+
+Во всех других случаях операторы отношения не вычисляются или упрощаются до логических
+значений, хотя их аргументы вычисляются.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c [x < y, y <= z, z >= y, y > z];
+@c map (is, %);
+@c ===end===
+@example
+(%o1)                    [123, 456, 789]
+(%i2) [x < y, y <= z, z >= y, y > z];
+(%o2)    [123 < 456, 456 <= 789, 789 >= 456, 456 > 789]
+(%i3) map (is, %);
+(%o3)               [true, true, true, false]
+@end example
+
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
-@node Общие операторы, , Операторы сравнения, Операторы
+@node Общие операторы, , Операторы отношения, Операторы
 @section Общие операторы
 
 @deffn {Оператор} ^^
@@ -361,6 +461,10 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 (%i2) string (a . a . b . b . b + a * a * a * b * b);
 (%o2)                  a^3*b^2+a^^2 . b^^3
 @end example
+
+@opencatbox
+@category{Операторы}
+@closecatbox
 
 @end deffn
 
@@ -448,6 +552,10 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
                                              2432902008176640000]
 @end example
 
+@opencatbox
+@category{Операторы} @category{Гамма функции и факториалы}
+@closecatbox
+
 @end deffn
 
 @deffn {Оператор} !!
@@ -470,6 +578,10 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 Для аргумента @code{n}, который не является целым, числом с плавающей точкой, или рациональным числом,
 @code{n!!} дает невычисляемую форму @code{genfact (n, n/2, 2)}.
 @c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
+
+@opencatbox
+@category{Операторы} @category{Гамма функции и факториалы}
+@closecatbox
 
 @end deffn
 
@@ -509,6 +621,10 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 (%o6)                         true
 @end example
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
 @deffn {Оператор} .
@@ -532,6 +648,10 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 и
 @code{dotscrules}.
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
 @deffn {Оператор} :
@@ -540,8 +660,8 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 @end ifinfo
 Оператор присваивания. 
 
-Если левая сторона есть атом или переменная с индексом,
-то @code{:} вычисляет правую сторону присваивания (но не левую сторону)
+Если левая сторона есть простая переменная (не переменная с индексом),
+то @code{:} вычисляет правую сторону присваивания 
 и присваивает значение с левой частью.
 
 Если левая строна есть индексированный элемент списка, матрица, объявленного Maxima массива или Lisp массива,
@@ -553,7 +673,7 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 то значение правой части присваивается этому элементу, если таковой уже существует,
 или вновь созданному объекту, если он еще не существует.
 
-Если левая строна присваивания есть список атомов и/или переменных с индексом, то
+Если левая строна присваивания есть список простых переменных и/или переменных с индексом, то
 правая часть должна вычисляться в список, и элементы этого списка присваиваются
 элементам левой части параллельно.
 
@@ -562,7 +682,7 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 
 Примеры:
 
-Присваивание символу.
+Присваивание простой переменной.
 
 @c ===beg===
 @c a;
@@ -654,6 +774,11 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 (%i4) b;
 (%o4)                          33
 @end example
+
+@opencatbox
+@category{Вычисление} @category{Операторы}
+@closecatbox
+
 @end deffn
 
 @deffn {Оператор} ::
@@ -695,6 +820,11 @@ Maxima распознает @code{**} как тот же оператор, что и @code{^} при вводе,
 (%i8) c;
 (%o8)                          33
 @end example
+
+@opencatbox
+@category{Вычисление} @category{Операторы}
+@closecatbox
+
 @end deffn
 
 @deffn {Оператор} ::=
@@ -820,6 +950,10 @@ x is equal to 1234 - 1729 w
 (%o7)                     1234 - 1729 w
 @end example
 
+@opencatbox
+@category{Определение функций} @category{Операторы}
+@closecatbox
+
 @end deffn
 
 @deffn {Оператор} :=
@@ -902,6 +1036,10 @@ x is equal to 1234 - 1729 w
 (%i2) H (a, b, c);
 (%o2)                       c + b + a
 @end example
+
+@opencatbox
+@category{Определение функций} @category{Операторы}
+@closecatbox
 
 @end deffn
 
@@ -1036,6 +1174,10 @@ x is equal to 1234 - 1729 w
 (%o2)                         true
 @end example
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -1065,6 +1207,10 @@ x is equal to 1234 - 1729 w
 Оператор @code{and} не является коммутативным:
 @code{a and b} может быть не равно @code{b and a} из-за трактовки неопределенных операндов.
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -1093,6 +1239,10 @@ x is equal to 1234 - 1729 w
 Оператор @code{or} не является коммутативным:
 @code{a or b} может быть не равно @code{b or a} из-за трактовки неопределенных операндов.
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
 @c NEEDS EXAMPLES
@@ -1112,11 +1262,19 @@ x is equal to 1234 - 1729 w
 Иначе, операнды, которые не могут быть вычислены как @code{true} или @code{false}, принимаются,
 и результат есть логическое выражение.
 
+@opencatbox
+@category{Операторы}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} abs (@var{expr})
 Возвращает абсолютное значение @var{expr} (модуль выражения). 
 Если @var{expr} - комплексное, возвращается комплексный модуль @var{expr}.
+
+@opencatbox
+@category{Математические функции}
+@closecatbox
 
 @end deffn
 
@@ -1131,6 +1289,10 @@ x is equal to 1234 - 1729 w
 аддитивность по первому аргументу @code{f}, как в случае @code{sum} или 
 @code{integrate}, то есть @code{f(h(x)+g(x),x)} будет упрощено как @code{f(h(x),x)+f(g(x),x)}.
 Это упрощение не произойдет, когда @code{f} применена к выражению вида @code{sum(x[i],i,lower-limit,upper-limit)}.
+
+@opencatbox
+@category{Операторы} @category{Факты и выводы}
+@closecatbox
 
 @end defvr
 
@@ -1192,10 +1354,18 @@ x is equal to 1234 - 1729 w
 или @code{commutative} результат, где n есть число перестановок двух
 аргументов необходимых для того, чтобы перевести к конечной форме.
 
+@opencatbox
+@category{Операторы} @category{Факты и выводы}
+@closecatbox
+
 @end defvr
 
 @deffn {Функция} cabs (@var{expr})
 Возвращает комплексное абсолютное значение (комплексный модуль) @var{expr}.
+
+@opencatbox
+@category{Комплексные переменные}
+@closecatbox
 
 @end deffn
 
@@ -1263,6 +1433,10 @@ $$\left \lceil a \right \rceil$$
 (%o3)                       f(x) - 1
 @end example
 
+@opencatbox
+@category{Математические функции}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} charfun (@var{p})
@@ -1290,6 +1464,10 @@ $$\left \lceil a \right \rceil$$
 (%o4)                       [0, 1, 0]
 @end example
 
+@opencatbox
+@category{Математические функции}
+@closecatbox
+
 @end deffn
 
 @defvr {Декларация} commutative
@@ -1297,11 +1475,15 @@ $$\left \lceil a \right \rceil$$
 упрощателю, что @code{h} есть коммутативная функция.  То есть @code{h(x,z,y)} 
 упроститься до @code{h(x, y, z)}.  Это тоже самое, что и @code{symmetric}.
 
+@opencatbox
+@category{Операторы} @category{Факты и выводы} 
+@closecatbox
+
 @end defvr
 
 @deffn {Функция} compare (@var{x}, @var{y})
 
-Возвращает оператор сравнения @var{op}
+Возвращает оператор отношения @var{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=} или @code{#}) так что
 @code{is (@var{x} @var{op} @var{y})} вычисляется до @code{true};
 когда @var{x} или @var{y} зависит от @code{%i} и
@@ -1348,12 +1530,20 @@ Maxima не может определить оператор, возвращает @code{unknown}.
 @c IT IS NOT QUITE TRUE, WHAT ABOUT x=0 ?
 Действительная область определения @code{acos (x^2 + 1)} пуста.
 
+@opencatbox
+@category{Факты и выводы} 
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} entier (@var{x})
 Возвращает наибольшее целое меньше или равное чем @var{x}, где @var{x} - численное.  
 Функция @code{fix} (как и в @code{fixnum}) есть синоним, 
 так что @code{fix(@var{x})} в точности тоже самое.
+
+@opencatbox
+@category{Математические функции} 
+@closecatbox
 
 @end deffn
 
@@ -1505,6 +1695,10 @@ equal(x  + 2 x + 1, x  - 2 x - 1)
 (%o2)                         true
 @end example
 
+@opencatbox
+@category{Операторы} 
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} floor (@var{x})
@@ -1569,6 +1763,10 @@ $$\left \lfloor a \right \rfloor$$
 (%o3)                       f(x) - 1
 @end example
 
+@opencatbox
+@category{Математические функции} 
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} notequal (@var{a}, @var{b})
@@ -1611,6 +1809,10 @@ $$\left \lfloor a \right \rfloor$$
 (%o10)                        true
 @end example
 
+@opencatbox
+@category{Операторы} 
+@closecatbox
+
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
@@ -1621,6 +1823,10 @@ $$\left \lfloor a \right \rfloor$$
 @code{eval} вызывает дополнительное вычисление @var{expr}.
 См. @code{ev}.
 
+@opencatbox
+@category{Флаги вычисления} 
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} evenp (@var{expr})
@@ -1628,10 +1834,18 @@ $$\left \lfloor a \right \rfloor$$
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} возвращается во всех других случаях.
 
+@opencatbox
+@category{Функции предикаты} 
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} fix (@var{x})
 Синоним для @code{entier (@var{x})}.
+
+@opencatbox
+@category{Математические функции} 
+@closecatbox
 
 @end deffn
 
@@ -1659,6 +1873,10 @@ $$\left \lfloor a \right \rfloor$$
 (%o3)                     g(b c) + g(a)
 @end example
 
+@opencatbox
+@category{Применение функций} @category{Выражения}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} fullmapl (@var{f}, @var{list_1}, ...)
@@ -1674,6 +1892,10 @@ $$\left \lfloor a \right \rfloor$$
 (%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
 (%o1)                [[a + 3, 4], [4, 3.5]]
 @end example
+
+@opencatbox
+@category{Применение функций} @category{Выражения}
+@closecatbox
 
 @end deffn
 
@@ -1754,6 +1976,10 @@ a > 0
 (%o5)                        unknown
 @end example
 
+@opencatbox
+@category{Функции предикаты} @category{Факты и выводы}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} maybe (@var{expr})
@@ -1785,12 +2011,20 @@ a > 0
 (%o3)                         true
 @end example
 
+@opencatbox
+@category{Функции предикаты} @category{Факты и выводы}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} isqrt (@var{x})
 Возвращает "целый квадратный корень"
 абсолютного значения @var{x},
 которое есть целое.
+
+@opencatbox
+@category{Математические функции}
+@closecatbox
 
 @end deffn
 
@@ -1799,12 +2033,20 @@ a > 0
 Когда @var{L} есть список или множество, возвращает @code{apply ('max, args (@var{L}))}.  Когда @var{L} не является 
 списком или множеством, выдает ошибку.
 
+@opencatbox
+@category{Математические функции} @category{Списки} @category{Множества}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} lmin (@var{L})
 
 Когда @var{L} есть список или множество, возвращает @code{apply ('min, args (@var{L}))}. Когда @var{L} не является 
 списком или множеством, выдает ошибку.
+
+@opencatbox
+@category{Математические функции} @category{Списки} @category{Множества}
+@closecatbox
 
 @end deffn
 
@@ -1817,6 +2059,10 @@ a > 0
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Для установки значения  @code{trylevel} в 2, используется
 @code{put (trylevel, 2, maxmin)}.
 
+@opencatbox
+@category{Математические функции}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} min (@var{x_1}, ..., @var{x_n})
@@ -1827,6 +2073,10 @@ a > 0
 исключить выражения, заключенные по значению между двумя другими аргументами. Например,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Для установки значения  @code{trylevel} в 2, используется
 @code{put (trylevel, 2, maxmin)}.
+
+@opencatbox
+@category{Математические функции}
+@closecatbox
 
 @end deffn
 
@@ -1840,6 +2090,10 @@ a > 0
 вместо текущего значения @code{modulus}.
 
 См. @code{modulus}.
+
+@opencatbox
+@category{Многочлены}
+@closecatbox
 
 @end deffn
 
@@ -1877,12 +2131,20 @@ a > 0
 (%o3)                           0
 @end example
 
+@opencatbox
+@category{Математические функции}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} oddp (@var{expr})
 есть @code{true} если @var{expr} есть нечетное целое.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} возвращается во всех других случаях.
+
+@opencatbox
+@category{Функции предикаты}
+@closecatbox
 
 @end deffn
 
@@ -1894,6 +2156,10 @@ a > 0
 @code{pred} вызывает вычисление предикатов (выражений, которые вычисляются в @code{true}
 или @code{false}) .
 См. @code{ev}.
+
+@opencatbox
+@category{Флаги вычисления}
+@closecatbox
 
 @end deffn
 
@@ -1923,12 +2189,20 @@ a > 0
 @code{make_random_state (false)} возвращает копию текущего состояния
 генератора случайных чисел.
 
+@opencatbox
+@category{Случайные числа}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} set_random_state (@var{s})
 Копирует @var{s} в состояние генератора случайных чисел.
 
 @code{set_random_state} всегда возвращает @code{done}.
+
+@opencatbox
+@category{Случайные числа}
+@closecatbox
 
 @end deffn
 
@@ -1987,6 +2261,10 @@ a > 0
 (%i13) random (100.0);
 (%o13)                  32.28666704056853
 @end example
+
+@opencatbox
+@category{Случайные числа} @category{Численные методы}
+@closecatbox
 
 @end deffn
 
@@ -2093,6 +2371,10 @@ reverse(uf))
                                37
 @end example
 
+@opencatbox
+@category{Численное вычисление}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} sign (@var{expr})
@@ -2101,6 +2383,10 @@ reverse(uf))
 следующих ответов: @code{pos} (положительное), @code{neg} (отрицательное), @code{zero} (нулевое), @code{pz}
 (положительное или ноль), @code{nz} (отрицательное или ноль), @code{pn} (положительное или отрицательное),
 или @code{pnz} (положительное, отрицательное или ноль, т.е. ничего не известно).
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
 
 @end deffn
 
@@ -2111,6 +2397,10 @@ reverse(uf))
 Если @var{x} не есть численное значение, то возвращается эквивалентная, но упрощенная форма.
 Например, @code{signum(-x)} дает @code{-signum(x)}.
 @c UMM, THIS ISN'T THE WHOLE STORY, AS IT APPEARS signum CONSULTS THE assume DATABASE FOR SYMBOLIC ARGUMENT
+
+@opencatbox
+@category{Математические функции}
+@closecatbox
 
 @end deffn
 
@@ -2182,6 +2472,10 @@ reverse(uf))
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
 @end example
 
+@opencatbox
+@category{Списки}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} sqrt (@var{x})
@@ -2192,6 +2486,10 @@ reverse(uf))
 которые есть степени n, будут вынесены за пределы радикала. Например,
 @code{sqrt(16*x^2)} станет @code{4*x}, только если @code{radexpand} есть @code{true}.
 
+@opencatbox
+@category{Математические функции}
+@closecatbox
+
 @end deffn
 
 @defvr {Управляющая переменная} sqrtdispflag
@@ -2200,6 +2498,10 @@ reverse(uf))
 Когда @code{sqrtdispflag} есть @code{false},
 то @code{sqrt} выводится как степень с показателем 1/2.
 @c AND OTHERWISE ... ??
+
+@opencatbox
+@category{Математические функции} @category{Переменные и флаги вывода}
+@closecatbox
 
 @end defvr
 
@@ -2221,6 +2523,10 @@ reverse(uf))
 (%o1)                    sin(b) + cos(a)
 @end example
 
+@opencatbox
+@category{Выражения}
+@closecatbox
+
 @end deffn
 
 @deffn {Функция} sublist (@var{list}, @var{p})
@@ -2240,6 +2546,10 @@ reverse(uf))
 (%o2)                       [2, 4, 6]
 @end example
 
+@opencatbox
+@category{Списки}
+@closecatbox
+
 @end deffn
 
 @defvr {Управляющая переменная} sublis_apply_lambda
@@ -2249,6 +2559,10 @@ reverse(uf))
 после того как используется @code{sublis} или
 нужно ли выполнить @code{ev}, чтобы эти элементы применились. 
 @code{true} означает - выполнить применение.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
 
 @end defvr
 
@@ -2298,6 +2612,10 @@ reverse(uf))
 
 @noindent
 Чтобы узнать о других примерах, выполните @code{example (subst)}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
 
 @end deffn
 
@@ -2379,6 +2697,10 @@ reverse(uf))
 Также, установка опции @code{inflag} в @code{true} и вызов @code{part} или @code{substpart} есть 
 тоже самое, что и вызов @code{inpart} или @code{substinpart}.
 
+@opencatbox
+@category{Выражения}
+@closecatbox
+
 @end deffn
 
 @c NEEDS CLARIFICATION
@@ -2415,12 +2737,20 @@ reverse(uf))
 Также, установка опции @code{inflag} в @code{true} и вызов @code{part} или @code{substpart}, есть 
 тоже самое, что и вызов @code{inpart} или @code{substinpart}.
 
+@opencatbox
+@category{Выражения}
+@closecatbox
+
 @end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
 @deffn {Функция} subvarp (@var{expr})
 Возвращает @code{true}, если @var{expr} есть переменная с индексом,
 например @code{a[i]}.
+
+@opencatbox
+@category{Функции предикаты}
+@closecatbox
 
 @end deffn
 
@@ -2431,6 +2761,10 @@ reverse(uf))
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
 См. также @ref{Identifiers}.
+
+@opencatbox
+@category{Функции предикаты}
+@closecatbox
 
 @end deffn
 
@@ -2468,6 +2802,10 @@ reverse(uf))
 (%o5)                        a  - a
 @end example
 
+@opencatbox
+@category{Выражения}
+@closecatbox
+
 @end deffn
 
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
@@ -2478,6 +2816,10 @@ reverse(uf))
 @code{potentialzeroloc} имеет аналогичную роль для @code{potential}, но порядок 
 левосторонних частей уравнений должен быть циклической перестановкой 
 координатных переменных.
+
+@opencatbox
+@category{Пакет vect}
+@closecatbox
 
 @end deffn
 
@@ -2511,6 +2853,10 @@ reverse(uf))
                             (y + x)
 @end example
 
+@opencatbox
+@category{Выражения}
+@closecatbox
+
 @end deffn
 
 @c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
@@ -2542,5 +2888,9 @@ reverse(uf))
 @code{true} и @code{zeroequiv (%e^x + x, x)} возвращает @code{false}.
 С другой стороны @code{zeroequiv (log(a*b) - log(a) - log(b), a)} возвращает 
 @code{dontknow} из-за присутствия дополнительного параметра @code{b}.
+
+@opencatbox
+@category{Функции предикаты}
+@closecatbox
 
 @end deffn
