@@ -1,10 +1,10 @@
 ;;;;
-;;;;                              ~*~  STRINGPROC  ~*~
+;;;;                                   ~*~  STRINGPROC  ~*~
 ;;;;
-;;;;  Maxima string processing package.
+;;;;  Maxima string processing
 ;;;;
-;;;;  Version       : 1.2 (march 2006)
-;;;;  Copyright     : 2005-2006 Volker van Nek
+;;;;  Version       : 2.0 (january 2008)
+;;;;  Copyright     : 2005-2008 Volker van Nek
 ;;;;  Licence       : GPL2
 ;;;;
 ;;;;  Test file     : rteststringproc.mac
@@ -18,457 +18,668 @@
 
 (in-package :maxima)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  1. I/O
 
+
 (defun $openw (file)
-   (open
-      file
-      :direction :output
-      :if-exists :supersede
-      :if-does-not-exist :create))
+  (if (not (stringp file))
+    (merror "openw: argument must be a path string."))
+  (open file
+        :direction :output
+        :if-exists :supersede
+        :if-does-not-exist :create))
+
 
 (defun $opena (file)
-   (open
-      file
-      :direction :output
-      :if-exists :append
-      :if-does-not-exist :create))
+  (if (not (stringp file))
+    (merror "opena: argument must be a path string."))
+  (open file
+        :direction :output
+        :if-exists :append
+        :if-does-not-exist :create))
 
-(defun $openr (file) (open file))
 
-(defun $make_string_input_stream (s &optional (start 0) (end nil))
-  (unless (stringp s)
-    (merror "make_string_input_stream: argument must be a string."))
-  (make-string-input-stream s start end))
+(defun $openr (file) 
+  (cond ((not (stringp file))
+           (merror "openr: argument must be a valid path string."))
+        ((not (probe-file file))
+           (merror "openr: file does not exist: ~m" file)))
+  (open file))
+
+
+(defun $make_string_input_stream (str &optional (start 1) (end nil))  ;; 1-based indexing!
+  (if (not (stringp str))
+    (merror "make_string_input_stream: first argument must be a string."))
+  (or (ignore-errors 
+        (make-string-input-stream str (1- start) end))
+      (merror "make_string_input_stream: improper start or end index.")))
+
 
 (defun $make_string_output_stream ()
   (make-string-output-stream))
 
+
 ;; Ignore :element-type keyword. 
 ;; So we get the default here, namely :element-type character.
-(defun $get_output_stream_string (s)
-  (if (not (streamp s))
+(defun $get_output_stream_string (stream)
+  (if (not (streamp stream))
     (merror "get_output_stream_string: argument must be a stream."))
-  (get-output-stream-string s))
+  (get-output-stream-string stream))
 
-(defun $close (stream) (close stream))
 
-(defun $flength (stream) (file-length stream))
+(defun $close (stream) 
+  (if (not (streamp stream))
+    (merror "close: argument must be a stream."))
+  (close stream))
+
+
+(defun $flength (stream) 
+  (if (not (streamp stream))
+    (merror "flength: argument must be a stream."))
+  (file-length stream))
+
 
 (defun $fposition (stream &optional pos)
-   (if pos
-      (file-position stream (1- pos))
-      (1+ (file-position stream))))
+  (if (not (streamp stream))
+    (merror "fposition: first argument must be a stream."))
+  (or (ignore-errors 
+        (if pos
+          (file-position stream (1- pos))
+          (1+ (file-position stream))))
+      (merror "fposition: improper position index ~m" pos)))
 
 
 (defun $readline (stream)
-   (let ((line (read-line stream nil nil)))
-      (if line
-	 line)))
+  (if (not (streamp stream))
+    (merror "readline: argument must be a stream."))
+  (let ((line (read-line stream nil nil)))
+    (if line line)))
 
-(defun $freshline (&optional (stream)) (fresh-line stream))
 
-(defun $newline (&optional (stream)) (terpri stream))
+(defun $freshline (&optional (stream)) 
+  (and stream (not (streamp stream))
+    (merror "freshline: optional argument must be a stream."))
+  (fresh-line stream))
+
+
+(defun $newline (&optional (stream)) 
+  (and stream (not (streamp stream))
+    (merror "newline: optional argument must be a stream."))
+  (terpri stream))
 
 
 ;;  $printf makes almost all features of CL-function format available
-(defmacro $printf (stream mstring &rest args)
-  (let (
-	;; needs a fix for directives like ~20s
-	(string (meval mstring))
-	(bracket ($ssearch "~{" (meval mstring)))
-	body)
+;;
+(defun $printf (stream ctrls &rest args)
+  (cond ((and (not (member stream '(t nil))) (not (streamp stream)))
+           (merror "printf: first argument must be `true', `false' or a stream."))
+        ((not (stringp ctrls))
+           (merror "printf: second argument must be a string.")))
+  (let (body)
     (dolist (arg args)
-       (progn
-	 (setq arg (meval arg))
-	 (setq arg
-	   (cond ((numberp arg) arg)
-		 ((stringp arg) arg)
-		 ((and (symbolp arg) (not (boundp arg)))
-		    `(quote ,(maybe-invert-string-case (subseq (string arg) 1))))
-		 ((and (listp arg) (listp (car arg)) (eq (caar arg) 'mlist))
-		    (if bracket
-		       `(quote ,(cltree arg))
-		       (merror
-			  "printf: For printing lists use ~M in the control string."
-			  "\~\{ and \~\}")))
-		 (t ($sconcat arg))))
-	 (setq body (append body (list arg)))))
-   (if stream
-      `(format ,stream ,string ,@body)
-      `(format ,stream ,string ,@body))))
-
-;;  cltree converts a Maxima-tree into a CL-tree on lisp level
-;;  helper-function for $printf
-(defun cltree (mtree)
-  (labels
-    ((clt (todo done)
-       (if (null todo)
-	 (nreverse done)
-	 (clt (cdr todo)
-	      (cons (let ((x (car todo)))
-		      (if (and (listp x) (listp (car x)) (eq (caar x) 'mlist))
-			(cltree x)
-			(mhandle x)))
-		    done))))
-     (mhandle (obj)
-       (progn
-	  (setq obj (meval obj))
-	  (cond ((numberp obj) obj)
-		((stringp obj) obj)
-		(t (if (and (symbolp obj) (not (boundp obj)))
-		      (maybe-invert-string-case (subseq (string obj) 1))
-		      ($sconcat obj)))))))
-   (clt (cdr mtree) nil)))
+       (setq body (append body (list (printf1 arg)))) )   
+    (eval `(format ,stream ,ctrls ,@body)) ))
+;;
+(defun printf1 (arg) 
+  (cond ((or (mstringp arg) (numberp arg)) arg) ;; no Maxima rationals
+        ((bigfloatp arg) (fp2flo arg))  ;; bigfloat to float conversion
+        ((and (symbolp arg) (not (boundp arg)))
+           (subseq (print-invert-case arg) 1))
+        ((and (listp arg) (listp (car arg)) (eq (caar arg) 'mlist))
+           `(quote ,(printf2 (cdr arg) nil))) 
+        (t (setq arg ($sconcat arg)))))
+;;
+(defun printf2 (todo done) ;; recursion over nested lists
+  (if (null todo)
+    (nreverse done)
+    (printf2 
+      (cdr todo)
+      (cons (let ((x (car todo)))
+              (if (and (listp x) (listp (car x)) (eq (caar x) 'mlist))
+                (printf2 (cdr x) nil)
+                (printf1 x)))
+            done)))))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; formatted printing of bigfloats:
+;;
+(defun $bprintf (stream bf &optional width decpl b0?)
+  (cond ((and (not (member stream '(t nil))) (not (streamp stream)))
+           (merror "bprintf: first argument must be `true', `false' or a stream."))
+        ((and (not (bigfloatp bf)) 
+           (if (and ($constantp bf) ($freeof '$%i bf))
+             (setq bf ($bfloat bf))
+             (merror "bprintf: second argument must be a real number or constant.")))))
+  (and decpl
+    (let ((m (intofp (expt 10 decpl))))
+      (setq bf (fptimes* (cdr bf) m))
+      (setq bf (meval `((%round) ,(bcons bf))))
+      (setq bf (bcons (fpquotient (intofp bf) m))) ))  
+  (let* ((s (string-left-trim "-" (meval `(($string) ,bf))))
+         (sgn (signum (cadr bf)))
+         (part1 (subseq s 0 1))
+         (pos (position #\b s))
+         (part2 (string-right-trim "0" (subseq s 2 pos)))
+         (len (length part2))
+         (pow (parse-integer (subseq s (1+ pos) nil))))
+    (cond ((and (> pow 0) (> len pow))
+             (setq s (concatenate 'string part1 (subseq part2 0 pow) "." (subseq part2 pow nil)))
+             (and decpl (> decpl (- len pow))
+               (setq s (concatenate 'string s (make-string (+ decpl pow (- len)) :initial-element #\0)))))
+          ((> pow 0)
+             (setq s (concatenate 'string part1 part2 (make-string (- pow len) :initial-element #\0) ".0"))
+             (and decpl (> decpl 0)
+               (setq s (concatenate 'string s (make-string (1- decpl) :initial-element #\0)))))
+          ((zerop pow)             
+             (setq s (concatenate 'string part1 (if (zerop len) ".0" ".") part2))
+             (if (zerop len) (setq len (1+ len)))
+             (and decpl (> decpl len)
+               (setq s (concatenate 'string s (make-string (- decpl len) :initial-element #\0)))))
+          ((< pow 0)
+             (setq s (concatenate 'string "0." (make-string (- 0 pow 1) :initial-element #\0) part1 part2))
+             (and decpl (> decpl (- len pow))
+               (setq s (concatenate 'string s (make-string (+ decpl pow (- len)) :initial-element #\0))))))
+    (and decpl (zerop decpl)
+      (setq s (string-right-trim "0" s)))
+    (if (minusp sgn) 
+      (setq s (concatenate 'string "-" s)))
+    (and width (setq len (length s)) (> width len)
+      (setq s (concatenate 'string (make-string (- width len) :initial-element #\ ) s)))
+    (and b0?
+      (setq s (concatenate 'string s "b0")))
+    (format stream "~a" s)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  2. characters
 
-;;  converts a maxima-string of length 1 into a lisp-character
-(defun $lchar (mch) (l-char mch));; for testing only
+;;  converts a Maxima string of length 1 into a Lisp character
+;;
+(defun $lchar (mc) ;; at Maxima level only for testing
+  (l-char mc))
+;;
+(defun l-char (mc)
+  (if (not ($charp mc))
+    (merror "stringproc: ~m is no Maxima character." mc))
+  (character mc))
 
-(defun l-char (mch)
-  (let ((smch mch))
-    (if (= (length smch) 1)
-      (character smch)
-      (merror
-	"stringproc: ~:M cannot be converted into a character."
-	  mch))))
 
-;;  converts a lisp-character into a maxima-string of length 1
-(defun $cunlisp (lch) (m-char lch));; for testing only
+;;  converts a Lisp character into a Maxima string of length 1
+;;
+(defun $cunlisp (c) ;; at Maxima level only for testing
+  (if (not (characterp c))
+    (merror "cunlisp: argument must be a Lisp character"))
+  (m-char c))
+;;
+(defun m-char (c) (make-string 1 :initial-element c))
 
-(defun m-char (lch)
-  (make-string 1 :initial-element lch))
 
-;;  tests, if object is lisp-character
-(defun $lcharp (obj) (characterp obj));; for testing only
+;;  tests, if object is Lisp character
+(defun $lcharp (obj) (characterp obj)) ;; for testing only
 
-;;  tests, if object is maxima-character
+
+;;  tests, if object is Maxima character
 (defun $charp (obj)
-   (and (stringp obj) (= 1 (length obj))))
+  (and (stringp obj) (= 1 (length obj))))
 
-;;  tests for different maxima-characters
-(defun $constituent (mch)   (constituent (l-char mch)))
-(defun $alphanumericp (mch) (alphanumericp (l-char mch)))
-(defun $alphacharp (mch)    (alpha-char-p (l-char mch)))
-(defun $lowercasep (mch)    (lower-case-p (l-char mch)))
-(defun $uppercasep (mch)    (upper-case-p (l-char mch)))
-(defun $digitcharp (mch)
-   (let ((nr (char-int (l-char mch))))
-      (and (> nr 47) (< nr 58))))
+
+;;  tests for different Maxima characters at Maxima level (Lisp level see $tokens below)
+;;
+(defun $constituent (mc)   (constituent (l-char mc)))
+(defun $alphanumericp (mc) (alphanumericp (l-char mc)))
+(defun $alphacharp (mc)    (alpha-char-p (l-char mc)))
+(defun $lowercasep (mc)    (lower-case-p (l-char mc)))
+(defun $uppercasep (mc)    (upper-case-p (l-char mc)))
+;;
+(defun $digitcharp (mc)
+  (let ((nr (char-int (l-char mc))))
+    (and (> nr 47) (< nr 58))))
+
 
 ;;  ascii-char <-> index
-(defun $cint (mch) (char-code (l-char mch)))
-(defun $ascii (int) (m-char (code-char int)))
+;;
+(defun $cint (mc) 
+  (if (not ($charp mc))
+    (merror "cint: argument must be a Maxima character."))
+  (char-code (character mc)))
+;;
+(defun $ascii (int) 
+  (if (or (not (integerp int)) (< int 0) (> int 255))
+    (merror "ascii: argument must be zero or a positve integer less than 256."))
+  (m-char (code-char int)))
+
 
 ;;  comparison - test functions - at Maxima level
-(defun $cequal (ch1 ch2)          (char= (l-char ch1) (l-char ch2)))
-(defun $cequalignore (ch1 ch2)    (char-equal (l-char ch1) (l-char ch2)))
-(defun $clessp (ch1 ch2)          (char< (l-char ch1) (l-char ch2)))
-(defun $clesspignore (ch1 ch2)    (char-lessp (l-char ch1) (l-char ch2)))
-(defun $cgreaterp (ch1 ch2)       (char> (l-char ch1) (l-char ch2)))
-(defun $cgreaterpignore (ch1 ch2) (char-greaterp (l-char ch1) (l-char ch2)))
+;;
+(defun $cequal          (mc1 mc2)  (char=         (l-char mc1) (l-char mc2)))
+(defun $cequalignore    (mc1 mc2)  (char-equal    (l-char mc1) (l-char mc2)))
+(defun $clessp          (mc1 mc2)  (char<         (l-char mc1) (l-char mc2)))
+(defun $clesspignore    (mc1 mc2)  (char-lessp    (l-char mc1) (l-char mc2)))
+(defun $cgreaterp       (mc1 mc2)  (char>         (l-char mc1) (l-char mc2)))
+(defun $cgreaterpignore (mc1 mc2)  (char-greaterp (l-char mc1) (l-char mc2)))
+
 
 ;;  comparison - test functions - at Lisp level
-(defun cequal (ch1 ch2)          (char= ch1 ch2))
-(defun cequalignore (ch1 ch2)    (char-equal ch1 ch2))
-(defun clessp (ch1 ch2)          (char< ch1 ch2))
-(defun clesspignore (ch1 ch2)    (char-lessp ch1 ch2))
-(defun cgreaterp (ch1 ch2)       (char> ch1 ch2))
-(defun cgreaterpignore (ch1 ch2) (char-greaterp ch1 ch2))
+;;
+(defun cequal          (c1 c2)  (char=         c1 c2))
+(defun cequalignore    (c1 c2)  (char-equal    c1 c2))
+(defun clessp          (c1 c2)  (char<         c1 c2))
+(defun clesspignore    (c1 c2)  (char-lessp    c1 c2))
+(defun cgreaterp       (c1 c2)  (char>         c1 c2))
+(defun cgreaterpignore (c1 c2)  (char-greaterp c1 c2))
 
-#|
- $newline    (definitions placed beneath string functions)
- $tab
- $space
-|#
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; special Maxima characters
+;;
+(defmvar $newline
+  (m-char #\newline) "Maxima newline character" string)
+;;  
+(defmvar $tab
+  (m-char #\tab)     "Maxima tab character"     string)
+;;  
+(defmvar $space
+  (m-char #\space)   "Maxima space character"   string)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  3. strings
+
 
 ;;  tests, if object is a string
 (defun $stringp (obj) (stringp obj))
 
 
 ;;  copy
-(defun $scopy (mstr) (copy-seq mstr))
+(defun $scopy (s) 
+  (if (not (stringp s))
+    (merror "scopy: argument must be a string."))
+  (copy-seq s))
+
 
 ;;  make
-(defun $smake (n mch)
-  (make-string n :initial-element (l-char mch)))
+(defun $smake (n mc)
+  (cond ((not (integerp n))
+           (merror "smake: first argument must be an integer."))
+        ((not ($charp mc))
+           (merror "smake: second argument must be a Maxima character.")))
+  (make-string n :initial-element (character mc)))
 
 
-;;  returns a maxima-string of length 1
-(defun $charat (mstr index) ;; 1-indexed!
-  (subseq mstr (1- index) index))
+;;  returns a Maxima character = Maxima string of length 1
+(defun $charat (str index) ;; 1-based indexing!
+  (if (not (stringp str))
+    (merror "charat: first argument must be a string."))
+  (or (ignore-errors 
+        (subseq str (1- index) index))
+      (merror "charat: improper index ~m" index)))
+
 
 (defun $charlist (s)
+  (if (not (stringp s))
+    (merror "charlist: argument must be a string."))
   (cons '(mlist) (mapcar #'(lambda (c) (m-char c)) (coerce s 'list))))
+
 
 (putprop '$sexplode '$charlist 'alias)
 
 
 ;;  $tokens implements Paul Grahams function tokens in Maxima
-(defun $tokens (mstr &optional (test '$constituent))
-  (cons '(mlist) (tokens mstr (stripdollar test) 0)))
-
+;;
+(defun $tokens (str &optional (test '$constituent))
+  (cond ((not (stringp str))
+           (merror "tokens: first argument must be a string."))
+          ((not (member test '($constituent $alphanumericp $alphacharp $digitcharp $lowercasep $uppercasep $charp)))
+           (merror "tokens: optional second argument must be one of ~%
+              `constituent', `alphanumericp', `alphacharp', `digitcharp', `lowercasep', `uppercasep', `charp'.")))
+  (cons '(mlist) (tokens str (stripdollar test) 0)))
+;;
 (defun tokens (str test start) ;; Author: Paul Graham - ANSI Common Lisp, 1996, page 67
-  (let ((p1 (position-if test str :start start)))
-   (if p1
-       (let ((p2 (position-if #'(lambda (ch)
-				  (not (funcall test ch)))
-			      str :start p1)))
-	 (cons (subseq str p1 p2)
-	       (if p2
-		   (tokens str test p2)
-		   nil)))
-       nil)))
+  (let ((pos1 (position-if test str :start start)))
+    (if pos1
+      (let ((pos2 (position-if #'(lambda (ch) (not (funcall test ch)))
+                               str 
+                               :start pos1)))
+        (cons (subseq str pos1 pos2)
+              (if pos2
+                (tokens str test pos2)
+                nil)))
+      nil)))
 
-;;  test functions for $tokens:
+;;  test functions for $tokens on Lisp level:
 (defun constituent (ch) ;; Author: Paul Graham - ANSI Common Lisp, 1996, page 67
   (and (graphic-char-p ch)
        (not (char= ch #\  ))))
 
-(defun alphacharp (ch) (alpha-char-p ch))
-(defun digitcharp (ch) (digit-char-p ch))
-(defun lowercasep (ch) (lower-case-p ch))
-(defun uppercasep (ch) (upper-case-p ch))
-(defun charp (ch) (characterp ch))
-;;     characterp (ch)
+(defun alphacharp    (ch)  (alpha-char-p ch))
+(defun digitcharp    (ch)  (digit-char-p ch))
+(defun lowercasep    (ch)  (lower-case-p ch))
+(defun uppercasep    (ch)  (upper-case-p ch))
+(defun charp         (ch)  (characterp   ch))
+;;     characterp    (ch)
 ;;     alphanumericp (ch)
 
 
 ;;  splits string at an optional user defined delimiter character
 ;;  optional flag for multiple delimiter chars
-(defun $split (mstr &optional (dc " ") (m t))
-  (cons '(mlist)
-	(split mstr
-	       (character dc)
-	       m)))
+(defun $split (str &optional (ds " ") (multiple? t))
+  (cond ((not (stringp str))
+           (merror "split: first argument must be a string."))
+        ((not (stringp ds))
+           (merror "split: optional second argument must be a character or string."))
+        ((not (member multiple? '(t nil)))
+           (merror "split: optional third argument must be `true' or `false'.")))
+  (cons '(mlist) (split str ds multiple?)))
+;;
+(defun split (str ds &optional (multiple? t))
+  (let ((pos1 (search ds str)))
+     (if pos1
+       (let ((ss (subseq str 0 pos1)))
+         (if (and multiple? (string= ss ""))
+           (split1 str ds multiple? pos1)
+           (cons ss (split1 str ds multiple? pos1))))
+       (list str))))
+;;
+(defun split1 (str ds multiple? start)
+  (let ((pos1 (search ds str :start2 start)))
+    (if pos1
+      (let* ((pos2 (search ds str :start2 (+ pos1 (length ds))))
+             (ss (subseq str (+ pos1 (length ds)) pos2)))
+        (if (and multiple? (string= ss ""))
+        (if pos2 (split1 str ds multiple? pos2) nil)
+        (cons ss (if pos2 (split1 str ds multiple? pos2) nil))))
+      nil)))
 
-(defun split (str dc &optional (m t))
-  (labels
-    ((splitrest (str dc m start)
-       (let ((p1 (position dc str :start start)))
-	  (if p1
-	    (let* ((p2 (position dc str :start (1+ p1)))
-		   (ss (subseq str (1+ p1) p2)))
-	       (if (and m (string= ss ""))
-		 (if p2 (splitrest str dc m p2) nil)
-		 (cons ss (if p2 (splitrest str dc m p2) nil))))
-	    nil))))
-   (let ((p1 (position dc str)))
-     (if p1
-	(let ((ss (subseq str 0 p1)))
-	   (if (and m (string= ss ""))
-	      (splitrest str dc m p1)
-	      (cons ss (splitrest str dc m p1))))
-	(list str)))))
 
 ;;  $sconcat for lists, allows an optional user defined separator string
 ;;  returns maxima-string
-(defun $simplode (lis &optional (ds ""))
-   (setq lis (cdr lis))
-   (let ((res ""))
-      (dolist (mstr lis)
-	 (setq res (concatenate 'string res ($sconcat mstr) ds)))
-      (string-right-trim ds res)))
+(defun $simplode (li &optional (ds ""))
+  (cond ((not (listp li))
+           (merror "simplode: first argument must be a list."))
+        ((not (stringp ds))
+           (merror "simplode: optional second argument must be a string.")))
+  (setq li (cdr li))
+  (let ((res ""))
+     (dolist (str li)
+        (setq res (concatenate 'string res ($sconcat str) ds)))
+     (string-right-trim ds res)))
 
 
-;;  modified version of $sconcat, returns maxima-string
+;;  obsolete in maxima-strings-are-lisp-strings-branch, will be cut out soon
 (defun $sconc (&rest args)
   (format t "$SCONC: PUNT TO $CONCAT. REPLACE CALLS TO THIS FUNCTION WITH CALLS TO CONCAT.~%")
   (apply #'$concat args))
 
 
+(defun $slength (s)
+  (if (not (stringp s))
+    (merror "slength: argument must be a string."))
+  (length s))
 
-(defun $slength (mstr)
-   (length mstr))
 
-(defun $sposition (mch mstr) ;; 1-indexed!
-   (let ((pos (position (l-char mch) mstr)))
-     (if pos (1+ pos))))
+(defun $sposition (mc s) ;; 1-based indexing!
+  (cond ((not ($charp mc))
+           (merror "sposition: first argument must be a Maxima character."))
+        ((not (stringp s))
+           (merror "sposition: second argument must be a string.")))
+  (let ((pos (position (character mc) s)))
+    (if pos (1+ pos))))
 
-(defun $sreverse (mstr)
-  (reverse mstr))
 
-(defun $substring (mstr start &optional (end)) ;; 1-indexed!
-  (subseq mstr (1- start) (if end (1- end))))
+(defun $sreverse (s)
+  (if (not (stringp s))
+    (merror "sreverse: argument must be a string."))
+  (reverse s))
 
+
+(defun $substring (str start &optional (end nil)) ;; 1-based indexing!
+  (if (not (stringp str))
+    (merror "substring: first argument must be a string."))
+  (or (ignore-errors 
+        (subseq str (1- start) (if end (1- end))))
+      (merror "substring: improper start or end index.")))
 
 ;;  comparison - test functions - at Maxima level
-(defun $sequalignore (mstr1 mstr2)
-   (string-equal mstr1 mstr2))
 
-(defun $sequal (mstr1 mstr2)
-   (string= mstr1 mstr2))
+(defun $sequalignore (s1 s2)
+  (if (or (not (stringp s1)) (not (stringp s2)))
+    (merror "sequalignore: both arguments must be strings."))
+  (string-equal s1 s2))
+
+(defun $sequal (s1 s2)
+  (if (or (not (stringp s1)) (not (stringp s2)))
+    (merror "sequal: both arguments must be strings."))
+  (string= s1 s2))
+
 
 ;;  comparison - test functions - at Lisp level
-(defun sequalignore (str1 str2)
-   (string-equal str1 str2))
 
-(defun sequal (str1 str2)
-   (string= str1 str2))
+;; args can also be characters
+(defun sequalignore (s1 s2) (string-equal s1 s2))
+(defun sequal (s1 s2)       (string= s1 s2))
+
+
+(defun $smismatch (s1 s2 &optional (test '$sequal))  ;; 1-based indexing!
+  (cond ((or (not (stringp s1)) (not (stringp s2)))
+           (merror "smismatch: first two arguments must be strings."))
+          ((not (member test '($sequal $sequalignore $cequal $cequalignore)))
+           (merror "smismatch: optional second argument must be be `sequal(ignore)' or `cequal(ignore)'")))
+  (let ((pos (mismatch s1 s2 :test (stripdollar test))))
+     (if pos (1+ pos)) ))
+
+
+;;  searching
+
+(defun $ssearch (seq str &rest args)  ;; 1-based indexing!
+  (if (not (and (stringp seq) (stringp str)))
+    (merror "ssearch: first two arguments must be strings."))
+  (setq args 
+    (stringproc-optional-args "ssearch" args))
+  (or (ignore-errors 
+        (meval `(ssearch ,seq ,str ,@args)))
+      (merror "ssearch: improper arguments.")))
+;;
+(defun ssearch (seq str &optional (test '$sequal) (start 1) (end nil))
+  (let ((pos (search seq str :test (stripdollar test) :start2 (1- start) :end2 (if end (1- end)))))
+    (if pos (1+ pos))))
+
+
+;; helper:
+;; allows flexible sequence of optional args (test, start, end)
+(defun stringproc-optional-args (name args) 
+  (let ((test '$sequal) 
+        (start 1)  ;; 1-based indexing!
+        (end nil) 
+        (tests '($sequal $sequalignore $cequal $cequalignore))
+        arg1 arg2 arg3)
+    (if args 
+      (progn
+        (setq arg1 (car args))
+        (cond ((and (integerp arg1) (> arg1 0))  (setq start arg1))
+              ((member arg1 tests)               (setq test arg1))
+              (t (merror "~m: improper argument ~m" name arg1)))
+        (setq args (cdr args))))
+    (if args 
+      (progn
+        (setq arg2 (car args))
+        (cond ((and (integerp arg1) (or (integerp arg2) (null arg2)))  (setq end arg2))
+              ((and (integerp arg2) (> arg2 0))                        (setq start arg2))
+              ((member arg2 tests)                                     (setq test arg2))
+              (t (merror "~m: improper argument ~m" name arg2)))
+        (setq args (cdr args))))
+    (if args 
+      (progn
+        (setq arg3 (car args))
+        (cond ((or (integerp arg3) (null arg3))  (setq end arg3))
+              ((member arg3 tests)               (setq test arg3))
+              (t (merror "~m: improper argument ~m" name arg3)))))
+   (list test start end)))
 
 
 ;;  functions for string manipulation
-(defun $ssubstfirst (news olds mstr &optional (test '$sequal) (s 1) (e)) ;; 1-indexed!
-   (let* ((str mstr)
-	  (new news)
-	  (old olds)
-	  (len (length old))
-	  (pos (search old str
-		  :test (if (numberp test)
-			   (merror
-			     "ssubstfirst: Order of optional arguments: test, start, end")
-			   (stripdollar test))
-		  :start2 (1- s)
-		  :end2 (if e (1- e)))))
-	 (if (null pos)
-	    str
-	    (concatenate 'string
-	       (subseq str 0 pos)
-	       new
-	       (subseq str (+ pos len))))))
 
-(defun $ssubst (news olds mstr &optional (test '$sequal) (s 1) (e)) ;; 1-indexed!
-   (let* ((str mstr)
-	  (new news)
-	  (old olds)
-	  (pos (search old str
-		  :test (if (numberp test)
-			   (merror
-			     "ssubst: Order of optional arguments: test, start, end")
-			   (stripdollar test))
-		  :start2 (1- s)
-		  :end2 (if e (1- e)))))
-      (if (null pos)
-        str
-	 ($ssubst
-	    new
-	    old
-	    ($ssubstfirst new old
-			  mstr (stripdollar test) (1+ pos) (if e (1+ e)))
-	    (stripdollar test)
-	    (1+ pos)
-	    (if e (1+ e)) ))))
+(defun $ssubstfirst (new old str &rest args)  ;; 1-based indexing!
+  (if (not (and (stringp new) (stringp old) (stringp str)))
+    (merror "ssubstfirst: first three arguments must be strings."))
+  (setq args 
+    (stringproc-optional-args "ssubstfirst" args))
+  (or (ignore-errors 
+        (meval `(ssubstfirst ,new ,old ,str ,@args)))
+      (merror "ssubstfirst: improper arguments.")))
+;;
+(defun ssubstfirst (new old str &optional (test '$sequal) (start 1) (end nil))
+  (let ((len (length old))
+        (pos (search old 
+                     str
+                     :test (stripdollar test) ;; call to function at Lisp level (char by char)
+                     :start2 (1- start)
+                     :end2 (if end (1- end)))))
+    (if (null pos)
+      str
+      (concatenate 'string (subseq str 0 pos) new (subseq str (+ pos len))))))
+       
 
-
-(defun $sremove (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
-  (labels ((sremovefirst (seq str &optional (test '$sequal) (s 0) (e))
-     (let* ((len (length seq))
-	    (pos (search seq str
-		    :test (stripdollar test)
-		    :start2 s
-		    :end2 e))
-	    (sq1 (subseq str 0 pos))
-	    (sq2 (subseq str (+ pos len))))
-	(concatenate 'string sq1 sq2))))
-   (let* ((str mstr)
-	  (sss seq)
-	  (end (if e (1- e)))
-	  (start (search sss str
-		    :test (if (numberp test)
-			     (merror
-			       "sremove: Order of optional arguments: test, start, end")
-			     (stripdollar test))
-		    :start2 (1- s)
-		    :end2 end)))
-      (do ()
-	  ((null start) str)
-	  (progn
-	     (setq str (sremovefirst sss str (stripdollar test) start end))
-	     (setq start (search sss str :test (stripdollar test) :start2 start :end2 end)))))))
-
-(defun $sremovefirst (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
-   (let* ((str mstr)
-	  (sss seq)
-	  (len (length sss))
-	  (pos (search sss str
-		  :test (if (numberp test)
-			   (merror
-			     "sremovefirst: Order of optional arguments: test, start, end")
-			   (stripdollar test))
-		  :start2 (1- s)
-		  :end2 (if e (1- e))))
-	  (sq1 (subseq str 0 pos))
-	  (sq2 (if pos (subseq str (+ pos len)) "")))
-      (concatenate 'string sq1 sq2)))
+(defun $ssubst (new old str &rest args)  ;; 1-based indexing!
+  (if (not (and (stringp new) (stringp old) (stringp str)))
+    (merror "ssubst: first three arguments must be strings."))
+  (setq args 
+    (stringproc-optional-args "ssubst" args))
+  (or (ignore-errors 
+        (meval `(ssubst ,new ,old ,str ,@args)))
+      (merror "ssubst: improper arguments.")))
+;;
+(defun ssubst (new old str &optional (test '$sequal) (start 1) (end nil))
+  (let ((pos (search old 
+                     str 
+                     :test (stripdollar test)
+                     :start2 (1- start)
+                     :end2 (if end (1- end)))))
+    (if (null pos)
+       str
+       (ssubst new
+               old
+               (ssubstfirst new old str test (+ pos 1) end)
+               test
+               (+ pos 1 (length new)) 
+               (if end (+ end (length new) (- (length old))))) ))))
 
 
-(defun $sinsert (seq mstr pos)  ;; 1-indexed!
-   (let* ((str mstr)
-	  (sq1 (subseq str 0 (1- pos)))
-	  (sq2 (subseq str (1- pos))))
-      (concatenate 'string sq1 seq sq2)))
+(defun $sremovefirst (seq str &rest args)  ;; 1-based indexing!
+  (if (not (and (stringp seq) (stringp str)))
+    (merror "sremovefirst: first two arguments must be strings."))
+  (setq args 
+    (stringproc-optional-args "sremovefirst" args))
+  (or (ignore-errors 
+        (meval `(sremovefirst ,seq ,str ,@args)))
+      (merror "sremovefirst: improper arguments.")))
+;;
+(defun sremovefirst (seq str &optional (test '$sequal) (start 1) (end nil))
+  (let* ((len (length seq))
+         (pos (search seq 
+                      str
+                      :test (stripdollar test)
+                      :start2 (1- start)
+                      :end2 (if end (1- end))))
+         (sq1 (subseq str 0 pos))
+         (sq2 (if pos (subseq str (+ pos len)) "")))
+    (concatenate 'string sq1 sq2)))
 
 
-(defun $ssort (mstr &optional (test '$clessp))
-   (let ((copy (copy-seq mstr)))
-      (stable-sort copy (stripdollar test))))
+(defun $sremove (seq str &rest args)  ;; 1-based indexing!
+  (if (not (and (stringp seq) (stringp str)))
+    (merror "sremove: first two arguments must be strings."))
+  (setq args 
+    (stringproc-optional-args "sremove" args))
+  (or (ignore-errors 
+        (meval `(sremove ,seq ,str ,@args)))
+      (merror "sremove: improper arguments.")))
+;;
+(defun sremove (seq str &optional (test '$sequal) (start 1) (end nil))
+  (if end (decf end))
+  (let ((pos (search seq str :test (stripdollar test) :start2 (1- start) :end2 end)))
+    (do () ((null pos) str)
+      (progn
+        (setq str (sremovefirst seq str test (1+ pos) (if end (1+ end))))
+        (if end (setq end (- end (length seq))))
+        (setq pos (search seq str :test (stripdollar test) :start2 pos :end2 end))  ))))
 
 
-(defun $smismatch (mstr1 mstr2 &optional (test '$sequal))  ;; 1-indexed!
-   (let ((pos 
-      (mismatch mstr1 mstr2 :test (stripdollar test))))
-     (if pos (1+ pos)) ))
-
-(defun $ssearch (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
-   (let ((pos
-	   (search
-	     seq
-	     mstr
-	     :test (if (numberp test)
-		     (merror
-		       "ssearch: Order of optional arguments: test, start, end")
-		     (stripdollar test))
-	     :start2 (1- s)
-	     :end2 (if e (1- e)))))
-     (if pos (1+ pos))))
+(defun $sinsert (seq str pos)  ;; 1-based indexing!
+  (if (not (and (stringp seq) (stringp str)))
+    (merror "sinsert: first two arguments must be strings."))
+  (or (ignore-errors 
+        (let ((sq1 (subseq str 0 (1- pos)))
+              (sq2 (subseq str (1- pos))))
+          (concatenate 'string sq1 seq sq2)))
+      (merror "sinsert: improper position index ~m" pos)))
 
 
-
-(defun $strim (seq mstr)
-  (string-trim seq mstr))
-
-(defun $striml (seq mstr)
-  (string-left-trim seq mstr))
-
-(defun $strimr (seq mstr)
-  (string-right-trim seq mstr))
+(defun $ssort (str &optional (test '$clessp))
+  (cond ((not (stringp str))
+           (merror "ssort: first argument must be a string."))
+          ((not (member test '($clessp $cgreaterp $cequal $clesspignore $cgreaterpignore $cequalignore)))
+           (merror "ssort: optional second argument must be `clessp', `cgreaterp', `cequal' or `clesspignore' ...")))
+  (let ((copy (copy-seq str)))
+     (stable-sort copy (stripdollar test))))
 
 
+(defun $strim (seq str)
+  (if (or (not (stringp seq)) (not (stringp str)))
+    (merror "strim: both arguments must be strings."))
+  (string-trim seq str))
 
-(defun $supcase (mstr &optional (s 1) (e))  ;; 1-indexed!
-  (string-upcase mstr :start (1- s) :end (if e (1- e))))
+(defun $striml (seq str)
+  (if (or (not (stringp seq)) (not (stringp str)))
+    (merror "striml: both arguments must be strings."))
+  (string-left-trim seq str))
 
-(defun $sdowncase (mstr &optional (s 1) (e))  ;; 1-indexed!
-  (string-downcase mstr :start (1- s) :end (if e (1- e))))
+(defun $strimr (seq str)
+  (if (or (not (stringp seq)) (not (stringp str)))
+    (merror "strimr: both arguments must be strings."))
+  (string-right-trim seq str))
 
 
-(defun invert-char (ch) (setf ch (character ch))
-   (if (upper-case-p ch)
-      (char-downcase ch)
-      (char-upcase ch)))
+(defun $supcase (str &optional (start 1) (end nil))  ;; 1-based indexing!
+  (if (not (stringp str))
+    (merror "supcase: first argument must be a string."))
+  (or (ignore-errors 
+        (string-upcase str :start (1- start) :end (if end (1- end))))
+      (merror "supcase: improper start or end index.")))
+
+
+(defun $sdowncase (str &optional (start 1) (end nil))  ;; 1-based indexing!
+  (if (not (stringp str))
+    (merror "sdowncase: first argument must be a string."))
+  (or (ignore-errors 
+        (string-downcase str :start (1- start) :end (if end (1- end))))
+      (merror "sdowncase: improper start or end index.")))
+
+
+(defun $sinvertcase (str &optional (start 1) (end nil))  ;; 1-based indexing!
+  (if (not (stringp str))
+    (merror "sinvertcase: first argument must be a string."))
+  (decf start)
+  (if end (decf end))
+  (or (ignore-errors 
+        (let ((s1 (subseq str 0 start))
+              (s2 (subseq str start end))
+              (s3 (if end (subseq str end) "")))
+          (concatenate 'string s1 (invert-string-case s2) s3)))
+      (merror "sinvertcase: improper start or end index.")))
+
+
+(defun invert-char (ch) 
+  (setf ch (character ch))
+  (if (upper-case-p ch)
+    (char-downcase ch)
+     (char-upcase ch)))
+
 
 (defun invert-string-case (str)
-   (let* ((cl1 (explode str))
-	  (cl2 (cdr (butlast cl1))))
-      (concatenate 'string (map 'list #'invert-char cl2))))
+  (let* ((cl1 (explode str))
+         (cl2 (cdr (butlast cl1))))
+    (concatenate 'string (map 'list #'invert-char cl2))))
 
-(defun $sinvertcase (mstr &optional (s 1) (e))  ;; 1-indexed!
-   (let* ((str mstr)
-	  (s1 (subseq str 0 (1- s)))
-	  (s2 (subseq str (1- s) (if e (1- e))))
-	  (s3 (if e (subseq str (1- e)) "")))
-      (concatenate 'string s1 (invert-string-case s2) s3)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; this character definitions must be placed beneath the definition of m-char
-(defmvar $newline  (m-char #\newline))
-(defmvar $tab      (m-char #\tab))
-(defmvar $space    (m-char #\space))
