@@ -397,3 +397,12 @@ true;
 
 maybe ('aa = 'bb);
 false;
+
+/* SF bug [ 1726148 ] maybe with prederror : true */
+
+(kill (a), ev (maybe (a), prederror = true));
+unknown;
+
+ev (maybe (a or false), prederror = true);
+unknown;
+
