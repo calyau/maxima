@@ -329,6 +329,7 @@
 	 "contrib/maximaMathML"
 	 "contrib/mcclim"
      "contrib/namespaces"
+     "contrib/noninteractive"
 	 "contrib/numericalio"
 	 "contrib/pdiff"
 	 "contrib/prim"

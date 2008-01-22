@@ -328,6 +328,9 @@ contrib/mnewton.mac\
 contrib/namespaces/namespaces.lisp\
 contrib/namespaces/rtest_namespaces.mac\
 contrib/namespaces/foo.mac\
+contrib/noninteractive/asksign1.lisp\
+contrib/noninteractive/noninteractive.lisp\
+contrib/noninteractive/noninteractive.mac\
 contrib/nset/README\
 contrib/nset/announce-1.2.txt\
 contrib/nset/changes_1.0_to_1.2.txt\
