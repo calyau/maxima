@@ -1905,6 +1905,9 @@ Those defined in the @code{draw} package. See also @code{bars} and @code{barsplo
 @var{nclasses}: number of classes of the histogram (10 by default).
 @end itemize
 
+See also @code{discrete_freq} and @code{continuous_freq} to count data,
+and @code{bars} and @code{barsplot} to display bar graphs.
+
 Examples:
 
 A simple histogram with eight classes.
