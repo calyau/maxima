@@ -2107,8 +2107,8 @@ Warning:  Float to bigfloat conversion of 0.25
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) cardinality(p) = stirling2 (6, 3);
 (%o3)                        90 = 90
-(%i4) cardinality(p) = stirling2 (6, 3);
 @end example
 
 Каждый элемент @code{p} должен иметь @var{n} = 3 члена. Проверим:
@@ -2121,8 +2121,8 @@ Warning:  Float to bigfloat conversion of 0.25
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) map (cardinality, p);
 (%o3)                          @{3@}
-(%i4) map (cardinality, p);
 @end example
 
 Наконец, для каждого члена @code{p} объединение всех членов должно совпадать с @code{s}.
@@ -2136,8 +2136,8 @@ Warning:  Float to bigfloat conversion of 0.25
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) map (lambda ([x], apply (union, listify (x))), p);
 (%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
-(%i4) map (lambda ([x], apply (union, listify (x))), p);
 @end example
 
 @opencatbox

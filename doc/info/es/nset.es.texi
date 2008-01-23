@@ -1945,8 +1945,8 @@ La cardinalidad del conjunto de particiones de un conjunto puede calcularse con 
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) cardinality(p) = stirling2 (6, 3);
 (%o3)                        90 = 90
-(%i4) cardinality(p) = stirling2 (6, 3);
 @end example
 
 Cada elemento de @code{p} deber@'{@dotless{i}}a tener @var{n} = 3 miembros,
@@ -1959,8 +1959,8 @@ Cada elemento de @code{p} deber@'{@dotless{i}}a tener @var{n} = 3 miembros,
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) map (cardinality, p);
 (%o3)                          @{3@}
-(%i4) map (cardinality, p);
 @end example
 
 Por @'ultimo, para cada miembro de @code{p}, la uni@'on de sus elementos
@@ -1974,8 +1974,8 @@ debe ser igual a @code{s},
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) map (lambda ([x], apply (union, listify (x))), p);
 (%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
-(%i4) map (lambda ([x], apply (union, listify (x))), p);
 @end example
 @end deffn
 

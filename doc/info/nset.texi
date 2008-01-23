@@ -2116,8 +2116,8 @@ The cardinality of the set of partitions of a set can be found using @code{stirl
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) cardinality(p) = stirling2 (6, 3);
 (%o3)                        90 = 90
-(%i4) cardinality(p) = stirling2 (6, 3);
 @end example
 
 Each member of @code{p} should have @var{n} = 3 members; let's check.
@@ -2130,8 +2130,8 @@ Each member of @code{p} should have @var{n} = 3 members; let's check.
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) map (cardinality, p);
 (%o3)                          @{3@}
-(%i4) map (cardinality, p);
 @end example
 
 Finally, for each member of @code{p}, the union of its members should 
@@ -2145,8 +2145,8 @@ equal @code{s}; again let's check.
 @example
 (%i1) s: @{0, 1, 2, 3, 4, 5@}$
 (%i2) p: set_partitions (s, 3)$ 
+(%i3) map (lambda ([x], apply (union, listify (x))), p);
 (%o3)                 @{@{0, 1, 2, 3, 4, 5@}@}
-(%i4) map (lambda ([x], apply (union, listify (x))), p);
 @end example
 
 @opencatbox
