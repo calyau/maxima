@@ -870,6 +870,7 @@
       :sbcl
       :cormanlisp
       :scl
+      :abcl
       (and allegro-version>= (version>= 4 1)))
 (eval-when #-(or :lucid)
            (:compile-toplevel :load-toplevel :execute)
@@ -990,10 +991,12 @@
 ;;; MAKE package. A nice side-effect is that the short nickname
 ;;; MK is my initials.
 
+#+abcl (defpackage make (:use "COMMON-LISP") (:nicknames "MK"))
+
 #+(or clisp cormanlisp ecl (and gcl defpackage) sbcl)
 (defpackage "MAKE" (:use "COMMON-LISP") (:nicknames "MK"))
 
-#-(or :sbcl :cltl2 :lispworks :ecl :scl)
+#-(or :sbcl :cltl2 :lispworks :ecl :scl :abcl)
 (in-package :make :nicknames '("MK"))
 
 ;;; For CLtL2 compatible lisps...
@@ -1024,7 +1027,7 @@
 ;;; The code below, is originally executed also for CMUCL. However I
 ;;; believe this is wrong, since CMUCL comes with its own defpackage.
 ;;; I added the extra :CMU in the 'or'.
-#+(and :cltl2 (not (or :cmu :scl :clisp :sbcl
+#+(and :cltl2 (not (or :cmu :scl :clisp :sbcl :abcl
 		       (and :excl (or :allegro-v4.0 :allegro-v4.1))
 		       :mcl)))
 (eval-when (compile load eval)
@@ -1049,7 +1052,7 @@
 (eval-when (compile load eval)
   (in-package :make))
 
-#+ecl
+#+(or ecl abcl)
 (in-package :make)
 
 ;;; *** Marco Antoniotti <marcoxa@icsi.berkeley.edu> 19970105
@@ -4123,10 +4126,10 @@ the system definition, if provided."
 (unless *old-require*
   (setf *old-require*
 	(symbol-function
-	 #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks) 'lisp:require
+	 #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl) 'lisp:require
 	 #+(and :excl :allegro-v4.0) 'cltl1:require
 	 #+(or :sbcl :scl) 'cl:require
-	 #+:lispworks3.1 'common-lisp::require
+	 #+(or :lispworks3.1 :abcl) 'common-lisp::require
 	 #+(and :lispworks (not :lispworks3.1)) 'system::require
 	 #+:openmcl 'cl:require
 	 #+(and :mcl (not :openmcl)) 'ccl:require
@@ -4137,9 +4140,9 @@ the system definition, if provided."
 	  (ccl:*warn-if-redefine-kernel* nil))
       #-(or (and allegro-version>= (version>= 4 1)) :lispworks)
       (setf (symbol-function
-	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks) 'lisp:require
+	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl) 'lisp:require
 	     #+(and :excl :allegro-v4.0) 'cltl1:require
-	     #+:lispworks3.1 'common-lisp::require
+	     #+(or :lispworks3.1 :abcl) 'common-lisp::require
 	     #+(or :sbcl :scl) 'cl:require
 	     #+(and :lispworks (not :lispworks3.1)) 'system::require
 	     #+:openmcl 'cl:require
