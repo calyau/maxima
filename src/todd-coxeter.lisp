@@ -1,12 +1,21 @@
 (in-package :maxima)
 
 (defvar $todd_coxeter_state nil)
+
 (proclaim '(type (vector t)  $todd_coxeter_state))
+
 ;;  To turn on debug printing set to T
 (defvar *debug* nil)
+
 ;;  When *debug* is not nil, this holds the multiplications for
 ;; the current row.
 (defvar *this-row* nil)
+
+(deftype coset nil 'fixnum)
+
+;; The data type we use to enumerate cosets.
+
+(defvar *todo* (make-array 10 :element-type 'coset :fill-pointer 0 :adjustable t :initial-element 0))
 
 (eval-when
     #+gcl (compile eval)
@@ -54,31 +63,7 @@
   (defmacro table (i)
     `(the (vector (coset)) (aref  multiply-table (f+ ,i nvars))))
 
-  ;; Some optional declarations of functions.
-  (proclaim '(ftype (function (fixnum) t) doing-row)) 
-  (proclaim '(ftype (function (t t t) t) set-up todd-coxeter )) 
-  (proclaim
-   '(ftype (function nil t) fill-in-inverses dprint-state next-coset
-     dcheck-tables replace-coset-in-multiply-table)) 
-  (proclaim
-   '(ftype (function (t) t) $todd_coxeter coerce-rel has-repeat)) 
-  (proclaim '(ftype (function (t t) t) my-print))
-  (proclaim '(ftype (function (t *) t) $todd_coxeter))
-
-
   ) ;; end of the macros and proclamations.
-
-(eval-when
-    #+gcl (compile eval load)
-    #-gcl (:compile-toplevel :execute :load-toplevel)
-
-    (deftype coset nil 'fixnum)
-    (proclaim '(type (vector (coset)) *todo*)))
-
-;; The data type we use to enumerate cosets.
-
-
-(defvar *todo* (make-array 10 :element-type 'coset :fill-pointer 0 :adjustable t))
 
 ;; NVARS is the number of of variables.   It should be the maximum
 ;; of the absolute values of the entries in the relations RELS.
@@ -100,11 +85,11 @@
 ;; the running time of the first version of this code is observed to be quadratic
 ;; in the number of cosets.  On a rios it is approx 5*10^-5 * (ncosets)^2.
 
-(defun todd-coxeter (nvars rels subgp &aux (i 1) (c 0 ))
+(defun todd-coxeter (nvars rels subgp &aux (i 1) (c 0))
   (declare (fixnum i c))
   (set-up nvars rels subgp)
   (loop while (>= (ncosets) i)
-	 do  (incf c) ;; count how many row tries.. 
+	 do  (incf c) ;; count how many row tries..
 	 (cond
 	   ;; row still being done
 	   ((doing-row i) (replace-coset-in-multiply-table))
@@ -113,7 +98,7 @@
 	    (incf i) (replace-coset-in-multiply-table))
 	   ;; row finished -- no work
 	   (t (incf i))))
-  (format t "~%Rows tried ~a" c) 
+  (format t "~%Rows tried ~d~%" c)
   (ncosets))
 
 ;; Store the data in $todd_coxeter_state, and build multiply-table.
@@ -135,7 +120,7 @@
 			    nvars))))
     (loop for i from (f- nvars)  to nvars
 	   when (not (zerop i))
-	   do (setf (table i) (make-array 10 :adjustable t :element-type 'coset)))
+	   do (setf (table i) (make-array 10 :adjustable t :element-type 'coset :initial-element 0)))
     ))
 
 ;; Starts multiplying coset i times the relations.  Basic fact is i . rel = i.
@@ -323,49 +308,45 @@
 	     (otherwise (error "bad rel"))))))
 
 ;; The following functions are for debugging purposes, and
-;; for displaying the rows as they are computed.   They are
-;; not required for correct running.
-;;#+debug
-(progn
-  (defvar *names* '(nil x y z))
-  (defun my-print (ro i  &aux relations)
-    (when *debug*
-      (fresh-line)
-      ;;  (print ro)
-      (format t "Row ~a " i)
-      (setq relations (if (eql i 1) (row1-relations) (relations)))
-      (loop for rel in relations
-	     do 
-	     (loop for v on rel
-		    do (format t
-			       (if (> (car v) 0) "~a" "~(~a~)")
-			       (nth (abs (car v)) *names*))
-		    (cond ((null ro) (return-from my-print)))
-		    (if (cdr v) (princ (pop ro))
-			(format t "~a | ~a" i i))))))
-     
-  (defun has-repeat (ar &aux (j (+ 1 (ncosets)))  ans tem)
-    (loop for k from 1 to (ncosets)
-	   do (setq tem (aref ar k))
-	   (cond ((and  (not (eql tem 0))
-			(find tem ar :start (+ k 1) :end j))
-		  (pushnew tem ans))))
-    ans)
+;; for displaying the rows as they are computed.
 
-  (defun dcheck-tables ( &aux tem )
-    (when *debug*
-      (with-multiply-table
-	  (loop for i from 1 to (nvars)
-		 do (if (setq tem (has-repeat (table i )) )
-			(format t "~%Table ~a has repeat ~a " i tem))))))
-     
-  (defun dprint-state ()
-    (when *debug*
-      (with-multiply-table
-	  (format t "~%Ncosets = ~a, *todo*=" (ncosets) *todo*)
-	(loop for i from 1 to (nvars) do
-	       (format t "~%~a:~a" (nth i *names*)
-		       (subseq (table i ) 1  (+ 1 (ncosets)))))
-	(my-print (reverse *this-row*) 0)
-	))
-    ))
+(defvar *names* '(nil x y z))
+
+(defun my-print (ro i  &aux relations)
+  (when *debug*
+    (fresh-line)
+    ;;  (print ro)
+    (format t "Row ~a " i)
+    (setq relations (if (eql i 1) (row1-relations) (relations)))
+    (loop for rel in relations
+       do 
+       (loop for v on rel
+	  do (format t
+		     (if (> (car v) 0) "~a" "~(~a~)")
+		     (nth (abs (car v)) *names*))
+	  (cond ((null ro) (return-from my-print)))
+	  (if (cdr v) (princ (pop ro))
+	      (format t "~a | ~a" i i))))))
+
+(defun has-repeat (ar &aux (j (+ 1 (ncosets)))  ans tem)
+  (loop for k from 1 to (ncosets)
+     do (setq tem (aref ar k))
+     (cond ((and  (not (eql tem 0))
+		  (find tem ar :start (+ k 1) :end j))
+	    (pushnew tem ans))))
+  ans)
+
+(defun dcheck-tables ( &aux tem )
+  (when *debug*
+    (with-multiply-table
+	(loop for i from 1 to (nvars)
+	   do (if (setq tem (has-repeat (table i )) )
+		  (format t "~%Table ~a has repeat ~a " i tem))))))
+
+(defun dprint-state ()
+  (when *debug*
+    (with-multiply-table
+	(format t "~%Ncosets = ~a, *todo* = ~a" (ncosets) *todo*)
+      (loop for i from 1 to (nvars) do
+	   (format t "~%~a:~a" (nth i *names*) (subseq (table i ) 1 (1+ (ncosets)))))
+      (my-print (reverse *this-row*) 0))))
