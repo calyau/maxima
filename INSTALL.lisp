@@ -68,7 +68,13 @@ to subsitute their knowledge of defsystem for the following steps.
     (load "maxima-build.lisp")
     (maxima-load)
 
-(9) Dump an image, and if the Lisp implementation allows one to
+(9a) Run Maxima from the loaded image.
+
+    (cl-user::run)
+
+    That should bring up the Maxima input prompt.
+
+(9b) Dump the image, and if the Lisp implementation allows one to
     specify a start-up function, specify USER::RUN.
 
     There is a function MAXIMA-DUMP to carry out those steps.
