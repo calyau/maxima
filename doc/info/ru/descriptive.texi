@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=descriptive.texi 
-@c OriginalRevision=1.18
+@c OriginalRevision=1.19
 @c TranslatedBy: (c) 2007-07 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -2000,6 +2000,9 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @item
 @var{nclasses} - число классов в гистограмме (10 по умолчанию).
 @end itemize
+
+См. также @code{discrete_freq} и @code{continuous_freq} для подсчета данных,
+и @code{bars} и @code{barsplot} для построения гистограмм непрерывных данных.
 
 Примеры:
 
