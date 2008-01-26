@@ -118,7 +118,7 @@
 
 (defmacro white-space-p (x)
   `(member ,x '(#\linefeed #\return #\space #\tab #\page
-		#-(or clisp gcl openmcl) #\vt
+		#-(or clisp gcl openmcl abcl) #\vt
 		#+clisp #\code11)
     :test #'char=))
 
