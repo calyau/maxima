@@ -35,7 +35,8 @@
 		   #+gcl "binary-gcl"
 		   #+allegro "binary-acl"
 		   #+openmcl "binary-openmcl"
-		   #-(or clisp cmu scl sbcl gcl allegro openmcl) "binary-unknownlisp"
+           #+abcl "binary-abcl"
+		   #-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "binary-unknownlisp"
   :components (#+gcl
 	       (:module proclaim :source-pathname ""
 			:load-only t

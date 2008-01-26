@@ -12,7 +12,8 @@
 			    #+sbcl "sbcl"
 			    #+allegro "acl"
 			    #+openmcl "openmcl"
-			    #-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
+                #+abcl "abcl"
+			    #-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
 	 :directory '(#-gcl :relative "blas"))
 	(make-pathname :directory (pathname-directory #-gcl *load-truename*
 						      #+gcl sys:*load-pathname*))))
@@ -33,7 +34,8 @@
 		       #+sbcl "sbcl"
 		       #+allegro "acl"
 		       #+openmcl "openmcl"
-		       #-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
+               #+abcl "abcl"
+		       #-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
     :directory (list :relative subdir))
    (make-pathname :directory (pathname-directory *load-truename*))))
 )

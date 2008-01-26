@@ -70,7 +70,8 @@
 	#+gcl "gcl"
 	#+allegro "acl"
 	#+openmcl "openmcl"
-	#-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
+    #+abcl "abcl"
+	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
 
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
