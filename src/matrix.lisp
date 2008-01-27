@@ -15,7 +15,7 @@
 (declare-top (special errrjfflag oneoff* ei* ej* *ech* *tri* *inv*
 		      mdl dosimp $detout vlist mul* top* *det* genvar $ratfac
 		      *mosesflag varlist header linind* $scalarmatrixp $sparse
-		      $algebraic *rank*))
+		      $algebraic *rank* *mat*))
 
 (defmvar $detout nil)
 (defmvar top* nil)
@@ -23,6 +23,8 @@
 (defmvar $matrix_element_mult "*")  ;;; Else, most useful when "."
 (defmvar $matrix_element_add "+")
 (defmvar $matrix_element_transpose nil)
+
+(defvar *mat*)
 
 ;;I believe that all the code now stores arrays in the value cell 
 (defun get-array-pointer (symbol)
