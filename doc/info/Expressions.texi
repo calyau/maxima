@@ -1652,7 +1652,7 @@ Examples:
 @c NEEDS WORK
 @deffn {Function} isolate (@var{expr}, @var{x})
 Returns @var{expr} with subexpressions which are sums and
-which do not contain var replaced by intermediate expression labels
+which do not contain @var{var} replaced by intermediate expression labels
 (these being atomic symbols like @code{%t1}, @code{%t2}, ...).  This is often useful
 to avoid unnecessary expansion of subexpressions which don't contain
 the variable of interest.  Since the intermediate labels are bound to
@@ -1660,7 +1660,7 @@ the subexpressions they can all be substituted back by evaluating the
 expression in which they occur.
 
 @code{exptisolate} (default value: @code{false}) if @code{true} will cause @code{isolate} to examine exponents of
-atoms (like @code{%e}) which contain var.
+atoms (like @code{%e}) which contain @var{var}.
 
 @code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate with respect to
 products. See @code{isolate_wrt_times}.
@@ -1768,7 +1768,7 @@ appear in @var{expr}.  The default is to omit these.
 
 @c NEEDS WORK
 @deffn {Function} lfreeof (@var{list}, @var{expr})
-For each member @var{m} of list, calls @code{freeof (@var{m}, @var{expr})}.
+For each member @var{m} of @var{list}, calls @code{freeof (@var{m}, @var{expr})}.
 It returns @code{false} if any call to @code{freeof} does and @code{true} otherwise.
 
 @opencatbox
@@ -2067,11 +2067,11 @@ part @var{n_k} of ... part @var{n_2} of part @var{n_1} of @code{expr}.
 
 @c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
 @c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
-If the last argument to a part function is a list of indices then
+If the last argument to a @code{part} function is a list of indices then
 several subexpressions are picked out, each one corresponding to an
 index of the list.  Thus @code{part (x + y + z, [1, 3])} is @code{z+x}.
 
-@code{piece} holds the last expression selected when using the part
+@code{piece} holds the last expression selected when using the @code{part}
 functions.  It is set during the execution of the function and thus
 may be referred to in the function itself as shown below.
 
@@ -2095,7 +2095,7 @@ Example: @code{part (z+2*y, 2, 1)} yields 2.
 @deffn {Function} partition (@var{expr}, @var{x})
 Returns a list of two expressions.  They are (1)
 the factors of @var{expr} (if it is a product), the terms of @var{expr} (if it is a
-sum), or the list (if it is a list) which don't contain var and, (2)
+sum), or the list (if it is a list) which don't contain @var{x} and, (2)
 the factors, terms, or list which do.
 
 @example
