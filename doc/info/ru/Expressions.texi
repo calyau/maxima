@@ -1,0 +1,2694 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Expressions.texi 
+@c OriginalRevision=1.61
+@c TranslatedBy: (c) 2007-12-24 Andrey Siver <ihep-2005@yandex.ru>
+
+
+@menu
+* Основные сведения о выражениях::  
+* Комплексные выражения::                     
+* Невычисляемые и вычисляемые формы::
+* Идентификаторы::
+* Строки::
+* Неравенства::                  
+* Синтаксис::                      
+* Функции и переменные для выражений::  
+@end menu
+
+@node Основные сведения о выражениях, Комплексные выражения, Выражения, Выражения
+@section Основные сведения о выражениях
+
+Есть некоторое число зарезервированных слов, которые не могут быть использованы
+как имена переменных. Их использование может вызвать скрытую
+синтаксическую ошибку.
+
+@example
+integrate            next           from                 diff            
+in                   at             limit                sum             
+for                  and            elseif               then            
+else                 do             or                   if              
+unless               product        while                thru            
+step                                                                     
+@end example
+
+Большинство сущностей в Maxima являются выражениями. Последовательность 
+выражений может превратиться в одно выражение, если элементы последовательности 
+разделены запятыми и последовательность взята в скобки. Это аналогично 
+подобным выражениям последовательного вычисления (comma expressions) 
+в языке программирования @b{C}.
+
+@example
+(%i1) x: 3$
+(%i2) (x: x+1, x: x^2);
+(%o2)                          16
+(%i3) (if (x > 17) then 2 else 4);
+(%o3)                           4
+(%i4) (if (x > 17) then x: 2 else y: 4, y+x);
+(%o4)                          20
+@end example
+
+Даже циклы в Maxima являются выражениями, хотя то значение, которое они
+возвращают, не слишком полезное @code{done}.
+
+@example
+(%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
+(%i2) y;
+(%o2)                         done
+@end example
+
+То, что Вы действительно хотите получить, нужно включить как третий 
+аргумент в выражение последовательного вычисления, 
+который в действительности возвращает значение.
+
+@example
+(%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
+(%i4) y;
+(%o4)                        3628800
+@end example
+
+
+@c THIS REALLY NEEDS EXPANSION
+@node Комплексные выражения, Невычисляемые и вычисляемые формы, Основные сведения о выражениях, Выражения
+@section Комплексные выражения
+
+Комплексное выражение задается в Maxima добавлением к
+вещественной части выражения @code{%i}, умноженного на мнимую часть. 
+Таким образом, корни уравнения @code{x^2 - 4*x + 13 = 0} равны @code{2 + 3*%i} 
+и @code{2 - 3*%i}. Заметим, что
+упрощение произведений комплексных выражений может произойти после
+раскрытия произведения.  Упрощение отношений, корней и других
+функций комплексных выражений, обычно, может быть произведено, с использованием
+функций 
+@code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs} 
+и @code{carg}.
+
+@opencatbox
+@category{Комплексные переменные}
+@closecatbox
+
+@node Невычисляемые и вычисляемые формы, Идентификаторы, Комплексные выражения, Выражения
+@section Невычисляемые и вычисляемые формы
+
+Maxima различает операторы, которые являются невычисляемыми (nouns) и операторы, 
+который являются вычисляемыми (verbs).
+Вычисляемым является оператор, который может быть выполнен.
+Невычисляемым является оператор, который встречается как символ в выражении, 
+без вычисления.
+По умолчанию, имена функций является вычисляемыми.
+Вычисляемая форма может быть переведена в невычисляемую, экранированием (quoting) имени функции 
+или применением функции @code{nounify}.
+Невычисляемая форма может быть переведена в вычисляемую, применением функции @code{verbify}.
+Флаг вычисления @code{nouns} вызывает функцию @code{ev} для вычисления невычисляемых 
+форм в выражении.
+
+Вычисляемая форма отличается первым знаком доллара @code{$} в
+соответствующем Lisp-символе.
+Невычисляемая форма, наоборот, отличается 
+первым знаком процента @code{%} в соответствующем Lisp-символе.
+Некоторые невычисляемые формы, такие как @code{'integrate} и @code{'derivative} 
+(возвращаемые @code{diff}),
+имеют специальные свойства вывода, но не всегда.
+По умолчанию, невычисляемые и вычисляемые формы функции идентичны при выводе.
+Глобальный флаг @code{noundisp} вызывает то, что Maxima выводит невычисляемые 
+формы с предшествующей одиночной кавычкой @code{'}.
+
+См. также @code{noun}, @code{nouns}, @code{nounify} и @code{verbify}.
+
+Примеры:
+
+@c ===beg===
+@c foo (x) := x^2;
+@c foo (42);
+@c 'foo (42);
+@c 'foo (42), nouns;
+@c declare (bar, noun);
+@c bar (x) := x/17;
+@c bar (52);
+@c bar (52), nouns;
+@c integrate (1/x, x, 1, 42);
+@c 'integrate (1/x, x, 1, 42);
+@c ev (%, nouns);
+@c ===end===
+@example
+(%i1) foo (x) := x^2;
+                                     2
+(%o1)                     foo(x) := x
+(%i2) foo (42);
+(%o2)                         1764
+(%i3) 'foo (42);
+(%o3)                        foo(42)
+(%i4) 'foo (42), nouns;
+(%o4)                         1764
+(%i5) declare (bar, noun);
+(%o5)                         done
+(%i6) bar (x) := x/17;
+                                     x
+(%o6)                    ''bar(x) := --
+                                     17
+(%i7) bar (52);
+(%o7)                        bar(52)
+(%i8) bar (52), nouns;
+                               52
+(%o8)                          --
+                               17
+(%i9) integrate (1/x, x, 1, 42);
+(%o9)                        log(42)
+(%i10) 'integrate (1/x, x, 1, 42);
+                             42
+                            /
+                            [   1
+(%o10)                      I   - dx
+                            ]   x
+                            /
+                             1
+(%i11) ev (%, nouns);
+(%o11)                       log(42)
+@end example
+
+@opencatbox
+@category{Вычисление} @category{Вычисляемые и невычисляемые формы}
+@closecatbox
+
+@node Идентификаторы, Строки, Невычисляемые и вычисляемые формы, Выражения
+@section Идентификаторы
+
+Идентификаторы Maxima могут содержать буквы алфавита,
+плюс цифры от 0 до 9,
+плюс любые специальные символы, с предшествующим знаком @code{\}.
+
+Цифра может быть первым символом идентификатора,
+если ей предшествует бэкслеш @code{\}.
+Для цифр, которые являются вторыми или последующими символами, бэкслеш
+не нужен.
+
+Специальный символ может быть объявлен алфавитным, с помощью функции @code{declare}.
+Если это так, его не нужно экранировать бэкслешом в идентификаторе.
+Изначально к алфавитным символам относятся  
+@code{A} до @code{Z}, @code{a} до @code{z}, @code{%} и @code{_}.
+
+Maxima чувствительна к регистру символов. Идентификаторы @code{foo}, @code{FOO} и @code{Foo} различны.
+Для дальнейших сведений по этому вопросу смотрите @ref{Lisp и Maxima}.
+
+Maxima идентификатор является Lisp-символом, который начинается со знака доллар @code{$}.
+Любой другой Lisp-символ, когда он встречается в Maxima, предваряется знаком вопроса @code{?}.
+См. @ref{Lisp и Maxima} для более подробной информации по этому вопросу.
+
+Примеры:
+
+@c ===beg===
+@c %an_ordinary_identifier42;
+@c embedded\ spaces\ in\ an\ identifier;
+@c symbolp (%);
+@c [foo+bar, foo\+bar];
+@c [1729, \1729];
+@c [symbolp (foo\+bar), symbolp (\1729)];
+@c [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+@c baz\~quux;
+@c declare ("~", alphabetic);
+@c baz~quux;
+@c [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+@c :lisp (defvar *my-lisp-variable* '$foo)
+@c ?\*my\-lisp\-variable\*;
+@c ===end===
+
+@example
+(%i1) %an_ordinary_identifier42;
+(%o1)               %an_ordinary_identifier42
+(%i2) embedded\ spaces\ in\ an\ identifier;
+(%o2)           embedded spaces in an identifier
+(%i3) symbolp (%);
+(%o3)                         true
+(%i4) [foo+bar, foo\+bar];
+(%o4)                 [foo + bar, foo+bar]
+(%i5) [1729, \1729];
+(%o5)                     [1729, 1729]
+(%i6) [symbolp (foo\+bar), symbolp (\1729)];
+(%o6)                     [true, true]
+(%i7) [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+(%o7)                    [false, false]
+(%i8) baz\~quux;
+(%o8)                       baz~quux
+(%i9) declare ("~", alphabetic);
+(%o9)                         done
+(%i10) baz~quux;
+(%o10)                      baz~quux
+(%i11) [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+(%o11)                [false, false, false]
+(%i12) :lisp (defvar *my-lisp-variable* '$foo)
+*MY-LISP-VARIABLE*
+(%i12) ?\*my\-lisp\-variable\*;
+(%o12)                         foo
+@end example
+
+@opencatbox
+@category{Синтаксис}
+@closecatbox
+
+@node Строки, Неравенства, Идентификаторы, Выражения
+@section Строки
+
+Строки (последовательности символов в кавычках) заключаются в двойные 
+кавычки @code{"} при вводе и выводятся с или без кавычек, 
+в зависимости от значения глобальной переменной @code{stringdisp}.
+
+Строки могут содержать любые символы,
+включая символы табуляции, новой строки и возврат каретки.
+Последовательность @code{\"} распознается как литерал двойной кавычки,
+а @code{\\} как литерал бэкслеша.
+Когда бэкслеш появляется в конце строки,
+то бэкслеш и символ завершение строки  (либо новая строка, либо возврат каретки)
+игнорируются, так что данная строка продолжается со следующей строки.
+Никакие другие специальные комбинации бэкслеша с другим символом не распознаются.
+Если бэкслеш появляется перед любым символом, отличным от @code{"}, @code{\},
+или конец строки, то он игнорируется.
+Нет других способов для представления специальных символов
+(таких как табуляция, новая строка или возврат каретки)
+кроме как вставка этого символа в строку.
+
+В Maxima нет типа одиночный символ.
+Одиночный символ представляется как одно-символьная строка.
+
+Дополнительный пакет @code{stringproc} содержит 
+много функций для работы со строками.
+
+Примеры:
+
+@c ===beg===
+@c s_1 : "This is a string.";
+@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+@c s_3 : "Embedded line termination
+@c in this string.";
+@c s_4 : "Ignore the \
+@c line termination \
+@c characters in \
+@c this string.";
+@c stringdisp : false;
+@c s_1;
+@c stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "This is a string.";
+(%o1)               This is a string.
+(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+(%o2) Embedded "double quotes" and backslash \ characters.
+(%i3) s_3 : "Embedded line termination
+in this string.";
+(%o3) Embedded line termination
+in this string.
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
+(%o4) Ignore the line termination characters in this string.
+(%i5) stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)                   This is a string.
+(%i7) stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)                  "This is a string."
+@end example
+
+@opencatbox
+@category{Синтаксис}
+@closecatbox
+
+@node Неравенства, Синтаксис, Строки, Выражения
+@section Неравенства
+
+Maxima имеет операторы неравенства @code{<}, @code{<=}, @code{>=},
+@code{>}, @code{#} и @code{notequal}.
+См. @code{if} для описания условных выражений.
+
+@opencatbox
+@category{Операторы} @category{Синтаксис}
+@closecatbox
+
+@node Синтаксис, Функции и переменные для выражений, Неравенства, Выражения
+@section Синтаксис
+
+Возможно определять новые операторы с заданным приоритетом,
+удалять определения существующих операторов
+или переопределять приоритет существующих операторов.  
+Оператор может быть унарным префиксным или унарным постфиксным, 
+бинарным инфиксным, n-арным (n-ary) инфиксным, матчфиксным (matchfix) 
+или безфиксным (nofix).
+Матчфиксный (matchfix) обозначает пару символов, которые заключают между собой свой 
+аргумент или аргументы,
+а безфиксный (nofix) означает оператор, который не принимает аргументы.
+Следующие примеры демонстрируют различные типы операторов.
+
+@table @asis
+@item унарный префиксный
+изменение знака @code{- a}
+@item унарный постфиксный
+факториал @code{a!}
+@item бинарный инфиксный
+экспонента @code{a^b}
+@item n-арный инфиксный
+сложение @code{a + b}
+@item матчфиксный
+список @code{[a, b]}
+@end table
+
+(Встроенных безфиксных операторов нет;
+для примера такого оператора см. @code{nofix}.)
+
+Механизм определения нового оператора прост.
+Необходимо только объявить функцию как оператор;
+сама функция оператора может быть определена или нет.
+
+Вот пример определенных пользователем операторов.
+Заметим, что явный вызов функции @code{"dd" (a)} эквивалентен 
+@code{dd a}, также как @code{"<-" (a, b)} эквивалентно @code{a <- b}.
+Заметим также, что функции @code{"dd"} и @code{"<-"} не определены в этом 
+примере.
+
+@c ===beg===
+@c prefix ("dd");
+@c dd a;
+@c "dd" (a);
+@c infix ("<-");
+@c a <- dd b;
+@c "<-" (a, "dd" (b));
+@c ===end===
+@example
+(%i1) prefix ("dd");
+(%o1)                          dd
+(%i2) dd a;
+(%o2)                         dd a
+(%i3) "dd" (a);
+(%o3)                         dd a
+(%i4) infix ("<-");
+(%o4)                          <-
+(%i5) a <- dd b;
+(%o5)                      a <- dd b
+(%i6) "<-" (a, "dd" (b));
+(%o6)                      a <- dd b
+@end example
+
+Maxima функции, которые определяют новые операторы, сведены в нижеследующей таблице,
+с установленными по умолчанию левыми и правыми степенями связывания (lbp и rbp, соответственно).
+@c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
+(Степень связывания определяет приоритет операторов. Однако, так как левые 
+и правые степени связывания могут отличаться, степень связывания - это что-то более сложное чем приоритет.)
+Некоторые функции определения операций принимают дополнительные аргументы,
+см. описания этих функций для более полного описания деталей.
+
+@c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
+@table @code
+@item prefix
+rbp=180
+@item postfix
+lbp=180
+@item infix
+lbp=180, rbp=180
+@item nary
+lbp=180, rbp=180
+@item matchfix
+(степень связывания не применима)
+@item nofix
+(степень связывания не применима)
+@end table
+
+Для сравнения, приведем некоторые встроенные операторы, и их левые и правые 
+степени связывания.
+
+@example
+Operator   lbp     rbp
+
+  :        180     20 
+  ::       180     20 
+  :=       180     20 
+  ::=      180     20 
+  !        160
+  !!       160
+  ^        140     139 
+  .        130     129 
+  *        120
+  /        120     120 
+  +        100     100 
+  -        100     134 
+  =        80      80 
+  #        80      80 
+  >        80      80 
+  >=       80      80 
+  <        80      80 
+  <=       80      80 
+  not              70 
+  and      65
+  or       60
+  ,        10
+  $        -1
+  ;        -1
+@end example
+
+@code{remove} и @code{kill} удаляют свойства оператора из атома.
+@code{remove ("@var{a}", op)} удаляет только свойства оператора @var{a}.
+@code{kill ("@var{a}")} удаляет все свойства @var{a}, включая свойства
+оператора.
+Заметим, что имя оператора должно быть взято в кавычки.
+
+@c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
+@c ===beg===
+@c infix ("@");
+@c "@" (a, b) := a^b;
+@c 5 @ 3;
+@c remove ("@", op);
+@c 5 @ 3;
+@c "@" (5, 3);
+@c infix ("@");
+@c 5 @ 3;
+@c kill ("@");
+@c 5 @ 3;
+@c "@" (5, 3);
+@c ===end===
+@example
+(%i1) infix ("@@");
+(%o1)                           @@
+(%i2) "@@" (a, b) := a^b;
+                                     b
+(%o2)                      a @@ b := a
+(%i3) 5 @@ 3;
+(%o3)                          125
+(%i4) remove ("@@", op);
+(%o4)                         done
+(%i5) 5 @@ 3;
+Incorrect syntax: @@ is not an infix operator
+5 @@
+ ^
+(%i5) "@@" (5, 3);
+(%o5)                          125
+(%i6) infix ("@@");
+(%o6)                           @@
+(%i7) 5 @@ 3;
+(%o7)                          125
+(%i8) kill ("@@");
+(%o8)                         done
+(%i9) 5 @@ 3;
+Incorrect syntax: @@ is not an infix operator
+5 @@
+ ^
+(%i9) "@@" (5, 3);
+(%o9)                        @@(5, 3)
+@end example
+
+@node Функции и переменные для выражений,  , Синтаксис, Выражения
+@section Функции и переменные для выражений
+
+@deffn {Функция} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Функция} at (@var{expr}, @var{eqn})
+Вычисляет выражение @var{expr}, предполагая значения для переменных,
+заданные в списке 
+уравнений @code{[@var{eqn_1}, ..., @var{eqn_n}]} или одном уравнении @var{eqn}.
+
+Если подвыражение зависит от переменных, для которых заданы значения, 
+но нет, заданного при помощи @code{atvalue} значения, или оно не может быть вычислено
+иным способом, то возвращается невычисляемая форма @code{at}, которая выводится 
+в двумерном формате.
+
+Функция @code{at} выполняет множественные подстановки последовательно, не параллельно.
+
+См. также @code{atvalue}.
+Для описания других функций, которые выполняют подстановки,
+см. также @code{subst} и @code{ev}.
+
+Примеры:
+@c COPIED FROM example(at)
+
+@c ===beg===
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x, y)^2 - u(x, y)^2, x);
+@c at (%, [x = 0, y = 1]);
+@c ===end===
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x, y)^2 - u(x, y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end example
+
+@end deffn
+
+@opencatbox
+@category{Вычисление} @category{Дифференциальные уравнения}
+@closecatbox
+
+@deffn {Функция} box (@var{expr})
+@deffnx {Функция} box (@var{expr}, @var{a})
+Возвращает @var{expr}, заключенное в бокс (box).
+Возвращаемое значение есть выражение с @code{box} в качестве оператора и 
+@var{expr} как аргумент.
+Бокс изображается при выводе, когда @code{display2d} есть @code{true}.
+
+@code{box (@var{expr}, @var{a})}
+заключает @var{expr} в бокс, обозначенный символом @var{a}.
+Эта метка обрезается, если она длиннее чем ширина бокса.
+
+@code{box} вычисляет свои аргументы.
+Однако, выражение, взятое в бокс, не вычисляется до его содержимого,
+так что выражения в боксе эффективно исключается из вычислений.
+
+@code{boxchar} есть символ, используемый для отображения бокса в 
+функциях @code{box}, в @code{dpart} и в @code{lpart}.
+
+Примеры:
+
+@c ===beg===
+@c box (a^2 + b^2);
+@c a : 1234;
+@c b : c - d;
+@c box (a^2 + b^2);
+@c box (a^2 + b^2, term_1);
+@c 1729 - box (1729);
+@c boxchar: "-";
+@c box (sin(x) + cos(y));
+@c ===end===
+@example
+(%i1) box (a^2 + b^2);
+                            """""""""
+                            " 2    2"
+(%o1)                       "b  + a "
+                            """""""""
+(%i2) a : 1234;
+(%o2)                         1234
+(%i3) b : c - d;
+(%o3)                         c - d
+(%i4) box (a^2 + b^2);
+                      """"""""""""""""""""
+                      "       2          "
+(%o4)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i5) box (a^2 + b^2, term_1);
+                      term_1""""""""""""""
+                      "       2          "
+(%o5)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i6) 1729 - box (1729);
+                                 """"""
+(%o6)                     1729 - "1729"
+                                 """"""
+(%i7) boxchar: "-";
+(%o7)                           -
+(%i8) box (sin(x) + cos(y));
+                        -----------------
+(%o8)                   -cos(y) + sin(x)-
+                        -----------------
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} boxchar
+Значение по умолчанию: @code{"}
+
+@code{boxchar} есть символ, который используется для изображения бокса в 
+функциях @code{box}, в @code{dpart} и в @code{lpart} .
+
+Все боксы в выражении изображаются с текущим значением @code{boxchar}.
+Изображаемый символ не сохраняется в выражении бокса.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} carg (@var{z})
+Возвращает комплексный аргумент @var{z}.
+Этот комплексный аргумент есть угол @code{theta} в пределах @code{(-%pi, %pi]}
+такой что @code{r exp (theta %i) = @var{z}}, где @code{r} есть модуль 
+@var{z}.
+@c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
+
+@code{carg} есть вычислительная функция,
+но не функция упрощения.
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@c SEE ALSO SF BUG REPORT # 902290
+
+@code{carg} игнорирует декларацию @code{declare (@var{x}, complex)}
+и рассматривает @var{x} как вещественную переменную.
+Это ошибка. @c SEE SF BUG REPORT # 620246
+
+См. также @code{abs} (комплексный модуль), @code{polarform}, @code{rectform},
+@code{realpart} и @code{imagpart}.
+
+Примеры:
+
+@c ===beg===
+@c carg (1);
+@c carg (1 + %i);
+@c carg (exp (%i));
+@c carg (exp (%pi * %i));
+@c carg (exp (3/2 * %pi * %i));
+@c carg (17 * exp (2 * %i));
+@c ===end===
+
+@example
+(%i1) carg (1);
+(%o1)                           0
+(%i2) carg (1 + %i);
+                               %pi
+(%o2)                          ---
+                                4
+(%i3) carg (exp (%i));
+(%o3)                           1
+(%i4) carg (exp (%pi * %i));
+(%o4)                          %pi
+(%i5) carg (exp (3/2 * %pi * %i));
+                                %pi
+(%o5)                         - ---
+                                 2
+(%i6) carg (17 * exp (2 * %i));
+(%o6)                           2
+@end example
+
+@opencatbox
+@category{Комплексные переменные}
+@closecatbox
+
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c CROSS REF declare, properties, ETC
+@deffn {Специальный оператор} constant
+@code{declare (@var{a}, constant)} объявляет @var{a} как константу.
+См. @code{declare}.
+@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
+
+@opencatbox
+@category{Факты и выводы} @category{Константы}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} constantp (@var{expr})
+Возвращает @code{true}, если @var{expr} есть константное выражение,
+иначе возвращает @code{false}.
+@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
+
+Выражение рассматривается как константное, если его аргументы 
+есть
+числа (включая рациональные числа, которые отображаются с помощью @code{/R/}),
+символьные константы, такие как @code{%pi}, @code{%e} и @code{%i},
+переменные, равные константами, или объявленные константами с помощью @code{declare},
+или функции, чьи аргументы есть константы.
+
+@code{constantp} вычисляет свои аргументы.
+
+Примеры:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+
+@opencatbox
+@category{Функции предикаты} @category{Константы}
+@closecatbox
+
+@end deffn
+
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c THIS ITEM IS EXTREMELY IMPORTANT
+@c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
+@c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
+@deffn {Функция} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+Присваивает атому или списку атомов @var{a_i} свойство или список свойств @var{p_i}.
+Когда @var{a_i} и/или @var{p_i} есть списки,
+каждый из атомом получает все свойства.
+
+@code{declare} не вычисляет свои аргументы.
+@code{declare} всегда возвращает @code{done}.
+
+Как отмечено в описании для каждого флага декларации,
+для некоторых флагов
+@code{featurep(@var{object}, @var{feature})}
+возвращает @code{true}, если @var{object} был объявлен, как имеющий @var{feature}.
+Однако, @code{featurep} не распознает некоторые флаги. Это ошибка.
+
+См. также @code{features}.
+
+@code{declare} распознает следующие свойства:
+
+@table @asis
+@item @code{evfun}
+Делает @var{a_i} известным для @code{ev} так, что эта функция названная как @var{a_i},
+применяется когда @var{a_i} появляется как флаговый аргумент @code{ev}.
+См. @code{evfun}.
+
+@item @code{evflag}
+Делает @var{a_i} известным для функции @code{ev} так, что @var{a_i} 
+связывается с @code{true}
+во время выполнение @code{ev}, когда @var{a_i} появляется как флаговый аргумент  @code{ev}.
+См. @code{evflag}.
+
+@c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{bindtest}
+Указывает Maxima то, что следует вызвать ошибку, когда при вычислении значение @var{a_i} не определено.
+
+@item @code{noun}
+Указывает Maxima считать @var{a_i} невычисляемой формой. 
+Эффект состоит в замене @var{a_i} на @code{'@var{a_i}}
+или @code{nounify(@var{a_i})}, в зависимости от контекста.
+
+@item @code{constant}
+Указывает Maxima рассматривать @var{a_i} как символьную константу.
+@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
+@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+
+@item @code{scalar}
+Указывает Maxima рассматривать @var{a_i} как скалярную переменную.
+
+@item @code{nonscalar}
+Указывает Maxima рассматривать @var{a_i} как нескалярную переменную.
+Обычное применение состоит в том, чтобы объявлять переменная как символьный вектор или матрицу.
+
+@item @code{mainvar}
+Указывает Maxima рассматривать @var{a_i} как "главную переменную" (@code{mainvar}).
+@code{ordergreatp} определяет упорядочивание атомов таким образом:
+
+(главные переменные) > (другие переменные) > (скалярный переменные) > (константы) > (числа)
+
+@item @code{alphabetic}
+Указывает Maxima рассматривать @var{a_i} как алфавитный символ.
+
+@item @code{feature}
+Указывает Maxima рассматривать @var{a_i} как имя свойства.
+Тогда другие атомы могут иметь свойство @var{a_i}.
+
+@item @code{rassociative}, @code{lassociative}
+Указывает Maxima рассматривать @var{a_i} как право-ассоциативную или лево-ассоциативную функцию.
+
+@item @code{nary}
+Указывает Maxima рассматривать @var{a_i} как n-арную функцию.
+
+Декларация @code{nary} это не тоже, что вызов функции @code{nary}.
+Единственный эффект @code{declare(foo, nary)} состоит в том, чтобы обучить упрощатель Maxima
+упрощать вложенные выражения,
+например, чтобы @code{foo(x, foo(y, z))} упрощалось до @code{foo(x, y, z)}.
+
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
+Указывает Maxima рассматривать @var{a_i} как симметричную или антисимметричную функцию.
+@code{commutative} это тоже самое, что @code{symmetric}.
+
+@item @code{oddfun}, @code{evenfun}
+Указывает Maxima рассматривать @var{a_i} как нечетную или четную функцию.
+
+@item @code{outative}
+Указывает Maxima упрощать выражения с  @var{a_i}
+путем выноса константных множителей за пределы первого аргумента.
+
+Когда @var{a_i} имеет один аргумент,
+множитель рассматривается константным, если он есть литерал или объявлен константой.
+
+Когда @var{a_i} имеет два или более аргументов,
+множитель рассматривается константой,
+если второй аргумент есть символ
+и этот множитель свободен от этого второго аргумента.
+
+@item @code{multiplicative}
+Указывает Maxima упрощать выражения @var{a_i} 
+путем подстановки @code{@var{a_i}(x * y * z * ...)} @code{-->}
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+Эта подстановка выполняется только для первого аргумента.
+
+@item @code{additive}
+Указывает Maxima упрощать @var{a_i} выражения
+путем подстановки @code{@var{a_i}(x + y + z + ...)} @code{-->}
+@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+Эта подстановка выполняется только для первого аргумента.
+
+@item @code{linear}
+Эквивалентно объявлению @var{a_i} совместно @code{outative} и @code{additive}.
+
+@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{integer}, @code{noninteger}
+Указывает Maxima рассматривать @var{a_i} как целую или нецелую переменную.
+
+@item @code{even}, @code{odd}
+Указывает Maxima рассматривать @var{a_i} как четную или нечетную целую переменную.
+
+@item @code{rational}, @code{irrational}
+Указывает Maxima рассматривать @var{a_i} как рациональную или иррациональную вещественную переменную.
+
+@item @code{real}, @code{imaginary}, @code{complex}
+Указывает Maxima рассматривать @var{a_i} как вещественную, чисто мнимую или комплексную переменную.
+
+@item @code{increasing}, @code{decreasing}
+Указывает Maxima рассматривать @var{a_i} как растущую или убывающую функцию.
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
+
+@item @code{posfun}
+Указывает Maxima рассматривать @var{a_i} как положительную функцию.
+
+@item @code{integervalued}
+Указывает Maxima рассматривать @var{a_i} как целочисленную функцию.
+
+@end table
+
+Примеры:
+
+Декларации @code{evfun} и @code{evflag}.
+@c ===beg===
+@c declare (expand, evfun);
+@c (a + b)^3;
+@c (a + b)^3, expand;
+@c declare (demoivre, evflag);
+@c exp (a + b*%i);
+@c exp (a + b*%i), demoivre;
+@c ===end===
+@example
+(%i1) declare (expand, evfun);
+(%o1)                         done
+(%i2) (a + b)^3;
+                                   3
+(%o2)                       (b + a)
+(%i3) (a + b)^3, expand;
+                     3        2      2      3
+(%o3)               b  + 3 a b  + 3 a  b + a
+(%i4) declare (demoivre, evflag);
+(%o4)                         done
+(%i5) exp (a + b*%i);
+                             %i b + a
+(%o5)                      %e
+(%i6) exp (a + b*%i), demoivre;
+                      a
+(%o6)               %e  (%i sin(b) + cos(b))
+@end example
+
+Декларация @code{bindtest}.
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+
+Декларация @code{noun}.
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+Декларации @code{constant}, @code{scalar}, @code{nonscalar} и @code{mainvar}.
+@c ===beg===
+@c declare (bb, constant);
+@c declare (cc, scalar);
+@c declare (dd, nonscalar);
+@c declare (ee, mainvar);
+@c ===end===
+@example
+@end example
+
+Декларация @code{alphabetic}.
+@c ===beg===
+@c xx\~yy : 1729;
+@c declare ("~", alphabetic);
+@c xx~yy + yy~xx + ~xx~~yy~;
+@c ===end===
+@example
+(%i1) xx\~yy : 1729;
+(%o1)                         1729
+(%i2) declare ("~", alphabetic);
+(%o2)                         done
+(%i3) xx~yy + yy~xx + ~xx~~yy~;
+(%o3)                ~xx~~yy~ + yy~xx + 1729
+@end example
+
+Декларация @code{feature}.
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+Декларации @code{rassociative} и @code{lassociative}.
+@c ===beg===
+@c declare (F, rassociative);
+@c declare (G, lassociative);
+@c ===end===
+@example
+@end example
+
+Декларация @code{nary}.
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+
+Декларации @code{symmetric} и @code{antisymmetric}.
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
+
+Декларации @code{oddfun} и @code{evenfun}.
+@c ===beg===
+@c o (- u) + o (u);
+@c declare (o, oddfun);
+@c o (- u) + o (u);
+@c e (- u) - e (u);
+@c declare (e, evenfun);
+@c e (- u) - e (u);
+@c ===end===
+@example
+(%i1) o (- u) + o (u);
+(%o1)                     o(u) + o(- u)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- u) + o (u);
+(%o3)                           0
+(%i4) e (- u) - e (u);
+(%o4)                     e(- u) - e(u)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- u) - e (u);
+(%o6)                           0
+@end example
+
+Декларация @code{outative}.
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
+
+Декларация @code{multiplicative}.
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+Декларация @code{additive}.
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
+Декларация @code{linear}.
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end example
+
+@opencatbox
+@category{Факты и выводы}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
+аналогична @code{isolate (@var{expr}, @var{x})},
+за исключением того, что она дает возможность пользователю изолировать
+более чем одну переменную одновременно. Это может быть полезно, например, 
+если пользователь пытается заменить переменные в многократном
+интегрировании и эта замена переменных включает две или более переменных интегрирования. 
+Данная функция автоматически загружается из
+@file{simplification/disol.mac}.  Демонстрация доступна по
+@code{demo("disol")$}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} dispform (@var{expr})
+Возвращает внешнее представление @var{expr} по отношению к его
+главному оператору. Это может быть полезно в сочетании с @code{part}, которая
+также имеет дело с внешним представлением. Предположим @var{expr} есть -A.
+Тогда внутреннее представление @var{expr} есть "*"(-1,A), в то время как
+внешнее представление есть "-"(A). @code{dispform (@var{expr}, all)} конвертирует 
+все выражение (не только верхний уровень) в внешний формат. Например,
+если @code{expr: sin (sqrt (x))}, то @code{freeof (sqrt, expr)} и
+@code{freeof (sqrt, dispform (expr))} дают @code{true}, в то время как
+@code{freeof (sqrt, dispform (expr, all))} дает @code{false}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} distrib (@var{expr})
+Распространяет суммы над произведениями. Она отличается от @code{expand}
+тем, что она работает только на самом верхнем уровне выражения, то есть она не
+рекурсивная и работает быстрее чем @code{expand}. Она отличается от @code{multthru} тем, 
+что раскрывает все суммы на этом уровне.
+
+Примеры:
+
+@example
+(%i1) distrib ((a+b) * (c+d));
+(%o1)                 b d + a d + b c + a c
+(%i2) multthru ((a+b) * (c+d));
+(%o2)                 (b + a) d + (b + a) c
+(%i3) distrib (1/((a+b) * (c+d)));
+                                1
+(%o3)                    ---------------
+                         (b + a) (d + c)
+(%i4) expand (1/((a+b) * (c+d)), 1, 0);
+                                1
+(%o4)                 ---------------------
+                      b d + a d + b c + a c
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+Выбирает тоже подвыражение что и @code{part}, но
+вместо только возвращения этого подвыражения как значения, она возвращает
+все выражение с выбранным подвыражением, изображенным внутри
+бокса. Данный бокс в действительности является частью выражения.
+
+@example
+(%i1) dpart (x+y/z^2, 1, 2, 1);
+                             y
+(%o1)                       ---- + x
+                               2
+                            """
+                            "z"
+                            """
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c PROBABLY MORE TO BE SAID HERE
+@deffn {Функция} exp (@var{x})
+Представляет собой экспоненциальную функцию.
+Все экземпляры @code{exp (@var{x})} при вводе упрощаются до @code{%e^@var{x}}.
+@code{exp} не присутствует в упрощенных выражениях.
+
+Если @code{demoivre} равно @code{true}, то @code{%e^(a + b %i)} упрощается до 
+@code{%e^(a (cos(b) + %i sin(b)))}, если @code{b} свободна от @code{%i}. См. @code{demoivre}.
+
+Если @code{%emode}, равно @code{true}, то 
+@code{%e^(%pi %i x)} упрощается. См. @code{%emode}.
+
+Если @code{%enumer}, равно @code{true}, то @code{%e} заменяется на 
+2.718..., когда @code{numer} есть @code{true}. См. @code{%enumer}.
+
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Экспоненциальные и логарифмические функции}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} %emode
+Значение по умолчанию: @code{true}
+
+Когда @code{%emode} есть @code{true},
+то @code{%e^(%pi %i x)} упрощается следующим образом.
+
+@code{%e^(%pi %i x)} упрощается до @code{cos (%pi x) + %i sin (%pi x)}, если @code{x} есть 
+число с плавающей точкой, целое или произведение 1/2, 1/3, 1/4 или 1/6 и тогда в дальнейшем упрощается.
+
+Для других численных @code{x},
+@code{%e^(%pi %i x)} упрощается до @code{%e^(%pi %i y)}, где @code{y} есть
+@code{x - 2 k} для некоторых целых @code{k}, таких что @code{abs(y) < 1}.  
+
+Когда @code{%emode} есть @code{false}, 
+специальное упрощение @code{%e^(%pi %i x)} не выполняется.
+
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Экспоненциальные и логарифмические функции} @category{Флаги и переменные упрощения}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} %enumer
+Значение по умолчанию: @code{false}
+
+Когда @code{%enumer} есть @code{true},
+то @code{%e} заменяется своим численным значением
+2.718..., когда @code{numer} есть @code{true}. 
+
+Когда @code{%enumer} есть @code{false}, эта подстановка выполняется
+только если экспонента в @code{%e^x} вычисляется до численного значения.
+
+См. также @code{ev} и @code{numer}.
+
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Экспоненциальные и логарифмические функции} @category{Флаги вычисления}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} exptisolate
+Значение по умолчанию: @code{false}
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+Если @code{exptisolate} равно @code{true}, то @code{isolate (expr, var)} 
+исследует показатели атомов (таких как @code{%e}), которые содержат @code{var}.
+
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} exptsubst
+Значение по умолчанию: @code{false}
+
+Если @code{exptsubst} равно @code{true}, то позволяется выполнять подстановки, такие как @code{y}
+для @code{%e^x} в @code{%e^(a x)}.
+
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Экспоненциальные и логарифмические функции} @category{Выражения}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@code{freeof (@var{x_1}, @var{expr})}
+Возвращает @code{true}, если никакое подвыражение @var{expr} не равно @var{x_1}
+или если @var{x_1} возникает только как немая переменная в
+@var{expr}, иначе возвращает @code{false}.
+
+@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}
+эквивалентно @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
+
+Аргументы @var{x_1}, ..., @var{x_n} 
+могут быть именами функций или переменных, именами с индексами,
+операторами (заключенными в двойные кавычки) или выражениями общего вида.
+@code{freeof} вычисляет свои аргументы.
+
+@code{freeof} действует только на @var{expr} в том виде, в как оно есть, 
+(после упрощения и вычисления) и
+не пытается определить, может ли некоторое эквивалентное выражение дать другой результат.
+В частности, упрощение может давать эквивалентное, но другое выражение, которое
+содержит некоторые различные элементы чем исходная форма @var{expr}.
+
+Переменная является немой переменной в некотором выражении, если она не имеет значения за пределами выражения.
+Немые переменные, распознаваемые @code{freeof}, есть
+индекс суммы или произведения, переменная предела в @code{limit},
+переменная интегрирования в определенном интеграле @code{integrate},
+исходная переменная в @code{laplace},
+формальные переменные в выражениях @code{at}
+и аргументы в @code{lambda} выражениях.
+Локальные переменные в @code{block} не распознаются @code{freeof} как немые 
+переменные. Это ошибка.
+
+Неопределенное интегрирование @code{integrate} @i{не} свободно от 
+переменной интегрирования.
+
+@itemize @bullet
+@item
+Аргументы есть имена функций, переменные, имена с индексами, операторы и выражения.
+@code{freeof (a, b, expr)} эквивалентно 
+@code{freeof (a, expr) and freeof (b, expr)}.
+
+@example
+(%i1) expr: z^3 * cos (a[1]) * b^(c+d);
+                                 d + c  3
+(%o1)                   cos(a ) b      z
+                             1
+(%i2) freeof (z, expr);
+(%o2)                         false
+(%i3) freeof (cos, expr);
+(%o3)                         false
+(%i4) freeof (a[1], expr);
+(%o4)                         false
+(%i5) freeof (cos (a[1]), expr);
+(%o5)                         false
+(%i6) freeof (b^(c+d), expr);
+(%o6)                         false
+(%i7) freeof ("^", expr);
+(%o7)                         false
+(%i8) freeof (w, sin, a[2], sin (a[2]), b*(c+d), expr);
+(%o8)                         true
+@end example
+
+@item
+@code{freeof} вычисляет свои аргументы.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) c: a$
+(%i3) freeof (c, expr);
+(%o3)                         false
+@end example
+
+@item
+@code{freeof} не учитывает эквивалентные выражения.
+Упрощение может дать эквивалентное, но отличное выражение.
+
+@example
+(%i1) expr: (a+b)^5$
+(%i2) expand (expr);
+          5        4       2  3       3  2      4      5
+(%o2)    b  + 5 a b  + 10 a  b  + 10 a  b  + 5 a  b + a
+(%i3) freeof (a+b, %);
+(%o3)                         true
+(%i4) freeof (a+b, expr);
+(%o4)                         false
+(%i5) exp (x);
+                                 x
+(%o5)                          %e
+(%i6) freeof (exp, exp (x));
+(%o6)                         true
+@end example
+
+@item Суммирование или определенный интеграл свободно от своих немых переменных.
+Неопределенный интеграл не свободен от своей переменной интегрирования.
+
+@example
+(%i1) freeof (i, 'sum (f(i), i, 0, n));
+(%o1)                         true
+(%i2) freeof (x, 'integrate (x^2, x, 0, 1));
+(%o2)                         true
+(%i3) freeof (x, 'integrate (x^2, x));
+(%o3)                         false
+@end example
+@end itemize
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c IS THIS DEFINITION CORRECT ??
+@deffn {Функция} genfact (@var{x}, @var{y}, @var{z})
+Возвращает обобщенный факториал, заданный как
+@code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}. Таким образом, для целого @var{x},
+@code{genfact (x, x, 1) = x!} и @code{genfact (x, x/2, 2) = x!!}.
+
+@opencatbox
+@category{Гамма функция и факториал}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} imagpart (@var{expr})
+Возвращает мнимую часть выражения @var{expr}.
+
+@code{imagpart} есть вычислительная функция,
+а не функция упрощения.
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@c SEE ALSO SF BUG REPORT # 902290
+
+См. также @code{abs}, @code{carg}, @code{polarform}, @code{rectform}
+и @code{realpart}.
+
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Комплексные переменные}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} infix (@var{op})
+@deffnx {Функция} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Функция} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+Объявляет @var{op} инфиксным оператором.
+Инфиксный оператор есть функция двух аргументов,
+с именем функции, записанным между этими аргументами.
+Например, оператор вычитания @code{-} есть инфиксный оператор.
+
+@code{infix (@var{op})} объявляет @var{op} инфиксным оператором
+со степенями связывания по умолчанию (левая и правая, обе равны 180)
+и частями речи по умолчанию (левая и правая, обе равны @code{any}).
+@c HOW IS pos DIFFERENT FROM lpos AND rpos ??
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} объявляет @var{op} инфиксным оператором
+с указанными левой и правой степени связывания 
+и частями речи по умолчанию (левая и правая, обе равны @code{any}).
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})} объявляет @var{op} инфиксным оператором
+с указанными левой и правой степенями связывания и частями речи
+@var{lpos}, @var{rpos} и @var{pos} для левого операнда, правого операнда и результата
+соответственно.
+
+Термин "часть речи" по отношению к объявлению операторов, означает тип выражения.
+Различается три типа: @code{expr}, @code{clause} и @code{any},
+которые означают алгебраическое выражение, логическое выражение и выражение
+произвольного типа соответственно.
+Maxima может обнаружить некоторые синтаксические ошибки, сравнивая
+объявленные для оператора части речи с актуальными выражениями.
+
+Приоритет @var{op} по отношению к другим операторам
+выводится из левой и правой степеней связывания рассматриваемых операторов.
+Если левые и правые степени связывания @var{op} обе больше
+левых и правых степеней связывания другого оператора,
+то @var{op} имеет более высокий приоритет чем этот оператор.
+Если степени связывания обе не больше или меньше,
+то имеют место некоторые более сложные соотношения.
+
+Ассоциативность @var{op} зависит от его степени связывания.
+Большая левая степень связывания (@var{lbp}) означает, что  
+@var{op} вычисляется до других операторов, стоящих слева от него в выражении,
+в то время как большая правая степень связывания (@var{rbp}) означает, что 
+@var{op} вычисляется до других операторов, стоящих справа от него в выражении.
+Таким образом, большее @var{lbp} делает @var{op} право-ассоциативным,
+в то время как большее @var{rbp} делает @var{op} лево-ассоциативным.
+Если @var{lbp} равно @var{rbp}, то @var{op} является лево-ассоциативный.
+
+См. также @code{Syntax}.
+
+Примеры:
+
+@itemize @bullet
+@item
+Если левые и правые степени связывания @var{op} обе больше
+левых и правых степеней связывания другого оператора,
+то @var{op} имеет более высокий приоритет чем этот оператор.
+@end itemize
+@example
+(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i2) :lisp (get '$+ 'lbp)
+100
+(%i2) :lisp (get '$+ 'rbp)
+100
+(%i2) infix ("@@", 101, 101)$
+(%i3) 1 + a@@b + 2;
+(%o3)                       (a,b) + 3
+(%i4) infix ("@@", 99, 99)$
+(%i5) 1 + a@@b + 2;
+(%o5)                       (a+1,b+2)
+@end example
+
+@itemize @bullet
+@item
+Большее @var{lbp} делает @var{op} право-ассоциативным,
+в том время как большее @var{rbp} делает @var{op} лево-ассоциативным.
+@end itemize
+@example
+(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i2) infix ("@@", 100, 99)$
+(%i3) foo @@ bar @@ baz;
+(%o3)                    (foo,(bar,baz))
+(%i4) infix ("@@", 100, 101)$
+(%i5) foo @@ bar @@ baz;
+(%o5)                    ((foo,bar),baz)
+@end example
+
+Maxima может обнаружить некоторые синтаксические ошибки, сравнивая
+объявленные для оператора части речи с актуальными выражениями.
+
+@c ===beg===
+@c infix ("##", 100, 99, expr, expr, expr);
+@c if x ## y then 1 else 0;
+@c infix ("##", 100, 99, expr, expr, clause);
+@c if x ## y then 1 else 0;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99, expr, expr, expr);
+(%o1)                          ##
+(%i2) if x ## y then 1 else 0;
+Incorrect syntax: Found algebraic expression where logical expression expected
+if x ## y then 
+             ^
+(%i2) infix ("##", 100, 99, expr, expr, clause);
+(%o2)                          ##
+(%i3) if x ## y then 1 else 0;
+(%o3)                if x ## y then 1 else 0
+@end example
+
+@opencatbox
+@category{Операторы} @category{Факты и выводы} @category{Синтаксис}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} inflag
+Значение по умолчанию: @code{false}
+
+Когда @code{inflag} есть @code{true}, функции для извлечения частей 
+выражения работает с внутренней формой @code{expr}.
+
+Заметим, что упрощатель переупорядочивает выражения.
+Таким образом, @code{first (x + y)} возвращает @code{x} если @code{inflag}
+есть @code{true}, и @code{y}, если @code{inflag} есть @code{false}
+(@code{first (y + x)} дает те же результаты.)
+
+Также, установка @code{inflag} равным @code{true} и вызов @code{part} или @code{substpart} есть 
+тоже самое, что вызов @code{inpart} или @code{substinpart}.
+
+Функции, на которые влияет значение @code{inflag}:
+@code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
+конструкция @code{for} ... @code{in},
+@code{map}, @code{fullmap}, @code{maplist}, @code{reveal} и @code{pickapart}.
+
+@c NEED EXAMPLES HERE
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@c NEEDS WORK
+@deffn {Функция} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+аналогична @code{part}, но работает с внутренним
+представлением выражения, а не с выводимой формой, и,
+таким образом, может быть быстрее, так как форматирование не выполняется.
+Нужно быть осторожным  
+по отношению к порядку подвыражений в суммах и произведениях
+(так как этот порядок переменных в внутренней форме часто отличается
+от порядка в выводимой форме) и в работе с унарным минусом,
+вычитанием и делением (так как эти операторы удаляются из 
+выражения). @code{part (x+y, 0)} или @code{inpart (x+y, 0)} дает @code{+}, 
+хотя для ссылки на оператор он должен быть заключен в двойные кавычки. 
+Например @code{... if inpart (%o9,0) = "+" then ...}.
+
+Примеры:
+
+@example
+(%i1) x + y + w*z;
+(%o1)                      w z + y + x
+(%i2) inpart (%, 3, 2);
+(%o2)                           z
+(%i3) part (%th (2), 1, 2);
+(%o3)                           z
+(%i4) 'limit (f(x)^g(x+1), x, 0, minus);
+                                  g(x + 1)
+(%o4)                 limit   f(x)
+                      x -> 0-
+(%i5) inpart (%, 1, 2);
+(%o5)                       g(x + 1)
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} isolate (@var{expr}, @var{x})
+Возвращает @var{expr} с подвыражениями, которые есть суммы, и
+которые не содержат переменную @var{var}, замененные метками промежуточных выражений
+(атомарными символами, такими как @code{%t1}, @code{%t2}, ...).  Это часто бывает полезно, 
+чтобы избежать ненужного раскрытия подвыражений, которые не содержат
+интересующих переменных. Так как данные метки промежуточных выражений имеют подвыражения
+в качестве своих значений, то они могут быть подставлены обратно вычислением этого
+выражения.
+
+Если @code{exptisolate} (значение по умолчанию: @code{false}) равно @code{true},  
+то @code{isolate} исследует показатели атомов (таких как @code{%e}), 
+которые содержат переменную @var{var}.
+
+Если @code{isolate_wrt_times} равно @code{true}, то @code{isolate} изолирует 
+также по отношению к произведениям. См. @code{isolate_wrt_times}.
+
+Выполните @code{example (isolate)} для других примеров.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@defvr {Управляющая переменная} isolate_wrt_times
+Значение по умолчанию: @code{false}
+
+Когда @code{isolate_wrt_times} равно @code{true}, то @code{isolate}
+также изолирует по отношению к произведениям. Например, сравнивает обе установки 
+
+@example
+(%i1) isolate_wrt_times: true$
+(%i2) isolate (expand ((a+b+c)^2), c);
+
+(%t2)                          2 a
+
+
+(%t3)                          2 b
+
+
+                          2            2
+(%t4)                    b  + 2 a b + a
+
+                     2
+(%o4)               c  + %t3 c + %t2 c + %t4
+(%i4) isolate_wrt_times: false$
+(%i5) isolate (expand ((a+b+c)^2), c);
+                     2
+(%o5)               c  + 2 b c + 2 a c + %t4
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@c NEEDS EXAMPLES
+@defvr {Управляющая переменная} listconstvars
+Значение по умолчанию: @code{false}
+
+Когда @code{listconstvars} есть @code{true}, то в список,
+возвращаемый @code{listofvars}, включаются @code{%e}, @code{%pi}, @code{%i} и
+другие переменные, объявленные константами.
+По умолчанию они опускаются.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} listdummyvars
+Значение по умолчанию: @code{true}
+
+Когда @code{listdummyvars} есть @code{false}, "немые переменные" в 
+выражении не будут включаться в список, возвращаемый @code{listofvars}.
+(Смысл "немых переменных" тот же, что и в @code{freeof}.
+"Немые переменные" -- это математические объекты, такие 
+как индекс суммы или произведения, переменная предела и переменная интегрирования
+в определенном интеграле).
+
+Пример:
+
+@example
+(%i1) listdummyvars: true$
+(%i2) listofvars ('sum(f(i), i, 0, n));
+(%o2)                        [i, n]
+(%i3) listdummyvars: false$
+(%i4) listofvars ('sum(f(i), i, 0, n));
+(%o4)                          [n]
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@c NEEDS WORK
+@deffn {Функция} listofvars (@var{expr})
+Возвращает список переменных в @var{expr}.
+
+Когда @code{listconstvars} есть @code{true}, то в список,
+возвращаемый @code{listofvars}, включаются @code{%e}, @code{%pi}, @code{%i} и
+другие переменные, объявленные константами.
+По умолчанию они опускаются.
+
+@example
+(%i1) listofvars (f (x[1]+y) / g^(2+a));
+(%o1)                     [g, a, x , y]
+                                  1
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} lfreeof (@var{list}, @var{expr})
+Для каждого члена @var{m} списка @var{list}, вызывает @code{freeof (@var{m}, @var{expr})}.
+Возвращает @code{false}, если какой либо из вызовов @code{freeof} дает @code{false}, 
+иначе возвращает @code{true}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} lopow (@var{expr}, @var{x})
+Возвращает наименьший показатель степени @var{x}, который явно присутствует 
+в @var{expr}. Таким образом,
+
+@example
+(%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
+(%o1)                       min(a, 2)
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
+Аналогично @code{dpart}, но использует 
+помеченный бокс. Помеченный бокс аналогичен боксу сделанному с помощью 
+@code{dpart}, но имеет имя в верхней строке.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} multthru (@var{expr})
+@deffnx {Функция} multthru (@var{expr_1}, @var{expr_2})
+Умножает множитель @var{expr} (который должен быть суммой) на
+другие множители @var{expr}. То есть, @var{expr} есть 
+@code{@var{f_1} @var{f_2} ... @var{f_n}},
+где по крайней мере
+один множитель, скажем @var{f_i}, есть сумма членов.  Каждый член 
+в той сумме умножается на остальные множители в этом произведении. 
+(А именно на все множители, за исключением @var{f_i}).  @code{multthru} 
+не раскрывает суммы, возведенные в степень.
+Эта функция есть самый быстрый способ распространять произведения (коммутативные
+или некоммутативные) на суммы. Так как дроби представляются как
+произведения, то @code{multthru} может также использоваться для деления сумм 
+на произведения.
+
+@code{multthru (@var{expr_1}, @var{expr_2})} умножает каждый член в @var{expr_2} 
+(который должен быть суммой или уравнением) на @var{expr_1}.
+Если @var{expr_1} сам по себе не является суммой, то эта
+форма эквивалентна @code{multthru (@var{expr_1}*@var{expr_2})}.
+
+@example
+(%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+                      1        x         f(x)
+(%o1)             - ----- + -------- - --------
+                    x - y          2          3
+                            (x - y)    (x - y)
+(%i2) multthru ((x-y)^3, %);
+                           2
+(%o2)             - (x - y)  + x (x - y) - f(x)
+(%i3) ratexpand (%);
+                           2
+(%o3)                   - y  + x y - f(x)
+(%i4) ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+                        10  2              2  2
+                 (b + a)   s  + 2 a b s + a  b
+(%o4)            ------------------------------
+                                  2
+                             a b s
+(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+                                        10
+                       2   a b   (b + a)
+(%o5)                  - + --- + ---------
+                       s    2       a b
+                           s
+(%i6) multthru (a.(b+c.(d+e)+f));
+(%o6)            a . f + a . c . (e + d) + a . b
+(%i7) expand (a.(b+c.(d+e)+f));
+(%o7)         a . f + a . c . e + a . c . d + a . b
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} nounify (@var{f})
+Возвращает невычисляемую форму функции с именем @var{f}. Это 
+необходимо, если требуется представить имя вычисляемой функции так, 
+если бы она была невычисляемой.  Заметим, что некоторые вычисляемые функции  
+возвращают их невычисляемые формы,
+если они не могут быть вычислены для определенных значений аргументов.  
+Невычисляемая форма возвращается также в случае, если перед функцией стоит кавычка.
+
+@opencatbox
+@category{Невычисляемые и вычисляемые формы}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} nterms (@var{expr})
+Возвращает число членов, которое выражение @var{expr} имело бы, если оно было бы
+полностью раскрыто и не возникло бы сокращений или комбинаций членов.
+Заметим, что выражения такие как @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})} и др.
+считаются только как один член, вне независимости от того, как много членов @var{expr} имеет (если оно сумма).
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} op (@var{expr})
+Возвращает главный оператор выражения @var{expr}.
+@code{op (@var{expr})} эквивалентно @code{part (@var{expr}, 0)}. 
+
+@code{op} возвращает строку, если главный оператор 
+встроенный или определенный пользователем префиксный, 
+бинарный или n-арный инфиксный, постфиксный, матчфиксный 
+или безфиксный оператор.
+Иначе @code{op} возвращает символ.
+
+@code{op} следит за значением глобального флага @code{inflag}.
+
+@code{op} вычисляет свой аргумент.
+
+См. также @code{args}.
+
+Примеры:
+
+@c ===beg===
+@c stringdisp: true$
+@c op (a * b * c);
+@c op (a * b + c);
+@c op ('sin (a + b));
+@c op (a!);
+@c op (-a);
+@c op ([a, b, c]);
+@c op ('(if a > b then c else d));
+@c op ('foo (a));
+@c prefix (foo);
+@c op (foo a);
+@c ===end===
+
+@example
+(%i1) stringdisp: true$
+(%i2) op (a * b * c);
+(%o2)                          "*"
+(%i3) op (a * b + c);
+(%o3)                          "+"
+(%i4) op ('sin (a + b));
+(%o4)                          sin
+(%i5) op (a!);
+(%o5)                          "!"
+(%i6) op (-a);
+(%o6)                          "-"
+(%i7) op ([a, b, c]);
+(%o7)                          "["
+(%i8) op ('(if a > b then c else d));
+(%o8)                         "if"
+(%i9) op ('foo (a));
+(%o9)                          foo
+(%i10) prefix (foo);
+(%o10)                        "foo"
+(%i11) op (foo a);
+(%o11)                        "foo"
+@end example
+
+@opencatbox
+@category{Выражения} @category{Операторы}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} operatorp (@var{expr}, @var{op})
+@deffnx {Функция} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+
+@code{operatorp (@var{expr}, @var{op})} возвращает @code{true},
+если @var{op} равен оператору @var{expr}.
+
+@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} возвращает @code{true},
+если какой-нибудь элемент @var{op_1}, ..., @var{op_n} равен оператору @var{expr}.
+
+@opencatbox
+@category{Функции предикаты} @category{Операторы}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} optimize (@var{expr})
+Возвращает выражение, которое выдает тоже самое значение и
+побочные эффекты, как и @var{expr}, но выполняется более 
+эффективно за счет устранения лишних повторных вычислений
+общих подвыражений. @code{optimize} также имеет побочный 
+эффект "сворачивания" своего аргумента так что все общие
+подвыражения используются совместно.
+Выполните @code{example (optimize)} для примеров.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} optimprefix
+Значение по умолчанию: @code{%}
+
+@code{optimprefix} это префикс, используемый для генерации символов 
+командой @code{optimize}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@c NEEDS WORK
+@c WHAT DOES ">" MEAN IN THIS CONTEXT ??
+@deffn {Функция} ordergreat (@var{v_1}, ..., @var{v_n})
+Устанавливает синонимы для переменных @var{v_1}, ..., @var{v_n},
+такие, что @var{v_1} > @var{v_2} > ...  > @var{v_n},
+и @var{v_n} > любой другой переменной, не включенной в аргументы.
+
+См. также @code{orderless}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
+@deffn {Функция} ordergreatp (@var{expr_1}, @var{expr_2})
+Возвращает @code{true}, если @var{expr_2} предшествует @var{expr_1} в 
+упорядочивании, установленном с помощью функции @code{ordergreat}.
+
+@opencatbox
+@category{Выражения} @category{Функции предикаты}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@c WHAT DOES "<" MEAN IN THIS CONTEXT
+@deffn {Функция} orderless (@var{v_1}, ..., @var{v_n})
+Устанавливает синонимы для переменных @var{v_1}, ..., @var{v_n},
+такие, что @var{v_1} < @var{v_2} < ...  < @var{v_n},
+и @var{v_n} < любой другой переменная, не включенной в аргументы.
+
+@c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
+Таким образом, полная шкала упорядочивания такова: 
+численные константы < объявленные константы < объявленные скаляры < первый аргумент @code{orderless} <
+...  < последний аргумент @code{orderless} < переменные, которые начинаются 
+с A < ...
+< переменные, которые начинаются с Z < последний аргумент @code{ordergreat} <
+ ... < первый аргумент @code{ordergreat} < объявленные главные переменные @code{mainvar}.
+
+См. также @code{ordergreat} и @code{mainvar}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
+@deffn {Функция} orderlessp (@var{expr_1}, @var{expr_2})
+Возвращает @code{true}, если @var{expr_1} предшествует @var{expr_2} в 
+упорядочивании, установленном командой @code{orderless}.
+
+@opencatbox
+@category{Выражения} @category{Функции предикаты}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} part (@var{expr}, @var{n_1}, ..., @var{n_k})
+Возвращает части внешней формы @code{expr}. Функция
+получает часть @code{expr}, которая определена индексами @var{n_1}, ..., @var{n_k}.  
+Когда первая
+часть @var{n_1} @code{expr} взята, берется часть @var{n_2} от нее и т.д. 
+Результат есть
+часть @var{n_k} от ... части @var{n_2}, от части @var{n_1} выражения @code{expr}.
+
+@code{part} может быть использована для того, чтобы получить элемент списка,
+строку матрицы и т.п.
+
+@c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
+@c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
+Если последний аргумент функции @code{part} есть список индексов, то
+выбираются несколько подвыражений, каждое из которых соответствует 
+индексу в списке. Таким образом, @code{part (x + y + z, [1, 3])} есть @code{z+x}.
+
+@code{piece} запоминает последнее выражение, выбранное при использовании 
+функции @code{part}. Оно доступно во время выполнения этой функция и, таким образом,
+может быть использовано в самой функции, как показано ниже.
+
+Если @code{partswitch} установлен равным @code{true}, то @code{end} возвращается 
+когда выбранная часть выражения не существует, иначе выдается сообщение об 
+ошибке.
+
+@c NEED "SEE ALSO" POINTING TO ALL OTHER PART FUNCTIONS
+
+Пример: @code{part (z+2*y, 2, 1)} дает 2.
+
+@c MERGE IN example (part) OUTPUT HERE
+@code{example (part)} показывает дополнительные примеры.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@deffn {Функция} partition (@var{expr}, @var{x})
+Возвращает список из двух выражений.  Они есть (1)
+множители @var{expr} (если оно произведение), члены @var{expr} 
+(если оно является суммой), или список (если оно является списком), которые 
+не содержит @var{x} и, (2) те множители, члены или список, которые  содержат.
+
+@example
+(%i1) partition (2*a*x*f(x), x);
+(%o1)                     [2 a, x f(x)]
+(%i2) partition (a+b, x);
+(%o2)                      [b + a, 0]
+(%i3) partition ([a, b, f(a), c], a); 
+(%o3)                  [[b, c], [a, f(a)]]
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS EXAMPLE
+@defvr {Управляющая переменная} partswitch
+Значение по умолчанию: @code{false}
+
+Когда @code{partswitch} есть @code{true}, то @code{end} возвращается,
+если выбранная часть выражения не существует, иначе выдается сообщение
+об ошибке.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} pickapart (@var{expr}, @var{n})
+Присваивает меткам промежуточных выражений все подвыражения 
+@var{expr} глубины @var{n} (целое число).
+Подвыражения большей или меньшей глубин меткам не присваиваются.
+@code{pickapart} возвращает выражение в терминах промежуточных выражений
+эквивалентное исходному @var{expr}.
+
+См. также @code{part}, @code{dpart}, @code{lpart}, @code{inpart} и @code{reveal}.
+
+Примеры:
+
+@example
+(%i1) expr: (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
+                                          2
+                                     sin(x )   b + a
+(%o1)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+(%i2) pickapart (expr, 0);
+
+                                          2
+                                     sin(x )   b + a
+(%t2)       - log(sqrt(x + 1) + 1) + ------- + -----
+                                        3        2
+
+(%o2)                          %t2
+(%i3) pickapart (expr, 1);
+
+(%t3)                - log(sqrt(x + 1) + 1)
+
+
+                                  2
+                             sin(x )
+(%t4)                        -------
+                                3
+
+
+                              b + a
+(%t5)                         -----
+                                2
+
+(%o5)                    %t5 + %t4 + %t3
+(%i5) pickapart (expr, 2);
+
+(%t6)                 log(sqrt(x + 1) + 1)
+
+
+                                  2
+(%t7)                        sin(x )
+
+
+(%t8)                         b + a
+
+                         %t8   %t7
+(%o8)                    --- + --- - %t6
+                          2     3
+(%i8) pickapart (expr, 3);
+
+(%t9)                    sqrt(x + 1) + 1
+
+
+                                2
+(%t10)                         x
+
+                  b + a              sin(%t10)
+(%o10)            ----- - log(%t9) + ---------
+                    2                    3
+(%i10) pickapart (expr, 4);
+
+(%t11)                     sqrt(x + 1)
+
+                      2
+                 sin(x )   b + a
+(%o11)           ------- + ----- - log(%t11 + 1)
+                    3        2
+(%i11) pickapart (expr, 5);
+
+(%t12)                        x + 1
+
+                   2
+              sin(x )   b + a
+(%o12)        ------- + ----- - log(sqrt(%t12) + 1)
+                 3        2
+(%i12) pickapart (expr, 6);
+                  2
+             sin(x )   b + a
+(%o12)       ------- + ----- - log(sqrt(x + 1) + 1)
+                3        2
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS WORK
+@defvr {Системная переменная} piece
+Содержит последнее выражение, выбранное при использовании функции @code{part}.
+@c WHAT DOES THIS MEAN EXACTLY ??
+Оно доступно во время выполнения функции и, таким образом,
+может быть в ней использовано.
+
+@c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end defvr
+
+@c NEEDS EXAMPLES
+@deffn {Функция} polarform (@var{expr})
+Возвращает выражение @code{r %e^(%i theta)} эквивалентное @var{expr},
+такое, что @code{r} и @code{theta} чисто вещественные.
+
+@opencatbox
+@category{Комплексные переменные} @category{Экспоненциальные и логарифмические функции}
+@closecatbox
+
+@end deffn
+
+@c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
+@c NEEDS WORK (IF KEPT)
+@deffn {Функция} powers (@var{expr}, @var{x})
+Выдает степени @var{x}, встречающиеся в @var{expr}.
+
+@code{load (powers)} загружает эту функцию.
+@c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
+@c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
+
+@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
+@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
+@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
+@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
+@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
+@c 
+@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
+@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
+@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
+@c AND MANY OTHER SIMILAR USEFUL HACKS.
+
+@opencatbox
+@category{Выражения} @category{Многочлены}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+Представляет произведение значений @var{expr} с
+индексом @var{i}, меняющимся от @var{i_0} до @var{i_1}.
+Невычисляемая форма @code{'product} изображается как заглавная буква пи.
+
+@code{product} вычисляет @var{expr} и нижний и верхний пределы @var{i_0} и @var{i_1},
+@code{product} не вычисляет индекс @var{i}.
+
+Если верхний и нижний пределы различаются на целое число,
+@var{expr} вычисляется для каждого значения индекса @var{i},
+и результат есть точное произведение.
+
+Иначе, диапазон индекса является неопределенным.
+Для упрощения произведения применяются некоторые правила.
+Когда глобальная переменная @code{simpproduct} есть @code{true}, 
+применяются дополнительные правила.
+В некоторых случаях, упрощение дает результат, который не является произведением,
+иначе, результат есть невычисляемая форма @code{'product}.
+
+См. также @code{nouns} и @code{evflag}.
+
+Примеры:
+
+@c ===beg===
+@c product (x + i*(i+1)/2, i, 1, 4);
+@c product (i^2, i, 1, 7);
+@c product (a[i], i, 1, 7);
+@c product (a(i), i, 1, 7);
+@c product (a(i), i, 1, n);
+@c product (k, k, 1, n);
+@c product (k, k, 1, n), simpproduct;
+@c product (integrate (x^k, x, 0, 1), k, 1, n);
+@c product (if k <= 5 then a^k else b^k, k, 1, 10);
+@c ===end===
+
+@example
+(%i1) product (x + i*(i+1)/2, i, 1, 4);
+(%o1)           (x + 1) (x + 3) (x + 6) (x + 10)
+(%i2) product (i^2, i, 1, 7);
+(%o2)                       25401600
+(%i3) product (a[i], i, 1, 7);
+(%o3)                 a  a  a  a  a  a  a
+                       1  2  3  4  5  6  7
+(%i4) product (a(i), i, 1, 7);
+(%o4)          a(1) a(2) a(3) a(4) a(5) a(6) a(7)
+(%i5) product (a(i), i, 1, n);
+                             n
+                           /===\
+                            ! !
+(%o5)                       ! !  a(i)
+                            ! !
+                           i = 1
+(%i6) product (k, k, 1, n);
+                               n
+                             /===\
+                              ! !
+(%o6)                         ! !  k
+                              ! !
+                             k = 1
+(%i7) product (k, k, 1, n), simpproduct;
+(%o7)                          n!
+(%i8) product (integrate (x^k, x, 0, 1), k, 1, n);
+                             n
+                           /===\
+                            ! !    1
+(%o8)                       ! !  -----
+                            ! !  k + 1
+                           k = 1
+(%i9) product (if k <= 5 then a^k else b^k, k, 1, 10);
+                              15  40
+(%o9)                        a   b
+@end example
+
+@opencatbox
+@category{Суммы и произведения}
+@closecatbox
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn {Функция} realpart (@var{expr})
+Возвращает вещественную часть @var{expr}. @code{realpart} и @code{imagpart} 
+будут работать для выражений, включающих тригонометрические и гипергеометрические функции,
+также как и квадратный корень, логарифм и возведение в степень.
+
+@opencatbox
+@category{Комплексные числа}
+@closecatbox
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn {Функция} rectform (@var{expr})
+Возвращает выражение @code{a + b %i}, эквивалентное @var{expr},
+такое, что @var{a} и @var{b} чисто вещественные.
+
+@opencatbox
+@category{Комплексные числа}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} rembox (@var{expr}, unlabelled)
+@deffnx {Функция} rembox (@var{expr}, @var{label})
+@deffnx {Функция} rembox (@var{expr})
+Удаляет боксы из @var{expr}.
+
+@code{rembox (@var{expr}, unlabelled)} удаляет все непомеченные боксы из @var{expr}.
+
+@code{rembox (@var{expr}, @var{label})} удаляет только боксы, содержащие @var{label}.
+
+@code{rembox (@var{expr})} удаляет все боксы, помеченные и непомеченные.
+
+Боксы рисуются функциями @code{box}, @code{dpart} и @code{lpart}.
+
+Примеры:
+
+@c ===beg===
+@c expr: (a*d - b*c)/h^2 + sin(%pi*x);
+@c dpart (dpart (expr, 1, 1), 2, 2);
+@c expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+@c rembox (expr2, unlabelled);
+@c rembox (expr2, FOO);
+@c rembox (expr2, BAR);
+@c rembox (expr2);
+@c ===end===
+@example
+(%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
+                                  a d - b c
+(%o1)                sin(%pi x) + ---------
+                                      2
+                                     h
+(%i2) dpart (dpart (expr, 1, 1), 2, 2);
+                        """""""    a d - b c
+(%o2)               sin("%pi x") + ---------
+                        """""""      """"
+                                     " 2"
+                                     "h "
+                                     """"
+(%i3) expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+                  FOO"""""""""""   BAR""""""""
+                  "    """"""" "   "a d - b c"
+(%o3)             "sin("%pi x")" + "---------"
+                  "    """"""" "   "  """"   "
+                  """"""""""""""   "  " 2"   "
+                                   "  "h "   "
+                                   "  """"   "
+                                   """""""""""
+(%i4) rembox (expr2, unlabelled);
+                                  BAR""""""""
+                   FOO"""""""""   "a d - b c"
+(%o4)              "sin(%pi x)" + "---------"
+                   """"""""""""   "    2    "
+                                  "   h     "
+                                  """""""""""
+(%i5) rembox (expr2, FOO);
+                                  BAR""""""""
+                       """""""    "a d - b c"
+(%o5)              sin("%pi x") + "---------"
+                       """""""    "  """"   "
+                                  "  " 2"   "
+                                  "  "h "   "
+                                  "  """"   "
+                                  """""""""""
+(%i6) rembox (expr2, BAR);
+                   FOO"""""""""""
+                   "    """"""" "   a d - b c
+(%o6)              "sin("%pi x")" + ---------
+                   "    """"""" "     """"
+                   """"""""""""""     " 2"
+                                      "h "
+                                      """"
+(%i7) rembox (expr2);
+                                  a d - b c
+(%o7)                sin(%pi x) + ---------
+                                      2
+                                     h
+@end example
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+Представляет собой суммирование значений @var{expr} для
+индекса @var{i}, изменяющегося от @var{i_0} до @var{i_1}.
+Невычисляемая форма @code{'sum} изображается как заглавная буква сигма.
+
+@code{sum} вычисляет свое слагаемое @var{expr} и нижний и верхний пределы @var{i_0} и @var{i_1},
+@code{sum} не вычисляет индекс @var{i}.
+
+Если верхний и нижний пределы отличаются на целое число,
+слагаемое @var{expr} вычисляется для каждого значения индекса суммирования  @var{i}, 
+и результат есть точная сумма.
+
+Иначе, диапазон индекса является неопределенным.
+Для упрощения суммирования применяются некоторые правила.
+Когда глобальная переменная @code{simpsum} есть @code{true}, дополнительные правила применяются.
+В некоторых случаях, упрощение дает результат, который не есть суммирование,
+иначе, результат есть невычисляемая форма @code{'sum}.
+
+Когда @code{evflag} (флаг вычисления) @code{cauchysum} есть @code{true},
+произведение суммирования выражается как произведение Коши,
+в котром индекс внутреннего суммирования есть функция 
+индекса внешнего суммирования, а не меняющейся независимо индекс.
+
+Глобальная переменная @code{genindex} есть буквенный префикс, 
+используемый для 
+генерации следующего индекса суммирования,
+если требуется автоматически сгенерированный индекс.
+
+@code{gensumnum} есть численный суффикс,  используемый для генерирования следующего 
+используемый для 
+генерации следующего индекса суммирования,
+если требуется автоматически сгенерированный индекс.
+Когда @code{gensumnum} есть @code{false}, автоматически сгенерированный индекс
+есть только @code{genindex} без численного суффикса.
+
+См. также @code{sumcontract}, @code{intosum},
+@code{bashindices}, @code{niceindices},
+@code{nouns}, @code{evflag} и @code{zeilberger}.
+
+Примеры:
+
+@c ===beg===
+@c sum (i^2, i, 1, 7);
+@c sum (a[i], i, 1, 7);
+@c sum (a(i), i, 1, 7);
+@c sum (a(i), i, 1, n);
+@c sum (2^i + i^2, i, 0, n);
+@c sum (2^i + i^2, i, 0, n), simpsum;
+@c sum (1/3^i, i, 1, inf);
+@c sum (1/3^i, i, 1, inf), simpsum;
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
+@c sum (integrate (x^k, x, 0, 1), k, 1, n);
+@c sum (if k <= 5 then a^k else b^k, k, 1, 10);
+@c ===end===
+
+@example
+(%i1) sum (i^2, i, 1, 7);
+(%o1)                          140
+(%i2) sum (a[i], i, 1, 7);
+(%o2)           a  + a  + a  + a  + a  + a  + a
+                 7    6    5    4    3    2    1
+(%i3) sum (a(i), i, 1, 7);
+(%o3)    a(7) + a(6) + a(5) + a(4) + a(3) + a(2) + a(1)
+(%i4) sum (a(i), i, 1, n);
+                            n
+                           ====
+                           \
+(%o4)                       >    a(i)
+                           /
+                           ====
+                           i = 1
+(%i5) sum (2^i + i^2, i, 0, n);
+                          n
+                         ====
+                         \       i    2
+(%o5)                     >    (2  + i )
+                         /
+                         ====
+                         i = 0
+(%i6) sum (2^i + i^2, i, 0, n), simpsum;
+                              3      2
+                   n + 1   2 n  + 3 n  + n
+(%o6)             2      + --------------- - 1
+                                  6
+(%i7) sum (1/3^i, i, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o7)                        >    --
+                            /      i
+                            ====  3
+                            i = 1
+(%i8) sum (1/3^i, i, 1, inf), simpsum;
+                                1
+(%o8)                           -
+                                2
+(%i9) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+                              inf
+                              ====
+                              \     1
+(%o9)                      30  >    --
+                              /      2
+                              ====  i
+                              i = 1
+(%i10) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
+                                  2
+(%o10)                       5 %pi
+(%i11) sum (integrate (x^k, x, 0, 1), k, 1, n);
+                            n
+                           ====
+                           \       1
+(%o11)                      >    -----
+                           /     k + 1
+                           ====
+                           k = 1
+(%i12) sum (if k <= 5 then a^k else b^k, k, 1, 10);
+          10    9    8    7    6    5    4    3    2
+(%o12)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
+@end example
+
+@opencatbox
+@category{Суммы и произведения}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} lsum (@var{expr}, @var{x}, @var{L})
+Представляет собой сумму @var{expr} для каждого элемента @var{x} в @var{L}.
+
+Невычисляемая форма @code{'lsum} возвращается,
+если аргумент @var{L} не вычисляется до списка.
+
+Примеры:
+
+@c ===beg===
+@c lsum (x^i, i, [1, 2, 7]);
+@c lsum (i^2, i, rootsof (x^3 - 1));
+@c ===end===
+@example
+(%i1) lsum (x^i, i, [1, 2, 7]);
+                            7    2
+(%o1)                      x  + x  + x
+(%i2) lsum (i^2, i, rootsof (x^3 - 1));
+                     ====
+                     \      2
+(%o2)                 >    i
+                     /
+                     ====
+                                   3
+                     i in rootsof(x  - 1)
+@end example
+
+@opencatbox
+@category{Суммы и произведения}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} verbify (@var{f})
+Возвращает вычисляемую форму функции с именем @var{f}.
+
+См. также @code{verb}, @code{noun} и @code{nounify}.
+
+Примеры:
+
+@c ===beg===
+@c verbify ('foo);
+@c :lisp $%
+@c nounify (foo);
+@c :lisp $%
+@c ===end===
+@example
+(%i1) verbify ('foo);
+(%o1)                          foo
+(%i2) :lisp $%
+$FOO
+(%i2) nounify (foo);
+(%o2)                          foo
+(%i3) :lisp $%
+%FOO
+@end example
+
+@opencatbox
+@category{Невычисляемые и вычисляемые формы}
+@closecatbox
+
+@end deffn
+
