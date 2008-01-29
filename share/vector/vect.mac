@@ -85,6 +85,8 @@ define_variable(expandcrosscross,false,boolean)$
 define_variable(expandcrossplus,false,boolean)$
 define_variable(firstcrossscalar,false,boolean)$
 
+vect_cross: true$
+
 
 ev_diff(x):=apply('ev,[x,'diff])$
 
