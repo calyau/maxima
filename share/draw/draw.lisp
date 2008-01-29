@@ -311,7 +311,7 @@
                   (t
                      (merror "Illegal tics allocation: ~M" val)) ))
       ($terminal ; defined as screen, png, jpg, gif, eps, eps_color or wxt
-            (if (member val '($screen $png $jpg $gif $eps $eps_color $wxt $animated_gif))
+            (if (member val '($screen $png $jpg $gif $eps $eps_color $wxt $animated_gif $aquaterm))
                 (setf (gethash opt *gr-options*) val)
                 (merror "This is not a terminal: ~M" val)))
       ($head_type ; defined as $filled, $empty and $nofilled
@@ -2674,6 +2674,7 @@
                            (get-option '$pic_height)
                            (get-option '$delay)
                            (get-option '$file_name)))
+      ($aquaterm (format cmdstorage "set terminal aqua~%"))
       ($wxt (format cmdstorage "set terminal wxt~%" )) )
 
     ; compute some parameters for multiplot
