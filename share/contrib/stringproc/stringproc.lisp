@@ -139,7 +139,7 @@
               (if (and (listp x) (listp (car x)) (eq (caar x) 'mlist))
                 (printf2 (cdr x) nil)
                 (printf1 x)))
-            done)))))
+            done))))
 
 
 ;; formatted printing of bigfloats:
@@ -561,7 +561,7 @@
                (ssubstfirst new old str test (+ pos 1) end)
                test
                (+ pos 1 (length new)) 
-               (if end (+ end (length new) (- (length old))))) ))))
+               (if end (+ end (length new) (- (length old))))) )))
 
 
 (defun $sremovefirst (seq str &rest args)  ;; 1-based indexing!
