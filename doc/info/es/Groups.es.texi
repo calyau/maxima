@@ -11,10 +11,7 @@
 
 Busca el orden de G/H donde G es el m@'odulo del Grupo Libre de @var{relations}, y H es el subgrupo de G generado por @code{subgrupo}. @code{subgrupo} es un argumento opcional, cuyo valor por defecto es []. 
 
-En este proceso se obtiene una tabla de multiplicaci@'on para la acci@'on correcta de G sobre G/H, donde los co-cojuntos son enumerados [H,Hg2,Hg3,...]. Esto puede ser observado internamente en el @code{$todd_coxeter_state}.
-
-Las tablas de multiplicaci@'on para las variables 
-est@'an en la @code{table:todd_coxeter_state[2]}. Entonces la @code{table[i]} retorna la tabla para la i-@'esima variable. @code{mulcoset(coset,i) := tabla[varnum][coset];}
+En este proceso se obtiene una tabla de multiplicaci@'on para la acci@'on correcta de G sobre G/H, donde los co-cojuntos son enumerados [H,Hg2,Hg3,...]. Esto puede ser observado internamente en el @code{todd_coxeter_state}.
 
 Ejemplo:
 
@@ -50,17 +47,7 @@ Rows tried 213
 
 Rows tried 71
 (%o6)                          20
-(%i7) table:todd_coxeter_state[2]$
-(%i8) table[1];
-(%o8) @{Array: (SIGNED-BYTE 30) #(0 2 1 3 7 6 5 4 8 11 17 9 12 14 #
-
-13 20 16 10 18 19 15 0 0 0 0 0 0 0 0 0 0 0 0
-
-  0 0 0)@}
-
 @end example
-
-N@'otese que s@'olo los elementos 1 hasta el 20 de este arreglo @code{%o8} son significativos. @code{table[1][4] = 7} indica coset4.var1 = coset7
 
 @end deffn
 

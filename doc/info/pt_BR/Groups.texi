@@ -15,11 +15,7 @@ H @'{e} o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'{e} um a
 opcional, cujo valor padr@~{a}o @'{e} [].  Em fazendo isso a fun@value{cedilha}@~{a}o produz uma
 tabela de multiplica@value{cedilha}@~{a}o @`a direita de G sobre G/H, onde os
 co-conjuntos s@~{a}o enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
-@code{$todd_coxeter_state}.
-
-As tabelas de multiplica@value{cedilha}@~{a}o para as vari@'{a}veis est@~{a}o em
-@code{table:todd_coxeter_state[2]}.  Ent@~{a}o @code{table[i]} fornece a tabela para
-a i'@'{e}sima vari@'{a}vel.  @code{multiplos_co_conjuntos(co_conjunto,i) := table[varnum][co_conjunto];}
+@code{todd_coxeter_state}.
 
 Exemplo:
 
@@ -33,8 +29,6 @@ Exemplo:
 @c todd_coxeter(%o3);
 @c todd_coxeter(%o3,[x1]);
 @c todd_coxeter(%o3,[x1,x2]);
-@c table:todd_coxeter_state[2]$
-@c table[1];
 @c ===end===
 @example
 (%i1) symet(n):=create_list(
@@ -68,18 +62,7 @@ Rows tried 213
 
 Rows tried 71
 (%o6)                          20
-(%i7) table:todd_coxeter_state[2]$
-(%i8) table[1];
-(%o8) @{Array: (SIGNED-BYTE 30) #(0 2 1 3 7 6 5 4 8 11 17 9 12 14 #
-
-13 20 16 10 18 19 15 0 0 0 0 0 0 0 0 0 0 0 0
-
-  0 0 0)@}
-
 @end example
-
-Observe que somente os elementos de 1 a 20 desse array @code{%o8} s@~{a}o significativos.
-@code{table[1][4] = 7} indica coset4.var1 = coset7
 
 @end deffn
 
