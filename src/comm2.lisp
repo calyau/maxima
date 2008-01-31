@@ -679,7 +679,7 @@
   (prog (arra ary)
      (setq arra val)
      (setq ary sym)
-     (if arra
+     (if (and arra (or (hash-table-p arra) (arrayp arra)))
 	 (cond ((hash-table-p arra)
 		(let ((dim1 (gethash 'dim1 arra)))
 		  (return (list* '(mlist) '$hash_table (if dim1 1 t)

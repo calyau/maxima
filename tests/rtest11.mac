@@ -256,3 +256,27 @@ done;
  */
 [integerp (absolute_real_time ()), floatnump (elapsed_real_time ()), floatnump (elapsed_run_time ())];
 [true, true, true];
+
+/* Do the right thing when listarray and arrayinfo are called within
+ * a function and the name of the formal argument coincides with the
+ * name of the actual argument. (Was a bug in ARRAYINFO-AUX.)
+ */
+
+(foo(x) := apply (arrayinfo, [x]),
+ bar(x) := listarray (x),
+ kill (x),
+ x[1] : 1234,
+ foo(x));
+[hashed, 1, [1]];
+
+bar(x);
+[1234];
+
+(kill(y),
+ y[2] : 2345,
+ foo(y));
+[hashed, 1, [2]];
+
+bar(y);
+[2345];
+
