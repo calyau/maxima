@@ -112,7 +112,7 @@
 
 (defun on-negative-real-axisp (z)
   (setq z (trisplit z))
-  (and (meqp (cdr z) 0)
+  (and (eq t (meqp (cdr z) 0))
        (eq t (mgrp 0 (car z)))))
 
 (defun in-domain-of-asin (z)
@@ -129,9 +129,9 @@
 (defun conjugate-log (x)
   (setq x (car x))
   (cond ((off-negative-real-axisp x)
-	 (simplify `((%log) ,(mfuncall '$conjugate x))))
+	 (take '(%log) (take '($conjugate) x)))
 	((on-negative-real-axisp x)
-	 (simplify `((mplus) ((mtimes) -1 $%i $%pi) ((%log) ((mtimes) -1 x)))))
+	 (add (take '(%log) (neg x)) (mul -1 '$%i '$%pi)))
 	(t `(($conjugate simp) ((%log) ,x)))))
 
 ;; Return conjugate(x^p), where e = (x, p). Suppose x isn't on the negative real axis.
