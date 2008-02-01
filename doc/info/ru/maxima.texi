@@ -159,11 +159,11 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Пакет diag::                    Жордановы матрицы.
 * Пакет distrib::                 Распределения вероятности.
 * Пакет draw::                    Интерфейс Maxima к прогрпмме Gnuplot.
-* dynamics::                      Graphics for dynamical systems and fractals.
-* f90::                           Maxima to fortran translator.
+* Пакет dynamics::                Графика для динамических систем и фракталов.
+* Пакет f90::                     Транслятор из Maxima в Fortran.
 * ggf::                           Generating function of sequences.
-* graphs::                        Graph theory package.
-* grobner::                       Functions for working with Groebner bases.
+* Пакет graphs::                  Теория графов.
+* Пакет grobner::                 Функции для работы с базисом Гребнера.
 * impdiff::                       Implicit derivatives.
 * implicit_plot::                 Implicit plots package.
 * interpol::                      Interpolation package.
@@ -447,28 +447,28 @@ Groups
 * Функции и переменные для картин::
 * Функции и переменные для карты мира::
 
-dynamics
+Пакет dynamics
 
-* Introduction to dynamics::
-* Definitions for dynamics::
+* Введение в пакет dynamics::
+* Функции и переменные пакета dynamics::
 
-f90
+Пакет f90
 
-* Definitions for f90::
+* Функции и переменные пакета f90::
 
 ggf
 
 * Definitions for ggf::
 
-graphs
+Пакет graphs
 
-* Introduction to graphs::
-* Functions and Variables for graphs::
+* Введение в пакет graphs::
+* Функции и переменные пакета graphs::
 
-grobner
+Пакет grobner
 
-* Introduction to grobner::
-* Definitions for grobner::
+* Введение в пакет grobner::
+* Функции и переменные пакета grobner::
 
 impdiff
 
