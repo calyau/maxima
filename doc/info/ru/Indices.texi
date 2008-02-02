@@ -1,0 +1,14 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Indices.texi 
+@c OriginalRevision=1.2
+@c TranslatedBy: (c) 2008-02 Vadim V. Zhytnikov <vvzhyt@gmail.com>
+
+@appendix ”казатель функций и переменных
+
+@printindex fn
+
+
+
+
+
