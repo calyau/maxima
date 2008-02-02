@@ -108,7 +108,7 @@
 (defun off-negative-real-axisp (z)
   (setq z (trisplit z))	          ; split into real and imaginary
   (or (eq t (mnqp (cdr z) 0))     ; y #  0
-      (eq t (mgqp (car z) 0))))  ; x >= 0
+      (eq t (mgqp (car z) 0))))   ; x >= 0
 
 (defun on-negative-real-axisp (z)
   (setq z (trisplit z))
@@ -143,37 +143,36 @@
 (defun conjugate-mexpt (e)
   (let ((x (first e)) (p (second e)))
     (if (or (off-negative-real-axisp x) ($featurep p '$integer))
-	(power (mfuncall '$conjugate x) (mfuncall '$conjugate p))
+	(power (take '($conjugate) x) (take '($conjugate) p))
       `(($conjugate simp) ,(power x p)))))
 
-
 (defun conjugate-sum (e)
-  `((%sum) ,(mfuncall '$conjugate (nth 0 e)) ,(nth 1 e) ,(nth 2 e) ,(nth 3 e)))
+  (take '(%sum) (take '($conjugate) (first e)) (second e) (third e) (fourth e)))
 
 (defun conjugate-product (e)
-  `((%product) ,(mfuncall '$conjugate (nth 0 e)) ,(nth 1 e) ,(nth 2 e) ,(nth 3 e)))
+  (take '(%product) (take '($conjugate) (first e)) (second e) (third e) (fourth e)))
 
 (defun conjugate-asin (x)
   (setq x (car x))
-  (if (in-domain-of-asin x) (simplify `((%asin) ,(mfuncall '$conjugate x)))
+  (if (in-domain-of-asin x) (take '(%asin) (take '($conjugate) x))
     `(($conjugate simp) ((%asin) ,x))))
 
 (defun conjugate-acos (x)
   (setq x (car x))
-  (if (in-domain-of-asin x) (simplify `((%acos) ,(mfuncall '$conjugate x)))
+  (if (in-domain-of-asin x) (take '(%acos) (take '($conjugate) x))
     `(($conjugate simp) ((%acos) ,x))))
 
 (defun conjugate-atan (x)
   (let ((xx))
     (setq xx (mul '$%i (car x)))
-    (if (in-domain-of-asin xx) (simplify `((%atan) ,(take '($conjugate) (car x))))
+    (if (in-domain-of-asin xx) (take '(%atan) (take '($conjugate) (car x)))
       `(($conjugate simp) ((%atan) ,x)))))
 
 ;; atanh and asin are entire on the same set; see A&S Fig. 4.4 and 4.7.
 
 (defun conjugate-atanh (x)
   (setq x (car x))
-  (if (in-domain-of-asin x) (simplify `((%atanh) ,(mfuncall '$conjugate x)))
+  (if (in-domain-of-asin x) (take '(%atanh) (take '($conjugate) x))
     `(($conjugate simp) ((%atanh) ,x))))
 
 ;; Integer order Bessel functions are entire; thus they commute with the
@@ -185,13 +184,13 @@
 (defun conjugate-bessel-j (z)
   (let ((n (first z)) (x (second z)))
     (if (and (off-negative-real-axisp x) ($featurep n '$integer))
-	(simplify `((%bessel_j) ,n (($conjugate) ,x)))
+	(take '(%bessel_j) n (take '($conjugate) x))
       `(($conjugate simp) ((%bessel_j) ,@z)))))
 
 (defun conjugate-bessel-y (z)
   (let ((n (first z)) (x (second z)))
     (if (and (off-negative-real-axisp x) ($featurep n '$integer))
-	(simplify `((%bessel_y) ,n (($conjugate) ,x)))
+	(take '(%bessel_y) n (take '($conjugate) x))
       `(($conjugate simp) ((%bessel_y) ,@z)))))
 
 ;; When a function maps "everything" into the reals, put real-valued on the
@@ -252,7 +251,7 @@
 (defun simp-conjugate (e f z)
   (oneargcheck e)
   (setq e (simpcheck (cadr e) z))	; simp and disrep if necessary
-  (cond ((complexp e) (conjugate e)) ;; never happens, but might someday.
+  (cond ((complexp e) (conjugate e))    ; never happens, but might someday.
 	((manifestly-real-p e) e)
 	((manifestly-pure-imaginary-p e) (mul -1 e))
 	((manifestly-nonreal-p e) `(($conjugate simp) ,e))
@@ -262,7 +261,7 @@
 	((and (symbolp (mop e)) (get (mop e) 'real-valued)) e)
 
 	((and (symbolp (mop e)) (get (mop e) 'commutes-with-conjugate))
-	 (simplify `((,(mop e)) ,@(mapcar #'(lambda (s) (take '($conjugate) s)) (margs e)))))
+	 (simplify (cons (list (mop e)) (mapcar #'(lambda (s) (take '($conjugate) s)) (margs e)))))
 
 	((setq f (and (symbolp (mop e)) (get (mop e) 'conjugate-function)))
 	 (funcall f (margs e)))
