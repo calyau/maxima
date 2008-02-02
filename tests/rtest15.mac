@@ -787,3 +787,7 @@ true$
  */
 integrate( (x^3+1)/(x^4 + 4*x + 1), x, 0, 1);
 log(6)/4;
+
+/* [ 1884711 ] bug when adding fractions involving square roots */
+sqrt(2)/6-2*sqrt(2)/6;
+-sqrt(2)/6;
