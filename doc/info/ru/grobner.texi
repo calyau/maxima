@@ -1,0 +1,752 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=grobner.texi 
+@c OriginalRevision=1.5
+@c TranslatedBy: (c) 2008-02 Vadim V. Zhytnikov <vvzhyt@gmail.com>
+
+
+@menu
+* Введение в пакет grobner::
+* Функции и переменные пакета grobner::
+@end menu
+
+@node Введение в пакет grobner, Функции и переменные пакета grobner, Top, Top
+@section Введение в пакет grobner
+
+Пакет @code{grobner} предназначен для работы с базисами Гребнера в Maxima.
+
+@noindent
+Учебные материалы по @emph{базисам Гребнера} могут быть найдены по адресу 
+
+@noindent
+@url{http://www.geocities.com/CapeCanaveral/Hall/3131/}
+
+@noindent
+Для использования, описанных ниже функций, необходимо загрузить пакет @file{grobner.lisp}.
+
+@example
+load(grobner);
+@end example
+
+@noindent
+Демонстрация может быть запущена так
+@example
+demo("grobner.demo");
+@end example
+
+@noindent
+или так
+@example
+batch("grobner.demo")
+@end example
+
+@noindent
+Некоторые вычисления в данной демонстрации занимают длительное время, 
+поэтому вывод демонстрации, записанный в файл @file{grobner-demo.output},
+может быть обнаружен в той же директории, где расположена демонстрация.
+
+@subsection О пакете grobner
+Пакет написан
+
+@noindent
+Marek Rychlik 
+
+@noindent
+@url{http://alamos.math.arizona.edu}
+
+@noindent
+и выпущен 2002-05-24 под лицензией General Public License (GPL) (см. файл @file{grobner.lisp}.
+Эта документация извлечена из файлов 
+@flushleft
+@file{README}, @file{grobner.lisp}, @file{grobner.demo}, @file{grobner-demo.output}
+@end flushleft
+
+@noindent
+G@"unter Nowak. Предложения по усовершенствованию документации можно обсудить в списке 
+рассылки @emph{maxima}-mailing-list @email{maxima@@math.utexas.edu}.
+Код несколько устарел. Современные реализации используют быстрый алгоритм @emph{F4}, описанный в 
+@smallformat
+A new efficient algorithm for computing Gr@"obner bases (F4) 
+Jean-Charles Faug@`ere
+LIP6/CNRS Universit@'e Paris VI 
+January 20, 1999
+@end smallformat
+
+@opencatbox
+@category{Базис Гребнера} @category{Пакеты библиотеки share} @category{Пакет grobner}
+@closecatbox
+
+@subsection Реализации и допустимые способы упорядочивания одночленов в пакете grobner
+
+@itemize @bullet
+@item @code{lex}
+
+чисто лексикографический,
+используется по умолчанию для сравнения порядка одночленов
+@item @code{grlex}
+
+порядок общей степени, совпадения разрешаются лексикографическим упорядочиванием
+
+@item @code{grevlex}
+
+общая степень, совпадения разрешаются обратным лексикографическим упорядочиванием
+
+@item @code{invlex}
+
+обратный лексикографический порядок
+
+@end itemize
+
+@node Функции и переменные пакета grobner, , Введение в пакет grobner, Top
+@section Функции и переменные пакета grobner 
+
+@subsection Глобальные переключатели пакета grobner
+
+@defvr {Управляющая переменная} poly_monomial_order
+Значение по умолчанию: @code{lex}
+
+Этот глобальный переключатель управляет тем, какой порядок одночленов
+используется с многочленах и в вычислении базиса Гребнера. 
+Если значение не задано, то будет использовано @code{lex}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+
+@defvr {Управляющая переменная} poly_coefficient_ring
+Значение по умолчанию: @code{expression_ring}
+
+Этот переключатель указывает кольцо коэффициентов многочленов, используемое
+в вычислениях базиса Гребнера. Если значение не задано, то используется общее кольцо выражений @emph{maxima}.
+Если необходимо, значение переключателя может быть установлено равным @code{ring_of_integers}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} poly_primary_elimination_order
+Значение по умолчанию: @code{false}
+
+Определяет порядок исключения переменных в функциях, основанных на исключении переменных.
+Если значение не задано, то будет использовано @code{lex}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} poly_secondary_elimination_order
+Значение по умолчанию: @code{false}
+
+Определяет порядок сохраняемых переменных в функциях, основанных на исключении переменных.
+Если значение не задано, то будет использовано @code{lex}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} poly_elimination_order
+Значение по умолчанию: @code{false}
+
+Определяет порядок исключения в вычислениях, основанных на исключении переменных. 
+Если значение задано, то оно перекрывает значение переменных
+@code{poly_primary_elimination_order} и @code{poly_secondary_elimination_order}.
+Пользователь должен обеспечить, что заданный порядок исключения
+применим для данного числа исключаемых переменных.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} poly_return_term_list
+Значение по умолчанию: @code{false}
+
+Если равно @code{true}, то все функции пакета возвращают многочлены в виде списков
+членов с текущим порядком одночленов, а не в виде выражений @emph{maxima}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} poly_grobner_debug
+Значение по умолчанию: @code{false}
+
+Если равно @code{true}, то выводится трассировка и отладочная информация.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} poly_grobner_algorithm
+Значение по умолчанию: @code{buchberger}
+
+Возможные значения: 
+@itemize
+@item @code{buchberger}
+@item @code{parallel_buchberger}
+@item @code{gebauer_moeller}
+@end itemize
+
+Определяет алгоритм, используемый для поиска базиса Гребнера.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} poly_top_reduction_only
+Значение по умолчанию: @code{false}
+
+Если не равно @code{false}, то когда возможно используется только приведение верхнего уровня. 
+Приведение верхнего уровня означает, что алгоритм деления останавливается после первого
+приведения.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end defvr
+
+@subsection Простые операторы в пакете grobner
+@code{poly_add}, @code{poly_subtract}, @code{poly_multiply} и @code{poly_expt}
+являются арифметическими операциями над многочленами.
+Они осуществляются над внутренним представлением, но результат
+преобразуется обратно в выражение @emph{maxima}.
+
+@deffn {Функция} poly_add (@var{poly1}, @var{poly2}, @var{varlist})
+Складывает два многочлена @var{poly1} и @var{poly2}.
+@example
+
+(%i1) poly_add(z+x^2*y,x-z,[x,y,z]);
+                                    2
+(%o1)                              x  y + x
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_subtract (@var{poly1}, @var{poly2}, @var{varlist})
+Вычитает многочлен @var{poly2} из @var{poly1}.
+@example
+
+(%i1) poly_subtract(z+x^2*y,x-z,[x,y,z]);
+                                      2
+(%o1)                          2 z + x  y - x
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_multiply (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает произведение многочленов @var{poly1} и @var{poly2}.
+@example
+
+(%i2) poly_multiply(z+x^2*y,x-z,[x,y,z])-(z+x^2*y)*(x-z),expand;
+(%o1)                                  0
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_s_polynomial (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает S-многочлен (@emph{syzygy polynomial}) двух многочленов @var{poly1} и @var{poly2}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_primitive_part (@var{poly1}, @var{varlist})
+Возвращает многочлен @var{poly} деленный на НОД своих коэффициентов. 
+
+@example
+(%i1) poly_primitive_part(35*y+21*x,[x,y]);
+(%o1)                              5 y + 3 x
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_normalize (@var{poly}, @var{varlist})
+Возвращает многочлен @var{poly} деленный на свой старший коэффициент.
+Подразумевается, что деление возможно, что может быть не всегда верно в случае
+колец не являющихся полями.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@subsection Другие функции пакета grobner
+
+@deffn {Функция} poly_expand (@var{poly}, @var{varlist})
+Эта функция преобразует многочлен во внутреннее представление и обратно. 
+Она эквивалентна @code{expand(@var{poly})}, если @var{poly} корректно 
+преобразуется в многочлен. Если представление не совместимо
+с многочленом от переменных @var{varlist}, то это приводит к ошибке.
+Данная функция может быть использована для проверки, возможно ли
+преобразование выражения во внутреннее представление.
+Нижеследующие примеры демонстрируют, что допустимы переменные
+с индексом или в виде трансцендентных функций.
+@example
+
+(%i1) poly_expand((x-y)*(y+x),[x,y]);
+                                     2    2
+(%o1)                               x  - y
+(%i2) poly_expand((y+x)^2,[x,y]);
+                                2            2
+(%o2)                          y  + 2 x y + x
+(%i3) poly_expand((y+x)^5,[x,y]);
+                  5      4         2  3       3  2      4      5
+(%o3)            y  + 5 x y  + 10 x  y  + 10 x  y  + 5 x  y + x
+(%i4) poly_expand(-1-x*exp(y)+x^2/sqrt(y),[x]);
+                                          2
+                                  y      x
+(%o4)                       - x %e  + ------- - 1
+                                       sqrt(y)
+
+(%i5) poly_expand(-1-sin(x)^2+sin(x),[sin(x)]);
+                                2
+(%o5)                      - sin (x) + sin(x) - 1
+
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_expt (@var{poly}, @var{number}, @var{varlist})
+возводит многочлен @var{poly} в положительную целую степень @var{number}. 
+Если @var{number} не есть целое положительное число, то сигнализируется ошибка.
+@example
+
+(%i1) poly_expt(x-y,3,[x,y])-(x-y)^3,expand;
+(%o1)                                  0
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_content (@var{poly}. @var{varlist})
+@code{poly_content} вычисляет НОД коэффициентов многочлена
+@example
+
+(%i1) poly_content(35*y+21*x,[x,y]);
+(%o1)                                  7
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_pseudo_divide (@var{poly}, @var{polylist}, @var{varlist})
+Псевдо-деление многочлена @var{poly} на список из @math{n} многочленов @var{polylist}. 
+Возвращает несколько значений. Первое значение -- список частных @math{a}. 
+Второе значение -- остаток @math{r}. 
+Третье значение -- скалярный коэффициент @math{c}, такой что @math{c*poly} делимо
+на @var{polylist} в кольце коэффициентов, не обязательно являющимся полем. 
+И наконец, четвертое значение -- целое число, дающее число
+выполненных приведение. Результирующие величины удовлетворяют выражению:
+
+@iftex
+@tex
+$$c*poly=\sum_{i=1}^{n}({a}_{i}*{polylist}_{i})+r$$
+@end tex
+@end iftex
+@ifnottex
+@math{c*poly=sum(a[i]*polylist[i],i=1...n)+r}.
+@end ifnottex
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_exact_divide (@var{poly1}, @var{poly2}, @var{varlist})
+Делит многочлен @var{poly1} на многочлен @var{poly2}. 
+Предполагается, что деление без остатка возможно.
+Возвращает частное.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_normal_form (@var{poly}, @var{polylist}, @var{varlist})
+Функция @code{poly_normal_form} вычисляет нормальную форму многочлена @var{poly} 
+по отношению к множеству многочленов @var{polylist}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_buchberger_criterion (@var{polylist}, @var{varlist})
+Возвращает @code{true} если @var{polylist} является базисом Гребнера с учетом текущего упорядочивания членов.
+Использует критерий Бухбергера:
+для любых двух многочленов @math{h1} и @math{h2} из @var{polylist} e
+S-многочлен @math{S(h1,h2)} приводим к 0 по модулю @var{polylist}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_buchberger (@var{polylist_fl} @var{varlist})
+@code{poly_buchberger} применяет алгоритм Бухбергера к списку многочленов
+и возвращает результирующий базис Гребнера.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+
+@subsection Стандартная пост-обработка для базиса Гребнера
+
+@iftex
+@tex
+\emph{Идеал k-го исключения} $I_k$ идеала $I$ над 
+$K [ x_1, ...,x_1 ]$ есть $I \cap K [ x_{k + 1}, ..., x_n ]$.
+
+\noindent
+\emph{Частное идеалов} $I : J$ есть идеал $\{ h|\forall w \in J : wh \in
+I \}$.@*
+
+\noindent
+Идеал $I : p^{\infty}$ есть идеал $\{ h|\exists n \in N : p^n h \in I \}$.@*
+
+\noindent
+Идеал $I : J^{\infty}$ есть идеал $\{ h|\exists n \in N, \exists p \in J: p^n h \in I \}$.@*
+
+\noindent
+\emph{Радикал идеала} $\sqrt{I}$ есть идеал $\{ h| \exists n \in N :
+h^n \in I \}$.@*
+
+@end tex
+@end iftex
+
+@ifnottex
+@emph{Идеал k-го исключения} @math{I_k} идеала @math{I} над @math{K[ x[1],...,x[n] ]} есть идеал @math{intersect(I, K[ x[k+1],...,x[n] ])}.@*
+@noindent
+@emph{Частное идеалов} @math{I:J} есть идеал @math{@{h| для всех w в J: w*h в I@}}.@*
+@noindent
+Идеал @math{I:p^inf} есть идеал @math{@{h| существует n в N: p^n*h в I@}}.@*
+@noindent
+Идеал @math{I:J^inf} есть идеал @math{@{h| существуют n в N и p в J: p^n*h в I@}}.@*
+@noindent
+@emph{Радикал идеала} @math{sqrt(I)} есть идеал 
+@math{@{h| существует n в N : h^n в I @}}.
+@end ifnottex
+
+@noindent
+@deffn {Функция} poly_reduction (@var{polylist}, @var{varlist})
+@code{poly_reduction} приводит список многочленов @var{polylist}, так что каждый
+многочлен полностью приведен по отношению к другим.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_minimization (@var{polylist}, @var{varlist})
+Возвращает подмножество списка многочленов @var{polylist}, порождающих 
+тот же мономиальный идеал, что и @var{polylist} но минимальный, 
+т.е. старшие одночлены многочленов из подмножества не делят ни один из
+других старших одночленов других многочленов этого подмножества.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Функция} poly_normalize_list (@var{polylist}, @var{varlist})
+@code{poly_normalize_list} применяет @code{poly_normalize} к каждому многочлену в списке.
+Т.е. делит каждый из многочленов списка @var{polylist} на его старший коэффициент.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_grobner (@var{polylist}, @var{varlist})
+Возвращает базис Гребнера идеала, порожденного многочленами @var{polylist}. 
+Зависит от глобальных флагов.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_reduced_grobner (@var{polylist}, @var{varlist})
+Возвращает приведенный базис Гребнера идеала, порожденного многочленами @var{polylist}. 
+Зависит от глобальных флагов.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Функция} poly_depends_p (@var{poly}, @var{var}, @var{varlist})
+@code{poly_depends} проверяет, зависит ли многочлен от переменной @var{var}.
+
+@opencatbox
+@category{Пакет grobner} @category{Функции предикаты}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Функция} poly_elimination_ideal (@var{polylist}, @var{number}, @var{varlist})
+
+
+@code{poly_elimination_ideal} возвращает базис Гребнера идеала @math{number}-го исключения идеала,
+порожденного списком многочленов (не обязательно образующих базис Гребнера).
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_colon_ideal (@var{polylist1}, @var{polylist2}, @var{varlist})
+
+Возвращает приведенный базис Гребнера частного идеала  
+
+@math{I(polylist1):I(polylist2)}
+
+@noindent
+где @math{polylist1} и @math{polylist2} -- два списка многочленов.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_ideal_intersection (@var{polylist1}, @var{polylist2}, @var{varlist})
+
+@code{poly_ideal_intersection} возвращает пересечение двух идеалов.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Функция} poly_lcm (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает наименьший общий множитель многочленов @var{poly1} и @var{poly2}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_gcd (@var{poly1}, @var{poly2}, @var{varlist})
+Возвращает наибольший общий делитель многочленов @var{poly1} и @var{poly2}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_grobner_equal (@var{polylist1}, @var{polylist2}, @var{varlist})
+@code{poly_grobner_equal} проверяет порождают ли два базиса Гребнера один и тот же идеал.
+Возвращает @code{true} если два списка многочленов @var{polylist1} и @var{polylist2}, 
+предполагаемые базисами Гребнера, порождают один и тот же идеал, и @code{false} в противном случае.
+Это эквивалентно проверке, что каждый многочлен первого базиса приводится к 0
+по модулю второго и обратно. Заметим, что в примере ниже первый список не есть базис Гребнера,
+и по этому результат есть @code{false}.
+
+@example
+(%i1) poly_grobner_equal([y+x,x-y],[x,y],[x,y]);
+(%o1)                         false
+@end example
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_grobner_subsetp (@var{polylist1}, @var{polylist2}, @var{varlist})
+
+@code{poly_grobner_subsetp} проверяет содержится ли идеал, порожденный @var{polylist1},
+в идеале, порожденном @var{polylist2}. 
+Чтобы тест всегда выполнялся, нужно чтобы @var{polylist2} был бы базисом Гребнера.
+
+@opencatbox
+@category{Пакет grobner} @category{Функции предикаты}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_grobner_member (@var{poly}, @var{polylist}, @var{varlist})
+
+Возвращает @code{true}, если многочлен @var{poly} принадлежит к идеалу, порожденному списком
+многочленов @var{polylist}, который предполагается базисом Гребнера. 
+Иначе возвращает @code{false}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_ideal_saturation1 (@var{polylist}, @var{poly}, @var{varlist})
+Возвращает приведенный базис Гребнера насыщения идеала
+@iftex
+@tex
+$$I(polylist):poly^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist):poly^inf
+@end ifnottex
+
+@noindent
+Геометрически, над алгебраически замкнутым полем, это есть 
+множество многочленов в идеале, порожденном @var{polylist},
+которые не исчезают на многообразии @var{poly}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_ideal_saturation (@var{polylist1}, @var{polylist2}, @var{varlist})
+Возвращает приведенный базис Гребнера насыщения идеала
+@iftex
+@tex
+$$I(polylist1):I(polylist2)^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist1):I(polylist2)^inf
+@end ifnottex
+
+@noindent
+Геометрически, над алгебраически замкнутым полем, это есть 
+множество многочленов в идеале, порожденном @var{polylist1},
+которые не исчезают на многообразии @var{polylist2}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_ideal_polysaturation1 (@var{polylist1}, @var{polylist2}, @var{varlist})
+@var{polylist2} -- есть список n многочленов @code{[poly1,...,polyn]}.
+Возвращает приведенный базис Гребнера идеала
+@iftex
+@tex
+$$I(polylist):poly1^\infty:...:polyn^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist):poly1^inf:...:polyn^inf
+@end ifnottex
+
+@noindent
+полученного последовательным насыщением многочленами из списка
+@var{polylist2} идеала, порожденного списком многочленов @var{polylist1}.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_ideal_polysaturation (@var{polylist}, @var{polylistlist}, @var{varlist})
+@var{polylistlist} -- есть список n списков многочленов @code{[polylist1,...,polylistn]}.
+Возвращает приведенный базис Гребнера насыщения идеала
+@iftex
+@tex
+$$I(polylist):I(polylist_1)^\infty:...:I(polylist_n)^\infty$$
+@end tex
+@end iftex
+
+@ifnottex
+I(polylist):I(polylist_1)^inf:...:I(polylist_n)^inf
+@end ifnottex
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_saturation_extension (@var{poly}, @var{polylist}, @var{varlist1}, @var{varlist2})
+
+@code{poly_saturation_extension} реализует знаменитый трюк Рабиновича.
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} poly_polysaturation_extension (@var{poly}, @var{polylist}, @var{varlist1}, @var{varlist2})
+
+@opencatbox
+@category{Пакет grobner}
+@closecatbox
+
+@end deffn
+
