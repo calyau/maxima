@@ -2146,7 +2146,7 @@ It appears in LIMIT and DEFINT.......")
 	  ((and (eq ta tb) (eq ta 'exp))
 	   ;; Both are exponential order of infinity.  Check the
 	   ;; exponents to determine which exponent is bigger.
-	   (ratgreaterp (limit (m- (logred (second a)) (logred (second b)))
+	   (ratgreaterp (limit (m- `((%log) ,(second a)) `((%log) ,(second b)))
 			       var val 'think)
 			0))
 	  ((member ta (cdr (member tb '(num log var exp fact gen) :test #'eq)) :test #'eq)))))

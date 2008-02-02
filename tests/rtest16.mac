@@ -383,6 +383,10 @@ und;
 limit(floor(x),x,0);
 'limit(floor(x),x,0);
 
+/* [ 1885377 ] wrong limit evaluation in 5.14.0 */
+limit((3/4)^(5*n+1), n, inf);
+0;
+
 /* tex(t[1]) shouldn't change t to true */
 tex (t[1], false);
 "$$t_{1}$$
