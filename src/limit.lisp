@@ -959,18 +959,23 @@ It appears in LIMIT and DEFINT.......")
     (cond ((null ans) t)     ; Ratfun package returns NIL for failure.
 	  (t ans))))
 
+;; substitute value v for var into expression e.
+;; if result is defined and e is continuous, we have the limit.
 (defun simplimsubst (v e)
-  (prog (ans)
-     (setq ans (no-err-sub (ridofab v) e))
-     (cond ((eq ans t)
-	    (return nil))
-	   ((involve e '(mfactorial)) nil)
-	   ((and (member v '($zeroa $zerob) :test #'eq) (=0 ans))
-	    (setq ans (behavior e var v))
-	    (return (cond ((equal ans 1) '$zeroa)
-			  ((equal ans -1) '$zerob)
-			  (t ans))))
-	   (t (return ans)))))
+  (let (ans)
+    (setq ans (no-err-sub (ridofab v) e))
+    (cond ((eq ans t) nil)
+	  ((involve e '(mfactorial)) nil)
+
+	  ;; functions that are defined at their discontinuities
+	  ((amongl '($atan2 $floor $round $ceiling) e) nil)
+
+	  ((and (member v '($zeroa $zerob) :test #'eq) (=0 ans))
+	   (setq ans (behavior e var v))
+	   (cond ((equal ans 1) '$zeroa)
+		 ((equal ans -1) '$zerob)
+		 (t ans)))
+	  (t ans))))
 
 ;;;returns (cons numerator denominator)
 (defun numden* (e)
@@ -1700,7 +1705,7 @@ It appears in LIMIT and DEFINT.......")
 			   (mapcar #'(lambda (a)
 				       (limit a var val 'think))
 				   (cdr exp))))
-	   (nounlimit exp var val)))))
+	   (throw 'limit t)))))
 
 (defun liminv (e)
   (setq e (resimplify (subst (m// 1 var) var e)))

@@ -368,6 +368,21 @@ tlimit(x*(atan(x)-%pi/2),x,inf);
 tlimit(atan(x^-1), x, 0, minus);
 -%pi/2;
 
+/* [ 1103515 ] limit(atan2(x,-1),x,0) wrong */
+limit(atan2(x,-1), x, 0, minus);
+-%pi;
+
+limit(atan2(x,-1), x, 0, plus);
+%pi;
+
+limit(atan2(x,-1), x, 0);
+und;
+/* ideally should be ind */
+
+/* [ 1587235 ] limit(floor(x),x,1) wrong */
+limit(floor(x),x,0);
+'limit(floor(x),x,0);
+
 /* tex(t[1]) shouldn't change t to true */
 tex (t[1], false);
 "$$t_{1}$$
