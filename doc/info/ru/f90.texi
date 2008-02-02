@@ -1,0 +1,58 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=f90.texi 
+@c OriginalRevision=1.5
+@c TranslatedBy: (c) 2008-02 Vadim V. Zhytnikov <vvzhyt@gmail.com>
+
+
+@menu
+* Функции и переменные пакета f90::
+@end menu
+
+@node Функции и переменные пакета f90,  , Пакет f90, Пакет f90
+@section Функции и переменные пакета f90
+
+
+@deffn {Функция} f90 (@var{expr})
+Команда @code{f90} является исправлением оригинальной Maxima команды @code{fortran}. 
+Основная разница заключается в том, как осуществляется перенос длинных строк.
+
+В следующем примере, обратите внимание как команда @code{fortran} переносит строки внутри символов. 
+Команда @code{f90} никогда не делает перенос внутри символа.
+
+@verbatim
+(%i1) load("f90")$
+
+(%i2) expr:expand((xxx+yyy+7)^4);
+         4            3         3        2    2
+(%o2) yyy  + 4 xxx yyy  + 28 yyy  + 6 xxx  yyy
+             2          2        3             2
+ + 84 xxx yyy  + 294 yyy  + 4 xxx  yyy + 84 xxx  yyy
+                               4         3          2
+ + 588 xxx yyy + 1372 yyy + xxx  + 28 xxx  + 294 xxx
+ + 1372 xxx + 2401
+(%i3) fortran(expr);
+      yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294*yy
+     1   y**2+4*xxx**3*yyy+84*xxx**2*yyy+588*xxx*yyy+1372*yyy+xxx**4+28*
+     2   xxx**3+294*xxx**2+1372*xxx+2401
+(%o3)                       done
+(%i4) f90(expr);
+yyy**4+4*xxx*yyy**3+28*yyy**3+6*xxx**2*yyy**2+84*xxx*yyy**2+294* &
+     yyy**2+4*xxx**3*yyy+84*xxx**2*yyy+588*xxx*yyy+1372*yyy+xxx** &
+     4+28*xxx**3+294*xxx**2+1372*xxx+2401
+(%o4)                       done
+@end verbatim
+@sp 1
+
+Команда @code{f90} реализована как быстрый хак. Она не является
+хорошим примером того, как следует реализовывать трансляцию в другие
+языки.
+
+Для того, чтобы использовать эту функцию, сначала введите команду @code{load("f90")}.
+
+@opencatbox
+@category{Трансляция и компиляция} @category{Пакеты библиотеки share} @category{Пакет f90}
+@closecatbox
+
+@end deffn
+
