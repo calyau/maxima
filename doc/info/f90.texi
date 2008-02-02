@@ -7,10 +7,10 @@
 
 
 @deffn {Function} f90 (@var{expr})
-The f90 command is an update to the original maxima fortran
+The @code{f90} command is an update to the original maxima @code{fortran}
 command. The primary difference is the way long lines are broken.
 
-In the next example, notice how the fortran command breaks lines within symbols. The @code{f90}
+In the next example, notice how the @code{fortran} command breaks lines within symbols. The @code{f90}
 command never breaks within a symbol.
 
 @verbatim
