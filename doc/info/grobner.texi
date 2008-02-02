@@ -302,7 +302,7 @@ case in rings which are not fields.
 
 @deffn {Function} poly_expand (@var{poly}, @var{varlist})
 This function parses polynomials to internal form and back. It
-is equivalent to @code{expand(poly)} if @var{poly} parses correctly to
+is equivalent to @code{expand(@var{poly})} if @var{poly} parses correctly to
 a polynomial. If the representation is not compatible with a
 polynomial in variables @var{varlist}, the result is an error.
 It can be used to test whether an expression correctly parses to the
@@ -523,7 +523,7 @@ Returns a reduced Groebner basis of the ideal span by the polynomials @var{polyl
 
 
 @deffn {Function} poly_depends_p (@var{poly}, @var{var}, @var{varlist})
-@code{poly_depends} tests whether a polynomial depends on a variable var.
+@code{poly_depends} tests whether a polynomial depends on a variable @var{var}.
 
 @opencatbox
 @category{Package grobner} @category{Predicate functions}
@@ -536,7 +536,7 @@ Returns a reduced Groebner basis of the ideal span by the polynomials @var{polyl
 
 
 @code{poly_elimination_ideal} returns the grobner basis of the @math{number}-th elimination ideal of an
-ideal specified as a list of generating polynomials (not necessarily Groebner basis
+ideal specified as a list of generating polynomials (not necessarily Groebner basis).
 
 @opencatbox
 @category{Package grobner}
