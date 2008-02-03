@@ -982,6 +982,7 @@
   #+clisp (ext:quit)
   #+mcl (ccl::quit)
   #+gcl (quit)
+  #+abcl (cl-user::quit)
   #+excl "don't know quit function")
 
 (defmfun $logout () (bye))
