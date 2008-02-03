@@ -341,36 +341,102 @@
   (cond ((null (cddr form))
 	 (dimension-function form result))
 	(t
-	 (prog (dissym (symlength 0) (w 0) (h 0) (d 0))
+	 (prog (dissym (symlength 0) (w 0) (h 0) (d 0) helper)
 	    (setq dissym (safe-get (caar form) 'dissym)
 		  symlength (length dissym)
-		  result (dimnary (cadr form) result lop (caar form) (caar form) 0)
+
+          ;; Look for a helper function. Fall back on default if none found.
+          helper (or (safe-get (caar form) 'dimension-nary-helper) 'dimnary)
+
+		  result (funcall helper (cadr form) result lop (caar form) (caar form) 0)
 		  w width
 		  h height
-		  d depth)
+		  d depth
+          )
 	    (do ((l (cddr form) (cdr l)))
 		(nil)
 	      (checkbreak result w)
 	      (setq result (revappend dissym result) w (+ symlength w))
 	      (cond ((null (cdr l))
-		     (setq result (dimnary (car l) result (caar form) (caar form) rop w)
+		     (setq result (funcall helper (car l) result (caar form) (caar form) rop w)
 			   width (+ w width)
 			   height (max h height)
 			   depth (max d depth))
 		     (return t))
 		    (t
-		     (setq result (dimnary (car l) result (caar form) (caar form) (caar form) w)
+		     (setq result (funcall helper (car l) result (caar form) (caar form) (caar form) w)
 			   w (+ w width)
 			   h (max h height)
 			   d (max d depth)))))
 	    (return result)))))
 
-;; Check for (* A (* B C)) --> A*(B*C)
+;; Output for general n-ary operators.
+;; Heuristic: if some argument is displayed as an infix or n-ary operator,
+;; then put parentheses around that argument (even if parentheses are not
+;; necessary, according to operator precedence, to disambiguate the output).
+;;
+;; Examples:
+;;
+;; a * b * c;                   --> a b c
+;; a . b . c;                   --> a . b . c
+;; a * b . c;                   --> a (b . c)
+;; (a * b) . c;                 --> (a b) . c
+;; a . b * c;                   --> (a . b) c
+;; a . (b * c);                 --> a . (b c)
+;; a . b * c . d;               --> (a . b) (c . d)
+;; a * b . c * d;               --> a (b . c) d
+;; (a * b) . (c * d);           --> (a b) . (c d)
+;; infix ("@@");
+;; a @@ b * c @@ d;             --> (a @@ b) (c @@ d)
+;; a @@ b . c @@ d;             --> (a @@ b) . (c @@ d)
+;; a * b @@ c . d;              --> a ((b @@ c) . d)
+;; (a * b) @@ (c . d);          --> (a b) @@ (c . d)
 
 (defun dimnary (form result lop op rop w)
-  (if (and (not (atom form)) (eq (caar form) op))
-      (dimension-paren form result)
-      (dimension form result lop rop w right)))
+  (if
+    (and
+      (consp form)
+      (member (safe-get (caar form) 'dimension) '(dimension-infix dimension-nary)))
+    (dimension-paren form result)
+    (dimension form result lop rop w right)))
+
+;; Output for Boolean n-ary operators.
+;; Heuristic: if some argument is displayed as an infix or n-ary operator,
+;; or the operator of the argument is MNOT, then put parentheses around that argument
+;; (even if parentheses are not necessary, according to operator precedence,
+;; to disambiguate the output).
+;;
+;; Examples:
+;;
+;; a and b and c;               --> a and b and c
+;; a or b or c;                 --> a or b or c
+;; a or b and c;                --> a or (b and c)
+;; (a or b) and c;              --> (a or b) and c
+;; a and b or c;                --> (a and b) or c
+;; a and (b or c);              --> a and (b or c)
+;; a and b or c and d;          --> (a and b) or (c and d)
+;; a or b and c or d;           --> a or (b and c) or d
+;; (a or b) and (c or d);       --> (a or b) and (c or d)
+;; a < 0 and b < 0 or c < 0;    --> ((a < 0) and (b < 0)) or (c < 0)
+;; a < 0 and not foo;           --> (a < 0) and (not foo)
+;; a < 0 or not foo;            --> (a < 0) or (not foo)
+;; infix ("=>");
+;; a => b and a => c;           --> (a => b) and (a => c)
+;; a => b or not b => c;        --> (a => b) or (not b => c)
+;; a and b => c and d;          --> a and (b => c) and d
+;; a or b => c and d;           --> a or ((b => c) and d)
+;; (a and b) => (c and d);      --> (a and b) => (c and d)
+;; if a and b then 1 else 0;    --> if a and b then 1 else 0
+
+(defun dimnary-boolean (form result lop op rop w)
+  (if
+    (and
+      (consp form)
+      (or
+        (member (safe-get (caar form) 'dimension) '(dimension-infix dimension-nary))
+        (eq (caar form) 'mnot)))
+    (dimension-paren form result)
+    (dimension form result lop rop w right)))
 
 (defmfun dimension-postfix (form result)
   (prog (dissym (symlength 0))
@@ -777,7 +843,9 @@
 (displa-def mlessp    dimension-infix  " < ")
 (displa-def mnot      dimension-prefix "not ")
 (displa-def mand      dimension-nary   " and ")
+(defprop mand dimnary-boolean dimension-nary-helper)
 (displa-def mor	      dimension-nary   " or ")
+(defprop mor dimnary-boolean dimension-nary-helper)
 (displa-def mcond     dim-mcond)
 (displa-def %mcond    dim-mcond)
 
