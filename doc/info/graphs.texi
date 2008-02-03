@@ -569,7 +569,7 @@ Example:
 Returns an optimal coloring of the edges of the graph @var{gr}.
 
 The function returns the chromatic index and a list representing the
-coloring of the edges of @var{g}.
+coloring of the edges of @var{gr}.
 
 Example:
 @c ===beg===
@@ -1380,7 +1380,7 @@ Example:
 @deffn {Function} planar_embedding (@var{gr})
 
 Returns the list of facial walks in a planar embedding of @var{gr} and
-false if @var{gr} is not a planar graph.
+@code{false} if @var{gr} is not a planar graph.
 
 The graph @var{gr} must be biconnected.
 
@@ -1854,7 +1854,7 @@ Removes the vertex @var{v} from the graph @var{gr}.
 Returns an optimal coloring of the vertices of the graph @var{gr}.
 
 The function returns the chromatic number and a list representing the
-coloring of the vertices of @var{g}.
+coloring of the vertices of @var{gr}.
 
 Example:
 @c ===beg===
@@ -1948,7 +1948,7 @@ vertices are displayed.
 vertices are displayed.
 @item
 @dfn{label_alignment=pos}: how to align the label/id of the vertices. Can
-be @code{left}, @code{center} or  @code{right}. The default is left.
+be @code{left}, @code{center} or  @code{right}. The default is @code{left}.
 @item
 @dfn{show_weight=show}: if @var{show} is @var{true} then weights of the
 edges are displayed.
@@ -1976,7 +1976,7 @@ are displayed. See the @var{point_type} option for the @code{draw} package.
 @dfn{edge_width=width}: the width of edges.
 @item
 @dfn{edge_type=type}: defines how edges are displayed. See the
-@var{line_type} option for the draw package.
+@var{line_type} option for the @code{draw} package.
 @item
 @dfn{show_edges=e_list}: display edges in the list @var{e_list}
 using a different color.
@@ -1987,9 +1987,9 @@ using a different color.
 @dfn{show_edge_width=width}: the width of edges in @var{show_edges}.
 @item
 @dfn{show_edge_type=type}: defines how edges in @var{show_edges} are
-displayed. See the @var{line_type} option for the draw package.
+displayed. See the @var{line_type} option for the @code{draw} package.
 @item
-@dfn{redraw=r}: if @var{redraw} is true, vertex positions are recomputed
+@dfn{redraw=r}: if @var{redraw} is @code{true}, vertex positions are recomputed
 even if the positions have been saved from a previous drawing of the
 graph.
 @item
@@ -2003,7 +2003,7 @@ directed graphs). Default value: 0.1.
 spring embedding graph drawing algorithm. Default value: 50.
 @item
 @dfn{terminal=term}: the terminal used for drawing (see the
-@var{terminal} option in the draw package).
+@var{terminal} option in the @code{draw} package).
 @item
 @dfn{file_name=file}: the filename of the drawing if terminal is not
 screen.
