@@ -1,0 +1,2185 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=graphs.texi 
+@c OriginalRevision=1.3
+@c TranslatedBy: (c) 2008-02 Vadim V. Zhytnikov <vvzhyt@gmail.com>
+
+
+@menu
+* Введение в пакет graphs::
+* Функции и переменные пакета graphs::
+@end menu
+
+@node Введение в пакет graphs, Функции и переменные пакета graphs, Пакет graphs, Пакет graphs
+@section Введение в пакет graphs
+
+Пакет @code{graphs} предоставляет структуры для представления графов
+и ориентированных графов в Maxima. Графы и ориентированные графы являются простыми,
+т.е. не имеют кратных ребер и петель, но ориентированные графы могут иметь
+ориентированное ребро из @var{u} в @var{v} и ориентированное ребро из @var{v} в @var{u}.
+
+Внутренне графы представляются как списки смежности и реализованы
+в виде Lisp структур. Вершины обозначаются своими идентификаторами id (id --
+есть целое число). Ребра/дуги представлены списками длины 2. 
+Вершинам графов и ориентированных графов могут быть присвоены метки а
+ребрам/дугам можно присвоить веса.
+
+Функция @code{draw_graph} предназначена для рисования графов. 
+Графы изображаются с использованием метода взаимодействия сил. 
+Функция @code{draw_graph} может также использовать программу graphviz,
+доступную по ссылке @url{http://www.graphviz.org}. 
+Функция @code{draw_graph} основана на пакете @code{draw}.
+
+Чтобы использовать пакет @code{graphs}, его сначала следует загрузить 
+командой @code{load(graphs)}.
+
+@node Функции и переменные пакета graphs, , Введение в пакет graphs, Пакет graphs
+@section Функции и переменные пакета graphs
+
+@subsection Построение графов
+
+@deffn {Функция} create_graph (@var{v_list}, @var{e_list})
+@deffnx {Функция} create_graph (@var{n}, @var{e_list})
+@deffnx {Функция} create_graph (@var{v_list}, @var{e_list}, @var{directed})
+Создает новый граф с множеством вершин @var{v_list} и ребрами @var{e_list}.
+
+@var{v_list} -- список вершин (@code{[v1, v2,..., vn]}) или вершин вместе с метками
+(@code{[[v1,l1], [v2,l2],..., [vn,ln]]}).
+
+Если @var{n} -- число вершин, то они будут обозначаться целыми числами от 0 до n-1.
+
+@var{e_list} -- список ребер вида (@code{[e1, e2,..., em]}) или список ребер вместе с весами
+(@code{[[e1, w1], ..., [em, wm]]}).
+
+Если @var{directed} отлично от @code{false}, то возвращается ориентированный граф.
+
+Пример 1: цикл с тремя вершинами:
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph([1,2,3], [[1,2], [2,3], [1,3]])$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : create_graph([1,2,3], [[1,2], [2,3], [1,3]])$
+(%i3) print_graph(g)$
+Graph on 3 vertices with 3 edges.
+Adjacencies:
+  3 :  1  2
+  2 :  3  1
+  1 :  3  2
+@end example
+
+Пример 2: цикл с тремя вершинами и весами ребер:
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph([1,2,3], [[[1,2], 1.0], [[2,3], 2.0],
+@c                           [[1,3], 3.0]])$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : create_graph([1,2,3], [[[1,2], 1.0], [[2,3], 2.0],
+                                [[1,3], 3.0]])$
+(%i2) get_edge_weight([2,3], g);
+(%o2)                                 2.0
+@end example
+
+Пример 3: ориентированный граф:
+@c ===beg===
+@c load (graphs)$
+@c d : create_graph(
+@c         [1,2,3,4], 
+@c         [
+@c          [1,3], [1,4],
+@c          [2,3], [2,4]
+@c         ],
+@c         'directed = true)$
+@c print_graph(d)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) d : create_graph(
+       [1,2,3,4], 
+       [
+        [1,3], [1,4],
+        [2,3], [2,4]
+       ],
+       'directed = true)$
+(%i3) print_graph(d)$
+Digraph on 4 vertices with 4 arcs.
+Adjacencies:
+  4 :
+  3 :
+  2 :  4  3
+  1 :  4  3
+@end example
+@end deffn
+
+@deffn {Функция} copy_graph (@var{g})
+Возвращает копию графа @var{g}.
+@end deffn
+
+@deffn {Функция} circulant_graph (@var{n}, @var{d})
+Возвращает циркулянтный граф граф с параметрами @var{n} и @var{d}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : circulant_graph(10, [1,3])$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : circulant_graph(10, [1,3])$
+(%i3) print_graph(g)$
+Graph on 10 vertices with 20 edges.
+Adjacencies:
+  9 :  2  6  0  8
+  8 :  1  5  9  7
+  7 :  0  4  8  6
+  6 :  9  3  7  5
+  5 :  8  2  6  4
+  4 :  7  1  5  3
+  3 :  6  0  4  2
+  2 :  9  5  3  1
+  1 :  8  4  2  0
+  0 :  7  3  9  1
+@end example
+@end deffn
+
+@deffn {Функция} clebsch_graph ()
+Возвращает граф Клебша (Clebsch graph).
+@end deffn
+
+@deffn {Функция} complement_graph (@var{g})
+Возвращает граф, дополнительный графу @var{g}.
+@end deffn
+
+@deffn {Функция} complete_bipartite_graph (@var{n}, @var{m})
+Возвращает полный двудольный граф с @var{n+m} вершинами.
+@end deffn
+
+@deffn {Функция} complete_graph (@var{n})
+Возвращает полный граф с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} cycle_digraph (@var{n})
+Возвращает ориентированный циклический граф с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} cycle_graph (@var{n})
+Возвращает циклический граф с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} cube_graph (@var{n})
+Возвращает @var{n}-мерный куб.
+@end deffn
+
+@deffn {Функция} dodecahedron_graph ()
+Возвращает граф додекаэдра.
+@end deffn
+
+@deffn {Функция} empty_graph (@var{n})
+Возвращает пустой граф с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} flower_snark (@var{n})
+Возвращает цветочный граф (flower graph) с @var{4n} вершинами.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c f5 : flower_snark(5)$
+@c chromatic_index(f5);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) f5 : flower_snark(5)$
+(%i3) chromatic_index(f5);
+(%o3)                                  4
+@end example
+@end deffn
+
+@deffn {Функция} from_adjacency_matrix (@var{A})
+Возвращает граф с матрицей смежности @var{A}.
+@end deffn
+
+@deffn {Функция} frucht_graph ()
+Возвращает граф Фручта (Frucht graph).
+@end deffn
+
+@deffn {Функция} graph_product (@var{g1}, @var{g1})
+Возвращает прямое произведение графов @var{g1} и @var{g2}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c grid : graph_product(path_graph(3), path_graph(4))$
+@c draw_graph(grid)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) grid : graph_product(path_graph(3), path_graph(4))$
+(%i3) draw_graph(grid)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs01,6cm}
+@end ifhtml
+
+@deffn {Функция} graph_union (@var{g1}, @var{g1})
+Возвращает объединение (сумму) графов @var{g1} и @var{g2}.
+@end deffn
+
+@deffn {Функция} grid_graph (@var{n}, @var{m})
+Возвращает решетку @var{n x m}.
+@end deffn
+
+@deffn {Функция} grotzch_graph ()
+Возвращает граф Гротча (Grotzch graph).
+@end deffn
+
+@deffn {Функция} heawood_graph ()
+Возвращает граф Хейвуда (Heawood graph).
+@end deffn
+
+@deffn {Функция} icosahedron_graph ()
+Возвращает граф икосаэдра.
+@end deffn
+
+@deffn {Функция} induced_subgraph (@var{V}, @var{g})
+Возвращает граф, состоящий из подмножества вершин @var{V} графа @var{g}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c V : [0,1,2,3,4]$
+@c g : induced_subgraph(V, p)$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) V : [0,1,2,3,4]$
+(%i4) g : induced_subgraph(V, p)$
+(%i5) print_graph(g)$
+Graph on 5 vertices with 5 edges.
+Adjacencies:
+  4 :  3  0
+  3 :  2  4
+  2 :  1  3
+  1 :  0  2
+  0 :  1  4
+@end example
+@end deffn
+
+@deffn {Функция} line_graph (@var{g})
+Возвращает граф двойственный (line graph) графу @var{g}.
+@end deffn
+
+@deffn {Функция} mycielski_graph (@var{g})
+Возвращает граф Мицельского (mycielskian graph) графа @var{g}.
+@end deffn
+
+@deffn {Функция} new_graph ()
+Возвращает граф без вершин и ребер.
+@end deffn
+
+@deffn {Функция} path_digraph (@var{n})
+Возвращает ориентированный путь с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} path_graph (@var{n})
+Возвращает путь с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} petersen_graph ()
+@deffnx {Функция} petersen_graph (@var{n}, @var{d})
+Возвращает граф Петерсена @var{P_@{n,d@}}. Значения по умолчанию для
+@var{n} и @var{d} есть @code{n=5} и @code{d=2}.
+@end deffn
+
+@deffn {Функция} random_digraph (@var{n}, @var{p})
+Возвращает случайный ориентированный граф с @var{n} вершинами. 
+Каждое ребро присутствует с вероятностью @var{p}.
+@end deffn
+
+@deffn {Функция} random_regular_graph (@var{n})
+@deffnx {Функция} random_regular_graph (@var{n}, @var{d})
+Возвращает случайный @var{d}-регулярный граф с @var{n} вершинами. 
+Значение по умолчанию для @var{d} есть @code{d=3}.
+@end deffn
+
+@deffn {Функция} random_graph (@var{n}, @var{p})
+Возвращает случайный граф с @var{n} вершинами. 
+Каждое ребро присутствует с вероятностью @var{p}.
+@end deffn
+
+@deffn {Функция} random_graph1 (@var{n}, @var{m})
+Возвращает случайный граф с @var{n} вершинами и @var{m} случайными ребрами.
+@end deffn
+
+@deffn {Функция} random_network (@var{n}, @var{p}, @var{w})
+Возвращает случайную сеть на @var{n} вершинах. Каждое ребро присутствует
+с вероятностью @var{p} и имеет вес в интервале @code{[0,w]}. 
+Эта функция возвращает список @code{[network, source, sink]}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c [net, s, t] : random_network(50, 0.2, 10.0);
+@c max_flow(net, s, t)$
+@c first(%);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) [net, s, t] : random_network(50, 0.2, 10.0);
+(%o2)                         [DIGRAPH, 50, 51]
+(%i3) max_flow(net, s, t)$
+(%i3) first(%);
+(%o3)                          36.458293875923
+@end example
+@end deffn
+
+@deffn {Функция} random_tournament (@var{n})
+Возвращает случайный полный ориентированный граф (tournament) с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} random_tree (@var{n})
+Возвращает случайное дерево с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} underlying_graph (@var{g})
+Возвращает неориентированный граф, получаемый заменой ребер ориентированного графа @var{g} на неориентированные.
+@end deffn
+
+@deffn {Функция} wheel_graph (@var{n})
+Возвращает колесный граф (wheel graph) с @var{n+1} вершинами.
+@end deffn
+
+@subsection Свойства графов
+
+@deffn {Функция} adjacency_matrix (@var{gr})
+Возвращает матрицу смежности графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c c5 : cycle_graph(4)$
+@c adjacency_matrix(c5);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) c5 : cycle_graph(4)$
+(%i3) adjacency_matrix(c5);
+                                [ 0  1  0  1 ]
+                                [            ]
+                                [ 1  0  1  0 ]
+(%o3)                           [            ]
+                                [ 0  1  0  1 ]
+                                [            ]
+                                [ 1  0  1  0 ]
+@end example
+@end deffn
+
+@deffn {Функция} average_degree (@var{gr})
+Возвращает среднюю степень вершин графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c average_degree(grotzch_graph());
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) average_degree(grotzch_graph());
+                                      40
+(%o2)                                 --
+                                      11
+@end example
+@end deffn
+
+@deffn {Функция} biconected_components (@var{gr})
+Возвращает (наборы вершин) 2-связных компонент графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph(
+@c             [1,2,3,4,5,6,7],
+@c             [
+@c              [1,2],[2,3],[2,4],[3,4],
+@c              [4,5],[5,6],[4,6],[6,7]
+@c             ])$
+@c biconnected_components(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i4) g : create_graph(
+            [1,2,3,4,5,6,7],
+            [
+             [1,2],[2,3],[2,4],[3,4],
+             [4,5],[5,6],[4,6],[6,7]
+            ])$
+(%i5) biconnected_components(g);
+(%o5)               [[6, 7], [4, 5, 6], [1, 2], [2, 3, 4]]
+@end example
+
+@ifhtml
+@image{figures/graphs13,6cm}
+@end ifhtml
+@end deffn
+
+@deffn {Функция} bipartition (@var{gr})
+Возвращает двудольное разложение графа @var{gr} или пустой список,
+если @var{gr} не является двудольным.
+
+Пример:
+
+@c ===beg===
+@c load (graphs)$
+@c h : heawood_graph()$
+@c [A,B]:bipartition(h);
+@c draw_graph(h, show_vertices=A, program=circular)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) h : heawood_graph()$
+(%i3) [A,B]:bipartition(h);
+(%o3)         [[8, 12, 6, 10, 0, 2, 4], [13, 5, 11, 7, 9, 1, 3]]
+(%i4) draw_graph(h, show_vertices=A, program=circular)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs02,6cm}
+@end ifhtml
+
+@deffn {Функция} chromatic_index (@var{gr})
+Возвращает хроматический индекс графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c chromatic_index(p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) chromatic_index(p);
+(%o3)                                  4
+@end example
+@end deffn
+
+@deffn {Функция} chromatic_number (@var{gr})
+Возвращает хроматическое число графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c chromatic_number(cycle_graph(5));
+@c chromatic_number(cycle_graph(6));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) chromatic_number(cycle_graph(5));
+(%o2)                                  3
+(%i3) chromatic_number(cycle_graph(6));
+(%o3)                                  2
+@end example
+@end deffn
+
+@deffn {Функция} clear_edge_weight (@var{e}, @var{gr})
+Удаляет вес ребра @var{e} в графе @var{gr}.
+
+Пример:
+
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph(3, [[[0,1], 1.5], [[1,2], 1.3]])$
+@c get_edge_weight([0,1], g);
+@c clear_edge_weight([0,1], g)$
+@c get_edge_weight([0,1], g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : create_graph(3, [[[0,1], 1.5], [[1,2], 1.3]])$
+(%i3) get_edge_weight([0,1], g);
+(%o3)                                 1.5
+(%i4) clear_edge_weight([0,1], g)$
+(%i5) get_edge_weight([0,1], g);
+(%o5)                                  1
+@end example
+@end deffn
+
+@deffn {Функция} clear_vertex_label (@var{v}, @var{gr})
+Удаляет метку вершины @var{v} в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
+@c get_vertex_label(0, g);
+@c clear_vertex_label(0, g);
+@c get_vertex_label(0, g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
+(%i3) get_vertex_label(0, g);
+(%o3)                               Zero
+(%i4) clear_vertex_label(0, g);
+(%o4)                               done
+(%i5) get_vertex_label(0, g);
+(%o5)                               false
+@end example
+@end deffn
+
+@deffn {Функция} connected_components (@var{gr})
+Возвращает (наборы вершин) компоненты связности графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g: graph_union(cycle_graph(5), path_graph(4))$
+@c connected_components(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g: graph_union(cycle_graph(5), path_graph(4))$
+(%i3) connected_components(g);
+(%o3)                  [[1, 2, 3, 4, 0], [8, 7, 6, 5]]
+@end example
+@end deffn
+
+@deffn {Функция} diameter (@var{gr})
+Возвращает диаметр графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c diameter(dodecahedron_graph());
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) diameter(dodecahedron_graph());
+(%o2)                                 5
+@end example
+@end deffn
+
+@deffn {Функция} edge_coloring (@var{gr})
+Возвращает оптимальную раскраску ребер графа @var{gr}.
+
+Эта функция возвращает хроматический индекс и список, представляющий раскраску ребер графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c [ch_index, col] : edge_coloring(p);
+@c assoc([0,1], col);
+@c assoc([0,5], col);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) [ch_index, col] : edge_coloring(p);
+(%o3) [4, [[[0, 5], 3], [[5, 7], 1], [[0, 1], 1], [[1, 6], 2],
+[[6, 8], 1], [[1, 2], 3], [[2, 7], 4], [[7, 9], 2],
+ [[2, 3], 2], [[3, 8], 3], [[5, 8], 2], 
+[[3, 4], 1], [[4, 9], 4], [[6, 9], 3], [[0, 4], 2]]]
+(%i4) assoc([0,1], col);
+(%o4)                                 1
+(%i5) assoc([0,5], col);
+(%o5)                                 3
+@end example
+@end deffn
+
+@deffn {Функция} degree_sequence (@var{gr})
+Возвращает список степеней вершин графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c degree_sequence(random_graph(10, 0.4));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) degree_sequence(random_graph(10, 0.4));
+(%o2)                  [3, 3, 3, 4, 4, 4, 5, 5, 6, 7]
+@end example
+@end deffn
+
+@deffn {Функция} edges (@var{gr})
+Возвращает список ребер/дуг ориентированного или неориентированного графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c edges(complete_graph(4));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) edges(complete_graph(4));
+(%o2)         [[2, 3], [1, 3], [1, 2], [0, 3], [0, 2], [0, 1]]
+@end example
+@end deffn
+
+@deffn {Функция} get_edge_weight (@var{e}, @var{gr})
+@deffnx {Функция} get_edge_weight (@var{e}, @var{gr}, @var{ifnot})
+Возвращает вес ребра @var{e} графа @var{gr}.
+
+Если вес не присвоен ребру, то возвращается 1. 
+Если ребро в графе отсутствует, то выдается ошибка или 
+возвращает необязательный аргумент @var{ifnot}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c c5 : cycle_graph(5)$
+@c get_edge_weight([1,2], c5);
+@c set_edge_weight([1,2], 2.0, c5);
+@c get_edge_weight([1,2], c5);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) c5 : cycle_graph(5)$
+(%i3) get_edge_weight([1,2], c5);
+(%o3)                                 1
+(%i4) set_edge_weight([1,2], 2.0, c5);
+(%o4)                               done
+(%i5) get_edge_weight([1,2], c5);
+(%o5)                                2.0
+@end example
+@end deffn
+
+@deffn {Функция} get_vertex_label (@var{v}, @var{gr})
+Возвращает метку вершины @var{v} графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
+@c get_vertex_label(0, g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
+(%i3) get_vertex_label(0, g);
+(%o3)                               Zero
+@end example
+@end deffn
+
+@deffn {Функция} graph_charpoly (@var{gr}, @var{x})
+Возвращает характеристический многочлен (от переменной @var{x}) графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c graph_charpoly(p, x), factor;
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) graph_charpoly(p, x), factor;
+                                         5        4
+(%o3)                     (x - 3) (x - 1)  (x + 2)
+@end example
+@end deffn
+
+@deffn {Функция} graph_center (@var{gr})
+Возвращает центр графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : grid_graph(5,5)$
+@c graph_center(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : grid_graph(5,5)$
+(%i3) graph_center(g);
+(%o3)                               [12]
+@end example
+@end deffn
+
+@deffn {Функция} graph_eigenvalues (@var{gr})
+Возвращает собственные значения графа @var{gr}. Значение возвращаются
+в том же формате, что возвращает Maxima функция @code{eigenvalue}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c graph_eigenvalues(p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) graph_eigenvalues(p);
+(%o3)                     [[3, - 2, 1], [1, 4, 5]]
+@end example
+@end deffn
+
+@deffn {Функция} graph_periphery (@var{gr})
+Возвращает периферию графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : grid_graph(5,5)$
+@c graph_periphery(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : grid_graph(5,5)$
+(%i3) graph_periphery(g);
+(%o3)                          [24, 20, 4, 0]
+@end example
+@end deffn
+
+@deffn {Функция} graph_size (@var{gr})
+Возвращает число вершин в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c graph_size(p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) graph_size(p);
+(%o3)                                10
+@end example
+@end deffn
+
+@deffn {Функция} graph_order (@var{gr})
+Возвращает число ребер в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c graph_order(p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) graph_order(p);
+(%o3)                                15
+@end example
+@end deffn
+
+@deffn {Функция} girth (@var{gr})
+Возвращает длину наикратчайшего цикла в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : heawood_graph()$
+@c girth(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : heawood_graph()$
+(%i3) girth(g);
+(%o3)                                 5
+@end example
+@end deffn
+
+@deffn {Функция} hamilton_cycle (@var{gr})
+Возвращает гамильтонов цикл графа @var{gr} или пустой список, если граф @var{gr} не является гамильтоновым.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c h : cube_graph(3)$
+@c hc : hamilton_cycle(h);
+@c draw_graph(c, show_edges=vertices_to_cycle(hc))$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) h : cube_graph(3)$
+(%i3) hc : hamilton_cycle(h);
+(%o3)        [7, 3, 2, 6, 4, 0, 1, 5, 7]
+(%i4) draw_graph(c, show_edges=vertices_to_cycle(hc))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs03,6cm}
+@end ifhtml
+
+@deffn {Функция} hamilton_path (@var{gr})
+Возвращает гамильтонов путь графа @var{gr} или пустой список, если граф @var{gr} не 
+имеет гамильтонова пути.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c hp : hamilton_path(p);
+@c draw_graph(p, show_edges=vertices_to_path(hp))$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) hp : hamilton_path(p);
+(%o3)                  [0, 5, 7, 2, 1, 6, 8, 3, 4, 9]
+(%i4) draw_graph(p, show_edges=vertices_to_path(hp))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs04,6cm}
+@end ifhtml
+
+@deffn {Функция} isomorphism (@var{gr1}, @var{gr2})
+
+Возвращает хэш-таблицу изоморфизма между (ориентированными) графами 
+@var{gr1} и @var{gr2}. Если @var{gr1} и @var{gr2} не изоморфны,
+то возвращается @code{false}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c clk5:complement_graph(line_graph(complete_graph(5)))$
+@c hash_table_data(isomorphism(clk5, petersen_graph()));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
+(%i2) hash_table_data(isomorphism(clk5, petersen_graph()));
+(%o2) [9 -> 0, 2 -> 1, 6 -> 2, 5 -> 3, 0 -> 4, 1 -> 5, 3 -> 6, 
+                                     4 -> 7, 7 -> 8, 8 -> 9]
+@end example
+@end deffn
+
+@deffn {Функция} in_neighbors (@var{v}, @var{gr})
+Возвращает список входящих соседей (in-neighbors) вершины @var{v} 
+ориентированного графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : path_digraph(3)$
+@c in_neighbors(2, p);
+@c out_neighbors(2, p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : path_digraph(3)$
+(%i3) in_neighbors(2, p);
+(%o3)                                 [1]
+(%i4) out_neighbors(2, p);
+(%o4)                                 []
+@end example
+@end deffn
+
+@deffn {Функция} is_biconnected (@var{gr})
+Возвращает @code{true}, если граф @var{gr} 2-связный, и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_biconnected(cycle_graph(5));
+@c is_biconnected(path_graph(5));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i3) is_biconnected(cycle_graph(5));
+(%o3)                               true
+(%i4) is_biconnected(path_graph(5));
+(%o4)                               false
+@end example
+@end deffn
+
+@deffn {Функция} is_bipartite (@var{gr})
+Возвращает @code{true}, если граф @var{gr} двудольный, и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_bipartite(petersen_graph());
+@c is_bipartite(heawood_graph());
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_bipartite(petersen_graph());
+(%o2)                               false
+(%i3) is_bipartite(heawood_graph());
+(%o3)                               true
+@end example
+@end deffn
+
+@deffn {Функция} is_connected (@var{gr})
+Возвращает @code{true}, если граф @var{gr} связный, и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_connected(graph_union(cycle_graph(4), path_graph(3)));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_connected(graph_union(cycle_graph(4), path_graph(3)));
+(%o2)                               false
+@end example
+@end deffn
+
+@deffn {Функция} is_digraph (@var{gr})
+Возвращает @code{true}, если @var{gr} является ориентированным графом, и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_digraph(path_graph(5));
+@c is_digraph(path_digraph(5));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_digraph(path_graph(5));
+(%o2)                               false
+(%i3) is_digraph(path_digraph(5));
+(%o3)                               true
+@end example
+@end deffn
+
+@deffn {Функция} is_edge_in_graph (@var{e}, @var{gr})
+Возвращает @code{true}, если @var{e} есть ребро (ориентированного) графа @var{g},
+и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c c4 : cycle_graph(4)$
+@c is_edge_in_graph([2,3], c4);
+@c is_edge_in_graph([3,2], c4);
+@c is_edge_in_graph([2,4], c4);
+@c is_edge_in_graph([3,2], cycle_digraph(4));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) c4 : cycle_graph(4)$
+(%i3) is_edge_in_graph([2,3], c4);
+(%o3)                               true
+(%i4) is_edge_in_graph([3,2], c4);
+(%o4)                               true
+(%i5) is_edge_in_graph([2,4], c4);
+(%o5)                               false
+(%i6) is_edge_in_graph([3,2], cycle_digraph(4));
+(%o6)                               false
+@end example
+@end deffn
+
+@deffn {Функция} is_graph (@var{gr})
+Возвращает @code{true}, если @var{gr} является графом, 
+и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_graph(path_graph(5));
+@c is_graph(path_digraph(5));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_graph(path_graph(5));
+(%o2)                               true
+(%i3) is_graph(path_digraph(5));
+(%o3)                               false
+@end example
+@end deffn
+
+@deffn {Функция} is_graph_or_digraph (@var{gr})
+Возвращает @code{true}, если @var{gr} является графом или ориентированным графом, и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_graph_or_digraph(path_graph(5));
+@c is_graph_or_digraph(path_digraph(5));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_graph_or_digraph(path_graph(5));
+(%o2)                               true
+(%i3) is_graph_or_digraph(path_digraph(5));
+(%o3)                               true
+@end example
+@end deffn
+
+@deffn {Функция} is_isomorphic (@var{gr1}, @var{gr2})
+
+Возвращает @code{true}, если (ориентированные) графы @var{gr1} и @var{gr2} изоморфны,
+и @code{false} в противном случае.
+
+См. также @code{isomorphism}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c clk5:complement_graph(line_graph(complete_graph(5)))$
+@c is_isomorphic(clk5, petersen_graph());
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
+(%i3) is_isomorphic(clk5, petersen_graph());
+(%o3)                              true
+@end example
+@end deffn
+
+@deffn {Функция} is_planar (@var{gr})
+
+Возвращает @code{true}, если @var{gr} является планарным графом, и @code{false} в противном случае.
+
+Используется алгоритм Демукрона, который является квадратичным по времени.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_planar(dodecahedron_graph());
+@c is_planar(petersen_graph());
+@c is_planar(petersen_graph(10,2));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_planar(dodecahedron_graph());
+(%o2)                                true
+(%i3) is_planar(petersen_graph());
+(%o3)                                false
+(%i4) is_planar(petersen_graph(10,2));
+(%o4)                                true
+@end example
+@end deffn
+
+@deffn {Функция} is_sconnected (@var{gr})
+Возвращает @code{true}, если ориентированный граф @var{gr} является сильно связным, 
+и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_sconnected(cycle_digraph(5));
+@c is_sconnected(path_digraph(5));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_sconnected(cycle_digraph(5));
+(%o2)                               true
+(%i3) is_sconnected(path_digraph(5));
+(%o3)                               false
+@end example
+@end deffn
+
+@deffn {Функция} is_vertex_in_graph (@var{v}, @var{gr})
+Возвращает @code{true}, если @var{v} есть вершина в графе @var{g}, и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c c4 : cycle_graph(4)$
+@c is_vertex_in_graph(0, c4);
+@c is_vertex_in_graph(6, c4);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) c4 : cycle_graph(4)$
+(%i3) is_vertex_in_graph(0, c4);
+(%o3)                               true
+(%i4) is_vertex_in_graph(6, c4);
+(%o4)                               false
+@end example
+@end deffn
+
+@deffn {Функция} is_tree (@var{gr})
+Возвращает @code{true}, если граф @var{gr} является деревом, и @code{false} в противном случае.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c is_tree(random_tree(4));
+@c is_tree(graph_union(random_tree(4), random_tree(5)));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) is_tree(random_tree(4));
+(%o2)                               true
+(%i3) is_tree(graph_union(random_tree(4), random_tree(5)));
+(%o3)                               false
+@end example
+@end deffn
+
+@deffn {Функция} laplacian_matrix (@var{gr})
+Возвращает матрицу Лапласа графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c laplacian_matrix(cycle_graph(5));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) laplacian_matrix(cycle_graph(5));
+                          [  2   - 1   0    0   - 1 ]
+                          [                         ]
+                          [ - 1   2   - 1   0    0  ]
+                          [                         ]
+(%o2)                     [  0   - 1   2   - 1   0  ]
+                          [                         ]
+                          [  0    0   - 1   2   - 1 ]
+                          [                         ]
+                          [ - 1   0    0   - 1   2  ]
+@end example
+@end deffn
+
+@deffn {Функция} max_clique (@var{gr})
+Возвращает максимальную клику графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : random_graph(100, 0.5)$
+@c max_clique(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : random_graph(100, 0.5)$
+(%i3) max_clique(g);
+(%o3)                 [2, 6, 13, 17, 21, 23, 31, 62, 65]
+@end example
+@end deffn
+
+@deffn {Функция} max_degree (@var{gr})
+Возвращает максимальную степень вершины графа @var{gr} и саму вершину
+с максимальной степенью.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : random_graph(100, 0.02)$
+@c max_degree(g);
+@c vertex_degree(95, g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : random_graph(100, 0.02)$
+(%i3) max_degree(g);
+(%o3)                               [5, 95]
+(%i4) vertex_degree(95, g);
+(%o4)                                  5
+@end example
+@end deffn
+
+@deffn {Функция} max_flow (@var{net}, @var{s}, @var{t})
+Возвращает максимальный поток через сеть @var{net} с истоком @var{s} и стоком @var{t}.
+
+Функция возвращает значение максимального потока и список весов ребер
+оптимального потока.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c net : create_graph(
+@c   [1,2,3,4,5,6],
+@c   [[[1,2], 1.0],
+@c    [[1,3], 0.3],
+@c    [[2,4], 0.2],
+@c    [[2,5], 0.3],
+@c    [[3,4], 0.1],
+@c    [[3,5], 0.1],
+@c    [[4,6], 1.0],
+@c    [[5,6], 1.0]],
+@c   directed=true)$
+@c [flow_value, flow] : max_flow(net, 1, 6);
+@c fl : 0$
+@c for u in out_neighbors(1, net) 
+@c      do fl : fl + assoc([1, u], flow)$
+@c fl;
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) net : create_graph(
+  [1,2,3,4,5,6],
+  [[[1,2], 1.0],
+   [[1,3], 0.3],
+   [[2,4], 0.2],
+   [[2,5], 0.3],
+   [[3,4], 0.1],
+   [[3,5], 0.1],
+   [[4,6], 1.0],
+   [[5,6], 1.0]],
+  directed=true)$
+(%i3) [flow_value, flow] : max_flow(net, 1, 6);
+(%o3) [0.7, [[[1, 2], 0.5], [[1, 3], 0.2], [[2, 4], 0.2],
+[[2, 5], 0.3], [[3, 4], 0.1], [[3, 5], 0.1], [[4, 6], 0.3],
+[[5, 6], 0.4]]]
+(%i4) fl : 0$
+(%i5) for u in out_neighbors(1, net) 
+         do fl : fl + assoc([1, u], flow)$
+(%i6) fl;
+(%o6)                                 0.7
+@end example
+@end deffn
+
+@deffn {Функция} max_independent_set (@var{gr})
+Возвращает максимальное независимое множество графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c d : dodecahedron_graph()$
+@c mi : max_independent_set(d);
+@c draw_graph(d, show_vertices=mi)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i3) d : dodecahedron_graph()$
+(%i4) mi : max_independent_set(d);
+(%o4)                   [0, 3, 5, 9, 10, 11, 18, 19]
+(%i5) draw_graph(d, show_vertices=mi)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs05,6cm}
+@end ifhtml
+
+@deffn {Функция} max_matching (@var{gr})
+Возвращает максимальный набор ребер, не имеющих общих вершин (maximal matching), для графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c d : dodecahedron_graph()$
+@c m : max_matching(d);
+@c draw_graph(d, show_edges=m)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) d : dodecahedron_graph()$
+(%i3) m : max_matching(d);
+(%o3) [[5, 7], [8, 9], [6, 10], [14, 19], [13, 18], [12, 17],
+                             [11, 16], [0, 15], [3, 4], [1, 2]]
+(%i4) draw_graph(d, show_edges=m)$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs06,6cm}
+@end ifhtml
+
+@deffn {Функция} min_degree (@var{gr})
+Возвращает минимальную степень вершины графа @var{gr} и саму вершину
+с минимальной степенью.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : random_graph(100, 0.1)$
+@c min_degree(g);
+@c vertex_degree(21, g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : random_graph(100, 0.1)$
+(%i3) min_degree(g);
+(%o3)                              [4, 21]
+(%i4) vertex_degree(21, g);
+(%o4)                                 4
+@end example
+@end deffn
+
+@deffn {Функция} minimum_spanning_tree (@var{gr})
+Возвращает минимальный каркас (минимальное остовное дерево) графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : graph_product(path_graph(10), path_graph(10))$
+@c t : minimum_spanning_tree(g)$
+@c draw_graph(g, show_edges=edges(t))$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : graph_product(path_graph(10), path_graph(10))$
+(%i3) t : minimum_spanning_tree(g)$
+(%i4) draw_graph(g, show_edges=edges(t))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs07,6cm}
+@end ifhtml
+
+@deffn {Функция} neighbors (@var{v}, @var{gr})
+Возвращает список соседей вершины @var{v} в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : petersen_graph()$
+@c neighbors(3, p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : petersen_graph()$
+(%i3) neighbors(3, p);
+(%o3)                             [4, 8, 2]
+@end example
+@end deffn
+
+@deffn {Функция} odd_girth (@var{gr})
+Возвращает длину наикратчайшего нечетного цикла в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : graph_product(cycle_graph(4), cycle_graph(7))$
+@c girth(g);
+@c odd_girth(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : graph_product(cycle_graph(4), cycle_graph(7))$
+(%i3) girth(g);
+(%o3)                                 4
+(%i4) odd_girth(g);
+(%o4)                                 7
+@end example
+@end deffn
+
+@deffn {Функция} out_neighbors (@var{v}, @var{gr})
+Возвращает список исходящих соседей (out-neighbors) вершины @var{v} 
+ориентированного графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : path_digraph(3)$
+@c in_neighbors(2, p);
+@c out_neighbors(2, p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : path_digraph(3)$
+(%i3) in_neighbors(2, p);
+(%o3)                                 [1]
+(%i4) out_neighbors(2, p);
+(%o4)                                 []
+@end example
+@end deffn
+
+@deffn {Функция} planar_embedding (@var{gr})
+
+Возвращает список поверхностных маршрутов (facial walks) в плоской укладке графа @var{gr},
+и @code{false}, если граф @var{gr} не является планарным.
+
+Граф @var{gr} должен быть бисвязным.
+
+Используется алгоритм Демукрона, который является квадратичным по времени.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c planar_embedding(grid_graph(3,3));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) planar_embedding(grid_graph(3,3));
+(%o2) [[6, 3, 4, 7], [3, 0, 1, 4], [5, 8, 7, 4], 
+                         [2, 1, 0, 3, 6, 7, 8, 5], [4, 1, 2, 5]]
+@end example
+@end deffn
+
+@deffn {Функция} print_graph (@var{gr})
+Выводит некоторую информацию о графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c c5 : cycle_graph(5)$
+@c print_graph(c5)$
+@c dc5 : cycle_digraph(5)$
+@c print_graph(dc5)$
+@c out_neighbors(0, dc5);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) c5 : cycle_graph(5)$
+(%i3) print_graph(c5)$
+Graph on 5 vertices with 5 edges.
+Adjacencies:
+  4 :  0  3
+  3 :  4  2
+  2 :  3  1
+  1 :  2  0
+  0 :  4  1
+(%i4) dc5 : cycle_digraph(5)$
+(%i5) print_graph(dc5)$
+Digraph on 5 vertices with 5 arcs.
+Adjacencies:
+  4 :  0
+  3 :  4
+  2 :  3
+  1 :  2
+  0 :  1
+(%i6) out_neighbors(0, dc5);
+(%o6)                                [1]
+@end example
+@end deffn
+
+@deffn {Функция} radius (@var{gr})
+Возвращает радиус графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c radius(dodecahedron_graph());
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) radius(dodecahedron_graph());
+(%o2)                                 5
+@end example
+@end deffn
+
+@deffn {Функция} set_edge_weight (@var{e}, @var{w}, @var{gr})
+Присваивает вес @var{w} ребру @var{e} графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph([1, 2], [[[1,2], 1.2]])$
+@c get_edge_weight([1,2], g);
+@c set_edge_weight([1,2], 2.1, g);
+@c get_edge_weight([1,2], g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : create_graph([1, 2], [[[1,2], 1.2]])$
+(%i3) get_edge_weight([1,2], g);
+(%o3)                                1.2
+(%i4) set_edge_weight([1,2], 2.1, g);
+(%o4)                               done
+(%i5) get_edge_weight([1,2], g);
+(%o5)                                2.1
+@end example
+@end deffn
+
+@deffn {Функция} set_vertex_label (@var{v}, @var{l}, @var{gr})
+Присваивает метку @var{l} вершине @var{v} графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : create_graph([[1, "One"], [2, "Two"]], [[1,2]])$
+@c get_vertex_label(1, g);
+@c set_vertex_label(1, "oNE", g);
+@c get_vertex_label(1, g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : create_graph([[1, "One"], [2, "Two"]], [[1,2]])$
+(%i3) get_vertex_label(1, g);
+(%o3)                                One
+(%i4) set_vertex_label(1, "oNE", g);
+(%o4)                               done
+(%i5) get_vertex_label(1, g);
+(%o5)                                oNE
+@end example
+@end deffn
+
+@deffn {Функция} shortest_path (@var{u}, @var{v}, @var{gr})
+Возвращает кратчайший путь из вершины @var{u} в вершину @var{v} в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c d : dodecahedron_graph()$
+@c path : shortest_path(0, 7, d);
+@c draw_graph(d, show_edges=vertices_to_path(path))$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) d : dodecahedron_graph()$
+(%i3) path : shortest_path(0, 7, d);
+(%o3)                          [0, 1, 19, 13, 7]
+(%i4) draw_graph(d, show_edges=vertices_to_path(path))$
+@end example
+@end deffn
+
+@ifhtml
+@image{figures/graphs08,6cm}
+@end ifhtml
+
+@deffn {Функция} strong_components (@var{gr})
+Возвращает сильную компоненту ориентированного графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c t : random_tournament(4)$
+@c strong_components(t);
+@c vertex_out_degree(3, t);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) t : random_tournament(4)$
+(%i3) strong_components(t);
+(%o3)                         [[2, 0, 1], [3]]
+(%i4) vertex_out_degree(3, t);
+(%o4)                                 0
+@end example
+@end deffn
+
+@deffn {Функция} topological_sort (@var{dag})
+
+Возвращает топологическую сортировку вершин ориентированного графа
+@var{dag}, или пустой список, если @var{dag} не является ориентированным ациклическим графом.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g:create_graph(
+@c          [1,2,3,4,5],
+@c          [
+@c           [1,2], [2,5], [5,3],
+@c           [5,4], [3,4], [1,3]
+@c          ],
+@c          directed=true)$
+@c topological_sort(g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g:create_graph(
+         [1,2,3,4,5],
+         [
+          [1,2], [2,5], [5,3],
+          [5,4], [3,4], [1,3]
+         ],
+         directed=true)$
+(%i3) topological_sort(g);
+(%o3)                           [1, 2, 5, 3, 4]
+@end example
+@end deffn
+
+@deffn {Функция} vertex_degree (@var{v}, @var{gr})
+Возвращает степень вершины @var{v} в графе @var{gr}.
+@end deffn
+
+@deffn {Функция} vertex_distance (@var{u}, @var{v}, @var{gr})
+Возвращает длину кратчайшего пути между вершинами @var{u} и @var{v} в
+(ориентированном) графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c d : dodecahedron_graph()$
+@c vertex_distance(0, 7, d);
+@c shortest_path(0, 7, d);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) d : dodecahedron_graph()$
+(%i3) vertex_distance(0, 7, d);
+(%o3)                                 4
+(%i4) shortest_path(0, 7, d);
+(%o4)                         [0, 1, 19, 13, 7]
+@end example
+@end deffn
+
+@deffn {Функция} vertex_eccentricity (@var{v}, @var{gr})
+
+Возвращает эксцентриситет вершины @var{v} графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g:cycle_graph(7)$
+@c vertex_eccentricity(0, g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g:cycle_graph(7)$
+(%i3) vertex_eccentricity(0, g);
+(%o4)                                  3
+@end example
+@end deffn
+
+@deffn {Функция} vertex_in_degree (@var{v}, @var{gr})
+Возвращает входящую степень вершины @var{v} ориентированного графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p5 : path_digraph(5)$
+@c print_graph(p5)$
+@c vertex_in_degree(4, p5);
+@c in_neighbors(4, p5);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p5 : path_digraph(5)$
+(%i3) print_graph(p5)$
+Digraph on 5 vertices with 4 arcs.
+Adjacencies:
+  4 :
+  3 :  4
+  2 :  3
+  1 :  2
+  0 :  1
+(%i4) vertex_in_degree(4, p5);
+(%o4)                                 1
+(%i5) in_neighbors(4, p5);
+(%o5)                                [3]
+@end example
+@end deffn
+
+@deffn {Функция} vertex_out_degree (@var{v}, @var{gr})
+Возвращает исходящую степень вершины @var{v} ориентированного графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c t : random_tournament(10)$
+@c vertex_out_degree(0, t);
+@c out_neighbors(0, t);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) t : random_tournament(10)$
+(%i3) vertex_out_degree(0, t);
+(%o3)                                 3
+(%i4) out_neighbors(0, t);
+(%o4)                             [7, 4, 2]
+@end example
+@end deffn
+
+@deffn {Функция} vertices (@var{gr})
+Возвращает список вершин графа  @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c vertices(complete_graph(4));
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) vertices(complete_graph(4));
+(%o2)                           [3, 2, 1, 0]
+@end example
+@end deffn
+
+@subsection Изменение графов
+
+@deffn {Функция} add_edge (@var{e}, @var{gr})
+Добавляет ребро @var{e} к графу @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p : path_graph(4)$
+@c neighbors(0, p);
+@c add_edge([0,3], p);
+@c neighbors(0, p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p : path_graph(4)$
+(%i3) neighbors(0, p);
+(%o3)                                [1]
+(%i4) add_edge([0,3], p);
+(%o4)                               done
+(%i5) neighbors(0, p);
+(%o5)                              [3, 1]
+@end example
+@end deffn
+
+@deffn {Функция} add_edges (@var{e_list}, @var{gr})
+Добавляет ребра из списка @var{e_list} к графу @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : empty_graph(3)$
+@c add_edges([[0,1],[1,2]], g)$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : empty_graph(3)$
+(%i3) add_edges([[0,1],[1,2]], g)$
+(%i4) print_graph(g)$
+Graph on 3 vertices with 2 edges.
+Adjacencies:
+  2 :  1
+  1 :  2  0
+  0 :  1
+@end example
+@end deffn
+
+@deffn {Функция} add_vertex (@var{v}, @var{gr})
+Добавляет вершину @var{v} к графу @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : path_graph(2)$
+@c add_vertex(2, g)$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : path_graph(2)$
+(%i3) add_vertex(2, g)$
+(%i4) print_graph(g)$
+Graph on 3 vertices with 1 edges.
+Adjacencies:
+  2 :
+  1 :  0
+  0 :  1
+@end example
+@end deffn
+
+@deffn {Функция} add_vertices (@var{v_list}, @var{gr})
+Добавляет все вершины из списка @var{v_list} к графу @var{gr}.
+@end deffn
+
+@deffn {Функция} connect_vertices (@var{v_list}, @var{u_list}, @var{gr})
+Соединяет все вершины из списка @var{v_list} с вершинами из списка @var{u_list} 
+в графе @var{gr}.
+
+@var{v_list} и @var{u_list} могут быть отдельными вершинами или списками вершин.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g : empty_graph(4)$
+@c connect_vertices(0, [1,2,3], g)$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g : empty_graph(4)$
+(%i3) connect_vertices(0, [1,2,3], g)$
+(%i4) print_graph(g)$
+Graph on 4 vertices with 3 edges.
+Adjacencies:
+  3 :  0
+  2 :  0
+  1 :  0
+  0 :  3  2  1
+@end example
+@end deffn
+
+@deffn {Функция} contract_edge (@var{e}, @var{gr})
+Стягивает ребро @var{e} в графе @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c g: create_graph(
+@c       8, [[0,3],[1,3],[2,3],[3,4],[4,5],[4,6],[4,7]])$
+@c print_graph(g)$
+@c contract_edge([3,4], g)$
+@c print_graph(g)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g: create_graph(
+       8, [[0,3],[1,3],[2,3],[3,4],[4,5],[4,6],[4,7]])$
+(%i3) print_graph(g)$
+Graph on 8 vertices with 7 edges.
+Adjacencies:
+  7 :  4
+  6 :  4
+  5 :  4
+  4 :  7  6  5  3
+  3 :  4  2  1  0
+  2 :  3
+  1 :  3
+  0 :  3
+(%i4) contract_edge([3,4], g)$
+(%i5) print_graph(g)$
+Graph on 7 vertices with 6 edges.
+Adjacencies:
+  7 :  3
+  6 :  3
+  5 :  3
+  3 :  5  6  7  2  1  0
+  2 :  3
+  1 :  3
+  0 :  3
+@end example
+@end deffn
+
+@deffn {Функция} remove_edge (@var{e}, @var{gr})
+Удаляет ребро @var{e} из графа @var{gr}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c c3 : cycle_graph(3)$
+@c remove_edge([0,1], c3)$
+@c print_graph(c3)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) c3 : cycle_graph(3)$
+(%i3) remove_edge([0,1], c3)$
+(%i4) print_graph(c3)$
+Graph on 3 vertices with 2 edges.
+Adjacencies:
+  2 :  0  1
+  1 :  2
+  0 :  2
+@end example
+@end deffn
+
+@deffn {Функция} remove_vertex (@var{v}, @var{gr})
+Удаляет вершину @var{v} из графа @var{gr}.
+@end deffn
+
+@deffn {Функция} vertex_coloring (@var{gr})
+Возвращает оптимальную раскраску вершин графа @var{gr}.
+
+Функция возвращает хроматическое число и список, 
+описывающий раскраску вершин графа @var{g}.
+
+Пример:
+@c ===beg===
+@c load (graphs)$
+@c p:petersen_graph()$
+@c vertex_coloring(p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p:petersen_graph()$
+(%i3) vertex_coloring(p);
+(%o3) [3, [[0, 2], [1, 3], [2, 2], [3, 3], [4, 1], [5, 3], 
+                                [6, 1], [7, 1], [8, 2], [9, 2]]]
+@end example
+@end deffn
+
+@subsection Чтение и запись файлов
+
+@deffn {Функция} dimacs_export (@var{gr}, @var{fl})
+@deffnx {Функция} dimacs_export (@var{gr}, @var{fl}, @var{comment1}, ..., @var{commentn})
+
+Экспортирует граф в файл @var{fl} в формате DIMACS. 
+Необязательный комментарий будет добавлен к началу файла.
+@end deffn
+
+@deffn {Функция} dimacs_import (@var{fl})
+
+Возвращает граф из файла @var{fl}, в котором он записан в формате DIMACS.
+@end deffn
+
+@deffn {Функция} graph6_decode (@var{str})
+
+Возвращает граф, закодированный в формате graph6 в строке @var{str}.
+@end deffn
+
+@deffn {Функция} graph6_encode (@var{gr})
+
+Возвращает строку -- закодированное представление графа @var{gr} в формате graph6.
+@end deffn
+
+@deffn {Функция} graph6_export (@var{gr_list}, @var{fl})
+
+Экспортирует графы из списка @var{gr_list} в файл @var{fl} в формате graph6.
+@end deffn
+
+@deffn {Функция} graph6_import (@var{fl})
+
+Возвращает список графов из файла @var{fl}, где они закодированы в формате graph6.
+@end deffn
+
+@deffn {Функция} sparse6_decode (@var{str})
+
+Возвращает граф, закодированный в формате sparse6 в строке @var{str}.
+@end deffn
+
+@deffn {Функция} sparse6_encode (@var{gr})
+
+Возвращает строку -- закодированное представление графа @var{gr} в формате sparse6.
+@end deffn
+
+@deffn {Функция} sparse6_export (@var{gr_list}, @var{fl})
+
+Экспортирует графы из списка @var{gr_list} в файл @var{fl} в формате sparse6.
+@end deffn
+
+@deffn {Функция} sparse6_import (@var{fl})
+
+Возвращает список графов из файла @var{fl}, где они закодированы в формате sparse6.
+@end deffn
+
+@subsection Визуализация
+
+@deffn {Функция} draw_graph (@var{graph})
+@deffnx {Функция} draw_graph (@var{graph}, @var{option1}, ..., @var{optionk})
+Изображает граф с помощью пакета @code{draw}.
+
+Алгоритм, используемый для размещения вершин, определяется необязательной переменной @var{program}. 
+Значение по умолчанию @code{program=spring_embedding}. 
+Может также использоваться программа graphviz, но она должна быть установлена отдельно.
+
+Необязательные аргументы @var{draw_graph} могут быть:
+@itemize @bullet
+@item
+@dfn{show_id=show}: если @var{show} равно @var{true}, то изображаются
+идентификаторы (id) вершин.
+@item
+@dfn{show_label=show}: если @var{show} равно @var{true}, то изображаются
+метки вершин.
+@item
+@dfn{label_alignment=pos}: как разместить метку или идентификатор вершины. 
+Может быть @code{left}, @code{center} или  @code{right}. 
+По умолчанию @code{left}.
+@item
+@dfn{show_weight=show}: если @var{show} равно @var{true}, то изображаются
+веса ребер.
+@item
+@dfn{vertex_type=type}: определяет, как изображаются вершины. 
+См. опцию @var{point_type} пакета @code{draw}.
+@item
+@dfn{vertex_size=size}: размер вершин.
+@item
+@dfn{vertex_color=c}: цвет вершин.
+@item
+@dfn{show_vertices=v_list}: изобразить вершины из списка @var{v_list}
+другим цветом.
+@item
+@dfn{show_vertex_type=type}: определяет, как изображаются вершины из списка @var{show_vertices}. 
+См. опцию @var{point_type} пакета @code{draw}.
+@item
+@dfn{show_vertex_size=size}: размер вершин в списке @var{show_vertices}.
+@item
+@dfn{show_vertex_color=c}: цвет вершин в списке @var{show_vertices}.
+@item
+@dfn{edge_color=c}: цвет, используемый для изображения ребер.
+@item
+@dfn{edge_width=width}: толщина ребер.
+@item
+@dfn{edge_type=type}: определяет способ изображения ребер. 
+См. опцию @var{line_type} пакета @code{draw}.
+@item
+@dfn{show_edges=e_list}: изображать ребра из списка @var{e_list}
+другим цветом.
+@item
+@dfn{show_edge_color=c}: цвет, используемый для изображения ребер из списка @var{show_edges}.
+@item
+@dfn{show_edge_width=width}: ширина ребер @var{show_edges}.
+@item
+@dfn{show_edge_type=type}: определяет, как изображаются ребра из списка @var{show_edges}. 
+См. опцию @var{line_type} пакета @code{draw}.
+@item
+@dfn{redraw=r}: если @var{redraw} равно @code{true}, то положение вершин
+вычисляется снова, даже если оно было сохранено с предыдущего изображения
+графа.
+@item
+@dfn{head_angle=angle}: угол наконечников стрелок, изображаемых на ребрах
+ориентированных графов. Значение по умолчанию: 15.
+@item
+@dfn{head_length=len}: длина наконечников стрелок, изображаемых на ребрах
+ориентированных графов. Значение по умолчанию: 0.1.
+@item
+@dfn{spring_embedding_depth=depth}: число итераций в алгоритме пружин
+(метод взаимодействия сил). Значение по умолчанию: 50.
+@item
+@dfn{terminal=term}: терминал, используемый для изображения (см. опцию @var{terminal} 
+пакета @code{draw}).
+@item
+@dfn{file_name=file}: имя файла изображения, если терминал не является дисплеем.
+@item
+@dfn{program=prg}: определяет программу, используемую для расположения вершин графа. 
+Может быть одной из опций программы graphviz (dot, neato, twopi, circ,
+fdp), @var{circular} или @var{spring_embedding}.
+@end itemize
+
+Пример 1:
+
+@c ===beg===
+@c load (graphs)$
+@c g:grid_graph(10,10)$
+@c m:max_matching(g)$
+@c draw_graph(g,
+@c    spring_embedding_depth=100,
+@c    show_edges=m, edge_type=dots,
+@c    vertex_size=0)$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g:grid_graph(10,10)$
+(%i3) m:max_matching(g)$
+(%i4) draw_graph(g,
+   spring_embedding_depth=100,
+   show_edges=m, edge_type=dots,
+   vertex_size=0)$
+@end example
+
+@ifhtml
+@image{figures/graphs09,6cm}
+@end ifhtml
+
+Пример 2:
+
+@c ===beg===
+@c load (graphs)$
+@c g:create_graph(16,
+@c     [
+@c      [0,1],[1,3],[2,3],[0,2],[3,4],[2,4],
+@c      [5,6],[6,4],[4,7],[6,7],[7,8],[7,10],[7,11],
+@c      [8,10],[11,10],[8,9],[11,12],[9,15],[12,13],
+@c      [10,14],[15,14],[13,14]
+@c     ])$
+@c t:minimum_spanning_tree(g)$
+@c draw_graph(
+@c     g,
+@c     show_edges=edges(t),
+@c     show_edge_width=4,
+@c     show_edge_color=green,
+@c     vertex_type=filled_square,
+@c     vertex_size=2
+@c     )$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g:create_graph(16,
+    [
+     [0,1],[1,3],[2,3],[0,2],[3,4],[2,4],
+     [5,6],[6,4],[4,7],[6,7],[7,8],[7,10],[7,11],
+     [8,10],[11,10],[8,9],[11,12],[9,15],[12,13],
+     [10,14],[15,14],[13,14]
+    ])$
+(%i3) t:minimum_spanning_tree(g)$
+(%i4) draw_graph(
+    g,
+    show_edges=edges(t),
+    show_edge_width=4,
+    show_edge_color=green,
+    vertex_type=filled_square,
+    vertex_size=2
+    )$
+@end example
+
+@ifhtml
+@image{figures/graphs10,6cm}
+@end ifhtml
+
+Пример 3:
+
+@c ===beg===
+@c load (graphs)$
+@c mi : max_independent_set(g)$
+@c draw_graph(
+@c     g,
+@c     show_vertices=mi,
+@c     show_vertex_type=filled_up_triangle,
+@c     show_vertex_size=2,
+@c     edge_color=cyan,
+@c     edge_width=3,
+@c     show_id=true,
+@c     text_color=brown
+@c     )$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) mi : max_independent_set(g)$
+(%i3) draw_graph(
+    g,
+    show_vertices=mi,
+    show_vertex_type=filled_up_triangle,
+    show_vertex_size=2,
+    edge_color=cyan,
+    edge_width=3,
+    show_id=true,
+    text_color=brown
+    )$
+@end example
+
+@ifhtml
+@image{figures/graphs11,6cm}
+@end ifhtml
+
+Пример 4:
+
+@c ===beg===
+@c load (graphs)$
+@c net : create_graph(
+@c     [0,1,2,3,4,5],
+@c     [
+@c      [[0,1], 3], [[0,2], 2],
+@c      [[1,3], 1], [[1,4], 3],
+@c      [[2,3], 2], [[2,4], 2],
+@c      [[4,5], 2], [[3,5], 2]
+@c     ],
+@c     directed=true
+@c     )$
+@c draw_graph(
+@c     net,
+@c     show_weight=true,
+@c     vertex_size=0,
+@c     show_vertices=[0,5],
+@c     show_vertex_type=filled_square,
+@c     head_length=0.2,
+@c     head_angle=10,
+@c     edge_color="dark-green",
+@c     text_color=blue
+@c     )$
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) net : create_graph(
+    [0,1,2,3,4,5],
+    [
+     [[0,1], 3], [[0,2], 2],
+     [[1,3], 1], [[1,4], 3],
+     [[2,3], 2], [[2,4], 2],
+     [[4,5], 2], [[3,5], 2]
+    ],
+    directed=true
+    )$
+(%i3) draw_graph(
+    net,
+    show_weight=true,
+    vertex_size=0,
+    show_vertices=[0,5],
+    show_vertex_type=filled_square,
+    head_length=0.2,
+    head_angle=10,
+    edge_color="dark-green",
+    text_color=blue
+    )$
+@end example
+
+@ifhtml
+@image{figures/graphs12,6cm}
+@end ifhtml
+
+@end deffn
+
+@defvr {Управляющая переменная} draw_graph_program
+Значение по умолчанию: @var{spring_embedding}.
+
+Значение по умолчанию, которое используется для расположения вершин в программе @code{draw_graph}.
+@end defvr
+
+@deffn {Функция} vertices_to_path (@var{v_list})
+Преобразует список вершин в список ребер пути, определяемого списком.
+@end deffn
+
+@deffn {Функция} vertices_to_cycle (@var{v_list})
+Преобразует список вершин в список ребер цикла, определяемого списком.
+@end deffn
