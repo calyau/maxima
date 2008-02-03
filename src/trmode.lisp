@@ -204,8 +204,8 @@
   (add2lnc v $props)
   (putprop v mode 'mode))
 
-(defmfun chekvalue (v mode &optional (val (meval1 v) val-givenp))
-  (cond ((or val-givenp (not (eq v val)))
+(defun chekvalue (my-v mode &optional (val (meval1 my-v) val-givenp))
+  (cond ((or val-givenp (not (eq my-v val)))
 	 ;; hack because macsyma PROG binds variable to itself. 
 	 (let ((checker (assoc mode `(($float . floatp)
 				      ($fixnum . integerp)
@@ -225,7 +225,7 @@
 				 (setq not-done nil))
 			       t)))
 		     ((if not-done (and nchecker (not (mfuncall '$featurep val (cdr nchecker)))))))
-	       (signal-mode-error v mode val))))))
+	       (signal-mode-error my-v mode val))))))
 
 (defun signal-mode-error (object mode value)
   (cond ((and $mode_check_warnp (not $mode_check_errorp))
