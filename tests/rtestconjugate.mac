@@ -244,6 +244,130 @@ done;
 conjugate (p0 + q1 + pq + qp + rr + ii);
 p0 + q1 + pq + qp + rr - ii;
 
+/* conjugate of  sums and products */
+
+conjugate(sum(cos(k),k,1,n));
+sum(cos(k),k,1,n)$
+
+conjugate(prod(cos(k),k,1,n));
+prod(cos(k),k,1,n)$
+
+conjugate(sum(log(k + %i), k, m, n));
+sum(log(k - %i), k, m, n)$
+ 
+conjugate(prod(log(k + %i), k, m, n));
+prod(log(k - %i), k, m, n)$
+
+/* conjugate of asin */
+
+(assume(x > -1, x < 1),0);
+0$
+
+conjugate(asin(x));
+asin(x)$
+
+conjugate(asin(-x));
+asin(-x)$
+
+conjugate(asin(x + %i));
+asin(x - %i)$
+
+conjugate(asin(x - %i));
+asin(x + %i)$
+
+conjugate(asin(x + %i * y));
+asin(x - %i * y)$
+
+conjugate(asin(x - %i * y));
+asin(x + %i * y)$
+
+/* Collections */
+
+conjugate([]);
+[]$
+
+conjugate([5]);
+[5]$
+
+conjugate([[%i]]);
+[[-%i]]$
+
+conjugate(set());
+set()$
+
+conjugate(set(1,2));
+set(1,2)$
+
+conjugate(set(8, set(8, set(32 - %i))));
+set(8, set(8, set(32 + %i)))$
+
+conjugate(matrix());
+matrix()$
+
+conjugate(matrix([]));
+matrix([])$
+
+conjugate(matrix([1,2,%i]));
+matrix([1,2,-%i])$
+
+conjugate(matrix([matrix([%i])]));
+matrix([matrix([-%i])])$
+
+/* logs */
+
+conjugate(log(x));
+conjugate(log(x))$
+
+conjugate(log(x + %i));
+log(conjugate(x) - %i)$
+
+conjugate(log(-1 + %i));
+log(-1 - %i)$
+
+(assume(x > 0, notequal(www,0)), 0);
+0$
+
+conjugate(log(-x));
+log(x) - %i * %pi$
+
+conjugate(log(-x + %i * www));
+log(-x - %i * www)$
+
+(forget(x > 0, notequal(www,0)),0);
+0$
+
+/* exponentials */
+
+conjugate(exp(x));
+exp(x)$
+
+conjugate(exp(y - %i * x));
+exp(y + %i * x)$
+
+(declare(z,complex),0);
+0$
+
+conjugate(exp(z));
+exp(conjugate(z))$
+
+(declare(n,integer,z,complex),0);
+0$
+
+conjugate(z^n);
+conjugate(z)^n$
+
+conjugate(z^b);
+conjugate(z^b)$
+
+conjugate(cosh(z));
+cosh(conjugate(z))$
+
+conjugate(sinh(z));
+sinh(conjugate(z))$
+
+conjugate(sinh(cosh(z)));
+sinh(cosh(conjugate(z)))$
+
 /* Test for bug 1491486 */
 
 conjugate((1+%i)^%i);
@@ -285,6 +409,7 @@ log(%pi - %i * y)$
 
 (forget(notequal(y,0)),0);
 0$
+
 
 /* Test for bug (conjugate of atan) fixed by CVS revisions 1.9 and 1.11 */
 
