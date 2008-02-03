@@ -98,7 +98,8 @@
     ((= (length args) 3)
      (multiple-value-bind
        (result left right)
-       (let (($numer t) ($%enumer t))
+       ;; BIND EVIL SPECIAL VARIABLE *PLOT-REALPART* HERE ...
+       (let (($numer t) ($%enumer t) (*plot-realpart* nil))
          (romberg-subr
            (coerce-float-fun (first args))
            (second args)
@@ -109,7 +110,8 @@
     ((= (length args) 4)
      (multiple-value-bind
        (result left right)
-       (let (($numer t) ($%enumer t))
+       ;; BIND EVIL SPECIAL VARIABLE *PLOT-REALPART* HERE ...
+       (let (($numer t) ($%enumer t) (*plot-realpart* nil))
          (romberg-subr
            (coerce-float-fun (first args) `((mlist) ,(second args)))
            (third args)
