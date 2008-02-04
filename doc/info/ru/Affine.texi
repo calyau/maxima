@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Affine.texi 
-@c OriginalRevision=1.15
+@c OriginalRevision=1.16
 @c TranslatedBy: (c) 2005-12 Vadim V. Zhytnikov <vvzhyt@gmail.ru>
 
 @menu
@@ -34,6 +34,8 @@
 
 @code{fast_linsolve} более быстрый чем @code{linsolve} для разреженных систем.
 
+Команда @code{load(affine)} загружает эту функцию.
+
 @opencatbox
 @category{Пакет affine}
 @closecatbox
@@ -55,6 +57,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 идеалу уравнений @var{expr_1}, ..., @var{expr_m}.  Иными словами, тогда и только тогда,
 когда @var{f} является полиномиальной комбинацией элементов
 @var{expr_1}, ..., @var{expr_m}.
+
+Команда @code{load(affine)} загружает эту функцию.
 
 @opencatbox
 @category{Пакет affine}
@@ -79,6 +83,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 Здесь степень определяется с помощью @code{nc_degree} и зависит от
 весов отдельных переменных.
 
+Команда @code{load(affine)} загружает эту функцию.
+
 @opencatbox
 @category{Пакет affine}
 @closecatbox
@@ -88,6 +94,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 Присваивает веса @var{w_1}, ..., @var{w_n} переменным @var{x_1}, ..., @var{x_n}.
 Эти веса используются при вычислении @code{nc_degree}.
 
+Команда @code{load(affine)} загружает эту функцию.
+
 @opencatbox
 @category{Пакет affine}
 @closecatbox
@@ -96,6 +104,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 @deffn {Функция} nc_degree (@var{p})
 Возвращает степень некоммутативного полинома @var{p}.
 См. также @code{declare_weights}.
+
+Команда @code{load(affine)} загружает эту функцию.
 
 @opencatbox
 @category{Пакет affine}
@@ -107,6 +117,8 @@ polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
 Возвращает 0 тогда и только тогда, когда @var{f} принадлежит идеалу уравнений, т.е.,
 тогда и только тогда, когда @var{f} является полиномиальной
 комбинацией элементов уравнений.
+
+Команда @code{load(affine)} загружает эту функцию.
 
 @opencatbox
 @category{Пакет affine}
@@ -124,6 +136,8 @@ set_up_dot_simplifications ([y.x + x.y], 3);
 fast_central_elements ([x, y], 2);
 [y.y, x.x];
 @end example
+
+Команда @code{load(affine)} загружает эту функцию.
 
 @opencatbox
 @category{Пакет affine}
@@ -143,6 +157,8 @@ fast_central_elements ([x, y], 2);
 Необязательный третий аргумент @code{reset}, @code{false} означает --
 не следует спрашивать о переопределении объектов.
 
+Команда @code{load(affine)} загружает эту функцию.
+
 @opencatbox
 @category{Пакет affine}
 @closecatbox
@@ -152,6 +168,8 @@ fast_central_elements ([x, y], 2);
 Возвращает список независимых мономов по отношению к текущим
 упрощениям степени @var{n} по переменным @var{x_1}, ..., @var{x_n}.
 
+Команда @code{load(affine)} загружает эту функцию.
+
 @opencatbox
 @category{Пакет affine}
 @closecatbox
@@ -159,6 +177,8 @@ fast_central_elements ([x, y], 2);
 
 @deffn {Функция} monomial_dimensions (@var{n})
 Вычисляет ряд Гильберта до степени @var{n} для текущей алгебры.
+
+Команда @code{load(affine)} загружает эту функцию.
 
 @opencatbox
 @category{Пакет affine}
@@ -171,6 +191,8 @@ fast_central_elements ([x, y], 2);
 Коэффициенты должны быть скалярными.  Для получения списка мономов
 используется @code{list_nc_monomials}.
 
+Команда @code{load(affine)} загружает эту функцию.
+
 @opencatbox
 @category{Пакет affine}
 @closecatbox
@@ -180,6 +202,8 @@ fast_central_elements ([x, y], 2);
 @deffnx {Функция} list_nc_monomials (@var{p})
 Возвращает список некоммутативных мономов полинома @var{p}
 или списка полиномов @var{p_1}, ..., @var{p_n}.
+
+Команда @code{load(affine)} загружает эту функцию.
 
 @opencatbox
 @category{Пакет affine}
