@@ -103,9 +103,6 @@
 		      (maxima-error "No TRANSLATE property to alias. ~a" ',from))))
     (mapc #'(lambda (name) (putprop name tr-prop 'translate))',others)))
 
-(defmacro tprop-call (op form)
-  `(subr-call ,op ,form))
-
 ;;; declarations for the TRANSL PACKAGE.
 
 (declare-top (special *transl-sources*)

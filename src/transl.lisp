@@ -830,9 +830,7 @@ APPLY means like APPLY.")
 	 (tr-arraycall form))
 	;; TRANSLATE properties have priority.
 	((setq temp (get (caar form) 'translate))
-	 ;; TPROP-CALL is a macro, think of it as FUNCALL.
-	 ;; see the macro file if you are curious.
-	 (tprop-call temp form))
+	 (funcall temp form))
 	((setq temp (get-lisp-fun-type (caar form)))
 	 (tr-lisp-function-call form temp))
 	((setq temp (macsyma-special-macro-p (caar form)))
@@ -844,7 +842,7 @@ APPLY means like APPLY.")
 	 ;; puntastical case. the weird ones are presumably taken care
 	 ;; of by TRANSLATE properties by now.
 	 (tr-infamous-noun-form form))
-	
+
 	;; "What does a macsyma function call mean?".
 	;; By the way, (A:'B,B:'C,C:'D)$ A(3) => D(3)
 	;; is not supported.

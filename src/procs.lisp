@@ -34,6 +34,3 @@
   `(defmacro ,(symbolconc 'def- name '-property) (name argl . body)
     (a-def-property name argl body ',name
      ',(verify-as-subr-argument-list 'def-def-property sample-arglist '*))))
-
-(defmacro subr-call (f &rest l)
-  `(funcall ,f ,@l))
