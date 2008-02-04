@@ -31,23 +31,23 @@
  0);
 0;
 
-(read_lisp_array (file_search ("array.data"), a2),
+(read_array (file_search ("array.data"), a2),
  is (equal (a, a2)));
 true;
 
-(read_maxima_array (file_search ("array.data"), b2),
+(read_array (file_search ("array.data"), b2),
  is (equal (b, b2)));
 true;
 
 (write_data (a2, sconcat (maxima_tempdir, "/tmp-lisp-array.data")),
  a3: make_array('any, 3, 4, 5),
- read_lisp_array (sconcat (maxima_tempdir, "/tmp-lisp-array.data"), a3), 
+ read_array (sconcat (maxima_tempdir, "/tmp-lisp-array.data"), a3), 
  is (equal (a2, a3)));
 true;
 
 (write_data (b2, sconcat (maxima_tempdir, "/tmp-maxima-array.data")),
  array (b3, 2, 3, 4),
- read_maxima_array (sconcat (maxima_tempdir, "/tmp-maxima-array.data"), b3),
+ read_array (sconcat (maxima_tempdir, "/tmp-maxima-array.data"), b3),
  is (equal (b2, b3)));
 true;
 
@@ -98,10 +98,10 @@ true;
 true;
 
 (array (a, 10, 6),
- read_maxima_array (file_search ("rectangular.data"), a),
+ read_array (file_search ("rectangular.data"), a),
  write_data (a, sconcat (maxima_tempdir, "/tmp-array.csv")),
  array (a2, 10, 6),
- read_maxima_array (sconcat (maxima_tempdir, "/tmp-array.csv"), a2),
+ read_array (sconcat (maxima_tempdir, "/tmp-array.csv"), a2),
  is (equal (a, a2)));
 true;
 
@@ -302,10 +302,10 @@ true;
 0;
 
 (a1 : make_array ('any, 3, 4, 5),
- read_lisp_array (file_search ("array.data"), a1),
+ read_array (file_search ("array.data"), a1),
  a2 : make_array ('any, 3, 4, 5),
  s : openr (file_search ("array.data")),
- read_lisp_array (s, a2),
+ read_array (s, a2),
  close (s),
  is (equal (a1, a2)));
 true;
@@ -315,16 +315,16 @@ true;
  close (s),
  a3 : make_array ('any, 3, 4, 5),
  s : openr (sconcat (maxima_tempdir, "/tmp-lisp-array.data")),
- read_lisp_array (s, a3),
+ read_array (s, a3),
  close (s),
  is (equal (a1, a3)));
 true;
 
 (b1 : array (b, 2, 3, 4),
- read_maxima_array (file_search ("array.data"), b1),
+ read_array (file_search ("array.data"), b1),
  b2 : array (b, 2, 3, 4),
  s : openr (file_search ("array.data")),
- read_lisp_array (s, b2),
+ read_array (s, b2),
  close (s),
  is (equal (b1, b2)));
 true;
@@ -334,7 +334,7 @@ true;
  close (s),
  b3 : array (b, 2, 3, 4),
  s : openr (sconcat (maxima_tempdir, "/tmp-maxima-array.data")),
- read_maxima_array (s, b3),
+ read_array (s, b3),
  close (s),
  is (equal (b1, b3)));
 true;
@@ -448,7 +448,7 @@ true;
 done;
 
 (A4b : make_array (any, 3, 7, 19),
- read_binary_lisp_array (tmp2_msb, A4b),
+ read_binary_array (tmp2_msb, A4b),
  is (A4b = A4b));
 true;
 
@@ -457,7 +457,7 @@ true;
 done;
 
 (A4c : make_array (any, 3, 7, 19),
- read_binary_lisp_array (tmp2_lsb, A4c),
+ read_binary_array (tmp2_lsb, A4c),
  is (A4c = A4));
 true;
 
