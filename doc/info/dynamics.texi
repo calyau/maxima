@@ -19,7 +19,7 @@ To use the functions in this package you must first load it with
 Starting with Maxima 5.12, the dynamics package now uses the function
 @code{plot2d} to do the graphs. The commands that produce graphics
 (with the exception of @code{julia} and @code{mandelbrot}) now accept
-any options of plot2d, including the option to change among the
+any options of @code{plot2d}, including the option to change among the
 various graphical interfaces, using different plot styles and colors,
 and representing one or both axes in a logarithmic scale. The old
 options @var{domain}, @var{pointsize}, @var{xcenter}, @var{xradius},
@@ -210,13 +210,13 @@ the sequence evolve @var{n1} iterations.
 
 @end deffn
 
-@deffn {Function} rk (ODE, var, initial, domain)
-@deffnx {Function} rk ([ODE1,...,ODEm], [v1,...,vm], [init1,...,initm], domain)
+@deffn {Function} rk (@var{ODE}, @var{var}, @var{initial}, @var{domain})
+@deffnx {Function} rk ([@var{ODE1},...,@var{ODEm}], [@var{v1},...,@var{vm}], [@var{init1},...,@var{initm}], @var{domain})
 
 The first form solves numerically one first-order ordinary differential
 equation, and the second form solves a system of m of those equations,
-using the 4th order Runge-Kutta method. var represents the dependent
-variable. ODE must be an expression that depends only on the independent
+using the 4th order Runge-Kutta method. @var{var} represents the dependent
+variable. @var{ODE} must be an expression that depends only on the independent
 and dependent variables and defines the derivative of the dependent
 variable with respect to the independent variable.
 
@@ -292,13 +292,13 @@ is reached.
 Each option is a list of two or more items. The first item is the name
 of the option, and the remainder comprises the arguments for the option.
 
-The options accepted by the functions evolution, evolution2d,
-staircase, orbits, ifs and chaosgame are the same as the options for
+The options accepted by the functions @code{evolution}, @code{evolution2d},
+@code{staircase}, @code{orbits}, @code{ifs} and @code{chaosgame} are the same as the options for
 @code{plot2d}. In addition to those options, @code{orbits} accepts and
 extra option @var{pixels} that sets up the maximum number of different
 points that will be represented in the vertical direction.
 
-The following options are accepted by the functions julia and mandelbrot:
+The following options are accepted by the functions @code{julia} and @code{mandelbrot}:
 
 @itemize @bullet
 @item
@@ -522,7 +522,7 @@ increments of 0.1 for t, use:
 (%i20) results: rk(t-x^2,x,1,[t,0,8,0.1])$
 @end example
 
-the results will be saved in the list results.
+the results will be saved in the list @code{results}.
 
 To solve numerically the system:
 
