@@ -161,18 +161,23 @@
 
 (setf (get '$romberg 'autoload) "romberg")
 
-(dolist (f       
-     '($read_matrix
-       $read_lisp_array
-       $read_maxima_array
-       $read_hashed_array
-       $read_nested_list
-       $read_list
-       $read_binary_lisp_array
-       $read_binary_maxima_array
-       $read_binary_list
-       $write_data
-       $write_binary_data))
+(dolist (f
+  '($assume_external_byte_order
+    $opena_binary
+    $openr_binary
+    $openw_binary
+    $read_array
+    $read_binary_array
+    $read_binary_list
+    $read_binary_matrix
+    $read_hashed_array
+    $read_lisp_array
+    $read_list
+    $read_matrix
+    $read_maxima_array
+    $read_nested_list
+    $write_binary_data
+    $write_data))
   (setf (get f 'autoload) "numericalio"))
 
 (setf (get '$eval_string 'autoload) "eval_string")
