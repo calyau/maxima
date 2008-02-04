@@ -52,20 +52,20 @@
     (if (eq x 'eof) 'eof (construct-float-64-from-integer x))))
 
 ;; READ-UNSIGNED-INTEGER, WRITE-UNSIGNED-INTEGER, and associated
-;; endianness stuff adapted from read-bytes-standalone.lisp,
+;; byte order stuff adapted from read-bytes-standalone.lisp,
 ;; by Martin Raspaud and Robert Strandh,
 ;; which was released under terms of GNU GPL v2 or later.
 
-(deftype endianness ()
-  "Defines the legal values for *IO-ENDIANNESS*."
-  '(member :big-endian :little-endian))
+(deftype external-byte-order ()
+  "Defines the legal values for *EXTERNAL-BYTE-ORDER*."
+  '(member :msb :lsb))
 
-(defvar *io-endianness* :big-endian
-  "*IO-ENDIANNESS* must be either :big-endian or :little-endian")
+(defvar *external-byte-order* :msb
+  "*EXTERNAL-BYTE-ORDER* must be either :msb or :lsb")
 
-(defun define-io-endianness (endian)
-  (check-type endian endianness)
-  (setf *io-endianness* endian))
+(defun define-external-byte-order (x)
+  (check-type x external-byte-order)
+  (setf *external-byte-order* x))
 
 (defun read-unsigned-integer (nb-bytes s)
   "Read an unsigned integer of size NB-BYTES bytes from input stream S."
@@ -76,24 +76,24 @@
           (if (eq x 'eof)
             (return-from read-unsigned-integer 'eof)
             (setq bytes (nconc bytes (list x))))))
-      (case *io-endianness*
-        (:little-endian
+      (case *external-byte-order*
+        (:lsb
           (mapc #'(lambda (x) (setq y (+ x (ash y 8)))) (nreverse bytes)))
-        (:big-endian
+        (:msb
           (mapc #'(lambda (x) (setq y (+ x (ash y 8)))) bytes)))
       y)))
 
 (defun write-unsigned-integer (quantity nb-bytes s)
   "Write an unsigned integer of size NB-BYTES bytes to output stream S."
-  (case *io-endianness*
-    (:little-endian
+  (case *external-byte-order*
+    (:lsb
       (unless (zerop nb-bytes)
         (write-byte (logand quantity #xff) s)
         (write-unsigned-integer
           (ash quantity -8)
           (1- nb-bytes)
           s)))
-    (:big-endian
+    (:msb
       (unless (zerop nb-bytes)
         (write-unsigned-integer
           (ash quantity -8)

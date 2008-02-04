@@ -11,38 +11,42 @@
 ;; Read functions:
 ;;
 ;;   M: read_matrix (source, sep_ch_flag)
-;;   read_lisp_array (source, A, sep_ch_flag)
-;;   read_binary_lisp_array (source, A)
-;;   read_maxima_array (source, A, sep_ch_flag)
-;;   read_binary_maxima_array (source, A)
+;;   read_matrix (source, M, sep_ch_flag)
+;;   read_array (source, A, sep_ch_flag)
 ;;   read_hashed_array (source, A, sep_ch_flag)
 ;;   L: read_nested_list (source, sep_ch_flag)
 ;;   L: read_list (source, sep_ch_flag)
+;;   read_list (source, L, sep_ch_flag)
+;;
+;;   read_binary_matrix (source, M, sep_ch_flag)
+;;   read_binary_array (source, A)
 ;;   L: read_binary_list (source)
+;;   read_binary_list (source, L)
 ;;
 ;; `source' is a file name or input stream.
 ;;
 ;; Write functions:
 ;;
+;; `sink' is a file name or output stream.
+;;
 ;;   write_data (X, sink, sep_ch_flag)
 ;;   write_binary_data (X, sink)
 ;;
-;; `sink' is a file name or output stream.
+;; Helpers:
 ;;
-;; assign_io_endianness sets the endianness for reading and writing
-;; binary floats. The endianness values recognized are big_endian
-;; and little_endian.
+;; byte_order_flag recognized values: msb, lsb
+;;
+;;   assume_external_byte_order (byte_order_flag)
+;;
 
-;; See numericalio.texi for a lengthier description.
-
-(defun $assign_io_endianness (x)
+(defun $assume_external_byte_order (x)
   (cond
-    ((eq x '$little_endian)
-     (define-io-endianness :little-endian))
-    ((eq x '$big_endian)
-     (define-io-endianness :big-endian))
+    ((eq x '$lsb)
+     (define-external-byte-order :lsb))
+    ((eq x '$msb)
+     (define-external-byte-order :msb))
     (t
-      (merror "assign_io_endianness: unrecognized endianness"))))
+      (merror "assume_external_byte_order: unrecognized byte order flag: ~a" x))))
 
 (defun lisp-or-declared-maxima-array-p (x)
   (or (arrayp x) (mget x 'array)))
@@ -69,19 +73,40 @@
 
 ;; -------------------- read functions --------------------
 
-(defun $read_matrix (file-name &optional sep-ch-flag)
-  `(($matrix) ,@(cdr ($read_nested_list file-name sep-ch-flag))))
+(defun $read_matrix (stream-or-filename &rest args)
+  (if ($matrixp (car args))
+    (let*
+      ((M (car args))
+       (sep-ch-flag (cadr args))
+       (nrow (length (cdr M)))
+       (ncol (if (> nrow 0) (length (cdadr M)) 0))
+       (L ($read_list stream-or-filename sep-ch-flag (* nrow ncol))))
+      (fill-matrix-from-list L M nrow ncol))
+    (let ((sep-ch-flag (car args)))
+      `(($matrix) ,@(cdr ($read_nested_list stream-or-filename sep-ch-flag))))))
 
-(defun $read_lisp_array (file-name A &optional sep-ch-flag)
+(defun $read_binary_matrix (stream-or-filename M)
+  (if ($matrixp M)
+    (let*
+      ((nrow (length (cdr M)))
+       (ncol (if (> nrow 0) (length (cdadr M)) 0))
+       (L ($read_binary_list stream-or-filename (* nrow ncol))))
+      (fill-matrix-from-list L M nrow ncol))
+    (merror "read_binary_matrix: expected a matrix, found ~a instead" (type-of M))))
+
+(defun fill-matrix-from-list (L M nrow ncol)
+  (let ((k 0))
+    (dotimes (i nrow)
+      (let ((row (nth (1+ i) M)))
+        (dotimes (j ncol)
+          (setf (nth (1+ j) row) (nth (1+ k) L))
+          (setq k (1+ k))))))
+  M)
+
+(defun $read_array (file-name A &optional sep-ch-flag)
   (read-array file-name A sep-ch-flag 'text))
 
-(defun $read_binary_lisp_array (file-name A)
-  (read-array file-name A nil 'binary))
-
-(defun $read_maxima_array (file-name A &optional sep-ch-flag)
-  (read-array file-name A sep-ch-flag 'text))
-
-(defun $read_binary_maxima_array (file-name A)
+(defun $read_binary_array (file-name A)
   (read-array file-name A nil 'binary))
 
 (defun read-array (file-name A sep-ch-flag mode)
@@ -141,8 +166,23 @@
         (return (cons '(mlist simp) (nreverse A))))
       (setq A (cons (make-mlist-from-string L sep-ch) A)))))
 
-(defun $read_list (stream-or-filename &optional sep-ch-flag n)
-  (read-list stream-or-filename sep-ch-flag 'text n))
+(defun $read_list (stream-or-filename &rest args)
+  (if ($listp (car args))
+    (let*
+      ((L (car args))
+       (sep-ch-flag (cadr args))
+       (n (or (caddr args) ($length L)))
+       ;; Probably we could try to avoid creating a second list
+       ;; by reading directly into the first one ...
+       (L2 (read-list stream-or-filename sep-ch-flag 'text n)))
+      (dotimes (i (length L2))
+        (setf (nth i L) (nth i L2)))
+      L)
+    (if (integerp (car args))
+      (let ((n (car args)))
+        (read-list stream-or-filename nil 'text n))
+      (let ((sep-ch-flag (car args)) (n (cadr args)))
+        (read-list stream-or-filename sep-ch-flag 'text n)))))
 
 (defun read-list (stream-or-filename sep-ch-flag mode n)
   (if (streamp stream-or-filename)
@@ -168,8 +208,19 @@
       (setq A (nconc (list x) A))
       (if n (decf n)))))
 
-(defun $read_binary_list (stream-or-filename &optional n)
-  (read-list stream-or-filename nil 'binary n))
+(defun $read_binary_list (stream-or-filename &rest args)
+  (if ($listp (car args))
+    (let*
+      ((L (car args))
+       (n (or (cadr args) ($length L)))
+       ;; Probably we could try to avoid creating a second list
+       ;; by reading directly into the first one ...
+       (L2 (read-list stream-or-filename nil 'binary n)))
+      (dotimes (i (length L2))
+        (setf (nth i L) (nth i L2)))
+      L)
+    (let ((n (car args)))
+      (read-list stream-or-filename nil 'binary n))))
 
 (let (pushback-sep-ch)
   (defun parse-next-element (in sep-ch)
@@ -241,6 +292,14 @@
     ((null LL) (append L '(nil)))
     ((= (length LL) 1) (append L LL))
     (t (append L (list (append '((mlist)) LL))))))
+
+;; ----- begin backwards compatibility stuff ... sigh -----
+(defun $read_lisp_array (file-name A &optional sep-ch-flag)
+  ($read_array file-name A sep-ch-flag))
+
+(defun $read_maxima_array (file-name A &optional sep-ch-flag)
+  ($read_array file-name A sep-ch-flag))
+;; -----  end backwards compatibility stuff ... sigh  -----
 
 
 ;; -------------------- write functions -------------------
