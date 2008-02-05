@@ -504,7 +504,8 @@ mnewton
 numericalio
 
 * Introduction to numericalio::
-* Functions and Variables for numericalio::
+* Functions and Variables for plain-text input and output::
+* Functions and Variables for binary input and output::
 
 opsubst
 
