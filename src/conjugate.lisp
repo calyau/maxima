@@ -217,8 +217,7 @@
 	 (not (manifestly-complex-p e))
 	 (not (manifestly-nonreal-p e))
 	 (or
-	  (mnump e)
-	  (mnump (numer e))
+	  ($numberp e)
 	  (symbolp e)
 	  (and ($subvarp e) (manifestly-real-p ($op e)))))))
 
