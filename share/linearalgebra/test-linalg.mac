@@ -39,7 +39,7 @@ mat_norm(m,'inf);
 13$
 
 mat_norm(m,'frobenius);
-2^2 + 3^2 + 6^2 + 7^2$
+sqrt(2^2 + 3^2 + 6^2 + 7^2)$
 
 (m : matrix([2*%i,3],[6,7]), 0);
 0$
@@ -51,7 +51,7 @@ mat_norm(m,'inf);
 13$
 
 mat_norm(m,'frobenius);
-2^2 + 3^2 + 6^2 + 7^2$
+sqrt(2^2 + 3^2 + 6^2 + 7^2)$
 
 
 /*--- matrix size ----*/
