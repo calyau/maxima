@@ -59,6 +59,16 @@ get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, ii%, jj%) := block
     else ?aref (a%, i%));
 
 tellsimpafter
+    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [ii%],
+     if u% = 1 then get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, 1, ii%)
+     elseif v% = 1 then get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, ii%, 1)
+     /* Throwing here is unsatisfactory. I might create a noun instead
+      * but by the time we get here, the symbol to which amatrix(...)
+      * is bound has been lost.
+      */
+     else throw (oops ("This matrix requires two subscripts")));
+
+tellsimpafter
     (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [ii%, jj%],
      get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, ii%, jj%));
 
@@ -205,7 +215,7 @@ amatrix_mean (x) := block
   ([m : nrows(x),
     n : ncols(x)],
     if n=1
-        then 1/m * sum (x [i, 1], i, 1, n)
+        then 1/m * sum (x [i], i, 1, m)
         else makelist (mean (x [all, j]), j, 1, n));
 
 matchdeclare (A%, amatrixp);
@@ -221,4 +231,14 @@ random_matrix (nr, nc) := block
     M);
 
 new2old_matrix (M) := genmatrix (lambda ([i, j], get_element (M, i, j)), nrows(M), ncols(M));
+
+old2new_matrix (M) := block ([nr, nc, M2],
+    nr : length (M),
+    nc : length (M [1]),
+    M2 : make_matrix (nr, nc),
+    for i thru nr
+        do for j thru nc
+            do M2 [i, j] : M [i, j],
+    M2);
+            
 
