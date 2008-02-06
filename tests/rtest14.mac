@@ -1066,3 +1066,15 @@ specint(8*t^1*exp(3*t)*bessel_y(8,7*t^(3/2))*exp(-p*t),t);
 
 (assume(t>0,v2>1), radcan(specint(bessel_i(-v2,t)*exp(-p*t),t)));
 'specint((%e^((%i*%pi*v2-2*p*t)/2)*bessel_i(-v2,t))/(-1)^(v2/2),t);
+
+/* Verify fix for [ 1877522 ] erf(1.0),nouns wrong; causes plot2d(erf) to fail
+ */
+erf(1.0), nouns;
+0.8427007929497148;
+
+erf(1.0), erf;
+0.8427007929497148;
+
+erf(1.0);
+0.8427007929497148;
+
