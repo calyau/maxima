@@ -261,3 +261,33 @@ v*cos(x)*sec(x)^2*tan(x)+(-v*sec(x)^2-2*'diff(v,x))*sin(x)+'diff(v,x)*cos(x)*sec
 trigsimp(%);
 -2*'diff(v,x,1)*sin(x)+'diff(v,x,2)*cos(x)+'diff(v,x,1)$
 
+triginverses : all;
+all;
+
+sinh(acosh(x));
+sqrt(x-1)*sqrt(x+1);
+
+sinh(atanh(x));
+x/(sqrt(1-x)*sqrt(x+1));
+
+cosh(asinh(x));
+sqrt(x^2+1);
+
+cosh(atanh(x));
+1/(sqrt(1-x)*sqrt(x+1));
+
+tanh(asinh(x));
+x/sqrt(x^2+1);
+
+tanh(acosh(x));
+sqrt(x-1)*sqrt(x+1)/x;
+
+/* A few checks to see that triginverses false disables the above transformations */
+triginverses: false;
+false;
+
+cos(acosh(x));
+cos(acosh(x));
+
+triginverses : all;
+all;

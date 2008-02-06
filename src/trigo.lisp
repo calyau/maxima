@@ -24,7 +24,22 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) 0)))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%sin (coeff y '$%i 1))))
-	((and $triginverses (not (atom y)) (if (eq '%asinh (caar y)) (cadr y))))
+	((and $triginverses (not (atom y))
+	      (let ((fcn (caar y))
+		    (arg (cadr y)))
+		(cond ((eq '%asinh fcn)
+		       arg)
+		      ((eq '%acosh fcn)
+		       ;; ratsimp(logarc(exponentialize(sinh(acosh(x))))),algebraic;
+		       ;; -> sqrt(x-1)*sqrt(x+1)
+		       (mul (power (sub arg 1) 1//2)
+			    (power (add arg 1) 1//2)))
+		      ((eq '%atanh fcn)
+		       ;; radcan(logarc(exponentialize(sinh(atanh(x)))));
+		       ;; -> x/(sqrt(1-x)*sqrt(1+x))
+		       (div arg
+			    (mul (power (sub 1 arg) 1//2)
+				 (power (add 1 arg) 1//2))))))))
 	((and $trigexpand (trigexpand '%sinh y)))
 	($exponentialize (exponentialize '%sinh y))
 	((and $halfangles (halfangle '%sinh y)))
@@ -40,7 +55,25 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) 1)))
 	((and $%iargs (multiplep y '$%i)) (cons-exp '%cos (coeff y '$%i 1)))
-	((and $triginverses (not (atom y)) (if (eq '%acosh (caar y)) (cadr y))))
+	((and $triginverses (not (atom y))
+	      (let ((fcn (caar y))
+		    (arg (cadr y)))
+		(cond ((eq '%acosh fcn)
+		       arg)
+		      ((eq '%asinh fcn)
+		       ;; ex: cosh(asinh(x));
+		       ;; ex,exponentialize,logarc;
+		       ;; ratsimp(%),algebraic
+		       ;; -> sqrt(x^2+1)
+		       ;; 
+		       (sqrt1+x^2 arg))
+		      ((eq '%atanh fcn)
+		       ;; ex: cosh(atanh(x))
+		       ;; radcan(logarc(exponentialize(ex)))
+		       ;; -> 1/sqrt(1-x)/sqrt(1+x)
+		       (div 1
+			    (mul (power (sub 1 arg) 1//2)
+				 (power (add 1 arg) 1//2))))))))
 	((and $trigexpand (trigexpand '%cosh y)))
 	($exponentialize (exponentialize '%cosh y))
 	((and $halfangles (halfangle '%cosh y)))
@@ -56,7 +89,21 @@
 	((taylorize (mop form) (second form)))
 	((and $%piargs (if (zerop1 y) 0)))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%tan (coeff y '$%i 1))))
-	((and $triginverses (not (atom y)) (if (eq '%atanh (setq z (caar y))) (cadr y))))
+	((and $triginverses (not (atom y))
+	      (let ((fcn (caar y))
+		    (arg (cadr y)))
+		(cond ((eq '%atanh fcn)
+		       arg)
+		      ((eq '%asinh fcn)
+		       ;; ratsimp(logarc(exponentialize(tanh(asinh(x))))),algebraic;
+		       ;; --> x/sqrt(1+x^2)
+		       (div arg (sqrt1+x^2 arg)))
+		      ((eq '%acosh fcn)
+		       ;; ratsimp(logarc(exponentialize(tanh(acosh(x))))),algebraic;
+		       ;; sqrt(x-1)*sqrt(x+1)/x
+		       (div (mul (power (sub arg 1) 1//2)
+				 (power (add arg 1) 1//2))
+			    arg))))))
 	((and $trigexpand (trigexpand '%tanh y)))
 	($exponentialize (exponentialize '%tanh y))
 	((and $halfangles (halfangle '%tanh y)))
