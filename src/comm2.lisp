@@ -40,7 +40,7 @@
 	  (if (pzerop v) 0 (mul3 v (maxima-substitute (caddr e) y (car e)) -1)))))
 
 (defmfun diffsumprod (e x)
-  (cond ((or (not (atom x)) (not (free (cadddr e) x)) (not (free (car (cddddr e)) x)))
+  (cond ((or (not ($mapatom x)) (not (free (cadddr e) x)) (not (free (car (cddddr e)) x)))
 	 (diff%deriv (list e x 1)))
 	((eq (caddr e) x) 0)
 	(t (let ((u (sdiff (cadr e) x)))
