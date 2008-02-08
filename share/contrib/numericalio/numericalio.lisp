@@ -18,7 +18,7 @@
 ;;   L: read_list (source, sep_ch_flag)
 ;;   read_list (source, L, sep_ch_flag)
 ;;
-;;   read_binary_matrix (source, M, sep_ch_flag)
+;;   read_binary_matrix (source, M)
 ;;   read_binary_array (source, A)
 ;;   L: read_binary_list (source)
 ;;   read_binary_list (source, L)
