@@ -102,6 +102,7 @@
   (setq y (simpcheck (cadr x) z))
   (cond ((or (floatp y) (and (not makef) (ratnump y) (equal (caddr y) 2)))
 	 (simplifya (makegamma1 (list '(mfactorial) y)) nil))
+	(($bfloatp y) (mfuncall '$bffac y $fpprec))
 	((or (not (fixnump y)) (not (> y -1)))
 	 (eqtest (list '(mfactorial) y) x))
 	((or (minusp $factlim) (not (> y $factlim)))

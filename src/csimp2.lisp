@@ -180,6 +180,7 @@
 	 (jr ($realpart j))
 	 (ji ($imagpart j)))
     (cond ((floatp j) (gammafloat j))
+	  (($bfloatp j) (mfuncall '$bffac (m+ j -1) $fpprec))
 	  ((and (numberp jr) 
 		(numberp ji)
 		(or $numer (floatp jr) (floatp ji)))

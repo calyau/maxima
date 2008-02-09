@@ -47,8 +47,6 @@ Returns the Riemann zeta function for the argument @var{s}.
 The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
 
-@code{load ("bffac")} loads this function.
-
 @opencatbox
 @category{Number theory} @category{Numerical evaluation}
 @closecatbox

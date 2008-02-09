@@ -5,8 +5,10 @@
 ($auto_mexpr '$unsum "nusum")
 ($auto_mexpr '$funcsolve "nusum")
 
+($auto_mexpr '$bffac "bffac")
 ($auto_mexpr '$bfzeta "bffac")
 ($auto_mexpr '$bfpsi "bffac")
+($auto_mexpr '$bfpsi0 "bffac")
 
 (auto-mexpr '$trigrat '|trigrat|)
 ($auto_mexpr '$gcdex '|gcdex|)
