@@ -197,3 +197,36 @@ clebsch_graph() := block(
 induced_subgraph1(e_list, gr) := block(
   [v_list : setify(xreduce(append, e_list))],
   create_graph(listify(v_list), e_list))$
+
+make_graph(vertices, edges_lambda, [directed]) := block(
+  [n, v_map, edges:[], j_min, int_vertices, vrt],
+  
+  if integerp(vertices) then (
+    n : vertices,
+    vrt : makelist(i, i, 1, n),
+    v_map : makelist(i=i, i, 1, n))
+  else (
+    n : length(vertices),
+    vrt : n,
+    v_map : makelist(i=part(vertices, i), i, 1, n)),
+  
+  for i:1 thru n do (
+    if length(directed)>0 then
+    for j:1 thru i-1 do
+      if apply(edges_lambda, [assoc(i, v_map), assoc(j, v_map)])=true then
+        edges : cons([i, j], edges),
+    for j:i+1 thru n do
+      if apply(edges_lambda, [assoc(i, v_map), assoc(j, v_map)])=true then
+        edges : cons([i,j], edges)),
+      
+  if not(integerp(vertices)) then (
+    if every(integerp, vertices) then (
+      vrt : vertices,
+      edges : map( lambda([u], [assoc(u[1], v_map), assoc(u[2], v_map)]), edges))
+    else (
+      vrt : makelist([i, part(vertices, i)], i, 1, n))),
+  
+  if length(directed)>0 then
+    create_graph(vrt, edges, 'directed=true)
+  else
+    create_graph(vrt, edges))$
