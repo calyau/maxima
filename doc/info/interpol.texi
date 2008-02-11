@@ -6,7 +6,7 @@
 @node Introduction to interpol, Functions and Variables for interpol, interpol, interpol
 @section Introduction to interpol
 
-Package @code{interpol} defines de Lagrangian, the linear and the cubic 
+Package @code{interpol} defines the Lagrangian, the linear and the cubic 
 splines methods for polynomial interpolation.
 
 For comments, bugs or suggestions, please contact me at @var{'mario AT edu DOT xunta DOT es'}.
