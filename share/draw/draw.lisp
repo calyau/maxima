@@ -40,6 +40,9 @@
                               "wgnuplot"
                               "gnuplot"))
 
+(defvar $gnuplot_file_name "maxout.gnuplot")
+
+(defvar $data_file_name "data.gnuplot")
 
 
 ;; This variable stores actual graphics options
