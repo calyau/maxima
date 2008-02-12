@@ -495,7 +495,7 @@
 			      (list "-c" (apply '$sconcat args)) :output t)
   #+openmcl (ccl::run-program "/bin/sh"
 			      (list "-c" (apply '$sconcat args)) :output t)
-  )
+  #+abcl (extensions::run-shell-command (apply '$sconcat args)))
 
 (defun $room (&optional (arg nil arg-p))
   (if arg-p
