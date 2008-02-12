@@ -197,6 +197,7 @@
        $hessian
        $jacobian
        $matrix_sign
+       $vandermonde_matrix
        
        $blockmatrixp           ; linalg-utilities.lisp
        $ctranspose
@@ -256,14 +257,13 @@
        $polytocompanion
        $ptriangularize
        $ptriangularize_with_proviso
-       $rank
+       $linalg_rank
        $request_rational_matrix
        $require_integer
        $require_symbol
        $rowop
        $rowswap
-       $toeplitz
-       $vandermonde_matrix ))
+       $toeplitz))
   ($auto_mexpr mexpr "linearalgebra"))
 
 
