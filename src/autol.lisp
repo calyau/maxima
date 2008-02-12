@@ -54,7 +54,7 @@
   (unless (mget fun 'mexpr)
     (mputprop fun
               `((lambda) ((mlist) ((mlist) |_l|))
-		((mprogn) ((aload) ',file ) (($apply) ',fun |_l|)))
+		((mprogn) ((aload) ((mquote) ,file)) (($apply) ((mquote) ,fun) |_l|)))
 	      'mexpr)))
 
 ;;foo(x,y):=..
@@ -62,5 +62,5 @@
   (unless (mget fun 'mexpr)
     (mputprop fun
               `((lambda) ((mlist) ((mlist) |_l|))
-		((mprogn) (($aload_mac) ',file ) (($apply) ',fun |_l|)))
+		((mprogn) (($aload_mac) ((mquote) ,file)) (($apply) ((mquote) ,fun) |_l|)))
 	      'mexpr)))
