@@ -33,12 +33,18 @@
 			#-clisp
                         ((mlist) $x #.(- (/ most-positive-flonum 1024))
                          #.(/ most-positive-flonum 1024))
+			#+clisp
+                        ((mlist) $x #.(- (/ most-positive-double-float 1024.0))
+                         #.(/ most-positive-double-float 1024.0))
                         ;; Make the default range on Y large.  Don't
                         ;; use most-positive-flonum because this
                         ;; causes overflow in the draw2d routine.
 			#-clisp
                         ((mlist) $y #.(- (/ most-positive-flonum 1024))
                          #.(/ most-positive-flonum 1024))
+			#+clisp
+                        ((mlist) $y #.(- (/ most-positive-double-float 1024.0))
+                         #.(/ most-positive-double-float 1024.0))
                         ((mlist) $t -3 3)
                         ((mlist) $grid 30 30)
                         ((mlist) $transform_xy nil)
