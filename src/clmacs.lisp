@@ -402,12 +402,12 @@
 	(t
 	 'kernel:double-double-float)))
 
-(defconstant most-positive-flonum (float most-positive-double-float 1w0))
-(defconstant most-negative-flonum (float most-negative-double-float 1w0))
-(defconstant least-positive-flonum (float least-positive-double-float 1w0))
-(defconstant least-negative-flonum (float least-negative-double-float 1w0))
-(defconstant flonum-epsilon (scale-float 1w0 -106)
-(defconstant least-positive-normalized-flonum (float least-positive-normalized-double-float 1w0))
+(defconstant most-positive-flonum (cl:float most-positive-double-float 1w0))
+(defconstant most-negative-flonum (cl:float most-negative-double-float 1w0))
+(defconstant least-positive-flonum (cl:float least-positive-double-float 1w0))
+(defconstant least-negative-flonum (cl:float least-negative-double-float 1w0))
+(defconstant flonum-epsilon (scale-float 1w0 -106))
+(defconstant least-positive-normalized-flonum (cl:float least-positive-normalized-double-float 1w0))
 
 (defconstant flonum-exponent-marker #\W)
 
