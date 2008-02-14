@@ -5,7 +5,7 @@ if ?plist(fillarray)=false then loadfile(array,fasl,dsk,share)$
 			for i from 0 thru 15 do g[i]:1.,
 			for i from 0 thru 31 do xa[i]:float(i))$
 /* define function to display them */
-			p():=graph2(xa,[g,h],[0,1])$
+			p():=plot2d([[discrete,listarray(xa),listarray(g)],[discrete,listarray(xa),listarray(h)]])$
 			p()$
 /* perform fft */	fft(g,h)$ 
 			p()$
@@ -23,7 +23,7 @@ if ?plist(fillarray)=false then loadfile(array,fasl,dsk,share)$
 			array([gt,ht],float,31)$
 			(fillarray(gt,g),fillarray(ht,h))$
 			fft(gt,ht)$
-			graph2(xa,[gt,ht],[0,1])$
+			plot2d([[discrete,listarray(xa),listarray(gt)],[discrete,listarray(xa),listarray(ht)]])$
 /* The last part of this demo plots pretty patterns created by FFT.
    They will only look good if your terminal supports high resolution
    plotting.  If it doesn't I suggest you quit out here by typing
