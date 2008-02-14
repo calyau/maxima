@@ -40,8 +40,8 @@
 			        `(make-unspecial ',w)))
 	     else collect `(proclaim ',v))))
 
-;;this list should contain all specials required by runtime or more than one maxima file,
-;;except for some specials declared in the macro files, eg displm
+;;; This list should contain all specials required by runtime or more than one maxima file,
+;;; except for some specials declared in the macro files, eg displm
 
 (declaim (special
 	  $% $%% $%edispflag $%emode $%enumer $%e_to_numlog $%iargs $%piargs

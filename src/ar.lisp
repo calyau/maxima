@@ -66,7 +66,7 @@
 	   (merror "Array type of ~M is not recognized by `make_array'" type)))
 	(make-array diml :initial-element (case (cdr ltype)
 					    (fixnum 0)
-					    (flonum 0d0)
+					    (flonum 0.0)
 					    (otherwise nil))))))
 
 (defmfun maknum (x)

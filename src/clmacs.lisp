@@ -239,7 +239,7 @@
   (setq x (cond ((null x)
 		 (ecase (array-element-type ar)
 		   (fixnum '(0))
-		   (float '(0d0))
+		   (float '(0.0))
 		   ((t) '(nil))))
 		((arrayp x)(listarray x))
 		((atom x) (list x))
@@ -277,21 +277,19 @@
     (or not-dim1 (setf (gethash 'dim1 table) t))
     table))
 
-;;range of atan should be [0,2*pi]
+;;; Range of atan should be [0,2*pi]
 (defun atan (y x)
   (let ((tem (cl:atan y x)))
     (if (>= tem 0)
 	tem
 	(+ tem (* 2 pi)))))
 
-;;range of atan2 should be (-pi,pi]
-;;CL manual says that's what lisp::atan is supposed to have.
+;;; Range of atan2 should be (-pi,pi]
+;;; CL manual says that's what lisp::atan is supposed to have.
 (deff atan2 #'cl:atan)
 
-;;exp is shadowed to save trouble for other packages--its declared special
+;;; exp is shadowed to save trouble for other packages--its declared special
 (deff exp #'cl:exp)
-
-(setq *read-default-float-format* 'double-float)
 
 #+clisp
 (progn
@@ -314,11 +312,108 @@
   ;; in those few cases when the mathematical result is exact although
   ;; one of the arguments is a floating-point number, such as (* 0
   ;; 1.618), (/ 0 1.618), (atan 0 1.0), (expt 2.0 0)
-  (setq custom:*floating-point-rational-contagion-ansi* t))
+  (setq custom:*floating-point-rational-contagion-ansi* t)
 
-(defmacro float (x &optional (y 1d0))
-  `(cl:float ,x ,y))
+  ;; When building maxima using with 'flonum being a 'long-float it may be
+  ;; useful to adjust the number of bits of precision that CLISP uses for
+  ;; long-floats.
+  #+nil
+  (setf (ext:long-float-digits) 128)
+  )
 
-;; Tell Lisp that a flonum is really a double-float.
+;;;; Setup the mapping from the Maxima 'flonum float type to a CL float type.
+
+;;;; Default double-float flonum.
+(eval-when (compile load eval)
+(setq *read-default-float-format* 'double-float)
+) ; eval-when
+
+;;; Tell Lisp that a flonum is really a double-float.
 (deftype flonum ()
   'double-float)
+
+;; Tell Lisp the float type for a 'flonum.
+(deftype flonum (&optional low high)
+  (cond (high
+	 `(double-float ,low ,high))
+	(low
+	 `(double-float ,low))
+	(t
+	 'double-float)))
+
+(defconstant most-positive-flonum most-positive-double-float)
+(defconstant most-negative-flonum most-negative-double-float)
+(defconstant least-positive-flonum least-positive-double-float)
+(defconstant least-negative-flonum least-negative-double-float)
+(defconstant flonum-epsilon double-float-epsilon)
+(defconstant least-positive-normalized-flonum least-positive-normalized-double-float)
+
+(defconstant flonum-exponent-marker #\D)
+
+#|
+;;;; The Maxima 'flonum can be a CL 'long-float on the Scieneer CL or CLISP,
+;;;; but should be the same a 'double-float on other CL implementations.
+
+(eval-when (compile load eval)
+(setq *read-default-float-format* 'long-float)
+) ; eval-when
+
+;;; Tell Lisp that a flonum is really a long-float.
+(deftype flonum ()
+  'long-float)
+
+;; Tell Lisp the float type for a 'flonum.
+(deftype flonum (&optional low high)
+  (cond (high
+	 `(long-float ,low ,high))
+	(low
+	 `(long-float ,low))
+	(t
+	 'long-float)))
+
+(defconstant most-positive-flonum most-positive-long-float)
+(defconstant most-negative-flonum most-negative-long-float)
+(defconstant least-positive-flonum least-positive-long-float)
+(defconstant least-negative-flonum least-negative-long-float)
+(defconstant flonum-epsilon long-float-epsilon)
+(defconstant least-positive-normalized-flonum least-positive-normalized-long-float)
+
+(defconstant flonum-exponent-marker #\L)
+
+|#
+
+#|
+;;;; The Maxima 'flonum can be a 'kernel:double-double-float on the CMU CL.
+
+(eval-when (compile load eval)
+(setq *read-default-float-format* 'kernel:double-double-float)
+) ; eval-when
+
+;;; Tell Lisp that a flonum is really a long-float.
+(deftype flonum ()
+  'kernel:double-double-float)
+
+;; Tell Lisp the float type for a 'flonum.
+(deftype flonum (&optional low high)
+  (cond (high
+	 `(kernel:double-double-float ,low ,high))
+	(low
+	 `(kernel:double-double-float ,low))
+	(t
+	 'kernel:double-double-float)))
+
+(defconstant most-positive-flonum (float most-positive-double-float 1w0))
+(defconstant most-negative-flonum (float most-negative-double-float 1w0))
+(defconstant least-positive-flonum (float least-positive-double-float 1w0))
+(defconstant least-negative-flonum (float least-negative-double-float 1w0))
+(defconstant flonum-epsilon (scale-float 1w0 -106)
+(defconstant least-positive-normalized-flonum (float least-positive-normalized-double-float 1w0))
+
+(defconstant flonum-exponent-marker #\W)
+
+|#
+
+;;;;
+(defmacro float (x &optional (y 1e0))
+  `(cl:float ,x ,y))
+

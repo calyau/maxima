@@ -268,11 +268,13 @@
 
 (defun make-number (data)
   (setq data (nreverse data))
-  ;; Maxima really wants to read in any number as a double-float
-  ;; (except when we have a bigfloat, of course!).  So convert an E or
-  ;; S exponent marker to D.
-  (when (member (car (nth 3 data)) '(#\E #\S))
-    (setf (nth 3 data) (list #\D)))
+  ;; Maxima really wants to read in any number as a flonum
+  ;; (except when we have a bigfloat, of course!).  So convert exponent
+  ;; markers to the flonum-exponent-marker.
+  (let ((marker (car (nth 3 data))))
+    (unless (eql marker flonum-exponent-marker)
+      (when (member marker '(#\E #\S #\D #\L #+cmu #\W))
+        (setf (nth 3 data) (list flonum-exponent-marker)))))
   (if (not (equal (nth 3 data) '(#\B)))
       (readlist (apply #'append data))
       ;; For bigfloats, turn them into rational numbers then convert to bigfloat.

@@ -115,8 +115,8 @@
 (declare-top (special $rootsepsilon $grindswitch $algepsilon $algdelta $true
 		      $false $on $off $logabs rischpf $limitdomain rischp rp-polylogp ))
 
-(setq $rootsepsilon 1d-7 $%rnum 0
-      $grindswitch nil $algepsilon 100000000 $algdelta 1d-5)
+(setq $rootsepsilon 1e-7 $%rnum 0
+      $grindswitch nil $algepsilon 100000000 $algdelta 1e-5)
 
 (defmvar $listarith t)
 
@@ -621,8 +621,7 @@
 (eval-when
     #+gcl (compile load)
     #-gcl (:compile-toplevel :load-toplevel)
-
-    (defconstant machine-mantissa-precision (float-digits 1d0)))
+    (defconstant machine-mantissa-precision (float-digits 1.0)))
 
 (defun fpcofrat1 (nu d)
   (if (and (bignump nu) (bignump d))
@@ -811,7 +810,7 @@
 	    (cond ((null (setq y (cdr y)))
 		   (return (simplifya (cons '(mplus) b) t))))
 	    (go loop)))
-	((double-float-eval (mop x) y))
+	((flonum-eval (mop x) y))
 	((and (not (memq 'simp (car x)))
 	      (big-float-eval (mop x) y)))
 	;; (($bfloatp y) ($bfloat (list '(%log) y)))
@@ -831,7 +830,7 @@
 (defmfun simpsqrt (x y z)
   (oneargcheck x)
   (setq y (simpcheck (cadr x) z))
-  (cond ((double-float-eval (mop x) y))
+  (cond ((flonum-eval (mop x) y))
 	((and (not (memq 'simp (car x)))
 	      (big-float-eval (mop x) y)))
 	(t
@@ -1350,7 +1349,7 @@
 					
 (defmfun exptrl (r1 r2)
   (cond ((equal r2 1) r1)
-	((equal r2 1d0) (cond ((mnump r1) (addk 0d0 r1)) (t r1)))
+	((equal r2 1.0) (cond ((mnump r1) (addk 0.0 r1)) (t r1)))
 	((equal r2 bigfloatone) (cond ((mnump r1) ($bfloat r1)) (t r1)))
 	((zerop1 r1)
 	 (cond ((or (zerop1 r2) (mnegp r2))
@@ -1368,7 +1367,7 @@
 	 (exptb (float r1) (floor r2)))
 	((or $numer (and (floatp r2) (or (plusp (num1 r1)) $numer_pbranch)))
 	 (let (y  #+kcl(r1 r1) #+kcl(r2 r2))
-	   (cond ((minusp (setq r1 (addk 0d0 r1)))
+	   (cond ((minusp (setq r1 (addk 0.0 r1)))
 		  (cond ((or $numer_pbranch (eq $domain '$complex))
 			 ;; for R1<0: R1^R2 = (-R1)^R2*cos(pi*R2) + i*(-R1)^R2*sin(pi*R2)
 			 (setq r2 (addk 0.0 r2))
@@ -1378,8 +1377,8 @@
 			(t (setq y (let ($numer $float $keepfloat $ratprint)
 				     (power -1 r2)))
 			   (mul2 y (exptrl (- r1) r2)))))
-		 ((equal (setq r2 (addk 0d0 r2)) (float (floor r2))) (exptb r1 (floor r2)))
-		 ((and (equal (setq y (* 2d0 r2)) (float (floor y))) (not (equal r1 %e-val)))
+		 ((equal (setq r2 (addk 0.0 r2)) (float (floor r2))) (exptb r1 (floor r2)))
+		 ((and (equal (setq y (* 2.0 r2)) (float (floor y))) (not (equal r1 %e-val)))
 		  (exptb (sqrt r1) (floor y)))
 		 (t (exp (* r2 (log r1)))))))
 	((floatp r2) (list '(mexpt simp) r1 r2))
@@ -1394,7 +1393,7 @@
 	((and (floatp r1) (alike1 r2 '((rat) 1 2)))
 	 (cond ((minusp r1) (list '(mtimes simp) (sqrt (- r1)) '$%i)) (t (sqrt r1))))
 	((and (floatp r1) (alike1 r2 '((rat) -1 2)))
-	 (cond ((minusp r1) (list '(mtimes simp) (/ -1d0 (sqrt (- r1))) '$%i))
+	 (cond ((minusp r1) (list '(mtimes simp) (/ -1.0 (sqrt (- r1))) '$%i))
 	       (t (/ (sqrt r1)))))
 	((floatp r1)
 	 (cond ((plusp r1) (exptrl r1 (fpcofrat r2)))
@@ -1541,9 +1540,9 @@
 			  (t (go retno))))
 		  (mget gr '$numer)))
 		((eq gr '$%e)
-		 ;; Numerically evaluate if the power is a double-float.
+		 ;; Numerically evaluate if the power is a flonum.
 		 (when $%emode
-		   (let ((val (double-float-eval '$exp pot)))
+		   (let ((val (flonum-eval '$exp pot)))
 		     (when val
 		       (return val)))
 		   ;; Numerically evaluate if the power is a (complex)

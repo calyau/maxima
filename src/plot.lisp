@@ -13,7 +13,7 @@
     #+gcl (compile eval load)
     #-gcl (:compile-toplevel :execute :load-toplevel)
     (defmacro coerce-float (x)
-      `(cl:float (meval* ,x) 1d0)))
+      `(cl:float (meval* ,x) 1.0)))
 
 (defvar *maxima-plotdir* "")
 (defvar *maxima-tempdir*)
@@ -22,7 +22,7 @@
 (defvar *z-range* nil)
 (defvar *original-points* nil)
 (defvar $axes_length 4.0)
-(defvar *rot* (make-array 9 :element-type 'double-float))
+(defvar *rot* (make-array 9 :element-type 'flonum))
 (defvar $rot nil)
 
 (defvar $plot_options `((mlist)
@@ -30,13 +30,15 @@
                         ;; doesn't impact 2-D plotting, but is useful
                         ;; for parametric plots so that the plots
                         ;; don't get prematurely clipped.
-                        ((mlist) $x #.(- (/ most-positive-double-float 1024))
-                         #.(/ most-positive-double-float 1024))
+			#-clisp
+                        ((mlist) $x #.(- (/ most-positive-flonum 1024))
+                         #.(/ most-positive-flonum 1024))
                         ;; Make the default range on Y large.  Don't
-                        ;; use most-positive-double-float because this
+                        ;; use most-positive-flonum because this
                         ;; causes overflow in the draw2d routine.
-                        ((mlist) $y #.(- (/ most-positive-double-float 1024))
-                         #.(/ most-positive-double-float 1024))
+			#-clisp
+                        ((mlist) $y #.(- (/ most-positive-flonum 1024))
+                         #.(/ most-positive-flonum 1024))
                         ((mlist) $t -3 3)
                         ((mlist) $grid 30 30)
                         ((mlist) $transform_xy nil)
@@ -280,17 +282,17 @@
 
 (defun draw3d (f minx maxx miny maxy  nxint nyint)
   (let* ((epsx (/ (- maxx minx) nxint))
-	 (x 0d0)  ( y 0d0)
+	 (x 0.0)  ( y 0.0)
          (epsy (/ (- maxy miny) nyint))
          (nx (+ nxint 1))
          (l 0)
          (ny (+ nyint 1))
 	 (ar (make-array  (+ 12         ; 12  for axes
 			     (* 3 nx ny))  :fill-pointer (* 3 nx ny)
-			     :element-type 'double-float :adjustable t)))
-    (declare (double-float x y epsy epsx)
+			     :element-type 'flonum :adjustable t)))
+    (declare (type flonum x y epsy epsx)
              (fixnum nx  ny l)
-             (type (cl:array double-float) ar))
+             (type (cl:array flonum) ar))
     (loop for j below ny
            initially (setq y miny)
            do (setq x minx)
@@ -375,8 +377,8 @@
          (l (length pts))
          (x 0.0) (y 0.0) (z 0.0)
          )
-    (declare (double-float  x y z))
-    (declare (type (cl:array double-float) rot))
+    (declare (type flonum  x y z))
+    (declare (type (cl:array flonum) rot))
     ($copy_pts rotation-matrix *rot* 0)
         
     ;;    (setf (rot rot  0 0) (* cosphi costh))
@@ -397,7 +399,7 @@
            (setq x (aref pts j))
            (setq y (aref pts (+ j 1)))
            (setq z (aref pts (+ j 2)))
-           (loop for i below 3 with a of-type double-float = 0.0
+           (loop for i below 3 with a of-type flonum = 0.0
                   do
                   (setq a (* x (aref rot (+ (* 3 i) 0))))
                   (setq a (+ a (* y (aref rot (+ (* 3 i) 1)))))
@@ -410,9 +412,9 @@
          ($list_matrix_entries (ncmul2  $rot x)))
         ((mbagp x) (cons (car x) (mapcar '$rotate_list (cdr x))))))
 
-(defun $get_range (pts k &aux (z 0.0) (max most-negative-double-float) (min most-positive-double-float))
-  (declare (double-float z max min))
-  (declare (type (vector double-float) pts))
+(defun $get_range (pts k &aux (z 0.0) (max most-negative-flonum) (min most-positive-flonum))
+  (declare (type flonum z max min))
+  (declare (type (vector flonum) pts))
   (loop for i from k below (length pts) by 3
          do (setq z (aref pts i))
          (cond ((< z min) (setq min z)))
@@ -456,14 +458,14 @@
   (cond ((eql z1 0.0)
          (if (> z2 0.0)
              0.0
-             (coerce pi 'double-float)))
+             (coerce pi 'flonum)))
         (t
          (cl:atan  z2 z1 ))))
 
 (defun $polar_to_xy (pts &aux (r 0.0) (th 0.0))
-  (declare (double-float r th))
-  (declare (type (cl:array double-float) pts))
-  (assert (typep pts '(vector double-float)))
+  (declare (type flonum r th))
+  (declare (type (cl:array flonum) pts))
+  (assert (typep pts '(vector flonum)))
   (loop for i below (length pts) by 3
          do (setq r (aref pts i))
          (setq th (aref pts (+ i 1)))
@@ -479,8 +481,8 @@
   (let ((sym (gensym "transform")))
     (setf (symbol-function sym)
           #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
-              (declare (double-float  x1 x2 x3))
-              (declare (type (cl:array double-float) pts))
+              (declare (type flonum  x1 x2 x3))
+              (declare (type (cl:array flonum) pts))
               (loop for i below (length pts) by 3
                      do 
 		     (setq x1 (aref pts i))
@@ -647,7 +649,7 @@
 ;; which is closer to us (ie highest z component after rotating towards the user)
 ;; and this is then they are sorted in groups of 5.   
 (defun sort-ngons (points edges n &aux lis )
-  (declare (type (cl:array (double-float))  points)
+  (declare (type (cl:array (flonum))  points)
            (type (cl:array (mod 65000)) edges)
            (fixnum n))
   (let ((new (make-array (length edges) :element-type  (array-element-type edges)))
@@ -661,7 +663,7 @@
     (declare (type (cl:array (mod 65000)) new)
              (fixnum i leng n1 at )
              )
-    (declare (double-float z z1))
+    (declare (type flonum z z1))
     
     (setq lis
           (loop  for i0 below leng by (+ n 1)
@@ -727,9 +729,9 @@
 (defun $copy_pts(lis vec start)
   (declare (fixnum start))
   (let ((tem vec))
-    (declare (type (cl:array double-float) tem))
+    (declare (type (cl:array flonum) tem))
     (cond ((numberp lis)
-	   (or (typep lis 'double-float) (setq lis (float lis 0d0)))
+	   (or (typep lis 'flonum) (setq lis (float lis)))
 	   (setf (aref tem start) lis)
 	   (1+ start))
           ((typep lis 'cons)
@@ -768,7 +770,7 @@
          (eps (/ (- tmax tmin) (- nticks 1)))
          f1 f2 in-range-y in-range-x in-range last-ok 
          )
-    (declare (double-float x y tt ymin ymax xmin xmax tmin tmax eps))
+    (declare (type flonum x y tt ymin ymax xmin xmax tmin tmax eps))
     (setq f1 (coerce-float-fun (third param) `((mlist), (second trange))))
     (setq f2 (coerce-float-fun (fourth param) `((mlist), (second trange))))
     (cons '(mlist simp)    
@@ -853,7 +855,7 @@
 ;;         (eps2 (* eps eps))
 ;;         in-range last-ok
 ;;         )
-;;      (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
+;;      (declare (type flonum x1 y1 x y dy eps2 eps ymin ymax ))
 ;;                                      ;(print (list 'ymin ymin 'ymax ymax epsy))
 ;;      (setq x ($- x eps))  
 ;;      (cons '(mlist)
@@ -947,10 +949,10 @@
            ;;
            ;; XXX: What is the right value for delta?  Does this break
            ;; other things?  Simple tests thus far show that
-           ;; 100*double-float-epsilon is ok.
+           ;; 100*flonum-epsilon is ok.
            (let ((diff (- (abs quad)
                           (* eps (- quad-b (min f-a f-a1 f-b f-b1 f-c)))))
-                 (delta (* 100 double-float-epsilon)))
+                 (delta (* 100 flonum-epsilon)))
              (<= diff delta))))
         (t
          ;; Something is not a number, so assume it's not smooth enough.
@@ -1008,10 +1010,10 @@
            (ymin (coerce-float (third yrange)))
            (ymax (coerce-float (fourth yrange)))
            ;; What is a good EPS value for adaptive plotting?
-                                        ;(eps 1d-5)
+                                        ;(eps 1e-5)
            x-samples y-samples result
            )
-      (declare (double-float ymin ymax))
+      (declare (type flonum ymin ymax))
       ;; Divide the region into NTICKS regions.  Each region has a
       ;; start, mid and endpoint. Then adaptively plot over each of
       ;; these regions.  So it's probably a good idea not to make
@@ -1060,10 +1062,10 @@
                             (cddr
                              (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                             (car y-start) (car y-mid) (car y-end)
-                                            depth 1d-5)))
+                                            depth 1e-5)))
                     (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                    (car y-start) (car y-mid) (car y-end)
-                                   depth 1d-5))))
+                                   depth 1e-5))))
           
 
         ;; jfa: I don't think this is necessary any longer
@@ -1084,12 +1086,12 @@
         (cons '(mlist) result)))))
 
 (defun get-range (lis)
-  (let ((ymin most-positive-double-float)
-        (ymax most-negative-double-float))
-    (declare (double-float ymin ymax))
+  (let ((ymin most-positive-flonum)
+        (ymax most-negative-flonum))
+    (declare (type flonum ymin ymax))
     (do ((l lis (cddr l)))
         ((null l))
-      (or (floatp (car l)) (setf (car l) (float (car l) #. (coerce 2 'double-float))))
+      (or (floatp (car l)) (setf (car l) (float (car l))))
       (cond ((< (car l) ymin)
 	     (setq ymin (car l))))
       (cond ((< ymax (car l))
@@ -1858,7 +1860,7 @@
                      (fourth grid)))
          (ar (polygon-pts pl)) tem
          )
-    (declare (type (cl:array double-float) ar))
+    (declare (type (cl:array flonum) ar))
 
     (if trans  (mfuncall trans ar))
     (if (setq tem  ($get_plot_option '$transform_xy 2)) (mfuncall tem ar))

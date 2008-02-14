@@ -29,7 +29,7 @@
   (:import-from :cl-sloop #:sloop)
   (:shadow continue		 ;(macsys): part of the top-level loop
 	   //                           ;(clmacs): arithmetic operator
-	   float		;(clmacs): has 1.0d0 as default format
+	   float		;(clmacs): has 1.0 as default format
 	   functionp                    ;(commac): accepts symbols
 	   array                        ;(commac)
 	   exp			   ;various files declare this special
@@ -74,6 +74,8 @@
        #:make-random-state
        #:%random-single-float
        #:%random-double-float
+       #+(or scl clisp) #:%random-long-float
+       #+cmu #:%random-double-double-float
        #:random-chunk
        #:init-random-state))
 

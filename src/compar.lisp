@@ -1039,7 +1039,7 @@ relational knowledge is contained in the default context GLOBAL."
 		     (or (null dum)
 			 (and (numberp dum)
 			      (prog2 (setq exp dum)
-				  (< (abs dum) 1.0d-6))))))
+				  (< (abs dum) 1.0e-6))))))
 	    (cond ($signbfloat
 		   (and (setq dum ($bfloat x)) ($bfloatp dum) (setq exp dum)))
 		  (t (setq sign '$pnz evens nil odds (ncons x) minus nil)

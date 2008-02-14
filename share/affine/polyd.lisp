@@ -126,7 +126,7 @@ far degree"
 		(cond (ones-to-add
 		       (cond((setq dims
 				   (monomials-and-rank-function-agree
-				     (floor (1+ (* 2.2d0 ($nc_degree (car (last ones-to-add))))))))
+				     (floor (1+ (* 2.2 ($nc_degree (car (last ones-to-add))))))))
 			     (return nil))))
 		      (t (return (setq answer
 				       (list '(mlist) relations

@@ -251,15 +251,27 @@
 
 ;;; %RANDOM-SINGLE-FLOAT, %RANDOM-DOUBLE-FLOAT  --  Interface
 ;;;
-(declaim (inline %random-single-float %random-double-float))
+(declaim (inline %random-single-float %random-double-float
+		 #+(or scl clisp) %random-long-float
+		 #+cmu %random-double-double-float))
+;;;
 (declaim (ftype (function ((single-float (0f0)) random-state)
 			  (single-float 0f0))
 		%random-single-float))
 ;;;
-;;;
 (declaim (ftype (function ((double-float (0d0)) random-state)
 			  (double-float 0d0))
 		%random-double-float))
+;;;
+#+(or scl clisp)
+(declaim (ftype (function ((long-float (0l0)) random-state)
+			  (long-float 0l0))
+		%random-long-float))
+;;;
+#+cmu
+(declaim (ftype (function ((kernel:double-double-float (0w0)) random-state)
+			  (kernel:double-double-float 0w0))
+		%random-double-double-float))
 ;;;
 ;;;
 (defun %random-single-float (arg state)
@@ -279,6 +291,28 @@
     ((random-mantissa-bits (%random-integer (expt 2 52) state))
     (random-unit-double (- (scale-float (float (+ (expt 2 52) random-mantissa-bits) 1d0) -52) 1d0)))
   (* arg random-unit-double)))
+
+#+(or scl clisp)
+(defun %random-long-float (arg state)
+  "Handle the long float case of RANDOM.  We generate a float in [0l0, 1l0) by
+  clobbering the mantissa of 1l0 with random bits; this yields a number in
+  [1l0, 2l0). Then 1l0 is subtracted."
+  (let* ((d (1- (float-digits 1l0)))
+	 (m (expt 2 d))
+	 (random-mantissa-bits (%random-integer m state))
+	 (random-unit-double (- (scale-float (float (+ m random-mantissa-bits) 1l0) (- d)) 1l0)))
+    (* arg random-unit-double)))
+
+#+cmu
+(defun %random-double-double-float (arg state)
+  "Handle the double-double float case of RANDOM.  We generate a float in [0w0, 1w0) by
+  clobbering the mantissa of 1w0 with random bits; this yields a number in
+  [1w0, 2w0). Then 1w0 is subtracted."
+  (let* ((d (1- (float-digits 1w0)))
+	 (m (expt 2 d))
+	 (random-mantissa-bits (%random-integer m state))
+	 (random-unit-double (- (scale-float (float (+ m random-mantissa-bits) 1w0) (- d)) 1w0)))
+    (* arg random-unit-double)))
 
 ;;;; Random integers:
 
@@ -311,6 +345,12 @@
      (%random-single-float arg state))
     ((and (typep arg 'double-float) (> arg 0.0D0))
      (%random-double-float arg state))
+    #+(or scl clisp)
+    ((and (typep arg 'long-float) (> arg 0.0L0))
+     (%random-long-float arg state))
+    #+cmu
+    ((and (typep arg 'kernel:double-double-float) (> arg 0.0W0))
+     (%random-double-double-float arg state))
     ((and (integerp arg) (> arg 0))
      (%random-integer arg state))
     (t

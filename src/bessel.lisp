@@ -40,7 +40,7 @@
 
 #||
 (defun j[0]-bessel (x)
-  (slatec:dbesj0 (float x 1d0)))
+  (slatec:dbesj0 (float x)))
 
 (defun $j0 ($x)
   "J[0](x). This is deprecated.  Use bessel_j(0,x)"        
@@ -62,7 +62,7 @@
 ;;      k = 0
 
 (defun j[1]-bessel (x) 
-  (slatec:dbesj1 (float x 1d0)))
+  (slatec:dbesj1 (float x)))
 
 (defun $j1 ($x)
   "J[1](x).  This is deprecated.  Use bessel_j(1,x)"
@@ -78,7 +78,7 @@
   (cond ((and (numberp $x) (numberp $n) (>= $n 0))
 	 (multiple-value-bind (n alpha)
 	     (floor (float $n))
-	   (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+	   (let ((jvals (make-array (1+ n) :element-type 'flonum)))
 	     (slatec:dbesj (float $x) alpha (1+ n) jvals 0)
 	     (narray $jarray n)
 	     (fillarray (symbol-value '$jarray) jvals)
@@ -102,7 +102,7 @@
 ;;        k = 0
 
 (defun i[0]-bessel (x)
-  (slatec:dbesi0 (float x 1d0)))
+  (slatec:dbesi0 (float x)))
 
 (defun $i0 ($x)
   "I[0](x).  This is deprecated.  Use bessel_i(0,x)"
@@ -126,7 +126,7 @@
 ;;       k = 0
 
 (defun i[1]-bessel (x)
-  (slatec:dbesi1 (float x 1d0)))
+  (slatec:dbesi1 (float x)))
 
 (defun $i1 ($x)
   "I[1](x).  This is deprecated.  Use bessel_i(1,x)"
@@ -150,7 +150,7 @@
 		  (slatec:dbesi1 (float arg)))
 		 (t
 		  (multiple-value-bind (n alpha) (floor (float order))
-		    (setf $besselarray (make-array (1+ n) :element-type 'double-float))
+		    (setf $besselarray (make-array (1+ n) :element-type 'flonum))
 		    (slatec:dbesi (float (realpart arg)) alpha 1 (1+ n) $besselarray 0)
 		    (aref $besselarray n))))))
 	(t
@@ -158,8 +158,8 @@
 	 ;; function
 	 (multiple-value-bind (n alpha)
 	     (floor (float order))
-	   (let ((cyr (make-array (1+ n) :element-type 'double-float))
-		 (cyi (make-array (1+ n) :element-type 'double-float)))
+	   (let ((cyr (make-array (1+ n) :element-type 'flonum))
+		 (cyi (make-array (1+ n) :element-type 'flonum)))
 	     (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
 					v-cyr v-cyi v-nz v-ierr)
 		 (slatec::zbesi (float (realpart arg))
@@ -200,7 +200,7 @@
 		  ;; From A&S 9.6.6, K(-v,z) = K(v,z), so take the
 		  ;; absolute value of the order.
 		  (multiple-value-bind (n alpha) (floor (abs (float order)))
-		    (setf $besselarray (make-array (1+ n) :element-type 'double-float))
+		    (setf $besselarray (make-array (1+ n) :element-type 'flonum))
 		    (slatec:dbesk (float (realpart arg)) alpha 1 (1+ n) $besselarray 0)
 		    (aref $besselarray n))))))
 	(t
@@ -208,8 +208,8 @@
 	 ;; function
 	 (multiple-value-bind (n alpha)
 	     (floor (float order))
-	   (let ((cyr (make-array (1+ n) :element-type 'double-float))
-		 (cyi (make-array (1+ n) :element-type 'double-float)))
+	   (let ((cyr (make-array (1+ n) :element-type 'flonum))
+		 (cyi (make-array (1+ n) :element-type 'flonum)))
 	     (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
 					v-cyr v-cyi v-nz v-ierr)
 		 (slatec::zbesk (float (realpart arg))
@@ -263,7 +263,7 @@
   (cond ((and (mnump $x) (mnump $n))
 	 ;; XXX Should we return noun forms if $n and $x are rational?
 	 (multiple-value-bind (n alpha) (floor ($float $n))
-	   (setf $iarray (make-array (1+ n) :element-type 'double-float))
+	   (setf $iarray (make-array (1+ n) :element-type 'flonum))
 	   (slatec:dbesi ($float $x) alpha 2 (1+ n) $iarray 0)
 	   (aref $iarray n)))
 	(t
@@ -277,7 +277,7 @@
 ;;
 (defun hankel-1 (v z)
   (let ((v (float v))
-	(z (coerce z '(complex double-float))))
+	(z (coerce z '(complex flonum))))
     (cond ((minusp v)
 	   ;; A&S 9.1.6:
 	   ;;
@@ -293,8 +293,8 @@
 	       (floor v)
 	   (let ((zr (realpart z))
 		 (zi (imagpart z))
-		 (cyr (make-array (1+ n) :element-type 'double-float))
-		 (cyi (make-array (1+ n) :element-type 'double-float)))
+		 (cyr (make-array (1+ n) :element-type 'flonum))
+		 (cyi (make-array (1+ n) :element-type 'flonum)))
 	     (multiple-value-bind (dzr dzi df dk dm dn dcyr dcyi nz ierr)
 		 (slatec::zbesh zr zi fnu 1 1 (1+ n) cyr cyi 0 0)
 	       (declare (ignore dzr dzi df dk dm dn dcyr dcyi nz ierr))
@@ -307,7 +307,7 @@
 ;;
 (defun hankel-2 (v z)
   (let ((v (float v))
-	(z (coerce z '(complex double-float))))
+	(z (coerce z '(complex flonum))))
     (cond ((minusp v)
 	   ;; A&S 9.1.6:
 	   ;;
@@ -323,8 +323,8 @@
 	       (floor v)
 	   (let ((zr (realpart z))
 		 (zi (imagpart z))
-		 (cyr (make-array (1+ n) :element-type 'double-float))
-		 (cyi (make-array (1+ n) :element-type 'double-float)))
+		 (cyr (make-array (1+ n) :element-type 'flonum))
+		 (cyi (make-array (1+ n) :element-type 'flonum)))
 	     (multiple-value-bind (dzr dzi df dk dm dn dcyr dcyi nz ierr)
 		 (slatec::zbesh zr zi fnu 1 2 (1+ n) cyr cyi 0 0)
 	       (declare (ignore dzr dzi df dk dm dn dcyr dcyi nz ierr))
@@ -354,7 +354,7 @@
 		(realpart (hankel-1 $order $arg)))
 	       (t
 		(multiple-value-bind (n alpha) (floor (float $order))
-		  (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+		  (let ((jvals (make-array (1+ n) :element-type 'flonum)))
 		    ;; Use analytic continuation formula A&S 9.1.35:
 		    ;;
 		    ;; %j[v](z*exp(m*%pi*%i)) = exp(m*%pi*%i*v)*%j[v](z)
@@ -389,14 +389,14 @@
 		;; perhaps good enough for maxima.
 		(let* ((arg (complex ($realpart $arg)
 				     ($imagpart $arg)))
-		       (result (* 0.5d0 (+ (hankel-1 $order arg)
+		       (result (* 0.5 (+ (hankel-1 $order arg)
 					   (hankel-2 $order arg)))))
 		  (complexify result)))
 	       (t
 		(multiple-value-bind (n alpha)
 		    (floor (float $order))
-		  (let ((cyr (make-array (1+ n) :element-type 'double-float))
-			(cyi (make-array (1+ n) :element-type 'double-float)))
+		  (let ((cyr (make-array (1+ n) :element-type 'flonum))
+			(cyi (make-array (1+ n) :element-type 'flonum)))
 		    (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
 					       v-cyr v-cyi v-nz v-ierr)
 			(slatec:zbesj (float ($realpart $arg))
@@ -471,7 +471,7 @@
 				      ,(* -2 (slatec:dbesj1 (float (- arg))))))))))
 		 (t
 		  (multiple-value-bind (n alpha) (floor (float order))
-		    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+		    (let ((jvals (make-array (1+ n) :element-type 'flonum)))
 		      (cond ((>= arg 0)
 			     (slatec:dbesy (float (realpart arg)) alpha (1+ n) jvals)
 			     (setf $besselarray (make-array (1+ n) :initial-contents jvals))
@@ -495,10 +495,10 @@
 	 ;; function
 	 (multiple-value-bind (n alpha)
 	     (floor (float order))
-	   (let ((cyr (make-array (1+ n) :element-type 'double-float))
-		 (cyi (make-array (1+ n) :element-type 'double-float))
-		 (cwrkr (make-array (1+ n) :element-type 'double-float))
-		 (cwrki (make-array (1+ n) :element-type 'double-float)))
+	   (let ((cyr (make-array (1+ n) :element-type 'flonum))
+		 (cyi (make-array (1+ n) :element-type 'flonum))
+		 (cwrkr (make-array (1+ n) :element-type 'flonum))
+		 (cwrki (make-array (1+ n) :element-type 'flonum)))
 	     (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
 					v-cyr v-cyi v-nz
 					v-cwrkr v-cwrki v-ierr)
@@ -532,39 +532,39 @@
 
 (defun z-function (x y) 
   ((lambda (xs ys capn nu np1 h h2 lamb r1 r2 s s1 s2 t1 t2 c bool re im) 
-     (setq xs (cond ((> 0.0d0 x) -1.0d0) (t 1.0d0)))
-     (setq ys (cond ((> 0.0d0 y) -1.0d0) (t 1.0d0)))
+     (setq xs (cond ((> 0.0 x) -1.0) (t 1.0)))
+     (setq ys (cond ((> 0.0 y) -1.0) (t 1.0)))
      (setq x (abs x) y (abs y))
-     (cond ((and (> 4.29d0 y) (> 5.33d0 x))
-	    (setq s (* (1+ (* -0.23310023d0 y))
-			(sqrt (1+ (* -0.035198873d0 x x)))))
-	    (setq h (* 1.6d0 s) h2 (* 2.0d0 h) capn (+ 6 (floor (* 23.0d0 s))))
-	    (setq nu (+ 9 (floor (* 21.0d0 s)))))
-	   (t (setq h 0.0d0) (setq capn 0) (setq nu 8)))
-     (and (> h 0.0d0) (setq lamb (expt h2 capn)))
+     (cond ((and (> 4.29 y) (> 5.33 x))
+	    (setq s (* (1+ (* -0.23310023 y))
+			(sqrt (1+ (* -0.035198873 x x)))))
+	    (setq h (* 1.6 s) h2 (* 2.0 h) capn (+ 6 (floor (* 23.0 s))))
+	    (setq nu (+ 9 (floor (* 21.0 s)))))
+	   (t (setq h 0.0) (setq capn 0) (setq nu 8)))
+     (and (> h 0.0) (setq lamb (expt h2 capn)))
      (setq bool (or (zerop h) (zerop lamb)))
      (do ((n nu (1- n)))
 	 ((> 0 n))
        (setq np1 (1+ n))
        (setq t1 (+ h (* (float np1) r1) y))
        (setq t2 (- x (* (float np1) r2)))
-       (setq c (/ 0.5d0 (+ (* t1 t1) (* t2 t2))))
+       (setq c (/ 0.5 (+ (* t1 t1) (* t2 t2))))
        (setq r1 (* c t1) r2 (* c t2))
        (cond ((and (> h 0.0) (not (< capn n)))
 	      (setq t1 (+ s1 lamb) s1 (- (* r1 t1) (* r2 s2)))
 	      (setq s2 (+ (* r1 s2) (* r2 t1)) lamb (/ lamb h2)))))
-     (setq im (cond ((zerop y) (* 1.77245384d0 (exp (- (* x x)))))
-		    (t (* 2.0d0 (cond (bool r1) (t s1))))))
-     (setq re (* -2.0d0 (cond (bool r2) (t s2))))
-     (cond ((> ys 0.0d0) (setq re (* re xs)))
+     (setq im (cond ((zerop y) (* 1.77245384 (exp (- (* x x)))))
+		    (t (* 2.0 (cond (bool r1) (t s1))))))
+     (setq re (* -2.0 (cond (bool r2) (t s2))))
+     (cond ((> ys 0.0) (setq re (* re xs)))
 	   (t (setq r1 (* 3.5449077 (exp (- (* y y) (* x x)))))
 	      (setq r2 (* 2.0 x y))
 	      (setq re (* (- re (* r1 (sin r2))) xs))
 	      (setq im (- (* r1 (cos r2)) im))))
      (list '(mlist simp) re im))
-   (cond ((> 0.0d0 x) -1.0d0) (t 1.0d0))
-   (cond ((> 0.0d0 x) -1.0d0) (t 1.0d0))
-   0 0 0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 nil 0.0d0 0.0d0)) 
+   (cond ((> 0.0 x) -1.0) (t 1.0))
+   (cond ((> 0.0 x) -1.0) (t 1.0))
+   0 0 0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 nil 0.0 0.0)) 
 
 (defun $nzeta ($z) 
   (prog ($x $y $w) 

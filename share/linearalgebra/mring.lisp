@@ -84,12 +84,12 @@
    :psqrt #'(lambda (s) (if (>= s 0) (cl:sqrt s) nil))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
-   :fzerop #'(lambda (s)  (< (abs s) (* 4 double-float-epsilon))) 
+   :fzerop #'(lambda (s)  (< (abs s) (* 4 flonum-epsilon))) 
    :adjoint #'cl:identity
    :mring-to-maxima #'cl:identity
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($float s))
-			(if (floatp s) s (merror "Unable to convert ~:M to a double float" s)))))
+			(if (floatp s) s (merror "Unable to convert ~:M to a long float" s)))))
 
 (setf (get '$floatfield 'ring) *floatfield*)
 
@@ -109,7 +109,7 @@
    :psqrt #'(lambda (s) (if (and (= 0 (imagpart s)) (>= (realpart s) 0)) (cl:sqrt s) nil))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
-   :fzerop #'(lambda (s) (< (abs s) (* 4 double-float-epsilon)))
+   :fzerop #'(lambda (s) (< (abs s) (* 4 flonum-epsilon)))
    :adjoint #'cl:conjugate
    :mring-to-maxima #'(lambda (s) (add (realpart s) (mult '$%i (imagpart s)))) ;; was complexify
    :maxima-to-mring #'(lambda (s) 
@@ -117,7 +117,7 @@
 			  (setq s ($rectform (meval s)))
 			  (if (complex-number-p s 'float-or-rational-p)
 			      (complex ($float ($realpart s)) ($float ($imagpart s)))
-			    (merror "Unable to convert ~:M to a complex double float" s))))))
+			    (merror "Unable to convert ~:M to a complex long float" s))))))
 
 (setf (get '$complexfield 'ring) *complexfield*)
 
@@ -362,8 +362,8 @@
 	  ((op-equalp e 'mabs) (funcall fabs (ring-eval (first (margs e)) fld)))
 	
 	  ((and (or (eq (mring-name fld) '$floatfield) (eq (mring-name fld) '$complexfield))
-		(consp e) (consp (car e)) (gethash (mop e) *double-float-op*))
-	   (apply (gethash (mop e) *double-float-op*) (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))))
+		(consp e) (consp (car e)) (gethash (mop e) *flonum-op*))
+	   (apply (gethash (mop e) *flonum-op*) (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))))
 	  
 	  (t (merror "Unable to evaluate ~:M in the ring '~:M'" e (mring-name fld))))))
   

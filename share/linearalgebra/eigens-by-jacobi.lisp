@@ -13,7 +13,7 @@
 ;; One sweep zeros each member of the matrix; for a n x n matrix, this requires n(n-1)/2
 ;; Jacobi rotations. 
 
-;; For double floats, eps is the machine epsilon; for bigfloats, it is 1/2^fpprec.
+;; For flonum floats, eps is the machine epsilon; for bigfloats, it is 1/2^fpprec.
 
 ;; The variable 'change' tracks the greatest percent change in a diagonal entry in
 ;; a sweep.  When the diagonal entry is less than eps, the percent change set to zero.
@@ -56,7 +56,7 @@
       (setq v (make-array (list n n) :initial-element zero))
       (setq d (make-array n))
 									 
-      (setq eps (if (eq fld-name '$floatfield) double-float-epsilon ($bfloat (div 1 (power 2 fpprec)))))
+      (setq eps (if (eq fld-name '$floatfield) flonum-epsilon ($bfloat (div 1 (power 2 fpprec)))))
              
       (decf n)
       (loop for i from 0 to n do 

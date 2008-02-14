@@ -201,9 +201,9 @@
 
 (defun gamma (y) ;;; numerical evaluation for 0 < y < 1
   (prog (sum coefs)
-     (setq coefs (list 0.035868343d0 -0.193527817d0 0.48219939d0
-		       -0.75670407d0 0.91820685d0 -0.89705693d0
-		       0.98820588d0 -0.57719165d0))
+     (setq coefs (list 0.035868343 -0.193527817 0.48219939
+		       -0.75670407 0.91820685 -0.89705693
+		       0.98820588 -0.57719165))
      (unless (atom y) (setq y (fpcofrat y)))
      (setq sum (car coefs) coefs (cdr coefs))
      loop (setq sum (+ (* sum y) (car coefs)))
@@ -258,26 +258,26 @@
 ;; accuracy.
 
 (defun gamma-lanczos (z)
-  (declare (type (complex double-float) z)
+  (declare (type (complex flonum) z)
 	   (optimize (safety 3)))
-  (let ((c (make-array 15 :element-type 'double-float
+  (let ((c (make-array 15 :element-type 'flonum
 		       :initial-contents
-		       '(0.99999999999999709182d0
-			 57.156235665862923517d0
-			 -59.597960355475491248d0
-			 14.136097974741747174d0
-			 -0.49191381609762019978d0
-			 .33994649984811888699d-4
-			 .46523628927048575665d-4
-			 -.98374475304879564677d-4
-			 .15808870322491248884d-3
-			 -.21026444172410488319d-3
-			 .21743961811521264320d-3
-			 -.16431810653676389022d-3
-			 .84418223983852743293d-4
-			 -.26190838401581408670d-4
-			 .36899182659531622704d-5))))
-    (declare (type (simple-array double-float (15)) c))
+		       '(0.99999999999999709182
+			 57.156235665862923517
+			 -59.597960355475491248
+			 14.136097974741747174
+			 -0.49191381609762019978
+			 .33994649984811888699e-4
+			 .46523628927048575665e-4
+			 -.98374475304879564677e-4
+			 .15808870322491248884e-3
+			 -.21026444172410488319e-3
+			 .21743961811521264320e-3
+			 -.16431810653676389022e-3
+			 .84418223983852743293e-4
+			 -.26190838401581408670e-4
+			 .36899182659531622704e-5))))
+    (declare (type (simple-array flonum (15)) c))
     (if (minusp (realpart z))
 	;; Use the reflection formula
 	;; -z*Gamma(z)*Gamma(-z) = pi/sin(pi*z)
@@ -286,25 +286,25 @@
 	;;
 	;; If z is a negative integer, Gamma(z) is infinity.  Should
 	;; we test for this?  Throw an error?  What
-	(/ (float pi 1d0)
-	   (* (- z) (sin (* (float pi 1d0) z))
+	(/ (float pi)
+	   (* (- z) (sin (* (float pi) z))
 	      (gamma-lanczos (- z))))
 	(let* ((z (- z 1))
 	       (zh (+ z 1/2))
 	       (zgh (+ zh 607/128))
 	       (zp (expt zgh (/ zh 2)))
 	       (ss 
-		(do ((sum 0d0)
+		(do ((sum 0.0)
 		     (pp (1- (length c)) (1- pp)))
 		    ((< pp 1)
 		     sum)
 		  (incf sum (/ (aref c pp) (+ z pp))))))
-	  (* (sqrt (float (* 2 pi) 1d0))
+	  (* (sqrt (float (* 2 pi)))
 	     (+ ss (aref c 0))
 	     (* zp (exp (- zgh)) zp))))))
 
 (defun gammafloat (a)
-  (realpart (gamma-lanczos (complex a 0d0))))
+  (realpart (gamma-lanczos (complex a 0.0))))
 
 (declare-top (special $numer $trigsign))
 
@@ -322,10 +322,10 @@
 
 
 (defmfun erf (y)
-  (slatec:derf (float y 1d0)))
+  (slatec:derf (float y)))
 
 (defmfun erfc (y)
-  (slatec:derfc (float y 1d0)))
+  (slatec:derfc (float y)))
 
 (defmfun $zeromatrix (m n) ($ematrix m n 0 1 1))
 

@@ -185,7 +185,7 @@
 	(unless $nolabels (set d-tag $%))
 	(setq $_ $__)
 	(when $showtime	;; we don't distinguish showtime:all?? /RJF
-	  (format t "Evaluation took ~$ seconds (~$ elapsed)"
+	  (format t "Evaluation took ~,4F seconds (~,4F elapsed)"
 		  time-used etime-used )
 	  #+gcl
 	  (format t "~%")
@@ -295,7 +295,7 @@
 
 (defun batch (filename &optional demo-p
 	      &aux (orig filename) list
-	      file-obj (accumulated-time 0d0) (abortp t))
+	      file-obj (accumulated-time 0.0) (abortp t))
   (setq list (if demo-p '$file_search_demo '$file_search_maxima))
   (setq filename ($file_search filename (symbol-value list)))
   (or filename (merror "Could not find ~M in ~M: ~M"
@@ -305,7 +305,7 @@
        (progn (batch-internal (setq file-obj (open filename)) demo-p)
 	      (setq abortp nil)
 	      (when $showtime
-		(format t "~&Batch spent ~$ seconds in evaluation.~%"
+		(format t "~&Batch spent ~,4F seconds in evaluation.~%"
 			accumulated-time)))
     (if file-obj (close file-obj))
     (when abortp (format t "~&(Batch of ~A aborted.)~%" filename))))
@@ -509,7 +509,7 @@
   (throw 'return-from-debugger t))
 
 (let ((t0-real 0) (t0-run 0)
-      (float-units (float internal-time-units-per-second 1d0)))
+      (float-units (float internal-time-units-per-second)))
 
   (defun initialize-real-and-run-time ()
     (setq t0-real (get-internal-real-time))

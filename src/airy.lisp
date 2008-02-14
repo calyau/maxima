@@ -24,7 +24,7 @@
 
 (in-package :maxima)
 
-(declaim (special *double-float-op*))
+(declaim (special *flonum-op*))
 
 ;; Airy Ai function 
 (defmfun $airy_ai (z)
@@ -37,13 +37,13 @@
   (cond ((floatp z) (airy-ai-real z))
 	((complexp z) (airy-ai-complex z))))
 
-(setf (gethash '%airy_ai *double-float-op*) #'airy-ai)
+(setf (gethash '%airy_ai *flonum-op*) #'airy-ai)
 
 (defmfun simp-%airy_ai (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((double-float-eval (mop form) z))
+    (cond ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_ai) z) form)))))
 
 
@@ -58,13 +58,13 @@
   (cond ((floatp z) (airy-dai-real z))
 	((complexp z) (airy-dai-complex z))))
 
-(setf (gethash '%airy_dai *double-float-op*) #'airy-dai)
+(setf (gethash '%airy_dai *flonum-op*) #'airy-dai)
 
 (defmfun simp-%airy_dai (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((double-float-eval (mop form) z))
+    (cond ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_dai) z) form)))))
 
 
@@ -79,13 +79,13 @@
   (cond ((floatp z) (airy-bi-real z))
 	((complexp z) (airy-bi-complex z))))
 
-(setf (gethash '%airy_bi *double-float-op*) #'airy-bi)
+(setf (gethash '%airy_bi *flonum-op*) #'airy-bi)
 
 (defmfun simp-%airy_bi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((double-float-eval (mop form) z))
+    (cond ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_bi) z) form)))))
 
 
@@ -100,13 +100,13 @@
   (cond ((floatp z) (airy-dbi-real z))
 	((complexp z) (airy-dbi-complex z))))
 
-(setf (gethash '%airy_dbi *double-float-op*) #'airy-dbi)
+(setf (gethash '%airy_dbi *flonum-op*) #'airy-dbi)
 
 (defmfun simp-%airy_dbi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((double-float-eval (mop form) z))
+    (cond ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_dbi) z) form)))))
 
 
@@ -114,19 +114,19 @@
 
 (defun airy-ai-real (z)
   " Airy function Ai(z) for real z"
-  (declare (type double-float z))
+  (declare (type flonum z))
   ;; slatec:dai issues underflow warning for z > zmax.  See dai.{f,lisp}
   ;; This value is correct for IEEE double precision
-  (let ((zmax 92.5747007268d0))
-    (declare (type double-float zmax))
-    (if (< z zmax) (slatec:dai z) 0d0))) 
+  (let ((zmax 92.5747007268))
+    (declare (type flonum zmax))
+    (if (< z zmax) (slatec:dai z) 0.0))) 
 
 (defun airy-ai-complex (z)
   "Airy function Ai(z) for complex z"
-  (declare (type (complex double-float) z))
+  (declare (type (complex flonum) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 air aii nz ierr)
-      (slatec:zairy (realpart z) (imagpart z) 0 1 0d0 0d0 0 0)
-    (declare (type double-float air aii)
+      (slatec:zairy (realpart z) (imagpart z) 0 1 0.0 0.0 0 0)
+    (declare (type flonum air aii)
 	     (type f2cl-lib:integer4 nz ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check nz and ierr for errors
@@ -134,21 +134,21 @@
 
 (defun airy-dai-real (z)
   "Derivative dAi/dz of Airy function Ai(z) for real z"
-  (declare (type double-float z))
+  (declare (type flonum z))
   (let ((rz (sqrt (abs z)))
 	(c (* 2/3 (expt (abs z) 3/2))))
-    (declare (type double-float rz c))
+    (declare (type flonum rz c))
     (multiple-value-bind (var-0 var-1 var-2 ai dai)
-	(slatec:djairy z rz c 0d0 0d0)
+	(slatec:djairy z rz c 0.0 0.0)
       (declare (ignore var-0 var-1 var-2 ai))
       dai)))
 
 (defun airy-dai-complex (z)
   "Derivative dAi/dz of Airy function Ai(z) for complex z"
-  (declare (type (complex double-float) z))
+  (declare (type (complex flonum) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 air aii nz ierr)
-      (slatec:zairy (realpart z) (imagpart z) 1 1 0d0 0d0 0 0)
-    (declare (type double-float air aii)
+      (slatec:zairy (realpart z) (imagpart z) 1 1 0.0 0.0 0 0)
+    (declare (type flonum air aii)
 	     (type f2cl-lib:integer4 nz ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check nz and ierr for errors
@@ -156,19 +156,19 @@
 
 (defun airy-bi-real (z)
   "Airy function Bi(z) for real z"
-  (declare (type double-float z))
+  (declare (type flonum z))
   ;; slatec:dbi issues overflows for z > zmax.  See dbi.{f,lisp}
   ;; This value is correct for IEEE double precision
-  (let ((zmax 104.2179765192136d0))
-    (declare (type double-float zmax))
+  (let ((zmax 104.2179765192136))
+    (declare (type flonum zmax))
     (if (< z zmax) (slatec:dbi z) nil)))
 
 (defun airy-bi-complex (z)
   "Airy function Bi(z) for complex z"
-  (declare (type (complex double-float) z))
+  (declare (type (complex flonum) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 bir bii ierr)
-      (slatec:zbiry (realpart z) (imagpart z) 0 1 0d0 0d0 0)
-    (declare (type double-float bir bii)
+      (slatec:zbiry (realpart z) (imagpart z) 0 1 0.0 0.0 0)
+    (declare (type flonum bir bii)
 	     (type f2cl-lib:integer4 ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check ierr for errors
@@ -176,18 +176,18 @@
 
 (defun airy-dbi-real (z)
   "Derivative dBi/dz of Airy function Bi(z) for real z"
-  (declare (type double-float z))
+  (declare (type flonum z))
   ;; Overflows for z > zmax.
   ;; This value is correct for IEEE double precision
-  (let ((zmax 104.1525d0))
-    (declare (type double-float zmax))
+  (let ((zmax 104.1525))
+    (declare (type flonum zmax))
     (if (< z zmax)
 	(let ((rz (sqrt (abs z)))
 	      (c (* 2/3 (expt (abs z) 3/2))))
-        (declare (type double-float rz c))
+        (declare (type flonum rz c))
         (multiple-value-bind (var-0 var-1 var-2 bi dbi)
-	    (slatec:dyairy z rz c 0d0 0d0)
-	  (declare (double-float bi dbi)
+	    (slatec:dyairy z rz c 0.0 0.0)
+	  (declare (flonum bi dbi)
 		   (ignore var-0 var-1 var-2 bi))
 	  dbi))
       ;; Will overflow.  Return unevaluated.
@@ -195,10 +195,10 @@
 
 (defun airy-dbi-complex (z)
   "Derivative dBi/dz of Airy function Bi(z) for complex z"
-  (declare (type (complex double-float) z))
+  (declare (type (complex flonum) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 bir bii ierr)
-      (slatec:zbiry (realpart z) (imagpart z) 1 1 0d0 0d0 0)
-    (declare (type double-float bir bii)
+      (slatec:zbiry (realpart z) (imagpart z) 1 1 0.0 0.0 0)
+    (declare (type flonum bir bii)
 	     (type f2cl-lib:integer4 ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check ierr for errors

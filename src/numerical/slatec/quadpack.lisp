@@ -39,56 +39,56 @@
 	  options)))
 
 (defun quad-qag (fun var a b key &key
-		 (epsrel 1d-8)
+		 (epsrel 1e-8)
 		 (limit 200)
-		 (epsabs 0d0))
+		 (epsabs 0.0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
-	 (work (make-array lenw :element-type 'double-float))
+	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqag #'(lambda (x)
-			  (float (funcall f x) 1d0))
+			  (float (funcall f x)))
 		      ($float a)
 		      ($float b)
 		      ($float epsabs)
 		      ($float epsrel) key
-		      0d0 0d0 0 0
+		      0.0 0.0 0 0
 		      limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-epsabs z-epsrel z-key z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 (defun quad-qags (fun var a b &key
-		  (epsrel 1d-8)
+		  (epsrel 1e-8)
 		  (limit 200)
-		  (epsabs 0d0))
+		  (epsabs 0.0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
-	 (work (make-array lenw :element-type 'double-float))
+	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqags #'(lambda (x)
-			   (float (funcall f x) 1d0))
+			   (float (funcall f x)))
 		       ($float a)
 		       ($float b)
 		       ($float epsabs)
 		       ($float epsrel)
-		       0d0 0d0 0 0
+		       0.0 0.0 0 0
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 (defun quad-qagi (fun var bound inf-type &key
-		  (epsrel 1d-8)
+		  (epsrel 1e-8)
 		  (limit 200)
-		  (epsabs 0d0))
+		  (epsabs 0.0))
   (quad_argument_check fun var bound inf-type) 
   (let* ((lenw (* 4 limit))
-	 (work (make-array lenw :element-type 'double-float))
+	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var))
 	 (infinity (case inf-type
@@ -104,47 +104,47 @@
     (multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqagi #'(lambda (x)
-			   (float (funcall f x) 1d0))
+			   (float (funcall f x)))
 	       ($float bound)
 		       infinity
 		       ($float epsabs)
 		       ($float epsrel)
-		       0d0 0d0 0 0
+		       0.0 0.0 0 0
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-bound z-inf z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 (defun quad-qawc (fun var c a b &key
-		  (epsrel 1d-8)
+		  (epsrel 1e-8)
 		  (limit 200)
-		  (epsabs 0d0))
+		  (epsabs 0.0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
-	 (work (make-array lenw :element-type 'double-float))
+	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqawc #'(lambda (x)
-			   (float (funcall f x) 1d0))
+			   (float (funcall f x)))
 		       ($float a)
 		       ($float b)
 		       ($float c)
 		       ($float epsabs)
 		       ($float epsrel)
-		       0d0 0d0 0 0
+		       0.0 0.0 0 0
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-c z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 (defun quad-qawf (fun var a omega trig &key
-		  (epsabs 1d-10)
+		  (epsabs 1e-10)
 		  (limit 200)
 		  (maxp1 100)
 		  (limlst 10))
   (let* ((leniw limit)
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
-	 (work (make-array lenw :element-type 'double-float))
+	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var))
 	 (integr (ecase trig
@@ -154,26 +154,26 @@
 			       z-limlst z-lst
 			       z-leniw z-maxp1 z-lenw)
 	(slatec:dqawf #'(lambda (x)
-			   (float (funcall f x) 1d0))
+			   (float (funcall f x)))
 		       ($float a)
 		       ($float omega)
 		       integr
 		       ($float epsabs)
-		       0d0 0d0 0 0
+		       0.0 0.0 0 0
 		       limlst 0 leniw maxp1 lenw iwork work)
       (declare (ignore junk z-a z-omega z-integr epsabs z-limlst z-lst
 		       z-leniw z-maxp1 z-lenw))
       (list '(mlist) result abserr neval ier))))
 
 (defun quad-qawo (fun var a b omega trig &key
-		  (epsrel 1d-10)
+		  (epsrel 1e-10)
 		  (limit 200)
 		  (maxp1 100)
-		  (epsabs 0d0))
+		  (epsabs 0.0))
   (quad_argument_check fun var a b) 
   (let* ((leniw limit)
 	 (lenw (+ (* 2 leniw) (* 25 maxp1)))
-	 (work (make-array lenw :element-type 'double-float))
+	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array leniw :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var))
 	 (integr (ecase trig
@@ -183,33 +183,33 @@
 			       result abserr neval ier
 			       z-leniw z-maxp1 z-lenw z-lst)
 	(slatec:dqawo #'(lambda (x)
-			   (float (funcall f x) 1d0))
+			   (float (funcall f x)))
 		       ($float a)
 		       ($float b)
 		       ($float omega)
 		       integr
 		       ($float epsabs)
 		       ($float epsrel)
-		       0d0 0d0 0 0
+		       0.0 0.0 0 0
 		       leniw maxp1 lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-omega z-integr z-epsabs z-epsrel
 		       z-lst z-leniw z-maxp1 z-lenw))
       (list '(mlist) result abserr neval ier))))
 
 (defun quad-qaws (fun var a b alfa beta wfun &key
-		  (epsrel 1d-10)
+		  (epsrel 1e-10)
 		  (limit 200)
-		  (epsabs 0d0))
+		  (epsabs 0.0))
   (quad_argument_check fun var a b) 
   (let* ((lenw (* 4 limit))
-	 (work (make-array lenw :element-type 'double-float))
+	 (work (make-array lenw :element-type 'flonum))
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (multiple-value-bind (junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 			       result abserr neval ier
 			       z-limit z-lenw last)
 	(slatec:dqaws #'(lambda (x)
-			   (float (funcall f x) 1d0))
+			   (float (funcall f x)))
 		       ($float a)
 		       ($float b)
 		       ($float alfa)
@@ -217,7 +217,7 @@
 		       wfun
 		       ($float epsabs)
 		       ($float epsrel)
-		       0d0 0d0 0 0
+		       0.0 0.0 0 0
 		       limit lenw 0 iwork work)
       (declare (ignore junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
 		       z-limit z-lenw last))
@@ -438,8 +438,8 @@
 ;; => sqrt(%pi)*(1-4^(-alpha))^(-1/4)*cos(atan(2^alpha)/2)
 ;;
 ;; quad_qawf(x^(-1/2)*exp(-2^(-2)*x), x, 0, 1, cos)
-;; quad_qawf(x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 1, cos)
-;; quad_qawo(x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos)
+;; quad_qawf(x^(-1/2)*exp(-2^(-2)*x), x, 1e-8, 1, cos)
+;; quad_qawo(x^(-1/2)*exp(-2^(-2)*x), x, 1e-8, 20*2^2, 1, cos)
 ;;
 
 ;; Test 15

@@ -35,7 +35,7 @@
 
 (defun partial-matrix-prod-float (m p i k n)
   (let ((add-id 0.0))
-    (declare (type double-float add-id))
+    (declare (type flonum add-id))
     (let ((l (aref p i)))
       (loop for s from 0 to n do
 	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
@@ -49,7 +49,7 @@
       (setf (aref m l k) (- (aref m l k) add-id)))))
 
 ;; Return the infinity norm (the largest row sum) of the r by c array mat. The function
-;; fn coerces matrix elements into double floats. The argument 'mat' is a Maxima
+;; fn coerces matrix elements into flonum floats. The argument 'mat' is a Maxima
 ;; style matrix; thus mat = (($matrix) ((mlist) a b c) etc).
 
 (defun array-infinity-norm (mat fn)
@@ -169,7 +169,7 @@
 
 ;; Return lower and upper bounds for the infinity norm condition number of the lower or
 ;; upper triangular part of the matrix mat. The function fn coerces the matrix
-;; elements to double floats.  When the matrix is singular, return infinity.
+;; elements to flonum floats.  When the matrix is singular, return infinity.
 ;; This code is based on pseudo-code (algorithm 2.1) in ``Survey of condition 
 ;; number estimation,'' by Nicholas J. Higham, SIAM Review, Vol. 29, No. 4, December,
 ;; 1987.  The lower and upper bounds can differ from the true value by arbitrarily 

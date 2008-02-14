@@ -53,7 +53,10 @@ will accurately represent the bigfloat.")
   0, then full precision is used."
   fixnum)
 
-(defmvar $fpprec 16.
+(defmvar $maxfpprintprec (ceiling (log (expt 2 (float-digits 1.0)) 10.0))
+  "The maximum number of significant digits printed for floats.")
+
+(defmvar $fpprec $maxfpprintprec
   "Number of decimal digits of precision to use when creating new bigfloats.
 One extra decimal digit in actual representation for rounding purposes.")
 
@@ -138,7 +141,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   (setq exp (readlist exp))
   (bigfloatp
    (let ((fpprec (+ 4 fpprec (integer-length exp)
-		    (floor (1+ (* #.(/ (log 10d0) (log 2d0)) (length lft))))))
+		    (floor (1+ (* #.(/ (log 10.0) (log 2.0)) (length lft))))))
 	 $float temp)
      (setq temp (add (readlist lft)
 		     (div (readlist rt) (expt 10. (length rt)))))
@@ -158,7 +161,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	     (mtell "Warning - an incorrect form for 0.0b0 has been generated."))
 	 (list '|0| '|.| '|0| '|b| '|0|))
 	(t ;; L IS ALWAYS POSITIVE FP NUMBER
-	 (let ((extradigs (floor (1+ (quotient (integer-length (caddr l)) #.(/ (log 10d0) (log 2d0))))))
+	 (let ((extradigs (floor (1+ (quotient (integer-length (caddr l)) #.(/ (log 10.0) (log 2.0))))))
 	       (*m 1) (*cancelled 0))
 	   (setq l
 		 ((lambda (*decfp fpprec of l expon)
@@ -276,7 +279,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	(*m 0))
     ;;Round the mantissa to the number of bits of precision of the machine,
     ;;and then convert it to a floating point fraction.
-    (setq mantissa (quotient (fpround mantissa) #.(expt 2d0 machine-mantissa-precision)))
+    (setq mantissa (quotient (fpround mantissa) #.(expt 2.0 machine-mantissa-precision)))
     ;; Multiply the mantissa by the exponent portion.  I'm not sure
     ;; why the exponent computation is so complicated. Using
     ;; scale-float will prevent possible overflow unless the result
@@ -814,9 +817,9 @@ One extra decimal digit in actual representation for rounding purposes.")
   ;; We also assume don't need a really precise value of beta because
   ;; our N's are not so big that we need more.
   (let* ((fpprec prec)
-	 (big-n (floor (* 1/4 prec (log 2d0))))
+	 (big-n (floor (* 1/4 prec (log 2.0))))
 	 (big-n-sq (intofp (* big-n big-n)))
-	 (beta 3.591121476668622136649223d0)
+	 (beta 3.591121476668622136649223)
 	 (limit (floor (* beta big-n)))
 	 (one (fpone))
 	 (term (intofp 1))
@@ -1630,7 +1633,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 (y (cdr (bigfloatp y)))
 	 (t1 (let (($float2bf t))
 	       ;; No warning message, please.
-	       (floattofp 1.2d0)))
+	       (floattofp 1.2)))
 	 (t2 (intofp 3))
 	 (rho (fpplus (fptimes* x x)
 		      (fptimes* y y)))

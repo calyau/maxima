@@ -122,31 +122,31 @@
           (bf1 0.8378)  (xx90 0.556)  (xx95 0.622)
           (sqrth 0.70711)  (small 1e-19)  (pi6 1.909859) (stqr 1.047198)
           ; polynomial coefficients
-          (g (make-array 2 :element-type 'double-float
+          (g (make-array 2 :element-type 'flonum
                :initial-contents '(-2.273 0.459)))
-          (c1 (make-array 6 :element-type 'double-float
+          (c1 (make-array 6 :element-type 'flonum
                :initial-contents '(0.0 0.221157 -0.147981 -2.07119 4.434685 -2.706056)))
-          (c2 (make-array 6 :element-type 'double-float
+          (c2 (make-array 6 :element-type 'flonum
                :initial-contents '(0.0 0.042981 -0.293762 -1.752461 5.682633 -3.582633)))
-          (c3 (make-array 4 :element-type 'double-float
+          (c3 (make-array 4 :element-type 'flonum
                :initial-contents '(0.544 -0.39978 0.025054 -6.714e-4)))
-          (c4 (make-array 4 :element-type 'double-float
+          (c4 (make-array 4 :element-type 'flonum
                :initial-contents '(1.3822 -0.77857 0.062767 -0.0020322)))
-          (c5 (make-array 4 :element-type 'double-float
+          (c5 (make-array 4 :element-type 'flonum
                :initial-contents '(-1.5861 -0.31082 -0.083751 0.0038915)))
-          (c6 (make-array 3 :element-type 'double-float
+          (c6 (make-array 3 :element-type 'flonum
                :initial-contents '(-0.4803 -0.082676 0.0030302)))
-          (c7 (make-array 2 :element-type 'double-float
+          (c7 (make-array 2 :element-type 'flonum
                :initial-contents '(0.164 0.533)))
-          (c8 (make-array 2 :element-type 'double-float
+          (c8 (make-array 2 :element-type 'flonum
                :initial-contents '(0.1736 0.315)))
-          (c9 (make-array 2 :element-type 'double-float
+          (c9 (make-array 2 :element-type 'flonum
                :initial-contents '(0.256 -0.00635)))
           ncens nn2 i1 range delta a2 a1 an25 an rsn fac ssumm2 summ2 xi xx y w1 
           ssassx xsx asa sax ssa ssx sx sa zbar zsd zfm z99f z95f 
           z90f bf ld s m gamma a)
 
-      (setf an (coerce n 'double-float))
+      (setf an (coerce n 'flonum))
       (setf ncens (- n n1))   ; number of censored observations
       (setf nn2 (truncate n 2))
       (if (or (< n 3) (> n 5000))
@@ -164,14 +164,14 @@
          (merror "Ratio of censored observations is too great (>80%)"))
 
       ; calculate coefficients for statistic w
-      (setf a (make-array (1+ n2) :element-type 'double-float :initial-element 0.0))
+      (setf a (make-array (1+ n2) :element-type 'flonum :initial-element 0.0))
       (cond ((= n 3)
                 (setf (aref a 1) sqrth))
             (t  (setf an25 (+ 0.25 an))
                 (setf summ2 0.0)
                 (do ((i 1 (1+ i)))
                    ((> i n2) 'done)
-                   (setf (aref a i) (coerce (ppnd16 (/ (- i 0.375) an25)) 'double-float))
+                   (setf (aref a i) (coerce (ppnd16 (/ (- i 0.375) an25)) 'flonum))
                    (setf summ2 (+ summ2 (* (aref a i) (aref a i)))))
                 (setf summ2 (* summ2 2.0))
                 (setf ssumm2 (sqrt summ2))

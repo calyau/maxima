@@ -206,7 +206,7 @@
 	      (errset (displa (list '(mlable) linelable $%)))))
   (if (null ret) (mtell "~%Error during display~%"))
   (when $disptime
-    (mtell-open "Displaytime= ~A sec.~%" (/ (float (- (get-internal-run-time) tim) 1d0)
+    (mtell-open "Displaytime= ~A sec.~%" (/ (float (- (get-internal-run-time) tim))
 					    internal-time-units-per-second)))
   ret)
 

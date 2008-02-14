@@ -90,13 +90,13 @@
 (defun domain-error (x f)
   (merror "The number ~:M isn't in the domain of ~A" (complexify x) f))
 
-;; Build a hash table 'cl-double-float-op' that maps Maxima function names 
+;; Build a hash table 'cl-flonum-op' that maps Maxima function names 
 ;; to their CL equivalents. 
 
-(defvar *double-float-op* (make-hash-table :size 64)
+(defvar *flonum-op* (make-hash-table :size 64)
   "Hash table mapping a maxima function to a corresponding Lisp
   function to evaluate the maxima function numerically with
-  double-float precision.")
+  flonum precision.")
 
 (defvar *big-float-op* (make-hash-table)
   "Hash table mapping a maxima function to a corresponding Lisp
@@ -113,7 +113,7 @@
 ;; Otherwise punt to CL:ASIN.
 (defun maxima-branch-asin (x)
   ;; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
-  (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
+  (if (and (> (abs (realpart x)) 1.0) (equal (imagpart x) 0.0))
       ;; The formula from CLHS is asin(x) = -%i*log(%i*x+sqrt(1-x^2)).
       ;; This has problems with overflow for large x.
       ;;
@@ -159,7 +159,7 @@
       ;; soon as 1/x.
       (let* ((absx (abs x))
 	     (recip (/ absx))
-	     (result (complex (/ #.(float pi 1d0) 2)
+	     (result (complex (/ #.(float pi) 2)
 			      (- (log (* absx
 					 (1+ (* (sqrt (+ 1 recip))
 						(sqrt (- 1 recip))))))))))
@@ -172,20 +172,20 @@
 ;; Otherwise punt to CL:ACOS.
 (defun maxima-branch-acos (x)
   ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
-  (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
-    (- #.(/ (float pi 1d0) 2) (maxima-branch-asin x))
+  (if (and (> (abs (realpart x)) 1.0) (equal (imagpart x) 0.0))
+    (- #.(/ (float pi) 2) (maxima-branch-asin x))
     (cl:acos x)))
 
 ;; Apply formula from CLHS if X falls on a branch cut.
 ;; Otherwise punt to CL:ATANH.
 (defun maxima-branch-atanh (x)
   ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
-  (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
+  (if (and (> (abs (realpart x)) 1.0) (equal (imagpart x) 0.0))
     (/ (- (cl:log (+ 1 x)) (cl:log (- 1 x))) 2)
     (cl:atanh x)))
 
 ;; Fill the hash table.
-(macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *double-float-op*) ,dfun)))
+(macrolet ((frob (mfun dfun) `(setf (gethash ',mfun *flonum-op*) ,dfun)))
   (frob mplus #'+)
   (frob mtimes #'*)
   (frob mquotient #'/)
@@ -371,11 +371,11 @@
 ;; When z is a Maxima complex float or when 'numer' is true and z is a
 ;; Maxima complex number, evaluate (op z) by applying the mapping from
 ;; the Maxima operator 'op' to the operator in the hash table
-;; 'double-float-op'. When z isn't a Maxima complex number, return
+;; 'flonum-op'. When z isn't a Maxima complex number, return
 ;; nil.
 
-(defun double-float-eval (op z)
-  (let ((op (gethash op *double-float-op*)))
+(defun flonum-eval (op z)
+  (let ((op (gethash op *flonum-op*)))
     (when (and op (complex-number-p z 'float-or-rational-p))
       (let ((x ($realpart z)) (y ($imagpart z)))
 	(when (or $numer (floatp x) (floatp y))
@@ -418,7 +418,7 @@
 (defmfun simp-%sin (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
-  (cond ((double-float-eval (mop form) y))
+  (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 0) ((linearp y '$%pi) (%piargs-sin/cos y)))))
@@ -441,7 +441,7 @@
 (defmfun simp-%cos (form y z) 
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
-  (cond ((double-float-eval (mop form) y))
+  (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 1) ((linearp y '$%pi) (%piargs-sin/cos (add %pi//2 y))))))
@@ -475,7 +475,7 @@
 (defmfun simp-%tan (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
-  (cond ((double-float-eval (mop form) y))
+  (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 0) ((linearp y '$%pi) (%piargs-tan/cot y)))))
@@ -499,7 +499,7 @@
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   
-  (cond ((double-float-eval (mop form) y))
+  (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) (domain-error y 'cot))
@@ -535,7 +535,7 @@
 (defmfun simp-%csc (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
-  (cond ((double-float-eval (mop form) y))
+  (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) (domain-error y 'csc))
@@ -560,7 +560,7 @@
 (defmfun simp-%sec (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
-  (cond ((double-float-eval (mop form) y))
+  (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) 1) ((linearp y '$%pi) (%piargs-csc/sec (add %pi//2 y))))))
@@ -594,7 +594,7 @@
 (defmfun simp-%atan (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
-  (cond ((double-float-eval (mop form) y))
+  (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs

@@ -65,16 +65,16 @@
 ;; Numerical evaluation for Chebyschev expansions of the first kind
 
 (defun cheby (x chebarr)
-  (let ((bn+2 0d0) (bn+1 0d0))
+  (let ((bn+2 0.0) (bn+1 0.0))
     (do ((i (floor (aref chebarr 0)) (1- i)))
 	((< i 1) (- bn+1 (* bn+2 x)))
      (setq bn+2
 	    (prog1 bn+1 (setq bn+1 (+ (aref chebarr i)
-				      (- (* 2d0 x bn+1) bn+2))))))))
+				      (- (* 2.0 x bn+1) bn+2))))))))
 
 (defun cheby-prime (x chebarr)
   (- (cheby x chebarr)
-      (* (aref chebarr 1) 0.5d0)))
+      (* (aref chebarr 1) 0.5)))
 
 ;; These should really be calculated with minimax rational approximations.
 ;; Someone has done LI[2] already, and this should be updated; I haven't
@@ -94,64 +94,64 @@
   (labels ((li2 (x)
 	     (cond ((< x 0)
 		    (+ (li2 (/ (- 1 x)))
-		       (* 0.5d0 (log (- 1 x)) (log (/ (- 1 x) (* x x))))
-		       (- (/ (cl:expt (coerce pi 'double-float) 2) 6))))
+		       (* 0.5 (log (- 1 x)) (log (/ (- 1 x) (* x x))))
+		       (- (/ (cl:expt (float pi) 2) 6))))
 		   ((< x 1)
 		    (slatec:dspenc x))
 		   ((= x 1)
-		    (/ (cl:expt (coerce pi 'double-float) 2) 6))
+		    (/ (cl:expt (float pi) 2) 6))
 		   (t
 		    ;; li[2](x) = -li[2](1/x)-log(-x)^2/2-%pi^2/6
 		    (- (+ (li2 (/ x))
 			  (/ (cl:expt (cl:log (- x)) 2) 2)
-			  (/ (cl:expt (coerce pi 'double-float) 2) 6)))))))
+			  (/ (cl:expt (float pi) 2) 6)))))))
     (complexify (li2 y))))
 
 
 (defun li3numer (x)
-  (cond ((= x 0d0) 0d0)
-	((= x 1d0) 1.20205690d0)
-	((< x -1d0)
-	 (- (chebyli3 (/ x)) (* 1.64493407d0 (log (- x)))
-	     (/ (expt (log (- x)) 3) 6d0)))
-	((not (> x .5d0)) (chebyli3 x))
-	((not (> x 2d0))
-	 (let ((fac (* (expt (log x) 2) 0.5d0)))
-	   (m+t (+ 1.20205690d0
+  (cond ((= x 0.0) 0.0)
+	((= x 1.0) 1.20205690)
+	((< x -1.0)
+	 (- (chebyli3 (/ x)) (* 1.64493407 (log (- x)))
+	     (/ (expt (log (- x)) 3) 6.0)))
+	((not (> x 0.5)) (chebyli3 x))
+	((not (> x 2.0))
+	 (let ((fac (* (expt (log x) 2) 0.5)))
+	   (m+t (+ 1.20205690
 		    (- (* (log x)
-			    (- 1.64493407d0 (chebyli2 (- 1d0 x))))
-			(chebys12 (- 1d0 x))
+			    (- 1.64493407 (chebyli2 (- 1.0 x))))
+			(chebys12 (- 1.0 x))
 			(* fac
-			    (log (cond ((< x 1d0) (- 1d0 x))
+			    (log (cond ((< x 1.0) (- 1.0 x))
 				       ((1- x)))))))
-		(cond ((< x 1d0) 0)
-		      ((m*t (* fac -3.14159265d0) '$%i))))))
-	(t (m+t (+ (chebyli3 (/ x)) (* 3.28986813d0 (log x))
-		    (/ (expt (log x) 3) -6d0))
-		(m*t (* -1.57079633d0 (expt (log x) 2)) '$%i)))))
+		(cond ((< x 1.0) 0)
+		      ((m*t (* fac -3.14159265) '$%i))))))
+	(t (m+t (+ (chebyli3 (/ x)) (* 3.28986813 (log x))
+		    (/ (expt (log x) 3) -6.0))
+		(m*t (* -1.57079633 (expt (log x) 2)) '$%i)))))
 
-(defvar *li2* (make-array 15. :initial-contents '(14.0d0 1.93506430d0 .166073033d0 2.48793229d-2
-						  4.68636196d-3 1.0016275d-3 2.32002196d-4
-						  5.68178227d-5 1.44963006d-5 3.81632946d-6
-						  1.02990426d-6 2.83575385d-7 7.9387055d-8
-						  2.2536705d-8 6.474338d-9)
-			  :element-type 'double-float))
+(defvar *li2* (make-array 15. :initial-contents '(14.0 1.93506430 .166073033 2.48793229e-2
+						  4.68636196e-3 1.0016275e-3 2.32002196e-4
+						  5.68178227e-5 1.44963006e-5 3.81632946e-6
+						  1.02990426e-6 2.83575385e-7 7.9387055e-8
+						  2.2536705e-8 6.474338e-9)
+			  :element-type 'flonum))
 
 
-(defvar *li3* (make-array 15. :initial-contents '(14.0d0 1.95841721d0 8.51881315d-2 8.55985222d-3
-						  1.21177214d-3 2.07227685d-4 3.99695869d-5
-						  8.38064066d-6 1.86848945d-6 4.36660867d-7
-						  1.05917334d-7 2.6478920d-8 6.787d-9
-						  1.776536d-9 4.73417d-10)
-			  :element-type 'double-float))
+(defvar *li3* (make-array 15. :initial-contents '(14.0 1.95841721 8.51881315e-2 8.55985222e-3
+						  1.21177214e-3 2.07227685e-4 3.99695869e-5
+						  8.38064066e-6 1.86848945e-6 4.36660867e-7
+						  1.05917334e-7 2.6478920e-8 6.787e-9
+						  1.776536e-9 4.73417e-10)
+			  :element-type 'flonum))
 
-(defvar *s12* (make-array 18. :initial-contents '(17.0d0 1.90361778d0 .431311318d0 .100022507d0
-						  2.44241560d-2 6.22512464d-3 1.64078831d-3
-						  4.44079203d-4 1.22774942d-4 3.45398128d-5
-						  9.85869565d-6 2.84856995d-6 8.31708473d-7
-						  2.45039499d-7 7.2764962d-8 2.1758023d-8 6.546158d-9
-						  1.980328d-9)
-			  :element-type 'double-float))
+(defvar *s12* (make-array 18. :initial-contents '(17.0 1.90361778 .431311318 .100022507
+						  2.44241560e-2 6.22512464e-3 1.64078831e-3
+						  4.44079203e-4 1.22774942e-4 3.45398128e-5
+						  9.85869565e-6 2.84856995e-6 8.31708473e-7
+						  2.45039499e-7 7.2764962e-8 2.1758023e-8 6.546158e-9
+						  1.980328e-9)
+			  :element-type 'flonum))
 
 (defun chebyli2 (x)
   (* x (cheby-prime (/ (1+ (* x 4)) 3) *li2*)))
@@ -335,7 +335,7 @@
 		   `(((1 . 1) . ,(prep1 '((mtimes) -1 $%gamma)))))
 		  ((= subl 0)
 		   (cons '((-1 . 1) -1 . 1)
-			 (if (> 0d0 npw) ()
+			 (if (> 0.0 npw) ()
 			     `(((0 . 1)
 				. ,(prep1 '((mtimes) -1 $%gamma)))))))
 		  (t (setq *last* (factorial subl))

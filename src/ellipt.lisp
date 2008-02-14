@@ -48,7 +48,7 @@
 ;; In addition, the Landen transformations are valid for all u and m.
 ;; Thus, we can compute the elliptic functions for complex u and
 ;; m. (The code below supports this, but we could make it run much
-;; faster if we specialized it to for double-floats.  However, if we
+;; faster if we specialized it to for flonums.  However, if we
 ;; do that, we won't be able to handle the cases where m < 0 or m > 1.
 ;; We'll have to handle these specially via A&S 16.10 and 16.11.)
 ;;
@@ -88,8 +88,8 @@
   (defun elliptic-dn-ascending (u m)
     (cond ((zerop m)
 	   ;; A&S 16.6.3
-	   1d0)
-	  ((< (abs (- 1 m)) (* 4 double-float-epsilon))
+	   1.0)
+	  ((< (abs (- 1 m)) (* 4 flonum-epsilon))
 	   ;; A&S 16.6.3
 	   (/ (cl:cosh u)))
 	  (t
@@ -107,7 +107,7 @@
     (cond ((zerop m)
 	   ;; A&S 16.6.2
 	   (cl:cos u))
-	  ((< (abs (- 1 m)) (* 4 double-float-epsilon))
+	  ((< (abs (- 1 m)) (* 4 flonum-epsilon))
 	   ;; A&S 16.6.2
 	   (/ (cl:cosh u)))
 	  (t
@@ -126,7 +126,7 @@
     (cond ((= m 1)
 	   ;; A&S 16.6.1
 	   (cl:tanh u))
-	  ((< (abs m) double-float-epsilon)
+	  ((< (abs m) flonum-epsilon)
 	   ;; A&S 16.6.1
 	   (cl:sin u))
 	  (t
@@ -137,7 +137,7 @@
 		  (1+ (* root-mu new-sn new-sn))))))))
   #+nil
   (defun elliptic-sn-ascending (u m)
-    (if (< (abs (- 1 m)) (* 4 double-float-epsilon))
+    (if (< (abs (- 1 m)) (* 4 flonum-epsilon))
 	;; A&S 16.6.1
 	(tanh u)
 	(multiple-value-bind (v mu root-mu1)
@@ -535,7 +535,7 @@
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
 	   ;; Numerically evaluate sn
-	   (sn (float u 1d0) (float m 1d0)))
+	   (sn (float u) (float m)))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   ;; For complex values.  Should we really do this?
@@ -628,7 +628,7 @@
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (cn (float u 1d0) (float m 1d0)))
+	   (cn (float u) (float m)))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (let ((result (cn (complex ($realpart u) ($imagpart u))
@@ -724,7 +724,7 @@
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (dn (float u 1d0) (float m 1d0)))
+	   (dn (float u) (float m)))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (let ((result (dn (complex ($realpart u) ($imagpart u))
@@ -918,7 +918,7 @@
 ;;          Value of IER assigned by the DRF routine
 ;;
 ;;                   Value assigned         Error Message Printed
-;;                   IER = 1                MIN(X,Y,Z) .LT. 0.0D0
+;;                   IER = 1                MIN(X,Y,Z) .LT. 0.0
 ;;                       = 2                MIN(X+Y,X+Z,Y+Z) .LT. LOLIM
 ;;                       = 3                MAX(X,Y,Z) .GT. UPLIM
 ;;
@@ -979,15 +979,15 @@
 ;;                  SIAM Journal of Mathematical Analysis 8, (1977),
 ;;                 pp. 231-242.
 
-(let ((errtol (expt (* 4 double-float-epsilon) 1/6))
-      (uplim (/ most-positive-double-float 5))
-      (lolim (* #-gcl least-positive-normalized-double-float
-		#+gcl least-positive-double-float
+(let ((errtol (expt (* 4 flonum-epsilon) 1/6))
+      (uplim (/ most-positive-flonum 5))
+      (lolim (* #-gcl least-positive-normalized-flonum
+		#+gcl least-positive-flonum
 		5))
-      (c1 (float 1/24 1d0))
-      (c2 (float 3/44 1d0))
-      (c3 (float 1/14 1d0)))
-  (declare (double-float errtol c1 c2 c3))
+      (c1 (float 1/24))
+      (c2 (float 3/44))
+      (c3 (float 1/14)))
+  (declare (flonum errtol c1 c2 c3))
   (defun drf (x y z)
     "Compute Carlson's incomplete or complete elliptic integral of the
 first kind:
@@ -1003,15 +1003,15 @@ first kind:
 
 where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 "
-    (declare (double-float x y z))
+    (declare (flonum x y z))
     ;; Check validity of input
     (assert (and (>= x 0) (>= y 0) (>= z 0)
 		 (plusp (+ x y)) (plusp (+ x z)) (plusp (+ y z))))
     (assert (<= (max x y z) uplim))
     (assert (>= (min (+ x y) (+ x z) (+ y z)) lolim))
     (locally 
-	(declare (type (double-float 0d0) x y)
-		 (type (double-float (0d0)) z)
+	(declare (type (flonum 0.0) x y)
+		 (type (flonum (0.0)) z)
 		 (optimize (speed 3)))
       (loop
        (let* ((mu (/ (+ x y z) 3))
@@ -1035,11 +1035,11 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 	   (setf y (* (+ y lam) 1/4))
 	   (setf z (* (+ z lam) 1/4))))))))
 
-(let ((errtol (expt (* 4 double-float-epsilon) 1/6))
-      (c1 (float 1/24 1d0))
-      (c2 (float 3/44 1d0))
-      (c3 (float 1/14 1d0)))
-  (declare (double-float errtol c1 c2 c3))
+(let ((errtol (expt (* 4 flonum-epsilon) 1/6))
+      (c1 (float 1/24))
+      (c2 (float 3/44))
+      (c3 (float 1/14)))
+  (declare (flonum errtol c1 c2 c3))
   (defun crf (x y z)
     "Compute Carlson's incomplete or complete elliptic integral of the
 first kind:
@@ -1055,10 +1055,10 @@ first kind:
   x, y, and z may be complex.
 "
     (declare (number x y z))
-    (let ((x (coerce x '(complex double-float)))
-	  (y (coerce y '(complex double-float)))
-	  (z (coerce z '(complex double-float))))
-      (declare (type (complex double-float) x y z)
+    (let ((x (coerce x '(complex flonum)))
+	  (y (coerce y '(complex flonum)))
+	  (z (coerce z '(complex flonum))))
+      (declare (type (complex flonum) x y z)
 	       (optimize (speed 3)))
       (loop
 	 (let* ((mu (/ (+ x y z) 3))
@@ -1106,22 +1106,22 @@ first kind:
 			 (m+1 (+ 1 m))
 			 (root (sqrt m+1))
 			 (m/m+1 (/ m m+1)))
-		    (- (/ (elliptic-f (float (/ pi 2) 1d0) m/m+1)
+		    (- (/ (elliptic-f (float (/ pi 2)) m/m+1)
 			  root)
-		       (/ (elliptic-f (- (float (/ pi 2) 1d0) phi) m/m+1)
+		       (/ (elliptic-f (- (float (/ pi 2)) phi) m/m+1)
 			  root))))
 		 ((= m 0)
 		  ;; A&S 17.4.19
 		  phi)
 		 ((= m 1)
 		  ;; A&S 17.4.21
-		  (log (cl:tan (+ (/ phi 2) (float (/ pi 2) 1d0)))))
+		  (log (cl:tan (+ (/ phi 2) (float (/ pi 2))))))
 		 ((minusp phi)
 		  (- (elliptic-f (- phi) m)))
 		 ((> phi pi)
 		  ;; A&S 17.4.3
 		  (multiple-value-bind (s phi-rem)
-		      (truncate phi (float pi 1d0))
+		      (truncate phi (float pi))
 		    (+ (* 2 s (elliptic-k m))
 		       (elliptic-f phi-rem m))))
 		 ((<= phi (/ pi 2))
@@ -1132,13 +1132,13 @@ first kind:
 		       (drf (* cos-phi cos-phi)
 			    (* (- 1 (* k sin-phi))
 			       (+ 1 (* k sin-phi)))
-			    1d0))))
+			    1.0))))
 		 ((< phi pi)
 		  (+ (* 2 (elliptic-k m))
-		     (elliptic-f (- phi (float pi 1d0)) m))))))
+		     (elliptic-f (- phi (float pi)) m))))))
 	(t
-	 (let ((phi (coerce phi-arg '(complex double-float)))
-	       (m (coerce m-arg '(complex double-float))))
+	 (let ((phi (coerce phi-arg '(complex flonum)))
+	       (m (coerce m-arg '(complex flonum))))
 	   (let ((sin-phi (sin phi))
 		 (cos-phi (cos phi))
 		 (k (sqrt m)))
@@ -1146,11 +1146,11 @@ first kind:
 		(crf (* cos-phi cos-phi)
 		     (* (- 1 (* k sin-phi))
 			(+ 1 (* k sin-phi)))
-		     1d0)))))))
+		     1.0)))))))
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
-  (declare (double-float m))
+  (declare (flonum m))
   (cond ((> m 1)
 	 ;; A&S 17.4.15
 	 (/ (elliptic-f (cl:asin (sqrt m)) (/ m))))
@@ -1162,16 +1162,16 @@ first kind:
 		(m/m+1 (/ m m+1)))
 	   (- (/ (elliptic-k m/m+1)
 		 root)
-	      (/ (elliptic-f 0d0 m/m+1)
+	      (/ (elliptic-f 0.0 m/m+1)
 		 root))))
 	((= m 0)
 	 ;; A&S 17.4.19
-	 (float (/ pi 2) 1d0))
+	 (float (/ pi 2)))
 	(t
 	 (let ((k (sqrt m)))
-	   (drf 0d0 (* (- 1 k)
+	   (drf 0.0 (* (- 1 k)
 		       (+ 1 k))
-		1d0)))))
+		1.0)))))
 ;;
 ;; Carlsons' elliptic integral of the second kind.
 ;;
@@ -1297,24 +1297,24 @@ first kind:
 ;;
 ;;
 
-(let ((errtol (expt (/ double-float-epsilon 3) 1/6))
-      (c1 (float 3/14 1d0))
-      (c2 (float 1/6 1d0))
-      (c3 (float 9/22 1d0))
-      (c4 (float 3/26 1d0)))
-  (declare (double-float errtol c1 c2 c3 c4))
+(let ((errtol (expt (/ flonum-epsilon 3) 1/6))
+      (c1 (float 3/14))
+      (c2 (float 1/6))
+      (c3 (float 9/22))
+      (c4 (float 3/26)))
+  (declare (flonum errtol c1 c2 c3 c4))
   (defun drd (x y z)
     ;; Check validity of input
 
     (assert (and (>= x 0) (>= y 0) (>= z 0) (plusp (+ x y))) (x y z))
 	    
-    (let ((x (float x 1d0))
-	  (y (float y 1d0))
-	  (z (float z 1d0))
-	  (sigma 0d0)
-	  (power4 1d0))
-      (declare (type (double-float 0d0) x y power4 sigma)
-	       (type (double-float (0d0)) z)
+    (let ((x (float x))
+	  (y (float y))
+	  (z (float z))
+	  (sigma 0.0)
+	  (power4 1.0))
+      (declare (type (flonum 0.0) x y power4 sigma)
+	       (type (flonum (0.0)) z)
 	       (optimize (speed 3)))
       (loop
        (let* ((mu (* 1/5 (+ x y (* 3 z))))
@@ -1358,7 +1358,7 @@ first kind:
 ;;      0
 
 (defun elliptic-e (phi m)
-  (declare (double-float phi m))
+  (declare (flonum phi m))
   (cond ((= m 0)
 	 ;; A&S 17.4.23
 	 phi)
@@ -1372,27 +1372,27 @@ first kind:
 		(y (* (- 1 (* k sin-phi))
 		      (+ 1 (* k sin-phi)))))
 	   (- (* sin-phi
-		 (drf (* cos-phi cos-phi) y 1d0))
+		 (drf (* cos-phi cos-phi) y 1.0))
 	      (* (/ m 3)
 		 (expt sin-phi 3)
-		 (drd (* cos-phi cos-phi) y 1d0)))))))
+		 (drd (* cos-phi cos-phi) y 1.0)))))))
 
 ;; Complete version
 (defun elliptic-ec (m)
-  (declare (double-float m))
+  (declare (flonum m))
   (cond ((= m 0)
 	 ;; A&S 17.4.23
-	 (float (/ pi 2) 1d0))
+	 (float (/ pi 2)))
 	((= m 1)
 	 ;; A&S 17.4.25
-	 1d0)
+	 1.0)
 	(t
 	 (let* ((k (sqrt m))
 		(y (* (- 1 k)
 		      (+ 1 k))))
-	   (- (drf 0d0 y 1d0)
+	   (- (drf 0.0 y 1.0)
 	      (* (/ m 3)
-		 (drd 0d0 y 1d0)))))))
+		 (drd 0.0 y 1.0)))))))
 
 
 ;; Define the elliptic integrals for maxima
@@ -1604,7 +1604,7 @@ first kind:
     (cond ((or (and (floatp phi) (floatp m))
 	       (and $numer (numberp phi) (numberp m)))
 	   ;; Numerically evaluate it
-	   (elliptic-e (float phi 1d0) (float m 1d0)))
+	   (elliptic-e (float phi) (float m)))
 	  ((zerop1 phi)
 	   0)
 	  ((zerop1 m)
@@ -1643,7 +1643,7 @@ first kind:
     (cond ((or (and (floatp m))
 	       (and $numer (numberp m)))
 	   ;; Numerically evaluate it
-	   (elliptic-k (float m 1d0)))
+	   (elliptic-k (float m)))
 	  ((zerop1 m)
 	   '((mtimes) ((rat) 1 2) $%pi))
 	  (t
@@ -1670,7 +1670,7 @@ first kind:
     (cond ((or (and (floatp m))
 	       (and $numer (numberp m)))
 	   ;; Numerically evaluate it
-	   (elliptic-ec (float m 1d0)))
+	   (elliptic-ec (float m)))
 	  ((zerop1 m)
 	   '((mtimes) ((rat) 1 2) $%pi))
 	  ;; Some special cases we know about.
@@ -1718,7 +1718,7 @@ first kind:
     (cond ((or (and (floatp n) (floatp phi) (floatp m))
 	       (and $numer (numberp n) (numberp phi) (numberp m)))
 	   ;; Numerically evaluate it
-	   (elliptic-pi (float n 1d0) (float phi 1d0) (float m 1d0)))
+	   (elliptic-pi (float n) (float phi) (float m)))
 	  ((zerop1 n)
 	   `(($elliptic_f) ,phi ,m))
 	  ((zerop1 m)
@@ -1754,9 +1754,9 @@ first kind:
 	 (k (sqrt m))
 	 (k2sin (* (- 1 (* k sin-phi))
 		   (+ 1 (* k sin-phi)))))
-    (- (* sin-phi (drf (expt cos-phi 2) k2sin 1d0))
+    (- (* sin-phi (drf (expt cos-phi 2) k2sin 1.0))
        (* (/ nn 3) (expt sin-phi 3)
-	  (drj (expt cos-phi 2) k2sin 1d0
+	  (drj (expt cos-phi 2) k2sin 1.0
 	       (- 1 (* n (expt sin-phi 2))))))))
     
 ;;***PURPOSE  Calculate a double precision approximation to
@@ -1861,30 +1861,30 @@ first kind:
 ;;                 pp. 231-242.
 
 
-(let ((errtol (expt (/ double-float-epsilon 3) 1/6))
-      (c1 (float 1/7 1d0))
-      (c2 (float 9/22 1d0)))
-  (declare (double-float errtol c1 c2))
+(let ((errtol (expt (/ flonum-epsilon 3) 1/6))
+      (c1 (float 1/7))
+      (c2 (float 9/22)))
+  (declare (flonum errtol c1 c2))
   (defun drc (x y)
-    (declare (type (double-float 0d0) x)
-	     (type (double-float (0d0)) y)
+    (declare (type (flonum 0.0) x)
+	     (type (flonum (0.0)) y)
 	     (optimize (speed 3)))
     (let ((xn x)
 	  (yn y))
-      (declare (type (double-float 0d0) xn)
-	       (type (double-float (0d0)) yn))
+      (declare (type (flonum 0.0) xn)
+	       (type (flonum (0.0)) yn))
       (loop
        (let* ((mu (/ (+ xn yn yn) 3))
 	      (sn (- (/ (+ yn mu) mu) 2)))
-	 (declare (type double-float sn))
+	 (declare (type flonum sn))
 	 (when (< (abs sn) errtol)
 	   (let ((s (* sn sn
-		       (+ 0.3d0
-			  (* sn (+ c1 (* sn (+ 0.375d0 (* sn c2)))))))))
+		       (+ 0.3
+			  (* sn (+ c1 (* sn (+ 0.375 (* sn c2)))))))))
 	     (return-from drc (/ (+ 1 s) (sqrt mu)))))
 	 (let ((lam (+ (* 2 (sqrt xn) (sqrt yn)) yn)))
-	   (setf xn (* (+ xn lam) 0.25d0))
-	   (setf yn (* (+ yn lam) 0.25d0))))))))
+	   (setf xn (* (+ xn lam) 0.25))
+	   (setf yn (* (+ yn lam) 0.25))))))))
 
 ;;   1.     DRJ
 ;;          Standard FORTRAN function routine
@@ -2008,25 +2008,25 @@ first kind:
 ;;               B. C. Carlson, Elliptic integrals of the first kind,
 ;;                 SIAM Journal of Mathematical Analysis 8, (1977),
 ;;                 pp. 231-242.
-(let ((errtol (expt (/ double-float-epsilon 3) 1/6))
+(let ((errtol (expt (/ flonum-epsilon 3) 1/6))
       (c1 3/14)
       (c2 1/3)
       (c3 3/22)
       (c4 3/26))
   (defun drj (x y z p)
-    (declare (type (double-float 0d0) x y z)
-	     (type (double-float (0d0)) p))
+    (declare (type (flonum 0.0) x y z)
+	     (type (flonum (0.0)) p))
     (let ((xn x)
 	  (yn y)
 	  (zn z)
 	  (pn p)
-	  (sigma 0d0)
-	  (power4 1d0))
-      (declare (type (double-float 0d0) xn yn zn)
-	       (type (double-float (0d0)) pn)
-	       (type double-float sigma power4))
+	  (sigma 0.0)
+	  (power4 1.0))
+      (declare (type (flonum 0.0) xn yn zn)
+	       (type (flonum (0.0)) pn)
+	       (type flonum sigma power4))
       (loop
-       (let* ((mu (* 0.2d0 (+ xn yn zn pn pn)))
+       (let* ((mu (* 0.2 (+ xn yn zn pn pn)))
 	      (xndev (/ (- mu xn) mu))
 	      (yndev (/ (- mu yn) mu))
 	      (zndev (/ (- mu zn) mu))
@@ -2060,11 +2060,11 @@ first kind:
 			    2))
 		(beta (* pn (expt (+ pn lam) 2))))
 	   (incf sigma (* power4 (drc alfa beta)))
-	   (setf power4 (* power4 0.25d0))
-	   (setf xn (* 0.25d0 (+ xn lam)))
-	   (setf yn (* 0.25d0 (+ yn lam)))
-	   (setf zn (* 0.25d0 (+ zn lam)))
-	   (setf pn (* 0.25d0 (+ pn lam)))))))))
+	   (setf power4 (* power4 0.25))
+	   (setf xn (* 0.25 (+ xn lam)))
+	   (setf yn (* 0.25 (+ yn lam)))
+	   (setf zn (* 0.25 (+ zn lam)))
+	   (setf pn (* 0.25 (+ pn lam)))))))))
 
 (defun check-drj (x y z p)
   (let* ((w (/ (* x y) z))
@@ -2073,7 +2073,7 @@ first kind:
 	 (drj-1 (drj x (+ x z) (+ x w) (+ x p)))
 	 (drj-2 (drj y (+ y z) (+ y w) (+ y p)))
 	 (drj-3 (drj a b b a))
-	 (drj-4 (drj 0d0 z w p)))
+	 (drj-4 (drj 0.0 z w p)))
     ;; Both values should be equal.
     (values (+ drj-1 drj-2 (* (- a b) drj-3) (/ 3 (sqrt a)))
 	    drj-4)))
@@ -2116,7 +2116,7 @@ first kind:
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
 	   ;; Numerically evaluate sn
-	   (/ (sn (float u 1d0) (float m 1d0))))
+	   (/ (sn (float u) (float m))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (let ((u-r ($realpart u))
@@ -2215,7 +2215,7 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (/ (cn (float u 1d0) (float m 1d0))))
+	   (/ (cn (float u) (float m))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (let ((u-r ($realpart u))
@@ -2325,7 +2325,7 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (/ (dn (float u 1d0) (float m 1d0))))
+	   (/ (dn (float u) (float m))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (let ((u-r ($realpart u))
@@ -2430,8 +2430,8 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (let ((fu (float u 1d0))
-		 (fm (float m 1d0)))
+	   (let ((fu (float u))
+		 (fm (float m)))
 	     (/ (sn fu fm) (cn fu fm))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
@@ -2542,8 +2542,8 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (let ((fu (float u 1d0))
-		 (fm (float m 1d0)))
+	   (let ((fu (float u))
+		 (fm (float m)))
 	     (/ (sn fu fm) (dn fu fm))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
@@ -2680,8 +2680,8 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (let ((fu (float u 1d0))
-		 (fm (float m 1d0)))
+	   (let ((fu (float u))
+		 (fm (float m)))
 	     (/ (cn fu fm) (sn fu fm))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
@@ -2795,8 +2795,8 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (let ((fu (float u 1d0))
-		 (fm (float m 1d0)))
+	   (let ((fu (float u))
+		 (fm (float m)))
 	     (/ (cn fu fm) (dn fu fm))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
@@ -2922,8 +2922,8 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (let ((fu (float u 1d0))
-		 (fm (float m 1d0)))
+	   (let ((fu (float u))
+		 (fm (float m)))
 	     (/ (dn fu fm) (sn fu fm))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
@@ -3061,8 +3061,8 @@ first kind:
 	coef)
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
-	   (let ((fu (float u 1d0))
-		 (fm (float m 1d0)))
+	   (let ((fu (float u))
+		 (fm (float m)))
 	     (/ (dn fu fm) (cn fu fm))))
 	  ((zerop1 u)
 	   1)
@@ -3166,7 +3166,7 @@ first kind:
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; ans(x,m) = asn(1/x,m) = F(asin(1/x),m)
-	   (elliptic-f (cl:asin (/ (float u 1d0))) (float m 1d0)))
+	   (elliptic-f (cl:asin (/ (float u))) (float m)))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (complexify (elliptic-f (cl:asin (/ (complex ($realpart u) ($imagpart u))))
@@ -3732,7 +3732,7 @@ first kind:
 	       (and $numer (numberp u) (numberp m)))
 	   (let ((u-r ($realpart u))
 		 (u-i ($imagpart u))
-		 (m (float m 1d0)))
+		 (m (float m)))
 	     (complexify (elliptic-eu (complex u-r u-i) m))))
 	  (t
 	   (eqtest `(($elliptic_eu) ,u ,m) form)))))
@@ -3762,7 +3762,7 @@ first kind:
     (cond ((or (and (floatp u) (floatp m))
 	       (and $numer (numberp u) (numberp m)))
 	   ;; Numerically evaluate am
-	   (cl:asin (sn (float u 1d0) (float m 1d0))))
+	   (cl:asin (sn (float u) (float m))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%jacobi_am) u m) form)))))

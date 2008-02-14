@@ -166,8 +166,8 @@
 ;; real valued, return 'notcomparable.'
 
 ;; The subtraction can be a problem--for example, compare(0.1, 1/10)
-;; evaluates to "=". But for double floats, I believe 0.1d0 > 1/10. 
-;; If you want to convert double and big floats to exact rational
+;; evaluates to "=". But for flonum floats, I believe 0.1 > 1/10. 
+;; If you want to convert flonum and big floats to exact rational
 ;; numbers, use $rationalize.
 
 ;; I think compare(asin(x), asin(x) + 1) should evaluate to < without

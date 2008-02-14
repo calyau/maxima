@@ -108,7 +108,7 @@
   (pushnew name *maxima-arrays*)	;for tracking down old ones.
   (setq aarray (make-array dimlist :initial-element (case maclisp-type
 						      (fixnum 0)
-						      (flonum 0.0d0)
+						      (flonum 0.0)
 						      (otherwise nil))))
   (cond ((null name) aarray)
 	((symbolp name)
@@ -321,8 +321,8 @@ values")
 	  ((floatp symb)
 	   (let ((a (abs symb))
 		 (effective-printprec (if (or (= $fpprintprec 0)
-					      (> $fpprintprec 16))
-					  16
+					      (> $fpprintprec $maxfpprintprec))
+					  $maxfpprintprec
 					  $fpprintprec)))
 	     ;; When printing out something for Fortran, we want to be
 	     ;; sure to print the exponent marker so that Fortran
@@ -339,13 +339,13 @@ values")
 		 (setq string (format nil "~e" symb))
 		 (multiple-value-bind (form width)
 		     (cond ((or (zerop a)
-				(<= 1 a 1d7))
+				(<= 1 a 1e7))
 			    (values "~vf" (+ 1 effective-printprec)))
-			   ((<= 0.001d0 a 1)
+			   ((<= 0.001 a 1)
 			    (values "~vf" (+ effective-printprec
-					     (cond ((< a 0.01d0)
+					     (cond ((< a 0.01)
 						    3)
-						   ((< a 0.1d0)
+						   ((< a 0.1)
 						    2)
 						   (t 1)))))
 			   (t

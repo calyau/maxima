@@ -74,7 +74,7 @@
 (defun log-base2 (n)
   (declare (type (and fixnum (integer 1)) n)
 	   (optimize (speed 3)))
-  (values (truncate (/ (log (float n 1d0)) #.(log 2d0)))))
+  (values (truncate (/ (log (float n)) #.(log 2.0)))))
 
 ;; Warning: What this routine thinks is the foward or inverse
 ;; direction is the "engineering" definition used in Oppenheim and
@@ -91,11 +91,11 @@ fft-dif-internal (vec &optional direction)
 			   Default is forward.
 
 The result is returned in vec."
-  (declare (type (array t (*)) vec-r vec-i))
+  (declare (type (cl:array t (*)) vec-r vec-i))
   (let* ((size (length vec-r))
 	 (le size)
 	 (m (log-base2 le))
-	 (dir (if direction 1d0 -1d0)))
+	 (dir (if direction 1.0 -1.0)))
     (assert (= size (ash 1 m)))
     (dotimes (level m)
       (declare (fixnum level))
@@ -103,15 +103,15 @@ The result is returned in vec."
 	     (ang (/ pi le1))
 	     (w-r (cos ang))
 	     (w-i (- (* dir (sin ang))))
-	     (u-r 1d0)
-	     (u-i 0d0)
-	     (tmp-r 0d0)
-	     (tmp-i 0d0)
+	     (u-r 1.0)
+	     (u-i 0.0)
+	     (tmp-r 0.0)
+	     (tmp-i 0.0)
 	     (kp 0)
 	     )
 	(declare (type fixnum le1)
-		 (type double-float ang)
-		 (type double-float w-r w-i u-r u-i tmp-r tmp-i)
+		 (type flonum ang)
+		 (type flonum w-r w-i u-r u-i tmp-r tmp-i)
 		 (type fixnum kp))
 	(dotimes (j le1)
 	  (declare (fixnum j))
@@ -182,7 +182,7 @@ Forward DFT of x.  Result is returned in x."
 
 Inverse DFT of x.  Result is returned in x."
   (let* ((len (length x-r))
-	 (flen (/ (float len 1d0))))
+	 (flen (/ (float len))))
     (fft-dif-internal x-r x-i t)
     (fft-bit-reverse x-r x-i)
     (dotimes (k len)

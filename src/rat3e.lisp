@@ -580,7 +580,7 @@
 
 (defun prep1 (x &aux temp)
   (cond ((floatp x)
-	 (cond ($keepfloat (cons x 1d0))
+	 (cond ($keepfloat (cons x 1.0))
 	       ((prepfloat x))))
 	((integerp x) (cons (cmod x) 1))
 	((rationalp x)
@@ -850,15 +850,15 @@
 
 (defmvar $ratprint t)
 
-(defmvar $ratepsilon 2d-8)
+(defmvar $ratepsilon 2e-8)
 
 ;; This control of conversion from float to rational appears to be explained
 ;; nowhere. - RJF
 
 (defmfun maxima-rationalize (x)
   (cond ((not (floatp x)) x)
-	((< x 0d0)
-	 (setq x (ration1 (* -1d0 x)))
+	((< x 0.0)
+	 (setq x (ration1 (* -1.0 x)))
 	 (rplaca x (* -1 (car x))))
 	(t (ration1 x))))
 
@@ -879,7 +879,7 @@
 	     ;; that demonstrates this.  In any case, CMUCL replaced
 	     ;; it with an algorithm based on the code in Clisp, which
 	     ;; was much better.
-	     (do ((xx x (setq y (/ 1d0 (- xx (float a x)))))
+	     (do ((xx x (setq y (/ 1.0 (- xx (float a x)))))
 		  (num (setq a (floor x)) (+ (* (setq a (floor y)) num) onum))
 		  (den 1 (+ (* a den) oden))
 		  (onum 1 num)

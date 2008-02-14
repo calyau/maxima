@@ -216,7 +216,7 @@
 ;; |a - b| <= float_approx_equal_tolerance * min(|a|, |b|).
 ;; In all other cases, return false.
 
-(defmvar $float_approx_equal_tolerance (* 8 double-float-epsilon))
+(defmvar $float_approx_equal_tolerance (* 8 flonum-epsilon))
 
 (defun $float_approx_equal (a b)
   (setq a (if (floatp a) a ($float a)))

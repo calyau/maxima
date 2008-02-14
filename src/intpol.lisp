@@ -18,8 +18,8 @@
 
 (declare-top (special $find_root_rel $find_root_abs $find_root_error)) 
 
-(or (boundp '$find_root_abs) (setq $find_root_abs 0d0)) 
-(or (boundp '$find_root_rel) (setq $find_root_rel 0d0))
+(or (boundp '$find_root_abs) (setq $find_root_abs 0.0)) 
+(or (boundp '$find_root_rel) (setq $find_root_rel 0.0))
 (or (boundp '$find_root_error) (setq $find_root_error t))
 
 (defmspec $interpolate (form)
@@ -53,19 +53,19 @@ Perhaps you meant to enter `~a'.~%"
 			    ((mequal) ((f) ,a) ,fa)
 			    ((mequal) ((f) ,b) ,fb))))
 		 (t (return $find_root_error))))
-      (and (> fa 0d0)
+      (and (> fa 0.0)
 	   (setq fa (prog2 nil fb (setq fb fa)) a (prog2 nil b (setq b a))))
       (setq lin 0)
       binary
-      (setq c (* (+ a b) 0.5d0)
+      (setq c (* (+ a b) 0.5)
 	    fc (funcall f c))
       (if (not (numberp fc))
         (return (values nil a b)))
       (and (interpolate-check a c b fc) (return c))
-      (cond ((< (abs (- fc (* (+ fa fb) 0.5d0))) (* 1d-1 (- fb fa)))
+      (cond ((< (abs (- fc (* (+ fa fb) 0.5))) (* 1e-1 (- fb fa)))
 	     (incf lin))
 	    (t (setq lin 0)))
-      (cond ((> fc 0d0) (setq fb fc b c)) (t (setq fa fc a c)))
+      (cond ((> fc 0.0) (setq fb fc b c)) (t (setq fa fc a c)))
       (or (= lin 3) (go binary))
       falsi
       (setq c (cond ((plusp (+ fb fa))

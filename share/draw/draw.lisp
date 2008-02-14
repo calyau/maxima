@@ -526,7 +526,7 @@
                (setf x (map 'list #'convert-to-float (cdadr arg1))
                      y (map 'list #'convert-to-float (cdaddr arg1))))
             (t (merror "draw (points2d): bad input format"))  )
-      (setf pts (make-array (* 2 (length x)) :element-type 'double-float
+      (setf pts (make-array (* 2 (length x)) :element-type 'flonum
                                              :initial-contents (mapcan #'list x y)))
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
@@ -603,7 +603,7 @@
                      y (map 'list #'convert-to-float (cdaddr arg1))
                      z (map 'list #'convert-to-float (cdaddr (rest arg1)))   ))
             (t (merror "draw (points3d): bad input format"))  )
-      (setf pts (make-array (* 3 (length x)) :element-type 'double-float
+      (setf pts (make-array (* 3 (length x)) :element-type 'flonum
                                              :initial-contents (mapcan #'list x y z)))
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
@@ -681,7 +681,7 @@
                                       (get-option '$color)))
              (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (+ (* 2 (length x)) 2)
-                                         :element-type 'double-float
+                                         :element-type 'flonum
                                          :initial-contents (append (mapcan #'list x y)
                                                                    (list (first x) (first y))) )) ) )
          ((not (get-option '$border)) ; no transparent, no border
@@ -690,7 +690,7 @@
                                       (get-option '$fill_color)))
              (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
-                                         :element-type 'double-float
+                                         :element-type 'flonum
                                          :initial-contents (mapcan #'list x y)) ) ))
          (t ; no transparent with border
              (setf pltcmd (list (format nil " ~a w filledcurves lc rgb '~a'"
@@ -704,10 +704,10 @@
              (setf grps '((2 0) (2 0)))  ; both sets of vertices (interior and border)
                                      ; are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
-                                         :element-type 'double-float
+                                         :element-type 'flonum
                                          :initial-contents (mapcan #'list x y))
                              (make-array (+ (* 2 (length x)) 2)
-                                         :element-type 'double-float
+                                         :element-type 'flonum
                                          :initial-contents (append (mapcan #'list x y)
                                                                    (list (first x) (first y))))))))
       (make-gr-object
@@ -783,10 +783,10 @@
         (fang1 (convert-to-float ang1))
         (fang2 (convert-to-float ang2))
         (nticks (gethash '$nticks  *gr-options*))
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305)
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305)
         (result nil)
         pts grps tmin tmax eps x y tt pltcmd)
     (if (or (notevery #'floatp (list fxc fyc fa fb fang1 fang2))
@@ -825,7 +825,7 @@
                                     (get-option '$line_type)
                                     (get-option '$color)))
            (setf grps '((2 0)))
-           (setf pts `( ,(make-array (length result) :element-type 'double-float
+           (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
            (setf pltcmd (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a'"
@@ -833,7 +833,7 @@
                                     fxc fyc
                                     (get-option '$fill_color)))
            (setf grps '((2 0)))
-           (setf pts `( ,(make-array (length result) :element-type 'double-float
+           (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        (t ; no transparent with border
              (setf pltcmd (list (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a'"
@@ -845,9 +845,9 @@
                                             (get-option '$line_type)
                                             (get-option '$color))))
            (setf grps '((2 0) (2 0)))
-           (setf pts (list (make-array (length result) :element-type 'double-float
+           (setf pts (list (make-array (length result) :element-type 'flonum
                                                        :initial-contents result)
-                           (make-array (length result) :element-type 'double-float
+                           (make-array (length result) :element-type 'flonum
                                                        :initial-contents result)))  ))
     (make-gr-object
        :name    'ellipse
@@ -939,16 +939,16 @@
 (defun bars (&rest boxes)
   (let ((n (length boxes))
         (count -1)
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305)
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305)
         result x h w w2)
     (when (= n 0) 
       (merror "draw2d (bars): no arguments in object bars"))
     (when (not (every #'(lambda (z) (and ($listp z) (= 3 ($length z)))) boxes))
       (merror "draw2d (bars): arguments must be lists of length three"))
-    (setf result (make-array (* 3 n) :element-type 'double-float))
+    (setf result (make-array (* 3 n) :element-type 'flonum))
     (dolist (k boxes)
        (setf x (convert-to-float ($first k))
              h (convert-to-float ($second k))
@@ -1025,7 +1025,7 @@
                               (get-option '$line_type)
                               (get-option '$color) )
          :groups '((4))
-         :points `(,(make-array 4 :element-type 'double-float
+         :points `(,(make-array 4 :element-type 'flonum
                                   :initial-contents (list x y dx dy))) ) ))
 
 
@@ -1085,7 +1085,7 @@
                               (get-option '$line_type)
                               (get-option '$color) )
          :groups '((6))
-         :points `(,(make-array 6 :element-type 'double-float
+         :points `(,(make-array 6 :element-type 'flonum
                                   :initial-contents (list x y z dx dy dz))) ) ))
 
 
@@ -1114,8 +1114,8 @@
          (xstart (convert-to-float minval))
          (xend (convert-to-float maxval))
          (x-step (/ (- xend xstart) (convert-to-float nticks) 2))
-         (ymin 1.75555970201398d+305)
-         (ymax -1.75555970201398d+305)
+         (ymin 1.75555970201398e+305)
+         (ymax -1.75555970201398e+305)
          x-samples y-samples yy result pltcmd result-array)
     (setq fcn (coerce-float-fun fcn `((mlist), var)))
     (if (< xend xstart)
@@ -1140,7 +1140,7 @@
         ;; The region is x-start to x-end, with mid-point x-mid.
         (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                          (car y-start) (car y-mid) (car y-end)
-                                          depth 1d-5)))
+                                          depth 1e-5)))
           (when (not (null result))
             (setf sublst (cddr sublst)))
           ;; clean non numeric pairs
@@ -1156,7 +1156,7 @@
                   (if (< yy ymin) (setf ymin yy)))
                (update-ranges xstart xend ymin ymax)
                (setf result-array (make-array (length result)
-                                              :element-type 'double-float 
+                                              :element-type 'flonum 
                                               :initial-contents result))
                (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc rgb '~a'"
                                         (make-obj-title (get-option '$key))
@@ -1176,7 +1176,7 @@
                   (if (< yy ymin) (setf ymin yy)))
                (update-ranges xstart xend ymin ymax)
                (setf result-array (make-array (length result)
-                                              :element-type 'double-float 
+                                              :element-type 'flonum 
                                               :initial-contents result))
                (setf pltcmd (format nil " ~a w filledcurves x1 lc rgb '~a'"
                                         (make-obj-title (get-option '$key))
@@ -1188,7 +1188,7 @@
                   :points  (list result-array )))
             (t
                (let (fcn2 yy2 (count -1))
-                  (setf result-array (make-array (* (/ (length result) 2) 3) :element-type 'double-float))
+                  (setf result-array (make-array (* (/ (length result) 2) 3) :element-type 'flonum))
                   (setq fcn2 (coerce-float-fun (get-option '$filled_func) `((mlist), var)))
                   (flet ((fun (x) (funcall fcn2 x)))
                     (do ((xx result (cddr xx)))
@@ -1253,10 +1253,10 @@
 
 (defun print-segment (points xmin xdelta ymin ydelta)
   (let* ((point1 (car points)) (point2 (cadr points))
-	 (x1 (coerce (+ xmin (/ (* xdelta (+ (car point1) (caddr point1))) 2)) 'double-float) )
-	 (y1 (coerce (+ ymin (/ (* ydelta (+ (cadr point1) (cadddr point1))) 2)) 'double-float) )
-	 (x2 (coerce (+ xmin (/ (* xdelta (+ (car point2) (caddr point2))) 2)) 'double-float) )
-	 (y2 (coerce (+ ymin (/ (* ydelta (+ (cadr point2) (cadddr point2))) 2)) 'double-float) ))
+	 (x1 (coerce (+ xmin (/ (* xdelta (+ (car point1) (caddr point1))) 2)) 'flonum) )
+	 (y1 (coerce (+ ymin (/ (* ydelta (+ (cadr point1) (cadddr point1))) 2)) 'flonum) )
+	 (x2 (coerce (+ xmin (/ (* xdelta (+ (car point2) (caddr point2))) 2)) 'flonum) )
+	 (y2 (coerce (+ ymin (/ (* ydelta (+ (cadr point2) (cadddr point2))) 2)) 'flonum) ))
     (setq pts (nconc (list x1 y1 x2 y2) pts))))	
 
 (defun print-square (xmin xmax ymin ymax sample grid)
@@ -1345,7 +1345,7 @@
        :name   'implicit
        :command pltcmd
        :groups '((2 2))
-       :points  `(,(make-array (length pts) :element-type 'double-float
+       :points  `(,(make-array (length pts) :element-type 'flonum
                                             :initial-contents pts)) ) ))
 
 
@@ -1422,11 +1422,11 @@
          (pts '())
          pltcmd
          (grouping '())
-         (px (make-array (+ nx 1) :element-type 'double-float))
-         (py (make-array (+ ny 1) :element-type 'double-float))
-         (pz (make-array (+ nz 1) :element-type 'double-float))
-         (oldval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'double-float))
-         (newval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'double-float)) )
+         (px (make-array (+ nx 1) :element-type 'flonum))
+         (py (make-array (+ ny 1) :element-type 'flonum))
+         (pz (make-array (+ nz 1) :element-type 'flonum))
+         (oldval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'flonum))
+         (newval (make-array `(,(+ nx 1) ,(+ ny 1)) :element-type 'flonum)) )
 
     ; initialize coordinate arrays
     (loop for i to nx do (setf (aref px i) (+ xmin (* i dx))))
@@ -1461,7 +1461,7 @@
                  (i+1 (+ i 1))
                  (j+1 (+ j 1))
                  (val (make-array 8 :element-type
-                                       'double-float
+                                       'flonum
                                     :initial-contents
                                        `(,(aref oldval i j+1) ,(aref oldval i+1 j+1)
                                          ,(aref oldval i+1 j) ,(aref oldval i j)
@@ -1513,7 +1513,7 @@
                                               (get-option '$color)))))
     (do ((v vertices (cdddr v)))
         ((null v) 'done)
-      (push (make-array 12 :element-type 'double-float
+      (push (make-array 12 :element-type 'flonum
                           :initial-contents (flatten (list (first v) (second v) (first v) (third v))))
             pts)
       (push '(3 2)
@@ -1555,15 +1555,15 @@
          (epsy (convert-to-float (/ (- fmaxval2 fminval2) yv_grid)))
          (x 0.0)
          (y 0.0)
-         (zmin 1.75555970201398d+305)
-         (zmax -1.75555970201398d+305)
+         (zmin 1.75555970201398e+305)
+         (zmax -1.75555970201398e+305)
          (nx (+ xu_grid 1))
          (ny (+ yv_grid 1))
          ($numer t)
          (count -1)
          result z)
     (setq fcn (coerce-float-fun fcn `((mlist),var1 ,var2)))
-    (setf result (make-array (* 3 nx ny) :element-type 'double-float))
+    (setf result (make-array (* 3 nx ny) :element-type 'flonum))
     (loop for j below ny
            initially (setq y fminval2)
            do (setq x fminval1)
@@ -1611,10 +1611,10 @@
          ($numer t)
          (tmin (convert-to-float parmin))
          (tmax (convert-to-float parmax))
-         (xmin 1.75555970201398d+305)
-         (xmax -1.75555970201398d+305)
-         (ymin 1.75555970201398d+305)
-         (ymax -1.75555970201398d+305)
+         (xmin 1.75555970201398e+305)
+         (xmax -1.75555970201398e+305)
+         (ymin 1.75555970201398e+305)
+         (ymax -1.75555970201398e+305)
          (tt (convert-to-float parmin))
          (eps (/ (- tmax tmin) (- nticks 1)))
          result f1 f2 x y)
@@ -1645,7 +1645,7 @@
                             (get-option '$line_type)
                             (get-option '$color))
        :groups '((2 0))
-       :points `(,(make-array (length result) :element-type 'double-float
+       :points `(,(make-array (length result) :element-type 'flonum
                                               :initial-contents result)))   ) )
 
 
@@ -1749,12 +1749,12 @@
          ($numer t)
          (tmin (convert-to-float parmin))
          (tmax (convert-to-float parmax))
-         (xmin 1.75555970201398d+305)
-         (xmax -1.75555970201398d+305)
-         (ymin 1.75555970201398d+305)
-         (ymax -1.75555970201398d+305)
-         (zmin 1.75555970201398d+305)
-         (zmax -1.75555970201398d+305)
+         (xmin 1.75555970201398e+305)
+         (xmax -1.75555970201398e+305)
+         (ymin 1.75555970201398e+305)
+         (ymax -1.75555970201398e+305)
+         (zmin 1.75555970201398e+305)
+         (zmax -1.75555970201398e+305)
          (tt parmin)
          (eps (/ (- tmax tmin) (- nticks 1)))
          result f1 f2 f3 x y z)
@@ -1790,7 +1790,7 @@
                             (get-option '$line_type)
                             (get-option '$color))
        :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
-       :points `(,(make-array (length result) :element-type 'double-float
+       :points `(,(make-array (length result) :element-type 'flonum
                                               :initial-contents result))  )) )
 
 
@@ -1817,12 +1817,12 @@
          (umax (convert-to-float par1max))
          (vmin (convert-to-float par2min))
          (vmax (convert-to-float par2max))
-         (xmin 1.75555970201398d+305)
-         (xmax -1.75555970201398d+305)
-         (ymin 1.75555970201398d+305)
-         (ymax -1.75555970201398d+305)
-         (zmin 1.75555970201398d+305)
-         (zmax -1.75555970201398d+305)
+         (xmin 1.75555970201398e+305)
+         (xmax -1.75555970201398e+305)
+         (ymin 1.75555970201398e+305)
+         (ymax -1.75555970201398e+305)
+         (zmin 1.75555970201398e+305)
+         (zmax -1.75555970201398e+305)
          (ueps (/ (- umax umin) (- ugrid 1)))
          (veps (/ (- vmax vmin) (- vgrid 1)))
          (nu (+ ugrid 1))
@@ -1863,7 +1863,7 @@
                             (get-option '$line_type)
                             (get-option '$color))
        :groups `((3 ,nu))  ; numbers are sent to gnuplot in groups of 3, with blank lines every nu lines
-       :points `(,(make-array (length result) :element-type 'double-float
+       :points `(,(make-array (length result) :element-type 'flonum
                                               :initial-contents result))   )) )
 
 
@@ -1896,7 +1896,7 @@
                  (setf n 3)   ; 3 numbers to be sent to gnuplot: x,y,value
                  (setf n 5))  ; 5 numbers to be sent: x,y,r,g,b
              (case n
-               (3 (setf result (make-array (* 3 nrows ncols) :element-type 'double-float))
+               (3 (setf result (make-array (* 3 nrows ncols) :element-type 'flonum))
                   (let ((yi (+ fy0 height (* dy -0.5)))
                         (counter -1)
                          xi)
@@ -1908,7 +1908,7 @@
                                (aref result (incf counter)) (convert-to-float (car col)))
                          (setf xi (+ xi dx)))
                        (setf yi (- yi dy)) )))
-               (5 (setf result (make-array (* 5 nrows ncols) :element-type 'double-float))
+               (5 (setf result (make-array (* 5 nrows ncols) :element-type 'flonum))
                   (let ((yi (+ fy0 height (* dy -0.5)))
                         (counter -1)
                          xi colors)
@@ -1931,7 +1931,7 @@
              (if (equal (nth 1 mat) '$level)  ; gray level picture
                  (setf n 3)   ; 3 numbers to be sent to gnuplot: x,y,value
                  (setf n 5))  ; 5 numbers to be sent: x,y,r,g,b
-             (setf result (make-array (* n nrows ncols) :element-type 'double-float))
+             (setf result (make-array (* n nrows ncols) :element-type 'flonum))
              (let ((yi (+ fy0 height (* dy -0.5)))
                    (count1 -1)
                    (count2 -1)
@@ -1979,16 +1979,16 @@
 ;; x and y are the longitude and latitude coordinates
 (defun longitude_latitude_projection_2d (lis)
   (let (res resi
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305) )
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305) )
     (setf res
        (loop for i on lis by #'cdr do
          (let* ((polyseg (aref $boundaries_array (car i)))
                 (ni (- (/ (length polyseg) 2) 1))
                 x y count)
-           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
            (setf count -1)
            (loop for k from 0 to ni do
              (setf x (aref polyseg (* 2 k))
@@ -2009,17 +2009,17 @@
 ;; This is experimental and not documented
 (defun mercator_projection_2d (lis)
   (let (res resi
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305) )
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305) )
     (setf res
        (loop for i on lis by #'cdr do
          (let* ((polyseg (aref $boundaries_array (car i)))
                 (ni (- (/ (length polyseg) 2) 1))
                 (c 0.0174532925199433) ; = %pi / 180
                 lon lat x y count)
-           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
            (setf count -1)
            (loop for k from 0 to ni do
              (setf lon (aref polyseg (* 2 k))
@@ -2042,10 +2042,10 @@
 ;; This is experimental and not documented
 (defun miller_projection_2d (lis)
   (let (res resi
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305) )
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305) )
     (setf res
        (loop for i on lis by #'cdr do
          (let* ((polyseg (aref $boundaries_array (car i)))
@@ -2053,7 +2053,7 @@
                 (c 0.0174532925199433) ; = %pi / 180
                 (c1 .7853981633974483) ; = %pi / 4
                 x y count)
-           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
            (setf count -1)
            (loop for k from 0 to ni do
              (setf x (aref polyseg (* 2 k))
@@ -2074,10 +2074,10 @@
 ;; This is experimental and not documented
 (defun kavrayskiy_projection_2d (lis)
   (let (res resi
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305) )
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305) )
     (setf res
        (loop for i on lis by #'cdr do
          (let* ((polyseg (aref $boundaries_array (car i)))
@@ -2086,7 +2086,7 @@
                 (c1 0.4774648292756861) ; = 3 / (2 * %pi)
                 (c2 3.289868133696452)  ; = %pi^2 / 3
                 lon lat x y count)
-           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
            (setf count -1)
            (loop for k from 0 to ni do
              (setf lon (aref polyseg (* 2 k))
@@ -2165,19 +2165,19 @@
 ;; sphere of radius r and center (cx,cy,cz)
 (defun spherical_projection_3d (lis cx cy cz r)
   (let (res resi
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305)
-        (zmin 1.75555970201398d+305)
-        (zmax -1.75555970201398d+305) )
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305)
+        (zmin 1.75555970201398e+305)
+        (zmax -1.75555970201398e+305) )
     (setf res
        (loop for i on lis by #'cdr do
          (let* ((polyseg (aref $boundaries_array (car i)))
                 (ni (- (/ (length polyseg) 2) 1))
                 (c 0.0174532925199433) ; = %pi / 180
                 lon lat x y z count)
-           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'flonum))
            (setf count -1)
            (loop for k from 0 to ni do
              (setf lon (* c (aref polyseg (* 2 k)))
@@ -2207,19 +2207,19 @@
 ;; of intersection with the sphere.
 (defun cylindrical_projection_3d (lis cx cy cz r rc)
   (let (res resi
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305)
-        (zmin 1.75555970201398d+305)
-        (zmax -1.75555970201398d+305) )
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305)
+        (zmin 1.75555970201398e+305)
+        (zmax -1.75555970201398e+305) )
     (setf res
        (loop for i on lis by #'cdr do
          (let* ((polyseg (aref $boundaries_array (car i)))
                 (ni (- (/ (length polyseg) 2) 1))
                 (c 0.0174532925199433) ; = %pi / 180
                 lon lat x y z count)
-           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'flonum))
            (setf count -1)
            (loop for k from 0 to ni do
              (setf lon (* c (aref polyseg (* 2 k)))
@@ -2247,12 +2247,12 @@
 ;; of radius r and center (cx,cy,cz). The cone is tangent to the globe.
 (defun conic_projection_3d (lis cx cy cz r a)
   (let (res resi
-        (xmin 1.75555970201398d+305)
-        (xmax -1.75555970201398d+305)
-        (ymin 1.75555970201398d+305)
-        (ymax -1.75555970201398d+305)
-        (zmin 1.75555970201398d+305)
-        (zmax -1.75555970201398d+305) )
+        (xmin 1.75555970201398e+305)
+        (xmax -1.75555970201398e+305)
+        (ymin 1.75555970201398e+305)
+        (ymax -1.75555970201398e+305)
+        (zmin 1.75555970201398e+305)
+        (zmax -1.75555970201398e+305) )
     (setf res
        (loop for i on lis by #'cdr do
          (let* ((polyseg (aref $boundaries_array (car i)))
@@ -2260,7 +2260,7 @@
                 (c 0.0174532925199433)  ; = %pi / 180
                 (cte (- 1.570796326794897 (* c a 0.5))) ; = %pi / 2 - c*a /2
                 north lon lat x y z p count)
-           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'double-float))
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'flonum))
            (setf count -1)
            (loop for k from 0 to ni do
              (setf lon (* c (aref polyseg (* 2 k)))
