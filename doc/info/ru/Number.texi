@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Number.texi
-@c OriginalRevision=1.26
+@c OriginalRevision=1.27
 @c TranslatedBy: (c) 2007-09-07 Alexey V. Beshenov <al@beshenov.ru>
 
 @menu
@@ -49,8 +49,6 @@
 Возвращает дзэта-функцию Римана для аргумента @var{s}.
 Возвращаемое значение - число с плавающей точкой повышенной точности (bfloat);
 @var{n} - количество цифр в возвращаемом значении.
-
-Функцию загружает команда @code{load ("bffac")}.
 
 @opencatbox
 @category{Теория чисел} @category{Численное вычисление}

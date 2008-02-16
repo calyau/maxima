@@ -4,7 +4,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=maxima.texi 
-@c OriginalRevision=1.56
+@c OriginalRevision=1.57
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
 @c info directory entry, reference to introduction chapter, and menu
@@ -100,7 +100,7 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * Выражения::                        Выражения в Maxima.
 * Simplification::                   Simplifying expressions.
 * Plotting::                         2D and 3D graphical output.
-* Input and Output::                 File input and output.
+* Ввод и вывод::                     Ввод и вывод файлов.
 * Floating Point::                   Low level numerical routines.
 * Контексты::                        Наборы известных фактов.
 
@@ -241,11 +241,11 @@ Plotting
 
 * Definitions for Plotting::    
 
-Input and Output
+Ввод и вывод
 
-* Comments::
-* Files::                       
-* Definitions for Input and Output::  
+* Комментарии::
+* Файлы::                       
+* Функции и переменные для ввода и вывода::
 
 Floating Point
 
@@ -517,7 +517,8 @@ mnewton
 numericalio
 
 * Introduction to numericalio::
-* Definitions for numericalio::
+* Functions and Variables for plain-text input and output::
+* Functions and Variables for binary input and output::
 
 opsubst
 
