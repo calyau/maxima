@@ -987,3 +987,14 @@ integrate(integrate((acos(x/l)+acos(y/l)-%pi/2)/(2*%pi),y,0,sqrt(l^2-x^2)),x,0,l
 l^2/(4*%pi);
 (forget(x>0,l>x),0);
 0;
+
+/* principal value integral */
+/* [ 657382 ] defint/limit infinite loop */
+integrate(1/(1-x^5), x, 0, inf);
+0-(2*sqrt(2*sqrt(5)+10)*atan((sqrt(5)-3)*sqrt(2*sqrt(5)+10)/(4*sqrt(5)))
+        +2*sqrt(10-2*sqrt(5))*atan(sqrt(10-2*sqrt(5))*(sqrt(5)+3)/(4*sqrt(5)))
+        -sqrt(2)*sqrt(sqrt(5)+5)*%pi-sqrt(2)*sqrt(5-sqrt(5))*%pi)
+        /20;
+
+integrate(1/x, x, minf, inf);
+0;

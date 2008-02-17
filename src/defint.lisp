@@ -551,10 +551,13 @@
 		  (cond ((take-principal anti-deriv ll ul poles))
 			(t ()))))))))
 
+;; adds up integrals of ranges between each pair of poles.
+;; checks if whole thing is divergent as limits of integration approach poles.
 (defun take-principal (anti-deriv ll ul poles &aux ans merged-list)
-  (setq anti-deriv (cond ((involve anti-deriv '(%log))
-			  ($logcontract anti-deriv))
-			 (t anti-deriv)))
+  ;;; calling $logcontract causes antiderivative of 1/(1-x^5) to blow up
+  ;;  (setq anti-deriv (cond ((involve anti-deriv '(%log))
+  ;;			  ($logcontract anti-deriv))
+  ;;			 (t anti-deriv)))
   (setq ans 0.)
   (setq merged-list (interval-list poles ll ul))
   (do ((current-pole (cdr merged-list) (cdr current-pole))
@@ -568,7 +571,7 @@
   (cond ((not (freeof '%log ans))
 	 (setq ans ($logcontract ans))))
   (setq ans (get-limit (get-limit ans 'epsilon 0 '$plus) 'prin-inf '$inf))
-  ;;Return setion.
+  ;;Return section.
   (cond ((or (null ans)
 	     (not (free ans '$infinity))
 	     (not (free ans '$ind)))  ())
@@ -1974,8 +1977,7 @@
 	   0)
 	  ((equal ($asksign denom) '$zero)
 	   '$undefined)
-	  (t (let (($%piargs ()))
-	       (intsubs exp ll ul))))))
+	  (t (intsubs exp ll ul)))))
 
 ;; Determine whether E is of the form sin(x)^m*cos(x)^n and return the
 ;; list (m n).
