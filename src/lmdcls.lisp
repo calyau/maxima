@@ -128,7 +128,7 @@
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
 	  smallprimes specials sqrt2//2 sqrt3//2 state-pdl $stringdisp substp
 	  sums tellratlist timesinp timesp tr-abort tr-progret tr-unique
-	  tramp1$ tramp2$ tramp3$ transl-file translate-time-evalables transp
+	  transl-file translate-time-evalables transp
 	  tstack typel user-mesfile user-timesofar varlist wflag
 	  $wtlevel $cflength $weightlevels *trunclist $taylordepth
 	  $maxtaydiff $verbose $psexpand ps-bmt-disrep

@@ -86,8 +86,6 @@
                (:module rat-macros :source-pathname ""
                         :components ((:file "ratmac") 
                                      (:file "mhayat")))
-               (:module numerical-macros :source-pathname ""
-                        :components ((:file "numerm")))
                #+gcl (:file "optimize") ; jfa check this
                (:module utilities :source-pathname ""
 			:depends-on (utility-macros)
@@ -444,7 +442,6 @@
 				     (:file "ellipt")
 				     (:file "airy"
 					    :depends-on ("ellipt"))
-				     (:file "numer") 
 				     (:file "intpol")))
 	       (:module reader :source-pathname ""
 			:depends-on (compatibility-macros)

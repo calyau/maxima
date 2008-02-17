@@ -367,8 +367,6 @@ nparse.lisp \
 nrat4.lisp \
 nregex.lisp \
 nset.lisp \
-numer.lisp \
-numerm.lisp \
 nummod.lisp \
 numth.lisp \
 openmath.lisp \

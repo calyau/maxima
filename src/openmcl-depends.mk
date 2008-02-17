@@ -21,7 +21,6 @@ binary-openmcl/maxima.image : strmac.lisp
 binary-openmcl/maxima.image : displm.lisp
 binary-openmcl/maxima.image : ratmac.lisp
 binary-openmcl/maxima.image : mhayat.lisp
-binary-openmcl/maxima.image : numerm.lisp
 binary-openmcl/maxima.image : opers.lisp
 binary-openmcl/maxima.image : utils.lisp
 binary-openmcl/maxima.image : sumcon.lisp
@@ -166,7 +165,6 @@ binary-openmcl/maxima.image : trprop.lisp
 binary-openmcl/maxima.image : mdefun.lisp
 binary-openmcl/maxima.image : bessel.lisp
 binary-openmcl/maxima.image : ellipt.lisp
-binary-openmcl/maxima.image : numer.lisp
 binary-openmcl/maxima.image : intpol.lisp
 binary-openmcl/maxima.image : nparse.lisp
 binary-openmcl/maxima.image : displa.lisp

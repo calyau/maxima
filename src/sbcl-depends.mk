@@ -23,7 +23,6 @@ binary-sbcl/maxima.core : strmac.lisp
 binary-sbcl/maxima.core : displm.lisp
 binary-sbcl/maxima.core : ratmac.lisp
 binary-sbcl/maxima.core : mhayat.lisp
-binary-sbcl/maxima.core : numerm.lisp
 binary-sbcl/maxima.core : opers.lisp
 binary-sbcl/maxima.core : utils.lisp
 binary-sbcl/maxima.core : sumcon.lisp
@@ -215,7 +214,6 @@ binary-sbcl/maxima.core : trgred.lisp
 binary-sbcl/maxima.core : bessel.lisp
 binary-sbcl/maxima.core : ellipt.lisp
 binary-sbcl/maxima.core : airy.lisp
-binary-sbcl/maxima.core : numer.lisp
 binary-sbcl/maxima.core : intpol.lisp
 binary-sbcl/maxima.core : nparse.lisp
 binary-sbcl/maxima.core : displa.lisp
@@ -284,9 +282,9 @@ binary-sbcl/maxima.core : hypgeo.lisp
 binary-sbcl/maxima.core : hyp.lisp
 binary-sbcl/maxima.core : todd-coxeter.lisp
 binary-sbcl/maxima.core : mactex.lisp
+binary-sbcl/maxima.core : plot.lisp
 binary-sbcl/maxima.core : gnuplot.lisp
 binary-sbcl/maxima.core : openmath.lisp
-binary-sbcl/maxima.core : plot.lisp
 binary-sbcl/maxima.core : autol.lisp
 binary-sbcl/maxima.core : max_ext.lisp
 binary-sbcl/maxima.core : init-cl.lisp

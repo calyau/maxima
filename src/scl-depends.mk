@@ -23,7 +23,6 @@ binary-scl/maxima.core : strmac.lisp
 binary-scl/maxima.core : displm.lisp
 binary-scl/maxima.core : ratmac.lisp
 binary-scl/maxima.core : mhayat.lisp
-binary-scl/maxima.core : numerm.lisp
 binary-scl/maxima.core : opers.lisp
 binary-scl/maxima.core : utils.lisp
 binary-scl/maxima.core : sumcon.lisp
@@ -215,7 +214,6 @@ binary-scl/maxima.core : trgred.lisp
 binary-scl/maxima.core : bessel.lisp
 binary-scl/maxima.core : ellipt.lisp
 binary-scl/maxima.core : airy.lisp
-binary-scl/maxima.core : numer.lisp
 binary-scl/maxima.core : intpol.lisp
 binary-scl/maxima.core : nparse.lisp
 binary-scl/maxima.core : displa.lisp

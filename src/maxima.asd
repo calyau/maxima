@@ -59,8 +59,6 @@
                (:module rat-macros :pathname ""
                         :components ((:file "ratmac") 
                                      (:file "mhayat")))
-               (:module numerical-macros :pathname ""
-                        :components ((:file "numerm")))
 	       #+gcl (:file "optimize")		; jfa check this
 
 	       (:module utilities :pathname ""
