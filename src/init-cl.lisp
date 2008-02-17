@@ -686,3 +686,12 @@
 
 (setf *builtin-$props* (copy-list $props))
 (setf *builtin-$rules* (copy-list $rules))
+
+;; Work around: ABCL handles special variables incorrectly
+;; unless they have DEFVAR or DEFPARAMETER.
+
+#+abcl (defvar msg)
+#+abcl (defvar flag)
+#+abcl (defvar print?)
+#+abcl (defvar errcatch)
+

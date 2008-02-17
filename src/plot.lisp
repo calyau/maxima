@@ -377,7 +377,7 @@
    
 ;; pts is a vector of bts [x0,y0,z0,x1,y1,z1,...] and each tuple xi,yi,zi is rotated
 ;; also the *z-range* is computed.
-(defun $rotate_pts(pts rotation-matrix)
+#-abcl (defun $rotate_pts(pts rotation-matrix)
   (or ($matrixp rotation-matrix) (error "second arg not matrix"))
   (let* ((rot *rot*)
          (l (length pts))
