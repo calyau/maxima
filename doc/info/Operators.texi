@@ -2343,6 +2343,19 @@ reverse(uf))
 @closecatbox
 @end deffn
 
+@deffn {Function} round (@var{x})
+
+When @var{x} is a real number, returns the closest integer 
+to @var{x}.  Multiples of 1/2 are rounded to the nearest 
+even integer.  Evaluation of @var{x} is similar to 
+@code{floor} and @code{ceiling}.
+
+@opencatbox
+@category{Mathematical functions}
+@closecatbox
+@end deffn
+
+
 @deffn {Function} sign (@var{expr})
 Attempts to determine the sign of @var{expr}
 on the basis of the facts in the current data base.  It returns one of
