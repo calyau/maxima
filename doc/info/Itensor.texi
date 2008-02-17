@@ -979,6 +979,7 @@ covariant indices and @var{n} contravariant indices.
 @end deffn
 
 @deffn {Function} canform (@var{expr})
+@deffnx {Function} canform (@var{expr}, @var{rename})
 Simplifies @var{expr} by renaming dummy
 indices and reordering all indices as dictated by symmetry conditions
 imposed on them. If @code{allsym} is @code{true} then all indices are assumed
@@ -990,6 +991,8 @@ This time can be shortened by calling @code{rename} on the expression first.
 Also see the example under @code{decsym}. Note: @code{canform} may not be able to
 reduce an expression completely to its simplest form although it will
 always return a mathematically correct result.
+
+The optional second parameter @var{rename}, if set to @code{false}, suppresses renaming.
 
 @opencatbox
 @category{Package itensor}
