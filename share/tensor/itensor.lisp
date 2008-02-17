@@ -2521,5 +2521,5 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 )
 
 ($load '$ex_calc)
-($load 'lckdt)
-($load 'iframe)
+($load '$lckdt)
+($load '$iframe)
