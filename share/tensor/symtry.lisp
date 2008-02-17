@@ -122,18 +122,26 @@
 	   (zl-remprop tensor '$cyc)))
     (return '$done)))
 
-(defun $canform (e)                              ;Convert E into CANonical FORM
-       (cond ((atom e) e)
+(defun $canform (&rest args)                      ;Convert E into CANonical FORM
+  (prog (e f)
+       (cond
+         ( (equal (length args) 1) (setq f t))
+         ( (equal (length args) 2) (setq f (cadr args)))
+         (t (merror "CANFORM requires one or two arguments"))
+       )
+       (setq e (car args))
+       (return
+        (cond ((atom e) e)
 	     ((eq (caar e) 'mequal)
-	      (mysubst0 (list (car e) ($canform (cadr e)) ($canform (caddr e)))
+	      (mysubst0 (list (car e) ($canform (cadr e) f) ($canform (caddr e) f))
 			e))
 	     ((eq (caar e) 'mplus)
-	      (mysubst0 (simplus (cons '(mplus) (mapcar '$canform (cdr e)))
+	      (mysubst0 (simplus (cons '(mplus) (mapcar (lambda (ee) ($canform ee f)) (cdr e)))
 				 1 nil) e))
-	     ((eq (caar e) 'mtimes) (mysubst0 (simplifya (canprod e) nil) e))
-	     ((rpobj e) (canten e t))
+	     ((eq (caar e) 'mtimes) (mysubst0 (simplifya (canprod e f) nil) e))
+	     ((rpobj e) (canten e f))
 	     (t (mysubst0 (simplifya (cons (ncons (caar e))
-					   (mapcar '$canform (cdr e))) t) e))))
+					   (mapcar (lambda (ee) ($canform ee f)) (cdr e))) t) e))))))
 
 (defun canten (e nfprpobjs)		;CANonical TENsor
   (prog (cov contr deriv tensor)
@@ -235,7 +243,7 @@
 
 (declare-top (special free-indices))
 
-(defun canprod (e)
+(defun canprod (e f)
   (prog (scalars indexed)
     (cond
       (
@@ -258,7 +266,7 @@
             )
           )
         )
-        (return ($canform ($expand e)))
+        (return ($canform ($expand e) f))
       )
       ((null indexed) (return e))
       (
@@ -276,8 +284,14 @@
               (function (lambda (z) (canten z nil)))
               (
                 (lambda (q)
-                  (rename1 q
-                    (nonumber (cdaddr ($indices2 (cons '(mtimes) (reverse q)))))
+                  (cond
+                    (f (rename1 q
+                         (nonumber
+                           (cdaddr ($indices2 (cons '(mtimes) (reverse q))))
+                         )
+                       )
+                    )
+                    (t q)
                   )
                 )
                 (mapcar
