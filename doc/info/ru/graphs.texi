@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=graphs.texi 
-@c OriginalRevision=1.3
+@c OriginalRevision=1.4
 @c TranslatedBy: (c) 2008-02 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 
@@ -80,9 +80,13 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) g : create_graph([1,2,3], [[[1,2], 1.0], [[2,3], 2.0],
-                                [[1,3], 3.0]])$
-(%i2) get_edge_weight([2,3], g);
-(%o2)                                 2.0
+                          [[1,3], 3.0]])$
+(%i3) print_graph(g)$
+Graph on 3 vertices with 3 edges.
+Adjacencies:
+  3 :  1  2
+  2 :  3  1
+  1 :  3  2
 @end example
 
 Пример 3: ориентированный граф:
@@ -100,12 +104,12 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) d : create_graph(
-       [1,2,3,4], 
-       [
-        [1,3], [1,4],
-        [2,3], [2,4]
-       ],
-       'directed = true)$
+        [1,2,3,4],
+        [
+         [1,3], [1,4],
+         [2,3], [2,4]
+        ],
+        'directed = true)$
 (%i3) print_graph(d)$
 Digraph on 4 vertices with 4 arcs.
 Adjacencies:
@@ -197,7 +201,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) f5 : flower_snark(5)$
 (%i3) chromatic_index(f5);
-(%o3)                                  4
+(%o3)                           4
 @end example
 @end deffn
 
@@ -280,6 +284,55 @@ Adjacencies:
 Возвращает граф двойственный (line graph) графу @var{g}.
 @end deffn
 
+@deffn {Функция} make_graph (@var{vrt}, @var{f})
+@deffnx {Функция} make_graph (@var{vrt}, @var{f}, @var{oriented})
+Создает граф, используя функцию предикат @var{f}.
+
+@var{vrt} -- есть список/множество вкршин или целое число. 
+Если @var{vrt} есть целое число,
+то вершины графа будут целыми от 1 до
+@var{vrt}.
+
+@var{f} -- функция предикат.  Вершины @var{a} и @var{b} будут
+соединены, если @code{f(a,b)=true}.
+
+Если @var{directed} не равно @var{false}, то граф будет ориентированным.
+
+Пример 1:
+@c ===beg===
+@c load(graphs)$
+@c g : make_graph(powerset({1,2,3,4,5}, 2), disjointp)$
+@c is_isomorphic(g, petersen_graph());
+@c get_vertex_label(1, g);
+@c ===end===
+@example
+(%i1) load(graphs)$
+(%i2) g : make_graph(powerset(@{1,2,3,4,5@}, 2), disjointp)$
+(%i3) is_isomorphic(g, petersen_graph());
+(%o3)                         true
+(%i4) get_vertex_label(1, g);
+(%o4)                        @{1, 2@}
+@end example
+
+Пример 2:
+@c ===beg===
+@c load(graphs)$
+@c f(i, j) := is (mod(j, i)=0)$
+@c g : make_graph(20, f, directed=true)$
+@c out_neighbors(4, g);
+@c in_neighbors(18, g);
+@c ===end===
+@example
+(%i1) load(graphs)$
+(%i2) f(i, j) := is (mod(j, i)=0)$
+(%i3) g : make_graph(20, f, directed=true)$
+(%i4) out_neighbors(4, g);
+(%o4)                    [8, 12, 16, 20]
+(%i5) in_neighbors(18, g);
+(%o5)                    [1, 2, 3, 6, 9]
+@end example
+@end deffn
+
 @deffn {Функция} mycielski_graph (@var{g})
 Возвращает граф Мицельского (mycielskian graph) графа @var{g}.
 @end deffn
@@ -337,10 +390,10 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) [net, s, t] : random_network(50, 0.2, 10.0);
-(%o2)                         [DIGRAPH, 50, 51]
+(%o2)                   [DIGRAPH, 50, 51]
 (%i3) max_flow(net, s, t)$
-(%i3) first(%);
-(%o3)                          36.458293875923
+(%i4) first(%);
+(%o4)                   27.65981397932507
 @end example
 @end deffn
 
@@ -375,13 +428,13 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) c5 : cycle_graph(4)$
 (%i3) adjacency_matrix(c5);
-                                [ 0  1  0  1 ]
-                                [            ]
-                                [ 1  0  1  0 ]
-(%o3)                           [            ]
-                                [ 0  1  0  1 ]
-                                [            ]
-                                [ 1  0  1  0 ]
+                         [ 0  1  0  1 ]
+                         [            ]
+                         [ 1  0  1  0 ]
+(%o3)                    [            ]
+                         [ 0  1  0  1 ]
+                         [            ]
+                         [ 1  0  1  0 ]
 @end example
 @end deffn
 
@@ -396,9 +449,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) average_degree(grotzch_graph());
-                                      40
-(%o2)                                 --
-                                      11
+                               40
+(%o2)                          --
+                               11
 @end example
 @end deffn
 
@@ -418,14 +471,14 @@ Adjacencies:
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i4) g : create_graph(
+(%i2) g : create_graph(
             [1,2,3,4,5,6,7],
             [
              [1,2],[2,3],[2,4],[3,4],
              [4,5],[5,6],[4,6],[6,7]
             ])$
-(%i5) biconnected_components(g);
-(%o5)               [[6, 7], [4, 5, 6], [1, 2], [2, 3, 4]]
+(%i3) biconnected_components(g);
+(%o3)        [[6, 7], [4, 5, 6], [1, 2], [2, 3, 4]]
 @end example
 
 @ifhtml
@@ -449,7 +502,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) h : heawood_graph()$
 (%i3) [A,B]:bipartition(h);
-(%o3)         [[8, 12, 6, 10, 0, 2, 4], [13, 5, 11, 7, 9, 1, 3]]
+(%o3)  [[8, 12, 6, 10, 0, 2, 4], [13, 5, 11, 7, 9, 1, 3]]
 (%i4) draw_graph(h, show_vertices=A, program=circular)$
 @end example
 @end deffn
@@ -471,7 +524,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) chromatic_index(p);
-(%o3)                                  4
+(%o3)                           4
 @end example
 @end deffn
 
@@ -487,9 +540,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) chromatic_number(cycle_graph(5));
-(%o2)                                  3
+(%o2)                           3
 (%i3) chromatic_number(cycle_graph(6));
-(%o3)                                  2
+(%o3)                           2
 @end example
 @end deffn
 
@@ -509,10 +562,10 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : create_graph(3, [[[0,1], 1.5], [[1,2], 1.3]])$
 (%i3) get_edge_weight([0,1], g);
-(%o3)                                 1.5
+(%o3)                          1.5
 (%i4) clear_edge_weight([0,1], g)$
 (%i5) get_edge_weight([0,1], g);
-(%o5)                                  1
+(%o5)                           1
 @end example
 @end deffn
 
@@ -531,11 +584,11 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
 (%i3) get_vertex_label(0, g);
-(%o3)                               Zero
+(%o3)                        Zero
 (%i4) clear_vertex_label(0, g);
-(%o4)                               done
+(%o4)                        done
 (%i5) get_vertex_label(0, g);
-(%o5)                               false
+(%o5)                        false
 @end example
 @end deffn
 
@@ -552,7 +605,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g: graph_union(cycle_graph(5), path_graph(4))$
 (%i3) connected_components(g);
-(%o3)                  [[1, 2, 3, 4, 0], [8, 7, 6, 5]]
+(%o3)           [[1, 2, 3, 4, 0], [8, 7, 6, 5]]
 @end example
 @end deffn
 
@@ -567,7 +620,7 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) diameter(dodecahedron_graph());
-(%o2)                                 5
+(%o2)                          5
 @end example
 @end deffn
 
@@ -588,14 +641,14 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) [ch_index, col] : edge_coloring(p);
-(%o3) [4, [[[0, 5], 3], [[5, 7], 1], [[0, 1], 1], [[1, 6], 2],
-[[6, 8], 1], [[1, 2], 3], [[2, 7], 4], [[7, 9], 2],
- [[2, 3], 2], [[3, 8], 3], [[5, 8], 2], 
-[[3, 4], 1], [[4, 9], 4], [[6, 9], 3], [[0, 4], 2]]]
+(%o3) [4, [[[0, 5], 3], [[5, 7], 1], [[0, 1], 1], [[1, 6], 2], 
+[[6, 8], 1], [[1, 2], 3], [[2, 7], 4], [[7, 9], 2], [[2, 3], 2], 
+[[3, 8], 3], [[5, 8], 2], [[3, 4], 1], [[4, 9], 4], [[6, 9], 3], 
+[[0, 4], 2]]]
 (%i4) assoc([0,1], col);
-(%o4)                                 1
+(%o4)                           1
 (%i5) assoc([0,5], col);
-(%o5)                                 3
+(%o5)                           3
 @end example
 @end deffn
 
@@ -610,7 +663,7 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) degree_sequence(random_graph(10, 0.4));
-(%o2)                  [3, 3, 3, 4, 4, 4, 5, 5, 6, 7]
+(%o2)            [3, 3, 3, 4, 4, 4, 5, 5, 6, 7]
 @end example
 @end deffn
 
@@ -625,7 +678,7 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) edges(complete_graph(4));
-(%o2)         [[2, 3], [1, 3], [1, 2], [0, 3], [0, 2], [0, 1]]
+(%o2)   [[2, 3], [1, 3], [1, 2], [0, 3], [0, 2], [0, 1]]
 @end example
 @end deffn
 
@@ -649,11 +702,11 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) c5 : cycle_graph(5)$
 (%i3) get_edge_weight([1,2], c5);
-(%o3)                                 1
+(%o3)                           1
 (%i4) set_edge_weight([1,2], 2.0, c5);
-(%o4)                               done
+(%o4)                         done
 (%i5) get_edge_weight([1,2], c5);
-(%o5)                                2.0
+(%o5)                          2.0
 @end example
 @end deffn
 
@@ -670,7 +723,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : create_graph([[0,"Zero"], [1, "One"]], [[0,1]])$
 (%i3) get_vertex_label(0, g);
-(%o3)                               Zero
+(%o3)                         Zero
 @end example
 @end deffn
 
@@ -687,8 +740,8 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_charpoly(p, x), factor;
-                                         5        4
-(%o3)                     (x - 3) (x - 1)  (x + 2)
+                                   5        4
+(%o3)               (x - 3) (x - 1)  (x + 2)
 @end example
 @end deffn
 
@@ -705,7 +758,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : grid_graph(5,5)$
 (%i3) graph_center(g);
-(%o3)                               [12]
+(%o3)                         [12]
 @end example
 @end deffn
 
@@ -723,7 +776,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_eigenvalues(p);
-(%o3)                     [[3, - 2, 1], [1, 4, 5]]
+(%o3)               [[3, - 2, 1], [1, 4, 5]]
 @end example
 @end deffn
 
@@ -740,7 +793,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : grid_graph(5,5)$
 (%i3) graph_periphery(g);
-(%o3)                          [24, 20, 4, 0]
+(%o3)                    [24, 20, 4, 0]
 @end example
 @end deffn
 
@@ -757,7 +810,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_size(p);
-(%o3)                                10
+(%o3)                          10
 @end example
 @end deffn
 
@@ -774,7 +827,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_order(p);
-(%o3)                                15
+(%o3)                          15
 @end example
 @end deffn
 
@@ -791,7 +844,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : heawood_graph()$
 (%i3) girth(g);
-(%o3)                                 5
+(%o3)                           5
 @end example
 @end deffn
 
@@ -801,15 +854,15 @@ Adjacencies:
 Пример:
 @c ===beg===
 @c load (graphs)$
-@c h : cube_graph(3)$
-@c hc : hamilton_cycle(h);
+@c c : cube_graph(3)$
+@c hc : hamilton_cycle(c);
 @c draw_graph(c, show_edges=vertices_to_cycle(hc))$
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i2) h : cube_graph(3)$
-(%i3) hc : hamilton_cycle(h);
-(%o3)        [7, 3, 2, 6, 4, 0, 1, 5, 7]
+(%i2) c : cube_graph(3)$
+(%i3) hc : hamilton_cycle(c);
+(%o3)              [7, 3, 2, 6, 4, 0, 1, 5, 7]
 (%i4) draw_graph(c, show_edges=vertices_to_cycle(hc))$
 @end example
 @end deffn
@@ -833,7 +886,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) hp : hamilton_path(p);
-(%o3)                  [0, 5, 7, 2, 1, 6, 8, 3, 4, 9]
+(%o3)            [0, 5, 7, 2, 1, 6, 8, 3, 4, 9]
 (%i4) draw_graph(p, show_edges=vertices_to_path(hp))$
 @end example
 @end deffn
@@ -857,9 +910,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
-(%i2) hash_table_data(isomorphism(clk5, petersen_graph()));
-(%o2) [9 -> 0, 2 -> 1, 6 -> 2, 5 -> 3, 0 -> 4, 1 -> 5, 3 -> 6, 
-                                     4 -> 7, 7 -> 8, 8 -> 9]
+(%i3) hash_table_data(isomorphism(clk5, petersen_graph()));
+(%o3) [8 -> 9, 7 -> 8, 4 -> 7, 3 -> 6, 1 -> 5, 0 -> 4, 5 -> 3, 
+                                          6 -> 2, 2 -> 1, 9 -> 0]
 @end example
 @end deffn
 
@@ -878,9 +931,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : path_digraph(3)$
 (%i3) in_neighbors(2, p);
-(%o3)                                 [1]
+(%o3)                          [1]
 (%i4) out_neighbors(2, p);
-(%o4)                                 []
+(%o4)                          []
 @end example
 @end deffn
 
@@ -895,10 +948,10 @@ Adjacencies:
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i3) is_biconnected(cycle_graph(5));
-(%o3)                               true
-(%i4) is_biconnected(path_graph(5));
-(%o4)                               false
+(%i2) is_biconnected(cycle_graph(5));
+(%o2)                         true
+(%i3) is_biconnected(path_graph(5));
+(%o3)                         false
 @end example
 @end deffn
 
@@ -914,9 +967,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_bipartite(petersen_graph());
-(%o2)                               false
+(%o2)                        false
 (%i3) is_bipartite(heawood_graph());
-(%o3)                               true
+(%o3)                        true
 @end example
 @end deffn
 
@@ -931,7 +984,7 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_connected(graph_union(cycle_graph(4), path_graph(3)));
-(%o2)                               false
+(%o2)                        false
 @end example
 @end deffn
 
@@ -947,9 +1000,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_digraph(path_graph(5));
-(%o2)                               false
+(%o2)                        false
 (%i3) is_digraph(path_digraph(5));
-(%o3)                               true
+(%o3)                        true
 @end example
 @end deffn
 
@@ -970,13 +1023,13 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) c4 : cycle_graph(4)$
 (%i3) is_edge_in_graph([2,3], c4);
-(%o3)                               true
+(%o3)                        true
 (%i4) is_edge_in_graph([3,2], c4);
-(%o4)                               true
+(%o4)                        true
 (%i5) is_edge_in_graph([2,4], c4);
-(%o5)                               false
+(%o5)                        false
 (%i6) is_edge_in_graph([3,2], cycle_digraph(4));
-(%o6)                               false
+(%o6)                        false
 @end example
 @end deffn
 
@@ -993,9 +1046,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_graph(path_graph(5));
-(%o2)                               true
+(%o2)                        true
 (%i3) is_graph(path_digraph(5));
-(%o3)                               false
+(%o3)                        false
 @end example
 @end deffn
 
@@ -1011,9 +1064,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_graph_or_digraph(path_graph(5));
-(%o2)                               true
+(%o2)                        true
 (%i3) is_graph_or_digraph(path_digraph(5));
-(%o3)                               true
+(%o3)                        true
 @end example
 @end deffn
 
@@ -1034,7 +1087,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
 (%i3) is_isomorphic(clk5, petersen_graph());
-(%o3)                              true
+(%o3)                       true
 @end example
 @end deffn
 
@@ -1054,11 +1107,11 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_planar(dodecahedron_graph());
-(%o2)                                true
+(%o2)                         true
 (%i3) is_planar(petersen_graph());
-(%o3)                                false
+(%o3)                         false
 (%i4) is_planar(petersen_graph(10,2));
-(%o4)                                true
+(%o4)                         true
 @end example
 @end deffn
 
@@ -1075,9 +1128,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_sconnected(cycle_digraph(5));
-(%o2)                               true
+(%o2)                        true
 (%i3) is_sconnected(path_digraph(5));
-(%o3)                               false
+(%o3)                        false
 @end example
 @end deffn
 
@@ -1095,9 +1148,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) c4 : cycle_graph(4)$
 (%i3) is_vertex_in_graph(0, c4);
-(%o3)                               true
+(%o3)                        true
 (%i4) is_vertex_in_graph(6, c4);
-(%o4)                               false
+(%o4)                        false
 @end example
 @end deffn
 
@@ -1113,9 +1166,9 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) is_tree(random_tree(4));
-(%o2)                               true
+(%o2)                        true
 (%i3) is_tree(graph_union(random_tree(4), random_tree(5)));
-(%o3)                               false
+(%o3)                        false
 @end example
 @end deffn
 
@@ -1130,15 +1183,15 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) laplacian_matrix(cycle_graph(5));
-                          [  2   - 1   0    0   - 1 ]
-                          [                         ]
-                          [ - 1   2   - 1   0    0  ]
-                          [                         ]
-(%o2)                     [  0   - 1   2   - 1   0  ]
-                          [                         ]
-                          [  0    0   - 1   2   - 1 ]
-                          [                         ]
-                          [ - 1   0    0   - 1   2  ]
+                   [  2   - 1   0    0   - 1 ]
+                   [                         ]
+                   [ - 1   2   - 1   0    0  ]
+                   [                         ]
+(%o2)              [  0   - 1   2   - 1   0  ]
+                   [                         ]
+                   [  0    0   - 1   2   - 1 ]
+                   [                         ]
+                   [ - 1   0    0   - 1   2  ]
 @end example
 @end deffn
 
@@ -1155,7 +1208,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.5)$
 (%i3) max_clique(g);
-(%o3)                 [2, 6, 13, 17, 21, 23, 31, 62, 65]
+(%o3)          [2, 6, 13, 17, 21, 23, 31, 62, 65]
 @end example
 @end deffn
 
@@ -1174,9 +1227,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.02)$
 (%i3) max_degree(g);
-(%o3)                               [5, 95]
+(%o3)                        [6, 70]
 (%i4) vertex_degree(95, g);
-(%o4)                                  5
+(%o4)                           3
 @end example
 @end deffn
 
@@ -1220,14 +1273,14 @@ Adjacencies:
    [[5,6], 1.0]],
   directed=true)$
 (%i3) [flow_value, flow] : max_flow(net, 1, 6);
-(%o3) [0.7, [[[1, 2], 0.5], [[1, 3], 0.2], [[2, 4], 0.2],
-[[2, 5], 0.3], [[3, 4], 0.1], [[3, 5], 0.1], [[4, 6], 0.3],
+(%o3) [0.7, [[[1, 2], 0.5], [[1, 3], 0.2], [[2, 4], 0.2], 
+[[2, 5], 0.3], [[3, 4], 0.1], [[3, 5], 0.1], [[4, 6], 0.3], 
 [[5, 6], 0.4]]]
 (%i4) fl : 0$
-(%i5) for u in out_neighbors(1, net) 
-         do fl : fl + assoc([1, u], flow)$
+(%i5) for u in out_neighbors(1, net)
+     do fl : fl + assoc([1, u], flow)$
 (%i6) fl;
-(%o6)                                 0.7
+(%o6)                          0.7
 @end example
 @end deffn
 
@@ -1243,10 +1296,10 @@ Adjacencies:
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i3) d : dodecahedron_graph()$
-(%i4) mi : max_independent_set(d);
-(%o4)                   [0, 3, 5, 9, 10, 11, 18, 19]
-(%i5) draw_graph(d, show_vertices=mi)$
+(%i2) d : dodecahedron_graph()$
+(%i3) mi : max_independent_set(d);
+(%o3)             [0, 3, 5, 9, 10, 11, 18, 19]
+(%i4) draw_graph(d, show_vertices=mi)$
 @end example
 @end deffn
 
@@ -1268,8 +1321,8 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) d : dodecahedron_graph()$
 (%i3) m : max_matching(d);
-(%o3) [[5, 7], [8, 9], [6, 10], [14, 19], [13, 18], [12, 17],
-                             [11, 16], [0, 15], [3, 4], [1, 2]]
+(%o3) [[1, 2], [3, 4], [0, 15], [11, 16], [12, 17], [13, 18], 
+                               [14, 19], [6, 10], [8, 9], [5, 7]]
 (%i4) draw_graph(d, show_edges=m)$
 @end example
 @end deffn
@@ -1293,9 +1346,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.1)$
 (%i3) min_degree(g);
-(%o3)                              [4, 21]
+(%o3)                        [4, 83]
 (%i4) vertex_degree(21, g);
-(%o4)                                 4
+(%o4)                          12
 @end example
 @end deffn
 
@@ -1334,7 +1387,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) neighbors(3, p);
-(%o3)                             [4, 8, 2]
+(%o3)                       [4, 8, 2]
 @end example
 @end deffn
 
@@ -1352,9 +1405,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : graph_product(cycle_graph(4), cycle_graph(7))$
 (%i3) girth(g);
-(%o3)                                 4
+(%o3)                           4
 (%i4) odd_girth(g);
-(%o4)                                 7
+(%o4)                           7
 @end example
 @end deffn
 
@@ -1373,9 +1426,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : path_digraph(3)$
 (%i3) in_neighbors(2, p);
-(%o3)                                 [1]
+(%o3)                           [1]
 (%i4) out_neighbors(2, p);
-(%o4)                                 []
+(%o4)                           []
 @end example
 @end deffn
 
@@ -1396,8 +1449,8 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) planar_embedding(grid_graph(3,3));
-(%o2) [[6, 3, 4, 7], [3, 0, 1, 4], [5, 8, 7, 4], 
-                         [2, 1, 0, 3, 6, 7, 8, 5], [4, 1, 2, 5]]
+(%o2) [[3, 6, 7, 8, 5, 2, 1, 0], [4, 3, 0, 1], [3, 4, 7, 6], 
+                                      [8, 7, 4, 5], [1, 2, 5, 4]]
 @end example
 @end deffn
 
@@ -1434,7 +1487,7 @@ Adjacencies:
   1 :  2
   0 :  1
 (%i6) out_neighbors(0, dc5);
-(%o6)                                [1]
+(%o6)                          [1]
 @end example
 @end deffn
 
@@ -1449,7 +1502,7 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) radius(dodecahedron_graph());
-(%o2)                                 5
+(%o2)                           5
 @end example
 @end deffn
 
@@ -1468,11 +1521,11 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : create_graph([1, 2], [[[1,2], 1.2]])$
 (%i3) get_edge_weight([1,2], g);
-(%o3)                                1.2
+(%o3)                          1.2
 (%i4) set_edge_weight([1,2], 2.1, g);
-(%o4)                               done
+(%o4)                         done
 (%i5) get_edge_weight([1,2], g);
-(%o5)                                2.1
+(%o5)                          2.1
 @end example
 @end deffn
 
@@ -1491,11 +1544,11 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g : create_graph([[1, "One"], [2, "Two"]], [[1,2]])$
 (%i3) get_vertex_label(1, g);
-(%o3)                                One
+(%o3)                           One
 (%i4) set_vertex_label(1, "oNE", g);
-(%o4)                               done
+(%o4)                          done
 (%i5) get_vertex_label(1, g);
-(%o5)                                oNE
+(%o5)                           oNE
 @end example
 @end deffn
 
@@ -1513,7 +1566,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) d : dodecahedron_graph()$
 (%i3) path : shortest_path(0, 7, d);
-(%o3)                          [0, 1, 19, 13, 7]
+(%o3)                    [0, 1, 19, 13, 7]
 (%i4) draw_graph(d, show_edges=vertices_to_path(path))$
 @end example
 @end deffn
@@ -1536,9 +1589,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) t : random_tournament(4)$
 (%i3) strong_components(t);
-(%o3)                         [[2, 0, 1], [3]]
+(%o3)                 [[2], [0], [1], [3]]
 (%i4) vertex_out_degree(3, t);
-(%o4)                                 0
+(%o4)                           2
 @end example
 @end deffn
 
@@ -1569,7 +1622,7 @@ Adjacencies:
          ],
          directed=true)$
 (%i3) topological_sort(g);
-(%o3)                           [1, 2, 5, 3, 4]
+(%o3)                     [1, 2, 5, 3, 4]
 @end example
 @end deffn
 
@@ -1592,9 +1645,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) d : dodecahedron_graph()$
 (%i3) vertex_distance(0, 7, d);
-(%o3)                                 4
+(%o3)                           4
 (%i4) shortest_path(0, 7, d);
-(%o4)                         [0, 1, 19, 13, 7]
+(%o4)                   [0, 1, 19, 13, 7]
 @end example
 @end deffn
 
@@ -1612,7 +1665,7 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) g:cycle_graph(7)$
 (%i3) vertex_eccentricity(0, g);
-(%o4)                                  3
+(%o4)                            3
 @end example
 @end deffn
 
@@ -1639,9 +1692,9 @@ Adjacencies:
   1 :  2
   0 :  1
 (%i4) vertex_in_degree(4, p5);
-(%o4)                                 1
+(%o4)                           1
 (%i5) in_neighbors(4, p5);
-(%o5)                                [3]
+(%o5)                          [3]
 @end example
 @end deffn
 
@@ -1659,9 +1712,9 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) t : random_tournament(10)$
 (%i3) vertex_out_degree(0, t);
-(%o3)                                 3
+(%o3)                           6
 (%i4) out_neighbors(0, t);
-(%o4)                             [7, 4, 2]
+(%o4)                  [9, 6, 4, 3, 2, 1]
 @end example
 @end deffn
 
@@ -1676,7 +1729,7 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) vertices(complete_graph(4));
-(%o2)                           [3, 2, 1, 0]
+(%o2)                     [3, 2, 1, 0]
 @end example
 @end deffn
 
@@ -1697,11 +1750,11 @@ Adjacencies:
 (%i1) load (graphs)$
 (%i2) p : path_graph(4)$
 (%i3) neighbors(0, p);
-(%o3)                                [1]
+(%o3)                          [1]
 (%i4) add_edge([0,3], p);
-(%o4)                               done
+(%o4)                         done
 (%i5) neighbors(0, p);
-(%o5)                              [3, 1]
+(%o5)                        [3, 1]
 @end example
 @end deffn
 
@@ -1797,7 +1850,7 @@ Adjacencies:
 @example
 (%i1) load (graphs)$
 (%i2) g: create_graph(
-       8, [[0,3],[1,3],[2,3],[3,4],[4,5],[4,6],[4,7]])$
+      8, [[0,3],[1,3],[2,3],[3,4],[4,5],[4,6],[4,7]])$
 (%i3) print_graph(g)$
 Graph on 8 vertices with 7 edges.
 Adjacencies:
@@ -1867,7 +1920,7 @@ Adjacencies:
 (%i2) p:petersen_graph()$
 (%i3) vertex_coloring(p);
 (%o3) [3, [[0, 2], [1, 3], [2, 2], [3, 3], [4, 1], [5, 3], 
-                                [6, 1], [7, 1], [8, 2], [9, 2]]]
+                                 [6, 1], [7, 1], [8, 2], [9, 2]]]
 @end example
 @end deffn
 
@@ -2082,6 +2135,13 @@ fdp), @var{circular} или @var{spring_embedding}.
 
 @c ===beg===
 @c load (graphs)$
+@c g:create_graph(16,
+@c     [
+@c      [0,1],[1,3],[2,3],[0,2],[3,4],[2,4],
+@c      [5,6],[6,4],[4,7],[6,7],[7,8],[7,10],[7,11],
+@c      [8,10],[11,10],[8,9],[11,12],[9,15],[12,13],
+@c      [10,14],[15,14],[13,14]
+@c     ])$
 @c mi : max_independent_set(g)$
 @c draw_graph(
 @c     g,
@@ -2096,8 +2156,15 @@ fdp), @var{circular} или @var{spring_embedding}.
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i2) mi : max_independent_set(g)$
-(%i3) draw_graph(
+(%i2) g:create_graph(16,
+    [
+     [0,1],[1,3],[2,3],[0,2],[3,4],[2,4],
+     [5,6],[6,4],[4,7],[6,7],[7,8],[7,10],[7,11],
+     [8,10],[11,10],[8,9],[11,12],[9,15],[12,13],
+     [10,14],[15,14],[13,14]
+    ])$
+(%i3) mi : max_independent_set(g)$
+(%i4) draw_graph(
     g,
     show_vertices=mi,
     show_vertex_type=filled_up_triangle,
