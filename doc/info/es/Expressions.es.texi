@@ -1,4 +1,4 @@
-@c english version 1.60
+@c english version 1.61
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::

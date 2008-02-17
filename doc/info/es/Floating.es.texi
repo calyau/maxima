@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.22
 @menu
 * Funciones y variables para la aritm@'etica de punto flotante::
 @end menu
@@ -20,8 +20,6 @@
 
 @deffn {Funci@'on} bffac (@var{expr}, @var{n})
 Versi@'on para "bigfloat" de la funci@'on factorial (Gamma desplazada). El segundo argumento indica cu@'antos d@'{@dotless{i}}gitos se conservan y devuelven, pudiendo utilizarse para obtener algunas cifras extra.
-
-La instrucci@'on @code{load ("bffac")} carga esta funci@'on.
 
 @end deffn
 
@@ -54,8 +52,6 @@ Estas funciones devuelven valores "bigfloat". La variable @var{fpprec} es la pre
 @c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
 @c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
 @c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
-
-La instrucci@'on @code{load ("bffac")} carga estas funciones.
 
 @end deffn
 

@@ -1,4 +1,4 @@
-@c english version 1.25
+@c english version 1.27
 @menu
 * Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
@@ -51,8 +51,6 @@ La funci@'on zeta de Hurwitz se define como
 @example
 sum ((k+h)^-s, k, 0, inf)
 @end example
-
-Es necesario cargar en memoria esta funci@'on haciendo @code{load ("bffac")}.
 
 @end deffn
 

@@ -1,4 +1,4 @@
-@c version 1.31
+@c version 1.33
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones y variables para las funciones especiales::
@@ -509,20 +509,62 @@ Examples:
 @end deffn
 
 
+@deffn {Funci@'on} hgfred (@var{a}, @var{b}, @var{t})
 
+Simplifica la funci@'on hipergeom@'etrica generalizada en t@'erminos
+de otras funciones m@'as sencillas. @var{a} es una lista de par@'ametros
+del numerador y @var{b} lo es de par@'ametros del denominador.
 
+En caso de que @code{hgfred} no pueda simplificar la funci@'on hipergeom@'etrica
+devolver@'a una expresi@'on de la forma @code{%f[p,q]([a], [b], x)}, siendo @var{p}
+el n@'umero de elementos de @var{a} y @var{q} el de @var{b}. Esta es la 
+funci@'on hipergeom@'etrica generalizada @code{pFq}.
 
+@example
+(%i1) assume(not(equal(z,0)));
+(%o1)                          [notequal(z, 0)]
+(%i2) hgfred([v+1/2],[2*v+1],2*%i*z);
 
+                     v/2                               %i z
+                    4    bessel_j(v, z) gamma(v + 1) %e
+(%o2)               ---------------------------------------
+                                       v
+                                      z
+(%i3) hgfred([1,1],[2],z);
 
+                                   log(1 - z)
+(%o3)                            - ----------
+                                       z
+(%i4) hgfred([a,a+1/2],[3/2],z^2);
 
+                               1 - 2 a          1 - 2 a
+                        (z + 1)        - (1 - z)
+(%o4)                   -------------------------------
+                                 2 (1 - 2 a) z
 
+@end example
 
+Tal como muestra el siguiente ejemplo, puede ser de utilidad cargar
+tambi@'en el paquete @code{orthopoly}. N@'otese que @var{L} es el
+polinomio generalizado de Laguerre.
 
+@example
+(%i5) load(orthopoly)$
+(%i6) hgfred([-2],[a],z);
 
+                                    (a - 1)
+                                 2 L       (z)
+                                    2
+(%o6)                            -------------
+                                   a (a + 1)
+(%i7) ev(%);
 
+                                  2
+                                 z        2 z
+(%o7)                         --------- - --- + 1
+                              a (a + 1)    a
 
+@end example
 
-
-
-
+@end deffn
 

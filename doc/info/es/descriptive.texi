@@ -1,4 +1,4 @@
-@c english version: 1.16
+@c english version: 1.19
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -1776,6 +1776,9 @@ Las definidas en el paquete @code{draw}. V@'eanse tambi@'en @code{bars} y @code{
 @item
 @var{nclasses}: n@'umero de clases del histograma (por defecto, 10).
 @end itemize
+
+V@'eanse tambi@'en @code{discrete_freq} y @code{continuous_freq} para recuentos,
+y @code{bars} y @code{barsplot} para representar gr@'aficos.
 
 Ejemplos:
 

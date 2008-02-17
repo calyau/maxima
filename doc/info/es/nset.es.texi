@@ -1,4 +1,4 @@
-@c english version 1.24
+@c english version 1.27
 @menu
 * Introducci@'on a los conjuntos::       
 * Funciones y variables para los conjuntos::       

@@ -1,4 +1,4 @@
-@c version 1.31
+@c version 1.33
 @menu
 * Introducci@'on a la programaci@'on::  
 * Funciones y variables para la programaci@'on::  
@@ -440,6 +440,8 @@ Eval@'ua @var{expr} y devuelve el valor del @code{catch} m@'as reciente. La func
 
 
 @deffn {Operador especial} while
+@deffnx {Operador especial} unless
+
 V@'ease @code{do}.
 
 @end deffn

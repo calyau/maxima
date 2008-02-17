@@ -1,4 +1,4 @@
-@c English version: 1.3
+@c English version: 1.5
 @menu
 * Introducci@'on a grobner::
 * Funciones y variables para grobner::
@@ -238,7 +238,7 @@ puede no ser siempre cierto en anillos que no son campos.
 @subsection Otras funciones
 
 @deffn {Funci@'on} poly_expand (@var{poly}, @var{varlist})
-Esta funci@'on expande los polinomios. Equivale a @code{expand(poly)}
+Esta funci@'on expande los polinomios. Equivale a @code{expand(@var{poly})}
 si @var{poly} es un polinomio. Si la representaci@'on no es compatible 
 con un polinomio de variables @var{varlist}, devuelve un error.
 @example

@@ -1,4 +1,4 @@
-@c english version 1.2
+@c english version 1.4
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -82,8 +82,12 @@ Crea un ciclo de 3 v@'ertices y aristas ponderadas:
 (%i1) load (graphs)$
 (%i2) g : create_graph([1,2,3], [[[1,2], 1.0], [[2,3], 2.0],
                                 [[1,3], 3.0]])$
-(%i2) get_edge_weight([2,3], g);
-(%o2)                                 2.0
+(%i3) print_graph(g)$
+Graph on 3 vertices with 3 edges.
+Adjacencies:
+  3 :  1  2
+  2 :  3  1
+  1 :  3  2
 @end example
 
 Crea un grafo orientado:
@@ -288,6 +292,56 @@ Adjacencies:
 Devuelve el grafo de l@'{@dotless{i}}nea del grafo @var{g}.
 @end deffn
 
+
+@deffn {Funci@'on} make_graph (@var{vrt}, @var{f})
+@deffnx {Funci@'on} make_graph (@var{vrt}, @var{f}, @var{oriented})
+Crea un grafo por medio de la funci@'on de predicado @var{f}.
+
+@var{vrt} es una lista o conjunto de v@'ertices o un simplemente un n@'umero entero.
+Si @var{vrt} es un n@'umero entero, entonces los v@'ertices del grafo ser@'an los
+enteros desde 1 hasta @var{vrt}.
+
+@var{f} es una funci@'on de predicado. Dos v@'ertices @var{a} y @var{b} se conectar@'an
+si @code{f(a,b)=true}.
+
+Si @var{directed} no es @var{false}, entonces en grafo ser@'a dirigido.
+
+Ejemplo 1:
+@c ===beg===
+@c load(graphs)$
+@c g : make_graph(powerset({1,2,3,4,5}, 2), disjointp)$
+@c is_isomorphic(g, petersen_graph());
+@c get_vertex_label(1, g);
+@c ===end===
+@example
+(%i1) load(graphs)$
+(%i2) g : make_graph(powerset(@{1,2,3,4,5@}, 2), disjointp)$
+(%i3) is_isomorphic(g, petersen_graph());
+(%o3)                         true
+(%i4) get_vertex_label(1, g);
+(%o4)                        @{1, 2@}
+@end example
+
+Ejemplo 2:
+@c ===beg===
+@c load(graphs)$
+@c f(i, j) := is (mod(j, i)=0)$
+@c g : make_graph(20, f, directed=true)$
+@c out_neighbors(4, g);
+@c in_neighbors(18, g);
+@c ===end===
+@example
+(%i1) load(graphs)$
+(%i2) f(i, j) := is (mod(j, i)=0)$
+(%i3) g : make_graph(20, f, directed=true)$
+(%i4) out_neighbors(4, g);
+(%o4)                    [8, 12, 16, 20]
+(%i5) in_neighbors(18, g);
+(%o5)                    [1, 2, 3, 6, 9]
+@end example
+@end deffn
+
+
 @deffn {Funci@'on} mycielski_graph (@var{g})
 Devuelve el grafo de Mycielski del grafo @var{g}.
 @end deffn
@@ -348,8 +402,8 @@ Ejemplo:
 (%i2) [net, s, t] : random_network(50, 0.2, 10.0);
 (%o2)                         [DIGRAPH, 50, 51]
 (%i3) max_flow(net, s, t)$
-(%i3) first(%);
-(%o3)                          36.458293875923
+(%i4) first(%);
+(%o4)                   27.65981397932507
 @end example
 @end deffn
 
@@ -430,14 +484,14 @@ Ejemplo:
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i4) g : create_graph(
+(%i2) g : create_graph(
             [1,2,3,4,5,6,7],
             [
              [1,2],[2,3],[2,4],[3,4],
              [4,5],[5,6],[4,6],[6,7]
             ])$
-(%i5) biconnected_components(g);
-(%o5)               [[6, 7], [4, 5, 6], [1, 2], [2, 3, 4]]
+(%i3) biconnected_components(g);
+(%o3)               [[6, 7], [4, 5, 6], [1, 2], [2, 3, 4]]
 @end example
 
 @ifhtml
@@ -592,7 +646,7 @@ Ejemplo:
 Devuelve una coloraci@'on @'optima de los arcos del grafo @var{gr}.
 
 La funci@'on devuelve el @'{@dotless{i}}ndice crom@'atico y una lista
-que representa el coloreado de los arcos de @var{g}.
+que representa el coloreado de los arcos de @var{gr}.
 
 Ejemplo:
 
@@ -607,14 +661,14 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) [ch_index, col] : edge_coloring(p);
-(%o3) [4, [[[0, 5], 3], [[5, 7], 1], [[0, 1], 1], [[1, 6], 2],
-[[6, 8], 1], [[1, 2], 3], [[2, 7], 4], [[7, 9], 2],
- [[2, 3], 2], [[3, 8], 3], [[5, 8], 2], 
-[[3, 4], 1], [[4, 9], 4], [[6, 9], 3], [[0, 4], 2]]]
+(%o3) [4, [[[0, 5], 3], [[5, 7], 1], [[0, 1], 1], [[1, 6], 2], 
+[[6, 8], 1], [[1, 2], 3], [[2, 7], 4], [[7, 9], 2], [[2, 3], 2], 
+[[3, 8], 3], [[5, 8], 2], [[3, 4], 1], [[4, 9], 4], [[6, 9], 3], 
+[[0, 4], 2]]]
 (%i4) assoc([0,1], col);
-(%o4)                                 1
+(%o4)                           1
 (%i5) assoc([0,5], col);
-(%o5)                                 3
+(%o5)                           3
 @end example
 @end deffn
 
@@ -630,7 +684,7 @@ Ejemplo:
 @example
 (%i1) load (graphs)$
 (%i2) degree_sequence(random_graph(10, 0.4));
-(%o2)                  [3, 3, 3, 4, 4, 4, 5, 5, 6, 7]
+(%o2)            [2, 2, 3, 3, 3, 4, 4, 4, 4, 5]
 @end example
 @end deffn
 
@@ -769,7 +823,7 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) g : grid_graph(5,5)$
 (%i3) graph_periphery(g);
-(%o3)                          [24, 20, 4, 0]
+(%o3)                          [0, 4, 20, 24]
 @end example
 @end deffn
 
@@ -823,7 +877,7 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) g : heawood_graph()$
 (%i3) girth(g);
-(%o3)                                 5
+(%o3)                                 6
 @end example
 @end deffn
 
@@ -835,15 +889,15 @@ Ejemplo:
 
 @c ===beg===
 @c load (graphs)$
-@c h : cube_graph(3)$
-@c hc : hamilton_cycle(h);
+@c c : cube_graph(3)$
+@c hc : hamilton_cycle(c);
 @c draw_graph(c, show_edges=vertices_to_cycle(hc))$
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i2) h : cube_graph(3)$
-(%i3) hc : hamilton_cycle(h);
-(%o3)        [7, 3, 2, 6, 4, 0, 1, 5, 7]
+(%i2) c : cube_graph(3)$
+(%i3) hc : hamilton_cycle(c);
+(%o3)              [7, 3, 2, 6, 4, 0, 1, 5, 7]
 (%i4) draw_graph(c, show_edges=vertices_to_cycle(hc))$
 @end example
 @end deffn
@@ -892,9 +946,9 @@ Ejemplo:
 @example
 (%i1) load (graphs)$
 (%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
-(%i2) hash_table_data(isomorphism(clk5, petersen_graph()));
-(%o2) [9 -> 0, 2 -> 1, 6 -> 2, 5 -> 3, 0 -> 4, 1 -> 5, 3 -> 6, 
-                                     4 -> 7, 7 -> 8, 8 -> 9]
+(%i3) hash_table_data(isomorphism(clk5, petersen_graph()));
+(%o3) [8 -> 9, 7 -> 8, 4 -> 7, 3 -> 6, 1 -> 5, 0 -> 4, 5 -> 3, 
+                                          6 -> 2, 2 -> 1, 9 -> 0]
 @end example
 @end deffn
 
@@ -926,6 +980,7 @@ en caso contrario.
 
 Ejemplo:
 
+Example:
 @c ===beg===
 @c load (graphs)$
 @c is_biconnected(cycle_graph(5));
@@ -933,10 +988,10 @@ Ejemplo:
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i3) is_biconnected(cycle_graph(5));
-(%o3)                               true
-(%i4) is_biconnected(path_graph(5));
-(%o4)                               false
+(%i2) is_biconnected(cycle_graph(5));
+(%o2)                         true
+(%i3) is_biconnected(path_graph(5));
+(%o3)                         false
 @end example
 @end deffn
 
@@ -1081,7 +1136,7 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
 (%i3) is_isomorphic(clk5, petersen_graph());
-(%o3)                              true
+(%o3)                         true
 @end example
 @end deffn
 
@@ -1208,7 +1263,7 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.5)$
 (%i3) max_clique(g);
-(%o3)                 [2, 6, 13, 17, 21, 23, 31, 62, 65]
+(%o3)       [20, 28, 42, 44, 47, 65, 69, 75, 87, 98]
 @end example
 @end deffn
 
@@ -1228,9 +1283,9 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.02)$
 (%i3) max_degree(g);
-(%o3)                               [5, 95]
+(%o3)                        [6, 70]
 (%i4) vertex_degree(95, g);
-(%o4)                                  5
+(%o4)                           3
 @end example
 @end deffn
 
@@ -1301,10 +1356,10 @@ Ejemplo:
 @c ===end===
 @example
 (%i1) load (graphs)$
-(%i3) d : dodecahedron_graph()$
-(%i4) mi : max_independent_set(d);
-(%o4)                   [0, 3, 5, 9, 10, 11, 18, 19]
-(%i5) draw_graph(d, show_vertices=mi)$
+(%i2) d : dodecahedron_graph()$
+(%i3) mi : max_independent_set(d);
+(%o3)             [0, 3, 5, 9, 10, 11, 18, 19]
+(%i4) draw_graph(d, show_vertices=mi)$
 @end example
 @end deffn
 
@@ -1327,8 +1382,8 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) d : dodecahedron_graph()$
 (%i3) m : max_matching(d);
-(%o3) [[5, 7], [8, 9], [6, 10], [14, 19], [13, 18], [12, 17],
-                             [11, 16], [0, 15], [3, 4], [1, 2]]
+(%o3) [[1, 2], [3, 4], [0, 15], [11, 16], [12, 17], [13, 18], 
+                               [14, 19], [6, 10], [8, 9], [5, 7]]
 (%i4) draw_graph(d, show_edges=m)$
 @end example
 @end deffn
@@ -1353,9 +1408,9 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.1)$
 (%i3) min_degree(g);
-(%o3)                              [4, 21]
+(%o3)                              [4, 83]
 (%i4) vertex_degree(21, g);
-(%o4)                                 4
+(%o4)                                 12
 @end example
 @end deffn
 
@@ -1460,8 +1515,8 @@ Ejemplo:
 @example
 (%i1) load (graphs)$
 (%i2) planar_embedding(grid_graph(3,3));
-(%o2) [[6, 3, 4, 7], [3, 0, 1, 4], [5, 8, 7, 4], 
-                         [2, 1, 0, 3, 6, 7, 8, 5], [4, 1, 2, 5]]
+(%o2) [[3, 6, 7, 8, 5, 2, 1, 0], [4, 3, 0, 1], [3, 4, 7, 6], 
+                                      [8, 7, 4, 5], [1, 2, 5, 4]]
 @end example
 @end deffn
 
@@ -1606,9 +1661,9 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) t : random_tournament(4)$
 (%i3) strong_components(t);
-(%o3)                         [[2, 0, 1], [3]]
+(%o3)                         [[2], [0], [1], [3]]
 (%i4) vertex_out_degree(3, t);
-(%o4)                                 0
+(%o4)                                 2
 @end example
 @end deffn
 
@@ -1684,7 +1739,7 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) g:cycle_graph(7)$
 (%i3) vertex_eccentricity(0, g);
-(%o4)                                  3
+(%o3)                           3
 @end example
 @end deffn
 
@@ -1735,9 +1790,9 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) t : random_tournament(10)$
 (%i3) vertex_out_degree(0, t);
-(%o3)                                 3
+(%o3)                           6
 (%i4) out_neighbors(0, t);
-(%o4)                             [7, 4, 2]
+(%o4)                  [9, 6, 4, 3, 2, 1]
 @end example
 @end deffn
 
@@ -1939,7 +1994,7 @@ Elimina el v@'ertice @var{v} del grafo @var{gr}.
 Devuelve un coloreado @'optimo de los v@'ertice del grafo @var{gr}.
 
 La funci@'on devuelve el n@'umero crom@'atico y una lista representando 
-el coloreado de los v@'ertices de  @var{g}.
+el coloreado de los v@'ertices de @var{gr}.
 
 Ejemplo:
 
@@ -2076,7 +2131,7 @@ Valor por defecto: 0.1.
 Valor por defecto: 50.
 @item
 @dfn{terminal=term}: terminal utilizado para ver el gr@'afo. V@'ease la opci@'on @var{terminal}
-del paquete  @code{draw}.
+del paquete @code{draw}.
 @item
 @dfn{file_name=file}: nombre del fichero cuando el terminal especificado no es la pantalla.
 @item

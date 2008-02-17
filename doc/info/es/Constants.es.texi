@@ -1,4 +1,4 @@
-@c version 1.19
+@c version 1.22
 @menu
 * Funciones y variables para Constantes::   
 @end menu
@@ -33,6 +33,26 @@ El s@'{@dotless{i}}mbolo @code{%i} representa la unidad imaginaria, @math{sqrt(-
 El s@'{@dotless{i}}mbolo @code{false} representa al valor l@'ogico
 "falso". Maxima implementa @code{false} con el valor @code{NIL} de
 Lisp.
+@end defvr
+
+@defvr {Constante} ind
+@ifinfo
+@vrindex Indeterminado
+@end ifinfo
+
+@code{ind} representa un resultado acotado indeterminado.
+
+V@'ease tambi@'en @code{limit}.
+
+Ejemplo:
+
+@c ===beg===
+@c limit (sin(1/x), x, 0);
+@c ===end===
+@example
+(%i1) limit (sin(1/x), x, 0);
+(%o1)                          ind
+@end example
 @end defvr
 
 @defvr {Constante} inf
@@ -151,3 +171,24 @@ El s@'{@dotless{i}}mbolo @code{true} representa al valor l@'ogico
 "verdadero". Maxima implementa @code{true} con el valor @code{T} de
 Lisp.
 @end defvr
+
+@defvr {Constante} und
+@ifinfo
+@vrindex Indefinido
+@end ifinfo
+
+@code{und} representa un resultado indefinido.
+
+V@'ease tambi@'en @code{limit}.
+
+Ejemplo:
+
+@c ===beg===
+@c limit (1/x, x, 0);
+@c ===end===
+@example
+(%i1) limit (1/x, x, 0);
+(%o1)                          und
+@end example
+@end defvr
+

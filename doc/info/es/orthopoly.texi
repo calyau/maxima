@@ -1,4 +1,4 @@
-@c version 1.13
+@c version 1.15
 @menu
 * Introducci@'on a polinomios ortogonales::
 * Funciones y variables para polinomios ortogonales::
@@ -692,14 +692,14 @@ num@'ericamente con c@'odigo SLATEC.
 @section Funciones y variables para polinomios ortogonales
 
 @deffn {Funci@'on} assoc_legendre_p (@var{n}, @var{m}, @var{x})
-Funci@'on asociada de Legendre de primera especie.
+Funci@'on asociada de Legendre de primera especie de grado @var{n} y orden @var{m}.
 
 Referencia: Abramowitz y Stegun, ecuaciones 22.5.37, p@'agina 779, 8.6.6
 (segunda ecuaci@'on), p@'agina 334 y  8.2.5, p@'agina 333.
 @end deffn
 
 @deffn {Funci@'on} assoc_legendre_q (@var{n}, @var{m}, @var{x})
-Funci@'on asociada de Legendre de segunda especie.
+Funci@'on asociada de Legendre de segunda especie de grado @var{n} y orden @var{m}.
 
 Referencia: Abramowitz y Stegun, ecuaciones 8.5.3 y 8.1.8.
 @end deffn
@@ -717,7 +717,7 @@ Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.48, p@'agina 779.
 @end deffn
 
 @deffn {Funci@'on} gen_laguerre (@var{n}, @var{a}, @var{x})
-Polinomio de Laguerre generalizado.
+Polinomio de Laguerre generalizado de grado @var{n}.
 
 Referencia: Abramowitz y Stegun, ecuaci@'on 22.5.54, p@'agina 780.
 @end deffn
