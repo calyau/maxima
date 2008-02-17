@@ -291,7 +291,7 @@ is EQ to FNNAME if the latter is non-NIL."
 		    ((eq (caar form) 'mqapply) (return (mqapply1 form))))
 	      (badfunchk (caar form) (caar form) nil)
 	      a    (setq u (or (safe-getl (caar form) '(noun))
-			       (and nounsflag (eq (getchar (caar form) 1) '%)
+			       (and nounsflag (eq (getcharn (caar form) 1) #\%)
 				    (not (or (getl-lm-fcn-prop (caar form) '(subr fsubr lsubr))
 					     (safe-getl (caar form) '(mfexpr* mfexpr*s))))
 				    (prog2 ($verbify (caar form))

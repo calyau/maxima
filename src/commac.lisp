@@ -501,7 +501,7 @@ values")
   (let ((strin (string symb)))
     (if (<= 1 i (length strin))
 	(char strin (1- i))
-	(maxima-error "out of bounds"))))
+    nil)))
 
 (defun getchar (symb i)
   (let ((str (string symb)))
