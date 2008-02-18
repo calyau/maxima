@@ -306,7 +306,7 @@
 			   (setq varlist vartemp))
 		       
 			 (cond ((atom exp) (go a))
-			       ((specasep exp) (solve1a exp mult))
+			       ((of-form-A*F<X>^N+B exp) (solve1a exp mult))
 			       ((and (not (pcoefp exp))
 				     (cddr exp)
 				     (not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp))))))
@@ -566,7 +566,7 @@
 			  *has*var))
 	   nil)
 	  ((equal (cadr exp) 1) (solvelin exp))
-	  ((specasep exp) (solvespec exp t))
+	  ((of-form-A*F<X>^N+B exp) (solve-A*F<X>^N+B exp t))
 	  ((equal (cadr exp) 2) (solvequad exp))
 	  ((not (equal 1 (setq *g (solventhp (cdddr exp) (cadr exp)))))
 	   (solventh exp *g))
@@ -699,30 +699,30 @@
   (solve x var mult)
   (make-solution *roots *failures))
 
-;; Sees if expression is of the form A*F(X)^N+B.
+;; Sees if expression is of the form A*F<X>^N+B.
 
-(defun specasep (e)
+(defun of-form-A*F<X>^N+B (e)
   (and (memalike (pdis (list (car e) 1 1)) *has*var)
        (or (atom (caddr e))
 	   (not (memalike (pdis (list (caaddr e) 1 1))
 			  *has*var)))
        (or (null (cdddr e)) (equal (cadddr e) 0))))
 
-;; Solves the special case A*F(X)^N+B.
+;; Solves the special case A*F<X>^N+B.
 
-(defun solvespec (exp $%emode) 
+(defun solve-A*F<X>^N+B (exp $%emode) 
   (prog (a b c) 
      (setq a (pdis (caddr exp)))
      (setq c (pdis (list (car exp) 1 1)))
      (cond ((null (cdddr exp))
 	    (return (solve c *var (* (cadr exp) mult)))))
      (setq b (pdis (pminus (cadddr (cdr exp)))))
-     (return (solvespec1 c
+     (return (solve-A*F<X>^N+B1 c
 			 (simpnrt (div* b a) (cadr exp))
 			 (make-rat 1 (cadr exp))
 			 (cadr exp)))))
 
-(defun solvespec1 (var root n thisn) 
+(defun solve-A*F<X>^N+B1 (var root n thisn) 
   (do ((thisn thisn (1- thisn))) ((zerop thisn))
     (solve (add* var (mul* -1 root (power* '$%e (mul* 2 '$%pi '$%i thisn n))))
 	   *var mult)))
@@ -747,7 +747,7 @@
 (setq broken-not-freeof nil)
 
 ;; For consistency, use backwards args.
-
+;; == (freeof var exp) but works even if solution is broken up ($breakup=t)
 (defun broken-freeof (var exp)
   (cond ($breakup
 	 (do ((b-n-fo var (car b-n-fo-l))
@@ -830,6 +830,7 @@
 ;; You mean you didn't do it because you were buggy.  Hope you're fixed soon!
 ;; --RWK
 
+;; Solve <exp> = <*myvar> for <*var>, where <*myvar>=<op>(...)
 (defun usolve (exp op) 
   (prog (inverse) 
      (setq inverse
