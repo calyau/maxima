@@ -425,7 +425,10 @@
 ;;; Lambert W
 
 (setf (get '$lambertw 'grad)  
-      '((x) ((mtimes) ((mexpt) x -1) (($lambertw) x) ((mexpt) ((mplus) 1 (($lambertw) x)) -1))))
+      '((x) 
+	((mtimes)
+	 ((mexpt) $%e ((mtimes ) -1 (($lambertw) x)))
+	 ((mexpt) ((mplus) 1 (($lambertw) x)) -1))))
 
 (mfuncall '$declare '$lambertw '$complex)
  
