@@ -436,6 +436,50 @@
   (cond ((equal x 0) 0)
 	((equal x 0.0) 0.0)
 	((zerop1 x) ($bfloat 0))	;bfloat case
+	((alike1 x '$%e)
+	 ;; W(%e) = 1
+	 1)
+	((alike1 x '((mtimes simp) ((rat simp) -1 2) ((%log simp) 2)))
+	 ;; W(-log(2)/2) = -log(2)
+	 '((mtimes simp) -1 ((%log simp) 2)))
+	((alike1 x '((mtimes simp) -1 ((mexpt simp) $%e -1)))
+	 ;; W(-1/e) = -1
+	 -1)
 	((alike1 x '((mtimes) ((rat) -1 2) $%pi))
+	 ;; W(-%pi/2) = %i*%pi/2
 	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
+	((or (floatp x)
+	     (and $numer (numberp x)))
+	 (lambert-w x))
 	(t (list '($lambert_w simp) x))))
+
+;; Initial approximation for Lambert W.
+;; http://www.desy.de/~t00fri/qcdins/texhtml/lambertw/
+(defun init-lambert-w (x)
+  (if (<= x 500)
+      (let ((lx1 (log (1+ x))))
+	(+ (* .665 (+ 1 (* .0195 lx1)) lx1)
+	   .04))
+      (- (log (- x 4))
+	 (* (- 1 (/ (log x)))
+	    (log (log x))))))
+
+;; Algorithm based in part on
+;; http://en.wikipedia.org/wiki/Lambert's_W_function.  This can also
+;; be found in
+;; http://www.apmaths.uwo.ca/~djeffrey/Offprints/W-adv-cm.pdf, which
+;; says the iteration is just Halley's iteration applied to w*exp(w).
+(defun lambert-w (z &key (maxiter 100) (prec 1d-14))
+  (let ((w (init-lambert-w z)))
+    (dotimes (k maxiter)
+      (let* ((we (* w (exp w)))
+	     (w1e (* (1+ w)
+		     (exp w)))
+	     (delta (/ (- we z)
+		       (- w1e (/ (* (+ w 2)
+				    (- we z))
+				 (+ 2 (* 2 w)))))))
+	(when (<= (abs (/ delta w)) prec)
+	  (return w))
+	(decf w delta)))
+    w))
