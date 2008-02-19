@@ -1089,11 +1089,12 @@ relational knowledge is contained in the default context GLOBAL."
 	((eq (caar x) 'mexpt) (sign-mexpt x))
 	((eq (caar x) '%log) (compare (cadr x) 1))
 	((eq (caar x) 'mabs) (sign-mabs x))
-	((member (caar x) '(%csc %csch) :test #'eq)
+	((memq (caar x) '($min $max)) (sign-minmax (caar x) (cdr x)))
+	((memq (caar x) '(%csc %csch))
 	 (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x)))))
 	((specrepp x) (sign (specdisrep x)))
 	((kindp (caar x) '$posfun) (sign-posfun x))
-	((or (member (caar x) '(%signum %erf) :test #'eq)
+	((or (memq (caar x) '(%signum %erf))
 	     (and (kindp (caar x) '$oddfun) (kindp (caar x) '$increasing)))
 	 (sign-oddinc x))
 	(t (sign-any x))))
@@ -1162,32 +1163,36 @@ relational knowledge is contained in the default context GLOBAL."
 	  ((signdiff-special lhs rhs)))))
 
 (defun signdiff-special (xlhs xrhs)
-  (when (or (and (numberp xrhs) (minusp xrhs)
-		 (not (atom xlhs)) (eq (sign* xlhs) '$pos))
+  ;; xlhs may be a constant
+  (let ((sgn nil))
+    (when (or (and (numberp xrhs) (minusp xrhs)
+		   (not (atom xlhs)) (eq (sign* xlhs) '$pos))
 					; e.g. sign(a^3+%pi-1) where a>0
-	    (and (mexptp xlhs)
-		 ;; e.g. sign(%e^x-1) where x>0
-		 (eq (sign* (caddr xlhs)) '$pos)
-		 (or (and
-		      ;; Q^Rpos - S, S<=1, Q>1
-		      (member (sign* (sub 1 xrhs)) '($pos $zero $pz) :test #'eq)
-		      (eq (sign* (sub (cadr xlhs) 1)) '$pos))
-		     (and
-		      ;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos)
-		      (eq (sign* (cadr xlhs)) '$pos)
-		      (eq (sign* xrhs) '$pos)
-		      (eq (sign* (sub (cadr xlhs)
-				      (power xrhs (div 1 (caddr xlhs)))))
-			  '$pos))))
-	    (and (mexptp xlhs) (mexptp xrhs)
-		 ;; Q^R - Q^T, Q>1, (R-T) > 0
-		 ;; e.g. sign(2^x-2^y) where x>y
-		 (alike1 (cadr xlhs) (cadr xrhs))
-		 (eq (sign* (sub (cadr xlhs) 1)) '$pos)
-		 (eq (sign* (sub (caddr xlhs) (caddr xrhs))) '$pos)))
-    (setq sign '$pos minus nil odds nil evens nil)
-    t)
-  )
+	      (and (mexptp xlhs)		
+		   ;; e.g. sign(%e^x-1) where x>0
+		   (eq (sign* (caddr xlhs)) '$pos)
+		   (or (and
+			;; Q^Rpos - S, S<=1, Q>1
+			(memq (sign* (sub 1 xrhs)) '($pos $zero $pz))
+			(eq (sign* (sub (cadr xlhs) 1)) '$pos))
+		       (and
+			;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos)
+			(eq (sign* (cadr xlhs)) '$pos)
+			(eq (sign* xrhs) '$pos)
+			(eq (sign* (sub (cadr xlhs)
+					(power xrhs (div 1 (caddr xlhs)))))
+			    '$pos))))
+	      (and (mexptp xlhs) (mexptp xrhs)
+		   ;; Q^R - Q^T, Q>1, (R-T) > 0
+		   ;; e.g. sign(2^x-2^y) where x>y
+		   (alike1 (cadr xlhs) (cadr xrhs))
+		   (eq (sign* (sub (cadr xlhs) 1)) '$pos)
+		   (eq (sign* (sub (caddr xlhs) (caddr xrhs))) '$pos)))
+      (setq sgn '$pos))
+    (when (and $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
+      (setq sgn (signdiff-minmax xlhs xrhs)))
+    (when sgn (setq sign sgn minus nil odds nil evens nil)
+	  t)))
 
 (defun signsum (x)
   (do ((l (cdr x) (cdr l)) (s '$zero))
@@ -1291,6 +1296,106 @@ relational knowledge is contained in the default context GLOBAL."
   (cond ((member sign '($pos $zero) :test #'eq))
 	((member sign '($neg $pn) :test #'eq) (setq sign '$pos))
 	(t (setq sign '$pz minus nil evens (nconc odds evens) odds nil))))
+
+;;; Compare min/max
+
+;;; Macros used in simp min/max
+;;; If op is min, use body; if not, negate sign constants in body
+;;; Used to avoid writing min and max code separately: just write the min code
+;;; in such a way that its dual works for max
+(defmacro minmaxforms (op &rest body)
+  `(cond ((eq ,op '$min) ,@body)
+	 (t ,@(sublis '(($neg . $pos)
+			($nz . $pz)
+			($pz . $nz)
+			($pos . $neg)
+			;;($zero . $zero)
+			;;($pn . $pn)
+			;;($pnz . $pnz)
+			;;
+			($max . $min)
+			($min . $max)
+			;;
+			($inf . $minf)
+			($minf . $inf))
+		      body))))
+
+(defun sign-minmax (op l)
+  (do ((sgn (minmaxforms op '$pos)	;identity element for min
+	    (sminmax op sgn (sign* (car l))))
+       (end (minmaxforms op '$neg))
+       (l l (cdr l)))
+      ((or (null l) (eq sgn end))
+       (setq minus nil odds nil evens nil
+	     sign sgn))))
+
+;; sign(op(a,b)) = sminmax(sign(a),sign(b))
+;; op is $min/$max; s1/s2 in neg, nz, zero, pz, pos, pn, pnz
+(defun sminmax (op s1 s2)
+  (minmaxforms
+   op
+   ;; Many of these cases don't come up in simplified expressions,
+   ;; since e.g. sign(a)=neg and sign(b)=pos implies min(a,b)=a
+   ;; the order of these clauses is important
+   (cond ((eq s1 '$pos) s2)
+	 ((eq s2 '$pos) s1)
+	 ((eq s1 s2) s1)
+	 ((or (eq s1 '$neg) (eq s2 '$neg)) '$neg)
+	 ((or (eq s1 '$nz) (eq s2 '$nz)) '$nz)
+	 ((eq s1 '$zero) (if (eq s2 '$pz) '$zero '$nz))
+	 ((eq s2 '$zero) (if (eq s2 '$pz) '$zero '$nz))
+	 (t '$pnz))))
+
+(setq $useminmax t)
+
+(defun minmaxp (ex)
+  (cond ((atom ex) nil)
+	((memq (caar ex) '($min $max)) (caar ex))
+	(t nil)))
+
+(setq tryhard t)
+
+(defun signdiff-minmax (l r)
+  ;; sign of l-r; nil if unknown (not PNZ)
+  (let ((lm (minmaxp l))
+	(rm (minmaxp r))
+	(sgn nil)			;distinguish between < and <=
+	ll rr)				;argument lists of min/max
+    (if lm (setq ll (cdr l)))
+    (if rm (setq rr (cdr r)))
+    (minmaxforms
+     (or rm lm)
+     (cond ((eq lm rm)			; min(a,...) - min(b,...)
+	    (multiple-value-bind (both onlyl onlyr)
+		(intersect-info ll rr)
+	      (cond
+	       ((null onlyl) '$pz)	; min(a,b) - min(a,b,c)
+	       ((null onlyr) '$nz)	; min(a,b,c) - min(a,b)
+	       ;; TBD: add processing for full onlyl/onlyr case
+	       (t nil))))
+	   ;; TBD: memalike and set-disjointp are crude approx.
+	   ((null lm) (if (memalike l rr) '$pz)) ; a - min(a,b)
+	   ((null rm) (if (memalike r ll) '$nz)) ; min(a,b) - a
+	   (t				; min/max or max/min
+	    (if (not (set-disjointp ll rr)) '$pz)))))) ; max(a,q,r) - min(a,s,t)
+
+(defun intersect-info (a b)
+  (let ((both nil)
+	(onlya nil)
+	(onlyb nil))
+    (do-merge-asym
+     a b
+     #'like
+     #'$orderlessp
+     #'(lambda (x) (push x both))
+     #'(lambda (x) (push x onlya))
+     #'(lambda (x) (push x onlyb)))
+    (values
+     (nreverse both)
+     (nreverse onlya)
+     (nreverse onlyb))))
+
+;;; end compare min/max
 
 (defun sign-posfun (xx)
   (declare (ignore xx))
