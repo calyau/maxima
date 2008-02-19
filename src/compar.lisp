@@ -1931,6 +1931,7 @@ relational knowledge is contained in the default context GLOBAL."
 	  (kind %csch $oddfun)
 	  (kind %sech $posfun)
 	  (kind $li $complex)
+	  (kind $lambert_w $complex)
 	  (kind %cabs $complex)))
 
   ;; Create an initial context for the user which is a subcontext of $global.

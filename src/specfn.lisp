@@ -424,15 +424,12 @@
 
 ;;; Lambert W
 
-(setf (get '$lambertw 'grad)  
+(setf (get '$lambert_w 'grad)  
       '((x) 
 	((mtimes)
-	 ((mexpt) $%e ((mtimes ) -1 (($lambertw) x)))
-	 ((mexpt) ((mplus) 1 (($lambertw) x)) -1))))
+	 ((mexpt) $%e ((mtimes ) -1 (($lambert_w) x)))
+	 ((mexpt) ((mplus) 1 (($lambert_w) x)) -1))))
 
-;; Somewhere we need to do declare lambertw to be complex -- without this we get
-;; imagpart(lambertw(x + %i)) --> 0. 
- 
 (defun simp-lambertw (x y z)
   (oneargcheck x)
   (setq x (cadr x))
@@ -441,4 +438,4 @@
 	((zerop1 x) ($bfloat 0))	;bfloat case
 	((alike1 x '((mtimes) ((rat) -1 2) $%pi))
 	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
-	(t (list '($lambertw simp) x))))
+	(t (list '($lambert_w simp) x))))
