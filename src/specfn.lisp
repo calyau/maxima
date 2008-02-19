@@ -421,3 +421,15 @@
 			`(%%taylor-index%% 0 ,(- (1+ const))) '%sum))))))))
 
 (declare-top (unspecial var subl *last* sign last-exp))
+
+;;; Lambert W
+
+(defun simp-lambertw (x y z)
+  (oneargcheck x)
+  (setq x (cadr x))
+  (cond ((equal x 0) 0)
+	((equal x 0.0) 0.0)
+	((zerop1 x) ($bfloat 0))	;bfloat case
+	((alike1 x '((mtimes) ((rat) -1 2) $%pi))
+	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
+	(t (list '($lambertw simp) x))))
