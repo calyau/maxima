@@ -424,6 +424,11 @@
 
 ;;; Lambert W
 
+(setf (get '$lambertw 'grad)  
+      '((x) ((mtimes) ((mexpt) x -1) (($lambertw) x) ((mexpt) ((mplus) 1 (($lambertw) x)) -1))))
+
+(mfuncall '$declare '$lambertw '$complex)
+ 
 (defun simp-lambertw (x y z)
   (oneargcheck x)
   (setq x (cadr x))
