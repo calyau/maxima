@@ -430,7 +430,8 @@
 	 ((mexpt) $%e ((mtimes ) -1 (($lambertw) x)))
 	 ((mexpt) ((mplus) 1 (($lambertw) x)) -1))))
 
-(mfuncall '$declare '$lambertw '$complex)
+;; Somewhere we need to do declare lambertw to be complex -- without this we get
+;; imagpart(lambertw(x + %i)) --> 0. 
  
 (defun simp-lambertw (x y z)
   (oneargcheck x)
