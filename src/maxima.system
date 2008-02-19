@@ -14,6 +14,14 @@
 #+cmu
 (setf ext:*gc-verbose* nil)
 
+;; If you maxima to use long-floats for arithmetic, use this:
+#+(and nil (or clisp scl))
+(pushnew :flonum-long *features*)
+
+;; If you want maxima to use double-double-floats, use this:
+#+(and nil cmu double-double)
+(pushnew :flonum-double-double *features*)
+
 (setf *load-verbose* nil)
 
 (defvar *maxima-build-time* (multiple-value-list (get-decoded-time)))

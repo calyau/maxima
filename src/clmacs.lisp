@@ -322,16 +322,19 @@
   )
 
 ;;;; Setup the mapping from the Maxima 'flonum float type to a CL float type.
-
+;;;;
+;;;; Add :flonum-log to *features* if you want flonum to be a
+;;;; long-float.  Or add :flonum-double-double if you want flonum to
+;;;; be a double-double (currently only for CMUCL).  Otherwise, you
+;;;; get double-float as the flonum type.
+;;;;
 ;;;; Default double-float flonum.
 (eval-when (compile load eval)
 (setq *read-default-float-format* 'double-float)
 ) ; eval-when
 
-;;; Tell Lisp that a flonum is really a double-float.
-(deftype flonum ()
-  'double-float)
-
+#-(or flonum-long flonum-double-double)
+(progn
 ;; Tell Lisp the float type for a 'flonum.
 (deftype flonum (&optional low high)
   (cond (high
@@ -349,18 +352,16 @@
 (defconstant least-positive-normalized-flonum least-positive-normalized-double-float)
 
 (defconstant flonum-exponent-marker #\D)
+)
 
-#|
+#+flonum-long
+(progn
 ;;;; The Maxima 'flonum can be a CL 'long-float on the Scieneer CL or CLISP,
 ;;;; but should be the same a 'double-float on other CL implementations.
 
 (eval-when (compile load eval)
 (setq *read-default-float-format* 'long-float)
 ) ; eval-when
-
-;;; Tell Lisp that a flonum is really a long-float.
-(deftype flonum ()
-  'long-float)
 
 ;; Tell Lisp the float type for a 'flonum.
 (deftype flonum (&optional low high)
@@ -380,18 +381,16 @@
 
 (defconstant flonum-exponent-marker #\L)
 
-|#
+)
 
-#|
+#+flonum-double-double
+(progn
+
 ;;;; The Maxima 'flonum can be a 'kernel:double-double-float on the CMU CL.
 
 (eval-when (compile load eval)
 (setq *read-default-float-format* 'kernel:double-double-float)
 ) ; eval-when
-
-;;; Tell Lisp that a flonum is really a long-float.
-(deftype flonum ()
-  'kernel:double-double-float)
 
 ;; Tell Lisp the float type for a 'flonum.
 (deftype flonum (&optional low high)
@@ -402,16 +401,30 @@
 	(t
 	 'kernel:double-double-float)))
 
-(defconstant most-positive-flonum (cl:float most-positive-double-float 1w0))
-(defconstant most-negative-flonum (cl:float most-negative-double-float 1w0))
+;; While double-double can represent number as up to
+;; most-positive-double-float, it can't really do operations on them
+;; due to the way multiplication and division are implemented.  (I
+;; don't think there's any workaround for that.)
+;;
+;; So, the largest number that can be used is the float just less than
+;; 2^1024/(1+2^27).  This is the number given here.
+(defconstant most-positive-double-double-hi
+  (scale-float (cl:float (1- 9007199187632128) 1d0) 944))
+
+(defconstant most-positive-flonum (cl:float most-positive-double-double-hi 1w0))
+(defconstant most-negative-flonum (cl:float (- most-positive-double-double-hi 1w0)))
 (defconstant least-positive-flonum (cl:float least-positive-double-float 1w0))
 (defconstant least-negative-flonum (cl:float least-negative-double-float 1w0))
+;; This is an approximation to a double-double epsilon.  Due to the
+;; way double-doubles are represented, epsilon is actually zero
+;; because 1+x = 1 only when x is zero.  But double-doubles only have
+;; 106 bits of precision, so we use that as epsilon.
 (defconstant flonum-epsilon (scale-float 1w0 -106))
 (defconstant least-positive-normalized-flonum (cl:float least-positive-normalized-double-float 1w0))
 
 (defconstant flonum-exponent-marker #\W)
 
-|#
+)
 
 ;;;;
 (defmacro float (x &optional (y 1e0))
