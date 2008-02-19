@@ -101,7 +101,7 @@ draw_graph(G, [options]) := block(
    gp_file_in : temp_filename(gp_file_in),
    gp_file_out : temp_filename(gp_file_out),
    redraw : false, directed : false,
-   label_alignment : 'left, label_padding: "    ",
+   label_alignment : 'left, label_padding: "  ",
    spring_embedding_depth : 50
   ],
 
@@ -172,8 +172,8 @@ draw_graph(G, [options]) := block(
     else if show_label=true then (
       for v in vertices(G) do block(
         [p : assoc(v, v_pos)],
-        vertex_labels : cons([concat(label_prefix,
-            get_vertex_label(v, G), label_padding), p[1], p[2]],
+        vertex_labels : cons([concat(label_padding,
+            string(get_vertex_label(v, G)), label_padding), p[1], p[2]],
           vertex_labels))),
     if length(vertex_labels) > 0 then
       vertex_labels : [apply(label, vertex_labels)],
