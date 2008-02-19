@@ -274,7 +274,7 @@ true$
 (s2 : args(nullspace(ctranspose(m))),0);
 0$
 
-every(lambda([e], e=0), map(lambda([e], apply('dotproduct,e)), 
+every(lambda([e], e=0), map(lambda([e], expand(apply('dotproduct,e))), 
      cartesian_product(setify(s1),setify(s2))));
 
 true$
@@ -395,7 +395,7 @@ matrix([a,b],[c,d])$
 0$
 
 nullspace(m);
-''(funmake('span, sort([matrix([1],[0],[0]),matrix([0],[1],[-1])])))$
+''(funmake('span, sort([matrix([1],[0],[0]),matrix([0],[-1],[1])])))$
 
 columnspace(m);
 span(matrix([1],[0],[0]))$

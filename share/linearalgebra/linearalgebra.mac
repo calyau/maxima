@@ -31,7 +31,7 @@ eval_when(translate,
                              hipow_gzeromat_norm))$
 
 eval_when([batch,load,translate,compile],
-  put(infolevel, debug, linearalgebra),    
+  put(infolevel, silent, linearalgebra),    
   load("load-linearalgebra-lisp-files"));
   
 require_integer(i, pos, fn) := 
@@ -53,41 +53,27 @@ dotproduct(a,b) := block([scalarmatrixp : true],
      error("Arguments to dotproduct must be vectors with the same size"),
   ctranspose(a) . b);
 
-/* I use algsys instead of linsolve because it seems that linsolve
-   doesn't pay attention to tellrat information.
-*/
-
-nullspace(m) := block([n, x, e, vo, %r, proviso, nc, nr, pos,
-                       scalarmatrixp : false,
-                       domxmxops : true],
-
-  require_unblockedmatrix(m, "first", "nullspace"),
-  nc : length(first(m)),
-  nr : length(m),
-  if nc = 0 or nr = 0 then 
-    error("The argument to 'nullspace' must be a matrix with one or more rows and columns"),  
+nullspace(m) := block([nr, nc, acc : set(), proviso : true, pv, prederror : false],
   
-  m : ptriangularize_with_proviso(m, ?gensym()),
-  proviso : second(m),
-  m : first(m),
-
-  for i : 1 thru nr do (
-   if listp(pos : locate_matrix_entry(m, i, 1, i, nc, lambda([x],x # 0), 'bool)) then (
-      if not(constantp(x : part(part(m, first(pos)),second(pos)))) then 
-          proviso : adjoin(x # 0,proviso))),
- 
-  if not(emptyp(proviso)) then print("Proviso: ",proviso),
+  require_unblockedmatrix(m, "first", "nullspace"),
+  /* nc and nr are the sizes of the transpose of m */
+   
+   [nc, nr] : matrix_size(m),
+   m : triangularize(addcol(transpose(m), ident(nr))),
+   for row : 1 thru nr do (
+     pv : locate_matrix_entry(m, row, 1, row, nc, lambda([s], compare(s,0) # "="), 'bool),
      
-  x : funmake('matrix, makelist([?gensym()],i,1,nc)),
-  e : lreduce('append, args(m.x)),
-  e : map('rat,e),
-  %r : setify(%rnum_list),
-  e : first(algsys(e,(listofvars(x)))),
-  %r : listify(setdifference(setify(%rnum_list), %r)),
-  vo : if emptyp(%r) then [ ] else map("=",%r, makelist(0,i,1,length(%r))),
-  x : subst(e, x),
-  x : sort(makelist(subst(vo, subst(vi = 1, x)), vi, %r)),
-  funmake('span, x));
+     if not(listp(pv)) then (
+       acc : adjoin(transpose(genmatrix(lambda([ii,j], m[row,j+nc]),1,nr)),acc))
+     else (
+       proviso : proviso and notequal(m[row, second(pv)],0))),
+   
+   if proviso # true then (	
+     print("Proviso: ",proviso),	
+     put(concat(outchar, linenum), proviso, 'proviso)),
+   
+   subst('span, 'set, subset(acc, lambda([s], some(lambda([x], compare(x,0) # "="), s)))));
+
 
 nullity(m) := length(nullspace(m));
 
@@ -98,8 +84,8 @@ orthogonal_complement([v]) :=  block([sz],
   for vi in v do (
     require_matrix(vi," ","orthogonal_complement"),
     if matrix_size(vi) # sz then error("Each vector must have the same dimension")),
-  nullspace(funmake('matrix, map('first, map('transpose, v)))));
- 
+  nullspace(transpose(rreduce('addcol, v))));
+
 locate_matrix_entry(m, r1, c1, r2, c2, fn, rel) := block([im, cm, mf, e, 
      nr, nc, ok : true, frel],
   require_unblockedmatrix(m, "first", "locate_matrix_entry"),
@@ -128,30 +114,29 @@ locate_matrix_entry(m, r1, c1, r2, c2, fn, rel) := block([im, cm, mf, e,
          mf : e))),
   if im > 0 and cm > 0 then [im, cm] else false);
          
-columnspace(a) := block([m, nc, nr, cs : [], pos, x, proviso : [], algebraic : true, c_min],
+columnspace(a) := block([m, nc, nr, cs : set(), pos, x, proviso : true, algebraic : true, c_min],
   require_unblockedmatrix(a, "first","columnspace"),
-  /* request_rational_matrix(a, "first", "columnspace"), */
-  nc : length(first(a)),
-  nr : length(a),
-  if nc = 0 or nr = 0 then 
-    error("The argument to 'columnspace' must be a matrix with one or more rows and columns"),  
+  [nr, nc] : matrix_size(a),
+  if nc = 0 or nr = 0 then (
+    error("The argument to 'columnspace' must be a matrix with one or more rows and columns")),  
 
-  m : ptriangularize_with_proviso(a, ?gensym()),
-  proviso : second(m),
-  m : first(m),
+  m : triangularize(a),
   c_min : 1,
   for i : 1 thru nr while c_min <= nc do (
-   if listp(pos : locate_matrix_entry(m, i, c_min, i, nc, lambda([x],x # 0), 'bool)) then (
-      c_min : second(pos) + 1,
-      if not(constantp(x : part(part(m, first(pos)),second(pos)))) then 
-          proviso : adjoin(x # 0,proviso),
-       cs : cons(col(a,second(pos)),cs))),
-  cs : listify(setify(cs)),
-  if not(emptyp(proviso)) then print("Proviso: ",proviso),
-  funmake('span,cs));
+   if listp(pos : locate_matrix_entry(m, i, c_min, i, nc, lambda([x], x # 0), 'bool)) then (
+     c_min : second(pos) + 1,
+     if constantp(x : part(part(m, first(pos)),second(pos))) = false then (
+       proviso : proviso and notequal(ratsimp(x), 0)),
+     cs : adjoin(col(a,second(pos)) ,cs))),
+  
+  if proviso # true then (	
+    print("Proviso: ",proviso),	
+    put(concat(outchar, linenum), proviso, 'proviso)),
+  funmake('span, listify(cs)));
 
 /* Maxima's rank function doesn't complain with symbolic matrices. 
-I don't approve of rank(matrix([a,b],[c,d])) --> 2.  
+I don't approve of rank(matrix([a,b],[c,d])) --> 2. This version will
+print the proviso warnings.
 */
 
 linalg_rank(m) := length(columnspace(m));
@@ -178,7 +163,7 @@ rowop(m,i,j,theta) := block([p : copymatrix(m), listarith : true],
 
 /*  col(m,i) <-- col(m,i) - theta * col(m,i) */       
 
-columnop(m,i,j,theta) := transpose(rowop(transpose(m),i,j,theta));
+columnop(m,i,j, theta) := transpose(rowop(transpose(m),i, j, theta));
 
 hipow_gzero(e,x) := block([n : hipow(e,x)], if n > 0 then n else 'inf);
 good_pivot(e,x) := freeof(x,e) and e # 0;
@@ -197,7 +182,7 @@ ptriangularize_with_proviso(m,v) := block([nr, nc, proviso : [], mp],
      m : first(mp),
      proviso : append(proviso, second(mp))),
   proviso : setify(proviso),
-  [expand(m), proviso]);
+  [expand(m), ratsimp(proviso)]);
 
 column_reduce(m,i,x) := block([nc, nr, pos, q, proviso : []],
    /* require_matrix(m, "first", "column_reduce"), */
@@ -322,5 +307,7 @@ polytocompanion(p,x) := block([n],
   p : multthru(p / coeff(p,x,n)),
   genmatrix(lambda([i,j], if i-j=1 then 1 else if j = n then -coeff(p,x,i-1) else 0),n));
       
-
-     
+moore_penrose_pseudoinverse(m) := block([mm, z : ?gensym(), scalarmatrixp : false],
+  require_unblockedmatrix(m, "first", "moore_penrose_pseudoinverse"),
+  mm : m . ctranspose(m),	
+  limit(mm : ctranspose(m) . (mm - z * identfor(mm))^^-1,z,0));
