@@ -1,4 +1,4 @@
-@c english version 1.48
+@c english version 1.49
 @menu
 * n-arios::
 * no-fijos::
@@ -2103,6 +2103,14 @@ reverse(uf))
                                37
 (%i8) apply ("+", %);
 @end example
+
+@end deffn
+
+
+@deffn {Funci@'on} round (@var{x})
+Si @var{x} es un n@'umero real, la funci@'on devuelve el entero m@'as 
+pr@'oximo a @var{x}. Los m@'ultiplos de 1/2 se redondean al entero par m@'as pr@'oximo.
+La evaluaci@'on de @var{x} es similar a @code{floor} y @code{ceiling}.
 
 @end deffn
 

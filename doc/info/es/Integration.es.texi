@@ -1,4 +1,4 @@
-@c version 1.34
+@c version 1.36
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -583,8 +583,8 @@ Clenshaw-Curtis modificada en los subintervalos que contienen a @math{x = c}.
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
-@deffnx {Funci@'on} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
+@deffn {Funci@'on} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funci@'on} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 Integraci@'on de una funci@'on general en un intervalo finito.
 La funci@'on @code{quad_qag} implementa un integrador global 
 adaptativo simple utilizando una estrategia de Aind (Piessens, 1973).
@@ -620,7 +620,19 @@ o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
 La integraci@'on num@'erica se hace de forma adaptativa particionando la regi@'on de integraci@'on en subintervalos hasta conseguir la precisi@'on requerida.
 
-Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
+Los argumentos opcionales pueden especificarse en cualquier orden. 
+Todos ellos toman la forma @code{key=val}. Tales argumentos son:
+
+@table @var
+@item epsrel
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+@item epsabs
+Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
+@item limit
+Tama@~no del array interno utilizado para realizar la cuadratura. 
+(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+a utilizar. El valor por defecto es 200.
+@end table
 
 La funci@'on @code{quad_qag} devuelve una lista de cuatro elementos:
 
@@ -655,7 +667,7 @@ si los argumentos de entrada no son v@'alidos.
 Ejemplos:
 
 @example
-(%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3);
+(%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
 (%o1)    [.4444444444492108, 3.1700968502883E-9, 961, 0]
 (%i2) integrate (x^(1/2)*log(1/x), x, 0, 1);
                                 4
@@ -666,8 +678,8 @@ Ejemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
-@deffnx {Funci@'on} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Funci@'on} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funci@'on} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 Integraci@'on de una funci@'on general en un intervalo finito.
 La funci@'on @code{quad_qags} implementa la subdivisi@'on de intervalos 
 global adaptativa con extrapolaci@'on (de Doncker, 1978) mediante
@@ -691,7 +703,19 @@ siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}.
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
-Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
+Los argumentos opcionales pueden especificarse en cualquier orden. 
+Todos ellos toman la forma @code{key=val}. Tales argumentos son:
+
+@table @var
+@item epsrel
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+@item epsabs
+Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
+@item limit
+Tama@~no del array interno utilizado para realizar la cuadratura. 
+(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+a utilizar. El valor por defecto es 200.
+@end table
 
 La funci@'on @code{quad_qags} devuelve una lista de cuatro elementos:
 
@@ -730,7 +754,7 @@ si los argumentos de entrada no son v@'alidos.
 Ejemplos:
 
 @example
-(%i1) quad_qags (x^(1/2)*log(1/x), x, 0 ,1);
+(%i1) quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
 (%o1)   [.4444444444444448, 1.11022302462516E-15, 315, 0]
 @end example
 
@@ -740,8 +764,8 @@ N@'otese que @code{quad_qags} es m@'as precisa y eficiente que @code{quad_qag} p
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
-@deffnx {Funci@'on} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@deffn {Funci@'on} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funci@'on} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 Integraci@'on de una funci@'on general en un intervalo infinito o semi-infinito.
 El intervalo se proyecta sobre un intervalo finito y luego se aplica la
 misma estrategia que en @code{quad_qags}.
@@ -794,7 +818,19 @@ El intervalo es desde menos infinito hasta @var{a}.
 El intervalo es toda la recta real.
 @end table
 
-Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
+Los argumentos opcionales pueden especificarse en cualquier orden. 
+Todos ellos toman la forma @code{key=val}. Tales argumentos son:
+
+@table @var
+@item epsrel
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+@item epsabs
+Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
+@item limit
+Tama@~no del array interno utilizado para realizar la cuadratura. 
+(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+a utilizar. El valor por defecto es 200.
+@end table
 
 La funci@'on @code{quad_qagi} devuelve una lista de cuatro elementos:
 
@@ -833,7 +869,7 @@ si los argumentos de entrada no son v@'alidos.
 Ejemplos:
 
 @example
-(%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf);
+(%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
 (%o1)        [0.03125, 2.95916102995002E-11, 105, 0]
 (%i2) integrate (x^2*exp(-4*x), x, 0, inf);
                                1
@@ -845,8 +881,8 @@ Ejemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
-@deffnx {Funci@'on} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Funci@'on} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funci@'on} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 Calcula el valor principal de Cauchy de @math{f(x)/(x - c)} en un
 intervalo finito @math{(a, b)} para una @math{c} dada.
 La estrategia es global adaptativa, utilizando la integraci@'on de 
@@ -870,7 +906,19 @@ utilizando la rutina QAWC de Quadpack.  La funci@'on a integrar es
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
-Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
+Los argumentos opcionales pueden especificarse en cualquier orden. 
+Todos ellos toman la forma @code{key=val}. Tales argumentos son:
+
+@table @var
+@item epsrel
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+@item epsabs
+Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
+@item limit
+Tama@~no del array interno utilizado para realizar la cuadratura. 
+(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+a utilizar. El valor por defecto es 200.
+@end table
 
 @code{quad_qawc} returns a list of four elements:
 
@@ -903,27 +951,28 @@ si los argumentos de entrada no son v@'alidos.
 Ejemplos:
 
 @example
-(%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
+(%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
+                 'epsrel=1d-7);
 (%o1)    [- 3.130120337415925, 1.306830140249558E-8, 495, 0]
 (%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
                  x, 0, 5);
 Principal Value
-                       alpha
-        alpha       9 4                 9
-       4      log(------------- + -------------)
-                      alpha           alpha
-                  64 4      + 4   64 4      + 4
-(%o2) (-----------------------------------------
-                        alpha
-                     2 4      + 2
-
-         3 alpha                       3 alpha
-         -------                       -------
-            2            alpha/2          2          alpha/2
-      2 4        atan(4 4       )   2 4        atan(4       )   alpha
-    - --------------------------- - -------------------------)/2
-                alpha                        alpha
-             2 4      + 2                 2 4      + 2
+        alpha        9 4                 9
+       4      log(-------------- + --------------)
+                   alpha + 3        alpha + 3
+                  4          + 4   4          + 4
+(%o2) (-------------------------------------------
+                         alpha
+                      2 4      + 2
+    3 alpha                   3 alpha
+    -------                   -------
+       2          alpha/2        2              alpha/2
+   4        atan(4       )   4        atan(- 4 4       )
+ - ----------------------- + ---------------------------)
+          alpha                       alpha
+         4      + 1                  4      + 1
+  alpha
+/2
 (%i3) ev (%, alpha=5, numer);
 (%o3)                    - 3.130120337415917
 @end example
@@ -932,8 +981,8 @@ Principal Value
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Funci@'on} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Funci@'on} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Funci@'on} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, [@var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 Calcula la transformada seno o coseno de Fourier en un intervalo semi-infinito.
 Se aplica el mismo m@'etodo que en @code{quad_qawo} a sucesivos intervalos
 finitos, acelerando la convergencia mediante el algoritmo Epsilon (Wynn, 1956).
@@ -963,7 +1012,8 @@ La funci@'on peso @math{w} se selecciona mediante @var{trig}:
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 
-Los argumentos opcionales son:
+Los argumentos opcionales pueden especificarse en cualquier orden. 
+Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
 @item epsabs
@@ -975,10 +1025,6 @@ N@'umero m@'aximo de momentos de Chebyshev. Debe ser mayor que 0.  El valor por 
 @item limlst
 Cota superior del n@'umero de ciclos. Debe ser mayor o igual que 3.  El valor por defecto es 10.
 @end table
-
-@c MERGE THESE LINES INTO PRECEDING TABLE
-Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
-
 
 @code{quad_qawf} returns a list of four elements:
 
@@ -1011,7 +1057,7 @@ si los argumentos de entrada no son v@'alidos.
 Ejemplos:
 
 @example
-(%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos);
+(%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
 (%o1)   [.6901942235215714, 2.84846300257552E-11, 215, 0]
 (%i2) integrate (exp(-x^2)*cos(x), x, 0, inf);
                           - 1/4
@@ -1026,8 +1072,8 @@ Ejemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
-@deffnx {Funci@'on} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Funci@'on} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
+@deffnx {Funci@'on} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 Integraci@'on de @math{cos(omega x) f(x)} o @math{sin(omega x) f(x)} en un
 intervalo finito, siendo @math{omega} una constante. La regla de 
 evaluaci@'on se basa en la t@'ecnica modificada de Clenshaw-Curtis.
@@ -1058,11 +1104,14 @@ La funci@'on peso @math{w} se selecciona mediante @var{trig}:
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 
-Los argumentos opcionales son:
+Los argumentos opcionales pueden especificarse en cualquier orden. 
+Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
-@item epsabs
+@item epsrel
 El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-10.
+@item epsabs
+Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
 Tama@~no del arreglo interno de trabajo.  (@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos para la partici@'on. El valor por defecto es 200.
 @item maxp1
@@ -1070,9 +1119,6 @@ N@'umero m@'aximo de momentos de Chebyshev. Debe ser mayor que 0.  El valor por 
 @item limlst
 Cota superior del n@'umero de ciclos. Debe ser mayor o igual que 3.  El valor por defecto es 10.
 @end table
-
-@c MERGE THESE LINES INTO PRECEDING TABLE
-Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
 
 @code{quad_qawo} returns a list of four elements:
 
@@ -1122,8 +1168,8 @@ Ejemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
-@deffnx {Funci@'on} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@deffn {Funci@'on} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funci@'on} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alpha}, @var{beta}, @var{wfun}, [@var{epsrel}, @var{epsabs}, @var{limit}])
 Integraci@'on de @math{w(x) f(x)} en un intervalo finito @math{[a, b]},
 siendo @math{w} una funci@'on de la forma @math{(x - a)^alpha (b - x)^beta v(x)},
 con  @math{v(x)} igual a 1, a @math{log(x - a)}, a @math{log(b - x)} o a
@@ -1160,17 +1206,19 @@ La funci@'on peso @math{w} se selecciona mediante @var{wfun}:
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 
-Los argumentos opcionales son:
+Los argumentos opcionales pueden especificarse en cualquier orden. 
+Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
-@item epsabs
+@item epsrel
 El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-10.
+@item epsabs
+Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
-Tama@~no del arreglo interno de trabajo.  (@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos para la partici@'on. El valor por defecto es 200.
+Tama@~no del array interno utilizado para realizar la cuadratura. 
+(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+a utilizar. El valor por defecto es 200.
 @end table
-
-@c MERGE THESE LINES INTO PRECEDING TABLE
-Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
 
 @code{quad_qaws} returns a list of four elements:
 
@@ -1203,7 +1251,8 @@ si los argumentos de entrada no son v@'alidos.
 Ejemplos:
 
 @example
-(%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1);
+(%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
+                 'epsabs=1d-9);
 (%o1)     [8.750097361672832, 1.24321522715422E-10, 170, 0]
 (%i2) integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
        alpha
