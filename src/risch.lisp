@@ -33,6 +33,9 @@
 
 (defmacro pair (al bl) `(mapcar #'cons ,al ,bl))
 
+;; internal representation of risch expressions: list with canonical rational
+;; expression (CRE) as first element, standard maxima expressions as remaining
+;; elements.  risch expression is sum of CRE and remaining elements.
 (defmacro rischzero () ''((0 . 1) 0))
 
 (defun rischnoun (exp1 &optional (exp2 exp1 exp2p))
@@ -51,6 +54,7 @@
   (setq r (ratfix r))
   (and (risch-pconstp (car r)) (risch-pconstp (cdr r))))
 
+;; adds two risch expressions (defined above).
 (defun rischadd (x y)
   (destructuring-let (((a . b) x) ((c . d) y))
     (cons (r+ a c) (append b d))))
@@ -470,8 +474,9 @@
     (setq y (get var 'leadop))
     (cond ((and (not (pzerop (ratnumerator f)))
 		(risch-constp (setq l (ratqu a f))))
-	   (cond (flag
-		  (list (r* l (cons (list expg n 1) 1)) 0))
+	   (cond (flag		;; multiply in expg^n - n may be negative
+		  (list (r* l (ratexpt (cons (list expg 1 1) 1) n))
+			0))
 		 (t l)))
 	  ((eq y intvar)
 	   (rischexpvar nil flag (list f a expg n)))
