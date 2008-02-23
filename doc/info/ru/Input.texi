@@ -1,0 +1,2186 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=Input.texi
+@c OriginalRevision=1.66
+@c TranslatedBy: (c) 2008-02 Sergei Shmakov <chivorotkiv@omich.net>
+
+@menu
+* Комментарии::
+* Файлы::                       
+* Функции и переменные для ввода и вывода::
+@end menu
+
+@node Комментарии, файлы, Ввод и вывод, Ввод и вывод
+@section Комментарии
+
+В Maxima любой текст, расположенный между @code{/*} и @code{*/}, является комментарием.
+
+Анализатор Maxima обрабатывает комментарии как пробелы, чтобы проще было различать лексемы
+во входном потоке, комментарий всегда завершает лексему.
+Следующий ввод @code{a/* foo */b} содержит две лексемы @code{a} и @code{b}, а не
+одну @code{ab}.
+Во всех остальных случаях комментарии игнорируются, что бы в них ни находилось.
+
+Комментарии могут иметь сколько угодно уровней вложенности. Разделители
+@code{/*} и @code{*/} образуют соответствующие пары. Количество открывающих
+разделителей @code{/*} должно быть равно количеству закрывающих @code{*/}.
+
+Примеры:
+
+@c ===beg===
+@c /* aa is a variable of interest */  aa : 1234;
+@c /* Value of bb depends on aa */  bb : aa^2;
+@c /* User-defined infix operator */  infix ("b");
+@c /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+@c /* Comments /* can be nested /* to any depth */ */ */  1 + xyz;
+@c ===end===
+@example
+(%i1) /* aa is a variable of interest */  aa : 1234;
+(%o1)                         1234
+(%i2) /* Value of bb depends on aa */  bb : aa^2;
+(%o2)                        1522756
+(%i3) /* User-defined infix operator */  infix ("b");
+(%o3)                           b
+(%i4) /* Parses same as a b c, not abc */  a/* foo */b/* bar */c;
+(%o4)                         a b c
+(%i5) /* Comments /* can be nested /* to any depth */ */ */  1 + xyz;
+(%o5)                        xyz + 1
+@end example
+
+@opencatbox
+@category{Синтаксис}
+@closecatbox
+
+@node Файлы, функции и переменные для ввода и вывода, Комментарии, Ввод и вывод
+@section Файлы
+Файл -- это область на определенном запоминающем устройстве, содержащая данные или текст.
+Файлы на дисках как-бы группируются в "директории", которые являются просто списками файлов.
+Для работы с файлами существуют следующие команды: 
+@code{save},
+@code{load},
+
+@code{loadfile},
+@code{stringout},
+@code{batch},
+@code{demo},
+@code{writefile},
+@code{closefile}
+и
+@code{appendfile}.
+
+@node Функции и переменные для ввода и вывода,  , Файлы, Ввод и вывод
+@section Функции и переменные для ввода и вывода
+
+@defvr {Системная переменная} __
+@ifinfo
+@vrindex Текущее входное выражение.
+@end ifinfo
+@code{__} - введенное выражение, обрабатываемое в данный момент.
+То есть, пока вычисляется @var{expr}, @code{__} равно @var{expr}.
+
+Введенное выражение присваивается переменной @code{__} до упрощения или вычисления.
+Однако, значение @code{__} упрощается (но не вычисляется) во время вывода.
+
+@code{__} распознается функциями @code{batch} и @code{load}.
+В файле, обрабатываемом с помощью @code{batch}, @code{__} означает то же самое,
+что и в режиме диалога. Когда файл обрабатывается функцией @code{load}, @code{__}
+имеет значения последнего, введенного в режиме диалога или пакетном файле, выражения.
+@code{__} не принимает значения выражений, которые вводятся в обрабатываемом файле.
+В частности, если @code{load ($var{filename})} вызывается в режиме диалога, 
+то во время выполнения файла @code{__} имеет значение @code{load(@var{filename})}.
+
+См. также @code{_} и @code{%}.
+
+Примеры:
+
+@c ===beg===
+@c print ("I was called as", __);
+@c foo (__);
+@c g (x) := (print ("Current input expression =", __), 0);
+@c [aa : 1, bb : 2, cc : 3];
+@c (aa + bb + cc)/(dd + ee + g(x));
+@c ===end===
+@example
+(%i1) print ("I was called as", __);
+I was called as print(I was called as, __) 
+(%o1)              print(I was called as, __)
+(%i2) foo (__);
+(%o2)                     foo(foo(__))
+(%i3) g (x) := (print ("Current input expression =", __), 0);
+(%o3) g(x) := (print("Current input expression =", __), 0)
+(%i4) [aa : 1, bb : 2, cc : 3];
+(%o4)                       [1, 2, 3]
+(%i5) (aa + bb + cc)/(dd + ee + g(x));
+                            cc + bb + aa
+Current input expression = -------------- 
+                           g(x) + ee + dd
+                                6
+(%o5)                        -------
+                             ee + dd
+@end example
+
+@opencatbox
+@category{Глобальные переменные}
+@closecatbox
+
+@end defvr
+
+@defvr {Системная переменная} _
+@ifinfo
+@vrindex Предыдущий ввод
+@end ifinfo
+
+@code{_} - самое последнее из введенных выражений (таких как @code{%i1}, @code{%i2}, @code{%i3}, ...).
+
+Введенное выражение присваивается переменной @code{_} до упрощения или вычисления.
+Однако, это значение упрощается (но не вычисляется) во время вывода.
+
+@code{_} обрабатывается функциями @code{batch} и @code{load}. 
+Во время обработки файла функцией @code{batch} переменная @code{_} означает то же, что и в
+режиме диалога.
+Когда файл обрабатывается функцией @code{load}, значение переменной @code{_} принимает
+последнее вычисленное выражение, которое было введено в диалоговом режиме или пакетном файле.
+Выражения, вводимые в обрабатываемом файле, не присваиваются переменной @code{_}.
+
+См. также @code{__} и @code{%}.
+
+Примеры:
+
+@c ===beg===
+@c 13 + 29;
+@c :lisp $_
+@c _;
+@c sin (%pi/2);
+@c :lisp $_
+@c _;
+@c a: 13$
+@c b: 29$
+@c a + b;
+@c :lisp $_
+@c _;
+@c a + b;
+@c ev (_);
+@c ===end===
+@example
+(%i1) 13 + 29;
+(%o1)                          42
+(%i2) :lisp $_
+((MPLUS) 13 29)
+(%i2) _;
+(%o2)                          42
+(%i3) sin (%pi/2);
+(%o3)                           1
+(%i4) :lisp $_
+((%SIN) ((MQUOTIENT) $%PI 2))
+(%i4) _;
+(%o4)                           1
+(%i5) a: 13$
+(%i6) b: 29$
+(%i7) a + b;
+(%o7)                          42
+(%i8) :lisp $_
+((MPLUS) $A $B)
+(%i8) _;
+(%o8)                         b + a
+(%i9) a + b;
+(%o9)                          42
+(%i10) ev (_);
+(%o10)                         42
+@end example
+
+@opencatbox
+@category{Работа в консоли} @category{Глобальные переменные}
+@closecatbox
+
+@end defvr
+
+@defvr {Системная переменная} %
+@ifinfo
+@vrindex Предыдущий выход
+@end ifinfo
+@code{%} - вывод (@code{%o1}, @code{%o2}, @code{o3}, ...) последнего обработанного
+выражения, даже если он не выводится.
+
+@code{%} обрабатывается командами @code{batch} и @code{load}.
+В файле, обрабатываемом командой @code{batch}, @code{%} имеет то же значение, что и
+в режиме диалога. В файле, обрабатываемого командой @code{load}, Значение @code{%} принимает
+вывод последнего обработанного в диалоговом режиме выражения. Переменной @code{%} не присваивается
+вывод выражений обрабатываемого файла.
+
+См. также @code{_}, @code{%%} и @code{%th}.
+
+@opencatbox
+@category{Работа в консоли} @category{Глобальные переменные}
+@closecatbox
+
+@end defvr
+
+@defvr {Системная переменная} %%
+@ifinfo
+@vrindex Предыдущий результат в составном выражении
+@end ifinfo
+В составных выражениях таких как @code{block}, @code{lambda}, или @code{(@var{s_1}, ..., @var{s_n})},
+@code{%%} - значение предыдущего утверждения. К примеру выражения,
+
+@example
+block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
+@end example
+
+дадут один и тот же результат, то есть @code{21/2}.
+
+Составное выражение может быть частью другого составного выражения. И в случае простого утверждения,
+и в случае, когда утверждение является составным выражением, @code{%%} принимает значение предыдущего утверждения.
+К примеру,
+
+@example
+block (block (a^n, %%*42), %%/6)
+@end example
+
+выдаст @code{7*a^n}.
+
+Внутри составного утверждения, значение @code{%%} можно проверить в диалоге
+команды @code{break}. К примеру, следующее выражение
+
+@example
+block (a: 42, break ())$
+@end example
+
+открывает диалог, в котором результатом ввода @code{%%;} будет @code{42}.
+
+В первом утверждении составного выражения или вне составного выражения
+переменная @code{%%} не определена.
+
+Переменная @code{%%} распознается функциями @code{batch} и @code{load},
+и имеет то же значение, что и в режиме диалога.
+
+См. также @code{%}.
+
+@opencatbox
+@category{Глобальные переменные}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} %edispflag
+Значение по умолчанию: @code{false}
+
+Когда @code{%edispflag} установлена равной @code{true}, Maxima отображает @code{%e} отрицательной
+степени. К примеру, @code{%e^-x} отображается как @code{1/%e^x}.
+@c тут бы я добавил "см. также exptdispflag", но в оригинале нету.
+
+@opencatbox
+@category{Экспоненциальные и логарифмические функции} @category{Флаги переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} %th (@var{i})
+@ifinfo
+@fnindex N-ный по счету предыдущий вывод
+@end ifinfo
+Значение @var{i}-го предыдущего вывода. То есть, если следующим вычисленным выражением
+будет вывод с номером @var{n}, то @code{%th (@var{m})} примет значение вывода с номером (@var{n} - @var{m}).
+
+@code{%th} полезна в пакетных @code{batch}-файлах или в ссылках на группу выведенных выражений.
+К примеру,
+
+@example
+block (s: 0, for i:1 thru 10 do s: s + %th (i))$
+@end example
+
+присвоит переменной @code{s} сумму последних десяти выведенных выражений.
+
+@code{%th} обрабатывается функциями @code{batch} и @code{load}.
+В файле, обрабатываемом функцией @code{batch}, @code{%th} означает то же, 
+что и в режиме диалога. В файле, обрабатываемом командой @code{load}, 
+@code{%th} ссылается на выведенные выражения, которые были вычислены последними в режиме диалога
+или пакетном файле. @code{%th} не ссылается на выражения, выводимые в процессе работы @code{load}.
+
+См. также @code{%}.
+
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
+
+@end deffn
+
+@deffn {Специальный символ} ?
+@ifinfo
+@fnindex Вызов документации
+@end ifinfo
+Стоящий перед именем функции или переменной символ @code{?} означает что
+это имя функции или переменной из Lisp, а не из Maxima.
+К примеру, @code{?round} означает Lisp-функцию @code{ROUND}.
+См. дополнительно @ref{Lisp ит Maxima}.
+
+Запись @code{? word} (вопросительный знак и следующее за ним слово разделены пробелом)
+эквивалентна записи @code{describe("word")}.
+Вопросительный знак должен находиться в начале строки ввода, иначе он не определится
+как запрос на документацию.
+
+@opencatbox
+@category{Справка} @category{Работа в консоли}
+@closecatbox
+
+@end deffn
+
+@deffn {Специальный символ} ??
+@ifinfo
+@fnindex Вызов документации (неточный поиск)
+@end ifinfo
+
+Запись @code{?? word} (@code{??} и следующее за ним слово разделяются символом пробела)
+эквивалентна записи @code{descrive("word", inexact)}.
+
+@opencatbox
+@category{Справка}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} absboxchar
+Значение по умолчанию: @code{!}
+
+Символ @code{absboxchar} используется для изображения знака модуля вокруг, 
+выражений, занимающих по высоте больше одной строчки.
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} file_output_append
+Значение по умолчанию: @code{false}
+
+@code{file_output_append} управляет тем, будет ли вывод в функции добавляться в конец
+или замещать содержимое выводимого файла.
+Когда @code{file_output_append} равна @code{true}, такие функции добавляют вывод к файлу,
+иначе выводимый файл переписывается заново.
+
+Функции @code{save}, @code{strungout} и @code{with_stdout} учитывают @code{file_output_append}.
+Остальные функции, которые записываю выход во внешние файлы, не учитывают @code{file_output_append}.
+В частности, графические и транслирующие функции всегда замещает содержимое выводимого файла, а
+@code{tex} и @code{strungout} всегда дописываю в конец.
+@c WHAT ABOUT WRITEFILE ??
+
+@opencatbox
+@category{Вывод файлов} @category{Глобальные флаги}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} appendfile (@var{filename})
+Добавляет копию консольного вывода в @var{filename}. 
+@code{appendfile} работает так же как и @code{writefile},
+но отличие в том, что если файл существует, он всегда дописывается.
+
+@code{closefile} закрывает трансляцию в файл открытый функциями @code{appendfile} или @code{writefile}.
+
+@opencatbox
+@category{Вывод файлов} @category{Работа в консоли}
+@closecatbox
+
+@end deffn
+
+@c batch CAN TAKE 'test AS AN OPTIONAL ARGUMENT IN WHICH CASE IT CALLS test-batch
+@c (SAME AS run_testsuite) -- SHOULD DOCUMENT batch (file, 'test)
+@c FIX BUG WHICH CAUSES batch (<file>, 'test) TO FAIL, THEN DOCUMENT IT HERE
+@deffn {Функция} batch (@var{filename})
+Считывает выражения Maxima из @var{filename}, и обрабатывает их.
+@code{batch} ищет @var{filename} в директориях списка @code{file_search_maxima}.
+См. @code{file_search}.
+
+@var{filename} содержит последовательность выражений Maxima,
+завершающихся символами @code{;} или @code{$}.
+Специальные переменная @code{%} и функция @code{%th}
+ссылаются на предыдущие результаты внутри файла.
+Файл может включать конструкции @code{:lisp}.
+Символы пробела, табуляции и новой строки в файле игнорируются.
+Подходящий входной файл может быть создан при помощи текстового редактора или 
+функцией @code{stringout}.
+
+@code{batch} считывает каждое входящее выражение из @var{filename},
+отображает его ввод в консоли,
+вычисляет соответствующее выходящее выражение
+и выводит его.
+Входящим выражениям присваиваются входные метки, а выходящим -- выходные.
+@code{batch} вычисляет все входящие выражения файла до тех пор пока в них не
+встретится ошибка.
+Если запрашивается пользовательский ввод (к примеру, командами @code{asksign} или @code{askinteger}),
+выполнение @code{batch} останавливается для сбора требуемого ввода и затем продолжается.
+
+Возможна остановка @code{batch} нажатием @code{control-C} в консоли.
+Эффект нажатия @code{control-C} зависит от реализации лежащего в основе Lisp.
+
+@code{batch} может использоваться в различных целях.
+Для хранения рабочих командных строк, дающих возможность проводить демонстрации без ошибок,
+или может помочь организовать работу над решением сложных задач.
+
+@code{batch} вычисляет свой аргумент.
+@c LACK OF A RETURN VALUE IS A BUG; THE INTENT IS TO RETURN THE FILE PATH, TO JUDGE BY THE SOURCE CODE
+@code{batch} не возвращает значений.
+
+См. также @code{load}, @code{batchload} и @code{demo}.
+
+@opencatbox
+@category{Управление сессией} @category{Ввод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} batchload (@var{filename})
+Считывает выражения Maxima из @var{filename} и вычисляет их,
+не отображая входные и выходные выражения и не присваивая ссылок
+выходным выражениям.
+Однако, печатаемый вывод (такой, какой производят команды @code{print} или @code{describe})
+отображается.
+
+Специальная переменная @code{%} и функция @code{%th}
+ссылается на предыдущие результаты из режима диалога, но не на результаты
+внутри файла.
+Файл не может включать конструкции @code{:lisp}.
+
+@code{batchload} возвращает путь к @var{filename} в виде строки.
+@code{batchload} вычисляет свой аргумент.
+
+См. также @code{batch} и @code{load}.
+
+@opencatbox
+@category{Управление сессией} @category{Ввод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} closefile ()
+Закрывает запись в файл, открытую командой @code{writefile} или @code{appendfile}.
+
+@opencatbox
+@category{Вывод файлов} @category{Работа в консоли}
+@closecatbox
+
+@end deffn
+
+@c NEEDS CLARIFICATION !!!
+@deffn {Функция} collapse (@var{expr})
+Сворачивает выражение @var{expr} делая все его общие (т.е. равные)
+ссылающимися на одни ячейки памяти, тем самым сохраняя память.
+Функция (@code{collapse} используется командой @code{optimize}.
+Таким образом, вызов @code{collapse} может быть полезным до выгрузки в @code{save} файл. 
+Можно свернуть несколько выражений вместе используя команду  
+@code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  
+Аналогично, можно свернуть элементы массива @code{A} 
+при помощи команды @code{collapse (listarray ('A))}.
+
+@opencatbox
+@category{Выражения}
+@closecatbox
+@end deffn
+
+@deffn {Функция} concat (@var{arg_1}, @var{arg_2}, ...)
+Сцепляет свои аргументы. Аргументы должны быть атомами.
+Возвращаемое значение является символом, если первый аргумент -- символ, и строкой
+в противном случае.
+
+@code{concat} вычисляет свои аргументы.
+Одиночная кавычка @code{'} предотвращает вычисление.
+
+@example
+(%i1) y: 7$
+(%i2) z: 88$
+(%i3) concat (y, z/2);
+(%o3)                          744
+(%i4) concat ('y, z/2);
+(%o4)                          y44
+@end example
+
+Символу, полученному с помощью @code{concat}, можно присваивать значения
+и использовать его в выражениях.
+@code{::} (двойное двоеточие) -- оператор присваивания, который вычисляет свой левый операнд.
+
+@example
+(%i5) a: concat ('y, z/2);
+(%o5)                          y44
+(%i6) a:: 123;
+(%o6)                          123
+(%i7) y44;
+(%o7)                          123
+(%i8) b^a;
+                               y44
+(%o8)                         b
+(%i9) %, numer;
+                               123
+(%o9)                         b
+@end example
+
+Заметьте, что несмотря на то, что @code{concat (1, 2)} выглядит как число, результат является строкой.
+
+@example
+(%i10) concat (1, 2) + 3;
+(%o10)                       12 + 3
+@end example
+
+@opencatbox
+@category{Выражения} @category{Строки}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} sconcat (@var{arg_1}, @var{arg_2}, ...)
+
+Сцепляет аргументы в строки. В отличии от @code{concat}, аргументы не обязаны
+быть атомами.
+
+@example
+(%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
+(%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+@end example
+
+@opencatbox
+@category{Выражения} @category{Строки}
+@closecatbox
+
+@end deffn
+
+@c AFTER REVIEWING src/displa.lisp, IT LOOKS LIKE THIS VARIABLE HAS NO EFFECT
+@c CUT IT ON THE NEXT PASS
+@c @defvar cursordisp
+@c Default value: @code{true}
+@c 
+@c When @code{cursordisp} is @code{true}, expressions are drawn by
+@c the displayer in logical sequence.  This only works with a console
+@c which can do cursor movement.  If @code{false}, expressions are
+@c printed line by line.
+@c 
+@c @code{cursordisp} is always @code{false} when a @code{writefile} is in
+@c effect.
+@c 
+@c @end defvar
+
+@deffn {Функция} disp (@var{expr_1}, @var{expr_2}, ...)
+то же что и @code{display}, но отличается тем что значение аргументов отображаются 
+без выражений. Это полезно для сложных аргументов, у которых нет имени или
+в случае, когда интерес представляет только значение без имени. 
+
+@opencatbox
+@category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Функция} dispcon (all)
+Отображает ограничения аргументов, наложенные на них командой @code{defcon}.
+@code{dispcon (all)} отображает все ограничения, которые были заданы.
+
+@opencatbox
+@category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} display (@var{expr_1}, @var{expr_2}, ...)
+Отображает равенства, выравненные по центру. Левыми частями равенств являются не вычисленные
+выражения @var{expr_i}, a правыми -- их значения.
+Эта функция полезна в блоках и конструкциях @code{for} для вывода промежуточных результатов.
+Аргументы @code{display} обычно являются атомами, переменными с индексом, или
+вызовами функций. См. также @code{disp}.
+
+@example
+(%i1) display(B[1,2]);
+                                      2
+                         B     = X - X
+                          1, 2
+(%o1)                            done
+@end example
+
+@opencatbox
+@category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} display2d
+Значение по умолчанию: @code{true}
+
+Когда @code{display2d} равна @code{false}, консольный вывод производится в строковой (одномерной) форме,
+а не в наглядной (двумерной).
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} display_format_internal
+Значение по умолчанию: @code{false}
+
+Когда @code{display_format_internal} равна  @code{true},
+выражения отображаются без преобразования, которое "прячет" 
+внутреннее математическое представление.
+Тогда вывод соответствует результату функции @code{inpart}, а не @code{part}.
+
+Примеры:
+
+@example
+User     part       inpart
+a-b;      a - b     a + (- 1) b
+
+           a            - 1
+a/b;       -         a b
+           b
+                       1/2
+sqrt(x);   sqrt(x)    x
+
+          4 X        4
+X*4/3;    ---        - X
+           3         3
+@end example
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@c IS THIS FUNCTION STILL USEFUL ???
+@c REPHRASE, NEEDS EXAMPLES
+@deffn {Функция} dispterms (@var{expr})
+Выводит друг под другом части @var{expr}.
+Первым отображается оператор выражения @var{expr}, затем каждое слагаемое суммы, множители
+произведения или части более общего выражения отображаются отдельно. Это полезно,
+когда @var{expr} слишком большое для иных способов отображения. К примеру, если 
+@code{P1}, @code{P2}, ... -- очень большие выражения, то программе может не хватить
+памяти при попытке отобразить @code{P1 + P2 + ...} как единое целое.
+Однако, @code{dispterms (P1 + P2 + ...)} отображает @code{P1}, затем ниже @code{P2} и т. д.
+Если не использовать @code{dispterms}, когда показательное выражение 
+слишком широко, для отображения в виде @code{A^B}, то оно выводится в виде @code{expt (A, B)}
+(или @code{ncexpt (A, B)} в случае @code{A^^B}).
+@c !!! кстати, у меня оно не в таком виде появляется, а в @code{expt(A,<B>)}
+
+@opencatbox
+@category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} error_size
+Значение по умолчанию: 10
+
+@code{error_size} изменяет сообщения об ошибках, в зависимости от размера выражения, которое появляется в нем.
+Если размер выражения (определенный с помощью Lisp-функции @code{ERROR-SIZE})
+больше чем @code{error_size}, выражение замещается символом, а символу присваивается
+выражение. Символы берутся из списка @code{error_syms}.
+
+В противном случае, когда выражение меньше чем @code{error_size}, оно и выводится
+в сообщении.
+
+См. также @code{error} и @code{error_syms}.
+
+Пример:
+@c OUTPUT GENERATED BY THE FOLLOWING
+@c U: (C^D^E + B + A)/(cos(X-1) + 1)$
+@c error_size: 20$
+@c error ("Example expression is", U);
+@c errexp1;
+@c error_size: 30$
+@c error ("Example expression is", U);
+
+@code{ERROR-SIZE} задает размер @code{U} равным 24.
+
+@example
+(%i1) U: (C^D^E + B + A)/(cos(X-1) + 1)$
+
+(%i2) error_size: 20$
+
+(%i3) error ("Example expression is", U);
+
+Example expression is errexp1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) errexp1;
+                            E
+                           D
+                          C   + B + A
+(%o4)                    --------------
+                         cos(X - 1) + 1
+(%i5) error_size: 30$
+
+(%i6) error ("Example expression is", U);
+
+                         E
+                        D
+                       C   + B + A
+Example expression is --------------
+                      cos(X - 1) + 1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+@opencatbox
+@category{Флаги и переменные вывода} @categopy{Отладка}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} error_syms
+Значение по умолчанию: @code{[errexp1, errexp2, errexp3]}
+
+В сообщениях об ошибках, выражения большие чем @code{error_size} заменяются символами
+и присваиваются этим символам. Символы берутся из списка @code{error_syms}.
+Первое слишком большое выражения заменяется символом @code{error_syms[1]},
+второе символом @code{error_syms[2]} и так далее.
+
+Если слишком больших выражений больше чем элементов в @code{error_syms},
+то символы генерируются автоматически, @code{n}-ный символ равен @code{concat ('errexp, @var{n})}.
+
+См. также @code{error} и @code{error_size}.
+
+@opencatbox
+@category{Флаги и переменные вывода} @categopy{Отладка}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} expt (@var{a}, @var{b})
+Если показательное выражение слишком широко для отображения в виде @code{@var{a}^@var{b}}),
+оно выводится в виде @code{expt (@var{a}, @var{b})} (или @code{ncexpt (@var{a}, @var{b})}
+в случае @code{@var{a}^^@var{b}}).
+
+@code{expt} и @code{ncexpt} не распознаются при вводе.
+
+@end deffn
+
+@defvr {Управляющая переменная} exptdispflag
+Значение по умолчанию: @code{true}
+
+Когда @code{exptdispflag} равна @code{true}, Maxima отображает выражения
+с отрицательными степенями в виде дробей, например @code{X^(-1)} в виде @code{1/X}.
+
+@opencatbox
+@category{Флаги и переменные вывода} @categopy{Выражения}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} filename_merge (@var{path}, @var{filename})
+Составляет путь из @var{path} и @var{filename}. Если последняя часть пути @var{path}
+имеет форму @code{###.@var{something}}, эта часть заменяется на @code{@var{filename}}.@var{something}}.
+В противном случае последняя часть заменяется на @var{filename}.
+
+Результатом является объект пути Lisp.
+
+@opencatbox
+@category{Ввод файлов} @category{Вывод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} file_search (@var{filename})
+@deffnx {Функция} file_search (@var{filename}, @var{pathlist})
+
+@code{file_search} ищет файл @var{filename} и возвращает путь к этому файлу (в виде строки),
+если может его найти, иначе возвращает @code{false}.
+@code{file_search (@var{filename})} ищет в определенных по умолчанию каталогах для поиска, которые
+указаны в переменных @code{file_search_maxima}, @code{file_search_lisp} и @code{file_search_demo}.
+
+Перед попыткой сопоставить имя с шаблонами поиска файлов.
+@code{file_search} первым делом проверяет существование искомого файла.
+См. @code{file_search_maxima} о шаблонах поиска файла.
+
+Аргумент @var{filename} может быть как путем с именем, так и просто именем файла.
+Если каталог включен в пути поиска вместе с поисковым шаблоном файла,
+то @var{filename} может быть именем без расширения.
+В примере
+
+@example
+file_search ("/home/wfs/special/zeta.mac");
+file_search ("zeta.mac");
+file_search ("zeta");
+@end example
+
+будет найден один и тот же файл, если он существует и @code{/home/wfs/special/###.mac} включен
+в @code{file_search_maxima}.
+
+@code{file_search (@var{filename}, @var{pathlist})} осуществляет поиск в каталогах,
+заданных переменной @var{pathlist}, которая представляет из себя список строк.
+Аргумент @var{pathlist} замещает каталоги поиска, определенные по умолчанию, так если дан список путей,
+@code{file_search} ищет только в заданных там и не ищет в путях по умолчанию.
+Даже если @var{pathlist} содержит только один каталог, @var{pathlist} должен быть задан, как список из одного 
+элемента.
+
+Пользователь может изменять пути, определенные по умолчанию. См. @code{file_search_maxima}.
+
+@code{file_search} используется функцией @code{load}, шаблоны поиска файлов берутся
+из @code{file_search_maxima} и @code{file_search_lisp}.
+
+@opencatbox
+@category{Ввод файлов}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} file_search_maxima
+@defvrx {Управляющая переменная} file_search_lisp
+@defvrx {Управляющая переменная} file_search_demo
+Эти переменные задают списки каталогов, в которых производят поиск функции
+@code{load}, @code{demo} и некоторые другие функции Maxima.
+По умолчанию в них заданы различные каталоги из путей установки Maxima.
+
+Пользователь может изменить эти переменные, удалить значения по умолчанию или 
+добавить дополнительные каталоги. 
+Например,
+
+@example
+file_search_maxima: ["/usr/local/foo/###.mac",
+    "/usr/local/bar/###.mac"]$
+@end example
+
+удаляет начальные директории списка @code{file_search_maxima},
+в то время как
+
+@example
+file_search_maxima: append (file_search_maxima,
+    ["/usr/local/foo/###.mac", "/usr/local/bar/###.mac"])$
+@end example
+
+добавляет две дополнительные директории.
+Иногда удобно разместить такие выражения в файле @code{maxima-init.mac},
+чтобы путь поиска файла назначался автоматически при запуске Maxima.
+
+При помощи шаблонов поиска файлов можно определить несколько расширений файлов и несколько путей. 
+Строка @code{###} заменяется запрашиваемым именем,
+в то время как список разделенных запятыми имен, заключенный в фигурные скобки, @code{@{foo,bar,baz@}}
+раскрывается в множество строк.
+В качестве примера предположим, что искомое имя -- @code{neumann}, тогда
+
+@example
+"/home/@{wfs,gcj@}/###.@{lisp,mac@}"
+@end example
+
+раскроется в @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac} и
+@code{/home/gcj/neumann.mac}.
+
+@opencatbox
+@category{Ввод файлов} @category{Глобальные переменные}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} file_type (@var{filename})
+Возвращает предположение о содержимом @var{filename}, на основе 
+его расширения. @var{filename} не должен ссылаться на существующий файл,
+не происходит попыток открыть файл и проверить содержимое.
+
+Возвращаемое значение является одним из символов: @code{object}, @code{lisp} или @code{maxima}.
+Если расширение начинается на @code{m} или @code{d}, @code{file_type} возвращается @code{maxima}.
+Если расширение начинается на @code{l}, @code{file_type} возвращается @code{lisp}.
+Если ни один из перечисленных вариантов, то @code{file_type} возвращается @code{object}.
+
+@opencatbox
+@category{Ввод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} grind (@var{expr})
+@deffnx {Управляющая переменная} grind
+Функция @code{grind} выводит @var{expr} в консоль в форме
+подходящем для ввода в Maxima. @code{grind} всегда возвращает @code{done}.
+
+Когда @var{expr} является именем функции или макрокоманды, @code{grind} печатает
+определение функции или макрокоманды вместо просто имени.
+
+См. также @code{string}, которая возвращает строку, а не печатает вывод. 
+@code{grind} пытается печатать выражение способом, который делает его проще
+для чтения, чем вывод команды @code{string}.
+
+Когда переменная @code{grind} равна @code{true}, вывод @code{string} и @code{stringout}
+имеет тот же вид, что и вывод @code{grind}.
+В противном случае специального форматирования вывода этих функций не производится.
+По умолчанию значение переменной @code{grind} равно @code{false}.
+
+@code{grind} может так же быть задана как аргумент @code{playback}.
+Когда @code{grind} задана, @code{playback} печатает входное выражение в таком же 
+виде как функция @code{grind}. 
+В противном случае специального форматирования вывода не производится.
+
+@code{grind} вычисляет свой аргумент.
+
+Примеры:
+
+@c ===beg===
+@c aa + 1729;
+@c grind (%);
+@c [aa, 1729, aa + 1729];
+@c grind (%);
+@c matrix ([aa, 17], [29, bb]);
+@c grind (%);
+@c set (aa, 17, 29, bb);
+@c grind (%);
+@c exp (aa / (bb + 17)^29);
+@c grind (%);
+@c expr: expand ((aa + bb)^10);
+@c grind (expr);
+@c string (expr);
+@c cholesky (A):= block ([n : length (A), L : copymatrix (A),
+@c   p : makelist (0, i, 1, length (A))], 
+@c   for i thru n do for j : i thru n do
+@c   (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), 
+@c   if i = j then @c   p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), 
+@c   for i thru n do L[i, i] : 1 / p[i],
+@c   for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+@c grind (cholesky);
+@c string (fundef (cholesky));
+@c ===end===
+@example
+(%i1) aa + 1729;
+(%o1)                       aa + 1729
+(%i2) grind (%);
+aa+1729$
+(%o2)                         done
+(%i3) [aa, 1729, aa + 1729];
+(%o3)                 [aa, 1729, aa + 1729]
+(%i4) grind (%);
+[aa,1729,aa+1729]$
+(%o4)                         done
+(%i5) matrix ([aa, 17], [29, bb]);
+                           [ aa  17 ]
+(%o5)                      [        ]
+                           [ 29  bb ]
+(%i6) grind (%);
+matrix([aa,17],[29,bb])$
+(%o6)                         done
+(%i7) set (aa, 17, 29, bb);
+(%o7)                   @{17, 29, aa, bb@}
+(%i8) grind (%);
+@{17,29,aa,bb@}$
+(%o8)                         done
+(%i9) exp (aa / (bb + 17)^29);
+                                aa
+                            -----------
+                                     29
+                            (bb + 17)
+(%o9)                     %e
+(%i10) grind (%);
+%e^(aa/(bb+17)^29)$
+(%o10)                        done
+(%i11) expr: expand ((aa + bb)^10);
+         10           9        2   8         3   7         4   6
+(%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
+         5   5         6   4         7   3        8   2
+ + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
+        9        10
+ + 10 aa  bb + aa
+(%i12) grind (expr);
+bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
+     +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
+     +10*aa^9*bb+aa^10$
+(%o12)                        done
+(%i13) string (expr);
+(%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
++252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
+bb+aa^10
+(%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
+  p : makelist (0, i, 1, length (A))], for i thru n do
+  for j : i thru n do
+  (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1),
+  if i = j then p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]),
+  for i thru n do L[i, i] : 1 / p[i],
+  for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+(%i15) grind (cholesky);
+cholesky(A):=block(
+         [n:length(A),L:copymatrix(A),
+          p:makelist(0,i,1,length(A))],
+         for i thru n do
+             (for j from i thru n do
+                  (x:L[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),
+                   if i = j then p[i]:1/sqrt(x)
+                       else L[j,i]:x*p[i])),
+         for i thru n do L[i,i]:1/p[i],
+         for i thru n do (for j from i+1 thru n do L[i,j]:0),L)$
+(%o15)                        done
+(%i16) string (fundef (cholesky));
+(%o16) cholesky(A):=block([n:length(A),L:copymatrix(A),p:makelis\
+t(0,i,1,length(A))],for i thru n do (for j from i thru n do (x:L\
+[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),if i = j then p[i]:1/sqrt(x\
+) else L[j,i]:x*p[i])),for i thru n do L[i,i]:1/p[i],for i thru \
+n do (for j from i+1 thru n do L[i,j]:0),L)
+@end example
+
+@opencatbox
+@category{Флаги и переменные вывода} @categopy{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@c !!! Это работает?
+@defvr {Управляющая переменная} ibase
+Значение по умолчанию: 10
+
+Целые вводимые в Maxima распознаются с учетом основания системы счисления @code{ibase}.
+
+Переменной @code{ibase} может быть присвоено значение между 2 и 35 (в десятичной), включительно.
+Когда @code{ibase} больше чем 10, в состав цифр входят десятичные цифры от 0 до 9
+и заглавные буквы алфавита A, B, C, ..., по мере необходимости.
+
+Цифры для основания 35, наибольшего возможного, включают цифры от 0 до 9 и буквы от A до Z.
+
+
+См. также @code{obase}.
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} inchar
+Значение по умолчанию: @code{%i}
+
+@code{inchar} -- префикс перед метками выражений, вводимых пользователем.
+Maxima автоматически генерирует ссылку для каждого входного выражения,
+соединяя @code{inchar} и @code{linenum}.
+Переменной @code{inchar} может быть присвоена любая строка или обозначение, не обязательно 
+состоящее из одной буквы.
+
+@example
+(%i1) inchar: "input";
+(%o1)                                input
+(input1) expand ((a+b)^3);
+                            3        2      2      3
+(%o1)                      b  + 3 a b  + 3 a  b + a
+(input2)
+@end example
+
+См. также @code{labels}.
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} ldisp (@var{expr_1}, ..., @var{expr_n})
+Отображает выражения @var{expr_1}, ..., @var{expr_n} в консоли как в печатном выводе.
+@code{ldisp} присваивает метки промежуточных выражений для каждого аргумента
+и возвращает список меток.
+
+См. также @code{disp}.
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisp (e, f);
+                                   3
+(%t3)                       (b + a)
+
+                     3        2      2      3
+(%t4)               b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                   3
+(%o4)                       (b + a)
+(%i5) %t4;
+                     3        2      2      3
+(%o5)               b  + 3 a b  + 3 a  b + a
+@end example
+
+@opencatbox
+@category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} ldisplay (@var{expr_1}, ..., @var{expr_n})
+Отображает выражения @var{expr_1}, ..., @var{expr_n} в консоли как при выводе.
+Каждое выражение печатается в виде равенства @code{lhs = rhs},
+в котором @code{lhs} -- один из аргументов функции @code{ldisplay},
+а @code{rhs} -- его значение.
+Обычно каждый аргумент -- переменная.
+@code{ldisp} присваивает метки промежуточных выражений каждому равенству
+и возвращает список меток.
+
+См. также @code{display}.
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisplay (e, f);
+                                     3
+(%t3)                     e = (b + a)
+
+                       3        2      2      3
+(%t4)             f = b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                     3
+(%o4)                     e = (b + a)
+(%i5) %t4;
+                       3        2      2      3
+(%o5)             f = b  + 3 a b  + 3 a  b + a
+@end example
+
+@opencatbox
+@category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} linechar
+Значение по умолчанию: @code{%t}
+
+@code{linechar} -- префикс меток промежуточных выражений, генерируемых Maxima.
+Maxima генерирует метки для каждого промежуточного выражения (если оно отображается),
+соединяя @code{linechar} и @code{linenum}.
+Переменной @code{linechar} может быть присвоена любая строка или символ, не обязательно
+одиночная буква.
+
+Промежуточный выражения могут отображаться, а могут и не отображаться.
+См. @code{programmode} и @code{labels}.
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} linel
+Значение по умолчанию: 79
+
+@code{linel} -- ширина консоли (в символах) для вывода выражений.
+@c лучше не придумал, или недопонял.
+Пользователь может задать любое значение @code{linel}, хотя очень маленькие или
+очень большие значения могут оказаться неудобными.
+Текст выводимый встроенными функциями Maxima, такой как сообщения об ошибках и вывод @code{describe},
+не зависит от @code{linel}.
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} lispdisp
+Значение по умолчанию: @code{false}
+
+Когда @code{lispdisp} равна @code{true},
+Lisp символы отображаются с вопросительным знаком @code{?} перед ними.
+В противном случае Lisp символы отображаются без знака.
+
+Примеры:
+
+@c ===beg===
+@c lispdisp: false$
+@c ?foo + ?bar;
+@c lispdisp: true$
+@c ?foo + ?bar;
+@c ===end===
+@example
+(%i1) lispdisp: false$
+(%i2) ?foo + ?bar;
+(%o2)                       foo + bar
+(%i3) lispdisp: true$
+(%i4) ?foo + ?bar;
+(%o4)                      ?foo + ?bar
+@end example
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} load (@var{filename})
+Вычисляет выражения в @var{filename},
+тем самым загружая переменные, функции и другие объекты в Maxima.
+Значения любых существовавших объектов заменяются связями, полученными из @var{filename}.
+Для поиска файла @code{load} вызывает @code{file_search},
+пути поиска берутся из @code{file_search_maxima} и @code{file_search_lisp}.
+Если @code{load} выполнена успешно, то возвращается имя файла, иначе печатается сообщение об ошибке.
+
+@code{load} работает с равным успехом как для Lisp, так и для Maxima программ.
+Файлы, созданные командами @code{save}, @code{translate_file} и @code{compile_file}, которые создают
+код Lisp, и @code{stringout}, которая создает код Maxima, могут быть обработаны функцией @code{load}.
+@code{load} вызывает @code{loadfile} для загрузки Lisp файлов и @code{batchload} для загрузки Maxima файлов.
+
+@code{load} не распознает конструкции @code{:lisp} в файлах Maxima, и во время обработки @var{filename},
+глобальные переменные @code{_}, @code{__}, @code{%} и @code{%th} имеют те связи, которые были у них в момент 
+вызова @code{load}.
+
+См. также @code{loadfile}, @code{batch}, @code{batchload} и @code{demo}.
+@code{batch}, @code{batchload} и @code{demo} выполняют Maxima файлы.
+
+См. @code{file_search} для более подробного ознакомления с механизмом поиска файлов.
+
+@code{load} вычисляет свой аргумент.
+
+@opencatbox
+@category{Управление сессией} @category{Ввод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} loadfile (@var{filename})
+Вычисляет выражения Lisp в @var{filename}.
+@code{loadfile} не вызывает @code{file_search}, поэтому @code{filename} должен включать
+расширение и информацию о пути, достаточную для поиска файла.
+
+@code{loadfile} может обрабатывать файлы, созданные командами @code{save}, @code{translate_file} и @code{compile_file}.
+Возможно, удобнее использовать @code{load} вместо @code{loadfile}.
+
+@opencatbox
+@category{Управление сессией} @category{Ввод файлов}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} loadprint
+Значение по умолчанию: @code{true}
+
+@code{loadprint} управляет печатью сообщение после загрузки файла.
+
+@itemize @bullet
+@item
+Если @code{loadprint} равна @code{true}, сообщение всегда выводится.
+@item
+Если @code{loadprint} равна @code{'loadfile}, сообщение выводится только в случае,
+когда файл загружается функцией @code{loadfile}.
+@item
+Когда @code{loadprint} равна @code{'autoload},
+сообщение выводится только если файл загружается автоматически.
+См. @code{setup_autoload}.
+@item
+Когда @code{loadprint} равен @code{false}, сообщение не выводится.
+@end itemize
+
+@opencatbox
+@category{Ввод файлов} @category{Глобальные флаги}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} obase
+Значение по умолчанию: 10
+
+@code{obase} -- основание системы счисления в которой Maxima отображает целые числа.
+
+Переменной @code{obase} можно присвоить любое целое число между 2 и 35 (десятичное),
+включительно.
+Когда @code{obase} больше десяти, цифрами являются десятичные цифры от 0 до 9 и 
+заглавные буквы латинского алфавита A, B, C, ..., по мере необходимости.
+Цифры системы с основанием 35, самым большим из допустимых,
+включают цифры от 0 до 9 и буквы от A до Y.
+
+См. также @code{ibase}.
+
+@c NEED EXAMPLES HERE
+@opencatbox
+@category{Флаги и переменные вывода} @category{Работа в консоли}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} outchar
+Значение по умолчанию: @code{%o}
+
+@code{outchar} -- это префикс меток для выражений, вычисленных системой Maxima.
+Maxima автоматически генерирует метки для каждого вычисленного выражения, соединяя
+@code{outchar} с @code{linenum}.
+Переменной @code{outchar} можно присвоить любую строку или символ, не обязательно 
+одиночную букву.
+
+@example
+(%i1) outchar: "output";
+(output1)                           output
+(%i2) expand ((a+b)^3);
+                            3        2      2      3
+(output2)                  b  + 3 a b  + 3 a  b + a
+(%i3)
+@end example
+
+См. также @code{labels}.
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@c STILL EXISTS, NEEDS CLARIFICATION !!!
+@defvr {Управляющая переменная} packagefile
+Значение по умолчанию: @code{false}
+
+Разработчики, которые используют @code{save} или @code{translate}, создавая пакеты (файлы)
+для использования другими, возможно захотят установить @cdoe{packagefile: true},
+чтобы при загрузке файла предотвратить 
+занесение информации, кроме необходимой, в списки Maxima (такие как @code{values},
+@code{functions}).
+В этом случае содержимое пакета будет загружено не в виде пользовательских данных.
+Заметим, что это не решает проблему возможного конфликта имен.
+Также заметим, что переменная просто указывает на то, что выводится в пакетный файл.
+Установка управляющей переменной в @code{true} также полезна для создания 
+инициализационных файлов Maxima.
+
+@opencatbox
+@category{Флаги и переменные трансляции}
+@closecatbox
+
+@end defvr
+
+@defvr {Управляющая переменная} pfeformat
+Значение по умолчанию: @code{false}
+
+Когда   @code{pfeformat} равна @code{true}, рациональная дробь отображается при помощи 
+косой черты (прямого слэша). Целочисленный знаменатель @code{n} отображается 
+как множитель @code{1/n}.
+
+@example
+(%i1) pfeformat: false$
+(%i2) 2^16/7^3;
+                              65536
+(%o2)                         -----
+                               343
+(%i3) (a+b)/8;
+                              b + a
+(%o3)                         -----
+                                8
+(%i4) pfeformat: true$ 
+(%i5) 2^16/7^3;
+(%o5)                       65536/343
+(%i6) (a+b)/8;
+(%o6)                      1/8 (b + a)
+@end example
+
+@opencatbox
+@category{Флаги и переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} print (@var{expr_1}, ..., @var{expr_n})
+Вычисляет и отображает @var{expr_1}, ..., @var{expr_n} одно за другим,
+слева направо, начиная с левого края экрана консоли.
+
+Функция @code{print} возвращает значение своего последнего аргумента.
+@code{print} не создает меток промежуточных выражений.
+
+См. также @code{display}, @code{disp}, @code{ldisplay} и @code{ldisp}.
+Эти функции отображают по одному выражению на строку, в то время как @code{print} старается 
+отобразить по два или больше выражений в каждой строке.
+
+Чтобы отобразить содержимое файла, см. @code{printfile}.
+
+@example
+(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+            3        2      2      3
+(a+b)^3 is b  + 3 a b  + 3 a  b + a  log (a^10/b) is 
+
+                                              10 log(a) - log(b) 
+(%i2) r;
+(%o2)                  10 log(a) - log(b)
+(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+                           (a+b)^3 is
+
+                     3        2      2      3
+                    b  + 3 a b  + 3 a  b + a
+
+                         log (a^10/b) is
+
+                       10 log(a) - log(b)
+@end example
+
+@opencatbox
+@category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} printfile (@var{path})
+
+Выводит файл с именем @var{path} на консоль.
+Значение @var{path} может быть строкой или символом.
+Если символ, то он преобразуется в строку.
+
+Если файл с именем @var{path} доступен в текущей директории, то 
+он печатается на консоли.
+В противном случае @code{printfile} пытается найти файл добавляя @var{path}
+ко всем элементам @code{file_search_usage}
+при помощи @code{filename_merge}.
+
+@code{printfile} возвращает @var{path}, если файл существует,
+и результат успешного поиска файла.
+
+@opencatbox
+@category{Ввод файлов} @category{Работа в консоли}
+@closecatbox
+@end deffn
+
+@deffn {Функция} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Функция} tcl_output (@var{list}, @var{i0})
+@deffnx {Функция} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
+
+Выводит элементы списков заключенными в фигурные скобки @code{@{ @}},
+в виде пригодном для использования в языке Tcl/Tk.
+
+
+@code{tcl_output (@var{list}, @var{i0}, @var{skip})}
+выводит элементы списка @var{list} с номерами @var{i0}, @code{@var{i0} + @var{skip}},
+@code{@var{i0} + 2 @var{skip}} и так далее.
+
+@code{tcl_output (@var{list}, @var{i0})} равнозначна @code{tcl_output (@var{list}, @var{i0}, 2)}.
+
+@code{tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})}
+выводит @var{i}-ые элементы списков @var{list_1}, ..., @var{list_n}.
+
+Примеры:
+@c EXAMPLE INPUT
+@c tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
+@c tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
+@c tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
+@c tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
+@c tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
+
+@c EXAMPLE OUTPUT: CLISP
+@c OUTPUT IS OK FOR FIRST TWO, BROKEN FOR OTHERS
+@c GCL OUTPUT: SAME FOR FIRST TWO
+@c GCL FAILS ON OTHERS (IN EACH CASE COMPLAINING ELEMENTS ARE "not of type (OR RATIONAL LISP:FLOAT)"
+@example
+(%i1) tcl_output ([1, 2, 3, 4, 5, 6], 1, 3)$
+
+ @{1.000000000     4.000000000     
+ @}
+(%i2) tcl_output ([1, 2, 3, 4, 5, 6], 2, 3)$
+
+ @{2.000000000     5.000000000     
+ @}
+(%i3) tcl_output ([3/7, 5/9, 11/13, 13/17], 1)$
+
+ @{((RAT SIMP) 3 7) ((RAT SIMP) 11 13) 
+ @}
+(%i4) tcl_output ([x1, y1, x2, y2, x3, y3], 2)$
+
+ @{$Y1 $Y2 $Y3 
+ @}
+(%i5) tcl_output ([[1, 2, 3], [11, 22, 33]], 1)$
+
+ @{SIMP 1.000000000     11.00000000     
+ @}
+@end example
+
+@end deffn
+
+@deffn {Функция} read (@var{expr_1}, ..., @var{expr_n})
+Выводит @var{expr_1}, ..., @var{expr_n}, затем считывает одно выражение с консоли и 
+возвращает вычисленное выражение.
+
+См. также @code{readonly}.
+
+@example
+(%i1) foo: 42$ 
+(%i2) foo: read ("foo is", foo, " -- enter new value.")$
+foo is 42  -- enter new value. 
+(a+b)^3;
+(%i3) foo;
+                                     3
+(%o3)                         (b + a)
+@end example
+
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} readonly (@var{expr_1}, ..., @var{expr_n})
+Выводит @var{expr_1}, ..., @var{expr_n}, затем считывает одно выражение с консоли
+и Возвращает его без вычисления.
+
+@example
+(%i1) aa: 7$
+(%i2) foo: readonly ("Enter an expression:");
+Enter an expression: 
+2^aa;
+                                  aa
+(%o2)                            2
+(%i3) foo: read ("Enter an expression:");
+Enter an expression: 
+2^aa;
+(%o3)                            128
+@end example
+
+См. также @code{read}.
+
+@opencatbox
+@category{Работа в консоли}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} reveal (@var{expr}, @var{depth})
+Замещает части выражения @var{expr} заданного уровня вложенности @var{depth}
+кратким описанием.
+
+@itemize @bullet
+@item
+Суммы и разности заменяются на @code{Sum(@var{n})},
+где @var{n} -- количество слагаемых.
+@item
+Произведения заменяются на @code{Product{@var{n})},
+где @var{n} -- количество множителей.
+@item
+Степени заменяются на @code{Expt}.
+@item
+Дроби заменяются на @code{Quotient}.
+@item
+Унарное отрицание заменяется на @code{Negterm}.
+@end itemize
+
+Если @var{depth} больше или равен максимальному уровню вложенности в выражении @var{expr},
+то @code{reveal (@var{expr}, @var{depth})} возвращает @var{expr} без изменений.
+
+@code{reveal} вычисляет свои аргументы.
+@code{reveal} возвращает анализируемое выражение.
+
+Пример:
+
+@example
+(%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+                          2            2
+                         b  - 2 a b + a
+(%o1)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+(%i2) reveal (e, 1);
+(%o2)                       Quotient
+(%i3) reveal (e, 2);
+                             Sum(3)
+(%o3)                        ------
+                             Sum(3)
+(%i4) reveal (e, 3);
+                     Expt + Negterm + Expt
+(%o4)               ------------------------
+                    Product(2) + Expt + Expt
+(%i5) reveal (e, 4);
+                       2                 2
+                      b  - Product(3) + a
+(%o5)         ------------------------------------
+                         Product(2)     Product(2)
+              2 Expt + %e           + %e
+(%i6) reveal (e, 5);
+                         2            2
+                        b  - 2 a b + a
+(%o6)              --------------------------
+                       Sum(2)     2 b     2 a
+                   2 %e       + %e    + %e
+(%i7) reveal (e, 6);
+                          2            2
+                         b  - 2 a b + a
+(%o7)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+@end example
+
+@opencatbox
+@category{Выражения} @category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} rmxchar
+Значение по умолчанию: @code{]}
+
+Правая сторона матриц изображается символами @code{rmxchar}.
+
+См. также @code{lmxchar}.
+@c !!! кстати описания переменной lmxchar в документации нет. :)
+
+@opencatbox
+@category{Флаги переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
+@deffnx {Функция} save (@var{filename}, values, functions, labels, ...)
+@deffnx {Функция} save (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Функция} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
+@deffnx {Функция} save (@var{filename}, all)
+@deffnx {Функция} save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+
+Сохраняет текущие значения аргументов @var{name_1}, @var{name_2}, @var{name_3}, ..., в @var{filename}.
+Аргументами являются имена переменных, функций и прочих объектов.
+Если имя не имеет значения или связанной с ним функцией, оно игнорируется.
+@code{save} возвращает @var{filename}.
+
+@code{save} сохраняет данные в форме Lisp выражений.
+Данные, сохраненные функцией @code{save}, можно загрузить при помощи @code{load (@var{filename})}.
+
+Глобальная управляющая переменная @code{file_output_append} управляет тем,
+будет ли информация добавлена к файлу, или файл будет переписан заново.
+Когда @code{file_output_append} равен @code{true}, происходит добавление,
+иначе @code{save} переписывает файл вывода. В обоих случаях @code{save} создает
+файл, если он до этого не существовал.
+
+Особая форма @code{save (@var{filename}, values, functions, labels, ...)}
+сохраняет элементы перечисленные в списках @code{values}, @code{functions}, @code{labels} и т. д.
+Возможны любые имена определенные в @code{infolist}.
+@code{values} включает все определенные пользователем переменные.
+
+Особая форма @code{save (@var{filename}, [@var{m}, @var{n}])} сохраняет значения
+входных и результирующих выражений с номерами от @var{m} до @var{n}.
+Заметим, что @var{m} и @var{n} должны быть буквальными целыми.
+Входные и результирующие метки можно также записать одну за другой, например, @code{save ("foo.1", %i42, %o42)}.
+@code{save (@var{filename}, labels)} сохраняет все входные и результирующие выражения.
+Сохраненные выражения при загрузке заменяют существующие.
+
+Особая форма @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
+сохраняет значения @var{expr_1}, @var{expr_2}, ... с именами @var{name_1}, @var{name_2}, ...
+Эту форму полезно применять для входных и результирующих меток, 
+например, @code{save ("foo.1", aa=%o88)}.
+С правой стороны равенства в этой форме может стоять любое выражение, которое вычисляется.
+Эта форма не вводит новые имена в текущий сеанс Maxima, только сохраняет их в @var{filename}.
+
+Эти особые формы и общую форму функции @code{save} можно как угодно смешивать.
+Например: @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
+
+Особая форма @code{save (@var{filename}, all)} сохраняет текущее состояние Maxima,
+включая все определенные пользователем переменные, функции, массивы и т. д., а также
+элементы, заданные автоматически.
+Сохраняемые элементы включают в себя системные переменные, такие как @code{file_search_maxima} или @code{showtime},
+если пользователь присвоил им новые значения. См. @code{myoptions}.
+
+@code{save} вычисляет @var{filename}, все остальные аргументы не вычисляются.
+
+@opencatbox
+@category{Управление сессией} @category{Вывод файлов}
+@closecatbox
+
+@end deffn
+
+@c NEEDS MORE WORK !!!
+@defvr {Управляющая переменная} savedef
+Значение по умолчанию: @code{true}
+
+Когда @code{savedef} равно @code{true}, Maxima версия определенной пользователем функции
+защищается, при ее трансляции. Это позволяет
+отобразить ее определение при помощи @code{dispfun} и дает возможность редактировать ее.
+
+Когда @code{savedef} равна @code{false}, имена транслируемых функций
+удаляются из списка @code{functions}.
+
+@opencatbox
+@category{Флаги и переменные трансляции}
+@closecatbox
+
+@end defvr
+
+@c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
+@c MOVE THIS DESCRIPTION TO Itensor.texi
+@deffn {Функция} show (@var{expr})
+При отображении @code{expr}, у индексированных объектов ковариантные
+индексы показываются как нижние, а контравариантные --
+как верхние. Индексы дифференцирования отображаются нижними и отделяются от
+ковариантных запятой.
+
+@opencatbox
+@category{Пакет itensor} @category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} showratvars (@var{expr})
+Возвращает список переменных в каноническом рациональном выражении @code{expr}.
+
+См. также @code{ratvars}.
+
+@opencatbox
+@category{Рациональные выражения}  @category{Функции вывода}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} stardisp
+Значение по умолчанию: @code{false}
+
+Когда @code{stardisp} равно @code{true}, произведение отображается 
+со звездочкой между операндами.
+
+@opencatbox
+@category{Флаги переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} string (@var{expr})
+Преобразовывает @code{expr} в линейное представление,
+как оно было бы введено с клавиатуры.
+
+Значение, возвращаемое функцией @code{string}, является строкой,
+поэтому не может использоваться в вычислениях.
+
+@opencatbox
+@category{Строки}
+@closecatbox
+
+@end deffn
+
+@defvr {Управляющая переменная} stringdisp
+Значение по умолчанию: @code{false}
+
+Когда @code{stringdisp} равна @code{true},
+строки отображаются заключенными в двойные кавычки.
+В противном случае кавычки опускаются.
+
+@code{stringdisp} всегда @code{true}, при выводе определений функций.
+
+Примеры:
+
+@c ===beg===
+@c stringdisp: false$
+@c "This is an example string.";
+@c foo () := 
+@c       print ("This is a string in a function definition.");
+@c stringdisp: true$
+@c "This is an example string.";
+@c ===end===
+@example
+(%i1) stringdisp: false$
+(%i2) "This is an example string.";
+(%o2)              This is an example string.
+(%i3) foo () :=
+      print ("This is a string in a function definition.");
+(%o3) foo() := 
+              print("This is a string in a function definition.")
+(%i4) stringdisp: true$
+(%i5) "This is an example string.";
+(%o5)             "This is an example string."
+@end example
+
+@opencatbox
+@category{Флаги переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Функция} stringout (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Функция} stringout (@var{filename}, input)
+@deffnx {Функция} stringout (@var{filename}, functions)
+@deffnx {Функция} stringout (@var{filename}, values)
+
+@code{stringout} записывает выражение в файл в той же форме, в которой 
+оно было бы введено с клавиатуры. Файл можно использовать в качестве входного для 
+команд @code{batch} или @code{demo}, его также можно редактировать для любых целей.
+@code{stringout} можно выполнять во время работы @code{writefile}.
+
+Глобальная переменная @code{file_output_append} определяет будет ли 
+@code{stringout} добавлять или переписывать выходной файл.
+Если @code{file_output_append} равна @code{true},
+@code{stringout} дописывает выходной файл, иначе переписывает его.
+В обоих случаях @code{stringout} создает файл, если тот не существовал.
+
+Общий вид команды @code{stringout} записывает значения одного или нескольких выражений в файл.
+Заметим, что если выражения являются переменной, записывается только значение переменной, но не ее имя.
+В полезном специальном случае, выражения могут быть метками входных 
+(@code{%i1}, @code{%i2}, @code{%i3}, ...) или результирующих (@code{%o1}, @code{%o2}, @code{%o3}, ...) выражений.
+
+Если @code{grind} равна @code{true}, @code{stringout} форматирует выход используя формат @code{grind}.
+Иначе используется формат @code{string}. См. @code{grind} и @code{string}.
+
+Особая форма @code{stringout (@var{filename}, [@var{m}, @var{n})} записывает значения входных выражений,
+с номерами от m до n, включительно.
+
+Особая форма @code{stringout (@var{filename}, input)} записывает в файл все входные выражения.
+
+Особая форма @code{stringout (@var{filename}, functions)} записывает в файл все пользовательские функции 
+(перечисленные в глобальном списке @code{functions}).
+
+Особая форма @code{stringout (@var{filename}, values)} записывает в файл все пользовательские 
+переменные (перечисленные в глобальном списке @code{values}). Каждая переменная выводится как
+оператор присваивания: с именем переменной, двоеточием и ее значением. Заметим, что общая форма 
+@code{stringout} не выводит переменные в виде операторов присваивания.
+
+@opencatbox
+@category{Управление сессией} @category{Вывод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} tex (@var{expr})
+@deffnx {Функция} tex (@var{expr}, @var{filename})
+@deffnx {Функция} tex (@var{expr}, false)
+@deffnx {Функция} tex (@var{label})
+@deffnx {Функция} tex (@var{label}, @var{filename})
+@deffnx {Функция} tex (@var{label}, false)
+
+Отображает выражение в представлении подходящим для системы подготовки документов TeX.
+Результат -- фрагмент документа, который можно скопировать в больший документ, но сам по себе
+он для обработки не подходит.
+
+@code{tex (@var{expr})} отображает TeX-представление выражения @var{expr} в консоль.
+
+@code{ (@var{label})} отображает TeX-представление выражения, помеченное @var{label},
+и назначает его метке выражения (отображаемой слева от выражения).
+Метки выражений TeX совпадают с метками Maxima.
+
+
+@code{tex (@var{expr}, @var{filename})} и @code{tex (@var{label}, @var{filename})}
+добавляют свой TeX-вывод в файл @var{filename}.
+
+@code{tex (@var{expr}, false)} и @code{tex (@var{label}, false)}
+возвращают свой вывод в виде строки.
+
+@code{tex} вычисляет свой первый аргумент после попытки определить, не является ли он меткой.
+Оператор две кавычки @code{''} вызывает вычисление аргумента, предотвращая
+попытки проверить, является ли он меткой. 
+
+См. также @code{texput}.
+
+Примеры:
+
+@example
+(%i1) integrate (1/(1+x^3), x);
+                                    2 x - 1
+                  2            atan(-------)
+             log(x  - x + 1)        sqrt(3)    log(x + 1)
+(%o1)      - --------------- + ------------- + ----------
+                    6             sqrt(3)          3
+(%i2) tex (%o1);
+$$-@{@{\log \left(x^2-x+1\right)@}\over@{6@}@}+@{@{\arctan \left(@{@{2\,x-1
+ @}\over@{\sqrt@{3@}@}@}\right)@}\over@{\sqrt@{3@}@}@}+@{@{\log \left(x+1\right)
+ @}\over@{3@}@}\leqno@{\tt (\%o1)@}$$
+(%o2)                          (\%o1)
+(%i3) tex (integrate (sin(x), x));
+$$-\cos x$$
+(%o3)                           false
+(%i4) tex (%o1, "foo.tex");
+(%o4)                          (\%o1)
+@end example
+
+@code{tex (@var{expr}, false)} возвращает свой вывод в виде строки.
+
+@c ===beg===
+@c S : tex (x * y * z, false);
+@c S;
+@c ===end===
+@example
+(%i1) S : tex (x * y * z, false);
+(%o1) $$x\,y\,z$$
+(%i2) S;
+(%o2) $$x\,y\,z$$
+@end example
+
+@opencatbox
+@category{Вывод в формате TeX} @category{Вывод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} texput (@var{a}, @var{s})
+@deffnx {Функция} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Функция} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Функция} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+
+Задает TeX вывод для атома @var{a}, который может быть символом или именем оператора.
+
+@code{texput (@var{a}, @var{s})} заставляет функцию @code{tex} в своем выводе вставлять
+строку @var{s} вместо @var{a}.
+
+@code{texput (@var{a}, @var{s}, @var{operator_type})},
+где @var{operator_type} можеть принимать значения @code{prefix}, @code{infix}, @code{postfix}, @code{nary}
+или @code{nofix}, заставляет функцию @code{tex} вставлять @var{s} вместо @var{a} и помещать 
+вставленный текст в подходящую позицию.
+
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
+заставляет @code{tex} вставлять @var{s_1} и @var{s_2} в вывод TeX с обоих сторон аргументов атома @var{a}.
+Аргументы (если их несколько) разделяются запятыми.
+
+@code{textpput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)}
+заставляет @code{tex} в TeX-выводе вставлять @var{s_1} и @var{s_2} с обоих сторон аргументов атома @var{a}
+и разделять их аргументом @var{s_3}.
+
+Примеры:
+
+Определение TeX вывода переменной.
+@c ===beg===
+@c texput (me,"\\mu_e");
+@c tex (me);
+@c ===end===
+
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+@end example
+
+Определение TeX вывода обычной функции (не оператору).
+@c ===beg===
+@c texput (lcm, "\\mathrm{lcm}");
+@c tex (lcm (a, b));
+@c ===end===
+
+@example
+(%i1) texput (lcm, "\\mathrm@{lcm@}");
+(%o1)                     \mathrm@{lcm@}
+(%i2) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o2)                         false
+@end example
+
+Определение TeX вывода префиксного оператора.
+@c ===beg===
+@c prefix ("grad");
+@c texput ("grad", " \\nabla ", prefix);
+@c tex (grad f);
+@c ===end===
+
+@example
+(%i1) prefix ("grad");
+(%o1)                         grad
+(%i2) texput ("grad", " \\nabla ", prefix);
+(%o2)                        \nabla 
+(%i3) tex (grad f);
+$$ \nabla f$$
+(%o3)                         false
+@end example
+
+Определение вывода инфиксного оператора.
+@c ===beg===
+@c infix ("~");
+@c texput ("~", " \\times ", infix);
+@c tex (a ~ b);
+@c ===end===
+
+@example
+(%i1) infix ("~");
+(%o1)                           ~
+(%i2) texput ("~", " \\times ", infix);
+(%o2)                        \times 
+(%i3) tex (a ~ b);
+$$a \times b$$
+(%o3)                         false
+@end example
+
+Определение вывода постфиксного оператора.
+@c ===beg===
+@c postfix ("##");
+@c texput ("##", "!!", postfix);
+@c tex (x ##);
+@c ===end===
+
+@example
+(%i1) postfix ("##");
+(%o1)                          ##
+(%i2) texput ("##", "!!", postfix);
+(%o2)                          !!
+(%i3) tex (x ##);
+$$x!!$$
+(%o3)                         false
+@end example
+
+Определение вывода n-арного оператора.
+@c ===beg===
+@c nary ("@@");
+@c texput ("@@", " \\circ ", nary);
+@c tex (a @@ b @@ c @@ d);
+@c ===end===
+
+@example
+(%i1) nary ("@@@@");
+(%o1)                          @@@@
+(%i2) texput ("@@@@", " \\circ ", nary);
+(%o2)                         \circ 
+(%i3) tex (a @@@@ b @@@@ c @@@@ d);
+$$a \circ b \circ c \circ d$$
+(%o3)                         false
+@end example
+
+Определение TeX вывода безфиксного оператора без аргументов.
+@c ===beg===
+@c nofix ("foo");
+@c texput ("foo", "\\mathsc{foo}", nofix);
+@c tex (foo);
+@c ===end===
+
+@example
+(%i1) nofix ("foo");
+(%o1)                          foo
+(%i2) texput ("foo", "\\mathsc@{foo@}", nofix);
+(%o2)                     \mathsc@{foo@}
+(%i3) tex (foo);
+$$\mathsc@{foo@}$$
+(%o3)                         false
+@end example
+
+Назначение вывода матчфиксному парному оператору.
+@c ===beg===
+@c matchfix ("<<", ">>");
+@c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], 
+@c       matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c ===end===
+
+@example
+(%i1) matchfix ("<<", ">>");
+(%o1)                          <<
+(%i2) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o2)                [ \langle ,  \rangle ]
+(%i3) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o3)                         false
+(%i4) tex (<<a, b>>);
+$$ \langle a , b \rangle $$
+(%o4)                         false
+(%i5) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"],
+      matchfix);
+(%o5)           [ \langle ,  \rangle ,  \, | \,]
+(%i6) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o6)                         false
+(%i7) tex (<<a, b>>);
+$$ \langle a \, | \,b \rangle $$
+(%o7)                         false
+@end example
+
+@opencatbox
+@category{Вывод в формате TeX}
+@closecatbox
+
+@end deffn
+
+@c NEEDS CLARIFICATION
+@deffn {Функция} system (@var{command})
+Выполняет команду @var{command} как отдельный процесс. 
+Команда отправляется на выполнение командной оболочке, заданной по умолчанию.
+@code{system} поддерживается не всеми операционными системами, она в основном существует 
+в Unix и Unix-подобных окружениях.
+
+Предположим, что @code{_hist.out} -- список частот, который вы хотите изобразить в виде гистограммы
+при помощи программы @code{xgraph}.
+
+@example
+(%i1) (with_stdout("_hist.out",
+           for i:1 thru length(hist) do (
+             print(i,hist[i]))),
+       system("xgraph -bar -brw .7 -nl < _hist.out"));
+@end example
+
+Для того чтобы создать готовый график в фоновом режиме (вернуться к управлению Maxima)
+и удалить временный файл после завершения, сделайте так:
+
+@example
+system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
+@end example
+
+@end deffn
+
+@defvr {Управляющая переменная} ttyoff
+Значение по умолчанию: @code{false}
+
+Когда @code{ttyoff} равна @code{true}, выводимые выражения не отображаются.
+Выводимые выражения по прежнему вычисляются и связываются с метками. См. @code{labels}.
+
+@code{ttyoff} не влияет на текст, отображаемый встроенными функциями, такой как 
+сообщения об ошибках и вывод @code{describe}.
+
+@opencatbox
+@category{Флаги переменные вывода}
+@closecatbox
+
+@end defvr
+
+@deffn {Функция} with_stdout (@var{f}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Функция} with_stdout (@var{s}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+Вычисляет @var{expr_1}, @var{expr_2}, @var{expr_3}, ... и записывает любой сгенерированный
+вывод в файл @var{f} или в выходной поток @var{s}.
+Вычисленные выражения не записываются в вывод.
+Вывод может генерироваться кроме прочих функциями @code{print}, @code{display}, @code{grind}.
+
+Глобальная переменная @code{file_output_append} управляет тем, будет ли @code{with_stdout}
+дописывать или переписывать заново файл @var{f}.
+Если @code{file_output_append} равна @code{true}, @code{with_stdout} добавляет вывод к файлу.
+Иначе @code{with_stdout} переписывает файл.
+В обоих случаях, @code{with_stdout} создает файл, если тот не существовал.
+
+@code{with_stdout} возвращает значение своего последнего аргумента.
+
+См. также  @code{writefile}.
+
+@c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
+@c Note the binding of display2d to be
+@c false, otherwise the printing will have things like "- 3" instead
+@c of "-3".
+@c
+@example
+@c THIS EXAMPLE USES SOME UNIX-ISH CONSTRUCTS -- WILL IT WORK IN WINDOWS ???
+@c ALSO IT'S SORT OF COMPLICATED AND THE SIMPLER SECOND EXAMPLE ILLUSTRATES with_stdout BETTER !!!
+@c mygnuplot (f, var, range, number_ticks) :=
+@c  block ([numer:true, display2d:false],
+@c  with_stdout("tmp.out",
+@c    dx: (range[2]-range[1])/number_ticks,
+@c    for x: range[1] thru range[2] step dx
+@c       do print (x, at (f, var=x))),
+@c  system ("echo \"set data style lines; set title '", f,"' ;plot '/tmp/gnu'
+@c ;pause 10 \" | gnuplot"))$
+(%i1) with_stdout ("tmp.out", for i:5 thru 10 do
+      print (i, "! yields", i!))$
+(%i2) printfile ("tmp.out")$
+5 ! yields 120 
+6 ! yields 720 
+7 ! yields 5040 
+8 ! yields 40320 
+9 ! yields 362880 
+10 ! yields 3628800
+@end example
+
+@opencatbox
+@category{Вывод файлов}
+@closecatbox
+
+@end deffn
+
+@deffn {Функция} writefile (@var{filename})
+Начинает записывать копию сессии Maxima в @var{filename}.
+Все взаимодействия между пользователем и Maxima  записываются в этот файл точно в том виде,
+в котором они показываются в консоли.
+
+Копия печатается в формате консольного вывода, который не может быть перезагружен в Maxima.
+Если хотите создать файл, содержащий выражения, с возможностью его загрузки, см. @code{save} и @code{stringout}.
+@code{save} сохраняет выражения в форме Lisp, в то время как @code{stringout} сохраняет их в форме Maxima. 
+
+Результат выполнения @code{writefile}, когда @var{filename} уже существует, зависит
+от реализации лежащего в основе Lisp. Выходной файл может быть стерт или дописан.
+@code{appendfile} всегда дописывает файл.
+
+Может оказаться удобным выполнить @code{playback} после @code{writefile} чтобы сохранить 
+отображение предыдущих взаимодействий. Так @code{playback} отображает только входные или результирующие 
+переменные (@code{%i1}, @code{%o1} и т. д.), любой вывод, создаваемый печатающими выражениями в 
+функциях (в противоположность возвращаемому значению), не отображается функцией @code{playback}.
+
+@code{closefile} закрывает файл, который открыла @code{writefile} или @code{appendfile}.
+
+@opencatbox
+@category{Вывод файлов} @category{Работа в консоли}
+@closecatbox
+
+@end deffn
