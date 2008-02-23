@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Operators.texi 
-@c OriginalRevision=1.48
+@c OriginalRevision=1.49
 @c TranslatedBy: (c) 2007-11-06 Andrey Siver <ihep-2005@yandex.ru>
 
 
@@ -2376,6 +2376,18 @@ reverse(uf))
 @category{Численное вычисление}
 @closecatbox
 
+@end deffn
+
+
+@deffn {Функция} round (@var{x})
+
+Если @var{x} является вещественным числом, то возвращает ближайшее к @var{x}
+целое.  Числа, кратные 1/2, округляются до ближайшего четного целого.
+Вычисление @var{x} аналогично функциям @code{floor} и @code{ceiling}.
+
+@opencatbox
+@category{Математические функции}
+@closecatbox
 @end deffn
 
 @deffn {Функция} sign (@var{expr})

@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Itensor.texi
-@c OriginalRevision=1.43    
+@c OriginalRevision=1.44    
 @c TranslatedBy: (c) 2005-12 Valery Pipin <pip@iszf.irk.ru>
 
 @menu
@@ -1007,6 +1007,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 
 @deffn {Функция} canform (@var{expr})
+@deffnx {Функция} canform (@var{expr}, @var{rename})
 Упрощает выражение @var{expr}, используя
 переименование немых индексов и сортировку всех индексов с учетом
 объявленных свойств симметрии. Если @code{allsym} равен @code{true},
@@ -1022,6 +1023,10 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 всегда приводит выражение к простейшей форме.
 В тоже время @code{canform} всегда возвращает математически
 корректный результат.
+
+Если значение второго необязательного параметра @var{rename} равно @code{false}, 
+то переименование не производится.
+
 
 @opencatbox
 @category{Пакет itensor}
