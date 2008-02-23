@@ -16,22 +16,10 @@
 
 <P>
 This document describes a new dimensional analysis package for Maxima.
-There is an older Maxima package for dimensional analysis that
-is similar to the one that was shipped with the commercial Macsyma system. 
-The software described in this document differs greatly from the
-older package. 
-
+There is an older Maxima package for dimensional analysis.  The
+software described in this document differs from the older package.
 </P>
-<P>
-The new dimensional analysis code  was  written by Barton Willis of the 
-University of  Nebraska at Kearney. The complete distribution contains 
-source code, texinfo documentation, a file for testing (in standard 
-Maxima "rtest" form), and a TeX file that provides additional documentation 
-and examples of how to use the package. You may download 
-the distribution from www.unk.edu/acad/math/people/willisb 
-and you may contact the author at willisb@unk.edu.
 
-</P>
 
 <P>
 To use the dimensional analysis package, you must first load the file 
@@ -42,26 +30,7 @@ that Maxima can  find, load it with the command
 (C1) load("dimension.mac")$
 </PRE>
 
-<P>
-Alternatively, you can compile <B>dimension.mac</B> with the command
 
-<PRE>
-(C1) compile_file("dimension.mac")$
-</PRE>
-
-<P>
-After it has been compiled, load it with
-
-<PRE>
-(C2) load("dimension.o")$
-</PRE>
-
-<P>
-The compiled code runs about thirty percent faster than the interpreted
-code.
-
-</P>
-<P>
 Use <B>qput</B> to define the dimension of a variable; thus
 to define <EM>x</EM> to be a length, <EM>t</EM> a time, and <EM>c</EM> a speed, use
 
