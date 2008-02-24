@@ -220,11 +220,13 @@ genhom;
 /* This equation presents a problem - runs forever */ 
 /* (pn_( 339 ),ans:contrib_ode(eqn: (x*sqrt(y^2+x^2+1)-y*(y^2+x^2))*'diff(y,x,1)-y*sqrt(y^2+x^2+1)-x*(y^2+x^2) ,y,x)); */ 
 
-/*  340  */ 
-(pn_(340),ans:contrib_ode(eqn:(e1*(x+a)/(y^2+(x+a)^2)^(3/2)+e2*(x-a)/(y^2+(x-a)^2)^(3/2))*'diff(y,x,1)-y*(e1/(y^2+(x+a)^2)^(3/2)+e2/(y^2+(x-a)^2)^(3/2)),y,x));
+/*  340  CHECKME 
+ 2008-02-24:  Now fails with "Expression too wide to be displayed */ 
+/* (pn_(340),ans:contrib_ode(eqn:(e1*(x+a)/(y^2+(x+a)^2)^(3/2)+e2*(x-a)/(y^2+(x-a)^2)^(3/2))*'diff(y,x,1)-y*(e1/(y^2+(x+a)^2)^(3/2)+e2/(y^2+(x-a)^2)^(3/2)),y,x));
 [-'integrate((sqrt(y^2+x^2+2*a*x+a^2)*(sqrt(y^2+x^2-2*a*x+a^2)*(y^4+(2*x^2+2*a^2)*y^2+x^4-2*a^2*x^2+a^4)*'integrate((sqrt(y^2+x^2+2*a*x+a^2)*(e2*y^7+8*a*e2*x*y^5+(-3*e2*x^4+4*a*e2*x^3+14*a^2*e2*x^2+4*a^3*e2*x-3*a^4*e2)*y^3+(-2*e2*x^6-4*a*e2*x^5+2*a^2*e2*x^4+8*a^3*e2*x^3+2*a^4*e2*x^2-4*a^5*e2*x-2*a^6*e2)*y)+sqrt(y^2+x^2-2*a*x+a^2)*(e1*y^7-8*a*e1*x*y^5+(-3*e1*x^4-4*a*e1*x^3+14*a^2*e1*x^2-4*a^3*e1*x-3*a^4*e1)*y^3+(-2*e1*x^6+4*a*e1*x^5+2*a^2*e1*x^4-8*a^3*e1*x^3+2*a^4*e1*x^2+4*a^5*e1*x-2*a^6*e1)*y))/(sqrt(y^2+x^2-2*a*x+a^2)*sqrt(y^2+x^2+2*a*x+a^2)*(y^8+(4*x^2+4*a^2)*y^6+(6*x^4+4*a^2*x^2+6*a^4)*y^4+(4*x^6-4*a^2*x^4-4*a^4*x^2+4*a^6)*y^2+x^8-4*a^2*x^6+6*a^4*x^4-4*a^6*x^2+a^8)),x)+(a*e2-e2*x)*y^3+(-e2*x^3-a*e2*x^2+a^2*e2*x+a^3*e2)*y)+sqrt(y^2+x^2-2*a*x+a^2)*((-e1*x-a*e1)*y^3+(-e1*x^3+a*e1*x^2+a^2*e1*x-a^3*e1)*y))/(sqrt(y^2+x^2-2*a*x+a^2)*sqrt(y^2+x^2+2*a*x+a^2)*(y^4+(2*x^2+2*a^2)*y^2+x^4-2*a^2*x^2+a^4)),y)-'integrate((sqrt(y^2+x^2-2*a*x+a^2)*(e2*y^6+(2*e2*x^2+4*a*e2*x+2*a^2*e2)*y^4+(e2*x^4+4*a*e2*x^3+6*a^2*e2*x^2+4*a^3*e2*x+a^4*e2)*y^2)+sqrt(y^2+x^2+2*a*x+a^2)*(e1*y^6+(2*e1*x^2-4*a*e1*x+2*a^2*e1)*y^4+(e1*x^4-4*a*e1*x^3+6*a^2*e1*x^2-4*a^3*e1*x+a^4*e1)*y^2))/(y^8+(4*x^2+4*a^2)*y^6+(6*x^4+4*a^2*x^2+6*a^4)*y^4+(4*x^6-4*a^2*x^4-4*a^4*x^2+4*a^6)*y^2+x^8-4*a^2*x^6+6*a^4*x^4-4*a^6*x^2+a^8),x)=%c];
 method;
 exact;
+*/
 
 /*  341  */ 
 (pn_(341),ans:contrib_ode(eqn:(x*%e^y+%e^x)*'diff(y,x,1)+%e^y+%e^x*y,y,x));
