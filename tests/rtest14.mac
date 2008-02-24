@@ -30,9 +30,9 @@ bessel_i(1,x);
 diff(bessel_i(1,x),x);
 (bessel_i(2,x)+bessel_i(0,x))/2;
 diff(bessel_k(0,x),x);
-bessel_k(1,x);
+-bessel_k(1,x);
 diff(bessel_k(1,x),x);
-(bessel_k(2,x)+bessel_k(0,x))/2;
+-((bessel_k(2,x)+bessel_k(0,x))/2);
 
 besselexpand:true;
 true$

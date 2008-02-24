@@ -1020,6 +1020,7 @@ Perhaps you meant to enter `~a'.~%"
 	 ((%derivative simp) ((%bessel_i simp) n x) n 1)))))
      ;; Derivative wrt to x.  A&S 9.6.29.
      ((mtimes)
+      -1
       ((mplus) ((%bessel_k) ((mplus) -1 n) x)
                ((%bessel_k) ((mplus) 1 n) x))
       ((rat) 1 2)))
