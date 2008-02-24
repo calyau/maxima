@@ -63,7 +63,7 @@
 (defprop $max simp-max operators)
 
 (defun simp-max (l tmp z)
-  (let ((acc nil) (sgn) (num-max nil) (issue-warning) (new-max))
+  (let ((acc nil) (sgn) (num-max nil) (issue-warning))
     (setq l (margs (specrepcheck l)))
     (dolist (li l)
       (if (op-equalp li '$max) (setq acc (append acc (mapcar #'(lambda (s) (simplifya s z)) (margs li))))
@@ -91,14 +91,14 @@
     
     (dolist (x l)
       (catch 'done
-	(setq new-max t)
 	(dolist (ai acc)
 	  (setq sgn ($compare x ai))
-	  (setq new-max (and new-max (member sgn '(">" ">=") :test #'equal)))
-	  (if (eq sgn '$notcomparable) (setq issue-warning t))
-	  (if (member sgn '("<" "=" "<=") :test #'equal) (throw 'done t)))
-	(if new-max (setq acc (list x)) (push x acc))))
-    
+	  (cond ((member sgn '(">" ">=") :test #'equal)
+		 (setq acc (delete ai acc :test #'eq)))
+		((eq sgn '$notcomparable) (setq issue-warning t))
+		((member sgn '("<" "=" "<=") :test #'equal)
+		 (throw 'done t))))
+	(push x acc)))
     ;; Fourth, when when trylevel is 2 or higher e and -e are members of acc, replace e by |e|.
     
     (cond ((eq t (mgrp ($get '$trylevel '$maxmin) 1))
