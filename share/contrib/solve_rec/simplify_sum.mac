@@ -5,8 +5,13 @@
  * ***                       * simplify_sum *                            *** *
  * ***                                                                   *** *
  * ***   This file implements simplify_sum function for simplification   *** *
- * ***     of sums (with finite support) which include binomials. It     *** *
- * ***             uses Zeilberger and solve_rec packages.               *** *
+ * ***   of sums.                                                        *** *
+ * ***   The methods used by simplify_sum:                               *** *
+ * ***     1. internal simplification using simpsum=true                 *** *
+ * ***     2. Gosper algorithm                                           *** *
+ * ***     3. rational summation with conversion to psi functions        *** *
+ * ***     4. Zeilberger algorithm                                       *** *
+ * ***     5. conversion to hypergeometrical sums, reduced by hgfred.    *** *
  * ***                                                                   *** *
  * ***   Author:  Andrej Vodopivec <andrejv@users.sourceforge.net>       *** *
  * ***   Licence: GPL2                                                   *** *
@@ -43,6 +48,7 @@ put('simplify_sum, 1.0, 'version)$
 
 define_variable(zeilberger_check, true, boolean)$
 define_variable(check_start, 1, fixnum)$
+define_variable(use_hgfred, true, boolean)$
 
 /*******************
  *
@@ -73,21 +79,14 @@ simplify_sum(expr) :=
      lo : part(expr, 3), hi : part(expr, 4),
      sm1, linsolvewarn:false],
 
-    /* Find some well known sums by checking the arguments              */
-    ss_print_message(1, "Looking for known sums ..."),
-    sm1 : check_known_sums(summand, var, lo, hi),
-    ss_print_message(1, "... returns", sm1),
-    if sm1#false then return(sm1),
-
-
-    /* Let's see if default maxima simplifications can handle this sum. */
+    /*** Default maxima simplification. *********************************/
     ss_print_message(1, "Trying with simpsum=true ..."),
     if errcatch(
       sm1 : ev(expr, simpsum = true)
     ) = [] then sm1 : expr,
     ss_print_message(1, "sum with simpsum=true returns:", sm1),
 
-    /* Now let's try the Gosper algorithm                               */
+    /*** Now let's try the Gosper algorithm *****************************/
     if errcatch(
       if not(atom(sm1)) and not freeof_sum(sm1) then block(
         [hi1 : ?gensym(), lo1 : ?gensym()],
@@ -108,7 +107,7 @@ simplify_sum(expr) :=
         )
     ) = [] then sm1 : expr,
 
-    /* Try converting the sum to finite sum of psi functions            */
+    /*** Try converting the sum to finite sum of psi functions **********/
     if errcatch(
       if not(atom(sm1)) and not( freeof_sum(sm1) ) and
          ?ratp(ratsimp(part(expr, 1)), part(expr, 2))
@@ -143,7 +142,7 @@ simplify_sum(expr) :=
       )
     ) = [] then sm1 : expr,
 
-    /* check for sum((-1)^n*ratfun, n, lo, inf);         */
+    /*** check for sum((-1)^n*ratfun, n, lo, inf); ****************************/
     if errcatch(
       if not(atom(sm1)) and not( freeof_sum(sm1) ) and
          ?ratp(ratsimp(summand/(-1)^var), var) and hi = inf
@@ -162,7 +161,7 @@ simplify_sum(expr) :=
 
     supcontext(ss_context),
     
-    /* If everything else fails let's try the Zeilberger algorithm .    */
+    /*** Zeilberger algorithm ************************************************/
     if errcatch(
       if not(atom(sm1)) and not freeof_sum(sm1) then (
         ss_print_message(1, "Trying with Zeilberger ..."),
@@ -171,12 +170,24 @@ simplify_sum(expr) :=
       )
     ) = [] then sm1 : expr,
 
-    /* :(                                                                */
     if sm1=false then
       sm1 : apply(sum, [summand, var, lo, hi]),
-
+    
     killcontext('ss_context),
 
+    /*** Convert to hypergeometrical functions. ******************************/
+    if not(atom(sm1)) and not( freeof_sum(sm1) ) and
+       use_hgfred=true and hi=inf and lo#-inf and lo#minf then (
+      if errcatch(
+        ss_print_message(1, "Converting to hypergeometrical sum ..."),
+        sm1 : to_hgfred(summand, var, lo, hi),
+        ss_print_message(1, "hgfred method returns:", sm1)
+      ) = [] then sm1 : expr
+    ),
+  
+    if sm1=false then
+      sm1 : apply(sum, [summand, var, lo, hi]),
+      
     sm1
   )$
 
@@ -515,59 +526,44 @@ factor_with_solve(expr, n) := block(
 
 /*******************
  *
- * Check for some known sums
+ * Reduce using hgfred
  *
  *******************/
 
-find_exponent(expr, var) :=
-  if atom(expr) then 1
-  else if part(expr, 0)="*" then apply("*", map(lambda([u], find_exponent(u, var)), args(expr)))
-  else if part(expr, 0)="/" then find_exponent(num(expr), var)/find_exponent(denom(expr), var)
-  else if part(expr, 0)="^" then block(
-    [a,b],
-    a : bothcoef(part(expr, 2), var),
-    b : a[2], a : a[1],
-    ss_print_message(3, "Finding exponent, a =", a, "b =", b),
-    if freeof(var, b) then part(expr, 1)^a
-    else 1
-  )
-  else 1$
+to_hgfred(expr, var, lo, hi) := block(
+  [quo, upper, lower, a:[], b:[], x, c],
 
-/* This could be extended to other known sums! */
-check_known_sums(expr, var, lo, hi) := block(
-  [sm],
+  while subst(var=lo, expr)=0 do lo : lo+1,
+  expr:subst(var=var+lo, expr),
+  
+  quo : ratsimp(shiftQuo(expr*var!, var)),
+  if not(?ratp(quo, var)) then return(false),
+  
+  ss_print_message(2, "Shift quotient", quo),
+  
+  upper : -map(rhs, solve(num(quo), var)),
+  if not(every(lambda([u], freeof(var, u)), upper)) then return(false),
+  for i:1 thru length(upper) do (
+    for j:1 thru multiplicities[i] do
+      a : cons(upper[i], a)),
+  ss_print_message(2, "a=", a),
+  
+  lower : -map(rhs, solve(denom(quo), var)),
+  if not(every(lambda([u], freeof(var, u)), lower)) then return(false),
+  for i:1 thru length(lower) do (
+    for j:1 thru multiplicities[i] do
+      b : cons(lower[i], b)),
+  ss_print_message(2, "b=", b),
+  
+  x : ratsimp(quo / apply("*", map(lambda([u], var+u), a)) *
+                    apply("*", map(lambda([u], var+u), b))),
+  ss_print_message(2, "x=", x),
+  
+  c : subst(var=0, expr),
+  ss_print_message(2, "c=", c),
+  if c=0 then return(false),
 
-  sm : check_for_expx(expr, var, lo, hi),
-  if sm#false then return(sm),
-
-  return(false)
-)$
-
-/* exp(x) */
-check_for_expx(expr, var, lo, hi) := block(
-  [a, fac:var!, shift, i__, x],
-
-  if hi#inf then return(false),
-
-  x : find_exponent(expr, var),
-
-  a : radcan(minfactorial( expr*fac/x^var )),
-  shift : -hipow(num(a), var),
-  if shift<0 and not(freeof(var, denom(a))) then return(false),
-  if shift=0 then shift : hipow(denom(a), var),
-
-  if shift<0 then a : a/product((var + 1 - i__), i__, 1, -shift)
-  else if shift>0 then a : a*product((var + i__), i__, 1, shift),
-
-  a : ratsimp(a/x^shift),
-
-  if freeof(var, a) then block(
-    [lo1 : lo + shift],
-    if lo1=0 then return(a*exp(x))
-    else if lo1>0 then return(a*exp(x) - a*apply(sum, [x^var/fac, var, 0, lo1-1]))
-  )
-)$
-
+  c*hgfred(a,b,x))$
 
 eval_when(batch,
           ttyoff : false,
