@@ -258,3 +258,48 @@ test_sum(
   [ratsimp, multthru],
   %pi^3/32);
 0;
+
+test_sum(
+  sum(x^n/n!, n, 0, inf),
+  [],
+  false,
+  [],
+  %e^x
+)$
+0;
+
+test_sum(
+  -sum(((-1)^i*x^(2*i))/i,i,1,inf),
+  [],
+  false,
+  [],
+  log(x^2+1)
+)$
+0;
+
+test_sum(
+  sum(n/((n+1)*2^n),n,1,inf),
+  [],
+  false,
+  [ratsimp],
+  2-2*log(2)
+)$
+0;
+
+test_sum(
+  sum(n/((2*n+1)*2^n),n,0,inf),
+  [],
+  false,
+  [ratsimp],
+  -(sqrt(2)*atanh(1/sqrt(2))-2)/2
+)$
+0;
+
+test_sum(
+  sum((4^(-i-1)*(-1)^i*x^(i+1))/(i+1),i,0,inf),
+  [],
+  false,
+  [],
+  log(x/4+1)
+)$
+0;
