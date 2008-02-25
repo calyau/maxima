@@ -71,12 +71,12 @@ WARNING: found some hypergeometrical solutions!
 So the general solution is
 
              n - 1
-             ====        n
+             ====        j
              \      (- 1)
        %k  n  >    -------- + %k  n
-         2   /     (n + 1)!     1
+         2   /     (j + 1)!     1
              ====
-             n = 0
+             j = 0
 @end example
 
 @opencatbox
@@ -102,8 +102,6 @@ See also: @code{solve_rec}.
 @deffn {Function} simplify_sum (@var{expr})
 
 Tries to simplify all sums appearing in @var{expr} to a closed form.
-
-@code{simplify_sum} uses Gosper and Zeilberger algorithms to simplify sums.
 
 To use this function first load the @code{simplify_sum} package with
 @code{load(simplify_sum)}.
