@@ -235,7 +235,7 @@ block([sq_num,sq_den,sq_base,sq_exp],
          )
        else if (freeof(k, first(expr))) then
          (
-         sq_exp: bothcoef(second(expr), k),
+         sq_exp: bothcoef(expand(second(expr)), k),
          if not(freeof(k, second(sq_exp))) then return([expr, NO_HYP])
          else return([first(expr)^first(sq_exp), hyp_flag])
          )
