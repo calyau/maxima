@@ -170,21 +170,23 @@ callgnuplot(persist):=
 /*               DATA MANIPULATION                 */
 
 
-/* Sub-sample matrix selection.                         */
-/*   Example: subsample(m,'(%c[1]<3 and %c[4]=A),3,2)   */
-/*   gives the 3rd an 2nd components, in this order, of */
-/*   those rows of matrix m whose first component is    */
-/*   lesser than 3 and fourth component equals A.       */
-subsample(mat,cond,[cols]):=block([subm:matrix(),subv],
-   if length(cols)=0
+/* Sub-sample matrix selection.                                */
+/*   Example: subsample(m,lambda([v],v[1]<3 and v[4]=A),3,2)   */
+/*   gives the 3rd an 2nd components, in this order, of        */
+/*   those rows of matrix m whose first component is           */
+/*   less than 3 and fourth component equals A.                */
+subsample(mat,cond,[cols]):=
+  block([tempvect, tempmat:[]],
+    if length(cols)=0
       then cols: makelist(i,i,1,length(mat[1])),
-   for %c in mat do
-      if is(cond)
-         then (subv:[],
-               for i in cols do
-                  subv: endcons(%c[i],subv),
-               subm: endcons(subv,subm)),
-   return(subm))$
+    for obs in mat do
+      if cond(obs)
+        then
+          (tempvect: [],
+           for i in cols do
+             tempvect: endcons(obs[i], tempvect),
+           tempmat: endcons(tempvect, tempmat)),
+    apply('matrix, tempmat))$
 
 
 /* Divides the range in intervals and counts how many values */
@@ -564,7 +566,7 @@ scatterplot(m,[select]):=
                        for j:1 thru n do
                          gr: endcons(if i=j
                                        then apply('gr2d,append(apply('histogram, append([col(m,i)],select,localopts))))
-                                       else apply('gr2d,append(apply('scatterplot, append([subsample(m,true,i,j)],select)))) ,
+                                       else apply('gr2d,append(apply('scatterplot, append([subsample(m,lambda([v],true),i,j)],select)))) ,
                                      gr),
                      gr),
              if draw_compound
