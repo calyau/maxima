@@ -1192,7 +1192,7 @@ Example:
 @end deffn
 
 @deffn {Function} max_clique (@var{gr})
-Returns a maximal clique of the graph @var{gr}.
+Returns a maximum clique of the graph @var{gr}.
 
 Example:
 @c ===beg===
@@ -1230,7 +1230,7 @@ Example:
 @end deffn
 
 @deffn {Function} max_flow (@var{net}, @var{s}, @var{t})
-Returns a maximal flow through the network @var{net} with the source
+Returns a maximum flow through the network @var{net} with the source
 @var{s} and the sink @var{t}.
 
 The function returns the value of the maximal flow and a list
@@ -1282,7 +1282,7 @@ Example:
 @end deffn
 
 @deffn {Function} max_independent_set (@var{gr})
-Returns a maximal independent set of the graph @var{gr}.
+Returns a maximum independent set of the graph @var{gr}.
 
 Example:
 @c ===beg===
@@ -1305,7 +1305,7 @@ Example:
 @end ifhtml
 
 @deffn {Function} max_matching (@var{gr})
-Returns a maximal matching of the graph @var{gr}.
+Returns a maximum matching of the graph @var{gr}.
 
 Example:
 @c ===beg===

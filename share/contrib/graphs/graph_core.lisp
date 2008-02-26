@@ -1666,10 +1666,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; maximal clique
+;;; maximum clique
 ;;;
 
-(defvar *maximal-clique* ())
+(defvar *maximum-clique* ())
 
 (defun vertices-by-degrees (gr)
   (let ((vrt ()))
@@ -1696,14 +1696,14 @@
 
 (defun $max_clique (gr)
   (require-graph 'max_clique 1 gr)
-  (setq *maximal-clique* ())
+  (setq *maximum-clique* ())
   (let ((v) (coloring) (h ($copy_graph gr)))
     (do () ((= 0 (graph-size h)))
       (setq coloring (greedy-color h))
       (setq v ($second ($max_degree h)))
       (extend-clique `(,v) (neighbors v h) coloring h)
       (remove-vertex v h)))
-  `((mlist simp) ,@(sort *maximal-clique* #'<)))
+  `((mlist simp) ,@(sort *maximum-clique* #'<)))
 
 (defun $max_independent_set (gr)
   (require-graph 'max_independent_set 1 gr)
@@ -1711,17 +1711,17 @@
 
 (defun extend-clique (clique neigh coloring gr)
   (if (= (length neigh) 0)
-      ;; did we get to a clique maximal clique
-      (if (> (length clique) (length *maximal-clique*))
+      ;; did we get to a maximal clique
+      (if (> (length clique) (length *maximum-clique*))
 	  (progn
-	    (setq *maximal-clique* clique)
+	    (setq *maximum-clique* clique)
 	    (return-from extend-clique)))
       ;; can we do better?
       (let ((colors ()))
 	(dolist (x neigh)
 	  (if (not (member (gethash x coloring) colors))
 	      (push (gethash x coloring) colors)))
-	(if (> (+ (length clique) (length colors)) (length *maximal-clique*))
+	(if (> (+ (length clique) (length colors)) (length *maximum-clique*))
 	    ;; try improving
 	    (do () ((= (length neigh) 0))
 	      (let* ((x (first neigh)) (new-clique (cons x clique))
