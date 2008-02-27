@@ -415,7 +415,7 @@ algunos argumentos racionales.
 Existen algunas variables globales para controlar en qu@'e rangos
 racionales debe devolver @code{psi} resultados exactos, si ello es posible.
 V@'eanse las descripciones de @code{maxpsiposint}, @code{maxpsinegint},
-@code{maxpsifracnum} y @code{maxpsifracnum}.
+@code{maxpsifracnum} y @code{maxpsifracdenom}.
 En resumen, @var{x} debe alcanzar un valor entre @code{maxpsinegint} y
 @code{maxpsiposint}. Si el valor absoluto de la parte fraccional de
 @var{x} es racional y tiene un numerador menor que @code{maxpsifracnum}

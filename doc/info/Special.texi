@@ -608,7 +608,7 @@ Maxima does not know how, in general, to compute a numerical value of
 @code{psi}, but it can compute some exact values for rational args.
 Several variables control what range of rational args @code{psi} will
 return an exact value, if possible.  See @code{maxpsiposint},
-@code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracnum}.
+@code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracdenom}.
 That is, @var{x} must lie between @code{maxpsinegint} and
 @code{maxpsiposint}.  If the absolute value of the fractional part of
 @var{x} is rational and has a numerator less than @code{maxpsifracnum}

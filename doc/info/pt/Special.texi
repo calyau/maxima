@@ -499,7 +499,7 @@ Maxima n@~ao sabe como, em geral, calcular um valor num@'erico de
 @code{psi}, mas Maxima pode calcular alguns valores exatos para argumentos racionais.
 Muitas vari@'aveis controlam qual intervalo de argumentos racionais @code{psi} ir@'a
 retornar um valor exato, se poss@'{@dotless{i}}vel.  Veja @code{maxpsiposint},
-@code{maxpsinegint}, @code{maxpsifracnum}, e @code{maxpsifracnum}.
+@code{maxpsinegint}, @code{maxpsifracnum}, e @code{maxpsifracdenom}.
 Isto @'e, @var{x} deve localizar-se entre @code{maxpsinegint} e
 @code{maxpsiposint}.  Se o valor absoluto da parte facion@'aria de
 @var{x} for racional e tiver um numerador menor que @code{maxpsifracnum}
