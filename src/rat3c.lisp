@@ -32,6 +32,13 @@
 (defmfun pquotientchk (a b)
   (if (eqn b 1) a (pquotient a b)))
 
+;; divides polynomial x by polynomial y
+;; avoids error "quotient by polynomial of higher degree"
+;;  (returns nil in this case)
+(defun pquotientchk-safe (x y)
+  (let ((errrjfflag t))
+    (catch 'raterr (pquotientchk x y))))
+
 (defun ptimeschk (a b)
   (cond ((eqn a 1) b)
 	((eqn b 1) a)
@@ -199,6 +206,9 @@
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))
 	    (t (merror "Illegal `gcd' algorithm"))))
+  (let ((errrjfflag t))			;; check for gcd that simplifies to 0
+    (if (not (catch 'raterr (rainv s))) ;; sourceforge bugs 831445 and 1313987
+	(setq s 1)))
   (unless (equal s 1)
     (setq s (pexpon*// (primpart
 			(if $algebraic s
@@ -233,7 +243,7 @@
 (defun redgcd (p q &aux (d 0))
   (loop until (zerop (pdegree q (p-var p)))
 	 do (psetq p q
-		   q (eztestdivide (prem p q) (pexpt (p-lc p) d))
+		   q (pquotientchk-safe (prem p q) (pexpt (p-lc p) d))
 		   d (+ (p-le p) 1 (- (p-le q))))
 	 (if (< d 1) (return 1))
 	 finally (return (if (pzerop q) p 1))))
@@ -243,13 +253,13 @@
 
 (defun subresgcd (p q)
   (loop for g = 1 then (p-lc p)
-	 for h = 1 then (eztestdivide (pexpt g d) h^1-d)
+	 for h = 1 then (pquotientchk-safe (pexpt g d) h^1-d)
 	 for d = (- (p-le p) (p-le q))
 	 for h^1-d = 1 then (if (< d 1)
 				(return 1)
 			      (pexpt h (1- d)))
 	 do (psetq p q
-		   q (eztestdivide (prem p q) (ptimes g (ptimes h h^1-d))))
+		   q (pquotientchk-safe (prem p q) (ptimes g (ptimes h h^1-d))))
 	 if (zerop (pdegree q (p-var p))) return (if (pzerop q) p 1)))
 
 ;;*** THIS COMPUTES PSEUDO REMAINDERS
