@@ -140,3 +140,50 @@
 			((= n nbr-pos-roots) '$pos)
 			((= n (+ nbr-pos-roots nbr-zero-roots)) '$pz)
 			(t '$pnz))))))))
+
+(defun $sylvester_matrix (p q z)
+  (let ((p-coeff nil) (q-coeff nil) (mat nil))
+    (if (or (not ($polynomialp p `((mlist) ,z) `((lambda) ((mlist) c) (($freeof) ,z c))))
+	    (not ($polynomialp q `((mlist) ,z) `((lambda) ((mlist) c) (($freeof) ,z c)))))
+	(merror "The first two arguments to 'sylvester_matrix' must be polynomials"))
+
+    (setq p ($ratexpand p))
+    (setq q ($ratexpand q))
+   
+    (setq p-deg ($hipow p z))
+    (setq q-deg ($hipow q z))
+
+    (dotimes (k (- q-deg 1))
+      (push 0 p-coeff))
+    
+    (dotimes (k (+ p-deg 1))
+      (push ($ratcoef p z k) p-coeff))
+
+    (dotimes (k (- p-deg 1))
+      (push 0 q-coeff))
+    
+    (dotimes (k (+ 1 q-deg))
+      (push ($ratcoef q z k) q-coeff))
+    
+    (dotimes (k q-deg)
+      (push (cons '(mlist) p-coeff) mat)
+      (setq p-coeff (butlast p-coeff))
+      (push 0 p-coeff))
+
+    (dotimes (k p-deg)
+      (push (cons '(mlist) q-coeff) mat)
+      (setq q-coeff (butlast q-coeff))
+      (push 0 q-coeff))
+    
+    (simplify `(($matrix) ,@(reverse mat)))))
+
+    
+
+
+      
+    
+    
+    
+
+    
+    
