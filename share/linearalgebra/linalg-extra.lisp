@@ -142,7 +142,7 @@
 			(t '$pnz))))))))
 
 (defun $sylvester_matrix (p q z)
-  (let ((p-coeff nil) (q-coeff nil) (mat nil))
+  (let ((p-coeff nil) (q-coeff nil) (mat nil) (p-deg) (q-deg))
     (if (or (not ($polynomialp p `((mlist) ,z) `((lambda) ((mlist) c) (($freeof) ,z c))))
 	    (not ($polynomialp q `((mlist) ,z) `((lambda) ((mlist) c) (($freeof) ,z c)))))
 	(merror "The first two arguments to 'sylvester_matrix' must be polynomials"))

@@ -634,5 +634,44 @@ span(matrix([1],[1]))$
 linalg_rank(matrix([0,1],[0,1]));
 1$
 
+sylvester_matrix(0, 0, x);
+matrix()$
+
+sylvester_matrix(1, 0, x);
+matrix()$
+
+sylvester_matrix(0, 1, x);
+matrix()$
+
+sylvester_matrix(1, 1, x);
+matrix()$
+
+sylvester_matrix(x, 1, x);
+matrix([1])$
+
+sylvester_matrix(1, x, x);
+matrix([1])$
+
+sylvester_matrix(x, x, x);
+matrix([1,0],[1,0])$
+
+sylvester_matrix(-x, x, x);
+matrix([-1,0],[1,0])$
+
+sylvester_matrix(a+b*x, x, x);
+matrix([b,a],[1,0])$
+
+sylvester_matrix(a+b*x, x^2, x);
+matrix([b,a,0],[0,b,a],[1,0,0])$
+
+
+
+
+
+
+
+
+
+
 
 
