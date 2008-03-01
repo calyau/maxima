@@ -272,10 +272,14 @@ diag_matrix([d]) := block([f, n, prederror : false],
   n : length(d),
   genmatrix(f, n, n));
 
-hilbert_matrix(n) := (
+hilbert_matrix(n) := block([row, mat : []],
+  mode_declare(n,integer),
   require_posinteger(n,"first","hilbert_matrix"),
-  funmake('matrix, makelist(makelist(1/(i + j - 1),i,1, n),j, 1, n)));
-
+  row : makelist(1/i,i,1,n),
+  for i : 1 thru n do (
+    mat : cons(row, mat),
+    row : endcons(1/(n + i), rest(row))),
+  funmake('matrix, reverse(mat)));
 
 hankel([q]) := block([col,row,m,n,partswitch : false],
   if length(q) > 2 or length(q) < 1 then error("The function 'hankel' requires one or two arguments"),
