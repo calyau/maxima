@@ -497,3 +497,53 @@ done;
 
 kill (rules);
 done;
+
+/* Unreported bug: patterns for + or * match any operator (not just + or *)
+ * when + or * is not the top-level operator and pattern variables
+ * partition the arguments of + or *.
+ */
+
+(matchdeclare (xx, integerp, yy, lambda ([ee], not integerp (ee))),
+ defrule (r1, FOO (xx + yy), FOOPLUS (xx, yy)),
+ defrule (r2, FOO (xx * yy), FOOTIMES (xx, yy)),
+ 0);
+0;
+
+apply1 (FOO (a + b + c + 123), r1);
+FOOPLUS (123, a + b + c);
+
+apply1 (FOO (x * y * z * 234), r2);
+FOOTIMES (234, x * y * z);
+
+apply1 (FOO (BAR (a, b, c, 123)), r1, r2);
+FOO (BAR (a, b, c, 123));
+
+apply1 (FOO (x + y + z + 345), r2);
+FOO (x + y + z + 345);
+
+apply1 (FOO (s * t * u * v * 456), r1);
+FOO (s * t * u * v * 456);
+
+/* Seems to work OK when pattern variables do not partition the arguments.
+ * Verify that continues to work after bug fix.
+ */
+(matchdeclare (xx, bfloatp, yy, symbolp),
+ defrule (r3, BAR (xx + yy), BARPLUS (xx, yy)),
+ defrule (r4, BAR (xx * yy), BARTIMES (xx, yy)),
+ 0);
+0;
+
+apply1 (BAR (1b0 + x + y), r3);
+BARPLUS (1b0, x + y);
+
+apply1 (BAR (2b0 * u * v), r4);
+BARTIMES (2b0, u * v);
+
+apply1 (BAR (FOO (3b0, g, h)), r3, r4);
+BAR (FOO (3b0, g, h));
+
+apply1 (BAR (4b0 * m * n), r3);
+BAR (4b0 * m * n);
+
+apply1 (BAR (5b0 + p + q), r4);
+BAR (5b0 + p + q);
