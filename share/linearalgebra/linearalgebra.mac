@@ -28,10 +28,10 @@ eval_when(translate,
 	  declare_translated(ptriangularize_with_proviso,locate_matrix_entry,hankel,toeplitz,
 			     nullspace,require_integer,columnspace,rowswap,rowop,require_symbol,
 	                     mat_fullunblocker,mat_trace,mat_unblocker, column_reduce,good_pivot,
-                             hipow_gzeromat_norm))$
+                             hipow_gzero, mat_norm))$
 
 eval_when([batch,load,translate,compile],
-  put(infolevel, silent, linearalgebra),    
+  put('infolevel, 'silent, 'linearalgebra),    
   load("load-linearalgebra-lisp-files"));
   
 require_integer(i, pos, fn) := 
@@ -220,16 +220,12 @@ column_reduce(m,i,x) := block([nc, nr, pos, q, proviso : []],
        if listp(pos) then m : rowswap(m,i, first(pos))),
     [m, proviso]);
 
-mat_norm(m, p) := block([listarith : true, d],
+mat_norm(m, p) := block([listarith : true],
   require_matrix(m,"first","mat_norm"),
   if blockmatrixp(m) then m : mat_fullunblocker(m),
-  if p = 1 then mat_norm(transpose(m), 'inf)
-  else if p = 'inf then (
-    d : 0,
-    for ri in m do (
-      d : max(d, tree_reduce("+", map('cabs, ri)))),
-    d)
-  else if p = 'frobenius then sqrt(tree_reduce("+", lreduce('append, args(cabs(m)^2))))
+  if p = 1 then lmax(xreduce("+", map(lambda([s], map('cabs, s)), if args(m) = [] then [[]] else args(m))))
+  else if p = 'inf then lmax(map(lambda([s], xreduce("+", map('cabs, s))), args(m)))	
+  else if p = 'frobenius then sqrt(xreduce("+", lreduce('append, args(cabs(m)^2))))
   else error("Not able to compute the ",p," norm"));
 
 mat_fullunblocker(m) := block(

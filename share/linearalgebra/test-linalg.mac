@@ -664,6 +664,33 @@ matrix([b,a],[1,0])$
 sylvester_matrix(a+b*x, x^2, x);
 matrix([b,a,0],[0,b,a],[1,0,0])$
 
+/* blockmatrixp -- SF bug # 1905668*/
+
+blockmatrixp(matrix());
+false$
+
+blockmatrixp(matrix([]));
+false$
+
+blockmatrixp(matrix([],[]));
+false$
+
+blockmatrixp(matrix([false]));
+false$
+
+blockmatrixp(matrix([matrix()]));
+true$
+
+blockmatrixp(matrix([matrix([false])]));
+true$
+
+
+
+
+
+
+
+
 
 
 
