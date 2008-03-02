@@ -875,3 +875,30 @@ diff ('sum (sin (a[1] * x[i]), i, 1, n), a[1]);
 diff ('sum (x[i]^a[1], i, 1, n), a[1]);
 'sum (x[i]^a[1] * log(x[i]), i, 1, n);
 
+/* Feature request 1848704: no way to convert log(product(...)) to sum(log(...)...)
+ */
+
+(kill (u, a, x, T), 0);
+0;
+
+log (product (u[k], k, 1, n));
+log (product (u[k], k, 1, n));
+
+log (product (u[k], k, 1, n)), logexpand=true;
+log (product (u[k], k, 1, n));
+
+log (product (u[k], k, 1, n)), logexpand=all;
+sum (log (u[k]), k, 1, n);
+
+log (product (u[k], k, 1, n)), logexpand=super;
+sum (log (u[k]), k, 1, n);
+
+log (product (a*%e^x(i), i, 1, T));
+log (product (a*%e^x(i), i, 1, T));
+
+log (product (a*%e^x(i), i, 1, T)), logexpand=all;
+/* Yields sum(const + ...) instead of const*T + sum(...)
+ * since sum is not known to be linear by default.
+ * Change this result if default ever changes.
+ */
+sum (log(a) + x(i), i, 1, T);
