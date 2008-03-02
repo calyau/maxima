@@ -173,7 +173,7 @@ argumentos.  Se qualqeur dos factores de @var{expr} estiver elevado a um expoent
 o factor e o expoente ir@~ao ser processados por esse meio.
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} collectterms (@var{arg_1}, ..., @var{arg_n})
+@deffn {Fun@value{cedilha}@~ao} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 Se muitas express@~oes tiverem sido
 simplificadas com @code{facsum}, @code{factorfacsum},  @code{factenexpand},  @code{facexpten} ou
 com @code{factorfacexpten},  e elas est@~ao para serem adicionadas umas @`as outras, pode ser

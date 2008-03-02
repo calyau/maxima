@@ -181,7 +181,7 @@ eleva a una potencia, tanto el factor como el exponente se procesar@'an de
 esta manera.
 @end deffn
 
-@deffn {Funci@'on} collectterms (@var{arg_1}, ..., @var{arg_n})
+@deffn {Funci@'on} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 Si algunas expresiones fueron ya simplificadas con @code{facsum}, @code{factorfacsum},
 @code{factenexpand},  @code{facexpten} o @code{factorfacexpten}, debiendo ser 
 luego sumadas, puede ser conveniente combinarlas utilizando la funci@'on

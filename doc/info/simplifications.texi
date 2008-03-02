@@ -205,7 +205,7 @@ the factor and the exponent will be processed in this way.
 
 @end deffn
 
-@deffn {Function} collectterms (@var{arg_1}, ..., @var{arg_n})
+@deffn {Function} collectterms (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 If several  expressions  have been
 simplified  with  @code{facsum}, @code{factorfacsum},  @code{factenexpand},  @code{facexpten} or
 @code{factorfacexpten},  and  they are  to  be added  together,  it  may be
