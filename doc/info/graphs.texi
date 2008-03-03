@@ -397,6 +397,10 @@ Returns a random tournament on @var{n} vertices.
 Returns a random tree on @var{n} vertices.
 @end deffn
 
+@deffn {Function} tutte_graph ()
+Returns the Tutte graph.
+@end deffn
+
 @deffn {Function} underlying_graph (@var{g})
 Returns the underlying graph of the directed graph @var{g}.
 @end deffn
@@ -1987,8 +1991,9 @@ Draws the graph using the @code{draw} package.
 
 The algorithm used to position vertices is specified by the optional
 argument @var{program}. The default value is
-@code{program=spring_embedding}. Draw can also use the graphviz programs
-for positioning vertices, but graphviz must be installed separately.
+@code{program=spring_embedding}. @var{spring_embedding} can also use the
+graphviz programs for positioning vertices, but graphviz must be
+installed separately.
 
 Optional arguments to the @var{draw_graph} function can be:
 @itemize @bullet
@@ -2062,7 +2067,15 @@ screen.
 @item
 @dfn{program=prg}: defines the program used for positioning vertices of
 the graph. Can be one of the graphviz programs (dot, neato, twopi, circ,
-fdp), @var{circular} or @var{spring_embedding}.
+fdp), @var{circular}, @var{spring_embedding} or
+@var{planar_embedding}. @var{planar_embedding} is only available for
+2-connected planar graphs. When @code{program=spring_embedding}, a set
+of vertices with fixed position can be specified with the
+@var{fixed_vertices} option.
+@item
+@dfn{fixed_vertices=[]}: specifies a list of vertices which will have
+positions fixed along a regular polygon. Can be used when
+@code{program=spring_embedding}.
 @end itemize
 
 Example 1:
