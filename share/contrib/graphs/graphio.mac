@@ -37,13 +37,13 @@ dimacs_export(gr, file, [comments]) := block(
 dimacs_import(file, [mv]) := block(
   [n, fl, line, elist:[], t],
   if length(mv)=1 and integerp(mv[1]) then mv:mv[1]
-  else mv:1,
+  else mv:0,
   fl:openr(file),
   l:readline(fl),
   while l#false do (
     t:tokens(l),
     if t[1]="p" then n:eval_string(third(t)),
-    if t[1]="e" then elist:cons(map(lambda([u], eval_string(u)-1), [second(t), third(t)]), elist),
+    if t[1]="e" then elist:cons(map(lambda([u], eval_string(u)-mv), [second(t), third(t)]), elist),
     l:readline(fl)),
   close(fl),
   if not(integerp(n)) then error("import_dimacs: wrong file format"),
