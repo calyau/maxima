@@ -102,6 +102,7 @@ draw_graph(G, [options]) := block(
    gp_file_out : temp_filename(gp_file_out),
    redraw : false, directed : false,
    label_alignment : 'left, label_padding: "  ",
+   fixed_vertices : [],
    spring_embedding_depth : 50
   ],
 
@@ -123,7 +124,16 @@ draw_graph(G, [options]) := block(
       if member(program, ['neato, 'dot, 'twopi, 'fdp, 'circo]) then
         v_pos : graphviz_positions(G, program)
       else if program = 'spring_embedding then
-        v_pos : spring_embedding(G, spring_embedding_depth)
+        v_pos : spring_embedding(G, spring_embedding_depth, fixed_vertices)
+      else if program = 'planar_embedding then block(
+        [embedding : planar_embedding(G), c],
+        if embedding=false then
+          error("The graph is not a 2-connected planar graph")
+        else (
+          c : embedding[1],
+          for i:2 thru length(embedding) do (
+            if length(embedding[i])>length(c) then c:embedding[i]),
+          v_pos : spring_embedding(G, spring_embedding_depth, c)))
       else
         v_pos : circular_positions(G),
       set_positions(v_pos, G)),
