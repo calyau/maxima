@@ -100,7 +100,7 @@ tellsimpafter (aa% ` mm%, (constant_factors(mm%) * aa%) ` everything_else(mm%));
 tellsimpafter (aa% ` cc%, aa%*cc%);
 simp: true$
 
-unitop_p (e%) := atom (op(e%)) and is (nounify (op(e%)) = nounify ("`"));
+unitop_p (e%) := not atom(e%) and atom (op(e%)) and is (nounify (op(e%)) = nounify ("`"));
 unitp (e%) :=
   if atom(e%) then featurep (e%, 'dimensional)
   else if unitop_p (e%) then true
@@ -164,17 +164,15 @@ compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nond
  *
  */
 
-known_unit_conversions : 
-   [
-
-    /* SI derived units */
+conversions_derived_si :
+   {
 
     km = 1000*m,
     cm = m/100,
     mm = m/1000,
     micron = m/1000000,
 
-    kg = 1000*g,
+    g = kg/1000,
 
     l = m^3/1000,
 
@@ -190,18 +188,24 @@ known_unit_conversions :
     S = 1/Ohm,          /* siemens: Electric conductance */
     Wb = J/A,           /* weber:   Magnetic flux        */
     T = J/m^2/A,        /* tesla:   Magnetic flux density*/
-    H = J/A^2,          /* henry:   Inductance           */
+    H = J/A^2           /* henry:   Inductance           */
 
-    /* "English" units --> SI */
+   };
+
+conversions_customary_si :
+   {
 
     ft = m/(328083/100000),
     lbm = kg/(2205/1000),
     min = 60*s,
     Btu = 1055*J,
     R = 5/9*K,
-    gallon = (3785/1000)*l,
+    gallon = (3785/1000)*l
 
-    /* "English" --> "English" */
+   };
+   
+conversions_customary_customary :
+   {
 
     in = ft/12,
     yd = 3*ft,
@@ -216,12 +220,18 @@ known_unit_conversions :
     psi = lbf/in^2,
     cfm = ft^3/min
 
-   ];
+   };
 
-declare_unit_conversion ([L]) := (known_unit_conversions : append (known_unit_conversions, L), done);
+known_unit_conversions :
+    union
+       (conversions_derived_si,
+        conversions_customary_si,
+        conversions_customary_customary);
+
+declare_unit_conversion ([L]) := (known_unit_conversions : union (known_unit_conversions, setify (L)), done);
 
 compute_conversion_factor (u1%, u2%) := block ([e%],
-  e% : cons (%%a = u1% / u2%, known_unit_conversions),
+  e% : cons (%%a = u1% / u2%, args (known_unit_conversions)),
   block ([logexpand : all], map (lambda ([e], map (log, e)), e%)),
   linsolve (%%, map (lhs, %%)),
   exp (rhs (first (%%))));
@@ -238,3 +248,121 @@ convert_units [degC, K] : lambda ([x], 27315/100 + x);
 convert_units [degF, R] : lambda ([x], 45967/100 + x);
 convert_units [K, degC] : lambda ([x], x - 27315/100);
 convert_units [R, degF] : lambda ([x], x - 45967/100);
+
+/* Dimensional analysis
+ */
+
+declare_dimensions ([L%]) :=
+    if length (L%) > 2
+        then (declare_dimensions1 (L%[1], L%[2]), apply (declare_dimensions, rest (rest (L%))))
+        elseif length (L%) = 2
+            then (declare_dimensions1 (L%[1], L%[2]), 'done)
+            else error ("declare_dimensions: expected an even number of arguments.");
+    
+declare_dimensions1 (a%, b%) :=
+    if listp (a%)
+        then map (lambda ([a1%], declare_dimensions1 (a1%, b%)), a%)
+        elseif listp (b%)
+            then map (lambda ([b1%], declare_dimensions1 (a%, b1%)), b%)
+            else put (a%, b%, 'dimension);
+
+declare_dimensions
+   ('m, 'length,
+    'kg, 'mass,
+    's, 'time,
+    'A, 'charge / 'time,
+    'K, 'temperature,
+    'mol, 'quantity);
+
+fundamental_dimensions :
+   ['length, 'mass, 'time, 'charge, 'temperature, 'quantity];
+
+map (lambda ([s], assume (s > 0)), fundamental_dimensions);
+
+/* I GUESS RULES FOR DIMENSIONS COULD RECOGNIZE EQUATIONS, DERIVATIVES, AND INTEGRALS
+ */
+
+matchdeclare
+   (aa, lambda ([e%], atom (e%) and not symbolp (e%)),
+    bb, lambda ([e%], symbolp (e%) and member (e%, fundamental_dimensions)),
+    cc, lambda ([e%], symbolp (e%) and get (e%, 'units) # false),
+    dd, lambda ([e%], symbolp (e%) and ?mget (e%, 'numer) # false),
+    ee, lambda ([e%], symbolp (e%) and get (e%, 'dimension) # false),
+    ff, lambda ([e%], symbolp (e%)),
+    gg, lambda ([e%], not atom (e%) and op (e%) = "`"),
+    hh, lambda ([e%], not atom (e%) and op (e%) = "^"),
+    ii, lambda ([e%], not atom (e%) and member (op (e%), ["+", "-", "*", "/"])));
+
+simp : false;
+defrule (raa, 'dimensions (aa), 1);
+defrule (rbb, 'dimensions (bb), bb);
+defrule (rcc, 'dimensions (cc), dimensions (get (cc, 'units)));
+defrule (rdd, 'dimensions (dd), dimensions (?mget (dd, 'numer)));
+defrule (ree, 'dimensions (ee), get (ee, 'dimension));
+defrule
+   (rff,
+    'dimensions (ff), 
+    block
+      ([ff2 : ev (ff, args (known_unit_conversions), infeval)],
+        if ff2 # ff then dimensions (ff2) else 'dimensions (ff)));
+defrule (rgg, 'dimensions (gg), dimensions (second (gg)));
+defrule (rhh, 'dimensions (hh), dimensions (first (hh)) ^ second (hh));
+defrule (rii, 'dimensions (ii), map (dimensions, ii));
+simp : true;
+
+dimensions (expr) :=
+    apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, rff, rgg, rhh, rii]);
+
+/* Adapted from dimensions_as_list in share/physics/dimension.mac.
+ * Thanks to Barton Willis.
+ */
+/* FOLLOWING DEFINITION HANDLES DIMENSION NOUNS INCORRECTLY
+ * NEED TO REVISIT THIS
+ */
+dimensions_as_list (e) :=
+    if listp (e)
+        then map ('dimensions_as_list, e)
+        else
+           (e : dimensions (e),
+            if polynomialp (e, fundamental_dimensions, lambda ([x], numberp (x)), lambda ([x], integerp (x)))
+                then makelist (hipow (e, d), d, fundamental_dimensions)
+                else 'dimensions_as_list (e));
+
+/* Adapted from dimensionless in share/physics/dimension.mac.
+ * Thanks to Barton Willis.
+ */
+
+dimensionless (e) :=
+    if not listp (e)
+        then 'dimensionless (e)
+        else
+            args
+               (map
+                   (lambda ([s], xreduce ("*", map("^", e, first (transpose (s))))),
+                    nullspace (transpose (funmake ('matrix, map ('dimensions_as_list, e))))));
+
+/* Adapted from natural_unit in share/physics/dimension.mac.
+ * Thanks to Barton Willis.
+ */
+
+natural_unit (d, e) :=
+block
+  ([vars, s],
+ 
+    if not listp (e)
+        then return ('natural_unit (d, e)),
+
+    d : dimensions_as_list (d),
+    s : map ('dimensions_as_list, e),
+    vars : makelist (?gensym(), k, 1, length (e)),
+
+    block
+      ([linsolve_params : true,
+        back_subst : true,
+        globalsolve : false,
+        solve_inconsistent_error : false],
+        s : linsolve (s . vars - d, vars)),
+
+    s : xreduce ("*", map ("^", e, map ('rhs, s))),
+    s : subst (map ("=", %rnum_list, makelist (0, i, 1, length (%rnum_list))), s),
+    map (lambda ([x], s * x), cons (1, dimensionless (e))));
