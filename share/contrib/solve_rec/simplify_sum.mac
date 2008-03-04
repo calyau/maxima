@@ -563,7 +563,7 @@ to_hgfred(expr, var, lo, hi) := block(
   ss_print_message(2, "c=", c),
   if c=0 then return(false),
 
-  c*hgfred(a,b,x))$
+  ratsimp(c*hgfred(a,b,x)))$
 
 eval_when(batch,
           ttyoff : false,
