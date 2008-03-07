@@ -177,6 +177,18 @@
     
     (simplify `(($matrix) ,@(reverse mat)))))
 
+(defun $krylov_matrix (v mat &optional (n 'no-value))
+  ($require_matrix mat '$second '$krylov_matrix)
+  (if (eq n 'no-value) (setq n ($first ($matrix_size mat))))
+  ($require_posinteger n  '$third '$krylov_matrix)
+  (let ((acc v))
+    (decf n 1)
+    (dotimes (k n)
+      (setq v (ncmul mat v))
+      (setq acc ($addcol acc v)))
+    acc))
+
+
     
 
 
