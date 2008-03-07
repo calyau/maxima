@@ -595,18 +595,14 @@
 ;;;; GENMAT
 
 (defmfun $genmatrix (a i2 &optional (j2 i2) (i1 1) (j1 i1))
-  (unless (or (symbolp a)
-	      (hash-table-p a)
-	      (and (not (atom a))
-		   (eq (caar a) 'lambda)))
-    (improper-arg-err a '$genmatrix))
-  (when (notevery #'fixnump (list i2 j2 i1 j1))
-    (merror "Invalid arguments to `genmatrix':~%~M" (list '(mlist) a i2 j2 i1 j1)))
-  (let ((header (list a 'array))
-	 (l (ncons '($matrix))))
-    (cond ((and (or (zerop i2) (zerop j2)) (= i1 1) (= j1 1)))
-	  ((or (> i1 i2) (> j1 j2))
-	   (merror "Invalid arguments to `genmatrix':~%~M" (list '(mlist) a i2 j2 i1 j1))))
+  (let ((f) (l (ncons '($matrix))))
+    (setq f (if (or (symbolp a) (hash-table-p a) (arrayp a))
+		#'(lambda (i j) (meval (list (list a 'array) i j)))
+	      #'(lambda (i j) (mfuncall a i j))))
+    
+    (if (or (notevery #'fixnump (list i2 j2 i1 j1)) (> i1 i2) (> j1 j2))
+	(merror "Invalid arguments to `genmatrix':~%~M" (list '(mlist) a i2 j2 i1 j1)))
+ 	 
     (dotimes (i (1+ (- i2 i1)))
       (nconc l (ncons (ncons '(mlist)))))
     (do ((i i1 (1+ i))
@@ -614,7 +610,7 @@
 	((> i i2))
       (do ((j j1 (1+ j)))
 	  ((> j j2))
-	(nconc (car l) (ncons (meval (list header i j))))))
+	(nconc (car l) (ncons (funcall f i j)))))
     l))
 
 ; Execute deep copy for copymatrix and copylist.
