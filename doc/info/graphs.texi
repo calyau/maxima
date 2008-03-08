@@ -347,6 +347,11 @@ Returns the petersen graph @var{P_@{n,d@}}. The default values for
 @var{n} and @var{d} are @code{n=5} and @code{d=2}.
 @end deffn
 
+@deffn {Function} random_bipartite_graph (@var{a}, @var{b}, @var{p})
+Returns a random bipartite graph on @code{a+b} vertices. Each edge is
+present with probability @var{p}.
+@end deffn
+
 @deffn {Function} random_digraph (@var{n}, @var{p})
 Returns a random directed graph on @var{n} vertices. Each arc is present
 with probability @var{p}.
@@ -1353,6 +1358,11 @@ Example:
 @end example
 @end deffn
 
+@deffn {Function} min_vertex_cover (@var{gr})
+
+Returns the minimal vertex cover of the graph @var{gr}.
+@end deffn
+
 @deffn {Function} minimum_spanning_tree (@var{gr})
 Returns the minimum spanning tree of the graph @var{gr}.
 
@@ -2262,11 +2272,11 @@ The default value for the program used to position vertices in
 @end defvr
 
 @deffn {Function} vertices_to_path (@var{v_list})
-Converts a list of vertices to a list of edges of the path defined by
-the list.
+Converts a list @var{v_list} of vertices to a list of edges of the path
+defined by @var{v_list}.
 @end deffn
 
 @deffn {Function} vertices_to_cycle (@var{v_list})
-Converts a list of vertices to a list of edges of the cycle defined by
-the list.
+Converts a list @var{v_list} of vertices to a list of edges of the cycle
+defined by @var{v_list}.
 @end deffn
