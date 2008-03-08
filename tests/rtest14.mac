@@ -1078,3 +1078,6 @@ erf(1.0), erf;
 erf(1.0);
 0.8427007929497148;
 
+/* [ 789059 ] simpexpt problem: sign called on imag arg */
+(-(-1)^(1/6))^(1/2);
+sqrt(-(-1)^(1/6));

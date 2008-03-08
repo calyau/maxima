@@ -1503,8 +1503,8 @@
 				  (setq rad (testt (tms rad 1 (cons '(mtimes) res))))
 				  (cond (rulesw (setq rulesw nil res (cdr rad))))))
 			   (eqtest (testt (cons '(mtimes) res)) check))))
-	       (setq z (cond ((not (free (car l) '$%i)) '$pnz)
-			     (t ($sign (car l)))))
+	       (setq z (csign (car l)))
+	       (if (eq z t) (setq z '$pnz))	;; if appears complex, unknown sign
 	       (setq w (cond ((memq z '($neg $nz))
 			      (setq rad (cons -1 rad)) (mult -1 (car l)))
 			     (t (car l))))
