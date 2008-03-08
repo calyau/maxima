@@ -39,7 +39,7 @@
 ;; the bipartite case
 ;;
 
-(defun maximum-matching-bipartite (gr a b)
+(defun maximum-matching-bipartite (gr a b &optional cover)
   (let ((matching (make-hash-table))
 	(done))
 
@@ -104,12 +104,52 @@
 			(setf (gethash u matching) v)
 			(setf (gethash v matching) u)
 			(setq x (gethash v prev))))) )) ))
-    
-    (let ((mmatching ()))
-      (maphash #'(lambda (u v) (if (< u v)
-				   (setq mmatching (cons `((mlist simp) ,u ,v) mmatching))))
-	       matching)
-      (cons '(mlist simp) mmatching))))
+    (if (null cover)
+	;; we want the matching
+	(let ((mmatching ()))
+	  (maphash #'(lambda (u v) (if (< u v)
+				       (setq mmatching (cons `((mlist simp) ,u ,v) mmatching))))
+		   matching)
+	  (cons '(mlist simp) mmatching))
+	;; we want the vertex cover
+	(get-cover-from-matching gr a matching)) ))
+
+(defun get-cover-from-matching (gr a matching)
+  (let ((au) (cov))
+    (loop for x in (cdr a) do
+	 (when (null (gethash x matching))
+	   (push x au)))
+    (if (null au)
+	`((mlist simp) ,@(sort (cdr a) #'<))
+	
+	;; construct the Hungarian tree
+	(let ((prev (make-hash-table))
+	      (new1 au) (new2))
+	  (loop while (not (null new1)) do
+	     ;; add edges in M^c
+	       (setq new2 ())
+	       (loop for u in new1 do
+		    (loop for v in (neighbors u gr) do
+			 (when (and (null (gethash v prev))
+				    (or (null (gethash v matching))
+					(not (= (gethash v matching) u))))
+			   (setf (gethash v prev) u)
+			   (push v new2))))
+		     (setq new1 ())
+	       
+	     ;; add edges in M
+	       (loop for v in new2 do
+		    (let ((u (gethash v matching)))
+		      (unless (null u)
+			(push u new1)
+			(setf (gethash u prev) v)))))
+	  (maphash #'(lambda (u v)
+		       (when (member v a)
+			 (if (null (gethash v prev))
+			     (push v cov)
+			     (push u cov))))
+		   matching)
+	  `((mlist simp) ,@(sort cov #'<))))))
 
 ;;;;;;;;;;;
 ;;
