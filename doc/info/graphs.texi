@@ -1338,8 +1338,8 @@ Example:
 @end ifhtml
 
 @deffn {Function} min_degree (@var{gr})
-Returns the minimal degree of vertices of the graph @var{gr} and a
-vertex of minimal degree.
+Returns the minimum degree of vertices of the graph @var{gr} and a
+vertex of minimum degree.
 
 Example:
 @c ===beg===
@@ -1360,7 +1360,7 @@ Example:
 
 @deffn {Function} min_vertex_cover (@var{gr})
 
-Returns the minimal vertex cover of the graph @var{gr}.
+Returns the minimum vertex cover of the graph @var{gr}.
 @end deffn
 
 @deffn {Function} minimum_spanning_tree (@var{gr})
