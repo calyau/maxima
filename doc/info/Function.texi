@@ -288,6 +288,25 @@ and their values on the right-hand side.
 (%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
 @end example
 
+Given a function of several arguments,
+create another function for which some of the arguments are fixed.
+
+@c ===beg===
+@c curry (f, [a]) :=
+@c         buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+@c by3 : curry ("*", 3);
+@c by3 (a + b);
+@c ===end===
+
+@example
+(%i1) curry (f, [a]) :=
+        buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+(%i2) by3 : curry ("*", 3);
+(%o2)        lambda([[x]], apply(*, append([3], x)))
+(%i3) by3 (a + b);
+(%o3)                       3 (b + a)
+@end example
+
 @opencatbox
 @category{Function definition}
 @closecatbox
