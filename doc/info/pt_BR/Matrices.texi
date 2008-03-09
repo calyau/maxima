@@ -593,8 +593,6 @@ pegam uma matriz @var{M} como seu argumento e retorna uma lista
 de listas cuja primeira sublista @'{e} a sa@'{i}da de @code{eigenvalues}
 e as outras sublistas s@~{a}o os autovetores da
 matriz correspondente para esses autovalores respectivamente.
-Os autovetores e os autovetores unit@'{a}rios da matriz s@~{a}o os
-autovetores direitos e os autovetores unit@'{a}rios direitos.
 
 @code{eivects} @'{e} um sin@^{o}nimo para @code{eigenvectors}.
 

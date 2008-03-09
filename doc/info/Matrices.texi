@@ -710,8 +710,6 @@ takes a matrix @var{M} as its argument and returns a list
 of lists the first sublist of which is the output of @code{eigenvalues}
 and the other sublists of which are the eigenvectors of the
 matrix corresponding to those eigenvalues respectively.
-The calculated eigenvectors and the unit eigenvectors of the matrix are the
-right eigenvectors and the right unit eigenvectors respectively.
 
 @code{eivects} is a synonym for @code{eigenvectors}.
 
