@@ -232,5 +232,6 @@ make_graph(vertices, edges_lambda, [directed]) := block(
     create_graph(vrt, edges))$
 
 tutte_graph() := sparse6_decode(
-  ":m`?WSMHD_pwoa@?_QhSs\\NgRaKE`FEdH@QaUcca|MUX`qr[YW\\eVwaAs[nF{UMqclhIYYCfSWCmDT\\QpTYr")$
+  ":m`?WSMHDbPwGa@?_QhSs\\NgRaKE`HEdH@QaUbca|MUX`qr[YW\\eVwaAs[nF{UMqclhIYYCfSWCmDT\\QpTYr")$
 
+pappus_graph() := graph6_decode("QhEKA?_C?O?_?P?g?I?@S?DOAG_")$
