@@ -1,4 +1,4 @@
-@c english version 1.9
+@c english version 1.11
 @menu
 * Introducci@'on a solve_rec::
 * Funciones y variables para solve_rec::
@@ -68,18 +68,16 @@ WARNING: found some hypergeometrical solutions!
                               1
 (%o6)                 %u  = ----------
                         n    (n + 1)!
-@end example
 
 So the general solution is
 
-@example
              n - 1
-             ====        n
+             ====        j
              \      (- 1)
        %k  n  >    -------- + %k  n
-         2   /     (n + 1)!     1
+         2   /     (j + 1)!     1
              ====
-             n = 0
+             j = 0
 @end example
 
 @end deffn
@@ -99,8 +97,7 @@ V@'ease tambi@'en @code{solve_rec}.
 @deffn {Funci@'on} simplify_sum (@var{expr})
 
 Intenta reducir todas las sumas que aparecen en @var{expr} a una forma
-cerrada. La funci@'on @code{simplify_sum} utiliza los algoritmos de Gosper
-y Zeilberger para reducir las sumas.
+cerrada.
 
 Para utilizar esta funci@'on c@'arguese previamente el paquete @code{simplify_sum}
 ejecutando la instrucci@'on @code{load(simplify_sum)}.

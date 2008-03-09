@@ -1,4 +1,4 @@
-@c version 1.42
+@c version 1.44
 @menu
 * Introducci@'on a itensor::
 * Funciones y variables para itensor::
@@ -662,9 +662,12 @@ Borra todas las propiedades de simetr@'{@dotless{i}}a del @var{tensor} que tiene
 @end deffn
 
 @deffn {Funci@'on} canform (@var{expr})
+@deffnx {Funci@'on} canform (@var{expr}, @var{rename})
 
 Simplifica @var{expr} renombrando @'{@dotless{i}}ndices mudos y reordenando todos los @'{@dotless{i}}ndices seg@'un las condiciones de simetr@'{@dotless{i}}a que se le hayan impuesto. Si @code{allsym} vale @code{true} entonces todos los @'{@dotless{i}}ndices se consideran sim@'etricos, en otro caso se utilizar@'a la informaci@'on sobre simetr@'{@dotless{i}}as suministrada por @code{decsym}. Los @'{@dotless{i}}ndices mudos se renombran de la misma manera que en la funci@'on @code{rename}. Cuando @code{canform} se aplica a una expresi@'on grande el c@'alculo puede llevar mucho tiempo. Este tiempo se puede acortar llamando primero  a @code{rename}.
 V@'ease tambi@'en el ejemplo de la descripci@'on de @code{decsym}. La funci@'on @code{canform} puede que no reduzca completamente una expresi@'on a su forma m@'as sencilla, pero en todo caso devolver@'a un resultado matem@'aticamente correcto.
+
+Si al par@'ametro opcional @var{rename} se le asigna el valor @code{false}, no se renombrar@'an los @'{@dotless{i}}ndices mudos.
 @end deffn
 
 @subsection C@'alculo tensorial indexado

@@ -1,4 +1,4 @@
-@c english version 1.4
+@c english version 1.6
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -19,7 +19,7 @@ por sus n@'umeros de identificaci@'n (siempre enteros). Las aristas/arcos
 se representan por listas de longitud 2. Se pueden asignar etiquetas a los
 v@'ertices de los grafos/digrafos y pesos a sus aristas/arcos.
 
-La funci@'on @code{draw_graph} dibuja grafos siguiendo un criterio rd@'{@dotless{i}}gido
+La funci@'on @code{draw_graph} dibuja grafos siguiendo un criterio r@'{@dotless{i}}gido
 de posicionamiento de los v@'ertices. Tambi@'en puede hacer uso del programa graphviz
 disponible en @url{http://www.graphviz.org}. La funci@'n @code{draw_graph} utiliza el paquete 
 @code{draw} de Maxima.
@@ -413,6 +413,10 @@ Devuelve un torneo aleatorio de @var{n} v@'ertices.
 
 @deffn {Funci@'on} random_tree (@var{n})
 Devuelve un @'arbol aleatorio de @var{n} v@'ertices.
+@end deffn
+
+@deffn {Funci@'on} tutte_graph ()
+Devuelve el grafo de Tutte.
 @end deffn
 
 @deffn {Funci@'on} underlying_graph (@var{g})
@@ -2065,8 +2069,8 @@ Dibuja el grafo utilizando el paquete @code{draw}.
 
 El algoritmo utilizado para posicionar los v@'ertices se especifica con el argumento
 opcional @var{program}, cuyo valor por defecto es @code{program=spring_embedding}.
-Tambi@'en se pueden utilizar los programas graphviz para posicionar los
-v@'ertices, para lo cual deber@'a instalarse separadamente el programa graphviz.
+@var{spring_embedding} tambi@'en puede utilizar los programas de graphviz para
+posicionar los v@'ertices, para lo cual deber@'a instalarse separadamente el programa graphviz.
 
 Los argumentos opcionales de la funci@'on @var{draw_graph} son:
 
@@ -2137,7 +2141,13 @@ del paquete @code{draw}.
 @item
 @dfn{program=prg}: establece el programa para posicionado de v@'ertices del grafo. Puede ser
 cualquiera de los programas graphviz (dot, neato, twopi, circ, fdp), @var{circular} o
-@var{spring_embedding}.
+@var{spring_embedding} or @var{planar_embedding}; @var{planar_embedding} s@'lo est@'a
+disponible para grafos planares 2-conectados. Si @code{program=spring_embedding},
+se puede especificar un conjunto de v@'ertices de posici@'on fija con la opci@'on 
+@var{fixed_vertices}.
+@item
+@dfn{fixed_vertices=[]}: especifica una lista de v@'ertices con posiciones fijas en
+un pol@'{@dotless{i}}gono regular. Se puede utilizar cuando @code{program=spring_embedding}.
 @end itemize
 
 Ejemplo 1:

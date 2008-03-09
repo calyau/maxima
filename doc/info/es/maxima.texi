@@ -507,7 +507,8 @@ mnewton
 numericalio
 
 * Introducci@'on a numericalio::
-* Funciones y variables para numericalio::
+* Funciones y variables para entrada y salida en formato texto::
+* Funciones y variables para entrada y salida en formato binario::
 
 opsubst
 

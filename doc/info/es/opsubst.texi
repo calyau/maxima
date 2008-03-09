@@ -58,7 +58,7 @@ La representaci@'on interna de -a*b es *(-1,a,b), de modo que
 (%o11)                  [- 1, a, b]
 @end example
 
-Si alguno de los operadores no es un s@'{@dotless{i}} de Maxima,
+Si alguno de los operadores no es un s@'{@dotless{i}}mbolo de Maxima,
 se emitir@'a un mensaje de error:
 @example
 (%i12) opsubst(a+b,f, f(x));

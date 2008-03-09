@@ -1,4 +1,4 @@
-@c english version 1.12
+@c english version 1.14
 @menu
 * Introducci@'on al procesamiento de cadenas::
 * Funciones y variables para entrada y salida::
@@ -164,6 +164,81 @@ Ejemplo:
 (%i7) close(s)$
 @end example
 
+@deffn {Funci@'on} bprintf (@var{dest}, @var{bigfloat})
+@deffnx {Funci@'on} bprintf (@var{dest}, @var{bigfloat}, @var{width})
+@deffnx {Funci@'on} bprintf (@var{dest}, @var{bigfloat}, @var{width}, @var{places})
+@deffnx {Funci@'on} bprintf (@var{dest}, @var{bigfloat}, @var{width}, @var{places}, @var{b0})
+Formatea n@'umeros decimales grandes (@i{bigfloats}) para imprimir.
+
+@var{dest} puede ser @code{true}, @code{false} o un flujo de salida hacia una cadena o fichero.
+Cuando @var{dest} toma el valor @code{false}, el valor devuelto es una cadena con el n@'umero
+decimal grande formateado; en cambio, si se le asigna @code{true} o un flujo, la funci@'on
+devuelve el valor @code{false} al tiempo que imprime @var{bigfloat}.
+
+@var{bigfloat} puede ser un n@'umero decimal grande o una constante real que se convertir@'a
+a n@'umero decimal grande seg@'un la precisi@'on indicada por la variable global @code{fpprec}.
+
+Los par@'ametros opcionales @var{width}, @var{places} y @var{b0} toman el valor @code{false}
+por defecto. Si a @var{width} se le asigna un valor entero, la cadena devuelta contendr@'a en
+su lado izquierdo tantos espacios como sean necesarios para que haya al menos un total de @var{width}
+caracteres. Si a @var{places} se le asigna un valor entero, el resultado es exacto un n@'umero de
+posiciones igual a @var{places}. Cuando a @var{b0} se le asigna el valor @code{true}, la cadena
+@code{"b0"} es concatenada a la derecha del resultado, de tal forma que el resultado devuelto
+queda en formato @i{bigfloat}.
+
+Ejemplos:
+
+Sin par@'ametros adicionales, un decimal grande se imprime tal cual, supuesto que
+la precisi@'on sea lo suficientemente alta. Una constante tal como @code{%pi} o @code{2^-50}
+se convierte en n@'umero decimal grande.
+
+@c ===beg===
+@c fpprec:100$
+@c bprintf(true,5.5b0^25);
+@c bprintf(true,2^-50)$
+@c ===end===
+@example
+(%i1) fpprec:100$
+(%i2) bprintf(true, 5.5b0^25);
+3228993995007387460.5247453153133392333984375
+(%o2)                          false
+(%i3) bprintf(true, 2^-50)$
+0.00000000000000088817841970012523233890533447265625
+@end example
+
+Haciendo uso de los par@'ametros opcionales:
+
+@c ===beg===
+@c fpprec:100$
+@c (printf(true,"|"), bprintf(true,5.5b0^25,45,5), printf(true,"|"))$
+@c bprintf(false,5.5b0^25,false,20,true);
+@c parse_string(%);
+@c ===end===
+@example
+(%i1) fpprec:100$
+(%i1) (printf(true,"|"), bprintf(true, 5.5b0^25, 45, 5), printf(true,"|"))$
+|                    3228993995007387460.52475|
+(%i2) bprintf(false, 5.5b0^25, false, 20, true);
+(%o2)         3228993995007387460.52474531531333923340b0
+(%i3) parse_string(%);
+(%o3)         3.2289939950073874605247453153133392334b18
+@end example
+
+El proceso de lectura, evaluaci@'on e impresi@'on depende de @code{fpprec}:
+
+@c ===beg===
+@c fpprec:16$
+@c bprintf(true, 1.12345678901234567890b0)$
+@c bprintf(true, 5.5b0^25)$
+@c ===end===
+@example
+(%i1) fpprec:16$
+(%i2) bprintf(true, 1.12345678901234567890b0)$
+1.123456789012346
+(%i3) bprintf(true, 5.5b0^25)$
+3228993995007387000.0
+@end example
+@end deffn
 
 @deffn {Funci@'on} close (@var{stream}) 
 Cierra el flujo de datos @var{stream} y devuelve @code{true} si @var{stream} hab@'{@dotless{i}}a
@@ -256,11 +331,15 @@ La siguiente descripci@'on y los ejemplos pueden dar una idea de c@'omo usar @co
    ~@{       iteraci@'on, ~@} termina
 @end example
 
-N@'otese que no hay un formato especificado para n@'umeros decimales
-grandes (@i{big floats}). Sin embargo, estos n@'umeros pueden escribirse
-utilizando simplemente la directiva @code{~a}. La directiva @code{~s}
-imprime cadenas encerradas entre "comillas dobles", lo cual se puede
-evitar utilizando @code{~a}.
+
+
+Please note that @code{printf} offers no format specifier for bigfloats. 
+@code{printf} converts a real input parameter of type bigfloat to double-float 
+and it can be printed by using a @code{~f} or @code{~a} directive. 
+See @code{bprintf} for printing formatted bigfloats.
+
+La directiva @code{~s} imprime cadenas encerradas entre "comillas dobles",
+lo cual se puede evitar utilizando @code{~a}.
 Por otro lado, la directiva @code{~[} est@'a indexada a partir del cero.
 Por @'ultimo, indicar que algunas directivas no funcionan en Maxima, como
 por ejemplo @code{~:[}.
@@ -606,7 +685,7 @@ N@'otese que al primer car@'acter de @var{string} le corresponde la posici@'on 1
 @deffnx {Funci@'on} sinvertcase (@var{string}, @var{start})  
 @deffnx {Funci@'on} sinvertcase (@var{string}, @var{start}, @var{end})  
 Devuelve la misma cadena @var{string} pero con todos sus caracteres desde la
-posici@'on @var{start} hasta @var{end} quedan invertidos, esto es, las
+posici@'on @var{start} hasta @var{end} invertidos, esto es, las
 may@'usculas se convierten en min@'usculas y @'estas en may@'usculas.
 Si no se incluye el argumento @var{end}, se invierten todos los caracteres 
 desde @var{start} hasta el final de la cadena.
