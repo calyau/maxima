@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
 @c File=Function.texi 
-@c OriginalRevision=1.51
+@c OriginalRevision=1.52
 @c TranslatedBy: (c) 2007-05 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 @menu
@@ -282,6 +282,26 @@ block ([x: 1], expr1, ..., exprn)
 (%o3)          [a = 17, b = 29, c - b - a = 1683]
 (%i4) macroexpand (show_values (a, b, c - a - b));
 (%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
+@end example
+
+»спользу€ функцию нескольких аргументов,
+создадим другую функцию, у которой некоторые аргументы
+имеют фиксированное значение.
+
+@c ===beg===
+@c curry (f, [a]) :=
+@c         buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+@c by3 : curry ("*", 3);
+@c by3 (a + b);
+@c ===end===
+
+@example
+(%i1) curry (f, [a]) :=
+        buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+(%i2) by3 : curry ("*", 3);
+(%o2)        lambda([[x]], apply(*, append([3], x)))
+(%i3) by3 (a + b);
+(%o3)                       3 (b + a)
 @end example
 
 @opencatbox
