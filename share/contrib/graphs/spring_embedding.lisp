@@ -44,8 +44,7 @@
 
 (defun repulsive-force (d)
   (let ((d (max d *epsilon-distance*)))
-    (/ (* *optimal-distance* *optimal-distance*) d 100))
-  0)
+    (/ (* *optimal-distance* *optimal-distance*) d 100)))
 
 (defun distance (p1 p2)
   (let ((dx (- (first p1)
@@ -88,7 +87,7 @@
 	  (setf (gethash v vertex-displacement) (list 0 0)))
 
 	;; calculate repulsive forces
-	(when (null fixed-vertices)
+	(when (null (cdr fixed-vertices))
 	  (dolist (v (vertices g))
 	    (let ((v-pos (gethash v *vertex-position*)))
 	      (dolist (u (vertices g))
