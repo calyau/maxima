@@ -339,6 +339,7 @@ Transforma @var{expr} combinando todos los t@'erminos de @var{expr} que tengan d
 
 Haciendo @code{pfeformat: true} y utilizando @code{combine} se consiguen resultados similares a aqu@'ellos que se pueden obtener con  @code{rncombine}, pero @code{rncombine} realiza el paso adicional de multiplicar denominadores num@'ericos. Esto da como resultado expresiones en las que se pueden reconocer algunas cancelaciones.
 
+Antes de utilizar esta funci@'on ejec@'utese @code{load(rncomb)}.
 @end deffn
 
 @deffn {Funci@'on} scalarp (@var{expr})

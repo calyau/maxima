@@ -436,6 +436,7 @@ passo adicional de multiplicar cruzado fatores num@'{e}rios do denominador.
 Esses resultados em forma ideal, e a possibilidade de reconhecer alguns
 cancelamentos.
 
+Para usar essa fun@value{cedilha}@~ao escreva primeiramente @code{load(rncomb)}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
