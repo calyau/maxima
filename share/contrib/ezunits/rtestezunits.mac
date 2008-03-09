@@ -295,11 +295,11 @@ cc: bar[11] * (57 ` s/kg) * (10 ` acre);
 -40 ` degC;
 
 1 ` acre*ft ` m^3;
-5445000000000/4165509529 ` m^3;
+4840000000000000000/3923816355038643 ` m^3;
 
 /* Stefan-Boltzmann constant */
 56697/10000/10^8 ` W/m^2/K^4 ` Btu/h/ft^2/R^4;
-18899/10619175641040 ` Btu/h/ft^2/R^4;
+9449500/5518946497523697 ` Btu/h/ft^2/R^4;
 
 declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*kWh);
 done;
@@ -310,4 +310,31 @@ done;
 1 ` MMBtu/d ` kW;
 5275/432 ` kW;
 
+(load (physical_constants), 0);
+0;
 
+map (lambda ([x], featurep (x, physical_constant)), [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
+[true, true, true, true, true, true, true];
+
+map (constantp, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
+[true, true, true, true, true, true, true];
+
+map (units, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
+[m/s, N/A^2, s*A^2/(m*N), m*N/(s*A^2), m^3/(kg*s), J*s, J*s];
+
+map (dimensions, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
+[length/time, length*mass/charge^2, charge^2*time/(length^2*mass),
+ length^2*mass/(charge^2*time), length^3/(mass*time),
+ length^2*mass/time, length^2*mass/time];
+
+fundamental_dimensions;
+[length, mass, time, charge, temperature, quantity];
+
+map (dimensions_as_list, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
+[[1, 0, -1, 0, 0, 0],
+ [1, 1, 0, -2, 0, 0],
+ [-2, -1, 1, 2, 0, 0],
+ [2, 1, -1, -2, 0, 0],
+ [3, -1, -1, 0, 0, 0],
+ [2, 1, -1, 0, 0, 0],
+ [2, 1, -1, 0, 0, 0]];
