@@ -62,7 +62,9 @@ units(e%) :=
   if atom(e%) then 
     if featurep (e%, 'dimensional) then
       if get (e%, units) = false then 'units(e%) else get (e%, units)
-    else 1
+    elseif ?mget (e%, 'numer) # false
+      then units (?mget (e%, 'numer))
+      else 1
   else if mapatom (e%) then units (op (e%))  /* mapatom but not atom => subscripted */
   else if unitop_p(e%) then second(e%)
   else if featurep (op(e%), 'dimensional) then units(op(e%))
