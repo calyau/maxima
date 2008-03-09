@@ -252,10 +252,12 @@ aplicado ap@'os um @code{factcomb}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} factor (@var{expr})
+@deffnx {Fun@value{cedilha}@~ao} factor (@var{expr}, @var{p})
+
 Factoriza a express@~ao @var{expr}, contendo qualquer n@'umero de
 vari@'aveis ou fun@value{cedilha}@~oes, em factores irredut@'{@dotless{i}}veis sobre os inteiros.
-@code{factor (@var{expr}, p)} factoriza @var{expr} sobre o campo dos inteiros com um elemento
-adjunto cujo menor polin@'omio @'e p.
+@code{factor (@var{expr}, @var{p})} factoriza @var{expr} sobre o campo dos inteiros com um elemento
+adjunto cujo menor polin@'omio @'e @var{p}.
 
 @code{factor} usa a fun@value{cedilha}@~ao @code{ifactors} para factorizar inteiros.
 
