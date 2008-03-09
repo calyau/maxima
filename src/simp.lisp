@@ -822,8 +822,7 @@
 	;;        ($lognumer (cond ((equal y -1) 0) (t (log (- y)))))
 	;;        (t (add2 (log (- y)) (mul2 '$%i %pi-val)))))
 	((and $lognegint (maxima-integerp y) (eq ($sign y) '$neg))
-	 (add2 '((mtimes simp) $%i $%pi)
-	       (cond ((equal y -1) 0) (t (list '(%log simp) (neg y))))))
+	 (add (mul '$%i '$%pi) (take '(%log) (neg y))))
 	(t (eqtest (list '(%log) y) x))))
 
 (defun simpln1 (w)
