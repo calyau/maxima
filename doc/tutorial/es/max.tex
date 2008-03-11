@@ -57,13 +57,17 @@
 % $ latex2html max.tex
 
 \begin{document}
+
 \maketitle
+
 \newpage
-\tableofcontents
+\thispagestyle{empty}
+\mbox{}
 \newpage
 
-\bigskip
 
+
+\thispagestyle{empty}
 \begin{quote}
 Copyright \copyright 2004-2008 Mario Rodríguez Riotorto
 
@@ -80,10 +84,18 @@ the Free Software Foundation. See the
 GNU General Public License for more details at \\
 http://www.gnu.org/copyleft/gpl.html}
 \end{quote}
-
-\bigskip
-
 \newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
+
+
+
+\addtocounter{page}{-3}
+\tableofcontents
+\newpage
+
 
 \newpage
 \section{Introducción}
