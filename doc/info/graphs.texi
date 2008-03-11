@@ -2038,6 +2038,13 @@ are displayed. See the @var{point_type} option for the @code{draw} package.
 @dfn{show_vertex_color=c}: color used for displaying vertices in the
 @var{show_vertices} list.
 @item
+@dfn{vertex_partition=part}: a partition
+@code{[[v1,v2,...],...,[vk,...,vn]]} of the vertices of the graph. The
+vertices of each list in the partition will be drawn in a different color.
+@item
+@dfn{vertex_coloring=col}: coloring of the vertices. The coloring @var{col} must
+be specified in the format as returned by @var{vertex_coloring}.
+@item
 @dfn{edge_color=c}: color used for displaying edges.
 @item
 @dfn{edge_width=width}: the width of edges.
@@ -2055,6 +2062,13 @@ using a different color.
 @item
 @dfn{show_edge_type=type}: defines how edges in @var{show_edges} are
 displayed. See the @var{line_type} option for the @code{draw} package.
+@item
+@dfn{edge_partition=partition}: a partition
+@code{[[e1,e2,...],...,[ek,...,em]]} of edges of the graph. The edges of
+each list in the partition will be drawn using a different color.
+@item
+@dfn{edge_coloring=col}: the coloring of edges. The coloring @var{col} must
+be specified in the format as returned by the function @var{edge_coloring}.
 @item
 @dfn{redraw=r}: if @var{redraw} is @code{true}, vertex positions are recomputed
 even if the positions have been saved from a previous drawing of the
