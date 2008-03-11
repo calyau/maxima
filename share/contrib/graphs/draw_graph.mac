@@ -21,6 +21,7 @@
 define_variable(gp_file_out, "out.txt", any)$
 define_variable(gp_file_in, "in.txt", any)$
 define_variable(draw_graph_program, 'spring_embedding, any)$
+define_variable(draw_graph_terminal, 'screen, any)$
 
 if draw_loaded#true then load("draw")$
 
@@ -83,27 +84,37 @@ with_parameters ([L]) ::= buildq (
 
 draw_graph(G, [options]) := block(
   [
+   maperror : false, mapprint : false,
    wxplot_size : [300,300],
    program : draw_graph_program, 
    show_id : false, show_label : false, show_weight : false,
    vertex_color : 'red, text_color : 'blue, edge_color : 'black,
    show_vertex_color : 'blue, show_edge_color : 'blue,
    vertex_type : 7, show_vertex_type : 7,
+   vertex_size : 2, show_vertex_size : 2,
    edge_type : solid, show_edge_type : solid,
+   edge_width : 1, show_edge_width : 2,
    head_length : 0.1, head_angle : 15,
    vertices:[], edges:[], v_pos, vertex_labels:[], edge_weights:[],
-   show_vertices : [], vertices1 : [],
-   vertex_size : 2, show_vertex_size : 2,
-   show_edges : [], edges1 : [],
-   edge_width : 1, show_edge_width : 2,
+   show_vertices : [], show_edges : [],
+   label_alignment : 'left, label_padding: "  ",
    command, x_max, y_max, gp_options,
-   terminal : 'screen, file_name : "graph",
+   terminal : draw_graph_terminal, file_name : "graph",
    gp_file_in : temp_filename(gp_file_in),
    gp_file_out : temp_filename(gp_file_out),
    redraw : false, directed : false,
-   label_alignment : 'left, label_padding: "  ",
    fixed_vertices : [],
-   spring_embedding_depth : 50
+   spring_embedding_depth : 50,
+   vertex_colors : [red, blue, "dark-green", orange, purple, cyan, brown],
+   edge_colors : [red, blue, "dark-green", orange, purple, cyan, brown],
+   vertex_partition : [],
+   vertex_coloring : [],
+   vertex_sizes : [],
+   vertex_types : [],
+   edge_partition : [],
+   edge_coloring : [],
+   edge_types : [],
+   edge_widths : []
   ],
 
   if not(is_graph(G)) and not(is_digraph(G)) then
@@ -150,29 +161,68 @@ draw_graph(G, [options]) := block(
           2*(part(u, 2, 2) - (y_min+y_max)/2)/(y_max-y_min)]]),
       v_pos),
 
-    /* Setup edge positions */
-    for e in edges(G) do (
-      if directed=true then block(
-        [p1 : assoc(e[1], v_pos), p2 : assoc(e[2], v_pos)],
-        edges : cons(vector(p1, p2-p1), edges))
-      else
-        edges : cons(points([assoc(e[1], v_pos), assoc(e[2], v_pos)]), edges)),
-    for e in show_edges do (
-      if directed=true then block(
-        [p1 : assoc(e[1], v_pos), p2 : assoc(e[2], v_pos)],
-        edges1 : cons(vector(p1, p2-p1), edges1))
-      else
-        edges1: cons(points([assoc(e[1], v_pos), assoc(e[2], v_pos)]), edges1)),
+    /* Setup edges */
+    if show_edges#[] then (
+      for e in edges(G) do
+        if not(member(e, show_edges)) then
+          edges : cons(e, edges),
+      edge_partition : [edges, show_edges],
+      edge_widths : [edge_width, show_edge_width],
+      edge_types : [edge_type, show_edge_type],
+      edge_colors : [edge_color, show_edge_color])
+    else if edge_coloring#[] then block(
+      [ch:first(edge_coloring), coloring:second(edge_coloring)],
+      edge_partition : makelist(
+        map(first, sublist(coloring, lambda([u], second(u)=c))),
+        c, 1, ch))
+    else if edge_partition=[] then (
+      edge_colors : [edge_color],
+      edge_types : [edge_type],
+      edge_widths : [edge_width],
+      edge_partition : [edges(G)]),
 
+    edges : apply(append,
+      map(lambda([c,t,w,edg],
+        append(['color=c, 'line_type=t, 'line_width=w],
+          map(lambda([u],
+             block([p1:assoc(u[1], v_pos), p2:assoc(u[2], v_pos)],
+               if directed=true then
+                 vector(p1, p2-p1)
+               else
+                 points([p1, p2]))),
+             edg))),
+       makelist(edge_colors[mod(i, length(edge_colors))+1], i, 0, length(edge_partition)-1),
+       if edge_types=[] then makelist(edge_type, i, 1, length(edge_partition)) else edge_types,
+       if edge_widths=[] then makelist(edge_width, i, 1, length(edge_partition)) else edge_widths,
+       edge_partition)),
 
-    /* Setup vertex positions */
-    for v in vertices(G) do
-      if not(member(v, show_vertices)) then
-        vertices : cons(assoc(v, v_pos), vertices),
-    if length(vertices) > 0 then vertices : [points(vertices)],
-    for v in show_vertices do (
-      vertices1 : cons(assoc(v, v_pos), vertices1)),
-    if length(vertices1) > 0 then vertices1 : [points(vertices1)],
+    /* Setup vertices */
+    if show_vertices#[] then (
+      for v in vertices(G) do
+        if not(member(v, show_vertices)) then
+          vertices : cons(v, vertices),
+      vertex_colors : [vertex_color, show_vertex_color],
+      vertex_sizes : [vertex_size, show_vertex_size],
+      vertex_types : [vertex_type, show_vertex_type],
+      vertex_partition : [vertices, show_vertices])
+    else if vertex_coloring#[] then block(
+      [ch:first(vertex_coloring), coloring:second(vertex_coloring)],
+      vertex_partition : makelist(
+        map(first, sublist(coloring, lambda([u], second(u)=c))),
+        c, 1, ch))
+    else if vertex_partition=[] then (
+      vertex_colors : [vertex_color],
+      vertex_sizes : [vertex_size],
+      vertex_types : [vertex_type],
+      vertex_partition : [vertices(G)]),
+      
+    vertices : apply(append,
+      map(lambda([c,t,s,vrt],
+        ['color=c, 'point_type=t, 'point_size=s, points(map(lambda([u], assoc(u, v_pos)), vrt))]),
+      makelist(vertex_colors[mod(i, length(vertex_colors))+1], i, 0, length(vertex_partition)-1),
+      if vertex_types=[] then makelist(vertex_type, i, 1, length(vertex_partition)) else vertex_types,
+      if vertex_sizes=[] then makelist(vertex_size, i, 1, length(vertex_partition)) else vertex_sizes,
+      vertex_partition)),
 
     /* Setup vertex labels or ids */
     if show_id=true then (
@@ -207,7 +257,6 @@ draw_graph(G, [options]) := block(
     /* plot the graph */
     apply(command, append(
        [
-        'color = edge_color,
         'point_type = 0,
         'line_type = edge_type,
         'line_width = edge_width,
@@ -217,24 +266,11 @@ draw_graph(G, [options]) := block(
        ],
         edges,
        [
-        'color = show_edge_color,
-        'line_width = show_edge_width,
-        'line_type = show_edge_type
-       ],
-        edges1,
-       [
         'points_joined = false,
         'point_size = vertex_size,
-        'point_type = vertex_type,
-        'color = vertex_color
+        'point_type = vertex_type
        ],
         vertices,
-       [
-        'color = show_vertex_color,
-        'point_size = show_vertex_size,
-        'point_type = show_vertex_type
-       ],
-        vertices1,
        [
         'color = text_color,
         'label_alignment = label_alignment
