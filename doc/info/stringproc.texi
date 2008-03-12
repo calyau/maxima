@@ -146,87 +146,6 @@ and an integer: ~20t~d~%"$
 (%i7) close(s)$
 @end example
 
-@deffn {Function} bprintf (@var{dest}, @var{bigfloat})
-@deffnx {Function} bprintf (@var{dest}, @var{bigfloat}, @var{width})
-@deffnx {Function} bprintf (@var{dest}, @var{bigfloat}, @var{width}, @var{places})
-@deffnx {Function} bprintf (@var{dest}, @var{bigfloat}, @var{width}, @var{places}, @var{b0})
-Prints formatted bigfloats. 
-
-@var{dest} may be @code{true}, @code{false} or an output stream to a string or file. 
-If @var{dest} is @code{false}, the return value is a string containing the formatted bigfloat,  
-if @code{true} or a stream, @var{bigfloat} is printed and @code{false} returned. 
-
-@var{bigfloat} may be a real bigfloat number or a real constant, 
-which then will be converted to a bigfloat with respect to the environment precision @code{fpprec}. 
-
-The optional parameters @var{width}, @var{places} and @var{b0} are @code{false} by default. 
-If @var{width} is set to an integer, the output resp. returned string is blank padded on the left 
-to a total amount of at least @var{width} characters.
-If @var{places} is set to an integer, the output is accurate to @var{places} decimal places, 
-presumed that @code{fpprec} has been chosen accordingly. 
-To even rounding is used.
-If @var{b0} is set to @code{true}, the string @code{"b0"} is concatenated on the right.  
-In this case the returned string can be parsed to a bigfloat.
-
-Examples:
-
-Without optional parameters a bigfloat is printed as it is, 
-presuming a sufficient high precision. 
-A constant like @code{%pi} or @code{2^-50} will be converted to a bigfloat.
-
-@c ===beg===
-@c fpprec:100$
-@c bprintf(true,5.5b0^25);
-@c bprintf(true,2^-50)$
-@c ===end===
-@example
-(%i1) fpprec:100$
-(%i2) bprintf(true, 5.5b0^25);
-3228993995007387460.5247453153133392333984375
-(%o2)                          false
-(%i3) bprintf(true, 2^-50)$
-0.00000000000000088817841970012523233890533447265625
-@end example
-
-Using the optional parameters:
-
-@c ===beg===
-@c fpprec:100$
-@c (printf(true,"|"), bprintf(true,5.5b0^25,45,5), printf(true,"|"))$
-@c bprintf(false,5.5b0^25,false,20,true);
-@c parse_string(%);
-@c ===end===
-@example
-(%i1) fpprec:100$
-(%i1) (printf(true,"|"), bprintf(true, 5.5b0^25, 45, 5), printf(true,"|"))$
-|                    3228993995007387460.52475|
-(%i2) bprintf(false, 5.5b0^25, false, 20, true);
-(%o2)         3228993995007387460.52474531531333923340b0
-(%i3) parse_string(%);
-(%o3)         3.2289939950073874605247453153133392334b18
-@end example
-
-The parse, evaluate and print process depends on @code{fpprec}:
-
-@c ===beg===
-@c fpprec:16$
-@c bprintf(true, 1.12345678901234567890b0)$
-@c bprintf(true, 5.5b0^25)$
-@c ===end===
-@example
-(%i1) fpprec:16$
-(%i2) bprintf(true, 1.12345678901234567890b0)$
-1.123456789012346
-(%i3) bprintf(true, 5.5b0^25)$
-3228993995007387000.0
-@end example
-
-@opencatbox
-@category{File output} @category{Package stringproc}
-@closecatbox
-
-@end deffn
-
 @deffn {Function} close (@var{stream}) 
 Closes @var{stream} and returns @code{true} if @var{stream} had been open. 
 
@@ -342,8 +261,9 @@ See a Lisp reference for more information.
    ~f       floating point
    ~e       scientific notation
    ~g       ~f or ~e, depending upon magnitude
-   ~a       as printed by Maxima function print
-   ~s       strings enclosed in "double quotes"
+   ~h       bigfloat
+   ~a       uses Maxima function string
+   ~s       like ~a, but output enclosed in "double quotes"
    ~~       ~
    ~<       justification, ~> terminates
    ~(       case conversion, ~) terminates 
@@ -351,15 +271,8 @@ See a Lisp reference for more information.
    ~@{       iteration, ~@} terminates
 @end example
 
-Please note that @code{printf} offers no format specifier for bigfloats. 
-@code{printf} converts a real input parameter of type bigfloat to double-float 
-and it can be printed by using a @code{~f} or @code{~a} directive. 
-See @code{bprintf} for printing formatted bigfloats.
-
-@code{~s} prints strings enclosed in "double quotes", you can avoid this by using @code{~a}.
 Note that the selection directive @code{~[} is zero-indexed.
-Also note that there are some directives, which do not work in Maxima.
-For example, @code{~:[} fails.
+Also note that the directive ~* is not supported.
 
 @c ===beg===
 @c printf( false, "~a ~a ~4f ~a ~@@r", 
