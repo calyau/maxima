@@ -3,7 +3,7 @@
 ;;;;
 ;;;;  Maxima string processing
 ;;;;
-;;;;  Version       : 2.0 (january 2008)
+;;;;  Version       : 3.0 (march 2008)
 ;;;;  Copyright     : 2005-2008 Volker van Nek
 ;;;;  Licence       : GPL2
 ;;;;
@@ -51,7 +51,7 @@
 (defun $make_string_input_stream (str &optional (start 1) (end nil))  ;; 1-based indexing!
   (if (not (stringp str))
     (merror "make_string_input_stream: first argument must be a string."))
-  (or (ignore-errors 
+  (or (ignore-errors ;; suppresses Lisp error outputs with internal 0-based indexing 
         (make-string-input-stream str (1- start) end))
       (merror "make_string_input_stream: improper start or end index.")))
 
@@ -109,86 +109,10 @@
   (terpri stream))
 
 
-;;  $printf makes almost all features of CL-function format available
-;;
-(defun $printf (stream ctrls &rest args)
-  (cond ((and (not (member stream '(t nil))) (not (streamp stream)))
-           (merror "printf: first argument must be `true', `false' or a stream."))
-        ((not (stringp ctrls))
-           (merror "printf: second argument must be a string.")))
-  (let (body)
-    (dolist (arg args)
-       (setq body (append body (list (printf1 arg)))) )   
-    (eval `(format ,stream ,ctrls ,@body)) ))
-;;
-(defun printf1 (arg) 
-  (cond ((or (mstringp arg) (numberp arg)) arg) ;; no Maxima rationals
-        ((bigfloatp arg) (fp2flo arg))  ;; bigfloat to float conversion
-        ((and (symbolp arg) (not (boundp arg)))
-           (subseq (print-invert-case arg) 1))
-        ((and (listp arg) (listp (car arg)) (eq (caar arg) 'mlist))
-           `(quote ,(printf2 (cdr arg) nil))) 
-        (t (setq arg ($sconcat arg)))))
-;;
-(defun printf2 (todo done) ;; recursion over nested lists
-  (if (null todo)
-    (nreverse done)
-    (printf2 
-      (cdr todo)
-      (cons (let ((x (car todo)))
-              (if (and (listp x) (listp (car x)) (eq (caar x) 'mlist))
-                (printf2 (cdr x) nil)
-                (printf1 x)))
-            done))))
+(defun $tab () $tab) ;; returns Maxima tab character; can be autoloaded
 
 
-;; formatted printing of bigfloats:
-;;
-(defun $bprintf (stream bf &optional width decpl b0?)
-  (cond ((and (not (member stream '(t nil))) (not (streamp stream)))
-           (merror "bprintf: first argument must be `true', `false' or a stream."))
-        ((and (not (bigfloatp bf)) 
-           (if (and ($constantp bf) ($freeof '$%i bf))
-             (setq bf ($bfloat bf))
-             (merror "bprintf: second argument must be a real number or constant.")))))
-  (and decpl
-    (let ((m (intofp (expt 10 decpl))))
-      (setq bf (fptimes* (cdr bf) m))
-      (setq bf (meval `((%round) ,(bcons bf))))
-      (setq bf (bcons (fpquotient (intofp bf) m))) ))  
-  (let* ((s (string-left-trim "-" (meval `(($string) ,bf))))
-         (sgn (signum (cadr bf)))
-         (part1 (subseq s 0 1))
-         (pos (position #\b s))
-         (part2 (string-right-trim "0" (subseq s 2 pos)))
-         (len (length part2))
-         (pow (parse-integer (subseq s (1+ pos) nil))))
-    (cond ((and (> pow 0) (> len pow))
-             (setq s (concatenate 'string part1 (subseq part2 0 pow) "." (subseq part2 pow nil)))
-             (and decpl (> decpl (- len pow))
-               (setq s (concatenate 'string s (make-string (+ decpl pow (- len)) :initial-element #\0)))))
-          ((> pow 0)
-             (setq s (concatenate 'string part1 part2 (make-string (- pow len) :initial-element #\0) ".0"))
-             (and decpl (> decpl 0)
-               (setq s (concatenate 'string s (make-string (1- decpl) :initial-element #\0)))))
-          ((zerop pow)             
-             (setq s (concatenate 'string part1 (if (zerop len) ".0" ".") part2))
-             (if (zerop len) (setq len (1+ len)))
-             (and decpl (> decpl len)
-               (setq s (concatenate 'string s (make-string (- decpl len) :initial-element #\0)))))
-          ((< pow 0)
-             (setq s (concatenate 'string "0." (make-string (- 0 pow 1) :initial-element #\0) part1 part2))
-             (and decpl (> decpl (- len pow))
-               (setq s (concatenate 'string s (make-string (+ decpl pow (- len)) :initial-element #\0))))))
-    (and decpl (zerop decpl)
-      (setq s (string-right-trim "0" s)))
-    (if (minusp sgn) 
-      (setq s (concatenate 'string "-" s)))
-    (and width (setq len (length s)) (> width len)
-      (setq s (concatenate 'string (make-string (- width len) :initial-element #\ ) s)))
-    (and b0?
-      (setq s (concatenate 'string s "b0")))
-    (format stream "~a" s)))
+;;  $printf now in printf.lisp
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -369,7 +293,9 @@
            (merror "split: optional second argument must be a character or string."))
         ((not (member multiple? '(t nil)))
            (merror "split: optional third argument must be `true' or `false'.")))
-  (cons '(mlist) (split str ds multiple?)))
+  (if (string= ds "")
+    ($charlist str)
+    (cons '(mlist) (split str ds multiple?))))
 ;;
 (defun split (str ds &optional (multiple? t))
   (let ((pos1 (search ds str)))
