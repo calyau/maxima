@@ -114,7 +114,7 @@
       ; point options
       (gethash '$point_size *gr-options*)    1
       (gethash '$point_type *gr-options*)    1
-      (gethash '$points_joined *gr-options*) nil
+      (gethash '$points_joined *gr-options*) nil ; other options are: true and $impulses
 
       ; polygon  options
       (gethash '$transparent *gr-options*) nil
@@ -215,6 +215,10 @@
                      (>= val 0 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Negative number: ~M " val)))
+      ($points_joined ; defined as true, false or $impulses
+            (if (member val '(t nil $impulses))
+              (setf (gethash opt *gr-options*) val)
+              (merror "Illegal points_joined option: ~M " val)) )
       (($line_type $xaxis_type $yaxis_type $zaxis_type) ; defined as $solid or $dots
             (case val
                ($solid (setf (gethash opt *gr-options*) 1))
@@ -257,7 +261,7 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "Unknown contour level description: ~M " val))))
-      (($points_joined $transparent $border $logx $logy $logz $head_both $grid
+      (($transparent $border $logx $logy $logz $head_both $grid
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
         $enhanced3d $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ztics_rotate
         $xtics_axis $ytics_axis $ztics_axis) ; true or false
@@ -486,6 +490,30 @@
 ;;     key
 ;;     line_type
 ;;     color
+(defun points-command ()
+  (let ((opt (get-option '$points_joined)))
+    (cond
+      ((null opt) ; draws isolated points
+         (format nil " ~a w p ps ~a pt ~a lc rgb '~a'"
+                 (make-obj-title (get-option '$key))
+                 (get-option '$point_size)
+                 (get-option '$point_type)
+                 (get-option '$color)))
+      ((eq opt t) ; draws joined points
+         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
+                 (make-obj-title (get-option '$key))
+                 (get-option '$point_size)
+                 (get-option '$point_type)
+                 (get-option '$line_width)
+                 (get-option '$line_type)
+                 (get-option '$color)))
+      (t  ; draws impulses
+         (format nil " ~a w i lw ~a lt ~a lc rgb '~a'"
+                 (make-obj-title (get-option '$key))
+                 (get-option '$line_width)
+                 (get-option '$line_type)
+                 (get-option '$color))))) )
+
 (defun points (arg1 &optional (arg2 nil))
    (let (x y xmin xmax ymin ymax pts)
       (cond ((and ($listp arg1)
@@ -536,19 +564,7 @@
       (update-ranges xmin xmax ymin ymax)
       (make-gr-object
          :name 'points
-         :command (if (get-option '$points_joined)
-                     (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
-                                 (make-obj-title (get-option '$key))
-                                 (get-option '$point_size)
-                                 (get-option '$point_type)
-                                 (get-option '$line_width)
-                                 (get-option '$line_type)
-                                 (get-option '$color))
-                     (format nil " ~a w p ps ~a pt ~a lc rgb '~a'"
-                                 (make-obj-title (get-option '$key))
-                                 (get-option '$point_size)
-                                 (get-option '$point_type)
-                                 (get-option '$color)) )
+         :command (points-command)
          :groups '((2 0)) ; numbers are sent to gnuplot in groups of 2
          :points (if (arrayp arg1)
                      (list arg1) 
@@ -615,19 +631,7 @@
       (update-ranges xmin xmax ymin ymax zmin zmax)
       (make-gr-object
          :name 'points
-         :command (if (get-option '$points_joined)
-                     (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
-                                 (make-obj-title (get-option '$key))
-                                 (get-option '$point_size)
-                                 (get-option '$point_type)
-                                 (get-option '$line_width)
-                                 (get-option '$line_type)
-                                 (get-option '$color))
-                     (format nil " ~a w p ps ~a pt ~a lc rgb '~a'"
-                                 (make-obj-title (get-option '$key))
-                                 (get-option '$point_size)
-                                 (get-option '$point_type)
-                                 (get-option '$color)) )
+         :command (points-command)
          :groups '((3 0)) ; numbers are sent to gnuplot in groups of 3, without blank lines
          :points (list pts) )  ))
 

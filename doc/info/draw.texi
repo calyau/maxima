@@ -1481,6 +1481,9 @@ Default value: 1
 @code{point_size} sets the size for plotted points. It must be a
 non negative number.
 
+This option has no effect when graphic option @code{point_type} is
+set to @code{dot}.
+
 This option affects the following graphic objects:
 @itemize @bullet
 @item
@@ -1565,7 +1568,10 @@ Example:
 @defvr {Graphic option} points_joined
 Default value: @code{false}
 
-If @code{points_joined} is @code{true}, points are joined by lines.
+When @code{points_joined} is @code{true}, points are joined by lines; when @code{false},
+isolated points are drawn. A third possible value for this graphic option is 
+@code{impulses}; in such case, vertical segments are drawn from points to the x-axis (2D)
+or to the xy-plane (3D).
 
 This option affects the following graphic objects:
 @itemize @bullet
@@ -2109,7 +2115,9 @@ See also @code{line_width}.
 @defvr {Graphic option} nticks
 Default value: 30
 
-@code{nticks} is the number of sample points used by the plotting routine.
+In 2d, @code{nticks} gives the initial number of points used by the
+adaptive plotting routine for explicit objects. It is also the
+number of points that will be shown in parametric and polar curves.
 
 This option affects the following graphic objects:
 @itemize @bullet
@@ -2619,6 +2627,15 @@ Example:
         key           = "Automatic abscissas",
         color         = red,
         points([2,12,8]))$
+@end example
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        points_joined = impulses,
+        line_width    = 2,
+        color         = red,
+        points(makelist([random(20),random(50)],k,1,10)))$
 @end example
 
 @b{3D}

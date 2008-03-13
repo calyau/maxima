@@ -1,4 +1,4 @@
-@c version 1.23
+@c version 1.26
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1248,6 +1248,8 @@ Valor por defecto: 1
 @code{point_size} establece el tama@~no de los puntos dibujados. Debe
 ser un n@'umero no negativo.
 
+Esta opci@'on no tiene efecto alguno cuando a la opci@'on gr@'afica
+@code{point_type} se le ha dado el valor @code{dot}.
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -1324,7 +1326,10 @@ Ejemplo:
 @defvr {Opci@'on gr@'afica} points_joined
 Valor por defecto: @code{false}
 
-Cuando @code{points_joined} vale @code{true}, los puntos se unen con segmentos.
+Cuando @code{points_joined} vale @code{true}, los puntos se unen con segmentos;
+si vale @code{false}, se dibujar@'an puntos aislados. Un tercer valor posible
+para esta opci@'on gr@'afica es @code{impulses}; en tal caso, se dibujar@'an
+segmentos verticales desde los puntos hasta el eje-x (2D) o hasta el plano-xy (3D).
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -1802,7 +1807,9 @@ V@'ease tambi@'en @code{line_width}.
 @defvr {Opci@'on gr@'afica} nticks
 Valor por defecto: 30
 
-@code{nticks} es el n@'umero de puntos muestreados por la rutina gr@'afica.
+En 2d, @code{nticks} es el n@'umero de puntos a utilizar por el programa
+adaptativo que genera las funciones expl@'{@dotless{i}}citas. Tambi@'en es el n@'umero de
+puntos que se representan en las curvas param@'etricas y polares.
 
 Esta opci@'on afecta a los siguientes objetos gr@'aficos:
 @itemize @bullet
@@ -2245,6 +2252,15 @@ Ejemplo:
         key           = "Automatic abscissas",
         color         = red,
         points([2,12,8]))$
+@end example
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        points_joined = impulses,
+        line_width    = 2,
+        color         = red,
+        points(makelist([random(20),random(50)],k,1,10)))$
 @end example
 
 @b{3D}
