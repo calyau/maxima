@@ -1,4 +1,4 @@
-@c version 1.26
+@c version 1.27
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -538,8 +538,8 @@ V@'eanse tambi@'en @code{xaxis_width}, @code{xaxis_type} y @code{xaxis_color}.
 @defvr {Opci@'on gr@'afica} xaxis_width
 Valor por defecto: 1
 
-@code{xaxis_width} is the width of the @var{x} axis.
-Its value must be a positive number.
+@code{xaxis_width} es el ancho del eje @var{x}.
+Su valor debe ser un n@'umero positivo.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -561,8 +561,8 @@ V@'eanse tambi@'en @code{xaxis}, @code{xaxis_type} y @code{xaxis_color}.
 @defvr {Opci@'on gr@'afica} xaxis_type
 Valor por defecto: @code{dots}
 
-@code{xaxis_type} indicates how the @var{x} axis is displayed; 
-possible values are @code{solid} and @code{dots}.
+@code{xaxis_type} indica c@'omo se debe dibujar el eje @var{x}; 
+valores admisibles son @code{solid} y @code{dots}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -584,8 +584,8 @@ V@'eanse tambi@'en @code{xaxis}, @code{xaxis_width} y @code{xaxis_color}.
 @defvr {Opci@'on gr@'afica} xaxis_color
 Valor por defecto: @code{"black"}
 
-@code{xaxis_color} specifies the color for the @var{x} axis. See
-@code{color} to know how colors are defined.
+@code{xaxis_color} especifica el color para el eje @var{x}. V@'ease
+@code{color} para ver c@'omo se definen los colores.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -629,8 +629,8 @@ V@'eanse tambi@'en @code{yaxis_width}, @code{yaxis_type} y @code{yaxis_color}.
 @defvr {Opci@'on gr@'afica} yaxis_width
 Valor por defecto: 1
 
-@code{yaxis_width} is the width of the @var{y} axis.
-Its value must be a positive number.
+@code{yaxis_width} es el ancho del eje @var{y}.
+Su valor debe ser un n@'umero positivo.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -652,8 +652,8 @@ V@'eanse tambi@'en @code{yaxis}, @code{yaxis_type} y @code{yaxis_color}.
 @defvr {Opci@'on gr@'afica} yaxis_type
 Valor por defecto: @code{dots}
 
-@code{yaxis_type} indicates how the @var{y} axis is displayed; 
-possible values are @code{solid} and @code{dots}.
+@code{yaxis_type} indica c@'omo se debe dibujar el eje @var{y}; 
+valores admisibles son @code{solid} y @code{dots}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -675,8 +675,8 @@ V@'eanse tambi@'en @code{yaxis}, @code{yaxis_width} y @code{yaxis_color}.
 @defvr {Opci@'on gr@'afica} yaxis_color
 Valor por defecto: @code{"black"}
 
-@code{yaxis_color} specifies the color for the @var{y} axis. See
-@code{color} to know how colors are defined.
+@code{yaxis_color} especifica el color para el eje @var{y}. V@'ease
+@code{color} para ver c@'omo se definen los colores.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -722,8 +722,8 @@ V@'eanse tambi@'en @code{zaxis_width}, @code{zaxis_type} y @code{zaxis_color}.
 @defvr {Opci@'on gr@'afica} zaxis_width
 Valor por defecto: 1
 
-@code{zaxis_width} is the width of the @var{z} axis.
-Its value must be a positive number. This option has no effect in 2D scenes.
+@code{zaxis_width} es el ancho del eje @var{z}.
+Su valor debe ser un n@'umero positivo. Esta opci@'on no tiene efecto alguno en escenas 2D.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -746,9 +746,9 @@ V@'eanse tambi@'en @code{zaxis}, @code{zaxis_type} y @code{zaxis_color}.
 @defvr {Opci@'on gr@'afica} zaxis_type
 Valor por defecto: @code{dots}
 
-@code{zaxis_type} indicates how the @var{z} axis is displayed; 
-possible values are @code{solid} and @code{dots}.
-This option has no effect in 2D scenes.
+@code{zaxis_type} indica c@'omo se debe dibujar el eje @var{z}; 
+valores admisibles son @code{solid} y @code{dots}.
+Esta opci@'on no tiene efecto alguno en escenas 2D.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -770,9 +770,9 @@ V@'eanse tambi@'en @code{zaxis}, @code{zaxis_width} y @code{zaxis_color}.
 @defvr {Opci@'on gr@'afica} zaxis_color
 Valor por defecto: @code{"black"}
 
-@code{zaxis_color} specifies the color for the @var{z} axis. See
-@code{color} to know how colors are defined. 
-This option has no effect in 2D scenes.
+@code{zaxis_color} especifica el color para el eje @var{z}. V@'ease
+@code{color} para ver c@'omo se definen los colores.
+Esta opci@'on no tiene efecto alguno en escenas 2D.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -789,6 +789,29 @@ Ejemplo:
 
 V@'eanse tambi@'en @code{zaxis}, @code{zaxis_width} y @code{zaxis_type}.
 @end defvr
+
+
+
+@defvr {Graphic option} xyplane
+Valor por defecto: @code{false}
+
+Coloca el plano-xy en escenas 3D. Si @code{xyplane} vale @code{false},
+el plano-xy se coloca autom@'aticamente; en cambio, si toma un
+valor real, el plano-xy intersectar@'a con el eje @var{z} a ese nivel.
+Esta opci@'on no tiene efecto alguno en escenas 2D.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xyplane = %e-2,
+             explicit(x^2+y^2,x,-1,1,y,-1,1))$
+@end example
+@end defvr
+
 
 
 @defvr {Opci@'on gr@'afica} rot_vertical

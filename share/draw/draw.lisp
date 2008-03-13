@@ -64,6 +64,7 @@
       (gethash '$rot_horizontal *gr-options*) 30   ; range: [0,360] (horizontal rotation)
       (gethash '$xy_file *gr-options*)        ""
       (gethash '$user_preamble *gr-options*)  ""
+      (gethash '$xyplane *gr-options*)   nil
 
       ; colors are specified by name
       (gethash '$color *gr-options*)      "black"   ; for lines, points, borders and labels
@@ -187,18 +188,21 @@
 (defun update-gr-option (opt val)
    (case opt
       ($rot_vertical ; in range [0, 180]
+            (setf val (convert-to-float val))
             (if (and (numberp val)
                      (>= val 0 )
                      (<= val 180 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "rot_vertical must be angle in [0, 180]")))
       ($rot_horizontal ; in range [0, 360]
+            (setf val (convert-to-float val))
             (if (and (numberp val)
                      (>= val 0 )
                      (<= val 360 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "rot_horizontal must be angle in [0, 360]")))
       ($fill_density ; in range [0, 1]
+            (setf val (convert-to-float val))
             (if (and (numberp val)
                      (>= val 0 )
                      (<= val 1 ))
@@ -206,11 +210,19 @@
                 (merror "fill_density must be a number in [0, 1]")))
       (($line_width $head_length $head_angle $eps_width $eps_height
         $xaxis_width $yaxis_width $zaxis_width) ; defined as positive numbers
+            (setf val (convert-to-float val))
             (if (and (numberp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Non positive number: ~M " val)))
+      ($xyplane ; defined as real number or false
+            (setf val (convert-to-float val))
+            (if (or (numberp val)
+                    (null val ))
+                (setf (gethash opt *gr-options*) val)
+                (merror "Illegal xyplane allocation: ~M " val)))
       ($point_size ; defined as non negative numbers
+            (setf val (convert-to-float val))
             (if (and (numberp val)
                      (>= val 0 ))
                 (setf (gethash opt *gr-options*) val)
@@ -2566,6 +2578,8 @@
                 (format nil "set border 0~%"))
             (if (get-option '$enhanced3d)
                (format nil "set pm3d~%"))
+            (if (get-option '$xyplane)
+               (format nil "set xyplane at ~a~%" (get-option '$xyplane)))
             (if (get-option '$surface_hide)
                (format nil "set hidden3d~%"))
             (if (get-option '$colorbox)

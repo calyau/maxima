@@ -947,6 +947,32 @@ See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_type}.
 @end defvr
 
 
+@defvr {Graphic option} xyplane
+Default value: @code{false}
+
+Allocates the xy-plane in 3D scenes. When @code{xyplane} is
+@code{false}, the xy-plane is placed automatically; when it is
+a real number, the xy-plane intersects the z-axis at this level.
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xyplane = %e-2,
+             explicit(x^2+y^2,x,-1,1,y,-1,1))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
 
 @defvr {Graphic option} rot_vertical
 Default value: 60
