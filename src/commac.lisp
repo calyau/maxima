@@ -313,6 +313,7 @@ values")
 ;;(defmfun foo a (show a )(show (listify a)) (show (arg 3)))
 
 (defun exploden (symb)
+  (declare (special $maxfpprintprec))
   (let* (#+(and gcl (not gmp)) (big-chunk-size 120)
 	   #+(and gcl (not gmp)) (tentochunksize (expt 10 big-chunk-size))
 	   string)
