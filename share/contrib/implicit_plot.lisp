@@ -194,7 +194,7 @@
 	  (progn
 	    (format file (pop openmath-titles))
 	    (format file " {xversusy~%")))
-	(setq e (coerce-float-fun ($float (imp-pl-prepare-expr e))
+	(setq e (coerce-float-fun (if (atom e) e ($float (imp-pl-prepare-expr e)))
 				  `((mlist simp)
 				    ,($first xrange)
 				    ,($first yrange))))
