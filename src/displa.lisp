@@ -393,12 +393,11 @@
 ;; (a * b) @@ (c . d);          --> (a b) @@ (c . d)
 
 (defun dimnary (form result lop op rop w)
-  (if
-    (and
-      (consp form)
-      (member (safe-get (caar form) 'dimension) '(dimension-infix dimension-nary)))
-    (dimension-paren form result)
-    (dimension form result lop rop w right)))
+  (declare (ignore op))
+  (if (and (consp form)
+	   (member (safe-get (caar form) 'dimension) '(dimension-infix dimension-nary)))
+      (dimension-paren form result)
+      (dimension form result lop rop w right)))
 
 ;; Output for Boolean n-ary operators.
 ;; Heuristic: if some argument is displayed as an infix or n-ary operator,
@@ -429,14 +428,12 @@
 ;; if a and b then 1 else 0;    --> if a and b then 1 else 0
 
 (defun dimnary-boolean (form result lop op rop w)
-  (if
-    (and
-      (consp form)
-      (or
-        (member (safe-get (caar form) 'dimension) '(dimension-infix dimension-nary))
-        (eq (caar form) 'mnot)))
-    (dimension-paren form result)
-    (dimension form result lop rop w right)))
+  (declare (ignore op))
+  (if (and (consp form)
+	   (or (member (safe-get (caar form) 'dimension) '(dimension-infix dimension-nary))
+	       (eq (caar form) 'mnot)))
+      (dimension-paren form result)
+      (dimension form result lop rop w right)))
 
 (defmfun dimension-postfix (form result)
   (prog (dissym (symlength 0))
