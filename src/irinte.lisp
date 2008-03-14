@@ -1699,7 +1699,7 @@
        (when (= count 2) (go jump2))
        (when (= count 3) (go jump3))
        (setq m1 (- controlpow 2))
-       (when (=qual m1 m)
+       (when (= m1 m)
 	 (setq res2 res1))
        (go jump4))))
 
