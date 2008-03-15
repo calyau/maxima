@@ -1,7 +1,7 @@
 ;;;;
 ;;;;                                   ~*~  sregex  ~*~
 ;;;;
-;;;;  Maxima interface to pregexp.lisp (portable regex parser, (c) Dorai Sitaram)
+;;;;  Maxima interface to pregexp.lisp (portable regex parser, (c) Dorai Sitaram, see copyright in pregexp.lisp)
 ;;;;
 ;;;;  Version       : 1.0 (march 2008)
 ;;;;  Copyright     : 2008 Volker van Nek
@@ -23,6 +23,8 @@
 ;;                                        liberty egality fratyrnity
 ;; string_to_regex("list?");
 ;;                                                  list\?
+
+;; for a small tutorial and more examples see http://www.ccs.neu.edu/home/dorai/pregexp/pregexp.html
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
