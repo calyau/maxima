@@ -1,3 +1,29 @@
+
+;; copyright notice:
+;;
+;; The following statement could be found today (08-03-15) on 
+;; http://www.ccs.neu.edu/home/dorai
+
+;; Dorai Sitaram
+;; Here are some Scheme- and Common-Lisp-related items. 
+;; Everything presented here is freely distributable and freely usable, and comes with no warranty of any kind. 
+;; FS (as in GPL, LGPL) bundlers who require a standard license may use the LGPL to bundle any of these items. 
+;; Others should find my COPYING file adequate.
+;;
+;; COPYING file from pregexp.tar.gz (http://www.ccs.neu.edu/home/dorai/pregexp/pregexp.html) :
+;; Copyright (c) 1999-2005, Dorai Sitaram.
+;; All rights reserved.
+;; 
+;; Permission to copy, modify, distribute, and use this work or
+;; a modified copy of this work, for any purpose, is hereby
+;; granted, provided that the copy includes this copyright
+;; notice, and in the case of a modified copy, also includes a
+;; notice of modification.  This work is provided as is, with
+;; no warranty of any kind.
+
+;; The rest of this file is an unmodified copy of pregexp.cl from pregexp.tar.gz. Volker van Nek, 2008-03-15
+
+
 ;Configured for Common Lisp CLISP 2.33.2 (2004-06-02) (built 3322385124) (memory 3322385911) by scmxlate, v 2004-09-08,
 ;(c) Dorai Sitaram, 
 ;http://www.ccs.neu.edu/~dorai/scmxlate/scmxlate.html
