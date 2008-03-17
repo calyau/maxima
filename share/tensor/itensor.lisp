@@ -506,6 +506,7 @@
       (eq (caar e) 'mequal)
       (list (car e) (covdiff (cadr e)) (covdiff (caddr e)))
     )
+    ((eq (caar e) '%determinant) 0)
     (t (merror "Not acceptable to COVDIFF: ~M" (ishow e)))
   )
 )
@@ -1552,8 +1553,9 @@
 ;coordinate index in sorted order unless the indexed object was declared
 ;constant in which case 0 is returned.
 (defun sdiff (e x) 
+  (simplifya
        (cond ((mnump e) 0.)
-	     ((alike1 e x) 1.)
+	     ((and (alike1 e x) (not (and (rpobj e) (rpobj x)))) 1.)
 	     ((or (atom e) (member 'array (cdar e) :test #'eq))
 	      (chainrule1 e x))
 	     ((mget (caar e) '$constant) 0.)                    ;New line added
@@ -1584,6 +1586,524 @@
 ;;			     (list '($ichr2 simp) (cons smlist (list dummy x))
 ;;				   (cons smlist (ncons dummy)))))
 ;;	       nil))
+
+         ((and
+              (boundp '$imetric)
+              (rpobj x)
+              (eq (caar e) '%determinant)
+              (eq (cadr e) $imetric)
+          )
+          (cond
+           ((and
+             (eq (caar x) $imetric)
+             (eq (length (cdadr x)) 0)
+             (eq (length (cdaddr x)) 2)
+             (eq (length (cdddr x)) 0)
+            )
+            (list '(mtimes simp)
+                   -1
+                  (list '(%determinant simp) $imetric)
+                  (list (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 0 (cdaddr x)) (nth 1 (cdaddr x)))
+                        '((mlist simp))
+                  )
+            )
+           )
+           ((and
+             (eq (caar x) $imetric)
+             (eq (length (cdadr x)) 2)
+             (eq (length (cdaddr x)) 0)
+             (eq (length (cdddr x)) 0)
+            )
+            (list '(mtimes simp)
+                  (list '(%determinant simp) $imetric)
+                  (list (cons $imetric '(simp))
+                        '((mlist simp))
+                        (list '(mlist simp) (nth 0 (cdadr x)) (nth 1 (cdadr x)))
+                  )
+            )
+           )
+           (t 0.)
+          )
+         )
+
+
+         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+         ;; Differentiation of tensors with respect to tensors ;;
+         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+         ;;
+         ((and (rpobj e) (rpobj x)) ; (merror "Not yet..."))
+          (cond
+
+            ( ;; dg([a,b],[])/dg([],[m,n])
+             (and
+              (boundp '$imetric)
+              (eq (caar e) $imetric)
+              (eq (caar x) $imetric)
+              (eq (length (cdadr e)) 2)
+              (eq (length (cdaddr e)) 0)
+              (eq (length (cdddr e)) 0)
+              (eq (length (cdadr x)) 0)
+              (eq (length (cdaddr x)) 2)
+              (eq (length (cdddr x)) 0)
+             )
+             (list '(mtimes simp)
+                   -1
+                   (list
+                    (cons $imetric '(simp))
+                    (list '(mlist simp) (nth 0 (cdadr e)) (nth 0 (cdaddr x)))
+                    '((mlist simp))
+                   )
+                   (list
+                    (cons $imetric '(simp))
+                    (list '(mlist simp) (nth 1 (cdadr e)) (nth 1 (cdaddr x)))
+                    '((mlist simp))
+                   )
+             )
+            )
+
+            ( ;; dg([],[a,b])/dg([m,n],[])
+             (and
+              (boundp '$imetric)
+              (eq (caar e) $imetric)
+              (eq (caar x) $imetric)
+              (eq (length (cdadr e)) 0)
+              (eq (length (cdaddr e)) 2)
+              (eq (length (cdddr e)) 0)
+              (eq (length (cdadr x)) 2)
+              (eq (length (cdaddr x)) 0)
+              (eq (length (cdddr x)) 0)
+             )
+             (list '(mtimes simp)
+                   -1
+                   (list
+                    (cons $imetric '(simp))
+                    '((mlist simp))
+                    (list '(mlist simp) (nth 0 (cdaddr e)) (nth 0 (cdadr x)))
+                   )
+                   (list
+                    (cons $imetric '(simp))
+                    '((mlist simp))
+                    (list '(mlist simp) (nth 1 (cdaddr e)) (nth 1 (cdadr x)))
+                   )
+             )
+            )
+
+            ( ;; dg([],[a,b],y)/dg([m,n],[])
+             (and
+              (boundp '$imetric)
+              (eq (caar e) $imetric)
+              (eq (caar x) $imetric)
+              (eq (length (cdadr e)) 2)
+              (eq (length (cdaddr e)) 0)
+              (eq (length (cdddr e)) 1)
+              (eq (length (cdadr x)) 0)
+              (eq (length (cdaddr x)) 2)
+              (eq (length (cdddr x)) 0)
+             )
+             (prog (d1 d2)
+              (setq d1 ($idummy) d2 ($idummy))
+              (return
+               (list '(mtimes simp)
+                   (list
+                    (cons $imetric '(simp))
+                    '((mlist simp))
+                    (list '(mlist simp) d1 d2)
+                    (cadddr e)
+                   )
+                   (list
+                     '(mplus simp)
+                     (list
+                       '(mtimes simp)
+                       (list
+                        (cons $imetric '(simp))
+                        (list
+                          '(mlist simp)
+                          (nth 0 (cdadr e))
+                          (nth 0 (cdaddr x))
+                        )
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) d1 (nth 1 (cdaddr x)))
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 1 (cdadr e)) d2)
+                        '((mlist simp))
+                       )
+                     )
+                     (list
+                       '(mtimes simp)
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 0 (cdadr e)) d1)
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list
+                          '(mlist simp)
+                          (nth 1 (cdadr e))
+                          (nth 0 (cdaddr x))
+                        )
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) d2 (nth 1 (cdaddr x)))
+                        '((mlist simp))
+                       )
+                     )
+                   )
+               )
+              )
+             )
+            )
+
+            ( ;; dg([],[a,b],y)/dg([m,n],[],k)
+             (and
+              (boundp '$imetric)
+              (eq (caar e) $imetric)
+              (eq (caar x) $imetric)
+              (eq (length (cdadr e)) 2)
+              (eq (length (cdaddr e)) 0)
+              (eq (length (cdddr e)) 1)
+              (eq (length (cdadr x)) 0)
+              (eq (length (cdaddr x)) 2)
+              (eq (length (cdddr x)) 1)
+             )
+             (list '(mtimes simp)
+                   -1
+                   (list
+                    (cons $imetric '(simp))
+                    (list '(mlist simp) (nth 0 (cdadr e)) (nth 0 (cdaddr x)))
+                    '((mlist simp))
+                   )
+                   (list
+                    (cons $imetric '(simp))
+                    (list '(mlist simp) (nth 1 (cdadr e)) (nth 1 (cdaddr x)))
+                    '((mlist simp))
+                   )
+                   (list
+                    '(%kdelta simp)
+                     (list '(mlist simp) (cadddr e))
+                     (list '(mlist simp) (cadddr x))
+                   )
+             )
+            )
+
+            ( ;; dg([],[a,b],y,d)/dg([m,n],[])
+             (and
+              (boundp '$imetric)
+              (eq (caar e) $imetric)
+              (eq (caar x) $imetric)
+              (eq (length (cdadr e)) 2)
+              (eq (length (cdaddr e)) 0)
+              (eq (length (cdddr e)) 2)
+              (eq (length (cdadr x)) 0)
+              (eq (length (cdaddr x)) 2)
+              (eq (length (cdddr x)) 0)
+             )
+             (prog (d1 d2)
+              (setq d1 ($idummy) d2 ($idummy))
+              (return
+               (list '(mtimes simp)
+                   (list
+                    (cons $imetric '(simp))
+                    '((mlist simp))
+                    (list '(mlist simp) d1 d2)
+                    (nth 0 (cdddr e))
+                    (nth 1 (cdddr e))
+                   )
+                   (list
+                     '(mplus simp)
+                     (list
+                       '(mtimes simp)
+                       (list
+                        (cons $imetric '(simp))
+                        (list
+                          '(mlist simp)
+                          (nth 0 (cdadr e))
+                          (nth 0 (cdaddr x))
+                        )
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) d1 (nth 1 (cdaddr x)))
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 1 (cdadr e)) d2)
+                        '((mlist simp))
+                       )
+                     )
+                     (list
+                       '(mtimes simp)
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 0 (cdadr e)) d1)
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list
+                          '(mlist simp)
+                          (nth 1 (cdadr e))
+                          (nth 0 (cdaddr x))
+                        )
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) d2 (nth 1 (cdaddr x)))
+                        '((mlist simp))
+                       )
+                     )
+                   )
+               )
+              )
+             )
+            )
+
+            ( ;; dg([],[a,b],y,d)/dg([m,n],[],k)
+             (and
+              (boundp '$imetric)
+              (eq (caar e) $imetric)
+              (eq (caar x) $imetric)
+              (eq (length (cdadr e)) 2)
+              (eq (length (cdaddr e)) 0)
+              (eq (length (cdddr e)) 2)
+              (eq (length (cdadr x)) 0)
+              (eq (length (cdaddr x)) 2)
+              (eq (length (cdddr x)) 1)
+             )
+             (prog (d1 d2 d3 d4)
+              (setq d1 ($idummy) d2 ($idummy) d3 ($idummy) d4 ($idummy))
+              (return
+               (list
+                '(mtimes simp)
+                (list
+                 '(mplus simp)
+                 (list
+                  '(mtimes simp)
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 0 (cdadr e)) d3)
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) d2 d4)
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 1 (cdadr e)) d1)
+                        '((mlist simp))
+                       )
+                 )
+                 (list
+                  '(mtimes simp)
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 0 (cdadr e)) d2)
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) (nth 1 (cdadr e)) d3)
+                        '((mlist simp))
+                       )
+                       (list
+                        (cons $imetric '(simp))
+                        (list '(mlist simp) d1 d4)
+                        '((mlist simp))
+                       )
+                 )
+                )
+                (list
+                 '(mplus simp)
+                 (list
+                  '(mtimes simp)
+                       (list
+                        '(%kdelta simp)
+                         (list '(mlist simp) (nth 0 (cdaddr x)))
+                         (list '(mlist simp) d3)
+                       )
+                       (list
+                        '(%kdelta simp)
+                         (list '(mlist simp) (nth 1 (cdaddr x)))
+                         (list '(mlist simp) d4)
+                       )
+                       (list
+                        '(%kdelta simp)
+                         (list '(mlist simp) (nth 1 (cdddr e)))
+                         (list '(mlist simp) (nth 0 (cdddr x)))
+                       )
+
+                       (list
+                        (cons $imetric '(simp))
+                        '((mlist simp))
+                        (list '(mlist simp) d2 d1)
+                        (nth 0 (cdddr e))
+                       )
+                 )
+                 (list
+                  '(mtimes simp)
+                       (list
+                        '(%kdelta simp)
+                         (list '(mlist simp) (nth 0 (cdaddr x)))
+                         (list '(mlist simp) d2)
+                       )
+                       (list
+                        '(%kdelta simp)
+                         (list '(mlist simp) (nth 1 (cdaddr x)))
+                         (list '(mlist simp) d1)
+                       )
+                       (list
+                        '(%kdelta simp)
+                         (list '(mlist simp) (nth 0 (cdddr e)))
+                         (list '(mlist simp) (nth 0 (cdddr x)))
+                       )
+
+                       (list
+                        (cons $imetric '(simp))
+                        '((mlist simp))
+                        (list '(mlist simp) d3 d4)
+                        (nth 1 (cdddr e))
+                       )
+                 )
+                )
+               )
+              )
+             )
+            )
+
+            ( ;; dg([],[a,b],y,d)/dg([m,n],[],k,l)
+             (and
+              (boundp '$imetric)
+              (eq (caar e) $imetric)
+              (eq (caar x) $imetric)
+              (eq (length (cdadr e)) 2)
+              (eq (length (cdaddr e)) 0)
+              (eq (length (cdddr e)) 2)
+              (eq (length (cdadr x)) 0)
+              (eq (length (cdaddr x)) 2)
+              (eq (length (cdddr x)) 2)
+             )
+             (list '(mtimes simp)
+                   -1
+                   (list
+                    (cons $imetric '(simp))
+                    (list '(mlist simp) (nth 0 (cdadr e)) (nth 0 (cdaddr x)))
+                    '((mlist simp))
+                   )
+                   (list
+                    (cons $imetric '(simp))
+                    (list '(mlist simp) (nth 1 (cdadr e)) (nth 1 (cdaddr x)))
+                    '((mlist simp))
+                   )
+                   (list
+                    '(%kdelta simp)
+                     (list '(mlist simp) (cadddr e))
+                     (list '(mlist simp) (cadddr x))
+                   )
+                   (list
+                    '(%kdelta simp)
+                     (list '(mlist simp) (nth 1 (cdddr e)))
+                     (list '(mlist simp) (nth 1 (cdddr x)))
+                   )
+             )
+            )
+
+
+            ((and
+               (eq (caar e) (caar x))
+               (eq (length (cdadr e)) (length (cdadr x)))
+               (eq (length (cdaddr e)) (length (cdaddr x)))
+               (eq (length (cdddr e)) (length (cdddr x)))
+             )
+             (cons '(mtimes)
+              (cons 1
+               (append
+                 (mapcar
+                   #'(lambda (x y)
+                       (list
+                         '(%kdelta simp)
+                         (list '(mlist simp) x)
+                         (list '(mlist simp) y)
+                       )
+                     ) (cdadr e) (cdadr x)
+                 )
+                 (mapcar
+                   #'(lambda (x y)
+                       (list
+                         '(%kdelta simp)
+                         (list '(mlist simp) x)
+                         (list '(mlist simp) y)
+                       )
+                     ) (cdaddr x) (cdaddr e)
+                 )
+                 (mapcar
+                   #'(lambda (x y)
+                       (list
+                         '(%kdelta simp)
+                         (list '(mlist simp) x)
+                         (list '(mlist simp) y)
+                       )
+                     )
+                     (cdddr e) (cdddr x)
+                 )
+               )
+              )
+             )
+            )
+            ((or
+              (and ;; catchall symbols constructed from the metric tensor
+               (boundp '$imetric)
+               (eq (caar x) $imetric)
+               (member
+                 (caar e)
+                 (cons '$icurvature (cons '%icurvature christoffels))
+               )
+              )
+              (and ;; d(some covi)/d(cov metric)
+               (boundp '$imetric)
+               (not (eq (caar e) $imetric))
+               (eq (caar x) $imetric)
+               (eq (length (cdadr x)) 2)
+               (eq (length (cdaddr x)) 0)
+               (eq (length (cdddr x)) 0)
+               (> (+ (length (cdadr e)) (length (cdddr e))) 0)
+              )
+              (and ;; d(some conti)/d(cont metric)
+               (boundp '$imetric)
+               (not (eq (caar e) $imetric))
+               (eq (caar x) $imetric)
+               (eq (length (cdadr x)) 0)
+               (eq (length (cdaddr x)) 2)
+               (eq (length (cdddr x)) 0)
+               (> (length (cdaddr e)) 0)
+              )
+              (and ;; da([a,b],y)/da([m,n],k) with a+b=m+n, y=k
+               (depends (caar e) (caar x))
+               (eq (+ (length (cdadr e)) (length (cdaddr e)))
+                   (+ (length (cdadr x)) (length (cdaddr x))))
+               (eq (length (cdddr e)) (length (cdddr x)))
+              )
+             )
+             (list '(%derivative) e x)
+            )
+            (t 0.)
+          )
+         )
+         ;; End of tensor vs. tensor differentiation
+
 	     ((not (depends e x))
 	      (cond ((fixnump x) (list '(%derivative) e x))
 		    ((atom x) 0.)
@@ -1608,7 +2128,9 @@
 		    ((freel (cdr e) x) 0.)
 		    (t (diff%deriv (list e x 1.)))))
 	     ((member (caar e) '(%sum %product) :test #'eq) (diffsumprod e x))
-	     (t (sdiffgrad e x)))) 
+	     (t (sdiffgrad e x)))
+  t )
+) 
 
 ; VTT: several of these functions have been copied verbatim from comm.lisp and
 ; comm2.lisp, in order to implement indicial differentiation as distinct from
