@@ -285,31 +285,31 @@ map (lambda ([s], assume (s > 0)), fundamental_dimensions);
  */
 
 matchdeclare
-   (aa, lambda ([e%], atom (e%) and not symbolp (e%)),
-    bb, lambda ([e%], symbolp (e%) and member (e%, fundamental_dimensions)),
-    cc, lambda ([e%], symbolp (e%) and get (e%, 'units) # false),
-    dd, lambda ([e%], symbolp (e%) and ?mget (e%, 'numer) # false),
-    ee, lambda ([e%], symbolp (e%) and get (e%, 'dimension) # false),
-    ff, lambda ([e%], symbolp (e%)),
-    gg, lambda ([e%], not atom (e%) and op (e%) = "`"),
-    hh, lambda ([e%], not atom (e%) and op (e%) = "^"),
-    ii, lambda ([e%], not atom (e%) and member (op (e%), ["+", "-", "*", "/"])));
+   (aa%, lambda ([e%], atom (e%) and not symbolp (e%)),
+    bb%, lambda ([e%], symbolp (e%) and member (e%, fundamental_dimensions)),
+    cc%, lambda ([e%], symbolp (e%) and get (e%, 'units) # false),
+    dd%, lambda ([e%], symbolp (e%) and ?mget (e%, 'numer) # false),
+    ee%, lambda ([e%], symbolp (e%) and get (e%, 'dimension) # false),
+    ff%, lambda ([e%], symbolp (e%)),
+    gg%, lambda ([e%], not atom (e%) and op (e%) = "`"),
+    hh%, lambda ([e%], not atom (e%) and op (e%) = "^"),
+    ii%, lambda ([e%], not atom (e%) and member (op (e%), ["+", "-", "*", "/"])));
 
 simp : false;
-defrule (raa, 'dimensions (aa), 1);
-defrule (rbb, 'dimensions (bb), bb);
-defrule (rcc, 'dimensions (cc), dimensions (get (cc, 'units)));
-defrule (rdd, 'dimensions (dd), dimensions (?mget (dd, 'numer)));
-defrule (ree, 'dimensions (ee), get (ee, 'dimension));
+defrule (raa, 'dimensions (aa%), 1);
+defrule (rbb, 'dimensions (bb%), bb%);
+defrule (rcc, 'dimensions (cc%), dimensions (get (cc%, 'units)));
+defrule (rdd, 'dimensions (dd%), dimensions (?mget (dd%, 'numer)));
+defrule (ree, 'dimensions (ee%), get (ee%, 'dimension));
 defrule
    (rff,
-    'dimensions (ff), 
+    'dimensions (ff%), 
     block
-      ([ff2 : ev (ff, args (known_unit_conversions), infeval)],
-        if ff2 # ff then dimensions (ff2) else 'dimensions (ff)));
-defrule (rgg, 'dimensions (gg), dimensions (second (gg)));
-defrule (rhh, 'dimensions (hh), dimensions (first (hh)) ^ second (hh));
-defrule (rii, 'dimensions (ii), map (dimensions, ii));
+      ([ff%2 : ev (ff%, args (known_unit_conversions), infeval)],
+        if ff%2 # ff% then dimensions (ff%2) else 'dimensions (ff%)));
+defrule (rgg, 'dimensions (gg%), dimensions (second (gg%)));
+defrule (rhh, 'dimensions (hh%), dimensions (first (hh%)) ^ second (hh%));
+defrule (rii, 'dimensions (ii%), map (dimensions, ii%));
 simp : true;
 
 dimensions (expr) :=
