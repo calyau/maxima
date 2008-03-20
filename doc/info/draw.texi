@@ -213,7 +213,7 @@ Default value: @code{screen}
 
 Selects the terminal to be used by Gnuplot; possible values are:
 @code{screen} (default), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
-@code{gif}, @code{animated_gif} and @code{wxt}.
+@code{gif}, @code{animated_gif}, @code{wxt} and @code{aquaterm}.
 
 Since this is a global graphics option, its position in the scene description
 does not matter. It can be also used as an argument of function @code{draw}.
@@ -260,6 +260,128 @@ Option @code{delay} is only active in animated gif's; it is ignored in
 any other case.
 
 See also @code{file_name}, @code{pic_width}, @code{pic_height} and @code{delay}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} font
+Default value: @code{""} (empty string)
+
+This option can be used to set the font face to be used by the terminal.
+Only one font face and size can be used throughout the plot.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+See also @code{font_size}.
+
+Gnuplot doesn't handle fonts by itself, it leaves this task to the
+support libraries of the different terminals, each one with its own
+philosophy about it. A brief summary follows:
+
+@itemize @bullet
+@item
+@i{x11}:
+Uses the normal x11 font server mechanism.
+
+Example:
+@example
+(%i1) load(draw)$
+(%i2) draw2d(font      = "Arial", 
+             font_size = 20,
+             label(["Arial font, size 20",1,1]))$
+@end example
+
+@item
+@i{windows}:
+The windows terminal doesn't support changing of fonts from inside the plot.
+Once the plot has been generated, the font can be changed right-clicking on
+the menu of the graph window.
+
+@item
+@i{png, jpeg, gif}:
+The @i{libgd} library uses the font path stored in the environment
+variable @code{GDFONTPATH}; in this case, it is only necessary to
+set option @code{font} to the font's name. It is also possible to
+give the complete path to the font file.
+
+Examples:
+
+Option @code{font} can be given the complete path to the font file:
+@example
+(%i1) load(draw)$
+(%i2) path: "/usr/share/fonts/truetype/freefont/" $
+(%i3) file: "FreeSerifBoldItalic.ttf" $
+(%i4) draw2d(
+        font      = concat(path, file), 
+        font_size = 20,
+        color     = red,
+        label(["FreeSerifBoldItalic font, size 20",1,1]),
+        terminal  = png)$
+@end example
+
+If environment variable @code{GDFONTPATH} is set to the
+path where font files are allocated, it is possible to
+set graphic option @code{font} to the name of the font.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        font      = "FreeSerifBoldItalic", 
+        font_size = 20,
+        color     = red,
+        label(["FreeSerifBoldItalic font, size 20",1,1]),
+        terminal  = png)$
+@end example
+
+@item
+@i{Postscript}:
+Standard Postscript fonts are: @code{"Times-Roman"}, @code{"Times-Italic"}, @code{"Times-Bold"}, @code{"Times-BoldItalic"}, @code{"Helvetica"}, @code{"Helvetica-Oblique"}, @code{"Helvetica-Bold"}, @code{"Helvetic-BoldOblique"}, @code{"Courier"}, @code{"Courier-Oblique"}, @code{"Courier-Bold"}, and @code{"Courier-BoldOblique"}.
+  
+Example:
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        font      = "Courier-Oblique", 
+        font_size = 15,
+        label(["Courier-Oblique font, size 15",1,1]),
+        terminal = eps)$
+@end example
+
+@item
+@i{wxt}:
+The @i{pango} library finds fonts via the @code{fontconfig} utility.
+
+@item
+@i{aqua}:
+Default is @code{"Times-Roman"}.
+@end itemize
+
+The gnuplot documentation is an important source of information about terminals and fonts.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} font_size
+Default value: 12
+
+This option can be used to set the font size to be used by the terminal.
+Only one font face and size can be used throughout the plot. @code{font_size} is
+active only when option @code{font} is not equal to the empty string.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+See also @code{font}.
 
 @opencatbox
 @category{Package draw}
@@ -2873,7 +2995,7 @@ Example:
              label(["Label in blue",0,0.6]),
              color = "light-blue",
              label(["Label in light-blue",0,0.9],
-                   ["Another ligght-blue",0,1.2])  )$
+                   ["Another light-blue",0,1.2])  )$
 @end example
 
 @b{3D}

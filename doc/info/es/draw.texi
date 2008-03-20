@@ -1,4 +1,4 @@
-@c version 1.27
+@c version 1.28
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -185,7 +185,7 @@ Valor por defecto: @code{screen}
 
 Selecciona el terminal a utilizar por Gnuplot; valores posibles son:
 @code{screen} (por defecto), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
-@code{gif}, @code{animated_gif} y @code{wxt}.
+@code{gif}, @code{animated_gif}, @code{wxt} y @code{aquaterm}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
@@ -233,6 +233,121 @@ La opci@'ob @code{delay} s@'olo se activa en caso de gifs animados; se ignora en
 cualquier otro caso.
 
 V@'eanse tambi@'en @code{file_name}, @code{pic_width}, @code{pic_height} y @code{delay}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} font
+Valor por defecto: @code{""} (cadena vac@'{@dotless{i}}a)
+
+Esta opci@'on permite seleccionar el tipo de fuente a utilizar por el
+terminal. S@'olo se puede utilizar un tipo de fuente y tama@~no por
+gr@'afico.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+V@'ease tambi@'en @code{font_size}.
+
+Gnuplot no puede gestionar por s@'{@dotless{i}} mismo las fuentes,
+dejando esta tarea a las librer@'{@dotless{i}}as que dan soporte a los
+diferentes terminales, cada uno con su propia manera de controlar
+la tipograf@'{@dotless{i}}a. A continuaci@'on un breve resumen:
+
+@itemize @bullet
+@item
+@i{x11}:
+Utiliza el mecanismo habitual para suministrar las fuentes en x11.
+
+Ejemplo:
+@example
+(%i1) load(draw)$
+(%i2) draw2d(font      = "Arial", 
+             font_size = 20,
+             label(["Arial font, size 20",1,1]))$
+@end example
+
+@item
+@i{windows}:
+El terminal de windows no permite cambiar fuentes desde dentro
+del gr@'afico. Una vez se ha creado el gr@'afico, se pueden cambiar las
+fuentes haciendo clic derecho en el men@'u de la ventana gr@'afica.
+
+@item
+@i{png, jpeg, gif}:
+La librer@'{@dotless{i}}a @i{libgd} utiliza la ruta a las fuentes
+almacenada en la variable de entorno @code{GDFONTPATH}; en tal caso
+s@'olo es necesario darle a la opci@'on @code{font} el nombre de la
+fuente. Tambi@'en es posible darle la ruta completa al fichero de la fuente.
+
+Ejemplos:
+
+A la opci@'on @code{font} se le puede dar la ruta completa al fichero de la fuente:
+@example
+(%i1) load(draw)$
+(%i2) path: "/usr/share/fonts/truetype/freefont/" $
+(%i3) file: "FreeSerifBoldItalic.ttf" $
+(%i4) draw2d(
+        font      = concat(path, file), 
+        font_size = 20,
+        color     = red,
+        label(["FreeSerifBoldItalic font, size 20",1,1]),
+        terminal  = png)$
+@end example
+
+Si la variable de entorno @code{GDFONTPATH} almacena la ruta
+a la carpeta donde se alojan las fuentes, es posible darle a la
+opci@'on @code{font} s@'olo el nombre de la fuente:
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        font      = "FreeSerifBoldItalic", 
+        font_size = 20,
+        color     = red,
+        label(["FreeSerifBoldItalic font, size 20",1,1]),
+        terminal  = png)$
+@end example
+
+@item
+@i{Postscript}:
+Las fuentes est@'andar de Postscript son: @code{"Times-Roman"}, @code{"Times-Italic"}, @code{"Times-Bold"}, @code{"Times-BoldItalic"}, @code{"Helvetica"}, @code{"Helvetica-Oblique"}, @code{"Helvetica-Bold"}, @code{"Helvetic-BoldOblique"}, @code{"Courier"}, @code{"Courier-Oblique"}, @code{"Courier-Bold"} y @code{"Courier-BoldOblique"}.
+  
+Ejemplo:
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        font      = "Courier-Oblique", 
+        font_size = 15,
+        label(["Courier-Oblique font, size 15",1,1]),
+        terminal = eps)$
+@end example
+
+@item
+@i{wxt}:
+La librer@'{@dotless{i}}a @i{pango} encuentra las fuentes por medio de la utilidad @code{fontconfig}.
+
+@item
+@i{aqua}:
+La fuente por defecto es @code{"Times-Roman"}.
+@end itemize
+
+La documentaci@'on de gnuplot es una importante fuente de informaci@'on sobre terminales y fuentes.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} font_size
+Valor por defecto: 12
+
+Esta opci@'on permite seleccionar el tama@~no de la fuente a utilizar por el
+terminal. S@'olo se puede utilizar un tipo de fuente y tama@~no por
+gr@'afico. @code{font_size} s@'olo se activa cuando la opci@'on @code{font}
+tiene un valor diferente de la cadena vac@'{@dotless{i}}a.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+V@'ease tambi@'en @code{font}.
 @end defvr
 
 
@@ -2476,7 +2591,7 @@ Ejemplo:
              label(["Label in blue",0,0.6]),
              color = "light-blue",
              label(["Label in light-blue",0,0.9],
-                   ["Another ligght-blue",0,1.2])  )$
+                   ["Another light-blue",0,1.2])  )$
 @end example
 
 @b{3D}

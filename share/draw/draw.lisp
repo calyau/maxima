@@ -64,7 +64,9 @@
       (gethash '$rot_horizontal *gr-options*) 30   ; range: [0,360] (horizontal rotation)
       (gethash '$xy_file *gr-options*)        ""
       (gethash '$user_preamble *gr-options*)  ""
-      (gethash '$xyplane *gr-options*)   nil
+      (gethash '$xyplane *gr-options*)        nil
+      (gethash '$font *gr-options*)           "";
+      (gethash '$font_size *gr-options*)      12;
 
       ; colors are specified by name
       (gethash '$color *gr-options*)      "black"   ; for lines, points, borders and labels
@@ -248,7 +250,7 @@
                         (setf (gethash opt *gr-options*) (- (position val shapes) 1))
                         (merror "Illegal point type: ~M " val))))) )
       (($columns $nticks $adapt_depth $pic_width $pic_height     ; defined as positive integers
-        $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel)
+        $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel $font_size)
             (if (and (integerp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
@@ -349,7 +351,7 @@
             (if (member val '($horizontal $vertical))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Illegal label orientation: ~M" val)))
-      (($key $file_name $xy_file $title $xlabel $ylabel $zlabel)  ; defined as strings
+      (($key $file_name $xy_file $title $xlabel $ylabel $zlabel $font)  ; defined as strings
             (setf (gethash opt *gr-options*) val))
       ($user_preamble ; defined as a string or a Maxima list of strings
             (let ((str ""))
@@ -2616,6 +2618,10 @@
                 #'(lambda (z) (format nil "~a " z))
                 ,arr))))
 
+(defmacro write-font-type ()
+   '(if (string= (get-option '$font) "")
+      ""
+      (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
 
 ;; This is the function to be called at Maxima level.
 ;; Some examples:
@@ -2670,33 +2676,45 @@
 
     ; write global options
     (case (gethash '$terminal *gr-options*)
-      ($png (format cmdstorage "set terminal png size ~a, ~a~%set out '~a.png'~%"
+      ($png (format cmdstorage "set terminal png ~a size ~a, ~a~%set out '~a.png'"
+                           (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name) ) )
-      ($eps (format cmdstorage "set terminal postscript eps size ~acm, ~acm~%set out '~a.eps'~%"
+      ($eps (format cmdstorage "set terminal postscript eps ~a size ~acm, ~acm~%set out '~a.eps'"
+                           (write-font-type) ; other alternatives are Arial, Courier
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($eps_color (format cmdstorage "set terminal postscript eps color size ~acm, ~acm~%set out '~a.eps'~%"
+      ($eps_color (format cmdstorage "set terminal postscript eps ~a color size ~acm, ~acm~%set out '~a.eps'"
+                           (write-font-type)
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($jpg (format cmdstorage "set terminal jpeg size ~a, ~a~%set out '~a.jpg'~%"
+      ($jpg (format cmdstorage "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
+                           (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)))
-      ($gif (format cmdstorage "set terminal gif size ~a, ~a~%set out '~a.gif'~%"
+      ($gif (format cmdstorage "set terminal gif ~a size ~a, ~a~%set out '~a.gif'"
+                           (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)))
-      ($animated_gif (format cmdstorage "set terminal gif animate size ~a, ~a delay ~a~%set out '~a.gif'~%"
+      ($animated_gif (format cmdstorage "set terminal gif animate ~a size ~a, ~a delay ~a~%set out '~a.gif'"
+                           (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$delay)
                            (get-option '$file_name)))
-      ($aquaterm (format cmdstorage "set terminal aqua~%"))
-      ($wxt (format cmdstorage "set terminal wxt~%" )) )
+      ($aquaterm (format cmdstorage "set terminal aqua ~a~%" (write-font-type)))
+      ($wxt (format cmdstorage "set terminal wxt ~a~%" (write-font-type)))
+      (otherwise ; default screen output
+        (cond
+          (*windows-OS*  ; running on windows operating system
+            (format cmdstorage "set terminal windows ~a" (write-font-type)))
+          (t  ; other platforms
+            (format cmdstorage "set terminal x11 ~a" (write-font-type))))) )
 
     ; compute some parameters for multiplot
     (when (not isanimatedgif)
@@ -2835,7 +2853,6 @@
                    (setf $gnuplot_command $draw_command)
                    (check-gnuplot-process)
                    (send-gnuplot-command "unset output")
-                   (send-gnuplot-command "set term x11")
                    (send-gnuplot-command "reset")
                    (send-gnuplot-command (format nil "load '~a'" (plot-temp-file "maxout.gnuplot"))) ))))
 
