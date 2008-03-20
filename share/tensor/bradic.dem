@@ -1,0 +1,68 @@
+/* Copyright (C) 2008 Viktor T. Toth <http://www.vttoth.com/>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * Deriving the field equations from the action for Brans-Dicke cosmology
+ *
+ */
+("Deriving the field equations in FLRW cosmology for the Brans-Dicke action" )$
+if get('ctensor,'version)=false then load(ctensor);
+if get('itensor,'version)=false then load(itensor);
+imetric(gg);
+components(gg([a,b],[]),kdels([a,b],[u,v])*g([u,v],[])/2);
+components(gg([],[a,b]),kdels([u,v],[a,b])*g([],[u,v])/2);
+rename(icurvature([a,b,c],[e]),10)*rename(gg([d,e],[]),1);
+contract(rename(expand(%),100))$
+idummyx:z;
+%th(2),ichr2$
+idummyx:'%;
+contract(rename(expand(%th(2))))$
+contract(%)$
+imetric(g);
+contract(rename(expand(%th(2))))$
+contract(rename(canform(%)))$
+components(R([a,b,c,d],[]),%);
+g([],[a,b])*%th(2)*g([],[c,d])$
+contract(rename(canform(%)))$
+contract(rename(canform(%)))$
+ishow(%)$
+components(R([],[]),%);
+
+decsym(g,2,0,[sym(all)],[]);
+decsym(g,0,2,[],[sym(all)]);
+
+
+L1:1/(16*%pi)*(('R([],[])))*sqrt(-determinant(g))$
+L2:1/(16*%pi)*(-w*gg([],[a,b])*f([],[],a)*f([],[],b)/f([],[]))*sqrt(-determinant(g))$
+L0:radcan(f([],[])*L1+L2)$
+L0:contract(ev(L0,R))$
+
+ishow(canform(contract(canform(rename(contract(expand(diff(L0,g([],[m,n]))-idiff(diff(L0,g([],[m,n],k)),k)+idiff(rename(idiff(contract(diff(L0,g([],[m,n],k,l))),k),1000),l))))))))$
+ishow(e([m,n],[])=canform(%*16*%pi/sqrt(-determinant(g))))$
+EQ:ic_convert(%)$
+
+ct_coords:[t,r,u,v];
+lg:ident(4);
+lg[2,2]:-a^2/(1-k*r^2);
+lg[3,3]:-a^2*r^2;
+lg[4,4]:-a^2*r^2*sin(u)^2;
+dependencies(a(t),f(t));
+cmetric();
+derivabbrev:true;
+christof(mcs);
+
+e:zeromatrix(4,4);
+ev(EQ);
+expand(radcan(ug.(e+transpose(e))/2))$
+subst(f,f([],[]),%)$
+expand(radcan(%/f));
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */
+

@@ -1117,8 +1117,8 @@
 (defun contract1 (f g)
   (prog (a b c d e cf sgn)
     (when (cdddr f) (return nil))
-    (setq a (derat (cdadr f)) b (cdaddr f)
-          c (derat (cadr g)) d (caddr g) e (cdddr g)
+    (setq a (copy-tree (derat (cdadr f))) b (copy-tree (cdaddr f))
+          c (copy-tree (derat (cadr g))) d (copy-tree (caddr g)) e (copy-tree (cdddr g))
     )
     (cond                        ; This section is all Kronecker-delta code
       (
@@ -1689,7 +1689,7 @@
              )
             )
 
-            ( ;; dg([],[a,b],y)/dg([m,n],[])
+            ( ;; dg([a,b],[],y)/dg([],[m,n])
              (and
               (boundp '$imetric)
               (eq (caar e) $imetric)
@@ -1763,7 +1763,7 @@
              )
             )
 
-            ( ;; dg([],[a,b],y)/dg([m,n],[],k)
+            ( ;; dg([a,b],[],y)/dg([],[m,n],k)
              (and
               (boundp '$imetric)
               (eq (caar e) $imetric)
@@ -1795,7 +1795,7 @@
              )
             )
 
-            ( ;; dg([],[a,b],y,d)/dg([m,n],[])
+            ( ;; dg([a,b],[],y,d)/dg([],[m,n])
              (and
               (boundp '$imetric)
               (eq (caar e) $imetric)
@@ -1870,7 +1870,7 @@
              )
             )
 
-            ( ;; dg([],[a,b],y,d)/dg([m,n],[],k)
+            ( ;; dg([a,b],[],y,d)/dg([],[m,n],k)
              (and
               (boundp '$imetric)
               (eq (caar e) $imetric)
@@ -1984,7 +1984,7 @@
              )
             )
 
-            ( ;; dg([],[a,b],y,d)/dg([m,n],[],k,l)
+            ( ;; dg([a,b],[],y,d)/dg([],[m,n],k,l)
              (and
               (boundp '$imetric)
               (eq (caar e) $imetric)
