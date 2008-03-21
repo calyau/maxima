@@ -130,7 +130,7 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
  *      then error("Tensor not declared anti(all) in its covariant indices")
  */
         else if not mapatom(forma) and op(forma)="+" then
-          sum(apply(extdiff,cons(part(forma,i),optind)),i,1,length(forma))
+          sum(apply(extdiff,cons(part(forma,%%i),optind)),%%i,1,length(forma))
 /* Another misguided attempt to process products. Fails because it
  * separates contractable products, yielding invalid results. DO NOT UNCOMMENT
  *      else if not mapatom(forma) and op(forma)="*" then block

@@ -25,7 +25,12 @@ ishow(icurvature([i,j,k],[l])+icurvature([i,k,j],[l]))$
 canform(%);
 ishow(icurvature([i,j,k],[l])+icurvature([j,k,i],[l])+icurvature([k,i,j],[l]))$
 %,ichr2$
-canform(%);
+("Sometimes we need to simplify repeatedly...")$
+canform(%th(2))$
+nterms(%);
+canform(contract(rename(%th(2))))$
+nterms(%);
+canform(contract(rename(%th(2))));
 ("Now define the covariant Riemann-tensor")$
 remcomps(R);
 kill(R);
@@ -34,29 +39,39 @@ components(R([i,j,k,l],[]),'icurvature([i,j,k],[m])*g([l,m],[]));
 R([i,j,k,l],[])+R([i,k,j,l],[])$
 %,icurvature$
 %,ichr2$
-ishow(canform(contract(contract(expand(%)))))$
+canform(contract(contract(expand(%))))$
+canform(contract(rename(%)));
 decsym(R,4,0,[anti(2,3)],[]);
 ("and also antisymmetric in its first and last index")$
 R([i,j,k,l],[])+R([l,j,k,i],[])$
 %,icurvature$
-canform(contract(canform(%)))$
+canform(contract(rename(%)))$
 %,ichr2$
-ishow(canform(contract(canform(simpmetderiv(canform(%))))))$
+canform(contract(canform(simpmetderiv(canform(%)))))$
+canform(contract(rename(%)))$
+allsym:true;
+canten(%th(2));
+allsym:false;
 decsym(R,4,0,[anti(1,4)],[]);
 ("But it is equal to itself with the first and last index pair swapped")$
-R([i,j,k,l],[])-R([j,i,l,k],[]),noeval$
+R([i,j,k,l],[])-R([j,i,l,k],[]),noeval;
 ishow(canform(%))$
 %,R$
 %,icurvature$
-canform(contract(canform(%)))$
+canform(contract(rename(%)))$
 %,ichr2$
-ishow(canform(contract(canform(simpmetderiv(canform(%))))))$
+canform(contract(canform(simpmetderiv(canform(%)))))$
+canform(contract(rename(%)))$
+allsym:true;
+canten(%th(2));
+allsym:false;
 ("Contraction of R in the first and last indices yields zero")$
 ishow(canform(icurvature([k,i,j],[k])))$
 %,ichr2$
-ishow(canform(rename(expand(%))))$
+canform(rename(expand(%)))$
+canform(contract(rename(%)))$
 ishow(simpmetderiv(%))$
-ishow(canform(conmetderiv(%,imetric)))$
+ishow(rename(canform(conmetderiv(%,imetric))))$
 ("Now let us define the Ricci-tensor")$
 components(R([i,j],[]),'icurvature([i,j,k],[k]));
 ("The Ricci tensor is symmetrical")$
@@ -64,9 +79,9 @@ ishow(canform(R([i,j],[])-R([j,i],[])))$
 %,icurvature$
 ishow(canform(%))$
 %,ichr2$
-ishow(canform(rename(expand(%))))$              /* Terms remain! But see Frankel, p. 300 */
-ishow(canform(simpmetderiv(%)))$
-ishow(canform(conmetderiv(%,imetric)))$
+ishow(rename(canform(rename(expand(%)))))$              /* Terms remain! But see Frankel, p. 300 */
+rename(contract(rename(contract(rename(canform(simpmetderiv(%)))))))$
+rename(canform(factor(simpmetderiv(canform(%)))));
 decsym(R,2,0,[sym(all)],[]);
 decsym(R,0,2,[],[sym(all)]);
 ("This is the curvature scalar")$

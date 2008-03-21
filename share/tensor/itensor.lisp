@@ -1575,7 +1575,7 @@
 		     (cdr e))))
 	     ((eq (caar e) 'mtimes)
  	      (addn (sdifftimes (cdr e) x) t))
-	     ((eq (caar e) 'mexpt) (diffexpt1 e x))
+	     ((eq (caar e) 'mexpt) (diffexpt e x))
 ;;	     ((rpobj e) (diffrpobj e x))                        ;New line added
 ;;	     ((and (boundp '$imetric) (eq (caar e) '%determinant);New line added
 ;;		   (eq (cadr e) $imetric))

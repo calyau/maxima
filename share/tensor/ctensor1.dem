@@ -45,6 +45,6 @@ ct_coordsys([r*cos(theta)*cos(phi),r*cos(theta)*sin(phi),
              r*sin(theta),[r,theta,phi]]);
 cmetric();
 fri;
-lg;
+lg:trigsimp(lg);
 
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */
