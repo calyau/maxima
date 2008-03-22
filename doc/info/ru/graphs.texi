@@ -1,7 +1,7 @@
 @c Language=Russian
 @c Encoding=CP1251
-@c File=graphs.texi 
-@c OriginalRevision=1.4
+@c File=graphs.texi
+@c OriginalRevision=1.9
 @c TranslatedBy: (c) 2008-02 Vadim V. Zhytnikov <vvzhyt@gmail.com>
 
 
@@ -355,6 +355,11 @@ Adjacencies:
 @var{n} и @var{d} есть @code{n=5} и @code{d=2}.
 @end deffn
 
+@deffn {Функция} random_bipartite_graph (@var{a}, @var{b}, @var{p})
+Возвращает случайный двудольный граф с @code{a+b} вершинами. 
+Каждая вершина присутствует с вероятностью @var{p}.
+@end deffn
+
 @deffn {Функция} random_digraph (@var{n}, @var{p})
 Возвращает случайный ориентированный граф с @var{n} вершинами. 
 Каждое ребро присутствует с вероятностью @var{p}.
@@ -403,6 +408,10 @@ Adjacencies:
 
 @deffn {Функция} random_tree (@var{n})
 Возвращает случайное дерево с @var{n} вершинами.
+@end deffn
+
+@deffn {Функция} tutte_graph ()
+Возвращает граф Татта (Tutte).
 @end deffn
 
 @deffn {Функция} underlying_graph (@var{g})
@@ -1352,6 +1361,11 @@ Adjacencies:
 @end example
 @end deffn
 
+@deffn {Функция} min_vertex_cover (@var{gr})
+
+Возвращает минимальное вершинное покрытие графа @var{gr}.
+@end deffn
+
 @deffn {Функция} minimum_spanning_tree (@var{gr})
 Возвращает минимальный каркас (минимальное остовное дерево) графа @var{gr}.
 
@@ -2021,6 +2035,13 @@ Adjacencies:
 @item
 @dfn{show_vertex_color=c}: цвет вершин в списке @var{show_vertices}.
 @item
+@dfn{vertex_partition=part}: разбиение
+@code{[[v1,v2,...],...,[vk,...,vn]]} вершин графа. 
+Вершины в каждом списка будут изображаться разными цветами.
+@item
+@dfn{vertex_coloring=col}: раскраска вершин. Раскраска @var{col} должна
+быть задана в формате, возвращаемом @var{vertex_coloring}.
+@item
 @dfn{edge_color=c}: цвет, используемый для изображения ребер.
 @item
 @dfn{edge_width=width}: толщина ребер.
@@ -2037,6 +2058,13 @@ Adjacencies:
 @item
 @dfn{show_edge_type=type}: определяет, как изображаются ребра из списка @var{show_edges}. 
 См. опцию @var{line_type} пакета @code{draw}.
+@item
+@dfn{edge_partition=partition}: разбиение 
+@code{[[e1,e2,...],...,[ek,...,em]]} ребер графа. Ребра в каждом списке
+будут изображаться разными цветами.
+@item
+@dfn{edge_coloring=col}: раскраска ребер. Раскраска @var{col} должна
+быть задана в формате, возвращаемом функцией @var{edge_coloring}.
 @item
 @dfn{redraw=r}: если @var{redraw} равно @code{true}, то положение вершин
 вычисляется снова, даже если оно было сохранено с предыдущего изображения
@@ -2058,7 +2086,15 @@ Adjacencies:
 @item
 @dfn{program=prg}: определяет программу, используемую для расположения вершин графа. 
 Может быть одной из опций программы graphviz (dot, neato, twopi, circ,
-fdp), @var{circular} или @var{spring_embedding}.
+fdp), @var{circular}, @var{spring_embedding} или
+@var{planar_embedding}. @var{planar_embedding} примеменимо только
+2-связным планарным графам. Когда @code{program=spring_embedding}, то набор
+вершин с фиксированным расположением может быть задан с помощью опции
+@var{fixed_vertices}.
+@item
+@dfn{fixed_vertices=[]}: задает список вершин, которые будут расположены в
+фиксорованных позициях по правильному многограннику. 
+Может использоваться совместно с @code{program=spring_embedding}.
 @end itemize
 
 Пример 1:
@@ -2244,9 +2280,9 @@ fdp), @var{circular} или @var{spring_embedding}.
 @end defvr
 
 @deffn {Функция} vertices_to_path (@var{v_list})
-Преобразует список вершин в список ребер пути, определяемого списком.
+Преобразует список вершин @var{v_list} в список ребер пути, определяемого списком @var{v_list}.
 @end deffn
 
 @deffn {Функция} vertices_to_cycle (@var{v_list})
-Преобразует список вершин в список ребер цикла, определяемого списком.
+Преобразует список вершин @var{v_list} в список ребер цикла, определяемого списком @var{v_list}.
 @end deffn
