@@ -53,8 +53,8 @@ decsym(g,2,0,[sym(all)],[]);
 decsym(g,0,2,[],[sym(all)]);
 ("Now we can construct the Brans-Dicke action.")$
 L1:1/(16*%pi)*(('R([],[])))*sqrt(-determinant(g))$
-L2:1/(16*%pi)*(-w*gg([],[a,b])*f([],[],a)*f([],[],b)/f([],[]))*sqrt(-determinant(g))$
-L0:radcan(f([],[])*L1+L2)$
+L2:1/(16*%pi)*(w*gg([],[a,b])*f([],[],a)*f([],[],b)/f([],[]))*sqrt(-determinant(g))$
+L0:radcan(-f([],[])*L1+L2)$
 L0:contract(ev(L0,R))$
 ("We construct and simplify the 2nd order Euler-Lagrange equation:")$
 canform(contract(canform(rename(contract(expand(diff(L0,g([],[m,n]))-idiff(diff(L0,g([],[m,n],k)),k)+idiff(rename(idiff(contract(diff(L0,g([],[m,n],k,l))),k),1000),l)))))))$
@@ -79,4 +79,10 @@ ev(EQ);
 ug.e$
 subst(f,f([],[]),%)$
 expand(radcan(%/f));
+("As a last step, let us calculate the Hamiltonian associated with f.")$
+ic_convert(L([],[])=L0)$
+ev(%)$
+L:factor(subst(f,f([],[]),L));
+P:subst(diff(f,t),ft,diff(subst(ft,diff(f,t),L),ft));
+H:ratsimp(P*diff(f,t)-L);
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */
