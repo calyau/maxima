@@ -1,0 +1,27 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=impdiff.texi 
+@c OriginalRevision=1.3
+@c TranslatedBy: (c) 2008-03 Vadim V. Zhytnikov <vvzhyt@gmail.com>
+
+@menu
+* Функции и переменные пакета impdiff::
+@end menu
+
+@node Функции и переменные пакета impdiff,  , Пакет impdiff, Пакет impdiff
+@section Функции и переменные пакета impdiff
+
+@deffn {Функция} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+Эта процедура вычисляет неявную производную функции многих переменных.
+@var{f} -- функция-массив, с индексами, обозначающими порядок производных по переменным из @var{indvarlist};
+@var{indvarlist} -- список независимых переменных; @var{orderlist} -- требуемый порядок; и
+@var{depvar} -- зависимая переменная.
+
+Для того, чтобы использовать эту функцию, сначала напишите @code{load("impdiff")}.
+
+@opencatbox
+@category{Дифференциальное исчисление} @category{Пакеты библиотеки share} @category{Пакет impdiff}
+@closecatbox
+
+@end deffn
+

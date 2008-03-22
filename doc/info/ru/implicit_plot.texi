@@ -1,0 +1,44 @@
+@c Language=Russian
+@c Encoding=CP1251
+@c File=implicit_plot.texi 
+@c OriginalRevision=1.5
+@c TranslatedBy: (c) 2008-03 Vadim V. Zhytnikov <vvzhyt@gmail.com>
+
+
+@menu
+* Функции и переменные пакета implicit_plot::
+@end menu
+
+@node Функции и переменные пакета implicit_plot,  , Пакет implicit_plot, Пакет implicit_plot
+@section Функции и переменные пакета implicit_plot
+
+@deffn {Функция} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Функция} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+
+Строит график одного или более неявных выражений. 
+@var{expr} -- изображаемое выражение, @var{x_range} -- пределы
+по горизонтальной оси, @var{y_range} -- пределы по вертикальной оси. 
+@code{implicit_plot} учитывает глобальные установки для gnuplot,
+задаваемые при помощи функции @var{set_plot_option}. Опции могут быть указаны в 
+@code{implicit_plot} как дополнительные необязательные аргументы.
+
+Функция @code{implicit_plot} работает, отслеживая изменения знака в области, 
+заданной пределами @var{x_range} и @var{y_range}, и может ошибаться в сложных случаях.
+
+Команда @code{load(implicit_plot)} загружает данную функцию.
+
+Пример:
+@example
+(%i1) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4],
+ [gnuplot_preamble, "set zeroaxis"]);
+@end example
+
+@ifnotinfo
+@image{figures/implicit_plot,8cm}
+@end ifnotinfo
+
+@opencatbox
+@category{Графика} @category{Пакеты библиотеки share} @category{Пакет implicit_plot}
+@closecatbox
+
+@end deffn

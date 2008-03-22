@@ -164,9 +164,9 @@ DOE Macsyma.  Копия DOE Macsyma поддерживалась профессором Вильямом
 * ggf::                           Generating function of sequences.
 * Пакет graphs::                  Теория графов.
 * Пакет grobner::                 Функции для работы с базисом Гребнера.
-* impdiff::                       Implicit derivatives.
-* implicit_plot::                 Implicit plots package.
-* interpol::                      Interpolation package.
+* Пакет impdiff::                 Неявные производные.
+* Пакет implicit_plot::           Графики неявных функций.
+* Пакет interpol::                Интерполяция.
 * lapack::                        LAPACK functions for linear algebra.
 * lbfgs::                         L-BFGS unconstrained minimization package.
 * lindstedt::                     Lindstedt package.
@@ -470,18 +470,18 @@ ggf
 * Введение в пакет grobner::
 * Функции и переменные пакета grobner::
 
-impdiff
+Пакет impdiff
 
-* Definitions for impdiff::
+* Функции и переменные пакета impdiff::
 
-implicit_plot
+Пакет implicit_plot
 
-* Definitions for implicit_plot::
+* Функции и переменные пакета implicit_plot::
 
-interpol
+Пакет interpol
 
-* Introduction to interpol::
-* Definitions for interpol::
+* Введение в пакет interpol::
+* Функции и переменные пакета interpol::
 
 lapack
 
