@@ -57,13 +57,29 @@ of the the special indicial representation in @code{itensor}, in some cases the
 user may find difficulty with the specification of the metric, function
 definition, and the evaluation of differentiated "indexed" objects.
 
+The @code{itensor} package can carry out differentiation with respect to an indexed
+variable, which allows one to use the package when dealing with Lagrangian
+and Hamiltonian formalisms. As it is possible to differentiate a field
+Lagrangian with respect to an (indexed) field variable, one can use Maxima
+to derive the corresponding Euler-Lagrange equations in indicial form. These
+equations can be translated into component tensor (@code{ctensor}) programs using
+the @code{ic_convert} function, allowing us to solve the field equations in a
+particular coordinate representation, or to recast the equations of motion
+in Hamiltonian form. See @code{einhil.dem} and @code{bradic.dem} for two comprehensive
+examples. The first, @code{einhil.dem}, uses the Einstein-Hilbert action to derive
+the Einstein field tensor in the homogeneous and isotropic case (Friedmann
+equations) and the spherically symmetric, static case (Schwarzschild
+solution.) The second, @code{bradic.dem}, demonstrates how to compute the Friedmann
+equations from the action of Brans-Dicke gravity theory, and also derives
+the Hamiltonian associated with the theory's scalar field.
+
 @opencatbox
 @category{Tensors} @category{Share packages} @category{Package itensor}
 @closecatbox
 
 @subsection New tensor notation
 
-Until now, the @code{itensor} package in Maxima has used a notation that sometimes
+Earlier versions of the @code{itensor} package in Maxima used a notation that sometimes
 led to incorrect index ordering. Consider the following, for instance:
 
 @example
@@ -204,11 +220,11 @@ specify the name of the metric, and perform some simple calculations.
 (%t11)                        v    - v   ichr2
                                i,j    %4      i j
 (%i12) ishow(ev(%,ichr2))$
-               %4 %5
-(%t12) v    - g      v   (e p       + e   p     - e p       - e    p
-        i,j           %4     j %5,i    ,i  j %5      i j,%5    ,%5  i j
+                %4 %5
+(%t12) v    - (g      v   (e p       + e   p     - e p       - e    p
+        i,j            %4     j %5,i    ,i  j %5      i j,%5    ,%5  i j
 
-                                         + e p       + e   p    )/2
+                                         + e p       + e   p    ))/2
                                               i %5,j    ,j  i %5
 (%i13) iframe_flag:true;
 (%o13)                               true
@@ -221,13 +237,13 @@ specify the name of the metric, and perform some simple calculations.
 (%t15)                        v    - v   ifc2
                                i,j    %6     i j
 (%i16) ishow(radcan(ev(%,ifc2,ifc1)))$
-             %6 %8                    %6 %8
+             %6 %7                    %6 %7
 (%t16) - (ifg      v   ifb       + ifg      v   ifb       - 2 v
-                    %6    j %8 i             %6    i j %8      i,j
+                    %6    j %7 i             %6    i j %7      i,j
 
-                                             %6 %8
+                                             %6 %7
                                         - ifg      v   ifb      )/2
-                                                    %6    %8 i j
+                                                    %6    %7 i j
 (%i17) ishow(canform(s([i,j],[])-s([j,i])))$
 (%t17)                            s    - s
                                    i j    j i
@@ -525,12 +541,21 @@ of which involve the use of the @code{components} command:
 
 @example
 
+(%i5) lg:-ident(4)$lg[1,1]:1$lg;
+                            [ 1   0    0    0  ]
+                            [                  ]
+                            [ 0  - 1   0    0  ]
+(%o5)                       [                  ]
+                            [ 0   0   - 1   0  ]
+                            [                  ]
+                            [ 0   0    0   - 1 ]
+
 (%i6) components(g([i,j],[]),lg);
 (%o6)                                done
 (%i7) ishow(g([i,j],[]))$
 (%t7)                                g
                                       i j
-(%i8) g([3,3],[]);
+(%i8) g([1,1],[]);
 (%o8)                                  1
 (%i9) g([4,4],[]);
 (%o9)                                 - 1
@@ -815,8 +840,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
         kdelta  ) a
               %4   j k
 (%i11) ishow(contract(expand(%)))$
-                                  l i      l i
-(%t11)                           a    - a g
+                                  l i    l i  j
+(%t11)                           a    - g    a
+                                              j
 
 @end example
 
@@ -838,7 +864,7 @@ For example:
 
 (%i1) load(itensor);
 (%o1)      /share/tensor/itensor.lisp
-(%i2)  el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
+(%i2) el1:ishow('levi_civita([i,j,k],[])*a([],[i])*a([],[j]))$
                              i  j
 (%t2)                       a  a  levi_civita
                                              i j k
@@ -846,9 +872,9 @@ For example:
                                        i j k
 (%t3)                       levi_civita      a  a
                                               i  j
-(%i4) ishow(canform(contract(expand(applyb1(el1,lc_l,lc_u)))))$
+(%i4) canform(contract(expand(applyb1(el1,lc_l,lc_u))));
 (%t4)                                  0
-(%i5) ishow(canform(contract(expand(applyb1(el2,lc_l,lc_u)))))$
+(%i5) canform(contract(expand(applyb1(el2,lc_l,lc_u))));
 (%t5)                                  0
 
 @end example
@@ -1014,6 +1040,14 @@ respect to the @var{v_i}th member of the list @code{vect_coords}.  If
 subscripted by @var{v_i} will be used for the variable of
 differentiation.  This permits an array of coordinate names or
 subscripted names like @code{x[1]}, @code{x[2]}, ...  to be used.
+
+A further extension adds the ability to @code{diff} to compute derivatives
+with respect to an indexed variable. In particular, the tensor package knows
+how to differentiate expressions containing combinations of the metric tensor
+and its derivatives with respect to the metric tensor and its first and
+second derivatives. This capability is particularly useful when considering
+Lagrangian formulations of a gravitational theory, allowing one to derive
+the Einstein tensor and field equations from the action principle.
 
 @opencatbox
 @category{Package itensor}
@@ -1587,19 +1621,23 @@ and @code{icc2}), as the following example demonstrates:
 (%t3)                         v   + icc2     v
                                ,j       %1 j
 (%i4) ishow(ev(%,icc2))$
-                        %1      i           i        i
-(%t4)                  v   (ifc2     + ichr2    ) + v
-                                %1 j        %1 j     ,j
+                               %1     i       i
+(%t4)                         v   ifc2     + v
+                                      %1 j    ,j
 (%i5) ishow(ev(%,ifc2))$
+                          %1    i %2                i
+(%t5)                    v   ifg     ifc1        + v
+                                         %1 j %2    ,j
+(%i6) ishow(ev(%,ifc1))$
             %1    i %2
            v   ifg     (ifb        - ifb        + ifb       )
                            j %2 %1      %2 %1 j      %1 j %2     i
-(%t5)      -------------------------------------------------- + v
+(%t6)      -------------------------------------------------- + v
                                    2                             ,j
-(%i6) ishow(ifb([a,b,c]))$
-                       %5    %4
-(%t6)               ifr   ifr   (ifri        - ifri       )
-                       a     b       c %4,%5       c %5,%4
+(%i7) ishow(ifb([a,b,c]))$
+                                                   %3    %4
+(%t7)               (ifri        - ifri       ) ifr   ifr
+                         a %3,%4       a %4,%3     b     c
 
 @end example
 
@@ -1609,9 +1647,9 @@ the @code{iframe_bracket_form} flag is set to @code{false}:
 @example
 
 (%i8) block([iframe_bracket_form:false],ishow(ifb([a,b,c])))$
-                       %7    %6        %6      %7
-(%t8)              (ifr   ifr     - ifr     ifr  ) ifri
-                       a     b,%7      a,%7    b       c %6
+                                %6    %5        %5      %6
+(%t8)              ifri     (ifr   ifr     - ifr     ifr  )
+                       a %5     b     c,%6      b,%6    c
 
 @end example
 
@@ -2153,8 +2191,9 @@ For instance:
 (%t6)                             v    - v
                                    j,i    i,j
 (%i7) ishow(extdiff(a([i,j]),k))$
-(%t7)                      a      - a      + a
-                            j k,i    i k,j    i j,k
+(%t7)                    - (a      - a      + a     )
+                             k j,i    k i,j    j i,k
+
 @end example
 
 @opencatbox
