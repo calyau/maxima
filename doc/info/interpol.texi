@@ -36,7 +36,7 @@ In the first two cases the pairs are ordered with respect to the first coordinat
 
 With the @var{option} argument it is possible to select the name for the independent variable, which is @code{'x} by default; to define another one, write something like @code{varname='z}. 
 
-Note that when working with high degree polynomials, floating point evaluations are inestable.
+Note that when working with high degree polynomials, floating point evaluations are instable.
 
 Examples:
 
