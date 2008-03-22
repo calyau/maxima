@@ -126,16 +126,18 @@
       ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
       ;; Define n to be the number of integers in this interval; we have
 
-      (setq eps (power ($bfloat 10) (- 20 digits)))
-      (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
-      (setq ub (add f3 (mult (take '(mabs) f3) eps)))
-      (setq n (sub (mfuncall '$ceiling ub) (mfuncall '$ceiling lb)))
-      (setq f1 (mfuncall fn f1))
-      (setq f2 (mfuncall fn f2))
-      (setq f3 (mfuncall fn f3))
-
+      (bind-fpprec digits 
+		   (setq eps (power ($bfloat 10) (- 20 digits)))
+		   (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
+		   (setq ub (add f3 (mult (take '(mabs) f3) eps)))
+		   (setq n (sub (take '($ceiling) ub) (take '($ceiling) lb))))
+      
+      (setq f1 (take (list fn) f1))
+      (setq f2 (take (list fn) f2))
+      (setq f3 (take (list fn) f3))
+      
       ;; Provided f1 = f2 = f3 and n = 0, return f1.
-
+      
       (if (and (= f1 f2 f3) (= n 0)) f1 nil))))
 
 ;; (a) The function fpentier rounds a bigfloat towards zero--we need to
