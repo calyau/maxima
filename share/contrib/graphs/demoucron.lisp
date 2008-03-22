@@ -29,6 +29,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; debugging
+;;
+
+(defvar $demoucron_debug nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; finds a cycle in g - g should be connected
 ;;
 
@@ -135,7 +142,7 @@
   (loop for e in (edges gr) do
        (if (and (subsetp e *h-vertices*)
 		(null (gethash e *h-edges*)))
-	   (push (list e e) *bridges*))) )
+	   (push (list e e) *bridges*))))
 
 (defun dfs-find-bridge (v gr)
   (setf (gethash v *visited-vertices*) t)
@@ -178,7 +185,7 @@
   (let ((*dfs-prev* (make-hash-table))
 	(*dfs-visited* (make-hash-table))
 	(attachements (second bridge)))
-    (dfs-find-path (first attachements) gr)
+    (dfs-find-path (first attachements) (car bridge) gr)
     ;; should not happen since graphs are biconnected!
     (if (< (length attachements) 2)
 	(merror "Too few attachements"))
@@ -190,14 +197,15 @@
       (push u path)
       path)))
 
-(defun dfs-find-path (v gr)
+(defun dfs-find-path (v bridge gr)
   (setf (gethash v *dfs-visited*) t)
   (loop for u in (neighbors v gr) do
        (unless (gethash (list v u) *h-edges*)
-	 (when (null (gethash u *dfs-visited*))
+	 (when (and (null (gethash u *dfs-visited*))
+		    (member u bridge))
 	   (setf (gethash u *dfs-prev*) v)
 	   (unless (member u *h-vertices*)
-	     (dfs-find-path u gr))))))
+	     (dfs-find-path u bridge gr))))))
 
 ;;;;;;;
 ;;
@@ -277,7 +285,7 @@
 ;;
 
 (defun demoucron (g return-walks)
-  
+
   (when (> ($graph_order g) (- (* 3 ($graph_size g)) 6))
     (return-from demoucron nil))
 
@@ -325,6 +333,13 @@
 			     (list (second *h-vertices*) (first *h-vertices*))))
 
     (while (not (null *bridges*))
+
+      (when $demoucron_debug
+	(print "++++++++++++++++++")
+	(print "--- facial walks:")
+	(print *facial-walks*)
+	(print "---      bridges:")
+	(mapcar #'print *bridges*))
       ;; for each bridge find facial walks in which it can be embedded
       (match-bridges-to-walks)
       ;; select the bridge with the smallest number of available walks
@@ -335,6 +350,9 @@
 	     (when (< (length (gethash b *available-faces*))
 		      (length (gethash bridge *available-faces*)))
 	       (setq bridge b)))
+	(when $demoucron_debug
+	  (print "---    embedding:")
+	  (print bridge))
 	;; if the bridge can't be embedded, the graph is not planar
 	(if (= 0 (length (gethash bridge *available-faces* bridge)))
 	    (return-from demoucron nil))
@@ -342,6 +360,9 @@
 	(setq path (find-path bridge g))
 	;; embedd the path
 	(embedd-path path (first (gethash bridge *available-faces*)))
+	(when $demoucron_debug
+	  (print "---         path:")
+	  (print path))
 	(setq *facial-walks* (remove (first (gethash bridge *available-faces*)) *facial-walks*))
 	;; find the facial walks of the embedding of h
 	(find-facial-walks (list (list (first path) (second path))
