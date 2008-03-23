@@ -387,6 +387,9 @@ limit(floor(x),x,0);
 limit((3/4)^(5*n+1), n, inf);
 0;
 
+limit(-%e^x/x, x, inf);
+minf;
+
 /* tex(t[1]) shouldn't change t to true */
 tex (t[1], false);
 "$$t_{1}$$

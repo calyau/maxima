@@ -802,7 +802,7 @@ It appears in LIMIT and DEFINT.......")
 	 (cond ((member answer '($ind $und) :test #'equal)
 		(return nil))
 	       ((member answer '($inf $minf 0) :test #'equal) ;Really? ZEROA ZEROB?
-		(return answer)))))))
+		(return (simplimtimes (list (m// numerator denominator) answer)))))))))
 
 (defun exppoly (exp)	   ;RETURNS EXPRESSION WITH UNRATTED EXPONENTS
   (do ((factor nil)
