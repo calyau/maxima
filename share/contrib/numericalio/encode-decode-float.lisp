@@ -1,10 +1,24 @@
-;;  Copyright 2007 by Robert Dodier
+;; encode-decode-float.lisp
+;; Copyright 2007 by Robert Dodier
 
-;;  This program is free software; you can redistribute it and/or
-;;  modify it under the terms of the GNU General Public License, version 2.
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License, version 2.
 
-;;  This program has NO WARRANTY, not even the implied warranty of
-;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+;; This program has NO WARRANTY, not even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+;; These functions encode integers into 64 bit IEEE 754 floats
+;; and decode 64 bit floats into 64 bit integers.
+;; These functions cannot handle any other size of float.
+;; 
+;; Encode float-64 to integer:  SMASH-FLOAT-64-INTO-INTEGER
+;; Decode integer to float-64:  CONSTRUCT-FLOAT-64-FROM-INTEGER
+;;
+;; Write float-64 to output stream:  WRITE-FLOAT-64
+;; Read float-64 from input stream:  READ-FLOAT-64
+;; Read an unsigned integer (of any size) from input stream: READ-UNSIGNED-INTEGER
+;; Write an unsigned integer (of any size) to output stream: WRITE-UNSIGNED-INTEGER
+;; Set assumed external byte order for input and output:  DEFINE-EXTERNAL-BYTE-ORDER
 
 (in-package :maxima)
 
