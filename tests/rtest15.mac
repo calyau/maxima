@@ -791,3 +791,16 @@ log(6)/4;
 /* [ 1884711 ] bug when adding fractions involving square roots */
 sqrt(2)/6-2*sqrt(2)/6;
 -sqrt(2)/6;
+
+/* Bug reported to mailing list 2008-03-23
+ * Bug causes a Lisp error in FREEL (eventually called by $DEFINT).
+ */
+
+block ([foo],
+    apply (forget, facts ()),
+    assume (equal (a, 0)),
+    foo : integrate (cos(a*x)/(1 + x^2), x, 0, inf),
+    forget (equal (a, 0)),
+    foo);
+%e^-a * (%pi*%e^(2*a) + %pi)/4;
+

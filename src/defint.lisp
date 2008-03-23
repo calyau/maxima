@@ -1015,7 +1015,7 @@
 	      (eq ($sign (m+ (deg (setq nn* ($imagpart (caddr term))))
 			     -2.))
 		  '$neg))
-	 (cond ((eq ($asksign (ratcoef nn* var)) '$pos)
+	 (cond ((eq ($asksign (ratdisrep (ratcoef nn* var))) '$pos)
 		(setq *updn t))
 	       (t (setq *updn nil)))
 	 term)
