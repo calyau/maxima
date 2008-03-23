@@ -370,7 +370,7 @@
       ((eq ind 'opr)
        (if (symbolp name)
          (list 'defprop name val ind)
-         `(setf (gethash *opr-table* ,name) ,val)))
+         `(setf (gethash ,name *opr-table*) ',val)))
       (t
         (list 'defprop name val ind)))))
 
