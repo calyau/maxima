@@ -134,8 +134,8 @@ done;
 [log (u + v) < log (u - v), cosh (u + v) < cosh (u - v)];
 [u + v < u - v, cosh (u + v) < cosh (u - v)];
 
-[sinh (u + v) > sinh (u * v), sin (u + v) > sin (u - v)];
-[u + v > u * v, sin (u + v) > sin (u - v)];
+[sinh (u + v) > sinh (u * v), sin (u + v) > sin (u * v)];
+[u + v > u * v, sin (u + v) > sin (u * v)];
 
 /* Various forms of matchdeclare predicates.
  * These should different ways to say the same thing.
@@ -547,3 +547,34 @@ BAR (4b0 * m * n);
 
 apply1 (BAR (5b0 + p + q), r4);
 BAR (5b0 + p + q);
+
+/* Examples derived from mailing list 2008-03-23
+ */
+
+(kill (aa, bb, foo, bar),
+ matchdeclare
+   (aa, integerp,
+    bb, floatnump,
+    foo, lambda ([ee], member (ee, '[sin, cos]))),
+ defmatch (bar, bb * foo (aa)),
+ 0);
+0;
+
+(bar (12.345 * sin (54321)),
+ if %% = false then false else sort (%%));
+[aa = 54321, bb = 12.345, foo = sin];
+
+(matchdeclare
+   (aa, floatnump,
+    bb, integerp),
+ defmatch (baz, aa * foo (bb)),
+ 0);
+0;
+
+/* Known failure: different ordering => match function fails to match */
+(baz (12.345 * sin (54321)),
+ if %% = false then false else sort (%%));
+[aa = 12.345, bb = 54321, foo = sin];
+
+
+
