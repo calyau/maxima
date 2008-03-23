@@ -694,4 +694,7 @@
 #+abcl (defvar flag)
 #+abcl (defvar print?)
 #+abcl (defvar errcatch)
-
+#+abcl (defvar mcatch)
+#+abcl (defvar *trigreduce)
+#+abcl (defvar *noexpand)
+#+abcl (defvar $verbose)
