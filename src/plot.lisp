@@ -4,6 +4,12 @@
 
 ;; see bottom of file for examples
 
+(defun ensure-string (x)
+  (cond
+    ((stringp x) x)
+    ((symbolp x) (print-invert-case (stripdollar x)))
+    (t (maybe-invert-string-case (string (implode (strgrind x)))))))
+
 (defmfun $join (x y)
   (if (and ($listp x) ($listp y))
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
@@ -186,8 +192,7 @@
          (val-list (if ($listp val)
                        (cdr val)
                        `(,val))))
-    (print-invert-case 
-     (stripdollar (nth (mod (- index 1) (length val-list)) val-list)))))
+    (ensure-string (nth (mod (- index 1) (length val-list)) val-list))))
 
 (defun check-list-items (name lis type length)
   (or (eql (length lis) length)
@@ -255,7 +260,7 @@
   )
 
 (defun get-gnuplot-term (term)
-  (let* ((sterm (string-downcase (format nil "~a" (stripdollar term))))
+  (let* ((sterm (string-downcase (ensure-string term)))
          (pos   (search " " sterm)))
     (if pos  
       (subseq sterm 0 pos)
@@ -1227,7 +1232,7 @@
             (setf no-range-required nil)))) ;; is a function, a range is needed
       (unless no-range-required
         (setq range (check-range range))
-        (setf xlabel (print-invert-case (stripdollar (second range))))
+        (setf xlabel (ensure-string (second range)))
         (setf xmin (coerce-float (third range)))
         (setf xmax (coerce-float (fourth range))))
       (if (and no-range-required range)
@@ -1255,8 +1260,8 @@
           ($logx (setf log-x t))
           ($logy (setf log-y t))
 	  ($box (setf box (cddr v)))
-          ($xlabel (setf xlabel (print-invert-case (stripdollar (third v)))))
-          ($ylabel (setf ylabel (print-invert-case (stripdollar (third v)))))
+          ($xlabel (setf xlabel (ensure-string (third v))))
+          ($ylabel (setf ylabel (ensure-string (third v))))
           ($x (when (fourth v)
                 (setf xmin (meval (third v)))
                 (setf xmax (meval (fourth v)))
@@ -1286,8 +1291,7 @@
     (if (and (eq plot-format '$gnuplot) (eq gnuplot-term '$default) 
              gnuplot-out-file)
       (setf file gnuplot-out-file)
-      (setf file (plot-temp-file
-                  (format nil "maxout.~(~a~)" (stripdollar plot-format)))))
+      (setf file (plot-temp-file (format nil "maxout.~(~a~)" (ensure-string plot-format)))))
     ;; old function $plot2dopen incorporated here
     (case plot-format
       ($openmath
@@ -1315,8 +1319,7 @@
             (if legend         ;; legend in the command line has priority
              (setf plot-name
 		   (if (first legend)
-		     (print-invert-case (stripdollar
-                                 (nth (mod (- i 1) (length legend)) legend)))
+		     (ensure-string (nth (mod (- i 1) (length legend)) legend))
 		     nil))     ;; no legend if option [legend,false]
              (if (= 2 (length fun))
                (setf plot-name nil)     ;; no legend if just one function
@@ -1411,8 +1414,7 @@
            (if legend
              (setf plot-name      ;; legend in the command line has priority
 		   (if (first legend)
-		     (print-invert-case (stripdollar
-                                 (nth (mod (- i 1) (length legend)) legend)))
+		     (ensure-string (nth (mod (- i 1) (length legend)) legend))
 		     nil))        ;; no legend if option [legend,false]
              (if (= 2 (length fun))
                (setf plot-name nil)     ;; no legend if just one function
@@ -1762,7 +1764,7 @@
 	     (not (member plot-format-in-plot-options gnuplot-formats :test #'eq))))
 
       (merror "contour_plot: plot_format = ~a not understood; must be a gnuplot format."
-              (print-invert-case (stripdollar (or plot-format-in-arguments plot-format-in-plot-options))))
+              (ensure-string (or plot-format-in-arguments plot-format-in-plot-options)))
 
       ; Prepend contour preamble to preamble in arguments (if given)
       ; and pass concatenated preamble as an argument to plot3d.
@@ -1823,7 +1825,7 @@
            (eq gnuplot-term '$default) 
            gnuplot-out-file)
       (setf file gnuplot-out-file)
-      (setf file (plot-temp-file (format nil "maxout.~(~a~)" (stripdollar plot-format)))))
+      (setf file (plot-temp-file (format nil "maxout.~(~a~)" (ensure-string plot-format)))))
   (and $in_netmath (setq $in_netmath (eq plot-format '$openmath)))
   (setq xrange (check-range xrange))
   (setq yrange (check-range yrange))
