@@ -1539,3 +1539,16 @@ minf$
 
 (tellsimpafter (signum(x), zzz), signum(-x));
 -zzz;
+
+floor(log(8) / log(2));
+3$
+
+ceiling(log(8) / log(2));
+3$
+
+floor(log(125) / log(5) + 42 / 5);
+11$
+
+ceiling(log(125) / log(5) + 42 / 5);
+12$
+
