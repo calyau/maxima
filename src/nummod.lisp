@@ -86,6 +86,11 @@
      (let (($fpprec (fpprec1 nil ,val)))
        ,@exprs)))
 
+;; Return true if the expression can be formed using rational numbers, logs, mplus, mexpt, or mtimes.
+
+(defun use-radcan-p (e)
+  (or ($ratnump e) (and (op-equalp e '%log 'mexpt 'mplus 'mtimes) (every 'use-radcan-p (cdr e)))))
+
 ;; When constantp(x) is true, we use bfloat evaluation to try to determine
 ;; the ceiling or floor. If numerical evaluation of e is ill-conditioned, this function
 ;; can misbehave.  I'm somewhat uncomfortable with this, but it is no worse
@@ -96,7 +101,7 @@
 
 (defun pretty-good-floor-or-ceiling (x fn &optional digits)
   (let (($float2bf t) ($algebraic t) (f1) (f2) (f3) (eps) (lb) (ub) (n))
-
+    
     (setq digits (if (and (integerp digits) (> 0 digits)) digits 25))
     (catch 'done
 
@@ -110,23 +115,24 @@
       ;; This happens when, for example, x = asin(2). For now, bfloatp
       ;; evaluates to nil for a complex big float. If this ever changes,
       ;; this code might need to be repaired.
-
-      (setq f1 (bind-fpprec digits ($bfloat x)))
-      (if (or (not ($bfloatp f1)) (not ($freeof '$%i f1))) (throw 'done nil))
-
+      
+      (bind-fpprec digits 
+		   (setq f1 ($bfloat x))
+		   (if (not ($bfloatp f1)) (throw 'done nil)))
+		   
       (incf digits 20)
       (setq f2 (bind-fpprec digits ($bfloat x)))
-      (if (or (not ($bfloatp f2)) (not ($freeof '$%i f2))) (throw 'done nil))
+      (if (not ($bfloatp f2)) (throw 'done nil))
 
       (incf digits 20)
-      (setq f3 (bind-fpprec digits ($bfloat x)))
-      (if (or (not ($bfloatp f3)) (not ($freeof '$%i f3))) (throw 'done nil))
-
-      ;; Let's say that the true value of x is in the interval
-      ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
-      ;; Define n to be the number of integers in this interval; we have
-
       (bind-fpprec digits 
+		   (setq f3 ($bfloat x))
+		   (if (not ($bfloatp f3)) (throw 'done nil))
+
+		   ;; Let's say that the true value of x is in the interval
+		   ;; [f3 - |f3| * eps, f3 + |f3| * eps], where eps = 10^(20 - digits).
+		   ;; Define n to be the number of integers in this interval; we have
+		   
 		   (setq eps (power ($bfloat 10) (- 20 digits)))
 		   (setq lb (sub f3 (mult (take '(mabs) f3) eps)))
 		   (setq ub (add f3 (mult (take '(mabs) f3) eps)))
@@ -136,9 +142,15 @@
       (setq f2 (take (list fn) f2))
       (setq f3 (take (list fn) f3))
       
-      ;; Provided f1 = f2 = f3 and n = 0, return f1.
+      ;; Provided f1 = f2 = f3 and n = 0, return f1; if n = 1 and (use-radcan-p e) and ($radcan e)
+      ;; is a $ratnump, return floor / ceiling of radcan(x),
       
-      (if (and (= f1 f2 f3) (= n 0)) f1 nil))))
+      (cond ((and (= f1 f2 f3) (= n 0)) f1)
+	    ((and (=  f1 f2 f3) (= n 1) (use-radcan-p x))
+	     (setq x ($radcan x))
+	     (if ($ratnump x) (take (list fn) x) nil))
+	    (t nil)))))
+
 
 ;; (a) The function fpentier rounds a bigfloat towards zero--we need to
 ;;     check for that.
@@ -204,7 +216,6 @@
 (defun simp-ceiling (e e1 z)
   (oneargcheck e)
   (setq e (simplifya (specrepcheck (nth 1 e)) z))
-
   (cond ((numberp e) (ceiling e))
 
 	((ratnump e) (ceiling (cadr e) (caddr e)))
