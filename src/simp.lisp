@@ -441,8 +441,7 @@
 	     (cond ((not (freeargs (car l) var)) (return nil)))))))
 
 (defmfun simplifya (x y)
-  (cond ((atom x) (cond ((and (eq x '$%pi) $numer) %pi-val) (t x)))
-	((not $simp) x)
+  (cond ((or (atom x) (not $simp)) x) 
 	((atom (car x))
 	 (cond ((and (cdr x) (atom (cdr x)))
 		(merror "~%~S is a cons with an atomic cdr - `simplifya'" x))
