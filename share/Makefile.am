@@ -478,6 +478,9 @@ contrib/stats/stats.mac\
 contrib/stringproc/rteststringproc.mac\
 contrib/stringproc/eval_string.lisp\
 contrib/stringproc/stringproc.lisp\
+contrib/stringproc/printf.lisp\
+contrib/stringproc/pregexp.lisp\
+contrib/stringproc/sregex.lisp\
 contrib/stringproc/stringproc.mac\
 contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
