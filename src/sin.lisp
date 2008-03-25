@@ -355,8 +355,8 @@
 			      (cons integrand stack)
 			      integrand))
 		       '%integrate)))
-	    (return (add (list '(mtimes) const w arcpart)
-			   (list '(mtimes) -1 const y))))
+	    (return (add* (list '(mtimes) const w arcpart)
+			  (list '(mtimes) -1 const y))))
 	   (t
 	    ;;(format t "t part~%")
 	    (return
@@ -467,7 +467,7 @@
 		   ,@(cddr wrt)))
 	     `((%derivative) ,expr	;Higher order, reduce order
 	       ,.(nreverse old-wrt)
-	       ,(car wrt) ,(add (cadr wrt) -1)
+	       ,(car wrt) ,(add* (cadr wrt) -1)
 	       ,@ (cddr wrt))))
 	((null (cddr wrt)) () )		;Say it doesn't apply here
 	(t (checkderiv1 expr (cddr wrt)	;Else we check later terms
@@ -869,7 +869,7 @@
 						   ((mtimes) -1 c1))
 						  r1))))
 			    var))))
-       ((integerp2 (add r1 r2))
+       ((integerp2 (add* r1 r2))
 	#+nil (format t "integer r1+r2~%")
 	;; If we're here,  (r1-q+1)/q+r2 is an integer.
 	;;
