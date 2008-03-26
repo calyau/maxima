@@ -998,26 +998,24 @@ is not included")
   (let ((stream (gethash lun *lun-hash*)))
     (if stream
 	stream
-	(cond ((integerp lun)
-	       (case lun
-		 (5
-		  ;; Always standard input
-		  (setf (gethash lun *lun-hash*) *standard-input*))
-		 ((6 t)
-		  ;; Always standard output
-		  (setf (gethash lun *lun-hash*) *standard-output*))
-		 (otherwise
-		  ;; All other cases open a file fort<n>.dat
-		  (setf (gethash lun *lun-hash*)
-			(open (format nil "fort~d.dat" lun)
-			      :direction :io
-			      :if-exists :rename)))))
+	(cond ((eql lun 5)
+	       ;; Always standard input
+	       (setf (gethash lun *lun-hash*) *standard-input*))
+	      ((or (eql lun 6)
+		   (eql lun t))
+	       ;; Always standard output
+	       (setf (gethash lun *lun-hash*) *standard-output*))
+	      ((integerp lun)
+	       ;; All other cases open a file fort<n>.dat
+	       (setf (gethash lun *lun-hash*)
+		     (open (format nil "fort~d.dat" lun)
+			   :direction :io
+			   :if-exists :rename)))
 	      ((stringp lun)
 	       (setf (gethash lun *lun-hash*)
 		     (if readp
 			 (make-string-input-stream lun)
-			 (make-string-output-stream))))
-	      ))))
+			 (make-string-output-stream))))))))
 
 (defun init-fortran-io ()
   "Initialize the F2CL Fortran I/O subsystem to sensible defaults"
@@ -1394,9 +1392,14 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.16 2008-03-26 12:54:54 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.17 2008-03-26 13:17:55 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.16  2008-03-26 12:54:54  rtoy
+;;; Revision 1.17  2008-03-26 13:17:55  rtoy
+;;; Oops.  Fix bug in previous commit where the test for lun = t was
+;;; inside the test for integerp lun.  Just use separate tests for units
+;;; 5, 6, and t.
+;;;
+;;; Revision 1.16  2008/03/26 12:54:54  rtoy
 ;;; Change how *lun-hash* is handled, based on Robert's changes.  Rather
 ;;; than initializing *lun-hash* to NIL, we continue to initialize it to
 ;;; a(n) (empty) hash-table.  Now we don't have to check *lun-hash* for
