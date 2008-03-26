@@ -1264,8 +1264,8 @@ causing all pending operations to be flushed"
   (ecase i
     (1 least-positive-normalized-double-float)
     (2 most-positive-double-float)
-    (3 double-float-epsilon)
-    (4 (scale-float double-float-epsilon 1))
+    (3 #-gcl double-float-epsilon #+gcl (scale-float (float #X10000000000001 1d0) -105))
+    (4 (scale-float #-gcl double-float-epsilon #+gcl (scale-float (float #X10000000000001 1d0) -105) 1))
     (5 (log (float (float-radix 1d0) 1d0) 10d0))))
 
 (defun r1mach (i)
@@ -1392,9 +1392,13 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.17 2008-03-26 13:17:55 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.18 2008-03-26 14:48:26 robert_dodier Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.17  2008-03-26 13:17:55  rtoy
+;;; Revision 1.18  2008-03-26 14:48:26  robert_dodier
+;;; For (D1MACH 3) and (D1MACH 4), make the values for GCL match the
+;;; values as shown in d1mach.f.
+;;;
+;;; Revision 1.17  2008/03/26 13:17:55  rtoy
 ;;; Oops.  Fix bug in previous commit where the test for lun = t was
 ;;; inside the test for integerp lun.  Just use separate tests for units
 ;;; 5, 6, and t.
