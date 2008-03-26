@@ -991,18 +991,27 @@ is not included")
    
 ;; Map Fortran logical unit numbers to Lisp streams
 
-(defvar *lun-hash* nil)
+(defparameter *lun-hash*
+  (make-hash-table))
 
 (defun lun->stream (lun &optional readp)
-  (if (null *lun-hash*) (init-fortran-io))
   (let ((stream (gethash lun *lun-hash*)))
     (if stream
 	stream
 	(cond ((integerp lun)
-	       (setf (gethash lun *lun-hash*)
-		     (open (format nil "fort~d.dat" lun)
-			   :direction :io
-			   :if-exists :rename)))
+	       (case lun
+		 (5
+		  ;; Always standard input
+		  (setf (gethash lun *lun-hash*) *standard-input*))
+		 ((6 t)
+		  ;; Always standard output
+		  (setf (gethash lun *lun-hash*) *standard-output*))
+		 (otherwise
+		  ;; All other cases open a file fort<n>.dat
+		  (setf (gethash lun *lun-hash*)
+			(open (format nil "fort~d.dat" lun)
+			      :direction :io
+			      :if-exists :rename)))))
 	      ((stringp lun)
 	       (setf (gethash lun *lun-hash*)
 		     (if readp
@@ -1012,9 +1021,7 @@ is not included")
 
 (defun init-fortran-io ()
   "Initialize the F2CL Fortran I/O subsystem to sensible defaults"
-  (if *lun-hash*
-    (clrhash *lun-hash*)
-    (setq *lun-hash* (make-hash-table)))
+  (clrhash *lun-hash*)
   (setf (gethash 6 *lun-hash*) *standard-output*)
   (setf (gethash 5 *lun-hash*) *standard-input*)
   (setf (gethash t *lun-hash*) *standard-output*))
@@ -1022,12 +1029,11 @@ is not included")
 (defun close-fortran-io ()
   "Close all F2CL Fortran units (except for standard output and input)
 causing all pending operations to be flushed"
-  (if *lun-hash*
-    (maphash #'(lambda (key val)
+  (maphash #'(lambda (key val)
 	       (when (and (streamp val) (not (member key '(5 6 t))))
 		 (format t "Closing unit ~A: ~A~%" key val)
 		 (close val)))
-	       *lun-hash*)))
+	   *lun-hash*))
 
 (defun %open-file (&key file status access recl blank unit form)
   ;; We should also check for values of access, form that we don't support.
@@ -1056,7 +1062,6 @@ causing all pending operations to be flushed"
     `(prog ((,result (%open-file :unit ,unit :file ,file :status ,status
 				 :access ,access :form ,form :recl ,recl :blank ,blank)))
 	(when ,result
-      (if (null *lun-hash*) (init-fortran-io))
 	  (setf (gethash ,unit *lun-hash*) ,result))
 	,(if err `(unless ,result (go ,(f2cl-lib::make-label err))))
 	,(if iostat `(setf ,iostat (if ,result 0 1))))))
@@ -1389,9 +1394,23 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.15 2008-03-15 20:00:48 robert_dodier Exp $
+;;; $Id: f2cl-lib.lisp,v 1.16 2008-03-26 12:54:54 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.15  2008-03-15 20:00:48  robert_dodier
+;;; Revision 1.16  2008-03-26 12:54:54  rtoy
+;;; Change how *lun-hash* is handled, based on Robert's changes.  Rather
+;;; than initializing *lun-hash* to NIL, we continue to initialize it to
+;;; a(n) (empty) hash-table.  Now we don't have to check *lun-hash* for
+;;; NIL everywhere.  Then we change lun->stream to initialize the table
+;;; for units 5, 6, and t to the correct streams.  The effect should be
+;;; the same and nicely localized to the one function.
+;;;
+;;; This change (or a very similar one) will go into f2cl.
+;;;
+;;; The following test works with both clisp, gcl, and cmucl:
+;;;
+;;; (%i1) :lisp (slatec::xerprn "FOOBAR" -1 "BAZQUUX" 72)
+;;;
+;;; Revision 1.15  2008/03/15 20:00:48  robert_dodier
 ;;; Lazy initialization of *LUN-HASH*. Putting the initialization into
 ;;; DEFPARAMETER caused some Clisp installations to barf up an error message
 ;;; (something about attempted write on a closed stream) when SLATEC::XERPRN was called.
