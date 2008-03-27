@@ -986,6 +986,13 @@
 ;;  The texput function was written by Barton Willis.
 
 (defun $texput (e s &optional tx)
+
+  (cond
+    ((stringp e)
+     (setq e ($verbify e)))
+    ((not (symbolp e))
+     (merror "texput: first argument must be a string or a symbol.")))
+
   (setq s (if ($listp s) (margs s) (list s)))
   
   (cond ((null tx)
