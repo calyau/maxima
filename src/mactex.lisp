@@ -56,6 +56,47 @@
 
 (declare-top (special lop rop ccol $gcprint texport $labels $inchar vaxima-main-dir))
 
+(defvar *tex-environment-default* '("$$" . "$$"))
+
+(defun $set_tex_environment_default (env-open env-close)
+  (setq env-open ($sconcat env-open))
+  (setq env-close ($sconcat env-close))
+  (setq *tex-environment-default* `(,env-open . ,env-close))
+  ($get_tex_environment_default))
+
+(defun $get_tex_environment_default ()
+  `((mlist) ,(car *tex-environment-default*) ,(cdr *tex-environment-default*)))
+
+(defun $set_tex_environment (x env-open env-close)
+  (setq env-open ($sconcat env-open))
+  (setq env-close ($sconcat env-close))
+  (if (getopr x) (setq x (getopr x)))
+  (setf (get x 'tex-environment) `(,env-open . ,env-close))
+  ($get_tex_environment x))
+
+(defun $get_tex_environment (x)
+  (if (getopr x) (setq x (getopr x)))
+  (let ((e (get-tex-environment x)))
+    `((mlist) ,(car e) ,(cdr e))))
+
+(defun get-tex-environment (x)
+  (cond
+    ((symbolp x)
+     (or (get x 'tex-environment) *tex-environment-default*))
+    ((atom x)
+     *tex-environment-default*)
+    (t
+      (get-tex-environment (caar x)))))
+
+(setf (get 'mdefine 'tex-environment)
+      `(,(format nil "~%\\begin{verbatim}~%") . ,(format nil ";~%\\end{verbatim}~%")))
+
+(setf (get 'mdefmacro 'tex-environment)
+      `(,(format nil "~%\\begin{verbatim}~%") . ,(format nil ";~%\\end{verbatim}~%")))
+
+(setf (get 'mlable 'tex-environment)
+      `(,(format nil "~%\\begin{verbatim}~%") . ,(format nil ";~%\\end{verbatim}~%")))
+
 ;; top level command the result of tex'ing the expression x.
 ;; Lots of messing around here to get C-labels verbatim printed
 ;; and function definitions verbatim "ground"
@@ -113,10 +154,10 @@
 		  (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
      (cond ((and (null(atom mexp))
 		 (member (caar mexp) '(mdefine mdefmacro) :test #'eq))
-	    (format texport "~%\\begin{verbatim}~%")
+	    (format texport (car (get-tex-environment (caar mexp))))
 	    (cond (mexplabel (format texport "~a " mexplabel)))
 	    (mgrind mexp texport)	;write expression as string
-	    (format texport ";~%\\end{verbatim}~%"))
+	    (format texport (cdr (get-tex-environment (caar mexp)))))
 	   ((and
 	     itsalabel ;; but is it a user-command-label?
          ;; THE FOLLOWING TESTS SEEM PRETTY STRANGE --
@@ -132,13 +173,14 @@
 	       (string= (subseq (maybe-invert-string-case (string $outchar)) 1 (length (string $outchar)))
 			(subseq (string mexplabel) 1 (length (string $outchar)))))))
 	    ;; aha, this is a C-line: do the grinding:
-	    (format texport "~%\\begin{verbatim}~%~a " mexplabel)
+	    (format texport (car (get-tex-environment 'mlable)))
+        (format texport "~a" mexplabel)
 	    (mgrind mexp texport)	;write expression as string
-	    (format texport ";~%\\end{verbatim}~%"))
+	    (format texport (cdr (get-tex-environment 'mlable))))
 	   (t 
 	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
 					; display the expression for TeX now:
-	    (myprinc "$$")
+        (myprinc (car (get-tex-environment mexp)))
 	    (mapc #'myprinc
 		  ;;initially the left and right contexts are
 		  ;; empty lists, and there are implicit parens
@@ -146,7 +188,7 @@
 		  (tex mexp nil nil 'mparen 'mparen))
 	    (cond (mexplabel
 		   (format texport "\\leqno{\\tt ~a}" mexplabel)))
-	    (format texport "$$")))
+	    (format texport (cdr (get-tex-environment mexp)))))
      (terpri texport)
      (cond (filename   ; and close port if not terminal
 	    (close texport)))

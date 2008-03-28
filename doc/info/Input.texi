@@ -2148,6 +2148,105 @@ $$ \langle a \, | \,b \rangle $$
 
 @end deffn
 
+@deffn {Function} get_tex_environment (@var{op})
+@deffnx {Function} set_tex_environment (@var{op}, @var{before}, @var{after})
+
+Customize the TeX environment output by @code{tex}.
+As maintained by these functions, the TeX environment comprises two strings:
+one is printed before any other TeX output, and the other is printed after.
+
+Only the TeX environment of the top-level operator in an expression
+is output; TeX environments associated with other operators are ignored.
+
+@code{get_tex_environment} returns the TeX enviroment which is applied
+to the operator @var{op}; returns the default if no other environment
+has been assigned.
+
+@code{set_tex_environment} assigns the TeX environment for the operator @var{op}.
+
+Examples:
+
+@c ===beg===
+@c get_tex_environment (":=");
+@c tex (f (x) := 1 - x);
+@c set_tex_environment (":=", "$$", "$$");
+@c tex (f (x) := 1 - x);
+@c ===end===
+@example
+(%i1) get_tex_environment (":=");
+(%o1) [
+\begin@{verbatim@}
+, ;
+\end@{verbatim@}
+]
+(%i2) tex (f (x) := 1 - x);
+
+\begin@{verbatim@}
+f(x):=1-x;
+\end@{verbatim@}
+
+(%o2)                         false
+(%i3) set_tex_environment (":=", "$$", "$$");
+(%o3)                       [$$, $$]
+(%i4) tex (f (x) := 1 - x);
+$$f(x):=1-x$$
+(%o4)                         false
+@end example
+
+@opencatbox
+@category{TeX output}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} get_tex_environment_default ()
+@deffnx {Function} set_tex_environment_default (@var{before}, @var{after})
+
+Customize the TeX environment output by @code{tex}.
+As maintained by these functions, the TeX environment comprises two strings:
+one is printed before any other TeX output, and the other is printed after.
+
+@code{get_tex_environment_default} returns the TeX environment which is
+applied to expressions for which the top-level operator has no
+specific TeX environment (as assigned by @code{set_tex_environment}).
+
+@code{set_tex_environment_default} assigns the default TeX environment.
+
+Examples:
+
+@c ===beg===
+@c get_tex_environment_default ();
+@c tex (f(x) + g(x));
+@c set_tex_environment_default ("\\begin{equation}
+@c ", "
+@c \\end{equation}");
+@c tex (f(x) + g(x));
+@c ===end===
+@example
+(%i1) get_tex_environment_default ();
+(%o1)                       [$$, $$]
+(%i2) tex (f(x) + g(x));
+$$g\left(x\right)+f\left(x\right)$$
+(%o2)                         false
+(%i3) set_tex_environment_default ("\\begin@{equation@}
+", "
+\\end@{equation@}");
+(%o3) [\begin@{equation@}
+, 
+\end@{equation@}]
+(%i4) tex (f(x) + g(x));
+\begin@{equation@}
+g\left(x\right)+f\left(x\right)
+\end@{equation@}
+(%o4)                         false
+@end example
+
+@opencatbox
+@category{TeX output}
+@closecatbox
+
+@end deffn
+
 @c NEEDS CLARIFICATION
 @deffn {Function} system (@var{command})
 Executes @var{command} as a separate process.
