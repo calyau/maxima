@@ -1,36 +1,17 @@
-\documentclass[spanish,12pt,a4paper]{article}
+\documentclass[ngerman,12pt,a4paper]{article}
 
-        \pagestyle{headings}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{hyperref}
 
-        \title{\textbf{\Huge{Einf\"{u}hrung in Maxima}}}
+\pagestyle{headings}
 
-        \author{Robert Gl\"{o}ckner}
+\title{\textbf{Einf\"{u}hrung in Maxima}}
+\author{Robert Gl\"{o}ckner}
 
-        \setlength{\oddsidemargin}{1cm}
-
-        \setlength{\textwidth}{14cm}
-
-        \setlength{\topmargin}{1.2cm}
-
-        \setlength{\textheight}{20cm}
-
-        \usepackage{graphicx}
-
-        \usepackage{lscape}
-
-        \usepackage[german, activeacute]{babel}
-
-        \usepackage{amsfonts}
-
-        \usepackage{latexsym}
-
-        \usepackage{amsmath,amsthm}
-
-        \usepackage{color}\pagecolor{white}
-
-
-
-
+\setlength{\textwidth}{14cm}
+\setlength{\topmargin}{1.2cm}
+\setlength{\textheight}{20cm}
 
 \begin{document}
 
@@ -38,51 +19,61 @@
 
 \tableofcontents
 
-
+\newpage
+\pagestyle{empty}
 Copyright (C) Robert Gl"ockner
 
 email (entferne alle Ziffern): 2R4o5b66e7r8t9.G0l5oe55ck8ne5r@6w0eb4.d3e
 
-\scriptsize
+\vspace{1cm}
+
+{\scriptsize
 This program-documentation is free software-documentation; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
-This program-documentation is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+This program-documentation is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE\@. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program-documentation; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-To keep this document short, a link to the text of the GPL-LICENCE (http://www.fsf.org/licenses/gpl.html).
+To keep this document short, a link to the text of the GPL-LICENCE (\url{http://www.fsf.org/licenses/gpl.html}).
+
+\vspace{1cm}
 
 Inoffizielle "ubersetzung: Diese Programm-Dokumentation ist freie Software. Sie k"onnen es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation ver"offentlicht, weitergeben und/oder modifizieren, entweder gem"a{\ss} Version 2 der Lizenz oder (nach Ihrer Option) jeder sp"ateren Version.
-Die Ver"offentlichung dieser Programm-Dokumentation erfolgt in der Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT F"uR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.
+Die Ver"offentlichung dieser Programm-Dokumentation erfolgt in der Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT F"uR EINEN BESTIMMTEN ZWECK\@. Details finden Sie in der GNU General Public License.
 Sie sollten ein Exemplar der GNU General Public License zusammen mit dieser Programm-Dokumentation erhalten haben. Falls nicht, schreiben Sie an die Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA.
 
-Um das Dokument nicht aufzubl"ahen, hier ein Link auf die inoffizielle deutsche "ubersetzung der GPL (http://www.gnu.de/gpl-ger.html).
-\normalsize
+Um das Dokument nicht aufzubl"ahen, hier ein Link auf die inoffizielle deutsche "ubersetzung der GPL (\url{http://www.gnu.de/gpl-ger.html}).
+}
+
+\vspace{1cm}
 
 Ich m"ochte nur kurz betonen, dass ich selbst Maxima-Anf"anger bin und der Text nur auf die Grundlagen der Maxima-Benutzung eingehen kann. Die Beispiele haben keinen tieferen Sinn. Sie dienen lediglich der Darstellung der M"oglichkeiten von Maxima.
-F"ur weitere Anregungen bin ich immer dankbar.
-email (entferne alle Ziffern): 2R4o5b66e7r8t9.G0l5oe55ck8ne5r@6w0eb4.d3e
 
+F"ur weitere Anregungen bin ich immer dankbar\@.
+
+email (entferne alle Ziffern): 2R4o5b66e7r8t9.G0l5oe55ck8ne5r@6w0eb4.d3e
 
 Verbesserungsvorschl"age durch: Volker van Nek, Robert Figura.
 
+\newpage
+\pagestyle{headings}
 
 \section{Einf"uhrung}
 
-
-
 \subsection{Starten von Maxima}
 
-Maxima ist ein in Lisp geschriebenes freies Computer-Algebra System ( homepage ). Es ist auf verschiedenen Betriebssystemen lauff"ahig. Es gibt mehrere M"oglichkeiten das Programm zu verwenden:
+Maxima\footnote
+{Homepage: \url{http://maxima.sourceforge.net} \\
+Dokumentation: \url{http://maxima.sourceforge.net/docs.shtml} \\
+Referenzhandbuch: \url{http://maxima.sourceforge.net/docs/manual/en/maxima.html}}
+ist ein in Lisp geschriebenes freies Computer-Algebra System. Es ist
+auf verschiedenen Betriebssystemen lauff"ahig.
+Es gibt mehrere M"oglichkeiten das Programm zu verwenden:
 
 \begin{itemize}
 \item auf der Konsole (hierzu maxima, bzw. \verb|maxima.bat| starten)
-
 \item eine rudiment"are grafische Oberfl"ache bietet xmaxima (mitgeliefert)
-
 \item eine grafische Formelausgabe bietet wxmaxima
-
 \item f"ur Leute die LaTex benutzen ist texmax und emaxima interessant
-
-\item f"ur Emacs-verr"uckte gibt es einen mitgelieferten maxima und emaxima Modus (Start im Emacs mit M-x maxima oder "offnen einer .max Datei)
+\item f"ur Emacs-verr"uckte gibt es einen mitgelieferten maxima und emaxima Modus (Start im Emacs mit M-x maxima oder "offnen einer {.mac} Datei)
 \end{itemize}
 
 Startet man Maxima (auf der Konsole) so erh"alt man folgende Meldung:
@@ -107,9 +98,7 @@ Kommandos werden entweder mit einem Semikolon  \verb|;|  oder einem  \verb|$| ab
 
 Maxima unterscheidet Gro{\ss}- und Kleinschreibung. Alle eingebauten Funktionen und Konstanten sind kleingeschrieben (\verb|simp|, \verb|solve|, \verb|ode2|, \verb|sin|, \verb|cos|, \verb|%e|, \verb|%pi|, \verb|inf|, etc). sImP oder SIMP werden von Maxima nicht den eingebauten Funktionen zugeordnet. Benutzerfunktionen und -variablen k"onnen klein und/oder gro{\ss}geschrieben werden.
 
-Auf vorangegange Ergebnisse und Ausdr"ucke kann mittels \verb|%| zugegriffen werden. \verb|%| bezeichnet das letzte Ergebnis, \verb|%i13| die 13. Eingabe und \verb|%o27| das 27. Ergebnis, \verb|''%i42| wiederholt die Berechnung der 42. Eingabe, \verb|%th(2)| ist das vorletzte Ergebnis.
-
-\subsection{Kommandoeingabe}
+Auf vorangegangene Ergebnisse und Ausdr"ucke kann mittels \verb|%| zugegriffen werden. \verb|%| bezeichnet das letzte Ergebnis, \verb|%i13| die 13. Eingabe und \verb|%o27| das 27. Ergebnis, \verb|''%i42| wiederholt die Berechnung der 42. Eingabe, \verb|%th(2)| ist das vorletzte Ergebnis.
 
 Ausdr"ucke werden mit \verb|:| einem Symbol zugewiesen. Funktionen werden mit \verb|:=| einem Symbol zugewiesen.
 
@@ -132,7 +121,7 @@ Ausdr"ucke werden mit \verb|:| einem Symbol zugewiesen. Funktionen werden mit \v
 (%o5)                              b + 3
 \end{verbatim}
 \normalsize
-Zuweisungen werden mit \verb|kill| einzeln oder auch insgesamt gel"oscht werden.
+Zuweisungen k"onnen mit \verb|kill| einzeln oder auch insgesamt gel"oscht werden.
 \scriptsize
 \begin{verbatim}
 (%i6) kill(equation);
@@ -150,7 +139,7 @@ Zuweisungen werden mit \verb|kill| einzeln oder auch insgesamt gel"oscht werden.
 (%i1) function(3);
 
 (%o1)                             function(3)
-(%i2) 
+(%i2)
 \end{verbatim}
 \normalsize
 
@@ -158,7 +147,7 @@ Zuweisungen werden mit \verb|kill| einzeln oder auch insgesamt gel"oscht werden.
 
 
 Zum Abbrechen eines Kommandos dr"uckt man die Tastenkombination \verb|Strg-C| oder \verb|Strg-G|. Meldet sich der Debugger, so beendet man diesen durch Eingabe von \verb|Q|.
-Zum Beenden von Maxima gibt man \verb|quit()|; ein (Bemerkung: unter xmaxima das Menue benutzen).
+Zum Beenden von Maxima gibt man \verb|quit()| ein (Bemerkung: unter xmaxima das Menue benutzen).
 
 
 \subsection{Hilfefunktionen}
@@ -168,7 +157,7 @@ Neben den Hilfefunktionen der Benutzerumgebung enth"alt Maxima eigene Hilfsfunkt
 \scriptsize
 \begin{verbatim}
 (%i3) apropos('plot);
-(%o3) [plot, plot2d, plot2dopen, plot2d_ps, plot3d, plotheight, plotmode, 
+(%o3) [plot, plot2d, plot2dopen, plot2d_ps, plot3d, plotheight, plotmode,
                                            plotting, plot_format, plot_options]
 (%i4) describe("plot");
 \end{verbatim}
@@ -228,8 +217,7 @@ Mit der Funktion \verb|example| k"onnen Beispiele zu einigen Funktionen von Maxi
 
 \subsection{Darstellung der Ergebnisse}
 
-
-Die Darstellung der Ergebnisse von Maxima, ist im Wesentlichen von der verwendeten Oberfl"ache abh"angig. W"ahrend die Ausgabe auf der Konsole und im einfachen Emacs-Modus auf die Darstellung von ASCII Zeichen begrenzt ist, zeigen der erweiterete Emacs-Modus, Imaxima, TexMacs und WxMaxima die Ergebnisse in grafischer Form an. D. h. es werden entsprechende Symbole f"ur Pi, Integral, Summe usw. verwendet.
+Die Darstellung der Ergebnisse von Maxima, ist im Wesentlichen von der verwendeten Oberfl"ache abh"angig. W"ahrend die Ausgabe auf der Konsole und im einfachen Emacs-Modus auf die Darstellung von ASCII Zeichen begrenzt ist, zeigen der erweiterte Emacs-Modus, Imaxima, TexMacs und WxMaxima die Ergebnisse in grafischer Form an. D.\,h.\@ es werden entsprechende Symbole f"ur Pi, Integral, Summe usw.\@ verwendet.
 Allgemein zeichnen sich die Ausgaben von Maxima durch exakte (rationale) Arithmetik aus:
 
 \scriptsize
@@ -241,7 +229,6 @@ Allgemein zeichnen sich die Ausgaben von Maxima durch exakte (rationale) Arithme
                                       11
 \end{verbatim}
 \normalsize
-
 
 Irrationale Zahlen werden in ihrer symbolischen Form beibehalten (mit \verb|%| wurde auf das Ergebnis der letzten Berechnung zugegriffen):
 
@@ -256,7 +243,6 @@ Irrationale Zahlen werden in ihrer symbolischen Form beibehalten (mit \verb|%| w
 (%o40)                          28 - 16 sqrt(3)
 \end{verbatim}
 \normalsize
-
 
 Mit \verb|ev(Ausdruck, numer);| oder kurz: \verb|Ausdruck, numer;| oder \verb|float(Ausdruck)| kann eine Dezimaldarstellung erzwungen werden (beachten Sie hier die Referenz auf das vorangegangene Ergebnis Nr. 40 via \verb|%o40|):
 
@@ -299,9 +285,9 @@ Die Voreinstellung der Genauigkeit bei Flie{\ss}ommazahlen betr"agt 16 Stellen, 
 \end{verbatim}
 \normalsize
 
-
-Die Eingabe von bestimmten Konstanten (e, i, pi, ...) erfolgt mit vorangestelltem \verb|%| (\verb|%e|, \verb|%i|, \verb|%pi|...).
-Die Darstellung von bestimmten Konstanten (e, i, pi, ...), Operatoren (Summe, Integral, Ableitungen, ...) und anderen Symbolen (Klammern, Br"uche, ...) ist abh"angig von der gew"ahlten Oberfl"ache. Im Textmodus, der von der Konsole, dem einfachen Emacs-Modus und der mitgelieferten xmaxima Oberfl"ache geboten wird, werden Konstanten mit einem % vorangestellt (\verb|%e|, \verb|%i|, \verb|%pi|...), Operatoren werden in ASCII-Grafik dargestellt, Klammern werden nicht in der Gr"o{\ss}e expandiert und Br"uche mit Hilfe von - dargestellt:
+Die Eingabe von bestimmten Konstanten (e, i, pi, \ldots) erfolgt mit
+vorangestelltem \verb|%| (\verb|%e|, \verb|%i|, \verb|%pi| \ldots).
+Die Darstellung von bestimmten Konstanten (e, i, pi, \ldots), Operatoren (Summe, Integral, Ableitungen, \ldots) und anderen Symbolen (Klammern, Br"uche, \ldots) ist abh"angig von der gew"ahlten Oberfl"ache. Im Textmodus, der von der Konsole, dem einfachen Emacs-Modus und der mitgelieferten xmaxima Oberfl"ache geboten wird, werden Konstanten mit einem \% vorangestellt (\verb|%e|, \verb|%i|, \verb|%pi|\ldots), Operatoren werden in ASCII-Grafik dargestellt, Klammern werden nicht in der Gr"o{\ss}e expandiert und Br"uche mit Hilfe von - dargestellt:
 
 \scriptsize
 \begin{verbatim}
@@ -325,7 +311,7 @@ Die Darstellung von bestimmten Konstanten (e, i, pi, ...), Operatoren (Summe, In
 \end{verbatim}
 \normalsize
 
-Die Darstellung im erweiterten Emacs-Modus, in Imaxima und in TexMax ist grafisch, d. h. f"ur \verb|%pi|, \verb|%e|, Integrale, Summen, ... werden entsprechende Symbole verwendet.
+Die Darstellung im erweiterten Emacs-Modus, in Imaxima und in TexMax ist grafisch, d.\,h.\@ f"ur \verb|%pi|, \verb|%e|, Integrale, Summen, \ldots werden entsprechende Symbole verwendet.
 Maxima kann nat"urlich auch Funktionen plotten. Die Funktion \verb|plot2d([Funktionsliste], [X-Var, Min, Max], [Y-Var, Min, Max]);| kann eine Gruppe von Funktionen plotten, hierzu gibt man die Liste von Funktionen in eckigen Klammern und durch Kommas getrennt als ersten Parameter an, es folgt eine Liste, welche die abh"angige Variable und den Plotbereich (x-Achse) angibt. Es gibt noch viele andere Plotm"oglichkeiten (\verb|apropos('plot)|, \verb|describe(plot)|)
 
 \scriptsize
@@ -373,7 +359,7 @@ Die "ublichen arithmetischen Operatoren stehen zur Verf"ugung:
 
 \subsection{Algebra}
 
-Niemand ist vor Leichtsinnsfehlern bei der Umformung, Transformation usw. von algebraischen Ausdrucken gefeit. Hier eignet sich Maxima hervorragend bei der Unters"utzung analytischer Berechnungen.
+Niemand ist vor Leichtsinnsfehlern bei der Umformung, Transformation usw.\@ von algebraischen Ausdrucken gefeit. Hier eignet sich Maxima hervorragend bei der Unters"utzung analytischer Berechnungen.
 Hier ein einfaches Beispiel f"ur die Behandlung von Polynomen. Zun"achst wird via expand Expandiert, anschlie{\ss}end eine Ersetzung vorgenommen, danach mittels \verb|ratsimp| ein gemeinsamer Nenner gesucht und anschlie{\ss}end via \verb|factor| Faktorisiert:
 
 \scriptsize
@@ -433,7 +419,7 @@ Maxima ist in der Lage, exakte L"osungen auch von nichtlinearen algebraischen Gl
 \end{verbatim}
 \normalsize
 
-Die L"osung wird in Form einer Liste einer Liste in eckigen Klammern dargestellt. Im Folgenden wird gezeigt, wie auf die Elemente einer Liste zugegriffen werden kann und wie man die L"osungen in andere Gleichungen einsetzen kann.
+Die L"osung wird in Form einer Liste in eckigen Klammern dargestellt. Im Folgenden wird gezeigt, wie auf die Elemente einer Liste zugegriffen werden kann und wie man die L"osungen in andere Gleichungen einsetzen kann.
 
 \scriptsize
 \begin{verbatim}
@@ -461,7 +447,7 @@ Die L"osung wird in Form einer Liste einer Liste in eckigen Klammern dargestellt
 
 \subsection{Trigonometrische Funktionen}
 
-Es stehen u.a. \verb|tan|, \verb|sin|, \verb|cos|, \verb|tanh|, \verb|sinh|, \verb|cosh| und deren Umkehrfunktionen zur Verf"ugung.
+Es stehen u.\,a.\@ \verb|tan|, \verb|sin|, \verb|cos|, \verb|tanh|, \verb|sinh|, \verb|cosh| und deren Umkehrfunktionen zur Verf"ugung.
 
 \scriptsize
 \begin{verbatim}
@@ -524,7 +510,7 @@ Trigonometrische Ausdr"ucke lassen sich in Maxima leicht manipulieren. Die Funkt
 \end{verbatim}
 \normalsize
 
-Die Funktion \verb|trigreduce|, konvertiert einen Ausdruck in eine Form, welche eine Summe von Einzeltermen,. bestehend aus jeweils einer sin- oder cos- Funktion.
+Die Funktion \verb|trigreduce|, konvertiert einen Ausdruck in eine Form, welche eine Summe von Einzeltermen, bestehend aus jeweils einer sin oder cos Funktion.
 
 \scriptsize
 \begin{verbatim}
@@ -577,6 +563,7 @@ Die Funktion \verb|trigreduce|, konvertiert einen Ausdruck in eine Form, welche 
 
 \scriptsize
 \begin{verbatim}
+
 (%i122) taylor(sin(x)/x,x,0,4)
 
                                   2    4
@@ -641,7 +628,7 @@ Komplexe Zahlen lassen sich mit \verb|imagpart()| und \verb|realpart()| in die e
 \subsection{Ableitungen, Grenzwerte, Integrale}
 
 
-Mit Maxima lassen sich u. a. Ableitungen, Integrale, Taylorentwicklungen, Grenzwerte, exakte L"osungen gew"ohnlicher Differentialgleichungen berechnen.
+Mit Maxima lassen sich u.\,a.\@ Ableitungen, Integrale, Taylorentwicklungen, Grenzwerte, exakte L"osungen gew"ohnlicher Differentialgleichungen berechnen.
 Zun"achst definieren wir ein Symbol f als Funktion von x auf 2 Arten. Beachten Sie die Unterschiede bei der Auswertung der Ableitung.
 
 \scriptsize
@@ -725,7 +712,8 @@ Ableitungen, bzw. Differentiale k"onnen so eingegeben werden, dass sie ausgewert
 \end{verbatim}
 \normalsize
 
-Zum L"osen von gew"ohnlichen Differentialgleichungen stehen folgende Funktionen zur Verf"ugung: \verb|ode2|, \verb|ic1|, \verb|ic2|, \verb|bc1|, \verb|bc2|.
+Zum L"osen von gew"ohnlichen Differentialgleichungen stehen folgende
+Funktionen zur Verf"ugung: \verb|ode2|, \verb|ic1|, \verb|ic2|, \verb|bc1|, \verb|bc2|.
 \verb|ic1|, \verb|ic2| sind auf Anfangswertaufgaben 1. bzw. 2. Ordnung spezialisiert.
 \verb|bc1|, \verb|bc2| sind auf Randwertaufgaben 1. bzw. 2. Ordnungspezialisiert.
 
@@ -747,7 +735,9 @@ Zum L"osen von gew"ohnlichen Differentialgleichungen stehen folgende Funktionen 
 \end{verbatim}
 \normalsize
 
-Anfangswertaufgabe: Harmonische Schwingungen z.B. eines Pendels werden durch folgende Differentialgleichung beschrieben und mittels \verb|ode2| und \verb|ic2| gel"ost:
+Anfangswertaufgabe: Harmonische Schwingungen z.\,B. eines Pendels
+werden durch folgende Differentialgleichung beschrieben und mittels
+\verb|ode2| und \verb|ic2| gel"ost:
 
 \scriptsize
 \begin{verbatim}
@@ -767,7 +757,7 @@ Anfangswertaufgabe: Harmonische Schwingungen z.B. eines Pendels werden durch fol
 \end{verbatim}
 \normalsize
 
-Randwertaufgabe: Bei gleichm"a{\ss}ger Belastung, l"asst sich die Biegelinie eines ruhenden und auf 2 S"utzen liegenden Balkens unter bestimmten Umst"anden durch folgende Differentialgleichung beschreiben und mittels \verb|ode2| und \verb|ic2| l"osen:
+Randwertaufgabe: Bei gleichm"a{\ss}ger Belastung, l"asst sich die Biegelinie eines ruhenden und auf 2 St"utzen liegenden Balkens unter bestimmten Umst"anden durch folgende Differentialgleichung beschreiben und mittels \verb|ode2| und \verb|ic2| l"osen:
 
 \scriptsize
 \begin{verbatim}
@@ -862,8 +852,8 @@ Mit Maxima lassen sich allgemeine Matrizenoperationen durchf"uhren.
 \end{verbatim}
 \normalsize
 
-Au{\ss}erdem lassen sich u. a. die Determinante, die Inverse, die Eigenwerte und Eigenvektoren einer Matrix berechnen. Die Matrix darf dabei auch symbolische Ausdr"ucke enthalten.
-\verb|eigenvalues(m)| ergibt als Ergebnis eine Liste, bestehend aus 2 Unterlisten. Die erste Unterliste enth"alt die Eigenwerte, die 2. Unterliste die entsprechenden Multipliktaroren.
+Au{\ss}erdem lassen sich u.\,a.\@ die Determinante, die Inverse, die Eigenwerte und Eigenvektoren einer Matrix berechnen. Die Matrix darf dabei auch symbolische Ausdr"ucke enthalten.
+\verb|eigenvalues(m)| ergibt als Ergebnis eine Liste, bestehend aus 2 Unterlisten. Die erste Unterliste enth"alt die Eigenwerte, die 2. Unterliste die entsprechenden Multiplikatoren.
 
 \scriptsize
 \begin{verbatim}
@@ -880,7 +870,7 @@ Au{\ss}erdem lassen sich u. a. die Determinante, die Inverse, die Eigenwerte und
 \end{verbatim}
 \normalsize
 
-Die Funktion \verb|eigenvectors| berechnet Eigenwerte, deren Multiplikatoren, sowie die Eigenvektoren der gegebenen Matrix. Die Ergebnisse werden in Listen, bzw. Unterlisten zusammengefasst. Es gibt verschiedene M"oglichkeiten die Auswertung zu beeinflussen \verb|nondiagonalizable|, \verb|hermitianmatrix|, \verb|knowneigvals|, diese werden mit \verb|describe(eigenvectors);| beschrieben.
+Die Funktion \verb|eigenvectors| berechnet Eigenwerte, deren Multiplikatoren, sowie die Eigenvektoren der gegebenen Matrix. Die Ergebnisse werden in Listen, bzw. Unterlisten zusammengefasst. Es gibt verschiedene M"oglichkeiten die Auswertung zu beeinflussen \verb|nondiagonalizable|, \verb|hermitianmatrix|, \verb|knowneigvals|. Diese werden mit \verb|describe(eigenvectors);| beschrieben.
 
 \scriptsize
 \begin{verbatim}
@@ -893,14 +883,25 @@ Die Funktion \verb|eigenvectors| berechnet Eigenwerte, deren Multiplikatoren, so
 \end{verbatim}
 \normalsize
 
-Weiterhin gibt es Funktionen zur Transponierung (\verb|transpose|), Berechnung der Determinante (\verb|determinant|), Berechnung des charakteristischen Polynomes \verb|charpoly(Matrix, Variable);|, Berechnung der Inversen (\verb|invert|). Das Schl"usselwort \verb|detout| faktorisiert dabei die Determinante aus der Inversen.
+Weiterhin gibt es Funktionen zur Transponierung (\verb|transpose|),
+Berechnung der Determinante (\verb|determinant|), Berechnung  des
+charakteristischen  Polynomes \verb|charpoly(Matrix, Variable)|,
+Berechnung der Inversen (\verb|invert|). Das  Schl"usselwort
+\verb|detout| faktorisiert  dabei die Determinante aus der Inversen.
 
 
 \section{Programmieren in Maxima}
 
-Bis jetzt haben Sie gesehen, wie man Maxima im interaktiven Modus wie einen Taschenrechner benutzt. F"ur Berechnungen, welche wiederholt Kommandosequenzen durchlaufen m"ussen, sind Programme geeigneter.
-Programme werden gew"ohnlich in einem Texteditor (Emacs) geschrieben und dann mittels batch in Maxima geladen.
-Ein kleines Statistik-M"unzwurfprogramm. Mit \verb|block( [Lokale_Variablen], Kommando1, Kommando2...)| wird ein Block von Kommandos definiert. Die lokalen Variablen k"onnen auch mit Startwerten versehen werden, wie im Folgenden gezeigt wird:
+Bis jetzt haben Sie gesehen, wie man Maxima im interaktiven Modus wie
+einen Taschenrechner benutzt. F"ur Berechnungen, welche wiederholt
+Kommandosequenzen durchlaufen m"ussen, sind Programme geeigneter.
+Programme werden gew"ohnlich in einem Texteditor (Emacs) geschrieben
+und dann mittels batch in Maxima geladen.
+
+Ein kleines Statistik-M"unzwurfprogramm.
+Mit \verb|block([Lokale_Variablen], Kommando1, Kommando2 ...)| wird
+ein Block von Kommandos  definiert. Die lokalen Variablen k"onnen auch
+mit Startwerten versehen werden, wie im Folgenden gezeigt wird:
 
 \scriptsize
 \begin{verbatim}
@@ -933,7 +934,7 @@ Kopf wurde  515 mal geworfen
 \end{verbatim}
 \normalsize
 
-Dieselben Ausgaben in die Datei \verb|Daten.txt| umlenken:
+Dieselben Ausgaben kan man auch in eine Datei \verb|Daten.txt| umlenken:
 
 \scriptsize
 \begin{verbatim}
@@ -951,12 +952,9 @@ muenze_werfen(n) := block( [muenze, statistik:[0,0] ], /* Kommentare wie in C/C+
 \end{verbatim}
 \normalsize
 
-
-
-
 \section{Maxima-Funktionen}
 
-Die Referenz befindet sich unter \verb|doc/html/maxima_toc.html| (im Installationspfad von Maxima). In Maxima k"onnen Sie Hilfe durch die Kommandos \verb|describe|, \verb|apropos| und \verb|example| erhalten. \verb|apropos(Stichwort)| gibt eine Liste von evtl. geeigneten Kommandos. \verb|describe(Befehl)| beschreibt die einzelnen Kommandos genauer (evtl. m"ussen Sie eine Auswahl treffen, welcher Aspekt genauer beschrieben werden soll) und \verb|example(Befehl)| gibt Beispiele f"ur den jeweiligen Befehl aus (soweit vorhanden).
+Die Referenz befindet sich unter \verb|doc/html/maxima_toc.html| (im Installationspfad von Maxima). In Maxima k"onnen Sie Hilfe durch die Kommandos \verb|describe|, \verb|apropos| und \verb|example| erhalten. \verb|apropos(Stichwort)| gibt eine Liste von evtl.\@ geeigneten Kommandos. \verb|describe(Befehl)| beschreibt die einzelnen Kommandos genauer (evtl.\@ m"ussen Sie eine Auswahl treffen, welcher Aspekt genauer beschrieben werden soll) und \verb|example(Befehl)| gibt Beispiele f"ur den jeweiligen Befehl aus (soweit vorhanden).
 
 \begin{itemize}
 \item \verb|allroots(a)| Findet alle (allgemein komplexen) Wurzeln einer Polynomialgleichung.
@@ -964,7 +962,7 @@ Die Referenz befindet sich unter \verb|doc/html/maxima_toc.html| (im Installatio
 \item \verb|apropos(a);| Liefert zu einem Stichwort m"ogliche Befehle/Funktionen.
 \item \verb|batch(a)| L"adt und startet Programm/File a.
 \item \verb|bc1, bc2 ( DGL, x=x0, y=y0, x=x1, y=y1)| L"osung einer Randwertaufgabe einer DGL nach Behandlung mit ode2.
-\item \verb|charpoly(Matrix, Variable)| Berechnet das charakteristische Polynom einer Matrix bzgl. der gegebenen Variable.
+\item \verb|charpoly(Matrix, Variable)| Berechnet das charakteristische Polynom einer Matrix bzgl.\@ der gegebenen Variable.
 \item \verb|coeff(a,b,c)| Koeffizienten von b der Potenz C in Ausdruck a.
 \item \verb|concat(a,b)| Generiert ein Symbol ab.
 \item \verb|cons(a,b)| F"ugt a in Liste b als erstes Element ein.
@@ -972,7 +970,7 @@ Die Referenz befindet sich unter \verb|doc/html/maxima_toc.html| (im Installatio
 \item \verb|denom(a)| Nenner von a.
 \item \verb|depends(a,b)| Erkl"art a als Funktion von b (n"utzlich f"ur Differentialgleichungen).
 \item \verb|desolve(a,b)| Versucht ein lineares System a von gew. DGLs nach unbekannten b mittels Laplace-Transformation zu l"osen.
-\item \verb|describe(a)| Beschreibt einen Befehl oder eine Funktion n"aher. Evtl. wird nachgefragt, welcher Aspekt eines Befehls oder einer Befehlsgruppe n"aher beschrieben werden soll.
+\item \verb|describe(a)| Beschreibt einen Befehl oder eine Funktion n"aher. Evtl.\@ wird nachgefragt, welcher Aspekt eines Befehls oder einer Befehlsgruppe n"aher beschrieben werden soll.
 \item \verb|determinant(a)| Determinante
 \item \verb|diff(a,b1,c1,b2,c2,...,bn,cn)| Gemischte partielle Ableitung von a nach bi der Stufe ci.
 \item \verb|eigenvalues(a)| Berechnet die Eigenwerte und ihre Multiplikatoren.
@@ -1019,12 +1017,4 @@ Die Referenz befindet sich unter \verb|doc/html/maxima_toc.html| (im Installatio
 \item \verb|with_stdout( Datei, Ausdr"ucke);| Leitet die Ausgabe der Ausdr"ucke in die angegebene Datei um.
 \end{itemize}
 
-
-
-
-
-
 \end{document}
-
-
-
