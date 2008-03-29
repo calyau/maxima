@@ -116,6 +116,9 @@ contrib/amatrix/rtest_amatrix.mac\
 contrib/amatrix/rtest_wilcoxon.mac\
 contrib/amatrix/wilcoxon.mac\
 contrib/augmented_lagrangian.mac\
+contrib/bitwise/bitwise.lisp\
+contrib/bitwise/bitwise_specification.txt\
+contrib/bitwise/rtest_bitwise.mac\
 contrib/bode.mac\
 contrib/boolsimp/boolsimp.lisp\
 contrib/boolsimp/rtest_boolsimp.mac\
@@ -475,12 +478,13 @@ contrib/stats/inference_result.lisp\
 contrib/stats/numstats.lisp\
 contrib/stats/rtest_stats.mac\
 contrib/stats/stats.mac\
-contrib/stringproc/rteststringproc.mac\
 contrib/stringproc/eval_string.lisp\
-contrib/stringproc/stringproc.lisp\
-contrib/stringproc/printf.lisp\
 contrib/stringproc/pregexp.lisp\
+contrib/stringproc/printf.lisp\
+contrib/stringproc/rtestprintf.mac\
+contrib/stringproc/rteststringproc.mac\
 contrib/stringproc/sregex.lisp\
+contrib/stringproc/stringproc.lisp\
 contrib/stringproc/stringproc.mac\
 contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
