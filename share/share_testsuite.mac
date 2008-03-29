@@ -50,6 +50,11 @@ block
         rtest_stats,
         rtest_levin,
         rtest_fractals,
-        rtest_lsquares]],
+        rtest_lsquares,
+
+		rtest_atensor,
+		rtest_ctensor,
+		rtest_itensor
+]],
     
     run_testsuite ());

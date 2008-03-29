@@ -1,3 +1,0 @@
-:lisp(setq *maxima-testsdir* ((lambda (s) (subseq s 0 (- (length s) 13))) ($file_search "tests/do_tests")))
-run_testsuite();
-
