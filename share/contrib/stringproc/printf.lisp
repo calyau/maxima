@@ -98,7 +98,7 @@
 ;;
 ;; handle some special directives:
         (cond
-;; ~v,v,v<spec>, spec=ABDEFGORSTX<~&%$   (# needs no special care)
+;; ~v,v,v<spec>, spec=ABDEFGORSTX<~&%$   (# needs no special care; ~v[ not supported, see below)
           ((search spec "abdefgorstx<~&%$" :test #'string-equal)
              (if (plusp (setq skip (count-v params)))
                (progn
@@ -130,6 +130,17 @@
                     (setq new-params (concatenate 'string new-params prm ",")) ))
                 (setq done (cons (prepare-arg new-params spec arg) done))
                 (go tag2) )))
+;; ~@[, ~#[, ~n[
+          ((string= "[" spec)
+            (cond
+              ((string= "" params)) ;; don't check another condition
+              ((or (and (string= "@" params) arg) ;; if arg is not nil, arg is not consumed
+                   (string= "#" params)) 
+                 (setq start pos2)
+                 (go tag1))
+              ((or (string= "v" params)
+                   (every #'digit-char-p (coerce params 'list)))
+                 (merror "printf: not supported directive ~~~m[" params)) )) ;; 0- vs. 1-based indexing
 ;; ~?
           ((string= "?" spec)
             (cond
@@ -142,11 +153,10 @@
                      (cons (prepare-args ind-ctrls (cdr arg) nil nil) done) )
                    (go tag2) ))
               ((string= "@" params)
-                 (progn
-                   (setq ctrls 
-                     (concatenate 'string (subseq ctrls 0 pos1) arg (subseq ctrls pos2)))
-                   (setq done (cons arg done))
-                   (go tag3)))
+                 (setq ctrls 
+                   (concatenate 'string (subseq ctrls 0 pos1) arg (subseq ctrls pos2)))
+                 (setq done (cons arg done))
+                 (go tag3))
               (t 
                  (merror "printf: illegal directive ~~~m?" params)) ))
 ;; ~^
@@ -167,9 +177,8 @@
                 (go tag1) ))
 ;; ~:P and ~:@P
           ((and (string-equal "p" spec) (search ":" params)) ;; ':' backs up
-            (progn 
-              (setq start pos2)
-              (go tag1) ))
+             (setq start pos2)
+             (go tag1))
         )
 ;; default part:
 ;;
