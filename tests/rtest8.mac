@@ -227,3 +227,73 @@ solve ('[x = 1], '[x, x]);
 
 solve ('[u = v], '[u, u, u, u]);
 [u = v];
+
+/* verify that quadpack functions return partially-evaluated expressions
+ * instead of barfing on non-numeric values in limits or integrand.
+ */
+
+(kill (foo, u, au, bu, cu, omega, trig, alfa, vita, wfn), 0);
+0;
+
+e1 : quad_qag (foo (u), u, au, bu, 3);
+quad_qag (foo (u), u, au, bu, 3, epsrel = 1.0E-8, epsabs = 0.0, limit = 200);
+
+e1 : ev (e1, foo(u)=u^3, au=1);
+quad_qag (u^3, u, 1, bu, 3, epsrel=1e-8, epsabs=0.0, limit=200);
+
+ev (e1, bu=4);
+[63.75, 7.077671781985375E-13, 31, 0];
+
+e2 : quad_qags (foo (u), u, au, bu, epsrel=1e-4, epsabs=1e-4);
+quad_qags (foo (u), u, au, bu, epsrel=1e-4, epsabs=1e-4, limit=200);
+
+e2 : ev (e2, au= -1, bu=1);
+quad_qags (foo (u), u, -1, 1, epsrel=1e-4, epsabs=1e-4, limit=200);
+
+ev (e2, foo(u)=u^4);
+[0.4, 4.440892098500628E-15, 21, 0];
+
+e3 : quad_qagi (foo (u), u, au, minf, epsabs=2e-3);
+quad_qagi (foo (u), u, au, minf, epsrel=1.0E-8, epsabs=2e-3, limit=200);
+
+e3 : ev (e3, foo(u)=1/u^3);
+quad_qagi (1/u^3, u, au, minf, epsrel=1.0E-8, epsabs=2e-3, limit=200);
+
+ev (e3, au= -1);
+[- 0.5, 5.551115123125784E-15, 15, 0];
+
+e4 : quad_qawc (foo (u), u, cu, au, bu, limit=16);
+quad_qawc (foo (u), u, cu, au, bu, epsrel=1.0E-8, epsabs=0.0, limit=16);
+
+e4 : ev (e4, cu=1, au=0, bu=2);
+quad_qawc (foo (u), u, 1, 0, 2, epsrel=1.0E-8, epsabs=0.0, limit=16);
+
+ev (e4, foo(u)=u);
+[1.999999999999999, 2.220446049250313E-16, 25, 0];
+
+e5 : quad_qawf (foo (u), u, au, omega, sin, limit=32);
+quad_qawf (foo (u), u, au, omega, sin, epsabs=1e-10, limit=32, maxp1=100, limlst=10);
+
+e5 : ev (e5, foo(u)=exp(-u));
+quad_qawf (exp (- u), u, au, omega, sin, epsabs=1e-10, limit=32, maxp1=100, limlst=10);
+
+ev (e5, au=0, omega=2);
+[.4000000000000001, 2.216570948815925E-11, 175, 0];
+
+e6 : quad_qawo (foo (u), u, au, bu, omega, cos, limit=64);
+quad_qawo (foo (u), u, au, bu, omega, cos, epsrel=1e-10, epsabs=0.0, limit=64, maxp1=100);
+
+e6 : ev (e6, au=0, bu=%pi/2);
+quad_qawo (foo (u), u, 0, %pi/2, omega, cos, epsrel=1e-10, epsabs=0.0, limit=64, maxp1=100);
+
+ev (e6, foo(u)=1, omega=1);
+[1.0, 1.110223024625157E-14, 15, 0];
+
+e7 : quad_qaws (foo (u), u, au, bu, alfa, vita, wfn, limit=48);
+quad_qaws (foo (u), u, au, bu, alfa, vita, wfn, epsrel=1e-10, epsabs=0.0, limit=48);
+
+e7 : ev (e7, foo(u)=1/u, au=1, bu=2, wfn=1);
+quad_qaws (1/u, u, 1, 2, alfa, vita, 1, epsrel=1e-10, epsabs=0.0, limit=48);
+
+ev (e7, alfa=2, vita=1);
+[.05296102778655729, 5.551115123125782E-17, 50, 0];
