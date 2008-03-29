@@ -101,8 +101,8 @@
 ;; Lots of messing around here to get C-labels verbatim printed
 ;; and function definitions verbatim "ground"
 
-(defmspec $tex(l) ;; mexplabel, and optional filename
-  ;;if filename supplied but 'nil' then return a string
+(defmspec $tex(l) ;; mexplabel, and optional filename or stream
+  ;;if filename or stream supplied but 'nil' then return a string
   (let ((args (cdr l)))
     (cond ((and (cdr args) (null (cadr args)))
 	   (let ((*standard-output* (make-string-output-stream)))
@@ -120,20 +120,26 @@
                            (quote-% (subseq strsym (1+ pos))))
       strsym)))
 
-(defun tex1 (mexplabel &optional filename ) ;; mexplabel, and optional filename
-  (prog (mexp  texport $gcprint ccol x y itsalabel)
+(defun tex1 (mexplabel &optional filename-or-stream) ;; mexplabel, and optional filename or stream
+  (prog (mexp  texport $gcprint ccol x y itsalabel need-to-close-texport)
      ;; $gcprint = nil turns gc messages off
      (setq ccol 1)
      (cond ((null mexplabel)
 	    (displa " No eqn given to TeX")
 	    (return nil)))
      ;; collect the file-name, if any, and open a port if needed
-     (setq texport (cond((null filename) *standard-output* ) ; t= output to terminal
-			(t
-			 (open (namestring (maxima-string (meval filename)))
-			       :direction :output
-			       :if-exists :append
-			       :if-does-not-exist :create))))
+     (setq filename-or-stream (meval filename-or-stream))
+     (setq texport
+       (cond
+         ((null filename-or-stream) *standard-output*)
+         ((eq filename-or-stream t) *standard-output*)
+         ((streamp filename-or-stream) filename-or-stream)
+         (t
+           (setq need-to-close-texport t)
+           (open (namestring (maxima-string filename-or-stream))
+                 :direction :output
+                 :if-exists :append
+                 :if-does-not-exist :create))))
      ;; go back and analyze the first arg more thoroughly now.
      ;; do a normal evaluation of the expression in macsyma
      (setq mexp (meval mexplabel))
@@ -190,8 +196,8 @@
 		   (format texport "\\leqno{\\tt ~a}" mexplabel)))
 	    (format texport (cdr (get-tex-environment mexp)))))
      (terpri texport)
-     (cond (filename   ; and close port if not terminal
-	    (close texport)))
+     (if need-to-close-texport
+	    (close texport))
      (return mexplabel)))
 
 ;;; myprinc is an intelligent low level printing routine.  it keeps track of
@@ -239,15 +245,13 @@
 	(t (tex-function x l r nil))))
 
 (defun tex-atom (x l r)	;; atoms: note: can we lose by leaving out {}s ?
-  (if (symbolp x)
-    (setq x (or (get x 'reversealias) x)))
   (append l
 	  (list (cond ((numberp x) (texnumformat x))
-		      ((and (symbolp x) (get x 'texword)))
+		      ((and (symbolp x) (or (get x 'texword) (get (get x 'reversealias) 'texword))))
                       ((stringp x)
                        (tex-string (quote-% (if $stringdisp (concatenate 'string "``" x "''") x))))
                       ((characterp x) (tex-char x))
-		      (t (tex-stripdollar x))))
+		      (t (tex-stripdollar (or (get x 'reversealias) x)))))
 	  r))
 
 (defun tex-string (x)

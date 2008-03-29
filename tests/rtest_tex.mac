@@ -1,6 +1,10 @@
+/* Various tests of TeX output. Run it via batch("tests/rtest_tex.mac").
+ * This program is not organized (at present) in actual result -- expected result pairs.
+ */
+ 
 latex0 (s) :=
     (print ("\\documentclass{article}"),
-    print (sconcat ("\\title{", s, "}")),
+    print (concat ("\\title{", s, "}")),
     print ("\\author{by Maxim A.}"),
     print ("\\begin{document}"),
     print ("\\maketitle"));
@@ -17,7 +21,7 @@ tex_text (s) := block ([linel: 2^16], print (s));
 
 '((aa or bb) and not (cc or dd));
 
-with_stdout ("tmp.tex",
+with_stdout ("tmp-rtest-1.tex",
     (latex0 ("Maxima \\TeX\\ test page"),
 
     tex_text ("\\subsection*{Symbols and subscripts}"),
@@ -46,10 +50,9 @@ with_stdout ("tmp.tex",
     tex_text ("\\subsection*{Strings}"),
     tex ("riff"),
     tex ("Riff Raff"),
-    tex (sconcat ("Riff Raff (Lisp string)")),    /* sconcat returns a Lisp string for some reason */
-    ?stringdisp: true,
+    stringdisp: true,
     tex ("Riff Raff (enclosed in `quote marks')"),
-    ?stringdisp: false,
+    stringdisp: false,
     tex ("String containing
 a newline."),
     tex ("String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands."),
@@ -189,3 +192,67 @@ a newline."),
      * tex (''(first (labels (%i)))),
      */
     latex1 ()));
+
+/* Test output options: standard output, string, file, and stream.
+ */
+
+with_stdout ("tmp-rtest-2a.tex",
+    tex ("Capture standard output to tmp-rtest-2a.tex."));
+
+S : tex ("Capture string output to S, then write S to tmp-rtest-2b.tex.", false);
+s : openw ("tmp-rtest-2b.tex");
+printf (s, "~a~%", S);
+close (s);
+
+tex ("Write output directly to tmp-rtest-2c.tex.", "tmp-rtest-2c.tex");
+
+s : openw ("tmp-rtest-2d.tex");
+tex ("Write output to output stream opened to tmp-rtest-2d.tex.", s);
+close (s);
+
+/* Test TeX environment functions.
+ */
+
+set_tex_environment_default ("
+\\begin{equation}
+", "
+\\end{equation}
+");
+
+set_tex_environment ("=", "$", "$");
+set_tex_environment (":=", "$$", "$$");
+
+s : openw ("tmp-rtest-3.tex");
+
+with_stdout (s,
+    print ("\\documentclass{article}"),
+    print ("\\title{A \\TeX\\ environment test}"),
+    print ("\\author{Maxim A.}"),
+    print ("\\begin{document}"),
+    print ("\\maketitle"),
+    print ("Here are some formulas. These should be numbered."),
+    tex ((a + b)/(c + d)),
+    tex (sin(x)/(1-sin(x))),
+    tex (erf(x)*gamma(x)),
+    print ("More text here. Followed by a formula embedded in the text."),
+    tex (b - a = d - c),
+    print ("More text here. A function definition."),
+    tex (foo(x) := 1 - 1/x));
+
+with_stdout (s,
+    tex_text ("Let's take this opportunity to test the interaction of\
+ $\\mathbf{tex}$ and $\\mathbf{ordergreat}$."),
+    tex_text ("Here are some variables before calling $\\mathbf{ordergreat}$."),
+    tex (x + y + z + t = x * y * z * t));
+
+ordergreat (x, y, z, t);
+
+with_stdout (s,
+    tex_text ("After calling $\\mathbf{ordergreat}(x, y, z, t)$, which constructs alias variables.\
+ We should still see just the original variables."),
+    tex (x + y + z + t = x * y * z * t),
+    print ("That's all, folks."),
+    print ("\\end{document}"));
+
+close (s);
+unorder (); /* undo ordergreat above */

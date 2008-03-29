@@ -1897,10 +1897,10 @@ variables as assignment statements.
 @end deffn
 
 @deffn {Function} tex (@var{expr})
-@deffnx {Function} tex (@var{expr}, @var{filename})
+@deffnx {Function} tex (@var{expr}, @var{destination})
 @deffnx {Function} tex (@var{expr}, false)
 @deffnx {Function} tex (@var{label})
-@deffnx {Function} tex (@var{label}, @var{filename})
+@deffnx {Function} tex (@var{label}, @var{destination})
 @deffnx {Function} tex (@var{label}, false)
 
 Prints a representation of an expression
@@ -1915,8 +1915,10 @@ but not processed by itself.
 and assigns it an equation label (to be displayed to the left of the expression).
 The TeX equation label is the same as the Maxima label.
 
-@code{tex (@var{expr}, @var{filename})} and @code{tex (@var{label}, @var{filename})}
-append their TeX output to the file @var{filename}.
+@var{destination} may be an output stream or file name.
+When @var{destination} is a file name,
+@code{tex} appends its output to the file.
+The functions @code{openw} and @code{opena} create output streams.
 
 @code{tex (@var{expr}, false)} and @code{tex (@var{label}, false)}
 return their TeX output as a string.
