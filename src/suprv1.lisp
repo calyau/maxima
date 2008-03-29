@@ -713,7 +713,7 @@
 	 (if (not (eq x y))
 	     (merror "~M already is aliased." x)))
 	(t (putprop x y'alias)
-	   (putprop y (stripdollar x) 'reversealias)
+	   (putprop y x 'reversealias)
 	   (add2lnc y $aliases)
 	   y)))
 
@@ -726,7 +726,7 @@
 	  (y (remprop x 'reversealias)
 	     (remprop x 'noun)
 	     (setf $aliases (delete x $aliases :count 1 :test #'eq))
-	     (remprop (setq x (makealias y)) 'alias) (remprop x 'verb) x))))
+	     (remprop (setq x y) 'alias) (remprop x 'verb) x))))
 
 (defmfun stripdollar (x)
   (cond ((not (atom x))
@@ -744,7 +744,7 @@
 
 (defmfun fullstrip1 (x)
   (or (and (numberp x) x)
-      (get x 'reversealias)
+      (let ((y (get x 'reversealias))) (if y (stripdollar y)))
       (let ((u (rassoc x aliaslist :test #'eq)))
 	(if u (implode (string*1 (car u)))))
       (stripdollar x)))
@@ -818,7 +818,7 @@
 
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias)
-		(putprop (cadr x) (caddr x) 'reversealias))
+		(putprop (cadr x) (car x) 'reversealias))
       '(($block mprog block) ($lambda lambda lambda)
 	($abs mabs abs) ($subst $substitute subst)
 	($go mgo go) ($signum %signum signum)
@@ -1041,7 +1041,7 @@
     ((null l))
   ((lambda (x)
      (putprop (car l) x 'alias)
-     (putprop x (stripdollar (car l)) 'reversealias))
+     (putprop x (car l) 'reversealias))
    ($nounify (car l))))
 
 ($nounify '$sum)

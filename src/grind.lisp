@@ -147,7 +147,7 @@
      (cond ((numberp x) (setq y (exploden x)))
 	   ((and (setq y (safe-get x 'reversealias))
 		 (not (and (member x $aliases :test #'eq) (get x 'noun))))
-	    (setq y (exploden y)))
+	    (setq y (exploden (stripdollar y))))
 	   ((setq y (rassoc x aliaslist :test #'eq)) (return (msize (car y) l r lop rop)))
        ((null (setq y (exploden x))))
        ((safe-get x 'noun) (return (msize-atom (get x 'noun) l r)))

@@ -227,7 +227,7 @@
 	  ((not (symbolp atom)) (exploden atom))
 	  ((and (setq dummy (get atom 'reversealias))
 		(not (and (member atom $aliases :test #'eq) (get atom 'noun))))
-	   (exploden dummy))
+	   (exploden (stripdollar dummy)))
 	  ((not (eq (getop atom) atom))
        (makestring (getop atom)))
 	  (t (setq dummy (exploden atom))
