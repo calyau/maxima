@@ -787,10 +787,10 @@ Tells Maxima to consider @var{a_i} a nonscalar variable.
 The usual application is to declare a variable as a symbolic vector or matrix.
 
 @item @code{mainvar}
-Tells Maxima to consider @var{a_i} a "main variable" (@code{mainvar}).
-@code{ordergreatp} determines the ordering of atoms as follows:
-
-(main variables) > (other variables) > (scalar variables) > (constants) > (numbers)
+Tells Maxima to consider @var{a_i} a "main variable".
+A main variable succeeds all other constants and variables in the
+canonical ordering of Maxima expressions,
+as determined by @code{ordergreatp}.
 
 @item @code{alphabetic}
 Tells Maxima to recognize all characters in @var{a_i} (which must be a string) as alphabetic characters.
@@ -1995,65 +1995,143 @@ the @code{optimize} command.
 
 @end defvr
 
-@c NEEDS WORK
-@c WHAT DOES ">" MEAN IN THIS CONTEXT ??
 @deffn {Function} ordergreat (@var{v_1}, ..., @var{v_n})
-Sets up aliases for the variables @var{v_1}, ..., @var{v_n}
-such that @var{v_1} > @var{v_2} > ...  > @var{v_n},
-and @var{v_n} > any other variable not mentioned as an
-argument.
+@deffnx {Function} orderless (@var{v_1}, ..., @var{v_n})
 
-See also @code{orderless}.
+@code{ordergreat} changes the canonical ordering of Maxima expressions
+such that @var{v_1} succeeds @var{v_2} succeeds ...  succeeds @var{v_n},
+and @var{v_n} succeeds any other symbol not mentioned as an argument.
+
+@code{orderless} changes the canonical ordering of Maxima expressions
+such that @var{v_1} precedes @var{v_2} precedes ...  precedes @var{v_n},
+and @var{v_n} precedes any other variable not mentioned as an argument.
+
+The order established by @code{ordergreat} and @code{orderless} is dissolved by @code{unorder}.
+@code{ordergreat} and @code{orderless} can be called only once each,
+unless @code{unorder} is called;
+only the last call to @code{ordergreat} and @code{orderless} has any effect.
+
+See also @code{ordergreatp}.
 
 @opencatbox
 @category{Expressions}
 @closecatbox
 @end deffn
 
-@c NEEDS WORK
-@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
 @deffn {Function} ordergreatp (@var{expr_1}, @var{expr_2})
-Returns @code{true} if @var{expr_2} precedes @var{expr_1} in the
-ordering set up with the @code{ordergreat} function.
+@deffnx {Function} orderlessp (@var{expr_1}, @var{expr_2})
+
+@code{ordergreatp} returns @code{true} if @var{expr_1} succeeds @var{expr_2} in the
+canonical ordering of Maxima expressions,
+and @code{false} otherwise.
+
+@code{orderlessp} returns @code{true} if @var{expr_1} precedes @var{expr_2} in the
+canonical ordering of Maxima expressions,
+and @code{false} otherwise.
+
+All Maxima atoms and expressions are comparable under @code{ordergreatp} and @code{orderlessp},
+although there are isolated examples of expressions for which these predicates are not transitive;
+that is a bug.
+
+The canonical ordering of atoms (symbols, literal numbers, and strings) is the following.
+
+(integers and floats) precede (bigfloats) precede
+(declared constants) precede (strings) precede (declared scalars)
+precede (first argument to @code{orderless}) precedes ...  precedes
+(last argument to @code{orderless}) precedes (other symbols) precede
+(last argument to @code{ordergreat}) precedes ... precedes
+(first argument to @code{ordergreat}) precedes (declared main variables)
+
+For non-atomic expressions, the canonical ordering is derived from the ordering for atoms.
+For the built-in @code{+} @code{*} and @code{^} operators,
+the ordering is not easily summarized.
+For other built-in operators and all other functions and operators,
+expressions are ordered by their arguments (beginning with the first argument),
+then by the name of the operator or function.
+In the case of subscripted expressions,
+the subscripted symbol is considered the operator and the subscript is considered an argument.
+
+The canonical ordering of expressions is modified by the functions
+@code{ordergreat} and @code{orderless},
+and the @code{mainvar}, @code{constant}, and @code{scalar} declarations.
+
+See also @code{sort}.
+
+Examples:
+
+Ordering ordinary symbols and constants.
+Note that @code{%pi} is not ordered according to its numerical value.
+
+@c ===beg===
+@c stringdisp : true;
+@c sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+@c ===end===
+@example
+(%i1) stringdisp : true;
+(%o1)                         true
+(%i2) sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+(%o2) [3, 3.0, 4, 4.0, 3.0b0, 4.0b0, %pi, "bar", "foo", a, x, X]
+@end example
+
+Effect of @code{ordergreat} and @code{orderless} functions.
+
+@c ===beg===
+@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
+@c ordergreat (S, J);
+@c orderless (M, H);
+@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
+@c ===end===
+@example
+(%i1) sort ([M, H, K, T, E, W, G, A, P, J, S]);
+(%o1)           [A, E, G, H, J, K, M, P, S, T, W]
+(%i2) ordergreat (S, J);
+(%o2)                         done
+(%i3) orderless (M, H);
+(%o3)                         done
+(%i4) sort ([M, H, K, T, E, W, G, A, P, J, S]);
+(%o4)           [M, H, A, E, G, K, P, T, W, J, S]
+@end example
+
+Effect of @code{mainvar}, @code{constant}, and @code{scalar} declarations.
+
+@c ===beg===
+@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+@c declare (aa, mainvar);
+@c declare ([baz, quux], constant);
+@c declare ([A1, B1], scalar);
+@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+@c ===end===
+@example
+(%i1) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+(%o1)   [aa, bar, baz, bb, cc, dd, foo, quux, A1, B1, C1]
+(%i2) declare (aa, mainvar);
+(%o2)                         done
+(%i3) declare ([baz, quux], constant);
+(%o3)                         done
+(%i4) declare ([A1, B1], scalar);
+(%o4)                         done
+(%i5) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+(%o5)   [baz, quux, A1, B1, bar, bb, cc, dd, foo, C1, aa]
+@end example
+
+Ordering non-atomic expressions.
+
+@c ===beg===
+@c sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
+@c sort ([foo(1), X[1], X[k], foo(k), 1, k]);
+@c ===end===
+@example
+(%i1) sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
+(%o1) [1, 2, f(1), g(1), g(1, 2), f(2), f(2, 1), n, g(n), 
+                                                         f(n, 1)]
+(%i2) sort ([foo(1), X[1], X[k], foo(k), 1, k]);
+(%o2)            [1, foo(1), X , k, foo(k), X ]
+                              1              k
+@end example
 
 @opencatbox
 @category{Expressions} @category{Predicate functions}
 @closecatbox
-
-@end deffn
-
-@c NEEDS WORK
-@c WHAT DOES "<" MEAN IN THIS CONTEXT ??
-@deffn {Function} orderless (@var{v_1}, ..., @var{v_n})
-Sets up aliases for the variables @var{v_1}, ..., @var{v_n}
-such that @var{v_1} < @var{v_2} < ...  < @var{v_n},
-and @var{v_n} < any other variable not mentioned as an
-argument.
-
-@c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
-Thus the complete ordering scale is: numerical constants <
-declared constants < declared scalars < first argument to @code{orderless} <
-...  < last argument to @code{orderless} < variables which begin with A < ...
-< variables which begin with Z < last argument to @code{ordergreat} <
- ... < first argument to @code{ordergreat} < declared @code{mainvar}s.
-
-See also @code{ordergreat} and @code{mainvar}.
-
-@opencatbox
-@category{Expressions}
-@closecatbox
-@end deffn
-
-@c NEEDS WORK
-@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Function} orderlessp (@var{expr_1}, @var{expr_2})
-Returns @code{true} if @var{expr_1} precedes @var{expr_2} in the
-ordering set up by the @code{orderless} command.
-
-@opencatbox
-@category{Expressions} @category{Predicate functions}
-@closecatbox
-
 @end deffn
 
 @c NEEDS WORK
