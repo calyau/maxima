@@ -1,4 +1,4 @@
-@c english version 1.61
+@c english version 1.62
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -713,10 +713,10 @@ Se aplica com@'unmente para declarar una variable como un vector simb@'olico
 o una matriz simb@'olica.
 
 @item @code{mainvar}
-Hace que Maxima considere a @var{a_i} como una "variable principal" (@code{mainvar});
-@code{ordergreatp} determina la ordenaci@'on de los @'atomos como sigue:
-
-(variables principales) > (otras variables) > (variables escalares) > (constantes) > (n@'umeros)
+Hace que Maxima considere a @var{a_i} como una "variable principal",
+d@'andole prioridad frente a cualesquiera otras constantes o
+variables en la ordenaci@'on can@'onica de expresiones de Maxima,
+tal como determina @code{ordergreatp}.
 
 @item @code{alphabetic}
 Indica a Maxima que reconozca todos los caracteres de la cadena alfanum@'erica
@@ -1706,48 +1706,145 @@ La variable @code{optimprefix} es el prefijo utilizado para los s@'{@dotless{i}}
 
 @end defvr
 
-@c NEEDS WORK
-@c WHAT DOES ">" MEAN IN THIS CONTEXT ??
 @deffn {Funci@'on} ordergreat (@var{v_1}, ..., @var{v_n})
-Establece una ordenaci@'on para las variables @var{v_1}, ..., @var{v_n}
-de manera que @var{v_1} > @var{v_2} > ...  > @var{v_n} y
-@var{v_n} > cualquier otra variable no mencionada como argumento.
+@deffnx {Funci@'on} orderless (@var{v_1}, ..., @var{v_n})
 
-V@'ease tambi@'en @code{orderless}.
+@code{ordergreat} cambia el orden can@'onico de las expresiones de
+Maxima, de manera que @var{v_1} prevalece sobre @var{v_2}, que
+prevalece sobre ..., que prevalece sobre @var{v_n}, que prevalece
+sobre cualquier otro s@'{@dotless{i}}mbolo no presente en la
+lista de argumentos.
+
+@code{orderless} cambia el orden can@'onico de las expresiones de
+Maxima, de manera que @var{v_1} precede a @var{v_2}, que precede a ...,
+que precede a @var{v_n}, que precede a cualquier otra variable no 
+presente en la lista de argumentos.
+
+El orden impuesto por @code{ordergreat} y @code{orderless} se 
+destruye con @code{unorder}. @code{ordergreat} y @code{orderless}
+s@'olo se pueden llamar una vez, a menos que se invoque a @code{unorder}.
+La @'ultima llamada a @code{ordergreat} y @code{orderless} es la que
+se mantiene activa.
+
+V@'ease tambi@'en @code{ordergreatp}.
 
 @end deffn
 
-@c NEEDS WORK
-@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
+
 @deffn {Funci@'on} ordergreatp (@var{expr_1}, @var{expr_2})
-Devuelve @code{true} si @var{expr_2} precede a @var{expr_1} seg@'un el orden establecido con la funci@'on @code{ordergreat}.
+@deffnx {Funci@'on} orderlessp (@var{expr_1}, @var{expr_2})
 
+@code{ordergreatp} devuelve @code{true} si @var{expr_1} prevalece sobre
+@var{expr_2} en el orden can@'onico de las expresiones de Maxima, o
+@code{false} en caso contrario.
+
+@code{orderlessp} devuelve @code{true} si @var{expr_1} precede a
+@var{expr_2} en el orden can@'onico de las expresiones de Maxima, o
+@code{false} en caso contrario.
+
+Todos los @'atomos y expresiones de Maxima son comparables bajo 
+@code{ordergreatp} y @code{orderlessp}, aunque existen ejemplos aislados
+de expresiones para los que estos predicados no son transitivos.
+
+La ordenaci@'on can@'onica de @'atomos (s@'{@dotless{i}}mbolos, n@'umeros
+literales y cadenas) es la siguiente: (enteros y decimales en coma flotante)
+preceden a (n@'umeros decimales grandes o @i{bigfloats}), que preceden a (constantes
+declaradas), que preceden a (cadenas), que preceden a (escalares declarados), que preceden a 
+(primer argumento de @code{orderless}), que precede a ..., que precede a (@'ultimo
+argumento de @code{orderless}), que precede a (otros s@'{@dotless{i}}mbolos), que
+preceden a (@'ultimo argumento de @code{ordergreat}), que precede a ..., que
+precede a (primer argumento de @code{ordergreat}), que precede a (variables
+principales declaradas).
+
+Para las expresiones no at@'omicas, la ordenaci@'on can@'onica se deriva de la
+ordenaci@'on de @'atomos. Para los operadores nativos @code{+}, @code{*} y @code{^},
+los criterios de ordenaci@'on no son sencillos de resumir.
+Para otros operadores nativos, y todas las dem@'as funciones y operadores,
+las expresiones se ordenan por sus argumentos (empezando por el primero),
+despu@'es por el nombre del operador o funci@'on. En caso de expresiones
+con sub@'{@dotless{i}}ndices, el s@'{@dotless{i}}mbolo subindicado se
+considera operador y el sub@'{@dotless{i}}ndice un argumento del mismo.
+
+El orden can@'onico de expresiones se modifica mediante las funciones
+@code{ordergreat} y @code{orderless}, as@'{@dotless{i}} como por las 
+declaraciones @code{mainvar}, @code{constant} y @code{scalar}.
+
+V@'ease tambi@'en @code{sort}.
+
+Ejemplos:
+
+Ordenaci@'on de s@'{@dotless{i}}mbolos comunes y constantes.
+N@'otese que @code{%pi} no se ordena en funci@'on de su valor
+num@'erico.
+
+@c ===beg===
+@c stringdisp : true;
+@c sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+@c ===end===
+@example
+(%i1) stringdisp : true;
+(%o1)                         true
+(%i2) sort ([%pi, 3b0, 3.0, x, X, "foo", 3, a, 4, "bar", 4.0, 4b0]);
+(%o2) [3, 3.0, 4, 4.0, 3.0b0, 4.0b0, %pi, "bar", "foo", a, x, X]
+@end example
+
+Efecto producido por las funciones @code{ordergreat} y @code{orderless}.
+
+@c ===beg===
+@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
+@c ordergreat (S, J);
+@c orderless (M, H);
+@c sort ([M, H, K, T, E, W, G, A, P, J, S]);
+@c ===end===
+@example
+(%i1) sort ([M, H, K, T, E, W, G, A, P, J, S]);
+(%o1)           [A, E, G, H, J, K, M, P, S, T, W]
+(%i2) ordergreat (S, J);
+(%o2)                         done
+(%i3) orderless (M, H);
+(%o3)                         done
+(%i4) sort ([M, H, K, T, E, W, G, A, P, J, S]);
+(%o4)           [M, H, A, E, G, K, P, T, W, J, S]
+@end example
+
+Efecto producido por las declaraciones @code{mainvar}, @code{constant} y @code{scalar}.
+
+@c ===beg===
+@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+@c declare (aa, mainvar);
+@c declare ([baz, quux], constant);
+@c declare ([A1, B1], scalar);
+@c sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+@c ===end===
+@example
+(%i1) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+(%o1)   [aa, bar, baz, bb, cc, dd, foo, quux, A1, B1, C1]
+(%i2) declare (aa, mainvar);
+(%o2)                         done
+(%i3) declare ([baz, quux], constant);
+(%o3)                         done
+(%i4) declare ([A1, B1], scalar);
+(%o4)                         done
+(%i5) sort ([aa, foo, bar, bb, baz, quux, cc, dd, A1, B1, C1]);
+(%o5)   [baz, quux, A1, B1, bar, bb, cc, dd, foo, C1, aa]
+@end example
+
+Ordenaci@'on de expresiones no at@'omicas.
+
+@c ===beg===
+@c sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
+@c sort ([foo(1), X[1], X[k], foo(k), 1, k]);
+@c ===end===
+@example
+(%i1) sort ([1, 2, n, f(1), f(2), f(2, 1), g(1), g(1, 2), g(n), f(n, 1)]);
+(%o1) [1, 2, f(1), g(1), g(1, 2), f(2), f(2, 1), n, g(n), 
+                                                         f(n, 1)]
+(%i2) sort ([foo(1), X[1], X[k], foo(k), 1, k]);
+(%o2)            [1, foo(1), X , k, foo(k), X ]
+                              1              k
+@end example
 @end deffn
 
-@c NEEDS WORK
-@c WHAT DOES "<" MEAN IN THIS CONTEXT ??
-@deffn {Funci@'on} orderless (@var{v_1}, ..., @var{v_n})
-Establece una ordenaci@'on para las variables @var{v_1}, ..., @var{v_n}
-de manera que @var{v_1} < @var{v_2} < ...  < @var{v_n} y
-@var{v_n} < cualquier otra variable no mencionada como argumento.
-
-@c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
-As@'{@dotless{i}}, la ordenaci@'on completa de objetos es: constantes num@'ericas <
-constantes declaradas < escalares declarados < primer argumento de @code{orderless} <
-...  < @'ultimo argumento de @code{orderless} < variables que empiezan por A < ...
-< variables que empiezan por Z < @'ultimo argumento de  @code{ordergreat} <
- ... < primer argumento de @code{ordergreat} < objetos declarados como @code{mainvar}.
-
-V@'eanse tambi@'en @code{ordergreat} y @code{mainvar}.
-
-@end deffn
-
-@c NEEDS WORK
-@c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@deffn {Funci@'on} orderlessp (@var{expr_1}, @var{expr_2})
-Devuelve @code{true} si @var{expr_1} precede a @var{expr_2} seg@'un el orden establecido con la funci@'on @code{orderless}.
-
-@end deffn
 
 @c NEEDS WORK
 @deffn {Funci@'on} part (@var{expr}, @var{n_1}, ..., @var{n_k})

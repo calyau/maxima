@@ -1,4 +1,4 @@
-@c english version 1.66
+@c english version 1.68
 @menu
 * Comentarios::
 * Archivos::
@@ -1366,10 +1366,10 @@ La forma especial @code{stringout (@var{filename}, values)} escribe todas las va
 @end deffn
 
 @deffn {Funci@'on} tex (@var{expr})
-@deffnx {Funci@'on} tex (@var{expr}, @var{filename})
+@deffnx {Funci@'on} tex (@var{expr}, @var{destination})
 @deffnx {Funci@'on} tex (@var{expr}, false)
 @deffnx {Funci@'on} tex (@var{label})
-@deffnx {Funci@'on} tex (@var{label}, @var{filename})
+@deffnx {Funci@'on} tex (@var{label}, @var{destination})
 @deffnx {Funci@'on} tex (@var{label}, false)
 
 Devuelve la expresi@'on en un formato apropiado para para ser incorporado a un documento basado en TeX.
@@ -1380,8 +1380,10 @@ La instrucci@'on @code{tex (@var{expr})} imprime en la consola la representaci@'
 
 La instrucci@'on @code{tex (@var{label})} imprime en la consola la representaci@'on en TeX de la expresi@'on a la que hace referencia la etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la expresi@'on en TeX es la misma que la de Maxima.
 
-Las instrucciones @code{tex (@var{expr}, @var{filename})} y 
-@code{tex (@var{label},@var{filename})} a@~naden la codificaci@'on TeX de @var{expr} al fichero @var{filename}. 
+@var{destination} puede ser tanto un flujo de salida como el nombre de un fichero.
+
+Si @var{destination} es el nombre de un fichero, @code{tex} a@~nade la salida al fichero.
+Las funciones @code{openw} y @code{opena} crean flujos de salida.
 
 Las instrucciones @code{tex (@var{expr}, false)} y @code{tex (@var{label}, false)}
 devuelven el c@'odigo TeX en formato de cadena.
@@ -1604,6 +1606,92 @@ $$ \langle a \, | \,b \rangle $$
 (%o7)                         false
 @end example
 
+@end deffn
+
+
+@deffn {Funci@'on} get_tex_environment (@var{op})
+@deffnx {Funci@'on} set_tex_environment (@var{op}, @var{before}, @var{after})
+
+Gestiona el entorno de las salidas TeX que se obtienen de la funci@'on @code{tex}.
+El entorno TeX est@'a formado por dos cadenas: una que se escribe antes que
+cualquier salida en TeX, y otra que se escribe despu@'es.
+
+@code{get_tex_environment} devuelve el entorno TeX que se aplica al operador @var{op}.
+Si no se ha asignado ning@'un entorno, devolver@'a el que tenga por defecto.
+
+@code{set_tex_environment} asigna el entorno TeX al operador @var{op}.
+
+Ejemplos:
+
+@c ===beg===
+@c get_tex_environment (":=");
+@c tex (f (x) := 1 - x);
+@c set_tex_environment (":=", "$$", "$$");
+@c tex (f (x) := 1 - x);
+@c ===end===
+@example
+(%i1) get_tex_environment (":=");
+(%o1) [
+\begin@{verbatim@}
+, ;
+\end@{verbatim@}
+]
+(%i2) tex (f (x) := 1 - x);
+
+\begin@{verbatim@}
+f(x):=1-x;
+\end@{verbatim@}
+
+(%o2)                         false
+(%i3) set_tex_environment (":=", "$$", "$$");
+(%o3)                       [$$, $$]
+(%i4) tex (f (x) := 1 - x);
+$$f(x):=1-x$$
+(%o4)                         false
+@end example
+@end deffn
+
+@deffn {Funci@'on} get_tex_environment_default ()
+@deffnx {Funci@'on} set_tex_environment_default (@var{before}, @var{after})
+
+Gestiona el entorno de las salidas TeX que se obtienen de la funci@'on @code{tex}.
+El entorno TeX est@'a formado por dos cadenas: una que se escribe antes que
+cualquier salida en TeX, y otra que se escribe despu@'es.
+
+@code{get_tex_environment_default} devuelve el entorno TeX que se aplica
+a expresiones para las cuales el operador de mayor rango no tiene entorno
+TeX asignado (mediante @code{set_tex_environment}).
+
+@code{set_tex_environment_default} asigna el entorno TeX por defecto.
+
+Ejemplos:
+
+@c ===beg===
+@c get_tex_environment_default ();
+@c tex (f(x) + g(x));
+@c set_tex_environment_default ("\\begin{equation}
+@c ", "
+@c \\end{equation}");
+@c tex (f(x) + g(x));
+@c ===end===
+@example
+(%i1) get_tex_environment_default ();
+(%o1)                       [$$, $$]
+(%i2) tex (f(x) + g(x));
+$$g\left(x\right)+f\left(x\right)$$
+(%o2)                         false
+(%i3) set_tex_environment_default ("\\begin@{equation@}
+", "
+\\end@{equation@}");
+(%o3) [\begin@{equation@}
+, 
+\end@{equation@}]
+(%i4) tex (f(x) + g(x));
+\begin@{equation@}
+g\left(x\right)+f\left(x\right)
+\end@{equation@}
+(%o4)                         false
+@end example
 @end deffn
 
 

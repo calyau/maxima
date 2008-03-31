@@ -1,4 +1,4 @@
-@c version 1.44
+@c version 1.45
 @menu
 * Introducci@'on a itensor::
 * Funciones y variables para itensor::
@@ -21,6 +21,24 @@ Estas dos t@'ecnicas para el tratamiento de los procesos diferenciales, algebrai
 La representaci@'on de los tensores y sus operaciones en t@'erminos de sus componentes facilita el uso de paquete @code{ctensor}. La especificaci@'on de la m@'etrica y el c@'alculo de los tensores inducidos e invariantes es inmediato. Aunque toda la potencia de simplificaci@'on de Maxima se encuentra siempre a mano, una m@'etrica compleja con dependencias funcionales y de coordenadas intrincada, puede conducir a expresiones de gran tama@~no en las que la estructura interna quede oculta. Adem@'as, muchos c@'alculos requieren de expresiones intermedias que pueden provocar la detenci@'on s@'ubita de los programas antes de que se termine el c@'alculo. Con la experiencia, el usuario podr@'a evitar muchas de estas dificultades.
 
 Devido a la forma en que los tensores y sus operaciones se representan en t@'erminos de operaciones simb@'olicas con sus @'{@dotless{i}}ndices, expresiones que ser@'{@dotless{i}}an intratables en su representaci@'on por componentes pueden en ocasiones simplificarse notablemente utilizando las rutinas especiales para objetos sim@'etricos del paquete @code{itensor}. De esta manera, la estructura de expresiones grandes puede hacerse m@'as transparente. Por otro lado, debido a la forma especial de la representaci@'on indexada de tensores en @code{itensor}, en algunos casos el usuario encontrar@'a dificultades con la especificaci@'on de la m@'etrica o la definici@'on de funciones.
+
+El paquete @code{itensor} puede derivar respecto de una variable indexada, lo que 
+permite utilizar el paquete cuando se haga uso del formalismo de lagrangiano y
+hamiltoniano. Puesto que es posible derivar un campo lagrangiano respecto de
+una variable de campo indexada, se puede hacer uso de Maxima para derivar las
+ecuaciones de Euler-Lagrange correspondientes en forma indexada. Estas ecuaciones
+pueden traducirse a componentes tensoriales (@code{ctensor}) con la funci@'on 
+@code{ic_convert}, lo que permite resolver las ecuaciones de campo en cualquier
+sistema de coordenadas, o obtener las ecuaciones de movimiento en forma 
+hamiltoniana. V@'eanse dos ejemplos en @code{einhil.dem} y @code{bradic.dem}; 
+el primero utiliza la acci@'on de Einstein-Hilbert para derivar el campo
+tensorial de Einstein en el caso homog@'eneo e isotr@'opico (ecuaciones de
+Friedmann), as@'{@dotless{i}} como en el caso esferosim@'etrico est@'atico
+(soluci@'on de Schwarzschild); el segundo demuestra c@'omo calcular las
+ecuaciones de Friedmann a partir de la acci@'on de la teor@'{@dotless{i}}a
+de la gravedad de Brans-Dicke, y tambi@'en muestra c@'omo derivar el
+hamiltoniano asociado con la teor@'{@dotless{i}}a del campo escalar.
+
 
 @subsection Notaci@'on tensorial
 
@@ -107,11 +125,11 @@ La siguiente sesi@'on de ejemplo demuestra c@'omo cargar el paquete @code{itenso
 (%t11)                        v    - v   ichr2
                                i,j    %4      i j
 (%i12) ishow(ev(%,ichr2))$
-               %4 %5
-(%t12) v    - g      v   (e p       + e   p     - e p       - e    p
-        i,j           %4     j %5,i    ,i  j %5      i j,%5    ,%5  i j
+                %4 %5
+(%t12) v    - (g      v   (e p       + e   p     - e p       - e    p
+        i,j            %4     j %5,i    ,i  j %5      i j,%5    ,%5  i j
 
-                                         + e p       + e   p    )/2
+                                         + e p       + e   p    ))/2
                                               i %5,j    ,j  i %5
 (%i13) iframe_flag:true;
 (%o13)                               true
@@ -124,13 +142,13 @@ La siguiente sesi@'on de ejemplo demuestra c@'omo cargar el paquete @code{itenso
 (%t15)                        v    - v   ifc2
                                i,j    %6     i j
 (%i16) ishow(radcan(ev(%,ifc2,ifc1)))$
-             %6 %8                    %6 %8
+             %6 %7                    %6 %7
 (%t16) - (ifg      v   ifb       + ifg      v   ifb       - 2 v
-                    %6    j %8 i             %6    i j %8      i,j
+                    %6    j %7 i             %6    i j %7      i,j
 
-                                             %6 %8
+                                             %6 %7
                                         - ifg      v   ifb      )/2
-                                                    %6    %8 i j
+                                                    %6    %7 i j
 (%i17) ishow(canform(s([i,j],[])-s([j,i])))$
 (%t17)                            s    - s
                                    i j    j i
@@ -322,13 +340,21 @@ Las componentes se pueden asignar a una expresi@'on indexada de cuatro maneras, 
 2) Como una matriz:
 
 @example
+(%i5) lg:-ident(4)$lg[1,1]:1$lg;
+                            [ 1   0    0    0  ]
+                            [                  ]
+                            [ 0  - 1   0    0  ]
+(%o5)                       [                  ]
+                            [ 0   0   - 1   0  ]
+                            [                  ]
+                            [ 0   0    0   - 1 ]
 
 (%i6) components(g([i,j],[]),lg);
 (%o6)                                done
 (%i7) ishow(g([i,j],[]))$
 (%t7)                                g
                                       i j
-(%i8) g([3,3],[]);
+(%i8) g([1,1],[]);
 (%o8)                                  1
 (%i9) g([4,4],[]);
 (%o9)                                 - 1
@@ -553,8 +579,9 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
         kdelta  ) a
               %4   j k
 (%i11) ishow(contract(expand(%)))$
-                                  l i      l i
-(%t11)                           a    - a g
+                                  l i    l i  j
+(%t11)                           a    - g    a
+                                              j
 
 @end example
 
@@ -578,9 +605,9 @@ Regla de simplificaci@'on utilizada en expresiones que contienen el s@'{@dotless
                                        i j k
 (%t3)                       levi_civita      a  a
                                               i  j
-(%i4) ishow(canform(contract(expand(applyb1(el1,lc_l,lc_u)))))$
+(%i4) canform(contract(expand(applyb1(el1,lc_l,lc_u))));
 (%t4)                                  0
-(%i5) ishow(canform(contract(expand(applyb1(el2,lc_l,lc_u)))))$
+(%i5) canform(contract(expand(applyb1(el2,lc_l,lc_u))));
 (%t5)                                  0
 
 @end example
@@ -676,6 +703,15 @@ Si al par@'ametro opcional @var{rename} se le asigna el valor @code{false}, no s
 @deffn {Funci@'on} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 
 Se trata de la funci@'on de Maxima para la diferenciaci@'on, ampliada para las necesidades del paquete @code{itensor}. Calcula la derivada de @var{expr} respecto de @var{v_1} @var{n_1} veces, respecto de @var{v_2} @var{n_2} veces, etc. Para el paquete de tensores,la funci@'on ha sido modificada de manera que @var{v_i} puedan ser enteros desde 1 hasta el valor que tome la variable @code{dim}. Esto permite que la derivaci@'on se pueda realizar con respecto del @var{v_i}-@'esimo miembro de la lista @code{vect_coords}. Si @code{vect_coords} guarda una variable at@'omica, entonces esa variable ser@'a la que se utilice en la derivaci@'on. Con esto se hace posible la utilizaci@'on de una lista con nombres de coordenadas subindicadas, como @code{x[1]}, @code{x[2]}, ...
+
+El paquete sobre tensores ampl@'{@dotless{i}}a las capacidades de @code{diff} con el
+fin de poder calcular derivadas respecto de variables indexadas. En particular, es
+posible derivar expresiones que contengan combinaciones del tensor m@'etrico y
+sus derivadas respecto del tensor m@'etrico y su primera y segunda derivadas.
+Estos m@'etodos son particularmente @'utiles cuando se consideran los
+formalismos lagrangianos de la teor@'{@dotless{i}}a gravitatoria, permitiendo
+obtener el tensor de Einstein y las ecuaciones de campo a partir del principio
+de acci@'on.
 @end deffn
 
 
@@ -1093,19 +1129,23 @@ Maxima utiliza estos dos tensores para definir los coeficientes del sistema de r
 (%t3)                         v   + icc2     v
                                ,j       %1 j
 (%i4) ishow(ev(%,icc2))$
-                        %1      i           i        i
-(%t4)                  v   (ifc2     + ichr2    ) + v
-                                %1 j        %1 j     ,j
+                               %1     i       i
+(%t4)                         v   ifc2     + v
+                                      %1 j    ,j
 (%i5) ishow(ev(%,ifc2))$
+                          %1    i %2                i
+(%t5)                    v   ifg     ifc1        + v
+                                         %1 j %2    ,j
+(%i6) ishow(ev(%,ifc1))$
             %1    i %2
            v   ifg     (ifb        - ifb        + ifb       )
                            j %2 %1      %2 %1 j      %1 j %2     i
-(%t5)      -------------------------------------------------- + v
+(%t6)      -------------------------------------------------- + v
                                    2                             ,j
-(%i6) ishow(ifb([a,b,c]))$
-                       %5    %4
-(%t6)               ifr   ifr   (ifri        - ifri       )
-                       a     b       c %4,%5       c %5,%4
+(%i7) ishow(ifb([a,b,c]))$
+                                                   %3    %4
+(%t7)               (ifri        - ifri       ) ifr   ifr
+                         a %3,%4       a %4,%3     b     c
 
 @end example
 
@@ -1114,9 +1154,9 @@ Se utiliza un m@'etodo alternativo  para calcular el sistema de referencia @code
 @example
 
 (%i8) block([iframe_bracket_form:false],ishow(ifb([a,b,c])))$
-                       %7    %6        %6      %7
-(%t8)              (ifr   ifr     - ifr     ifr  ) ifri
-                       a     b,%7      a,%7    b       c %6
+                                %6    %5        %5      %6
+(%t8)              ifri     (ifr   ifr     - ifr     ifr  )
+                       a %5     b     c,%6      b,%6    c
 
 @end example
 
@@ -1525,8 +1565,9 @@ Calcula la derivada exterior de @var{expr} con respecto del @'{@dotless{i}}ndice
 (%t6)                             v    - v
                                    j,i    i,j
 (%i7) ishow(extdiff(a([i,j]),k))$
-(%t7)                      a      - a      + a
-                            j k,i    i k,j    i j,k
+(%t7)                    - (a      - a      + a     )
+                             k j,i    k i,j    j i,k
+
 @end example
 
 @end deffn

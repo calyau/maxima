@@ -1,4 +1,4 @@
-@c english version 1.6
+@c english version 1.9
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -362,6 +362,11 @@ Devuelve el camino de @var{n} v@'ertices.
 @deffnx {Funci@'on} petersen_graph (@var{n}, @var{d})
 Devuelve el grafo de Petersen @var{P_@{n,d@}}. Los valores por
 defecto para @var{n} y @var{d} son @code{n=5} y @code{d=2}.
+@end deffn
+
+@deffn {Funci@'on} random_bipartite_graph (@var{a}, @var{b}, @var{p})
+Devuelve un grafo aleatorio bipartido a partir de los v@'ertices @code{a+b}. Cada
+arista se genera con probabilidad @var{p}.
 @end deffn
 
 @deffn {Funci@'on} random_digraph (@var{n}, @var{p})
@@ -1418,6 +1423,11 @@ Ejemplo:
 @end example
 @end deffn
 
+@deffn {Funci@'on} min_vertex_cover (@var{gr})
+Devuelve el m@'{@dotless{i}}nimo nodo @i{covering} del grafo @var{gr}.
+@c Esta traduccion esta tomada de la wikipedia. Habra que revisarla.
+@end deffn
+
 @deffn {Funci@'on} minimum_spanning_tree (@var{gr})
 Devuelve el grafo de expansi@'on m@'{@dotless{i}}nimo del grafo @var{gr}.
 
@@ -2106,6 +2116,13 @@ con colores diferentes.
 @item
 @dfn{show_vertex_color=c}: color a utilizar en los v@'ertices de la lista @var{show_vertices}.
 @item
+@dfn{vertex_partition=part}: una partici@'on
+@code{[[v1,v2,...],...,[vk,...,vn]]} de los v@'ertices del grafo. Los 
+v@'ertices de cada lista se dibujar@'an de diferente color.
+@item
+@dfn{vertex_coloring=col}: colores de los v@'ertices. Los colores @var{col} deben
+especificarse en el mismo formato que el devuelto por @var{vertex_coloring}.
+@item
 @dfn{edge_color=c}: color a utilizar en las aristas.
 @item
 @dfn{edge_width=width}: ancho de las aristas.
@@ -2121,6 +2138,13 @@ con colores diferentes.
 @item
 @dfn{show_edge_type=type}: establece c@'omo se dibujar@'an las aristas de @var{show_edges}.
 V@'ease la opci@'on @var{line_type} del paquete @code{draw}.
+@item
+@dfn{edge_partition=partition}: una partici@'on
+@code{[[e1,e2,...],...,[ek,...,em]]} de las aristas del grafo. Las aristas
+de cada lista se dibujar@'an de diferente color.
+@item
+@dfn{edge_coloring=col}: colores de las aristas. Los colores @var{col} deben
+especificarse en el mismo formato que el devuelto por @var{edge_coloring}.
 @item
 @dfn{redraw=r}: si @var{redraw} vale @code{true}, las posiciones de los v@'ertices se recalculan
 incluso si las posiciones est@'an almacenadas de un dibujo previo del grafo.
@@ -2318,10 +2342,13 @@ Valor por defecto: @var{spring_embedding}.
 Programa a utilizar por defecto para posicionar los v@'ertices en la funci@'on @code{draw_graph}.
 @end defvr
 
-@deffn {Funci@'on} v@'ertices_to_path (@var{v_list})
-Convierte una lista de v@'ertices en la lista de aristas del camino definido por ellos.
+@deffn {Funci@'on} vertices_to_path (@var{v_list})
+Convierte una lista @var{v_list} de v@'ertices en la lista de aristas del camino
+definido por la propia @var{v_list}.
 @end deffn
 
-@deffn {Funci@'on} v@'ertices_to_cycle (@var{v_list})
-Convierte una lista de v@'ertices en la lista de aristas del ciclo definido por ellos.
+@deffn {Funci@'on} vertices_to_cycle (@var{v_list})
+Convierte una lista @var{v_list} de v@'ertices en la lista de aristas del ciclo
+definido por la propia @var{v_list}.
 @end deffn
+
