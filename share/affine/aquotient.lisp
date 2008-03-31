@@ -1620,7 +1620,8 @@
 				appending(sloop for pol1 in  (integer-univariate-factor1 pol)
 					       collecting pol1 collecting deg))))
 
-(defvar *small-primes* '(3 5 7 11 13 17 19))
+;;(defvar *small-primes* '(3 5 7 11 13 17 19)) ; overrides *small-primes* in src/ifactor.lisp; not used
+
 (defun find-small-prime-so-square-free (poly &optional (variable (p-var poly)) (prime-start 13)&aux deriv cof the-gcd)
   "finds a small prime P so that the roots of poly with respect to variable VARIABLE are distinct and so
     that poly has the same degree reduced modulo P.  It will continue for ever if the input is not square free over
