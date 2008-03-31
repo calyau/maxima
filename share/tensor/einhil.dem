@@ -77,12 +77,12 @@ ev(EQ);
 expand(radcan(ug.e));
 ("What about the spherically symmetric case?")$
 lg:ident(4);
-lg[1,1]:a;
-lg[2,2]:-b;
+lg[1,1]:B;
+lg[2,2]:-A;
 lg[3,3]:-r^2;
 lg[4,4]:-r^2*sin(u)^2;
 kill(dependencies);
-dependencies(a(r),b(r));
+dependencies(A(r),B(r));
 cmetric();
 christof(false);
 e:zeromatrix(4,4);
@@ -91,11 +91,11 @@ ev(EQ);
 E:expand(radcan(ug.e));
 ("In a vacuum solution, E should be zero. Let's solve for it!")$
 exp:findde(E,2);
-solve(ode2(exp[1],b,r),b);
+solve(ode2(exp[1],A,r),A);
 %,%c=-2*M;
-B:%[1],%c=-2*M;
-ode2(ev(exp[2],B),a,r);
-A:ev(%,%c=rhs(solve(rhs(%)*rhs(B)=1,%c)[1]));
+a:%[1],%c=-2*M;
+ode2(ev(exp[2],a),B,r);
+b:ev(%,%c=rhs(solve(rhs(%)*rhs(a)=1,%c)[1]));
 ("Finally, we obtain the Schwarzschild-de Sitter metric")$
-expand(ev(lg,A,B));
+expand(ev(lg,a,b));
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */
