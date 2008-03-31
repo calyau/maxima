@@ -3,14 +3,15 @@
 ;;;;
 ;;;;  Maxima integer factorization package.
 ;;;;
-;;;;  Version  : 1.3 (april 2006)
-;;;;  Copyright: 2005-2006 Andrej Vodopivec, Volker van Nek
+;;;;  Version  : 1.4 (march 2008)
+;;;;  Copyright: 2005-2008 Andrej Vodopivec, Volker van Nek
 ;;;;  Licence  : GPL2
 ;;;;
 ;;;;   - ifactors     : factorization of integers
 ;;;;   - primep       : probabilistic primality test
 ;;;;   - next_prime   : smallest prime > n
 ;;;;   - prev_prime   : greatest prime < n
+;;;;   - primes       : list of primes
 ;;;;   - power_mod    : fast modular powers
 ;;;;   - inv_mod      : modular inverse
 
@@ -745,3 +746,21 @@
 	  (if ($primep n)
 	      (return-from next-prime n))
 	  (setq n (+ (* 2 c) n))))))         
+
+
+;;; return a list of all primes between start and end
+
+(defun $primes (start end) 
+  (let ((primes nil))
+    (if (not (and (integerp start) (integerp end)))
+      (merror "`primes' needs two integer arguments."))
+    ;; take primes from *small-primes* if possible
+    (dolist (n *small-primes* (setq start (1+ start)))  
+      (and (>= n start) (<= n end)
+           (setq primes (cons n primes))
+           (setq start n)))  
+    ;; search for the rest of primes
+    (do ((n (next-prime start 1) (next-prime (1+ n) 1)))
+        ((> n end))
+      (setq primes (cons n primes)))
+    (cons '(mlist) (reverse primes))))
