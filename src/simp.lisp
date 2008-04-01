@@ -1942,6 +1942,14 @@
 (defmfun decl-realp (e)
   (and (symbolp e) (kindp e '$real)))
 
+;; WARNING:  Exercise extreme caution when modifying this function!
+;;
+;; Richard Fateman and Stavros Macrakis both say that changing the
+;; actual ordering relations (as opposed to making them faster to
+;; determine) could have very subtle and wide-ranging effects.  Also,
+;; the simplifier spends the vast majority of its time here, so be
+;; very careful about changes that may drastically slow down the
+;; simplifier.
 (defmfun great (x y)
   (cond ((atom x)
 	 (cond ((atom y)
