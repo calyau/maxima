@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.16 2007-12-03 00:16:37 villate Exp $
+#       $Id: Plot2d.tcl,v 1.17 2008-04-04 23:09:32 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -43,7 +43,7 @@ set plot2dOptions {
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
     {psfile "" "A filename where the graph will be saved in PostScript."}
     {nobox 0 "if not zero, do not draw the box around the plot."}
-    {noaxes 0 "if not zero, do not draw the axes."}
+    {axes "xy" "if zero, no axes are drawn. x, y or xy to draw the axes."}
     {nolegend 0 "if not zero, do not write down the legend."}
 }
 
@@ -337,7 +337,7 @@ proc plot2d {args } {
 
 proc replot2d {win } {
     global printOption axisGray plot2dOptions
-    linkLocal $win xfundata data psfile nobox noaxes
+    linkLocal $win xfundata data psfile nobox axes
     foreach v $data {
 	if { "[assq [lindex $v 0] $plot2dOptions notthere]" != "notthere" } {
 	    oset $win [lindex $v 0] [lindex $v 1]
@@ -381,10 +381,10 @@ proc replot2d {win } {
 
     # Draw the two axes
     $c del axes
-    if { $xmin*$xmax < 0 && $noaxes == 0 } {
+    if { $xmin*$xmax < 0 && ($axes == {y} || $axes == {xy}) } {
 	$c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -fill $axisGray -tags axes
     }
-    if { $ymin*$ymax < 0 && $noaxes == 0 } {
+    if { $ymin*$ymax < 0 && ($axes == {x} || $axes == {xy}) } {
 	$c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -fill $axisGray -tags axes
     }
 
