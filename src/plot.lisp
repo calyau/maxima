@@ -1219,79 +1219,89 @@
  
     (when (and (consp fun) (eq (cadr fun) '$parametric))
       (or range (setq range (nth 4 fun)))
-      (setf fun `((mlist) ,fun)))
+      (setq fun `((mlist) ,fun)))
     (when (and (consp fun) (eq (cadr fun) '$discrete))
-      (setf fun `((mlist) ,fun)))
+      (setq fun `((mlist) ,fun)))
 
-    (unless ($listp fun ) (setf fun `((mlist) ,fun)))     
+    (unless ($listp fun ) (setq fun `((mlist) ,fun)))     
     (let ((no-range-required t))
       (if (not ($listp fun))    ;; to plot a single function a range is needed
-        (setf no-range-required nil)
+        (setq no-range-required nil)
         (dolist (subfun (rest fun))
           (if (not ($listp subfun))         ;; if any of the sets to be plotted
-            (setf no-range-required nil)))) ;; is a function, a range is needed
+            (setq no-range-required nil)))) ;; is a function, a range is needed
       (unless no-range-required
         (setq range (check-range range))
-        (setf xlabel (ensure-string (second range)))
-        (setf xmin (coerce-float (third range)))
-        (setf xmax (coerce-float (fourth range))))
+        (setq xlabel (ensure-string (second range)))
+        (setq xmin (coerce-float (third range)))
+        (setq xmax (coerce-float (fourth range))))
       (if (and no-range-required range)
         ;;; second argument was really a plot option, not a range
-        (setf options (cons range options))))
+        (setq options (cons range options))))
     ;; if only one function is being plotted, use its name for ylabel
     ;; of for xlabel and ylabel, if the plot is a parametric
     (when (= (length fun) 2)
       (let ((v (second fun)))
         (cond ((atom v) 
-               (setf ylabel (coerce (mstring v) 'string)))
+               (setq ylabel (coerce (mstring v) 'string)))
               ((eq (second v) '$parametric)
-               (setf xlabel (coerce (mstring (third v)) 'string))
-               (setf ylabel (coerce (mstring (fourth v)) 'string)))
+               (setq xlabel (coerce (mstring (third v)) 'string))
+               (setq ylabel (coerce (mstring (fourth v)) 'string)))
               ((eq (second v) '$discrete)
-               (setf ylabel (format nil "discrete data")))
-              (t (setf ylabel (coerce (mstring v) 'string)))))
-      (if (> (length xlabel) 80) (setf xlabel nil))
-      (if (> (length ylabel) 80) (setf ylabel nil)))
+               (setq ylabel (format nil "discrete data")))
+              (t (setq ylabel (coerce (mstring v) 'string)))))
+      (if (> (length xlabel) 80) (setq xlabel nil))
+      (if (> (length ylabel) 80) (setq ylabel nil)))
 
     ;; options parser
     (dolist (v options)
       (if ($listp v)
-        (case (second v)
-          ($logx (setf log-x t))
-          ($logy (setf log-y t))
-	  ($box (setf box (cddr v)))
-          ($xlabel (setf xlabel (ensure-string (third v))))
-          ($ylabel (setf ylabel (ensure-string (third v))))
-          ($x (when (fourth v)
-                (setf xmin (meval (third v)))
-                (setf xmax (meval (fourth v)))
-                ($set_plot_option `((mlist) $x ,xmin ,xmax)))
-              (unless xlabel (setf xlabel "x")))
-          ($y (when (fourth v)
-                (setf ymin (meval (third v)))
-                (setf ymax (meval (fourth v)))
-                ($set_plot_option `((mlist) $y ,ymin ,ymax))))
-          ($style (setf styles (cddr v)))
-          ($legend (setf legend (cddr v)))
+        (case (second v)	    (if axes
+		(case axes
+		      ($x (format st "set xzeroaxis~%"))
+		      ($y (format st "set yzeroaxis~%"))
+		      (t (format st "set zeroaxis~%"))))
+
+          ($logx (setq log-x t))
+          ($logy (setq log-y t))
+	  ($box (setq box (cddr v)))
+          ($xlabel (setq xlabel (ensure-string (third v))))
+          ($ylabel (setq ylabel (ensure-string (third v))))
+          ($x
+	   (or (eql (length v) 4)
+	       (merror "Option x must have the form [x, xmin, xmax]"))
+	   (setq xmin (meval (third v)))
+	   (setq xmax (meval (fourth v)))
+	   ($set_plot_option `((mlist) $x ,xmin ,xmax))
+	   (unless xlabel (setq xlabel "x")))
+          ($y
+	   (or (eql (length v) 4)
+	       (merror "Option y must have the form [y, ymin, ymax]"))
+	   (setq ymin (meval (third v)))
+	   (setq ymax (meval (fourth v)))
+	   ($set_plot_option `((mlist) $y ,ymin ,ymax))
+	   (unless ylabel (setq ylabel "y")))
+          ($style (setq styles (cddr v)))
+          ($legend (setq legend (cddr v)))
 	  ($psfile
-	   (progn ($set_plot_option '((MLIST SIMP) $GNUPLOT_TERM $PS))
-	      ($set_plot_option `((MLIST SIMP) $GNUPLOT_OUT_FILE ,(third v)))
-	      (setf psfile t)))
+	   ($set_plot_option '((MLIST SIMP) $GNUPLOT_TERM $PS))
+	   ($set_plot_option `((MLIST SIMP) $GNUPLOT_OUT_FILE ,(third v)))
+	   (setq psfile t))
           (t ($set_plot_option v)))
         (merror "Option ~M should be a list" v)))
-    (when (and xlabel log-x) (setf xlabel (format nil "log(~a)" xlabel)))
-    (when (and ylabel log-y) (setf ylabel (format nil "log(~a)" ylabel)))
+    (when (and xlabel log-x) (setq xlabel (format nil "log(~a)" xlabel)))
+    (when (and ylabel log-y) (setq ylabel (format nil "log(~a)" ylabel)))
     ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
 
     (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
-    (setf plot-format  ($get_plot_option '$plot_format 2))
-    (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
+    (setq plot-format  ($get_plot_option '$plot_format 2))
+    (setq gnuplot-term ($get_plot_option '$gnuplot_term 2))
     (if ($get_plot_option '$gnuplot_out_file 2)
-      (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
+      (setq gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
     (if (and (eq plot-format '$gnuplot) (eq gnuplot-term '$default) 
              gnuplot-out-file)
-      (setf file gnuplot-out-file)
-      (setf file (plot-temp-file (format nil "maxout.~(~a~)" (ensure-string plot-format)))))
+      (setq file gnuplot-out-file)
+      (setq file (plot-temp-file (format nil "maxout.~(~a~)" (ensure-string plot-format)))))
     ;; old function $plot2dopen incorporated here
     (case plot-format
       ($openmath
@@ -1312,29 +1322,29 @@
           (dolist (f (cdr fun))
             (if styles
               (progn
-                (setf style (nth (mod i (length styles)) styles))
-                (setf style (if ($listp style) (cdr style) `(,style))))
-              (setf style nil))
+                (setq style (nth (mod i (length styles)) styles))
+                (setq style (if ($listp style) (cdr style) `(,style))))
+              (setq style nil))
             (incf i)
             (if legend         ;; legend in the command line has priority
-             (setf plot-name
+             (setq plot-name
 		   (if (first legend)
 		     (ensure-string (nth (mod (- i 1) (length legend)) legend))
 		     nil))     ;; no legend if option [legend,false]
              (if (= 2 (length fun))
-               (setf plot-name nil)     ;; no legend if just one function
+               (setq plot-name nil)     ;; no legend if just one function
                (setq plot-name
                  (let ((string ""))
                    (cond ((atom f) 
-                          (setf string (coerce (mstring f) 'string)))
+                          (setq string (coerce (mstring f) 'string)))
                          ((eq (second f) '$parametric)
-                          (setf string 
+                          (setq string 
                                 (concatenate 
                                  'string (coerce (mstring (third f)) 'string)
                                  ", " (coerce (mstring (fourth f)) 'string))))
                          ((eq (second f) '$discrete)
-                          (setf string (format nil "discrete~a" i)))
-                         (t (setf string (coerce (mstring f) 'string))))
+                          (setq string (format nil "discrete~a" i)))
+                         (t (setq string (coerce (mstring f) 'string))))
                    (cond ((< (length string) 80) string)
                          (t (format nil "fun~a" i)))))))
             (when plot-name 
@@ -1407,29 +1417,29 @@
                               (format nil "'~a' index ~a " file i)))))
            (if styles
              (progn
-               (setf style (nth (mod i (length styles)) styles))
-               (setf style (if ($listp style) (cdr style) `(,style))))
-             (setf style nil))
+               (setq style (nth (mod i (length styles)) styles))
+               (setq style (if ($listp style) (cdr style) `(,style))))
+             (setq style nil))
            (incf i)
            (if legend
-             (setf plot-name      ;; legend in the command line has priority
+             (setq plot-name      ;; legend in the command line has priority
 		   (if (first legend)
 		     (ensure-string (nth (mod (- i 1) (length legend)) legend))
 		     nil))        ;; no legend if option [legend,false]
              (if (= 2 (length fun))
-               (setf plot-name nil)     ;; no legend if just one function
+               (setq plot-name nil)     ;; no legend if just one function
                (setq plot-name
                  (let ((string ""))
                    (cond ((atom v) 
-                          (setf string (coerce (mstring v) 'string)))
+                          (setq string (coerce (mstring v) 'string)))
                          ((eq (second v) '$parametric)
-                          (setf string 
+                          (setq string 
                                 (concatenate 
                                  'string (coerce (mstring (third v)) 'string)
                                  ", " (coerce (mstring (fourth v)) 'string))))
                          ((eq (second v) '$discrete)
-                          (setf string (format nil "discrete~a" i)))
-                         (t (setf string (coerce (mstring v) 'string))))
+                          (setq string (format nil "discrete~a" i)))
+                         (t (setq string (coerce (mstring v) 'string))))
                    (cond ((< (length string) 80) string)
                          (t (format nil "fun~a" i)))))))
            (case plot-format
@@ -1454,7 +1464,7 @@
             (format st "~%"))
            ($gnuplot_pipes
             (format st "~%")))
-         (setf i 0)
+         (setq i 0)
          (dolist (v (cdr fun))
            (incf i)
            ;; Assign PLOT-NAME only if not already assigned.
