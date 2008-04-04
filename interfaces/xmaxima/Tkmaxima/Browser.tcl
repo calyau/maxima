@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.21 2007-12-07 14:02:22 villate Exp $
+#       $Id: Browser.tcl,v 1.22 2008-04-04 23:10:28 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -570,7 +570,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
     uplevel 1 set $type "unknown"
 
 
-    puts "getting $resolved,post=<$post>"
+    #puts "getting $resolved,post=<$post>"
     switch [assoc type $res] {
 	http {
 	    #mike FIXME: replace with http get
