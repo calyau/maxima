@@ -55,6 +55,7 @@
                         ((mlist) $grid 30 30)
                         ((mlist) $transform_xy nil)
                         ((mlist) $run_viewer t)
+			((mlist) $axes t)
                         ((mlist) $plot_format
                          ,(if (string= *autoconf-win32* "true")
                               '$gnuplot
@@ -219,6 +220,9 @@
           ($nticks  (check-list-items name (cddr value) 'fixnum 1))
           (($run_viewer $transform_xy $gnuplot_pm3d)
            (check-list-items name (cddr value) 't 1))
+	  ($axes
+	   (or (member (third value) '($x $y t nil))
+	       (merror "option axes should be: true, false, x or y")) value)
           ($plot_format (or (member (third value)
                                     (if (string= *autoconf-win32* "true")
                                         '($zic $geomview
@@ -1215,7 +1219,7 @@
 	(output-file "")
         plot-format gnuplot-term gnuplot-out-file file plot-name
         log-x log-y xmin xmax ymin ymax styles style legend
-        xlabel ylabel box psfile)
+        xlabel ylabel box psfile axes)
  
     (when (and (consp fun) (eq (cadr fun) '$parametric))
       (or range (setq range (nth 4 fun)))
@@ -1296,6 +1300,7 @@
     (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
     (setq plot-format  ($get_plot_option '$plot_format 2))
     (setq gnuplot-term ($get_plot_option '$gnuplot_term 2))
+    (setq axes ($get_plot_option '$axes 2))
     (if ($get_plot_option '$gnuplot_out_file 2)
       (setq gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
     (if (and (eq plot-format '$gnuplot) (eq gnuplot-term '$default) 
@@ -1314,6 +1319,12 @@
 			       (get-plot-option-string '$gnuplot_out_file)))
 	  (when (and legend (not (first legend))) (format st " {nolegend 1}"))
 	  (when (and box (not (first box))) (format st " {nobox 1}"))
+	  (if axes
+	      (case axes
+		    ($x (format st " {axes {x} }"))
+		    ($y (format st " {axes {y} }"))
+		    (t (format st " {axes {xy} }")))
+	    (format st " {axes 0}"))
           (when (and xmin xmax) (format st " {xrange ~g ~g}" xmin xmax))
           (when (and ymin ymax) (format st " {yrange ~g ~g}" ymin ymax))
           (when xlabel (format st " {xaxislabel \"~a\"}" xlabel))
@@ -1332,7 +1343,9 @@
 		     (ensure-string (nth (mod (- i 1) (length legend)) legend))
 		     nil))     ;; no legend if option [legend,false]
              (if (= 2 (length fun))
-               (setq plot-name nil)     ;; no legend if just one function
+               (progn
+		 (setq plot-name nil)     ;; no legend if just one function
+		 (format st " {nolegend 1}"))
                (setq plot-name
                  (let ((string ""))
                    (cond ((atom f) 
@@ -1378,6 +1391,11 @@
 	      (format st "unset key~%"))
 	    (when (and box (not (first box)))
 	      (format st "unset border; unset xtics; unset ytics~%"))
+	    (if axes
+		(case axes
+		      ($x (format st "set xzeroaxis~%"))
+		      ($y (format st "set yzeroaxis~%"))
+		      (t (format st "set zeroaxis~%"))))
             (format st "plot")
             (when (and xmin xmax) (format st " [~g:~g]" xmin xmax))
             (when (and ymin ymax)
@@ -1395,6 +1413,11 @@
 	      (format *gnuplot-stream* "unset key~%"))
 	    (when (and box (not (first box)))
 	      (format *gnuplot-stream* "unset border; unset xtics; unset ytics~%"))
+	    (if axes
+		(case axes
+		      ($x (format *gnuplot-stream* "set xzeroaxis~%"))
+		      ($y (format *gnuplot-stream* "set yzeroaxis~%"))
+		      (t (format *gnuplot-stream* "set zeroaxis~%"))))
             (setq *gnuplot-command* (format nil "plot"))
             (when (and xmin xmax)
               (setq *gnuplot-command*
