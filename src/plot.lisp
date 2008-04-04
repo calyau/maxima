@@ -1478,7 +1478,7 @@
              ($mgnuplot
               (format st "~%~%# \"~a\"~%" plot-name))
              )
-           (let (in-discontinuity)
+           (let (in-discontinuity points)
              (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
                do
                (cond ((eq v 'moveto)
@@ -1495,8 +1495,11 @@
                        (t
                         (format st "move "))))
                      (t  (format st "~g ~g ~%" v w)
-                         (setq in-discontinuity nil)))))))))
-    
+			 (setq points true)
+                         (setq in-discontinuity nil))))
+	     (if (and (null points) xmin ymin)
+		 (format st "~g ~g ~%" xmin ymin)))))))
+
     (case plot-format
       ($gnuplot 
        (setq output-file (gnuplot-process file)))
