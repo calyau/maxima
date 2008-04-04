@@ -1495,7 +1495,7 @@
                        (t
                         (format st "move "))))
                      (t  (format st "~g ~g ~%" v w)
-			 (setq points true)
+			 (setq points t)
                          (setq in-discontinuity nil))))
 	     (if (and (null points) xmin ymin)
 		 (format st "~g ~g ~%" xmin ymin)))))))
