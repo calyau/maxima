@@ -37,8 +37,8 @@
 	(($ratnump x) (number-sign ($num x)))
 	(($bfloatp x) (number-sign (second x)))
 	((eq '$minf x) '$neg)
-	((memq x '($inf $%pi $%e $%phi)) '$pos)
-	((memq x '($%i '$infinity)) '$complex)
+	((member x '($inf $%pi $%e $%phi) :test #'eq) '$pos)
+	((member x '($%i '$infinity) :test #'eq) '$complex)
 	(($constantp x) (constant-expression-sign x))
 	(t nil)))
 	 
@@ -260,7 +260,7 @@
           
      ;; z^n = 0 --> false if n <= 0 else z = 0.
      ((and (op-equalp z 'mexpt) (mnump (third z)))
-      (if (memq (number-sign (third z)) '($neg $zero)) nil (m= (second z) 0)))
+      (if (member (number-sign (third z)) '($neg $zero) :test #'eq) nil (m= (second z) 0)))
           
      ;; f(a) = f(b), where f is one-to-one --> a = b.
      ((and (not ($mapatom a)) (not ($mapatom b)) (eq (mop a) (mop b)) ($featurep (mop a) '$one_to_one))
@@ -454,14 +454,14 @@
   ;; (2) If pos has a zero or negative member set pos to (-1).
   ;; (3) Remove the extremal members of pos (apply min).
   
-  (cond ((memq pos '($inf $minf)) (list pos))
+  (cond ((member pos '($inf $minf) :test #'eq) (list pos))
 	(t
 	 (let ((save-context $context) (new-context (gensym)))
 	   (unwind-protect
 	       (progn
 		 ($newcontext new-context)
 		 (setq pos (delete-if #'(lambda (s) (eq '$pos (csign s))) pos))
-		 (if (some #'(lambda (s) (memq (csign s) '($neg $nz $zero))) pos) (setq pos (list -1)))
+		 (if (some #'(lambda (s) (member (csign s) '($neg $nz $zero) :test #'eq)) pos) (setq pos (list -1)))
 		 (setq pos (apply-min pos))
 		 (if (op-equalp pos '$min) (margs pos) (list pos)))
 	     (if ($member new-context $contexts) ($killcontext new-context))
@@ -484,7 +484,7 @@
     (dolist (li pos)
       (setq cf ($ratcoef li x))
       (setq sgn (number-sign cf))
-      (if (memq sgn '($neg $pos))
+      (if (member sgn '($neg $pos) :test #'eq)
           (progn 
             (setq sol ($expand (div (sub (mul cf x) li) cf)))
             (if (eq sgn '$neg) (push sol ub) (push sol lb)))

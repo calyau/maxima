@@ -387,7 +387,7 @@
 		    t)
 		 (transp (setf (symbol-value x) x) t)
 		 ((eq x '$default_let_rule_package) t)
-         ((memq x (cdr $namespaces))                                        ; NEW
+         ((member x (cdr $namespaces) :test #'eq)                           ; NEW
           (setf $namespaces (delete x $namespaces :count 1 :test #'eq))     ; NEW
           (delete-package x)                                                ; NEW
           (makunbound x))                                                   ; NEW
