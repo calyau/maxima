@@ -1260,12 +1260,7 @@
     ;; options parser
     (dolist (v options)
       (if ($listp v)
-        (case (second v)	    (if axes
-		(case axes
-		      ($x (format st "set xzeroaxis~%"))
-		      ($y (format st "set yzeroaxis~%"))
-		      (t (format st "set zeroaxis~%"))))
-
+        (case (second v)
           ($logx (setq log-x t))
           ($logy (setq log-y t))
 	  ($box (setq box (cddr v)))
