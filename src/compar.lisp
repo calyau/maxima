@@ -1089,12 +1089,12 @@ relational knowledge is contained in the default context GLOBAL."
 	((eq (caar x) 'mexpt) (sign-mexpt x))
 	((eq (caar x) '%log) (compare (cadr x) 1))
 	((eq (caar x) 'mabs) (sign-mabs x))
-	((memq (caar x) '($min $max)) (sign-minmax (caar x) (cdr x)))
-	((memq (caar x) '(%csc %csch))
+	((member (caar x) '($min $max) :test #'eq) (sign-minmax (caar x) (cdr x)))
+	((member (caar x) '(%csc %csch) :test #'eq)
 	 (sign (inv* (cons (ncons (zl-get (caar x) 'recip)) (cdr x)))))
 	((specrepp x) (sign (specdisrep x)))
 	((kindp (caar x) '$posfun) (sign-posfun x))
-	((or (memq (caar x) '(%signum %erf))
+	((or (member (caar x) '(%signum %erf) :test #'eq)
 	     (and (kindp (caar x) '$oddfun) (kindp (caar x) '$increasing)))
 	 (sign-oddinc x))
 	(t (sign-any x))))
@@ -1168,12 +1168,12 @@ relational knowledge is contained in the default context GLOBAL."
     (when (or (and (numberp xrhs) (minusp xrhs)
 		   (not (atom xlhs)) (eq (sign* xlhs) '$pos))
 					; e.g. sign(a^3+%pi-1) where a>0
-	      (and (mexptp xlhs)		
+	      (and (mexptp xlhs)
 		   ;; e.g. sign(%e^x-1) where x>0
 		   (eq (sign* (caddr xlhs)) '$pos)
 		   (or (and
 			;; Q^Rpos - S, S<=1, Q>1
-			(memq (sign* (sub 1 xrhs)) '($pos $zero $pz))
+			(member (sign* (sub 1 xrhs)) '($pos $zero $pz) :test #'eq)
 			(eq (sign* (sub (cadr xlhs) 1)) '$pos))
 		       (and
 			;; Qpos ^ Rpos - Spos => Qpos - Spos^(1/Rpos)
@@ -1350,7 +1350,7 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun minmaxp (ex)
   (cond ((atom ex) nil)
-	((memq (caar ex) '($min $max)) (caar ex))
+	((member (caar ex) '($min $max)) (caar ex) :test #'eq)
 	(t nil)))
 
 (setq tryhard t)

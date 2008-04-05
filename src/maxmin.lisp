@@ -47,7 +47,7 @@
   (catch 'done
       (dolist (pk p)
 	(dolist (qk q)
-	  (if (memq (csign ($expand (mul (sub x pk) (sub qk x)))) '($pos $pz)) (throw 'done t))))
+	  (if (member (csign ($expand (mul (sub x pk) (sub qk x)))) '($pos $pz) :test #'eq) (throw 'done t))))
       nil))
 	  	       
 ;; Return true if y is the additive inverse of x. 
@@ -120,21 +120,21 @@
 	   (setq acc l)))
 
     ;; Finally, do a few clean ups:
-	   
+
     (setq acc (delete '$minf acc))
     (cond ((null acc) '$minf)
-	  ((memq '$inf acc) '$inf)
+	  ((member '$inf acc :test #'eq) '$inf)
 	  ((null (cdr acc)) (car acc))
 	  (t  `(($max simp) ,@(sort acc '$orderlessp))))))
 
 (defun limitneg (x)
   (cond ((eq x '$minf) '$inf)
 	((eq x '$inf) '$minf)
-	((memq x '($und $ind $infinity)) x)
+	((member x '($und $ind $infinity) :test #'eq) x)
 	(t (neg x))))
 
 (defprop $min simp-min operators)
-	  
+
 (defun simp-min (l tmp z)
   (declare (ignore tmp))
   (let ((acc nil))

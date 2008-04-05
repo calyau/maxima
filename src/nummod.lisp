@@ -186,7 +186,7 @@
 	((and (setq e1 (mget e '$numer)) (floor e1)))
 
 	((or (member e infinities) (eq e '$und) (eq e '$ind)) '$und)
-	;;((memq e '($inf $minf $ind $und)) e) ; Proposed code
+	;;((member e '($inf $minf $ind $und)) e) ; Proposed code
 	;; leave floor(infinity) as is
 	((or (eq e '$zerob)) -1)
 	((or (eq e '$zeroa)) 0)
@@ -285,7 +285,7 @@
   (setq yy (caar e)) ;; find a use for the otherwise unused YY.
   (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of round(round(x)) --> round(x).
-	((memq e '($inf $minf $und $ind)) e)
+	((member e '($inf $minf $und $ind) :test #'eq) e)
 	(t 
 	 (let* ((lb (take '($floor) e))
 		(ub (take '($ceiling) e))
@@ -313,11 +313,10 @@
   (setq yy (caar e)) ;; find a use for the otherwise unused YY.
   (setq e (simplifya (specrepcheck (second e)) z))
   (cond (($featurep e '$integer) e) ;; takes care of truncate(truncate(x)) --> truncate(x).
-	((memq e '($inf $minf $und $ind)) e)
+	((member e '($inf $minf $und $ind) :test #'eq) e)
 	(t
 	 (let ((sgn (csign e)))
-	   (cond ((memq sgn '($neg $nz)) (take '($ceiling) e))
-		 ((memq sgn '($zero $pz $pos)) (take '($floor) e))
+	   (cond ((member sgn '($neg $nz) :test #'eq) (take '($ceiling) e))
+		 ((member sgn '($zero $pz $pos) :test #'eq) (take '($floor) e))
 		 ((apply-reflection-simp yy e t))
 		 (t `((,yy simp) ,e)))))))
-	

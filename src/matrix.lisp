@@ -621,7 +621,7 @@
 
 (defmfun $transpose (mat)
   (cond ((not (mxorlistp mat))
-	 (cond ((and (not (atom mat)) (memq (mop mat) '($transpose %transpose)))
+	 (cond ((and (not (atom mat)) (member (mop mat) '($transpose %transpose) :test #'eq))
 		(cadr mat))
 	       (($scalarp mat) mat)
 	       ((mplusp mat)
@@ -633,7 +633,6 @@
 	       ((mncexptp mat)
 		(destructuring-let (((mat pow) (cdr mat)))
 		  `((mncexpt) ,($transpose mat) ,pow)))
-	       
 	       (t ($nounify '$transpose) (list '(%transpose) mat))))
 	(t
 	 (let ((ans (transpose (mcx (cdr (check mat))))))
