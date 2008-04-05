@@ -57,7 +57,7 @@
 					pcomplexity-of-inverses))
 	    (setq facts (npfactor may-invert)))
 	   (t (setq facts (list (square-free may-invert) 1))))
-     (setq newvars (unused-variables (// (length facts) 2) string-for-inverse-name))
+     (setq newvars (unused-variables (truncate (length facts) 2) string-for-inverse-name))
      (setq inverses
 	   (sloop for (pol deg) on facts by 'cddr
 		 for new in newvars

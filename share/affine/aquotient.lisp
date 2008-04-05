@@ -342,11 +342,8 @@
   (cond (quot quot)
 	(t nil)))
 
-(defun afc-remainder (n divisor &aux remainder)
-;    (declare (values remainder quotient))
-  (setq remainder (// n divisor))
-  (values  (- n (* divisor remainder)) remainder))
-
+(defun afc-remainder (n divisor)
+  (multiple-value-bind (q r) (truncate n divisor) (values r q)))
 
 ;;pseudo division as in Knuth's book.
 

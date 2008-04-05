@@ -701,7 +701,7 @@
      (sloop for jj below (length (the cl:array this-row)) by 2
 	   when (setq ind (aref this-row jj))
 	   do (format t "~%In slot ~D ~D-->~D "
-		      (// jj 2) ind (aref this-row (1+ jj))))))
+		      (truncate jj 2) ind (aref this-row (1+ jj))))))
 	   
 (defun sp-show-row (sp-mat i)
   (let ((this-row (aref (sp-rows sp-mat) i)))

@@ -204,7 +204,7 @@ far degree"
    ($sort_dot_simplifications)
      (format t "~%starting to resimplify dot simplifications..")
      (cond ((< (setq leng ($length $dot_simplifications)) 10) (displa $dot_simplifications))
-	   (t (format t "~%There are ~A of them." (// leng 2))))
+	   (t (format t "~%There are ~A of them." (truncate leng 2))))
 
    (setq dot-simps $dot_simplifications)
    (sloop named sue for v on (cdr $dot_simplifications) by 'cddr

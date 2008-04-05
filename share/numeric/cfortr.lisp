@@ -349,7 +349,7 @@
             (cond ((member opr '(mtimes mplus) :test #'eq)
                    (do ((newlen (+ 2 (+ prefix-psize suffix-psize
                                         (flatc $fbreak_temp_counter))))
-                        (threshold (// size 2))
+                        (threshold (truncate size 2))
                         (newobj)
                         (big-ones)
                         (scan (cdr x) (cdr scan)))
@@ -402,7 +402,7 @@
                                  (cond ((< $labelength halfing-floor)
                                         (break-p-t x est))
                                        (t
-                                        (setq $labelength (// $labelength 2))))
+                                        (setq $labelength (truncate $labelength 2))))
                                  (setq est (fort-len x)))
                                 (t
                                  (let ((prt (car posit)))
@@ -462,7 +462,7 @@
 			      (tyo arg out-designate)
 			      (setq eliminate-space nil))
 			    (if (= left (1- tabsz)) (setq eliminate-space t)))
-			(setq pure-col (+ tabsz (* tabsz (// pure-col tabsz)))
+			(setq pure-col (+ tabsz (* tabsz (truncate pure-col tabsz)))
 			      tab-encounter t)))
                      (t
                       (if (and comment-fortran tab-encounter)
@@ -494,7 +494,7 @@
 				       (setq eliminate-space t))
 				   (setq rst follow)))
 			      (if tab-encounter (setq eliminate-space nil))
-			      (setq pure-col (+ tabsize (* tabsize (// pure-col tabsize)))
+			      (setq pure-col (+ tabsize (* tabsize (truncate pure-col tabsize)))
 				    tab-encounter t)))
 			   (t
 			    (if (and comment-fortran tab-encounter)

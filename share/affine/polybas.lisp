@@ -293,7 +293,7 @@
 	(t (setq offset 0 lbound 0 ub (f1- leng))
 	   (sloop while (> (f- ub lbound) 1)
 		 do
-		 (setq mid (// (f+ ub lbound) 2))
+		 (setq mid (truncate (f+ ub lbound) 2))
 		 (cond ((funcall order-function x (car(setq tem
 							(nthcdr mid a-list))))(setq ub mid))
 		       ((funcall order-equal  (car tem) x)(setq after (f+ offset mid)

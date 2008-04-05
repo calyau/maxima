@@ -81,7 +81,7 @@
                        (t $cost_float_power)))
               (declare (fixnum exin rem in-cut pw2))
               (setq rem (cond (slow (rem (quotient exin pw2) 2))
-                              (t (\ (// exin pw2) 2)))))))))
+                              (t (\ (truncate exin pw2) 2)))))))))
 
 ;;; the following macro is courtesy of gjc.
 

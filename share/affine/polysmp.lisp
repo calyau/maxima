@@ -481,8 +481,8 @@ substituting them to be zero."
   ;;  (if test-all-theorems (check-proof-time))
   (cond
    (*show-grob*
-    (setq leng(length *poly-simplifications*))
-    (format t "~%Starting to simplify ~A poly-simplifications " (// leng 2))
+    (setq leng (length *poly-simplifications*))
+    (format t "~%Starting to simplify ~A poly-simplifications " (truncate leng 2))
     (cond ((> 10 leng )
 	   (show-simps))
 	  (t (format t "~%Replacements are :") (show-replacements)))))
