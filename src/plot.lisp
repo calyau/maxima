@@ -68,7 +68,7 @@
                         ((mlist) $nticks 10)
                         ;; Controls the number of splittings
                         ;; adaptive-plotting will do.
-                        ((mlist) $adapt_depth 10)
+                        ((mlist) $adapt_depth 5)
                         ((mlist) $gnuplot_pm3d
                          ,(if (string= *autoconf-win32* "true") t nil))
                         ((mlist) $gnuplot_preamble "")
