@@ -2295,8 +2295,7 @@ wrapper for this."
 	   z)))
 
 (defmfun |''MAKE-FUN| (noun-name x)
-  (let (($numer t) ($float t))
-    (simplifya (list (ncons noun-name) (resimplify x)) t)))
+  (simplifya (list (ncons noun-name) (resimplify x)) t))
 
 (macrolet ((|''MAKE| (fun noun)
 	     `(defmfun ,fun (x) (|''MAKE-FUN| ',noun x))))

@@ -804,3 +804,182 @@ block ([foo],
     foo);
 %e^-a * (%pi*%e^(2*a) + %pi)/4;
 
+/* verify that verbified math functions are not evaluated to numbers
+ * bug reported to mailing list 2007-11-19
+ */
+
+(kill (x, t),
+ 'integrate (sqrt (9*x^2 + 37), x, 0, 2),
+ changevar (%%, 3*x = sqrt(37)*sinh(t), t, x),
+ ev (%%, nouns));
+37*%e^-(2*asinh(6/sqrt(37)))
+  *(%e^(4*asinh(6/sqrt(37)))+4*asinh(6/sqrt(37))
+                              *%e^(2*asinh(6/sqrt(37)))-1) /24;
+
+/* considering the verbification stuff in more detail:
+ * (1) verify that foo(non-float), nouns => non-numeric
+ * (2) verify that foo(non-float), numer => float
+ * (3) verify that foo(float) => float
+ */
+
+/* ignore last few digits; not important in this context */
+
+(kill (all), float_approx_equal_tolerance : 1e-12, 0);
+0;
+
+/* LIST OF MATH FUNCTIONS FOR WHICH THERE ARE FLOAT FUNCTIONS
+ * (1) FUNCTIONS OF 1 ARGUMENT
+ */
+(F1 :
+ [erf, airy_ai, airy_bi, airy_dai, airy_dbi, elliptic_ec,
+  elliptic_kc, exp, log, factorial, gamma, acosh, acoth, acsch,
+  asech, asinh, atanh, cosh, coth, csch, sech, sinh, tanh, sqrt,
+  acos, acot, acsc, asec, asin, atan, cos, cot, csc, sec, sin, tan,
+  li[1], li[2], li[3], psi[0], psi[1], psi[2]],
+ Y1 : makelist (foo(1/7), foo, F1),
+ ev (Y1, nouns));
+[erf(1/7), 'airy_ai(1/7), 'airy_bi(1/7), 'airy_dai(1/7),
+ 'airy_dbi(1/7), 'elliptic_ec(1/7), 'elliptic_kc(1/7), %e^(1/7),
+ -log(7), (1/7)!, gamma(1/7), acosh(1/7), acoth(1/7), acsch(1/7),
+ asech(1/7), asinh(1/7), atanh(1/7), cosh(1/7), coth(1/7), csch(1/7),
+ sech(1/7), sinh(1/7), tanh(1/7), 1/sqrt(7), acos(1/7), acot(1/7),
+ acsc(1/7), asec(1/7), asin(1/7), atan(1/7), cos(1/7), cot(1/7),
+ csc(1/7), sec(1/7), sin(1/7), tan(1/7), -log(6/7), li[2](1/7),
+ li[3](1/7), psi[0](1/7), psi[1](1/7), psi[2](1/7)];
+
+ev (Y1, numer);
+[0.16010712672873, 0.31821739764818, 0.67928220872456, 
+- 0.25544752010866, 0.45500004582164, 1.513096652187913, 
+1.631906796078438, 1.153564994895108, - 1.945910149055313, 
+0.93543756289255, 6.548062940247834, 1.427448757889531*%i, 
+0.14384103622589 - 1.570796326794897*%i, 2.644120761058629, 
+2.633915793849633, 0.1423756431678, 0.14384103622589, 
+1.010221447322645, 7.047554385466551, 6.976247043798608, 
+0.98988197355171, 0.14334354757246, 0.14189319376693, 
+0.37796447300923, 1.427448757889531, 1.428899272190733, 
+1.570796326794897 - 2.633915793849634*%i, 2.633915793849634*%i, 
+0.14334756890537, 0.14189705460416, 0.98981326044662, 
+6.952316038379697, 7.023866335396166, 1.010291577169605, 
+0.14237172979226, 0.14383695943619, 0.15415067982726, 
+0.14831179749879, 0.14552316969849, - 7.363980242224349, 
+50.3574714369117, - 687.6815220686585];
+
+makelist (foo(float(1/7)), foo, F1);
+[0.16010712672873, 0.31821739764818, 0.67928220872456, 
+- 0.25544752010866, 0.45500004582164, 1.513096652187913, 
+1.631906796078438, 1.153564994895108, - 1.945910149055313, 
+0.93543756289255, 6.548062940247834, 1.427448757889531*%i, 
+0.14384103622589 - 1.570796326794897*%i, 2.644120761058629, 
+2.633915793849633, 0.1423756431678, 0.14384103622589, 
+1.010221447322645, 7.047554385466551, 6.976247043798608, 
+0.98988197355171, 0.14334354757246, 0.14189319376693, 
+0.37796447300923, 1.427448757889531, 1.428899272190733, 
+1.570796326794897 - 2.633915793849634*%i, 2.633915793849634*%i, 
+0.14334756890537, 0.14189705460416, 0.98981326044662, 
+6.952316038379697, 7.023866335396166, 1.010291577169605, 
+0.14237172979226, 0.14383695943619, 0.15415067982726, 
+0.14831179749879, 0.14552316969849, - 7.363980242224349, 
+50.3574714369117, - 687.6815220686585];
+
+/* (2) FUNCTIONS OF 2 ARGUMENTS
+ */
+(F2 : 
+ [atan2, bessel_i, bessel_j, bessel_k, bessel_y,
+jacobi_cd, jacobi_cn,
+  jacobi_cs, jacobi_dc, jacobi_dn, jacobi_ds, jacobi_nc, jacobi_nd,
+  jacobi_ns, jacobi_sc, jacobi_sd, jacobi_sn, elliptic_e,
+  elliptic_eu, elliptic_f, beta],
+ Y2 : makelist (foo(1/7, 2/7), foo, F2),
+ ev (Y2, nouns));
+[atan(1/2), 'bessel_i(1/7, 2/7), 'bessel_j(1/7, 2/7),
+ 'bessel_k(1/7, 2/7), 'bessel_y(1/7, 2/7),
+ 'jacobi_cd(1/7, 2/7), 'jacobi_cn(1/7, 2/7), 'jacobi_cs(1/7, 2/7),
+ 'jacobi_dc(1/7, 2/7), 'jacobi_dn(1/7, 2/7), 'jacobi_ds(1/7, 2/7),
+ 'jacobi_nc(1/7, 2/7), 'jacobi_nd(1/7, 2/7), 'jacobi_ns(1/7, 2/7),
+ 'jacobi_sc(1/7, 2/7), 'jacobi_sd(1/7, 2/7), 'jacobi_sn(1/7, 2/7),
+ elliptic_e(1/7, 2/7), elliptic_eu(1/7, 2/7), elliptic_f(1/7, 2/7),
+ beta(1/7, 2/7)];
+
+ev (Y2, numer);
+[0.46364760900081, 0.82410033570153, 0.79518665715578, 
+1.44325571710677, - 1.035878262667884, 0.99270611823031, 
+0.98983293044762, 6.959141929885592, 1.007347473371774, 
+0.99710570154659, 7.010274039905824, 1.010271500613521, 
+1.002902699732754, 7.030622760487995, 0.14369587660018, 
+0.14264777586547, 0.1422349106284, 0.14271875687, 
+0.14258093144727, 0.1429957703483, 9.973633393356877];
+
+makelist (foo (float (1/7), float (2/7)), foo, F2);
+[0.46364760900081, 0.82410033570153, 0.79518665715578, 
+1.44325571710677, - 1.035878262667884, 0.99270611823031, 
+0.98983293044762, 6.959141929885592, 1.007347473371774, 
+0.99710570154659, 7.010274039905824, 1.010271500613521, 
+1.002902699732754, 7.030622760487995, 0.14369587660018, 
+0.14264777586547, 0.1422349106284, 0.14271875687, 
+0.14258093144727, 0.1429957703483, 9.973633393356877];
+
+(F2 :
+ [inverse_jacobi_cd, inverse_jacobi_cn, inverse_jacobi_cs,
+  inverse_jacobi_sc, inverse_jacobi_sd, inverse_jacobi_sn],
+ Y2 : makelist (foo(1/7, 2/7), foo, F2),
+ ev (Y2, nouns));
+['inverse_jacobi_cd(1/7,2/7),'inverse_jacobi_cn(1/7,2/7),
+ 'inverse_jacobi_cs(1/7,2/7),'inverse_jacobi_sc(1/7,2/7),
+ 'inverse_jacobi_sd(1/7,2/7),'inverse_jacobi_sn(1/7,2/7)];
+
+ev (Y2, numer);
+[1.562139916774403, 1.536246964132837, 1.537956342530595, 
+  .1420329085375161, .1430674391291362, 0.143487627597992];
+
+makelist (foo (float (1/7), float (2/7)), foo, F2);
+[1.562139916774403, 1.536246964132837, 1.537956342530595, 
+  .1420329085375161, .1430674391291362, 0.143487627597992];
+
+(kill (F2),
+ Y2 : [inverse_jacobi_dc (8/7, 1/7),
+  inverse_jacobi_dn (1/7, 8/7),
+  inverse_jacobi_ds (1/7, 8/7),
+  inverse_jacobi_nc (8/7, 9/7),
+  inverse_jacobi_nd (8/7, 9/7),
+  inverse_jacobi_ns (8/7, 9/7)],
+ ev (%%, nouns));
+['inverse_jacobi_dc(8/7,1/7),'inverse_jacobi_dn(1/7,8/7),
+ 'inverse_jacobi_ds(1/7,8/7),'inverse_jacobi_nc(8/7,9/7),
+ 'inverse_jacobi_nd(8/7,9/7),'inverse_jacobi_ns(8/7,9/7)];
+
+ev (Y2, numer);
+[.5422366033071744, .4814049171519623, .4750213033941648, 
+1.645105736576537, 1.91297202083972, 0.51387624945997];
+
+[inverse_jacobi_dc (float (8/7), float (1/7)),
+ inverse_jacobi_dn (float (1/7), float (8/7)),
+ inverse_jacobi_ds (float (1/7), float (8/7)),
+ inverse_jacobi_nc (float (8/7), float (9/7)),
+ inverse_jacobi_nd (float (8/7), float (9/7)),
+ inverse_jacobi_ns (float (8/7), float (9/7))];
+[.5422366033071744, .4814049171519623, .4750213033941648, 
+1.645105736576537, 1.91297202083972, 0.51387624945997];
+
+/* (3) FUNCTIONS OF 3 ARGUMENTS */
+(Y3 : elliptic_pi (1/2, 1/3, 1/4),
+ ev (Y3, nouns));
+elliptic_pi (1/2, 1/3, 1/4);
+
+ev (Y3, numer);
+.3411527670552569;
+
+elliptic_pi (float (1/2), float (1/3), float (1/4));
+.3411527670552569;
+
+/* (4) FUNCTIONS WHICH ARE DON'T SEEM TO
+ * GENERALLY YIELD NOUNS WHICH CAN BE EVALUATED TO NUMBERS
+ * AND WHICH ARE THEREFORE EXCLUDED FROM THESE TESTS
+ *  hermite chebyshev_t chebyshev_u scaled_bessel_i scaled_bessel_i0
+ *  stirling jacobi_p laguerre legendre_p legendre_q assoc_legendre_p
+ *  assoc_legendre_q spherical_bessel_j spherical_bessel_y
+ *  spherical_hankel1 spherical_hankel2 spherical_harmonic
+ *  ultraspherical pochhammer zeta genfact gen_laguerre
+ */
+ 
+(reset (float_approx_equal_tolerance), 0);
+0;

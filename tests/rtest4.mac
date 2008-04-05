@@ -25,7 +25,7 @@ done$
 sin(x)+cos(y)+(w+1)^2+'diff(sin(w),w);
 cos(y)+sin(x)+'diff(sin(w),w,1)+(w+1)^2$
 ev(%,sin,expand,diff,x = 2,y = 1);
-cos(w)+w^2+2*w+cos(1)+1.909297426825682;
+cos(w)+w^2+2*w+cos(1)+sin(2)+1;
 ev(x+y,x:a+y,y:2);
 y+a+2$
 'diff(y^2+x*y+x^2,x,2,y,1);
