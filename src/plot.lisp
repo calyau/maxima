@@ -1837,17 +1837,30 @@
                 &aux lvars trans *original-points*
                 ($plot_options $plot_options)
                 ($in_netmath $in_netmath)
-                grid
-                plot-format gnuplot-term gnuplot-out-file file
-                orig-fun
-                const-expr
+                grid plot-format gnuplot-term gnuplot-out-file file
+                orig-fun const-expr psfile box legend xlabel ylabel zlabel
 		(output-file "")
                 )
   (declare (special *original-points*))
   (setf orig-fun fun)
-  (cond (options
-         (dolist (v options)
-           ($set_plot_option v))))
+    ;; options parser
+    (dolist (v options)
+      (if ($listp v)
+        (case (second v)
+	  ($box (setq box (cddr v)))
+          ($xlabel (setq xlabel (ensure-string (third v))))
+          ($ylabel (setq ylabel (ensure-string (third v))))
+          ($zlabel (setq zlabel (ensure-string (third v))))
+          ($legend (setq legend (cddr v)))
+ 	  ($psfile
+	   ($set_plot_option '((MLIST SIMP) $GNUPLOT_TERM $PS))
+	   ($set_plot_option `((MLIST SIMP) $GNUPLOT_OUT_FILE ,(third v)))
+	   (setq psfile t))
+          (t ($set_plot_option v)))
+        (merror "Option ~M should be a list" v)))
+;  (cond (options
+;         (dolist (v options)
+;           ($set_plot_option v))))
   (setf plot-format  ($get_plot_option '$plot_format 2))
   (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
   (if ($get_plot_option '$gnuplot_out_file 2)
@@ -1928,6 +1941,13 @@
                 (output-points pl nil)))
              ($gnuplot
               (gnuplot-print-header $pstream :const-expr const-expr)
+	      (when xlabel (format $pstream "set xlabel \"~a\"~%" xlabel))
+	      (when ylabel (format $pstream "set ylabel \"~a\"~%" ylabel))
+	      (when zlabel (format $pstream "set zlabel \"~a\"~%" zlabel))
+	      (when (and legend (not (first legend)))
+		(format $pstream "unset key~%"))
+	      (when (and box (not (first box)))
+		(format $pstream "unset border; unset xtics; unset ytics; unset ztics~%"))
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
                      (let ((string (coerce (mstring orig-fun) 'string)))
@@ -1942,6 +1962,13 @@
               (setq output-file (check-gnuplot-process))
               ($gnuplot_reset)
               (gnuplot-print-header *gnuplot-stream* :const-expr const-expr)
+	      (when xlabel (format *gnuplot-stream* "set xlabel \"~a\"~%" xlabel))
+	      (when ylabel (format *gnuplot-stream "set ylabel \"~a\"~%" ylabel))
+	      (when zlabel (format *gnuplot-stream* "set zlabel \"~a\"~%" zlabel))
+	      (when (and legend (not (first legend)))
+		(format *gnuplot-stream* "unset key~%"))
+	      (when (and box (not (first box)))
+		(format *gnuplot-stream* "unset border; unset xtics; unset ytics; unset ztics~%"))
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
                      (let ((string (coerce (mstring orig-fun) 'string)))
@@ -1959,8 +1986,20 @@
               (progn
                 (cond 
                  ($show_openplot
-                  (format $pstream "plot3d -data {{matrix_mesh ~%"))
-                 (t (format $pstream "{plot3d {matrix_mesh ~%")))
+                  (format $pstream "plot3d -data {~%"))
+                 (t (format $pstream "{plot3d ")))
+		(when psfile
+		  (format $pstream " {psfile \"~a\"}"
+			  (get-plot-option-string '$gnuplot_out_file)))
+		(when (and legend (not (first legend)))
+		  (format $pstream " {nolegend 1}"))
+		(when (and box (not (first box)))
+		  (format $pstream " {nobox 1}"))
+		(when xlabel (format $pstream " {xaxislabel \"~a\"}" xlabel))
+		(when ylabel (format $pstream " {yaxislabel \"~a\"}" ylabel))
+		(when zlabel (format $pstream " {zaxislabel \"~a\"}" zlabel))
+		(format $pstream " {matrix_mesh ~%")
+
                 ;; we do the x y z  separately:
                 (loop for off from 0 to 2
                        with ar = (polygon-pts pl)
