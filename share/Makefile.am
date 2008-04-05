@@ -937,11 +937,6 @@ tensor/taubnut.dem\
 tensor/tendemo.mac\
 tensor/tensor.dem\
 tensor/tentex.lisp\
-tensor/tests/atest.mac\
-tensor/tests/ctest.mac\
-tensor/tests/do_tests.mac\
-tensor/tests/itest.mac\
-tensor/tests/testsuite.lisp\
 tensor/tetrad.dem\
 tensor/weyl.dem\
 trigonometry/atrig1.mac\
