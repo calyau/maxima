@@ -356,7 +356,11 @@
 (defun freeof (var e) 
   (cond ((alike1 var e) nil)
 	((atom e) t)
-	((and (not argsfreeofp) (alike1 var (caar e))) nil)
+	((and (not argsfreeofp)
+          (or
+            (alike1 var ($verbify (caar e)))
+            (alike1 var ($nounify (caar e)))))
+     nil)
 	((and (or (member (caar e) '(%product %sum %laplace) :test #'eq)
 		  (and (eq (caar e) '%integrate) (cdddr e))
 		  (and (eq (caar e) '%limit) (cddr e)))

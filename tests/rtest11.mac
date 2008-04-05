@@ -220,6 +220,44 @@ freeof(y,sin(x+2*y));
 false$
 freeof(cos(y),"*",sin(y)+cos(x));
 true$
+
+/* freeof should try both noun and verb forms */
+
+(kill (f, g, h, x, n), 0);
+0;
+
+freeof (sin, sin (x));
+false;
+
+freeof (integrate, 'integrate (f(x), x));
+false;
+
+freeof (diff, 'diff (f(x), x));
+false;
+
+freeof (sum, 'sum (f(x), x, 1, n));
+false;
+
+freeof (limit, 'limit (f(x), x, inf));
+false;
+
+freeof (sin, f (g (1 + sin (h (x)))));
+false;
+
+freeof (integrate, f (g (x - 'integrate (h (x), x))));
+false;
+
+freeof (diff, f (g (x * 'diff (h (x), x, 3))));
+false;
+
+freeof (sum, f (g (x / 'sum (h (x), x, 2, n))));
+false;
+
+freeof (limit, f (g (x ^ 'limit (h (x), x, inf))));
+false;
+
+/* Additional freeof tests */
+
 lfreeof([x],y);
 true$
 lfreeof([x],y+z);

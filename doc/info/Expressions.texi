@@ -1327,6 +1327,7 @@ for @code{%e^x} in @code{%e^(a x)}.
 Returns @code{true}
 if no subexpression of @var{expr} is equal to @var{x_1}
 or if @var{x_1} occurs only as a dummy variable in @var{expr},
+or if @var{x_1} is neither the noun nor verb form of any operator in @var{expr},
 and returns @code{false} otherwise.
 
 @code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}
