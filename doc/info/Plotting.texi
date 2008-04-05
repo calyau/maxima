@@ -1,8 +1,81 @@
 @menu
-* Functions and Variables for Plotting::    
+* Introduction to Plotting::
+* Functions and Variables for Plotting::
 @end menu
 
-@node Functions and Variables for Plotting,  , Plotting, Plotting
+@node Introduction to Plotting, Functions and Variables for Plotting, Plotting, Plotting
+@section Introduction to Plotting
+
+Maxima uses an external plotting package to make the plots (see the
+section on Plotting Interfaces below). Maxima calculates set of points
+to be plotted and pass the to the plotting package together with a set
+of commands; the commands and plot data are passed to the external
+program either through a pipe or by saving them into a file with the
+extension @code{maxout.interface}, where @code{interface} is the name of
+the plotting interface being used.
+
+The @code{maxout.interface} file, in the cases when it is used, is
+created in the directory specified by the variable @var{temp_dir}. That
+location can be changed; by assigning to that variable a string that
+represents a valid directory where Maxima can create new files.
+
+After a plot has been obtained, the file @code{maxout.interface} can be
+executed again with the appropriate external program. If a Maxima plotting
+command fails to show anything, that file can be inspected to look for
+possible sources of problems. 
+
+@subsection Plotting Interfaces
+
+Currently, Maxima can one of two external plotting programs: Gnuplot or
+Xmaxima. There are various different interfaces for those programs,
+which can be selected with the option @code{[plot_format,interface]}, 
+where @code{interface} is one of the following:
+
+@itemize @bullet
+@item
+Value: @code{gnuplot} default on Windows
+
+Gnuplot is the most advanced plotting package among the packages
+available in Maxima. It requires an external gnuplot installation. All
+plotting commands and data are passed in a file @code{maxout.gnuplot}.
+
+@item
+Value: @code{gnuplot_pipes} default on non-Windows platforms
+
+Similar to the @code{gnuplot} format except that the commands are sent
+to gnuplot is done through a pipe; the data is passed via a file
+@code{maxout.gnuplot_pipes}. It should be used to plot on screen, for
+plotting to files it is better to use the @code{gnuplot} format.
+
+@item
+Value: @code{mgnuplot}
+
+Mgnuplot is a Tk-based wrapper around gnuplot. It is included in the
+Maxima distribution. Mgnuplot offers a rudimentary GUI for gnuplot,
+but has fewer overall features than the plain gnuplot
+interface. Mgnuplot requires an external gnuplot installation and
+Tcl/Tk.
+
+@item
+Value: @code{openmath}
+
+Openmath is a Tcl/Tk GUI plotting program. This format is provided by
+Xmaxima, which is distributed together with Maxima; in order to use this
+format you should install the package Xmaxima, and it will work not only
+from Xmaxima itself, but also from the command line and other GUI's for
+Maxima. If it is used from within Xmaxima, all commands and data are
+passed using the same socket used for the communication between Maxima
+and Xmaxima. If it is used from the console or other interface different
+from Xmaxima, the commands and data will be save in a file named
+@code{maxout.openmath}.
+
+@end itemize
+
+@opencatbox
+@category{Plotting}
+@closecatbox
+
+@node Functions and Variables for Plotting,  , Introduction to Plotting, Plotting
 @section Functions and Variables for Plotting
 
 @deffn {Function} contour_plot (@var{expr}, @var{x_range}, @var{y_range}, @var{options}, ...)
@@ -146,7 +219,11 @@ isolated points, or as points and line segments.
 There are several global options stored in the list @var{plot_options}
 which can be modified with the function @code{set_plot_option}; any of
 those global options can be overriden with options given in the
-@var{plot2d} command.
+@var{plot2d} command. There are also other options which are not part of
+the global options array @var{plot_options} and which can be given only
+as part of the @var{plot2d} command; those options are: @var{logx},
+@var{logy}, @var{box}, @var{legend}, @var{xlabel}, @var{ylabel},
+@var{psfile} and @var{style}.
 
 A function to be plotted may be specified as the name of a Maxima or
 Lisp function or operator, a Maxima lambda expression, or a general
@@ -328,8 +405,57 @@ are as follows; 5: radius of the points, 2: index of color used (red),
 ``lines'' style option give the thickness of the line (1 point) and
 the color (1 corresponds to blue).
 
-See also @code{plot_options}, which describes plotting options and has
-more examples.
+To save a plot of @code{sin(x)} to the file @code{sin.ps}, one can use:
+@example
+(%i18) plot2d (sin(x), [x, 0, 2*%pi], [psfile, "sin.eps"])$
+@end example
+
+The next example uses the y option to chop off singularities and the
+gnuplot_preamble option to put the key at the bottom of the plot instead
+of the top.
+@example
+(%i19) plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10],
+                     [gnuplot_preamble, "set key bottom"])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting14,8cm}
+@end ifnotinfo
+
+We can also use a @code{gnuplot_preamble} to produce fancy x-axis
+labels.  (Note that the @code{gnuplot_preamble} string must be entered
+without any line breaks.)
+@example
+(%i20) my_preamble: "set xtics ('-2pi' -6.283, \
+'-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0, \
+'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
+
+(%i21) plot2d([cos(x), sin(x), tan(x), cot(x)],
+       [x, -2*%pi, 2.1*%pi], [y, -2, 2], [axes, x]
+       [gnuplot_preamble, my_preamble]);
+@end example
+
+@ifnotinfo
+@image{figures/plotting15,8cm}
+@end ifnotinfo
+
+This example uses a @code{gnuplot_preamble} to produce fancy x-axis
+labels, and produces PostScript output that takes advantage of the
+advanced text formatting available in gnuplot.  (Note that the
+@code{gnuplot_preamble} string must be entered without any line breaks.)
+@example
+(%i22) my_preamble: "set xtics ('-2@{/Symbol p@}' \
+-6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, \
+'-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, \
+'@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' \
+6.283)"$
+
+(%i23) plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
+    [y, -2, 2], [gnuplot_preamble, my_preamble],
+    [psfile, "trig.eps"]);
+@end example
+
+See also @code{plot_options}, which describes plotting options.
 
 @opencatbox
 @category{Plotting}
@@ -416,7 +542,9 @@ Elements of this list state the default options for plotting.
 If an option is present in a @code{plot2d} or @code{plot3d} call,
 that value takes precedence over the default option.
 Otherwise, the value in @code{plot_options} is used.
-Default options are assigned by @code{set_plot_option}.
+Default options are assigned by @code{set_plot_option}. There are other
+local options specific to each plotting command, and not included in
+this list of global options.
 
 Each element of @code{plot_options} is a list of two or more items.
 The first item is the name of an option, and the remainder comprises the value or values
@@ -430,37 +558,8 @@ The plot options which are recognized by @code{plot2d} and @code{plot3d} are the
 Option: @code{plot_format}
 
 Determines which graphic interface is used by @code{plot2d} and
-@code{plot3d}.
-
-@itemize @bullet
-@item
-Value: @code{gnuplot} default on Windows
-
-Gnuplot is the most advanced plotting package among the packages
-available in Maxima. It requires an external gnuplot installation.
-@item
-Value: @code{gnuplot_pipes} default on non-Windows platforms
-
-Similar to the @code{gnuplot} format except that communication with
-gnuplot is done through a pipe. It should be used to plot on screen,
-for plotting to files it is better to use the @code{gnuplot} format.
-@item
-Value: @code{mgnuplot}
-
-Mgnuplot is a Tk-based wrapper around gnuplot. It is included in the
-Maxima distribution. Mgnuplot offers a rudimentary GUI for gnuplot,
-but has fewer overall features than the plain gnuplot
-interface. Mgnuplot requires an external gnuplot installation and
-Tcl/Tk.
-@item
-Value: @code{openmath}
-
-Openmath is a Tcl/Tk GUI plotting program. This format is provided by
-Xmaxima, which is distributed together with Maxima; in order to use this
-format you should install the package Xmaxima, and it will work not only
-from Xmaxima itself, but also from the command line and other GUI's for
-Maxima.
-@end itemize
+@code{plot3d}. It can be either @code{gnuplot}, @code{gnuplot_pipes},
+@code{mgnuplot} or @code{openmath}
 
 @item
 Option: @code{run_viewer}
@@ -641,6 +740,35 @@ The default for the style option is @var{lines} with a width of 1, and
 different colors.
 
 @item
+Option: @code{psfile}       
+                 
+This option is used to save the plots created by plot2d or plot3d into a
+Postscript file. The option should be given one parameter, which must be
+a valid name for a Postscript file. By default, that file will be
+created in the directory defined by the variable @var{maxima_tempdir};
+the value of that variable can be changed to save the file in a
+different directory.
+
+Example:
+@example
+[psfile, "plot1.ps"]
+@end example
+
+@item
+Option: @code{axes}
+
+This is a global option used only by plot2d. By default it has the value
+@emph{true}, which means that the two axis, x and y, will be
+displayed. It can be changed to @emph{x}, to show only the x axis, or to
+@emph{y}, which will show only the y axis, or to @emph{false} to skip
+the display of the axes.
+
+Example:
+@example
+[axes, 'x]
+@end example
+
+@item
 Option: @code{grid}
 
 Sets the number of grid points to use in the x- and y-directions
@@ -678,7 +806,9 @@ make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 
 There are several plot options specific to gnuplot.  Some of these
 options are raw gnuplot commands, specified as strings. Refer to the
-gnuplot documentation for more details.
+gnuplot documentation for more details. In most cases, these options can
+be replaced by one of the more general options above; in those cases we
+recommend that you use the most general form.
 
 @itemize @bullet
 @item
@@ -723,22 +853,15 @@ terminal name.
 @item
 Option: @code{gnuplot_out_file}
 
-Write gnuplot output to a file.
+When used in conjunction with the @code{gnuplot_term} option, it can be
+used to save the plot in a file, in one of the graphic formats supported
+by Gnuplot. If you want to create a Postscript file, you can use the
+option @code{psfile} instead, which will also work in Openmath, and does
+the same thing with just one option.
 
-@itemize @bullet
-@item
-Default value: @code{false}
-
-No output file specified.
-@item
-Value: @var{filename}
-
-Example: @code{[gnuplot_out_file, "myplot.ps"]}
-This example sends PostScript output to the file @code{myplot.ps} when
-used in conjunction with the PostScript gnuplot terminal.
-@c DOES OUTPUT FILE != FALSE IMPLY DON'T RUN THE VIEWER ??
-@c WHAT HAPPENS IF OUTPUT FILE IS SPEFICIED BUT TERMINAL IS NOT PS ??
-@end itemize
+@example
+[gnuplot_term, png], [gnuplot_outfile, "graph3.png"]
+@end example
 
 @item
 Option: @code{gnuplot_pm3d}
@@ -764,40 +887,20 @@ log scale plot. The default value for @code{gnuplot_preamble} is the empty strin
 Example:
 
 @example
-[gnuplot_preamble, "set log y"]
+[gnuplot_preamble, "set size ratio -1"]
 @end example
 
 @item
 Option: @code{gnuplot_curve_titles}
 
-Controls the titles given in the plot key. The
-default value is @code{[default]}, which automatically sets the title of each
-curve to the function plotted. If not @code{[default]}, @code{gnuplot_curve_titles}
-should contain a list of strings,
-each of which is @code{"title '@var{title_string}'"}.
-(To disable the plot key, add @code{"set nokey"} to @code{gnuplot_preamble}.)
-
-Example:
-
-@example
-[gnuplot_curve_titles,
-["title 'My first function'", "title 'My second function'"]]
-@end example
+This is an old option that has been replaced by @emph{legend} described
+above.
 
 @item
 Option: @code{gnuplot_curve_styles}
 
-A list of strings controlling the appearance
-of curves, i.e., color, width, dashing, etc., to be sent to the
-gnuplot plot command. The default value is
-@code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, which cycles through different colors. See the
-gnuplot documentation for @code{plot} for more information.
-
-Example:
-
-@example
-[gnuplot_curve_styles, ["with lines 7", "with lines 2"]]
-@end example
+This is an old option that has been replaced by @emph{style} described
+above.
 
 @item
 Option: @code{gnuplot_default_term_command}
@@ -849,115 +952,6 @@ setting @code{gnuplot_ps_term_command} as:
 @end example
 
 @end itemize
-
-@b{Examples:}
-
-@itemize @bullet
-@item
-Saves a plot of @code{sin(x)} to the file @code{sin.eps}.
-@end itemize
-@example
-(%i1) plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps],
-                        [gnuplot_out_file, "sin.eps"])$
-@end example
-
-@itemize @bullet
-@item
-Uses the y option to chop off singularities and the gnuplot_preamble
-option to put the key at the bottom of the plot instead of the top.
-@end itemize
-@example
-(%i2) plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10],
-                     [gnuplot_preamble, "set key bottom"])$
-@end example
-
-@ifnotinfo
-@image{figures/plotting14,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Uses a very complicated @code{gnuplot_preamble} to produce fancy x-axis labels.
-(Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
-@end itemize
-@example
-(%i3) my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, \
-'-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0, \
-'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
-
-(%i4) plot2d([cos(x), sin(x), tan(x), cot(x)],
-       [x, -2*%pi, 2.1*%pi], [y, -2, 2],
-       [gnuplot_preamble, my_preamble]);
-@end example
-
-@ifnotinfo
-@image{figures/plotting15,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-Uses a very complicated @code{gnuplot_preamble} to produce fancy x-axis labels,
-and produces PostScript
-output that takes advantage of the advanced text formatting available
-in gnuplot.
-(Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
-@end itemize
-@example
-(%i5) my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' \
--6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, \
-'-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, \
-'@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' \
-6.283)"$
-
-(%i6) plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
-    [y, -2, 2], [gnuplot_preamble, my_preamble],
-    [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
-@end example
-
-@itemize @bullet
-@item
-A three-dimensional plot using the gnuplot pm3d terminal.
-@end itemize
-@example
-(%i7) plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-        [grid, 50, 50], [gnuplot_pm3d, true])$
-@end example
-
-@ifnotinfo
-@image{figures/plotting16,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-A three-dimensional plot without a mesh and with contours
-projected on the bottom plane.
-@end itemize
-@example
-(%i8) my_preamble: "set pm3d at s;unset surface;set contour;\
-set cntrparam levels 20;unset key"$
-(%i9) plot3d(atan(-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [grid, 50, 50], [gnuplot_pm3d, true],
-    [gnuplot_preamble, my_preamble])$
-@end example
-
-@ifnotinfo
-@image{figures/plotting17,8cm}
-@end ifnotinfo
-
-@itemize @bullet
-@item
-A plot where the z-axis is represented by color only.
-(Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
-@end itemize
-@example
-(%i10) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [gnuplot_preamble, "set view map; unset surface"],
-    [gnuplot_pm3d, true], [grid, 150, 150])$
-@end example
-
-@ifnotinfo
-@image{figures/plotting18,8cm}
-@end ifnotinfo
 
 @opencatbox
 @category{Plotting}
@@ -1026,11 +1020,14 @@ In the form @code{plot3d ([@var{f_1}, @var{f_2}, @var{f_3}], ...)}
 where @var{f_1}, @var{f_2}, and @var{f_3} are names of functions or lambda expressions,
 each function must be a function of three arguments.
 
-This example shows a plot of the real part of @code{z^1/3}.
+This example shows a plot of the real part of @code{z^1/3}, using polar
+coordinates. The options @code{box} and @code{legend} were also used to
+suppress the title and the axes box. 
 
 @example
 (%i4) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-      ['grid, 12, 80], ['transform_xy, polar_to_xy]);
+      ['grid, 12, 80], ['transform_xy, polar_to_xy],
+      [box, false],[legend,false]);
 @end example
 
 @ifnotinfo
@@ -1084,7 +1081,44 @@ difficult, and it is just easier to make a function.
 @image{figures/plotting24,8cm}
 @end ifnotinfo
 
-See @code{plot_options} for more examples.
+Here is a three-dimensional plot using the gnuplot pm3d terminal.
+@example
+(%i7) plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+        [grid, 50, 50], [gnuplot_pm3d, true])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting16,8cm}
+@end ifnotinfo
+
+And a three-dimensional plot without a mesh and with contours projected
+on the bottom plane.  (Note that the @code{gnuplot_preamble} string must
+be entered without any line breaks.)
+
+@example
+(%i8) my_preamble: "set pm3d at s;unset surface;set contour;\
+set cntrparam levels 20;unset key"$
+(%i9) plot3d(atan(-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+    [grid, 50, 50], [gnuplot_pm3d, true],
+    [gnuplot_preamble, my_preamble])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting17,8cm}
+@end ifnotinfo
+
+Finally, a plot where the z-axis is represented by color only.
+@example
+(%i10) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+    [gnuplot_preamble, "set view map; unset surface"],
+    [gnuplot_pm3d, true], [grid, 150, 150])$
+@end example
+
+@ifnotinfo
+@image{figures/plotting18,8cm}
+@end ifnotinfo
+
+See the available options in @code{plot_options}.
 
 @opencatbox
 @category{Plotting}
