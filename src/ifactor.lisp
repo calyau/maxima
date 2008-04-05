@@ -374,7 +374,7 @@
   (if (< a 0) (setq a (mod a m)))
   (let ((u1 1)(u2 a)(v1 0)(v2 m) q)
     (do () ((= 0 v2) (if (= 1 u2) (mod u1 m) nil)) 
-      (setq q (// u2 v2))
+      (setq q (truncate u2 v2))
       (psetq u1 v1 v1 (- u1 (* q v1)))
       (psetq u2 v2 v2 (- u2 (* q v2))) )))
 

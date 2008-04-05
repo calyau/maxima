@@ -910,17 +910,16 @@
 	    (return (hyp-algv k l m n a b c))))
      (return nil)))
 
-(defun getxy
-    (k l m n)
+(defun getxy (k l m n)
   (prog (x y)
      (setq y 0)
      loop
-     (cond ((hyp-integerp (setq x (// (+ y
-					 (// k l)
-					 (* -2 (// m n)))
-				      2)))
+     (cond ((hyp-integerp (setq x (truncate (+ y
+					       (truncate k l)
+					       (* -2 (// m n)))
+					    2)))
 	    (return (list x y))))
-     (setq y (+ 2 y))
+     (incf y 2)
      (go loop)))
 
 (defun hyp-algv  (k l m n a b c)

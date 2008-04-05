@@ -87,8 +87,8 @@
 	   (j i (1+ j)))
 	  ((or (= gcd 1) (> j m))
 	   (setf (aref arr (car varord) 0)
-		 (abs (// (aref arr i i) gcd))))
-	(setq gcd (gcd gcd (aref arr i j)))))))						
+		 (abs (truncate (aref arr i i) gcd))))
+	(setq gcd (gcd gcd (aref arr i j)))))))
 ; returns (mixed list of <reduced exp> and <basis vector for null space>)
 ; <reduced expon> corresponds to dependent var
 ; <basis vector> corresponds to independent var
@@ -104,7 +104,7 @@
 			 (red (car hl))
 			 (ans))
 			((null p) (nreverse ans))
-			(push (// (car p) red) ans)
+			(push (truncate (car p) red) ans)
 			(push (hreduce (cadr p) (cdr vl) (cdr hl)) ans))))
 	     (t (do ((p (cdddr p) (cddr p))
 		     (sum (hreduce (caddr p) (cdr vl) (cdr hl))
@@ -138,7 +138,7 @@
 		((null pl))
 	      (do ((term (car pl) (cdr term))
 		   (j (1- i) (1- j)))
-		  ((= j 0) (rplaca term (// (- maxwt (car wtlist)) newwt))))))))))
+		  ((= j 0) (rplaca term (truncate (- maxwt (car wtlist)) newwt))))))))))
 
 (defun hdot (ht pt)
        (do ((ht (cdr ht) (cdr ht))

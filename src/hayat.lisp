@@ -268,7 +268,7 @@
 		     (when (and (evenp n) (eq ($sign (pdis (car l))) '$neg))
 		       (rplaca l (pminus (car l))))
 		     (setq ans (rctimes ans (ratexpt (cons (car l) 1)
-						   (// (cadr l) n))))))))))
+						   (truncate (cadr l) n))))))))))
 
 (defun rccoefp (e)		;a sure check, but expensive
        (and (null (atom e))
@@ -2876,7 +2876,7 @@
 
 (defun [max-trunc] ()
    (do ((l tlist (cdr l)) (emax (rczero)))
-       ((null l) (1+ (// (car emax) (cdr emax))))
+       ((null l) (1+ (truncate (car emax) (cdr emax))))
       (when (e> (current-trunc (car l)) emax)
 	 (setq emax (orig-trunc (car l))))))
 

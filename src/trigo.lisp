@@ -459,7 +459,7 @@
 	     (t num)))
     (setq num (cons (mul binom (power f i)) num) 
 	  den (cond ((= end i) den)
-		    (t (cons (mul (setq binom (// (* flag (- end i) binom) (1+ i)))
+		    (t (cons (mul (setq binom (truncate (* flag (- end i) binom) (1+ i)))
 				  (power f (1+ i)))
 			     den))))))
 
@@ -469,13 +469,13 @@
        (end (abs n))
        (num)
        (den)
-       (binom 1 (// (* flag (1- i) binom) (- end i -2))))
+       (binom 1 (truncate (* flag (1- i) binom) (- end i -2))))
       ((< i 0) (setq num (div* (cons '(mplus) num) (cons '(mplus) den)))
        (if (minusp n) (neg num) num))
     (setq num (cons (mul binom (power f i)) num)
 	  den (if (= 0 i)
 		  den
-		  (cons (mul (setq binom (// (* i binom) (- end i -1))) (power f (1- i))) den)))))
+		  (cons (mul (setq binom (truncate (* i binom) (- end i -1))) (power f (1- i))) den)))))
 
 (defun csc/sec-times (l m n f1 f2 flag)
   (div* (mul (power (cons-exp f1 (cons '(mtimes) l)) (abs n))

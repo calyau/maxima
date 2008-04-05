@@ -181,7 +181,7 @@
 
 (defun pmodroot1 (x)
   (cond ((null x) x)
-	(t (cons (// (car x) modulus)
+	(t (cons (truncate (car x) modulus)
 		 (cons (pmodroot (cadr x))
 		       (pmodroot1 (cddr x)))))))
 
