@@ -1,0 +1,154 @@
+gf_set(123127,5,x^5+2*x+1);
+true;
+
+string(gf_prim);
+"x+4";
+
+
+gf_set(7,10,x^10+5*x^2+x+5);
+true;
+
+string(gf_prim);
+"x";
+
+string(gf_binpower(gf_prim,gf_ind(x^9+3*x^6+x^5+2*x^2+6)));
+"x^9+3*x^6+x^5+2*x^2-1";
+
+
+string(gf_binpower(gf_prim,gf_ind(x^9+3*x^6+x^5+2*x^2+6)));
+"x^9+3*x^6+x^5+2*x^2-1";
+
+
+string(gf_minpoly(x^9+3*x^6+x^5+2*x^2+6));
+"z^10-2*z^9-z^8-2*z^6+3*z^5-3*z^4+z^3+2*z^2-3*z+3";
+
+
+gf_setp(19);
+true;
+
+ffastpower(gf_prim,gf_ind(17));
+-2;
+
+
+gf_setp(10000000019);
+true;
+
+ffastpower(gf_prim,gf_ind(3));
+3;
+
+
+gf_set(32717,11,x^11+x^5+x^2+x+1);
+true;
+
+string(gf_prim);
+"x+2";
+
+
+gf_set(211,17,x^17+2*x^2+1);
+true;
+
+string(gf_prim);
+"x+6";
+
+
+gf_set(2,20,x^20+x^3+x^2+x+1);
+true;
+
+string(gf_prim);
+"x^2+x";
+
+string(gf_binpower(gf_prim,gf_ind(x^10+1)));
+"x^10+1";
+
+
+string(gf_minpoly(x^10+1));
+"z^20+z^13+z^12+z^5+z^4+z^3+1";
+
+
+gf_set(3,91,x^91+x^35+x+1);
+true;
+
+string(gf_prim);
+"x";
+
+/* --------------------------------------------------------------- */
+/* Compatibility test */
+
+/* ifactors */
+ifactors(226800);
+[[2,4],[3,4],[5,2],[7,1]];
+
+/* fasttimes - order does matter */
+string(fasttimes(rat(x),rat(1)));
+"x";
+
+/* polymod for integers*/
+polymod(33,17);
+-1;
+
+/* polymod for polynomials*/
+polymod(x^2+33*x-12,17);
+x^2-x+5;
+
+/* mod - for integers only */
+mod(33,17);
+16;
+
+/* ?logbitp */
+?logbitp(2,181);
+true;
+
+?logbitp(0,16);
+false;
+
+/* ?ash */
+?ash(17,2);
+68;
+
+?ash(27,-3);
+3;
+
+/* ?integer-length */
+?integer\-length(1789);
+11;
+
+/* end of compatibility test */
+/* --------------------------------------------------------------- */
+
+/* msqrt */
+msqrt(289,1789);
+[1772, 17];
+
+gf_sqrt(289,1789);
+[1772, 17];
+
+
+/* ssqrt */
+ssqrt(289,1234567891);
+[1234567874, 17];
+
+gf_sqrt(289,1234567891);
+[1234567874, 17];
+
+/* mcbrt */
+mcbrt(1331,1789);
+[1672, 106, 11];
+
+
+/* scbrt */
+scbrt(1331,1234567891);
+[330264042, 11, 904303838];
+
+gf_cbrt(1331, 1234567891);
+[330264042, 904303838, 11];
+
+
+/* qsplit */
+qsplit(1789);
+[5, 42];
+
+/* csplit */
+csplit(1789);
+[12, 35];
+
+
