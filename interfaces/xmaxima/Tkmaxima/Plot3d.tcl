@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.11 2006-07-30 23:33:27 villate Exp $
+#       $Id: Plot3d.tcl,v 1.12 2008-04-05 17:26:51 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -38,6 +38,8 @@ set plot3dOptions {
     {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
     {screenwindow "20 20 700 700" "Part of canvas on screen"}
     {windowname ".plot3d" "window name"}
+    {psfile "" "A filename where the graph will be saved in PostScript."}
+    {nobox 0 "if not zero, do not draw the box around the plot."}
 }
 
 
@@ -386,7 +388,7 @@ proc plot3d { args } {
 proc replot3d { win } {
     global   printOption plot2dOptions
     makeLocal $win nsteps zfun data c
-    linkLocal $win parameters sliders
+    linkLocal $win parameters sliders psfile nobox
 
     oset $win maintitle    "concat \"Plot of z = [oget $win zfun]\""
     if { [llength $nsteps] == 1 }    {
@@ -434,10 +436,12 @@ proc replot3d { win } {
     setUpTransforms3d $win
 
     oset $win colorfun plot3dcolorFun
-    #    addAxes $win
+    #   addAxes $win
     oset $win cmap c1
     setupPlot3dColors $win
-    addBbox $win
+    if { $nobox == 0 } {
+	addBbox $win
+    }
     # grab the bbox just as itself
     global maxima_priv
     linkLocal $win lmesh
@@ -459,6 +463,15 @@ proc replot3d { win } {
     }
     oset $win lastAnglesPlotted ""
     setView $win ignore
+
+    # Create a PostScript file, if requested
+    if { $psfile != "" } {
+	set printOption(psfilename) $psfile
+	writePostscript $win
+	$c delete printoptions
+	eval [$win.menubar.close cget -command]
+    }
+
 }
 
 proc setView { win ignore } {
