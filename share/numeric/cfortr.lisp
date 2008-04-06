@@ -124,11 +124,9 @@
 ;; is NIL to keep a message from being printed when the file containing MSTRING
 ;; is loaded.  (MRG;GRIND)
 
-(defprop mexpt (#/* #/*) dissym)
+(defprop mexpt (#\* #\*) dissym)
 
-(defun fortran-print (x &optional bypass
-                        (stream #+MACLISP nil #-MACLISP standard-output)
-                        &aux #+pdp10 (terpri t) #+pdp10 ($loadprint nil)
+(defun fortran-print (x &optional bypass (stream standard-output)
                         ;; this is a poor way of saying that array references
                         ;; are to be printed with parens instead of brackets.
                         (lb #/( ) (rb #/) ))
@@ -279,8 +277,7 @@
 ;; statements of the form
 ;;  NAME(I,J) = <corresponding matrix element>
 
-(defmfun $fortmx (name mat &optional (stream #+MACLISP nil #-MACLISP standard-output)
-                         &aux ($loadprint nil))
+(defmfun $fortmx (name mat &optional (stream standard-output) &aux ($loadprint nil))
   (declare (fixnum i j))
   (cond ((not (eq (typep name) 'symbol))
          (merror "~%First argument to FORTMX must be a symbol."))
@@ -432,7 +429,7 @@
           (pre-compile x)))
    x)
 
-(defmacro tablen () #-(or Franz LISPM) (status tabsize) #+(or Franz LISPM) 8)
+(defmacro tablen () 8)
 
 (defvar eliminate-space nil)
 
@@ -537,8 +534,7 @@
 
 (defun zconcat (a b) (format NIL "~A~A" a b))
 
-(defun $generate_data_section (&optional (stream #+MACLISP nil
-                                                 #-MACLISP standard-output))
+(defun $generate_data_section (&optional (stream standard-output))
    (if data-info
        (do ((step 15)
             (contin -1 -1)
