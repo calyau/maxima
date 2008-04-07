@@ -253,7 +253,7 @@
 ;;;
 (declaim (inline %random-single-float %random-double-float
 		 #+(or scl clisp) %random-long-float
-		 #+cmu %random-double-double-float))
+		 #+(and cmu double-double) %random-double-double-float))
 ;;;
 (declaim (ftype (function ((single-float (0f0)) random-state)
 			  (single-float 0f0))
@@ -268,7 +268,7 @@
 			  (long-float 0l0))
 		%random-long-float))
 ;;;
-#+cmu
+#+(and cmu double-double)
 (declaim (ftype (function ((kernel:double-double-float (0w0)) random-state)
 			  (kernel:double-double-float 0w0))
 		%random-double-double-float))
@@ -303,7 +303,7 @@
 	 (random-unit-double (- (scale-float (float (+ m random-mantissa-bits) 1l0) (- d)) 1l0)))
     (* arg random-unit-double)))
 
-#+cmu
+#+(and cmu double-double)
 (defun %random-double-double-float (arg state)
   "Handle the double-double float case of RANDOM.  We generate a float in [0w0, 1w0) by
   clobbering the mantissa of 1w0 with random bits; this yields a number in
@@ -340,7 +340,7 @@
   and less than Arg.  State, if supplied, is the random state to use."
   (declare (inline %random-single-float %random-double-float))
   (cond
-    #-gcl  ; GCL doesn't distinguish single and double floats; route all floats through %random-double-float
+    #-gcl  ; GCL's single and double floats are the same; route all floats through %random-double-float
     ((and (typep arg 'single-float) (> arg 0.0F0))
      (%random-single-float arg state))
     ((and (typep arg 'double-float) (> arg 0.0D0))
@@ -348,7 +348,7 @@
     #+(or scl clisp)
     ((and (typep arg 'long-float) (> arg 0.0L0))
      (%random-long-float arg state))
-    #+cmu
+    #+(and cmu double-double)
     ((and (typep arg 'kernel:double-double-float) (> arg 0.0W0))
      (%random-double-double-float arg state))
     ((and (integerp arg) (> arg 0))
