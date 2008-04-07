@@ -54,7 +54,7 @@ available. The rmaxima front-end provides advanced line-editing
 facilities for Maxima when compiled with CMUCL. rlwrap is available
 from <http://utopia.knoware.nl/~hlub/uck/rlwrap/> .
 
-CMUCL versions: 18e and 19a are known to work.
+CMUCL versions: 18e and 19a and later are known to work.
 
 There are CMUCL implementations only for Unix-like systems
 (not MS Windows).
