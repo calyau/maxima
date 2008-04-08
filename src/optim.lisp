@@ -12,10 +12,9 @@
 
 (macsyma-module optim)
 
-(declare-top (special vars setqs optimcount xvars)
-	     (unspecial args))
+(declare-top (unspecial args))
 
-(defvar *subexp* (make-array 64))
+(defvar *subexp* (make-array 64 :initial-element nil))
 
 (defmvar $optimprefix '$%)
 
@@ -26,21 +25,24 @@
 ;; common subexpressions.  These subexpressions are found by hashing them.
 
 (defmfun $optimize (x0)
-  (let (($optimwarn $optimwarn))
-    (prog (vars setqs optimcount xvars x)
-       (setq optimcount 0 xvars (cdr ($listofvars x0)))
-       (fillarray *subexp* '(nil))
-       (setq x (collapse (opformat (collapse x0))))
+  (let (($optimwarn $optimwarn)
+	*setqs*
+	vars
+	(*optimcount* 0)
+	(*xvars* (cdr ($listofvars x0))))
+    (declare (special *optimcount* *xvars* *setqs* vars))
+    (fill *subexp* nil)
+    (prog ((x (collapse (opformat (collapse x0)))))
        (when (atom x) (return x))
        (comexp x)
        (setq x (optim x))
        (return (prog1 (cond ((null vars) x0)
 			    (t (if (or (not (eq (caar x) 'mprog))
 				       (and ($listp (cadr x)) (cdadr x)))
-				   (setq x (nreverse (cons x setqs)))
-				   (setq x (nreconc setqs (cddr x))))
-			       `((mprog simp) ((mlist) . ,(nreverse vars)) . ,x)))
-		 (fillarray *subexp* '(nil)))))))
+				   (setq x (nreverse (cons x *setqs*)))
+				   (setq x (nreconc *setqs* (cddr x))))
+			       `((mprog simp) ((mlist) ,@(nreverse vars)) ,@x)))
+		 (fill *subexp* nil))))))
 
 (defun opformat (x)
   (cond ((atom x) x)
@@ -86,9 +88,9 @@
     (if (alike1 x xnew) x xnew)))
 
 (defmfun $collapse (x)
-  (fillarray *subexp* '(nil))
-  (prog1 (collapse x) (fillarray *subexp* '(nil))))
-       
+  (fill *subexp* nil)
+  (prog1 (collapse x) (fill *subexp* nil)))
+
 (defun collapse (x)
   (cond ((atom x) x)
 	((specrepp x) (collapse (specdisrep x)))
@@ -112,6 +114,7 @@
 	      (t (rplacd x 'comexp))))))
 
 (defun optim (x)
+  (declare (special *setqs*))
   (cond ((atom x) x)
 	((and (member 'array (cdar x) :test #'eq)
 	      (not (eq (caar x) 'mqapply))
@@ -126,7 +129,7 @@
 	     (cond ((eq (cdr x) 'seen) nx)
 		   ((eq (cdr x) 'comexp)
 		    (rplacd x (getoptimvar))
-		    (setq setqs (cons `((msetq) ,(cdr x) ,nx) setqs))
+		    (push `((msetq) ,(cdr x) ,nx) *setqs*)
 		    (cdr x))
 		   (t (cdr x)))))))
 
@@ -141,11 +144,12 @@
 
 
 (defun getoptimvar ()
+  (declare (special *optimcount* *xvars* vars))
   (loop with var
      do
-     (incf optimcount)
-     (setq var (make-symbol (format nil "~A~D" $optimprefix optimcount)))
-     while (member var xvars :test #'eq)
+     (incf *optimcount*)
+     (setq var (make-symbol (format nil "~A~D" $optimprefix *optimcount*)))
+     while (member var *xvars* :test #'eq)
      finally
      (push var vars)
      (return var)))
