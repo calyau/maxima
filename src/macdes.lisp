@@ -10,12 +10,6 @@
 
 (defvar $manual_demo "manual.demo")
 
-(defvar *maxima-demodir*)
-
-(defun combine-path (list)
-  "splice a '/' between the path components given as arguments"
-  (format nil "~{~A~^/~}" list))
-
 (defmspec $example (l)
   (declare (special *need-prompt*))
   (let ((example (second l)))

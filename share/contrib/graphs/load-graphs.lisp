@@ -2,14 +2,13 @@
 
 #+ignore
 (progn
-  (format t "path = ~A~%" (combine-path (list *maxima-sharedir* "graphs")))
+  (format t "path = ~A~%" (combine-path *maxima-sharedir* "graphs"))
   (format t "*load-truename* = ~A~%" *load-truename*)
   (format t "sys = ~A~%" (merge-pathnames (make-pathname :name "graphs" :type "system")
 					  *load-truename*)))
 
-
 (load (merge-pathnames (make-pathname :name "graphs" :type "system")
 		       #-gcl *load-pathname*
 		       #+gcl sys:*load-pathname*))
-(mk:oos "graphs" :compile)
 
+(mk:oos "graphs" :compile)
