@@ -1632,14 +1632,15 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 (defun $firstn (n a-list)
   (subseq a-list 0 (1+ n)))
 
+(defun create-list2 (form l)
+  (cons '(mlist) (apply #'create-list1 form l)))
+
 (defun $general_sum (terms &optional coefficients &aux answer)
-  (cond ((null coefficients)
-	 (setq coefficients
-	       (create-list2 '($concat '$aa i) `(i 1
-						   ,(f1- (length terms)))))
-	 (mfuncall '$declare_scalar_list coefficients)))
-  (cond ((> (length terms) (length coefficients))
-	 (error "not enough coefficients you silly")))
+  (when (null coefficients)
+    (setq coefficients (create-list2 '($concat '$aa i) `(i 1 ,(1- (length terms)))))
+    (mfuncall '$declare_scalar_list coefficients))
+  (when (> (length terms) (length coefficients))
+    (error "not enough coefficients"))
   (setq answer (sloop for u in (cdr terms) with sum = 0
 		  for v in (cdr coefficients)
 		  do (setq  sum (add* sum  (mul* u v)))
