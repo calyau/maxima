@@ -27,6 +27,16 @@
 
 (in-package :maxima)
 
+;; new implementation of formerly src/plot.lisp/$sprint in stringproc/printf.lisp 
+;; as a simple wrapper for printf(true,"~@{~a ~}",x,y,z,...)
+;; keeping the original return value: the first argument resp. false
+;;
+(defun $sprint (&rest args)
+  (sloop for v in args do
+    ($printf t "~a " v))
+  (car args))
+
+
 ;;
 ;;
 (defun $printf (stream ctrls &rest args)
