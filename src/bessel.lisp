@@ -141,23 +141,52 @@
 (defun bessel-i (order arg)
   (cond ((zerop (imagpart arg))
 	 ;; We have numeric args and the first arg is purely
-	 ;; real. Call the real-valued Bessel function.  We call i0
-	 ;; and i1 instead of jn, if possible.
+	 ;; real. Call the real-valued Bessel function.  Use special
+	 ;; routines for order 0 and 1, when possible
 	 (let ((arg (realpart arg)))
 	   (cond ((zerop order)
 		  (slatec:dbesi0 (float arg)))
 		 ((= order 1)
 		  (slatec:dbesi1 (float arg)))
+                 ((or (minusp order) (< arg 0))
+                  ;; Order or arg is negative, use the bessel-j
+                  ;; function for calculation.  We know from the
+                  ;; definition I[v](x) = %i^(-v)*J[v](%i*x).
+                  (let ((result (* (expt arg order)
+				   (expt (complex 0 arg) (- order))
+				   (bessel-j order (complex 0 arg)))))
+		    ;; Try to clean up result if we know the result is
+		    ;; purely real or purely imaginary.
+                    (cond ((>= arg 0)
+			   ;; Result is purely real for arg >= 0
+			   (realpart result))
+
+			  ((= (floor order) order)
+			   ;; Order is an integer or a float
+			   ;; representation of an integer, the result
+			   ;; is purely real.
+			   (realpart result))
+
+			  ((= (floor (* 2 order)) (* 2 order))
+			   ;; Order is half-integral-value or a float
+			   ;; representation and arg < 0, the result
+			   ;; is purely imaginary.
+			   (complex 0 (imagpart result)))
+			  (t result))))
 		 (t
+		  ;; Now the case order > 0 and arg >= 0
 		  (multiple-value-bind (n alpha) (floor (float order))
-		    (setf $besselarray (make-array (1+ n) :element-type 'flonum))
-		    (slatec:dbesi (float (realpart arg)) alpha 1 (1+ n) $besselarray 0)
-		    (aref $besselarray n))))))
+                    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+                      (slatec:dbesi (float (realpart arg)) alpha 1 (1+ n) jvals 0)
+                      (aref jvals n)))))))
+
 	(t
 	 ;; The arg is complex.  Use the complex-valued Bessel
-	 ;; function
+	 ;; function.
 	 (multiple-value-bind (n alpha)
-	     (floor (float order))
+	     (floor (abs (float order)))
+	   ;; We evaluate the function for positive order and fixup
+	   ;; the result later.
 	   (let ((cyr (make-array (1+ n) :element-type 'flonum))
 		 (cyi (make-array (1+ n) :element-type 'flonum)))
 	     (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
@@ -177,37 +206,67 @@
 	       ;; value of v-ierr.
 	       (when (plusp v-ierr)
 		 (format t "zbesi ierr = ~A~%" v-ierr))
-	       (setf $besselarray (make-array (+ n 2)))
-	       (dotimes (k (1+ n) (aref $besselarray n))
-		 (setf (aref $besselarray k)
-		       (simplify (list '(mplus)
-				       (simplify (list '(mtimes)
-						       '$%i
-						       (aref cyi k)))
-				       (aref cyr k)))))))))))
+
+               ;; We have evaluated I(abs(order), arg), now we look at
+               ;; the the sign of the order.
+
+               (cond ((minusp order)
+		      ;;  I(-a,z) = I(a,z) + (2/pi)*sin(pi*a)*K(a,z)
+		      (+ (complex (aref cyr n) (aref cyi n))
+			 (let ((dpi (coerce pi 'double-float)))
+			   (* (/ 2.0 dpi)
+			      (sin (* dpi (- order))) 
+			      (bessel-k (- order) arg)))))
+		     (t
+		      (complex (aref cyr n) (aref cyi n))))))))))
 
 (defun bessel-k (order arg)
   (cond ((zerop (imagpart arg))
 	 ;; We have numeric args and the first arg is purely
-	 ;; real. Call the real-valued Bessel function.  We call i0
-	 ;; and i1 instead of jn, if possible.
+	 ;; real. Call the real-valued Bessel function.  Handle orders
+	 ;; 0 and 1 specially, when possible.
 	 (let ((arg (realpart arg)))
-	   (cond ((zerop order)
-		  (slatec:dbesk0 (float arg)))
-		 ((= order 1)
-		  (slatec:dbesk1 (float arg)))
-		 (t
-		  ;; From A&S 9.6.6, K(-v,z) = K(v,z), so take the
-		  ;; absolute value of the order.
-		  (multiple-value-bind (n alpha) (floor (abs (float order)))
-		    (setf $besselarray (make-array (1+ n) :element-type 'flonum))
-		    (slatec:dbesk (float (realpart arg)) alpha 1 (1+ n) $besselarray 0)
-		    (aref $besselarray n))))))
+	   (cond 
+	     ((< arg 0)
+	      ;; This is the extension for negative arg.
+	      ;; We use the following formula for evaluation:
+	      ;; K[v](-z) = exp(-i*pi*v) * K[n][z]-i * pi *I[n](z)
+	      (let* ((dpi (coerce pi 'double-float))
+		     (s1 (cis (* dpi (- (abs order)))))
+		     (s2 (* (complex 0 -1) dpi))
+		     (result (+ (* s1 (bessel-k (abs order) (- arg)))
+				(* s2 (bessel-i (abs order) (- arg))))))
+		(cond
+		  ((= (floor order) order)
+		   ;; order is an integer or a float representation of an integer, 
+		   ;; the result is a general complex
+		   result)
+		  ((= (floor (* 2 order)) (* 2 order))
+		   ;; order is half-integral-value or an float representation
+		   ;; and arg  < 0, the result is pure imaginary
+		   (complex 0 (imagpart result)))
+		  ;; in all other cases general complex result
+		  (t result))))
+
+	     ((= order 0)
+	      (slatec:dbesk0 (float arg)))
+	     ((= order 1)
+	      (slatec:dbesk1 (float arg)))
+	     (t
+	      ;; From A&S 9.6.6, K(-v,z) = K(v,z), so take the
+	      ;; absolute value of the order.
+
+	      (multiple-value-bind (n alpha) 
+		  (floor (abs (float order)))
+		(let ((jvals (make-array (1+ n) :element-type 'double-float)))
+		  (slatec:dbesk (float arg) alpha 1 (1+ n) jvals 0)
+		  (aref jvals n)))))))
 	(t
 	 ;; The first arg is complex.  Use the complex-valued Bessel
-	 ;; function
+	 ;; function.  From A&S 9.6.6, K(-v,z) = K(v,z), so take the
+	 ;; absolute value of the order.
 	 (multiple-value-bind (n alpha)
-	     (floor (float order))
+	     (floor (abs (float order)))
 	   (let ((cyr (make-array (1+ n) :element-type 'flonum))
 		 (cyi (make-array (1+ n) :element-type 'flonum)))
 	     (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
@@ -228,15 +287,7 @@
 	       ;; value of v-ierr.
 	       (when (plusp v-ierr)
 		 (format t "zbesk ierr = ~A~%" v-ierr))
-	       (setf $besselarray (make-array (+ n 2)))
-	       (dotimes (k (1+ n) (aref $besselarray n))
-		 (setf (aref $besselarray k)
-		       (simplify (list '(mplus)
-				       (simplify (list '(mtimes)
-						       '$%i
-						       (aref cyi k)))
-				       (aref cyr k)))))))))))
-
+               (complex (aref cyr n) (aref cyi n))))))))
 
 ;; I think g0(x) = exp(-x)*I[0](x), g1(x) = exp(-x)*I[1](x), and
 ;; gn(x,n) = exp(-x)*I[n](x), based on some simple numerical
@@ -270,6 +321,34 @@
 	 (mul (power '$%e (neg (simplifya `((mabs) ,$x) nil)))
 	      ($bessel_i $n $x)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Define the Hankel funtion H1[n](z)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmfun $hankel_1 (v z)
+  (simplify (list '(%hankel_1) (resimplify v) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %hankel_1 simp-hankel-1 operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-hankel-1 (exp ignored z)
+  (declare (ignore ignored))
+  (let ((order (simpcheck (cadr exp) z))
+	(arg   (simpcheck (caddr exp) z)))
+    (cond 
+      ((bessel-numerical-eval-p order arg)
+       (let ((result 
+	      (hankel-1 order (complex ($realpart arg) ($imagpart arg)))))
+         (simplify
+           (list '(mplus)
+             (simplify (list '(mtimes) '$%i (imagpart result)))
+             (realpart result)))))
+      (t (eqtest (list '(%hankel_1) order arg) exp)))))
 
 ;; Numerically compute H1(v, z).
 ;;
@@ -301,6 +380,36 @@
 	       (complex (aref cyr n)
 			(aref cyi n)))))))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Define the Hankel funtion H2[n](z)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmfun $hankel_2 (v z)
+  (simplify (list '(%hankel_2) (resimplify v) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %hankel_2 simp-hankel-2 operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-hankel-2 (exp ignored z)
+  (declare (ignore ignored))
+  (let ((order (simpcheck (cadr exp) z))
+	(arg   (simpcheck (caddr exp) z)))
+    (cond 
+      ((bessel-numerical-eval-p order arg)
+       (let ((result 
+	      (hankel-2 order (complex ($realpart arg) ($imagpart arg)))))
+         (simplify
+	  (list '(mplus)
+		(simplify (list '(mtimes) '$%i (imagpart result)))
+		(realpart result)))))
+      (t (eqtest (list '(%hankel_2) order arg) exp)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Numerically compute H2(v, z).
 ;;
 ;; A&S 9.1.4 says H2(v,z) = J(v,z) - i * Y(v,z)
@@ -424,6 +533,119 @@
 							      (aref cyi k)))
 					      (aref cyr k)))))))))))))
 
+;;; New function bessel-j is based on the routine $bessel
+;;; the old routine should be deleted completly
+
+(defun bessel-j (order arg)
+  (cond 
+    ((zerop (imagpart arg))
+
+     ;; We have numeric args and the arg is purely real. 
+     ;; Call the real-valued Bessel function when possible.
+     (let ((arg (realpart arg)))
+       (cond 
+         ((= order 0)
+	  (slatec:dbesj0 (float arg)))
+         ((= order 1)
+	  (slatec:dbesj1 (float arg)))
+
+         ((minusp order)
+          ;; Bessel function of negative order.  We use the Hankel function to 
+          ;; compute this, because A&S 9.1.3 says 
+          ;; H1(v,z) = J(v,z) + i * Y(v,z), and we know J(v,z) is real.
+
+          ;; This don't work for negative and not integer arg
+          ;; (realpart (hankel-1 order arg))
+
+          ;; The following uses J(v,z)= 0.5*(H1(v,x) + H2(v,x))
+          ;; This works for negative and positive arg and handle special cases
+
+          (let ((result (* 0.5 (+ (hankel-1 order arg) (hankel-2 order arg)))))
+            (cond
+              ;; order is an integer or a float representation of an integer, 
+              ;; the result is pure real
+              ((= (floor order) order)
+               (realpart result))
+              ;; order is a half-integral-value or an float representation
+              ((= (floor (* 2 order)) (* 2 order))
+               (if (minusp arg)
+		   ;; arg is negative, the result is pure complex
+		   (complex 0 (imagpart result))
+		   ;; arg is positive, the result is pure real
+		   (realpart result)))
+              ;; in all other cases general complex result
+              (t result))))
+         (t
+
+          ;; we have a real arg and order > 0 and order not 0 or 1
+          ;; for this case we can call the function dbesj
+
+          (multiple-value-bind (n alpha) 
+	      (floor (float order))
+            (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+              (slatec:dbesj (abs (float arg)) alpha (1+ n) jvals 0)
+              
+              (cond ((>= arg 0) 
+		     (aref jvals n))
+
+		    (t
+		     ;; Use analytic continuation formula A&S 9.1.35:
+		     ;; %j[v](z*exp(m*%pi*%i)) = exp(m*%pi*%i*v)*%j[v](z)
+		     ;; for an integer m.  In particular, for m = 1:
+		     ;; %j[v](-x) = exp(v*%pi*%i)*%j[v](x)
+		     ;; and handle special cases
+		     (cond
+		       ;; order is an integer
+		       ((= (floor order) order) 
+			(if (evenp (floor order))
+			    (aref jvals n)
+			    (- (aref jvals n))))
+		       ;; Order is a half-integral-value and we know that
+		       ;; arg < 0, the result is pure complex
+		       ((= (floor (* 2 order)) (* 2 order))
+			;; Arg is negative, the result is pure complex
+			(if (evenp (floor order))
+			    (complex 0 (aref jvals n))
+			    (complex 0 (- (aref jvals n)))))
+		       ;; In all other cases a general complex result
+		       (t
+			(* (cis (* order pi))
+			   (aref jvals n))))))))))))
+    (t
+     ;; The arg is complex. Use the complex-valued Bessel function.
+     (cond 
+       ((mminusp order)
+        ;; Bessel function of negative order. We use the Hankel function to 
+        ;; compute this, because A&S 9.1.3 says H1(v,z) = J(v,z) + i * Y(v,z), 
+        ;; and H2(v,z) = J(v,z) - i * Y(v,z).  
+        ;; Thus, J(v,z) = (H1(v,z) + H2(v,z))/2.  Not the most efficient way, 
+        ;; but perhaps good enough for maxima.
+        (* 0.5 (+ (hankel-1 order arg) (hankel-2 order arg))))
+       (t
+        (multiple-value-bind (n alpha)
+	    (floor (float order))
+          (let ((cyr (make-array (1+ n) :element-type 'double-float))
+		(cyi (make-array (1+ n) :element-type 'double-float)))
+            (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
+				       v-cyr v-cyi v-nz v-ierr)
+		(slatec:zbesj 
+		 (float (realpart arg))
+		 (float (imagpart arg))
+		 alpha
+		 1
+		 (1+ n)
+		 cyr
+		 cyi
+		 0
+		 0)
+              (declare (ignore v-zr v-zi v-fnu v-kode v-n v-cyr v-cyi v-nz))
+
+              ;; Should check the return status in v-ierr of this routine.
+
+              (when (plusp v-ierr)
+		(format t "zbesj ierr = ~A~%" v-ierr))
+              (complex (aref cyr n) (aref cyi n))))))))))
+
 (defmfun $bessel_j (v z)
   (simplify (list '(%bessel_j) (resimplify v) (resimplify z))))
 
@@ -452,11 +674,9 @@
 			 ;; For v = 0, this simplifies to
 			 ;;
 			 ;; %y[0](-z) = %y[0](z) + 2*%i*%j[0](z)
-			 (simplify `((mplus)
-				     ,(slatec:dbesy0 (float (- arg)))
-				     ((mtimes)
-				      $%i
-				      ,(* 2 (slatec:dbesj0 (float (- arg))))))))))
+                         ;; the return value has to be a CL number
+                         (+ (slatec:dbesy0 (float (- arg)))
+			    (complex 0 (* 2 (slatec:dbesj0 (float (- arg)))))))))
 		 ((= order 1)
 		  (cond ((>= arg 0)
 			 (slatec:dbesy1 (float arg)))
@@ -464,70 +684,116 @@
 			 ;; For v = 1, this simplifies to
 			 ;;
 			 ;; %y[1](-z) = -%y[1](z) - 2*%i*%j[1](v)
-			 (simplify `((mplus)
-				     ,(slatec:dbesy1 (float (- arg)))
-				     ((mtimes)
-				      $%i
-				      ,(* -2 (slatec:dbesj1 (float (- arg))))))))))
-		 (t
-		  (multiple-value-bind (n alpha) (floor (float order))
-		    (let ((jvals (make-array (1+ n) :element-type 'flonum)))
-		      (cond ((>= arg 0)
-			     (slatec:dbesy (float (realpart arg)) alpha (1+ n) jvals)
-			     (setf $besselarray (make-array (1+ n) :initial-contents jvals))
-			     (aref jvals n))
-			    (t
-			     (let* ((s1 (cis (- (* order pi))))
-				    (s2 (* #c(0 2) (cos (* order pi)))))
-			       (slatec:dbesy (- (float arg)) alpha (1+ n) jvals)
-			       (setf $yarray (make-array (1+ n)))
-			       (dotimes (k (1+ n))
-				 (let ((v (+ (* s1 (aref jvals k))
-					     (* s2 (aref $besselarray k)))))
-				   (setf (aref $yarray k)
-					 (simplify `((mplus) ,(realpart v)
-						     ((mtimes)
-						      $%i
-						      ,(imagpart v)))))))
-			       (aref $yarray n))))))))))
-	(t
-	 ;; The first arg is complex.  Use the complex-valued Bessel
-	 ;; function
-	 (multiple-value-bind (n alpha)
-	     (floor (float order))
-	   (let ((cyr (make-array (1+ n) :element-type 'flonum))
-		 (cyi (make-array (1+ n) :element-type 'flonum))
-		 (cwrkr (make-array (1+ n) :element-type 'flonum))
-		 (cwrki (make-array (1+ n) :element-type 'flonum)))
-	     (multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
-					v-cyr v-cyi v-nz
-					v-cwrkr v-cwrki v-ierr)
-		 (slatec::zbesy (float (realpart arg))
-				(float (imagpart arg))
-				alpha
-				1
-				(1+ n)
-				cyr
-				cyi
-				0
-				cwrkr
-				cwrki
-				0)
-	       (declare (ignore v-zr v-zi v-fnu v-kode v-n
-				v-cyr v-cyi v-cwrkr v-cwrki v-nz))
+                         ;; the return value has to be a CL number
+                         (+
+			  (slatec:dbesy1 (float (- arg))) ; hier Vorzeichen in Ordnung?!  
+			  (complex 0 (* -2 (slatec:dbesj1 (float (- arg)))))))))
 
-	       ;; We should check for errors here based on the
-	       ;; value of v-ierr.
-	       (when (plusp v-ierr)
-		 (format t "zbesy ierr = ~A~%" v-ierr))
-	       (setf $besselarray (make-array (+ n 2)))
-	       (dotimes (k (1+ n) (aref $besselarray n))
-		 (setf (aref $besselarray k)
-		       (simplify (list '(mplus)
-				       (simplify (list '(mtimes)
-						       '$%i
-						       (aref cyi k)))
-				       (aref cyr k)))))))))))
+                 ;; Extension for negative order
+
+                 ((minusp order)
+                  ;; Bessel function of negative order.  We use the Hankel function to 
+                  ;; compute this, because A&S 9.1.3 says H1(v,z) = J(v,z) + i * Y(v,z) 
+                  ;; and H2(v,z) = J(v,z) -i * Y(v,z), we now that
+                  ;; Y(v,z) = 0.5/%i * (H1(v,z) - H2(v,z))
+                  (let ((result 
+			 (/ (- (hankel-1 order arg) (hankel-2 order arg))
+			    (complex 0 2))))
+                    (cond
+                      ;; order is an integer or a float representation of an integer, 
+                      ;; and the arg is positive the result is pure real
+                      ((= (floor order) order)
+                       (if (minusp arg)
+			   result
+			   (realpart result)))
+                      ;; order is half-integral-value or an float representation
+                      ((= (floor (* 2 order)) (* 2 order))
+                       (if (minusp arg)
+			   ;; arg is negative, the result is pure complex
+			   (complex 0 (imagpart result))
+			   ;; arg is positive, the result is pure real
+			   (realpart result)))
+                      ;; in all other cases general complex result
+                      (t result))))
+
+		 (t
+                  (multiple-value-bind (n alpha)
+                    (floor (float order))
+                    (let ((jvals (make-array (1+ n) :element-type 'double-float)))
+                      ;; First we do the calculation for an positive argument.
+                      (slatec:dbesy (abs (float arg)) alpha (1+ n) jvals)
+
+                      ;; now we look at the sign of the argument
+                      (cond 
+                        ((>= arg 0)                
+                         ;; for positiv arg and order we store the values of jvals
+                         ;; in the global array $bessel_y_array
+                         (aref jvals n))
+                        (t
+                         (let* ((s1 (cis (- (* order pi))))
+				(s2 (* #c(0 2) (cos (* order pi))))) 
+                           (let ((result 
+				  (+ (* s1 (aref jvals n)) 
+				     (* s2 
+					(bessel-j order (- arg))))))
+                             (cond
+                               ;; order is an integer or a float representation of an 
+                               ;; integer, and the arg is positive the result is pure 
+                               ;; real
+                               ((= (floor order) order)
+				result)           
+                               ;; order is a half-integral-value or an float 
+                               ;; representation and we have arg < 0, 
+                               ;; the result is pure imaginary
+                               ((= (floor (* 2 order)) (* 2 order))
+                                (complex 0 (imagpart result)))
+                               ;; in all other cases general complex result
+                               (t result))))))))))))
+
+	(t
+         (cond
+           ;; The extension for negative order
+           ((minusp order)
+            ;; Bessel function of negative order.  We use the Hankel function to 
+            ;; compute this, because A&S 9.1.3 says H1(v,z) = J(v,z) + i * Y(v,z) 
+            ;; and H2(v,z) = J(v,z) -i * Y(v,z), we now that
+            ;; Y(v,z) = 1/(2*%i) * (H1(v,z) - H2(v,z))
+            (/ (- (hankel-1 order arg) (hankel-2 order arg))
+	       (complex 0 2)))
+
+	   ;; The first arg is complex.  Use the complex-valued Bessel
+	   ;; function
+
+           (t
+  	    (multiple-value-bind (n alpha)
+		(floor (float order))
+	      (let ((cyr (make-array (1+ n) :element-type 'double-float))
+		    (cyi (make-array (1+ n) :element-type 'double-float))
+		    (cwrkr (make-array (1+ n) :element-type 'double-float))
+		    (cwrki (make-array (1+ n) :element-type 'double-float)))
+		(multiple-value-bind (v-zr v-zi v-fnu v-kode v-n
+					   v-cyr v-cyi v-nz
+					   v-cwrkr v-cwrki v-ierr)
+		    (slatec::zbesy (float (realpart arg))
+				   (float (imagpart arg))
+				   alpha
+				   1
+				   (1+ n)
+				   cyr
+				   cyi
+				   0
+				   cwrkr
+				   cwrki
+				   0)
+		  (declare (ignore v-zr v-zi v-fnu v-kode v-n
+				   v-cyr v-cyi v-cwrkr v-cwrki v-nz))
+
+		  ;; We should check for errors here based on the
+		  ;; value of v-ierr.
+		  (when (plusp v-ierr)
+		    (format t "zbesy ierr = ~A~%" v-ierr))
+
+		  (complex (aref cyr n) (aref cyi n))))))))))
 
 
 (defun z-function (x y) 
@@ -618,7 +884,7 @@ Perhaps you meant to enter `~a'.~%"
 
 ;; Define the Bessel funtion J[n](z)
 
-(defprop %bessel_j bessel-j-simp operators)
+(defprop %bessel_j simp-bessel-j operators)
 
 ;; Derivatives of the Bessel function.
 (defprop %bessel_j
@@ -823,16 +1089,16 @@ Perhaps you meant to enter `~a'.~%"
       (and $numer (numberp order)
 	   (complex-number-p arg))))
 	 
-(defun bessel-j-simp (exp ignored z)
+(defun simp-bessel-j (exp ignored z)
   (declare (ignore ignored))
   (twoargcheck exp)
   (let ((order (simpcheck (cadr exp) z))
+        (arg   (simpcheck (caddr exp) z))
 	(rat-order nil))
-    (let* ((arg (simpcheck (caddr exp) z)))
       (when (and (numberp arg) (zerop arg)
 		 (numberp order))
 	;; J[v](0) = 1 if v = 0.  Otherwise 0.
-	(return-from bessel-j-simp
+	(return-from simp-bessel-j
 	  (if (zerop order)
 	      1
 	      0)))
@@ -840,7 +1106,18 @@ Perhaps you meant to enter `~a'.~%"
 	     ;; We have numeric order and arg and $numer is true, or
 	     ;; we have either the order or arg being floating-point,
 	     ;; so let's evaluate it numerically.
-	     ($bessel arg order))
+             ;; the numerical routine bessel-j returns a CL number, so we have to add
+             ;; the conversion to a Maxima-complex-number
+             (let ((result (bessel-j order (complex ($realpart arg) ($imagpart arg))))) 
+               (simplify
+                 (list '(mplus)
+                   (simplify (list '(mtimes) '$%i (imagpart result)))
+                   (realpart result)
+                 )
+               )
+             )
+            )
+
 	    ((and (integerp order) (minusp order))
 	     ;; Some special cases when the order is an integer
 	     ;;
@@ -858,7 +1135,7 @@ Perhaps you meant to enter `~a'.~%"
 	     )
 	    (t
 	     (eqtest (list '(%bessel_j) order arg)
-		     exp))))))
+                     exp)))))
 
 
 ;; Define the Bessel funtion Y[n](z)
@@ -866,7 +1143,7 @@ Perhaps you meant to enter `~a'.~%"
 (defmfun $bessel_y (v z)
   (simplify (list '(%bessel_y) (resimplify v) (resimplify z))))
 
-(defprop %bessel_y bessel-y-simp operators)
+(defprop %bessel_y simp-bessel-y operators)
 
 (defprop %bessel_y
     ((n x)
@@ -893,19 +1170,22 @@ Perhaps you meant to enter `~a'.~%"
     ;; ((mtimes) -1 n ((%bessel_y) n x) ((mexpt) x -1))))
     grad)
 
-(defun bessel-y-simp (exp ignored z)
+(defun simp-bessel-y (exp ignored z)
   (declare (ignore ignored))
   (twoargcheck exp)
   (let ((order (simpcheck (cadr exp) z))
+        (arg (simpcheck (caddr exp) z))
 	(rat-order nil))
-    (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((eql arg 0) (domain-error arg 'bessel_y))
-	    ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
+      (cond ((and (numberp arg) (= arg 0)) (domain-error arg 'bessel_y))
+	    ((bessel-numerical-eval-p order arg)
 	     ;; We have numeric order and arg and $numer is true, or
 	     ;; we have either the order or arg being floating-point,
 	     ;; so let's evaluate it numerically.
-	     (bessel-y (float order) (complex ($realpart arg) ($imagpart arg))))
-
+             (let ((result (bessel-y order (complex ($realpart arg) ($imagpart arg)))))
+               (simplify
+		(list '(mplus)
+		      (simplify (list '(mtimes) '$%i (imagpart result)))
+		      (realpart result)))))
 	  	    
 	    ((and (integerp order) (minusp order))
 	     ;; Special case when the order is an integer.
@@ -926,14 +1206,14 @@ Perhaps you meant to enter `~a'.~%"
 	     (bessel-y-half-order rat-order arg))
 	    (t
 	     (eqtest (list '(%bessel_y) order arg)
-		     exp))))))
+		     exp)))))
 
 ;; Define the Bessel funtion I[n](z)
 
 (defmfun $bessel_i (v z)
   (simplify (list '(%bessel_i) (resimplify v) (resimplify z))))
 
-(defprop %bessel_i bessel-i-simp operators)
+(defprop %bessel_i simp-bessel-i operators)
 
 (defprop %bessel_i
     ((n x)
@@ -960,20 +1240,26 @@ Perhaps you meant to enter `~a'.~%"
       ((rat) 1 2)))
   grad)
 
-(defun bessel-i-simp (exp ignored z)
+(defun simp-bessel-i (exp ignored z)
   (declare (ignore ignored))
   (twoargcheck exp)
   (let ((order (simpcheck (cadr exp) z))
+        (arg (simpcheck (caddr exp) z))
 	(rat-order nil))
-    (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((and (numberp arg) (zerop arg)
-		  (numberp order))
-	     ;; I[v](0) = 1 if v = 0, Otherwise 0
-	     (if (zerop order)
-		 1
-		 0))
-	    ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
-	     (bessel-i (float order) (complex ($realpart arg) ($imagpart arg))))
+      (cond 
+            ;; handle the special case arg = 0.  I[v](0) = if v = 0,
+            ;; otherwise 0
+            ((and (numberp arg) (= arg 0))
+             (if (and (numberp order) (integerp order))
+               (return-from simp-bessel-i (if (zerop order) 1 0))
+               (domain-error arg 'bessel_i)))
+
+            ((bessel-numerical-eval-p order arg)
+             (let ((result (bessel-i order (complex ($realpart arg) ($imagpart arg)))))
+               (simplify
+                 (list '(mplus)
+                   (simplify (list '(mtimes) '$%i (imagpart result)))
+                   (realpart result)))))
 	    ((and (integerp order) (minusp order))
 	     ;; Some special cases when the order is an integer
 	     ;;
@@ -990,7 +1276,7 @@ Perhaps you meant to enter `~a'.~%"
 	     (bessel-i-half-order rat-order arg))
 	    (t
 	     (eqtest (list '(%bessel_i) order arg)
-		     exp))))))
+		     exp)))))
 
 ;; Define the Bessel funtion K[n](z)
 
@@ -998,7 +1284,7 @@ Perhaps you meant to enter `~a'.~%"
   (simplify (list '(%bessel_k) (resimplify v) (resimplify z))))
 
 
-(defprop %bessel_k bessel-k-simp operators)
+(defprop %bessel_k simp-bessel-k operators)
 
 (defprop %bessel_k
     ((n x)
@@ -1026,27 +1312,36 @@ Perhaps you meant to enter `~a'.~%"
       ((rat) 1 2)))
   grad)
 
-(defun bessel-k-simp (exp ignored z)
+(defun simp-bessel-k (exp ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (cadr exp) z))
+        (arg (simpcheck (caddr exp) z))
 	(rat-order nil))
-    (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
-	     ;; A&S 9.6.6
-	     ;; K[-v](x) = K[v](x)
-	     (bessel-k (abs (float order)) (complex ($realpart arg) ($imagpart arg))))
-	    ((mminusp order)
-	     ;; A&S 9.6.6
-	     ;; K[-v](x) = K[v](x)
-	     (resimplify (list '(%bessel_k) `((mtimes) -1 ,order) arg)))
-	    ((and $besselexpand
-		  (setq rat-order (max-numeric-ratio-p order 2)))
-	     ;; When order is a fraction with a denominator of 2, we
-	     ;; can express the result in terms of elementary
-	     ;; functions.
-	     ;;
-	     ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
-	     (bessel-k-half-order rat-order arg))
-	    (t
-	     (eqtest (list '(%bessel_k) order arg)
-		     exp))))))
+    (cond
+      ;; handle the special case arg = 0
+      ((and (numberp arg) (= arg 0)) (domain-error arg 'bessel_k))
+
+      ((bessel-numerical-eval-p order arg)
+       ;; A&S 9.6.6
+       ;; K[-v](x) = K[v](x)
+       (let ((result 
+	      (bessel-k order (complex ($realpart arg) ($imagpart arg)))))
+	 (simplify
+	  (list '(mplus)
+		(simplify (list '(mtimes) '$%i (imagpart result)))
+		(realpart result)))))
+      ((mminusp order)
+       ;; A&S 9.6.6
+       ;; K[-v](x) = K[v](x)
+       (resimplify (list '(%bessel_k) `((mtimes) -1 ,order) arg)))
+      ((and $besselexpand
+	    (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary
+       ;; functions.
+       ;;
+       ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
+       (bessel-k-half-order rat-order arg))
+      (t
+       (eqtest (list '(%bessel_k) order arg)
+	       exp)))))

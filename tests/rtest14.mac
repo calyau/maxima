@@ -1027,9 +1027,6 @@ true;
 closeto(bessel_k(0,1.0) - .4210244382407085, 1e-14);
 true;
 
-kill(closeto);
-done;
-
 /*
  * Tests for failed cases to see if we're returning the noun forms
  */
@@ -1081,3 +1078,439 @@ erf(1.0);
 /* [ 789059 ] simpexpt problem: sign called on imag arg */
 (-(-1)^(1/6))^(1/2);
 sqrt(-(-1)^(1/6));
+
+/* Further tests of bessel functions */
+/* The following numerical values are evaluated with the evaluation tool
+   of the website wwww.functions.wolfram.com with a precision of 16 digits
+   1998-2008 Wolfram Research, Inc. */
+
+(test_bessel(actual, ref, digits) := closeto(realpart(actual)-realpart(ref), 10^(-digits)) and closeto(imagpart(actual)-imagpart(ref), 10^(-digits)), 0);
+0;
+
+/* Numerical values for the bessel functions J with negative order */
+
+test_bessel(bessel_j(-1,-2.0),0.5767248077568734, 15);
+true;
+
+test_bessel(bessel_j(-1,2.0), -0.5767248077568734, 15);
+true;
+
+test_bessel(bessel_j(-1,-1.5), 0.5579365079100996, 15);
+true;
+
+test_bessel(bessel_j(-1,1.5), -0.5579365079100996, 15);
+true;
+
+test_bessel(bessel_j(-1.5, -2.0), -0.3956232813587035*%i, 15);
+true;
+
+test_bessel(bessel_j(-1.5, 2.0), -0.3956232813587035, 15);
+true;
+
+test_bessel
+  (bessel_j(-1.8, -1.5),- 0.2033279902093184 - 0.1477264320209275 * %i,15);
+true;
+
+test_bessel(bessel_j(-1.8, 1.5), -0.251327217627129314,15);
+true;
+
+test_bessel(bessel_j(-2,-1.5), 0.2320876721442147, 15);
+true;
+
+test_bessel(bessel_j(-2,1.5), 0.2320876721442147, 15);
+true;
+
+test_bessel(bessel_j(-2.5,-1.5), -1.315037204805194 * %i,15);
+true;
+
+test_bessel(bessel_j(-2.5,1.5), 1.315037204805194,15);
+true;
+
+test_bessel
+  (bessel_j(-2.3,-1.5), 0.5949438455752484 - 0.8188699527453657 * %i,15);
+true;
+
+test_bessel(bessel_j(-2.3,1.5), 1.012178926325313, 15);
+true;
+
+/* Numerical values for the bessel functions J with positiv order */
+
+test_bessel(bessel_j(1.5,1.0), 0.2402978391234270, 15);
+true;
+
+test_bessel(bessel_j(1.5,-1.0), -0.2402978391234270 * %i, 15);
+true;
+
+test_bessel(bessel_j(1.8,1.0), 0.1564953153109239, 14);
+true;
+
+test_bessel
+  (bessel_j(1.8,-1.0), 0.1266073696266034 - 0.0919856383926216 * %i, 15);
+true;
+
+test_bessel(bessel_j(2.0,1.0), 0.1149034849319005,15);
+true;
+
+test_bessel(bessel_j(2.0,-1.0),0.1149034849319005,15);
+true;
+
+test_bessel(bessel_j(2.5,1.0),0.04949681022847794,15);
+true;
+
+test_bessel(bessel_j(2.5,-1.0),0.04949681022847794 * %i,15);
+true;
+
+/* Numerical values for the bessel functions J with complex arg 
+   and positive or negative order*/
+
+test_bessel
+  (bessel_j(0,1.0+%i),0.9376084768060293 - 0.4965299476091221 * %i,15);
+true;
+
+test_bessel
+  (bessel_j(1,1.0+%i),0.6141603349229036 + 0.3650280288270878 * %i,15);
+true;
+
+test_bessel
+  (bessel_j(-1,1.0+%i),-0.6141603349229036 - 0.3650280288270878 * %i,14);
+true;
+
+test_bessel
+  (bessel_j(2,1.0+%i),0.0415798869439621 + 0.2473976415133063 * %i,15);
+true;
+
+test_bessel
+  (bessel_j(-2,1.0+%i),0.0415798869439621 + 0.2473976415133063 * %i,15);
+true;
+
+test_bessel
+  (bessel_j(2.3,1.0+%i),-0.0141615213034667 + 0.1677798241687935 * %i,15);
+true;
+
+test_bessel
+  (bessel_j(-2.3,1.0+%i),0.1920598664138632 - 0.5158676904105332 * %i,14);
+true;
+
+/******************************************************************/
+/* Numerical values for the bessel functions Y with negativ order */
+
+test_bessel
+  (bessel_y(-1,-2.0),-0.1070324315409375 + 1.1534496155137468 * %i,14);
+true;
+
+test_bessel(bessel_y(-1,2.0),0.1070324315409375,15);
+true;
+
+test_bessel
+  (bessel_y(-1,-1.5),-0.4123086269739113 + 1.1158730158201993 * %i,15);
+true;
+
+test_bessel(bessel_y(-1,1.5),0.4123086269739113,15);
+true;
+
+test_bessel(bessel_y(-1.5, -2.0),0.4912937786871623 * %i,15);
+true;
+
+test_bessel(bessel_y(-1.5, 2.0),-0.4912937786871623,15);
+true;
+
+test_bessel
+  (bessel_y(-1.8, -1.5),-0.6777414340388011 + 0.0857519944018923 * %i,14);
+true;
+
+test_bessel(bessel_y(-1.8, 1.5),-0.8377344836401481,14);
+true;
+
+test_bessel
+  (bessel_y(-2,-1.5),-0.9321937597629739 + 0.4641753442884295 * %i,15);
+true;
+
+test_bessel(bessel_y(-2,1.5),-0.9321937597629739,14);
+true;
+
+test_bessel(bessel_y(-2.5,-1.5),0.1244463597983876 * %i,14);
+true;
+
+test_bessel(bessel_y(-2.5,1.5),0.1244463597983876,15);
+true;
+
+test_bessel
+  (bessel_y(-2.3,-1.5),-0.3148570865836879 + 0.7565240896444820 * %i,14);
+true;
+
+test_bessel(bessel_y(-2.3,1.5),-0.5356668704355646,14);
+true;
+
+/* Numerical values for the bessel functions Y with positiv order */
+
+test_bessel(bessel_y(1.5,1.0),-1.102495575160179,14);
+true;
+
+test_bessel(bessel_y(1.5,-1.0),-1.102495575160179 * %i,14);
+true;
+
+test_bessel(bessel_y(1.8,1.0),-1.382351995367631,14);
+true;
+
+test_bessel
+  (bessel_y(1.8,-1.0),-1.1183462564605324 - 0.5593113771009602 * %i,14);
+true;
+
+test_bessel(bessel_y(2.0,1.0),-1.650682606816254,14);
+true;
+
+test_bessel
+  (bessel_y(2.0,-1.0),-1.650682606816254 + 0.229806969863801 * %i,14);
+true;
+
+test_bessel(bessel_y(2.5,1.0),-2.876387857462161,14);
+true;
+
+test_bessel(bessel_y(2.5,-1.0),2.876387857462161 * %i,14);
+true;
+
+
+/* Numerical values for the bessel functions Y with complex arg 
+   and positive or negative order*/
+
+test_bessel
+  (bessel_y(0,1.0+%i),0.4454744889360325 + 0.7101585820037345 * %i,15);
+true;
+
+test_bessel
+  (bessel_y(1,1.0+%i),-0.6576945355913452 + 0.6298010039928844 * %i,15);
+true;
+
+test_bessel
+(bessel_y(-1,1.0+%i),0.6576945355913452 - 0.6298010039928844 * %i,15);
+true;
+
+test_bessel
+  (bessel_y(2,1.0+%i),-0.4733680205344934 + 0.5773369575804951 * %i,14);
+true;
+
+test_bessel
+  (bessel_y(-2,1.0+%i),-0.4733680205344934 + 0.5773369575804951 * %i,14);
+true;
+
+test_bessel
+  (bessel_y(2.3,1.0+%i),-0.2476879981252862 + 0.7595467103431256 * %i,15);
+true;
+
+test_bessel
+  (bessel_y(-2.3,1.0+%i),-0.1570442638685963 + 0.5821870838327466 * %i,14);
+true;
+
+
+/******************************************************************/
+/* Numerical values for the bessel functions I with negativ order */
+
+test_bessel(bessel_i(-1,-2.0),-1.590636854637329,15);
+true;
+
+test_bessel(bessel_i(-1,2.0),1.590636854637329,15);
+true;
+
+test_bessel(bessel_i(-1,-1.5),-0.9816664285779076,15);
+true;
+
+test_bessel(bessel_i(-1,1.5),0.9816664285779076,15);
+true;
+
+test_bessel(bessel_i(-1.5, -2.0),0.9849410530002364 * %i,14);
+true;
+
+test_bessel(bessel_i(-1.5, 2.0),0.9849410530002364,14);
+true;
+
+test_bessel
+  (bessel_i(-1.8, -1.5),0.2026903980307014 + 0.1472631941876387 * %i,15);
+true;
+
+test_bessel(bessel_i(-1.8, 1.5),0.2505391103524365,15);
+true;
+
+test_bessel(bessel_i(-2,-1.5),0.3378346183356807,15);
+true;
+
+test_bessel(bessel_i(-2,1.5),0.3378346183356807,15);
+true;
+
+test_bessel(bessel_i(-2.5,-1.5),-0.8015666610717216*%i,14);
+true;
+
+test_bessel(bessel_i(-2.5,1.5),0.8015666610717216,14);
+true;
+
+test_bessel
+  (bessel_i(-2.3,-1.5),0.3733945265830230 - 0.5139334755917659 * %i,15);
+true;
+
+test_bessel(bessel_i(-2.3,1.5),0.6352567117441516,15);
+true;
+
+/* Numerical values for the bessel functions Y with positiv order */
+
+test_bessel(bessel_i(1.5,1.0),0.2935253263474798,15);
+true;
+
+test_bessel(bessel_i(1.5,-1.0),-0.2935253263474798*%i,13);
+true;
+
+test_bessel(bessel_i(1.8,1.0),0.1871011888310777,15);
+true;
+
+test_bessel
+  (bessel_i(1.8,-1.0),0.1513680414320980 - 0.1099753194812967 * %i,14);
+true;
+
+test_bessel(bessel_i(2.0,1.0),0.1357476697670383,15);
+true;
+
+test_bessel(bessel_i(2.0,-1.0),0.1357476697670383,15);
+true;
+
+test_bessel(bessel_i(2.5,1.0),0.05709890920304825,15);
+true;
+
+test_bessel(bessel_i(2.5,-1.0),0.05709890920304825 * %i,15);
+true;
+
+
+/* Numerical values for the bessel functions Y with complex arg 
+   and positive or negative order*/
+
+test_bessel
+  (bessel_i(0,1.0+%i),0.9376084768060293 + 0.4965299476091221 * %i,15);
+true;
+
+test_bessel
+  (bessel_i(1,1.0+%i),0.3650280288270878 + 0.6141603349229036 * %i,15);
+true;
+
+test_bessel
+  (bessel_i(-1,1.0+%i),0.3650280288270878 + 0.6141603349229036 * %i,15);
+true;
+
+test_bessel
+  (bessel_i(2,1.0+%i),-0.0415798869439621 + 0.2473976415133063 * %i,15);
+true;
+
+test_bessel
+  (bessel_i(-2,1.0+%i),-0.0415798869439621 + 0.2473976415133063 * %i,15);
+true;
+
+test_bessel
+  (bessel_i(2.3,1.0+%i),-0.0635524383467825 + 0.1559221140952053 * %i,15);
+true;
+
+test_bessel
+  (bessel_i(-2.3,1.0+%i),-0.4053256245784623 - 0.3724481230406298 * %i,14);
+true;
+
+/******************************************************************/
+/* Numerical values for the bessel functions I with negativ order */
+
+test_bessel
+  (bessel_k(-1,-2.0),-0.139865881816522-4.997133057057809*%i,14);
+true;
+
+test_bessel(bessel_k(-1,2.0),0.139865881816522,14);
+true;
+
+test_bessel
+  (bessel_k(-1,-1.5),-0.277387800456844 - 3.083996040296084*%i,14);
+true;
+
+test_bessel(bessel_k(-1,1.5),0.2773878004568438,15);
+true;
+
+test_bessel(bessel_k(-1.5, -2.0),-3.2741902342766302*%i,13);
+true;
+
+test_bessel(bessel_k(-1.5, 2.0),0.1799066579520922,15);
+true;
+
+test_bessel
+  (bessel_k(-1.8, -1.5),0.3929372194683435 - 1.0725774293000646*%i,15);
+true;
+
+test_bessel(bessel_k(-1.8, 1.5),0.4856971141526263,15);
+true;
+
+test_bessel
+  (bessel_k(-2,-1.5),0.5836559632566508 - 1.0613387550916862*%i,14);
+true;
+
+test_bessel(bessel_k(-2,1.5),0.5836559632566508,15);
+true;
+
+test_bessel
+  (bessel_k(-2.3,-1.5),0.465598659425186 - 1.354876241730594*%i,14);
+true;
+
+test_bessel(bessel_k(-2.3,1.5),0.7921237520153218,15);
+true;
+
+/* Numerical values for the bessel functions Y with positiv order */
+
+test_bessel(bessel_k(1.5,1.0),0.9221370088957891,14);
+true;
+
+/* kein Wert von function-site !? Ist das eine Nullstelle??? */
+test_bessel(bessel_k(1.5,-1.0),0,13);
+true;
+
+test_bessel(bessel_k(1.8,1.0),1.275527037541854,15);
+true;
+
+test_bessel
+  (bessel_k(1.8,-1.0),1.0319230501560911 + 0.1619402612577788*%i,14);
+true;
+
+test_bessel(bessel_k(2.0,1.0),1.624838898635177,14);
+true;
+
+test_bessel(bessel_k(2.0,-1.0),1.624838898635177 - 0.426463882082061*%i,14);
+true;
+
+test_bessel(bessel_k(2.5,1.0),3.227479531135262,14);
+true;
+
+test_bessel(bessel_k(2.5,-1.0),-3.406861044815549*%i,14);
+true;
+
+/* Numerical values for the bessel functions Y with complex arg 
+   and positive or negative order*/
+
+test_bessel
+  (bessel_k(0,1.0+%i),0.0801977269465178 - 0.3572774592853303*%i,15);
+true;
+
+test_bessel
+  (bessel_k(1,1.0+%i),0.0245683055237403 - 0.4597194738011894 * %i,15);
+true;
+
+test_bessel
+  (bessel_k(-1,1.0+%i),0.0245683055237403 - 0.4597194738011894 * %i,15);
+true;
+
+test_bessel
+  (bessel_k(2,1.0+%i),-0.3549534413309312 - 0.8415652386102600 * %i,13);
+true;
+
+test_bessel
+  (bessel_k(-2,1.0+%i),-0.3549534413309312 - 0.8415652386102600 * %i,13);
+true;
+
+test_bessel
+  (bessel_k(2.3,1.0+%i),-0.6635905911278042 - 1.0258894849569300 * %i,15);
+true;
+
+test_bessel
+  (bessel_k(-2.3,1.0+%i),-0.6635905911278042 - 1.0258894849569300 * %i,13);
+true;
+
+kill(closeto, test_bessel);
+done;
+
