@@ -109,6 +109,7 @@
        $make_string_output_stream
        $get_output_stream_string
        $printf
+       $sprint
        $readline
        $alphacharp
        $alphanumericp
