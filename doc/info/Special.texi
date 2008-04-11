@@ -114,10 +114,10 @@ numerical analysis.
 @closecatbox
 @end deffn
 
-@deffn {Function} bessel (@var{z}, @var{a}) 
+@deffn {Function} bessel (@var{z}, @var{order}) 
 The Bessel function of the first kind.
 
-This function is deprecated.  Write @code{bessel_j (@var{z}, @var{a})} instead.
+This function has been removed.  Use @code{bessel_j (@var{order}, @var{z})} instead.
 
 @end deffn
 
