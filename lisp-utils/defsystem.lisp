@@ -4606,7 +4606,19 @@ the system definition, if provided."
 	 ;; Ugly, but seems to fix the problem.
 	 (concatenate 'string "./" namestring))))
 
-#+gcl(defun ensure-directories-exist (arg0 &key verbose) ())
+#+gcl
+(defun ensure-directories-exist (pathspec &key verbose)
+  (declare (ignore verbose))
+  ;; A very gross implementation of ensure-directories-exist.  Just
+  ;; call /bin/mkdir with our desired path.
+  (let* ((dir (make-pathname :host (pathname-host pathspec)
+			     :directory (pathname-directory pathspec)))
+	 (cmd (format nil "/bin/mkdir -p ~S" (namestring dir))))
+    (lisp:system cmd)
+    ;; The second return value is supposed to be T if directories were
+    ;; created.  I don't know how to tell that, so we just return T.
+    ;; (Would NIL be better?)
+    (values pathspec t)))
 
 (defun compile-file-operation (component force)
   ;; Returns T if the file had to be compiled.
