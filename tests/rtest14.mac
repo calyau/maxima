@@ -4,11 +4,14 @@ j0(1);
 j0(1); /*0.7651976865579665 ;*/
 bessel_j(0,1.0);
 0.7651976865579665 ;
+
+/* BESSEL is gone. This makes sure it's gone. */
 bessel(2,3);
-bessel_j(3,2)$
+bessel(2,3)$
 
 bessel(2,3.0);
-0.1289432494744021;
+bessel(2, 3.0);
+
 bessel_j(3,2.0);
 0.1289432494744021;
 
