@@ -7,6 +7,20 @@
 load ("ezunits.lisp");
 
 infix ("`", 118, 118);
+infix ("``", 117, 117);
+
+declare (constvalue, evfun);
+
+constvalue (e) :=
+  if atom(e)
+    then
+     (if symbolp(e)
+        then (get (e, 'constvalue), if %% # false then %% else e)
+        else e)
+    else map (constvalue, e);
+
+declare_constvalue (a, x) ::= buildq ([a, x], put (a, x, 'constvalue));
+
 /* Hold off on this display symbol business.
  * :lisp (put '$\` '(#\space #\space) 'dissym)
  */
@@ -33,7 +47,7 @@ declare_qty (a%, q%) :=
     then map (lambda ([a1%], local(a1%), declare1_qty (a1%, q%)), a%)
     else declare1_qty (a%, q%), q%);
 
-/* Maybe we want to work with numerval in declare1_qty
+/* Maybe we want to work with constvalue in declare1_qty
  * (instead of the indicator qty).
  */
 declare1_qty (a%, q%) :=
@@ -62,12 +76,13 @@ units(e%) :=
   if atom(e%) then 
     if featurep (e%, 'dimensional) then
       if get (e%, units) = false then 'units(e%) else get (e%, units)
-    elseif ?mget (e%, 'numer) # false
-      then units (?mget (e%, 'numer))
+    elseif symbolp (e%) and get (e%, 'constvalue) # false
+      then units (get (e%, 'constvalue))
       else 1
   else if mapatom (e%) then units (op (e%))  /* mapatom but not atom => subscripted */
   else if unitop_p(e%) then second(e%)
   else if featurep (op(e%), 'dimensional) then units(op(e%))
+  else if op(e%) = "^" then units (first (e%)) ^ second (e%)
   else apply (op(e%), map (units, args(e%))));
 
 d(e%) := dimension (units (e%));
@@ -83,7 +98,7 @@ matchdeclare
     xx%, nonconstantp);
 
 simp: false$
-tellsimpafter (uu% ` nd%, convert_units [units(uu%), nd%] (qty(uu%)) ` nd%);
+tellsimpafter (uu% `` nd%, convert_units [units(uu%), nd%] (qty(uu%)) ` nd%);
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (nd% * uu%, multiply_with_units (nd%, uu%));
 tellsimpafter (nd% + uu%, add_with_units (nd%, uu%));
@@ -100,6 +115,9 @@ tellsimpafter (aa% ` bb%, ?resimplify (aa%) ` ?resimplify (bb%));
 tellsimpafter (aa% ` (xx% + ccn0%), (aa% - ccn0%)`xx%);
 tellsimpafter (aa% ` mm%, (constant_factors(mm%) * aa%) ` everything_else(mm%));
 tellsimpafter (aa% ` cc%, aa%*cc%);
+tellsimpafter (uu% ` nd%, qty (uu%) ` (units (uu%) * nd%));
+tellsimpafter (abs (aa% ` bb%), abs (aa%) ` bb%);
+tellsimpafter (aa% ` abs (bb%), aa% ` bb%);
 simp: true$
 
 unitop_p (e%) := not atom(e%) and atom (op(e%)) and is (nounify (op(e%)) = nounify ("`"));
@@ -268,16 +286,10 @@ declare_dimensions1 (a%, b%) :=
             then map (lambda ([b1%], declare_dimensions1 (a%, b1%)), b%)
             else put (a%, b%, 'dimension);
 
-declare_dimensions
-   ('m, 'length,
-    'kg, 'mass,
-    's, 'time,
-    'A, 'charge / 'time,
-    'K, 'temperature,
-    'mol, 'quantity);
+%fundamental_units : '[m, kg, s, A, K, mol];
+fundamental_dimensions : '[length, mass, time, charge, temperature, quantity];
 
-fundamental_dimensions :
-   ['length, 'mass, 'time, 'charge, 'temperature, 'quantity];
+map (lambda ([x, y], declare_dimensions (x, y)), %fundamental_units, fundamental_dimensions);
 
 map (lambda ([s], assume (s > 0)), fundamental_dimensions);
 
@@ -288,8 +300,9 @@ matchdeclare
    (aa%, lambda ([e%], atom (e%) and not symbolp (e%)),
     bb%, lambda ([e%], symbolp (e%) and member (e%, fundamental_dimensions)),
     cc%, lambda ([e%], symbolp (e%) and get (e%, 'units) # false),
-    dd%, lambda ([e%], symbolp (e%) and ?mget (e%, 'numer) # false),
+    dd%, lambda ([e%], symbolp (e%) and get (e%, 'constvalue) # false),
     ee%, lambda ([e%], symbolp (e%) and get (e%, 'dimension) # false),
+    ee1%, lambda ([e%], symbolp (e%) and ?mget (e%, 'numer) # false),
     ff%, lambda ([e%], symbolp (e%)),
     gg%, lambda ([e%], not atom (e%) and op (e%) = "`"),
     hh%, lambda ([e%], not atom (e%) and op (e%) = "^"),
@@ -299,8 +312,9 @@ simp : false;
 defrule (raa, 'dimensions (aa%), 1);
 defrule (rbb, 'dimensions (bb%), bb%);
 defrule (rcc, 'dimensions (cc%), dimensions (get (cc%, 'units)));
-defrule (rdd, 'dimensions (dd%), dimensions (?mget (dd%, 'numer)));
+defrule (rdd, 'dimensions (dd%), dimensions (get (dd%, 'constvalue)));
 defrule (ree, 'dimensions (ee%), get (ee%, 'dimension));
+defrule (ree1, 'dimensions (ee1%), dimensions (?mget (ee1%, 'numer)));
 defrule
    (rff,
     'dimensions (ff%), 
@@ -308,12 +322,14 @@ defrule
       ([ff%2 : ev (ff%, args (known_unit_conversions), infeval)],
         if ff%2 # ff% then dimensions (ff%2) else 'dimensions (ff%)));
 defrule (rgg, 'dimensions (gg%), dimensions (second (gg%)));
-defrule (rhh, 'dimensions (hh%), dimensions (first (hh%)) ^ second (hh%));
+matchdeclare (aa%, all, bb%, constantp_not1);
+defrule (rhh, 'dimensions (aa%^bb%), dimensions (aa%) ^ bb%);
 defrule (rii, 'dimensions (ii%), map (dimensions, ii%));
+/* ??? defrule (rjj, 'dimensions (sqrt (aa%)), sqrt (dimensions (aa%))); */
 simp : true;
 
 dimensions (expr) :=
-    apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, rff, rgg, rhh, rii]);
+    apply (apply1, ['dimensions (expr), raa, rbb, rcc, rdd, ree, ree1, rff, rgg, rhh, rii]);
 
 /* Adapted from dimensions_as_list in share/physics/dimension.mac.
  * Thanks to Barton Willis.
@@ -329,6 +345,13 @@ dimensions_as_list (e) :=
             if polynomialp (e, fundamental_dimensions, lambda ([x], numberp (x)), lambda ([x], integerp (x)))
                 then makelist (hipow (e, d), d, fundamental_dimensions)
                 else 'dimensions_as_list (e));
+
+fundamental_units (e) :=
+    if listp (e)
+        then map ('fundamental_units, e)
+        else
+           (dimensions_as_list (e),
+            apply ("*", map ("^", %fundamental_units, %%)));
 
 /* Adapted from dimensionless in share/physics/dimension.mac.
  * Thanks to Barton Willis.

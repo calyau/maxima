@@ -135,6 +135,9 @@ sin(1`kg/s);
 /* end stuff adapted from Cliff Yapp's email
  */
 
+(kill (J, N), 0);
+0;
+
 /* foo(a`s) fails nondimensional_not1 test, due to presence of a`s within.
  * => No rule triggered here.
  */
@@ -172,8 +175,8 @@ sqrt(2)/2;
 0;
 
 /* Constants for Planck's law */
-numerval (%C2, 14390.0, %C1, 3.742E+8);
-[%C2, %C1];
+[declare_constvalue (%C2, 14390.0), declare_constvalue (%C1, 3.742E+8)];
+[14390.0, 3.742E+8];
 
 declare ("µ", alphabetic);
 done;
@@ -189,7 +192,7 @@ done;
 expr: C1/(l^5*(exp(C2/(l*T)) - 1)), infeval=true;
 %C1/(%l^5*(%e^(%C2/(%l*%T))-1)) ` W/(m^2*µm);
 
-ev (expr, numer);
+ev (expr, constvalue);
 3.742E+8/(%l^5*(%e^(14390.0/(%l*%T))-1)) ` W/(m^2*µm);
 
 qty(%), %T=6000;
@@ -288,26 +291,26 @@ cc: bar[11] * (57 ` s/kg) * (10 ` acre);
 
 /* Unit conversions */
 
-100 ` degC ` degF;
+100 ` degC `` degF;
 212 ` degF;
 
--40 ` degF ` degC;
+-40 ` degF `` degC;
 -40 ` degC;
 
-1 ` acre*ft ` m^3;
+1 ` acre*ft `` m^3;
 4840000000000000000/3923816355038643 ` m^3;
 
 /* Stefan-Boltzmann constant */
-56697/10000/10^8 ` W/m^2/K^4 ` Btu/h/ft^2/R^4;
+56697/10000/10^8 ` W/m^2/K^4 `` Btu/h/ft^2/R^4;
 9449500/5518946497523697 ` Btu/h/ft^2/R^4;
 
 declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*kWh);
 done;
 
-1 ` MMBtu ` MWh;
+1 ` MMBtu `` MWh;
 211/720 ` MWh;
 
-1 ` MMBtu/d ` kW;
+1 ` MMBtu/d `` kW;
 5275/432 ` kW;
 
 (load (physical_constants), 0);
@@ -320,21 +323,61 @@ map (constantp, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 [true, true, true, true, true, true, true];
 
 map (units, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
-[m/s, N/A^2, s*A^2/(m*N), m*N/(s*A^2), m^3/(kg*s), J*s, J*s];
+''([m/s, N/A^2, s^2*A^2/(m^2*N), m*N/(s*A^2), m^3/(kg*s), J*s, J*s]);
 
 map (dimensions, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
-[length/time, length*mass/charge^2, charge^2*time/(length^2*mass),
- length^2*mass/(charge^2*time), length^3/(mass*time),
- length^2*mass/time, length^2*mass/time];
+[length/time,
+ length*mass/(charge^2*time^2),
+ charge^2*time^4/(length^3*mass),
+ length^2*mass/(charge^2*time^3),
+ length^3/(mass*time),
+ length^2*mass/time,
+ length^2*mass/time];
 
 fundamental_dimensions;
 [length, mass, time, charge, temperature, quantity];
 
 map (dimensions_as_list, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
-[[1, 0, -1, 0, 0, 0],
- [1, 1, 0, -2, 0, 0],
- [-2, -1, 1, 2, 0, 0],
- [2, 1, -1, -2, 0, 0],
- [3, -1, -1, 0, 0, 0],
- [2, 1, -1, 0, 0, 0],
- [2, 1, -1, 0, 0, 0]];
+[[1, 0, - 1, 0, 0, 0],
+ [1, 1, - 2, - 2, 0, 0],
+ [- 3, - 1, 4, 2, 0, 0],
+ [2, 1, - 3, - 2, 0, 0],
+ [3, - 1, - 1, 0, 0, 0],
+ [2, 1, - 1, 0, 0, 0],
+ [2, 1, - 1, 0, 0, 0]];
+
+map (fundamental_units, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
+[m/s,
+ kg*m/(s^2*A^2),
+ s^4*A^2/(kg*m^3),
+ kg*m^2/(s^3*A^2),
+ m^3/(kg*s),
+ kg*m^2/s,
+ kg*m^2/s];
+
+/* examples from message from ed romana to mailing list 2007-12-02, -12-03 */
+
+e : 1/sqrt (%mu_0 * %e_0);
+1/sqrt (%mu_0 * %e_0);
+
+[e, %c], constvalue;
+[299792458 ` m/s, 299792458 ` m/s];
+
+/* Helium sound velocity at 27 C, He(Cp/Cv)=5/3, 4gr/mol */
+e : sqrt (5/3 * %R/(4 ` g/mol) * (27 ` degC `` K));
+sqrt(2001)*sqrt(%R)/4 ` sqrt(mol)*sqrt(K)/sqrt(g);
+
+e : constvalue (e);
+sqrt(2001)*sqrt(1039309)/(1000*sqrt(2)) ` sqrt(J)/sqrt(g);
+
+dimensions (e);
+length / time;
+
+u : fundamental_units (e);
+m/s;
+
+e : e `` u;
+sqrt(2001)*sqrt(1039309)*%e^(log(1000)/2)/(1000*sqrt(2)) ` m/s;
+
+e, numer;
+1019.719890214955 ` m/s;
