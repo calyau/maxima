@@ -986,7 +986,7 @@
 (displa-def mprogn dimension-match "(" ")")
 (displa-def mlist  dimension-match "[" "]")
 (displa-def mangle dimension-match "<" ">")
-(displa-def mcomma dimension-nary  ", " 20. 20.)
+(displa-def mcomma dimension-nary  ", " 10. 10.)
 (displa-def mabs   dim-mabs)
 
 (defun dim-mabs (form result &aux arg bar)
