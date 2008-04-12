@@ -92,7 +92,7 @@ to subsitute their knowledge of defsystem for the following steps.
 
     SBCL: (SBCL terminates after saving the image)
 
-    (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core" :toplevel #'cl-user::run :executable t)
+    (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core" :toplevel #'cl-user::run)
 
     CMUCL: (CMUCL terminates after saving the image)
 
