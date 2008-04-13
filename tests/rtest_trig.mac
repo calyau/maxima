@@ -318,8 +318,19 @@ sin(%pi * 31 / 37);
 subst(n = 1, tan(%pi * n * 31 / 37));
 tan(%pi * 31 / 37);
 
+/* [ 580721 ] trigexpand bug */
+tan(%pi*x+%pi/2),trigexpand;
+-cot(%pi*x);
+
+tan(n*2*%pi);
+0;
+
 (kill(n,declare),0);
 0$
+
+/* [ 1553866 ] %piargs inconsistent behavior */
+cos(%pi*x + %pi);
+-cos(%pi*x);
 
 (remfunction(complexfloatp, complexbigfloatp),0);
 0$

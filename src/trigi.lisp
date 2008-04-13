@@ -421,7 +421,8 @@
   (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
-	((and $%piargs (cond ((zerop1 y) 0) ((linearp y '$%pi) (%piargs-sin/cos y)))))
+	((and $%piargs (cond ((zerop1 y) 0)
+			     ((has-const-or-int-term y '$%pi) (%piargs-sin/cos y)))))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%sinh (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%asin (setq z (caar y))) (cadr y))
@@ -444,7 +445,9 @@
   (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
-	((and $%piargs (cond ((zerop1 y) 1) ((linearp y '$%pi) (%piargs-sin/cos (add %pi//2 y))))))
+	((and $%piargs (cond ((zerop1 y) 1)
+			     ((has-const-or-int-term y '$%pi)
+			      (%piargs-sin/cos (add %pi//2 y))))))
 	((and $%iargs (multiplep y '$%i)) (cons-exp '%cosh (coeff y '$%i 1)))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%acos (setq z (caar y))) (cadr y))
@@ -463,8 +466,9 @@
 
 (defun %piargs-sin/cos (x)
   (let ($float coeff ratcoeff zl-rem)
-    (setq ratcoeff (coefficient x '$%pi 1)
-	  coeff (linearize ratcoeff) zl-rem (coefficient x '$%pi 0))
+    (setq ratcoeff (get-const-or-int-terms x '$%pi)
+	  coeff (linearize ratcoeff)
+	  zl-rem ($expand (m- x (m* '$%pi ratcoeff))))
     (cond ((zerop1 zl-rem) (%piargs coeff ratcoeff))
 	  ((not (mevenp (car coeff))) nil)
 	  ((equal 0 (setq x (mmod (cdr coeff) 2))) (cons-exp '%sin zl-rem))
@@ -472,13 +476,45 @@
 	  ((alike1 1//2 x) (cons-exp '%cos zl-rem))
 	  ((alike1 '((rat) 3 2) x) (neg (cons-exp '%cos zl-rem))))))
 
+
+(defun filter-sum (pred form simp-flag)
+  "Takes form to be a sum and a sum of the summands for which pred is
+   true. Passes simp-flag through to addn if there is more than one
+   term in the sum."
+  (if (mplusp form)
+      (addn (mapcan
+	     #'(lambda (term)
+		 (when (funcall pred term) (list term))) (cdr form))
+	    simp-flag)
+    (if (funcall pred form) form 0)))
+ 
+(defun get-const-or-int-terms (form var)
+  (filter-sum (lambda (term) (or ($constantp term)
+				 (maxima-integerp term)))
+	      ($expand (coefficient form var 1)) 0))
+
+(defun has-const-or-int-term (form var)
+  "Tests whether form has at least some term of the form a*var where a
+  is constant (as measured by constantp)"
+  (let ((lin-coeff ($coeff ($expand form) var)))
+    (or
+     (and (mplusp lin-coeff)
+	  (find-if (lambda (term) (or ($constantp term)
+				      (maxima-integerp term) ))
+		   (cdr lin-coeff)))
+     (and (not (zerop1 lin-coeff))
+	  (or ($constantp lin-coeff)
+	      (maxima-integerp lin-coeff))))))
+
+
 (defmfun simp-%tan (form y z)
   (oneargcheck form)
   (setq y (simpcheck (cadr form) z))
   (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
-	((and $%piargs (cond ((zerop1 y) 0) ((linearp y '$%pi) (%piargs-tan/cot y)))))
+	((and $%piargs (cond ((zerop1 y) 0)
+			     ((has-const-or-int-term y '$%pi) (%piargs-tan/cot y)))))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%tanh (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%atan (setq z (caar y))) (cadr y))
@@ -503,7 +539,9 @@
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) (domain-error y 'cot))
-			     ((and (linearp y '$%pi) (setq z (%piargs-tan/cot (add %pi//2 y)))) (neg z)))))
+			     ((and (has-const-or-int-term y '$%pi)
+				   (setq z (%piargs-tan/cot (add %pi//2 y))))
+			      (neg z)))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (cons-exp '%coth (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%acot (setq z (caar y))) (cadr y))
@@ -521,16 +559,46 @@
 	(t (eqtest (list '(%cot) y) form))))
 
 (defun %piargs-tan/cot (x)
-  (prog ($float coeff zl-rem)
-     (setq coeff (linearize (coefficient x '$%pi 1)) zl-rem (coefficient x '$%pi 0))
-     (return (cond ((and (zerop1 zl-rem)
-			 (setq zl-rem (%piargs coeff nil))
-			 (setq coeff (%piargs (cons (car coeff) (rplus 1//2 (cdr coeff)))
-					      nil)))
-		    (div zl-rem coeff))
-		   ((not (mevenp (car coeff))) nil)
-		   ((integerp (setq x (mmod (cdr coeff) 2))) (cons-exp '%tan zl-rem))
-		   ((or (alike1 1//2 x) (alike1 '((rat) 3 2) x)) (neg (cons-exp '%cot zl-rem)))))))
+  "If x is of the form tan(u) where u has a nonzero constant linear
+   term in %pi, then %piargs-tan/cot returns a simplified version of x
+   without this constant term."
+  ;; Set coeff to be the coefficient of $%pi collecting terms with no
+  ;; other atoms, so given %pi(x+1/2), coeff = 1/2. Let zl-rem be the
+  ;; remainder (TODO: computing zl-rem could probably be prettier.)
+  (let* ((nice-terms (get-const-or-int-terms x '$%pi))
+	 (coeff (linearize nice-terms))
+	 (zl-rem ($expand (sub x (mul2 '$%pi nice-terms))))
+	 (sin-of-coeff-pi)
+	 (cos-of-coeff-pi))
+    (cond
+     ;; sin-of-coeff-pi and cos-of-coeff-pi are only non-nil if they
+     ;; are constants that %piargs-offset could compute, and we just
+     ;; checked that cos-of-coeff-pi was nonzero. Thus we can just
+     ;; return their quotient.
+     ((and (zerop1 zl-rem)
+	   (setq sin-of-coeff-pi
+		 (%piargs coeff nil))
+	   (setq cos-of-coeff-pi
+		 (%piargs (cons (car coeff)
+				(rplus 1//2 (cdr coeff))) nil)))
+      (unless (zerop1 cos-of-coeff-pi)
+	(div sin-of-coeff-pi cos-of-coeff-pi)))
+       
+     ;; I _think_ (car coeff)=1 => the coefficient of %pi is an
+     ;; integer, but evod can't work out whether it's even or odd. In
+     ;; which case we can't do anything :( Return nil.
+     ((not (mevenp (car coeff))) nil)
+ 
+     ;; This expression sets x to the coeff of %pi (mod 2) as a side
+     ;; effect and then, if this is an integer, returns tan of the
+     ;; rest.
+     ((integerp (setq x (mmod (cdr coeff) 2)))
+      (cons-exp '%tan zl-rem))
+ 
+     ;; Similarly, if x = 1/2 or 3/2 then return -cot(x).
+     ((or (alike1 1//2 x)
+	  (alike1 '((rat) 3 2) x))
+        (neg (cons-exp '%cot zl-rem))))))
 
 (defmfun simp-%csc (form y z)
   (oneargcheck form)
@@ -539,7 +607,7 @@
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs (cond ((zerop1 y) (domain-error y 'csc))
-			     ((linearp y '$%pi) (%piargs-csc/sec y)))))
+			     ((has-const-or-int-term y '$%pi) (%piargs-csc/sec y)))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (cons-exp '%csch (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%acsc (setq z (caar y))) (cadr y))
@@ -563,7 +631,8 @@
   (cond ((flonum-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
-	((and $%piargs (cond ((zerop1 y) 1) ((linearp y '$%pi) (%piargs-csc/sec (add %pi//2 y))))))
+	((and $%piargs (cond ((zerop1 y) 1)
+			     ((has-const-or-int-term y '$%pi) (%piargs-csc/sec (add %pi//2 y))))))
 	((and $%iargs (multiplep y '$%i)) (cons-exp '%sech (coeff y '$%i 1)))
 	((and $triginverses (not (atom y))
 	      (cond ((eq '%asec (setq z (caar y))) (cadr y))
@@ -582,8 +651,10 @@
 	(t (eqtest (list '(%sec) y) form))))
 
 (defun %piargs-csc/sec (x)
-  (prog ($float coeff zl-rem)
-     (setq coeff (linearize (coefficient x '$%pi 1)) zl-rem (coefficient x '$%pi 0))
+  (prog ($float coeff ratcoeff zl-rem)
+     (setq ratcoeff (get-const-or-int-terms x '$%pi)
+	   coeff (linearize ratcoeff)
+	   zl-rem ($expand (m- x (m* '$%pi ratcoeff))))
      (return (cond ((and (zerop1 zl-rem) (setq zl-rem (%piargs coeff nil))) (div 1 zl-rem))
 		   ((not (mevenp (car coeff))) nil)
 		   ((equal 0 (setq x (mmod (cdr coeff) 2))) (cons-exp '%csc zl-rem))
@@ -613,7 +684,7 @@
 		     (div '$%pi -3))
 		    ;; 1/sqrt(3) = sqrt(3)/3
 		    ((or (alike1 y (power* 3 -1//2))
-			 (alike1 y (div (power* 3 1//2) 3)))
+			 (alike1 y (mul (rat 1 3) (power* 3 1//2))))
 		     (div '$%pi 6))
 		    ;; -1/sqrt(3) = -sqrt(3)/3
 		    ((or (alike1 y (mul -1 (power* 3 -1//2)))
