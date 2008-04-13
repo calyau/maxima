@@ -2667,12 +2667,12 @@
 
     ; we now create two files: maxout.gnuplot and data.gnuplot
     (setf cmdstorage
-          (open (plot-temp-file "maxout.gnuplot")
+          (open (plot-temp-file $gnuplot_file_name)
                 :direction :output :if-exists :supersede))
     (setf datastorage
-          (open (plot-temp-file "data.gnuplot")
+          (open (plot-temp-file $data_file_name)
                 :direction :output :if-exists :supersede))
-    (setf datapath (format nil "'~a'" (plot-temp-file "data.gnuplot")))
+    (setf datapath (format nil "'~a'" (plot-temp-file $data_file_name)))
 
     ; write global options
     (case (gethash '$terminal *gr-options*)
@@ -2825,7 +2825,7 @@
              (close cmdstorage)
              ($system (format nil "~a \"~a\"" 
                                   $draw_command
-                                  (plot-temp-file "maxout.gnuplot")) ))
+                                  (plot-temp-file $gnuplot_file_name)) ))
           (t ; non animated gif
              ; command file maxout.gnuplot is now ready
              (format cmdstorage "~%")
@@ -2845,16 +2845,16 @@
                    ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
                                    (format nil "~a ~a"
                                                $draw_command
-                                               (format nil $gnuplot_view_args (plot-temp-file "maxout.gnuplot")))
+                                               (format nil $gnuplot_view_args (plot-temp-file $gnuplot_file_name)))
                                    (format nil "~a \"~a\"" 
                                                $draw_command
-                                               (plot-temp-file "maxout.gnuplot")))) )
+                                               (plot-temp-file $gnuplot_file_name)))) )
                 (t  ; non windows operating system
                    (setf $gnuplot_command $draw_command)
                    (check-gnuplot-process)
                    (send-gnuplot-command "unset output")
                    (send-gnuplot-command "reset")
-                   (send-gnuplot-command (format nil "load '~a'" (plot-temp-file "maxout.gnuplot"))) ))))
+                   (send-gnuplot-command (format nil "load '~a'" (plot-temp-file $gnuplot_file_name))) ))))
 
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)    ) )
