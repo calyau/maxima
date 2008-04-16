@@ -122,6 +122,9 @@ a newline."),
     tex ({a, b, c, d, e}),
     tex ({a + b, a*b, a/b, a^b, a^b^c}),
 
+    tex_text ("\\subsubsection*{Binomial}"),
+    tex (xyz + binomial (foo(a)/foo(b), bar(a)/bar(b)) + abc),
+
     tex_text ("\\subsection*{User-defined \\TeX\\ properties}"),
 
     /* User-defined operator declarations have to be outside with_stdout.

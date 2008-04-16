@@ -724,13 +724,13 @@
 (defprop %binomial tex-choose tex)
 
 (defun tex-choose (x l r)
-  `(,@l
-    "\\pmatrix{"
-    ,@(tex (cadr x) nil nil 'mparen 'mparen)
-    "\\\\"
-    ,@(tex (caddr x) nil nil 'mparen 'mparen)
-    "}"
-    ,@r))
+  (append l
+          '("{{")
+          (tex (cadr x) nil nil 'mparen 'mparen)
+          '("}\\choose{")
+          (tex (caddr x) nil nil 'mparen 'mparen)
+          '("}}")
+          r))
 
 (defprop rat tex-rat tex)
 (defun tex-rat(x l r) (tex-mquotient x l r))
