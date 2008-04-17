@@ -41,4 +41,6 @@
    (:file "isomorphism")
    (:file "matching")
    (:file "graph6")
-   (:file "demoucron")))
+   (:file "demoucron")
+   (:file "dijkstra")))
+

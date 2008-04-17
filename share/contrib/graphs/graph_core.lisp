@@ -1,7 +1,7 @@
 ;;;
 ;;;  GRAPHS - graph theory package for Maxima
 ;;;
-;;;  Copyright (C) 2007 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+;;;  Copyright (C) 2007-2008 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ;;;
 ;;;  This program is free software; you can redistribute it and/or modify
 ;;;  it under the terms of the GNU General Public License as published by
@@ -1077,6 +1077,31 @@
 (defun $is_tree (gr)
   (require-graph 'is_tree 1 gr)
   (and ($is_connected gr) (= (graph-size gr) (1+ (graph-order gr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Reachable vertices
+;;;
+
+
+(defun $reachable_vertices (v gr)
+  (require-graph-or-digraph 'reachable_vertices 2 gr)
+  (require-vertex 'reachable_vertices 1 v)
+  (require-vertex-in-graph 'reachable_vertices v gr)
+  (when (= 0 (if (graph-p gr) (graph-size gr) (digraph-size gr)))
+    (return-from $reachable_vertices '((mlist simp))))
+  (let ((component ()) (visited (make-hash-table)))
+    (unless (gethash v visited)
+      (let ((active ()))
+	(push v active)
+	(loop while active do
+	     (let ((x (pop active)))
+	       (push x component)
+	       (setf (gethash x visited) t)
+	       (dolist (u (if (graph-p gr) (neighbors x gr) (out-neighbors x gr)))
+		 (unless (or (gethash u visited) (member u active))
+		   (push u active)))))))
+    `((mlist simp) ,@component)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
