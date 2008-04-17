@@ -1130,10 +1130,10 @@ test_bessel(bessel_j(-2.5,1.5), 1.315037204805194,15);
 true;
 
 test_bessel
-  (bessel_j(-2.3,-1.5), 0.5949438455752484 - 0.8188699527453657 * %i,15);
+  (bessel_j(-2.3,-1.5), 0.5949438455752484 - 0.8188699527453657 * %i,14);
 true;
 
-test_bessel(bessel_j(-2.3,1.5), 1.012178926325313, 15);
+test_bessel(bessel_j(-2.3,1.5), 1.012178926325313, 14);
 true;
 
 /* Numerical values for the bessel functions J with positiv order */
