@@ -20,7 +20,7 @@
 
 dimacs_export(gr, file, [comments]) := block(
   [fl, names:hash_table(), i:0],
-  if not(is_graph(gr)) then error("dimacs_export: first argument is not a graph:", gr),
+  if not(is_graph_or_digraph(gr)) then error("dimacs_export: first argument is not a graph:", gr),
   for v in vertices(gr) do (
     set_hash(v, names, i),
     i:i+1),
@@ -28,23 +28,48 @@ dimacs_export(gr, file, [comments]) := block(
   printf(fl, "c graph exported from MAXIMA~%"),
   for c in comments do (
     printf(fl, "c ~a~%", c)),
-  printf(fl, "p edges ~a ~a~%", graph_size(gr), graph_order(gr)),
+  if is_graph(gr) then
+    printf(fl, "p edges ~a ~a~%", graph_size(gr), graph_order(gr))
+  else
+    printf(fl, "d edges ~a ~a~%", graph_size(gr), graph_order(gr)),
+  for v in vertices(gr) do (
+    if get_vertex_label(v, gr)#false then
+      printf(fl, "n ~a ~a~%", get_hash(v, names), get_vertex_label(v, gr))),
   for e in edges(gr) do block(
-    [u:get_hash(first(e), names), v:get_hash(second(e), names)],
-    printf(fl, "e ~a ~a~%", min(u,v), max(u,v), names)),
+    [u:get_hash(first(e), names), v:get_hash(second(e), names), u1, v1],
+    if is_graph(gr) then
+      [u1,v1] : [min(u,v), max(u,v)]
+    else
+      [u1,v1] : [u, v],
+    if get_edge_weight(e, gr)=1 then
+      printf(fl, "e ~a ~a~%", u1, v1)
+    else
+      printf(fl, "e ~a ~a ~a~%", u1, v1, get_edge_weight(e, gr))),
   close(fl))$
 
 dimacs_import(file, [mv]) := block(
-  [n, fl, line, elist:[], t],
+  [n, fl, line, elist:[], t, e, v_labels:[], g, dir:false],
   if length(mv)=1 and integerp(mv[1]) then mv:mv[1]
   else mv:0,
   fl:openr(file),
   l:readline(fl),
   while l#false do (
     t:tokens(l),
-    if t[1]="p" then n:eval_string(third(t)),
-    if t[1]="e" then elist:cons(map(lambda([u], eval_string(u)-mv), [second(t), third(t)]), elist),
+    if t[1]="p" then n:eval_string(third(t))
+    else if t[1]="d" then (dir:true, n:eval_string(third(t)))
+    else if t[1]="n" then
+      v_labels:cons([eval_string(second(t))-mv, third(t)], v_labels)
+    else if t[1]="e" then (
+      e : map(lambda([u], eval_string(u)-mv), [second(t), third(t)]),
+      if length(t)=3 then
+        elist:cons(e, elist)
+      else
+        elist:cons([e, eval_string(fourth(t))], elist)
+      )
+    else if t[1]#"c" then error("import_dimacs: wrong file format"),
     l:readline(fl)),
   close(fl),
   if not(integerp(n)) then error("import_dimacs: wrong file format"),
-  create_graph(n,elist))$
+  g : create_graph(n,elist,'directed=dir),
+  for v in v_labels do set_vertex_label(v[1], v[2], g),
+  g)$

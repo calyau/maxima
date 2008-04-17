@@ -228,13 +228,15 @@ draw_graph(G, [options]) := block(
     if show_id=true then (
       for v in vertices(G) do block(
         [p : assoc(v, v_pos)],
-        vertex_labels : cons([concat(label_padding, v, label_padding), p[1], p[2]], vertex_labels)))
+        vertex_labels : cons([printf(false, "~a~a~a", label_padding, v, label_padding), p[1], p[2]],
+                             vertex_labels)))
     else if show_label=true then (
       for v in vertices(G) do block(
         [p : assoc(v, v_pos)],
-        vertex_labels : cons([concat(label_padding,
-            string(get_vertex_label(v, G)), label_padding), p[1], p[2]],
-          vertex_labels))),
+        vertex_labels : cons([printf(false, "~a~a~a", label_padding,
+                                     get_vertex_label(v, G), label_padding),
+                              p[1], p[2]],
+                             vertex_labels))),
     if length(vertex_labels) > 0 then
       vertex_labels : [apply(label, vertex_labels)],
 
@@ -242,8 +244,9 @@ draw_graph(G, [options]) := block(
     if show_weight=true then (
       for e in edges(G) do block(
         [p1 : assoc(e[1], v_pos), p2 : assoc(e[2], v_pos)],
-        edge_weights : cons([concat(get_edge_weight(e, G)),
-          (2*p1[1]+p2[1])/3, (2*p1[2]+p2[2])/3], edge_weights))),
+        edge_weights : cons([printf(false, "~a", get_edge_weight(e, G)),
+                             (2*p1[1]+p2[1])/3, (2*p1[2]+p2[2])/3],
+                            edge_weights))),
     if length(edge_weights) > 0 then
       edge_weights : [apply(label, edge_weights)],
 
