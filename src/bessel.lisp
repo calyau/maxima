@@ -32,22 +32,24 @@
                   ;; Order or arg is negative, use the bessel-j
                   ;; function for calculation.  We know from the
                   ;; definition I[v](x) = %i^(-v)*J[v](%i*x).
-                  (let ((result (* (expt arg order)
-				   (expt (complex 0 arg) (- order))
-				   (bessel-j order (complex 0 arg)))))
+                  (let* ((arg (float arg))
+			 (result (* (expt arg order)
+				    (expt (complex 0 arg) (- order))
+				    (bessel-j order (complex 0 arg))))
+			 (rem (nth-value 1 (floor order))))
 		    ;; Try to clean up result if we know the result is
 		    ;; purely real or purely imaginary.
                     (cond ((>= arg 0)
 			   ;; Result is purely real for arg >= 0
 			   (realpart result))
 
-			  ((zerop (nth-value 1 (truncate order)))
+			  ((zerop rem)
 			   ;; Order is an integer or a float
 			   ;; representation of an integer, the result
 			   ;; is purely real.
 			   (realpart result))
 
-			  ((= (nth-value 1 (truncate order)) 1/2)
+			  ((= rem 1/2)
 			   ;; Order is half-integral-value or a float
 			   ;; representation and arg < 0, the result
 			   ;; is purely imaginary.
@@ -116,13 +118,14 @@
 		     (s1 (cis (* dpi (- (abs order)))))
 		     (s2 (* (complex 0 -1) dpi))
 		     (result (+ (* s1 (bessel-k (abs order) (- arg)))
-				(* s2 (bessel-i (abs order) (- arg))))))
+				(* s2 (bessel-i (abs order) (- arg)))))
+		     (rem (nth-value 1 (floor order))))
 		(cond
-		  ((zerop (nth-value 1 (truncate order)))
+		  ((zerop rem)
 		   ;; order is an integer or a float representation of an integer, 
 		   ;; the result is a general complex
 		   result)
-		  ((= (nth-value 1 (truncate order)) 1/2)
+		  ((= rem 1/2)
 		   ;; order is half-integral-value or an float representation
 		   ;; and arg  < 0, the result is pure imaginary
 		   (complex 0 (imagpart result)))
@@ -347,7 +350,7 @@
 		  ;; If ORDER is an integer or a float representation
 		  ;; of an integer, the result is purely real.
 		   (realpart result))
-		  ((= (nth-value 1 (truncate order)) 1/2)
+		  ((= (nth-value 1 (floor order)) 1/2)
 		  ;; ORDER is a half-integral-value or a float
 		  ;; representation, thereof.
 		   (if (minusp arg)
@@ -379,7 +382,7 @@
 			    (if (evenp (floor order))
 				(aref jvals n)
 				(- (aref jvals n))))
-			   ((= (nth-value 1 (truncate order)) 1/2)
+			   ((= (nth-value 1 (floor order)) 1/2)
 			    ;; Order is a half-integral-value and we
 			    ;; know that arg < 0, so the result is
 			    ;; purely imginary.
@@ -479,7 +482,7 @@
                        (if (minusp arg)
 			   result
 			   (realpart result)))
-                      ((= (nth-value 1 (truncate order)) 1/2)
+                      ((= (nth-value 1 (floor order)) 1/2)
 		       ;; ORDER is half-integral-value or a float
 		       ;; representation thereof.
                        (if (minusp arg)
@@ -519,7 +522,7 @@
 				       ;; float representation and we
 				       ;; have arg < 0.  the result is
 				       ;; purely imaginary.
-				       ((= (nth-value 1 (truncate order)) 1/2)
+				       ((= (nth-value 1 (floor order)) 1/2)
 					(complex 0 (imagpart result)))
 				       ;; in all other cases general complex result
 				       (t result))))))))))))
