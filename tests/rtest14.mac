@@ -1517,3 +1517,141 @@ true;
 kill(closeto, test_bessel);
 done;
 
+/* Numerical tests of the Bessel functions using the Wronskians
+
+   The Wronskians combines different types of Bessel functions and 
+   Bessel functions with negative and positve order.
+   The results are very simple. Therefore the numerical calculation of the
+   Wronskians is a good test for the different parts of the algorithmen.  
+
+   Based on code by Dieter Kaiser.
+*/
+
+/* Test the Wronskian.  wf is the Wronskian function.  w_true is simplified Wronskian.
+ * eps is the max absolute error allowed, and the Wronskian is tested
+ * for values of the arg between -zlimit and zlimit.
+ */ 
+(test_wronskian(wf, w_true, eps, zlimit) :=
+block([badpoints : [], 
+       ratprint : false,
+       abserr : 0,
+       maxerr : -1],
+  for order:-1 thru 1 step 1/10 do
+  (
+    for z: -zlimit thru zlimit step 1 do
+    (
+      if notequal(z,0.0) then
+      (
+        result : float(rectform(wf(float(order),z))),
+        answer : float(rectform(w_true(float(order),z))),
+        abserr : abs(result - answer),
+	maxerr : max(maxerr, abserr),
+        if abserr > eps then
+        (
+          badpoints : cons([[order, z], result, answer, abserr], badpoints)
+        ) 
+      )
+    )
+  ),
+  /* 
+   * For debugging, if there are any bad points, return the maximum error 
+   * found as the first element.
+   */
+  if badpoints # [] then
+    cons(maxerr, badpoints)
+  else
+    badpoints
+), 0);
+0;
+
+/*******************************************************************************
+
+   Wronskian w_jj 
+
+   A&S 9.1.15 : J[n+1](z)*J[-n](z)+J[n](z)*J[-(n+1)](z) = -2*sin(n*pi)/(pi*z)
+   
+*******************************************************************************/
+
+w_jj(n,z) := bessel_j(n+1,z)*bessel_j(-n,z) + bessel_j(n,z)*bessel_j(-n-1,z);
+w_jj(n,z) := bessel_j(n+1,z) *bessel_j(-n,z) + bessel_j(n,z)*bessel_j(-n-1,z);
+
+/* Calculation of w_jj for real argument */
+
+test_wronskian('w_jj, lambda([n,z], -2.0*sin(n*%pi)/(z*%pi)), 1e-14, 10);
+[];
+
+
+/* Calculation of w_jj for complex argument */
+
+test_wronskian(lambda([n,z], expand(w_jj(n,%i*z))), 
+               lambda([n,z],-2.0*sin(n*%pi)/(%i*z*%pi)),
+               1e-8, 10);
+[];
+
+/*******************************************************************************
+
+   Wronskian w_jy
+
+   A&S 9.1.16: J[n+1](z)*Y[n](z)-J[n](z)*Y[n+1,z] = 2/(pi*z)
+
+*******************************************************************************/
+
+w_jy(n,z) := bessel_j(n+1,z)*bessel_y(n,z) - bessel_j(n,z)*bessel_y(n+1,z);
+w_jy(n,z) := bessel_j(n+1,z)*bessel_y(n,z) - bessel_j(n,z)*bessel_y(n+1,z);
+
+/* Calculation of w_yj for real argument */
+
+test_wronskian(w_jy, lambda([n,z], 2.0/(z*%pi)), 1e-14, 10);
+[];
+
+
+/* Calculation of w_jy for complex argument */
+
+test_wronskian(lambda([n,z], w_jy(n,z*%i)), lambda([n,z],2.0/(z*%i*%pi)), 1e-8, 10);
+[];
+
+/*******************************************************************************
+
+   Wronskian w_ii
+
+   A&S 9.6.14: I[n](z)*I[-(n+1)](z)-I[n+1](z)*I[-n](z) = -2*sin(n*pi)/(pi*z)
+
+*******************************************************************************/
+
+w_ii(n,z) := bessel_i(n,z)*bessel_i(-n-1,z) - bessel_i(n+1,z)*bessel_i(-n,z);
+w_ii(n,z) := bessel_i(n,z)*bessel_i(-n-1,z) - bessel_i(n+1,z)*bessel_i(-n,z);
+
+/* Calculation of w_ii for real argument */
+
+test_wronskian(w_ii, lambda([n,z],-2.0*sin(n*%pi)/(z*%pi)), 1e-10, 5);
+[];
+
+/* Calculation of w_ii for complex argument */
+
+test_wronskian(lambda([n,z], w_ii(n,z*%i)), 
+               lambda([n,z], -2.0*sin(n*%pi)/(z*%i*%pi)), 
+               1e-10, 5);
+[];
+
+/*******************************************************************************
+
+   Test Wronskian w_ik
+
+   A&S 9.6.15: I[n](z)*K[n+1](z)+I[n+1](z)*K[n](z) = 1/z
+
+*******************************************************************************/
+
+w_ik(n,z) := bessel_i(n,z)*bessel_k(n+1,z) + bessel_i(n+1,z)*bessel_k(n,z);
+w_ik(n,z) := bessel_i(n,z)*bessel_k(n+1,z) + bessel_i(n+1,z)*bessel_k(n,z);
+
+/* Calculation of w_ik for real argument */
+
+test_wronskian(w_ik, lambda([n,z], 1/z), 1e-10, 5);
+[];
+
+/* Calculation of w_ik for complex argument */
+
+test_wronskian(lambda([n,z], w_ik(n,z*%i)), lambda([n,z], 1/(z*%i)), 1e-12, 5);
+[];
+
+/******************************************************************************/
