@@ -465,7 +465,7 @@
 			 ;;
 			 ;; %y[1](-z) = -%y[1](z) - 2*%i*%j[1](v)
                          ;; the return value has to be a CL number
-                         (+ (slatec:dbesy1 (float (- arg))) ; hier Vorzeichen in Ordnung?!  
+                         (+ (- (slatec:dbesy1 (float (- arg))))
 			    (complex 0 (* -2 (slatec:dbesj1 (float (- arg)))))))))
                  ((minusp order)
                   ;; Bessel function of negative order.  We use the Hankel function to 
