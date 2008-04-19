@@ -24,9 +24,9 @@ expand(trigreduce(%));
 2*cos(2*x)+x+1$
 declare(j,integer,e,even,o,odd);
 done$
-sin(x+(e+1/2)*%pi);
+sin(x+(e+1/2)*%pi),expand;
 cos(x)$
-sin(x+(o+1/2)*%pi);
+sin(x+(o+1/2)*%pi),expand;
 -cos(x)$
 (linel:500,diff(exp(x^2+y)/(x+y),x,2));
 4*x^2*%e^(y+x^2)/(y+x)+2*%e^(y+x^2)/(y+x)-4*x*%e^(y+x^2)/(y+x)^2 +2*%e^(y+x^2)/(y+x)^3$

@@ -468,7 +468,7 @@
   (let ($float coeff ratcoeff zl-rem)
     (setq ratcoeff (get-const-or-int-terms x '$%pi)
 	  coeff (linearize ratcoeff)
-	  zl-rem ($expand (m- x (m* '$%pi ratcoeff))))
+	  zl-rem (get-not-const-or-int-terms x '$%pi))
     (cond ((zerop1 zl-rem) (%piargs coeff ratcoeff))
 	  ((not (mevenp (car coeff))) nil)
 	  ((equal 0 (setq x (mmod (cdr coeff) 2))) (cons-exp '%sin zl-rem))
@@ -487,25 +487,39 @@
 		 (when (funcall pred term) (list term))) (cdr form))
 	    simp-flag)
     (if (funcall pred form) form 0)))
- 
+
+;; collect terms of form A*var where A is a constant or integer.
+;; returns sum of all such A.
+;; does not expand form, so does not find constant term in (x+1)*var.
+;; thus we cannot simplify sin(2*%pi*(1+x)) => sin(2*%pi*x) unless
+;;  the user calls expand.  this could be extended to look a little
+;;  more deeply into the expression, but we don't want to call expand
+;;  in the core simplifier for reasons of speed and predictability.
 (defun get-const-or-int-terms (form var)
-  (filter-sum (lambda (term) (or ($constantp term)
-				 (maxima-integerp term)))
-	      ($expand (coefficient form var 1)) 0))
+  (coeff 
+   (filter-sum (lambda (term)
+		 (let ((coeff (coeff term var 1)))
+		   (and (not (zerop1 coeff))
+			(or ($constantp coeff)
+			    (maxima-integerp coeff)))))
+	       form
+	       0)
+   var 1))
+
+;; collect terms skipped by get-const-or-int-terms
+(defun get-not-const-or-int-terms (form var)
+  (filter-sum (lambda (term)
+		(let ((coeff (coeff term var 1)))
+		  (not (and (not (zerop1 coeff))
+			    (or ($constantp coeff)
+				(maxima-integerp coeff))))))
+	      form
+	      0))
 
 (defun has-const-or-int-term (form var)
   "Tests whether form has at least some term of the form a*var where a
-  is constant (as measured by constantp)"
-  (let ((lin-coeff ($coeff ($expand form) var)))
-    (or
-     (and (mplusp lin-coeff)
-	  (find-if (lambda (term) (or ($constantp term)
-				      (maxima-integerp term) ))
-		   (cdr lin-coeff)))
-     (and (not (zerop1 lin-coeff))
-	  (or ($constantp lin-coeff)
-	      (maxima-integerp lin-coeff))))))
-
+  is constant or integer"
+  (not (zerop1 (get-const-or-int-terms form var))))
 
 (defmfun simp-%tan (form y z)
   (oneargcheck form)
@@ -567,7 +581,7 @@
   ;; remainder (TODO: computing zl-rem could probably be prettier.)
   (let* ((nice-terms (get-const-or-int-terms x '$%pi))
 	 (coeff (linearize nice-terms))
-	 (zl-rem ($expand (sub x (mul2 '$%pi nice-terms))))
+	 (zl-rem (get-not-const-or-int-terms x '$%pi))
 	 (sin-of-coeff-pi)
 	 (cos-of-coeff-pi))
     (cond
@@ -654,7 +668,7 @@
   (prog ($float coeff ratcoeff zl-rem)
      (setq ratcoeff (get-const-or-int-terms x '$%pi)
 	   coeff (linearize ratcoeff)
-	   zl-rem ($expand (m- x (m* '$%pi ratcoeff))))
+	   zl-rem (get-not-const-or-int-terms x '$%pi))
      (return (cond ((and (zerop1 zl-rem) (setq zl-rem (%piargs coeff nil))) (div 1 zl-rem))
 		   ((not (mevenp (car coeff))) nil)
 		   ((equal 0 (setq x (mmod (cdr coeff) 2))) (cons-exp '%csc zl-rem))
@@ -827,7 +841,7 @@
 	 (div 2 (add (power '$%e arg) (power '$%e (mul -1 arg)))))))
 
 (defun coefficient (exp var pow)
-  (coeff (expand1 exp 1 0) var pow))
+  (coeff exp var pow))
 
 (defun mmod (x mod)
   (cond ((and (integerp x) (integerp mod))
@@ -846,7 +860,7 @@
   (and (not (zerop1 exp)) (zerop1 (sub exp (mul var (coeff exp var 1))))))
 
 (defun linearp (exp var)
-  (and (setq exp (islinear (expand1 exp 1 0) var)) (not (equal (car exp) 0))))
+  (and (setq exp (islinear exp var)) (not (equal (car exp) 0))))
 
 (defmfun mminusp (x)
   (= -1 (signum1 x)))
