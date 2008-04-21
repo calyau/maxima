@@ -1927,7 +1927,7 @@
               ($gnuplot_reset)
               (gnuplot-print-header *gnuplot-stream* :const-expr const-expr)
 	      (when xlabel (format *gnuplot-stream* "set xlabel \"~a\"~%" xlabel))
-	      (when ylabel (format *gnuplot-stream "set ylabel \"~a\"~%" ylabel))
+	      (when ylabel (format *gnuplot-stream* "set ylabel \"~a\"~%" ylabel))
 	      (when zlabel (format *gnuplot-stream* "set zlabel \"~a\"~%" zlabel))
 	      (when (and legend (not (first legend)))
 		(format *gnuplot-stream* "unset key~%"))
