@@ -355,6 +355,8 @@ contrib/numericalio/rectangular.csv\
 contrib/numericalio/rectangular.data\
 contrib/numericalio/rtest_numericalio.mac\
 contrib/numericalio/semicolon.data\
+contrib/numericalio/test-binary.f8-lsb\
+contrib/numericalio/test-binary.f8-msb\
 contrib/pdiff/battex.sty\
 contrib/pdiff/history.txt\
 contrib/pdiff/pdiff-doc.pdf\
@@ -895,6 +897,7 @@ tensor/allnutt.dem\
 tensor/atensor.dem\
 tensor/atensor.mac\
 tensor/bianchi.dem\
+tensor/bradic.dem\
 tensor/canten.lisp\
 tensor/car_iden.dem\
 tensor/ctensor.mac\
@@ -906,8 +909,10 @@ tensor/ctensor5.dem\
 tensor/ctensor6.dem\
 tensor/ctensor7.dem\
 tensor/ctensor8.dem\
+tensor/einhil.dem\
 tensor/ex_calc.dem\
 tensor/ex_calc.mac\
+tensor/friedmann.dem\
 tensor/gener.lisp\
 tensor/godel.dem\
 tensor/helicity.dem\
@@ -926,10 +931,14 @@ tensor/kaluza.dem\
 tensor/lckdt.mac\
 tensor/mail-archive.txt\
 tensor/maxwell.dem\
+tensor/papapetrou.dem\
 tensor/petrov.dem\
 tensor/plasma.dem\
 tensor/rainich.dem\
 tensor/reissner.dem\
+tensor/rtest_atensor.mac\
+tensor/rtest_ctensor.mac\
+tensor/rtest_itensor.mac\
 tensor/schwarz.dem\
 tensor/spinor.dem\
 tensor/symtry.lisp\
