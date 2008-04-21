@@ -375,7 +375,8 @@
      (cond ((univar (cdr p)) (return (oldcontent p)))
 	   (t (setq oldgenvar genvar)
 	      (setq var (car p))
-	      (setq genvar (remove var (intersection (cdr genvar) (listovars p) :test #'equal)
+	      ;; intersect must maintain order of genvar list
+	      (setq genvar (remove var (intersect (cdr genvar) (listovars p))
 				   :test #'equal))))
      (cond ((pminusp p) (setq p (pminus p) minus? t)))
      (setq tppl (oddelm (cddr p)))

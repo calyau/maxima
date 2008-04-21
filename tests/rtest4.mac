@@ -202,3 +202,8 @@ factor(expand((35*x*y^2+19*x^2+25) * (35*x*y^2+25*x^2+19)));
 is (errcatch (rat (x^(2^128))) = []);
 false;
 
+/* [ 1943756 ] ezgcd() never returns. */
+ezgcd(n^2+(-2*d+c+b+2)*n+d^2+(-c-b-2)*d+c+b+1, -n^2+(2*d-c-b-2)*n-d^2+(c+b+2)*d+(-b-1)*c-b-1);
+[1,n^2+(-2*d+c+b+2)*n+d^2+(-c-b-2)*d+c+b+1,
+       -n^2+(2*d-c-b-2)*n-d^2+(c+b+2)*d+(-b-1)*c-b-1];
+
