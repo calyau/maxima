@@ -15,7 +15,6 @@
 
 (defvar $iarray)
 (defvar $yarray)
-(defvar $besselarray)
 
 ;; Compute value of Modified Bessel function of the first kind of order n
 (defun bessel-i (order arg)
