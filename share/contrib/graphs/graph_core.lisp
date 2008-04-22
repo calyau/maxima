@@ -2041,3 +2041,9 @@
   (unless (stringp file)
     ($error "Argument to `temp_filename' is not a string"))
   (plot-temp-file file))
+
+(defun $read_string (str)
+  (unless (stringp str)
+    ($error "Argument to `read_string' is not a string"))
+  (let ((num (read-from-string str)))
+    (if (numberp num) num str)))

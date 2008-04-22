@@ -57,18 +57,18 @@ dimacs_import(file, [mv]) := block(
     t:tokens(l),
     if length(t) > 0 then (
       if t[1]="p" then (
-        n:eval_string(third(t)),
-        dir:eval_string(second(t)),
+        n:read_string(third(t)),
+        dir:read_string(second(t)),
         if dir='edges then dir:false
         else dir:true)
       else if t[1]="n" and length(t)>=3 then
-        v_labels:cons([eval_string(second(t))-mv, third(t)], v_labels)
+        v_labels:cons([read_string(second(t))-mv, third(t)], v_labels)
       else if t[1]="e" then (
-        e : map(lambda([u], eval_string(u)-mv), [second(t), third(t)]),
+        e : map(lambda([u], read_string(u)-mv), [second(t), third(t)]),
         if length(t)=3 then
           elist:cons(e, elist)
         else
-          elist:cons([e, eval_string(fourth(t))], elist))
+          elist:cons([e, read_string(fourth(t))], elist))
       else if t[1]#"c" then error("import_dimacs: wrong file format")),
     l:readline(fl)),
   close(fl),
