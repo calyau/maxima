@@ -2,7 +2,7 @@
 
 
   1  General
-      
+
       Makefile.am is the file to modify, NOT Makefile
       (Makefile is generated automatically from Makefile.am)
 
@@ -16,20 +16,20 @@
 
       --  Remove the old something and add the new something.
           (CVS has no concept of renaming)
-         
+
 
   3  Adding / removing a file in maxima/src
 
       --  Copy new file / remove old file
           and execute "cvs add" / "cvs rm"
-             
+
           Then execute "cvs commit"
           (Otherwise add / rm has no effect!)
 
       --  Add / remove file name from maxima/src/Makefile.am
 
       --  Add / remove file name from maxima/src/*-depends.mk
-             
+
           NOTE: There are several *-depends.mk files. These are
           theoretically updated automatically but to the best
           of my knowledge it is necessary to fix them by hand.
@@ -39,7 +39,7 @@
       --  Verify that
           "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
-          
+
       --  Execute "cvs commit"
 
 
@@ -62,7 +62,7 @@
        E.g., new package name = my_package
 
       -- Naming conventions:
-         
+
          write_long_names_like_this, andNotLikeThisPlease,
          norlikethiseitherthanks
 
@@ -102,7 +102,7 @@
 
       --  In the directory above the one you want to add,
           "cvs add my_package"
-          
+
           NOTE: no need to commit after "cvs add" when adding a directory
 
       --  In the directory my_package, "cvs add file1 file2 file3 ..."
@@ -112,7 +112,7 @@
       --  Add my_package to SHARE-SUBDIRS-LIST in maxima/src/init-cl.lisp
 
       --  Move my_package.texi to maxima/doc/info
-      
+
           Put my_package.texi on the list of files in
           maxima/doc/info/Makefile.am
 
@@ -144,37 +144,13 @@
 
   7  Updating the website
 
-    The web pages are in CVS, in maxima/htdocs/ (sibling directory
-    to maxima/maxima which contains src, share, etc).
-    The web pages are named .shtml, because they have server-side
-    includes.
-
-    There is a Maxima home directory at SF:
-    /home/groups/m/ma/maxima/, and pages appearing
-    in /home/groups/m/ma/maxima/htdocs/ are served by the SF
-    web server. If you login via ssh,
-    e.g. ssh robert_dodier@maxima.sourceforge.net
-    you should be able to cd to the Maxima home directory.
-
-    Usually what I do is edit the web pages in a sandbox on my
-    desktop box, commit them to CVS, then login via ssh and
-    run cvs update in /home/groups/m/ma/maxima/htdocs/.
-    PLEASE NOTE that you should specify which files to update
-    i.e. "cvs update foo.shtml" instead of "cvs update"; the cvs
-    version of the shell server is ancient, there is trouble with
-    large binary files, trailing whitespace on lines and perhaps
-    other things as well - if you work on selected files you will
-    avoid these problems as much as possible.
-
-    You should try to set umask and chmod and chgrp stuff so that
-    cvs update can overwrite files in htdocs if run by other
-    developers. 
+    See the CVS module "site-xml", particularly "README" there.
 
 
   8.1  Backups of CVS
 
     All you need is the rsync tool and some disk space.
-    
+
     Issue the following command:
 
     rsync -av 'rsync://maxima.cvs.sourceforge.net/cvsroot/maxima/*' .
