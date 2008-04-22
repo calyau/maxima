@@ -199,8 +199,9 @@ induced_subgraph1(e_list, gr) := block(
   create_graph(listify(v_list), e_list))$
 
 make_graph(vertices, edges_lambda, [directed]) := block(
-  [n, v_map, edges:[], j_min, int_vertices, vrt],
-  
+  [n, v_map, edges:[], j_min, int_vertices, vrt, e_list],
+
+  /* Build a list of vertices */
   if integerp(vertices) then (
     n : vertices,
     vrt : makelist(i, i, 1, n),
@@ -209,23 +210,30 @@ make_graph(vertices, edges_lambda, [directed]) := block(
     n : length(vertices),
     vrt : n,
     v_map : makelist(i=part(vertices, i), i, 1, n)),
-  
-  for i:1 thru n do (
-    if length(directed)>0 then
-    for j:1 thru i-1 do
-      if apply(edges_lambda, [assoc(i, v_map), assoc(j, v_map)])=true then
-        edges : cons([i, j], edges),
-    for j:i+1 thru n do
-      if apply(edges_lambda, [assoc(i, v_map), assoc(j, v_map)])=true then
-        edges : cons([i,j], edges)),
-      
+
+  /* Build a list of edges */
+  if listp(edges_lambda) then block(
+    [inv_map:map(reverse, v_map)],
+    edges : map(lambda([e], [assoc(e[1], inv_map), assoc(e[2], inv_map)]), edges_lambda))
+  else (
+    for i:1 thru n do (
+      if length(directed)>0 then
+        for j:1 thru i-1 do
+          if apply(edges_lambda, [assoc(i, v_map), assoc(j, v_map)])=true then
+            edges : cons([i,j], edges),
+      for j:i+1 thru n do
+        if apply(edges_lambda, [assoc(i, v_map), assoc(j, v_map)])=true then
+          edges : cons([i,j], edges))),
+
+  /* Put the labels on vertices if vertices is not a list of integers */
   if not(integerp(vertices)) then (
     if every(integerp, vertices) then (
       vrt : vertices,
       edges : map( lambda([u], [assoc(u[1], v_map), assoc(u[2], v_map)]), edges))
     else (
       vrt : makelist([i, part(vertices, i)], i, 1, n))),
-  
+
+  /* Create the graph */
   if length(directed)>0 then
     create_graph(vrt, edges, 'directed=true)
   else
