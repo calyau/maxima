@@ -987,7 +987,7 @@
       (c1 (float 1/24))
       (c2 (float 3/44))
       (c3 (float 1/14)))
-  (declare (flonum errtol c1 c2 c3))
+  (declare (type flonum errtol c1 c2 c3))
   (defun drf (x y z)
     "Compute Carlson's incomplete or complete elliptic integral of the
 first kind:
@@ -1003,7 +1003,7 @@ first kind:
 
 where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
 "
-    (declare (flonum x y z))
+    (declare (type flonum x y z))
     ;; Check validity of input
     (assert (and (>= x 0) (>= y 0) (>= z 0)
 		 (plusp (+ x y)) (plusp (+ x z)) (plusp (+ y z))))
@@ -1039,7 +1039,7 @@ where x >= 0, y >= 0, z >=0, and at most one of x, y, z is zero.
       (c1 (float 1/24))
       (c2 (float 3/44))
       (c3 (float 1/14)))
-  (declare (flonum errtol c1 c2 c3))
+  (declare (type flonum errtol c1 c2 c3))
   (defun crf (x y z)
     "Compute Carlson's incomplete or complete elliptic integral of the
 first kind:
@@ -1150,7 +1150,7 @@ first kind:
 
 ;; Complete elliptic integral of the first kind
 (defun elliptic-k (m)
-  (declare (flonum m))
+  (declare (type flonum m))
   (cond ((> m 1)
 	 ;; A&S 17.4.15
 	 (/ (elliptic-f (cl:asin (sqrt m)) (/ m))))
@@ -1302,7 +1302,7 @@ first kind:
       (c2 (float 1/6))
       (c3 (float 9/22))
       (c4 (float 3/26)))
-  (declare (flonum errtol c1 c2 c3 c4))
+  (declare (type flonum errtol c1 c2 c3 c4))
   (defun drd (x y z)
     ;; Check validity of input
 
@@ -1358,7 +1358,7 @@ first kind:
 ;;      0
 
 (defun elliptic-e (phi m)
-  (declare (flonum phi m))
+  (declare (type flonum phi m))
   (cond ((= m 0)
 	 ;; A&S 17.4.23
 	 phi)
@@ -1379,7 +1379,7 @@ first kind:
 
 ;; Complete version
 (defun elliptic-ec (m)
-  (declare (flonum m))
+  (declare (type flonum m))
   (cond ((= m 0)
 	 ;; A&S 17.4.23
 	 (float (/ pi 2)))
@@ -1864,7 +1864,7 @@ first kind:
 (let ((errtol (expt (/ flonum-epsilon 3) 1/6))
       (c1 (float 1/7))
       (c2 (float 9/22)))
-  (declare (flonum errtol c1 c2))
+  (declare (type flonum errtol c1 c2))
   (defun drc (x y)
     (declare (type (flonum 0.0) x)
 	     (type (flonum (0.0)) y)

@@ -187,7 +187,7 @@
         (declare (type flonum rz c))
         (multiple-value-bind (var-0 var-1 var-2 bi dbi)
 	    (slatec:dyairy z rz c 0.0 0.0)
-	  (declare (flonum bi dbi)
+	  (declare (type flonum bi dbi)
 		   (ignore var-0 var-1 var-2 bi))
 	  dbi))
       ;; Will overflow.  Return unevaluated.
