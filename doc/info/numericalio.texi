@@ -78,7 +78,7 @@ according to the global flag set by @code{assume_external_byte_order}.
 If not specified, @code{numericalio} assumes the external byte order is most-significant byte first.
 
 Other kinds of numbers are coerced to 8-byte floats;
-@code{numericalio} cannot read or write non-numeric data.
+@code{numericalio} cannot read or write binary non-numeric data.
 
 Some Lisp implementations do not recognize IEEE 754 special values
 (positive and negative infinity, not-a-number values, denormalized values).
