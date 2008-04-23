@@ -1045,7 +1045,7 @@
 		   (or (meqp a1 (m// h 2))
 		       (mgrp a1 (m// h 2))))
 	      (progn
-		(adsum (m* -1 y ($fib (m+ a1 1))))
+		(adsum (m* y ($fib (m+ a1 1))))
 		(when (> l1 0)
 		  (adsum (m* -1 y (dosum (list '(%binomial) a1 *var*) *var* 0 (m- l1 1) t)))))
 	      (adusum e))))

@@ -887,8 +887,7 @@ log (product (u[k], k, 1, n));
 log (product (u[k], k, 1, n)), logexpand=true;
 log (product (u[k], k, 1, n));
 
-log (product (u[k], k, 1, n)), logexpand=all;
-sum (log (u[k]), k, 1, n);
+log (product (u[k], k, 1, n)), logexpand=all;sum (log (u[k]), k, 1, n);
 
 log (product (u[k], k, 1, n)), logexpand=super;
 sum (log (u[k]), k, 1, n);
@@ -902,3 +901,37 @@ log (product (a*%e^x(i), i, 1, T)), logexpand=all;
  * Change this result if default ever changes.
  */
 sum (log(a) + x(i), i, 1, T);
+
+/* Tests for fbino in combin.lisp */
+sum(binomial(n-k,k), k, 0, floor(n/2)), simpsum;
+fib(n+1);
+
+sum(binomial(n-k,k), k, 1, n), simpsum;
+fib(n+1)-1;
+
+sum(binomial(n-k,k+1), k, 1, n-1), simpsum;
+fib(n+2)-n-2;
+
+sum(binomial(n,2*k), k, 0, floor(n/2)), simpsum;
+2^(n-1);
+
+sum(binomial(n,2*k+1), k, 0, floor((n-1)/2)), simpsum;
+2^(n-1);
+
+sum(binomial(2*n,2*k), k, 0, n), simpsum;
+2^(2*n-1);
+
+sum(binomial(n,2*k), k, 1, n), simpsum;
+2^(n-1)-1;
+
+sum(binomial(n+1,k), k, 1, n), simpsum;
+2^(n+1)-n-3;
+
+sum(binomial(n,k), k, -1, n+1), simpsum;
+2^n;
+
+sum(binomial(k+3,a), k, l, h), simpsum;
+binomial(h+4,a+1) - binomial(l+4,a+1);
+
+sum(binomial(k+a,k+b),k,l,h), simpsum;
+binomial(h+a+1,-b+a+1)-binomial(l+a+1,-b+a+1);
