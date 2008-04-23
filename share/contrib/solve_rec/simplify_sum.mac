@@ -47,8 +47,9 @@ eval_when(batch,
 put('simplify_sum, 1.0, 'version)$
 
 define_variable(zeilberger_check, true, boolean)$
-define_variable(check_start, 1, fixnum)$
+define_variable(sum_min, 1, fixnum)$
 define_variable(use_hgfred, true, boolean)$
+define_variable(use_simpsum, true, boolean)$
 
 /*******************
  *
@@ -77,15 +78,14 @@ simplify_sum(expr) :=
   else block(
     [summand : part(expr, 1), var : part(expr, 2),
      lo : part(expr, 3), hi : part(expr, 4),
-     sm1, linsolvewarn:false],
+     sm1 : expr, linsolvewarn:false],
 
     /*** Default maxima simplification. *********************************/
-    ss_print_message(1, "Trying with simpsum=true ..."),
-    if errcatch(
-      sm1 : ev(expr, simpsum = true)
-    ) = [] then sm1 : expr,
-    ss_print_message(1, "sum with simpsum=true returns:", sm1),
-
+    if use_simpsum=true then (
+      ss_print_message(1, "Trying with simpsum=true ..."),
+      sm1 : ev(expr, simpsum = true),
+      ss_print_message(1, "sum with simpsum=true returns:", sm1)),
+        
     /*** Now let's try the Gosper algorithm *****************************/
     if errcatch(
       if not(atom(sm1)) and not freeof_sum(sm1) then block(
@@ -108,59 +108,54 @@ simplify_sum(expr) :=
     ) = [] then sm1 : expr,
 
     /*** Try converting the sum to finite sum of psi functions **********/
-    if errcatch(
-      if not(atom(sm1)) and not( freeof_sum(sm1) ) and
-         ?ratp(ratsimp(part(expr, 1)), part(expr, 2))
-      then (
-        if hi=inf then block(
-          [lo1, hi1, ratfun, new_var : ?gensym(), expr1],
-          ss_print_message(1, "Trying ratfun -> psi ..."),
-          expr1 : intosum(changevar(expr, new_var=var-lo+1, new_var, var)),
-          ratfun : part(expr1, 1),
-          lo1 : part(expr1, 3),
-          hi1 : part(expr1, 4),
-          if hipow(num(ratfun), new_var) <= hipow(denom(ratfun), new_var)-2
-          then (
-            ss_print_message(2, "calling ratfun_to_psi"),
-            sm1 : ratfun_to_psi(ratfun, new_var),
-            ss_print_message(2, "ratfun -> psi returns", sm1)
-          )
-          else
-            sm1 : inf
-        )
-        else block(
-          [expr1, ratfun, new_var : ?gensym(), expr0],
-          ss_print_message(2, "Splitting sum"),
-          expr0 : substpart(inf, expr, 4),
-          expr1 : intosum(changevar(expr0, new_var=var-lo+1, new_var, var)),
-          ratfun : part(expr1, 1),
-          sm1 : ratfun_to_psi(ratfun, new_var),
-          expr1 : intosum(changevar(expr0, new_var=var-hi, new_var, var)),
-          ratfun : part(expr1, 1),
-          sm1 : sm1 - ratfun_to_psi(ratfun, new_var)
-        )
-      )
-    ) = [] then sm1 : expr,
-
-    /*** check for sum((-1)^n*ratfun, n, lo, inf); ****************************/
-    if errcatch(
-      if not(atom(sm1)) and not( freeof_sum(sm1) ) and
-         ?ratp(ratsimp(summand/(-1)^var), var) and hi = inf
-      then block(
-        [ratfun, new_var : ?gensym(), expr1],
+    if not(atom(sm1)) and not( freeof_sum(sm1) ) and
+      ?ratp(ratsimp(part(expr, 1)), part(expr, 2))
+    then (
+      if hi=inf then block(
+        [lo1, hi1, ratfun, new_var : ?gensym(), expr1],
         ss_print_message(1, "Trying ratfun -> psi ..."),
         expr1 : intosum(changevar(expr, new_var=var-lo+1, new_var, var)),
-        ratfun : part(expr1, 1)/(-1)^new_var,
-        if hipow(num(ratfun), new_var) <= hipow(denom(ratfun), new_var)-1 then (
-          sm1 : ratfun_to_psi(subst(new_var=2*new_var, ratfun), new_var) -
-                ratfun_to_psi(subst(new_var=2*new_var-1, ratfun), new_var)
+        ratfun : part(expr1, 1),
+        lo1 : part(expr1, 3),
+        hi1 : part(expr1, 4),
+        if hipow(num(ratfun), new_var) <= hipow(denom(ratfun), new_var)-2
+        then (
+          ss_print_message(2, "calling ratfun_to_psi"),
+          sm1 : ratsimp(ratfun_to_psi(ratfun, new_var)),
+          ss_print_message(2, "ratfun -> psi returns", sm1)
         )
-        else sm1 : und
+        else
+          error("Sum is divergent")
       )
-    ) = [] then sm1 : expr,
-
-    supcontext(ss_context),
+      else block(
+        [expr1, ratfun, new_var : ?gensym(), expr0],
+        ss_print_message(2, "Splitting sum"),
+        expr0 : substpart(inf, expr, 4),
+        expr1 : intosum(changevar(expr0, new_var=var-lo+1, new_var, var)),
+        ratfun : part(expr1, 1),
+        sm1 : ratfun_to_psi(ratfun, new_var),
+        expr1 : intosum(changevar(expr0, new_var=var-hi, new_var, var)),
+        ratfun : part(expr1, 1),
+        sm1 : ratsimp(sm1 - ratfun_to_psi(ratfun, new_var))
+      )
+    ),
     
+    /*** check for sum((-1)^n*ratfun, n, lo, inf); ****************************/
+    if not(atom(sm1)) and not( freeof_sum(sm1) ) and
+      ?ratp(ratsimp(summand/(-1)^var), var) and hi = inf
+    then block(
+      [ratfun, new_var : ?gensym(), expr1],
+      ss_print_message(1, "Trying ratfun -> psi ..."),
+      expr1 : intosum(changevar(expr, new_var=var-lo+1, new_var, var)),
+      ratfun : part(expr1, 1)/(-1)^new_var,
+      if hipow(num(ratfun), new_var) <= hipow(denom(ratfun), new_var)-1 then (
+        sm1 : ratfun_to_psi(subst(new_var=2*new_var, ratfun), new_var) -
+              ratfun_to_psi(subst(new_var=2*new_var-1, ratfun), new_var)
+      )
+      else sm1 : und
+    ),
+  
+    supcontext(ss_context),  
     /*** Zeilberger algorithm ************************************************/
     if errcatch(
       if not(atom(sm1)) and not freeof_sum(sm1) then (
@@ -172,17 +167,14 @@ simplify_sum(expr) :=
 
     if sm1=false then
       sm1 : apply(sum, [summand, var, lo, hi]),
-    
     killcontext('ss_context),
 
     /*** Convert to hypergeometrical functions. ******************************/
     if not(atom(sm1)) and not( freeof_sum(sm1) ) and
        use_hgfred=true and hi=inf and lo#-inf and lo#minf then (
-      if errcatch(
-        ss_print_message(1, "Converting to hypergeometrical sum ..."),
-        sm1 : to_hgfred(summand, var, lo, hi),
-        ss_print_message(1, "hgfred method returns:", sm1)
-      ) = [] then sm1 : expr
+         ss_print_message(1, "Converting to hypergeometrical sum ..."),
+         sm1 : to_hgfred(summand, var, lo, hi),
+         ss_print_message(1, "hgfred method returns:", sm1)
     ),
   
     if sm1=false then
@@ -273,7 +265,7 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
                                               ]
                                         )
                                   ),
-                    %i%, 1, deg-1)),
+                    %i%, sum_min, sum_min + deg - 2)),
   cond : factor(minfactorial(cond)),
 
   if not freeof_sum(cond) then (
@@ -362,8 +354,8 @@ check_sum(expr, %k%, %n%, lo, hi, deg, sm) :=
   if not zeilberger_check then true
   else catch(
     block(
-      [%i%, tmp_sum, real_sum, simpsum:true],
-      for %i%:check_start thru deg+check_start do(
+      [%i%, tmp_sum, real_sum, simpsum:true, sum_min:sum_min+deg],
+      for %i%:sum_min thru deg+sum_min do(
         real_sum : minfactorial(factcomb(makefact(subst(%n%=%i%, apply(sum,
            [expr, %k%, ceiling(lo) , floor(hi)]))))),
         tmp_sum  : minfactorial(factcomb(makefact(subst(%n%=%i%, sm)))),
