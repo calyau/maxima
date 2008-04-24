@@ -63,9 +63,8 @@
                         ((mlist) $gnuplot_term $default)
                         ((mlist) $gnuplot_out_file nil)
                         ;; With adaptive plotting, 100 is probably too
-                        ;; many ticks.  I (rtoy) think 10 is a more
-                        ;; reasonable default.
-                        ((mlist) $nticks 10)
+                        ;; many ticks.
+                        ((mlist) $nticks 29)
                         ;; Controls the number of splittings
                         ;; adaptive-plotting will do.
                         ((mlist) $adapt_depth 5)
