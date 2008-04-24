@@ -835,7 +835,7 @@
 
 	   ((setq exp (sumsum exp i lo hi))
 	    (setq exp (m* *times (dosum (cadr exp) (caddr exp)
-					(cadddr exp) (cadr (cdddr exp)) t))))
+					(cadddr exp) (cadr (cdddr exp)) t :evaluate-summand nil))))
 	   (t (return (m+l *plus))))
      (return (m+l (cons exp *plus)))))
 
@@ -1028,9 +1028,9 @@
 	      (progn
 		(adsum (m* y (m^ 2 (car n))))
 		(when (mlsp h1 (car n))
-		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*) *var* (m+ h1 1) (car n) t))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*) *var* (m+ h1 1) (car n) t :evaluate-summand nil))))
 		(when (> c 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*) *var* 0 (m- c 1) t)))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*) *var* 0 (m- c 1) t :evaluate-summand nil)))))
 	      (adusum e))))
 
        ;; sum(binomial(b-k,k),k,0,floor(b/2))=fib(b+1)
@@ -1047,7 +1047,7 @@
 	      (progn
 		(adsum (m* y ($fib (m+ a1 1))))
 		(when (> l1 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) (m- a1 *var*) *var*) *var* 0 (m- l1 1) t)))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (m- a1 *var*) *var*) *var* 0 (m- l1 1) t :evaluate-summand nil)))))
 	      (adusum e))))
 
        ;; sum(binomial(n,2*k),k,0,floor(n/2))=2^(n-1)
@@ -1063,7 +1063,7 @@
 	      (progn
 		(adsum (m* y (m^ 2 (m- a 1))))
 		(when (> l1 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) a (m* *var* 2)) *var* 0 (m- l1 1) t))))))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) a (m* *var* 2)) *var* 0 (m- l1 1) t :evaluate-summand nil))))))))
 
        ;; other sums we can't do
        (t
@@ -1074,7 +1074,7 @@
 (defmspec $product (l)
   (setq l (cdr l))
   (cond ((not (= (length l) 4)) (merror "Wrong no. of args to product"))
-	((dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) nil))))
+	((dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) nil :evaluate-summand t))))
 
 (declare-top (special $ratsimpexpons))
 

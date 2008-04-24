@@ -902,6 +902,50 @@ log (product (a*%e^x(i), i, 1, T)), logexpand=all;
  */
 sum (log(a) + x(i), i, 1, T);
 
+/* bug reported to mailing list 2008-04-17:
+ * simpsum causes two evaluations of summand, should be only one
+ */
+(bar (x, y) := sum (F (i, x, y), i, 1, n),
+ ev (bar (y, x), simpsum=false));
+'sum (F (i, y, x), i, 1, n);
+
+ev (bar (y, x), simpsum=true);
+'sum (F (i, y, x), i, 1, n);
+
+/* original problem */
+
+(kill (all),
+ geom(x,m,n):= (x^m-x^(n+1))/(1-x),
+ B(s,sp):=-phi[1](s)*phi[1](s+sp)*phi[0](s+sp)/(1-phi[1](s+sp)*phi[0](s +sp))
+ +(1-phi[1](s))*sum((phi[1](s)*phi[0](s))^n*(
+     geom( (phi[0](s+sp)*phi[1](s+sp))/(phi[0](s)*phi[1](s)), 1, n-1 )
+     -phi[1](s+sp)/phi[1](s)
+     *geom((phi[0](s+sp)*phi[1](s+sp))/(phi[0](s)*phi[1](s)), 0, n-1))
+   , n , 1, inf ),
+ A(s):=phi[1](s)*(1+phi[0](s))/(1-phi[1](s)*phi[0](s)),
+ C(s,sp):=A(s+sp)+B(s,sp)+B(sp,s),
+ 0);
+0;
+
+(expr_1 : ev (C (s, sp), simpsum=false),
+ expr_2 : ev (C (s, sp), simpsum=true),
+ is (expr_1 = expr_2));
+true;
+
+(expr_1 : ev (C (sp, s), simpsum=false),
+ expr_2 : ev (C (sp, s), simpsum=true),
+ is (expr_1 = expr_2));
+true;
+
+is (sublis ([s=sp, sp=s], C (s, sp)) = C (s, sp)), simpsum;
+true;
+
+is (sublis ([s=sp, sp=s], C (sp, s)) = C (sp, s)), simpsum;
+true;
+
+is (C (sp, s) = C (s, sp)), simpsum;
+true;
+
 /* Tests for fbino in combin.lisp */
 sum(binomial(n-k,k), k, 0, floor(n/2)), simpsum;
 fib(n+1);

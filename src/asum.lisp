@@ -356,7 +356,7 @@ summation when necessary."
 (defmspec $sum (l)
   (setq l (cdr l))
   (if (= (length l) 4)
-      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
+      (dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t :evaluate-summand t)
       (wna-err '$sum)))
 
 (defmspec $lsum (l)
@@ -422,7 +422,7 @@ summation when necessary."
 ;;  - return 0/1 for empty sum/product. sumhack/prodhack are ignored
 ;;  - distribute sum/product over mbags when listarith = true
 
-(defun dosum (expr ind low hi sump)
+(defun dosum (expr ind low hi sump &key (evaluate-summand t))
   (setq low (ratdisrep low) hi (ratdisrep hi)) ;; UGH, GAG WITH ME A SPOON
   (if (not (symbolp ind))
       (merror "~:M: bad index ~M (must be a symbol)~%" (if sump '$sum '$product) ind))
@@ -431,7 +431,7 @@ summation when necessary."
 	  (setq lind (cons ind nil))
 	  (cond
 	    ((not (fixnump (setq *hl (m- hi low))))
-	     (setq expr (mevalsumarg expr ind low hi))
+	     (if evaluate-summand (setq expr (mevalsumarg expr ind low hi)))
 	     (return (cons (if sump '(%sum) '(%product))
 			   (list expr ind low hi))))
 	    ((signp l *hl)
