@@ -1047,7 +1047,7 @@
 	      (progn
 		(adsum (m* y ($fib (m+ a1 1))))
 		(when (> l1 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) a1 *var*) *var* 0 (m- l1 1) t)))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (m- a1 *var*) *var*) *var* 0 (m- l1 1) t)))))
 	      (adusum e))))
 
        ;; sum(binomial(n,2*k),k,0,floor(n/2))=2^(n-1)
