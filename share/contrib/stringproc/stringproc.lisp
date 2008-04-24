@@ -3,7 +3,7 @@
 ;;;;
 ;;;;  Maxima string processing
 ;;;;
-;;;;  Version       : 3.0 (march 2008)
+;;;;  Version       : 3.1 (april 2008)
 ;;;;  Copyright     : 2005-2008 Volker van Nek
 ;;;;  Licence       : GPL2
 ;;;;
@@ -52,7 +52,7 @@
   (if (not (stringp str))
     (merror "make_string_input_stream: first argument must be a string."))
   (or (ignore-errors ;; suppresses Lisp error outputs with internal 0-based indexing 
-        (make-string-input-stream str (1- start) end))
+        (make-string-input-stream str (1- start) (if end (1- end))))
       (merror "make_string_input_stream: improper start or end index.")))
 
 
@@ -399,11 +399,13 @@
 (defun $ssearch (seq str &rest args)  ;; 1-based indexing!
   (if (not (and (stringp seq) (stringp str)))
     (merror "ssearch: first two arguments must be strings."))
-  (setq args 
+  (setq args
     (stringproc-optional-args "ssearch" args))
-  (or (ignore-errors 
-        (meval `(ssearch ,seq ,str ,@args)))
-      (merror "ssearch: improper arguments.")))
+  (let ((index t))
+    (ignore-errors (setq index (meval `(ssearch ,seq ,str ,@args))))
+    (if (or (integerp index) (equal index nil))
+      index
+      (merror "ssearch: improper arguments."))))
 ;;
 (defun ssearch (seq str &optional (test '$sequal) (start 1) (end nil))
   (let ((pos (search seq str :test (stripdollar test) :start2 (1- start) :end2 (if end (1- end)))))
