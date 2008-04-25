@@ -150,16 +150,17 @@ draw_graph(G, [options]) := block(
       set_positions(v_pos, G)),
 
     /* Normalize positions into [-1,1]x[-1,1] */
-    x_max : lmax(map(lambda([u], part(u, 2, 1)), v_pos)),
-    x_min : lmin(map(lambda([u], part(u, 2, 1)), v_pos)),
-    y_max : lmax(map(lambda([u], part(u, 2, 2)), v_pos)),
-    y_min : lmin(map(lambda([u], part(u, 2, 2)), v_pos)),
-    v_pos : map(
-      lambda([u],
-        [part(u, 1),
-         [2*(part(u, 2, 1) - (x_min+x_max)/2)/(x_max-x_min),
-          2*(part(u, 2, 2) - (y_min+y_max)/2)/(y_max-y_min)]]),
-      v_pos),
+    if length(v_pos)>1 then (
+      x_max : lmax(map(lambda([u], part(u, 2, 1)), v_pos)),
+      x_min : lmin(map(lambda([u], part(u, 2, 1)), v_pos)),
+      y_max : lmax(map(lambda([u], part(u, 2, 2)), v_pos)),
+      y_min : lmin(map(lambda([u], part(u, 2, 2)), v_pos)),
+      v_pos : map(
+        lambda([u],
+          [part(u, 1),
+          [2*(part(u, 2, 1) - (x_min+x_max)/2)/(x_max-x_min),
+           2*(part(u, 2, 2) - (y_min+y_max)/2)/(y_max-y_min)]]),
+        v_pos)),
 
     /* Setup edges */
     if show_edges#[] then (
