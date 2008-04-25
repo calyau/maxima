@@ -316,7 +316,7 @@
        `((mlist simp) ,d ,v)))))
 
 (defun $min_degree (gr)
-  (require-graph 'max_degree 1 gr)
+  (require-graph 'min_degree 1 gr)
   (cond
     ((= 0 (graph-size gr))
      ($error "min_degree: no min degree in an empty graph."))
@@ -1743,7 +1743,7 @@
   (require-graph 'max_clique 1 gr)
   (setq *maximum-clique* ())
   (let ((v) (coloring) (h ($copy_graph gr)))
-    (do () ((= (length *maximum-clique*) (graph-size h)))
+    (do () ((>= (length *maximum-clique*) (graph-size h)))
       (setq coloring (greedy-color h))
       (setq v ($second ($max_degree h)))
       (extend-clique `(,v) (neighbors v h) coloring h)
