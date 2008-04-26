@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.11 2006-07-30 19:27:22 villate Exp $
+#       $Id: Plotdf.tcl,v 1.12 2008-04-26 20:39:31 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -44,6 +44,10 @@ set plotdfOptions {
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
     {labelposition "10 15" "Position for the curve labels nw corner"}
+    {psfile "" "A filename where the graph will be saved in PostScript."}
+    {nobox 0 "if not zero, do not draw the box around the plot."}
+    {axes "xy" "if zero, no axes are drawn. x, y or xy to draw the axes."}
+    {nolegend 0 "if not zero, do not write down the legend."}
 }
 
 proc makeFrameDf { win } {
