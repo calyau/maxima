@@ -136,7 +136,7 @@
           (merror "read_hashed_array no such file `~a'" file-name))))))
 
 (defun read-hashed-array-from-stream (in A sep-ch-flag)
-  (let (key L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
+  (let (key L (sep-ch (get-input-sep-ch sep-ch-flag in)))
     (loop
       (setq L (read-line in nil 'eof))
       (if (eq L 'eof) (return))
@@ -159,7 +159,7 @@
           (merror "read_nested_list: no such file `~a'" file-name))))))
 
 (defun read-nested-list-from-stream (in sep-ch-flag)
-  (let (A L (sep-ch (get-input-sep-ch sep-ch-flag (truename in))))
+  (let (A L (sep-ch (get-input-sep-ch sep-ch-flag in)))
     (loop
       (setq L (read-line in nil 'eof))
       (if (eq L 'eof)
@@ -197,7 +197,7 @@
           (merror "read_list: no such file `~a'" file-name))))))
 
 (defun read-list-from-stream (in sep-ch-flag mode n)
-  (let (A x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag (truename in)))))
+  (let (A x (sep-ch (if (eq mode 'text) (get-input-sep-ch sep-ch-flag in))))
     (loop
       (if
         (or
@@ -340,11 +340,11 @@
     '$done))
 
 (defun write-matrix (M out sep-ch-flag mode)
-  (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))))
+  (let ((sep-ch (get-output-sep-ch sep-ch-flag out)))
     (mapcar #'(lambda (x) (write-list-lowlevel (cdr x) out sep-ch mode)) (cdr M))))
 
 (defun write-lisp-array (A out sep-ch-flag mode)
-  (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))) (d (array-dimensions A)))
+  (let ((sep-ch (get-output-sep-ch sep-ch-flag out)) (d (array-dimensions A)))
     (write-lisp-array-helper A d '() out sep-ch mode)))
 
 (defun write-lisp-array-helper (A d indices out sep-ch mode)
@@ -366,7 +366,7 @@
 (defun write-hashed-array (A out sep-ch-flag mode)
   (let
     ((keys (cdddr (meval (list '($arrayinfo) A))))
-     (sep-ch (get-output-sep-ch sep-ch-flag (truename out)))
+     (sep-ch (get-output-sep-ch sep-ch-flag out))
      L)
     (loop
       (if (not keys) (return))
@@ -376,7 +376,7 @@
       (write-list-lowlevel (append (cdr (pop keys)) L) out sep-ch mode))))
 
 (defun write-list (L out sep-ch-flag mode)
-  (let ((sep-ch (get-output-sep-ch sep-ch-flag (truename out))))
+  (let ((sep-ch (get-output-sep-ch sep-ch-flag out)))
     (write-list-lowlevel (cdr L) out sep-ch mode)))
 
 (defun write-list-lowlevel (L out sep-ch mode)
@@ -402,14 +402,14 @@
                   (merror "write_data: unrecognized mode")))))))))
   (finish-output out))
 
-(defun get-input-sep-ch (sep-ch-flag file-name)
+(defun get-input-sep-ch (sep-ch-flag my-stream)
   (cond
     ((eq sep-ch-flag '$tab)
      (format t "numericalio: separator flag ``tab'' not recognized for input; assume ``space'' instead.~%")
      #\space)
-    (t (get-output-sep-ch sep-ch-flag file-name))))
+    (t (get-output-sep-ch sep-ch-flag my-stream))))
 
-(defun get-output-sep-ch (sep-ch-flag file-name)
+(defun get-output-sep-ch (sep-ch-flag my-stream)
   (cond
     ((eq sep-ch-flag '$space) #\space)
     ((eq sep-ch-flag '$tab) #\tab)
@@ -418,7 +418,9 @@
     ((eq sep-ch-flag '$semicolon) '$\;)
 
     ((null sep-ch-flag)
-      (cond ((equal (pathname-type file-name) "csv") '$\,)
+      (cond
+        ((ignore-errors (equal (pathname-type (truename my-stream)) "csv"))
+         '$\,)
         (t #\space)))
     (t
       (format t "numericalio: separator flag ~S not recognized; assume ``space''.~%" (stripdollar sep-ch-flag))
