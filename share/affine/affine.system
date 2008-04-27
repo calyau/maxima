@@ -2,15 +2,11 @@
 
 (in-package :maxima)
 
-(defvar *maxima-affinedir*
-  (combine-path (list *maxima-sharedir* "affine")))
+(defvar *maxima-affinedir* (combine-path *maxima-sharedir* "affine"))
 
 (mk:defsystem "affine"
     :source-extension "lisp"
-    :binary-pathname (combine-path
-		      (list *maxima-affinedir*
-			    (concatenate 'string
-					 "binary-" *maxima-lispname*)))
+    :binary-pathname (combine-path *maxima-affinedir* (concatenate 'string "binary-" *maxima-lispname*))
     :components ((:file "sys-declaim" :load-only t)
 		 (:file "sloop")
 		 (:file "compat")       ;new
