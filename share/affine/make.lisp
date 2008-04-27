@@ -21,7 +21,7 @@
 ;;Alternately you may specify dependency information (see :depends below).
 
 
-;;****** Sample file which when loaded causes system ALGEBRA 
+;;****** Sample file which when loaded causes system ALGEBRA
 ;;              to be compiled and loaded ******
 
 ;;(require "MAKE")
@@ -32,7 +32,7 @@
 ;;(make :algebra :compile t)
 
 ;;  More complex systems may need to do some special operations
-;;at certain points of the make.  
+;;at certain points of the make.
 ;;the tree of files may contain some keywords which have special meaning.
 ;;eg. '(a b (:progn (gbc) (if make::*compile*
 ;;                                  (format t "A and B finally compiled")))
@@ -42,11 +42,11 @@
 ;;then during the load and compile phases the function (gbc) will be
 ;;called after a and b have been acted on, and during the compile phase
 ;;the message about "A and B finally.." will be printed.
-;;the lisp files h and i will be loaded after merging the paths with 
+;;the lisp files h and i will be loaded after merging the paths with
 ;;the source directory.  This feature is extensible: see the definitions
 ;;of :load-source and :progn.
 
-;;  The keyword feature is extensible, and you may specify what 
+;;  The keyword feature is extensible, and you may specify what
 ;;happens during the load or compile phase for your favorite keyword.
 ;;To do this look at the definition of :progn, and :load-source
 ;;in the source for make.
@@ -116,9 +116,9 @@
 ;;this is the main entry point
 
 (defun make (system &key recompile compile batch object-path source-path
-		    show
-		    &aux files *depends* *when-compile*
-		    *show-files-loaded*)
+	     show
+	     &aux files *depends* *when-compile*
+	     *show-files-loaded*)
 
   "SYSTEM is a tree of files, or a symbol with :make property.  It
 loads all file files in system.  If COMPILE it will try to compile
@@ -140,14 +140,12 @@ the :object-path property of SYSTEM.  Similarly for :source-path"
 		 (error "Use :make property, :files property is obssolet{!")))
 	 )
 	(t (setf files system)))
-  (let (#+lispm ( si::inhibit-fdefine-warnings
-		 (if batch :just-warn  si::inhibit-fdefine-warnings)))
-    (let ((*depends*  (if (or compile recompile) (get-depends system)))
-	  *depends-new*)
+  (let ((*depends*  (if (or compile recompile) (get-depends system)))
+	*depends-new*)
     (dolist (v files)
-	    (when (or compile recompile)
-		    (compile-files v recompile))
-	    (load-files v recompile)))))
+      (when (or compile recompile)
+	(compile-files v recompile))
+      (load-files v recompile))))
 
 (defun system-load (system-name &rest names)
   "If :infor is a system, (system-load :uinfor joe betty) will load
@@ -155,7 +153,7 @@ joe and betty from the object-path for :uinfor"
   (load-files names t (get system-name :object-path)))
 
 (defun system-compile (system-name &rest names)
-				  
+
   "If :iunfor is a system, (system-compile :uinfor joe) will in the
 source path for joe and compile him into the object path for :uinfor"
   (compile-files names t :source-path
@@ -172,7 +170,7 @@ source path for joe and compile him into the object path for :uinfor"
 	   ((eq (car v) :depends)
 	    (push (cdr v) result ))))
     result)
-	   
+
 #+kcl
 (setq si::*default-time-zone* 6)
 
@@ -186,15 +184,14 @@ source path for joe and compile him into the object path for :uinfor"
 			   "Jul" "Aug" "Sep" "Oct" "Nov" "Dec"))
 		day
 		hr min sec yr)))
-	       
+
 ;;This is an awfully roundabout downcase, but some machines
-;;like symbolics swap cases on the pathname, so we have to do an extra 
+;;like symbolics swap cases on the pathname, so we have to do an extra
 ;;swap!!
 (defun lowcase (na &aux (*print-case* :downcase))
   (pathname-name (pathname  (format nil "~a" na))))
 
 (defun our-merge (name path &optional ign  ) ign
-  #+lispm (setq name (string-upcase (string name)))
     (make-pathname :name (string name)
 		   :type (pathname-type path)
 		   :version (pathname-version path)
@@ -210,7 +207,7 @@ source path for joe and compile him into the object path for :uinfor"
 		       to-link)))
 
 (setf (get :link 'compile)
-      #'(lambda (path to-link) 
+      #'(lambda (path to-link)
 	   to-link
 	  (compile-files  path *force*)))
 
@@ -319,8 +316,8 @@ source path for joe and compile him into the object path for :uinfor"
 (defun make-load-file (l)
   (format t "~%Fake loading ~a" (namestring(object l))))
 
- 
-		  
+
+
 
 (defun compile-files (files &optional (*force*  *force*)
 			    &key (source-path source-path)
@@ -342,20 +339,16 @@ source path for joe and compile him into the object path for :uinfor"
 	 (let ((fun (get (car files) 'compile)))
 	   (if fun (apply fun (cdr files)))))
 	(t (dolist (v files) (compile-files v *force*)))))
-;;Return 
+;;Return
 (defun system-files (system &aux *files*)
   (declare (special *files*))
   (let ((sys (get system :make)))
     (get-files1 sys))
   (nreverse *files*))
 
-   
+
 (defun get-files1 (sys)
   (cond ((and sys (atom sys) )(pushnew sys *files*))
 	((eq (car sys) :serial) (get-files1 (cdr sys)))
 	((keywordp (car sys)))
 	(t (sloop for v in sys do (get-files1 v)))))
-
-
-
-

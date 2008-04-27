@@ -13,7 +13,7 @@
   (setq pss  (compose-rmap (zopen-coord ichart)
 			   (zopen-coord zopen)))
   (setq qss
-	(compose-rmap 
+	(compose-rmap
 		 (zopen-inv zopen)
 		 (zopen-inv ichart)))
   (setq ineq (function-numerator (apply-rmap (zopen-inv ichart) (zopen-inequality zopen))))
@@ -68,12 +68,12 @@
 	   (show op codim)
 	   (format t "~%The ~A blowup: the ~A component of the ~A open of codimension ~A."
 		   i (second op) (car op) codim)
-	   
+
 	   (setq new-pls (blowup-pls current-pls (nth (car op) (pls-opens red-pls))
 				   (ldata-eqns  (nth (second op)
 					  (nth (car op) (pls-data red-pls))))
 				     :simplify-homogeneous (null one-open)))
-	   
+
 	   and
 	   collecting (list (format nil "Before the ~A blowup the homogeneous equations on one of the nontrivial opens looked like :" i)current-pls) into blew-up
 	   and
@@ -84,22 +84,22 @@
 	(setq first-time nil)
 	(sloop for ii from 0
 	      for ope in (pls-opens new-pls)
-              do
+	      do
 	      (setq red-pls (simplify-svar-ldata
 			     (open-sub-scheme new-pls ii)))
-	      	      (show ii (length (pls-data red-pls)))
+		      (show ii (length (pls-data red-pls)))
 	      (format t "Open history: ~A" (zopen-history  (car (pls-opens current-pls))))
 	      when (pls-data red-pls)
 	      do
 	      (cond (one-open (setq current-pls (open-sub-scheme new-pls ii)))
 		    (t (setq current-pls new-pls)))
 	      (format t "~%Taking the ~A open with history " ii)
-		      	      (loop-return 'done)
+			      (loop-return 'done)
 	      else do (format t "~%The ~A open is empty")
 	      finally (return-from sue  (append already-blown-up blew-up)))
 	finally (loop-return (list (append already-blown-up blew-up) i))))
 ;(defun blowup-pls-using-choices (pls n &key (query-user t) (one-open t) already-blown-up
-;				 (number-to-reduce 3) &aux (current-pls pls) choice  
+;				 (number-to-reduce 3) &aux (current-pls pls) choice
 ;				   )
 ;  (sloop named sue for i from n  while (pls-data current-pls)
 ;	with new-pls =  current-pls
@@ -135,7 +135,7 @@
 ;	   collecting (list
 ;			(format nil "~%The ~A blowup was by :"
 ;				i ) (second choice) (third choice))
-;	   
+;
 ;	   into blew-up
 ;
 ;	do
@@ -161,10 +161,10 @@
 (defun eliminate-empty-and-larger-opens ( pls &aux pairs)
   (sloop for v in (pls-opens pls)
 	for lis-dat in (pls-data pls)
-	when lis-dat 
+	when lis-dat
 	collecting (cons v lis-dat) into paired-dat
 	finally
-;	(setq paired-dat  (eliminate-smaller paired-dat :key 'car	
+;	(setq paired-dat  (eliminate-smaller paired-dat :key 'car
 ;					       :test 'zopen-special-subset))
 	(loop-return (construct-pre-ldata-sheaves :opens (mapcar 'car paired-dat)
 					     :data (mapcar 'cdr paired-dat)))))
@@ -199,23 +199,23 @@
 		    (setq new-pls (blowup-pls current-pls (second choice)
 					      (ldata-eqns (third choice))
 					      :simplify-homogeneous t)))
-		  (cond (new-pls 
+		  (cond (new-pls
 			 (setq new-pls (eliminate-empty-and-larger-opens new-pls))
 			 (loop-return 'done)))
 		  finally (fsignal "Ran out of choices"))
-   	   and
+	   and
 	   collecting (list
 			(format nil "~%The ~A blowup was by equations on the ~A open :"
 				i current-op-number ) (second choice) (third choice))
 	   into blew-up
 	   and
 	   collecting (list (format nil "After the ~A blowup the homogeneous equations ~
-             on one of the nontrivial opens looked like :" i)new-pls)
+	     on one of the nontrivial opens looked like :" i)new-pls)
 	   into blew-up
 	   and do (setq *blew-up* blew-up)
 	do (push *blew-up* *previous-blowups*) (setq *blew-up* blew-up)
 ;	(user:write-object "Alonzo:wfs>blew-up.tem" (nthcdr (f- (length *blew-up*) 2)
-;							    *blew-up*)) 
+;							    *blew-up*))
 	(setq first-time nil)
 	(setq choices
 	      (provide-some-choices-to-blowup new-pls
@@ -239,7 +239,7 @@
 					:already-blown-up (list part) :number-to-reduce
 					number-to-reduce))
 
-	(use-blewup 
+	(use-blewup
 	 (let ((las (nth  (f1- (length *blew-up*)) *blew-up*))
 	       (blas (nth  (f- (length *blew-up*) 2) *blew-up*))
 	       (n (quotient (length *blew-up*) 2)))
@@ -248,7 +248,7 @@
 	   (blowup-pls-using-choices pls n :query-user query-user :one-open one-open
 				     :number-to-reduce number-to-reduce
 				     :already-blown-up *blew-up*)))))
-	
+
 
 ;(defun restart-blowup  (&key one-open query-user after &aux pls)
 ;  (let ((las (nth  (f1- (length *blew-up*)) *blew-up*))
@@ -290,7 +290,7 @@
     ((or (null  query-user)
 	 (yes-or-no-p " Simplify and provide choices of open and equation "))
      (sloop for lis-ld in (pls-data new-pls)
-           when lis-ld	   	   
+	   when lis-ld
 	   collecting (setq len (length (ldata-eqns (car lis-ld)))) into tem
 	   and
 	   collecting (setq pcomp
@@ -298,7 +298,7 @@
 	   into tem1
 	   else collecting 0 into tem
 	   and collecting 0 into tem1
-           when lis-ld
+	   when lis-ld
 	   minimize len into the-min1
 	   and
 	   maximize len into the-max1
@@ -327,24 +327,24 @@
 			   op (car lis-ld) ) choices))
      (cond(query-user (user-supply check-the-worst)))
      (cond (query-user (user-supply opens-not-to-try)
- 		       (user-supply opens-to-try)))
-	   
-	   (sloop for ii from 0   
+		       (user-supply opens-to-try)))
+
+	   (sloop for ii from 0
 		 for op in (pls-opens new-pls)
 		 when
 		 (and (null (member ii opens-not-to-try :test #'equal))
-		      (or 
+		      (or
 			(< (length some-red) number-to-reduce) (member ii opens-to-try :test #'equal)))
 		 do  (push ii opens-not-to-try) (format t "~%Reducing the ~A open" ii)
 		 (show ii opens-not-to-try (member ii opens-not-to-try :test #'equal)
 		       (null (member ii opens-not-to-try :test #'equal)))
-		 (setq red-pls 
+		 (setq red-pls
 		       (simplify-svar-ldata (open-sub-scheme new-pls ii)))
 		 (push (car (make-component-history red-pls))(zopen-history op))
 		 and
 		 when (null (pls-data red-pls))
 		 do (setf (nth  ii (pls-data new-pls)) nil)
-		 
+
 		 else collecting red-pls into some-red
 		 finally
 		 (show the-max opens-not-to-try where-the-max)
@@ -355,7 +355,7 @@
 		       (t (setq some-red-pls some-red))))
 	   (setq red-choices
 		 (sloop for red-pls in some-red-pls
-		       appending 
+		       appending
 		       (sloop for lis-ld in (pls-data red-pls)
 			     for op in (pls-opens red-pls)
 			     appending
@@ -364,7 +364,7 @@
 	   (setq red-choices (sort red-choices
 				   #'(lambda (u v) (order-ldata (third u) (third v)))))
 	   (setq choices (append red-choices choices))
- 	   (push some-red-pls *Reduced-history*)
+	   (push some-red-pls *Reduced-history*)
 	   (cond ( query-user
 		  (sloop while (yes-or-no-p "Show the reduced pls's?")
 			do (des some-red-pls))))
@@ -385,20 +385,20 @@
 						(cons (nth n choices)
 						      (delete-nth n choices))))
 					     (t nil)))))
-			
+
 			))
 		 (t  choices)))
      (t
        (sloop do
 	     (format  t "enter a form to evaluate giving (list nil open ldata-to-blowup) ~
-             or T to enter pls and component numbers: ")
-	     	     
+	     or T to enter pls and component numbers: ")
+
 	     (setq answ   (eval (read)))
 	     (cond ((atom answ)
 		    (user-supply a-red-pls)
 	     (user-supply an-open-number)
 	     (user-supply component-number)
-                    (setq answ
+		    (setq answ
 			  (list nil
 				(nth an-open-number (pls-opens  a-red-pls))
 				(nth component-number (nth an-open-number (pls-data
@@ -411,9 +411,9 @@
 
 
 (defun sort-the-reduced-history (some-red-pls  &aux red-choices)
-  	   (setq red-choices
+	   (setq red-choices
 		 (sloop for red-pls in some-red-pls
-		       appending 
+		       appending
 		       (sloop for lis-ld in (pls-data red-pls)
 			     for op in (pls-opens red-pls)
 			     appending
@@ -453,10 +453,10 @@
 ;	   (show op codim)
 ;	   (format t "~%The ~A blowup: the ~A component of the ~A open of codimension ~A."
 ;		   i (second op) (car op) codim)
-;	   
+;
 ;	   (setq new-pls (blowup-pls current-pls (nth (car op) (pls-opens red-pls))
 ;				     (nth (second op) (nth (car op) (pls-data red-pls)))))
-;	   
+;
 ;	   and
 ;	   collecting (list (format nil "Before the ~A blowup the homogeneous equations on one of the nontrivial opens looked like :" i)current-pls) into blew-up
 ;	   and
@@ -470,12 +470,12 @@
 ;              do
 ;	      (setq red-pls (simplify-svar-ldata
 ;			     (open-sub-scheme new-pls ii)))
-;	      	      (show ii (length (pls-data red-pls)))
+;		      (show ii (length (pls-data red-pls)))
 ;	      (format t "Open history" (zopen-history  (car (pls-opens current-pls))))
 ;	      when (pls-data red-pls)
 ;	      do (setq current-pls (open-sub-scheme new-pls ii))
 ;	      (format t "~%Taking the ~A open with history " ii)
-;		      	      (return 'done)
+;			      (return 'done)
 ;	      else do (format t "~%The ~A open is empty")
 ;	      finally (return-from sue  blew-up))
 ;	finally (return (list blew-up i))))
@@ -488,7 +488,7 @@
 ;	(format t "~%The ~A blowup: the ~A component of the ~A open of codimension ~A."
 ;		i (second op) (car op) codim)
 ;	(setq current-pls (copy-tree (s-blow current-pls (car op) (second op))))))
-	
+
 
 ;;performs the transform of a list of equations into new equations on the
 ;;ITH blowup of the FIRSTK coordinates  AMBIENT-DIM space
@@ -515,17 +515,17 @@
    (format t "~%Exceptional divisor is ~/maxima::tilde-q-fsh/." (xxx ith))
    (setq answ
 	 (cdr (eliminate-common-factors (cons (pexpt (xxx ith) 10) (ldata-eqns trans) ))))
-   
-   
+
+
    ;(setq answ($cancel_factors_and_denominators (cons '(mlist)(ldata-eqns trans))
 ;					       (list (xxx ith))
-					       ;;homogeneous cancellation 
+					       ;;homogeneous cancellation
 ;					       t))
    (setf (ldata-eqns trans ) answ)
    trans)
 
-  
-	
+
+
 ;
 ;(defun blowup-sheaf (pls firstk &key opens-not-to-blowup opens-to-blowup
 ;		     simplify-homogeneous
@@ -593,7 +593,7 @@
 	  for  dl in data
 
 	  for ii from 0
-	  	  do  	  (des dl)
+		  do	  (des dl)
 	  when (or (and (null opens-to-blowup) (not (member ii opens-not-to-blowup :test #'eq)))
 		   (member ii opens-to-blowup :test #'eq))
 	  do (format t "~%Blowing up open number ~A " ii)
@@ -602,9 +602,9 @@
 	  appending
 	  (sloop for i from 1 to firstk
 		do (setq tem (iblowup op i firstk))
-                (setq pt (sloop for ldat in dl
+		(setq pt (sloop for ldat in dl
 			       do (iassert (ldatap ldat))
-	                       collecting
+			       collecting
 			       (proper-transform ldat
 						 i firstk dim)))
 		(iassert (eq (car tem) 'zopen))
@@ -654,7 +654,7 @@
 ;							    coords-for-fn
 ;							    :subs subs)))
 ;		     inequality (function-numerator(apply-rmap rmap (ldata-inequality fns)
-;					    	    :coords-for-fn
+;						    :coords-for-fn
 ;							    coords-for-fn
 ;							    :subs subs))))
 ;	((or (polynomialp (car fns))
@@ -684,7 +684,7 @@
 ;							    coords-for-fn
 ;							    :subs subs)))
 ;		     inequality (function-numerator(apply-rmap rmap (ldata-inequality fns)
-;					    	    :coords-for-fn
+;						    :coords-for-fn
 ;							    coords-for-fn
 ;							    :subs subs))))
 ;	((or (polynomialp (car fns))
@@ -709,7 +709,7 @@
 		       (simple-rat-sublis subs fns)))
 	   (process-sleep 5)
 	   answ)
-	     
+
 	  ((eq (car fns) 'ldata)
 	   (make-ldata :eqns
 		       (sloop for v in (ldata-eqns fns)
@@ -733,9 +733,9 @@
 (defun ldatap (obj)
   (and (consp obj)(eq (car obj) 'ldata)))
 ;
-;;  
+;;
 ;;;;idea is to take the eqns in ldata and
-;;;;construct an rmap to a coordinate system where the 
+;;;;construct an rmap to a coordinate system where the
 ;;;;elements of ldata are transformed to the first n
 ;;;;eqns where n is the number of eqns in ldata
 ;;;;we need the ldata since the gg is necessary to figure out which
@@ -773,7 +773,7 @@
 ;;	(sublis   (pairlis newvars    *xxx*)
 ;;                 all-eqns))
 ;;  (setq lis (make-list dim))
-;;   (sloop for v in all-vari 
+;;   (sloop for v in all-vari
 ;;		       for u in all-eqns
 ;;		       do (setq n (find-position-in-list v *xxx*))
 ;;		       (setf (nth n lis) u))
@@ -781,9 +781,9 @@
 ;;   (setq gg (num  (apply-rmap map gg)))
 ;;   (setq fns (construct-rmap fns))
 ;;  (make-zopen coord fns inv (construct-rmap lis) inequality  gg))
-;  
+;
 ;;;idea is to take the eqns in ldata and
-;;;construct an rmap to a coordinate system where the 
+;;;construct an rmap to a coordinate system where the
 ;;;elements of ldata are transformed to the first n
 ;;;eqns where n is the number of eqns in ldata
 ;;;we need the ldata since the gg is necessary to figure out which
@@ -819,7 +819,7 @@
 ;  (setq new-eqns
 ;	(sloop for w in new-eqns
 ;		       collecting (cons (psublis subs 1 (car w))
-;  					(psublis subs 1 (cdr w)))))
+;					(psublis subs 1 (cdr w)))))
 ;;   (setq all-subs (append subs (my-pairlis vari new-eqns)))
 ;  (setq new-eqns  (append new-eqns rest-new))
 ;;  (make-zopen coord vari inv (append new-eqns rest-new)
@@ -837,13 +837,13 @@
 ;  (setf (rmap-fns map) new-eqns)
 ;  (setf (rmap-denom map) (gen-psublis newvars *xxx* (rmap-denom map)))
 ;  map)
-  
+
 
 
 ;  "takes as arguments a list of polys or rat'l fns and tries to make
 ; these into the first coordinates.  It tries to find the inverse.
 ; It will check whether it has found the inverse, and error if not
-; 
+;
 ; some variable.    It collects these linear variables and then completes
 ; them to get a list up to the  dimension of the space.  (f1,f2, ..
 ; fm,xi1,xi2,..) is then the set of coordinates,  and it calculates the
@@ -857,7 +857,7 @@
 				     coords
 				     newvar coord-eqns solu dif-eqns other-monoms other-variables)
   (setq newvar (unused-variables dim))
-  (setq dif-eqns  (sloop for v in eqns 
+  (setq dif-eqns  (sloop for v in eqns
 	for u in newvar
 	collecting
 	(function-numerator (n- v  (list u 1 1)))))
@@ -898,7 +898,7 @@
 			 (construct-rmap coords) :inv (construct-rmap fns) :inequality gg))
   (cond (check-inverse (check-zopen-inv answ)))
   answ)
-;  
+;
 ;(defun make-normal-zopen (eqns dim gg &aux (check-inverse t)
 ;     variables  fns tem all-variables answ
 ;				     coords
@@ -981,7 +981,7 @@
   (setq op (make-normal-zopen eqns (zopen-dim zopen) inequality ))
   (setq answ (copy-list zopen))
   (set-slots answ zopen-  coord (compose-rmap (zopen-coord op) (zopen-coord zopen))
-	      inv (compose-rmap (zopen-inv zopen) (zopen-inv op))	
+	      inv (compose-rmap (zopen-inv zopen) (zopen-inv op))
 	      inequality (function-numerator (apply-rmap (zopen-inv op) inequality)))
   (cond (data  (setq data (apply-rmap (zopen-inv op) data))))
   (values  answ data))
@@ -989,7 +989,7 @@
 
 (defun normalize-zopen-in-pls (pls zopen-number eqns
 			       &key copy &aux new-open opens open lis-dat MAPL )
-  
+
   (cond (copy (setq pls (copy-tree pls)))
 	(t (setq pls (copy-list-structure pls))))
   (setq opens (pls-opens pls))
@@ -1040,7 +1040,7 @@
 
 ;;should return an open cover such that the functions are all linear
 ;;they should start out well prepared.  You  shortest such covering
-;;Note some functions depend on the fact that the first 
+;;Note some functions depend on the fact that the first
 ;;element returned by best-open-cover is the function itself and
 (defun best-open-cover (list-fns open-g &aux   tem inv-list prep-fns)
   (cond ((all-linearp list-fns open-g)
@@ -1052,7 +1052,7 @@
 		  (best-open-cover1 prep-fns open-g))
 		 (t (sloop for v in prep-fns
 			  do
-                          (show v)
+			  (show v)
 			  (setq tem ( best-open-cover1 (list v) open-g))
 			  (setq inv-list
 				(sloop for gg in tem
@@ -1064,7 +1064,7 @@
 			  collecting inv-list into possible
 			  minimize (length inv-list) into min
 			  do (show min)
-  
+
 			  finally
 			  (loop-return
 				    (sloop for v in possible
@@ -1104,7 +1104,7 @@
 				    do (setf (second v) 1)))))))
   (setq possible-refs (all-perms lis-prep-cofs))
   (sloop for v in possible-refs
-        collecting  (setq tem (eliminate-larger v :test 'a-factor)) into facts
+	collecting  (setq tem (eliminate-larger v :test 'a-factor)) into facts
 	minimize (length tem) into min
 	finally
 	(sloop for v in facts
@@ -1140,7 +1140,7 @@
     (setq cofs   (sloop for v in vari
 		       collecting (pcoeff gmprep-poly (list v 1 1))))
     (setq mzopens
-	  (sloop 
+	  (sloop
 	    for cof in cofs
 	    collecting
 	    (zl-copy-structure zopen
@@ -1164,7 +1164,7 @@
 ;    (setq cofs   (sloop for v in vari
 ;		       collecting (pcoeff gmprep-poly (list v 1 1))))
 ;   (setq all-ldata
-;	  (sloop 
+;	  (sloop
 ;	    for cof in cofs
 ;	    collecting
 ;	    (copy-structure  ldata
@@ -1185,7 +1185,7 @@
     (eliminate-multiples cofs)
     (setq cofs (mapcar 'square-free cofs))
    (setq all-ldata
-	  (sloop 
+	  (sloop
 	    for cof in cofs
 	    collecting
 	    (zl-copy-structure  ldata
@@ -1202,7 +1202,7 @@
 ;    (iassert (may-invertp gmprep-poly (car cofs)))
 ;    (setq cofs (cdr cofs))
 ;   (setq all-ldata
-;	  (sloop 
+;	  (sloop
 ;	    for cof in cofs
 ;	    collecting
 ;	    (copy-structure  ldata
@@ -1220,9 +1220,9 @@
 ;;the ldata, it will return a pre-ldata-sheaves
 
 ;;notes add an argument to (ldata-simplifications ldata gg)
-;;to allow passing the gg from the current open.  The 
+;;to allow passing the gg from the current open.  The
 ;;computation of the mpreprared should be wrt that gg.
-;;still have to modify the ldata-simplifications to return 
+;;still have to modify the ldata-simplifications to return
 ;; in *stop-simplify* the mprepared fn and m. (and to stop work )
 
 (defun simplify-svar-ldata (pls &key keep-opens-with-empty-ldata
@@ -1292,13 +1292,13 @@
 	  (cond (simped-ld
 		 (setq simped-ld (delete-redundant-ldata
 				   simped-ld :gg (zopen-inequality (car w))))
-							 
+
 		 (cond (check-containment
 			(check-component-containment  (cdr w)
 						      simped-ld
 						      (zopen-inequality (car w)))))))
 
-		      
+
 	  and
 	  collecting
 	  (car w) into opens
@@ -1323,7 +1323,7 @@
 ;	((eq (car lis) 'ldata)		 (setf (ldata-inequality lis) 1))
 ;	(t
 ;	 (sloop for v on lis while (not (atom v))
-;	       
+;
 ;	       do (set-inequalities-to-one v)))))
 ;
 ;(defun set-inequalities-to-one (lis)
@@ -1337,8 +1337,8 @@
 (defun set-inequalities-to-one (form)
   (cond ((null form) nil)
 	((atom form ) form)
-        ((eq (car form ) 'ldata)
-	 		 (setf (ldata-inequality form) 1)
+	((eq (car form ) 'ldata)
+			 (setf (ldata-inequality form) 1)
 			 form)
 	(t (do ((r form (cdr r)))
 	       ((not (consp r)) form)
@@ -1358,13 +1358,13 @@
 	      when use-ldata-inverse
 	      do(setq gg (plcm open-g (ldata-inequality v)))
 	      else do  (setq gg open-g)
-	      do 
+	      do
 	      (multiple-value-setq
 		(answ unit)(grobner-subset (ldata-eqns ld) (ldata-eqns v) gg))
-      	      when unit do (format t "~%**The component is   empty***")
+	      when unit do (format t "~%**The component is   empty***")
 	      when (or unit answ)
-	      do 
-	      (format t "~%    Component ~D verified:" i) (des v) 	      (loop-return 'ok)
+	      do
+	      (format t "~%    Component ~D verified:" i) (des v)	      (loop-return 'ok)
 
 
 	      finally (push i bad-components)
@@ -1380,11 +1380,11 @@
 	for i from 0
 	do
      (setq answ (catch 'took-too-long (grobner-remember (ldata-eqns v))))
-	   
+
 	(sloop for u in (ldata-eqns ldata)
 	      when (not ($zerop (polysimp u)))
 	      do (mshow u (polysimp u))
-	      
+
 	      (format t "**The ideal: ~/maxima::tilde-q-fsh/ ~%does not contain the original one *** : ~/maxima::tilde-q-fsh/"
 		      v ldata)
 	      (push-new i bad-components)
@@ -1410,14 +1410,14 @@
 ;	  (show op)
 ;          (show  dat-list)
 ;	  (setq gg (zopen-inequality (car op)))
-;	  	  (show gg)
+;		  (show gg)
 ;	  (setq *stop-simplify* nil)
 ;	  (sloop for ld in (car dat-list)
 ;		do (setq some-ld (ldata-simplifications  ld gg ))
 ;		when (null *stop-simplify*)
 ;		appending some-ld into tem
 ;		else
-;		do				
+;		do
 ;		(setq ref (apply  'refinement
 ;				    (cons (car op) *stop-simplify*)))
 ;		(setq op (cons nil (append ref (cdr op))))
@@ -1441,11 +1441,11 @@
 ;  answ)
 
 ;;the following is for converting back things which have been dumped to file.
-;;or after we have reset the genvar 
+;;or after we have reset the genvar
 (defun replace-rmaps-by-new-ones (form)
   (cond ((null form) nil)
 	((atom form ) form)
-        ((eq (car form ) 'rmap)
+	((eq (car form ) 'rmap)
 		     (convert-rmap-to-new form))
 	(t (do ((r form (cdr r)))
 	       ((not (consp r)) form)
@@ -1473,7 +1473,7 @@
 ;						       inequality 1)))))
 ;
 ;
-;(setq test 
+;(setq test
 ;      (construct-pre-ldata-sheaves
 ;	:s-var
 ;	(make-s-var zopens (list (affine-open (firstn 8 *xxx*) #$1$)))
@@ -1497,7 +1497,7 @@
 	:data (list (list
 		      (make-ldata :eqns  eqns
 				  :inequality inequality)))))
-  
+
 
 
 (defmacro for-editor (&body body)
@@ -1515,7 +1515,7 @@
 (defun change-strings-to-symbols (tree)
   (cond ((stringp tree) (make-symbol tree))
 	((atom tree) tree)
-	(t 
+	(t
 	 (sloop for v on tree
 	       do (setf (car v) (change-strings-to-symbols (car v)))
 	       finally (loop-return tree)))))
@@ -1528,22 +1528,11 @@
 	(des expr ))))
 
 
-#+lispm
-(defmacro des-editor (expr &aux me)
-  (setq me `(setq ,expr (rerat (quote ,(eval expr)))))
-  (let ($display2d)(zwei:with-editor-stream (st :window zwei:*window*  :start :point)
-					    (terpri st)
-					    #+Lispm(time:print-current-time st)
-					    (terpri st)
-					    (des (symbol-value expr) st)
-					    (format st "~%;;the above is represented internally as:~%~A" me)))
-  (values))
-;
 ;(defmacro des-editor (expr &optional slash &aux me)
 ;  (setq me `(setq ,expr (rerat (quote ,(eval expr)))))
 ;  (time:print-current-time)
 ;  (for-editor (des (symbol-value expr)))
-;  (cond (slash 
+;  (cond (slash
 ;	 (format t "~%~s" me))
 ;	(t (format t "~%~a" me)))
 ;  (values ))
@@ -1570,7 +1559,7 @@
 
 
 (defun translate-component (from-open to-open ldata &key pls &aux MAPL  )
-  (cond (pls 
+  (cond (pls
 	 (setq to-open (nth to-open (pls-opens pls)))
 	 (setq ldata (nth ldata (nth from-open (pls-data pls))))
 	 (setq from-open (nth from-open (pls-opens pls)))))
@@ -1583,7 +1572,7 @@
 
 ;(defun translate-component-and-reduce (from-open to-open ldata
 ;				       &aux *refine-opens* hh gg red-transl transl map )
-;  	 (setq map (find-ring-map from-open to-open))
+;	 (setq map (find-ring-map from-open to-open))
 ;	 (setq transl (apply-rmap map ldata))
 ;	 (setq red-transl (ldata-simplifications transl
 ;						 (setq gg (zopen-inequality to-open))))
@@ -1608,7 +1597,7 @@
 
 ;;;works
 (defun apply-rmap-to-square-free-factors (MAPL pol &aux answ)
-  
+
   (let ((facts (non-constant-factors pol)))
     (cond ((null facts) (cons pol 1))
 	  (t
@@ -1670,7 +1659,7 @@
 ;    (cond ((null answ) (values answ hh))
 ;	  ((equal leng (length (ldata-eqns ldata)))
 ;	   (cond ((null use-inverse-inequal)
-;	   
+;
 ;	   (translate-component-and-reduce from-open to-open ldata
 ;					   :use-inverse-inequal t
 ;					   ))))
@@ -1682,7 +1671,7 @@
 (defun translate-reduced-component-and-reduce (from-open to-open ldata
 					       &key homogeneous-ldata-on-to-open
 					       &aux answer int-transl
-					        contract simp-contract)
+						contract simp-contract)
   (multiple-value-bind ( answ hh)
       (translate-component-and-reduce from-open to-open ldata
 				      :use-inverse-inequal t)
@@ -1690,7 +1679,7 @@
 	  (t
 	   (setq
 	     answer
-	     (cond ((or 
+	     (cond ((or
 		      (linear-solvedp (ldata-eqns answ))
 		      (linear-ldatap answ :open-g (zopen-inequality to-open)))
 		    answ)
@@ -1723,9 +1712,9 @@
 				 (intersect-ldata homogeneous-ldata-on-to-open
 						  answ :open-g hh))
 			   (fsignal "Wrong dimension or not complete intersection ~
-                              look at the value of int-transl "))
+			      look at the value of int-transl "))
 			  (t (setq answer answ)))
-		    
+
 		    ))))
     (cond ((and *query-user* answer
 		(sloop for v in (ldata-eqns answer)
@@ -1742,8 +1731,8 @@
 ;  "Takes eqns (which one might want to turn into coordinates) and translates them
 ; around to the other opens.  For example if one had an ldata of some one open
 ; and wanted to blow it up one would need the translates of this, before blowing up."
-;  
-;  
+;
+;
 ;  (cond ((eq from-open to-open) ldata)
 ;	(t
 ;	 (setq to-open (nth to-open (pls-opens pls)))
@@ -1777,7 +1766,7 @@
 
 
 (defun ldata-subset (ld ldd)
-  	       (grobner-subset (ldata-eqns ld) (ldata-eqns ldd) (ldata-inequality ldd)))
+	       (grobner-subset (ldata-eqns ld) (ldata-eqns ldd) (ldata-inequality ldd)))
 
 ;(defun test (pl n m l &aux opens im (ldata (nth n (nth m (pls-data pl)))))
 ;  (setq opens (pls-opens pl))
@@ -1811,7 +1800,7 @@
 ;  (setq open (nth nth-open opens))
 ;  (setq answ
 ;	(sloop for ld in  (pls-ldata pls open)
-;	      for ii from 0 
+;	      for ii from 0
 ;	      collecting
 ;	      (sloop for op in opens
 ;		    for i from 0
@@ -1830,7 +1819,7 @@
 ;			      (grobner-subset (ldata-eqns ldd)
 ;					      (ldata-eqns image)
 ;					      (plcm (zopen-inequality op) gg)))
-;			    
+;
 ;			    (cond (unit
 ;				   (format
 ;				     t
@@ -1841,8 +1830,8 @@
 ;						  (ldata-eqns image)
 ;						  (ldata-eqns ldd)
 ;						  (plcm (zopen-inequality op) gg)))
-;					  
-;					  (ferror "containment only one way!!"))))) 
+;
+;					  (ferror "containment only one way!!")))))
 ;			    when unit do (return nil)
 ;			    when (and (null unit)cont)
 ;			    collecting (cons i j) into tem
@@ -1966,10 +1955,10 @@
 ;						  (ldata-eqns  image))
 ;					   (setq images nil))))
 ;				   (t
-;				    
+;
 ;				    (push (list nth-open  i ld-number) *bad-components*)
 ;				    (format t "~%Bad component ~A" (car *bad-components*)))))))))
- 
+
 (defun final-check-contained-in (lis-ld orig-image hh current-open
 				 current-ld-number nth-open
 				 &aux images cont unit *refine-opens*)
@@ -1988,12 +1977,12 @@
 				 (length (ldata-eqns image)))
 			     (return-from sue  (cons current-open i)))
 			    (t (format t "image properly contains zl-SOME part"))))
-	
+
 	finally (push (list nth-open current-open
 			    current-ld-number) *bad-components*)
 	(format t "~%Bad component ~A" (car *bad-components*))
 	(break t)))
-;	
+;
 ;(defun match-components (pls nth-open &key check-equal break-on-bad ignore-empty-opens
 ;			 ldata-number &aux map opens open gg hh image cont unit answ found-one str lis-dat rev-cont)
 ;  (setq opens (pls-opens pls))
@@ -2006,10 +1995,10 @@
 ;	      ;;str will be ( (open number . ld number) ...)
 ;	      when  ldata-number
 ;	      do (setq str (list (cons nth-open ldata-number)))
-;	      else 
+;	      else
 ;	      do
 ;	      (setq str (list  (cons nth-open ii)))
-;	      do 
+;	      do
 ;	      (sloop for op in opens
 ;		    for i from 0
 ;		    for lis-ld in (pls-data pls)
@@ -2033,7 +2022,7 @@
 ;								  hh))
 ;				   (cond ((null rev-cont)
 ;					  (cond (break-on-bad (break 'not-equal)))))))
-;					 
+;
 ;			    (cond (unit
 ;				   (format
 ;				     t
@@ -2044,8 +2033,8 @@
 ;;						  (ldata-eqns image)
 ;;						  (ldata-eqns ldd)
 ;;						  (nplcm (zopen-inequality op) gg)))
-;; 					  
-;;					  (ferror "containment only one way!!"))))) 
+;;
+;;					  (ferror "containment only one way!!")))))
 ;			    when unit do (push (cons i nil) str)(setq found-one t)
 ;			    when (and (null unit)cont)
 ;                             do (push (cons i j) str) (setq found-one t)
@@ -2065,9 +2054,9 @@
 ;	;			     "this component not trivial but doesn't seem to be here"))))))
 ;	      collecting str))
 ;  answ)
-	
 
-  
+
+
 (defun match-components (pls nth-open &key check-equal break-on-bad ignore-empty-opens
 			 ldata-number &aux MAPL opens open gg hh tem
 			 image cont unit answ found-one str lis-dat rev-cont)
@@ -2081,10 +2070,10 @@
 	      ;;str will be ( (open number . ld number) ...)
 	      when  ldata-number
 	      do (setq str (list (cons nth-open ldata-number)))
-	      else 
+	      else
 	      do
 	      (setq str (list  (cons nth-open ii)))
- 	      do 
+	      do
 	      (sloop for op in opens
 		    for i from 0
 		    for lis-ld in (pls-data pls)
@@ -2108,7 +2097,7 @@
 								  hh))
 				   (cond ((null rev-cont)
 					  (cond (break-on-bad (break 'not-equal)))))))
-					 
+
 			    (cond (unit
 				   (format
 				     t
@@ -2119,11 +2108,11 @@
 ;						  (ldata-eqns image)
 ;						  (ldata-eqns ldd)
 ;						  (nplcm (zopen-inequality op) gg)))
-; 					  
-;					  (ferror "containment only one way!!"))))) 
+;
+;					  (ferror "containment only one way!!")))))
 			    when unit do (push (cons i nil) str)(setq found-one t)
 			    when (and (null unit)cont)
-                             do (push (cons i j) str) (setq found-one t)
+			     do (push (cons i j) str) (setq found-one t)
 			    finally
 			    (cond ((and lis-ld (null found-one))
 				   (setq tem  (final-check-contained-in
@@ -2150,7 +2139,7 @@
 
 (defun list-opens1 (components &aux answ)
   (sloop for com in components
-        do  (sloop for v in com do(push-new (car v) answ))
+	do  (sloop for v in com do(push-new (car v) answ))
 	finally (loop-return answ)))
 
 (defun short-list-open-numbers ( components-to-cover &optional opens-used
@@ -2196,7 +2185,7 @@
 	(setq ops (ml-sort ops ))
 		(show op-num ops)
 	(sloop for to-op-num in ops
-	      	      with accounted-for
+		      with accounted-for
 	      do  (setq to-open   (nth to-op-num (pls-opens pls)))
 	      (setq   to-lis-dat  (nth to-op-num (pls-data pls)))
 	      (sloop for lld in lis-dat
@@ -2211,13 +2200,13 @@
 		    (sloop for ld in to-lis-dat
 			  for ld-num from 0
 			  when
-                          (and (not (unit-idealp (ldata-eqns ld) hh))
+			  (and (not (unit-idealp (ldata-eqns ld) hh))
 			  (variety-ldata-subset ld transl :open-g hh
 						      :ignore-ldata-inequalities t))
 			  do
-			  (cond 
+			  (cond
 			    ((variety-ldata-subset
-			       transl ld :open-g hh	
+			       transl ld :open-g hh
 			       :ignore-ldata-inequalities t)
 			     (nconc (get-component components (cons to-op-num ld-num))
 				    (list (cons op-num lld-num)))
@@ -2227,14 +2216,14 @@
 			    for lld-num from 0
 			    when (not (member lld accounted-for :test #'eq))
 			    do (show to-op-num lld-num)
-			    and 
+			    and
 			    collecting (list (cons op-num  lld-num)) into comps
 			    and
 			    collecting (length (ldata-eqns lld)) into dims
 			    finally (setq components (nconc components comps))
 			    (setq all-codims (append all-codims dims)))))
  (values components all-codims))
-					
+
 (defun get-component (components cons-op-ld)
   (sloop for com in components
 	when (member cons-op-ld com :test #'equal)
@@ -2245,12 +2234,12 @@
   (format t "~%is in opens: ")
   (sloop for op in (pls-opens pls)
 	for i from 0
-        when  (eq (cdr (assoc i answ :test #'equal)) compon-num)
+	when  (eq (cdr (assoc i answ :test #'equal)) compon-num)
 	collecting i))
 
 (defun match-all-components (pls &key (ignore-empty-opens t)
 			     &aux all equiv opens *bad-components*)
-  
+
   (setq opens (pls-opens pls))
   (setq all (sloop for i below (length opens)
 	appending (match-components pls i :ignore-empty-opens ignore-empty-opens)))
@@ -2268,7 +2257,7 @@
 	for i from 0
 	for lis-dat in (pls-data pl1)
 	do
-        (format t "~%**For the original ~:R open" i)
+	(format t "~%**For the original ~:R open" i)
 	(sloop  for op2 in (sv-zopens (pls-s-var pl2simp))
 	       for j from 0
 	       for lis-dat2 in (pls-data pl2simp)
@@ -2276,19 +2265,15 @@
 	       ;; should really look at inequal	       when (equal  open  op2)
 	       do (format t " whose coordinates are equal to those on open ~D"  j)
 	       (cond (lis-dat2
-		      	       (check-component-containment  lis-dat lis-dat2))
+		      (check-component-containment  lis-dat lis-dat2))
 ;	       (check-components-contain-original (car lis-dat) lis-dat2))
 		     (t (format t "the data was empty"))))))
 
 
-#+lispm
-(defmacro setdbg (&rest l)
-  (sloop for v in l do (eval `(setf ,v (dbg:loc ',v)))))
-
 ;;the following system of equations does not admit a nice solution using the above.
 ;;maybe we have to add another divide-dichotomy machine:
 ;;If have two polynomials with leading term x6 could do a dichotomy:
-;;f=y^i*a+.. g=y^j*b+.. then do 
+;;f=y^i*a+.. g=y^j*b+.. then do
 ;; while y is the main variable  you make dichotomy
 ;;between (third (vdivide f g))=0 and (third (vdivide f g)) invertible.
 ;;in the latter system you have the additional ldata of remainder.
@@ -2324,7 +2309,7 @@
 		with .prev-min. = ,init
 		with .where.
 		,@ when-clause
-		do	 
+		do
 		(setq .tem. ,quantity)
 		,@ (cond (when-clause '(and))(t nil))
 		when (,pred .tem. .prev-min.)
@@ -2359,7 +2344,7 @@
 ;	(sloop for v in
 ;	varl
 ;	collecting
-;	(cons v 
+;	(cons v
 ;	(sloop for w in variable-occurs
 ;	      for f in eqns
 ;	      when (member v w :test #'eq)
@@ -2370,8 +2355,8 @@
 
 
 ;;this allowed me to do the troublesome ldata
-;;it tries to order the variables so that the variables belonging to 
-;;simpler and less equations come first. 
+;;it tries to order the variables so that the variables belonging to
+;;simpler and less equations come first.
 ;(defun good-order-variables (eqns &aux variable-occurs (varl (list-variables eqns))
 ;			     compl)
 ;  (declare (special mult))
@@ -2467,20 +2452,20 @@
 
 (defun highest-variables (variables occurs)
   (sloop for oc in occurs
-        collecting (sloop for v in variables
+	collecting (sloop for v in variables
 			 when (member v oc :test #'eq) do (loop-return v))))
 
 
 (defun all-linear-variables (f &optional g &aux varl)
  (setq varl (degree-one-variables f))
  (sloop for v in varl when (may-invertp (pcoeff f (list v  1 1 ) ) g)
-        collecting v))
+	collecting v))
 
 
 (defun POLY-relations-from-simplifications (&optional (simps *poly-simplifications*))
   (sloop for (seq repl) on simps by 'cddr
 	when (numberp seq) do (loop-return '( 1))
-	collecting 
+	collecting
 	(pdifference
 	  (ptimes (convert-deg-sequence-to-monomial seq)
 		  (denom repl))
@@ -2492,7 +2477,7 @@
   (let ((*refine-opens* refine-opens) *stop-simplify*)
     (setq answ (ldata-simplifications ldata :open-g open-g :error-check-containments
 				      error-check-containments))
-    
+
     (setq answ (sloop for ld in answ
 		     when (linear-ldatap ld :open-g open-g)
 		     collecting ld
@@ -2517,7 +2502,7 @@
   (cond
     ((member(setq tem (list ldata open-g)) *already-tried* :test #'equal)
      (list ldata))
-    
+
     (*dont-try-factor-irreducible-ldata* (list ldata))
     (t
      (setq answer
@@ -2536,7 +2521,7 @@
 					     :inequality (plcm open-g (ldata-inequality ldata)))))))
 	(cond ((< (gen-pcomplexity (ldata-eqns new-ldata)) (* 1.1 comp))
 	       (setq ldata new-ldata)))
-	
+
 	(setq lin-vars  (sloop for f in eqns
 			      collecting (all-linear-variables f open-g)))
 	(show lin-vars )
@@ -2545,13 +2530,13 @@
 		     for f in eqns
 		     when (null v)
 		       do (setq varl (list-variables f))
-			  
+
 			  (sloop for w in lin-vars
 				for ff in eqns
 				when (setq tem (intersection w varl))
-				  do 
+				  do
 				    (sloop for uu in tem
-					  do (setq eqn (gen-prem f ff uu)) 
+					  do (setq eqn (gen-prem f ff uu))
 					  when (> (length  (non-constant-factors eqn open-g)) 2)
 					    do (return-from sue (make-dichotomy
 								  (zl-copy-structure ldata ldata-
@@ -2611,7 +2596,7 @@
 
 ;(defun divide-dichotomy (ldata &key (open-g 1) &aux (eqns (ldata-eqns ldata)) f new-eqns
 ;			 occurs vars highest-vars orig-rep repeat eqns-rep  gg ld1 ld2)
-;  
+;
 ;  "endeavors to turn ldata into an  triangular list of eqns
 ; so that each equation has  possibly one more variable occurring than the
 ; previous.  It takes a good order for the variables and then takes the first variable
@@ -2627,7 +2612,7 @@
 ;	      collecting (sloop for u in vars
 ;			       when (member u v :test #'eq)
 ;			       do (return u))))
-;  (show vars highest-vars)  
+;  (show vars highest-vars)
 ;  (setq repeat
 ;	(sloop named rep for v in vars
 ;	      do
@@ -2660,7 +2645,7 @@
 ;     (setq f (second eqns-rep))
 ;
 ;     (show repeat)
-;     
+;
 ;     (multiple-value-bind (rem c-reqd)
 ;	 (gen-prem  f (first eqns-rep) repeat)
 ;
@@ -2686,7 +2671,7 @@
 ;;	      (sh c-reqd)
 ;;	      (format t "%original ldata followed by consequents:" )
 ;;	      (des ldata)(des ld1) (des ld2 )
-;;	      
+;;
 ;;	      (append (ldata-simplifications ld1)
 ;;		      (ldata-simplifications ld2)))
 ;;	     (t
@@ -2699,7 +2684,7 @@
 ;;;I hope this was the one to keep
 ;(defun divide-dichotomy (ldata &key (open-g 1) &aux answ (eqns (ldata-eqns ldata)) f new-eqns
 ;			 occurs vars highest-vars orig-rep repeat eqns-rep  gg ld1 ld2)
-;  
+;
 ;  "endeavors to turn ldata into an  triangular list of eqns
 ; so that each equation has  possibly one more variable occurring than the
 ; previous.  It takes a good order for the variables and then takes the first variable
@@ -2715,7 +2700,7 @@
 ;	      collecting (sloop for u in vars
 ;			       when (member u v :test #'eq)
 ;			       do (return u))))
-;  (show vars highest-vars)  
+;  (show vars highest-vars)
 ;  (setq repeat
 ;	(sloop named rep for v in vars
 ;	      do
@@ -2736,7 +2721,7 @@
 ;;     (setq eqns-rep (sort eqns-rep
 ;;			  #'(lambda (u v) (< (pdegree u repeat) (pdegree v repeat))))
 ;     (show (length eqns-rep))
-;     
+;
 ;     (cond ((eq ( pdegree (first eqns-rep) repeat)
 ;		(pdegree (second eqns-rep) repeat))
 ;	    ;;choose the least complex leading coefficient to divide by
@@ -2750,7 +2735,7 @@
 ;			      (ml-sort (copy-list  orig-rep))))
 ;	    (ferror "not sorted but destroyed!!")))
 ;     (show repeat)
-;     
+;
 ;     (multiple-value-bind (rem c-reqd)
 ;	 (gen-prem  f (first eqns-rep) repeat)
 ;       (shl (list f  (first eqns-rep)))
@@ -2780,7 +2765,7 @@
 ;;watch out for the  use-inverse in delete redundant  switch.
 
 (defvar *used-divisors* nil)
- 
+
 (defun find-repeats (highest-variables eqns &aux first-repeat repeat-eqns)
   (setq first-repeat
 	(sloop for v on highest-variables
@@ -2798,7 +2783,7 @@
 
 ;
 ;(defun new-divide-dichotomy (ldata &key (open-g 1) &aux var-and-occurs variables eqns occurs highest-variables
-;			 divisor ld1 ld2 
+;			 divisor ld1 ld2
 ;			 repeated-eqns high-var)
 ;  (setq var-and-occurs (good-order-variables ldata))
 ;  (setq variables (car var-and-occurs) occurs (second var-and-occurs))
@@ -2810,7 +2795,7 @@
 ;  (cond
 ;    (repeated-eqns
 ;     (setq repeated-eqns (sort-key repeated-eqns '< 'pdegree high-var))
-;     
+;
 ;     (setq divisor
 ;	   (sloop for v in repeated-eqns
 ;		 find v minimizing (+ (* 1000 (pdegree v high-var))
@@ -2843,20 +2828,20 @@
 
 
 
- 
+
 
 (defun  divide-dichotomy (ldata &key (open-g 1) &aux answer  used
 			  (eqns (ldata-eqns ldata)) f new-eqns
 			  occurs vars highest-vars orig-rep repeat eqns-rep  gg ld1 ld2)
-  
+
   "endeavors to turn ldata into an  triangular list of eqns
  so that each equation has  possibly one more variable occurring than the
  previous.  It takes a good order for the variables and then takes the first variable
  to be highest in two succeeding eqns, and does a division to try to correct this.  If
  the leading variable is not invertible it does a dichotomy "
-  
+
   ;;ordering should take into account open-g
-  
+
   (setq ldata (copy-list-structure ldata))
   (setq vars (copy-tree  (good-order-variables eqns)))
   (setq occurs (second vars))
@@ -2866,12 +2851,12 @@
 	      collecting (sloop for u in vars
 			       when (member u v :test #'eq)
 			       do (loop-return u))))
-  (show vars highest-vars)  
-                
+  (show vars highest-vars)
+
   (multiple-value-setq (eqns-rep repeat)
     (find-repeats vars eqns))
   (unwind-protect
-    (progn 
+    (progn
       (cond
 	(repeat
 	 (setq orig-rep (copy-list eqns-rep))
@@ -2912,17 +2897,17 @@
 					   :inequality gg
 					   :variables vars))))
 	   (setq answer
-		 
+
 		 (cond
 		   (ld1
 			(format t "~%Breaking into dichotomy on:")
 			(sh c-reqd)
 			(format t "%original ldata followed by consequents:" )
 			(des ldata)(des ld1) (des ld2 )
-;	      (sloop for v in (list ld1 ld2)	
+;	      (sloop for v in (list ld1 ld2)
 ;		    when (not  (unit-idealp (ldata-eqns v) (ldata-inequality v)))
 ;		    appending (ldata-simplifications v )))
-			
+
 			(append (ldata-simplifications ld1
 						       :open-g open-g :recursive-p t)
 				(ldata-simplifications
@@ -2936,24 +2921,24 @@
 			  ld2 :open-g open-g :recursive-p t))))))
 	 (t (setq answer  (list ldata)))))
     (setq *used-divisors* nil))
-  
+
     answer)
 
 
 ;
-;;;;;the following was the divide-dichotomy in force at XMAS 84						
+;;;;;the following was the divide-dichotomy in force at XMAS 84
 ;(defun  divide-dichotomy (ldata &key (open-g 1) &aux answer  used
 ;			  (eqns (ldata-eqns ldata)) f new-eqns
 ;			  occurs vars highest-vars orig-rep repeat eqns-rep  gg ld1 ld2)
-;  
+;
 ;  "endeavors to turn ldata into an  triangular list of eqns
 ; so that each equation has  possibly one more variable occurring than the
 ; previous.  It takes a good order for the variables and then takes the first variable
 ; to be highest in two succeeding eqns, and does a division to try to correct this.  If
 ; the leading variable is not invertible it does a dichotomy "
-;  
+;
 ;  ;;ordering should take into account open-g
-;  
+;
 ;  (setq ldata (copy-list-structure ldata))
 ;  (setq vars (copy-tree  (good-order-variables eqns)))
 ;  (setq occurs (second vars))
@@ -2963,7 +2948,7 @@
 ;	      collecting (sloop for u in vars
 ;			       when (member u v :test #'eq)
 ;			       do (return u))))
-;  (show vars highest-vars)  
+;  (show vars highest-vars)
 ;  (setq repeat
 ;	(sloop named rep for v in vars
 ;	      do
@@ -2973,7 +2958,7 @@
 ;		    do (return-from rep v))))
 ;
 ;  (unwind-protect
-;    (progn 
+;    (progn
 ;      (cond
 ;	(repeat
 ;	 (setq eqns-rep  (sloop for v in eqns
@@ -3019,17 +3004,17 @@
 ;					   inequality gg
 ;					   variables vars))))
 ;	   (setq answer
-;		 
+;
 ;		 (cond
 ;		   (ld1
 ;			(format t "~%Breaking into dichotomy on:")
 ;			(sh c-reqd)
 ;			(format t "%original ldata followed by consequents:" )
 ;			(des ldata)(des ld1) (des ld2 )
-;;	      (sloop for v in (list ld1 ld2)	
+;;	      (sloop for v in (list ld1 ld2)
 ;;		    when (not  (unit-idealp (ldata-eqns v) (ldata-inequality v)))
 ;;		    appending (ldata-simplifications v )))
-;			
+;
 ;			(append (ldata-simplifications ld1
 ;						       :open-g open-g :recursive-p t)
 ;				(ldata-simplifications
@@ -3043,21 +3028,21 @@
 ;			  ld2 :open-g open-g :recursive-p t))))))
 ;	 (t (setq answer  (list ldata)))))
 ;    (setq *used-divisors* nil))
-;  
+;
 ;    answer)
 ;;attempt to repeat use of the variable order
 ;(defun  divide-dichotomy (ldata &key (open-g 1) &aux answer  used
 ;			  (eqns (ldata-eqns ldata)) f new-eqns
 ;			  occurs vars highest-vars orig-rep repeat eqns-rep  gg ld1 ld2)
-;  
+;
 ;  "endeavors to turn ldata into an  triangular list of eqns
 ; so that each equation has  possibly one more variable occurring than the
 ; previous.  It takes a good order for the variables and then takes the first variable
 ; to be highest in two succeeding eqns, and does a division to try to correct this.  If
 ; the leading variable is not invertible it does a dichotomy "
-;  
+;
 ;  ;;ordering should take into account open-g
-;  
+;
 ;  (setq ldata (copy-list-structure ldata))
 ;  (setq vars  (good-order-variables eqns))
 ;  (setq occurs (second vars))
@@ -3069,7 +3054,7 @@
 ;	      collecting (sloop for u in vars
 ;			       when (member u v :test #'eq)
 ;			       do (return u))))
-;  (show vars highest-vars)  
+;  (show vars highest-vars)
 ;  (setq repeat
 ;	(sloop named rep for v in vars
 ;	      do
@@ -3079,7 +3064,7 @@
 ;		    do (return-from rep v))))
 ;
 ;  (unwind-protect
-;    (progn 
+;    (progn
 ;      (cond
 ;	(repeat
 ;	 (setq eqns-rep  (sloop for v in eqns
@@ -3130,10 +3115,10 @@
 ;			(sh c-reqd)
 ;			(format t "%original ldata followed by consequents:" )
 ;			(des ldata)(des ld1) (des ld2 )
-;;	      (sloop for v in (list ld1 ld2)	
+;;	      (sloop for v in (list ld1 ld2)
 ;;		    when (not  (unit-idealp (ldata-eqns v) (ldata-inequality v)))
 ;;		    appending (ldata-simplifications v )))
-;			
+;
 ;			(append (ldata-simplifications ld1
 ;						       :open-g open-g :recursive-p t)
 ;				(ldata-simplifications
@@ -3147,7 +3132,7 @@
 ;			  ld2 :open-g open-g :recursive-p t))))))
 ;	 (t (setq answer  (list ldata)))))
 ;    (setq *used-divisors* nil))
-;  
+;
 ;    answer)
 
 
@@ -3165,7 +3150,7 @@
 	      collecting (sloop for u in vars
 			       when (member u v :test #'eq)
 			       do (loop-return u))))
-  (show vars highest-vars)  
+  (show vars highest-vars)
   (setq repeat
 	(sloop named rep for v in vars
 	      do
@@ -3194,7 +3179,7 @@
 ;	    when (setq tem (any-linearp eqn open-g :variables-to-exclude
 ;					variables-to-exclude))
 ;	    do (push tem variables-to-exclude)
-;            and 
+;            and
 ;	    collecting  eqn into lin-eqn
 ;	    else
 ;	    collecting eqn into non-lin
@@ -3234,14 +3219,14 @@
 ;		    (sloop for va in (third try)
 ;			  when (not (member (cons va (cdr try))
 ;					    *used-divisors*))
-;			  collecting (append 
+;			  collecting (append
 ;					     (multiple-value-list (gen-prem (first try)
 ;							   (second try)
 ;							   va)) try))))
 ;	    (sloop for f in non-lin-eqns
 ;		  when (may-invertp (second v) open-g))))
 ;
-;	    
+;
 ;    (setq *used-divisors* nil)))
 
 (defun linear-dichotomy (ldata &key (open-g 1) in-linear-dich  &aux answer  varl fns
@@ -3250,7 +3235,7 @@
   (cond
     (in-linear-dich (list ldata))
     ((multiple-value-setq (varl fns) (linear-solvedp (ldata-eqns ldata) :order-functions t
-     					     ))
+					     ))
      (cond ((linear-ldatap ldata :open-g open-g)(list ldata))
 	   (t(sloop for va in varl
 		   for f in fns
@@ -3262,7 +3247,7 @@
 			 (t
 			  (setq answer
 				 (append
-                                 (setq ans1
+				 (setq ans1
 				   (ldata-simplifications
 				    (make-ldata :eqns (ldata-eqns ldata)
 						:inequality (sftimes answ
@@ -3278,13 +3263,13 @@
 				(sloop for v in ans1
 				collecting
 				(make-ldata :eqns
-    				(contract-ideal-localization (ldata-eqns v)
+				(contract-ideal-localization (ldata-eqns v)
 							     (ldata-inequality v)))))
 			  (setq answer (append ans1 ans2))
 			  (setq answer (delete-redundant-ldata answer :gg open-g))
 			  (mshow answer)
 			  )))))))
-    
+
     (t (format t "~%**Unchanged")
        (list ldata))))
 
@@ -3296,9 +3281,8 @@
 
 (defvar *answer* nil)
 (defun simplify-affine-ldata-write (ldata &key (open-g 1) (pathname "haskell:>wfs>answer.lisp") &aux answ)
-  (setq *answer* (setq answ (simplify-affine-ldata ldata :open-g open-g))) 
+  (setq *answer* (setq answ (simplify-affine-ldata ldata :open-g open-g)))
   (with-open-file (st pathname :direction :output)
     (let ((*standard-output* st) (*nopoint t) *print-radix*)
       (for-editor (des answ))
       (format st "~%(setq (answ (rerat '~A)))" answ))))
-

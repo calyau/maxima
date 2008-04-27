@@ -34,7 +34,7 @@
   (setq tensor-subs (point-of-tensors special-tensor standard-tensor))
   (append tensor-subs
 	  (sloop for v in (mapcar 'st-rat  (apply 'append  (gen-matrix-rows q)))
-         for w in (mapcar 'st-rat  (apply 'append (gen-matrix-rows standard-q)))
+	 for w in (mapcar 'st-rat  (apply 'append (gen-matrix-rows standard-q)))
 	collecting (cons (car w) v))))
 
 (defun $dimensions_for_replacements ($repl-list &optional (degree 7))
@@ -60,8 +60,8 @@
 
 (defmacro while (test &body body)
        `(sloop (cond ((null ,test) (return)))
-         ,@ body))
- 
+	 ,@ body))
+
 (defun collect-atoms (tree &optional (pred #'(lambda (x) t)) &aux result)
    (declare (special result))
    (collect-atoms1 tree pred) result)
@@ -74,7 +74,7 @@
 				 (pushnew (cdr tree) result :test 'equal))))
 	(t (collect-atoms1 (cdr tree) pred))))
 
-  
+
 (defun $find_coefficients_for_linear_combination( items in-terms-of monoms &optional (cofs $aaaa)
 		 &aux (gen-sum 0) rest-monoms final-answ answ tem dif)
    (setq monoms (nreverse (st-rat  monoms)))
@@ -86,16 +86,16 @@
     (setq answ nil)
     (setq rest-monoms  monoms)
     (while (and (setq tem (car rest-monoms))(setq rest-monoms (cdr rest-monoms)))
-              (setq tem (gencoeff dif tem))
+	      (setq tem (gencoeff dif tem))
 	     (push (new-disrep tem) answ))
     (push (cons '(mlist) answ) final-answ))
   (cons '(mlist) final-answ))
- 
+
 (defun $generate_matrix (fun i j)
   (cons '($matrix)   (sloop for ii from 1 to i
        collecting (cons'(mlist)
        (sloop for jj from 1 to j
-          collecting (meval* `((,fun) ,ii ,jj)))))))
+	  collecting (meval* `((,fun) ,ii ,jj)))))))
 
 
 (defun gen-matrix-row-plus (row1 row2 &key row1-multiple  row2-multiple)
@@ -104,7 +104,7 @@
        (cond (row1-multiple (setq  row2-multiple (st-rat  row2-multiple))))
        (sloop for v in (cdr row1) for w in (cdr row2)
 	     when row1-multiple do (setq v (n* row1-multiple v))
-	     when row2-multiple do (setq w (n* row2-multiple w)) 
+	     when row2-multiple do (setq w (n* row2-multiple w))
 	     collecting (n+ v w) into result
 	     finally (return (cons '(mlist) result))))
 
@@ -115,7 +115,7 @@
 			  (sloop for u in (cdr matrix)
 				with max =  (1+ (max i j))
 				collecting (nconc (subseq u 0 max) (nthcdr max u)))))))
-				
+
   (sloop for u in (cdr matrix)
 	do (swapf (nth i u) (nth j u)))
   matrix)
@@ -138,7 +138,7 @@
   (setq orig matrix)
   (setq matrix (cons (car matrix) (sloop for v in (cdr matrix) collecting (copy-list v))))
   (sloop for ii from 1 below ($length matrix)
-	do 
+	do
    (sloop for i from ii to ($length matrix)
 	 when (not (pzerop (matrix-entry matrix i ii)))
 	 do
@@ -151,7 +151,7 @@
 		  (return)))
 	 finally (fsignal "This implementation assumes the matrix is nonsingular"))
    (setq pivot-row ($multiply_row (nth ii matrix) (setq fact (nred 1 (matrix-entry matrix ii ii)))))
-   (setf ident-pivot-row ($multiply_row (nth ii ident) fact)) 
+   (setf ident-pivot-row ($multiply_row (nth ii ident) fact))
    (sloop for i from (1+ ii) to ($length matrix)
 	 do (setf (nth i matrix)(gen-matrix-row-plus (nth i matrix) pivot-row
 				    :row2-multiple (setq fact (n* -1 (matrix-entry matrix i ii)))))
@@ -354,7 +354,7 @@
 	 (cons '(mlist) (mapcar '$ldata_disrep lis)))
 	(t (fsignal "ldata_disrep only ldata or lists of ldata"))))
 
-(defun $linear_automorphism_group (&optional 
+(defun $linear_automorphism_group (&optional
 				    (relations ($relations_from_dot_simps))
 				    (set_up_simps nil)
 				    (variables $current_variables)
@@ -364,7 +364,7 @@
   (or variables (seta $current_variables ($list_nc_variables relations)))
   (mshow $current_variables)
   (cond (set_up_simps
-         (setq deg (apply 'max (mapcar '$nc_degree (cdr relations))))
+	 (setq deg (apply 'max (mapcar '$nc_degree (cdr relations))))
 	 ($set_up_dot_simplifications relations deg)))
   (setq subs (sloop for v in (cdr variables)
 		    collecting ($scalar_sum
@@ -396,10 +396,10 @@
 	for rv in rbasis
 	do (show v rv)
 	with tra = 0
-        do (show v) (setq tem  ($dotsimp_remember (ncmul* element v)))
+	do (show v) (setq tem  ($dotsimp_remember (ncmul* element v)))
 	(setq den (function-denominator tem))
 	(setq num (function-numerator tem))
-        (setq cof  (pcoeff num rv vars))
+	(setq cof  (pcoeff num rv vars))
 	when (not (pzerop cof)) do (mshow num cof)
 	do
 	(setq tra (n+ tra (nred cof den)))
@@ -446,7 +446,7 @@
 
 (defun make-pairing-function (domain range &key (test 'alike))
   #'(lambda (u) (sloop for v in domain
-		      for w in range 
+		      for w in range
 		      when (funcall test u v)
 		      do (return w)
 		      finally(error "u was not in the domain ~A" domain))))
@@ -465,7 +465,7 @@
 			(t (assert (poly-scalar-p (p-cof expr)))
 			   (setq result(n* (p-cof expr)
 					   (funcall fn (get (car expr) 'disrep))))
-                           (cond ((cdddr expr)
+			   (cond ((cdddr expr)
 				  (assert (and (eql (fourth expr) 0)
 					       (null (nthcdr 5 expr))))
 				  (n+ (apply-linear-function fn (fifth expr))
@@ -500,32 +500,17 @@
 	(sloop for w in var-eqns
 	      for eqn in eqns
 	      when (member v w)
-	      
+
 	      do(setf (car mon) v) (setq tem (pcoeff eqn mon))
 	      (cond ((> (pdegree eqn v) 1)(setq vari (delete v vari)))
 		    (t
 		     (cond ((numberp tem))
 			   ((and constants (every #'(lambda (var)(member var constants))
 						  (list-variables tem))))
-			   (t 
+			   (t
 			    (setq vari (delete v vari))))))))
   (values (cons '(mlist)(sloop for v in vari collecting (get v 'disrep)))
-	  vari))	
-#+lispm
-(defmacro $save_forms (file &rest forms &aux
-		       saves)
-   (setq saves   (sloop for v in forms
-		       when (null (symbolp v)) do  (fsignal "~%Warning: not dumping a non symbol : ~A" v)
-		       when (boundp v)
-		       collecting
-		       `(setq ,v ',(symbol-value v)) into you 
-		       collecting `(setf (symbol-plist ',v) ',(symbol-plist v)) into you
-		       when (member v $values)
-		       collecting `(add2lnc ',v $values)
-		       finally (return you)))
-  (sys:dump-forms-to-file (string-trim "&" (format nil "~A" file))
-			   saves
-			   (list :package 'cl-maxima :mode :common-lisp)))
+	  vari))
 
 (defun $fast_linsolve_inconsistent_equations ( &optional (disrep t))
   (let ((eqns (find-extra-conditions (pv-the-sparse-matrix $poly_vector))))
@@ -564,7 +549,7 @@
 	 (sloop for w in (cdr lis2)
 		collect
 		(new-disrep (n- (n. v w) (n. w v)))))))
-	 
+
 (defun $set_up (rels &optional n)
   (setq *previously-checked-pairs* nil)
   ($set_up_dot_simplifications rels)
@@ -588,7 +573,7 @@
     (displa joe)
     (let ((ctls ($centralize_rels ($list_matrix_entries matt) vec))
 	  dotted mon)
-      	  (displa ctls)
+	  (displa ctls)
       ($set_up ($append ctls rel3) 4)
       (setq dotted ($dotsimp joe))
       (setq mon ($mono vec 2))
@@ -597,9 +582,9 @@
       (setq dotted ($dotsimp dotted))
       (apply  '$append (cdr ($separate_parameters dotted "aa"))))))
 
-    
 
-  
+
+
 
 
 (defvar *nvars* 6)
@@ -610,7 +595,7 @@
     (list-ordered-pairs-with-repeat-count1 i j n nrepeats)))
 
 (defun repeat-ok1 (i j lis nrepeats &aux (n 0))
-  
+
   ;; return t if (append (list i j) lis) has no more than nrepeats
   (cond ((eql i j) (setq n 1)))
   (cond ((member i lis) (setq n (+ n 1))))
@@ -620,7 +605,7 @@
 		  do (setq n (+ n 1)))
 	   (cond ((> n nrepeats) nil)
 		 (t t)))))
-  
+
 (defun list-ordered-pairs-with-repeat-count1 (i j number-pairs number-repeats)
   (cond ((<= number-pairs 0) (list nil))
 	(t
@@ -644,7 +629,7 @@
 	 (sloop for (deg cof) on (cdr f) by 'cddr
 		nconc (extract_cof1 cof vars)))
 	(t (list f))))
-  
+
 (defun $extract_linear_from_commutative (form vars)
   (assert  (listp form))
   (setq form (st-rat form))
@@ -654,5 +639,3 @@
 		(sloop for f in form
 		       appending
 		       (extract_cof1 f vars)))))
-
-	 
