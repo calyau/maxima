@@ -3,7 +3,7 @@
 ;;;;
 ;;;;  Maxima string processing
 ;;;;
-;;;;  Version       : 3.1 (april 2008)
+;;;;  Version       : 3.2 (april 2008)
 ;;;;  Copyright     : 2005-2008 Volker van Nek
 ;;;;  Licence       : GPL2
 ;;;;
@@ -109,7 +109,8 @@
   (terpri stream))
 
 
-(defun $tab () $tab) ;; returns Maxima tab character; can be autoloaded
+;;  (defun $tab () $tab) 
+;;    moved the end of the character section; sbcl complained
 
 
 ;;  $printf now in printf.lisp
@@ -205,6 +206,8 @@
 (defmvar $space
   (m-char #\space)   "Maxima space character"   string)
 
+
+(defun $tab () $tab) ;; returns Maxima tab character; can be autoloaded
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  3. strings
@@ -401,11 +404,12 @@
     (merror "ssearch: first two arguments must be strings."))
   (setq args
     (stringproc-optional-args "ssearch" args))
-  (let ((index t))
-    (ignore-errors (setq index (meval `(ssearch ,seq ,str ,@args))))
-    (if (or (integerp index) (equal index nil))
-      index
-      (merror "ssearch: improper arguments."))))
+  (or (ignore-errors 
+        (let ((index (meval `(ssearch ,seq ,str ,@args))))
+          (if index 
+            index
+            (return-from $ssearch nil))))
+      (merror "ssearch: improper arguments.")))
 ;;
 (defun ssearch (seq str &optional (test '$sequal) (start 1) (end nil))
   (let ((pos (search seq str :test (stripdollar test) :start2 (1- start) :end2 (if end (1- end)))))
