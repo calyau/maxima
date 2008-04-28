@@ -146,7 +146,7 @@
           ssassx xsx asa sax ssa ssx sx sa zbar zsd zfm z99f z95f 
           z90f bf ld s m gamma a)
 
-      (setf an (coerce n 'flonum))
+      (setf an (coerce n 'double-float))     ; (coerce n 'flonum) doesn't work
       (setf ncens (- n n1))   ; number of censored observations
       (setf nn2 (truncate n 2))
       (if (or (< n 3) (> n 5000))
