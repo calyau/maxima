@@ -723,6 +723,9 @@ AC_SUBST(expanded_infodir)
 default_layout_autotools="true"
 AC_SUBST(default_layout_autotools)
 
+dnl Need to run configure for imaxima
+AC_CONFIG_SUBDIRS(interfaces/emacs/imaxima)
+
 AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss \
 src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
