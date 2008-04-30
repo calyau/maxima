@@ -457,5 +457,14 @@ erf(-x) + erf(x);
 erf(a-b) + erf(b-a);
 0$
 
+/* Bug [ 1950653 ] bessel_j not simplified 
+ * A few additional related tests added too.
+ */
+
+bessel_j(1/2,%pi);
+0;
+bessel_y(1/2,%pi/2);
+0;
+
 end;
 end$

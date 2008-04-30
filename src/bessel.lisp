@@ -770,10 +770,10 @@ Perhaps you meant to enter `~a'.~%"
   (let* ((n (floor order))
 	 (sign (if (oddp n) -1 1))
 	 (jn (sub (mul ($expand (f-fun n arg))
-		       `((%sin) ,arg))
+		       (take '(%sin) arg))
 		  (mul sign
 		       ($expand (f-fun (- (- n) 1) arg))
-		       `((%cos) ,arg)))))
+		       (take '(%cos) arg)))))
     (mul (root-2z/pi arg)
 	 jn)))
 
