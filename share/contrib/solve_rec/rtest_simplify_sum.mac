@@ -79,7 +79,7 @@ test_sum(
   sum(binomial(2*n,2*k), k, 0, n),
   [],
   true,
-  [],
+  [radcan],
   4^n/2);
 0;
 
