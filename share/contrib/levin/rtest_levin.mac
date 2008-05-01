@@ -144,7 +144,7 @@ levin_zeta(s):=bflevin_u_sum(1/n^(bfloat(s)),n,1);
 levin_zeta(s):=bflevin_u_sum(1/n^(bfloat(s)),n,1)$
 check_prec(levin_zeta(1.1),bfzeta(1.1,fpprec),fpprec-1);
 true$
-check_prec(levin_zeta(1.01),bfzeta(1.01,fpprec),fpprec-1);
+check_prec(levin_zeta(1.01b1),bfzeta(1.01b1,fpprec),fpprec-1);
 true$
 levin_u_sum(1/(n+a)^2,n,1,1);
 1/(a+1)^2$
