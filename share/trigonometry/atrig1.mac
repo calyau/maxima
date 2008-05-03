@@ -16,6 +16,7 @@ put('atrig1,1,'version)$
 define_variable(piover4,%pi/4,any)$
 define_variable(piover3,%pi/3,any)$
 define_variable(piover6,%pi/6,any)$
+define_variable(piover8,%pi/8,any)$
 define_variable(sqrt3,sqrt(3),any)$
 define_variable(sqrt2,sqrt(2),any)$
 define_variable(angles_known_for_atrig,[0,piover6,piover4,piover3,%pi/2],
@@ -49,6 +50,11 @@ tellsimpafter(acot(sqrt3),  piover6)$
 tellsimpafter(asec(2/sqrt3),piover6)$
 tellsimpafter(asec(2*sqrt3/3),piover6)$
 tellsimpafter(acsc(2),        piover6)$
+
+/* For %PI/8 */
+
+tellsimpafter(atan(sqrt2-1),piover8)$
+tellsimpafter(atan(sqrt2+1),3*piover8)$
 
 /* Could also do  [1,5,7,11]*%PI/12 if there is ever demand for it. */
 
