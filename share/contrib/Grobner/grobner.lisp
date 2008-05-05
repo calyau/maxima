@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                              
-;;;  $Id: grobner.lisp,v 1.4 2008-05-05 08:18:06 andrejv Exp $		 
+;;;  $Id: grobner.lisp,v 1.5 2008-05-05 08:47:28 andrejv Exp $		 
 ;;;  Copyright (C) 1999, 2002 Marek Rychlik <rychlik@u.arizona.edu>		 
 ;;;  		       								 
 ;;;  This program is free software; you can redistribute it and/or modify	 
@@ -28,7 +28,7 @@
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
     (format t "~&Loading maxima-grobner ~a ~a~%"
-	    "$Revision: 1.4 $" "$Date: 2008-05-05 08:18:06 $"))
+	    "$Revision: 1.5 $" "$Date: 2008-05-05 08:47:28 $"))
 
 ;;FUNCTS is loaded because it contains the definition of LCM
 ($load "functs")
@@ -126,7 +126,7 @@
 INITIAL-CONTENTS specifies the list of powers of the consecutive
 variables. The alternative additional argument INITIAL-ELEMENT
 specifies the common power for all variables."
-  (declare (fixnum dim))
+  ;(declare (fixnum dim))
   `(make-array ,dim
 	       :element-type 'exponent
 	       ,@(when initial-contents-supplied-p `(:initial-contents ,initial-contents))
@@ -2001,7 +2001,6 @@ are assumed to be defined.")
       ;;to coefficients intact
       (coerce-coeff *maxima-ring* expr vars))
      (t
-      (setf expr ($num (sratsimp expr)))
       (case (caar expr)
 	(mplus (reduce #'(lambda (x y) (poly-add *maxima-ring* x y)) (parse-list (cdr expr))))
 	(mminus (poly-uminus *maxima-ring* (parse (cadr expr))))
