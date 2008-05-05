@@ -902,20 +902,20 @@ Example:
 
 @deffn {Function} isomorphism (@var{gr1}, @var{gr2})
 
-Returns a hash table representing an isomorphism between graphs/digraphs
-@var{gr1} and @var{gr2}. If @var{gr1} and @var{gr2} are not isomorphic,
-it returns @code{false}.
+Returns a an isomorphism between graphs/digraphs @var{gr1} and
+@var{gr2}. If @var{gr1} and @var{gr2} are not isomorphic, it returns
+an empty list.
 
 Example:
 @c ===beg===
 @c load (graphs)$
 @c clk5:complement_graph(line_graph(complete_graph(5)))$
-@c hash_table_data(isomorphism(clk5, petersen_graph()));
+@c isomorphism(clk5, petersen_graph());
 @c ===end===
 @example
 (%i1) load (graphs)$
 (%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
-(%i3) hash_table_data(isomorphism(clk5, petersen_graph()));
+(%i3) isomorphism(clk5, petersen_graph());
 (%o3) [8 -> 9, 7 -> 8, 4 -> 7, 3 -> 6, 1 -> 5, 0 -> 4, 5 -> 3, 
                                           6 -> 2, 2 -> 1, 9 -> 0]
 @end example

@@ -20,18 +20,30 @@
 
 
 (defun $is_isomorphic (gr1 gr2)
-  (if ($isomorphism gr1 gr2)
-      t
-      nil))
+  (> ($length ($isomorphism gr1 gr2)) 0))
 
 (defun $isomorphism (gr1 gr2)
   (cond ((graph-p gr1)
 	 (if (graph-p gr2)
-	     (isomorphism-graphs gr1 gr2)
+	     (let (res
+		   (iso (isomorphism-graphs gr1 gr2)))
+	       (when iso
+		 (maphash
+		  (lambda (key val)
+		    (setq res (cons `((marrow simp) ,key ,val) res)))
+		  (isomorphism-graphs gr1 gr2)))
+	       (cons '(mlist simp) res))
 	     (merror "Wrong inputs to isomorphism")))
 	((digraph-p gr1)
 	 (if (digraph-p gr2)
-	     (isomorphism-digraphs gr1 gr2)
+	     (let (res
+		   (iso (isomorphism-graphs gr1 gr2)))
+	       (when iso
+		 (maphash
+		  (lambda (key val)
+		    (setq res (cons `((marrow simp) ,key ,val) res)))
+		  (isomorphism-digraphs gr1 gr2)))
+	       (cons '(mlist simp) res))
 	     (merror "Wrong inputs to isomorphism")))
 	(t
 	 (merror "Wrong inputs to isomorphism"))))
