@@ -2008,7 +2008,7 @@
 ;;;;;;
 
 (defun $hash_table ()
-  (make-hash-table :test #'equal))
+  (make-hash-table :test #'alike1))
 
 (defun $get_hash (elt ht &optional default)
   (unless (hash-table-p ht)
