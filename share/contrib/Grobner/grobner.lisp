@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                              
-;;;  $Id: grobner.lisp,v 1.3 2007-04-14 21:23:05 are_muc Exp $		 
+;;;  $Id: grobner.lisp,v 1.4 2008-05-05 08:18:06 andrejv Exp $		 
 ;;;  Copyright (C) 1999, 2002 Marek Rychlik <rychlik@u.arizona.edu>		 
 ;;;  		       								 
 ;;;  This program is free software; you can redistribute it and/or modify	 
@@ -28,7 +28,7 @@
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
     (format t "~&Loading maxima-grobner ~a ~a~%"
-	    "$Revision: 1.3 $" "$Date: 2007-04-14 21:23:05 $"))
+	    "$Revision: 1.4 $" "$Date: 2008-05-05 08:18:06 $"))
 
 ;;FUNCTS is loaded because it contains the definition of LCM
 ($load "functs")
@@ -1950,13 +1950,13 @@ polynomials in the list IDEAL-LIST."
 		      (t
 		       (case (caar expr)
 			 (mrat (eql ($ratdisrep expr) 0))
-			 (otherwise (eql ($totaldisrep expr) 0))))))
-     :add #'(lambda (x y) (m+ x y))
-     :sub #'(lambda (x y) (m- x y))
+			 (otherwise (eql (sratsimp expr) 0))))))
+     :add #'(lambda (x y) (sratsimp (m+ x y)))
+     :sub #'(lambda (x y) (sratsimp (m- x y)))
      :uminus #'(lambda (x) (m- x))
      :mul #'(lambda (x y) (m* x y))
      ;;(defun coeff-div (x y) (cadr ($divide x y)))
-     :div #'(lambda (x y) (m// x y))
+     :div #'(lambda (x y) (sratsimp (m// x y)))
      :lcm #'(lambda (x y) (meval1 `((|$lcm|) ,x ,y)))
      :ezgcd #'(lambda (x y) (apply #'values (cdr ($ezgcd x y))))
      :gcd #'(lambda (x y) (second ($ezgcd x y)))))
@@ -1983,9 +1983,13 @@ are assumed to be defined.")
 
 (defun free-of-vars (expr vars) (apply #'$freeof `(,@vars ,expr)))
 
-(defun parse-poly (expr vars &aux (vars (coerce-maxima-list vars)))
+;; This function removes rational numbers from coefficients of polynomials.
+(defun parse-poly (expr vars)
+  (parse-poly1 ($num (sratsimp expr)) vars))
+
+(defun parse-poly1 (expr vars &aux (vars (coerce-maxima-list vars)))
   "Convert a maxima polynomial expression EXPR in variables VARS to internal form."
-  (labels ((parse (arg) (parse-poly arg vars))
+  (labels ((parse (arg) (parse-poly1 arg vars))
 	   (parse-list (args) (mapcar #'parse args)))
     (cond
      ((eql expr 0) (make-poly-zero))
@@ -1997,6 +2001,7 @@ are assumed to be defined.")
       ;;to coefficients intact
       (coerce-coeff *maxima-ring* expr vars))
      (t
+      (setf expr ($num (sratsimp expr)))
       (case (caar expr)
 	(mplus (reduce #'(lambda (x y) (poly-add *maxima-ring* x y)) (parse-list (cdr expr))))
 	(mminus (poly-uminus *maxima-ring* (parse (cadr expr))))
