@@ -1,7 +1,7 @@
 ;; Expose some properties of double floating point numbers to Maxima.
 ;; Note: floatbits is one plus the number of bits in the fractional part.
 
-(defmvar $float_eps flonum-float-epsilon)
+(defmvar $float_eps flonum-epsilon)
 (setf (get '$float_eps 'assign) 'neverset)
 
 (defmvar $largest_float most-positive-flonum)
