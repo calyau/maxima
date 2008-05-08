@@ -12,3 +12,6 @@
 
 (defmvar $float_bits (float-digits 0.0))
 (setf (get '$float_bits 'assign) 'neverset)
+
+(defun $bigfloat_eps ()
+  ($bfloat (div 1 (expt 2 fpprec))))
