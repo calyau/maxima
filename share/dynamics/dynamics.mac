@@ -16,7 +16,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston,
     MA  02111-1307  USA
 
-$Id: dynamics.mac,v 1.1 2007-04-01 22:46:42 villate Exp $
+$Id: dynamics.mac,v 1.2 2008-05-11 22:07:53 villate Exp $
 ***********************************************************************/
 
 load("complex_dynamics")$
@@ -371,59 +371,35 @@ block
     Sample usage:
       (%i1) load(dynamics)$
       (%i2) results: rk(t-x^2,x,1,[t,0,8,0.1])$
-      (%i3) openplot_curves([results]);
-        (or plot2d([discrete, results]))
+      (%i3) plot2d([discrete, results]))
       
 ***********************************************************************/
 
 rk(odes, state, initial, domain) :=
 block (
-  [fff,vvv,xxx,i_1,i_2,i_3,nnn,k1,k2,k3,k4,ddd,ppp,sss:true,numer:true,
-  display2d:false],
-  nnn:   make_array(fixnum,2),
-  if listp(odes) then nnn[1]: length(odes)-1 else nnn[1]: 0,
-  k1:  make_array(flonum,nnn[1]+1),
-  k2:  make_array(flonum,nnn[1]+1),
-  k3:  make_array(flonum,nnn[1]+1),
-  k4:  make_array(flonum,nnn[1]+1), 
-  fff: make_array(any,nnn[1]+1),
-  vvv: make_array(any,nnn[1]+1),
-  xxx:  make_array(any,nnn[1]+1),
-  if listp(odes) then fillarray(fff,odes) else fillarray(fff,[odes]),
-  if listp(state) then fillarray(vvv,state) else fillarray(vvv,[state]),
-  if listp(initial) then fillarray(xxx,initial) else fillarray(xxx,[initial]),
-  nnn[0]: fix((domain[3] - domain[2])/domain[4]),
-  ppp: [xxx[nnn[1]]],
-  for i_2:(nnn[1]-1) step -1 thru 0 do ppp: cons(xxx[i_2], ppp),
-  ppp: cons(domain[2], ppp),
-  ddd: [ppp],
-  errcatch (
-    for i_1:0 thru nnn[0]-1 do (
-      if (sss) then (
-        for i_2:0 thru nnn[1] do (
-          k1[i_2]: ev(fff[i_2], domain[1] = domain[2]+i_1*domain[4]),
-          for i_3:0 thru nnn[1] do
-            k1[i_2]: ev(k1[i_2], vvv[i_3] = xxx[i_3])),
-        for i_2:0 thru nnn[1] do (
-          k2[i_2]: ev(fff[i_2], domain[1] = domain[2]+(i_1+0.5)*domain[4]),
-          for i_3:0 thru nnn[1] do
-            k2[i_2]: ev(k2[i_2], vvv[i_3] = xxx[i_3]+domain[4]*k1[i_3]/2)),
-        for i_2:0 thru nnn[1] do (
-          k3[i_2]: ev(fff[i_2], domain[1] = domain[2]+(i_1+0.5)*domain[4]),
-          for i_3:0 thru nnn[1] do
-            k3[i_2]: ev(k3[i_2], vvv[i_3] = xxx[i_3]+domain[4]*k2[i_3]/2)),
-        for i_2:0 thru nnn[1] do (
-          k4[i_2]: ev(fff[i_2], domain[1] = domain[2]+(i_1+1)*domain[4]),
-          for i_3:0 thru nnn[1] do
-            k4[i_2]: ev(k4[i_2], vvv[i_3] = xxx[i_3]+domain[4]*k3[i_3])),
-        for i_2:0 thru nnn[1] do (
-          xxx[i_2]: xxx[i_2]+domain[4]*(k1[i_2]+2*k2[i_2]+2*k3[i_2]+k4[i_2])/6,
-          if (abs(xxx[i_2]) > 1e100) then sss: false),
-        if (sss) then ( 
-          ppp: [xxx[nnn[1]]],
-          for i_2:(nnn[1]-1) step -1 thru 0 do
-            ppp: cons(xxx[i_2], ppp),
-          ppp: cons(domain[2]+(i_1+1)*domain[4], ppp),
-          ddd: cons(ppp, ddd))))),
+  [kkk,xxx,ddd,n,k1,k2,k3,k4,t0,t1,r,numer:true,display2d:false],
+  if (not(listp(odes))) then odes: [odes],
+  if (not(listp(state))) then state: [state],
+  if (not(listp(initial))) then initial: [initial],
+  local(f),
+  define(funmake(f,cons(domain[1],state)),odes),
+  n: fix((domain[3] - domain[2])/domain[4]),
+  t0: domain[2],
+  xxx: initial,
+  if (not(numberp(last(apply(f,cons(t0,xxx)))))) then
+    error("Inconsistent set of equations and variables"),
+  ddd: [cons(t0, initial)],
+  for i:1 thru n do (
+    r: errcatch (
+      t1: domain[2]+i*domain[4],
+      k1: apply(f,cons(t0,xxx)),
+      k2: apply(f,cons((t0+t1)/2,xxx+k1*domain[4]/2)),
+      k3: apply(f,cons((t0+t1)/2,xxx+k2*domain[4]/2)),
+      k4: apply(f,cons(t1,xxx+k3*domain[4]))),
+    if length(r)=0 then return()
+    else xxx: xxx+domain[4]*(k1+2*k2+2*k3+k4)/6,
+    t0: t1,
+    ddd: cons(cons(t0,xxx), ddd)),
   reverse(ddd))$
+
 
