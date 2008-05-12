@@ -14,4 +14,5 @@
   (float-digits 0.0))
 
 (defun $bigfloat_eps ()
-  ($bfloat (div 2 (expt 2 fpprec))))
+  (let ((r ($bfloat (div 1 (expt 2 fpprec)))))
+    (list (first r) (incf (second r)) (third r))))
