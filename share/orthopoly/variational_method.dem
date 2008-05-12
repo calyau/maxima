@@ -89,3 +89,25 @@ plot2d(['(f(epsilon,1)),'(f(epsilon,2)),'(f(epsilon,3)),'(f(epsilon,4))],[epsilo
 remfunction(ham,"<<",f);
 remvalue(n,psi,vars,min_this,eqs,m_det,solve_ord,pows,unks,eq,ans);
 assume_pos : false;
+
+
+/* Let's apply a variational method to the potential x^2 / 2 + x^4. We'll assume
+a trial wavefuction of the form qo * exp(-%alpha * abs(x)^(2*n) / 2) where the
+parameters are %alpha and n. See "Post-Gaussian variational method for quantum anharmonic
+oscillator," by Akihiro Ogura." */
+
+kill(all)$
+assume(qo > 0, %alpha > 0, n > 1/2)$
+f : qo * exp(-%alpha * abs(x)^(2*n) / 2);
+1 = integrate(f^2,x,minf,inf);
+solve(%,qo);
+f : subst(second(%), f);
+v : x^2 / 2 + x^4$
+ham(f) := -diff(f,x,2) / 2 + v * f$
+energy : integrate(f * ham(f),x,minf,inf);
+eqs : [diff(energy,n), diff(energy,%alpha)]$
+load(mnewton)$
+newtonepsilon : 1.0e-15$
+sol : mnewton(eqs,[n,%alpha],[1.1, 2.0]);
+subst(sol, energy);
+
