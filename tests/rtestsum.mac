@@ -947,23 +947,26 @@ is (C (sp, s) = C (s, sp)), simpsum;
 true;
 
 /* Tests for fbino in combin.lisp */
-sum(binomial(n-k,k), k, 0, floor(n/2)), simpsum;
-fib(n+1);
+sum(binomial(2*n-k,k), k, 0, n), simpsum;
+fib(2*n+1);
 
 sum(binomial(n-k,k), k, 1, n), simpsum;
 fib(n+1)-1;
 
+(assume(n>1), 0);
+0;
+
 sum(binomial(n-k,k+1), k, 1, n-1), simpsum;
 fib(n+2)-n-1;
 
-sum(binomial(n,2*k), k, 0, floor(n/2)), simpsum;
-2^(n-1);
-
-sum(binomial(n,2*k+1), k, 0, floor((n-1)/2)), simpsum;
-2^(n-1);
-
 sum(binomial(2*n,2*k), k, 0, n), simpsum;
 2^(2*n-1);
+
+sum(binomial(n,2*k+1), k, 0, n), simpsum;
+2^(n-1);
+
+sum(binomial(n,2*k), k, 0, n), simpsum;
+2^(n-1);
 
 sum(binomial(n,2*k), k, 1, n), simpsum;
 2^(n-1)-1;
@@ -979,3 +982,6 @@ binomial(h+4,a+1) - binomial(l+4,a+1);
 
 sum(binomial(k+a,k+b),k,l,h), simpsum;
 binomial(h+a+1,-b+a+1)-binomial(l+a+1,-b+a+1);
+
+(forget(n>1), 0);
+0;

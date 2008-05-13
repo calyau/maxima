@@ -1027,10 +1027,12 @@
 		   (integerp c))
 	      (progn
 		(adsum (m* y (m^ 2 (car n))))
-		(when (mlsp h1 (car n))
-		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*) *var* (m+ h1 1) (car n) t :evaluate-summand nil))))
+		(when (member (asksign (m- h1 (car n))) '($zero $negative) :test #'eq)
+		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*)
+					 *var* (m+ h1 1) (car n) t :evaluate-summand nil))))
 		(when (> c 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*) *var* 0 (m- c 1) t :evaluate-summand nil)))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*)
+					 *var* 0 (m- c 1) t :evaluate-summand nil)))))
 	      (adusum e))))
 
        ;; sum(binomial(b-k,k),k,0,floor(b/2))=fib(b+1)
@@ -1041,29 +1043,33 @@
 	      (a1 (m+ (car n) (car d))))
 	  ;; sum(binomial(a1-k,k),k,0,floor(a1/2))=fib(a1+1)
 	  ;; we only do sums with h>floor(a1/2)
+	  (print a1)
+	  (print h1)
 	  (if (and (integerp l1)
-		   (or (meqp a1 (m// h 2))
-		       (mgrp a1 (m// h 2))))
+		   (member (asksign (m- h1 (m// a1 2))) '($zero $positive) :test #'eq))
 	      (progn
 		(adsum (m* y ($fib (m+ a1 1))))
 		(when (> l1 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) (m- a1 *var*) *var*) *var* 0 (m- l1 1) t :evaluate-summand nil)))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) (m- a1 *var*) *var*)
+					 *var* 0 (m- l1 1) t :evaluate-summand nil)))))
 	      (adusum e))))
 
        ;; sum(binomial(n,2*k),k,0,floor(n/2))=2^(n-1)
        ;; sum(binomial(n,2*k+1),k,0,floor((n-1)/2))=2^(n-1)
        ((and (equal 0 (cdr n)) (equal 2 (cdr d)))
-	;; sum(binomial(a,2*k+b),k,l,h)=sum(binomial(a,2*k),k,l+b/2,h+b/2)
+	;; sum(binomial(a,2*k+b),k,l,h)=sum(binomial(a,2*k),k,l+b/2,h+b/2), b even
+	;; sum(binomial(a,2*k+b),k,l,h)=sum(binomial(a,2*k+1),k,l+(b-1)/2,h+(b-1)/2), b odd
 	(let ((a (car n))
+	      (r1 (if (oddp (car d)) 1 0))
 	      (l1 (m+ l (truncate (car d) 2)))
 	      (h1 (m+ h (truncate (car d) 2))))
 	  (if (and (integerp l1)
-		   (or (meqp a hi)
-		       (mgrp a hi)))
+		   (member (asksign (m- a hi)) '($zero $positive) :test #'eq))
 	      (progn
 		(adsum (m* y (m^ 2 (m- a 1))))
 		(when (> l1 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) a (m* *var* 2)) *var* 0 (m- l1 1) t :evaluate-summand nil))))))))
+		  (adsum (m* -1 y (dosum (list '(%binomial) a (m+ *var* *var* r1))
+					 *var* 0 (m- l1 1) t :evaluate-summand nil))))))))
 
        ;; other sums we can't do
        (t
