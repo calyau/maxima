@@ -666,7 +666,7 @@ Example:
 @example
 (%i1) load (graphs)$
 (%i2) degree_sequence(random_graph(10, 0.4));
-(%o2)            [2, 2, 3, 3, 3, 4, 4, 4, 4, 5]
+(%o2)            [2, 2, 2, 2, 2, 2, 3, 3, 3, 3]
 @end example
 @end deffn
 
@@ -797,7 +797,7 @@ Example:
 (%i1) load (graphs)$
 (%i2) g : grid_graph(5,5)$
 (%i3) graph_periphery(g);
-(%o3)                    [0, 4, 20, 24]
+(%o3)                    [24, 20, 4, 0]
 @end example
 @end deffn
 
@@ -916,8 +916,8 @@ Example:
 (%i1) load (graphs)$
 (%i2) clk5:complement_graph(line_graph(complete_graph(5)))$
 (%i3) isomorphism(clk5, petersen_graph());
-(%o3) [8 -> 9, 7 -> 8, 4 -> 7, 3 -> 6, 1 -> 5, 0 -> 4, 5 -> 3, 
-                                          6 -> 2, 2 -> 1, 9 -> 0]
+(%o3) [9 -> 0, 2 -> 1, 6 -> 2, 5 -> 3, 0 -> 4, 1 -> 5, 3 -> 6, 
+                                          4 -> 7, 7 -> 8, 8 -> 9]
 @end example
 @end deffn
 
@@ -1213,7 +1213,7 @@ Example:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.5)$
 (%i3) max_clique(g);
-(%o3)       [20, 28, 42, 44, 47, 65, 69, 75, 87, 98]
+(%o3)          [6, 12, 31, 36, 52, 59, 62, 63, 80]
 @end example
 @end deffn
 
@@ -1232,9 +1232,9 @@ Example:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.02)$
 (%i3) max_degree(g);
-(%o3)                        [6, 70]
+(%o3)                        [6, 79]
 (%i4) vertex_degree(95, g);
-(%o4)                           3
+(%o4)                           2
 @end example
 @end deffn
 
@@ -1327,8 +1327,8 @@ Example:
 (%i1) load (graphs)$
 (%i2) d : dodecahedron_graph()$
 (%i3) m : max_matching(d);
-(%o3) [[1, 2], [3, 4], [0, 15], [11, 16], [12, 17], [13, 18], 
-                               [14, 19], [6, 10], [8, 9], [5, 7]]
+(%o3) [[5, 7], [8, 9], [6, 10], [14, 19], [13, 18], [12, 17], 
+                               [11, 16], [0, 15], [3, 4], [1, 2]]
 (%i4) draw_graph(d, show_edges=m)$
 @end example
 @end deffn
@@ -1352,9 +1352,9 @@ Example:
 (%i1) load (graphs)$
 (%i2) g : random_graph(100, 0.1)$
 (%i3) min_degree(g);
-(%o3)                        [4, 83]
+(%o3)                        [3, 49]
 (%i4) vertex_degree(21, g);
-(%o4)                          12
+(%o4)                           9
 @end example
 @end deffn
 
@@ -1587,6 +1587,31 @@ Example:
 @image{figures/graphs08,6cm}
 @end ifhtml
 
+@deffn {Function} shortest_weighted_path (@var{u}, @var{v}, @var{gr})
+Returns the length of the shortest weighted path and the shortest
+weighted path from @var{u} to @var{v} in the graph @var{gr}.
+
+The length of a weighted path is the sum of edge weights of edges in the
+path. If and edge has no weight, then it has a default weight 1.
+
+Example:
+
+@c ===beg===
+@c load (graphs)$
+@c g: petersen_graph(20, 2)$
+@c for e in edges(g) do set_edge_weight(e, random(1.0), g)$
+@c shortest_weighted_path(0, 10, g);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) g: petersen_graph(20, 2)$
+(%i3) for e in edges(g) do set_edge_weight(e, random(1.0), g)$
+(%i4) shortest_weighted_path(0, 10, g);
+(%o4) [2.575143920268482, [0, 20, 38, 36, 34, 32, 30, 10]]
+@end example
+
+@end deffn
+
 @deffn {Function} strong_components (@var{gr})
 Returns the strong components of a directed graph @var{gr}.
 
@@ -1601,9 +1626,9 @@ Example:
 (%i1) load (graphs)$
 (%i2) t : random_tournament(4)$
 (%i3) strong_components(t);
-(%o3)                 [[2], [0], [1], [3]]
+(%o3)                 [[1], [0], [2], [3]]
 (%i4) vertex_out_degree(3, t);
-(%o4)                           2
+(%o4)                           3
 @end example
 @end deffn
 
@@ -1724,9 +1749,9 @@ Example:
 (%i1) load (graphs)$
 (%i2) t : random_tournament(10)$
 (%i3) vertex_out_degree(0, t);
-(%o3)                           6
+(%o3)                           2
 (%i4) out_neighbors(0, t);
-(%o4)                  [9, 6, 4, 3, 2, 1]
+(%o4)                        [7, 1]
 @end example
 @end deffn
 
@@ -2274,6 +2299,44 @@ Example 4:
 
 @ifhtml
 @image{figures/graphs12,6cm}
+@end ifhtml
+
+Example 5:
+
+@c ===beg===
+@c load(graphs)$
+@c g: petersen_graph(20, 2);
+@c draw_graph(g, redraw=true, program=planar_embedding);
+@c ===end===
+@example
+(%i1) load(graphs)$
+(%i2) g: petersen_graph(20, 2);
+(%o2)                         GRAPH
+(%i3) draw_graph(g, redraw=true, program=planar_embedding);
+(%o3)                         done
+@end example
+
+@ifhtml
+@image{figures/graphs14,6cm}
+@end ifhtml
+
+Example 6:
+
+@c ===beg===
+@c load(graphs)$
+@c t: tutte_graph();
+@c draw_graph(t, redraw=true, fixed_vertices=[1,2,3,4,5,6,7,8,9]);
+@c ===end===
+@example
+(%i1) load(graphs)$
+(%i2) t: tutte_graph();
+(%o2)                         GRAPH
+(%i3) draw_graph(t, redraw=true, fixed_vertices=[1,2,3,4,5,6,7,8,9]);
+(%o3)                         done
+@end example
+
+@ifhtml
+@image{figures/graphs15,6cm}
 @end ifhtml
 
 @end deffn
