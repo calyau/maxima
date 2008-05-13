@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Send-some.tcl,v 1.7 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Send-some.tcl,v 1.8 2008-05-13 08:20:53 villate Exp $
 #
 ###### send-some.tcl ######
 
@@ -80,14 +80,18 @@ proc _myaction { ind name1 name2 op } {
 # proc myVwait { x args } {uplevel "#0"  vwait $x }
 if { "[info commands vwait]" == "vwait"  } {
     proc myVwait { x  } {
-	global maxima_priv $x
+        global maxima_priv
+# Fix for Tcl 8.5: linking unreachable global variables used to be ignored
+# in Tcl 8.4 but in 8.5 it raises an errror. The catch command should
+# restore the Tcl 8.4 behavior. (villate, 20080513)
+	catch {global $x}
 	lappend maxima_priv(myVwait) $x
 	vwait $x
 	set maxima_priv(myVwait) [ ldelete $x $maxima_priv(myVwait)]
     }
 }
 
-proc omDoInterrupt { win } {
+proc omDoInterrupt { win } {7534
     foreach v [ $win tag names] {
 	if { [regexp "com:pdata\\((\[a-z_A-Z]*)," $v junk program] } {
 	    set var [string range $v 4 end]
