@@ -1043,8 +1043,6 @@
 	      (a1 (m+ (car n) (car d))))
 	  ;; sum(binomial(a1-k,k),k,0,floor(a1/2))=fib(a1+1)
 	  ;; we only do sums with h>floor(a1/2)
-	  (print a1)
-	  (print h1)
 	  (if (and (integerp l1)
 		   (member (asksign (m- h1 (m// a1 2))) '($zero $positive) :test #'eq))
 	      (progn
