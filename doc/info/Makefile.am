@@ -100,7 +100,9 @@ figures/graphs09.gif\
 figures/graphs10.gif\
 figures/graphs11.gif\
 figures/graphs12.gif\
-figures/graphs13.gif
+figures/graphs13.gif\
+figures/graphs14.gif\
+figures/graphs15.gif
 
 pdffigures = \
 figures/dynamics1.pdf\
