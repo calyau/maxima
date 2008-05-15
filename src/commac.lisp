@@ -610,9 +610,8 @@ values")
 (defun $timedate ()
   (multiple-value-bind (second minute hour date month year day-of-week dst-p tz)
       (get-decoded-time)
-    (declare (ignore dst-p))
     (format nil "~2,'0d:~2,'0d:~2,'0d ~[Mon~;Tue~;Wed~;Thu~;Fri~;Sat~;Sun~], ~d/~2,'0d/~d (GMT~@d)"
-	    hour minute second day-of-week month date year (- tz))))
+	    hour minute second day-of-week month date year (if dst-p (- 1 tz) (- tz)))))
 
 ;;Some systems make everything functionp including macros:
 (defun functionp (x)
