@@ -19,31 +19,26 @@
 (in-package :maxima)
 (macsyma-module ifactor)
 
-(defmvar $save_primes nil
-  "Save primes found." boolean)
-(defmvar $primep_number_of_tests 25
-  "Number of Miller-Rabin tests." fixnum)
+(defmvar $save_primes nil "Save primes found." boolean)
 
-(defmvar $pollard_rho_limit 10000
-  "Limit for pollard-rho factorization depth." fixnum)
-(defmvar $pollard_rho_tests 5
-  "Number of pollard-rho rounds before starting ecm." fixnum)
-(defmvar $pollard_rho_limit_step 1000
-  "Step for pollard-rho factorization limit." fixnum)
+(defmvar $primep_number_of_tests 25 "Number of Miller-Rabin tests." fixnum)
 
-(defmvar $ecm_number_of_curves 50
-  "Number of curves tried in one round of ecm." fixnum)
-(defmvar $ecm_limit 200
-  "Starting smootheness limit for ecm method." fixnum)
-(defmvar $ecm_max_limit 51199
-  "Maximum smootheness for ecm method." fixnum)
-(defmvar $ecm_limit_delta 200
-  "Increase smoothness limit for ecm method after each round." fixnum)
+(defmvar $pollard_rho_limit 16000 "Limit for pollard-rho factorization depth." fixnum)
+(defmvar $pollard_pm1_limit 25000 "Limit for pollard-rho factorization depth." fixnum)
 
-(defmvar $ifactor_verbose nil
-  "Display factorization steps." boolean)
-(defmvar $factors_only nil
-  "Return a list of factors only." boolean)
+(defmvar $pollard_rho_tests 10 "Number of pollard-rho rounds." fixnum)
+(defmvar $pollard_pm1_tests 10 "Number of pollard-p-1 rounds." fixnum)
+
+(defmvar $pollard_rho_limit_step 1000 "Step for pollard-rho factorization limit." fixnum)
+(defmvar $pollard_pm1_limit_step 5000 "Step for pollard-rho factorization limit." fixnum)
+
+(defmvar $ecm_number_of_curves 50 "Number of curves tried in one round of ecm." fixnum)
+(defmvar $ecm_limit       200  "Starting smootheness limit for ecm method." fixnum)
+(defmvar $ecm_max_limit 51199  "Maximum smootheness for ecm method." fixnum)
+(defmvar $ecm_limit_delta 200  "Increase smoothness limit for ecm method after each round." fixnum)
+
+(defmvar $ifactor_verbose nil "Display factorization steps." boolean)
+(defmvar $factors_only nil  "Return a list of factors only." boolean)
 
 (defun number-of-digits (n)
   (length (format nil "~d" n)))
@@ -53,8 +48,7 @@
 (defvar *largest-small-prime* 9973)
 
 (defvar *small-primes*
-  '(
-    2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
+  '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
     101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181
     191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277
     281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383
@@ -139,15 +133,12 @@
     9601 9613 9619 9623 9629 9631 9643 9649 9661 9677 9679 9689 9697 9719
     9721 9733 9739 9743 9749 9767 9769 9781 9787 9791 9803 9811 9817 9829
     9833 9839 9851 9857 9859 9871 9883 9887 9901 9907 9923 9929 9931 9941
-    9949 9967 9973
-   ))
-
+    9949 9967 9973))
 
 ;;; List of numbers which have already been tested and are
 ;;; primes > *largest-small-prime* (only used if $save_primes is true!).
 
-(defvar *large-primes* `())
-
+(defvar *large-primes* '())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
@@ -156,127 +147,158 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun get-factor-list (n)
-  (if $ifactor_verbose
-      (format t "~%Starting factorization of n = ~d~%" n))
+  (when $ifactor_verbose
+    (format t "~%Starting factorization of n = ~d~%" n))
+  (init-prime-diffs 640000)
   (let* ((factor-list (get-small-factors n))
-         (large-part (car factor-list))
-         (factor-list (cadr factor-list))
-         (factor-list (if (> large-part 1)
-                          (append (convert-list (get-large-factors large-part))
-                                  factor-list)
+	 (large-part (car factor-list))
+	 (factor-list (cadr factor-list))
+	 (factor-list (if (> large-part 1)
+			  (append (convert-list (get-large-factors large-part)) factor-list)
 			  factor-list)))
     factor-list))
 
 (defun $ifactors (n)
-  (if (and (integerp n)
-           (> n 0))
-      (let* (($intfaclim)
-             (factor-list (get-factor-list n))
-             (factor-list (if $factors_only                     
-			      (mapcar #'car factor-list)
-			      (mapcar #'(lambda (u) `((mlist simp) ,(car u) ,(cadr u)))
-				      factor-list))))
-        ($sort `((mlist simp) ,@factor-list)))
-      (merror "Argument to `ifactors' must be positive integer:~%~M." n)))
+  (unless (and (integerp n) (plusp n))
+    (merror "Argument to `ifactors' must be positive integer:~%~M." n))
+  (let* (($intfaclim)
+	 (factor-list (get-factor-list n))
+	 (factor-list (if $factors_only
+			  (mapcar #'car factor-list)
+			  (mapcar #'(lambda (u) `((mlist simp) ,(car u) ,(cadr u))) factor-list))))
+    ($sort `((mlist simp) ,@factor-list))))
 
 ;; cfactor is the function used by maxima to factor integers
 ;; (used form outside ifactor package)
 
 (defun cfactor (x)
-  (cond
-    ((null $factorflag) (return-from cfactor (list x 1)))
-    ((floatp x)
-     (errrjf "`factor' given floating arg"))
-    ((pzerop x) (return-from cfactor (list (pzero) 1)))
-    ((eqn x -1) (return-from cfactor (list -1 1)))
-    ((minusp x)
-     (return-from cfactor (cons -1 (cons 1 (cfactor (- x))))))
-    ((< x 2) (return-from cfactor (list x 1)))
-    (t
-     (let* ((factor-list (get-factor-list x))
-	    (factor-list (sort factor-list (lambda (u v) (< (car u) (car v)))))
-	    (ans ()))
-       (dolist (fac factor-list)
-	 (setq ans (cons (car fac) (cons (cadr fac) ans))))
-       ans))))
+  (cond ((null $factorflag) (return-from cfactor (list x 1)))
+	((floatp x) (errrjf "`factor' given floating arg"))
+	((pzerop x) (return-from cfactor (list (pzero) 1)))
+	((eqn x -1) (return-from cfactor (list -1 1)))
+	((minusp x) (return-from cfactor (cons -1 (cons 1 (cfactor (- x))))))
+	((< x 2) (return-from cfactor (list x 1)))
+	(t (let* ((factor-list (get-factor-list x))
+		  (factor-list (sort factor-list #'< :key #'car))
+		  (ans ()))
+	     (dolist (fac factor-list ans)
+	       (setq ans (cons (car fac) (cons (cadr fac) ans))))))))
 
+;;; we need to keep a list of differences between consecutive primes
+;;; for trial division, for stage 2 of ecm and the big prime variation of Pollard p-1
 
-;;; factor out primes < *largest-small-prime* and primes which were
-;;; already discovered so far (if save_primes is true)
+(defvar *prime-diffs* (make-array 150000 :element-type 'fixnum :adjustable t :initial-element 2)
+  "array of differences between consecutive primes")
+
+(defvar *prime-diffs-limit* 1
+  "biggest prime in *prime-diffs")
+
+(defvar *prime-diffs-maxdiff* 2
+  "maximum difference between consecutive primes in *prime-diffs*")
+
+;;; factor out primes < *prime-diffs-limit* by trial division
+;;; the array gets filled by a call to init-prime-diffs in get-factor-list
 
 (defun get-small-factors (n)
-  (let ((factors nil))
-    (dolist (d (append *small-primes* *large-primes*))
-      (let ((deg 0))
-        (loop while (and (> n 1) (equal (mod n d) 0)) do
-	      (setq n (/ n d))
-	      (setq deg (1+ deg)))
-        (cond ((> deg 0)
-               (if $ifactor_verbose
-		   (format t "Factoring out small prime: ~A (degree:~A)~%"
-			   d deg))
-               (setq factors (cons `(,d ,deg) factors))))
-        (cond ((equal n 1)
-               (return-from get-small-factors `(1 ,factors))))))
-    `(,n ,factors)))
-
+  (let (factors)
+    ;; first divide off the even part
+    (when (> 4 n)
+      (push `(,n 1) factors)
+      (when $ifactor_verbose (format t "small cofactor: ~A~%" n))
+      (return-from get-small-factors `(1 ,factors)))
+    (loop with deg = 0
+       while (and (> n 1) (evenp n)) do
+       (setq n (ash n -1))
+       (incf deg)
+       finally
+       (progn
+	 (when (plusp deg)
+	   (when $ifactor_verbose (format t "Factoring out 2: 2 (degree:~A)~%" deg))
+	   (push `(2 ,deg) factors))
+	 (when (= n 1) (return-from get-small-factors `(1 ,factors)))))
+    ;; now use the *prime-diffs* array for trial-factoring
+    (loop for i from 0 to (1- (length *prime-diffs*))
+       and d = 3 then (+ d (aref *prime-diffs* i)) do
+       (when (> (* d d) n)
+         (push `(,n 1) factors)
+         (when $ifactor_verbose  (format t "small prime cofactor: ~A~%" n))
+         (return-from get-small-factors `(1 ,factors)))
+       (loop with deg = 0
+	  while (and (> n 1) (zerop (mod n d))) do
+	  (setq n (truncate n d))
+	  (incf deg)
+	  finally
+	  (progn
+	    (when (plusp deg)
+	      (when $ifactor_verbose (format t "Factoring out small prime: ~A (degree:~A)~%" d deg))
+	      (push `(,d ,deg) factors))
+	    (when (= n 1) (return-from get-small-factors `(1 ,factors)))))
+       finally (return `(,n ,factors)))))
 
 ;;; get-large-factors returns the list of factors of integer n (n has
 ;;; no small factor at this tage)
 
 (defun get-large-factors (n)
-  (if ($primep n)
+  (if (primep n)
       (progn
-        (if $ifactor_verbose
-	    (format t "========> Prime factor: ~d~%~%" n))
-        (list n))
+	(when $ifactor_verbose (format t "========> Prime factor: ~d~%~%" n))
+	(list n))
       (get-large-factors-1 n)))
 
 (defun get-large-factors-1 (n)
   (let ((f (get-one-factor n)))
     (if (= f n)
 	(progn
-	  (if $ifactor_verbose
-	      (format t "WARNING: could not find factors of composite:~%~A~%" n))
+	  (when $ifactor_verbose (format t "WARNING: could not find factors of composite:~%~A~%" n))
 	  (list n))
 	(append (get-large-factors f) (get-large-factors (/ n f))))))
 
 (defun get-one-factor (n)
-  (if $ifactor_verbose
-      (format t "Factoring n = ~d~%" n))
+  (when $ifactor_verbose
+    (format t "Factoring n = ~d~%" n))
   (let ((f nil)
-        (lim_pollard $pollard_rho_limit)
-        ($ecm_number_of_curves $ecm_number_of_curves))
+	(lim_pollard $pollard_rho_limit)
+	(lim_p-1 $pollard_pm1_limit)
+	($ecm_number_of_curves $ecm_number_of_curves))
 
     ;; If $intfaclim is not false then we don't want to spend too much
     ;; time factoring integers so we return n and leave it
     ;; unfactored. The default value for $intfaclim is true, but most
     ;; functions which use integer factorization set it to false.
-    (if (not (null $intfaclim))
-	(return-from get-one-factor n))
-    
+    (when $intfaclim
+      (return-from get-one-factor n))
+
     ;; try factoring smaller factors with pollard-rho
     (dotimes (i $pollard_rho_tests)
-      (if $ifactor_verbose
-	  (format t "Pollard rho: round #~d of ~d (lim=~d)~%"
-		  (1+ i) $pollard_rho_tests lim_pollard))
+      (when $ifactor_verbose
+	(format t "Pollard rho: round #~d of ~d (lim=~d)~%" (1+ i) $pollard_rho_tests lim_pollard))
       (setq f (get-one-factor-pollard n lim_pollard))
-      (if (and (> f 1) (< f n))
-	  (progn
-	    (if $ifactor_verbose
-		(format t "Pollard rho: found factor ~A (~d digits)~%"
-			f (number-of-digits f)))
-	    (return-from get-one-factor f)))
+      (when (< 1 f n)
+	(when $ifactor_verbose
+	  (format t "Pollard rho: found factor ~A (~d digits)~%" f (number-of-digits f)))
+	(return-from get-one-factor f))
       (if (> lim_pollard 0)
-	  (setq lim_pollard (+ $pollard_rho_limit_step lim_pollard))))
-    
-    ;; continue with ecm
-    (do () (nil)
-      (setq f (get-one-factor-ecm n))
-      (if (not (null f))
-	  (return-from get-one-factor f))
-      (setq $ecm_number_of_curves (+ $ecm_number_of_curves 50))) ))
+	  (incf lim_pollard $pollard_rho_limit_step)))
 
+    ;; now try factoring with pollards p-1 method
+    (dotimes (i $pollard_pm1_tests)
+      (when $ifactor_verbose
+	(format t "Pollard p-1: round #~d of ~d (lim=~d)~%" (1+ i) $pollard_pm1_tests lim_p-1))
+      (setq f (get-one-factor-p-1 n lim_p-1))
+      (when (< 1 f n)
+	(when $ifactor_verbose
+	  (format t "Pollard p-1: found factor ~A (~d digits)~%" f (number-of-digits f)))
+	(return-from get-one-factor f))
+      (when (plusp lim_pollard)
+	(incf lim_p-1 $pollard_pm1_limit_step)))
+
+    ;; continue with ecm
+    (do ()
+	(nil)
+      (setq f (get-one-factor-ecm n))
+      (unless (null f)
+	(return-from get-one-factor f))
+      (setq $ecm_number_of_curves (+ $ecm_number_of_curves 50)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
@@ -288,28 +310,96 @@
 
 (defun get-one-factor-pollard (n lim)
   (let* ((x (+ (random (- n 3)) 2))
-         (a (+ (random (- n 2)) 1))
-         (b (+ (random (- n 5)) 1))
-         (y x) (d 1) (r 2) (j 1) (k) (terms 1))
-    (setq terms (1+ ($entier ($float ($log n)))))
+	 (a (+ (random (- n 2)) 1))
+	 (b (+ (random (- n 5)) 1))
+	 (y x) (d 1) (r 2) (j 1) (k)
+	 (terms (ceiling (log (float n)))))
     (setq b (/ b (gcd a b)))
-    (loop while (equal d 1) do
-	  (setq y x)
-	  (setq j (+ j r))
-	  (dotimes (i r)
-	    (setq x (mod (+ (* a (mod (* x x) n)) b) n)))
-	  (setq k 0)
-	  (loop while (and (< k r) (equal d 1)) do
-		(dotimes (i (min terms (- r k)))
-		  (setq x (mod (+ (* a (mod (* x x) n)) b) n))
-		  (setq d (mod (* d (- x y)) n)))
-		(setq d (gcd d n))
-		(setq k (+ k terms)))
-	  (setq r (* 2 r))
-	  (if (and (> lim 0)
-		   (> j lim))
-	      (return-from get-one-factor-pollard d)))
+    (loop while (= d 1) do
+	 (setq y x)
+	 (incf j r)
+	 (dotimes (i r)
+	   (setq x (mod (+ (* a (mod (* x x) n)) b) n)))
+	 (setq k 0)
+	 (loop while (and (< k r) (equal d 1)) do
+	      (dotimes (i (min terms (- r k)))
+		(setq x (mod (+ (* a (mod (* x x) n)) b) n))
+		(setq d (mod (* d (- x y)) n)))
+	      (setq d (gcd d n))
+	      (incf k terms))
+	 (setq r (* 2 r))
+	 (when (< 0 lim j)
+	     (return-from get-one-factor-pollard d)))
     d))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                                                                       ;;;
+;;;   ~*~  IMPLEMENTATION OF POLLARDS P-1 FACTORIZATION METHOD   ~*~      ;;;
+;;;                                                                       ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; product of all primes low < p < high and all integers
+;;; isqrt(low) < n < isqrt(high)
+
+(defun ppexpo (low high)
+  (declare (integer low high))
+  (let ((x 1))
+    (loop for i from (max 2 (1+ (isqrt low))) to (isqrt high) do
+	 (setq x (* i x)))
+    (when (oddp low) (incf low))
+    (loop for i from (1+ low) to high
+       when (primep i) do (setq x (* i x)))
+    x))
+
+(defun big-prime-var (y n bound)
+  (let ((x (make-array (1+ (ash *prime-diffs-maxdiff* -1)) :element-type 'integer :initial-element 1))
+	(y2 (mod (* y y) n))
+	(q 3)
+	(count 1)
+	(d 0)
+	(z 0)
+	(k 0))
+    (loop for i from 1 to (ash *prime-diffs-maxdiff* -1) do
+	 (setf (aref x i) (mod (* y2 (aref x (1- i))) n)))
+    (setq y (power-mod y q n))
+    (setq z (1- y))
+    (setq bound (min bound *prime-diffs-limit*))
+    (loop for i from 0
+	 while (< q bound) do
+	 (setq k (aref *prime-diffs* i))
+	 (incf q k)
+	 (setq y (mod (* y (aref x (ash k -1))) n))
+	 (setq z (mod (* z (1- y)) n))
+	 (when (> (incf count) 1000)
+	   (setq count 0)
+	   (setq d (gcd z n))
+	   (when (> d 1)
+	     (format t "bpv: ~d~%" d)
+	     (return-from big-prime-var d))))
+    d))
+
+;;; Pollard's p-1 factoring algorithm
+;;; in general a prime factor p of x is found, if p-1 is
+;;; a product of prime powers q^k <= lim
+
+(defun get-one-factor-p-1 (n &optional (lim 16000) (lim2 1000000))
+  (declare (integer n lim))
+  (let* ((base (+ 2 (random (- n 2))))
+	 (anz 256)
+	 (d (gcd base n)))
+    (declare (fixnum anz)
+	     (integer base d))
+    (when (< 1 d n) (return-from get-one-factor-p-1 d))
+    (loop for n0 from 0 to (1- lim) by anz
+       and ex = (ppexpo n0 (min lim (+ n0 anz))) do
+       (setq base (power-mod base ex n))
+       (when (<= base 1) (return-from get-one-factor-p-1 1))
+       (setq d (gcd (1- base) n))
+       (when (> d 1)
+	 (return-from get-one-factor-p-1 d)))
+    (when (= d 1)
+      (return-from get-one-factor-p-1 (big-prime-var base n *prime-diffs-limit*))))
+  1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
@@ -324,46 +414,31 @@
 ;;;
 ;;; Based on the implementation from GAP4 FacInt package.
 
-
-;;; we need to keep a list of differences between consecutive primes
-;;; for stage 2 of ecm
-
-(defmvar *prime-diffs-length* 1)
-(defmvar *prime-diffs* (make-array *prime-diffs-length*
-				   :element-type 'fixnum :adjustable t
-				   :initial-element 2))
-(defmvar *prime-diffs-limit* 1)
 (defmacro get-prime-diff (i) `(aref *prime-diffs* ,i))
 
 (defun init-prime-diffs (n)
-  (if (> n *prime-diffs-limit*)
-      (progn
-	(if $ifactor_verbose
-	    (format t "Initilizing prime diffs up to n=~d~%" (* n 2)))
-	(setq n (* 2 n))
-	(let* ((sqrt_n (isqrt n)) (sieve (make-array (1+ n) :element-type 'bit
-						     :initial-element 1)))
-	  (do ((p 3 ($next_prime p)))
-	      ((> p sqrt_n))
-	    (do ((d (* 2 p) (+ d p)))
-		((> d n))
-	      (setf (aref sieve d) 0)))
-	  (let ((q1 3) (i 0))
-	    (do ((q2 5 (+ q2 2))) ((> q2 n))
-	      (if (= 1 (aref sieve q2))
-		  (progn
-		    (if (>= i *prime-diffs-length*)
-			(progn
-			  (setq *prime-diffs-length*
-				(* 2 *prime-diffs-length*))
-			  (adjust-array *prime-diffs* *prime-diffs-length*)))
-		    (setq *prime-diffs-limit* q2)
-		    (setf (aref *prime-diffs* i) (- q2 q1))
-		    (setq q1 q2)
-		    (setq i (1+ i))))))
-	  ))
-      ))
-
+  (when (> n *prime-diffs-limit*)
+    (setq n (* 2 n))
+    (when $ifactor_verbose (format t "Initializing prime diffs up to n=~d~%" n))
+    (let ((sieve (make-array (1+ n) :element-type 'bit :initial-element 1)))
+      (do ((p 3 ($next_prime p)))
+	  ((> p (isqrt n)))
+	(do ((d (* 2 p) (+ d p)))
+	    ((> d n))
+	  (setf (sbit sieve d) 0)))
+      (do ((q1 3)
+	   (i 0)
+	   (q2 5 (+ q2 2)))
+	  ((> q2 n))
+	(when (= 1 (sbit sieve q2))
+	  (when (>= i (length *prime-diffs*))
+	    (adjust-array *prime-diffs* (* 2 (length *prime-diffs*))))
+	  (setq *prime-diffs-limit* q2)
+	  (let ((diff (- q2 q1)))
+	    (setf (aref *prime-diffs* i) diff)
+	    (when (> diff *prime-diffs-maxdiff*) (setq *prime-diffs-maxdiff* diff)))
+	  (setq q1 q2)
+	  (incf i))))))
 
 ;;; modular inverse of a (modulus m)
 ;;;
@@ -371,17 +446,18 @@
 ;;; inv-mod returns a positive modulo or `nil' in case of a zero divisor
 
 (defun inv-mod (a m)
-  (if (< a 0) (setq a (mod a m)))
-  (let ((u1 1)(u2 a)(v1 0)(v2 m) q)
-    (do () ((= 0 v2) (if (= 1 u2) (mod u1 m) nil)) 
+  (when (minusp a) (setq a (mod a m)))
+  (let ((u1 1) (u2 a) (v1 0) (v2 m) q)
+    (do ()
+	((zerop v2) (if (= 1 u2) (mod u1 m) nil))
       (setq q (truncate u2 v2))
       (psetq u1 v1 v1 (- u1 (* q v1)))
-      (psetq u2 v2 v2 (- u2 (* q v2))) )))
+      (psetq u2 v2 v2 (- u2 (* q v2))))))
 
 (defun $inv_mod (a m)
-  (if (and (integerp a) (integerp m))
-      (inv-mod a m)
-      (merror "Non-integer arguments to `inv_mod': ~%~M ~M" a m)))
+  (unless (and (integerp a) (integerp m))
+      (merror "Non-integer arguments to `inv_mod': ~%~M ~M" a m))
+  (inv-mod a m))
 
 ;;; computations on the elliptic curve:
 ;;; we use the elliptic curve in projective coordinates (x,y,z), but only
@@ -389,8 +465,8 @@
 
 (defun ecm-product (q p1 p2 n)
   (let ((x1 (car p1)) (x2 (car p2))
-        (z1 (cadr p1)) (z2 (cadr p2))
-        (pr1) (pr2) (sq1) (sq2) (x3) (z3))
+	(z1 (cadr p1)) (z2 (cadr p2))
+	(pr1) (pr2) (sq1) (sq2) (x3) (z3))
     (setq pr1 (mod (* (- x1 z1) (+ x2 z2)) n))
     (setq pr2 (mod (* (+ x1 z1) (- x2 z2)) n))
     (setq sq1 (mod (expt (+ pr1 pr2) 2) n))
@@ -401,7 +477,7 @@
 
 (defun ecm-square (p n a)
   (let ((x1 (car p)) (z1 (cadr p))
-        (x2) (z2) (sq1) (sq2) (f1) (f2))
+	(x2) (z2) (sq1) (sq2) (f1) (f2))
     (setq sq1 (mod (* (+ x1 z1) (+ x1 z1)) n))
     (setq sq2 (mod (* (- x1 z1) (- x1 z1)) n))
     (setq f1 (- sq1 sq2))
@@ -413,7 +489,7 @@
 (defun ecm-power (base e n a)
   (let ((p base) (ptb (ecm-square base n a)) (l (integer-length e)))
     (do ((i (- l 2) (1- i)))
-        ((< i 0))
+	((< i 0))
       (if (logbitp i e)
 	  (progn
 	    (setq p (ecm-product base p ptb n))
@@ -425,99 +501,90 @@
 
 (defun ecm-factor-with-curve (n x z a lim1)
   (let ((g (gcd (- (* a a) 4) n)))
-    (if (not (= g 1)) (return-from ecm-factor-with-curve g)))
+    (unless (= g 1) (return-from ecm-factor-with-curve g)))
   (setq a (mod (floor (/ (+ a 2) 4)) n))
   ;;
   ;; stage 1: compute p^M where M=p1^e1*...*pk^ek where
   ;;          p1,...,pk are primes < lim1 and ei=log[pi](n)
   ;;
-  (let ((q 1) (last_q ($prev_prime lim1)) (p `(,x ,z)) (ex) (next_gcd)
-	(gcd_interval))
+  (let ((q 1)
+	(last_q ($prev_prime lim1))
+	(p `(,x ,z))
+	(ex) (next_gcd)	(gcd_interval))
     (setq gcd_interval (floor (/ lim1 4)))
     (setq next_gcd gcd_interval)
-    (do () ((> q lim1))
+    (do ()
+	((> q lim1))
       (setq q ($next_prime q))
       (setq ex (floor (/ (log lim1) (log q))))
-      (cond
-	((= q 2) (setq ex (+ ex 2)))
-	((= q 3) (setq ex (+ ex 1))))
+      (cond ((= q 2) (incf ex 2))
+	    ((= q 3) (incf ex)))
       (setq p (ecm-power p (expt q ex) n a))
-      (if (>= q next_gcd)
-	  (progn
-	    (let ((g (gcd (cadr p) n)))
-	      (if (and (< g n) (> g 1))
-		  (progn
-		    (if (and $ifactor_verbose (< g n))
-			(format
-			 t
-			 "ECM: found factor in stage 1: ~d (~d digits)~%"
-			 g (number-of-digits g)))
-		    (return-from ecm-factor-with-curve g)))
-	      (setq next_gcd (min (+ next_gcd gcd_interval) last_q))))))
+      (when (>= q next_gcd)
+	(let ((g (gcd (cadr p) n)))
+	  (when (< 1 g n)
+	    (when $ifactor_verbose
+	      (format t "ECM: found factor in stage 1: ~d (~d digits)~%" g (number-of-digits g)))
+	    (return-from ecm-factor-with-curve g))
+	  (setq next_gcd (min (+ next_gcd gcd_interval) last_q)))))
     ;;
     ;; stage 2: compute (p^M)^pi for each prime lim1<pi<lim2 (and some
     ;;          other exponents)
     ;;          Uses "Improved standard cotinuation".
     ;;
     (let* ((lim2 (* lim1 100))
-           (power-after-1 p)
-           (step-size (min (/ lim1 2) (isqrt (/ lim2 2))))
-           (d-step-size (* 2 step-size))
-           (power-table (make-array (+ 2 step-size)))
-           (d-step-size-power (ecm-power power-after-1 d-step-size n a))
-           (step-power (ecm-power power-after-1 (1+ d-step-size) n a))
-           (last-step-power power-after-1)
-           (step-pos 1)
-           (q1 3)
-           (prime-diffs-pos 0)
-           (step-power-buff))
+	   (power-after-1 p)
+	   (step-size (min (/ lim1 2) (isqrt (/ lim2 2))))
+	   (d-step-size (* 2 step-size))
+	   (power-table (make-array (+ 2 step-size)))
+	   (d-step-size-power (ecm-power power-after-1 d-step-size n a))
+	   (step-power (ecm-power power-after-1 (1+ d-step-size) n a))
+	   (last-step-power power-after-1)
+	   (step-pos 1)
+	   (q1 3)
+	   (prime-diffs-pos 0)
+	   (step-power-buff))
       (init-prime-diffs lim2)
       (setf (aref power-table 1) (ecm-square power-after-1 n a))
       (setf (aref power-table 2) (ecm-square (aref power-table 1) n a))
-      (do ((i 3 (1+ i))) ((> i step-size))
-        (setf (aref power-table i)
-              (ecm-product (aref power-table (- i 2))
-                           (aref power-table 1)
-                           (aref power-table (- i 1))
-                           n)))
-      (do () ((> step-pos (- lim2 d-step-size)))
-        (let ((buff-prod 1)
-              (q-limit (+ step-pos d-step-size))
-              (power-table-pos (/ (- q1 step-pos) 2)))
-	  (if (= 0 power-table-pos) ($error q1 step-pos))
-          (do () ((> q1 q-limit))
-            (let* ((sp1 (car step-power))
-                   (sp2 (cadr step-power))
-                   (pp1 (car (aref power-table power-table-pos)))
-                   (pp2 (cadr (aref power-table power-table-pos)))
-                   (coord-diffs (mod (- (* sp1 pp2) (* sp2 pp1)) n)))
-              (setq buff-prod (mod (* coord-diffs buff-prod) n)))
-            (setq q1 (+ q1 (get-prime-diff prime-diffs-pos)))
-            (setq power-table-pos (+ power-table-pos
-                                     (/ (get-prime-diff prime-diffs-pos) 2)))
-            (setq prime-diffs-pos (1+ prime-diffs-pos)))
-	  
-          (let ((g (gcd n buff-prod)))
-            (if (> g 1)
-		(progn
-		  (if $ifactor_verbose
-		      (format
-		       t "ECM: found factor in stage 2: ~d (~d digits)~%"
-		       g (number-of-digits g)))
-		  (return-from ecm-factor-with-curve g))))
-	  
-          (setq step-power-buff step-power)
-          (setq step-power (ecm-product last-step-power
-                                        d-step-size-power
-                                        step-power
-                                        n))
-          (setq last-step-power step-power-buff)
-          (setq step-pos (+ step-pos d-step-size)))))
+      (do ((i 3 (1+ i)))
+	  ((> i step-size))
+	(setf (aref power-table i)
+	      (ecm-product (aref power-table (- i 2)) (aref power-table 1) (aref power-table (1- i)) n)))
+      (do ()
+	  ((> step-pos (- lim2 d-step-size)))
+	(let ((buff-prod 1)
+	      (q-limit (+ step-pos d-step-size))
+	      (power-table-pos (/ (- q1 step-pos) 2)))
+	  (when (zerop power-table-pos) ($error q1 step-pos))
+	  (do ()
+	      ((> q1 q-limit))
+	    (let* ((sp1 (car step-power))
+		   (sp2 (cadr step-power))
+		   (pp1 (car (aref power-table power-table-pos)))
+		   (pp2 (cadr (aref power-table power-table-pos)))
+		   (coord-diffs (mod (- (* sp1 pp2) (* sp2 pp1)) n)))
+	      (setq buff-prod (mod (* coord-diffs buff-prod) n)))
+	    (incf q1 (get-prime-diff prime-diffs-pos))
+	    (incf power-table-pos (/ (get-prime-diff prime-diffs-pos) 2))
+	    (incf prime-diffs-pos))
+
+	  (let ((g (gcd n buff-prod)))
+	    (when (> g 1)
+	      (when $ifactor_verbose
+		(format t "ECM: found factor in stage 2: ~d (~d digits)~%" g (number-of-digits g)))
+	      (return-from ecm-factor-with-curve g)))
+
+	  (setq step-power-buff step-power)
+	  (setq step-power (ecm-product last-step-power	d-step-size-power step-power n))
+	  (setq last-step-power step-power-buff)
+	  (incf step-pos d-step-size))))
     nil))
 
 (defun get-one-factor-ecm (n)
-  (if ($primep n) (return-from get-one-factor-ecm n))
-  (let ((sigma (+ 6 (random (ash 1 20)))) (x) (z) (u) (v) (a) (a1) (a2)
+  (when (primep n) (return-from get-one-factor-ecm n))
+  (let ((sigma (+ 6 (random (ash 1 20))))
+	(x) (z) (u) (v) (a) (a1) (a2)
 	(fact) (lim1 $ecm_limit) (a2_inv))
     (dotimes (i $ecm_number_of_curves)
       (setq u (mod (- (* sigma sigma) 5) n))
@@ -527,17 +594,15 @@
       (setq a1 (mod (* (expt (- v u) 3) (+ (* 3 u) v)) n))
       (setq a2 (mod (* 4 x v) n))
       (setq a2_inv (inv-mod a2 n))
-      (if (null a2_inv)
-	  (return-from get-one-factor-ecm (gcd a2 n)))
+      (when (null a2_inv)
+	(return-from get-one-factor-ecm (gcd a2 n)))
       (setq a (mod (* a1 a2_inv) n))
       (setq sigma (max 6 (mod (+ (* sigma sigma) 1) n)))
-      (if $ifactor_verbose
-	  (format t "ECM: trying with curve #~d of ~d (lim=~d)~%"
-		  (1+ i) $ecm_number_of_curves lim1))
-      (init-prime-diffs 640000)
+      (when $ifactor_verbose
+	(format t "ECM: trying with curve #~d of ~d (lim=~d)~%" (1+ i) $ecm_number_of_curves lim1))
       (setq fact (ecm-factor-with-curve n x z a lim1))
-      (if (and fact (< fact n))
-	  (return-from get-one-factor-ecm fact))
+      (when (and fact (< fact n))
+	(return-from get-one-factor-ecm fact))
       (setq lim1 (min (+ lim1 $ecm_limit_delta) $ecm_max_limit)))
     nil))
 
@@ -545,17 +610,14 @@
 ;;; convert (3 5 3 5 3 7) to ((3 3) (5 2) (7 1))
 
 (defun convert-list (l)
-  (labels
-      ((convert-list-sub (e n l1 l2)
-	 (cond ((null l1)
-		(append l1 (cons (list e n) l2)))
-	       ((equal e (car l1))
-		(convert-list-sub e (1+ n) (cdr l1) l2))
-	       (t (convert-list-sub (car l1) 1 (cdr l1)
-				    (cons `(,e ,n) l2))))))
+  (labels ((convert-list-sub (e n l1 l2)
+	     (cond ((null l1)
+		    (cons (list e n) l2))
+		   ((= e (car l1))
+		    (convert-list-sub e (1+ n) (cdr l1) l2))
+		   (t (convert-list-sub (car l1) 1 (cdr l1) (cons `(,e ,n) l2))))))
     (let ((l1 (sort l #'>)))
       (convert-list-sub (car l1) 1 (rest l1) nil))))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
@@ -569,41 +631,38 @@
       (merror "Argument to `primep' must be an integer:~%~M." n)))
 
 (defun primep (n)
-  (cond ((equal n 1) nil)
-	((equal n 2) t)
-	((evenp n) nil)
-	((member n `(2 3 5 7 11 13 17)) t)
+  (cond ((= n 1) nil)
+	((evenp n) (= n 2))
+	((member n *small-primes*) t)
 	((< n 341550071728321) (primep-small n))
 	((member n *large-primes*) t)
 	(t (primep-prob n))))
 
-
-;;; miller-rabin test is deterministic for n<341550071728321 
+;;; miller-rabin test is deterministic for n<341550071728321
 ;;; if we test for small bases
 ;;; Reference:
 ;;;  G. Jaeschke, On Strong Pseudoprimes to Several Bases,
 ;;;       Math. Comp., 61 (1993), 915-926.
 
 (defun primep-small (n)
-  (dolist (x `(2 3 5 7 11 13 17))
-    (if (not (miller-rabin n x))
-	(return-from primep-small nil)))
+  (dolist (x '(2 3 5 7 11 13 17))
+    (unless (miller-rabin n x)
+      (return-from primep-small nil)))
   t)
-
 
 ;;; strong primality test:
 ;;;  - run miller-rabin test $primep_number_of_tests times
-;;;  - run one lucas test 
+;;;  - run one lucas test
 
 (defun primep-prob (n)
   (let ((nroot (isqrt n)))
-    (if (equal (* nroot nroot) n)
+    (if (= (* nroot nroot) n)
 	(return-from primep-prob nil)))
-  ;; Miller-Rabin Test:    
+  ;; Miller-Rabin Test:
   (dotimes (i $primep_number_of_tests)
-    (if (not (miller-rabin n)) 
-	(return-from primep-prob nil)))
-  ;; Lucas Test:    
+    (unless (miller-rabin n)
+      (return-from primep-prob nil)))
+  ;; Lucas Test:
   (primep-lucas n))
 
 
@@ -616,46 +675,43 @@
 ;;;
 ;;; probability of n passing one test and beeing not a prime is less than 1/4
 
-(defun miller-rabin (n &optional x)
-  (let* ((k 0) (j 0) y
-         (q (1- n))
-         (x (if (null x) (+ (random (1- q)) 2) x)))
-    (progn
-      (do () ((logbitp 0 q))
-        (progn
-          (setq q (ash q -1))
-          (setq k (1+ k))))
-      (setq y (power-mod x q n))
-      (do () ((= j k))
-        (progn
-          (if (or (and (= j 0) (= y 1)) (= y (1- n)))
-	      (return t)
-	      (if (and (> j 0) (= y 1)) (return)))
-          (setq j (1+ j))
-          (setq y (power-mod y 2 n)) )))))
+(defun miller-rabin (n &optional (x (+ (random (- n 2)) 2)))
+  (let ((k 0) (j 0) (y 0)
+	(q (1- n)))
+    (do ()
+	((logbitp 0 q))
+      (setq q (ash q -1))
+      (incf k))
+    (setq y (power-mod x q n))
+    (do ()
+	((= j k))
+      (if (or (and (zerop j) (= y 1)) (= y (1- n)))
+	  (return t)
+	  (if (and (plusp j) (= y 1)) (return)))
+      (incf j)
+      (setq y (power-mod y 2 n)))))
 
 (defun $power_mod (b n m)
-  (if (and (integerp b) (integerp n) (integerp m))
-    (if (>= n 0) 
+  (unless (and (integerp b) (integerp n) (integerp m))
+    (merror "Non-integer arguments to `power_mod': ~%~M ~M ~M" b n m))
+  (if (>= n 0)
       (power-mod b n m)
       (let ((inv (inv-mod b m)))
-        (if inv 
-          (power-mod inv (neg n) m) )))
-    (merror "Non-integer arguments to `power_mod': ~%~M ~M ~M" b n m) ))
+	(if inv
+	    (power-mod inv (neg n) m)))))
 
 (defun power-mod (b n m)
-  (if (= 0 n) 1
-      (do ((res 1)) (())
-	(progn
-	  (if (logbitp 0 n)
-	      (progn
-		(setq res (mod (* res b) m))
-		(if (= 1 n) (return res)) ))
-	  (setq n (ash n -1))
-	  (setq b (mod (* b b) m)) ))))
+  (if (zerop n)
+      1
+      (do ((res 1))
+	  (())
+	(when (logbitp 0 n)
+	  (setq res (mod (* res b) m))
+	  (when (= 1 n) (return res)))
+	(setq n (ash n -1))
+	(setq b (mod (* b b) m)))))
 
-
-;;; primep-lucas: 
+;;; primep-lucas:
 ;;;
 ;;;  Define: x^2-a*x+b, D=a^2-4*b; x1, x2 roots of x^2+a*x+b;
 ;;;  U[k]=(x1^k-x2^k)/(x1-x2), V[k]=x1^k+x2^k.
@@ -667,53 +723,47 @@
 ;;;  and test if p divides U[p+1].
 
 (defun primep-lucas (n)
-  (let (u prmp (b 3))
-    (loop while (not (equal ($jacobi (- (* b b) 4) n) -1)) do
-	  (setq b (+ b 1)))
-    (setq u (lucas-sequence (1+ n) b n))
-    (setq prmp (= u 0))
-    (cond ((and prmp $save_primes)
-           (setq *large-primes* (cons n *large-primes*))))
+  (let (prmp (b 3))
+    (loop while (not (= ($jacobi (- (* b b) 4) n) -1)) do
+	 (incf b))
+    (setq prmp (zerop (lucas-sequence (1+ n) b n)))
+    (when (and prmp $save_primes)
+      (push n *large-primes*))
     prmp))
-
 
 ;;; Get element U[p+1] of Lucas sequence for x^2-p*x+1.
 ;;;
-;;; Uses algorithm from M. Joye and J.-J. Quisquater, 
+;;; Uses algorithm from M. Joye and J.-J. Quisquater,
 ;;;                     Efficient computation of full Lucas sequences, 1996
 
 (defun lucas-sequence (k p n)
   (let ((uh 1) (vl 2) (vh p) (s 0) l)
-    
-    (do () ((logbitp 0 k))
-      (progn
-	(setq k (ash k -1))
-	(setq s (1+ s)) ))
-    (setq l (integer-length k)) 
-    
-    (do ((j (1- l) (1- j))) 
+    (do ()
+	((logbitp 0 k))
+      (setq k (ash k -1))
+      (setq s (1+ s)))
+
+    (setq l (integer-length k))
+
+    (do ((j (1- l) (1- j)))
 	((= 0 j))
       (if (logbitp j k)
-          (progn
-            (setq uh (mod (* uh vh) n))
-            (setq vl (mod (- (* vh vl) p) n))
-            (setq vh (mod (- (* vh vh) 2) n)) )            
+	  (progn
+	    (setq uh (mod (* uh vh) n))
+	    (setq vl (mod (- (* vh vl) p) n))
+	    (setq vh (mod (- (* vh vh) 2) n)))
 	  (progn
 	    (setq uh (mod (1- (* uh vl)) n))
 	    (setq vh (mod (- (* vh vl) p) n))
-	    (setq vl (mod (- (* vl vl) 2) n))) ))
-    
-    (progn
-      (setq uh (mod (1- (* uh vl)) n))
-      (setq vl (mod (- (* vh vl) p) n)) )
-    
-    (dotimes (j s) 
-      (progn
-	(setq uh (mod (* uh vl) n))
-	(setq vl (mod (- (* vl vl) 2) n)) ))
-    
-    uh))
+	    (setq vl (mod (- (* vl vl) 2) n)))))
 
+    (setq uh (mod (1- (* uh vl)) n))
+    (setq vl (mod (- (* vh vl) p) n))
+
+    (dotimes (j s)
+      (setq uh (mod (* uh vl) n))
+      (setq vl (mod (- (* vl vl) 2) n)))
+    uh))
 
 ;;; Get smallest prime bigger than n.
 ;;; Get greatest prime smaller than n.
@@ -721,46 +771,38 @@
 ;;; Passing one miller-rabin test is necessary for beeing prime.
 
 (defun $next_prime (n)
-  (if (and (integerp n)
-	   (> n 0))
-      (if (equal n 1)
-	  2
-	  (next-prime (1+ n) 1))
-      (merror
-       "Argument to next_prime must be a positive integer:~%~M." n)))
+  (unless (and (integerp n) (plusp n))
+    (merror "Argument to next_prime must be a positive integer:~%~M." n))
+  (if (equal n 1)
+      2
+      (next-prime (1+ n) 1)))
 
 (defun $prev_prime (n)
-  (if (and (integerp n)
-	   (> n 2))
-      (if (equal n 3)
-	  2
-	  (next-prime (1- n) -1))
-      (merror
-       "Argument to prev_prime must be an integer greater than 2:~%~M." n)))
+  (unless (and (integerp n) (> n 2))
+    (merror "Argument to prev_prime must be an integer greater than 2:~%~M." n))
+  (if (= n 3)
+      2
+      (next-prime (1- n) -1)))
 
 (defun next-prime (n c)
-  (progn
-    (if (evenp n) (setq n (+ n c)))
-    (do () (())
-      (if (miller-rabin n)
-	  (if ($primep n)
-	      (return-from next-prime n))
-	  (setq n (+ (* 2 c) n))))))         
-
+  (when (evenp n) (incf n c))
+  (loop
+     (if (miller-rabin n)
+	 (when (primep n) (return-from next-prime n))
+	 (incf n (* 2 c)))))
 
 ;;; return a list of all primes between start and end
 
-(defun $primes (start end) 
+(defun $primes (start end)
+  (unless (and (integerp start) (integerp end))
+    (merror "`primes' needs two integer arguments."))
   (let ((primes nil))
-    (if (not (and (integerp start) (integerp end)))
-      (merror "`primes' needs two integer arguments."))
     ;; take primes from *small-primes* if possible
-    (dolist (n *small-primes* (setq start (1+ start)))  
-      (and (>= n start) (<= n end)
-           (setq primes (cons n primes))
-           (setq start n)))  
+    (dolist (n *small-primes* (incf start))
+      (when (<= start n end)
+	(push n primes)
+	(setq start n)))
     ;; search for the rest of primes
     (do ((n (next-prime start 1) (next-prime (1+ n) 1)))
-        ((> n end))
-      (setq primes (cons n primes)))
-    (cons '(mlist) (reverse primes))))
+	((> n end) (cons '(mlist) (reverse primes)))
+      (push n primes))))
