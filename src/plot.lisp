@@ -104,9 +104,11 @@
           x
           nil)))
 
+(defvar *missing-data-indicator* "NaN")
 
 (defvar *gnuplot-stream* nil)
 (defvar *gnuplot-command* "")
+
 (defvar $gnuplot_command (if (string= *autoconf-win32* "true")
 			     "wgnuplot"
 			     "gnuplot"))
@@ -272,7 +274,9 @@
 (defvar $pstream nil)
 
 (defun print-pt1 (f str)
-  (format str "~g " f))
+  (if (floatp f)
+    (format str "~g " f)
+    (format str "~a " *missing-data-indicator*)))
 
 (defstruct (polygon (:type list)
                     (:constructor %make-polygon (pts edges)))
@@ -303,10 +307,10 @@
          (ny (+ nyint 1))
 	 (ar (make-array  (+ 12         ; 12  for axes
 			     (* 3 nx ny))  :fill-pointer (* 3 nx ny)
-			     :element-type 'flonum :adjustable t)))
+			     :element-type t :adjustable t)))
     (declare (type flonum x y epsy epsx)
              (fixnum nx  ny l)
-             (type (cl:array flonum) ar))
+             (type (cl:array t) ar))
     (loop for j below ny
            initially (setq y miny)
            do (setq x minx)
@@ -1875,7 +1879,7 @@
                      (fourth grid)))
          (ar (polygon-pts pl)) tem
          )
-    (declare (type (cl:array flonum) ar))
+    (declare (type (cl:array t) ar))
 
     (if trans  (mfuncall trans ar))
     (if (setq tem  ($get_plot_option '$transform_xy 2)) (mfuncall tem ar))
@@ -1911,6 +1915,7 @@
 		(format $pstream "unset key~%"))
 	      (when (and box (not (first box)))
 		(format $pstream "unset border; unset xtics; unset ytics; unset ztics~%"))
+        (format $pstream "set datafile missing \"~a\"~%" *missing-data-indicator*)
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
                      (let ((string (coerce (mstring orig-fun) 'string)))
@@ -1932,6 +1937,7 @@
 		(format *gnuplot-stream* "unset key~%"))
 	      (when (and box (not (first box)))
 		(format *gnuplot-stream* "unset border; unset xtics; unset ytics; unset ztics~%"))
+          (format *gnuplot-stream* "set datafile missing \"~a\"~%" *missing-data-indicator*)
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
                      (let ((string (coerce (mstring orig-fun) 'string)))
