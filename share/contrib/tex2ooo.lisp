@@ -281,8 +281,8 @@
 			 )))))
     (append l r)))
 
-(defprop mnctimes " cdot " texsym)
-(defprop mtimes " cdot " texsym)    ;; HMM, SEEMS INADVISABLE
+(defprop mnctimes (" cdot ") texsym)
+(defprop mtimes (" cdot ") texsym)    ;; HMM, SEEMS INADVISABLE
 
 (defun tex-sqrt(x l r)
   ;; format as \\sqrt { } assuming implicit parens for sqr grouping
