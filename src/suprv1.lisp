@@ -884,7 +884,7 @@
 			 (if $grind (mgrind (strmeval (car l)) savefile)
 			     (princ (print-invert-case (maknam (mstring (strmeval (car l)))))
 					    savefile))
-			 (if (or (and (atom (car l)) (get (car l) 'nodisp)) (not $strdisp))
+			 (if (or (and (symbolp (car l)) (get (car l) 'nodisp)) (not $strdisp))
 			     (write-char #\$ savefile)
 			     (write-char #\; savefile)))))
 		     (setq maxima-error t)))
