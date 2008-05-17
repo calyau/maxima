@@ -969,17 +969,10 @@
 	(t (cons (subst2s (car ex) pat)
 		 (subst2s (cdr ex) pat)))))
 
-;; Helper for simple-trig-arg
-(defun simple-trig-arg->=1 (x)
-  (and ($numberp x)
-       (or (great x 1)
-	   (alike1 x 1))))
-
 ;; Match (c*x+b), where c and b are free of x and c is a number
-;; greater than or equal to 1.
 (defun simple-trig-arg (exp)
   (m2 exp '((mplus) ((mtimes)
-		     ((coefftt) (c simple-trig-arg->=1))
+		     ((coefftt) (c $numberp))
 		     ((coefftt) (v varp)))
 	    ((coeffpp) (b freevar)))
       nil))
@@ -995,14 +988,19 @@
 	     ;; takes longer and longer as n gets larger and larger.
 	     ;; This is caused by the Risch integrator.  This is a
 	     ;; work-around for this issue.
-	     (let ((c (cdras 'c arg))
-		   (b (cdras 'b arg))
-		   (new-var (gensym "NEW-VAR-")))
-	       (let ((new-int (div ($integrate (maxima-substitute (div (sub new-var b) c)
-								  var exp)
-					       new-var)
-				   c)))
-		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int)))))
+	     (let* ((c (cdras 'c arg))
+		    (b (cdras 'b arg))
+		    (new-var (gensym "NEW-VAR-"))
+		    (new-exp (maxima-substitute (div (sub new-var b) c)
+						var exp))
+		    (new-int
+		     (if (< (expression-size new-exp)
+			    (expression-size exp))
+			 ;; check whether new expression is simpler:
+			 ;; recursion stopper when var appears more than once in exp
+			 (div ($integrate new-exp new-var) c)
+		       (rischint exp var))))
+		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int))))
 	    (t
 	     (return-from monstertrig (rischint exp var))))))
   (prog (*notsame* w *a* *b* y *d*) 
@@ -1502,10 +1500,10 @@
 			     (list '(mtimes) y *d*)
 			     (list '(mtimes) -1 z))))))
 
-(defun find1 (y a) 
-  (cond ((eq y a) t)
-	((atom y) nil)
-	(t (or (find1 (car y) a) (find1 (cdr y) a)))))
+;; total number of nodes in expression tree
+(defun expression-size (y) 
+  (cond ((atom y) 1)
+	(t (+ (expression-size (car y)) (expression-size (cdr y))))))
 
 (defun matchsum (alist blist) 
   (prog (r s *c* *d*) 
