@@ -77,34 +77,12 @@ to subsitute their knowledge of defsystem for the following steps.
 (9b) Dump the image, and if the Lisp implementation allows one to
     specify a start-up function, specify USER::RUN.
 
-    There is a function MAXIMA-DUMP to carry out those steps.
-    At present it works only for Clisp.
-
-    Clisp:
+    There is a function MAXIMA-DUMP in src/maxima-build.lisp to dump an image.
+    At present it works for Clisp, SBCL, GCL, CMUCL, Scieneer, and Allegro.
+    Some Lisp implementations (SBCL, GCL, CMUCL, Scieneer, maybe others)
+    terminate after saving the image.
 
     (maxima-dump)
-     --- or ---
-    (ext:saveinitmem "binary-clisp/maxima.mem" :init-function 'user::run)
-
-    GCL: (GCL terminates after saving the image)
-
-    (si:save-system "binary-gcl/maxima")
-
-    SBCL: (SBCL terminates after saving the image)
-
-    (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core" :toplevel #'cl-user::run)
-
-    CMUCL: (CMUCL terminates after saving the image)
-
-    (extensions:save-lisp "binary-cmucl/maxima.core" :init-function 'cl-user::run)
-
-    SCL: (SCL terminates after saving the image)
-
-    (extensions:save-lisp "binary-scl/maxima.core" :init-function 'user::run)
-
-    Allegro:
-
-    (excl:dumplisp :name "binary-acl/maxima.dxl")
 
 (10) Execute the saved image.
 
