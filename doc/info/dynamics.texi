@@ -406,7 +406,7 @@ $$x_{n+1} = a + x_n^2$$
 
 To enlarge the region around the lower bifurcation near x @code{=} -1.25 use:
 @example
-(%i5) orbits(x+y^2, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
+(%i5) orbits(x^2+a, 0, 100, 400, [a,-1,-1.53], [x,-1.6,-0.8],
              [nticks, 400], [style,dots]);
 @end example
 
