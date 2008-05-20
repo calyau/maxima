@@ -461,9 +461,9 @@ erf(a-b) + erf(b-a);
  * A few additional related tests added too.
  */
 
-bessel_j(1/2,%pi);
+bessel_j(1/2,%pi),besselexpand:true;
 0;
-bessel_y(1/2,%pi/2);
+bessel_y(1/2,%pi/2),besselexpand:true;
 0;
 
 end;
