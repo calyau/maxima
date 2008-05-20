@@ -390,7 +390,7 @@ solve_rec_lin_cc(coeffs, ihom, %f, %n, cond) := block(
 
     for ex in exps do block(
       [base, pow, mul, %emode : false],
-      pol : coeff(ihom, ex),
+      pol : ratcoeff(ihom, ex),
       if part(ex, 0)="^" then
         pow : part(ex, 2)
       else
@@ -410,7 +410,7 @@ solve_rec_lin_cc(coeffs, ihom, %f, %n, cond) := block(
       ),
       if curr_ihom#false then (
         gen_sol : gen_sol + curr_ihom,
-        ihom : expand(ihom-pol*ex)
+        ihom : ratexpand(ihom-pol*ex)
       )
     )
 
