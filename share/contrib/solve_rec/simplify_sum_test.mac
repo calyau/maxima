@@ -71,7 +71,7 @@ test_sum(
 
 test_sum(
   sum(binomial(2*n,2*k), k, 0, n),
-  [],
+  [n>0],
   true,
   []
 )$
