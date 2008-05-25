@@ -402,6 +402,7 @@
       ((= i n) l)
     (push v l)))
 
+;; special variable *odr* contains order of nesting of variables in c
 (defun degvector (l n c)
   (prog (lf ans j)
    bk (cond ((numberp c)
@@ -454,6 +455,7 @@
   (let (modulus)
     (pquotient x y)))
 
+;; maintains order of list x
 (defun intersect (x y)
   (if x (if (member (car x) y :test #'equal)
 	    (cons (car x) (intersect (cdr x) y))
@@ -884,11 +886,9 @@
      (setq lindex (cons nil lindex))
      (setq lfunct (copy-list lprod))
      tloop (incf stage)
-     cont (cond ((or (> stage d2) (> stage (1- r)))
-		 (return (cons u factor))))
-     nextuple
-     (cond ((or (null ltuple) (null (cdr ltuple)))
-	    (return (cons u factor))))
+     nextuple (cond ((or (> stage d2) (> stage (1- r))
+			 (null ltuple) (null (cdr ltuple)))
+		     (return (cons u factor))))
      (setq li (cdr lindex))
      (setq lf (cdr lfunct))
      (setq tuple (cadr ltuple))
@@ -922,7 +922,7 @@
 		   (remov1 l ltemp lpr d2)
 		   (remov2 l lindex lfunct d2)
 		   (setq r (- r stage))
-		   (go cont))
+		   (setq li nil))	; exit iloop
 		  (t (setq ltemp (nconc ltemp (list l)))
 		     (setq lpr (nconc lpr (list af0)))))))
      (cond (li (go iloop)) ((cdr ltuple) (go nextuple)))
