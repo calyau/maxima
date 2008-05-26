@@ -16,7 +16,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston,
     MA  02111-1307  USA
 
-$Id: dynamics.mac,v 1.3 2008-05-13 21:02:06 villate Exp $
+$Id: dynamics.mac,v 1.4 2008-05-26 10:30:13 villate Exp $
 ***********************************************************************/
 
 load("complex_dynamics")$
@@ -381,22 +381,22 @@ block (
   if (not(listp(odes))) then odes: [odes],
   if (not(listp(state))) then state: [state],
   if (not(listp(initial))) then initial: [initial],
-  local(f),
-  define(funmake(f,cons(domain[1],state)),odes),
-  translate(f),
+  local(f_rk_4),
+  define(funmake(f_rk_4,cons(domain[1],state)),odes),
+  translate(f_rk_4),
   n: fix((domain[3] - domain[2])/domain[4]),
   t0: domain[2],
   xxx: initial,
-  if (not(numberp(last(apply(f,cons(t0,xxx)))))) then
+  if (not(numberp(last(apply(f_rk_4,cons(t0,xxx)))))) then
     error("Inconsistent set of equations and variables"),
   ddd: [cons(t0, initial)],
   for i:1 thru n do (
     r: errcatch (
       t1: domain[2]+i*domain[4],
-      k1: apply(f,cons(t0,xxx)),
-      k2: apply(f,cons((t0+t1)/2,xxx+k1*domain[4]/2)),
-      k3: apply(f,cons((t0+t1)/2,xxx+k2*domain[4]/2)),
-      k4: apply(f,cons(t1,xxx+k3*domain[4]))),
+      k1: apply(f_rk_4,cons(t0,xxx)),
+      k2: apply(f_rk_4,cons((t0+t1)/2,xxx+k1*domain[4]/2)),
+      k3: apply(f_rk_4,cons((t0+t1)/2,xxx+k2*domain[4]/2)),
+      k4: apply(f_rk_4,cons(t1,xxx+k3*domain[4]))),
     if length(r)=0 then return()
     else xxx: xxx+domain[4]*(k1+2*k2+2*k3+k4)/6,
     t0: t1,
