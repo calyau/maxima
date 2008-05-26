@@ -48,6 +48,7 @@ block
         rteststringproc,
         [rtest_opproperties, 72],
         rtest_stats,
+        rtest_distrib.mac,
         rtest_levin,
         rtest_fractals,
         rtest_lsquares,
