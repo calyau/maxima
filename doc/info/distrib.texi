@@ -192,28 +192,6 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectively.
 
-Package @code{distrib} includes functions for simulating random variates. Some of these functions make use of optional variables indicating the algorithm to be used. The general inverse method (based on the fact that if @var{u} is an uniform random number in @math{(0,1)}, then @var{F^(-1)(u)} is a random variate with distribution @math{F}) is implemented in most cases; this is a suboptimal method in terms of timing, but useful for comparing with other algorithms. In this example, the performance of algorithms @code{ahrens_cheng} and @code{inverse} for simulating chi-square variates are compared by means of their histograms:
-
-@example
-(%i1) load(distrib)$
-(%i2) load(descriptive)$
-(%i3) showtime: true$
-Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
-(%i4) random_chi2_algorithm: 'ahrens_cheng$
-                                       histogram(random_chi2(10,500))$
-Evaluation took 0.00 seconds (0.00 elapsed) using 40 bytes.
-Evaluation took 0.69 seconds (0.71 elapsed) using 5.694 MB.
-(%i6) random_chi2_algorithm: 'inverse$ histogram(random_chi2(10,500))$
-Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
-Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
-@end example
-
-In order to make visual comparisons among algorithms for a discrete variate, function @code{barsplot} of the @code{descriptive} package should be used.
-
-Note that some work remains to be done, since these simulating functions are not yet checked by more rigurous goodness of fit tests.
-
-Please, consult an introductory manual on probability and statistics for more information about all this mathematical stuff.
-
 There is a naming convention in package @code{distrib}. Every function name has two parts, the first one makes reference to the function or parameter we want to calculate,
 @example
 Functions:
@@ -234,6 +212,7 @@ Continuous distributions:
    Normal              (*normal)
    Student             (*student_t)
    Chi^2               (*chi2)
+   Noncentral Chi^2    (*noncentral_chi2)
    F                   (*f)
    Exponential         (*exp)
    Lognormal           (*lognormal)
@@ -374,34 +353,13 @@ Returns the kurtosis coefficient of a @math{Normal(m,s)} random variable, with @
 @end deffn
 
 
-@defvr {Option variable} random_normal_algorithm
-Default value: @code{box_mueller}
-
-This is the selected algorithm for simulating random normal variates. Implemented algorithms are @code{box_mueller} and @code{inverse}:
-@itemize @bullet
-@item
-@code{box_mueller}, based on algorithm described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
-
-@item
-@code{inverse}, based on the general inverse method.
-@end itemize
-
-See also @code{random_normal}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_normal (@var{m},@var{s})
 @deffnx {Function} random_normal (@var{m},@var{s},@var{n})
 Returns a @math{Normal(m,s)} random variate, with @math{s>0}. Calling @code{random_normal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_normal_algorithm}, which defaults to @code{box_mueller}.
+This is an implementation of the Box-Mueller algorithm, as described in Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
-See also @code{random_normal_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -517,17 +475,11 @@ Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with 
 @end deffn
 
 
-@defvr {Option variable} random_student_t_algorithm
-Default value: @code{ratio}
+@deffn {Function} random_student_t (@var{n})
+@deffnx {Function} random_student_t (@var{n},@var{m})
+Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
-This is the selected algorithm for simulating random Student variates. Implemented algorithms are @code{inverse} and @code{ratio}:
-@itemize @bullet
-@item
-@code{inverse}, based on the general inverse method.
-
-
-@item
-@code{ratio}, based on the fact that if @var{Z} is a normal random variable @math{N(0,1)} and @math{S^2} is chi square  random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
+The implemented algorithm is based on the fact that if @var{Z} is a normal random variable @math{N(0,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
 @ifhtml
 @example
                            Z
@@ -552,24 +504,8 @@ This is the selected algorithm for simulating random Student variates. Implement
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
 is a Student random variable with @var{n} degrees of freedom, @math{t(n)}.
-@end itemize
 
-See also @code{random_student_t}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
-@deffn {Function} random_student_t (@var{n})
-@deffnx {Function} random_student_t (@var{n},@var{m})
-Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
-
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_student_t_algorithm}, which defaults to @code{ratio}.
-
-See also @code{random_student_t_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -801,42 +737,115 @@ The @math{Chi^2(n)} random variable is equivalent to the @math{Gamma(n/2,2)}, th
 @end deffn
 
 
-@defvr {Option variable} random_chi2_algorithm
-Default value: @code{ahrens_cheng}
-
-This is the selected algorithm for simulating random Chi-square variates. Implemented algorithms are @code{ahrens_cheng} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{ahrens_cheng}, based on the random simulation of gamma variates. See @code{random_gamma_algorithm} for details.
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_chi2}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_chi2 (@var{n})
 @deffnx {Function} random_chi2 (@var{n},@var{m})
 Returns a Chi-square random variate @math{Chi^2(n)}, with @math{n>0}. Calling @code{random_chi2} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_chi2_algorithm}, which defaults to @code{ahrens_cheng}.
+The simulation is based on the Ahrens-Cheng algorithm. See @code{random_gamma} for details.
 
-See also @code{random_chi2_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
 @closecatbox
 
 @end deffn
+
+
+@deffn {Function} pdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
+Returns the value at @var{x} of the density function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load(distrib)}.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} cdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
+Returns the value at @var{x} of the distribution function of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. To make use of this function, write first @code{load(distrib)}.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} quantile_noncentral_chi2 (@var{q},@var{n},@var{ncp})
+Returns the @var{q}-quantile of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}; in other words, this is the inverse of @code{cdf_noncentral_chi2}. Argument @var{q} must be an element of @math{[0,1]}.
+
+This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} mean_noncentral_chi2 (@var{n},@var{ncp})
+Returns the mean of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} var_noncentral_chi2 (@var{n},@var{ncp})
+Returns the variance of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} std_noncentral_chi2 (@var{n},@var{ncp})
+Returns the standard deviation of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} skewness_noncentral_chi2 (@var{n},@var{ncp})
+Returns the skewness coefficient of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} kurtosis_noncentral_chi2 (@var{n},@var{ncp})
+Returns the kurtosis coefficient of a noncentral Chi-square random variable @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}.
+
+@opencatbox
+@category{Package distrib}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Function} random_noncentral_chi2 (@var{n},@var{ncp})
+@deffnx {Function} random_noncentral_chi2 (@var{n},@var{ncp},@var{m})
+Returns a noncentral Chi-square random variate @math{nc_Chi^2(n,ncp)}, with @math{n>0} and noncentrality parameter @math{ncp>=0}. Calling @code{random_noncentral_chi2} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
+
+To make use of this function, write first @code{load(distrib)}.
+
+@opencatbox
+@category{Package distrib} @category{Random numbers}
+@closecatbox
+
+@end deffn
+
 
 
 @deffn {Function} pdf_f (@var{x},@var{m},@var{n})
@@ -951,14 +960,11 @@ Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @mat
 @end deffn
 
 
-@defvr {Option variable} random_f_algorithm
-Default value: @code{inverse}
+@deffn {Function} random_f (@var{m},@var{n})
+@deffnx {Function} random_f (@var{m},@var{n},@var{k})
+Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
 
-This is the selected algorithm for simulating random F variates. Implemented algorithms are @code{ratio} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{ratio}, based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a @math{Chi^2(n)} random variable, then
+The simulation algorithm is based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a @math{Chi^2(n)} random variable, then
 @ifhtml
 @example
                         n X
@@ -978,27 +984,7 @@ $$F={{n X}\over{m Y}}$$
 @end tex
 is a F random variable with @var{m} and @var{n} degrees of freedom, @math{F(m,n)}.
 
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_f}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
-@deffn {Function} random_f (@var{m},@var{n})
-@deffnx {Function} random_f (@var{m},@var{n},@var{k})
-Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
-
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_f_algorithm}, which defaults to @code{inverse}.
-
-See also @code{random_f_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -1232,39 +1218,13 @@ The @math{Exponential(m)} random variable is equivalent to the @math{Weibull(1,1
 @end deffn
 
 
-@defvr {Option variable} random_exp_algorithm
-Default value: @code{inverse}
-
-This is the selected algorithm for simulating random exponential variates. Implemented algorithms are @code{inverse}, @code{ahrens_cheng} and @code{ahrens_dieter}
-@itemize @bullet
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@item
-@code{ahrens_cheng}, based on the fact that the @math{Exp(m)} random variable is equivalent to the @math{Gamma(1,1/m)}. See @code{random_gamma_algorithm} for details.
-
-@item
-@code{ahrens_dieter}, based on algorithm described in Ahrens, J.H. and Dieter, U. (1972) @var{Computer methods for sampling from the exponential and normal distributions.} Comm, ACM, 15, Oct.,  873-882.
-
-@end itemize
-
-See also @code{random_exp}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_exp (@var{m})
 @deffnx {Function} random_exp (@var{m},@var{k})
 Returns an @math{Exponential(m)} random variate, with @math{m>0}. Calling @code{random_exp} with a second argument @var{k}, a random sample of size @var{k} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_exp_algorithm}, which defaults to @code{inverse}.
+The simulation algorithm is based on the general inverse method.
 
-See also @code{random_exp_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -1372,9 +1332,9 @@ Returns the kurtosis coefficient of a @math{Lognormal(m,s)} random variable, wit
 @deffnx {Function} random_lognormal (@var{m},@var{s},@var{n})
 Returns a @math{Lognormal(m,s)} random variate, with @math{s>0}. Calling @code{random_lognormal} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Log-normal variates are simulated by means of random normal variates. There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_normal_algorithm}, which defaults to @code{box_mueller}.
+Log-normal variates are simulated by means of random normal variates. See @code{random_normal} for details.
 
-See also @code{random_normal_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -1477,40 +1437,17 @@ Returns the kurtosis coefficient of a @math{Gamma(a,b)} random variable, with @m
 @end deffn
 
 
-@defvr {Option variable} random_gamma_algorithm
-Default value: @code{ahrens_cheng}
+@deffn {Function} random_gamma (@var{a},@var{b})
+@deffnx {Function} random_gamma (@var{a},@var{b},@var{n})
+Returns a @math{Gamma(a,b)} random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-This is the selected algorithm for simulating random gamma variates. Implemented algorithms are @code{ahrens_cheng} and @code{inverse}
-@itemize @bullet
-
-@item
-@code{ahrens_cheng}, this is a combinantion of two procedures, depending on the value of parameter @var{a}:
+The implemented algorithm is a combinantion of two procedures, depending on the value of parameter @var{a}:
 
 For @math{a>=1}, Cheng, R.C.H. and Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
 For @math{0<a<1}, Ahrens, J.H. and Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial cdf_tributions}. Computing, 12, 223-246.
 
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_gamma}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
-@deffn {Function} random_gamma (@var{a},@var{b})
-@deffnx {Function} random_gamma (@var{a},@var{b},@var{n})
-Returns a @math{Gamma(a,b)} random variate, with @math{a,b>0}. Calling @code{random_gamma} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
-
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_gamma_algorithm}, which defaults to @code{ahrens_cheng}.
-
-See also @code{random_gamma_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -1616,39 +1553,13 @@ Returns the kurtosis coefficient of a @math{Beta(a,b)} random variable, with @ma
 @end deffn
 
 
-@defvr {Option variable} random_beta_algorithm
-Default value: @code{cheng}
-
-This is the selected algorithm for simulating random beta variates. Implemented algorithms are @code{cheng}, @code{inverse} and @code{ratio}
-@itemize @bullet
-
-@item
-@code{cheng}, this is the algorithm defined in Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@item
-@code{ratio}, based on the fact that if @var{X} is a random variable @math{Gamma(a,1)} and @var{Y} is @math{Gamma(b,1)}, then the ratio @math{X/(X+Y)} is distributed as @math{Beta(a,b)}.
-
-@end itemize
-
-See also @code{random_beta}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_beta (@var{a},@var{b})
 @deffnx {Function} random_beta (@var{a},@var{b},@var{n})
 Returns a @math{Beta(a,b)} random variate, with @math{a,b>0}. Calling @code{random_beta} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_beta_algorithm}, which defaults to @code{cheng}.
+The implemented algorithm is defined in Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
 
-See also @code{random_beta_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -1834,7 +1745,9 @@ Returns the kurtosis coefficient of a @math{Logistic(a,b)} random variable , wit
 @deffnx {Function} random_logistic (@var{a},@var{b},@var{n})
 Returns a @math{Logistic(a,b)} random variate, with @math{b>0}. Calling @code{random_logistic} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+The implemented algorithm is based on the general inverse method.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -1927,7 +1840,9 @@ Returns the kurtosis coefficient of a @math{Pareto(a,b)} random variable, with @
 @deffnx {Function} random_pareto (@var{a},@var{b},@var{n})
 Returns a @math{Pareto(a,b)} random variate, with @math{a>0,b>0}. Calling @code{random_pareto} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+The implemented algorithm is based on the general inverse method.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -2020,7 +1935,9 @@ Returns the kurtosis coefficient of a @math{Weibull(a,b)} random variable, with 
 @deffnx {Function} random_weibull (@var{a},@var{b},@var{n})
 Returns a @math{Weibull(a,b)} random variate, with @math{a,b>0}. Calling @code{random_weibull} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+The implemented algorithm is based on the general inverse method.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -2281,7 +2198,9 @@ The @math{Rayleigh(b)} random variable is equivalent to the @math{Weibull(2,1/b)
 @deffnx {Function} random_rayleigh (@var{b},@var{n})
 Returns a @math{Rayleigh(b)} random variate, with @math{b>0}. Calling @code{random_rayleigh} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+The implemented algorithm is based on the general inverse method.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -2375,7 +2294,9 @@ Returns the kurtosis coefficient of a @math{Laplace(a,b)} random variable, with 
 @deffnx {Function} random_laplace (@var{a},@var{b},@var{n})
 Returns a @math{Laplace(a,b)} random variate, with @math{b>0}. Calling @code{random_laplace} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+The implemented algorithm is based on the general inverse method.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -2419,7 +2340,9 @@ Returns the @var{q}-quantile of a @math{Cauchy(a,b)} random variable, with @math
 @deffnx {Function} random_cauchy (@var{a},@var{b},@var{n})
 Returns a @math{Cauchy(a,b)} random variate, with @math{b>0}. Calling @code{random_cauchy} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+The implemented algorithm is based on the general inverse method.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -2541,7 +2464,9 @@ Returns the kurtosis coefficient of a @math{Gumbel(a,b)} random variable, with @
 @deffnx {Function} random_gumbel (@var{a},@var{b},@var{n})
 Returns a @math{Gumbel(a,b)} random variate, with @math{b>0}. Calling @code{random_gumbel} with a third argument @var{n}, a random sample of size @var{n} will be simulated.
 
-Only the inverse method is implemented. To make use of this function, write first @code{load(distrib)}.
+The implemented algorithm is based on the general inverse method.
+
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -2651,39 +2576,13 @@ Returns the kurtosis coefficient of a @math{Binomial(n,p)} random variable, with
 @end deffn
 
 
-@defvr {Option variable} random_binomial_algorithm
-Default value: @code{kachit}
-
-This is the selected algorithm for simulating random binomial variates. Implemented algorithms are @code{kachit}, @code{bernoulli} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{kachit}, based on algorithm described in Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
-
-@item
-@code{bernoulli}, based on simulation of Bernoulli trials.
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_binomial}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_binomial (@var{n},@var{p})
 @deffnx {Function} random_binomial (@var{n},@var{p},@var{m})
 Returns a @math{Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_binomial_algorithm}, which defaults to @code{kachit}.
+The implemented algorithm is based on the one described in Kachitvichyanukul, V. and Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
-See also @code{random_binomial_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -2787,36 +2686,13 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 @end deffn
 
 
-@defvr {Option variable} random_poisson_algorithm
-Default value: @code{ahrens_dieter}
-
-This is the selected algorithm for simulating random Poisson variates. Implemented algorithms are @code{ahrens_dieter} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{ahrens_dieter}, based on algorithm described in Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_poisson}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_poisson (@var{m})
 @deffnx {Function} random_poisson (@var{m},@var{n})
 Returns a @math{Poisson(m)} random variate, with @math{m>0}. Calling @code{random_poisson} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_poisson_algorithm}, which defaults to @code{ahrens_dieter}.
+The implemented algorithm is the one described in Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
 
-See also @code{random_poisson_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -3094,39 +2970,13 @@ Returns the kurtosis coefficient of a geometric random variable  @math{Geo(p)}, 
 @end deffn
 
 
-@defvr {Option variable} random_geometric_algorithm
-Default value: @code{bernoulli}
-
-This is the selected algorithm for simulating random geometric variates. Implemented algorithms are @code{bernoulli}, @code{devroye} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{bernoulli}, based on simulation of Bernoulli trials.
-
-@item
-@code{devroye}, based on algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_geometric}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_geometric (@var{p})
 @deffnx {Function} random_geometric (@var{p},@var{n})
 Returns a @math{Geometric(p)} random variate, with @math{0<p<1}. Calling @code{random_geometric} with a second argument @var{n}, a random sample of size @var{n} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_geometric_algorithm}, which defaults to @code{bernoulli}.
+The algorithm is based on simulation of Bernoulli trials.
 
-See also @code{random_geometric_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -3309,36 +3159,14 @@ Returns the kurtosis coefficient of a @math{Hypergeometric(n1,n2,n)} random vari
 
 @end deffn
 
-@defvr {Option variable} random_hypergeometric_algorithm
-Default value: @code{kachit}
-
-This is the selected algorithm for simulating random hypergeometric variates. Implemented algorithms are @code{kachit} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{kachit}, based on algorithm described in Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_hypergeometric}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
 
 @deffn {Function} random_hypergeometric (@var{n1},@var{n2},@var{n})
 @deffnx {Function} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
 Returns a @math{Hypergeometric(n1,n2,n)} random variate, with @var{n1}, @var{n2} and @var{n} non negative integers and @math{n<=n1+n2}. Calling @code{random_hypergeometric} with a fourth argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are two algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_hypergeometric_algorithm}, which defaults to @code{kachit}.
+Algorithm described in Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
 
-See also @code{random_hypergeometric_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}
@@ -3444,39 +3272,13 @@ Returns the kurtosis coefficient of a @math{Negative Binomial(n,p)} random varia
 @end deffn
 
 
-@defvr {Option variable} random_negative_binomial_algorithm
-Default value: @code{bernoulli}
-
-This is the selected algorithm for simulating random negative binomial variates. Implemented algorithms are @code{devroye}, @code{bernoulli} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{devroye}, based on algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
-
-@item
-@code{bernoulli}, based on simulation of Bernoulli trials.
-
-@item
-@code{inverse}, based on the general inverse method.
-
-@end itemize
-
-See also @code{random_negative_binomial}.
-
-@opencatbox
-@category{Package distrib}
-@closecatbox
-
-@end defvr
-
-
 @deffn {Function} random_negative_binomial (@var{n},@var{p})
 @deffnx {Function} random_negative_binomial (@var{n},@var{p},@var{m})
 Returns a @math{Negative Binomial(n,p)} random variate, with @math{0<p<1} and @math{n} a positive integer. Calling @code{random_negative_binomial} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
-There are three algorithms implemented for this function, the one to be used can be selected giving a certain value to the global variable @code{random_negative_binomial_algorithm}, which defaults to @code{bernoulli}.
+Algorithm described in Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
-See also @code{random_negative_binomial_algorithm}. To make use of this function, write first @code{load(distrib)}.
+To make use of this function, write first @code{load(distrib)}.
 
 @opencatbox
 @category{Package distrib} @category{Random numbers}

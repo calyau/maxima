@@ -1,4 +1,4 @@
-@c version 1.7
+@c English version 1.10
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::
@@ -188,26 +188,6 @@ $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
 @end tex
 respectivamente.
 
-El paquete @code{distrib} incluye funciones para la simulaci@'on de variables aleatorias. Algunas de estas funciones hacen uso de variables opcionales que indican el algoritmo a ejecutar. El m@'etodo general de inversi@'on (basado en el hecho de que si @var{u} es un n@'umero aleatorio generado uniformemente en @math{(0,1)}, entonces @var{F^(-1)(u)} es una variable aleatoria con distribuci@'on @math{F}) est@'a implementado en la mayor@'{@dotless{i}}a de los casos, aunque se trate de una t@'ecnica sub@'optima en t@'erminos de tiempo, pero @'util para compararla con otros algoritmos. En el siguiente ejemplo se compara mediante histogramas el comportamiento de los algoritmos @code{ahrens_cheng} y @code{inverse} para la simulaci@'on de variables chi-cuadrada:
-
-@example
-(%i1) load(distrib)$
-(%i2) load(descriptive)$
-(%i3) showtime: true$
-Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
-(%i4) random_chi2_algorithm: 'ahrens_cheng$ 
-      histogram(random_chi2(10,500))$
-Evaluation took 0.00 seconds (0.00 elapsed) using 40 bytes.
-Evaluation took 0.69 seconds (0.71 elapsed) using 5.694 MB.
-(%i6) random_chi2_algorithm: 'inverse$ histogram(random_chi2(10,500))$
-Evaluation took 0.00 seconds (0.00 elapsed) using 32 bytes.
-Evaluation took 10.15 seconds (10.17 elapsed) using 322.098 MB.
-@end example
-
-A fin de hacer comparaciones visuales entre algoritmos para variables discretas, se deber@'{@dotless{i}}a utilizar la funci@'on @code{barsplot} del paquete @code{descriptive}.
-
-N@'otese que a@'un queda trabajo por hacer, puesto que estas funciones de simulaci@'on todav@'{@dotless{i}}a no se han puesto a prueba con tests de bondad de ajuste m@'as rigurosos.
-
 Por favor, cons@'ultese cualquier manual introductorio de probabilidad y estad@'{@dotless{i}}stica para m@'as informaci@'on sobre toda esta parafernalia matem@'atica.
 
 Se sigue cierta convenci@'on a la hora de nombrar las funciones del paquete @code{distrib}. Cada nombre tiene dos partes, el primero hace referencia a la funci@'on o par@'ametro que se quiere calcular,
@@ -230,6 +210,7 @@ Distribuciones continuas:
    Normal              (*normal)
    Student             (*student_t)
    Chi^2               (*chi2)
+   Chi^2 no central    (*noncentral_chi2)
    F                   (*f)
    Exponencial         (*exp)
    Lognormal           (*lognormal)
@@ -323,29 +304,13 @@ Devuelve el coeficiente de curtosis de una variable aleatoria @i{Normal}@math{(m
 @end deffn
 
 
-@defvr {Variable opcional} random_normal_algorithm
-Valor por defecto: @code{box_mueller}
-
-Este es el algoritmo seleccionado para simular variables aleatorias normales. Los algoritmos implementados son @code{box_mueller} y @code{inverse}:
-@itemize @bullet
-@item
-@code{box_mueller}, basado en el algoritmo descrito en Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-@end itemize
-
-V@'ease tambi@'en @code{random_normal}.
-@end defvr
-
-
 @deffn {Funci@'on} random_normal (@var{m},@var{s})
 @deffnx {Funci@'on} random_normal (@var{m},@var{s},@var{n})
 Devuelve un valor aleatorio  @i{Normal}@math{(m,s)}, con @math{s>0}. Llamando a @code{random_normal} con un tercer argumento @var{n}, se simula una muestra aleatoria de tama@~no @var{n}.
 
-Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_normal_algorithm}, cuyo valor por defecto es @code{box_mueller}.
+El algoritmo de simulaci@'on es el de Box-Mueller, tal como est@'a descrito en Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.} Addison-Wesley.
 
-V@'eanse tambi@'en @code{random_normal_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -416,17 +381,11 @@ Devuelve el coeficiente de curtosis una variable aleatoria de Student @math{t(n)
 @end deffn
 
 
-@defvr {Variable opcional} random_student_t_algorithm
-Valor por defecto: @code{ratio}
+@deffn {Funci@'on} random_student_t (@var{n})
+@deffnx {Funci@'on} random_student_t (@var{n},@var{m})
+Devuelve un valor aleatorio @math{t(n)}, con @math{n>0}. Llamando a @code{random_student_t} con un segundo argumento @var{m}, se obtiene una muestra aleatoria simulada de tama@~no @var{m}.
 
-Es el algoritmo seleccionado para simular variables aleatorias de Student. Los m@'etodos implementados son @code{inverse} y @code{ratio}:
-@itemize @bullet
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-
-@item
-@code{ratio}, basado en el hecho de que si @var{Z} es una variable aleatoria normal @math{N(0,1)} y @math{S^2} es una variable aleatoria chi cuadrada con @var{n} grados de libertad, @math{Chi^2(n)}, entonces
+El algoritmo utilizado est@'a basado en el hecho de que si @var{Z} es una variable aleatoria normal @math{N(0,1)} y @math{S^2} es una chi cuadrada de @var{n} grados de libertad, @math{Chi^2(n)}, entonces
 @ifhtml
 @example
                            Z
@@ -450,20 +409,9 @@ Es el algoritmo seleccionado para simular variables aleatorias de Student. Los m
 @tex
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
-es una variable aleatoria de Student con @var{n} grados de libertad, @math{t(n)}.
-@end itemize
+es una variable aleatoria de Student de @var{n} grados de libertad, @math{t(n)}.
 
-V@'ease tambi@'en @code{random_student_t}.
-@end defvr
-
-
-@deffn {Funci@'on} random_student_t (@var{n})
-@deffnx {Funci@'on} random_student_t (@var{n},@var{m})
-Devuelve un valor aleatorio @math{t(n)}, con @math{n>0}. Llamando a @code{random_student_t} con un segundo argumento @var{m}, se obtiene una muestra aleatoria simulada de tama@~no @var{m}.
-
-Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_student_t_algorithm}, cuyo valor por defecto es @code{ratio}.
-
-V@'ease tambi@'en @code{random_student_t_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -650,32 +598,72 @@ La variable aleatoria @math{Chi^2(n)} equivale a una @i{Gamma}@math{(n/2,2)}, po
 @end deffn
 
 
-@defvr {Variable opcional} random_chi2_algorithm
-Valor por defecto: @code{ahrens_cheng}
-
-Es el algoritmo seleccionado para simular variables aleatorias chi-cuadrado. Los m@'etodos implementados son @code{ahrens_cheng} y @code{inverse}:
-
-@itemize @bullet
-
-@item
-@code{ahrens_cheng}, basado en la simulaci@'on aleatoria de variables gamma. V@'ease @code{random_gamma_algorithm} para m@'as detalles.
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_chi2}.
-@end defvr
-
-
 @deffn {Funci@'on} random_chi2 (@var{n})
 @deffnx {Funci@'on} random_chi2 (@var{n},@var{m})
 Devuelve un valor aleatorio  @math{Chi^2(n)}, con @math{n>0}. Llamando a @code{random_chi2} con un segundo argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no @var{m}.
 
-Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_chi2_algorithm}, cuyo valor por defecto es @code{ahrens_cheng}.
+La simulaci@'on est@'a basada en el algoritmo de Ahrens-Cheng. V@'ease @code{random_gamma} para m@'as detalles.
 
-V@'ease tambi@'en @code{random_chi2_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Funci@'on} pdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria chi-cuadrado no centrada @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}. Para hacer uso de esta funci@'on ejec@'utese primero @code{load(distrib)}.
+
+@end deffn
+
+
+@deffn {Funci@'on} cdf_noncentral_chi2 (@var{x},@var{n},@var{ncp})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria chi-cuadrado no centrada @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}.
+
+@end deffn
+
+
+@deffn {Funci@'on} quantile_noncentral_chi2 (@var{q},@var{n},@var{ncp})
+Devuelve el @var{q}-cuantil de una variable aleatoria chi-cuadrado no centrada @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}; en otras palabras, se trata de la inversa de  @code{cdf_noncentral_chi2}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+
+Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal.
+
+@end deffn
+
+
+@deffn {Funci@'on} mean_noncentral_chi2 (@var{n},@var{ncp})
+Devuelve la media de  una variable aleatoria chi-cuadrado no centrada @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}.
+
+@end deffn
+
+
+@deffn {Funci@'on} var_noncentral_chi2 (@var{n},@var{ncp})
+Devuelve la varianza de  una variable aleatoria chi-cuadrado no centrada  @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}.
+
+@end deffn
+
+
+@deffn {Funci@'on} std_noncentral_chi2 (@var{n},@var{ncp})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria chi-cuadrado no centrada  @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}.
+
+@end deffn
+
+
+@deffn {Funci@'on} skewness_noncentral_chi2 (@var{n},@var{ncp})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria chi-cuadrado no centrada  @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}.
+
+@end deffn
+
+
+@deffn {Funci@'on} kurtosis_noncentral_chi2 (@var{n},@var{ncp})
+Devuelve el coeficiente de curtosis una variable aleatoria chi-cuadrado no centrada @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}.
+
+@end deffn
+
+
+@deffn {Funci@'on} random_noncentral_chi2 (@var{n},@var{ncp})
+@deffnx {Funci@'on} random_noncentral_chi2 (@var{n},@var{ncp},@var{m})
+Devuelve un valor aleatorio  @math{nc_Chi^2(n,ncp)}, con @math{n>0} y par@'ametro de no centralidad @math{ncp>=0}. Llamando a @code{random_noncentral_chi2} con un tercer argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no @var{m}.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+
 @end deffn
 
 
@@ -753,14 +741,11 @@ Devuelve el coeficiente de curtosis una variable aleatoria  @i{F}@math{(m,n)}, c
 @end deffn
 
 
-@defvr {Variable opcional} random_f_algorithm
-Valor por defecto: @code{inverse}
+@deffn {Funci@'on} random_f (@var{m},@var{n})
+@deffnx {Funci@'on} random_f (@var{m},@var{n},@var{k})
+Devuelve un valor aleatorio  @i{F}@math{(m,n)}, con @math{m,n>0}. Llamando a  @code{random_f} con un tercer argumento @var{k}, se simular@'a una muestra aleatoria de tama@~no @var{k}.
 
-Es el algoritmo seleccionado para simular variables aleatorias @math{F}. Los algoritmos programados son @code{ratio} y @code{inverse}:
-@itemize @bullet
-
-@item
-@code{ratio}, basado en el hecho de que si @var{X} es una variable aleatoria @math{Chi^2(m)} y @math{Y} es una @math{Chi^2(n)}, entonces
+El algoritmo de simulaci@'on est@'a basado en el hecho de que si @var{X} es una variable aleatoria @math{Chi^2(m)} y @math{Y} es una @math{Chi^2(n)}, entonces
 @ifhtml
 @example
                         n X
@@ -780,22 +765,7 @@ $$F={{n X}\over{m Y}}$$
 @end tex
 es una variable aleatoria @math{F} con @var{m} y @var{n} grados de libertad, @i{F}@math{(m,n)}.
 
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_f}.
-@end defvr
-
-
-@deffn {Funci@'on} random_f (@var{m},@var{n})
-@deffnx {Funci@'on} random_f (@var{m},@var{n},@var{k})
-Devuelve un valor aleatorio  @i{F}@math{(m,n)}, con @math{m,n>0}. Llamando a  @code{random_f} con un tercer argumento @var{k}, se simular@'a una muestra aleatoria de tama@~no @var{k}.
-
-Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_f_algorithm}, cuyo valor por defecto es @code{inverse}.
-
-V@'ease tambi@'en @code{random_f_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -984,34 +954,13 @@ La variable aleatoria @i{Exponencial}@math{(m)} equivale a una @i{Weibull}@math{
 @end deffn
 
 
-@defvr {Variable opcional} random_exp_algorithm
-Valor por defecto: @code{inverse}
-
-Es el algoritmo seleccionado para simular variables aleatoria exponenciales. Los algoritmos programados son @code{inverse}, @code{ahrens_cheng} y @code{ahrens_dieter}
-@itemize @bullet
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@item
-@code{ahrens_cheng}, basado en el hecho de que la variable aleatoria @i{Exponencial}@math{(m)} equivale a una @math{Gamma(1,1/m)}. V@'ease @code{random_gamma_algorithm} para m@'as detalles.
-
-@item
-@code{ahrens_dieter}, basada en el algoritmo descrito en Ahrens, J.H. y Dieter, U. (1972) @var{Computer methods for sampling from the exponential and normal distributions}. Comm, ACM, 15, Oct.,  873-882.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_exp}.
-@end defvr
-
-
 @deffn {Funci@'on} random_exp (@var{m})
 @deffnx {Funci@'on} random_exp (@var{m},@var{k})
 Devuelve un valor aleatorio  @i{Exponencial}@math{(m)}, con @math{m>0}. Llamando a @code{random_exp2} con un segundo argumento @var{k}, se simular@'a una muestra aleatoria de tama@~no @var{k}.
 
-Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_exp_algorithm}, cuyo valor por defecto es @code{inverse}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
 
-V@'ease tambi@'en @code{random_exp_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1074,9 +1023,9 @@ Devuelve el coeficiente de curtosis una variable aleatoria @i{Lognormal}@math{(m
 @deffnx {Funci@'on} random_lognormal (@var{m},@var{s},@var{n})
 Devuelve un valor aleatorio  @i{Lognormal}@math{(m,s)}, con @math{s>0}. Llamando a @code{random_lognormal} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no @var{n}.
 
-Las variables lognormales se simulan mediante variables normales. Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_normal_algorithm}, cuyo valor por defecto es @code{box_mueller}.
+Las variables lognormales se simulan mediante variables normales. V@'ease @code{random_normal} para m@'as detalles.
 
-V@'ease tambi@'en @code{random_normal_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1135,42 +1084,23 @@ Devuelve el coeficiente de curtosis una variable aleatoria @i{Gamma}@math{(a,b)}
 @end deffn
 
 
-@defvr {Variable opcional} random_gamma_algorithm
-Valor por defecto: @code{ahrens_cheng}
+@deffn {Funci@'on} random_gamma (@var{a},@var{b})
+@deffnx {Funci@'on} random_gamma (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @i{Gamma}@math{(a,b)}, con @math{a,b>0}. Llamando a @code{random_gamma} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no @var{n}.
 
-Es el algoritmo seleccionado para simular variables aleatorias gamma. Algoritmos programados son @code{ahrens_cheng} y @code{inverse}
-@itemize @bullet
-
-@item
-@code{ahrens_cheng}, se trata de una combinaci@'on de dos procedimientos, seg@'un sea el valor del par@'ametro @var{a}:
+El algoritmo de simulaci@'on es una combinaci@'on de dos procedimientos, seg@'un sea el valor del par@'ametro @var{a}:
 
 Para @math{a>=1}, Cheng, R.C.H. y Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
 
 Para @math{0<a<1}, Ahrens, J.H. y Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial distributions}. Computing, 12, 223-246.
 
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_gamma}.
-@end defvr
-
-
-@deffn {Funci@'on} random_gamma (@var{a},@var{b})
-@deffnx {Funci@'on} random_gamma (@var{a},@var{b},@var{n})
-Devuelve un valor aleatorio  @i{Gamma}@math{(a,b)}, con @math{a,b>0}. Llamando a @code{random_gamma} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no @var{n}.
-
-Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_gamma_algorithm}, cuyo valor por defecto es @code{ahrens_cheng}.
-
-V@'ease tambi@'en @code{random_gamma_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
 @deffn {Funci@'on} pdf_beta (@var{x},@var{a},@var{b})
 Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria @i{Beta}@math{(a,b)}, con @math{a,b>0}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
-
 
 
 @deffn {Funci@'on} cdf_beta (@var{x},@var{a},@var{b})
@@ -1224,34 +1154,13 @@ Devuelve el coeficiente de curtosis de una variable aleatoria @i{Beta}@math{(a,b
 @end deffn
 
 
-@defvr {Variable opcional} random_beta_algorithm
-Valor por defecto: @code{cheng}
-
-Es el algoritmo seleccionado para simular variables aleatorias beta. Algoritmos programados son @code{cheng}, @code{inverse} y @code{ratio}
-@itemize @bullet
-
-@item
-@code{cheng}, es el algoritmo definido en Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@item
-@code{ratio}, basado en el hecho de que si @var{X} es una variable aleatoria @i{Gamma}@math{(a,1)} y @var{Y} es una @i{Gamma}@math{(b,1)}, entonces el cociente @math{X/(X+Y)} se distribuye como una @i{Beta}@math{(a,b)}.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_beta}.
-@end defvr
-
-
 @deffn {Funci@'on} random_beta (@var{a},@var{b})
 @deffnx {Funci@'on} random_beta (@var{a},@var{b},@var{n})
 Devuelve un valor aleatorio @i{Beta}@math{(a,b)}, con @math{a,b>0}. Llamando a @code{random_beta} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_beta_algorithm}, cuyo valor por defecto es @code{cheng}.
+El algoritmo de simulaci@'on es el decrito en Cheng, R.C.H. (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322.
 
-V@'ease tambi@'en @code{random_beta_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 @deffn {Funci@'on} pdf_continuous_uniform (@var{x},@var{a},@var{b})
@@ -1347,7 +1256,9 @@ Devuelve el coeficiente de curtosis una variable aleatoria @i{Log@'{@dotless{i}}
 @deffnx {Funci@'on} random_logistic (@var{a},@var{b},@var{n})
 Devuelve un valor aleatorio  @i{Log@'{@dotless{i}}stico}@math{(a,b)}, con @math{b>0}. Llamando a  @code{random_logistic} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1395,7 +1306,9 @@ Devuelve el coeficiente de curtosis de una variable aleatoria de @i{Pareto}@math
 @deffnx {Funci@'on} random_pareto (@var{a},@var{b},@var{n})
 Devuelve un valor aleatorio  @i{Pareto}@math{(a,b)}, con @math{a>0,b>0}. Llamando a  @code{random_pareto} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1443,7 +1356,9 @@ Devuelve el coeficiente de curtosis una variable aleatoria de @i{Weibull}@math{(
 @deffnx {Funci@'on} random_weibull (@var{a},@var{b},@var{n})
 Devuelve un valor aleatorio  @i{Weibull}@math{(a,b)}, con @math{a,b>0}. Llamando a  @code{random_weibull} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1659,7 +1574,9 @@ La variable aleatoria @i{Rayleigh}@math{(b)} equivale a una @i{Weibull}@math{(2,
 @deffnx {Funci@'on} random_rayleigh (@var{b},@var{n})
 Devuelve un valor aleatorio  @i{Rayleigh}@math{(b)}, con @math{b>0}. Llamando a  @code{random_rayleigh} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1708,7 +1625,9 @@ Devuelve el coeficiente de curtosis una variable aleatoria de @i{Laplace}@math{(
 @deffnx {Funci@'on} random_laplace (@var{a},@var{b},@var{n})
 Devuelve un valor aleatorio  @i{Laplace}@math{(a,b)}, con @math{b>0}. Llamando a  @code{random_laplace} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1732,7 +1651,9 @@ Devuelve el @var{q}-cuantil de una variable aleatoria de @i{Cauchy}@math{(a,b)},
 @deffnx {Funci@'on} random_cauchy (@var{a},@var{b},@var{n})
 Devuelve un valor aleatorio  @i{Cauchy}@math{(a,b)}, con @math{b>0}. Llamando a  @code{random_cauchy} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1809,7 +1730,9 @@ Devuelve el coeficiente de curtosis de una variable aleatoria de @i{Gumbel}@math
 @deffnx {Funci@'on} random_gumbel (@var{a},@var{b},@var{n})
 Devuelve un valor aleatorio  @i{Gumbel}@math{(a,b)}, con @math{b>0}. Llamando a  @code{random_gumbel} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-S@'olo se ha programado el m@'etodo inverso. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+El algoritmo de simulaci@'on est@'a basado en el m@'etodo inverso.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1874,34 +1797,13 @@ Devuelve el coeficiente de curtosis de una variable aleatoria binomial  @i{Binom
 @end deffn
 
 
-@defvr {Variable opcional} random_binomial_algorithm
-Valor por defecto: @code{kachit}
-
-Es el algoritmo seleccionado para simular variables binomiales. Los algoritmos programados son @code{kachit}, @code{bernoulli} y @code{inverse}:
-@itemize @bullet
-
-@item
-@code{kachit}, basado en el algoritmo descrito en Kachitvichyanukul, V. y Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
-
-@item
-@code{bernoulli}, basado en la simulaci@'on de ensayos de Bernoulli.
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_binomial}.
-@end defvr
-
-
 @deffn {Funci@'on} random_binomial (@var{n},@var{p})
 @deffnx {Funci@'on} random_binomial (@var{n},@var{p},@var{m})
 Devuelve un valor aleatorio  @i{Binomial}@math{(n,p)}, con @math{0<p<1} y @math{n} entero positivo. Llamando a  @code{random_binomial} con un tercer argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
 
-Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_binomial_algorithm}, cuyo valor por defecto es @code{kachit}.
+El algoritmo de simulaci@'on es el descrito en Kachitvichyanukul, V. y Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
 
-V@'ease tambi@'en @code{random_binomial_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -1960,31 +1862,13 @@ Devuelve el coeficiente de curtosis de una variable aleatoria de @i{Poisson}@mat
 @end deffn
 
 
-@defvr {Variable opcional} random_poisson_algorithm
-Valor por defecto: @code{ahrens_dieter}
-
-Es el algoritmo seleccionado para simular variables de Poisson. Los algoritmos programados son @code{ahrens_dieter} y @code{inverse}:
-@itemize @bullet
-
-@item
-@code{ahrens_dieter}, basado en el algoritmo descrito en Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_poisson}.
-@end defvr
-
-
 @deffn {Funci@'on} random_poisson (@var{m})
 @deffnx {Funci@'on} random_poisson (@var{m},@var{n})
 Devuelve un valor aleatorio  @i{Poisson}@math{(m)}, con @math{m>0}. Llamando a  @code{random_poisson} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_poisson_algorithm}, cuyo valor por defecto es @code{ahrens_dieter}.
+El algoritmo de simulaci@'on es el descrito en Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
 
-V@'ease tambi@'en @code{random_poisson_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -2172,34 +2056,13 @@ Devuelve el coeficiente de curtosis de una variable aleatoria @i{Geom@'etrica}@m
 @end deffn
 
 
-@defvr {Variable opcional} random_geometric_algorithm
-Valor por defecto: @code{bernoulli}
-
-Es el algoritmo seleccionado para simular variables geom@'etricas. Los algoritmos programados son @code{bernoulli}, @code{devroye} y @code{inverse}:
-@itemize @bullet
-
-@item
-@code{bernoulli}, basado en la simulaci@'on de ensayos de Bernoulli.
-
-@item
-@code{devroye}, basado en el algoritmo descrito en Devroye, L. (1986) @var{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_geometric}.
-@end defvr
-
-
 @deffn {Funci@'on} random_geometric (@var{p})
 @deffnx {Funci@'on} random_geometric (@var{p},@var{n})
 Devuelve un valor aleatorio @i{Geom@'etrico}@math{(p)}, con @math{0<p<1}. Llamando a  @code{random_geometric} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
 
-Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_geometric_algorithm}, cuyo valor por defecto es @code{bernoulli}.
+El algoritmo est@'a basado en la simulaci@'on de ensayos de Bernoulli.
 
-V@'ease tambi@'en @code{random_geometric_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -2288,35 +2151,13 @@ Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria @i{
 @end deffn
 
 
-@deffn {Funci@'on} kurtosis_hypergeometric (@var{n1},@var{n2},@var{n})
-Devuelve el coeficiente de curtosis de una variable aleatoria @i{Hipergeom@'etrica}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
-@end deffn
-
-@defvr {Variable opcional} random_hypergeometric_algorithm
-Valor por defecto: @code{kachit}
-
-Es el algoritmo seleccionado para simular variables hipergeom@'etricas. Los algoritmos programados son @code{kachit} and @code{inverse}:
-@itemize @bullet
-
-@item
-@code{kachit}, basado en el algoritmo descrito en Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_hypergeometric}.
-@end defvr
-
-
 @deffn {Funci@'on} random_hypergeometric (@var{n1},@var{n2},@var{n})
 @deffnx {Funci@'on} random_hypergeometric (@var{n1},@var{n2},@var{n},@var{m})
 Devuelve un valor aleatorio @i{Hipergeom@'etrico}@math{(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}. Llamando a  @code{random_hypergeometric} con un cuarto argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
 
-Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_hypergeometric_algorithm}, cuyo valor por defecto es @code{kachit}.
+Algoritmo descrito en Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
 
-V@'ease tambi@'en @code{random_hypergeometric_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 
 
@@ -2377,34 +2218,12 @@ Devuelve el coeficiente de curtosis una variable aleatoria binomial negativa  @m
 @end deffn
 
 
-@defvr {Variable opcional} random_negative_binomial_algorithm
-Valor por defecto: @code{bernoulli}
-
-Es el algoritmo seleccionado para simular variables aleatorias binomiales negativas. Los algoritmos programados son @code{devroye}, @code{bernoulli} y @code{inverse}:
-@itemize @bullet
-
-@item
-@code{devroye}, basado en el algoritmo descrito en Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
-
-@item
-@code{bernoulli}, basado en la simulaci@'on de ensayos de Bernoulli.
-
-@item
-@code{inverse}, basado en el m@'etodo inverso.
-
-@end itemize
-
-V@'ease tambi@'en @code{random_negative_binomial}.
-@end defvr
-
-
 @deffn {Funci@'on} random_negative_binomial (@var{n},@var{p})
 @deffnx {Funci@'on} random_negative_binomial (@var{n},@var{p},@var{m})
 Devuelve un valor aleatorio @i{Binomial Negativo}@math{(n,p)}, con @math{0<p<1} y @math{n} entero positivo. Llamando a  @code{random_negative_binomial} con un tercer argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
 
+Algoritmo descrito en Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
 
-Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{random_negative_binomial_algorithm}, cuyo valor por defecto es @code{bernoulli}.
-
-V@'ease tambi@'en @code{random_negative_binomial_algorithm}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn
 

@@ -1,6 +1,6 @@
 ;;                 COPYRIGHT NOTICE
 ;;  
-;;  Copyright (C) 2005 Mario Rodriguez Riotorto
+;;  Copyright (C) 2005-2008 Mario Rodriguez Riotorto
 ;;  
 ;;  This program is free software; you can redistribute
 ;;  it and/or modify it under the terms of the
@@ -20,9 +20,7 @@
 ;; For questions, suggestions, bugs and the like, feel free
 ;; to contact me at
 ;; mario @@@ edu DOT xunta DOT es
-;; www.biomates.net
 
-;; 2006, january: first release
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -393,6 +391,198 @@
                          (setf a m ga gm)))))  ))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                ;;
+;;   Numerical routines for the noncentral chi2   ;;
+;;                                                ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Cumulative probability of the noncentral chi-square distribution.
+;; Reference:
+;;    Ding, C. G. (1992)
+;;    Algorithm AS275: Computing the non-central chi-squared
+;;    distribution function. Appl.Statist., 41, 478-482.
+;; Comments: This is a translation of the C code in the R program.
+;; Conditions: x>0; f>0 (degrees of freedom) ; theta>0 (non centrality param.)
+(defun cdfnchi2 (x f theta errmax reltol itrmax)
+   (declare (type flonum x f theta errmax reltol itrmax))
+   (cond
+      ((< theta 80)
+          (let ((sum 0.0)
+                (lamda (* 0.5 theta)))
+             (declare (type flonum sum lamda))
+             (do* ((i 0 (1+ i))
+                   (pr (exp (- lamda)) (* pr (/ lamda i))))
+                  ((= i 100) 'done)
+                (setf sum (+ sum (* pr (igamma (* 0.5 x) (+ (* 0.5 f) i))))) )
+             sum))
+      (t
+          (let* ((dbl_epsilon 1.77635683940025e-15)
+                 (dbl_min_exp (* (log 2.0) -1021.0)) ; ln(2) * DBL_MIN_EXP
+                 (lam (* 0.5 theta))
+                 (lamsml (< (- lam) dbl_min_exp))
+                 (lu -1.0)
+                 (l_lam -1.0)
+                 (l_x -1.0)
+                 (u  1.0) (v  1.0) (x2 1.0) (f2 1.0) (f_x_2n 1.0) (tt 1.0)
+                 (lt 1.0) tsml (ans 1.0) (term 1.0) is_b is_r is_it n (f_2n 1.0) (bound 1.0)  )
+              (declare (type flonum dbl_epsilon dbl_min_exp lam lu l_lam l_x u 
+                                    v x2 f2 f_x_2n tt lt l_x ans term f_2n bound)
+                       (type boolean lamsml tsml is_b is_r is_it) )
+             (cond
+                (lamsml
+                    ; non centrality parameter too large
+                    (setf u 0.0
+                          lu (- lam)
+                          l_lam (log lam)))
+                (t
+                    (setf u (exp (- lam)))))
+
+             ; evaluate the first term
+             (setf v u
+                   x2 (* 0.5 x)
+                   f2 (* 0.5 f)
+                   f_x_2n (- f x) )
+             (setf tt (- x2 f2))
+             (cond
+                ((and (> (* f2 dbl_epsilon) 0.125)     ; very large f and x ~= f: probably needs
+                      (< (abs tt)                      ; other algorithm
+                         (* (sqrt dbl_epsilon) f2)))
+                    ; evade cancellation error
+                    (setf lt (- (* (- 1 tt) (- 2 (/ tt (+ f2 1))))
+                                (* 0.5 (log (* 2 ($float '$%pi) (+ f2 1.0)))))))
+                (t
+                    ; Usual case 2: careful not to overflow
+                    (setf lt (- (* f2 (log x2))
+                                x2
+                                (lngamma (+ f2 1.0))))))
+             (setf tsml (< lt dbl_min_exp))
+             (cond
+                ((and tsml
+                      (> x (+ f theta (* 5 (sqrt (* 2 (+ f (* 2 theta))))))))
+                    ; x > E[X] + 5* sigma(X)
+                    (setf ans 1.0))
+                (t
+                    (cond
+                       (tsml
+                          (setf l_x (log x)
+                                ans 0.0
+                                term 0.0
+                                tt 0.0))
+                       (t
+                          (setf tt (exp lt))
+                          (setf ans (* v tt))
+                          (setf term ans)))
+                    (setf is_b nil
+                          is_r nil
+                          is_it nil
+                          n 1
+                          f_2n (+ f 2.0)
+                          f_x_2n (+ f_x_2n 2.0))
+                    (loop
+                       ;f_2n = f + 2*n
+                       ;f_x_2n = f - x + 2*n   > 0  <=> (f+2n)  >   x
+                       (when (> f_x_2n 0)
+                          ; find the error bound and check for convergence
+                          (setf bound (/ (* tt x) f_x_2n))
+                          (setf is_b (<= bound errmax))
+                          (setf is_r (<= term (* reltol ans)))
+                          (setf is_it (> n itrmax))
+                          ; convergence only if BOTH absolute and relative error < 'bnd'
+                          (when (or (and is_b is_r) is_it)
+                             (return) ))
+                       ; evaluate the next term of the
+                       ; expansion and then the partial sum
+                       (cond
+                          (lamsml
+                             (setf lu (+ lu l_lam (- (log n))))
+                             (when (>= lu dbl_min_exp)
+                                ; no underflow anymore => change regime
+                                (setf v (exp lu))  ; the first non-0 'u'
+                                (setf u v)
+                                (setf lamsml nil)))
+                          (t
+                             (setf u (* u (/ lam n)))
+                             (setf v (+ v u))))
+                       (cond
+                          (tsml
+                             (setf lt (+ lt l_x (- (log f_2n))))
+                             (when (>= lt dbl_min_exp)
+                                (setf tt (exp lt)) ; the first non-0 'tt'
+                                (setf tsml nil)))
+                          (t
+                             (setf tt (* tt (/ x f_2n)))))
+                       (when (and (not lamsml) (not tsml))
+                          (setf term (* v tt))
+                          (setf ans (+ ans term)))
+                       (incf n)
+                       (setf f_2n (+ f_2n 2.0))
+                       (setf f_x_2n (+ f_x_2n 2.0)) ) ; loop
+                    (when is_it
+                       ($print (format nil "Warning: cdf_noncentral_chi2 not converged in ~a iterations" itrmax)))
+                    ans))   ))) )
+
+
+;; Quantiles of the noncentral chi-square distribution.
+;; Method: First calculate suboptimal Pearson's approximation, then
+;;     estimate an interval and apply bipartite method.
+;; Comments: This is a translation of the C code in the R program.
+;; Conditions: 0<p<1; f>0 (degrees of freedom) ; theta>0 (non centrality param.)
+(defun qnchi2 (p df lambda)
+   (let ((accu 1e-13)
+         (racc 8.881784197001252e-16)
+         (dbl_epsilon 8.881784197001252e-16)
+         (dbl_min 2.2250738585072014e-308)
+         (dbl_max 1.7976931348623157e+308)
+         (eps 1e-11)    ; must be > accu
+         (reps 1e-10)   ; relative tolerance
+         (ux 1.0) (lx 1.0) (nx 1.0) (pp 1.0))
+      (declare (type flonum accu eps reps ux lx nx pp dbl_epsilon dbl_min dbl_max))
+
+      ; This is Pearson's (1959) approximation,
+      ; which is usually good to 4 figs or so.
+      (let (b c ff)
+         (setf b (/ (* lambda lambda)
+                    (+ df (* 3.0 lambda)) ))
+         (setf c (/ (+ df (* 3.0 lambda))
+                    (+ df (* 2.0 lambda))))
+         (setf ff (/ (+ df (* 2.0 lambda))
+                     (* c c)))
+         (setf ux (+ b (* c 2.0 (iigamma p (* 0.5 ff)))))
+         (when (< ux 0.0) (setf ux 1.0)))
+
+      ; finding an upper and lower bound
+      (cond
+         ((> p (- 1 dbl_epsilon)) ; probability near 1
+             '$inf)
+         (t
+            (setf pp (min (- 1 dbl_epsilon)
+                          (* p (+ 1 eps))))
+            (loop
+               (when (or (>= ux dbl_max)
+                         (>= (cdfnchi2 ux df lambda eps reps 10000.0) pp))
+                  (return))
+               (setf ux (* 2.0 ux)))
+            (setf pp (* p (- 1 eps)))
+            (setf lx (min ux dbl_max))
+            (loop
+               (when (or (<= lx dbl_min)
+                         (<= (cdfnchi2 lx df lambda eps reps 10000.0) pp))
+                  (return))
+               (setf lx (* 0.5 lx)))
+
+            ; interval (lx,ux)  halving
+            (loop
+               (setf nx (* 0.5 (+ lx ux)))
+               (if (> (cdfnchi2 nx df lambda accu racc 100000.0) p)
+                  (setf ux nx)
+                  (setf lx nx))
+               (when (<= (/ (- ux lx) nx) accu)
+                  (return)))
+            (* 0.5 (+ ux lx)) )) ))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                         ;;
 ;;         Normal random simulation        ;;
@@ -422,27 +612,15 @@
               *rnormal-gset*))))
 
 
-;;  Generates random normal variates, with mean=0 and var=1,
-;;  using the inverse method.
-(defun rndnormal-inverse ()
-   (let (u)
-     (loop (setf u ($random 1.0))
-          (if (/= u 0.0) (return 'done)))
-     (ppnd16 u)))
-
-
-;;  Handles random normal variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_normal_algorithm '$box_mueller)
 (defun rndnormal (ss &aux sample)
-   (cond ((= ss 0) (case $random_normal_algorithm
-                         ($box_mueller  (rndnormal-box))
-                         ($inverse      (rndnormal-inverse))))
+   (cond ((= ss 0)
+            (rndnormal-box))
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
-                     (setf sample (cons (rndnormal 0) sample))) )) )
+                     (setf sample (cons (rndnormal 0) sample))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -450,68 +628,6 @@
 ;;     Exponential random simulation       ;;
 ;;                                         ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;; Generates random exponential variates (m).
-;; Exp(m) is equivalent to Gamma(1,1/m) and
-;; the simulation algorithms for gamma can be
-;; used to compute exponential variates; in this case
-;; the ahrens-cheng method is used. See comments
-;; for rndgamma-ahrens-cheng.
-(defun rndexp-ahrens-cheng (m)
-   (declare (type flonum m))
-   (rndgamma-ahrens-cheng 1.0 (/ 1.0 m)))
-
-
-;;  Generates random exponential variates (m).
-;;  Reference:
-;;    [1] Ahrens, J.H. and Dieter, U. (1972).
-;;        Computer methods for sampling from the
-;;        exponential and normal distributions.
-;;        Comm, ACM, 15, Oct.,  873-882.
-;;  Comments: This is a translation of the
-;;    C code from the R package, file sexp.c
-(defun rndexp-ahrens-dieter (m)
-   (declare (type flonum m))
-   (let  (u ustar umin 
-          (a 0.0)
-          (i 0)
-          ;; q(k):=sum(log(2)^(i+1) / (i+1)!, i, 0, k), 
-          ;; for k=0... 15
-          (q (make-array 16
-                   :element-type 'flonum
-                   :initial-contents '(0.6931471805599453
-                                       0.9333736875190459
-                                       0.9888777961838675
-                                       0.9984959252914960
-                                       0.9998292811061389
-                                       0.9999833164100727
-                                       0.9999985691438767
-                                       0.9999998906925558
-                                       0.9999999924734159
-                                       0.9999999995283275
-                                       0.9999999999728814
-                                       0.9999999999985598
-                                       0.9999999999999289
-                                       0.9999999999999968
-                                       0.9999999999999999
-                                       1.0))))
-        (setf ustar ($random 1.0))
-        (setf umin ustar)
-        (loop (setf u ($random 1.0))
-              (if (and (< 0.0 u) (< u 1.0)) (return 'done)))
-        (loop (setf u (+ u u))
-              (if (> u 1.0) (return 'done))
-              (setf a (+ a (aref q 0))))
-        (setf u (- u 1.0))
-        (cond ((<= u (aref q 0))
-                   (/ (+ a u) m))
-              (t   (loop (setf ustar ($random 1.0))
-                         (if (< ustar umin)
-                             (setf umin ustar))
-                         (setf i (1+ i))
-                         (if (<= u (aref q i)) (return 'done)))
-                   (/ (+ a (* umin (aref q 0))) m)))))
 
 
 ;;  Generates random exponential variates (m),
@@ -524,19 +640,15 @@
      (/ (- (log (- 1.0 ($random 1.0)))) m)))
 
 
-;;  Handles random exponential variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_exp_algorithm '$inverse)
 (defun rndexp (m ss &aux sample)
-   (cond ((= ss 0) (case $random_exp_algorithm
-                         ($ahrens_dieter  (rndexp-ahrens-dieter m))
-                         ($ahrens_cheng   (rndexp-ahrens-cheng m))
-                         ($inverse        (rndexp-inverse m))))
+   (cond ((= ss 0)
+            (rndexp-inverse m))
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
-                     (setf sample (cons (rndexp m 0) sample))) )) )
+                     (setf sample (cons (rndexp m 0) sample))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -597,25 +709,12 @@
              (* bb a w)))))
 
 
-;;  Generates random gamma variates (a, b),
-;;  using the inverse method.
-(defun rndgamma-inverse (a b)
-   (declare (type flonum a b))
-   (let (u)
-     (loop (setf u ($random 1.0))
-          (if (/= u 0.0) (return 'done)))
-     (* b (iigamma u a))))
-
-
-;;  Handles random gamma variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_gamma_algorithm '$ahrens_cheng)
 (defun rndgamma (a b ss &aux sample)
-   (cond ((= ss 0) (case $random_gamma_algorithm
-                         ($ahrens_cheng   (rndgamma-ahrens-cheng a b))
-                         ($inverse        (rndgamma-inverse a b))))
+   (cond ((= ss 0) 
+            (rndgamma-ahrens-cheng a b) )
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndgamma a b 0) sample))) )) )
@@ -628,28 +727,54 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;  Generates random chi^2 variates (n),
-;;  using the inverse method.
-(defun rndchi2-inverse (n)
-   (declare (type flonum n))
-   (let (u)
-     (loop (setf u ($random 1.0))
-          (if (/= u 0.0) (return 'done)))
-     (* 2.0 (iigamma u (* n 0.5)))))
-
-
-;;  Handles random chi^2 variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_chi2_algorithm '$ahrens_cheng)
 (defun rndchi2 (n ss &aux sample)
-   (cond ((= ss 0) (case $random_chi2_algorithm
-                         ($ahrens_cheng   (rndgamma-ahrens-cheng (* n 0.5) 2.0))
-                         ($inverse        (rndchi2-inverse n))))
+   (cond ((= ss 0)
+            (rndgamma-ahrens-cheng (* n 0.5) 2.0) )
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndchi2 n 0) sample))) )) )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                           ;;
+;;    Noncentral Chi^2 random simulation     ;;
+;;                                           ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Generates random noncentral chi^2 variates (df, lambda)
+;; based on the fact that the noncentral chi^2 can be decomposed
+;; as the sum of a central chisquare with df degrees of freedom plus a
+;; noncentral chisquare with zero degrees of freedom (which is a Poisson
+;; mixture of central chisquares with integer degrees of freedom),
+;; see Formula (29.5b-c) in Johnson, Kotz, Balakrishnan (1995).
+(defun rndnchi2-chi2-poisson (df lambda)
+   (declare (type flonum df lambda))
+   (cond
+      ((= lambda 0.0)
+          (rndgamma (* 0.5 df) 2.0 0))
+      (t
+          (let ((r (coerce (rndpoisson (/ lambda 2.0) 0) 'flonum)))
+             (declare (type flonum r))
+             (when (> r 0.0)
+                (setf r (rndchi2 (* 2.0 r) 0)))
+             (setf r (+ r (rndgamma (* 0.5 df) 2.0 0)))
+             r) )))
+
+
+
+;;  The sample size ss must be a non negative integer.
+;;  If ss=0, returns a number, otherwise a maxima list
+;;  of length ss
+(defun rndnchi2 (df lambda ss &aux sample)
+   (cond ((= ss 0)
+            (rndnchi2-chi2-poisson df lambda))
+         (t (setf sample nil)
+            (dotimes (i ss (cons '(mlist simp) sample))
+                     (setf sample (cons (rndnchi2 df lambda 0) sample))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -671,30 +796,12 @@
      (/ z (sqrt (/ y n)))))
 
 
-;;  Generates random Student's t variates (n),
-;;  using the inverse method.
-(defun rndstudent-inverse (n)
-   (declare (type flonum n))
-   (let (u auxi sgn)
-     (loop (setf u ($random 1.0))
-           (if (/= u 0.0) (return 'done)))
-     (cond ((< u 0.5)
-              (setf auxi (* 2.0 u)
-                    sgn -1.0))
-           (t (setf auxi (* 2.0 (- 1.0 u))
-                    sgn 1.0)))
-     (* sgn (sqrt (* n (- (/ 1.0 (iibeta auxi (* n 0.5) 0.5)) 1.0))))))
-
-
-;;  Handles random Student's t variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_student_t_algorithm '$ratio)
 (defun rndstudent (n ss &aux sample)
-   (cond ((= ss 0) (case $random_student_t_algorithm
-                         ($ratio    (rndstudent-ratio n))
-                         ($inverse  (rndstudent-inverse n))))
+   (cond ((= ss 0) 
+            (rndstudent-ratio n) )
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndstudent n 0) sample))) )) )
@@ -719,28 +826,15 @@
       (/ (* n x) (* m y))))
 
 
-;;  Generates random Snedecor's F variates (m,n),
-;;  using the inverse method.
-(defun rndf-inverse (m n)
-   (declare (type flonum m n))
-   (let (u)
-      (loop (setf u ($random 1.0))
-            (if (/= u 0.0) (return 'done)))
-      (* (/ n m) (- (/ 1.0 (iibeta (- 1.0 u) (/ n 2) (/ m 2))) 1.0))))
-
-
-;;  Handles random Snedecor's F variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_f_algorithm '$inverse)
 (defun rndf (m n ss &aux sample)
-   (cond ((= ss 0) (case $random_f_algorithm
-                         ($ratio    (rndf-ratio m n))
-                         ($inverse  (rndf-inverse m n))))
+   (cond ((= ss 0) 
+            (rndf-ratio m n))
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
-                     (setf sample (cons (rndf m n 0) sample))) )) )
+                     (setf sample (cons (rndf m n 0) sample))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -885,37 +979,12 @@
         genbet))
 
 
-;;  Generates random beta variates (a b), based
-;;  on the fact that X/(X+Y) is a beta(a,b) random
-;;  variable, if X~gamma(a,1) and Y~gamma(b,1).
-(defun rndbeta-ratio (a b)
-   (declare (type flonum a b))
-   (let (x y)
-     (setf x (rndgamma a 1.0 0)
-           y (rndgamma b 1.0 0))
-     (/ x (+ x y))))
-
-
-;;  Generates random beta variates (a b),
-;;  using the inverse method.
-(defun rndbeta-inverse (a b)
-   (declare (type flonum a b))
-   (let (u)
-     (loop (setf u ($random 1.0))
-           (if (/= u 0.0) (return 'done)))
-     (iibeta u a b)))
-
-
-;;  Handles random beta variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_beta_algorithm '$cheng)
 (defun rndbeta (a b ss &aux sample)
-   (cond ((= ss 0) (case $random_beta_algorithm
-                         ($cheng    (rndbeta-cheng a b))
-                         ($ratio    (rndbeta-ratio a b))
-                         ($inverse  (rndbeta-inverse a b))))
+   (cond ((= ss 0)
+            (rndbeta-cheng a b) )
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndbeta a b 0) sample))) )) )
@@ -1126,40 +1195,15 @@
        ix)))
 
 
-;;  Generates random binomial variates (n p),
-;;  by simulation of Bernoulli trials.
-(defun rndbinomial-ber (n p)
-   (declare (type integer n)
-            (type flonum p))
-   (let ((sum 0))
-      (dotimes (k n sum)
-         (if (< ($random 1.0) p)
-             (setf sum (1+ sum))))))
-
-
-;;  Generates random binomial variates (n p),
-;;  using the inverse method.
-(defun rndbinomial-inverse (n p)
-   (declare (type integer n)
-            (type flonum p))
-   (let (u)
-     (setf u ($random 1.0))
-     (mfunction-call $quantile_binomial u n p)))
-
-
-;;  Handles random binomial variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_binomial_algorithm '$kachit)
 (defun rndbinomial (n p ss &aux sample)
-   (cond ((= ss 0) (case $random_binomial_algorithm
-                         ($kachit     (rndbinomial-kachit n p))
-                         ($bernoulli  (rndbinomial-ber n p))
-                         ($inverse    (rndbinomial-inverse n p))))
+   (cond ((= ss 0)
+            (rndbinomial-kachit n p))
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
-                     (setf sample (cons (rndbinomial n p 0) sample))) )) )
+                     (setf sample (cons (rndbinomial n p 0) sample))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1377,29 +1421,17 @@
        ignpoi))
 
 
-;;  Generates random Poisson variates (m),
-;;  using the inverse method.
-(defun rndpoisson-inverse (m)
-   (declare (type flonum m))
-   (let (u)
-     (setf u ($random 1.0))
-     (mfunction-call $quantile_poisson u m)))
-
-
-;;  Handles random Poisson variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_poisson_algorithm '$ahrens_dieter)
 (defun rndpoisson (m ss &aux sample)
    (declare (type flonum m))
    (declare (type integer ss))
-   (cond ((= ss 0) (case $random_poisson_algorithm
-                         ($ahrens_dieter (rndpoisson-ahrens m))
-                         ($inverse       (rndpoisson-inverse m))))
+   (cond ((= ss 0)
+            (rndpoisson-ahrens m))
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
-                     (setf sample (cons (rndpoisson m 0) sample))) )) )
+                     (setf sample (cons (rndpoisson m 0) sample))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1416,47 +1448,20 @@
    (let ((sum 0))
       (declare (type integer sum))
       (loop (if (<= ($random 1.0) p) (return sum))
-            (setf sum (1+ sum))) ))
+            (setf sum (1+ sum)))))
 
 
-;;  Generates random geometric variates (p)
-;;  Reference:
-;;    [1] Devroye, L. (1986)
-;;        Non-Uniform Random Variate Generation.
-;;        Springer Verlag, p. 480
-;;  Comments:
-;;    [1] This is a translation of the C code of the
-;;        ranlib.c library. R statistical package uses this same
-;;        algorithm but in a more structured style.
-(defun rndgeo-devroye (p)
-   (declare (type flonum p))
-   (rndpoisson (rndexp (/ p (- 1.0 p)) 0) 0) )
-
-
-;;  Generates random geometric variates (p),
-;;  using the inverse method.
-(defun rndgeo-inverse (p)
-   (declare (type flonum p))
-   (let (u)
-     (setf u ($random 1.0))
-     (mfunction-call $quantile_geometric u p)))
-
-
-;;  Handles random geometric variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_geometric_algorithm '$bernoulli)
 (defun rndgeo (p ss &aux sample)
    (declare (type flonum p))
    (declare (type integer ss))
-   (cond ((= ss 0) (case $random_geometric_algorithm
-                         ($bernoulli (rndgeo-trials p))
-                         ($devroye (rndgeo-devroye p))
-                         ($inverse       (rndgeo-inverse p))))
+   (cond ((= ss 0)
+            (rndgeo-trials p))
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
-                     (setf sample (cons (rndgeo p 0) sample))) )) )
+                     (setf sample (cons (rndgeo p 0) sample))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1536,8 +1541,7 @@
    (let (ix reject setup1 setup2 e f g p r tt u v y de dg dr ds dt gl
          gu nk nm ub xk xm xn y1 ym yn yk alv
          (con 57.56462733) (deltal 0.0078) (deltau 0.0034) (scale 1.e25))
-   ;;    (declare (type flonum con deltal deltau scale))
-
+       (declare (type flonum con deltal deltau scale))
        ;; if new parameter values, initialize
        (setf reject t)
        (cond ((or (/= nn1 *rhyp-n1s*) (/= nn2 *rhyp-n2s*))
@@ -1727,25 +1731,13 @@
                        (t ix))))))
 
 
-;;  Generates random hypergeometric variates (n1, n2, n),
-;;  using the inverse method.
-(defun rndhypergeo-inverse (n1 n2 n)
-   (declare (type integer n1 n2 n))
-   (let (u)
-     (setf u ($random 1.0))
-     (mfunction-call $quantile_hypergeometric u n1 n2 n)))
-
-
-;;  Handles random hypergeometric variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_hypergeometric_algorithm '$kachit)
 (defun rndhypergeo (n1 n2 n ss &aux sample)
    (declare (type integer n1 n2 n ss))
-   (cond ((= ss 0) (case $random_hypergeometric_algorithm
-                         ($kachit   (rndhypergeo-kachit n1 n2 n))
-                         ($inverse  (rndhypergeo-inverse n1 n2 n))))
+   (cond ((= ss 0) 
+            (rndhypergeo-kachit n1 n2 n) )
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndhypergeo n1 n2 n 0) sample))) )) )
@@ -1772,39 +1764,21 @@
    (rndpoisson (rndgamma n (/ (- 1.0 p) p) 0) 0) )
 
 
-;;  Generates random negative binomial variates (n p),
-;;  by simulation of Bernoulli trials.
-(defun rndnegbinom-ber (n p)
-   (declare (type flonum p))
-   (let ((nsuc 0) (nfail 0))
-      (loop
-         (if (= nsuc n) (return nfail))
-         (if (> ($random 1.0) p)
-             (setf nfail (1+ nfail))
-             (setf nsuc (1+ nsuc))))))
-
-
-;;  Generates random negative binomial variates (n p),
-;;  using the inverse method.
-(defun rndnegbinom-inverse (n p)
-   (declare (type integer n)
-            (type flonum p))
-   (let (u)
-     (setf u ($random 1.0))
-     (mfunction-call $quantile_negative_binomial u n p)))
-
-
-;;  Handles random negative binomial variates at top level.
 ;;  The sample size ss must be a non negative integer.
 ;;  If ss=0, returns a number, otherwise a maxima list
 ;;  of length ss
-(defvar $random_negative_binomial_algorithm '$bernoulli)
 (defun rndnegbinom (n p ss &aux sample)
-   (cond ((= ss 0) (case $random_negative_binomial_algorithm
-                         ($devroye    (rndnegbinom-devroye n p))
-                         ($bernoulli  (rndnegbinom-ber n p))
-                         ($inverse    (rndnegbinom-inverse n p))))
+   (cond ((= ss 0)
+            (rndnegbinom-devroye n p) )
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndnegbinom n p 0) sample))) )) )
+
+
+
+
+
+
+
+
 

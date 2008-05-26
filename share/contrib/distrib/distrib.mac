@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2006 Mario Rodriguez Riotorto
+Copyright (C) 2005-2008 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -39,6 +39,7 @@ Continuous distributions:                   Discrete distributions:
    Laplace             (*laplace)
    Cauchy              (*cauchy)
    Gumbel              (*gumbel)
+   Noncentral Chi^2    (*noncentral_chi2)
 
 Functions:
    Density function            (pdf_*)
@@ -62,16 +63,10 @@ For example,
 Note: the Cauchy model has no moments, in this case only the density and
       the distribution functions, 'pdf_cauchy' and 'cdf_cauchy', are defined.
 
-   
-Code tested with Maxima 5.9.2
-
 For questions, suggestions, bugs and the like, feel free
 to contact me at
 
 mario @@@ edu DOT xunta DOT es
-www.biomates.net
-
-2005, march: first release
 */
 
 /* Sets the random state according to the computer clock time */
@@ -102,6 +97,15 @@ control2(a,b):=
    if member(sign(a), ['nz,'neg,'zero]) or member(sign(b), ['nz,'neg,'zero])
       then -1
       else if sign(a)='pos and sign(b)='pos
+              then 1
+              else 0 $
+
+/* If a > 0 and b >= 0, the function returns 1. Otherwise it
+   returns -1. If there is not enough information, the output is 0 */
+control3(a,b):=
+   if member(sign(a), ['nz,'neg,'zero]) or sign(b) = 'neg
+      then -1
+      else if sign(a)='pos and member(sign(b), ['pos, 'zero])
               then 1
               else 0 $
 
@@ -228,14 +232,12 @@ kurtosis_normal(m,s):=block([cp:control1(s)],
    if cp=0 then return(funmake('kurtosis_normal,[m,s])),
    0  )$
 
-/* Implemented algorithms: box_mueller, inverse.
-   More info in numdistrib.lisp */
 random_normal(m,s,[num]):=block([cp:control1(s),cn,no],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
    if cp=0 or cn=0 then return(funmake('random_normal,append([m,s],num))),
-   m + s * ?rndnormal(no) )$
+   m + s * ?rndnormal(no))$
 
 
 
@@ -308,8 +310,6 @@ kurtosis_student_t(n):=block([cp:control1(n-4)],
    if cp=0 then return(funmake('kurtosis_student_t,[n])),
    6/(n-4)  )$
 
-/* Implemented algorithms: ratio, inverse.
-   More info in numdistrib.lisp */
 random_student_t(n,[num]):=block([cp:control1(n),cn,no,fn],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -319,6 +319,7 @@ random_student_t(n,[num]):=block([cp:control1(n),cn,no,fn],
    if numberp(fn)
       then return(?rndstudent(fn,no)),
    funmake('random_student_t,append([n],num)) )$
+
 
 
 /*         CHI-SQUARE (OR PEARSON'S)  DISTRIBUTION          */
@@ -342,8 +343,6 @@ skewness_chi2(n):=skewness_gamma(n/2,2)$
 
 kurtosis_chi2(n):=kurtosis_gamma(n/2,2)$
 
-/* Implemented algorithms: ahrens_cheng, inverse.
-   More info in numdistrib.lisp */
 random_chi2(n,[num]):=block([cp:control1(n),cn,no,fn],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -353,6 +352,92 @@ random_chi2(n,[num]):=block([cp:control1(n),cn,no,fn],
    if numberp(fn)
       then return(?rndchi2(fn,no)),
    funmake('random_chi2,append([n],num)) )$
+
+
+
+/*     NONCENTRAL CHI-SQUARE DISTRIBUTION      */
+
+
+
+/* R: dchisq(x,n,ncp) */
+pdf_noncentral_chi2(x,n,ncp):=block([cp:control3(n,ncp)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('pdf_noncentral_chi2,[x,n,ncp])),
+   if sign(ncp) = 'zero then return(pdf_chi2(x,n)),
+   if member(sign(x), ['neg])
+      then 0
+      else if member(sign(x), ['zero,'pos])
+              then 1/2 * exp(-(x+ncp)/2) * (x/ncp)^(n/4-1/2) * bessel_i(n/2-1, sqrt(x*ncp))
+              else funmake('pdf_noncentral_chi2,[x,n,ncp]) )$
+
+/* R: pchisq(x,n,ncp) */
+cdf_noncentral_chi2(x,n,ncp):=block([cp:control3(n,ncp)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('cdf_noncentral_chi2,[x,n,ncp])),
+   if sign(ncp) = 'zero then return(cdf_chi2(x,n)),
+   if member(sign(x), ['nz,'neg,'zero])
+      then return(0)
+      else if numberp(x) and x>0 and numberp(n) and numberp(ncp) and 
+              (numer or ?floatp(x) or ?floatp(n) or ?floatp(ncp))
+              then return(?cdfnchi2(float(x),float(n),float(ncp),
+                                    1e-12,                /* maximum error */
+                                    1.4210854715202e-14,  /* 8*DBL_EPSILON */
+                                    1000000.0)),            /* number of iterations */
+   funmake('cdf_noncentral_chi2,[x,n,ncp]) )$
+
+/* R: qchisq(q,n,ncp) */
+quantile_noncentral_chi2(q,n,ncp):=block([cp:control3(n,ncp), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('quantile_noncentral_chi2,[q,n,ncp])),
+   if fq=0.0 then return(0),
+   if fq=1.0 then return('inf),
+   if sign(ncp) = 'zero then return(quantile_chi2(q,n)),
+   if numberp(q) and numberp(n) and numberp(ncp) and 
+      (numer or ?floatp(q) or ?floatp(n) or ?floatp(ncp))
+     then return(?qnchi2(float(q),float(n),float(ncp))),
+   funmake('quantile_noncentral_chi2,[q,n,ncp]) )$
+
+mean_noncentral_chi2(n,ncp):=block([cp:control3(n,ncp)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('mean_noncentral_chi2,[n,ncp])),
+   n + ncp) $
+
+var_noncentral_chi2(n,ncp):=block([cp:control3(n,ncp)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('var_noncentral_chi2,[n,ncp])),
+   2*(n + 2*ncp)) $
+
+std_noncentral_chi2(n,ncp):=block([cp:control3(n,ncp)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('std_noncentral_chi2,[n,ncp])),
+   sqrt(2*(n + 2*ncp))) $
+
+skewness_noncentral_chi2(n,ncp):=block([cp:control3(n,ncp)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('skewness_noncentral_chi2,[n,ncp])),
+   2^(3/2) * (n+3*ncp) /(n+2*ncp)^(3/2)    )$
+
+kurtosis_noncentral_chi2(n,ncp):=block([cp:control3(n,ncp)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('kurtosis_noncentral_chi2,[n,ncp])),
+   12 * (n+4*ncp) /(n+2*ncp)^2    )$
+
+random_noncentral_chi2(n,ncp,[num]):=block([cp:control3(n,ncp),cn,no,fn,fncp],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('random_noncentral_chi2,append([n,ncp],num))),
+   fn: float(n),
+   fncp: float(ncp),
+   if numberp(fn) and numberp(fncp)
+      then return(?rndnchi2(fn,fncp,no)),
+   funmake('random_noncentral_chi2,append([n,ncp],num)) )$
+
+
+
+
+
+
 
 
 
@@ -386,7 +471,7 @@ quantile_f(q,m,n):=block([cp:control2(m,n), cq:controlq(q), fq:float(q)],
    if cp=0 or cq=0 then return(funmake('quantile_f,[q,m,n])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
-   if numberp(q) and numberp(m) and numberp(n) and
+   if numberp(fq) and numberp(m) and numberp(n) and
       (numer or ?floatp(q) or ?floatp(m) or ?floatp(n))
       then n * (1 / ?iibeta(1-fq, float(n/2), float(m/2)) - 1) / m
       else funmake('quantile_f,[q,m,n]) )$
@@ -438,8 +523,6 @@ kurtosis_f(m,n):=block([cp:control2(m,n)],
    funmake('kurtosis_f,[m,n])  )$
 
 
-/* Implemented algorithms: ratio, inverse.
-   More info in numdistrib.lisp */
 random_f(m,n,[num]):=block([cp:control2(m,n),cn,no,fm,fn],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -474,8 +557,6 @@ skewness_exp(m):=skewness_weibull(1,1/m)$
 
 kurtosis_exp(m):=kurtosis_weibull(1,1/m)$
 
-/* Implemented algorithms: ahrens_cheng, ahrens_dieter, inverse.
-   More info in numdistrib.lisp */
 random_exp(m,[num]):=block([cp:control1(m),cn,no,fm],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -484,7 +565,7 @@ random_exp(m,[num]):=block([cp:control1(m),cn,no,fm],
    fm: float(m),
    if numberp(fm)
       then return(?rndexp(fm,no)),
-   funmake('random_exp,append([m],num)) )$
+   funmake('random_exp,append([m],num)))$
 
 
 
@@ -546,10 +627,6 @@ kurtosis_lognormal(m,s):=block([cp:control1(s)],
    if cp=0 then return(funmake('kurtosis_lognormal,[m,s])),
    exp(4*s^2)+2*exp(3*s^2)+3*exp(2*s^2)-3  )$
 
-/* Implemented algorithms: box_mueller, inverse.
-   To select the algorithm, use the global variable
-   'random_normal_algorithm'.
-   More info in numdistrib.lisp */
 random_lognormal(m,s,[num]):=block([cp:control1(s),cn,no],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -563,6 +640,7 @@ random_lognormal(m,s,[num]):=block([cp:control1(s),cn,no],
 
 
 
+/* R: dgamma(x,a,1/b) */
 pdf_gamma(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('pdf_gamma,[x,a,b])),
@@ -619,8 +697,6 @@ kurtosis_gamma(a,b):=block([cp:control2(a,b)],
    if cp=0 then return(funmake('kurtosis_gamma,[a,b])),
    6/a  )$
 
-/* Implemented algorithms: ahrens_cheng, inverse.
-   More info in numdistrib.lisp */
 random_gamma(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -696,8 +772,6 @@ kurtosis_beta(a,b):=block([cp:control2(a,b)],
    if cp=0 then return(funmake('kurtosis_beta,[a,b])),
    3*(a+b+1)*(2*(a+b)^2+a*b*(a+b-6)) / (a*b*(a+b+2)*(a+b+3)) - 3  )$
 
-/* Implemented algorithms: cheng, ratio, inverse.
-   More info in numdistrib.lisp */
 random_beta(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -831,8 +905,7 @@ kurtosis_logistic(a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('kurtosis_logistic,[a,b])),
    6/5  )$
 
-/* Only the inverse method is implemented; there
-   is no global variable */
+/* inverse method */
 random_logistic(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -922,8 +995,7 @@ kurtosis_pareto(a,b):=block([cp:control2(a,b)],
               then error("Illegal parameter"),
    funmake('kurtosis_pareto,[a,b]) )$
 
-/* Only the inverse method is implemented; there
-   is no global variable */
+/* inverse method */
 random_pareto(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -997,8 +1069,7 @@ kurtosis_weibull(a,b):=block([cp:control2(a,b)],
                        6*gamma(1/a+1)^2*gamma(2/a+1)-3*gamma(1/a+1)^4) /
           (gamma(2/a+1)-gamma(1/a+1)^2)^2 - 3  )$
 
-/* Only the inverse method is implemented; there
-   is no global variable */
+/* inverse method */
 random_weibull(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1035,8 +1106,7 @@ skewness_rayleigh(b):=skewness_weibull(2,1/b)$
 
 kurtosis_rayleigh(b):=kurtosis_weibull(2,1/b)$
 
-/* Only the inverse method is implemented; there
-   is no global variable */
+/* inverse method */
 random_rayleigh(b,[num]):=block([cp:control1(b),cn,no,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1102,8 +1172,7 @@ kurtosis_laplace(a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('kurtosis_laplace,[a,b])),
    3  )$
 
-/* Only the inverse method is implemented; there
-   is no global variable */
+/* inverse method */
 random_laplace(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1143,8 +1212,7 @@ quantile_cauchy(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
 
 /* Note: integrals for Cauchy moments are divergent */
 
-/* Only the inverse method is implemented; there
-   is no global variable */
+/* inverse method */
 random_cauchy(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1209,8 +1277,7 @@ kurtosis_gumbel(a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('kurtosis_gumbel,[a,b])),
    12/5  )$
 
-/* Only the inverse method is implemented; there
-   is no global variable */
+/* inverse method */
 random_gumbel(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1298,8 +1365,6 @@ kurtosis_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=0 then return(funmake('kurtosis_binomial,[n,p])),
    (1-6*p*(1-p))/(n*p*(1-p))  )$
 
-/* Implemented algorithms: kachit, bernoulli, inverse.
-   More info in numdistrib.lisp */
 random_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1385,8 +1450,6 @@ kurtosis_poisson(m):=block([cp:control1(m)],
    if cp=0 then return(funmake('kurtosis_poisson,[m])),
    1/m  )$
 
-/* Implemented algorithms: ahrens_dieter, inverse.
-   More info in numdistrib.lisp */
 random_poisson(m,[num]):=block([cp:control1(m),cn,no,fm],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1507,8 +1570,6 @@ kurtosis_geometric(p):=block([cp:controlp(p)],
    if cp=0 then return(funmake('kurtosis_geometric,[p])),
    (p^2+6-6*p)/(1-p)  )$
 
-/* Implemented algorithms: bernoulli, devroye, inverse.
-   More info in numdistrib.lisp */
 random_geometric(p,[num]):=block([cp:controlp(p),cn,no,fp],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1674,8 +1735,6 @@ kurtosis_hypergeometric(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
    t*t*(t-1)/((t-2)*(t-3)*n*n1*n2*(t-n)) * 
      (t*(t+1)-6*n*(t-n)+3*n1*n2*(t*t*(n-2)-t*n*n+6*n*(t-n))/t^2) - 3  )$
 
-/* Implemented algorithms: kachit, inverse.
-   More info in numdistrib.lisp */
 random_hypergeometric(n1,n2,n,[num]):=block([cp:controliii(n1,n2,n),cn,no],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1722,14 +1781,14 @@ quantile_negative_binomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:
       then return(funmake('quantile_negative_binomial,[q,n,p])),
    /* let's use the partition method */
    b: 1,
-   while (cdf_negative_binomial(b,n,p) < q) do b: b*2,
+   while (?ibeta(float(p),float(n),float(floor(b)+1)) < fq) do b: b*2,
    a: b/2,
    while (b-a > 1) do(
       m: floor(0.5*(a+b)),
-      if cdf_negative_binomial(m,n,p) < q
+      if ?ibeta(float(p),float(n),float(m)) < q
          then a: m
          else b: m ),
-   b )$
+   b-1 )$
 
 mean_negative_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
@@ -1756,8 +1815,6 @@ kurtosis_negative_binomial(n,p):=block([cp:controlip(n,p)],
    if cp=0 then return(funmake('kurtosis_negative_binomial,[n,p])),
    (p*p+6-6*p)/(n*(1-p)) )$
 
-/* Implemented algorithms: devroye, bernoulli, inverse.
-   More info in numdistrib.lisp */
 random_negative_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
    if length(num) = 0 then no: 0 else no: num[1],
    cn: controlib(no),
@@ -1765,6 +1822,6 @@ random_negative_binomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
    if cp=0 or cn=0 then return(funmake('random_negative_binomial,append([n,p],num))),
    fp: float(p),
    if integerp(n) and numberp(fp)
-      then return(?rndnegbinom(n,fp,no)),
+      then return(?rndnegbinom(float(n),fp,no)),
    funmake('random_negative_binomial,append([n,p],num)) )$
 
