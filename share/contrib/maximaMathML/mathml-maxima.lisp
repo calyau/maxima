@@ -18,16 +18,11 @@
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; uses these fuctions from nparse.lisp
-;;;    SCAN-MACSYMA-TOKEN 
-;;;    SCAN-NUMBER-BEFORE-DOT
-;;;; with look-ahead disabled
-
 (in-package :maxima)
 
-(declaim (special *tag* *special-proc* *PARSE-STREAM* *in* parse-tyipeek))
+(declaim (special *tag* *special-proc* *parse-stream* *in* parse-tyipeek))
 
-(defvar *in* *PARSE-STREAM*  "input stream to read")
+(defvar *in* *parse-stream*  "input stream to read")
 
 (setq parse-tyipeek nil) ;; look-ahead in nparse.lisp
 
@@ -37,7 +32,7 @@
 ;;;;; mltoma is the top-level mathml input function
 
 (defun $mathml()
-  (meval (mltoma *PARSE-STREAM*)))
+  (meval (mltoma *parse-stream*)))
 
 (defun mltoma(&optional *in*)
 (prog(ans)
@@ -49,16 +44,16 @@
    (return ans)))
 
 (defun ml2ma ()
-  (prog(tag)
-     (setq *tag* (setq tag (get-tag)))
-     (return 
-       (cond ((eq tag 'ci) (ml-ci))
-	     ((eq tag 'cn) (ml-cn))
-	     ((eq tag 'apply) (ml-apply))
-	     ((member tag '(bvar lowlimit uplimit) :test #'eq)
-	      (setq ans (ml2ma)) (get-tag) ans)
-	     ((eq tag '/apply) nil)
-	     (t (merror "unknown or invalid mathml tag: ~A" tag))))))
+  (multiple-value-bind (tag attributes) (get-tag)
+    (setq *tag* tag)
+    (cond
+      ((eq tag 'ci) (ml-ci attributes))
+      ((eq tag 'cn) (ml-cn attributes))
+      ((eq tag 'apply) (ml-apply))
+      ((member tag '(bvar lowlimit uplimit) :test #'eq)
+       (setq ans (ml2ma)) (get-tag) ans)
+      ((eq tag '/apply) nil)
+      (t (merror "unknown or invalid mathml tag: ~A" tag)))))
 
 (defun ml-apply()
   (prog(op *special-proc* ans)
@@ -124,68 +119,61 @@
      (return (list v d))
 ))
       
-(defun ml-cn()
+(defun ml-cn (attributes)
 (prog(type number)
-   (setq type (get-type))  ;; always has type
-   (if (or (eq type 'integer) (equal type "integer")
-		 (eq type 'float) (equal type "float"))
-       (setq number (get-number))
-   ) 
-   (return number)
-))
-
-;; (DEFVAR PARSE-TYIPEEK () "T if there is a peek character.")
-;; (DEFVAR PARSE-TYI	() "The peek character.")
-
-(defun ml-ci()
-(prog(parse-tyipeek a *PARSE-STREAM* type)
-   (setq type (get-type)) ;; may or may not have type
-   (cond ((or (eq type 'constant) (equal type "constant")) ;; math constants
-	    (setq a (implode (get-token)))
-            (get-token) ;; skip to >
-	    (cond ((eq a '|&pi;|) (return '$%PI))
-	          ((eq a '|&ee;|) (return '$%E))
-	          ((eq a '|&ii;|) (return '$%i))
-	          ((eq a '|&gamma;|) (return '$%gamma))
-	    )
-   ))
-;; normal identifier
-;;(setq *PARSE-STREAM* *in*)
-;;(setq a (SCAN-MACSYMA-TOKEN))  ;; $ prefixed
-  (setq a (read-from-string
-	   (concatenate 'string "$"  type)))  ;; type is string
+   (setq type (find-attribute "type" attributes))  ;; always has type
+   (cond
+     ((or (equal type "integer") (equal type "float"))
+      (setq number (get-number)))
+     ((equal type "constant")
+      (setq number (coerce (get-token) 'string))
+      (setq number (mathml-constant-to-maxima-constant number)))
+     (t
+       ;; Dunno what we could do here to handle an arbitrary type.
+       ;; For now, just raise an error.
+       (merror "Unrecognized type ``%a'' in <cn> tag.~%" type)))
    (get-token) ;; skip to >
-   (return a)
-))
+   (return number)))
+
+(defun ml-ci (attributes)
+(prog(parse-tyipeek a *parse-stream* type)
+   (setq type (find-attribute "type" attributes)) ;; may or may not have type
+   (cond
+     ((equal type "constant") ;; math constants
+      (setq a (coerce (get-token) 'string))
+      (setq a (mathml-constant-to-maxima-constant a)))
+     (t
+       ;; normal identifier
+       (setq a (read-from-string (concatenate 'string "$" (get-token))))))
+  (get-token) ;; skip to >
+  (return a)))
+
+(defun mathml-constant-to-maxima-constant (name-string)
+  (cond
+    ((equal name-string "&pi;") '$%pi)
+    ((equal name-string "&ee;") '$%e)
+    ((equal name-string "&ii;") '$%i)
+    ((equal name-string "&gamma;") '$%gamma)
+    (t
+      (let
+        ((bare-name (string-left-trim "&" (string-right-trim ";" name-string))))
+        (read-from-string (concatenate 'string "$" bare-name))))))
 
 (defun get-number()
-(prog(parse-tyipeek n  *PARSE-STREAM*)
-   (setq *PARSE-STREAM* *in*)
-   (setq n (SCAN-number-before-dot nil))
-   (get-token) ;; skip to >
-   (return n)
-))
+  (let ((s (get-str #\<)))
+    (if s (read-from-string s))))
 
-(defun get-type()
-(prog(tk)
-   (setq tk (get-str #\=))
-   (if (not (eq (read-from-string tk) 'type)) 
-       (return tk)  ;; string for next token
-       (return (get-atag))    ;; atom for type
-   )
-))
-   
 ;; returns next non-white non #\> char (or -1?)
-(DEFUN next-char ()
-(DO (c) (NIL)      ; Gobble whitespace
-    (IF (MEMBER (setq c (TYI *in* -1))
-           '(#\> #\TAB #\SPACE #\Linefeed #\return #\Page))
+(defun next-char ()
+(do (c) (nil)      ; Gobble whitespace
+    (if (member (setq c (tyi *in* -1))
+           '(#\> #\tab #\space #\linefeed #\return #\page))
         nil
-        (RETURN c)
+        (return c)
     )
 ))
 
-(defun get-tag(&optional endc)
+(defun get-tag(&optional (endc #\>))
 (prog(tag c)
    (setq c (next-char))
    (if (not (char= c #\<)) (return nil))
@@ -196,30 +184,63 @@
 (prog(str)
     (setq str (get-str endc))
     (if (null str) (return nil))
-    (return (read-from-string str))
-))
+    (return
+      (let*
+        ((tag+attributes
+           (split-string str '(#\tab #\space #\linefeed #\return #\page)))
+         (tag (car tag+attributes))
+         (attributes (mapcar #'split-attribute (cdr tag+attributes))))
+        (values (read-from-string tag) attributes)))))
+
+;; Split "FOO=\"BAR\"" into ("FOO" . "BAR")
+(defun split-attribute (attr-string)
+  (let ((i (position #\= attr-string)))
+    (if (null i)
+      (list attr-string)
+      (let
+        ((name (subseq attr-string 0 i))
+         (value (dequotify (subseq attr-string (+ i 1)))))
+        `(,name . ,value)))))
+
+;; Remove first character and last characters if the first character
+;; is a single or double quote and last character is the same as the first.
+;; (Do not call STRING-TRIM, because might strip off multiple characters.)
+
+(defun dequotify (s)
+  (if (or (null s) (< (length s) 2))
+    s
+    (let
+      ((first-char (aref s 0))
+       (last-char (aref s (1- (length s)))))
+      (if
+        (and
+          (or (eq first-char #\") (eq first-char #\'))
+          (eq last-char first-char))
+        (subseq (subseq s 1) 0 (- (length s) 2))
+        s))))
+
+(defun find-attribute (attr attrs-list)
+  (cdr (assoc attr attrs-list :test #'equal)))
 
 (defun get-str(&optional endc)
 (prog(str)
    (setq str (get-token endc))
    (if str
-      (return (string-downcase
-           (symbol-name (IMPLODE str))))
+      (return (coerce str 'string))
       (return nil)
    )
 ))
 
 ;; returns list of chars for next token
 (defun get-token (&optional endc)
-  (DO ((C (TYI *in* -1) (TYI *in* -1))
-       (L () (CONS C L)))
-      ( (or (equal c -1) (and endc (char= C endc))
-           (member c '(#\< #\> #\TAB #\SPACE #\Linefeed #\return #\Page))
-        )
-        (NREVERSE (OR L (NCONS (TYI *in* -1))))
-      ) ; Read at least one char ...
-  )
-)
+  ; Read at least one char ...
+  (do ((c (tyi *in* -1) (tyi *in* -1))
+       (l () (cons c l)))
+    ((or
+       (equal c -1)
+       (and endc (char= c endc))
+       (and (not endc) (member c '(#\< #\> #\tab #\space #\linefeed #\return #\page))))
+     (nreverse (or l (ncons (tyi *in* -1)))))))
 
 (defun get-op ()
 (prog(op mop opa)
@@ -395,3 +416,4 @@
 ;;(set-table '($$boldif (mmfun "if/")))
 ;;(set-table '($$boldthen (mmfun "then/")))
 ;;(set-table '($$boldelse (mmfun "else/")))
+

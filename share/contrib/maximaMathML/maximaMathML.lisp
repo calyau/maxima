@@ -17,22 +17,22 @@
 (in-package :maxima)
 
 ;;; no saving of expressions under automatically generated labels
-(setq $NOLABELS t)
+(setq $nolabels t)
 
 ;;; For the time being use concat(load("maximaMathML/load-mathml.lisp"))
 ;;; or something since the redefined displa can't handle lisp strings. -wj
 
 ;; redefines maxima displa
-($load "maximaMathML/mathmldisplay")
+($load "mathmldisplay")
 
 ;; mathml input to maxima
-($load "maximaMathML/mathml-maxima")
+($load "mathml-maxima")
 
 ;; generate MathML Presentation encoding
-($load "maximaMathML/PrMathML")
+($load "PrMathML")
 
 ;; generate MathML Content encoding
-($load "maximaMathML/CtMathML")
+($load "CtMathML")
 
 ;;; enables mathml content code input to maxima
 ;;; use the command mathml(); followed by <math>...</math> from stdin

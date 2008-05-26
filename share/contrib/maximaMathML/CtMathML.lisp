@@ -27,8 +27,8 @@
 
 
 (defmfun $ctmathml (&rest margs)
-         (prog (ccol *row* *indent* displaytype filename mexplabel
-		 mexpress mPrport x y eqnline lop rop)
+         (prog (ccol *row* *indent* filename 
+		 mexpress mPrport x y lop rop)
 	   (setq lop 'mparen rop 'mparen)
            (setq mexpress (car margs))
            (setq ccol 1 *indent* 0 *row* t)
@@ -131,20 +131,18 @@
          (tprinc (princ-to-string a))
 	 (tprinc "</cn>")
         )
-        ((setq val (get a 'chchr))
+        ((setq val (safe-get a 'chchr))
 	 (cond ((member val '("&pi;" "&gamma;" "&ii;" "&ee;") :test #'equal)
 	          (tprinc "<cn type=\"constant\">") )
 	       (t (tprinc "<cn>") )
 	 )
          (tprinc val) (tprinc "</cn>")
         )
-        (t (tprinc "<ci>")
-         (tprinc (apply 'concat (mapcar #'handle_rsw
-		   ;; next line modified explode to exploden pwang 2/2003
-                   (rm '// (exploden (fullstrip1 a))))))
-         (tprinc "</ci>"))
-  )
-))
+        (t
+          (let ((my-atom (if (symbolp a) (print-invert-case (stripdollar a)) a)))
+            (tprinc "<ci>")
+            (tprinc (coerce (mapcar #'handle_rsw (rm '// (exploden my-atom))) 'string))
+            (tprinc "</ci>"))))))
 
 (defun cpxp(a)
 (if (among '$%i a)
@@ -213,11 +211,11 @@
 	       (tprinc "<")(tprinc sym)(tprinc ">") 
 	       (tprinc "<bvar>")(ctmathml var)(tprinc "</bvar>") 
                (setq ll (nformat (meval 
-                 (list '($SUBSTITUTE) '((MMINUS) $INF) '$MINF ll))))
+                 (list '($substitute) '((mminus) $inf) '$minf ll))))
 	       (tprinc "<lowlimit>")(ctmathml ll)(tprinc "</lowlimit>") 
 	       (myterpri)
                (setq ul (nformat (meval 
-                 (list '($SUBSTITUTE) '((MMINUS) $INF) '$MINF ul))))
+                 (list '($substitute) '((mminus) $inf) '$minf ul))))
 	       (tprinc "<uplimit>")(ctmathml ul)(tprinc "</uplimit>") 
 	       (ctmathml exp)
 	       (row-end "</apply>")
@@ -233,7 +231,7 @@
      (tprinc "<")(tprinc sym)(tprinc ">") 
      (tprinc "<bvar>")(ctmathml v)(tprinc "</bvar>") 
      (setq p (nformat (meval 
-       (list '($SUBSTITUTE) '((MMINUS) $INF) '$MINF p))))
+       (list '($substitute) '((mminus) $inf) '$minf p))))
      (tprinc "<lowlimit>")(ctmathml p)(tprinc "</lowlimit>") 
      (myterpri)
      (cond (args (row-begin "<condition>")

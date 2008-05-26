@@ -17,11 +17,11 @@
 (in-package :maxima)
 (defun displa(exp) 
      (setq exp (caddr exp))   ;;; get rid of output label
-     (print 'PRESENTATION-EXP)
+     (print 'presentation-exp)
      ($prmathml exp)
-     (print 'CONTENT-EXP)
+     (print 'content-exp)
      ($ctmathml exp)
-     (print 'END-EXP)
+     (print 'end-exp)
      (terpri)
 )
 
