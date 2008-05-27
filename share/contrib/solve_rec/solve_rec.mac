@@ -390,7 +390,7 @@ solve_rec_lin_cc(coeffs, ihom, %f, %n, cond) := block(
 
     for ex in exps do block(
       [base, pow, mul, %emode : false],
-      pol : ratcoeff(ihom, ex),
+      pol : coeff(ihom, ex),
       if part(ex, 0)="^" then
         pow : part(ex, 2)
       else
