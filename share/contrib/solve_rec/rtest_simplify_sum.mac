@@ -188,6 +188,14 @@ test_sum(
 0;
 
 test_sum(
+  sum(binomial(l+j,j)*(-1)^(l+2*j)*binomial(n+1,l+j+1),l,0,n-j),
+  [],
+  true,
+  [],
+  1);
+0;
+
+test_sum(
   sum((n^2+n+1)/(n^4-2*n^2+1),n,2,inf),
   [],
   true,

@@ -47,9 +47,12 @@ eval_when(batch,
 put('simplify_sum, 1.0, 'version)$
 
 define_variable(zeilberger_check, true, boolean)$
-define_variable(sum_min, 1, fixnum)$
+define_variable(sum_min, 1, any)$
 define_variable(use_hgfred, true, boolean)$
 define_variable(use_simpsum, true, boolean)$
+
+define_variable(simplify_sum_depth, 0, fixnum)$
+define_variable(simplify_sum_max_depth, 3, fixnum)$
 
 /*******************
  *
@@ -78,8 +81,10 @@ simplify_sum(expr) :=
   else block(
     [summand : part(expr, 1), var : part(expr, 2),
      lo : part(expr, 3), hi : part(expr, 4),
-     sm1 : expr, linsolvewarn:false],
+     sm1 : expr, linsolvewarn:false, simplify_sum_depth:simplify_sum_depth+1],
 
+    if simplify_sum_depth>simplify_sum_max_depth then return(expr),
+    
     /*** Default maxima simplification. *********************************/
     if use_simpsum=true then (
       ss_print_message(1, "Trying with simpsum=true ..."),
@@ -155,7 +160,7 @@ simplify_sum(expr) :=
       else sm1 : und
     ),
   
-    supcontext(ss_context),  
+    apply(supcontext, [concat('ss_context, simplify_sum_depth)]),
     /*** Zeilberger algorithm ************************************************/
     if errcatch(
       if not(atom(sm1)) and not freeof_sum(sm1) then (
@@ -167,7 +172,7 @@ simplify_sum(expr) :=
 
     if sm1=false then
       sm1 : apply(sum, [summand, var, lo, hi]),
-    killcontext('ss_context),
+    killcontext(concat('ss_context, simplify_sum_depth)),
 
     /*** Convert to hypergeometrical functions. ******************************/
     if not(atom(sm1)) and not( freeof_sum(sm1) ) and
@@ -219,7 +224,7 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   if length(in_zr)=0 then (
     if length(vars)<1 then return(false),
     if length(listofvars(hi))>0 then %n% : first(listofvars(hi))
-    else if length(listofvars(lo))>0 then %n% : first(listofvars(hi))
+    else if length(listofvars(lo))>0 then %n% : first(listofvars(lo))
     else %n% : vars[1]
   )
   else
@@ -238,7 +243,7 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
 
   if lo=minf then lo : support[1],
   if hi=inf then hi : support[2],
-
+  
   ss_print_message(2, "Found support:", support),
 
   /* We don't handle sums over infinite support yet!                     */
@@ -260,13 +265,13 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
                                   apply(sum, [
                                                 minfactorial(expr),
                                                 %k%,
-                                                ceiling(lo),
-                                                floor(hi)
+                                                lo, /*ceiling(lo),*/
+                                                hi /*floor(hi)*/
                                               ]
                                         )
                                   ),
                     %i%, sum_min, sum_min + deg - 2)),
-  cond : factor(minfactorial(cond)),
+  cond : factor(minfactorial(simplify_sum(cond))),
 
   if not freeof_sum(cond) then (
     ss_print_message(3, "Wrong initial conditions:", cond),
@@ -356,8 +361,8 @@ check_sum(expr, %k%, %n%, lo, hi, deg, sm) :=
     block(
       [%i%, tmp_sum, real_sum, simpsum:true, sum_min:sum_min+deg],
       for %i%:sum_min thru deg+sum_min do(
-        real_sum : minfactorial(factcomb(makefact(subst(%n%=%i%, apply(sum,
-           [expr, %k%, ceiling(lo) , floor(hi)]))))),
+        real_sum : minfactorial(factcomb(makefact(
+              simplify_sum(subst(%n%=%i%, apply(sum, [expr, %k%, lo , hi])))))),
         tmp_sum  : minfactorial(factcomb(makefact(subst(%n%=%i%, sm)))),
         dif : factor(minfactorial(factcomb(real_sum - tmp_sum))),
         if freeof_sum(tmp_sum) and dif#0
