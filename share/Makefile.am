@@ -294,6 +294,7 @@ contrib/graph2d.lisp\
 contrib/graphs/cgraphs.mac\
 contrib/graphs/create_graph.mac\
 contrib/graphs/demoucron.lisp\
+contrib/graphs/dijkstra.lisp\
 contrib/graphs/draw_graph.mac\
 contrib/graphs/graph_core.lisp\
 contrib/graphs/graph_polynomials.mac\
@@ -322,10 +323,10 @@ contrib/makeOrders.mac\
 contrib/maxima-server.lisp\
 contrib/maximaMathML/CtMathML.lisp\
 contrib/maximaMathML/PrMathML.lisp\
-contrib/maximaMathML/load-mathml.lisp\
 contrib/maximaMathML/mathml-maxima.lisp\
 contrib/maximaMathML/mathml.readme\
 contrib/maximaMathML/mathmldisplay.lisp\
+contrib/maximaMathML/maximaMathML.lisp\
 contrib/mcclim/README\
 contrib/mcclim/formula.lisp\
 contrib/mcclim/listeneroutput.png\
