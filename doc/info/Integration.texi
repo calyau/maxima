@@ -183,9 +183,9 @@ begin with.
 @end defvr
 
 @c NEEDS WORK
-@deffn {Function} ilt (@var{expr}, @var{t}, @var{s})
+@deffn {Function} ilt (@var{expr}, @var{s}, @var{t})
 Computes the inverse Laplace transform of @var{expr} with
-respect to @var{t} and parameter @var{s}.  @var{expr} must be a ratio of
+respect to @var{s} and parameter @var{t}.  @var{expr} must be a ratio of
 polynomials whose denominator has only linear and quadratic factors.
 By using the functions @code{laplace} and @code{ilt} together with the @code{solve} or
 @code{linsolve} functions the user can solve a single differential or
