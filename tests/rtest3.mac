@@ -291,3 +291,11 @@ cos(acosh(x));
 
 triginverses : all;
 all;
+
+/* SF bug # 1981518, Calling desolve inside a "for...do" makes it loop endlessly
+ * (protect against endless loop by throw--catch in case bug is triggered)
+ */
+catch (block ([foo:1],
+ for i thru 3 do (ilt (1/s, s, t),
+ if foo > 3 then throw ('i = i) else foo : foo + 1)));
+done;
