@@ -290,6 +290,7 @@
 	    "combinatorics"
 	    "contrib"
 	    "contrib/amatrix"
+       "contrib/bitwise"
 	    "contrib/boolsimp"
 	    "contrib/descriptive"
 	    "contrib/diffequations"
