@@ -601,7 +601,7 @@ summation when necessary."
             
             (($freeof i ex) (power ex n))
             
-            ((and (integerp n) (eq sgn '$pos))
+            ((and (integerp n) (eq sgn '$pos) $simpproduct)
              (unwind-protect
 		  (dotimes (j n acc)
 		    (setq acc (mult acc (resimplify (subst (add j lo) i ex)))))

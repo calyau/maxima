@@ -857,6 +857,17 @@ f(1) + f(2) + f(3);
 'sum (f(i), i, 1, 3), simpsum;
 f(1) + f(2) + f(3);
 
+/* (analogous tests for product) */
+
+product (f(i), i, 1, 3);
+f(1)*f(2)*f(3);
+
+'product (f(i), i, 1, 3);
+'product (f(i), i, 1, 3);
+
+'product (f(i), i, 1, 3), simpproduct;
+f(1)*f(2)*f(3);
+
 /* Differentiate wrt a subscripted symbol in a summation.
  * Should work the same as for an ordinary symbol.
  */
