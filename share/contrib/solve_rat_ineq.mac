@@ -1,0 +1,150 @@
+
+/* solver for real univariate rational inequalities
+
+   returns intervals of solutions as a list of simple inequalities
+   
+   uses algsys as equality solver
+   
+   Volker van Nek, June 2008
+   
+   LGPL
+                   
+   example:
+   (%i6) solve_rat_ineq((x-1)^2*(x+1)^2>0);
+   (%o6)               [[x < - 1], [x > - 1, x < 1], [x > 1]]
+   
+   more examples see below
+*/
+
+solve_rat_ineq(ineq):= block (
+   [ vars, var, op, left, right,
+     lden, rden, lnum, rnum, lsing, rsing, 
+     sol, pts, pt0, pt1, nr, dist,
+     range:[], ex:[], flat_range, realonly:true ],
+
+   if not freeof(%i,ineq) then 
+      error("solve_rat_ineq: Inequality is not real: ",ineq),
+
+/* variable:*/   
+   vars: listofvars(ineq),
+   if length(vars)=0 then (
+      if is(map('fullratsimp,ineq)) then return('all)
+      else return([]) ),
+   if length(vars)>1 then 
+      error("solve_rat_ineq: Inequality is not univariate: ",ineq),
+   var: vars[1],
+   
+/* operator:*/   
+   op: op(ineq),    
+   if not member(op, ["<","<=",">",">="]) then 
+      error("solve_rat_ineq: ",ineq," is no inequality."),
+
+/* numerators and denominators:*/   
+   [left,right]: map('fullratsimp,args(ineq)),
+   [lden,rden]: map('denom,[left,right]),
+   [lnum,rnum]: map('num,[left,right]),
+   if not every('lambda([p],polynomialp(p,[var])),[lnum,rnum,lden,rden]) then
+      error("solve_rat_ineq: ",ineq," is not rational."),
+
+/* solutions:*/   
+   sol: map('rhs, 
+            flatten(apply('algsys,[[expand(lnum*rden=rnum*lden)],[var]]))),
+
+/* singularities:*/   
+   [lsing,rsing]: map(
+      'lambda([den],
+         if freeof(var,den) then [] 
+         else map('rhs, flatten(apply('algsys,[[den],[var]])))),
+      [lden,rden]),
+
+/* critical points:*/   
+   pts: listify(setify(append(sol,lsing,rsing))),
+   if op="<" or op=">" then ex:sol,
+   ex: listify(setify(append(lsing,rsing,ex))), /* eliminates duplicates */
+
+/* cons range of solutions:*/   
+   nr: length(pts),
+   if nr=0 then (
+      if is(apply(op,[subst(0,var,left),subst(0,var,right)])) then
+         range: ['minf,'inf] )       
+   else
+      for n thru nr+1 do (
+         pt0: if n=1 then 'minf else pts[n-1],
+         pt1: if n=nr+1 then 'inf else pts[n],
+         dist: if n=1 then 1 else pt1-pt0,
+         if n<=nr and 
+            is(apply(op, [subst(pt1-dist/2,var,left),
+                          subst(pt1-dist/2,var,right)] )) then
+               range: cons([pt0,pt1],range)
+         else if n=nr+1 and 
+            is(apply(op, [subst(pt0+1,var,left),
+                          subst(pt0+1,var,right)] )) then
+               range: cons([pt0,pt1],range)
+         else if member(pt1,sol) and (op="<=" or op=">=") then 
+            range: cons([pt1,pt1],range) ),
+   range: reverse(range),
+
+   /* eliminate x when x is not in range: */   
+   flat_range: flatten(range),
+   ex: sublist(ex, 'lambda([x],member(x,flat_range))),
+   
+   /* stick intervals together at boundaries which are not in ex: */
+   if op="<=" or op=">=" then range: stick_together(range,ex),
+   
+   /* return a list of simple inequalities:*/
+   ineq_return(range,ex,var) )$
+
+
+ineq_return(range,ex,var):= 
+   if emptyp(range) then []
+   else if range=[['minf,'inf]] then 'all
+   else block([ilist:[],i],
+      for r in range do (
+         if r[1]='minf or r[1]=r[2] then i:[]
+         else if member(r[1],ex) then i:[var>r[1]]
+         else i:[var>=r[1]],
+         if r[2]#'inf then (
+            if member(r[2],ex) then i:endcons(var<r[2],i)
+            else if r[1]=r[2] then i:cons(var=r[2],i)
+            else i:endcons(var<=r[2],i) ),
+         ilist:cons(i,ilist) ),
+      reverse(ilist) )$
+
+stick_together(range,ex):= block([res:[],f,r],
+   unless emptyp(range) do (
+      f:first(range),
+      r:rest(range),
+      if emptyp(r) or f[2]#first(r)[1] then (
+         res:cons(f,res),
+         range:r )
+      else range:cons([f[1],first(r)[2]],rest(r)) ),
+   reverse(res) )$
+
+/*
+(%i4) solve_rat_ineq(x/2+2/x<=20);
+(%o4)       [[x < 0], [x >= 20 - 6 sqrt(11), x <= 6 sqrt(11) + 20]]
+(%i5) solve_rat_ineq((x-1)^2*(x+1)^2>=0);
+(%o5)                                 all
+(%i6) solve_rat_ineq((x-1)^2*(x+1)^2>0);
+(%o6)               [[x < - 1], [x > - 1, x < 1], [x > 1]]
+(%i7) solve_rat_ineq((x-1)^2*(x+1)^2<0);
+(%o7)                                 []
+(%i8) solve_rat_ineq(x^2<=0);
+(%o8)                              [[x = 0]]
+(%i9) solve_rat_ineq(x^2>0);
+(%o9)                         [[x < 0], [x > 0]]
+(%i10) solve_rat_ineq(x^2>=0);
+(%o10)                                all
+(%i11) solve_rat_ineq(x^2<0);
+(%o11)                                []
+(%i12) solve_rat_ineq((x-1)^2*(x+1)>0);
+(%o12)                    [[x > - 1, x < 1], [x > 1]]
+(%i13) solve_rat_ineq(1>0);
+(%o13)                                all
+(%i14) solve_rat_ineq(1<0);
+(%o14)                                []
+(%i15) solve_rat_ineq(name^2<=0);
+(%o15)                           [[name = 0]]
+*/
+
+'done$
