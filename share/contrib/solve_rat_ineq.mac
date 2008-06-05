@@ -4,24 +4,42 @@
    returns intervals of solutions as a list of simple inequalities
    
    uses algsys as equality solver
-   
-   Volker van Nek, June 2008
-   
-   LGPL
-                   
+                      
    example:
-   (%i6) solve_rat_ineq((x-1)^2*(x+1)^2>0);
-   (%o6)               [[x < - 1], [x > - 1, x < 1], [x > 1]]
+   (%i3) solve_rat_ineq( (x-1)^2*(x+1) > 1+x );
+   (%o3)                     [[x > - 1, x < 0], [x > 2]]
    
    more examples see below
+
+   Copyright(C) June 2008  Volker van Nek
+
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License, or
+      (at your option) any later version.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+
+      You should have received a copy of the GNU General Public License
+      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 solve_rat_ineq(ineq):= block (
    [ vars, var, op, left, right,
      lden, rden, lnum, rnum, lsing, rsing, 
      sol, pts, pt0, pt1, nr, dist,
-     range:[], ex:[], flat_range, realonly:true ],
+     range:[], ex:[], flat_range, 
+     realonly:true, listconstvars:false, ratprint:false ],
+   
+/* operator:*/   
+   if atom(ineq) or not member(op:op(ineq), ["<","<=",">",">="]) then 
+      error("solve_rat_ineq: ",ineq," is not an inequality."),
 
+/* ineq is real:*/   
    if not freeof(%i,ineq) then 
       error("solve_rat_ineq: Inequality is not real: ",ineq),
 
@@ -33,11 +51,6 @@ solve_rat_ineq(ineq):= block (
    if length(vars)>1 then 
       error("solve_rat_ineq: Inequality is not univariate: ",ineq),
    var: vars[1],
-   
-/* operator:*/   
-   op: op(ineq),    
-   if not member(op, ["<","<=",">",">="]) then 
-      error("solve_rat_ineq: ",ineq," is no inequality."),
 
 /* numerators and denominators:*/   
    [left,right]: map('fullratsimp,args(ineq)),
@@ -66,7 +79,7 @@ solve_rat_ineq(ineq):= block (
    nr: length(pts),
    if nr=0 then (
       if is(apply(op,[subst(0,var,left),subst(0,var,right)])) then
-         range: ['minf,'inf] )       
+         range: [['minf,'inf]] )       
    else
       for n thru nr+1 do (
          pt0: if n=1 then 'minf else pts[n-1],
@@ -75,11 +88,11 @@ solve_rat_ineq(ineq):= block (
          if n<=nr and 
             is(apply(op, [subst(pt1-dist/2,var,left),
                           subst(pt1-dist/2,var,right)] )) then
-               range: cons([pt0,pt1],range)
+            range: cons([pt0,pt1],range)
          else if n=nr+1 and 
             is(apply(op, [subst(pt0+1,var,left),
                           subst(pt0+1,var,right)] )) then
-               range: cons([pt0,pt1],range)
+            range: cons([pt0,pt1],range)
          else if member(pt1,sol) and (op="<=" or op=">=") then 
             range: cons([pt1,pt1],range) ),
    range: reverse(range),
@@ -91,9 +104,8 @@ solve_rat_ineq(ineq):= block (
    /* stick intervals together at boundaries which are not in ex: */
    if op="<=" or op=">=" then range: stick_together(range,ex),
    
-   /* return a list of simple inequalities:*/
+   /* return a list of simple inequalities: */
    ineq_return(range,ex,var) )$
-
 
 ineq_return(range,ex,var):= 
    if emptyp(range) then []
@@ -143,8 +155,12 @@ stick_together(range,ex):= block([res:[],f,r],
 (%o13)                                all
 (%i14) solve_rat_ineq(1<0);
 (%o14)                                []
-(%i15) solve_rat_ineq(name^2<=0);
-(%o15)                           [[name = 0]]
+(%i15) solve_rat_ineq(foo^2<=0);
+(%o15)                           [[foo = 0]]
+(%i16) solve_rat_ineq( x^2 > 1b0 );
+(%o16)                        [[x < - 1], [x > 1]]
+(%i17) solve_rat_ineq( x^7+x^3 > 1/x );
+(%o17)      [[x > - 0.88665175242356, x < 0], [x > 0.88665175242356]]
 */
 
 'done$
