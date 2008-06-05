@@ -5,7 +5,7 @@
 ;;;;
 ;;;;  Version  : 1.4 (march 2008)
 ;;;;  Copyright: 2005-2008 Andrej Vodopivec, Volker van Nek
-;;;;  Licence  : GPL2
+;;;;  Licence  : GPL
 ;;;;
 ;;;;   - ifactors     : factorization of integers
 ;;;;   - primep       : probabilistic primality test
