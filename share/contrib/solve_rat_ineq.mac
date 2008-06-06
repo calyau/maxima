@@ -82,14 +82,14 @@ solve_rat_ineq(ineq):= block (
       for n thru nr+1 do (
          pt0: if n=1 then 'minf else pts[n-1],
          pt1: if n=nr+1 then 'inf else pts[n],
-         dist: if n=1 then 2000 else pt1-pt0,
+         dist: if n=1 then 2*abs(pt0) else pt1-pt0,
          if n<=nr and 
             is(apply(op, [subst(pt1-dist/2,var,left),
                           subst(pt1-dist/2,var,right)] )) then
             range: cons([pt0,pt1],range)
          else if n=nr+1 and 
-            is(apply(op, [subst(pt0+1000,var,left),
-                          subst(pt0+1000,var,right)] )) then
+            is(apply(op, [subst(pt0+abs(pt0),var,left),
+                          subst(pt0+abs(pt0),var,right)] )) then
             range: cons([pt0,pt1],range)
          else if member(pt1,sol) and (op="<=" or op=">=") then 
             range: cons([pt1,pt1],range) ),
