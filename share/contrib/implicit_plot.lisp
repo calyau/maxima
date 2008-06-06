@@ -2,7 +2,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                                                           ;;
 ;;  Author:  Andrej Vodopivec <andrejv@users.sourceforge.net>                ;;
-;;  Licence: GPL2                                                            ;;
+;;  Licence: GPL                                                             ;;
 ;;                                                                           ;;
 ;;  Usage:                                                                   ;;
 ;;   implicit_plot(expr, xrange, yrange, [options]);                         ;;
