@@ -385,23 +385,28 @@ solve_rec_lin_cc(coeffs, ihom, %f, %n, cond) := block(
 
   if ihom#0 then block(
     [exps : get_exps(expand(ihom), %n), curr_ihom, pol],
-
+/*
     exps : remove_duplicates(exps),
-
+*/
     for ex in exps do block(
       [base, pow, mul, %emode : false],
-      pol : coeff(ihom, ex),
-      if part(ex, 0)="^" then
-        pow : part(ex, 2)
-      else
-        pow : part(ex, 2, 2),
+      [pol, ex] : ex,
+      
+      if not(numberp(ex)) then (
+        if part(ex, 0)="^" then
+          pow : part(ex, 2)
+        else
+          pow : part(ex, 2, 2)),
       if hipow(pow, %n)>1 then curr_ihom : false
       else (
         mul : coeff(pow, %n),
-        if part(ex, 0)="^" then
-          base : part(ex, 1)
-        else
-          base : 1/part(ex, 2, 1),
+        if numberp(ex) then base:1
+        else (
+          if part(ex, 0)="^" then
+            base : part(ex, 1)
+          else
+            base : 1/part(ex, 2, 1)
+        ),
         base : base^mul,
         if not(freeof(%n, expand(pow-mul*%n))) then curr_ihom : false
         else (
@@ -493,20 +498,33 @@ rec_polyp1(p%, %n, hi) := block(
     false
 )$
 
-get_exps(expr, %n) :=
-  if atom(expr) then []
-  else if part(expr, 0)="^" then block(
-    [base : part(expr, 1), pow : part(expr, 2)],
-    if freeof(%n, pow) then []
-    else if not(freeof(%n, pow)) and not(freeof(%n, base)) then []
-    else [expr]
+get_exps(expr, var) :=
+  if atom(expr) then [[expr, 1]]
+  else if op(expr)="+" then apply(append, map(lambda([u], get_exps(u, var)), args(expr)))
+  else if op(expr)="-" then block(
+    [ex:get_exps(-expr, var)],
+    map(lambda([u], [-u[1], u[2]]), ex)
   )
-  else if part(expr, 0)="/" then block(
-    [nu : get_exps(part(expr, 1), %n),
-     de : 1/get_exps(part(expr, 2), %n)],
-    append(de, nu)
+  else if op(expr)="/" then block(
+    [dn_exps : get_exps(denom(expr), var), nm_exps : get_exps(num(expr), var)],
+    if length(dn_exps)=0 then nm_exps
+    else if length(dn_exps)>1 then []
+    else if length(nm_exps)=0 then 1/dn_exps[1]
+    else map(lambda([u], u/dn_exps[1]), nm_exps))
+  else if op(expr)="^" then block(
+    [bs : part(expr, 1), pw : part(expr, 2)],
+    if freeof(var, pw) then [[expr, 1]]
+    else if not(freeof(var, pw)) and not(freeof(var, bs)) then [[expr, 1]]
+    else block(
+      [a0,a1],
+      [a1,a0]:bothcoef(pw, var),
+      if not freeof(var, a0) then [[expr, 1]]
+      else [[bs^a0, bs^(a1*var)]]
+    )
   )
-  else apply('append, map(lambda([u], get_exps(u, %n)), args(expr)))$
+  else if op(expr)="*" then xreduce("*", map(lambda([u], get_exps(u, var)), args(expr)))
+  else [expr, 1]$
+
 
 /**************************************************************************
  *
