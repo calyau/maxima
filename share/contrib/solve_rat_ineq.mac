@@ -66,10 +66,11 @@ solve_rat_ineq(ineq):= block (
 
 /* critical points:*/   
    pts: listify(setify(append(sol,lsing,rsing))),
-   pts: sublist(pts, 'lambda([e],not contains_inf(e))), /* eliminate minf, inf  */
+   pts: sublist(pts, 'lambda([e],freeof('minf,'inf,e))), /* eliminate minf, inf  */
    pts: sort(pts, 'lambda([x,y],is(x<y))),
    if op="<" or op=">" then ex:sol,
-   ex: listify(setify(append(lsing,rsing,ex))), /* eliminate duplicates */
+   ex: listify(setify(append(lsing,rsing,ex))),          /* eliminate duplicates */
+   ex: sublist(ex, 'lambda([e],freeof('minf,'inf,e))),   /* eliminate minf, inf  */
    ex: sort(ex, 'lambda([x,y],is(x<y))),
 
 /* cons range of solutions:*/   
@@ -81,7 +82,7 @@ solve_rat_ineq(ineq):= block (
       for n thru nr+1 do (
          pt0: if n=1 then 'minf else pts[n-1],
          pt1: if n=nr+1 then 'inf else pts[n],
-         dist: if n=1 then 1000 else pt1-pt0,
+         dist: if n=1 then 2000 else pt1-pt0,
          if n<=nr and 
             is(apply(op, [subst(pt1-dist/2,var,left),
                           subst(pt1-dist/2,var,right)] )) then
@@ -103,14 +104,6 @@ solve_rat_ineq(ineq):= block (
    
    /* return a list of simple inequalities: */
    ineq_return(range,ex,var) )$
-
-structure(expr):= 
-   if atom(expr) then expr 
-   else map('structure, cons(op(expr), args(expr)))$
-
-contains_inf(expr):= block([parts: flatten(structure(expr))],
-   if not listp(parts) then parts:[parts],
-   some('lambda([e],e='inf or e='minf), parts) )$
 
 
 ineq_return(range,ex,var):= 
