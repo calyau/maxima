@@ -82,7 +82,7 @@ solve_rat_ineq(ineq):= block (
       for n thru nr+1 do (
          pt0: if n=1 then 'minf else pts[n-1],
          pt1: if n=nr+1 then 'inf else pts[n],
-         dist: if n=1 then 2*abs(pt0) else pt1-pt0,
+         dist: if n=1 then 2*abs(pt1) else pt1-pt0,
          if n<=nr and 
             is(apply(op, [subst(pt1-dist/2,var,left),
                           subst(pt1-dist/2,var,right)] )) then
