@@ -232,7 +232,7 @@
 
 (defun fortscan (e)
  (cond ((atom e)
-        (cond ((and $fort_float (fixp e)) (float e))
+        (cond ((and $fort_float (fixnump e)) (float e))
               ((eq e '$%i) (list '(mprogn) 0.0 1.0)) ;; %I is (0,1)
               (t e)))
        ((member 'array (cdar e) :test #'eq) e)
@@ -246,7 +246,7 @@
                             (list '(mquotient simp) 1 (list '(%sqrt simp) (fortscan mybase))))
                            (t (list (car e)
                                     (fortscan mybase)
-                                    (cond ((fixp expon)
+                                    (cond ((fixnump expon)
                                            (cond ($fort_power_float (float expon))
                                                  (t expon)))
                                           (t (fortscan expon))))))))
@@ -303,7 +303,7 @@
                    ((null mp)
                     (and (> sm $labelength) 
                          (let ((len-q (last (car x)))) 
-                           (cond ((fixp (car len-q)) (rplaca len-q sm))
+                           (cond ((fixnump (car len-q)) (rplaca len-q sm))
                                  (t (rplaca x `(,(caar x) simp ,sm))))))
                     sm)
                  (declare (fixnum sm negexps))
@@ -384,7 +384,7 @@
    (cond ((atom x) 0)
          (t
           (let ((lenf (car (last (car x)))))
-            (cond ((not (fixp lenf)) 0)
+            (cond ((not (fixnump lenf)) 0)
                   (t
                    (do ((est lenf))
                        ((< est $allowed_length) est)
@@ -417,7 +417,7 @@
                                    (cond ((atom potl-atom) 0)
                                          (t
                                           (let ((pnum (car (last (car potl-atom)))))
-                                            (cond ((fixp pnum) pnum)
+                                            (cond ((fixnump pnum) pnum)
                                                   (t 0)))))))))))))))
 
 (defun $fortranbreak (x)

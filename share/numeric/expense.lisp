@@ -104,7 +104,7 @@
                    ((eq opr 'mexpt)
                     (let ((expon (caddr x)))
                       (+ ($expense (cadr x))
-                         (cond ((fixp expon)
+                         (cond ((fixnump expon)
                                 (cond ((< expon 0)
                                        (+ $cost_reciprocal
                                           (multiplies-in-nth-power (- expon))))
