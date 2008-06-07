@@ -499,6 +499,8 @@ with numerical arguments to be evaluated in floating point. It causes
 variables in @code{expr} which have been given numerals to be replaced by
 their values.  It also sets the @code{float} switch on.
 
+See also @code{%enumer}.
+
 @opencatbox
 @category{Numerical evaluation}
 @closecatbox
@@ -611,7 +613,7 @@ When @code{%e_to_numlog} is @code{true},
 When @code{radexpand} is @code{false}, certain transformations are inhibited.
 @code{radcan (sqrt (1-x))} remains @code{sqrt (1-x)}
 and is not simplified to @code{%i sqrt (x-1)}. 
-@code{radcan (sqrt (x^2 - 2*x + 11))} remains @code{sqrt (x^2 - 2*x + 1)}
+@code{radcan (sqrt (x^2 - 2*x + 1))} remains @code{sqrt (x^2 - 2*x + 1)}
 and is not simplified to @code{x - 1}.
 
 @c MERGE EXAMPLES INTO THIS FILE
