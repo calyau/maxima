@@ -8,3 +8,11 @@
 ;; Expose GENSYM as a Maxima function.
 (defun $gensym () (cadr (dollarify `(,(gensym)))))
 
+(defmspec $assuming (e)
+  (let*
+    ((args (margs e))
+     (assumptions (mapcar #'meval (rest (first args)))))
+    (meval `(($assume) ,@assumptions))
+    (unwind-protect
+      (first (last (mapcar #'meval (rest args))))
+      (meval `(($forget) ,@assumptions)))))

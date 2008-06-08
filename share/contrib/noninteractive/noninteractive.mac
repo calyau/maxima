@@ -12,7 +12,7 @@
  * abs (asin (x + %i));
  * (declare (xx, complex), abs (asin (xx + %i)));   (TRIGGERS STACK OVERFLOW)
  * realpart (sqrt (25 - x^2 - y^2));
- * integrate (exp(a*x), x, 0, inf);
+ * integrate (exp(a*x), x, 0, inf);  (INCORRECT RESULT FOR A=0, NOT OUR PROBLEM)
  * integrate (x^k, x);
  * integrate (x^k, x, 1, b);
  * integrate (x**a/(x + 1), x, 0, inf);
@@ -136,7 +136,7 @@ MEVAL1 () :=
     else r%);
 
 enumerate_cases (L%) := 
-  map (lambda ([p%], block ([r%], assume (p%), r%: MEVAL1(), forget (p%), r%)), L%);
+  map (lambda ([p%], assuming ([p%], MEVAL1 ())), L%);
 
 interleave (L1, L2) := flatten (map (lambda ([e1, e2], [e1, e2]), L1, L2));
 
