@@ -1,5 +1,0 @@
-AC_INIT(imaxima.el,imath.el,imaxima-autoconf-variables.el)
-AM_INIT_AUTOMAKE(imaxima-imath,0.99)
-AC_PROG_INSTALL
-AM_PATH_LISPDIR
-AC_OUTPUT(Makefile imaxima-autoconf-variables.el)
