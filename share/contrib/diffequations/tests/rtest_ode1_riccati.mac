@@ -348,7 +348,13 @@ ode_check(eqn,ans);
 assume(x>0);
 [x>0];
 ans:ode1_riccati_original(b:3,c:2,m:-1,y,x);
-y=-((sqrt(6)*bessel_k(0,2*sqrt(6)*sqrt(x))*%c-sqrt(6)*bessel_i(0,2*sqrt(6)*sqrt(x)))/((3*bessel_k(1,2*sqrt(6)*sqrt(x))*%c+3*bessel_i(1,2*sqrt(6)*sqrt(x)))*sqrt(x)));
+y = -((((sqrt(6)*bessel_k(2,2*sqrt(6)*sqrt(x))
+        +sqrt(6)*bessel_k(0,2*sqrt(6)*sqrt(x)))*%c
+        -sqrt(6)*bessel_i(2,2*sqrt(6)*sqrt(x))
+        -sqrt(6)*bessel_i(0,2*sqrt(6)*sqrt(x)))*sqrt(x)
+        -bessel_k(1,2*sqrt(6)*sqrt(x))*%c-bessel_i(1,2*sqrt(6)*sqrt(x)))
+  /((6*bessel_k(1,2*sqrt(6)*sqrt(x))*%c
+    +6*bessel_i(1,2*sqrt(6)*sqrt(x)))*x));
 ode_check(eqn,ans);
 0;
 forget(x>0);
