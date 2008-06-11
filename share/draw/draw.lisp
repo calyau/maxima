@@ -2681,12 +2681,12 @@
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name) ) )
-      ($eps (format cmdstorage "set terminal postscript eps ~a size ~acm, ~acm~%set out '~a.eps'"
+      ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($eps_color (format cmdstorage "set terminal postscript eps ~a color size ~acm, ~acm~%set out '~a.eps'"
+      ($eps_color (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (get-option '$eps_width)
                            (get-option '$eps_height)
@@ -2723,7 +2723,7 @@
       (setf width (/ 1.0 ncols))
       (setf height (/ 1.0 nrows))
       (if (> (length scenes) 1)
-        (format cmdstorage "set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%")) )
+        (format cmdstorage "~%set size 1.0, 1.0~%set origin 0.0, 0.0~%set multiplot~%")) )
 
     ; write descriptions of 2d and 3d scenes
     (let ((i -1))
