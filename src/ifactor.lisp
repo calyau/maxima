@@ -26,8 +26,8 @@
 (defmvar $pollard_rho_limit 16000 "Limit for pollard-rho factorization depth." fixnum)
 (defmvar $pollard_pm1_limit 25000 "Limit for pollard-rho factorization depth." fixnum)
 
-(defmvar $pollard_rho_tests 10 "Number of pollard-rho rounds." fixnum)
-(defmvar $pollard_pm1_tests 10 "Number of pollard-p-1 rounds." fixnum)
+(defmvar $pollard_rho_tests 5 "Number of pollard-rho rounds." fixnum)
+(defmvar $pollard_pm1_tests 3 "Number of pollard-p-1 rounds." fixnum)
 
 (defmvar $pollard_rho_limit_step 1000 "Step for pollard-rho factorization limit." fixnum)
 (defmvar $pollard_pm1_limit_step 5000 "Step for pollard-rho factorization limit." fixnum)
@@ -634,18 +634,24 @@
   (cond ((= n 1) nil)
 	((evenp n) (= n 2))
 	((member n *small-primes*) t)
-	((< n 341550071728321) (primep-small n))
+	((< n 1373653) (primep-small n '(2 3)))
+	((< n 25326001) (primep-small n '(2 3 5)))
+	((< n 2152302898747) (primep-small n '(2 3 5 7 11)))
+	((= n 46856248255981) nil)
+	;((< n 341550071728321) (primep-small n '(2 3 5 7 11 13 17)))
+	((< n 10000000000000000) (primep-small n '(2 3 7 61 24251)))
 	((member n *large-primes*) t)
 	(t (primep-prob n))))
 
-;;; miller-rabin test is deterministic for n<341550071728321
+;;; miller-rabin test is deterministic for small n
 ;;; if we test for small bases
 ;;; Reference:
-;;;  G. Jaeschke, On Strong Pseudoprimes to Several Bases,
-;;;       Math. Comp., 61 (1993), 915-926.
+;;;  [1] G. Jaeschke, On Strong Pseudoprimes to Several Bases,
+;;;         Math. Comp., 61 (1993), 915-926.
+;;;  [2] http://primes.utm.edu/prove/prove2_3.html
 
-(defun primep-small (n)
-  (dolist (x '(2 3 5 7 11 13 17))
+(defun primep-small (n bases)
+  (dolist (x bases)
     (unless (miller-rabin n x)
       (return-from primep-small nil)))
   t)
