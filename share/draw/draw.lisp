@@ -485,9 +485,7 @@
       (concatenate 'string "t '" str "'"))
 
 
-
-
-
+     
 
 
 ;; Object: 'points'
@@ -1135,7 +1133,7 @@
          (ymin 1.75555970201398e+305)
          (ymax -1.75555970201398e+305)
          x-samples y-samples yy result pltcmd result-array)
-    (setq fcn (coerce-float-fun fcn `((mlist), var)))
+    (setq fcn (coerce-float-fun (convert-to-float fcn) `((mlist) ,var)))
     (if (< xend xstart)
        (merror "draw2d (explicit): illegal range"))
     (flet ((fun (x) (funcall fcn x)))
@@ -1207,7 +1205,7 @@
             (t
                (let (fcn2 yy2 (count -1))
                   (setf result-array (make-array (* (/ (length result) 2) 3) :element-type 'flonum))
-                  (setq fcn2 (coerce-float-fun (get-option '$filled_func) `((mlist), var)))
+                  (setq fcn2 (coerce-float-fun (convert-to-float (get-option '$filled_func)) `((mlist), var)))
                   (flet ((fun (x) (funcall fcn2 x)))
                     (do ((xx result (cddr xx)))
                       ((null xx))
@@ -1434,7 +1432,7 @@
          (dx (convert-to-float (/ (- xmax xmin) nx)))
          (dy (convert-to-float (/ (- ymax ymin) ny)))
          (dz (convert-to-float (/ (- zmax zmin) nz)))
-         (fcn (coerce-float-fun (m- ($lhs expr) ($rhs expr)) `((mlist),x ,y ,z)))
+         (fcn (coerce-float-fun (convert-to-float (m- ($lhs expr) ($rhs expr))) `((mlist),x ,y ,z)))
          ($numer t)
          (vertices '())
          (pts '())
@@ -1580,7 +1578,7 @@
          ($numer t)
          (count -1)
          result z)
-    (setq fcn (coerce-float-fun fcn `((mlist),var1 ,var2)))
+    (setq fcn (coerce-float-fun (convert-to-float fcn) `((mlist),var1 ,var2)))
     (setf result (make-array (* 3 nx ny) :element-type 'flonum))
     (loop for j below ny
            initially (setq y fminval2)
@@ -1638,8 +1636,8 @@
          result f1 f2 x y)
     (if (< tmax tmin)
        (merror "draw2d (parametric): illegal range"))
-    (setq f1 (coerce-float-fun xfun `((mlist), par)))
-    (setq f2 (coerce-float-fun yfun `((mlist), par)))
+    (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist), par)))
+    (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist), par)))
     (setf result
        (loop
           do (setf x (convert-to-float (funcall f1 tt)))
@@ -1778,9 +1776,9 @@
          result f1 f2 f3 x y z)
     (if (< tmax tmin)
        (merror "draw3d (parametric): illegal range"))
-    (setq f1 (coerce-float-fun xfun `((mlist), par)))
-    (setq f2 (coerce-float-fun yfun `((mlist), par)))
-    (setq f3 (coerce-float-fun zfun `((mlist), par)))
+    (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist), par)))
+    (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist), par)))
+    (setq f3 (coerce-float-fun (convert-to-float zfun) `((mlist), par)))
     (setf result
        (loop
           do (setf x (funcall f1 tt))
@@ -1849,9 +1847,9 @@
     (if (or (< umax umin)
             (< vmax vmin))
        (merror "draw3d (parametric_surface): illegal range"))
-    (setq f1 (coerce-float-fun xfun `((mlist), par1 ,par2)))
-    (setq f2 (coerce-float-fun yfun `((mlist), par1 ,par2)))
-    (setq f3 (coerce-float-fun zfun `((mlist), par1 ,par2)))
+    (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist), par1 ,par2)))
+    (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist), par1 ,par2)))
+    (setq f3 (coerce-float-fun (convert-to-float zfun) `((mlist), par1 ,par2)))
     (loop for j below nv
            initially (setq vv vmin)
            do (setq uu umin)
