@@ -48,8 +48,11 @@ put('simplify_sum, 1.0, 'version)$
 
 define_variable(zeilberger_check, true, boolean)$
 define_variable(sum_min, 1, any)$
-define_variable(use_hgfred, true, boolean)$
 define_variable(use_simpsum, true, boolean)$
+define_variable(use_gosper, true, boolean)$
+define_variable(use_ratfun, true, boolean)$
+define_variable(use_zeilberger, true, boolean)$
+define_variable(use_hgfred, true, boolean)$
 
 define_variable(simplify_sum_depth, 0, fixnum)$
 define_variable(simplify_sum_max_depth, 3, fixnum)$
@@ -85,16 +88,23 @@ simplify_sum(expr) :=
 
     /*** Prevent possible infinite recursion. ***************************/
     if simplify_sum_depth>simplify_sum_max_depth then return(expr),
+
+    /*** Simplify the summand *******************************************/
+    apply(supcontext, [concat('ss_context, simplify_sum_depth)]),
+    if lo#minf and lo#-inf then assume(var>=lo),
+    if hi#inf then assume(var<=hi),
+    summand : simplify_sum(summand),
+    killcontext(concat('ss_context, simplify_sum_depth)),
     
     /*** Default maxima simplification. *********************************/
     if use_simpsum=true then (
       ss_print_message(1, "Trying with simpsum=true ..."),
-      sm1 : ev(expr, simpsum = true),
+      sm1 : ev(apply(sum, [summand, var, lo, hi]), simpsum = true),
       ss_print_message(1, "sum with simpsum=true returns:", sm1)),
         
     /*** Now let's try the Gosper algorithm *****************************/
     if errcatch(
-      if not(atom(sm1)) and not freeof_sum(sm1) then block(
+      if use_gosper and not(atom(sm1)) and not freeof_sum(sm1) then block(
         [hi1 : ?gensym(), lo1 : ?gensym()],
         ss_print_message(1, "Trying with Gosper ..."),
         sm1 : nusum(summand, var, lo1, hi1),
@@ -111,7 +121,7 @@ simplify_sum(expr) :=
           else sm1 : expr)) = [] then sm1 : expr,
 
     /*** Try converting the sum to finite sum of psi functions **********/
-    if not(atom(sm1)) and not( freeof_sum(sm1) ) and ?ratp(summand, var)
+    if use_ratfun and not(atom(sm1)) and not( freeof_sum(sm1) ) and ?ratp(summand, var)
     then (
       if hi=inf then block(
         [lo1, hi1, ratfun, new_var : ?gensym(), expr1],
@@ -139,7 +149,7 @@ simplify_sum(expr) :=
         sm1 : ratsimp(sm1 - ratfun_to_psi(ratfun, new_var)))),
     
     /*** check for sum((-1)^n*ratfun, n, lo, inf); ****************************/
-    if not(atom(sm1)) and not( freeof_sum(sm1) ) and
+    if use_ratfun and not(atom(sm1)) and not( freeof_sum(sm1) ) and
       ?ratp(ratsimp(summand/(-1)^var), var) and hi = inf
     then block(
       [ratfun, new_var : ?gensym(), expr1],
@@ -155,7 +165,7 @@ simplify_sum(expr) :=
 
     /*** Zeilberger algorithm ************************************************/
     if errcatch(
-      if not(atom(sm1)) and not freeof_sum(sm1) then (
+      if use_zeilberger and not(atom(sm1)) and not freeof_sum(sm1) then (
         ss_print_message(1, "Trying with Zeilberger ..."),
         sm1 : ss_zeilb(summand, var, lo, hi),
         ss_print_message(1, "Zeilberger method returns:", sm1)
@@ -308,7 +318,7 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   if not freeof_sum(eq) then return(false),
 
   eq : ratsimp(minfactorial(makefact(rhs(eq)))),
-  ss_print_message(4, "Simplifies solution:", eq),
+  ss_print_message(4, "Simplified solution:", eq),
 
   /* Check the solution. */
   if check_sum(expr, %k%, %n%, lo, hi, deg, eq) then eq

@@ -8,10 +8,10 @@
  ***************************************/
 (
   load (simplify_sum),
-  test_sum(s, ass, use_gamma, smp, ans) := block(
+  test_sum(sm, ass, use_gamma, smp, ans) := block(
     [product_use_gamma : use_gamma, cs, f],
     if length(ass)>0 then apply(assume, ass),
-    cs : simplify_sum(s),
+    cs : simplify_sum(sm),
     for f in smp do cs : apply(f, [cs]),
     ratsimp(cs-ans)
     ),
@@ -310,4 +310,13 @@ test_sum(
   [],
   log(x/4+1)
 )$
+0;
+
+test_sum(
+  'sum('sum(n!/(k!^2*(n - 2*k)!)*(x/y)^k*(x*y)^(n - k), n, 2*k, inf), k, 0, inf),
+  [x*y<1],
+  false,
+  [lambda([u], scanmap(factor, u, 'bottomup))],
+  1/sqrt((x*y-2*x-1)*(x*y+2*x-1))
+), use_zeilberger=false$
 0;

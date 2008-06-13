@@ -8,14 +8,14 @@
  *
  ***************************************/
 
-test_sum(s, ass, use_gamma, smp) := block(
+test_sum(sm, ass, use_gamma, smp) := block(
   [product_use_gamma : use_gamma, cs, f],
   if length(ass)>0 then apply(assume, ass),
-  cs : simplify_sum(s),
+  cs : simplify_sum(sm),
   for f in smp do cs : apply(f, [cs]),
   print("|----------------------------------------------------------|"),
   if length(ass)>0 then print("Assuming:", ass),
-  print(s = cs),
+  print(sm = cs),
   print("|----------------------------------------------------------|"),
   if length(ass)>0 then apply(forget, ass)
   )$
@@ -273,3 +273,11 @@ test_sum(
   false,
   []
 )$
+
+
+test_sum(
+  'sum('sum(n!/(k!^2*(n - 2*k)!)*(x/y)^k*(x*y)^(n - k), n, 2*k, inf), k, 0, inf),
+  [x*y<1],
+  false,
+  [lambda([u], scanmap(factor, u, 'bottomup))]
+), use_zeilberger=false$
