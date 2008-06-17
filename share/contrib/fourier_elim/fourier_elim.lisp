@@ -1,4 +1,4 @@
-#| Copyright 2007 by Barton Willis
+#| Copyright 2007, 2008 by Barton Willis
 
   This is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License,
@@ -183,15 +183,15 @@
 	  ;; Catch four easy cases before we splitify z. Without the checks for the easy cases, 
 	  ;; we'd get things like |x| > 1 --> (-1 < x & x < 0) or (x = 0) or (x < 1, x > 0).
 
-	  ;; First, |a| > b --> (b < 0) or (a > b, b >= 0).
+	  ;; First, |a| > b --> (b < 0) or (a > b, b >= 0) or (-a > b, b >= 0).
 
 	  ((and (op-equalp a 'mabs) ($freeof 'mabs '$min '$max b))
 	   (setq a (first (margs a)))
 	   (opapply 'mor (list
 			  (opapply 'mand (list (m> 0 b)))
-			  (opapply 'mand (list (m>= b 0) (m> a b))))))
-	  
-
+			  (opapply 'mand (list (m>= b 0) (m> a b)))
+			  (opapply 'mand (list (m>= b 0) (m> (neg a) b))))))
+		    
 	  ;; Second, a > |b| == a > b and  a > -b.
 
 	  ((and (op-equalp b 'mabs) ($freeof 'mabs '$min '$max a))
@@ -231,7 +231,10 @@
 
 	  ;; Do f(a) > f(b), where f is increasing --> a > b.
 	  ((and (not ($mapatom a)) (not ($mapatom b)) (eq (mop a) (mop b)) ($featurep (mop a) '$increasing))
-	   (m> (first (margs a)) (first (margs b))))
+	   (opapply 'mand (list 
+			   (m> (first (margs a)) (first (margs b)))
+			   (in-real-domain a)
+			   (in-real-domain b))))
 	  
 	  ;; Do f(a) > f(b), where f is decreasing --> a < b.
 	  ((and (not ($mapatom a)) (not ($mapatom b)) (eq (mop a) (mop b)) ($featurep (mop a) '$decreasing))
