@@ -7,7 +7,7 @@ fourier_elim([max(x,0) > 0],[x]);
 [0 < x]$
 
 fourier_elim([max(x,0) >= 0],[x]);
-[x<0] or [x=0] or [0<x]$
+universalset$
 
 fourier_elim([min(x,0) >= 0],[x]);
 [x=0] or [0 < x]$
@@ -322,8 +322,10 @@ fourier_elim([2.78b0 *  x > 3.14b0],[x]);
 fourier_elim([min(x,0) >= 0],[x]);
 [x=0] or [0<x]$
 
+/* This answer isn't wrong, but it could be simplified. */
+
 fourier_elim([abs(x - abs(x - abs(x - 23))) > abs(x-1)],[x]);
-[x<1] or [x=1] or [1<x,x<6] or [x=23/2] or [11<x,x<23/2]$
+[x<1] or [x=1] or [1<x,x<6] or [23/2<x,x<12] or [x=23/2] or [11<x,x<23/2]$
 
 fourier_elim([sqrt(5) * x < 1],[x]);
 [x<1/sqrt(5)]$
@@ -349,6 +351,14 @@ fourier_elim(x < 1 and x >= 1,[x]);
 fourier_elim(x <= 1 and x >= 1,[x]);
 [x = 1]$
 
+fourier_elim([log(x) > log(a)],[x, a]);
+[a<x,0<a]$
+
+/* SF bug 1952642 */
+
+fourier_elim([abs(x)>1], [x]);
+[x<-1] or [1<x]$
+
 /* known bugs!  */
 fourier_elim([x < 1/a],[x]);
 [x < 1/a]$
@@ -362,14 +372,10 @@ fourier_elim([x - z^42 < 0],[x]);
 fourier_elim([log(x) < log(a)],[x,a]);
 [0 < x, x < a]$
 
-fourier_elim([log(x) > log(a)],[a,x]);
-[0 < a, a < x]$
-
 /* I think this bug is related to linsolve([x=3.14],[x]) --> [x = 157/50]. Even when
 keepfloat is true, linsolve converts floats to rationals. */
 fourier_elim([x<=3.14],[x]);
 [x = 3.14] or [x < 3.14]$
-
 
 
 /* end of known bugs */
