@@ -185,6 +185,7 @@ contrib/ezunits/ezunits.mac\
 contrib/ezunits/physical_constants.mac\
 contrib/ezunits/rtestezunits.mac\
 contrib/floatproperties.lisp\
+contrib/integer_sequence.lisp\
 contrib/topoly.lisp\
 contrib/topoly_solver.mac\
 contrib/f90.lisp\
