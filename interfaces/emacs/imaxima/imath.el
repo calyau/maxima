@@ -6,8 +6,6 @@
 ;; Created: 7 Nov 2004
 ;; Keywords: maxima
 
-;; $Id: imath.el,v 1.1 2008-03-25 03:24:54 robert_dodier Exp $
-
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
 ;; published by the Free Software Foundation; either version 2 of

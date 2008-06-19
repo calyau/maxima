@@ -10,8 +10,6 @@
 ;; Copyright (C) 2006 Stephen Eglen (imaxima-print-buffer)
 ;; Copyright (C) 2007, 2008 Yasuaki Honda (imaxima-to-html)
 
-;; $Id: imaxima.el,v 1.1 2008-03-25 03:24:54 robert_dodier Exp $
-
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
 ;; published by the Free Software Foundation; either version 2 of
