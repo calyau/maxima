@@ -450,8 +450,7 @@ false$
  *
  * Stuff checked here (various Lisp types omitted):
  *
- *  Maxima string
- *  Lisp string
+ *  string
  *  Lisp array
  *  Maxima declared array
  *  Maxima undeclared array
