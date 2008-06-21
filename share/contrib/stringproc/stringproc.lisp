@@ -334,11 +334,6 @@
      (string-right-trim ds res)))
 
 
-;;  obsolete in maxima-strings-are-lisp-strings-branch, will be cut out soon
-(defun $sconc (&rest args)
-  (format t "$SCONC: PUNT TO $CONCAT. REPLACE CALLS TO THIS FUNCTION WITH CALLS TO CONCAT.~%")
-  (apply #'$concat args))
-
 
 (defun $slength (s)
   (if (not (stringp s))
