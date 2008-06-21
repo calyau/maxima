@@ -137,6 +137,8 @@ sreverse("einnegermitgazellezagtimregennie");
 "einnegermitgazellezagtimregennie"$
 ssearch("~s", "~{~S ~}~%", 'sequalignore);
 3$
+ssearch ("foo", "bar");
+false;
 ssort("I don't like Mondays.");
 "   '.IMaddeiklnnoosty"$
 ssort("I don't like Mondays.", 'cgreaterpignore);
