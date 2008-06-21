@@ -1552,3 +1552,35 @@ floor(log(125) / log(5) + 42 / 5);
 ceiling(log(125) / log(5) + 42 / 5);
 12$
 
+/* SF bug [ 1220227 ] MIN is not correct (problem with "is" function) */
+
+(f(h,k,l):=(h^k)*((1/h)*k*(1+l)+(d-k)*2*l),
+ g(h,k,l):=2*d*l+(h^k)*((1/h)*k*(1-l)-(d-k)*2*l),
+ d:2,
+ l:0.5,
+ aa: f((1-v)^(1/2),2,l),
+ bb: f((1-v),1,l),
+ cc: g(v^(1/2),2,l),
+ dd: g(v,1,l),
+ 0);
+0;
+
+min (aa, bb, cc, dd);
+min (3.0*sqrt(1 - v), 1.0*sqrt(v) + 2.0, (0.5/v - 1.0)*v + 2.0);
+
+ratsimp (bb - dd);
+0;
+
+block ([prederror : false], is (cc > aa));
+unknown;
+
+block ([prederror : false], is (cc > bb));
+unknown;
+
+block ([prederror : false], is (cc > dd));
+unknown;
+
+/* SF bug [ 1995595 ] sign(max(7,x) - max(6,x)) --> error */
+
+sign (max (7, foo543) - max (6, foo543));
+pnz;

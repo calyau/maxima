@@ -439,3 +439,77 @@
 (defmacro float (x &optional (y 1e0))
   `(cl:float ,x ,y))
 
+;; DO-MERGE-ASYM moved here from nset.lisp so that it is defined before 
+;; it is referenced in compar.lisp.
+
+(defmacro do-merge-symm (list1 list2 eqfun lessfun bothfun onefun)
+  ;; Like do-merge-asym, but calls onefun if an element appears in one but
+  ;; not the other list, regardless of which list it appears in.
+  `(do-merge-asym ,list1 ,list2 ,eqfun ,lessfun ,bothfun ,onefun ,onefun))
+
+(defmacro do-merge-asym
+  (list1 list2 eqfun lessfun bothfun only1fun only2fun)
+  ;; Takes two lists.
+  ;; The element equality function is eqfun, and they must be sorted by lessfun.
+  ;; Calls bothfun on each element that is shared by the two lists;
+  ;; calls only1fun on each element that appears only in the first list;
+  ;; calls only2fun on each element that appears only in the second list.
+  ;; If both/only1/only2 fun are nil, treat as no-op.
+  ;; Initializes the variable "res" to nil; returns its value as the result.
+  (let ((l1var (gensym))
+	(l2var (gensym)))
+    `(do ((,l1var ,list1)
+	  (,l2var ,list2)
+	  res)
+	 ;; The variable RES is for the use of both/only1/only2-fun
+	 ;; do-merge-asym returns (nreverse res)
+	 ((cond ((null ,l1var)
+		 (if ,only2fun
+		     (while ,l2var
+		       (funcall ,only2fun (car ,l2var))
+		       (setq ,l2var (cdr ,l2var))))
+		 t)
+		((null ,l2var)
+		 (if ,only1fun
+		     (while ,l1var
+		       (funcall ,only1fun (car ,l1var))
+		       (setq ,l1var (cdr ,l1var))))
+		 t)
+		((funcall ,eqfun (car ,l1var) (car ,l2var))
+		 (if ,bothfun (funcall ,bothfun (car ,l1var)))
+		 (setq ,l1var (cdr ,l1var) ,l2var (cdr ,l2var))
+		 nil)
+		((funcall ,lessfun (car ,l1var) (car ,l2var))
+		 (if ,only1fun (funcall ,only1fun (car ,l1var)))
+		 (setq ,l1var (cdr ,l1var))
+		 nil)
+		(t
+		 (if ,only2fun (funcall ,only2fun (car ,l2var)))
+		 (setq ,l2var (cdr ,l2var))
+		 nil))
+	  (reverse res)))))
+
+;;; Test
+; (do-merge-asym '(a a a b c g h k l)
+; 	       '(a b b c c h i j k k)
+; 	       'eq
+; 	       'string<
+; 	       '(lambda (x) (prin0 'both x))
+; 	       '(lambda (x) (prin0 'one1 x))
+; 	       '(lambda (x) (prin0 'one2 x)))
+; both a
+; one1 a
+; one1 a
+; both b
+; one2 b
+; both c
+; one2 c
+; one1 g
+; both h
+; one2 i
+; one2 j
+; both k
+; one2 k
+; one1 l
+; nil
+
