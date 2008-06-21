@@ -489,7 +489,7 @@
 (defmacro first-c () '(peek-one-token))
 (defmacro pop-c   () '(scan-one-token))
 
-(defun mstringp (x) (stringp x))
+(defun mstringp (x) (stringp x)) ;; OBSOLETE. PRESERVE FOR SAKE OF POSSIBLE CALLS FROM NON-MAXIMA CODE !!
 
 (defun inherit-propl (op-to op-from getl)
   (let ((propl (getl op-from getl)))
