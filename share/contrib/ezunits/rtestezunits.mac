@@ -367,6 +367,9 @@ e : 1/sqrt (%mu_0 * %e_0);
 e : sqrt (5/3 * %R/(4 ` g/mol) * (27 ` degC `` K));
 sqrt(2001)*sqrt(%R)/4 ` sqrt(mol)*sqrt(K)/sqrt(g);
 
+dimensions (e);
+length / time;
+
 e : constvalue (e);
 sqrt(2001)*sqrt(1039309)/(1000*sqrt(2)) ` sqrt(J)/sqrt(g);
 
