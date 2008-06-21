@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2008 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -148,7 +148,7 @@
       (gethash '$xu_grid *gr-options*)        30
       (gethash '$yv_grid *gr-options*)        30
       (gethash '$surface_hide *gr-options*)   nil
-      (gethash '$enhanced3d *gr-options*)     nil
+      (gethash '$enhanced3d *gr-options*)     nil     ; false, true (z levels) or an expression
       (gethash '$contour *gr-options*)        '$none  ; other options are: $base, $surface, $both and $map
       (gethash '$contour_levels *gr-options*) 5       ; 1-50, [lowest_level,step,highest_level] or {z1,z2,...}
       (gethash '$colorbox *gr-options*)       t       ; in pm3d mode, always show colorbox
@@ -275,15 +275,17 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "Unknown contour level description: ~M " val))))
-      (($transparent $border $logx $logy $logz $head_both $grid
+      (($transparent $border $logx $logy $logz $head_both $grid 
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
-        $enhanced3d $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ztics_rotate
+        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ztics_rotate
         $xtics_axis $ytics_axis $ztics_axis) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
                 (merror "Non boolean value: ~M " val)))
       ($filled_func ; true, false or an expression
+         (setf (gethash opt *gr-options*) val))
+      ($enhanced3d  ; true or an expression
          (setf (gethash opt *gr-options*) val))
       (($xtics $ytics $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
             (cond ((member val '($none nil))   ; nil is maintained for back-portability
@@ -935,7 +937,7 @@
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
                               (get-option '$color) )
-       :groups (if is2d '((3 0)) '((4)))
+       :groups (if is2d '((3 0)) '((4 0)))
        :points (list (make-array (length result) :initial-contents result))) ))
 
 
@@ -1040,7 +1042,7 @@
                               (get-option '$line_width)
                               (get-option '$line_type)
                               (get-option '$color) )
-         :groups '((4))
+         :groups '((4 0))
          :points `(,(make-array 4 :element-type 'flonum
                                   :initial-contents (list x y dx dy))) ) ))
 
@@ -1100,7 +1102,7 @@
                               (get-option '$line_width)
                               (get-option '$line_type)
                               (get-option '$color) )
-         :groups '((6))
+         :groups '((6 0))
          :points `(,(make-array 6 :element-type 'flonum
                                   :initial-contents (list x y z dx dy dz))) ) ))
 
@@ -1557,6 +1559,7 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     enhanced3d
 ;; Note: implements a clon of draw3d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
 ;;       Read source in plot.lisp for more information
@@ -1577,9 +1580,14 @@
          (ny (+ yv_grid 1))
          ($numer t)
          (count -1)
-         result z)
-    (setq fcn (coerce-float-fun (convert-to-float fcn) `((mlist),var1 ,var2)))
-    (setf result (make-array (* 3 nx ny) :element-type 'flonum))
+         (enhanced4d (not (member (get-option '$enhanced3d) '(nil t))))
+         (ncols (if enhanced4d 4 3))
+         result z fcn4d)
+    (setq fcn (coerce-float-fun (convert-to-float fcn) `((mlist) ,var1 ,var2)))
+    (if enhanced4d
+       (setq fcn4d (coerce-float-fun (convert-to-float (get-option '$enhanced3d))
+                                     `((mlist) ,var1 ,var2))))
+    (setf result (make-array (* ncols nx ny) :element-type 'flonum))
     (loop for j below ny
            initially (setq y fminval2)
            do (setq x fminval1)
@@ -1591,8 +1599,10 @@
                   (setf (aref result (incf count)) x)
                   (setf (aref result (incf count)) y)
                   (setf (aref result (incf count)) z)
-                  (setq x (+ x epsx))
-                  )
+                  (when enhanced4d
+                     (setf (aref result (incf count))
+                           (funcall fcn4d x y)))
+                  (setq x (+ x epsx)))
            (setq y (+ y epsy)))
     (update-ranges fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
     (make-gr-object
@@ -1601,10 +1611,8 @@
                             (make-obj-title (get-option '$key))
                             (get-option '$line_type)
                             (get-option '$color))
-       :groups `((3 ,nx))
-       :points  (list result)  )))
-
-
+       :groups `((,ncols ,nx))
+       :points  (list result))))
 
 
 
@@ -1702,6 +1710,7 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     enhanced3d
 ;; This object is constructed as a parametric surface in 3d.
 ;; Functions are defined in format r=r(azimuth,zenith),
 ;; where, normally, azimuth is an angle in [0,2*%pi] and zenith in [0,%pi]
@@ -1843,13 +1852,18 @@
          (veps (/ (- vmax vmin) (- vgrid 1)))
          (nu (+ ugrid 1))
          (nv (+ vgrid 1))
-         result f1 f2 f3 x y z uu vv)
+         (enhanced4d (not (member (get-option '$enhanced3d) '(nil t))))
+         (ncols (if enhanced4d 4 3))
+         result f1 f2 f3 x y z uu vv fcn4d)
     (if (or (< umax umin)
             (< vmax vmin))
        (merror "draw3d (parametric_surface): illegal range"))
     (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist), par1 ,par2)))
     (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist), par1 ,par2)))
     (setq f3 (coerce-float-fun (convert-to-float zfun) `((mlist), par1 ,par2)))
+    (if enhanced4d
+       (setq fcn4d (coerce-float-fun (convert-to-float (get-option '$enhanced3d))
+                                     `((mlist) ,par1 ,par2))))
     (loop for j below nv
            initially (setq vv vmin)
            do (setq uu umin)
@@ -1864,10 +1878,11 @@
                   (setf z (funcall f3 uu vv))
                   (if (> z zmax) (setf zmax z))
                   (if (< z zmin) (setf zmin z))
-                  (setf result (append result (list x y z)))
+                  (if enhanced4d
+                     (setf result (append result (list x y z (funcall fcn4d uu vv))))
+                     (setf result (append result (list x y z))) )                  
                   (setq uu (+ uu ueps))
-                  (if (> uu umax) (setf uu umax))
-                  )
+                  (if (> uu umax) (setf uu umax)))
            (setq vv (+ vv veps))
            (if (> vv vmax) (setf vv vmax)))
     ; update x-y ranges if necessary
@@ -1878,9 +1893,9 @@
                             (make-obj-title (get-option '$key))
                             (get-option '$line_type)
                             (get-option '$color))
-       :groups `((3 ,nu))  ; numbers are sent to gnuplot in groups of 3, with blank lines every nu lines
+       :groups `((,ncols ,nu)) ; ncols is 4 or 3, depending on colored 4th dimension or not
        :points `(,(make-array (length result) :element-type 'flonum
-                                              :initial-contents result))   )) )
+                                              :initial-contents result)))))
 
 
 
@@ -1973,7 +1988,7 @@
                    (5 (format nil " t '' w rgbimage")))
        :groups (case n
                    (3 '((3 0)))   ; numbers are sent to gnuplot in gropus of 3, no blank lines
-                   (5 '((5))  ))  ; numbers in groups of 5
+                   (5 '((5 0))  ))  ; numbers in groups of 5, no blank lines
        :points (list result)) ) )
 
 
@@ -2775,44 +2790,22 @@
             ((null blis) 'done)
           (let* ((vect (car blis))
                  (k (length vect))
-                 (ncol (caar glis)))
-            (case ncol
-              (2  ; 2d points
-                (let ((l 0)
-                      (m (cadar glis)))
-                   (cond
-                     ((= m 0)     ; 2d points without blank lines
-                        (do ((cont 0 (+ cont 2)))
-                            ((= cont k) 'done)
-                          (write-subarray (subseq vect cont (+ cont 2)) datastorage))  )
-                     (t           ; 2d points with blank lines every m lines
-                        (do ((cont 0 (+ cont 2)))
-                            ((= cont k) 'done)
-                          (when (eql l m)
-                                (format datastorage "~%")
-                                (setf l 0) )
-                          (write-subarray (subseq vect cont (+ cont 2)) datastorage)
-                          (incf l)  ))))  )
-              (3  ; 3d points, gray image and palette image
-                (let ((l 0)
-                      (m (cadar glis)))
-                   (cond
-                     ((= m 0)     ; 3d points without blank lines
-                        (do ((cont 0 (+ cont 3)))
-                            ((= cont k) 'done)
-                          (write-subarray (subseq vect cont (+ cont 3)) datastorage))  )
-                     (t           ; 3d points with blank lines every m lines
-                        (do ((cont 0 (+ cont 3)))
-                            ((= cont k) 'done)
-                          (when (eql l m)
-                                (format datastorage "~%")
-                                (setf l 0) )
-                          (write-subarray (subseq vect cont (+ cont 3)) datastorage)
-                          (incf l)  ))))  )
-              (otherwise
-                 (do ((cont 0 (+ cont ncol)))
-                     ((= cont k) 'done)
-                   (write-subarray (subseq vect cont (+ cont ncol)) datastorage) ))  ))
+                 (ncol (caar glis))
+                 (l 0)
+                 (m (cadar glis)))
+             (cond
+                ((= m 0)     ; no blank lines
+                   (do ((cont 0 (+ cont ncol)))
+                       ((= cont k) 'done)
+                     (write-subarray (subseq vect cont (+ cont ncol)) datastorage))  )
+                (t           ; blank lines every m lines
+                   (do ((cont 0 (+ cont ncol)))
+                       ((= cont k) 'done)
+                     (when (eql l m)
+                           (format datastorage "~%")
+                           (setf l 0) )
+                     (write-subarray (subseq vect cont (+ cont ncol)) datastorage)
+                     (incf l)))))
           (format datastorage "~%~%") )
         (incf counter)
         (setf scenes-list (cons (reverse scene-short-description) scenes-list)) ))  ; end let-dolist scenes
