@@ -25,6 +25,80 @@ sort(allroots(%));
        x = -0.96596251521963683*%i-0.40695972319240747,
        x = 0.96596251521963683*%i-0.40695972319240747];
 
+/* SF bug [ 1951128 ] curious warning from allroots(x=0) */
+
+allroots (x = 0);
+[x = 0.0];
+
+allroots (17*x = 0);
+[x = 0.0];
+
+allroots (19*x^4 = 0);
+[x = 0.0, x = 0.0, x = 0.0, x = 0.0];
+
+allroots (x^3 * (x^4 - 1) = 0);
+[x = 0.0, x = 0.0, x = 0.0,
+ x = 1.0, x = - 1.0, x = 1.0*%i, x = - 1.0*%i];
+
+allroots (%i*x^5 = 0); /* this one goes through CPOLY-SL */
+[x = 0.0, x = 0.0, x = 0.0, x = 0.0, x = 0.0];
+
+/* additional tests for allroots */
+
+allroots (x = 1);
+[x = 1.0];
+
+allroots (8*u = 1);
+[u = 0.125];
+
+allroots (u^2 - 2*u = 35);
+[u = -5.0, u = 7.0];
+
+(complex_float_approx_equal (a, b) :=
+    if listp (a) and listp (b)
+        then apply ("and", map (complex_float_approx_equal, a, b))
+        elseif equationp (a) and equationp (b)
+            then is (lhs (a) = lhs (b))
+                and complex_float_approx_equal (rhs (a), rhs (b))
+            else
+                my_float_approx_equal (realpart (a), realpart (b))
+                    and my_float_approx_equal (imagpart (a), imagpart (b)),
+
+ equationp (e) := not atom (e) and op (e) = "=",
+
+ my_float_approx_equal (x, y) :=
+    if equal (y, 0)
+        then is (abs (x) <= float_approx_equal_tolerance)
+        else float_approx_equal (x, y),
+
+ float_approx_equal_tolerance : 1e-12,
+
+ 0);
+0;
+
+/* (u - 5/4)*(u - 7/4)*(u + 1/4)*(u^2 - 2*u + 5/4) which has roots
+ * 5/4, 7/4, -1/4, and 1 + %i/2, 1 - %i/2.
+ */
+complex_float_approx_equal 
+   (allroots (u^5 + 131*u^3/16 + 45*u/64 + 175/256 = 19*u^4/4 + 369*u^2/64),
+    [u = -0.25, u = 0.5*%i + 1, u = 1 - 0.5*%i, u = 1.25, u = 1.75]);
+true;
+
+/* (v - 5/4)*(v - 7/4*%i)*(v + 1/4*%i)*(v^2 - 2*v + 5/4) which has roots
+ * 5/4, 7/4*%i, -1/4*%i, and 1 + %i/2, 1 - %i/2.
+ */
+complex_float_approx_equal
+   (allroots (expand ((v - 5/4)*(v - 7/4*%i)*(v + 1/4*%i)*(v^2 - 2*v + 5/4))),
+    [v = - 0.25*%i,
+     v = 1.25,
+     v = 1.0 - 0.5*%i,
+     v = 0.5*%i + 1.0,
+     v = 1.75*%i]);
+true;
+
+reset (float_approx_equal_tolerance);
+[float_approx_equal_tolerance];
+
 exp1:x+z = y;
 z+x = y$
 exp:2*a*x-y = 2*a^2;

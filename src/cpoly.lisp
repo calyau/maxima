@@ -182,7 +182,7 @@
      (do ((i 0 (1+ i)))
 	 ((> i nn))
        (setf (aref *shr-sl* i) (cmod-sl (aref *pr-sl* i) (aref *pi-sl* i))))
-     (scale-sl)
+     (if (> nn 0) (scale-sl))
      (do ()
 	 ((> 2 nn)
 	  (cdivid-sl (- (aref *pr-sl* 1)) (- (aref *pi-sl* 1))
@@ -462,7 +462,7 @@
      (do ((i degree (1- i))) ((not (zerop (aref *pr-sl* i))) (setq nn i n (1- i))))
      (setq degree nn)
      (do ((i 0 (1+ i))) ((> i nn)) (setf (aref *shr-sl* i) (abs (aref *pr-sl* i))))
-     (scale-sl)
+     (if (> nn 0) (scale-sl))
      (do nil
 	 ((< nn 3)
 	  (cond ((= nn 2)
