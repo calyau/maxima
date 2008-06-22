@@ -23,7 +23,7 @@
 
 (defmvar mopl nil)
 
-(declare-top  (special $lasttime $disptime
+(declare-top  (special $debugmode $lasttime $disptime
 		       bindlist loclist errset $labels linelable $filesize
 		       st rephrase $dispflag refchkl baktrcl
 		       dskfnp dsksavep *rset ^q lf tab ff cr
@@ -473,6 +473,7 @@
 	     (member rule l :test #'equal) op))))
 
 (defmfun $debugmode (x)
+  (setq $debugmode x)
   (debugmode1 nil x))
 
 (defun debugmode1 (assign-var y)
