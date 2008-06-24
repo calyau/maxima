@@ -36,7 +36,7 @@ declared integer) or  sign(b - a) is negative or zero and h is nonzero.
     (if k (setq lo i hi k h j) (setq lo i h 1 hi j))
     (if (zerop1 h) (merror "The step argument to '..' must be nonzero"))
     
-    (setq sgn (csign (sub hi lo)))
+    (setq sgn (if (like hi lo) '$zero (csign (sub hi lo))))
     (setq sgn-h (csign h))
     (setq n (if (eq sgn '$zero) 0 (take '($floor) (div (sub hi lo) h))))
     (cond ((and (integerp n) (memq sgn-h '($neg $pos $pn)))
