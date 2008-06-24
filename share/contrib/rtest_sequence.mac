@@ -157,6 +157,9 @@ rat(a) .. 5 .. a;
 args(a .. rat(h) .. b);
 [a,h,b]$
 
+[a] .. [a];
+[[a]]$
+
 /* Known bug(s)   */
 
 /* csign(ind) ---> error, not pnz */
