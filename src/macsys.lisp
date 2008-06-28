@@ -486,16 +486,16 @@
     ans))
 
 (defun $system (&rest args)
-  #+gcl   (lisp:system (apply '$sconcat args))
-  #+clisp (ext:run-shell-command (apply '$sconcat args))
-  #+(or cmu scl) (ext:run-program "/bin/sh"
-				  (list "-c" (apply '$sconcat args)) :output t)
-  #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t)
-  #+sbcl  (sb-ext:run-program "/bin/sh"
-			      (list "-c" (apply '$sconcat args)) :output t)
-  #+openmcl (ccl::run-program "/bin/sh"
-			      (list "-c" (apply '$sconcat args)) :output t)
-  #+abcl (extensions::run-shell-command (apply '$sconcat args)))
+  ;; If XMaxima is running, direct output from command into *SOCKET-CONNECTION*.
+  ;; From what I can tell, GCL and Clisp cannot redirect the output into a stream. Oh well.
+  (let ((s (and (boundp '*socket-connection*) *socket-connection*)))
+    #+gcl (lisp:system (apply '$sconcat args))
+    #+clisp (ext:run-shell-command (apply '$sconcat args))
+    #+(or cmu scl) (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
+    #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))
+    #+sbcl (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
+    #+openmcl (ccl::run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
+    #+abcl (extensions::run-shell-command (apply '$sconcat args) :output (or s *standard-output*))))
 
 (defun $room (&optional (arg nil arg-p))
   (if arg-p
