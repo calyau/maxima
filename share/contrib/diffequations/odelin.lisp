@@ -32,7 +32,6 @@
 (eval-when
     #+gcl (load compile eval)
     #-gcl (:load-toplevel :compile-toplevel :execute)
-    ($load "nset")
     ($load "polynomialp")
     ($load "sqfr")
     ($load "spherodialwave")
@@ -42,7 +41,7 @@
     ($load "gauss")
     ($load "odeutils"))
 
-(defmvar $de_solver_is_loquacious t)
+(defmvar $de_solver_is_loquacious nil)
 
 (defun ode-polynomialp (p x)
   (setq p ($ratdisrep p))

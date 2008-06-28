@@ -19,7 +19,7 @@
     #-gcl (:load-toplevel :compile-toplevel :execute)
     ($load "odeutils"))
 
-(defmvar $aalgsys_is_loquacious t)
+(defmvar $aalgsys_is_loquacious nil)
 
 (defun variablep (e)
   (or ($symbolp e) ($subvarp e)))

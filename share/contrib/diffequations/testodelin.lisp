@@ -14,10 +14,6 @@
 
 ($put '$testodelin 1 '$version)
 
-(defmacro while (cond &rest body)
-  `(do ()
-       ((not ,cond))
-     ,@body))
 
 (defun $testodelin (fn)
   (let ((acc) (strm) (de) (sol) (t1) (gork) (i 0) (times)
