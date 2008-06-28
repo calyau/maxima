@@ -1,2 +1,2 @@
 (setq *gentran-dir ".")
-(load "gtload.l")
+(load "local.gtload.lisp")
