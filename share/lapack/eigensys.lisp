@@ -15,6 +15,7 @@
 (defun lapack-lispify-matrix (a nrow ncol)
   "Convert a Maxima matrix A of dimension NROW and NCOL to Lisp matrix
   suitable for use with LAPACK"
+  (setq a ($float a))
   (let* ((array-type (if (complex-maxima-matrix-p a)
 			 '(complex flonum)
 			 'flonum))
