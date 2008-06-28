@@ -1,4 +1,7 @@
-#| 
+#|
+Author: Barton Willis, June 2008
+
+I, Barton Willis, hereby place this code into the public domain.
 
 The dot-dot operator generates terms of an arithmetic sequence. The
 two argument dot-dot operator is defined by (Z is the set of integers).
