@@ -576,6 +576,16 @@ The local variables may be bound to arbitrary values within the block but when t
 block is exited the saved values are restored,
 and the values assigned within the block are lost.
 
+The declaration @code{local(@var{v_1}, ..., @var{v_m})} within @code{block}
+saves the properties associated with the symbols @var{v_1}, ..., @var{v_m},
+removes any properties before evaluating other expressions,
+and restores any saved properties on exit from the block.
+Some declarations are implemented as properties of a symbol,
+including @code{:=}, @code{array}, @code{dependencies}, @code{atvalue}, @code{matchdeclare},
+@code{atomgrad}, @code{constant}, @code{nonscalar}, @code{assume}, and some others.
+The effect of @code{local} is to make such declarations effective only within the block;
+otherwise declarations within a block are actually global declarations.
+
 @code{block} may appear within another @code{block}.
 Local variables are established each time a new @code{block} is evaluated.
 Local variables appear to be global to any enclosed blocks.
@@ -583,12 +593,6 @@ If a variable is non-local in a block,
 its value is the value most recently assigned by an enclosing block, if any,
 otherwise, it is the value of the variable in the global environment.
 This policy may coincide with the usual understanding of "dynamic scope".
-
-If it is desired to save and restore other local properties
-besides @code{value}, for example @code{array} (except for complete arrays),
-@code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant}, and
-@code{nonscalar} then the function @code{local} should be used inside of the block
-with arguments being the names of the variables.
 
 The value of the block is the value of the last statement or the
 value of the argument to the function @code{return} which may be used to exit
@@ -732,7 +736,9 @@ this allows for the function name to be computed, as well as the body.
 
 All function definitions appear in the same namespace;
 defining a function @code{f} within another function @code{g}
-does not limit the scope of @code{f} to @code{g}.
+does not automatically limit the scope of @code{f} to @code{g}.
+However, @code{local(f)} makes the definition of function @code{f}
+effective only within the block or other compound expression in which @code{local} appears.
 
 If some formal argument @var{x_k} is a quoted symbol (after evaluation),
 the function defined by @code{define} does not evaluate the corresponding actual argument.
@@ -1478,18 +1484,46 @@ The arguments appear within the function body as a list.
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 @deffn {Function} local (@var{v_1}, ..., @var{v_n})
-Declares the variables @var{v_1}, ..., @var{v_n} to be local with
-respect to all the properties in the statement in which this function
-is used.
+
+Saves the properties associated with the symbols @var{v_1}, ..., @var{v_n},
+removes any properties before evaluating other expressions,
+and restores any saved properties on exit
+from the block or other compound expression in which @code{local} appears.
+
+Some declarations are implemented as properties of a symbol,
+including @code{:=}, @code{array}, @code{dependencies}, @code{atvalue}, @code{matchdeclare},
+@code{atomgrad}, @code{constant}, @code{nonscalar}, @code{assume}, and some others.
+The effect of @code{local} is to make such declarations effective only within the block
+or other compound expression in which @code{local} appears;
+otherwise such declarations are global declarations.
+
+@code{local} can only appear in @code{block}
+or in the body of a function definition or @code{lambda} expression,
+and only one occurrence is permitted in each.
 
 @code{local} quotes its arguments.
 @code{local} returns @code{done}.
 
-@code{local} may only be used in @code{block}, in the body of function
-definitions or @code{lambda} expressions, or in the @code{ev} function, and only one
-occurrence is permitted in each.
+Example:
 
-@code{local} is independent of @code{context}.
+A local function definition.
+
+@c ===beg===
+@c foo (x) := 1 - x;
+@c foo (100);
+@c block (local (foo), foo (x) := 2 * x, foo (100));
+@c foo (100);
+@c ===end===
+@example
+(%i1) foo (x) := 1 - x;
+(%o1)                    foo(x) := 1 - x
+(%i2) foo (100);
+(%o2)                         - 99
+(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
+(%o3)                          200
+(%i4) foo (100);
+(%o4)                         - 99
+@end example
 
 @opencatbox
 @category{Function definition} @category{Programming}

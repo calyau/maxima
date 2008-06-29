@@ -967,7 +967,9 @@ and any further actual arguments, if present, are assigned to @var{x_n} as a lis
 
 All function definitions appear in the same namespace;
 defining a function @code{f} within another function @code{g}
-does not limit the scope of @code{f} to @code{g}.
+does not automatically limit the scope of @code{f} to @code{g}.
+However, @code{local(f)} makes the definition of function @code{f}
+effective only within the block or other compound expression in which @code{local} appears.
 
 If some formal argument @var{x_k} is a quoted symbol,
 the function defined by @code{:=} does not evaluate the corresponding actual argument.
@@ -1025,6 +1027,25 @@ the function defined by @code{:=} accepts a variable number of arguments.
 (%o1)                H([L]) := apply("+", L)
 (%i2) H (a, b, c);
 (%o2)                       c + b + a
+@end example
+
+@code{local} makes a local function definition.
+
+@c ===beg===
+@c foo (x) := 1 - x;
+@c foo (100);
+@c block (local (foo), foo (x) := 2 * x, foo (100));
+@c foo (100);
+@c ===end===
+@example
+(%i1) foo (x) := 1 - x;
+(%o1)                    foo(x) := 1 - x
+(%i2) foo (100);
+(%o2)                         - 99
+(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
+(%o3)                          200
+(%i4) foo (100);
+(%o4)                         - 99
 @end example
 
 @opencatbox
