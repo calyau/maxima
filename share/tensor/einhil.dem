@@ -96,6 +96,8 @@ solve(ode2(exp[1],A,r),A);
 a:%[1],%c=-2*M;
 ode2(ev(exp[2],a),B,r);
 b:ev(%,%c=rhs(solve(rhs(%)*rhs(a)=1,%c)[1]));
+("The solution must be consistent with the third equation")$
+factor(ev(ev(exp[3],a,b),diff));
 ("Finally, we obtain the Schwarzschild-de Sitter metric")$
 expand(ev(lg,a,b));
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */

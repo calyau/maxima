@@ -25,7 +25,7 @@ load(nchrpl);
 ("Now we set up the metric with (+,-,-,-) signature:")$
 dim:4;
 ct_coords:[t,r,o,f];
-lg:matrix([(r^2+q^2-2*m*r)/r^2,0,0,0],[0,r^2/(2*m*r-r^2-q^2),0,0],[0,0,-r^2,0],[0,0,0,-r^2*sin(o)^2]);
+lg:matrix([(r^2+4*%pi*q^2-2*m*r)/r^2,0,0,0],[0,r^2/(2*m*r-r^2-4*%pi*q^2),0,0],[0,0,-r^2,0],[0,0,0,-r^2*sin(o)^2]);
 ug:ratsimp(invert(lg));
 ("Next, we compute the Christoffel-symbols:")$
 christof(false);
@@ -43,7 +43,7 @@ for i thru dim do for j thru dim do fl[i,j]:diff(a[i],ct_coords[j])-diff(a[j],ct
 fm:ug.fl;
 fu:fm.ug;
 ("And now we can compute the stress-energy tensor (times 8*%pi).")$
-t:ratsimp(2*(fl.fm-lg*mattrace(fl.fu)/4));
+t:ratsimp(8*%pi*(fl.fm-lg*mattrace(fl.fu)/4));
 ("This and the covariant Einstein tensor should be identical:")$
 ratsimp(lein-t);
 
