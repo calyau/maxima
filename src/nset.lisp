@@ -733,10 +733,10 @@ a positive integer; instead found ~:M" n))))
 	   (setq acc (cond ((= n 0) nil)
 			   ((integerp len) (fixed-length-partitions n n len))
 			   (t (integer-partitions n))))
-	   (setq acc (mapcar #'(lambda (x) (cons `(mlist simp) x)) acc))
+	   (setq acc (mapcar #'(lambda (x) (simplify (cons '(mlist) x))) acc))
 	   `(($set simp) ,@acc))
 	  (t
-	   (if len `(($integer_partitions simp) ,n ,len) `(($int_partitions simp) ,n))))))
+	   (if len `(($integer_partitions simp) ,n ,len) `(($integer_partitions simp) ,n))))))
 	 
 (defun integer-partitions (n)
   (let ((p `(,n)) (acc nil) (d) (k) (j) (r))
