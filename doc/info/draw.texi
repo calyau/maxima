@@ -1600,19 +1600,29 @@ See also @code{palette}.
 @defvr {Graphic option} enhanced3d
 Default value: @code{false}
 
-If @code{enhanced3d} is @code{true}, surfaces are colored in 3d plots;
-in other words, it sets Gnuplot's pm3d mode.
+If @code{enhanced3d} is @code{false}, surfaces are not colored in 3d plots.
+If @code{enhanced3d} is @code{true}, surfaces are colored setting Gnuplot's
+pm3d mode. If an expression is given to @code{enhanced3d}, it will be used
+to assign colors according to the @code{palette}; variables in this expression
+must be the same used in the surface description.
 
 See option @code{palette} to learn how palettes are specified.
 
-Example:
+Examples:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(surface_hide = true,
-             enhanced3d   = true,
-             palette      = gray,
-             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+(%i2) draw3d(
+         surface_hide = true,
+         enhanced3d   = true,
+         palette      = gray,
+         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+(%i3) draw3d(
+         surface_hide = true,
+         /* same variables x and y as */
+         /* in explicit below:        */
+         enhanced3d   = sin(x*y),
+         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
 
 @opencatbox

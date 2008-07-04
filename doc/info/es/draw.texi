@@ -1,4 +1,4 @@
-@c version 1.28
+@c version 1.29
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1360,21 +1360,29 @@ V@'ease tambi@'en @code{palette}.
 @defvr {Opci@'on gr@'afica} enhanced3d
 Valor por defecto: @code{false}
 
-Si @code{enhanced3d} vale @code{true}, se coloreaer@'an las superficies
-de los gr@'aficos tridimensionales; en otras palabras, se activa el
-modo pm3d de Gnuplot.
+Si @code{enhanced3d} vale @code{false}, no se colorear@'an las superficies
+de los gr@'aficos tridimensionales. Si @code{enhanced3d} vale @code{true},
+las superficies se colorear@'an activando el modo pm3d de Gnuplot.
+Si se da una expresi@'on a @code{enhanced3d}, @'esta se utilizar@'a
+para asignar colores de acuerdo con el valor de la opci@'on @code{palette};
+las variables de esta expresi@'on deben ser las mismas que luego se
+utilicen para la descripci@'on de la superficie.
 
-V@'ease la opci@'on @code{palette} para informarse sobre c@'omo
-se especifican las paletas de colores.
-
-Ejemplo:
+Ejemplos:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(surface_hide = true,
-             enhanced3d   = true,
-             palette      = gray,
-             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+(%i2) draw3d(
+         surface_hide = true,
+         enhanced3d   = true,
+         palette      = gray,
+         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+(%i3) draw3d(
+         surface_hide = true,
+         /* mismas variables x e y que */
+         /* en explicit mas abajo:     */
+         enhanced3d   = sin(x*y),
+         explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
 @end example
 @end defvr
 
