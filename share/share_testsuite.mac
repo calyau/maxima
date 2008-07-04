@@ -49,6 +49,7 @@ block
         [rtest_opproperties, 72],
         rtest_stats,
         rtest_distrib,
+        rtest_interpol,
         rtest_levin,
         rtest_fractals,
         rtest_lsquares,

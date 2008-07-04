@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2007 Mario Rodriguez Riotorto
+Copyright (C) 2005-2008 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -19,8 +19,7 @@ http://www.gnu.org/copyleft/gpl.html
 
 /*             INTRODUCTION
 
-This package defines de Lagrangian, the linear and the cubic 
-splines methods for polynomial interpolation.
+This package defines some interpolation techniques.
 
 For questions, suggestions, bugs and the like, feel free
 to contact me at
@@ -38,29 +37,30 @@ www.biomates.net
 /*  b) a list of pairs, p: [[2,4],[5,6],[9,3]]                            */
 /*  c) a list of numbers, p: [4,6,3], in which case the abscissas will be */
 /*     assigned automatically to 1, 2, 3, etc.                            */
-/* This is an uxiliary function for the 'interpol' package. If the        */
-/* returned value is a negative number, it's due to an error:             */
-/*  -1: the argument is not a list nor a matrix                           */
-/*  -2: sample pairs is too short                                         */
-/*  -3: unknown error                                                     */
-interpol_check_input(data):= block([n],
+/* This is an uxiliary function for the 'interpol' package.               */
+interpol_check_input(data,funame):=
+ block([n,out],
    if not listp(data) and not matrixp(data)
-      then return(-1),
+      then error("Argument to '",funame,"' must be a list or matrix"),
    n: length(data),
    if n<2
-      then return(-2),
-   if listp(data) and every('identity,map(lambda([x], listp(x) and length(x)=2),data))
-      then return(sort(data)),
-   if matrixp(data) and length(data[1]) = 2
-      then return(sort(args(data))),
-   if listp(data) and every('identity,map(lambda([x], not listp(x)),data)) 
-      then return(makelist([i,data[i]],i,1,n))
-   -3 )$
+      then error("Argument to '",funame,"' has too few sample points")
+   elseif listp(data) and every('identity,map(lambda([x], listp(x) and length(x)=2),data))
+      then out: sort(data)
+   elseif matrixp(data) and length(data[1]) = 2
+      then out: sort(args(data))
+   elseif listp(data) and every('identity,map(lambda([x], not listp(x)),data)) 
+      then out: makelist([i,data[i]],i,1,n)
+      else error("Error in arguments to '",funame,"' function"),
+   /* controlling duplicated x's */
+   for i:2 thru n do
+      if out[i-1][1] = out[i][1]
+         then error("Duplicated abscissas are not allowed"),
+   out )$
 
 
 
-/* Computes the polynomial interpolation by the Lagrangian method. The         */
-/* argument must be either:                                                    */
+/* Lagrangian interpolation. The argument must be either:                      */
 /*  a) a two column matrix, p:matrix([2,4],[5,6],[9,3])                        */
 /*  b) a list of pairs, p: [[2,4],[5,6],[9,3]]                                 */
 /*  c) a list of numbers, p: [4,6,3], in which case the abscissas will be      */
@@ -69,21 +69,18 @@ interpol_check_input(data):= block([n],
 /* computation is made. Option:                                                */
 /*   'varname='x: the name of the independent variable                         */
 /* Sample session:                                                             */
+/* load(interpol);                                                             */
 /* p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$                                          */
 /* lagrange(p);                                                                */
 /* f(x):=''%;                                                                  */
 /* map(f,[2.3,5/7,%pi]);                                                       */
-/* %,numer;                                                                    */
-/* plot2d([f(x),[discrete,p]],[x,0,10],                                        */
-/*        [gnuplot_curve_styles,["with lines","with points pointsize 3"]])$    */
+/* load(draw)$;                                                                */
+/* draw2d(                                                                     */
+/*    explicit(f(x),x,0,9),                                                    */
+/*    point_size = 3,                                                          */
+/*    points(p)) $                                                             */
 lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults,ratprint:false],
-   tab: rat(interpol_check_input(tab)),
-   if numberp(tab) then
-      if tab=-1
-         then error("Argument to 'lagrange' must be a list or matrix")
-         else if tab=-2
-                 then error("Argument to 'lagrange' has too few sample points")
-                 else error("Unknown error in 'lagrange' function"),
+   tab: rat(interpol_check_input(tab,"lagrange")),
    options:  ['varname],
    defaults: ['x],
    for i in select do(
@@ -93,13 +90,8 @@ lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults,ratprint:false],
    if not symbolp(defaults[1])
       then error("Option 'varname' is not correct"),
 
-   n: length(tab),
-   /* controlling duplicated x's */
-   for i:2 thru n do
-      if tab[i-1][1] = tab[i][1]
-         then error("Duplicated abscissas are not allowed"),
-
    /* constructing the interpolating polynomial */
+   n: length(tab),
    for i:1 thru n do(
       prod: 1,
       for k:1 thru n do
@@ -116,7 +108,7 @@ charfun2(z,l1,l2):= charfun(l1 <= z and z < l2)$
 
 
 
-/* Computes the linear interpolation function. The argument must be either:    */
+/* Linear interpolation. The argument must be either:                          */
 /*  a) a two column matrix, p:matrix([2,4],[5,6],[9,3])                        */
 /*  b) a list of pairs, p: [[2,4],[5,6],[9,3]]                                 */
 /*  c) a list of numbers, p: [4,6,3], in which case the abscissas will be      */
@@ -125,21 +117,18 @@ charfun2(z,l1,l2):= charfun(l1 <= z and z < l2)$
 /* computation is made. Option:                                                */
 /*   'varname='x: the name of the independent variable                         */
 /* Sample session:                                                             */
+/* load(interpol);                                                             */
 /* p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$                                          */
 /* linearinterpol(p);                                                          */
 /* f(x):=''%;                                                                  */
-/* map(f,[7.3,25/7,%pi]);                                                      */
-/* %,numer;                                                                    */
-/* plot2d(['(f(x)),[discrete,p]],[x,0,10],                                     */
-/*        [gnuplot_curve_styles,["with lines","with points pointsize 3"]])$    */
+/* map(f,[2.3,5/7,%pi]);                                                       */
+/* load(draw)$;                                                                */
+/* draw2d(                                                                     */
+/*    explicit(f(x),x,0,9),                                                    */
+/*    point_size = 3,                                                          */
+/*    points(p)) $                                                             */
 linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:false],
-   tab: interpol_check_input(tab),
-   if numberp(tab) then
-      if tab=-1
-         then error("Argument to 'linearinterpol' must be a list or matrix")
-         else if tab=-2
-                 then error("Argument to 'linearinterpol' has too few sample points")
-                 else error("Unknown error in 'linearinterpol' function"),
+   tab: interpol_check_input(tab,"linearinterpol"),
    options:  ['varname],
    defaults: ['x],
    for i in select do(
@@ -149,13 +138,8 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:fals
    if not symbolp(defaults[1])
       then error("Option 'varname' is not correct"),
 
-   n: length(tab),
-   /* controlling duplicated x's */
-   for i:2 thru n do
-      if tab[i-1][1] = tab[i][1]
-         then error("Duplicated abscissas are not allowed"),
-
    /* constructing the interpolating polynomial */
+   n: length(tab),
    if n=2 /* case of two points */
       then s: tab[2][2] + (tab[2][2]-tab[1][2]) *
                           (defaults[1]-tab[2][1]) /
@@ -174,7 +158,7 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:fals
 
 
 
-/* Computes the cubic spline interpolation function. The argument must be either:      */
+/* Cubic splines interpolation. The argument must be either:                           */
 /*  a) a two column matrix, p:matrix([2,4],[5,6],[9,3])                                */
 /*  b) a list of pairs, p: [[2,4],[5,6],[9,3]]                                         */
 /*  c) a list of numbers, p: [4,6,3], in which case the abscissas will be              */
@@ -190,26 +174,25 @@ linearinterpol(tab,[select]) := block([n,s:0,a,b,options, defaults,ratprint:fals
 /*   'varname='x: the name of the independent variable                                 */
 /* Reference: this algorithm is based on 'Numerical Recipes in C', section 3.3         */
 /* Sample session:                                                                     */
+/* load(interpol);                                                                     */
 /* p:[[7,2],[8,2],[1,5],[3,2],[6,7]]$                                                  */
 /* cspline(p); ==> natural cubic spline (second derivatives are zero in both extremes) */
 /* f(x):=''%;                                                                          */
 /* map(f,[2.3,5/7,%pi]);                                                               */
-/* %,numer;                                                                            */
-/* plot2d(['(f(x)),[discrete,p]],[x,0,10],                                             */
-/*        [gnuplot_curve_styles,["with lines","with points pointsize 3"]])$            */
+/* load(draw)$;                                                                        */
+/* draw2d(                                                                             */
+/*    explicit(f(x),x,0,9),                                                            */
+/*    point_size = 3,                                                                  */
+/*    points(p)) $                                                                     */
 /* cspline(p,d1=0,dn=0);                                                               */
 /* g(x):=''%;                                                                          */
-/* plot2d(['(f(x)),'(g(x)),[discrete,p]],[x,0,10],                                     */
-/*      [gnuplot_curve_styles,["with lines","with lines","with points pointsize 3"]])$ */
+/* draw2d(                                                                             */
+/*    explicit(g(x),x,0,9),                                                            */
+/*    point_size = 3,                                                                  */
+/*    points(p)) $                                                                     */
 cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
                                qn, un, a, b, s:0, aj, bj, cj, dj, aux,ratprint:false],
-   tab: interpol_check_input(tab),
-   if numberp(tab) then
-      if tab=-1
-         then error("Argument to 'cspline' must be a list or matrix")
-         else if tab=-2
-                 then error("Argument to 'cspline' has too few sample points")
-                 else error("Unknown error in 'cspline' function"),
+   tab: interpol_check_input(tab,"cspline"),
    options:  ['d1, 'dn, 'varname],
    defaults: ['unknown, 'unknown, 'x],
    for i in select do(
@@ -218,18 +201,13 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
         then defaults[aux]: rhs(i)),
    if not numberp(defaults[1]) and  defaults[1] # 'unknown
       then error("Option 'd1' is not correct"),
-   if not numberp(defaults[2]) and  defaults[1] # 'unknown
+   if not numberp(defaults[2]) and  defaults[2] # 'unknown
       then error("Option 'dn' is not correct"),
    if not symbolp(defaults[3])
       then error("Option 'varname' is not correct"),
 
-   n: length(tab),
-   /* controlling duplicated x's */
-   for i:2 thru n do
-      if tab[i-1][1] = tab[i][1]
-         then error("Duplicated abscissas are not allowed"),
-
    /* if tab contains only two points, linear interpolation */
+   n: length(tab),
    if n=2 /* case of two points */
       then return(ratsimp( tab[2][2] + (tab[2][2]-tab[1][2]) *
                                        (defaults[3]-tab[2][1]) /
@@ -288,3 +266,68 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
       s: s + funmake('charfun2,[defaults[3], a, b]) *
              expand(aj * tab[j-1][2] + bj * tab[j][2] + cj * y2[j-1] + dj * y2[j])  ),
    s )$
+
+
+
+/* Rational interpolation, with interpolating function of the form             */
+/*               r                                                             */
+/*           p  x  + ... + p  x + p                                            */
+/*            r             1      0                                           */
+/*    R(x) = ------------------------                                          */
+/*               m                                                             */
+/*           q  x  + ... + q  x + q                                            */
+/*            m             1      0                                           */
+/* The 2nd. argument r is the degree of the numerator (r < sample size). The   */
+/* degree of the denominator is calculated as m: sample_size - r - 1.          */
+/* The 1st. argument must be either:                                           */
+/*  a) a two column matrix, p:matrix([2,4],[5,6],[9,3])                        */
+/*  b) a list of pairs, p: [[2,4],[5,6],[9,3]]                                 */
+/*  c) a list of numbers, p: [4,6,3], in which case the abscissas will be      */
+/*     assigned automatically to 1, 2, 3, etc.                                 */
+/* In cases a) and b) the pairs are ordered wrt the 1st. coordinate before any */
+/* computation is made. Option:                                                */
+/*   'varname='x: the name of the independent variable                         */
+/*   'denterm=1 : value for q_0 in the denominator                             */
+/* Sample session:                                                             */
+/* load(interpol);                                                             */
+/* load(draw)$;                                                                */
+/* p: [[7.2, 2.5], [8.5, 2.1], [1.6, 5.1], [3.4, 2.4], [6.7, 7.9]]$            */
+/* for k:0 thru length(p)-1 do                                                 */
+/*   draw2d(explicit(ratinterpol(p,k),x,0,9),                                  */
+/*          point_size = 3,                                                    */
+/*          points(p),                                                         */
+/*          title = concat("Degree of numerator = ",k),                        */
+/*          yrange=[0,10])$                                                    */
+ratinterpol(tab,r,[select]) :=
+  block([n,m,coef,indep,pq,p,q,options,defaults,ratprint:false],
+    tab: rat(interpol_check_input(tab,"ratinterpol")),
+    options:  ['varname, 'denterm],
+    defaults: ['x, 1],
+    for i in select do(
+       aux: ?position(lhs(i),options),
+       if numberp(aux) and aux <= length(options) and aux >= 1
+         then defaults[aux]: rhs(i)),
+    if not symbolp(defaults[1])
+       then error("Option 'varname' is not correct"),
+    if listp(defaults[2]) or matrixp(defaults[2])
+       then error("Option 'denterm' must be a number or mathematical expression"),
+
+    /* constructing the interpolating rational function */
+    n: length(tab),
+    if not integerp(r) or r > n-1 or r < 0
+      then error("Degree of numerator must be a positive integer less than sample size"),
+    m: n - r - 1, /* degree of denominator */
+   
+    /* coef matrix */
+    coef: apply(matrix,
+                makelist(block([x,y],
+                           [x,y]: p,
+                           append(makelist(x^k,k,0,r),
+                                  makelist(-y*x^k,k,1,m))),
+                         p, tab)),
+    indep: map(second, tab) * defaults[2],
+    pq: first(transpose(first(linsolve_by_lu(coef, indep)))),
+    p: makelist(pq[k],k,1,r+1),
+    q: cons(defaults[2], makelist(pq[k],k,r+2,n)),
+    p.makelist(defaults[1]^k,k,0,r) / q.makelist(defaults[1]^k,k,0,m)  )$
+
