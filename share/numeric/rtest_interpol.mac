@@ -1,6 +1,5 @@
 (kill (all),
- /*load (interpol),*/
- load("/home/xefe/proyectos/interpol/interpol.mac"),
+ load (interpol),
  save_tolerance : float_approx_equal_tolerance,
  float_approx_equal_tolerance : 1e-8,
  dat1: matrix([6.5,3],[1.8,-8],[9,2],[-2,4],[1/8,1],[9/12,3],[10,%pi]),
