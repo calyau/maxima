@@ -284,9 +284,12 @@ ratsimp(specint(t^(3/2)*hstruve[1](t^(1/2))*%e^(-p*t),t));
 	/(8*sqrt(%pi)*p^(9/2)) $
 
 /* Trivial result because %ibes is not bessel_i
+   After specializing the pattern match of arbpow1 we get a more
+   correct noun form. The result is adjusted. DK. 
  */ 
 specint(t*%ibes[0](a*t/2)*%ibes[1](a*t/2)*%e^(-p*t),t);
-%ibes[0](a*t/2)*%ibes[1](a*t/2)/p^2 $
+/* %ibes[0](a*t/2)*%ibes[1](a*t/2)/p^2 $ */
+specint(t*%ibes[0](a*t/2)*%ibes[1](a*t/2)*%e^(-p*t),t);
 
 /*
  * t^(3/4)*bessel_j(1/2,t)*bessel_j(1/4,t)
@@ -1037,9 +1040,12 @@ true;
 specint(t^(-3/2)*exp(-t^2/8/a)*exp(-p*t),t);
 'specint(t^(-3/2)*exp(-t^2/8/a)*exp(-p*t),t);
 
-/* fail-on-f35p147test */
+/* fail-on-f35p147test
+   Because we modified the construction of a noun form, we get a sligthly
+   different noun form as result. DK. */
 specint((2*t)^(-3/2)*exp(-2*sqrt(a)*sqrt(t))*exp(-p*t),t);
-'specint(exp(-p*t -2*sqrt(a)*sqrt(t))/(8*t^(3/2)),t);
+/*'specint(exp(-p*t -2*sqrt(a)*sqrt(t))/(8*t^(3/2)),t);*/
+'specint(%e^(-p*t-2*sqrt(a)*sqrt(t))/(2*sqrt(2)*t^(3/2)),t);
 
 /* fail-on-f29p146test */
 specint(t^(v-1)*exp(1/8/t)*exp(-p*t),t);
@@ -1064,8 +1070,12 @@ specint(8*t^1*exp(3*t)*bessel_y(8,7*sqrt(t))*exp(-p*t),t);
 specint(8*t^1*exp(3*t)*bessel_y(8,7*t^(3/2))*exp(-p*t),t);
 'specint(8*bessel_y(8,7*t^(3/2))*t*exp(-((p-3)*t)),t);
 
+/* The additionally phase factor in the calculation vanish, because of
+   the modificaton of the transformation to Bessel J in the code. DK.
+*/
 (assume(t>0,v2>1), radcan(specint(bessel_i(-v2,t)*exp(-p*t),t)));
-'specint((%e^((%i*%pi*v2-2*p*t)/2)*bessel_i(-v2,t))/(-1)^(v2/2),t);
+/*'specint((%e^((%i*%pi*v2-2*p*t)/2)*bessel_i(-v2,t))/(-1)^(v2/2),t);*/
+'(specint(bessel_i(-v2,t)*exp(-p*t),t));
 
 /* Verify fix for [ 1877522 ] erf(1.0),nouns wrong; causes plot2d(erf) to fail
  */
