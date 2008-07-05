@@ -123,7 +123,7 @@
       (dimension-function form result))))
 
 (defun $amatrixp (a)
-  (and (not (atom a)) (eq ($op a) '$amatrix)))
+  (and (not ($atom a)) (eq ($op a) '$amatrix)))
 
 (defun $nrows (a)
   (if ($amatrixp a)
