@@ -2,6 +2,46 @@
  * I release this file under the terms of the GNU General Public License, version 2
  */
 
+/* operations on amatrix objects */
+
+matchdeclare ([A%, A1%, A2%], amatrixp);
+matchdeclare ([X%, X1%, X2%], lambda ([e], not amatrixp (e)));
+
+/* troublesome ??: tellsimp (is (A%), amatrixmap (is, A%)); */
+
+tellsimpafter (A% < X%, amatrixmap (buildq ([X%], lambda ([a%], a% < X%)), A%));
+tellsimpafter (A% <= X%, amatrixmap (buildq ([X%], lambda ([a%], a% <= X%)), A%));
+tellsimpafter (A% = X%, amatrixmap (buildq ([X%], lambda ([a%], a% = X%)), A%));
+tellsimpafter (equal (A%, X%), amatrixmap (buildq ([X%], lambda ([a%], equal (a%, X%))), A%));
+tellsimpafter (notequal (A%, X%), amatrixmap (buildq ([X%], lambda ([a%], notequal (a%, X%))), A%));
+tellsimpafter (A% # X%, amatrixmap (buildq ([X%], lambda ([a%], a% # X%)), A%));
+tellsimpafter (A% >= X%, amatrixmap (buildq ([X%], lambda ([a%], a% >= X%)), A%));
+tellsimpafter (A% > X%, amatrixmap (buildq ([X%], lambda ([a%], a% > X%)), A%));
+
+tellsimpafter (X% < A%, amatrixmap (buildq ([X%], lambda ([a%], X% < a%)), A%));
+tellsimpafter (X% <= A%, amatrixmap (buildq ([X%], lambda ([a%], X% <= a%)), A%));
+tellsimpafter (X% = A%, amatrixmap (buildq ([X%], lambda ([a%], X% = a%)), A%));
+tellsimpafter (equal (X%, A%), amatrixmap (buildq ([X%], lambda ([a%], equal (X%, a%))), A%));
+tellsimpafter (notequal (X%, A%), amatrixmap (buildq ([X%], lambda ([a%], notequal (X%, a%))), A%));
+tellsimpafter (X% # A%, amatrixmap (buildq ([X%], lambda ([a%], X% # a%)), A%));
+tellsimpafter (X% >= A%, amatrixmap (buildq ([X%], lambda ([a%], X% >= a%)), A%));
+tellsimpafter (X% > A%, amatrixmap (buildq ([X%], lambda ([a%], X% > a%)), A%));
+
+tellsimpafter (A1% < A2%, amatrixmap ("<", A1%, A2%));
+tellsimpafter (A1% <= A2%, amatrixmap ("<=", A1%, A2%));
+tellsimpafter (A1% = A2%, amatrixmap ("=", A1%, A2%));
+tellsimpafter (equal (A1%, A2%), amatrixmap ('equal, A1%, A2%));
+tellsimpafter (notequal (A1%, A2%), amatrixmap ('notequal, A1%, A2%));
+tellsimpafter (A1% # A2%, amatrixmap ("#", A1%, A2%));
+tellsimpafter (A1% >= A2%, amatrixmap (">=", A1%, A2%));
+tellsimpafter (A1% > A2%, amatrixmap (">", A1%, A2%));
+
+tellsimpafter (not A%, amatrixmap ("not", A%));
+tellsimpafter (A1% and A2%, amatrixmap (lambda ([a1%, a2%], a1% and a2%), A1%, A2%));
+tellsimpafter (A1% or A2%, amatrixmap (lambda ([a1%, a2%], a1% or a2%), A1%, A2%));
+
+/* implementation */
+
 defstruct (amatrix (nr, r0, rinc, nc, c0, cinc, storage));
 
 elements (m) := create_list (get_element (m, i, j), i, 1, m@nr, j, 1, m@nc);
@@ -27,13 +67,13 @@ matchdeclare
    (a%, symbolp,
     [LI%, LI1%, LI2%], integer_listp,
     [R%, R1%, R2%], relationalp,
-    [B%, B1%, B2%], booleanp,
+    [B%, B1%, B2%], booleanexprp,
     [MB%, MB1%, MB2%], putative_boolean_amatrixp,
     [ii%, jj%, i0%, j0%, u%, v%, x%, y%], integerp);
 
 integer_listp (e) := not atom(e) and op(e) = "[" and every (integerp, e);
 relationalp (e) := not atom(e) and member (op(e), ["<", "<=", "=", "#", ">=", ">"]);
-booleanp (e) := not atom(e) and member (op(e), ["and", "or", "not"]);
+booleanexprp (e) := not atom(e) and member (op(e), ["and", "or", "not"]);
 putative_boolean_amatrixp (e) :=
   not atom(e)
     and op(e) = amatrix
@@ -160,153 +200,6 @@ tellsimpafter
 tellsimpafter
     (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [MB1%, MB2%],
      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, MB1%, MB2%));
-
-/* relational expression and integer or vv */
-
-matchdeclare (ROP%,
-    lambda ([e], member (e, '[?mlessp, ?mleqp, ?mequal, equal, notequal, ?mnotequal, ?mgeqp, ?mgreaterp])));
-matchdeclare ([A%, A1%, A2%], amatrixp);
-matchdeclare ([X%, X1%, X2%], lambda ([e], not amatrixp (e)));
-
-defrule (relexpr_r1, ROP% (A%, X%), amatrixmap (buildq ([ROP%, X%], lambda ([a%], is (ROP% (a%, X%)))), A%));
-defrule (relexpr_r2, ROP% (X%, A%), amatrixmap (buildq ([ROP%, X%], lambda ([a%], is (ROP% (X%, a%)))), A%));
-defrule (relexpr_r3, ROP% (A1%, A2%), amatrixmap (lambda ([a1%, a2%], is (ROP% (a1%, a2%))), A1%, A2%));
-
-relational_expression_rules : [relexpr_r1, relexpr_r2, relexpr_r3];
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [R%, jj%],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_flags_and_indices (u%, i0%, x%, v%, j0%, y%, a%, %%, [jj%])));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [ii%, R%],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_indices_and_flags (u%, i0%, x%, v%, j0%, y%, a%, [ii%], %%)));
-
-/* relational expression and 'all or vv */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [R%, all],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_flags_and_all (u%, i0%, x%, v%, j0%, y%, a%, %%)));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [all, R%],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_all_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%)));
-
-/* relational expression and list of integers or vv */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [R%, LI%],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_flags_and_indices (u%, i0%, x%, v%, j0%, y%, a%, %%, LI%)));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [LI%, R%],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_indices_and_flags (u%, i0%, x%, v%, j0%, y%, a%, LI%, %%)));
-
-/* relational expression and amatrix of booleans or vv */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [R%, MB%],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%, MB%)));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [MB%, R%],
-     (apply (apply1, cons (R%, relational_expression_rules)),
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, MB%, %%)));
-
-/* relational expressions both */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [R1%, R2%],
-     ([apply (apply1, cons (R1%, relational_expression_rules)),
-       apply (apply1, cons (R2%, relational_expression_rules))],
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%[1], %%[2])));
-
-/* boolean expression and integer or vv */
-
-matchdeclare (BOP%, lambda ([e], member (e, '[?mand, ?mor, ?mnot])));
-matchdeclare ([A%, A1%, A2%], amatrixp);
-matchdeclare ([X%, X1%, X2%], lambda ([e], not amatrixp (e)));
-
-defrule (boolexpr_r1, BOP% (A%, X%), amatrixmap (buildq ([BOP%, X%], lambda ([a%], is (BOP% (a%, X%)))), A%));
-defrule (boolexpr_r2, BOP% (X%, A%), amatrixmap (buildq ([BOP%, X%], lambda ([a%], is (BOP% (X%, a%)))), A%));
-defrule (boolexpr_r3, BOP% (A1%, A2%), amatrixmap (lambda ([a1%, a2%], is (BOP% (a1%, a2%))), A1%, A2%));
-
-boolean_expression_rules : [boolexpr_r1, boolexpr_r2, boolexpr_r3];
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [B%, jj%],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_flags_and_indices (u%, i0%, x%, v%, j0%, y%, a%, %%, [jj%])));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [ii%, B%],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_indices_and_flags (u%, i0%, x%, v%, j0%, y%, a%, [ii%], %%)));
-
-/* boolean expression and 'all or vv */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [B%, all],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_flags_and_all (u%, i0%, x%, v%, j0%, y%, a%, %%)));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [all, B%],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_all_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%)));
-
-/* boolean expression and list of integers or vv */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [B%, LI%],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_flags_and_indices (u%, i0%, x%, v%, j0%, y%, a%, %%, LI%)));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [LI%, B%],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_indices_and_flags (u%, i0%, x%, v%, j0%, y%, a%, LI%, %%)));
-
-/* boolean expression and amatrix of booleans or vv */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [B%, MB%],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%, MB%)));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [MB%, B%],
-     (apply (apply1, cons (B%, boolean_expression_rules)),
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, MB%, %%)));
-
-/* boolean expression and relational expression */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [B%, R%],
-     ([apply (apply1, cons (B%, boolean_expression_rules)),
-       apply (apply1, cons (R%, relational_expression_rules))],
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%[1], %%[2])));
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [R%, B%],
-     ([apply (apply1, cons (R%, relational_expression_rules)),
-       apply (apply1, cons (B%, boolean_expression_rules))],
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%[1], %%[2])));
-
-/* boolean expressions both */
-
-tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [B1%, B2%],
-     ([apply (apply1, cons (B1%, boolean_expression_rules)),
-       apply (apply1, cons (B2%, boolean_expression_rules))],
-      submatrix_by_flags_and_flags (u%, i0%, x%, v%, j0%, y%, a%, %%[1], %%[2])));
 
 simp : true;
 
