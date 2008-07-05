@@ -4,10 +4,8 @@
 
 wilcoxon (X, C) := block ([X1, X0, X10, R, n1, n0, Rsum, W],
 
-    amatrixmap (lambda ([c], c = 1), C),
-    X1 : X [%%, 1],
-    amatrixmap (lambda ([c], c = 0), C),
-    X0 : X [%%, 1],
+    X1 : X [C = 1, 1],
+    X0 : X [C = 0, 1],
     n1 : nrows (X1),
     n0 : nrows (X0),
     if n1 = 0 or n0 = 0

@@ -110,14 +110,16 @@
         (integerp cinc)
         (symbolp storage)
         (arrayp (get storage 'storage_array)))
-      (dim-$matrix
-        (simplifya
-          ($genmatrix
-            `((lambda) ((mlist) i j) (mfuncall '$get_element ,form i j))
-            ($@-function form '$nr)
-            ($@-function form '$nc))
-          t)
-        result)
+      (if (or (= nr 0) (= nc 0))
+        (dimension-function '(($amatrix simp)) result)
+        (dim-$matrix
+          (simplifya
+            ($genmatrix
+              `((lambda) ((mlist) i j) (mfuncall '$get_element ,form i j))
+              ($@-function form '$nr)
+              ($@-function form '$nc))
+            t)
+          result))
       (dimension-function form result))))
 
 (defun $amatrixp (a)
