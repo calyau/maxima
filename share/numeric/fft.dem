@@ -35,7 +35,8 @@ plinit(nn):=(block([i:?runtime()],?sstatus(?random,i)),
 plinit(8)$
 pl():=block([xaxis:false,yaxis:false,noprint:true,
 	     dateplot:false,equalscale:true],
-	    rearray(fr,2**n-1),rearray(fi,2**n-1),
+        apply (rearray, ['fr, 2^n - 1]),
+        apply (rearray, ['fi, 2^n - 1]),
 	    fillarray(fr,[0.0]),fillarray(fi,[0.0]),
 	    thru 2 do if random(2)=0 
 			 then fr[random(2**n)]:(-1.0)^random(2)
