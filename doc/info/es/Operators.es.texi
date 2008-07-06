@@ -992,7 +992,7 @@ de argumentos.
 (%o2)                       c + b + a
 @end example
 
-code{local} define una funci@'on como local.
+@code{local} define una funci@'on como local.
 
 @c ===beg===
 @c foo (x) := 1 - x;
