@@ -1054,7 +1054,7 @@
 (defun sum-c*logs (c*logs)
    (if (null c*logs) (rczero)
       (let ((ps (cddr (car c*logs))))
-	 (psplus (make-ps ps (ncons (term (rcmone) (caar c*logs))))
+	 (psplus (make-ps ps (ncons (term (ps-le ps) (caar c*logs))))
 		 (sum-c*logs (cdr c*logs))))))
 
 ;; Calculatest the limit of a series at the expansion point. Returns one of

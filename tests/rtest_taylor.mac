@@ -370,12 +370,6 @@ x$
 taylor(acosh(x),x,1,1) - taylor(logarc(acosh(x)),x,1,1);
 0$
 
-/* SF bug 807275 */
-
-/*
-taylor(log(cos(th)),th,%pi/2,2);
- - log(2) + log( - 2 * th + %pi) - (((th - ((%pi)/2))^2)/6)$ */
-
 /*  SF bug 774065 */
 
 taylor(x/log(x),x,inf,1);
@@ -390,12 +384,6 @@ taylor(x^y,x,0,1,y,0,1);
 taylor(taylor(x^y,y,0,1),x,0,1);
 1 + log(x) * y$ */
 
-/* SF bug  752332 */
-
-/*
-taylor(atan(1/sqrt(1-b))/sqrt(1-b),b,1,2);
- - ((%i * %pi)/(2 * sqrt(b - 1))) - 1 - ((b - 1)/3) - (((b - 1)^2)/5)$ 
-*/
 
 /* SF bug  701628*/
 
@@ -474,3 +462,13 @@ taylor(rat(factor(1+x)),x,0,1);
 /* [ 807275 ] Taylor Illegal log kernel: log(cos(th)) @ %pi/2 */
 taylor(log(cos(th)),th,%pi/2,2);
 log((2*th-%pi)/2)+log(-1)-(th-%pi/2)^2/6$
+
+/* SF bug  752332 
+taylor(atan(1/sqrt(1-b))/sqrt(1-b),b,1,2);
+((%i * %pi)/(2 * sqrt(b - 1))) - 1 - ((b - 1)/3) - (((b - 1)^2)/5)$ 
+*/
+
+/* [ 1358239 ] taylor(exp(sqrt(log(x)*log(log(x))))@inf > stack overflow */
+taylor(exp(sqrt(log(x)*log(log(x)))), x, inf, 2);
+exp(sqrt(log(x))*sqrt(log(log(x))));
+
