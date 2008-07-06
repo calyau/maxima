@@ -1,4 +1,4 @@
-@c English version 1.3
+@c English version 1.6
 @menu
 * Introducci@'on a numericalio::
 * Funciones y variables para entrada y salida en formato texto::
@@ -88,7 +88,7 @@ indique la variable global @code{assume_external_byte_order}. Por defecto, @code
 los almacena con el byte m@'as significativo primero.
 
 Cualesquiera otros tipos de decimales son transformados a 8 bytes. El paquete
-@code{numericalio} no puede leer ni escribir datos no num@'ericos.
+@code{numericalio} no puede leer ni escribir datos binarios no num@'ericos.
 
 Ciertos entornos Lisp no reconocen valores especiales del est@'andar IEEE 754
 (m@'as o menos infinito, valores no num@'ericos, valores no normales). El efecto

@@ -1,4 +1,4 @@
-@c english version 1.49
+@c english version 1.50
 @menu
 * n-arios::
 * no-fijos::
@@ -925,7 +925,10 @@ valores de argumentos, si existen, se asignan a @var{x_n} en forma de lista.
 
 Todas las definiciones de funciones aparecen en el mismo espacio de
 nombres; definiendo una funci@'on @code{f} dentro de otra funci@'on @code{g}
-no limita el alcance de @code{f} a @code{g}.
+no limita autom@'aticamente el alcance de @code{f} a @code{g}.
+No obstante, @code{local(f)} hace que la funci@'on @code{f}
+sea efectiva solamente dentro del bloque o empaquetado de expresiones en la
+que aparece @code{local}.
 
 Si un argumento formal @var{x_k} es un s@'{@dotless{i}}mbolo afectado por el
 operador comilla (expresi@'on nominal), la funci@'on definida por @code{:=} no eval@'ua el
@@ -989,7 +992,26 @@ de argumentos.
 (%o2)                       c + b + a
 @end example
 
+code{local} define una funci@'on como local.
+
+@c ===beg===
+@c foo (x) := 1 - x;
+@c foo (100);
+@c block (local (foo), foo (x) := 2 * x, foo (100));
+@c foo (100);
+@c ===end===
+@example
+(%i1) foo (x) := 1 - x;
+(%o1)                    foo(x) := 1 - x
+(%i2) foo (100);
+(%o2)                         - 99
+(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
+(%o3)                          200
+(%i4) foo (100);
+(%o4)                         - 99
+@end example
 @end deffn
+
 
 @deffn {Operador} =
 @ifinfo

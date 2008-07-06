@@ -1,4 +1,4 @@
-@c English version 1.10
+@c English version 1.12
 @menu
 * Introducci@'on a las funciones e integrales el@'{@dotless{i}}pticas::
 * Funciones y variables para funciones el@'{@dotless{i}}pticas::
@@ -248,10 +248,10 @@ Integral el@'{@dotless{i}}ptica incompleta de segunda especie, definida como
 @ifinfo
 @math{elliptic_e(phi, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
-
 @tex
 $$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
+
 V@'eanse tambi@'en @code{elliptic_e} y @code{elliptic_ec}.
 
 @end deffn
@@ -263,19 +263,18 @@ Integral el@'{@dotless{i}}ptica incompleta de segunda especie, definida como
 @ifhtml
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
 
-donde @math{tau = sn(u,m)} 
+donde @math{tau = sn(u,m)}. 
 @end ifhtml
 @ifinfo
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
 
-donde @math{tau = sn(u,m)} 
+donde @math{tau = sn(u,m)}.
 @end ifinfo
 @tex
 $$\int_0^u {\rm dn}(v, m)^2 dv  = \int_0^\tau \sqrt{{1-m t^2}\over{1-t^2}} dt$$
 
-donde $\tau = {\rm sn}(u, m)$
+donde $\tau = {\rm sn}(u, m)$.
 @end tex
-
 
 Esto se relaciona con @code{elliptic_e} mediante
 
@@ -286,9 +285,9 @@ Esto se relaciona con @code{elliptic_e} mediante
 @math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}
 @end ifinfo
 @tex
-$$EU(u,m) = E(\phi, m)$$
+$$E(u,m) = E(\phi, m)$$
 
-donde $\phi = \sin^{-1} {\rm sn}(u, m)$
+donde $\phi = \sin^{-1} {\rm sn}(u, m)$.
 @end tex
 
 V@'ease tambi@'en @code{elliptic_e}.

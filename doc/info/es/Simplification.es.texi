@@ -1,4 +1,4 @@
-@c version 1.18
+@c version 1.20
 @menu
 * Funciones y variables para simplificaci@'on::  
 @end menu
@@ -262,6 +262,8 @@ con argumentos num@'ericos se eval@'uen como decimales de punto flotante.
 Tambi@'en hace que las variables de una expresi@'on a las cuales se les ha
 asignado un n@'umero sean sustituidas por sus valores.
 Adem@'as, activa la variable @code{float}.
+
+V@'ease tambi@'en @code{%enumer}.
 @end defvr
 
 @deffn {Funci@'on} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
@@ -323,7 +325,7 @@ Si @code{%e_to_numlog} vale @code{true},
 Si @code{radexpand} vale @code{false}, ciertas transformaciones se inhiben;
 @code{radcan (sqrt (1-x))} se mantiene como @code{sqrt (1-x)}
 y no se reduce a @code{%i sqrt (x-1)}, o 
-@code{radcan (sqrt (x^2 - 2*x + 11))} se mantiene como  @code{sqrt (x^2 - 2*x + 1)}
+@code{radcan (sqrt (x^2 - 2*x + 1))} se mantiene como  @code{sqrt (x^2 - 2*x + 1)}
 sin reducirse a@code{x - 1}.
 
 @c MERGE EXAMPLES INTO THIS FILE

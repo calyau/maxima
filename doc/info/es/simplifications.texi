@@ -1,4 +1,4 @@
-@c english version 1.6
+@c english version 1.8
 @menu
 * Introducci@'on a simplification::
 * Funciones y variables para simplification::

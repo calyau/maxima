@@ -1,4 +1,4 @@
-@c version 1.36
+@c version 1.38
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -109,8 +109,8 @@ Si @code{erfflag} vale @code{false}, la funci@'on @code{risch} no introduce la f
 
 @end defvr
 
-@deffn {Funci@'on} ilt (@var{expr}, @var{t}, @var{s})
-Calcula la transformada inversa de Laplace de @var{expr} con respecto de @var{t} y par@'ametro @var{s}. El argumento  @var{expr} debe ser una fracci@'on de polinomios cuyo denominador tenga s@'olo factores lineales y cuadr@'aticos. Utilizando las funciones @code{laplace} y @code{ilt}, junto con las funciones @code{solve} o @code{linsolve}, el usuario podr@'a resolver ciertas ecuaciones integrales.
+@deffn {Funci@'on} ilt (@var{expr}, @var{s}, @var{t})
+Calcula la transformada inversa de Laplace de @var{expr} con respecto de @var{s} y par@'ametro @var{t}. El argumento  @var{expr} debe ser una fracci@'on de polinomios cuyo denominador tenga s@'olo factores lineales y cuadr@'aticos. Utilizando las funciones @code{laplace} y @code{ilt}, junto con las funciones @code{solve} o @code{linsolve}, el usuario podr@'a resolver ciertas ecuaciones integrales.
 
 @example
 (%i1) 'integrate (sinh(a*x)*f(t-x), x, 0, t) + b*f(t) = t**2;

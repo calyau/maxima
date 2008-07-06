@@ -1,4 +1,4 @@
-@c english version 1.62
+@c english version 1.63
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -1183,9 +1183,9 @@ Si @code{exptsubst} vale @code{true} permite la sustituci@'on @code{y} por @code
 
 @deffn {Funci@'on} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 @code{freeof (@var{x_1}, @var{expr})}
-Devuelve @code{true}
-si ninguna subexpresi@'on de  @var{expr} es igual a @var{x_1}
-o si  @var{x_1} aparece como variable muda en @var{expr},
+Devuelve @code{true} si ninguna subexpresi@'on de @var{expr} coincide con @var{x_1},
+o si @var{x_1} aparece como variable muda en @var{expr}, o si @var{x_1} no es ni
+una forma nominal ni verbal de cualesquiera operadores presentes en @var{expr},
 devolviendo @code{false} en otro caso.
 
 La llamada @code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}

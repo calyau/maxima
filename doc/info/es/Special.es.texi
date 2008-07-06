@@ -1,4 +1,4 @@
-@c version 1.33
+@c version 1.36
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones y variables para las funciones especiales::
@@ -83,17 +83,15 @@ La instrucci@'on @code{load ("asympa")} carga este paquete.
 
 @end deffn
 
-@deffn {Funci@'on} bessel (@var{z}, @var{a}) 
+@deffn {Funci@'on} bessel (@var{z}, @var{order}) 
 Funci@'on de Bessel de primera especie.
 
-Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (@var{z}, @var{a})} en su lugar.
+Esta funci@'on ha sido eliminada. Util@'{@dotless{i}}cese @code{bessel_j (@var{order}, @var{z})} en su lugar.
 
 @end deffn
 
 @deffn {Funci@'on} bessel_j (@var{v}, @var{z})
 Funci@'on de Bessel de primera especie de orden @math{v} y argumento @math{z}.
-
-La funci@'on @code{bessel_j} calcula el arreglo @code{besselarray} tal que @code{besselarray [i] = bessel_j [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
 
 La funci@'on @code{bessel_j} se define como
 
@@ -132,9 +130,6 @@ aunque la serie infinita no se utiliza en los c@'alculos.
 @deffn {Funci@'on} bessel_y (@var{v}, @var{z})
 Funci@'on de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
 
-La funci@'on @code{bessel_y} calcula el arreglo @code{besselarray} tal que
-@code{besselarray [i] = bessel_y [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
-
 La funci@'on @code{bessel_y} se define como
 
 @ifhtml
@@ -163,9 +158,6 @@ si @math{v} no es un entero.  En caso de que  @math{v} sea un entero @math{n}, s
 
 @deffn {Funci@'on} bessel_i (@var{v}, @var{z})
 Funci@'on modificada de Bessel de primera especie de orden @math{v} y argumento @math{z}.
-
-La funci@'on @code{bessel_i} calcula el arreglo @code{besselarray} tal que
-@code{besselarray [i] = bessel_i [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
 
 La funci@'on @code{bessel_i} se define como
 
@@ -203,9 +195,6 @@ aunque la serie infinita no se utiliza en los c@'alculos.
 
 @deffn {Funci@'on} bessel_k (@var{v}, @var{z})
 Funci@'on modificada de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
-
-La funci@'on @code{bessel_k} calcula el arreglo @code{besselarray} tal que
-@code{besselarray [i] = bessel_k [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
 
 La funci@'on @code{bessel_k} se define como
 
