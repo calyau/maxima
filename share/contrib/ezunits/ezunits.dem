@@ -1,0 +1,104 @@
+if get ('ezunits, 'version) = false then load (ezunits) else 'already_loaded;
+
+"SI units"$
+
+foo : 10 ` m;
+
+qty (foo);
+
+units (foo);
+
+dimensions (foo);
+
+"So-called customary units"$
+
+bar : x ` acre;
+
+dimensions (bar);
+
+fundamental_units (bar);
+
+"Unit conversions"$
+
+100 ` degC `` degF;
+
+-40 ` degF `` degC;
+
+1 ` acre*ft `` m^3;
+
+"Arithmetic operations on dimensional quantities"$
+
+100 ` m + 100 ` ft;
+
+(100 ` m + 100 ` ft) `` ft;
+
+(100 ` m + 100 ` ft) `` m;
+
+((10 ` acre) * (10 ` ft)) `` m^3;
+
+quux : (144 ` Btu/h) / (48 ` ft^2);
+
+dimensions (quux);
+
+fundamental_units (quux);
+
+quux `` fundamental_units (quux);
+
+foo^2;
+
+dimensions (foo^2);
+
+foo^2 `` acre;
+
+bar `` m^2;
+
+sqrt (bar);
+
+dimensions (sqrt (bar));
+
+"Units ad hoc"$
+
+3 ` sheep + 8 ` goat + 1 ` horse;
+
+%, sheep = 3*goat, horse = 10*goat;
+
+1000`gallon/fortnight;
+
+%, fortnight = 14*d;
+
+% `` l/h;
+
+"Declared unit conversions"$
+
+declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*kWh);
+
+1 ` MMBtu `` MWh;
+
+1 ` MMBtu/d `` kW;
+
+"Stefan-Boltzmann constant in customary units"$
+
+56697/10000/10^8 ` W/m^2/K^4;
+
+% `` Btu/h/ft^2/R^4;
+
+"Velocity of sound in helium at 27 C, He(Cp/Cv) = 5/3, 4 g/mol"$
+
+if get ('physical_constants, 'version) = false then load (physical_constants) else 'already_loaded;
+
+v : sqrt (5/3 * %R/(4 ` g/mol) * (27 ` degC `` K));
+
+get (%R, 'description);
+
+constvalue (%R);
+
+constvalue (v);
+
+dimensions (constvalue (v));
+
+fundamental_units (constvalue (v));
+
+constvalue (v) `` %;
+
+%, numer;
+
