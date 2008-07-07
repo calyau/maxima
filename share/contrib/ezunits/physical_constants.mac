@@ -17,6 +17,10 @@
       print ("\\end{document}"));
 */
 
+qput (physical_constants, "experimental, usable", version);
+
+if get ('ezunits, 'version) = false then load (ezunits) else 'already_loaded;
+
 declare (physical_constant, feature);
 
 /* UNIVERSAL */
