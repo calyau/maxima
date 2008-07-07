@@ -1,4 +1,4 @@
-@c version 1.29
+@c version 1.30
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2548,8 +2548,8 @@ Dibuja elipses y c@'{@dotless{i}}rculos en 2D.
 
 @code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
 dibuja una elipse de centro @code{[@var{xc}, @var{yc}]} con semiejes horizontal y vertical
-@var{a} y @var{b}, respectivamente, desde el @'angulo @var{ang1} hasta el @'angulo
-@var{ang2}.
+@var{a} y @var{b}, respectivamente, comenzando en el @'angulo @var{ang1} y trazando un arco
+de amplitud igual al @'angulo @var{ang2}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 

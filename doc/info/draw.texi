@@ -2949,8 +2949,8 @@ Draws ellipses and circles in 2D.
 
 @code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
 plots an ellipse centered at @code{[@var{xc}, @var{yc}]} with horizontal and vertical
-semi axis @var{a} and @var{b}, respectively, from angle @var{ang1} to angle
-@var{ang2}.
+semi axis @var{a} and @var{b}, respectively, starting at angle @var{ang1} with an amplitude
+equal to angle @var{ang2}.
 
 This object is affected by the following @i{graphic options}: @code{nticks}, 
 @code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
