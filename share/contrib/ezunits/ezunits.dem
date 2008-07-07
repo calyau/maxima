@@ -20,11 +20,25 @@ fundamental_units (bar);
 
 "Unit conversions"$
 
+1 ` ft `` m;
+
+%, numer;
+
+1 ` kg `` lbm;
+
+%, numer;
+
+1 ` W `` Btu/h;
+
+%, numer;
+
 100 ` degC `` degF;
 
 -40 ` degF `` degC;
 
 1 ` acre*ft `` m^3;
+
+%, numer;
 
 "Arithmetic operations on dimensional quantities"$
 
@@ -32,9 +46,15 @@ fundamental_units (bar);
 
 (100 ` m + 100 ` ft) `` ft;
 
+%, numer;
+
 (100 ` m + 100 ` ft) `` m;
 
+%, numer;
+
 ((10 ` acre) * (10 ` ft)) `` m^3;
+
+%, numer;
 
 quux : (144 ` Btu/h) / (48 ` ft^2);
 
@@ -50,7 +70,11 @@ dimensions (foo^2);
 
 foo^2 `` acre;
 
+%, numer;
+
 bar `` m^2;
+
+%, numer;
 
 sqrt (bar);
 
@@ -82,6 +106,8 @@ declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*k
 
 % `` Btu/h/ft^2/R^4;
 
+%, numer;
+
 "Velocity of sound in helium at 27 C, He(Cp/Cv) = 5/3, 4 g/mol"$
 
 if get ('physical_constants, 'version) = false then load (physical_constants) else 'already_loaded;
@@ -94,9 +120,9 @@ constvalue (%R);
 
 constvalue (v);
 
-dimensions (constvalue (v));
+dimensions (v);
 
-fundamental_units (constvalue (v));
+fundamental_units (v);
 
 constvalue (v) `` %;
 

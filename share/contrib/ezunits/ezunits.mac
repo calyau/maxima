@@ -14,7 +14,7 @@ infix ("``", 117, 117);
 declare (constvalue, evfun);
 
 constvalue (e) :=
-  if atom(e)
+  if mapatom(e)
     then
      (if symbolp(e)
         then (get (e, 'constvalue), if %% # false then %% else e)
@@ -219,7 +219,7 @@ conversions_derived_si :
 conversions_customary_si :
    {
 
-    ft = m/(328083/100000),
+    ft = 3048/10000 * m,
     lbm = kg/(2205/1000),
     min = 60*s,
     Btu = 1055*J,
@@ -325,7 +325,7 @@ defrule
     block
       ([ff%2 : ev (ff%, args (known_unit_conversions), infeval)],
         if ff%2 # ff% then dimensions (ff%2) else 'dimensions (ff%)));
-defrule (rgg, 'dimensions (gg%), dimensions (second (gg%)));
+defrule (rgg, 'dimensions (gg%), (constvalue (first (gg%)), if unitp (%%) then dimensions (second (%%)) else 1) * dimensions (second (gg%)));
 matchdeclare (aa%, all, bb%, constantp_not1);
 defrule (rhh, 'dimensions (aa%^bb%), dimensions (aa%) ^ bb%);
 defrule (rii, 'dimensions (ii%), map (dimensions, ii%));
