@@ -1,4 +1,4 @@
-@c english version 1.50
+@c english version 1.53
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -233,7 +233,26 @@ Se construye a continuaci@'on un sistema de ecuaciones con algunas variables o e
 (%o4)    map(=, '([a, b, c - b - a]), [a, b, c - b - a])
 @end example
 
+Dada una funci@'on con varios argumentos, se crea otra funci@'on
+en la cual algunos argumentos son fijos.
+
+@c ===beg===
+@c curry (f, [a]) :=
+@c         buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+@c by3 : curry ("*", 3);
+@c by3 (a + b);
+@c ===end===
+
+@example
+(%i1) curry (f, [a]) :=
+        buildq ([f, a], lambda ([[x]], apply (f, append (a, x))))$
+(%i2) by3 : curry ("*", 3);
+(%o2)        lambda([[x]], apply(*, append([3], x)))
+(%i3) by3 (a + b);
+(%o3)                       3 (b + a)
+@end example
 @end deffn
+
 
 
 @deffn {Funci@'on} macroexpand (@var{expr})
@@ -457,9 +476,18 @@ La funci@'on @code{block} eval@'ua @var{expr_1}, ..., @var{expr_n} secuencialmen
 
 La funci@'on @code{block} guarda los valores actuales de las variables @var{v_1}, ..., @var{v_m}, si los tienen, a la entrada del bloque y luego las eval@'ua a s@'{@dotless{i}} mismas, es decir les saca el valor temporalmente. A las variables locales se les puede asignar cualquier valor dentro del bloque, pero al salir de @'este, los valores inicialmente almacenados quedan restaurados, al tiempo que los asignados dentro del bloque se pierden.
 
-Un @code{block} puede aparecer dentro de otro @code{block}. Las variables locales se inicializan cada vez que se entra dentro de un nuevo bloque. Las variables locales de un bloque se consideran globales dentro de otro anidado dentro del primero. Si una variable es no local dentro de un bloque, su valor es el que le corresponde en el bloque superior. Este criterio se conoce con el nombre de "alcance din@'amico".
+La declaraci@'on @code{local(@var{v_1}, ..., @var{v_m})} dentro de un bloque
+almacena las propiedades asociadas a los s@'{@dotless{i}}mbolos @var{v_1}, ..., @var{v_m},
+borra cualesquiera otras propiedades antes de evaluar las expresiones y
+restaura las propiedades guardadas antes de abandonar el bloque.
+Algunas declaraciones, como @code{:=}, @code{array}, @code{dependencies}, @code{atvalue},
+@code{matchdeclare}, @code{atomgrad}, @code{constant}, @code{nonscalar}, @code{assume}
+y otras se implementan como propiedades de s@'{@dotless{i}}mbolos.
+El efecto producido por @code{local} consiste en hacer que tales declaraciones tengan
+efecto s@'olo dentro del bloque, en otro caso las declaraciones dentro del bloque 
+tendr@'{@dotless{i}}an un efecto global que afectar@'{@dotless{i}}an al exterior de @code{block}.
 
-Si se quieren guardar y restaurar otras propiedades locales adem@'as del @code{valor} de las variables, por ejemplo @code{arreglo} (excepto arreglos completos), @code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant} y @code{nonscalar} entonces deber@'{@dotless{i}}a usarse la funci@'on @code{local} dentro del bloque, siendo sus argumentos los nombres de las variables.
+Un @code{block} puede aparecer dentro de otro @code{block}. Las variables locales se inicializan cada vez que se entra dentro de un nuevo bloque. Las variables locales de un bloque se consideran globales dentro de otro anidado dentro del primero. Si una variable es no local dentro de un bloque, su valor es el que le corresponde en el bloque superior. Este criterio se conoce con el nombre de "alcance din@'amico".
 
 El valor del bloque es el de la @'ultima sentencia o el argumento de la funci@'on @code{return}, que puede utilizarse para salir del bloque. La funci@'on @code{go} puede usarse para transferir el control a la sentencia del bloque que est@'e etiquetada con el argumento de @code{go}. Para etiquetar una sentencia basta que vaya precedida de un argumento at@'omico como cualquier otra sentencia dentro del bloque. Por ejemplo, @code{block ([x], x:1, tururu, x: x+1, ..., go(tururu), ...)}.  El argumento de @code{go} debe ser el nombre de una etiqueta colocada dentro del bloque. No se puede utilzar @code{go} para trasladarse a una etiqueta de un bloque que no sea el que contenga a @code{go}.
 
@@ -558,7 +586,10 @@ permite calcular la funci@'on.
 
 Todas las definiciones de funciones aparecen en el mismo espacio
 de nombres; definiendo una funci@'on @code{f} dentro de otra
-funci@'on @code{g} no limita el alcance de @code{f} a @code{g}.
+funci@'on @code{g} no limita autom@'aticamente el alcance de @code{f} a @code{g}.
+Sin embargo, @code{local(f)} hace que la definici@'on de la funci@'on @code{f}
+sea efectiva s@'olo dentro del bloque o expresi@'on compuesta en el que
+aparece @code{local}.
 
 Si un argumento formal @var{x_k} es un s@'{@dotless{i}}mbolo afectado
 por el operador comilla simple (expresi@'on nominal), la funci@'on definida por
@@ -1238,15 +1269,47 @@ la funci@'on en forma de lista.
 
 @deffn {Funci@'on} local (@var{v_1}, ..., @var{v_n})
 
-Declara las variables  @var{v_1}, ..., @var{v_n} locales respecto de todas las propiedades en la sentencia en la que aparece esta funci@'on.
+La declaraci@'on @code{local(@var{v_1}, ..., @var{v_m})} dentro de un bloque
+almacena las propiedades asociadas a los s@'{@dotless{i}}mbolos @var{v_1}, ..., @var{v_m},
+borra cualesquiera otras propiedades antes de evaluar las expresiones y
+restaura las propiedades guardadas antes de abandonar el bloque.
+
+Algunas declaraciones, como @code{:=}, @code{array}, @code{dependencies}, @code{atvalue},
+@code{matchdeclare}, @code{atomgrad}, @code{constant}, @code{nonscalar}, @code{assume}
+y otras se implementan como propiedades de s@'{@dotless{i}}mbolos.
+El efecto producido por @code{local} consiste en hacer que tales declaraciones tengan
+efecto s@'olo dentro del bloque, en otro caso las declaraciones dentro del bloque 
+tendr@'{@dotless{i}}an un efecto global que afectar@'{@dotless{i}}an al exterior de @code{block}.
+
+La funci@'on @code{local} s@'olo puede usarse dentro de un @code{block}, en el
+cuerpo de definici@'on de funciones o de expresiones @code{lambda} o en la
+funci@'on @code{ev}, si@'endole permitido aparecer una s@'ola vez en cada una de ellas.
 
 La funci@'on @code{local} no eval@'ua sus argumentos y devuelve @code{done}.
 
-La funci@'on @code{local} s@'olo puede usarse dentro de un @code{block}, en el cuerpo de definici@'on de funciones o de expresiones @code{lambda} o en la funci@'on @code{ev}, si@'endole permitido aparecer una s@'ola vez en cada una de ellas.
+Ejemplo:
 
-La funci@'on @code{local} es independiente de @code{context}.
+Definici@'on local de una funci@'on.
 
+@c ===beg===
+@c foo (x) := 1 - x;
+@c foo (100);
+@c block (local (foo), foo (x) := 2 * x, foo (100));
+@c foo (100);
+@c ===end===
+@example
+(%i1) foo (x) := 1 - x;
+(%o1)                    foo(x) := 1 - x
+(%i2) foo (100);
+(%o2)                         - 99
+(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
+(%o3)                          200
+(%i4) foo (100);
+(%o4)                         - 99
+@end example
 @end deffn
+
+
 
 @defvr {Variable opcional} macroexpansion
 Valor por defecto: @code{false}
