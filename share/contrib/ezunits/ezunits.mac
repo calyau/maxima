@@ -4,6 +4,8 @@
  * GNU General Public License, version 2.
  */
 
+qput (ezunits, "experimental, usable", version);
+
 load ("ezunits.lisp");
 
 infix ("`", 118, 118);
@@ -94,11 +96,13 @@ matchdeclare
     ccn1%, constantp_not1,
     mm%, mult_expr_nontrivialconstfactorsp,
     nd%, nondimensional,
+    pp%, lambda ([e], not atom(e) and op(e) = "+"),
     uu%, unitp,
     xx%, nonconstantp);
 
 simp: false$
-tellsimpafter (uu% `` nd%, convert_units [units(uu%), nd%] (qty(uu%)) ` nd%);
+tellsimp (uu% `` nd%, convert_units [units(uu%), nd%] (qty(uu%)) ` nd%);
+tellsimp (pp% `` nd%, apply ("+", map (buildq ([nd%], lambda ([e], e `` nd%)), args (pp%))));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (nd% * uu%, multiply_with_units (nd%, uu%));
 tellsimpafter (nd% + uu%, add_with_units (nd%, uu%));
