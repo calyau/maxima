@@ -195,49 +195,49 @@
                      (>= val 0 )
                      (<= val 180 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "rot_vertical must be angle in [0, 180]")))
+                (merror "draw: rot_vertical must be angle in [0, 180]")))
       ($rot_horizontal ; in range [0, 360]
             (setf val (convert-to-float val))
             (if (and (numberp val)
                      (>= val 0 )
                      (<= val 360 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "rot_horizontal must be angle in [0, 360]")))
+                (merror "draw: rot_horizontal must be angle in [0, 360]")))
       ($fill_density ; in range [0, 1]
             (setf val (convert-to-float val))
             (if (and (numberp val)
                      (>= val 0 )
                      (<= val 1 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "fill_density must be a number in [0, 1]")))
+                (merror "draw: fill_density must be a number in [0, 1]")))
       (($line_width $head_length $head_angle $eps_width $eps_height
         $xaxis_width $yaxis_width $zaxis_width) ; defined as positive numbers
             (setf val (convert-to-float val))
             (if (and (numberp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Non positive number: ~M " val)))
+                (merror "draw: Non positive number: ~M " val)))
       ($xyplane ; defined as real number or false
             (setf val (convert-to-float val))
             (if (or (numberp val)
                     (null val ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Illegal xyplane allocation: ~M " val)))
+                (merror "draw: illegal xyplane allocation: ~M " val)))
       ($point_size ; defined as non negative numbers
             (setf val (convert-to-float val))
             (if (and (numberp val)
                      (>= val 0 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Negative number: ~M " val)))
+                (merror "draw: negative number: ~M " val)))
       ($points_joined ; defined as true, false or $impulses
             (if (member val '(t nil $impulses))
               (setf (gethash opt *gr-options*) val)
-              (merror "Illegal points_joined option: ~M " val)) )
+              (merror "draw: nllegal points_joined option: ~M " val)) )
       (($line_type $xaxis_type $yaxis_type $zaxis_type) ; defined as $solid or $dots
             (case val
                ($solid (setf (gethash opt *gr-options*) 1))
                ($dots  (setf (gethash opt *gr-options*) 0))
-               (otherwise  (merror "Illegal line type: ~M" val))) )
+               (otherwise  (merror "draw: illegal line type: ~M" val))) )
       ($point_type ; numbers >= -1 or shape names
             (cond
               ((and (integerp val) (>= val -1 ))
@@ -248,13 +248,13 @@
                                  $filled_down_triangle $diamant $filled_diamant)))
                     (if (member val shapes)
                         (setf (gethash opt *gr-options*) (- (position val shapes) 1))
-                        (merror "Illegal point type: ~M " val))))) )
+                        (merror "draw: illegal point type: ~M " val))))) )
       (($columns $nticks $adapt_depth $pic_width $pic_height     ; defined as positive integers
         $xu_grid $yv_grid $delay $x_voxel $y_voxel $z_voxel $font_size)
             (if (and (integerp val)
                      (> val 0 ))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Non positive integer: ~M " val)))
+                (merror "draw: non positive integer: ~M " val)))
       ($contour_levels    ; positive integer, increment or set of points
             (cond ((and (integerp val) (> val 0 ))
                     (setf (gethash opt *gr-options*) val))
@@ -266,7 +266,7 @@
                                     (< step (- end ini)))
                                 (setf (gethash opt *gr-options*) (format nil "incremental ~a,~a,~a" ini step end)))
                               (t
-                                (merror "Illegal contour level incremental description: ~M " val))) ))
+                                (merror "draw: illegal contour level incremental description: ~M " val))) ))
                   ((and ($setp val) (not ($emptyp val)))
                      (let ((pts (map 'list #'convert-to-float (rest val)))
                            (str "discrete ") )
@@ -274,7 +274,7 @@
                          (setf str (concatenate 'string str " " (format nil "~a," num))))
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
-                    (merror "Unknown contour level description: ~M " val))))
+                    (merror "draw: unknown contour level description: ~M " val))))
       (($transparent $border $logx $logy $logz $head_both $grid 
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
         $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ztics_rotate
@@ -282,7 +282,7 @@
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Non boolean value: ~M " val)))
+                (merror "draw: non boolean value: ~M " val)))
       ($filled_func ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
       ($enhanced3d  ; true or an expression
@@ -332,27 +332,27 @@
                                          (string-right-trim "," str)
                                          ")")))))
                   (t
-                     (merror "Illegal tics allocation: ~M" val)) ))
+                     (merror "draw: illegal tics allocation: ~M" val)) ))
       ($terminal ; defined as screen, png, jpg, gif, eps, eps_color or wxt
             (if (member val '($screen $png $jpg $gif $eps $eps_color $wxt $animated_gif $aquaterm))
                 (setf (gethash opt *gr-options*) val)
-                (merror "This is not a terminal: ~M" val)))
+                (merror "draw: this is not a terminal: ~M" val)))
       ($head_type ; defined as $filled, $empty and $nofilled
             (if (member val '($filled $empty $nofilled))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Illegal head type for vectors: ~M" val)))
+                (merror "draw: illegal head type for vectors: ~M" val)))
       ($contour ; defined as $none, $base, $surface, $both and $map
             (if (member val '($base $surface $both $map))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Illegal contour allocation: ~M" val)))
+                (merror "draw: illegal contour allocation: ~M" val)))
       ($label_alignment ; defined as $center, $left and $right
             (if (member val '($center $left $right))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Illegal label alignment: ~M" val)))
+                (merror "draw: illegal label alignment: ~M" val)))
       ($label_orientation ; defined as $horizontal and $vertical
             (if (member val '($horizontal $vertical))
                 (setf (gethash opt *gr-options*) val)
-                (merror "Illegal label orientation: ~M" val)))
+                (merror "draw: illegal label orientation: ~M" val)))
       (($key $file_name $xy_file $title $xlabel $ylabel $zlabel $font)  ; defined as strings
             (setf (gethash opt *gr-options*) val))
       ($user_preamble ; defined as a string or a Maxima list of strings
@@ -363,18 +363,18 @@
                 (($listp val)
                   (dolist (st (rest val))
                     (if (not ($atom st))
-                        (merror "User preamble ~M should be a string" st))
+                        (merror "draw: user preamble ~M should be a string" st))
                     (setf str (concatenate 'string
                                             str
                                             (format nil (if (string= str "") "~a" "~%~a") st)))))
-                (t (merror "Illegal user preamble especification")))
+                (t (merror "draw: illegal user preamble especification")))
               (setf (gethash opt *gr-options*) str))  )
       (($xrange $yrange $zrange) ; defined as a Maxima list with two numbers in increasing order
             (cond ((member val '($auto nil))     ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((or (not ($listp val))
                        (not (member ($length val) '(2 3))))
-                     (merror "Illegal range: ~M " val))
+                     (merror "draw: illegal range: ~M " val))
                   (t
                      (let ((fval1 (convert-to-float (cadr val)))
                            (fval2 (convert-to-float (caddr val))))
@@ -382,17 +382,17 @@
                          ((or (not (floatp fval1))
                               (not (floatp fval2))
                               (< fval2 fval1))
-                            (merror "Illegal values in range specification"))
+                            (merror "draw: illegal values in range specification"))
                          ((= ($length val) 2)  ; it's a trick: length 2 => user change
                             (setf (gethash opt *gr-options*) (list fval1 fval2)))
                          (t  ; should be length 3 or nil option => automatic computation of ranks
                             (setf (gethash opt *gr-options*) (list fval1 fval2 0)) ))  ))) )
       (($ip_grid $ip_grid_in)
        (if (not ($listp val))
-	   (merror "Illegal value for grid")
+	   (merror "draw: illegal value for grid")
 	   (if (not (and (integerp ($first val))
 			 (integerp ($second val))))
-	       (merror "Illegal value for grid")
+	       (merror "draw: illegal value for grid")
 	       (setf (gethash opt *gr-options*) val))))
       ($palette ; defined as $color, $gray or [f1,f2,f3], with -36<=fi<=36
             (cond ((member val '($color $gray))
@@ -403,7 +403,7 @@
                                (cdr val)) )
                     (setf (gethash opt *gr-options*) (list (cadr val) (caddr val) (cadddr val))))
                   (t
-                    (merror "Illegal palette description: ~M" val)))  )
+                    (merror "draw: illegal palette description: ~M" val)))  )
       (($color $fill_color $xaxis_color $yaxis_color
         $zaxis_color)  ; defined as a color name or hexadecimal #rrggbb
         (let ((str (string-downcase (string-trim "\"" (coerce (mstring val) 'string)))))
@@ -431,9 +431,9 @@
                            (subseq str 1)))
                  (setf (gethash opt *gr-options*) str))
               (t
-                 (merror "Illegal color specification: ~M" str)))))
+                 (merror "draw: illegal color specification: ~M" str)))))
 
-      (otherwise (merror "Unknown option ~M " opt))  ) )
+      (otherwise (merror "draw: unknown option ~M " opt))  ) )
 
 
 
@@ -780,7 +780,7 @@
 
 ;; Object: 'ellipse'
 ;; Usage:
-;;     ellipse(xc, yc, a, b, ang1 ang2),  both angles in degrees [-360, 360]
+;;     ellipse(xc, yc, a, b, ang1 ang2)
 ;; Options:
 ;;     nticks
 ;;     transparent
@@ -807,9 +807,9 @@
         (ymax -1.75555970201398e+305)
         (result nil)
         pts grps tmin tmax eps x y tt pltcmd)
-    (if (or (notevery #'floatp (list fxc fyc fa fb fang1 fang2))
-            (< fang1 -360.0) (< fang2 -360.0)
-            (> fang1  360.0) (> fang2  360.0))
+    (when (or (notevery #'floatp (list fxc fyc fa fb fang1 fang2))
+              (<= fa 0.0)
+              (<= fb 0.0))
        (merror "draw (ellipse): illegal argument(s)"))
     ; degrees to radians
     (setf fang1 (* 0.017453292519943295 fang1)
@@ -2393,7 +2393,7 @@
                                      ($polar       (apply #'polar (rest x)))
                                      ($image       (apply #'image (rest x)))
                                      ($geomap      (apply #'geomap (rest x)))
-                                     (otherwise (merror "Graphical 2d object ~M is not recognized" x)))))))))
+                                     (otherwise (merror "draw: graphical 2d object ~M is not recognized" x)))))))))
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
@@ -2500,7 +2500,7 @@
                                      ($cylindrical        (apply #'cylindrical (rest x)))
                                      ($geomap             (apply #'geomap3d (rest x)))
                                      ($label              (apply #'label (rest x)))
-                                     (otherwise (merror "Graphical 3d object ~M is not recognized" x)))))))))
+                                     (otherwise (merror "draw: graphical 3d object ~M is not recognized" x)))))))))
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
@@ -2667,7 +2667,7 @@
                 ($eps_height (update-gr-option '$eps_height ($rhs x)))
                 ($file_name  (update-gr-option '$file_name ($rhs x)))
                 ($delay      (update-gr-option '$delay ($rhs x)))
-                (otherwise (merror "Unknown global option ~M " ($lhs x)))  ))
+                (otherwise (merror "draw: unknown global option ~M " ($lhs x)))  ))
             ((equal (caar x) '$gr3d)
               (setf scenes (append scenes (list (funcall #'make-scene-3d (rest x))))))
             ((equal (caar x) '$gr2d)
