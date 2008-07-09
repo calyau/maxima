@@ -892,12 +892,9 @@ Perhaps you meant to enter `~a'.~%"
 		   ((and (numberp order) (integerp order))
 		    0)
 		   ((> ($realpart order) 0)
-		    0)            
-		   ((< ($realpart order) 0)
-		    ;; complex infinity
-		    '$infinity)
+		    0)
 		   (t
-		    ;; the function is indeterminate
+		    ;; in all other cases
 		    (domain-error arg 'bessel_j))))
 
             ((bessel-numerical-eval-p order arg)
@@ -922,11 +919,15 @@ Perhaps you meant to enter `~a'.~%"
 		 `((mtimes simp) -1 ((%bessel_j simp) ,(- order) ,arg))))
 
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
-	     ;; When order is a fraction with a denominator of 2, we
-	     ;; can express the result in terms of elementary
-	     ;; functions.
-	     ;;
-	     (bessel-j-half-order rat-order arg))
+             (cond ((and (numberp arg) (= arg 0)) 
+                    ;; We don't expand for a zero argument.
+                    (if (> rat-order 0) 0 (domain-error arg 'bessel_j)))
+                   (t
+                    ;; When order is a fraction with a denominator of 2, we
+                    ;; can express the result in terms of elementary
+                    ;; functions.
+                    ;;
+                    (bessel-j-half-order rat-order arg))))
 
 	    (t
 	     (eqtest (list '(%bessel_j) order arg)
@@ -974,14 +975,7 @@ Perhaps you meant to enter `~a'.~%"
 	(rat-order nil))
 
       (cond ((and (numberp arg) (= arg 0) (complex-number-p order)) 
-	     ;; We handle the different case for zero arg carefully.
-             (cond ((and (numberp order) (zerop order))
-		    '$minf)
-		   ((not (= ($realpart order) 0))
-		    '$infinity)            
-		   (t
-		    ;; the function is indeterminate
-		    (domain-error arg 'bessel_y))))
+	     (domain-error arg 'bessel_y))
 
 	    ((bessel-numerical-eval-p order arg)
 	     ;; We have numeric order and arg and $numer is true, or
@@ -1003,14 +997,17 @@ Perhaps you meant to enter `~a'.~%"
 		 `((mtimes simp) -1 ((%bessel_y simp) ,(- order) ,arg))))
 
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
-	     ;; When order is a fraction with a denominator of 2, we
-	     ;; can express the result in terms of elementary
-	     ;; functions.
-	     ;;
-	     ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
-	     ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
-
-	     (bessel-y-half-order rat-order arg))
+             (cond ((and (numberp arg) (= arg 0))
+                    ;; We don't expand for a zero argument.
+                    (domain-error arg 'bessel_y))
+                   (t
+                    ;; When order is a fraction with a denominator of 2, we
+                    ;; can express the result in terms of elementary
+                    ;; functions.
+                    ;;
+                    ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
+                    ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
+                    (bessel-y-half-order rat-order arg))))
 
 	    (t
 	     (eqtest (list '(%bessel_y) order arg)
@@ -1059,11 +1056,9 @@ Perhaps you meant to enter `~a'.~%"
              (cond ((= order 0)
 		    1)
 		   ((or (and (numberp order) (> order 0)) (integerp order))
-		    0)
-		   ((and (numberp order) (< order 0))
-		    '$infinity)           
+		    0)     
 		   (t
-		    ;; the function is indeterminate
+		    ;; in all other cases domain-error
 		    (domain-error arg 'bessel_i))))
 
             ((bessel-numerical-eval-p order arg)
@@ -1081,19 +1076,23 @@ Perhaps you meant to enter `~a'.~%"
 	     (list '(%bessel_i) (- order) arg))
 
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
-	     ;; When order is a fraction with a denominator of 2, we
-	     ;; can express the result in terms of elementary
-	     ;; functions.
-	     ;;
-	     ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
-	     ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
-	     (bessel-i-half-order rat-order arg))
+             (cond ((and (numberp arg) (= arg 0))
+                    ;; We don't expand for a zero argument.
+                    (if (> rat-order 0) 0 (domain-error arg 'bessel_i)))
+                   (t
+                    ;; When order is a fraction with a denominator of 2, we
+                    ;; can express the result in terms of elementary
+                    ;; functions.
+                    ;;
+                    ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
+                    ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
+                    (bessel-i-half-order rat-order arg))))
 
 	    (t
 	     (eqtest (list '(%bessel_i) order arg)
 		     exp)))))
 
-;; Define the Bessel funtion K[n](z)
+;; Define the Bessel function K[n](z)
 
 (defmfun $bessel_k (v z)
   (simplify (list '(%bessel_k) (resimplify v) (resimplify z))))
@@ -1134,14 +1133,8 @@ Perhaps you meant to enter `~a'.~%"
 	(rat-order nil))
 
     (cond ((and (numberp arg) (= arg 0) (complex-number-p order))
-	   ;; We handle the different case for zero arg carefully.
-           (cond ((and (numberp order) (zerop order))
-		  '$inf)
-		 ((not (= ($realpart order) 0))
-		  '$infinity)            
-		 (t
-		  ;; the function is indeterminate
-		  (domain-error arg 'bessel_k))))
+	   ;; domain-error for all cases of zero arg
+           (domain-error arg 'bessel_k))
 	  ((bessel-numerical-eval-p order arg)
 	   ;; A&S 9.6.6
 	   ;; K[-v](x) = K[v](x)
@@ -1157,14 +1150,17 @@ Perhaps you meant to enter `~a'.~%"
 	   ;; K[-v](x) = K[v](x)
 	   (resimplify (list '(%bessel_k) `((mtimes) -1 ,order) arg)))
 
-	  ((and $besselexpand
-		(setq rat-order (max-numeric-ratio-p order 2)))
-	   ;; When order is a fraction with a denominator of 2, we
-	   ;; can express the result in terms of elementary
-	   ;; functions.
-	   ;;
-	   ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
-	   (bessel-k-half-order rat-order arg))
+	  ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
+           (cond ((and (numberp arg) (= arg 0)) 
+                  ;; We don't expand for a zero argument.
+                  (domain-error arg 'bessel_k))
+                 (t
+                  ;; When order is a fraction with a denominator of 2, we
+                  ;; can express the result in terms of elementary
+                  ;; functions.
+                  ;;
+                  ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
+                  (bessel-k-half-order rat-order arg))))
 	  (t
 	   (eqtest (list '(%bessel_k) order arg)
 		   exp)))))
