@@ -56,6 +56,7 @@
  * solve (x = log(a + sqrt( a^2 - r^2)), r); (MAKES A MESS; RESULTS INCORRECTLY MERGED INTO CONDITIONAL)
  * solve (sqrt(x) + sqrt(y) = sqrt(a), y);
  * solve (y^2 + x^2 + 2*a*e*x + a^2*e^2 = (2*a - sqrt (y^2 + x^2 - 2*a*e*x + a^2*e^2))^2, y);
+ * solve (b^(a*t) = 1, b); (ATTEMPTS DECLARE(A*T, INTEGER) => ERROR, STACK OVERFLOW)
  * ode2 ('diff(x, t, 2) + a*x = b*sin(c*t), x, t);
  * ode2 ('diff(x, t, 2) + a*'diff(x, t) + b*x = 0, x, t);
  * ode2 ('diff(x, t, 2) + a*'diff(x, t) + b*x = d*sin(e*t), x, t);
