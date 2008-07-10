@@ -236,9 +236,10 @@
                                               $gnuplot_pipes
                                               $mgnuplot
                                               $openmath
+                                              $xgraph
                                               )
                                         ))
-                            (merror "plot_format: only [gnuplot,mgnuplot,openmath,geomview] are available"))
+                            (merror "plot_format: only gnuplot, mgnuplot, openmath, geomview, and xgraph are recognized"))
                         value)
           ($gnuplot_term (or (symbolp (third value)) (stringp (third value))
                              (merror "gnuplot_term: must be symbol or string"))
