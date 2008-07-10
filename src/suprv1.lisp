@@ -220,7 +220,9 @@
 	 #+cmu (c::backend-fasl-file-type c::*target-backend*)
 	 #+clisp "fas"
 	 #+allegro "fasl"
-	 #-(or gcl cmu clisp allegro) ""))
+	 #+openmcl (pathname-type ccl::*.fasl-pathname*)
+	 #+lispworks (pathname-type (compile-file-pathname "foo.lisp"))
+	 #-(or gcl cmu clisp allegro openmcl lispworks) ""))
     (if (member type (list bin-ext "lisp" "lsp")  :test 'equalp)
       #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file))
       ($load file))))
@@ -981,10 +983,11 @@
   #+(or cmu scl) (ext:quit)
   #+sbcl (sb-ext:quit)
   #+clisp (ext:quit)
-  #+mcl (ccl::quit)
+  #+(or openmcl mcl) (ccl::quit)
   #+gcl (quit)
   #+abcl (cl-user::quit)
-  #+excl "don't know quit function")
+  #+excl "don't know quit function"
+  #+lispworks (lispworks:quit))
 
 (defmfun $logout () (bye))
 

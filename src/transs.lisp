@@ -150,7 +150,7 @@
 	 (setq result (list '(mlist) input-file)))
 	(t (setq result (translate-file input-file translation-output-file))
 	   (setq input-file (third result))))
-  #+(or cmu scl sbcl clisp allegro openmcl)
+  #+(or cmu scl sbcl clisp allegro openmcl lispworks)
   (multiple-value-bind (output-truename warnings-p failure-p)
       (if bin-file
 	  (compile-file input-file :output-file bin-file)
@@ -160,7 +160,7 @@
     ;; indicate that we found errors. Is this what we want?
     (unless failure-p
       (setq bin-file output-truename)))
-  #-(or cmu scl sbcl clisp allegro openmcl)
+  #-(or cmu scl sbcl clisp allegro openmcl lispworks)
   (setq bin-file (compile-file input-file :output-file bin-file))
   (append result (list bin-file)))
 

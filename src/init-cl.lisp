@@ -71,8 +71,9 @@
 	#+gcl "gcl"
 	#+allegro "acl"
 	#+openmcl "openmcl"
-    #+abcl "abcl"
-	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
+	#+abcl "abcl"
+	#+lispworks "lispworks"
+	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks) "unknownlisp")
 
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
@@ -271,9 +272,9 @@
 	      #+sbcl "fasl"
 	      #+clisp "fas"
 	      #+allegro "fasl"
-	      #+(and openmcl darwinppc-target) "dfsl"
-	      #+(and openmcl linuxppc-target) "pfsl"
-	      #-(or gcl cmu scl sbcl clisp allegro openmcl)
+	      #+openmcl (pathname-type ccl::*.fasl-pathname*)
+	      #+lispworks (pathname-type (compile-file-pathname "foo.lisp"))
+	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks)
 	      "")
 	 (lisp-patterns (concatenate 'string "###.{" ext ",lisp,lsp}"))
 	 (maxima-patterns "###.{mac,mc}")

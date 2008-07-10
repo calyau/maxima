@@ -96,7 +96,12 @@
 							      ;; cons-cells and other bytes,
 							      ;; also report gc-user time
 
-#-(or cmu scl sbcl clisp allegro)
+#+lispworks
+(defun used-area (&optional unused)
+  (declare (ignore unused))
+  (getf (system:room-values) :total-allocated))
+
+#-(or cmu scl sbcl clisp allegro openmcl lispworks)
 (defun used-area (&optional unused)
   (declare (ignore unused))
   0)
@@ -376,8 +381,8 @@
       (loop
 	 do
 	 (catch #+kcl si::*quit-tag*
-		#+(or cmu scl sbcl) 'continue
-		#-(or kcl cmu scl sbcl) nil
+		#+(or cmu scl sbcl openmcl lispworks) 'continue
+		#-(or kcl cmu scl sbcl openmcl lispworks) nil
 		(catch 'macsyma-quit
 		  (continue input-stream batch-flag)
 		  (format t *maxima-epilog*)
@@ -495,7 +500,8 @@
     #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))
     #+sbcl (sb-ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
     #+openmcl (ccl::run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
-    #+abcl (extensions::run-shell-command (apply '$sconcat args) :output (or s *standard-output*))))
+    #+abcl (extensions::run-shell-command (apply '$sconcat args) :output (or s *standard-output*))
+    #+lispworks (system:run-shell-command (apply '$sconcat args) :wait t)))
 
 (defun $room (&optional (arg nil arg-p))
   (if arg-p

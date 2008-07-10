@@ -43,8 +43,11 @@
 		   #+gcl "binary-gcl"
 		   #+allegro "binary-acl"
 		   #+openmcl "binary-openmcl"
-           #+abcl "binary-abcl"
-		   #-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "binary-unknownlisp"
+		   #+abcl "binary-abcl"
+		   #+lispworks (make-pathname
+				:name "binary-lispworks"
+				:directory (pathname-directory *load-truename*))
+		   #-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks) "binary-unknownlisp"
   :components (#+gcl
 	       (:module proclaim :source-pathname ""
 			:load-only t
