@@ -381,7 +381,8 @@
 (defmfun $echelon (x)
   (let (($ratmx t))
     (newvarmat1 (setq x (check x))))
-  (let ((*ech* t))
+  (let ((*ech* t) ($algebraic $algebraic))
+    (and (not $algebraic) (some #'algp varlist) (setq $algebraic t))
     (setq x (cons '($matrix) (mxc (disreplist1 (echelon1 (replist1 (mcx (cdr x)))))))))
   (if $ratmx x ($totaldisrep x)))
 
