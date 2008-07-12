@@ -294,6 +294,7 @@ contrib/gf/whatsnew.txt\
 contrib/ggf.mac\
 contrib/graph2d.lisp\
 contrib/graphs/cgraphs.mac\
+contrib/graphs/connectivity.mac\
 contrib/graphs/create_graph.mac\
 contrib/graphs/demoucron.lisp\
 contrib/graphs/dijkstra.lisp\
@@ -468,6 +469,7 @@ contrib/simplex/Tests/share2b_c.csv\
 contrib/simplex/Tests/share2b_b.csv\
 contrib/simplex/Tests/share2b_A.csv\
 contrib/simplex/Readme.txt\
+contrib/solve_rat_ineq.mac\
 contrib/solve_rec/simplify_sum.mac\
 contrib/solve_rec/simplify_sum_test.mac\
 contrib/solve_rec/rtest_simplify_sum.mac\
