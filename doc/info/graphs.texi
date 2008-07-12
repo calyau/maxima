@@ -670,6 +670,10 @@ Example:
 @end example
 @end deffn
 
+@deffn {Function} edge_connectivity (@var{gr})
+Returns the edge-connectivity of a connected graph @var{gr}.
+@end deffn
+
 @deffn {Function} edges (@var{gr})
 Returns the list of edges (arcs) in a (directed) graph @var{gr}.
 
@@ -1358,8 +1362,11 @@ Example:
 @end example
 @end deffn
 
-@deffn {Function} min_vertex_cover (@var{gr})
+@deffn {Function} min_edge_cut (@var{gr})
+Returns the minimum edge cut in a connected graph @var{gr}
+@end deffn
 
+@deffn {Function} min_vertex_cover (@var{gr})
 Returns the minimum vertex cover of the graph @var{gr}.
 @end deffn
 
