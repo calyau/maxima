@@ -103,3 +103,7 @@ true;
 
 delete(sin(x),x+sin(x)+y);
 y+x$
+
+/* SF bug 2014436 */
+at(f(x),[]);
+f(x)$
