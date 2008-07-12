@@ -1059,8 +1059,12 @@
 	;; sum(binomial(a,2*k+b),k,l,h)=sum(binomial(a,2*k+1),k,l+(b-1)/2,h+(b-1)/2), b odd
 	(let ((a (car n))
 	      (r1 (if (oddp (car d)) 1 0))
-	      (l1 (m+ l (truncate (car d) 2)))
-	      (h1 (m+ h (truncate (car d) 2))))
+	      (l1 (if (oddp (car d))
+		      (m+ l (truncate (1- (car d)) 2))
+		      (m+ l (truncate (car d) 2))))
+	      (h1 (if (oddp (car d))
+		      (m+ h (truncate (1- (car d)) 2))
+		      (m+ h (truncate (car d) 2)))))
 	  (if (and (integerp l1)
 		   (member (asksign (m- a hi)) '($zero $positive) :test #'eq))
 	      (progn
