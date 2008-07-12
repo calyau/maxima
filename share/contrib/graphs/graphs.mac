@@ -30,4 +30,4 @@ load("create_graph.mac")$
 load("graphio.mac")$
 load("graph6.lisp")$
 load("dijkstra.lisp")$
-
+load("connectivity.mac")$

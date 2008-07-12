@@ -24,3 +24,4 @@ load("draw_graph.mac")$
 load("graph_polynomials.mac")$
 load("create_graph.mac")$
 load("graphio.mac")$
+load("connectivity.mac")$

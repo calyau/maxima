@@ -15,7 +15,7 @@
 			 #+sbcl "sbcl"
 			 #+allegro "acl"
 			 #+openmcl "openmcl"
-             #+abcl "abcl"
+			 #+abcl "abcl"
 			 #-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
       :directory (list :relative subdir))
      (make-pathname :directory (pathname-directory *load-truename*))))
