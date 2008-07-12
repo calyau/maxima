@@ -163,7 +163,7 @@
   (atscan (let ((atp t)) ($substitute ateqs exp))))
 
 (defun atscan (exp)
-  (cond ((or (atom exp) (member (caar exp) '(%at mrat) :test #'eq)) exp)
+  (cond ((or (atom exp) (member (caar exp) '(%at mrat) :test #'eq) (like ateqs '((mlist)))) exp)
 	((eq (caar exp) '%derivative)
 	 (or (and (not (atom (cadr exp)))
 		  (let ((vl (cdadr exp)) dl)
