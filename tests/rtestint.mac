@@ -1006,3 +1006,16 @@ log(sin(x)^2+cos(x)^2+2*cos(x)+1) + log(sin(x)^2+cos(x)^2-2*cos(x)+1) + cos(2*x)
 /* [ 1960200 ] integrate function raises "too many contexts" error */
 float(rectform(integrate(integrate(x^2*y^2*(sin(2.*x)+%i*cos(2.*y))*exp(%i*20.*x)*exp(%i*30.*y),x,-1,-10),y,-5,15)));
 6.127592006717518 - 40.62195392101798 * %i;
+
+/* [ 1860487 ] MONSTERTRIG endless recursion */
+integrate (x*(cos(2*x) + sin(x)), x);
+(2*x*sin(2*x)+cos(2*x)+4*sin(x)-4*x*cos(x))/4;
+
+/* [ 1631094 ] integrate(sin(n*x)*x, x) => linear time when n is an integer */
+integrate(sin(1000000000*x)*x, x);
+(sin(1000000000*x)-1000000000*x*cos(1000000000*x))/1000000000000000000;
+
+/* [ 1847543 ] Integration problem of a special periodic function */
+integrate( 1/(11/10+sin(2*%pi*x)), x);
+10*atan((22*sin(2*%pi*x)/(cos(2*%pi*x)+1)+20)/(2*sqrt(21)))
+        /(sqrt(21)*%pi);

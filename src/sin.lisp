@@ -969,10 +969,10 @@
 	(t (cons (subst2s (car ex) pat)
 		 (subst2s (cdr ex) pat)))))
 
-;; Match (c*x+b), where c and b are free of x and c is a number
+;; Match (c*x+b), where c and b are free of x 
 (defun simple-trig-arg (exp)
   (m2 exp '((mplus) ((mtimes)
-		     ((coefftt) (c $numberp))
+		     ((coefftt) (c freevar))
 		     ((coefftt) (v varp)))
 	    ((coeffpp) (b freevar)))
       nil))
@@ -994,15 +994,15 @@
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
 						var exp))
 		    (new-int
-		     (if (< (expression-size new-exp)
-			    (expression-size exp))
-			 ;; check whether new expression is simpler:
-			 ;; recursion stopper when var appears more than once in exp
+		     (if (every-trigarg-alike exp *trigarg*)
+			 ;; avoid endless recursion when more than one
+			 ;; trigarg exists
 			 (div ($integrate new-exp new-var) c)
 		       (rischint exp var))))
 		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int))))
 	    (t
-	     (return-from monstertrig (rischint exp var))))))
+	     (return-from monstertrig (rischint exp var)))
+)))
   (prog (*notsame* w *a* *b* y *d*) 
      (declare (special *notsame*))
 	(cond
@@ -1500,10 +1500,14 @@
 			     (list '(mtimes) y *d*)
 			     (list '(mtimes) -1 z))))))
 
-;; total number of nodes in expression tree
-(defun expression-size (y) 
-  (cond ((atom y) 1)
-	(t (+ (expression-size (car y)) (expression-size (cdr y))))))
+;; returns t if argument of every trig operation in y matches arg
+(defun every-trigarg-alike (y arg)
+  (cond ((atom y) t)
+	((optrig (caar y)) (alike1 arg (cadr y)))
+	(t (every (lambda (exp)
+		    (every-trigarg-alike exp arg))
+		  (cdr y)))))
+
 
 (defun matchsum (alist blist) 
   (prog (r s *c* *d*) 
