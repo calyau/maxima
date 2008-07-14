@@ -66,14 +66,10 @@ make_matrix  (nr, nc, [a]) := block
 matchdeclare
    (a%, symbolp,
     [LI%, LI1%, LI2%], integer_listp,
-    [R%, R1%, R2%], relationalp,
-    [B%, B1%, B2%], booleanexprp,
     [MB%, MB1%, MB2%], putative_boolean_amatrixp,
     [ii%, jj%, i0%, j0%, u%, v%, x%, y%], integerp);
 
 integer_listp (e) := not atom(e) and op(e) = "[" and every (integerp, e);
-relationalp (e) := not atom(e) and member (op(e), ["<", "<=", "=", "#", ">=", ">"]);
-booleanexprp (e) := not atom(e) and member (op(e), ["and", "or", "not"]);
 putative_boolean_amatrixp (e) :=
   not atom(e)
     and op(e) = amatrix
@@ -102,17 +98,15 @@ get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, ii%, jj%) := block
     then error ("Matrix index out of bounds")
     else ?aref (a%, i%));
 
-/* one subscript => [subscript, 1] or [1, subscript] */
+/* one integer */
 
 tellsimpafter
-    (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [ii%],
-     if u% = 1 then get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, 1, ii%)
-     elseif v% = 1 then get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, ii%, 1)
-     /* Throwing here is unsatisfactory. I might create a noun instead
-      * but by the time we get here, the symbol to which amatrix(...)
-      * is bound has been lost.
-      */
-     else throw (oops ("This matrix requires two subscripts")));
+    (amatrix (1, i0%, x%, v%, j0%, y%, a%) [ii%],
+     get_element_internal (1, i0%, x%, v%, j0%, y%, a%, 1, ii%));
+
+tellsimpafter
+    (amatrix (u%, i0%, x%, 1, j0%, y%, a%) [ii%],
+     get_element_internal (u%, i0%, x%, 1, j0%, y%, a%, ii%, 1));
 
 /* integers both */
 
@@ -120,6 +114,18 @@ tellsimpafter
     (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [ii%, jj%],
      get_element_internal (u%, i0%, x%, v%, j0%, y%, a%, ii%, jj%));
 
+/* one 'all */
+
+tellsimpafter
+    (amatrix (1, i0%, x%, v%, j0%, y%, a%) [all],
+    (incprop (a%, '?refcount),
+     amatrix (1, i0%, x%, v%, j0%, y%, a%)));
+     
+tellsimpafter
+    (amatrix (u%, i0%, x%, 1, j0%, y%, a%) [all],
+    (incprop (a%, '?refcount),
+     amatrix (u%, i0%, x%, 1, j0%, y%, a%)));
+     
 /* 'all and an integer */
 
 tellsimpafter
@@ -138,6 +144,16 @@ tellsimpafter
     (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [all, all],
     (incprop (a%, '?refcount),
      amatrix (u%, i0%, x%, v%, j0%, y%, a%)));
+
+/* one list of integers */
+
+tellsimpafter
+    (amatrix (1, i0%, x%, v%, j0%, y%, a%) [LI%],
+     submatrix_by_indices (1, i0%, x%, v%, j0%, y%, a%, [1], LI%));
+
+tellsimpafter
+    (amatrix (u%, i0%, x%, 1, j0%, y%, a%) [LI%],
+     submatrix_by_indices (u%, i0%, x%, 1, j0%, y%, a%, LI%, [1]));
 
 /* list of integers and an integer */
 
@@ -164,6 +180,16 @@ tellsimpafter
 tellsimpafter
     (amatrix (u%, i0%, x%, v%, j0%, y%, a%) [LI1%, LI2%],
      submatrix_by_indices (u%, i0%, x%, v%, j0%, y%, a%, LI1%, LI2%));
+
+/* one amatrix of booleans */
+
+tellsimpafter
+    (amatrix (1, i0%, x%, v%, j0%, y%, a%) [MB%],
+     submatrix_by_indices_and_flags (1, i0%, x%, v%, j0%, y%, a%, [1], MB%));
+
+tellsimpafter
+    (amatrix (u%, i0%, x%, 1, j0%, y%, a%) [MB%],
+     submatrix_by_flags_and_indices (u%, i0%, x%, 1, j0%, y%, a%, MB%, [1]));
 
 /* amatrix of booleans and an integer */
 

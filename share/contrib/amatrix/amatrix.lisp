@@ -26,7 +26,22 @@
 (putprop '$amatrix 'amatrix-assign 'mset_extension_operator)
 
 (defun amatrix-assign (e x)
-  (amatrix-assign1 (caar e) (symbol-value (caar e)) (meval (cadr e)) (meval (caddr e)) x))
+  (let
+    ((my-amatrix-name (caar e))
+     (my-amatrix (symbol-value (caar e))))
+    (cond
+      ((= (length e) 2)
+       (cond
+         ((= ($nrows my-amatrix) 1)
+          (amatrix-assign1 my-amatrix-name my-amatrix 1 (meval (cadr e)) x))
+         ((= ($ncols my-amatrix) 1)
+          (amatrix-assign1 my-amatrix-name my-amatrix (meval (cadr e)) 1 x))
+         (t
+           (merror "amatrix assignment: given one subscript, but expected two"))))
+      ((= (length e) 3)
+       (amatrix-assign1 (caar e) (symbol-value (caar e)) (meval (cadr e)) (meval (caddr e)) x))
+      (t
+        (merror "amatrix assignment: expected one or two subscripts")))))
 
 (defun amatrix-assign1 (lhs aa i j x)
   (when (> (get ($@-function aa '$storage) 'refcount) 1)
@@ -41,9 +56,19 @@
     ((and (eq i '$all) (integerp j))
      (amatrix-assign1-all-column aa j x))
     ((and (integerp i) (eq j '$all))
-     (amatrix-assign1-all-row aa i x))
+     (amatrix-assign1-row-all aa i x))
     ((and (eq i '$all) (eq j '$all))
      (amatrix-assign1-all-all aa x))
+    ((and ($listp i) (integerp j))
+     (amatrix-assign1-list-integer aa i j x))
+    ((and (integerp i) ($listp j))
+     (amatrix-assign1-integer-list aa i j x))
+    ((and ($listp i) (eq j '$all))
+     (amatrix-assign1-list-all aa i x))
+    ((and (eq i '$all) ($listp j))
+     (amatrix-assign1-all-list aa j x))
+    ((and ($listp i) ($listp j))
+     (amatrix-assign1-list-list aa i j x))
     (t
       `((mset) ((,aa array) ,i ,j) ,x))))
 
@@ -63,7 +88,7 @@
         (amatrix-assign1-row-column aa (1+ i) j x))))
   x)
 
-(defun amatrix-assign1-all-row (aa i x)
+(defun amatrix-assign1-row-all (aa i x)
   (let ((n ($@-function aa '$nc)))
     (if ($amatrixp x)
       ;; MIGHT WANT TO ENSURE THAT X HAS EXACTLY ONE ROW AND SAME NUMBER OF COLUMNS AS AA
@@ -86,6 +111,74 @@
         (dotimes (j n)
           (amatrix-assign1-row-column aa (1+ i) (1+ j) x)))))
   x)
+
+(defun amatrix-assign1-list-integer (aa l j x)
+  (amatrix-assign1-list-list aa l `((mlist) ,j) x))
+
+(defun amatrix-assign1-integer-list (aa i l x)
+  (amatrix-assign1-list-list aa `((mlist) ,i) l x))
+
+(defun amatrix-assign1-list-all (aa l x)
+  (let
+    ((m ($length l))
+     (n ($@-function aa '$nc)))
+    (if ($amatrixp x)
+      ;; MIGHT WANT TO ENSURE THAT X HAS SAME NUMBER OF ROWS AND COLUMNS AS AA
+      (dotimes (i m)
+        (dotimes (j n)
+          (amatrix-assign1-row-column aa (nth (1+ i) l) (1+ j) (mfuncall '$get_element x (1+ i) (1+ j)))))
+      (dotimes (i m)
+        (dotimes (j n)
+          (amatrix-assign1-row-column aa (nth (1+ i) l) (1+ j) x)))))
+  x)
+
+(defun amatrix-assign1-all-list (aa l x)
+  (let
+    ((m ($@-function aa '$nr))
+     (n ($length l)))
+    (if ($amatrixp x)
+      ;; MIGHT WANT TO ENSURE THAT X HAS SAME NUMBER OF ROWS AND COLUMNS AS AA
+      (dotimes (i m)
+        (dotimes (j n)
+          (amatrix-assign1-row-column aa (1+ i) (nth (1+ j) l) (mfuncall '$get_element x (1+ i) (1+ j)))))
+      (dotimes (i m)
+        (dotimes (j n)
+          (amatrix-assign1-row-column aa (1+ i) (nth (1+ j) l) x)))))
+  x)
+
+(defun amatrix-assign1-list-list (aa l1 l2 x)
+  (let
+    ((m ($length l1))
+     (n ($length l2)))
+    (if ($amatrixp x)
+      ;; MIGHT WANT TO ENSURE THAT X HAS SAME NUMBER OF ROWS AND COLUMNS AS AA
+      (dotimes (i m)
+        (dotimes (j n)
+          (amatrix-assign1-row-column
+            aa
+            (nth (1+ i) l1)
+            (nth (1+ j) l2)
+            (mfuncall '$get_element x (1+ i) (1+ j)))))
+      (dotimes (i m)
+        (dotimes (j n)
+          (amatrix-assign1-row-column
+            aa
+            (nth (1+ i) l1)
+            (nth (1+ j) l2)
+            x)))))
+  x)
+
+(defun amatrix-assign1-amatrix-column (aa ai j x))
+
+(defun amatrix-assign1-row-amatrix (aa i aj x))
+
+(defun amatrix-assign1-amatrix-amatrix (aa ai aj x))
+
+(defun amatrix-assign1-boolean-column (aa b j x))
+
+(defun amatrix-assign1-row-boolean (aa i b x))
+
+(defun amatrix-assign1-boolean-boolean (aa b1 b2 x))
 
 (displa-def $amatrix dim-$amatrix)
 
