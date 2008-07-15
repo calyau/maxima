@@ -46,7 +46,7 @@ block
         rtest_simplify_sum,
 	rtest_solve_rec,
         rteststringproc,
-        [rtest_opproperties, 72],
+        rtest_opproperties,
         rtest_stats,
         rtest_distrib,
         rtest_interpol,
@@ -74,6 +74,7 @@ block
 	/* rtest_namespaces, -- causes test_suite to halt */
 	[arag_test, 7],
 	/* hard_test, --takes a long time or never finishes */
+        rtest_pdiff,
 	[rtestprintf, 29, 38, 39, 40, 41, 47, 48]]],
     
     run_testsuite ());
