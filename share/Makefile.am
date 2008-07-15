@@ -367,6 +367,7 @@ contrib/pdiff/history.txt\
 contrib/pdiff/pdiff-doc.pdf\
 contrib/pdiff/pdiff-doc.tex\
 contrib/pdiff/pdiff.lisp\
+contrib/pdiff/rtest_pdiff.mac\
 contrib/plsquares.mac\
 contrib/powers.lisp\
 contrib/prim/prim-ex.mac\
