@@ -13,7 +13,7 @@
     (when (> ($length vars) l)
       (maxima-error "eliminate: More variables than equations"))
     (when (= l 1)
-      (maxima-error "elimiinate: Can't eliminate from only one equation"))
+      (maxima-error "eliminate: Can't eliminate from only one equation"))
     (when (= ($length vars) l)
       (setq vars ($reverse vars))
       (setq sv (maref vars 1))
