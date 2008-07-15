@@ -426,6 +426,10 @@
     (cond ((and (eq fun 'mqapply) (oldget (caaadr e) 'grad))
 	   (sdiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
 		      x))
+
+	  ;; extension for pdiff.
+	  ((and (get '$pderivop 'operators) (sdiffgrad-pdiff e x)))
+
 	  ((or (eq fun 'mqapply) (null (setq grad (oldget fun 'grad))))
 	   (if (not (depends e x)) 0 (diff%deriv (list e x 1))))
 	  ((not (= (length (cdr e)) (length (car grad))))

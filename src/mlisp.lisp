@@ -89,6 +89,10 @@ or if apply is being used are printed.")
 		       (badfunchk fnname fn nil)
 		       (let ((noevalargs t))
 			 (meval (cons (ncons fn) args))))))))
+
+	;; extension for pdiff; additional extension are welcomed.
+	((and (consp fn) (get (mop fn) 'mapply1-extension)
+	      (apply (get (mop fn) 'mapply1-extension) (list fn args fnname form))))
 	((eq (car fn) 'lambda)
 	 (apply (coerce fn 'function) args))
 	((eq (caar fn) 'lambda) (mlambda fn args fnname t form))
