@@ -249,15 +249,20 @@ To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
-Returns the Wronskian matrix of the functions @var{f_1}, ..., @var{f_n} in the variable @var{x}.
+Returns the Wronskian matrix of the list of expressions [@var{f_1}, ..., @var{f_n}] in the variable @var{x}.
+The determinant of the Wronskian matrix is the Wronskian determinant of the list of expressions.
 
-@var{f_1}, ..., @var{f_n} may be the names of user-defined functions,
-or expressions in the variable @var{x}.
+To use @code{wronskian}, first @code{load(functs)}. Example:
 
-The determinant of the Wronskian matrix is the Wronskian determinant of the set of functions.
-The functions are linearly dependent if this determinant is zero.
-
-To use this function write first @code{load(functs)}.
+@c ===beg===
+@c load (functs)$
+@c wronskian([f(x), g(x)],x);
+@c ===end===
+@example
+(%i1) load(functs)$
+(%i2) wronskian([f(x), g(x)],x);
+(%o2) matrix([f(x),g(x)],['diff(f(x),x,1),'diff(g(x),x,1)])
+@end example
 
 @opencatbox
 @category{Package functs} @category{Differential calculus}
