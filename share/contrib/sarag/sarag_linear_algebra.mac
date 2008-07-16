@@ -2,7 +2,9 @@
 /* SARAG - Linear Algebra                                             */
 /* by Fabrizio Caruso                                                 */
 
-
+/* It counts the sign change of a determinant after */
+/* i consecutive row changes */
+revRowsCount(i) := (-1)^(i*(i-1)/2);
 
 exchange(m,i,j) :=
   block([aux,size],
@@ -662,7 +664,7 @@ matrixProdArray(a,b) :=
     print("matrixProd) incompatible matrices"),
     print("matrixProd) a : ", a),
     print("matrixProd) b : ", b),
-    return(false)
+    return(FALSE)
     )
   else
     (

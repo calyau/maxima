@@ -511,6 +511,7 @@ printZeilbergerSummary(f,parGRes) :=
       print("a[",i,"] = ", parGRes[1][2][i+1])
      );
 
+
 /* Front-end of the Zeilberger's algorithm with verbosity option */
 ZeilbergerVerboseOpt(f,k,n,mode) :=
    block(
@@ -567,34 +568,69 @@ ZeilbergerVerboseOpt(f,k,n,mode) :=
    ) ; 
 
 
-ZeilbergerSummary(f,k,n) ::=
-  buildq([f,k,n],
-      ZeilbergerVerboseOpt(f,k,n,summary)
-      );
+/* Non verbose version of Zeilberger's algorithm */
+ZeilbergerSummary([args]):=
+ block([f,k,n],
+ f:first(args),
+ k:second(args),
+ n:third(args),
+ if length(args)=3 then
+   ZeilbergerVerboseOpt(f,k,n,summary)
+ else
+   parGosperVerboseOpt(f,k,n,fourth(args),summary)
+ );
 
-/* Verbose front-end macro of the Zeilberger's algorithm */
-ZeilbergerVerbose(f,k,n) ::=
-   buildq([f,k,n],
-       ZeilbergerVerboseOpt(f,k,n,verbose)
-         ) ;
-
-
-/* Very verbose front-end macro of the Zeilberger's algorithm */
-ZeilbergerVeryVerbose(f,k,n) ::=
-   buildq([f,k,n],
-       ZeilbergerVerboseOpt(f,k,n,very_verbose)
-         ) ;
-
-ZeilbergerExtra(f,k,n) ::=
-   buildq([f,k,n],
-       ZeilbergerVerboseOpt(f,k,n,extra)
-         );
 
 /* Non verbose version of Zeilberger's algorithm */
-Zeilberger(f,k,n) ::=
-  buildq([f,k,n],
-       ZeilbergerVerboseOpt(f,k,n,nonverbose)
-        );
+ZeilbergerVerbose([args]):=
+ block([f,k,n],
+ f:first(args),
+ k:second(args),
+ n:third(args),
+ if length(args)=3 then
+   ZeilbergerVerboseOpt(f,k,n,verbose)
+ else
+   parGosperVerboseOpt(f,k,n,fourth(args),verbose)
+ );
+
+
+/* Non verbose version of Zeilberger's algorithm */
+ZeilbergerVeryVerbose([args]):=
+ block([f,k,n],
+ f:first(args),
+ k:second(args),
+ n:third(args),
+ if length(args)=3 then
+   ZeilbergerVerboseOpt(f,k,n,very_verbose)
+ else
+   parGosperVerboseOpt(f,k,n,fourth(args),very_verbose)
+ );
+
+
+/* Non verbose version of Zeilberger's algorithm */
+ZeilbergerExtra([args]):=
+ block([f,k,n],
+ f:first(args),
+ k:second(args),
+ n:third(args),
+ if length(args)=3 then
+   ZeilbergerVerboseOpt(f,k,n,extra)
+ else
+   parGosperVerboseOpt(f,k,n,fourth(args),extra)
+ );
+
+
+/* Non verbose version of Zeilberger's algorithm */
+Zeilberger([args]):=
+ block([f,k,n],
+ f:first(args),
+ k:second(args),
+ n:third(args),
+ if length(args)=3 then
+   ZeilbergerVerboseOpt(f,k,n,nonverbose)
+ else
+   parGosperVerboseOpt(f,k,n,fourth(args),nonverbose)
+ );
 
 
 /* Short name macro for verbose parGosper */

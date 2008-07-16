@@ -1,3 +1,17 @@
+WHAT'S NEW (Version 4.1)
+
+(Only minor aesthetic changes that make the use
+of "zb_prove" simpler and make Zeilberger do 
+also what parGosper does).
+
+(i) zb_prove produces proofs with more details by default
+
+(ii) zb_prove also takes 3 arguments (it computes the fourth by itself)
+
+(iii) Zeilberger also takes four arguments (in this case parGosper is invoked)
+
+
+----------------------------------------------------------------------------
 WHAT'S NEW (Version 4.0)
 
 (i) Bugs:

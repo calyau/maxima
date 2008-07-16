@@ -9,7 +9,7 @@
 ---------------------------------------------------------------
 developed by Fabrizio Caruso 
 
-under the scientific guidance of Marie-Françoise Roy
+under the scientific guidance of Marie-Francoise Roy
 
 at the University of Rennes 1, France
 

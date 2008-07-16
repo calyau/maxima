@@ -75,10 +75,13 @@ gf_set([ars]):=block([gj,m,i,j,dg],
          dg:hipow(ars[2],x),
          
          if dg=1 then
+           (
            gf_setp(ars[1]),
+           return(true)
+           ),
          gf_irr:ars[2],
-         gf_exp:dg,
-         return(true)
+         gf_exp:dg
+         
          )
        )
     else
@@ -1338,7 +1341,7 @@ pe:"Please use GF_PRIM instead of 'pe'";
 
 gf_sqrt([ap]):=
   if length(ap)=1 then
-    gsqrt(ap[1],GF_CHAR)
+    gsqrt(ap[1],gf_char)
   else
     gsqrt(ap[1],ap[2]);
 

@@ -18,6 +18,13 @@ NORM_ALGORITHM : lambda([x],ratexpand(x));
 NORM_ALGORITHM : lambda([x],rat(x));
 */
 
+/* Square-free algorithm */
+/* Standard possibilities: */
+/* squareFreeBuiltin       */
+/* squareFreeWithZ         */
+/* squareFreeWithQ         */
+SQUARE_FREE_ALGORITHM : lambda([x,y],squareFreeWithZ(x,y));
+
 /* Sign determination algorithm to be used in Thom encoding */
 /*
 THOM_SIGN_DET_ALG : naiveSignDetermination;

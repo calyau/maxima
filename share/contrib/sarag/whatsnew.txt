@@ -1,3 +1,13 @@
+SARAG 1.0
+
+(Some bug fixes)
+
+(1) gcdFreePart should be now correct
+
+(2) sRem and sSubRes compute sequences that
+are now longer by one element
+
+---------------------------------------------------
 SARAG beta 0.4
 
 (1) newtonFromPoly(pol,var,len) now takes three arguments:

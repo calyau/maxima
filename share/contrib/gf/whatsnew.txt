@@ -1,6 +1,10 @@
-Version 2 of GF
+Version 2b
 
+(only two small bug-fixes)
 
+- gf_set with 2 arguments should work now
+
+Version 2 
 
 - the two packages (gf.mac, gf_roots.mac) have been merged
 

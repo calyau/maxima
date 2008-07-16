@@ -12,8 +12,6 @@
 /* -------------------------------------- */
 /* Chapter                             10 */
 
-(load("sarag"),0);
-0$
 
 deCasteljauIsolateRoots(
 expand(

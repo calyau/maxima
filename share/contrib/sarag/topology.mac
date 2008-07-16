@@ -70,7 +70,7 @@ deCasteljauBivariateFindRootsVerbose(pol,var,x,polyInX,rootInX,threshold,verbosi
   if not(gcd(pol,diff(pol,var))=1) then
     (
     modulus : false,
-    sqPol : squareFree(pol,var)
+    sqPol : SQUARE_FREE_ALGORITHM(pol,var)
     )
   else
     (
@@ -80,7 +80,7 @@ deCasteljauBivariateFindRootsVerbose(pol,var,x,polyInX,rootInX,threshold,verbosi
       print("deCasteljauIsolateRoots) Polynomial already square free")
     ),
 */
-  sqPol : expand(squareFree(pol,var)),
+  sqPol : expand(SQUARE_FREE_ALGORITHM(pol,var)),
   resList : [],   
   bCoeffList : [[bernsteinCoeffList(sqPol,var,-2^n,2^n),-2^n,2^n]], 
   count : 0,
@@ -243,7 +243,7 @@ archimedianTopologyVerbose(pol,isolAlg,x,y,verbosity) :=
   block([sRes,sSR,sSRCoeff,discr,isolDiscr,i,j,jList,epsList,flag,rootSign,degP,
          numOfRoots,rootsAtDiscr,numAbove,rootsAtDiscrAboveCr,taQ,
          numBetween,rootsBetween,res,
-         coSys,generic,critY,multi],
+         coSys,generic,crity,multi],
 
   pol : expand(pol), 
 
@@ -462,7 +462,7 @@ archimedianTopologyVerbose(pol,isolAlg,x,y,verbosity) :=
             (
               /*
             numOfRoots : bivariateSSubResTarskiQueryVerbose(1,pol,
-                              y,x,expand(squareFree(discr,x)),isolDiscr[i],verbosity-1),
+                              y,x,expand(SQUARE_FREE_ALGORITHM(discr,x)),isolDiscr[i],verbosity-1),
                             */
             numOfRoots : bivariateSSubResSignChanges(sSRCoeff,x,discr,isolDiscr[i]),
             if verbosity>=VERY then
@@ -471,7 +471,7 @@ archimedianTopologyVerbose(pol,isolAlg,x,y,verbosity) :=
 
             taQ : bivariateSSubResTarskiQueryVerbose(
                                       rootSign*(j*sSRCoeff[degP+1-j]*y+coeff(sSR[degP+1-j],y,j-1)),
-                                      pol,y,x,expand(squareFree(discr,x)),isolDiscr[i],
+                                      pol,y,x,expand(SQUARE_FREE_ALGORITHM(discr,x)),isolDiscr[i],
                                       verbosity-1),
             if verbosity>=EXTRA then
                print("topology) Tarski query : ", taQ),

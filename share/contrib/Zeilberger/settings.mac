@@ -49,4 +49,4 @@ trivial_solutions : true;
 gs_prove_detail : PROOF_MEDIUM;
 
 /* Level of details in "zb_prove" and "zb_test" */
-zb_prove_detail : PROOF_LOW;
+zb_prove_detail : PROOF_MEDIUM;

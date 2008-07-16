@@ -102,8 +102,21 @@ zb_test_equality(eq_pair) :=
 /* It proves the result of Zeilbeger's algorithm       */
 /*                                                     */
 /* The level of verbosity depends on "zb_prove_detail" */
-zb_prove(zb_in,k,n,zb_out) :=
+
+/* zb_prove(zb_in,k,n,zb_out) := */
+zb_prove([args]):=
   block([i,j,zb_red,proof,undecided],
+    zb_in:first(args),
+    k:second(args),
+    n:third(args),
+    if length(args)=3 then
+      (
+      zb_out:Zeilberger(zb_in,k,n)
+      )
+    else
+      (
+      zb_out:fourth(args)
+      ),
     if length(zb_out) = 0 then
       (
       if zb_prove_detail>=PROOF_LOW then

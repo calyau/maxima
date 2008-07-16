@@ -188,3 +188,9 @@ mergeSorted(lhs,rhs,ordering) :=
   return(res)
        
  );
+ 
+ /* adds zeros to a list */
+ 
+ padWithZeros(seq,size) :=
+  append(seq,makelist(0,i,1,size-length(seq)));
+
