@@ -13,6 +13,9 @@
 /* Chapter                             10 */
 
 
+(kill(all), load(sarag),0);
+0$
+
 deCasteljauIsolateRoots(
 expand(
 9*x^13-18*x^11-33*x^10+102*x^8
