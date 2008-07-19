@@ -573,7 +573,7 @@ for h : 0 thru j-2 do
 
 
 lastNonZero(seq) :=
-  lastNonZeroAux(seq,Length(seq));
+  lastNonZeroAux(seq,length(seq));
 
 lastNonZeroAux(seq,res) :=
   if seq = [] then
