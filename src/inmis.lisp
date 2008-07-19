@@ -68,6 +68,7 @@
 ;; No attempt is made to handle variables declare with DEFVAR or by other means.
 
 (defun maybe-reset (key val actually-reset reset-verbose)
+  (declare (special munbindp))
   ; MAYBE DEFMVAR VALUES SHOULD ONLY BE MAXIMA EXPRESSIONS ??
   (let ((non-maxima (and (consp val) (not (consp (car val))))))
     (when
@@ -84,7 +85,8 @@
         (let ((displa-val (if non-maxima `((mprogn) ,@val) val)))
           (displa `((mtext) "reset: bind " ,key " to " ,displa-val))))
       (nconc actually-reset (list key))
-      (meval `((msetq) ,key ,val)))))
+      (let ((munbindp t))
+        (meval `((msetq) ,key ,val))))))
 
 (defmspec $reset_verbosely (L)
   (reset-do-the-work (cdr L) t))
