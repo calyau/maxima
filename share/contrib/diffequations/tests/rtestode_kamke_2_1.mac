@@ -71,11 +71,10 @@ variationofparameters;
 assume(a>0);
 [a>0];
 (pn_(8),ans:contrib_ode(eqn:'diff(y,x,2)+a^2*y-cot(a*x),y,x));
-[y=-((sin(a*x)*log(2*cos(a*x)+2)-sin(a*x)*log(2-2*cos(a*x)))/(2*a^2))+%k1*sin(a*x)+%k2*cos(a*x)];
-ode_check(eqn,ans[1]);
--((2*cos(a*x)*sin(a*x)^3+(3*cos(a*x)^3-3*cos(a*x))*sin(a*x)+(cos(a*x)^4-2*cos(a*x)^2+1)*cot(a*x))/(cos(a*x)^4-2*cos(a*x)^2+1));
-method;
-variationofparameters;
+[y = -((sin(a*x)*log(cos(a*x)+1)-sin(a*x)*log(cos(a*x)-1))/(2*a^2))
+   +%k1*sin(a*x)+%k2*cos(a*x)];
+[method,trigsimp(ode_check(eqn,ans[1]))];
+[variationofparameters,0];
 forget(a>0);
 [a>0];
 
