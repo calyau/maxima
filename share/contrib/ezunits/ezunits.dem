@@ -1,6 +1,6 @@
 if get ('ezunits, 'version) = false then load (ezunits) else 'already_loaded;
 
-"SI units"$
+"... SI units ..."$
 
 foo : 10 ` m;
 
@@ -10,7 +10,7 @@ units (foo);
 
 dimensions (foo);
 
-"So-called customary units"$
+"... So-called customary units ..."$
 
 bar : x ` acre;
 
@@ -18,7 +18,7 @@ dimensions (bar);
 
 fundamental_units (bar);
 
-"Unit conversions"$
+"... Unit conversions ..."$
 
 1 ` ft `` m;
 
@@ -40,7 +40,7 @@ fundamental_units (bar);
 
 %, numer;
 
-"Arithmetic operations on dimensional quantities"$
+"... Arithmetic operations on dimensional quantities ..."$
 
 100 ` m + 100 ` ft;
 
@@ -80,7 +80,7 @@ sqrt (bar);
 
 dimensions (sqrt (bar));
 
-"Units ad hoc"$
+"... Units ad hoc ..."$
 
 3 ` sheep + 8 ` goat + 1 ` horse;
 
@@ -92,7 +92,7 @@ dimensions (sqrt (bar));
 
 % `` l/h;
 
-"Declared unit conversions"$
+"... Declared unit conversions ..."$
 
 declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*kWh);
 
@@ -100,7 +100,7 @@ declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*k
 
 1 ` MMBtu/d `` kW;
 
-"Stefan-Boltzmann constant in customary units"$
+"... Stefan-Boltzmann constant in customary units ..."$
 
 56697/10000/10^8 ` W/m^2/K^4;
 
@@ -108,7 +108,7 @@ declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W, kWh = kW*h, MWh = 1000*k
 
 %, numer;
 
-"Velocity of sound in helium at 27 C, He(Cp/Cv) = 5/3, 4 g/mol"$
+"... Velocity of sound in helium at 27 C, He(Cp/Cv) = 5/3, 4 g/mol ..."$
 
 if get ('physical_constants, 'version) = false then load (physical_constants) else 'already_loaded;
 
