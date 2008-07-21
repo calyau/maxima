@@ -1108,7 +1108,8 @@
                 ;; We forget the rule after finishing the calculation.
                 (mfuncall '$forget `((mgreaterp) psey 0))))))
 
-     (return 'other-defint-to-follow-negtest)))
+     (return 
+       (setq *hyp-return-noun-form-flag* 'other-defint-to-follow-negtest))))
 
 ;; Compute the transform of
 ;;
@@ -2301,7 +2302,7 @@
 			 ((eq flg 'kbateman)
 			  (kbatemantw i1 a1))
 			 ((eq flg 'gammaincomplete)
-			  (gammaincompletetw a1 i1))
+			  (gammaincomplete-to-gammagreek a1 i1))
 			 ((eq flg 'kti)
 			  (kti i1 a1))
 			 ((eq flg 'erfc)
@@ -2581,6 +2582,34 @@
   (mul* (power x (div (sub a 1) 2))
 	(power '$%e (div x -2))
 	(wwhit x (div (sub a 1) 2)(div a 2))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Only for a=0 we use the general representation as a Whittaker W function:
+;;;
+;;;   gammaincomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
+;;;
+;;; In all other cases we transform to a Gammagreek function:
+;;;
+;;;   gammaincomplete(a,x) = gamma(a)- gammagreek(a,x)
+;;;
+;;; The Gammagreek function will be further transformed to a Hypergeometric 1F1 
+;;; representation. With this change we get more simple and correct results for 
+;;; the Laplace transform of the Gammaincomplete function.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun gammaincomplete-to-gammagreek (a x)
+  (if (eq (asksign a) '$zero)
+    ;; The representation as a Whittaker W function for a=0
+    (mul
+      (power x (div (sub a 1) 2))
+      (power '$%e (div x -2))
+      (wwhit x (div (sub a 1) 2) (div a 2)))
+    ;; In all other cases the representation as a Gammagreek function
+    (sub
+      (list '(%gamma) a)
+      (list '($gammagreek) a x))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun distrexecinit (fun)
   (cond ((and (consp fun)
