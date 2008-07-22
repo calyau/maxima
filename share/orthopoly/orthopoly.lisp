@@ -952,7 +952,7 @@
 	   (setq n (+ 0.5 ($float n)))
 	   (setq d (* d (sqrt (/ pi (* 2 z)))))
 	   (setq d (lisp-float-to-maxima-float d))
-	   ($expand (mul ($rectform d) ($bessel_j x n)))))
+	   ($expand (mul ($rectform d) ($bessel_j n x)))))
 
 	((and (integerp n) (> n -1))
 	 (let ((xt (sub x (div (mul n '$%pi) 2))))
