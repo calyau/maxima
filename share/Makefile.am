@@ -189,6 +189,7 @@ contrib/integer_sequence.lisp\
 contrib/rtest_sequence.mac\
 contrib/topoly.lisp\
 contrib/topoly_solver.mac\
+contrib/rtest_topoly.mac\
 contrib/f90.lisp\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
