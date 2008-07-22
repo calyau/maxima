@@ -41,7 +41,7 @@ block
         rtestode_odelin,
 
      */
-        [rtestezunits, 100, 101, 103, 104, 108],
+        rtestezunits,
         rtest_numericalio,
         rtest_simplify_sum,
 	rtest_solve_rec,
@@ -72,9 +72,10 @@ block
 	/* gf_roots_test, -- many bugs */
 	/* gf_hard_test, -- many bugs  */
 	/* rtest_namespaces, -- causes test_suite to halt */
-	[arag_test, 7],
+	arag_test,
 	/* hard_test, --takes a long time or never finishes */
         rtest_pdiff,
+        rtest_topoly,
 	[rtestprintf, 29, 38, 39, 40, 41, 47, 48]]],
     
     run_testsuite ());
