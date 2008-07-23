@@ -107,6 +107,8 @@ a newline."),
     tex ('diff (exp (-a*x), x)),
     tex ('diff (a(x) * 'diff (F, x), x) + a(x) * 'diff (F, x, 2)),
     tex ('limit (exp (-a*x), x, inf)),
+    tex ('limit (exp (-a*x), x, 0, plus)),
+    tex ('limit (exp (-a*x), x, 0, minus)),
 
     tex ('(a and b)),
     tex ('(a or b)),

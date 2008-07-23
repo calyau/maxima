@@ -689,12 +689,19 @@
 
 (defprop %limit tex-limit tex)
 
-(defun tex-limit(x l r)	;; ignoring direction, last optional arg to limit
-  (let ((s1 (tex (cadr x) nil nil 'mparen rop))	;; limitfunction
-	(subfun	;; the thing underneath "limit"
-	 (subst "\\rightarrow " '=
-		(tex `((mequal simp) ,(caddr x),(cadddr x))
-		     nil nil 'mparen 'mparen))))
+(defun tex-limit (x l r)
+  (let*
+     ;; limit function
+    ((s1 (tex (cadr x) nil nil 'mparen rop))
+     (direction (fifth x))
+     ;; the thing underneath "limit"
+     (subfun
+       (subst (or (and (eq direction '$plus) "\\downarrow ")
+                  (and (eq direction '$minus) "\\uparrow ")
+                  "\\rightarrow ")
+              '=
+              (tex `((mequal simp) ,(caddr x),(cadddr x))
+                   nil nil 'mparen 'mparen))))
     (append l `("\\lim_{" ,@subfun "}{" ,@s1 "}") r)))
 
 (defprop %at tex-at tex)

@@ -27,20 +27,3 @@
 		 (cdr x))
 	 '("\\end{pmatrix}") r))
 
-;; Here is a version of tex-limit that doesn't ignore the direction of
-;; the limit; it uses down and up arrows to indicate the direction.
-
-(defun tex-limit(x l r)
-  (let* ((s1 (tex (cadr x) nil nil 'mparen rop))
-	 (arrow
-	  (cond ((eq (nth 4 x) '$minus)
-		 " \\,  \\downarrow  \\,")
-		((eq (nth 4 x) '$plus)
-		 " \\, \\uparrow \\, " )
-		(t
-		  " \\rightarrow ")))
-	 (subfun  (subst arrow '=
-			 (tex `((mequal simp) ,(caddr x),(cadddr x))
-			      nil nil 'mparen 'mparen))))
-    (append l `("\\lim_{" ,@subfun "}{" ,@s1 "}") r)))
-
