@@ -252,7 +252,21 @@ known_unit_conversions :
         conversions_customary_si,
         conversions_customary_customary);
 
-declare_unit_conversion ([L]) := (known_unit_conversions : union (known_unit_conversions, setify (L)), done);
+declare_unit_conversion ([L]) :=
+   (if not every (equationp, L)
+        then error ("declare_unit_conversion: all arguments must be equations."),
+    setify (ratsimp (L)),
+    map (flatten_conversion_equation, %%),
+    known_unit_conversions : union (known_unit_conversions, %%),
+    done);
+
+flatten_conversion_equation (e%) := block
+  ([l% : lhs (e%), r% : rhs (e%)],
+    if unitop_p (l%) and unitop_p (r%)
+        then qty (l%) * units (l%) = qty (r%) * units (r%)
+        else e%);
+
+equationp (e) := not atom (e) and op (e) = "=";
 
 compute_conversion_factor (u1%, u2%) := block ([e%],
   e% : cons (%%a = u1% / u2%, args (known_unit_conversions)),
@@ -290,12 +304,36 @@ declare_dimensions1 (a%, b%) :=
             then map (lambda ([b1%], declare_dimensions1 (a%, b1%)), b%)
             else put (a%, b%, 'dimension);
 
-%fundamental_units : '[m, kg, s, A, K, mol];
-fundamental_dimensions : '[length, mass, time, charge, temperature, quantity];
+remove_dimensions ([L%]) := map (lambda ([a%], put (a%, false, 'dimension)), L%);
 
-map (lambda ([x, y], declare_dimensions (x, y)), %fundamental_units, fundamental_dimensions);
+declare_fundamental_dimensions ([L]) :=
+   (if not every (symbolp, L)
+        then error ("declare_fundamental_dimensions: all arguments must be symbols."),
+    if listp (fundamental_dimensions)
+        then remove_fundamental_dimensions (),
+    fundamental_dimensions : L,
+    map (lambda ([s], assume (s > 0)), fundamental_dimensions));
 
-map (lambda ([s], assume (s > 0)), fundamental_dimensions);
+remove_fundamental_dimensions () :=
+    map (lambda ([s], forget (s > 0)), fundamental_dimensions);
+
+declare_fundamental_units ([L]) :=
+   (if length (L) # length (fundamental_dimensions)
+        then error ("declare_fundamental_units: expected one argument per fundamental dimension."),
+    if not every (symbolp, L)
+        then error ("declare_fundamental_units: all arguments must be symbols."),
+    if listp (%fundamental_units)
+        then remove_fundamental_units (),
+    %fundamental_units : L,
+    map (lambda ([x, y], declare_dimensions (x, y)), %fundamental_units, fundamental_dimensions));
+
+remove_fundamental_units () :=
+   (apply (remove_dimensions, %fundamental_units),
+    kill (%fundamental_units));
+
+declare_fundamental_dimensions (length, mass, time, charge, temperature, quantity);
+
+declare_fundamental_units (m, kg, s, A, K, mol);
 
 /* I GUESS RULES FOR DIMENSIONS COULD RECOGNIZE EQUATIONS, DERIVATIVES, AND INTEGRALS
  */
