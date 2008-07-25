@@ -131,7 +131,6 @@
        $stringp
        $charat
        $charlist
-       $sconc
        $scopy
        $sdowncase
        $sequal
