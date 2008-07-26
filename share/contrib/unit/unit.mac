@@ -146,7 +146,7 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
 %catalytic_activity];
 
 /*Volume*/
-%volumelisting : [m^3,[[L,liter,liters],1,m]];
+%volumelisting : [m^3,[[L,liter,liters],0.001,m]];
 
 
 /* Derived Units with Special SI Names and Symbols 
