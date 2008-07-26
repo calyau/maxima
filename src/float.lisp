@@ -258,10 +258,41 @@ One extra decimal digit in actual representation for rounding purposes.")
 		     (list '(rat simp) 1 (exptrl 2 (1- fpprec)))
 		     $ratepsilon)))))
 
+(defun float-nan-p (x)
+  (and (floatp x) (not (= x x))))
+
+(defun float-inf-p (x)
+  (and (floatp x) (not (float-nan-p x)) (beyond-extreme-values x)))
+
+(defun beyond-extreme-values (x)
+  (multiple-value-bind (most-negative most-positive) (extreme-float-values x)
+    (cond
+      ((< x 0) (< x most-negative))
+      ((> x 0) (> x most-positive))
+      (t nil))))
+
+(defun extreme-float-values (x)
+  ;; BLECHH, I HATE ENUMERATING CASES. IS THERE A BETTER WAY ??
+  (case (type-of x)
+    (short-float (values most-negative-short-float most-positive-short-float))
+    (single-float (values most-negative-single-float most-positive-single-float))
+    (double-float (values most-negative-double-float most-positive-double-float))
+    (long-float (values most-negative-long-float most-positive-long-float))
+    ;; NOT SURE THE FOLLOWING REALLY WORKS
+    ;; #+(and cmu double-double)
+    ;; (kernel:double-double-float
+    ;;   (values most-negative-double-double-float most-positive-double-double-float))
+    ))
+
 ;; Convert a floating point number into a bigfloat.
 (defun floattofp (x)
+  (if (float-nan-p x)
+    (merror "Attempted float-to-bigfloat conversion of floating point NaN (not-a-number).~%"))
+  (if (float-inf-p x)
+    (merror "Attempted float-to-bigfloat conversion of floating-point infinity.~%"))
   (unless $float2bf
     (mtell "Warning:  Float to bigfloat conversion of ~S~%" x))
+
   (multiple-value-bind (frac exp sign)
       (integer-decode-float x)
     ;; Scale frac to the desired number of bits, and adjust the
