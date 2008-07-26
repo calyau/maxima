@@ -1007,6 +1007,19 @@ log(sin(x)^2+cos(x)^2+2*cos(x)+1) + log(sin(x)^2+cos(x)^2-2*cos(x)+1) + cos(2*x)
 float(rectform(integrate(integrate(x^2*y^2*(sin(2.*x)+%i*cos(2.*y))*exp(%i*20.*x)*exp(%i*30.*y),x,-1,-10),y,-5,15)));
 6.127592006717518 - 40.62195392101798 * %i;
 
+integrate(x^3/(1 + + 4*x^2 + 6*x^4 + 4*x^6 + x^8 ), x, 0, inf);
+1/12;
+
+/* [ 1668087 ] integrate(1/cosh(x/R)^4,x,-inf,inf) = 0 */
+/* already assumed a>0 */
+integrate(1/cosh(x/a)^4,x,-inf,inf);
+4*a/3;
+
+/* [ 1309432 ] integrate(1/cosh(a*x)^2,x,-inf,inf); */
+/* already assumed a>0 */
+integrate(1/cosh(x/a)^2,x,-inf,inf);
+2*a;
+
 /* [ 1860487 ] MONSTERTRIG endless recursion */
 integrate (x*(cos(2*x) + sin(x)), x);
 (2*x*sin(2*x)+cos(2*x)+4*sin(x)-4*x*cos(x))/4;

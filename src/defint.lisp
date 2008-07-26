@@ -1240,7 +1240,7 @@
 
 (defun ztorat (n d s)
   (cond ((and (null *dflag)
-	      (setq s (difapply n d nn* #'ztorat)))
+	      (setq s (difapply n d s #'ztorat)))
 	 s)
 	((setq n (let ((plogabs ()))
 		   (keyhole (m* `((%plog) ,(m- var)) n) d var)))
@@ -1292,7 +1292,8 @@
 	    (cond ((setq temp (mtosc grand))
 		   (return temp))
 		  (t (go en)))))
-     (cond ((polyinx grand var nil)
+     (setq grand ($exponentialize grand))	; exponentializing before numden 
+     (cond ((polyinx grand var nil)		;  avoids losing multiplicities [ 1309432 ]
 	    (diverg))
 	   ((and (ratp grand var)
 		 (mtimesp grand)
