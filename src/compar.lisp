@@ -832,11 +832,12 @@ relational knowledge is contained in the default context GLOBAL."
     (setq z ($niceindices z))
     (setq sgn (csign (sratsimp z)))
     (cond ((eq '$zero sgn) t)
-	  ((eq sgn t)
-	   (setq z ($rectform z))
-	   (if (or (eq nil (meqp ($realpart z) 0)) (eq nil (meqp ($imagpart z) 0)))
-	       nil
-	       `(($equal) ,a ,b)))
+	  ((and (eq sgn t) (islinear z '$%i))
+	   (let ((r (meqp ($realpart z) 0))
+		 (i (meqp ($imagpart z) 0)))
+	     (cond ((or (eq r nil) (eq i nil)) nil)
+		   ((and (eq r t) (eq i t)) t)
+		   (t `(($equal) ,a ,b)))))
 	  ((member sgn '($pos $neg $pn)) nil)
 	  (t `(($equal) ,a ,b)))))
 
