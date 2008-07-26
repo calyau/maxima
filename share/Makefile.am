@@ -825,7 +825,6 @@ numeric/submac.dem\
 numeric/submac.mac\
 orthopoly/changes_0.9_to_0.94.txt\
 orthopoly/h_atom.dem\
-orthopoly/orthopoly-init.lisp\
 orthopoly/orthopoly.lisp\
 orthopoly/README\
 orthopoly/test_orthopoly.mac\
