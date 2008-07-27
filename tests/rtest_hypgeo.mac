@@ -270,9 +270,6 @@ factor(radcan(specint(%e^(-s*t)*((1+a^2*t^2)*sin(a*t)-a*t*cos(a*t)),t)));
 
 ******************************************************************************/
 
-block (if get ('orthopoly, 'version) = false then load (orthopoly), done);
-done;
-
 /* We test the integration of the Laguerre function for three different 
    values for the order of the polynom.
 */
@@ -417,8 +414,7 @@ factor(fullratsimp(specint(%e^(-s*t)*(%e^(a^2*t)*(b/a*erf(a*sqrt(t))-1)+%e^(b^2*
    values for the order of the polynom.
 */
 
-block (if get ('orthopoly, 'version) = false then load (orthopoly),
-   h1(n,x):= n!/((2*n)!*sqrt(%pi*t))*hermite(2*n,sqrt(t)),
+block (h1(n,x):= n!/((2*n)!*sqrt(%pi*t))*hermite(2*n,sqrt(t)),
    h1(n,x):= n!/((2*n)!*sqrt(%pi*t))*hermite(2*n,sqrt(t)), 
    done
 );
