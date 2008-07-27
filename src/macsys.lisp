@@ -492,9 +492,10 @@
 
 (defun $system (&rest args)
   ;; If XMaxima is running, direct output from command into *SOCKET-CONNECTION*.
-  ;; From what I can tell, GCL and Clisp cannot redirect the output into a stream. Oh well.
+  ;; From what I can tell, GCL, ECL, and Clisp cannot redirect the output into an existing stream. Oh well.
   (let ((s (and (boundp '*socket-connection*) *socket-connection*)))
     #+gcl (lisp:system (apply '$sconcat args))
+    #+ecl (si:system (apply '$concat args))
     #+clisp (ext:run-shell-command (apply '$sconcat args))
     #+(or cmu scl) (ext:run-program "/bin/sh" (list "-c" (apply '$sconcat args)) :output (or s t))
     #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t :output (or s nil))

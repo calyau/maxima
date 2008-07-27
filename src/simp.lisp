@@ -130,8 +130,8 @@
       rischp nil rp-polylogp nil *const* 0)
 
 (eval-when
-	#+gcl (load)
-	#-gcl (:load-toplevel)
+	#+gcl (load eval)
+	#-gcl (:load-toplevel :execute)
 	(mapc #'(lambda (x) (mputprop x t '$constant) (setf (get x 'sysconst) t))
 	'($%pi $%i $%e $%phi %i $%gamma	;numeric constants
 	       $inf $minf $und $ind $infinity ;pseudo-constants
@@ -629,8 +629,8 @@
 ;;  point number.
 
 (eval-when
-    #+gcl (compile load)
-    #-gcl (:compile-toplevel :load-toplevel)
+    #+gcl (compile load eval)
+    #-gcl (:compile-toplevel :load-toplevel :execute)
     (defconstant machine-mantissa-precision (float-digits 1.0)))
 
 (defun fpcofrat1 (nu d)

@@ -139,7 +139,7 @@
 	 (msize-paren x l r))
 	((member 'array (cdar x) :test #'eq) (msize-array x l r))
 	((safe-get (caar x) 'grind)
-	 (the (values t) (funcall (get (caar x) 'grind) x l r)))
+	 (the #-ecl (values t) #+ecl t (funcall (get (caar x) 'grind) x l r)))
 	(t (msize-function x l r nil))))
 
 (defun msize-atom (x l r)

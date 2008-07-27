@@ -20,9 +20,11 @@
   :description "Maxima is a symbolic computation program." 
   :licence "GPL" 
   :version "5.10" 
+  :serial t
   :components (
 	       (:module package :pathname ""
 			:components (#-gcl(:file "maxima-package")
+					  (:file "ecl-port")
 					  (:file "autoconf-variables" :depends-on ("maxima-package"))))
 	       (:module info :pathname ""
 			:components ((:file "nregex")
@@ -90,6 +92,7 @@
 				  ((:file "f2cl-package")
 				   (:file "slatec")))
 			 (:module f2cl-lib :pathname ""
+                  :depends-on (packages)
 				  :components ((:file "f2cl-lib")))
 			 (:module slatec 
 				  :depends-on (f2cl-lib packages)
@@ -378,6 +381,151 @@
                                      (:file "nalgfa") 
                                      (:file "ufact") 
                                      (:file "result")))
+	       (:module ifactor :pathname ""
+			:components ((:file "ifactor")))
+
+	       (:module rational-functions :pathname ""
+			:components ((:file "rat3a") 
+				     (:file "rat3b") 
+				     (:file "rat3d") 
+				     (:file "numth") 
+				     (:file "rat3c") 
+				     (:file "rat3e") 
+				     (:file "nrat4") 
+				     (:file "ratout")))
+
+	       (:module maxima-language-compiler-macros :pathname ""
+			:components ((:file "transm")))
+	       (:module maxima-language-compiler :pathname ""
+			:components ((:file "transl") 
+				     (:file "transs") 
+				     (:file "trans1") 
+				     (:file "trans2") 
+				     (:file "trans3") 
+				     (:file "trans4") 
+				     (:file "trans5") 
+				     (:file "transf") 
+				     (:file "troper") 
+				     (:file "trutil") 
+				     (:file "trmode") 
+				     (:file "trdata") 
+				     (:file "trpred") 
+				     (:file "transq") 
+				     (:file "acall")
+				     (:file "fcall") 
+				     (:file "evalw") 
+				     (:file "trprop") 
+				     (:file "mdefun"))
+			:depends-on (maxima-language-compiler-macros))
+
+	       (:module trigonometry :pathname ""
+			:components ((:file "trigi") 
+				     (:file "trigo") 
+				     (:file "trgred")))
+
+	       (:module numerical-functions :pathname ""
+			:depends-on (trigonometry)
+			:components ((:file "bessel")
+				     ;;#+gcl(:file "parse-body")
+				     (:file "ellipt")
+				     (:file "airy"
+					    :depends-on ("ellipt"))
+				     (:file "intpol")))
+
+	       (:module reader :pathname ""
+			:depends-on (compatibility-macros)
+			:components ((:file "nparse")))
+
+	       (:module display :pathname ""
+			:components ((:file "displa") 
+				     (:file "nforma") 
+				     (:file "ldisp") 
+				     (:file "grind")))
+
+	       (:module gcd :pathname ""
+			:components ((:file "spgcd")
+				     (:file "ezgcd")))
+	       (:module documentation :pathname ""
+			:components ((:file "option")
+				     (:file "macdes")))
+	       (:module algebraic-database :pathname ""
+			:components ((:file "inmis") 
+				     (:file "db") 
+				     (:file "compar") 
+				     (:file "askp"))) ;does this belong here?
+	       (:module integration :pathname ""
+			:components ((:file "sinint") 
+				     (:file "sin") 
+				     (:file "risch")))
+	       (:module taylor-series :pathname ""
+			:depends-on (rat-macros)
+			:components ((:file "hayat")))
+	       (:module definite-integration :pathname ""
+			:components ((:file "defint") 
+				     (:file "residu")))
+	       (:module special-functions :pathname ""
+			:components ((:file "specfn")))
+	       (:module matrix-algebra :pathname ""
+			:components ((:file "mat") 
+				     (:file "matrix")))
+	       (:module determinants :pathname ""
+			:components ((:file "sprdet") 
+				     (:file "newinv") 
+				     (:file "newdet")))
+	       (:module pattern-matching :pathname ""
+			:components ((:file "schatc") 
+				     (:file "matcom") 
+				     (:file "matrun") 
+				     (:file "nisimp")))
+	       (:module limits :pathname ""
+			:components ((:file "tlimit") 
+				     (:file "limit")))
+	       (:module solve :pathname ""
+			:components ((:file "solve") 
+				     (:file "psolve") 
+				     (:file "algsys") 
+				     (:file "polyrz") 
+				     (:file "cpoly")))
+	       (:module debugging :pathname ""
+			:components ((:file "mtrace")
+				     (:file "mdebug")))
+	       (:module miscellaneous :pathname ""
+			:components ((:file "scs") 
+				     (:file "asum") 
+				     (:file "fortra") 
+				     (:file "optim") 
+				     (:file "marray") 
+				     (:file "mdot") 
+				     (:file "irinte") 
+				     (:file "series") 
+				     (:file "laplac") 
+				     (:file "pade") 
+				     (:file "homog") 
+				     (:file "combin") 
+				     (:file "nset")
+				     (:file "rand-mt19937")
+				     (:file "maxmin")
+				     (:file "nummod")
+				     (:file "conjugate")
+				     (:file "mstuff")))
+	       (:module poisson-series :pathname ""
+			:components ((:file "ratpoi")
+				     (:file "pois2") 
+				     (:file "pois3")))
+	       (:module translated-packages :pathname ""
+			:depends-on ("maxima-language-compiler-macros")
+			:components
+			((:file "desoln")
+			 (:file "elim")
+			 (:file "invert")
+			 (:file "hypgeo")
+			 (:file "hyp")
+			 (:file "todd-coxeter")
+			 (:file "mactex")
+			 (:file "plot")))
+	       (:module graphics-drivers :pathname ""
+			:components ((:file "gnuplot")
+				     (:file "openmath")))
 
 	       (:module final :pathname ""
 			;; These are not compiled, for whatever reason

@@ -19,8 +19,8 @@
 (defprop $conjugate simp-conjugate operators)
 
 (eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
+    #+gcl (load eval)
+    #-gcl (:load-toplevel :execute)
     (let (($context '$global) (context '$global))
       (meval '(($declare) $conjugate $complex))))
 

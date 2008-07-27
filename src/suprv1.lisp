@@ -986,6 +986,7 @@
   #+(or openmcl mcl) (ccl::quit)
   #+gcl (quit)
   #+abcl (cl-user::quit)
+  #+ecl (si:quit)
   #+excl "don't know quit function"
   #+lispworks (lispworks:quit))
 

@@ -306,17 +306,17 @@ One extra decimal digit in actual representation for rounding purposes.")
   (let ((precision (caddar l))
 	(mantissa (cadr l))
 	(exponent (caddr l))
-	(fpprec #.machine-mantissa-precision)
+	(fpprec machine-mantissa-precision)
 	(*m 0))
     ;;Round the mantissa to the number of bits of precision of the machine,
     ;;and then convert it to a floating point fraction.
-    (setq mantissa (quotient (fpround mantissa) #.(expt 2.0 machine-mantissa-precision)))
+    (setq mantissa (quotient (fpround mantissa) (expt 2.0 machine-mantissa-precision)))
     ;; Multiply the mantissa by the exponent portion.  I'm not sure
     ;; why the exponent computation is so complicated. Using
     ;; scale-float will prevent possible overflow unless the result
     ;; really would.
     (setq precision
-	  (errset (scale-float mantissa (+ exponent (- precision) *m #.machine-mantissa-precision))
+	  (errset (scale-float mantissa (+ exponent (- precision) *m machine-mantissa-precision))
 		  nil))
     (if precision
 	(car precision)
@@ -328,7 +328,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; 7.45E-9) - JPG
 
 (defun fixfloat (x)
-  (let (($ratepsilon #.(expt 2.0 (- machine-mantissa-precision))))
+  (let (($ratepsilon (expt 2.0 (- machine-mantissa-precision))))
     (maxima-rationalize x)))
 
 ;; Takes a flonum arg and returns a rational number corresponding to the flonum
@@ -1703,6 +1703,6 @@ One extra decimal digit in actual representation for rounding purposes.")
 	    (bcons (fproot x 2))))))
 
 (eval-when
-    #+gcl (load)
-    #-gcl (:load-toplevel)
+    #+gcl (load eval)
+    #-gcl (:load-toplevel :execute)
     (fpprec1 nil $fpprec))		; Set up user's precision

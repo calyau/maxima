@@ -75,7 +75,8 @@
 	#+allegro "acl"
 	#+openmcl "openmcl"
     #+abcl "abcl"
-	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
+    #+ecl "ecl"
+	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl ecl) "unknownlisp")
 
 (defun configure (&key (interactive t) (verbose nil)
 		  is-win32 
@@ -86,7 +87,8 @@
 		  scl-name
 		  acl-name
 		  openmcl-name
-		  sbcl-name)
+		  sbcl-name
+		  ecl-name)
   (let ((prefix (if maxima-directory 
 		    maxima-directory
 		    (default-directory-string)))
@@ -98,6 +100,7 @@
 	(acl (if acl-name acl-name "acl"))
 	(openmcl (if openmcl-name openmcl-name "mcl"))
 	(sbcl (if sbcl-name sbcl-name "sbcl"))
+	(ecl (if ecl-name ecl-name "ecl"))
 	(files (list "maxima-local.in" "src/maxima.in" "src/maxima.bat.in"
 		     "src/autoconf-variables.lisp.in"))
 	(substitutions))
@@ -123,6 +126,9 @@
 	  (setf openmcl 
 		(read-with-default "Name of the OpenMCL executable (optional)"
 				   openmcl))
+	  (setf ecl 
+		(read-with-default "Name of the ECL executable (optional)"
+				   ecl))
 	  (setf sbcl 
 		(read-with-default "Name of the SBCL executable (optional)"
 				   sbcl))))
@@ -141,6 +147,7 @@
 			      (cons "@SCL_NAME@" scl)
 			      (cons "@ACL_NAME@" acl)
 			      (cons "@OPENMCL_NAME@" openmcl)
+			      (cons "@ECL_NAME@" ecl)
 			      (cons "@SBCL_NAME@" sbcl)))
     (if verbose
 	(mapc #'(lambda (pair) (format t "~a=~a~%" (first pair) (rest pair)))

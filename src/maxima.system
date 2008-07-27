@@ -28,6 +28,29 @@
 
 (export '*maxima-build-time*)
 
+#+ecl
+(defun do-compile-ecl (&rest args)
+  (let ((c::*cc-flags* (concatenate 'string "-I. " c::*cc-flags*))
+        (c::*cc-optimize* ""))
+    (apply #'compile-file args)))
+
+#+ecl
+(defun build-maxima-lib ()
+  (labels ((list-all-objects (module)
+             (if (eql (mk::component-type module) :file)
+               (list (mk::component-full-pathname module :binary))
+               (apply #'append (mapcar #'list-all-objects (mk::component-components module))))))
+    #+msvc
+    (progn
+      (c::build-static-library "binary-ecl/maxima-lib" :lisp-files (print (list-all-objects (mk:find-system 'maxima))))
+      (let ((c::*ld-format* (concatenate 'string c::*ld-format* " /LIBPATH:binary-ecl")))
+        (c::build-fasl "binary-ecl/maxima" :lisp-files '(maxima-lib))))
+    #+cygwin
+    (c::build-fasl "binary-ecl/maxima" :lisp-files (list-all-objects (mk:find-system 'maxima)))
+    #-(or cygwin msvc)
+    (c::build-fasl "binary-ecl/maxima" :lisp-files (list-all-objects (mk:find-system 'maxima)))
+  ))
+
 (mk:defsystem "maxima"
   :source-extension "lisp"  
   :binary-pathname #+clisp "binary-clisp"
@@ -47,7 +70,11 @@
 		   #+lispworks (make-pathname
 				:name "binary-lispworks"
 				:directory (pathname-directory *load-truename*))
-		   #-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks) "binary-unknownlisp"
+           #+ecl "binary-ecl"
+		   #-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks ecl) "binary-unknownlisp"
+           #+ecl :compiler-options #+ecl (:system-p t :c-file t :data-file t)
+           #+ecl :compiler #+ecl do-compile-ecl
+           #+ecl :finally-do #+ecl (build-maxima-lib)
   :components (#+gcl
 	       (:module proclaim :source-pathname ""
 			:load-only t
@@ -59,7 +86,7 @@
 				     #+gcl-working-proclaims
 				     (:file "sys-proclaim")))
 	       (:module package :source-pathname ""
-			:load-only t
+			#-ecl :load-only #-ecl t
 			:components (#-gcl(:file "maxima-package")
 					  (:file "autoconf-variables")))
 	       (:module info :source-pathname ""
@@ -552,7 +579,7 @@
 				     (:file "openmath")))
 	       (:module final :source-pathname ""
 			;; These are not compiled, for whatever reason
-			:load-only t
+			#-ecl :load-only #-ecl t
 			:components ((:file "autol")
 				     (:file "max_ext")
 				     (:file "init-cl")))))

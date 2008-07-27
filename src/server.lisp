@@ -16,6 +16,11 @@
   (let* ((sock (open-socket host port)))
     #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
+    #+ecl (setq *old-stdin* *standard-input*
+		*old-stdout* *standard-output*
+		*old-stderr* *error-output*
+		*old-term-io* *terminal-io*
+		*old-debug-io* *debug-io*)
     (setq *standard-input* sock)
     (setq *standard-output* sock)
     (setq *error-output* sock)
@@ -25,6 +30,14 @@
     (force-output sock)
     (setq *debug-io* sock))
   (values))
+
+(defun close-server ()
+  #+ecl (setq *standard-input* *old-stdin*
+	      *standard-output* *old-stdout*
+	      *error-output* *old-stderr*
+	      *terminal-io* *old-term-io*
+	      *debug-io* *old-debug-io*)
+  #+ecl (close *socket-connection*))
 
 ;;; from CLOCC: <http://clocc.sourceforge.net>
 (defun open-socket (host port &optional bin)
@@ -51,7 +64,8 @@
     #+gcl (si::socket port :host host)
     #+lispworks (comm:open-tcp-stream host port :direction :io :element-type
                                       (if bin 'unsigned-byte 'base-char))
-    #-(or allegro clisp cmu scl sbcl gcl lispworks)
+    #+ecl (si::open-client-stream host port)
+    #-(or allegro clisp cmu scl sbcl gcl lispworks ecl)
     (error 'not-implemented :proc (list 'open-socket host port bin))))
 
 
@@ -77,14 +91,16 @@
 #+gcl (system:getpid)
 #+openmcl (ccl::getpid)
 #+lispworks (system::getpid)
-#-(or clisp cmu scl sbcl gcl openmcl lispworks) (getpid-from-environment)
+#+ecl (si:getpid)
+#-(or clisp cmu scl sbcl gcl openmcl lispworks ecl) (getpid-from-environment)
 )
 
-#+(or gcl clisp cmu scl sbcl lispworks)
+#+(or gcl clisp cmu scl sbcl lispworks ecl)
 (defun xchdir (w)
   #+clisp (ext:cd w)
   #+gcl (si::chdir w)
   #+(or cmu scl) (unix::unix-chdir w)
   #+sbcl (sb-posix:chdir w)
   #+lispworks (hcl:change-directory w)
+  #+ecl (si:chdir w)
   )

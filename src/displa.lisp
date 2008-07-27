@@ -1176,7 +1176,9 @@
 	 (if (or (null bkpt) (eq result bkpt))
 	     (merror "Expression is too wide to be displayed."))
 	 (do ((l result (cdr l)))
-	     ((eq bkpt (cdr l)) (rplacd l nil))
+	     ;; THE NEED FOR EQUAL HERE IS PROBABLY THE SYMPTOM OF A BUG IN ECL !!
+	     ;; PROBABLY RELATED TO SIDE-EFFECTS OF NRECONC, RPLACD, ETC !!
+	     ((#+ecl equal #-ecl eq bkpt (cdr l)) (rplacd l nil))
 	   (if (null l)
 	       (merror "`checkbreak' not found in `display'")))
 	 (output bkpt 0)

@@ -95,6 +95,7 @@ set maxima_image_base=%maxima_imagesdir%\binary-%lisp%\maxima
 if "%verbose%" == "true" @echo on
 if "%lisp%" == "gcl" goto dogcl
 if "%lisp%" == "clisp" goto doclisp
+if "%lisp%" == "ecl" goto doecl
 
 @echo Maxima error: lisp %lisp% not known.
 goto end
@@ -110,6 +111,10 @@ goto end
 
 :clisp_autotools
 %maxima_imagesdir%\binary-clisp\lisp.exe -q -M %maxima_image_base%.mem "" -- %arg1% %arg2% %arg3% %arg4% %arg5% %arg6% %arg7% %arg8% %arg9%
+goto end
+
+:doecl
+ecl -load %maxima_image_base%.fas -eval "(user::run)" -- "%arg1%" "%arg2%" "%arg3%" "%arg4%" "%arg5%" "%arg6%" "%arg7%" "%arg8%" "%arg9%"
 goto end
 
 :end

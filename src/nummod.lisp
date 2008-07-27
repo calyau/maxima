@@ -30,7 +30,7 @@
 
 ;; Let's have version numbers 1,2,3,...
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
+(eval-when (:load-toplevel :execute)
   (mfuncall '$declare '$integervalued '$feature)
   ($put '$nummod 3 '$version))
 

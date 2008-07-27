@@ -1264,8 +1264,8 @@ causing all pending operations to be flushed"
   (ecase i
     (1 least-positive-normalized-double-float)
     (2 most-positive-double-float)
-    (3 #-gcl double-float-epsilon #+gcl (scale-float (float #X10000000000001 1d0) -105))
-    (4 (scale-float #-gcl double-float-epsilon #+gcl (scale-float (float #X10000000000001 1d0) -105) 1))
+    (3 #-(or gcl ecl) double-float-epsilon #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105))
+    (4 (scale-float #-(or gcl ecl) double-float-epsilon #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105) 1))
     (5 (log (float (float-radix 1d0) 1d0) 10d0))))
 
 (defun r1mach (i)
@@ -1392,9 +1392,15 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.18 2008-03-26 14:48:26 robert_dodier Exp $
+;;; $Id: f2cl-lib.lisp,v 1.19 2008-07-27 07:04:15 robert_dodier Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.18  2008-03-26 14:48:26  robert_dodier
+;;; Revision 1.19  2008-07-27 07:04:15  robert_dodier
+;;; Merge patches-for-ecl-branch into main trunk.
+;;; With these changes, Maxima builds without errors with Clisp, CMUCL, SBCL, and GCL,
+;;; and run_testsuite does not appear to report any errors that are not reported
+;;; otherwise. Not yet tested with ECL.
+;;;
+;;; Revision 1.18  2008/03/26 14:48:26  robert_dodier
 ;;; For (D1MACH 3) and (D1MACH 4), make the values for GCL match the
 ;;; values as shown in d1mach.f.
 ;;;

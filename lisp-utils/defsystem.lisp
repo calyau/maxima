@@ -1371,7 +1371,7 @@
  	 #+ACLPC                              ("lsp"  . "fsl")
  	 #+CLISP                              ("lisp" . "fas")
          #+KCL                                ("lsp"  . "o")
-         #+ECL                                ("lsp"  . "so")
+         #+ECL                                ("lsp"  . #+msvc "obj" #-msvc "o")
          #+IBCL                               ("lsp"  . "o")
          #+Xerox                              ("lisp" . "dfasl")
 	 ;; Lucid on Silicon Graphics

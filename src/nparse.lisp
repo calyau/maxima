@@ -14,7 +14,7 @@
 
 (load-macsyma-macros defcal mopers)
 
-(defmvar *alphabet* '(#\_ #\%))
+(defmvar *alphabet* (list #\_ #\%))
 
 (defmfun alphabetp (n)
   (and (characterp n)

@@ -13,14 +13,15 @@
 
 (eval-when
     #+gcl (compile load)
-    #-gcl (:compile-toplevel :load-toplevel)
+    #+ecl (compile load eval)
+    #-(or gcl ecl) (:compile-toplevel :load-toplevel)
 
     ;;this will make operators which
     ;;declare the type and result of numerical operations
 
-    (defmacro def-op (name type op &optional return-type)
+    (defmacro def-op (name arg-type op &optional return-type)
       `(setf (macro-function ',name)
-	     (make-operation ',type ',op ',return-type)))
+	     (make-operation ',arg-type ',op ',return-type)))
 
     ;;make very sure .type .op and .return are not special!!
     (defun make-operation (.type .op .return)
@@ -50,9 +51,9 @@
 	  (when *dbreak*
 	    (break "hi"))))
 
-      (defmacro def-op (name type old)
+      (defmacro def-op (name arg-type old)
 	`(defmacro ,name (&rest l)
-	   `(progn (chk-type (list ,@l) ',',name ',',type ',l)
+	   `(progn (chk-type (list ,@l) ',',name ',',arg-type ',l)
 		   (,',old ,@l)))))
 
     (def-op f+ fixnum +)
@@ -225,8 +226,8 @@
 		     (aref curs 4) (aref curs 5)) val)))
     ;; set the index (`cursor') for the next call to ASET-BY-CURSOR
     (loop for j downfrom (aref curs 0)
-	   do (cond ((< (aref curs j) (aref curs (f+ 5 j)))
-		     (setf (aref curs j) (f+  (aref curs j) 1))
+	   do (cond ((< (aref curs j) (aref curs (+ 5 j)))
+		     (setf (aref curs j) (+  (aref curs j) 1))
 		     (return-from aset-by-cursor t))
 		    (t (setf (aref curs j) 0)))
 	   (cond ((eql j 0) (return-from aset-by-cursor nil))))))
