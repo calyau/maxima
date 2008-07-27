@@ -64,7 +64,6 @@
 ;; ((unk) input from user). We "simplify" this form by printing an error.
 
 (defprop unk simp-unk operators)
-
 (defun simp-unk (x y z)
   (declare (ignore y z))
   (merror "Maxima doesn't know the derivative of ~:M with respect the ~:M argument" (nth 2 x) (nth 1 x)))
@@ -76,7 +75,6 @@
 ;; This function differs from (1 + signum(x))/2 which isn't left or right
 ;; continuous at 0.
 
-(defprop $unit_step simp-unit-step operators)
 (defprop $unit_step "\\Theta" texword)
 
 (defun simp-unit-step (a y z)
@@ -241,7 +239,6 @@
 
 (meval `(($declare) $pochhammer $complex))
 (defmvar $pochhammer_max_index 100)
-(defprop $pochhammer simp-pochhammer operators)
 
 (defun $pochhammer (x n)
   (simplify `(($pochhammer) ,x ,n)))
