@@ -10,7 +10,7 @@ units (foo);
 
 dimensions (foo);
 
-"... So-called customary units ..."$
+"... \"Customary\" units ..."$
 
 bar : x ` acre;
 
@@ -82,13 +82,13 @@ dimensions (sqrt (bar));
 
 "... Units ad hoc ..."$
 
-3 ` sheep + 8 ` goat + 1 ` horse;
+baz : 3 ` sheep + 8 ` goat + 1 ` horse;
 
-%, sheep = 3*goat, horse = 10*goat;
+subst ([sheep = 3*goat, horse = 10*goat], baz);
 
-1000`gallon/fortnight;
+baz2 : 1000`gallon/fortnight;
 
-%, fortnight = 14*d;
+subst (fortnight = 14*d, baz2);
 
 % `` l/h;
 
