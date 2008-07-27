@@ -280,8 +280,6 @@
 ;;for hypgeo.lisp
 '($%y $%k $%j)
 
-(autof 'simp-unit-step "orthopoly")
-
 (dolist (f
      '($assoc_legendre_p
        $assoc_legendre_q
