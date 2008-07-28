@@ -53,12 +53,12 @@ exp(z)*sinh(z)/z$
  *
  * He(n,x) = 2^(-n/2)*H(n,x/sqrt(2))
  */
-ratsimp(hgfred([-4],[1/2],z^2/2) - hermite(8,z/sqrt(2))/1680);
-0$
+hgfred([-4],[1/2],z^2/2);
+hermite(8,z/sqrt(2))/1680;
 
 /* A&S 13.6.18 */
-ratsimp(hgfred([-4],[3/2],z^2/2) - sqrt(2)*hermite(9,z/sqrt(2))/30240/z)$
-0$
+ratsimp(hgfred([-4],[3/2],z^2/2));
+hermite(9,z/sqrt(2))/(15120*sqrt(2)*z)$
 
 /* A&S 13.6.19 */
 ratsimp(hgfred([1/2],[3/2],-z^2));
@@ -302,8 +302,8 @@ laguerre(7,z)$
 hgfred([-2],[1/2],z);
 hermite(4,sqrt(z))/12$
 
-ratsimp(hgfred([-2],[3/2],z) - hermite(5,sqrt(z))/(120*sqrt(z)));
-0$
+ratsimp(hgfred([-2],[3/2],z));
+hermite(5,sqrt(z))/(120*sqrt(z));
 
 hgfred([a],[a+1],-z);
 a*%gammagreek(a,z)/z^a$

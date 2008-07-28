@@ -303,9 +303,15 @@ factor(specint(%e^(-s*t)*laguerre(10,t),t));
    Last:   After some corrections to the routine ltw the result is OK.
 */
 
-/* Problem 42: OK New
+/* Problem 41: OK New
    After correction of some bugs we get the correct result.    
 */
+
+/* First a test with a special value for the order of the Laguerre function.
+   (Test is added to compensate a killed line to load orthopoly.) */
+
+factor(specint(%e^(-s*t)*%l[10,0](t),t));
+(s-1)^10/s^11;
 
 factor(specint(%e^(-s*t)*%l[n,0](t),t));
 (s-1)^n/s^(n+1);
