@@ -281,7 +281,7 @@ fourier_elim([abs(x) + abs(x/2) + abs(x/3) =  1],[x]);
 [x=-6/11] or [x=6/11]$
 
 fourier_elim([abs(x) + abs(x/2) + abs(x/3) #  1],[x]);
-[x=0] or [0<x,x<6/11] or [-6/11<x,x<0] or [6/11<x] or [x<-6/11]$
+[x = 0] or [0 < x,x < 6/11] or [-6/11 < x,x < 0] or [x < -6/11] or [6/11 < x]$
 
 fourier_elim([max(x,6) < max(x,7)],[x]);
 [x<6] or [x=6] or [6<x,x<7]$
@@ -359,6 +359,17 @@ fourier_elim([log(x) > log(a)],[x, a]);
 fourier_elim([abs(x)>1], [x]);
 [x<-1] or [1<x]$
 
+/* SF bug 2030675 */
+
+fourier_elim([f(abs(x)) < 0],[x]);
+[- f(abs(x)) > 0]$
+
+fourier_elim([f(abs(x)) > 0],[x]);
+[f(abs(x)) > 0]$
+
+fourier_elim([log(x) < log(a)],[x,a]);
+[0 < x, x < a, 0 < a]$
+
 /* known bugs!  */
 fourier_elim([x < 1/a],[x]);
 [x < 1/a]$
@@ -368,9 +379,6 @@ fourier_elim([x - cos(z) < 0],[x]);
 
 fourier_elim([x - z^42 < 0],[x]);
 [x < z^42]$
-
-fourier_elim([log(x) < log(a)],[x,a]);
-[0 < x, x < a]$
 
 /* I think this bug is related to linsolve([x=3.14],[x]) --> [x = 157/50]. Even when
 keepfloat is true, linsolve converts floats to rationals. */

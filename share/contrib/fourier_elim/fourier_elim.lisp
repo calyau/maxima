@@ -163,7 +163,7 @@
 
 	  (t (list (list e t))))))
 	       
-(defun m> (a b &optional (expand nil))
+(defun m> (a b &optional (expand nil) (use-splitify t))
   (let* ((z) (sgn) (z-split) (acc nil))
     (setq a ($ratdisrep a))
     (setq b ($ratdisrep b))
@@ -207,24 +207,7 @@
 	  
           ((and (op-equalp b '$max) ($freeof 'mabs '$min '$max a))
 	   (opapply 'mand (mapcar #'(lambda (s) (m> a s)) (margs b))))
-	  
-	  ;; Finally, take care of the abs, max, and min cases that the previous
-	  ;; four cases miss. 
-	  
-	  ((not ($freeof 'mabs '$min '$max z))
-	   (setq z-split (splitify z))
-	   (dolist (zk z-split)
-	     (push `((mand) ,(m> (first zk) 0) ,@(rest zk)) acc))
-	   (push '(mor) acc)
-	   (simplifya acc nil))
-	  	  
-	  ;; Do a * b > 0 --> (a > 0, b > 0) or (a < 0, b < 0). We only do this when
-	  ;; z has two or more non-constant factors. This check seems spendy--is there
-	  ;; a way to bailout before we get here?
-
-          ((and (op-equalp z 'mtimes) expand) 
-	   (make-positive-product (margs z)))
-
+	  	  	  
 	  ;; Do z^n > 0 --> z # 0  n even,  z > 0, n odd.
 	  ((and (op-equalp z 'mexpt) (integerp (third z)))
 	   (if (even (third z)) (m-neq (second z) 0) (m> (second z) 0)))
@@ -246,10 +229,26 @@
 		(eq (compare-using-empty-context (second a) 1) ">"))
 	   (m> (first (margs a)) (first (margs b))))
 	  
+	  ;; Do a * b > 0 --> (a > 0, b > 0) or (a < 0, b < 0). We only do this when
+	  ;; z has two or more non-constant factors. This check seems spendy--is there
+	  ;; a way to bailout before we get here?
+
+          ((and (op-equalp z 'mtimes) expand) 
+	   (make-positive-product (margs z)))
+	  ;; Finally, take care of the abs, max, and min cases that the previous
+	  ;; four cases miss. 
+	  
+	  ((and use-splitify (op-equalp z '$max '$min 'mabs 'mtimes 'mplus))
+	   (setq z-split (splitify z))
+	   (dolist (zk z-split)
+	     (push `((mand) ,(m> (first zk) 0 expand nil) ,@(rest zk)) acc))
+	   (push '(mor) acc)
+	   (simplifya acc nil))
+
           (t 
 	   (opapply 'mgreaterp (list z 0))))))
               
-(defun m= (a b)
+(defun m= (a b &optional (use-splitify t))
   (let* ((z (sub a b)) (nz) (acc) (z-split) (sgn  (compare-using-empty-context a b)))
     (setq z (if (freeof-floats z) ($factor z) z))
     
@@ -275,10 +274,10 @@
       (expand-and-over-or 
        (take '(mand) nz (opapply 'mor (mapcar #'(lambda (s) (m= s 0)) (margs z))))))
 
-     ((not ($freeof 'mabs '$min '$max z))
+     ((and use-splitify (op-equalp z '$max '$min 'mabs 'mtimes 'mplus))
       (setq z-split (splitify z))
       (dolist (zk z-split)
-	(push `((mand) ,(m= (first zk) 0) ,@(rest zk)) acc))
+	(push `((mand) ,(m= (first zk) 0 nil) ,@(rest zk)) acc))
       (push '(mor) acc)
       (expand-and-over-or (simplifya acc nil)))
      
