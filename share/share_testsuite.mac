@@ -56,7 +56,7 @@ block
         rtest_atensor,
         rtest_ctensor,
         rtest_itensor,
-        [rtest_fourier_elim, 82, 119, 120, 121, 122, 123],
+        [rtest_fourier_elim, 82,122,123,124,125],
         [rtest_sequence, 55],
         "test-cholesky",
         "test-eigens-by-jacobi",
