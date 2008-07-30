@@ -2,7 +2,7 @@
  * CODATA 2006 values. See: http://physics.nist.gov/constants
  * This program copyright 2008 by Robert Dodier.
  * I release this program under the terms of
- * the GNU General Public License, version 2.
+ * the GNU General Public License.
  */
 
 /* After loading this program, the following prints a LaTeX document

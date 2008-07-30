@@ -1,5 +1,5 @@
 ; namespaces.lisp -- user-level namespace system for Maxima
-; by Robert Dodier, copyright 2006, released under terms of GNU GPL v 2
+; by Robert Dodier, copyright 2006, released under terms of GNU General Public License.
 
 ; Known warts:
 ; * input labels appears as ($%i1) when namespace is something other than maxima

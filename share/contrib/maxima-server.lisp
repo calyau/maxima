@@ -2,7 +2,7 @@
 ;;
 ;; Copyright 2007 by Robert Dodier.
 ;; I release this file under the terms of
-;; the GNU General Public License, version 2.
+;; the GNU General Public License.
 ;;
 ;; The function SERVER-RUN implements a simple Unix server:
 ;; listen, accept, fork.

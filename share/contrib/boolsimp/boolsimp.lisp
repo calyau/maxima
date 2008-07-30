@@ -1,7 +1,7 @@
 ; Simplification and evaluation of Boolean and conditional expressions.
 ; 
 ; Copyright 2006 by Robert Dodier.
-; Released under the terms of the GNU General Public License, version 2.
+; Released under the terms of the GNU General Public License.
 
 ; The functions in this file are an attempt to make Boolean (and, or, not)
 ; and conditional (if -- then -- else/elseif) expressions work more like

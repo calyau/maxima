@@ -1,6 +1,6 @@
 Notes about amatrix
 Robert Dodier, 2007-12-15
-I release this file under the terms of the GNU General Public License, version 2
+I release this file under the terms of the GNU General Public License.
 
 amatrix is a matrix object which is implemented via an underlying
 Lisp array (instead of a list of lists), and which supports row and/or

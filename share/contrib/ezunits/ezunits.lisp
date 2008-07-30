@@ -1,7 +1,7 @@
 ;; ezunits: yet another units package for Maxima
 ;; This program copyright 2008 by Robert Dodier.
 ;; I release this program under the terms of the
-;; GNU General Public License, version 2.
+;; GNU General Public License.
 
 ;; Process tex(a`b): throw away the backtick, texify a,
 ;; and texify b with all symbols in b output as mathrm.

@@ -2,7 +2,7 @@ C     Modification of lbfgs.f as retrieved 1997/03/29 from
 C     ftp://ftp.netlib.org/opt/lbfgs_um.shar
 C
 C     This version copyright 2006 by Robert Dodier and released
-C     under the terms of the GNU General Public License, version 2.
+C     under the terms of the GNU General Public License.
 C
 C     ---------------- Message from the author ----------------
 C     From: Jorge Nocedal [mailto:nocedal@dario.ece.nwu.edu]

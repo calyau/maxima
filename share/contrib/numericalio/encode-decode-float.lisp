@@ -2,7 +2,7 @@
 ;; Copyright 2007 by Robert Dodier
 
 ;; This program is free software; you can redistribute it and/or
-;; modify it under the terms of the GNU General Public License, version 2.
+;; modify it under the terms of the GNU General Public License.
 
 ;; This program has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

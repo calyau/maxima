@@ -1,7 +1,7 @@
 /* augmented Lagrangian method for constrained optimization
  *
  * copyright Robert Dodier, October 2005
- * Released under the terms of the GNU Public License
+ * Released under the terms of the GNU General Public License
  *
  * See http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html
  * and http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf

@@ -1,5 +1,5 @@
 /* copyright 2007 by Robert Dodier
- * I release this file under the terms of the GNU General Public License, version 2
+ * I release this file under the terms of the GNU General Public License.
  */
 
 wilcoxon (X, C) := block ([X1, X0, X10, R, n1, n0, Rsum, W],

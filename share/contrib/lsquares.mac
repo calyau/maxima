@@ -1,8 +1,7 @@
 /* lsquares.mac -- fit parameters to data by the method of least squares
  *
  * Copyright 2007 by Robert Dodier.
- * I release this file under the terms of
- * the GNU General Public License, version 2.
+ * I release this file under the terms of the GNU General Public License.
  *
  * Examples:
 
