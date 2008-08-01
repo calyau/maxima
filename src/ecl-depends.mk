@@ -181,6 +181,7 @@ binary-ecl/maxima.image : compar.lisp
 binary-ecl/maxima.image : maxmin.lisp
 binary-ecl/maxima.image : nummod.lisp
 binary-ecl/maxima.image : conjugate.lisp
+binary-ecl/maxima.image : expintegral.lisp
 binary-ecl/maxima.image : askp.lisp
 binary-ecl/maxima.image : sinint.lisp
 binary-ecl/maxima.image : sin.lisp

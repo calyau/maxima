@@ -333,6 +333,7 @@ dskfn.lisp \
 elim.lisp \
 ellipt.lisp \
 evalw.lisp \
+expintegral.lisp \
 ezgcd.lisp \
 factor.lisp \
 fcall.lisp \

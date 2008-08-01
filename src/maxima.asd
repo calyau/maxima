@@ -507,6 +507,7 @@
 				     (:file "maxmin")
 				     (:file "nummod")
 				     (:file "conjugate")
+                                     (:file "expintegral")
 				     (:file "mstuff")))
 	       (:module poisson-series :pathname ""
 			:components ((:file "ratpoi")
