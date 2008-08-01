@@ -26,51 +26,51 @@
 (in-package :maxima)
 
 (defstruct graphs-pqueue
-  (data (make-array 128 :adjustable t))
-  (last -1) ;; last index used
-  (max 127) ;; length of data array
+  (data (make-array 129 :adjustable t))
+  (last 0)  ;; last index used
+  (max 128) ;; max possible index
+  (index (make-hash-table))
   (weights (make-hash-table)))
 
 (defun graphs-pqueue-insert (v w queue)
-  (if (= (graphs-pqueue-last queue) -1)
+  (if (= (graphs-pqueue-last queue) 0)
       (progn
 	;; insert into an empty queue
-	(setf (graphs-pqueue-last queue) 0)
-	(setf (aref (graphs-pqueue-data queue)
-		    (graphs-pqueue-last queue))
-	      v)
+	(setf (graphs-pqueue-last queue) 1)
+	(setf (aref (graphs-pqueue-data queue) 1) v)
+	(setf (gethash v (graphs-pqueue-index queue)) 1)
 	(setf (gethash v (graphs-pqueue-weights queue)) w))
       (progn
 	;; resize the queue if needed
 	(when (= (graphs-pqueue-max queue) (graphs-pqueue-last queue))
-	  (setf (graphs-pqueue-data queue)
-		(adjust-array (graphs-pqueue-data queue)
-			      (* (1+ (graphs-pqueue-max queue)) 2)))
+	  (adjust-array (graphs-pqueue-data queue)
+			(1+ (* (graphs-pqueue-max queue) 2)))
 	  (setf (graphs-pqueue-max queue)
-		(1+ (* (graphs-pqueue-max queue) 2))))
+		(* (graphs-pqueue-max queue) 2)))
 	;; insert the element
 	(incf (graphs-pqueue-last queue))
 	(setf (aref (graphs-pqueue-data queue) (graphs-pqueue-last queue)) v)
+	(setf (gethash v (graphs-pqueue-index queue)) (graphs-pqueue-last queue))
 	(setf (gethash v (graphs-pqueue-weights queue)) w)
 	;; balance the queue
 	(let* ((ind (graphs-pqueue-last queue))
 	       (ind-new (truncate ind 2)))
-	  (loop while (and (> ind 0)
-			   (mlsp (gethash (aref (graphs-pqueue-data queue) ind)
-					  (graphs-pqueue-weights queue))
-				 (gethash (aref (graphs-pqueue-data queue) ind-new)
-					  (graphs-pqueue-weights queue))))
-	       do
+	  (loop while (and (> ind 1)
+			   (mlsp w (gethash (aref (graphs-pqueue-data queue) ind-new)
+					    (graphs-pqueue-weights queue))))
+	     do
 	       (rotatef (aref (graphs-pqueue-data queue) ind)
 			(aref (graphs-pqueue-data queue) ind-new))
+	       (rotatef (gethash (aref (graphs-pqueue-data queue) ind) (graphs-pqueue-index queue))
+			(gethash (aref (graphs-pqueue-data queue) ind-new) (graphs-pqueue-index queue)))
 	       (setq ind ind-new)
-	       (setq ind-new (truncate ind-new 2)))))))
+	       (setq ind-new (truncate ind 2)))))))
 
 (defun graphs-pqueue-emptyp (queue)
-  (= (graphs-pqueue-last queue) -1))
+  (= (graphs-pqueue-last queue) 0))
 
 (defun graphs-pqueue-first (queue)
-  (aref (graphs-pqueue-data queue) 0))
+  (aref (graphs-pqueue-data queue) 1))
 
 (defun graphs-pqueue-get-weight (v queue)
   (gethash v (graphs-pqueue-weights queue)))
@@ -81,20 +81,22 @@
   (let ((top (graphs-pqueue-first queue))
 	(last (aref (graphs-pqueue-data queue)
 		    (graphs-pqueue-last queue)))
-	(pos 0)
+	(pos 1)
 	min-child)
     ;; remove the top element
     (remhash top (graphs-pqueue-weights queue))
+    (remhash top (graphs-pqueue-index queue))
     (decf (graphs-pqueue-last queue))
     ;; put the last element into the first position
-    (setf (aref (graphs-pqueue-data queue) 0) last)
+    (setf (aref (graphs-pqueue-data queue) 1) last)
+    (setf (gethash last (graphs-pqueue-index queue)) 1)
     ;; rebalance the queue
     (loop while t do
 	 ;; find the min child
-	 (setf min-child (1+ (* 2 pos)))
+	 (setf min-child (* 2 pos))
 	 (when (> min-child (graphs-pqueue-last queue))
 	   (return-from graphs-pqueue-pop top))
-	 (when (and (< (1+ min-child) (graphs-pqueue-last queue))
+	 (when (and (<= (1+ min-child) (graphs-pqueue-last queue))
 		    (mlsp (gethash (aref (graphs-pqueue-data queue) (1+ min-child))
 				   (graphs-pqueue-weights queue))
 			  (gethash (aref (graphs-pqueue-data queue) min-child)
@@ -108,6 +110,8 @@
 	   (return-from graphs-pqueue-pop top))
 	 (rotatef (aref (graphs-pqueue-data queue) pos)
 		  (aref (graphs-pqueue-data queue) min-child))
+	 (rotatef (gethash (aref (graphs-pqueue-data queue) pos) (graphs-pqueue-index queue))
+		  (gethash (aref (graphs-pqueue-data queue) min-child) (graphs-pqueue-index queue)))
 	 (setq pos min-child))))
 
 (defun graphs-pqueue-contains (v queue)
@@ -116,23 +120,20 @@
 
 (defun graphs-pqueue-set-weight (v w queue)
   (setf (gethash v (graphs-pqueue-weights queue)) w)
-  (let ((pos 0))
-    ;; find the node in the queue
-    (loop while (and (not (= (aref (graphs-pqueue-data queue) pos) v))
-		     (<= pos (graphs-pqueue-max queue))) do (incf pos))
+  (let ((pos (gethash v (graphs-pqueue-index queue))))
     ;; rebalance the queue
     (let* ((ind pos)
 	   (ind-new (truncate ind 2)))
-      (loop while (and (> ind 0)
-		       (mlsp (gethash (aref (graphs-pqueue-data queue) ind)
-				      (graphs-pqueue-weights queue))
-			     (gethash (aref (graphs-pqueue-data queue) ind-new)
-				      (graphs-pqueue-weights queue))))
+      (loop while (and (> ind 1)
+		       (mlsp w (gethash (aref (graphs-pqueue-data queue) ind-new)
+					(graphs-pqueue-weights queue))))
 	 do
 	   (rotatef (aref (graphs-pqueue-data queue) ind)
 		    (aref (graphs-pqueue-data queue) ind-new))
+	   (rotatef (gethash (aref (graphs-pqueue-data queue) ind) (graphs-pqueue-index queue))
+		    (gethash (aref (graphs-pqueue-data queue) ind-new) (graphs-pqueue-index queue)))
 	   (setq ind ind-new)
-	   (setq ind-new (truncate ind-new 2))))))
+	   (setq ind-new (truncate ind 2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -161,15 +162,14 @@
 	   (if (or (eq (gethash u distance) '$inf)
 		   (= u v1))
 	       (setq cont nil)
-	       (loop for w in (if (graph-p g) (neighbors u g) (out-neighbors u g)) do
-		    (when (graphs-pqueue-contains w pq)
-		      (let* ((e (if (graph-p g) (list (min u w) (max u w)) (list u w)))
-			     (alt (m+ (or (get-edge-weight e g) 1)
-				      u-distance)))
-			(when (mlsp alt (graphs-pqueue-get-weight w pq))
-			  (setf (gethash w previous) u)
-			  (setf (gethash w distance) alt)
-			  (graphs-pqueue-set-weight w alt pq))))))))
+	       (progn
+		 (dolist (w (if (graph-p g) (neighbors u g) (out-neighbors u g)))
+		   (when (graphs-pqueue-contains w pq)
+		     (let ((alt (m+ u-distance ($get_edge_weight `((mlist simp) ,u ,w) g))))
+		       (when (mlsp alt (graphs-pqueue-get-weight w pq))
+			 (setf (gethash w previous) u)
+			 (setf (gethash w distance) alt)
+			 (graphs-pqueue-set-weight w alt pq)))))))))
     (values distance previous)))
 
 (defun $shortest_weighted_path (v u g)
