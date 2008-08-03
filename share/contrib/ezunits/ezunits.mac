@@ -165,7 +165,14 @@ multiply_with_units(x%, u%) :=
   else
     (x%*apply ("*", map (qty, args (u%)))) ` simplify_units (apply ("*", map (units, args (u%))));
 
-constant_factors (e%) := block ([L%, eqns%], L%: listofvars(e%), eqns%: map ("=", L%, L%*0+1), subst (eqns%, e%));
+matchdeclare (a%, all);
+defrule (runits1, 'units (a%), 1);
+
+constant_factors (e%) := block ([L%, eqns%],
+    e% : apply1 (e%, runits1),
+    L%: listofvars(e%),
+    eqns%: map ("=", L%, L%*0+1),
+    subst (eqns%, e%));
 
 everything_else(e%) := e%/constant_factors(e%);
 
