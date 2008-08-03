@@ -169,9 +169,19 @@
 
 (defun $gnuplot_reset ()
   (send-gnuplot-command "unset output")
-  (send-gnuplot-command (format nil "set term ~a" 
-                                (get-plot-option-string '$gnuplot_term)))
+  (send-gnuplot-command (format nil "set term ~a" (translate-gnuplot-term-option)))
   (send-gnuplot-command "reset"))
+
+;; If embedded in output, the gnuplot_term option makes Gnuplot unhappy,
+;; so translate gnuplot_term into something Gnuplot actually wants to see.
+;; Logic copied from GNUPLOT-PRINT-HEADER.
+
+(defun translate-gnuplot-term-option ()
+  (case ($get_plot_option '$gnuplot_term 2)
+    ($default (get-plot-option-string '$gnuplot_default_term_command))
+    ($ps (get-plot-option-string '$gnuplot_ps_term_command))
+    ($dumb (get-plot-option-string '$gnuplot_dumb_term_command))
+    (t (get-plot-option-string '$gnuplot_term))))
 
 (defun $gnuplot_replot (&optional s)
   (if (null *gnuplot-stream*)
