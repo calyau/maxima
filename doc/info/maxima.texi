@@ -147,6 +147,7 @@ Additional packages
 * distrib::                     Probability distributions.
 * draw::                        A Maxima-Gnuplot interface.
 * dynamics::                    Graphics for dynamical systems and fractals.
+* ezunits::                     Dimensional quantities.
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
 * graphs::                      Graph theory package.
@@ -437,6 +438,12 @@ dynamics
 
 * Introduction to dynamics::
 * Functions and Variables for dynamics::
+
+ezunits
+
+* Introduction to ezunits::
+* Introduction to physical_constants::
+* Functions and Variables for ezunits::
 
 f90
 
@@ -777,11 +784,15 @@ zeilberger
 @chapter draw
 @include draw.texi
 
-@node dynamics, f90, draw, Top
+@node dynamics, ezunits, draw, Top
 @chapter dynamics
 @include dynamics.texi
 
-@node f90, ggf, dynamics, Top
+@node ezunits, f90, dynamics, Top
+@chapter ezunits
+@include ezunits.texi
+
+@node f90, ggf, ezunits, Top
 @chapter f90
 @include f90.texi
 

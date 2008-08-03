@@ -1,0 +1,1066 @@
+@menu
+* Introduction to ezunits::
+* Introduction to physical_constants::
+* Functions and Variables for ezunits::
+@end menu
+
+@node Introduction to ezunits, Introduction to physical_constants, ezunits, ezunits
+@section Introduction to ezunits
+
+@code{ezunits} is a package for working with dimensional quantities,
+including some functions for dimensional analysis.
+@code{ezunits} can carry out arithmetic operations on dimensional quantities and unit conversions.
+The built-in units include Systeme Internationale (SI) and US customary units,
+and other units can be declared.
+See also @code{physical_constants}, a collection of physical constants.
+@code{load(ezunits)} loads this package.
+@code{demo(ezunits)} displays several examples.
+
+An expression @code{a ` b} represents a dimensional quantity,
+with @code{a} indicating a nondimensional quantity and @code{b} indicating the dimensional units.
+A symbol can be used as a unit without declaring it as such;
+unit symbols need not have any special properties.
+The quantity and unit of an expression @code{a ` b} can
+be extracted by the @code{qty} and @code{units} functions, respectively.
+
+A symbol may be declared to be a dimensional quantity,
+with specified quantity or specified units or both.
+
+An expression @code{a ` b `` c} converts from unit @code{b} to unit @code{c}.
+@code{ezunits} has built-in conversions for SI base units,
+SI derived units, and some non-SI units.
+Unit conversions not already known to @code{ezunits} can be declared.
+The unit conversions known to @code{ezunits} are specified by the
+global variable @code{known_unit_conversions},
+which comprises built-in and user-defined conversions.
+Conversions for products, quotients, and powers of units are
+derived from the set of known unit conversions.
+
+As Maxima generally prefers exact numbers (integers or rationals)
+to inexact (float or bigfloat),
+so @code{ezunits} preserves exact numbers when they appear
+in dimensional quantities.
+All built-in unit conversions are expressed in terms of exact numbers;
+inexact numbers in declared conversions are coerced to exact.
+
+There is no preferred system for display of units;
+input units are not converted to other units
+unless conversion is explicitly indicated.
+@code{ezunits} does not attempt to simplify units by prefixes
+(milli-, centi-, deci-, etc)
+unless such conversion is explicitly indicated.
+
+Arithmetic operations on dimensional quantities are carried out by
+conventional rules for such operations.
+
+@itemize
+@item @code{(x ` a) * (y ` b)} is equal to @code{(x * y) ` (a * b)}.
+@item @code{(x ` a) + (y ` a)} is equal to @code{(x + y) ` a}.
+@item @code{(x ` a)^y} is equal to @code{x^y ` a^y} when @code{y} is nondimensional.
+@end itemize
+
+@code{ezunits} does not require that units in a sum have the same dimensions;
+such terms are not added together, and no error is reported.
+
+@code{ezunits} includes functions for elementary dimensional analysis,
+namely the fundamental dimensions and fundamental units
+of a dimensional quantity,
+and computation of dimensionless quantities and natural units.
+The functions for dimensional analysis were adapted from similar
+functions in another package, written by Barton Willis.
+
+For the purpose of dimensional analysis,
+a list of fundamental dimensions and an associated list of fundamental units
+are maintained;
+by default the fundamental dimensions are
+length, mass, time, charge, temperature, and quantity,
+and the fundamental units are the associated SI units,
+but other fundamental dimensions and units can be declared.
+
+@opencatbox
+@category{Physical units} @category{Share packages} @category{Package ezunits}
+@closecatbox
+
+@node Introduction to physical_constants, Functions and Variables for ezunits, Introduction to ezunits, ezunits
+@section Introduction to physical_constants
+
+@code{physical_constants} is a collection of physical constants,
+copied from CODATA 2006 recommended values. [1]
+@code{load(physical_constants)} loads this package,
+and loads @code{ezunits} also, if it is not already loaded.
+
+A physical constant is represented as a symbol which has a property
+which is the constant value.
+The constant value is a dimensional quantity, as represented by @code{ezunits}.
+The function @code{constvalue} fetches the constant value;
+the constant value is not the ordinary value of the symbol,
+so the symbols persist in evaluated expressions until the
+value is fetched by @code{constvalue}.
+
+@code{physical_constants} includes some auxilliary information
+such as a description string for each constant,
+an estimate of the error of its numerical value,
+and a property for TeX display.
+To identify physical constants, each symbol has the
+@code{physical_constant} property;
+@code{propvars(physical_constant)} therefore shows the list
+of all such symbols.
+
+@code{physical_constants} comprises the following constants.
+
+@table @code
+@item %c
+speed of light in vacuum
+@item %mu_0
+magnetic constant
+@item %e_0
+electric constant
+@item %Z_0
+characteristic impedance of vacuum
+@item %G
+Newtonian constant of gravitation
+@item %h
+Planck constant
+@item %h_bar
+Planck constant
+@item %m_P
+Planck mass
+@item %T_P
+Planck temperature
+@item %l_P
+Planck length
+@item %t_P
+Planck time
+@item %%e
+elementary charge
+@item %Phi_0
+magnetic flux quantum
+@item %G_0
+conductance quantum
+@item %K_J
+Josephson constant
+@item %R_K
+von Klitzing constant
+@item %mu_B
+Bohr magneton
+@item %mu_N
+nuclear magneton
+@item %alpha
+fine-structure constant
+@item %R_inf
+Rydberg constant
+@item %a_0
+Bohr radius
+@item %E_h
+Hartree energy
+@item %ratio_h_me
+quantum of circulation
+@item %m_e
+electron mass
+@item %N_A
+Avogadro constant
+@item %m_u
+atomic mass constant
+@item %F
+Faraday constant
+@item %R
+molar gas constant
+@item %%k
+Boltzmann constant
+@item %V_m
+molar volume of ideal gas
+@item %n_0
+Loschmidt constant
+@item %ratio_S0_R
+Sackur-Tetrode constant (absolute entropy constant)
+@item %sigma
+Stefan-Boltzmann constant
+@item %c_1
+first radiation constant
+@item %c_1L
+first radiation constant for spectral radiance
+@item %c_2
+second radiation constant
+@item %b
+Wien displacement law constant
+@item %b_prime
+Wien displacement law constant
+@end table
+
+References:
+
+[1] @url{http://physics.nist.gov/constants}
+
+Examples:
+
+The list of all symbols which have the @code{physical_constant} property.
+
+@c ===beg===
+@c load (physical_constants);
+@c propvars (physical_constant);
+@c ===end===
+@example
+(%i1) load (physical_constants);
+(%i2) propvars (physical_constant);
+(%o2) [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar, %m_P, %T_P, %l_P, 
+%t_P, %%e, %Phi_0, %G_0, %K_J, %R_K, %mu_B, %mu_N, %alpha, 
+%R_inf, %a_0, %E_h, %ratio_h_me, %m_e, %N_A, %m_u, %F, %R, %%k, 
+%V_m, %n_0, %ratio_S0_R, %sigma, %c_1, %c_1L, %c_2, %b, %b_prime]
+@end example
+
+Properties of the physical constant @code{%c}.
+
+@c ===beg===
+@c load (physical_constants);
+@c constantp (%c);
+@c get (%c, description);
+@c constvalue (%c);
+@c get (%c, RSU);
+@c tex (%c);
+@c ===end===
+@example
+(%i1) load (physical_constants);
+(%i2) constantp (%c);
+(%o2)                         true
+(%i3) get (%c, description);
+(%o3)               speed of light in vacuum
+(%i4) constvalue (%c);
+                                      m
+(%o4)                     299792458 ` -
+                                      s
+(%i5) get (%c, RSU);
+(%o5)                           0
+(%i6) tex (%c);
+$$c$$
+(%o6)                         false
+@end example
+
+The energy equivalent of 1 pound-mass.
+The symbol @code{%c} persists until its value is fetched by @code{constvalue}.
+The joules to gigajoules conversion is not built-in,
+so it is declared.
+
+@c ===beg===
+@c load (physical_constants);
+@c m * %c^2;
+@c %, m = 1 ` lbm;
+@c constvalue (%);
+@c E : % `` J;
+@c declare_unit_conversion (1 ` GJ = 10^9 ` J);
+@c E `` GJ;
+@c float (%);
+@c ===end===
+@example
+(%i1) load (physical_constants);
+(%i2) m * %c^2;
+                                2
+(%o2)                         %c  m
+(%i3) %, m = 1 ` lbm;
+                              2
+(%o3)                       %c  ` lbm
+(%i4) constvalue (%);
+                                            2
+                                       lbm m
+(%o4)              89875517873681764 ` ------
+                                          2
+                                         s
+(%i5) E : % `` J;
+                     366838848464007200
+(%o5)                ------------------ ` J
+                             9
+(%i6) declare_unit_conversion (1 ` GJ = 10^9 ` J);
+(%o6)                         done
+(%i7) E `` GJ;
+                      458548560580009
+(%o7)                 --------------- ` GJ
+                         11250000
+(%i8) float (%);
+(%o8)              4.0759872051556356e+7 ` GJ
+@end example
+
+@opencatbox
+@category{Physical units} @category{Share packages} @category{Package physical_constants}
+@closecatbox
+
+@node Functions and Variables for ezunits, , Introduction to physical_constants, ezunits
+@section Functions and Variables for ezunits
+
+@deffn {Operator} `
+
+The dimensional quantity operator.
+An expression @code{a ` b} represents a dimensional quantity,
+with @code{a} indicating a nondimensional quantity and @code{b} indicating the dimensional units.
+A symbol can be used as a unit without declaring it as such;
+unit symbols need not have any special properties.
+The quantity and unit of an expression @code{a ` b} can
+be extracted by the @code{qty} and @code{units} functions, respectively.
+
+Arithmetic operations on dimensional quantities are carried out by
+conventional rules for such operations.
+
+@itemize
+@item @code{(x ` a) * (y ` b)} is equal to @code{(x * y) ` (a * b)}.
+@item @code{(x ` a) + (y ` a)} is equal to @code{(x + y) ` a}.
+@item @code{(x ` a)^y} is equal to @code{x^y ` a^y} when @code{y} is nondimensional.
+@end itemize
+
+@code{ezunits} does not require that units in a sum have the same dimensions;
+such terms are not added together, and no error is reported.
+
+@code{load(ezunits)} enables this operator.
+
+Examples:
+
+SI (Systeme Internationale) units.
+
+@c ===beg===
+@c foo : 10 ` m;
+@c qty (foo);
+@c units (foo);
+@c dimensions (foo);
+@c ===end===
+@example
+(%i1) foo : 10 ` m;
+(%o1)                        10 ` m
+(%i2) qty (foo);
+(%o2)                          10
+(%i3) units (foo);
+(%o3)                           m
+(%i4) dimensions (foo);
+(%o4)                        length
+@end example
+
+"Customary" units.
+
+@c ===beg===
+@c bar : x ` acre;
+@c dimensions (bar);
+@c fundamental_units (bar);
+@c ===end===
+@example
+(%i1) bar : x ` acre;
+(%o1)                       x ` acre
+(%i2) dimensions (bar);
+                                   2
+(%o2)                        length
+(%i3) fundamental_units (bar);
+                                2
+(%o3)                          m
+@end example
+
+Units ad hoc.
+
+@c ===beg===
+@c load (ezunits);
+@c baz : 3 ` sheep + 8 ` goat + 1 ` horse;
+@c subst ([sheep = 3*goat, horse = 10*goat], baz);
+@c baz2 : 1000`gallon/fortnight;
+@c subst (fortnight = 14*d, baz2);
+@c ===end===
+@example
+(%i1) load (ezunits);
+(%i2) baz : 3 ` sheep + 8 ` goat + 1 ` horse;
+(%o2)           8 ` goat + 3 ` sheep + 1 ` horse
+(%i3) subst ([sheep = 3*goat, horse = 10*goat], baz);
+(%o3)                       27 ` goat
+(%i4) baz2 : 1000`gallon/fortnight;
+                                gallon
+(%o4)                   1000 ` ---------
+                               fortnight
+(%i5) subst (fortnight = 14*d, baz2);
+                          500   gallon
+(%o5)                     --- ` ------
+                           7      d
+@end example
+
+Arithmetic operations on dimensional quantities.
+
+@c ===beg===
+@c 100 ` kg + 200 ` kg;
+@c 100 ` m^3 - 100 ` m^3;
+@c (10 ` kg) * (17 ` m/s^2);
+@c (x ` m) / (y ` s);
+@c (a ` m)^2;
+@c ===end===
+@example
+(%i1) 100 ` kg + 200 ` kg;
+(%o1)                       300 ` kg
+(%i2) 100 ` m^3 - 100 ` m^3;
+                                  3
+(%o2)                        0 ` m
+(%i3) (10 ` kg) * (17 ` m/s^2);
+                                 kg m
+(%o3)                      170 ` ----
+                                   2
+                                  s
+(%i4) (x ` m) / (y ` s);
+                              x   m
+(%o4)                         - ` -
+                              y   s
+(%i5) (a ` m)^2;
+                              2    2
+(%o5)                        a  ` m
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Operator} ``
+
+The unit conversion operator.
+An expression @code{a ` b `` c} converts from unit @code{b} to unit @code{c}.
+@code{ezunits} has built-in conversions for SI base units,
+SI derived units, and some non-SI units.
+Unit conversions not already known to @code{ezunits} can be declared.
+The unit conversions known to @code{ezunits} are specified by the
+global variable @code{known_unit_conversions},
+which comprises built-in and user-defined conversions.
+Conversions for products, quotients, and powers of units are
+derived from the set of known unit conversions.
+
+There is no preferred system for display of units;
+input units are not converted to other units
+unless conversion is explicitly indicated.
+@code{ezunits} does not attempt to simplify units by prefixes
+(milli-, centi-, deci-, etc)
+unless such conversion is explicitly indicated.
+
+@code{load(ezunits)} enables this operator.
+
+Examples:
+
+The set of known unit conversions.
+
+@c ===beg===
+@c load (ezunits)$
+@c display2d : false$
+@c known_unit_conversions;
+@c ===end===
+
+@example
+(%i1) load (ezunits)$
+(%i2) display2d : false$
+(%i3) known_unit_conversions;
+(%o3) @{acre = 4840*yd^2,Btu = 1055*J,cfm = ft^3/min,cm = m/100,
+       d = 24*h,ft = 381*m/1250,g = kg/1000,gallon = 757*l/200,
+       h = 60*min,Hz = 1/s,in = ft/12,km = 1000*m,l = m^3/1000,
+       lbf = 32*ft*lbm/s^2,lbm = 200*kg/441,mi = 5280*ft,
+       micron = m/1000000,min = 60*s,mm = m/1000,oz = lbm/16,
+       Ohm = s*J/C^2,psi = lbf/in^2,Pa = N/m^2,Wb = J/A,
+       yd = 3*ft,C = s*A,F = C^2/J,H = J/A^2,J = m*N,
+       N = kg*m/s^2,R = 5*K/9,S = 1/Ohm,T = J/(m^2*A),V = J/C,
+       W = J/s@}
+@end example
+
+Elementary unit conversions.
+
+@c ===beg===
+@c load (ezunits)$
+@c 1 ` ft `` m;
+@c %, numer; 
+@c 1 ` kg `` lbm; 
+@c %, numer;
+@c 1 ` W `` Btu/h;
+@c %, numer;
+@c 100 ` degC `` degF;
+@c -40 ` degF `` degC;
+@c 1 ` acre*ft `` m^3;
+@c %, numer;
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) 1 ` ft `` m;
+                            381
+(%o2)                       ---- ` m
+                            1250
+(%i3) %, numer; 
+(%o3)                      0.3048 ` m
+(%i4) 1 ` kg `` lbm; 
+                            441
+(%o4)                       --- ` lbm
+                            200
+(%i5) %, numer;
+(%o5)                      2.205 ` lbm
+(%i6) 1 ` W `` Btu/h;
+                            720   Btu
+(%o6)                       --- ` ---
+                            211    h
+(%i7) %, numer;
+                                         Btu
+(%o7)                3.412322274881517 ` ---
+                                          h
+(%i8) 100 ` degC `` degF;
+(%o8)                      212 ` degF
+(%i9) -40 ` degF `` degC;
+(%o9)                     (- 40) ` degC
+(%i10) 1 ` acre*ft `` m^3;
+                        60228605349    3
+(%o10)                  ----------- ` m
+                         48828125
+(%i11) %, numer;
+                                          3
+(%o11)                1233.48183754752 ` m
+@end example
+
+Coercing quantities in feet and meters to one or the other.
+
+@c ===beg===
+@c load (ezunits)$
+@c 100 ` m + 100 ` ft;
+@c (100 ` m + 100 ` ft) `` ft;
+@c %, numer;
+@c (100 ` m + 100 ` ft) `` m;
+@c %, numer;
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) 100 ` m + 100 ` ft;
+(%o2)                  100 ` m + 100 ` ft
+(%i3) (100 ` m + 100 ` ft) `` ft;
+                           163100
+(%o3)                      ------ ` ft
+                            381
+(%i4) %, numer;
+(%o4)                428.0839895013123 ` ft
+(%i5) (100 ` m + 100 ` ft) `` m;
+                            3262
+(%o5)                       ---- ` m
+                             25
+(%i6) %, numer;
+(%o6)                      130.48 ` m
+@end example
+
+Dimensional analysis to find fundamental dimensions and fundamental units.
+
+@c ===beg===
+@c load (ezunits)$
+@c foo : 1 ` acre * ft;
+@c dimensions (foo);
+@c fundamental_units (foo);
+@c foo `` m^3;
+@c %, numer;
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) foo : 1 ` acre * ft;
+(%o2)                      1 ` acre ft
+(%i3) dimensions (foo);
+                                   3
+(%o3)                        length
+(%i4) fundamental_units (foo);
+                                3
+(%o4)                          m
+(%i5) foo `` m^3;
+                        60228605349    3
+(%o5)                   ----------- ` m
+                         48828125
+(%i6) %, numer;
+                                          3
+(%o6)                 1233.48183754752 ` m
+@end example
+
+Declared unit conversions.
+
+@c ===beg===
+@c load (ezunits)$
+@c declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
+@c declare_unit_conversion (kWh = kW*h, MWh = 1000*kWh, bell = 1800*s);
+@c 1 ` kW*s `` MWh;
+@c 1 ` kW/m^2 `` MMBtu/bell/ft^2;
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
+(%o2)                         done
+(%i3) declare_unit_conversion (kWh = kW*h, MWh = 1000*kWh, bell = 1800*s);
+(%o3)                         done
+(%i4) 1 ` kW*s `` MWh;
+                             1
+(%o4)                     ------- ` MWh
+                          3600000
+(%i5) 1 ` kW/m^2 `` MMBtu/bell/ft^2;
+                       1306449      MMBtu
+(%o5)                 ---------- ` --------
+                      8242187500          2
+                                   bell ft
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} constvalue (@var{x})
+@deffnx {Function} declare_constvalue (@var{a}, @var{x})
+
+@c REWORK THIS STATEMENT !!
+Returns the declared constant value of a symbol,
+or value of an expression with declared constant values substituted for symbols.
+
+Constant values are declared by @code{declare_constvalue}.
+Note that constant values as recognized by @code{constvalue}
+are separate from values declared by @code{numerval} and
+recognized by @code{constantp}.
+
+The @code{physical_units} package declares constant values
+for a number of physical constants.
+
+@code{load(ezunits)} loads this function.
+
+Example:
+
+Constant value of a physical constant.
+
+@c ===beg===
+@c load (physical_constants)$
+@c constvalue (%G);
+@c get ('%G, 'description);
+@c ===end===
+@example
+(%i1) load (physical_constants)$
+(%i2) constvalue (%G);
+                                     3
+                                    m
+(%o2)                    6.67428 ` -----
+                                       2
+                                   kg s
+(%i3) get ('%G, 'description);
+(%o3)           Newtonian constant of gravitation
+@end example
+
+Declaring a new constant.
+
+@c ===beg===
+@c load (ezunits)$
+@c declare_constvalue (FOO, 100 ` lbm / acre);
+@c FOO * (50 ` acre);
+@c constvalue (%);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) declare_constvalue (FOO, 100 ` lbm / acre);
+                                 lbm
+(%o2)                      100 ` ----
+                                 acre
+(%i3) FOO * (50 ` acre);
+(%o3)                     50 FOO ` acre
+(%i4) constvalue (%);
+(%o4)                      5000 ` lbm
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} units (@var{x})
+@deffnx {Function} declare_units (@var{a}, @var{u})
+
+Returns the units of a dimensional quantity @var{x},
+or returns 1 if @var{x} is nondimensional.
+
+@var{x} may be a literal dimensional expression @code{a ` b},
+a symbol with declared units, 
+or an expression containing either or both of those.
+
+@code{load(ezunits)} loads these functions.
+
+@code{declare_units} declares that @code{units(@var{a})} should return @var{u},
+where @var{u} is an expression.
+
+Examples:
+
+@code{units} applied to literal dimensional expressions.
+
+@c ===beg===
+@c load (ezunits)$
+@c foo : 100 ` kg;
+@c bar : x ` m/s;
+@c units (foo);
+@c units (bar);
+@c units (foo * bar);
+@c units (foo / bar);
+@c units (foo^2);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) foo : 100 ` kg;
+(%o2)                              100 ` kg
+(%i3) bar : x ` m/s;
+                                         m
+(%o3)                                x ` -
+                                         s
+(%i4) units (foo);
+(%o4)                                 kg
+(%i5) units (bar);
+                                       m
+(%o5)                                  -
+                                       s
+(%i6) units (foo * bar);
+                                     kg m
+(%o6)                                ----
+                                      s
+(%i7) units (foo / bar);
+                                     kg s
+(%o7)                                ----
+                                      m
+(%i8) units (foo^2);
+                                        2
+(%o8)                                 kg
+@end example
+
+@code{units} applied to symbols with declared units.
+
+@c ===beg===
+@c load (ezunits)$
+@c units (aa);
+@c declare_units (aa, J);
+@c units (aa);
+@c units (aa^2);
+@c foo : 100 ` kg;
+@c units (aa * foo);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) linenum:0;
+(%o0)                                  0
+(%i1) units (aa);
+(%o1)                                  1
+(%i2) declare_units (aa, J);
+(%o2)                                  J
+(%i3) units (aa);
+(%o3)                                  J
+(%i4) units (aa^2);
+                                       2
+(%o4)                                 J
+(%i5) foo : 100 ` kg;
+(%o5)                              100 ` kg
+(%i6) units (aa * foo);
+(%o6)                                kg J
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} qty (@var{x})
+@deffnx {Function} declare_qty (@var{a}, @var{x})
+
+@code{qty} returns the nondimensional part of a dimensional quantity @var{x},
+or returns @var{x} if @var{x} is nondimensional.
+@var{x} may be a literal dimensional expression @code{a ` b},
+a symbol with declared quantity, 
+or an expression containing either or both of those.
+
+@code{declare_qty} declares that @code{qty(@var{a})} should return @var{x},
+where @var{x} is a nondimensional quantity.
+
+@code{load(ezunits)} loads these functions.
+
+Examples:
+
+@code{qty} applied to literal dimensional expressions.
+
+@c ===beg===
+@c load (ezunits)$
+@c foo : 100 ` kg;
+@c qty (foo);
+@c bar : v ` m/s;
+@c foo * bar;
+@c qty (foo * bar);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) foo : 100 ` kg;
+(%o2)                       100 ` kg
+(%i3) qty (foo);
+(%o3)                          100
+(%i4) bar : v ` m/s;
+                                  m
+(%o4)                         v ` -
+                                  s
+(%i5) foo * bar;
+                                  kg m
+(%o5)                     100 v ` ----
+                                   s
+(%i6) qty (foo * bar);
+(%o6)                         100 v
+@end example
+
+@code{qty} applied to symbols with declared quantity.
+
+@c ===beg===
+@c load (ezunits)$
+@c declare_qty (aa, xx);
+@c qty (aa);
+@c qty (aa^2);
+@c foo : 100 ` kg;
+@c qty (aa * foo);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) declare_qty (aa, xx);
+(%o2)                          xx
+(%i3) qty (aa);
+(%o3)                          xx
+(%i4) qty (aa^2);
+                                 2
+(%o4)                          xx
+(%i5) foo : 100 ` kg;
+(%o5)                       100 ` kg
+(%i6) qty (aa * foo);
+(%o6)                        100 xx
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@c PROBABLY SHOULD RENAME THIS TO DIMENSIONALP !!
+@deffn {Function} unitp (@var{x})
+
+Returns @code{true} if @var{x} is a literal dimensional expression,
+a symbol declared dimensional,
+or an expression in which the main operator is declared dimensional.
+@code{unitp} returns @code{false} otherwise.
+
+@code{load(ezunits)} loads this function.
+
+Examples:
+
+@code{unitp} applied to a literal dimensional expression.
+
+@c ===beg===
+@c load (ezunits)$
+@c unitp (100 ` kg);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) unitp (100 ` kg);
+(%o2)                         true
+@end example
+
+@code{unitp} applied to a symbol declared dimensional.
+
+@c ===beg===
+@c load (ezunits)$
+@c unitp (foo);
+@c declare (foo, dimensional);
+@c unitp (foo);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) unitp (foo);
+(%o2)                         false
+(%i3) declare (foo, dimensional);
+(%o3)                         done
+(%i4) unitp (foo);
+(%o4)                         true
+@end example
+
+@code{unitp} applied to an expression in which the main operator is declared dimensional.
+
+@c ===beg===
+@c load (ezunits)$
+@c unitp (bar (x, y, z));
+@c declare (bar, dimensional);
+@c unitp (bar (x, y, z));
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) unitp (bar (x, y, z));
+(%o2)                         false
+(%i3) declare (bar, dimensional);
+(%o3)                         done
+(%i4) unitp (bar (x, y, z));
+(%o4)                         true
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} declare_unit_conversion (@var{u} = @var{v}, ...)
+
+Appends equations @var{u} = @var{v}, ... to the list of unit conversions
+known to the unit conversion operator @code{``}.
+Each equation is a equality of multiplicative terms,
+in which any variables are units,
+or literal dimensional expressions.
+
+At present, it is necessary to express conversions such that
+the left-hand side of each equation is a simple unit
+(not a multiplicative expression)
+or a literal dimensional expression with the quantity equal to 1
+and the unit being a simple unit.
+It is foreseen that this limitation will be relaxed in future versions.
+
+@code{known_unit_conversions} is the list of known unit conversions.
+
+@code{load(ezunits)} loads this function.
+
+Examples:
+
+Unit conversions expressed by equations of multiplicative terms.
+
+@c ===beg===
+@c load (ezunits)$
+@c declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * d);
+@c 100 ` nautical_mile / fortnight `` m/s;
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * d);
+(%o2)                         done
+(%i3) 100 ` nautical_mile / fortnight `` m/s;
+                            463    m
+(%o3)                       ---- ` -
+                            3024   s
+@end example
+
+Unit conversions expressed by equations of literal dimensional expressions.
+
+@c ===beg===
+@c load (ezunits)$
+@c declare_unit_conversion (1 ` fluid_ounce = 2 ` tablespoon);
+@c declare_unit_conversion (1 ` tablespoon = 3 ` teaspoon);
+@c 15 ` fluid_ounce `` teaspoon;
+@c ===end===
+@example
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} declare_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {Function} remove_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {Function} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} declare_fundamental_units (@var{u_1}, @var{u_2}, @var{u_3}, ...)
+@deffnx {Function} remove_fundamental_units (@var{u_1}, @var{u_2}, @var{u_3}, ...)
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} dimensions (@var{x})
+@deffnx {Function} dimensions_as_list (@var{x})
+
+@code{dimensions} returns the dimensions of the dimensional quantity @var{x}
+as an expression comprising products and powers of base dimensions.
+
+@code{dimensions_as_list} returns the dimensions of the dimensional quantity @var{x}
+as a list, in which each element is an integer which indicates the power of the
+corresponding base dimension in the dimensions of @var{x}.
+
+@code{load(ezunits)} loads these functions.
+
+Examples:
+
+@c ===beg===
+@c load (ezunits)$
+@c dimensions (1000 ` kg*m^2/s^3);
+@c declare_units (foo, acre*ft/h);
+@c dimensions (foo);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) dimensions (1000 ` kg*m^2/s^3);
+                                2
+                          length  mass
+(%o2)                     ------------
+                                 3
+                             time
+(%i3) declare_units (foo, acre*ft/h);
+                             acre ft
+(%o3)                        -------
+                                h
+(%i4) dimensions (foo);
+                                   3
+                             length
+(%o4)                        -------
+                              time
+@end example
+
+@c ===beg===
+@c load (ezunits)$
+@c fundamental_dimensions;
+@c dimensions_as_list (1000 ` kg*m^2/s^3);
+@c declare_units (foo, acre*ft/h);
+@c dimensions_as_list (foo);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) fundamental_dimensions;
+(%o2)  [length, mass, time, charge, temperature, quantity]
+(%i3) dimensions_as_list (1000 ` kg*m^2/s^3);
+(%o3)                 [2, 1, - 3, 0, 0, 0]
+(%i4) declare_units (foo, acre*ft/h);
+                             acre ft
+(%o4)                        -------
+                                h
+(%i5) dimensions_as_list (foo);
+(%o5)                 [3, 0, - 1, 0, 0, 0]
+@end example
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} fundamental_units (@var{x})
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} dimensionless (@var{x})
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} natural_unit  (@var{x})
+
+@opencatbox
+@category{Package ezunits}
+@closecatbox
+
+@end deffn
+
+
