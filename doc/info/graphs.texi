@@ -1599,7 +1599,7 @@ Returns the length of the shortest weighted path and the shortest
 weighted path from @var{u} to @var{v} in the graph @var{gr}.
 
 The length of a weighted path is the sum of edge weights of edges in the
-path. If and edge has no weight, then it has a default weight 1.
+path. If an edge has no weight, then it has a default weight 1.
 
 Example:
 
