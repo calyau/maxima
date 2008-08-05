@@ -1,4 +1,4 @@
-@c english version 1.8
+@c english version 1.9
 @menu
 * Introducci@'on a simplification::
 * Funciones y variables para simplification::
@@ -211,17 +211,24 @@ Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
 
 @deffn {Funci@'on} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
-Devuelve la matriz wronskiana de las funciones @var{f_1}, ..., @var{f_n}
+Devuelve la matriz wronskiana de las expresiones @var{f_1}, ..., @var{f_n}
 dependeientes de la variable @var{x}.
-
-Los argumentos @var{f_1}, ..., @var{f_n} pueden ser nombres de funciones
-definidas por el usuario, o expresiones de variable @var{x}.
-
-El determinante de la matriz wronskiana es el determinante wronskiano del
-conjunto de funciones. Las funciones ser@'an linealmente dependientes si
-este determinante es nulo.
+El determinante de la matriz wronskiana es el determinante wronskiano de
+la lista de expresiones.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
+
+Ejemplo:
+
+@c ===beg===
+@c load (functs)$
+@c wronskian([f(x), g(x)],x);
+@c ===end===
+@example
+(%i1) load(functs)$
+(%i2) wronskian([f(x), g(x)],x);
+(%o2) matrix([f(x),g(x)],['diff(f(x),x,1),'diff(g(x),x,1)])
+@end example
 @end deffn
 
 @c adjoint already described in doc/info/Matrices.texi
