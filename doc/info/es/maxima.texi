@@ -150,7 +150,7 @@ Paquetes adicionales
 * distrib::                     Distribuciones de probabilidad.
 * draw::                        Un interfaz Maxima-Gnuplot.
 * dynamics::                    Gr@'aficas de sistemas din@'amicos y fractales.
-* ezunits::                     Cantidades dimensionales.
+* ezunits::                     Magnitudes dimensionales.
 * f90::                         Traductor de Maxima fortran.
 * ggf::                         Expresi@'on general de sucesiones.
 * graphs::                      Teor@'{@dotless{i}}a de grafos.
