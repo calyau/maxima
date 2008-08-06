@@ -37,7 +37,7 @@
 	((digraph-p gr1)
 	 (if (digraph-p gr2)
 	     (let (res
-		   (iso (isomorphism-graphs gr1 gr2)))
+		   (iso (isomorphism-digraphs gr1 gr2)))
 	       (when iso
 		 (maphash
 		  (lambda (key val)
