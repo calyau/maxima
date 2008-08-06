@@ -150,7 +150,7 @@ Paquetes adicionales
 * distrib::                     Distribuciones de probabilidad.
 * draw::                        Un interfaz Maxima-Gnuplot.
 * dynamics::                    Gr@'aficas de sistemas din@'amicos y fractales.
-* eval_string::                 Expresiones de Maxima en formato de cadena.
+* ezunits::                     Cantidades dimensionales.
 * f90::                         Traductor de Maxima fortran.
 * ggf::                         Expresi@'on general de sucesiones.
 * graphs::                      Teor@'{@dotless{i}}a de grafos.
@@ -442,9 +442,11 @@ dynamics
 * Introducci@'on a dynamics::
 * Funciones y variables para dynamics::
 
-eval_string
+ezunits
 
-* Funciones y variables para eval_string::
+* Introducci@'on a ezunits::
+* Introducci@'on a physical_constants::
+* Funciones y variables para ezunits::
 
 f90
 
@@ -770,15 +772,15 @@ zeilberger
 @chapter draw
 @include draw.texi
 
-@node dynamics, eval_string, draw, Top
+@node dynamics, ezunits, draw, Top
 @chapter dynamics
 @include dynamics.texi
 
-@node eval_string, f90, dynamics, Top
-@chapter eval_string
-@include eval_string.texi
+@node ezunits, f90, dynamics, Top
+@chapter ezunits
+@include ezunits.texi
 
-@node f90, ggf, eval_string, Top
+@node f90, ggf, ezunits, Top
 @chapter f90
 @include f90.texi
 
