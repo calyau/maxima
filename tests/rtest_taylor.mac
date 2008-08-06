@@ -477,3 +477,13 @@ diff(taylor(sqrt((f - z^2/4/f)^2 + (d-z)^2) + sqrt((f - z^2/4/f)^2 + (zp-z)^2),
 	    [z, zp, d], 0, 4),
      z);
 (z-zp-d)/f+((3*zp+3*d)*z^2+(-5*zp^2-5*d^2)*z+2*zp^3+2*d^3)/(4*f^3);
+
+/* [ 734851 ] pade interfered with by taylor */
+ts:taylor(sin(x),x,0,3);
+x-x^3/6;
+
+taylor(x,x,0,3);
++x;
+
+pade(ts,2,2);
+[6*x/(x^2+6)];
