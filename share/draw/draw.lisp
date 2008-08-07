@@ -27,7 +27,6 @@
 ;;; For questions, suggestions, bugs and the like, feel free
 ;;; to contact me at
 ;;; mario @@@ edu DOT xunta DOT es
-;;; www.biomates.net
 
 
 (defvar $draw_loaded t)
@@ -1559,7 +1558,6 @@
 ;;     line_type
 ;;     color
 ;;     key
-;;     enhanced3d
 ;; Note: implements a clon of draw3d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
 ;;       Read source in plot.lisp for more information
@@ -1607,8 +1605,11 @@
     (update-ranges fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
     (make-gr-object
        :name   'explicit
-       :command (format nil " ~a w l lt ~a lc rgb '~a'"
+       :command (format nil " ~a w ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
+                            (if (get-option '$enhanced3d)
+                                "pm3d"
+                                "l")
                             (get-option '$line_type)
                             (get-option '$color))
        :groups `((,ncols ,nx))
@@ -1880,7 +1881,7 @@
                   (if (< z zmin) (setf zmin z))
                   (if enhanced4d
                      (setf result (append result (list x y z (funcall fcn4d uu vv))))
-                     (setf result (append result (list x y z))) )                  
+                     (setf result (append result (list x y z))) )
                   (setq uu (+ uu ueps))
                   (if (> uu umax) (setf uu umax)))
            (setq vv (+ vv veps))
@@ -1889,8 +1890,11 @@
     (update-ranges xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric_surface
-       :command (format nil " ~a w l lt ~a lc rgb '~a'"
+       :command (format nil " ~a w ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
+                            (if (get-option '$enhanced3d)
+                                "pm3d"
+                                "l")
                             (get-option '$line_type)
                             (get-option '$color))
        :groups `((,ncols ,nu)) ; ncols is 4 or 3, depending on colored 4th dimension or not
@@ -2592,11 +2596,11 @@
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
             (if (get-option '$enhanced3d)
-               (format nil "set pm3d~%"))
+                (format nil "set pm3d depthorder~%")
+                (if (get-option '$surface_hide)
+                    (format nil "set hidden3d~%")))
             (if (get-option '$xyplane)
                (format nil "set xyplane at ~a~%" (get-option '$xyplane)))
-            (if (get-option '$surface_hide)
-               (format nil "set hidden3d~%"))
             (if (get-option '$colorbox)
                (format nil "set colorbox~%")
                (format nil "unset colorbox~%"))
