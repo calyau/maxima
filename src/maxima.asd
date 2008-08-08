@@ -4,6 +4,27 @@
 ; This file is released under the terms of
 ; the GNU General Public License, version 2.
 
+(in-package :asdf)
+
+(defvar *binary-output-dir* "binary-ecl")
+
+(defmethod output-files :around ((operation compile-op) (c source-file))
+  (let* ((source (component-pathname c))
+        (source-dir (pathname-directory source))
+        (paths (call-next-method))
+        (this-dir (pathname-directory (first (directory ""))))
+        (binary-dir (append this-dir (list *binary-output-dir*))))
+    (mapcar #'(lambda (path)
+               (merge-pathnames 
+                    (make-pathname 
+                        :directory
+                            (append binary-dir 
+                                (last source-dir 
+                                        (- (length source-dir) 
+                                            (length this-dir)))))
+                    path))
+            paths)))
+
 (in-package :cl-user)
 
 (defvar *maxima-build-time* (multiple-value-list (get-decoded-time)))
@@ -19,7 +40,6 @@
 (defsystem :maxima
   :description "Maxima is a symbolic computation program." 
   :licence "GPL" 
-  :version "5.10" 
   :serial t
   :components (
 	       (:module package :pathname ""

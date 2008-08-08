@@ -49,6 +49,13 @@ check-openmcl:
 	$(MAXIMA) --lisp=openmcl --batch-string="run_testsuite();" < /dev/null
 endif
 
+if ECL
+check: check-ecl
+check-ecl:
+	echo "Running test suite with ecl..."; \
+	$(MAXIMA) --lisp=ecl --batch-string="run_testsuite();" < /dev/null
+endif
+
 genericdir = $(insttestsdir)
 genericdirDATA = rexamples.mac \
 rtest10.mac \
