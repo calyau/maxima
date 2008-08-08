@@ -861,6 +861,7 @@ simplification/rducon.dem\
 simplification/rducon.lisp\
 simplification/rncomb.dem\
 simplification/rncomb.mac\
+simplification/rtest_rncomb.mac\
 simplification/scifac.dem\
 simplification/scifac.lisp\
 simplification/sqdnst.mac\
