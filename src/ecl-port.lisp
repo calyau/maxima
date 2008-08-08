@@ -27,13 +27,6 @@
 ;;; in ECL's compiler -- in that case we will simply reuse its code.
 ;;;
 
-(eval-when (:execute :load-toplevel :compile-toplevel)
-  (format t "~&;;; SHADOWING COERCE")
-  (shadow 'cl:coerce)
-  (intern "COERCE")
-  (shadow 'cl:typep)
-  (intern "TYPEP"))
-
 (defmacro maxima::typep (object type &environment env)
   (let* ((whole (list 'cl:typep object type))
 	 (fd (compiler-macro-function 'cl:typep)))
