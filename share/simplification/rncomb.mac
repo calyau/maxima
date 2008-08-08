@@ -41,11 +41,10 @@ rncombine1(list):=block(
 	      then rncombine1(args(num(flist)))/denom(flist)
 	      else flist),
   flist_denom:(flist_denom:denom(flist))/numfactor(flist_denom),
-  flist:flist*flist_denom,
   splitdum:predpartition(rest(list),
 			 lambda([dum],numberp(denom(dum)/flist_denom))),
   if (lsplitdum:last(splitdum))#[]
-  then flist:denomthru(cons(flist,lsplitdum*flist_denom))/flist_denom,
+  then flist:denomthru(cons(flist*flist_denom,lsplitdum*flist_denom))/flist_denom,
   flist+rncombine1(first(splitdum)))$
 
 denomthru(exp):=block(
