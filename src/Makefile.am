@@ -274,13 +274,21 @@ distclean: clean-ecl
 
 ecl:binary-ecl/maxima
 
+# We have to do some gymnastics here because ECL puts the
+# compiled application in the file "maxima", which would
+# overwrite the maxima shell script.
 binary-ecl/maxima:
+	test -f maxima && mv maxima maxima-tmp
+	success=true && \
 	$(EXECUTEECL) -eval "(require 'asdf)" -eval "(asdf:make-build \"maxima\" :type :program)" -eval "(ext:quit)" && \
-	mv maxima binary-ecl/maxima
+	mv maxima binary-ecl/maxima || \
+	success=false; \
+	test -f maxima-tmp && mv maxima-tmp maxima ; \
+	test $$success = true && /bin/true || /bin/false
 
 install-ecl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-ecl"
-	$(INSTALL_DATA) binary-ecl/maxima "$(DESTDIR)$(verpkglibdir)/binary-ecl/maxima"
+	$(INSTALL_PROGRAM) binary-ecl/maxima "$(DESTDIR)$(verpkglibdir)/binary-ecl/maxima"
 
 uninstall-ecl:
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-ecl/maxima"
