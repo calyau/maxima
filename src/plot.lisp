@@ -132,7 +132,7 @@
   #+gcl (setq *gnuplot-stream*
               (open (concatenate 'string "| " path) :direction :output))
   #+ecl (progn
-          (setq *gnuplot-stream* (ext:run-program path nil :input :stream :output t :error :output)))
+          (setq *gnuplot-stream* (ext:run-program path nil :input :stream :output t :error :output :wait nil)))
   #-(or clisp cmu sbcl gcl scl lispworks ecl)
   (merror "Gnuplot not supported with your lisp!")
   
