@@ -44,8 +44,6 @@
 	   gcd				; special in rat module
 	   ;; (getalias '$lambda) => cl:lambda, which implies that
 	   ;; Maxima parses lambda as cl:lambda. 
-           #+ecl typep ;; ecl-port.lisp provides an optimized version of typep
-           #+ecl coerce;; ecl-port.lisp provides an optimized version of coerce
 	   #+(and sbcl sb-package-locks) makunbound)
   #+gcl
   (:import-from :system
