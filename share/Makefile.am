@@ -109,6 +109,7 @@ contrib/Zeilberger/zb_prover.mac\
 contrib/Zeilberger/zeilberger_algorithm.mac\
 contrib/Zeilberger/zeilberger_linear_algebra.mac\
 contrib/Zeilberger/zeilberger.mac\
+contrib/amatrix/amatrix.dem\
 contrib/amatrix/amatrix.lisp\
 contrib/amatrix/amatrix.mac\
 contrib/amatrix/README\
@@ -180,6 +181,7 @@ contrib/diffequations/tests/testsuite.lisp\
 contrib/distrib/distrib.mac\
 contrib/distrib/numdistrib.lisp\
 contrib/distrib/rtest_distrib.mac\
+contrib/ezunits/ezunits.dem\
 contrib/ezunits/ezunits.lisp\
 contrib/ezunits/ezunits.mac\
 contrib/ezunits/physical_constants.mac\
