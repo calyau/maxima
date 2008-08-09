@@ -107,6 +107,7 @@ rtest_round.mac \
 rtest_map.mac \
 rtest_sign.mac \
 rtest_algebraic.mac \
+rtest_hypgeo.mac \
 README.how-to \
 testsuite.lisp \
 wester_problems/wester-gpl-permission-message.txt \
