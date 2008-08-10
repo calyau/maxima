@@ -105,7 +105,7 @@ zb_test_equality(eq_pair) :=
 
 /* zb_prove(zb_in,k,n,zb_out) := */
 zb_prove([args]):=
-  block([i,j,zb_red,proof,undecided],
+  block([i,j,zb_red,zb_in,zb_out,proof,undecided,k,n],
     zb_in:first(args),
     k:second(args),
     n:third(args),
