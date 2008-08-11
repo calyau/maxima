@@ -20,7 +20,8 @@
 
 
 (defun $is_isomorphic (gr1 gr2)
-  (> ($length ($isomorphism gr1 gr2)) 0))
+  (and (= ($graph_size gr1) ($graph_size gr2))
+       (= ($length ($isomorphism gr1 gr2)) ($graph_size gr1))))
 
 (defun $isomorphism (gr1 gr2)
   (cond ((graph-p gr1)
