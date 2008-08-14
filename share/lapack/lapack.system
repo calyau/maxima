@@ -34,8 +34,9 @@
 		       #+sbcl "sbcl"
 		       #+allegro "acl"
 		       #+openmcl "openmcl"
-               #+abcl "abcl"
-		       #-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
+		       #+abcl "abcl"
+		       #+ecl "ecl"
+		       #-(or clisp cmu scl sbcl gcl allegro openmcl abcl ecl) "unknownlisp")
     :directory (list :relative subdir))
    (make-pathname :directory (pathname-directory *load-truename*))))
 )
