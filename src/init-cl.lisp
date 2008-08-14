@@ -274,7 +274,8 @@
 	      #+allegro "fasl"
 	      #+openmcl (pathname-type ccl::*.fasl-pathname*)
 	      #+lispworks (pathname-type (compile-file-pathname "foo.lisp"))
-	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks)
+	      #+ecl "fas"
+	      #-(or gcl cmu scl sbcl clisp allegro openmcl lispworks ecl)
 	      "")
 	 (lisp-patterns (concatenate 'string "###.{" ext ",lisp,lsp}"))
 	 (maxima-patterns "###.{mac,mc}")
