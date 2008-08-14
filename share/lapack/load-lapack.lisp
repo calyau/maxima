@@ -7,6 +7,8 @@
   (format t "sys = ~A~%" (merge-pathnames (make-pathname :name "lapack" :type "system")
 					  *load-truename*)))
 
+#+ecl ($load "lisp-utils/defsystem.lisp")
+
 (load (merge-pathnames (make-pathname :name "lapack" :type "system")
 		       #-gcl *load-pathname*
 		       #+gcl sys:*load-pathname*))
