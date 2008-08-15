@@ -2373,7 +2373,7 @@
 		  (go begin-expansion)))
 	     (t
 	      (if (and (eq funame '%atan)
-		       (eq (asksign-p-or-n (term-disrep (ps-lt psarg) psarg)) '$neg))
+		       (eq (coef-sign arg) '$neg))
 		  (return (psplus (atrigh arg func) (taylor2 (m- '$%pi))))
 		  (return (atrigh arg func))))))
      (setq temp (t-o-var (gvar psarg)))

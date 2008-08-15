@@ -463,10 +463,11 @@ taylor(rat(factor(1+x)),x,0,1);
 taylor(log(cos(th)),th,%pi/2,2);
 log((2*th-%pi)/2)+log(-1)-(th-%pi/2)^2/6$
 
-/* SF bug  752332 
-taylor(atan(1/sqrt(1-b))/sqrt(1-b),b,1,2);
-((%i * %pi)/(2 * sqrt(b - 1))) - 1 - ((b - 1)/3) - (((b - 1)^2)/5)$ 
-*/
+/* SF bug  752332 */
+(assume(a < 1),0);
+0;
+taylor(atan(1/sqrt(1-a))/sqrt(1-a),a,1,2);
+((%i * %pi)/(2 * sqrt(a - 1))) - 1 - ((a - 1)/3) - (((a - 1)^2)/5)$ 
 
 /* [ 1358239 ] taylor(exp(sqrt(log(x)*log(log(x))))@inf > stack overflow */
 taylor(exp(sqrt(log(x)*log(log(x)))), x, inf, 2);
