@@ -534,7 +534,7 @@
 (defun remov4 (fact cl)
   (cond ((or (symbolp cl)		;if CL is a symbol or
 	     (and (consp cl) ;an interned number, then we want to REMOV4 FACT
-		  (numberp (car cl))))	;from its property list.
+		  (mnump (car cl))))	;from its property list.
 	 (_ (sel cl data) (delete fact (sel cl data) :test #'eq)))
 	((or (atom cl) (atom (car cl)))) ;if CL is an atom (not a symbol)
 					;or its CAR is an atom then we don't want to do

@@ -288,8 +288,14 @@ pnz$
 (remvalue(aaa, bbb, ccc),0);
 0$
 
+assume(x32 > 3/2);
+[x32 > 3/2];
 
+kill(all);
+done;
 
+assume(x32 < 1);
+[x32 < 1];
 
 
 
