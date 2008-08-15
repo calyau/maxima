@@ -1350,7 +1350,7 @@ fillarray(ci_2,[
 ]),done);
 done;
 
-test_table(lambda([z],expintegral_ci(z)),'ci_2,230,1.00e-10);
+test_table(lambda([z],expintegral_ci(z)),'ci_2,230,3.2e-8);
 [];
 
 /******************************************************************************
@@ -2004,7 +2004,7 @@ fillarray(e1_3,[
 ]),done);
 done;
 
-test_table(lambda([z],z*%e^z*expintegral_e1(z)),'e1_3,80,3.30e-9);
+test_table(lambda([z],z*%e^z*expintegral_e1(z)),'e1_3,80,2.50e-8);
 [];
 
 /******************************************************************************
@@ -3033,7 +3033,7 @@ fillarray(ec_1,[
 ]),done);
 done;
 
-test_complex_table(lambda([z],z*%e^z*expintegral_e1(z)),'ec_1,838,7.50e-7);
+test_complex_table(lambda([z],z*%e^z*expintegral_e1(z)),'ec_1,838,1.25e-6);
 [];
 
 kill(all);
