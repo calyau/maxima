@@ -541,7 +541,7 @@
       (format t "~&   : z = ~A~%" z))
 
     (cond
-      ((and (> (realpart z) 0) (> (cabs z) 1.0))
+      ((and (> (realpart z) 0) (> (abs z) 1.0))
        ;; We expand in continued fractions.
        (when *debug-expintegral*
          (format t "~&We expand in continued fractions.~%"))
@@ -562,7 +562,7 @@
            (setq e (* c d))
            (setq h (* h e))
             
-           (when (< (cabs (- e 1.0)) *expint-eps*)
+           (when (< (abs (- e 1.0)) *expint-eps*)
              (when *debug-expintegral*
                (setq *debug-expint-maxit* (max *debug-expint-maxit* i)))
              (return (* h (exp (- z))))))))
@@ -588,7 +588,7 @@
              (t 
               (setq e (/ (- f) (- i n1)))))
            (setq r (+ r e))
-           (when (< (cabs e) (* (cabs r) *expint-eps*))
+           (when (< (abs e) (* (abs r) *expint-eps*))
              (when *debug-expintegral*
                (setq *debug-expint-maxit* (max *debug-expint-maxit* i)))
              (return r))))))))
@@ -610,7 +610,7 @@
       (format t "~&   : z = ~A~%" z))
 
     (cond
-      ((and (> (realpart z) 0) (> (cabs z) 1.0))
+      ((and (> (realpart z) 0) (> (abs z) 1.0))
        ;; We expand in continued fractions.
        (when *debug-expintegral*
          (format t "~&We expand in continued fractions.~%"))
@@ -631,7 +631,7 @@
            (setq e (* c d))
            (setq h (* h e))
             
-           (when (< (cabs (- e 1.0)) *expint-eps*)
+           (when (< (abs (- e 1.0)) *expint-eps*)
              (when *debug-expintegral*
                (setq *debug-expint-fracmaxit* (max *debug-expint-fracmaxit* i)))
              (return (* h (exp (- z))))))))
@@ -665,7 +665,7 @@
            (setq f (* -1 f (/ z (float i))))
            (setq e (/ (- f) (- (float i) n1)))
            (setq r (+ r e))
-           (when (< (cabs e) (* (cabs r) *expint-eps*))
+           (when (< (abs e) (* (abs r) *expint-eps*))
              (when *debug-expintegral*
                (setq *debug-expint-fracmaxit* (max *debug-expint-fracmaxit* i)))
              (return r))))))))
