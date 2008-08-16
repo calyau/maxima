@@ -189,7 +189,8 @@
   (declare (ignore ignored))
   (twoargcheck exp)
   (let ((order (simpcheck (cadr exp) z))
-        (arg   (simpcheck (caddr exp) z)))
+        (arg   (simpcheck (caddr exp) z))
+        (ratorder))
 
     (when *debug-expintegral* 
       (format t "~&SIMP-EXPINTEGRAL-E:~%")
@@ -1347,8 +1348,7 @@
             (not (eq $expintrep '$expintegral_hyp)))
        (when *debug-expintegral*
          (format t "~&Transform Shi to ~A~%" $expintrep))
-       (let ((logarg (list '(%log) arg)))
-         (case $expintrep
+       (case $expintrep
            ($gammaincomplete
              (mul
                (inv 2)
@@ -1392,7 +1392,7 @@
                (list '($signum) ($imagpart arg)))))
 
            ($expintegral_trig
-             (mul -1 '$%i (list '($expintegral_si) (mul '$%i arg)))))))
+             (mul -1 '$%i (list '($expintegral_si) (mul '$%i arg))))))
 
       (t (eqtest (list '(%expintegral_shi) arg) exp)))))
 
@@ -1476,8 +1476,7 @@
             (not (eq $expintrep '$expintegral_trig)))
        (when *debug-expintegral*
          (format t "~&Transform Ci to ~A~%" $expintrep))
-       (let ((logarg (list '(%log) arg)))
-         (case $expintrep
+       (case $expintrep
            ($gammaincomplete
              (sub
                (list '(%log) arg)
@@ -1532,7 +1531,7 @@
              (add
                (list '($expintegral_chi) (mul '$%i arg))
                (mul -1 (list '(%log) (mul '$%i arg)))
-               (list '(%log) arg))))))
+               (list '(%log) arg)))))
 
       (t (eqtest (list '(%expintegral_ci) arg) exp)))))
 
