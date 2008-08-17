@@ -90,6 +90,10 @@ or if apply is being used are printed.")
 		       (let ((noevalargs t))
 			 (meval (cons (ncons fn) args))))))))
 
+	;; GCL considers interpreted functions and lambdas to be non-atoms
+	#+gcl((functionp fn)
+	 (apply fn args))
+
 	;; extension for pdiff; additional extension are welcomed.
     ;; (AND (CONSP FN) (CONSP (CAR FN)) ...) is an attempt to identify
     ;; conventional Maxima expressions ((FOO) X Y Z); probably should
