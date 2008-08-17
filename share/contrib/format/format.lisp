@@ -167,7 +167,7 @@
 (defun $coerce_bag (oper expr)
   (unless (or (mbagp expr)(mrelationp expr))
     (merror "Error: ~M is not a relation, list or array: can't be made into an ~M" expr oper))
-  (setq oper (or (get oper 'opr) oper))
+  (setq oper (getopr oper))
   (flet ((swap (op x)
 	   (cons (list op)
 		 (mapcar #'(lambda (l)(simplify (cons (car x) l)))
