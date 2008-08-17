@@ -9,6 +9,8 @@
 
 ;;; An ANSI-CL portable initializer to replace init_max1.lisp
 
+#+ecl (defvar cl-user::*maxima-build-time* '#.(multiple-value-list (get-decoded-time)))
+
 ;;; Locations of various types of files. These variables are discussed
 ;;; in more detail in the file doc/implementation/dir_vars.txt. Since
 ;;; these are already in the maxima package, the maxima- prefix is
