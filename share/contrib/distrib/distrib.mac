@@ -260,8 +260,8 @@ cdf_student_t(x,n):=block([cp:control1(n),fn,fx],
       then (fn: float(n),
             fx: float(x),
             if x>0
-              then return(1.0 - ?ibeta(fn/(fn+fx*fx),fn/2,0.5) / 2)
-              else return(?ibeta(fn/(fn+fx*fx),fn/2,0.5) / 2)  ),
+              then return(1.0 - ?ibeta(fn/(fn+fx^2),fn/2,0.5) / 2)
+              else return(?ibeta(fn/(fn+fx^2),fn/2,0.5) / 2)  ),
    funmake('cdf_student_t,[x,n]) )$
 
 /* R: qt(q,n) */

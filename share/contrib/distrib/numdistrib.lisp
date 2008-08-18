@@ -185,7 +185,8 @@
 ;;  Conditions: 0<=x<=1; a, b>0
 (defun ibeta (x a b)
    (declare (type flonum x a b))
-   (cond ((or (= x 0) (= x 1)) 0.0)
+   (cond ((= x 0) 0.0)
+         ((= x 1) 1.0)
          (t (let ((bt (exp (+ (- (lnbeta a b))
                               (* a (log x))
                               (* b (log (- 1 x)))))))
