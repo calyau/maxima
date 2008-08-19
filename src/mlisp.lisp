@@ -98,7 +98,7 @@ or if apply is being used are printed.")
     ;; (AND (CONSP FN) (CONSP (CAR FN)) ...) is an attempt to identify
     ;; conventional Maxima expressions ((FOO) X Y Z); probably should
     ;; encapsulate somewhere, maybe it is already ??
-	((and (consp fn) (consp (car fn)) (get (mop fn) 'mapply1-extension)
+	((and (consp fn) (consp (car fn)) (symbolp (mop fn)) (get (mop fn) 'mapply1-extension)
 	      (apply (get (mop fn) 'mapply1-extension) (list fn args fnname form))))
 	((eq (car fn) 'lambda)
 	 (apply (coerce fn 'function) args))
