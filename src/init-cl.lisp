@@ -32,6 +32,8 @@
 (defvar *maxima-lang-subdir*)
 (defvar *maxima-demodir*)
 
+#+ecl (defvar cl-user::*maxima-build-time* '#.(multiple-value-list (get-decoded-time)))
+
 (defmvar $maxima_tempdir)
 (putprop '$maxima_tempdir 'shadow-string-assignment 'assign)
 (putprop '$maxima_tempdir '*maxima-tempdir* 'lisp-shadow)
@@ -75,7 +77,8 @@
 	#+openmcl "openmcl"
 	#+abcl "abcl"
 	#+lispworks "lispworks"
-	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks) "unknownlisp")
+	#+ecl "ecl"
+	#-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks ecl) "unknownlisp")
 
 (defvar $file_search_lisp nil
   "Directories to search for Lisp source code.")
