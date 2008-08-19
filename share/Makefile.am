@@ -820,8 +820,8 @@ numeric/newton.mac\
 numeric/newton1.mac\
 numeric/riemsum.mac\
 numeric/romberg.lisp\
-numeric/rtest_romberg.mac\
 numeric/rtest_interpol.mac\
+numeric/rtest_romberg.mac\
 numeric/simpsn.dem\
 numeric/simpsn.mac\
 numeric/submac.dem\
