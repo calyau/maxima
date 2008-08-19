@@ -284,7 +284,7 @@ binary-ecl/maxima:
 	mv maxima binary-ecl/maxima || \
 	success=false; \
 	test -f maxima-tmp && mv maxima-tmp maxima ; \
-	test $$success = true && /bin/true || /bin/false
+	test $$success = true
 
 install-ecl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-ecl"
