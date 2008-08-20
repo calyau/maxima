@@ -398,9 +398,9 @@
 	    (combine-path *maxima-infodir* subdir-bit "maxima-index.lisp")))))
 
 (defun get-dirs (path)
-  #+(or :clisp :sbcl)
+  #+(or :clisp :sbcl :ecl)
   (directory (concatenate 'string (namestring path) "/*/"))
-  #-(or :clisp :sbcl)
+  #-(or :clisp :sbcl :ecl)
   (directory (concatenate 'string (namestring path) "/*")))
 
 (defun unix-like-basename (path)
