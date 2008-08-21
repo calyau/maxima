@@ -39,10 +39,6 @@
 (defmvar $linsolvewarn t
   "Needs to be documented.")
 
-(defmvar $solve_inconsistent_error t
-  "If T gives an MAXIMA-ERROR if SOLVE meets up with inconsistent linear
-	 equations.  If NIL, returns ((MLIST SIMP)) in this case.")
-
 (defmvar $programmode t
   "Causes SOLVE to return its answers explicitly as elements
 	 in a list rather than printing E-labels.")
@@ -938,9 +934,7 @@
      (if (and $linsolvewarn (car ans))
 	 (mtell "~&Dependent equations eliminated:  ~A~%" (car ans)))
      (if (cadr ans)
-	 (if $solve_inconsistent_error
-	     (merror "Inconsistent equations:  ~M" (cons '(mlist) (cadr ans)))
-	     (return '((mlist simp)))))
+	 (return '((mlist simp))))
      (do ((j 0 (1+ j)))
 	 ((> j xm*))
        ;;I put this in the value cell--wfs 

@@ -83,7 +83,7 @@
 	  $rules $savedef $savefactors $scalarmatrixp $setcheck
 	  $setcheckbreak $setval $showtime $signbfloat $simp $simpsum
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
-	  $solveradcan $solvetrigwarn $solve_inconsistent_error $sparse
+	  $solveradcan $solvetrigwarn $sparse
 	  $special $sqrtdispflag $stardisp $storenum $sublis_apply_lambda
 	  $subnumsimp $subscrmap $sumexpand $sumsplitfact
 	  $superlogcon $suspend $taylor_logexpand

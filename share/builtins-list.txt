@@ -946,7 +946,6 @@ solve
 solvedecomposes
 solveexplicit
 solvefactors
-solve_inconsistent_error
 solvenullwarn
 solveradcan
 solvetrigwarn

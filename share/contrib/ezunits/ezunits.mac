@@ -433,8 +433,7 @@ block
     block
       ([linsolve_params : true,
         back_subst : true,
-        globalsolve : false,
-        solve_inconsistent_error : false],
+        globalsolve : false],
         s : linsolve (s . vars - d, vars)),
 
     s : xreduce ("*", map ("^", e, map ('rhs, s))),

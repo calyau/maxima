@@ -283,7 +283,6 @@ lsquares_estimates_exact (MSE, parameters) := block
     solveradcan : true,
     %e_to_numlog : true,
     logexpand : all,
-    solve_inconsistent_error : false,
     solveexplicit : true,
     equations],
 

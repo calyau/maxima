@@ -62,7 +62,7 @@
 (defun $checkedalgsys (eqs vars &optional (nz `((mlist))))
   
   (let ((sol) ($ratfac nil) ($ratprint nil) ($realonly nil) ($algexact t) 
-	($gcd '$spmod) ($algebraic t) ($solve_inconsistent_error nil) 
+	($gcd '$spmod) ($algebraic t) 
 	($programmode t) ($globalsolve nil) ($solveexplicit t) 
 	($listconstvars t) ($solveradcan nil) ($ratvars nil))
 

@@ -1,7 +1,3 @@
-
-/* Inconsistent system should NOT produce an error */
-solve_inconsistent_error : false;
-
 /* It makes the linear solver non-verbose */
 linsolvewarn : false;
 

@@ -192,7 +192,7 @@ dimensionless(e) := (
       nullspace(transpose(funmake('matrix, map('dimension_as_list, e)))))));
   
 natural_unit(dim,e) := block([vars, s, linsolve_params : true,
-  back_subst : true, globalsolve : false, solve_inconsistent_error : false],
+  back_subst : true, globalsolve : false],
   require_list(e,"second", "natural_unit"),
  
  dim : dimension_as_list(dim),

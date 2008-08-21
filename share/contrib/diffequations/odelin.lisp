@@ -327,7 +327,7 @@
 
 (defun easy-eqs (cnd s x)
   (let ((acc) (n) ($gcd '$spmod) ($algebraic t) 
-	($solve_inconsistent_error nil) ($programmode t) 
+	($programmode t) 
 	($globalsolve nil) ($solveexplicit t) ($solveradcan nil))
     
     (setq s (polynomial-filter s x #'(lambda (n) (min 1 n))))

@@ -17,9 +17,6 @@ zb_operatorp(expr,operator) :=
     else
        false;
 
-solve_inconsistent_error : false;
-
-
 
 
 

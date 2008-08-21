@@ -1087,10 +1087,12 @@ solutions.  It takes two lists as arguments.  The first list
 represents the equations to be solved; the second list is a
 list of the unknowns to be determined.  If the total number of
 variables in the equations is equal to the number of equations, the
-second argument-list may be omitted.  For linear systems if the given
-equations are not compatible, the message @code{inconsistent} will be
-displayed (see the @code{solve_inconsistent_error} switch); if no unique
-solution exists, then @code{singular} will be displayed.
+second argument-list may be omitted.
+
+@c I think this is not true --hgeyer
+@c
+@c if no unique
+@c solution exists, then @code{singular} will be displayed.
 
 When @code{programmode} is @code{false},
 @code{solve} displays solutions with intermediate expression (@code{%t}) labels,
@@ -1297,29 +1299,3 @@ solutions.
 
 @end defvr
 
-@defvr {Option variable} solve_inconsistent_error
-Default value: @code{true}
-
-When @code{solve_inconsistent_error} is @code{true}, @code{solve} and
-@code{linsolve} give an error if the equations to be solved are inconsistent.
-
-If @code{false}, @code{solve} and @code{linsolve} return an empty list @code{[]} 
-if the equations are inconsistent.
-
-Example:
-
-@example
-(%i1) solve_inconsistent_error: true$
-(%i2) solve ([a + b = 1, a + b = 2], [a, b]);
-Inconsistent equations:  (2)
- -- an error.  Quitting.  To debug this try debugmode(true);
-(%i3) solve_inconsistent_error: false$
-(%i4) solve ([a + b = 1, a + b = 2], [a, b]);
-(%o4)                          []
-@end example
-
-@opencatbox
-@category{Algebraic equations}
-@closecatbox
-
-@end defvr
