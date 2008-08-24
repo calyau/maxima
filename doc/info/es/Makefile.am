@@ -17,7 +17,7 @@ Differential.es.texi     Introduction.es.texi  Plotting.es.texi       ezunits.te
 Differentiation.es.texi  Itensor.es.texi       Polynomials.es.texi    lapack.texi \
 Elliptic.es.texi         Limits.es.texi        Program.es.texi        contrib_ode.texi \
 bode.texi           augmented_lagrangian.texi      descriptive.texi    draw.texi \
-diag.texi           distrib.texi                   eval_string.texi    f90.texi \
+diag.texi           distrib.texi                   f90.texi \
 ggf.texi            impdiff.texi                   interpol.texi       lindstedt.texi \
 linearalgebra.texi  lsquares.texi                  makeOrders.texi     mnewton.texi \
 numericalio.texi    opsubst.texi                   orthopoly.texi      plotdf.texi       romberg.texi  \

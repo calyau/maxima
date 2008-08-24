@@ -1,4 +1,4 @@
-@c english version 1.27
+@c english version 1.29
 @menu
 * Funciones y variable para las ecuaciones::
 @end menu
@@ -834,7 +834,7 @@ Si la variable @code{breakup} vale @code{false} har@'a que @code{solve} muestre 
 A la variable @code{multiplicities} se le asignar@'a una lista con las multiplicidades de las soluciones individuales devueltas por @code{solve}, @code{realroots} o @code{allroots}. La instrucci@'on @code{apropos (solve)} har@'a que se muestren las variables optativas que de alg@'un modo afectan al comportamiento de @code{solve}. Se podr@'a luego utilizar la funci@'on  @code{describe} para aquellas variables cuyo objeto no est@'e claro.
 
 La llamada @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
-resuelve un sistema de ecuaciones polin@'omicas simult@'aneas (lineales o no) llamando a @code{linsolve} o @code{algsys} y devuelve una lista de listas con soluciones para las inc@'ognitas. En caso de haberse llamado a @code{linsolve} esta lista contendr@'a una @'unica lista de soluciones. La llamada a @code{solve} tiene dos listas como argumentos. La primera lista tiene las ecuaciones a resolver y la segunda son las inc@'ognitas cuyos valores se quieren calcular. Si el n@'umero de variables en las ecuaciones es igual al n@'umero de inc@'ognitas, el segundo argumento puede omitirse. En caso de sistemas lineales incompatibles se mostrar@'a el mensaje @code{inconsistent} (v@'ease la variable @code{solve_inconsistent_error}); si no existe una @'unica soluci@'on, se mostrar@'a el mensaje @code{singular}.
+resuelve un sistema de ecuaciones polin@'omicas simult@'aneas (lineales o no) llamando a @code{linsolve} o @code{algsys} y devuelve una lista de listas con soluciones para las inc@'ognitas. En caso de haberse llamado a @code{linsolve} esta lista contendr@'a una @'unica lista de soluciones. La llamada a @code{solve} tiene dos listas como argumentos. La primera lista tiene las ecuaciones a resolver y la segunda son las inc@'ognitas cuyos valores se quieren calcular. Si el n@'umero de variables en las ecuaciones es igual al n@'umero de inc@'ognitas, el segundo argumento puede omitirse.
 
 Si @code{programmode} vale @code{false},
 @code{solve} muestra la soluci@'on con etiquetas de expresiones 
@@ -1001,22 +1001,3 @@ Si @code{solvetrigwarn} vale @code{true}, @code{solve} puede presentar un mensaj
 
 @end defvr
 
-@defvr {Variable opcional} solve_inconsistent_error
-Valor por defecto: @code{true}
-
-Si @code{solve_inconsistent_error} vale @code{true}, @code{solve} y
-@code{linsolve} devuelven un error si las ecuaciones a resolver son incompatibles. Si vale @code{false}, @code{solve} y @code{linsolve} devuelven la lista vac@'{@dotless{i}}a @code{[]} en caso de incompatibilidad.
-
-Ejemplo:
-
-@example
-(%i1) solve_inconsistent_error: true$
-(%i2) solve ([a + b = 1, a + b = 2], [a, b]);
-Inconsistent equations:  (2)
- -- an error.  Quitting.  To debug this try debugmode(true);
-(%i3) solve_inconsistent_error: false$
-(%i4) solve ([a + b = 1, a + b = 2], [a, b]);
-(%o4)                          []
-@end example
-
-@end defvr
