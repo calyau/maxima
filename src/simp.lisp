@@ -242,7 +242,10 @@
 
 (defmfun $integerp (x)
   (or (integerp x)
-      (and ($ratp x) (integerp (cadr x)) (equal (cddr x) 1))))
+      (and ($ratp x)
+	   (not (member 'trunc (car x)))
+	   (integerp (cadr x))
+	   (equal (cddr x) 1))))
 
 ;; The call to $INTEGERP in the following two functions checks for a CRE
 ;; rational number with an integral numerator and a unity denominator.
@@ -262,7 +265,10 @@
 (defmfun $ratnump (x)
   (or (integerp x)
       (ratnump x)
-      (and ($ratp x) (integerp (cadr x)) (integerp (cddr x)))))
+      (and ($ratp x)
+	   (not (member 'trunc (car x)))
+	   (integerp (cadr x))
+	   (integerp (cddr x)))))
 
 (defmfun $ratp (x) (and (not (atom x)) (eq (caar x) 'mrat)))
 

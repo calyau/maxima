@@ -488,3 +488,7 @@ taylor(x,x,0,3);
 
 pade(ts,2,2);
 [6*x/(x^2+6)];
+
+/* [ 1729430 ] numberp of taylor poly */
+numberp(taylor(x^2, x, 0, 1));
+false;
