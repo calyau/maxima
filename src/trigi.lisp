@@ -176,6 +176,12 @@
     (- #.(/ (float pi) 2) (maxima-branch-asin x))
     (cl:acos x)))
 
+(defun maxima-branch-acot (x)
+  ;; Allow 0.0 in domain of acot, otherwise use atan(1/x)
+  (if (and (equal (realpart x) 0.0) (equal (imagpart x) 0.0))
+    #.(/ (float pi) 2)
+    (cl:atan (/ 1 x))))
+
 ;; Apply formula from CLHS if X falls on a branch cut.
 ;; Otherwise punt to CL:ATANH.
 (defun maxima-branch-atanh (x)
@@ -221,7 +227,7 @@
 		    (if y y (domain-error x 'acsc)))))
 
   (frob %acot #'(lambda (x)
-		  (let ((y (ignore-errors (cl:atan (/ 1 x)))))
+		  (let ((y (ignore-errors (maxima-branch-acot x))))
 		    (if y y (domain-error x 'acot)))))
 
   (frob %cosh #'cl:cosh)
@@ -715,13 +721,13 @@
 (defun %piargs (x ratcoeff)
   (let (offset-result)
     (cond ((and (integerp (car x)) (integerp (cdr x))) 0)
-		   ((not (mevenp (car x))) 
-		    (cond ((null ratcoeff) nil)
-		 		  ((and (integerp (car x)) 
-		 		        (setq offset-result (%piargs-offset (cdr x))))
-		 		   (mul (power -1 (sub ratcoeff (cdr x)))
-		 		        offset-result))))
-		   ((%piargs-offset (mmod (cdr x) 2))))))
+	  ((not (mevenp (car x))) 
+	   (cond ((null ratcoeff) nil)
+		 ((and (integerp (car x)) 
+		       (setq offset-result (%piargs-offset (cdr x))))
+		  (mul (power -1 (sub ratcoeff (cdr x)))
+		       offset-result))))
+	  ((%piargs-offset (mmod (cdr x) 2))))))
 
 ; simplifies sin(%pi * x) where x is between 0 and 1 
 ; returns nil if can't simplify
