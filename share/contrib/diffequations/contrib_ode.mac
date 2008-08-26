@@ -228,7 +228,50 @@ besysimp(ex):=besFsimp(ex,bessel_y,
 besisimp(ex):=besFsimp(ex,bessel_i,
   lambda([n,x],-2*(n-1)*bessel_i(n-1,x)/x+bessel_i(n-2,x)));
 
-besksimp(ex):=besFsimp(ex,bessel_k,
-  lambda([n,x], 2*(n-1)*bessel_k(n-1,x)/x+bessel_k(n-2,x)));
+/* bessel_k requires special treatment due to the simplification
+   bessel_k(-n,x) => bessel_k(n,x), which upsets the recurrence 
+   relationship.  */
+besksimp(ex):=block(
+  [bk:?gensym(),e],
+  e:opsubst(bk,bessel_k,ex),
+  e:besksimp_1(e,bk),
+  /* Recurrence relation for bessel_k */
+  e:besFsimp(e,bk,lambda([n,x], 2*(n-1)*bk(n-1,x)/x+bk(n-2,x))),
+  opsubst(nounify(bessel_k),bk,e)
+);
+
+/* This is a helper function for besksimp.
+  - the function bk has been substituted for bessel_k in ex
+  - collect all the arguments of each occurence of bk in e
+  - partition arguements into sets with same argument and where 
+    either the orders m and n differ by integer or m and (-n) 
+    differ by integer (so m+n is an integer).
+  - for the elements where  m+n is an integer, substitute
+    bk(-n,x) for bk(n,x) in e
+  - return e
+*/
+besksimp_1(e,bk):=block(
+  [s,argset],
+  /* Break into equivalence classes */ 
+  argset:equiv_classes(setify(gatherargs(e,bk)),
+    lambda([x,y],
+      (second(x)=second(y)) 
+      and 
+           (integerp(ratsimp(first(x)-first(y))) 
+        or  integerp(ratsimp(first(x)+first(y)))))),
+  /* For each equivalnce class */
+  for s in argset do block(
+    [x,ords,t,n],
+    x:second(first(s)),  /* The common argument for s */
+    ords:map('first,s),  /* Set of orders */
+    /* t is an element of ords, If ords are numbers then t is the largest */
+    t:first(ords), if every(numberp,ords) then t:lmax(ords),
+    /* Find the subset that do not differ by an integer from t 
+       and change sign of the order for those orders */
+    for n in subset(ords,lambda([i],integerp(ratsimp(t+i)))) do (
+      e:subst(bk(-n,x),bk(n,x),e) )
+  ),
+  e
+);
 
 bessimp(e) := besksimp(besisimp(besysimp(besjsimp(e))))$
