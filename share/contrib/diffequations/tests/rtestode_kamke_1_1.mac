@@ -125,7 +125,8 @@ assume(m>-2,a>0);
             -%c*bessel_j(-(1/(m+2)),2*sqrt(a)*x^(m/2+1)/(m+2)))
           /((2*bessel_j(1/(m+2),2*sqrt(a)*x^(m/2+1)/(m+2))
          +2*%c*bessel_j(-(1/(m+2)),2*sqrt(a)*x^(m/2+1)/(m+2)))*x))];
-/* FIXME:  This is correct but check is nasty */
+[method,ratsimp(ode_check(eqn,ans[1]))];
+[riccati,0];
 forget(m>-2,a>0);
 [m>-2,a>0];
 
@@ -133,6 +134,8 @@ assume(m>-2,a<0);
 [m>-2,a<0];
 (pn_("14ii"),ans:contrib_ode(eqn: 'diff(y,x) + y^2 + a*x^m,y,x));
  [y = -(sqrt(-a)*(%c*bessel_k((m+1)/(m+2),2*sqrt(-a)*x^(m/2+1)/(m+2))-bessel_i(-((m+1)/(m+2)),2*sqrt(-a)*x^(m/2+1)/(m+2)))*x^(m/2)/(%c*bessel_k(1/(m+2),2*sqrt(-a)*x^(m/2+1)/(m+2))+bessel_i(1/(m+2),2*sqrt(-a)*x^(m/2+1)/(m+2))))];
+[method,ratsimp(ode_check(eqn,ans[1]))];
+[riccati,0];
 forget(m>-2,a<0);
 [m>-2,a<0];
 
@@ -239,8 +242,8 @@ assume(nu>-2,a>0,b>0);
 [nu > -2,a>0,b>0];
 (pn_(24),ans:contrib_ode(eqn:'diff(y,x) + a*y^2 - b*x^nu,y,x));
 [y = -(sqrt(a)*sqrt(b)*(%c*bessel_k((nu+1)/(nu+2),2*sqrt(a)*sqrt(b)*x^(nu/2+1)/(nu+2))-bessel_i(-((nu+1)/(nu+2)),2*sqrt(a)*sqrt(b)*x^(nu/2+1)/(nu+2)))*x^(nu/2)/(%c*a*bessel_k(1/(nu+2),2*sqrt(a)*sqrt(b)*x^(nu/2+1)/(nu+2))+a*bessel_i(1/(nu+2),2*sqrt(a)*sqrt(b)*x^(nu/2+1)/(nu+2))))];
-method;
-riccati;
+[method,ratsimp(ode_check(eqn,ans[1]))];
+[riccati,0];
 forget(nu>-2,a>0,b>0);
 [nu>-2,a>0,b>0];
 

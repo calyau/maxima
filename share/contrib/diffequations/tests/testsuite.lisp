@@ -25,7 +25,7 @@
          "rtestode_murphy_2_3.mac"
          "rtestode_murphy_2_4.mac"
          "rtestode_murphy_2_5.mac"
-         ((mlist) "rtestode_kamke_1_1.mac" 33 73 191 192)
+         ((mlist) "rtestode_kamke_1_1.mac" 34 75 193)
          ((mlist) "rtestode_kamke_1_2.mac" 9)  ; OK - testsuite issues
          "rtestode_kamke_1_3.mac"
          "rtestode_kamke_1_4.mac" 
