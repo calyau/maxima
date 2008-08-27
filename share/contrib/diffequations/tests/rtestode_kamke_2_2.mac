@@ -477,7 +477,7 @@ done;
 remove(v,integer);
 done;
 
-/* Kamke 2. 163  CHECKME - It is correct for f(x)=0 */ 
+/* Kamke 2. 163  Note: this is still correct for f(x)=0 */ 
 declare(v,integer);
 done;
 (pn_(163),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-v^2)*y-f(x),y,x));
@@ -488,8 +488,8 @@ done;
    /((bessel_j(v,x)*bessel_y(v+1,x)-bessel_y(v,x)*bessel_j(v+1,x)
      +bessel_j(v-1,x)*bessel_y(v,x)-bessel_y(v-1,x)*bessel_j(v,x))*x^2),x)
  +%k2*bessel_y(v,x)+%k1*bessel_j(v,x)];
-method;
-variationofparameters;
+[method,ode_check(eqn,ans[1])];
+[variationofparameters,0];
 remove(v,integer);
 done;
 
@@ -531,8 +531,8 @@ exact;
 (pn_(169),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+2*x*'diff(y,x,1)+(a*x-b^2)*y,y,x));
 [y = %k2*bessel_y(sqrt(4*b^2+1),2*sqrt(a)*sqrt(x))/sqrt(x)
     +%k1*bessel_j(sqrt(4*b^2+1),2*sqrt(a)*sqrt(x))/sqrt(x)];
-method;
-odelin;
+[method,ode_check(eqn,ans[1])];
+[odelin,0];
 
 /* Kamke 2. 170  */ 
 (pn_(170),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+2*x*'diff(y,x,1)+(a*x^2+b)*y,y,x));
