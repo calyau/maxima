@@ -54,15 +54,24 @@ forget(a>0);
 method;
 riccati;
 
-/* 106 [a+b>0] Actually want b+a # 0 */
-assume(a+b>0);
-[a+b>0];
-(pn_(106),ans:contrib_ode(eqn:x*'diff(y,x)+x^a*y^2+(a-b)*y/2+x^b,y,x));
+/* 106 */
+assume(not(equal(b+a,0)));
+[notequal(b+a,0)];
+(pn_("106a"),ans:contrib_ode(eqn:x*'diff(y,x)+x^a*y^2+(a-b)*y/2+x^b,y,x));
 [y=-((%c*x^(b/2+a/2)*sin(2*x^(b/2+a/2)/(b+a))-x^(b/2+a/2)*cos(2*x^(b/2+a/2)/(b+a)))/(x^a*sin(2*x^(b/2+a/2)/(b+a))+%c*x^a*cos(2*x^(b/2+a/2)/(b+a))))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
-forget(a+b>0);
-[a+b>0];
+forget(notequal(b + a,0));
+[notequal(b+a,0)];
+
+assume(equal(a+b,0));
+[equal(b + a, 0)];
+(pn_("106b"),ans:contrib_ode(eqn:x*'diff(y,x)+x^a*y^2+(a-b)*y/2+x^b,y,x));
+[y = -((%c*sin(log(x))-cos(log(x)))/(x^a*sin(log(x))+%c*x^a*cos(log(x))))];
+[method,subst(-a,b,ode_check(eqn,ans[1]))];  /* Need to use a+b=0 */
+[riccati,0];
+forget(equal(a+b,0));
+[equal(b + a, 0)];
 
 /* 107 */
 (pn_(107),ans:contrib_ode(eqn:x*'diff(y,x)+a*x^alpha*y^2+b*y-c*x^beta,y,x));
