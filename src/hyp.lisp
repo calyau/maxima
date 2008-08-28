@@ -2397,10 +2397,16 @@
 	   ;;
 	   ;; F(n,2*n,z) =
 	   ;; gamma(n+1/2)*exp(z/2)*(z/4)^(-n-3/2)*bessel_i(n-1/2,z/2);
-	   (let ((z (div var 2)))
-	     (mul (power '$%e z)
-		  (bestrig (add a (inv 2))
-			   (div (mul z z) 4)))))
+	   ;;
+	   ;; If n is a negative integer, we use laguerre polynomial.
+	   (if (and (maxima-integerp a)
+		    (eq (asksign a) '$negative))
+	       (let ((n (m- a)))
+		 (mul (m^ -1  n) (inv (mbinom (m+ n n) n)) (lagpol n (m- c 1) var)))
+	       (let ((z (div var 2)))
+		 (mul (power '$%e z)
+		      (bestrig (add a (inv 2))
+			       (div (mul z z) 4))))))
 	  ((not (hyp-integerp a-c))
 	   (cond ((hyp-integerp a)
 		  (kummer arg-l1 arg-l2))
