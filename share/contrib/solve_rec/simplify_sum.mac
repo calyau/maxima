@@ -366,7 +366,7 @@ check_sum(expr, %k%, %n%, lo, hi, deg, sm) :=
         ))),
         
         tmp_sum  : minfactorial(factcomb(makefact(subst(%n%=%i%, sm)))),
-        dif : factor(real_sum - tmp_sum),
+        dif : factor(rectform(real_sum - tmp_sum)),
         if not freeof_sum(real_sum) then (
          if dif#0 then (
           ss_print_message(2, "Sum check failed with: ", 'i=%i%, 'tmp_sum=tmp_sum, 'dif=dif),
@@ -521,7 +521,7 @@ to_hgfred(expr, var, lo, hi) := block(
   while subst(var=lo, expr)=0 do lo : lo+1,
   expr:subst(var=var+lo, expr),
   
-  quo : ratsimp(shiftQuo(expr*var!, var)),
+  quo : ratsimp(shiftQuo(makefact(expr)*var!, var)),
   if not(?ratp(quo, var)) then return(false),
   
   ss_print_message(2, "Shift quotient", quo),
