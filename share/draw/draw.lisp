@@ -887,7 +887,7 @@
 ;;     label_alignment
 ;;     label_orientation
 ;;     color
-(defun label (&rest lab)
+(defun label (lab)
   (let ((n (length lab))
         (result nil)
         is2d)
@@ -953,7 +953,7 @@
 ;;     fill_color
 ;;     fill_density
 ;;     line_width
-(defun bars (&rest boxes)
+(defun bars (boxes)
   (let ((n (length boxes))
         (count -1)
         (xmin 1.75555970201398e+305)
@@ -2392,8 +2392,8 @@
 				     ($implicit    (apply #'implicit (rest x)))
                                      ($parametric  (apply #'parametric (rest x)))
                                      ($vector      (apply #'vect (rest x)))
-                                     ($label       (apply #'label (rest x)))
-                                     ($bars        (apply #'bars (rest x)))
+                                     ($label       (funcall #'label (rest x)))
+                                     ($bars        (funcall #'bars (rest x)))
                                      ($polar       (apply #'polar (rest x)))
                                      ($image       (apply #'image (rest x)))
                                      ($geomap      (apply #'geomap (rest x)))
@@ -2503,7 +2503,7 @@
                                      ($spherical          (apply #'spherical (rest x)))
                                      ($cylindrical        (apply #'cylindrical (rest x)))
                                      ($geomap             (apply #'geomap3d (rest x)))
-                                     ($label              (apply #'label (rest x)))
+                                     ($label              (funcall #'label (rest x)))
                                      (otherwise (merror "draw: graphical 3d object ~M is not recognized" x)))))))))
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
