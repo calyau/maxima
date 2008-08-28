@@ -51,6 +51,7 @@ define_variable(solve_rec_warn,        true,   bool)$
 
 define_variable(simplify_products,     true,   bool)$
 define_variable(normalize_products,    true,   bool)$
+define_variable(distribute_products,   true,   bool)$
 define_variable(simplify_products_deg,   10, fixnum)$
 define_variable(product_use_gamma,     true,   bool)$
 
@@ -949,11 +950,11 @@ simplify_product(prod) := block(
   if atom(term) or freeof(%n, term) then return(term^(hi-lo+1)),
 
   /* Distribute over products.  */
-  if part(term, 0)="*" then
-    p%*apply("*", map(lambda([u], simplify_product(apply(nounify('product),
-                                                         [u, %n, lo, hi]))),
-                     args(term)))
-
+  if part(term, 0)="*" then (
+      p%*apply("*", map(lambda([u], simplify_product(apply(nounify('product),
+                [u, %n, lo, hi]))),
+          args(term)))
+  )
   /* Take care of fractions. */
   else if part(term, 0)="/" then block(
     [nu : num(term), de : denom(term)],
@@ -1007,7 +1008,7 @@ simplify_product(prod) := block(
       )
       else if product_use_gamma and integerp(aa) then
         gamma(subst(hi+1, %n, expand(term/aa)))/
-        gamma(subst(lo, %n, expand(term/aa)))*aa^(hi-lo)
+        gamma(subst(lo, %n, expand(term/aa)))*aa^(hi-lo+1)
       else
         prod
     )
