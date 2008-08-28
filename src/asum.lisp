@@ -430,7 +430,7 @@ summation when necessary."
        (prog (u *i lind l*i *hl)
 	  (setq lind (cons ind nil))
 	  (cond
-	    ((not (fixnump (setq *hl (m- hi low))))
+	    ((not (fixnump (setq *hl (mfuncall '$floor (m- hi low)))))
 	     (if evaluate-summand (setq expr (mevalsumarg expr ind low hi)))
 	     (return (cons (if sump '(%sum) '(%product))
 			   (list expr ind low hi))))
