@@ -14,6 +14,7 @@
     if length(ass)>0 then apply(assume, ass),
     cs : simplify_sum(sm),
     for f in smp do cs : apply(f, [cs]),
+    if length(ass)>0 then apply(forget, ass),
     ratsimp(cs-ans)
     ),
   0
@@ -194,6 +195,30 @@ test_sum(
   true,
   [],
   1);
+0;
+
+test_sum(
+  sum(binomial(n,4*k),k,0,inf),
+  [],
+  true,
+  [rectform],
+  (2*2^(n/2)*cos((%pi*n)/4)+2^n)/4
+  );
+0;
+
+(declare(n, integer), load(orthopoly), 0);
+0;
+
+test_sum(
+  sum(binomial(n, k)/binomial(2*n, k)/k!*(2*x)^k, k, 0, inf),
+  [n>0],
+  true,
+  [lambda([u], ev(u, gen_laguerre))],
+  (-1)^n*gen_laguerre(n,-2*n-1,2*x)/binomial(2*n,n)
+  );
+0;
+
+(kill(n), 0);
 0;
 
 test_sum(

@@ -175,12 +175,32 @@ test_sum(
 )$
 
 test_sum(
+  sum(binomial(n,4*k),k,0,inf),
+  [],
+  true,
+  [rectform]
+)$
+
+(assume(n>0), declare(n, integer), 0);
+0;
+
+test_sum(
+  sum(binomial(n, k)/binomial(2*n, k)/k!*(2*x)^k, k, 0, inf),
+  [],
+  true,
+  []
+  );
+0;
+
+(kill(n), 0);
+0;
+
+test_sum(
   sum((n^2+n+1)/(n^4-2*n^2+1),n,2,inf),
   [],
   true,
   [ratsimp, multthru]
 )$
-
 
 test_sum(
   sum(1/n/(2*n+1),n,1,inf),
