@@ -411,7 +411,7 @@ gf_findprim():=
   block([f,fastf,slowf,found:false,fastCase,
          lf,lfastf,lslowf,decomp,main_powers,q,elt,leng,i,test,fast_test,j,blist,sig,genn2l],
   sig:?even(gf_exp),
-  fastf : ifactors(gf_char-1), /* "fast" factors of gf_char-1 */
+  fastf : if gf_char=2 then [] else ifactors(gf_char-1), /* "fast" factors of gf_char-1 */
   lfastf : length(fastf),
   fastf : makelist(fastf[i][1],i,1, lfastf),
   fastfex : makelist([fastf[i],true,(gf_char-1)/fastf[i]],i,1,lfastf), 
