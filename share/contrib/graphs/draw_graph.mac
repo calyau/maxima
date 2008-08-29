@@ -1,6 +1,6 @@
 /*  
   GRAPHS - graph theory package for Maxima
-  Copyright (C) 2007 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+  Copyright (C) 2007-2008 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -97,7 +97,7 @@ draw_graph(G, [options]) := block(
    head_length : 0.1, head_angle : 15,
    vertices:[], edges:[], v_pos, vertex_labels:[], edge_weights:[],
    show_vertices : [], show_edges : [],
-   label_alignment : 'left, label_padding: "  ",
+   label_alignment : 'center, label_padding: "  ",
    command, x_max, y_max, gp_options,
    terminal : draw_graph_terminal, file_name : "graph",
    gp_file_in : temp_filename(gp_file_in),
@@ -126,7 +126,14 @@ draw_graph(G, [options]) := block(
       vertex_size : 1.2,
       show_vertex_size : 1.2)),
   if is_digraph(G) then directed : true,
-  
+
+  if assoc('show_id, options)=true or assoc('show_label, options)=true then (
+    vertex_size : 3,
+    show_vertex_size : 3,
+    vertex_colors : ["light-red", "light-blue", "light-green", orange, purple, cyan, brown],
+    show_vertex_color : "light-blue",
+    vertex_color : "light-red"),
+
   with_parameters(options,
 
     /* Get vertex positions */
@@ -198,14 +205,19 @@ draw_graph(G, [options]) := block(
        edge_partition)),
 
     /* Setup vertices */
-    if show_vertices#[] then (
+    if show_vertices#[] then block(
+      [show_vertices1 : flatten(show_vertices)],
       for v in vertices(G) do
-        if not(member(v, show_vertices)) then
+        if not(member(v, show_vertices1)) then
           vertices : cons(v, vertices),
-      vertex_colors : [vertex_color, show_vertex_color],
-      vertex_sizes : [vertex_size, show_vertex_size],
-      vertex_types : [vertex_type, show_vertex_type],
-      vertex_partition : [vertices, show_vertices])
+      if not listp(show_vertices[1]) then (
+        vertex_colors : [vertex_color, show_vertex_color],
+        vertex_sizes : [vertex_size, show_vertex_size],
+        vertex_types : [vertex_type, show_vertex_type]),
+      if listp(show_vertices[1]) then
+        vertex_partition : cons(vertices, show_vertices)
+      else
+        vertex_partition : [vertices, show_vertices])
     else if vertex_coloring#[] then block(
       [ch:first(vertex_coloring), coloring:second(vertex_coloring)],
       vertex_partition : makelist(
@@ -219,11 +231,11 @@ draw_graph(G, [options]) := block(
       
     vertices : apply(append,
       map(lambda([c,t,s,vrt],
-        ['color=c, 'point_type=t, 'point_size=s, points(map(lambda([u], assoc(u, v_pos)), vrt))]),
-      makelist(vertex_colors[mod(i, length(vertex_colors))+1], i, 0, length(vertex_partition)-1),
-      if vertex_types=[] then makelist(vertex_type, i, 1, length(vertex_partition)) else vertex_types,
-      if vertex_sizes=[] then makelist(vertex_size, i, 1, length(vertex_partition)) else vertex_sizes,
-      vertex_partition)),
+          ['color=c, 'point_type=t, 'point_size=s, points(map(lambda([u], assoc(u, v_pos)), vrt))]),
+        makelist(vertex_colors[mod(i, length(vertex_colors))+1], i, 0, length(vertex_partition)-1),
+        if vertex_types=[] then makelist(vertex_type, i, 1, length(vertex_partition)) else vertex_types,
+        if vertex_sizes=[] then makelist(vertex_size, i, 1, length(vertex_partition)) else vertex_sizes,
+        vertex_partition)),
 
     /* Setup vertex labels or ids */
     if show_id=true then (
