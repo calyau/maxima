@@ -138,7 +138,7 @@ elif [ "$MAXIMA_LISP" = "openmcl" ]; then
 #        in the function get-application-args in command-line.lisp
     exec "@OPENMCL_NAME@" -I "$maxima_image_base.image" "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "ecl" ]; then
-    exec "$maxima_image_base" "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    exec "$maxima_image_base" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then
     exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform --end-runtime-options --eval '(cl-user::run)' --end-toplevel-options "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 else

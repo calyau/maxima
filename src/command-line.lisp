@@ -109,7 +109,9 @@
 (defun get-application-args ()
   #+clisp (rest ext:*args*)
     
-  #+ecl (remove "" (rest (ext:command-args)))
+  #+ecl (let ((result (ext:command-args)))
+	  (do ((removed-arg nil (pop result)))
+	      ((or (equal removed-arg "--") (equal nil result)) result)))
 
   #+cmu (let ((result lisp::lisp-command-line-list))
 	  (do ((removed-arg nil (pop result)))

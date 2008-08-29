@@ -645,6 +645,3 @@
 #+abcl (defvar *trigreduce)
 #+abcl (defvar *noexpand)
 #+abcl (defvar $verbose)
-
-;; ECL expects to find some executable code here
-#+ecl (cl-user::run)

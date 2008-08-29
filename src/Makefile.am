@@ -286,6 +286,11 @@ binary-ecl/maxima:
 	test -f maxima-tmp && mv maxima-tmp maxima ; \
 	test $$success = true
 
+# This uses defsystem to build maxima with ecl.
+#binary-ecl/maxima:
+#	test -d binary-ecl || mkdir binary-ecl
+#	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' -eval '(quit)'
+
 install-ecl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-ecl"
 	$(INSTALL_PROGRAM) binary-ecl/maxima "$(DESTDIR)$(verpkglibdir)/binary-ecl/maxima"
@@ -298,7 +303,7 @@ clean-ecl:
 
 ecl-depends.mk: maxima.system
 	test -d binary-ecl || mkdir binary-ecl
-	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-ecl/maxima" "ecl-depends.mk"))'
+	$(EXECUTEECL) -eval '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-ecl/maxima" "ecl-depends.mk") (quit))'
 include ecl-depends.mk
 endif
 

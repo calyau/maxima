@@ -1,4 +1,4 @@
-; -*- Lisp -*-
+;;; -*- Lisp -*-
 
 (in-package :cl-user)
 
@@ -14,7 +14,7 @@
 #+cmu
 (setf ext:*gc-verbose* nil)
 
-;; If you maxima to use long-floats for arithmetic, use this:
+;; If you want maxima to use long-floats for arithmetic, use this:
 #+(and nil (or clisp scl))
 (pushnew :flonum-long *features*)
 
@@ -30,51 +30,71 @@
 
 #+ecl
 (defun do-compile-ecl (&rest args)
-  (let ((c::*cc-flags* (concatenate 'string "-I. " c::*cc-flags*))
-        (c::*cc-optimize* ""))
-    (apply #'compile-file args)))
+  ;; Not sure about this.  Compile twice.  The first produces a .o
+  ;; file.  The second produces the .fas file to keep defsystem happy
+  ;; because defsystem needs to load the files while compiling so
+  ;; macros and such are defined.
+  (apply #'compile-file args)
+  (let ((output (getf (cdr args) :output-file)))
+    (c:build-fasl (compile-file-pathname output :type :fasl)
+		  :lisp-files (list (compile-file-pathname output
+							   :type :object)))))
 
 #+ecl
 (defun build-maxima-lib ()
   (labels ((list-all-objects (module)
              (if (eql (mk::component-type module) :file)
-               (list (mk::component-full-pathname module :binary))
-               (apply #'append (mapcar #'list-all-objects (mk::component-components module))))))
-    #+msvc
-    (progn
-      (c::build-static-library "binary-ecl/maxima-lib" :lisp-files (print (list-all-objects (mk:find-system 'maxima))))
-      (let ((c::*ld-format* (concatenate 'string c::*ld-format* " /LIBPATH:binary-ecl")))
-        (c::build-fasl "binary-ecl/maxima" :lisp-files '(maxima-lib))))
-    #+cygwin
-    (c::build-fasl "binary-ecl/maxima" :lisp-files (list-all-objects (mk:find-system 'maxima)))
-    #-(or cygwin msvc)
-    (c::build-fasl "binary-ecl/maxima" :lisp-files (list-all-objects (mk:find-system 'maxima)))
-  ))
+		 (list (mk::component-full-pathname module :binary))
+		 (apply #'append (mapcar #'list-all-objects (mk::component-components module))))))
+    (let* ((files (list-all-objects (mk:find-system 'maxima))))
+      #+msvc
+      (progn
+	(c::build-static-library "binary-ecl/maxima-lib" :lisp-files (print files))
+	(let ((c::*ld-format* (concatenate 'string c::*ld-format* " /LIBPATH:binary-ecl")))
+	  (c::build-fasl "binary-ecl/maxima" :lisp-files '(maxima-lib))))
+      #+cygwin
+      (c::build-fasl "binary-ecl/maxima" :lisp-files files)
+      #-(or cygwin msvc)
+      (let ((obj (mapcar #'(lambda (p)
+			     ;; Convert dir/foo.fas to dir/foo.o
+			     (make-pathname :type "o" :defaults p))
+			 files)))
+	(c::build-program "binary-ecl/maxima" :lisp-files obj)))))
+
+(defun maxima-binary-pathname ()
+  #+clisp
+  "binary-clisp"
+  #+cmu
+  (make-pathname :name "binary-cmucl"
+		 :directory (pathname-directory *load-truename*))
+  #+scl
+  (make-pathname :name "binary-scl"
+		 :directory (pathname-directory *load-truename*))
+  #+sbcl
+  (make-pathname :name "binary-sbcl"
+		 :directory (pathname-directory *load-truename*))
+  #+gcl
+  "binary-gcl"
+  #+allegro
+  "binary-acl"
+  #+openmcl
+  "binary-openmcl"
+  #+abcl
+  "binary-abcl"
+  #+lispworks
+  (make-pathname :name "binary-lispworks"
+		 :directory (pathname-directory *load-truename*))
+  #+ecl
+  "binary-ecl"
+  #-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks ecl)
+  "binary-unknownlisp")
 
 (mk:defsystem "maxima"
   :source-extension "lisp"  
-  :binary-pathname #+clisp "binary-clisp"
-                   #+cmu (make-pathname
-			  :name "binary-cmucl"
-			  :directory (pathname-directory *load-truename*))
-                   #+scl (make-pathname
-			  :name "binary-scl"
-			  :directory (pathname-directory *load-truename*))
-		   #+sbcl (make-pathname
-			   :name "binary-sbcl"
-			   :directory (pathname-directory *load-truename*))
-		   #+gcl "binary-gcl"
-		   #+allegro "binary-acl"
-		   #+openmcl "binary-openmcl"
-		   #+abcl "binary-abcl"
-		   #+lispworks (make-pathname
-				:name "binary-lispworks"
-				:directory (pathname-directory *load-truename*))
-           #+ecl "binary-ecl"
-		   #-(or clisp cmu scl sbcl gcl allegro openmcl abcl lispworks ecl) "binary-unknownlisp"
-           #+ecl :compiler-options #+ecl (:system-p t :c-file t :data-file t)
-           #+ecl :compiler #+ecl do-compile-ecl
-           #+ecl :finally-do #+ecl (build-maxima-lib)
+  :binary-pathname (maxima-binary-pathname)
+  #+ecl :compiler-options #+ecl (:system-p t)
+  #+ecl :compiler #+ecl do-compile-ecl
+  #+ecl :finally-do #+ecl (build-maxima-lib)
   :components (#+gcl
 	       (:module proclaim :source-pathname ""
 			:load-only t
@@ -87,8 +107,10 @@
 				     (:file "sys-proclaim")))
 	       (:module package :source-pathname ""
 			#-ecl :load-only #-ecl t
-			:components (#-gcl(:file "maxima-package")
-					  (:file "autoconf-variables")))
+			:components (#-gcl
+				     (:file "maxima-package")
+				     #+ecl (:file "ecl-port")
+				     (:file "autoconf-variables")))
 	       (:module info :source-pathname ""
 			:components ((:file "nregex")
 				     (:file "cl-info")))
