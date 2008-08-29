@@ -64,7 +64,7 @@
 ;;
 
 (defun int-init-random-state (&optional (seed 5489) state)
-  (declare (type (integer 1 #xffffffff) seed))
+  (declare (type (integer 0 #xffffffff) seed))
   (let ((state (or state (make-array 627 :element-type '(unsigned-byte 32)))))
     (declare (type (simple-array (unsigned-byte 32) (627)) state))
     (setf (aref state 0) 0)
