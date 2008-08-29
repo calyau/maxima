@@ -59,7 +59,9 @@
 			     ;; Convert dir/foo.fas to dir/foo.o
 			     (make-pathname :type "o" :defaults p))
 			 files)))
-	(c::build-program "binary-ecl/maxima" :lisp-files obj)))))
+	(c::build-program "binary-ecl/maxima" :lisp-files obj
+			  :epilogue-code '(progn (require :defsystem)
+					         (cl-user::run)))))))
 
 (defun maxima-binary-pathname ()
   #+clisp
