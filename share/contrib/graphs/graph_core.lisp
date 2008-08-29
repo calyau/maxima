@@ -64,7 +64,7 @@
 
 (defun require-digraph (m ar gr)
   (unless (digraph-p gr)
-    ($error (format nil "Argument ~a to `~a' is not a graph:" ar m) gr)))
+    ($error (format nil "Argument ~a to `~a' is not a directed graph:" ar m) gr)))
 
 (defun require-graph-or-digraph (m ar gr)
   (unless (or (graph-p gr) (digraph-p gr))
@@ -1080,7 +1080,7 @@
 
 (defun $is_connected (gr)
   (require-graph 'is_connected 1 gr)
-  (= ($length ($connected_components gr)) 1))
+  (<= ($length ($connected_components gr)) 1))
 
 (defun $is_tree (gr)
   (require-graph 'is_tree 1 gr)
@@ -1293,7 +1293,7 @@
 (defun $bipartition (gr)
   (require-graph 'bipartition 1 gr)
   (when (= (graph-size gr) 0)
-    (return-from $bipartition `((mlist simp))))
+    (return-from $bipartition `((mlist simp) ((mlist simp)) ((mlist simp)))))
   (let ((components (cdr ($connected_components gr))) (A ()) (B ()))
     (dolist (c components)
       (let ((partition (bi-partition (first (cdr c)) gr)))
@@ -1840,6 +1840,11 @@
   ($first ($vertex_coloring ($line_graph g))))
 
 (defun dsatur (g)
+  (when (< (length (vertices g)) 2)
+    (let ((col (make-hash-table)))
+      (dolist (v (vertices g))
+	(setf (gethash v col) 1))
+      (return-from dsatur col)))
   (let* ((x)
 	 (vsize (length (vertices g)))
 	 (opt-chnumber (1+ vsize)) (back nil)
