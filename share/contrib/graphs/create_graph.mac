@@ -243,3 +243,9 @@ tutte_graph() := sparse6_decode(
   ":m`?WSMHDbPwGa@?_QhSs\\NgRaKE`HEdH@QaUbca|MUX`qr[YW\\eVwaAs[nF{UMqclhIYYCfSWCmDT\\QpTYr")$
 
 pappus_graph() := graph6_decode("QhEKA?_C?O?_?P?g?I?@S?DOAG_")$
+
+add_path(lst, g) :=
+  add_edges(vertices_to_path(lst), g)$
+
+add_cycle(lst, g) :=
+  add_edges(vertices_to_cycle(lst), g)$
