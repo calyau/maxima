@@ -52,3 +52,47 @@ min_edge_cut(g) := block(
   tr : reachable_vertices(t, g1),
   sublist(edges(g), lambda([e], is(member(e[1], tr) and not member(e[2], tr)) or
                                 is(member(e[2], tr) and not member(e[1], tr)))))$
+
+vertex_connectivity_graph(g) := block(
+  [edges : edges(g), vertices : vertices(g), dg, dedges],
+  dedges : append(
+    makelist([2*e[1],2*e[2]+1], e, edges),
+    makelist([2*e[2],2*e[1]+1], e, edges),
+    makelist([2*v+1, 2*v], v, vertices)),
+  dedges : map(lambda([u], [u, 1]), dedges),
+  vertices : append(2*vertices, 2*vertices+1),
+  create_graph(vertices, dedges, directed=true))$
+
+vertex_connectivity(g) := block(
+  [vertices, mvc : inf, flw, dg],
+  if not is_graph(g) then error("Argument to `vertex_connectivity' is not a graph."),
+  if not is_connected(g) then error("Argument to `vertex_connectivity' is not a connected graph."),
+  dg : vertex_connectivity_graph(g),
+  vertices : vertices(g),
+  for i:1 thru length(vertices)-1 do (
+    for j:i+1 thru length(vertices) do (
+      if not is_edge_in_graph([vertices[i], vertices[j]], g) then (
+        flw : max_flow(dg, 2*vertices[i], 2*vertices[j]+1),
+        if flw[1]<mvc then mvc : flw[1]))),
+  mvc)$
+
+min_vertex_cut(g) := block(
+  [vertices, dg, v, mf : [inf, false], mf1, g1, edges:[], s, t, tr],
+  if not is_graph(g) then error("Argument to `min_vertex_cut' is not a graph."),
+  if not is_connected(g) then error("Argument to `min_vertex_cut' is not a connected graph."),
+  vertices : vertices(g),
+  dg : vertex_connectivity_graph(g),
+  for i:1 thru length(vertices)-1 do (
+    for j:i+1 thru length(vertices) do (
+      if not is_edge_in_graph([vertices[i], vertices[j]], g) then (
+        mf1 : max_flow(dg, 2*vertices[i], 2*vertices[j]+1),
+        if mf1[1]<mf[1] then (
+          mf:mf1,
+          t : vertices[i])))),
+  for e in edges(dg) do
+    if assoc(e, mf[2])=0 then edges : cons(e, edges)
+    else edges : cons(reverse(e), edges),
+  g1 : create_graph(append(2*vertices, 2*vertices+1), edges, directed=true),
+  tr : reachable_vertices(2*t, g1),
+  edges : sublist(edges(dg), lambda([e], is(member(e[1], tr) and not member(e[2], tr)))),
+  map(lambda([u], floor(second(u)/2)), edges))$
