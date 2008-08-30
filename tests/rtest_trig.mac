@@ -342,3 +342,17 @@ cos(%pi*x + %pi);
 /* [ 1644575 ] acot(0.0) vs acot(0) */
 acot(0.0);
 1.570796326794897;
+
+/* [ 620246 ] carg(complex) */
+(declare(u, complex),0);
+0;
+
+rectform(log(u));
+log(cabs(u)) + %i*carg(u);
+
+cabs(u);
+sqrt(?%realpart(u)^2+?%imagpart(u)^2);
+
+/* [ 617699 ] carg([1]) is bogus */
+carg([1]);
+[0];

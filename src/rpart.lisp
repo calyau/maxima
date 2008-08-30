@@ -55,7 +55,10 @@
 (defmfun $cabs (xx) (cabs ($rectform xx)))
 
 ;;; Carg gives the complex argument.
-(defmfun $carg (xx) (cdr (absarg xx)))
+(defmfun $carg (xx)
+  (cond ((and (not (atom xx)) (member (caar xx) '(mequal mlist $matrix) :test #'eq))
+	 (cons (car xx) (mapcar #'$carg (cdr xx))))
+	(t (cdr (absarg xx)))))
 
 (defvar absflag nil)
 
@@ -436,6 +439,8 @@
 		(cons (abs l) (argnum l)))
 	       ((member l '($%e $%pi) :test #'eq) (cons l 0))
 	       ((eq l '$infinity) (cons '$inf '$ind))
+	       ((kindp l '$complex) (cons (list '($cabs) l)
+					  (list '($carg) l)))
 	       (absflag (cons (take '(mabs) l) 0))
 	       (t ((lambda (gs)
 		     (cond ((eq gs '$positive) (cons l 0))
