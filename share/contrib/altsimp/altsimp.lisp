@@ -8,6 +8,7 @@
 ;; easier. The basic design of this code is due to Barton Willis.
 
 
+
 #| Fixed bugs:
 
 (1) ceiling(asin(-107) -42) <--- bug! Gets stuck. I think -1.0 * (complex) should 
@@ -61,13 +62,24 @@ Unfixed bugs:
 	  (t (cons x 1)))))
 
 ;; The expression e must be simplified (ok)
+;;   (a) 1 * x --> x,
+;;   (b) 0 * x --> 0, 0.0 * x --> 0, 0.0b0 * x --> 0 (the last two are wrong, I think),
+;;   (c) cf * e --> timesk(ck,e) when e is a maxima number,
+;;   (d) -1 * (a + b) --> -a - b,
+;;   (e) cf * (* a b c) --> (* (* cf a) b c ...) when a is a number; otherwise (* cf a b ...)
+;;   (f) (* cf e) (default)
 
 (defun number-times-expr (cf e)
   (cond ((eq cf 1) e)
 	((mzerop cf) 0) ;; wrong for 0.0 * e and 0.0b0 * e.
+	((mnump e) (timesk cf e)) ; didn't think this should happen
+	((and (onep1 (neg cf)) (mplusp e))
+	 (opapply 'mplus (mapcar 'neg (cdr e))))
 	((mtimesp e) 
-	 (if (mnump (cadr e)) (mult cf e) `((mtimes simp) ,cf ,@(cdr e))))
-	(t (mul cf e))))
+	 (if (mnump (cadr e))
+	     `((mtimes simp) ,@(cons (timesk cf (cadr e)) (cddr e)))
+	   `((mtimes simp) ,@(cons cf (cdr e)))))
+	(t  `((mtimes simp) ,cf ,e))))
 
 ;; Add an expression x to a list of equalities l.
 
@@ -234,4 +246,5 @@ Unfixed bugs:
 	(setq acc (add-expr-infinities acc inf-terms)))   
  
     acc))
+
 
