@@ -2151,9 +2151,9 @@ It appears in LIMIT and DEFINT.......")
 	  ((and (eq ta tb) (eq ta 'exp))
 	   ;; Both are exponential order of infinity.  Check the
 	   ;; exponents to determine which exponent is bigger.
-	   (ratgreaterp (limit (m- `((%log) ,(second a)) `((%log) ,(second b)))
-			       var val 'think)
-			0))
+	   (eq (limit (m- `((%log) ,(second a)) `((%log) ,(second b)))
+		      var val 'think)
+	       '$inf))
 	  ((member ta (cdr (member tb '(num log var exp fact gen) :test #'eq)) :test #'eq)))))
 
 (defun ismax (l)

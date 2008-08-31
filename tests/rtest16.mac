@@ -404,6 +404,9 @@ tex (t[1], false);
 "$$x_{1}^2$$
 "; /* tex output contains embedded newline */
 
+/* [ 2084910 ] limit bugs */
+limit((%pi*N^(2*N+1)*2^(2*N))/((2*N-1)^(2*N)*(2*%e*N+%e)), N, inf);
+%pi/2;
 
 /*
  * Bug [ 1854888 ] hgfred([5],[5], 1) doesn't simplify
