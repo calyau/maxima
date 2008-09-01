@@ -1,13 +1,39 @@
-;; Authors: Barton Willis with help from Richard Fateman
+;; Author: Barton Willis with help from Richard Fateman
 
-;; To simplify a sum with n terms, the standard simplus function calls great O(n^2) times. By 
-;; using sorting more effectively, this code reduced the calls to great to O(n log_2(n)). Also, 
-;; this code tries to be infinity correct: thus inf + inf --> inf,inf + 1 --> inf, and inf + minf --> und. 
-;; Since -1 * inf doesn't simplify to minf, this code doesn't simplify inf - inf to und. Maybe the 
-;; special case dispatch part of this code makes the task of extending simplus (to intervals, for example)
-;; easier. The basic design of this code is due to Barton Willis.
+#|
+To simplify a sum with n terms, the standard simplus function calls
+great O(n^2) times. By using sorting more effectively, this code
+reduces the calls to great to O(n log_2(n)).
 
+Also, this code tries to be "infinity correct" for addition. By this I
+mean inf + inf --> inf, inf + number --> inf, and inf + minf --> und.
+Since -1 * inf doesn't simplify to minf, this code doesn't simplify
+inf - inf to und; consequently, this portion of the code is largely
+untested. There are other problems too.  For one, this code does
+f(inf) - f(inf) --> 0 (comment from Stavros Macrakis). I don't know
+how far we can go with such things without making a mess. You could
+argue that Maxima should do
 
+   f(x) - f(x) --> if finitep(f(x)) then 0 else und 
+
+instead of f(x) - f(x) --> 0.
+
+There is a great deal more that could be done. We could tag each
+infinity with a unique identifier (idea from RJF). That way we could
+have x : inf, x - x --> 0 and x : inf, y : inf, x - y --> und, for
+example.
+
+In short, this code is highly experimental; you should not use it for
+anything that is important. I place it in /share/contrib because
+others encouraged me too; also I thought it might be useful to others
+who would like to experiment with similar code. Since a great deal of
+work has gone into the current simplus code, I'm not sure that a total
+re-write is the best route.
+
+Maybe the special case dispatch part of this code makes the task of
+extending simplus (to intervals, for example) easier. The basic design
+of this code is due to Barton Willis.
+|#
 
 #| Fixed bugs:
 
