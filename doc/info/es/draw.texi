@@ -229,7 +229,7 @@ End of animation sequence
 (%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
 @end example
 
-La opci@'ob @code{delay} s@'olo se activa en caso de gifs animados; se ignora en
+La opci@'on @code{delay} s@'olo se activa en caso de gifs animados; se ignora en
 cualquier otro caso.
 
 V@'eanse tambi@'en @code{file_name}, @code{pic_width}, @code{pic_height} y @code{delay}.

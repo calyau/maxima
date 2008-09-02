@@ -387,7 +387,8 @@ V@'eanse tambi@'en @code{is} y @code{maybe}.
 @end defvr
 
 @deffn {Funci@'on} return (valor)
-Puede utilizarse para salir de un bloque, devolviendo su.  V@'ease @code{block} para m@'as informaci@'on.
+Puede utilizarse para salir de un bloque, devolviendo su argumento.
+V@'ease @code{block} para m@'as informaci@'on.
 
 @end deffn
 
