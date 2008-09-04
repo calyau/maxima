@@ -150,7 +150,7 @@
 (defun mathml-atom (x l r) 
   (append l
 	  (list (cond ((numberp x) (mathmlnumformat x))
-                      ((stringp x) x)
+                      ((stringp x) (format nil "<mtext>~a</mtext>" x))
 		      ((and (symbolp x) (get x 'mathmlword)))
 		      (t (mathml-stripdollar x))))
 	  r))
@@ -573,7 +573,7 @@
 		    x (cdr x))))))
 
 (defprop mminus mathml-prefix mathml)
-(defprop mminus ("-") mathmlsym)
+(defprop mminus ("<mo>-</mo>") mathmlsym)
 (defprop mminus 100. mathml-rbp)
 (defprop mminus 100. mathml-lbp)
 
