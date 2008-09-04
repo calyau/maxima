@@ -154,6 +154,38 @@
    (setf output (append (list '($inference_result simp) (list '(mlist simp) title)) output))
    (dim-$inference_result output result)))
 
+
+;; Format TeX output
+(defprop $inference_result tex-inference_result tex)
+
+(defun tex-inference_result (x l r)
+  ;; inference_result looks like 
+  ;; ((inference_result) string ((mlist) ((mlist)..) ((mlist)..)..))
+  (append l `("\\left | \\matrix{" )
+          (list "\\hbox{" (cadr x) "} \\cr \\matrix{")
+	  (mapcan #'(lambda(y)
+		      (tex-list `(((mequal) ,(cadr y) ,(caddr y))) nil (list "\\cr ") "&"))
+		  (cdar (butlast (cddr x))))
+	  '("}} \\right .") r))
+
+;; Format MathML output
+(defprop $inference_result mathml-inference_result mathml)
+
+(defun mathml-inference_result (x l r)
+  ;; inference_result looks like 
+  ;; ((inference_result) string ((mlist) ((mlist)..) ((mlist)..)..))
+  (append l `("<mfenced separators=\"\" open=\"|\" close=\"\"><mtable>")
+         (list "<mtr><mtd>" (cadr x) "</mtd></mtr><mtable>")
+	 (mapcan #'(lambda(y)
+			  (mathml-list `(((mequal) ,(cadr y) ,(caddr y)))
+                                        (list "<mtr><mtd>")
+                                        (list "</mtd></mtr> ")
+                                        "</mtd><mtd>"))
+		 (cdar (butlast (cddr x))))
+	 '("</mtable></mtable></mfenced> ") r))
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                  ;;
 ;;  FUNCTIONS FOR inference_result  ;;
