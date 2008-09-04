@@ -50,10 +50,7 @@
 (defprop $set (("\\left \\{" ) " \\right \\}") texsym)
 
 (defun require-set (x context-string)
-  (cond (($setp x) 
-	 (cdr (simp-set x 1 nil)))
-	(t 
-	 (merror "Function ~:M expects a set, instead found ~:M" context-string x))))
+  (if ($setp x) (cdr x) (merror "Function ~:M expects a set, instead found ~:M" context-string x)))
 
 ;; If x is a Maxima list, return a Lisp list of its members; otherwise,
 ;; signal an error. Unlike require-set, the function require-list does not
