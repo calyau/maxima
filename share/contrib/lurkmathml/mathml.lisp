@@ -163,8 +163,7 @@
 	   (setq r (explode atom))
 	   (setq exponent (member 'e r :test #'string-equal));; is it ddd.ddde+EE
 	   (cond ((null exponent)
-		   ;; it is not. go with it as given
-                  (strcat "<mn>" (format nil "~s" atom) "</mn> "))
+                  (strcat "<mn>" (format nil "~a" (implode (exploden atom))) "</mn> "))
 		 (t
 		  (setq firstpart
 			(nreverse (cdr (member 'e (reverse r) :test #'string-equal))))
@@ -270,7 +269,24 @@
 
 (defprop bigfloat mathml-bigfloat mathml)
 
-(defun mathml-bigfloat (x l r) (declare (ignore l r)) (fpformat x))
+(defun mathml-bigfloat (x l r) 
+  (let ((formatted (fpformat x)))
+    (if (or (find '|b| formatted) (find '|B| formatted))
+      (let*
+        ((spell-out-expt
+           (append
+             '("<mrow><msub><mn>")
+             (apply #'append
+                    (mapcar
+                     #'(lambda (e) (if (or (eq e '|b|) (eq e '|B|))
+                                       '("</mn><mi>B</mi></msub>"
+                                         "<mo>&times;</mo>"
+                                         "<msup><mn>10</mn><mn>")
+                                       (list e)))
+                      formatted))
+             '("</mn></msup></mrow>"))))
+        (append l spell-out-expt r))
+      (append l formatted r))))
 
 (defprop mprog "<mi>block</mi><mspace width=\"mediummathspace\"/> " mathmlword) 
 (defprop %erf "<mi>erf</mi> " mathmlword)
