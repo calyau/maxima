@@ -36,6 +36,7 @@ Uninstallable=yes
 UninstallFilesDir={app}\uninst
 ShowLanguageDialog=yes
 ChangesAssociations=yes
+PrivilegesRequired=none
 
 
 [Languages]
