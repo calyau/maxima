@@ -159,7 +159,7 @@ limit(atan2(y,x),y,minf);
 
 /* Bug 1548643 */
 limit(abs(sqrt(1-1/x)-1),x,0);
-und;
+'limit(abs(sqrt(1-1/x)-1),x,0);
 
 /* Bug 671574 */
 limit(x*atan(x)/(x+1),x,inf);
@@ -209,7 +209,7 @@ limit(x*(atan(x)-%pi/2),x,inf);
 /*
  * Bug [ 1661490 ] An integral gives a wrong result.
  */
-(assume(a>0,b>0,sqrt(b^2+a^2)-a>0,sqrt(sqrt(b^2+a^2)-a)*(sqrt(b^2+a^2)+a)^(3/2)-b^2>0),0);
+(assume(a>0, b>0, sqrt(sqrt(b^2+a^2)-a)*(sqrt(b^2+a^2)+a)^(3/2)-b^2>0),0);
 0;
 radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b)));
 1;
@@ -393,6 +393,13 @@ minf;
 /* [ 2083561 ] Limit of the Wallis product */
 limit((%pi*4^N*N!^2)/(2*2^(2*N)*gamma(N+1/2)*gamma(N+3/2)), N, inf);
 %pi/2;
+
+/* [ 635606 ] limit(abs(log(x))) internal error, UND */
+limit(abs(log(x)), x, 0);
+inf;
+
+limit(exp(-x)*(x*sin(x)+cos(x)), x, inf);
+0;
 
 /* tex(t[1]) shouldn't change t to true */
 tex (t[1], false);

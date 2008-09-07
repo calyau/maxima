@@ -184,32 +184,19 @@ It appears in LIMIT and DEFINT.......")
 				((eq dr '$minus) '$zerob)
 				(t 0)))
 		(setq origval 0))
+	      ;; Resimplify in light of new assumptions.
 	      (setq exp (resimplify (factosimp (tansc (lfibtophi (limitsimp
 								  ($expand (hide exp) 1 0) var))))))
-	      ;; Resimplify in light of new assumptions.
-	      (setq d (catch 'mabs (mabs-subst exp var val)))
-	      (cond ((eq d 'both) (or (setq ans (both-side exp var val))
-				      (nounlimit exp var val)))
-		    ((eq d '$und) (return '$und))
-		    ((eq d 'retn)
-		     ;; mabs-subst returned.  Let's try to compute the
-		     ;; limit from both sides.  If they're the same,
-		     ;; we're done.  We don't want to preserve
-		     ;; direction info in the result.
-		     ;;
-		     ;; This case handles limit(abs(sin(x)/x),x,0),
-		     ;; among others.
-		     (setq ans (both-side exp var val nil))
-		     (if ans
-			 (return (clean-limit-exp ans))
-			 (return (nounlimit exp var val))))
-		    (t (setq exp d)))
-	      (setq ans (limit-catch exp var val))
 
-	      (if (and (null ans)
-		       (not (or (real-epsilonp val)
-				(real-infinityp val))))
-		  (setq ans (both-side exp var val)))
+	      (if (not (or (real-epsilonp val)		;; if direction of limit not specified
+			   (real-infinityp val)))
+		  (setq ans (both-side exp var val))	;; compute from both sides
+		(let ((d (catch 'mabs (mabs-subst exp var val))))
+		  (cond 				;; otherwise try to remove absolute value
+		   ((eq d '$und) (return '$und))
+		   ((eq d 'retn) )
+		   (t (setq exp d)))
+		  (setq ans (limit-catch exp var val))));; and find limit from one side
 
 	      ;; try taylor series expansion if simple limit didn't work
 	      (if (and (null ans)		;; if no limit found and
@@ -319,6 +306,8 @@ It appears in LIMIT and DEFINT.......")
       (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))
 	    ((or (not (free la '%limit))
 		 (not (free lb '%limit)))  ())
+	    ;; inf + minf => infinity
+	    ((and (infinityp la) (infinityp lb)) '$infinity)
 	    (t '$und)))))
 
 ;; Warning:  (CATCH NIL ...) will catch all throws.
@@ -388,11 +377,6 @@ It appears in LIMIT and DEFINT.......")
 		    (setq a (mabs-subst ans var val))
 		    (setq d (limit a var val t))
 		    (cond
-		      ((or (null a) (null d))
-		       (if (not (or (eq val '$zeroa)
-				    (eq val '$zerob)
-				    (real-infinityp val)))
-			   (throw 'mabs 'both)))
 		      ((and a d)
 		       (cond ((zerop1 d)
 			      (setq d (behavior a var val))
@@ -402,9 +386,10 @@ It appears in LIMIT and DEFINT.......")
 		       (cond ((or (eq d '$zeroa) (eq d '$inf)
 				  (eq d '$ind)
 				  ;; fails on limit(abs(sin(x))/sin(x), x, inf)
-				  (ratgreaterp d 0))
+				  (eq ($sign d) '$pos))
 			      (setq exp (maxima-substitute a `((mabs) ,ans) exp)))
-			     ((or (eq d '$zerob) (eq d '$minf) (ratgreaterp 0 d))
+			     ((or (eq d '$zerob) (eq d '$minf)
+				  (eq ($sign d) '$neg))
 			      (setq exp (maxima-substitute (m* -1 a) `((mabs) ,ans) exp)))))
 		      (t
 		       (throw 'mabs 'retn))))))))))
@@ -1497,6 +1482,7 @@ It appears in LIMIT and DEFINT.......")
 		  (setq const (m* (car l) const)))
 		 ((and (setq lim (limit (car l) var val 'think))
 		       (free-infp lim)
+		       (not (member lim '($ind $und)))
 		       (not (equal (ridofab lim) 0)))
 		  (setq const (m* lim const)))
 		 (t (setq varl (m* (car l) varl))))))
