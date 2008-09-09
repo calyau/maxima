@@ -175,8 +175,7 @@ ode_check_tidy(e) := if freeof_bessel(e) then e else bessimp(e)$
 
 
 /*  This Bessel function simplification code can be improved,
-    but is does work fairly well on the contrib_ode testsuite.
-    Need to extend to cover cases like Kamke 1.14 and 1.24
+    but is does work well on the contrib_ode testsuite.
 */
 
 freeof_bessel(e):=freeof(nounify(bessel_j),nounify(bessel_y),
