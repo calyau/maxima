@@ -202,6 +202,8 @@
 (defun get-small-factors (n)
   (let (factors)
     ;; first divide off the even part
+    (when (= n 1)
+      (return-from get-small-factors '(1 ())))
     (when (> 4 n)
       (push `(,n 1) factors)
       (when $ifactor_verbose (format t "small cofactor: ~A~%" n))
