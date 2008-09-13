@@ -109,12 +109,6 @@
 	    ;; know its small now, so print on same line.
 	    (merror "Bad file spec: ~:M" user-object)))))
 
-(defmfun open-out-dsk (x)
-  (open x :direction :output :element-type 'character))
-
-(defmfun open-in-dsk (x)
-  (open x :direction :input :element-type 'character))
-
 (defun $batchload (filename &aux expr (*mread-prompt* ""))
   (declare (special *mread-prompt*))
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
