@@ -38,6 +38,9 @@ prev_prime(100002100042);
 
 /* FACTORING TESTS */
 
+ifactors(1);
+[];
+
 /* trial divisions */
 ifactors(226800);
 [[2,4],[3,4],[5,2],[7,1]];
