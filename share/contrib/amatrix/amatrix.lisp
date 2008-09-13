@@ -228,31 +228,35 @@
     ($@-function a '$nc)
     `(($ncols) ,a)))
 
-(defun $amatrix-multiply (m1 m2)
-  (if (eq ($ncols m1) ($nrows m2))
-    (let
-      ((aa (gensym))
-       (nn ($ncols m1))
-       (nr ($nrows m1))
-       (a1 (get ($@-function m1 '$storage) 'storage_array))
-       (a1-inc ($@-function m1 '$cinc))
-       (nc ($ncols m2))
-       (a2 (get ($@-function m2 '$storage) 'storage_array))
-       (a2-inc ($@-function m2 '$rinc)))
-      (setf (symbol-value aa) (make-array (* nr nc) :initial-element 0))
-      (dotimes (i nr)
-        (dotimes (j nc)
-          (let
-            ((a1-base (mfuncall '$compute_index0 m1 i 0))
-             (a2-base (mfuncall '$compute_index0 m2 0 j)))
-            (setf
-              (aref (symbol-value aa) (+ i (* j nr)))
-              (dot nn a1 a1-base a1-inc a2 a2-base a2-inc)))))
-      `(($amatrix) ,nr 0 1 ,nc 0 ,nr ,aa 0))
-    `((mnctimes) ,m1 ,m2)))
+(defun $amatrix_multiply (m1 m2)
+  (let ((nc1 ($ncols m1)) (nr2 ($nrows m2)))
+    (cond
+      ((and (integerp nc1) (integerp nr2))
+       (if (eq ($ncols m1) ($nrows m2))
+         (let
+           ((aa (gensym))
+            (nn ($ncols m1))
+            (nr ($nrows m1))
+            (a1 (get ($@-function m1 '$storage) 'storage_array))
+            (a1-inc ($@-function m1 '$cinc))
+            (nc ($ncols m2))
+            (a2 (get ($@-function m2 '$storage) 'storage_array))
+            (a2-inc ($@-function m2 '$rinc)))
+           (setf (get aa 'storage_array) (make-array (* nr nc) :initial-element 0))
+           (dotimes (i nr)
+             (dotimes (j nc)
+               (let
+                 ((a1-base (mfuncall '$compute_index0 m1 i 0))
+                  (a2-base (mfuncall '$compute_index0 m2 0 j)))
+                 (setf
+                   (aref (get aa 'storage_array) (+ i (* j nr)))
+                   (dot nn a1 a1-base a1-inc a2 a2-base a2-inc)))))
+           `(($amatrix) ,nr 0 1 ,nc 0 ,nr ,aa 0))
+         (merror "amatrix_multiply: inconformable operands")))
+      (t
+        `((mnctimes) ,m1 ,m2)))))
 
 (defun dot (n a a0 ainc b b0 binc)
-  (setq a (symbol-value a) b (symbol-value b))
   (let ((ai a0) (bi b0) (sum 0))
     (dotimes (i n)
       (setq
