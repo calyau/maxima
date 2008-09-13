@@ -89,6 +89,8 @@
 
 (defmspec $compfile (forms)
     (setq forms (cdr forms))
+    (if (eq 1 (length forms))
+      (merror "compfile: bravely refusing to write file of length 0"))
     (bind-transl-state
      (setq $transcompile t
 	   *in-compfile* t)
@@ -99,7 +101,7 @@
        (pop forms)
        (unwind-protect
 	    (progn
-	      (setq transl-file (open-out-dsk out-file-name))
+	      (setq transl-file (open out-file-name :direction :output :if-exists :overwrite :if-does-not-exist :create :element-type 'character))
 	      (cond ((or (member '$all forms :test #'eq)
 			 (member '$functions forms :test #'eq))
 		     (setq forms (mapcar #'caar (cdr $functions)))))
