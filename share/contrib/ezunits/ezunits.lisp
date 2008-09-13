@@ -7,10 +7,8 @@
 ;; and texify b with all symbols in b output as mathrm.
 
 (defun tex-ezunits (x l r)
-  (append
-    (tex (second x) l r 'mparen 'mparen)
-    (list "\\;")
-    (tex (mathrm-ify (third x)) l r 'mparen 'mparen)))
+  (setq l (tex (second x) l '("\\;") lop (caar x)))
+  (tex (mathrm-ify (third x)) l r (caar x) rop))
 
 ;; If a symbol has a texword property, preserve it.
 ;; Otherwise replace each symbol with a gensym which has a mathrm texword property.
