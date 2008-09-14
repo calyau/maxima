@@ -1,0 +1,327 @@
+/******************************************************************************
+  rtest_gamma.mac
+  Try to test systematically the properties of the Gamma function.
+******************************************************************************/
+
+/* Two definitions for numerical test functions
+   For big results relerror is used */
+
+(closeto(value,compare,tol):=
+  block(
+    [numer:true,abse],
+    abse:abs(value-compare),if(abse<tol) then true else abse),
+    done);
+done;
+
+(relerror(value,compare,tol):=
+  block(
+    [numer:true,abse],
+    abse:abs((value-compare)/compare),
+    if(abse<tol) then true else abse),
+    done);
+done;
+
+/* The Gamma function has mirror symmetry */
+
+declare(z,complex);
+done;
+
+conjugate(gamma(z));
+gamma(conjugate(z));
+
+conjugate(gamma(x+%i*y));
+gamma(x-%i*y);
+
+/* Check simple values for integer, float and bigfloat */
+
+map('gamma,[1,2,3,4,5]);
+[1,1,2,6,24];
+
+closeto(gamma(1.0),1.0,1e-13);
+true;
+
+closeto(gamma(2.0),1.0,1e-13);
+true;
+
+closeto(gamma(3.0),2.0,1e-13);
+true;
+
+closeto(gamma(4.0),6.0,1e-13);
+true;
+
+closeto(gamma(5.0),24.0,5e-13);  
+true;
+
+closeto(gamma(1.0b0),1.0b0,1e-13);
+true;
+
+closeto(gamma(2.0b0),1.0b0,1e-13);
+true;
+
+closeto(gamma(3.0b0),2.0b0,1e-13);
+true;
+
+closeto(gamma(4.0b0),6.0b0,1e-13);
+true;
+
+closeto(gamma(5.0b0),24.0b0,1e-13);
+true;
+
+/* Check for a zero argument */
+
+errcatch(gamma(0));
+[];
+errcatch(gamma(0.0));
+[];
+errcatch(gamma(0.0b0));
+[];
+
+/* Check test for negative integer or a representation of a negative integer */
+
+errcatch(gamma(-2));
+[];
+errcatch(gamma(-2.0));
+[];
+errcatch(gamma(-2.b0));
+[];
+
+/* Check half integral integers as values */
+
+gamma(1/2);
+sqrt(%pi);
+gamma(-1/2);
+-2*sqrt(%pi);
+gamma(3/2);
+sqrt(%pi)/2;
+gamma(-3/2);
+4*sqrt(%pi)/3;
+gamma(5/2);
+3*sqrt(%pi)/4;
+gamma(-5/2);
+-8*sqrt(%pi)/15;
+
+/* We do not test the default value $gammalim and try not do test
+   for big integers, the results are unpredictable.
+   Perhaps we can set $gammalim and $factlim to default values which will
+   work for most (all) systems.
+   Here an attempt for big values which might work generally */
+
+(x:gamma(100000),  /* Try this as the biggest integer */
+ relerror(
+   bfloat(x),
+   gamma(100000.0b0),
+   1e-10));
+true;
+
+(x:gamma(20001/2),   /* Try this as the biggest half integral value        */
+ relerror(           /* perhaps such a big value is not very useful and we */
+   bfloat(x),        /* should further reduce the default value eg. to 100 */
+   gamma(bfloat(20001/2)),
+   1e-10));
+true;
+
+/* Check test for overflow in flonum routine gamma-lanczos */
+   
+relerror(
+  gamma(170.0),          /* should not overflow. For GCL 2.6.8 and */
+  gamma(170),            /* and CLISP 2.46 the limit is ~171.6243  */
+  1e-10);
+true;       
+
+errcatch(gamma(175.0));  /* should overflow */
+[];
+
+errcatch(gamma(250.0));  /* should overflow */
+[];
+
+/* No simplifcation for infinities and undeterminates */
+
+map('gamma, [inf,minf,infinity,und,ind]);
+[gamma(inf),gamma(minf),gamma(infinity),gamma(und),gamma(ind)];
+
+/* Check real and complex arguments for double float. 
+   This is a check for the numerical routine gamma-lanczos */
+
+closeto(
+  gamma(0.5),
+  1.772453850905516027298167483341145182797549456122387128213807790b0,
+  1e-14);
+true;
+
+closeto(
+  gamma(1.5),
+  0.8862269254527580136490837416705725913987747280611935641069038949b0,
+  1e-14);
+true;
+
+closeto(
+  gamma(2.5),
+  1.329340388179137020473625612505858887098162092091790346160355842b0,
+  1e-14);
+true;
+
+closeto(
+  gamma(3.5),
+  3.323350970447842551184064031264647217745405230229475865400889606b0,
+  1e-14);
+true;
+
+relerror(
+  gamma(75.5),
+  2.859942315653572214189951793671955438617013849084406338093590075b108,
+  5e-14);
+true;
+
+closeto(
+  gamma(0.5+%i),
+  (0.3006946172606558162173894638352104402306759641691949986162475934b0 
+  -0.4249678794331238126098496402574059704734842223340586518754297249b0*%i),
+  1e-14);
+true;
+
+closeto(
+  gamma(1.5+%i),
+  (0.5753151880634517207185443721750111905888222044186561511835535216b0 
+  +0.0882106775440939099124646437065074549939338530021656726785327309b0*%i),
+  1e-14);
+true;
+
+closeto(
+  gamma(2.5+%i),
+  (0.7747621045510836711653519145560093308892994536258185540967975514b0 
+  +0.7076312043795925855872413377347723730797229839219046602013526179b0*%i),
+  1e-14);
+true;
+
+closeto(
+  gamma(3.5+%i),
+  (1.229274056998116592326138448655250954143525650142641725040641261b0 
+  +2.543840115500065135133455258892940263588606913430580204600179096b0*%i),
+  1e-14);
+true;
+
+relerror(
+  gamma(75.5+%i),
+  (-1.092860022497734443706055997676557155572470037327121860702819811b108 
+   -2.622326961675321010452173874453854546607804545768376326095021243b108*%i),
+  5e-14);
+true;
+
+/* Check negative real arguments in double float precision. 
+   This is a check for the reflection formula of gamma-lanzos */
+
+closeto(
+  gamma(-0.5b0),
+  -3.544907701811032054596334966682290365595098912244774256427615580b0,
+  1e-14);
+true;
+
+closeto(
+  gamma(-1.5b0),
+  2.363271801207354703064223311121526910396732608163182837618410386b0,
+  1e-14);
+true;
+
+closeto(
+  gamma(-2.5b0),
+  -0.9453087204829418812256893244486107641586930432652731350473641546b0,
+  1e-14);
+true;
+
+/* Check real arguments up to 64 digits. 
+   This is a check for the numerical routine bffac */
+
+(oldfpprec:fpprec,fpprec:64,done);
+done;
+
+closeto(
+  gamma(0.5b0),
+  1.772453850905516027298167483341145182797549456122387128213807790b0,
+  1e-61);
+true;
+
+closeto(
+  gamma(1.5b0),
+  0.8862269254527580136490837416705725913987747280611935641069038949b0,
+  1e-61);
+true;
+
+closeto(
+  gamma(2.5b0),
+  1.329340388179137020473625612505858887098162092091790346160355842b0,
+  1e-61);
+true;
+
+closeto(
+  gamma(3.5b0),
+  3.323350970447842551184064031264647217745405230229475865400889606b0,
+  1e-61);
+true;
+
+relerror(
+  gamma(75.5b0),
+  2.859942315653572214189951793671955438617013849084406338093590075b108,
+  1e-61);
+true;
+
+/* Check negative real arguments up to 64 digits. 
+   This is a check for the reflection formula of bffac */
+
+closeto(
+  gamma(-0.5b0),
+  -3.544907701811032054596334966682290365595098912244774256427615580b0,
+  1e-61);
+true;
+
+closeto(
+  gamma(-1.5b0),
+  2.363271801207354703064223311121526910396732608163182837618410386b0,
+  1e-61);
+true;
+
+closeto(
+  gamma(-2.5b0),
+  -0.9453087204829418812256893244486107641586930432652731350473641546b0,
+  1e-61);
+true;
+
+/* Check complex arguments up to 64 digits. 
+   This is a check for the numerical routine cbffac */
+
+closeto(
+  gamma(0.5b0+%i),
+  (0.3006946172606558162173894638352104402306759641691949986162475934b0 
+  -0.4249678794331238126098496402574059704734842223340586518754297249b0*%i),
+  1e-61);
+true;
+
+closeto(
+  gamma(1.5b0+%i),
+  (0.5753151880634517207185443721750111905888222044186561511835535216b0 
+  +0.0882106775440939099124646437065074549939338530021656726785327309b0*%i),
+  1e-61);
+true;
+
+closeto(
+  gamma(2.5b0+%i),
+  (0.7747621045510836711653519145560093308892994536258185540967975514b0 
+  +0.7076312043795925855872413377347723730797229839219046602013526179b0*%i),
+  1e-61);
+true;
+
+closeto(
+  gamma(3.5b0+%i),
+  (1.229274056998116592326138448655250954143525650142641725040641261b0 
+  +2.543840115500065135133455258892940263588606913430580204600179096b0*%i),
+  1e-61);
+true;
+
+relerror(
+  gamma(75.5b0+%i),
+  (-1.092860022497734443706055997676557155572470037327121860702819811b108 
+   -2.622326961675321010452173874453854546607804545768376326095021243b108*%i),
+  1e-61);
+true;
+
+(fpprec:oldfpprec,done);
+done;
