@@ -179,13 +179,29 @@
   (let* ((j (simpcheck (cadr x) z))
 	 (jr ($realpart j))
 	 (ji ($imagpart j)))
-    (cond ((floatp j) (gammafloat j))
+    (cond ((and (floatp j)
+                (or (zerop j)
+                    (and (< j 0)
+                         (zerop (nth-value 1 (truncate j))))))
+           (merror "gamma(~:M) is undefined." j))
+          ((floatp j) (gammafloat j))
+          ((and ($bfloatp j)
+                (or (zerop1 j)
+                    (and (eq ($sign j) '$neg)
+                         (zerop1 (sub j ($truncate j))))))
+           (merror "gamma(~:M) is undefined." j))
 	  (($bfloatp j) (mfuncall '$bffac (m+ j -1) $fpprec))
 	  ((and (numberp jr) 
 		(numberp ji)
 		(or $numer (floatp jr) (floatp ji)))
 	   (complexify (gamma-lanczos (complex (float jr)
 					       (float ji)))))
+          ((and (mnump jr)
+                (mnump ji)
+                (or $numer ($bfloatp jr) ($bfloatp ji)))
+           (mfuncall '$cbffac 
+                     (add -1 ($bfloat jr) (mul '$%i ($bfloat ji))) 
+                     $fpprec))
 	  ((or (not (mnump j))
 	       (ratgreaterp (simpabs (list '(%abs) j) 1 t) $gammalim))
 	   (eqtest (list '(%gamma) j) x))
@@ -285,23 +301,38 @@
 	;; Gamma(z) = pi/z/sin(pi*z)/Gamma(-z)
 	;;
 	;; If z is a negative integer, Gamma(z) is infinity.  Should
-	;; we test for this?  Throw an error?  What
+	;; we test for this?  Throw an error?
+        ;; The test must be done by the calling routine.
 	(/ (float pi)
 	   (* (- z) (sin (* (float pi) z))
 	      (gamma-lanczos (- z))))
 	(let* ((z (- z 1))
 	       (zh (+ z 1/2))
 	       (zgh (+ zh 607/128))
-	       (zp (expt zgh (/ zh 2)))
+               ;; Calculate log(zp) to avoid overflow at this point.
+	       (lnzp (* (/ zh 2) (log zgh)))
 	       (ss 
 		(do ((sum 0.0)
 		     (pp (1- (length c)) (1- pp)))
 		    ((< pp 1)
 		     sum)
 		  (incf sum (/ (aref c pp) (+ z pp))))))
-	  (* (sqrt (float (* 2 pi)))
-	     (+ ss (aref c 0))
-	     (* zp (exp (- zgh)) zp))))))
+          (let ((result 
+                 ;; We check for an overflow. The last positive value in 
+                 ;; double-float precicsion for which Maxima can calculate 
+                 ;; gamma is ~171.6243 (CLISP 2.46 and GCL 2.6.8)
+                 (ignore-errors
+	           (* (sqrt (float (* 2 pi)))
+	              (+ ss (aref c 0))
+                      (exp (+ (- zgh) (* 2 lnzp)))))))
+            (cond ((null result)
+                   ;; No result. Overflow.
+                   (merror "Overflow in `gamma-lanczos'."))
+                  ((or (float-nan-p (realpart result))
+                       (float-inf-p (realpart result)))
+                   ;; Result, but beyond extreme values. Overflow.
+                   (merror "Overflow in `gamma-lanczos'."))
+                  (t result)))))))
 
 (defun gammafloat (a)
   (realpart (gamma-lanczos (complex a 0.0))))
