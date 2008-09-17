@@ -514,7 +514,7 @@
     (setf (symbol-function sym)
           #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
               (declare (type flonum  x1 x2 x3))
-              (declare (type (cl:array flonum) pts))
+              (declare (type (cl:array t) pts))
               (loop for i below (length pts) by 3
                      do 
 		     (setq x1 (aref pts i))
