@@ -1,7 +1,13 @@
 /******************************************************************************
   rtest_gamma.mac
-  Try to test systematically the properties of the Gamma function.
+  Test for Factorial, Gamma function and related functions ...
 ******************************************************************************/
+
+kill(all);
+done;
+
+(oldfpprec:fpprec, fpprec:16, done);
+done;
 
 /* Two definitions for numerical test functions
    For big results relerror is used */
@@ -20,6 +26,180 @@ done;
     if(abse<tol) then true else abse),
     done);
 done;
+
+/******************************************************************************
+  Factorial
+******************************************************************************/
+
+/* Factorial has mirror symmetrie */
+
+declare(z,complex);
+done;
+
+conjugate(factorial(z));
+factorial(conjugate(z));
+
+conjugate(factorial(x+%i*y));
+factorial(x-%i*y);
+
+/* some small positive integers or the real representation */
+
+fpprec:16;
+16;
+
+map(factorial, [0,1,2,3,4]);
+[1,1,2,6,24];
+
+closeto(factorial(0.0),1.0,1e-13);
+true;
+closeto(factorial(1.0),1.0,1e-13);
+true;
+closeto(factorial(2.0),2.0,1e-13);
+true;
+closeto(factorial(3.0),6.0,1e-13);
+true;
+closeto(factorial(4.0),24.0,1e-13);
+true;
+
+closeto(factorial(0.0b0),1.0b0,1e-13);
+true;
+closeto(factorial(1.0b0),1.0b0,1e-13);
+true;
+closeto(factorial(2.0b0),2.0b0,1e-13);
+true;
+closeto(factorial(3.0b0),6.0b0,1e-13);
+true;
+closeto(factorial(4.0b0),24.0b0,1e-13);
+true;
+
+/* negatvie integers or there real representation */
+
+errcatch(factorial(-1));
+[];
+
+errcatch(factorial(-1.0));
+[];
+
+errcatch(factorial(-1.0b0));
+[];
+
+errcatch(factorial(-10));
+[];
+
+errcatch(factorial(-10.0));
+[];
+
+errcatch(factorial(-10.0b0));
+[];
+
+/* half integral values */
+
+factorial(1/2);
+sqrt(%pi)/2;
+factorial(-1/2);
+sqrt(%pi);
+factorial(3/2);
+3*sqrt(%pi)/4;
+factorial(-3/2);
+-2*sqrt(%pi);
+factorial(5/2);
+15*sqrt(%pi)/8;
+factorial(-5/2);
+4*sqrt(%pi)/3;
+
+/* No simplifcation for infinities and undeterminates */
+
+map(factorial, [inf,minf,infinity,und,ind]);
+[factorial(inf),factorial(minf),factorial(infinity),factorial(und),factorial(ind)];
+
+/* some real values in double float and bigfloat precision */
+
+fpprec:64;
+64;
+
+closeto(
+  factorial(1.3),
+  1.166711905198160345041881441202917938533994349719468893970206664b0,
+  1e-14);
+true;
+
+closeto(
+  factorial(2.3),
+  2.683437381955768793596327314766711258628187004354778456131475327b0,
+  1e-14);
+true;
+
+closeto(
+  factorial(3.3),
+  8.855343360454037018867880138730147153473017114370768905233868579b0,
+  1e-14);
+true;
+
+closeto(
+  factorial(1.3b0),
+  1.166711905198160345041881441202917938533994349719468893970206664b0,
+  1e-62);
+true;
+
+closeto(
+  factorial(2.3b0),
+  2.683437381955768793596327314766711258628187004354778456131475327b0,
+  1e-62);
+true;
+
+closeto(
+  factorial(3.3b0),
+  8.855343360454037018867880138730147153473017114370768905233868579b0,
+  1e-61);
+true;
+
+/* some complex values in double float and bigfloat precision */
+
+closeto(
+  factorial(1.3+%i),
+  (0.7191409365372817791473038599462048083254863806205029128993808432b0 
+  +0.5406144679098492753783510221774150545811250310680842509749769021b0*%i),
+  1e-14);
+true;
+
+closeto(
+  factorial(2.3+%i),
+  (1.113409686125898816660447855698856004567493644359072448693599037b0 
+  +1.962554212729935112517511210954259433862073952077096690141827718b0*%i),
+  1e-14);
+true;
+
+closeto(
+  factorial(3.3+%i),
+  (1.711697751485530982461966712851965381210655074307842390547049105b0 
+  +7.589838588134684687968234851847912136312337686213491526161630507b0*%i),
+  1e-14);
+true;
+
+closeto(
+  factorial(1.3b0+%i),
+  (0.7191409365372817791473038599462048083254863806205029128993808432b0 
+  +0.5406144679098492753783510221774150545811250310680842509749769021b0*%i),
+  1e-62);
+true;
+
+closeto(
+  factorial(2.3b0+%i),
+  (1.113409686125898816660447855698856004567493644359072448693599037b0 
+  +1.962554212729935112517511210954259433862073952077096690141827718b0*%i),
+  1e-62);
+true;
+
+closeto(
+  factorial(3.3b0+%i),
+  (1.711697751485530982461966712851965381210655074307842390547049105b0 
+  +7.589838588134684687968234851847912136312337686213491526161630507b0*%i),
+  1e-61);
+true;
+
+/******************************************************************************
+  Gamma function
+******************************************************************************/
 
 /* The Gamma function has mirror symmetry */
 
@@ -230,9 +410,6 @@ true;
 
 /* Check real arguments up to 64 digits. 
    This is a check for the numerical routine bffac */
-
-(oldfpprec:fpprec,fpprec:64,done);
-done;
 
 closeto(
   gamma(0.5b0),
