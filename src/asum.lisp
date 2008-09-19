@@ -62,7 +62,8 @@
 
 ;; factorial stuff
 
-(setq $factlim -1 makef nil)
+(setq $factlim 100000 ; set to a big integer which will work (not -1)
+      makef nil)
 
 (defmfun $genfact (&rest l)
   (cons '(%genfact) l))
@@ -97,12 +98,26 @@
       1
       (k n 1)))
 
+;;; Factorial has mirror symmetry
+
+(defprop mfactorial t commutes-with-conjugate)
+
 (defmfun simpfact (x y z)
   (oneargcheck x)
   (setq y (simpcheck (cadr x) z))
-  (cond ((or (floatp y) (and (not makef) (ratnump y) (equal (caddr y) 2)))
-	 (simplifya (makegamma1 (list '(mfactorial) y)) nil))
-	(($bfloatp y) (mfuncall '$bffac y $fpprec))
+  (cond ((and (mnump y)
+              (eq ($sign y) '$neg)
+              (zerop1 (sub (simplify (list '(%truncate) y)) y)))
+         ;; Negative integer or a real representation of a negative integer.
+         (merror "factorial(~:M) is undefined." y))
+        ((or (floatp y)             
+             ($bfloatp y)
+             (and (not (integerp y))
+                  (not (ratnump y))
+                  (or (complex-number-p y)
+                      (complex-number-p y 'bigfloat-or-number-p)))
+             (and (not makef) (ratnump y) (equal (caddr y) 2)))
+	 (simplify (list '(%gamma) (add 1 y))))
 	((or (not (fixnump y)) (not (> y -1)))
 	 (eqtest (list '(mfactorial) y) x))
 	((or (minusp $factlim) (not (> y $factlim)))
