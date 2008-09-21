@@ -16,6 +16,9 @@
 
 (declare-top (special var %p%i varlist plogabs half%pi nn* dn*))
 
+(defvar $gamma_expand nil
+  "Expand gamma(z+n) for n an integer when T.") 
+
 (defmfun simpplog (x vestigial z)
   (declare (ignore vestigial))
   (prog (varlist dd check y)
@@ -202,6 +205,20 @@
            (mfuncall '$cbffac 
                      (add -1 ($bfloat jr) (mul '$%i ($bfloat ji))) 
                      $fpprec))
+          ((and $gamma_expand
+                (mplusp j) 
+                (integerp (cadr j)))
+           ;; Expand gamma(z+n) for n an integer.
+           (let ((n (cadr j))
+                 (z (simplify (cons '(mplus) (cddr j)))))
+             (cond 
+               ((> n 0)
+                (mul (simplify (list '($pochhammer) z n))
+                     (simplify (list '(%gamma) z))))
+               ((< n 0)
+                (setq n (- n))
+                (div (mul (power -1 n) (simplify (list '(%gamma) z)))
+                     (simplify (list '($pochhammer) (sub 1 z) n)))))))
 	  ((or (not (mnump j))
 	       (ratgreaterp (simpabs (list '(%abs) j) 1 t) $gammalim))
 	   (eqtest (list '(%gamma) j) x))
