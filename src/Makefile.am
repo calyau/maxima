@@ -353,6 +353,7 @@ factor.lisp \
 fcall.lisp \
 float.lisp \
 fortra.lisp \
+gamma.lisp \
 generate-sys-proclaim.lisp \
 generr.lisp \
 gnuplot.lisp \

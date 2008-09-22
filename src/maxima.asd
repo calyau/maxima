@@ -528,6 +528,7 @@
 				     (:file "nummod")
 				     (:file "conjugate")
                                      (:file "expintegral")
+                                     (:file "gamma")
 				     (:file "mstuff")))
 	       (:module poisson-series :pathname ""
 			:components ((:file "ratpoi")
