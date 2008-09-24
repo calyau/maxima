@@ -679,7 +679,7 @@
 ;;;   - x is a random number 1<x<n
 ;;;   - n passes the test if:
 ;;;        o x^q=1 (mod n)
-;;;        o x^(q*2^j)=n-1 (mod n) for some j=1..k-1
+;;;        o x^(q*2^j)=n-1 (mod n) for some j=0..k-1
 ;;;
 ;;; probability of n passing one test and beeing not a prime is less than 1/4
 
