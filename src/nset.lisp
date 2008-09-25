@@ -25,23 +25,21 @@
 (setf (get '$set  'dimension) 'dimension-match)
 
 ;; Parse {a, b, c} into set(a, b, c).
-;; Don't bother with DEF-NUD etc -- matchfix + ::= works just fine.
-;; Well, MDEFMACRO is a little too zealous in this context, since we
-;; don't really want this macro defn to show up on the $MACROS infolist.
-;; (Maybe it would be cleanest to append built-in defns to FOO::$MACROS
-;; where FOO is something other than MAXIMA, but that awaits
-;; regularization of package use within Maxima.)
 
-(eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
-    ;; matchfix ("{", "}")
-    (meval '(($matchfix) "{" "}"))
-    ;; "{" ([L]) ::= buildq ([L], set (splice (L)));
-    (let ((new-defn
-	   (meval '((mdefmacro) ((${) ((mlist) $l)) (($buildq) ((mlist) $l) (($set) (($splice) $l)))))))
-      ;; Simpler to patch up $MACROS here, than to replicate the functionality of MDEFMACRO.
-      (setq $macros (delete (cadr new-defn) $macros :test #'equal))))
+(def-nud-equiv |$}| delim-err)
+(def-led-equiv |$}| erb-err)
+(def-lbp     |$}| 5.)
+
+(def-nud-equiv	|${| parse-matchfix)
+(def-match	|${| |$}|)
+(def-lbp	|${| 200.)
+;No RBP
+(def-mheader	|${| ($set))
+(def-pos	|${| $any)
+;No LPOS
+;No RPOS
+
+(def-operator "{" '$any nil '$any nil nil nil nil '(nud . parse-matchfix) 'msize-matchfix 'dimension-match "}")
 
 ;; Support for TeXing sets. If your mactex doesn't TeX the empty set
 ;; correctly, get the latest mactex.lisp.
