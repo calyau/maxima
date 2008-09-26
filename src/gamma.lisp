@@ -1,6 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Double Factorial
+;;; Double Factorial, Incomplete Gamma function
 ;;;
 ;;; This file will be extended with further functions related to the 
 ;;; Factorial and Gamma functions.
@@ -9,18 +9,21 @@
 ;;;
 ;;; This file containts the following Maxima User functions:
 ;;;
-;;;   factorial_double(z) - Double factorial generalized for real and complex
-;;;                         argument z in double float and bigfloat precision
+;;;   factorial_double(z)   - Double factorial generalized for real and complex
+;;;                           argument z in double float and bigfloat precision
+;;;   gamma_incomplete(a,z) - Incomplete Gamma function
 ;;;
 ;;; Maxima User variable:
 ;;;
-;;;   $factorial_expand   - Allows argument simplificaton for expressions like
-;;;                         factorial_double(n-1) and factorial_double(2*k+n)
+;;;   $factorial_expand    - Allows argument simplificaton for expressions like
+;;;                          factorial_double(n-1) and factorial_double(2*k+n)
 ;;;
 ;;; Maxima User variable (not definied in this file):
 ;;;
-;;;   $factlim            - biggest integer for numerically evaluation
-;;;                         of the Double factorial
+;;;   $factlim             - biggest integer for numerically evaluation
+;;;                          of the Double factorial
+;;;   $gamma_expand        - Expansion of the Gamma und Incomplete Gamma
+;;;                          function for some special cases
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; This library is free software; you can redistribute it and/or modify it
@@ -42,7 +45,7 @@
 
 (in-package :maxima)
 
-(declare-top (special $factlim))
+(declare-top (special $factlim $gamma_expand))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -200,5 +203,466 @@
       (cmul
         (cpower bigfloat2 (cdiv z bigfloat2))
         (simplify (list '(%gamma) (add bigfloat1 (cdiv z bigfloat2))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; The implementation of the Incomplete Gamma function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *debug-gamma* nil)
+
+(defun $gamma_incomplete (a z)
+  (simplify (list '(%gamma_incomplete) (resimplify a) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Set properties to give full support to the parser and display
+
+(defprop $gamma_incomplete %gamma_incomplete alias)
+(defprop $gamma_incomplete %gamma_incomplete verb)
+
+(defprop %gamma_incomplete $gamma_incomplete reversealias)
+(defprop %gamma_incomplete $gamma_incomplete noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Incomplete Gamma function is a simplifying function
+
+(defprop %gamma_incomplete simp-gamma-incomplete operators)
+
+;;; Incomplete Gamma function has mirror symmetry
+
+(defprop %gamma_incomplete t commutes-with-conjugate)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Derivative of the Incomplete Gamma function
+
+(defprop %gamma_incomplete
+  ((a z)
+   ;; The derivative wrt a in terms of hypergeometric_generalized 2F2 function
+   ;; and the Generalized Incomplete Gamma function (functions.wolfram.com)
+   ((mplus)
+      ((mtimes)
+         ((mexpt) ((%gamma) a) 2)
+         ((mexpt) z a)
+         (($hypergeometric_generalized)
+            ((mlist) a a)
+            ((mlist) ((mplus) 1 a) ((mplus) 1 a))
+            ((mtimes) -1 z)))
+      ((mtimes) -1
+         ((%gamma_incomplete_generalized) a 0 z)
+         ((%log) z))
+      ((mtimes)
+         ((%gamma) a)
+         ((mqapply) (($psi array) 0) a)))
+   ;; The derivative wrt z
+   ((mtimes) -1
+      ((mexpt) $%e ((mtimes) -1 z))
+      ((mexpt) z ((mplus) -1 a))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-gamma-incomplete (expr ignored simpflag)
+  (declare (ignore ignored))
+  (twoargcheck expr)
+  (let ((a (simpcheck (cadr expr) simpflag))
+        (z (simpcheck (caddr expr) simpflag))
+        (ratorder))
+    (when *debug-gamma* 
+         (format t "~&SIMP-GAMMA-INCOMPLETE:~%")
+         (format t "~&   : a = ~A~%" a)
+         (format t "~&   : z = ~A~%" z))
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg) (domain-error 0 'gamma_incomplete))
+               ((eq sgn '$zero) (domain-error 0 'gamma_incomplete))
+               ((member sgn '($pos $pz)) ($gamma a))
+               (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
+              
+      ((eq z '$inf) 0)
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((and (numberp a)
+            (numberp z)
+            (or $numer (floatp a) (floatp z)))
+       (when *debug-gamma* 
+         (format t "~&SIMP-GAMMA-INCOMPLETE: float evaluation.~%"))
+       (complexify (gamma-incomplete a z)))
+
+      ((and (complex-number-p a)
+            (complex-number-p z)
+            (or $numer 
+                (floatp ($realpart a)) (floatp ($imagpart a))
+                (floatp ($realpart z)) (floatp ($imagpart z))))
+       (let ((ca (complex (float ($realpart a)) (float ($imagpart a))))
+             (cz (complex (float ($realpart z)) (float ($imagpart z)))))
+         (complexify (gamma-incomplete ca cz))))
+           
+      ((and (mnump a)
+            (mnump z)
+            (or $numer ($bfloatp a) ($bfloatp z)))
+       (bfloat-gamma-incomplete a z))
+
+      ((and (complex-number-p a 'bigfloat-or-number-p)
+            (complex-number-p z 'bigfloat-or-number-p)
+            (or $numer
+                ($bfloatp ($realpart a)) ($bfloatp ($imagpart a))
+                ($bfloatp ($realpart z)) ($bfloatp ($imagpart z))))
+       (complex-bfloat-gamma-incomplete
+         (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
+         (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
+
+      ;; Check for transformations and argument simplification
+
+      ((and $gamma_expand (integerp a))
+       ;; Integer or a symbol declared to be an integer. Expand in a series.
+       (let ((sgn ($sign a)))
+         (cond
+           ((eq sgn '$zero)
+            (add
+              (mul -1
+                (simplify (list '(%expintegral_ei) (mul -1 z))))
+              (mul
+                (div 1 2)
+                (sub
+                  (simplify (list '(%log) (mul -1 z)))
+                  (simplify (list '(%log) (div -1 z)))))
+              (mul -1 (simplify (list '(%log) z)))))
+           ((member sgn '($pos $pz))
+            (when *debug-gamma* 
+              (format t "Expand in series for a=~A and z=~A~%" a z))
+            (mul
+              (simplify (list '(%gamma) a))
+              (power '$%e (mul -1 z))
+              (let ((index (gensumindex)))
+                (dosum
+                  (div 
+                    (power z index)
+                    (list '(%gamma) (add index 1)))
+                  index 0 (sub a 1) t))))
+           ((member sgn '($neg $nz))
+            (sub
+              (mul
+                (div
+                  (power -1 (add (mul -1 a) -1))
+                  (simplify (list '(%gamma) (add (mul -1 a) 1))))
+                (add
+                  (simplify (list '(%expintegral_ei) (mul -1 z)))
+                  (mul
+                    (div -1 2)
+                    (sub
+                      (simplify (list '(%log) (mul -1 z)))
+                      (simplify (list '(%log) (div -1 z)))))
+                  (simplify (list '(%log) z))))
+              (mul
+                (power '$%e (mul -1 z))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (div
+                      (power z (add index a -1))
+                      (simplify (list '($pochhammer) a index)))
+                    index 1 (mul -1 a) t)))))
+           (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
+
+      ((and $gamma_expand (setq ratorder (max-numeric-ratio-p a 2)))
+       ;; We have a half integral order and $gamma_expand is not NIL.
+       ;; We expand in a series with the Erfc function
+       (setq ratorder (- ratorder (/ 1 2)))
+       (cond
+         ((equal ratorder 0)
+          (mul 
+            (power '$%pi '((rat) 1 2))
+            (simplify (list '(%erfc) (power z '((rat) 1 2))))))
+         ((> ratorder 0)
+          (sub
+            (mul
+              (simplify (list '(%gamma) ratorder))
+              (simplify (list '(%erfc) (power z '((rat) 1 2)))))
+            (mul
+              (power -1 (sub ratorder 1))
+              (power '$%e (mul -1 z))
+              (power z '((rat) 1 2))
+              (let ((index (gensumindex)))
+                (dosum
+                  (mul -1                      ; we get more simple results
+                    (simplify                  ; when multiplying with -1  
+                      (list 
+                       '($pochhammer)
+                        (sub (div 1 2) ratorder)
+                        (add (- ratorder 1) index)))
+                    (power (mul -1 z) index))
+                  index 0 (sub ratorder 1) t)))))
+         ((< ratorder 0)
+          (setq ratorder (- ratorder))
+          (sub
+            (div
+              (mul
+                (power -1 ratorder)
+                (power '$%pi '((rat) 1 2))
+                (simplify (list '(%erfc) (power z '((rat) 1 2)))))
+              (simplify (list '($pochhammer) (div 1 2) ratorder)))
+            (mul 
+              (power z (sub (div 1 2) ratorder))
+              (power '$%e (mul -1 z))
+              (let ((index (gensumindex)))
+                (dosum
+                  (div
+                    (power z index)
+                    (simplify 
+                      (list 
+                       '($pochhammer) 
+                        (sub (div 1 2) ratorder)  
+                        (add index 1))))
+                  index 0 (sub ratorder 1) t)))))))
+
+      ((and (mplusp a) (integerp (cadr a)))
+       (when *debug-gamma* 
+         (format t "~&SIMP-GAMMA-INCOMPLETE in COND (mplusp)~%"))
+       (let ((n (cadr a))
+             (a (cons '(mplus) (cddr a))))
+         (cond
+           ((> n 0)
+            (add
+              (mul
+                (simplify (list '($pochhammer) a n))
+                (simplify (list '(%gamma_incomplete) a z)))
+              (mul
+                (power '$%e (mul -1 z))
+                (power z (add a n -1))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (mul
+                      (simplify 
+                        (list 
+                         '($pochhammer) (add 1 (mul -1 a) (mul -1 n)) index))
+                      (power (mul -1 z) (mul -1 index)))
+                    index 0 (add n -1) t)))))
+           ((< n 0)
+            (setq n (- n))
+            (sub
+              (div
+                (mul
+                  (power -1 n)
+                  (simplify (list '(%gamma_incomplete) a z)))
+                (simplify (list '($pochhammer) (sub 1 a) n)))
+              (mul
+                (power '$%e (mul -1 z))
+                (power z (sub a n))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (div
+                      (power z index)
+                      (simplify (list '($pochhammer) (sub a n) (add index 1))))
+                    index 0 (sub n 1) t))))))))
+
+      (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *gamma-incomplete-maxit* 10000)
+(defvar *gamma-incomplete-eps* 1.0e-15)
+(defvar *gamma-incomplete-min* 1.0e-30)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; The numerical evaluation for CL float or complex values a and x
+
+(defun gamma-incomplete (a x)
+  (let ((gm-maxit *gamma-incomplete-maxit*)
+        (gm-eps   *gamma-incomplete-eps*)
+        (gm-min   *gamma-incomplete-min*))
+    (cond
+      ((and (> (realpart x) 0) (> (abs x) (realpart (+ 1.0 a))))
+       ;; Expansion in continued fractions
+       (do* ((i 1 (+ i 1))
+             (an (- a 1.0) (* i (- a i)))
+             (b (+ 3.0 x (- a)) (+ b 2.0))
+             (c (/ 1.0 gm-min))
+             (d (/ 1.0 (- b 2.0)))
+             (h d)
+             (del 0.0))
+            ((> i gm-maxit)
+             (merror "Continued fractions failed in `gamma_incomplete'"))
+         (when *debug-gamma* 
+           (format t "~&GAMMA-INCOMPLETE in continued fractions:~%")
+           (format t "~&   : i    = ~A~%" i)
+           (format t "~&   : b    = ~A~%" b)
+           (format t "~&   : c    = ~A~%" c)
+           (format t "~&   : d    = ~A~%" d)
+           (format t "~&   : del  = ~A~%" del)
+           (format t "~&   : h    = ~A~%" h))
+         
+       (setq d (+ (* an d) b))
+       (when (< (abs d) gm-min) (setq d gm-min))
+       (setq c (+ b (/ an c)))
+       (when (< (abs c) gm-min) (setq c gm-min))
+       (setq d (/ 1.0 d))
+       (setq del (* d c))
+       (setq h (* h del))
+       (when (< (abs (- del 1.0)) gm-eps)
+         (return (* h (expt x a) (exp (- x)))))))
+
+      (t
+       ;; Expansion in a series
+       (do* ((i 1 (+ i 1))
+             (ap a (+ ap 1.0))
+             (del (/ 1.0 a) (* del (/ x ap)))
+             (sum del (+ sum del))
+             (gm (gamma-lanczos (complex (realpart a) (imagpart a)))))
+            ((> i gm-maxit)
+             (merror "Series expansion failed in `gamma_incomplete"))
+         (when *debug-gamma* 
+           (format t "~&GAMMA-INCOMPLETE in series:~%")
+           (format t "~&   : i    = ~A~%" i)
+           (format t "~&   : ap   = ~A~%" ap)
+           (format t "~&   : x/ap = ~A~%" (/ x ap))
+           (format t "~&   : del  = ~A~%" del)
+           (format t "~&   : sum  = ~A~%" sum))
+         (when (< (abs del) (* (abs sum) gm-eps))
+           (when *debug-gamma* (format t "~&Series converged.~%"))
+           (return
+             (- (gamma-lanczos (complex (realpart a) (imagpart a)))
+                (* sum (expt x a) (exp (- x)))))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun bfloat-gamma-incomplete (a x)
+  (let* ((gm-maxit *gamma-incomplete-maxit*)
+         (gm-eps (pow ($bfloat 10.0) (- $fpprec)))
+         (gm-min (mul gm-eps gm-eps)))
+    (cond
+      ((and (eq ($sign ($realpart x)) '$pos) 
+            (eq ($sign (sub (simplify (list '(mabs) x)) 
+                            ($realpart (add 1.0 a)))) '$pos))
+       ;; Expansion in continued fractions of the Incomplete Gamma function
+       (do* ((i 1 (+ i 1))
+             (an (sub a 1.0) (mul i (sub a i)))
+             (b (add 3.0 x (mul -1 a)) (add b 2.0))
+             (c (div 1.0 gm-min))
+             (d (div 1.0 (sub b 2.0)))
+             (h d)
+             (del 0.0))
+            ((> i gm-maxit)
+             (merror "Continued fractions failed in `gamma_incomplete"))
+         (when *debug-gamma* 
+           (format t "~&in coninued fractions:~%")
+           (format t "~&   : i = ~A~%" i)
+           (format t "~&   : h = ~A~%" h))
+         (setq d (add (mul an d) b))
+         (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
+           (setq d gm-min))
+         (setq c (add b (div an c)))
+         (when (eq ($sign (sub (simplify (list '(mabs) c)) gm-min)) '$neg)
+           (setq c gm-min))
+         (setq d (div 1.0 d))
+         (setq del (mul d c))
+         (setq h (mul h del))
+         (when (eq ($sign (sub (simplify (list '(mabs) (sub del 1.0))) gm-eps))
+                   '$neg)
+           (return 
+             (mul h
+                  (power x a) 
+                  (power ($bfloat '$%e) (mul -1 x)))))))
+
+      (t
+       ;; Series expansion of the Incomplete Gamma function
+       (do* ((i 1 (+ i 1))
+             (ap a (add ap 1.0))
+             (del (div 1.0 a) (mul del (div x ap)))
+             (sum del (add sum del)))
+            ((> i gm-maxit)
+             (merror "Series expansion failed in `gamma-incomplete'"))
+         (when *debug-gamma* 
+           (format t "~&GAMMA-INCOMPLETE in series:~%")
+           (format t "~&   : i    = ~A~%" i)
+           (format t "~&   : ap   = ~A~%" ap)
+           (format t "~&   : x/ap = ~A~%" (div x ap))
+           (format t "~&   : del  = ~A~%" del)
+           (format t "~&   : sum  = ~A~%" sum))
+         (when (eq ($sign (sub (simplify (list '(mabs) del)) 
+                               (mul (cabs sum) gm-eps)))
+                   '$neg)
+           (when *debug-gamma* (format t "~&Series converged.~%"))
+           (return 
+             (sub (simplify (list '(%gamma) a))
+                  (mul sum
+                       (power x a)
+                       (power ($bfloat '$%e) (mul -1 x)))))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun complex-bfloat-gamma-incomplete (a x)
+  (let* ((gm-maxit *gamma-incomplete-maxit*)
+         (gm-eps (pow ($bfloat 10.0) (- $fpprec)))
+         (gm-min (mul gm-eps gm-eps)))
+    (cond
+      ((and (eq ($sign ($realpart x)) '$pos) 
+            (eq ($sign (sub (simplify (list '(mabs) x)) 
+                            ($realpart (add 1.0 a)))) '$pos))
+       ;; Expansion in continued fractions of the Incomplete Gamma function
+       (do* ((i 1 (+ i 1))
+             (an (sub a 1.0) (mul i (sub a i)))
+             (b (add 3.0 x (mul -1 a)) (add b 2.0))
+             (c (cdiv 1.0 gm-min))
+             (d (cdiv 1.0 (sub b 2.0)))
+             (h d)
+             (del 0.0))
+            ((> i gm-maxit)
+             (merror "Continued fractions failed in `gamma_incomplete"))
+         (when *debug-gamma* 
+           (format t "~&in coninued fractions:~%")
+           (format t "~&   : i = ~A~%" i)
+           (format t "~&   : h = ~A~%" h))
+         (setq d (add (cmul an d) b))
+         (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
+           (setq d gm-min))
+         (setq c (add b (cdiv an c)))
+         (when (eq ($sign (sub (simplify (list '(mabs) c)) gm-min)) '$neg)
+           (setq c gm-min))
+         (setq d (cdiv 1.0 d))
+         (setq del (cmul d c))
+         (setq h (cmul h del))
+         (when (eq ($sign (sub (simplify (list '(mabs) (sub del 1.0))) 
+                               gm-eps))
+                   '$neg)
+           (return 
+             (cmul h
+               (cmul
+                 (cpower x a) 
+                 (cpower ($bfloat '$%e) (mul -1 x))))))))
+
+      (t
+       ;; Series expansion of the Incomplete Gamma function
+       (do* ((i 1 (+ i 1))
+             (ap a (add ap 1.0))
+             (del (cdiv 1.0 a) (cmul del (cdiv x ap)))
+             (sum del (add sum del)))
+            ((> i gm-maxit)
+             (merror "Series expansion failed in `gamma-incomplete'"))
+         (when *debug-gamma*
+           (format t "~&GAMMA-INCOMPLETE in series:~%")
+           (format t "~&   : i    = ~A~%" i)
+           (format t "~&   : ap   = ~A~%" ap)
+           (format t "~&   : x/ap = ~A~%" (div x ap))
+           (format t "~&   : del  = ~A~%" del)
+           (format t "~&   : sum  = ~A~%" sum))
+         (when (eq ($sign (sub (simplify (list '(mabs) del)) 
+                               (mul (cabs sum) gm-eps)))
+                   '$neg)
+           (when *debug-gamma* (format t "~&Series converged.~%"))
+           (return 
+             (sub (simplify (list '(%gamma) a))
+                  (cmul sum
+                    (cmul
+                      (cpower x a)
+                      (cpower ($bfloat '$%e) (mul -1 x))))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
