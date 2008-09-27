@@ -1,6 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Double Factorial, Incomplete Gamma function
+;;; Double Factorial, Incomplete Gamma function, ...
 ;;;
 ;;; This file will be extended with further functions related to the 
 ;;; Factorial and Gamma functions.
@@ -11,7 +11,11 @@
 ;;;
 ;;;   factorial_double(z)   - Double factorial generalized for real and complex
 ;;;                           argument z in double float and bigfloat precision
+;;;
 ;;;   gamma_incomplete(a,z) - Incomplete Gamma function
+;;;
+;;;   gamma_incomplete_generalized(a,z1,z2)
+;;;                         - Generalized Incomplete Gamma function
 ;;;
 ;;; Maxima User variable:
 ;;;
@@ -664,5 +668,215 @@
                     (cmul
                       (cpower x a)
                       (cpower ($bfloat '$%e) (mul -1 x))))))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Generalized Incomplete Gamma function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $gamma_incomplete_generalized (a z1 z2)
+  (simplify (list '(%gamma_incomplete) 
+                   (resimplify a) (resimplify z1) (resimplify z2))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Set the properties alias, reversealias, noun and verb
+
+(defprop $gamma_incomplete_generalized %gamma_incomplete_generalized alias)
+(defprop $gamma_incomplete_generalized %gamma_incomplete_generalized verb)
+
+(defprop %gamma_incomplete_generalized 
+         $gamma_incomplete_generalized reversealias)
+(defprop %gamma_incomplete_generalized 
+         $gamma_incomplete_generalized noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Generalized Incomplete Gamma function has mirror symmetry
+
+(defprop %gamma_incomplete_generalized t commutes-with-conjugate)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Generalized Incomplete Gamma function is a simplifying function
+
+(defprop %gamma_incomplete_generalized 
+         simp-gamma-incomplete-generalized operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Differentiation of Generalized Incomplete Gamma function
+
+(defprop %gamma_incomplete_generalized
+  ((a z1 z2)
+   ;; The derivative wrt a in terms of hypergeometric_generalized 2F2 function
+   ;; and the Generalized Incomplete Gamma function (functions.wolfram.com)
+   ((mplus)
+      ((mtimes)
+         ((mexpt) ((%gamma) a) 2)
+         ((mexpt) z1 a)
+         (($hypergeometric_generalized)
+            ((mlist) a a)
+            ((mlist) ((mplus) 1 a) ((mplus) 1 a))
+            ((mtimes) -1 z1)))
+      ((mtimes) -1
+         ((mexpt) ((%gamma) a) 2)
+         ((mexpt) z2 a)
+         (($hypergeometric_generalized)
+            ((mlist) a a)
+            ((mlist) ((mplus) 1 a) ((mplus) 1 a))
+            ((mtimes) -1 z2)))
+      ((mtimes) -1
+         ((%gamma_incomplete_generalized) a 0 z1)
+         ((%log) z1))
+      ((mtimes)
+         ((%gamma_incomplete_generalized) a 0 z2)
+         ((%log) z2)))
+   ;; The derivative wrt z1
+   ((mtimes) -1
+      ((mexpt) $%e ((mtimes) -1 z1))
+      ((mexpt) z1 ((mplus) -1 a)))
+   ;; The derivative wrt z2
+   ((mtimes)
+      ((mexpt) $%e ((mtimes) -1 z2))
+      ((mexpt) z2 ((mplus) -1 a))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-gamma-incomplete-generalized (expr ignored simpflag)
+  (declare (ignore ignored))
+  (if (not (= (length expr) 4)) (wna-err '$gamma_incomplete_generalized))
+  (let ((a  (simpcheck (cadr expr)   simpflag))
+        (z1 (simpcheck (caddr expr)  simpflag))
+        (z2 (simpcheck (cadddr expr) simpflag)))
+
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z2)
+       (let ((sgn ($sign ($realpart a))))
+         (cond 
+           ((eq sgn '$pos) 
+            (sub
+              (simplify (list '(%gamma_incomplete) a z1))
+              (simplify (list '(%gamma) a))))
+           (t 
+            (eqtest (list '(%gamma_incomplete_generalized) a z1 z2) expr)))))
+
+      ((zerop1 z1)
+       (let ((sgn ($sign ($realpart a))))
+         (cond 
+           ((eq sgn '$pos) 
+            (sub
+              (simplify (list '(%gamma) a))
+              (simplify (list '(%gamma_incomplete) a z2))))
+           (t 
+            (eqtest (list '(%gamma_incomplete_generalized) a z1 z2) expr)))))
+
+      ((zerop1 (sub z1 z2)) 0)
+
+      ((eq z2 '$inf) (simplify (list '(%gamma_incomplete) a z1)))
+      ((eq z1 '$inf) (mul -1 (simplify (list '(%gamma_incomplete) a z2))))
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+      ;; Use the numerical routines of the Incomplete Gamma function
+
+      ((and (numberp a)
+            (numberp z1)
+            (numberp z2)
+            (or $numer (floatp a) (floatp z1) (floatp z2)))
+       (complexify (- (gamma-incomplete a z1) (gamma-incomplete a z2))))
+
+      ((and (complex-number-p a)
+            (complex-number-p z1)
+            (complex-number-p z2)
+            (or $numer 
+                (floatp ($realpart a)) (floatp ($imagpart a))
+                (floatp ($realpart z1)) (floatp ($imagpart z1))
+                (floatp ($realpart z2)) (floatp ($imagpart z2))))
+       (let ((ca (complex ($realpart a) ($imagpart a)))
+             (cz1 (complex ($realpart z1) ($imagpart z1)))
+             (cz2 (complex ($realpart z2) ($imagpart z2))))
+         (complexify (- (gamma-incomplete ca cz1) (gamma-incomplete ca cz2)))))
+           
+      ((and (mnump a)
+            (mnump z1)
+            (mnump z2)
+            (or $numer ($bfloatp a) ($bfloatp z1) ($bfloatp z2)))
+       (sub (bfloat-gamma-incomplete a z1) (bfloat-gamma-incomplete a z2)))
+
+      ((and (complex-number-p a 'bigfloat-or-number-p)
+            (complex-number-p z1 'bigfloat-or-number-p)
+            (complex-number-p z2 'bigfloat-or-number-p)
+            (or $numer
+                ($bfloatp ($realpart a)) ($bfloatp ($imagpart a))
+                ($bfloatp ($realpart z1)) ($bfloatp ($imagpart z1))
+                ($bfloatp ($realpart z2)) ($bfloatp ($imagpart z2))))
+       (sub
+         (complex-bfloat-gamma-incomplete
+           (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
+           (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))
+         (complex-bfloat-gamma-incomplete
+           (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
+           (add ($bfloat ($realpart z2)) (mul '$%i ($bfloat ($imagpart z2)))))))
+
+      ;; Check for transformations and argument simplification
+
+      ((and $gamma_expand (mplusp a) (integerp (cadr a)))
+       ;; Expand gamma_incomplete_generalized(a+n,z1,z2) with n an integer
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (cond
+           ((> n 0)
+            (mul
+              (simplify (list '($pochhammer) a n))
+              (add
+                (simplify (list '(%gamma_incomplete_generalized) a z1 z2))
+                (mul
+                  (power '$%e (mul -1 z1))
+                  (let ((index (gensumindex)))
+                    (dosum
+                      (div
+                        (power z1 (add a index -1))
+                        (simplify (list '($pochhammer) a index)))
+                      index 1 n t)))
+                (mul -1
+                  (power '$%e (mul -1 z2))
+                  (let ((index (gensumindex)))
+                    (dosum
+                      (div
+                        (power z2 (add a index -1))
+                        (simplify (list '($pochhammer) a index)))
+                      index 1 n t))))))
+
+           ((< n 0)
+            (setq n (- n))
+            (add
+              (mul
+                (div
+                  (power -1 n)
+                  (simplify (list '($pochhammer) (sub 1 a) n)))
+                (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))
+              (mul -1
+                (power '$%e (mul -1 z2))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (div
+                      (power z1 (add a index (- n) -1))
+                      (simplify (list '($pochhammer) (sub a n) index)))
+                    index 1 n t)))
+              (mul
+                (power '$%e (mul -1 z2))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (div
+                      (power z2 (add a index (- n) -1))
+                      (simplify (list '($pochhammer) (sub a n) index)))
+                    index 1 n t))))))))
+
+      (t (eqtest (list '(%gamma_incomplete_generalized) a z1 z2) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
