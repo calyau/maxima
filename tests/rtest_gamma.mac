@@ -1399,5 +1399,107 @@ block([badpoints : [],
 );
 [];
 
+
+/******************************************************************************
+  Test Generalized Incomplete Gamma function
+******************************************************************************/
+
+/* Some special values */
+
+(kill(a), assume(a>0), done);
+done;
+
+gamma_incomplete_generalized(a,z1,0);
+gamma_incomplete(a,z1)-gamma(a);
+
+gamma_incomplete_generalized(a,z1,0.0);
+gamma_incomplete(a,z1)-gamma(a);
+
+gamma_incomplete_generalized(a,z1,0.0b0);
+gamma_incomplete(a,z1)-gamma(a);
+
+gamma_incomplete_generalized(a,0,z2);
+gamma(a)- gamma_incomplete(a,z2);
+
+gamma_incomplete_generalized(a,0.0,z2);
+gamma(a)- gamma_incomplete(a,z2);
+
+gamma_incomplete_generalized(a,0.0b0,z2);
+gamma(a)- gamma_incomplete(a,z2);
+
+gamma_incomplete_generalized(a,z1,inf);
+gamma_incomplete(a,z1);
+
+gamma_incomplete_generalized(a,inf,z2);
+-gamma_incomplete(a,z2);
+
+gamma_incomplete_generalized(a,0,inf);
+gamma(a);
+
+gamma_incomplete_generalized(a,x,x);
+0;
+
+gamma_incomplete_generalized(a,1.0,1.0b0);
+0;
+
+/* Mirror symmetry */
+
+declare(a,complex, z1,complex, z2, complex);
+done;
+
+conjugate(gamma_incomplete_generalized(a,z1,z2));
+gamma_incomplete_generalized(conjugate(a),conjugate(z1),conjugate(z2));
+
+(kill(a,b,x1,x2,y1,x2),done);
+done;
+
+conjugate(gamma_incomplete_generalized(a+%i*b,x1+%i*y1,x2+%i*y2));
+gamma_incomplete_generalized(a-%i*b,x1-%i*y1,x2-%i*y2);
+
+/* Test numerical evaluation for some values */
+
+closeto(
+  gamma_incomplete_generalized(0.15,0.10,0.90),
+  1.285210772938496575538196624140369253496313719924712338486508252b0,
+  1e-14);
+true;
+
+fpprec:64;
+64;
+
+closeto(
+  gamma_incomplete_generalized(0.15b0,0.10b0,0.90b0),
+  1.285210772938496575538196624140369253496313719924712338486508252b0,
+  1b-62);
+true;
+
+closeto(
+  gamma_incomplete_generalized(0.15+%i,0.10+%i,0.90+%i),
+  (-0.03956290928621934869542750861441673192206453223955788892863857789b0 
+   -0.13316249485419500645510117515710482169661446536096647384481038655b0*%i),
+  1e-14);
+true;
+
+closeto(
+  gamma_incomplete_generalized(0.15b0+%i,0.10b0+%i,0.90b0+%i),
+  (-0.03956290928621934869542750861441673192206453223955788892863857789b0 
+   -0.13316249485419500645510117515710482169661446536096647384481038655b0*%i),
+  1b-62);
+true;
+
+closeto(
+  gamma_incomplete_generalized(-0.15+%i,0.10+%i,0.90+%i),
+  (-0.07903699552278027449948116754698066920498863638107044857029927559b0 
+   -0.10615739775378488990365404098165130400907362070260244159331987806b0*%i),
+  1e-14);
+true;
+
+closeto(
+  gamma_incomplete_generalized(-0.15b0+%i,0.10b0+%i,0.90b0+%i),
+  (-0.07903699552278027449948116754698066920498863638107044857029927559b0 
+   -0.10615739775378488990365404098165130400907362070260244159331987806b0*%i),
+  1b-62);
+true;
+
 (fpprec:oldfpprec,done);
 done;
