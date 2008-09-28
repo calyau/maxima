@@ -1501,5 +1501,141 @@ closeto(
   1b-62);
 true;
 
+/******************************************************************************
+
+  Test Regularized Incomplete Gamma function
+
+******************************************************************************/
+
+/* Specialized values */
+
+gamma_incomplete_regularized(a,0);
+gamma_incomplete_regularized(a,0);
+
+(assume(ap>0,am<0),done);
+done;
+
+errcatch(gamma_incomplete_regularized(am,0));
+[];
+gamma_incomplete_regularized(ap,0);
+1;
+gamma_incomplete_regularized(0,z);
+0;
+gamma_incomplete_regularized(a,inf);
+0;
+
+/* Expand gamma_incomplete_regularized */
+
+gamma_expand:true;
+true;
+
+gamma_incomplete_regularized(1,z);
+%e^(-z);
+
+gamma_incomplete_regularized(a+1,z);
+gamma_incomplete_regularized(a,z)+%e^(-z)*z^a/gamma(a+1);
+gamma_incomplete_regularized(a-1,z);
+gamma_incomplete_regularized(a,z)-%e^(-z)*z^(a-1)/gamma(a);
+
+gamma_incomplete_regularized(1/2,z);
+erfc(sqrt(z));
+gamma_incomplete_regularized(-1/2,z);
+erfc(sqrt(z))-%e^(-z)/sqrt(%pi)/sqrt(z);
+gamma_incomplete_regularized(3/2,z);
+erfc(sqrt(z))+2*sqrt(z)*%e^(-z)/sqrt(%pi);
+gamma_incomplete_regularized(-3/2,z);
+erfc(sqrt(z))-3*(4*z/3-2/3)*%e^(-z)/(4*sqrt(%pi)*z^(3/2));
+
+/* Test expansion for half integral values against expansion of 
+   gamma_incomplete 
+*/
+
+expand(gamma_incomplete_regularized(5/2,z)-gamma_incomplete(5/2,z)/gamma(5/2));
+0;
+expand(gamma_incomplete_regularized(-5/2,z)-gamma_incomplete(-5/2,z)/gamma(-5/2));
+0;
+expand(gamma_incomplete_regularized(7/2,z)-gamma_incomplete(7/2,z)/gamma(7/2));
+0;
+expand(gamma_incomplete_regularized(-7/2,z)-gamma_incomplete(-7/2,z)/gamma(-7/2));
+0;
+expand(gamma_incomplete_regularized(9/2,z)-gamma_incomplete(9/2,z)/gamma(9/2));
+0;
+expand(gamma_incomplete_regularized(-9/2,z)-gamma_incomplete(-9/2,z)/gamma(-9/2));
+0;
+
+gamma_expand:false;
+false;
+
+/* Some numerical tests */
+
+fpprec:64;
+64;
+
+closeto(
+  gamma_incomplete_regularized(0.25,0.15),
+  0.3331718023153566353128831003164180886983644245472471410932121590b0,
+  1e-15);
+true;
+
+closeto(
+  gamma_incomplete_regularized(0.25b0,0.15b0),
+  0.3331718023153566353128831003164180886983644245472471410932121590b0,
+  1b-62);
+true;
+
+closeto(
+  gamma_incomplete_regularized(-0.25,0.15),
+   -0.3747953569677745583399657181155178573572870781780605755597341785b0,
+  1e-15);
+true;
+
+closeto(
+  gamma_incomplete_regularized(-0.25b0,0.15b0),
+   -0.3747953569677745583399657181155178573572870781780605755597341785b0,
+  1b-61);
+true;
+
+closeto(
+  gamma_incomplete_regularized(-0.25,-0.15),
+  (0.1206888313473692669850487605186163406801228067412581029970643626b0 
+  +0.8793111686526307330149512394813836593198771932587418970029356374b0*%i),
+  1e-15);
+true;
+
+closeto(
+  gamma_incomplete_regularized(-0.25b0,-0.15b0),
+  (0.1206888313473692669850487605186163406801228067412581029970643626b0 
+  +0.8793111686526307330149512394813836593198771932587418970029356374b0*%i),
+  1e-15);
+true;
+
+closeto(
+  gamma_incomplete_regularized(0.25,0.15+%i),
+  (-0.0241833450538703040924257417951024895368614341619005659619193200b0 
+   -0.1759768209797086273285777898669237251900625192446301525551431309b0*%i),
+  1e-15);
+true;
+
+closeto(
+  gamma_incomplete_regularized(0.25b0,0.15b0+%i),
+  (-0.0241833450538703040924257417951024895368614341619005659619193200b0 
+   -0.1759768209797086273285777898669237251900625192446301525551431309b0*%i),
+  1b-62);
+true;
+
+closeto(
+  gamma_incomplete_regularized(0.25,0.15-%i),
+  (-0.0241833450538703040924257417951024895368614341619005659619193200b0 
+   +0.1759768209797086273285777898669237251900625192446301525551431309b0*%i),
+  1e-15);
+true;
+
+closeto(
+  gamma_incomplete_regularized(0.25b0,0.15b0-%i),
+  (-0.0241833450538703040924257417951024895368614341619005659619193200b0 
+   +0.1759768209797086273285777898669237251900625192446301525551431309b0*%i),
+  1b-62);
+true;
+
 (fpprec:oldfpprec,done);
 done;
