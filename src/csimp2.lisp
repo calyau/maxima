@@ -217,8 +217,11 @@
                      (simplify (list '(%gamma) z))))
                ((< n 0)
                 (setq n (- n))
-                (div (mul (power -1 n) (simplify (list '(%gamma) z)))
-                     (simplify (list '($pochhammer) (sub 1 z) n)))))))
+                ;; We don't calculate pochhammer(1-z,n) but pochhammer(z-1,n)
+                ;; and multiply the expression with -1. Now Maxima gets results
+                ;; like (a-1) (a-2) ... and not (1-a) (2-a) ...
+                (div (mul -1 (power -1 n) (simplify (list '(%gamma) z)))
+                     (simplify (list '($pochhammer) (add -1 z) n)))))))
 	  ((or (not (mnump j))
 	       (ratgreaterp (simpabs (list '(%abs) j) 1 t) $gammalim))
 	   (eqtest (list '(%gamma) j) x))
