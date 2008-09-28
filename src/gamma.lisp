@@ -9,13 +9,12 @@
 ;;;
 ;;; This file containts the following Maxima User functions:
 ;;;
-;;;   factorial_double(z)   - Double factorial generalized for real and complex
-;;;                           argument z in double float and bigfloat precision
+;;;   factorial_double(z)
 ;;;
-;;;   gamma_incomplete(a,z) - Incomplete Gamma function
-;;;
+;;;   gamma_incomplete(a,z)
 ;;;   gamma_incomplete_generalized(a,z1,z2)
-;;;                         - Generalized Incomplete Gamma function
+;;;
+;;;   gamma_incomplete_regularized(a,z)
 ;;;
 ;;; Maxima User variable:
 ;;;
@@ -878,5 +877,217 @@
                     index 1 n t))))))))
 
       (t (eqtest (list '(%gamma_incomplete_generalized) a z1 z2) expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Regularized Incomplete Gamma function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $gamma_incomplete_regularized (z)
+  (simplify (list '(%gamma_incomplete) (resimplify a) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $gamma_incomplete_regularized %gamma_incomplete_regularized alias)
+(defprop $gamma_incomplete_regularized %gamma_incomplete_regularized verb)
+
+(defprop %gamma_incomplete_regularized 
+         $gamma_incomplete_regularized reversealias)
+(defprop %gamma_incomplete_regularized 
+         $gamma_incomplete_regularized noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Regularized Incomplete Gamma function is a simplifying function
+
+(defprop %gamma_incomplete_regularized 
+         simp-gamma-incomplete-regularized operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Differentiation of Regularized Incomplete Gamma function
+
+(defprop %gamma_incomplete_regularized
+  ((a z)
+   ;; The derivative wrt a in terms of hypergeometric_generalized 2F2 function
+   ;; and the Regularized Generalized Incomplete Gamma function 
+   ;; (functions.wolfram.com)
+   ((mplus)
+      ((mtimes)
+         ((%gamma) a)
+         ((mexpt) z a)
+         (($hypergeometric_generalized)
+            ((mlist) a a)
+            ((mlist) ((mplus) 1 a) ((mplus) 1 a))
+            ((mtimes) -1 z)))
+      ((mtimes)
+         ((%gamma_incomplete_generalized_regularized) a z 0)
+         ((mplus)
+            ((%log) z)
+            ((mtimes) -1 ((mqapply) (($psi array) 0) a)))))
+   ;; The derivative wrt z
+   ((mtimes)
+      ((mexpt) $%e ((mtimes) -1 z))
+      ((mexpt) z ((mplus) -1 a))
+      ((mexpt) ((%gamma) a) -1)))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-gamma-incomplete-regularized (expr ignored simpflag)
+  (declare (ignore ignored))
+  (twoargcheck expr)
+  (let ((a (simpcheck (cadr expr)  simpflag))
+        (z (simpcheck (caddr expr) simpflag))
+        (ratorder 0))
+
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg) (domain-error 0 'gamma_incomplete_regularized))
+               ((eq sgn '$zero) (domain-error 0 'gamma_incomplete))
+               ((member sgn '($pos $pz)) 1)
+               (t (eqtest (list '(%gamma_incomplete) a z) expr)))))  
+
+      ((zerop1 a) 0)
+      ((eq z '$inf) 0)
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((and (numberp a)
+            (numberp z)
+            (or $numer (floatp a) (floatp z)))
+       (complexify (/ (gamma-incomplete a z) (gamma-lanczos a))))
+
+      ((and (complex-number-p a)
+            (complex-number-p z)
+            (or $numer 
+                (floatp ($realpart a)) (floatp ($imagpart a))
+                (floatp ($realpart z)) (floatp ($imagpart z))))
+       (let ((ca (complex ($realpart a) ($imagpart a)))
+             (cz (complex ($realpart z) ($imagpart z))))
+         (complexify (/ (gamma-incomplete ca cz) (gamma-lanczos ca)))))
+           
+      ((and (mnump a)
+            (mnump z)
+            (or $numer ($bfloatp a) ($bfloatp z)))
+       (div (bfloat-gamma-incomplete a z) (simplify (list '(%gamma) a))))
+
+      ((and (complex-number-p a 'bigfloat-or-number-p)
+            (complex-number-p z 'bigfloat-or-number-p)
+            (or $numer
+                ($bfloatp ($realpart a)) ($bfloatp ($imagpart a))
+                ($bfloatp ($realpart z)) ($bfloatp ($imagpart z))))
+       (let ((ca (add ($bfloat ($realpart a)) 
+                      (mul '$%i ($bfloat ($imagpart a)))))
+             (cz (add ($bfloat ($realpart z)) 
+                 (mul '$%i ($bfloat ($imagpart z))))))
+       ($rectform
+         (div
+           (complex-bfloat-gamma-incomplete ca cz)
+           (simplify (list '(%gamma) ca))))))
+
+      ;; Check for transformations and argument simplification
+
+      ((and $gamma_expand (integerp a))
+       ;; An integer. Expand the expression.
+       (let ((sgn ($sign a)))
+         (cond
+           ((member sgn '($pos $pz))
+            (mul              
+              (power '$%e (mul -1 z))
+              (let ((index (gensumindex)))
+                (dosum
+                  (div 
+                    (power z index)
+                    (list '(%gamma) (add index 1)))
+                  index 0 (sub a 1) t))))
+           ((member sgn '($neg $nz)) 0)
+           (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
+
+      ((and $gamma_expand (setq ratorder (max-numeric-ratio-p a 2)))
+       ;; We have a half integral order and $gamma_expand is not NIL.
+       ;; We expand in a series with the Erfc function
+       (setq ratorder (- ratorder (/ 1 2)))
+       (when *debug-gamma*
+         (format t "~&SIMP-GAMMA-INCOMPLETE-REGULARIZED in RATORDER~%")
+         (format t "~&   : a        = ~A~%" a)
+         (format t "~&   : ratorder = ~A~%" ratorder))
+       (cond
+         ((equal ratorder 0)
+          (simplify (list '(%erfc) (power z '((rat) 1 2)))))
+
+         ((> ratorder 0)
+          (add                               
+            (simplify (list '(%erfc) (power z '((rat) 1 2))))
+            (mul
+              (power -1 (sub ratorder 1))
+              (power '$%e (mul -1 z))
+              (power z (div 1 2))
+              (div 1 (simplify (list '(%gamma) a)))             
+              (let ((index (gensumindex)))
+                (dosum
+                  (mul
+                    (power (mul -1 z) index)
+                    (list '($pochhammer) (sub (div 1 2) ratorder)   
+                                         (sub ratorder (add index 1))))
+                  index 0 (sub ratorder 1) t)))))
+
+         ((< ratorder 0)
+          (setq ratorder (- ratorder))
+          (add
+            (simplify (list '(%erfc) (power z '((rat) 1 2))))
+            (mul -1
+              (power '$%e (mul -1 z))
+              (power z (sub (div 1 2) ratorder))
+              (div 1 (simplify (list '(%gamma) (sub (div 1 2) ratorder))))
+              (let ((index (gensumindex)))
+                (dosum
+                  (div
+                    (power z index)
+                    (list '($pochhammer) (sub (div 1 2) ratorder) 
+                                         (add index 1)))
+                  index 0 (sub ratorder 1) t)))))))
+
+      ((and (mplusp a) (integerp (cadr a)))
+       (when *debug-gamma* 
+         (format t "~&SIMP-GAMMA-INCOMPLETE-REGULARIZED in COND (mplusp)~%"))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (cond
+           ((> n 0)
+            (add
+              (simplify (list '(%gamma_incomplete_regularized) a z))
+              (mul
+                (power '$%e (mul -1 z))
+                (power z (add a -1))
+                (div 1 (simplify (list '(%gamma) a)))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (div
+                      (power z index)
+                      (simplify 
+                        (list '($pochhammer) a index)))
+                    index 1 n t)))))
+           ((< n 0)
+            (setq n (- n))
+            (add
+              (simplify (list '(%gamma_incomplete_regularized) a z))
+              (mul -1
+                (power '$%e (mul -1 z))
+                (power z (sub a (add n 1)))
+                (div 1 (simplify (list '(%gamma) (add a (- n)))))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (div
+                      (power z index) 
+                      (list '($pochhammer) (add a (- n)) index))
+                    index 1 n t))))))))
+      
+      (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
