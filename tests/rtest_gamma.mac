@@ -1534,8 +1534,12 @@ gamma_incomplete_regularized(1,z);
 
 gamma_incomplete_regularized(a+1,z);
 gamma_incomplete_regularized(a,z)+%e^(-z)*z^a/gamma(a+1);
+
+/* The result is not as simple as expected because of the
+   ordering of terms which comes from the Pochhammer function.
+*/
 gamma_incomplete_regularized(a-1,z);
-gamma_incomplete_regularized(a,z)-%e^(-z)*z^(a-1)/gamma(a);
+gamma_incomplete_regularized(a,z)+%e^(-z)*z^(a-1)*(1-a)/((a-1)*gamma(a));
 
 gamma_incomplete_regularized(1/2,z);
 erfc(sqrt(z));
