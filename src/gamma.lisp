@@ -388,7 +388,7 @@
          ((> ratorder 0)
           (sub
             (mul
-              (simplify (list '(%gamma) ratorder))
+              (simplify (list '(%gamma) a))
               (simplify (list '(%erfc) (power z '((rat) 1 2)))))
             (mul
               (power -1 (sub ratorder 1))
@@ -401,7 +401,7 @@
                       (list 
                        '($pochhammer)
                         (sub (div 1 2) ratorder)
-                        (add (- ratorder 1) index)))
+                        (sub ratorder (add index 1))))
                     (power (mul -1 z) index))
                   index 0 (sub ratorder 1) t)))))
          ((< ratorder 0)
