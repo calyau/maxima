@@ -7,12 +7,22 @@
 
 @deffn {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy})
 @deffnx {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{C}, @var{yy}, optional_args)
+@deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
+@deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
 
 Returns an approximate minimum of the expression @var{FOM}
 with respect to the variables @var{xx},
 holding the constraints @var{C} equal to zero.
 @var{yy} is a list of initial guesses for @var{xx}.
 The method employed is the augmented Lagrangian method (see Refs [1] and [2]).
+
+@var{grad}, if present, is the gradient of @var{FOM} with respect to @var{xx},
+represented as a list of expressions,
+one for each variable in @var{xx}.
+If not present, the gradient is constructed automatically.
+
+@var{FOM} and each element of @var{grad}, if present,
+must be ordinary expressions, not names of functions or lambda expressions.
 
 @code{optional_args} represents additional arguments,
 specified as @code{@var{symbol} = @var{value}}.
@@ -50,7 +60,7 @@ References:
 [2] \texttt{http://\-www.cs.ubc.ca/\-spider/\-ascher/\-542/\-chap10.pdf}
 @end tex
 
-Example:
+Examples:
 
 @c ===beg===
 @c load (lbfgs);
@@ -79,6 +89,40 @@ Example:
 (%i7) augmented_lagrangian_method(FOM, xx, C, yy, iprint=[-1,0]);
 (%o7) [[x = 0.66665984108002, y = 0.33334027245545], 
                                  %lambda = [- 1.333337940892525]]
+@end example
+
+Same example as before, but this time the gradient is supplied as an argument.
+
+@c ===beg===
+@c load (lbfgs)$
+@c load (augmented_lagrangian)$
+@c FOM: x^2 + 2*y^2;
+@c xx: [x, y];
+@c grad : [2*x, 4*y];
+@c C: [x + y - 1];
+@c yy: [1, 1];
+@c augmented_lagrangian_method ([FOM, grad], xx, C, yy, iprint = [-1, 0]);
+@c ===end===
+@example
+(%i1) load (lbfgs)$
+(%i2) load (augmented_lagrangian)$
+(%i3) FOM: x^2 + 2*y^2;
+                               2    2
+(%o3)                       2 y  + x
+(%i4) FOM: x^2 + 2*y^2;
+                               2    2
+(%o4)                       2 y  + x
+(%i5) xx: [x, y];
+(%o5)                        [x, y]
+(%i6) grad : [2*x, 4*y];
+(%o6)                      [2 x, 4 y]
+(%i7) C: [x + y - 1];
+(%o7)                      [y + x - 1]
+(%i8) yy: [1, 1];
+(%o8)                        [1, 1]
+(%i9) augmented_lagrangian_method ([FOM, grad], xx, C, yy, iprint = [-1, 0]);
+(%o9) [[x = 0.666659841080025, y = .3333402724554462], 
+                                 %lambda = [- 1.333337940892543]]
 @end example
 
 @opencatbox
