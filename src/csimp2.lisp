@@ -221,10 +221,10 @@
                      ($factor
                        (simplify (list '($pochhammer) (sub 1 z) n))))))))
 	  ((or (not (mnump j))
-	       (ratgreaterp (simpabs (list '(%abs) j) 1 t) $gammalim))
+	       (ratgreaterp (simplify (list '(mabs) j)) $gammalim))
 	   (eqtest (list '(%gamma) j) x))
 	  ((integerp j)
-	   (cond ((> j 0) (simpfact (list '(mfactorial) (1- j)) 1 nil))
+	   (cond ((> j 0) (simplify (list '(mfactorial) (1- j))))
 		 (errorsw (throw 'errorsw t))
 		 (t (merror "gamma(~:M) is undefined" j))))
 	  ($numer (gammafloat (fpcofrat j)))
