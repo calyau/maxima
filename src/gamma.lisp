@@ -1053,7 +1053,7 @@
                                          (add index 1)))
                   index 0 (sub ratorder 1) t)))))))
 
-      ((and (mplusp a) (integerp (cadr a)))
+      ((and $gamma_expand (mplusp a) (integerp (cadr a)))
        (when *debug-gamma* 
          (format t "~&SIMP-GAMMA-INCOMPLETE-REGULARIZED in COND (mplusp)~%"))
        (let ((n (cadr a))
@@ -1062,31 +1062,36 @@
            ((> n 0)
             (add
               (simplify (list '(%gamma_incomplete_regularized) a z))
-              (mul
-                (power '$%e (mul -1 z))
-                (power z (add a -1))
-                (div 1 (simplify (list '(%gamma) a)))
-                (let ((index (gensumindex)))
-                  (dosum
-                    (div
-                      (power z index)
-                      (simplify 
-                        (list '($pochhammer) a index)))
-                    index 1 n t)))))
+              ;; We factor the second summand. 
+              ;; Some factors vanish and the result is more readable.
+              ($factor
+                (mul
+                  (power '$%e (mul -1 z))
+                  (power z (add a -1))
+                  (div 1 (simplify (list '(%gamma) a)))
+                  (let ((index (gensumindex)))
+                    (dosum
+                      (div
+                        (power z index)
+                        (simplify
+                          (list '($pochhammer) a index)))
+                      index 1 n t))))))
            ((< n 0)
             (setq n (- n))
             (add
               (simplify (list '(%gamma_incomplete_regularized) a z))
-              (mul -1
-                (power '$%e (mul -1 z))
-                (power z (sub a (add n 1)))
-                (div 1 (simplify (list '(%gamma) (add a (- n)))))
-                (let ((index (gensumindex)))
-                  (dosum
-                    (div
-                      (power z index) 
-                      (list '($pochhammer) (add a (- n)) index))
-                    index 1 n t))))))))
+              ;; We factor the second summand.
+              ($factor
+                (mul -1
+                  (power '$%e (mul -1 z))
+                  (power z (sub a (add n 1)))
+                  (div 1 (simplify (list '(%gamma) (add a (- n)))))
+                  (let ((index (gensumindex)))
+                    (dosum
+                      (div
+                        (power z index)
+                        (list '($pochhammer) (add a (- n)) index))
+                      index 1 n t)))))))))
       
       (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
 
