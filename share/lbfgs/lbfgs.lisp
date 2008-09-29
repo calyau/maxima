@@ -1,3 +1,5 @@
+;;; With minor changes by hand (see CVS history)
+
 ;;; Compiled by f2cl version 2.0 beta Date: 2006/01/11 22:57:58 
 ;;; Using Lisp SBCL 0.9.9
 ;;; 
@@ -23,8 +25,6 @@
 
 
 (let ((finish nil)
-      (mp 0)
-      (lp 0)
       (iter 0)
       (nfun 0)
       (point 0)
@@ -40,14 +40,11 @@
       (inmc 0)
       (iycn 0)
       (iscn 0)
-      (gtol 0.0d0)
       (one 1.0d0)
       (zero 0.0d0)
       (gnorm 0.0d0)
       (stp1 0.0d0)
       (ftol 0.0d0)
-      (stpmin 0.0d0)
-      (stpmax 0.0d0)
       (stp 0.0d0)
       (ys 0.0d0)
       (yy 0.0d0)
@@ -64,14 +61,11 @@
          yy
          ys
          stp
-         stpmax
-         stpmin
          ftol
          stp1
          gnorm
          zero
-         one
-         gtol)
+         one)
    (type f2cl-lib:integer4
          iscn
          iycn
@@ -87,9 +81,7 @@
          ispt
          point
          nfun
-         iter
-         lp
-         mp)
+         iter)
    (type f2cl-lib:logical finish))
   (defun lbfgs (n m x f g diagco diag iprint eps xtol w iflag scache)
     (declare (type (array f2cl-lib:integer4 (*)) iprint)
@@ -1245,16 +1237,10 @@
       (brackt nil)
       (stage1 nil)
       (infoc 0)
-      (j 0)
-      (gtol 0.0d0)
-      (stpmin 0.0d0)
-      (stpmax 0.0d0))
+      (j 0))
   (declare (type f2cl-lib:integer4 j infoc)
            (type f2cl-lib:logical stage1 brackt)
            (type double-float
-                 stpmax
-                 stpmin
-                 gtol
                  zero
                  xtrapf
                  width1
