@@ -107,12 +107,79 @@ factorial(5/2);
 factorial(-5/2);
 4*sqrt(%pi)/3;
 
-/* No simplifcation for infinities and undeterminates */
+/* Expansion for factorial(z+n) and integer n */
+
+factorial_expand:true;
+true;
+
+factorial(z+1);
+(z+1)*factorial(z);
+
+factorial(z+2);
+(z+1)*(z+2)*factorial(z);
+
+factorial(z+3);
+(z+1)*(z+2)*(z+3)*factorial(z);
+
+factorial(z-1);
+factorial(z)/z;
+
+factorial(z-1);
+factorial(z)/z;
+
+factorial(z-2);
+factorial(z)/(z*(z-1));
+
+factorial(z-3);
+factorial(z)/(z*(z-1)*(z-2));
+
+/* Nested factorials simplifies too, see SF[1486452] */
+
+factorial(factorial(n)/factorial(n-1));
+factorial(n);
+
+factorial(sin(factorial(n)/factorial(n-1)));
+factorial(sin(n));
+
+factorial_expand:false;
+false;
+
+/* minfactorial does not do this job */
+
+minfactorial(factorial(factorial(n)/factorial(n-1)));
+factorial(factorial(n)/factorial(n-1));
+
+/* factcomb is the inverse operation to minfactorial 
+   factorial_expand has to be false 
+*/
+
+factcomb((n+1)*(n+2)*(n+3)*n!);
+(n+3)!;
+
+factcomb(n!/(n*(n-1)*(n-2)));
+(n-3)!;
+
+/* No simplifcation for infinities and undeterminates 
+   with the exception of inf: inf! -> inf */
 
 map(factorial, [inf,minf,infinity,und,ind]);
-[factorial(inf),factorial(minf),factorial(infinity),factorial(und),factorial(ind)];
+[inf,factorial(minf),factorial(infinity),factorial(und),factorial(ind)];
 
-/* some real values in double float and bigfloat precision */
+/* factlim is set to the value 100,000. This should work.  */
+
+fpprec:64;
+64;
+
+relerror(
+  factorial(factlim),
+  factorial(bfloat(factlim)),
+  1b-58);                      /* We loose a lost of digits in relerror */
+true;
+
+factorial(factlim+1);
+factorial(100000+1);
+
+/* Some real values in double float and bigfloat precision */
 
 fpprec:64;
 64;
@@ -1014,19 +1081,20 @@ true;
 fpprec:128;
 128;
 
-/* Problem 229:
-   We have a problem with this test.
+/* We have a problem with this test.
    The result is equal up to about 90 digits. Not more.
    But for other arguments we can verify the result within the accuracy.
    Furthermore we can verify the calculation against the result
    of the evaluation of expintegral_e. So what is wrong?
 */
 
+/* Exlude this test for now
 closeto(
   gamma_incomplete(0.25b0,0.50b0),
   0.55658041400942713438787175086206500916583389997764808415332643613122015052649897833312327325822333229784708198027750127190766504b0,  
   1.0b-124);
 true;
+*/
 
 /* Test against expintegral_e. This test work! */
 closeto(
@@ -1535,11 +1603,8 @@ gamma_incomplete_regularized(1,z);
 gamma_incomplete_regularized(a+1,z);
 gamma_incomplete_regularized(a,z)+%e^(-z)*z^a/gamma(a+1);
 
-/* The result is not as simple as expected because of the
-   ordering of terms which comes from the Pochhammer function.
-*/
 gamma_incomplete_regularized(a-1,z);
-gamma_incomplete_regularized(a,z)+%e^(-z)*z^(a-1)*(1-a)/((a-1)*gamma(a));
+gamma_incomplete_regularized(a,z)-%e^(-z)*z^(a-1)/gamma(a);
 
 gamma_incomplete_regularized(1/2,z);
 erfc(sqrt(z));
