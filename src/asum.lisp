@@ -14,7 +14,7 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special opers *a *n $factlim sum msump *i *opers-list opers-list $ratsimpexpons makef))
+(declare-top (special opers *a *n $factlim sum msump *i *opers-list opers-list $ratsimpexpons makef $factorial_expand))
 
 (loop for (x y) on '(%cot %tan %csc %sin %sec %cos %coth %tanh %csch %sinh %sech %cosh)
    by #'cddr do (putprop x y 'recip) (putprop y x 'recip))
@@ -118,6 +118,24 @@
                       (complex-number-p y 'bigfloat-or-number-p)))
              (and (not makef) (ratnump y) (equal (caddr y) 2)))
 	 (simplify (list '(%gamma) (add 1 y))))
+        ((eq y '$inf) '$inf)
+        ((and $factorial_expand
+              (mplusp y)
+              (integerp (cadr y)))
+         ;; factorial(n+m) and m integer. Expand.
+         (let ((m (cadr y))
+               (n (simplify (cons '(mplus) (cddr y)))))
+           (cond ((>= m 0)
+                  (mul 
+                    (simplify (list '($pochhammer) (add n 1) m))
+                    (simplify (list '(mfactorial) n))))
+                 ((< m 0)
+                  (setq m (- m))
+                  (div
+                    (mul (power -1 m) (simplify (list '(mfactorial) n)))
+                    ;; We factor to get the ordering (n-1)*(n-2)*...
+                    ($factor
+                      (simplify (list '($pochhammer) (mul -1 n) m))))))))
 	((or (not (fixnump y)) (not (> y -1)))
 	 (eqtest (list '(mfactorial) y) x))
 	((or (minusp $factlim) (not (> y $factlim)))
