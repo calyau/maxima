@@ -803,7 +803,7 @@ Desired relative error of approximation.  Default is 1d-10.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -892,7 +892,7 @@ Desired relative error of approximation.  Default is 1d-10.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1013,7 +1013,7 @@ Desired relative error of approximation.  Default is 1d-10.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1107,7 +1107,7 @@ Desired relative error of approximation.  Default is 1d-10.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+Size of internal work array.  @var{limit} is the
 maximum number of subintervals to use.  Default is 200.
 @end table
 
@@ -1319,7 +1319,7 @@ Desired relative error of approximation.  Default is 1d-10.
 @item epsabs
 Desired absolute error of approximation.  Default is 0.
 @item limit
-Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
+Size of internal work array.  @var{limit}/2 is the
 maximum number of subintervals to use.  Default is 200.
 @item maxp1
 Maximum number of Chebyshev moments.  Must be greater than 0.  Default
