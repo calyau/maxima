@@ -169,6 +169,19 @@
 	    (take '(%gamma) (sub (add (div x z) 1) y)))))
 	;; End code copied from orthopoly/orthopoly-init.lisp
 
+        ;; Double factorial
+
+        ((eq (caar e) '%factorial_double)
+         (let ((x (makegamma1 (nth 1 e))))
+           (mul
+             (power
+               (div 2 '$%pi)
+               (mul
+                 (div 1 4)
+                 (sub 1 (simplify (list '(%cos) (mul '$%pi x))))))
+             (power 2 (div x 2))
+             (simplify (list '(%gamma) (add 1 (div x 2)))))))
+
 	((eq (caar e) '%elliptic_kc)
 	 ;; Complete elliptic integral of the first kind
 	 (cond ((alike1 (cadr e) '((rat simp) 1 2))
