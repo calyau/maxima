@@ -104,16 +104,16 @@
   ((z)
    ((mtimes) 
       ((rat) 1 2)
-      ((%double_factorial) $z)
+      ((%double_factorial) z)
       ((mplus) 
          ((%log) 2)
          ((mqapply) 
             (($psi array) 0)
-            ((mplus) 1 ((mtimes) ((rat) 1 2) $z)))
+            ((mplus) 1 ((mtimes) ((rat) 1 2) z)))
          ((mtimes) 
             ((rat) 1 2) $%pi
             ((%log) ((mtimes) 2 ((mexpt) $%pi -1)))
-            ((%sin) ((mtimes) $%pi $z))))))
+            ((%sin) ((mtimes) $%pi z))))))
   grad)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -151,6 +151,9 @@
      (bfloat-factorial-double 
        (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
 
+    ;; factorial_double(inf) -> inf
+    ((eq z '$inf) '$inf)
+
     ((and $factorial_expand
           (mplusp z)
           (integerp (cadr z)))
@@ -159,6 +162,7 @@
        (cond
          ((= k -1)
           ;; Special case factorial_double(n-1)
+          ;; Not sure if this simplification is useful.
           (div (simplify (list '(mfactorial) n)) 
                (simplify (list '(%factorial_double) n))))
          ((= k (* 2 (truncate (/ k 2))))
@@ -884,7 +888,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $gamma_incomplete_regularized (z)
+(defun $gamma_incomplete_regularized (a z)
   (simplify (list '(%gamma_incomplete) (resimplify a) (resimplify z))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
