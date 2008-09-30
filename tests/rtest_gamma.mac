@@ -344,6 +344,51 @@ genfact(2.5b0,1,2);
   Double factorial
 ******************************************************************************/
 
+/* Double factorial has mirror symmetry */
+
+declare(z,complex);
+done;
+
+conjugate(factorial_double(z));
+factorial_double(conjugate(z));
+
+conjugate(factorial_double(x+%i*y));
+factorial_double(x-%i*y);
+
+/* No simplifcation for infinities and undeterminates 
+   with the exception of inf: inf! -> inf */
+
+map(factorial, [inf,minf,infinity,und,ind]);
+[inf,factorial(minf),factorial(infinity),factorial(und),factorial(ind)];
+
+/* Test the expansion of Double factorial */
+
+factorial_double(n+1);
+factorial_double(n+1);
+
+factorial_double(n+2),factorial_expand:true;
+(n+2)*factorial_double(n);
+
+factorial_double(n+3),factorial_expand:true;
+factorial_double(n+3);
+
+factorial_double(n+4),factorial_expand:true;
+(n+2)*(n+4)*factorial_double(n);
+
+factorial_double(n-1),factorial_expand:true;
+factorial(n)/factorial_double(n);
+
+factorial_double(n-2),factorial_expand:true;
+factorial_double(n)/n;
+
+factorial_double(n-3),factorial_expand:true;
+factorial_double(n-3);
+
+factorial_double(n-4),factorial_expand:true;
+factorial_double(n)/(n*(n-2));
+
+/* Some small numbers */
+
 factorial_double(-3);
 -1;
 errcatch(factorial_double(-2));
@@ -581,10 +626,6 @@ closeto(
   1e-13);
 true;
 
-/* Complex Bigfloat does not work. We get only double float precision.
-   I have no idea why! Further work is needed.
-*/
-
 closeto(
   factorial_double(-3.5b0+%i),
   (-0.0026442534512730229977827874410755514695008373007370518369259413b0 
@@ -605,26 +646,6 @@ closeto(
   + 1.778201955902329072861901606357849890890501421219437116360540910b0*%i),
   1b-60);
 true;
-
-/* This test shows that the Gamma function works for complex bigfloat */
-
-closeto(
-  gamma(1+(3.3b0+%i)/2.0),
-  (1.2972549927172942677789338941981645022071299145741135508593106691b0 
- + 0.5352362571886066062517362544937539933942267771249551706160092774b0*%i),
-  1b-62);
-true;
-
-/* Test the expansion of Double factorial */
-
-factorial_double(n-1),factorial_expand:true;
-factorial(n)/factorial_double(n);
-
-factorial_double(n+2),factorial_expand:true;
-(n+2)*factorial_double(n);
-
-factorial_double(n-2),factorial_expand:true;
-factorial_double(n)/n;
 
 /******************************************************************************
   Gamma function
