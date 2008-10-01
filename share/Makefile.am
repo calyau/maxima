@@ -816,6 +816,7 @@ numeric/forma1.usg\
 numeric/format.lisp\
 numeric/format.usg\
 numeric/interpol.mac\
+numeric/jtroot3.mac\
 numeric/newton.mac\
 numeric/newton1.mac\
 numeric/riemsum.mac\
