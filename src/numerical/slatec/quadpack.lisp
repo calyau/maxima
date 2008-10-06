@@ -103,46 +103,73 @@
 	  ((mequal) $epsabs ,epsabs)
 	  ((mequal) $limit ,limit))))))
 
-(defun quad-qagi (fun var bound inf-type &key
-		  (epsrel 1e-8)
-		  (limit 200)
-		  (epsabs 0.0))
-  (quad_argument_check fun var bound inf-type) 
-  (let* ((lenw (* 4 limit))
-	 (work (make-array lenw :element-type 'flonum))
-	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
-	 (f (get-integrand fun var))
-	 (infinity (case inf-type
-		     ((1 $inf)
-		      ;; Interval is [bound, infinity]
-		      1)
-		     ((-1 $minf)
-		      ;; Interval is [-infinity, bound]
-		      -1)
-		     ((2 $both)
-		      ;; Interval is [-infinity, infinity]
-		      2))))
-    (handler-case
-	(multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel result abserr neval ier
-				   z-limit z-lenw last)
-	    (slatec:dqagi #'(lambda (x)
-			      (float (funcall f x)))
-			  (let ((v ($float bound)))
-			    (if (numberp v) v (throw 'error nil)))
-			  infinity
-			  (let ((v ($float epsabs)))
-			    (if (numberp v) v (throw 'error nil)))
-			  (let ((v ($float epsrel)))
-			    (if (numberp v) v (throw 'error nil)))
-			  0.0 0.0 0 0
-			  limit lenw 0 iwork work)
-	  (declare (ignore junk z-bound z-inf z-epsabs z-epsrel z-limit z-lenw last))
-	  (list '(mlist) result abserr neval ier))
-      (error (e)
-	`(($quad_qagi) ,fun ,var ,bound ,inf-type
-	  ((mequal) $epsrel ,epsrel)
-	  ((mequal) $epsabs ,epsabs)
-	  ((mequal) $limit ,limit))))))
+(defun quad-qagi (fun var a b &key
+		      (epsrel 1e-8)
+		      (limit 200)
+		      (epsabs 0.0))
+  (quad_argument_check fun var a b)
+  ;; Massage the limits a and b into what Quadpack QAGI wants.
+  (flet ((fixup (low high)
+	   (let (bnd inf)
+	     ;; Cases to handle: (minf, x), (x, inf), (minf, inf).
+	     ;; Everything else is an error.
+	     (cond ((eq low '$minf)
+		    (cond ((eq high '$inf)
+			   (setf bnd 0)
+			   (setf inf 2))
+			  (t
+			   (setq bnd ($float high))
+			   (setq inf low))))
+		   ((eq high '$inf)
+		    (setq bnd ($float low))
+		    (setq inf high))
+		   (t
+		    (return-from quad-qagi
+		      `(($quad_qagi) ,fun ,var ,a ,b
+			((mequal) $epsrel ,epsrel)
+			((mequal) $epsabs ,epsabs)
+			((mequal) $limit ,limit)))))
+	     (values bnd inf))))
+
+    (multiple-value-bind (bound inf-type)
+	(fixup a b)
+      (let* ((lenw (* 4 limit))
+	     (work (make-array lenw :element-type 'flonum))
+	     (iwork (make-array limit :element-type 'f2cl-lib:integer4))
+	     (f (get-integrand fun var))
+	     (infinity (case inf-type
+			 ((1 $inf)
+			  ;; Interval is [bound, infinity]
+			  1)
+			 ((-1 $minf)
+			  ;; Interval is [-infinity, bound]
+			  -1)
+			 ((2 $both)
+			  ;; Interval is [-infinity, infinity]
+			  2))))
+	(handler-case
+	    (multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel
+				       result abserr neval ier
+				       z-limit z-lenw last)
+		(slatec:dqagi #'(lambda (x)
+				  (float (funcall f x)))
+			      (let ((v ($float bound)))
+				(if (numberp v) v (throw 'error nil)))
+			      infinity
+			      (let ((v ($float epsabs)))
+				(if (numberp v) v (throw 'error nil)))
+			      (let ((v ($float epsrel)))
+				(if (numberp v) v (throw 'error nil)))
+			      0.0 0.0 0 0
+			      limit lenw 0 iwork work)
+	      (declare (ignore junk z-bound z-inf z-epsabs z-epsrel
+			       z-limit z-lenw last))
+	      (list '(mlist) result abserr neval ier))
+	  (error (e)
+	    `(($quad_qagi) ,fun ,var ,a ,b
+	      ((mequal) $epsrel ,epsrel)
+	      ((mequal) $epsabs ,epsabs)
+	      ((mequal) $limit ,limit))))))))
 
 (defun quad-qawc (fun var c a b &key
 		  (epsrel 1e-8)
@@ -326,7 +353,7 @@
 	      (apply ',iname ,@args ,keylist))))))
   (frob $quad_qag quad-qag (fun var a b key) ($epsrel $limit $epsabs))
   (frob $quad_qags quad-qags (fun var a b) ($epsrel $limit $epsabs))
-  (frob $quad_qagi quad-qagi (fun var bound inf-type) ($epsrel $limit $epsabs))
+  (frob $quad_qagi quad-qagi (fun var a b) ($epsrel $limit $epsabs))
   (frob $quad_qawc quad-qawc (fun var c a b) ($epsrel $limit $epsabs))
   (frob $quad_qawf quad-qawf (fun var a omega trig) ($limit $epsabs $maxp1 $limlst))
   (frob $quad_qawo quad-qawo (fun var a b omega trig) ($epsrel $limit $epsabs $maxp1))

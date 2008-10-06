@@ -331,11 +331,11 @@ quad_qags (foo (u), u, -1, 1, epsrel=1e-4, epsabs=1e-4, limit=200);
 ev (e2, foo(u)=u^4);
 [0.4, 4.440892098500628E-15, 21, 0];
 
-e3 : quad_qagi (foo (u), u, au, minf, epsabs=2e-3);
-quad_qagi (foo (u), u, au, minf, epsrel=1.0E-8, epsabs=2e-3, limit=200);
+e3 : quad_qagi (foo (u), u, minf, au, epsabs=2e-3);
+quad_qagi (foo (u), u, minf, au, epsrel=1.0E-8, epsabs=2e-3, limit=200);
 
 e3 : ev (e3, foo(u)=1/u^3);
-quad_qagi (1/u^3, u, au, minf, epsrel=1.0E-8, epsabs=2e-3, limit=200);
+quad_qagi (1/u^3, u, minf, au, epsrel=1.0E-8, epsabs=2e-3, limit=200);
 
 ev (e3, au= -1);
 [- 0.5, 5.551115123125784E-15, 15, 0];
