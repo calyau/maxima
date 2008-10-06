@@ -48,24 +48,28 @@
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (handler-case
-    (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier
-			       z-limit z-lenw last)
-	(slatec:dqag #'(lambda (x)
-			  (float (funcall f x)))
-		      (let ((v ($float a))) (if (numberp v) v (throw 'error nil)))
-		      (let ((v ($float b))) (if (numberp v) v (throw 'error nil)))
-		      (let ((v ($float epsabs))) (if (numberp v) v (throw 'error nil)))
-		      (let ((v ($float epsrel))) (if (numberp v) v (throw 'error nil)))
-              key
-		      0.0 0.0 0 0
-		      limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-key z-limit z-lenw last))
-      (list '(mlist) result abserr neval ier))
+	(multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier
+				   z-limit z-lenw last)
+	    (slatec:dqag #'(lambda (x)
+			     (float (funcall f x)))
+			 (let ((v ($float a)))
+			   (if (numberp v) v (throw 'error nil)))
+			 (let ((v ($float b)))
+			   (if (numberp v) v (throw 'error nil)))
+			 (let ((v ($float epsabs)))
+			   (if (numberp v) v (throw 'error nil)))
+			 (let ((v ($float epsrel)))
+			   (if (numberp v) v (throw 'error nil)))
+			 key
+			 0.0 0.0 0 0
+			 limit lenw 0 iwork work)
+	  (declare (ignore junk z-a z-b z-epsabs z-epsrel z-key z-limit z-lenw last))
+	  (list '(mlist) result abserr neval ier))
       (error (e)
-          `(($quad_qag) ,fun ,var ,a ,b ,key
-                        ((mequal) $epsrel ,epsrel)
-                        ((mequal) $epsabs ,epsabs)
-                        ((mequal) $limit ,limit))))))
+	`(($quad_qag) ,fun ,var ,a ,b ,key
+	  ((mequal) $epsrel ,epsrel)
+	  ((mequal) $epsabs ,epsabs)
+	  ((mequal) $limit ,limit))))))
 
 (defun quad-qags (fun var a b &key
 		  (epsrel 1e-8)
@@ -77,23 +81,27 @@
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (handler-case
-    (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel result abserr neval ier
-			       z-limit z-lenw last)
-	(slatec:dqags #'(lambda (x)
-			   (float (funcall f x)))
-		       (let ((v ($float a))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float b))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float epsabs))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float epsrel))) (if (numberp v) v (throw 'error nil)))
-		       0.0 0.0 0 0
-		       limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw last))
-      (list '(mlist) result abserr neval ier))
-    (error (e)
-           `(($quad_qags) ,fun ,var ,a ,b
-                         ((mequal) $epsrel ,epsrel)
-                         ((mequal) $epsabs ,epsabs)
-                         ((mequal) $limit ,limit))))))
+	(multiple-value-bind (junk z-a z-b z-epsabs z-epsrel result abserr neval ier
+				   z-limit z-lenw last)
+	    (slatec:dqags #'(lambda (x)
+			      (float (funcall f x)))
+			  (let ((v ($float a)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float b)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float epsabs)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float epsrel)))
+			    (if (numberp v) v (throw 'error nil)))
+			  0.0 0.0 0 0
+			  limit lenw 0 iwork work)
+	  (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw last))
+	  (list '(mlist) result abserr neval ier))
+      (error (e)
+	`(($quad_qags) ,fun ,var ,a ,b
+	  ((mequal) $epsrel ,epsrel)
+	  ((mequal) $epsabs ,epsabs)
+	  ((mequal) $limit ,limit))))))
 
 (defun quad-qagi (fun var bound inf-type &key
 		  (epsrel 1e-8)
@@ -115,23 +123,26 @@
 		      ;; Interval is [-infinity, infinity]
 		      2))))
     (handler-case
-    (multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel result abserr neval ier
-			       z-limit z-lenw last)
-	(slatec:dqagi #'(lambda (x)
-			   (float (funcall f x)))
-		       (let ((v ($float bound))) (if (numberp v) v (throw 'error nil)))
-		       infinity
-		       (let ((v ($float epsabs))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float epsrel))) (if (numberp v) v (throw 'error nil)))
-		       0.0 0.0 0 0
-		       limit lenw 0 iwork work)
-      (declare (ignore junk z-bound z-inf z-epsabs z-epsrel z-limit z-lenw last))
-      (list '(mlist) result abserr neval ier))
-    (error (e)
-           `(($quad_qagi) ,fun ,var ,bound ,inf-type
-                          ((mequal) $epsrel ,epsrel)
-                          ((mequal) $epsabs ,epsabs)
-                          ((mequal) $limit ,limit))))))
+	(multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel result abserr neval ier
+				   z-limit z-lenw last)
+	    (slatec:dqagi #'(lambda (x)
+			      (float (funcall f x)))
+			  (let ((v ($float bound)))
+			    (if (numberp v) v (throw 'error nil)))
+			  infinity
+			  (let ((v ($float epsabs)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float epsrel)))
+			    (if (numberp v) v (throw 'error nil)))
+			  0.0 0.0 0 0
+			  limit lenw 0 iwork work)
+	  (declare (ignore junk z-bound z-inf z-epsabs z-epsrel z-limit z-lenw last))
+	  (list '(mlist) result abserr neval ier))
+      (error (e)
+	`(($quad_qagi) ,fun ,var ,bound ,inf-type
+	  ((mequal) $epsrel ,epsrel)
+	  ((mequal) $epsabs ,epsabs)
+	  ((mequal) $limit ,limit))))))
 
 (defun quad-qawc (fun var c a b &key
 		  (epsrel 1e-8)
@@ -143,24 +154,29 @@
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (handler-case
-    (multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier
-			       z-limit z-lenw last)
-	(slatec:dqawc #'(lambda (x)
-			   (float (funcall f x)))
-		       (let ((v ($float a))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float b))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float c))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float epsabs))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float epsrel))) (if (numberp v) v (throw 'error nil)))
-		       0.0 0.0 0 0
-		       limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-c z-epsabs z-epsrel z-limit z-lenw last))
-      (list '(mlist) result abserr neval ier))
-    (error (e)
-           `(($quad_qawc) ,fun ,var ,c ,a ,b
-                          ((mequal) $epsrel ,epsrel)
-                          ((mequal) $epsabs ,epsabs)
-                          ((mequal) $limit ,limit))))))
+	(multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier
+				   z-limit z-lenw last)
+	    (slatec:dqawc #'(lambda (x)
+			      (float (funcall f x)))
+			  (let ((v ($float a)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float b)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float c)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float epsabs)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float epsrel)))
+			    (if (numberp v) v (throw 'error nil)))
+			  0.0 0.0 0 0
+			  limit lenw 0 iwork work)
+	  (declare (ignore junk z-a z-b z-c z-epsabs z-epsrel z-limit z-lenw last))
+	  (list '(mlist) result abserr neval ier))
+      (error (e)
+	`(($quad_qawc) ,fun ,var ,c ,a ,b
+	  ((mequal) $epsrel ,epsrel)
+	  ((mequal) $epsabs ,epsabs)
+	  ((mequal) $limit ,limit))))))
 
 (defun quad-qawf (fun var a omega trig &key
 		  (epsabs 1e-10)
@@ -176,29 +192,33 @@
 		   ((1 %cos $cos) 1)
 		   ((2 %sin $sin) 2))))
     (handler-case
-    (multiple-value-bind (junk z-a z-omega z-integr epsabs result abserr neval ier
-			       z-limlst z-lst
-			       z-leniw z-maxp1 z-lenw)
-	(slatec:dqawf #'(lambda (x)
-			   (float (funcall f x)))
-		       (let ((v ($float a))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float omega))) (if (numberp v) v (throw 'error nil)))
-		       integr
-		       (let ((v ($float epsabs))) (if (numberp v) v (throw 'error nil)))
-		       0.0 0.0 0 0
-		       limlst 0 leniw maxp1 lenw iwork work)
-      (declare (ignore junk z-a z-omega z-integr epsabs z-limlst z-lst
-		       z-leniw z-maxp1 z-lenw))
-      (list '(mlist) result abserr neval ier))
-    (error (e)
-           `(($quad_qawf) ,fun ,var ,a ,omega ,trig
-                          ((mequal) $epsabs ,epsabs)
-                          ((mequal) $limit ,limit)
-                          ((mequal) $maxp1 ,maxp1)
-                          ((mequal) $limlst ,limlst))))))
+	(multiple-value-bind (junk z-a z-omega z-integr
+				   epsabs result abserr neval ier
+				   z-limlst z-lst
+				   z-leniw z-maxp1 z-lenw)
+	    (slatec:dqawf #'(lambda (x)
+			      (float (funcall f x)))
+			  (let ((v ($float a)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float omega)))
+			    (if (numberp v) v (throw 'error nil)))
+			  integr
+			  (let ((v ($float epsabs)))
+			    (if (numberp v) v (throw 'error nil)))
+			  0.0 0.0 0 0
+			  limlst 0 leniw maxp1 lenw iwork work)
+	  (declare (ignore junk z-a z-omega z-integr epsabs z-limlst z-lst
+			   z-leniw z-maxp1 z-lenw))
+	  (list '(mlist) result abserr neval ier))
+      (error (e)
+	`(($quad_qawf) ,fun ,var ,a ,omega ,trig
+	  ((mequal) $epsabs ,epsabs)
+	  ((mequal) $limit ,limit)
+	  ((mequal) $maxp1 ,maxp1)
+	  ((mequal) $limlst ,limlst))))))
 
 (defun quad-qawo (fun var a b omega trig &key
-		  (epsrel 1e-10)
+		  (epsrel 1e-8)
 		  (limit 200)
 		  (maxp1 100)
 		  (epsabs 0.0))
@@ -212,31 +232,36 @@
 		   ((1 %cos $cos) 1)
 		   ((2 %sin $sin) 2))))
     (handler-case
-    (multiple-value-bind (junk z-a z-b z-omega z-integr z-epsabs z-epsrel
-			       result abserr neval ier
-			       z-leniw z-maxp1 z-lenw z-lst)
-	(slatec:dqawo #'(lambda (x)
-			   (float (funcall f x)))
-		       (let ((v ($float a))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float b))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float omega))) (if (numberp v) v (throw 'error nil)))
-		       integr
-		       (let ((v ($float epsabs))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float epsrel))) (if (numberp v) v (throw 'error nil)))
-		       0.0 0.0 0 0
-		       leniw maxp1 lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-omega z-integr z-epsabs z-epsrel
-		       z-lst z-leniw z-maxp1 z-lenw))
-      (list '(mlist) result abserr neval ier))
-    (error (e)
-           `(($quad_qawo) ,fun ,var ,a ,b ,omega ,trig
-                          ((mequal) $epsrel ,epsrel)
-                          ((mequal) $epsabs ,epsabs)
-                          ((mequal) $limit ,limit)
-                          ((mequal) $maxp1 ,maxp1))))))
+	(multiple-value-bind (junk z-a z-b z-omega z-integr z-epsabs z-epsrel
+				   result abserr neval ier
+				   z-leniw z-maxp1 z-lenw z-lst)
+	    (slatec:dqawo #'(lambda (x)
+			      (float (funcall f x)))
+			  (let ((v ($float a)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float b)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float omega)))
+			    (if (numberp v) v (throw 'error nil)))
+			  integr
+			  (let ((v ($float epsabs)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float epsrel)))
+			    (if (numberp v) v (throw 'error nil)))
+			  0.0 0.0 0 0
+			  leniw maxp1 lenw 0 iwork work)
+	  (declare (ignore junk z-a z-b z-omega z-integr z-epsabs z-epsrel
+			   z-lst z-leniw z-maxp1 z-lenw))
+	  (list '(mlist) result abserr neval ier))
+      (error (e)
+	`(($quad_qawo) ,fun ,var ,a ,b ,omega ,trig
+	  ((mequal) $epsrel ,epsrel)
+	  ((mequal) $epsabs ,epsabs)
+	  ((mequal) $limit ,limit)
+	  ((mequal) $maxp1 ,maxp1))))))
 
 (defun quad-qaws (fun var a b alfa beta wfun &key
-		  (epsrel 1e-10)
+		  (epsrel 1e-8)
 		  (limit 200)
 		  (epsabs 0.0))
   (quad_argument_check fun var a b) 
@@ -245,28 +270,34 @@
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (get-integrand fun var)))
     (handler-case
-    (multiple-value-bind (junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
-			       result abserr neval ier
-			       z-limit z-lenw last)
-	(slatec:dqaws #'(lambda (x)
-			   (float (funcall f x)))
-		       (let ((v ($float a))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float b))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float alfa))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float beta))) (if (numberp v) v (throw 'error nil)))
-		       wfun
-		       (let ((v ($float epsabs))) (if (numberp v) v (throw 'error nil)))
-		       (let ((v ($float epsrel))) (if (numberp v) v (throw 'error nil)))
-		       0.0 0.0 0 0
-		       limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
-		       z-limit z-lenw last))
-      (list '(mlist) result abserr neval ier))
-    (error (e)
-           `(($quad_qaws) ,fun ,var ,a ,b ,alfa ,beta ,wfun
-                          ((mequal) $epsrel ,epsrel)
-                          ((mequal) $epsabs ,epsabs)
-                          ((mequal) $limit ,limit))))))
+	(multiple-value-bind (junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
+				   result abserr neval ier
+				   z-limit z-lenw last)
+	    (slatec:dqaws #'(lambda (x)
+			      (float (funcall f x)))
+			  (let ((v ($float a)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float b)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float alfa)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float beta)))
+			    (if (numberp v) v (throw 'error nil)))
+			  wfun
+			  (let ((v ($float epsabs)))
+			    (if (numberp v) v (throw 'error nil)))
+			  (let ((v ($float epsrel)))
+			    (if (numberp v) v (throw 'error nil)))
+			  0.0 0.0 0 0
+			  limit lenw 0 iwork work)
+	  (declare (ignore junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel
+			   z-limit z-lenw last))
+	  (list '(mlist) result abserr neval ier))
+      (error (e)
+	`(($quad_qaws) ,fun ,var ,a ,b ,alfa ,beta ,wfun
+	  ((mequal) $epsrel ,epsrel)
+	  ((mequal) $epsabs ,epsabs)
+	  ((mequal) $limit ,limit))))))
 
 ;; error checking similar to that done by $defint
 (defun quad_argument_check (exp var ll ul) 
