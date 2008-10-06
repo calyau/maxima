@@ -359,19 +359,19 @@ ev (e5, au=0, omega=2);
 [.4000000000000001, 2.216570948815925E-11, 175, 0];
 
 e6 : quad_qawo (foo (u), u, au, bu, omega, cos, limit=64);
-quad_qawo (foo (u), u, au, bu, omega, cos, epsrel=1e-10, epsabs=0.0, limit=64, maxp1=100);
+quad_qawo (foo (u), u, au, bu, omega, cos, epsrel=1e-8, epsabs=0.0, limit=64, maxp1=100);
 
 e6 : ev (e6, au=0, bu=%pi/2);
-quad_qawo (foo (u), u, 0, %pi/2, omega, cos, epsrel=1e-10, epsabs=0.0, limit=64, maxp1=100);
+quad_qawo (foo (u), u, 0, %pi/2, omega, cos, epsrel=1e-8, epsabs=0.0, limit=64, maxp1=100);
 
 ev (e6, foo(u)=1, omega=1);
 [1.0, 1.110223024625157E-14, 15, 0];
 
 e7 : quad_qaws (foo (u), u, au, bu, alfa, vita, wfn, limit=48);
-quad_qaws (foo (u), u, au, bu, alfa, vita, wfn, epsrel=1e-10, epsabs=0.0, limit=48);
+quad_qaws (foo (u), u, au, bu, alfa, vita, wfn, epsrel=1e-8, epsabs=0.0, limit=48);
 
 e7 : ev (e7, foo(u)=1/u, au=1, bu=2, wfn=1);
-quad_qaws (1/u, u, 1, 2, alfa, vita, 1, epsrel=1e-10, epsabs=0.0, limit=48);
+quad_qaws (1/u, u, 1, 2, alfa, vita, 1, epsrel=1e-8, epsabs=0.0, limit=48);
 
 ev (e7, alfa=2, vita=1);
 [.05296102778655729, 5.551115123125782E-17, 50, 0];
