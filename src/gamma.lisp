@@ -185,12 +185,12 @@
 
 (defun factorial-double (z)
   (let ((pival (float pi)))
-  (*
-    (expt
+    (*
+     (expt
       (/ 2 pival)
       (/ (- 1 (cos (* pival z))) 4))
-    (expt 2 (/ z 2))
-    (gamma-lanczos (+ 1 (/ z 2))))))
+     (expt 2d0 (/ z 2))
+     (gamma-lanczos (+ 1 (/ z 2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Double factorial for a bigfloat or complex bigfloat argument
@@ -965,7 +965,7 @@
       ((and (numberp a)
             (numberp z)
             (or $numer (floatp a) (floatp z)))
-       (complexify (/ (gamma-incomplete a z) (gamma-lanczos a))))
+       (complexify (/ (gamma-incomplete a z) (gamma-lanczos (complex a)))))
 
       ((and (complex-number-p a)
             (complex-number-p z)
