@@ -480,5 +480,25 @@ bessel_j(1/2,%pi),besselexpand:true;
 bessel_y(1/2,%pi/2),besselexpand:true;
 0;
 
+/* Bug [ 2149714 ] fpprintprec does not work correctly
+*/
+
+fpprec:16;
+16;
+
+block([fpprintprec:5], string(1.23b0));
+"1.23b0";
+
+block([fpprintprec:5], string(1.2345b0));
+"1.2345b0";
+
+block([fpprintprec:5], string(1.23456789b0));
+"1.2345b0";
+
+block([fpprintprec:25], string(1.2345678901234567890123456789b0));
+"1.234567890123457b0";
+
+
+
 end;
 end$
