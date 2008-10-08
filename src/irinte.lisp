@@ -165,22 +165,24 @@
 
 ;; Handle d*p(x)/(e*x^2+f*x+g)*r0(x)^e0.  We know that e*x^2+f*x+g has
 ;; no repeated roots.  Let D be the discriminant of this quadratic,
-;; sqrt(f^2-4*e*g).  Thus, we can factor this quadratic as
-;; (2*e*x+f-D)*(2*e*x+f+D)/(4*e^2).  Thus, the original integrand becomes
+;; sqrt(f^2-4*e*g).  (If we're here, we already know that f^2-4*e*g >
+;; 0).  Thus, we can factor this quadratic as
+;; (2*e*x+f-D)*(2*e*x+f+D)/(4*e).  Thus, the original integrand
+;; becomes
 ;;
-;; 4*e^2*d/(2*e*x+f-D)/(2*e*x+f+D)*p(x)*r0(x)^e0.
+;; 4*e*d/(2*e*x+f-D)/(2*e*x+f+D)*p(x)*r0(x)^e0.
 ;;
 ;; We can separate this as a partial fraction to get
 ;;
-;; (2*d*e^2/D/(2*e*x+f-D) - 2*d*e^2/D/(2*e*x+f+D))*p(x)*r0(x)^e0.
+;; (2*d*e/D/(2*e*x+f-D) - 2*d*e/D/(2*e*x+f+D))*p(x)*r0(x)^e0.
 ;;
 ;; So we have separated this into two "simpler" integrals.
 (defun pns-intir3 (x e f g d p r0 e0)
   (let* ((discr (power (sub (mul f f) (mul 4 e g)) 1//2)) ;; Compute discriminant of
 	 (p*r0^e0 (mul p (power r0 e0)))                  ;; quadratic:  sqrt(f^2-4*e*g)
 	 (2*e*x+f (add (mul 2 e x) f))
-	 (2*e^2*d*invdisc (mul 2 e e d (inv discr))))
-    (mul 2*e^2*d*invdisc
+	 (2*e*d*invdisc (mul 2 e d (inv discr))))
+    (mul 2*e*d*invdisc
 	 (sub (intir2 (mul (inv (sub 2*e*x+f discr)) p*r0^e0) x)
 	      (intir2 (mul (inv (add 2*e*x+f discr)) p*r0^e0) x)))))
 
@@ -191,7 +193,7 @@
   ;; Since e*x^2+f*x+g has repeated roots, it can be written as e*(x+r)^2.
   ;; We easily see that r = f/(2*e), so rewrite the integrand as
   ;;
-  ;; d*p(x)/e/(x-r)^2*r0(x)^e0.
+  ;; d*p(x)/e/(x+r)^2*r0(x)^e0.
   (intir2 (mul d p (inv e)
 	       (power (add x (div f (add e e))) -2)
 	       (power r0 e0))

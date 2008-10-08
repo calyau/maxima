@@ -498,7 +498,18 @@ block([fpprintprec:5], string(1.23456789b0));
 block([fpprintprec:25], string(1.2345678901234567890123456789b0));
 "1.234567890123457b0";
 
+/*
+ * Bug 2142758: integrate(sqrt(2-2*x^2)*(sqrt(2)*x^2+sqrt(2))/(4-4*x^2),x,0,1)
+ */
+integrate(sqrt(2-2*x^2)*(sqrt(2)*x^2+sqrt(2))/(4-4*x^2),x,0,1);
+3*%pi/8;
 
+
+integrate(sqrt(1-x^2)*(x^2+1)/(2-2*x^2),x,0,1);
+3*%pi/8;
+
+integrate(sqrt(1-x^2)*(x^2+1)/(1-x^2),x,0,1);
+3*%pi/4;
 
 end;
 end$
