@@ -55,6 +55,60 @@
 (defvar $factorial_expand nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; The following functions test if numerical evaluation has to be done.
+;;; The functions should help to test for numerical evaluation more consitent
+;;; and without complicated conditional tests including more than one or two
+;;; arguments.
+;;;
+;;; The functions take a list of arguments. All arguments have to be a CL or
+;;; Maxima number. If all arguments are numbers we have two cases:
+;;; 1. $numer is T we return T. The function has to be evaluated numerically.
+;;; 2. One of the args is a float or a bigfloat. Evaluate numerically.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Test for numerically evaluation in float precision
+
+(defun float-numerical-eval-p (&rest args)
+  (let ((flag nil))
+    (dolist (ll args)
+      (when (not (float-or-rational-p ll)) 
+        (return-from float-numerical-eval-p nil))
+      (when (floatp ll) (setq flag t)))
+    (if (or $numer flag) t nil)))
+
+;;; Test for numerically evaluation in complex float precision
+
+(defun complex-float-numerical-eval-p (&rest args)
+  (let ((flag nil))
+    (dolist (ll args)
+      (when (not (complex-number-p ll 'float-or-rational-p)) 
+        (return-from complex-float-numerical-eval-p nil))
+      (when (or (floatp ($realpart ll)) (floatp ($imagpart ll)))
+        (setq flag t)))
+    (if (or $numer flag) t nil)))
+
+;;; Test for numerically evaluation in bigfloat precision
+
+(defun bigfloat-numerical-eval-p (&rest args)
+  (let ((flag nil))
+    (dolist (ll args)
+      (when (not (bigfloat-or-number-p ll)) 
+        (return-from bigfloat-numerical-eval-p nil))
+      (when ($bfloatp ll) (setq flag t)))
+    (if (or $numer flag) t nil)))
+
+;;; Test for numerically evaluation in complex bigfloat precision
+
+(defun complex-bigfloat-numerical-eval-p (&rest args)
+  (let ((flag nil))
+    (dolist (ll args)
+      (when (not (complex-number-p ll 'bigfloat-or-number-p)) 
+        (return-from complex-bigfloat-numerical-eval-p nil))
+      (when (or ($bfloatp ($realpart ll)) ($bfloatp ($imagpart ll)))
+        (setq flag t)))
+    (if (or $numer flag) t nil)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; The changes to the parser to connect the operator !! to factorial_double(z)
 
@@ -1098,5 +1152,241 @@
                       index 1 n t)))))))))
       
       (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Logarithm of the Gamma function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $gamma_log (z)
+  (simplify (list '(%gamma_log) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $gamma_log %gamma_log alias)
+(defprop $gamma_log %gamma_log verb)
+
+(defprop %gamma_log $gamma_log reversealias)
+(defprop %gamma_log $gamma_log noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %gamma_log simp-gamma-log operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %gamma_log
+  ((z)
+   ((mqapply) (($psi array) 0) z))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-gamma-log (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+
+    ;; Check for specific values
+
+    ((and (mnump z)
+          (or (zerop1 z)
+              (and (eq ($sign z) '$neg)
+                   (zerop1 (sub z ($truncate z))))))
+     ;; We have zero, a negative integer or a float or bigfloat representation.
+     (merror "gamma_log(~:M) is undefined." z))
+
+    ((eq z '$inf) '$inf)
+
+    ;; Check for numerical evaluation
+
+    ((float-numerical-eval-p z)
+     (complexify (gamma-log-lanczos (complex z 0))))
+
+    ((complex-float-numerical-eval-p z)
+     (complexify (gamma-log-lanczos (complex ($realpart z) ($imagpart z)))))
+
+    ((bigfloat-numerical-eval-p z) 
+     (bfloat-gamma-log ($bfloat z)))
+
+    ((complex-bigfloat-numerical-eval-p z)
+     (complex-bfloat-gamma-log 
+       (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
+
+    ;; Transform to Logarithm of Factorial for integer values
+    ;; At this point the integer values is positive and not zero.
+
+    ((integerp z)
+     (simplify (list '(%log) (simplify (list '(mfactorial) (- z 1))))))
+
+    (t (eqtest (list '(%gamma_log) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; The functions gamma-log-lanczos, bfloat-gamma-log and 
+;;; complex-bfloat-gamma-log are modified versions of the related functions
+;;; gamma-lanczos, bffac and cbffac. The functions return the Logarithm of
+;;; the Gamma function. If we have to calculate the quotient of Gamma functions,
+;;; e. g. for the Beta function, it is much more appropriate to use the
+;;; logarithmic versions to avoid overflow.
+;;;
+;;; Be careful log(gamma(z)) is only for realpart(z) positive equal to 
+;;; gamma_log(z). For a negative realpart(z) gamma_log differ by multiple of 
+;;; %pi from the Logarithm of the Gamma function. But we always have 
+;;; exp(gamma_log(z)) =  gamma(z).
+;;; The terms to get the transformation for log_gamma(-z) are taken from
+;;; functions.wolfram.com.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun gamma-log-lanczos (z)
+  (declare (type (complex flonum) z)
+           (optimize (safety 3)))
+  (let ((c (make-array 15 :element-type 'flonum
+                       :initial-contents
+                       '(0.99999999999999709182
+                         57.156235665862923517
+                         -59.597960355475491248
+                         14.136097974741747174
+                         -0.49191381609762019978
+                         .33994649984811888699e-4
+                         .46523628927048575665e-4
+                         -.98374475304879564677e-4
+                         .15808870322491248884e-3
+                         -.21026444172410488319e-3
+                         .21743961811521264320e-3
+                         -.16431810653676389022e-3
+                         .84418223983852743293e-4
+                         -.26190838401581408670e-4
+                         .36899182659531622704e-5))))
+    (declare (type (simple-array flonum (15)) c))
+    (if (minusp (realpart z))
+        (let ((z (- z)))
+          (-
+            (+
+              (*
+                (- (float pi))
+                (complex 0 1)
+                (abs (floor (realpart z)))
+                (- 1 (abs (signum (imagpart z)))))
+              (log (float pi))
+              (- (log (- z)))
+              (- (log (sin (* (float pi) (- z (floor (realpart z)))))))
+              (* 
+                (float pi)
+                (complex 0 1)
+                (floor (realpart z))
+                (signum (imagpart z))))
+            (gamma-log-lanczos z)))
+        (let* ((z (- z 1))
+               (zh (+ z 1/2))
+               (zgh (+ zh 607/128))
+               (lnzp (* (/ zh 2) (log zgh)))
+               (ss 
+                (do ((sum 0.0)
+                     (pp (1- (length c)) (1- pp)))
+                    ((< pp 1)
+                     sum)
+                  (incf sum (/ (aref c pp) (+ z pp))))))
+          (+ (log (sqrt (float (* 2 pi))))
+             (log (+ ss (aref c 0)))
+             (+ (- zgh) (* 2 lnzp)))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun bfloat-gamma-log (z)
+  (let (($ratprint nil)
+        (bigfloat%pi  ($bfloat '$%pi)))
+  (cond
+    ((eq ($sign z) '$neg)
+     (let ((z (mul -1 z)))
+       (sub
+         (add
+           (mul -1 bigfloat%pi '$%i
+             (simplify (list '(mabs) (simplify (list '($floor) ($realpart z)))))
+             (sub 1
+               (simplify 
+                 (list '(mabs) (simplify (list '(%signum) ($imagpart z)))))))
+           (simplify (list '(%log) bigfloat%pi))
+           (mul -1 (simplify (list '(%log) (mul -1 z))))
+           (mul -1 
+             (simplify (list '(%log) 
+               (simplify (list '(%sin) 
+                 (mul 
+                   bigfloat%pi 
+                   (sub z (simplify (list '($floor) ($realpart z))))))))))
+           (mul
+             bigfloat%pi '$%i
+             (simplify (list '($floor) ($realpart z)))
+             (simplify (list '(%signum) ($imagpart z)))))
+         (bfloat-gamma-log z))))
+    (t
+     (let* ((k (* 2 (+ 1 ($entier (* 0.41 $fpprec)))))
+            (m ($bfloat bigfloatone))
+            (z+k (add z k -1))
+            (y (power z+k 2))
+            (x ($bfloat bigfloatzero))
+            (ii))
+       (dotimes (i (/ k 2))
+         (setq ii (* 2 (+ i 1)))
+         (setq m (mul m (add z ii -2) (add z ii -1)))
+         (setq x (div
+                   (add x
+                        (div ($bern (+ k (- ii) 2))
+                             (* (+ k (- ii) 1) (+ k (- ii) 2))))
+                   y)))
+       (add
+         (div (simplify (list '(%log) (mul 2 bigfloat%pi z+k))) 2)
+         (mul z+k (add (simplify (list '(%log) z+k)) x -1))
+         (mul -1 (simplify (list '(%log) m)))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun complex-bfloat-gamma-log (z)
+  (let (($ratprint nil)
+        (bigfloat%pi ($bfloat '$%pi)))
+  (cond
+    ((eq ($sign ($realpart z)) '$neg)
+     (let ((z (mul -1 z)))
+       (sub
+         (add
+           (mul -1 bigfloat%pi '$%i
+             (simplify (list '(mabs) (simplify (list '($floor) ($realpart z)))))
+             (sub 1
+               (simplify 
+                 (list '(mabs) (simplify (list '(%signum) ($imagpart z)))))))
+           (simplify (list '(%log) bigfloat%pi))
+           (mul -1 (simplify (list '(%log) (mul -1 z))))
+           (mul -1 
+             (simplify (list '(%log) 
+               (simplify (list '(%sin) 
+                 (mul 
+                   bigfloat%pi 
+                   (sub z (simplify (list '($floor) ($realpart z))))))))))
+           (mul
+             bigfloat%pi '$%i
+             (simplify (list '($floor) ($realpart z)))
+             (simplify (list '(%signum) ($imagpart z)))))
+         (bfloat-gamma-log z))))
+    (t
+     (let* ((k (* 2 (+ 1 ($entier (* 0.41 $fpprec)))))
+            (m ($bfloat bigfloatone))
+            (z+k (add z k -1))
+            (y ($rectform (power z+k 2)))
+            (x ($bfloat bigfloatzero))
+            (ii))
+       (dotimes (i (/ k 2))
+         (setq ii (* 2 (+ i 1)))
+         (setq m ($rectform (mul m (add z ii -2) (add z ii -1))))
+         (setq x ($rectform
+                   (div
+                     (add x 
+                       (div ($bern (+ k (- ii) 2))
+                            (* (+ k (- ii) 1) (+ k (- ii) 2))))
+                   y))))
+       ($rectform
+         (add
+           (div (simplify (list '(%log) (mul 2 bigfloat%pi z+k))) 2)
+           (mul z+k (add (simplify (list '(%log) z+k)) x -1))
+           (mul -1 (simplify (list '(%log) m))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
