@@ -1159,31 +1159,31 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $gamma_log (z)
-  (simplify (list '(%gamma_log) (resimplify z))))
+(defun $log_gamma (z)
+  (simplify (list '(%log_gamma) (resimplify z))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defprop $gamma_log %gamma_log alias)
-(defprop $gamma_log %gamma_log verb)
+(defprop $log_gamma %log_gamma alias)
+(defprop $log_gamma %log_gamma verb)
 
-(defprop %gamma_log $gamma_log reversealias)
-(defprop %gamma_log $gamma_log noun)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defprop %gamma_log simp-gamma-log operators)
+(defprop %log_gamma $log_gamma reversealias)
+(defprop %log_gamma $log_gamma noun)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defprop %gamma_log
+(defprop %log_gamma simp-log-gamma operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %log_gamma
   ((z)
    ((mqapply) (($psi array) 0) z))
   grad)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun simp-gamma-log (expr z simpflag)
+(defun simp-log-gamma (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
   (cond
@@ -1195,23 +1195,23 @@
               (and (eq ($sign z) '$neg)
                    (zerop1 (sub z ($truncate z))))))
      ;; We have zero, a negative integer or a float or bigfloat representation.
-     (merror "gamma_log(~:M) is undefined." z))
+     (merror "log_gamma(~:M) is undefined." z))
 
     ((eq z '$inf) '$inf)
 
     ;; Check for numerical evaluation
 
     ((float-numerical-eval-p z)
-     (complexify (gamma-log-lanczos (complex z 0))))
+     (complexify (log-gamma-lanczos (complex z 0))))
 
     ((complex-float-numerical-eval-p z)
-     (complexify (gamma-log-lanczos (complex ($realpart z) ($imagpart z)))))
+     (complexify (log-gamma-lanczos (complex ($realpart z) ($imagpart z)))))
 
     ((bigfloat-numerical-eval-p z) 
-     (bfloat-gamma-log ($bfloat z)))
+     (bfloat-log-gamma ($bfloat z)))
 
     ((complex-bigfloat-numerical-eval-p z)
-     (complex-bfloat-gamma-log 
+     (complex-bfloat-log-gamma 
        (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
 
     ;; Transform to Logarithm of Factorial for integer values
@@ -1220,25 +1220,24 @@
     ((integerp z)
      (simplify (list '(%log) (simplify (list '(mfactorial) (- z 1))))))
 
-    (t (eqtest (list '(%gamma_log) z) expr))))
+    (t (eqtest (list '(%log_gamma) z) expr))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; The functions gamma-log-lanczos, bfloat-gamma-log and 
-;;; complex-bfloat-gamma-log are modified versions of the related functions
+;;; The functions log-gamma-lanczos, bfloat-log-gamma and 
+;;; complex-bfloat-log-gamma are modified versions of the related functions
 ;;; gamma-lanczos, bffac and cbffac. The functions return the Logarithm of
 ;;; the Gamma function. If we have to calculate the quotient of Gamma functions,
 ;;; e. g. for the Beta function, it is much more appropriate to use the
 ;;; logarithmic versions to avoid overflow.
 ;;;
 ;;; Be careful log(gamma(z)) is only for realpart(z) positive equal to 
-;;; gamma_log(z). For a negative realpart(z) gamma_log differ by multiple of 
-;;; %pi from the Logarithm of the Gamma function. But we always have 
-;;; exp(gamma_log(z)) =  gamma(z).
+;;; log_gamma(z). For a negative realpart(z) log_gamma differ by multiple of 
+;;; %pi from log(gamma(z)). But we always have exp(log_gamma(z))= gamma(z).
 ;;; The terms to get the transformation for log_gamma(-z) are taken from
 ;;; functions.wolfram.com.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun gamma-log-lanczos (z)
+(defun log-gamma-lanczos (z)
   (declare (type (complex flonum) z)
            (optimize (safety 3)))
   (let ((c (make-array 15 :element-type 'flonum
@@ -1276,7 +1275,7 @@
                 (complex 0 1)
                 (floor (realpart z))
                 (signum (imagpart z))))
-            (gamma-log-lanczos z)))
+            (log-gamma-lanczos z)))
         (let* ((z (- z 1))
                (zh (+ z 1/2))
                (zgh (+ zh 607/128))
@@ -1293,7 +1292,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun bfloat-gamma-log (z)
+(defun bfloat-log-gamma (z)
   (let (($ratprint nil)
         (bigfloat%pi  ($bfloat '$%pi)))
   (cond
@@ -1318,7 +1317,7 @@
              bigfloat%pi '$%i
              (simplify (list '($floor) ($realpart z)))
              (simplify (list '(%signum) ($imagpart z)))))
-         (bfloat-gamma-log z))))
+         (bfloat-log-gamma z))))
     (t
      (let* ((k (* 2 (+ 1 ($entier (* 0.41 $fpprec)))))
             (m ($bfloat bigfloatone))
@@ -1341,7 +1340,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun complex-bfloat-gamma-log (z)
+(defun complex-bfloat-log-gamma (z)
   (let (($ratprint nil)
         (bigfloat%pi ($bfloat '$%pi)))
   (cond
@@ -1366,7 +1365,7 @@
              bigfloat%pi '$%i
              (simplify (list '($floor) ($realpart z)))
              (simplify (list '(%signum) ($imagpart z)))))
-         (bfloat-gamma-log z))))
+         (bfloat-log-gamma z))))
     (t
      (let* ((k (* 2 (+ 1 ($entier (* 0.41 $fpprec)))))
             (m ($bfloat bigfloatone))
