@@ -1,5 +1,7 @@
 ;;; With minor changes by hand (see CVS history)
 
+#+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
+
 (in-package :common-lisp-user)
 
 
@@ -1636,3 +1638,4 @@
             (return
              (values n m nil f nil nil nil nil nil xtol nil iflag nil))))))))
 
+#+sbcl (declaim (sb-ext:unmuffle-conditions sb-ext:compiler-note))
