@@ -427,10 +427,9 @@ values")
 
 (defun intern-invert-case (string)
   ;; Like read-from-string with readtable-case :invert
-  ;;
-  ;; No explicit package for INTERN.  It seems maxima sets *package*
-  ;; as needed.
-  (intern (maybe-invert-string-case string)))
+  ;; Supply package argument in case this function is called
+  ;; from outside the :maxima package.
+  (intern (maybe-invert-string-case string) :maxima))
 
 
 #-(or gcl scl allegro)
