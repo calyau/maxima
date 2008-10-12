@@ -488,7 +488,7 @@
 		 (if ,only2fun (funcall ,only2fun (car ,l2var)))
 		 (setq ,l2var (cdr ,l2var))
 		 nil))
-	  (reverse res)))))
+	  (nreverse res)))))
 
 ;;; Test
 ; (do-merge-asym '(a a a b c g h k l)
