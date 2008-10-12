@@ -1584,3 +1584,10 @@ unknown;
 
 sign (max (7, foo543) - max (6, foo543));
 pnz;
+
+/* SF bug [ 2144225 ] rationalize bug / fix (?) */
+map('rationalize, [cos(s)]);
+[cos(s)]$
+
+map(lambda([s], rationalize(s)), [cos(s)]);
+[cos(s)]$
