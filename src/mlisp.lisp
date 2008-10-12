@@ -2320,7 +2320,7 @@ wrapper for this."
   (|''MAKE| $asinh %asinh) (|''MAKE| $acosh %acosh) (|''MAKE| $atanh %atanh)
   (|''MAKE| $acoth %acoth) (|''MAKE| $asech %asech) (|''MAKE| $acsch %acsch)
   (|''MAKE| $round %round) (|''MAKE| $truncate %truncate) (|''MAKE| $plog %plog)
-  (|''MAKE| $signum %signum) (|''MAKE| $erf %erf) (|''MAKE| $gamma %gamma))
+  (|''MAKE| $signum %signum) (|''MAKE| $gamma %gamma))
 
 (defmfun $binomial (x y)
   (let (($numer t) ($float t))

@@ -407,7 +407,7 @@
                      ((eq $expintexpand '%erf)
                       (sub 1 (simplify (list '(%erf) (power arg (inv 2))))))
                      (t
-                      (simplify (list '($erfc) (power arg (inv 2))))))))
+                      (simplify (list '(%erfc) (power arg (inv 2))))))))
          (cond
            ((= ratorder 1/2)
             (mul (power '$%pi (inv 2)) (inv (power arg (inv 2))) func))

@@ -13,13 +13,21 @@
 ;;;
 ;;;   gamma_incomplete(a,z)
 ;;;   gamma_incomplete_generalized(a,z1,z2)
-;;;
 ;;;   gamma_incomplete_regularized(a,z)
+;;;
+;;;   log_gamma(z)
+;;;
+;;;   erf(z)
+;;;   erfc(z)
+;;;   erfi(z)
+;;;   erf_generalized(z1,z2)
 ;;;
 ;;; Maxima User variable:
 ;;;
 ;;;   $factorial_expand    - Allows argument simplificaton for expressions like
 ;;;                          factorial_double(n-1) and factorial_double(2*k+n)
+;;;   $erf_representation  - When T erfc, erfi and erf_generalized are
+;;;                          transformed to erf
 ;;;
 ;;; Maxima User variable (not definied in this file):
 ;;;
@@ -53,6 +61,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar $factorial_expand nil)
+
+(defvar $erf_representation nil
+  "When T erfc, erfi and erf_generalized are transformed to erf.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; The following functions test if numerical evaluation has to be done.
@@ -1386,5 +1397,362 @@
            (div (simplify (list '(%log) (mul 2 bigfloat%pi z+k))) 2)
            (mul z+k (add (simplify (list '(%log) z+k)) x -1))
            (mul -1 (simplify (list '(%log) m))))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Error function Erf(z)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $erf (z)
+  (simplify (list '(%erf) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $erf %erf alias)
+(defprop $erf %erf verb)
+
+(defprop %erf $erf reversealias)
+(defprop %erf $erf noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erf t commutes-with-conjugate)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erf simp-erf operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erf 
+  ((z)
+   ((mtimes) 2 
+      ((mexpt) $%pi ((rat) -1 2))
+      ((mexpt) $%e ((mtimes) -1 ((mexpt) z 2)))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-erf (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf) 1)
+    ((eq z '$minf) -1)
+
+    ;; Check for numerical evaluation
+
+    ((float-numerical-eval-p z)
+     (erf (float z)))
+    ((complex-float-numerical-eval-p z)
+     (complexify (complex-erf (complex ($realpart z) ($imagpart z)))))
+    ((bigfloat-numerical-eval-p z)
+     (bfloat-erf ($bfloat z)))
+    ((complex-bigfloat-numerical-eval-p z)
+     (complex-bfloat-erf 
+       (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
+
+    ;; Argument simplification
+
+    ((and $trigsign (great (mul -1 z) z))
+     (mul -1 (simplify (list  '(%erf) (mul -1 z)))))
+
+    (t
+     (eqtest (list '(%erf) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun erf (z)
+  ;; We use the slatec routine for float values.
+  (slatec:derf (float z)))
+
+;;; This would be the code when using gamma-implete.
+;  (realpart
+;    (*
+;      (signum z)
+;      (- 1.0 
+;        (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0)))))))
+
+(defun complex-erf (z)
+  (*
+    (/ (sqrt (expt z 2)) z)
+    (- 1.0 
+      (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0))))))
+
+(defun bfloat-erf (z)
+  ($realpart
+    (mul
+      (simplify (list '(%signum) z))
+      (sub 1.0
+        (mul 
+          (div 1.0 (power ($bfloat '$%pi) 0.5))
+          (bfloat-gamma-incomplete ($bfloat 0.5) ($bfloat (power z 2))))))))
+
+(defun complex-bfloat-erf (z)
+  (let (($ratprint nil))
+    ($rectform
+      (mul
+        ($rectform (div (power (power z 2) 0.5) z))
+        (sub 1.0
+          (mul 
+            (div 1.0 (power ($bfloat '$%pi) 0.5))
+            (complex-bfloat-gamma-incomplete 
+              ($bfloat 0.5) 
+              ($bfloat (power z 2)))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Generalized Error function Erf(z1,z2)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $erf_generalized (z1 z2)
+  (simplify (list '(%erf_generalized) (resimplify z1) (resimplify z2))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $erf_generalized %erf_generalized alias)
+(defprop $erf_generalized %erf_generalized verb)
+
+(defprop %erf_generalized $erf_generalized reversealias)
+(defprop %erf_generalized $erf_generalized noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erf_generalized t commutes-with-conjugate)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erf_generalized simp-erf-generalized operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erf_generalized 
+  ((z1 z2)
+   ;; derivative wrt z1
+   ((mtimes) -2 
+      ((mexpt) $%pi ((rat) -1 2))
+      ((mexpt) $%e ((mtimes) -1 ((mexpt) z1 2))))
+   ;; derviative wrt z2
+   ((mtimes) 2 
+      ((mexpt) $%pi ((rat) -1 2))
+      ((mexpt) $%e ((mtimes) -1 ((mexpt) z2 2)))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-erf-generalized (expr ignored simpflag)
+  (declare (ignore ignored))
+  (twoargcheck expr)
+  (let ((z1 (simpcheck (cadr expr) simpflag))
+        (z2 (simpcheck (caddr expr) simpflag)))
+    (cond
+
+      ;; Check for specific values
+
+      ((and (zerop1 z1) (zerop1 z2)) 0)
+      ((zerop1 z1) (simplify (list '(%erf) z2)))
+      ((zerop1 z2) (mul -1 (simplify (list '(%erf) z1))))
+      ((eq z2 '$inf) (sub 1 (simplify (list '(%erf) z1))))
+      ((eq z2 '$minf) (sub (mul -1 (simplify (list '(%erf) z1))) 1))
+      ((eq z1 '$inf) (sub (simplify (list '(%erf) z2)) 1))
+      ((eq z1 '$minf) (add (simplify (list '(%erf) z2)) 1))
+
+      ;; Check for numerical evaluation. Use erf(z1,z2) = erf(z2)-erf(z1)
+
+      ((float-numerical-eval-p z1 z2)
+       (- (erf (float z2)) (erf (float z1))))
+      ((complex-float-numerical-eval-p z1 z2)
+       (complexify 
+         (- 
+           (complex-erf (complex ($realpart z2) ($imagpart z2))) 
+           (complex-erf (complex ($realpart z1) ($imagpart z1))))))
+      ((bigfloat-numerical-eval-p z1 z2)
+       (sub
+         (bfloat-erf ($bfloat z2))
+         (bfloat-erf ($bfloat z1))))
+      ((complex-bigfloat-numerical-eval-p z1 z2)
+       (sub
+         (complex-bfloat-erf 
+           (add ($bfloat ($realpart z2)) (mul '$%i ($bfloat ($imagpart z2)))))
+         (complex-bfloat-erf 
+           (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))))
+
+      ;; Argument simplification
+   
+      ((and $trigsign (great (mul -1 z1) z1) (great (mul -1 z2) z2))
+       (mul -1 (simplify (list '(%erf_generalized) (mul -1 z1) (mul -1 z2)))))
+
+      ;; Transformation to Erf
+
+      ($erf_representation
+       (sub (simplify (list '(%erf) z2)) (simplify (list '(%erf) z1))))
+
+      (t
+       (eqtest (list '(%erf_generalized) z1 z2) expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Complementary Error function Erfc(z)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $erfc (z)
+  (simplify (list '(%erfc) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $erfc %erfc alias)
+(defprop $erfc %erfc verb)
+
+(defprop %erfc $erfc reversealias)
+(defprop %erfc $erfc noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erfc t commutes-with-conjugate)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erfc simp-erfc operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erfc 
+  ((z)
+   ((mtimes) -2 
+      ((mexpt) $%pi ((rat) -1 2))
+      ((mexpt) $%e ((mtimes) -1 ((mexpt) z 2)))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-erfc (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) 1)
+    ((eq z '$inf) 0)
+    ((eq z '$minf) 2)
+
+    ;; Check for numerical evaluation. Use erfc(z) = 1-erf(z).
+
+    ((float-numerical-eval-p z)
+     (- 1.0 (erf (float z))))
+    ((complex-float-numerical-eval-p z)
+     (complexify (- 1.0 (complex-erf (complex ($realpart z) ($imagpart z))))))
+    ((bigfloat-numerical-eval-p z)
+     (sub 1.0 (bfloat-erf ($bfloat z))))
+    ((complex-bigfloat-numerical-eval-p z)
+     (sub 1.0
+       (complex-bfloat-erf 
+         (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z)))))))
+
+    ;; Argument simplification
+
+    ((and $trigsign (great (mul -1 z) z))
+     (sub 2 (simplify (list  '(%erfc) (mul -1 z)))))
+
+    ;; Transformation to Erf
+
+    ($erf_representation
+     (sub 1 (simplify (list '(%erf) z))))
+
+
+    (t
+     (eqtest (list '(%erfc) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Imaginary Error function Erfi(z)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $erfi (z)
+  (simplify (list '(%erfi) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $erfi %erfi alias)
+(defprop $erfi %erfi verb)
+
+(defprop %erfi $erfi reversealias)
+(defprop %erfi $erfi noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erfi t commutes-with-conjugate)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erfi simp-erfi operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %erfi
+  ((z)
+   ((mtimes) 2 
+      ((mexpt) $%pi ((rat) -1 2))
+      ((mexpt) $%e ((mexpt) z 2))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-erfi (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf) '$inf)
+    ((eq z '$minf) '$minf)
+
+    ;; Check for numerical evaluation. Use erfi(z) = -%i*erf(%i*z).
+
+    ((float-numerical-eval-p z)
+     ;; For real argument z the value of erfi is real.
+     (realpart (* (complex 0 -1) (complex-erf (complex 0 (float z))))))
+    ((complex-float-numerical-eval-p z)
+     (complexify 
+       (* 
+         (complex 0 -1)
+         (complex-erf 
+           (complex (- (float ($imagpart z))) (float ($realpart z)))))))
+    ((bigfloat-numerical-eval-p z)
+     ;; For real argument z the value of erfi is real.
+     ($realpart
+       (mul -1
+         '$%i
+         (complex-bfloat-erf ($bfloat (mul '$%i z))))))
+    ((complex-bigfloat-numerical-eval-p z)
+     ($rectform
+       (mul -1
+         '$%i
+         (complex-bfloat-erf 
+           (add ($bfloat (mul -1 ($imagpart z)))
+                (mul '$%i ($bfloat ($realpart z))))))))
+
+    ;; Argument simplification
+
+    ((and $trigsign (great (mul -1 z) z))
+     (mul -1 (simplify (list  '(%erfi) (mul -1 z)))))
+
+    ;; Transformation to Erf
+
+    ($erf_representation
+     (mul -1 '$%i (simplify (list '(%erf) (mul '$%i z)))))
+
+    (t
+     (eqtest (list '(%erfi) z) expr))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

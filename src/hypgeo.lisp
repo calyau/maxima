@@ -456,7 +456,8 @@
     (exp)
   (m2 exp
       '((mplus)
-	((coeffpt)(u nonzerp)(($erfc)(w true)))
+        ;; erfc is implemented as a simplifying function. Change $erfc to %erfc.
+	((coeffpt)(u nonzerp)((%erfc)(w true)))
 	((coeffpp)(a zerp)))
       nil))
 

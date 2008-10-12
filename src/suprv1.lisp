@@ -1039,7 +1039,7 @@
 	 (setq *features* (delete ($mkey item) *features*)) t)
 	(t (error "know only how to set and remove feature status"))))
 
-(do ((l '($sqrt $erf $sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
+(do ((l '($sqrt $sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
 	  $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
 	  $acosh $atanh $acsch $asech $acoth $binomial $gamma $genfact $del)
 	(cdr l)))
