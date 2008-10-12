@@ -1733,5 +1733,353 @@ closeto(
   1b-62);
 true;
 
+/******************************************************************************
+  Test the Error functions: erf, erfc, erfi and erf_generalized
+******************************************************************************/
+
+/* Specific values */
+
+map(erf, [0,0.0,0.0b0,inf,minf,infinity,und,ind]);
+[0,0.0,0.0b0,1,-1,erf(infinity),erf(und),erf(ind)];
+
+map(erfc, [0,inf,minf,infinity,und,ind]);
+[1,0,2,erfc(infinity),erfc(und),erfc(ind)];
+
+map(erfi, [0,inf,minf,infinity,und,ind]);
+[0,inf,minf,erfi(infinity),erfi(und),erfi(ind)];
+
+erf_generalized(z1,0);
+-erf(z1);
+
+erf_generalized(0,z2);
+erf(z2);
+
+erf_generalized(0,0);
+0;
+
+erf_generalized(0.0,0.0);
+0;
+
+erf_generalized(0.0b0,0.0b0);
+0;
+
+erf_generalized(z1,inf);
+1-erf(z1);
+
+erf_generalized(z1,minf);
+-erf(z1)-1;
+
+erf_generalized(inf,z2);
+erf(z2)-1;
+
+erf_generalized(minf,z2);
+erf(z2)+1;
+
+/* Parity */
+
+erf(-z);
+-erf(z);
+
+erfc(-z);
+2-erfc(z);
+
+erfi(-z);
+-erfi(z);
+
+erf_generalized(-z1,-z2);
+-erf_generalized(z1,z2);
+
+/* Mirror symmetrie */
+
+declare(z,complex);
+done;
+
+conjugate(erf(z));
+erf(conjugate(z));
+
+conjugate(erf(x+%i*y));
+erf(x-%i*y);
+
+conjugate(erfc(z));
+erfc(conjugate(z));
+
+conjugate(erfc(x+%i*y));
+erfc(x-%i*y);
+
+conjugate(erfi(z));
+erfi(conjugate(z));
+
+conjugate(erfi(x+%i*y));
+erfi(x-%i*y);
+
+declare(z1,complex,z2,complex);
+done;
+
+conjugate(erf_generalized(z1,z2));
+erf_generalized(conjugate(z1),conjugate(z2));
+
+conjugate(erf_generalized(x1+%i*y1,x2+%i*y2));
+erf_generalized(x1-%i*y1,x2-%i*y2);
+
+/* Numerical test for the Error functions 
+   First check erf in double float precision */
+
+closeto(
+  erf(-0.50),
+  -0.5204998778130465376827466538919645287364515757579637000588057256b0,
+  1e-15);
+true;
+
+closeto(
+  erf(0.50),
+  0.5204998778130465376827466538919645287364515757579637000588057256b0,
+  1e-15);
+true;
+
+closeto(
+  erf(0.75),
+  0.7111556336535151315989378345914107773742059540965372322781333971b0,
+  1e-15);
+true;
+
+closeto(
+  erf(-0.75+%i),
+  (-1.372897192365736489613456241111589390954675856186764729607156305b0 
+  + 0.539788632227100129936591912063260716699852732091113612337142798b0*%i),
+  1e-15);
+true;
+
+closeto(
+  erf(-0.50+%i),
+  (-1.204847558314218002702112682097006717296399718277162764595960866b0 
+  + 1.024400881608445881724860454410886676966127193189877583791256132b0*%i),
+  1e-15);
+true;
+
+closeto(
+  erf(0.50+%i),
+  ( 1.204847558314218002702112682097006717296399718277162764595960866b0 
+  + 1.024400881608445881724860454410886676966127193189877583791256132b0*%i),
+  1e-15);
+true;
+
+closeto(
+  erf(0.75+%i),
+  ( 1.372897192365736489613456241111589390954675856186764729607156305b0 
+  + 0.539788632227100129936591912063260716699852732091113612337142798b0*%i),
+  1e-15);
+true;
+
+/* Erf with bigfloat precision */
+
+fpprec:64;
+64;
+
+closeto(
+  erf(-0.50b0),
+  -0.5204998778130465376827466538919645287364515757579637000588057256b0,
+  1b-61);
+true;
+
+closeto(
+  erf(0.50b0),
+  0.5204998778130465376827466538919645287364515757579637000588057256b0,
+  1b-61);
+true;
+
+closeto(
+  erf(0.75b0),
+  0.7111556336535151315989378345914107773742059540965372322781333971b0,
+  1b-61);
+true;
+
+closeto(
+  erf(-0.75b0+%i),
+  (-1.372897192365736489613456241111589390954675856186764729607156305b0 
+  + 0.539788632227100129936591912063260716699852732091113612337142798b0*%i),
+  1b-61);
+true;
+
+closeto(
+  erf(-0.50b0+%i),
+  (-1.204847558314218002702112682097006717296399718277162764595960866b0 
+  + 1.024400881608445881724860454410886676966127193189877583791256132b0*%i),
+  1b-61);
+true;
+
+closeto(
+  erf(0.50b0+%i),
+  ( 1.204847558314218002702112682097006717296399718277162764595960866b0 
+  + 1.024400881608445881724860454410886676966127193189877583791256132b0*%i),
+  1b-61);
+true;
+
+closeto(
+  erf(0.75b0+%i),
+  ( 1.372897192365736489613456241111589390954675856186764729607156305b0 
+  + 0.539788632227100129936591912063260716699852732091113612337142798b0*%i),
+  1b-61);
+true;
+
+/* We have done a check for the numerical algorithm of the Erf function which
+   calls the Incomplete Gamma function. 
+   We do not do further numerical tests for the other Error functions, 
+   but only check the correct implementation of the numercial routines
+   against the Erf function
+*/
+
+/* Check Erfc against Erf for some values */
+
+fpprec:32;
+32;
+
+closeto(
+  erfc(-0.25),
+  1-erf(-0.25),
+  1e-15);
+true;
+
+closeto(
+  erfc(0.25),
+  1-erf(0.25),
+  1e-15);
+true;
+
+closeto(
+  erfc(-0.25+%i),
+  1-erf(-0.25+%i),
+  1e-15);
+true;
+
+closeto(
+  erfc(0.25+%i),
+  1-erf(0.25+%i),
+  1e-15);
+true;
+
+closeto(
+  erfc(-0.25b0),
+  1-erf(-0.25b0),
+  1.0b-30);
+true;
+
+closeto(
+  erfc(0.25b0),
+  1-erf(0.25b0),
+  1b-30);
+true;
+
+closeto(
+  erfc(-0.25b0+%i),
+  1-erf(-0.25b0+%i),
+  1b-30);
+true;
+
+closeto(
+  erfc(0.25b0+%i),
+  1-erf(0.25b0+%i),
+  1b-30);
+true;
+
+/* Check Erfi against Erf for some values */
+
+closeto(
+  erfi(-0.15),
+  -%i*erf(-0.15*%i),
+  1e-15);
+true;
+
+closeto(
+  erfi(0.15),
+  -%i*erf(0.15*%i),
+  1e-15);
+true;
+
+closeto(
+  erfi(-0.15+%i),
+  -%i*erf((-0.15+%i)*%i),
+  1e-15);
+true;
+
+closeto(
+  erfi(0.15+%i),
+  -%i*erf((0.15+%i)*%i),
+  1e-15);
+true;
+
+closeto(
+  erfi(-0.15b0),
+  -%i*erf(-0.15b0*%i),
+  5.0b-30);
+true;
+
+closeto(
+  erfi(0.15b0),
+  -%i*erf(0.15b0*%i),
+  5.0b-30);
+true;
+
+closeto(
+  erfi(-0.15b0+%i),
+  expand(-%i*erf((-0.15b0+%i)*%i)),
+  1b-30);
+true;
+
+closeto(
+  erfi(0.15b0+%i),
+  expand(-%i*erf((0.15b0+%i)*%i)),
+  1b-30);
+true;
+
+/* Check Generalized Erf against Erf for some values */
+
+closeto(
+  erf_generalized(0.35,1.25),
+  erf(1.25)-erf(0.35),
+  1e-15);
+true;
+
+closeto(
+  erf_generalized(0.35+%i,1.25),
+  erf(1.25)-erf(0.35+%i),
+  1e-15);
+true;
+
+closeto(
+  erf_generalized(0.35,1.25+%i),
+  erf(1.25+%i)-erf(0.35),
+  1e-15);
+true;
+
+closeto(
+  erf_generalized(0.35+%i,1.25+%i),
+  erf(1.25+%i)-erf(0.35+%i),
+  1e-15);
+true;
+
+closeto(
+  erf_generalized(0.35b0,1.25b0),
+  erf(1.25b0)-erf(0.35b0),
+  1b-30);
+true;
+
+closeto(
+  erf_generalized(0.35b0+%i,1.25b0),
+  erf(1.25b0)-erf(0.35b0+%i),
+  1b-30);
+true;
+
+closeto(
+  erf_generalized(0.35b0,1.25b0+%i),
+  erf(1.25b0+%i)-erf(0.35b0),
+  1b-30);
+true;
+
+closeto(
+  erf_generalized(0.35b0+%i,1.25b0+%i),
+  erf(1.25b0+%i)-erf(0.35b0+%i),
+  1b-30);
+true;
+
 (fpprec:oldfpprec,done);
 done;
