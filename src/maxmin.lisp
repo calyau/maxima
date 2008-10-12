@@ -206,8 +206,9 @@
 ;; Convert all floats and big floats in e to an exact rational representation. 
 
 (defun $rationalize (e)
+  (setq e (ratdisrep e))
   (cond ((floatp e) (cl-rat-to-maxima (rationalize e)))
 	(($bfloatp e) (cl-rat-to-maxima (* (cadr e)(expt 2 (- (caddr e) (third (car e)))))))
 	(($mapatom e) e)
-	(t (mfuncall '$fullmap '$rationalize e))))
+	(t (simplify (cons (list (mop e)) (mapcar #'$rationalize (margs e)))))))
 
