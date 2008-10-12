@@ -121,14 +121,11 @@
 (defun $setp (a)
   (and (consp a) (consp (car a)) (eq (caar a) '$set)))
 
-;; Return the cardinality of a set; if the argument is a list, convert it to a
-;; set. Works even when simp : false.  For example,
-
-;; (C1) cardinality(set(a,a,a)), simp : false;
-;; (D1) 				   1
+;; Return the cardinality of a set. This function works even when $simp is false.
  
 (defun $cardinality (a)
-  (length (require-set a "$cardinality")))
+  (if $simp (length (require-set a "$cardinality"))
+    (let (($simp t)) ($cardinality (simplify a)))))
 
 ;; Return true iff a is a subset of b. If either argument is a list, first 
 ;; convert it to a set. Signal an error if a or b aren't lists or sets.
@@ -634,7 +631,7 @@
        (acc)
        (tail)
        (x))
-      ((null l) (cons '($set) (mapcar #'(lambda (x) (cons '($set) x)) acc)))
+      ((null l) (simplify (cons '($set) (mapcar #'(lambda (x) (cons '($set) x)) acc))))
     (setq x (car l))
     (setq tail (member-if #'(lambda (z) (bool-checked-mfuncall f x (car z))) acc))
     (cond ((null tail)
@@ -1084,11 +1081,11 @@ a positive integer; instead found ~:M" n-sub))))
 
 (defun xappend (s)
   #+(or cmu scl)
-  (cons '(mlist) (apply 'append (mapcar #'(lambda (x) 
-					    (require-list x "$append")) s)))
+  (cons '(mlist) (apply 'append (mapcar #'(lambda (x)
+                        (require-list x "$append")) s)))
   #-(or cmu scl)
   (let ((acc))
-    (dolist (si s (cons '(mlist) acc))
+    (dolist (si (reverse s) (cons '(mlist) acc))
       (setq acc (append (require-list si "$append") acc)))))
 
 (def-nary 'mand (s) (mevalp (cons '(mand) s)) t)
@@ -1105,15 +1102,27 @@ a positive integer; instead found ~:M" n-sub))))
 ;; When there isn't a Maxima function we can call (actually when (get op '$nary) 
 ;; returns nil) we give up and use rl-reduce with left-associativity.
 
+
 (defun $xreduce (f s &optional (init 'no-init))
-  (let ((op (if (atom f) ($verbify f) nil)))
-    (cond ((get op '$nary)
+  (let* ((op-props (get (if (atom f) ($verbify f) nil) '$nary))
+	 (opfn  (if (consp op-props) (car op-props) nil)))
+  
+    (cond (opfn
 	   (setq s (require-list-or-set s "$xreduce"))
-	   (if (not (equal init 'no-init)) (setq s (cons init s)))
-					;(print "...using nary function")
-	   (mapply1 op s f nil))
+	   (if (not (equal init 'no-init))
+	       (setq s (cons init s)))
+	  
+	   (if (null s)
+	       (cadr op-props)        ; is this clause really needed?
+	     
+	     (funcall opfn s)))
+
+	  (op-props
+	   ($apply f ($listify s)))
+	  
 	  (t
 	   (rl-reduce f ($listify s) nil init "$xreduce")))))
+
 
 ;; Extend a function f : S x S -> S to n arguments using a minimum depth tree.
 ;; The function f should be nary (associative); otherwise, the result is somewhat 
