@@ -576,8 +576,7 @@
        (do* ((i 1 (+ i 1))
              (ap a (+ ap 1.0))
              (del (/ 1.0 a) (* del (/ x ap)))
-             (sum del (+ sum del))
-             (gm (gamma-lanczos (complex (realpart a) (imagpart a)))))
+             (sum del (+ sum del)))
             ((> i gm-maxit)
              (merror "Series expansion failed in `gamma_incomplete"))
          (when *debug-gamma* 
