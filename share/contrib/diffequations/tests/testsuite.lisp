@@ -38,7 +38,7 @@
          "rtestode_kamke_2_5.mac"
 	 "rtest_sym.mac" 
 	 "rtest_sym2.mac"
-	 ((mlist) "rtest_ode1_riccati.mac" 138 139)
+	 ((mlist) "rtest_ode1_riccati.mac" 138) ; OK - testsuite issues
          "rtest_ode1_abel.mac"
          "rtestode_odelin.mac"
 	)
