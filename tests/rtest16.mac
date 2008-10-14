@@ -20,6 +20,8 @@ limit(erf(nn*zz), nn, inf);
 0$
 limit(tanh(nn*zz), nn, inf);
 0$
+limit(nn^zz, nn, 0);
+1$
 
 /* From A. Reiner.  Fixed in buildq.lisp rev. 1.4.
    Exposed a bug caused by the dynamical scope of VARLIST. */
