@@ -1633,6 +1633,43 @@ Examples:
 
 
 
+@defvr {Graphic option} meshed_surface
+Default value: @code{false}
+
+Option @code{meshed_surface} has effect only when option @code{enhanced3d} is
+not @code{false}. In such case, if @code{meshed_surface} is @code{false},
+only the colored surface is plotted. If its value is @code{true}, both the
+colored surface and the mesh lines are plotted.
+
+Only @code{explicit} functions in 3d and @code{parametric_surface} objects are
+affected by this option.
+
+See also @code{enhanced3d}.
+
+Examples:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+         enhanced3d     = true,
+         color          = green,
+         meshed_surface = true,
+         explicit(x^2+y^2, x,-2,2,y,-2,2)) $
+(%i3) draw3d (
+         enhanced3d     = true,
+         surface_hide   = true,
+         color          = green,
+         meshed_surface = true,
+         parametric_surface(x^2,y,x+y, x,-2,2,y,-2,2)) $
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
+
+
 @defvr {Graphic option} point_size
 Default value: 1
 
@@ -2986,6 +3023,8 @@ Example:
 @deffnx {Graphic object} label ([@var{string},@var{x},@var{y},@var{z}],...)
 Writes labels in 2D and 3D.
 
+Colored labels work only with Gnuplot 4.3. This is a known bug in package @code{draw}.
+
 This object is affected by the following @i{graphic options}: @code{label_alignment}, 
 @code{label_orientation} and @code{color}.
 
@@ -3117,7 +3156,8 @@ from @var{minval1} to @var{maxval1} and variable @var{var2} taking values
 from @var{minval2} to @var{maxval2}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{meshed_surface} and @code{color}.
 
 Example:
 
@@ -3624,7 +3664,8 @@ taking values from @var{par1min} to @var{par1max} and parameter @var{par2}
 taking values from @var{par2min} to @var{par2max}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{meshed_surface} and @code{color}.
 
 Example:
 

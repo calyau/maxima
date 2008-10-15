@@ -148,6 +148,7 @@
       (gethash '$yv_grid *gr-options*)        30
       (gethash '$surface_hide *gr-options*)   nil
       (gethash '$enhanced3d *gr-options*)     nil     ; false, true (z levels) or an expression
+      (gethash '$meshed_surface *gr-options*) nil     ; false or true, works together with enhanced3d
       (gethash '$contour *gr-options*)        '$none  ; other options are: $base, $surface, $both and $map
       (gethash '$contour_levels *gr-options*) 5       ; 1-50, [lowest_level,step,highest_level] or {z1,z2,...}
       (gethash '$colorbox *gr-options*)       t       ; in pm3d mode, always show colorbox
@@ -277,14 +278,12 @@
       (($transparent $border $logx $logy $logz $head_both $grid 
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
         $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ztics_rotate
-        $xtics_axis $ytics_axis $ztics_axis) ; true or false
+        $xtics_axis $ytics_axis $ztics_axis $meshed_surface) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: non boolean value: ~M " val)))
-      ($filled_func ; true, false or an expression
-         (setf (gethash opt *gr-options*) val))
-      ($enhanced3d  ; true or an expression
+      (($filled_func $enhanced3d) ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
       (($xtics $ytics $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
             (cond ((member val '($none nil))   ; nil is maintained for back-portability
@@ -1556,8 +1555,12 @@
 ;;     xu_grid
 ;;     yv_grid
 ;;     line_type
+;;     line_width
 ;;     color
 ;;     key
+;;     enhanced3d
+;;     meshed_surface
+;;     surface_hide
 ;; Note: implements a clon of draw3d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
 ;;       Read source in plot.lisp for more information
@@ -1605,11 +1608,13 @@
     (update-ranges fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
     (make-gr-object
        :name   'explicit
-       :command (format nil " ~a w ~a lt ~a lc rgb '~a'"
+       :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
-                            (if (get-option '$enhanced3d)
+                            (if (and (get-option '$enhanced3d)
+                                     (not (get-option '$meshed_surface)))
                                 "pm3d"
                                 "l")
+                            (get-option '$line_width)
                             (get-option '$line_type)
                             (get-option '$color))
        :groups `((,ncols ,nx))
@@ -1833,8 +1838,12 @@
 ;;     xu_grid
 ;;     yv_grid
 ;;     line_type
+;;     line_width
 ;;     color
+;;     enhanced3d
 ;;     key
+;;     surface_hide
+;;     meshed_surface
 (defun parametric_surface (xfun yfun zfun par1 par1min par1max par2 par2min par2max)
   (let* ((ugrid (gethash '$xu_grid  *gr-options*))
          (vgrid (gethash '$yv_grid  *gr-options*))
@@ -1890,11 +1899,13 @@
     (update-ranges xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric_surface
-       :command (format nil " ~a w ~a lt ~a lc rgb '~a'"
+       :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
-                            (if (get-option '$enhanced3d)
+                            (if (and (get-option '$enhanced3d)
+                                     (not (get-option '$meshed_surface)))
                                 "pm3d"
                                 "l")
+                            (get-option '$line_width)
                             (get-option '$line_type)
                             (get-option '$color))
        :groups `((,ncols ,nu)) ; ncols is 4 or 3, depending on colored 4th dimension or not
@@ -2596,7 +2607,7 @@
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
             (if (get-option '$enhanced3d)
-                (format nil "set pm3d depthorder~%")
+                (format nil "set pm3d at s depthorder~%")
                 (if (get-option '$surface_hide)
                     (format nil "set hidden3d~%")))
             (if (get-option '$xyplane)
