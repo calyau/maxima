@@ -696,3 +696,18 @@ unknown;
 
 (a2a [1, 4] : '(1/(1/x - 1)), a2b [1, 4] : '(x/(1 - x)), is (equal (a2a, a2b)));
 true;
+
+is(notequal(exp(x),0));
+true$
+
+is(notequal(exp(%i * x),0));
+true$
+
+is(notequal(exp(x - sqrt(3) * x^2 + 42*%i),0));
+true$
+
+is(notequal(%i * exp(x),0));
+true$
+
+is(notequal(exp(minf),0));
+false$
