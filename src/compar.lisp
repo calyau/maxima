@@ -829,17 +829,19 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun meqp-by-csign (z a b)
   (let ((sgn) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
-    (setq z ($niceindices z))
-    (setq sgn (csign (sratsimp z)))
-    (cond ((eq '$zero sgn) t)
-	  ((and (eq sgn t) (islinear z '$%i))
-	   (let ((r (meqp ($realpart z) 0))
-		 (i (meqp ($imagpart z) 0)))
-	     (cond ((or (eq r nil) (eq i nil)) nil)
-		   ((and (eq r t) (eq i t)) t)
-		   (t `(($equal) ,a ,b)))))
-	  ((member sgn '($pos $neg $pn)) nil)
-	  (t `(($equal) ,a ,b)))))
+    (cond ((and (mexptp z) (eq t (mnqp (third z) '$minf)) (eq t (mnqp (second z) 0))) nil)
+	  (t
+	   (setq z ($niceindices z))
+	   (setq sgn (csign (sratsimp z)))
+	   (cond ((eq '$zero sgn) t)
+		 ((and (eq sgn t) (islinear z '$%i))
+		  (let ((r (meqp ($realpart z) 0))
+			(i (meqp ($imagpart z) 0)))
+		    (cond ((or (eq r nil) (eq i nil)) nil)
+			  ((and (eq r t) (eq i t)) t)
+			  (t `(($equal) ,a ,b)))))
+		 ((member sgn '($pos $neg $pn)) nil)
+		 (t `(($equal) ,a ,b)))))))
 
 ;; For each fact of the form equal(a,b) in the active context, do e : ratsubst(b,a,e).
 
