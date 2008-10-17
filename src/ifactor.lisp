@@ -795,9 +795,10 @@
 (defun next-prime (n c)
   (when (evenp n) (incf n c))
   (loop
-     (if (miller-rabin n)
-	 (when (primep n) (return-from next-prime n))
-	 (incf n (* 2 c)))))
+     (and (miller-rabin n)
+          (primep n) 
+          (return-from next-prime n))
+     (incf n (* 2 c))))
 
 ;;; return a list of all primes between start and end
 
