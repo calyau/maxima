@@ -47,7 +47,7 @@
 (defmvar mplc* nil)
 (defmvar mm* 1)
 (defmvar alpha nil)
-(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37. 41. 43. 47. 53. 59. 61.))
+;(defmvar smallprimes '(3 5 7 11. 13. 17. 19. 23. 29. 31. 37. 41. 43. 47. 53. 59. 61.))
 
 ;; External specials
 
@@ -1289,7 +1289,7 @@
 	 (deg  (cadr v)) (algcont 0))
      (declare (special ncont lmin nf deg algcont))
      (setq nf (integer-length deg))
-     (setq lchar1 (if gauss '(3 7 11. 19. 23. 29. 31. 37.) smallprimes))
+     (setq lchar1 (if gauss '(3 7 11. 19. 23. 29. 31. 37.) (cdr *small-primes*)))
      test (setq modulus (car lchar1))
      (setq u (pmod v))
      (cond ((or (zerop (rem sharpcont modulus))
