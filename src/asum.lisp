@@ -114,9 +114,17 @@
              ($bfloatp y)
              (and (not (integerp y))
                   (not (ratnump y))
-                  (or (complex-number-p y)
-                      (complex-number-p y 'bigfloat-or-number-p)))
+                  (or (and (complex-number-p y 'float-or-rational-p)
+                           (or $numer 
+                               (floatp ($realpart y)) 
+                               (floatp ($imagpart y))))
+                      (and (complex-number-p y 'bigfloat-or-number-p)
+                           (or $numer
+                               ($bfloatp ($realpart y))
+                               ($bfloatp ($imagpart y))))))
              (and (not makef) (ratnump y) (equal (caddr y) 2)))
+         ;; Numerically evaluate for real or complex argument in float or
+         ;; bigfloat precision using the Gamma function
 	 (simplify (list '(%gamma) (add 1 y))))
         ((eq y '$inf) '$inf)
         ((and $factorial_expand
