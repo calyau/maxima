@@ -755,21 +755,31 @@ One extra decimal digit in actual representation for rounding purposes.")
        (setq s (+ s h)))
      s ))
 ;;     
-;; fprt18231_ computes sqrt(640320^3/12^2).
+;; fprt18231_ computes sqrt(640320^3/12^2)
+;;                   = sqrt(1823176476672000) = 42698670.666333...
+;; 1. gcl-version:
 ;;                                   n[0]   n[i+1] = n[i]^2+a*d[i]^2            n[inf]
 ;; quadratic Heron algorithm: x[0] = ----,                          , sqrt(a) = ------
 ;;                                   d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
-(defun fprt18231_ nil  
-  (let (a n d h)     
-     (setq a 1823176476672000)
-     (setq n 42698670666) 
-     (setq d 1000)     
-     (do ((prec 10 (* 2 prec)))
-         ((> prec $fpprec))
+#+gcl (defun fprt18231_ nil  
+  (let ((a 1823176476672000)
+        (n 42698670666)
+        (d 1000)
+         h )    
+     (do ((prec 32 (* 2 prec)))
+         ((> prec fpprec))
        (setq h n)
        (setq n (+ (* n n) (* a d d)))
        (setq d (* 2 h d)) )
      (fpquotient (intofp n) (intofp d)) ))
+;;
+;; 2. non-gcl-version (by Raymond Toy, October 2008):
+;;
+#-gcl (defun fprt18231_ nil
+  (let ((a 1823176476672000))  
+    (setq a (ash a (* 2 fpprec)))
+    (destructuring-bind (mantissa exp) (intofp (isqrt a))
+      (list mantissa (- exp fpprec)))))
 ;;................................................................................ Volker van Nek 2007 .. ;;
 
 
