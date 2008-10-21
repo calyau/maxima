@@ -67,9 +67,11 @@ minimize_lp(target, constraints, [pozitive]) := block(
     if op(e)#"=" then inequalities : inequalities+1
   ),
 
-  if length(pozitive)>0 and listp(pozitive[1]) then pozitive : pozitive[1],
-
-  if nonegative_lp=true then
+  if length(pozitive)>0 then (
+    if listp(pozitive[1]) then pozitive : pozitive[1]
+    else if pozitive[1]='all then pozitive : copylist(var)
+  )
+  else if nonegative_lp=true then
     pozitive : copylist(var),
 
   for v in var do
