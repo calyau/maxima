@@ -181,7 +181,7 @@ draw_graph(G, [options]) := block(
     else if edge_coloring#[] then block(
       [ch:first(edge_coloring), coloring:second(edge_coloring)],
       edge_partition : makelist(
-        map(first, sublist(coloring, lambda([u], second(u)=c))),
+        map(first, sublist(coloring, lambda([u], is(second(u)=c)))),
         c, 1, ch))
     else if edge_partition=[] then (
       edge_colors : [edge_color],
@@ -221,7 +221,7 @@ draw_graph(G, [options]) := block(
     else if vertex_coloring#[] then block(
       [ch:first(vertex_coloring), coloring:second(vertex_coloring)],
       vertex_partition : makelist(
-        map(first, sublist(coloring, lambda([u], second(u)=c))),
+        map(first, sublist(coloring, lambda([u], is(second(u)=c)))),
         c, 1, ch))
     else if vertex_partition=[] then (
       vertex_colors : [vertex_color],

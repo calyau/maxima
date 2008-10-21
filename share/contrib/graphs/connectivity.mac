@@ -28,15 +28,16 @@ edge_connectivity_graph(g) := block(
 edge_connectivity(g) := block(
   [vertices, dg],
   if not is_graph(g) then error("Argument to `edge_connectivity' is not a graph."),
-  if not is_connected(g) then error("Argument to `edge_connectivity' is not a connected graph."),
+  if not is_connected(g) then return(0),
   vertices : vertices(g),
+  if length(vertices)<2 then return('inf),
   dg : edge_connectivity_graph(g),
   lmin(makelist(first(max_flow(dg, first(vertices), u)), u, rest(vertices))))$
 
 min_edge_cut(g) := block(
   [vertices, dg, v, mf : [inf, false], mf1, g1, edges:[], s, t, tr],
   if not is_graph(g) then error("Argument to `min_edge_cut' is not a graph."),
-  if not is_connected(g) then error("Argument to `min_edge_cut' is not a connected graph."),
+  if not is_connected(g) then return([]),
   vertices : vertices(g),
   v : first(vertices),
   s : v,
@@ -66,7 +67,7 @@ vertex_connectivity_graph(g) := block(
 vertex_connectivity(g) := block(
   [vertices, mvc : inf, flw, dg],
   if not is_graph(g) then error("Argument to `vertex_connectivity' is not a graph."),
-  if not is_connected(g) then error("Argument to `vertex_connectivity' is not a connected graph."),
+  if not is_connected(g) then return(0),
   dg : vertex_connectivity_graph(g),
   vertices : vertices(g),
   for i:1 thru length(vertices)-1 do (
@@ -79,7 +80,7 @@ vertex_connectivity(g) := block(
 min_vertex_cut(g) := block(
   [vertices, dg, v, mf : [inf, false], mf1, g1, edges:[], s, t, tr],
   if not is_graph(g) then error("Argument to `min_vertex_cut' is not a graph."),
-  if not is_connected(g) then error("Argument to `min_vertex_cut' is not a connected graph."),
+  if not is_connected(g) then return([]),
   vertices : vertices(g),
   dg : vertex_connectivity_graph(g),
   for i:1 thru length(vertices)-1 do (
