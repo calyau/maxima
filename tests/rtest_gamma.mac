@@ -349,11 +349,11 @@ genfact(2.5b0,1,2);
 declare(z,complex);
 done;
 
-conjugate(factorial_double(z));
-factorial_double(conjugate(z));
+conjugate(double_factorial(z));
+double_factorial(conjugate(z));
 
-conjugate(factorial_double(x+%i*y));
-factorial_double(x-%i*y);
+conjugate(double_factorial(x+%i*y));
+double_factorial(x-%i*y);
 
 /* No simplifcation for infinities and undeterminates 
    with the exception of inf: inf! -> inf */
@@ -363,140 +363,140 @@ map(factorial, [inf,minf,infinity,und,ind]);
 
 /* Test the expansion of Double factorial */
 
-factorial_double(n+1);
-factorial_double(n+1);
+double_factorial(n+1);
+double_factorial(n+1);
 
-factorial_double(n+2),factorial_expand:true;
-(n+2)*factorial_double(n);
+double_factorial(n+2),factorial_expand:true;
+(n+2)*double_factorial(n);
 
-factorial_double(n+3),factorial_expand:true;
-factorial_double(n+3);
+double_factorial(n+3),factorial_expand:true;
+double_factorial(n+3);
 
-factorial_double(n+4),factorial_expand:true;
-(n+2)*(n+4)*factorial_double(n);
+double_factorial(n+4),factorial_expand:true;
+(n+2)*(n+4)*double_factorial(n);
 
-factorial_double(n-1),factorial_expand:true;
-factorial(n)/factorial_double(n);
+double_factorial(n-1),factorial_expand:true;
+factorial(n)/double_factorial(n);
 
-factorial_double(n-2),factorial_expand:true;
-factorial_double(n)/n;
+double_factorial(n-2),factorial_expand:true;
+double_factorial(n)/n;
 
-factorial_double(n-3),factorial_expand:true;
-factorial_double(n-3);
+double_factorial(n-3),factorial_expand:true;
+double_factorial(n-3);
 
-factorial_double(n-4),factorial_expand:true;
-factorial_double(n)/(n*(n-2));
+double_factorial(n-4),factorial_expand:true;
+double_factorial(n)/(n*(n-2));
 
 /* Some small numbers */
 
-factorial_double(-3);
+double_factorial(-3);
 -1;
-errcatch(factorial_double(-2));
+errcatch(double_factorial(-2));
 [];
-factorial_double(-1);
+double_factorial(-1);
 1;
-factorial_double(0);
+double_factorial(0);
 1;
-factorial_double(1);
+double_factorial(1);
 1;
-factorial_double(2);
+double_factorial(2);
 2;
-factorial_double(3);
+double_factorial(3);
 3;
-factorial_double(4);
+double_factorial(4);
 8;
-factorial_double(5);
+double_factorial(5);
 15;
-factorial_double(6);
+double_factorial(6);
 48;
-factorial_double(7);
+double_factorial(7);
 105;
-factorial_double(8);
+double_factorial(8);
 384;
-factorial_double(9);
+double_factorial(9);
 945;
-factorial_double(10);
+double_factorial(10);
 3840;
 
 /* The same for double float */
 
 closeto(
-  factorial_double(-3.0),
+  double_factorial(-3.0),
   -1.0,
   1e-13);
 true;
 
-errcatch(factorial_double(-2.0));
+errcatch(double_factorial(-2.0));
 [];
 
 closeto(
-  factorial_double(-1.0),
+  double_factorial(-1.0),
   1.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(0.0),
+  double_factorial(0.0),
   1.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(1.0),
+  double_factorial(1.0),
   1.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(2.0),
+  double_factorial(2.0),
   2.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(3.0),
+  double_factorial(3.0),
   3.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(4.0),
+  double_factorial(4.0),
   8.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(5.0),
+  double_factorial(5.0),
   15.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(6.0),
+  double_factorial(6.0),
   48.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(7.0),
+  double_factorial(7.0),
   105.0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(8.0),
+  double_factorial(8.0),
   384.0,
   1e-12);
 true;
 
 closeto(
-  factorial_double(9.0),
+  double_factorial(9.0),
   945.0,
   1e-11);
 true;
 
 closeto(
-  factorial_double(10.0),
+  double_factorial(10.0),
   3840.0,
   1e-12);
 true;
@@ -506,82 +506,82 @@ fpprec:64;
 64;
 
 closeto(
-  factorial_double(-3.0b0),
+  double_factorial(-3.0b0),
   -1.0b0,
   1e-13);
 true;
 
-errcatch(factorial_double(-2.0b0));
+errcatch(double_factorial(-2.0b0));
 [];
 
 closeto(
-  factorial_double(-1.0b0),
+  double_factorial(-1.0b0),
   1.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(0.0b0),
+  double_factorial(0.0b0),
   1.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(1.0b0),
+  double_factorial(1.0b0),
   1.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(2.0b0),
+  double_factorial(2.0b0),
   2.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(3.0b0),
+  double_factorial(3.0b0),
   3.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(4.0b0),
+  double_factorial(4.0b0),
   8.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(5.0b0),
+  double_factorial(5.0b0),
   15.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(6.0b0),
+  double_factorial(6.0b0),
   48.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(7.0b0),
+  double_factorial(7.0b0),
   105.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(8.0b0),
+  double_factorial(8.0b0),
   384.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(9.0b0),
+  double_factorial(9.0b0),
   945.0b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(10.0b0),
+  double_factorial(10.0b0),
   3840.0b0,
   1e-13);
 true;
@@ -589,59 +589,59 @@ true;
 /* Some real and complex values */
 
 closeto(
-  factorial_double(-3.5),
+  double_factorial(-3.5),
   -1.283770376595223397225456287264697304361344685971440894669095353b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(-3.5b0),
+  double_factorial(-3.5b0),
   -1.283770376595223397225456287264697304361344685971440894669095353b0,
   1e-60);
 true;
 
 closeto(
-  factorial_double(-3.5+%i),
+  double_factorial(-3.5+%i),
   (-0.0026442534512730229977827874410755514695008373007370518369259413b0 
    +0.4140148090845355309500755922424659939330568167751526009311942842b0*%i),
   1e-13);
 true;
 
 closeto(
-  factorial_double(3.5),
+  double_factorial(3.5),
   4.832319386136852665658314936437452651454869331098044546829825309b0,
   1e-13);
 true;
 
 closeto(
-  factorial_double(3.5b0),
+  double_factorial(3.5b0),
   4.832319386136852665658314936437452651454869331098044546829825309b0,
   1e-60);
 true;
 
 closeto(
-  factorial_double(3.5+%i),
+  double_factorial(3.5+%i),
   (-2.165793510810110416038389252512222520262890874310470919228355939b0 
    +4.032141259508464573377851775093179996368679285808989461893416849b0*%i),
   1e-13);
 true;
 
 closeto(
-  factorial_double(-3.5b0+%i),
+  double_factorial(-3.5b0+%i),
   (-0.0026442534512730229977827874410755514695008373007370518369259413b0 
    +0.4140148090845355309500755922424659939330568167751526009311942842b0*%i),
   1e-60);
 true;
 
 closeto(
-  factorial_double(3.5b0+%i),
+  double_factorial(3.5b0+%i),
   (-2.165793510810110416038389252512222520262890874310470919228355939b0 
    +4.032141259508464573377851775093179996368679285808989461893416849b0*%i),
   1b-60);
 true;
 
 closeto(
-  factorial_double(3.3b0+%i),
+  double_factorial(3.3b0+%i),
   (-0.401169963963553982868990904015984192029807700247132080411340721b0 
   + 1.778201955902329072861901606357849890890501421219437116360540910b0*%i),
   1b-60);
