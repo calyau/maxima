@@ -191,7 +191,11 @@
                     (and (eq ($sign j) '$neg)
                          (zerop1 (sub j ($truncate j))))))
            (merror "gamma(~:M) is undefined." j))
-	  (($bfloatp j) (mfuncall '$bffac (m+ j -1) $fpprec))
+	  (($bfloatp j) 
+           ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
+           ;; and an argument up to about 500.0 the accuracy of the result is
+           ;; better than 10^(-$fpprec).
+           (mfuncall '$bffac (m+ j -1) (+ $fpprec 4)))
 	  ((and (complex-number-p j 'float-or-rational-p)
 		(or $numer (floatp ($realpart j)) (floatp ($imagpart j))))
 	   (complexify (gamma-lanczos (complex ($float ($realpart j))
@@ -199,10 +203,11 @@
           ((and (complex-number-p j 'bigfloat-or-number-p)
                 (or $numer ($bfloatp ($realpart j)) 
                            ($bfloatp ($imagpart j))))
+           ;; Adding 4 digits in the call to cbffac. See comment above.
            (mfuncall '$cbffac 
                      (add -1 ($bfloat ($realpart j)) 
                              (mul '$%i ($bfloat ($imagpart j))))
-                     $fpprec))
+                     (+ $fpprec 4)))
           ((and $gamma_expand
                 (mplusp j) 
                 (integerp (cadr j)))
