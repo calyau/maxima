@@ -197,9 +197,8 @@
      ;; Even negative integer or real representation. Not defined.
      (merror "double_factorial(~:M) is undefined." z))
 
-    ((or (integerp z)   ; at this point odd negative integer
-         (floatp z)
-         (complex-number-p z))
+    ((or (integerp z)   ; at this point odd negative integer. Evaluate.
+         (complex-float-numerical-eval-p z))
      (cond
        ((and (integerp z) (= z -1))  1)  ; Special cases -1 and -3 
        ((and (integerp z) (= z -3)) -1)
@@ -207,11 +206,10 @@
         ;; Odd negative integer, float or complex float.
         (complexify 
           (double-factorial 
-            (complex (float ($realpart z)) (float ($imagpart z))))))))
+            (complex ($float ($realpart z)) ($float ($imagpart z))))))))
   
     ((and (not (ratnump z))
-          (or ($bfloatp z)
-              (complex-number-p z 'bigfloat-or-number-p)))
+          (complex-bigfloat-numerical-eval-p z))
      ;; bigfloat or complex bigfloat.
      (bfloat-double-factorial 
        (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
