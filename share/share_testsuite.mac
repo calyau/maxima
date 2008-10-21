@@ -76,6 +76,8 @@ block
 	/* hard_test, --takes a long time or never finishes */
         rtest_pdiff,
         rtest_topoly,
-	[rtestprintf, 29, 38, 39, 40, 41, 47, 48]]],
+	[rtestprintf, 29, 38, 39, 40, 41, 47, 48],
+        rtest_simplex,
+        rtest_graphs]],
     
     run_testsuite ());
