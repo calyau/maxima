@@ -757,28 +757,41 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;     
 ;; fprt18231_ computes sqrt(640320^3/12^2)
 ;;                   = sqrt(1823176476672000) = 42698670.666333...
+;;
+;; See this email thread on this topic for an explanation of why there
+;; are two routines and timing measurements that were done:
+;;
+;; http://www.math.utexas.edu/pipermail/maxima/2008/013946.html
+;;
+;; Basically, using isqrt is faster than Heron's algorithm for
+;; everyone except gcl.
+;;
 ;; 1. gcl-version:
 ;;                                   n[0]   n[i+1] = n[i]^2+a*d[i]^2            n[inf]
 ;; quadratic Heron algorithm: x[0] = ----,                          , sqrt(a) = ------
 ;;                                   d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
-#+gcl (defun fprt18231_ nil  
+#+gcl
+(defun fprt18231_ ()  
   (let ((a 1823176476672000)
         (n 42698670666)
         (d 1000)
-         h )    
-     (do ((prec 32 (* 2 prec)))
-         ((> prec fpprec))
-       (setq h n)
-       (setq n (+ (* n n) (* a d d)))
-       (setq d (* 2 h d)) )
-     (fpquotient (intofp n) (intofp d)) ))
+	h )    
+    (do ((prec 32 (* 2 prec)))
+	((> prec fpprec))
+      (setq h n)
+      (setq n (+ (* n n) (* a d d)))
+      (setq d (* 2 h d)) )
+    (fpquotient (intofp n) (intofp d))))
 ;;
 ;; 2. non-gcl-version (by Raymond Toy, October 2008):
 ;;
-#-gcl (defun fprt18231_ nil
-  (let ((a 1823176476672000))  
+#-gcl
+(defun fprt18231_ ()
+  (let ((a 1823176476672000))
+    ;; sqrt(a) = sqrt(a*2^(2*n))/(2^n).  Use isqrt to compute the sqrt.
     (setq a (ash a (* 2 fpprec)))
-    (destructuring-bind (mantissa exp) (intofp (isqrt a))
+    (destructuring-bind (mantissa exp)
+	(intofp (isqrt a))
       (list mantissa (- exp fpprec)))))
 ;;................................................................................ Volker van Nek 2007 .. ;;
 
