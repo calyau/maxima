@@ -304,7 +304,7 @@ solve_rec_ic1(gen_sol, %f, %n, cond, var) := block(
   ),
   eqns : ev(eqns, product),
   sol : linsolve(eqns, used_vars),
-  gen_sol : subst_all(gen_sol, sol),
+  gen_sol : subst(sol, gen_sol),
   gen_sol
 )$
 
@@ -468,9 +468,9 @@ solve_rec_char_part(coeffs, po, ihom_pol, ihom, %n) := block(
     false
   else (
     if (listp(eqns[1])) then
-      subst_all(p%, eqns[1]) /*at(p, eqns[1])*/
+      subst(eqns[1], p%) /*at(p, eqns[1])*/
     else
-      subst_all(p%, eqns)
+      subst(eqns, p%)
   )
 )$
 
@@ -624,7 +624,7 @@ hyper_poly(coeffs, ihom, %n) := block(
     eqn : makelist(coeff(eqn, %n, i)=0, i, 0, hipow(eqn, %n)),
     if errcatch(sol : linsolve(eqn, makelist(%k[i+1], i, 0, deg)))=[] then
       return(false),
-    gen_p : expand(subst_all(gen_p, sol)),
+    gen_p : expand(subst(sol, gen_p)),
     gen_p
   )
 )$
@@ -1056,12 +1056,6 @@ my_prod(term, n, lo, hi) := block(
   [pr : 1],
   for i:lo thru hi do pr : pr*subst(i, n, term),
   pr
-)$
-
-subst_all(expr, sub) := block(
-  [s],
-  for s in sub do expr : subst(part(s, 2), part(s, 1), expr),
-  expr
 )$
 
 /*************************************************************************
