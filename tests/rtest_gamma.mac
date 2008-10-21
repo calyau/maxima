@@ -1102,32 +1102,10 @@ true;
 fpprec:128;
 128;
 
-/* We have a problem with this test.
-   The result is equal up to about 90 digits. Not more.
-   But for other arguments we can verify the result within the accuracy.
-   Furthermore we can verify the calculation against the result
-   of the evaluation of expintegral_e. So what is wrong?
-
-  This error occurs because we have increased ffprec and the first
-  call to bffac after increasing fpprec does not give the full precision
-  for the numerical result of the gamma function. See bug report SF [2159499].
-*/
-
-/* As a workaround we do first a call to gamma */
-(gamma(0.5b0),done);
-done;
-
 closeto(
   gamma_incomplete(0.25b0,0.50b0),
   0.55658041400942713438787175086206500916583389997764808415332643613122015052649897833312327325822333229784708198027750127190766504b0,  
   1.0b-124);
-true;
-
-/* Test against expintegral_e. This test work! */
-closeto(
-  gamma_incomplete(0.25b0,0.50b0),
-  0.50b0^0.25b0*expintegral_e(1.0b0-0.25b0,0.50b0),
-  1e-127);
 true;
 
 /* Test gamma_incomplete(0.25,1.50) for Float and Bigfloat */
