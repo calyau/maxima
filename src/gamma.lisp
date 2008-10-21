@@ -9,7 +9,7 @@
 ;;;
 ;;; This file containts the following Maxima User functions:
 ;;;
-;;;   factorial_double(z)
+;;;   double_factorial(z)
 ;;;
 ;;;   gamma_incomplete(a,z)
 ;;;   gamma_incomplete_generalized(a,z1,z2)
@@ -121,9 +121,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; The changes to the parser to connect the operator !! to factorial_double(z)
+;;; The changes to the parser to connect the operator !! to double_factorial(z)
 
-;(def-mheader |$!!| (%factorial_double))
+;(def-mheader |$!!| (%double_factorial))
 
 ;(def-led (|$!!| 160.) (op left)
 ;  (list '$expr
@@ -136,36 +136,36 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $factorial_double (z)
-  (simplify (list '(%factorial_double) (resimplify z))))
+(defun $double_factorial (z)
+  (simplify (list '(%double_factorial) (resimplify z))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Set properties to give full support to the parser and display
 
-(defprop $factorial_double %factorial_double alias)
-(defprop $factorial_double %factorial_double verb)
+(defprop $double_factorial %double_factorial alias)
+(defprop $double_factorial %double_factorial verb)
 
-(defprop %factorial_double $factorial_double reversealias)
-(defprop %factorial_double $factorial_double noun)
+(defprop %double_factorial $double_factorial reversealias)
+(defprop %double_factorial $double_factorial noun)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Double factorial is a simplifying function
 
-(defprop %factorial_double simp-factorial-double operators)
+(defprop %double_factorial simp-double-factorial operators)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Double factorial has mirror symmetry
 
-(defprop %factorial_double t commutes-with-conjugate)
+(defprop %double_factorial t commutes-with-conjugate)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Differentiation of Double factorial
 
-(defprop %factorial_double
+(defprop %double_factorial
   ((z)
    ((mtimes) 
       ((rat) 1 2)
@@ -183,7 +183,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun simp-factorial-double (expr z simpflag)
+(defun simp-double-factorial (expr z simpflag)
   (oneargcheck expr)
   (setq z (simpcheck (cadr expr) simpflag))
   (cond    
@@ -195,7 +195,7 @@
           (eq ($sign z) '$neg)          
           (zerop1 (sub (simplify (list '(%truncate) (div z 2))) (div z 2))))
      ;; Even negative integer or real representation. Not defined.
-     (merror "factorial_double(~:M) is undefined." z))
+     (merror "double_factorial(~:M) is undefined." z))
 
     ((or (integerp z)   ; at this point odd negative integer
          (floatp z)
@@ -206,17 +206,17 @@
        (t
         ;; Odd negative integer, float or complex float.
         (complexify 
-          (factorial-double 
+          (double-factorial 
             (complex (float ($realpart z)) (float ($imagpart z))))))))
   
     ((and (not (ratnump z))
           (or ($bfloatp z)
               (complex-number-p z 'bigfloat-or-number-p)))
      ;; bigfloat or complex bigfloat.
-     (bfloat-factorial-double 
+     (bfloat-double-factorial 
        (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
 
-    ;; factorial_double(inf) -> inf
+    ;; double_factorial(inf) -> inf
     ((eq z '$inf) '$inf)
 
     ((and $factorial_expand
@@ -226,29 +226,29 @@
            (n (simplify (cons '(mplus) (cddr z)))))
        (cond
          ((= k -1)
-          ;; Special case factorial_double(n-1)
+          ;; Special case double_factorial(n-1)
           ;; Not sure if this simplification is useful.
           (div (simplify (list '(mfactorial) n)) 
-               (simplify (list '(%factorial_double) n))))
+               (simplify (list '(%double_factorial) n))))
          ((= k (* 2 (truncate (/ k 2))))
-          ;; Special case factorial_double(2*k+n), k integer
+          ;; Special case double_factorial(2*k+n), k integer
           (setq k (/ k 2))
           ($factor   ; we get more simple expression when factoring
             (mul
               (power 2 k)
               (simplify (list '($pochhammer) (add (div n 2) 1) k))
-              (simplify (list '(%factorial_double) n)))))
+              (simplify (list '(%double_factorial) n)))))
          (t
-           (eqtest (list '(%factorial_double) z) expr)))))
+           (eqtest (list '(%double_factorial) z) expr)))))
 
     (t
-      (eqtest (list '(%factorial_double) z) expr))))
+      (eqtest (list '(%double_factorial) z) expr))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Double factorial for a complex float argument. The result is a CL complex.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun factorial-double (z)
+(defun double-factorial (z)
   (let ((pival (float pi)))
     (*
      (expt
@@ -261,7 +261,7 @@
 ;;; Double factorial for a bigfloat or complex bigfloat argument
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun bfloat-factorial-double (z)
+(defun bfloat-double-factorial (z)
   (let* ((pival ($bfloat '$%pi))
          (bigfloat1 ($bfloat bigfloatone))
          (bigfloat2 (add bigfloat1 bigfloat1))
