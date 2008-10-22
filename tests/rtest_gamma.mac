@@ -648,7 +648,10 @@ closeto(
 true;
 
 /******************************************************************************
-  Gamma function
+
+  Test the Gamma function
+
+  Numerical values are taken from functions/wolfram.com.
 ******************************************************************************/
 
 /* The Gamma function has mirror symmetry */
@@ -662,7 +665,7 @@ gamma(conjugate(z));
 conjugate(gamma(x+%i*y));
 gamma(x-%i*y);
 
-/* Check simple values for integer, float and bigfloat */
+/* Check some simple values for integer, float and bigfloat */
 
 map('gamma,[1,2,3,4,5]);
 [1,1,2,6,24];
@@ -730,35 +733,56 @@ gamma(5/2);
 gamma(-5/2);
 -8*sqrt(%pi)/15;
 
-/* We do not test the default value $gammalim and try not do test
-   for big integers, the results are unpredictable.
-   Perhaps we can set $gammalim and $factlim to default values which will
-   work for most (all) systems.
-   Here an attempt for big values which might work generally */
+/* Check expansion of the Gamma function */
 
-(x:gamma(100000),  /* Try this as the biggest integer */
- relerror(
-   bfloat(x),
-   gamma(100000.0b0),
-   1e-10));
+gamma_expand:true;
 true;
 
-(x:gamma(20001/2),   /* Try this as the biggest half integral value        */
- relerror(           /* perhaps such a big value is not very useful and we */
-   bfloat(x),        /* should further reduce the default value eg. to 100 */
-   gamma(bfloat(20001/2)),
-   1e-10));
+gamma(z+1)/gamma(z);
+z;
+
+gamma(gamma(z+1)/gamma(z));
+gamma(z);
+
+gamma(z+1)/gamma(z-1);
+(z-1)*z;
+
+gamma(z+2)/gamma(z-2);
+(z-2)*(z-1)*z*(z+1);
+
+gamma_expand:false;
+false;
+
+/* We check that the default values for $factlim:100000 and 
+   $gammalim:10000 work. */
+
+fpprec:16;
+16;
+
+relerror(
+  bfloat(gamma(factlim)),
+  gamma(bfloat(factlim)),
+  1b-14);
 true;
 
-kill(x);
-done;
+relerror(
+  bfloat(gamma((gammalim-1)+1/2)),
+  gamma(bfloat((gammalim-1)+1/2)),
+  1b-15);
+true;
+
+relerror(
+  bfloat(gamma(-gammalim+1/2)),
+  gamma(bfloat(-gammalim+1/2)),
+  1b-15);
+true;
 
 /* Check test for overflow in flonum routine gamma-lanczos */
-   
+
 relerror(
   gamma(170.0),          /* should not overflow. For GCL 2.6.8 and */
-  gamma(170),            /* and CLISP 2.46 the limit is ~171.6243  */
-  1e-10);
+  float(gamma(170)),     /* and CLISP 2.44 the limit is ~171.6243  */
+  1e-12);
 true;       
 
 errcatch(gamma(175.0));  /* should overflow */
@@ -767,19 +791,13 @@ errcatch(gamma(175.0));  /* should overflow */
 errcatch(gamma(250.0));  /* should overflow */
 [];
 
-/* No simplifcation for infinities and undeterminates */
+/* Simplifcation for infinities and undeterminates only for inf */
 
 map('gamma, [inf,minf,infinity,und,ind]);
-[gamma(inf),gamma(minf),gamma(infinity),gamma(und),gamma(ind)];
+[inf,gamma(minf),gamma(infinity),gamma(und),gamma(ind)];
 
-/* Check real and complex arguments for double float. 
+/* Check real and complex arguments in double float precision. 
    This is a check for the numerical routine gamma-lanczos */
-
-closeto(
-  gamma(0.5),
-  1.772453850905516027298167483341145182797549456122387128213807790b0,
-  1e-14);
-true;
 
 closeto(
   gamma(1.5),
@@ -844,19 +862,19 @@ true;
    This is a check for the reflection formula of gamma-lanzos */
 
 closeto(
-  gamma(-0.5b0),
+  gamma(-0.5),
   -3.544907701811032054596334966682290365595098912244774256427615580b0,
   1e-14);
 true;
 
 closeto(
-  gamma(-1.5b0),
+  gamma(-1.5),
   2.363271801207354703064223311121526910396732608163182837618410386b0,
   1e-14);
 true;
 
 closeto(
-  gamma(-2.5b0),
+  gamma(-2.5),
   -0.9453087204829418812256893244486107641586930432652731350473641546b0,
   1e-14);
 true;
@@ -864,34 +882,37 @@ true;
 /* Check real arguments up to 64 digits. 
    This is a check for the numerical routine bffac */
 
+fpprec:64; /* we have saved the actual value at the beginning of the file */
+64;
+
 closeto(
   gamma(0.5b0),
   1.772453850905516027298167483341145182797549456122387128213807790b0,
-  1e-61);
+  5.0b-64);
 true;
 
 closeto(
   gamma(1.5b0),
   0.8862269254527580136490837416705725913987747280611935641069038949b0,
-  1e-61);
+  5.0b-64);
 true;
 
 closeto(
   gamma(2.5b0),
   1.329340388179137020473625612505858887098162092091790346160355842b0,
-  1e-61);
+  5.0b-64);
 true;
 
 closeto(
   gamma(3.5b0),
   3.323350970447842551184064031264647217745405230229475865400889606b0,
-  1e-61);
+  5.0b-64);
 true;
 
 relerror(
   gamma(75.5b0),
   2.859942315653572214189951793671955438617013849084406338093590075b108,
-  1e-61);
+  5.0b-64);
 true;
 
 /* Check negative real arguments up to 64 digits. 
@@ -900,19 +921,19 @@ true;
 closeto(
   gamma(-0.5b0),
   -3.544907701811032054596334966682290365595098912244774256427615580b0,
-  1e-61);
+  5.0b-64);
 true;
 
 closeto(
   gamma(-1.5b0),
   2.363271801207354703064223311121526910396732608163182837618410386b0,
-  1e-61);
+  8.0b-64);
 true;
 
 closeto(
   gamma(-2.5b0),
   -0.9453087204829418812256893244486107641586930432652731350473641546b0,
-  1e-61);
+  5.0b-64);
 true;
 
 /* Check complex arguments up to 64 digits. 
@@ -922,38 +943,38 @@ closeto(
   gamma(0.5b0+%i),
   (0.3006946172606558162173894638352104402306759641691949986162475934b0 
   -0.4249678794331238126098496402574059704734842223340586518754297249b0*%i),
-  1e-61);
+  5.0b-64);
 true;
 
 closeto(
   gamma(1.5b0+%i),
   (0.5753151880634517207185443721750111905888222044186561511835535216b0 
   +0.0882106775440939099124646437065074549939338530021656726785327309b0*%i),
-  1e-61);
+  5.0b-64);
 true;
 
 closeto(
   gamma(2.5b0+%i),
   (0.7747621045510836711653519145560093308892994536258185540967975514b0 
   +0.7076312043795925855872413377347723730797229839219046602013526179b0*%i),
-  1e-61);
+  5.0b-64);
 true;
 
 closeto(
   gamma(3.5b0+%i),
   (1.229274056998116592326138448655250954143525650142641725040641261b0 
   +2.543840115500065135133455258892940263588606913430580204600179096b0*%i),
-  1e-61);
+  5.0b-64);
 true;
 
 relerror(
   gamma(75.5b0+%i),
   (-1.092860022497734443706055997676557155572470037327121860702819811b108 
    -2.622326961675321010452173874453854546607804545768376326095021243b108*%i),
-  1e-61);
+  5.0b-64);
 true;
 
-(fpprec:oldfpprec,done);
+(fpprec:oldfpprec,done); /* Reset the value of fpprec */
 done;
 
 /******************************************************************************
