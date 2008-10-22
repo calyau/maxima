@@ -14,7 +14,10 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var %p%i varlist plogabs half%pi nn* dn*))
+(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim))
+
+(defmvar $gammalim 10000
+  "Controls simplification of gamma for rational number arguments.")
 
 (defvar $gamma_expand nil
   "Expand gamma(z+n) for n an integer when T.") 
@@ -191,7 +194,7 @@
                     (and (eq ($sign j) '$neg)
                          (zerop1 (sub j ($truncate j))))))
            (merror "gamma(~:M) is undefined." j))
-	  (($bfloatp j) 
+          (($bfloatp j) 
            ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
            ;; and an argument up to about 500.0 the accuracy of the result is
            ;; better than 10^(-$fpprec).
@@ -208,6 +211,7 @@
                      (add -1 ($bfloat ($realpart j)) 
                              (mul '$%i ($bfloat ($imagpart j))))
                      (+ $fpprec 4)))
+          ((eq j '$inf) '$inf) ; Simplify to $inf to be more consistent.
           ((and $gamma_expand
                 (mplusp j) 
                 (integerp (cadr j)))
@@ -225,17 +229,24 @@
                      ;; and not (1-z)*(2-z)*... 
                      ($factor
                        (simplify (list '($pochhammer) (sub 1 z) n))))))))
-	  ((or (not (mnump j))
-	       (ratgreaterp (simplify (list '(mabs) j)) $gammalim))
-	   (eqtest (list '(%gamma) j) x))
 	  ((integerp j)
-	   (cond ((> j 0) (simplify (list '(mfactorial) (1- j))))
+	   (cond ((> j 0)
+                  (cond ((<= j $factlim)
+                         ;; Positive integer less than $factlim. Evaluate.
+                         (simplify (list '(mfactorial) (1- j))))
+                         ;; Positive integer greater $factlim. Noun form.
+                        (t (eqtest (list '(%gamma) j) x))))
+                 ;; Negative integer. Throw a Maxima error.
 		 (errorsw (throw 'errorsw t))
 		 (t (merror "gamma(~:M) is undefined" j))))
 	  ($numer (gammafloat (fpcofrat j)))
 	  ((alike1 j '((rat) 1 2))
 	   (list '(mexpt simp) '$%pi j))
-	  ((or (ratgreaterp j 1) (ratgreaterp 0 j)) (gammared j))
+          ((and (mnump j)
+                (ratgreaterp $gammalim (simplify (list '(mabs) j)))
+                (or (ratgreaterp j 1) (ratgreaterp 0 j)))
+           ;; Expand for rational numbers less than $gammalim.
+           (gammared j))
 	  (t (eqtest (list '(%gamma) j) x)))))
 
 (defun gamma (y) ;;; numerical evaluation for 0 < y < 1

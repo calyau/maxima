@@ -33,7 +33,7 @@
 (defmvar %pi2 '((mtimes) 2 $%pi)) 
 (defmvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi)) 
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
-(defmvar $gammalim 1000000.)
+;(defmvar $gammalim 1000000.) Moved to csimp2.lisp
 
 (loop for (a b) on 
        '(%sin %asin %cos %acos %tan %atan
