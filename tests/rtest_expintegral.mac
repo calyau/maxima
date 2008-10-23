@@ -143,7 +143,7 @@ true;
 expintegral_e(-5/2,1/2);
 8*sqrt(2)*(15*sqrt(%pi)*(1-erf(1/sqrt(2)))/8+21/(4*sqrt(2)*sqrt(%e)));
 
-test_value(%,expintegral_e(-2.5,0.5),14),numer;
+test_value(%,expintegral_e(-2.5,0.5),13),numer;
 true;
 
 /*******************************************************************************
@@ -470,35 +470,35 @@ done;
 (oldlogexpand:logexpand, logexpand:false);
 false;
 
-expintrep:gammaincomplete;
-gammaincomplete;
+expintrep:gamma_incomplete;
+gamma_incomplete;
 
 expintegral_e(n,z);
-gammaincomplete(1-n,z)*z^(n-1);
+gamma_incomplete(1-n,z)*z^(n-1);
 
 expintegral_e(n,z);
-z^(n-1)*gammaincomplete(1-n,z);
+z^(n-1)*gamma_incomplete(1-n,z);
 
 expintegral_e1(z);
-gammaincomplete(0,z);
+gamma_incomplete(0,z);
 
 expintegral_ei(z);
-(log(z)-log(1/z))/2-log(-z)-gammaincomplete(0,-z);
+(log(z)-log(1/z))/2-log(-z)-gamma_incomplete(0,-z);
 
 expintegral_li(z);
-(log(log(z))-log(1/log(z)))/2-log(-log(z))-gammaincomplete(0,-log(z));
+(log(log(z))-log(1/log(z)))/2-log(-log(z))-gamma_incomplete(0,-log(z));
 
 expintegral_si(z);
-%i*(-log(%i*z)+log(-%i*z)-gammaincomplete(0,%i*z)+gammaincomplete(0,-%i*z))/2;
+%i*(-log(%i*z)+log(-%i*z)-gamma_incomplete(0,%i*z)+gamma_incomplete(0,-%i*z))/2;
 
 expintegral_ci(z);
-log(z)-(log(%i*z)+log(-%i*z)+gammaincomplete(0,%i*z)+gammaincomplete(0,-%i*z))/2;
+log(z)-(log(%i*z)+log(-%i*z)+gamma_incomplete(0,%i*z)+gamma_incomplete(0,-%i*z))/2;
 
 expintegral_shi(z);
-(log(z)-log(-z)+gammaincomplete(0,z)-gammaincomplete(0,-z))/2;
+(log(z)-log(-z)+gamma_incomplete(0,z)-gamma_incomplete(0,-z))/2;
 
 expintegral_chi(z);
-(-log(z)+log(-z)+gammaincomplete(0,z)+gammaincomplete(0,-z))/-2;
+(-log(z)+log(-z)+gamma_incomplete(0,z)+gamma_incomplete(0,-z))/-2;
 
 expintrep:false;
 false;

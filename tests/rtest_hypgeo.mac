@@ -1032,12 +1032,12 @@ radcan(specint(%e^(-s*t)*sqrt(k)/(%pi*sqrt(t)*(t+k)),t));
 
 /*****************************************************************************
    Problem 133: A&S: 29.3.115 OK New
-   gammaincomplete(1/2,a*s)=sqrt(%pi)*erfc(sqrt(a*s))
+   gamma_incomplete(1/2,a*s)=sqrt(%pi)*erfc(sqrt(a*s))
    1/sqrt(s)*erfc(sqrt(k*s));
 ******************************************************************************/
 
 specint(%e^(-s*t)/sqrt(%pi*t)*unit_step(t-k),t);
-gammaincomplete(1/2,k*s)/(sqrt(%pi)*sqrt(s));
+gamma_incomplete(1/2,k*s)/(sqrt(%pi)*sqrt(s));
 
 /*****************************************************************************
    Problem 134: A&S: 29.3.116 OK New
@@ -1045,7 +1045,7 @@ gammaincomplete(1/2,k*s)/(sqrt(%pi)*sqrt(s));
 ******************************************************************************/
 
 specint(%e^(-s*t)*1/sqrt(%pi*(t+k)),t);
-gammaincomplete(1/2,k*s)*%e^(k*s)/(sqrt(%pi)*sqrt(s));
+gamma_incomplete(1/2,k*s)*%e^(k*s)/(sqrt(%pi)*sqrt(s));
 
 /*****************************************************************************
    Problem 135: A&S: 29.3.117 (OK noun form)
@@ -1138,7 +1138,7 @@ done;
 ******************************************************************************/
 
 specint(%e^(-s*t)/(t+a),t);
-gammaincomplete(0,a*s)*%e^(a*s);
+gamma_incomplete(0,a*s)*%e^(a*s);
 
 /*****************************************************************************
    Problem 145: A&S: 29.3.127 OK
@@ -1146,7 +1146,7 @@ gammaincomplete(0,a*s)*%e^(a*s);
 ******************************************************************************/
 
 specint(%e^(-s*t)/(t+a)^2,t);
-gammaincomplete(-1,a*s)*s*%e^(a*s);
+gamma_incomplete(-1,a*s)*s*%e^(a*s);
 
 /*****************************************************************************
    Problem 146: A&S: 29.3.128 OK
@@ -1154,7 +1154,7 @@ gammaincomplete(-1,a*s)*s*%e^(a*s);
 ******************************************************************************/
 
 specint(%e^(-s*t)/(t+a)^n,t);
-gammaincomplete(1-n,a*s)*s^(n-1)*%e^(a*s);
+gamma_incomplete(1-n,a*s)*s^(n-1)*%e^(a*s);
 
 /*****************************************************************************
    Problem 147: A&S: 29.3.129 (OK noun form)
@@ -1207,7 +1207,7 @@ specint(%e^(-s*t)*t,t);
 */
 
 specint(%e^(-s*t)*(t+a)^-1,t);
-gammaincomplete(0,a*s)*%e^(a*s);
+gamma_incomplete(0,a*s)*%e^(a*s);
 
 /* Problem 153: No. 5 OK */
 
@@ -1220,13 +1220,13 @@ specint(%e^(-s*t)*t^(n-1/2),t);
 gamma(n+1/2)/s^(1/2+n);
 
 /* Problem 155: No. 7 OK New
-   With gammaincomplete(1/2,a*s)=sqrt(%pi)*erfc(sqrt(a*s)) the result of 
+   With gamma_incomplete(1/2,a*s)=sqrt(%pi)*erfc(sqrt(a*s)) the result of 
    Maxima is equivalent to the
    tabulated result: sqrt(%pi/s)*%e^(a*s)*erfc(sqrt(a*s));
 */
 
 specint(%e^(-s*t)/sqrt(t+a),t);
-gammaincomplete(1/2,a*s)*%e^(a*s)/sqrt(s);
+gamma_incomplete(1/2,a*s)*%e^(a*s)/sqrt(s);
 
 /* Problem 156: No. 8 OK New
    tabulated result: sqrt(%pi/s)-%pi*sqrt(a)*%e^(a*s)*erfc(sqrt(a*s))
@@ -1236,13 +1236,13 @@ radcan(specint(%e^(-s*t)*sqrt(t)/(t+a),t));
 (sqrt(a)*(%pi*erf(sqrt(a)*sqrt(s))-%pi)*sqrt(s)*%e^(a*s)+sqrt(%pi))/sqrt(s);
 
 /* Problem 157: No. OK New
-   With gammaincomplete(-1/2,z)=2*e^-z/sqrt(z)-2*sqrt(%pi)*erfc(sqrt(z))
+   With gamma_incomplete(-1/2,z)=2*e^-z/sqrt(z)-2*sqrt(%pi)*erfc(sqrt(z))
    the result of Maxima is equivalent to the
    Tabulated result: 2*a^(-1/2)-2*(%pi*s)^(1/2)*%e^(a*s)*erfc(sqrt(a*s))
 */
 
 specint(%e^(-s*t)*(t+a)^(-3/2),t);
-gammaincomplete(-1/2,a*s)*sqrt(s)*%e^(a*s);
+gamma_incomplete(-1/2,a*s)*sqrt(s)*%e^(a*s);
 
 /* Problem 158: No. 10 OK New
    Tabulated result: (%pi/s)^(1/2)-%pi*a^(1/2)*e^(a*s)*erfc(sqrt(a*s));
@@ -1264,18 +1264,18 @@ specint(%e^(-s*t)*t^nu,t);
 gamma(nu+1)/s^(nu+1);
 
 /* Problem 161: No. 13 OK New
-   Tabulated result: s^(-nu-1)*%e^(a*s)*gammaincomplete(nu+1,a*s)
+   Tabulated result: s^(-nu-1)*%e^(a*s)*gamma_incomplete(nu+1,a*s)
 */
 
 specint(%e^(-s*t)*(t+a)^nu,t);
-gammaincomplete(nu+1,a*s)*s^(-nu-1)*%e^(a*s);
+gamma_incomplete(nu+1,a*s)*s^(-nu-1)*%e^(a*s);
 
 /* Problem 162: No. 14 Ok New
    With 
-     gammaincomplete(-v,a*s) = gamma(-v,a*s) - gammagreek(-v,a*s) and
+     gamma_incomplete(-v,a*s) = gamma(-v,a*s) - gammagreek(-v,a*s) and
      gamma(v+1) = v * gamma(v) 
    the result of Maxima can be shown to be equivalent ot the
-   tabulated result: a^nu*gamma(nu+1)*e^(a*s)*gammaincomplete(-nu,a*s);
+   tabulated result: a^nu*gamma(nu+1)*e^(a*s)*gamma_incomplete(-nu,a*s);
 */
 
 radcan(specint(%e^(-s*t)*t^nu*(t+a)^(-1),t));
