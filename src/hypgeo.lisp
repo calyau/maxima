@@ -138,7 +138,7 @@
 
 ;; I (rtoy) think this is the tail of the incomplete gamma function.
 (defun gminc (a b)
-  (list '($gammaincomplete) a b))
+  (list '(%gamma_incomplete) a b))
 
 ;; Lommel's little s[u,v](z) function.
 (defun littleslommel
@@ -485,7 +485,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize gammaincomplete(w1, w2), the tail of the incomplete gamma
+;; Recognize gamma_incomplete(w1, w2), the tail of the incomplete gamma
 ;; function.
 (defun onegammaincomplete
     (exp)
@@ -493,7 +493,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 (($gammaincomplete)(w1 freevarpar)(w2 true)))
+	 ((%gamma_incomplete)(w1 freevarpar)(w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -1462,12 +1462,12 @@
 ;; p. 147, formula 36:
 ;;
 ;; exp(-a*exp(t))
-;;   -> a^(-p)*gammaincomplete(-p,a)
+;;   -> a^(-p)*gamma_incomplete(-p,a)
 (defun f37p147 (c a)
   (let ((-a (mul -1 a)))
     (mul* c
           (power -a *par*)
-	 `(($gammaincomplete) ,(mul -1 *par*) ,-a))))
+	 `((%gamma_incomplete) ,(mul -1 *par*) ,-a))))
 
 
 ;; Table of Integral Transforms
@@ -1829,7 +1829,7 @@
 			       arg1
 			       arg2
 			       nil
-			       'gammaincomplete))))
+			       'gamma_incomplete))))
      (cond ((setq l (onekbateman u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
@@ -2116,7 +2116,7 @@
          (inv b)
          (power (mul *par* a (inv b)) (mul -1 (add pow2 1)))
          (power '$%e (mul *par* a (inv b)))
-         (list '($gammaincomplete) (add pow2 1) (mul *par* a (inv b)))))
+         (list '(%gamma_incomplete) (add pow2 1) (mul *par* a (inv b)))))
       ((not (maxima-integerp (add pow1 pow2 2)))
        ;; The general result is a Hypergeometric U function U(a,b,z) which can 
        ;; be represented by two Hypergeometic 1F1 functions for the special
@@ -2287,7 +2287,7 @@
 		  (equal (caar i1) 'rat))
 	     (eq flg 'd)
 	     (eq flg 'kbateman)
-	     (eq flg 'gammaincomplete)
+	     (eq flg 'gamma_incomplete)
 	     (eq flg 'htjory)
 	     (eq flg 'erfc)
 	     (eq flg 'ei)
@@ -2302,8 +2302,8 @@
 			  (dtw i1 a1))
 			 ((eq flg 'kbateman)
 			  (kbatemantw i1 a1))
-			 ((eq flg 'gammaincomplete)
-			  (gammaincomplete-to-gammagreek a1 i1))
+			 ((eq flg 'gamma_incomplete)
+			  (gamma_incomplete-to-gammagreek a1 i1))
 			 ((eq flg 'kti)
 			  (kti i1 a1))
 			 ((eq flg 'erfc)
@@ -2538,7 +2538,7 @@
 ;;
 ;; -Ei(-x) = E1(x) = integrate(exp(-t)/t,t,x,inf)
 ;;
-;;         = gammaincomplete(0,x)
+;;         = gamma_incomplete(0,x)
 ;;
 (defun eitgammaincomplete (x)
   (mul* -1 (gminc 0 (mul -1 x))))
@@ -2578,7 +2578,7 @@
 ;;
 ;; Tables of Integral Transforms, p. 387
 ;;
-;; gammaincomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
+;; gamma_incomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
 (defun gammaincompletetw (a x)
   (mul* (power x (div (sub a 1) 2))
 	(power '$%e (div x -2))
@@ -2587,18 +2587,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Only for a=0 we use the general representation as a Whittaker W function:
 ;;;
-;;;   gammaincomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
+;;;   gamma_incomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
 ;;;
 ;;; In all other cases we transform to a Gammagreek function:
 ;;;
-;;;   gammaincomplete(a,x) = gamma(a)- gammagreek(a,x)
+;;;   gamma_incomplete(a,x) = gamma(a)- gammagreek(a,x)
 ;;;
 ;;; The Gammagreek function will be further transformed to a Hypergeometric 1F1 
 ;;; representation. With this change we get more simple and correct results for 
-;;; the Laplace transform of the Gammaincomplete function.
+;;; the Laplace transform of the Incomplete Gamma function.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun gammaincomplete-to-gammagreek (a x)
+(defun gamma_incomplete-to-gammagreek (a x)
   (if (eq (asksign a) '$zero)
     ;; The representation as a Whittaker W function for a=0
     (mul

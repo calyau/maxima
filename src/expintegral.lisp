@@ -19,7 +19,7 @@
 ;;;  Global variables for the Maxima User:
 ;;;
 ;;;  $expintrep    - Change the representation of the Exponential Integral to
-;;;                  gammaincomplete, expintegral_e1, expintegral_ei, 
+;;;                  gamma_incomplete, expintegral_e1, expintegral_ei, 
 ;;;                  expintegral_li, expintegral_trig, expintegral_hyp
 ;;;
 ;;;  $expintexpand - Expand the Exponential Integral E[n](z)
@@ -49,7 +49,7 @@
 ;;; 4. Derivatives of the Exponential Integrals
 ;;;
 ;;; 5. Change the representation of every Exponential Integral through other
-;;;    Exponential Integrals or the Gammaincomplete function.
+;;;    Exponential Integrals or the Incomplete Gamma function.
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; This library is free software; you can redistribute it and/or modify it
@@ -101,7 +101,7 @@
 
 (defvar $expintrep nil
   "Change the representation of the Exponential Integral. 
-   Values are: gammaincomplete, expintegral_e1, expintegral_ei, 
+   Values are: gamma_incomplete, expintegral_e1, expintegral_ei, 
    expintegral_li, expintegral_trig, expintegral_hyp.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -109,7 +109,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *expintflag* '($expintegral_e1   $expintegral_ei  $expintegral_li
-                       $expintegral_trig $expintegral_hyp $gammaincomplete)
+                       $expintegral_trig $expintegral_hyp %gamma_incomplete)
   "Allowed flags to transform the Exponential Integral.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -443,11 +443,11 @@
                                                (add index n 1)))
                         index (- n) -1 t))))))))))
 
-      ((eq $expintrep '$gammaincomplete)
+      ((eq $expintrep '%gamma_incomplete)
        ;; We transform to the Gammincomplete function.
        (mul
          (power arg (sub order 1))
-         (list '($gammaincomplete) (sub 1 order) arg)))
+         (list '(%gamma_incomplete) (sub 1 order) arg)))
 
       (t 
        (eqtest (list '(%expintegral_e) order arg) exp)))))
@@ -906,12 +906,12 @@
        (when *debug-expintegral*
          (format t "~&Transform E1 to ~A~%" $expintrep))
 
-       ;; We have only implemented Gammaincomplete and Ei. 
+       ;; We have only implemented the Incomplete Gamma and Ei function. 
        ;; Further work is needed.
 
        (case $expintrep
-         ($gammaincomplete
-           (list '($gammaincomplete) 0 arg))
+         (%gamma_incomplete
+           (list '(%gamma_incomplete) 0 arg))
          ($expintegral_ei
            (add
              (mul -1 (list '(%expintegral_ei) (mul -1 arg)))
@@ -975,10 +975,10 @@
        (when *debug-expintegral*
          (format t "~&Transform Ei to ~A~%" $expintrep))
        (case $expintrep
-         ($gammaincomplete
+         (%gamma_incomplete
            (add
              (mul -1 
-               (list '($gammaincomplete) 0 (mul -1 arg)))
+               (list '(%gamma_incomplete) 0 (mul -1 arg)))
              (mul 
                (inv 2) 
                (sub 
@@ -1111,9 +1111,9 @@
          (format t "~&Transform Li to ~A~%" $expintrep))
        (let ((logarg (list '(%log) arg)))
          (case $expintrep
-           ($gammaincomplete
+           (%gamma_incomplete
              (add
-               (mul -1 (list '($gammaincomplete) 0 (mul -1 logarg)))
+               (mul -1 (list '(%gamma_incomplete) 0 (mul -1 logarg)))
                (mul
                 (inv 2)
                 (sub (list '(%log) logarg) 
@@ -1222,12 +1222,12 @@
        (when *debug-expintegral*
          (format t "~&Transform Si to ~A~%" $expintrep))
        (case $expintrep
-         ($gammaincomplete
+         (%gamma_incomplete
            (mul
              (div '$%i 2)
              (add
-               (list '($gammaincomplete) 0 (mul -1 '$%i arg))
-               (mul -1 (list '($gammaincomplete) 0 (mul '$%i arg)))
+               (list '(%gamma_incomplete) 0 (mul -1 '$%i arg))
+               (mul -1 (list '(%gamma_incomplete) 0 (mul '$%i arg)))
                (list '(%log) (mul -1 '$%i arg))
                (mul -1 (list '(%log) (mul '$%i arg))))))
 
@@ -1349,12 +1349,12 @@
        (when *debug-expintegral*
          (format t "~&Transform Shi to ~A~%" $expintrep))
        (case $expintrep
-           ($gammaincomplete
+           (%gamma_incomplete
              (mul
                (inv 2)
                (add
-                 (list '($gammaincomplete) 0 arg)
-                 (mul -1 (list '($gammaincomplete) 0 (mul -1 arg)))
+                 (list '(%gamma_incomplete) 0 arg)
+                 (mul -1 (list '(%gamma_incomplete) 0 (mul -1 arg)))
                  (mul -1 (list '(%log) (mul -1 arg)))
                  (list '(%log) arg))))
 
@@ -1477,14 +1477,14 @@
        (when *debug-expintegral*
          (format t "~&Transform Ci to ~A~%" $expintrep))
        (case $expintrep
-           ($gammaincomplete
+           (%gamma_incomplete
              (sub
                (list '(%log) arg)
                (mul
                  (inv 2)
                  (add
-                   (list '($gammaincomplete) 0 (mul -1 '$%i arg))
-                   (list '($gammaincomplete) 0 (mul '$%i arg))
+                   (list '(%gamma_incomplete) 0 (mul -1 '$%i arg))
+                   (list '(%gamma_incomplete) 0 (mul '$%i arg))
                    (list '(%log) (mul -1 '$%i arg))
                    (list '(%log) (mul '$%i arg))))))
 
@@ -1621,12 +1621,12 @@
        (when *debug-expintegral*
          (format t "~&Transform Chi to ~A~%" $expintrep))
        (case $expintrep
-         ($gammaincomplete
+         (%gamma_incomplete
            (mul
              (inv -2)
              (add
-               (list '($gammaincomplete) 0 (mul -1 arg))
-               (list '($gammaincomplete) 0 arg)
+               (list '(%gamma_incomplete) 0 (mul -1 arg))
+               (list '(%gamma_incomplete) 0 arg)
                (list '(%log) (mul -1 arg))
                (mul -1 (list '(%log) arg)))))
 
