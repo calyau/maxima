@@ -341,10 +341,6 @@
   (let ((a (simpcheck (cadr expr) simpflag))
         (z (simpcheck (caddr expr) simpflag))
         (ratorder))
-    (when *debug-gamma* 
-         (format t "~&SIMP-GAMMA-INCOMPLETE:~%")
-         (format t "~&   : a = ~A~%" a)
-         (format t "~&   : z = ~A~%" z))
     (cond
 
       ;; Check for specific values
@@ -360,32 +356,18 @@
 
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
-      ((and (numberp a)
-            (numberp z)
-            (or $numer (floatp a) (floatp z)))
-       (when *debug-gamma* 
-         (format t "~&SIMP-GAMMA-INCOMPLETE: float evaluation.~%"))
-       (complexify (gamma-incomplete a z)))
+      ((float-numerical-eval-p a z)
+       (complexify (gamma-incomplete ($float a) ($float z))))
 
-      ((and (complex-number-p a)
-            (complex-number-p z)
-            (or $numer 
-                (floatp ($realpart a)) (floatp ($imagpart a))
-                (floatp ($realpart z)) (floatp ($imagpart z))))
-       (let ((ca (complex (float ($realpart a)) (float ($imagpart a))))
-             (cz (complex (float ($realpart z)) (float ($imagpart z)))))
+      ((complex-float-numerical-eval-p a z)
+       (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
+             (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
          (complexify (gamma-incomplete ca cz))))
            
-      ((and (mnump a)
-            (mnump z)
-            (or $numer ($bfloatp a) ($bfloatp z)))
-       (bfloat-gamma-incomplete a z))
+      ((bigfloat-numerical-eval-p a z)
+       (bfloat-gamma-incomplete ($bfloat a) ($bfloat z)))
 
-      ((and (complex-number-p a 'bigfloat-or-number-p)
-            (complex-number-p z 'bigfloat-or-number-p)
-            (or $numer
-                ($bfloatp ($realpart a)) ($bfloatp ($imagpart a))
-                ($bfloatp ($realpart z)) ($bfloatp ($imagpart z))))
+      ((complex-bigfloat-numerical-eval-p a z)
        (complex-bfloat-gamma-incomplete
          (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
          (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
@@ -407,8 +389,6 @@
                   (simplify (list '(%log) (div -1 z)))))
               (mul -1 (simplify (list '(%log) z)))))
            ((member sgn '($pos $pz))
-            (when *debug-gamma* 
-              (format t "Expand in series for a=~A and z=~A~%" a z))
             (mul
               (simplify (list '(%gamma) a))
               (power '$%e (mul -1 z))
@@ -493,11 +473,9 @@
                         (add index 1))))
                   index 0 (sub ratorder 1) t)))))))
 
-      ((and (mplusp a) (integerp (cadr a)))
-       (when *debug-gamma* 
-         (format t "~&SIMP-GAMMA-INCOMPLETE in COND (mplusp)~%"))
+      ((and $gamma_expand (mplusp a) (integerp (cadr a)))
        (let ((n (cadr a))
-             (a (cons '(mplus) (cddr a))))
+             (a (simplify (cons '(mplus) (cddr a)))))
          (cond
            ((> n 0)
             (add
@@ -536,10 +514,38 @@
       (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Numerical evaluation of the Incomplete Gamma function
+;;;
+;;;  gamma-incomplete (a,z)                - real and complex double float
+;;;  bfloat-gamma-incomplete (a z)         - bigfloat
+;;;  complex-bfloat-gamma-incomplete (a z) - complex bigfloat
+;;;
+;;;  Expansion in a power series for realpart(z) < 0 and realpart(z) > 1.0
+;;;  (A&S 6.5.29):
+;;;
+;;;                            inf
+;;;                            ===    
+;;;                            \      gamma(a)
+;;;  gamma(a,z) = exp(-x)*z^a * >   ------------ * z^n
+;;;                            /    gamma(a+1^+n)
+;;;                            ===
+;;;                            n=0
+;;;
+;;; Expansion in continued fractions for realpart(z) > 1.0 (A&S 6.5.31):
+;;;
+;;;                              1   1-a   1   2-a   2
+;;;  gamma(a,z) = exp(-x) z^a *( --  ---  ---  ---  --- ... )  
+;;;                              z+  1+   z+   1+   z+ 
+;;;
+;;; The accuracy is controlled by *gamma-incomplete-eps* for double float
+;;; precision. For bigfloat precision epsilon is 10^(-$fpprec). The expansions
+;;; in a power series or continued fractions stops if *gamma-incomplete-maxit*
+;;; is exceeded and an Maxima error is thrown.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *gamma-incomplete-maxit* 10000)
-(defvar *gamma-incomplete-eps* 1.0e-15)
-(defvar *gamma-incomplete-min* 1.0e-30)
+(defvar *gamma-incomplete-eps* 1.0e-16)
+(defvar *gamma-incomplete-min* 1.0e-32)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -606,7 +612,8 @@
 (defun bfloat-gamma-incomplete (a x)
   (let* ((gm-maxit *gamma-incomplete-maxit*)
          (gm-eps (pow ($bfloat 10.0) (- $fpprec)))
-         (gm-min (mul gm-eps gm-eps)))
+         (gm-min (mul gm-eps gm-eps))
+         ($ratprint nil))
     (cond
       ((and (eq ($sign ($realpart x)) '$pos) 
             (eq ($sign (sub (simplify (list '(mabs) x)) 
@@ -671,7 +678,8 @@
 (defun complex-bfloat-gamma-incomplete (a x)
   (let* ((gm-maxit *gamma-incomplete-maxit*)
          (gm-eps (pow ($bfloat 10.0) (- $fpprec)))
-         (gm-min (mul gm-eps gm-eps)))
+         (gm-min (mul gm-eps gm-eps))
+         ($ratprint nil))
     (cond
       ((and (eq ($sign ($realpart x)) '$pos) 
             (eq ($sign (sub (simplify (list '(mabs) x)) 
