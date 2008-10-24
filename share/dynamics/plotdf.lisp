@@ -2,7 +2,7 @@
 ;;              Field for an ordinary 1st order differential equation,
 ;;              or for a system of two autonomous 1st order equations.
 ;;   
-;; Copyright (C) 2004 Jaime E. Villate <villate@gnu.org>
+;; Copyright (C) 2004, 2008 Jaime E. Villate <villate@gnu.org>
 ;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.3 2007-07-19 08:14:40 villate Exp $
+;; $Id: plotdf.lisp,v 1.4 2008-10-24 08:43:30 villate Exp $
 
 (in-package :maxima)
 
@@ -48,8 +48,10 @@
          value)
         (t (cond
             ((eql name s1)
+	     (setq value (check-range value))
              (check-list-items '$x (rest (rest value)) 'number 2))
             ((eql name s2)
+	     (setq value (check-range value))
              (check-list-items '$y (rest (rest value)) 'number 2))
             (t (merror "Unknown option ~M" name))))))
     (setq vv (mapcar #'stripdollar (rest value)))
