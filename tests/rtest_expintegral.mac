@@ -20,41 +20,57 @@ done;
  At first we check the special values of the Exponential Integrals 
 *******************************************************************************/
 
+errcatch(expintegral_e(0,0));
+[];
 errcatch(expintegral_e(0,0.0));
 [];
 errcatch(expintegral_e(0,0.0b0));
 [];
 
+errcatch(expintegral_ei(0));
+[];
 errcatch(expintegral_ei(0.0));
 [];
 errcatch(expintegral_ei(0.0b0));
 [];
 
-expintegral_li(0.0);
+expintegral_li(0);
 0;
+expintegral_li(0.0);
+0.0;
 expintegral_li(0.0b0);
 0.0b0;
 
+errcatch(expintegral_li(1));
+[];
 errcatch(expintegral_li(1.0));
 [];
 errcatch(expintegral_li(1.0b0));
 [];
 
-expintegral_si(0.0);
+expintegral_si(0);
 0;
+expintegral_si(0.0);
+0.0;
 expintegral_si(0.0b0);
 0.0b0;
 
-expintegral_shi(0.0);
+expintegral_shi(0);
 0;
+expintegral_shi(0.0);
+0.0;
 expintegral_shi(0.0b0);
 0.0b0;
 
+errcatch(expintegral_ci(0));
+[];
 errcatch(expintegral_ci(0.0));
 [];
 errcatch(expintegral_ci(0.0b0));
 [];
 
+errcatch(expintegral_chi(0));
+[];
 errcatch(expintegral_chi(0.0));
 [];
 errcatch(expintegral_chi(0.0b0));
@@ -90,19 +106,19 @@ expintegral_e(0,10+%i);
 expintegral_e(3/2+%i,0);
 1/(%i+1/2);
 
-expintegral_e(1/2+%i,0);
-expintegral_e(1/2+%i,0);
+errcatch(expintegral_e(1/2+%i,0));
+[];
 
 /* We don't simplify for infinities as an argument */
 
 expintegral_e(-1,inf);
 expintegral_e(-1,inf);
 
-expintegral_e(0,infinity);
-expintegral_e(0,infinity);
+expintegral_e(v,infinity);
+expintegral_e(v,infinity);
 
-expintegral_e(minf,0);
-expintegral_e(minf,0);
+expintegral_e(minf,z);
+expintegral_e(minf,z);
 
 /*******************************************************************************
    For a negative integer parameter we expand in a series
