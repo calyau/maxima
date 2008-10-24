@@ -207,7 +207,10 @@
 
 (defun $rationalize (e)
   (setq e (ratdisrep e))
-  (cond ((floatp e) (cl-rat-to-maxima (rationalize e)))
+  (cond ((floatp e) 
+	 (let ((significand) (expon) (sign))
+	   (multiple-value-setq (significand expon sign) (integer-decode-float e))
+	   (cl-rat-to-maxima (* sign significand (expt 2 expon)))))
 	(($bfloatp e) (cl-rat-to-maxima (* (cadr e)(expt 2 (- (caddr e) (third (car e)))))))
 	(($mapatom e) e)
 	(t (simplify (cons (list (mop e)) (mapcar #'$rationalize (margs e)))))))
