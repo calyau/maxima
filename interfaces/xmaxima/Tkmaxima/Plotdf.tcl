@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.12 2008-04-26 20:39:31 villate Exp $
+#       $Id: Plotdf.tcl,v 1.13 2008-10-25 18:24:23 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -138,9 +138,13 @@ proc doIntegrateScreen { win sx sy  } {
 proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
     #    puts "dointegrate $win $x0 $y0"
-    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t linecolors
+    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t linecolors xmin xmax ymin ymax
     linkLocal $win didLast trajectoryStarts
     set rtosx rtosx$win ; set rtosy rtosy$win
+    set x1 [$rtosx $xmin]
+    set y1 [$rtosy $ymax]
+    set x2 [$rtosx $xmax]
+    set y2 [$rtosy $ymin]
     oset $win trajectory_at [format "%.10g  %.10g" $x0 $y0]
     lappend trajectoryStarts [list $x0 $y0]
 
@@ -188,12 +192,16 @@ proc doIntegrate { win x0 y0 } {
 				 set im [getPoint 2 $ptColor]
 				 #set im1 [getPoint 2 purple]		
 				 catch  {
-				     while { $i <= $lim } {
+				     while { $i <= $lim &&
+					     ($xn1-$x1)*($xn1-$x2) <= 0 &&
+					     ($yn1-$y1)*($yn1-$y2) <= 0 } {
 					 set xn2  [$rtosx [lindex $ans [incr i]]]
 					 set yn2  [$rtosy [lindex $ans [incr i]]]
 					 # puts "$xn1 $yn1"
 					 # xxxxxxxx following is for a bug in win95 version
-					 if { abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee    } {
+					 if { ($xn2-$x1)*($xn2-$x2) <= 0 &&
+					      ($yn2-$y1)*($yn2-$y2) <= 0 &&
+			 abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee } {
 					     $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth -fill $linecolor
 					
 					 }
