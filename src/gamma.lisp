@@ -357,20 +357,64 @@
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
       ((float-numerical-eval-p a z)
-       (complexify (gamma-incomplete ($float a) ($float z))))
+       (cond
+         ((and (integerp a) 
+               (or (= a 0) 
+                   (and (= 0 (- a (truncate a))) 
+                        (< ($float ($realpart z)) 0))))
+          ;; a is zero or a negative integer representation and realpart(z)<0.
+          ;; For these cases the numerical routines of gamma-incomplete
+          ;; do not work. Call the numerical routine for the Exponential 
+          ;; Integral E(n,z). The routine is called with a positive integer!.
+          (let ((a (truncate a))
+                (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
+            (complexify (* (expt cz a) (expintegral-e (- 1 a) cz)))))
+         (t
+           (complexify (gamma-incomplete ($float a) ($float z))))))
 
       ((complex-float-numerical-eval-p a z)
-       (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
-             (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
-         (complexify (gamma-incomplete ca cz))))
+       (cond
+         ((and (integerp a)
+               (or (= a 0) 
+                   (and (= 0 (- a (truncate a))) 
+                        (< ($float ($realpart z)) 0))))
+          ;; Call expintegral-e. See comment above.
+          (let ((a (truncate a))
+                (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
+            (complexify (* (expt cz a) (expintegral-e (- 1 a) cz)))))
+         (t
+           (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
+                 (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
+             (complexify (gamma-incomplete ca cz))))))
            
       ((bigfloat-numerical-eval-p a z)
-       (bfloat-gamma-incomplete ($bfloat a) ($bfloat z)))
+       (cond
+         ((and (integerp a)
+               (or (= a 0)
+                   (and (= 0 (- a (truncate a)))
+                        (eq ($sign ($realpart z)) '$neg))))
+          ;; Call bfloat-expintegral-e. See comment above.
+          (let ((a (truncate a))
+                (z ($bfloat z)))
+          ($rectform (mul (power z a) (bfloat-expintegral-e (- 1 a) z)))))
+         (t
+          (bfloat-gamma-incomplete ($bfloat a) ($bfloat z)))))
 
       ((complex-bigfloat-numerical-eval-p a z)
-       (complex-bfloat-gamma-incomplete
-         (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
-         (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
+       (cond
+         ((and (integerp a)
+               (or (= a 0)
+                   (and (= 0 (- a (truncate a)))
+                        (eq ($sign ($realpart z)) '$neg))))
+          ;; Call bfloat-expintegral-e. See comment above.
+          (let ((a (truncate a))
+                (cz (add ($bfloat ($realpart z))
+                         (mul '$%i ($bfloat ($imagpart z))))))
+          ($rectform (mul (power cz a) (bfloat-expintegral-e (- 1 a) cz)))))
+         (t
+          (complex-bfloat-gamma-incomplete
+            (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
+            (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))))
 
       ;; Check for transformations and argument simplification
 
@@ -527,9 +571,16 @@
 ;;;                            ===    
 ;;;                            \      gamma(a)
 ;;;  gamma(a,z) = exp(-x)*z^a * >   ------------ * z^n
-;;;                            /    gamma(a+1^+n)
+;;;                            /    gamma(a+1+n)
 ;;;                            ===
 ;;;                            n=0
+;;;
+;;; This expansion does not work for an integer a<=0, because the Gamma function
+;;; in the denominator is not defined for a=0 and negative integers. For this
+;;; case we use the Exponential Integral E for numerically evaluation. The
+;;; Incomplete Gamma function and the Exponential integral are connected by
+;;;
+;;; gamma(a,z) = z^a * expintegral_e(1-a,z)
 ;;;
 ;;; Expansion in continued fractions for realpart(z) > 1.0 (A&S 6.5.31):
 ;;;
