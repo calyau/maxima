@@ -1069,6 +1069,115 @@ gamma_incomplete(a-b*%i,x-y*%i);
 
 /* Numerical tests for the Incomplete Gamma function */
 
+/* At first tests for a=0 and negative integers for a 
+   For this values the numerical algorithm of gamma-incomplete do not
+   work. The routines of the Exponential Integral E are used. */
+
+closeto(
+  gamma_incomplete(0,0.5),
+  0.55977359477616081174679593931509b0,
+  5e-15);
+true;
+
+closeto(
+  gamma_incomplete(0,-0.5),
+  -0.4542199048631735799205238126628b0-3.1415926535897932384626433832795b0*%i,
+  5e-15);
+true;
+
+closeto(
+  gamma_incomplete(0,0.5+%i),
+  -0.07139471104245272355588497993684b0-0.35749377365216265125485869345732b0*%i,
+  5e-15);
+true;
+
+closeto(
+  gamma_incomplete(0,-0.5+%i),
+  -0.92289919055678882179364241497461b0-0.81571273343182452677967141350955b0*%i,
+  5e-15);
+true;
+
+/* Now for bigfloat precision */
+
+fpprec:32;
+32;
+
+closeto(
+  gamma_incomplete(0,0.5b0),
+  0.55977359477616081174679593931509b0,
+  1b-30);
+true;
+
+closeto(
+  gamma_incomplete(0,-0.5b0),
+  -0.4542199048631735799205238126628b0-3.1415926535897932384626433832795b0*%i,
+  1b-30);
+true;
+
+closeto(
+  gamma_incomplete(0,0.5b0+%i),
+  -0.07139471104245272355588497993684b0-0.35749377365216265125485869345732b0*%i,
+  1b-30);
+true;
+
+closeto(
+  gamma_incomplete(0,-0.5b0+%i),
+  -0.92289919055678882179364241497461b0-0.81571273343182452677967141350955b0*%i,
+  1b-30);
+true;
+
+/* Tests with negative integers */
+
+closeto(
+  gamma_incomplete(-1,-0.5),
+  -2.8432226365370827137767777629655b0+3.1415926535897932384626433832795b0*%i,
+  5e-15);
+true;
+
+closeto(
+  gamma_incomplete(-5,-0.5),
+  -12.1692735494620863710665339515891b0+0.0261799387799149436538553615273b0*%i,
+  5e-15);
+true;
+
+closeto(
+  gamma_incomplete(-1,-0.5+%i),
+  -0.54330486022427331058655939975980b0+0.65800685452922697341354545991819b0*%i,
+  5e-15);
+true;
+
+closeto(
+  gamma_incomplete(-5,-0.5+%i),
+  0.08881923337904654547301590363812b0+0.18155943299796684573147338017934b0*%i,
+  5e-15);
+true;
+
+/* Again for bigfloat precision */
+
+closeto(
+  gamma_incomplete(-1,-0.5b0),
+  -2.8432226365370827137767777629655b0+3.1415926535897932384626433832795b0*%i,
+  1b-30);
+true;
+
+closeto(
+  gamma_incomplete(-5,-0.5b0),
+  -12.1692735494620863710665339515891b0+0.0261799387799149436538553615273b0*%i,
+  1b-30);
+true;
+
+closeto(
+  gamma_incomplete(-1,-0.5b0+%i),
+  -0.54330486022427331058655939975980b0+0.65800685452922697341354545991819b0*%i,
+  1b-30);
+true;
+
+closeto(
+  gamma_incomplete(-5,-0.5b0+%i),
+  0.08881923337904654547301590363812b0+0.18155943299796684573147338017934b0*%i,
+  1b-30);
+true;
+
 /* Test gamma_incomplete(0.25,2.5) for Float and Bigfloat */
 
 closeto(
