@@ -114,30 +114,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Part 0: Helper functions for the main parts of the code
-;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; If arg is a Maxima complex number with a float realpart or float imagpart, 
-;;; or $numer is T and arg is a Maxima Complex number we eval the function
-;;; numerically. 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun expintegral-numerical-eval-p (arg)
-  (or (and (complex-number-p arg)
-           (or (floatp ($realpart arg)) (floatp ($imagpart arg))))
-      (and $numer (complex-number-p arg))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; The same for Bigfloats.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun expintegral-bfloat-numerical-eval-p (arg)
-  (or (and (complex-number-p arg 'bigfloat-or-number-p)
-           (or ($bfloatp ($realpart arg)) ($bfloatp ($imagpart arg))))
-      (and $numer (complex-number-p arg 'bigfloat-or-number-p))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
 ;;; Part 1: The implementation of the Exponential Integral En
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -255,7 +231,7 @@
                 (div (power arg index) `((mfactorial) ,index)) 
                 index 0 (mul -1 order) t))))
         
-         ((and (> order 0) (expintegral-numerical-eval-p arg))
+         ((and (> order 0) (complex-float-numerical-eval-p arg))
           ;; Numerical evaluation for double float real or complex arg.
           ;; Order is an positive integer.
           (when *debug-expintegral*
@@ -265,10 +241,11 @@
              (domain-error arg 'expintegral_e))
             (t
              ;; order is an integer > 0 and arg <> 0 for order < 2
-             (let* ((carg (complex ($realpart arg) ($imagpart arg))))
+             (let* ((carg (complex ($float ($realpart arg)) 
+                                   ($float ($imagpart arg)))))
                (complexify (expintegral-e order carg))))))
 
-         ((and (> order 0) (expintegral-bfloat-numerical-eval-p arg))
+         ((and (> order 0) (complex-bigfloat-numerical-eval-p arg))
           ;; Numerical evaluation for Bigfloat real or complex arg.
           (when *debug-expintegral*
             (format t "~&Bigfloat evaluation for arg = ~A~%" arg))
@@ -326,13 +303,12 @@
          (t
            (eqtest (list '(%expintegral_e) order arg) exp))))
 
-      ((or (and (expintegral-numerical-eval-p order) (complex-number-p arg))
-           (and (expintegral-numerical-eval-p arg) (complex-number-p order)))
+      ((complex-float-numerical-eval-p order arg)
        (cond
          ((and (numberp arg) (= arg 0) (< ($realpart order) 1))
           (domain-error arg '%expintegral_e))
-
-         ((and (= ($imagpart order) 0)
+         ((and (eq ($sign ($imagpart order)) '$zero)
+               (numberp ($realpart order))
                (> ($realpart order) 0)
                (= (nth-value 1 (truncate ($realpart order))) 0))
           ;; We have a pure real positive order and the realpart is a float 
@@ -340,38 +316,26 @@
           ;; We call the routine for an integer order.
           (when *debug-expintegral*
             (format t "~&Order is a float representation of an integer.~%"))
-          (let* ((order (truncate ($realpart order)))
-                 (carg (complex ($realpart arg) ($imagpart arg))))
-               (complexify (expintegral-e order carg))))
+          (let ((order (truncate ($realpart order)))
+                (carg (complex ($float ($realpart arg)) 
+                               ($float ($imagpart arg)))))
+            (complexify (expintegral-e order carg))))
          (t
           ;; The general case, order and arg are complex or real.
           (when *debug-expintegral*
             (format t "~&Order is a number (not an integer).~%"))
-          (let* ((corder (complex ($realpart order) ($imagpart order)))
-                 (carg (complex ($realpart arg) ($imagpart arg))))
+          (let ((corder (complex ($float ($realpart order)) 
+                                 ($float ($imagpart order))))
+                (carg (complex ($float ($realpart arg)) 
+                               ($float ($imagpart arg)))))
             (complexify (frac-expintegral-e corder carg))))))
 
-      ((or (and (expintegral-bfloat-numerical-eval-p order)
-                (complex-number-p arg 'bigfloat-or-number-p))
-           (and (expintegral-bfloat-numerical-eval-p arg)
-                (complex-number-p order 'bigfloat-or-number-p)))
+      ((complex-bigfloat-numerical-eval-p order arg)
        (cond
-         ((or (and (numberp arg) 
-                   (= arg 0) 
-                   (eq (asksign (add order -1)) '$negative))
-              (and ($bfloatp arg)
-                   (equal arg bigfloatzero)
-                   (eq (asksign (add order -1)) '$negative)))
-          (domain-error 0.0 '%expintegral_e))
-
-         ((or (and (numberp order)
-                   (= ($imagpart order) 0)
-                   (> ($realpart order) 0)
-                   (= (nth-value 1 (truncate ($realpart order))) 0))
-              (and ($bfloatp order)
-                   (eq (asksign order) '$positive)
-                   (equal (sub (mul 2 ($fix order)) (mul 2 order))
-                          bigfloatzero)))
+         ((and (eq ($sign ($imagpart order)) '$zero)
+               (eq ($sign ($realpart order)) '$pos)
+               (eq ($sign (sub ($realpart order)
+                               ($truncate ($realpart order)))) '$zero))
           ;; We have a real positive order and the realpart is a Float or 
           ;; Bigfloat representation of an integer value.
           ;; We call the routine for an integer order.
@@ -387,27 +351,20 @@
                 (simplify (list '(mtimes) '$%i ($imagpart result)))
                 ($realpart result)))))
 
-         ((or ($bfloatp order) (floatp order))
-          ;; order has to be a Real Bigfloat, because Maxima don't support
-          ;; the evaluation of Gamma for Complex Bigfloat. We can not do
-          ;; the evaluation with a Complex Float number for the order, because
-          ;; the accuracy would be limited to the accurary of Float evaluation.
+         (t
+          ;; the general case, order and arg are bigfloat or complex bigfloat
           (when *debug-expintegral*
             (format t "~&Order is a Bigfloat (not an integer).~%"))
           (let* (($ratprint nil)
-                 (corder ($bfloat order))
-                 (carg (add ($bfloat ($realpart arg)) 
+                 (corder (add ($bfloat ($realpart order))
+                              (mul '$%i ($bfloat ($imagpart order)))))
+                 (carg (add ($bfloat ($realpart arg))
                             (mul '$%i ($bfloat ($imagpart arg)))))
                  (result (frac-bfloat-expintegral-e corder carg)))
-            (simplify 
-              (list '(mplus) 
+            (simplify
+              (list '(mplus)
               (simplify (list '(mtimes) '$%i ($imagpart result)))
-              ($realpart result)))))
-         (t
-          ;; We have no support for Complex Bigfloat evaluation for the order
-          (when *debug-expintegral*
-            (format t "~&No Complex Bigfloat evaluation for the parameter.~%"))
-          (eqtest (list '(expintegral_e) order arg) exp))))
+              ($realpart result)))))))
 
       ((and $expintexpand (setq ratorder (max-numeric-ratio-p order 2)))
        ;; We have a half integral order and $expintexpand is not NIL. 
@@ -809,7 +766,7 @@
               (h  d)
               (e  0.0))
          (do* ((i 1 (+ i 1))
-               (a (mul -1 n) (cmul (- (float i)) (add n1 (float i)))))
+               (a (mul -1 n) (cmul (- i) (add n1 i))))
               ((> i *expint-maxit*)
                (merror "Continued fractions failed in expintegral."))
 
@@ -841,7 +798,7 @@
        (bfloat-expintegral-e ($fix ($realpart n)) z))
 
       (t
-       ;; At this point the parameter n is a real (not an float representation
+       ;; At this point the parameter n is a real (not a float representation
        ;; of an integer) or complex. We expand in a power series.
        (when *debug-expintegral*
              (format t "We expand in a power series.~%"))       
@@ -904,12 +861,12 @@
       ((zerop1 arg) 
        (merror "expintegral_e1(~:M) is undefined." arg))
 
-      ((expintegral-numerical-eval-p arg)
+      ((complex-float-numerical-eval-p arg)
        ;; For E1 we call En(z) with n=1 directly.
-       (let ((carg (complex ($realpart arg) ($imagpart arg))))
+       (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-e 1 carg))))
 
-      ((expintegral-bfloat-numerical-eval-p arg)
+      ((complex-bigfloat-numerical-eval-p arg)
        ;; For E1 we call En(z) with n=1 directly.
        (let* (($ratprint nil)
               (carg (add ($bfloat ($realpart arg))
@@ -983,11 +940,11 @@
       ((zerop1 arg) 
        (merror "expintegral_ei(~:M) is undefined." arg))
 
-      ((expintegral-numerical-eval-p arg)
-       (let ((carg (complex ($realpart arg) ($imagpart arg))))
+      ((complex-float-numerical-eval-p arg)
+       (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-ei carg))))
 
-      ((expintegral-bfloat-numerical-eval-p arg)
+      ((complex-bigfloat-numerical-eval-p arg)
        (let* (($ratprint nil)
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
@@ -1133,11 +1090,11 @@
       ((onep1 arg)
        (merror "expintegral_li(~:M) is undefined." arg))
 
-      ((expintegral-numerical-eval-p arg)
-       (let ((carg (complex ($realpart arg) ($imagpart arg))))
+      ((complex-float-numerical-eval-p arg)
+       (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-li carg))))
 
-      ((expintegral-bfloat-numerical-eval-p arg)
+      ((complex-bigfloat-numerical-eval-p arg)
        (let* (($ratprint nil)
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
@@ -1251,11 +1208,11 @@
     (cond
       ((zerop1 arg) arg)
      
-      ((expintegral-numerical-eval-p arg)
-       (let ((carg (complex ($realpart arg) ($imagpart arg))))
+      ((complex-float-numerical-eval-p arg)
+       (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-si carg))))
 
-      ((expintegral-bfloat-numerical-eval-p arg)
+      ((complex-bigfloat-numerical-eval-p arg)
        (let* (($ratprint nil)
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
@@ -1383,11 +1340,11 @@
     (cond
       ((zerop1 arg) arg)
 
-      ((expintegral-numerical-eval-p arg)
-       (let ((carg (complex ($realpart arg) ($imagpart arg))))
+      ((complex-float-numerical-eval-p arg)
+       (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-shi carg))))
 
-      ((expintegral-bfloat-numerical-eval-p arg)
+      ((complex-bigfloat-numerical-eval-p arg)
        (let* (($ratprint nil)
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
@@ -1514,11 +1471,12 @@
   (let ((arg (simpcheck (cadr exp) z)))
     (cond
       ((zerop1 arg) (merror "expintegral_ci(~:M) is undefined." arg))
-      ((expintegral-numerical-eval-p arg)
-       (let ((carg (complex ($realpart arg) ($imagpart arg))))
+
+      ((complex-float-numerical-eval-p arg)
+       (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-ci carg))))
 
-      ((expintegral-bfloat-numerical-eval-p arg)
+      ((complex-bigfloat-numerical-eval-p arg)
        (let* (($ratprint nil)
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
@@ -1661,11 +1619,12 @@
       ((zerop1 arg) 
        ;; First check for zero argument. Throw Maxima error.
        (merror "expintegral_chi(~:M) is undefined." arg))
-      ((expintegral-numerical-eval-p arg)
-       (let ((carg (complex ($realpart arg) ($imagpart arg))))
+
+      ((complex-float-numerical-eval-p arg)
+       (let ((carg (complex ($float ($realpart arg)) ($float ($imagpart arg)))))
          (complexify (expintegral-chi carg))))
 
-      ((expintegral-bfloat-numerical-eval-p arg)
+      ((complex-bigfloat-numerical-eval-p arg)
        (let* (($ratprint nil)
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
