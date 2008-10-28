@@ -1056,16 +1056,23 @@ gamma_incomplete(a,z)/((1-a)*(2-a))-z^(a-2)*(z/((a-2)*(a-1))+1/(a-2))*%e^-z;
 gamma_expand:false;
 false;
 
-/* The Incomplete Gamma function has mirror symmetry */
+/* The Incomplete Gamma function has not mirror symmetry on the negative
+   real axis. We have supported a conjugate-gamma-incomplete function */
 
 declare(ac, complex, zc,complex);
 done;
 
 conjugate(gamma_incomplete(ac,zc));
-gamma_incomplete(conjugate(ac), conjugate(zc));
+conjugate(gamma_incomplete(ac,zc));
 
 conjugate(gamma_incomplete(a+b*%i,x+y*%i));
-gamma_incomplete(a-b*%i,x-y*%i);
+conjugate(gamma_incomplete(a+b*%i,x+y*%i));
+
+conjugate(gamma_incomplete(a+b*%i,10));
+gamma_incomplete(a-b*%i,10);
+
+conjugate(gamma_incomplete(a+b*%i,-10));
+conjugate(gamma_incomplete(a+b*%i,-10));
 
 /* Numerical tests for the Incomplete Gamma function */
 
@@ -1672,19 +1679,19 @@ gamma_incomplete_generalized(a,x,x);
 gamma_incomplete_generalized(a,1.0,1.0b0);
 0;
 
-/* Mirror symmetry */
+/* Mirror symmetry, but not when z1 or z2 on the negative real axis */
 
 declare(a,complex, z1,complex, z2, complex);
 done;
 
 conjugate(gamma_incomplete_generalized(a,z1,z2));
-gamma_incomplete_generalized(conjugate(a),conjugate(z1),conjugate(z2));
+conjugate(gamma_incomplete_generalized(a,z1,z2));
 
-(kill(a,b,x1,x2,y1,x2),done);
+conjugate(gamma_incomplete_generalized(x+%i*y,1+%i,1-%i));
+gamma_incomplete_generalized(x-%i*y,1-%i,1+%i);
+
+(kill(a,z1,z2),done);
 done;
-
-conjugate(gamma_incomplete_generalized(a+%i*b,x1+%i*y1,x2+%i*y2));
-gamma_incomplete_generalized(a-%i*b,x1-%i*y1,x2-%i*y2);
 
 /* Test numerical evaluation for some values */
 
