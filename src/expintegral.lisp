@@ -542,10 +542,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-e (n z)
-  (declare (type integer n)
-           (type (complex flonum) z))
+  (declare (type integer n))
   (let ((*expint-eps*   *expint-eps*)
-        (*expint-maxit* *expint-maxit*))
+        (*expint-maxit* *expint-maxit*)
+	;; Add (complex) 0 to get rid of any signed zeroes, and make z
+	;; be a complex number.
+	(z (+ (coerce 0 '(complex flonum)) z)))
+    (declare (type (complex flonum) z))
 
     (when *debug-expintegral*
       (format t "~&EXPINTEGRAL-E called with:~%")
@@ -1057,10 +1060,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-ei (z)
-  (+
-    (- (expintegral-e 1 (- z)))
-    (- (* 0.5 (- (log z) (log (/ 1 z)))) (log (- z)))))
-
+  (+ (- (expintegral-e 1 (- z)))
+     ;; Carefully compute 1/2*(log(z)-log(1/z))-log(-z), using the
+     ;; branch cuts that we want, not the one that Lisp wants.
+     ;; (Mostly an issue with Lisps that support signed zeroes.)
+     (cond 
+       ((> (imagpart z) 0)
+	;; Positive imaginary part. Add phase %i*%pi.
+	(complex 0 (float pi)))
+       ((< (imagpart z) 0)
+	;; Negative imaginary part. Add phase -%i*%pi.
+	(complex 0 (- (float pi))))
+       ((> (realpart z) 0)
+	;; Positive real value. Add phase -%i*pi.
+	(complex 0 (- (float pi))))
+       ;; Negative real value. No phase factor.
+       (t 0))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; We have not modified the algorithm for Bigfloat numbers. It is only
 ;;; generalized for Bigfloats. The calcualtion of the complex phase factor
@@ -1313,13 +1328,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-si (z)
-  (* 
-    (complex 0 0.5)
-    (+
-      (expintegral-e 1 (* (complex 0 -1) z))
-      (- (expintegral-e 1 (* (complex 0 1) z)))
-      (log (* (complex 0 -1) z))
-      (- (log (* (complex 0 1) z))))))
+  (let ((z (coerce z '(complex flonum))))
+    (* (complex 0 0.5)
+       (+ (expintegral-e 1 (* (complex 0 -1) z))
+	  (- (expintegral-e 1 (* (complex 0 1) z)))
+	  (log (* (complex 0 -1) z))
+	  (- (log (* (complex 0 1) z)))))))
 
 (defun bfloat-expintegral-si (z)
   (let ((z*%i (cmul '$%i z))
@@ -1588,15 +1602,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun expintegral-ci (z)
-  (+
-    (* 
-      -0.5
-      (+
-        (expintegral-e 1 (* (complex 0 -1) z))
-        (expintegral-e 1 (* (complex 0 1) z))
-        (log (* (complex 0 -1) z))
-        (log (* (complex 0 1) z))))
-   (log z)))
+  (let ((z (coerce z '(complex flonum))))
+    (+ (* -0.5
+	  (+ (expintegral-e 1 (* (complex 0 -1) z))
+	     (expintegral-e 1 (* (complex 0 1) z))
+	     (log (* (complex 0 -1) z))
+	     (log (* (complex 0 1) z))))
+       (log z))))
 
 (defun bfloat-expintegral-ci (z)
   (let ((z*%i (cmul '$%i z))
