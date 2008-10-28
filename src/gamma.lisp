@@ -301,9 +301,25 @@
 
 (defprop %gamma_incomplete simp-gamma-incomplete operators)
 
-;;; Incomplete Gamma function has mirror symmetry
+;;; Incomplete Gamma function has not mirror symmetry for z on the negative
+;;; real axis. We support a conjugate-function which test this case.
 
-(defprop %gamma_incomplete t commutes-with-conjugate)
+(defprop %gamma_incomplete conjugate-gamma-incomplete conjugate-function)
+
+(defun conjugate-gamma-incomplete (args)
+  (let ((a (first args)) (z (second args)))
+    (cond ((off-negative-real-axisp z)
+           ;; Definitly not on the negative real axis for z. Mirror symmetry.
+	   (simplify
+             (list
+              '(%gamma_incomplete)
+               (simplify (list '($conjugate) a))
+               (simplify (list '($conjugate) z)))))
+	  (t
+           ;; On the negative real axis or no information. Unsimplified.
+           (list
+            '($conjugate simp)
+             (simplify (list '(%gamma_incomplete) a z)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -800,7 +816,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun $gamma_incomplete_generalized (a z1 z2)
-  (simplify (list '(%gamma_incomplete) 
+  (simplify (list '(%gamma_incomplete_generalized)
                    (resimplify a) (resimplify z1) (resimplify z2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -815,11 +831,29 @@
 (defprop %gamma_incomplete_generalized 
          $gamma_incomplete_generalized noun)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Generalized Incomplete Gamma function has not mirror symmetry for z1 or z2 
+;;; on the negative real axis. 
+;;; We support a conjugate-function which test this case.
 
-;;; Generalized Incomplete Gamma function has mirror symmetry
+(defprop %gamma_incomplete_generalized 
+         conjugate-gamma-incomplete-generalized conjugate-function)
 
-(defprop %gamma_incomplete_generalized t commutes-with-conjugate)
+(defun conjugate-gamma-incomplete-generalized (args)
+  (let ((a (first args)) (z1 (second args)) (z2 (third args)))
+    (cond ((and (off-negative-real-axisp z1) (off-negative-real-axisp z2))
+           ;; z1 and z2 definitly not on the negative real axis. 
+           ;; Mirror symmetry.
+	   (simplify
+             (list
+              '(%gamma_incomplete_generalized)
+               (simplify (list '($conjugate) a))
+               (simplify (list '($conjugate) z1))
+               (simplify (list '($conjugate) z2)))))
+	  (t
+           ;; On the negative real axis or no information. Unsimplified.
+           (list
+            '($conjugate simp)
+             (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -908,44 +942,30 @@
       ;; Check for numerical evaluation in Float or Bigfloat precision
       ;; Use the numerical routines of the Incomplete Gamma function
 
-      ((and (numberp a)
-            (numberp z1)
-            (numberp z2)
-            (or $numer (floatp a) (floatp z1) (floatp z2)))
-       (complexify (- (gamma-incomplete a z1) (gamma-incomplete a z2))))
+      ((float-numerical-eval-p a z1 z2)
+       (complexify 
+         (- (gamma-incomplete ($float a) ($float z1)) 
+            (gamma-incomplete ($float a) ($float z2)))))
 
-      ((and (complex-number-p a)
-            (complex-number-p z1)
-            (complex-number-p z2)
-            (or $numer 
-                (floatp ($realpart a)) (floatp ($imagpart a))
-                (floatp ($realpart z1)) (floatp ($imagpart z1))
-                (floatp ($realpart z2)) (floatp ($imagpart z2))))
-       (let ((ca (complex ($realpart a) ($imagpart a)))
-             (cz1 (complex ($realpart z1) ($imagpart z1)))
-             (cz2 (complex ($realpart z2) ($imagpart z2))))
+      ((complex-float-numerical-eval-p a z1 z2)
+       (let ((ca  (complex ($float ($realpart a))  ($float ($imagpart a))))
+             (cz1 (complex ($float ($realpart z1)) ($float ($imagpart z1))))
+             (cz2 (complex ($float ($realpart z2)) ($float ($imagpart z2)))))
          (complexify (- (gamma-incomplete ca cz1) (gamma-incomplete ca cz2)))))
            
-      ((and (mnump a)
-            (mnump z1)
-            (mnump z2)
-            (or $numer ($bfloatp a) ($bfloatp z1) ($bfloatp z2)))
-       (sub (bfloat-gamma-incomplete a z1) (bfloat-gamma-incomplete a z2)))
+      ((bigfloat-numerical-eval-p a z1 z2)
+       (sub (bfloat-gamma-incomplete ($bfloat a) ($bfloat z1)) 
+            (bfloat-gamma-incomplete ($bfloat a) ($bfloat z2))))
 
-      ((and (complex-number-p a 'bigfloat-or-number-p)
-            (complex-number-p z1 'bigfloat-or-number-p)
-            (complex-number-p z2 'bigfloat-or-number-p)
-            (or $numer
-                ($bfloatp ($realpart a)) ($bfloatp ($imagpart a))
-                ($bfloatp ($realpart z1)) ($bfloatp ($imagpart z1))
-                ($bfloatp ($realpart z2)) ($bfloatp ($imagpart z2))))
-       (sub
-         (complex-bfloat-gamma-incomplete
-           (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
-           (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))
-         (complex-bfloat-gamma-incomplete
-           (add ($bfloat ($realpart a)) (mul '$%i ($bfloat ($imagpart a))))
-           (add ($bfloat ($realpart z2)) (mul '$%i ($bfloat ($imagpart z2)))))))
+      ((complex-bigfloat-numerical-eval-p a z1 z2)
+       (let ((ca  (add ($bfloat ($realpart a)) 
+                       (mul '$%i ($bfloat ($imagpart a)))))
+             (cz1 (add ($bfloat ($realpart z1))
+                       (mul '$%i ($bfloat ($imagpart z1)))))
+             (cz2 (add ($bfloat ($realpart z2))
+                       (mul '$%i ($bfloat ($imagpart z2))))))
+       (sub (complex-bfloat-gamma-incomplete ca cz1)
+            (complex-bfloat-gamma-incomplete ca cz2))))
 
       ;; Check for transformations and argument simplification
 
@@ -982,7 +1002,7 @@
               (mul
                 (div
                   (power -1 n)
-                  (simplify (list '($pochhammer) (sub 1 a) n)))
+                  ($factor (simplify (list '($pochhammer) (sub 1 a) n))))
                 (simplify (list '(%gamma_incomplete_generalized) a z1 z2)))
               (mul -1
                 (power '$%e (mul -1 z2))
@@ -1023,6 +1043,28 @@
          $gamma_incomplete_regularized noun)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Generalized Incomplete Gamma function has not mirror symmetry for z1 or z2 
+;;; on the negative real axis. 
+;;; We support a conjugate-function which test this case.
+
+(defprop %gamma_incomplete_regularized
+         conjugate-gamma-incomplete-regularized conjugate-function)
+
+(defun conjugate-gamma-incomplete-regularized (args)
+  (let ((a (first args)) (z (second args)))
+    (cond ((off-negative-real-axisp z)
+           ;; z definitly not on the negative real axis. Mirror symmetry.
+	   (simplify
+             (list
+              '(%gamma_incomplete_regularized)
+               (simplify (list '($conjugate) a))
+               (simplify (list '($conjugate) z)))))
+	  (t
+           ;; On the negative real axis or no information. Unsimplified.
+           (list
+            '($conjugate simp)
+             (simplify (list '(%gamma_incomplete_regularized) a z)))))))
 
 ;;; Regularized Incomplete Gamma function is a simplifying function
 
@@ -1083,30 +1125,21 @@
 
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
-      ((and (numberp a)
-            (numberp z)
-            (or $numer (floatp a) (floatp z)))
-       (complexify (/ (gamma-incomplete a z) (gamma-lanczos (complex a)))))
+      ((float-numerical-eval-p a z)
+       (complexify 
+         (/ (gamma-incomplete ($float a) ($float z)) 
+            (gamma-lanczos (complex ($float a))))))
 
-      ((and (complex-number-p a)
-            (complex-number-p z)
-            (or $numer 
-                (floatp ($realpart a)) (floatp ($imagpart a))
-                (floatp ($realpart z)) (floatp ($imagpart z))))
-       (let ((ca (complex ($realpart a) ($imagpart a)))
-             (cz (complex ($realpart z) ($imagpart z))))
+      ((complex-float-numerical-eval-p a z)
+       (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
+             (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
          (complexify (/ (gamma-incomplete ca cz) (gamma-lanczos ca)))))
            
-      ((and (mnump a)
-            (mnump z)
-            (or $numer ($bfloatp a) ($bfloatp z)))
-       (div (bfloat-gamma-incomplete a z) (simplify (list '(%gamma) a))))
+      ((bigfloat-numerical-eval-p a z)
+       (div (bfloat-gamma-incomplete ($bfloat a) ($bfloat z)) 
+            (simplify (list '(%gamma) ($bfloat a)))))
 
-      ((and (complex-number-p a 'bigfloat-or-number-p)
-            (complex-number-p z 'bigfloat-or-number-p)
-            (or $numer
-                ($bfloatp ($realpart a)) ($bfloatp ($imagpart a))
-                ($bfloatp ($realpart z)) ($bfloatp ($imagpart z))))
+      ((complex-bigfloat-numerical-eval-p a z)
        (let ((ca (add ($bfloat ($realpart a)) 
                       (mul '$%i ($bfloat ($imagpart a)))))
              (cz (add ($bfloat ($realpart z)) 
@@ -1269,10 +1302,12 @@
     ;; Check for numerical evaluation
 
     ((float-numerical-eval-p z)
-     (complexify (log-gamma-lanczos (complex z 0))))
+     (complexify (log-gamma-lanczos (complex ($float z) 0))))
 
     ((complex-float-numerical-eval-p z)
-     (complexify (log-gamma-lanczos (complex ($realpart z) ($imagpart z)))))
+     (complexify 
+       (log-gamma-lanczos 
+         (complex ($float ($realpart z)) ($float ($imagpart z))))))
 
     ((bigfloat-numerical-eval-p z) 
      (bfloat-log-gamma ($bfloat z)))
@@ -1505,9 +1540,10 @@
     ;; Check for numerical evaluation
 
     ((float-numerical-eval-p z)
-     (erf (float z)))
+     (erf ($float z)))
     ((complex-float-numerical-eval-p z)
-     (complexify (complex-erf (complex ($realpart z) ($imagpart z)))))
+     (complexify 
+       (complex-erf (complex ($float ($realpart z)) ($float ($imagpart z))))))
     ((bigfloat-numerical-eval-p z)
      (bfloat-erf ($bfloat z)))
     ((complex-bigfloat-numerical-eval-p z)
@@ -1623,12 +1659,14 @@
       ;; Check for numerical evaluation. Use erf(z1,z2) = erf(z2)-erf(z1)
 
       ((float-numerical-eval-p z1 z2)
-       (- (erf (float z2)) (erf (float z1))))
+       (- (erf ($float z2)) (erf ($float z1))))
       ((complex-float-numerical-eval-p z1 z2)
        (complexify 
          (- 
-           (complex-erf (complex ($realpart z2) ($imagpart z2))) 
-           (complex-erf (complex ($realpart z1) ($imagpart z1))))))
+           (complex-erf 
+             (complex ($float ($realpart z2)) ($float ($imagpart z2))))
+           (complex-erf 
+             (complex ($float ($realpart z1)) ($float ($imagpart z1)))))))
       ((bigfloat-numerical-eval-p z1 z2)
        (sub
          (bfloat-erf ($bfloat z2))
@@ -1703,9 +1741,12 @@
     ;; Check for numerical evaluation. Use erfc(z) = 1-erf(z).
 
     ((float-numerical-eval-p z)
-     (- 1.0 (erf (float z))))
+     (- 1.0 (erf ($float z))))
     ((complex-float-numerical-eval-p z)
-     (complexify (- 1.0 (complex-erf (complex ($realpart z) ($imagpart z))))))
+     (complexify 
+       (- 1.0 
+         (complex-erf 
+           (complex ($float ($realpart z)) ($float ($imagpart z)))))))
     ((bigfloat-numerical-eval-p z)
      (sub 1.0 (bfloat-erf ($bfloat z))))
     ((complex-bigfloat-numerical-eval-p z)
@@ -1722,7 +1763,6 @@
 
     ($erf_representation
      (sub 1 (simplify (list '(%erf) z))))
-
 
     (t
      (eqtest (list '(%erfc) z) expr))))
@@ -1778,13 +1818,13 @@
 
     ((float-numerical-eval-p z)
      ;; For real argument z the value of erfi is real.
-     (realpart (* (complex 0 -1) (complex-erf (complex 0 (float z))))))
+     (realpart (* (complex 0 -1) (complex-erf (complex 0 ($float z))))))
     ((complex-float-numerical-eval-p z)
      (complexify 
        (* 
          (complex 0 -1)
          (complex-erf 
-           (complex (- (float ($imagpart z))) (float ($realpart z)))))))
+           (complex (- ($float ($imagpart z))) ($float ($realpart z)))))))
     ((bigfloat-numerical-eval-p z)
      ;; For real argument z the value of erfi is real.
      ($realpart
