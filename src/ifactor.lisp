@@ -24,13 +24,13 @@
 (defmvar $primep_number_of_tests 25 "Number of Miller-Rabin tests." fixnum)
 
 (defmvar $pollard_rho_limit 16000 "Limit for pollard-rho factorization depth." fixnum)
-(defmvar $pollard_pm1_limit 25000 "Limit for pollard-rho factorization depth." fixnum)
+(defmvar $pollard_pm1_limit 25000 "Limit for pollard-p1 factorization depth." fixnum)
 
 (defmvar $pollard_rho_tests 5 "Number of pollard-rho rounds." fixnum)
 (defmvar $pollard_pm1_tests 3 "Number of pollard-p-1 rounds." fixnum)
 
 (defmvar $pollard_rho_limit_step 1000 "Step for pollard-rho factorization limit." fixnum)
-(defmvar $pollard_pm1_limit_step 5000 "Step for pollard-rho factorization limit." fixnum)
+(defmvar $pollard_pm1_limit_step 5000 "Step for pollard-p-1 factorization limit." fixnum)
 
 (defmvar $ecm_number_of_curves 50 "Number of curves tried in one round of ecm." fixnum)
 (defmvar $ecm_limit       200  "Starting smootheness limit for ecm method." fixnum)
@@ -384,7 +384,7 @@
 ;;; in general a prime factor p of x is found, if p-1 is
 ;;; a product of prime powers q^k <= lim
 
-(defun get-one-factor-p-1 (n &optional (lim 16000) (lim2 1000000))
+(defun get-one-factor-p-1 (n &optional (lim 16000))
   (declare (integer n lim))
   (let* ((base (+ 2 (random (- n 2))))
 	 (anz 256)
