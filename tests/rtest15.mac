@@ -3,6 +3,10 @@
 kill(all);
 done$
 
+/* This file assumes fpprec has its default value of 16 */
+fpprec:16;
+16;
+
 /* apropos function added 7 april 2002 */
 apropos('tr_optimize_max_loop);
 [tr_optimize_max_loop]$
