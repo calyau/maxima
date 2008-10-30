@@ -1,7 +1,7 @@
 ;;;
 ;;;  GRAPHS - graph theory package for Maxima
 ;;;
-;;;  Copyright (C) 2007 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+;;;  Copyright (C) 2007-2008 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 ;;;
 ;;;  This program is free software; you can redistribute it and/or modify
 ;;;  it under the terms of the GNU General Public License as published by
@@ -47,13 +47,10 @@
     (/ (* *optimal-distance* *optimal-distance*) d 100)))
 
 (defun distance (p1 p2)
-  (let ((dx (- (first p1)
-	       (first p2)))
-	(dy (- (second p1)
-	       (second p2))))
-    (sqrt (+ (* dx dx) (* dy dy)))))
+  (let ((d (mapcar #'- p1 p2)))
+    (sqrt (apply #'+ (mapcar #'* d d)))))
 
-(defun random-positions (v-list)
+(defun random-positions (v-list dimension)
   (when *fixed-vertices*
     (let ((n (length *fixed-vertices*)))
       (dotimes (i (length *fixed-vertices*))
@@ -65,18 +62,21 @@
   (dolist (v v-list)
     (unless (member v *fixed-vertices*)
       (let* ((x (- *frame-width* (random (* 2 *frame-width*))))
-	     (y (- *frame-width* (random (* 2 *frame-width*)))))
+	     (y (- *frame-width* (random (* 2 *frame-width*))))
+	     (z (- *frame-width* (random (* 2 *frame-width*)))))
 	(setf (gethash v *vertex-position*)
-	      (list x y))))))
+	      (if (= dimension 3)
+		  (list x y z)
+		  (list x y)))))))
 
-(defun $spring_embedding (g depth &optional fixed-vertices)
+(defun $spring_embedding (g depth fixed-vertices dimension)
   (let ((*vertex-position* (make-hash-table))
 	(vertex-displacement (make-hash-table))
 	(*fixed-vertices* (cdr fixed-vertices))
 	(*optimal-distance* (/ (* 2 *frame-width*)
 			       (sqrt ($graph_size g)))))
 
-    (random-positions (vertices g))
+    (random-positions (vertices g) dimension)
     
     (let* ((step (/ *frame-width* 5))
 	   (d-step (/ step (1+ depth))))
@@ -84,10 +84,10 @@
 	(setq step (- step d-step))
       
 	(dolist (v (vertices g))
-	  (setf (gethash v vertex-displacement) (list 0 0)))
+	  (setf (gethash v vertex-displacement) (if (= dimension 2) (list 0 0) (list 0 0 0))))
 
 	;; calculate repulsive forces
-	(when (null (cdr fixed-vertices))
+	(when (null *fixed-vertices*)
 	  (let ((v-vrt (vertices g)))
 	    (loop while v-vrt do
 		 (let* ((v (car v-vrt))
@@ -96,67 +96,58 @@
 		   (loop while u-vrt do
 			(let* ((u (car u-vrt))
 			       (u-pos (gethash u *vertex-position*))
-			       (delta (list (- (first v-pos) (first u-pos))
-					    (- (second v-pos) (second u-pos))))
+			       (delta (mapcar #'- v-pos u-pos))
 			       (delta-abs (distance v-pos u-pos))
 			       (force (repulsive-force delta-abs))
-			       (x (* (/ (first delta) (max delta-abs *epsilon-distance*))
-				     force))
-			       (y (* (/ (second delta) (max delta-abs *epsilon-distance*))
-				     force))
+			       (vu-disp (mapcar
+					 #'(lambda (u) (* (/ u (max delta-abs *epsilon-distance*)) force))
+					 delta))
 			       (v-disp (gethash v vertex-displacement))
 			       (u-disp (gethash u vertex-displacement)))
 			  (setf (gethash v vertex-displacement)
-				(list (+ (first v-disp) x)
-				      (+ (second v-disp) y))
+				(mapcar #'+ v-disp vu-disp)
 				(gethash u vertex-displacement)
-				(list (- (first u-disp) x)
-				      (- (second u-disp) y)))
+				(mapcar #'- u-disp vu-disp))
 			  (setq u-vrt (cdr u-vrt)))))
 		 (setq v-vrt (cdr v-vrt)))))
 	
 	;; calculate attractive forces
 	(dolist (e (edges g))
-	  (let* ((v (first e)) (u (second e))
+	  (let* ((v (first e))
+		 (u (second e))
 		 (v-pos (gethash v *vertex-position*))
 		 (u-pos (gethash u *vertex-position*))
-		 (delta (list (- (first v-pos) (first u-pos))
-			      (- (second v-pos) (second u-pos))))
+		 (delta (mapcar #'- v-pos u-pos))
 		 (delta-abs (distance v-pos u-pos))
 		 (v-disp (gethash v vertex-displacement))
 		 (u-disp (gethash u vertex-displacement))
 		 (force (attractive-force delta-abs))
-		 (x (* (/ (first delta) (max delta-abs *epsilon-distance*))
-		       force))
-		 (y (* (/ (second delta) (max delta-abs *epsilon-distance*))
-		       force)))
+		 (vu-disp (mapcar
+			   #'(lambda (u)
+			       (* (/ u (max delta-abs *epsilon-distance*)) force))
+			   delta)))
 	    (setf (gethash v vertex-displacement)
-		  (list (- (first v-disp) x)
-			(- (second v-disp) y)))
-	    (setf (gethash u vertex-displacement)
-		  (list (+ (first u-disp) x)
-			(+ (second u-disp) y)))))
+		  (mapcar #'- v-disp vu-disp)
+		  (gethash u vertex-displacement)
+		  (mapcar #'+ u-disp vu-disp))))
 	
 	;; Limit the displacement
 	(dolist (v (vertices g))
 	  (unless (member v *fixed-vertices*)
 	    (let* ((v-disp (gethash v vertex-displacement))
 		   (v-disp (mapcar #'(lambda (u) (/ u 2)) v-disp))
-		   (v-disp-abs (distance (list 0 0) v-disp))
+		   (v-disp-abs (sqrt (apply #'+ (mapcar #'* v-disp v-disp))))
 		   (v-pos (gethash v *vertex-position*)))
 	      (if (> v-disp-abs step)
-		  (setq v-pos (list (+ (first v-pos)
-				       (* (/ (first v-disp) v-disp-abs) step))
-				    (+ (second v-pos)
-				       (* (/ (second v-disp) v-disp-abs) step))))
-		  (setq v-pos (list (+ (first v-pos) (first v-disp))
-				    (+ (second v-pos) (second v-disp)))))
-	      (setq v-pos (list (min *frame-width* (max (first v-pos) 
-							(- *frame-width*)))
-				(min *frame-width* (max (second v-pos)
-							(- *frame-width*)))))
-	      (setf (gethash v *vertex-position*) v-pos)))) ))
-    
+		  (setq v-pos (mapcar #'(lambda (u v)
+					  (+ u (* (/ v v-disp-abs) step)))
+				      v-pos v-disp))
+		  (setq v-pos (mapcar #'+ v-pos v-disp)))
+	      (setq v-pos (mapcar #'(lambda (u) (min *frame-width* (max u (- *frame-width*))))
+				  v-pos))
+	      (setf (gethash v *vertex-position*) v-pos))))
+	))
+	
     (let (result)
       (maphash #'(lambda (vrt pos)
 		   (setq result

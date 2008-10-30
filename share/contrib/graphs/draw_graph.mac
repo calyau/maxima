@@ -114,7 +114,8 @@ draw_graph(G, [options]) := block(
    edge_partition : [],
    edge_coloring : [],
    edge_types : [],
-   edge_widths : []
+   edge_widths : [],
+   dimension : 2
   ],
 
   if not(is_graph(G)) and not(is_digraph(G)) then
@@ -142,7 +143,7 @@ draw_graph(G, [options]) := block(
       if member(program, ['neato, 'dot, 'twopi, 'fdp, 'circo]) then
         v_pos : graphviz_positions(G, program)
       else if program = 'spring_embedding then
-        v_pos : spring_embedding(G, spring_embedding_depth, fixed_vertices)
+        v_pos : spring_embedding(G, spring_embedding_depth, fixed_vertices, dimension)
       else if program = 'planar_embedding then block(
         [embedding : planar_embedding(G), c],
         if embedding=false then
@@ -151,24 +152,26 @@ draw_graph(G, [options]) := block(
           c : embedding[1],
           for i:2 thru length(embedding) do (
             if length(embedding[i])>length(c) then c:embedding[i]),
-          v_pos : spring_embedding(G, spring_embedding_depth, c)))
+          v_pos : spring_embedding(G, spring_embedding_depth, c, 2)))
       else
         v_pos : circular_positions(G),
-      set_positions(v_pos, G)),
+      set_positions(v_pos, G))
+    else dimension : length(second(first(v_pos))),
 
     /* Normalize positions into [-1,1]x[-1,1] */
-    if length(v_pos)>1 then (
-      x_max : lmax(map(lambda([u], part(u, 2, 1)), v_pos)),
-      x_min : lmin(map(lambda([u], part(u, 2, 1)), v_pos)),
-      y_max : lmax(map(lambda([u], part(u, 2, 2)), v_pos)),
-      y_min : lmin(map(lambda([u], part(u, 2, 2)), v_pos)),
+    if length(v_pos)>1 then block(
+      [xyz_min, xyz_max, xyz],
+      xyz : args(transpose(apply(matrix, map(second, v_pos)))),
+      xyz_max : map(lmax, xyz),
+      xyz_min : map(lmin, xyz),
       v_pos : map(
         lambda([u],
-          [part(u, 1),
-          [2*(part(u, 2, 1) - (x_min+x_max)/2)/(x_max-x_min),
-           2*(part(u, 2, 2) - (y_min+y_max)/2)/(y_max-y_min)]]),
-        v_pos)),
-
+          [u[1],
+           map(lambda([xx, xx_max, xx_min],
+               2*(xx - (xx_min, xx_max)/2) / (xx_max - xx_min)),
+             u[2], xyz_max, xyz_min)]),
+         v_pos)),
+     
     /* Setup edges */
     if show_edges#[] then (
       for e in edges(G) do
@@ -264,7 +267,10 @@ draw_graph(G, [options]) := block(
       edge_weights : [apply(label, edge_weights)],
 
     /* Check if we are in wxmaxima */
-    if terminal='wxmaxima then command : wxdraw2d else command : draw2d,
+    if terminal='wxmaxima then (
+      if dimension=3 then command : wxdraw3d else command : wxdraw2d)
+    else (
+      if dimension=3 then command : draw3d else command : draw2d),
     
     if terminal#'wxmaxima then
       gp_options : ['terminal = terminal, 'file_name = file_name]
