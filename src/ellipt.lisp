@@ -791,7 +791,7 @@
 		      ((mplus simp) 1 ((mtimes simp) -1 ,m))
 		      ((rat simp) 1 4)))
 		   (t
-		    (eqtest (list '(%jacobi_cn) u m) form)))))
+		    (eqtest (list '(%jacobi_dn) u m) form)))))
 	  (t (eqtest (list '(%jacobi_dn) u m) form)))))
 
 ;; Should we simplify the inverse elliptic functions into the

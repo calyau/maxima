@@ -513,5 +513,11 @@ integrate(sqrt(1-x^2)*(x^2+1)/(2-2*x^2),x,0,1);
 integrate(sqrt(1-x^2)*(x^2+1)/(1-x^2),x,0,1);
 3*%pi/4;
 
+/*
+ * Bug [ 2208303 ] Problem with jacobi_dn and elliptic_kc
+ */
+jacobi_dn(elliptic_kc(m)*t,m);
+jacobi_dn(elliptic_kc(m)*t,m);
+
 end;
 end$
