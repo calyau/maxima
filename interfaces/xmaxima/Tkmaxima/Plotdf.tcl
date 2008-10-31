@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.13 2008-10-25 18:24:23 villate Exp $
+#       $Id: Plotdf.tcl,v 1.14 2008-10-31 14:57:37 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -12,9 +12,7 @@ set plotdfOptions {
     {dxdt "x-y^2+sin(x)*.3" {specifies dx/dt = dxdt.  eg -dxdt "x+y+sin(x)^2"} }
     {dydt "x+y" {specifies dy/dt = dydt.  eg -dydt "x-y^2+exp(x)"} }
     {dydx "" { may specify dy/dx = x^2+y,instead of dy/dt = x^2+y and dx/dt=1 }}
-    {adamsMoulton red "Color to do adams moulton integration in. None means dont do" }
-    {rungeKuttaA "" "Color to do Runge Kutta adaptive integration in. None means dont do" }
-
+    {trajectory red "Color for the trajectories." }
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
     {width 560 "Width of canvas in pixels"}
@@ -24,7 +22,7 @@ set plotdfOptions {
     {ycenter 0.0 "see xcenter"}
     {bbox "" "xmin ymin xmax ymax .. overrides the -xcenter etc"}
     {tinitial 0.0 "The initial value of variable t"}
-    {nsteps 100 "Number of steps to do in one pass"}
+    {nsteps 200 "Number of steps to do in one pass"}
     {xfun "" "A semi colon separated list of functions to plot as well"}
     {tstep "" "t step size"}
     {direction "both" "May be both, forward or backward" }
@@ -92,7 +90,7 @@ proc doHelpdf { win } {
     global Parser
     doHelp $win [join [list \
 			 [mc  {
-SOLVER/PLOTTER FOR SYSTEMS OF DIFFERENTIAL EQUAITONS
+SOLVER/PLOTTER FOR SYSTEMS OF DIFFERENTIAL EQUATIONS
 
 To quit this help click anywhere on this text.
 
@@ -151,31 +149,35 @@ proc doIntegrate { win x0 y0 } {
     set didLast {}
     # puts "doing at $trajectory_at"
     set steps $nsteps
+    set hx [expr {$xradius / 100.0}]
+    set hy [expr {$yradius / 100.0}]
     if { "$tstep" == "" } {
 	set h [expr {[vectorlength $xradius $yradius] / 200.0}]
 	set tstep $h
     } else {set h $tstep }
 
     # puts h=$h
-    set todo $h
+    set todo "1"
     switch -- $direction {
-	forward { set todo "$h" }
-	backward { set todo "[expr {- $h}]" }
-	both { set todo "$h [expr {- $h}]" }
+	forward { set todo "1" }
+	backward { set todo "-1" }
+	both { set todo "1 -1" }
     }
-    foreach method { adamsMoulton rungeKuttaA  } {
-						  set color [oget $win $method]
-						  if { "$color" != "" } {
-						      lappend methods $method
-						      lappend useColors $method $color
-						  }
-					      }
+    foreach method { trajectory } {
+				    set color [oget $win $method]
+				    if { "$color" != "" } {
+					lappend methods $method
+					lappend useColors $method $color
+				    }
+				}
     set methodNo -1
     foreach method $methods {
 			     incr methodNo
 			     #    puts method=$method
-			     foreach h $todo {
-				 set form [list $method xff yff $tinitial $x0 $y0 $h $steps]
+			     foreach sgn $todo {
+				 set h1 [expr {- $hx}]
+				 set h2 [expr {- $hy}]
+				 set form [list $method xff yff $tinitial $x0 $y0 $hx $hy $steps $sgn]
 				 set ans [eval $form]
 				 lappend didLast $form
 
@@ -513,7 +515,7 @@ proc doConfigdf { win } {
     pack $frdydx.dxdt  $frdydx.dydt -side bottom  -fill x -expand 1
     pack $frdydx.dydxbut $frdydx.dydtbut -side left -fill x -expand 1
 
-    foreach w {versus_t parameters linewidth xradius yradius xcenter ycenter tinitial nsteps tstep direction xfun linecolors rungeKuttaA adamsMoulton } {
+    foreach w {versus_t parameters linewidth xradius yradius xcenter ycenter tinitial nsteps direction xfun linecolors trajectory } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
