@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.46 2006-12-19 11:30:19 vvzhy Exp $
+#       $Id: Makefile.am,v 1.47 2008-10-31 14:53:03 villate Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -38,6 +38,7 @@ TKSOURCES = \
 	Tkmaxima/Plotconf.tcl \
 	Tkmaxima/Adams.tcl \
 	Tkmaxima/Rk.tcl \
+	Tkmaxima/rk4.tcl \
 	Tkmaxima/Plotdf.tcl \
 	Tkmaxima/Plot2d.tcl \
 	Tkmaxima/Matrix.tcl \
