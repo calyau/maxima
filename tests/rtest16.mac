@@ -417,6 +417,23 @@ tex (t[1], false);
 limit((%pi*N^(2*N+1)*2^(2*N))/((2*N-1)^(2*N)*(2*%e*N+%e)), N, inf);
 %pi/2;
 
+/* tests for gruntz limit algorithm */
+gruntz(exp(x), x, inf);
+inf;
+
+gruntz(exp(-x), x, inf);
+0;
+
+gruntz( (x + 2^x) / 3^x, x, inf);
+0;
+
+gruntz( x^2/(x + 2*x^2), x, inf);
+1/2;
+
+gruntz( x/x^log(x), x, inf);
+0;
+
+
 /*
  * Bug [ 1854888 ] hgfred([5],[5], 1) doesn't simplify
  */

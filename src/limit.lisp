@@ -116,7 +116,7 @@ It appears in LIMIT and DEFINT.......")
 
     (unwind-protect
 	 (let ((exp1 ()) (rd* t) (lhcount $lhospitallim) (behavior-count-now 0)
-	       (d ()) (exp ()) (var ()) (val ()) (dr ())
+	       (exp ()) (var ()) (val ()) (dr ())
 	       (*indicator ()) (taylored ()) (origval ())
 	       (logcombed ()) (lhp? ()) ($logexpand t)
 	       (varlist ()) (ans ()) (genvar ()) (loginprod? ())
@@ -929,7 +929,6 @@ It appears in LIMIT and DEFINT.......")
 		       ((mexpt simp) $%pi ((rat simp) 1 2))
 		       ((mexpt simp) $z ((mplus simp) ((rat simp) -1 2) $z))
 		       ((mexpt simp) $%e ((mtimes simp) -1 $z)))))
-
 
 (defun no-err-sub (v e &aux ans)
   (let ((errorsw t) (errrjfflag t) (*zexptsimp? t)
@@ -2845,3 +2844,235 @@ It appears in LIMIT and DEFINT.......")
 
 (declare-top (unspecial *indicator nn* dn* exp var val origval taylored
 			$tlimswitch logcombed lhp? lhcount $ratfac))
+
+
+;; GRUNTZ ALGORITHM
+
+;; Dominik Gruntz
+;; "On Computing Limits in a Symbolic Manipulation System"
+;; PhD Dissertation ETH Zurich 1996
+
+;; The algorithm identifies the most rapidly varying (MRV) subexpression,
+;; replaces it with a new variable w, rewrites the expression in terms
+;; of the new variable, and then repeats.
+
+;; The algorithm doesn't handle oscillating functions, so it can't do things like
+;; limit(sin(x)/x, x, inf).
+
+;; To handle limits involving functions like gamma(x) and erf(x), the
+;; gruntz algorithm requires them to be written in terms of asymptotic
+;; expansions, which maxima cannot currently do.
+
+;; The algorithm assumes that everything is real, so it can't
+;; currently handle limit((-2)^x, x, inf).
+
+;; After more testing, this should become one of the methods used by maxima's $limit.
+;; For now, it is available to the user as $gruntz.
+
+
+;; most rapidly varying subexpression of expression exp with respect to limit variable var.
+;; returns a list of subexpressions which are in the same MRV equivalence class.
+(defun mrv (exp var)
+  (cond ((freeof var exp)
+	 nil)
+	((eq var exp)
+	 (list var))
+	((mtimesp exp)
+	 (mrv-max (mrv (cadr exp) var)
+		  (mrv (m*l (cddr exp)) var)
+		  var))
+	((mplusp exp)
+	 (mrv-max (mrv (cadr exp) var)
+		  (mrv (m+l (cddr exp)) var)
+		  var))
+	((mexptp exp)
+	 (cond ((eq (cadr exp) '$%e)
+		(cond ((member (limitinf (caddr exp) var) '($inf $minf) :test #'eq)
+		       (mrv-max (list exp) (mrv (caddr exp) var) var))
+		      (t (mrv (caddr exp) var))))
+		((not (freeof var (caddr exp)))
+		 (mrv (m^ '$%e (m* (caddr exp) `((%log) ,(cadr exp))))
+		     var))
+		(t (mrv (cadr exp) var))))
+	((mlogp exp)
+	 (mrv (cadr exp) var))
+	((eq (length (cdr exp)) 1)
+	 (mrv (cadr exp) var))
+	(t (merror "mrv not implemented"))))
+
+;; takes two lists of expresions, f and g, and limit variable var.
+;; members in each list are assumed to be in same MRV equivalence class.
+;; returns MRV set of the union of the inputs - either f or g or the union of f and g.
+(defun mrv-max (f g var)
+  (prog () 
+	(cond ((not f)
+	       (return g))
+	      ((not g)
+	       (return f))
+	      ((intersection f g)
+	       (return (union f g)))
+	      ((member var f :test #'eq) (return g))
+	      ((member var g :test #'eq) (return f)))
+	(let ((c (mrv-compare (car f) (car g) var)))
+	  (cond ((eq c ">")
+		 (return f))
+		((eq c "<")
+		 (return g))
+		((eq c "=")
+		 (return (union f g)))
+		(t (merror "mrv-mav: invalid comparison"))))))
+
+(defun mrv-compare (a b var)
+  (let ((c (limitinf (m// `((%log) ,a) `((%log) ,b)) var)))
+    (cond ((eq c 0)
+	   "<")
+	  ((member c '($inf $minf) :test #'eq)
+	   ">")
+	  (t "="))))
+
+;; rewrite expression exp by 
+;; replacing members of MRV set omega with expressions in terms of new variable wsym.
+;; return cons pair of new version of exp and the log of the new variable wsym.
+(defun mrv-rewrite (exp omega var wsym)
+  (setq omega (sort omega (lambda (x y) (> (length (mrv x var))
+					   (length (mrv y var))))))
+  (let* ((g (car (last omega)))
+	 (sig (eq (mrv-sign (caddr g) var) 1))
+	 (o2 nil))
+    (cond (sig (setq wsym (m// 1 wsym))))
+    (setq o2 (mapcar (lambda (f)
+		       (let ((c (mrv-leadterm (m// (caddr f)
+						   (caddr g))
+					      var
+					      nil)))
+			 (cond ((not (eq (cadr c) 0))
+				(merror "leadterm should be constant")))
+			 (m* (m^ wsym (car c))
+			     ($expand ($exp (m- (caddr f)
+						(m* (car c)
+						    (caddr g))))))))
+		       omega))
+    (let ((f ($radcan exp)))
+      (mapcar (lambda (x y)
+		;; radcan normalizes 2^x and exp(log(2)*x)
+		(setq f (maxima-substitute ($radcan y) ($radcan x) f)))
+	      omega
+	      o2)
+      (setq logw (caddr g))
+      (cond (sig (setq logw (m* -1 logw))))
+      (cons f logw))))
+    
+;; returns list of two elements: coeff and exponent of leading term of exp,
+;; after rewriting exp in term of its MRV set omega.
+(defun mrv-leadterm (exp var omega)
+  (prog ((new-omega ()))
+	(cond ((freeof var exp)
+	       (return (list exp 0))))
+	(dolist (term omega)
+	  (cond ((subexp exp term)
+		 (setq new-omega (cons term new-omega)))))
+	(setq omega new-omega)
+	(cond ((not omega)
+	       (setq omega (mrv exp var))))
+	(cond ((member var omega :test #'eq)
+	       (let* ((omega-up (mrv-moveup omega var))
+		      (e-up (car (mrv-moveup (list exp) var)))
+		      (mrv-leadterm-up (mrv-leadterm e-up var omega-up)))
+		 (return (mrv-movedown mrv-leadterm-up var)))))
+	(destructuring-let* ((wsym (gensym "w"))
+			     ((f . logw) (mrv-rewrite exp omega var wsym))
+			     (series (calculate-series f wsym)))
+			    (setq series (maxima-substitute logw `((%log) ,wsym) series))
+			    (return (list ($coeff series wsym ($lopow series wsym))
+					  ($lopow series wsym))))))
+
+(defun mrv-moveup (l var)
+  (mapcar (lambda (exp) (maxima-substitute ($exp var) var exp))
+	  l))
+    
+(defun mrv-movedown (l var)
+  (mapcar (lambda (exp) (maxima-substitute `((%log) ,var) var exp))
+	  l))
+
+;; test whether sub is a subexpression of exp
+(defun subexp (exp sub)
+  (not (equal (maxima-substitute 'dummy
+				 sub
+				 exp)
+	      exp)))
+
+(defun calculate-series (exp var)
+  (let ((series ($taylor exp var 0 2)))
+    series))
+
+(defun mrv-sign (exp var)
+  (cond ((mnump exp)
+	 (cond ((eq exp 0)
+		0)
+	       ((eq ($sign exp) '$pos)
+		1)
+	       ((eq ($sign exp) '$neg)
+		-1)
+	       (merror "unknown sign")))
+	((freeof var exp)
+	 (cond ((eq ($sign exp) '$zero)
+		0)
+	       ((eq ($sign exp) '$pos)
+		1)
+	       ((eq ($sign exp) '$neg)
+		-1)))
+	((eq exp var)
+	 1)
+	((mtimesp exp)
+	 (* (mrv-sign (cadr exp) var)
+	    (mrv-sign (m*l (cddr exp)) var)))
+	((and (mexptp exp)
+	      (eq (mrv-sign (cadr exp) var) 1))
+	 1)
+	((mlogp exp)
+	 (mrv-sign (m+ -1 (cadr exp)) var))
+	((mplusp exp)
+	 (mrv-sign (limitinf exp var) var))
+	(t (merror "cannot determine mrv-sign ~S~%" exp))))
+					   
+;; gruntz algorithm for limit of exp as var goes to positive infinity
+(defun limitinf (exp var)
+  (prog (($exptsubst t))
+	(cond ((freeof var exp)
+	       (return exp)))
+	(destructuring-let* ((c0-e0 (mrv-leadterm exp var nil))
+			     (c0 (car c0-e0))
+			     (e0 (cadr c0-e0))
+			     (sig (mrv-sign e0 var)))
+			    (cond ((eq sig 1)
+				   (return 0))
+				  ((eq sig -1)
+				   (cond ((eq (mrv-sign c0 var) 1)
+					  (return '$inf))
+					 ((eq (mrv-sign c0 var) -1)
+					  (return '$minf))))
+				  ((eq sig 0)
+				   (return (limitinf c0 var)))))))
+
+;; user-level function equivalent to $limit
+;; direction must be specified if limit point is not infinite
+(defmfun $gruntz (exp var val &rest rest)
+  (cond ((> (length rest) 1)
+	 (merror "too many arguments")))
+  (let ((dir (car rest)))
+    (cond ((eq val '$inf)
+	   (limitinf exp var))
+	  ((eq val '$minf)
+	   (setq exp (maxima-substitute (m* -1 var) var exp))
+	   (limitinf exp var))
+	  ((eq dir '$plus)
+	   (setq exp (maxima-substitute (m+ val (m// 1 var)) var exp))
+	   (limitinf exp var))
+	  ((eq dir '$minus)
+	   (setq exp (maxima-substitute (m+ val (m// -1 var)) var exp))
+	   (limitinf exp var))
+	  (t (merror "direction must be plus or minus")))))
+
+
+
+	
