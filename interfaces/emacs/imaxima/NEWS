@@ -1,4 +1,15 @@
+* Changes in imaxima-imath 1.0 beta2
+
+** Workaround for OpenSUSE Linux is included.
+
+* Changes in imaxima-imath 1.0 beta
+
+** bohumir's patch for {eps xxx eps} is included.
+** Inline graph support in both imaxima and imath is added.
+** I have decided this version to be 1.0 beta. 
+
 * Changes in imaxima-imath 0.98
+
 ** Greek letter gamma is better handled in imaxima.
 ** Conjugate symbol is handled correctly in imaxima.
 ** imaxima-to-html function, which converts imaxima
