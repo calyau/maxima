@@ -2901,8 +2901,9 @@ It appears in LIMIT and DEFINT.......")
 	(t (merror "mrv not implemented"))))
 
 ;; takes two lists of expresions, f and g, and limit variable var.
-;; members in each list are assumed to be in same MRV equivalence class.
-;; returns MRV set of the union of the inputs - either f or g or the union of f and g.
+;; members in each list are assumed to be in same MRV equivalence
+;; class.  returns MRV set of the union of the inputs - either f or g
+;; or the union of f and g.
 (defun mrv-max (f g var)
   (prog () 
 	(cond ((not f)
@@ -2914,25 +2915,25 @@ It appears in LIMIT and DEFINT.......")
 	      ((member var f :test #'eq) (return g))
 	      ((member var g :test #'eq) (return f)))
 	(let ((c (mrv-compare (car f) (car g) var)))
-	  (cond ((eq c ">")
+	  (cond ((eq c '>)
 		 (return f))
-		((eq c "<")
+		((eq c '<)
 		 (return g))
-		((eq c "=")
+		((eq c '=)
 		 (return (union f g)))
-		(t (merror "mrv-mav: invalid comparison"))))))
+		(t (merror "mrv-max: invalid comparison"))))))
 
 (defun mrv-compare (a b var)
   (let ((c (limitinf (m// `((%log) ,a) `((%log) ,b)) var)))
     (cond ((eq c 0)
-	   "<")
+	   '<)
 	  ((member c '($inf $minf) :test #'eq)
-	   ">")
-	  (t "="))))
+	   '>)
+	  (t '=))))
 
-;; rewrite expression exp by 
-;; replacing members of MRV set omega with expressions in terms of new variable wsym.
-;; return cons pair of new version of exp and the log of the new variable wsym.
+;; rewrite expression exp by replacing members of MRV set omega with
+;; expressions in terms of new variable wsym.  return cons pair of new
+;; version of exp and the log of the new variable wsym.
 (defun mrv-rewrite (exp omega var wsym)
   (setq omega (sort omega (lambda (x y) (> (length (mrv x var))
 					   (length (mrv y var))))))
