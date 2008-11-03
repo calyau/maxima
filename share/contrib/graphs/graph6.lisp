@@ -64,7 +64,7 @@
   (graph6-string gr))
 
 (defun graph6-string (gr)
-  (let ((n ($graph_size gr))
+  (let ((n ($graph_order gr))
 	(names (get-canonical-names (vertices gr)))
 	(e-val))
 
@@ -247,7 +247,7 @@
 
 (defun sparse6-string (gr)
   (let* ((vrt (reverse (vertices gr)))
-	 (n ($graph_size gr))
+	 (n ($graph_order gr))
 	 (k (integer-length (1- n)))
 	 (names (get-canonical-names vrt))
 	 (edges (mapcar #'(lambda (u) (list (cdr (assoc (first u) names))

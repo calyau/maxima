@@ -27,16 +27,16 @@
  *********************/
 
 chromatic_polynomial(gr, x) :=
-if graph_order(gr)=0 then x^graph_size(gr)
+if graph_size(gr)=0 then x^graph_order(gr)
 else  block(
   [comp],
   comp : connected_components(gr),
   if length(comp)>1 then (
     comp : map(lambda([u], chromatic_polynomial(induced_subgraph(u, gr), x)), comp),
     expand(apply("*", comp)))
-  else if graph_order(gr)=graph_size(gr)-1 then x*(x-1)^graph_order(gr)
-  else if graph_order(gr)=graph_size(gr)*(graph_size(gr)-1)/2 then c_poly_complete(graph_size(gr),x)
-  else if min_degree(gr)[1]=2 and max_degree(gr)[1]=2 then c_poly_cycle[graph_size(gr)](x)
+  else if graph_size(gr)=graph_order(gr)-1 then x*(x-1)^graph_size(gr)
+  else if graph_size(gr)=graph_order(gr)*(graph_order(gr)-1)/2 then c_poly_complete(graph_order(gr),x)
+  else if min_degree(gr)[1]=2 and max_degree(gr)[1]=2 then c_poly_cycle[graph_order(gr)](x)
   else block(
     [g1, g2, u, v, p1, p2, e],
     u : max_degree(gr)[2],

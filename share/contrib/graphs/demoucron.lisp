@@ -286,7 +286,7 @@
 
 (defun demoucron (g return-walks)
 
-  (when (> ($graph_order g) (- (* 3 ($graph_size g)) 6))
+  (when (> ($graph_size g) (- (* 3 ($graph_order g)) 6))
     (return-from demoucron nil))
 
   (let ((*h-vertices*)
@@ -389,13 +389,13 @@
 
 (defun $is_planar (gr)
   (require-graph 'is_planar 1 gr)
-  (when (< ($graph_size gr) 5)
+  (when (< ($graph_order gr) 5)
     (return-from $is_planar t))
-  (when (> ($graph_order gr) (- (* 3 ($graph_size gr)) 6))
+  (when (> ($graph_size gr) (- (* 3 ($graph_order gr)) 6))
     (return-from $is_planar nil))
   (unless ($is_connected gr)
     (return-from $is_planar (is-planar-unconnected gr)))
-  (when (< ($graph_order gr) ($graph_size gr)) ;; gr is a tree
+  (when (< ($graph_size gr) ($graph_order gr)) ;; gr is a tree
     (return-from $is_planar t))
   (let ((bicomponents ($biconnected_components gr)))
     (loop for c in (cdr bicomponents) do

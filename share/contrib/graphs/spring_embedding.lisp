@@ -74,7 +74,7 @@
 	(vertex-displacement (make-hash-table))
 	(*fixed-vertices* (cdr fixed-vertices))
 	(*optimal-distance* (/ (* 2 *frame-width*)
-			       (sqrt ($graph_size g)))))
+			       (sqrt ($graph_order g)))))
 
     (random-positions (vertices g) dimension)
     

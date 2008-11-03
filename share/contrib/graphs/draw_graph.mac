@@ -26,12 +26,12 @@ define_variable(draw_graph_terminal, 'screen, any)$
 if draw_loaded#true then load("draw")$
 
 circular_positions(G) := block(
-  [v_list, numer : true, n : graph_size(G)],
+  [v_list, numer : true, n : graph_order(G)],
   v_list : vertices(G),
   makelist(
     [v_list[i+1],
     [2+cos(2*i*%pi/n), 2+sin(2*i*%pi/n)]],
-    i, 0, graph_size(G)-1))$
+    i, 0, graph_order(G)-1))$
 
 write_file(G) := block(
   [display2d:false, file, e],
@@ -284,7 +284,11 @@ draw_graph(G, [options]) := block(
         'line_width = edge_width,
         'points_joined = true,
         'head_length = head_length,
-        'head_angle = head_angle
+        'head_angle = head_angle,
+        'axis_3d = false,
+        'xtics = false,
+        'ytics = false,
+        'ztics = false
        ],
         edges,
        [

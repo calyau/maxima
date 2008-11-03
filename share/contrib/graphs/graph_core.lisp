@@ -75,8 +75,8 @@
   (cond
     ((graph-p gr)
      (format t "~%Graph on ~d vertices with ~d edges."
-	     (graph-size gr) (graph-order gr))
-     (when (> (graph-size gr) 0 )
+	     (graph-order gr) (graph-size gr))
+     (when (> (graph-order gr) 0 )
        (format t "~%Adjacencies:"))
      (dolist (v (graph-vertices gr))
        (format t "~% ~2d :" v)
@@ -84,8 +84,8 @@
 	 (format t " ~2d" u))))
     (t
      (format t "~%Digraph on ~d vertices with ~d arcs."
-	     (digraph-size gr) (digraph-order gr))
-     (when (> (digraph-size gr) 0 )
+	     (digraph-order gr) (digraph-size gr))
+     (when (> (digraph-order gr) 0 )
        (format t "~%Adjacencies:"))
      (dolist (v (digraph-vertices gr))
        (format t "~% ~2d :" v)
@@ -103,17 +103,17 @@
 (defun $is_graph_or_digraph (x)
   (or (graph-p x) (digraph-p x)))
 
-(defun $graph_size (gr)
-  (require-graph-or-digraph 'graph_size 1 gr)
-  (if (graph-p gr)
-      (graph-size gr)
-      (digraph-size gr)))
-
 (defun $graph_order (gr)
   (require-graph-or-digraph 'graph_order 1 gr)
   (if (graph-p gr)
       (graph-order gr)
       (digraph-order gr)))
+
+(defun $graph_size (gr)
+  (require-graph-or-digraph 'graph_size 1 gr)
+  (if (graph-p gr)
+      (graph-size gr)
+      (digraph-size gr)))
 
 (defun $copy_graph (gr)
   (require-graph-or-digraph 'copy_graph 1 gr)
@@ -208,12 +208,12 @@
 (defun add-vertex (i gr)
   (if (graph-p gr)
       (progn
-	(incf (graph-size gr))
+	(incf (graph-order gr))
 	(push i (graph-vertices gr))
 	(setf (graph-vertex-positions gr) nil)
 	(setf (gethash i (graph-neighbors gr)) ()))
       (progn
-	(incf (digraph-size gr))
+	(incf (digraph-order gr))
 	(push i (digraph-vertices gr))
 	(setf (digraph-vertex-positions gr) nil)
 	(setf (gethash i (digraph-in-neighbors gr)) ())
@@ -281,7 +281,7 @@
 	(setf (graph-vertex-positions gr) nil)
 	(setf (graph-vertices gr) (remove v (graph-vertices gr) :count 1))
 	(remhash v (graph-neighbors gr))
-	(decf (graph-size gr)))
+	(decf (graph-order gr)))
       (progn
 	(dolist (u (out-neighbors v gr))
 	  (remove-edge (list v u) gr))
@@ -292,20 +292,20 @@
 	(setf (digraph-vertices gr) (remove v (digraph-vertices gr) :count 1))
 	(remhash v (digraph-in-neighbors gr))
 	(remhash v (digraph-out-neighbors gr))
-	(decf (digraph-size gr))))
+	(decf (digraph-order gr))))
   '$done)
 
 (defun $first_vertex (gr)
   (require-graph-or-digraph 'first_vertex 1 gr)
   (cond
-    ((= 0 (if (graph-p gr) (graph-size gr) (digraph-size gr)))
+    ((= 0 (if (graph-p gr) (graph-order gr) (digraph-order gr)))
      ($error "first_vertex: no first vertex in an empty graph."))
     (t (first (vertices gr)))))
 
 (defun $max_degree (gr)
   (require-graph 'max_degree 1 gr)
   (cond
-    ((= 0 (graph-size gr))
+    ((= 0 (graph-order gr))
      ($error "max_degree: no max degree in an empty graph."))
     (t
      (let* ((v (first (graph-vertices gr))) (d (length (neighbors v gr))))
@@ -318,7 +318,7 @@
 (defun $min_degree (gr)
   (require-graph 'min_degree 1 gr)
   (cond
-    ((= 0 (graph-size gr))
+    ((= 0 (graph-order gr))
      ($error "min_degree: no min degree in an empty graph."))
     (t
      (let* ((v (first (graph-vertices gr))) (d (length (neighbors v gr))))
@@ -330,7 +330,7 @@
 
 (defun $average_degree (gr)
   (require-graph 'average_degee 1 gr)
-  (m* 2 (m// (graph-order gr) (graph-size gr))))
+  (m* 2 (m// (graph-size gr) (graph-order gr))))
 
 (defun $vertex_degree (v gr)
   (require-vertex 'vertex_degree 1 v)
@@ -461,12 +461,12 @@
 	  (push v (gethash u (graph-neighbors gr)))
 	  (push u (gethash v (graph-neighbors gr)))
 	  (push e (graph-edges gr))
-	  (incf (graph-order gr)))
+	  (incf (graph-size gr)))
 	(progn
 	  (push v (gethash u (digraph-out-neighbors gr)))
 	  (push u (gethash v (digraph-in-neighbors gr)))
 	  (push e (digraph-edges gr))
-	  (incf (digraph-order gr))))
+	  (incf (digraph-size gr))))
     '$done))
 
 (defun add-edges (elist gr)
@@ -511,7 +511,7 @@
 	  (setf (gethash v (graph-neighbors gr))
 		(remove u (gethash v (graph-neighbors gr)) :count 1))
 	  (clear-edge-weight e gr)
-	  (decf (graph-order gr))
+	  (decf (graph-size gr))
 	  (setf (graph-edges gr)
 		(remove `(,u ,v) (graph-edges gr) :test #'equal :count 1)))
 	(progn
@@ -520,7 +520,7 @@
 	  (setf (gethash v (digraph-in-neighbors gr))
 		(remove u (gethash v (digraph-in-neighbors gr)) :count 1))
 	  (clear-edge-weight e gr)
-	  (decf (digraph-order gr))
+	  (decf (digraph-size gr))
 	  (setf (digraph-edges gr)
 		(remove `(,u ,v) (digraph-edges gr) :test #'equal :count 1))))
     '$done))
@@ -800,7 +800,18 @@
 	    (add-edge `(,i ,j) g))))
     g))
 
-(defun $graph_union (g1 g2)
+(defun $graph_union (&rest gr-list)
+  (cond
+    ((= 0 (length gr-list))
+     ($empty_graph 0))
+    ((= 1 (length gr-list))
+     (first gr-list))
+    ((= 2 (length gr-list))
+     (graph-union (first gr-list) (second gr-list)))
+    (t
+     (graph-union (first gr-list) (apply #'$graph_union (rest gr-list))))))
+
+(defun graph-union (g1 g2)
   (require-graph 'graph_union 1 g1)
   (require-graph 'graph_union 2 g2)
   (let ((g (make-graph)) (n (1+ (apply #'max (graph-vertices g1)))))
@@ -821,14 +832,25 @@
       (setq i (1+ i)))
     names))
 
-(defun $graph_product (g1 g2)
+(defun $graph_product (&rest gr-list)
+  (cond
+    ((= 0 (length gr-list))
+     ($empty_graph 0))
+    ((= 1 (length gr-list))
+     (first gr-list))
+    ((= 2 (length gr-list))
+     (graph-product (first gr-list) (second gr-list)))
+    (t
+     (graph-product (first gr-list) (apply #'$graph_product (rest gr-list))))))
+
+(defun graph-product (g1 g2)
   (require-graph 'graph_product 1 g1)
   (require-graph 'graph_product 2 g2)
   (let*
       ((names1 (get-canonical-names (graph-vertices g1)))
        (names2 (get-canonical-names (graph-vertices g2)))
-       (size1 (graph-size g1))
-       (size2 (graph-size g2))
+       (size1 (graph-order g1))
+       (size2 (graph-order g2))
        (size (* size1 size2))
        (g ($empty_graph size)))
     (dolist (e (graph-edges g1))
@@ -854,7 +876,7 @@
 (defun $line_graph (gr)
   (require-graph 'line_graph 1 gr)
   (let* ((edge-list
-	  (get-canonical-names (graph-edges gr))) (n (graph-order gr))
+	  (get-canonical-names (graph-edges gr))) (n (graph-size gr))
 	 (g ($empty_graph n)))
     (dotimes (i n)
       (do ((j (1+ i) (1+ j)))
@@ -1061,7 +1083,7 @@
 
 (defun $connected_components (gr)
   (require-graph 'connected_components 1 gr)
-  (when (= 0 (graph-size gr))
+  (when (= 0 (graph-order gr))
     (return-from $connected_components '((mlist simp))))
   (let ((components ()) (visited (make-hash-table)))
     (loop for v in (vertices gr) do
@@ -1084,7 +1106,7 @@
 
 (defun $is_tree (gr)
   (require-graph 'is_tree 1 gr)
-  (and ($is_connected gr) (= (graph-size gr) (1+ (graph-order gr)))))
+  (and ($is_connected gr) (= (graph-order gr) (1+ (graph-size gr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1096,7 +1118,7 @@
   (require-graph-or-digraph 'reachable_vertices 2 gr)
   (require-vertex 'reachable_vertices 1 v)
   (require-vertex-in-graph 'reachable_vertices v gr)
-  (when (= 0 (if (graph-p gr) (graph-size gr) (digraph-size gr)))
+  (when (= 0 (if (graph-p gr) (graph-order gr) (digraph-order gr)))
     (return-from $reachable_vertices '((mlist simp))))
   (let ((component ()) (visited (make-hash-table)))
     (unless (gethash v visited)
@@ -1118,7 +1140,7 @@
 
 (defun $adjacency_matrix (gr)
   (require-graph-or-digraph 'adjacency_matrix 1 gr)
-  (let* ((n (if (graph-p gr) (graph-size gr) (digraph-size gr)))
+  (let* ((n (if (graph-p gr) (graph-order gr) (digraph-order gr)))
 	 (m ($zeromatrix n n))
 	 (names (get-canonical-names (vertices gr))))
     (dolist (e (edges gr))
@@ -1131,7 +1153,7 @@
 
 (defun $laplacian_matrix (gr)
   (require-graph 'laplacian_matrix 1 gr)
-  (let ((m ($zeromatrix (graph-size gr) (graph-size gr)))
+  (let ((m ($zeromatrix (graph-order gr) (graph-order gr)))
 	(names (get-canonical-names (vertices gr))))
     (dolist (v (graph-vertices gr))
       (setf (nth (1+ (cdr (assoc v names)))
@@ -1168,7 +1190,7 @@
   (girth gr t))
 
 (defun girth (gr odd)
-  (let ((girth (1+ (graph-size gr))))
+  (let ((girth (1+ (graph-order gr))))
     (dolist (v (graph-vertices gr))
       (let
 	  ((visited (new-set v))
@@ -1193,7 +1215,7 @@
 			(setq girth (min girth (* 2 depth))))))))
 	  (setq active next)
 	  (setq depth (1+ depth)))))
-    (if (> girth (graph-size gr))
+    (if (> girth (graph-order gr))
 	'$inf
 	girth)))
 
@@ -1245,7 +1267,7 @@
 (defun $radius (gr)
   (require-graph 'radius 1 gr)
   (let ((ecc (eccentricity (vertices gr) gr))
-	(radius ($graph_size gr)))
+	(radius ($graph_order gr)))
     (maphash #'(lambda (key val)
 		 (declare (ignore key))
 		 (when (< val radius)
@@ -1257,7 +1279,7 @@
   (require-graph 'graph_center 1 gr)
   (let ((ecc (eccentricity (vertices gr) gr))
 	(per ())
-	(radius ($graph_size gr)))
+	(radius ($graph_order gr)))
     (maphash #'(lambda (key val)
 		 (declare (ignore key))
 		 (when (< val radius)
@@ -1292,7 +1314,7 @@
 
 (defun $bipartition (gr)
   (require-graph 'bipartition 1 gr)
-  (when (= (graph-size gr) 0)
+  (when (= (graph-order gr) 0)
     (return-from $bipartition `((mlist simp) ((mlist simp)) ((mlist simp)))))
   (let ((components (cdr ($connected_components gr))) (A ()) (B ()))
     (dolist (c components)
@@ -1345,7 +1367,7 @@
 
 (defun $biconnected_components (gr)
   (require-graph 'biconnected_components 1 gr)
-  (if (= 0 (graph-size gr))
+  (if (= 0 (graph-order gr))
       `((mlist simp))
       (let
 	  ((bicomp `((mlist simp)))
@@ -1426,7 +1448,7 @@
 
 (defun $strong_components (gr)
   (require-digraph 'strong_components 1 gr)
-  (if (= 0 (digraph-size gr))
+  (if (= 0 (digraph-order gr))
       `((mlist simp))
       (let ((res))
 	(setq *scon-low* (make-hash-table))
@@ -1478,7 +1500,7 @@
   (require-digraph 'topological_sort 1 dag)
   (let ((in-degrees (make-hash-table))
 	(q ())
-	(n ($graph_order dag))
+	(n ($graph_size dag))
 	(s ()))
     (dolist (v (vertices dag))
       (setf (gethash v in-degrees) 0))
@@ -1688,8 +1710,8 @@
   (if (null *hamilton-cycle*)
       (progn
 	(if (= (length part) (if (graph-p gr)
-				 (graph-size gr)
-				 (digraph-size gr)))
+				 (graph-order gr)
+				 (digraph-order gr)))
 	    (if (member (car (last part)) (neighbors (first part) gr))
 		(setq *hamilton-cycle* (append (last part) part))))
 	(dolist (v (neighbors (car part) gr))
@@ -1730,7 +1752,7 @@
 (defun greedy-color (gr)
   (let ((coloring (make-hash-table))
 	(available-colors (make-hash-table)) (tmp ()))
-    (dotimes (i (graph-size gr))
+    (dotimes (i (graph-order gr))
       (push i tmp))
     (setq tmp (reverse tmp))
     (dolist (v (graph-vertices gr))
@@ -1747,7 +1769,7 @@
   (require-graph 'max_clique 1 gr)
   (setq *maximum-clique* ())
   (let ((v) (coloring) (h ($copy_graph gr)))
-    (do () ((>= (length *maximum-clique*) (graph-size h)))
+    (do () ((>= (length *maximum-clique*) (graph-order h)))
       (setq coloring (greedy-color h))
       (setq v ($second ($max_degree h)))
       (extend-clique `(,v) (neighbors v h) coloring h)
@@ -1820,7 +1842,7 @@
 (defun $edge_coloring (gr)
   (require-graph 'edge_coloring 1 gr)
   (let* ((edge-list (get-canonical-names (graph-edges gr)))
-	 (n (graph-order gr))
+	 (n (graph-size gr))
 	 (g ($empty_graph n)))
     (dotimes (i n)
       (do
