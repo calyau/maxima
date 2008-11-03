@@ -1,6 +1,7 @@
 ;; Copyright (C) 2007, 2008 Yasuaki Honda
 
 ;; Author: Yasuaki Honda (yhonda@mac.com)
+;; $Id: setup-imaxima-imath.el,v 1.3 2008-11-03 06:16:23 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -30,7 +31,7 @@
   "Maxima emacs mode maxima.el directory, added to load-path")
 
 (defvar *imaxima-maxima-bin-dir*
-  (file-name-directory (car (file-expand-wildcards "c:/PROGRA~1/MAXIMA~1.0/bin/maxima.bat")))
+  (file-name-directory (car (file-expand-wildcards "c:/Program Files/Maxima*/bin/maxima.bat")))
   "Maxima bin directory, added to exec-path")
 
 (defvar *imaxima-maxima-info-dir*
@@ -49,8 +50,7 @@
 ;;; latex.exe is specified for the latex program to be invoked.
 (setq imaxima-tex-program "latex.exe")
 
-(defvar *imaxima-imath-dir*
-  (file-name-directory (car (file-expand-wildcards "d:/Program-Files/imaxima-imath/imaxima.el")))
+(defvar *imaxima-imath-dir* *imaxima-maxima-el-dir*
   "Imaxima imath directory, containing .el, .lisp, and .info files")
 
 ;;; The following definition eases the locating of imaxima.lisp.
@@ -68,7 +68,7 @@
 (setq exec-path (append (list *imaxima-gs-bin-dir* *imaxima-maxima-bin-dir* *imaxima-miktex-bin-dir*) exec-path))
 
 ;;; set up load-path
-(setq load-path (append (list *imaxima-maxima-el-dir* *imaxima-imath-dir*) load-path))
+(setq load-path (append (list *imaxima-imath-dir* *imaxima-maxima-el-dir*) load-path))
 
 ;;; set up Info-additional-directory-list
 (setq Info-additional-directory-list (list *imaxima-imath-dir* *imaxima-maxima-info-dir*) Info-additional-directory-list)

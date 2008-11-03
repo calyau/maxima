@@ -1,3 +1,32 @@
+;; Copyright (C) 2001, 2002, 2003, 2004 Jesper Harder
+;; Copyright (C) 2007, 2008 Yasuaki Honda
+;;
+;; Plotting support section of this file is the copy of the same
+;; section of wxmathml.lisp with very small modification. The file
+;; wxmathml.lisp is a part of the distribution of wxMaxima.
+
+;; Author: Jesper Harder <harder@ifa.au.dk>
+;; Created: 14 Nov 2001
+;; Version: 1.0b
+;; Keywords: maxima
+;; $Id: imaxima.lisp,v 1.2 2008-11-03 06:16:23 yasu-honda Exp $
+;;
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2 of
+;; the License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be
+;; useful, but WITHOUT ANY WARRANTY; without even the implied
+;; warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+;; PURPOSE.  See the GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public
+;; License along with this program; if not, write to the Free
+;; Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+;; MA 02111-1307 USA
+;;
+;;; History:
 ;;; Putting prefix package name to the variable does cause
 ;;; error when the file is loaded into older clisp, e.g. 2.29.
 ;;; I changed it so that it checks the existence of the symbol
@@ -22,6 +51,40 @@
 ;;;
 
 (in-package :maxima)
+
+(defvar *windows-OS* (string= *autoconf-win32* "true"))
+(defmvar $wxplot_size '((mlist simp) 400 250))
+(defmvar $wxplot_old_gnuplot nil)
+(defvar *image-counter* 0)
+
+
+;;; Following function wx-gnuplot-installed-p and the macro
+;;; wx-gnuplot-installation-check should be in plotting section
+;;; later in this file. However, because they must be in the
+;;; real toplevel, they are moved here.
+;;; yasuaki honda
+(defun wx-gnuplot-installed-p ()
+  #+gcl
+  (cond ((member :linux *features*)
+	 (let* ((tmp-stream (open "| which gnuplot" :direction :input))
+		(result (read-line tmp-stream nil :eof)))
+	   (if (eql result :eof) nil t)))
+	((and (member :mingw32 *features*)
+	      (probe-file "c:\\Windows\\System32\\where.exe"))
+	 (let* ((tmp-stream (open "| where wgnuplot" :direction :input))
+		(result (read-line tmp-stream nil :eof)))
+	   (if (eql result :eof) nil t)))
+	(t t))
+  #-gcl
+  ;; The function check-gnuplot-process is defined in
+  ;; maxima/src/plot.lisp since at least 5.12.0.
+  (handler-case (progn (check-gnuplot-process) t)
+		(error () nil)))
+
+(defun wx-gnuplot-installation-check ()
+  (if (not (wx-gnuplot-installed-p))
+      (merror (format t "Gnuplot error: Gnuplot is not installed,
+nor Gnuplot is not recognized by maxima"))))
 
 (defmacro style-warning-suppressor (&rest body)
   (if (member :clisp *features*)
@@ -137,6 +200,7 @@
 	      ((get (caar x) 'tex) (funcall (get (caar x) 'tex) x l r))
 	      (t (tex-function x l r nil))))
 
+#|
 (defun tex-atom (x l r) ;; atoms: note: can we lose by leaving out {}s ?
   (append l 
 	  (list (cond ((numberp x) (texnumformat x))
@@ -147,6 +211,7 @@
 		      (t (tex-stripdollar x))))
 	  
 	  r))
+|#
 
 (defun texstring (x)
   (let ((sym-name
@@ -212,11 +277,11 @@
     (cond ((integerp atom)
 	   atom)
 	  (t
-	   (setq r (explode atom))
+	   (setq r (exploden atom))
 	   (setq exponent (member 'e r :test #'string-equal));; is it ddd.ddde+EE
 	   (cond ((null exponent)
 		   ;; it is not. go with it as given
-		  atom)
+		  (coerce r 'string))
 		 (t
 		  (setq firstpart
 			(nreverse (cdr (member 'e (reverse r) :test #'string-equal))))
@@ -263,7 +328,7 @@
       (let ((texw))
         (if (eql (caar x) '%gamma)
 	    (setq texw "\\Gamma")
-	  (setq texw (texword (caar x))))
+	  (setq texw (caar x)))
 	(setq l (tex texw l nil 'mparen 'mparen)
 	      r (tex (cons '(mprogn) (cdr x)) nil r 'mparen 'mparen))
 	(nconc l r)))
@@ -351,6 +416,7 @@
 
 (defprop $%i "i" texword)
 (defprop $%pi "\\pi" texword)
+(defprop $%phi "\\phi" texword) ;; yhonda
 (defprop $%e "e" texword)
 (defprop $inf "\\infty " texword)
 (defprop $minf " -\\infty " texword)
@@ -929,5 +995,160 @@
        (setq end-flag t))
       (t (mtell
 	  "~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))
+
+;;
+;; Plotting support
+;;
+		       
+(defun wxxml-tag (x l r)
+  (let ((name (cadr x))
+	(tag (caddr x)))
+    (append l (list (format nil "<~a>~a</~a>" tag name tag)) r)))
+
+
+(defun wxplot-filename (&optional (suff t) &aux filename)
+  (incf *image-counter*)
+  (setq filename
+	(plot-temp-file (if suff
+			    (format nil "maxout_~d.eps" *image-counter*)
+			  (format nil "maxout_~d" *image-counter*))))
+  (if (probe-file filename)
+      (delete-file filename))
+  filename)
+
+(defun $wxplot_preamble ()
+  (let ((frmt (if $wxplot_old_gnuplot
+		  "set terminal postscript picsize ~d ~d; set zeroaxis;"
+		  "set terminal postscript size ~d,~d; set zeroaxis;")))
+    (format nil frmt
+	    ($first $wxplot_size)
+	    ($second $wxplot_size))))
+
+(defun $range (i j)
+  (let ((x (gensym)))
+    (mfuncall '$makelist x x i j)))
+
+(defun $wxplot2d (&rest args)
+  ;; if gnuplot is not installed, this will terminate the
+  ;; further execution.
+  (wx-gnuplot-installation-check)
+  (let ((preamble ($wxplot_preamble))
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (wxplot-filename)))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble (caddr arg)))))
+    (apply #'$plot2d `(,@args
+		       ((mlist simp) $plot_format $gnuplot)
+;;		       ((mlist simp) $gnuplot_preamble ,preamble)
+		       ((mlist simp) $gnuplot_term $ps)
+		       ((mlist simp) $gnuplot_out_file ,filename)))
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
+
+(defun $wxplot3d (&rest args)
+  ;; if gnuplot is not installed, this will terminate the
+  ;; further execution.
+  (wx-gnuplot-installation-check)
+  (let ((preamble ($wxplot_preamble))
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (wxplot-filename)))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble (caddr arg)))))
+    (apply #'$plot3d `(,@args
+		       ((mlist simp) $plot_format $gnuplot)
+;;		       ((mlist simp) $gnuplot_preamble ,preamble)
+		       ((mlist simp) $gnuplot_term $ps)
+		       ((mlist simp) $gnuplot_out_file ,filename)))
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
+
+(defun $wxdraw2d (&rest args)
+  (apply #'$wxdraw
+	 (list (cons '($gr2d) args))))
+
+
+(defun $wxdraw3d (&rest args)
+  (apply #'$wxdraw
+	 (list (cons '($gr3d) args))))
+
+(defun $wxdraw (&rest args)
+  ;; if gnuplot is not installed, this will terminate the
+  ;; further execution.
+  (wx-gnuplot-installation-check)
+  (let* ((filename (wxplot-filename nil))
+	 (*windows-OS* t)
+	 res)
+    (if (not (fboundp '$draw))
+	($load '$draw))
+    ;; Usually the following is used.
+    ;;    (setq res (apply #'$draw
+    ;; However, CMUCL warns that function $draw is not defined.
+    ;; To suppress this warning, symbol-function is used to make
+    ;; clear that the runtime definition is used rather than 
+    ;; read time.
+    (setq res (apply (symbol-function '$draw)
+		     (append
+		      `(
+			((mequal simp) $terminal $eps)
+			((mequal simp) $pic_width ,($first $wxplot_size))
+			((mequal simp) $pic_height ,($second $wxplot_size))
+			((mequal simp) $file_name ,filename))
+		      args)))
+    ($ldisp `((wxxmltag simp) ,(format nil "~a.eps" filename) "img"))
+    res))
+
+(defun $wximplicit_plot (&rest args)
+  ;; if gnuplot is not installed, this will terminate the
+  ;; further execution.
+  (wx-gnuplot-installation-check)
+  (let ((preamble ($wxplot_preamble))
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (wxplot-filename)))
+    (if (not (fboundp '$implicit_plot))
+	($load '$implicit_plot))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a"
+				 preamble (caddr arg)))))
+    (apply (symbol-function '$implicit_plot)
+	   `(,@args
+	     ((mlist simp) $plot_format $gnuplot)
+;;           ((mlist simp) $gnuplot_preamble ,preamble)
+	     ((mlist simp) $gnuplot_term $ps)
+	     ((mlist simp) $gnuplot_out_file ,filename)))
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
+
+
+(defun $wxcontour_plot (&rest args)
+  ;; if gnuplot is not installed, this will terminate the
+  ;; further execution.
+  (wx-gnuplot-installation-check)
+  (let ((preamble ($wxplot_preamble))
+	(system-preamble (get-plot-option-string '$gnuplot_preamble 2))
+	(filename (wxplot-filename)))
+    (if (length system-preamble)
+	(setq preamble (format nil "~a; ~a" preamble system-preamble)))
+    (dolist (arg args)
+      (if (and (listp arg) (eql (cadr arg) '$gnuplot_preamble))
+	  (setq preamble (format nil "~a; ~a" preamble (caddr arg)))))
+    (apply #'$contour_plot `(,@args
+			     ((mlist simp) $plot_format $gnuplot)
+;;			     ((mlist simp) $gnuplot_preamble ,preamble)
+			     ((mlist simp) $gnuplot_term $ps)
+			     ((mlist simp) $gnuplot_out_file ,filename)))
+
+    ($ldisp `((wxxmltag simp) ,filename "img")))
+  "")
 
 ) ;; This paran closes style-warning-suppressor.

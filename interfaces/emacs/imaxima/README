@@ -46,6 +46,16 @@ To get the best image quality a fairly recent version of Ghostscript
 is recommended.  See the Info manaul for options suitable for using
 older versions of Ghostscript or not using Ghostscript at all.
 
+From the version 1.0 beta, imaxima and imath supports inline graph
+capability. That is, special plotting commands such as wxplot2d()
+can be used in imaxima and the resulted graph appears in the
+*imaxima* session buffer in Emacs. Similarly, you can use the same
+special plotting commands in a maxima formula in imath mode buffers.
+Such formula are converted to graph image in imath mode.
+
+To do so, you need to install GNUPLOT 4.2 or later. Your Maxima 
+should be 5.12.0 or later.
+
 Imaxima and imath are distributed from:
 http://members3.jcom.home.ne.jp/imaxima
 by Yasuaki Honda, the current maintainer of this package.

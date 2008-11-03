@@ -1,3 +1,11 @@
+2008-10-26 Yasuaki Honda <yasuaki.honda@gmail.com>
+	* A workaround for OpenSUSE Linux 10.3 is incorporated.
+
+2008-05-28 Yasuaki Honda <yhonda@mac.com>
+	* bohumir's patch for {eps xxx eps} is included.
+	* Inline graph support in both imaxima and imath is added.
+	* I have decided this version to be 1.0 beta. 
+
 2008-01-06 Yasuaki Honda <yhonda@mac.com>
 	* Nothing is changed for imaxima.el and imaxma.lisp.
 	* setup-imaxima-imath.el is now a part of the distribution package. This 
