@@ -297,8 +297,8 @@
 ;;
 ;; to handle the case of Re(z) <= 0.
 ;;
-;; See http://winnie.fit.edu/~gabdo/gamma.m for some matlab code to
-;; compute this and http://winnie.fit.edu/~gabdo/gamma.txt for a nice
+;; See http://my.fit.edu/~gabdo/gamma.m for some matlab code to
+;; compute this and http://my.fit.edu/~gabdo/gamma.txt for a nice
 ;; discussion of Lanczos method and an improvement of Lanczos method.
 ;;
 ;;
