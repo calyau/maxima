@@ -671,7 +671,9 @@ Example:
 @end deffn
 
 @deffn {Function} edge_connectivity (@var{gr})
-Returns the edge-connectivity of a connected graph @var{gr}.
+Returns the edge-connectivity of the graph @var{gr}.
+
+See also @code{min_edge_cut}.
 @end deffn
 
 @deffn {Function} edges (@var{gr})
@@ -806,7 +808,7 @@ Example:
 @end deffn
 
 @deffn {Function} graph_size (@var{gr})
-Returns the number of vertices in the graph @var{gr}.
+Returns the number of edges in the graph @var{gr}.
 
 Example:
 @c ===beg===
@@ -818,12 +820,12 @@ Example:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_size(p);
-(%o3)                          10
+(%o3)                          15
 @end example
 @end deffn
 
 @deffn {Function} graph_order (@var{gr})
-Returns the number of edges in the graph @var{gr}.
+Returns the number of vertices in the graph @var{gr}.
 
 Example:
 @c ===beg===
@@ -835,7 +837,7 @@ Example:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_order(p);
-(%o3)                          15
+(%o3)                          10
 @end example
 @end deffn
 
@@ -1363,11 +1365,19 @@ Example:
 @end deffn
 
 @deffn {Function} min_edge_cut (@var{gr})
-Returns the minimum edge cut in a connected graph @var{gr}
+Returns the minimum edge cut in the graph @var{gr}.
+
+See also @code{edge_connectivity}.
 @end deffn
 
 @deffn {Function} min_vertex_cover (@var{gr})
 Returns the minimum vertex cover of the graph @var{gr}.
+@end deffn
+
+@deffn {Function} min_vertex_cut (@var{gr})
+Returns the minimum vertex cut in the graph @var{gr}.
+
+See also @code{vertex_connectivity}.
 @end deffn
 
 @deffn {Function} minimum_spanning_tree (@var{gr})
@@ -1668,6 +1678,12 @@ Example:
 (%i3) topological_sort(g);
 (%o3)                    [1, 2, 5, 3, 4]
 @end example
+@end deffn
+
+@deffn {Function} vertex_connectivity (@var{g})
+Returns the vertex connectivity of the graph @var{g}.
+
+See also @code{min_vertex_cut}.
 @end deffn
 
 @deffn {Function} vertex_degree (@var{v}, @var{gr})
@@ -2033,7 +2049,7 @@ Draws the graph using the @code{draw} package.
 
 The algorithm used to position vertices is specified by the optional
 argument @var{program}. The default value is
-@code{program=spring_embedding}. @var{spring_embedding} can also use the
+@code{program=spring_embedding}. @var{draw_graph} can also use the
 graphviz programs for positioning vertices, but graphviz must be
 installed separately.
 
