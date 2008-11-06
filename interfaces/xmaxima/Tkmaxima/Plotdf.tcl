@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.14 2008-10-31 14:57:37 villate Exp $
+#       $Id: Plotdf.tcl,v 1.15 2008-11-06 18:36:02 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -32,7 +32,7 @@ set plotdfOptions {
     {sliders "" "List of parameters ranges k=3:5,u"}
     {linecolors { green black  brown gray black} "colors to use for lines in data plots"}
     {trajectory_at "" "Place to calculate trajectory"}
-    {linewidth "1.0" "Width of integral lines" }
+    {linewidth "2.0" "Width of integral lines" }
     {nolines 0 "If not 0, plot points and nolines"}
     {bargraph 0 "If not 0 this is the width of the bars on a bar graph" }
     {plotpoints 0 "if not 0 plot the points at pointsize" }
@@ -183,48 +183,29 @@ proc doIntegrate { win x0 y0 } {
 
 				 #puts "doing: $form"
 				 set i -1
-				 set xn1 [$rtosx [lindex $ans [incr i]]]
-				 set yn1 [$rtosy [lindex $ans [incr i]]]
+				 set coords {}
 				 set lim [expr {$steps * 2}]
-				 set mee [expr {pow(10.0,9)}]
-				 set ptColor [assoc $method $useColors ]
-				 set linecolor [lindex $linecolors $methodNo]
-				 #set im [getPoint 2 green]
-				 #set im1 [getPoint 2 purple]
-				 set im [getPoint 2 $ptColor]
-				 #set im1 [getPoint 2 purple]		
-				 catch  {
-				     while { $i <= $lim &&
-					     ($xn1-$x1)*($xn1-$x2) <= 0 &&
-					     ($yn1-$y1)*($yn1-$y2) <= 0 } {
-					 set xn2  [$rtosx [lindex $ans [incr i]]]
-					 set yn2  [$rtosy [lindex $ans [incr i]]]
-					 # puts "$xn1 $yn1"
-					 # xxxxxxxx following is for a bug in win95 version
-					 if { ($xn2-$x1)*($xn2-$x2) <= 0 &&
-					      ($yn2-$y1)*($yn2-$y2) <= 0 &&
-			 abs($xn1) + abs($yn1) +abs($xn2)+abs($yn2) < $mee } {
-					     $c create line $xn1 $yn1 $xn2 $yn2 -tags path -width $linewidth -fill $linecolor
-					
+				 catch {
+				     while { $i <= $lim } {
+					 set xn [$rtosx [lindex $ans [incr i]]]
+					 set yn [$rtosy [lindex $ans [incr i]]]
+					 # puts "$xn $yn"
+					 # Tests if point is inside the domain.
+					 # In version 1.14 there was an if:
+					 # abs($xn1)+abs($yn1)+abs($xn2)
+					 # +abs($yn2) < [expr {pow(10.0,9)}]
+					 # to fix a bug in win95 version.
+					 # That's now out of context, but the
+					 # bug might reappear. (J. Villate)
+					 if { ($xn-$x1)*($xn-$x2) <= 0 &&
+					      ($yn-$y1)*($yn-$y2) <= 0 } {
+					     lappend coords $xn $yn
 					 }
-					
-					 if { "$im" != "" } {
-					     #puts hi
-					     $c create image $xn1 $yn1 -image $im -anchor center \
-						 -tags "point"
-					
-					 } else {
-					     $c create oval [expr $xn1 -2] [expr $yn1 -2] [expr $xn1 +2] [expr $yn1 +2] -fill $color
-
-					 }
-					
-					
-					
-
-					 # puts "$xn1 $yn1"
-					 set xn1 $xn2
-					 set yn1 $yn2
 				     }
+				 }
+				 if { [llength $coords] > 3 } {
+				     $c create line $coords -tags path \
+					 -width $linewidth -fill $color
 				 }
 			     }
 			 }
