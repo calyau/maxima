@@ -1,4 +1,4 @@
-@c version 1.32
+@c version 1.33
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -185,11 +185,15 @@ Valor por defecto: @code{screen}
 
 Selecciona el terminal a utilizar por Gnuplot; valores posibles son:
 @code{screen} (por defecto), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
-@code{gif}, @code{animated_gif}, @code{wxt} y @code{aquaterm}.
+@code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt} y @code{aquaterm}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
 usarse como argumento de la funci@'on @code{draw}.
+
+pdfcairo necesita Gnuplot 4.3. Actualmente (Nov 2008) Gnuplot 4.3 es una versi@'on en desarrollo.
+pdf necesita que Gnuplot 4.2/4.3 haya sido compilado con la opci@'on @code{--enable-pdf} y libpdf debe
+estar instalado (@url{http://www.pdflib.com/en/download/pdflib-family/pdflib-lite/}).
 
 Ejemplos:
 
@@ -210,7 +214,13 @@ Ejemplos:
       draw2d(file_name = "myfile",
              explicit(x^2,x,-1,1),
              terminal  = 'eps)$
-(%i6) /* ventana wxwidgets */
+(%i6) /* pdf file */
+      draw2d(file_name = "mypdf",
+             pdf_width = 12.0,
+             pdf_height = 8.0,
+             explicit(x^2,x,-1,1),
+             terminal  = 'pdf)$
+(%i7) /* wxwidgets window */
       draw2d(explicit(x^2,x,-1,1),
              terminal  = 'wxt)$
 @end example
@@ -321,6 +331,14 @@ Ejemplo:
         label(["Courier-Oblique font, size 15",1,1]),
         terminal = eps)$
 @end example
+
+@item
+@i{pdf}:
+Utiliza las mismas fuentes que @i{Postscript}.
+
+@item
+@i{pdfcairo}:
+Utiliza las mismas fuentes que @i{wxt}.
 
 @item
 @i{wxt}:
@@ -1025,7 +1043,8 @@ pero es posible activarlo haciendo uso de la opci@'on @code{user_preamble},
 Valor por defecto: @code{"maxima_out"}
 
 @code{file_name} es el nombre del fichero en el que los terminales @code{png}, 
-@code{jpg}, @code{eps} y @code{eps_color} guardar@'an el gr@'afico.
+@code{jpg}, @code{eps}, @code{pdf} and @code{pdfcairo} y @code{eps_color}
+guardar@'an el gr@'afico.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
@@ -1126,7 +1145,7 @@ V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pic_width}.
 @defvr {Opci@'on gr@'afica} eps_width
 Valor por defecto: 12
 
-@code{eps_width} es el ancho (medido en cm) del archivo Postscipt
+@code{eps_width} es el ancho (medido en cm) del archivo Postscript
 generado por los terminales @code{eps} y @code{eps_color}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -1151,7 +1170,7 @@ V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_height}.
 @defvr {Opci@'on gr@'afica} eps_height
 Valor por defecto: 8
 
-@code{eps_height} es la altura (medida en cm) del archivo Postscipt
+@code{eps_height} es la altura (medida en cm) del archivo Postscript
 generado por los terminales @code{eps} y @code{eps_color}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -1170,6 +1189,57 @@ Ejemplo:
 
 V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_width}.
 @end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} pdf_width
+Valor por defecto: 21.0 (ancho A4)
+
+Es el ancho (medida en cm) del documento PDF generado por los
+terminales @code{pdf} y @code{pdfcairo}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'pdf,
+             pdf_width  = 3.0,
+             pdf_height = 3.0,
+             explicit(x^2,x,-1,1))$
+@end example
+
+V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pdf_height}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} pdf_height
+Valor por defecto: 29.7 (alto A4)
+
+Es el alto (medida en cm) del documento PDF generado por los
+terminales @code{pdf} y @code{pdfcairo}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'pdf,
+             pdf_width  = 3.0,
+             pdf_height = 3.0,
+             explicit(x^2,x,-1,1))$
+@end example
+
+V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pdf_width}.
+@end defvr
+
 
 
 @defvr {Opci@'on gr@'afica} axis_bottom

@@ -167,6 +167,8 @@
       (gethash '$pic_height *gr-options*) 480    ; points for bitmap pictures
       (gethash '$eps_width *gr-options*)  12     ; cm for eps pictures
       (gethash '$eps_height *gr-options*) 8      ; cm for eps pictures
+      (gethash '$pdf_width *gr-options*)  21.0   ; cm for pdf pictures (A4 portrait width)
+      (gethash '$pdf_height *gr-options*) 29.7   ; cm for pdf pictures (A4 portrait height)
 
       (gethash '$file_name *gr-options*)  "maxima_out"
       (gethash '$delay *gr-options*)  5          ; delay for animated gif's, default 5*(1/100) sec
@@ -210,7 +212,7 @@
                      (<= val 1 ))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: fill_density must be a number in [0, 1]")))
-      (($line_width $head_length $head_angle $eps_width $eps_height
+      (($line_width $head_length $head_angle $eps_width $eps_height $pdf_width $pdf_height
         $xaxis_width $yaxis_width $zaxis_width) ; defined as positive numbers
             (setf val (convert-to-float val))
             (if (and (numberp val)
@@ -331,8 +333,8 @@
                                          ")")))))
                   (t
                      (merror "draw: illegal tics allocation: ~M" val)) ))
-      ($terminal ; defined as screen, png, jpg, gif, eps, eps_color or wxt
-            (if (member val '($screen $png $jpg $gif $eps $eps_color $wxt $animated_gif $aquaterm))
+      ($terminal ; defined as screen, png, jpg, gif, eps, eps_color, pdf, pdfcairo or wxt
+            (if (member val '($screen $png $jpg $gif $eps $eps_color $pdf $pdfcairo $wxt $animated_gif $aquaterm))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: this is not a terminal: ~M" val)))
       ($head_type ; defined as $filled, $empty and $nofilled
@@ -2680,6 +2682,8 @@
                 ($pic_height (update-gr-option '$pic_height ($rhs x)))
                 ($eps_width  (update-gr-option '$eps_width ($rhs x)))
                 ($eps_height (update-gr-option '$eps_height ($rhs x)))
+                ($pdf_width  (update-gr-option '$pdf_width ($rhs x)))
+                ($pdf_height (update-gr-option '$pdf_height ($rhs x)))
                 ($file_name  (update-gr-option '$file_name ($rhs x)))
                 ($delay      (update-gr-option '$delay ($rhs x)))
                 (otherwise (merror "draw: unknown global option ~M " ($lhs x)))  ))
@@ -2718,6 +2722,16 @@
                            (write-font-type)
                            (get-option '$eps_width)
                            (get-option '$eps_height)
+                           (get-option '$file_name)))
+      ($pdf (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+                           (write-font-type)
+                           (get-option '$pdf_width)
+                           (get-option '$pdf_height)
+                           (get-option '$file_name)))
+      ($pdfcairo (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+                           (write-font-type)
+                           (get-option '$pdf_width)
+                           (get-option '$pdf_height)
                            (get-option '$file_name)))
       ($jpg (format cmdstorage "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
                            (write-font-type)
@@ -2843,6 +2857,10 @@
                    ((not (string= (gethash '$xy_file *gr-options*) ""))
                       (format cmdstorage "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
                                    (gethash '$xy_file *gr-options*))) )
+
+             (format cmdstorage "unset output~%")
+             (format cmdstorage "reset~%")
+
              (close cmdstorage)
 
              ; get the plot
