@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.15 2008-11-06 18:36:02 villate Exp $
+#       $Id: Plotdf.tcl,v 1.16 2008-11-07 02:09:53 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -27,6 +27,7 @@ set plotdfOptions {
     {tstep "" "t step size"}
     {direction "both" "May be both, forward or backward" }
     {versus_t 0 "Plot in a separate window x and y versus t, after each trajectory" }
+    {arrows 1 "Plot arrows showing the direction field"}
     {windowname ".dfplot" "window name"}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
     {sliders "" "List of parameters ranges k=3:5,u"}
@@ -313,7 +314,7 @@ proc drawArrowScreen { c atx aty dfx dfy } {
 
 proc drawDF { win tinitial } {
     global  axisGray
-    makeLocal  $win xmin xmax   xcenter ycenter c ymin ymax transform
+    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform arrows
 
     # flush stdout
     set rtosx rtosx$win ; set rtosy rtosy$win
@@ -333,6 +334,7 @@ proc drawDF { win tinitial } {
 #    set uptoy [expr {[$rtosy $ymin] + $extra}]
     # draw the axes:
     #puts "draw [$rtosx $xmin] to $uptox"
+    if { $arrows } {
     for { set x [expr {[$rtosx $xmin] + $extra}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
 	for { set y [expr {[$rtosy $ymax] + $extra}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
 	    set args "$t0 [$storx $x] [$story $y]"
@@ -374,6 +376,7 @@ proc drawDF { win tinitial } {
 	    # puts "$len $dfx $dfy"
 	    drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy}]
         }
+    }
     }
 
     # Draw the two axes
