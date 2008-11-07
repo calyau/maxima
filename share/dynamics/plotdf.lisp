@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.5 2008-11-07 02:36:47 villate Exp $
+;; $Id: plotdf.lisp,v 1.6 2008-11-07 15:05:14 villate Exp $
 
 (in-package :maxima)
 
@@ -41,7 +41,7 @@
         ($trajectory_at
          (check-list-items name (rest (rest value)) 'number 2))
         ($bbox (check-list-items name (rest (rest value)) 'number 4))
-        (($xfun $parameters $sliders) value)
+        (($xfun $parameters $sliders $vector $trajectory $orthogonal) value)
         ('$direction
          (or (member (third value) '($forward $backward $both))
              (merror "direction: choose one of [forward,backward,both]")) 
@@ -82,7 +82,7 @@
 	(member (second (first options))
 		'($xradius $yradius $xcenter $ycenter $tinitial $tstep
 			   $width $height $nsteps $versus_t $xfun $parameters
-			   $sliders))
+			   $sliders $vector $trajectory $orthogonal))
       (if (and (listp (first options)) (= (length (first options)) 3)
 	       (symbolp (second (first options)))
 	       (symbolp (third (first options))))
@@ -126,7 +126,7 @@
 	(member (second (first options))
 		'($xradius $yradius $xcenter $ycenter $tinitial $tstep
 			   $width $height $nsteps $versus_t $xfun $parameters
-			   $sliders))
+			   $sliders $vector $trajectory $orthogonal))
       (if (and (listp (first options)) (= (length (first options)) 3)
 	       (symbolp (second (first options)))
 	       (symbolp (third (first options))))
@@ -143,10 +143,10 @@
 ;;    (if (delete '$y (delete '$x (rest (mfuncall '$listofvars ode))))
 ;;        (merror "The equation(s) can depend only on 2 variable which must be specified!"))
     (setq cmd (concatenate 'string " -dxdt \""
-			   (expr_to_str (mfuncall '$diff fun '$y))
+			   (expr_to_str (mfuncall '$diff mfun '$x))
 			   "\" -dydt \""
-			   (expr_to_str (mfuncall '$diff mfun '$x)) 
-			   "\" -arrows 0 "))
+			   (expr_to_str (mfuncall '$diff mfun '$y)) 
+			   "\" -vector {} -trajectory {} -orthogonal {red} "))
     
     ;; parse options and copy them to string opts
     (cond (options
