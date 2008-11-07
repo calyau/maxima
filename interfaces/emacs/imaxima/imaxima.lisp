@@ -9,7 +9,7 @@
 ;; Created: 14 Nov 2001
 ;; Version: 1.0b
 ;; Keywords: maxima
-;; $Id: imaxima.lisp,v 1.2 2008-11-03 06:16:23 yasu-honda Exp $
+;; $Id: imaxima.lisp,v 1.3 2008-11-07 15:51:18 yasu-honda Exp $
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -200,7 +200,6 @@ nor Gnuplot is not recognized by maxima"))))
 	      ((get (caar x) 'tex) (funcall (get (caar x) 'tex) x l r))
 	      (t (tex-function x l r nil))))
 
-#|
 (defun tex-atom (x l r) ;; atoms: note: can we lose by leaving out {}s ?
   (append l 
 	  (list (cond ((numberp x) (texnumformat x))
@@ -211,7 +210,6 @@ nor Gnuplot is not recognized by maxima"))))
 		      (t (tex-stripdollar x))))
 	  
 	  r))
-|#
 
 (defun texstring (x)
   (let ((sym-name
