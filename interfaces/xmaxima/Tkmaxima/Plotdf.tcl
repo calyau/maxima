@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.16 2008-11-07 02:09:53 villate Exp $
+#       $Id: Plotdf.tcl,v 1.17 2008-11-07 14:56:15 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -12,7 +12,9 @@ set plotdfOptions {
     {dxdt "x-y^2+sin(x)*.3" {specifies dx/dt = dxdt.  eg -dxdt "x+y+sin(x)^2"} }
     {dydt "x+y" {specifies dy/dt = dydt.  eg -dydt "x-y^2+exp(x)"} }
     {dydx "" { may specify dy/dx = x^2+y,instead of dy/dt = x^2+y and dx/dt=1 }}
-    {trajectory red "Color for the trajectories." }
+    {vector blue "Color for the vectors"}
+    {trajectory red "Color for the trajectories"}
+    {orthogonal "" "Color for the orthogonal curves"}
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
     {width 560 "Width of canvas in pixels"}
@@ -22,16 +24,15 @@ set plotdfOptions {
     {ycenter 0.0 "see xcenter"}
     {bbox "" "xmin ymin xmax ymax .. overrides the -xcenter etc"}
     {tinitial 0.0 "The initial value of variable t"}
-    {nsteps 200 "Number of steps to do in one pass"}
+    {nsteps 300 "Number of steps to do in one pass"}
     {xfun "" "A semi colon separated list of functions to plot as well"}
     {tstep "" "t step size"}
     {direction "both" "May be both, forward or backward" }
     {versus_t 0 "Plot in a separate window x and y versus t, after each trajectory" }
-    {arrows 1 "Plot arrows showing the direction field"}
     {windowname ".dfplot" "window name"}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
+    {linecolors { green black  brown gray black} "colors for functions plots"}
     {sliders "" "List of parameters ranges k=3:5,u"}
-    {linecolors { green black  brown gray black} "colors to use for lines in data plots"}
     {trajectory_at "" "Place to calculate trajectory"}
     {linewidth "2.0" "Width of integral lines" }
     {nolines 0 "If not 0, plot points and nolines"}
@@ -137,7 +138,7 @@ proc doIntegrateScreen { win sx sy  } {
 proc doIntegrate { win x0 y0 } {
     # global xradius yradius c tstep  nsteps
     #    puts "dointegrate $win $x0 $y0"
-    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t linecolors xmin xmax ymin ymax
+    makeLocal $win xradius yradius c tstep  nsteps direction linewidth tinitial versus_t xmin xmax ymin ymax
     linkLocal $win didLast trajectoryStarts
     set rtosx rtosx$win ; set rtosy rtosy$win
     set x1 [$rtosx $xmin]
@@ -164,9 +165,10 @@ proc doIntegrate { win x0 y0 } {
 	backward { set todo "-1" }
 	both { set todo "1 -1" }
     }
-    foreach method { trajectory } {
+    set methods ""
+    foreach method { trajectory orthogonal } {
 				    set color [oget $win $method]
-				    if { "$color" != "" } {
+				    if {"$color" != "" && "$color" != "blank"} {
 					lappend methods $method
 					lappend useColors $method $color
 				    }
@@ -174,8 +176,23 @@ proc doIntegrate { win x0 y0 } {
     set methodNo -1
     foreach method $methods {
 			     incr methodNo
+			     set linecolor [assoc $method $useColors ]
 			     #    puts method=$method
-			     foreach sgn $todo {
+			     set signs $todo
+			     if {"$method" == "orthogonal"} {
+				 set signs "1 -1"
+			     }
+			     foreach sgn $signs {
+				 set arrow "none"
+				 if { "$method"=="trajectory" } {
+				     if { $sgn < 0 } {
+					 set arrow "first"
+				     } else {
+					 if { "$direction" == "forward"} {
+					     set arrow "last"
+					 }
+				     }
+				 }
 				 set h1 [expr {- $hx}]
 				 set h2 [expr {- $hy}]
 				 set form [list $method xff yff $tinitial $x0 $y0 $hx $hy $steps $sgn]
@@ -206,7 +223,8 @@ proc doIntegrate { win x0 y0 } {
 				 }
 				 if { [llength $coords] > 3 } {
 				     $c create line $coords -tags path \
-					 -width $linewidth -fill $color
+					 -width $linewidth -fill $linecolor \
+					 -arrow $arrow
 				 }
 			     }
 			 }
@@ -299,7 +317,7 @@ proc lreverse { lis } {
 #----------------------------------------------------------------
 #
 
-proc drawArrowScreen { c atx aty dfx dfy } {
+proc drawArrowScreen { c atx aty dfx dfy color } {
 
     set x1 [expr {$atx + $dfx}]
     set y1 [expr {$aty + $dfy}]
@@ -307,14 +325,14 @@ proc drawArrowScreen { c atx aty dfx dfy } {
     #   set y2 [expr {$aty + .8*$dfy - .1* $dfx}]
     #   set x3 [expr {$atx + .8*$dfx -.1* $dfy}]
     #   set y3 [expr {$aty + .8*$dfy + .1* $dfx}]
-    $c create line $atx $aty $x1 $y1 -tags arrow -fill blue -arrow last -arrowshape {3 5 2}
+    $c create line $atx $aty $x1 $y1 -tags arrow -fill $color -arrow last -arrowshape {3 5 2}
     #  $c create line $x2 $y2  $x1 $y1 -tags arrow -fill red
     #  $c create line $x3 $y3 $x1 $y1 -tags arrow -fill red
 }
 
 proc drawDF { win tinitial } {
     global  axisGray
-    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform arrows
+    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vector
 
     # flush stdout
     set rtosx rtosx$win ; set rtosy rtosy$win
@@ -334,49 +352,49 @@ proc drawDF { win tinitial } {
 #    set uptoy [expr {[$rtosy $ymin] + $extra}]
     # draw the axes:
     #puts "draw [$rtosx $xmin] to $uptox"
-    if { $arrows } {
-    for { set x [expr {[$rtosx $xmin] + $extra}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
-	for { set y [expr {[$rtosy $ymax] + $extra}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
-	    set args "$t0 [$storx $x] [$story $y]"
-	    set dfx [expr {$xfactor * [eval xff $args]}]
-	    # screen y is negative of other y
-	    set dfy [expr  {$yfactor * [eval yff $args]}]
-	    # puts "$dfx $dfy"
-	    set len  [vectorlength $dfx $dfy]
-	    append all " $len $dfx $dfy "
-	    if { $min > $len } { set min $len }
-	    if { $max < $len } {set  max $len}
+    if { "$vector" != "" && "$vector" != "blank" } {
+	for { set x [expr {[$rtosx $xmin] + $extra}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
+	    for { set y [expr {[$rtosy $ymax] + $extra}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
+		set args "$t0 [$storx $x] [$story $y]"
+		set dfx [expr {$xfactor * [eval xff $args]}]
+		# screen y is negative of other y
+		set dfy [expr  {$yfactor * [eval yff $args]}]
+		# puts "$dfx $dfy"
+		set len  [vectorlength $dfx $dfy]
+		append all " $len $dfx $dfy "
+		if { $min > $len } { set min $len }
+		if { $max < $len } {set  max $len}
+	    }
 	}
-    }
-    set fac [expr {($stepsize -5 -8)/($max - $min)}]
-    set arrowmin 8
-    set arrowrange [expr {$stepsize -4 - $arrowmin}]
-    set s1 [expr {($arrowrange*$min+$arrowmin*$min-$arrowmin*$max)/($min-$max)}]
-    set s2 [expr {$arrowrange/($max-$min) }]
-    # we calculate fac for each length, so that
-    # when we multiply the vector times fac, its length
-    # will fall somewhere in [arrowmin,arrowmin+arrowrange].
-    # vectors of length min and max resp. should get mapped
-    # to the two end points.
-    # To do this we set fac [expr {$s1/$len + $s2}]
-    # puts "now to draw,s1=$s1 s2=$s2,max=$max,min=$min"
-    # puts "xfactor=$xfactor,yfactor=$yfactor"
-
-    set i -1
-    for { set x [expr {[$rtosx $xmin] + $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
-	for { set y [expr {[$rtosy $ymax] + $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
+	set fac [expr {($stepsize -5 -8)/($max - $min)}]
+	set arrowmin 8
+	set arrowrange [expr {$stepsize -4 - $arrowmin}]
+	set s1 [expr {($arrowrange*$min+$arrowmin*$min-$arrowmin*$max)/($min-$max)}]
+	set s2 [expr {$arrowrange/($max-$min) }]
+	# we calculate fac for each length, so that
+	# when we multiply the vector times fac, its length
+	# will fall somewhere in [arrowmin,arrowmin+arrowrange].
+	# vectors of length min and max resp. should get mapped
+	# to the two end points.
+	# To do this we set fac [expr {$s1/$len + $s2}]
+	# puts "now to draw,s1=$s1 s2=$s2,max=$max,min=$min"
+	# puts "xfactor=$xfactor,yfactor=$yfactor"
 	
+	set i -1
+	for { set x [expr {[$rtosx $xmin] + $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
+	    for { set y [expr {[$rtosy $ymax] + $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
+		
+		
+		set len [lindex $all [incr i]]
 	
-	    set len [lindex $all [incr i]]
-	
-	    set fac [expr {$s1/$len + $s2}]
-	    set dfx [lindex $all [incr i]]
-	    set dfy [lindex $all [incr i]]
-	    #puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy fac=$fac"
-	    # puts "$len $dfx $dfy"
-	    drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy}]
-        }
-    }
+		set fac [expr {$s1/$len + $s2}]
+		set dfx [lindex $all [incr i]]
+		set dfy [lindex $all [incr i]]
+		#puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy fac=$fac"
+		# puts "$len $dfx $dfy"
+		drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy} ] $vector
+	    }
+	}
     }
 
     # Draw the two axes
@@ -499,7 +517,7 @@ proc doConfigdf { win } {
     pack $frdydx.dxdt  $frdydx.dydt -side bottom  -fill x -expand 1
     pack $frdydx.dydxbut $frdydx.dydtbut -side left -fill x -expand 1
 
-    foreach w {versus_t parameters linewidth xradius yradius xcenter ycenter tinitial nsteps direction xfun linecolors trajectory } {
+    foreach w {parameters xfun linewidth xradius yradius xcenter ycenter tinitial versus_t nsteps direction orthogonal vector trajectory } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
