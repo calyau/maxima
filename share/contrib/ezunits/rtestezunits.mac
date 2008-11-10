@@ -135,7 +135,7 @@ sin(1`kg/s);
 /* end stuff adapted from Cliff Yapp's email
  */
 
-(kill (J, N), 0);
+(remvalue (J, N), 0);
 0;
 
 /* foo(a`s) fails nondimensional_not1 test, due to presence of a`s within.
@@ -262,7 +262,7 @@ m*kg*s*K*feet*in*acre;
 ff: ee*(12`in)/(1`feet);
 12*%ee`in;
 
-gg: ff^2*((1`yd)/(36`in))^2*(1`acre)/(55*88`yd^2);
+gg: ff^2*((1`yard)/(36`in))^2*(1`acre)/(55*88`yard^2);
 %ee^2/43560`acre;
 
 declare_units (foo, m/s^2);
@@ -299,6 +299,9 @@ cc: bar[11] * (57 ` s/kg) * (10 ` acre);
 
 1 ` acre*ft `` m^3;
 60228605349/48828125 ` m^3;
+
+declare_unit_conversion (h = hour, d = day);
+done;
 
 /* Stefan-Boltzmann constant */
 56697/10000/10^8 ` W/m^2/K^4 `` Btu/h/ft^2/R^4;
