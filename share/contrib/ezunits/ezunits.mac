@@ -387,6 +387,7 @@ declare_unit_conversion ([L]) :=
     setify (ratsimp (L)),
     map (flatten_conversion_equation, %%),
     known_unit_conversions : union (known_unit_conversions, %%),
+    kill (conversions_to_base_units),
     done);
 
 flatten_conversion_equation (e%) := block
@@ -397,12 +398,18 @@ flatten_conversion_equation (e%) := block
 
 equationp (e) := not atom (e) and op (e) = "=";
 
-compute_conversion_factor (u1%, u2%) := block ([e%],
-  e% : cons (%%a = u1% / u2%, args (known_unit_conversions)),
-  block ([logexpand : all], map (lambda ([e], map (log, e)), e%)),
-  linsolve (%%, map (lhs, %%)),
-  exp (rhs (first (%%))));
-  
+compute_conversion_factor (u1%, u2%) :=
+ (if conversions_to_base_units = 'conversions_to_base_units
+    then compute_conversions_to_base_units (),
+  ev (u1% / u2%, conversions_to_base_units));
+
+compute_conversions_to_base_units () :=
+ (print ("Computing conversions to base units; may take a moment."),
+  listify (known_unit_conversions),
+  ev (map (lambda ([e], map (log, e)), %%), logexpand = all),
+  linsolve (map (lambda ([e], lhs (e) - rhs (e)), %%), map (lhs, %%)),
+  conversions_to_base_units : map (lambda ([e], map (exp, e)), %%));
+
 convert_units [u1%, u2%] := block ([a%],
   a% : compute_conversion_factor (u1%, u2%),
   if constantp (a%)
@@ -454,10 +461,12 @@ declare_fundamental_units ([L]) :=
     if listp (%fundamental_units)
         then remove_fundamental_units (),
     %fundamental_units : L,
+    map (lambda ([s], assume (s > 0)), %fundamental_units),
     map (lambda ([x, y], declare_dimensions (x, y)), %fundamental_units, fundamental_dimensions));
 
 remove_fundamental_units () :=
    (apply (remove_dimensions, %fundamental_units),
+    map (lambda ([s], forget (s > 0)), %fundamental_units),
     kill (%fundamental_units));
 
 declare_fundamental_dimensions (length, mass, time, charge, temperature, quantity);
