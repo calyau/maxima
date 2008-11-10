@@ -197,16 +197,6 @@ compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nond
 
 conversions_derived_si :
    {
-
-    km = 1000*m,
-    cm = m/100,
-    mm = m/1000,
-    micron = m/1000000,
-
-    g = kg/1000,
-
-    l = m^3/1000,
-
     Hz = 1/s,           /* hertz:   Frequency            */
     N = kg*m/s^2,       /* newton:  Force                */
     Pa = N/m^2,         /* pascal:  Pressure             */
@@ -219,16 +209,145 @@ conversions_derived_si :
     S = 1/Ohm,          /* siemens: Electric conductance */
     Wb = J/A,           /* weber:   Magnetic flux        */
     T = J/m^2/A,        /* tesla:   Magnetic flux density*/
-    H = J/A^2           /* henry:   Inductance           */
+    H = J/A^2,          /* henry:   Inductance           */
+
+    mm = m/1000,
+    km = 1000*m,
+    Mm = 1000000*m,
+    Gm = 1000000000*m,
+
+    mg = kg/1000000,
+    g = kg/1000,
+    Mg = 1000*kg,
+    Gg = 1000000*kg,
+
+    ms = s/1000,
+    ks = 1000*s,
+    Ms = 1000000*s,
+    Gs = 1000000000*s,
+
+    mA = A/1000,
+    kA = 1000*A,
+    MA = 1000000*A,
+    GA = 1000000000*A,
+
+    mK = K/1000,
+    kK = 1000*K,
+    MK = 1000000*K,
+    GK = 1000000000*K,
+
+    mmol = mol/1000,
+    kmol = 1000*mol,
+    Gmol = 1000000*mol,
+    Mmol = 1000000000*mol,
+
+    mHz = Hz/1000,
+    kHz = 1000*Hz,
+    MHz = 1000000*Hz,
+    GHz = 1000000000*Hz,
+
+    mN = N/1000,
+    kN = 1000*N,
+    MN = 1000000*N,
+    GN = 1000000000*N,
+
+    mPa = Pa/1000,
+    kPa = 1000*Pa,
+    MPa = 1000000*Pa,
+    GPa = 1000000000*Pa,
+
+    mJ = J/1000,
+    kJ = 1000*J,
+    MJ = 1000000*J,
+    GJ = 1000000000*J,
+
+    mW = W/1000,
+    kW = 1000*W,
+    MW = 1000000*W,
+    GW = 1000000000*W,
+
+    mC = C/1000,
+    kC = 1000*C,
+    MC = 1000000*C,
+    GC = 1000000000*C,
+
+    mV = V/1000,
+    kV = 1000*V,
+    MV = 1000000*V,
+    GV = 1000000000*V,
+
+    mF = F/1000,
+    kF = 1000*F,
+    MF = 1000000*F,
+    GF = 1000000000*F,
+
+    mOhm = Ohm/1000,
+    kOhm = 1000*Ohm,
+    MOhm = 1000000*Ohm,
+    GOhm = 1000000000*Ohm,
+
+    mS = S/1000,
+    kS = 1000*S,
+    MS = 1000000*S,
+    GS = 1000000000*S,
+
+    mWb = Wb/1000,
+    kWb = 1000*Wb,
+    MWb = 1000000*Wb,
+    GWb = 1000000000*Wb,
+
+    mT = T/1000,
+    kT = 1000*T,
+    MT = 1000000*T,
+    GT = 1000000000*T,
+
+    mH = H/1000,
+    kH = 1000*H,
+    MH = 1000000*H,
+    GH = 1000000000*H,
+
+    micrometer = m/1000000,
+    micron = micrometer,
+    cm = m/100,
+
+    microgram = kg/1000000000,
+    metric_ton = Mg,
+
+    ns = s/1000000000,
+    microsecond = s/1000000,
+    
+    hectare = 100*m^2,
+    ha = hectare,
+
+    liter = m^3/1000,
+    l = liter
 
    };
+
+texput (mOhm, "{\\mathrm m\\Omega}");
+texput (Ohm, "{\\mathrm \\Omega}");
+texput (kOhm, "{\\mathrm k\\Omega}");
+texput (MOhm, "{\\mathrm M\\Omega}");
+texput (GOhm, "{\\mathrm G\\Omega}");
+
+texput (micrometer, "\\mu {\\mathrm m}");
+texput (micron, "\\mu {\\mathrm m}");
+texput (microgram, "\\mu {\\mathrm g}");
+texput (microsecond, "\\mu {\\mathrm s}");
+
+texput (metric_ton, "{\\mathrm metric\\ ton}");
 
 conversions_customary_si :
    {
 
-    ft = 3048/10000 * m,
-    lbm = kg/(2205/1000),
-    min = 60*s,
+    feet = 3048/10000 * m,
+    pound_mass = kg/(2205/1000),
+    minute = 60*s,
+    hour = 3600*s,
+    day = 86400*s,
+    week = 7*86400*s,
+    month = (30 + 7/16)*86400*s,
+    year = (365 + 1/4)*86400*s,
     Btu = 1055*J,
     R = 5/9*K,
     gallon = (3785/1000)*l
@@ -238,18 +357,21 @@ conversions_customary_si :
 conversions_customary_customary :
    {
 
-    in = ft/12,
-    yd = 3*ft,
-    mi = 5280*ft,
+    inch = feet/12,
+    yard = 3*feet,
+    mile = 5280*feet,
     /* slug = ???, */
-    oz = lbm/16,
+    ounce = pound_mass/16,
     /* grain = ???, */
-    h = 60*min,
-    d = 24*h,
-    lbf = lbm*32*ft/s^2,
-    acre = 55*88*yd^2,
-    psi = lbf/in^2,
-    cfm = ft^3/min
+    pound_force = pound_mass*32*ft/s^2,
+    acre = 55*88*yard^2,
+    psi = pound_force/inch^2,
+    cfm = feet^3/minute,
+
+    ft = feet,
+    lbm = pound_mass,
+    oz = ounce,
+    lbf = pound_force
 
    };
 
