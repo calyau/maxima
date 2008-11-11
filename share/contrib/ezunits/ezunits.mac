@@ -401,7 +401,7 @@ equationp (e) := not atom (e) and op (e) = "=";
 compute_conversion_factor (u1%, u2%) :=
  (if conversions_to_base_units = 'conversions_to_base_units
     then compute_conversions_to_base_units (),
-  ev (u1% / u2%, conversions_to_base_units));
+  ev (simplify_units (u1% / u2%), conversions_to_base_units));
 
 compute_conversions_to_base_units () :=
  (print ("Computing conversions to base units; may take a moment."),
@@ -461,12 +461,10 @@ declare_fundamental_units ([L]) :=
     if listp (%fundamental_units)
         then remove_fundamental_units (),
     %fundamental_units : L,
-    map (lambda ([s], assume (s > 0)), %fundamental_units),
     map (lambda ([x, y], declare_dimensions (x, y)), %fundamental_units, fundamental_dimensions));
 
 remove_fundamental_units () :=
    (apply (remove_dimensions, %fundamental_units),
-    map (lambda ([s], forget (s > 0)), %fundamental_units),
     kill (%fundamental_units));
 
 declare_fundamental_dimensions (length, mass, time, charge, temperature, quantity);
