@@ -780,7 +780,7 @@ AC_SUBST(GREP)
 AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss \
 src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
-doc/emaxima/Makefile doc/info/Makefile \
+doc/emaxima/Makefile doc/info/Makefile doc/info/maxima.texi \
 doc/info/es/Makefile doc/info/es.utf8/Makefile \
 doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
 doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \

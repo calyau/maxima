@@ -14,7 +14,7 @@
 @c %**start of header
 @setfilename  maxima.info
 @synindex vr fn
-@settitle Maxima Manual
+@settitle Maxima @VERSION@ Manual
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
