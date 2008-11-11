@@ -383,7 +383,7 @@ u : fundamental_units (e);
 m/s;
 
 e : e `` u;
-sqrt(2001)*sqrt(1039309)*%e^(log(1000)/2)/(1000*sqrt(2)) ` m/s;
+sqrt(10)*sqrt(2001)*sqrt(1039309)/(100*sqrt(2)) ` m/s;
 
 e, numer;
 1019.719890214955 ` m/s;
