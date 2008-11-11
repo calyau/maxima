@@ -568,3 +568,12 @@ block
     s : xreduce ("*", map ("^", e, map ('rhs, s))),
     s : subst (map ("=", %rnum_list, makelist (0, i, 1, length (%rnum_list))), s),
     map (lambda ([x], s * x), cons (1, dimensionless (e))));
+
+/* A couple of convenience functions.
+ */
+
+known_units () :=
+    sort (append (%fundamental_units, map (lhs, listify (known_unit_conversions))));
+
+display_known_unit_conversions () := 
+    for x in known_unit_conversions do display (x);
