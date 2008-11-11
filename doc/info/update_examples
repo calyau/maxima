@@ -96,7 +96,7 @@ while (<STDIN>) {
 
 	    $tempf = tmpnam();
 
-	    $com = "$maxima_command > $tempf <<EOF\n"; 
+	    $com = "$maxima_command > $tempf << \\EOF\n"; 
 	    foreach $l (@example_input_buf) { $com .= $l };
 	    $com .= "EOF";
 	    
