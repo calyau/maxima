@@ -82,7 +82,7 @@ simplify_sum(expr) :=
   else if part(expr, 0)#nounify(sum) then map(simplify_sum, expr)
 
   else block(
-    [summand : part(expr, 1), var : part(expr, 2),
+    [summand : ratsimp(part(expr, 1)), var : part(expr, 2),
      lo : part(expr, 3), hi : part(expr, 4),
      sm1 : expr, linsolvewarn:false, simplify_sum_depth:simplify_sum_depth+1],
 
