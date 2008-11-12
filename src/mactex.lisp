@@ -319,9 +319,9 @@
 	  (t
 	   (setq r (exploden atom))
 	   (setq exponent (member 'e r :test #'string-equal)) ;; is it ddd.ddde+EE
-	   (cond ((null exponent)
-		  ;; it is not. go with it as given
-		  atom)
+	   (cond
+         ((null exponent)
+		  (coerce r 'string))
 		 (t
 		  (setq firstpart
 			(nreverse (cdr (member 'e (reverse r) :test #'string-equal))))
