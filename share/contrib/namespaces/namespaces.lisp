@@ -319,6 +319,15 @@
 
 ; ------------------ begin modified existing Maxima functions ------------------
 
+;; Intern symbols in the current package.
+;; I think the right policy is this:
+;; if the current package :uses :maxima, then intern in current package;
+;; otherwise intern in :maxima.
+;; I don't know how to detect :uses :maxima, maybe that is easy.
+
+(defun intern-invert-case (string)
+  (intern (maybe-invert-string-case string)))
+
 (defun stripdollar-string (x)
   (if (and (stringp x) (equal (car (exploden x)) #\$))
     (subseq x 1)

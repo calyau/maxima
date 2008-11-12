@@ -1,6 +1,9 @@
 kill(all);
 done;
 
+(if maxima = 'maxima then load (namespaces), 0);
+0;
+
 maxima;
 ''(?find\-package ("MAXIMA"));
 
@@ -258,3 +261,7 @@ unknown;
 
 (defstruct (foo (a=1, b=2)), new (foo), [%%@a, %%@b]);
 [1, 2];
+
+in_namespace (maxima);
+''(?find\-package ("MAXIMA"));
+

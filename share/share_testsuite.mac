@@ -71,7 +71,7 @@ block
 	/* gf_test, -- many bugs */
 	/* gf_roots_test, -- many bugs */
 	/* gf_hard_test, -- many bugs  */
-	/* rtest_namespaces, -- causes test_suite to halt */
+	rtest_namespaces,
 	arag_test,
 	/* hard_test, --takes a long time or never finishes */
         rtest_pdiff,
