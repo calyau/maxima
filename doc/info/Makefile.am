@@ -24,7 +24,7 @@ endif
 
 SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR_DIR_UTF8)
 
-info_TEXINFOS = maxima.texi
+info_TEXINFOS = 
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   Expressions.texi Simplification.texi Plotting.texi Input.texi \
   Floating.texi Contexts.texi Polynomials.texi Constants.texi \
@@ -156,7 +156,7 @@ html: maxima.html contents.hhc
 maxima-index.lisp: maxima.info build_index.pl
 	perl ./build_index.pl maxima.info ':crlf' > maxima-index.lisp
 
-maxima.html: maxima.texi $(maxima_TEXINFOS)
+maxima.html: maxima.texi.in $(maxima_TEXINFOS)
 	sh extract_categories.sh maxima
 
 contents.hhc: maxima.html
