@@ -24,7 +24,6 @@ endif
 
 SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8) $(PT_BR_DIR) $(PT_BR_DIR_UTF8)
 
-info_TEXINFOS = 
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   Expressions.texi Simplification.texi Plotting.texi Input.texi \
   Floating.texi Contexts.texi Polynomials.texi Constants.texi \
@@ -149,7 +148,10 @@ figures/plotting24.pdf\
 figures/plotting25.pdf\
 figures/orthopoly1.pdf
 
-all-local: maxima-index.lisp
+all-local: maxima.info maxima-index.lisp
+
+maxima.info : maxima.texi
+	makeinfo maxima.texi
 
 html: maxima.html contents.hhc
 
