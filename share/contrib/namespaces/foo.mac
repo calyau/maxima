@@ -3,4 +3,4 @@
     my_constant : 1729;
     f(x) := my_constant * sin(x);
     g(n) := expand ((f(a) + n!)^n);
-    h(z) := f(z) - g(2);
+    hh(z) := f(z) - g(2);

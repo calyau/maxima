@@ -17,13 +17,13 @@ namespaces;
 '[foo];
 
 symbols (foo);
-[foo|a, foo|f, foo|g, foo|h, foo|my_constant, foo|n, foo|x, foo|z];
+[foo|a, foo|f, foo|g, foo|hh, foo|my_constant, foo|n, foo|x, foo|z];
 
 external_symbols (foo);
 [foo|f, foo|g];
 
 functions;
-[foo|f(foo|x), foo|g(foo|n), foo|h(foo|z)];
+[foo|f(foo|x), foo|g(foo|n), foo|hh(foo|z)];
 
 values;
 [foo|my_constant];
@@ -43,17 +43,17 @@ string ('foo|my_constant);
 (my_constant : 1 - %pi, is (my_constant = foo|my_constant));
 false;
 
-(h(x) := (1/2) * x^2, 0);
+(hh(x) := (1/2) * x^2, 0);
 0;
 
 import (foo);
 [[foo|f, foo|g]];
 
-map (fundef, [f, g, h, foo|h]);
+map (fundef, [f, g, hh, foo|hh]);
 [foo|f(foo|x) := foo|my_constant*sin(foo|x),
  foo|g(foo|n) := expand ((foo|f(foo|a) + foo|n!)^foo|n),
- h(x) := 1/2*x^2,
- foo|h(foo|z) := foo|f(foo|z) - foo|g(2)];
+ hh(x) := 1/2*x^2,
+ foo|hh(foo|z) := foo|f(foo|z) - foo|g(2)];
 
 f(%pi/4);
 1729/sqrt(2);
@@ -61,19 +61,19 @@ f(%pi/4);
 g(3);
 5168743489*sin(foo|a)^3 + 53809938*sin(foo|a)^2 + 186732*sin(foo|a) + 216;
 
-h(u - v);
+hh(u - v);
 (u - v)^2/2;
 
-foo|h(u - v);
+foo|hh(u - v);
 -1729*sin(v - u) - 2989441*sin(foo|a)^2 - 6916*sin(foo|a) - 4;
 
-kill (foo|h);
+kill (foo|hh);
 done;
 
-foo|h(u - v);
-'(foo|h(u - v));
+foo|hh(u - v);
+'(foo|hh(u - v));
 
-h(u - v);
+hh(u - v);
 (u - v)^2/2;
 
 in_namespace (aa);
