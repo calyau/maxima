@@ -269,7 +269,7 @@
 	   ;;
 	   ;; H1(v,z) = exp(-v*pi*i)*H1(-v,z)
 	   
-	   (* (cis (* pi (- v))) (hankel-1 (- v) z)))
+	   (* (cis (* (float pi) (- v))) (hankel-1 (- v) z)))
 	  (t
 	   (multiple-value-bind (n fnu)
 	       (floor v)
@@ -338,7 +338,7 @@
 	   ;;
 	   ;; H2(v,z) = exp(v*pi*i)*H1(-v,z)
 	   
-	   (* (cis (* pi v)) (hankel-2 (- v) z)))
+	   (* (cis (* (float pi) v)) (hankel-2 (- v) z)))
 	  (t
 	   (multiple-value-bind (n fnu)
 	       (floor v)
