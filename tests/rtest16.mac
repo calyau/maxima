@@ -251,9 +251,8 @@ limit(x*(sqrt(1+x^2)-x),x,inf), algebraic : true, gcd : subres;
 1/2;
 
 /* [ 1097982 ] limit(x/(x^(log(x)))); returns wrong answer */
-/* should be zero, someday */
 limit(x/(x^log(x)), x, inf);
-'limit(%e^((1-log(x))*log(x)),x,inf);
+0;
 
 /* [ 1039965 ] limit(4^n/2^(2*n),n,inf) is wrong */
 limit(4^n/2^(2*n),n,inf);
@@ -417,6 +416,15 @@ tex (t[1], false);
 limit((%pi*N^(2*N+1)*2^(2*N))/((2*N-1)^(2*N)*(2*%e*N+%e)), N, inf);
 %pi/2;
 
+/* [ 1977992 ] no limit calculation */
+limit(abs(sin(x))/sqrt(1-cos(x)), x, 0);
+sqrt(2);
+
+/* [ 1973399 ] F(x) := 1/%pi*(atan(x) + %pi/2) */
+/* only works with taylor_logexpand:true */
+limit( ((1/%pi)*(atan(n/%pi) + %pi/2))^n, n, inf);
+%e^-1;
+
 /* tests for gruntz limit algorithm */
 gruntz(exp(x), x, inf);
 inf;
@@ -433,6 +441,20 @@ gruntz( x^2/(x + 2*x^2), x, inf);
 gruntz( x/x^log(x), x, inf);
 0;
 
+gruntz( (2^x)/(x + exp(x)) , x, 0, plus);
+1;
+
+gruntz( (erf(x))/sqrt(1-cos(x)) , x, 0, minus);
+-2*sqrt(2)/sqrt(%pi);
+
+gruntz( (erf(x))/sqrt(1-cos(x)) , x, 0, plus);
+2*sqrt(2)/sqrt(%pi);
+
+gruntz( x*(x^(1/x)-1)/log(x), x, inf);
+1;
+
+gruntz( (x*x^(1/x)-x)/log(x), x, inf);
+1;
 
 /*
  * Bug [ 1854888 ] hgfred([5],[5], 1) doesn't simplify
