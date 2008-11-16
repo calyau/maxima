@@ -197,7 +197,7 @@
   precison; otherwise (the default) they are truncated based upon the input
   truncation levels.")
 
-(defmvar $taylor_logexpand ()
+(defmvar $taylor_logexpand t
  "Unless FALSE log's of products will be expanded fully in TAYLOR (the default)
   to avoid identically-zero constant terms which involve log's. When FALSE,
   only expansions necessary to produce a formal series will be executed.")
