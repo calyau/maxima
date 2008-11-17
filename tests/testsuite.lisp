@@ -46,4 +46,5 @@
 	((mlist) "rtest_algebraic")
         "rtest_gamma"
         "rtest_expintegral"
+	"rtest_signum"
 	))
