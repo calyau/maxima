@@ -1368,14 +1368,23 @@
 (defmfun simpsignum (x y z) 
   (oneargcheck x)
   (setq y (simpcheck (cadr x) z))
-  (cond ((mnump y)
-	 (setq y (num1 y)) (cond ((plusp y) 1) ((minusp y) -1) (t 0))) 
-	((eq (setq z (csign y)) t) (eqtest (list '(%signum) y) x))
-	((eq z '$pos) 1) 
-	((eq z '$neg) -1) 
-	((eq z '$zero) 0) 
-	((mminusp y) (neg (take '(%signum) (neg y))))
-	(t (eqtest (list '(%signum) y) x))))
+  (setq z (csign y))
+  ;; When csign thinks y is complex, let it be.
+  (cond ((eq t z) (eqtest (list '(%signum) y) x))
+	(t 
+	 ;; positive * x --> x and negative * x --> -1 * x.
+	 (if (mtimesp y)
+	     (setq y (muln (mapcar #'(lambda (s) (let ((sgn (csign s)))
+						   (cond ((eq sgn '$neg) -1)
+							 ((eq sgn '$pos) 1)
+							 (t s)))) (margs y)) t)))
+
+	 (cond ((and (not ($mapatom y)) (eq (mop y) '%signum)) y) ;; signum(signum(x)) --> signum(x)
+	       ((eq z '$pos) 1) 
+	       ((eq z '$neg) -1) 
+	       ((eq z '$zero) 0) 
+	       ((great (neg y) y) (neg (take '(%signum) (neg y)))) ;; signum(x) --> -signum(-x).
+	       (t (eqtest (list '(%signum) y) x))))))
 
 (defmfun exptrl (r1 r2)
   (cond ((equal r2 1) r1)
