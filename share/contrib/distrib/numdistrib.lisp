@@ -535,7 +535,7 @@
          (racc 8.881784197001252e-16)
          (dbl_epsilon 8.881784197001252e-16)
          (dbl_min 2.2250738585072014e-308)
-         (dbl_max most-positive-flonum) ;; GCL and CLISP on W2k can't read 1.7976931348623157e+308
+         (dbl_max 1.7976931348623157e+308)
          (eps 1e-11)    ; must be > accu
          (reps 1e-10)   ; relative tolerance
          (ux 1.0) (lx 1.0) (nx 1.0) (pp 1.0))
@@ -582,6 +582,121 @@
                (when (<= (/ (- ux lx) nx) accu)
                   (return)))
             (* 0.5 (+ ux lx)) )) ))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                             ;;
+;;   Numerical routines for the noncentral t   ;;
+;;                                             ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Cumulative probability of the noncentral Student's t distribution.
+;; Reference:
+;;    Algorithm AS243: Appl.Statist., Lenth,R.V. (1989), vol. 38, no. 1
+;; Conditions: df>0 (degrees of freedom)
+(defun cdfnt (x df delta)
+   (declare (type flonum x df delta))
+   (let ((alnrpi 0.57236494292470008707)  ; log(sqrt(%pi))
+         (r2pi   0.79788456080286535588)  ; sqrt(2/%pi)
+         (r2     1.41421356237309504880)  ; sqrt(2)
+         (errmax 1.e-12)
+         (itrmax 1000)
+         (negdel nil)
+         a albeta b del errbd geven godd lambda p q rxb s tt xx xeven xodd tnc) 
+      (setf tt  x
+            del delta)
+      (when (< x 0.0)
+         (setf negdel t
+               tt     (- tt)
+               del    (- del)))
+      ; initialize twin series
+      ; Guenther, J. (1978). Statist. Computn. Simuln. vol.6, 199.
+      (setf xx (/ (* x x) (+ (* x x) df)))
+      (cond
+         ((> xx 0.0)
+          (setf lambda (* del del))
+          (setf p (* 0.5 (exp (* lambda -0.5))))
+          (setf q (* r2pi p del))
+          (setf s (- 0.5 p)
+                a 0.5
+                b (* 0.5 df))
+          (setf rxb (expt (- 1.0 xx) b)
+                albeta (+ alnrpi
+                          (lngamma b)
+                          (- (lngamma (+ a b)))))
+          (setf xodd  (ibeta xx a b)
+                godd  (* 2.0 rxb (exp (- (* a (log xx)) albeta)))
+                xeven (- 1.0 rxb)
+                geven (* b xx rxb))
+          (setf tnc (+ (* p xodd) (* q xeven)))
+          ; repeat until convergence or iteration limit
+          (loop for it from 1 to itrmax do
+             (setf a     (+ a 1.0))
+             (setf xodd  (- xodd godd)
+                   xeven (- xeven geven)
+                   godd  (/ (* godd xx (+ a b -1.0)) a)
+                   geven (/ (* geven xx (+ a b -0.5)) (+ a 0.5))
+                   p     (/ (* p lambda) (* 2.0 it))
+                   q     (/ (* q lambda) (+ (* 2.0 it) 1.0)))
+             (setf s   (- s p)
+                   tnc (+ tnc (* p xodd) (* q xeven)))
+             (setf errbd (* 2.0 s (- xodd godd)))
+             (when (< errbd errmax)
+                (return))))
+         (t ; xx = t = 0
+            (setf tnc 0.0)))
+      (cond
+         ((>= errbd errmax)
+             ($print "Warning: dcf_noncentral_student_t didn't converge")
+             ($funmake '$dcf_noncentral_student_t '((mlist) x df delta)) )
+         (t
+             (setf tnc (+ tnc ($float (+ 0.5 (* 0.5 ($erf (/ (- del) r2)))))))
+             (if negdel
+                (- 1.0 tnc)
+                tnc)))))
+
+
+
+;; Quantiles for the noncentral Student's t distribution
+;; by the inverse method. Translation of file qnt.c from R.
+;; Conditions: 0<=p<=1, df>0 (degrees of freedom)
+(defun qnct (p df ncp)
+   (declare (type flonum p df ncp))
+   (let ((accu 1.0e-13)
+         (eps 1.0e-11)
+         (dbl_max most-positive-double-float) ; DBL_MAX
+         (dbl_epsilon double-float-epsilon) ; DBL_EPSILON
+         ux lx nx pp)
+
+      ; 1. finding an upper and lower bound
+      (setf pp (min (- 1.0 dbl_epsilon)
+                    (* p (+ 1.0 eps))))
+      (setf ux (max 1.0 ncp))
+      (loop
+         (when (or (>= ux dbl_max)
+                   (>= (cdfnt ux df ncp) pp))
+            (return 'done))
+         (setf ux (* ux 2)))
+      (setf pp (* p (- 1.0 eps)))
+      (setf lx (min -1.0 (- ncp)))
+      (loop
+         (when (or (<= lx (- dbl_max))
+                   (<= (cdfnt lx df ncp) pp))
+            (return 'done))
+         (setf lx (* lx 2)))
+
+      ; 2. interval (lx,ux)  halving
+      (loop
+         (setf nx (* 0.5 (+ lx ux)))
+         (if (> (cdfnt nx df ncp) p)
+            (setf ux nx)
+            (setf lx nx))
+         (when (<= (/ (- ux lx) (abs nx)) accu)
+            (return 'done)))
+      (* 0.5 (+ lx ux))))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -806,6 +921,38 @@
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndstudent n 0) sample))) )) )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                    ;;
+;;       Noncentral Student's t random simulation     ;;
+;;                                                    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;  Generates random Noncentral Student variates (n), based
+;;  on the fact that X/sqrt(Y/n) is a Noncentral Student random
+;;  variable with n degrees of freedom and noncentrality parameter k,
+;;  if X~N(k,1) and Y~chi^2(n).
+(defun rndncstudent-ratio (n k)
+   (declare (type flonum n k))
+   (let (x y)
+     (setf x (+ k (rndnormal 0))
+           y (rndchi2 n 0))
+     (/ x (sqrt (/ y n)))))
+
+
+;;  The sample size ss must be a non negative integer.
+;;  If ss=0, returns a number, otherwise a maxima list
+;;  of length ss
+(defun rndncstudent (n k ss &aux sample)
+   (cond ((= ss 0) 
+            (rndncstudent-ratio n k) )
+         (t (setf sample nil)
+            (dotimes (i ss (cons '(mlist simp) sample))
+                     (setf sample (cons (rndncstudent-ratio n k) sample))) )) )
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

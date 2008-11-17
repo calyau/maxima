@@ -1,4 +1,4 @@
-@c English version 1.10
+@c English version 1.11
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::
@@ -410,6 +410,135 @@ El algoritmo utilizado est@'a basado en el hecho de que si @var{Z} es una variab
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
 es una variable aleatoria de Student de @var{n} grados de libertad, @math{t(n)}.
+
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Funci@'on} pdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>0} grados de libertad y par@'ametro de no centralidad @math{ncp}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+
+En ocasiones es necesario hacer alg@'un trabajo extra para obtener el resultado final.
+
+@c ===beg===
+@c load (distrib)$
+@c expand(pdf_noncentral_student_t(3,5,0.1));
+@c float(%);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) expand(pdf_noncentral_student_t(3,5,0.1));
+       .01370030107589574 sqrt(5)
+(%o2)  --------------------------
+       sqrt(2) sqrt(14) sqrt(%pi)
+   1.654562884111515E-4 sqrt(5)
+ + ----------------------------
+            sqrt(%pi)
+   .02434921505438663 sqrt(5)
+ + --------------------------
+              %pi
+(%i3) float(%);
+(%o3)          .02080593159405669
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} cdf_noncentral_student_t (@var{x},@var{n},@var{ncp})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>0} grados de libertad y par@'ametro de no centralidad @math{ncp}. Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true} o si alguno de sus argumentos es un n@'umero decimal, en otro caso devuelve una expresi@'on nominal.
+Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+
+@c ===beg===
+@c load (distrib)$
+@c cdf_noncentral_student_t(-2,5,-5);
+@c cdf_noncentral_student_t(-2.0,5,-5);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) cdf_noncentral_student_t(-2,5,-5);
+(%o2) cdf_noncentral_student_t(- 2, 5, - 5)
+(%i3) cdf_noncentral_student_t(-2.0,5,-5);
+(%o3)          .9952030093319743
+@end example
+
+@end deffn
+
+
+@deffn {Funci@'on} quantile_noncentral_student_t (@var{q},@var{n},@var{ncp})
+Devuelve el @var{q}-cuantil de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>0} grados de libertad y par@'ametro de no centralidad @math{ncp}; en otras palabras, se trata de la inversa de @code{cdf_noncentral_student_t}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Funci@'on} mean_noncentral_student_t (@var{n},@var{ncp})
+Devuelve la media de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>1} grados de libertad y par@'ametro de no centralidad @math{ncp}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+
+@c ===beg===
+@c load (distrib)$
+@c (assume(df>1), mean_noncentral_student_t(df,k));
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) (assume(df>1), mean_noncentral_student_t(df,k));
+                   df - 1
+             gamma(------) sqrt(df) k
+                     2
+(%o2)        ------------------------
+                              df
+                sqrt(2) gamma(--)
+                              2
+@end example
+
+@end deffn
+
+
+@deffn {Funci@'on} var_noncentral_student_t (@var{n},@var{ncp})
+Devuelve la varianza de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>2} grados de libertad y par@'ametro de no centralidad @math{ncp}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Funci@'on} std_noncentral_student_t (@var{n},@var{ncp})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>2} grados de libertad y par@'ametro de no centralidad @math{ncp}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Funci@'on} skewness_noncentral_student_t (@var{n},@var{ncp})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>3} grados de libertad y par@'ametro de no centralidad @math{ncp}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Funci@'on} kurtosis_noncentral_student_t (@var{n},@var{ncp})
+Devuelve el coeficiente de curtosis de una variable aleatoria no central de Student @math{nc_t(n,ncp)}, con @math{n>4} grados de libertad y par@'ametro de no centralidad @math{ncp}. Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
+@end deffn
+
+
+@deffn {Funci@'on} random_noncentral_student_t (@var{n},@var{ncp})
+@deffnx {Funci@'on} random_noncentral_student_t (@var{n},@var{ncp},@var{m})
+Devuelve un valor aleatorio @math{nc_t(n,ncp)}, con @math{n>0}. Llamando a @code{random_noncentral_student_t} con un tercer argumento @var{m}, se obtiene una muestra aleatoria simulada de tama@~no @var{m}.
+
+El algoritmo utilizado est@'a basado en el hecho de que si @var{X} es una variable aleatoria normal @math{N(ncp,1)} y @math{S^2} es una chi cuadrada de @var{n} grados de libertad, @math{Chi^2(n)}, entonces
+@ifhtml
+@example
+                           X
+                 U = -------------
+                     /   2  \ 1/2
+                     |  S   |
+                     | ---  |
+                     \  n   /
+@end example
+@end ifhtml
+@ifinfo
+@example
+                           X
+                 U = -------------
+                     /   2  \ 1/2
+                     |  S   |
+                     | ---  |
+                     \  n   /
+@end example
+@end ifinfo
+@tex
+$$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
+@end tex
+es una variable aleatoria no central de Student de @var{n} grados de libertad y par@'ametro de no centralidad @math{ncp}, @math{nc_t(n,ncp)}.
 
 Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
 @end deffn

@@ -40,6 +40,7 @@ Continuous distributions:                   Discrete distributions:
    Cauchy              (*cauchy)
    Gumbel              (*gumbel)
    Noncentral Chi^2    (*noncentral_chi2)
+   Noncentral Student  (*noncentral_student_t)
 
 Functions:
    Density function            (pdf_*)
@@ -245,7 +246,7 @@ random_normal(m,s,[num]):=block([cp:control1(s),cn,no],
 
 
 
-pdf_student_t(x,n):=block([cp:control1(n),fn,fx],
+pdf_student_t(x,n):=block([cp:control1(n)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('pdf_student_t,[x,n])),
    gamma((n+1)/2) * (1+x*x/n)^(-(n+1)/2) / (sqrt(n*%pi) * gamma(n/2)) )$
@@ -319,6 +320,117 @@ random_student_t(n,[num]):=block([cp:control1(n),cn,no,fn],
    if numberp(fn)
       then return(?rndstudent(fn,no)),
    funmake('random_student_t,append([n],num)) )$
+
+
+
+/*     NONCENTRAL STUDENT DISTRIBUTION      */
+
+
+
+/* According to documentation on hgfred, sometimes it might be useful to load */
+/* package orthopoly. In R, dt(x,n,ncp)                                       */
+pdf_noncentral_student_t(x,n,ncp):=block([cp:control1(n)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('pdf_noncentral_student_t,[x,n,ncp])),
+   if float(ncp)=0.0
+     then pdf_student_t(x,n)
+     else n^(n/2) * factorial(n) * exp(-ncp^2/2) / 
+          (2^n * (n+x^2)^(n/2) * gamma(n/2)) *
+          (sqrt(2)*ncp*x*hgfred([n/2+1],[3/2],ncp^2*x^2/(2*(n+x^2))) /  ((n+x^2) * gamma((n+1)/2))  + 
+           hgfred([(n+1)/2],[1/2],ncp^2*x^2/(2*(n+x^2))) / (sqrt(n+x^2) * gamma(n/2+1))  )  )$
+
+/* R: pt(x,n,ncp) */
+cdf_noncentral_student_t(x,n,ncp):=block([cp:control1(n)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('cdf_noncentral_student_t,[x,n,ncp])),
+   if sign(x)='zero  /* central Student */
+     then cdf_student_t(x,n)
+     elseif numberp(x) and numberp(n) and numberp(ncp) and
+            (numer or ?floatp(x) or ?floatp(n) or ?floatp(ncp))
+     then ?cdfnt(float(x),float(n),float(ncp))
+     else funmake('cdf_noncentral_student_t,[x,n,ncp]) )$
+
+/* R: qt(q,n,ncp) */
+quantile_noncentral_student_t(q,n,ncp):=
+  block([cp:control1(n), cq:controlq(q), fq:float(q), fn:float(n), fncp:float(ncp)],
+    if cp=-1 or cq=-1 then error("Illegal parameter"),
+    if cp=0 or cq=0 then return(funmake('quantile_noncentral_student_t,[q,n,ncp])),
+    if fq=0.0 then return('minf),
+    if fq=1.0 then return('inf),
+    if fq=0.0 then return('minf),
+    if fncp=0.0 then return(quantile_student_t(q,n)),
+    if numberp(fq) and numberp(fn) and numberp(fncp) and
+       (numer or ?floatp(q) or ?floatp(n))
+       then ?qnct(fq, fn, fncp)
+       else funmake('quantile_noncentral_student_t,[q,n,ncp]) )$
+
+mean_noncentral_student_t(n,ncp):=block([cp:control1(n)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('mean_noncentral_student_t,[n,ncp])),
+   if sign(n-1)='pos
+      then return(ncp * sqrt(n/2) * gamma((n-1)/2) / gamma(n/2))
+      else if member(sign(n-1),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('mean_noncentral_student_t,[n,ncp]))$
+
+var_noncentral_student_t(n,ncp):=block([cp:control1(n)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('var_noncentral_student_t,[n,ncp])),
+   if sign(n-2)='pos
+      then return( n*(1+ncp^2)/(n-2) - ncp^2*n/2 * (gamma((n-1)/2) / gamma(n/2))^2)
+      else if member(sign(n-2),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('var_noncentral_student_t,[n,ncp]))$
+
+std_noncentral_student_t(n,ncp):=block([cp:control1(n)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('std_noncentral_student_t,[n,ncp])),
+   if sign(n-2)='pos
+      then return( sqrt(n*(1+ncp^2)/(n-2) - ncp^2*n/2 * (gamma((n-1)/2) / gamma(n/2))^2))
+      else if member(sign(n-2),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('std_noncentral_student_t,[n,ncp]))$
+
+skewness_noncentral_student_t(n,ncp):=block([cp:control1(n)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('skewness_noncentral_student_t,[n,ncp])),
+   if sign(n-3)='pos
+      then return(block([m: mean_noncentral_student_t(n,ncp),
+                         v: var_noncentral_student_t(n,ncp)],
+                    m / v^(3/2) * (n*(2*n-3+ncp^2)/((n-2)*(n-3)) - 2*v) ))
+      else if member(sign(n-3),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('skewness_noncentral_student_t,[n,ncp]))$
+
+kurtosis_noncentral_student_t(n,ncp):=block([cp:control1(n)],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('kurtosis_noncentral_student_t,[n,ncp])),
+   if sign(n-4)='pos
+      then return(block([m: mean_noncentral_student_t(n,ncp),
+                         v: var_noncentral_student_t(n,ncp), aux],
+                    aux: n^2*(3+6*ncp^2+ncp^4)/((n-2)*(n-4)) -
+                         m^2 * (n*((n+1)*ncp^2+3*(3*n-5))/((n-2)*(n-3)) - 3*v),
+                    aux/v^2 - 3 ))
+      else if member(sign(n-4),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('kurtosis_noncentral_student_t,[n,ncp]))$
+
+random_noncentral_student_t(n,ncp,[num]):=block([cp:control1(n),cn,no,fn,fncp],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('random_noncentral_student_t,append([n,ncp],num))),
+   fn: float(n),
+   fncp: float(ncp),
+   if numberp(fn)
+      then return(?rndncstudent(fn,fncp,no)),
+   funmake('random_noncentral_student_t,append([n,ncp],num)) )$
+
+
+
+
+
+
 
 
 
