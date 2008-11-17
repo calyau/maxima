@@ -604,7 +604,9 @@
          (errmax 1.e-12)
          (itrmax 1000)
          (negdel nil)
-         a albeta b del errbd geven godd lambda p q rxb s tt xx xeven xodd tnc) 
+         (it 1)
+         (tnc 0.0)
+         a albeta b del errbd geven godd lambda p q rxb s tt xx xeven xodd) 
       (setf tt  x
             del delta)
       (when (< x 0.0)
@@ -614,43 +616,41 @@
       ; initialize twin series
       ; Guenther, J. (1978). Statist. Computn. Simuln. vol.6, 199.
       (setf xx (/ (* x x) (+ (* x x) df)))
+      (when (> xx 0.0)
+        (setf lambda (* del del))
+        (setf p (* 0.5 (exp (* lambda -0.5))))
+        (setf q (* r2pi p del))
+        (setf s (- 0.5 p)
+              a 0.5
+              b (* 0.5 df))
+        (setf rxb (expt (- 1.0 xx) b)
+              albeta (+ alnrpi
+                        (lngamma b)
+                        (- (lngamma (+ a b)))))
+        (setf xodd  (ibeta xx a b)
+              godd  (* 2.0 rxb (exp (- (* a (log xx)) albeta)))
+              xeven (- 1.0 rxb)
+              geven (* b xx rxb))
+        (setf tnc (+ (* p xodd) (* q xeven)))
+        ; repeat until convergence or iteration limit
+        (loop
+           (setf a     (+ a 1.0))
+           (setf xodd  (- xodd godd)
+                 xeven (- xeven geven)
+                 godd  (/ (* godd xx (+ a b -1.0)) a)
+                 geven (/ (* geven xx (+ a b -0.5)) (+ a 0.5))
+                 p     (/ (* p lambda) (* 2.0 it))
+                 q     (/ (* q lambda) (+ (* 2.0 it) 1.0)))
+           (setf s   (- s p)
+                 tnc (+ tnc (* p xodd) (* q xeven))
+                 it (+ it 1))
+           (setf errbd (* 2.0 s (- xodd godd)))
+           (when (or (< errbd errmax) (> it itrmax))
+             (return))  ))
       (cond
-         ((> xx 0.0)
-          (setf lambda (* del del))
-          (setf p (* 0.5 (exp (* lambda -0.5))))
-          (setf q (* r2pi p del))
-          (setf s (- 0.5 p)
-                a 0.5
-                b (* 0.5 df))
-          (setf rxb (expt (- 1.0 xx) b)
-                albeta (+ alnrpi
-                          (lngamma b)
-                          (- (lngamma (+ a b)))))
-          (setf xodd  (ibeta xx a b)
-                godd  (* 2.0 rxb (exp (- (* a (log xx)) albeta)))
-                xeven (- 1.0 rxb)
-                geven (* b xx rxb))
-          (setf tnc (+ (* p xodd) (* q xeven)))
-          ; repeat until convergence or iteration limit
-          (loop for it from 1 to itrmax do
-             (setf a     (+ a 1.0))
-             (setf xodd  (- xodd godd)
-                   xeven (- xeven geven)
-                   godd  (/ (* godd xx (+ a b -1.0)) a)
-                   geven (/ (* geven xx (+ a b -0.5)) (+ a 0.5))
-                   p     (/ (* p lambda) (* 2.0 it))
-                   q     (/ (* q lambda) (+ (* 2.0 it) 1.0)))
-             (setf s   (- s p)
-                   tnc (+ tnc (* p xodd) (* q xeven)))
-             (setf errbd (* 2.0 s (- xodd godd)))
-             (when (< errbd errmax)
-                (return))))
-         (t ; xx = t = 0
-            (setf tnc 0.0)))
-      (cond
-         ((>= errbd errmax)
-             ($print "Warning: dcf_noncentral_student_t didn't converge")
-             ($funmake '$dcf_noncentral_student_t '((mlist) x df delta)) )
+         ((> it itrmax)
+             ($print "Warning: cdf_noncentral_student_t didn't converge")
+             ($funmake 'cdf_noncentral_student_t '((mlist) x df delta)) )
          (t
              (setf tnc (+ tnc ($float (+ 0.5 (* 0.5 ($erf (/ (- del) r2)))))))
              (if negdel
@@ -693,7 +693,7 @@
          (if (> (cdfnt nx df ncp) p)
             (setf ux nx)
             (setf lx nx))
-         (when (<= (/ (- ux lx) (abs nx)) accu)
+         (when (<= (- ux lx) accu)
             (return 'done)))
       (* 0.5 (+ lx ux))))
 
