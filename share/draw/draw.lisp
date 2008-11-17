@@ -2887,13 +2887,23 @@
 
 ;; Equivalent to draw2d(opt & obj)
 (defun $draw2d (&rest args)
-   ($draw (cons '($gr2d) args)) )
+   ($draw (cons '($gr2d) (draw-transform args '$draw2d_transform))) )
 
 
 ;; Equivalent to draw3d(opt & obj)
 (defun $draw3d (&rest args)
-   ($draw (cons '($gr3d) args)) )
+   ($draw (cons '($gr3d) (draw-transform args '$draw3d_transform))) )
 
+(defun draw-transform-one (expr transform)
+  (if (atom expr)
+      (list expr)
+      (if ($get (caar expr) transform)
+	  (cdr (mfuncall ($get (caar expr) transform) expr))
+	  (list expr))))
+
+(defun draw-transform (expr transform)
+  (if (null expr) ()
+      (append (draw-transform-one (car expr) transform) (draw-transform (cdr expr) transform))))
 
 ;; This function transforms an integer number into
 ;; a string, adding zeros at the left side until the
@@ -2901,4 +2911,3 @@
 ;; useful to name a sequence of frames.
 (defun $add_zeroes (num)
    (format nil "~10,'0d" num) )
-
