@@ -8,13 +8,40 @@
 
 @menu
 * Introduction to Symmetries::
-* Functions and Variables for Symmetries::  
+* Functions and Variables for Symmetries::
 @end menu
 
 @node Introduction to Symmetries, Functions and Variables for Symmetries, Symmetries, Symmetries
 @section Introduction to Symmetries
 
 @code{sym} is a package for working with symmetric groups of polynomials.
+
+It was written for Macsyma-Symbolics by Annick Valibouze (@url{http://www-calfor.lip6.fr/~avb/}).
+The algorithms are described in the following papers:
+
+@enumerate
+
+@item
+Fonctions sym@'etriques et changements de bases. Annick Valibouze.
+EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
+Springer, Berlin, 1989.@*
+@url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
+
+@item R@'esolvantes et fonctions sym@'etriques. Annick Valibouze.
+Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
+and Algebraic Computation, ISSAC'89 (Portland, Oregon).
+ACM Press, 390-399, 1989.@*
+@url{http://www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}
+
+@item Symbolic computation with symmetric polynomials, an extension to Macsyma.
+Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
+Springer-Verlag, New York Berlin, 308-320, 1989.@*
+@url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
+
+@item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
+@`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994
+
+@end enumerate
 
 @opencatbox
 @category{Group theory} @category{Polynomials} @category{Share packages} @category{Package sym}
