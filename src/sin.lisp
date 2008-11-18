@@ -1576,7 +1576,7 @@
   (prog (y *a* x v *d* z w r) 
      (cond ((and (mexptp exp)
 		 (mplusp (cadr exp))
-		 (integerp2 (caddr exp))
+		 (integerp (caddr exp))
 		 (< (caddr exp) 6)
 		 (> (caddr exp) 0))
 	    (return (integrator (expandexpt (cadr exp) (caddr exp)) var))))
