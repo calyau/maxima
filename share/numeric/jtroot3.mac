@@ -246,9 +246,9 @@ prt_converged(p, root) :=
  * given roundoff errors.
  */
 prt_stage3(p, h, s, nshifts) :=
-  block([result : [], w, mult, root, vals],
+  block([result : [], w, mult, root : s, vals],
     for k : 1 thru nshifts do
-      (root : s - expand(rectform(prt_eval(p,s)/(prt_eval(h,s)/h[1]))),
+      (root : root - expand(rectform(prt_eval(p,root)/(prt_eval(h,root)/h[1]))),
        /*print("root = ", root),*/
        vals : prt_converged(p, root),
        /*print("conv = ", vals),*/
