@@ -25,7 +25,6 @@ For questions, suggestions, bugs and the like, feel free
 to contact me at
 
 mario @@@ edu DOT xunta DOT es
-www.biomates.net
 
 */
 
@@ -80,7 +79,7 @@ interpol_check_input(data,funame):=
 /*    point_size = 3,                                                          */
 /*    points(p)) $                                                             */
 lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults,ratprint:false],
-   tab: rat(interpol_check_input(tab,"lagrange")),
+   tab: interpol_check_input(tab,"lagrange"),
    options:  ['varname],
    defaults: ['x],
    for i in select do(
@@ -97,7 +96,7 @@ lagrange(tab,[select]) := block([n,sum:0,prod,options, defaults,ratprint:false],
       for k:1 thru n do
          if k#i then prod: prod * (defaults[1]-tab[k][1]) / (tab[i][1]-tab[k][1]),
       sum: sum + prod * tab[i][2] ),
-   expand(sum) )$
+   sum )$
 
 
 
@@ -289,8 +288,8 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
 /*   'varname='x: the name of the independent variable                         */
 /*   'denterm=1 : value for q_0 in the denominator                             */
 /* Sample session:                                                             */
-/* load(interpol);                                                             */
-/* load(draw)$;                                                                */
+/* load(interpol)$                                                             */
+/* load(draw)$                                                                 */
 /* p: [[7.2, 2.5], [8.5, 2.1], [1.6, 5.1], [3.4, 2.4], [6.7, 7.9]]$            */
 /* for k:0 thru length(p)-1 do                                                 */
 /*   draw2d(explicit(ratinterpol(p,k),x,0,9),                                  */
@@ -300,7 +299,7 @@ cspline(tab,[select]):= block([options, defaults, n, aux, y2, u, sig, p,
 /*          yrange=[0,10])$                                                    */
 ratinterpol(tab,r,[select]) :=
   block([n,m,coef,indep,pq,p,q,options,defaults,ratprint:false],
-    tab: rat(interpol_check_input(tab,"ratinterpol")),
+    tab: interpol_check_input(tab,"ratinterpol"),
     options:  ['varname, 'denterm],
     defaults: ['x, 1],
     for i in select do(
