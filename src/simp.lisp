@@ -202,6 +202,10 @@
       (and (not (atom x)) (not (atom (car x)))
 	   (member (caar x) '(rat bigfloat)))))
 
+(defmfun mlistp (x)				;; VTT
+  (and (not (atom x))			;; VTT
+       (eq (caar x) 'mlist)))	;; VTT
+
 ;; EVEN works for any arbitrary lisp object since it does an integer
 ;; check first.  In other cases, you may want the Lisp EVENP function
 ;; which only works for integers.
@@ -787,7 +791,15 @@
      del	(cond ((not (mtimesp (cadr fm))) (go check))
 		      ((onep1 (cadadr fm))
 		       (rplacd (cadr fm) (cddadr fm)) (return (cdr fm)))
-		      ((not (zerop1 (cadadr fm))) (return (cdr fm))))
+		      ((not (zerop1 (cadadr fm))) (return (cdr fm))) ;; VTT )
+                      ((and (not $listarith)							;; VTT
+                            (zerop1 (cadadr fm))						;; VTT
+							(mlistp (caddr (cadr fm))) )				;; VTT
+;;                          (eq 'mlist (caar (caddr (cadr fm)))) )		;; VTT
+                        (return 										;; VTT
+                          (rplacd fm 									;; VTT
+                            (list (constmx 0 (caddr (cadr fm))))  ))) )	;; VTT
+
      (return (rplacd fm (cddr fm)))
      equt (setq x1 (testtneg (list* '(mtimes simp)
 				    (addk (cond (flag (cadadr fm))
@@ -993,7 +1005,7 @@
 						(mul2 res (cadr eqnflag))
 						(mul2 res (caddr eqnflag)))))
 			 (t (dolist (u x)
-			      (cond ((mxorlistp1 u)
+			      (cond (  (mxorlistp u)  ;;; VTT - (mxorlistp1 u)
 				     (return
 				       (setq res (constmx res u))))
 				    ((and (mexptp u)
