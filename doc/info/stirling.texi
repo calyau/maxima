@@ -6,8 +6,11 @@
 @section Functions and Variables for stirling
 
 @deffn {Function} stirling (@var{z},@var{n})
+@deffnx {Function} stirling (@var{z},@var{n},@var{pred})
+
 Replace @code{gamma(x)} with the @math{O(1/x^(2n-1))} Stirling formula. when @var{n} isn't
-a nonnegative integer, signal an error.
+a nonnegative integer, signal an error. With the optional third argument @code{pred},
+the Stirling formula is applied only when @code{pred} is true.
 
 Reference: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
 
@@ -47,6 +50,17 @@ the function gamma:
                                               x - 1/2   - x
                          + sqrt(2) sqrt(%pi) x        %e
 @end example
+
+To apply the Stirling formula only to terms that involve the variable @code{k},
+use an optional third argument; for example
+@example
+(%i7) makegamma(pochhammer(a,k)/pochhammer(b,k));
+(%o7) (gamma(b)*gamma(k+a))/(gamma(a)*gamma(k+b))
+(%i8) stirling(%,1, lambda([s], not(freeof(k,s))));
+(%o8) (%e^(b-a)*gamma(b)*(k+a)^(k+a-1/2)*(k+b)^(-k-b+1/2))/gamma(a)
+@end example
+The terms @code{gamma(a)} and @code{gamma(b)} are free of @code{k}, so the Stirling formula
+was not applied to these two terms.
 
 To use this function write first @code{load("stirling")}.
 
