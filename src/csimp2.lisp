@@ -343,8 +343,6 @@
 	(let* ((z (- z 1))
 	       (zh (+ z 1/2))
 	       (zgh (+ zh 607/128))
-               ;; Calculate log(zp) to avoid overflow at this point.
-	       (lnzp (* (/ zh 2) (log zgh)))
 	       (ss 
 		(do ((sum 0.0)
 		     (pp (1- (length c)) (1- pp)))
@@ -356,9 +354,10 @@
                  ;; double-float precicsion for which Maxima can calculate 
                  ;; gamma is ~171.6243 (CLISP 2.46 and GCL 2.6.8)
                  (ignore-errors
-	           (* (sqrt (float (* 2 pi)))
-	              (+ ss (aref c 0))
-                      (exp (+ (- zgh) (* 2 lnzp)))))))
+		   (let ((zp (expt zgh (/ zh 2))))
+		     (* (sqrt (float (* 2 pi)))
+			(+ ss (aref c 0))
+			(* (/ zp (exp zgh)) zp))))))
             (cond ((null result)
                    ;; No result. Overflow.
                    (merror "Overflow in `gamma-lanczos'."))
@@ -369,7 +368,26 @@
                   (t result)))))))
 
 (defun gammafloat (a)
-  (realpart (gamma-lanczos (complex a 0.0))))
+  (let ((a (float a)))
+    (cond ((minusp a)
+	   (/ (float (- pi))
+	      (* a (sin (* (float pi) a)))
+	      (gammafloat (- a))))
+	  ((< a 10)
+	   (slatec::dgamma a))
+	  (t
+	   (let ((result
+		  (let ((c (* (sqrt (* 2 (float pi)))
+			      (exp (slatec::d9lgmc a)))))
+		    (let ((v (expt a (- (* .5d0 a) 0.25d0))))
+		      (* v
+			 (/ v (exp a))
+			 c)))))
+	     (if (or (float-nan-p result)
+		     (float-inf-p result))
+		 (merror "Overflow in `gammafloat'")
+		 result))))))
+
 
 (declare-top (special $numer $trigsign))
 
