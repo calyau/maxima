@@ -35,10 +35,6 @@
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
-(defvar $draw_command (if (string= *autoconf-win32* "true")
-                              "wgnuplot"
-                              "gnuplot"))
-
 (defvar $gnuplot_file_name "maxout.gnuplot")
 
 (defvar $data_file_name "data.gnuplot")
@@ -2844,7 +2840,7 @@
              (format cmdstorage "~%quit~%~%")
              (close cmdstorage)
              ($system (format nil "~a \"~a\"" 
-                                  $draw_command
+                                  $gnuplot_command
                                   (plot-temp-file $gnuplot_file_name)) ))
           (t ; non animated gif
              ; command file maxout.gnuplot is now ready
@@ -2859,7 +2855,6 @@
                                    (gethash '$xy_file *gr-options*))) )
 
              (format cmdstorage "unset output~%")
-             (format cmdstorage "reset~%")
 
              (close cmdstorage)
 
@@ -2868,20 +2863,19 @@
                 (*windows-OS*
                    ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
                                    (format nil "~a ~a"
-                                               $draw_command
+                                               $gnuplot_command
                                                (format nil $gnuplot_view_args (plot-temp-file $gnuplot_file_name)))
                                    (format nil "~a \"~a\"" 
-                                               $draw_command
+                                               $gnuplot_command
                                                (plot-temp-file $gnuplot_file_name)))) )
                 (t  ; non windows operating system
-                   (setf $gnuplot_command $draw_command)
                    (check-gnuplot-process)
                    (send-gnuplot-command "unset output")
                    (send-gnuplot-command "reset")
                    (send-gnuplot-command (format nil "load '~a'" (plot-temp-file $gnuplot_file_name))) ))))
 
     ; the output is a simplified description of the scene(s)
-    (reverse scenes-list)    ) )
+    (reverse scenes-list)) )
 
 
 
