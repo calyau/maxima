@@ -75,13 +75,29 @@
   (terpri)
   '$done)
 
+;; Takes a name and a matrix and prints a sequence of F90 assignment
+;; statements of the form
+;;  NAME(I,J) = <corresponding matrix element>
+
+(defmfun $f90mx (name mat)
+  (cond ((not (symbolp name))
+	 (merror "~%First argument to `f90mx' must be a symbol."))
+	((not ($matrixp mat))
+	 (merror "Second argument to `f90mx' not a matrix: ~M" mat)))
+  (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
+      ((null mat))
+    (do ((m (cdar mat) (cdr m)) (j 1 (1+ j)))
+	((null m))
+      (f90-print `((mequal) ((,name) ,i ,j) ,(car m)))))
+  '$done)
+
 (defmspec $f90 (l)
   (setq l (fexprcheck l))
   (let ((value (strmeval l)))
     (cond ((msetqp l) (setq value `((mequal) ,(cadr l) ,(meval l)))))
     (cond ((and (symbolp l) ($matrixp value))
-	   ($fortmx l value))
+	   ($f90mx l value))
 	  ((and (not (atom value)) (eq (caar value) 'mequal)
 		(symbolp (cadr value)) ($matrixp (caddr value)))
-	   ($fortmx (cadr value) (caddr value)))
+	   ($f90mx (cadr value) (caddr value)))
 	  (t (f90-print value)))))
