@@ -498,7 +498,7 @@ true;
 closeto(
   double_factorial(10.0),
   3840.0,
-  1e-12);
+  1.5E-12);
 true;
 
 /* The same with bigfloat */
