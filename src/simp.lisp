@@ -787,14 +787,12 @@
      del	(cond ((not (mtimesp (cadr fm))) (go check))
 		      ((onep1 (cadadr fm))
 		       (rplacd (cadr fm) (cddadr fm)) (return (cdr fm)))
-		      ((not (zerop1 (cadadr fm))) (return (cdr fm)))
-                      ((and (not $listarith)
-                            (zerop1 (cadadr fm))
-							($listp (caddr (cadr fm))) )
-                        (return
-                          (rplacd fm
-                            (list (constmx 0 (caddr (cadr fm))))  ))) )
-
+		      ((not (zerop1 (cadadr fm))) (return (cdr fm)));)
+              ((and (or (not $listarith) (not $doallmxops))
+                    (zerop1 (cadadr fm))
+                    (mxorlistp (caddr (cadr fm))) )
+               (return (rplacd fm (cons (constmx 0 (caddr (cadr fm))) (cddr fm))))
+              ) )
      (return (rplacd fm (cddr fm)))
      equt (setq x1 (testtneg (list* '(mtimes simp)
 				    (addk (cond (flag (cadadr fm))
