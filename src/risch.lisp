@@ -47,6 +47,10 @@
        (gl genvar (cdr gl)))
       ((null (cdr vl)) (car gl))))
 
+;; test whether CRE p is constant with respect to variable of integration.
+;; requires variables in varlist and genvar
+;; to be ordered as by intsetup, with var of integration ordered before
+;; any other expressions that contain it.
 (defun risch-pconstp (p)
   (or (pcoefp p) (pointergp mainvar (car p))))
 
@@ -440,7 +444,7 @@
 		       (narg (remabs (cadr nlog)))
 		       (varlist varlist)
 		       (genvar genvar)
-		       (rn (rform narg))
+		       (rn (rform narg))	;; can add new vars to varlist
 		       (ro (rform (cadr olog)))
 		       (var (caar ro))
 		       ((j . k) (ratreduce (pdegree (car rn) var) (pdegree (car ro) var)))
@@ -455,8 +459,8 @@
 		 coef (div coef (f* j degree))
 		 olog (mul j olog))))
     (desetq (rc . rd) (ratdivide rn ro))
-    (cond ((and (risch-constp rc)
-		(risch-constp rd))
+    (cond ((and (freeof intvar (rdis rc))	;; can't use risch-constp because varlist
+		(freeof intvar (rdis rd)))	;; is not set up with vars in correct order.
 	   (setq narg ($ratsimp (sub 1 (div narg (rdis rd)))))
 	   (mul* coef (power -1 (1+ degree))
 		 `((mfactorial) ,degree)
