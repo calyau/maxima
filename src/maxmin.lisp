@@ -174,8 +174,8 @@
 ;; being quizzed about the sign of x. Thus the call to lenient-extended-realp.
 
 (defun $compare (a b)
-  (cond ((or (not (lenient-extended-realp a)) (not (lenient-extended-realp b)))
-	 (if (eq t (meqp a b)) "=" '$notcomparable))
+  (cond ((eq t (meqp a b)) "=")
+	((or (not (lenient-extended-realp a)) (not (lenient-extended-realp b))) '$notcomparable)
 	(t
 	 (let ((sgn (csign (specrepcheck (sub a b)))))
 	   (cond ((eq sgn '$neg) "<")
