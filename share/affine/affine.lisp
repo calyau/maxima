@@ -4,6 +4,6 @@
 
 (load (combine-path *maxima-affinedir* "affine.system"))
 
-(mk:compile-system "affine")
+(mk:load-system "affine" :load-source-if-no-binary t)
 
 ;;; affine.lisp ends here
