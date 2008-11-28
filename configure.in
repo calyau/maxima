@@ -774,8 +774,8 @@ default_layout_autotools="true"
 AC_SUBST(default_layout_autotools)
 
 dnl Look for grep that can handle long lines and -e.
-AC_PROG_GREP
-AC_SUBST(GREP)
+AC_PROG_EGREP
+AC_SUBST(EGREP)
 
 AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss \
 src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
