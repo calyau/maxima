@@ -44,8 +44,7 @@ romberg (romberg (a^2 - x, a, 0, x) - 7, x, 0, 100);
 
 (expr : t - (297 * exp ((1000000 * t) / 33) - 330) / 10000000,
  romberg (expr, t, 1e-9, 0.003));
-''(ev (integrate (expr, t, 1e-9, 0.003), keepfloat=true),
- ev (%%, numer));
+''(float ((-9801*%e^(1000/11)+9801*%e^(1/33000)+9197999933999/200000) /10000000000000));
 
 (expr : 6096 * tan((2 * atan(c/(2 * fl))) / r) / (tan((1/60) * (%pi/180))),
  ev (romberg (expr-6096, fl, 1, 10), c=7.176, r=3264));
