@@ -359,7 +359,7 @@
 	  ((not (symbolp atom)) (exploden atom))
 	  ((and (setq dummy (get atom 'reversealias))
 		(not (and (member atom $aliases :test #'eq) (get atom 'noun))))
-	   (exploden dummy))
+	   (exploden (stripdollar dummy)))
       ((equal (symbol-name atom) "") '())                                           ; NEW
 	  ((not (eq (getop atom) atom))
        (makestring (getop atom)))
@@ -474,7 +474,7 @@
             l r lop rop)))                                                              ; NEW
 	   ((and (setq y (safe-get x 'reversealias))
 		 (not (and (member x $aliases :test #'eq) (get x 'noun))))
-	    (setq y (exploden y)))
+	    (setq y (exploden (stripdollar y))))
 	   ((setq y (rassoc x aliaslist :test #'eq)) (return (msize (car y) l r lop rop)))
        ((null (setq y (exploden x))))
        ((safe-get x 'noun) (return (msize-atom (get x 'noun) l r)))
