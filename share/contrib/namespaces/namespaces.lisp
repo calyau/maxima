@@ -343,7 +343,8 @@
      ;; !! THE FOLLOWING DOES NOT DISPLAY NESTED PACKAGES CORRECTLY (ONLY THE INNERMOST IS DISPLAYED)
      (dimension-infix                                                                           ; NEW
        `(($\|)                                                                                  ; NEW
-         ,(make-symbol (package-name (symbol-package form)))                                    ; NEW
+         ,#-gcl (make-symbol (package-name (symbol-package form)))                              ; NEW
+          #+gcl (make-symbol (let ((x (package-name (symbol-package form)))) (if (stringp x) x "(none)"))) ; NEW
          ,(make-symbol (symbol-name form)))                                                     ; NEW
        result))                                                                                 ; NEW
 	(t (dimension-string (makestring form) result))))
@@ -469,7 +470,8 @@
           ;; !! THE FOLLOWING DOES NOT DISPLAY NESTED PACKAGES CORRECTLY (ONLY THE INNERMOST IS DISPLAYED)
           (msize                                                                        ; NEW
             `(($\|)                                                                     ; NEW
-              ,(make-symbol (package-name (symbol-package x)))                          ; NEW
+              ,#-gcl (make-symbol (package-name (symbol-package x)))                    ; NEW
+               #+gcl (make-symbol (let ((x (package-name (symbol-package x)))) (if (stringp x) x "(none)"))) ; NEW
               ,(make-symbol (symbol-name x)))                                           ; NEW
             l r lop rop)))                                                              ; NEW
 	   ((and (setq y (safe-get x 'reversealias))
