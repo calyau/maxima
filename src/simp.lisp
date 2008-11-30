@@ -815,6 +815,8 @@
 	       ((not errorsw) (merror "log(0) has been generated."))
 	       (t (throw 'errorsw t))))
 	((eq y '$%e) 1)
+	((and (mexptp y) (eq (cadr y) '$%e))	;; log(%e^x) -> x
+	 (simplifya (caddr y) t))
 	((ratnump y)
 	 (cond ((equal (cadr y) 1) (simpln1 (list nil (caddr y) -1)))
 	       ((eq $logexpand '$super)

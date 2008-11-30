@@ -240,8 +240,9 @@
 		   ((logconcoeffp (car x)) (setq decints (cons (car x) decints)))
 		   (t (setq notlogs (cons (car x) notlogs))))))))
 
-(defun lgcsimp (e)
-  (cond ((atom e) (simpln (list '(%log) e) 1 t)) (t (list '(%log simp) e))))
+(defun lgcsimp (e)		;; this is to simplify
+  (let (($logexpand nil))	;; log(%e) -> 1 and log(%e^2) -> 2
+    (simpln `((%log) ,e) 1 t)))
 
 (defun lgcsimplep (e)
   (and (eq (caar e) 'mplus)
@@ -419,15 +420,18 @@
 		 y ($bfloat y))
 	   (*fpatan y (list x)))
 	  ((and $%piargs (free x '$%i) (free y '$%i)
-		;; Only use asksign if %piargs is on.
-		(cond ((zerop1 y) (if (atan2negp x) (simplify '$%pi) 0))
+		(cond ((zerop1 y)
+		       (cond ((atan2negp x) (simplify '$%pi))
+			     ((atan2posp x) 0)))
 		      ((zerop1 x)
-		       (if (atan2negp y) (mul2* -1 half%pi) (simplify half%pi)))
+		       (cond ((atan2negp y) (mul2* -1 half%pi))
+			     ((atan2posp y) (simplify half%pi))))
 		      ((alike1 y x)
-		       ;; Should we check if ($sign x) is $zero here?
-		       (if (atan2negp x) (mul2* -3 fourth%pi) (simplify fourth%pi)))
+		       (cond ((atan2negp x) (mul2* -3 fourth%pi))
+			     ((atan2posp x) (simplify fourth%pi))))
 		      ((alike1 y (mul2 -1 x))
-		       (if (atan2negp x) (mul2* 3 fourth%pi) (mul2* -1 fourth%pi)))
+		       (cond ((atan2negp x) (mul2* 3 fourth%pi))
+			     ((atan2posp x) (mul2* -1 fourth%pi))))
 		      ;; Why is atan2(1,sqrt(3)) super-special-cased here?!?!
 		      ;; It doesn't even handle atan2(1,-sqrt(3));
 		      ;; *Atan* should handle sqrt(3) etc., so all cases will work
@@ -449,7 +453,8 @@
 	   (merror "atan2(0,0) has been generated."))
 	  (t (eqtest (list '($atan2) y x) e)))))
 
-(defun atan2negp (e) (eq (asksign-p-or-n e) '$neg))
+(defun atan2negp (e) (eq ($sign e) '$neg))
+(defun atan2posp (e) (eq ($sign e) '$pos))
 
 ;;;; ARITHF
 
