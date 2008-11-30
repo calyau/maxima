@@ -40,7 +40,7 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Manual de Maxima}
-@center Ver. 5.16.3
+@center Ver. 5.17
 @page
 @vskip 0pt plus 1filll
 @i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}

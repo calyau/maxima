@@ -1,4 +1,4 @@
-@c english version 1.12
+@c english version 1.14
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -698,7 +698,9 @@ Ejemplo:
 @end deffn
 
 @deffn {Funci@'on} edge_connectivity (@var{gr})
-Devuelve la conectividad de las aristas del grafo conexto @var{gr}.
+Devuelve la conectividad de las aristas del grafo @var{gr}.
+
+V@'ease tambi@'en @code{min_edge_cut}.
 @end deffn
 
 @deffn {Funci@'on} edges (@var{gr})
@@ -841,7 +843,7 @@ Ejemplo:
 @end deffn
 
 @deffn {Funci@'on} graph_size (@var{gr})
-Devuelve el n@'umero de v@'ertices del grafo @var{gr}.
+Devuelve el n@'umero de aristas del grafo @var{gr}.
 
 Ejemplo:
 
@@ -854,12 +856,12 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_size(p);
-(%o3)                                10
+(%o3)                                15
 @end example
 @end deffn
 
 @deffn {Funci@'on} graph_order (@var{gr})
-Devuelve el n@'umero de aristas del grafo @var{gr}.
+Devuelve el n@'umero de v@'ertices del grafo @var{gr}.
 
 Ejemplo:
 
@@ -872,7 +874,7 @@ Ejemplo:
 (%i1) load (graphs)$
 (%i2) p : petersen_graph()$
 (%i3) graph_order(p);
-(%o3)                                15
+(%o3)                                10
 @end example
 @end deffn
 
@@ -1427,14 +1429,23 @@ Ejemplo:
 @end deffn
 
 @deffn {Funci@'on} min_edge_cut (@var{gr})
-Devuelve el m@'{@dotless{i}}nimo @i{edge cut} del grafo conexo @var{gr}. Un @i{edge cut} es
+Devuelve el m@'{@dotless{i}}nimo @i{edge cut} del grafo @var{gr}. Un @i{edge cut} es
 un conjunto de aristas cuya eliminaci@'on aumenta el n@'umero de componentes del grafo.
+
+V@'ease tambi@'en @code{edge_connectivity}.
 @end deffn
 
-@deffn {Funci@'on} min_vertex_ cover(@var{gr})
+@deffn {Funci@'on} min_vertex_cover (@var{gr})
 Devuelve el m@'{@dotless{i}}nimo nodo @i{covering} del grafo @var{gr}.
 @c Esta traduccion esta tomada de la wikipedia. Habra que revisarla.
 @end deffn
+
+@deffn {Funci@'on} min_vertex_cut (@var{gr})
+Devuelve el m@'{@dotless{i}}nimo @i{vertex cut} del grafo @var{gr}.
+
+V@'ease tambi@'en @code{vertex_connectivity}.
+@end deffn
+
 
 @deffn {Funci@'on} minimum_spanning_tree (@var{gr})
 Devuelve el grafo de expansi@'on m@'{@dotless{i}}nimo del grafo @var{gr}.
@@ -1747,6 +1758,12 @@ Ejemplo:
 (%i3) topological_sort(g);
 (%o3)                           [1, 2, 5, 3, 4]
 @end example
+@end deffn
+
+@deffn {Funci@'on} vertex_connectivity (@var{g})
+Devuelve la conectividad de los v@'ertices del grafo @var{g}.
+
+V@'ease tambi@'en @code{min_vertex_cut}.
 @end deffn
 
 @deffn {Funci@'on} vertex_degree (@var{v}, @var{gr})
@@ -2115,7 +2132,7 @@ Dibuja el grafo utilizando el paquete @code{draw}.
 
 El algoritmo utilizado para posicionar los v@'ertices se especifica con el argumento
 opcional @var{program}, cuyo valor por defecto es @code{program=spring_embedding}.
-@var{spring_embedding} tambi@'en puede utilizar los programas de graphviz para
+@var{draw_graph} tambi@'en puede utilizar los programas de graphviz para
 posicionar los v@'ertices, para lo cual deber@'a instalarse separadamente el programa graphviz.
 
 Los argumentos opcionales de la funci@'on @var{draw_graph} son:
@@ -2201,7 +2218,7 @@ del paquete @code{draw}.
 @item
 @dfn{program=prg}: establece el programa para posicionado de v@'ertices del grafo. Puede ser
 cualquiera de los programas graphviz (dot, neato, twopi, circ, fdp), @var{circular} o
-@var{spring_embedding} or @var{planar_embedding}; @var{planar_embedding} s@'lo est@'a
+@var{spring_embedding} o @var{planar_embedding}; @var{planar_embedding} s@'lo est@'a
 disponible para grafos planares 2-conectados. Si @code{program=spring_embedding},
 se puede especificar un conjunto de v@'ertices de posici@'on fija con la opci@'on 
 @var{fixed_vertices}.

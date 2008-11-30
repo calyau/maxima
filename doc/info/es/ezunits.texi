@@ -1,4 +1,4 @@
-@c version 1.1
+@c version 1.2
 @menu
 * Introducci@'on a ezunits::
 * Introducci@'on a physical_constants::
@@ -19,6 +19,9 @@ V@'ease tambi@'en @code{physical_constants}, una colecci@'on de constantes f@'{@
 
 Es necesario ejecutar primero @code{load(ezunits)} para utilizar este paquete. 
 Con @code{demo(ezunits)} se podr@'an ver algunos ejemplos de utilizaci@'on.
+La funci@'on @code{known_units} devuelve una lista con todas las unidades
+que est@'an definidas y @code{display_known_unit_conversions} muestra
+las conversiones conocidas por el sistema en un formato de lectura sencilla.
 
 Una expresi@'on tal como @code{a ` b} representa una magnitud dimensional, siendo
 @code{a} una magnitud adimensional y @code{b} las unidades.
@@ -48,9 +51,10 @@ t@'erminos de n@'umeros exactos.
 
 No hay un sistema de representaci@'on de unidades que se considere preferible,
 raz@'on por la cual las unidades no se convierten a otras a menos que se
-indique de forma expl@'{@dotless{i}}cita. Del mismo modo, @code{ezunits}
-no transforma prefijos (milli-, centi-, deci-, etc) a menos que se le
-indique.
+indique de forma expl@'{@dotless{i}}cita. @code{ezunits} reconoce los prefijos
+m-, k-, M y G- para mili-, kilo-, mega- y giga-, respectivamente, tal como se
+utilizan en el SI; estos prefijos s@'olo se utilizan cuando as@'{@dotless{i}}
+se indica de forma expl@'{@dotless{i}}cita.
 
 Las operaciones aritm@'eticas con magnitudes dimensionales se realizan
 de la forma convencional.
@@ -94,8 +98,8 @@ Una constante f@'{@dotless{i}}sica se representa por un s@'{@dotless{i}}mbolo
 con la propiedad de ser un valor constante. El valor constante es una magnitud
 dimensional en la sintaxis de @code{ezunits}. La funci@'on @code{constvalue}
 extrae el valor constante, el cual no es el valor ordinario del s@'{@dotless{i}}mbolo,
-por lo que los s@'{@dotless{i}}mbolos se mantienen inalterados en las
-expresiones evaluadas hasta que su valor sea extra@'{@dotless{i}}do con
+por lo que las constantes f@'{@dotless{i}}sicas se mantienen inalteradas en las
+expresiones evaluadas hasta que sus valores sea extra@'{@dotless{i}}do con
 la funci@'on @code{constvalue}.
 
 @code{physical_constants} incluye cierta informaci@'on adicional,
@@ -194,11 +198,11 @@ Lista de todos los s@'{@dotless{i}}mbolos que tienen la propiedad
 @code{physical_constant}.
 
 @c ===beg===
-@c load (physical_constants);
+@c load (physical_constants)$
 @c propvars (physical_constant);
 @c ===end===
 @example
-(%i1) load (physical_constants);
+(%i1) load (physical_constants)$
 (%i2) propvars (physical_constant);
 (%o2) [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar, %m_P, %T_P, %l_P, 
 %t_P, %%e, %Phi_0, %G_0, %K_J, %R_K, %mu_B, %mu_N, %alpha, 
@@ -206,10 +210,11 @@ Lista de todos los s@'{@dotless{i}}mbolos que tienen la propiedad
 %V_m, %n_0, %ratio_S0_R, %sigma, %c_1, %c_1L, %c_2, %b, %b_prime]
 @end example
 
+
 Propiedades de la constante f@'{@dotless{i}}sica @code{%c}.
 
 @c ===beg===
-@c load (physical_constants);
+@c load (physical_constants)$
 @c constantp (%c);
 @c get (%c, description);
 @c constvalue (%c);
@@ -217,7 +222,7 @@ Propiedades de la constante f@'{@dotless{i}}sica @code{%c}.
 @c tex (%c);
 @c ===end===
 @example
-(%i1) load (physical_constants);
+(%i1) load (physical_constants)$
 (%i2) constantp (%c);
 (%o2)                         true
 (%i3) get (%c, description);
@@ -233,24 +238,22 @@ $$c$$
 (%o6)                         false
 @end example
 
+
 Energ@'{@dotless{i}}a equivalente de una libra-masa. El s@'{@dotless{i}}mbolo
 @code{%c} se mantiene hasta que su valor es extra@'{@dotless{i}}do
 con la llamada a la funci@'on @code{constvalue}.
-La conversi@'on de julios a gigajulios no est@'a incluida en el paquete,
-por lo que debe ser declarada.
 
 @c ===beg===
-@c load (physical_constants);
+@c load (physical_constants)$
 @c m * %c^2;
 @c %, m = 1 ` lbm;
 @c constvalue (%);
 @c E : % `` J;
-@c declare_unit_conversion (1 ` GJ = 10^9 ` J);
 @c E `` GJ;
 @c float (%);
 @c ===end===
 @example
-(%i1) load (physical_constants);
+(%i1) load (physical_constants)$
 (%i2) m * %c^2;
                                 2
 (%o2)                         %c  m
@@ -264,18 +267,18 @@ por lo que debe ser declarada.
                                           2
                                          s
 (%i5) E : % `` J;
+Computing conversions to base units; may take a moment. 
                      366838848464007200
 (%o5)                ------------------ ` J
                              9
-(%i6) declare_unit_conversion (1 ` GJ = 10^9 ` J);
-(%o6)                         done
-(%i7) E `` GJ;
+(%i6) E `` GJ;
                       458548560580009
-(%o7)                 --------------- ` GJ
+(%o6)                 --------------- ` GJ
                          11250000
-(%i8) float (%);
-(%o8)              4.0759872051556356e+7 ` GJ
+(%i7) float (%);
+(%o7)              4.0759872051556356e+7 ` GJ
 @end example
+
 
 
 @node Funciones y variables para ezunits, , Introducci@'on a physical_constants, ezunits
@@ -311,51 +314,56 @@ Ejemplos:
 Unidades del Sistema Internacional.
 
 @c ===beg===
+@c load (ezunits)$
 @c foo : 10 ` m;
 @c qty (foo);
 @c units (foo);
 @c dimensions (foo);
 @c ===end===
 @example
-(%i1) foo : 10 ` m;
-(%o1)                        10 ` m
-(%i2) qty (foo);
-(%o2)                          10
-(%i3) units (foo);
-(%o3)                           m
-(%i4) dimensions (foo);
-(%o4)                        length
+(%i1) load (ezunits)$
+(%i2) foo : 10 ` m;
+(%o2)                        10 ` m
+(%i3) qty (foo);
+(%o3)                          10
+(%i4) units (foo);
+(%o4)                           m
+(%i5) dimensions (foo);
+(%o5)                        length
 @end example
+
 
 Unidades definidas por el usuario.
 
 @c ===beg===
+@c load (ezunits)$
 @c bar : x ` acre;
 @c dimensions (bar);
 @c fundamental_units (bar);
 @c ===end===
 @example
-(%i1) bar : x ` acre;
-(%o1)                       x ` acre
-(%i2) dimensions (bar);
+(%i1) load (ezunits)$
+(%i2) bar : x ` acre;
+(%o2)                       x ` acre
+(%i3) dimensions (bar);
                                    2
-(%o2)                        length
-(%i3) fundamental_units (bar);
+(%o3)                        length
+(%i4) fundamental_units (bar);
                                 2
-(%o3)                          m
+(%o4)                          m
 @end example
 
 Unidades ad hoc.
 
 @c ===beg===
-@c load (ezunits);
+@c load (ezunits)$
 @c baz : 3 ` sheep + 8 ` goat + 1 ` horse;
 @c subst ([sheep = 3*goat, horse = 10*goat], baz);
 @c baz2 : 1000`gallon/fortnight;
-@c subst (fortnight = 14*d, baz2);
+@c subst (fortnight = 14*day, baz2);
 @c ===end===
 @example
-(%i1) load (ezunits);
+(%i1) load (ezunits)$
 (%i2) baz : 3 ` sheep + 8 ` goat + 1 ` horse;
 (%o2)           8 ` goat + 3 ` sheep + 1 ` horse
 (%i3) subst ([sheep = 3*goat, horse = 10*goat], baz);
@@ -364,15 +372,17 @@ Unidades ad hoc.
                                 gallon
 (%o4)                   1000 ` ---------
                                fortnight
-(%i5) subst (fortnight = 14*d, baz2);
+(%i5) subst (fortnight = 14*day, baz2);
                           500   gallon
 (%o5)                     --- ` ------
-                           7      d
+                           7     day
 @end example
+
 
 Operaciones aritm@'eticas y magnitudes dimensionales.
 
 @c ===beg===
+@c load (ezunits)$
 @c 100 ` kg + 200 ` kg;
 @c 100 ` m^3 - 100 ` m^3;
 @c (10 ` kg) * (17 ` m/s^2);
@@ -380,24 +390,26 @@ Operaciones aritm@'eticas y magnitudes dimensionales.
 @c (a ` m)^2;
 @c ===end===
 @example
-(%i1) 100 ` kg + 200 ` kg;
-(%o1)                       300 ` kg
-(%i2) 100 ` m^3 - 100 ` m^3;
+(%i1) load (ezunits)$
+(%i2) 100 ` kg + 200 ` kg;
+(%o2)                       300 ` kg
+(%i3) 100 ` m^3 - 100 ` m^3;
                                   3
-(%o2)                        0 ` m
-(%i3) (10 ` kg) * (17 ` m/s^2);
+(%o3)                        0 ` m
+(%i4) (10 ` kg) * (17 ` m/s^2);
                                  kg m
-(%o3)                      170 ` ----
+(%o4)                      170 ` ----
                                    2
                                   s
-(%i4) (x ` m) / (y ` s);
+(%i5) (x ` m) / (y ` s);
                               x   m
-(%o4)                         - ` -
+(%o5)                         - ` -
                               y   s
-(%i5) (a ` m)^2;
+(%i6) (a ` m)^2;
                               2    2
-(%o5)                        a  ` m
+(%o6)                        a  ` m
 @end example
+
 
 @end deffn
 
@@ -433,21 +445,51 @@ Conjunto de conversiones conocidas.
 @c display2d : false$
 @c known_unit_conversions;
 @c ===end===
-
 @example
 (%i1) load (ezunits)$
 (%i2) display2d : false$
 (%i3) known_unit_conversions;
-(%o3) @{acre = 4840*yd^2,Btu = 1055*J,cfm = ft^3/min,cm = m/100,
-       d = 24*h,ft = 381*m/1250,g = kg/1000,gallon = 757*l/200,
-       h = 60*min,Hz = 1/s,in = ft/12,km = 1000*m,l = m^3/1000,
-       lbf = 32*ft*lbm/s^2,lbm = 200*kg/441,mi = 5280*ft,
-       micron = m/1000000,min = 60*s,mm = m/1000,oz = lbm/16,
-       Ohm = s*J/C^2,psi = lbf/in^2,Pa = N/m^2,Wb = J/A,
-       yd = 3*ft,C = s*A,F = C^2/J,H = J/A^2,J = m*N,
+(%o3) @{acre = 4840*yard^2,Btu = 1055*J,cfm = feet^3/minute,
+       cm = m/100,day = 86400*s,feet = 381*m/1250,ft = feet,
+       g = kg/1000,gallon = 757*l/200,GHz = 1000000000*Hz,
+       GOhm = 1000000000*Ohm,GPa = 1000000000*Pa,
+       GWb = 1000000000*Wb,Gg = 1000000*kg,Gm = 1000000000*m,
+       Gmol = 1000000*mol,Gs = 1000000000*s,ha = hectare,
+       hectare = 100*m^2,hour = 3600*s,Hz = 1/s,inch = feet/12,
+       km = 1000*m,kmol = 1000*mol,ks = 1000*s,l = liter,
+       lbf = pound_force,lbm = pound_mass,liter = m^3/1000,
+       metric_ton = Mg,mg = kg/1000000,MHz = 1000000*Hz,
+       microgram = kg/1000000000,micrometer = m/1000000,
+       micron = micrometer,microsecond = s/1000000,
+       mile = 5280*feet,minute = 60*s,mm = m/1000,
+       mmol = mol/1000,month = 2629800*s,MOhm = 1000000*Ohm,
+       MPa = 1000000*Pa,ms = s/1000,MWb = 1000000*Wb,
+       Mg = 1000*kg,Mm = 1000000*m,Mmol = 1000000000*mol,
+       Ms = 1000000*s,ns = s/1000000000,ounce = pound_mass/16,
+       oz = ounce,Ohm = s*J/C^2,
+       pound_force = 32*ft*pound_mass/s^2,
+       pound_mass = 200*kg/441,psi = pound_force/inch^2,
+       Pa = N/m^2,week = 604800*s,Wb = J/A,yard = 3*feet,
+       year = 31557600*s,C = s*A,F = C^2/J,GA = 1000000000*A,
+       GC = 1000000000*C,GF = 1000000000*F,GH = 1000000000*H,
+       GJ = 1000000000*J,GK = 1000000000*K,GN = 1000000000*N,
+       GS = 1000000000*S,GT = 1000000000*T,GV = 1000000000*V,
+       GW = 1000000000*W,H = J/A^2,J = m*N,kA = 1000*A,
+       kC = 1000*C,kF = 1000*F,kH = 1000*H,kHz = 1000*Hz,
+       kJ = 1000*J,kK = 1000*K,kN = 1000*N,kOhm = 1000*Ohm,
+       kPa = 1000*Pa,kS = 1000*S,kT = 1000*T,kV = 1000*V,
+       kW = 1000*W,kWb = 1000*Wb,mA = A/1000,mC = C/1000,
+       mF = F/1000,mH = H/1000,mHz = Hz/1000,mJ = J/1000,
+       mK = K/1000,mN = N/1000,mOhm = Ohm/1000,mPa = Pa/1000,
+       mS = S/1000,mT = T/1000,mV = V/1000,mW = W/1000,
+       mWb = Wb/1000,MA = 1000000*A,MC = 1000000*C,
+       MF = 1000000*F,MH = 1000000*H,MJ = 1000000*J,
+       MK = 1000000*K,MN = 1000000*N,MS = 1000000*S,
+       MT = 1000000*T,MV = 1000000*V,MW = 1000000*W,
        N = kg*m/s^2,R = 5*K/9,S = 1/Ohm,T = J/(m^2*A),V = J/C,
        W = J/s@}
 @end example
+
 
 Converiones de unidades fundamentales.
 
@@ -457,7 +499,7 @@ Converiones de unidades fundamentales.
 @c %, numer; 
 @c 1 ` kg `` lbm; 
 @c %, numer;
-@c 1 ` W `` Btu/h;
+@c 1 ` W `` Btu/hour;
 @c %, numer;
 @c 100 ` degC `` degF;
 @c -40 ` degF `` degC;
@@ -467,25 +509,26 @@ Converiones de unidades fundamentales.
 @example
 (%i1) load (ezunits)$
 (%i2) 1 ` ft `` m;
+Computing conversions to base units; may take a moment. 
                             381
 (%o2)                       ---- ` m
                             1250
-(%i3) %, numer; 
+(%i3) %, numer;
 (%o3)                      0.3048 ` m
-(%i4) 1 ` kg `` lbm; 
+(%i4) 1 ` kg `` lbm;
                             441
 (%o4)                       --- ` lbm
                             200
 (%i5) %, numer;
 (%o5)                      2.205 ` lbm
-(%i6) 1 ` W `` Btu/h;
-                            720   Btu
-(%o6)                       --- ` ---
-                            211    h
+(%i6) 1 ` W `` Btu/hour;
+                           720   Btu
+(%o6)                      --- ` ----
+                           211   hour
 (%i7) %, numer;
-                                         Btu
-(%o7)                3.412322274881517 ` ---
-                                          h
+                                        Btu
+(%o7)               3.412322274881517 ` ----
+                                        hour
 (%i8) 100 ` degC `` degF;
 (%o8)                      212 ` degF
 (%i9) -40 ` degF `` degC;
@@ -561,7 +604,7 @@ Declaraci@'on de conversiones.
 @c ===beg===
 @c load (ezunits)$
 @c declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
-@c declare_unit_conversion (kWh = kW*h, MWh = 1000*kWh, bell = 1800*s);
+@c declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh, bell = 1800*s);
 @c 1 ` kW*s `` MWh;
 @c 1 ` kW/m^2 `` MMBtu/bell/ft^2;
 @c ===end===
@@ -569,9 +612,10 @@ Declaraci@'on de conversiones.
 (%i1) load (ezunits)$
 (%i2) declare_unit_conversion (MMBtu = 10^6*Btu, kW = 1000*W);
 (%o2)                         done
-(%i3) declare_unit_conversion (kWh = kW*h, MWh = 1000*kWh, bell = 1800*s);
+(%i3) declare_unit_conversion (kWh = kW*hour, MWh = 1000*kWh, bell = 1800*s);
 (%o3)                         done
 (%i4) 1 ` kW*s `` MWh;
+Computing conversions to base units; may take a moment. 
                              1
 (%o4)                     ------- ` MWh
                           3600000
@@ -581,6 +625,7 @@ Declaraci@'on de conversiones.
                       8242187500          2
                                    bell ft
 @end example
+
 
 
 @end deffn
@@ -889,14 +934,15 @@ Conversi@'on de unidades expresadas por ecuaciones con t@'erminos multiplicativo
 
 @c ===beg===
 @c load (ezunits)$
-@c declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * d);
+@c declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * day);
 @c 100 ` nautical_mile / fortnight `` m/s;
 @c ===end===
 @example
 (%i1) load (ezunits)$
-(%i2) declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * d);
+(%i2) declare_unit_conversion (nautical_mile = 1852 * m, fortnight = 14 * day);
 (%o2)                         done
 (%i3) 100 ` nautical_mile / fortnight `` m/s;
+Computing conversions to base units; may take a moment. 
                             463    m
 (%o3)                       ---- ` -
                             3024   s
@@ -912,7 +958,16 @@ literales.
 @c 15 ` fluid_ounce `` teaspoon;
 @c ===end===
 @example
+(%i1) load (ezunits)$
+(%i2) declare_unit_conversion (1 ` fluid_ounce = 2 ` tablespoon);
+(%o2)                         done
+(%i3) declare_unit_conversion (1 ` tablespoon = 3 ` teaspoon);
+(%o3)                         done
+(%i4) 15 ` fluid_ounce `` teaspoon;
+Computing conversions to base units; may take a moment. 
+(%o4)                     90 ` teaspoon
 @end example
+
 
 @end deffn
 
@@ -949,7 +1004,7 @@ Ejemplos:
 @c ===beg===
 @c load (ezunits)$
 @c dimensions (1000 ` kg*m^2/s^3);
-@c declare_units (foo, acre*ft/h);
+@c declare_units (foo, acre*ft/hour);
 @c dimensions (foo);
 @c ===end===
 @example
@@ -960,10 +1015,10 @@ Ejemplos:
 (%o2)                     ------------
                                  3
                              time
-(%i3) declare_units (foo, acre*ft/h);
+(%i3) declare_units (foo, acre*ft/hour);
                              acre ft
 (%o3)                        -------
-                                h
+                              hour
 (%i4) dimensions (foo);
                                    3
                              length
@@ -971,11 +1026,12 @@ Ejemplos:
                               time
 @end example
 
+
 @c ===beg===
 @c load (ezunits)$
 @c fundamental_dimensions;
 @c dimensions_as_list (1000 ` kg*m^2/s^3);
-@c declare_units (foo, acre*ft/h);
+@c declare_units (foo, acre*ft/hour);
 @c dimensions_as_list (foo);
 @c ===end===
 @example
@@ -984,13 +1040,14 @@ Ejemplos:
 (%o2)  [length, mass, time, charge, temperature, quantity]
 (%i3) dimensions_as_list (1000 ` kg*m^2/s^3);
 (%o3)                 [2, 1, - 3, 0, 0, 0]
-(%i4) declare_units (foo, acre*ft/h);
+(%i4) declare_units (foo, acre*ft/hour);
                              acre ft
 (%o4)                        -------
-                                h
+                              hour
 (%i5) dimensions_as_list (foo);
 (%o5)                 [3, 0, - 1, 0, 0, 0]
 @end example
+
 
 @end deffn
 

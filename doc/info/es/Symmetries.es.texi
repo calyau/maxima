@@ -1,9 +1,38 @@
-@c version 1.13
+@c version 1.15
 @c Esta es traduccion del original en frances;
 @c Queda pendiente cotejar con la version inglesa.
 @menu
 * Funciones y variables para simetr@'{@dotless{i}}as::  
 @end menu
+
+
+Paquete escrito para Macsyma-Symbolics por Annick Valibouze (@url{http://www-calfor.lip6.fr/~avb/}).
+Los algoritmos est@'an descritos en los siguientes art@'{@dotless{i}}culos:
+
+@enumerate
+
+@item
+Fonctions sym@'etriques et changements de bases. Annick Valibouze.
+EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
+Springer, Berlin, 1989.@*
+@url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
+
+@item R@'esolvantes et fonctions sym@'etriques. Annick Valibouze.
+Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
+and Algebraic Computation, ISSAC'89 (Portland, Oregon).
+ACM Press, 390-399, 1989.@*
+@url{http://www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}
+
+@item Symbolic computation with symmetric polynomials, an extension to Macsyma.
+Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
+Springer-Verlag, New York Berlin, 308-320, 1989.@*
+@url{http://www.stix.polytechnique.fr/publications/1984-1994.html}
+
+@item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
+@`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994
+
+@end enumerate
+
 
 @node Funciones y variables para simetr@'{@dotless{i}}as,  , Simetr@'{@dotless{i}}as, Simetr@'{@dotless{i}}as
 @section Funciones y variables para simetr@'{@dotless{i}}as

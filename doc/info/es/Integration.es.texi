@@ -1,4 +1,4 @@
-@c version 1.38
+@c version 1.41
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -625,12 +625,12 @@ Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
 @item epsrel
-Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
 Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
 Tama@~no del array interno utilizado para realizar la cuadratura. 
-(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+@var{limit} es el n@'umero m@'aximo de subintervalos
 a utilizar. El valor por defecto es 200.
 @end table
 
@@ -708,12 +708,12 @@ Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
 @item epsrel
-Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
 Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
 Tama@~no del array interno utilizado para realizar la cuadratura. 
-(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+@var{limit} es el n@'umero m@'aximo de subintervalos
 a utilizar. El valor por defecto es 200.
 @end table
 
@@ -764,8 +764,9 @@ N@'otese que @code{quad_qags} es m@'as precisa y eficiente que @code{quad_qag} p
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Funci@'on} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, [@var{epsrel}, @var{epsabs}, @var{limit}])
-@deffnx {Funci@'on} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffn {Funci@'on} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+@deffnx {Funci@'on} quad_qagi (@var{f}, @var{x}, @var{a}, @var{b}, [@var{epsrel}, @var{epsabs}, @var{limit}])
+
 Integraci@'on de una funci@'on general en un intervalo infinito o semi-infinito.
 El intervalo se proyecta sobre un intervalo finito y luego se aplica la
 misma estrategia que en @code{quad_qags}.
@@ -807,28 +808,20 @@ utilizando la rutina QAGI de Quadpack QAGI. La funci@'on a integrar es @var{f(x)
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
-El argumento @var{inftype} determina el intervalo de integraci@'on como sigue:
-
-@table @code
-@item inf
-El intervalo es desde @var{a} hasta m@'as infinito.
-@item minf
-El intervalo es desde menos infinito hasta @var{a}.
-@item both
-El intervalo es toda la recta real.
-@end table
+Uno de los l@'{@dotless{i}}mites de integraci@'on debe ser infinito. De no ser
+as@'{@dotless{i}}, @code{quad_qagi} devolver@'a una forma nominal.
 
 Los argumentos opcionales pueden especificarse en cualquier orden. 
 Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
 @item epsrel
-Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
 Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
 Tama@~no del array interno utilizado para realizar la cuadratura. 
-(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+@var{limit} es el n@'umero m@'aximo de subintervalos
 a utilizar. El valor por defecto es 200.
 @end table
 
@@ -911,12 +904,12 @@ Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
 @item epsrel
-Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-10.
+Error relativo deseado de la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
 Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
 Tama@~no del array interno utilizado para realizar la cuadratura. 
-(@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos
+@var{limit} es el n@'umero m@'aximo de subintervalos
 a utilizar. El valor por defecto es 200.
 @end table
 
@@ -1109,11 +1102,11 @@ Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
 @item epsrel
-El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-10.
+El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
 Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
-Tama@~no del arreglo interno de trabajo.  (@var{limit} - @var{limlst})/2 es el n@'umero m@'aximo de subintervalos para la partici@'on. El valor por defecto es 200.
+Tama@~no del arreglo interno de trabajo. @var{limit}/2 es el n@'umero m@'aximo de subintervalos para la partici@'on. El valor por defecto es 200.
 @item maxp1
 N@'umero m@'aximo de momentos de Chebyshev. Debe ser mayor que 0.  El valor por defecto es 100.
 @item limlst
@@ -1211,7 +1204,7 @@ Todos ellos toman la forma @code{key=val}. Tales argumentos son:
 
 @table @var
 @item epsrel
-El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-10.
+El error absoluto deseado para la aproximaci@'on. El valor por defecto es 1d-8.
 @item epsabs
 Error absoluto deseado de la aproximaci@'on. El valor por defecto es 0.
 @item limit
