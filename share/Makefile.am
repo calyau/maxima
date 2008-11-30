@@ -975,7 +975,10 @@ vector/vect.usg\
 vector/vect_transform.mac\
 vector/vector.dem\
 vector/vector.mac\
-vector/vector.usg
+vector/vector.usg\
+vector/vector_rebuild.lisp\
+vector/vector_rebuild.mac\
+vector/vector_rebuild.usg
 
 genericdirDATA = \
 maxima-init.lisp\
