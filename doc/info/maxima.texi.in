@@ -41,7 +41,6 @@ END-INFO-DIR-ENTRY
 @sp 10
 @comment The title is printed in a large font.
 @center @titlefont{Maxima Manual}
-@center Ver. 5.16.3
 @page
 @vskip 0pt plus 1filll
 Maxima is a computer algebra system, implemented in Lisp.
