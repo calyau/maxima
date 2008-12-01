@@ -102,7 +102,10 @@ yp;
 exp(x)/4;
 
 ode2( x*'diff(y,x,2)+('diff(y,x))^2=0, y, x);
-y='integrate(1/(log(x)+%k1),x)+%k2;
+/* y='integrate(1/(log(x)+%k1),x)+%k2;
+   Because of adding more integrals for the power function we get a result
+   12/2008 */
+y=%k2-expintegral_e(1,-log(x)-%k1)*%e^-%k1;
 method;
 freeofy;
 
