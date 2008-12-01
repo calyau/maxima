@@ -558,5 +558,14 @@ integrate(sqrt(1-x^2)*(x^2+1)/(1-x^2),x,0,1);
 jacobi_dn(elliptic_kc(m)*t,m);
 jacobi_dn(elliptic_kc(m)*t,m);
 
+/*
+ * Bug [ 2180110 ] GCL do not signal an overflow converting bigfloat to float
+ */
+errcatch(float(2b400));
+[];
+
+errcatch(float(bfloat(2^1024)));
+[];
+
 end;
 end$

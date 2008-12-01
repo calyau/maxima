@@ -308,19 +308,21 @@ One extra decimal digit in actual representation for rounding purposes.")
 	(exponent (caddr l))
 	(fpprec machine-mantissa-precision)
 	(*m 0))
-    ;;Round the mantissa to the number of bits of precision of the machine,
-    ;;and then convert it to a floating point fraction.
+    ;; Round the mantissa to the number of bits of precision of the
+    ;; machine, and then convert it to a floating point fraction.  We
+    ;; have 0.5 <= mantissa < 1
     (setq mantissa (quotient (fpround mantissa) (expt 2.0 machine-mantissa-precision)))
     ;; Multiply the mantissa by the exponent portion.  I'm not sure
-    ;; why the exponent computation is so complicated. Using
-    ;; scale-float will prevent possible overflow unless the result
-    ;; really would.
-    (setq precision
-	  (errset (scale-float mantissa (+ exponent (- precision) *m machine-mantissa-precision))
-		  nil))
-    (if precision
-	(car precision)
-	(merror "Floating point overflow in converting ~:M to flonum" l))))
+    ;; why the exponent computation is so complicated.
+    ;;
+    ;; GCL doesn't signal overflow from scale-float if the number
+    ;; would overflow.  We have to do it this way.  0.5 <= mantissa <
+    ;; 1.  The largest double-float is .999999 * 2^1024.  So if the
+    ;; exponent is 1025 or higher, we have an overflow.
+    (let ((e (+ exponent (- precision) *m machine-mantissa-precision)))
+      (if (>= (abs e) 1025)
+	  (merror "Floating point overflow in converting ~:M to flonum" l)
+	  (scale-float mantissa e)))))
 
 ;; New machine-independent version of FIXFLOAT.  This may be buggy. - CWH
 ;; It is buggy!  On the PDP10 it dies on (RATIONALIZE -1.16066076E-7)
