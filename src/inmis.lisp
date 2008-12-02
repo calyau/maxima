@@ -86,7 +86,7 @@
           (displa `((mtext) "reset: bind " ,key " to " ,displa-val))))
       (nconc actually-reset (list key))
       (let ((munbindp t))
-        (meval `((msetq) ,key ,val))))))
+        (meval `((msetq) ,key ((mquote) ,val)))))))
 
 (defmspec $reset_verbosely (L)
   (reset-do-the-work (cdr L) t))
