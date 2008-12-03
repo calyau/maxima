@@ -171,8 +171,13 @@ ode_check(e_,a_) := block(
 )$
 
 /* Attempt to simplify the result from ode_check() */
-ode_check_tidy(e) := if freeof_bessel(e) then e else bessimp(e)$
-
+ode_check_tidy(e) := block(
+  if not(freeof_bessel(e)) then 
+    e:bessimp(e),
+  if not(freeof(expintegral_e,e)) then
+    e:expintegral_e_simp(e),
+  e
+)$
 
 /*  This Bessel function simplification code can be improved,
     but is does work well on the contrib_ode testsuite.
@@ -274,3 +279,39 @@ besksimp_1(e,bk):=block(
 );
 
 bessimp(e) := besksimp(besisimp(besysimp(besjsimp(e))))$
+
+
+/* Simplify expressions containing exponential integral expintegral_e
+   using the recurrence (A&S 5.1.14).
+
+   expintegral_e(n+1,z) 
+        = (1/n) * (exp(-z)-z*expintegral_e(n,z))      n = 1,2,3 ....
+
+   functions.wolfram.com indicates that it also applies for non-integer n,
+   and this is supported by some numerical tests.
+
+   This is a support routine for checking solutions of differential equations 
+   in the contrib_ode testsuite.  Assumes numberp(n) but this could be relaxed,
+   as was done for Bessel functions.  Not required for existing testsuite.
+*/
+
+expintegral_e_simp(ex) := block( [argset],
+  if freeof(expintegral_e,ex) then return(ex),
+  /* Get the set of arguments. Partition into sets with orders that
+     differ by an integer and with common second arguments.  */
+  argset:setify(gatherargs(ex,expintegral_e)),
+  argset:equiv_classes(argset,
+           lambda([x,y], integerp(x[1]-y[1]) and (second(x)=second(y)))),
+
+  /* Iterate over each equivalance class */
+  for s in argset do block( [z, ords],
+    z:second(first(s)),  /* The common argument for s */
+    ords:map('first,s),  /* List of orders */
+    for n: lmax(ords)-1 step -1 thru lmin(ords) do (
+      ex:subst((1/n)*(exp(-z)-z*expintegral_e(n,z)), expintegral_e(n+1,z), ex)
+    )
+  ),
+  /* Note: When ratsimp was in the loop, then z within the expression 
+     was sometimes altered and subst didn't work */
+  ratsimp(ex)
+);
