@@ -176,8 +176,9 @@
     (setq zip (sratsimp zip))
     (or
      (like 0 zip) (like 0 ($radcan zip)) (like 0 ($radcan ($expand zip)))
+     (like 0 (mfuncall '$expintegral_e_simp zip))
      (mtell "should vanish, but it does not ~:M~%" zip))))
-    
+
 (defun check-fss (cfs fss x)
   (let (($gcd '$spmod) ($algebraic t))
     (and 
