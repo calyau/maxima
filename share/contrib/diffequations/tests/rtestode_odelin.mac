@@ -35,13 +35,13 @@ odelin(x^2*'diff(y,x,2)+(x^2+x)*'diff(y,x,1)-y,y,x);
 set ( 1-(1/x), %e^-x/x );
 
 odelin(3*x*'diff(y,x,2)+(2-x)*'diff(y,x,1)-y,y,x);
-set (x^(1/3)*%e^(x/3),x^(1/3)*%e^(x/3)*'integrate(%e^-(x/3)/x^(4/3),x));
+set (x^(1/3)*%e^(x/3), gamma_incomplete(-1/3,x/3)*x^(1/3)*%e^(x/3) );
 
 odelin(4*x^2*'diff(y,x,2)+2*x^2*'diff(y,x,1)+(-(x+3))*y,y,x);
 set ( sqrt(x)-(2/sqrt(x)), %e^-(x/2)/sqrt(x) );
 
 odelin(x^2*'diff(y,x,2)+(x^2-x)*'diff(y,x,1)+y,y,x);
-set (x*%e^-x,x*%e^-x*'integrate(%e^x/x,x));
+set (x*%e^-x,gamma_incomplete(0,-x)*x*%e^-x);
 
 odelin(x*'diff(y,x,2)-'diff(y,x,1)+(-x)*y,y,x);
 set (bessel_j(1,-%i*x)*x,bessel_y(1,-%i*x)*x);
@@ -51,16 +51,16 @@ set (bessel_j(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6),
 	bessel_y(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6));
 
 odelin(x*'diff(y,x,2)+(x-1)*'diff(y,x,1)+(-2)*y,y,x);
-set (x^2,x^2*'integrate(%e^-x/x^3,x));
+set (x^2, gamma_incomplete(-2,x)*x^2 );
 
 odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
 set (gauss_a(-6,-2,-3,-x)/x^4,gauss_b(-6,-2,-3,-x)/x^4);
 
 odelin(x*'diff(y,x,2)+(1-x)*'diff(y,x,1)-y,y,x);
-set (%e^x,%e^x*'integrate(%e^-x/x,x));
+set (%e^x,gamma_incomplete(0,x)*%e^x);
 
 odelin(x^2*'diff(y,x,2)-x*(1+x)*'diff(y,x,1)+y,y,x);
-set (x*%e^x,x*%e^x*'integrate(%e^-x/x,x));
+set (x*%e^x,gamma_incomplete(0,x)*x*%e^x);
 
 odelin(3*x*'diff(y,x,2)+2*(1-x)*'diff(y,x,1)+(-4)*y,y,x);
 set (kummer_m(-1,4/3,-2*x/3)*x^(1/3)*%e^(2*x/3),
@@ -182,7 +182,7 @@ odelin(4*x^2*'diff(y,x,2)+2*x^2*'diff(y,x,1)+(-(x+3))*y,y,x);
 set ( sqrt(x)-(2/sqrt(x)), %e^-(x/2)/sqrt(x) );
 
 odelin(x^2*'diff(y,x,2)+(x^2-x)*'diff(y,x,1)+y,y,x);
-set (x*%e^-x,x*%e^-x*'integrate(%e^x/x,x));
+set (x*%e^-x,gamma_incomplete(0,-x)*x*%e^-x);
 
 odelin(x*'diff(y,x,2)-'diff(y,x,1)+(-x)*y,y,x);
 set (bessel_j(1,-%i*x)*x,bessel_y(1,-%i*x)*x);
@@ -192,16 +192,16 @@ set (bessel_j(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6),
 	bessel_y(-(7/3),2*sqrt(x)/sqrt(3))/x^(5/6));
 
 odelin(x*'diff(y,x,2)+(x-1)*'diff(y,x,1)+(-2)*y,y,x);
-set (x^2,x^2*'integrate(%e^-x/x^3,x));
+set (x^2,gamma_incomplete(-2,x)*x^2);
 
 odelin(x*(x+1)*'diff(y,x,2)+(x+5)*'diff(y,x,1)+(-4)*y,y,x);
 set (gauss_a(-6,-2,-3,-x)/x^4,gauss_b(-6,-2,-3,-x)/x^4);
 
 odelin(x*'diff(y,x,2)+(1-x)*'diff(y,x,1)-y,y,x);
-set (%e^x,%e^x*'integrate(%e^-x/x,x));
+set (%e^x,gamma_incomplete(0,x)*%e^x);
 
 odelin(x^2*'diff(y,x,2)-x*(1+x)*'diff(y,x,1)+y,y,x);
-set (x*%e^x,x*%e^x*'integrate(%e^-x/x,x));
+set (x*%e^x,gamma_incomplete(0,x)*x*%e^x);
 
 odelin(3*x*'diff(y,x,2)+2*(1-x)*'diff(y,x,1)-y,y,x);
 set (kummer_m(1/2,4/3,-2*x/3)*x^(1/3)*%e^(2*x/3),
