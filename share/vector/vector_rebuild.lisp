@@ -5,6 +5,8 @@
 
 ;; Copyright (C)  Nov. 2008  Volker van Nek
 
+;; modified 08-12-03: vector_factor factors lists and matrices
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2 of the License, or
@@ -114,7 +116,7 @@
         (nr-pars (length params))
         (vec ($vector_eval expr)) )
     (when (not (vector-p vec)) (return-from vector-rebuild expr))
-    (when (zero-column-vector-p vec) (return-from vector-rebuild vec))
+    (when (zero-vector-p vec) (return-from vector-rebuild vec))
     (when (column-vector-p vec) (setq col-flag t))
     (dolist (a (cdr vec))
       (when col-flag (setq a (cadr a)))
@@ -202,38 +204,38 @@
   (let (fac vec args minus-flag $ratprint)
     (setq vec ($vector_eval expr))
     (cond
-      ((zero-column-vector-p vec) vec)
-      ((not (vector-p vec)) expr)
-      (t
-        (setq args
+      ((or (zero-vector-p vec) (zero-$matrix-p vec))
+        vec)
+      ((or ($listp vec) ($matrixp vec))
+        (setq args 
           (if ($listp vec)
-            (margs vec)
-            (margs (column-to-row vec)) ))
+            (cdr vec)
+            (apply #'append (mapcar #'cdr (cdr vec))) ))
         (setq fac 
           (reduce #'(lambda (a b) ($gcd a b)) (cons (car args) args)))
-        (setq args
-          (mapcar 
-            #'(lambda (a) (meval `(($ratsimp) ((mquotient) ,a ,fac)))) 
-            args))
+        (setq vec
+          (meval 
+            `(($fullmapl) 
+              ((lambda) ((mlist) e) (($ratsimp) ((mquotient) e ,fac)))
+              ,vec )))
         (and 
           $vector_factor_minus
           (every 
             #'(lambda (a) (eq t (meval `(($is) ((mlessp) ,a 0))))) 
             args)
           (setq minus-flag t)
-          (setq args
-            (mapcar #'(lambda (a) (meval `((mminus) ,a)) ) args)) )
-        (setq vec
-          (if ($listp vec)
-            `((mlist simp) ,@args) 
-            (row-to-column `((mlist simp) ,@args)) ))
+          (setq vec
+            (meval 
+              `(($fullmapl) ((lambda) ((mlist) e) ((mminus) e)) ,vec) )))
         (if minus-flag
           (if (eq 1 fac)
             `((mminus) ,vec)
             `((mminus) ((mtimesq) ,fac ,vec)) )
           (if (eq 1 fac)
             vec
-            `((mtimesq) ,fac ,vec) )))) ))
+            `((mtimesq) ,fac ,vec) )))
+      (t
+        expr ))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -343,18 +345,21 @@
 (defun vector-dim (vec) ;; assume vec to be a row or column vector
   (length (cdr vec)) )
 
-(defun column-vector-p (expr)
-  (and ($matrixp expr)
-       (= 2 (length (cadr expr))) ))
+(defun column-vector-p (obj)
+  (and ($matrixp obj)
+       (= 2 (length (cadr obj))) ))
 
-(defun vector-p (expr)
-  (or ($listp expr) (column-vector-p expr)))
+(defun vector-p (obj)
+  (or ($listp obj) (column-vector-p obj)))
 
-(defun zero-column-vector-p (expr)
-  (and (vector-p expr) 
-       (if ($matrixp expr)           
-         (setq expr (column-to-row expr))
-         t)
-       (every #'zerop1 (cdr expr)) ))
+(defun zero-vector-p (obj)
+  (or (zero-mlist-p obj)
+      (and (zero-$matrix-p obj) (= 2 (length (cadr obj)))) ))
+
+(defun zero-mlist-p (obj)
+  (and ($listp obj) (every #'zerop1 (cdr obj)) ))
+
+(defun zero-$matrix-p (obj)
+  (and ($matrixp obj) (every #'zero-mlist-p (cdr obj)) ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
