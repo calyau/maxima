@@ -284,10 +284,14 @@ method;
 separable;
 
 /* 140 */
+(assume(sin(x)>0,sin(2*x)>0),done);
+done;
 (pn_(140),ans:contrib_ode(eqn:2*'diff(y,x)=sec(x)^2+y*sec(x)*csc(x),y,x));
 [y = %e^((log(sin(x))-log(sin(x)^2-1)/2)/2)*(('integrate(sec(x)^2*%e^-((log(sin(x))-log(sin(x)^2-1)/2)/2),x))/2+%c)]; /* Mmmm */
 method;
 linear;
+(forget(sin(x)>0,sin(2*x)>0),done);
+done;
 
 /* 141 Riccati */
 (pn_(141),ans:contrib_ode(eqn:2*'diff(y,x)+2*csc(x)^2=y*csc(x)*sec(x)+y^2*sec(x)^2,y,x));
