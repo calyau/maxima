@@ -177,6 +177,7 @@ contrib/diffequations/tests/rtestode_murphy_2_3.mac\
 contrib/diffequations/tests/rtestode_murphy_2_4.mac\
 contrib/diffequations/tests/rtestode_murphy_2_5.mac\
 contrib/diffequations/tests/rtestode_odelin.mac\
+contrib/diffequations/tests/rtestode_utils.mac\
 contrib/diffequations/tests/testsuite.lisp\
 contrib/distrib/distrib.mac\
 contrib/distrib/numdistrib.lisp\
