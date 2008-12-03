@@ -224,7 +224,7 @@
 
 (defun integrator (exp var)
   (prog (y arg *powerl* const *b* w *c* *d* e *ratrootform*
-	 *chebyform* arcpart coef integrand)
+	 *chebyform* arcpart coef integrand result)
      (declare (special *ratrootform* *chebyform* *integrator-level*))
      ;; Increment recursion counter
      (incf *integrator-level*)
@@ -312,15 +312,19 @@
 	    (format t "In loop, go skip~%")
 	    (go skip))
 	   ((and (setq w (intform (car y)))
-                 ;; Do not return a noun form as result, because we would like 
-                 ;; to check for further special integrals.
+                 ;; Do not return a noun form as result at this point, because
+                 ;; we would like to check for further special integrals.
+                 ;; We store the result for later use.
+                 (setq result w)
                  (not (isinop w '%integrate)))
 	    #+nil
 	    (format t "In loop, case intform~%")
-	    (return (mul2* const w)))
+            (return (mul2* const w)))
 	   (t
 	    #+nil
 	    (format t "In loop, go special~%")
+            ;; Store a possible partial result
+	    (setq nounform w)
 	    (go special)))
      skip
      (setq y (cdr y))
@@ -399,13 +403,21 @@
 			    ((and (setq y (rischint exp var))
                                   ;; rischint has not found an integral but
                                   ;; returns a noun form. Do not return that
-                                  ;; noun form as result.
+                                  ;; noun form as result at this point, but
+                                  ;; store it for later use.
+                                  (setq result y)
                                   (not (isinop y '%integrate)))
                              y)
                             ((setq y (integrate-exp-special exp var))
                              ;; Maxima found an integral for a power function
                              y)
-			    (t (list '(%integrate) exp var)))))))))
+			    (t 
+                             ;; Integrate-exp-special has not found an integral
+                             ;; We look for a previous result obtained by
+                             ;; intform or rischint.
+                             (if result 
+                                 result
+                                 (list '(%integrate) exp var))))))))))
  
 (defun rat8 (ex)
   (cond ((or (alike1 ex var) (freevar ex))
