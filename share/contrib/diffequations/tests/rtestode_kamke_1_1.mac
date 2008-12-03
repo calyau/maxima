@@ -411,7 +411,9 @@ kill(a);
 done;
 
 (pn_("46ii"),assume(a>1),ans:contrib_ode(eqn:'diff(y,x) - x^a*y^3 + 3*y^2 - x^(-a)*y -x^(-2*a) + a*x^(-a-1),y,x));
-[y = %e^-(2*x^(1-a)/(1-a))/sqrt(%c-2*'integrate(x^a*%e^-(4*x^(1-a)/(1-a)),x))+1/x^a];
+[y=%e^-(2*x^(1-a)/(1-a))/sqrt(2*(a-1)^((a+1)/(1-a))
+  *gamma_incomplete((a+1)/(1-a),-4*x^(1-a)/(a-1))*x^(a+1)
+   /((1-a)*4^((a+1)/(1-a))*(-x^(1-a))^((a+1)/(1-a)))+%c)+1/x^a];
 [method,ode_check(eqn,ans[1])];
 [abel,0];
 forget(a>1);
