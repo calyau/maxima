@@ -138,6 +138,22 @@
 		     (cdr (sassq 'c y 'nill))
 		     (cdr (sassq 'd y 'nill)))))
 		 (t (return nil)))))))
+
+      ;; We have a special function with an integral on the property list.
+      ;; We try to do a partial integration.
+
+      ((and (not (atom (car expres)))
+            (get (caar expres) 'integral))
+       (when *debug-integrate* 
+         (format t "~&INTFORM with Integral on property list~%"))
+       (cond
+         ((setq arg
+            (m2 exp 
+             `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))
+              nil))
+          (partial-integration (cons (cons 'a expres) arg) var))
+	 (t nil)))
+
 	((optrig (caar expres))
 	 (cond ((not (setq w (m2 (cadr expres) *c* nil)))
 		(intform (cadr expres)))
@@ -324,7 +340,7 @@
 	    #+nil
 	    (format t "In loop, go special~%")
             ;; Store a possible partial result
-	    (setq nounform w)
+	    (setq result w)
 	    (go special)))
      skip
      (setq y (cdr y))
@@ -517,13 +533,46 @@
 (defun varp (x)
   (alike1 x var))
 
-(defun integrallookups (exp) 
+(defun integrallookups (exp &aux form)
   (cond ((eq (caar exp) '%log)
 	 (maxima-substitute (cadr exp)
 			    'x
 			    '((mplus)
 			      ((mtimes) x ((%log) x))
 			      ((mtimes) -1 x))))
+
+        ;; The integral of the Log function is directly implemented in the
+        ;; algorithm. This can be generalized to a lookup algorithm for any
+        ;; special function. The integral is put on the property list.
+        ;; In a first step we support functions with one and two arguments.
+        ;; In the case of two arguments we do an integration only wrt the
+        ;; second argument.
+
+        ((and (not (atom (car exp)))
+              (setq form (get (caar exp) 'integral)))
+         (cond
+           ((= (length (car form)) 1)
+            ;; Found an integral on the property list with one argument.
+            (when *debug-integrate*
+              (format t "~&INTEGRALLOOKUPS: Found integral with 1 argument.~%"))
+            ($substitute (cadr exp) (caar form) (cadr form)))
+
+          ((and (= (length (car form)) 2)
+                (freevar (cadr exp)))
+           ;; Found an integral on the property list with two arguments.
+           ;; We allow integration only wrt the 2. argument. This has to
+           ;; be generalized.
+           (when *debug-integrate*
+             (format t "~&INTEGRALLOOKUPS: Found integral with 2 arguments.~%"))
+           (let ((arg1 (cadr exp))
+                 (arg2 (caddr exp)))
+             ($substitute
+               arg2
+               (cadar form)
+               ($substitute arg1 (caar form) (caddr form)))))
+
+          (t nil)))
+
 	((eq (caar exp) 'mplus)
 	 (muln (list '((rat simp) 1 2) exp exp) nil))
 	((eq (caar exp) 'mexpt)
@@ -1510,6 +1559,10 @@
       (member x '(%log %integrate %atan) :test #'eq)
       (or (finds (car x)) (finds (cdr x)))))
 
+;;; ratlog is called for an expression containing the log or atan function
+;;; The integrand is like log(x)*f'(x). To obtain the result the technique of
+;;; partial integration is applied: log(x)*f(x)-integrate(1/x*f(x),x)
+
 (defun ratlog (exp var form)
   (prog (*a* *b* *c* *d* y z w) 
      (setq y form)
@@ -1525,6 +1578,24 @@
      (return (simplify (list '(mplus)
 			     (list '(mtimes) y *d*)
 			     (list '(mtimes) -1 z))))))
+
+;;; partial-integration is an extension of the algorithm of ratlog to support 
+;;; the technique of partial integration for more cases. The integrand
+;;; is like g(x)*f'(x) and the result is g(x)*f(x)-integrate(g'(x)*f(x),x).
+
+(defun partial-integration (form var)
+  (let ((g  (cdr (assoc 'a form)))   ; part g(x)
+        (df (cdr (assoc 'c form)))   ; part f'(x)
+        (f  nil))
+    (setq f (integrator df var))     ; integrate f'(x) wrt var
+    (cond 
+      ((or (isinop f '%integrate)    ; no result or
+           (isinop f (caar g)))      ; g in result
+       nil)                          ; we return nil
+      (t
+       ;; Build the result: g(x)*f(x)-integrate(g'(x)*f(x))
+       (add (mul f g)
+            (mul -1 (integrator (mul f (sdiff g var)) var)))))))
 
 ;; returns t if argument of every trig operation in y matches arg
 (defun every-trigarg-alike (y arg)
@@ -1621,7 +1692,20 @@
 		    (cond ((freevar (cadr y)) (caddr y))
 			  ((freevar (caddr y)) (cadr y))
 			  (t 0)))
-		   (t (cadr y))))
+
+                   ;; At this point the algorithm assume that we have a
+                   ;; function with one argument. This argument is taken
+                   ;; with (cadr y). The algorithm has to be extended
+                   ;; to support functions with more than one argument.
+                   ;; In a first step we only support the functions
+                   ;; gamma_incomplete and expintegral_e.
+                   ((member (caar y) '(%gamma_incomplete %expintegral_e))
+                    ;; We assume the integration wrt the second value
+                    ;; of the function.
+                    (caddr y))
+                   (t
+                    ;; Take the argument of a function with one value. 
+                    (cadr y))))
      (cond
        ((setq w (cond ((and (setq x (sdiff w var))
 			    (mplusp x)
