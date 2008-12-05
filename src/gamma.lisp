@@ -349,6 +349,16 @@
       ((mexpt) z ((mplus) -1 a))))
   grad)
 
+;;; Integral of the Incomplete Gamma function
+
+(defprop %gamma_incomplete
+  ((a z)
+   nil
+   ((mplus)
+      ((mtimes) -1 ((%gamma_incomplete) ((mplus) 1 a) z))
+      ((mtimes) ((%gamma_incomplete) a z) z)))
+  integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-gamma-incomplete (expr ignored simpflag)
@@ -1524,6 +1534,17 @@
       ((mexpt) $%e ((mtimes) -1 ((mexpt) z 2)))))
   grad)
 
+;;; Integral of the Error function erf
+
+(defprop %erf
+  ((z)
+   ((mplus)
+     ((mtimes) 
+        ((mexpt) $%pi ((rat) -1 2))
+        ((mexpt) $%e ((mtimes) -1 ((mexpt) z 2))))
+     ((mtimes) z ((%erf) z))))
+  integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-erf (expr z simpflag)
@@ -1725,6 +1746,17 @@
       ((mexpt) $%e ((mtimes) -1 ((mexpt) z 2)))))
   grad)
 
+;;; Integral of the Error function erfc
+
+(defprop %erfc
+  ((z)
+   ((mplus)
+     ((mtimes) -1
+        ((mexpt) $%pi ((rat) -1 2))
+        ((mexpt) $%e ((mtimes) -1 ((mexpt) z 2))))
+     ((mtimes) z ((%erfc) z))))
+  integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-erfc (expr z simpflag)
@@ -1800,6 +1832,17 @@
       ((mexpt) $%pi ((rat) -1 2))
       ((mexpt) $%e ((mexpt) z 2))))
   grad)
+
+;;; Integral of the Error function erfi
+
+(defprop %erfi
+  ((z)
+   ((mplus)
+     ((mtimes) -1
+        ((mexpt) $%pi ((rat) -1 2))
+        ((mexpt) $%e ((mexpt) z 2)))
+     ((mtimes) z ((%erfi) z))))
+  integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
