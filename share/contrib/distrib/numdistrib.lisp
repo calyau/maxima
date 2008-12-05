@@ -31,31 +31,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;  Natural logarithm of the gamma function.
-;;  Reference:
-;;     Lanczos, C. 'A precision approximation of the gamma function',
-;;                  J. SIAM Numer. Anal., B, 1, 86-96, 1964.
-;;  Comments: Accurate about 14 significant digits except for small regions
-;;            in the vicinity of 1 and 2.
-;;            Translated from Fortran.
-;;            Sometimes Maxima crashes with built-in functions, i.e. 'numer:true$ log(gamma(333));'
-;;  Conditions: 0<p<1.0e302
+;; Natural logarithm of the gamma function. This function is called from
+;; some numerical routines below.
 (defun lngamma (p)
-   (declare (type flonum p))
-   (cond ((<= p 0) (merror "Argument to lngamma must be positive"))
-         (t (let ((a1 9.999999999995183e-1)   (a2 6.765203681218835e2)
-                 (a3 -1.259139216722289e3)   (a4 7.713234287757674e2)
-                 (a5 -1.766150291498386e2)   (a6 1.250734324009056e1)
-                 (a7 -1.385710331296526e-1)  (a8 9.934937113930748e-6)
-                 (a9 1.659470187408462e-7)   (lnsqrt2pi 9.189385332046727e-1)
-                 (lng 0.0))
-            (declare (type flonum a1 a2 a3 a4 a5 a6 a7 a8 a9 lnsqrt2pi lng))
-            (setf lng (+ a1  (/ a2 p)      (/ a3 (+ p 1.0))    (/ a4 (+ p 2.0))
-                         (/ a5 (+ p 3.0))  (/ a6 (+ p 4.0))    (/ a7 (+ p 5.0))
-                         (/ a8 (+ p 6.0))  (/ a9 (+ p 7.0)) ))
-            (+ (log lng) lnsqrt2pi
-               (- (+ p 6.5))
-               (* (- p 0.5) (log (+ p 6.5)))) ))) )
+  (simplify (list '(%log_gamma) p)))
 
 
 ;;  Natural logarithm of the beta function
@@ -64,78 +43,10 @@
    (+ (lngamma p) (lngamma q) (- (lngamma (+ p q)))) )
 
 
-;;  Incomplete gamma.
-;;  Reference:
-;;     Shea, B.L. (1988) Algorithm AS 239. Chi-squared and Incomplete Gamma Integral.
-;;     Applied Statistics (JRSS C) 37, 466-473.
-;;  Comments: Translated from Fortran.
-;;  Conditions: x>=0; p>0
+;; Lower regularized gamma incomplete. This function is called from
+;; some numerical routines below.
 (defun igamma (x p)
-   (declare (type flonum x p))
-   (if (or (< x 0.0) (<= p 0.0))
-       (merror "Arguments to igamma must be positive"))
-   (let (arg gammad a b c pn1 pn2 pn3 pn4 pn5 pn6 an rn
-         (plimit 1.0e3) (xbig 1.0e8) (tol 1.0e-14) (elimit -8.8e1) (oflo 1.0e37))
-        (cond ((= x 0.0) 0.0)
-              ;; if x is extremely large compared to p then return 1
-              ((> x xbig) 1.0)
-              ;; use normal approximation if p>plimit
-              ;; 1/2+erf((3 * sqrt(p) * ((x/p)^(1/3) + 1 / (9 * p) - 1)) / sqrt(2))/2
-              ((> p plimit)
-                (+ 0.5 (* 0.5
-                         (mfuncall '%erf (* 2.121320343559642 (sqrt p) 
-                                            (+ (/ 1.0 (* 9.0 p)) (- 1.0)
-                                               (expt (/ x p) .3333333333333333)))))))
-              ;; Pearson's series expansion. I use lngamma(z) here, but
-              ;; log(gamma(z)) could be used instead, since p is not large
-              ;; enough to force overflow
-              ((or (<= x 1.0) (< x p))
-                 (setf arg (+ (* p (log x))
-                              (- x)
-                              (- (lngamma (+ p 1.0)))))
-                 (setf c 1.0 gammad 1.0)
-                 (do ((a (+ p 1.0) (1+ a)))
-                     ((<= c tol) '$done)
-                     (setf c (/ (* c x) a))
-                     (setf gammad (+ gammad c)))
-                 (setf arg (+ arg (log gammad)))
-                 (if (>= arg elimit)
-                     (exp arg)
-                     0.0 )  )
-              ;; use a continued fraction expansion
-              (t (setf arg (+ (* p (log x))
-                              (- x)
-                              (- (lngamma p))))
-                 (setf  a (- 1.0 p)
-                       b (+ a x 1.0)
-                       c 0.0
-                       pn1 1.0
-                       pn2 x
-                       pn3 (+ x 1.0)
-                       pn4 (* x b)
-                       gammad (/ pn3 pn4))
-                 (loop (setf a (+ a 1.0)
-                             b (+ b 2.0)
-                             c (+ c 1.0)
-                             an (* a c)
-                             pn5 (- (* b pn3) (* an pn1))
-                             pn6 (- (* b pn4) (* an pn2)))
-                       (if (> (abs pn6) 0.0)
-                           (progn (setf rn (/ pn5 pn6))
-                                  (if (<= (abs (- gammad rn)) (min tol (* tol rn)))
-                                      (return 0.0)
-                                      (setf gammad rn))))
-                       (setf pn1 pn3 pn2 pn4 pn3 pn5 pn4 pn6)
-                       ;; re-escale terms in continued fraction if terms are large
-                       (if (>= (abs pn5) oflo)
-                           (setf pn1 (/ pn1 oflo)
-                                 pn2 (/ pn2 oflo)
-                                 pn3 (/ pn3 oflo)
-                                 pn4 (/ pn4 oflo)))  )
-                 (setf arg (+ arg (log gammad)))
-                 (if (>= arg elimit)
-                     (- 1.0 (exp arg))
-                     1.0) ))))
+  (- 1.0 (simplify (list '(%gamma_incomplete_regularized) p x))) )
 
 
 ;;  Continued fraction approximation of the incomplete beta.
@@ -1921,12 +1832,5 @@
          (t (setf sample nil)
             (dotimes (i ss (cons '(mlist simp) sample))
                      (setf sample (cons (rndnegbinom n p 0) sample))) )) )
-
-
-
-
-
-
-
 
 

@@ -763,15 +763,15 @@ pdf_gamma(x,a,b):=block([cp:control2(a,b)],
    funmake('pdf_gamma,[x,a,b]) )$
 
 /* R: pgamma(x,a,1/b) */
-cdf_gamma(x,a,b):=block([cp:control2(a,b)],
+cdf_gamma(x,a,b):=block([cp:control2(a,b), sgn],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_gamma,[x,a,b])),
-   if member(sign(x), ['nz,'neg,'zero])
+   sgn : sign(x),
+   if member(sgn, ['nz,'neg,'zero])
       then return(0)
-      else if numberp(x) and numberp(a) and numberp(b) and
-              (numer or ?floatp(x) or ?floatp(a) or ?floatp(b))
-              then return(?igamma(float(x/b),float(a))),
-   funmake('cdf_gamma,[x,a,b])  )$
+   elseif member(sgn, ['pos,'pz])
+      then return(1 - gamma_incomplete_regularized(a,x/b))
+   else funmake('cdf_gamma,[x,a,b]))$
 
 /* R: qgamma(q,a,1/b) */
 quantile_gamma(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
@@ -1505,20 +1505,19 @@ pdf_poisson(x,m):=block([cp:control1(m)],
    funmake('pdf_poisson,[x,m]) )$
 
 /* R: ppois(q,m) */
-cdf_poisson(x,m):=block([cp:control1(m)],
+cdf_poisson(x,m):=block([cp:control1(m), sgn],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_poisson,[x,m])),
-   if sign(m)='pos
-      then if sign(x)='neg
-              then return(0)
-              else if numberp(x) and numberp(m) and
-                      (numer or ?floatp(x) or ?floatp(m))
-                      then return(1-?igamma(float(m), float(floor(x)+1))),
-   funmake('cdf_poisson,[x,m])  )$
+   sgn: sign(x),
+   if sgn = 'neg
+     then 0
+   elseif member(sgn, ['pos, 'zero, 'pz])
+     then gamma_incomplete_regularized(floor(x)+1, m)
+     else funmake('cdf_poisson,[x,m])  )$
 
 /* R: qpois(q,m) */
 quantile_poisson(q,m):=block([cp:control1(m), cq:controlq(q), fq:float(q),
-                         a, b, mm],
+                              a, b, mm],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
       then return(funmake('quantile_poisson,[q,m])),

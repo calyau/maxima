@@ -1,4 +1,4 @@
-@c English version 1.11
+@c English version 1.12
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::
@@ -574,19 +574,19 @@ La variable aleatoria @math{Chi^2(n)} equivale a una @i{Gamma}@math{(n/2,2)}, po
 @deffn {Funci@'on} cdf_chi2 (@var{x},@var{n})
 Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria chi-cuadrado @math{Chi^2(n)}, con @math{n>0}.
 
-Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal basada en la distribuci@'on gamma, puesto que la variable aleatoria @math{Chi^2(n)} equivale a una @i{Gamma}@math{(n/2,2)}.
-
 @c ===beg===
 @c load (distrib)$
 @c cdf_chi2(3,4);
-@c cdf_chi2(3,4),numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_chi2(3,4);
-(%o2)                  cdf_gamma(3, 2, 2)
-(%i3) cdf_chi2(3,4),numer;
-(%o3)                   .4421745996289249
+                                               3
+(%o2)      1 - gamma_incomplete_regularized(2, -)
+                                               2
+(%i3) float(%);
+(%o3)               .4421745996289256
 @end example
 @end deffn
 
@@ -1166,20 +1166,19 @@ Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una v
 @deffn {Funci@'on} cdf_gamma (@var{x},@var{a},@var{b})
 Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria @i{Gamma}@math{(a,b)}, con @math{a,b>0}. 
 
-
-Esta funci@'on no tiene expresi@'on compacta, por lo que es evaluada num@'ericamente si la variable global @code{numer} vale @code{true}, en caso contrario devuelve una forma nominal.
-
 @c ===beg===
 @c load (distrib)$
 @c cdf_gamma(3,5,21);
-@c %,numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_gamma(3,5,21);
-(%o2)                  cdf_gamma(3, 5, 21)
-(%i3) %,numer;
-(%o3)                 4.402663157135039E-7
+                                              1
+(%o2)     1 - gamma_incomplete_regularized(5, -)
+                                              7
+(%i3) float(%);
+(%o3)              4.402663157376807E-7
 @end example
 @end deffn
 
@@ -1944,19 +1943,17 @@ Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de u
 @deffn {Funci@'on} cdf_poisson (@var{x},@var{m})
 Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de @i{Poisson}@math{(m)}, con @math{m>0}.
 
-Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal.
-
 @c ===beg===
 @c load (distrib)$
 @c cdf_poisson(3,5);
-@c cdf_poisson(3,5), numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_poisson(3,5);
-(%o2)                   cdf_poisson(3, 5)
-(%i3) cdf_poisson(3,5), numer;
-(%o3)                   .2650259152973617
+(%o2)       gamma_incomplete_regularized(4, 5)
+(%i3) float(%);
+(%o3)               .2650259152973623
 @end example
 @end deffn
 

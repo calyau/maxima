@@ -1,9 +1,9 @@
 (kill (all),
- load (distrib),
+ load(distrib),
  rnd_state: make_random_state(false),
  set_random_state (make_random_state (123456789)),
  save_tolerance : float_approx_equal_tolerance,
- float_approx_equal_tolerance : 1e-8,
+ float_approx_equal_tolerance : 1e-12,
  0);
 0;
 
@@ -138,7 +138,7 @@ cdf_gamma(5,2.1,30.5);
 0.009139841119737905;
 
 cdf_gamma(5,21,30.5);
-5.392385901203894E-37;
+0.0;
 
 quantile_gamma(1/6,15,0.2);
 2.254909620526077;

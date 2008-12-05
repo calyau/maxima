@@ -17,6 +17,7 @@
 @documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual de Maxima
+Ver. 5.18
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
@@ -40,7 +41,6 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @center @titlefont{Manual de Maxima}
-@center Ver. 5.17
 @page
 @vskip 0pt plus 1filll
 @i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
