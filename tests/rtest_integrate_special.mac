@@ -1,0 +1,124 @@
+/******************************************************************************
+  rtest_integrate_special.mac
+  Integrals with special functions
+******************************************************************************/
+
+/* Integrals for the Incomplete Gamma function */
+
+integrate(gamma_incomplete(a,z),z);
+z*gamma_incomplete(a,z)-gamma_incomplete(a+1,z);
+
+integrate(z^(v-1)*gamma_incomplete(a,z),z);
+'integrate(z^(v-1)*gamma_incomplete(a,z),z);
+
+/* Integrals for Exponential Integral E(v,z) */
+
+integrate(expintegral_e(v,a*z),z);
+-expintegral_e(v+1,a*z)/a;
+
+integrate(expintegral_e(v,z),z);
+-expintegral_e(v+1,z);
+
+integrate(z^(p-1)*expintegral_e(v,a*z),z);
+'integrate(z^(p-1)*expintegral_e(v,a*z),z);
+
+/* Integrals for Exponential Integral E1(z) */
+
+integrate(expintegral_e1(a*z),z);
+-expintegral_e(2,a*z)/a;
+
+integrate(expintegral_e1(z),z);
+-expintegral_e(2,z);
+
+integrate(z^(p-1)*expintegral_e1(a*z),z);
+'integrate(z^(p-1)*expintegral_e1(a*z),z);
+
+/* Integrals for Exponential Integral Ei(z) */
+
+integrate(expintegral_ei(z),z);
+z*expintegral_ei(z)-%e^z;
+
+integrate(expintegral_ei(a*z),z);
+(a*z*expintegral_ei(a*z)-%e^(a*z))/a;
+
+integrate(expintegral_ei(a*z+b),z);
+((a*z+b)*expintegral_ei(a*z+b)-%e^(a*z+b))/a;
+
+integrate(z^(p-1)*expintegral_ei(a*z),z);
+'integrate(z^(p-1)*expintegral_ei(a*z),z);
+
+integrate(z*expintegral_ei(a*z),z);
+z^2*expintegral_ei(a*z)/2-(a*z-1)*%e^(a*z)/(2*a^2);
+
+integrate(expintegral_ei(a*z)/z,z);
+'integrate(expintegral_ei(a*z)/z,z);
+
+integrate(expintegral_ei(a*z)/z^2,z);
+gamma_incomplete(-1,-a*z)*a-expintegral_ei(a*z)/z;
+
+integrate(expintegral_ei(a*z+b)/z^2,z);
+'integrate(expintegral_ei(a*z+b)/z^2,z);
+
+integrate(z^(p-1)*expintegral_ei(a*z^r),z);
+'integrate(z^(p-1)*expintegral_ei(a*z^r),z);
+
+integrate(z^n*%e^(b*z)*expintegral_ei(a*z),z);
+'integrate(z^n*%e^(b*z)*expintegral_ei(a*z),z);
+
+integrate(z*%e^(b*z)*expintegral_ei(a*z),z);
+'integrate(z*%e^(b*z)*expintegral_ei(a*z),z);
+
+integrate(z^2*%e^(b*z)*expintegral_ei(a*z),z);
+'integrate(z^2*%e^(b*z)*expintegral_ei(a*z),z);
+
+integrate(z^3*%e^(b*z)*expintegral_ei(a*z),z);
+integrate(z^3*%e^(b*z)*expintegral_ei(a*z),z);
+
+integrate(%e^(a*z)*expintegral_ei(a*z)/z,z);
+1/2*expintegral_ei(a*z)^2;
+
+/* Integrals for Exponential Integral Li(z) */
+
+integrate(expintegral_li(a*z),z);
+(a*z*expintegral_li(a*z)-expintegral_ei(2*log(a*z)))/a;
+
+integrate(expintegral_li(z),z);
+z*expintegral_li(z)-expintegral_ei(2*log(z));
+
+integrate(z*expintegral_li(z),z);
+z^2*expintegral_li(z)/2+gamma_incomplete(0,-3*log(z))/2;
+
+integrate(sqrt(z)*expintegral_li(z),z);
+2*(z^(3/2)*expintegral_li(z)/3+gamma_incomplete(0,-5/2*log(z))/3);
+
+/* Integrals for Exponential Integral Si(z) */
+
+integrate(expintegral_si(z),z);
+z*expintegral_si(z)+cos(z);
+
+integrate(z*expintegral_si(z),z);
+z^2*expintegral_si(z)/2 - (sin(z)-z*cos(z)) /2;
+
+/* Integrals for Exponential Integral Ci(z) */
+
+integrate(expintegral_ci(z),z);
+z*expintegral_ci(z)-sin(z);
+
+integrate(z*expintegral_ci(z),z);
+z^2*expintegral_ci(z)/2 - (z*sin(z)+cos(z)) /2;
+
+/* Integrals for Exponential Integral Shi(z) */
+
+integrate(expintegral_shi(z),z);
+z*expintegral_shi(z)-cosh(z);
+
+integrate(z*expintegral_shi(z),z);
+z^2*expintegral_shi(z)/2 - ((z-1)*%e^z+(z+1)*%e^(-z))/4;
+
+/* Integrals for Exponential Integral Chi(z) */
+
+integrate(expintegral_chi(z),z);
+z*expintegral_chi(z)-sinh(z);
+
+integrate(z*expintegral_chi(z),z);
+z^2*expintegral_chi(z)/2 - ((z-1)*%e^z+(-z-1)*%e^(-z))/4;
