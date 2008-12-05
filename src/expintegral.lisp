@@ -165,6 +165,14 @@
    ((mtimes) -1 ((%expintegral_e) ((mplus) -1 n) z)))
   grad)
 
+;;; Integral of Exponential Integral E
+
+(defprop %expintegral_e
+  ((n z)
+   nil
+   ((mtimes) -1 ((%expintegral_e) ((mplus) 1 n) z)))
+  integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-expintegral-e (exp ignored z)
@@ -851,6 +859,13 @@
     ((mexpt) $%e ((mtimes) -1 x))))
   grad)
 
+;;; Integral of Exponential Integral E1
+
+(defprop %expintegral_e1
+  ((z)
+   ((mtimes) -1 ((%expintegral_e) 2 z)))
+  integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-expintegral_e1 (exp ignored z)
@@ -929,6 +944,15 @@
   ((x)
    ((mtimes) ((mexpt) x -1) ((mexpt) $%e x)))
   grad)
+
+;;; Integral of Exponential Ei
+
+(defprop %expintegral_ei
+  ((x)
+   ((mplus) 
+      ((mtimes) -1 ((mexpt) $%e x))
+      ((mtimes) x ((%expintegral_ei) x))))
+  integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1079,6 +1103,15 @@
    ((mtimes) ((mexpt) ((%log) x) -1)))
   grad)
 
+;;; Integral of Exponential Li
+
+(defprop %expintegral_li
+  ((x)
+   ((mplus)
+      ((mtimes) x ((%expintegral_li) x))
+      ((mtimes) -1  ((%expintegral_ei) ((mtimes) 2 ((%log) x))))))
+  integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-expintegral-li (exp ignored z)
@@ -1198,6 +1231,15 @@
   ((x)
    ((mtimes) ((%sin) x) ((mexpt) x -1)))
   grad)
+
+;;; Integral of Exponential Si
+
+(defprop %expintegral_si
+  ((x)
+   ((mplus)
+      ((%cos) x)
+      ((mtimes) x ((%expintegral_si) x))))
+  integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1331,6 +1373,15 @@
    ((mtimes) ((%sinh) x) ((mexpt) x -1)))
   grad)
 
+;;; Integral of Exponential Shi
+
+(defprop %expintegral_shi
+  ((x)
+   ((mplus)
+      ((mtimes) -1 ((%cosh) x))
+      ((mtimes) x ((%expintegral_shi) x))))
+  integral)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun simp-expintegral-shi (exp ignored z)
@@ -1462,6 +1513,15 @@
   ((x)
    ((mtimes) ((%cos) x) ((mexpt) x -1)))
   grad)
+
+;;; Integral of Exponential Ci
+
+(defprop %expintegral_ci
+  ((x)
+   ((mplus)
+      ((mtimes) x ((%expintegral_ci) x))
+      ((mtimes) -1 ((%sin) x))))
+  integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1608,6 +1668,15 @@
   ((x)
    ((mtimes) ((%cosh) x) ((mexpt) x -1)))
   grad)
+
+;;; Integral of Exponential Chi
+
+(defprop %expintegral_chi
+  ((x)
+   ((mplus)
+      ((mtimes) x ((%expintegral_chi) x))
+      ((mtimes) -1 ((%sinh) x))))
+  integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
