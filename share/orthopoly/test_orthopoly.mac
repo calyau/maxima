@@ -133,13 +133,12 @@ check_zero_list(foo)$
 
 /*---------------*/
 
-my_conjugate(e) := subst(-%i, %i,e)$
 
 test_name : "spherical harmonic orthogonality"$
 
 
 f(n1,m1,n2,m2) := defint(defint(trigreduce(spherical_harmonic(n1,m1,th,ph) * 
-   my_conjugate(spherical_harmonic(n2,m2,th,ph)) * sin(th)),th,0,%pi),ph,0,2*%pi)$
+   conjugate(spherical_harmonic(n2,m2,th,ph)) * sin(th)),th,0,%pi),ph,0,2*%pi)$
 
 sofar : [ ]$
 for n1 : 0 thru 2 do (
