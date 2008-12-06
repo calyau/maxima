@@ -172,16 +172,20 @@ ode_check(e_,a_) := block(
 
 /* Attempt to simplify the result from ode_check() */
 ode_check_tidy(e) := block(
-  if not(freeof_bessel(e)) then 
-    e:bessimp(e),
-  if not(freeof(expintegral_e,e)) then
-    e:expintegral_e_simp(e),
-  e
+  for f in ['bessimp,'expintegral_e_simp] 
+  do 
+    (if (f(e)=0) then return(e:0)),
+  return(e)
 )$
 
 /*  This Bessel function simplification code can be improved,
     but is does work well on the contrib_ode testsuite.
 */
+bessimp(e) := 
+if freeof_bessel(e) then
+  e
+else
+  besksimp(besisimp(besysimp(besjsimp(e))))$
 
 freeof_bessel(e):=freeof(nounify(bessel_j),nounify(bessel_y),
    nounify(bessel_i),nounify(bessel_k),e);
@@ -220,7 +224,7 @@ besFsimp(ex,F,Fsub) := block([arglist,ords,ord2,max,min,s,t,u,m,n,x,e:ex],
       e:ratsimp(e)
     ) 
   ),
-  e
+  ratsimp(e)
 )$
 
 besjsimp(ex):=besFsimp(ex,bessel_j,
@@ -277,9 +281,6 @@ besksimp_1(e,bk):=block(
   ),
   e
 );
-
-bessimp(e) := besksimp(besisimp(besysimp(besjsimp(e))))$
-
 
 /* Simplify expressions containing exponential integral expintegral_e
    using the recurrence (A&S 5.1.14).
