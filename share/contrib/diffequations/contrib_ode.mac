@@ -172,7 +172,7 @@ ode_check(e_,a_) := block(
 
 /* Attempt to simplify the result from ode_check() */
 ode_check_tidy(e) := block(
-  for f in ['bessimp,'expintegral_e_simp] 
+  for f in ['bessimp, 'expintegral_e_simp,'ode_trig_simp]
   do 
     (if (f(e)=0) then return(e:0)),
   return(e)
@@ -316,3 +316,13 @@ expintegral_e_simp(ex) := block( [argset],
      was sometimes altered and subst didn't work */
   ratsimp(ex)
 );
+
+ode_freeof_trig(e) := 
+  freeof(cos,sin,tan,cot,sec,csc,cosh,sinh,tanh,coth,sech,csch,e)$
+
+ode_trig_simp(e) := block(
+  if ode_freeof_trig(e) then 
+    e
+  else
+    radcan(trigrat(trigsimp(e)))
+)$
