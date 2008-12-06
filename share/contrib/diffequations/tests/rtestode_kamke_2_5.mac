@@ -154,12 +154,8 @@ false;
 /* Kamke 2. 429  */ 
 (pn_(429),ans:contrib_ode(eqn:'diff(y,x,2)=y/sin(x)^2-cos(x)*'diff(y,x,1)/sin(x),y,x));
 [y=%k2*cosh(log(cos(x)+1)/2-log(cos(x)-1)/2)-%i*%k1*sinh(log(cos(x)+1)/2-log(cos(x)-1)/2)];
-ode_check(eqn,ans[1]);
-(((2*%k2*cos(x)-%i*%k1)*sin(x)^4+(2*%k2*cos(x)^3-2*%k2*cos(x))*sin(x)^2+%i*%k1*cos(x)^4-2*%i*%k1*cos(x)^2+%i*%k1)*sinh((log(cos(x)+1)-log(cos(x)-1))/2)+((%k2-2*%i*%k1*cos(x))*sin(x)^4+(2*%i*%k1*cos(x)-2*%i*%k1*cos(x)^3)*sin(x)^2-%k2*cos(x)^4+2*%k2*cos(x)^2-%k2)*cosh((log(cos(x)+1)-log(cos(x)-1))/2))/((cos(x)^4-2*cos(x)^2+1)*sin(x)^2);
-expand(exponentialize(%));
-0;
-method;
-xformtoconstcoeff;
+[method,ode_check(eqn,ans[1])];
+[xformtoconstcoeff,0];
 
 /* Kamke 2. 430  */ 
 (pn_(430),ans:contrib_ode(eqn:'diff(y,x,2)=-cos(x)*'diff(y,x,1)/sin(x)-(v*(v+1)*sin(x)^2-n^2)*y/sin(x)^2,y,x));

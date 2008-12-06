@@ -64,14 +64,14 @@ assume(not(equal(b+a,0)));
 forget(notequal(b + a,0));
 [notequal(b+a,0)];
 
-assume(equal(a+b,0));
-[equal(b + a, 0)];
+assume(equal(a+b,0),x>0);
+[equal(b + a, 0),x>0];
 (pn_("106b"),ans:contrib_ode(eqn:x*'diff(y,x)+x^a*y^2+(a-b)*y/2+x^b,y,x));
 [y = -((%c*sin(log(x))-cos(log(x)))/(x^a*sin(log(x))+%c*x^a*cos(log(x))))];
 [method,subst(-a,b,ode_check(eqn,ans[1]))];  /* Need to use a+b=0 */
 [riccati,0];
-forget(equal(a+b,0));
-[equal(b + a, 0)];
+forget(equal(a+b,0),x>0);
+[equal(b + a, 0),x>0];
 
 /* 107 */
 (pn_(107),ans:contrib_ode(eqn:x*'diff(y,x)+a*x^alpha*y^2+b*y-c*x^beta,y,x));
@@ -108,7 +108,7 @@ assume(x>0);
 [x>0];
 solve(map(log,ans[1]/%c),y);
 [y = x*sinh(log(x/%c))];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [genhom,0];
 forget(x>0);
 [x>0];
@@ -120,7 +120,7 @@ assume(x>0);
 [x>0];
 solve(map(log,ans[1]/%c),y);
 [y=-x*sinh(a*log(x/%c))];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [genhom,0];
 forget(x>0);
 [x>0];
@@ -132,7 +132,7 @@ assume(x>0,y>0);
 [x-asinh(y/x)=%c];
 solve(ans[1],y);
 [y=x*sinh(x-%c)];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [lie,0];
 forget(x>0,y>0);
 [x>0,y>0];
@@ -294,7 +294,7 @@ solve(ans[1],y);
 [%c*x=%e^atan(y/x)];
 solve(map(log,ans[1]),y);
 [y=x*tan(log(%c*x))];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [homogeneous,0];
 
 /*  139  */ 
@@ -320,7 +320,7 @@ map(log,ans[1]/%c);
 log(x/%c)=-2*atan((2*x*y+a-1)/sqrt(4*b-a^2+2*a-1))/sqrt(4*b-a^2+2*a-1);
 solve(%,y);
 [y=-((sqrt(4*b-a^2+2*a-1)*tan(sqrt(4*b-a^2+2*a-1)*log(x/%c)/2)+a-1)/(2*x))];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [genhom,0];
 forget(4*b-a^2+2*a-1>0);
 [4*b-a^2+2*a-1>0];
@@ -499,7 +499,7 @@ forget(x>0);
 [%c*x=%e^(3*atan(7*y/(sqrt(7)*x))/sqrt(7))];
 solve(map(log,ans[1]),y);
 [y=sqrt(7)*x*tan(sqrt(7)*log(%c*x)/3)/7];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [homogeneous,0];
 
 /*  168  */ 
@@ -600,7 +600,7 @@ assume(a>0);
 [a>0];
 (pn_(181),ans:contrib_ode(eqn:x^4*('diff(y,x,1)+y^2)+a,y,x));
 [y=-((sqrt(a)-x*tan((sqrt(a)-%c*x)/x))/(x^2*tan((sqrt(a)-%c*x)/x)))];
-[method,trigsimp(ode_check(eqn,ans[1]))];   
+[method,ode_check(eqn,ans[1])];   
 [riccati,0];
 forget(a>0);
 [a>0];
@@ -718,20 +718,20 @@ forget(a>0);
 ans:radcan(ans[1]);
 y=-sqrt(sin(x)-1)*('integrate((sin(x)+1)^(3/2)/sqrt(sin(x)-1),x)-%c)
   /sqrt(sin(x)+1);
-[method,trigrat(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [linear,0];
 */
 /*  197  */ 
 (pn_(197),ans:contrib_ode(eqn:cos(x)*'diff(y,x,1)-y^4-sin(x)*y,y,x));
 [y=1/(cos(x)*(%c-3*(tan(x)^3/3+tan(x)))^(1/3))];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [bernoulli,0];
 
 /*  198  FIXME: This now fails.  May be a maxima bug.  Jan 2007 */
 /* 
 (pn_(198),ans:contrib_ode(eqn:cos(x)*sin(x)*'diff(y,x,1)-y-sin(x)^3,y,x));
 [y=sin(x)*(%c-sqrt(sin(x)^2-1))*%e^-(log(sin(x)^2-1)/2)];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 */
 
@@ -746,11 +746,11 @@ solve(%,y);
 [y = acos(%c*cos(2*x)/(%c*cos(2*x)-cos(2*x)-%c-1)
     +cos(2*x)/(%c*cos(2*x)-cos(2*x)-%c-1)-%c/(%c*cos(2*x)-cos(2*x)-%c-1)
     +1/(%c*cos(2*x)-cos(2*x)-%c-1))/2];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [separable,0];
 
 /*  200  */ 
 (pn_(200),ans:contrib_ode(eqn:(a*sin(x)^2+b)*'diff(y,x,1)+a*sin(2*x)*y+A*x*(a*sin(x)^2+c),y,x));
 [y = (%c-(c*x^2/2-a*(2*x*sin(2*x)+cos(2*x)-2*x^2)/8)*A)/(a*sin(x)^2+b)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];

@@ -68,7 +68,7 @@ solve(ans[1][1],%t);
 [%t = sin(x-%c)];
 ans:ans[1][2],%;
 y = -sqrt(1-sin(x-%c)^2); /* y = sin(x+%c) */
-[method,trigsimp(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [lagrange,0];
 /* ans[2] has %c -> -%c */
 /* Other solutions y=1, y=-1 */
@@ -80,7 +80,7 @@ solve(ans[1][1],%t);
 [%t = abs(a)*sin(x-%c)];
 ans:ans[1][2],%;
 y=-sqrt(a^2-a^2*sin(x-%c)^2);
-[method,trigsimp(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [lagrange,0];
 /* Solutions in Murphy are
      y=(a*(1-%c^2)*sin(x)+2*%c*a*cos(x))/(1+%c^2))

@@ -30,7 +30,7 @@ true;
 [y=%e^(2*x)*(-%e^-(3*x)*(3*%e^(2*x)+1)/2-(2*x^2+2*x+1)*%e^-(2*x)/4+%c)];
 ans:expand(ans[1]);
 y = %c*%e^(2*x)-3*%e^x/2-%e^-x/2-x^2/2-x/2-1/4;
-[method,trigrat(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [linear,0];
 
 /* 4 */
@@ -109,25 +109,25 @@ y = %c*%e^sin(x)-sin(x)-1;
 /* 14 */
 (pn_(14),ans:contrib_ode(eqn:'diff(y,x)=y*cot(x),y,x));
 [y = %c*sin(x)];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 15 */
 (pn_(15),ans:contrib_ode(eqn:'diff(y,x)=1-y*cot(x),y,x));
 [y = (%c-cos(x))/sin(x)];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 16 */
 (pn_(16),ans:contrib_ode(eqn:'diff(y,x)=x*csc(x)-y*cot(x),y,x));
 [y = (x^2/2+%c)/sin(x)];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 17 */
 (pn_(17),ans:contrib_ode(eqn:'diff(y,x)=(2*csc(2*x)+cot(x))*y,y,x));
 [y = %c*sin(x)/(csc(2*x)+cot(2*x))];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 18 */
@@ -135,110 +135,110 @@ y = %c*%e^sin(x)-sin(x)-1;
 [y = (%c-log(1-sin(x)^2)/2)/sin(x)];
 ans:subst(cos(x)^2,1-sin(x)^2,ans[1]);
 y = (%c-log(cos(x)))/sin(x);
-[method,trigsimp(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [linear,0];
 
 /* 19 */
 (pn_(19),ans:contrib_ode(eqn:'diff(y,x)=exp(x)*sin(x)+y*cot(x),y,x));
 [y = (%e^x+%c)*sin(x)];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 20 */
 (pn_(20),ans:contrib_ode(eqn:'diff(y,x)+csc(x)+2*y*cot(x)=0,y,x));
 [y = (cos(x)+%c)/sin(x)^2];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 21 */
 (pn_(21),ans:contrib_ode(eqn:'diff(y,x)=2*csc(2*x)*sec(x)^2-2*y*cot(2*x),y,x));
 [y=(4*sin(2*x)/(sin(2*x)^2+cos(2*x)^2+2*cos(2*x)+1)+%c)/sin(2*x)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 22 */
 (pn_(22),ans:contrib_ode(eqn:'diff(y,x)=2*(cot(x)^2*cos(2*x)-y*csc(2*x)),y,x));
 [y = (csc(2*x)+cot(2*x))*(log(sin(x)^2+cos(x)^2+2*cos(x)+1)
        +log(sin(x)^2+cos(x)^2-2*cos(x)+1)+cos(2*x)+%c)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 23 */
 (pn_(23),ans:contrib_ode(eqn:'diff(y,x)=2*csc(2*x)*(sin(x)^3+y),y,x),ans:map(lambda([e],map(trigrat,e)),ans));
 [y=-((sin(2*x)-2*%c*sin(x))/(2*cos(x)))];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 24 */
 (pn_(24),ans:contrib_ode(eqn:'diff(y,x)=2*csc(2*x)*(1-tan(x)^2+y),y,x),ans:map(lambda([e],map(trigrat,e)),ans));
 [y=(%c*sin(2*x)-2)/(cos(2*x)+1)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 25 */
 (pn_(25),ans:contrib_ode(eqn:'diff(y,x)=y*sec(x),y,x));
 [y = %c*(tan(x)+sec(x))];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 26 */
 (pn_(26),ans:contrib_ode(eqn:'diff(y,x)+tan(x)=(1-y)*sec(x),y,x));
 [y=(x+%c)/(tan(x)+sec(x))];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 27 */
 (pn_(27),ans:contrib_ode(eqn:'diff(y,x)=y*tan(x),y,x));
 [y=%c*sec(x)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 28 */
 (pn_(28),ans:contrib_ode(eqn:'diff(y,x)=cos(x)+y*tan(x),y,x));
 [y=sec(x)*((sin(2*x)/2+x)/2+%c)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 29 */
 (pn_(29),ans:contrib_ode(eqn:'diff(y,x)=cos(x)-y*tan(x),y,x));
 [y=(x+%c)/sec(x)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 30 */
 (pn_(30),ans:contrib_ode(eqn:'diff(y,x)=sec(x)-y*tan(x),y,x));
 [y=(tan(x)+%c)/sec(x)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 31 */
 (pn_(31),ans:contrib_ode(eqn:'diff(y,x)=sin(2*x)+y*tan(x),y,x));
 [y=(%c-2*cos(x)^3/3)*sec(x)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 32 */
 (pn_(32),ans:contrib_ode(eqn:'diff(y,x)=sin(2*x)-y*tan(x),y,x));
 [y=(%c-2*cos(x))/sec(x)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 33 */
 (pn_(33),ans:contrib_ode(eqn:'diff(y,x)=sin(x)+2*y*tan(x),y,x));
 [y=(%c-cos(x)^3/3)*sec(x)^2];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 34 */
 (pn_(34),ans:contrib_ode(eqn:'diff(y,x)=2*(1+sec(2*x)+y*tan(2*x)),y,x));
 [y = sec(2*x)*((2*sin(2*x)+4*x)/2+%c)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 35 */
 (pn_(35),ans:contrib_ode(eqn:'diff(y,x)=csc(x)+3*y*tan(x),y,x));
 [y=sec(x)^3*(log(sin(x))-sin(x)^2/2+%c)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 36 */
@@ -246,13 +246,13 @@ y = (%c-log(cos(x)))/sin(x);
 [y=%c*%e^(x*(sin(log(x))+cos(log(x)))/2+x*(sin(log(x))-cos(log(x)))/2+a*x)];
 (assume(x>0),ans:map(trigrat,ans[1]),forget(x>0),ans);
 y=%c*%e^(x*sin(log(x))+a*x);
-[method,trigrat(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [linear,0];
 
 /* 37 */
 (pn_(37),ans:contrib_ode(eqn:'diff(y,x)=6*exp(2*x)-y*tanh(x),y,x));
 [y=(%e^(3*x)+3*%e^x+%c)/cosh(x)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 38 - too general*/
@@ -279,7 +279,7 @@ solve(ans[2][1],sqrt(%t));
 [sqrt(%t)=tan(x-%c)];
 ans[2]:ev(ans[2][2],%[1]);
 y=tan(x-%c)-x;
-[method,trigsimp(ode_check(eqn,ans[1])),trigsimp(ode_check(eqn,ans[2]))];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2])];
 [lagrange,0,0];
 
 /* 44  Riccati */
@@ -356,7 +356,7 @@ y=((x-1)*%e^(2*x-2*%c)-x-1)/(%e^(2*x-2*%c)-1);
 (pn_(53),ans:contrib_ode(eqn:'diff(y,x)=(1+4*x+9*y)^2,y,x));
  [y = -((x*(12*%c*%e^(12*%i*x)+12)+(2*%i*%c+3*%c)*%e^(12*%i*x)-2*%i+3)
           /(27*%c*%e^(12*%i*x)+27))];
-[method,trigsimp(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [riccati,0];
 
 /* 54 Riccati */
@@ -368,7 +368,7 @@ assume(a>0,b>0);
 [atan(sqrt(b)*y/sqrt(a))/(sqrt(a)*sqrt(b)) = x+%c];
 solve(ans[1],y);
 [y = sqrt(a)*tan(sqrt(a)*sqrt(b)*x+%c*sqrt(a)*sqrt(b))/sqrt(b)];
-[method,trigsimp(ode_check(eqn,%[1]))];
+[method,ode_check(eqn,%[1])];
 [separable,0];
 forget(a>0,b>0);
 [a>0,b>0];
@@ -457,7 +457,7 @@ y=-2/(a*x^2+2*%c*a);
                            +2*(log(sin(x)/(cos(x)+1)+1)
                               -log(sin(x)^2/(cos(x)+1)^2+1)/2)+%c)];
 /* y = (tan(x)+sec(x))/(%c+sin(x)) ??? */
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [linear,0];
 
 /* 75 */
@@ -467,7 +467,7 @@ map(exp,2*ans[1]);
 (y-1)/(y+1)=%e^(2*(log(sec(x))+%c));
 ans:first(solve(%,y));
 y=-((%e^(2*%c)*sec(x)^2+1)/(%e^(2*%c)*sec(x)^2-1));
-[method,trigrat(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [separable,0];
 
 /* 76 Riccati */
@@ -489,7 +489,7 @@ false;
 /* 91 */
 (pn_(91),ans:contrib_ode(eqn:'diff(y,x)+(tan(x)+y^2*sec(x))*y=0,y,x));
 [y=1/(sec(x)*sqrt(2*sin(x)+%c))];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [bernoulli,0];
 
 /* 92 */
@@ -497,7 +497,7 @@ false;
 [1/(2*y^2)=1/cos(x)+%c];
 ans:first(solve(ans[1],y));
 y=-sqrt(cos(x)/(%c*cos(x)+1))/sqrt(2);
-[method,trigrat(ode_check(eqn,ans))];
+[method,ode_check(eqn,ans)];
 [separable,0];
 
 /* 93 - Generic Abel equation */
@@ -505,7 +505,7 @@ y=-sqrt(cos(x)/(%c*cos(x)+1))/sqrt(2);
 /* 94 */
 (pn_(94),ans:contrib_ode(eqn:'diff(y,x)=(tan(x)+y^3*sec(x))*y,y,x));
 [y=sec(x)/(%c-3*(tan(x)^3/3+tan(x)))^(1/3)];
-[method,trigrat(ode_check(eqn,ans[1]))];
+[method,ode_check(eqn,ans[1])];
 [bernoulli,0];
 
 /* 95 */
