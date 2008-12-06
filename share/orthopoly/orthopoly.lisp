@@ -1,13 +1,17 @@
 ;; 8/8 | 5/5 
-;; Copyright (C) 2000, 2001, 2003 Barton Willis
+;; Copyright (C) 2000, 2001, 2003, 2008 Barton Willis
 
-;; Maxima code for evaluating orthogonal polynomials listed in Chapter 22 
-;; of Abramowitz and Stegun (A & S). 
+#|
+  This is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License,
+  http://www.gnu.org/copyleft/gpl.html.
 
-;; Author: Barton Willis, University of Nebraska at Kearney (aka UNK).
-;; License: see README. The user of this code assumes all risk 
-;; for its use. It has no warranty. If you don't know the meaning 
-;; of "no warranty," don't use this code. :-)
+ This software has NO WARRANTY, not even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramowitz and Stegun (A & S). 
+|#
+
 
 (in-package :maxima)
 ($put '$orthopoly 1.0 '$version)
@@ -1045,11 +1049,8 @@
 
 (defun assoc-leg-cos (n m x)
   (interval-mult
-   (if (= m 0) 1 (mul (simplify 
-		       `((%genfact) ,(add (mul 2 m) -1) ,(add m (div 1 2)) 2))
-		      (power (simplify `((%sin) ,x)) m)))
-   ($ultraspherical (sub n m) (add m `((rat) 1 2)) 
-		    (simplify `((%cos) ,x)))))
+   (if (= m 0) 1 (mul (take '(%genfact) (sub (mul 2 m) 1) (sub m (div 1 2)) 2) (power (take '(%sin) x) m)))
+   ($ultraspherical (sub n m) (add m (div 1 2)) (take  '(%cos) x))))
 
 (defun $spherical_harmonic (n m th p)
   (cond ((and (integerp n) (integerp m) (> n -1))
