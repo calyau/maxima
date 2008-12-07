@@ -43,19 +43,13 @@ of this code is due to Barton Willis.
 
 (2) rat(x) + taylor(x^42,x,0,1) --> error. Fixed by adding taylor terms separately from mrat terms.
 
-Unfixed bugs:
+Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact that
+-1 * inf doesn't simplify to minf. Fixing this requires a new simptimes, I think.
 
-(1) rtest15, #222 sqrt(2)/6-(2*sqrt(2))/6 --> simplify correctly.
-
-(2) compare('inf,'inf) --> "<" (related to rtest_allnummod #133 bug).
-
-(3) 0 + 0.0 --> 0; this may be the cause of bug in rtest_trig, #29. Fixing this is
-    easy: change (if (not (mzerop num-sum)) (push num-sum acc)) to
-    (if (not (eq 0 num-sum)) (push num-sum acc)). But this fix causes problems with
-    the testsuite (I think it does an asksign and it's either very slow or gets
-    stuck.) Compare tlimit((x*atan(x))/(1+x),x,inf) with the standard simplus and
-    with a simplus that does 0.0 + x --> 0.0 + x.
-
+ Errors found in rtest15.mac, problems: (189 222) <-- correct, but differ from expected
+ Errors found in rtest16.mac, problems: (74 121)  <-- wrong and do asksign
+ Error found in rtestsum.mac, problem: (226)  <-- not wrong but differs from expected
+ Errors found in rtest_expintegral.mac, problems: (133 134) <-- small differences in big float
 |#
 
 (in-package :maxima)
@@ -125,6 +119,17 @@ Unfixed bugs:
   (setq l (if (cdr l) (reduce 'addmx l) (car l)))
   (opapply 'mlist (mapcar #'(lambda (s) (add x s)) (cdr l))))
 
+;; Simple demo showing how to define addition for a new object.
+;; We could append simplification rules for intervals:
+
+;;  (a) interval(a,a) --> a,
+;;  (b) if p > q then interval(p,q) --> standardized empty interval?
+
+(defun add-expr-interval (x l)
+  (setq l (mapcar #'(lambda (s) `((mlist) ,@(cdr s))) l))
+  (setq l (if (cdr l) (reduce 'addmx l) (car l)))
+  (opapply '$interval (mapcar #'(lambda (s) (add x s)) (cdr l))))
+
 ;; Add an expression x to a list of matrices l.
 
 (defun add-expr-matrix (x l)
@@ -171,13 +176,12 @@ Unfixed bugs:
 ;(defvar *its-an-atom* 0)
 ;(defvar *not-an-atom* 0)
 
-
 (defun simplus (l w z)
   (declare (ignore w))
   ;;(incf *calls-to-simplus*)
   ;;(if (> 8 (length l)) (incf *simplus-length*))
   (let ((acc nil) (cf) (x) (num-sum 0) (do-over nil) (mequal-terms nil) (mrat-terms nil) 
-	(inf-terms nil) (matrix-terms nil) (mlist-terms nil) (taylor-terms nil) (op)
+	(inf-terms nil) (matrix-terms nil) (mlist-terms nil) (taylor-terms nil) (interval-terms nil) (op)
 	(atom-hash (make-hash-table :test #'eq :size 8)))
 
     (setq l (margs l))
@@ -193,7 +197,7 @@ Unfixed bugs:
       (cond ((mnump li) (mincf num-sum li))
 	    
 	    ;; factor out infrequent cases.
-	    ((and (consp li) (consp (car li)) (memq (caar li) '(mequal mrat $matrix mlist)))
+	    ((and (consp li) (consp (car li)) (memq (caar li) '(mequal mrat $matrix mlist $interval)))
 	     (setq op (caar li))
 	     (cond ((eq op 'mequal)
 		    (push li mequal-terms))
@@ -203,6 +207,8 @@ Unfixed bugs:
 		    (push li mrat-terms))
 		   ((eq op '$matrix)
 		    (push li matrix-terms))
+		   ((eq op '$interval)
+		    (push li interval-terms))
 		   ((eq op 'mlist)
 		    (if $listarith (push li mlist-terms) (push (convert-to-coeff-form li) acc)))))
 
@@ -214,7 +220,9 @@ Unfixed bugs:
 		 (setq cf (gethash li atom-hash))
 		 (setf (gethash li atom-hash) (if cf (1+ cf) 1)))))
 
-	    (t (push (convert-to-coeff-form li) acc))))
+	    ;; The extra ($expand li 0 0) shouldn't be needed, but try
+	    ;; sqrt(2)/6 - 2 * sqrt(2)/6 without it.
+	    (t (push (convert-to-coeff-form ($expand li 0 0)) acc))))
 
      ;; push atoms in the hashtable into the accumulator acc; sort acc.
     (maphash #'(lambda (cf a) (push (cons cf a) acc)) atom-hash)
@@ -237,7 +245,7 @@ Unfixed bugs:
       (cond ((mnump x) (mincf num-sum x))
 	    ((not (mzerop x)) (push x acc))))
 
-    ;; (setq acc (sort acc '$orderlessp))   ;;<-- not sure this is needed.
+    ;;(setq acc (sort acc '$orderlessp))   ;;<-- not sure this is needed.
 
     ;; I think we want x + 0.0 --> x + 0.0, not x + 0.0 --> x.
     ;; If float and bfloat were simplifying functions we could do 
@@ -253,7 +261,7 @@ Unfixed bugs:
     ;;(if do-over (incf *do-over*)) ;; never happens for testsuite!
     (setq acc
 	  (cond (do-over (simplifya `((mplus) ,@acc) nil))
-		((null acc) 0)
+		((null acc) num-sum)
 		((null (cdr acc)) (car acc))
 		(t (cons '(mplus simp) acc))))
     
@@ -266,6 +274,8 @@ Unfixed bugs:
 	(setq acc (add-expr-mrat acc mrat-terms)))
     (if mlist-terms
 	(setq acc (add-expr-mlist acc mlist-terms)))
+    (if interval-terms
+	(setq acc (add-expr-interval acc interval-terms)))
     (if matrix-terms
 	(setq acc (add-expr-matrix acc matrix-terms)))
     (if inf-terms
