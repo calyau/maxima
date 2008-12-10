@@ -30,6 +30,10 @@
 (defmfun $airy_ai (z)
   "Airy function Ai(z)"
   (simplify (list '(%airy_ai) (resimplify z))))
+(defprop $airy_ai %airy_ai alias)
+(defprop $airy_ai %airy_ai verb)
+(defprop %airy_ai $airy_ai reversealias)
+(defprop %airy_ai $airy_ai noun)
 (defprop %airy_ai simp-%airy_ai operators)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
 
@@ -51,6 +55,10 @@
 (defmfun $airy_dai (z)
   "Derivative dAi/dz of Airy function Ai(z)"
   (simplify (list '(%airy_dai) (resimplify z))))
+(defprop $airy_dai %airy_dai alias)
+(defprop $airy_dai %airy_dai verb)
+(defprop %airy_dai $airy_dai reversealias)
+(defprop %airy_dai $airy_dai noun)
 (defprop %airy_dai simp-%airy_dai operators)
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
 
@@ -72,6 +80,10 @@
 (defmfun $airy_bi (z)
   "Airy function Bi(z)"
   (simplify (list '(%airy_bi) (resimplify z))))
+(defprop $airy_bi %airy_bi alias)
+(defprop $airy_bi %airy_bi verb)
+(defprop %airy_bi $airy_bi reversealias)
+(defprop %airy_bi $airy_bi noun)
 (defprop %airy_bi simp-%airy_bi operators)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
 
@@ -93,6 +105,10 @@
 (defmfun $airy_dbi (z)
   "Derivative dBi/dz of Airy function Bi(z)"
   (simplify (list '(%airy_dbi) (resimplify z))))
+(defprop $airy_dbi %airy_dbi alias)
+(defprop $airy_dbi %airy_dbi verb)
+(defprop %airy_dbi $airy_dbi reversealias)
+(defprop %airy_dbi $airy_dbi noun)
 (defprop %airy_dbi simp-%airy_dbi operators)
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
 
