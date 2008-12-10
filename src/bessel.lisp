@@ -455,6 +455,11 @@
 (defmfun $bessel_j (v z)
   (simplify (list '(%bessel_j) (resimplify v) (resimplify z))))
 
+(defprop $bessel_j %bessel_j alias)
+(defprop $bessel_j %bessel_j verb)
+(defprop %bessel_j $bessel_j reversealias)
+(defprop %bessel_j $bessel_j noun)
+
 ;; Bessel function of the second kind, Y[n](z), for real or complex z
 (defun bessel-y (order arg)
   (cond ((zerop (imagpart arg))
@@ -939,6 +944,11 @@ Perhaps you meant to enter `~a'.~%"
 (defmfun $bessel_y (v z)
   (simplify (list '(%bessel_y) (resimplify v) (resimplify z))))
 
+(defprop $bessel_y %bessel_y alias)
+(defprop $bessel_y %bessel_y verb)
+(defprop %bessel_y $bessel_y reversealias)
+(defprop %bessel_y $bessel_y noun)
+
 (defprop %bessel_y simp-bessel-y operators)
 
 (defprop %bessel_y
@@ -1017,6 +1027,11 @@ Perhaps you meant to enter `~a'.~%"
 
 (defmfun $bessel_i (v z)
   (simplify (list '(%bessel_i) (resimplify v) (resimplify z))))
+
+(defprop $bessel_i %bessel_i alias)
+(defprop $bessel_i %bessel_i verb)
+(defprop %bessel_i $bessel_i reversealias)
+(defprop %bessel_i $bessel_i noun)
 
 (defprop %bessel_i simp-bessel-i operators)
 
@@ -1097,6 +1112,10 @@ Perhaps you meant to enter `~a'.~%"
 (defmfun $bessel_k (v z)
   (simplify (list '(%bessel_k) (resimplify v) (resimplify z))))
 
+(defprop $bessel_k %bessel_k alias)
+(defprop $bessel_k %bessel_k verb)
+(defprop %bessel_k $bessel_k reversealias)
+(defprop %bessel_k $bessel_k noun)
 
 (defprop %bessel_k simp-bessel-k operators)
 
