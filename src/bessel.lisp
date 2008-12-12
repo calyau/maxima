@@ -225,6 +225,10 @@
   (simplify (list '(%hankel_1) (resimplify v) (resimplify z))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defprop $hankel_1 %hankel_1 alias)
+(defprop $hankel_1 %hankel_1 verb)
+(defprop %hankel_1 $hankel_1 reversealias)
+(defprop %hankel_1 $hankel_1 noun)
 
 (defprop %hankel_1 simp-hankel-1 operators)
 
@@ -293,6 +297,10 @@
   (simplify (list '(%hankel_2) (resimplify v) (resimplify z))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defprop $hankel_2 %hankel_2 alias)
+(defprop $hankel_2 %hankel_2 verb)
+(defprop %hankel_2 $hankel_2 reversealias)
+(defprop %hankel_2 $hankel_2 noun)
 
 (defprop %hankel_2 simp-hankel-2 operators)
 
