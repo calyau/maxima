@@ -672,18 +672,6 @@ Perhaps you meant to enter `~a'.~%"
     (print-invert-case (implode (mstring `(($random_normal) ,@ (cdr form))))))
   '$done)
 
-;; I think this is the function E1(x).  At least some simple numerical
-;; tests show that this expint matches the function de1 from SLATEC
-
-;; Exponential integral E1(x).  The Cauchy principal value is used for
-;; negative x.
-(defun $expint (x)
-  (cond ((numberp x)
-	 (values (slatec:de1 (float x))))
-	(t
-	 (list '($expint simp) x))))
-
-
 ;; Define the Bessel funtion J[n](z)
 
 (defprop %bessel_j simp-bessel-j operators)

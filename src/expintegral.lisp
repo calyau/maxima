@@ -16,6 +16,8 @@
 ;;;  $expintegral_shi (z) - Exponential Integral Shi(z)
 ;;;  $expintegral_chi (z) - Exponential Integral Chi(z)
 ;;;
+;;;  $expint (x)          - Exponential Integral E1(x) (depreciated)
+;;;
 ;;;  Global variables for the Maxima User:
 ;;;
 ;;;  $expintrep    - Change the representation of the Exponential Integral to
@@ -1793,3 +1795,13 @@
         (mul -1 ($log z))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Moved from bessel.lisp 2008-12-11.  Consider deleting it.
+;;
+;; Exponential integral E1(x).  The Cauchy principal value is used for
+;; negative x.
+(defun $expint (x)
+  (cond ((numberp x)
+	 (values (slatec:de1 (float x))))
+	(t
+	 (list '($expint simp) x))))
+
