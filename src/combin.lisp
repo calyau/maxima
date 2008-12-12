@@ -944,19 +944,24 @@
 	 (adsum (list '(mtimes) a
 		      (list '(mexpt) (list '(mplus) 1 (list '(mtimes) -1 r)) -1))))))
 
+
+;; Sums of polynomials using
+;;   bernpoly(x+1, n) - bernpoly(x, n) = n*x^(n-1)
+;; which implies
+;;   sum(k^n, k, A, B) = 1/(n+1)*(bernpoly(B+1, n+1) - bernpoly(A, n+1))
+;;
+;; fpoly1 returns 1/(n+1)*(bernpoly(foo+1, n+1) - bernpoly(0, n+1)) for each power
+;; in the polynomial e
+
 (defun fpolysum (e)			;returns *ans*
   (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *var*))))))
 	(b) ($prederror))
     (cond ((null a) 0)
 	  ((member lo '(0 1))
 	   (maxima-substitute hi 'foo a))
-	  ((or (equal t (mevalp (list '(mgeqp) lo 0)))
-	       (member (asksign lo) '($zero $positive) :test #'eq))
-	   (list '(mplus) (maxima-substitute hi 'foo a)
-		 (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a))))
 	  (t
-	   (setq b (fpoly1 (maxima-substitute (list '(mtimes) -1 *var*) *var* e)))
-	   (list '(mplus) (maxima-substitute hi 'foo a) (maxima-substitute lo 'foo b))))))
+	   (list '(mplus) (maxima-substitute hi 'foo a)
+		 (list '(mtimes) -1 (maxima-substitute (list '(mplus) lo -1) 'foo a)))))))
 
 (defun fpoly1 (e)
   (cond ((smono e *var*)
