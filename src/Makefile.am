@@ -424,6 +424,7 @@ outmis.lisp \
 pade.lisp \
 parse-body.lisp \
 plot.lisp \
+plasma.lisp \
 pois2.lisp \
 pois3.lisp \
 polyrz.lisp \
