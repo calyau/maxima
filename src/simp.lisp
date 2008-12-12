@@ -270,7 +270,10 @@
 	   (integerp (cadr x))
 	   (integerp (cddr x)))))
 
-(defmfun $ratp (x) (and (not (atom x)) (eq (caar x) 'mrat)))
+(defmfun $ratp (x)
+  (and (not (atom x))
+       (consp (car x))
+       (eq (caar x) 'mrat)))
 
 (defmfun $taylorp (x)
   (and (not (atom x)) (eq (caar x) 'mrat) (member 'trunc (cdar x) :test #'eq) t))
