@@ -19,6 +19,9 @@
 ;;;;
 ;;;; Unfortunately, some important pages in the scan are all black.
 ;;;;
+;;;; A version with the missing pages is available (2008-12-14) from
+;;;; http://www.softwarepreservation.org/projects/LISP/MIT
+;;;;
 ;;;; Schatchen is Yiddish for "matchmaker" and Schatchen here is a
 ;;;; pattern matching routine.
 
