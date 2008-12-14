@@ -2854,8 +2854,6 @@
                       (format cmdstorage "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
                                    (gethash '$xy_file *gr-options*))) )
 
-             (format cmdstorage "unset output~%")
-
              (close cmdstorage)
 
              ; get the plot
