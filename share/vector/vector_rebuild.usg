@@ -28,12 +28,12 @@ readable form. Choose lists or one column matrices to represent vectors.
 Loading vector_rebuild.mac sets the option variables listarith, 
 doallmxops and domxmxops to false. Then addition, scalar multiplication 
 and non commutative multiplication are not carried out automatically. 
-They need an additional step of evaluation by vector_eval:
+These operations  need an additional step which is done by vector_simp:
 
 (%i1) load(vector_rebuild)$
 (%i2) line: [1,2]+t*[3,4];
 (%o2)                          t [3, 4] + [1, 2]
-(%i3) %, vector_eval;
+(%i3) %, vector_simp;
 (%o3)                         [3 t + 1, 4 t + 2]
 
 Such expanded expressions can be reconstructed by vector_rebuild:
@@ -156,9 +156,9 @@ Some more examples:
 (%i3) a: [2,0,1]$
 (%i4) plane: x.n = a.n;
 (%o4)                x . [1, 2, 3] = [2, 0, 1] . [1, 2, 3]
-(%i5) %, vector_eval;
+(%i5) %, vector_simp;
 (%o5)                          x . [1, 2, 3] = 5
-(%i6) %, x=[x1,x2,x3], vector_eval;
+(%i6) %, x=[x1,x2,x3], vector_simp;
 (%o6)                        3 x3 + 2 x2 + x1 = 5
 
 ***********************************************************************
@@ -179,16 +179,16 @@ Some more examples:
 (%o6)                      x . [ 2 ] = [ 0 ] . [ 2 ]
                                [   ]   [   ]   [   ]
                                [ 3 ]   [ 1 ]   [ 3 ]
-(%i7) %, vector_eval;
+(%i7) %, vector_simp;
                                      [ 1 ]
                                      [   ]
 (%o7)                            x . [ 2 ] = 5
                                      [   ]
                                      [ 3 ]
-(%i8) %, x=v(x1,x2,x3), vector_eval;
+(%i8) %, x=v(x1,x2,x3), vector_simp;
 (%o8)                        3 x3 + 2 x2 + x1 = 5
 (%i9) point: v(0,1,2)$
-(%i10) plane, x=point, vector_eval;
+(%i10) plane, x=point, vector_simp;
 (%o10)                               8 = 5
 (%i11) distance: |(point-a)*en|;
                                    sqrt(17)
@@ -202,7 +202,7 @@ Some more examples:
 (%o12)                      -------- [ 2 ] + [ 0 ]
                             sqrt(14) [   ]   [   ]
                                      [ 3 ]   [ 1 ]
-(%i13) vector_eval(%);
+(%i13) vector_simp(%);
                                [    t         ]
                                [ -------- + 2 ]
                                [ sqrt(14)     ]
@@ -242,7 +242,7 @@ Factoring matrices:
                                  1 [ 1   2  ]
 (%o3)                            - [        ]
                                  7 [ 3  - 1 ]
-(%i5) M.M_1, vector_eval;
+(%i5) M.M_1, vector_simp;
                                    [ 1  0 ]
 (%o5)                              [      ]
                                    [ 0  1 ]
