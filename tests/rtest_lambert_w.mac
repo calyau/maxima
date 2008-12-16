@@ -1,0 +1,69 @@
+/******************************************************************************
+  rtest_lambert_w.mac
+  Test for Lambert W function
+******************************************************************************/
+
+kill(all);
+done;
+
+(closeto(value,compare,tol):=
+  block(
+    [abse],
+    abse:abs(value-compare),if(abse<tol) then true else abse),
+    done);
+done;
+
+
+/* Exact values */
+lambert_w(-%pi/2)$
+%i*%pi/2;
+lambert_w(-log(2)/2)$
+-log(2);
+lambert_w(-1/%e)$
+-1;
+lambert_w(0)$
+0;
+lambert_w(%e)$
+1;
+
+/* Numerical values.  Results from functions.wolfram.com to 70 sf.  Will use for bfloats later. */
+
+/* This point -47/128 is slightly greater than -1/%e.  Known difficult region. */
+closeto(lambert_w(-0.3671875),
+ -0.9398863980524345419695464132107234809629689590715558376016258594821501,5.0e-15);
+true;
+
+closeto(lambert_w(-0.25),
+  -0.3574029561813889030688111040559047533165905550760120436276204485896714,1.0e-16);
+true;
+
+closeto(lambert_w(0.0),0.0,1.0e-16);
+true;
+
+closeto(lambert_w(0.5),
+  0.3517337112491958260249093009299510651714642155171118040466438461099606,1.0e-16);
+true;
+
+closeto(lambert_w(2.0),
+  0.8526055020137254913464724146953174668984533001514035087721073946525151,1.0e-16);
+true;
+
+closeto(lambert_w(16.0),
+  2.053192717462648587277573057065703715549879054683959196524461288893671,1.0e-16);
+true;
+
+closeto(lambert_w(128.0),
+  3.577395298551653342882928583858277466679549941663670990487212206804013,1.0e-16);
+true;
+
+closeto(lambert_w(2048.0),
+  5.856984162999493888162560618072936017287078565867036752738725003619707,1.0e-16);
+true;
+
+/* Derivative */
+diff(lambert_w(x),x);
+%e^-lambert_w(x)/(lambert_w(x)+1);
+
+
+
+
