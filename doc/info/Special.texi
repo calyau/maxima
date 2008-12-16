@@ -80,7 +80,7 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
 although the infinite series is not used for computations.
 
 @opencatbox
-@category{Bessel functions}
+@category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -112,7 +112,7 @@ when @math{v} is not an integer.  When @math{v} is an integer @math{n},
 the limit as @math{v} approaches @math{n} is taken.
 
 @opencatbox
-@category{Bessel functions}
+@category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -151,7 +151,7 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
 although the infinite series is not used for computations.
 
 @opencatbox
-@category{Bessel functions}
+@category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -181,21 +181,21 @@ when @math{v} is not an integer.  If @math{v} is an integer @math{n},
 then the limit as @math{v} approaches @math{n} is taken.
 
 @opencatbox
-@category{Bessel functions}
+@category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} hankel_1 (@var{v}, @var{z})
 The Hankel funtion of the first kind of order @math{v} and argument @math{z}. (A&S 9.1.3)
 @opencatbox
-@category{Bessel functions}
+@category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} hankel_2 (@var{v}, @var{z})
 The Hankel funtion of the second kind of order @math{v} and argument @math{z}. (A&S 9.1.4)
 @opencatbox
-@category{Bessel functions}
+@category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -223,7 +223,8 @@ the Bessel function is expanded.
 @end example
 
 @opencatbox
-@category{Bessel functions} @category{Simplification flags and variables}
+@category{Bessel functions} @category{Simplification flags and variables} 
+@category{Special functions}
 @closecatbox
 
 @end defvr
@@ -248,7 +249,7 @@ symbolic work, it is probably preferable to work with the expression
 Identical to @code{scaled_bessel_i(0,z)}.
 
 @opencatbox
-@category{Bessel functions}
+@category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -283,7 +284,7 @@ when possible.
 See also @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 
 @opencatbox
-@category{Airy functions}
+@category{Airy functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -294,7 +295,7 @@ The derivative of the Airy function Ai @code{airy_ai(x)}.
 See @code{airy_ai}.
 
 @opencatbox
-@category{Airy functions}
+@category{Airy functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -313,7 +314,7 @@ The derivative @code{diff (airy_bi(x), x)} is @code{airy_dbi(x)}.
 See @code{airy_ai}, @code{airy_dbi}.
 
 @opencatbox
-@category{Airy functions}
+@category{Airy functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -324,7 +325,7 @@ The derivative of the Airy Bi function @code{airy_bi(x)}.
 See @code{airy_ai} and @code{airy_bi}.
 
 @opencatbox
-@category{Airy functions}
+@category{Airy functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -520,56 +521,56 @@ Abramowitz and Stegun,
 @deffn {Function} expintegral_e1 (@var{z})
 The Exponential Integral E1(z) (A&S 5.1.1)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_ei (@var{z})
 The Exponential Integral Ei(z) (A&S 5.1.2)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_li (@var{n},(@var{z})
+@deffn {Function} expintegral_li (@var{n},@var{z})
 The Exponential Integral Li(z)  (A&S 5.1.3)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_e (@var{n},(@var{z})
+@deffn {Function} expintegral_e (@var{n},@var{z})
 The Exponential Integral En(z)  (A&S 5.1.4)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_si (@var{z})
 The Exponential Integral Si(z) (A&S 5.2.1)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_ci (@var{z})
 The Exponential Integral Ci(z) (A&S 5.2.2)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_shi (@var{z})
 The Exponential Integral Shi(z) (A&S 5.2.3)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
 @deffn {Function} expintegral_chi (@var{z})
 The Exponential Integral Chi(z) (A&S 5.2.4)
 @opencatbox
-@category{Exponential Integrals}
+@category{Exponential Integrals} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -890,3 +891,10 @@ shows.  Note that @var{L} is the generalized Laguerre polynomial.
 
 @end deffn
 
+@deffn {Function} lambert_w (@var{z})
+The principal branch of Lambert's W funtion W(z), the solution of 
+@code{z = W(z) * exp(W(z))}.
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
