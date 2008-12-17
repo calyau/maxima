@@ -24,7 +24,7 @@
 (declare-top (special $partswitch $keepfloat $demoivre $listconstvars
 		      $algebraic $polyfactor $ratfac $programmode))
 
-(declare-top (special *logbas* *infin* *smalno* *are* *mre* *cr* *ci* *sr* *si*
+(declare-top (special *logbas* *infin* *are* *mre* *cr* *ci* *sr* *si*
 		      *tr* *ti* *zr* *zi* *n* *nn* *bool*
 		      *conv* *pvr* *pvi* *polysc* *polysc1*))
 
@@ -173,7 +173,7 @@
   (merror "`allroots': not a polynomial:~%~M" expr))
 
 (defun cpoly-sl (degree) 
-  ((lambda (*logbas* *infin* *smalno* *are* *mre* xx yy cosr sinr *cr* *ci* *sr* *si* *tr*
+  ((lambda (*logbas* *infin* *are* *mre* xx yy cosr sinr *cr* *ci* *sr* *si* *tr*
 	    *ti* *zr* *zi* bnd *n* *polysc* *polysc1* *conv*) 
      (setq *mre* (* 2.0 (sqrt 2.0) *are*)
 	   yy (- xx))
@@ -229,7 +229,6 @@
      *nn*)
    (log 2.0)
    most-positive-flonum
-   least-positive-flonum
    flonum-epsilon
    0.0
    ;; sqrt(0.5)
@@ -456,7 +455,7 @@
 ;;; not to be used here
 
 (defun rpoly-sl (degree) 
-  ((lambda (*logbas* *infin* *smalno* *are* *mre* xx yy cosr sinr aa cc bb bnd
+  ((lambda (*logbas* *infin* *are* *mre* xx yy cosr sinr aa cc bb bnd
 	    *sr* *u* *v* t1 *szr* *szi* *lzr* *lzi* *nz* *n* *polysc* *polysc1* zerok conv1) 
      (setq *mre* *are* yy (- xx))
      (do ((i degree (1- i))) ((not (zerop (aref *pr-sl* i))) (setq *nn* i *n* (1- i))))
@@ -541,7 +540,6 @@
        (setf (aref *pr-sl* i) (scale-float (aref *pr-sl* i) j))))
    (log 2.0)
    most-positive-flonum
-   least-positive-flonum
    flonum-epsilon
    0.0
    ;; sqrt(0.5)
@@ -1194,8 +1192,6 @@
 	(*logbas* (fplog (intofp 2)))
 	;; "Largest" bfloat.  What should we use?
 	(*infin* (intofp most-positive-flonum))
-	;; "Smallest" bfloat.  What should we use?
-	(*smalno* (intofp least-positive-flonum))
 	;; bfloat epsilon.  2^(-fpprec)
 	(*are* (bf-scale-float (intofp 2) (- fpprec)))
 	(*mre* (intofp 0))
@@ -1430,7 +1426,6 @@
 (defun bf-rpoly-sl (degree)
   (let ((*logbas* (fplog (intofp 2)))
 	(*infin* (intofp most-positive-flonum))
-	(*smalno* (intofp least-positive-flonum))
 	(*are* (bf-scale-float (intofp 2) (- fpprec)))
 	(*mre* (intofp 0))
 	(xx (fproot bfhalf 2))
