@@ -311,6 +311,7 @@
 	    "contrib/gf"
 	    "contrib/graphs"
 	    "contrib/Grobner"
+	    "contrib/integration"
 	    "contrib/levin"
 	    "contrib/lurkmathml"
 	    "contrib/maximaMathML"
