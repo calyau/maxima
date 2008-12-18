@@ -315,6 +315,10 @@ contrib/graphs/matching.lisp\
 contrib/graphs/spring_embedding.lisp\
 contrib/impdiff.mac\
 contrib/implicit_plot.lisp\
+contrib/integration/abs_integrate.mac\
+contrib/integration/abs_integrate.texi\
+contrib/integration/abs_integrate.html\
+contrib/integration/rtest_abs_integrate.mac\
 contrib/levin/levin.dem\
 contrib/levin/levin.mac\
 contrib/levin/rtest_levin.mac\
