@@ -159,16 +159,6 @@ See @code{quad_qag} and related functions for numerical approximation of definit
 @closecatbox
 @end deffn
 
-@c NEEDS EXPANSION AND EXAMPLES
-@deffn {Function} erf (@var{x})
-Represents the error function, whose derivative is:
-@code{2*exp(-x^2)/sqrt(%pi)}.
-
-@opencatbox
-@category{Mathematical functions}
-@closecatbox
-@end deffn
-
 @defvr {Option variable} erfflag
 Default value: @code{true}
 
