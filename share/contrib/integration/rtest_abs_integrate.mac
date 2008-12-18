@@ -111,7 +111,7 @@ integrate(unit_step(x),x,-1,1);
 signum_to_abs(integrate(unit_step(x),x,a,b));
 (abs(b)+b-abs(a)-a)/2$
 
-(i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x));
+(i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
 (x^3/3-a^3/3)*signum(x-a)+(a^3/2-(a*x^2)/2)*signum(x-a)$
 
 (i : integrate(f(x) * max(x,-x),x,0,1), ev(i, f(x) := x,integrate));
@@ -157,6 +157,11 @@ integrate(abs(x-1) * (x + abs(x-5)),x,-7,9);
 integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
 (3*log(13)+18)/4-(3*log(5)+10)/4+8$
 
+integrate(signum(x) * f(x),x);
+signum(x)*integrate(f(x%),x%,0,x)$
+
+integrate(signum(x-a) * f(x),x);
+signum(x-a)*integrate(f(x%),x%,a,x)$
 
 
 

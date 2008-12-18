@@ -88,7 +88,7 @@ make_dummy(e,x) := block([listconstvars : true, v : listofvars(e)],
 signum_int_helper(q,l,x) := block([v, xo, f, noun_int : nounify('integrate)],
   if emptyp(rest(l)) then (
     f : integrate(q,x),
-    if (safe_op(f) = 'integrate) then (
+    if (nounify(safe_op(f)) = noun_int) then (
       v : make_dummy(q,x),
       f : funmake(noun_int, [subst(x = v, q), v, first(l), x])),
     signum(x - first(l)) * (f - subst(x = first(l), f)))
