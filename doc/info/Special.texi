@@ -4,6 +4,7 @@
 * Airy Functions::
 * Gamma and factorial Functions::
 * Exponential Integrals::
+* Error Function::
 * Functions and Variables for Special Functions::  
 @end menu
 
@@ -332,8 +333,13 @@ See @code{airy_ai} and @code{airy_bi}.
 @node Gamma and factorial Functions, Exponential Integrals, Airy Functions, Special Functions
 @section Gamma and factorial Functions
 
+The gamma function and the related beta, psi and incomplete gamma 
+functions are defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Chapter 6.
+
 @deffn {Function} beta (@var{x}, @var{y})
-The beta function, defined as @code{gamma(x) gamma(y)/gamma(x + y)}.
+The beta function A&S 6.2.1, 
+defined as @code{gamma(x) gamma(y)/gamma(x + y)}.
 @c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
 @c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
 
@@ -343,7 +349,7 @@ The beta function, defined as @code{gamma(x) gamma(y)/gamma(x + y)}.
 @end deffn
 
 @deffn {Function} gamma (@var{x})
-The gamma function.
+The gamma function A&S 6.1.1.
 
 @c SEEMS POINTLESS TO MENTION THE FOLLOWING IDENTITY, 
 @c AS MAXIMA DOESN'T SEEM TO CARRY OUT THIS SIMPLIFICATION
@@ -356,7 +362,42 @@ The variable @code{gammalim} controls simplification of the gamma function.
 The Euler-Mascheroni constant is @code{%gamma}.
 
 @opencatbox
-@category{Gamma and factorial functions}
+@category{Gamma and factorial functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} log_gamma (@var{z})
+The natural logarithm of the gamma function.
+@opencatbox
+@category{Gamma and factorial functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} gamma_incomplete (@var{a},@var{z})
+The incomplete upper gamma function A&S 6.5.2.
+@opencatbox
+@category{Gamma and factorial functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} gamma_incomplete_regularized (@var{a},@var{z})
+The regularized incomplete upper gamma function A&S 6.5.1.  
+
+@code{ gamma_incomplete_regularized(a,z)=gamma_incomplete(a,z)/gamma(a)}
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1} )
+The generalized incomplete gamma function.  
+
+@code{ gamma_incomplete_generalized(a,z) =
+ integrate(t^(a-1)*exp(-t), z, z1,z2) }
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Special functions}
 @closecatbox
 @end deffn
 
@@ -600,7 +641,48 @@ for positive integers in terms of Ei
 @closecatbox
 @end defvr
 
-@node Functions and Variables for Special Functions,  , Exponential Integrals, Special Functions
+@node Error Function, Functions and Variables for Special Functions, Exponential Integrals, Special Functions
+@section Functions and Variables for Special Functions
+
+The Error function and related funtions are defined in 
+Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Chapter 7
+
+@deffn {Function} erf (@var{z})
+The Error Function erf(z) (A&S 7.1.1)
+
+See also flag @code{erfflag}.
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} erfc (@var{z})
+The Complementary Error Function erfc(z) (A&S 7.1.2)
+
+@code{erfc(z) = 1-erf(z)}
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} erfi (@var{z})
+The Imaginary Error Function. 
+
+@code{erfi(z) = -%i*erf(%i*z)}
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} erf_generalized (@var{z1},@var{z2})
+Generalized Error function Erf(z1,z2)
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@node Functions and Variables for Special Functions,  , Error Function, Special Functions
 @section Functions and Variables for Special Functions
 
 @deffn {Function} asympa
