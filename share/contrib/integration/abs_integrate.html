@@ -1,0 +1,179 @@
+<HTML>
+<HEAD>
+<!-- Created by texi2html 1.56k from abs_integrate.texi on 17 December 2008 -->
+
+<TITLE>Untitled Document</TITLE>
+</HEAD>
+<BODY>
+<H1>Untitled Document</H1>
+<P>
+<P><HR><P>
+
+<P>
+The package <CODE>abs_integrate</CODE> extends Maxima's integration code to
+some integrands that involve the absolute value, max, min, signum, or
+unit step functions. For integrands of the form <EM>p(x) |q(x)|</EM>,
+where <EM>p</EM> is a polynomial and <EM>q</EM> is a polynomial that
+<CODE>factor</CODE> is able to factor into a product of linear or constant
+terms, the <CODE>abs_integrate</CODE> package determines an antiderivative
+that is continuous on the entire real line.
+
+
+<P>
+<B>Examples</B> To use the <CODE>abs_integrate</CODE> package, you'll first need to load it:
+
+<PRE>
+ (%i1) load("abs_integrate.mac")$
+
+ (%i2)  integrate(abs(x),x);
+ (%o2) (x^2*signum(x))/2
+</PRE>
+
+<P>
+To convert (%o2) into an expression involving the absolute value function,
+apply <CODE>signum_to_abs</CODE>; thus
+
+<PRE>
+ (%i3) signum_to_abs(%);
+ (%o3) (x*abs(x))/2
+</PRE>
+
+<P>
+When the integrand has the form <EM>p(x) |x - c1| |x - c2| ... |x - cn|</EM>,
+where <EM>p(x)</EM> is a polynomial and <EM>c1, c2, ..., cn</EM> are constants,
+the <CODE>abs_integrate</CODE> package returns an antiderivative that is valid on the
+entire real line; thus <I>without</I> making assumptions on <EM>a</EM> and <EM>b</EM>;
+for example
+
+<PRE>
+ (%i4) factor(convert_to_signum(integrate(abs((x-a)*(x-b)),x,a,b)));
+ (%o4) ((b-a)^3*signum(b-a)^2)/6
+</PRE>
+
+<P>
+Additionally, <CODE>abs_integrate</CODE> is able to find antiderivatives of some
+integrands involving <CODE>max, min, signum</CODE>, and <CODE>unit_step</CODE>;
+examples:
+
+<PRE>
+ (%i5) integrate(max(x,x^2),x);
+ (%o5) signum(x-1)*((x^3*signum(x))/6-1/6)+signum(x-1)*(1/4-(x^2*signum(x))/4)+x^3/6+x^2/4
+
+ (%i6) integrate(signum(x) - signum(1-x),x);
+ (%o6) x*signum(x)+(x-1)*signum(x-1)
+</PRE>
+
+<P>
+A plot indicates that indeed (%o5) and (%o6) are continuous at zero and at one.
+
+
+<P>
+For definite integrals with numerical integration limits, the
+<CODE>abs_integrate</CODE> package converts the integrand to signum form and
+then it tries to subdivide the integration region so that the
+integrand simplifies to a non-signum expression on each subinterval;
+for example
+
+<PRE>
+ (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
+ (%o1) log(11)+log(2)
+</PRE>
+
+<P>
+Barton Willis (Professor of Mathematics, University of Nebraska at
+Kearney) wrote the <CODE>abs_integrate</CODE> package and its English
+language user documentation.
+
+
+<P>
+<B>To use</B> <TT>`load(abs_integrate)'</TT>
+
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>signum_to_abs</B> <I>(<VAR>e</VAR>)</I>
+<DD><A NAME="IDX1"></A>
+ 
+This function replaces subexpressions of the form <EM>q signum(q)</EM> by
+<EM>abs(q)</EM>.  Before it does these substitutions, it replaces
+subexpressions of the form <EM>signum(p) * signum(q)</EM> by
+<EM>signum(p * q)</EM>; examples:
+
+
+
+<PRE>
+ (%i1) map('signum_to_abs, [x * signum(x), x * y * signum(x)* signum(y)/2]);
+ (%o1) [abs(x),(abs(x)*abs(y))/2]
+</PRE>
+
+<P>
+<B>To use</B> <TT>`load(abs_integrate)'</TT>
+
+
+<P>
+<B>Related functions</B> <I>convert_to_signum</I>
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>convert_to_signum</B> <I>(<VAR>e</VAR>)</I>
+<DD><A NAME="IDX2"></A>
+
+
+<P>
+This function replaces subexpressions of the form <EM>abs(q), unit_step(q),
+ min(q1,q2, ..., qn)</EM> and <EM>max(q1,q2, ..., qn)</EM> by equivalent <EM>signum</EM>
+terms.
+
+
+
+<PRE>
+ (%i1) map('convert_to_signum, [abs(x), unit_step(x), max(a,2), min(a,2)]);
+ (%o1) [x*signum(x),(signum(x)+1)/2,((a-2)*signum(a-2)+a+2)/2,(-(a-2)*signum(a-2)+a+2)/2]
+</PRE>
+
+<P>
+To convert <CODE>unit_step</CODE> to signum form, the function <CODE>convert_to_signum</CODE> 
+uses <EM>unit_step(x) = (1 + signum(x))/2</EM>. 
+
+
+<P>
+<B>To use</B> <TT>`load(abs_integrate)'</TT>
+
+
+<P>
+<B>Related functions</B> <I>signum_to_abs</I>
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>make_dummy(e,x)</B>
+<DD><A NAME="IDX3"></A>
+
+
+<P>
+Append "%" to the symbol <EM>x</EM> until <EM>x</EM> is <I>not</I> a variable in the expression <EM>e</EM>.
+
+
+
+<PRE>
+ (%i1) make_dummy((x-y)*x, x);
+ (%o1) x%
+
+ (%i2) make_dummy((x-y)*x%, x);
+ (%o2) x%%
+</PRE>
+
+<P>
+<B>To use</B> <TT>`load(abs_integrate)'</TT>
+
+
+<P><HR><P>
+This document was generated on 17 December 2008 using
+<A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
+</BODY>
+</HTML>

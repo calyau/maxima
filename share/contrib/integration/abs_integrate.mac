@@ -1,0 +1,119 @@
+/*
+  Copyright 2008 by Barton Willis
+  Maxima code for integration of signum, abs, max, min, and unit_step.
+
+  This is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License,
+  http://www.gnu.org/copyleft/gpl.html.
+
+ This software has NO WARRANTY, not even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+I gratefully thank Robert Dodier and Richard Fateman for their suggestions, advice, assistance, and bug fixes.
+
+*/
+qput(abs_integrate, 1, version);
+
+eval_when(translate,declare_translated(signum_int,signum_int_helper))$
+
+load("opsubst");
+
+matchdeclare(x, symbolp, q, true, a, numberp, b, numberp);
+block([simp : false], tellsimpafter('integrate(q,x), signum_int(q,x)),
+                      tellsimpafter('integrate(q,x,a,b), abs_defint(q,x,a,b)));
+ 
+matchdeclare(l, lambda([s], listp(l) and symbol(first(l)) and symbolp(second(l))));
+                   
+gradef(signum(x),0);
+gradef(abs(x), abs(x) / x);
+
+safe_op(e) := block([inflag : true], if mapatom(e) then false else op(e));
+
+/* If e factors into a product of linear factors, return the list of factors; otherwise return false */
+real_linear_factors(e,x) := (
+  e : factor(e),
+  e : if (safe_op(e) = "*") then args(e) else [e],
+  if every(lambda([w], polynomialp(w, [x], lambda([s], freeof(x,s)), lambda([k], is(k < 2)))), e) then (
+     e : sublist(args(e), lambda([s], is(equal(s, conjugate(s))) and not freeof(x,s))),
+     map(lambda([s], rhs(first(linsolve(s,x)))), e))
+  else false);	
+ 
+/* Convert abs, max, min, and unit_step to signum expressions */
+convert_to_signum(e) := block([opsubst : true],
+  e : subst('unit_step = lambda([s], (signum(s) + 1) / 2), e),
+  e : subst('max = lambda([[x]], xreduce(lambda([a,b], (a + b +abs(a-b))/2),x)),e),
+  e : subst('min = lambda([[x]], xreduce(lambda([a,b], (a + b -abs(a-b))/2),x)),e),
+  subst('abs = lambda([s], s * signum(s)), e));
+
+/* Do signum(a) * signum(b) --> signum(a * b). Maybe it should, but when n is a positive integer,
+   apply_signum_mult doesn't do signum(a)^n --> signum(a^n).*/
+   
+apply_signum_mult_id (e) := block([p : 1, q : 1, inflag : true],
+ if mapatom(e) then e
+ else if (safe_op(e) = "*") then (
+   for ek in e do (
+     if (safe_op(ek) = 'signum) then p : p * first(ek) else q : q * ek),
+   signum(p) * q)
+ else map('apply_signum_mult_id, e));
+
+/* Do signum(a) * signum(b) --> signum(a * b) and e * signum(e) --> abs(e) */
+signum_to_abs(e) := block([l],
+  e : apply_signum_mult_id(e),
+  l : flatten(gatherargs(e,'signum)),
+  for lk in l do (
+     e : ratsubst(abs(lk), lk * signum(lk),e)),
+  e);
+
+signum_int(q,x) := block([p : 1, w : 1, l, inflag : true, f, qsave : q,noun_int : nounify('integrate)],
+  q : ratexpand(convert_to_signum(q)),
+  q : apply_signum_mult_id(q),
+  if (safe_op(q) = 'signum) or ((safe_op(q) = "*") and not (freeof('signum, q))) then (
+    if op(q) = 'signum then (p : 1, w : first(q))
+    else (
+      for qk in q do (
+        if mapatom(qk) then p : p * qk else if (op(qk)='signum) then w : w * first(qk) else p : p * qk)),
+    l : real_linear_factors(w,x),
+    if (l = false) or (not (freeof('signum, p))) or emptyp(l) then (
+      funmake(noun_int, [qsave,x]))
+    else signum_int_helper(p, l, x))
+  else if (safe_op(q) = "+") then map(lambda([s], signum_int(s,x)), q)
+  else integrate(qsave,x));
+
+make_dummy(e,x) := block([listconstvars : true, v : listofvars(e)],
+ while member(x, v) do x : concat(x,"%"),
+ x);
+
+/* integrate(q(x) * signum(x - l[1]) * signum(x - l[2]) * ...,x). The list l is nonempty. */
+
+signum_int_helper(q,l,x) := block([v, xo, f, noun_int : nounify('integrate)],
+  if emptyp(rest(l)) then (
+    f : integrate(q,x),
+    if (safe_op(f) = 'integrate) then (
+      v : make_dummy(q,x),
+      f : funmake(noun_int, [subst(x = v, q), v, first(l), x])),
+    signum(x - first(l)) * (f - subst(x = first(l), f)))
+  else (
+    xo : first(l),
+    f : signum_int_helper(q, rest(l), x),
+    signum(x - xo) * (f - subst(x = xo, f))));
+
+/* The function abs_defint is based on code I wrote and placed in the public domain.*/
+
+dint(e,x, l) := block([],
+  if emptyp(l) or emptyp(rest(l)) then 0 else
+  integrate(e,x,first(l), second(l)) + dint(e,x, rest(l)));
+
+abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate)],
+  if numberp(lo) and numberp(hi) then (
+    if (hi < lo) then abs_defint(-e,x,hi,lo)
+    else if (lo < hi) then (
+      e : convert_to_signum(e),
+      l : flatten(gatherargs(e, 'signum)),
+      knots : flatten(map(lambda([s], (real_linear_factors(s,x))), l)),
+      if every('numberp, knots) then (
+        knots : sublist(knots, lambda([s], is(s > lo) and is(s < hi))),
+        knots : append([lo, hi], knots),
+        dint(e,x, sort(knots, lambda([a,b], is(compare(a,b) = "<")))))
+      else funmake(noun_int,[e,x,lo,hi])))
+  else funmake(noun_int,[e,x,lo,hi]));
+

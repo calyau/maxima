@@ -1,0 +1,117 @@
+\input texinfo   @c -*-texinfo-*-
+
+The package @code{abs_integrate} extends Maxima's integration code to
+some integrands that involve the absolute value, max, min, signum, or
+unit step functions. For integrands of the form @math{p(x) |q(x)|},
+where @math{p} is a polynomial and @math{q} is a polynomial that
+@code{factor} is able to factor into a product of linear or constant
+terms, the @code{abs_integrate} package determines an antiderivative
+that is continuous on the entire real line.
+
+
+@b{Examples} To use the @code{abs_integrate} package, you'll first need to load it:
+@example
+ (%i1) load("abs_integrate.mac")$
+
+ (%i2)  integrate(abs(x),x);
+ (%o2) (x^2*signum(x))/2
+@end example
+To convert (%o2) into an expression involving the absolute value function,
+apply @code{signum_to_abs}; thus
+@example
+ (%i3) signum_to_abs(%);
+ (%o3) (x*abs(x))/2
+@end example
+When the integrand has the form @math{p(x) |x - c1| |x - c2| ... |x - cn|},
+where @math{p(x)} is a polynomial and @math{c1, c2, ..., cn} are constants,
+the @code{abs_integrate} package returns an antiderivative that is valid on the
+entire real line; thus @i{without} making assumptions on @math{a} and @math{b};
+for example
+@example
+ (%i4) factor(convert_to_signum(integrate(abs((x-a)*(x-b)),x,a,b)));
+ (%o4) ((b-a)^3*signum(b-a)^2)/6
+@end example
+
+Additionally, @code{abs_integrate} is able to find antiderivatives of some
+integrands involving @code{max, min, signum}, and @code{unit_step};
+examples:
+@example
+ (%i5) integrate(max(x,x^2),x);
+ (%o5) signum(x-1)*((x^3*signum(x))/6-1/6)+signum(x-1)*(1/4-(x^2*signum(x))/4)+x^3/6+x^2/4
+
+ (%i6) integrate(signum(x) - signum(1-x),x);
+ (%o6) x*signum(x)+(x-1)*signum(x-1)
+@end example
+A plot indicates that indeed (%o5) and (%o6) are continuous at zero and at one.
+
+For definite integrals with numerical integration limits, the
+@code{abs_integrate} package converts the integrand to signum form and
+then it tries to subdivide the integration region so that the
+integrand simplifies to a non-signum expression on each subinterval;
+for example
+@example
+ (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
+ (%o1) log(11)+log(2)
+@end example
+
+Barton Willis (Professor of Mathematics, University of Nebraska at
+Kearney) wrote the @code{abs_integrate} package and its English
+language user documentation.
+
+
+@b{To use} @file{load(abs_integrate)}
+
+@deffn {Function} signum_to_abs (@var{e})
+ 
+This function replaces subexpressions of the form @math{q signum(q)} by
+@math{abs(q)}.  Before it does these substitutions, it replaces
+subexpressions of the form @math{signum(p) * signum(q)} by
+@math{signum(p * q)}; examples:
+
+@example
+ (%i1) map('signum_to_abs, [x * signum(x), x * y * signum(x)* signum(y)/2]);
+ (%o1) [abs(x),(abs(x)*abs(y))/2]
+@end example
+
+@b{To use} @file{load(abs_integrate)}
+
+@b{Related functions} @i{convert_to_signum}
+
+@end deffn
+
+@deffn {Function} convert_to_signum (@var{e})
+
+This function replaces subexpressions of the form @math{abs(q), unit_step(q),
+ min(q1,q2, ..., qn)} and @math{max(q1,q2, ..., qn)} by equivalent @math{signum}
+terms.
+
+@example
+ (%i1) map('convert_to_signum, [abs(x), unit_step(x), max(a,2), min(a,2)]);
+ (%o1) [x*signum(x),(signum(x)+1)/2,((a-2)*signum(a-2)+a+2)/2,(-(a-2)*signum(a-2)+a+2)/2]
+@end example
+
+To convert @code{unit_step} to signum form, the function @code{convert_to_signum} 
+uses @math{unit_step(x) = (1 + signum(x))/2}. 
+
+@b{To use} @file{load(abs_integrate)}
+
+@b{Related functions} @i{signum_to_abs}
+
+@end deffn
+
+@deffn {Function} make_dummy(e,x)
+
+Append "%" to the symbol @math{x} until @math{x} is @i{not} a variable in the expression @math{e}.
+
+@example
+ (%i1) make_dummy((x-y)*x, x);
+ (%o1) x%
+
+ (%i2) make_dummy((x-y)*x%, x);
+ (%o2) x%%
+@end example
+
+@b{To use} @file{load(abs_integrate)}
+
+
+
