@@ -58,8 +58,8 @@ dimacs_import(file, [mv]) := block(
     if length(t) > 0 then (
       if t[1]="p" then (
         n:read_string(third(t)),
-        dir:read_string(second(t)),
-        if dir='edges then dir:false
+        dir:second(t),
+        if dir="edges" then dir:false
         else dir:true)
       else if t[1]="n" and length(t)>=3 then
         v_labels:cons([read_string(second(t))-mv, third(t)], v_labels)
