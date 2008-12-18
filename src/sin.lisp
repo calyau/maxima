@@ -2451,27 +2451,24 @@
 ;;; not powerful enough to do the job.
 
 (defun facsum-exponent (expr)
-  (let ((result nil))
+  ;; Make sure that expr has the form ((mtimes) factor1 factor2 ...)
+  (when (not (mtimesp expr)) (setq expr (list '(mtimes) expr)))
+  (do ((result nil)
+       (l (cdr expr) (cdr l)))
+      ((null l) (cons (list 'mtimes) result))
     (cond
-      ((mexptp expr)
-       (cons 
-         (list 'mexpt)
-         (cons 
-           (cadr expr)
-           (list (mfuncall '$facsum (caddr expr) var)))))
+      ((mexptp (car l))
+       ;; Found an power function. Factor the exponent with facsum.
+       (setq result
+             (cons 
+               (cons 
+                 (list 'mexpt)
+                 (cons 
+                   (cadr (car l))
+                   (list (mfuncall '$facsum (caddr (car l)) var))))
+               result)))
       (t
-       (do ((l (cdr expr) (cdr l)))
-           ((null l) (cons (list 'mtimes) result))
-         (cond
-           ((mexptp (car l))
-            (setq result
-              (cons 
-                (cons 
-                  (list 'mexpt)
-                  (cons 
-                    (cadr (car l))
-                    (list (mfuncall '$facsum (caddr (car l)) var))))
-                result)))
-          (t (setq result (cons (car l) result)))))))))
+       ;; Nothing to do. 
+       (setq result (cons (car l) result))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
