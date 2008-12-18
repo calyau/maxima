@@ -422,13 +422,42 @@
 
 (declare-top (unspecial var subl *last* sign last-exp))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Lambert W
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setf (get '$lambert_w 'grad)  
-      '((x) 
-	((mtimes)
-	 ((mexpt) $%e ((mtimes ) -1 (($lambert_w) x)))
-	 ((mexpt) ((mplus) 1 (($lambert_w) x)) -1))))
+(defun $lambert_w (z)
+  (simplify (list '(%lambert_w) (resimplify z))))
+
+;;; Set properties to give full support to the parser and display
+(defprop $lambert_w %lambert_w alias)
+(defprop $lambert_w %lambert_w verb)
+(defprop %lambert_w $lambert_w reversealias)
+(defprop %lambert_w $lambert_w noun)
+
+;;; lambert_w is a simplifying function
+(defprop %lambert_w simp-lambertw operators)
+
+;;; Derivative of lambert_w
+(defprop %lambert_w
+  ((x) 
+   ((mtimes)
+    ((mexpt) $%e ((mtimes ) -1 ((%lambert_w) x)))
+    ((mexpt) ((mplus) 1 ((%lambert_w) x)) -1)))
+  grad)
+
+;;; Integral of lambert_w
+;;; integrate(W(x),x) := x*(W(x)^2-W(x)+1)/W(x)
+(defprop %lambert_w
+  ((x)
+   ((mtimes)
+    x
+    ((mplus) 
+     ((mexpt) ((%lambert_w) x) 2) 
+     ((mtimes) -1 ((%lambert_w) x))
+     1)
+    ((mexpt) ((%lambert_w) x) -1)))
+  integral)
 
 (defun simp-lambertw (x y z)
   (oneargcheck x)
@@ -448,21 +477,36 @@
 	((alike1 x '((mtimes) ((rat) -1 2) $%pi))
 	 ;; W(-%pi/2) = %i*%pi/2
 	 '((mtimes simp) ((rat simp) 1 2) $%i $%pi))
-	((or (floatp x)
-	     (and $numer (numberp x)))
+	;; W(x) is real for x real and x > -1/%e
+	((and (float-numerical-eval-p x) (< (- (/ %e-val)) x))
 	 (lambert-w x))
-	(t (list '($lambert_w simp) x))))
+	;; Complex float x or real float x < -1/%e
+	((complex-float-numerical-eval-p x)
+	 (complexify (lambert-w 
+		      (complex ($float ($realpart x)) ($float ($imagpart x))))))
+	(t (list '(%lambert_w simp) x))))
 
-;; Initial approximation for Lambert W.
-;; http://www.desy.de/~t00fri/qcdins/texhtml/lambertw/
-(defun init-lambert-w (x)
-  (if (<= x 500)
-      (let ((lx1 (log (1+ x))))
-	(+ (* .665 (+ 1 (* .0195 lx1)) lx1)
-	   .04))
-      (- (log (- x 4))
-	 (* (- 1 (/ (log x)))
-	    (log (log x))))))
+;; Complex value of the principal branch of Lambert’s W function in 
+;; the entire complex plane with relative error less than 1%, given 
+;; standard branch cuts for sqrt(z) and log(z).
+;;
+;;   Winitzki, S. Uniform Approximations for Transcendental Functions. 
+;;   In Part 1 of Computational Science and its Applications - ICCSA 2003, 
+;;   Lecture Notes in Computer Science, Vol. 2667, Springer-Verlag, 
+;;   Berlin, 2003, 780-789. DOI 10.1007/3-540-44839-X_82
+;;
+;;   From http://homepages.physik.uni-muenchen.de/~Winitzki/papers/
+
+(defun init-lambert-w (z)
+  (let ((A 2.344d0) (B 0.8842d0) (C 0.9294d0) (D 0.5106d0) (E -1.213d0)
+     (y (sqrt (+ (* 2 %e-val z ) 2)) ) )   ; y=sqrt(2*%e*z+2) 
+    ; w = (2*log(1+B*y)-log(1+C*log(1+D*y))+E)/(1+1/(2*log(1+B*y)+2*A)
+     (/ 
+      (+ (* 2 (log (+ 1 (* b y))))
+	 (* -1 (log (+ 1 (* C (log (+ 1 (* D y)))))))
+	 E)
+      (+ 1
+	 (/ 1 (+ (* 2 (log (+ 1 (* B y)))) (* 2 A)))))))
 
 ;; Algorithm based in part on
 ;; http://en.wikipedia.org/wiki/Lambert's_W_function.  This can also
