@@ -21,8 +21,6 @@ load("opsubst");
 matchdeclare(x, symbolp, q, true, a, numberp, b, numberp);
 block([simp : false], tellsimpafter('integrate(q,x), signum_int(q,x)),
                       tellsimpafter('integrate(q,x,a,b), abs_defint(q,x,a,b)));
- 
-matchdeclare(l, lambda([s], listp(l) and symbol(first(l)) and symbolp(second(l))));
                    
 gradef(signum(x),0);
 gradef(abs(x), abs(x) / x);
