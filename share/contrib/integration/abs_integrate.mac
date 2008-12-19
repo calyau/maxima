@@ -31,7 +31,7 @@ safe_op(e) := block([inflag : true], if mapatom(e) then false else op(e));
 real_linear_factors(e,x) := (
   e : factor(e),
   e : if (safe_op(e) = "*") then args(e) else [e],
-  if every(lambda([w], polynomialp(w, [x], lambda([s], freeof(x,s)), lambda([k], is(k < 2)))), e) then (
+  if every(lambda([w], polynomialp(w, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1)))),e) then (
      e : sublist(args(e), lambda([s], is(equal(s, conjugate(s))) and not freeof(x,s))),
      map(lambda([s], rhs(first(linsolve(s,x)))), e))
   else false);	
