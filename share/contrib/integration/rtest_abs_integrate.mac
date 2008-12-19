@@ -157,6 +157,9 @@ integrate(abs(x-1) * (x + abs(x-5)),x,-7,9);
 integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
 (3*log(13)+18)/4-(3*log(5)+10)/4+8$
 
+integrate(abs(x-1) / (x + abs(x-5)),x,9,-7) + integrate(abs(x-1) / (x + abs(x-5)),x,-7,9);
+0$
+
 integrate(signum(x) * f(x),x);
 signum(x)*integrate(f(x%),x%,0,x)$
 
