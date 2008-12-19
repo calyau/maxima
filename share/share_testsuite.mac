@@ -78,6 +78,7 @@ block
         rtest_topoly,
 	[rtestprintf, 29, 38, 39, 40, 41, 47, 48],
         rtest_simplex,
-        rtest_graphs]],
+        rtest_graphs,
+	rtest_abs_integrate]],
     
     run_testsuite ());
