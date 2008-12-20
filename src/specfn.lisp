@@ -484,6 +484,8 @@
 	((complex-float-numerical-eval-p x)
 	 (complexify (lambert-w 
 		      (complex ($float ($realpart x)) ($float ($imagpart x))))))
+	((complex-bigfloat-numerical-eval-p x)
+	 (bfloat-lambert-w x))
 	(t (list '(%lambert_w simp) x))))
 
 ;; Complex value of the principal branch of Lambert’s W function in 
@@ -509,10 +511,30 @@
 	 (/ 1 (+ (* 2 (log (+ 1 (* B y)))) (* 2 A)))))))
 
 ;; Algorithm based in part on
-;; http://en.wikipedia.org/wiki/Lambert's_W_function.  This can also
-;; be found in
-;; http://www.apmaths.uwo.ca/~djeffrey/Offprints/W-adv-cm.pdf, which
-;; says the iteration is just Halley's iteration applied to w*exp(w).
+;; http://en.wikipedia.org/wiki/Lambert's_W_function 
+;;
+;; and 
+;;
+;; Corless, R. M., Gonnet, D. E. G., Jeffrey, D. J., Knuth, D. E. (1996). 
+;; "On the Lambert W function". Advances in Computational Mathematics 5: 
+;; pp 329-359
+;; 
+;;    http://www.apmaths.uwo.ca/~djeffrey/Offprints/W-adv-cm.pdf.
+;; or http://www.apmaths.uwo.ca/~rcorless/frames/PAPERS/LambertW/
+;;
+;; It is Halley's iteration applied to w*exp(w).
+;;
+;;
+;;                               w[j] exp(w[j]) - z 
+;; w[j+1] = w[j] - -------------------------------------------------
+;;                                       (w[j]+2)(w[j] exp(w[j]) -z)
+;;                  exp(w[j])(w[j]+1) -  ---------------------------
+;;                                               2 w[j] + 2
+;;
+;; The algorithm has cubic convergence.  Once convergence begins, the 
+;; number of digits correct at step k is roughly 3 times the number 
+;; which were correct at step k-1.
+
 (defun lambert-w (z &key (maxiter 100) (prec 1d-14))
   (let ((w (init-lambert-w z)))
     (dotimes (k maxiter)
@@ -527,3 +549,37 @@
 	  (return w))
 	(decf w delta)))
     w))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; This routine is a translation of the float version for complex
+;;; Bigfloat numbers.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun bfloat-lambert-w (z)
+  (let ((prec (power ($bfloat 10.0) (- $fpprec)))
+        (maxiter 500) ; arbitrarily chosen, we need a better choice
+	($fpprec (add fpprec 5)) ; Increase precision slightly
+        w)
+
+  ;; Get an initial estimate.  
+  ;;FIXME: This assumes that z is representable as float.  
+  ;; For large z, can use W(z) ~ log(z)-log(log(z))
+  (setq w ($bfloat (complexify (lambert-w 
+		 (complex ($float ($realpart z)) ($float ($imagpart z)))))))
+
+  (dotimes (k maxiter)
+    (let* ((one ($bfloat 1))
+	   (two ($bfloat 2))
+	   (exp-w ($bfloat ($exp w)))
+	   (we (cmul w exp-w))
+	   (w1e (cmul (add w one ) exp-w))
+	   (delta (cdiv (sub we z)
+		     (sub w1e (cdiv (cmul (add w two)
+				  (sub we z))
+			       (add two (cmul two w)))))))
+      ;; How to compare bigfloats?  This works but ...  
+      (when (fplessp 
+	     (cdr ($cabs (cdiv delta w)))
+	     (cdr prec))
+	(return w))
+      (setq w (sub w delta))))
+  w))
