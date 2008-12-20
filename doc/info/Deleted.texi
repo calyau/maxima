@@ -1,0 +1,20 @@
+@menu
+* Renamed or deleted functions::
+@end menu
+
+This appendix is a partial list of  functions that have been removed 
+from maxima.
+
+@node Renamed or deleted functions, , Deleted Functions, Deleted Functions
+@section Renamed or deleted functions
+
+@deffn {Function} bessel (@var{z}, @var{order}) 
+The Bessel function of the first kind.  Use @code{bessel_j (@var{order}, @var{z})} instead.
+@xref{Bessel Functions}.
+@end deffn
+
+@deffn {Function} expint (@var{z})
+The Exponential Integral E1(z)(A&S 5.1.2).  
+Use @code{expintegral_e1 (@var{z})}.
+@xref{Exponential Integrals}.
+@end deffn
