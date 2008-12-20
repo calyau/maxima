@@ -10,7 +10,8 @@
 
 
 ($load '$polynomialp)
-($load '$topoly)
+(if (not ($get '$to_poly '$version)) ($load '$topoly))
+
 (mfuncall '$declare '$one_to_one '$feature)
 (mfuncall '$declare '$sinh '$one_to_one)
 (mfuncall '$declare '$log  '$one_to_one)
@@ -122,7 +123,7 @@
 	   
 (defun freeof-floats (e)
   (if ($mapatom e) (not (or (floatp e) ($bfloatp e)))
-    (every 'freeof-floats (margs e))))
+    (every 'freeof-floats (margs (ratdisrep e)))))
 
 ;; Splitify an expression; this does e -> ((e1, boolean) (e2, boolean), ...). Examples:
 
@@ -284,10 +285,15 @@
      (t (take '(mequal) z 0)))))
 
 (defun m-neq (a b)
-  (let ((sgn  (compare-using-empty-context a b)))
-    (cond ((member sgn '("#" "<" ">" $notcomparable) :test 'equal) t)
-	  ((equal sgn "=") nil)
-	  (t (opcons 'mor (m> a b  t) (m> b a t))))))
+  (let ((save-context $context) (new-context (gensym)) (sgn))
+    (unwind-protect
+     (progn
+       (setq sgn (mnqp a b))
+       (cond ((or (eq sgn t) (eq sgn nil)) sgn)
+	     ((eq $domain '$real) (opcons 'mor (m> a b t) (m> b a t)))
+	     (t (take '(mnot) (m= a b)))))
+     (if ($member new-context $contexts) ($killcontext new-context))
+     (setq $context save-context))))
 	  
 (defun m>= (a b)
   (let ((sgn (compare-using-empty-context a b)))
