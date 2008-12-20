@@ -921,6 +921,16 @@ true;
 closeto(airy_dbi(0)/sqrt(3)-c2,1.0e-14);
 true;
 
+/* Exact values A&S 10.4.4 and 10.4.5 */
+airy_ai(0);
+1/(3^(2/3)*gamma(2/3));
+airy_dai(0);
+-(1/(3^(1/3)*gamma(1/3)));
+airy_bi(0);
+1/(3^(1/6)*gamma(2/3));
+airy_dbi(0);
+3^(1/6)/gamma(1/3);
+
 /* A&S 10.4.10 - Wronskian */
 AS_10_4_10(z):=expand(airy_ai(z)*airy_dbi(z)-airy_bi(z)*airy_dai(z)-1/%pi);
 AS_10_4_10(z):=expand(airy_ai(z)*airy_dbi(z)-airy_bi(z)*airy_dai(z)-1/%pi);

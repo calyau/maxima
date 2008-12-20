@@ -47,7 +47,11 @@
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((flonum-eval (mop form) z))
+    (cond ((equal z 0) ; A&S 10.4.4: Ai(0) = 3^(-2/3)/gamma(2/3)
+	    '((mtimes simp)
+	      ((mexpt simp) 3 ((rat simp) -2 3))
+	      ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
+	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_ai) z) form)))))
 
 
@@ -72,9 +76,12 @@
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((flonum-eval (mop form) z))
+    (cond ((equal z 0) ; A&S 10.4.5: Ai'(0) = -3^(-1/3)/gamma(1/3)
+          '((mtimes simp) -1
+	      ((mexpt simp) 3 ((rat simp) -1 3))
+	      ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
+	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_dai) z) form)))))
-
 
 ;; Airy Bi function 
 (defmfun $airy_bi (z)
@@ -97,9 +104,12 @@
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((flonum-eval (mop form) z))
+    (cond ((equal z 0) ; A&S 10.4.4: Bi(0) = sqrt(3) 3^(-2/3)/gamma(2/3)
+	    '((mtimes simp)
+	      ((mexpt simp) 3 ((rat simp) -1 6))
+	      ((mexpt simp) ((%gamma simp) ((rat simp) 2 3)) -1)))
+	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_bi) z) form)))))
-
 
 ;; Derivative dBi/dz of Airy function Bi(z)
 (defmfun $airy_dbi (z)
@@ -122,9 +132,12 @@
   (declare (ignore unused))
   (oneargcheck form)
   (let ((z (simpcheck (cadr form) x)))
-    (cond ((flonum-eval (mop form) z))
+    (cond ((equal z 0) ; A&S 10.4.5: Bi'(0) = sqrt(3) 3^(-1/3)/gamma(1/3)
+          '((mtimes simp) 
+	    ((mexpt simp) 3 ((rat simp) 1 6))
+	    ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1)))
+	  ((flonum-eval (mop form) z))
 	  (t (eqtest (list '(%airy_dbi) z) form)))))
-
 
 ;; Numerical routines using slatec functions
 
