@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from abs_integrate.texi on 17 December 2008 -->
+<!-- Created by texi2html 1.56k from abs_integrate.texi on 20 December 2008 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -77,6 +77,18 @@ for example
 <PRE>
  (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
  (%o1) log(11)+log(2)
+</PRE>
+
+<P>
+Finally, <CODE>abs_integrate</CODE> is able to determine antiderivatives of <EM>some</EM>
+functions of the form <EM>F(x, |x - a|)</EM>; examples
+
+<PRE>
+ (%i2) integrate(1/(1 + abs(x)),x);
+ (%o2) ((signum(x)+1)*log(x+1))/2-(log(1-x)*(1-signum(x)))/2
+
+ (%i3) integrate(cos(x + abs(x)),x);
+ (%o3) ((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4
 </PRE>
 
 <P>
@@ -173,7 +185,7 @@ Append "%" to the symbol <EM>x</EM> until <EM>x</EM> is <I>not</I> a variable in
 
 
 <P><HR><P>
-This document was generated on 17 December 2008 using
+This document was generated on 20 December 2008 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>

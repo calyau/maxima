@@ -54,6 +54,16 @@ for example
  (%o1) log(11)+log(2)
 @end example
 
+Finally, @code{abs_integrate} is able to determine antiderivatives of @emph{some}
+functions of the form @math{F(x, |x - a|)}; examples
+@example
+ (%i2) integrate(1/(1 + abs(x)),x);
+ (%o2) ((signum(x)+1)*log(x+1))/2-(log(1-x)*(1-signum(x)))/2
+
+ (%i3) integrate(cos(x + abs(x)),x);
+ (%o3) ((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4
+@end example
+
 Barton Willis (Professor of Mathematics, University of Nebraska at
 Kearney) wrote the @code{abs_integrate} package and its English
 language user documentation.
