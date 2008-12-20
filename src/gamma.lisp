@@ -649,8 +649,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; The numerical evaluation for CL float or complex values a and x
+;;; When the flag regularized is T, the result is divided by gamma(a) and
+;;; Maxima returns the numercial result for gamma_incomplete_regularized
 
-(defun gamma-incomplete (a x)
+(defun gamma-incomplete (a x &optional (regularized nil))
   (let ((gm-maxit *gamma-incomplete-maxit*)
         (gm-eps   *gamma-incomplete-eps*)
         (gm-min   *gamma-incomplete-min*))
@@ -685,7 +687,19 @@
          (setq del (* d c))
          (setq h (* h del))
          (when (< (abs (- del 1.0)) gm-eps)
-           (return (* h (expt x a) (exp (- x)))))))
+           (return
+             (let ((result (* h (expt x a) (exp (- x)))))
+               (cond 
+                 (regularized
+                   ;; Return gamma_incomplete_regularized
+                   (cond
+                     ((complexp a)
+                      (/ result (gamma-lanczos a)))
+                     (t
+                      ;; Call the more precise function  gammafloat 
+                      (/ result (gammafloat a)))))
+                 (t 
+                  result)))))))
 
        (t
         ;; Expansion in a series
@@ -700,8 +714,23 @@
           (when (< (abs del) (* (abs sum) gm-eps))
             (when *debug-gamma* (format t "~&Series converged.~%"))
             (return
-              (- (gamma-lanczos (complex (realpart a) (imagpart a)))
-                 (* sum (expt x a) (exp (- x)))))))))))
+              (let ((result (* sum (expt x a) (exp (- x)))))
+              (cond
+                ((complexp a)
+                  (cond
+                    (regularized
+                     ;; Return gamma_incomplete_regularized
+                     (- 1.0 (/ result (gamma-lanczos a))))
+                    (t 
+                     (- (gamma-lanczos a) result ))))
+                
+                (t
+                 (cond
+                   (regularized
+                    ;; Return gamma_incomplete_regularized
+                    (- 1.0 (/ result (gammafloat a))))
+                   (t
+                    (- (gammafloat a) result)))))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1168,14 +1197,15 @@
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
       ((float-numerical-eval-p a z)
-       (complexify 
-         (/ (gamma-incomplete ($float a) ($float z)) 
-            (gammafloat ($float a))))) ; call gammafloat, not gamma-lanczos
+       (complexify
+       ;; gamma_incomplete returns a regularized result
+         (gamma-incomplete ($float a) ($float z) t)))
 
       ((complex-float-numerical-eval-p a z)
        (let ((ca (complex ($float ($realpart a)) ($float ($imagpart a))))
              (cz (complex ($float ($realpart z)) ($float ($imagpart z)))))
-         (complexify (/ (gamma-incomplete ca cz) (gamma-lanczos ca)))))
+         ;; gamma_incomplete returns a regularized result
+         (complexify (gamma-incomplete ca cz t))))
            
       ((bigfloat-numerical-eval-p a z)
        (div (bfloat-gamma-incomplete ($bfloat a) ($bfloat z)) 
