@@ -126,12 +126,15 @@ abs_int_extra(q,x) := block([cntx,q1,q2,k,xo],
         k : first(first(k)),
         if polynomialp(k, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1))) then (
           assume(k < 0),
-          q1 : integrate(q,x),
+          q1 : errcatch(integrate(q,x)),
           forget(k < 0),
           assume(k > 0),
-          q2 : integrate(q,x),
+          q2 : errcatch(integrate(q,x)),
           forget(k > 0),
-          if freeof('integrate, 'limit, 'diff, q1) and freeof('integrate, 'limit, 'diff, q2) then (
+          if freeof('integrate, 'limit, 'diff, q1) and freeof('integrate, 'limit, 'diff, q2) and
+          q1 # [] and q2 # [] then (
+            q1 : first(q1),
+            q2 : first(q2),
             xo : linsolve(k,x),
             q2 : q2 + subst(xo, q1 - q2),
             xo : first(xo),
