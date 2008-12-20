@@ -1,3 +1,6 @@
+(kill(all), load("abs_integrate.mac"), 0);
+0$
+
 integrate(abs(x),x);
 (x^2*signum(x))/2$
 
@@ -145,7 +148,7 @@ signum_to_abs(diff(i,x));
 integrate(1/(1 + abs(x)),x,-1,1);
 2 * log(2)$
 
-integrate(exp(-abs(x)),x,-1,1);
+expand(integrate(exp(-abs(x)),x,-1,1));
 2-2*%e^(-1)$
 
 is(equal(integrate(exp(-abs(x)),x,-1,1), 2 * integrate(exp(-x),x,0,1)));
@@ -168,6 +171,16 @@ signum(x-a)*integrate(f(x%),x%,a,x)$
 
 is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
+
+integrate(abs(x-1)/ ( 1 + x^2),x);
+signum(x-1)*(log(x^2+1)/2-log(2)/2)+signum(x-1)*(%pi/4-atan(x))$
+
+integrate(exp(-abs(x)), x);
+((2-%e^(-x))*(signum(x)+1))/2+(%e^x*(1-signum(x)))/2$
+
+integrate(cos(x + abs(x)),x);
+((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4$
+
 
 
 
