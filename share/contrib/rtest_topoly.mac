@@ -1,40 +1,40 @@
-(load(topoly),load(topoly_solver),0);
+(load(topoly),0);
 0$
 
 /* constants and symbols */
 
 to_poly(42);
-[[42],[]]$
+[[42],[],[]]$
 
 to_poly(42.01);
-[[42.01],[]]$
+[[4201],[],[]]$
 
 to_poly(42.01b0);
-[[42.01b0],[]]$
+[[4201],[],[]]$
 
 to_poly(8/3);
-[[8/3],[]]$
+[[8],[],[]]$
 
 to_poly(%pi);
-[[%pi],[]]$
+[[%pi],[],[]]$
 
 map('first, map('to_poly, [false, true, %i, %phi, minf, inf]));
 [[false],[true],[%i],[%phi],[minf],[inf]]$
 
 to_poly(x);
-[[x],[]]$
+[[x],[],[]]$
 
 to_poly(x,[x]);
-[[x],[]]$
+[[x],[],[]]$
 
 to_poly(x,[x,y,z]);
-[[x],[]]$
+[[x],[],[]]$
 
 to_poly(x,[a,b,c]);
-[[x],[]]$
+[[x],[],[]]$
 
 to_poly(sqrt(5),[]);
-[[sqrt(5)],[]]$
+[[sqrt(5)],[],[]]$
 
 /* powers */
 first(elim_allbut(first(to_poly(sqrt(a)= b)),[a,b]));
@@ -66,60 +66,20 @@ first(elim_allbut(first(to_poly(abs(1-abs(1-abs(a))))),[a]));
 /* polynomials */
 
 to_poly(-x);
-[[-x],[]]$
+[[-x],[],[]]$
 
 to_poly(4.3-x);
-[[4.3-x],[]]$
+[[43-10*x],[],[]]$
 
 to_poly((x-1)*(x-2)*(x-3));
-[[(x-1)*(x-2)*(x-3)],[]]$
+[[x^3-6*x^2+11*x-6],[],[]]$
 
-to_poly((x-1)*(x-sqrt(2))*(x-sqrt(3)),[x]);
-[[(x-1)*(x-sqrt(2))*(x-sqrt(3))],[]]$
+expand(to_poly((x-1)*(x-sqrt(2))*(x-sqrt(3)),[x]));
+[[x^3-sqrt(3)*x^2-sqrt(2)*x^2-x^2+sqrt(2)*sqrt(3)*x+sqrt(3)*x+sqrt(2)*x-sqrt(2)*sqrt(3)],[],[]]$
 
 first(first(elim_allbut(first(to_poly((x-1)*(x-sqrt(2))*(x-sqrt(3)),[x,1])),[x])));
 (x^2-3)*(x^3-x^2-2*x+2)$
 
-(chk_sol(s,e) := every(lambda([z], is(equal(lhs(z),rhs(z)))), subst(s, e)),0);
-0$
-
-/* to_poly_solve */
-
-(e : [sqrt(x) - 1], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [x^1/3 - 1], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [x^1/4 - 1], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [max(x,1)-5], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [min(x,1) = max(2,7-x)], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [min(x,1) = max(2,7-x)], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [abs(1-abs(1-abs(x))) = 42], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [sqrt(x) = 10 - sqrt(x-1)], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [sqrt(x) = min(x,35)], s : to_poly_solve(e,[x]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [sqrt(x-y) = 2, sqrt(x+y) = 5], s : to_poly_solve(e,[x,y]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(e : [sqrt(x-y) = 2, sqrt(x+y) = 5], s : to_poly_solve(e,[x,y]), every(lambda([s], chk_sol(s,e)),s));
-true$
-
-(remvalue(e,s), remfunction(chk_sol),0);
-0$
 
 
 
