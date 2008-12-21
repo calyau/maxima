@@ -511,9 +511,6 @@
 	 (/ 1 (+ (* 2 (log (+ 1 (* B y)))) (* 2 A)))))))
 
 ;; Algorithm based in part on
-;; http://en.wikipedia.org/wiki/Lambert's_W_function 
-;;
-;; and 
 ;;
 ;; Corless, R. M., Gonnet, D. E. G., Jeffrey, D. J., Knuth, D. E. (1996). 
 ;; "On the Lambert W function". Advances in Computational Mathematics 5: 
@@ -521,6 +518,8 @@
 ;; 
 ;;    http://www.apmaths.uwo.ca/~djeffrey/Offprints/W-adv-cm.pdf.
 ;; or http://www.apmaths.uwo.ca/~rcorless/frames/PAPERS/LambertW/
+;;
+;; See also http://en.wikipedia.org/wiki/Lambert's_W_function
 ;;
 ;; It is Halley's iteration applied to w*exp(w).
 ;;
@@ -557,14 +556,16 @@
 (defun bfloat-lambert-w (z)
   (let ((prec (power ($bfloat 10.0) (- $fpprec)))
         (maxiter 500) ; arbitrarily chosen, we need a better choice
-	($fpprec (add fpprec 5)) ; Increase precision slightly
+	(fpprec (add fpprec 8)) ; Increase precision slightly
         w)
 
   ;; Get an initial estimate.  
-  ;;FIXME: This assumes that z is representable as float.  
-  ;; For large z, can use W(z) ~ log(z)-log(log(z))
-  (setq w ($bfloat (complexify (lambert-w 
-		 (complex ($float ($realpart z)) ($float ($imagpart z)))))))
+  ;; if abs(z) < 2^332 ~ 1.0e100 use W(z) ~ lambert_w(float(z))
+  ;; For large z,                    W(z) ~ log(z)-log(log(z))
+  (setq w 
+	(if (eq ($sign (sub ($cabs z) ($bfloat (power 2 332)))) '$neg)
+	    ($bfloat ($lambert_w ($float z)))
+	    (let ((log-z ($log z))) (sub log-z ($log log-z)))))
 
   (dotimes (k maxiter)
     (let* ((one ($bfloat 1))
@@ -576,10 +577,7 @@
 		     (sub w1e (cdiv (cmul (add w two)
 				  (sub we z))
 			       (add two (cmul two w)))))))
-      ;; How to compare bigfloats?  This works but ...  
-      (when (fplessp 
-	     (cdr ($cabs (cdiv delta w)))
-	     (cdr prec))
+      (when (eq ($sign (sub ($cabs (cdiv delta w)) prec)) '$neg)
 	(return w))
       (setq w (sub w delta))))
   w))

@@ -103,6 +103,12 @@ closeto(lambert_w(3.0b0+2.0b0*%i),
 *%i ,1.0b-80);
 true;
 
+/* Check an argument > most-positive-double-float ~ 1.0e308 */
+closeto(lambert_w(1.0b1000),
+2294.846671683506869652792785993616789973426699478802684415757740164730983851156757b0,
+1.0b-77);
+true;
+
 /* Arguments that are exact numbers are not evaluated numerically */
 lambert_w(2);
 lambert_w(2);
