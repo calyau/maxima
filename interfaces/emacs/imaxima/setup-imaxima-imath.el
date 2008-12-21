@@ -1,7 +1,7 @@
 ;; Copyright (C) 2007, 2008 Yasuaki Honda
 
 ;; Author: Yasuaki Honda (yhonda@mac.com)
-;; $Id: setup-imaxima-imath.el,v 1.3 2008-11-03 06:16:23 yasu-honda Exp $
+;; $Id: setup-imaxima-imath.el,v 1.5 2009-02-04 16:53:26 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -71,7 +71,7 @@
 (setq load-path (append (list *imaxima-imath-dir* *imaxima-maxima-el-dir*) load-path))
 
 ;;; set up Info-additional-directory-list
-(setq Info-additional-directory-list (list *imaxima-imath-dir* *imaxima-maxima-info-dir*) Info-additional-directory-list)
+(setq Info-additional-directory-list (append (list *imaxima-imath-dir* *imaxima-maxima-info-dir*) Info-additional-directory-list))
 
 
 ;;; imaxima-maxima-options should be "" instead of "(user::run)"
