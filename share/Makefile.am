@@ -194,6 +194,8 @@ contrib/topoly.lisp\
 contrib/topoly_solver.mac\
 contrib/rtest_topoly.mac\
 contrib/to_poly_solve_extra.lisp\
+contrib/to_poly_solver.mac\
+contrib/rtest_to_poly_solver.mac\
 contrib/f90.lisp\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
