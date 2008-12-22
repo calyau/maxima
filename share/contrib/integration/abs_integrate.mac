@@ -22,7 +22,7 @@ load("unwind_protect");
 matchdeclare(x, symbolp, q, true, a, numberp, b, numberp);
 block([simp : false], tellsimpafter('integrate(q,x), signum_int(q,x)),
                       tellsimpafter('integrate(q,x,a,b), abs_defint(q,x,a,b)));
-                   
+                                        
 gradef(signum(x),0);
 gradef(abs(x), abs(x) / x);
 
@@ -99,18 +99,24 @@ signum_int_helper(q,l,x) := block([v, xo, f, noun_int : nounify('integrate)],
 
 /* The function abs_defint is based on code I wrote and placed in the public domain.*/
 
-dint(e,x, l) := block([],
-  if emptyp(l) or emptyp(rest(l)) then 0 else
-  integrate(e,x,first(l), second(l)) + dint(e,x, rest(l)));
+dint(e,x,l) := block([xo, acc : 0],
+  xo : first(l),
+  l : rest(l),
+  for xi in l do (
+    acc : acc + integrate(e,x,xo,xi),
+    xo : xi),
+  acc);
 
 abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate)],
   if numberp(lo) and numberp(hi) then (
     if (hi < lo) then abs_defint(-e,x,hi,lo)
-    else if (lo < hi) then (
+    else if (lo = hi) then 0
+    else (
       e : convert_to_signum(e),
       l : flatten(gatherargs(e, 'signum)),
       knots : flatten(map(lambda([s], (real_linear_factors(s,x))), l)),
       if every('numberp, knots) then (
+        knots : listify(setify(knots)),
         knots : sublist(knots, lambda([s], is(s > lo) and is(s < hi))),
         knots : append([lo, hi], knots),
         dint(e,x, sort(knots, lambda([a,b], is(compare(a,b) = "<")))))
