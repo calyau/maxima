@@ -11,10 +11,10 @@ integrate(abs(sqrt(3)*x),x);
 (sqrt(3)*x^2*signum(x))/2$
 
 signum_to_abs(integrate(abs(x - 5),x));
-((x-5)*abs(x-5))/2$
+(x*abs(x-5)-5*abs(x-5))/2$
 
 integrate(abs(%pi * x + 1),x);
-((%pi*x^2)/2-1/(2*%pi))*signum(x+1/%pi)+(x+1/%pi)*signum(x+1/%pi)$
+((%pi*x^2)/2+x+1/(2*%pi))*signum(x+1/%pi)$
 
 integrate(x*abs(x),x);
 (x^3*signum(x))/3$
@@ -26,15 +26,14 @@ integrate(x*abs(x),x);
 0$
 
 integrate(abs((x-a)*(x-b)),x);
-signum(x-a)*((x^3/3-b^3/3)*signum(x-b)+(a^3/3-b^3/3)*signum(b-a))+signum(x-a)*
-((b^3/2-(b*x^2)/2)*signum(x-b)+(b^3/2-(a^2*b)/2)*signum(b-a))+signum(x-a)*(((a*b^2)/2-(a*x^2)/2)*signum(x-b)+((a*b^2)/2-a^3/2)*signum(b-a))+
-signum(x-a)*((a*b*x-a*b^2)*signum(x-b)+(a^2*b-a*b^2)*signum(b-a))$
+signum(x-a)*(((2*x^3+(-3*b-3*a)*x^2+6*a*b*x)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(x-b)+
+((6*a^2*b+a^2*(-3*b-3*a)+2*a^3)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(b-a))$
 
-integrate(abs((x-a)*(x-b)),x,a,b);
-(b^3*signum(b-a)^2-3*a*b^2*signum(b-a)^2+3*a^2*b*signum(b-a)^2-a^3*signum(b-a)^2)/6$
+factor(signum_to_abs(integrate(abs((x-a)*(x-b)),x,a,b)));
+(b-a)^3/6$
 
 i : integrate(abs(x) + abs(1-x),x);
-(x^2*signum(x))/2+(x^2/2-1/2)*signum(x-1)+(1-x)*signum(x-1)$
+(x^2*signum(x))/2+(x^2/2-x+1/2)*signum(x-1)$
 
 factor(signum_to_abs(diff(%,x)));
 abs(x)+abs(x-1)$
@@ -85,7 +84,7 @@ signum_to_abs(integrate(unit_step(a * x + b),x));
 (abs(x+b/a)+x)/2$
 
 integrate(unit_step(x) + cos(x^2) * x,x);
-(sin(x^2)+x*signum(x)+x)/2$
+(sin(x^2)+x*(signum(x)+1))/2$
 
 integrate(unit_step(x^2-1),x);
 signum(x-1)*((x/2+1/2)*signum(x+1)-1)+x/2$

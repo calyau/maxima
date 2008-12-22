@@ -63,10 +63,17 @@ signum_to_abs(e) := block([l],
      e : ratsubst(abs(lk), lk * signum(lk),e)),
   e);
 
-signum_int(q,x) := block([p : 1, w : 1, l, inflag : true, f, qsave : q,noun_int : nounify('integrate)],
-  q : ratexpand(convert_to_signum(q)),
-  q : apply_signum_mult_id(q),
-  if (safe_op(q) = 'signum) or ((safe_op(q) = "*") and not (freeof('signum, q))) then (
+signum_int(q,x) := block([p : 1, w : 1, l, v, inflag : true, f, qsave : q, listconstvars : true,
+  noun_int : nounify('integrate)],
+  
+  q : convert_to_signum(q),
+
+  /* maybe expand */
+  v : listofvars(q),
+  if safe_op(q) = "*" and not every(lambda([s], polynomialp(s,v) or safe_op(s) = 'signum), args(q)) then (
+    q : ratexpand(q)),
+  
+  if (safe_op(q) = 'signum) or (safe_op(q) = "*" and not freeof('signum, q)) then (
     if op(q) = 'signum then (p : 1, w : first(q))
     else (
       for qk in q do (
