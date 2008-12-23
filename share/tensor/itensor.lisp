@@ -24,8 +24,8 @@
 
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 
-;(cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
-;      (t ($put '$itensor '$v20041126 '$version)))
+(cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
+      (t ($put '$itensor '$v20081223 '$version)))
 
 ;    Various functions in Itensor have been parceled out to separate files. A
 ;    function in one of these files will only be loaded in (automatically) if
@@ -424,20 +424,20 @@
           '(mplus)
           (cons
             (idiff e x)
-              (cond
-                (
-                  (or (cdadr e) (cdddr e))
-                  (cons (list '(mtimes) -1.  (cons '(mplus)
-                    (nconc
-                      (mapcar 
-                        #'(lambda (v) 
-                          (list '(mtimes)
-                              (list
-                                (diffop)
-                                (list smlist v x)
-                                (list smlist d)
-                              )
-                              (covsubst d v e)
+            (cond
+              (
+                (or (cdadr e) (cdddr e))
+                (cons (list '(mtimes) -1.  (cons '(mplus)
+                      (nconc
+                        (mapcar 
+                          #'(lambda (v) 
+                            (list '(mtimes)
+                                (list
+                                  (diffop)
+                                  (list smlist v x)
+                                  (list smlist d)
+                                )
+                                (covsubst d v e)
                             )
                           )
                           (cdadr e)
@@ -1319,7 +1319,8 @@
         (member (car cf) christoffels1)
         (cond
           (
-            (and (eq (length a) 2) (eq (length b) 1))
+            ;;(and (eq (length a) 2) (eq (length b) 1))
+            (and (eq (+ (length (plusi a)) (length (minusi b))) 2) (eq (+ (length (plusi b)) (length (minusi a))) 1))
             (setq cf
               (cons
                 (elt christoffels2 (position (car cf) christoffels1))
@@ -1328,7 +1329,8 @@
             )
           )
           (
-            (not (and (eq (length a) 3) (eq (length b) 0)))
+            ;; (not (and (eq (length a) 3) (eq (length b) 0)))
+            (not (and (eq (+ (length (plusi a)) (length (minusi b))) 3) (eq (+ (length (plusi b)) (length (minusi a))) 0)))
             (return nil)
           )
         )
@@ -1337,7 +1339,8 @@
         (member (car cf) christoffels2)
         (cond
           (
-            (and (eq (length a) 3) (eq (length b) 0))
+            ;;(and (eq (length a) 3) (eq (length b) 0))
+            (and (eq (+ (length (plusi a)) (length (minusi b))) 3) (eq (+ (length (plusi b)) (length (minusi a))) 0))
             (setq cf
               (cons
                 (elt christoffels1 (position (car cf) christoffels2))
@@ -1346,7 +1349,8 @@
             )
           )
           (
-            (not (and (eq (length a) 2) (eq (length b) 1)))
+            ;;(not (and (eq (length a) 2) (eq (length b) 1)))
+            (not (and (eq (+ (length (plusi a)) (length (minusi b))) 2) (eq (+ (length (plusi b)) (length (minusi a))) 1)))
             (return nil)
           )
         )
