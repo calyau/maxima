@@ -120,7 +120,7 @@ atensimp(exp):=block
 
 init_atensor(algname, [optdims]):=
 (
-  if algname='universal or algname='grassman or algname='clifford or
+  if algname='universal or algname='grassmann or algname='clifford or
      algname='symmetric or algname='symplectic or algname='lie_envelop then
   (
     alg_type:algname,
@@ -208,4 +208,4 @@ av(%u,%v):=if abasep(%u) and abasep(%v) then block
            else 'av(%u,%v);
 
 
-put('atensor,'v20041203,'version)$
+put('atensor,'v20081223,'version)$
