@@ -31,7 +31,7 @@ done;
   Factorial
 ******************************************************************************/
 
-/* Factorial has mirror symmetrie */
+/* Factorial has mirror symmetry */
 
 declare(z,complex);
 done;
@@ -2319,7 +2319,7 @@ erfi(-z);
 erf_generalized(-z1,-z2);
 -erf_generalized(z1,z2);
 
-/* Mirror symmetrie */
+/* Mirror symmetry */
 
 declare(z,complex);
 done;
@@ -2350,6 +2350,35 @@ erf_generalized(conjugate(z1),conjugate(z2));
 
 conjugate(erf_generalized(x1+%i*y1,x2+%i*y2));
 erf_generalized(x1-%i*y1,x2-%i*y2);
+
+/* For a pure real or imaginary argument of the error functions erf and erfi
+   we get pure real or imaginary result. We test it. */
+
+is(equal(imagpart(erf(1.0)),0));
+true;
+
+is(equal(imagpart(erfi(1.0)),0));
+true;
+
+is(equal(realpart(erf(1.0*%i)),0));
+true;
+
+is(equal(realpart(erfi(1.0*%i)),0));
+true;
+
+/* Again for bigfloats */
+
+is(equal(imagpart(erf(1.0b0)),0));
+true;
+
+is(equal(imagpart(erfi(1.0b0)),0));
+true;
+
+is(equal(realpart(erf(1.0b0*%i)),0));
+true;
+
+is(equal(realpart(erfi(1.0b0*%i)),0));
+true;
 
 /* Numerical test for the Error functions 
    First check erf in double float precision */
