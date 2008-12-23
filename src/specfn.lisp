@@ -461,7 +461,7 @@
 
 (defun simp-lambertw (x y z)
   (oneargcheck x)
-  (setq x (cadr x))
+  (setq x (simpcheck (cadr x) z))
   (cond ((equal x 0) 0)
 	((equal x 0.0) 0.0)
 	((zerop1 x) ($bfloat 0))	;bfloat case
