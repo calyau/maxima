@@ -122,3 +122,19 @@ z*expintegral_chi(z)-sinh(z);
 
 integrate(z*expintegral_chi(z),z);
 z^2*expintegral_chi(z)/2 - ((z-1)*%e^z+(-z-1)*%e^(-z))/4;
+
+/* Integrals of Lambert W function.  This checks that other parts
+   of the integration routines work with the 'integral property */
+
+/* This is tested in rtest_lambert_w.mac */
+/* integrate(lambert_w(x),x);
+x*(lambert_w(x)^2-lambert_w(x)+1)/lambert_w(x); */
+
+integrate(lambert_w(a*x+b),x);
+(a*x+b)*(lambert_w(a*x+b)^2-lambert_w(a*x+b)+1)/(a*lambert_w(a*x+b));
+
+integrate(sin(x)*lambert_w(cos(x)),x);
+-(cos(x)*(lambert_w(cos(x))^2-lambert_w(cos(x))+1)/lambert_w(cos(x)));
+
+integrate(diff(f(x),x)*lambert_w(f(x)),x);
+ f(x)*(lambert_w(f(x))^2-lambert_w(f(x))+1)/lambert_w(f(x));
