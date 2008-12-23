@@ -217,10 +217,12 @@ the Bessel function is expanded.
                                     2
 (%i3) besselexpand: true$
 (%i4) bessel_j (3/2, z);
-                          2 z   sin(z)   cos(z)
-(%o4)                sqrt(---) (------ - ------)
-                          %pi      2       z
-                                  z
+                                        sin(z)   cos(z)
+                       sqrt(2) sqrt(z) (------ - ------)
+                                           2       z
+                                          z
+(%o4)                  ---------------------------------
+                                   sqrt(%pi)
 @end example
 
 @opencatbox
