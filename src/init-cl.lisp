@@ -302,6 +302,7 @@
 	    "contrib/diffequations/tests"
 	    "contrib/distrib"
 	    "contrib/ezunits"
+            "contrib/finance"
 	    "contrib/format"
 	    "contrib/fourier_elim"
 	    "contrib/fractals"

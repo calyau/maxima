@@ -199,6 +199,8 @@ contrib/rtest_to_poly_solver.mac\
 contrib/topoly-user-doc.texi\
 contrib/topoly-user-doc.html\
 contrib/f90.lisp\
+contrib/finance/finance.mac\
+contrib/finance/finance.texi\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
 contrib/format/autoload-mp.macsyma\
