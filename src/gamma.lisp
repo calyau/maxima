@@ -1389,7 +1389,7 @@
        (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
 
     ;; Transform to Logarithm of Factorial for integer values
-    ;; At this point the integer values is positive and not zero.
+    ;; At this point the integer value is positive and not zero.
 
     ((integerp z)
      (simplify (list '(%log) (simplify (list '(mfactorial) (- z 1))))))
@@ -1647,7 +1647,7 @@
   ;; We use the slatec routine for float values.
   (slatec:derf (float z)))
 
-;;; This would be the code when using gamma-implete.
+;;; This would be the code when using gamma-incomplete.
 ;  (realpart
 ;    (*
 ;      (signum z)
@@ -1655,12 +1655,23 @@
 ;        (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0)))))))
 
 (defun complex-erf (z)
-  (*
-    (/ (sqrt (expt z 2)) z)
-    (- 1.0 
-      (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0))))))
+  (let ((result
+          (*
+            (/ (sqrt (expt z 2)) z)
+            (- 1.0 
+              (* (/ (sqrt (float pi))) (gamma-incomplete 0.5 (expt z 2.0)))))))
+    (cond
+      ((= (imagpart z) 0.0)
+       ;; Pure real argument, the result is real
+       (complex (realpart result) 0.0))
+      ((= (realpart z) 0.0)
+       ;; Pure imaginary argument, the result is pure imaginary
+       (complex 0.0 (imagpart result)))
+      (t
+        result))))
 
 (defun bfloat-erf (z)
+  ;; The argument is real, the result is real too
   ($realpart
     (mul
       (simplify (list '(%signum) z))
@@ -1670,16 +1681,27 @@
           (bfloat-gamma-incomplete ($bfloat 0.5) ($bfloat (power z 2))))))))
 
 (defun complex-bfloat-erf (z)
-  (let (($ratprint nil))
-    ($rectform
-      (mul
-        ($rectform (div (power (power z 2) 0.5) z))
-        (sub 1.0
-          (mul 
-            (div 1.0 (power ($bfloat '$%pi) 0.5))
-            (complex-bfloat-gamma-incomplete 
-              ($bfloat 0.5) 
-              ($bfloat (power z 2)))))))))
+  (let* (($ratprint nil)
+         (result 
+           ($rectform
+             (mul
+               ($rectform (div (power (power z 2) 0.5) z))
+               (sub 1.0
+                 (mul 
+                   (div 1.0 (power ($bfloat '$%pi) 0.5))
+                   (complex-bfloat-gamma-incomplete 
+                     ($bfloat 0.5) 
+                     ($bfloat (power z 2)))))))))
+    (cond
+      ((zerop1 ($imagpart z))
+       ;; Pure real argument, the result is real
+       ($realpart result))
+      ((zerop1 ($realpart z))
+        ;; Pure imaginary argument, the result is pure imaginary
+        (mul '$%i ($imagpart result)))
+      (t
+       ;; A general complex result
+       result))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1922,7 +1944,7 @@
     ;; Check for numerical evaluation. Use erfi(z) = -%i*erf(%i*z).
 
     ((float-numerical-eval-p z)
-     ;; For real argument z the value of erfi is real.
+     ;; For a real argument z the value of erfi is real.
      (realpart (* (complex 0 -1) (complex-erf (complex 0 ($float z))))))
     ((complex-float-numerical-eval-p z)
      (complexify 
@@ -1931,7 +1953,7 @@
          (complex-erf 
            (complex (- ($float ($imagpart z))) ($float ($realpart z)))))))
     ((bigfloat-numerical-eval-p z)
-     ;; For real argument z the value of erfi is real.
+     ;; For a real argument z the value of erfi is real.
      ($realpart
        (mul -1
          '$%i
