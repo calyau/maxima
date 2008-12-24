@@ -140,7 +140,6 @@
 		 (t (return nil)))))))
 
       ;; We have a special function with an integral on the property list.
-      ;; We try to do a partial integration.
 
       ((and (not (atom (car expres)))
             (get (caar expres) 'integral))
@@ -151,7 +150,13 @@
             (m2 exp 
              `((mtimes) ((,(caar expres)) (b rat8)) ((coefftt) (c rat8prime)))
               nil))
+          ;; A rational function times the special function.
+          ;; Integrate with the method integration-by-parts. 
           (partial-integration (cons (cons 'a expres) arg) var))
+         ;; The method of integration-by-parts can not be applied.
+         ;; Maxima tries to get a clue for the argument of the function which 
+         ;; allows a substitution for the argument.
+         ((intform (cadr expres)))
 	 (t nil)))
 
 	((optrig (caar expres))
