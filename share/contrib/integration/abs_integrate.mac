@@ -131,18 +131,21 @@ abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate), f, es 
       else funmake(noun_int,[es,x,lo,hi])))
   else funmake(noun_int,[es,x,lo,hi]));
 
-abs_int_extra(q,x) := block([q1,q2,k,xo],
+simp_assuming(e, [fcts]) := block([context : ?gensym()],
+  unwind_protect((
+      apply('assume, fcts),
+      expand(e,0,0)),
+    killcontext(context)));
+
+abs_int_extra(q,x) := block([q1,q2,k,xo,kk],
   q : convert_to_signum(q),
   k : gatherargs(q,'signum),
   if k # [] and emptyp(rest(k)) then (
     k : first(first(k)),
     if polynomialp(k, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1))) then (
-      assume(k < 0),
-      q1 : errcatch(integrate(q,x)),
-      forget(k < 0),
-      assume(k > 0),
-      q2 : errcatch(integrate(q,x)),
-      forget(k > 0),
+      kk : rhs(first(linsolve(k,x))),
+      q1 : errcatch(integrate(simp_assuming(q, x < kk),x)),
+      q2 : errcatch(integrate(simp_assuming(q, x > kk),x)),
       if freeof('integrate, 'limit, 'diff, q1) and freeof('integrate, 'limit, 'diff, q2) and
       q1 # [] and q2 # [] then (
         q1 : first(q1),

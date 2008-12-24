@@ -78,7 +78,19 @@ gruntz(i,x,1, 'minus) - gruntz(i,x,1, 'plus);
 0$
 
 signum_to_abs(integrate(unit_step(a * x),x));
-(abs(x)+x)/2$
+(signum(a)*abs(x)+x)/2$
+
+(i : integrate(unit_step(a * x),x,-7,10),0);
+0$
+
+subst(a = -1,i);
+7$
+
+subst(a = 1,i);
+10$
+
+(remvalue(i),0);
+0$
 
 signum_to_abs(integrate(unit_step(a * x + b),x));
 (abs(x+b/a)+x)/2$
