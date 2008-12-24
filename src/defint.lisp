@@ -646,8 +646,7 @@
     (flet ((try-antideriv (e lo hi)
 	     (let ((ans (antideriv e)))
 	       (when ans
-		 (m- ($substitute hi var ans)
-		     ($substitute lo var ans))))))
+		 (intsubs ans lo hi)))))
 
       (cond ((equal 0. (car e))
 	     ;; No polynomial part
