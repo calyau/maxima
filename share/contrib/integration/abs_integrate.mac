@@ -14,12 +14,12 @@ I gratefully thank Robert Dodier and Richard Fateman for their suggestions, advi
 */
 qput(abs_integrate, 1, version);
 
-eval_when(translate,declare_translated(signum_int,signum_int_helper))$
+eval_when(translate,declare_translated(signum_int,signum_int_helper,abs_defint,abs_int_extra))$
 
 load("opsubst");
 load("unwind_protect");
 
-matchdeclare(x, symbolp, q, true, a, numberp, b, numberp);
+matchdeclare(x, symbolp, q, true, [a,b], lambda([s], numberp(s) or is(s = 'minf) or is(s = 'inf)));
 block([simp : false], tellsimpafter('integrate(q,x), signum_int(q,x)),
                       tellsimpafter('integrate(q,x,a,b), abs_defint(q,x,a,b)));
                                         
@@ -65,15 +65,15 @@ signum_to_abs(e) := block([l],
 
 signum_int(q,x) := block([p : 1, w : 1, l, v, inflag : true, f, qsave : q, listconstvars : true,
   noun_int : nounify('integrate)],
-  
   q : convert_to_signum(q),
-
+  
   /* maybe expand */
   v : listofvars(q),
   if safe_op(q) = "*" and not every(lambda([s], polynomialp(s,v) or safe_op(s) = 'signum), args(q)) then (
     q : ratexpand(q)),
-  
-  if (safe_op(q) = 'signum) or (safe_op(q) = "*" and not freeof('signum, q)) then (
+
+  if (f : abs_int_extra(q,x)) # false then f
+  else if (safe_op(q) = 'signum) or (safe_op(q) = "*" and not freeof('signum, q)) then (
     if op(q) = 'signum then (p : 1, w : first(q))
     else (
       for qk in q do (
@@ -83,7 +83,6 @@ signum_int(q,x) := block([p : 1, w : 1, l, v, inflag : true, f, qsave : q, listc
       funmake(noun_int, [qsave,x]))
     else signum_int_helper(p, l, x))
   else if (safe_op(q) = "+") then map(lambda([s], signum_int(s,x)), q)
-  else if (p : abs_int_extra(q,x)) # false then p
   else integrate(qsave,x));
 
 make_dummy(e,x) := block([listconstvars : true, v : listofvars(e)],
@@ -106,17 +105,18 @@ signum_int_helper(q,l,x) := block([v, xo, f, noun_int : nounify('integrate)],
 
 /* The function abs_defint is based on code I wrote and placed in the public domain.*/
 
-dint(e,x,l) := block([xo, acc : 0],
+dint(e,x,l) := block([xo, acc : 0, i],
   xo : first(l),
   l : rest(l),
   for xi in l do (
-    acc : acc + integrate(e,x,xo,xi),
+    i : errcatch(integrate(e,x,xo,xi)),
+    if i = [ ] then return(acc : false) else acc : acc + first(i),
     xo : xi),
   acc);
 
-abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate)],
-  if numberp(lo) and numberp(hi) then (
-    if (hi < lo) then abs_defint(-e,x,hi,lo)
+abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate), f, es : e],
+  if (numberp(lo) or lo = 'minf or hi = inf) and (numberp(hi) or hi = 'minf or hi = 'inf) then (
+    if (hi < lo) then abs_defint(-es,x,hi,lo)
     else if (lo = hi) then 0
     else (
       e : convert_to_signum(e),
@@ -126,33 +126,33 @@ abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate)],
         knots : listify(setify(knots)),
         knots : sublist(knots, lambda([s], is(s > lo) and is(s < hi))),
         knots : append([lo, hi], knots),
-        dint(e,x, sort(knots, lambda([a,b], is(compare(a,b) = "<")))))
-      else funmake(noun_int,[e,x,lo,hi])))
-  else funmake(noun_int,[e,x,lo,hi]));
+        f : dint(e,x, sort(knots, lambda([a,b], is(compare(a,b) = "<")))),
+        if f = false then funmake(noun_int,[es,x,lo,hi]) else f)
+      else funmake(noun_int,[es,x,lo,hi])))
+  else funmake(noun_int,[es,x,lo,hi]));
 
-abs_int_extra(q,x) := block([cntx,q1,q2,k,xo],
-  unwind_protect((
-      cntx : supcontext(cntx),
-      q : convert_to_signum(q),
-      k : gatherargs(q,'signum),
-      if k # [] and emptyp(rest(k)) then (
-        k : first(first(k)),
-        if polynomialp(k, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1))) then (
-          assume(k < 0),
-          q1 : errcatch(integrate(q,x)),
-          forget(k < 0),
-          assume(k > 0),
-          q2 : errcatch(integrate(q,x)),
-          forget(k > 0),
-          if freeof('integrate, 'limit, 'diff, q1) and freeof('integrate, 'limit, 'diff, q2) and
-          q1 # [] and q2 # [] then (
-            q1 : first(q1),
-            q2 : first(q2),
-            xo : linsolve(k,x),
-            q2 : q2 + subst(xo, q1 - q2),
-            xo : first(xo),
-            xo : rhs(xo) - lhs(xo),
-            (1 + signum(xo)) * q1 / 2 + (1 - signum(xo)) * q2 / 2)
-          else false)
-        else false)),
-    killcontext(cntx)));
+abs_int_extra(q,x) := block([q1,q2,k,xo],
+  q : convert_to_signum(q),
+  k : gatherargs(q,'signum),
+  if k # [] and emptyp(rest(k)) then (
+    k : first(first(k)),
+    if polynomialp(k, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1))) then (
+      assume(k < 0),
+      q1 : errcatch(integrate(q,x)),
+      forget(k < 0),
+      assume(k > 0),
+      q2 : errcatch(integrate(q,x)),
+      forget(k > 0),
+      if freeof('integrate, 'limit, 'diff, q1) and freeof('integrate, 'limit, 'diff, q2) and
+      q1 # [] and q2 # [] then (
+        q1 : first(q1),
+        q2 : first(q2),
+        xo : linsolve(k,x),
+        /* make both q1 and q2 vanish at xo */
+        q1 : q1 - subst(xo, q1),
+        q2 : q2 - subst(xo, q2),
+        xo : first(xo),
+        xo : rhs(xo) - lhs(xo),
+        (q1 + q2)/2 - (q2 - q1) * signum(xo)/2)
+      else false)
+    else false));

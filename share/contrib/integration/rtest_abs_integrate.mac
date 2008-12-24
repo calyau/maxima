@@ -14,7 +14,7 @@ signum_to_abs(integrate(abs(x - 5),x));
 (x*abs(x-5)-5*abs(x-5))/2$
 
 integrate(abs(%pi * x + 1),x);
-((%pi*x^2)/2+x+1/(2*%pi))*signum(x+1/%pi)$
+((%pi*x^2+2*x+1/%pi)*signum(x+1/%pi))/2$
 
 integrate(x*abs(x),x);
 (x^3*signum(x))/3$
@@ -33,7 +33,7 @@ factor(signum_to_abs(integrate(abs((x-a)*(x-b)),x,a,b)));
 (b-a)^3/6$
 
 i : integrate(abs(x) + abs(1-x),x);
-(x^2*signum(x))/2+(x^2/2-x+1/2)*signum(x-1)$
+(x^2*signum(x))/2+((x^2-2*x+1)*signum(x-1))/2$
 
 factor(signum_to_abs(diff(%,x)));
 abs(x)+abs(x-1)$
@@ -45,7 +45,7 @@ integrate(signum(x),x);
 x * signum(x)$
 
 integrate(signum(x - 42),x);
-(x-42)*signum(x-42)$
+((2*x-84)*signum(x-42))/2$
 
 integrate(signum(x) * sin(x),x);
 (1-cos(x))*signum(x)$
@@ -84,7 +84,7 @@ signum_to_abs(integrate(unit_step(a * x + b),x));
 (abs(x+b/a)+x)/2$
 
 integrate(unit_step(x) + cos(x^2) * x,x);
-(sin(x^2)+x*(signum(x)+1))/2$
+(sin(x^2)+x*signum(x)+x)/2$
 
 integrate(unit_step(x^2-1),x);
 signum(x-1)*((x/2+1/2)*signum(x+1)-1)+x/2$
@@ -172,18 +172,25 @@ is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
 
 integrate(abs(x-1)/ ( 1 + x^2),x);
-signum(x-1)*(log(x^2+1)/2-log(2)/2)+signum(x-1)*(%pi/4-atan(x))$
+(signum(x-1)*(log(x^2+1)-log(2)))/2+(signum(x-1)*(%pi/2-2*atan(x)))/2$
 
 integrate(exp(-abs(x)), x);
-((2-%e^(-x))*(signum(x)+1))/2+(%e^x*(1-signum(x)))/2$
+((-%e^x-%e^(-x)+2)*signum(x))/2+(%e^x-%e^(-x))/2$
 
 integrate(cos(x + abs(x)),x);
 ((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4$
 
+signum_to_abs(expand(integrate(diff(abs(x) * cos(x),x),x)));
+cos(x)*abs(x)$
 
+integrate(abs(x) * exp(-abs(x-9)),x,minf,inf);
+18 + 2 * exp(-9)$
 
+integrate(exp(-abs((x-1)*(x-7))),x,minf,inf);
+-%e^(-9)*sqrt(%pi)*%i*erf(3*%i)-%e^9*sqrt(%pi)*erf(3)+%e^9*sqrt(%pi)$
 
-
+integrate(exp(-abs((x-1)*(x+1))),x,minf,inf);
+-%e^(-1)*sqrt(%pi)*%i*erf(%i)-sqrt(%pi)*%e*erf(1)+sqrt(%pi)*%e$
 
 
 
