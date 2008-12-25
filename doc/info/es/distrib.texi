@@ -319,7 +319,7 @@ Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una v
 @end deffn
 
 
-@deffn {Funci@'on} cdf_student_t_t (@var{x},@var{n})
+@deffn {Funci@'on} cdf_student_t (@var{x},@var{n})
 Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Student @math{t(n)}, con @math{n>0}. Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal.
 
 @c ===beg===
