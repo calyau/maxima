@@ -450,6 +450,7 @@
 				     (:file "ellipt")
 				     (:file "airy"
 					    :depends-on ("ellipt"))
+				     (:file "plasma")
 				     (:file "intpol")))
 
 	       (:module reader :pathname ""

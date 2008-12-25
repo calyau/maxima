@@ -214,6 +214,7 @@ binary-clisp/maxima.mem : trgred.lisp
 binary-clisp/maxima.mem : bessel.lisp
 binary-clisp/maxima.mem : ellipt.lisp
 binary-clisp/maxima.mem : airy.lisp
+binary-clisp/maxima.mem : plasma.lisp
 binary-clisp/maxima.mem : intpol.lisp
 binary-clisp/maxima.mem : nparse.lisp
 binary-clisp/maxima.mem : displa.lisp

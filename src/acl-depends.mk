@@ -214,6 +214,7 @@ binary-acl/maxima.dxl : trgred.lisp
 binary-acl/maxima.dxl : bessel.lisp
 binary-acl/maxima.dxl : ellipt.lisp
 binary-acl/maxima.dxl : airy.lisp
+binary-acl/maxima.dxl : plasma.lisp
 binary-acl/maxima.dxl : intpol.lisp
 binary-acl/maxima.dxl : nparse.lisp
 binary-acl/maxima.dxl : displa.lisp

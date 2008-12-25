@@ -214,6 +214,7 @@ binary-scl/maxima.core : trgred.lisp
 binary-scl/maxima.core : bessel.lisp
 binary-scl/maxima.core : ellipt.lisp
 binary-scl/maxima.core : airy.lisp
+binary-scl/maxima.core : plasma.lisp
 binary-scl/maxima.core : intpol.lisp
 binary-scl/maxima.core : nparse.lisp
 binary-scl/maxima.core : displa.lisp

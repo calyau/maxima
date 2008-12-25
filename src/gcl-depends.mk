@@ -220,6 +220,7 @@ binary-gcl/maxima : trgred.lisp
 binary-gcl/maxima : bessel.lisp
 binary-gcl/maxima : ellipt.lisp
 binary-gcl/maxima : airy.lisp
+binary-gcl/maxima : plasma.lisp
 binary-gcl/maxima : intpol.lisp
 binary-gcl/maxima : nparse.lisp
 binary-gcl/maxima : displa.lisp

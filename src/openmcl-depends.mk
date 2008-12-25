@@ -165,6 +165,7 @@ binary-openmcl/maxima.image : trprop.lisp
 binary-openmcl/maxima.image : mdefun.lisp
 binary-openmcl/maxima.image : bessel.lisp
 binary-openmcl/maxima.image : ellipt.lisp
+binary-openmcl/maxima.image : plasma.lisp
 binary-openmcl/maxima.image : intpol.lisp
 binary-openmcl/maxima.image : nparse.lisp
 binary-openmcl/maxima.image : displa.lisp

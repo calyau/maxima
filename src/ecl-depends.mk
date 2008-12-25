@@ -215,6 +215,7 @@ binary-ecl/maxima : trgred.lisp
 binary-ecl/maxima : bessel.lisp
 binary-ecl/maxima : ellipt.lisp
 binary-ecl/maxima : airy.lisp
+binary-ecl/maxima : plasma.lisp
 binary-ecl/maxima : intpol.lisp
 binary-ecl/maxima : nparse.lisp
 binary-ecl/maxima : displa.lisp
