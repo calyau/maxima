@@ -122,6 +122,10 @@ diff(lambert_w(x),x);
 integrate(lambert_w(x),x);
 x*(lambert_w(x)^2-lambert_w(x)+1)/lambert_w(x);
 
+/* The integrator used to loop endlessly */
+integrate(lambert_w(1/x),x);
+integrate(lambert_w(1/x),x);
+
 taylor(lambert_w(x),x,0,6);
 x-x^2+3*x^3/2-(8*x^4/3)+125*x^5/24-(54*x^6/5);
 
