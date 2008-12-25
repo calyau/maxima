@@ -297,7 +297,7 @@ copy_amatrix (m) :=
 
 copy_array (a) := if ?arrayp (a) then ?copy\-seq (a) else ?copy\-tree (a);
 
-load ("amatrix.lisp");
+if not ?get ('amatrix, 'present) then load ("amatrix.lisp");
 
 /* SHOULD TRY TO MERGE THIS WITH EXISTING MEAN FUNCTION IN SHARE PACKAGE DESCRIPTIVE */
 amatrix_mean (x) := block

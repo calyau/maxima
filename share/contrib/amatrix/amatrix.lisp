@@ -2,6 +2,10 @@
 ;; copyright 2007 by Robert Dodier
 ;; I release this file under the terms of the GNU General Public License.
 
+(setf (get '$amatrix '$present) t)
+
+(declare-top (unspecial x))
+
 (defun $amatrixmap (f &rest m)
   (let*
     ((nr ($nrows (car m)))
@@ -168,17 +172,19 @@
             x)))))
   x)
 
-(defun amatrix-assign1-amatrix-column (aa ai j x))
+;; UNFINISHED STUFF. SORRY, I'M WORKING ON IT.
 
-(defun amatrix-assign1-row-amatrix (aa i aj x))
+(defun amatrix-assign1-amatrix-column (aa ai j x) (declare (ignore aa ai j x)))
 
-(defun amatrix-assign1-amatrix-amatrix (aa ai aj x))
+(defun amatrix-assign1-row-amatrix (aa i aj x) (declare (ignore aa i aj x)))
 
-(defun amatrix-assign1-boolean-column (aa b j x))
+(defun amatrix-assign1-amatrix-amatrix (aa ai aj x) (declare (ignore aa ai aj x)))
 
-(defun amatrix-assign1-row-boolean (aa i b x))
+(defun amatrix-assign1-boolean-column (aa b j x) (declare (ignore aa b j x)))
 
-(defun amatrix-assign1-boolean-boolean (aa b1 b2 x))
+(defun amatrix-assign1-row-boolean (aa i b x) (declare (ignore aa i b x)))
+
+(defun amatrix-assign1-boolean-boolean (aa b1 b2 x) (declare (ignore aa b1 b2 x)))
 
 (displa-def $amatrix dim-$amatrix)
 
