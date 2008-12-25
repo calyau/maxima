@@ -152,7 +152,7 @@ figures/orthopoly1.pdf
 all-local: maxima.info maxima-index.lisp
 
 maxima.info : maxima.texi
-	makeinfo maxima.texi
+	makeinfo --split-size=1000000 maxima.texi
 
 html: maxima.html contents.hhc
 
