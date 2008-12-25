@@ -26,6 +26,8 @@
 
 ;; Parse {a, b, c} into set(a, b, c).
 
+(putopr "{" '$set)
+
 (def-nud-equiv |$}| delim-err)
 (def-led-equiv |$}| erb-err)
 (def-lbp     |$}| 5.)

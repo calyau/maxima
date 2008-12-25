@@ -772,6 +772,7 @@ AC_SUBST(expanded_datadir)
 AC_SUBST(expanded_infodir)
 default_layout_autotools="true"
 AC_SUBST(default_layout_autotools)
+AC_SUBST(LDFLAGS)
 
 dnl Look for grep that can handle long lines and -e.
 AC_PROG_EGREP
@@ -780,7 +781,7 @@ AC_SUBST(EGREP)
 AC_OUTPUT(Makefile maxima-local xmaxima-local maxima.spec maxima.iss \
 src/Makefile src/maxima src/maxima.bat src/rmaxima src/autoconf-variables.lisp \
 lisp-utils/Makefile tests/Makefile doc/Makefile \
-doc/emaxima/Makefile doc/info/Makefile doc/info/maxima.texi \
+doc/emaxima/Makefile doc/info/Makefile doc/info/include-maxima.texi \
 doc/info/es/Makefile doc/info/es.utf8/Makefile \
 doc/info/pt/Makefile doc/info/pt.utf8/Makefile \
 doc/info/pt_BR/Makefile doc/info/pt_BR.utf8/Makefile \

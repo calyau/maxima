@@ -1,4 +1,3 @@
-\input texinfo
 @c -*-texinfo-*-
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
@@ -12,7 +11,6 @@
 
 
 @c %**start of header
-@setfilename  maxima.info
 @synindex vr fn
 @settitle Maxima @VERSION@ Manual
 @c %**end of header
@@ -41,6 +39,7 @@ END-INFO-DIR-ENTRY
 @sp 10
 @comment The title is printed in a large font.
 @center @titlefont{Maxima Manual}
+@center Ver. 5.16.3
 @page
 @vskip 0pt plus 1filll
 Maxima is a computer algebra system, implemented in Lisp.
@@ -139,7 +138,6 @@ Advanced facilities and programming
 
 Additional packages
 
-* asympa::                      asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
 * bode::                        Bode gain and phase plots.
 * contrib_ode::                 Additional routines for ODEs
@@ -181,10 +179,6 @@ Additional packages
 Index
 
 * Function and Variable Index:: Index.
-
-Appendix
-
-* Deleted Functions::           Functions deleted from maxima
 
 @comment @detailmenu
  --- The Detailed Node Listing ---
@@ -266,12 +260,7 @@ Trigonometric
 
 Special Functions
 
-* Introduction to Special Functions::
-* Bessel Functions::
-* Airy Functions::
-* Gamma and factorial Functions::
-* Exponential Integrals::
-* Error Function::
+* Introduction to Special Functions::  
 * Functions and Variables for Special Functions::  
 
 Elliptic Functions
@@ -402,10 +391,6 @@ Debugging
 
 * Functions and Variables for Debugging::   
 
-asympa
-
-* Introduction to asympa::
-* Functions and variables for asympa::
 
 augmented_lagrangian
 
@@ -766,15 +751,11 @@ zeilberger
 @chapter Program Flow
 @include Program.texi
 
-@node Debugging, asympa, Program Flow, Top
+@node Debugging, augmented_lagrangian, Program Flow, Top
 @chapter Debugging
 @include Debugging.texi
 
-@node asympa, augmented_lagrangian, Debugging, Top
-@chapter asympa
-@include asympa.texi
-
-@node augmented_lagrangian, bode, asympa, Top
+@node augmented_lagrangian, bode, Debugging, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
@@ -918,15 +899,9 @@ zeilberger
 @chapter zeilberger
 @include zeilberger.texi
 
-
-@node Function and Variable Index, Deleted Functions, zeilberger, Top
+@node Function and Variable Index,  , zeilberger, Top
 @chapter Indices
 @include Indices.texi
 
-@node Deleted Functions, , Function and Variable Index, Top
-@appendix Deleted Functions
-@include Deleted.texi
-
 @c end includes
 
-@bye
