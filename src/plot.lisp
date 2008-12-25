@@ -860,69 +860,6 @@
       (meval data))))
 
 
-;; arrange so that the list of points x0,y0,x1,y1,.. on the curve
-;; never have abs(y1-y0 ) and (x1-x0) <= deltax
-
-;;#+nil
-;;(defun draw2d (f range )
-;;  (if (and ($listp f) (equal '$parametric (cadr f)))
-;;      (return-from draw2d (draw2d-parametric f range)))
-;;  (let* ((nticks (third($get_plot_option '$nticks)))
-;;       (yrange ($get_plot_option '|$y|))
-;;       ($numer t)
-;;       )
-
-;;    (setq f (coerce-float-fun f `((mlist), (second range))))
-
-;;    (let* ((x (coerce-float (third range)))
-;;         (xend (coerce-float (fourth range)))
-;;         (ymin (coerce-float (third yrange)))
-;;         (ymax (coerce-float (fourth yrange)))
-;;         (eps ($/ (- xend x) (coerce-float nticks)))
-;;         (x1 0.0)
-;;         (y1 0.0)
-;;         (y (funcall f x))
-;;         (dy 0.0)
-;;         (epsy ($/ (- ymax ymin) 1.0))
-;;         (eps2 (* eps eps))
-;;         in-range last-ok
-;;         )
-;;      (declare (type flonum x1 y1 x y dy eps2 eps ymin ymax ))
-;;                                      ;(print (list 'ymin ymin 'ymax ymax epsy))
-;;      (setq x ($- x eps))  
-;;      (cons '(mlist)
-;;          (loop   do
-;;                   (setq x1 ($+ eps x))
-;;                   (setq y1 (funcall f x1))
-;;                   (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
-;;                   (cond (in-range
-;;                          (setq dy (- y1 y))
-;;                          (cond ((< dy 0) (setq dy (- dy))))
-;;                          (cond ((> dy eps)
-;;                                 (setq x1 (+ x (/ eps2 dy)))
-;;                                 (setq y1 (funcall f x1))
-;;                                 (setq in-range (and (<= y1 ymax) (>= y1 ymin)))
-;;                                 (or in-range (setq x1 (+ eps x)))
-;;                                 )
-;;                                ))
-;;                         )
-;;                   (setq x x1)
-;;                   (setq y y1)
-;;                   when (or (and (not last-ok)
-;;                                 (not in-range))
-;;                            (> dy epsy))
-
-;;                   collect 'moveto and collect 'moveto
-;;                   do
-;;                   (setq last-ok in-range)
-;;                   collect x1 
-;;                   collect (if in-range y1 (if (> y1 ymax) ymax ymin))
-;;                   when (>= x xend)
-;;                   collect xend and
-;;                   collect (let ((tem (funcall f xend)))
-;;                             (if (>= tem ymax) ymax (if (<= tem ymin) ymin tem)))
-;;                   and do (sloop::loop-finish))))))
-
 ;;; Adaptive plotting, based on the adaptive plotting code from
 ;;; YACAS. See http://yacas.sourceforge.net/Algo.html#c3s1 for a
 ;;; description of the algorithm.  More precise details can be found
@@ -1115,7 +1052,30 @@
                        (<= ymin (car y) ymax))
             (setf (car x) 'moveto)
             (setf (car y) 'moveto)))
-        (cons '(mlist) result)))))
+
+        ;; Filter out any MOVETO's which do not precede a number.
+        ;; Code elsewhere in this file expects MOVETO's to
+        ;; come in pairs, so leave two MOVETO's before a number.
+        (let ((n (length result)))
+          (dotimes (i n)
+            (when
+              (and
+                (evenp i)
+                (eq (nth i result) 'moveto)
+                (eq (nth (1+ i) result) 'moveto)
+                (or 
+                  (eq i (- n 2))
+                  (eq (nth (+ i 2) result) 'moveto)))
+              (setf (nth i result) nil)
+              (setf (nth (1+ i) result) nil))))
+
+        (let ((n-nil (count nil result))
+              (result-sans-nil (delete nil result)))
+          (if (null result-sans-nil)
+            (mtell "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")
+            (if (> n-nil 0)
+              (mtell "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
+          (cons '(mlist) result-sans-nil))))))
 
 (defun get-range (lis)
   (let ((ymin most-positive-flonum)
@@ -1236,7 +1196,7 @@
 	(output-file "")
         plot-format gnuplot-term gnuplot-out-file file plot-name
         log-x log-y xmin xmax ymin ymax styles style legend
-        xlabel ylabel box psfile axes)
+        xlabel ylabel box psfile axes points-lists)
  
     (when (and (consp fun) (eq (cadr fun) '$parametric))
       (or range (setq range (nth 4 fun)))
@@ -1308,6 +1268,15 @@
     ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
 
     (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
+
+    ;; Compute points to plot for each element of FUN.
+    ;; If no plottable points are found, return immediately from $PLOT2D.
+
+    (setq points-lists (mapcar #'(lambda (f) (cdr (draw2d f range log-x log-y))) (cdr fun)))
+    (when (= (count-if #'(lambda (x) x) points-lists) 0)
+      (mtell "plot2d: nothing to plot.~%")
+      (return-from $plot2d))
+
     (setq plot-format  ($get_plot_option '$plot_format 2))
     (setq gnuplot-term ($get_plot_option '$gnuplot_term 2))
     (setq axes ($get_plot_option '$axes 2))
@@ -1340,7 +1309,8 @@
           (when xlabel (format st " {xaxislabel \"~a\"}" xlabel))
           (when ylabel (format st " {yaxislabel \"~a\"}" ylabel))
           (format st "~%")
-          (dolist (f (cdr fun))
+          (loop for f in (cdr fun) for points-list in points-lists do
+          (when points-list
             (if styles
               (progn
                 (setq style (nth (mod i (length styles)) styles))
@@ -1374,7 +1344,7 @@
 	      (format st " {label \"~a\"}" plot-name))
             (format st " ~a~%" (openmath-curve-style style i))
             (format st " {xversusy~%")
-            (let ((lis (cdr (draw2d f range log-x log-y))))
+            (let ((lis points-list))
               (loop while lis
                 do
                  (loop while (and lis (not (eq (car lis) 'moveto)))
@@ -1388,7 +1358,7 @@
                         (tcl-output-list st yy)))
                 ;; remove the moveto
                 (setq lis (cddr lis))))
-            (format st "}"))
+            (format st "}")))
           (format st "} "))))
       (t
        (with-open-file (st file :direction :output :if-exists :supersede)
@@ -1440,7 +1410,8 @@
               (setq *gnuplot-command*
                     ($sconcat *gnuplot-command* 
                               (format nil " [~g:~g]"  ymin ymax))))))
-         (dolist (v (cdr fun))
+         (loop for v in (cdr fun) for points-list in points-lists do
+         (when points-list
            (case plot-format
              ($gnuplot_pipes
               (if (> i 0)
@@ -1491,14 +1462,15 @@
                        (format nil " title \"~a\" ~a" plot-name 
                                  (gnuplot-curve-style style i))
                        (format nil " notitle ~a"
-                               (gnuplot-curve-style style i))))))))
+                               (gnuplot-curve-style style i)))))))))
          (case plot-format
            ($gnuplot
             (format st "~%"))
            ($gnuplot_pipes
             (format st "~%")))
          (setq i 0)
-         (dolist (v (cdr fun))
+         (loop for v in (cdr fun) for points-list in points-lists do
+         (when points-list
            (incf i)
            ;; Assign PLOT-NAME only if not already assigned.
            ;; I (Robert Dodier) would just cut it, but it's not clear
@@ -1522,7 +1494,7 @@
               (format st "~%~%# \"~a\"~%" plot-name))
              )
            (let (in-discontinuity points)
-             (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
+             (loop for (v w) on points-list by #'cddr
                do
                (cond ((eq v 'moveto)
                       (cond 
@@ -1541,7 +1513,7 @@
 			 (setq points t)
                          (setq in-discontinuity nil))))
 	     (if (and (null points) xmin ymin)
-		 (format st "~g ~g ~%" xmin ymin)))))))
+		 (format st "~g ~g ~%" xmin ymin))))))))
 
     (case plot-format
       ($gnuplot 
