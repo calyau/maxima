@@ -315,7 +315,7 @@
 (defun texnumformat(atom)
   (let (r firstpart exponent)
     (cond ((integerp atom)
-	   atom)
+	   (coerce (exploden atom) 'string))
 	  (t
 	   (setq r (exploden atom))
 	   (setq exponent (member 'e r :test #'string-equal)) ;; is it ddd.ddde+EE
@@ -1027,6 +1027,30 @@
     (format st "\\end~%"))
   '$done)
 
+;; Construct a Lisp function and attach it to the TEX property of
+;; operator OP. The constructed function calls a Maxima function F
+;; to generate TeX output for OP.
+;; F must take 1 argument (an expression which has operator OP)
+;; and must return a string (the TeX output).
+
+(defun make-maxima-tex-glue (op f)
+  (let
+    ((glue-f (gensym))
+     (f-body `(append l
+                      (list
+                        (let ((f-x (mfuncall ',f x)))
+                          (if (stringp f-x) f-x
+                            (merror "tex: function ~s did not return a string.~%" ($sconcat ',f)))))
+                      r)))
+    (setf (symbol-function glue-f) (coerce `(lambda (x l r) ,f-body) 'function))
+    (setf (get op 'tex) glue-f))
+  f)
+
+;; Convenience function to allow user to process expression X
+;; and get a string (TeX output for X) in return.
+
+(defun $tex1 (x) (apply #'strcat (tex x nil nil 'mparen 'mparen)))
+
 ;; Undone and trickier:
 ;; handle reserved symbols stuff, just in case someone
 ;; has a macsyma variable named (yuck!!) \over  or has a name with
@@ -1048,8 +1072,16 @@
 
   (setq s (if ($listp s) (margs s) (list s)))
   
-  (cond ((null tx)
-	 (putprop e (nth 0 s) 'texword))
+  (cond
+    ((null tx)
+     ;; texput was called as texput(op, foo) where foo is a string
+     ;; or a symbol; when foo is a string, assign TEXWORD property,
+     ;; when foo is a symbol, construct glue function to call
+     ;; the Maxima function named by foo.
+     (let ((s0 (nth 0 s)))
+       (if (stringp s0)
+         (putprop e s0 'texword)
+         (make-maxima-tex-glue e s0)))) ;; assigns TEX property
 	((eq tx '$matchfix)
 	 (putprop e 'tex-matchfix 'tex)
 	 (cond ((< (length s) 2)

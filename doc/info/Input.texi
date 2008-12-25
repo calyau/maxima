@@ -1969,7 +1969,24 @@ $$-\cos x$$
 
 @end deffn
 
+@deffn {Function} tex1 (@var{e})
+
+Returns a string which represents the TeX output for the expressions @var{e}.
+The TeX output is not enclosed in delimiters for an equation or any other environment.
+
+Examples:
+
+@c ===beg===
+@c tex1 (sin(x) + cos(x));
+@c ===end===
+@example
+(%i1) tex1 (sin(x) + cos(x));
+(%o1)                     \sin x+\cos x
+@end example
+@end deffn
+
 @deffn {Function} texput (@var{a}, @var{s})
+@deffnx {Function} texput (@var{a}, @var{f})
 @deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
 @deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
 @deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
@@ -1979,6 +1996,12 @@ which can be a symbol or the name of an operator.
 
 @code{texput (@var{a}, @var{s})} causes the @code{tex} function
 to interpolate the string @var{s} into the TeX output in place of @var{a}.
+
+@code{texput (@var{a}, @var{f})} causes the @code{tex} function
+to call the function @var{f} to generate TeX output.
+@var{f} must accept one argument, which is an expression which has operator @var{a},
+and must return a string (the TeX output).
+@var{f} may call @code{tex1} to generate TeX output for the arguments of the input expression.
 
 @code{texput (@var{a}, @var{s}, @var{operator_type})},
 where @var{operator_type} is @code{prefix}, @code{infix}, @code{postfix}, @code{nary}, or @code{nofix},
@@ -2023,6 +2046,24 @@ Assign TeX output for an ordinary function (not an operator).
 (%i2) tex (lcm (a, b));
 $$\mathrm@{lcm@}\left(a , b\right)$$
 (%o2)                         false
+@end example
+
+Call a function to generate TeX output.
+
+@c ===beg===
+@c texfoo (e) := block ([a, b], [a, b] : args (e),
+@c   concat ("\\left[\\stackrel{", tex1 (b), "}{", tex1 (a), "}\\right]"))$
+@c texput (foo, texfoo);
+@c tex (foo (2^x, %pi));
+@c ===end===
+@example
+(%i1) texfoo (e) := block ([a, b], [a, b] : args (e),
+  concat ("\\left[\\stackrel@{", tex1 (b), "@}@{", tex1 (a), "@}\\right]"))$
+(%i2) texput (foo, texfoo);
+(%o2)                        texfoo
+(%i3) tex (foo (2^x, %pi));
+$$\left[\stackrel@{\pi@}@{2^@{x@}@}\right]$$
+(%o3)                         false
 @end example
 
 Assign TeX output for a prefix operator.
