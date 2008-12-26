@@ -784,3 +784,25 @@ The principal branch of Lambert's W funtion W(z), the solution of
 @category{Special functions}
 @closecatbox
 @end deffn
+
+@deffn {Function} nzeta (@var{z})
+The Plasma Dispersion Function 
+@code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} nzetar (@var{z})
+Returns @code{realpart(nzeta(z))}.
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} nzetai (@var{z})
+Returns @code{imagpart(nzeta(z))}.
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
