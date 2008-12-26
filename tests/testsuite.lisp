@@ -47,5 +47,5 @@
         "rtest_gamma"
         "rtest_expintegral"
 	"rtest_signum"
-        ((mlist) "rtest_lambert_w" 33)
+        "rtest_lambert_w"
 	))
