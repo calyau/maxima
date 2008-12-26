@@ -488,7 +488,7 @@
 	 (bfloat-lambert-w x))
 	(t (list '(%lambert_w simp) x))))
 
-;; Complex value of the principal branch of Lambert’s W function in 
+;; Complex value of the principal branch of Lambert's W function in 
 ;; the entire complex plane with relative error less than 1%, given 
 ;; standard branch cuts for sqrt(z) and log(z).
 ;;
