@@ -357,6 +357,7 @@
 ;; flonum be exactly the same as double-float, without bounds.
 #+clisp
 (deftype flonum (&optional low high)
+  (declare (ignorable low high))
   'double-float)
 
 (defconstant most-positive-flonum most-positive-double-float)
