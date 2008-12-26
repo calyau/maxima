@@ -44,11 +44,11 @@ examples:
 @end example
 A plot indicates that indeed (%o5) and (%o6) are continuous at zero and at one.
 
-For definite integrals with numerical integration limits, the
-@code{abs_integrate} package converts the integrand to signum form and
-then it tries to subdivide the integration region so that the
-integrand simplifies to a non-signum expression on each subinterval;
-for example
+For definite integrals with numerical integration limits (including
+both minus and plus infinity), the @code{abs_integrate} package
+converts the integrand to signum form and then it tries to subdivide
+the integration region so that the integrand simplifies to a
+non-signum expression on each subinterval; for example
 @example
  (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
  (%o1) log(11)+log(2)
@@ -82,10 +82,33 @@ subexpressions of the form @math{signum(p) * signum(q)} by
  (%i1) map('signum_to_abs, [x * signum(x), x * y * signum(x)* signum(y)/2]);
  (%o1) [abs(x),(abs(x)*abs(y))/2]
 @end example
-
 @b{To use} @file{load(abs_integrate)}
 
-@b{Related functions} @i{convert_to_signum}
+@end deffn
+
+
+@deffn {Macro} simp_assuming (@var{e}, @var{f_1}, @var{f_2}, ..., @var{f_n})
+
+Appended the facts @math{f_1, f_2, ..., f_n} to the current context and simplify
+@math{e}. The facts are removed before returning the simplified expression @math{e}.
+
+@example
+(%i2) simp_assuming(x + abs(x), x < 0);
+(%o2) 0
+@end example
+The facts in the current context aren't ignored:
+@example
+(%i3) assume(x > 0)$
+(%i4) simp_assuming(x + abs(x),x < 0);
+(%o4) 2*x
+@end example
+Since @code{simp_assuming} is a macro, effectively @code{simp_assuming} quotes is arguments;
+this allows
+@example
+(%i5) simp_assuming(asksign(p), p < 0);
+(%o5) neg
+@end example
+@b{To use} @file{load(abs_integrate)}
 
 @end deffn
 

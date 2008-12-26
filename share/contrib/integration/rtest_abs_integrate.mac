@@ -204,6 +204,8 @@ integrate(exp(-abs((x-1)*(x-7))),x,minf,inf);
 integrate(exp(-abs((x-1)*(x+1))),x,minf,inf);
 -%e^(-1)*sqrt(%pi)*%i*erf(%i)-sqrt(%pi)*%e*erf(1)+sqrt(%pi)*%e$
 
+integrate(1/(1 + abs(x))^2,x,minf,inf);
+2$
 
 
 

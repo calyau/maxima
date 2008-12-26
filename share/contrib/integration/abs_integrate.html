@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from abs_integrate.texi on 20 December 2008 -->
+<!-- Created by texi2html 1.56k from abs_integrate.texi on 26 December 2008 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -68,11 +68,11 @@ A plot indicates that indeed (%o5) and (%o6) are continuous at zero and at one.
 
 
 <P>
-For definite integrals with numerical integration limits, the
-<CODE>abs_integrate</CODE> package converts the integrand to signum form and
-then it tries to subdivide the integration region so that the
-integrand simplifies to a non-signum expression on each subinterval;
-for example
+For definite integrals with numerical integration limits (including
+both minus and plus infinity), the <CODE>abs_integrate</CODE> package
+converts the integrand to signum form and then it tries to subdivide
+the integration region so that the integrand simplifies to a
+non-signum expression on each subinterval; for example
 
 <PRE>
  (%i1) integrate(1 / (1 + abs(x-5)),x,-5,6);
@@ -122,8 +122,45 @@ subexpressions of the form <EM>signum(p) * signum(q)</EM> by
 <B>To use</B> <TT>`load(abs_integrate)'</TT>
 
 
+</DL>
+
 <P>
-<B>Related functions</B> <I>convert_to_signum</I>
+<DL>
+<DT><U>Macro:</U> <B>simp_assuming</B> <I>(<VAR>e</VAR>, <VAR>f_1</VAR>, <VAR>f_2</VAR>, ..., <VAR>f_n</VAR>)</I>
+<DD><A NAME="IDX2"></A>
+
+
+<P>
+Appended the facts <EM>f_1, f_2, ..., f_n</EM> to the current context and simplify
+<EM>e</EM>. The facts are removed before returning the simplified expression <EM>e</EM>.
+
+
+
+<PRE>
+(%i2) simp_assuming(x + abs(x), x &#60; 0);
+(%o2) 0
+</PRE>
+
+<P>
+The facts in the current context aren't ignored:
+
+<PRE>
+(%i3) assume(x &#62; 0)$
+(%i4) simp_assuming(x + abs(x),x &#60; 0);
+(%o4) 2*x
+</PRE>
+
+<P>
+Since <CODE>simp_assuming</CODE> is a macro, effectively <CODE>simp_assuming</CODE> quotes is arguments;
+this allows
+
+<PRE>
+(%i5) simp_assuming(asksign(p), p &#60; 0);
+(%o5) neg
+</PRE>
+
+<P>
+<B>To use</B> <TT>`load(abs_integrate)'</TT>
 
 
 </DL>
@@ -131,7 +168,7 @@ subexpressions of the form <EM>signum(p) * signum(q)</EM> by
 <P>
 <DL>
 <DT><U>Function:</U> <B>convert_to_signum</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX2"></A>
+<DD><A NAME="IDX3"></A>
 
 
 <P>
@@ -164,7 +201,7 @@ uses <EM>unit_step(x) = (1 + signum(x))/2</EM>.
 <P>
 <DL>
 <DT><U>Function:</U> <B>make_dummy(e,x)</B>
-<DD><A NAME="IDX3"></A>
+<DD><A NAME="IDX4"></A>
 
 
 <P>
@@ -185,7 +222,7 @@ Append "%" to the symbol <EM>x</EM> until <EM>x</EM> is <I>not</I> a variable in
 
 
 <P><HR><P>
-This document was generated on 20 December 2008 using
+This document was generated on 26 December 2008 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>
