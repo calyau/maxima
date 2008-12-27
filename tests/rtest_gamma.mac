@@ -2640,5 +2640,431 @@ closeto(
   1b-30);
 true;
 
+/******************************************************************************
+   Test the Fresnel Integrals S(z) and C(z) 
+******************************************************************************/
+
+/* Specific values for the Fresnel Integrals */
+
+map(fresnel_s,[0,0.0,0.0b0]);
+[0,0.0,0.b0];
+
+map(fresnel_c,[0,0.0,0.0b0]);
+[0,0.0,0.b0];
+
+/* Simplification of infinities 
+   The rules for an odd function and the simplifaction for imaginary
+   arguments are applied too.
+*/
+
+map(fresnel_s,[inf,-inf,minf,-minf,%i*inf,-%i*inf,%i*minf,-%i*minf]);
+[1/2,-1/2,-1/2,1/2,-%i/2,%i/2,%i/2,-%i/2];
+
+map(fresnel_c,[inf,-inf,minf,-minf,%i*inf,-%i*inf,%i*minf,-%i*minf]);
+[1/2,-1/2,-1/2,1/2,%i/2,-%i/2,-%i/2,%i/2];
+
+/* No simplification for other infinities and undeterminates */
+
+map(fresnel_s,[infinity,und,ind]);
+[fresnel_s(infinity),fresnel_s(und),fresnel_s(ind)];
+
+map(fresnel_c,[infinity,und,ind]);
+[fresnel_c(infinity),fresnel_c(und),fresnel_c(ind)];
+
+/* The Fresnel Integrals S(z) and C(z) are odd functions 
+   A reflection rule is given and the rule odd-function-reflect is applied */
+
+map(fresnel_s,[-x, (x-1), (-x+1), (-x-1)]);
+[-fresnel_s(x), fresnel_s(x-1), -fresnel_s(x-1),-fresnel_s(1+x)];
+
+map(fresnel_c,[-x, (x-1), (-x+1), (-x-1)]);
+[-fresnel_c(x), fresnel_c(x-1), -fresnel_c(x-1),-fresnel_c(1+x)];
+
+/* The Fresnel Integals simplify imaginary arguments */
+
+map(fresnel_s, [%i,%i*x,-%i*x,%i*(x+1)]);
+[-%i*fresnel_s(1),-%i*fresnel_s(x),%i*fresnel_s(x),-%i*fresnel_s(x+1)];
+
+map(fresnel_c, [%i,%i*x,-%i*x,%i*(x+1)]);
+[%i*fresnel_c(1),%i*fresnel_c(x),-%i*fresnel_c(x),%i*fresnel_c(x+1)];
+
+/* The Fresnel Integrals have Mirror Symmetry */
+
+declare(z,complex);
+done;
+
+conjugate(fresnel_s(z));
+fresnel_s(conjugate(z));
+
+conjugate(fresnel_s(x+%i*y));
+fresnel_s(x-%i*y);
+
+conjugate(fresnel_c(z));
+fresnel_c(conjugate(z));
+
+conjugate(fresnel_c(x+%i*y));
+fresnel_c(x-%i*y);
+
+/* Taylor expansion of the Fresnel Integrals to order O(z^12) */
+
+/* Expand the function */
+taylor(fresnel_s(x),x,0,12);
+%pi*x^3/6 - %pi^3*x^7/336 + %pi^5 *x^11/42240;
+
+taylor(fresnel_c(x),x,0,12);
+x - %pi^2*x^5/40 + %pi^4 *x^9/3456;
+
+/* Expand the argument and apply the function */
+fresnel_s(taylor(x,x,0,12));
+%pi*x^3/6 - %pi^3*x^7/336 + %pi^5 *x^11/42240;
+
+fresnel_c(taylor(x,x,0,12));
+x - %pi^2*x^5/40 + %pi^4 *x^9/3456;
+
+/* Differentiation of the Fresnel Integrals */
+
+diff(fresnel_s(x),x);
+sin(%pi*x^2/2);
+
+diff(fresnel_c(x),x);
+cos(%pi*x^2/2);
+
+/* The elementary Integral of the Fresnel Integrals 
+   More complicated integrals can be found in rtest_integrate_special.mac */
+
+integrate(fresnel_s(x),x);
+x*fresnel_s(x)+1/%pi*cos(%pi*x^2/2);
+
+integrate(fresnel_c(x),x);
+x*fresnel_c(x)-1/%pi*sin(%pi*x^2/2);
+
+/* Representation of the Fresnel Integrals through the Error function Erf */
+
+erf_representation:true;
+true;
+
+fresnel_s(x);
+(1+%i)/4*(erf((1+%i)/2*sqrt(%pi)*x) - %i* erf((1-%i)/2*sqrt(%pi)*x));
+
+fresnel_c(x);
+(1-%i)/4*(erf((1+%i)/2*sqrt(%pi)*x) + %i* erf((1-%i)/2*sqrt(%pi)*x));
+
+erf_representation:false;
+false;
+
+/* Representation of the Fresnel Integrals through the 
+   Hypergeometric function */
+
+hypergeometric_representation:true;
+true;
+
+fresnel_s(x);
+%pi*x^3/6*hypergeometric([3/4],[3/2,7/4],-%pi^2*x^4/16);
+
+fresnel_c(x);
+x*hypergeometric([1/4],[1/2,5/4],-%pi^2*x^4/16);
+
+hypergeometric_representation:false;
+false;
+
+/* Numerical tests for the Fresnel Integrals */
+
+fpprec:64;
+64;
+
+/* Tests for fresnel_s
+   Real argument 0.25,0.50,1.0,2.0,5.0,10.0 */
+
+relerror(
+  fresnel_s(0.25),
+  0.008175600235777755778102308866942774752486734698017086013976457144b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(0.25b0),
+  0.008175600235777755778102308866942774752486734698017086013976457144b0,
+  1b-64);
+true;
+
+relerror(
+  fresnel_s(0.50),
+  0.06473243285999927761148051223061476765072591849351249278758894565b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(0.50b0),
+  0.06473243285999927761148051223061476765072591849351249278758894565b0,
+  1b-64);
+true;
+
+relerror(
+  fresnel_s(1.0),
+  0.4382591473903547660767566966251526374937865724524165673344073263b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(1.0b0),
+  0.4382591473903547660767566966251526374937865724524165673344073263b0,
+  2.0b-64);
+true;
+
+relerror(
+  fresnel_s(2.0),
+  0.3434156783636982421953008159580684568865418122025247675792689204b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(2.0b0),
+  0.3434156783636982421953008159580684568865418122025247675792689204b0,
+  5.0b-64);
+true;
+
+relerror(
+  fresnel_s(5.0),
+  0.4991913819171168867519283804659916554084319970723881534101411152b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(5.0b0),
+  0.4991913819171168867519283804659916554084319970723881534101411152b0,
+  1b-64);
+true;
+
+relerror(
+  fresnel_s(10.0),
+  0.4681699785848822404033511108104469460538427245558302799270062272b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(10.0b0),
+  0.4681699785848822404033511108104469460538427245558302799270062272b0,
+  1b-64);
+true;
+
+/* Complex argument 0.25+%i,0.50+%i,1.0+%i,2.0+%i,5.0+%i */
+
+relerror(
+  fresnel_s(0.25+%i),
+  -0.2762104914409824591766528447060750469693825567583676638192814447b0
+  - 0.4331061708987372646968782339728450577465559834165609320175098398b0*%i,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(0.25b0+%i),
+  -0.2762104914409824591766528447060750469693825567583676638192814447b0
+  - 0.4331061708987372646968782339728450577465559834165609320175098398b0*%i,
+  1b-64);
+true;
+
+relerror(
+  fresnel_s(0.50+%i),
+   -0.7169788451833594258616872412575572495423663980107873580716959051b0
+  - 0.3393082523853171783825858066689424560943675693298848574923503884b0*%i,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(0.50b0+%i),
+   -0.7169788451833594258616872412575572495423663980107873580716959051b0
+  - 0.3393082523853171783825858066689424560943675693298848574923503884b0*%i,
+  1b-64);
+true;
+
+relerror(
+  fresnel_s(1.0+%i),
+  -2.061888219194840468080716536685708600815908323737868052048638806b0 
+  + 2.061888219194840468080716536685708600815908323737868052048638806b0*%i,
+  1e-15);
+true;
+
+relerror(
+  fresnel_s(1.0b0+%i),
+  -2.061888219194840468080716536685708600815908323737868052048638806b0 
+  + 2.061888219194840468080716536685708600815908323737868052048638806b0*%i,
+  2.0b-64);
+true;
+
+relerror(
+  fresnel_s(2.0+%i),
+  -15.58775110440458732748278797797881643198730378904101846898562610b0 
+  - 36.72546488399143842838787627677917885752587065976755449373500438b0*%i,
+  4.0e-13);
+true;
+
+relerror(
+  fresnel_s(2.0b0+%i),
+  -15.58775110440458732748278797797881643198730378904101846898562610b0 
+  - 36.72546488399143842838787627677917885752587065976755449373500438b0*%i,
+  4.0b-62);
+true;
+
+relerror(
+  fresnel_s(5.0+%i),
+  -204452.5505063210590493330126425293361797143144299005524393297869b0 
+  + 38438.9093777759513198736581956757227475265101347572827364567521b0*%i,
+  2.0e-14);
+true;
+
+relerror(
+  fresnel_s(5.0b0+%i),
+  -204452.5505063210590493330126425293361797143144299005524393297869b0 
+  + 38438.9093777759513198736581956757227475265101347572827364567521b0*%i,
+  4.0b-63);
+true;
+
+/* Tests for fresnel_c
+   Real argument 0.25,0.50,1.0,2.0,5.0,10.0 */
+
+relerror(
+  fresnel_c(0.25),
+  0.2497591503565431834592215178008857243781399770549380697377810451b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(0.25b0),
+  0.2497591503565431834592215178008857243781399770549380697377810451b0,
+  2.0b-64);
+true;
+
+relerror(
+  fresnel_c(0.50),
+  0.4923442258714463928788436651566816377660951457715012532946526193b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(0.50b0),
+  0.4923442258714463928788436651566816377660951457715012532946526193b0,
+  1b-64);
+true;
+
+relerror(
+  fresnel_c(1.0),
+  0.7798934003768228294742064136526901366306257081363209601031335832b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(1.0b0),
+  0.7798934003768228294742064136526901366306257081363209601031335832b0,
+  2.0b-64);
+true;
+
+relerror(
+  fresnel_c(2.0),
+  0.4882534060753407545002235033572610376883671545092153829475964427b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(2.0b0),
+  0.4882534060753407545002235033572610376883671545092153829475964427b0,
+  5.0b-64);
+true;
+
+relerror(
+  fresnel_c(5.0),
+  0.5636311887040122311021074044130139641207537623099921078616593412b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(5.0b0),
+  0.5636311887040122311021074044130139641207537623099921078616593412b0,
+  2.0b-64);
+true;
+
+relerror(
+  fresnel_c(10.0),
+  0.4998986942055157236141518477356211143923468402262626572074674093b0,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(10.0b0),
+  0.4998986942055157236141518477356211143923468402262626572074674093b0,
+  1b-64);
+true;
+
+/* Complex argument 0.25+%i,0.50+%i,1.0+%i,2.0+%i,5.0+%i */
+
+relerror(
+  fresnel_c(0.25+%i),
+  0.0097446563393801078320153856258158947458946246448139394089371651b0 
+  + 0.8830495953515316267486626148763161568578011755347662219418704558b0*%i,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(0.25b0+%i),
+  0.0097446563393801078320153856258158947458946246448139394089371651b0 
+  + 0.8830495953515316267486626148763161568578011755347662219418704558b0*%i,
+  1b-64);
+true;
+
+relerror(
+  fresnel_c(0.50+%i),
+  0.1199549363708813724035204126626172258713764410185526201803481040b0 
+  + 1.2468579809337107891237368150539206578767217615436096318514136378b0*%i,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(0.50b0+%i),
+  0.1199549363708813724035204126626172258713764410185526201803481040b0 
+  + 1.2468579809337107891237368150539206578767217615436096318514136378b0*%i,
+  1b-64);
+true;
+
+relerror(
+  fresnel_c(1.0+%i),
+  2.555793778102439024634522388352195842156623604203584296357752992b0 
+  + 2.555793778102439024634522388352195842156623604203584296357752992b0*%i,
+  1e-15);
+true;
+
+relerror(
+  fresnel_c(1.0b0+%i),
+  2.555793778102439024634522388352195842156623604203584296357752992b0 
+  + 2.555793778102439024634522388352195842156623604203584296357752992b0*%i,
+  2.0b-64);
+true;
+
+relerror(
+  fresnel_c(2.0+%i),
+  -36.22568799288165021578757830205090012554103292231420092205271528b0
+  + 16.08787137412548041729488986757594802326683407694887086741793640b0*%i,
+  4.0e-13);
+true;
+
+relerror(
+  fresnel_c(2.0b0+%i),
+  -36.22568799288165021578757830205090012554103292231420092205271528b0
+  + 16.08787137412548041729488986757594802326683407694887086741793640b0*%i,
+  4.0b-62);
+true;
+
+relerror(
+  fresnel_c(5.0+%i),
+  38439.4093777740143202918713550472184235160647415045418329908291b0 
+  + 204453.0505063119004499308897858846121088557663560705550579996093b0*%i,
+  2.0e-14);
+true;
+
+relerror(
+  fresnel_c(5.0b0+%i),
+  38439.4093777740143202918713550472184235160647415045418329908291b0 
+  + 204453.0505063119004499308897858846121088557663560705550579996093b0*%i,
+  4.0b-63);
+true;
+
 (fpprec:oldfpprec,done);
 done;
