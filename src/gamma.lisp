@@ -22,12 +22,18 @@
 ;;;   erfi(z)
 ;;;   erf_generalized(z1,z2)
 ;;;
+;;;   fresnel_s(z)
+;;;   fresnel_c(z)
+;;;
 ;;; Maxima User variable:
 ;;;
 ;;;   $factorial_expand    - Allows argument simplificaton for expressions like
 ;;;                          factorial_double(n-1) and factorial_double(2*k+n)
-;;;   $erf_representation  - When T erfc, erfi and erf_generalized are
-;;;                          transformed to erf
+;;;   $erf_representation  - When T erfc, erfi, erf_generalized, fresnel_s 
+;;;                          and fresnel_c are transformed to erf.
+;;;   $hypergeometric_representation
+;;;                        - Enables transformation to a Hypergeometric
+;;;                          representation for fresnel_s and fresnel_c
 ;;;
 ;;; Maxima User variable (not definied in this file):
 ;;;
@@ -64,6 +70,9 @@
 
 (defvar $erf_representation nil
   "When T erfc, erfi and erf_generalized are transformed to erf.")
+
+(defvar $hypergeometric_representation nil
+  "When T a transformation to a hypergeometric representation is done.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; The following functions test if numerical evaluation has to be done.
@@ -1978,5 +1987,536 @@
 
     (t
      (eqtest (list '(%erfi) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Fresnel Integral S(z)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $fresnel_s (z)
+  (simplify (list '(%fresnel_s) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Set properties to give full support to the parser and display
+
+(defprop $fresnel_s %fresnel_s alias)
+(defprop $fresnel_s %fresnel_s verb)
+
+(defprop %fresnel_s $fresnel_s reversealias)
+(defprop %fresnel_s $fresnel_s noun)
+
+;;; fresnel_s is a simplifying function
+
+(defprop %fresnel_s simp-fresnel-s operators)
+
+;;; fresnel_s has mirror symmetry
+
+(defprop %fresnel_s t commutes-with-conjugate)
+
+;;; fresnel_s is an odd function
+;;;
+;;; Maxima has two mechanism to define a reflection property
+;;; 1. Declare the feature oddfun or evenfun
+;;; 2. Put a reflection rule on the property list
+;;;
+;;; The second way is used for the trig functions. We use it here too.
+
+;;; This would be the first way to give the property of an odd function.
+;(eval-when
+;    #+gcl (load eval)
+;    #-gcl (:load-toplevel :execute)
+;    (let (($context '$global) (context '$global))
+;      (meval '(($declare) %fresnel_s $oddfun))))
+
+(defprop %fresnel_s odd-function-reflect reflection-rule)
+
+;;; Differentiation of the Fresnel Integral S
+
+(defprop %fresnel_s
+  ((z)
+   ((%sin) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))
+  grad)
+
+;;; Integration of the Fresnel Integral S
+
+(defprop %fresnel_s
+  ((z)
+   ((mplus) 
+      ((mtimes) z ((%fresnel_s) z))
+      ((mtimes) 
+         ((mexpt) $%pi -1)
+         ((%cos) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))))
+  integral)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-fresnel-s (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf)  '((rat) 1 2))
+    ((eq z '$minf) '((rat) -1 2))
+    
+    ;; Check for numerical evaluation
+    
+     ((float-numerical-eval-p z)
+      (nth-value 0 (fresnel ($float z))))
+    
+     ((complex-float-numerical-eval-p z)
+      (cond
+        ((zerop1 ($realpart z))
+         ;; A pure imaginary argument. Use fresnel_s(%i*x)=-%i*fresnel_s(x).
+         (mul -1 '$%i
+           (nth-value 0 (fresnel ($float ($imagpart z))))))
+        (t
+         (complexify 
+           (nth-value 0 
+             (complex-fresnel (complex ($float ($realpart z)) 
+                                       ($float ($imagpart z)))))))))
+
+    ((bigfloat-numerical-eval-p z)
+     (nth-value 0 (bfloat-fresnel ($bfloat z))))
+
+    ((complex-bigfloat-numerical-eval-p z)
+     (cond
+       ((zerop1 ($realpart z))
+        ;; A pure imaginary argument. Use fresnel_s(%i*x)=-%i*fresnel_s(x).
+        (nth-value 0
+          (mul -1 '$%i 
+            (bfloat-fresnel ($bfloat ($imagpart z))))))
+       (t
+        (nth-value 0 
+          (complex-bfloat-fresnel 
+            (add ($bfloat ($realpart z)) 
+                 (mul '$%i ($bfloat ($imagpart z)))))))))
+
+    ;; Check for argument simplification
+
+    ((taylorize (mop expr) (second expr)))
+    ((and $%iargs (multiplep z '$%i))
+     (mul -1 '$%i (simplify (list '(%fresnel_s) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop expr) z $trigsign))
+
+    ;; Representation through equivalent functions
+
+    ($erf_representation
+      (mul
+        (div (add 1 '$%i) 4)
+        (add
+          (simplify 
+            (list 
+              '(%erf) 
+              (mul (div (add 1 '$%i) 2) (power '$%pi (div 1 2)) z)))
+          (mul -1 '$%i
+            (simplify 
+              (list 
+                '(%erf) 
+                (mul (div (sub 1 '$%i) 2) (power '$%pi (div 1 2)) z)))))))
+
+    ($hypergeometric_representation
+      (mul 
+        (div (mul '$%pi (power z 3)) 6)
+        (list '(%hypergeometric) 
+          (list '(mlist) (div 3 4))
+          (list '(mlist) (div 3 2) (div 7 4))
+          (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+
+    (t
+     (eqtest (list '(%fresnel_s) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Fresnel Integral C(z)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $fresnel_c (z)
+  (simplify (list '(%fresnel_c) (resimplify z))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Set properties to give full support to the parser and display
+
+(defprop $fresnel_c %fresnel_c alias)
+(defprop $fresnel_c %fresnel_c verb)
+
+(defprop %fresnel_c $fresnel_c reversealias)
+(defprop %fresnel_c $fresnel_c noun)
+
+;;; fresnel_c is a simplifying function
+
+(defprop %fresnel_c simp-fresnel-c operators)
+
+;;; fresnel_c has mirror symmetry
+
+(defprop %fresnel_c t commutes-with-conjugate)
+
+;;; fresnel_c is an odd function
+;;; Maxima has two mechanism to define a reflection property
+;;; 1. Declare the feature oddfun or evenfun
+;;; 2. Put a reflection rule on the property list
+;;;
+;;; The second way is used for the trig functions. We use it here too.
+
+(defprop %fresnel_c odd-function-reflect reflection-rule)
+
+;;; Differentiation of the Fresnel Integral C
+
+(defprop %fresnel_c
+  ((z)
+   ((%cos) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))
+  grad)
+
+;;; Integration of the Fresnel Integral C
+
+(defprop %fresnel_c
+  ((z)
+   ((mplus) 
+      ((mtimes) z ((%fresnel_c) z))
+      ((mtimes) -1 
+         ((mexpt) $%pi -1)
+         ((%sin) ((mtimes) ((rat) 1 2) $%pi ((mexpt) z 2))))))
+  integral)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-fresnel-c (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+
+    ;; Check for specific values
+
+    ((zerop1 z) z)
+    ((eq z '$inf)  '((rat) 1 2))
+    ((eq z '$minf) '((rat) -1 2))
+    
+    ;; Check for numerical evaluation
+    
+     ((float-numerical-eval-p z)
+      (nth-value 1 (fresnel ($float z))))
+
+     ((complex-float-numerical-eval-p z)
+      (cond
+        ((zerop1 ($realpart z))
+         ;; A pure imaginary argument. Use fresnel_c(%i*x)=%i*fresnel_c(x).
+         (mul '$%i
+           (nth-value 1 (fresnel ($float ($imagpart z))))))
+        (t
+         (complexify 
+           (nth-value 1
+             (complex-fresnel (complex ($float ($realpart z)) 
+                                       ($float ($imagpart z)))))))))
+
+    ((bigfloat-numerical-eval-p z)
+     (nth-value 1 (bfloat-fresnel ($bfloat z))))
+
+    ((complex-bigfloat-numerical-eval-p z)
+     (cond
+       ((zerop1 ($realpart z))
+        ;; A pure imaginary argument. Use fresnel_c(%i*x)=%i*fresnel_c(x).
+        (nth-value 1
+          (mul -1 '$%i 
+            (bfloat-fresnel ($bfloat ($imagpart z))))))
+       (t
+        (nth-value 1 
+          (complex-bfloat-fresnel 
+            (add ($bfloat ($realpart z)) 
+                 (mul '$%i ($bfloat ($imagpart z)))))))))
+
+    ;; Check for argument simplification
+
+    ((taylorize (mop expr) (second expr)))
+    ((and $%iargs (multiplep z '$%i))
+     (mul '$%i (simplify (list '(%fresnel_c) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop expr) z $trigsign))
+
+    ;; Representation through equivalent functions
+
+    ($erf_representation
+      (mul
+        (div (sub 1 '$%i) 4)
+        (add
+          (simplify 
+            (list 
+              '(%erf) 
+              (mul (div (add 1 '$%i) 2) (power '$%pi (div 1 2)) z)))
+          (mul '$%i
+            (simplify 
+              (list 
+                '(%erf) 
+                (mul (div (sub 1 '$%i) 2) (power '$%pi (div 1 2)) z)))))))
+
+    ($hypergeometric_representation
+      (mul z
+        (list '(%hypergeometric) 
+          (list '(mlist) (div 1 4))
+          (list '(mlist) (div 1 2) (div 5 4))
+          (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
+
+    (t
+      (eqtest (list '(%fresnel_c) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *fresnel-maxit* 1000)
+(defvar *fresnel-eps*   1e-16)
+(defvar *fresnel-min*   1e-32)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun fresnel (x)
+  (let ((fpmin *fresnel-min*)
+        (eps *fresnel-eps*)
+        (maxit *fresnel-maxit*)
+        (xmin 1.5)
+        (ax (abs x))
+        (s 0.0)
+        (c (abs x)))
+    (when (> ax (sqrt fpmin))
+      (cond
+        ((< ax xmin)
+         (when *debug-gamma*
+           (format t "~& in FRESNEL series expansion.~%"))
+         (let ((sums 0.0) (sumc ax))
+           (do ((sum 0.0) 
+                (sign 1) 
+                (fact (* (/ (float pi) 2.0) ax ax))
+                (term ax)
+                (odd t (not odd))
+                (n 3 (+ n 2))
+                (k 1 (+ k 1)))
+               ((> k maxit) (merror "Series expansion failed in fresnel."))
+             (setq term (* term (/ fact k)))
+             (setq sum (+ sum (/ (* sign term) n)))
+             (setq test (* (abs sum) eps))
+             (if odd
+               (progn
+                 (setq sign (- sign))
+                 (setq sums sum)
+                 (setq sum sumc))
+               (progn
+                 (setq sumc sum)
+                 (setq sum sums)))
+             (if (< term test) (return)))
+         (setq s sums)
+         (setq c sumc)))
+        (t
+         (let* ((pix2 (* (float pi) ax ax))
+                (b (complex 1.0 (- pix2)))
+                (d (/ 1.0 b))
+                (h d)
+                (cs (complex 0.0 0.0)))
+           (do ((cc (complex (/ 1.0 fpmin) 0.0))
+                (a 0.0)
+                (del 0.0)
+                (n 1 (+ n 2))
+                (k 2 (+ k 1)))
+               ((> k maxit)
+                (merror "Continued fractions fails in `fresnel'."))
+             (setq a (* (- n) (+ n 1)))
+             (setq b (+ b (complex 4.0 0.0)))
+             (setq d (/ 1.0 (+ (* a d) b)))
+             (setq cc (+ b (/ (complex a 0.0) cc)))
+             (setq del (* cc d))
+             (setq h (* h del))
+             (if (< (abs (- del 1.0)) eps) (return)))
+           (setq h (* (complex ax (- ax)) h))
+           (setq cs (* (complex 0.5 0.5)
+                       (- 1.0 (* (complex (cos (* 0.5 pix2))
+                                          (sin (* 0.5 pix2)))
+                                 h))))
+           (setq c (realpart cs))
+           (setq s (imagpart cs))))))
+    (when (< x 0.0)
+        (setq c (- c))
+        (setq s (- s)))
+    (values s c)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun complex-fresnel (z)
+  (let ((fpmin *fresnel-min*)
+        (eps *fresnel-eps*)
+        (maxit *fresnel-maxit*)
+        (xmin 1.5)
+        (s (complex 0.0 0.0))
+        (c z))
+    (when (> (abs z) (sqrt fpmin))
+      (cond
+        ((< (abs z) xmin)
+         (when *debug-gamma*
+           (format t "~& in FRESNEL series expansion.~%"))
+         (let ((sums (complex 0.0 0.0)) (sumc z))
+           (do ((sum (complex 0.0 0.0))
+                (sign 1)
+                (fact (* (/ (float pi) 2.0) z z))
+                (term z)
+                (odd t (not odd))
+                (test 0.0)
+                (n 3 (+ n 2))
+                (k 1 (+ k 1)))
+               ((> k maxit) (merror "Series expansion failed in `fresnel'."))
+             (setq term (* term (/ fact k)))
+             (setq sum (+ sum (/ (* sign term) n)))
+             (setq test (* (abs sum) eps))
+             (if odd
+               (progn
+                 (setq sign (- sign))
+                 (setq sums sum)
+                 (setq sum sumc))
+               (progn
+                 (setq sumc sum)
+                 (setq sum sums)))
+             (if (< (abs term) test) (return)))
+           (setq s sums)
+           (setq c sumc)))
+        (t
+         (let* ((z+ (* (complex 0.5 0.5) (sqrt (float pi)) z))
+                (z- (* (complex 0.5 -0.5) (sqrt (float pi)) z))
+                (erf+ (complex-erf z+))
+                (erf- (complex-erf z-)))
+           (setq s (* (complex 0.25 0.25) 
+                      (+ erf+ (* (complex 0 -1) erf-))))
+           (setq c (* (complex 0.25 -0.25)
+                      (+ erf+ (* (complex 0 1) erf-))))))))
+    (values s c)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun bfloat-fresnel (x)
+  (let* ((eps (power ($bfloat 10.0) (- $fpprec)))
+         (fpmin (mul eps eps))
+         (maxit *fresnel-maxit*)
+         (xmin 1.5)
+         (ax (simplify (list '(mabs) ($bfloat x))))
+         (bigfloatzero ($bfloat bigfloatzero))
+         (s bigfloatzero)
+         (c ax))
+    (when (eq ($sign (sub ax (power fpmin (div 1 2)))) '$pos)
+      (cond
+        ((eq ($sign (sub ax xmin)) '$neg)
+         (when *debug-gamma*
+           (format t "~& in FRESNEL series expansion for bfloat.~%"))
+         (let ((sums bigfloatzero) (sumc ax))
+           (do ((sum bigfloatzero)
+                (sign 1)
+                (fact (mul (div ($bfloat '$%pi) ($bfloat 2)) ax ax))
+                (term ax)
+                (odd t (not odd))
+                (n 3 (+ n 2))
+                (k 1 (+ k 1)))
+               ((> k maxit) (merror "Series expansion failed in `fresnel'."))
+             (when *debug-gamma*
+               (format t "~& in DO-LOOP~%")
+               (format t "~&   : sums = ~A~%" sums)
+               (format t "~&   : sumc = ~A~%" sumc))
+             (setq term (mul term (div fact k)))
+             (setq sum (add sum (div (mul sign term) n)))
+             (setq test (mul (simplify (list '(mabs) sum)) eps))
+             (if odd
+               (progn
+                 (setq sign (- sign))
+                 (setq sums sum)
+                 (setq sum sumc))
+               (progn
+                 (setq sumc sum)
+                 (setq sum sums)))
+             (if (eq ($sign (sub term test)) '$neg) (return)))
+         (setq s sums)
+         (setq c sumc)))
+        (t
+         (let* ((pix2 (mul ($bfloat '$%pi) ax ax))
+                (b (add 1.0 (mul -1 '$%i pix2)))
+                (d (div 1.0 b))
+                (h d)
+                (cs bigfloatzero))
+           (do ((cc (div 1.0 fpmin))
+                (a 0)
+                (del bigfloatzero)
+                (n 1 (+ n 2))
+                (k 2 (+ k 1)))
+               ((> k maxit)
+                (merror "Continued fractions fails in `fresnel'."))
+             (setq a (* (- n) (+ n 1)))
+             (setq b (add b 4.0))
+             (setq d (cdiv 1.0 (add (mul a d) b)))
+             (setq cc (add b (cdiv a cc)))
+             (setq del (cmul cc d))
+             (setq h (cmul h del))
+             (if (eq ($sign (sub (simplify (list '(mabs) (sub del 1.0))) eps)) 
+                     '$neg)
+               (return)))
+           (setq h (cmul (add ax (mul -1 '$%i ax)) h))
+           (setq cs (cmul (add 0.5 (mul '$%i 0.5))
+                       (sub 1.0 (mul (add ($cos (mul 0.5 pix2))
+                                          (mul '$%i ($sin (mul 0.5 pix2))))
+                                 h))))
+           (setq c ($realpart cs))
+           (setq s ($imagpart cs))))))
+    (when (eq ($sign x) '$neg)
+        (setq c (mul -1 c))
+        (setq s (mul -1 s)))
+    (values s c)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun complex-bfloat-fresnel (z)
+  (let* ((eps (power ($bfloat 10.0) (- $fpprec)))
+         (fpmin (mul eps eps))
+         (maxit *fresnel-maxit*)
+         (xmin 1.5)
+         (bigfloatzero ($bfloat bigfloatzero))
+         (s bigfloatzero)
+         (c z))
+    (when (eq ($sign (sub (simplify (list '(mabs) z))
+                          (power fpmin (div 1 2)))) '$pos)
+      (cond
+        ((eq ($sign (sub (simplify (list '(mabs) z)) xmin)) '$neg)
+         (when *debug-gamma*
+           (format t "~& in FRESNEL series expansion.~%"))
+         (let ((sums bigfloatzero) (sumc z))
+           (do ((sum bigfloatzero)
+                (sign 1)
+                (fact (cmul (div ($bfloat '$%pi) 2.0) (cmul z z)))
+                (term z)
+                (odd t (not odd))
+                (test bigfloatzero)
+                (n 3 (+ n 2))
+                (k 1 (+ k 1)))
+               ((> k maxit) (merror "Series expansion failed in `fresnel'."))
+             (setq term (cmul term (div fact k)))
+             (setq sum (add sum (cdiv (mul sign term) n)))
+             (setq test (mul (simplify (list '(mabs) sum)) eps))
+             (if odd
+               (progn
+                 (setq sign (- sign))
+                 (setq sums sum)
+                 (setq sum sumc))
+               (progn
+                 (setq sumc sum)
+                 (setq sum sums)))
+             (if (eq ($sign (sub (simplify (list '(mabs) term)) test)) '$neg)
+               (return)))
+           (setq s sums)
+           (setq c sumc)))
+        (t
+         (let* ((z+ (cmul (add 0.5 (mul '$%i 0.5)) 
+                          (cmul (power ($bfloat '$%pi) ($bfloat (div 1 2))) z)))
+                (z- (cmul (add 0.5 (mul -1 '$%i 0.5)) 
+                          (cmul (power ($bfloat '$%pi) ($bfloat (div 1 2))) z)))
+                (erf+ (complex-bfloat-erf z+))
+                (erf- (complex-bfloat-erf z-)))
+           (setq s (cmul (add 0.25 (mul '$%i 0.25)) 
+                         (add erf+ (mul -1 '$%i erf-))))
+           (setq c (cmul (add 0.25 (mul -1 '$%i 0.25))
+                         (add erf+ (mul '$%i erf-))))))))
+    (values s c)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
