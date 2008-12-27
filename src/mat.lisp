@@ -452,3 +452,6 @@
 		     (timeorg tim))
 	  (t (putprop linelable t 'nodisp)))
     linelable))
+
+(declare-top (unspecial permsign a rank delta nrow nvar n m variableorder
+			dependentrows inconsistentrows l k))
