@@ -869,7 +869,7 @@ printing message (2).
 (%i3) z: 1729 * w$
 
 (%i4) printq1 (x) ::= block (print ("(1) x is equal to", x),
-'(print ("(2) x is equal to", x)))$
+      '(print ("(2) x is equal to", x)))$
 
 (%i5) printq1 (y - z);
 (1) x is equal to y - z
@@ -898,7 +898,7 @@ until the explicit evaluation @code{''%}.
 (%i3) z: 1729 * w$
 
 (%i4) printe1 (x) := block (print ("(1) x is equal to", x),
-'(print ("(2) x is equal to", x)))$
+      '(print ("(2) x is equal to", x)))$
 
 (%i5) printe1 (y - z);
 (1) x is equal to 1234 - 1729 w
