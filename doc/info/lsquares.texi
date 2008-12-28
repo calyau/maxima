@@ -289,17 +289,20 @@ in the variables @var{x}, with data @var{D}.
 
 The MSE is defined as:
 
+@tex
+$${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right)\right]^2,$$
+@end tex
+@ifnottex
 @example
                     n
                    ====
-                   \                        2
-                    >    (lhs(e ) - rhs(e ))
-                   /           i         i
+               1   \                        2
+               -    >    (lhs(e ) - rhs(e ))
+               n   /           i         i
                    ====
                    i = 1
-                   --------------------------
-                               n
 @end example
+@end ifnottex
 
 where @var{n} is the number of data and @code{@var{e}[i]} is the equation @var{e}
 evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]}.
@@ -382,10 +385,15 @@ if not an equation, @var{e} is treated as if it were @code{@var{e} = 0}.
 
 The residuals are defined as:
 
+@tex
+$${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
+@end tex
+@ifnottex
 @example
                         lhs(e ) - rhs(e )
                              i         i
 @end example
+@end ifnottex
 
 where @code{@var{e}[i]} is the equation @var{e}
 evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]},
@@ -446,17 +454,20 @@ with specified parameters @var{a} and data @var{D}.
 
 The residual MSE is defined as:
 
+@tex
+$${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right)\right]^2,$$
+@end tex
+@ifnottex
 @example
                     n
                    ====
-                   \                        2
-                    >    (lhs(e ) - rhs(e ))
-                   /           i         i
+               1   \                        2
+               -    >    (lhs(e ) - rhs(e ))
+               n   /           i         i
                    ====
                    i = 1
-                   --------------------------
-                               n
 @end example
+@end ifnottex
 
 where @code{@var{e}[i]} is the equation @var{e}
 evaluated with the variables in @var{x} assigned values from the @code{i}-th datum, @code{@var{D}[i]},
