@@ -202,7 +202,7 @@ false;
 false;
 
 /* Kamke 2. 441  */ 
-(pn_(441),ans:contrib_ode(eqn:'diff(y,x,2)=(2*JacobiSN(x,k)+JacobiCN(x,k)*JacobiDN(x,k))*'diff(y,x,1)/(JacobiSN(x,k)^2-JacobiSN(a,k)^2)-(-4*JacobiSN(a,k)^2*(k^2+1)+6*JacobiSN(a,k)^4*k^2+2)*y/(JacobiSN(x,k)^2-JacobiSN(a,k)^2)-1/(JacobiSN(x,k)^2-JacobiSN(a,k)^2),y,x));
+(pn_(441),ans:contrib_ode(eqn:'diff(y,x,2)=(2*jacobi_sn(x,m)+jacobi_cn(x,m)*jacobi_dn(x,m))*'diff(y,x,1)/(jacobi_sn(x,m)^2-jacobi_sn(a,m)^2)-(-4*jacobi_sn(a,m)^2*(m+1)+6*jacobi_sn(a,m)^4*m+2)*y/(jacobi_sn(x,m)^2-jacobi_sn(a,m)^2)-1/(jacobi_sn(x,m)^2-jacobi_sn(a,m)^2),y,x));
 false;
 
 /* Kamke 2. 442  */ 

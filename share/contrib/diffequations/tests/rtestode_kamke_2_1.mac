@@ -165,7 +165,7 @@ false;
 false;
 
 /* Kamke 2. 27  */ 
-(pn_(27),ans:contrib_ode(eqn:'diff(y,x,2)+(a*JacobiSN(x,k)^2+b)*y,y,x));
+(pn_(27),ans:contrib_ode(eqn:'diff(y,x,2)+(a*jacobi_sn(x,m)^2+b)*y,y,x));
 false;
 
 /* Kamke 2. 28  */ 
@@ -442,7 +442,7 @@ false;
 false;
 
 /* Kamke 2. 74  */ 
-(pn_(74),ans:contrib_ode(eqn:'diff(y,x,2)+k^2*JacobiCN(x,k)*JacobiSN(x,k)*'diff(y,x,1)/JacobiDN(x,k)+n^2*JacobiDN(x,k)^2*y,y,x));
+(pn_(74),ans:contrib_ode(eqn:'diff(y,x,2)+m*jacobi_cn(x,m)*jacobi_sn(x,m)*'diff(y,x,1)/jacobi_dn(x,m)+n^2*jacobi_dn(x,m)^2*y,y,x));
 false;
 
 /* Kamke 2. 75  */ 
