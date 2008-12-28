@@ -145,16 +145,11 @@ $$E\left[X\right]=\sum_{x_{i}}{x_{i}f\left(x_{i}\right)},$$
 $$V\left[X\right]=\sum_{x_{i}}{f\left(x_{i}\right)\left(x_{i}-E\left[X\right]\right)^2},$$
 @end tex
 
-@ifhtml
+@ifnottex
 @example
                D[X] = sqrt(V[X]),
 @end example
-@end ifhtml
-@ifinfo
-@example
-               D[X] = sqrt(V[X]),
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$D\left[X\right]=\sqrt{V\left[X\right]},$$
 @end tex
@@ -480,7 +475,7 @@ Returns the kurtosis coefficient of a Student random variable @math{t(n)}, with 
 Returns a Student random variate @math{t(n)}, with @math{n>0}. Calling @code{random_student_t} with a second argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @var{Z} is a normal random variable @math{N(0,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
-@ifhtml
+@ifnottex
 @example
                            Z
                  X = -------------
@@ -489,17 +484,7 @@ The implemented algorithm is based on the fact that if @var{Z} is a normal rando
                      | ---  |
                      \  n   /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                           Z
-                 X = -------------
-                     /   2  \ 1/2
-                     |  S   |
-                     | ---  |
-                     \  n   /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
@@ -651,7 +636,7 @@ Returns the kurtosis coefficient of a noncentral Student random variable @math{n
 Returns a noncentral Student random variate @math{nc_t(n,ncp)}, with @math{n>0}. Calling @code{random_noncentral_student_t} with a third argument @var{m}, a random sample of size @var{m} will be simulated.
 
 The implemented algorithm is based on the fact that if @var{X} is a normal random variable @math{N(ncp,1)} and @math{S^2} is a chi square random variable with @var{n} degrees of freedom, @math{Chi^2(n)}, then
-@ifhtml
+@ifnottex
 @example
                            X
                  U = -------------
@@ -660,17 +645,7 @@ The implemented algorithm is based on the fact that if @var{X} is a normal rando
                      | ---  |
                      \  n   /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                           X
-                 U = -------------
-                     /   2  \ 1/2
-                     |  S   |
-                     | ---  |
-                     \  n   /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
@@ -1136,20 +1111,13 @@ Returns the kurtosis coefficient of a F random variable @math{F(m,n)}, with @mat
 Returns a F random variate @math{F(m,n)}, with @math{m,n>0}. Calling @code{random_f} with a third argument @var{k}, a random sample of size @var{k} will be simulated.
 
 The simulation algorithm is based on the fact that if @var{X} is a @math{Chi^2(m)} random variable and @math{Y} is a @math{Chi^2(n)} random variable, then
-@ifhtml
+@ifnottex
 @example
                         n X
                     F = ---
                         m Y
 @end example
-@end ifhtml
-@ifinfo
-@example
-                        n X
-                    F = ---
-                        m Y
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$F={{n X}\over{m Y}}$$
 @end tex
