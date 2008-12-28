@@ -550,8 +550,6 @@
         ;; algorithm. This can be generalized to a lookup algorithm for any
         ;; special function. The integral is put on the property list.
         ;; In a first step we support functions with one and two arguments.
-        ;; In the case of two arguments we do an integration only wrt the
-        ;; second argument.
 
         ((and (not (atom (car exp)))
               (setq form (get (caar exp) 'integral)))
@@ -562,13 +560,27 @@
               (format t "~&INTEGRALLOOKUPS: Found integral with 1 argument.~%"))
             ($substitute (cadr exp) (caar form) (cadr form)))
 
+         ((and (= (length (car form)) 2)
+		(cadr form)
+                (freevar (caddr exp)))
+ 	   ;; integral on the property list with two arguments.
+	   ;; integrate wrt argument 1.          
+           (when *debug-integrate*
+             (format t "~&INTEGRALLOOKUPS: Found integral with 1st of 2 arguments.~%"))
+           (let ((arg1 (cadr exp))
+                 (arg2 (caddr exp)))
+             ($substitute
+               arg2
+               (cadar form)
+               ($substitute arg1 (caar form) (cadr form)))))
+
           ((and (= (length (car form)) 2)
+		(caddr form)
                 (freevar (cadr exp)))
            ;; Found an integral on the property list with two arguments.
-           ;; We allow integration only wrt the 2. argument. This has to
-           ;; be generalized.
+           ;; Integrate wrt argument 2.
            (when *debug-integrate*
-             (format t "~&INTEGRALLOOKUPS: Found integral with 2 arguments.~%"))
+             (format t "~&INTEGRALLOOKUPS: Found integral with 2nd of 2 arguments.~%"))
            (let ((arg1 (cadr exp))
                  (arg2 (caddr exp)))
              ($substitute
