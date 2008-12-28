@@ -668,6 +668,51 @@ Generalized Error function Erf(z1,z2)
 @closecatbox
 @end deffn
 
+@deffn {Function} fresnel_c (@var{z})
+The Fresnel Integral C(z) = integrate(cos((%pi/2)*t^2),t,0,z). (A&S 7.3.1)
+
+The simplification fresnel_c(-x) = -fresnel_c(x) is applied when
+flag @code{trigsign} is true.
+
+The simplification fresnel_c(%i*x) =  %i*fresnel_c(x) is applied when
+flag @code{%iargs} is true.
+
+See flags @code{erf_representation} and @code{hypergeometric_representation}.
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} fresnel_s (@var{z})
+The Fresnel Integral S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
+
+The simplification fresnel_s(-x) = -fresnel_s(x) is applied when
+flag @code{trigsign} is true.
+
+The simplification fresnel_s(%i*x) =  %i*fresnel_s(x) is applied when
+flag @code{%iargs} is true.
+
+See flags @code{erf_representation} and @code{hypergeometric_representation}.
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@defvr {Option variable} erf_representation
+Default value: false
+
+When T erfc, erfi, erf_generalized, fresnel_s 
+and fresnel_c are transformed to erf.
+@end defvr
+
+@defvr {Option variable} hypergeometric_representation
+Default value: false
+
+Enables transformation to a Hypergeometric
+representation for fresnel_s and fresnel_c
+@end defvr
+
+
 @node Functions and Variables for Special Functions,  , Error Function, Special Functions
 @section Functions and Variables for Special Functions
 
