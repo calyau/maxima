@@ -391,7 +391,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @deffn {Function} mean (@var{list})
 @deffnx {Function} mean (@var{matrix})
 This is the sample mean, defined as
-@ifhtml
+@ifnottex
 @example
                        n
                      ====
@@ -401,18 +401,7 @@ This is the sample mean, defined as
                      ====
                      i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                       n
-                     ====
-             _   1   \
-             x = -    >    x
-                 n   /      i
-                     ====
-                     i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 @end tex
@@ -451,7 +440,7 @@ Example:
 @deffn {Function} var (@var{list})
 @deffnx {Function} var (@var{matrix})
 This is the sample variance, defined as
-@ifhtml
+@ifnottex
 @example
                      n
                    ====
@@ -461,18 +450,7 @@ This is the sample variance, defined as
                    ====
                    i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     n
-                   ====
-           2   1   \          _ 2
-          s  = -    >    (x - x)
-               n   /       i
-                   ====
-                   i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 @end tex
@@ -503,7 +481,7 @@ See also function @code{var1}.
 @deffn {Function} var1 (@var{list})
 @deffnx {Function} var1 (@var{matrix})
 This is the sample variance, defined as
-@ifhtml
+@ifnottex
 @example
                      n
                    ====
@@ -513,18 +491,7 @@ This is the sample variance, defined as
                    ====
                    i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     n
-                   ====
-               1   \          _ 2
-              ---   >    (x - x)
-              n-1  /       i
-                   ====
-                   i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 @end tex
@@ -627,7 +594,7 @@ See also functions @code{var1} and @code{std}.
 @deffn {Function} noncentral_moment (@var{list}, @var{k})
 @deffnx {Function} noncentral_moment (@var{matrix}, @var{k})
 The non central moment of order @math{k}, defined as
-@ifhtml
+@ifnottex
 @example
                        n
                      ====
@@ -637,18 +604,7 @@ The non central moment of order @math{k}, defined as
                      ====
                      i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                       n
-                     ====
-                 1   \      k
-                 -    >    x
-                 n   /      i
-                     ====
-                     i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 @end tex
@@ -685,7 +641,7 @@ See also function @code{central_moment}.
 @deffn {Function} central_moment (@var{list}, @var{k})
 @deffnx {Function} central_moment (@var{matrix}, @var{k})
 The central moment of order @math{k}, defined as
-@ifhtml
+@ifnottex
 @example
                     n
                   ====
@@ -695,18 +651,7 @@ The central moment of order @math{k}, defined as
                   ====
                   i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                    n
-                  ====
-              1   \          _ k
-              -    >    (x - x)
-              n   /       i
-                  ====
-                  i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 @end tex
@@ -966,7 +911,7 @@ See also function @code{quantile}.
 @deffn {Function} mean_deviation (@var{list})
 @deffnx {Function} mean_deviation (@var{matrix})
 The mean deviation, defined as
-@ifhtml
+@ifnottex
 @example
                      n
                    ====
@@ -976,18 +921,7 @@ The mean deviation, defined as
                    ====
                    i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     n
-                   ====
-               1   \          _
-               -    >    |x - x|
-               n   /       i
-                   ====
-                   i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 @end tex
@@ -1026,7 +960,7 @@ See also function @code{mean}.
 @deffn {Function} median_deviation (@var{list})
 @deffnx {Function} median_deviation (@var{matrix})
 The median deviation, defined as
-@ifhtml
+@ifnottex
 @example
                  n
                ====
@@ -1036,18 +970,7 @@ The median deviation, defined as
                ====
                i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                 n
-               ====
-           1   \
-           -    >    |x - med|
-           n   /       i
-               ====
-               i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 @end tex
@@ -1086,7 +1009,7 @@ See also function @code{mean}.
 @deffn {Function} harmonic_mean (@var{list})
 @deffnx {Function} harmonic_mean (@var{matrix})
 The harmonic mean, defined as
-@ifhtml
+@ifnottex
 @example
                   n
                --------
@@ -1098,20 +1021,7 @@ The harmonic mean, defined as
                ====   i
                i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                  n
-               --------
-                n
-               ====
-               \     1
-                >    --
-               /     x
-               ====   i
-               i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 @end tex
@@ -1149,7 +1059,7 @@ See also functions @code{mean} and @code{geometric_mean}.
 @deffn {Function} geometric_mean (@var{list})
 @deffnx {Function} geometric_mean (@var{matrix})
 The geometric mean, defined as
-@ifhtml
+@ifnottex
 @example
                  /  n      \ 1/n
                  | /===\   |
@@ -1159,18 +1069,7 @@ The geometric mean, defined as
                  | i = 1   |
                  \         /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                 /  n      \ 1/n
-                 | /===\   |
-                 |  ! !    |
-                 |  ! !  x |
-                 |  ! !   i|
-                 | i = 1   |
-                 \         /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 @end tex
@@ -1207,7 +1106,7 @@ See also functions @code{mean} and @code{harmonic_mean}.
 @deffn {Function} kurtosis (@var{list})
 @deffnx {Function} kurtosis (@var{matrix})
 The kurtosis coefficient, defined as
-@ifhtml
+@ifnottex
 @example
                     n
                   ====
@@ -1217,18 +1116,7 @@ The kurtosis coefficient, defined as
            n s    ====
                   i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                    n
-                  ====
-            1     \          _ 4
-           ----    >    (x - x)  - 3
-              4   /       i
-           n s    ====
-                  i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 @end tex
@@ -1265,7 +1153,7 @@ See also functions @code{mean}, @code{var} and @code{skewness}.
 @deffn {Function} skewness (@var{list})
 @deffnx {Function} skewness (@var{matrix})
 The skewness coefficient, defined as
-@ifhtml
+@ifnottex
 @example
                     n
                   ====
@@ -1275,18 +1163,7 @@ The skewness coefficient, defined as
            n s    ====
                   i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                    n
-                  ====
-            1     \          _ 3
-           ----    >    (x - x)
-              3   /       i
-           n s    ====
-                  i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 @end tex
@@ -1323,22 +1200,14 @@ See also functions @code{mean}, @code{var} and @code{kurtosis}.
 @deffn {Function} pearson_skewness (@var{list})
 @deffnx {Function} pearson_skewness (@var{matrix})
 Pearson's skewness coefficient, defined as 
-@ifhtml
+@ifnottex
 @example
                 _
              3 (x - med)
              -----------
                   s
 @end example
-@end ifhtml
-@ifinfo
-@example
-                _
-             3 (x - med)
-             -----------
-                  s
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 @end tex
@@ -1376,7 +1245,7 @@ See also functions @code{mean}, @code{var} and @code{median}.
 @deffn {Function} quartile_skewness (@var{list})
 @deffnx {Function} quartile_skewness (@var{matrix})
 The quartile skewness coefficient, defined as 
-@ifhtml
+@ifnottex
 @example
                c    - 2 c    + c
                 3/4      1/2    1/4
@@ -1384,16 +1253,7 @@ The quartile skewness coefficient, defined as
                    c    - c
                     3/4    1/4
 @end example
-@end ifhtml
-@ifinfo
-@example
-               c    - 2 c    + c
-                3/4      1/2    1/4
-               --------------------
-                   c    - c
-                    3/4    1/4
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
  _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
@@ -1436,7 +1296,7 @@ See also function @code{quantile}.
 
 @deffn {Function} cov (@var{matrix})
 The covariance matrix of the multivariate sample, defined as
-@ifhtml
+@ifnottex
 @example
               n
              ====
@@ -1446,18 +1306,7 @@ The covariance matrix of the multivariate sample, defined as
              ====
              j = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-              n
-             ====
-          1  \           _        _
-      S = -   >    (X  - X) (X  - X)'
-          n  /       j        j
-             ====
-             j = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
@@ -1498,7 +1347,7 @@ See also function @code{cov1}.
 
 @deffn {Function} cov1 (@var{matrix})
 The covariance matrix of the multivariate sample, defined as
-@ifhtml
+@ifnottex
 @example
               n
              ====
@@ -1508,18 +1357,7 @@ The covariance matrix of the multivariate sample, defined as
              ====
              j = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-              n
-             ====
-         1   \           _        _
-   S  = ---   >    (X  - X) (X  - X)'
-    1   n-1  /       j        j
-             ====
-             j = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
@@ -1690,27 +1528,20 @@ Function @code{list_correlations} returns a list of correlation measures:
 
 @item
 @var{precision matrix}: the inverse of the covariance matrix @math{S_1},
-@ifhtml
+@ifnottex
 @example
        -1     ij
       S   = (s  )             
        1         i,j = 1,2,...,p
 @end example
-@end ifhtml
-@ifinfo
-@example
-       -1     ij
-      S   = (s  )             
-       1         i,j = 1,2,...,p
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
 @var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, with 
-@ifhtml
+@ifnottex
 @example
        2          1
       R  = 1 - -------
@@ -1718,16 +1549,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
                s   s
                     ii
 @end example
-@end ifhtml
-@ifinfo
-@example
-       2          1
-      R  = 1 - -------
-       i        ii
-               s   s
-                    ii
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 @end tex
@@ -1735,7 +1557,7 @@ being an indicator of the goodness of fit of the linear multivariate regression 
 
 @item
 @var{partial correlation matrix}: with element @math{(i, j)} being
-@ifhtml
+@ifnottex
 @example
                          ij
                         s
@@ -1744,17 +1566,7 @@ being an indicator of the goodness of fit of the linear multivariate regression 
                    |s   s  |
                    \       /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                         ij
-                        s
-      r        = - ------------
-       ij.rest     / ii  jj\ 1/2
-                   |s   s  |
-                   \       /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end tex
