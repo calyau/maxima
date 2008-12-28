@@ -50,7 +50,8 @@ kelliptic (z)                  Complete elliptic integral of the first
 The Bessel function of the first kind of order @math{v} and argument @math{z}.
 
 @code{bessel_j} is defined as
-@ifhtml
+
+@ifnottex
 @example
                 inf
                 ====       k  - v - 2 k  v + 2 k
@@ -60,18 +61,7 @@ The Bessel function of the first kind of order @math{v} and argument @math{z}.
                 ====
                 k = 0
 @end example
-@end ifhtml
-@ifinfo
-@example
-                inf
-                ====       k  - v - 2 k  v + 2 k
-                \     (- 1)  2          z
-                 >    --------------------------
-                /        k! gamma(v + k + 1)
-                ====
-                k = 0
-@end example
-@end ifinfo
+@end ifnottex
 
 @tex
 $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
@@ -89,20 +79,13 @@ although the infinite series is not used for computations.
 The Bessel function of the second kind of order @math{v} and argument @math{z}.
 
 @code{bessel_y} is defined as
-@ifhtml
+@ifnottex
 @example
               cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
               -------------------------------------------
                              sin(%pi v)
 @end example
-@end ifhtml
-@ifinfo
-@example
-              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
-              -------------------------------------------
-                             sin(%pi v)
-@end example
-@end ifinfo
+@end ifnottex
 
 @tex
 $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
@@ -121,7 +104,7 @@ the limit as @math{v} approaches @math{n} is taken.
 The modified Bessel function of the first kind of order @math{v} and argument @math{z}.
 
 @code{bessel_i} is defined as
-@ifhtml
+@ifnottex
 @example
                     inf
                     ====   - v - 2 k  v + 2 k
@@ -131,18 +114,7 @@ The modified Bessel function of the first kind of order @math{v} and argument @m
                     ====
                     k = 0
 @end example
-@end ifhtml
-@ifinfo
-@example
-                    inf
-                    ====   - v - 2 k  v + 2 k
-                    \     2          z
-                     >    -------------------
-                    /     k! gamma(v + k + 1)
-                    ====
-                    k = 0
-@end example
-@end ifinfo
+@end ifnottex
 
 @tex
 $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
@@ -160,20 +132,13 @@ although the infinite series is not used for computations.
 The modified Bessel function of the second kind of order @math{v} and argument @math{z}.
 
 @code{bessel_k} is defined as
-@ifhtml
+@ifnottex
 @example
            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
            -------------------------------------------------
                                   2
 @end example
-@end ifhtml
-@ifinfo
-@example
-           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
-           -------------------------------------------------
-                                  2
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
 @end tex
