@@ -25,6 +25,10 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 Represents the polylogarithm function of order @var{s} and argument @var{z},
 defined by the infinite series
 
+@tex
+$${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
+@end tex
+@ifnottex
 @example
                                  inf
                                  ====   k
@@ -34,6 +38,7 @@ defined by the infinite series
                                  ====  k
                                  k = 1
 @end example
+@end ifnottex
 
 @code{li [1]} is @code{- log (1 - z)}.
 @code{li [2]} and @code{li [3]} are the dilogarithm and trilogarithm functions, respectively.
