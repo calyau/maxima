@@ -1,0 +1,186 @@
+/* Tests of Jacobi elliptic functions and elliptic integrals */
+
+kill(all);
+done$
+
+/* derivatives */
+diff(jacobi_sn(u,m),u);
+jacobi_cn(u,m)*jacobi_dn(u,m);
+
+diff(jacobi_sn(u,m),m);
+jacobi_cn(u,m)*jacobi_dn(u,m)*(u-elliptic_e(asin(jacobi_sn(u,m)),m)/(1-m))
+  /(2*m)
+ +jacobi_cn(u,m)^2*jacobi_sn(u,m)/(2*(1-m));
+
+diff(jacobi_cn(u,m),u);
+-jacobi_dn(u,m)*jacobi_sn(u,m);
+
+diff(jacobi_cn(u,m),m);
+-(jacobi_dn(u,m)*jacobi_sn(u,m)*(u-elliptic_e(asin(jacobi_sn(u,m)),m)/(1-m))/(2*m))
+  -(jacobi_cn(u,m)*jacobi_sn(u,m)^2/(2*(1-m)));
+
+diff(jacobi_dn(u,m),u);
+-m*jacobi_cn(u,m)*jacobi_sn(u,m);
+
+diff(jacobi_dn(u,m),m);
+-(jacobi_cn(u,m)*jacobi_sn(u,m)*(u-elliptic_e(asin(jacobi_sn(u,m)),m)/(1-m))/2)
+  -(jacobi_dn(u,m)*'jacobi_sn(u,m)^2/(2*(1-m)));
+
+diff(inverse_jacobi_sn(u,m),u);
+1/(sqrt(1-u^2)*sqrt(1-m*u^2));
+
+diff(inverse_jacobi_sn(u,m),m);
+((elliptic_e(asin(u),m)-(1-m)*elliptic_f(asin(u),m))/m-(u*sqrt(1-u^2)/sqrt(1-m*u^2)))/(1-m);
+
+diff(inverse_jacobi_cn(u,m),u);
+-(1/(sqrt(1-u^2)*sqrt(m*u^2-m+1)));
+
+diff(inverse_jacobi_cn(u,m),m);
+((elliptic_e(asin(sqrt(1-u^2)),m)-(1-m)*elliptic_f(asin(sqrt(1-u^2)),m))/m
+   -(sqrt(1-u^2)*abs(u)/sqrt(1-m*(1-u^2))))/(1-m);
+
+diff(inverse_jacobi_dn(u,m),u);
+1/(sqrt(1-u^2)*sqrt(u^2+m-1));
+
+diff(inverse_jacobi_dn(u,m),m);
+((elliptic_e(asin(sqrt(1-u^2)/sqrt(m)),m)-(1-m)*elliptic_f(asin(sqrt(1-u^2)/sqrt(m)),m))/m
+  -sqrt(1-(1-u^2)/m)*sqrt(1-u^2)/(sqrt(m)*abs(u)))/(1-m)
+-(sqrt(1-u^2)/(2*m^(3/2)*sqrt(1-(1-u^2)/m)*abs(u)));
+
+diff(elliptic_e(phi,m),phi);
+sqrt(1-m*sin(phi)^2);
+
+diff(elliptic_e(phi,m),m);
+(elliptic_e(phi,m)-elliptic_f(phi,m))/(2*m);
+
+diff(elliptic_f(phi,m),phi);
+1/sqrt(1-m*sin(phi)^2);
+
+diff(elliptic_f(phi,m),m);
+((elliptic_e(phi,m)-(1-m)*elliptic_f(phi,m))/m
+   -(cos(phi)*sin(phi)/sqrt(1-m*sin(phi)^2)))
+ /(2*(1-m));
+
+diff(elliptic_kc(m),m);
+(elliptic_ec(m)-(1-m)*elliptic_kc(m))/(2*(1-m)*m);
+
+diff(elliptic_ec(m),m);
+(elliptic_ec(m)-elliptic_kc(m))/(2*m);
+
+/* Integrals */
+
+integrate(jacobi_sn(u,m),u); /* A&S 16.24.1 */
+log(jacobi_dn(u,m)-sqrt(m)*jacobi_cn(u,m))/sqrt(m);
+
+integrate(jacobi_cn(u,m),u); /* A&S 16.24.2 */
+acos(jacobi_dn(u,m))/sqrt(m);
+
+integrate(jacobi_dn(u,m),u); /* A&S 16.24.3 */
+asin(jacobi_sn(u,m));
+
+integrate(jacobi_cd(u,m),u); /* A&S 16.24.4 */
+log(sqrt(m)*jacobi_sd(u,m)+jacobi_nd(u,m))/sqrt(m);
+
+/* Use functions.wolfram.com 09.35.21.001.01, not A&S 16.24.5 */
+integrate(jacobi_sd(u,m),u);
+-(sqrt(1-m*jacobi_cd(u,m)^2)*jacobi_dn(u,m)*asin(sqrt(m)*jacobi_cd(u,m))
+  /((1-m)*sqrt(m)));
+
+/* Use functions.wolfram.com 09.32.21.0001.01, not A&S 16.24.6 */
+integrate(jacobi_nd(u,m),u); 
+sqrt(1-jacobi_cd(u,m)^2)*acos(jacobi_cd(u,m))/((1-m)*jacobi_sd(u,m));
+
+integrate(jacobi_dc(u,m),u); /* A&S 16.24.7 */
+log(jacobi_sc(u,m)+jacobi_nc(u,m));
+
+integrate(jacobi_nc(u,m),u); /* A&S 16.24.8 */
+log(sqrt(1-m)*jacobi_sc(u,m)+jacobi_dc(u,m))/sqrt(1-m);
+
+integrate(jacobi_sc(u,m),u); /* A&S 16.24.9 */
+log(sqrt(1-m)*jacobi_nc(u,m)+jacobi_dc(u,m))/sqrt(1-m);
+
+integrate(jacobi_ns(u,m),u); /* A&S 16.24.10 */
+log(jacobi_ds(u,m)-jacobi_cs(u,m));
+
+/* Use functions.wolfram.com 09.30.21.0001.01, not A&S 16.24.11 */
+integrate(jacobi_ds(u,m),u);
+log((1-jacobi_cn(u,m))/jacobi_sn(u,m));
+
+integrate(jacobi_cs(u,m),u); /* A&S 16.24.12 */
+log(jacobi_ns(u,m)-jacobi_ds(u,m));
+
+/* Check the integrals and derivatives by confirming
+
+       f(x,m)-diff(integral(x,m),x),x) = constant
+
+  Look at Taylor expansion about zero, rather than messing about with 
+  elliptic function.  This was sufficient to find several errors  */
+(te(f,n):=ratsimp(
+           taylor(f(x,m)
+           -diff(integrate(f(x,m),x),x),x,0,n)),
+ti(f,n):=ratsimp(
+           taylor(integrate(f(x,m),x),x,0,n)
+            -integrate(taylor(f(x,m),x,0,n-1),x)),
+td(f,n):=ratsimp(
+           taylor(diff(f(x,m),x),x,0,n)
+            -diff(taylor(f(x,m),x,0,n+1),x)),
+/* Compare analytic and numerical integral */
+ni(f,x1,x2,m):= block(
+  [x,n,I,In,Ia,key:1,eps:1.0e-14],
+  I:integrate(f(x,n),x),
+  In:quad_qag(f(x,m),x,x1,x2,key),
+  Ia:subst([x=float(x2),n=float(m)],I)-subst([x=float(x1),n=float(m)],I),
+  if ( abs(Ia-In[1]) < eps ) then
+    true
+  else
+    [Ia,In[1]]
+),
+done);
+done;
+
+te(jacobi_sn,4);
+0;
+
+te(jacobi_cn,4);
+0;
+
+te(jacobi_dn,4);
+0;
+
+te(jacobi_cd,4);
+0;
+
+assume(m>0,m<1); /* also ok for m<0 and m>0 */
+[m > 0, m < 1];
+te(jacobi_sd,4);
+0;
+forget(m>0,m<1);
+[m > 0, m < 1];
+
+te(jacobi_nd,4);
+0;
+
+te(jacobi_dc,4);
+0;
+
+te(jacobi_nc,4);
+0;
+
+te(jacobi_sc,4);
+0;
+
+/* jacobi_ns, jacobi_ds and jacobi_cs are singular at x=0 
+   Compare numerical and analytic integrals for a single case.
+*/
+
+ni(jacobi_ns,1,2,1/2);
+true;
+
+ni(jacobi_ds,1,2,1/2);
+true;
+
+ni(jacobi_cs,1,2,1/2);
+true;
+
+kill(te,ti,td,ni);
+done;

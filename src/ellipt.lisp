@@ -441,6 +441,7 @@
 	    m))))))))
   grad)
 
+
 ;; Define the actual functions for the user
 (defmfun $jacobi_sn (u m)
   (simplify (list '(%jacobi_sn) (resimplify u) (resimplify m))))
@@ -3766,4 +3767,223 @@ first kind:
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%jacobi_am) u m) form)))))
-  
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Integrals.  At present with respect to first argument only.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; A&S 16.24.1: integrate(jacobi_sn(u,m),u)
+;;              = log(jacobi_dn(u,m)-sqrt(m)*jacobi_cn(u,m))/sqrt(m)
+(defprop %jacobi_sn
+  ((u m)
+   ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
+    ((%log simp)
+     ((mplus simp)
+      ((mtimes simp) -1 ((mexpt simp) m ((rat simp) 1 2))
+       ((%jacobi_cn simp) u m))
+      ((%jacobi_dn simp) u m))))
+   nil)
+  integral)
+
+;; A&S 16.24.2: integrate(jacobi_cn(u,m),u) = acos(jacobi_dn(u,m))/sqrt(m)
+(defprop %jacobi_cn
+  ((u m)
+   ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
+    ((%acos simp) ((%jacobi_dn simp) u m))) 
+   nil)
+  integral)
+
+;; A&S 16.24.3: integrate(jacobi_dn(u,m),u) = asin(jacobi_sn(u,m))
+(defprop %jacobi_dn
+  ((u m)
+   ((%asin simp) ((%jacobi_sn simp) u m)) 
+   nil)
+  integral)
+
+;; A&S 16.24.4: integrate(jacobi_cd(u,m),u) 
+;;              = log(jacobi_nd(u,m)+sqrt(m)*jacobi_sd(u,m))/sqrt(m)
+(defprop %jacobi_cd
+  ((u m)
+   ((mtimes simp) ((mexpt simp) m ((rat simp) -1 2))
+    ((%log simp)
+     ((mplus simp) ((%jacobi_nd simp) u m)
+      ((mtimes simp) ((mexpt simp) m ((rat simp) 1 2))
+       ((%jacobi_sd simp) u m))))) 
+   nil)
+  integral)
+
+;; integrate(jacobi_sd(u,m),u)
+;;
+;; A&S 16.24.5 gives
+;;   asin(-sqrt(m)*jacobi_cd(u,m))/sqrt(m*m_1), where m + m_1 = 1
+;;  but this does not pass some simple tests.
+;;
+;; functions.wolfram.com 09.35.21.001.01 gives
+;;  -asin(sqrt(m)*jacobi_cd(u,m))*sqrt(1-m*jacobi_cd(u,m)^2)*jacobi_dn(u,m)/((1-m)*sqrt(m))
+;; and this does pass.
+(defprop %jacobi_sd
+  ((u m)
+   ((mtimes simp) -1
+    ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
+    ((mexpt simp) m ((rat simp) -1 2))
+    ((mexpt simp)
+     ((mplus simp) 1
+      ((mtimes simp) -1 $m ((mexpt simp) ((%jacobi_cd simp) u m) 2)))
+     ((rat simp) 1 2))
+    ((%jacobi_dn simp) u m)
+    ((%asin simp)
+     ((mtimes simp) ((mexpt simp) m ((rat simp) 1 2))
+      ((%jacobi_cd simp) u m)))) 
+   nil)
+  integral)
+
+;; integrate(jacobi_nd(u,m),u)
+;; 
+;;  A&S 16.24.6 gives
+;;    acos(jacobi_cd(u,m))/sqrt(m_1), where m + m_1 = 1
+;;  but this does not pass some simple tests.
+;;
+;; functions.wolfram.com 09.32.21.0001.01 gives
+;;  sqrt(1-jacobi_cd(u,m)^2)*acos(jacobi_cd(u,m))/((1-m)*jacobi_sd(u,m))
+;; and this does pass.
+(defprop %jacobi_nd
+  ((u m)
+   ((mtimes simp) ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m)) -1)
+    ((mexpt simp)
+     ((mplus simp) 1
+      ((mtimes simp) -1 ((mexpt simp) ((%jacobi_cd simp) u m) 2)))
+     ((rat simp) 1 2))
+    ((mexpt simp) ((%jacobi_sd simp) u m) -1)
+    ((%acos simp) ((%jacobi_cd simp) u m))) 
+   nil)
+  integral)
+
+;; A&S 16.24.7: integrate(jacobi_dc(u,m),u) = log(jacobi_nc(u,m)+jacobi_sc(u,m))
+(defprop %jacobi_dc
+  ((u m)
+   ((%log simp) ((mplus simp) ((%jacobi_nc simp) u m) ((%jacobi_sc simp) u m))) 
+  nil)
+  integral)
+
+;; A&S 16.24.8: integrate(jacobi_nc(u,m),u) 
+;;              = log(jacobi_dc(u,m)+sqrt(m_1)*jacobi_sc(u,m))/sqrt(m_1), where m + m_1 = 1
+(defprop %jacobi_nc
+  ((u m)
+   ((mtimes simp)
+    ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m))
+     ((rat simp) -1 2))
+    ((%log simp)
+     ((mplus simp) ((%jacobi_dc simp) u m)
+      ((mtimes simp)
+       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m))
+	((rat simp) 1 2))
+       ((%jacobi_sc simp) u m))))) 
+   nil)
+  integral)
+
+;; A&S 16.24.9: integrate(jacobi_sc(u,m),u) 
+;;              = log(jacobi_dc(u,m)+sqrt(m_1)*jacobi_nc(u,m))/sqrt(m_1), where m + m_1 = 1
+(defprop %jacobi_sc
+  ((u m)
+   ((mtimes simp)
+    ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m))
+     ((rat simp) -1 2))
+    ((%log simp)
+     ((mplus simp) ((%jacobi_dc simp) u m)
+      ((mtimes simp)
+       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 m))
+	((rat simp) 1 2))
+       ((%jacobi_nc simp) u m))))) 
+   nil)
+  integral)
+
+;; A&S 16.24.10: integrate(jacobi_ns(u,m),u) 
+;;               = log(jacobi_ds(u,m)-jacobi_cs(u,m))
+(defprop %jacobi_ns
+  ((u m)
+   ((%log simp)
+    ((mplus simp) ((mtimes simp) -1 ((%jacobi_cs simp) u m))
+     ((%jacobi_ds simp) u m)))
+   nil)
+  integral)
+
+;; integrate(jacobi_ds(u,m),u)
+;;
+;;  A&S 16.24.11 gives
+;;   log(jacobi_ds(u,m)-jacobi_cs(u,m))
+;; but this does not pass some simple tests.
+;;
+;; functions.wolfram.com 09.30.21.0001.01 gives
+;;   log((1-jacobi_cn(u,m))/jacobi_sn(u,m))
+;; 
+(defprop %jacobi_ds
+  ((u m)
+   ((%log simp)
+    ((mtimes simp)
+     ((mplus simp) 1 ((mtimes simp) -1 ((%jacobi_cn simp) u m)))
+     ((mexpt simp) ((%jacobi_sn simp) u m) -1)))
+   nil)
+  integral)
+
+;; A&S 16.24.12: integrate(jacobi_cs(u,m),u) = log(jacobi_ns(u,m)-jacobi_ds(u,m))
+(defprop %jacobi_cs
+  ((u m)
+   ((%log simp)
+    ((mplus simp) ((mtimes simp) -1 ((%jacobi_ds simp) u m))
+     ((%jacobi_ns simp) u m)))
+   nil)
+  integral)
+
+;; functions.wolfram.com 09.48.21.0001.01
+;; integrate(inverse_jacobi_sn(u,m),u) =
+;;   inverse_jacobi_sn(u,m)*u
+;;   - log(         jacobi_dn(inverse_jacobi_sn(u,m),m) 
+;;         -sqrt(m)*jacobi_cn(inverse_jacobi_sn(u,m),m)) / sqrt(m)
+(defprop %inverse_jacobi_sn
+  ((u m)
+   ((mplus simp) ((mtimes simp) u ((%inverse_jacobi_sn simp) u m))
+    ((mtimes simp) -1 ((mexpt simp) m ((rat simp) -1 2))
+     ((%log simp)
+      ((mplus simp)
+       ((mtimes simp) -1 ((mexpt simp) m ((rat simp) 1 2))
+	((%jacobi_cn simp) ((%inverse_jacobi_sn simp) u m) m))
+       ((%jacobi_dn simp) ((%inverse_jacobi_sn simp) u m) m)))))
+   nil)
+  integral)
+
+;; functions.wolfram.com 09.38.21.0001.01
+;; integrate(inverse_jacobi_cn(u,m),u) =
+;;   u*inverse_jacobi_cn(u,m)
+;;    -%i*log(%i*jacobi_dn(inverse_jacobi_cn(u,m),m)/sqrt(m)
+;;              -jacobi_sn(inverse_jacobi_cn(u,m),m))
+;;      /sqrt(m)
+(defprop %inverse_jacobi_cn
+  ((u m)
+   ((mplus simp) ((mtimes simp) u ((%inverse_jacobi_cn simp) u m))
+    ((mtimes simp) -1 $%i ((mexpt simp) m ((rat simp) -1 2))
+     ((%log simp)
+      ((mplus simp)
+       ((mtimes simp) $%i ((mexpt simp) m ((rat simp) -1 2))
+	((%jacobi_dn simp) ((%inverse_jacobi_cn simp) u m) m))
+       ((mtimes simp) -1
+	((%jacobi_sn simp) ((%inverse_jacobi_cn simp) u m) m))))))
+   nil)
+  integral)
+
+;; functions.wolfram.com 09.41.21.0001.01
+;; integrate(inverse_jacobi_dn(u,m),u) =
+;;   u*inverse_jacobi_dn(u,m)
+;;   - %i*log(%i*jacobi_cn(inverse_jacobi_dn(u,m),m)
+;;              +jacobi_sn(inverse_jacobi_dn(u,m),m))
+(defprop %inverse_jacobi_dn
+  ((u m)
+   ((mplus simp) ((mtimes simp) u ((%inverse_jacobi_dn simp) u m))
+    ((mtimes simp) -1 $%i
+     ((%log simp)
+      ((mplus simp)
+       ((mtimes simp) $%i
+	((%jacobi_cn simp) ((%inverse_jacobi_dn simp) u m) m))
+       ((%jacobi_sn simp) ((%inverse_jacobi_dn simp) u m) m))))) 
+  nil)
+  integral)
+

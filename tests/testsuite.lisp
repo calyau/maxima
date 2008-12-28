@@ -48,4 +48,5 @@
         "rtest_expintegral"
 	"rtest_signum"
         "rtest_lambert_w"
+	"rtest_elliptic"
 	))
