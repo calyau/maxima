@@ -2351,6 +2351,11 @@ erf_generalized(conjugate(z1),conjugate(z2));
 conjugate(erf_generalized(x1+%i*y1,x2+%i*y2));
 erf_generalized(x1-%i*y1,x2-%i*y2);
 
+/* Generalized Erf is antisymmetric */
+
+erf_generalized(x1,x2)+erf_generalized(x2,x1);
+0;
+
 /* For a pure real or imaginary argument of the error functions erf and erfi
    we get pure real or imaginary result. We test it. */
 
@@ -2379,6 +2384,28 @@ true;
 
 is(equal(realpart(erfi(1.0b0*%i)),0));
 true;
+
+/* Taylor expansion of the Error functions */
+
+taylor(erf(x),x,0,5) - 2/sqrt(%pi)*(x-x^3/3+x^5/10);
+0;
+
+(erf(taylor(x,x,0,5)) - 2/sqrt(%pi)*(x-x^3/3+x^5/10));
+0;
+
+taylor(erf(x),x,x0,2)
+  - (erf(x0)+2*%e^(-x0^2)/sqrt(%pi)*(x-x0)-2*x0*%e^(-x0^2)/sqrt(%pi)*(x-x0)^2);
+0;
+
+taylor(erfi(x),x,0,5) - 2/sqrt(%pi)*(x+x^3/3+x^5/10);
+0;
+
+erfi(taylor(x,x,0,5)) - 2/sqrt(%pi)*(x+x^3/3+x^5/10);
+0;
+
+taylor(erfi(x),x,x0,2)
+ -(erfi(x0)+2*%e^(x0^2)/sqrt(%pi)*(x-x0)+2*x0*%e^(x0^2)/sqrt(%pi)*(x-x0)^2);
+0;
 
 /* Numerical test for the Error functions 
    First check erf in double float precision */
