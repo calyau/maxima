@@ -23,24 +23,61 @@ summation.
 
 @subsubsection The indefinite summation problem
 
-@code{zeilberger} implements Gosper's algorithm
-for indefinite hypergeometric summation.
+@code{zeilberger} implements Gosper's algorithm for indefinite hypergeometric summation.
 Given a hypergeometric term @math{F_k} in @math{k} we want to find its hypergeometric
-anti-difference, that is, a hypergeometric term @math{f_k} such that @math{F_k = f_(k+1) - f_k}.
+anti-difference, that is, a hypergeometric term @math{f_k} such that
+
+@tex
+$$F_k = f_{k+1} - f_k.$$
+@end tex
+@ifnottex
+@math{F_k = f_(k+1) - f_k}.
+@end ifnottex
 
 @subsubsection The definite summation problem
 
-@code{zeilberger} implements Zeilberger's algorithm
-for definite hypergeometric summation.
-Given a proper hypergeometric term (in @math{n} and @math{k}) @math{F_(n,k)} and a
-positive integer @math{d} we want to find a @math{d}-th order linear
-recurrence with polynomial coefficients (in @math{n}) for @math{F_(n,k)}
+@code{zeilberger} implements Zeilberger's algorithm for definite hypergeometric summation.
+Given a proper hypergeometric term (in @math{n} and @math{k})
+@tex
+$F_{n,k}$
+@end tex
+@ifnottex
+@math{F_(n,k)}
+@end ifnottex
+and a positive integer @math{d} we want to find a @math{d}-th order linear
+recurrence with polynomial coefficients (in @math{n}) for
+@tex
+$F_{n,k}$
+@end tex
+@ifnottex
+@math{F_(n,k)}
+@end ifnottex
 and a rational function @math{R} in @math{n} and @math{k} such that
 
-@math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_K(R(n,k) F_(n,k))}
+@tex
+$$a_0 \, F_{n,k} + \ldots + a_d \, F_{n+d}, ~ k = \Delta_K \left(R\left(n,k\right) F_{n,k}\right),$$
+@end tex
+@ifnottex
+@math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_k(R(n,k) F_(n,k))},
+@end ifnottex
 
-where @math{Delta_k} is the @math{k}-forward difference operator, i.e.,
+@tex
+\noindent
+@end tex
+where
+@tex
+$\Delta_k$
+@end tex
+@ifnottex
+@math{Delta_k}
+@end ifnottex
+is the @math{k}-forward difference operator, i.e.,
+@tex
+$\Delta_k \left(t_k\right) \equiv t_{k+1} - t_k$.
+@end tex
+@ifnottex
 @math{Delta_k(t_k) := t_(k+1) - t_k}.
+@end ifnottex
 
 @subsection Verbosity levels
 
@@ -67,10 +104,9 @@ For example:
 @node Functions and Variables for zeilberger, , Introduction to zeilberger, zeilberger
 @section Functions and Variables for zeilberger
 
-@deffn {Function} AntiDifference (@var{F_k}, @var{k})
+@deffn {Function} AntiDifference (@math{F_k}, @var{k})
 
-Returns the hypergeometric anti-difference
-of @var{F_k}, if it exists.
+Returns the hypergeometric anti-difference of @math{F_k}, if it exists.
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 
 @opencatbox
@@ -79,12 +115,15 @@ Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 
 @end deffn
 
-@deffn {Function} Gosper (@var{F_k}, @var{k})
-Returns the rational certificate @var{R(k)} for @var{F_k}, that is,
+@deffn {Function} Gosper (@math{F_k}, @var{k})
+Returns the rational certificate @math{R(k)} for @math{F_k}, that is,
 a rational function such that
-
-@math{F_k = R(k+1) F_(k+1) - R(k) F_k}
- 
+@tex
+$F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k$,
+@end tex
+@ifnottex
+@math{F_k = R(k+1) F_(k+1) - R(k) F_k},
+@end ifnottex
 if it exists.
 Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
@@ -94,10 +133,10 @@ Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
 
 @end deffn
 
-@deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+@deffn {Function} GosperSum (@math{F_k}, @var{k}, @var{a}, @var{b})
 
-Returns the summmation of @var{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
-if @var{F_k} has a hypergeometric anti-difference.
+Returns the summmation of @math{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
+if @math{F_k} has a hypergeometric anti-difference.
 Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
 
 Examples:
@@ -159,8 +198,19 @@ Dependent equations eliminated:  (1)
 
 @end deffn
 
-@deffn {Function} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
-Attempts to find a @var{d}-th order recurrence for @var{F_@{n,k@}}.
+@iftex
+@deffn {Function} parGosper (@math{F_{n,k}}, @var{k}, @var{n}, @var{d})
+@end iftex
+@ifnottex
+@deffn {Function} parGosper (@math{F_(n,k)}, @var{k}, @var{n}, @var{d})
+@end ifnottex
+Attempts to find a @var{d}-th order recurrence for
+@tex
+$F_{n,k}$.
+@end tex
+@ifnottex
+@math{F_(n,k)}.
+@end ifnottex
 
 The algorithm yields a sequence
 @math{[s_1, s_2, ..., s_m]} of solutions.
@@ -176,8 +226,19 @@ Each solution has the form
 
 @end deffn
 
-@deffn {Function} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
-Attempts to compute the indefinite hypergeometric summation of @var{F_@{n,k@}}.
+@iftex
+@deffn {Function} Zeilberger (@math{F_{n,k}}, @var{k}, @var{n})
+@end iftex
+@ifnottex
+@deffn {Function} Zeilberger (@math{F_(n,k)}, @var{k}, @var{n})
+@end ifnottex
+Attempts to compute the indefinite hypergeometric summation of
+@tex
+$F_{n,k}$.
+@end tex
+@ifnottex
+@math{F_(n,k)}.
+@end ifnottex
 
 @code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a solution, then invokes
 @code{parGosper} with order 1, 2, 3, ..., up to @code{MAX_ORD}.
