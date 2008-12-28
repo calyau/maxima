@@ -31,6 +31,8 @@
 ;;;                          factorial_double(n-1) and factorial_double(2*k+n)
 ;;;   $erf_representation  - When T erfc, erfi, erf_generalized, fresnel_s 
 ;;;                          and fresnel_c are transformed to erf.
+;;;   $erf_%iargs          - Enable simplification of Erf and Erfi for
+;;;                          imaginary arguments
 ;;;   $hypergeometric_representation
 ;;;                        - Enables transformation to a Hypergeometric
 ;;;                          representation for fresnel_s and fresnel_c
@@ -70,6 +72,9 @@
 
 (defvar $erf_representation nil
   "When T erfc, erfi and erf_generalized are transformed to erf.")
+
+(defvar $erf_%iargs nil
+  "When T erf and erfi simplifies for an imaginary argument.")
 
 (defvar $hypergeometric_representation nil
   "When T a transformation to a hypergeometric representation is done.")
@@ -1590,13 +1595,19 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; erf has mirror symmetry
+
 (defprop %erf t commutes-with-conjugate)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; erf is an odd function
+
+(defprop %erf odd-function-reflect reflection-rule)
+
+;;; erf is a simplifying function
 
 (defprop %erf simp-erf operators)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Derivative of the Error function erf
 
 (defprop %erf 
   ((z)
@@ -1643,9 +1654,23 @@
        (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
 
     ;; Argument simplification
-
-    ((and $trigsign (great (mul -1 z) z))
-     (mul -1 (simplify (list  '(%erf) (mul -1 z)))))
+    
+    ((taylorize (mop expr) (second expr)))
+    ((and $erf_%iargs 
+          (not $erf_representation)
+          (multiplep z '$%i))
+     (mul '$%i (simplify (list '(%erfi) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop expr) z $trigsign))
+    
+    ;; Representation through equivalent functions
+    
+    ($hypergeometric_representation
+      (mul 2 z 
+           (power '$%pi (div 1 2))
+           (list '(%hypergeometric)
+                 (list '(mlist) (div 1 2))
+                 (list '(mlist) (div 3 2))
+                 (mul -1 (power z 2)))))
 
     (t
      (eqtest (list '(%erf) z) expr))))
@@ -1731,7 +1756,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Generalized Erf has mirror symmetry
+
 (defprop %erf_generalized t commutes-with-conjugate)
+
+;;; Generalized Erf is antisymmetric Erf(z1,z2) = - Erf(z2,z1)
+
+(eval-when
+    #+gcl (load eval)
+    #-gcl (:load-toplevel :execute)
+    (let (($context '$global) (context '$global))
+      (meval '(($declare) %erf_generalized $antisymmetric))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1793,7 +1828,7 @@
            (add ($bfloat ($realpart z1)) (mul '$%i ($bfloat ($imagpart z1)))))))
 
       ;; Argument simplification
-   
+      
       ((and $trigsign (great (mul -1 z1) z1) (great (mul -1 z2) z2))
        (mul -1 (simplify (list '(%erf_generalized) (mul -1 z1) (mul -1 z2)))))
 
@@ -1881,6 +1916,7 @@
 
     ;; Argument simplification
 
+    ((taylorize (mop expr) (second expr)))
     ((and $trigsign (great (mul -1 z) z))
      (sub 2 (simplify (list  '(%erfc) (mul -1 z)))))
 
@@ -1888,6 +1924,15 @@
 
     ($erf_representation
      (sub 1 (simplify (list '(%erf) z))))
+    
+    ($hypergeometric_representation
+      (sub 1
+        (mul 2 z 
+             (power '$%pi (div 1 2))
+             (list '(%hypergeometric)
+                   (list '(mlist) (div 1 2))
+                   (list '(mlist) (div 3 2 ))
+                   (mul -1 (power z 2))))))
 
     (t
      (eqtest (list '(%erfc) z) expr))))
@@ -1909,15 +1954,19 @@
 (defprop %erfi $erfi reversealias)
 (defprop %erfi $erfi noun)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; erfi has mirror symmetry
 
 (defprop %erfi t commutes-with-conjugate)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; erfi is an odd function
+
+(defprop %erfi odd-function-reflect reflection-rule)
+
+;;; erfi is an simplifying function
 
 (defprop %erfi simp-erfi operators)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Derivative of the Error function erfi
 
 (defprop %erfi
   ((z)
@@ -1977,13 +2026,24 @@
 
     ;; Argument simplification
 
-    ((and $trigsign (great (mul -1 z) z))
-     (mul -1 (simplify (list  '(%erfi) (mul -1 z)))))
+    ((taylorize (mop expr) (second expr)))
+    ((and $erf_%iargs
+          (multiplep z '$%i))
+     (mul '$%i (simplify (list '(%erf) (coeff z '$%i 1)))))
+    ((apply-reflection-simp (mop expr) z $trigsign))
 
-    ;; Transformation to Erf
+    ;; Representation through equivalent functions
 
     ($erf_representation
      (mul -1 '$%i (simplify (list '(%erf) (mul '$%i z)))))
+    
+    ($hypergeometric_representation
+      (mul 2 z
+        (power '$%pi (div 1 2))
+               (list '(%hypergeometric)
+                     (list '(mlist) (div 1 2))
+                     (list '(mlist) (div 3 2))
+                     (power z 2))))
 
     (t
      (eqtest (list '(%erfi) z) expr))))
@@ -2290,6 +2350,7 @@
                 (fact (* (/ (float pi) 2.0) ax ax))
                 (term ax)
                 (odd t (not odd))
+                (test 0.0)
                 (n 3 (+ n 2))
                 (k 1 (+ k 1)))
                ((> k maxit) (merror "Series expansion failed in fresnel."))
@@ -2410,6 +2471,7 @@
                 (fact (mul (div ($bfloat '$%pi) ($bfloat 2)) ax ax))
                 (term ax)
                 (odd t (not odd))
+                (test bigfloatzero)
                 (n 3 (+ n 2))
                 (k 1 (+ k 1)))
                ((> k maxit) (merror "Series expansion failed in `fresnel'."))
