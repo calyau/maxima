@@ -339,6 +339,7 @@ Series
 
 * Introducci@'on a las series::      
 * Funciones y variables para las series::
+* Series de Poisson::
 
 Teor@'{@dotless{i}}a de N@'umeros
 

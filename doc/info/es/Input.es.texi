@@ -1,4 +1,4 @@
-@c english version 1.68
+@c english version 1.69
 @menu
 * Comentarios::
 * Archivos::
@@ -1430,7 +1430,25 @@ $$-\cos x$$
 @end deffn
 
 
+@deffn {Funci@'on} tex1 (@var{e})
+Devuelve una cadena con el c@'odigo TeX de la expresi@'on @var{e}.
+El c@'odigo TeX no se encierra entre delimitadores para una ecuaci@'on
+ni cualesquiera otros entornos.
+
+Ejemplo:
+
+@c ===beg===
+@c tex1 (sin(x) + cos(x));
+@c ===end===
+@example
+(%i1) tex1 (sin(x) + cos(x));
+(%o1)                     \sin x+\cos x
+@end example
+@end deffn
+
+
 @deffn {Funci@'on} texput (@var{a}, @var{s})
+@deffnx {Funci@'on} texput (@var{a}, @var{f})
 @deffnx {Funci@'on} texput (@var{a}, @var{s}, @var{operator_type})
 @deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
 @deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
@@ -1440,6 +1458,13 @@ s@'{@dotless{i}}mbolo o el nombre de un operador.
 
 La instrucci@'on @code{texput (@var{a}, @var{s})} hace que la funci@'on
 @code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}.
+
+La instrucci@'on @code{texput (@var{a}, @var{f})} hace que @code{tex} llame
+a la funci@'on @var{f} para que genere c@'odigo TeX. La funci@'on @var{f} 
+debe aceptar un @'unico argumento, el cual es una expresi@'on que tenga como
+operador @var{a} y que devuelva una cadena con el c@'odigo TeX. Esta funci@'on
+puede llamar a @code{tex1} para generar el c@'odigo TeX para los argumentos
+de la expresi@'on de entrada.
 
 La instrucci@'on @code{texput (@var{a}, @var{s}, @var{operator_type})},
 en la que @var{operator_type} es @code{prefix}, @code{infix} o
@@ -1464,6 +1489,25 @@ Asigna c@'odigo TeX para una variable.
 @c texput (me,"\\mu_e");
 @c tex (me);
 @c ===end===
+
+Llama a una funci@'on que genera c@'odigo TeX.
+
+@c ===beg===
+@c texfoo (e) := block ([a, b], [a, b] : args (e),
+@c   concat ("\\left[\\stackrel{", tex1 (b), "}{", tex1 (a), "}\\right]"))$
+@c texput (foo, texfoo);
+@c tex (foo (2^x, %pi));
+@c ===end===
+@example
+(%i1) texfoo (e) := block ([a, b], [a, b] : args (e),
+  concat ("\\left[\\stackrel@{", tex1 (b), 
+          "@}@{", tex1 (a), "@}\\right]"))$
+(%i2) texput (foo, texfoo);
+(%o2)                        texfoo
+(%i3) tex (foo (2^x, %pi));
+$$\left[\stackrel@{\pi@}@{2^@{x@}@}\right]$$
+(%o3)                         false
+@end example
 
 @example
 (%i1) texput (me,"\\mu_e");
@@ -1761,7 +1805,8 @@ V@'ease tambi@'en @code{writefile}.
 @c       do print (x, at (f, var=x))),
 @c  system ("echo \"set data style lines; set title '", f,"' ;plot '/tmp/gnu'
 @c ;pause 10 \" | gnuplot"))$
-(%i1) with_stdout ("tmp.out", for i:5 thru 10 do print (i, "! yields", i!))$
+(%i1) with_stdout ("tmp.out", 
+                   for i:5 thru 10 do print (i, "! yields", i!))$
 (%i2) printfile ("tmp.out")$
 5 ! yields 120 
 6 ! yields 720 

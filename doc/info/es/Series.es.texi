@@ -1,7 +1,8 @@
-@c english version 1.17
+@c english version 1.20
 @menu
-* Introducci@'on a las series::      
-* Funciones y variables para las series::      
+* Introducci@'on a las series::
+* Funciones y variables para las series::
+* Series de Poisson::
 @end menu
 
 @node Introducci@'on a las series, Funciones y variables para las series, Series, Series
@@ -10,7 +11,7 @@
 Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular las series de las funciones diferenciables. Tambi@'en tiene herramientas como @code{nusum} capaces de encontrar la expresi@'on compacta de algunas series. Operaciones como la suma y la multiplicaci@'on operan de la forma habitual en el contexto de las series. Esta secci@'on presenta las variables globales que controlan la expansi@'on.
 @c end concepts Series
 
-@node Funciones y variables para las series,  , Introducci@'on a las series, Series
+@node Funciones y variables para las series, Series de Poisson, Introducci@'on a las series, Series
 @section Funciones y variables para las series
 
 @defvr {Variable opcional} cauchysum
@@ -656,3 +657,104 @@ Valor por defecto: @code{false}
 Si @code{verbose} vale @code{true}, la funci@'on @code{powerseries} va imprimiendo mensajes durante su ejecuci@'on.
 
 @end defvr
+
+
+
+
+
+
+@node Series de Poisson, , Funciones y variables para las series, Series
+@section Series de Poisson
+
+
+@deffn {Funci@'on} intopois (@var{a})
+Convierte @var{a} en un codificado Poisson.
+
+@end deffn
+
+
+@deffn {Funci@'on} outofpois (@var{a})
+Convierte @var{a} desde codificado de Poisson a una representaci@'on general.  Si @var{a} no est@'a en forma de Poisson, @code{outofpois} hace la conversi@'on, siendo entonces el valor retornado @code{outofpois (intopois (@var{a}))}. Esta funci@'on es un simplificador can@'onico para sumas de potencias de senos y cosenos.
+
+@end deffn
+
+
+@deffn {Funci@'on} poisdiff (@var{a}, @var{b})
+Deriva @var{a} con respecto a @var{b}. El argumento @var{b} debe aparecer s@'olo en los argumentos trigonom@'etricos o s@'olo en los coeficientes.
+
+@end deffn
+
+
+@deffn {Funci@'on} poisexpt (@var{a}, @var{b})
+Id@'entico a @code{intopois (@var{a}^@var{b})}. El argumento @var{b} debe ser un entero positivo.
+
+@end deffn
+
+
+@deffn {Funci@'on} poisint (@var{a}, @var{b})
+Integra en un sentido restringido similar a @code{poisdiff}.
+@end deffn
+
+
+@defvr {Variable optativa} poislim
+Valor por defecto: 5
+
+La variable @code{poislim} determina el dominio de los coeficientes en los argumentos de las funciones trigonom@'etricas.  El valor por defecto 5 corresponde al intervalo [-2^(5-1)+1,2^(5-1)], o [-15,16], pero puede reasignarse para  [-2^(n-1)+1, 2^(n-1)].
+
+@end defvr
+
+
+@deffn {Funci@'on} poismap (@var{series}, @var{sinfn}, @var{cosfn})
+Aplica las funciones @var{sinfn} a los t@'erminos sinusoidales y
+las funciones @var{cosfn} a los cosenoidales de la serie de Poisson
+dada. Tanto @var{sinfn} como @var{cosfn} son funciones de dos
+argumentos, los cuales son un coeficiente y una parte trigonom@'etrica
+de un t@'ermino de la serie.
+@end deffn
+
+
+@deffn {Funci@'on} poisplus (@var{a}, @var{b})
+Id@'entico a @code{intopois (a + b)}.
+
+@end deffn
+
+@deffn {Funci@'on} poissimp (@var{a})
+Convierte @var{a} en una serie de Poisson para @var{a} en su representaci@'on general.
+
+@end deffn
+
+
+@defvr {S@'{@dotless{i}}mbolo especial} poisson
+El s@'{@dotless{i}}mbolo @code{/P/} sigue a la etiqueta de las l@'{@dotless{i}}neas que contienen expresiones que son series de Poisson.
+
+@end defvr
+
+
+@deffn {Funci@'on} poissubst (@var{a}, @var{b}, @var{c})
+Sustituye @var{b} por @var{a} en @var{c}, donde  @var{c} es una serie de Poisson.
+
+(1) Si @var{b} es una de las variables @var{u}, @var{v}, @var{w}, @var{x}, @var{y} o @var{z}, entonces @var{a} debe ser una expresi@'on lineal en esas variables (por ejemplo, @code{6*u + 4*v}).
+
+(2) Si @var{b} no es ninguna de esas variables, entonces @var{a} no puede contener tampoco a ninguna de ellas, ni senos, ni cosenos.
+
+@c AQUI FALTA PARRAFO
+
+@end deffn
+
+@deffn {Funci@'on} poistimes (@var{a}, @var{b})
+Id@'entico a @code{intopois (@var{a}*@var{b})}.
+
+@end deffn
+
+
+
+@c AQUI FALTA DEFINICION DE poistrim
+
+
+@deffn {Funci@'on} printpois (@var{a})
+Presenta una serie de Poisson en un formato legible.  Conjuntamente con @code{outofpois}, si es necesario convertir@'a @var{a} primero en una codificaci@'on de Poisson.
+
+@end deffn
+
+
+

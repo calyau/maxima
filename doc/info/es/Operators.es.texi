@@ -1,4 +1,4 @@
-@c english version 1.50
+@c english version 1.52
 @menu
 * n-arios::
 * no-fijos::
@@ -373,7 +373,8 @@ funciones y sentencias condicionales.
 @c is (x < y);
 @c maybe (y > z);
 @c if x >= z then 1 else 0;
-@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+@c block ([S], S : 0, 
+@c        for i:1 while i <= 100 do S : S + i, return (S));
 @c ===end===
 @example
 (%i1) [x, y, z] : [123, 456, 789];
@@ -384,7 +385,8 @@ funciones y sentencias condicionales.
 (%o3)                         false
 (%i4) if x >= z then 1 else 0;
 (%o4)                           0
-(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+(%i5) block ([S], S : 0, 
+             for i:1 while i <= 100 do S : S + i, return (S));
 (%o5)                         5050
 @end example
 
@@ -502,7 +504,7 @@ Sin embargo puede ser posible simplificar el factorial despu@'es de evaluar el o
 (%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
 (%i2) ev (%, numer, %enumer);
 (%o2) [(%i + 1)!, 7.188082728976037, 4.260820476357, 
-                                               1.227580202486819]
+                                       1.227580202486819]
 @end example
 
 @item
@@ -532,7 +534,7 @@ precedida por el operador comilla.
           105 sqrt(%pi)
 (%o1) [1, -------------, 81.44668037931199, 40320, 
                16
-                                             2432902008176640000]
+                                   2432902008176640000]
 @end example
 @end itemize
 
@@ -810,97 +812,93 @@ Una funci@'on macro no eval@'ua sus argumentos, por lo que el mensaje (1) muestr
 La macroexpansi@'on (es decir, la expresi@'on no evaluada @code{'(print ("(2) x is equal to", x))}) se eval@'ua en el contexto desde el cual se produjo la llamada a la macro, imprimiendo el mensaje (2).
 
 @c ===beg===
-@c x: %pi;
-@c y: 1234;
-@c z: 1729 * w;
-@c printq1 (x) ::=
-@c    block (print ("(1) x is equal to", x),
-@c           '(print ("(2) x is equal to", x)));
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c printq1 (x) ::= block (print ("(1) x is equal to", x), 
+@c                                 '(print ("(2) x is equal to", x)))$
 @c printq1 (y - z);
 @c ===end===
 @example
-(%i1) x: %pi;
-(%o1)                          %pi
-(%i2) y: 1234;
-(%o2)                         1234
-(%i3) z: 1729 * w;
-(%o3)                        1729 w
-(%i4) printq1 (x) ::=
-         block (print ("(1) x is equal to", x),
-         '(print ("(2) x is equal to", x)));
-(%o4) printq1(x) ::= block(print("(1) x is equal to", x), 
-                                '(print("(2) x is equal to", x)))
+(%i1) x: %pi$
+
+(%i2) y: 1234$
+
+(%i3) z: 1729 * w$
+
+(%i4) printq1 (x) ::= block (print ("(1) x is equal to", x),
+'(print ("(2) x is equal to", x)))$
+
 (%i5) printq1 (y - z);
-(1) x is equal to y - z 
-(2) x is equal to %pi 
-(%o5)                          %pi
+(1) x is equal to y - z
+(2) x is equal to %pi
+(%o5)                                 %pi
 @end example
+
 
 Una funci@'on ordinaria eval@'ua sus argumentos, por lo que el mensaje (1) muestra el valor de @code{y - z}.
 El valor de retorno no se eval@'ua, por lo que el mensaje (2) no se imprime hasta la evaluaci@'on expl@'{@dotless{i}}cita @code{''%}.
 
 @c ===beg===
-@c x: %pi;
-@c y: 1234;
-@c z: 1729 * w;
-@c printe1 (x) :=
-@c     block (print ("(1) x is equal to", x),
-@c            '(print ("(2) x is equal to", x)));
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c printe1 (x) := block (print ("(1) x is equal to", x), 
+@c       '(print ("(2) x is equal to", x)))$
 @c printe1 (y - z);
 @c ''%;
 @c ===end===
 @example
-(%i1) x: %pi;
-(%o1)                          %pi
-(%i2) y: 1234;
-(%o2)                         1234
-(%i3) z: 1729 * w;
-(%o3)                        1729 w
-(%i4) printe1 (x) :=
-         block (print ("(1) x is equal to", x),
-               '(print ("(2) x is equal to", x)));
-(%o4) printe1(x) := block(print("(1) x is equal to", x), 
-                                '(print("(2) x is equal to", x)))
+(%i1) x: %pi$
+
+(%i2) y: 1234$
+
+(%i3) z: 1729 * w$
+
+(%i4) printe1 (x) := block (print ("(1) x is equal to", x),
+'(print ("(2) x is equal to", x)))$
+
 (%i5) printe1 (y - z);
-(1) x is equal to 1234 - 1729 w 
-(%o5)              print((2) x is equal to, x)
+(1) x is equal to 1234 - 1729 w
+(%o5)                     print((2) x is equal to, x)
 (%i6) ''%;
-(2) x is equal to %pi 
-(%o6)                          %pi
+(2) x is equal to %pi
+(%o6)                                 %pi
 @end example
+@end deffn
+
 
 @code{macroexpand} devuelve la macroexpansi@'on;
 @code{macroexpand (foo (x))} seguida de @code{''%} es equivalente a @code{foo (x)} si @code{foo} es una funci@'on macro.
 
 @c ===beg===
-@c x: %pi;
-@c y: 1234;
-@c z: 1729 * w;
-@c g (x) ::= buildq ([x], print ("x is equal to", x));
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c g (x) ::= buildq ([x], print ("x is equal to", x))$
 @c macroexpand (g (y - z));
 @c ''%;
 @c g (y - z);
 @c ===end===
 @example
-(%i1) x: %pi;
-(%o1)                          %pi
-(%i2) y: 1234;
-(%o2)                         1234
-(%i3) z: 1729 * w;
-(%o3)                        1729 w
-(%i4) g (x) ::= buildq ([x], print ("x is equal to", x));
-(%o4)    g(x) ::= buildq([x], print("x is equal to", x))
+(%i1) x: %pi$
+
+(%i2) y: 1234$
+
+(%i3) z: 1729 * w$
+
+(%i4) g (x) ::= buildq ([x], print ("x is equal to", x))$
+
 (%i5) macroexpand (g (y - z));
-(%o5)              print(x is equal to, y - z)
+(%o5)                     print(x is equal to, y - z)
 (%i6) ''%;
-x is equal to 1234 - 1729 w 
-(%o6)                     1234 - 1729 w
+x is equal to 1234 - 1729 w
+(%o6)                            1234 - 1729 w
 (%i7) g (y - z);
-x is equal to 1234 - 1729 w 
-(%o7)                     1234 - 1729 w
+x is equal to 1234 - 1729 w
+(%o7)                            1234 - 1729 w
 @end example
 
-@end deffn
 
 @deffn {Operador} :=
 @ifinfo

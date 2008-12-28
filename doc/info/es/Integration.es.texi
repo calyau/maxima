@@ -1,4 +1,4 @@
-@c version 1.41
+@c version 1.42
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -97,10 +97,6 @@ V@'ease @code{quad_qag} y sus funciones relacionadas para aproximaciones num@'er
 
 @end deffn
 
-@deffn {Funci@'on} erf (@var{x})
-Es la funci@'on de error, cuya derivada es @code{2*exp(-x^2)/sqrt(%pi)}.
-
-@end deffn
 
 @defvr {Variable optativa} erfflag
 Valor por defecto: @code{true}
@@ -418,11 +414,11 @@ Si ahora se le da a la variable el valor @code{true}, la parte no resuelta de la
 (%o4) ----------------------------------------------------------
                7
 
-                                                             2 x + 1
-                                         2            5 atan(-------)
-                                    log(x  + x + 1)          sqrt(3)
-                                  - --------------- + ---------------
-                                          14             7 sqrt(3)
+                                                       2 x + 1
+                                   2            5 atan(-------)
+                              log(x  + x + 1)          sqrt(3)
+                            - --------------- + ---------------
+                                    14             7 sqrt(3)
 @end example
 
 Alternativamente, el usuario puede calcular las ra@'{@dotless{i}}ces del denominador separadamente y luego representar el integrando en funci@'on de dichas ra@'{@dotless{i}}ces, como por ejemplo @code{1/((x - a)*(x - b)*(x - c))} o @code{1/((x^2 - (a+b)*x + a*b)*(x - c))}
