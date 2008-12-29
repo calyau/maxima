@@ -441,9 +441,12 @@ false;
 (pn_(73),ans:contrib_ode(eqn:'diff(y,x,2)+('diff(p(x),x,3)-'diff(p(x),x,2)-p(x)*'diff(p(x),x,1))*'diff(y,x,1)/('diff(p(x),x,1)+p(x)^2)+(-p(x)*'diff(p(x),x,2)+('diff(p(x),x,1))^2-p(x)^2*'diff(p(x),x,1))*y/('diff(p(x),x,1)+p(x)^2),y,x));
 false;
 
-/* Kamke 2. 74  */ 
+/* Kamke 2. 74  */
 (pn_(74),ans:contrib_ode(eqn:'diff(y,x,2)+m*jacobi_cn(x,m)*jacobi_sn(x,m)*'diff(y,x,1)/jacobi_dn(x,m)+n^2*jacobi_dn(x,m)^2*y,y,x));
-false;
+[y = %k1*sin(n*asin(jacobi_sn(x,m)))+%k2*cos(n*asin(jacobi_sn(x,m)))];
+method;
+xformtoconstcoeff;
+/* solution satisfies the ODE for a few random values of the variables */
 
 /* Kamke 2. 75  */ 
 (pn_(75),ans:contrib_ode(eqn:'diff(y,x,2)+f(x)*'diff(y,x,1)+g(x)*y,y,x));
