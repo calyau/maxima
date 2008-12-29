@@ -1,10 +1,15 @@
-@c version 1.36
+@c version 1.44
 @menu
 * Introducci@'on a las funciones especiales::
+* Funciones de Bessel::
+* Funciones de Airy::
+* Funciones Gamma y factorial::
+* Integral exponencial::
+* Funci@'on de error::
 * Funciones y variables para las funciones especiales::
 @end menu
 
-@node Introducci@'on a las funciones especiales, Funciones y variables para las funciones especiales, Funciones Especiales, Funciones Especiales
+@node Introducci@'on a las funciones especiales, Funciones de Bessel, Funciones Especiales, Funciones Especiales
 @section Introducci@'on a las funciones especiales
 
 A continuaci@'on se especifican las notaciones correspondientes a las funciones especiales:
@@ -38,26 +43,207 @@ kelliptic (z)             Integral el@'{@dotless{i}}ptica completa
 
 
 
-@node Funciones y variables para las funciones especiales,  , Introducci@'on a las funciones especiales, Funciones Especiales
-@section Funciones y variables para las funciones especiales
 
+@node Funciones de Bessel, Funciones de Airy, Introducci@'on a las funciones especiales, Funciones Especiales
+@section Funciones de Bessel
+
+
+@deffn {Funci@'on} bessel_j (@var{v}, @var{z})
+Funci@'on de Bessel de primera especie de orden @math{v} y argumento @math{z}.
+
+La funci@'on @code{bessel_j} se define como
+
+@ifnottex
+@example
+                inf
+                ====       k  - v - 2 k  v + 2 k
+                \     (- 1)  2          z
+                 >    --------------------------
+                /        k! gamma(v + k + 1)
+                ====
+                k = 0
+@end example
+@end ifnottex
+
+@tex
+$$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
+ }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
+@end tex
+
+aunque la serie infinita no se utiliza en los c@'alculos.
+
+@end deffn
+
+@deffn {Funci@'on} bessel_y (@var{v}, @var{z})
+Funci@'on de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
+
+La funci@'on @code{bessel_y} se define como
+
+@ifnottex
+@example
+              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
+              -------------------------------------------
+                             sin(%pi v)
+@end example
+@end ifnottex
+
+@tex
+$${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
+ \sin \left(\pi\,v\right)}}$$
+@end tex
+
+si @math{v} no es un entero.  En caso de que  @math{v} sea un entero @math{n}, se calcula el l@'{@dotless{i}}mite cuando @math{v} se aproxima a @math{n}.
+
+@end deffn
+
+
+@deffn {Funci@'on} bessel_i (@var{v}, @var{z})
+Funci@'on modificada de Bessel de primera especie de orden @math{v} y argumento @math{z}.
+
+La funci@'on @code{bessel_i} se define como
+
+@ifnottex
+@example
+                    inf
+                    ====   - v - 2 k  v + 2 k
+                    \     2          z
+                     >    -------------------
+                    /     k! gamma(v + k + 1)
+                    ====
+                    k = 0
+@end example
+@end ifnottex
+
+@tex
+$$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
+ \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
+@end tex
+
+aunque la serie infinita no se utiliza en los c@'alculos.
+
+@end deffn
+
+
+@deffn {Funci@'on} bessel_k (@var{v}, @var{z})
+Funci@'on modificada de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
+
+La funci@'on @code{bessel_k} se define como
+
+@ifnottex
+@example
+           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
+           -------------------------------------------------
+                                  2
+@end example
+@end ifnottex
+
+@tex
+$${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
+@end tex
+
+si @math{v} no es un entero.  Si @math{v} es igual al entero @math{n}, entonces se calcula el l@'{@dotless{i}}mite cuando @math{v} tiende a @math{n}.
+@end deffn
+
+
+@deffn {Funci@'on} hankel_1 (@var{v}, @var{z})
+Funci@'on de Hankel de primera especie de orden @math{v} y argumento @math{z}. (A&S 9.1.3)
+@end deffn
+
+@deffn {Funci@'on} hankel_2 (@var{v}, @var{z})
+Funci@'on de Hankel de segunda especie de orden @math{v} y argumento @math{z}. (A&S 9.1.4)
+@end deffn
+
+@defvr {Variable optativa} besselexpand
+Valor por defecto: @code{false}
+
+Controla la expansi@'on de las funciones de Bessel cuando el orden es la mitad de un entero impar. En tal caso, las funciones de Bessel se pueden expandir en t@'erminos de otras funciones elementales.  Si @code{besselexpand} vale @code{true}, se expande la funci@'on de Bessel.
+
+@example
+(%i1) besselexpand: false$
+(%i2) bessel_j (3/2, z);
+                                    3
+(%o2)                      bessel_j(-, z)
+                                    2
+(%i3) besselexpand: true$
+(%i4) bessel_j (3/2, z);
+                                        sin(z)   cos(z)
+                       sqrt(2) sqrt(z) (------ - ------)
+                                           2       z
+                                          z
+(%o4)                  ---------------------------------
+                                   sqrt(%pi)
+@end example
+
+@end defvr
+
+
+@deffn {Funci@'on} scaled_bessel_i (@var{v}, @var{z})
+
+Es la funci@'on de Bessel modificada de primera especie de
+orden @math{v} y argumento @math{z}, es decir
+@math{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}.
+Esta funci@'on es especialmente @'util para calcular @math{bessel_i}
+cuando @math{z} es grande. Sin embargo, Maxima no sabe mucho m@'as 
+sobre esta funci@'on. En c@'alculos simb@'olicos, quiz@'as sea
+preferible trabajar directamente con la expresi@'on 
+@code{exp(-abs(z))*bessel_i(v, z)}.
+
+@end deffn
+
+
+@deffn {Funci@'on} scaled_bessel_i0 (@var{z})
+
+Id@'entica a @code{scaled_bessel_i(0,z)}.
+
+@end deffn
+
+@deffn {Funci@'on} scaled_bessel_i1 (@var{z})
+
+Id@'entica a @code{scaled_bessel_i(1,z)}.
+
+@end deffn
+
+
+@deffn {Funci@'on} bessel (@var{z}, @var{order}) 
+Funci@'on de Bessel de primera especie.
+
+Esta funci@'on ha sido eliminada. 
+Util@'{@dotless{i}}cese @code{bessel_j (@var{order}, @var{z})} en su lugar.
+
+@end deffn
+
+
+
+
+
+@node Funciones de Airy, Funciones Gamma y factorial, Funciones de Bessel, Funciones Especiales
+@section Funciones de Airy
+
+Las funciones de Airy Ai(x) y Bi(x) se definen en la secci@'on 10.4.
+de Abramowitz and Stegun, @i{Handbook of Mathematical Functions}.
+
+@code{y = Ai(x)} y @code{y = Bi(x)} son dos soluciones linealmente
+independientes de la ecuaci@'on diferencia de Airy
+@code{diff (y(x), x, 2) - x y(x) = 0}.
+
+Si el argumento @code{x} es un n@'umero decimal en coma flotante
+real o complejo, se devolver@'a el valor num@'erico de la funci@'on.
 
 @deffn {Funci@'on} airy_ai (@var{x})
-Funci@'on Ai de Airy, tal como la definen Abramowitz y Stegun,
-@i{Handbook of Mathematical Functions}, Secci@'on 10.4. 
+Funci@'on de Airy Ai(x).  (A&S 10.4.2)
 
-La ecuaci@'on de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tiene dos soluciones linealmente independientes, @code{y = Ai(x)} y @code{y = Bi(x)}. La derivada @code{diff (airy_ai(x), x)} es @code{airy_dai(x)}.
-
-Si el argumento @code{x} es un n@'umero decimal real o complejo, se devolver@'a el valor num@'erico de @code{airy_ai} siempre que sea posible.
+La derivada @code{diff (airy_ai(x), x)} es @code{airy_dai(x)}.
 
 V@'eanse @code{airy_bi}, @code{airy_dai} y @code{airy_dbi}.
 @end deffn
+
 
 @deffn {Funci@'on} airy_dai (@var{x})
 Es la derivada de la funci@'on Ai de Airy, @code{airy_ai(x)}. 
 
 V@'ease @code{airy_ai}.
 @end deffn
+
 
 @deffn {Funci@'on} airy_bi (@var{x})
 Es la funci@'on Bi de Airy, tal como la definen Abramowitz y Stegun,
@@ -76,213 +262,54 @@ Es la derivada de la funci@'on Bi de Airy, @code{airy_bi(x)}.
 V@'eanse @code{airy_ai} y @code{airy_bi}.
 @end deffn
 
-@deffn {Funci@'on} asympa
-El paquete @code{asympa} contiene funciones de simplificaci@'on para realizar an@'alisis asint@'otico, incluyendo las funciones  ``big O'' y  ``little o'', de uso frecuente en el an@'alisis complejo y num@'erico.
-
-La instrucci@'on @code{load ("asympa")} carga este paquete.
-
-@end deffn
-
-@deffn {Funci@'on} bessel (@var{z}, @var{order}) 
-Funci@'on de Bessel de primera especie.
-
-Esta funci@'on ha sido eliminada. Util@'{@dotless{i}}cese @code{bessel_j (@var{order}, @var{z})} en su lugar.
-
-@end deffn
-
-@deffn {Funci@'on} bessel_j (@var{v}, @var{z})
-Funci@'on de Bessel de primera especie de orden @math{v} y argumento @math{z}.
-
-La funci@'on @code{bessel_j} se define como
-
-@ifhtml
-@example
-                inf
-                ====       k  - v - 2 k  v + 2 k
-                \     (- 1)  2          z
-                 >    --------------------------
-                /        k! gamma(v + k + 1)
-                ====
-                k = 0
-@end example
-@end ifhtml
-@ifinfo
-@example
-                inf
-                ====       k  - v - 2 k  v + 2 k
-                \     (- 1)  2          z
-                 >    --------------------------
-                /        k! gamma(v + k + 1)
-                ====
-                k = 0
-@end example
-@end ifinfo
-
-@tex
-$$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
- }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
-@end tex
-
-aunque la serie infinita no se utiliza en los c@'alculos.
-
-@end deffn
-
-@deffn {Funci@'on} bessel_y (@var{v}, @var{z})
-Funci@'on de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
-
-La funci@'on @code{bessel_y} se define como
-
-@ifhtml
-@example
-              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
-              -------------------------------------------
-                             sin(%pi v)
-@end example
-@end ifhtml
-@ifinfo
-@example
-              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
-              -------------------------------------------
-                             sin(%pi v)
-@end example
-@end ifinfo
-
-@tex
-$${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
- \sin \left(\pi\,v\right)}}$$
-@end tex
-
-si @math{v} no es un entero.  En caso de que  @math{v} sea un entero @math{n}, se calcula el l@'{@dotless{i}}mite cuando @math{v} se aproxima a @math{n}.
-
-@end deffn
-
-@deffn {Funci@'on} bessel_i (@var{v}, @var{z})
-Funci@'on modificada de Bessel de primera especie de orden @math{v} y argumento @math{z}.
-
-La funci@'on @code{bessel_i} se define como
-
-@ifhtml
-@example
-                    inf
-                    ====   - v - 2 k  v + 2 k
-                    \     2          z
-                     >    -------------------
-                    /     k! gamma(v + k + 1)
-                    ====
-                    k = 0
-@end example
-@end ifhtml
-@ifinfo
-@example
-                    inf
-                    ====   - v - 2 k  v + 2 k
-                    \     2          z
-                     >    -------------------
-                    /     k! gamma(v + k + 1)
-                    ====
-                    k = 0
-@end example
-@end ifinfo
-
-@tex
-$$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
- \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
-@end tex
-
-aunque la serie infinita no se utiliza en los c@'alculos.
-
-@end deffn
-
-@deffn {Funci@'on} bessel_k (@var{v}, @var{z})
-Funci@'on modificada de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
-
-La funci@'on @code{bessel_k} se define como
-
-@ifhtml
-@example
-           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
-           -------------------------------------------------
-                                  2
-@end example
-@end ifhtml
-@ifinfo
-@example
-           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
-           -------------------------------------------------
-                                  2
-@end example
-@end ifinfo
-
-@tex
-$${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
-@end tex
-
-si @math{v} no es un entero.  Si @math{v} es igual al entero @math{n}, entonces se calcula el l@'{@dotless{i}}mite cuando @math{v} tiende a @math{n}.
-
-@end deffn
-
-@defvr {Variable optativa} besselexpand
-Valor por defecto: @code{false}
-
-Controla la expansi@'on de las funciones de Bessel cuando el orden es la mitad de un entero impar. En tal caso, las funciones de Bessel se pueden expandir en t@'erminos de otras funciones elementales.  Si @code{besselexpand} vale @code{true}, se expande la funci@'on de Bessel.
-
-@example
-(%i1) besselexpand: false$
-(%i2) bessel_j (3/2, z);
-                                    3
-(%o2)                      bessel_j(-, z)
-                                    2
-(%i3) besselexpand: true$
-(%i4) bessel_j (3/2, z);
-                          2 z   sin(z)   cos(z)
-(%o4)                sqrt(---) (------ - ------)
-                          %pi      2       z
-                                  z
-@end example
-@end defvr
 
 
-@deffn {Funci@'on} scaled_bessel_i (@var{v}, @var{z})
 
-Es la funci@'on de Bessel modificada de primera especie de
-orden @math{v} y argumento @math{z}, es decir
-@math{scaled_bessel_i(v,z) = exp(-abs(z))*bessel_i(v, z)}.
-Esta funci@'on es especialmente @'util para calcular @math{bessel_i}
-cuando @math{z} es grande. Sin embargo, Maxima no sabe mucho m@'as 
-sobre esta funci@'on. En c@'alculos simb@'olicos, quiz@'as sea
-preferible trabajar directamente con la expresi@'on 
-@code{exp(-abs(z))*bessel_i(v, z)}.
 
-@end deffn
+@node Funciones Gamma y factorial, Integral exponencial, Funciones de Airy, Funciones Especiales
+@section Funciones Gamma y factorial
 
-@deffn {Funci@'on} scaled_bessel_i0 (@var{z})
-
-Id@'entica a @code{scaled_bessel_i(0,z)}.
-
-@end deffn
-
-@deffn {Funci@'on} scaled_bessel_i1 (@var{z})
-
-Id@'entica a @code{scaled_bessel_i(1,z)}.
-
-@end deffn
-
+Las funciones gamma, beta, psi y gamma incompleta est@'an
+definidas en el cap@'{@dotless{i}}tulo 6 de Abramowitz y Stegun,
+@i{Handbook of Mathematical Functions}.
 
 @deffn {Funci@'on} beta (@var{x}, @var{y})
-Funci@'on beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
-
+Funci@'on beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}
+en A&S 6.2.1.
 @end deffn
 
 @deffn {Funci@'on} gamma (@var{x})
-Funci@'on gamma.
+Funci@'on gamma A&S 6.1.1.
 
 V@'ease tambi@'en @code{makegamma}.
 
 La variable @code{gammalim} controla la simplificaci@'on de la funci@'on gamma.
 
 La constante de Euler-Mascheroni es @code{%gamma}.
-
 @end deffn
+
+
+@deffn {Funci@'on} log_gamma (@var{z})
+Logaritmo natural de la funci@'on gamma.
+@end deffn
+
+@deffn {Funci@'on} gamma_incomplete (@var{a},@var{z})
+Funci@'on gamma incompleta superior, A&S 6.5.2.
+@end deffn
+
+@deffn {Funci@'on} gamma_incomplete_regularized (@var{a},@var{z})
+Funci@'on gamma incompleta superior regularizada, A&S 6.5.1.  
+
+@code{ gamma_incomplete_regularized(a,z)=gamma_incomplete(a,z)/gamma(a)}
+@end deffn
+
+@deffn {Funci@'on} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1})
+Funci@'on gamma incompleta generalizada.  
+
+@code{ gamma_incomplete_generalized(a,z) =
+ integrate(t^(a-1)*exp(-t), z, z1,z2) }
+@end deffn
+
 
 @defvr {Variable optativa} gammalim
 Valor por defecto: 1000000
@@ -291,102 +318,10 @@ La variable @code{gammalim} controla la simplificaci@'on de la funci@'on gamma c
 
 @end defvr
 
-@deffn {Funci@'on} intopois (@var{a})
-Convierte @var{a} en un codificado Poisson.
-
-@end deffn
-
-@deffn {Funci@'on} makefact (@var{expr})
-Transforma las funciones @code{binomial}, @code{gamma} y @code{beta} que aparecen en @var{expr} en su notaci@'on factorial.
-
-V@'ease tambi@'en @code{makegamma}.
-
-@end deffn
-
 @deffn {Funci@'on} makegamma (@var{expr})
 Transforma las funciones @code{binomial}, @code{factorial} y @code{beta} que aparecen en @var{expr} en funciones @code{gamma}.
 
 V@'ease tambi@'en @code{makefact}.
-
-@end deffn
-
-@deffn {Funci@'on} numfactor (@var{expr})
-Devuelve el factor num@'erico que multiplica a la expresi@'on @var{expr}, la cual debe tener un @'unico t@'ermino. 
-
-@example
-(%i1) gamma (7/2);
-                          15 sqrt(%pi)
-(%o1)                     ------------
-                               8
-(%i2) numfactor (%);
-                               15
-(%o2)                          --
-                               8
-@end example
-
-@end deffn
-
-@deffn {Funci@'on} outofpois (@var{a})
-Convierte @var{a} desde codificado de Poisson a una representaci@'on general.  Si @var{a} no est@'a en forma de Poisson, @code{outofpois} hace la conversi@'on, siendo entonces el valor retornado @code{outofpois (intopois (@var{a}))}. Esta funci@'on es un simplificador can@'onico para sumas de potencias de senos y cosenos.
-
-@end deffn
-
-@deffn {Funci@'on} poisdiff (@var{a}, @var{b})
-Deriva @var{a} con respecto a @var{b}. El argumento @var{b} debe aparecer s@'olo en los argumentos trigonom@'etricos o s@'olo en los coeficientes.
-
-@end deffn
-
-@deffn {Funci@'on} poisexpt (@var{a}, @var{b})
-Id@'entico a @code{intopois (@var{a}^@var{b})}. El argumento @var{b} debe ser un entero positivo.
-
-@end deffn
-
-@c AQUI FALTA DEFINICION DE poisint
-
-@defvr {Variable optativa} poislim
-Valor por defecto: 5
-
-La variable @code{poislim} determina el dominio de los coeficientes en los argumentos de las funciones trigonom@'etricas.  El valor por defecto 5 corresponde al intervalo [-2^(5-1)+1,2^(5-1)], o [-15,16], pero puede reasignarse para  [-2^(n-1)+1, 2^(n-1)].
-
-@end defvr
-
-@c AQUI FALTA DEFINICION DE poismap 
-
-@deffn {Funci@'on} poisplus (@var{a}, @var{b})
-Id@'entico a @code{intopois (a + b)}.
-
-@end deffn
-
-@deffn {Funci@'on} poissimp (@var{a})
-Convierte @var{a} en una serie de Poisson para @var{a} en su representaci@'on general.
-
-@end deffn
-
-@defvr {S@'{@dotless{i}}mbolo especial} poisson
-El s@'{@dotless{i}}mbolo @code{/P/} sigue a la etiqueta de las l@'{@dotless{i}}neas que contienen expresiones que son series de Poisson.
-
-@end defvr
-
-@deffn {Funci@'on} poissubst (@var{a}, @var{b}, @var{c})
-Sustituye @var{b} por @var{a} en @var{c}, donde  @var{c} es una serie de Poisson.
-
-(1) Si @var{b} es una de las variables @var{u}, @var{v}, @var{w}, @var{x}, @var{y} o @var{z}, entonces @var{a} debe ser una expresi@'on lineal en esas variables (por ejemplo, @code{6*u + 4*v}).
-
-(2) Si @var{b} no es ninguna de esas variables, entonces @var{a} no puede contener tampoco a ninguna de ellas, ni senos, ni cosenos.
-
-@c AQUI FALTA PARRAFO
-
-@end deffn
-
-@deffn {Funci@'on} poistimes (@var{a}, @var{b})
-Id@'entico a @code{intopois (@var{a}*@var{b})}.
-
-@end deffn
-
-@c AQUI FALTA DEFINICION DE poistrim
-
-@deffn {Funci@'on} printpois (@var{a})
-Presenta una serie de Poisson en un formato legible.  Conjuntamente con @code{outofpois}, si es necesario convertir@'a @var{a} primero en una codificaci@'on de Poisson.
 
 @end deffn
 
@@ -434,6 +369,7 @@ una respuesta simplificada, aunque supiese c@'omo hacerlo.
 
 @end defvr
 
+
 @defvr {Variable opcional} maxpsifracnum
 Valor por defecto: 6
 
@@ -451,6 +387,178 @@ Si @code{q} es mayor que @code{maxpsifracnum}, entonces
 @code{psi[@var{n}](@var{x})} no devolver@'a una respuesta simplificada.
 
 @end defvr
+
+
+@deffn {Funci@'on} makefact (@var{expr})
+Transforma las funciones @code{binomial}, @code{gamma} y @code{beta} que aparecen en @var{expr} en su notaci@'on factorial.
+
+V@'ease tambi@'en @code{makegamma}.
+
+@end deffn
+
+
+@deffn {Funci@'on} numfactor (@var{expr})
+Devuelve el factor num@'erico que multiplica a la expresi@'on @var{expr}, la cual debe tener un @'unico t@'ermino. 
+
+@example
+(%i1) gamma (7/2);
+                          15 sqrt(%pi)
+(%o1)                     ------------
+                               8
+(%i2) numfactor (%);
+                               15
+(%o2)                          --
+                               8
+@end example
+
+@end deffn
+
+
+
+
+
+
+
+@node Integral exponencial, Funci@'on de error, Funciones Gamma y factorial, Funciones Especiales
+@section Funciones Gamma y factorial
+
+La integral exponencial y sus funciones relacionadas se 
+definen en el cap@'{@dotless{i}}tulo 5 de Abramowitz y Stegun, 
+@i{Handbook of Mathematical Functions}.
+
+
+@deffn {Funci@'on} expintegral_e1 (@var{z})
+La integral exponencial E1(z) (A&S 5.1.1)
+@end deffn
+
+@deffn {Funci@'on} expintegral_ei (@var{z})
+La integral exponencial Ei(z) (A&S 5.1.2)
+@end deffn
+
+@deffn {Funci@'on} expintegral_li (@var{n},@var{z})
+La integral exponencial Li(z)  (A&S 5.1.3)
+@end deffn
+
+@deffn {Funci@'on} expintegral_e (@var{n},@var{z})
+La integral exponencial En(z)  (A&S 5.1.4)
+@end deffn
+
+@deffn {Funci@'on} expintegral_si (@var{z})
+La integral exponencial Si(z) (A&S 5.2.1)
+@end deffn
+
+@deffn {Funci@'on} expintegral_ci (@var{z})
+La integral exponencial Ci(z) (A&S 5.2.2)
+@end deffn
+
+@deffn {Funci@'on} expintegral_shi (@var{z})
+La integral exponencial Shi(z) (A&S 5.2.3)
+@end deffn
+
+@deffn {Funci@'on} expintegral_chi (@var{z})
+La integral exponencial Chi(z) (A&S 5.2.4)
+@end deffn
+
+@defvr {Option variable} expintrep
+Valor por defecto: false
+
+Transforma la representaci@'on de la integral exponencial
+en t@'erminos de las funciones @code{gamma_incomplete}, 
+@code{expintegral_e1}, @code{expintegral_ei}, 
+@code{expintegral_li}, @code{expintegral_trig} y @code{expintegral_hyp}.
+@end defvr
+
+@defvr {Option variable} expintexpand 
+Valor por defecto: false
+
+Expande la integral exponencial E[n](z)
+para valores medios de la integral en t@'erminos de 
+las funciones Erfc o Erf y para positivos enteros
+en t@'erminos de Ei .
+@end defvr
+
+
+
+
+
+@node Funci@'on de error, Funciones y variables para las funciones especiales, Integral exponencial, Funciones Especiales
+@section Funci@'on de error
+
+La funci@'on de error y sus asociadas se definen en el 
+cap@'{@dotless{i}}tulo 7 de Abramowitz y Stegun, 
+@i{Handbook of Mathematical Functions}.
+
+
+@deffn {Funci@'on} erf (@var{z})
+Funci@'on de error erf(z) (A&S 7.1.1)
+
+V@'ease tambi@'en @code{erfflag}.
+@end deffn
+
+@deffn {Funci@'on} erfc (@var{z})
+Complemento de la funci@'on de error erfc(z) (A&S 7.1.2)
+
+@code{erfc(z) = 1-erf(z)}
+@end deffn
+
+@deffn {Funci@'on} erfi (@var{z})
+Funci@'on de error imaginaria. 
+
+@code{erfi(z) = -%i*erf(%i*z)}
+@end deffn
+
+@deffn {Funci@'on} erf_generalized (@var{z1},@var{z2})
+Funci@'on de error generalizada Erf(z1,z2)
+@end deffn
+
+
+@deffn {Funci@'on} fresnel_c (@var{z})
+Integral de Fresnel C(z) = integrate(cos((%pi/2)*t^2),t,0,z). (A&S 7.3.1)
+
+La simplificaci@'on fresnel_c(-x) = -fresnel_c(x) se aplica cuando
+la variable global @code{trigsign} vale @code{true}.
+
+La simplificaci@'on fresnel_c(%i*x) =  %i*fresnel_c(x) se aplica cuando
+la variable global @code{%iargs} vale @code{true}.
+
+V@'eanse tambi@'en @code{erf_representation} y
+@code{hypergeometric_representation}.
+@end deffn
+
+@deffn {Funci@'on} fresnel_s (@var{z})
+Integral de Fresnel S(z) = integrate(sin((%pi/2)*t^2),t,0,z). (A&S 7.3.2)
+
+La simplificaci@'on fresnel_s(-x) = -fresnel_s(x) se aplica cuando
+la variable global @code{trigsign} vale @code{true}.
+
+La simplificaci@'on fresnel_s(%i*x) =  %i*fresnel_s(x) se aplica cuando
+la variable global @code{%iargs} vale @code{true}.
+
+V@'eanse tambi@'en @code{erf_representation} y
+@code{hypergeometric_representation}.
+@end deffn
+
+@defvr {Variable opcional} erf_representation
+Valor por defecto: false
+
+Cuando valga @code{true} erfc, erfi, erf_generalized, fresnel_s 
+y fresnel_c se transforman a erf.
+@end defvr
+
+@defvr {Variable opcional} hypergeometric_representation
+Valor por defecto: false
+
+Permite obtener la representaci@'on hipergeom@'etrica
+de las funciones fresnel_s y fresnel_c.
+@end defvr
+
+
+
+
+
+
+@node Funciones y variables para las funciones especiales,  , Funci@'on de error, Funciones Especiales
+@section Funciones y variables para las funciones especiales
 
 
 @deffn {Funci@'on} specint (exp(- s*@var{t}) * @var{expr}, @var{t})
@@ -555,5 +663,24 @@ polinomio generalizado de Laguerre.
 
 @end example
 
+@end deffn
+
+
+@deffn {Funci@'on} lambert_w (@var{z})
+Rama principal de la funci@'on W de Lambert, la soluci@'on de
+la ecuaci@'on @code{z = W(z) * exp(W(z))}.
+@end deffn
+
+@deffn {Funci@'on} nzeta (@var{z})
+Funci@'on de dispersi@'on del plasma.
+@code{nzeta(z) = %i*sqrt(%pi)*exp(-z^2)*(1-erf(-%i*z))}
+@end deffn
+
+@deffn {Funci@'on} nzetar (@var{z})
+Devuelve @code{realpart(nzeta(z))}.
+@end deffn
+
+@deffn {Funci@'on} nzetai (@var{z})
+Devuelve @code{imagpart(nzeta(z))}.
 @end deffn
 

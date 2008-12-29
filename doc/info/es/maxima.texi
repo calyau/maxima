@@ -270,6 +270,11 @@ Trigonometr@'{@dotless{i}}a
 Funciones Especiales
 
 * Introducci@'on a las funciones especiales::
+* Funciones de Bessel::
+* Funciones de Airy::
+* Funciones Gamma y factorial::
+* Integral exponencial::
+* Funci@'on de error::
 * Funciones y variables para las funciones especiales::
 
 Funciones el@'{@dotless{i}}pticas
