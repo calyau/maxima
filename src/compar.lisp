@@ -19,6 +19,9 @@
 	    ;; Variables defined in DB
 	    (special context current dobjects dbtrace +labs))
 
+(defvar *debug-compar* nil 
+  "Enables debugging code for this file.")
+
 (defvar %initiallearnflag)
 
 (defmvar $context '$initial
@@ -48,6 +51,9 @@ relational knowledge is contained in the default context GLOBAL."
   "If T, COMPAR attempts to work in a complex mode.
 	  This scheme is only very partially developed at this time."
   no-reset)
+
+(defvar *complexsign* nil
+  "If T, COMPAR works in a complex mode.")
 
 (defmvar $prederror nil)
 (defmvar $signbfloat t)
@@ -656,10 +662,27 @@ relational knowledge is contained in the default context GLOBAL."
   (or (not (free x '$%i))
       (let (sign-imag-errp limitp) (catch 'sign-imag-err ($sign x)))))
 
+;;; $csign works like $sign but switches the sign-functions into a complex
+;;; mode. In complex mode complex and imaginary expressions give the results
+;;; imagarinary or complex.
+
+(defun $csign (z)
+  (let ((*complexsign* t))
+    ($sign z)))
+
 (defmfun $sign (x)
   (let ((x (specrepcheck x))
 	sign minus odds evens factored)
     (sign01 (cond (limitp (restorelim x))
+                  (*complexsign* 
+                   ;; No rectform in Complex mode. Rectform ask unnecessary
+                   ;; questions about complex expressions and can not handle
+                   ;; imaginary expressions completely. Thus $csign can not
+                   ;; handle something like (1+%i)*(1-%i) which is real. 
+                   ;; After improving rectform, we can change this. (12/2008)
+                   (when *debug-compar*
+                     (format t "~&$SIGN with ~A~%" x))
+                   x)
 		  ((not (free x '$%i)) ($rectform x))
 		  (t x)))))
 
@@ -1027,6 +1050,10 @@ relational knowledge is contained in the default context GLOBAL."
 (defun sign1 (x)
   (setq x (specrepcheck x))
   (setq x (infsimp* x))
+  (when (and *complexsign* (atom x) (eq x '$infinity))
+    ;; In Complex Mode the sign of infinity is complex.
+    (when *debug-compar* (format t "~& in sign1 detect $infintiy.~%"))
+    (return-from sign1 '$complex))
   (if (member x '($und $ind $infinity) :test #'eq)
       (if limitp '$pnz (merror "The sign of ~:M is undefined" x)))
   (prog (dum exp)
@@ -1086,6 +1113,10 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmfun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
+        ((and *complexsign* (atom x) (eq x '$%i))
+         ;; In Complex Mode the sign of %i is $imaginary.
+         (when *debug-compar* (format t "~& in sign detected $%i~~%"))
+         (setq sign '$imaginary))
 	((atom x) (if (eq x '$%i) (imag-err x)) (sign-any x))
 	((eq (caar x) 'mtimes) (sign-mtimes x))
 	((eq (caar x) 'mplus) (sign-mplus x))
@@ -1102,21 +1133,59 @@ relational knowledge is contained in the default context GLOBAL."
 	 (sign-oddinc x))
 	(t (sign-any x))))
 
+;;; Test if a symbol is declared to be complex or imaginary.
+;;; There are more definitions of similiar functions in Maxima.
+;;; These functions are more or less complete. Perhaps we can choose one
+;;; style and convention for all of such functions. (12/2008)
+
+(defun declared-complex-p (sym)
+  (and (symbolp sym)
+       (kindp sym '$complex)
+       (not (or (kindp sym '$real)
+                (kindp sym '$rational)
+                (kindp sym '$integer)))))
+
 (defun sign-any (x)
-  (dcompare x 0)
-  (if (and $assume_pos
-	   (member sign '($pnz $pz $pn) :test #'eq)
-	   (if $assume_pos_pred (let ((*x* x)) (is '(($assume_pos_pred) *x*)))
-	       (mapatom x)))
-      (setq sign '$pos))
-  (setq minus nil evens nil
-	odds (if (not (member sign '($pos $neg $zero) :test #'eq)) (ncons x))))
+  (cond
+    ((and *complexsign*
+          (or (and (atom x) (declared-complex-p x))
+              (and (not (atom x)) (declared-complex-p (caar x)))))
+     ;; In Complex Mode look for symbols declared to be complex.
+     (when *debug-compar*
+       (format t "~&SIGN-ANY with ~A" x)
+       (format t "~&   Symbol declared to be complex found.~%"))
+     (cond ((and (atom x) ($featurep x '$imaginary))
+            (setq sign '$imaginary))
+           (t (setq sign '$complex))))
+    (t
+     (dcompare x 0)
+     (if (and $assume_pos
+              (member sign '($pnz $pz $pn) :test #'eq)
+              (if $assume_pos_pred 
+                  (let ((*x* x)) (is '(($assume_pos_pred) *x*)))
+                  (mapatom x)))
+         (setq sign '$pos))
+     (setq minus nil evens nil
+           odds (if (not (member sign '($pos $neg $zero) :test #'eq)) 
+                    (ncons x))))))
 
 (defun sign-mtimes (x)
   (setq x (cdr x))
   (do ((s '$pos) (m) (o) (e)) ((null x) (setq sign s minus m odds o evens e))
     (sign1 (car x))
     (cond ((eq sign '$zero) (return t))
+
+          ((and *complexsign* (eq sign '$complex))
+           ;; Found a complex factor. Return immediatly. The sign is $complex.
+           (return t))
+          ((and *complexsign* (eq sign '$imaginary))
+           ;; Found an imaginary factor. Look if we have already one.
+           (cond ((eq s '$imaginary)
+                  ;; imaginary*imaginary is real. But remember the sign in m.
+                  (setq s (if m '$pos '$neg) m (not m)))
+                 (t (setq s sign))))
+          ((and *complexsign* (eq s '$imaginary))) ; continue the loop
+
 	  ((eq sign '$pos))
 	  ((eq sign '$neg) (setq s (flip s) m (not m)))
 	  ((prog2 (setq m (not (eq m minus)) o (nconc odds o) e (nconc evens e))
@@ -1199,9 +1268,19 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun signsum (x)
   (do ((l (cdr x) (cdr l)) (s '$zero))
-      ((null l) (setq sign s minus nil odds (list x) evens nil) t)
+      ((null l) (setq sign s minus nil odds (list x) evens nil) 
+                (cond (*complexsign*
+                       ;; Because we have continued the loop in Complex Mode
+                       ;; we have to look for the sign '$pnz and return nil.
+                       (if (eq s '$pnz) nil t))
+                      (t t))) ; in Real Mode return T
     (sign (car l))
-    (cond ((or (and (eq sign '$zero)
+    (cond ((and *complexsign*
+                (or (eq sign '$complex) (eq sign '$imaginary)))
+           ;; Found a complex or imaginary expression. The sign is $complex.
+           (setq sign '$complex odds nil evens nil minus nil)
+           (return t))
+          ((or (and (eq sign '$zero)
 		    (setq x (sub x (car l))))
 	       (and (eq s sign) (not (eq s '$pn))) ; $PN + $PN = $PNZ
 	       (and (eq s '$pos) (eq sign '$pz))
@@ -1210,8 +1289,16 @@ relational knowledge is contained in the default context GLOBAL."
 	       (and (member sign '($nz $neg) :test #'eq) (member s '($zero $nz) :test #'eq))
 	       (and (eq sign '$pn) (eq s '$zero)))
 	   (setq s sign))
-	  (t (setq sign '$pnz odds (list x) evens nil minus nil)
-	     (return nil)))))
+          (t
+            (cond
+              (*complexsign*
+               ;; In Complex Mode we have to continue the loop to look further
+               ;; for a complex or imaginay expression.
+               (setq s '$pnz))
+              (t
+               ;; In Real mode the loop stops when the sign is 'pnz.
+               (setq sign '$pnz odds (list x) evens nil minus nil)
+               (return nil)))))))
 
 (defun signfactor (x)
   (let (y (factored t))
@@ -1227,13 +1314,44 @@ relational knowledge is contained in the default context GLOBAL."
       (let ($ratprint)
 	(factor x)) x))
 
-(defmvar complexsign nil)
+;(defmvar complexsign nil)
 
 (defun sign-mexpt (x)
   (let* ((expt (caddr x)) (base1 (cadr x))
 	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
 	 (evod (evod expt)))
-    (cond ((and (eq sign-base '$zero)
+    (cond ((and *complexsign* (or (eq sign-expt '$complex)
+                                  (eq sign-expt '$imaginary)
+                                  (eq sign-base '$complex)))
+           ;; Base is complex or exponent is complex or imaginary.
+           ;; The sign is $complex.
+           (when *debug-compar* 
+             (format t "~&in SIGN-MEXPT for ~A, sign is complex.~%" x))
+           (setq sign '$complex))
+
+          ((and *complexsign* 
+                (eq sign-base '$neg)
+                (eq (evod ($expand (mul 2 expt))) '$odd))
+           ;; Base is negative and the double of the exponent is odd.
+           ;; Result is imaginary.
+           (when *debug-compar* 
+             (format t "~&in SIGN-MEXPT for ~A, sign is $imaginary.~%" x))
+           (setq sign '$imaginary))
+
+          ((and *complexsign*
+                (eq sign-base '$imaginary))
+           ;; An imaginary base. Look for even or odd exponent.
+           (when *debug-compar* 
+             (format t "~&in SIGN-MEXPT for ~A, base is $imaginary.~%" x))
+           (cond
+             ((and (integerp expt) (eq evod '$even))
+              (setq sign (if (eq (mod expt 4) 0) '$pz '$nz)))
+             ((and (integerp expt) (eq evod '$odd))
+              (setq sign '$imaginary 
+                    minus (if (eq (mod (- expt 1) 4) 0) t nil)))
+             (t (setq sign '$complex))))
+
+          ((and (eq sign-base '$zero)
 		(member sign-expt '($zero $neg) :test #'eq))
 	   (dbzs-err x))
 	  ((eq sign-expt '$zero) (setq sign '$pos) (tdzero (sub x 1)))
@@ -1270,8 +1388,16 @@ relational knowledge is contained in the default context GLOBAL."
 			   (setq evens (nconc odds evens)
 				 odds nil minus nil))
 			  ((mevenp (caddr expt))
-			   (cond (complexsign
-				  (setq sign-base (setq sign-expt '$pnz)))
+                           (cond ((and *complexsign* (eq sign-base '$neg))
+                                  ;; In Complex Mode the sign is $complex.
+                                  (setq sign-base (setq sign-expt '$complex)))
+                                 (complexsign
+                                  ;; The only place the variable complexsign
+                                  ;; is used. Unfortunately, one routine in 
+                                  ;; topoly.lisp in /share/contrib depends on 
+                                  ;; this piece of code. Perhaps we can remove
+                                  ;; the dependency. (12/2008)
+                                  (setq sign-base (setq sign-expt '$pnz)))
 				 ((eq sign-base '$neg) (imag-err x))
 				 ((eq sign-base '$pn)
 				  (setq sign-base '$pos)
