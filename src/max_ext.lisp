@@ -278,8 +278,6 @@
 			 ((mlist) $plot_format $openmath)
 			 ((mlist) $nticks 100)
 			 ))
-;;for hypgeo.lisp
-'($%y $%k $%j)
 
 (dolist (f
      '($assoc_legendre_p
