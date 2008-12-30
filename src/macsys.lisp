@@ -338,7 +338,7 @@
 (defmfun $bug_report ()
   (format t "~%The Maxima bug database is available at~%")
   (format t "    http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse~%")
-  (format t "Submit bug reports by following the 'Submit New' link on that page.~%")
+  (format t "Submit bug reports by following the 'Add new artifact' link on that page.~%")
   (format t "Please include the following build information with your bug report:~%")
   (format t "-------------------------------------------------------------~%")
   ($build_info)
