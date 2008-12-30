@@ -39,9 +39,46 @@
 
 (defvar $data_file_name "data.gnuplot")
 
+(defvar *multiplot-is-active* nil)
+
+(defun $multiplot_mode (term)
+  (case term
+    ($screen
+      ($multiplot_mode '$none)
+      (send-gnuplot-command
+        (format nil "set terminal x11 ~a~%set multiplot~%" (write-font-type)))
+      (setf *multiplot-is-active* t))
+    ($wxt
+      ($multiplot_mode '$none)
+      (send-gnuplot-command
+        (format nil "set terminal wxt ~a~%set multiplot~%" (write-font-type)))
+      (setf *multiplot-is-active* t))
+    ($none
+      (send-gnuplot-command
+        (format nil "unset multiplot~%"))
+      (setf *multiplot-is-active* nil))
+    (otherwise
+      (merror "draw: ~M is not recognized as a multiplot mode" x)) ))
+
 
 ;; This variable stores actual graphics options
 (defvar *gr-options* (make-hash-table))
+
+
+;; This variable stores user defaults
+(defvar *user-gr-default-options* '())
+
+
+(defun $set_draw_defaults (&rest opts)
+   (setf *user-gr-default-options* opts)
+   (cons '(mlist) opts))
+
+;; Sets user default values of graphics options
+(defun user-defaults ()
+   (dolist (x *user-gr-default-options*)
+      (if (equal ($op x) "=")
+         (update-gr-option ($lhs x) ($rhs x))
+         (merror "draw: item ~M is not recognized as an option assignment" x))))
 
 
 ;; Sets default values of graphics options
@@ -167,7 +204,7 @@
       (gethash '$pdf_height *gr-options*) 29.7   ; cm for pdf pictures (A4 portrait height)
 
       (gethash '$file_name *gr-options*)  "maxima_out"
-      (gethash '$delay *gr-options*)  5          ; delay for animated gif's, default 5*(1/100) sec
+      (gethash '$delay *gr-options*)      5      ; delay for animated gif's, default 5*(1/100) sec
    ) )
 
 
@@ -330,7 +367,7 @@
                   (t
                      (merror "draw: illegal tics allocation: ~M" val)) ))
       ($terminal ; defined as screen, png, jpg, gif, eps, eps_color, pdf, pdfcairo or wxt
-            (if (member val '($screen $png $jpg $gif $eps $eps_color $pdf $pdfcairo $wxt $animated_gif $aquaterm))
+            (if (member val '($screen $png $jpg $gif $eps $eps_color $pdf $pdfcairo $wxt $animated_gif $aquaterm $wxtmultiplot))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: this is not a terminal: ~M" val)))
       ($head_type ; defined as $filled, $empty and $nofilled
@@ -2385,6 +2422,7 @@
    (let ((objects nil)
          plotcmd)
       (ini-gr-options)
+      (user-defaults)
       ; update option values and detect objects to be plotted
       (dolist (x args)
          (cond ((equal ($op x) "=")
@@ -2495,6 +2533,7 @@
    (let ((objects nil)
          plotcmd)
       (ini-gr-options)
+      (user-defaults)
       ; update option values and detect objects to be plotted
       (dolist (x args)
          (cond ((equal ($op x) "=")
@@ -2660,6 +2699,7 @@
 ;; See bellow for $draw2d and $draw3d
 (defun $draw (&rest args)
   (ini-global-options)
+  (user-defaults)
   (let ((counter 0)
         (scenes-list '((mlist simp)))  ; these two variables will be used
         scene-short-description        ; to build the text output
@@ -2703,56 +2743,57 @@
     (setf datapath (format nil "'~a'" (plot-temp-file $data_file_name)))
 
     ; write global options
-    (case (gethash '$terminal *gr-options*)
-      ($png (format cmdstorage "set terminal png ~a size ~a, ~a~%set out '~a.png'"
+    (if (not *multiplot-is-active*) 
+      (case (gethash '$terminal *gr-options*)
+        ($png (format cmdstorage "set terminal png ~a size ~a, ~a~%set out '~a.png'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name) ) )
-      ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
+        ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($eps_color (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
+        ($eps_color (format cmdstorage "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type)
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
-      ($pdf (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        ($pdf (format cmdstorage "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (get-option '$pdf_width)
                            (get-option '$pdf_height)
                            (get-option '$file_name)))
-      ($pdfcairo (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+        ($pdfcairo (format cmdstorage "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
                            (write-font-type)
                            (get-option '$pdf_width)
                            (get-option '$pdf_height)
                            (get-option '$file_name)))
-      ($jpg (format cmdstorage "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
+        ($jpg (format cmdstorage "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)))
-      ($gif (format cmdstorage "set terminal gif ~a size ~a, ~a~%set out '~a.gif'"
+        ($gif (format cmdstorage "set terminal gif ~a size ~a, ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)))
-      ($animated_gif (format cmdstorage "set terminal gif animate ~a size ~a, ~a delay ~a~%set out '~a.gif'"
+        ($animated_gif (format cmdstorage "set terminal gif animate ~a size ~a, ~a delay ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$delay)
                            (get-option '$file_name)))
-      ($aquaterm (format cmdstorage "set terminal aqua ~a~%" (write-font-type)))
-      ($wxt (format cmdstorage "set terminal wxt ~a~%" (write-font-type)))
-      (otherwise ; default screen output
-        (cond
-          (*windows-OS*  ; running on windows operating system
-            (format cmdstorage "set terminal windows ~a" (write-font-type)))
-          (t  ; other platforms
-            (format cmdstorage "set terminal x11 ~a" (write-font-type))))) )
+        ($aquaterm (format cmdstorage "set terminal aqua ~a~%" (write-font-type)))
+        ($wxt (format cmdstorage "set terminal wxt ~a~%" (write-font-type)))
+        (otherwise ; default screen output
+          (cond
+            (*windows-OS*  ; running on windows operating system
+              (format cmdstorage "set terminal windows ~a" (write-font-type)))
+            (t  ; other platforms
+              (format cmdstorage "set terminal x11 ~a" (write-font-type))))) ) )
 
     ; compute some parameters for multiplot
     (when (not isanimatedgif)
@@ -2868,7 +2909,8 @@
                                                (plot-temp-file $gnuplot_file_name)))) )
                 (t  ; non windows operating system
                    (check-gnuplot-process)
-                   (send-gnuplot-command "unset output")
+                   (when (not *multiplot-is-active*)
+                     (send-gnuplot-command "unset output"))
                    (send-gnuplot-command "reset")
                    (send-gnuplot-command (format nil "load '~a'" (plot-temp-file $gnuplot_file_name))) ))))
 
@@ -2903,3 +2945,51 @@
 ;; useful to name a sequence of frames.
 (defun $add_zeroes (num)
    (format nil "~10,'0d" num) )
+
+
+;; copies current plot in window into a file
+(defun $draw_file (&rest opts)
+ (let (str)
+   (dolist (x opts)
+      (if (equal ($op x) "=")
+         (update-gr-option ($lhs x) ($rhs x))
+         (merror "draw: item ~M is not recognized as an option assignment" x)))
+   (case (gethash '$terminal *gr-options*)
+      ($png (setf str (format nil "set terminal png ~a size ~a, ~a~%set out '~a.png'"
+                           (write-font-type)
+                           (get-option '$pic_width)
+                           (get-option '$pic_height)
+                           (get-option '$file_name) ) ))
+      ($eps (setf str (format nil "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
+                           (write-font-type) ; other alternatives are Arial, Courier
+                           (get-option '$eps_width)
+                           (get-option '$eps_height)
+                           (get-option '$file_name))))
+      ($eps_color (setf str (format nil "set terminal postscript eps enhanced ~a color size ~acm, ~acm~%set out '~a.eps'"
+                           (write-font-type)
+                           (get-option '$eps_width)
+                           (get-option '$eps_height)
+                           (get-option '$file_name))))
+      ($pdf (setf str (format nil "set terminal pdf enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+                           (write-font-type)
+                           (get-option '$pdf_width)
+                           (get-option '$pdf_height)
+                           (get-option '$file_name))))
+      ($pdfcairo (setf str (format nil "set terminal pdfcairo enhanced ~a color size ~acm, ~acm~%set out '~a.pdf'"
+                           (write-font-type)
+                           (get-option '$pdf_width)
+                           (get-option '$pdf_height)
+                           (get-option '$file_name))))
+      ($jpg (setf str (format nil "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
+                           (write-font-type)
+                           (get-option '$pic_width)
+                           (get-option '$pic_height)
+                           (get-option '$file_name))))
+      ($gif (setf str (format nil "set terminal gif ~a size ~a, ~a~%set out '~a.gif'"
+                           (write-font-type)
+                           (get-option '$pic_width)
+                           (get-option '$pic_height)
+                           (get-option '$file_name))))
+      (otherwise (merror "draw: unknown file format" )))
+   (send-gnuplot-command (format nil "~a~%replot" str)) ))
+
