@@ -44,7 +44,7 @@
   :components (
 	       (:module package :pathname ""
 			:components (#-gcl(:file "maxima-package")
-					  (:file "ecl-port")
+					  #+ecl (:file "ecl-port")
 					  (:file "autoconf-variables" :depends-on ("maxima-package"))))
 	       (:module info :pathname ""
 			:components ((:file "nregex")
