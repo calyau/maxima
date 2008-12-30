@@ -227,7 +227,7 @@
     (merror "~M is not a plot option.  Must be [symbol,..data]" value))
   (setq value
         (case name
-          (($x $y $t) (check-list-items name (cddr value) 'number 2)
+          (($x $y $z $t) (check-list-items name (cddr value) 'number 2)
            (check-range value)
            )
           ($grid  (check-list-items name (cddr value) 'fixnum 2))
@@ -272,9 +272,12 @@
           ($plot_realpart value)
           (t
            (merror "Unknown plot option specified:  ~M" name))))
-  (loop for v on (cdr $plot_options)
-         when (eq (second (car v)) name)
-         do (setf (car v) value))
+
+  (let ((v (rassoc name (cdr $plot_options) :test #'(lambda (a b) (eq a (car b))))))
+    (if v
+      (setf (cdr v) (cdr value))
+      (nconc $plot_options (list value))))
+
   $plot_options
   )
 
@@ -1790,7 +1793,7 @@
                 &aux lvars trans *original-points*
                 ($plot_options $plot_options)
                 ($in_netmath $in_netmath)
-                grid plot-format gnuplot-term gnuplot-out-file file
+                grid plot-format gnuplot-term gnuplot-out-file file zrange
                 orig-fun const-expr psfile box legend xlabel ylabel zlabel
 		(output-file "")
                 )
@@ -1826,6 +1829,7 @@
   (and $in_netmath (setq $in_netmath (eq plot-format '$openmath)))
   (setq xrange (check-range xrange))
   (setq yrange (check-range yrange))
+  (let ((foo ($get_plot_option '$z))) (if foo (setq zrange (check-range foo))))
   (cond ((not y-supplied)
          (let ((vars ($sort ($listofvars fun))))
            (or (eql ($length vars) 2)
@@ -1901,6 +1905,7 @@
 		(format $pstream "unset key~%"))
 	      (when (and box (not (first box)))
 		(format $pstream "unset border; unset xtics; unset ytics; unset ztics~%"))
+        (if zrange (format $pstream "set zrange [~g : ~g]~%" ($second zrange) ($third zrange)))
         (format $pstream "set datafile missing \"~a\"~%" *missing-data-indicator*)
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
@@ -1923,6 +1928,7 @@
 		(format *gnuplot-stream* "unset key~%"))
 	      (when (and box (not (first box)))
 		(format *gnuplot-stream* "unset border; unset xtics; unset ytics; unset ztics~%"))
+          (if zrange (format *gnuplot-stream* "set zrange [~g : ~g]~%" ($second zrange) ($third zrange)))
           (format *gnuplot-stream* "set datafile missing \"~a\"~%" *missing-data-indicator*)
               (let ((title (get-plot-option-string '$gnuplot_curve_titles 1))
                     (plot-name
