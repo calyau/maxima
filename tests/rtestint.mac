@@ -1045,3 +1045,11 @@ integrate( 1/(11/10+sin(2*%pi*x)), x);
 /* [ 1054472 ] defint(log(1+exp(A+B*cos(phi))),phi,0,%pi) wrong */
 integrate(log(1+exp(cos(phi))),phi,0,%pi);
 'integrate(log(1+exp(cos(phi))),phi,0,%pi);
+
+/* atan2 function is a special case in lisp function INTEGRATOR.
+   There were no regression tests for it. */
+integrate(atan2(y,x),x);
+y*log(y^2+x^2)/2+x*atan(y/x);
+
+integrate(atan2(y,x),y);
+y*atan(y/x)-(x*log(y^2/x^2+1)/2);
