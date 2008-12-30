@@ -525,11 +525,6 @@
 		 ((mtimes) -1 x ((mexpt) ((mplus) ((mexpt) x 2) ((mexpt) y 2)) -1)))
   grad)
 
-(defprop $%j ((n x) ((%derivative) ((mqapply) (($%j array) n) x) n 1)
-	      ((mplus) ((mqapply) (($%j array) ((mplus) -1 n)) x)
-	       ((mtimes) -1 n ((mqapply) (($%j array) n) x) ((mexpt) x -1))))
-  grad)
-
 (defprop $li ((n x) ((%derivative) ((mqapply) (($li array) n) x) n 1)
 	      ((mtimes) ((mqapply) (($li array) ((mplus) -1 n)) x) ((mexpt) x -1)))
   grad)
