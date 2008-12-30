@@ -1271,7 +1271,8 @@
     #+(and :lispworks (not :lispworks4))
     ,(multiple-value-bind (major minor)
 			  #-:lispworks-personal-edition
-			  (system::lispworks-version)
+              (values system::*major-version-number*
+                      system::*minor-version-number*)
 			  #+:lispworks-personal-edition
 			  (values system::*major-version-number*
 				  system::*minor-version-number*)

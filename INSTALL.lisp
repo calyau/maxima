@@ -79,6 +79,8 @@ to subsitute their knowledge of defsystem for the following steps.
 
     There is a function MAXIMA-DUMP in src/maxima-build.lisp to dump an image.
     At present it works for Clisp, SBCL, GCL, CMUCL, Scieneer, and Allegro.
+    Reinhard Oldenburg writes, in reference to Lispworks:
+    "(maxima-dump) works when threading is disabled."
     Some Lisp implementations (SBCL, GCL, CMUCL, Scieneer, maybe others)
     terminate after saving the image.
 

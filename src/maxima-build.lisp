@@ -1,3 +1,16 @@
+#+lispworks
+(setq hcl:*packages-for-warn-on-redefinition*
+    (remove-if (lambda (package-name)
+                 (member package-name
+                         '("HARLEQUIN-COMMON-LISP"
+                           ;"CL-USER"
+                           )
+                         :test #'string-equal))
+               *packages-for-warn-on-redefinition*))
+#+lispworks (in-package "HARLEQUIN-COMMON-LISP")
+#+lispworks (defun getenv (x) (LW:ENVIRONMENT-VARIABLE x))
+#+lispworks (in-package "CL-USER")
+
 (load "../lisp-utils/defsystem.lisp")
 #+ecl (load "maxima-package.lisp")
 #+ecl
