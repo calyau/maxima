@@ -1,6 +1,6 @@
 @menu
-* Introduction to Integration::  
-* Functions and Variables for Integration::  
+* Introduction to Integration::
+* Functions and Variables for Integration::
 * Introduction to QUADPACK::
 * Functions and Variables for QUADPACK::
 @end menu
@@ -36,6 +36,7 @@ The new variable is @var{y}.
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
 (%i1) assume(a > 0)$
+@group
 (%i2) 'integrate (%e**sqrt(a*y), y, 0, 4);
                       4
                      /
@@ -44,6 +45,8 @@ The new variable is @var{y}.
                      ]
                      /
                       0
+@end group
+@group
 (%i3) changevar (%, y-z^2/a, z, y);
                       0
                      /
@@ -54,6 +57,7 @@ The new variable is @var{y}.
                       - 2 sqrt(a)
 (%o3)            - ----------------------------
                                 a
+@end group
 @end example
 
 An expression containing a noun form, such as the instances of @code{'integrate} above,
@@ -67,6 +71,7 @@ sum or product, this change must be a shift, i.e., @code{i = j+ ...}, not a
 higher degree function.  E.g.,
 
 @example
+@group
 (%i4) sum (a[i]*x^(i-2), i, 0, inf);
                          inf
                          ====
@@ -75,6 +80,8 @@ higher degree function.  E.g.,
                          /      i
                          ====
                          i = 0
+@end group
+@group
 (%i5) changevar (%, i-2-n, n, i);
                         inf
                         ====
@@ -83,6 +90,7 @@ higher degree function.  E.g.,
                         /        n + 2
                         ====
                         n = - 2
+@end group
 @end example
 
 @opencatbox
@@ -103,11 +111,13 @@ $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, d
 @end tex
 @ifnottex
 @example
+@group
 /b /s(x)
 |  |
 |  |    f(x,y) dy dx
 |  |
 /a /r(x)
+@end group
 @end example
 @end ifnottex
 
@@ -187,6 +197,7 @@ By using the functions @code{laplace} and @code{ilt} together with the @code{sol
 convolution integral equation or a set of them.
 
 @example
+@group
 (%i1) 'integrate (sinh(a*x)*f(t-x), x, 0, t) + b*f(t) = t**2;
               t
              /
@@ -195,17 +206,23 @@ convolution integral equation or a set of them.
              ]
              /
               0
+@end group
+@group
 (%i2) laplace (%, t, s);
                                a laplace(f(t), t, s)   2
 (%o2)  b laplace(f(t), t, s) + --------------------- = --
                                        2    2           3
                                       s  - a           s
+@end group
+@group
 (%i3) linsolve ([%], ['laplace(f(t), t, s)]);
                                         2      2
                                      2 s  - 2 a
 (%o3)     [laplace(f(t), t, s) = --------------------]
                                     5         2     3
                                  b s  + (a - a  b) s
+@end group
+@group
 (%i4) ilt (rhs (first (%)), s, t);
 Is  a b (a b - 1)  positive, negative, or zero?
 
@@ -221,6 +238,7 @@ pos;
                                              + ------------------
                                                 3  2      2
                                                a  b  - 2 a  b + a
+@end group
 @end example
 
 @opencatbox
@@ -312,23 +330,31 @@ Examples:
 Elementary indefinite and definite integrals.
 
 @example
+@group
 (%i1) integrate (sin(x)^3, x);
                            3
                         cos (x)
 (%o1)                   ------- - cos(x)
                            3
+@end group
+@group
 (%i2) integrate (x/ sqrt (b^2 - x^2), x);
                                  2    2
 (%o2)                    - sqrt(b  - x )
+@end group
+@group
 (%i3) integrate (cos(x)^2 * exp(x), x, 0, %pi);
                                %pi
                            3 %e      3
 (%o3)                      ------- - -
                               5      5
+@end group
+@group
 (%i4) integrate (x^2 * exp(-x^2), x, minf, inf);
                             sqrt(%pi)
 (%o4)                       ---------
                                 2
+@end group
 @end example
 
 @item
@@ -336,6 +362,7 @@ Use of @code{assume} and interactive query.
 
 @example
 (%i1) assume (a > 1)$
+@group
 (%i2) integrate (x**a/(x+1)**(5/2), x, 0, inf);
     2 a + 2
 Is  -------  an integer?
@@ -348,6 +375,7 @@ neg;
                                    3
 (%o2)                  beta(a + 1, - - a)
                                    2
+@end group
 @end example
 
 @item
@@ -356,16 +384,22 @@ one using a derivative established by @code{gradef},
 and one using the derivation @code{diff(r(x))} of an unspecified function @code{r(x)}.
 
 @example
+@group
 (%i3) gradef (q(x), sin(x**2));
 (%o3)                         q(x)
+@end group
+@group
 (%i4) diff (log (q (r (x))), x);
                       d               2
                      (-- (r(x))) sin(r (x))
                       dx
 (%o4)                ----------------------
                             q(r(x))
+@end group
+@group
 (%i5) integrate (%, x);
 (%o5)                     log(q(r(x)))
+@end group
 @end example
 
 @item
@@ -376,9 +410,12 @@ of a rational function, but cannot factor the remainder or otherwise find its in
 See also @code{integrate_use_rootsof} for more on integrals of rational functions.
 
 @example
+@group
 (%i1) expand ((x-4) * (x^3+2*x+1));
                     4      3      2
 (%o1)              x  - 4 x  + 2 x  - 7 x - 4
+@end group
+@group
 (%i2) integrate (1/%, x);
                               /  2
                               [ x  + 4 x + 18
@@ -387,8 +424,11 @@ See also @code{integrate_use_rootsof} for more on integrals of rational function
                  log(x - 4)   / x  + 2 x + 1
 (%o2)            ---------- - ------------------
                      73               73
+@end group
+@group
 (%i3) grind (%);
 log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
+@end group
 @end example
 
 @item
@@ -399,19 +439,27 @@ The quote-quote operator @code{'@w{}'} causes the integral to be evaluated,
 and the result becomes the body of @code{f_2}.
 
 @example
+@group
 (%i1) f_1 (a) := integrate (x^3, x, 1, a);
                                      3
 (%o1)           f_1(a) := integrate(x , x, 1, a)
+@end group
+@group
 (%i2) ev (f_1 (7), nouns);
 (%o2)                          600
+@end group
+@group
 (%i3) /* Note parentheses around integrate(...) here */
       f_2 (a) := ''(integrate (x^3, x, 1, a));
                                    4
                                   a    1
 (%o3)                   f_2(a) := -- - -
                                   4    4
+@end group
+@group
 (%i4) f_2 (7);
 (%o4)                          600
+@end group
 @end example
 @end itemize
 
@@ -437,18 +485,24 @@ Examples:
 @c integrate (x^2 = 1, x);
 @c ===end===
 @example
+@group
 (%i1) integrate (x^2 = 1, x);
                            3
                           x
 (%o1)                     -- = x + %c1
                           3
+@end group
+@group
 (%i2) integration_constant : 'k;
 (%o2)                           k
+@end group
+@group
 (%i3) integrate (x^2 = 1, x);
                             3
                            x
 (%o3)                      -- = x + k2
                            3
+@end group
 @end example
 
 @opencatbox
@@ -476,28 +530,38 @@ Examples:
 @c integrate (x^2 = 1, x);
 @c ===end===
 @example
+@group
 (%i1) integrate (x^2 = 1, x);
                            3
                           x
 (%o1)                     -- = x + %c1
                           3
+@end group
+@group
 (%i2) integrate (x^2 = 1, x);
                            3
                           x
 (%o2)                     -- = x + %c2
                           3
+@end group
+@group
 (%i3) integrate (x^2 = 1, x);
                            3
                           x
 (%o3)                     -- = x + %c3
                           3
+@end group
+@group
 (%i4) reset (integration_constant_counter);
 (%o4)            [integration_constant_counter]
+@end group
+@group
 (%i5) integrate (x^2 = 1, x);
                            3
                           x
 (%o5)                     -- = x + %c1
                           3
+@end group
 @end example
 
 @opencatbox
@@ -518,6 +582,7 @@ For example, with @code{integrate_use_rootsof} set to @code{false},
 
 @example
 (%i1) integrate_use_rootsof: false$
+@group
 (%i2) integrate (1/(1+x+x^5), x);
         /  2
         [ x  - 4 x + 5
@@ -526,6 +591,7 @@ For example, with @code{integrate_use_rootsof} set to @code{false},
         / x  - x  + 1       log(x  + x + 1)          sqrt(3)
 (%o2)   ----------------- - --------------- + ---------------
                 7                 14             7 sqrt(3)
+@end group
 @end example
 
 Now we set the flag to be true and the unsolved part of the
@@ -533,6 +599,7 @@ integral will be expressed as a summation over the roots of the denominator of t
 
 @example
 (%i3) integrate_use_rootsof: true$
+@group
 (%i4) integrate (1/(1+x+x^5), x);
       ====        2
       \       (%r4  - 4 %r4 + 5) log(x - %r4)
@@ -549,6 +616,7 @@ integral will be expressed as a summation over the roots of the denominator of t
                              log(x  + x + 1)          sqrt(3)
                            - --------------- + ---------------
                                    14             7 sqrt(3)
+@end group
 @end example
 
 Alternatively the user may compute the roots of the denominator separately,
@@ -608,15 +676,19 @@ residue is the coefficient of @code{(@var{z} - @var{z_0})^(-1)} in the Laurent s
 for @var{expr}.
 
 @example
+@group
 (%i1) residue (s/(s**2+a**2), s, a*%i);
                                 1
 (%o1)                           -
                                 2
+@end group
+@group
 (%i2) residue (sin(a*x)/x**4, x, 0);
                                  3
                                 a
 (%o2)                         - --
                                 6
+@end group
 @end example
 
 @opencatbox
@@ -637,15 +709,19 @@ function in the answer if there were none in the integrand to begin
 with.
 
 @example
+@group
 (%i1) risch (x^2*erf(x), x);
                                                         2
              3                      2                - x
         %pi x  erf(x) + (sqrt(%pi) x  + sqrt(%pi)) %e
 (%o1)   -------------------------------------------------
                               3 %pi
+@end group
+@group
 (%i2) diff(%, x), ratsimp;
                              2
 (%o2)                       x  erf(x)
+@end group
 @end example
 
 @opencatbox
@@ -718,22 +794,40 @@ The interval is mapped onto a finite interval and
 then the same strategy as in @code{quad_qags} is applied.
 
 @item quad_qawo
+@ifnottex
 Integration of @math{cos(omega x) f(x)} or @math{sin(omega x) f(x)} over a finite interval,
 where @math{omega} is a constant.
+@end ifnottex
+@tex
+Integration of $\cos\left(\omega \, x\right) \, f\left(x\right)$ or
+$\sin\left(\omega \, x\right) \, f\left(x\right)$ over a finite interval,
+where $\omega$ is a constant.
+@end tex
 The rule evaluation component is based on the modified Clenshaw-Curtis technique.
 @code{quad_qawo} applies adaptive subdivision with extrapolation, similar to @code{quad_qags}.
 
 @item quad_qawf
 Calculates a Fourier cosine or Fourier sine transform on a semi-infinite interval.
 The same approach as in @code{quad_qawo} is applied on successive finite intervals,
-and convergence acceleration by means of the Epsilon algorithm (Wynn, 1956) 
+and convergence acceleration by means of the Epsilon algorithm (Wynn, 1956)
 is applied to the series of the integral contributions.
 
 @item quad_qaws
+@ifnottex
 Integration of @math{w(x) f(x)} over a finite interval @math{[a, b]},
 where @math{w} is a function of the form @math{(x - a)^alpha (b - x)^beta v(x)}
 and @math{v(x)} is 1 or @math{log(x - a)} or @math{log(b - x)} or @math{log(x - a) log(b - x)},
 and @math{alpha > -1} and @math{beta > -1}.
+@end ifnottex
+@tex
+Integration of $w\left(x\right) \, f\left(x\right)$ over a finite interval
+$\left[a, b\right]$, where $w$ is a function of the form
+$\left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, v\left(x\right)$
+and $v\left(x\right)$ is $1$ or $\log\left(x - a\right)$
+or $\log\left(b - x\right)$ or $\log\left(x - a\right) \, \log\left(b - x\right)$,
+and $\alpha > -1$ and $\beta > -1$.
+@end tex
+
 A globally adaptive subdivision strategy is applied,
 with modified Clenshaw-Curtis integration on the subintervals which contain @math{a} or @math{b}.
 
@@ -765,14 +859,11 @@ The high-degree rules are suitable for strongly oscillating integrands.
 
 @code{quad_qag} computes the integral
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x), x, a, b)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x), x, a, b)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_a^b {f(x) dx}$$
+$$\int_a^b {f(x) \, dx}$$
 @end tex
 
 The function to be integrated is @var{f(x)}, with dependent
@@ -808,7 +899,7 @@ maximum number of subintervals to use.  Default is 200.
 @item
 an approximation to the integral,
 @item
-the estimated absolute error of the approximation, 
+the estimated absolute error of the approximation,
 @item
 the number integrand evaluations,
 @item
@@ -819,7 +910,7 @@ The error code (fourth element of the return value) can have the values:
 
 @table @code
 @item 0
-if no problems were encountered; 
+if no problems were encountered;
 @item 1
 if too many sub-intervals were done;
 @item 2
@@ -836,12 +927,16 @@ if the input is invalid.
 Examples:
 
 @example
+@group
 (%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3, 'epsrel=5d-8);
 (%o1)    [.4444444444492108, 3.1700968502883E-9, 961, 0]
+@end group
+@group
 (%i2) integrate (x^(1/2)*log(1/x), x, 0, 1);
                                 4
 (%o2)                           -
                                 9
+@end group
 @end example
 
 @opencatbox
@@ -861,14 +956,11 @@ Integration of a general function over a finite interval.
 
 @code{quad_qags} computes the integral
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x), x, a, b)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x), x, a, b)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_a^b {f(x) dx}$$
+$$\int_a^b {f(x) \, dx}$$
 @end tex
 
 The function to be integrated is @var{f(x)}, with
@@ -897,7 +989,7 @@ maximum number of subintervals to use.  Default is 200.
 @item
 an approximation to the integral,
 @item
-the estimated absolute error of the approximation, 
+the estimated absolute error of the approximation,
 @item
 the number integrand evaluations,
 @item
@@ -908,7 +1000,7 @@ The error code (fourth element of the return value) can have the values:
 
 @table @code
 @item 0
-no problems were encountered; 
+no problems were encountered;
 @item 1
 too many sub-intervals were done;
 @item 2
@@ -928,8 +1020,10 @@ if the input is invalid.
 Examples:
 
 @example
+@group
 (%i1) quad_qags (x^(1/2)*log(1/x), x, 0, 1, 'epsrel=1d-10);
 (%o1)   [.4444444444444448, 1.11022302462516E-15, 315, 0]
+@end group
 @end example
 
 Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} for this integrand.
@@ -951,34 +1045,25 @@ then the same strategy as in @code{quad_qags} is applied.
 
 @code{quad_qagi} evaluates one of the following integrals
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x), x, a, inf)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x), x, a, inf)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_a^\infty {f(x) dx}$$
+$$\int_a^\infty {f(x) \, dx}$$
 @end tex
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x), x, minf, a)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x), x, minf, a)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_\infty^a {f(x) dx}$$
+$$\int_\infty^a {f(x) \, dx}$$
 @end tex
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x), x, minf, inf)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x), x, minf, inf)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_{-\infty}^\infty {f(x) dx}$$
+$$\int_{-\infty}^\infty {f(x) \, dx}$$
 @end tex
 
 using the Quadpack QAGI routine.  The function to be integrated is
@@ -1010,7 +1095,7 @@ maximum number of subintervals to use.  Default is 200.
 @item
 an approximation to the integral,
 @item
-the estimated absolute error of the approximation, 
+the estimated absolute error of the approximation,
 @item
 the number integrand evaluations,
 @item
@@ -1021,7 +1106,7 @@ The error code (fourth element of the return value) can have the values:
 
 @table @code
 @item 0
-no problems were encountered; 
+no problems were encountered;
 @item 1
 too many sub-intervals were done;
 @item 2
@@ -1042,12 +1127,16 @@ if the input is invalid.
 Examples:
 
 @example
+@group
 (%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf, 'epsrel=1d-8);
 (%o1)        [0.03125, 2.95916102995002E-11, 105, 0]
+@end group
+@group
 (%i2) integrate (x^2*exp(-4*x), x, 0, inf);
                                1
 (%o2)                          --
                                32
+@end group
 @end example
 
 @opencatbox
@@ -1068,12 +1157,9 @@ which contain the point @math{x = c}.
 
 @code{quad_qawc} computes the Cauchy principal value of
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x)/(x - c), x, a, b)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x)/(x - c), x, a, b)}
-@end ifinfo
+@end ifnottex
 @tex
 $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
@@ -1104,7 +1190,7 @@ maximum number of subintervals to use.  Default is 200.
 @item
 an approximation to the integral,
 @item
-the estimated absolute error of the approximation, 
+the estimated absolute error of the approximation,
 @item
 the number integrand evaluations,
 @item
@@ -1115,7 +1201,7 @@ The error code (fourth element of the return value) can have the values:
 
 @table @code
 @item 0
-no problems were encountered; 
+no problems were encountered;
 @item 1
 too many sub-intervals were done;
 @item 2
@@ -1130,8 +1216,12 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5, 'epsrel=1d-7);
+@group
+(%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5,
+                 'epsrel=1d-7);
 (%o1)    [- 3.130120337415925, 1.306830140249558E-8, 495, 0]
+@end group
+@group
 (%i2) integrate (2^(-alpha)*(((x-1)^2 + 4^(-alpha))*(x-2))^(-1),
       x, 0, 5);
 Principal Value
@@ -1151,8 +1241,11 @@ Principal Value
   - --------------------------- - -------------------------)/2
               alpha                        alpha
            2 4      + 2                 2 4      + 2
+@end group
+@group
 (%i3) ev (%, alpha=5, numer);
 (%o3)                    - 3.130120337415917
+@end group
 @end example
 
 @opencatbox
@@ -1169,19 +1262,16 @@ Principal Value
 Calculates a Fourier cosine or Fourier sine transform on a semi-infinite interval
 using the Quadpack QAWF function.
 The same approach as in @code{quad_qawo} is applied on successive finite intervals,
-and convergence acceleration by means of the Epsilon algorithm (Wynn, 1956) 
+and convergence acceleration by means of the Epsilon algorithm (Wynn, 1956)
 is applied to the series of the integral contributions.
 
 @code{quad_qawf} computes the integral
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x)*w(x), x, a, inf)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x)*w(x), x, a, inf)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_a^\infty f(x) w(x) dx$$
+$$\int_a^\infty f(x) \, w(x) \, dx$$
 @end tex
 
 The weight function @math{w} is selected by @var{trig}:
@@ -1219,7 +1309,7 @@ Upper bound on the number of cycles.  Must be greater than or equal to
 @item
 an approximation to the integral,
 @item
-the estimated absolute error of the approximation, 
+the estimated absolute error of the approximation,
 @item
 the number integrand evaluations,
 @item
@@ -1230,7 +1320,7 @@ The error code (fourth element of the return value) can have the values:
 
 @table @code
 @item 0
-no problems were encountered; 
+no problems were encountered;
 @item 1
 too many sub-intervals were done;
 @item 2
@@ -1245,15 +1335,21 @@ if the input is invalid.
 Examples:
 
 @example
+@group
 (%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos, 'epsabs=1d-9);
 (%o1)   [.6901942235215714, 2.84846300257552E-11, 215, 0]
+@end group
+@group
 (%i2) integrate (exp(-x^2)*cos(x), x, 0, inf);
                           - 1/4
                         %e      sqrt(%pi)
 (%o2)                   -----------------
                                 2
+@end group
+@group
 (%i3) ev (%, numer);
 (%o3)                   .6901942235215714
+@end group
 @end example
 
 @opencatbox
@@ -1267,31 +1363,59 @@ Examples:
 @deffn {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 @deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, [@var{epsrel}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst}])
 
-Integration of @math{cos(omega x) f(x)} or @math{sin(omega x) f(x)} over a finite interval,
-where @math{omega} is a constant.
+Integration of
+@ifnottex
+@math{cos (omega x) f(x)}
+@end ifnottex
+@tex
+$\cos \left(\omega \, x\right) \, f\left(x\right)$
+@end tex
+or
+@ifnottex
+@math{sin (omega x) f(x)}
+@end ifnottex
+@tex
+$\sin \left(\omega \, x\right) \, f\left(x\right)$
+@end tex
+over a finite interval,
+where
+@ifnottex
+@math{omega}
+@end ifnottex
+@tex
+$\omega$
+@end tex
+is a constant.
 The rule evaluation component is based on the modified Clenshaw-Curtis technique.
 @code{quad_qawo} applies adaptive subdivision with extrapolation, similar to @code{quad_qags}.
 
 @code{quad_qawo} computes the integral using the Quadpack QAWO
 routine:
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x)*w(x), x, a, b)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x)*w(x), x, a, b)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_a^b f(x) w(x) dx$$
+$$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
 
 The weight function @math{w} is selected by @var{trig}:
 
 @table @code
 @item cos
+@ifnottex
 @math{w(x) = cos (omega x)}
+@end ifnottex
+@tex
+$w\left(x\right) = \cos \left(\omega \, x\right)$
+@end tex
 @item sin
+@ifnottex
 @math{w(x) = sin (omega x)}
+@end ifnottex
+@tex
+$w\left(x\right) = \sin \left(\omega \, x\right)$
+@end tex
 @end table
 
 The integrand may be specified as the name of a Maxima or Lisp function or operator,
@@ -1322,7 +1446,7 @@ Upper bound on the number of cycles.  Must be greater than or equal to
 @item
 an approximation to the integral,
 @item
-the estimated absolute error of the approximation, 
+the estimated absolute error of the approximation,
 @item
 the number integrand evaluations,
 @item
@@ -1333,7 +1457,7 @@ The error code (fourth element of the return value) can have the values:
 
 @table @code
 @item 0
-no problems were encountered; 
+no problems were encountered;
 @item 1
 too many sub-intervals were done;
 @item 2
@@ -1348,8 +1472,11 @@ if the input is invalid.
 Examples:
 
 @example
+@group
 (%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
 (%o1)     [1.376043389877692, 4.72710759424899E-11, 765, 0]
+@end group
+@group
 (%i2) rectform (integrate (x^(-1/2)*exp(-2^(-alpha)*x) * cos(x),
       x, 0, inf));
                    alpha/2 - 1/2            2 alpha
@@ -1357,8 +1484,11 @@ Examples:
 (%o2)   -----------------------------------------------------
                                2 alpha
                          sqrt(2        + 1)
+@end group
+@group
 (%i3) ev (%, alpha=2, numer);
 (%o3)                     1.376043390090716
+@end group
 @end example
 
 @opencatbox
@@ -1381,27 +1511,44 @@ of the interval of integration.
 @code{quad_qaws} computes the integral using the Quadpack QAWS
 routine:
 
-@ifhtml
+@ifnottex
 @math{integrate (f(x)*w(x), x, a, b)}
-@end ifhtml
-@ifinfo
-@math{integrate (f(x)*w(x), x, a, b)}
-@end ifinfo
+@end ifnottex
 @tex
-$$\int_a^b f(x) w(x) dx$$
+$$\int_a^b f(x) \, w(x) \, dx$$
 @end tex
 
 The weight function @math{w} is selected by @var{wfun}:
 
 @table @code
 @item 1
+@ifnottex
 @math{w(x) = (x - a)^alpha (b - x)^beta}
+@end ifnottex
+@tex
+$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta$
+@end tex
 @item 2
+@ifnottex
 @math{w(x) = (x - a)^alpha (b - x)^beta log(x - a)}
+@end ifnottex
+@tex
+$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, \log\left(x - a\right)$
+@end tex
 @item 3
+@ifnottex
 @math{w(x) = (x - a)^alpha (b - x)^beta log(b - x)}
+@end ifnottex
+@tex
+$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, \log\left(b - x\right)$
+@end tex
 @item 4
+@ifnottex
 @math{w(x) = (x - a)^alpha (b - x)^beta log(x - a) log(b - x)}
+@end ifnottex
+@tex
+$w\left(x\right) = \left(x - a\right)^\alpha \, \left(b - x\right)^\beta \, \log\left(x - a\right) \, \log\left(b - x\right)$
+@end tex
 @end table
 
 The integrand may be specified as the name of a Maxima or Lisp function or operator,
@@ -1426,7 +1573,7 @@ maximum number of subintervals to use.  Default is 200.
 @item
 an approximation to the integral,
 @item
-the estimated absolute error of the approximation, 
+the estimated absolute error of the approximation,
 @item
 the number integrand evaluations,
 @item
@@ -1437,7 +1584,7 @@ The error code (fourth element of the return value) can have the values:
 
 @table @code
 @item 0
-no problems were encountered; 
+no problems were encountered;
 @item 1
 too many sub-intervals were done;
 @item 2
@@ -1452,8 +1599,12 @@ if the input is invalid.
 Examples:
 
 @example
-(%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1, 'epsabs=1d-9);
+@group
+(%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1,
+                 'epsabs=1d-9);
 (%o1)     [8.750097361672832, 1.24321522715422E-10, 170, 0]
+@end group
+@group
 (%i2) integrate ((1-x*x)^(-1/2)/(x+1+2^(-alpha)), x, -1, 1);
        alpha
 Is  4 2      - 1  positive, negative, or zero?
@@ -1464,8 +1615,11 @@ pos;
 (%o2)              -------------------------------
                                alpha
                             4 2      + 2
+@end group
+@group
 (%i3) ev (%, alpha=4, numer);
 (%o3)                     8.750097361672829
+@end group
 @end example
 
 @opencatbox
