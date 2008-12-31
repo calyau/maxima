@@ -1,7 +1,6 @@
-
 @menu
-* Introduction to Trigonometric::  
-* Functions and Variables for Trigonometric::  
+* Introduction to Trigonometric::
+* Functions and Variables for Trigonometric::
 @end menu
 
 @node Introduction to Trigonometric, Functions and Variables for Trigonometric, Trigonometric, Trigonometric
@@ -12,14 +11,14 @@ identities are programmed, but it is possible for the user to add many
 of them using the pattern matching capabilities of the system.  The
 trigonometric functions defined in Maxima are: @code{acos},
 @code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
-@code{acsch}, @code{asec}, @code{asech}, @code{asin}, 
-@code{asinh}, @code{atan}, @code{atanh}, @code{cos}, 
-@code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch}, 
-@code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan}, 
-and @code{tanh}.  There are a number of commands especially for 
+@code{acsch}, @code{asec}, @code{asech}, @code{asin},
+@code{asinh}, @code{atan}, @code{atanh}, @code{cos},
+@code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch},
+@code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan},
+and @code{tanh}.  There are a number of commands especially for
 handling trigonometric functions, see @code{trigexpand},
-@code{trigreduce}, and the switch @code{trigsign}.  Two share 
-packages extend the simplification rules built into Maxima, 
+@code{trigreduce}, and the switch @code{trigsign}.  Two share
+packages extend the simplification rules built into Maxima,
 @code{ntrig} and @code{atrig1}.  Do @code{describe(@var{command})}
 for details.
 
@@ -54,39 +53,49 @@ are multiplied by an integer variable (that is, a symbol declared to be integer)
 Examples:
 
 @c ===beg===
-@c %piargs : false;
+@c %piargs : false$
 @c [sin (%pi), sin (%pi/2), sin (%pi/3)];
 @c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-@c %piargs : true;
+@c %piargs : true$
 @c [sin (%pi), sin (%pi/2), sin (%pi/3)];
 @c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
-@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3), cos (sqrt(2)*%pi/3)];
+@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+@c        cos (sqrt(2)*%pi/3)];
 @c ===end===
 @example
-(%i1) %piargs : false;
-(%o1)                         false
+(%i1) %piargs : false$
+@group
 (%i2) [sin (%pi), sin (%pi/2), sin (%pi/3)];
                                 %pi       %pi
 (%o2)            [sin(%pi), sin(---), sin(---)]
                                  2         3
+@end group
+@group
 (%i3) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
                       %pi       %pi       %pi
 (%o3)            [sin(---), sin(---), sin(---)]
                        4         5         6
-(%i4) %piargs : true;
-(%o4)                         true
+@end group
+(%i4) %piargs : true$
+@group
 (%i5) [sin (%pi), sin (%pi/2), sin (%pi/3)];
                                 sqrt(3)
 (%o5)                    [0, 1, -------]
                                    2
+@end group
+@group
 (%i6) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
                          1         %pi   1
 (%o6)                [-------, sin(---), -]
                       sqrt(2)       5    2
-(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3), cos (sqrt(2)*%pi/3)];
+@end group
+@group
+(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+       cos (sqrt(2)*%pi/3)];
                 1    1               sqrt(2) %pi
 (%o7)          [-, - -, sqrt(3), cos(-----------)]
                 2    2                    3
+@end group
 @end example
 
 @iftex
@@ -97,15 +106,18 @@ Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied by a
 @end ifnottex
 
 @c ===beg===
-@c declare (n, integer, m, even);
-@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m), cos (%pi/2 * m)];
+@c declare (n, integer, m, even)$
+@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+@c        cos (%pi/2 * m)];
 @c ===end===
 @example
-(%i1) declare (n, integer, m, even);
-(%o1)                         done
-(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m), cos (%pi/2 * m)];
+(%i1) declare (n, integer, m, even)$
+@group
+(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+       cos (%pi/2 * m)];
                                       m/2
 (%o2)                  [0, 1, 0, (- 1)   ]
+@end group
 @end example
 
 @opencatbox
@@ -137,36 +149,41 @@ Maxima considers only whether the argument is a literal multiple of @math{%i}.
 Examples:
 
 @c ===beg===
-@c %iargs : false;
+@c %iargs : false$
 @c [sin (%i * x), cos (%i * x), tan (%i * x)];
-@c %iargs : true;
+@c %iargs : true$
 @c [sin (%i * x), cos (%i * x), tan (%i * x)];
 @c ===end===
 @example
-(%i1) %iargs : false;
-(%o1)                         false
+(%i1) %iargs : false$
+@group
 (%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
 (%o2)           [sin(%i x), cos(%i x), tan(%i x)]
-(%i3) %iargs : true;
-(%o3)                         true
+@end group
+(%i3) %iargs : true$
+@group
 (%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
 (%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
+@end group
 @end example
 
 Even when the argument is demonstrably real, the simplification is applied.
 
 @c ===beg===
-@c declare (x, imaginary);
+@c declare (x, imaginary)$
 @c [featurep (x, imaginary), featurep (x, real)];
 @c sin (%i * x);
 @c ===end===
 @example
-(%i1) declare (x, imaginary);
-(%o1)                         done
+(%i1) declare (x, imaginary)$
+@group
 (%i2) [featurep (x, imaginary), featurep (x, real)];
 (%o2)                     [true, false]
+@end group
+@group
 (%i3) sin (%i * x);
 (%o3)                      %i sinh(x)
+@end group
 @end example
 
 @opencatbox
@@ -176,7 +193,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end defvr
 
 @deffn {Function} acos (@var{x})
- - Arc Cosine.
+-- Arc Cosine.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -184,7 +201,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} acosh (@var{x})
- - Hyperbolic Arc Cosine.
+-- Hyperbolic Arc Cosine.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -192,7 +209,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} acot (@var{x})
- - Arc Cotangent.
+-- Arc Cotangent.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -200,7 +217,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} acoth (@var{x})
- - Hyperbolic Arc Cotangent.
+-- Hyperbolic Arc Cotangent.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -208,7 +225,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} acsc (@var{x})
- - Arc Cosecant.
+-- Arc Cosecant.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -216,7 +233,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} acsch (@var{x})
- - Hyperbolic Arc Cosecant.
+-- Hyperbolic Arc Cosecant.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -224,7 +241,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} asec (@var{x})
- - Arc Secant.
+-- Arc Secant.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -232,7 +249,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} asech (@var{x})
- - Hyperbolic Arc Secant.
+-- Hyperbolic Arc Secant.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -240,7 +257,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} asin (@var{x})
- - Arc Sine.
+-- Arc Sine.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -248,7 +265,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} asinh (@var{x})
- - Hyperbolic Arc Sine.
+-- Hyperbolic Arc Sine.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -256,7 +273,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} atan (@var{x})
- - Arc Tangent.
+-- Arc Tangent.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -264,7 +281,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} atan2 (@var{y}, @var{x})
-- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi} to
+-- yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi} to
 @code{%pi}.
 
 @opencatbox
@@ -273,7 +290,7 @@ Even when the argument is demonstrably real, the simplification is applied.
 @end deffn
 
 @deffn {Function} atanh (@var{x})
- - Hyperbolic Arc Tangent.
+-- Hyperbolic Arc Tangent.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -283,11 +300,11 @@ Even when the argument is demonstrably real, the simplification is applied.
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 @defvr {Package} atrig1
-The @code{atrig1} package contains several additional simplification rules 
+The @code{atrig1} package contains several additional simplification rules
 for inverse trigonometric functions.  Together with rules
 already known to Maxima, the following angles are fully implemented:
-@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, and @code{%pi/2}.  
-Corresponding angles in the other three quadrants are also available.  
+@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3}, and @code{%pi/2}.
+Corresponding angles in the other three quadrants are also available.
 Do @code{load(atrig1);} to use them.
 
 @opencatbox
@@ -296,7 +313,7 @@ Do @code{load(atrig1);} to use them.
 @end defvr
 
 @deffn {Function} cos (@var{x})
- - Cosine.
+-- Cosine.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -304,7 +321,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @deffn {Function} cosh (@var{x})
- - Hyperbolic Cosine.
+-- Hyperbolic Cosine.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -312,7 +329,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @deffn {Function} cot (@var{x})
- - Cotangent.
+-- Cotangent.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -320,7 +337,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @deffn {Function} coth (@var{x})
- - Hyperbolic Cotangent.
+-- Hyperbolic Cotangent.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -328,7 +345,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @deffn {Function} csc (@var{x})
- - Cosecant.
+-- Cosecant.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -336,7 +353,7 @@ Do @code{load(atrig1);} to use them.
 @end deffn
 
 @deffn {Function} csch (@var{x})
- - Hyperbolic Cosecant.
+-- Hyperbolic Cosecant.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -353,24 +370,26 @@ are simplified to functions of @var{expr}.
 Examples:
 
 @c ===beg===
-@c halfangles : false;
+@c halfangles : false$
 @c sin (x / 2);
-@c halfangles : true;
+@c halfangles : true$
 @c sin (x / 2);
 @c ===end===
 @example
-(%i1) halfangles : false;
-(%o1)                         false
+(%i1) halfangles : false$
+@group
 (%i2) sin (x / 2);
                                  x
 (%o2)                        sin(-)
                                  2
-(%i3) halfangles : true;
-(%o3)                         true
+@end group
+(%i3) halfangles : true$
+@group
 (%i4) sin (x / 2);
                         sqrt(1 - cos(x))
 (%o4)                   ----------------
                             sqrt(2)
+@end group
 @end example
 
 @opencatbox
@@ -384,7 +403,7 @@ Examples:
 @defvr {Package} ntrig
 The @code{ntrig} package contains a set of simplification rules that are
 used to simplify trigonometric function whose arguments are of the form
-@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions 
+@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
 @c NEED TO LOAD THIS PACKAGE ??
 
@@ -394,7 +413,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end defvr
 
 @deffn {Function} sec (@var{x})
- - Secant.
+-- Secant.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -402,7 +421,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @deffn {Function} sech (@var{x})
- - Hyperbolic Secant.
+-- Hyperbolic Secant.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -410,7 +429,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @deffn {Function} sin (@var{x})
- - Sine.
+-- Sine.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -418,7 +437,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @deffn {Function} sinh (@var{x})
- - Hyperbolic Sine.
+-- Hyperbolic Sine.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -426,7 +445,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @deffn {Function} tan (@var{x})
- - Tangent.
+-- Tangent.
 
 @opencatbox
 @category{Trigonometric functions}
@@ -434,7 +453,7 @@ used to simplify trigonometric function whose arguments are of the form
 @end deffn
 
 @deffn {Function} tanh (@var{x})
- - Hyperbolic Tangent.
+-- Hyperbolic Tangent.
 
 @opencatbox
 @category{Hyperbolic functions}
@@ -476,12 +495,15 @@ Examples:
 @c trigexpand(sin(10*x+y));
 @c ===end===
 @example
+@group
 (%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
                          2           2
 (%o1)               - sin (x) + 3 cos (x) + x
+@end group
+@group
 (%i2) trigexpand(sin(10*x+y));
 (%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
-
+@end group
 @end example
 
 @opencatbox
@@ -494,8 +516,8 @@ Default value: @code{true}
 
 @code{trigexpandplus} controls the "sum" rule for
 @code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
-@code{trigexpand} switch set to @code{true}, expansion of sums 
-(e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is 
+@code{trigexpand} switch set to @code{true}, expansion of sums
+(e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is
 @code{true}.
 
 @opencatbox
@@ -525,14 +547,14 @@ Default value: @code{all}
 composition of trigonometric and hyperbolic functions with their inverse
 functions.
 
-If @code{all}, both e.g. @code{atan(tan(@var{x}))} 
-and @code{tan(atan(@var{x}))} simplify to @var{x}.  
+If @code{all}, both e.g. @code{atan(tan(@var{x}))}
+and @code{tan(atan(@var{x}))} simplify to @var{x}.
 
-If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))} 
+If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))}
 simplification is turned off.
 
-If @code{false}, both the 
-@code{@var{arcfun}(@var{fun}(@var{x}))} and 
+If @code{false}, both the
+@code{@var{arcfun}(@var{fun}(@var{x}))} and
 @code{@var{fun}(@var{arcfun}(@var{x}))}
 simplifications are turned off.
 
@@ -555,30 +577,36 @@ See also @code{poissimp}.
 @c trigreduce(-sin(x)^2+3*cos(x)^2+x);
 @c ===end===
 @example
+@group
 (%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
                cos(2 x)      cos(2 x)   1        1
 (%o1)          -------- + 3 (-------- + -) + x - -
                   2             2       2        2
-
+@end group
 @end example
 
-The trigonometric simplification routines will use declared
-information in some simple cases.  Declarations about variables are
-used as follows, e.g.
-
-@c ===beg===
+@c
+@c     OBSOLETE
+@c     The behavior was changed in order to avoid calling expand in the core
+@c     simplifier (trigi.lisp rev 1.31)
+@c     See http://www.math.utexas.edu/pipermail/maxima/2008/010919.html.
+@c
+@c The trigonometric simplification routines will use declared
+@c information in some simple cases.  Declarations about variables are
+@c used as follows, e.g.
+@c
+@c ---beg---
 @c declare(j, integer, e, even, o, odd)$
 @c sin(x + (e + 1/2)*%pi);
 @c sin(x + (o + 1/2)*%pi);
-@c ===end===
-@example
-(%i1) declare(j, integer, e, even, o, odd)$
-(%i2) sin(x + (e + 1/2)*%pi);
-(%o2)                        cos(x)
-(%i3) sin(x + (o + 1/2)*%pi);
-(%o3)                       - cos(x)
-
-@end example
+@c ---end---
+@c @example
+@c (%i1) declare(j, integer, e, even, o, odd)$
+@c (%i2) sin(x + (e + 1/2)*%pi);
+@c (%o2)                        cos(x)
+@c (%i3) sin(x + (o + 1/2)*%pi);
+@c (%o3)                       - cos(x)
+@c @end example
 
 @opencatbox
 @category{Trigonometric functions} @category{Simplification functions}
@@ -599,9 +627,23 @@ arguments to trigonometric functions. E.g., @code{sin(-x)} will become
 @end defvr
 
 @deffn {Function} trigsimp (@var{expr})
+@iftex
+Employs the identities
+@tex
+$\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
+@end tex
+and
+@tex
+$\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
+@end tex
+to simplify expressions containing @code{tan}, @code{sec},
+etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@end iftex
+@ifnottex
 Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
 @math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
 etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@end ifnottex
 
 @code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
 able to further simplify the result.
@@ -627,9 +669,10 @@ Thus @code{trigrat} linearize always when it is possible.
 @c trigrat(sin(3*a)/sin(a+%pi/3));
 @c ===end===
 @example
+@group
 (%i1) trigrat(sin(3*a)/sin(a+%pi/3));
 (%o1)            sqrt(3) sin(2 a) + cos(2 a) - 1
-
+@end group
 @end example
 
 The following example is taken from
@@ -637,63 +680,67 @@ Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (or in English,
 Addison-Wesley), section 1.5.5, Morley theorem.
 
 @c ===beg===
-@c c: %pi/3 - a - b;
-@c bc: sin(a)*sin(3*c)/sin(a+b);
-@c ba: bc, c=a, a=c$
-@c ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+@c c : %pi/3 - a - b$
+@c bc : sin(a)*sin(3*c)/sin(a+b);
+@c ba : bc, c=a, a=c;
+@c ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
 @c trigrat (ac2);
 @c ===end===
 @example
-(%i1) c: %pi/3 - a - b;
-                                    %pi
-(%o1)                     - b - a + ---
-                                     3
-(%i2) bc: sin(a)*sin(3*c)/sin(a+b);
-                      sin(a) sin(3 b + 3 a)
-(%o2)                 ---------------------
+(%i1) c : %pi/3 - a - b$
+@group
+(%i2) bc : sin(a)*sin(3*c)/sin(a+b);
+                                          %pi
+                  sin(a) sin(3 (- b - a + ---))
+                                           3
+(%o2)             -----------------------------
                            sin(b + a)
-(%i3) ba: bc, c=a, a=c$
-(%i4) ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
-         2       2
-      sin (a) sin (3 b + 3 a)
-(%o4) -----------------------
-               2
-            sin (b + a)
-
-                                        %pi
-   2 sin(a) sin(3 a) cos(b) sin(b + a - ---) sin(3 b + 3 a)
-                                         3
- - --------------------------------------------------------
-                           %pi
-                   sin(a - ---) sin(b + a)
-                            3
-
-      2         2         %pi
-   sin (3 a) sin (b + a - ---)
-                           3
- + ---------------------------
-             2     %pi
-          sin (a - ---)
-                    3
+@end group
+@group
+(%i3) ba : bc, c=a, a=c;
+                                         %pi
+                    sin(3 a) sin(b + a - ---)
+                                          3
+(%o3)               -------------------------
+                                  %pi
+                          sin(a - ---)
+                                   3
+@end group
+@group
+(%i4) ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
+         2         2         %pi
+      sin (3 a) sin (b + a - ---)
+                              3
+(%o4) ---------------------------
+                2     %pi
+             sin (a - ---)
+                       3
+                                       %pi
+ - (2 sin(a) sin(3 a) sin(3 (- b - a + ---)) cos(b)
+                                        3
+             %pi            %pi
+ sin(b + a - ---))/(sin(a - ---) sin(b + a))
+              3              3
+      2       2              %pi
+   sin (a) sin (3 (- b - a + ---))
+                              3
+ + -------------------------------
+                2
+             sin (b + a)
+@end group
+@group
 (%i5) trigrat (ac2);
 (%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
-
  - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
-
  - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
-
  + 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
-
  + sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
-
  + sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
-
  - 9)/4
-
+@end group
 @end example
 
 @opencatbox
 @category{Trigonometric functions} @category{Simplification functions}
 @closecatbox
 @end deffn
-
