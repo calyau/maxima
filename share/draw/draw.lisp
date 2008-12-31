@@ -194,17 +194,17 @@
 ;; Sets default values to global options
 (defun ini-global-options ()
   (setf ; global options
-      (gethash '$columns *gr-options*)    1
-      (gethash '$terminal *gr-options*)   '$screen
-      (gethash '$pic_width *gr-options*)  640    ; points for bitmap pictures
-      (gethash '$pic_height *gr-options*) 480    ; points for bitmap pictures
-      (gethash '$eps_width *gr-options*)  12     ; cm for eps pictures
-      (gethash '$eps_height *gr-options*) 8      ; cm for eps pictures
-      (gethash '$pdf_width *gr-options*)  21.0   ; cm for pdf pictures (A4 portrait width)
-      (gethash '$pdf_height *gr-options*) 29.7   ; cm for pdf pictures (A4 portrait height)
-
-      (gethash '$file_name *gr-options*)  "maxima_out"
-      (gethash '$delay *gr-options*)      5      ; delay for animated gif's, default 5*(1/100) sec
+      (gethash '$columns *gr-options*)      1
+      (gethash '$terminal *gr-options*)     '$screen
+      (gethash '$pic_width *gr-options*)    640    ; points for bitmap pictures
+      (gethash '$pic_height *gr-options*)   480    ; points for bitmap pictures
+      (gethash '$eps_width *gr-options*)    12     ; cm for eps pictures
+      (gethash '$eps_height *gr-options*)   8      ; cm for eps pictures
+      (gethash '$pdf_width *gr-options*)    21.0   ; cm for pdf pictures (A4 portrait width)
+      (gethash '$pdf_height *gr-options*)   29.7   ; cm for pdf pictures (A4 portrait height)
+      (gethash '$file_name *gr-options*)    "maxima_out"
+      (gethash '$file_bgcolor *gr-options*) "xffffff"
+      (gethash '$delay *gr-options*)        5      ; delay for animated gif's, default 5*(1/100) sec
    ) )
 
 
@@ -465,6 +465,14 @@
                  (setf (gethash opt *gr-options*) str))
               (t
                  (merror "draw: illegal color specification: ~M" str)))))
+      ($file_bgcolor ; defined as hexadecimal #rrggbb
+        (let ((str (string-downcase (string-trim "\"" (coerce (mstring val) 'string)))))
+            (if (and (= (length str) 7)
+                     (char= (schar str 0) #\#)
+                     (every #'(lambda (z) (position z "0123456789abcdef"))
+                            (subseq str 1)))
+              (setf (gethash opt *gr-options*) (concatenate 'string "x" (subseq str 1)))
+              (merror "draw: illegal color background specification: ~M" str))) )
 
       (otherwise (merror "draw: unknown option ~M " opt))  ) )
 
@@ -2712,16 +2720,17 @@
     (dolist (x args)
       (cond ((equal ($op x) "=")
               (case ($lhs x)
-                ($terminal   (update-gr-option '$terminal ($rhs x)))
-                ($columns    (update-gr-option '$columns ($rhs x)))
-                ($pic_width  (update-gr-option '$pic_width ($rhs x)))
-                ($pic_height (update-gr-option '$pic_height ($rhs x)))
-                ($eps_width  (update-gr-option '$eps_width ($rhs x)))
-                ($eps_height (update-gr-option '$eps_height ($rhs x)))
-                ($pdf_width  (update-gr-option '$pdf_width ($rhs x)))
-                ($pdf_height (update-gr-option '$pdf_height ($rhs x)))
-                ($file_name  (update-gr-option '$file_name ($rhs x)))
-                ($delay      (update-gr-option '$delay ($rhs x)))
+                ($terminal     (update-gr-option '$terminal ($rhs x)))
+                ($columns      (update-gr-option '$columns ($rhs x)))
+                ($pic_width    (update-gr-option '$pic_width ($rhs x)))
+                ($pic_height   (update-gr-option '$pic_height ($rhs x)))
+                ($eps_width    (update-gr-option '$eps_width ($rhs x)))
+                ($eps_height   (update-gr-option '$eps_height ($rhs x)))
+                ($pdf_width    (update-gr-option '$pdf_width ($rhs x)))
+                ($pdf_height   (update-gr-option '$pdf_height ($rhs x)))
+                ($file_name    (update-gr-option '$file_name ($rhs x)))
+                ($file_bgcolor (update-gr-option '$file_bgcolor ($rhs x)))
+                ($delay        (update-gr-option '$delay ($rhs x)))
                 (otherwise (merror "draw: unknown global option ~M " ($lhs x)))  ))
             ((equal (caar x) '$gr3d)
               (setf scenes (append scenes (list (funcall #'make-scene-3d (rest x))))))
@@ -2745,10 +2754,11 @@
     ; write global options
     (if (not *multiplot-is-active*) 
       (case (gethash '$terminal *gr-options*)
-        ($png (format cmdstorage "set terminal png ~a size ~a, ~a~%set out '~a.png'"
+        ($png (format cmdstorage "set terminal png ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
+                           (get-option '$file_bgcolor)
                            (get-option '$file_name) ) )
         ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier
@@ -2770,21 +2780,24 @@
                            (get-option '$pdf_width)
                            (get-option '$pdf_height)
                            (get-option '$file_name)))
-        ($jpg (format cmdstorage "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
+        ($jpg (format cmdstorage "set terminal jpeg ~a size ~a, ~a ~a~%set out '~a.jpg'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
+                           (get-option '$file_bgcolor)
                            (get-option '$file_name)))
-        ($gif (format cmdstorage "set terminal gif ~a size ~a, ~a~%set out '~a.gif'"
+        ($gif (format cmdstorage "set terminal gif ~a size ~a, ~a ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
+                           (get-option '$file_bgcolor)
                            (get-option '$file_name)))
-        ($animated_gif (format cmdstorage "set terminal gif animate ~a size ~a, ~a delay ~a~%set out '~a.gif'"
+        ($animated_gif (format cmdstorage "set terminal gif animate ~a size ~a, ~a delay ~a ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$delay)
+                           (get-option '$file_bgcolor)
                            (get-option '$file_name)))
         ($aquaterm (format cmdstorage "set terminal aqua ~a~%" (write-font-type)))
         ($wxt (format cmdstorage "set terminal wxt ~a~%" (write-font-type)))
@@ -2955,10 +2968,11 @@
          (update-gr-option ($lhs x) ($rhs x))
          (merror "draw: item ~M is not recognized as an option assignment" x)))
    (case (gethash '$terminal *gr-options*)
-      ($png (setf str (format nil "set terminal png ~a size ~a, ~a~%set out '~a.png'"
+      ($png (setf str (format nil "set terminal png ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
+                           (get-option '$file_bgcolor)
                            (get-option '$file_name) ) ))
       ($eps (setf str (format nil "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
                            (write-font-type) ; other alternatives are Arial, Courier
@@ -2980,15 +2994,17 @@
                            (get-option '$pdf_width)
                            (get-option '$pdf_height)
                            (get-option '$file_name))))
-      ($jpg (setf str (format nil "set terminal jpeg ~a size ~a, ~a~%set out '~a.jpg'"
+      ($jpg (setf str (format nil "set terminal jpeg ~a size ~a, ~a ~a~%set out '~a.jpg'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
+                           (get-option '$file_bgcolor)
                            (get-option '$file_name))))
-      ($gif (setf str (format nil "set terminal gif ~a size ~a, ~a~%set out '~a.gif'"
+      ($gif (setf str (format nil "set terminal gif ~a size ~a, ~a ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
+                           (get-option '$file_bgcolor)
                            (get-option '$file_name))))
       (otherwise (merror "draw: unknown file format" )))
    (send-gnuplot-command (format nil "~a~%replot" str)) ))
