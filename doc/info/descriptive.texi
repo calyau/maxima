@@ -28,20 +28,26 @@ Here is a simple example on how the descriptive functions in @code{descriptive} 
 @c ===end===
 @example
 (%i1) load (descriptive)$
+@group
 (%i2) /* univariate sample */   mean ([a, b, c]);
                             c + b + a
 (%o2)                       ---------
                                 3
+@end group
+@group
 (%i3) matrix ([a, b], [c, d], [e, f]);
                             [ a  b ]
                             [      ]
 (%o3)                       [ c  d ]
                             [      ]
                             [ e  f ]
+@end group
+@group
 (%i4) /* multivariate sample */ mean (%);
                       e + c + a  f + d + b
 (%o4)                [---------, ---------]
                           3          3
+@end group
 @end example
 
 Note that in multivariate samples the mean is calculated for each column.
@@ -54,10 +60,12 @@ In case of several samples with possible different sizes, the Maxima function @c
 @c ===end===
 @example
 (%i1) load (descriptive)$
+@group
 (%i2) map (mean, [[a, b, c], [d, e]]);
                         c + b + a  e + d
 (%o2)                  [---------, -----]
                             3        2
+@end group
 @end example
 
 In this case, two samples of sizes 3 and 2 were stored into a list.
@@ -68,8 +76,10 @@ Univariate samples must be stored in lists like
 @c s1 : [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
 @c ===end===
 @example
+@group
 (%i1) s1 : [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
 (%o1)           [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]
+@end group
 @end example
 
 and multivariate samples in matrices as in
@@ -79,6 +89,7 @@ and multivariate samples in matrices as in
 @c              [10.58, 6.63], [13.33, 13.25], [13.21,  8.12]);
 @c ===end===
 @example
+@group
 (%i1) s2 : matrix ([13.17, 9.29], [14.71, 16.88], [18.50, 16.88],
              [10.58, 6.63], [13.33, 13.25], [13.21,  8.12]);
                         [ 13.17  9.29  ]
@@ -92,12 +103,14 @@ and multivariate samples in matrices as in
                         [ 13.33  13.25 ]
                         [              ]
                         [ 13.21  8.12  ]
+@end group
 @end example
 
 In this case, the number of columns equals the random variable dimension and the number of rows is the sample size.
 
 Data can be introduced by hand, but big samples are usually stored in plain text files. For example, file @code{pidigits.data} contains the first 100 digits of number @code{%pi}:
 @example
+@group
       3
       1
       4
@@ -108,6 +121,7 @@ Data can be introduced by hand, but big samples are usually stored in plain text
       6
       5
       3 ...
+@end group
 @end example
 
 In order to load these digits in Maxima,
@@ -118,8 +132,10 @@ In order to load these digits in Maxima,
 @c ===end===
 @example
 (%i1) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i2) length (s1);
 (%o2)                          100
+@end group
 @end example
 
 On the other hand, file @code{wind.data} contains daily average wind speeds at 5 meteorological stations in the Republic of Ireland (This is part of a data set taken at 12 meteorological stations. The original file is freely downloadable from the StatLib Data Repository and its analysis is discused in Haslett, J., Raftery, A. E. (1989) @var{Space-time Modelling with Long-memory Dependence: Assessing Ireland's Wind Power Resource, with Discussion}. Applied Statistics 38, 1-50). This loads the data:
@@ -131,10 +147,14 @@ On the other hand, file @code{wind.data} contains daily average wind speeds at 5
 @c ===end===
 @example
 (%i1) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i2) length (s2);
 (%o2)                          100
+@end group
+@group
 (%i3) s2 [%]; /* last record */
 (%o3)            [3.58, 6.0, 4.58, 7.62, 11.25]
+@end group
 @end example
 
 Some samples contain non numeric data. As an example, file @code{biomed.data} (which is part of another bigger one downloaded from the StatLib Data Repository) contains four blood measures taken from two groups of patients, @code{A} and @code{B}, of different ages,
@@ -146,10 +166,14 @@ Some samples contain non numeric data. As an example, file @code{biomed.data} (w
 @c ===end===
 @example
 (%i1) s3 : read_matrix (file_search ("biomed.data"))$
+@group
 (%i2) length (s3);
 (%o2)                          100
+@end group
+@group
 (%i3) s3 [1]; /* first record */
 (%o3)            [A, 30, 167.0, 89.0, 25.6, 364]
+@end group
 @end example
 
 The first individual belongs to group @code{A}, is 30 years old and his/her blood measures were 167.0, 89.0, 25.6 and 364.
@@ -162,10 +186,12 @@ One must take care when working with categorical data. In the next example, symb
 @c ===end===
 @example
 (%i1) a : 1$
+@group
 (%i2) matrix ([a, 3], [b, 5]);
                             [ 1  3 ]
 (%o2)                       [      ]
                             [ b  5 ]
+@end group
 @end example
 
 @opencatbox
@@ -187,8 +213,10 @@ The argument of @code{continuous_freq} must be a list of numbers, which will be 
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) continuous_freq (s1, 5);
 (%o3) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
+@end group
 @end example
 
 The first list contains the interval limits and the second the corresponding
@@ -213,9 +241,11 @@ Counts absolute frequencies in discrete samples, both numeric and categorical. I
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) discrete_freq (s1);
 (%o3) [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
                              [8, 8, 12, 12, 10, 8, 9, 8, 12, 13]]
+@end group
 @end example
 
 The first list gives the sample values and the second their absolute frequencies. Commands @code{? col} and @code{? transpose} should help you to understand the last input.
@@ -246,6 +276,7 @@ refered to as @code{v[i]}.
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i3) subsample (s2, lambda([v], v[1] > 18));
               [ 19.38  15.37  15.12  23.09  25.25 ]
               [                                   ]
@@ -254,6 +285,7 @@ refered to as @code{v[i]}.
               [ 20.25  21.46  19.95  27.71  23.38 ]
               [                                   ]
               [ 18.79  18.96  14.46  26.38  21.84 ]
+@end group
 @end example
 
 In the following example, we request only the first, second and fifth
@@ -271,6 +303,7 @@ the predicate function is defined as an ordinary Maxima function.
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) g(x):= x[1] >= 16 and x[4] < 25$
+@group
 (%i4) subsample (s2, g, 1, 2, 5);
                      [ 19.38  15.37  25.25 ]
                      [                     ]
@@ -279,6 +312,7 @@ the predicate function is defined as an ordinary Maxima function.
                      [ 16.92  13.21  21.21 ]
                      [                     ]
                      [ 17.25  18.46  23.87 ]
+@end group
 @end example
 
 Here is an example with the categorical variables of @code{biomed.data}.
@@ -294,6 +328,7 @@ who are older than 38 years.
 (%i1) load (descriptive)$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) h(u):= u[1] = B and u[2] > 38 $
+@group
 (%i4) subsample (s3, h);
                 [ B  39  28.0  102.3  17.1  146 ]
                 [                               ]
@@ -310,6 +345,7 @@ who are older than 38 years.
                 [ B  39  18.0  95.0   11.3  66  ]
                 [                               ]
                 [ B  39  39.0  88.5   7.6   168 ]
+@end group
 @end example
 
 Probably, the statistical analysis will involve only the blood measures,
@@ -322,6 +358,7 @@ Probably, the statistical analysis will involve only the blood measures,
 @example
 (%i1) load (descriptive)$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
+@group
 (%i3) subsample (s3, lambda([v], v[1] = B and v[2] > 38),
                  3, 4, 5, 6);
                    [ 28.0  102.3  17.1  146 ]
@@ -339,6 +376,7 @@ Probably, the statistical analysis will involve only the blood measures,
                    [ 18.0  95.0   11.3  66  ]
                    [                        ]
                    [ 39.0  88.5   7.6   168 ]
+@end group
 @end example
 
 This is the multivariate mean of @code{s3},
@@ -350,13 +388,15 @@ This is the multivariate mean of @code{s3},
 @example
 (%i1) load (descriptive)$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
+@group
 (%i3) mean (s3);
-       65 B + 35 A  317          6 NA + 8145.0
-(%o3) [-----------, ---, 87.178, -------------, 18.123, 
-           100      10                100
+       65 B + 35 A  317          6 NA + 8144.999999999999
+(%o3) [-----------, ---, 87.178, ------------------------, 
+           100      10                     100
                                                     3 NA + 19587
-                                                    ------------]
+                                            18.123, ------------]
                                                         100
+@end group
 @end example
 
 Here, the first component is meaningless, since @code{A} and @code{B} are categorical, the second component is the mean age of individuals in rational form, and the fourth and last values exhibit some strange behaviour. This is because symbol @code{NA} is used here to indicate @var{non available} data, and the two means are nonsense. A possible solution would be to take out from the matrix those rows with @code{NA} symbols, although this deserves some loss of information.
@@ -370,11 +410,13 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 (%i1) load (descriptive)$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
 (%i3) g(v):= v[4] # NA and v[6] # NA $
-(%i4) mean(subsample(s3, g, 3,4,5,6));
+@group
+(%i4) mean (subsample (s3, g, 3, 4, 5, 6));
 (%o4) [79.4923076923077, 86.2032967032967, 16.93186813186813, 
                                                             2514
                                                             ----]
                                                              13
+@end group
 @end example
 
 @opencatbox
@@ -419,15 +461,21 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) mean (s1);
                                471
 (%o3)                          ---
                                100
+@end group
+@group
 (%i4) %, numer;
 (%o4)                         4.71
+@end group
 (%i5) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i6) mean (s2);
 (%o6)     [9.9485, 10.1607, 10.8685, 15.7166, 14.8441]
+@end group
 @end example
 
 @opencatbox
@@ -442,6 +490,7 @@ Example:
 This is the sample variance, defined as
 @ifnottex
 @example
+@group
                      n
                    ====
            2   1   \          _ 2
@@ -449,6 +498,7 @@ This is the sample variance, defined as
                n   /       i
                    ====
                    i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -465,8 +515,10 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) var (s1), numer;
 (%o3)                   8.425899999999999
+@end group
 @end example
 
 See also function @code{var1}.
@@ -483,6 +535,7 @@ See also function @code{var1}.
 This is the sample variance, defined as
 @ifnottex
 @example
+@group
                      n
                    ====
                1   \          _ 2
@@ -490,6 +543,7 @@ This is the sample variance, defined as
               n-1  /       i
                    ====
                    i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -508,12 +562,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) var1 (s1), numer;
 (%o3)                    8.5110101010101
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) var1 (s2);
 (%o5) [17.39586540404041, 15.13912778787879, 15.63204924242424, 
                             32.50152569696971, 24.66977392929294]
+@end group
 @end example
 
 See also function @code{var}.
@@ -541,12 +599,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) std (s1), numer;
 (%o3)                   2.902740084816414
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) std (s2);
 (%o5) [4.149928523480858, 3.871399812729241, 3.933920277534866, 
                             5.672434260526957, 4.941970881136392]
+@end group
 @end example
 
 See also functions @code{var} and @code{std1}.
@@ -574,12 +636,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) std1 (s1), numer;
 (%o3)                   2.917363553109228
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) std1 (s2);
-(%o5) [4.17083509672109, 3.89090320978032, 3.953738641137555, 
+(%o5) [4.170835096721089, 3.89090320978032, 3.953738641137555, 
                             5.701010936401517, 4.966867617451963]
+@end group
 @end example
 
 See also functions @code{var1} and @code{std}.
@@ -596,6 +662,7 @@ See also functions @code{var1} and @code{std}.
 The non central moment of order @math{k}, defined as
 @ifnottex
 @example
+@group
                        n
                      ====
                  1   \      k
@@ -603,6 +670,7 @@ The non central moment of order @math{k}, defined as
                  n   /      i
                      ====
                      i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -621,12 +689,18 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) noncentral_moment (s1, 1), numer; /* the mean */
 (%o3)                         4.71
-(%i4) s2 : read_matrix (file_search ("wind.data"))$
-(%i5) noncentral_moment (s2, 5);
-(%o5) [319793.8724761506, 320532.1923892463, 391249.5621381556, 
-                            2502278.205988911, 1691881.797742255]
+@end group
+@group
+(%i5) s2 : read_matrix (file_search ("wind.data"))$
+@end group
+@group
+(%i6) noncentral_moment (s2, 5);
+(%o6) [319793.8724761505, 320532.1923892463,
+      391249.5621381556, 2502278.205988911, 1691881.797742255]
+@end group
 @end example
 
 See also function @code{central_moment}.
@@ -643,6 +717,7 @@ See also function @code{central_moment}.
 The central moment of order @math{k}, defined as
 @ifnottex
 @example
+@group
                     n
                   ====
               1   \          _ k
@@ -650,6 +725,7 @@ The central moment of order @math{k}, defined as
               n   /       i
                   ====
                   i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -668,12 +744,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) central_moment (s1, 2), numer; /* the variance */
 (%o3)                   8.425899999999999
-(%i4) s2 : read_matrix (file_search ("wind.data"))$
-(%i5) central_moment (s2, 3);
-(%o5) [11.29584771375004, 16.97988248298583, 5.626661952750102, 
+@end group
+(%i5) s2 : read_matrix (file_search ("wind.data"))$
+@group
+(%i6) central_moment (s2, 3);
+(%o6) [11.29584771375004, 16.97988248298583, 5.626661952750102,
                              37.5986572057918, 25.85981904394192]
+@end group
 @end example
 
 See also functions @code{central_moment} and @code{mean}.
@@ -699,12 +779,16 @@ The variation coefficient is the quotient between the sample standard deviation 
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) cv (s1), numer;
 (%o3)                   .6193977819764815
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) cv (s2);
 (%o5) [.4192426091090204, .3829365309260502, 0.363779605385983, 
                             .3627381836021478, .3346021393989506]
+@end group
 @end example
 
 See also functions @code{std} and @code{mean}.
@@ -730,11 +814,15 @@ This is the minimum value of the sample @var{list},
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) mini (s1);
 (%o3)                           0
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) mini (s2);
 (%o5)             [0.58, 0.5, 2.67, 5.25, 5.17]
+@end group
 @end example
 
 See also function @code{maxi}.
@@ -760,11 +848,15 @@ This is the maximum value of the sample @var{list},
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) maxi (s1);
 (%o3)                           9
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) maxi (s2);
 (%o5)          [20.25, 21.46, 20.04, 29.63, 27.63]
+@end group
 @end example
 
 See also function @code{mini}.
@@ -792,11 +884,15 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) range (s1);
 (%o3)                           9
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) range (s2);
 (%o5)          [19.67, 20.96, 17.37, 24.38, 22.46]
+@end group
 @end example
 
 @opencatbox
@@ -824,12 +920,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) /* 1st and 3rd quartiles */
          [quantile (s1, 1/4), quantile (s1, 3/4)], numer;
 (%o3)                      [2.0, 7.25]
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) quantile (s2, 1/4);
 (%o5)    [7.2575, 7.477500000000001, 7.82, 11.28, 11.48]
+@end group
 @end example
 
 @opencatbox
@@ -855,13 +955,17 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) median (s1);
                                 9
 (%o3)                           -
                                 2
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) median (s2);
 (%o5)         [10.06, 9.855, 10.73, 15.48, 14.105]
+@end group
 @end example
 
 The median is the 1/2-quantile.
@@ -889,14 +993,18 @@ The interquartilic range is the difference between the third and first quartiles
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) qrange (s1);
                                21
 (%o3)                          --
                                4
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) qrange (s2);
-(%o5) [5.385, 5.572499999999998, 6.0225, 8.729999999999999, 
-                                               6.650000000000002]
+(%o5) [5.385, 5.572499999999998, 6.022500000000001, 
+                            8.729999999999999, 6.649999999999999]
+@end group
 @end example
 
 See also function @code{quantile}.
@@ -913,6 +1021,7 @@ See also function @code{quantile}.
 The mean deviation, defined as
 @ifnottex
 @example
+@group
                      n
                    ====
                1   \          _
@@ -920,6 +1029,7 @@ The mean deviation, defined as
                n   /       i
                    ====
                    i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -938,14 +1048,18 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) mean_deviation (s1);
                                51
 (%o3)                          --
                                20
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) mean_deviation (s2);
 (%o5) [3.287959999999999, 3.075342, 3.23907, 4.715664000000001, 
                                                4.028546000000002]
+@end group
 @end example
 
 See also function @code{mean}.
@@ -962,6 +1076,7 @@ See also function @code{mean}.
 The median deviation, defined as
 @ifnottex
 @example
+@group
                  n
                ====
            1   \
@@ -969,6 +1084,7 @@ The median deviation, defined as
            n   /       i
                ====
                i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -988,13 +1104,17 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) median_deviation (s1);
                                 5
 (%o3)                           -
                                 2
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) median_deviation (s2);
 (%o5)           [2.75, 2.755, 3.08, 4.315, 3.31]
+@end group
 @end example
 
 See also function @code{mean}.
@@ -1011,6 +1131,7 @@ See also function @code{mean}.
 The harmonic mean, defined as
 @ifnottex
 @example
+@group
                   n
                --------
                 n
@@ -1020,6 +1141,7 @@ The harmonic mean, defined as
                /     x
                ====   i
                i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1038,12 +1160,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
+@group
 (%i3) harmonic_mean (y), numer;
 (%o3)                   3.901858027632205
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) harmonic_mean (s2);
 (%o5) [6.948015590052786, 7.391967752360356, 9.055658197151745, 
                             13.44199028193692, 13.01439145898509]
+@end group
 @end example
 
 See also functions @code{mean} and @code{geometric_mean}.
@@ -1061,6 +1187,7 @@ See also functions @code{mean} and @code{geometric_mean}.
 The geometric mean, defined as
 @ifnottex
 @example
+@group
                  /  n      \ 1/n
                  | /===\   |
                  |  ! !    |
@@ -1068,6 +1195,7 @@ The geometric mean, defined as
                  |  ! !   i|
                  | i = 1   |
                  \         /
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1086,12 +1214,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) y : [5, 7, 2, 5, 9, 5, 6, 4, 9, 2, 4, 2, 5]$
+@group
 (%i3) geometric_mean (y), numer;
 (%o3)                   4.454845412337012
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) geometric_mean (s2);
 (%o5) [8.82476274347979, 9.22652604739361, 10.0442675714889, 
                             14.61274126349021, 13.96184163444275]
+@end group
 @end example
 
 See also functions @code{mean} and @code{harmonic_mean}.
@@ -1108,6 +1240,7 @@ See also functions @code{mean} and @code{harmonic_mean}.
 The kurtosis coefficient, defined as
 @ifnottex
 @example
+@group
                     n
                   ====
             1     \          _ 4
@@ -1115,6 +1248,7 @@ The kurtosis coefficient, defined as
               4   /       i
            n s    ====
                   i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1133,12 +1267,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) kurtosis (s1), numer;
 (%o3)                  - 1.273247946514421
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) kurtosis (s2);
 (%o5) [- .2715445622195385, 0.119998784429451, 
-   - .4275233490482866, - .6405361979019522, - .4952382132352935]
+       - .4275233490482861, - .6405361979019522, - .4952382132352935]
+@end group
 @end example
 
 See also functions @code{mean}, @code{var} and @code{skewness}.
@@ -1155,6 +1293,7 @@ See also functions @code{mean}, @code{var} and @code{skewness}.
 The skewness coefficient, defined as
 @ifnottex
 @example
+@group
                     n
                   ====
             1     \          _ 3
@@ -1162,6 +1301,7 @@ The skewness coefficient, defined as
               3   /       i
            n s    ====
                   i = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1180,12 +1320,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) skewness (s1), numer;
-(%o3)                  .009196180476450306
+(%o3)                  .009196180476450424
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) skewness (s2);
-(%o5) [.1580509020000979, .2926379232061854, .09242174416107717, 
-                            .2059984348148687, .2142520248890832]
+(%o5) [.1580509020000978, .2926379232061854, .09242174416107717, 
+                            .2059984348148687, .2142520248890831]
+@end group
 @end example
 
 See also functions @code{mean}, @code{var} and @code{kurtosis}.
@@ -1202,10 +1346,12 @@ See also functions @code{mean}, @code{var} and @code{kurtosis}.
 Pearson's skewness coefficient, defined as 
 @ifnottex
 @example
+@group
                 _
              3 (x - med)
              -----------
                   s
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1225,12 +1371,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) pearson_skewness (s1), numer;
 (%o3)                   .2159484029093895
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) pearson_skewness (s2);
 (%o5) [- .08019976629211892, .2357036272952649, 
          .1050904062491204, .1245042340592368, .4464181795804519]
+@end group
 @end example
 
 See also functions @code{mean}, @code{var} and @code{median}.
@@ -1247,11 +1397,13 @@ See also functions @code{mean}, @code{var} and @code{median}.
 The quartile skewness coefficient, defined as 
 @ifnottex
 @example
+@group
                c    - 2 c    + c
                 3/4      1/2    1/4
                --------------------
                    c    - c
                     3/4    1/4
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1272,12 +1424,16 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) quartile_skewness (s1), numer;
 (%o3)                  .04761904761904762
+@end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i5) quartile_skewness (s2);
 (%o5) [- 0.0408542246982353, .1467025572005382, 
-       0.0336239103362392, .03780068728522298, 0.210526315789474]
+       0.0336239103362392, .03780068728522298, .2105263157894735]
+@end group
 @end example
 
 See also function @code{quantile}.
@@ -1298,6 +1454,7 @@ See also function @code{quantile}.
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
 @example
+@group
               n
              ====
           1  \           _        _
@@ -1305,6 +1462,7 @@ The covariance matrix of the multivariate sample, defined as
           n  /       j        j
              ====
              j = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1324,6 +1482,7 @@ Example:
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) fpprintprec : 7$  /* change precision for pretty output */
+@group
 (%i4) cov (s2);
       [ 17.22191  13.61811  14.37217  19.39624  15.42162 ]
       [                                                  ]
@@ -1334,6 +1493,7 @@ Example:
       [ 19.39624  15.15834  17.32544  32.17651  20.44685 ]
       [                                                  ]
       [ 15.42162  14.9711   16.18171  20.44685  24.42308 ]
+@end group
 @end example
 
 See also function @code{cov1}.
@@ -1349,6 +1509,7 @@ See also function @code{cov1}.
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
 @example
+@group
               n
              ====
          1   \           _        _
@@ -1356,6 +1517,7 @@ The covariance matrix of the multivariate sample, defined as
     1   n-1  /       j        j
              ====
              j = 1
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1375,6 +1537,7 @@ Example:
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) fpprintprec : 7$ /* change precision for pretty output */
+@group
 (%i4) cov1 (s2);
       [ 17.39587  13.75567  14.51734  19.59216  15.5774  ]
       [                                                  ]
@@ -1385,6 +1548,7 @@ Example:
       [ 19.59216  15.31145  17.50044  32.50153  20.65338 ]
       [                                                  ]
       [ 15.5774   15.12232  16.34516  20.65338  24.66977 ]
+@end group
 @end example
 
 See also function @code{cov}.
@@ -1426,9 +1590,11 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i3) global_variances (s2);
 (%o3) [105.338342060606, 21.06766841212119, 12874.34690469686, 
-         113.4651792608502, 6.636590811800794, 2.576158149609762]
+         113.4651792608501, 6.636590811800795, 2.576158149609762]
+@end group
 @end example
 
 Function @code{global_variances} has an optional logical argument: @code{global_variances(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{global_variances(x)}. On the other hand, @code{global_variances(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
@@ -1443,9 +1609,11 @@ Function @code{global_variances} has an optional logical argument: @code{global_
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) s : cov1 (s2)$
+@group
 (%i4) global_variances (s, false);
 (%o4) [105.338342060606, 21.06766841212119, 12874.34690469686, 
-         113.4651792608502, 6.636590811800794, 2.576158149609762]
+         113.4651792608501, 6.636590811800795, 2.576158149609762]
+@end group
 @end example
 
 See also @code{cov} and @code{cov1}.
@@ -1465,14 +1633,15 @@ Example:
 
 @c ===beg===
 @c load (descriptive)$
-@c fpprintprec:7$
+@c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c cor (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) fpprintprec:7$
+(%i2) fpprintprec : 7 $
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i4) cor (s2);
       [   1.0     .8476339  .8803515  .8239624  .7519506 ]
       [                                                  ]
@@ -1483,22 +1652,24 @@ Example:
       [ .8239624  .6902622  .7764065    1.0     .7293848 ]
       [                                                  ]
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
+@end group
 @end example
 
 Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{cor(x)}. On the other hand, @code{cor(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
 
 @c ===beg===
 @c load (descriptive)$
-@c fpprintprec:7$
+@c fpprintprec : 7 $
 @c s2 : read_matrix (file_search ("wind.data"))$
 @c s : cov1 (s2)$
 @c cor (s, false); /* this is faster */
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) fpprintprec:7$
+(%i2) fpprintprec : 7 $
 (%i3) s2 : read_matrix (file_search ("wind.data"))$
 (%i4) s : cov1 (s2)$
+@group
 (%i5) cor (s, false); /* this is faster */
       [   1.0     .8476339  .8803515  .8239624  .7519506 ]
       [                                                  ]
@@ -1509,6 +1680,7 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
       [ .8239624  .6902622  .7764065    1.0     .7293848 ]
       [                                                  ]
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
+@end group
 @end example
 
 See also @code{cov} and @code{cov1}.
@@ -1530,9 +1702,11 @@ Function @code{list_correlations} returns a list of correlation measures:
 @var{precision matrix}: the inverse of the covariance matrix @math{S_1},
 @ifnottex
 @example
+@group
        -1     ij
       S   = (s  )             
        1         i,j = 1,2,...,p
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1543,11 +1717,13 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, with 
 @ifnottex
 @example
+@group
        2          1
       R  = 1 - -------
        i        ii
                s   s
                     ii
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1559,12 +1735,14 @@ being an indicator of the goodness of fit of the linear multivariate regression 
 @var{partial correlation matrix}: with element @math{(i, j)} being
 @ifnottex
 @example
+@group
                          ij
                         s
       r        = - ------------
        ij.rest     / ii  jj\ 1/2
                    |s   s  |
                    \       /
+@end group
 @end example
 @end ifnottex
 @tex
@@ -1589,6 +1767,7 @@ Example:
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
 (%i3) z : list_correlations (s2)$
 (%i4) fpprintprec : 5$ /* for pretty output */
+@group
 (%i5) z[1];  /* precision matrix */
       [  .38486   - .13856   - .15626   - .10239    .031179  ]
       [                                                      ]
@@ -1599,18 +1778,23 @@ Example:
       [ - .10239   .038447   - .024816   .10937    - .034033 ]
       [                                                      ]
       [ .031179   - .052842  - .10054   - .034033   .14834   ]
+@end group
+@group
 (%i6) z[2];  /* multiple correlation vector */
-(%o6)       [.85063, .80634, .86474, .71867, .72675]
+(%o6)      [.85063, .80634, .86474, .71867, .72675]
+@end group
+@group
 (%i7) z[3];  /* partial correlation matrix */
-       [  - 1.0     .38244   .36627   .49908   - .13049 ]
-       [                                                ]
-       [  .38244    - 1.0    .37927  - .19907   .23492  ]
-       [                                                ]
-(%o7)  [  .36627    .37927   - 1.0    .10911    .37956  ]
-       [                                                ]
-       [  .49908   - .19907  .10911   - 1.0     .26719  ]
-       [                                                ]
-       [ - .13049   .23492   .37956   .26719    - 1.0   ]
+      [  - 1.0     .38244   .36627   .49908   - .13049 ]
+      [                                                ]
+      [  .38244    - 1.0    .37927  - .19907   .23492  ]
+      [                                                ]
+(%o7) [  .36627    .37927   - 1.0    .10911    .37956  ]
+      [                                                ]
+      [  .49908   - .19907  .10911   - 1.0     .26719  ]
+      [                                                ]
+      [ - .13049   .23492   .37956   .26719    - 1.0   ]
+@end group
 @end example
 
 Function @code{list_correlations} also has an optional logical argument: @code{list_correlations(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{list_correlations(x)}. On the other hand, @code{list_correlations(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation.
@@ -1669,14 +1853,16 @@ A simple histogram with eight classes.
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
+@group
 (%i3) histogram (
-        s1,
-        nclasses     = 8,
-        title        = "pi digits",
-        xlabel       = "digits",
-        ylabel       = "Absolute frequency",
-        fill_color   = grey,
-        fill_density = 0.6)$
+           s1,
+           nclasses     = 8,
+           title        = "pi digits",
+           xlabel       = "digits",
+           ylabel       = "Absolute frequency",
+           fill_color   = grey,
+           fill_density = 0.6)$
+@end group
 @end example
 
 @opencatbox
@@ -1720,6 +1906,7 @@ Univariate scatter diagram from a simulated Gaussian sample.
 @example
 (%i1) load (descriptive)$
 (%i2) load (distrib)$
+@group
 (%i3) scatterplot(
         random_normal(0,1,200),
         xaxis      = true,
@@ -1727,6 +1914,7 @@ Univariate scatter diagram from a simulated Gaussian sample.
         terminal   = eps,
         eps_width  = 10,
         eps_height = 2)$
+@end group
 @end example
 
 Two dimensional scatter plot.
@@ -1744,12 +1932,14 @@ Two dimensional scatter plot.
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i3) scatterplot(
-        submatrix(s2, 1,2,3),
-        title      = "Data from stations #4 and #5",
-        point_type = diamant,
-        point_size = 2,
-        color      = blue)$
+       submatrix(s2, 1,2,3),
+       title      = "Data from stations #4 and #5",
+       point_type = diamant,
+       point_size = 2,
+       color      = blue)$
+@end group
 @end example
 
 Three dimensional scatter plot.
@@ -1780,12 +1970,14 @@ Five dimensional scatter plot, with five classes histograms.
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix (file_search ("wind.data"))$
+@group
 (%i3) scatterplot(
         s2,
         nclasses     = 5,
         fill_color   = blue,
         fill_density = 0.3,
         xtics        = 5)$
+@end group
 @end example
 
 For plotting isolated or line-joined points in two and three dimensions,
@@ -1831,11 +2023,13 @@ Example:
 @example
 (%i1) load (descriptive)$
 (%i2) s3 : read_matrix (file_search ("biomed.data"))$
+@group
 (%i3) barsplot(col(s3,2),
-         title        = "Ages",
-         xlabel       = "years",
-         box_width    = 1/2,
-         fill_density = 0.3)$
+        title        = "Ages",
+        xlabel       = "years",
+        box_width    = 1/2,
+        fill_density = 0.3)$
+@end group
 @end example
 
 For bars diagrams related options, see @code{bars} of package @code{draw}.
@@ -1944,12 +2138,14 @@ Box-and-whishker diagram from a multivariate sample.
 @example
 (%i1) load (descriptive)$
 (%i2) s2 : read_matrix(file_search("wind.data"))$
+@group
 (%i3) boxplot(s2,
         box_width  = 0.2,
         title      = "Windspeed in knots",
         xlabel     = "Stations",
         color      = red,
-        line_width = 2) $
+        line_width = 2)$
+@end group
 @end example
 
 Box-and-whishker diagram from three samples of different sizes.
@@ -1964,10 +2160,12 @@ Box-and-whishker diagram from three samples of different sizes.
 @c ===end===
 @example
 (%i1) load (descriptive)$
+@group
 (%i2) A :
        [[6, 4, 6, 2, 4, 8, 6, 4, 6, 4, 3, 2],
         [8, 10, 7, 9, 12, 8, 10],
         [16, 13, 17, 12, 11, 18, 13, 18, 14, 12]]$
+@end group
 (%i3) boxplot (A)$
 @end example
 
