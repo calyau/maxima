@@ -1,10 +1,4 @@
 @c end concepts Symmetries
-@c Notes by K.O.:
-@c In {Function} mon2schur, I don't know how to produce both
-@c nice-looking dvi/pdf output, and HTML output.  Same situation occurs in
-@c a couple of other places.  I've favored dvi/pdf.  So right now, "make
-@c html" reports some (non-fatal) errors.
-
 
 @menu
 * Introduction to Symmetries::
@@ -95,9 +89,11 @@ otherwise the size is set to @var{n}.
 @c GENERATED FROM THE FOLLOWING
 @c comp2pui (3, [4, g]);
 @example
+@group
 (%i1) comp2pui (3, [4, g]);
                         2                    2
 (%o1)    [4, g, 2 h2 - g , 3 h3 - g h2 + g (g  - 2 h2)]
+@end group
 @end example
 
 @opencatbox
@@ -152,13 +148,17 @@ contracted form (which here depends on only two of its variables) is
 @c elem ([3, 7], x^4 - 2*x*y, [x, y]);
 @c ratsimp (%);
 @example
+@group
 (%i1) elem ([3, 7], x^4 - 2*x*y, [x, y]);
 (%o1) 7 (e3 - 7 e2 + 7 (49 - e2)) + 21 e3
 
                                          + (- 2 (49 - e2) - 2) e2
+@end group
+@group
 (%i2) ratsimp (%);
                               2
 (%o2)             28 e3 + 2 e2  - 198 e2 + 2401
+@end group
 @end example
 
 @noindent
@@ -179,40 +179,43 @@ of the infinite matrix @math{h_{i-j}}, @math{i \ge 1, j \ge 1},
 consisting of the @math{q} first rows and the columns @math{i_1+1,
 i_2+2, \ldots, i_q+q}.
 @end iftex
-@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
-@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
-@ifinfo
+@ifnottex
 @math{L = [i_1, i_2, ..., i_q]}, with @math{i_1 <= i_2 <= ... <= i_q}.
 The Schur function @math{S_[i_1, i_2, ..., i_q]} is the minor
 of the infinite matrix @math{h_[i-j]}, @math{i <= 1, j <= 1},
 consisting of the @math{q} first rows and the columns @math{1 + i_1,
 2 + i_2, ..., q + i_q}.
-@end ifinfo
-@ifhtml
-@math{L = [i_1, i_2, ..., i_q]}, with @math{i_1 <= i_2 <= ... <= i_q}.
-The Schur function @math{S_[i_1, i_2, ..., i_q]} is the minor
-of the infinite matrix @math{h_[i-j]}, @math{i <= 1, j <= 1},
-consisting of the @math{q} first rows and the columns @math{1 + i_1,
-2 + i_2, ..., q + i_q}.
-@end ifhtml
+@end ifnottex
 
 This Schur function can be written in terms of monomials by using
 @code{treinat} and @code{kostka}.  The form returned is a symmetric
-polynomial in a contracted representation in the variables @math{x_1,x_2,\ldots}.
+polynomial in a contracted representation in the variables
+@tex
+$x_1,x_2,\ldots$
+@end tex
+@ifnottex
+@math{x_1,x_2,...}
+@end ifnottex
 
 @c GENERATED FROM THE FOLLOWING
 @c mon2schur ([1, 1, 1]);
 @c mon2schur ([3]);
 @c mon2schur ([1, 2]);
 @example
+@group
 (%i1) mon2schur ([1, 1, 1]);
 (%o1)                       x1 x2 x3
+@end group
+@group
 (%i2) mon2schur ([3]);
                                   2        3
 (%o2)                x1 x2 x3 + x1  x2 + x1
+@end group
+@group
 (%i3) mon2schur ([1, 2]);
                                       2
 (%o3)                  2 x1 x2 x3 + x1  x2
+@end group
 @end example
 
 @noindent
@@ -220,8 +223,10 @@ which means that for 3 variables this gives:
 
 @c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ?? (original comment)
 @example
+@group
    2 x1 x2 x3 + x1^2 x2 + x2^2 x1 + x1^2 x3 + x3^2 x1
     + x2^2 x3 + x3^2 x2
+@end group
 @end example
 @noindent
 Other functions for changing bases: @code{comp2ele}.
@@ -242,13 +247,17 @@ decomposes a multi-symmetric polynomial in the multi-contracted form
 @c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
 @c ratsimp (%);
 @example
+@group
 (%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3,
       [[x, y], [a, b]]);
                                                   3
 (%o1)         - 2 f2 + f1 (f1 + e1) - 3 e1 e2 + e1
+@end group
+@group
 (%i2) ratsimp (%);
                          2                       3
 (%o2)         - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
+@end group
 @end example
 
 Other functions for changing bases: @code{comp2ele}.
@@ -267,12 +276,14 @@ the function @code{elem}.
 @c GENERATED FROM THE FOLLOWING
 @c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
 @example
+@group
 (%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3,
       [[x, y], [a, b]]);
                                             3
                                 3 p1 p2   p1
 (%o1)              t2 + p1 t1 + ------- - ---
                                    2       2
+@end group
 @end example
 
 @opencatbox
@@ -299,18 +310,24 @@ be 2). The function @code{pui} is used in the same way.
 @c pui ([3, a, b], u*x*y*z, [x, y, z]);
 @c ratsimp (%);
 @example
+@group
 (%i1) pui;
 (%o1)                           1
+@end group
+@group
 (%i2) pui ([3, a, b], u*x*y*z, [x, y, z]);
                        2
                    a (a  - b) u   (a b - p3) u
 (%o2)              ------------ - ------------
                         6              3
+@end group
+@group
 (%i3) ratsimp (%);
                                        3
                       (2 p3 - 3 a b + a ) u
 (%o3)                 ---------------------
                                 6
+@end group
 @end example
 @noindent
 Other functions for changing bases: @code{comp2ele}.
@@ -334,11 +351,14 @@ otherwise it is its first element (as in @code{comp2ele} and
 @c pui2comp (3, [2, a1]);
 @c ratsimp (%);
 @example
+@group
 (%i1) pui2comp (2, []);
                                        2
                                 p2 + p1
 (%o1)                   [2, p1, --------]
                                    2
+@end group
+@group
 (%i2) pui2comp (3, [2, a1]);
                                             2
                                  a1 (p2 + a1 )
@@ -346,11 +366,14 @@ otherwise it is its first element (as in @code{comp2ele} and
                   p2 + a1              2
 (%o2)     [2, a1, --------, --------------------------]
                      2                  3
+@end group
+@group
 (%i3) ratsimp (%);
                             2                     3
                      p2 + a1   2 p3 + 3 a1 p2 + a1
 (%o3)        [2, a1, --------, --------------------]
                         2               6
+@end group
 @end example
 @noindent
 Other functions for changing bases: @code{comp2ele}.
@@ -384,16 +407,20 @@ first @var{m}.
 @c GENERATED FROM THE FOLLOWING
 @c puireduc (3, [2]);
 @example
+@group
 (%i1) puireduc (3, [2]);
                                          2
                                    p1 (p1  - p2)
 (%o1)          [2, p1, p2, p1 p2 - -------------]
                                          2
+@end group
+@group
 (%i2) ratsimp (%);
                                            3
                                3 p1 p2 - p1
 (%o2)              [2, p1, p2, -------------]
                                      2
+@end group
 @end example
 
 @opencatbox
@@ -415,12 +442,16 @@ functions.
 @c schur2comp (h1*h2 - h3, [h1, h2, h3]);
 @c schur2comp (a*h3, [h3]);
 @example
+@group
 (%i1) schur2comp (h1*h2 - h3, [h1, h2, h3]);
 (%o1)                         s
                                1, 2
+@end group
+@group
 (%i2) schur2comp (a*h3, [h3]);
 (%o2)                         s  a
                                3
+@end group
 @end example
 
 @opencatbox
@@ -442,12 +473,16 @@ returns the partitioned polynomial associated to the contracted form
 @c pc: 2*a^3*b*x^4*y + x^5;
 @c cont2part (pc, [x, y]);
 @example
+@group
 (%i1) pc: 2*a^3*b*x^4*y + x^5;
                            3    4      5
 (%o1)                   2 a  b x  y + x
+@end group
+@group
 (%i2) cont2part (pc, [x, y]);
                                    3
 (%o2)              [[1, 5, 0], [2 a  b, 4, 1]]
+@end group
 @end example
 
 @opencatbox
@@ -469,15 +504,19 @@ the polynomial.
 @c psym: explose (2*a^3*b*x^4*y, [x, y, z]);
 @c contract (psym, [x, y, z]);
 @example
+@group
 (%i1) psym: explose (2*a^3*b*x^4*y, [x, y, z]);
          3      4      3      4      3    4        3    4
 (%o1) 2 a  b y z  + 2 a  b x z  + 2 a  b y  z + 2 a  b x  z
 
                                            3      4      3    4
                                       + 2 a  b x y  + 2 a  b x  y
+@end group
+@group
 (%i2) contract (psym, [x, y, z]);
                               3    4
 (%o2)                      2 a  b x  y
+@end group
 @end example
 
 @opencatbox
@@ -493,8 +532,10 @@ returns the symmetric polynomial associated with the contracted form
 @c GENERATED FROM THE FOLLOWING
 @c explose (a*x + 1, [x, y, z]);
 @example
+@group
 (%i1) explose (a*x + 1, [x, y, z]);
 (%o1)                  a z + a y + a x + 1
+@end group
 @end example
 
 @opencatbox
@@ -510,9 +551,11 @@ The contracted form is rendered with the variables in @var{lvar}.
 @c GENERATED FROM THE FOLLOWING
 @c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
 @example
+@group
 (%i1) part2cont ([[2*a^3*b, 4, 1]], [x, y]);
                               3    4
 (%o1)                      2 a  b x  y
+@end group
 @end example
 
 @opencatbox
@@ -529,8 +572,10 @@ The contracted form is rendered with the variables in @var{lvar}.
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
 @example
+@group
 (%i1) partpol (-a*(x + y) + 3*x*y, [x, y]);
 (%o1)               [[3, 1, 1], [- a, 1, 0]]
+@end group
 @end example
 
 @opencatbox
@@ -584,6 +629,7 @@ reduce the amount of computation.
 @c ratsimp (direct ([z^3-e1*z^2+e2*z-e3,z^2  - f1* z + f2],
 @c               z, b*v + a*u, [[u, v], [a, b]]));
 @example
+@group
 (%i1) direct ([z^2  - e1* z + e2, z^2  - f1* z + f2],
               z, b*v + a*u, [[u, v], [a, b]]);
        2
@@ -593,9 +639,13 @@ reduce the amount of computation.
                   - 4 e2 f2 - (e1  - 2 e2) (f1  - 2 f2) + e1  f1
                 + -----------------------------------------------
                                          2
+@end group
+@group
 (%i2) ratsimp (%);
               2                2                   2
 (%o2)        y  - e1 f1 y + (e1  - 4 e2) f2 + e2 f1
+@end group
+@group
 (%i3) ratsimp (direct ([z^3-e1*z^2+e2*z-e3,z^2  - f1* z + f2],
               z, b*v + a*u, [[u, v], [a, b]]));
        6            5         2                        2    2   4
@@ -624,6 +674,7 @@ reduce the amount of computation.
 
                    2    4        2   6
  + (e1 e2 e3 - 9 e3 ) f1  f2 + e3  f1
+@end group
 @end example
 
 Finding the polynomial whose roots are the sums @math{a+u} where @math{a}
@@ -634,6 +685,7 @@ f_1 z + f_2}.
 @c ratsimp (direct ([z^2 - e1* z + e2, z^2 - f1* z + f2],
 @c                           z, a + u, [[u], [a]]));
 @example
+@group
 (%i1) ratsimp (direct ([z^2 - e1* z + e2, z^2 - f1* z + f2],
                           z, a + u, [[u], [a]]));
        4                    3             2
@@ -647,6 +699,7 @@ f_1 z + f_2}.
 
      2
  + e2
+@end group
 @end example
 
 @code{direct} accepts two flags: @code{elementaires} and
@@ -680,10 +733,14 @@ lists.
 @c multi_orbit (a*x + b*y, [[x, y], [a, b]]);
 @c multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
 @example
+@group
 (%i1) multi_orbit (a*x + b*y, [[x, y], [a, b]]);
 (%o1)                [b y + a x, a y + b x]
+@end group
+@group
 (%i2) multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
 (%o2)        [y + x + 2 c, y + x + 2 b, y + x + 2 a]
+@end group
 @end example
 @noindent
 Also see: @code{orbit} for the action of a single symmetric group.
@@ -708,8 +765,10 @@ Given the 2 symmetric polynomials in @var{x}, @var{y}:  @code{3*(x + y)
 @c GENERATED FROM THE FOLLOWING
 @c multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
 @example
+@group
 (%i1) multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
 (%o1)         [[10, 3, 1], [15, 3, 0], [15, 2, 1]]
+@end group
 @end example
 @noindent
 that is @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
@@ -730,16 +789,20 @@ Functions for changing the representations of a symmetric polynomial:
 computes the orbit of the polynomial @var{P} in the variables in the list
 @var{lvar} under the action of the symmetric group of the set of
 variables in the list @var{lvar}.
- 
+
 @c GENERATED FROM THE FOLLOWING
 @c orbit (a*x + b*y, [x, y]);
 @c orbit (2*x + x^2, [x, y]);
 @example
+@group
 (%i1) orbit (a*x + b*y, [x, y]);
 (%o1)                [a y + b x, b y + a x]
+@end group
+@group
 (%i2) orbit (2*x + x^2, [x, y]);
                         2         2
 (%o2)                 [y  + 2 y, x  + 2 x]
+@end group
 @end example
 @noindent
 See also @code{multi_orbit} for the action of a product of symmetric
@@ -761,22 +824,22 @@ degree @var{c_1}, ..., @var{c_n}. This group acts naturally on @var{f}.
 The list @var{orbite} is the orbit, denoted @code{@var{SC}(@var{f})}, of
 the function @var{f} under the action of @var{SC}. (This list may be
 obtained by the function @code{multi_orbit}.)  The @var{di} are integers
-s.t. @math{c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n}.  
+s.t.
+@iftex
+$c_1 \le d_1, c_2 \le d_2, \ldots, c_n \le d_n$.
+@end iftex
+@ifnottex
+@math{c_1 <= d_1, c_2 <= d_2, ..., c_n <= d_n}.
+@end ifnottex
 
 @iftex
 Let @var{SD} be the product of the symmetric groups @math{S_{d_1} \times
 S_{d_2} \times \cdots \times S_{d_n}}.
 @end iftex
-@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
-@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
-@ifinfo
+@ifnottex
 Let @var{SD} be the product of the symmetric groups @math{S_[d_1] x
 S_[d_2] x ... x S_[d_n]}.
-@end ifinfo
-@ifhtml
-Let @var{SD} be the product of the symmetric groups @math{S_[d_1] x
-S_[d_2] x ... x S_[d_n]}.
-@end ifhtml
+@end ifnottex
 The function @code{pui_direct} returns
 the first @var{n} power functions of @code{@var{SD}(@var{f})} deduced
 from the power functions of @code{@var{SC}(@var{f})}, where @var{n} is
@@ -791,11 +854,16 @@ element is kept per orbit, under the action of @var{SD}.
 @c pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
 @c pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [2, 3]);
 @example
+@group
 (%i1) l: [[x, y], [a, b]];
 (%o1)                   [[x, y], [a, b]]
+@end group
+@group
 (%i2) pui_direct (multi_orbit (a*x + b*y, l), l, [2, 2]);
                                        2  2
 (%o2)               [a x, 4 a b x y + a  x ]
+@end group
+@group
 (%i3) pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
                              2  2     2    2        3  3
 (%o3) [2 a x, 4 a b x y + 2 a  x , 3 a  b x  y + 2 a  x , 
@@ -808,6 +876,8 @@ element is kept per orbit, under the action of @var{SD}.
 
     3  3  3  3       4  2  4  2      5    5        6  6
 40 a  b  x  y  + 15 a  b  x  y  + 6 a  b x  y + 2 a  x ]
+@end group
+@group
 (%i4) pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a],
       [[x, y], [a, b, c]], [2, 3]);
                              2              2
@@ -815,6 +885,7 @@ element is kept per orbit, under the action of @var{SD}.
 
                  2                   3        2       2        3
               9 x  y + 12 a x y + 3 x  + 6 a x  + 12 a  x + 8 a ]
+@end group
 @end example
 @c THIS NEXT FUNCTION CALL TAKES A VERY LONG TIME (SEVERAL MINUTES)
 @c SO LEAVE IT OUT TIL PROCESSORS GET A LITTLE FASTER ...
@@ -839,8 +910,10 @@ written by P. Esperet, calculates the Kostka number of the partition
 @c GENERATED FROM THE FOLLOWING
 @c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
 @example
+@group
 (%i1) kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
 (%o1)                           6
+@end group
 @end example
 
 @opencatbox
@@ -856,8 +929,10 @@ returns the list of partitions of weight @var{n} and length @var{m}.
 @c GENERATED FROM THE FOLLOWING
 @c lgtreillis (4, 2);
 @example
+@group
 (%i1) lgtreillis (4, 2);
 (%o1)                   [[3, 1], [2, 2]]
+@end group
 @end example
 @noindent
 Also see: @code{ltreillis}, @code{treillis} and @code{treinat}.
@@ -876,8 +951,10 @@ equal to @var{m}.
 @c GENERATED FROM THE FOLLOWING
 @c ltreillis (4, 2);
 @example
+@group
 (%i1) ltreillis (4, 2);
 (%o1)               [[4, 0], [3, 1], [2, 2]]
+@end group
 @end example
 @noindent
 Also see: @code{lgtreillis}, @code{treillis} and @code{treinat}.
@@ -895,8 +972,10 @@ returns all partitions of weight @var{n}.
 @c GENERATED FROM THE FOLLOWING
 @c treillis (4);
 @example
+@group
 (%i1) treillis (4);
 (%o1)    [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
+@end group
 @end example
 
 See also: @code{lgtreillis}, @code{ltreillis} and @code{treinat}.
@@ -917,14 +996,20 @@ the natural order.
 @c treinat ([1, 1, 1, 1, 1]);
 @c treinat ([3, 2]);
 @example
+@group
 (%i1) treinat ([5]);
 (%o1)                         [[5]]
+@end group
+@group
 (%i2) treinat ([1, 1, 1, 1, 1]);
 (%o2) [[5], [4, 1], [3, 2], [3, 1, 1], [2, 2, 1], [2, 1, 1, 1], 
 
                                                  [1, 1, 1, 1, 1]]
+@end group
+@group
 (%i3) treinat ([3, 2]);
 (%o3)                 [[5], [4, 1], [3, 2]]
+@end group
 @end example
 
 See also: @code{lgtreillis}, @code{ltreillis} and @code{treillis}.
@@ -951,14 +1036,20 @@ polynomial and @var{e_i} the @var{i}-th elementary symmetric function.
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
 @c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
 @example
+@group
 (%i1) ele2polynome ([2, e1, e2], z);
                           2
 (%o1)                    z  - e1 z + e2
+@end group
+@group
 (%i2) polynome2ele (x^7 - 14*x^5 + 56*x^3  - 56*x + 22, x);
 (%o2)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+@end group
+@group
 (%i3) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
                   7       5       3
 (%o3)            x  - 14 x  + 56 x  - 56 x + 22
+@end group
 @end example
 @noindent
 The inverse: @code{polynome2ele (@var{P}, @var{z})}.
@@ -983,11 +1074,15 @@ of the roots of @var{P}.
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
 @c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
 @example
+@group
 (%i1) polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
 (%o1)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+@end group
+@group
 (%i2) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
                   7       5       3
 (%o2)            x  - 14 x  + 56 x  - 56 x + 22
+@end group
 @end example
 @noindent
 The inverse: @code{ele2polynome (@var{l}, @var{x})}
@@ -1021,17 +1116,27 @@ are given in the list @var{lpui}.
 @c ele2pui (3, %);
 @c pui2polynome (x, %);
 @example
+@group
 (%i1) pui;
 (%o1)                           1
+@end group
+@group
 (%i2) kill(labels);
 (%o0)                         done
+@end group
+@group
 (%i1) polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
 (%o1)                     [3, 4, 5, 1]
+@end group
+@group
 (%i2) ele2pui (3, %);
 (%o2)                     [3, 4, 6, 7]
+@end group
+@group
 (%i3) pui2polynome (x, %);
                         3      2
 (%o3)                  x  - 4 x  + 5 x - 1
+@end group
 @end example
 @noindent
 See also:
@@ -1091,8 +1196,10 @@ the function of the Cayley resolvent (usable up to degree 5)
 
 @c WHAT IS THIS ILLUSTRATING EXACTLY ??
 @example
+@group
 (x1*x2 + x2*x3 + x3*x4 + x4*x5 + x5*x1 -
      (x1*x3 + x3*x5 + x5*x2 + x2*x4 + x4*x1))^2
+@end group
 @end example
 
 general,
@@ -1139,6 +1246,7 @@ the flag of @code{resolvante} may be, respectively:
 @c resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 @example
 (%i1) resolvante: unitaire$
+@group
 (%i2) resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1,
       [x]);
 
@@ -1164,7 +1272,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 (%o2) y  + 7 y  - 539 y  - 1841 y  + 51443 y  + 315133 y
 
                                               + 376999 y + 125253
+@end group
 (%i3) resolvante: lineaire$
+@group
 (%i4) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
 
 " resolvante lineaire " 
@@ -1173,7 +1283,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
 (%i5) resolvante: general$
+@group
 (%i6) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
 
 " resolvante generale " 
@@ -1182,6 +1294,8 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
+@group
 (%i7) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3, x4]);
 
 " resolvante generale " 
@@ -1190,36 +1304,48 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
+@group
 (%i8) direct ([x^4 - 1], x, x1 + 2*x2 + 3*x3, [[x1, x2, x3]]);
        24       20         16            12             8
 (%o8) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
 (%i9) resolvante :lineaire$
+@group
 (%i10) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
 
 " resolvante lineaire " 
                               4
 (%o10)                       y  - 1
+@end group
 (%i11) resolvante: symetrique$
+@group
 (%i12) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
 
 " resolvante symetrique " 
                               4
 (%o12)                       y  - 1
+@end group
+@group
 (%i13) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
 
 " resolvante symetrique " 
                            6      2
 (%o13)                    y  - 4 y  - 1
+@end group
 (%i14) resolvante: alternee$
+@group
 (%i15) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
 
 " resolvante alternee " 
             12      8       6        4        2
 (%o15)     y   + 8 y  + 26 y  - 112 y  + 216 y  + 229
+@end group
 (%i16) resolvante: produit$
+@group
 (%i17) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
 
 " resolvante produit "
@@ -1240,7 +1366,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
             5             3
  - 3720087 y  + 26040609 y  + 14348907
+@end group
 (%i18) resolvante: symetrique$
+@group
 (%i19) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
 
 " resolvante symetrique " 
@@ -1261,7 +1389,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
             5             3
  - 3720087 y  + 26040609 y  + 14348907
+@end group
 (%i20) resolvante: cayley$
+@group
 (%i21) resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 
 " resolvante de Cayley "
@@ -1269,6 +1399,7 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 (%o21) x  - 40 x  + 4080 x  - 92928 x  + 3772160 x  + 37880832 x
 
                                                        + 93392896
+@end group
 @end example
 
 For the Cayley resolvent, the 2 last arguments are neutral and the input
@@ -1293,14 +1424,9 @@ calculates the transformation
 @iftex
 @math{\prod_{1\leq i<j\leq n-1} (x_i-x_j)}.
 @end iftex
-@c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
-@c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
-@ifinfo
+@ifnottex
 @math{product(x_i - x_j, 1 <= i < j <= n - 1)}.
-@end ifinfo
-@ifhtml
-@math{product(x_i - x_j, 1 <= i < j <= n - 1)}.
-@end ifhtml
+@end ifnottex
 
 See also:
 
@@ -1322,12 +1448,9 @@ calculates the transformation of
 @end iftex
 @c UNFORTUNATELY TEXINFO DOES NOT HAVE A NOTION OF "@ELSE"
 @c SO IT IS NECESSARY TO REPEAT THE FOLLOWING NON-TEX STUFF FOR INFO AND FOR HTML ... SIGH
-@ifinfo
+@ifnottex
 @math{x_1 x_2 ... x_[n/2] + x_[n/2 + 1] ... x_n}.
-@end ifinfo
-@ifhtml
-@math{x_1 x_2 ... x_[n/2] + x_[n/2 + 1] ... x_n}.
-@end ifhtml
+@end ifnottex
 
 See also:
 
@@ -1338,9 +1461,11 @@ See also:
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_bipartite (x^6 + 108, x);
 @example
+@group
 (%i1) resolvante_bipartite (x^6 + 108, x);
               10        8           6             4
 (%o1)        y   - 972 y  + 314928 y  - 34012224 y
+@end group
 @end example
 
 See also:
@@ -1364,6 +1489,7 @@ calculates the transformation of @code{@var{P}(@var{x})} by the function
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
 @example
+@group
 (%i1) resolvante_diedrale (x^5 - 3*x^4 + 1, x);
        15       12       11       10        9         8         7
 (%o1) x   - 21 x   - 81 x   - 21 x   + 207 x  + 1134 x  + 2331 x
@@ -1372,6 +1498,7 @@ calculates the transformation of @code{@var{P}(@var{x})} by the function
  - 945 x  - 4970 x  - 18333 x  - 29079 x  - 20745 x  - 25326 x
 
  - 697
+@end group
 @end example
 
 See also:
@@ -1429,6 +1556,7 @@ calculates the list of all product resolvents of the polynomial
 @c resolvante: produit$
 @c resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
 @example
+@group
 (%i1) resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
         5      4             10      8       7       6       5
 (%o1) [y  + 3 y  + 2 y - 1, y   - 2 y  - 21 y  - 31 y  - 14 y
@@ -1438,12 +1566,15 @@ calculates the list of all product resolvents of the polynomial
 
        3      2       5      4
  - 21 y  - 2 y  + 1, y  - 2 y  - 3 y - 1, y - 1]
+@end group
 (%i2) resolvante: produit$
+@group
 (%i3) resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
 
 " resolvante produit "
        10      8       7    6        5       4       3     2
 (%o3) y   + 3 y  + 14 y  - y  - 14 y  - 31 y  - 21 y  - 2 y  + 1
+@end group
 @end example
 @c INPUT %i3 TICKLES A MINOR BUG IN resolvante: 
 @c " resolvante produit " IS PRINTED FROM SOMEWHERE IN THE BOWELS OF resolvante
