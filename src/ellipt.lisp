@@ -2526,17 +2526,13 @@ first kind:
 		       ;; sc(K) = infinity
 		       (if (zerop1 const)
 			   (dbz-err1 'jacobi_sc)
-			   `((mtimes simp) -1
-			     ((mexpt simp)
-			      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-			      ((rat simp) -1 2))
-			     ((%jacobi_cs simp) ,const ,m))))))
+			   (mul -1
+				(div (cons-exp '%jacobi_cs const m)
+				     (power (sub 1 m) 1//2)))))))
 		   ((and (alike1 lin 1//2)
 			 (zerop1 const))
 		    ;; (1-m)^(1/4)
-		    `((mexpt simp)
-		      ((mplus simp) 1 ((mtimes simp) -1 ,m))
-		      ((rat simp) 1 4)))
+		    (power (sub 1 m) (div 1 4)))
 		   (t
 		    (eqtest (list '(%jacobi_sc) u m) form)))))
 	  (t
