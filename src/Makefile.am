@@ -265,7 +265,7 @@ include openmcl-depends.mk
 endif
 
 if ECL
-EXECUTEECL = $(ECL_NAME)
+EXECUTEECL = $(ECL_NAME) -norc
 all-local: binary-ecl/maxima
 install-exec-local: install-ecl
 uninstall-hook: uninstall-ecl
