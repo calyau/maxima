@@ -39,23 +39,18 @@
 ;;
 ;; A&S gives several methods for computing elliptic functions
 ;; including the AGM method (16.4) and ascending and descending Landen
-;; transformations (16.12 and 16.14).  We use these latter because
-;; they are actually quite fast, only requiring simple arithmetic and
-;; square roots for the transformation until the last step.  The AGM
-;; requires evaluation of several trignometric functions at each
-;; stage.
+;; transformations (16.12 and 16.14).  The latter are actually quite
+;; fast, only requiring simple arithmetic and square roots for the
+;; transformation until the last step.  The AGM requires evaluation of
+;; several trignometric functions at each stage.
 ;;
-;; In addition, the Landen transformations are valid for all u and m.
-;; Thus, we can compute the elliptic functions for complex u and
-;; m. (The code below supports this, but we could make it run much
-;; faster if we specialized it to for flonums.  However, if we
-;; do that, we won't be able to handle the cases where m < 0 or m > 1.
-;; We'll have to handle these specially via A&S 16.10 and 16.11.)
+;; However, the Landen transformations appear to have some round-off
+;; issues.  For example, using the ascending transform to compute cn,
+;; cn(100,.7) > 1e10.  This is clearly not right since |cn| <= 1.
 ;;
-;; See A&S 16.12 and 16.14.
 
-
-
+;; Leave this here for now.  We may remove this at some later date.
+#+nil
 (flet ((ascending-transform (u m)
 	 ;; A&S 16.14.1
 	 ;;
@@ -95,6 +90,7 @@
 	  (t
 	   (multiple-value-bind (v mu root-mu1)
 	       (ascending-transform u m)
+	     (format t "dn-ascend: v, mu, root-mu1 = ~A ~A ~A~%" v mu root-mu1)
 	     ;; A&S 16.14.4
 	     (let* ((new-dn (elliptic-dn-ascending v mu)))
 	       (* (/ (- 1 root-mu1) mu)
@@ -114,6 +110,7 @@
 	   (multiple-value-bind (v mu root-mu1)
 	       (ascending-transform u m)
 	     ;; A&S 16.14.3
+	     (format t "cn-ascend: v, mu, root-mu1 = ~A ~A ~A~%" v mu root-mu1)
 	     (let* ((new-dn (elliptic-dn-ascending v mu)))
 	       (* (/ (+ 1 root-mu1) mu)
 		  (/ (- (* new-dn new-dn) root-mu1)
@@ -150,22 +147,75 @@
 	       new-dn)))))
   )
 
+;; AGM scale.  See A&S 17.6
+;;
+;; The AGM scale is
+;;
+;; a[n] = (a[n-1]+b[n-1])/2, b[n] = sqrt(a[n-1]*b[n-1]), c[n] = (a[n-1]-b[n-1])/2.
+;;
+;; We stop when abs(c[n]) <= 10*eps
+;;
+;; A list of (n a[n] b[n] c[n]) is returned.
+(defun agm-scale (a b c)
+  (loop for n from 0
+     while (> (abs c) (* 10 double-float-epsilon))
+     collect (list n a b c)
+     do (psetf a (/ (+ a b) 2)
+	       b (sqrt (* a b))
+	       c (/ (- a b) 2))))
+
+(defun jacobi-agm (u m)
+  ;; A&S 16.4.
+  ;;
+  ;; Compute the AGM scale with a = 1, b = sqrt(1-m), c = sqrt(m).
+  ;;
+  ;; Then phi[N] = 2^N*a[N]*u and compute phi[n] from
+  ;;
+  ;; sin(2*phi[n-1] - phi[n]) = c[n]/a[n]*sin(phi[n])
+  ;;
+  ;; Finally,
+  ;;
+  ;; sn(u|m) = sin(phi[0]), cn(u|m) = cos(phi[0])
+  ;; dn(u|m) = cos(phi[0])/cos(phi[1]-phi[0])
+  ;;
+  ;; Returns the three values sn, cn, dn.
+  (let* ((agm-data (nreverse (rest (agm-scale 1d0 (sqrt (- 1 m)) (sqrt m)))))
+	 (phi (destructuring-bind (n a b c)
+		  (first agm-data)
+		(declare (ignore b))
+		(* a u (ash 1 n))))
+	 (phi1 0d0))
+    (dolist (agm agm-data)
+      (destructuring-bind (n a b c)
+	  agm
+	(declare (ignore n b))
+	(setf phi1 phi
+	      phi (/ (+ phi (cl:asin (* (/ c a) (cl:sin phi)))) 2))))
+    (values (cl:sin phi) (cl:cos phi) (/ (cl:cos phi) (cl:cos (- phi1 phi))))))
+
 (defun sn (u m)
-  (if (and (realp u) (realp m))
-      (realpart (elliptic-sn-descending u m))
-      (elliptic-sn-descending u m)))
+  (multiple-value-bind (s c d)
+      (jacobi-agm u m)
+    (declare (ignore c d))
+    (if (and (realp u) (realp m))
+	(realpart s)
+	s)))
 
 (defun cn (u m)
-  (if (and (realp u) (realp m))
-      (realpart (elliptic-cn-ascending u m))
-      (elliptic-cn-ascending u m)))
+  (multiple-value-bind (s c d)
+      (jacobi-agm u m)
+    (declare (ignore s d))
+    (if (and (realp u) (realp m))
+	(realpart c)
+	c)))
 
 (defun dn (u m)
-  (if (and (realp u) (realp m))
-      (realpart (elliptic-dn-ascending u m))
-      (elliptic-dn-ascending u m)))
-
-
+  (multiple-value-bind (s c d)
+      (jacobi-agm u m)
+    (declare (ignore s c))
+    (if (and (realp u) (realp m))
+	(realpart d)
+	d)))
 ;;
 ;; How this works, I think.
 ;;
@@ -3740,15 +3790,6 @@ first kind:
 
 (defmfun $elliptic_eu (u m)
   (simplify `(($elliptic_eu) ,(resimplify u) ,(resimplify m))))
-
-(defun agm (a0 b0 phi)
-  (let (c0)
-    (dotimes (k 16)
-      (psetq a0 (/ (+ a0 b0) 2)
-	     b0 (sqrt (* a0 b0)))
-      (setf c0 (/ (- a0 b0) 2))
-      (setf phi (+ phi (cl:atan (* (/ b0 a0) (cl:tan phi)))))
-      (format t "~A ~A ~A ~A~%" a0 b0 c0 phi))))
 
 (defprop %jacobi_am simp-%jacobi_am operators)
 
