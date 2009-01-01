@@ -567,5 +567,23 @@ errcatch(float(2b400));
 errcatch(float(bfloat(2^1024)));
 [];
 
+/*
+ * Bug [ 2055235 ] Plot leaves range with jacobi functions
+ *
+ * Actually jacobi_cn(100, .7) is computed inaccurately.  Just check that abs(jacobi_cn(100,.7)) < 1
+ */
+
+is(abs(jacobi_cn(100.0, 0.7)) < 1);
+true$
+
+/*
+ * Bug [ 1658067 ] jacobi_sn(elliptic_kc(1-m)*%i/2,m) isn't simplified
+ */
+jacobi_sn(elliptic_kc(1-m)*%i/2,m);
+%i*m^(1/4)$
+
+jacobi_sc(elliptic_kc(m)+u,m);
+-jacobi_cs(u,m)/sqrt(1-m)$
+
 end;
 end$
