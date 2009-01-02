@@ -939,6 +939,52 @@ Perhaps you meant to enter `~a'.~%"
     ;; ((mtimes) -1 n ((%bessel_y) n x) ((mexpt) x -1))))
     grad)
 
+;; Integral of the Bessel Y function wrt z
+;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselY/21/01/01/
+(defprop %bessel_y
+  ((n z)
+   nil
+  (lambda (n unused)
+   (cond 
+     ((and ($integerp n) (<= 0 n))
+      (cond
+       (($oddp n)
+	;; integrate(bessel_y(2*N+1,z)) , N > 0 
+	;; = -bessel_y(0,z) - 2 * sum(bessel_y(2*k,z),k,1,(n-1)/2)
+	(let* ((k (gensym))
+	       (answer `((mplus) ((mtimes) -1 ((%bessel_y) 0 z))
+		       ((mtimes) -2
+			((%sum) ((%bessel_y) ((mtimes) 2 ,k) z) ,k 1
+			 ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))))
+	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
+	  (if (< n 10) 
+	    (meval `(($ev) ,answer $sum))   ; Is there a better way?
+	    (simplifya ($niceindices answer)))))
+       (($evenp n)
+	;; integrate(bessel_y(2*N,z)) , N > 0
+	;; = (1/2)*%pi*z*(bessel_y(0,z)*hstruve[-1](z)
+	;;               +bessel_y(1,z)*hstruve[0](z))
+	;;    - 2 * sum(bessel_y(2*k,z),k,1,n/2)
+	(let* 
+	    ((k (gensym))
+	     (answer `((mplus)
+		       ((mtimes) -2
+			((%sum) ((%bessel_y) ((mtimes) 2 ,k) z) ,k 1
+			 ((mtimes) ((rat) 1 2) ,n)))
+		       ((mtimes) ((rat) 1 2) $%pi z
+			((mplus)
+			 ((mtimes) ((%bessel_y) 0 z)
+			  ((mqapply) (($hstruve array) -1) z))
+			 ((mtimes) ((%bessel_y) 1 z)
+			  ((mqapply) (($hstruve array) 0) z)))))))
+	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
+	  (if (< n 10) 
+	    (meval `(($ev) ,answer $sum))  ; Is there a better way?
+	    (simplifya ($niceindices answer)))))
+      ))
+     (t nil))))
+  integral)
+
 (defun simp-bessel-y (exp ignored z)
   (declare (ignore ignored))
   (twoargcheck exp)
@@ -1021,6 +1067,31 @@ Perhaps you meant to enter `~a'.~%"
                ((%bessel_i) ((mplus) 1 n) x)) ; hier Vorzeichen falsch? Nein!
       ((rat) 1 2)))
   grad)
+
+;; Integral of the Bessel I function wrt z
+;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselI/21/01/01/
+(defprop %bessel_i
+  ((n z)
+   nil
+  (lambda (n unused)
+    (case n
+	  (0 
+	   ;; integrate(bessel_i(0,z)
+	   ;; = (1/2)*z*(bessel_i(0,z)*(%pi*lstruve[1](z)+2)
+	   ;;            -%pi*bessel_i(1,z)**lstruve[0](z))
+	   '((mtimes) ((rat) 1 2) z
+	     ((mplus)
+	      ((mtimes) -1 $%pi
+	       ((mexpt) ((%bessel_i) 1 z)
+		((mqapply) (($lstruve array) 0) z)))
+	      ((mtimes) ((%bessel_i) 0 z)
+	       ((mplus) 2
+		((mtimes) $%pi ((mqapply) (($lstruve array) 1) $z)))))))
+	  (1
+	   ;; integrate(bessel_j(1,z) = -bessel_i(0,z)
+	   '((mtimes) -1 ((%bessel_i) 0 z)))
+	  (otherwise nil))))
+  integral)
 
 (defun simp-bessel-i (exp ignored z)
   (declare (ignore ignored))
@@ -1106,6 +1177,64 @@ Perhaps you meant to enter `~a'.~%"
                ((%bessel_k) ((mplus) 1 n) x))
       ((rat) 1 2)))
   grad)
+
+;; Integral of the Bessel K function wrt z
+;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselK/21/01/01/
+(defprop %bessel_k
+  ((n z)
+   nil
+  (lambda (n unused)
+   (cond 
+     ((and ($integerp n) (<= 0 n))
+      (cond
+       (($oddp n)
+	;; integrate(bessel_y(2*N+1,z)) , N > 0
+	;; = -(-1)^((n-1)/2)*bessel_k(0,z) 
+	;;   + 2*sum((-1)^(k+(n-1)/2-1)*bessel_k(2*k,z),k,1,(n-1)/2)
+	(let* ((k (gensym))
+	       (answer `((mplus)
+			 ((mtimes) -1 ((%bessel_k) 0 z)
+			  ((mexpt) -1
+			   ((mtimes) ((rat) 1 2) ((mplus) -1 ,n))))
+			 ((mtimes simp) 2
+			  ((%sum)
+			   ((mtimes) ((%bessel_k) ((mtimes) 2 ,k) z)
+			    ((mexpt) -1
+			     ((mplus) -1 ,k
+			      ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))
+			   ,k 1 ((mtimes) ((rat) 1 2) ((mplus) -1 ,n)))))))
+	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
+	  (if (< n 10) 
+	    (meval `(($ev) ,answer $sum))   ; Is there a better way?
+	    (simplifya ($niceindices answer)))))
+       (($evenp n)
+	;; integrate(bessel_k(2*N,z)) , N > 0
+	;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*lstruve[-1](z)
+	;;               +bessel_k(1,z)*lstruve[0](z))
+	;;    + 2 * sum((-1)^(k+n/2)*bessel_k(2*k+1,z),k,0,n/2-1)
+	(let* 
+	    ((k (gensym))
+	     (answer `((mplus)
+		       ((mtimes) 2
+			((%sum)
+			 ((mtimes)
+			  ((%bessel_y) ((mplus) 1 ((mtimes) 2 ,k)) z)
+			  ((mexpt) -1
+			   ((mplus) ,k ((mtimes) ((rat) 1 2) ,n))))
+			 ,k 0 ((mplus) -1 ((mtimes) ((rat) 1 2) ,n))))
+		       ((mtimes) ((rat) 1 2) $%pi
+			((mexpt) -1 ((mtimes) ((rat) 1 2) ,n)) z
+			((mplus)
+			 ((mtimes) ((%bessel_k) 0 z)
+			  ((mqapply) (($lstruve array) -1) z))
+			 ((mtimes) ((%bessel_k) 1 z)
+			  ((mqapply) (($lstruve array) 0) z)))))))
+	  ;; expand out the sum if n < 10.  Otherwise fix up the indices
+	  (if (< n 10) 
+	    (meval `(($ev) ,answer $sum))  ; Is there a better way?
+	    (simplifya ($niceindices answer)))))))
+      (t nil))))
+  integral)
 
 (defun simp-bessel-k (exp ignored z)
   (declare (ignore ignored))

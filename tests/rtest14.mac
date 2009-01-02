@@ -1674,4 +1674,59 @@ test_wronskian(w_ik, lambda([n,z], 1/z), 1e-10, 5);
 test_wronskian(lambda([n,z], w_ik(n,z*%i)), lambda([n,z], 1/(z*%i)), 1e-12, 5);
 [];
 
-/******************************************************************************/
+/******************************************************************************
+
+    Integrals of Bessel functions
+
+*******************************************************************************/
+
+integrate(bessel_j(0,x),x);
+x*(bessel_j(0,x)*(2-%pi*hstruve[1](x))+%pi*bessel_j(1,x)*hstruve[0](x))/2;
+
+integrate(bessel_j(1,x),x);
+-bessel_j(0,x);
+
+integrate(bessel_j(2,x),x);
+'integrate(bessel_j(2,x),x);
+
+/* http://functions.wolfram.com/Bessel-TypeFunctions/BesselY/21/01/01/ */
+integrate(bessel_y(0,x),x);
+%pi*x*(bessel_y(1,x)*hstruve[0](x)+bessel_y(0,x)*hstruve[-1](x))/2;
+
+integrate(bessel_y(1,x),x);
+-bessel_y(0,x);
+
+integrate(bessel_y(2,x),x);
+%pi*x*(bessel_y(1,x)*hstruve[0](x)+bessel_y(0,x)*hstruve[-1](x))/2-2*bessel_y(2,x);
+
+integrate(bessel_y(3,x),x);
+-2*bessel_y(2,x)-bessel_y(0,x);
+
+integrate(bessel_y(10,x),x);
+%pi*x*(bessel_y(1,x)*hstruve[0](x)+bessel_y(0,x)*hstruve[-1](x))/2
+  -2*'sum(bessel_y(2*i,x),i,1,5);
+
+integrate(bessel_y(11,x),x);
+-2*'sum(bessel_y(2*i,x),i,1,5)-bessel_y(0,x);
+
+integrate(bessel_i(0,x),x);
+x*(bessel_i(0,x)*(%pi*lstruve[1](z)+2)-%pi*bessel_i(1,x)^lstruve[0](x))/2;
+
+integrate(bessel_i(1,x),x);
+-bessel_i(0,x);
+
+/* http://functions.wolfram.com/Bessel-TypeFunctions/BesselK/21/01/01/ */
+integrate(bessel_k(0,x),x);
+%pi*x*(bessel_k(1,x)*lstruve[0](x)+bessel_k(0,x)*lstruve[-1](x))/2;
+
+integrate(bessel_k(1,x),x);
+-bessel_k(0,x);
+
+integrate(bessel_k(7,x),x);
+2*(-bessel_k(6,x)+bessel_k(4,x)-bessel_k(2,x))+bessel_k(0,x);
+
+integrate(bessel_k(8,x),x);
+%pi*x*(bessel_k(1,x)*lstruve[0](x)+bessel_k(0,x)*lstruve[-1](x))/2
+      +2*(-bessel_y(7,x)+bessel_y(5,x)-bessel_y(3,x)+bessel_y(1,x));
+
+
