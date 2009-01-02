@@ -14,7 +14,11 @@
 
 ;;; Reference:  J. Moses, Symbolic Integration, MIT-LCS-TR-047, 12-1-1967.
 ;;; http://www.lcs.mit.edu/publications/pubs/pdf/MIT-LCS-TR-047.pdf.
-
+;;;;
+;;;; Unfortunately, some important pages in the scan are all black.
+;;;;
+;;;; A version with the missing pages is available (2008-12-14) from
+;;;; http://www.softwarepreservation.org/projects/LISP/MIT
 
 (declare-top (special ratform exptsum $radexpand $%e_to_numlog
 		      exptind quotind splist l ans splist arcpart coef
@@ -30,6 +34,7 @@
   `(get ,frob 'operators))
 
 (defun integerp1 (x)
+  "Returns 2*x if 2*x is an integer, else nil"
   (integerp2 (mul2* 2 x)))
 
 (defun superexpt (exp var base*) 
@@ -78,6 +83,8 @@
 	(t (cons (ncons (caar ex))
 		 (mapcar #'(lambda (c) (subst10 c)) (cdr ex))))))
 
+;; Returns a list equal to x2 with first occurrence of x1 removed.
+;; Stack overflow if x1 does not occur in x2.
 (defun choicesin (x1 x2) 
   (if (eq x1 (car x2))
       (cdr x2)
@@ -243,13 +250,19 @@
 		(> (integerp2 (caddr ex)) 0)
 		(arcfuncp (cadr ex))))))
 
++;; This is the main integration routine.  It is called from sinint.
++;; exp is guaranteed to be a product
 (defun integrator (exp var)
   (prog (y arg *powerl* const *b* w *c* *d* e *ratrootform*
 	 *chebyform* arcpart coef integrand result)
      (declare (special *ratrootform* *chebyform* *integrator-level*))
      ;; Increment recursion counter
      (incf *integrator-level*)
+
+     ;; Trivial case. exp is not a function of var.
      (if (freevar exp) (return (mul2* exp var)))
+
+     ;; Remove constant factors
      (setq w (partition exp var 1))
      (setq const (car w))
      (setq exp (cdr w))
@@ -258,18 +271,27 @@
        (format t "w = ~A~%" w)
        (format t "const = ~A~%" const)
        (format t "exp = ~A~%" exp))
+
      (cond ((mplusp exp)
 	    (return (mul2* const (integrate1 (cdr exp)))))
+
+	   ;; Convert atan2(a,b) to atan(a/b) and try again.
 	   ((and (not (atom exp))
 		 (eq (caar exp) '$atan2))
 	    (return (mul2* const (integrator
 				  (simplifya (list '(%atan) (div (cadr exp) (caddr exp))) t)
 				  var))))
+
+	   ;; Integrate sums.
 	   ((and (not (atom exp))
 		 (eq (caar exp) '%sum))
 	    (return (mul2* const (intsum exp var)))))
+
+     ;; Try derivative-divides method.
+     ;; This is the workhorse that solves many integrals.  
      (cond ((setq y (diffdiv exp var))
 	    (return (mul2* const y))))
+
      ;; At this point, we have EXP as a product of terms.  Make Y a
      ;; list of the terms of the product.
      (setq y (cond ((eq (caar exp) 'mtimes)
@@ -440,6 +462,9 @@
                                  result
                                  (list '(%integrate) exp var))))))))))
  
+
+;; This predicate is used with m2 pattern matcher.  
+;; A rational expression in var.
 (defun rat8 (ex)
   (cond ((or (alike1 ex var) (freevar ex))
 	 t)
@@ -538,7 +563,8 @@
 (defun varp (x)
   (alike1 x var))
 
-(defun integrallookups (exp &aux form)
+(defun integrallookups (exp)
+  (let (form dummy-args real-args)
   (cond ((eq (caar exp) '%log)
 	 (maxima-substitute (cadr exp)
 			    'x
@@ -552,43 +578,22 @@
         ;; In a first step we support functions with one and two arguments.
 
         ((and (not (atom (car exp)))
-              (setq form (get (caar exp) 'integral)))
-         (cond
-           ((= (length (car form)) 1)
-            ;; Found an integral on the property list with one argument.
-            (when *debug-integrate*
-              (format t "~&INTEGRALLOOKUPS: Found integral with 1 argument.~%"))
-            ($substitute (cadr exp) (caar form) (cadr form)))
-
-         ((and (= (length (car form)) 2)
-		(cadr form)
-                (freevar (caddr exp)))
- 	   ;; integral on the property list with two arguments.
-	   ;; integrate wrt argument 1.          
-           (when *debug-integrate*
-             (format t "~&INTEGRALLOOKUPS: Found integral with 1st of 2 arguments.~%"))
-           (let ((arg1 (cadr exp))
-                 (arg2 (caddr exp)))
-             ($substitute
-               arg2
-               (cadar form)
-               ($substitute arg1 (caar form) (cadr form)))))
-
-          ((and (= (length (car form)) 2)
-		(caddr form)
-                (freevar (cadr exp)))
-           ;; Found an integral on the property list with two arguments.
-           ;; Integrate wrt argument 2.
-           (when *debug-integrate*
-             (format t "~&INTEGRALLOOKUPS: Found integral with 2nd of 2 arguments.~%"))
-           (let ((arg1 (cadr exp))
-                 (arg2 (caddr exp)))
-             ($substitute
-               arg2
-               (cadar form)
-               ($substitute arg1 (caar form) (caddr form)))))
-
-          (t nil)))
+            (setq form (get (caar exp) 'integral))
+	    (setq dummy-args (car form))
+	    (setq real-args (cdr exp))
+	    ;; search through the args of exp and find the arg containing var
+	    ;; look up the integral wrt this arg from form
+	    (setq form 
+	      (do ((x real-args (cdr x))
+		   (y (cdr form) (cdr y)))
+		  ((or (null x) (null y)) nil)
+		  (if (not (freevar (car x))) (return (car y)))))
+	    ;; If form is a function then evaluate it with actual args
+	    (or (not (functionp form))
+		(setq form (apply form real-args))))
+	 (when *debug-integrate*
+	   (format t "~&INTEGRALLOOKUPS: Found integral ~A~.~%" (caar exp)))
+	 (maxima-substitute-list real-args dummy-args form))
 
 	((eq (caar exp) 'mplus)
 	 (muln (list '((rat simp) 1 2) exp exp) nil))
@@ -643,7 +648,7 @@
 					       ((%csc) x)
 					       ((%cot)
 						x)))))
-					  'nill))))))
+					  'nill)))))))
 
 (defun rat10 (ex) 
   (cond ((freevar ex) t)
@@ -681,6 +686,7 @@
       (integrator ex var)))
 
 (defun integerp2 (x)
+  "Returns x if x is an integer, else false"
   (let (u)
     (cond ((not (numberp x)) nil)
 	  ((not (floatp x)) x)
@@ -1497,6 +1503,7 @@
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
 
+;; This is the top level of the integrator
 (defmfun sinint (exp var)
   ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
   ;; INTEGRATOR for more details.  Initialize it here.
@@ -1505,9 +1512,11 @@
     (cond ((mnump var) (merror "Attempt to integrate wrt a number: ~:M" var))
 	  (($ratp var) (sinint exp (ratdisrep var)))
 	  (($ratp exp) (sinint (ratdisrep exp) var))
-	  ((mxorlistp exp)
+	  ((mxorlistp exp)    ;; if exp is an mlist or matrix
 	   (cons (car exp)
 		 (mapcar #'(lambda (y) (sinint y var)) (cdr exp))))
+	  ;; if exp is an equality, integrate both sides 
+	  ;; and add an integration constant
 	  ((mequalp exp)
 	   (list (car exp) (sinint (cadr exp) var)
 		 (add (sinint (caddr exp) var)
@@ -1686,6 +1695,27 @@
 				    (subst10 *b*)))
 		    var)))))
 
+;; This is the derivative-divides algorithm of Moses.
+;;
+;;                /
+;;                [
+;; Look for form  I  c * op(u(x)) * u'(x) dx
+;;                ]
+;;                /
+;;
+;;  where:  c     is a constant
+;;          u(x)  is an elementary expression in x
+;;          u'(x) is its derivative
+;;          op    is an elementary operator:
+;;                - the indentity, or
+;;                - any function that can be integrated by INTEGRALLOOKUPS
+;;
+;; The method of solution, once the problem has been determined to
+;; posses the form above, is to look up OP in a table and substitute 
+;; u(x) for each occurrence of x in the expression given in the table.
+;; In other words, the method performs an implicit substitution y = u(x),
+;; and obtains the integral of op(y)dy by a table look up.
+;;
 (defun diffdiv (exp var) 
   (prog (y *a* x v *d* z w r) 
      (cond ((and (mexptp exp)
@@ -1694,35 +1724,40 @@
 		 (< (caddr exp) 6)
 		 (> (caddr exp) 0))
 	    (return (integrator (expandexpt (cadr exp) (caddr exp)) var))))
+
+     ;; If not a product, transform to a product with one term 
      (setq exp (cond ((mtimesp exp) exp) (t (list '(mtimes) exp))))
+
+     ;; Loop over the terms in exp
      (setq z (cdr exp))
      a    (setq y (car z))
+
+     ;; This m2 pattern matches const*(exp/y)
      (setq r (list '(mplus)
 		   (cons '(coeffpt)
 			 (cons '(c free1)
 			       (choicesin y (cdr exp))))))
      (cond
+      ;; Case u(var) is the identity function. y is a term in exp.  
+      ;; Match if diff(y,var) == c*(exp/y).
+      ;; This even works when y is a function with multiple args.
        ((setq w (m2 (sdiff y var) r nil))
 	(return (muln (list y y (power* (mul2* 2 (cdr (sassq 'c w 'nill))) -1)) nil))))
-     (setq w (cond ((or (atom y) (member (caar y) '(mplus mtimes) :test #'eq)) y)
-		   ((eq (caar y) 'mexpt)
-		    (cond ((freevar (cadr y)) (caddr y))
-			  ((freevar (caddr y)) (cadr y))
-			  (t 0)))
 
-                   ;; At this point the algorithm assume that we have a
-                   ;; function with one argument. This argument is taken
-                   ;; with (cadr y). The algorithm has to be extended
-                   ;; to support functions with more than one argument.
-                   ;; In a first step we only support the functions
-                   ;; gamma_incomplete and expintegral_e.
-                   ((member (caar y) '(%gamma_incomplete %expintegral_e))
-                    ;; We assume the integration wrt the second value
-                    ;; of the function.
-                    (caddr y))
-                   (t
-                    ;; Take the argument of a function with one value. 
-                    (cadr y))))
+     ;; w is the arg in y.
+     (let ((arg-freevar))
+       (setq w 
+	 (cond 
+	  ((or (atom y) (member (caar y) '(mplus mtimes) :test #'eq)) y)
+	  ;; Take the argument of a function with one value. 
+	  ((= (length (cdr y)) 1) (cadr y))
+	  ;; A function has multiple args, and exactly one arg depends on var
+	  ((= (count-if #'null (setq arg-freevar (mapcar #'freevar (cdr y)))) 1)
+	   (do ((args (cdr y) (cdr args))
+		(argf arg-freevar (cdr argf)))
+	       ((if (not (car argf)) (return (car args))))))
+	  (t 0))))
+ 
      (cond
        ((setq w (cond ((and (setq x (sdiff w var))
 			    (mplusp x)
