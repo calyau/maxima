@@ -1,4 +1,4 @@
-@c version 1.42
+@c version 1.43
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -76,6 +76,10 @@ Ejemplo:
 @deffn {Funci@'on} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 Es una rutina para integrales dobles escrita en lenguaje Maxima y posteriormente traducida y compilada a c@'odigo m@'aquina. La instrucci@'on @code{load (dblint)} carga esta funci@'on. Utiliza el m@'etodo de Simpson en las dos direcciones @code{x} e @code{y} para calcular
 
+@tex
+$$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, dx.$$
+@end tex
+@ifnottex
 @example
 /b /s(x)
 |  |
@@ -83,6 +87,8 @@ Es una rutina para integrales dobles escrita en lenguaje Maxima y posteriormente
 |  |
 /a /r(x)
 @end example
+@end ifnottex
+
 
 La funci@'on @var{f} debe ser una funci@'on traducida o compilada de dos variables, a la vez que @var{r} y @var{s} deben ser cada una de ellas una funci@'on traducida o compilada de una variable, mientras que @var{a} y @var{b} deben ser n@'umeros en coma flotante. La rutina tiene dos variables globales que determinan el n@'umero de divisiones de los intervalos @code{x} e @code{y}: @code{dblint_x} y @code{dblint_y}, ambos con un valor por defecto de 10, pero que pueden cambiarse de forma independiente a otros valores enteros (hay @code{2*dblint_x+1} puntos a calcular en la direcci@'on @code{x} y @code{2*dblint_y+1} en la direcci@'on @code{y}). La rutina subdivide el eje X y luego para cada valor de X calcula primero @code{@var{r}(x)} y @code{@var{s}(x)}; entonces se subdivide el eje Y entre @code{@var{r}(x)} y @code{@var{s}(x)}, evalu@'andose la integral a lo largo del eje Y aplicando la regla de Simpson; a continuaci@'on, se eval@'ua la integral a lo largo del eje X utilizando tambi@'en la regla de Simpson tomando como valores de funci@'on las integrales sobre Y. Este procedimiento puede ser num@'ericamente inestable por m@'ultiples motivos, pero es razonablemente r@'apido: ev@'{@dotless{i}}tese su uso con funciones con grandes oscilaciones o que tengan singularidades. Las integrales del eje Y dependen de la proximidad de los l@'{@dotless{i}}mites @code{@var{r}(x)} y @code{@var{s}(x)}, de manera que si la distancia @code{@var{s}(x) - @var{r}(x)} var@'{@dotless{i}}a r@'apidamente con X, puede dar lugar errores importantes debido a truncamientos de diferente amplitud en las integrales de Y. Se puede aumentar @code{dblint_x} y @code{dblint_y} al objeto de mejorar el recubrimiento de la regi@'on de integraci@'on, pero a costa del tiempo de c@'omputo. Es necesario que las funciones @var{f}, @var{r} y @var{s} est@'en traducidas o compiladas antes de utilizar @code{dblint}, lo cual redundar@'a en una mejora del tiempo de ejecuci@'on de varios @'ordenes de magnitud respecto de la ejecuci@'on de c@'odigo interpretado.
 

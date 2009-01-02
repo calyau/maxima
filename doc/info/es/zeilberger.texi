@@ -1,4 +1,4 @@
-@c english version 1.6
+@c english version 1.10
 @menu
 * Introducci@'on a zeilberger::
 * Funciones y variables para zeilberger::
@@ -25,8 +25,14 @@ para la suma hipergeom@'etrica indefinida.
 Dado el t@'ermino general hipergeom@'etrico @math{F_k} de
 @'{@dotless{i}}ndice @math{k}, se plantea el problema de encontrar su
 antidiferencia hipergeom@'etrica, esto es, el t@'ermino
-hipergeom@'etrico tal que @math{F_k = f_(k+1) - f_k}.
+hipergeom@'etrico tal que
 
+@tex
+$$F_k = f_{k+1} - f_k.$$
+@end tex
+@ifnottex
+@math{F_k = f_(k+1) - f_k}.
+@end ifnottex
 
 @subsubsection El problema de la suma definida
 
@@ -72,7 +78,7 @@ Por ejemplo:
 @deffn {Funci@'on} AntiDifference (@var{F_k}, @var{k})
 
 Returns the hypergeometric anti-difference
-of @var{F_k}, if it exists.
+of @math{F_k}, if it exists.
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 @end deffn
 
@@ -80,21 +86,26 @@ Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 Devuelve, si existe, el elemento racional asociado a @var{F_k}, esto es,
 la funci@'on racional que verifica
 
-@math{F_k = R(k+1) F_(k+1) - R(k) F_k}.
+@tex
+$F_k = R\left(k+1\right) \, F_{k+1} - R\left(k\right) \, F_k$,
+@end tex
+@ifnottex
+@math{F_k = R(k+1) F_(k+1) - R(k) F_k},
+@end ifnottex
 
 En caso de no existir este elemento, @code{Gosper} devuelve @code{no_hyp_sol}.
 @end deffn
 
 @deffn {Funci@'on} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
-Devuelve la suma de los t@'erminos @var{F_k} desde @math{@var{k} = @var{a}} hasta
-@math{@var{k} = @var{b}} si @var{F_k} tiene una antidiferencia
+Devuelve la suma de los t@'erminos @math{F_k} desde @math{@var{k} = @var{a}} hasta
+@math{@var{k} = @var{b}} si @math{F_k} tiene una antidiferencia
 hipergeom@'etrica. En caso contrario, @code{GosperSum} devuelve
 @code{nongosper_summable}.
 
 Ejemplos:
 
 @c ===beg===
-@c load (zeilberger);
+@c load (zeilberger)$
 @c GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
 @c GosperSum (1 / (4*k^2 - 1), k, 1, n);
 @c GosperSum (x^k, k, 1, n);
@@ -104,10 +115,9 @@ Ejemplos:
 @c GosperSum (1 / ((a - k)!*k!), k, 1, n);
 @c ===end===
 @example
-(%i1) load (zeilberger);
-(%o1)  /usr/share/maxima/share/contrib/Zeilberger/zeilberger.mac
+(%i1) load (zeilberger)$
+@group
 (%i2) GosperSum ((-1)^k*k / (4*k^2 - 1), k, 1, n);
-
 Dependent equations eliminated:  (1)
                            3       n + 1
                       (n + -) (- 1)
@@ -115,6 +125,8 @@ Dependent equations eliminated:  (1)
 (%o2)               - ------------------ - -
                                   2        4
                       2 (4 (n + 1)  - 1)
+@end group
+@group
 (%i3) GosperSum (1 / (4*k^2 - 1), k, 1, n);
                                 3
                           - n - -
@@ -122,27 +134,38 @@ Dependent equations eliminated:  (1)
 (%o3)                  -------------- + -
                                 2       2
                        4 (n + 1)  - 1
+@end group
+@group
 (%i4) GosperSum (x^k, k, 1, n);
                           n + 1
                          x          x
 (%o4)                    ------ - -----
                          x - 1    x - 1
+@end group
+@group
 (%i5) GosperSum ((-1)^k*a! / (k!*(a - k)!), k, 1, n);
                                 n + 1
                 a! (n + 1) (- 1)              a!
 (%o5)       - ------------------------- - ----------
               a (- n + a - 1)! (n + 1)!   a (a - 1)!
+@end group
+@group
 (%i6) GosperSum (k*k!, k, 1, n);
-
 Dependent equations eliminated:  (1)
 (%o6)                     (n + 1)! - 1
+@end group
+@group
 (%i7) GosperSum ((k + 1)*k! / (k + 1)!, k, 1, n);
                   (n + 1) (n + 2) (n + 1)!
 (%o7)             ------------------------ - 1
                           (n + 2)!
+@end group
+@group
 (%i8) GosperSum (1 / ((a - k)!*k!), k, 1, n);
-(%o8)                  nonGosper_summable
+(%o8)                  NON_GOSPER_SUMMABLE
+@end group
 @end example
+
 @end deffn
 
 @deffn {Funci@'on} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})

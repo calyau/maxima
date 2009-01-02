@@ -1,4 +1,4 @@
-@c english version: 1.20
+@c english version: 1.21
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -379,7 +379,7 @@ Aqu@'{@dotless{i}} la primera componente carece de significado, ya que tanto @co
 @deffn {Funci@'on} mean (@var{list})
 @deffnx {Funci@'on} mean (@var{matrix})
 Es la media muestral, definida como
-@ifhtml
+@ifnottex
 @example
                        n
                      ====
@@ -389,21 +389,11 @@ Es la media muestral, definida como
                      ====
                      i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                       n
-                     ====
-             _   1   \
-             x = -    >    x
-                 n   /      i
-                     ====
-                     i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -436,7 +426,7 @@ Ejemplo:
 @deffn {Funci@'on} var (@var{list})
 @deffnx {Funci@'on} var (@var{matrix})
 Es la varianza muestral, definida como
-@ifhtml
+@ifnottex
 @example
                      n
                    ====
@@ -446,21 +436,11 @@ Es la varianza muestral, definida como
                    ====
                    i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     n
-                   ====
-           2   1   \          _ 2
-          s  = -    >    (x - x)
-               n   /       i
-                   ====
-                   i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
-$${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
+$${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -484,7 +464,7 @@ V@'ease tambi@'en @code{var1}.
 @deffn {Funci@'on} var1 (@var{list})
 @deffnx {Funci@'on} var1 (@var{matrix})
 Es la cuasivarianza muestral, definida como
-@ifhtml
+@ifnottex
 @example
                      n
                    ====
@@ -494,21 +474,11 @@ Es la cuasivarianza muestral, definida como
                    ====
                    i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     n
-                   ====
-               1   \          _ 2
-              ---   >    (x - x)
-              n-1  /       i
-                   ====
-                   i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -596,7 +566,7 @@ V@'eanse tambi@'en @code{var1} y @code{std}.
 @deffn {Funci@'on} noncentral_moment (@var{list}, @var{k})
 @deffnx {Funci@'on} noncentral_moment (@var{matrix}, @var{k})
 Es el momento no central de orden @math{k}, definido como
-@ifhtml
+@ifnottex
 @example
                        n
                      ====
@@ -606,21 +576,11 @@ Es el momento no central de orden @math{k}, definido como
                      ====
                      i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                       n
-                     ====
-                 1   \      k
-                 -    >    x
-                 n   /      i
-                     ====
-                     i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -650,7 +610,7 @@ V@'ease tambi@'en @code{central_moment}.
 @deffn {Funci@'on} central_moment (@var{list}, @var{k})
 @deffnx {Funci@'on} central_moment (@var{matrix}, @var{k})
 Es el momento central de orden @math{k}, definido como
-@ifhtml
+@ifnottex
 @example
                     n
                   ====
@@ -660,21 +620,11 @@ Es el momento central de orden @math{k}, definido como
                   ====
                   i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                    n
-                  ====
-              1   \          _ k
-              -    >    (x - x)
-              n   /       i
-                  ====
-                  i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -901,7 +851,7 @@ V@'ease tambi@'en @code{quantile}.
 @deffn {Funci@'on} mean_deviation (@var{list})
 @deffnx {Funci@'on} mean_deviation (@var{matrix})
 Es la desviaci@'on media, definida como
-@ifhtml
+@ifnottex
 @example
                      n
                    ====
@@ -911,21 +861,11 @@ Es la desviaci@'on media, definida como
                    ====
                    i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                     n
-                   ====
-               1   \          _
-               -    >    |x - x|
-               n   /       i
-                   ====
-                   i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -957,7 +897,7 @@ V@'ease tambi@'en @code{mean}.
 @deffn {Funci@'on} median_deviation (@var{list})
 @deffnx {Funci@'on} median_deviation (@var{matrix})
 Es la desviaci@'on mediana, definida como
-@ifhtml
+@ifnottex
 @example
                  n
                ====
@@ -967,21 +907,11 @@ Es la desviaci@'on mediana, definida como
                ====
                i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                 n
-               ====
-           1   \
-           -    >    |x - med|
-           n   /       i
-               ====
-               i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 @end tex
+
 siendo @code{med} la mediana de @var{list}.
 
 Ejemplo:
@@ -1013,7 +943,7 @@ V@'ease tambi@'en @code{mean}.
 @deffn {Funci@'on} harmonic_mean (@var{list})
 @deffnx {Funci@'on} harmonic_mean (@var{matrix})
 Es la media arm@'onica, definida como
-@ifhtml
+@ifnottex
 @example
                   n
                --------
@@ -1025,23 +955,11 @@ Es la media arm@'onica, definida como
                ====   i
                i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                  n
-               --------
-                n
-               ====
-               \     1
-                >    --
-               /     x
-               ====   i
-               i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -1071,7 +989,7 @@ V@'eanse tambi@'en @code{mean} y @code{geometric_mean}.
 @deffn {Funci@'on} geometric_mean (@var{list})
 @deffnx {Funci@'on} geometric_mean (@var{matrix})
 Es la media geom@'etrica, definida como
-@ifhtml
+@ifnottex
 @example
                  /  n      \ 1/n
                  | /===\   |
@@ -1081,21 +999,11 @@ Es la media geom@'etrica, definida como
                  | i = 1   |
                  \         /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                 /  n      \ 1/n
-                 | /===\   |
-                 |  ! !    |
-                 |  ! !  x |
-                 |  ! !   i|
-                 | i = 1   |
-                 \         /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -1125,7 +1033,7 @@ V@'eanse tambi@'en @code{mean} y @code{harmonic_mean}.
 @deffn {Funci@'on} kurtosis (@var{list})
 @deffnx {Funci@'on} kurtosis (@var{matrix})
 Es el coeficiente de curtosis, definido como
-@ifhtml
+@ifnottex
 @example
                     n
                   ====
@@ -1135,21 +1043,11 @@ Es el coeficiente de curtosis, definido como
            n s    ====
                   i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                    n
-                  ====
-            1     \          _ 4
-           ----    >    (x - x)  - 3
-              4   /       i
-           n s    ====
-                  i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 @end tex
+
 
 Ejemplo:
 
@@ -1179,7 +1077,7 @@ V@'eanse tambi@'en @code{mean}, @code{var} y @code{skewness}.
 @deffn {Funci@'on} skewness (@var{list})
 @deffnx {Funci@'on} skewness (@var{matrix})
 Es el coeficiente de asimetr@'{@dotless{i}}a, definido como
-@ifhtml
+@ifnottex
 @example
                     n
                   ====
@@ -1189,21 +1087,11 @@ Es el coeficiente de asimetr@'{@dotless{i}}a, definido como
            n s    ====
                   i = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-                    n
-                  ====
-            1     \          _ 3
-           ----    >    (x - x)
-              3   /       i
-           n s    ====
-                  i = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 @end tex
+
 
 Ejemplo:
 
@@ -1233,25 +1121,18 @@ V@'eanse tambi@'en @code{mean}, @code{var} y @code{kurtosis}.
 @deffn {Funci@'on} pearson_skewness (@var{list})
 @deffnx {Funci@'on} pearson_skewness (@var{matrix})
 Es el coeficiente de asimetr@'{@dotless{i}}a de Pearson, definido como
-@ifhtml
+@ifnottex
 @example
                 _
              3 (x - med)
              -----------
                   s
 @end example
-@end ifhtml
-@ifinfo
-@example
-                _
-             3 (x - med)
-             -----------
-                  s
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 @end tex
+
 siendo @var{med} la mediana de @var{list}.
 
 Ejemplo:
@@ -1282,7 +1163,7 @@ V@'eanse tambi@'en @code{mean}, @code{var} y @code{median}.
 @deffn {Funci@'on} quartile_skewness (@var{list})
 @deffnx {Funci@'on} quartile_skewness (@var{matrix})
 Es el coeficiente de asimetr@'{@dotless{i}}a cuart@'{@dotless{i}}lico, definido como
-@ifhtml
+@ifnottex
 @example
                c    - 2 c    + c
                 3/4      1/2    1/4
@@ -1290,20 +1171,12 @@ Es el coeficiente de asimetr@'{@dotless{i}}a cuart@'{@dotless{i}}lico, definido 
                    c    - c
                     3/4    1/4
 @end example
-@end ifhtml
-@ifinfo
-@example
-               c    - 2 c    + c
-                3/4      1/2    1/4
-               --------------------
-                   c    - c
-                    3/4    1/4
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
  _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
 @end tex
+
 siendo @math{c_p} el @var{p}-cuantil de la muestra @var{list}.
 
 Ejemplo:
@@ -1336,7 +1209,7 @@ V@'ease tambi@'en @code{quantile}.
 
 @deffn {Funci@'on} cov (@var{matrix})
 Es la matriz de covarianzas de una muestra multivariante, definida como
-@ifhtml
+@ifnottex
 @example
               n
              ====
@@ -1346,21 +1219,11 @@ Es la matriz de covarianzas de una muestra multivariante, definida como
              ====
              j = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-              n
-             ====
-          1  \           _        _
-      S = -   >    (X  - X) (X  - X)'
-          n  /       j        j
-             ====
-             j = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
+
 siendo @math{X_j} la @math{j}-@'esima fila de la matriz muestral.
 
 Ejemplo:
@@ -1394,7 +1257,7 @@ V@'ease tambi@'en @code{cov1}.
 
 @deffn {Funci@'on} cov1 (@var{matrix})
 Es la matriz de cuasivarianzas de una muestra multivariante, definida como
-@ifhtml
+@ifnottex
 @example
               n
              ====
@@ -1404,21 +1267,11 @@ Es la matriz de cuasivarianzas de una muestra multivariante, definida como
              ====
              j = 1
 @end example
-@end ifhtml
-@ifinfo
-@example
-              n
-             ====
-         1   \           _        _
-   S  = ---   >    (X  - X) (X  - X)'
-    1   n-1  /       j        j
-             ====
-             j = 1
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
+
 siendo @math{X_j} la @math{j}-@'esima fila de la matriz muestral.
 
 Ejemplo:
@@ -1574,27 +1427,20 @@ La funci@'on @code{list_correlations} devuelve una lista con medidas de correlac
 
 @item
 @var{matriz de precisi@'on}: es la inversa de la matriz de covarianzas @math{S_1},
-@ifhtml
+@ifnottex
 @example
        -1     ij
       S   = (s  )             
        1         i,j = 1,2,...,p
 @end example
-@end ifhtml
-@ifinfo
-@example
-       -1     ij
-      S   = (s  )             
-       1         i,j = 1,2,...,p
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@var{vector de correlaci@'on m@'ultiple}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, donde 
-@ifhtml
+@var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, with 
+@ifnottex
 @example
        2          1
       R  = 1 - -------
@@ -1602,16 +1448,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
                s   s
                     ii
 @end example
-@end ifhtml
-@ifinfo
-@example
-       2          1
-      R  = 1 - -------
-       i        ii
-               s   s
-                    ii
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 @end tex
@@ -1619,7 +1456,7 @@ es un indicador de la bondad de ajuste del modelo de regresi@'on lineal multivar
 
 @item
 @var{matriz de correlaciones parciales}: en la que el elemento @math{(i, j)} es
-@ifhtml
+@ifnottex
 @example
                          ij
                         s
@@ -1628,20 +1465,11 @@ es un indicador de la bondad de ajuste del modelo de regresi@'on lineal multivar
                    |s   s  |
                    \       /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                         ij
-                        s
-      r        = - ------------
-       ij.rest     / ii  jj\ 1/2
-                   |s   s  |
-                   \       /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 @end tex
+
 
 @end itemize
 

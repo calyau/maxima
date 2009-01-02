@@ -1,4 +1,4 @@
-@c English version 1.5
+@c English version 1.8
 @menu
 * Funciones y variables para lsquares::
 @end menu
@@ -270,17 +270,21 @@ Devuelve el error medio cuadr@'atico (MSE) para la ecuaci@'on @var{e}
 de variables @var{x} respecto de los datos @var{D}. El resultado devuelto
 es una suma, definida como
 
+@tex
+$${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right)\right]^2,$$
+@end tex
+@ifnottex
 @example
                     n
                    ====
-                   \                        2
-                    >    (lhs(e ) - rhs(e ))
-                   /           i         i
+               1   \                        2
+               -    >    (lhs(e ) - rhs(e ))
+               n   /           i         i
                    ====
                    i = 1
-                   --------------------------
-                               n
 @end example
+@end ifnottex
+
 
 siendo @var{n} el n@'umero de datos y @code{@var{e}[i]} es la ecuaci@'on @var{e}
 evaluada cuando a sus variables @var{x} se le asignan los valores asociados
@@ -360,10 +364,15 @@ que especifican valores para cualesquiera par@'ametros de @var{e} que no est@'en
 
 Los residuos se definen como
 
+@tex
+$${\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right),$$
+@end tex
+@ifnottex
 @example
                         lhs(e ) - rhs(e )
                              i         i
 @end example
+@end ifnottex
 
 siendo @code{@var{e}[i]} la ecuaci@'on @var{e} evaluada cuando las variables @var{x}
 toman los valores asociados al dato @code{i}-@'esimo @code{@var{D}[i]}, y haciendo las
@@ -420,17 +429,21 @@ para los valores par@'ametricos @var{a} y datos @var{D}.
 
 El residuo del error cuadr@'atico medio (MSE) se define como
 
+@tex
+$${1 \over n} \, \sum_{i=1}^n \left[{\rm lhs}\left(e_i\right) - {\rm rhs}\left(e_i\right)\right]^2,$$
+@end tex
+@ifnottex
 @example
                     n
                    ====
-                   \                        2
-                    >    (rhs(e ) - lhs(e ))
-                   /           i         i
+               1   \                        2
+               -    >    (lhs(e ) - rhs(e ))
+               n   /           i         i
                    ====
                    i = 1
-                   --------------------------
-                               n
 @end example
+@end ifnottex
+
 
 siendo @code{@var{e}[i]} la ecuaci@'on @var{e} evaluada cuando las variables @var{x}
 toman los valores asociados al dato @code{i}-@'esimo @code{@var{D}[i]}, y haciendo las

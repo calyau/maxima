@@ -1,16 +1,21 @@
-@c version 1.15
+@c version 1.17
 @c Esta es traduccion del original en frances;
 @c Queda pendiente cotejar con la version inglesa.
 @menu
 * Funciones y variables para simetr@'{@dotless{i}}as::  
 @end menu
 
-
+@ifnottex
 Paquete escrito para Macsyma-Symbolics por Annick Valibouze (@url{http://www-calfor.lip6.fr/~avb/}).
 Los algoritmos est@'an descritos en los siguientes art@'{@dotless{i}}culos:
+@end ifnottex
+@iftex
+Paquete escrito para Macsyma-Symbolics por Annick Valibouze@footnote{@url{www-calfor.lip6.fr/~avb}}.
+Los algoritmos est@'an descritos en los siguientes art@'{@dotless{i}}culos:
+@end iftex
 
+@ifnottex
 @enumerate
-
 @item
 Fonctions sym@'etriques et changements de bases. Annick Valibouze.
 EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
@@ -30,8 +35,36 @@ Springer-Verlag, New York Berlin, 308-320, 1989.@*
 
 @item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
 @`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994
-
 @end enumerate
+@end ifnottex
+
+
+@iftex
+@enumerate
+@item
+Fonctions sym@'etriques et changements de bases
+@footnote{@url{www.stix.polytechnique.fr/publications/1984-1994.html}}. Annick Valibouze.
+EUROCAL'87 (Leipzig, 1987), 323--332, Lecture Notes in Comput. Sci 378.
+Springer, Berlin, 1989.
+
+@item R@'esolvantes et fonctions sym@'etriques
+@footnote{@url{www-calfor.lip6.fr/~avb/DonneesTelechargeables/MesArticles/issac89ACMValibouze.pdf}}.
+Annick Valibouze.
+Proceedings of the ACM-SIGSAM 1989 International Symposium on Symbolic
+and Algebraic Computation, ISSAC'89 (Portland, Oregon).
+ACM Press, 390-399, 1989.
+
+@item Symbolic computation with symmetric polynomials, an extension to Macsyma
+@footnote{@url{www.stix.polytechnique.fr/publications/1984-1994.html}}.
+Annick Valibouze. Computers and Mathematics (MIT, USA, June 13-17, 1989),
+Springer-Verlag, New York Berlin, 308-320, 1989.
+
+@item Th@'eorie de Galois Constructive. Annick Valibouze. M@'emoire d'habilitation
+@`a diriger les recherches (HDR), Universit@'e P. et M. Curie (Paris VI), 1994
+@end enumerate
+@end iftex
+
+
 
 
 @node Funciones y variables para simetr@'{@dotless{i}}as,  , Simetr@'{@dotless{i}}as, Simetr@'{@dotless{i}}as
@@ -50,10 +83,13 @@ en caso contrario se le da el valor @var{n}.
 @c GENERATED FROM THE FOLLOWING
 @c comp2pui (3, [4, g]);
 @example
+@group
 (%i1) comp2pui (3, [4, g]);
                         2                    2
 (%o1)    [4, g, 2 h2 - g , 3 h3 - g h2 + g (g  - 2 h2)]
+@end group
 @end example
+
 
 @end deffn
 
@@ -284,14 +320,19 @@ se descompone en funciones sim@'etricas elementales:
 @c elem ([3, 7], x^4 - 2*x*y, [x, y]);
 @c ratsimp (%);
 @example
+@group
 (%i1) elem ([3, 7], x^4 - 2*x*y, [x, y]);
 (%o1) 7 (e3 - 7 e2 + 7 (49 - e2)) + 21 e3
 
                                          + (- 2 (49 - e2) - 2) e2
+@end group
+@group
 (%i2) ratsimp (%);
                               2
 (%o2)             28 e3 + 2 e2  - 198 e2 + 2401
+@end group
 @end example
+
 
 
 Otras funciones para cambio de bases son:
@@ -381,22 +422,31 @@ contra@'{@dotless{i}}das con las variables @var{x_1}, @var{x_2}, ...
 @c mon2schur ([3]);
 @c mon2schur ([1, 2]);
 @example
+@group
 (%i1) mon2schur ([1, 1, 1]);
 (%o1)                       x1 x2 x3
+@end group
+@group
 (%i2) mon2schur ([3]);
                                   2        3
 (%o2)                x1 x2 x3 + x1  x2 + x1
+@end group
+@group
 (%i3) mon2schur ([1, 2]);
                                       2
 (%o3)                  2 x1 x2 x3 + x1  x2
+@end group
 @end example
+
 
 Para 3 variables se tendr@'a:
 
 @c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ??
 @example
+@group
    2 x1 x2 x3 + x1^2 x2 + x2^2 x1 + x1^2 x3 + x3^2 x1
     + x2^2 x3 + x3^2 x2
+@end group
 @end example
 
 Otras funciones para cambio de bases son:
@@ -416,13 +466,19 @@ grupos de funciones sim@'etricas elementales contenidas en @var{l_elem}.
 @c multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
 @c ratsimp (%);
 @example
-(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+@group
+(%i1) multi_elem ([[2, e1, e2], [2, f1, f2]], a*x + a^2 + x^3,
+      [[x, y], [a, b]]);
                                                   3
 (%o1)         - 2 f2 + f1 (f1 + e1) - 3 e1 e2 + e1
+@end group
+@group
 (%i2) ratsimp (%);
                          2                       3
 (%o2)         - 2 f2 + f1  + e1 f1 - 3 e1 e2 + e1
+@end group
 @end example
+
 
 Otras funciones para cambio de bases son:
 
@@ -443,11 +499,16 @@ variables representadas por esas @var{p} listas.
 @c multi_orbit (a*x + b*y, [[x, y], [a, b]]);
 @c multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
 @example
+@group
 (%i1) multi_orbit (a*x + b*y, [[x, y], [a, b]]);
 (%o1)                [b y + a x, a y + b x]
+@end group
+@group
 (%i2) multi_orbit (x + y + 2*a, [[x, y], [a, b, c]]);
 (%o2)        [y + x + 2 c, y + x + 2 b, y + x + 2 a]
+@end group
 @end example
+
 
 V@'ease tambi@'en @code{orbit} para la acci@'on de un solo grupo sim@'erico.
 
@@ -461,12 +522,16 @@ a la funci@'on @code{elem}.
 @c GENERATED FROM THE FOLLOWING
 @c multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
 @example
-(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3, [[x, y], [a, b]]);
+@group
+(%i1) multi_pui ([[2, p1, p2], [2, t1, t2]], a*x + a^2 + x^3,
+      [[x, y], [a, b]]);
                                             3
                                 3 p1 p2   p1
 (%o1)              t2 + p1 t1 + ------- - ---
                                    2       2
+@end group
 @end example
+
 
 @end deffn
 
@@ -493,9 +558,12 @@ respectivamente; el producto de ambos ser@'a:
 @c GENERATED FROM THE FOLLOWING
 @c multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
 @example
+@group
 (%i1) multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
 (%o1)         [[10, 3, 1], [15, 3, 0], [15, 2, 1]]
+@end group
 @end example
+
 
 o sea, @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
 
@@ -515,11 +583,15 @@ conjunto de variables contenidas en la lista @var{lvar}.
 @c orbit (a*x + b*y, [x, y]);
 @c orbit (2*x + x^2, [x, y]);
 @example
+@group
 (%i1) orbit (a*x + b*y, [x, y]);
 (%o1)                [a y + b x, b y + a x]
+@end group
+@group
 (%i2) orbit (2*x + x^2, [x, y]);
                         2         2
 (%o2)                 [y  + 2 y, x  + 2 x]
+@end group
 @end example
 
 V@'ease tambi@'en @code{multi_orbit} para la acci@'on de un producto
@@ -535,10 +607,13 @@ se devuelve con las variables contenidas en @var{lvar}.
 @c GENERATED FROM THE FOLLOWING
 @c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
 @example
+@group
 (%i1) part2cont ([[2*a^3*b, 4, 1]], [x, y]);
                               3    4
 (%o1)                      2 a  b x  y
+@end group
 @end example
+
 
 Otras funciones para efectuar cambios de representaci@'on son:
 
@@ -553,9 +628,12 @@ sim@'etrico @var{psym} de variables en @var{lvar}.
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
 @example
+@group
 (%i1) partpol (-a*(x + y) + 3*x*y, [x, y]);
 (%o1)               [[3, 1, 1], [- a, 1, 0]]
+@end group
 @end example
+
 
 Otras funciones para efectuar cambios de representaci@'on son:
 
@@ -577,12 +655,17 @@ ra@'{@dotless{i}}ces de @var{P}.
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
 @c ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
 @example
+@group
 (%i1) polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
 (%o1)          [7, 0, - 14, 0, 56, 0, - 56, - 22]
+@end group
+@group
 (%i2) ele2polynome ([7, 0, -14, 0, 56, 0, -56, -22], x);
                   7       5       3
 (%o2)            x  - 14 x  + 56 x  - 56 x + 22
+@end group
 @end example
+
 
 La funci@'on rec@'{@dotless{i}}proca es @code{ele2polynome (@var{l}, @var{x})}.
 
@@ -617,19 +700,26 @@ siguiendo este mismo modelo.
 @c pui ([3, a, b], u*x*y*z, [x, y, z]);
 @c ratsimp (%);
 @example
+@group
 (%i1) pui;
 (%o1)                           1
+@end group
+@group
 (%i2) pui ([3, a, b], u*x*y*z, [x, y, z]);
                        2
                    a (a  - b) u   (a b - p3) u
 (%o2)              ------------ - ------------
                         6              3
+@end group
+@group
 (%i3) ratsimp (%);
                                        3
                       (2 p3 - 3 a b + a ) u
 (%o3)                 ---------------------
                                 6
+@end group
 @end example
+
 
 Otras funciones para cambio de bases son:
 @code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem}, @code{mon2schur},
@@ -652,11 +742,14 @@ cardinal su primer elemento, de forma similar a como se procede en
 @c pui2comp (3, [2, a1]);
 @c ratsimp (%);
 @example
+@group
 (%i1) pui2comp (2, []);
                                        2
                                 p2 + p1
 (%o1)                   [2, p1, --------]
                                    2
+@end group
+@group
 (%i2) pui2comp (3, [2, a1]);
                                             2
                                  a1 (p2 + a1 )
@@ -664,12 +757,16 @@ cardinal su primer elemento, de forma similar a como se procede en
                   p2 + a1              2
 (%o2)     [2, a1, --------, --------------------------]
                      2                  3
+@end group
+@group
 (%i3) ratsimp (%);
                             2                     3
                      p2 + a1   2 p3 + 3 a1 p2 + a1
 (%o3)        [2, a1, --------, --------------------]
                         2               6
+@end group
 @end example
+
 
 Otras funciones para cambio de bases son:
 @code{comp2ele}, @code{comp2pui}, @code{ele2comp}, @code{ele2pui}, @code{elem},
@@ -701,17 +798,27 @@ como funciones potenciales las dadas en la lista @var{lpui}.
 @c ele2pui (3, %);
 @c pui2polynome (x, %);
 @example
+@group
 (%i1) pui;
 (%o1)                           1
+@end group
+@group
 (%i2) kill(labels);
 (%o0)                         done
+@end group
+@group
 (%i1) polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
 (%o1)                     [3, 4, 5, 1]
+@end group
+@group
 (%i2) ele2pui (3, %);
 (%o2)                     [3, 4, 6, 7]
+@end group
+@group
 (%i3) pui2polynome (x, %);
                         3      2
 (%o3)                  x  - 4 x  + 5 x - 1
+@end group
 @end example
 
 V@'eanse tambi@'en @code{polynome2ele} y @code{ele2polynome}.
@@ -745,11 +852,16 @@ respecto de @var{SD}.
 @c pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
 @c pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [2, 3]);
 @example
+@group
 (%i1) l: [[x, y], [a, b]];
 (%o1)                   [[x, y], [a, b]]
+@end group
+@group
 (%i2) pui_direct (multi_orbit (a*x + b*y, l), l, [2, 2]);
                                        2  2
 (%o2)               [a x, 4 a b x y + a  x ]
+@end group
+@group
 (%i3) pui_direct (multi_orbit (a*x + b*y, l), l, [3, 2]);
                              2  2     2    2        3  3
 (%o3) [2 a x, 4 a b x y + 2 a  x , 3 a  b x  y + 2 a  x , 
@@ -762,13 +874,18 @@ respecto de @var{SD}.
 
     3  3  3  3       4  2  4  2      5    5        6  6
 40 a  b  x  y  + 15 a  b  x  y  + 6 a  b x  y + 2 a  x ]
-(%i4) pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [2, 3]);
+@end group
+@group
+(%i4) pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a],
+      [[x, y], [a, b, c]], [2, 3]);
                              2              2
 (%o4) [3 x + 2 a, 6 x y + 3 x  + 4 a x + 4 a , 
 
                  2                   3        2       2        3
               9 x  y + 12 a x y + 3 x  + 6 a x  + 12 a  x + 8 a ]
+@end group
 @end example
+
 @c THIS NEXT FUNCTION CALL TAKES A VERY LONG TIME (SEVERAL MINUTES)
 @c SO LEAVE IT OUT TIL PROCESSORS GET A LITTLE FASTER ...
 @c pui_direct ([y + x + 2*c, y + x + 2*b, y + x + 2*a], [[x, y], [a, b, c]], [3, 4]);
@@ -783,17 +900,22 @@ funciones potenciales en funci@'on de las @var{m} primeras.
 @c GENERATED FROM THE FOLLOWING
 @c puireduc (3, [2]);
 @example
+@group
 (%i1) puireduc (3, [2]);
                                          2
                                    p1 (p1  - p2)
 (%o1)          [2, p1, p2, p1 p2 - -------------]
                                          2
+@end group
+@group
 (%i2) ratsimp (%);
                                            3
                                3 p1 p2 - p1
 (%o2)              [2, p1, p2, -------------]
                                      2
+@end group
 @end example
+
 
 @end deffn
 
@@ -852,9 +974,12 @@ m@'as apropiado:
 @c resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 @example
 (%i1) resolvante: unitaire$
-(%i2) resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1, [x]);
+@group
+(%i2) resolvante (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x, x^3 - 1,
+      [x]);
 
-" resolvante unitaire " [7, 0, 28, 0, 168, 0, 1120, - 154, 7840, - 2772, 56448, - 33880, 
+" resolvante unitaire " [7, 0, 28, 0, 168, 0, 1120, - 154, 7840,
+                         - 2772, 56448, - 33880, 
 
 413952, - 352352, 3076668, - 3363360, 23114112, - 30494464, 
 
@@ -875,7 +1000,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 (%o2) y  + 7 y  - 539 y  - 1841 y  + 51443 y  + 315133 y
 
                                               + 376999 y + 125253
+@end group
 (%i3) resolvante: lineaire$
+@group
 (%i4) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
 
 " resolvante lineaire " 
@@ -884,7 +1011,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
 (%i5) resolvante: general$
+@group
 (%i6) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3]);
 
 " resolvante generale " 
@@ -893,6 +1022,8 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
+@group
 (%i7) resolvante (x^4 - 1, x, x1 + 2*x2 + 3*x3, [x1, x2, x3, x4]);
 
 " resolvante generale " 
@@ -901,36 +1032,48 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
+@group
 (%i8) direct ([x^4 - 1], x, x1 + 2*x2 + 3*x3, [[x1, x2, x3]]);
        24       20         16            12             8
 (%o8) y   + 80 y   + 7520 y   + 1107200 y   + 49475840 y
 
                                                     4
                                        + 344489984 y  + 655360000
+@end group
 (%i9) resolvante :lineaire$
+@group
 (%i10) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
 
 " resolvante lineaire " 
                               4
 (%o10)                       y  - 1
+@end group
 (%i11) resolvante: symetrique$
+@group
 (%i12) resolvante (x^4 - 1, x, x1 + x2 + x3, [x1, x2, x3]);
 
 " resolvante symetrique " 
                               4
 (%o12)                       y  - 1
+@end group
+@group
 (%i13) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
 
 " resolvante symetrique " 
                            6      2
 (%o13)                    y  - 4 y  - 1
+@end group
 (%i14) resolvante: alternee$
+@group
 (%i15) resolvante (x^4 + x + 1, x, x1 - x2, [x1, x2]);
 
 " resolvante alternee " 
             12      8       6        4        2
 (%o15)     y   + 8 y  + 26 y  - 112 y  + 216 y  + 229
+@end group
 (%i16) resolvante: produit$
+@group
 (%i17) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
 
 " resolvante produit "
@@ -951,7 +1094,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
             5             3
  - 3720087 y  + 26040609 y  + 14348907
+@end group
 (%i18) resolvante: symetrique$
+@group
 (%i19) resolvante (x^7 - 7*x + 3, x, x1*x2*x3, [x1, x2, x3]);
 
 " resolvante symetrique " 
@@ -972,7 +1117,9 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 
             5             3
  - 3720087 y  + 26040609 y  + 14348907
+@end group
 (%i20) resolvante: cayley$
+@group
 (%i21) resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 
 " resolvante de Cayley "
@@ -980,6 +1127,7 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 (%o21) x  - 40 x  + 4080 x  - 92928 x  + 3772160 x  + 37880832 x
 
                                                        + 93392896
+@end group
 @end example
 
 Para la resolvente de Cayley, los dos @'ultimos argumentos son neutro
@@ -1012,10 +1160,13 @@ $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_bipartite (x^6 + 108, x);
 @example
+@group
 (%i1) resolvante_bipartite (x^6 + 108, x);
               10        8           6             4
 (%o1)        y   - 972 y  + 314928 y  - 34012224 y
+@end group
 @end example
+
 
 V@'eanse tambi@'en:
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
@@ -1032,6 +1183,7 @@ Calcula la transformaci@'on de
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_diedrale (x^5 - 3*x^4 + 1, x);
 @example
+@group
 (%i1) resolvante_diedrale (x^5 - 3*x^4 + 1, x);
        15       12       11       10        9         8         7
 (%o1) x   - 21 x   - 81 x   - 21 x   + 207 x  + 1134 x  + 2331 x
@@ -1040,7 +1192,9 @@ Calcula la transformaci@'on de
  - 945 x  - 4970 x  - 18333 x  - 29079 x  - 20745 x  - 25326 x
 
  - 697
+@end group
 @end example
+
 
 V@'eanse tambi@'en:
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
@@ -1080,6 +1234,7 @@ del polinomio @code{@var{P}(@var{x})}.
 @c resolvante: produit$
 @c resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
 @example
+@group
 (%i1) resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
         5      4             10      8       7       6       5
 (%o1) [y  + 3 y  + 2 y - 1, y   - 2 y  - 21 y  - 31 y  - 14 y
@@ -1089,13 +1244,17 @@ del polinomio @code{@var{P}(@var{x})}.
 
        3      2       5      4
  - 21 y  - 2 y  + 1, y  - 2 y  - 3 y - 1, y - 1]
+@end group
 (%i2) resolvante: produit$
+@group
 (%i3) resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
 
 " resolvante produit "
        10      8       7    6        5       4       3     2
 (%o3) y   + 3 y  + 14 y  - y  - 14 y  - 31 y  - 21 y  - 2 y  + 1
+@end group
 @end example
+
 @c INPUT %i3 TICKLES A MINOR BUG IN resolvante: 
 @c " resolvante produit " IS PRINTED FROM SOMEWHERE IN THE BOWELS OF resolvante
 @c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
@@ -1143,12 +1302,16 @@ en funci@'on de las funciones de Schur.
 @c schur2comp (h1*h2 - h3, [h1, h2, h3]);
 @c schur2comp (a*h3, [h3]);
 @example
+@group
 (%i1) schur2comp (h1*h2 - h3, [h1, h2, h3]);
 (%o1)                         s
                                1, 2
+@end group
+@group
 (%i2) schur2comp (a*h3, [h3]);
 (%o2)                         s  a
                                3
+@end group
 @end example
 
 @end deffn
@@ -1191,9 +1354,12 @@ Devuelve todas las particiones de pesos @var{n}.
 @c GENERATED FROM THE FOLLOWING
 @c treillis (4);
 @example
+@group
 (%i1) treillis (4);
 (%o1)    [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
+@end group
 @end example
+
 
 V@'eanse tambi@'en @code{lgtreillis}, @code{ltreillis} y @code{treinat}.
 
@@ -1208,15 +1374,22 @@ Devuelve la lista de las particiones inferiores de la partici@'on
 @c treinat ([1, 1, 1, 1, 1]);
 @c treinat ([3, 2]);
 @example
+@group
 (%i1) treinat ([5]);
 (%o1)                         [[5]]
+@end group
+@group
 (%i2) treinat ([1, 1, 1, 1, 1]);
 (%o2) [[5], [4, 1], [3, 2], [3, 1, 1], [2, 2, 1], [2, 1, 1, 1], 
 
                                                  [1, 1, 1, 1, 1]]
+@end group
+@group
 (%i3) treinat ([3, 2]);
 (%o3)                 [[5], [4, 1], [3, 2]]
+@end group
 @end example
+
 
 V@'eanse tambi@'en @code{lgtreillis}, @code{ltreillis} y @code{treillis}.
 

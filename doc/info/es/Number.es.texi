@@ -1,4 +1,4 @@
-@c english version 1.28
+@c english version 1.29
 @menu
 * Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
@@ -48,9 +48,22 @@ Devuelve la funci@'on zeta de Hurwitz para los argumentos @var{s} y @var{h}. El 
 
 La funci@'on zeta de Hurwitz se define como
 
+@tex
+$$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
+@end tex
+@ifnottex
 @example
-sum ((k+h)^-s, k, 0, inf)
+                        inf
+                        ====
+                        \        1
+         zeta (s,h)  =   >    --------
+                        /            s
+                        ====  (k + h)
+                        k = 0
 @end example
+@end ifnottex
+
+Ejec@'utese @code{load (bffac)} antes de hacer uso de esta funci@'on.
 
 @end deffn
 

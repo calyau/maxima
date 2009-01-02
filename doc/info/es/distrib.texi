@@ -1,4 +1,4 @@
-@c English version 1.12
+@c English version 1.13
 @menu
 * Introducci@'on a distrib::
 * Funciones y variables para distribuciones continuas::
@@ -386,7 +386,7 @@ Devuelve el coeficiente de curtosis una variable aleatoria de Student @math{t(n)
 Devuelve un valor aleatorio @math{t(n)}, con @math{n>0}. Llamando a @code{random_student_t} con un segundo argumento @var{m}, se obtiene una muestra aleatoria simulada de tama@~no @var{m}.
 
 El algoritmo utilizado est@'a basado en el hecho de que si @var{Z} es una variable aleatoria normal @math{N(0,1)} y @math{S^2} es una chi cuadrada de @var{n} grados de libertad, @math{Chi^2(n)}, entonces
-@ifhtml
+@ifnottex
 @example
                            Z
                  X = -------------
@@ -395,20 +395,11 @@ El algoritmo utilizado est@'a basado en el hecho de que si @var{Z} es una variab
                      | ---  |
                      \  n   /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                           Z
-                 X = -------------
-                     /   2  \ 1/2
-                     |  S   |
-                     | ---  |
-                     \  n   /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
+
 es una variable aleatoria de Student de @var{n} grados de libertad, @math{t(n)}.
 
 Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
@@ -515,7 +506,7 @@ Devuelve el coeficiente de curtosis de una variable aleatoria no central de Stud
 Devuelve un valor aleatorio @math{nc_t(n,ncp)}, con @math{n>0}. Llamando a @code{random_noncentral_student_t} con un tercer argumento @var{m}, se obtiene una muestra aleatoria simulada de tama@~no @var{m}.
 
 El algoritmo utilizado est@'a basado en el hecho de que si @var{X} es una variable aleatoria normal @math{N(ncp,1)} y @math{S^2} es una chi cuadrada de @var{n} grados de libertad, @math{Chi^2(n)}, entonces
-@ifhtml
+@ifnottex
 @example
                            X
                  U = -------------
@@ -524,20 +515,11 @@ El algoritmo utilizado est@'a basado en el hecho de que si @var{X} es una variab
                      | ---  |
                      \  n   /
 @end example
-@end ifhtml
-@ifinfo
-@example
-                           X
-                 U = -------------
-                     /   2  \ 1/2
-                     |  S   |
-                     | ---  |
-                     \  n   /
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$U={{X}\over{\sqrt{{S^2}\over{n}}}}$$
 @end tex
+
 es una variable aleatoria no central de Student de @var{n} grados de libertad y par@'ametro de no centralidad @math{ncp}, @math{nc_t(n,ncp)}.
 
 Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
@@ -875,23 +857,17 @@ Devuelve el coeficiente de curtosis una variable aleatoria  @i{F}@math{(m,n)}, c
 Devuelve un valor aleatorio  @i{F}@math{(m,n)}, con @math{m,n>0}. Llamando a  @code{random_f} con un tercer argumento @var{k}, se simular@'a una muestra aleatoria de tama@~no @var{k}.
 
 El algoritmo de simulaci@'on est@'a basado en el hecho de que si @var{X} es una variable aleatoria @math{Chi^2(m)} y @math{Y} es una @math{Chi^2(n)}, entonces
-@ifhtml
+@ifnottex
 @example
                         n X
                     F = ---
                         m Y
 @end example
-@end ifhtml
-@ifinfo
-@example
-                        n X
-                    F = ---
-                        m Y
-@end example
-@end ifinfo
+@end ifnottex
 @tex
 $$F={{n X}\over{m Y}}$$
 @end tex
+
 es una variable aleatoria @math{F} con @var{m} y @var{n} grados de libertad, @i{F}@math{(m,n)}.
 
 Para hacer uso de esta funci@'on, ejec@'utese primero @code{load(distrib)}.
