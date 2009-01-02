@@ -5,6 +5,7 @@
 * Gamma and factorial Functions::
 * Exponential Integrals::
 * Error Function::
+* Struve Functions::
 * Functions and Variables for Special Functions::  
 @end menu
 
@@ -592,7 +593,7 @@ for positive integers in terms of Ei
 @closecatbox
 @end defvr
 
-@node Error Function, Functions and Variables for Special Functions, Exponential Integrals, Special Functions
+@node Error Function, Struve Functions, Exponential Integrals, Special Functions
 @section Error Function
 
 The Error function and related funtions are defined in 
@@ -677,8 +678,34 @@ Enables transformation to a Hypergeometric
 representation for fresnel_s and fresnel_c
 @end defvr
 
+@node Struve Functions, Functions and Variables for Special Functions, Error Function, Special Functions
+@section Struve Functions
 
-@node Functions and Variables for Special Functions,  , Error Function, Special Functions
+The Struve functions are defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Chapter 12.
+
+Maxima has very limited knowledge of Struve functions.
+
+
+@deffn {Function} hstruve [@var{v}] (@var{z}) 
+The Struve Function H of order v and argument z. (A&S 12.1.1)
+
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+
+@deffn {Function} lstruve [@var{v}] (@var{z}) 
+The Modified Struve Function L of order v and argument z. (A&S 12.2.1)
+
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+
+@node Functions and Variables for Special Functions,  , Struve Functions, Special Functions
 @section Functions and Variables for Special Functions
 
 
