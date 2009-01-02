@@ -162,3 +162,16 @@ integrate(sin(x)*lambert_w(cos(x)),x);
 
 integrate(diff(f(x),x)*lambert_w(f(x)),x);
  f(x)*(lambert_w(f(x))^2-lambert_w(f(x))+1)/lambert_w(f(x));
+
+/* Integrals where the property is a function */
+integrate(bessel_j(0,x),x);
+x*(bessel_j(0,x)*(2-%pi*hstruve[1](x))+%pi*bessel_j(1,x)*hstruve[0](x))/2;
+
+integrate(bessel_j(1,x),x);
+-bessel_j(0,x);
+
+integrate(bessel_j(2,x),x);
+'integrate(bessel_j(2,x),x);
+
+integrate(bessel_j(n,x),n);
+'integrate(bessel_j(n,x),n);

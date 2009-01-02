@@ -646,6 +646,30 @@ Perhaps you meant to enter `~a'.~%"
 ;;      ((mtimes) -1 n ((%bessel_j) n x) ((mexpt) x -1))))
   grad)
 
+;; Integral of the Bessel function wrt z
+(defprop %bessel_j
+  ((n z)
+   nil
+  (lambda (n unused)
+    (case n
+	  (0 
+	   ;; integrate(bessel_j(0,z)
+	   ;; = (1/2)*z*(%pi*bessel_j(1,z)*hstruve[0](z)
+	   ;;            +bessel_j(0,z)*(2-%pi*hstruve[1](z)))
+	   '((mtimes) ((rat) 1 2) z
+	     ((mplus)
+	      ((mtimes) $%pi ((%bessel_j) 1 z) 
+	       ((mqapply) (($hstruve array) 0) z))
+	      ((mtimes) ((%bessel_j) 0 z)
+	       ((mplus) 2 ((mtimes) -1 $%pi 
+			   ((mqapply) (($hstruve array) 1) z)))))))
+	  (1
+	   ;; integrate(bessel_j(1,z) = -bessel_j(0,z)
+	   '((mtimes) -1 ((%bessel_j) 0 z)))
+	  (otherwise nil))))
+  integral)
+
+
 ;; If E is a maxima ratio with a denominator of DEN, return the ratio
 ;; as a Lisp rational.  Otherwise NIL.
 (defun max-numeric-ratio-p (e den)

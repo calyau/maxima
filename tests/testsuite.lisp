@@ -49,4 +49,6 @@
 	"rtest_signum"
         "rtest_lambert_w"
 	"rtest_elliptic"
+	"rtest_integrate"
+	"rtest_integrate_special"
 	))
