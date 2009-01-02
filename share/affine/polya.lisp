@@ -724,66 +724,58 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 	  (loop for v in (cddr nc-list) do
 		 (format t ".~A" (string-trim "$" (string v)))))))
 
-
 (defun new-rat-dotsimp (expr &aux  (answer 0) repl the-num the-denom the-rest tem)
   (format t "~%Beginnning to new-rat-dotsimp ")
-  (cond
-    (($must_replacep expr)
-     (with-polynomial-area-new ()
-
-       (loop while(not ($zerop expr))
-	     do
-	     (show answer)
-	     (setq tem nil)
-	     (cond (($must_replacep expr))
-		   (t (return (header-poly (n+ answer expr)))))
-	     (setq-num-den the-num the-denom expr)
-	     (show the-num)
-;	     (cond ((polynomialp  expr) (setq the-num expr the-denom 1))
-;		   ((rational-functionp expr) (setq the-num (num expr) the-denom (denom expr)))
-;		   (t (fsignal "expr is supposed to be poly or rational-functionp")))
-;	     (cond ((numberp the-num)(setq answer (n+ answer expr))
-	     (cond ((poly-scalarp the-num)(setq answer (n+ answer expr))
-			   (return (header-poly answer))))
-	     (setq tem  (get (car the-num) 'disrep))
-	     when
-	     (contains-a-zero-replacement tem)
-		do
-		(format t "~%Simplifying the worst monomial: ")(dot-show tem)
-		(cond ((setq expr (fifth the-num)))
-		   (t (setq expr 0)))
-	     else
-		when ($must_replacep tem)       ;; (setq tem  (get (car the-num) 'disrep)))
-		   do
-		   (format t "~%Simplifying the worst monomial: ")(dot-show tem)
-		   (setq repl (n* (third the-num)  ($dot_simp_monomial tem)))
-		   (cond ((setq the-rest (fifth the-num))
-			  (show the-rest repl)
-			  (setq expr (n+ the-rest repl))
-			  (show expr)
-			  (setq expr (nred expr the-denom)))
-			 (t (setq expr (nred repl the-denom))))
-		 else
-		 do
-		 (format t "~%Simplifying the worst monomial: ")(dot-show tem)
-		 (format t "adding it to answer")
-		 (cond ((fifth the-num)(setq expr (nred  (fifth the-num) the-denom)))	;cons?
-		       (t (setq expr 0)))
-	     (setq answer (n+ answer (nred (subseq the-num 0 3) the-denom)))
-	     do
-	     (setq repl nil)
-	     (setq tem nil the-num nil the-denom nil )
-	     (:maybe-reset (answer *genvar* *varlist* expr))
-	     finally (return (header-poly answer)))))
-    (t (header-poly expr))))
-
-
-
+  (cond (($must_replacep expr)
+	 (loop while(not ($zerop expr))
+	    do
+	      (show answer)
+	      (setq tem nil)
+	      (cond (($must_replacep expr))
+		    (t (return (header-poly (n+ answer expr)))))
+	      (setq-num-den the-num the-denom expr)
+	      (show the-num)
+					;	     (cond ((polynomialp  expr) (setq the-num expr the-denom 1))
+					;		   ((rational-functionp expr) (setq the-num (num expr) the-denom (denom expr)))
+					;		   (t (fsignal "expr is supposed to be poly or rational-functionp")))
+					;	     (cond ((numberp the-num)(setq answer (n+ answer expr))
+	      (cond ((poly-scalarp the-num)(setq answer (n+ answer expr))
+		     (return (header-poly answer))))
+	      (setq tem  (get (car the-num) 'disrep))
+	    when
+	      (contains-a-zero-replacement tem)
+	    do
+	      (format t "~%Simplifying the worst monomial: ")(dot-show tem)
+	      (cond ((setq expr (fifth the-num)))
+		    (t (setq expr 0)))
+	    else
+	    when ($must_replacep tem) ;; (setq tem  (get (car the-num) 'disrep)))
+	    do
+	      (format t "~%Simplifying the worst monomial: ")(dot-show tem)
+	      (setq repl (n* (third the-num)  ($dot_simp_monomial tem)))
+	      (cond ((setq the-rest (fifth the-num))
+		     (show the-rest repl)
+		     (setq expr (n+ the-rest repl))
+		     (show expr)
+		     (setq expr (nred expr the-denom)))
+		    (t (setq expr (nred repl the-denom))))
+	    else
+	    do
+	      (format t "~%Simplifying the worst monomial: ")(dot-show tem)
+	      (format t "adding it to answer")
+	      (cond ((fifth the-num)(setq expr (nred  (fifth the-num) the-denom))) ;cons?
+		    (t (setq expr 0)))
+	      (setq answer (n+ answer (nred (subseq the-num 0 3) the-denom)))
+	    do
+	      (setq repl nil)
+	      (setq tem nil the-num nil the-denom nil )
+	    finally (return (header-poly answer))))
+	(t (header-poly expr))))
 
 (defun rat-dotsimp (expr &aux (answer 0) repl monom term cof tem simped-monom )
   (format t "~%Beginning to rat-dotsimp..")
   (setq expr (minimize-varlist expr))
-						; (setq upper-bound-for-gen-var (expt  (length (cdr $current_variables))
+; (setq upper-bound-for-gen-var (expt  (length (cdr $current_variables))
 ;				   ($nc_degree expr)))
 ;  (cond (*genvar* nil)
 ;	(t (setq *genvar* (copy-list genvar))))

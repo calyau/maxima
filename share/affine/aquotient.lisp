@@ -597,60 +597,60 @@
   modulus is not zero then u should be univariate.  Otherwise for eg mod 3, x^3-t
   is not square free in the field with cube root of t adjoined, and it can't be factored
   in Z/3Z[x,t]."
-  (cond
-    (modulus (afp-square-free-with-modulus u))
- (t
-  (with-polynomial-area-new
-    () :reset
-    (cond
-      ((numberp u) u)
-      (t
-       (setq d (afp-content u))
-       (setq u (term-operation u d afp-quotient))
-       (multiple-value-setq (tx v1 w1)
-			    (afp-big-gcd u (pderivative u (p-var u))))
-;       (show tx v1 w1)
-       (setq some-factors
-	     (cond
-	       ((eql tx 1) (list u 1))
-	       ((numberp tx) (fsignal 'how-did-this-happen))
-	       (t (loop for i from 1
-		       with vi = v1 with wi = w1 with videriv with vi+1 with ui with wi+1
-		       with main-var = (p-var u)
-		       do; (show i)
-			  (setq videriv (pderivative vi main-var))
-;			  (show factor-list)
-		       when (equal wi videriv)
-			 do
-			   (return (append factor-list (list vi i)))
-		       do
-		   (multiple-value-setq (ui vi+1 wi+1)
-					(afp-big-gcd vi (pdifference wi
-								     videriv)))
-;		   (show vi wi ui  vi+1 wi+1)
-		       when (not (eql ui 1))
-			 nconc (list ui i) into factor-list
-		       do
-			  (setq vi vi+1)
-			  (setq wi wi+1)
-			  ))))
-;       (show some-factors)
-       ;;this is all to collect some numbers and fix the unit multiple.
-       (loop for (pol deg) on some-factors by #'cddr
-	     with answ = d
-	     do (setq answ (ptimes answ (pexpt (p-cof pol) deg)))
-		finally
-		  (setq unit (afp-quotient (p-cof u) answ))
-		  (cond ((eql unit 1) nil)
-			((eql unit -1) (loop for (pol1 deg1) on some-factors by #'cddr
-					    for i from 0 by 2
-					    when (oddp deg1) do (setf (nth i some-factors)
-								   (pminus pol1))
-							      (return 'done)
+  (cond (modulus
+	 (afp-square-free-with-modulus u))
+	(t
+	 (cond ((numberp u)
+		u)
+	       (t
+		(setq d (afp-content u))
+		(setq u (term-operation u d afp-quotient))
+		(multiple-value-setq (tx v1 w1)
+		  (afp-big-gcd u (pderivative u (p-var u))))
+					;       (show tx v1 w1)
+		(setq some-factors
+		      (cond ((eql tx 1)
+			     (list u 1))
+			    ((numberp tx)
+			     (fsignal 'how-did-this-happen))
+			    (t
+			     (loop for i from 1
+				with vi = v1 with wi = w1 with videriv with vi+1 with ui with wi+1
+				with main-var = (p-var u)
+				do	; (show i)
+				(setq videriv (pderivative vi main-var))
+					;			  (show factor-list)
+				when (equal wi videriv)
+				do
+				(return (append factor-list (list vi i)))
+				do
+				(multiple-value-setq (ui vi+1 wi+1)
+				  (afp-big-gcd vi (pdifference wi
+							       videriv)))
+					;		   (show vi wi ui  vi+1 wi+1)
+				when (not (eql ui 1))
+				nconc (list ui i) into factor-list
+				do
+				(setq vi vi+1)
+				(setq wi wi+1)
+				))))
+					;       (show some-factors)
+		;;this is all to collect some numbers and fix the unit multiple.
+		(loop for (pol deg) on some-factors by #'cddr
+		   with answ = d
+		   do (setq answ (ptimes answ (pexpt (p-cof pol) deg)))
+		   finally
+		     (setq unit (afp-quotient (p-cof u) answ))
+		     (cond ((eql unit 1) nil)
+			   ((eql unit -1) (loop for (pol1 deg1) on some-factors by #'cddr
+					     for i from 0 by 2
+					     when (oddp deg1) do (setf (nth i some-factors)
+								       (pminus pol1))
+					       (return 'done)
 					     finally (merror "no odd factors yet differs by minus ")))
-			(t (fsignal "not handled yet"))))
-       (cond ((eql d 1) some-factors)
-	     (t (append (afp-square-free-factorization d) some-factors)))))))))
+			   (t (fsignal "not handled yet"))))
+		(cond ((eql d 1) some-factors)
+		      (t (append (afp-square-free-factorization d) some-factors))))))))
 
 
 
@@ -669,11 +669,9 @@
 ;
 ;(compare-functions
 ;(defun af-fake-times (f g)
-; (user:tim (with-polynomial-area-new ()
-;    (afp-times f g) nil)))
+; (user:tim (progn (afp-times f g) nil)))
 ;(defun reg-fake-times (f g)
-; (user:tim   (with-polynomial-area-new ()
-;  (ptimes f g) nil)))
+; (user:tim   (progn (ptimes f g) nil)))
 ;)
 
 
@@ -771,16 +769,16 @@
 (defun test-times (f g &key empty)
   (cond (modulus (iassert (equal (tim (afp-times f g))
 				 (remove-zero-coefficients (tim (ptimes f g))))))
-	(empty (tim (with-polynomial-area ()
-			   (afp-times f g)
-			   nil))
+	(empty (tim (progn
+		      (afp-times f g)
+		      nil))
 	       (reset-paa)
-	       (tim (with-polynomial-area ()
-			   (ptimes f g)
-			   nil))
+	       (tim (progn
+		      (ptimes f g)
+		      nil))
 	       (reset-paa))
 	(t	     (iassert (equal (tim (afp-times f g))
-				  (tim (ptimes f g)))))))
+				     (tim (ptimes f g)))))))
 
 
 (defun remove-zero-coefficients (poly)
@@ -798,9 +796,11 @@
 
 
 (defmacro with-area-used (&rest body)
-  `(progn (reset-paa) (prog1 (with-polynomial-area () ,@ body)
-			     (reset-paa))))
-
+  `(progn
+     (reset-paa)
+     (prog1
+	 (progn ,@body)
+       (reset-paa))))
 
 (defun recursive-ideal-gcd1 (f g )
    "assumes that f and g are polynomials of one variable and that modulus is non trivial
@@ -1023,30 +1023,29 @@
 (defun test-square (f  &key empty)
   (cond (modulus (iassert (equal (tim (afp-square f))
 				 (remove-zero-coefficients (tim (pexpt f 2 ))))))
-	(empty (tim (with-polynomial-area ()
-			   (afp-square f )
-			   nil))
+	(empty (tim (progn
+		      (afp-square f )
+		      nil))
 	       (reset-paa)
-	       (tim (with-polynomial-area ()
-			   (pexpt f 2)
-			   nil))
+	       (tim (progn
+		      (pexpt f 2)
+		      nil))
 	       (reset-paa))
 	(t	     (iassert (equal (tim (afp-square f ))
-		 		  (tim (pexpt f 2)))))))
-
+				     (tim (pexpt f 2)))))))
 (defun test-square (f  &key empty)
   (cond (modulus (iassert (equal (tim (afp-square f))
 				 (remove-zero-coefficients (tim (ptimes f f ))))))
-	(empty (tim (with-polynomial-area ()
-			   (afp-square f )
-			   nil))
+	(empty (tim (progn
+		      (afp-square f )
+		      nil))
 	       (reset-paa)
-	       (tim (with-polynomial-area ()
-			   (pexpt f 2)
-			   nil))
+	       (tim (progn
+		      (pexpt f 2)
+		      nil))
 	       (reset-paa))
 	(t	     (iassert (equal (tim (afp-square f ))
-		 		  (tim (ptimes f f)))))))
+				     (tim (ptimes f f)))))))
 
 
 ;;pexpt is not accurate for modulus=9
@@ -1113,18 +1112,18 @@
       ~%with argument list ~A being ~A" ',f1 ',f2 (arglist ',f1) rest-args)
        (cond (empty (format t  "~%All computations done in a temporary area:")))
        (cond ((and (null empty)modulus)
-	      (with-polynomial-area ()
+	      (progn
 		(iassert (equal (setq ansa(tim (apply ',f1 rest-args)))
 				(setq ansb (remove-zero-coefficients (tim (apply ',f2 rest-args ))))))))
-	     (empty (tim (with-polynomial-area ()
-				(apply ',f1 rest-args )
-				nil))
+	     (empty (tim (progn
+			   (apply ',f1 rest-args )
+			   nil))
 		    (reset-paa)
-		    (tim (with-polynomial-area ()
-				(apply ',f2 rest-args)
-				nil))
+		    (tim (progn
+			   (apply ',f2 rest-args)
+			   nil))
 		    (reset-paa))
-	     (t (with-polynomial-area ()
+	     (t (progn
 		  (iassert (equal (setq ansa (tim (apply ',f1 rest-args )))
 				  (setq ansb(tim (apply ',f2 rest-args)))))))))))
 
@@ -1661,10 +1660,9 @@
 
 
 (defun test-integer-factor (pol &aux facts)
-  (setq facts (with-polynomial-area ()  (integer-univariate-factor pol)))
+  (setq facts (integer-univariate-factor pol))
   (iassert (equal pol (apply 'exponent-product facts)))
   facts)
-
 
 (defun subs-translate-sublis ( point &optional inv)
   (cond (inv  (loop for v in point

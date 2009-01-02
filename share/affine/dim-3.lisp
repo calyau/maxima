@@ -388,8 +388,7 @@
   ($maybe_ldata_solve eqns :inequality ($determinant mat)))
 
 (defremember $dotsimp_remember (elmnt &optional ($dot_simplifications $dot_simplifications))
-  (new-copy-from-temporary-area ($dotsimp elmnt))
-  )
+  ($dotsimp elmnt))
 
 (defun $algebra_trace (element  basis &aux cof tem rbasis  den num)
   (setq rbasis (st-rat basis))

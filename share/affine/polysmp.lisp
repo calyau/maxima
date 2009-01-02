@@ -725,18 +725,15 @@ substituting them to be zero."
 		  (t ($polysimp (new-rat ($totaldisrep f))))))))
 
 (defun check-associative (a overlap b &aux answer simpa simpb)
-  ;;;give chance to reset area
-  (with-polynomial-area-new ()
-    (:maybe-reset)
-  (cond (*show-grob* (format t "Checking overlap ~A for ~A ~A "(disrep-list overlap)
-		     (disrep-list a) (disrep-list b))))
+  (when *show-grob*
+    (format t "Checking overlap ~A for ~A ~A "(disrep-list overlap) (disrep-list a) (disrep-list b)))
   (let ((ma (convert-deg-sequence-to-monomial a))
 	( mo (convert-deg-sequence-to-monomial overlap))
 	(mb (convert-deg-sequence-to-monomial b)))
-						;   (setq simpa (polysimp (cons ma 1)))
+					;   (setq simpa (polysimp (cons ma 1)))
     (setq simpa  (get-altq a *poly-simplifications*))
     (setq simpb  (get-altq b *poly-simplifications*))
-;    (setq simpb (polysimp (cons mb 1)))
+					;    (setq simpb (polysimp (cons mb 1)))
 
     (setq simpa (cons (ptimes (num simpa) (num (ratreduce mb mo))) (denom simpa)))
     (setq simpb (cons (ptimes (num simpb) (num (ratreduce ma mo))) (denom simpb)))
@@ -745,21 +742,22 @@ substituting them to be zero."
     (cond ((equal simpa simpb)
 	   (princ ".")
 	   (cond (*show-grob*   (format t"..The overlap is associative")(rzero)))
-	   (rzero)
-	   )
+	   (rzero))
 	  (t
 	   (setq answer (ratdifference simpa simpb))
 	   (cond ((null *simplify-rhs* ) (setq plain-answer answer)
 		  (setq answer (nred (polysimp (function-numerator answer))
-							   (function-denominator answer)))))
+				     (function-denominator answer)))))
 	   (cond ((null *simplify-rhs*)
 		  (cond ((new-zerop answer))
 			(t (setq answer plain-answer)))))
 	   (cond (*show-grob*
-		   (format t "~%The difference  is ..")(sh answer)))
+		  (format t "~%The difference  is ..")(sh answer)))
 	   (cond ((new-zerop answer) (princ ".")(rzero))
-		 (t answer)))))))
+		 (t answer))))))
+
 (defvar *simplify-simplifications* nil)
+
 (defun reverse-z-order-sequence (seqa seqb)
   (and (not (equal seqa seqb))(not (z-order-sequence seqb seqa))))
 

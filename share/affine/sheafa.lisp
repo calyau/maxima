@@ -223,7 +223,7 @@
 ;		   do(setq eqn1 v)
 ;		   when (equal w (second int-opens))
 ;		   do (setq eqn2 w))
-;	           (setq eqn2 (sublis *vforx* eqn2)
+;		   (setq eqn2 (sublis *vforx* eqn2)
 ;                   (setq answ
 ;			 ($find_birational_map eqn1 eqn2 birat-string
 ;					 (firstn (length eqn2) *vvv*)))
@@ -263,10 +263,10 @@
 ;  (remove-common-factors answ (map-denom map)))
 
 (defun remove-common-factors (from-poly divisor &aux answ)
-  (with-polynomial-area ()
-  (setq answ (pgcdcofacts  from-poly divisor))
-  (cond ((eq 1 (car answ))(second answ))
-	(t (remove-common-factors (second answ) (first answ))))))
+  (setq answ (pgcdcofacts from-poly divisor))
+  (if (eq 1 (car answ))
+      (second answ)
+      (remove-common-factors (second answ) (first answ))))
 
 (defun strings-search (keys sstring &aux tem)
   (loop for v in keys when (setq tem (search v sstring :test #'char-equal))
@@ -561,18 +561,17 @@
 	       do (return answ)))))
 
 (defun non-constant-factors (poly &optional invert &aux tem (genvar *genvar*))
-  (with-polynomial-area ()
   (setq tem (npfactor poly))
-	(loop for (v deg) on tem by #'cddr
-	when (and (not (numberp v))
-		  (or (null invert)(null (may-invertp v invert))))
-	collecting v
-	and
-	collecting deg)))
-
+  (loop for (v deg) on tem by #'cddr
+     when (and (not (numberp v))
+	       (or (null invert)(null (may-invertp v invert))))
+     collecting v
+     and
+     collecting deg))
 
 (defvar *factored-list* nil)
 (defvar *all-factors* nil)
+
 (defun gen-ptimes (&rest l)
   (cond ((null l) 1)
 	((eq (length l) 1) (car l))
@@ -742,7 +741,7 @@
 ;  (loop for h in list-to-replace
 ;	when (not (eql f h))
 ;	when (not (pzerop (setq tem
-;	                    (square-free (gen-prem h f var)))))
+;			    (square-free (gen-prem h f var)))))
 ;	collecting
 ;	tem))
 ;
@@ -755,32 +754,30 @@
 ;	collecting (square-free tem)
 ;	else collecting h))
 
-(defun replace-functions (list-to-replace f var &key  general-leading-cof (invertible-g 1)
-			  &aux c-reqd remaind tem)
-  (with-polynomial-area ()
+(defun replace-functions (list-to-replace f var &key  general-leading-cof (invertible-g 1) &aux c-reqd remaind tem)
   (cond ((null general-leading-cof)
 	 (loop for h in list-to-replace
-	       when (not (eql f h))
-	       when (not (pzerop (setq tem
-				       (gen-prem h f var))))
-	       when (not (eq h tem))
-	       collecting (square-free tem)
-	       else collecting h))
+	    when (not (eql f h))
+	    when (not (pzerop (setq tem
+				    (gen-prem h f var))))
+	    when (not (eq h tem))
+	    collecting (square-free tem)
+	    else collecting h))
 	(t
 	 (loop for h in list-to-replace
-	       when (eq f h) do (setq h nil)
-	       when h
-	       do
-	       (multiple-value
-		 (remaind c-reqd)
-		 (gen-prem h f var))
-	       when  h
-		when (eq h remaind) collecting h
-		else collecting (square-free remaind)
-		;;collect h if the c-reqd is not a unit.
-	       when  h
-		 when (not (may-invertp c-reqd invertible-g))
-		 collecting h)))))
+	    when (eq f h) do (setq h nil)
+	    when h
+	    do
+	    (multiple-value
+	     (remaind c-reqd)
+	     (gen-prem h f var))
+	    when  h
+	    when (eq h remaind) collecting h
+	    else collecting (square-free remaind)
+	    ;;collect h if the c-reqd is not a unit.
+	    when  h
+	    when (not (may-invertp c-reqd invertible-g))
+	    collecting h))))
 
 (defun any-gm-prepared (poly gg)
   (gm-prepared poly :inequal gg))
@@ -1758,13 +1755,13 @@
    (sort all-vars #'(lambda( u v)(< (funcall f u) (funcall f v)))))
 
 (defun may-invertp (poly invertible-poly)
-  (cond (($zerop poly) nil)
-	(t
-	 (with-polynomial-area ()
-	   (numberp (denom (ratreduce invertible-poly (square-free poly))))))))
+  (if ($zerop poly)
+      nil
+      (numberp (denom (ratreduce invertible-poly (square-free poly))))))
 
 (defvar $char_set nil)
 (defvar $ideal nil)
+
 (defun poly-linearp (poly  var may-invert &aux cof)
   (cond ((numberp poly ) nil)
 	((eq (pdegree poly var) 1)
@@ -1882,13 +1879,13 @@
 ;  $char_set)
 
 (defun square-free (p)
-  (with-polynomial-area ()
   (let ((facts (psqfr p)))
-  (cond ((cddr facts)   (loop for v in (cddr facts) by #'cddr
-	  with answer = (car facts)
-	  do (setq answer (ptimes v answer))
-	  finally (return answer)))
-	(t (car facts))))))
+    (if (cddr facts)
+	(loop for v in (cddr facts) by #'cddr
+	   with answer = (car facts) do
+	     (setq answer (ptimes v answer))
+	   finally (return answer))
+	(car facts))))
 
 (defun $square_free_numerators (expr)
   (cond ((atom expr) expr)
@@ -2161,20 +2158,12 @@ would restore the list"
 	collecting (cons v w)))
 
 (defremember compose-rmap (f g)
-  (let (  fns-f subs)
+  (let (fns-f subs)
     (new-rmap f) (new-rmap g)
-
     (setq subs (loop for gg in (rmap-fns g)
-		     for v in *xxx*
-		     collecting (cons v gg)))
-    (setq fns-f (loop for ff in (rmap-fns f)
-		      collecting
-		       (with-polynomial-area ()
-			(simple-rat-sublis subs ff))))
+		  for v in *xxx* collecting (cons v gg)))
+    (setq fns-f (loop for ff in (rmap-fns f) collecting (simple-rat-sublis subs ff)))
     (construct-rmap fns-f)))
-
-
-
 
 ;;should take [(x1+x2)
 

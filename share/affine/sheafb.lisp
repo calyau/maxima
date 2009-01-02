@@ -545,7 +545,7 @@
 ;	  (loop for i from 1 to firstk
 ;		do (setq tem (iblowup op i firstk))
 ;                (setq pt (loop for ldat in dl
-;	                       collecting
+;			       collecting
 ;			       (proper-transform ldat
 ;						 i firstk dim)))
 ;		(iassert (eq (car tem) 'zopen))
@@ -691,45 +691,39 @@
 ;				      :subs subs)))
 ;	(t (merror "fns should be a polynomial, rat'l fn,ldata or list of such"))))
 
-(defun apply-rmap (rmap  fns &key (coords-for-fn *xxx*) subs
-		   &aux answ )
+(defun apply-rmap (rmap  fns &key (coords-for-fn *xxx*) subs &aux answ)
   "Argument may be list of polys, or rat'l fns, result is always rat'l"
   (new-rmap rmap)
-  (cond(subs nil)
-       (t  (setq subs (subs-for-simple-rat-sublis
-			coords-for-fn
-			(rmap-fns rmap)))))
-
-    (cond ((or (polynomialp fns)(rational-functionp fns))
-	   (setq answ(with-polynomial-area-new ()
-		       (simple-rat-sublis subs fns)))
-	   (process-sleep 5)
-	   answ)
-
-	  ((eq (car fns) 'ldata)
-	   (make-ldata :eqns
-		       (loop for v in (ldata-eqns fns)
-				  collecting (function-numerator (apply-rmap rmap v
-								    :coords-for-fn
-								    coords-for-fn
-								    :subs subs)))
-		       :inequality (function-numerator(apply-rmap rmap (ldata-inequality fns)
-							:coords-for-fn
-							coords-for-fn
-							:subs subs))))
-	  ((or (polynomialp (car fns))
-	       (rational-functionp (car fns))
-	       (ldatap (car fns)))
-	   (loop for v in fns
-		 collecting (apply-rmap rmap v :coords-for-fn coords-for-fn
-					:subs subs)))
-	  (t (merror "fns should be a polynomial, rat'l fn,ldata or list of such"))))
-
+  (cond (subs
+	 nil)
+	(t
+	 (setq subs (subs-for-simple-rat-sublis coords-for-fn (rmap-fns rmap)))))
+  (cond ((or (polynomialp fns) (rational-functionp fns))
+	 (setq answ (simple-rat-sublis subs fns))
+	 (process-sleep 5)
+	 answ)
+	((eq (car fns) 'ldata)
+	 (make-ldata :eqns
+		     (loop for v in (ldata-eqns fns)
+			collecting (function-numerator (apply-rmap rmap v
+								   :coords-for-fn
+								   coords-for-fn
+								   :subs subs)))
+		     :inequality (function-numerator(apply-rmap rmap (ldata-inequality fns)
+								:coords-for-fn
+								coords-for-fn
+								:subs subs))))
+	((or (polynomialp (car fns))
+	     (rational-functionp (car fns))
+	     (ldatap (car fns)))
+	 (loop for v in fns
+	    collecting (apply-rmap rmap v :coords-for-fn coords-for-fn
+				   :subs subs)))
+	(t (merror "fns should be a polynomial, rat'l fn,ldata or list of such"))))
 
 (defun ldatap (obj)
   (and (consp obj)(eq (car obj) 'ldata)))
-;
-;;
+
 ;;;;idea is to take the eqns in ldata and
 ;;;;construct an rmap to a coordinate system where the
 ;;;;elements of ldata are transformed to the first n
@@ -1581,30 +1575,25 @@
 
 
 ;;;works
-(defun apply-rmap-to-square-free-factors (MAPL pol &aux answ)
-
+(defun apply-rmap-to-square-free-factors (mapl pol &aux answ)
   (let ((facts (non-constant-factors pol)))
     (cond ((null facts) (cons pol 1))
 	  (t
 	   (loop named sue
-		 for v in facts by #'cddr
-		 collecting v into tem
-		 finally (setq answ (apply-rmap MAPL tem))
-		 (with-polynomial-area (k)
-		   (loop for v in answ
-			 with answer = (cons 1 1)
-			 do (setq answer (rattimes answer v t))
-			 finally (return-from sue answer))))))))
+	      for v in facts by #'cddr
+	      collecting v into tem
+	      finally (setq answ (apply-rmap mapl tem))
+		(loop for v in answ
+		   with answer = (cons 1 1)
+		   do (setq answer (rattimes answer v t))
+		   finally (return-from sue answer)))))))
 
 ;;;did not need to compute the translated ldata except on the intersection
 (defun translate-component-and-reduce (from-open to-open ldata &key (use-inverse-inequal t)
 				       &aux *refine-opens* hh gg red-transl answ
-				       inv inv-denom
-				       transl MAPL )
+				       inv inv-denom transl MAPL )
 ;  (declare (values ldata intersection-inequality-on-to-open))
   (setq MAPL (find-ring-map from-open to-open))
-    (with-polynomial-area-new ()
-    (:maybe-reset))
   (process-sleep 20)
   (setq gg (zopen-inequality to-open))
   (cond (use-inverse-inequal
@@ -1612,8 +1601,6 @@
 	 (setq inv-denom (function-numerator (apply-rmap-to-square-free-factors
 				      MAPL (rmap-denom inv))))
 	 (setq hh (sftimes gg inv-denom))
-	 (with-polynomial-area-new ()
-	   (:maybe-reset))
 	 (process-sleep 20))
 	(t (setq hh gg)))
 

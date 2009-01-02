@@ -7,7 +7,7 @@
 
 (in-package :maxima)
 
-(declare-top (unspecial p y)) 
+(declare-top (unspecial p y))
 
 ;;   These functions can be used to keep an alphabetical masterlist in
 ;;*genvar* and *varlist* and use them.  I think *genpairs* is now
@@ -49,7 +49,7 @@
 ;;(defun POINTERGP (A B) (> (VALGET A) (VALGET B)))
 ;;as a subst it is faster any problems 'wfs
 
-(defun new-prep1 (x &aux temp) 
+(defun new-prep1 (x &aux temp)
        (cond ((floatp x)
 	      (cond ($keepfloat (cons x 1.0)) ((prepfloat x))))
 	     ((integerp x) (cons (cmod x) 1))
@@ -68,7 +68,7 @@
 		     (cond ((every #'frpoly? x)
 			    (cons (mfacpplus (mapl #'(lambda (x)
 						      (rplaca x (caar x)))
-						  x)) 
+						  x))
 				  1))
 			   (t (do ((a (car x) (facrplus a (car l)))
 				   (l (cdr x) (cdr l)))
@@ -146,7 +146,7 @@
 	   (list* 'mrat 'simp *varlist* *genvar*
 		  		  (if (and (not (atom x)) (member 'irreducible (cdar x) :test #'eq))
 		      '(irreducible)))))
-	  
+
 (defun new-rat (x &aux genpairs)
   (cond
     ((polynomialp x) (cons x 1))
@@ -155,12 +155,12 @@
 	 (cond ((member (car (num (cdr x))) *genvar* :test #'eq)
 		(cdr x))
 	       (t (format t "~%disrepping")(new-rat  ($totaldisrep x)))))
-	(t 
-	     
+	(t
+
   (prog (u *withinratf*)
 	(setq *withinratf* t)
 	(cond ((mbagp x)(return (cons (car x) (mapcar 'new-rat (cdr x)))))
-	      (t 
+	      (t
 	(when (eq '%% (catch 'ratf (new-newvar x)))
 	  (setq *withinratf* nil)(return (srf x)))
 	(let ((varlist *varlist*)(genvar *genvar*))
@@ -178,7 +178,7 @@
 		    '(mplus mtimes rat mdifference
 			    mquotient mminus bigfloat) :test #'eq)
 	      (mapc #'my-newvar1 (cdr x)))
-	     
+
 	     ((eq (caar x) 'mexpt)
 	       (my-newvar1 (second  x) ))
 	     ;; ;(newvarmexpt x (caddr x) nil))
@@ -321,20 +321,20 @@ into genvar ordering and adds to genpairs"
 	  (t (psimp (p-var y) (pctimes1 x (p-terms y))))))
   (defun ptimes (x y)
     (cond ((atom x)
-           (cond ((and (numberp x)
-                       (zerop x))
-                  0)
-                 (t (pctimes x y))))
-          ((atom y)
-           (cond ((and (numberp y)
-                       (zerop y))
-                  0)
-                 (t (pctimes y x))))
-          ((eq (car x) (car y))
-           (palgsimp (car x) (ptimes1 (cdr x) (cdr y)) (alg x)))
-          ((> (symbol-value (car x)) (symbol-value (car y)))
-           (psimp (car x) (pctimes1 y (cdr x))))
-          (t (psimp (car y) (pctimes1 x (cdr y))))))
+	   (cond ((and (numberp x)
+		       (zerop x))
+		  0)
+		 (t (pctimes x y))))
+	  ((atom y)
+	   (cond ((and (numberp y)
+		       (zerop y))
+		  0)
+		 (t (pctimes y x))))
+	  ((eq (car x) (car y))
+	   (palgsimp (car x) (ptimes1 (cdr x) (cdr y)) (alg x)))
+	  ((> (symbol-value (car x)) (symbol-value (car y)))
+	   (psimp (car x) (pctimes1 y (cdr x))))
+	  (t (psimp (car y) (pctimes1 x (cdr y))))))
 
   (defmfun pdifference (x y)
     (cond ((pcoefp x) (pcdiffer x y))
@@ -381,24 +381,21 @@ into genvar ordering and adds to genpairs"
   (cond ((and (eq (length fns) 1)
 	      ($listp (car fns))
 	      (setq fns (cdr (car fns))))))
-  (let  ( varlist  gcd-denom gcd-num rat-fns )
+  (let (varlist  gcd-denom gcd-num rat-fns )
     (cond ((eq (length fns) 1) (car fns))
 	  (t
 	   (loop for v in fns
 	      do (newvar v))
-	   (with-polynomial-area ()
-	     (setq rat-fns (loop for v in fns
-			      collecting (cdr (ratrep* v))))
-	     (setq gcd-num (num (car rat-fns)))
-	     (loop for w in (cdr rat-fns)
-		do
-		  (setq gcd-num (pgcd gcd-num (num  w))))
-	     (setq gcd-denom (denom (car rat-fns)))
-	     (loop for w in (cdr rat-fns)
-		do (setq gcd-denom (pgcd gcd-denom (denom w))))
-	     (ratdisrep (cons (list 'mrat 'simp varlist genvar)
-			      (cons gcd-num gcd-denom))))))))
-
+	   (setq rat-fns (loop for v in fns	collecting (cdr (ratrep* v))))
+	   (setq gcd-num (num (car rat-fns)))
+	   (loop for w in (cdr rat-fns)
+	      do
+	      (setq gcd-num (pgcd gcd-num (num  w))))
+	   (setq gcd-denom (denom (car rat-fns)))
+	   (loop for w in (cdr rat-fns)
+	      do (setq gcd-denom (pgcd gcd-denom (denom w))))
+	   (ratdisrep (cons (list 'mrat 'simp varlist genvar)
+			    (cons gcd-num gcd-denom)))))))
 
 ;;;;the following works but seems slower than factoring
 ;(defun $projective ( vector)
@@ -407,7 +404,6 @@ into genvar ordering and adds to genpairs"
 ;			answer gcd-num factor lcm-denom  rat-fns )
 ;	       (loop for v in fns
 ;		     do (newvar v))
-;	  (with-polynomial-area ()
 ;	      (setq rat-fns (loop for v in fns
 ;		     collecting (cdr (ratrep* v))))
 ;	      (setq gcd-num (num (car rat-fns)))
@@ -423,8 +419,7 @@ into genvar ordering and adds to genpairs"
 ;	      (setq header (list 'mrat 'simp varlist genvar))
 ;	      (loop for v in answer
 ;		    collecting (ratdisrep (cons header v)) into tem
-;		    finally (return (cons '(mlist) tem))))))
-
+;		    finally (return (cons '(mlist) tem)))))
 
 (defun factoredp (poly)
   (cond ((atom poly) t)
@@ -436,7 +431,7 @@ into genvar ordering and adds to genpairs"
 				      (t 0)))
 	(t(check-arg prod '$productp nil)
 	  (loop for v in (cdr prod) do
-	       (cond 
+	       (cond
 		 ((equal expr v) (return 1))
 		 ((numberp v))
 		 ((atom v))
@@ -445,44 +440,42 @@ into genvar ordering and adds to genpairs"
 		  (return (third v))))
 	     finally (return 0)))))
 
-(defun $projective (vector &aux factors first-one
-		    factored-vector expon lcm-denom tem fac where proj)
-  (with-polynomial-area ()
-    (setq factored-vector (loop for v in (cdr vector)
-			     when (factoredp v) collecting v
-			     else collecting ($factor v)))
-    (loop for v in factored-vector
-       for i from 0
-       when (not ($zerop v))
-       do (setq first-one v)(setq where i) (return 'done))
-    (cond ((null where) 'image_not_in_projective_space)
-	  (t
-	   (setq factored-vector (delete first-one factored-vector :count 1 :test #'equal))
-	   (setq proj (loop for w in  factored-vector collecting (div* w first-one)))
-	   (loop for term in proj
-	      when (not (numberp term) )
-	      do
-		(cond ((atom term)(setq fac term))
-		      (t
-		       (loop for v in (cdr term) do
-			    (cond ((atom v) (setq fac v))
-				  ((eq (caar v) 'mexpt) (setq fac (second v)))
-				  ((eq (caar v) 'mplus) (setq fac v)))
-			    (cond ((not (member fac factors :test #'equal)) (push fac factors)))))))
-	   (loop for w in factors
-	      do (setq expon 0)
-		(setq expon (loop for v in proj
-			       when (< (setq tem (exponent w v)) 0)
-			       minimize tem))
-		(cond ((not (eql expon 0))
-		       (push  `((mexpt simp) ,w ,expon) lcm-denom))))
-	   (cond (lcm-denom (push '(mtimes simp) lcm-denom))
-		 (t (setq lcm-denom 1)))
-	   (loop for v in proj
-	      collecting (div* v lcm-denom) into tem
-	      finally (return
-			(cons '(mlist)  (nsplice-in (1- where)
-						    (div* 1 lcm-denom) tem))))))))
+(defun $projective (vector &aux factors first-one factored-vector expon lcm-denom tem fac where proj)
+  (setq factored-vector (loop for v in (cdr vector)
+			   when (factoredp v) collecting v
+			   else collecting ($factor v)))
+  (loop for v in factored-vector
+     for i from 0
+     when (not ($zerop v))
+     do (setq first-one v)(setq where i) (return 'done))
+  (cond ((null where) 'image_not_in_projective_space)
+	(t
+	 (setq factored-vector (delete first-one factored-vector :count 1 :test #'equal))
+	 (setq proj (loop for w in  factored-vector collecting (div* w first-one)))
+	 (loop for term in proj
+	    when (not (numberp term) )
+	    do
+	    (cond ((atom term)(setq fac term))
+		  (t
+		   (loop for v in (cdr term) do
+			(cond ((atom v) (setq fac v))
+			      ((eq (caar v) 'mexpt) (setq fac (second v)))
+			      ((eq (caar v) 'mplus) (setq fac v)))
+			(cond ((not (member fac factors :test #'equal)) (push fac factors)))))))
+	 (loop for w in factors
+	    do (setq expon 0)
+	    (setq expon (loop for v in proj
+			   when (< (setq tem (exponent w v)) 0)
+			   minimize tem))
+	    (cond ((not (eql expon 0))
+		   (push  `((mexpt simp) ,w ,expon) lcm-denom))))
+	 (cond (lcm-denom (push '(mtimes simp) lcm-denom))
+	       (t (setq lcm-denom 1)))
+	 (loop for v in proj
+	    collecting (div* v lcm-denom) into tem
+	    finally (return
+		      (cons '(mlist)  (nsplice-in (1- where)
+						  (div* 1 lcm-denom) tem)))))))
 (defun $zeta3_ratsimp (expr &aux answer)
   (setq answer (new-rat expr))
   (setq answer (rationalize-denom-zeta3 answer))
@@ -521,13 +514,12 @@ into genvar ordering and adds to genpairs"
 	   (variable-in-polyp1 (car r) gen)))))
 
 (defun $zeta3_factor (poly)
-  (with-polynomial-area (*genvar*)
-    ($factor poly `((mplus) ((mexpt) $%zeta3 2) $%zeta3 1)))) ; %zeta3^2+%zeta3+1
+  ($factor poly `((mplus) ((mexpt) $%zeta3 2) $%zeta3 1))) ; %zeta3^2+%zeta3+1
 
-(defun new-newvarmexpt (x e flag) 
+(defun new-newvarmexpt (x e flag)
   (declare (special radlist expsumsplit vlist))
        ;; when flag is t, call returns ratform
-       (prog (topexp) 
+       (prog (topexp)
 	     (cond ((and (fixp e) (not flag))
 		    (return (newvar1 (cadr x)))))
 	     (setq topexp 1)
@@ -555,7 +547,7 @@ into genvar ordering and adds to genpairs"
 	      ;; x=b^(a*c)
 	      ((eq (caar e) 'mtimes)
 	       (cond
-		((or 
+		((or
 
 		     ;; x=b^(n *c)
 		     (and (atom (cadr e))
@@ -585,8 +577,8 @@ into genvar ordering and adds to genpairs"
 		x					;sums
 		(cons
 		 '(mtimes)
-		 (mapcar 
-		  #'(lambda (ll) 
+		 (mapcar
+		  #'(lambda (ll)
 		      (list '(mexpt)
 			    (cadr x)
 			    (simplify (list '(mtimes)
@@ -660,5 +652,3 @@ into genvar ordering and adds to genpairs"
   (if (setq x (assol (car algvar) tellratlist))
       (setq tellratlist (remove x tellratlist :test #'equal)))
   (push algvar tellratlist))
-
-
