@@ -6,6 +6,7 @@
 * Funciones Gamma y factorial::
 * Integral exponencial::
 * Funci@'on de error::
+* Funciones de Struve::
 * Funciones y variables para las funciones especiales::
 @end menu
 
@@ -481,7 +482,7 @@ en t@'erminos de Ei .
 
 
 
-@node Funci@'on de error, Funciones y variables para las funciones especiales, Integral exponencial, Funciones Especiales
+@node Funci@'on de error, Funciones de Struve, Integral exponencial, Funciones Especiales
 @section Funci@'on de error
 
 La funci@'on de error y sus asociadas se definen en el 
@@ -557,7 +558,34 @@ de las funciones fresnel_s y fresnel_c.
 
 
 
-@node Funciones y variables para las funciones especiales,  , Funci@'on de error, Funciones Especiales
+
+@node Funciones de Struve, Funciones y variables para las funciones especiales, Funci@'on de error, Funciones Especiales
+@section Funciones de Struve
+
+Las funciones de Struve se definen en el cap@'{@dotless{i}}tulo
+12 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}.
+
+Maxima tiene un soporte limitado a las funciones de Struve.
+
+@deffn {Funci@'on} hstruve [@var{v}] (@var{z}) 
+Funci@'on de Struve H de orden @var{v} y argumento @var{z}. (A&S 12.1.1)
+
+@end deffn
+
+
+@deffn {Funci@'on} lstruve [@var{v}] (@var{z}) 
+Funci@'on de Struve modificada L de orden @var{v} y argumento @var{z}. (A&S 12.2.1)
+
+@end deffn
+
+
+
+
+
+
+
+
+@node Funciones y variables para las funciones especiales,  , Funciones de Struve, Funciones Especiales
 @section Funciones y variables para las funciones especiales
 
 

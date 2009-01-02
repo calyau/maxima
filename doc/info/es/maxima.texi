@@ -275,6 +275,7 @@ Funciones Especiales
 * Funciones Gamma y factorial::
 * Integral exponencial::
 * Funci@'on de error::
+* Funciones de Struve::
 * Funciones y variables para las funciones especiales::
 
 Funciones el@'{@dotless{i}}pticas

@@ -1,4 +1,4 @@
-@c version 1.43
+@c version 1.44
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -324,18 +324,24 @@ Ejemplos:
 @c integrate (x^2 = 1, x);
 @c ===end===
 @example
+@group
 (%i1) integrate (x^2 = 1, x);
                            3
                           x
 (%o1)                     -- = x + %c1
                           3
+@end group
+@group
 (%i2) integration_constant : 'k;
 (%o2)                           k
+@end group
+@group
 (%i3) integrate (x^2 = 1, x);
                             3
                            x
 (%o3)                      -- = x + k2
                            3
+@end group
 @end example
 
 @end defvr
@@ -360,28 +366,38 @@ Ejemplos:
 @c integrate (x^2 = 1, x);
 @c ===end===
 @example
+@group
 (%i1) integrate (x^2 = 1, x);
                            3
                           x
 (%o1)                     -- = x + %c1
                           3
+@end group
+@group
 (%i2) integrate (x^2 = 1, x);
                            3
                           x
 (%o2)                     -- = x + %c2
                           3
+@end group
+@group
 (%i3) integrate (x^2 = 1, x);
                            3
                           x
 (%o3)                     -- = x + %c3
                           3
+@end group
+@group
 (%i4) reset (integration_constant_counter);
 (%o4)            [integration_constant_counter]
+@end group
+@group
 (%i5) integrate (x^2 = 1, x);
                            3
                           x
 (%o5)                     -- = x + %c1
                           3
+@end group
 @end example
 @end defvr
 
