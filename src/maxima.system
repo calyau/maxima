@@ -4,6 +4,10 @@
 
 (pushnew :cl *features*)
 
+;; Don't try to optimize so much in ECL.
+;; Therefore functions can be redefined (essential for share libraries).
+#+ecl (declaim (optimize (debug 2)))
+
 #+gcl
 (let ((version-num (+ (* 10000 system::*gcl-major-version*)
 		      (* 100 system::*gcl-minor-version*)

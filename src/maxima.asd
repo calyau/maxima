@@ -6,6 +6,10 @@
 
 (in-package :asdf)
 
+;; Don't try to optimize so much in ECL.
+;; Therefore functions can be redefined (essential for share libraries).
+#+ecl (declaim (optimize (debug 2)))
+
 (defvar *binary-output-dir* "binary-ecl")
 
 (defmethod output-files :around ((operation compile-op) (c source-file))
