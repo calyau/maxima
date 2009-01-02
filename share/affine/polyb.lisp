@@ -19,25 +19,27 @@
        (list '(mlist simp) firs sec)))
     (otherwise
      ($circle_times (car l) (apply '$circle_times (cdr l))))))
-(defun sort-grouped-list (a-list group-size pred &aux if-necessary answer
-			  tem (prev (car a-list)))
-  (sloop for v in a-list
-	for i from 0
-	when (zerop (mod i group-size))
-	do (cond ((funcall pred v prev)(setq if-necessary t)(return t)))
-	(setq prev v))
+
+(defun sort-grouped-list (a-list group-size pred &aux if-necessary answer tem (prev (car a-list)))
+  (loop for v in a-list
+     for i from 0
+     when (zerop (mod i group-size))
+     do (cond ((funcall pred v prev)
+	       (setq if-necessary t)
+	       (return t)))
+       (setq prev v))
   (cond (if-necessary
-	 (sloop  with v = a-list 
-		 while v
-		collect v into all
-		do (setf v (nthcdr group-size v))
-		finally
-		(setq all (sort all pred :key 'car ))
-		(loop-return
-		(sloop for v in all
-		      nconc
-		      (sloop for w in v for i below group-size
-			     collect w)))))
+	 (loop  with v = a-list
+	    while v
+	    collect v into all
+	    do (setf v (nthcdr group-size v))
+	    finally
+	      (setq all (sort all pred :key 'car ))
+	      (return
+		(loop for v in all
+		   nconc
+		     (loop for w in v for i below group-size
+			collect w)))))
 	(t a-list)))
 
 (defun $sort_dot_simplifications (&optional (pred $order_function) &aux rev-pred)
@@ -53,7 +55,7 @@
 ;				      (dot-simps $dot_simplifications))
 ;
 ;  ($sort_dot_simplifications)
-;  (sloop for term in (cdr $dot_simplifications)
+;  (loop for term in (cdr $dot_simplifications)
 ;	for i from 0
 ;	when (evenp i)
 ;	do
@@ -62,7 +64,7 @@
 ;			(nthcdr (+ 3 i) dot-simps))))
 ;	  (cond (($must_replacep term)
 ;                 (setq repl (nth (1+ i)  (cdr dot-simps)))
-;		 
+;
 ;                 (setq relat
 ;		       (cond ($new_fast_dotsimp
 ;			      (header-poly (n- repl term)))
@@ -77,7 +79,7 @@
 ;;;;;		 (>= ($nc_degree temp2) from-degree)
 ;;;;		 ($must_replacep temp2))
 ;
-;	       (sloop until  (null ($must_replacep temp2))
+;	       (loop until  (null ($must_replacep temp2))
 ;		     do
 ;		     (break 'here)(setq temp1 temp2)
 ;		     (cond ($free_dot (setq temp2 ($dotsimp temp2)))
@@ -89,19 +91,19 @@
 ;		     (setf (nth (1+ i) $dot_simplifications) temp2)))
 ;  (cond (relat (setq $dot_simplifications dot-simps)
 ;	       (convert-relation-to-dot-simp ($dotsimp relat)))
-;	(t 
+;	(t
 ;	 $dot_simplifications))
 ;   (cond ($fast_dotsimp ($rat_the_dot_simplifications))
 ;	 (t $dot_simplifications)))
 ;
-;;;second The above definition worked for not fast_dotsimp 
+;;;second The above definition worked for not fast_dotsimp
 ;
-; 
-;(defun $simplify_dot_simplifications (&optional (from-degree 0) &aux 
-;				      relat 
+;
+;(defun $simplify_dot_simplifications (&optional (from-degree 0) &aux
+;				      relat
 ;				      (dot-simps $dot_simplifications))
 ;   ($sort_dot_simplifications)
-;   (sloop for v on (cdr $dot_simplifications) by 'cddr
+;   (loop for v on (cdr $dot_simplifications) by #'cddr
 ;	 for i from 1 by 2
 ;	 do
 ;         (setq dot-simps $dot_simplifications)
@@ -121,18 +123,16 @@
 
 
 
-(defmfun ncmul2* (x y) (simplifya `((mnctimes) ,x ,y) nil))
+(defmfun ncmul2* (x y)
+  (simplifya `((mnctimes) ,x ,y) nil))
 
-
-  
 (defun contains-a-zero-replacement (form &aux u)
   (or (in-nth-power-radical form $radical_nilpotent_of_order)
-      
       (cond ((atom form)
-	     (sloop for v on (cdr $dot_simplifications) by 'cddr
+	     (loop for v on (cdr $dot_simplifications) by #'cddr
 		   when (and (eq 0 (second v)) (eq (car v) form))
 		   do (return t)))
-	    (t (sloop for v on (cdr $dot_simplifications) by 'cddr
+	    (t (loop for v on (cdr $dot_simplifications) by #'cddr
 		     when (eq 0 (second v))
 		     do (cond ((atom (setq u (car v)))
 			       (cond ((member u form :test #'equal) (return t))))
@@ -142,12 +142,13 @@
   "returns t if (ncmuln form nil) would cause a replacement  when simplified (form is
  not a product"
   (setq tem1 (cdr $dot_simplifications))
-  (cond ((atom form)(sloop for u in tem1
-			  for i from 1
-			  when (and (oddp i)(eq u form))
-			  do(return t)))
+  (cond ((atom form)
+	 (loop for u in tem1
+	    for i from 1
+	    when (and (oddp i)(eq u form))
+	    do(return t)))
 	(t
-	 (sloop while tem1
+	 (loop while tem1
 	       do (setq u (car tem1))
 	       (setq tem1 (cddr tem1))
 	       (cond ((atom u)(cond ((member u form :test #'equal) (return t))))
@@ -166,7 +167,7 @@
   (cond (poly
 	 (cond ((numberp poly) nil)
 	       (t
-		(sloop while poly
+		(loop while poly
 		      when ($must_replacep (get (car poly) 'disrep))
 		      do (return t)
 		      when (numberp       (setq poly (fifth poly)))
@@ -237,13 +238,13 @@
 ;		   (displa answer)
 ;		   answer)
 ;		  (t
-;		   
+;
 ;		   (setq term1 (ncmul1 1 ($dotsimp ($vrat (ncmul* a b))) c))
 ;		   (setq term2 (ncmul1  a ($dotsimp ($vrat (ncmul* b c))) 1))
 ;		   (setq tem  (vsub* term1 term2))
 ;		   (check-rat-order tem)
 ;		   ($dotsimp tem))))))
-;	 
+;
 ;	 (t
 ;	   (setq tem  ($ratsimp
 ;			($dotsimp ($ratsimp
@@ -273,12 +274,12 @@
 ;			 (t (zerop (setq ,n ($ratsimp ,n)))
 ;			    (format t "~having to Ratsimp ~A" ,n))))
 ;		   (t (and (numberp (setq ,n ($ratsimp ,n)))(zerop ,n)))))))
-  
+
 (defvar *previously-checked-pairs* nil)
 (defvar $global_dimension_three nil)
 (defvar $rank_function nil)
 
-(defun two-times-n (n) (cond ((> n 4) (f* 2 n))
+(defun two-times-n (n) (cond ((> n 4) (* 2 n))
 			     (t 0)))
 (defun rank-dimension-three-modulo-cubic (n)
   (cond ((< n  4) 0)
@@ -286,8 +287,8 @@
 
 (defun rank-1-1-1-9 (n)
   (cond ((< n 9) (polynomial-ring-1-1-1 n))
-	(t 
-	 (- (f* n 9)  27))))
+	(t
+	 (- (* n 9)  27))))
 
 (defvar *all-rank-functions* '($global_dimension_3
 			       rank-dimension-three
@@ -305,7 +306,7 @@
   (or *previously-checked-pairs*
       (setq *previously-checked-pairs*
 	    (make-hash-table :test 'equal)))
-  (cond (maybe-reset 
+  (cond (maybe-reset
 	 (cond ((y-or-n-p "Reset *previously-checked-pairs* ?")
 		(or *previously-checked-pairs*
 		    (setq *previously-checked-pairs*
@@ -316,7 +317,7 @@
 		(user-supply list-of-degrees-to-mod-out)
 		(setq $rank_function (hilbert-modulo list-of-degrees-to-mod-out)))
 	       ((y-or-n-p "Set the $Rank_function to a non nil value?")
-		(sloop for v in *all-rank-functions*
+		(loop for v in *all-rank-functions*
 		      do
 		      (format t "~%Use ~A ?" v)
 
@@ -330,52 +331,52 @@
 	 (cond ((not (y-or-n-p "Keep the current variables?"))
 		(setq reset-monomials t)(format t "~%Enter a Macsyma list:")
 		(setq $current_variables  (mread-noprompt *standard-input*)))))
-		
+
 	(t (format t "
 ~%Starting to check overlaps without resetting *previously-checked-pairs*")))
   (show $rank_function)
-  (setq to-replace				
-	(sloop for mon in $dot_simplifications 
+  (setq to-replace
+	(loop for mon in $dot_simplifications
 	      for i from 0
 	      when (and (oddp i) (not (atom mon)))
 	      collecting mon))
-  (sloop for mon in to-replace
+  (loop for mon in to-replace
 	minimize (setq deg ($nc_degree mon)) into the-min
 	maximize deg into the-max
 	finally (setq lowest-degree the-min)
 	(cond ((not (numberp up-to-degree))
-	       (setq up-to-degree (1- (f* 2 the-max))))))
+	       (setq up-to-degree (1- (* 2 the-max))))))
 
   (cond (from-degree (setq lowest-degree  from-degree)))
  (setq deg lowest-degree)
- 
-   
-  (sloop named angela
+
+
+  (loop named angela
     while (<= deg up-to-degree)
     for deg from (1+ lowest-degree) to up-to-degree
-    
+
     do
     (cond ($rank_function
 	(format t "~%current variables are")
 	(displa $current_variables)
-	(sloop while (< deg (1+ up-to-degree))
+	(loop while (< deg (1+ up-to-degree))
 	      do
 	      (setq dim (1- (length
 				($mono $current_variables  deg reset-monomials))))
 	      (format t
 		      "~%There are ~A independent monomials in degree ~A and rank function is ~A" dim deg (funcall $rank_function deg))
-	      (cond ((<= dim (funcall $rank_function  deg))	
+	      (cond ((<= dim (funcall $rank_function  deg))
 		     (setq lowest-degree  (min up-to-degree deg)) (setq deg (1+ deg)))
 		    (t (return 'done))))))
     (cond ((<= deg up-to-degree)
-    (sloop
+    (loop
       for right1 in to-replace
       do
       (setq bef-overlap (- deg ($nc_degree right1)))
-      (sloop
+      (loop
 	for left in to-replace
 	do
-	(sloop while (< deg-so-far bef-overlap)
+	(loop while (< deg-so-far bef-overlap)
 	      for v in (cdr left)
 	      for ii from 2
 	      summing ($nc_degree v) into deg-so-far
@@ -392,7 +393,7 @@
 			      (ordered-pair-in-list left right1
 						    *previously-checked-pairs* ))
 			    nil )
-			   (t  (setf (gethash  
+			   (t  (setf (gethash
 					      (list left right1) *previously-checked-pairs*)
 				    t)
 			      (setq assoc-list
@@ -400,7 +401,7 @@
 					  (ncmuln (nthcdr ii left) t)
 					  (ncmuln tem t)))
 			      (format t "~%Checking the overlap for")
-			      (displa (list '(mlist simp) left right1))     
+			      (displa (list '(mlist simp) left right1))
 			      (setq tem1 (apply  '$check_associative
 						 assoc-list))
 			      (cond (($zerop tem1)
@@ -411,17 +412,18 @@
 				     (displa (cons '(mlist simp) assoc-list))
 				     (cond (add-to-simps
 					    (convert-relation-to-dot-simp tem1)))
-                                     (cond ($fast_dotsimp ($rat_the_dot_simplifications)))
+				     (cond ($fast_dotsimp ($rat_the_dot_simplifications)))
 				     ($check_overlaps
 				       up-to-degree
 				       add-to-simps nil lowest-degree)
-				     (return-from angela 'done))))))))))))) 
+				     (return-from angela 'done)))))))))))))
   $dot_simplifications)
 
 (defun rank-dimension-three (n)
-  (cond ((oddp n)(div* (f* (1+ n) (+ n 3)) 4))
-	(t (div* (f* (+ 2 n) (+ 2 n)) 4))))
-;  (cond ((null ok) 
+  (cond ((oddp n)(div* (* (1+ n) (+ n 3)) 4))
+	(t (div* (* (+ 2 n) (+ 2 n)) 4))))
+
+;  (cond ((null ok)
 ;	(cond ((y-or-n-p "Would you like to try again?")
 ;	      (format t "~%Up to what degree would you like to test?
 ;  ~%Enter a number: ")
@@ -429,13 +431,14 @@
 ;		   ($check_overlaps up-to-degree t)))))
 
 (defvar *temp-pair* (list nil nil))
+
 (defun ordered-pair-in-list (a b a-list-of-pairs)
   (let ((lis *temp-pair*))
     (setf (car lis) a (second lis) b)
     (gethash  lis a-list-of-pairs)))
 
 (defmacro spsafe (&rest ll)
-  (sloop for u in ll
+  (loop for u in ll
 	do
 	(cond ((get u 'special)(format t "~%***Warning**** ~A is a special" u))
 	      (t (format t "~%~A is not special" u)))))
@@ -447,7 +450,7 @@
   (setq $dot_simplifications '((mlist simp)))
   (show $order_function)
   (cond (($listp (setq relations (meval* relations)))(setq relations (cdr relations))))
-  (sloop for relat in relations
+  (loop for relat in relations
 	do
 	 (convert-relation-to-dot-simp relat ordering))
   (format t "~%The new dot simplifications are set up")
@@ -466,11 +469,11 @@
 				     cof worst  )
   ordering
   (cond ($fast_dotsimp (setq relat ($dotsimp relat )))              ;;($vrat relat))))
-        ((null $free_dot)(setq relat (meval* relat)))
+	((null $free_dot)(setq relat (meval* relat)))
 	(t (setq relat ($dotsimp relat))))
   (cond
     (($zerop relat ) nil)
-    ((numberp relat)(ferror "Adding a constant relation  will result in the trivial algebra"))
+    ((numberp relat) (merror "Adding a constant relation  will result in the trivial algebra"))
     (t
      (cond
        ($new_fast_dotsimp
@@ -479,7 +482,7 @@
 	      cof (third  relat))
 	(setq relat  (nred relat cof))
        (setq relat (n-  worst relat))                ;;; should take cdddr etc. not subtractt
-       
+
 	(setq relat (header-poly relat)))
 ;;;;	(setq relat (vsub* worst relat)))
        (t
@@ -534,12 +537,12 @@
 ;;new varlist.  Since we usually just want to splice them, we introduce vadd*,etc.
 ;;which locally put the varlist to nil.  This method involves no ratdisrepping,
 ;;and so is quite fast.  The elements of genvar get reused again and again, unless
-;;you specify genvar nil say, or somehow hide the old elements of genvar.  
+;;you specify genvar nil say, or somehow hide the old elements of genvar.
 ;;
 ;;   The elements of genvar sometimes get a 'disrep property, after disrepping.
 ;;This will not happen if you were not displaying intermediate results etc.
 ;;The elements of genvar get assigned the numerical values 1,2 ,3,4,...  as shown
-;;below.  
+;;below.
 ;;
 ;;   $gcd does not cause disrepping and can be used to find the common factor
 ;;of a numerator and denominator, so as to have the same effect as ratsimp
@@ -548,7 +551,7 @@
 ;;   The order of varlist when splicing is alphabetical.  Thus if you want
 ;;to have zeta before a use %zeta or @zeta.  Otherwise you would have to add
 ;;a to varlist first, and that would give it precedence over b etc.  Note
-;;that lists come after any atom in alphalessp order. 
+;;that lists come after any atom in alphalessp order.
 ;;
 ;;   I add v to the name if we let varlist be nil.  Thus ($vrat '$a) will cause
 ;;the result to have only a varlist of ($a) .  The genvar will be the global
@@ -588,7 +591,7 @@
 ;;   G0557 disreps $B value 2
 ;;   G0556 disreps $C value 3
 ;;   G0555 disreps $D value 4
-;; 
+;;
 ;;
 ;;   If one is going to do a lot of computations with entries of a matrix
 ;;say which all have more or less the same variables occurring one could
@@ -601,7 +604,7 @@
 ;;new-genvar).  Then outside everything put a (let ((genvar new-genvar))
 ;;
 ;;   Prep1 does not disrep expr if the global varlist contains all
-;;(varlist expr) in the right order, and if the global genvar 
+;;(varlist expr) in the right order, and if the global genvar
 ;;is as long as the varlist.  Note that rattimes will not automatically
 ;;simplifying such things as %i^2, so one may still want to just use vmul*.
 ;;Prep1 does not alter (cdr expr) if the varlist and genvar of expr are equal to
@@ -618,7 +621,7 @@
 ;
 
 ;(defun vmul* (&rest a-list))
-;  
+;
 
 
 
@@ -676,7 +679,7 @@
   (cond (($listp a-list)(setq a-list (cdr a-list))))
   (cond ((and (zerop $expop)(null $fast_dotsimp))
 	 (setf (second a-list) ($multthru (second a-list)))))
-  (sloop for u in $dot_simplifications
+  (loop for u in $dot_simplifications
 	for i from 0
 	when (and (oddp i) (not (funcall ordering  (car a-list) u)))
 	do (setq $dot_simplifications (append (subseq $dot_simplifications 0 i)
@@ -702,7 +705,7 @@ and modulo-p not prime gives false answer"
 (defun $nu (i llist &aux
   (p1  (length llist)))
   (let ((fact ($inverse_modulo i p1)))
-  (sloop for ii from 1 below p1
+  (loop for ii from 1 below p1
 	collecting
 	(nth (mod (* ii fact) p1) llist) into tem
 	do (show tem ii)
@@ -712,12 +715,12 @@ and modulo-p not prime gives false answer"
   (setq l (cdr l))
   (let ((p0 (length l)))
     (show p0)
-    (add*  (mul* p0 (sloop for i from 1 to (1- p0)
+    (add*  (mul* p0 (loop for i from 1 to (1- p0)
 			  collecting (mul* (nth i l) (power '$sig (mod (- i) p0)))
 			  into tem
 			  finally (return (meval* (cons '(mplus) tem))))
 		 (car l)
-		 (mul* (- p0) (sloop for i from 1 to (1- p0)
+		 (mul* (- p0) (loop for i from 1 to (1- p0)
 					collecting (nth i l) into tem
 					finally (return (meval* (cons '(mplus) tem)))))))))
 
@@ -734,7 +737,7 @@ and modulo-p not prime gives false answer"
   (let ((tem (apply '$concat l)))
     (putprop tem '(nil $scalar t) 'mprops)
     tem))
-                                                      
+
 (defun $rel (i j)
   (let ((ii (max i j)) ans (jj (min i j)))
     (cond ((not (equal i j))
@@ -746,16 +749,16 @@ and modulo-p not prime gives false answer"
     (cons '(mlist simp) ans)))
 
 (defun $clifford_dot_simplifications (n )
-  (sloop for i from 1 to n
-        appending
-	(sloop for j from 1 to i
+  (loop for i from 1 to n
+	appending
+	(loop for j from 1 to i
 	      appending (cdr ($rel i j)))
 	into tem
 	finally (return (cons '(mlist simp) tem))))
 
 
 (defun $replacements (&aux (tem (cdr $dot_simplifications)))
-  (sloop while tem
+  (loop while tem
 	collecting (car tem) into a-list
 	do (setq tem (cddr tem))
 	finally (return (cons '(mlist simp) a-list))))
@@ -765,17 +768,17 @@ and modulo-p not prime gives false answer"
 
 (defun $earlier_mono (monom &optional (variables $current_variables) &aux answer)
   (setq answer ($mono variables ($nc_degree monom)))
-  (sloop for v in (cdr answer)
+  (loop for v in (cdr answer)
 	 when (funcall $order_function v monom)
 	 collecting v into tem
 	 finally (return (cons '(mlist simp) (sort tem $order_function)))))
 
 (defun parse-string (a-string)
-  (cond ((null (or (string-search "$" a-string) (string-search ";" a-string)))
-	 (setq a-string  (string-append a-string "$"))))	
+  (cond ((null (or (search "$" a-string :test #'char-equal) (search ";" a-string :test #'char-equal)))
+	 (setq a-string  (string-append a-string "$"))))
   (with-input-from-string (stream a-string)
     (let ((*standard-input* stream) answer)
-         (setq answer (caddr (mread)))
+	 (setq answer (caddr (mread)))
 	   answer)))
 (defmacro   mac (a-string )
   "Parses a Macsyma string but does not call meval*"
@@ -802,19 +805,19 @@ and modulo-p not prime gives false answer"
 	(t (format t "~%Enter Macsyma list of variables to use:") (setq $current_variables
 						      (caddr (mread-raw *standard-input*)))))
   (cond (order-weight
-	 (sloop for j from 1 to n
+	 (loop for j from 1 to n
 	       do (setq the-count 0)
-	       (sloop for i from 1 to n
+	       (loop for i from 1 to n
 		     do
-		     (sloop for v in (cdr ($mono $current_variables i))
+		     (loop for v in (cdr ($mono $current_variables i))
 			   when (eq ($nc_degree v :order-weight) j)
 			   do (incf the-count)))
 	       (format t "~%There are ~A monomials of order weight ~A and of degree less than ~A"
 		       the-count j n)
 	       summing the-count into tem
 	       finally (format t "~%The total number of monomials of weight and degree less than ~A is ~A." n (1+ tem)))))
-	 
-  (sloop for i from 1 to n
+
+  (loop for i from 1 to n
 	do
 	(format t "~%There are ~A independent monomials in degree ~A."
 		(setq j (length  (cdr ($mono $current_variables i)))) i)
@@ -825,13 +828,13 @@ and modulo-p not prime gives false answer"
 
 
 (defun $mono_weighted (n &aux the-list)
-  (sloop for i from 1 to n
+  (loop for i from 1 to n
 	do
-	(sloop for v in (cdr ($mono $current_variables i))
+	(loop for v in (cdr ($mono $current_variables i))
 	      when (eq ($nc_degree v :order-weight) n)
 	      do (setq the-list (cons v the-list)))
 	finally (return (cons '(mlist) the-list))))
-	      
+
 (defmacro subscript (d i)
   `((,d  :array) ,i))
 (defvar $last_equations nil)
@@ -839,18 +842,18 @@ and modulo-p not prime gives false answer"
 (defun $find_relations_among (a-list &optional (dotsimp-first nil) (term-names nil)&aux eqns gen-sum answers)
   (check-arg a-list '$listp "macsyma list")
   (cond (dotsimp-first (setq a-list
-			     (sloop for v in (cdr a-list)
+			     (loop for v in (cdr a-list)
 			     collecting ($dotsimp v) into tem
 			     finally (return (cons '(mlist) tem))))))
   (setq gen-sum ($general_sum  a-list $aaaa))
   (cond ((null dotsimp-first) (setq gen-sum ($dotsimp gen-sum))))
   (setq $last_equations (setq eqns ($nc_coefficients ($ratsimp `((mlist) , gen-sum)))))
-  (setq answers (apply '$fast_linsolve (cdr eqns)))  
+  (setq answers (apply '$fast_linsolve (cdr eqns)))
   (setq $last_solutions answers)
-  (cond ((null term-names)(setq term-names (sloop for i from 1 to (length (cdr a-list))
+  (cond ((null term-names)(setq term-names (loop for i from 1 to (length (cdr a-list))
 				       collecting ($concat '$term i) into tem
 				       finally (return (cons '(mlist) tem))))))
-  ($sublis answers ($general_sum term-names 
+  ($sublis answers ($general_sum term-names
 				 $aaaa)))
 
 
@@ -859,10 +862,10 @@ and modulo-p not prime gives false answer"
 (deff $te #'$power_series_monomial_alphalessp)
 
 (defun $check_skew_relations (&optional(variables $current_variables) &aux tem answer)
-  (sloop for  u in (cdr variables)
+  (loop for  u in (cdr variables)
 	unless ($must_replacep u)
 	do
-	(sloop for v in (cdr variables)
+	(loop for v in (cdr variables)
 	      when (and (funcall $order_function u v) (not (equal u v)))
 	      do
 	      (cond (($must_replacep (setq tem (ncmul* v u))) nil)
@@ -872,18 +875,18 @@ and modulo-p not prime gives false answer"
 		      (t (cons '(mlist) answer)))))
 
 (defun get-alt (item a-list)
-  (sloop while a-list
+  (loop while a-list
 	when (equal item (car a-list))
 	do(return (second a-list))
 	else do (setq a-list (cddr a-list))))
 
 (defun $collect_skew_relations (&optional(variables $current_variables) &aux tem  tem2)
-  (sloop for  u in (cdr variables)		;a
+  (loop for  u in (cdr variables)		;a
 	unless ($must_replacep u)
 	appending
-	(sloop for v in (cdr variables)
+	(loop for v in (cdr variables)
 	      when (and (funcall $order_function u v) (not (equal u v))
-	           (setq tem2 (get-alt (setq tem (ncmul* v u)) (cdr $dot_simplifications))))
+		   (setq tem2 (get-alt (setq tem (ncmul* v u)) (cdr $dot_simplifications))))
 	      collecting tem
 	      and
 	      collecting tem2 )
@@ -892,7 +895,7 @@ and modulo-p not prime gives false answer"
 
 (defun $relations_from_dot_simps(&optional (dot-simps $dot_simplifications))
   (let ((a-list (cdr dot-simps)))
-	(sloop
+	(loop
 	      while a-list
 	      collecting  (sub* (first a-list) ($totaldisrep (second a-list))) into tem
 	      do
@@ -903,11 +906,13 @@ and modulo-p not prime gives false answer"
 
 (defun $pb (n)
   (mfuncall '$playback (list '(mlist) n 1000)))
+
 (defvar $centrals_so_far nil)
+
 (defun $find_central_thru_deg (begin to-n &aux tem)
   (displa $current_variables)
   (setq $centrals_so_far nil)
-  (sloop for i from begin  to to-n
+  (loop for i from begin  to to-n
 	do
 	($check_overlaps (1+ i) t nil i)
 	(setq $centrals_so_far
@@ -935,7 +940,7 @@ and modulo-p not prime gives false answer"
 	   (mnctimes nil)
 	   (mrat
 	    (let ((gen-vars (fourth (rat-variable-info x))))
-	      (sloop for vv in gen-vars
+	      (loop for vv in gen-vars
 		     when (not (fast-scalarp (get vv 'disrep)))
 		     do
 		     (cond ((appears-in  (cdr x) vv) (return nil)))
@@ -954,15 +959,15 @@ and modulo-p not prime gives false answer"
 				      monom)
 	($ratcoef expr monom deg))
        (t answer)))
- 
+
 (defun my-ratcoeff1 (expr monom &optional (deg 1))
   (let ((var-list (varlist expr))
 	(gen-vars (genvar expr)))
-    (sloop for v in var-list
+    (loop for v in var-list
 	  for w in gen-vars
 	  when (equal v monom)			;
 	  do
-          (cond ((not (appears-in (num (cdr expr)) w)) (return 0))
+	  (cond ((not (appears-in (num (cdr expr)) w)) (return 0))
 		(t
 		 (return (cons (rat-variable-info expr) (cons (my-ratcoeff2 (num (cdr expr))
 									    w
@@ -972,12 +977,12 @@ and modulo-p not prime gives false answer"
 ;
 ;(defun my-ratcoeff2(rat-expr gen-var &optional (deg 1))
 ;  (cond ((atom rat-expr) (rzero))
-;	
+;
 ;	(t (let ((rat-num rat-expr))
 ;						; (gshow rat-num)
 ;	     (cond ((eq (car rat-num) gen-var)
 ;		    (setq rat-num (cdr rat-num))
-;		    (sloop while rat-num
+;		    (loop while rat-num
 ;			  when (eq (car rat-num) deg)
 ;			  do
 ;			  (return  (second rat-num) )
@@ -985,17 +990,17 @@ and modulo-p not prime gives false answer"
 ;			  do
 ;			  (return (my-ratcoeff2 (second rat-expr) gen-var))
 ;			  else
-;			  
+;
 ;			  do
 ;			  (setq rat-num (cddr rat-num))))
 ;		   (t (setq rat-num (cdr rat-num))
 ;;		      (break t)
-;		    (sloop while rat-num
+;		    (loop while rat-num
 ;			    when (eq (car rat-num) 0)
 ;			    do
 ;			    (return (my-ratcoeff2 (second rat-num) gen-var))
 ;			    else
-;			    
+;
 ;			    do (setq rat-num (cddr rat-num))
 ;;			    (gshow rat-num)
 ;			    )))))))
@@ -1003,12 +1008,12 @@ and modulo-p not prime gives false answer"
 
 (defun my-ratcoeff2(rat-expr gen-var &optional (deg 1))
   (cond ((atom rat-expr) (rzero))
-	
+
 	(t (let ((rat-num rat-expr))
 						; (gshow rat-num)
 	     (cond ((eq (car rat-num) gen-var)
 		    (setq rat-num (cdr rat-num))
-		    (sloop while rat-num
+		    (loop while rat-num
 			  when (eq (car rat-num) deg)
 			  do
 			  (return  (second rat-num) )
@@ -1016,12 +1021,12 @@ and modulo-p not prime gives false answer"
 			  do
 			  (return (my-ratcoeff2 (second rat-expr) gen-var))
 			  else
-			  
+
 			  do
 			  (setq rat-num (cddr rat-num))))
 		   (t (setq rat-num (cdr rat-num))
 ;		      (break t)
-		    (sloop while rat-num
+		    (loop while rat-num
 			    when (eq (car rat-num) 0)
 			    do
 			    (return (my-ratcoeff2 (second rat-num) gen-var))
@@ -1035,13 +1040,13 @@ and modulo-p not prime gives false answer"
 ;
 ;(defun $numerator (expr)
 ;;  (check-arg expr '$ratp "macsyma cre form")
-;  
+;
 ;  (cond
 ;    ((numberp expr) expr)
 ;    ((mbagp expr)(cons (car expr) (mapcar '$numerator (cdr expr))))
 ;    (($ratp expr) (cons (car expr)(cons (cadr expr) 1)))
 ;        ((equal (caar expr) 'mtimes)
-;		 (sloop for v in (cdr expr)
+;		 (loop for v in (cdr expr)
 ;		       unless  (and (not (atom v))
 ;				  (equal (caar v) 'mexpt)
 ;;				  (show (third v))
@@ -1055,7 +1060,7 @@ and modulo-p not prime gives false answer"
   (cond (($ratp expr)
 	 (cons (car expr)(cons (cddr expr) 1)))
 	((equal (caar expr) 'mtimes)
-		 (sloop for v in (cdr expr)
+		 (loop for v in (cdr expr)
 		       when  (and (not (atom v))
 				  (equal (caar v) 'mexpt)
 ;				  (show (third v))
@@ -1103,34 +1108,34 @@ and modulo-p not prime gives false answer"
   (let (($dot_simplifications nil)(result t) coeff-values answer )
     (setq monoms3 ($mono '((mlist) $x $y) 3))
     (setq coeff-values
-      (sloop for relat in (cdr relations)
+      (loop for relat in (cdr relations)
 	  for coeff-names in (list $bbbb $cccc)
 	  appending
-	  (sloop for u in (cdr monoms3)
+	  (loop for u in (cdr monoms3)
 		for j from 1
 		collecting `((mequal) ,(nth j coeff-names) ,($coeff  relat u)))
 	  into tem
 	  finally (return (cons '(mlist) tem))))
     (setq answer ($sublis coeff-values $skew3_conditions))
-    (sloop for v in (cdr answer)
+    (loop for v in (cdr answer)
 	  when (not ($zerop (sub*  (nth 1 v) (nth 2 v))))
 	  do (format t "~%Inconsistent condition ")
 	  (displa v)
 	  (setq result nil))
     (cond ((null result)(format t "~%Trying to interchange f and g...")
-	  
+
 	   ($check_skew3_conditions (list '(mlist) (reverse (cdr relations)))))
-	  (t result)))) 
+	  (t result))))
 (defun $list_variables (expr &rest key-strings &aux string-v tem)
   (cond ((null key-strings) ($listofvars expr))
 	(t
-	 (sloop for v in key-strings
+	 (loop for v in key-strings
 	       collecting (string-trim "&" v) into tem
 	       finally (setq key-strings tem))
-	 (sloop for v in (cdr (setq tem ($listofvars expr)))
+	 (loop for v in (cdr (setq tem ($listofvars expr)))
 	       do (setq string-v (string v))
-	       when (not (sloop for key in key-strings
-			       when  (string-search key string-v)
+	       when (not (loop for key in key-strings
+			       when  (search key string-v :test #'char-equal)
 			       do (return t)))
 	       do (setq tem (delete v tem :test #'equal))
 	       finally (return tem)))))
@@ -1140,15 +1145,15 @@ and modulo-p not prime gives false answer"
 	(monoms-higher ($mono variables (1+ deg))))
 
     (setq f ($general_sum monoms $aaaa))
-    (sloop for v in (cdr variables)
+    (loop for v in (cdr variables)
 	  do
   	  (setq unknowns ($list_variables f "aa" "par"))
-	  (setq parameters (sloop for vv in (cdr unknowns)
-				 when (string-search "par" (string vv))
+	  (setq parameters (loop for vv in (cdr unknowns)
+				 when (search "par" (string vv) :test #'char-equal)
 				 collecting vv))
 	  (setq tem1 (cdr $aaaa))
-	  (sloop for vv in parameters
-		do (sloop while tem1
+	  (loop for vv in parameters
+		do (loop while tem1
 			 when (not (member (car tem1) unknowns :test #'eq))
 			 do (setq f (subst (car tem1) vv f))
 			 (setq unknowns (subst (car tem1) vv unknowns))
@@ -1179,21 +1184,21 @@ and modulo-p not prime gives false answer"
      (setq variables (cons '(mlist) (mapcar 'car tem)) auto (cons'(mlist)
 							      (mapcar 'cdr tem)))
   (setq $commutators nil $centralizers nil)
-  (let* ((monoms (cond (up_to_deg (cons '(mlist) (sloop for i from 1 to deg appending (cdr  ($mono variables i)))))
+  (let* ((monoms (cond (up_to_deg (cons '(mlist) (loop for i from 1 to deg appending (cdr  ($mono variables i)))))
 		       (t ($mono variables deg))))
 ;	(monoms-higher ($mono variables (1+ deg)))
 	)
     (setq f ($general_sum monoms $aaaa))
-    (sloop for v in (cdr variables)
+    (loop for v in (cdr variables)
 	  for im in (cdr auto)
 	  do
   	  (setq unknowns ($list_variables f "aa" "par"))
-	  (setq parameters (sloop for vv in (cdr unknowns)
-				 when (string-search "par" (string vv))
+	  (setq parameters (loop for vv in (cdr unknowns)
+				 when (search "par" (string vv) :test #'char-equal)
 				 collecting vv))
 	  (setq tem1 (cdr $aaaa))
-	  (sloop for vv in parameters
-		do (sloop while tem1
+	  (loop for vv in parameters
+		do (loop while tem1
 			 when (not (member (car tem1) unknowns :test #'eq))
 			 do (setq f (subst (car tem1) vv f))
 			 (setq unknowns (subst (car tem1) vv unknowns))
@@ -1216,17 +1221,17 @@ and modulo-p not prime gives false answer"
   (let* ((monoms ($mono variables deg))
 ;	(monoms-higher ($mono variables (1+ deg)))
 	)
-   
+
     (setq f ($general_sum monoms $aaaa))
-    (sloop for v in (cdr variables)
+    (loop for v in (cdr variables)
 	  do
   	  (setq unknowns ($list_variables f "aa" "par"))
-	  (setq parameters (sloop for vv in (cdr unknowns)
-				 when (string-search "par" (string vv))
+	  (setq parameters (loop for vv in (cdr unknowns)
+				 when (search "par" (string vv) :test #'char-equal)
 				 collecting vv))
 	  (setq tem1 (cdr $aaaa))
-	  (sloop for vv in parameters
-		do (sloop while tem1
+	  (loop for vv in parameters
+		do (loop while tem1
 			 when (not (member (car tem1) unknowns :test #'eq))
 			 do (setq f (subst (car tem1) vv f))
 			 (setq unknowns (subst (car tem1) vv unknowns))
@@ -1245,7 +1250,7 @@ and modulo-p not prime gives false answer"
 	  finally (return ($separate_parameters f)))))
 
 (defun $central_elements_in_degrees (&rest degrees &aux $centrals_so_far)
-  (sloop for i in degrees do
+  (loop for i in degrees do
     ($check_overlaps (1+ i) t nil)
     (push ($fast_central_elements $current_variables i)
 			    $centrals_so_far)
@@ -1255,7 +1260,7 @@ and modulo-p not prime gives false answer"
 
 (defun $pbi (n &aux tem)
   (let ((linel (- linel 10)))
-    (sloop for i from n below $linenum
+    (loop for i from n below $linenum
 	  do  (format t "~% ~4A: ~A" (string-trim "$" (string (setq tem ($concat '$c i))))
 		      (string-grind (meval* tem))))))
 
@@ -1263,7 +1268,7 @@ and modulo-p not prime gives false answer"
 				 :fill-pointer 0 :adjustable t))
 
 (defun new-concat (a &rest b &aux me)
-  (sloop for v in b collecting
+  (loop for v in b collecting
 	(format nil "~A" v) into tem
 	finally (setq me (apply 'string-append tem))
 	(return (intern (format nil "~A~A" a me) 'maxima))))
@@ -1272,7 +1277,7 @@ and modulo-p not prime gives false answer"
 (defun $list_sublis (a-list b-list expr)
   (cond (($listp a-list) (setq a-list (cdr a-list))))
   (cond ( ($listp b-list )(setq b-list (cdr b-list))))
-  (sloop for v in a-list
+  (loop for v in a-list
 	for w in b-list
 	collecting (cons v w) into tem
 	finally (return (sublis tem expr))))
@@ -1284,7 +1289,7 @@ and modulo-p not prime gives false answer"
 		    (t  (let ($cursordisp $linedisp (*standard-output* st))
 			  (displa x))))))
   (setq answ (string-trim '(#\newline #\space  #\$) answ))
-  (cond (stream  (format stream "~A" answ)) ; 
+  (cond (stream  (format stream "~A" answ)) ;
 	(t answ)))
 
 (defun macsyma-typep (x)
@@ -1292,7 +1297,7 @@ and modulo-p not prime gives false answer"
   (or (numberp x)
       (and (consp x)(consp (car x))(get (caar x) 'dimension))))
 
-;If foo is (#:X2 1 1 0 (#:X1 1 1)) for instance, then 
+;If foo is (#:X2 1 1 0 (#:X1 1 1)) for instance, then
 ;(format t "The functions  ~VQ  are the inverses" foo 'fsh)
 ;(format t "~%The functions  ~VQ  are  inverses" (st-rat #$[x1+1,1/ (x1+1)]$)  'fsh)
 ;The functions  X1+1 and 1/(X1+1)  are  inverses
@@ -1307,16 +1312,13 @@ and modulo-p not prime gives false answer"
        (case (length x)
 	 (1 (fsh x stream))
 	 (2 (fsh (first x) stream) (format stream " and ") (fsh (second x) stream))
-	 (t 
-	   (sloop for v in  x
+	 (t
+	   (loop for v in  x
 		 for i from 1 below (length x)
 		 do (fsh v stream) (format stream ",")
 		 finally (format stream " and ") (fsh (car (last x)) stream)))))
       ((and (listp x) (macsyma-typep (car x)))
        (format stream "(")
-       (sloop for v in x do (fsh v) (format t " ")
+       (loop for v in x do (fsh v) (format t " ")
 	     finally (format t ")")))
       (t (des x)))))
-
-
-

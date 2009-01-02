@@ -15,14 +15,13 @@
 
 (defun $monomial_alphalessp (x y)
   (cond ((atom x)
-	 (cond ((atom y)(alphalessp x y))
-	       ((null (cdr y))(alphalessp x (car y) ))
-	       ; x<x.z , x< x.*
-	       ((eql x (cadr y) ))
-	       (t(alphalessp  x (cadr y)))))
+	 (cond ((atom y) (alphalessp x y))
+	       ((null (cdr y)) (alphalessp x (car y) ))
+					; x<x.z , x< x.*
+	       ((eql x (cadr y)))
+	       (t (alphalessp x (cadr y)))))
 	((atom y)
-	 (cond ((atom x)(alphalessp x y))
-	       ((null (cdr x))(alphalessp (car x) y))
+	 (cond ((null (cdr x)) (alphalessp (car x) y)) ;x cannot be an atom here
 	       (t (alphalessp (cadr x) y))))
 	(t
 	 (alphalessp (cdr x) (cdr y)))))
@@ -32,7 +31,7 @@
 
 (defun $power_series_monomial_alphalessp (x y)
   (cond ((equal x y) nil)
-	(t 
+	(t
   (let ((x-deg ($nc_degree x :order-weight))(y-deg ($nc_degree y :order-weight)))
     (cond ((eql x-deg y-deg)($monomial_alphalessp x y))
 	  ((zerop y-deg) (not (zerop x-deg)))
@@ -42,7 +41,7 @@
 
 (defun $polynomial_monomial_alphalessp (x y)
   (cond ((equal x y) nil)
-	(t 
+	(t
   (let ((x-deg ($nc_degree x :order-weight))(y-deg ($nc_degree y :order-weight)))
     (cond ((eql x-deg y-deg)($monomial_alphalessp x y))
 	  ((zerop x-deg) (not (zerop y-deg)))
@@ -50,13 +49,12 @@
 	  ((< x-deg y-deg) t)
 	  (t nil))))))
 
-
 (defun fix-optional (args  &aux (tem (copy-list args)))
-  (sloop for v on tem
+  (loop for v on tem
 	for i from 0
-	when (MEMBER (car v) '(&optional  &key))
-	do (sloop for w on (cdr v)
-		 until (and (atom (car w)) (string-search "&" (string (car w))))
+	when (member (car v) '(&optional  &key))
+	do (loop for w on (cdr v)
+		 until (and (atom (car w)) (search "&" (string (car w)) :test #'char-equal))
 		 when (atom (car w))
 		 do (setq tem  (car w))
 		 else do (setq tem  (caar w))
@@ -69,7 +67,7 @@
   args)
 
 (defun delete-from-&aux (list)
-  (sloop for u in list
+  (loop for u in list
 	for i from 1
 	when (eq u '&aux) do (return (subseq list 0 (1- i)))
 	finally (return list)))
@@ -78,10 +76,8 @@
   (cond ((setq tem  (get f ':memory-table))
 	 (clrhash tem))))
 
-
-(defmacro defremember (func-spec arglist &rest body &aux hash-args
-                       hash-put-args (call-arglist (copy-list arglist)))
-  
+(defmacro defremember (func-spec arglist &rest body
+		       &aux hash-args hash-put-args (call-arglist (copy-list arglist)))
   "Like defun but defines function foo that remembers previous calls to
   it  it unless the calls were made while (disable-remember foo) until
   (enable-remember foo) is done.  To clear memory do (clear-hash (get 'foo
@@ -90,12 +86,12 @@
   use as optional arguments of  global variables or other data not
   included in the arguments upon which  the function call depends.  These
   will then become part of the  argument."
-  
-  (cond ((get func-spec	    :memory-table)
+
+  (cond ((get func-spec	:memory-table)
 	 (clrhash (get func-spec :memory-table))))
   (remprop func-spec :dont-remember)
 ;; (show call-arglist)
-  
+
   (setq call-arglist  (fix-optional(delete-from-&aux call-arglist)))
   (cond ((member '&aux call-arglist  :test #'eq)
 	 (format t "~%It is inadvisable to use &aux with defremember")))
@@ -106,7 +102,7 @@
 	 (setq call-arglist (second arglist)))
 	((member '&rest arglist :test #'eq) (setq hash-args `(list ,@ (DELETE '&rest call-arglist)))
 	 (setq hash-put-args (copy-list hash-args))
-	 (setf (nth (f1- (length hash-put-args)) hash-put-args)
+	 (setf (nth (1- (length hash-put-args)) hash-put-args)
 	       `(copy-list ,(car (last hash-put-args)))))
 	(t (setq hash-put-args (setq hash-args (cons 'list call-arglist)))))
   `(defun ,func-spec ,arglist
@@ -134,10 +130,10 @@
   `(remprop ',f :dont-remember))
 
 (defmacro function-let (alist &body body &aux sym)
-  (sloop for v in alist
+  (loop for v in alist
 	for i from 1
 	do (setq sym (gensym))
-        collecting sym into locals
+	collecting sym into locals
 	collecting `(setq ,sym (symbol-function ',(first v))) into initial
 	collecting `(setf (symbol-function ',(first v))
 			  (symbol-function ',(second v))) into initial
@@ -149,51 +145,43 @@
 			   ,@ protects)))))
 
 (defmacro with-no-query (&rest body)
-  `(function-let ((fquery no-query-aux))
-		,@ body))
-
+  `(function-let ((fquery no-query-aux)) ,@body))
 
 (defmacro with-no-query-answer-no (&rest body)
-  `(function-let ((fquery (lambda( ignore ctrl &rest args)(apply 'format  t ctrl args ) nil)))
-		,@ body))
+  `(function-let ((fquery (lambda (ignore ctrl &rest args) (apply 'format  t ctrl args ) nil)))	,@body))
 
-(defmacro find-minimal (in-list ordering &optional   such-that ind   )
+(defmacro find-minimal (in-list ordering &optional such-that ind)
   (cond (such-that
 	 (cond ((functionp such-that)(setq ind '-ind-)
 		(setq such-that `(,such-that -ind-)))
 	       (t
-	 (check-arg ind (not (null ind)) "non nil.  Must specify index")))
-	 ` (sloop for ,ind in ,in-list
+		(check-arg ind (not (null ind)) "non nil.  Must specify index")))
+	 ` (loop for ,ind in ,in-list
+	      with prev-min
+	      when  ,such-that
+	      do (cond (prev-min
+			(cond ((funcall ,ordering ,ind prev-min)
+			       (setq prev-min ,ind))))
+		       (t (setq prev-min ,ind)))
+	      finally (return prev-min)))
+	(t   `(loop for v in ,in-list
 		 with prev-min
-		 when  ,such-that 
 		 do (cond (prev-min
-			   (cond ((funcall ,ordering ,ind prev-min)
-				  (setq prev-min ,ind))))
-			  (t (setq prev-min ,ind)))
-		 finally (return prev-min)))
-	(t   `(sloop for v in ,in-list
-		    with prev-min
-		    do (cond (prev-min
-			      (cond ((funcall , ordering v prev-min)
-				     (setq prev-min v))))
-			     (t (setq prev-min v)))
-		    finally (return prev-min)))))
-
+			   (cond ((funcall , ordering v prev-min)
+				  (setq prev-min v))))
+			  (t (setq prev-min v)))
+		 finally (return prev-min)))))
 
 (defmacro user-supply (var)
   `(setq ,var (user-supply1 ',var ,var)))
-
 
 (defun user-supply1 (var val)
   (let ((*print-level* 3)
 	.new.
 	.ch.)
-    (sloop do
+    (loop do
 	  (format t "~%The value of ~A is ~A ." var val)
-	  
-	  (format t
-		  "~%Supply a form to evaluate to use for ~A or hit return to keep same :"
-		  var)
+	  (format t "~%Supply a form to evaluate to use for ~A or hit return to keep same :" var)
 	  (setq .ch. (read-char *standard-input*))
 	  (cond ((eql .ch. #\newline)
 		 (return val))
@@ -213,9 +201,9 @@
 
 ;;Idea is that you have two function definitions possibly with the
 ;;same name, and lots of places where the first one is called.
-;;you may want to replace the first function with the second one 
-;;and think you have the definition correct.  You want to compare 
-;;the speed and whether they work the same.  So wrap 
+;;you may want to replace the first function with the second one
+;;and think you have the definition correct.  You want to compare
+;;the speed and whether they work the same.  So wrap
 ;;compare-functions around the two definitions, then it will compare
 ;;them as to speed (and value) in the applications.  It might be reasonable to implement
 ;;this as an emacs macro wrapping it around a region.
@@ -223,7 +211,7 @@
 (defmacro compare-functions (defa defb &rest assertions)
   (let (.fa. .fb.
 	.boda. .bodb.
-	(.assert. (sloop for v in assertions
+	(.assert. (loop for v in assertions
 			collecting `(iassert ,v) into tem
 			finally
 			(return (cons `(iassert (equal .ansa. .ansb.)) tem)))))
@@ -243,7 +231,7 @@
 		   (tim ,@ .bodb.))
 	    (defun ,(second defa)
 		   (&rest l)
-	      (declare (arglist ,. (sloop for v in (third defa)
+	      (declare (arglist ,. (loop for v in (third defa)
 					 until (eq v '&aux) collecting v)))
 	      (let (.ansa. .ansb.)
 		(format t "~%Comparing the functions ~A and ~A " ', .fa. ', .fb.)
@@ -253,8 +241,6 @@
 		,@ .assert.
 		(apply 'values .ansa.))))))
 
-
-
 (defmacro compare-recursive-functions (fn-a fn-b &rest assertions)
   `(progn 'compile
 	 ,fn-a
@@ -262,10 +248,9 @@
   , `(compare-functions
 	(defun ,(intern (string-append (second fn-a) (symbol-name '#:-compare))) ,@ (cddr fn-a))
 	(defun ,(intern (string-append (second fn-b) (symbol-name '#:-compare))) ,@ (cddr fn-b))
-	,@ assertions))) 
+	,@ assertions)))
 
-
-;;sample usage of compare-recursive-functions 
+;;sample usage of compare-recursive-functions
 ;(compare-recursive-functions
 ;  (defun my-pgcd (f g) ...
 ;	 ...
@@ -279,7 +264,7 @@
 ;;are equal (or check other assertions you specify) and print the time spent
 ;;in my-pgcd-compare-a and in my-pgcd-compare-b
 
-;(compare-functions 
+;(compare-functions
 ;(defun ff (u &optional v)
 ;  (values  (+ u v) ))
 ;+
@@ -293,7 +278,7 @@
 ;  (values (+ v u) v))
 ;)
 ;;then if you run some functions that call ff it will give the comparison
-;;note that ff and gg may have the same name 
+;;note that ff and gg may have the same name
 ;(defun test (c d)
 ;  (ff c d))
 
@@ -302,13 +287,11 @@
   (format st "~A" obj)))
 
 (defstruct (s-var (:type list) :named (:conc-name sv-))
-  zopens  ;; list of open sets
-   )
+  zopens)  ;; list of open sets
 
 (defmacro set-slots (struct conc-prefix &rest alt-list)
-  (sloop for v on alt-list by 'cddr
-	collecting `(setf ( ,(intern (format nil "~a~a"
-					     conc-prefix (car v))) ,struct) ,(second v))
+  (loop for v on alt-list by #'cddr
+	collecting `(setf ( ,(intern (format nil "~a~a" conc-prefix (car v))) ,struct) ,(second v))
 	into tem
 	finally (return (cons 'progn tem))))
 
@@ -336,7 +319,6 @@
   ;;for each open a list of ldata
   data)
 
-
 (defstruct (ldata (:type  list ) :named (:conc-name ldata-))
   eqns
   (inequality 1)
@@ -344,10 +326,10 @@
   (open-inequality 1)
   variables)
 
-
 (defstruct (rmap (:type  list ) :named (:conc-name rmap-))
   fns
   denom)
+
 (defstruct (zopen (:type  list) :named (:conc-name zopen-))
   ;;coord is an r-map
   coord
@@ -355,7 +337,6 @@
   inv
   inequality
   history)
-
 
 (defstruct (variable-correspondence :named (:conc-name vc-))
   genvar
@@ -368,27 +349,24 @@
   localization
   variable-correspondence)
 
-
-
 (defstruct ( polynomial-vectors :named (:conc-name pv-))
-  length-of-array-of-tables 
-  rows  
+  length-of-array-of-tables
+  rows
   (constants-column-number nil)
   (relations nil)
   (type-of-entries :integer)
   (variables nil)
   (verify-conversion nil)
   array-of-polynomials
-  array-of-tables 
-  last-column-number  
+  array-of-tables
+  last-column-number
   number-of-independent-terms   ;;never occurs
   solution-in-macsyma-format
-  table 
+  table
   the-sparse-matrix
   type-of-polynomials
   solution-plist
   )
-
 
 (defstruct (poly-data :named   (:conc-name pd-))
   rows
@@ -396,13 +374,12 @@
   segments ;;beginning of each new group of monoms in big-monom-list
   big-monom-list)
 
- 
 (defmacro gshow (form)
   `(progn (format t "~%The value of ~A is" ',form)
 	  (grind-top-level ,form)))
 
 (defmacro mshow (&rest l)
-  (sloop for v in l
+  (loop for v in l
 	collecting `(format t "~%The value of ~A is.. " ',v) into tem
 	collecting `(des ,v) into tem
 	finally (return (cons 'progn tem))))
@@ -414,10 +391,10 @@
 (defstruct (matrix (:type list) :named (:conc-name matrix-))
   rows)  ;; list of open sets
 
-(defmacro matrix-p (mat)
-  `(and (listp ,mat) (eq (car ,mat) 'matrix)))
+;(defmacro matrix-p (mat)
+;  `(and (listp ,mat) (eq (car ,mat) 'matrix)))
 
 (defvar *verbose-check-overlaps* nil)
 
 (defmacro if-verbose (&rest l)
-  `(cond (*verbose-check-overlaps*  ,@l)))
+  `(when *verbose-check-overlaps* ,@l))

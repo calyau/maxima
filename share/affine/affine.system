@@ -6,10 +6,9 @@
 
 (mk:defsystem "affine"
     :source-extension "lisp"
-    :binary-pathname (combine-path *maxima-affinedir* (concatenate 'string "binary-" *maxima-lispname*))
+    :binary-pathname (combine-path *maxima-tempdir* (concatenate 'string "binary-" *maxima-lispname*))
     :components ((:file "sys-declaim" :load-only t)
-		 (:file "sloop")
-		 (:file "compat")       ;new
+		 (:file "compat")
 		 (:file "amacros")
 		 (:file "dummy-gc")
 		 (:file "polybas")
@@ -27,6 +26,7 @@
 		 (:file "sheafb")
 		 (:file "sheafc")
 		 (:file "dim-3")
+		 (:file "todd-coxeter")
 		 (:file "modsimp")))
 
 ;;; affine.system ends here

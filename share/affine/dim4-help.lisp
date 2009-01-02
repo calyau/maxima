@@ -180,7 +180,7 @@
 
 
 (defun $sort_complexity(list)
-  (sloop for v in (cdr list)
+  (loop for v in (cdr list)
 	 collect (cons (pcomplexity (st-rat v)) v) into all
 	 finally (setq all (sort all '< :key 'car))
 	 (return (cons (car list) (mapcar 'cdr all)))))
@@ -262,40 +262,45 @@ list of lists call this function on each of the lists independently."
 
 (push 'hilbert_4 *all-rank-functions*)
 
-;(sloop for i below 10 collect (list i (hilbert_tem i)))
+;(loop for i below 10 collect (list i (hilbert_tem i)))
 
 (defun $minors2_2 (mat cols)
   (let ((nmat (apply '$submatrix mat (cdr cols))))
      (cons '(mlist)
-	   (sloop for ro in (list-tableaux 2 (1- (length nmat)))
+	   (loop for ro in (list-tableaux 2 (1- (length nmat)))
 	    do (show ro)
-	    collect (cons '($matrix)
-					(sloop for i in ro
-					       collect (nth i nmat)))))))
+	    collect (cons '($matrix) (loop for i in ro
+					collect (nth i nmat)))))))
 
 (defun $minors (n mat cols)
   (let ((nmat (apply '$submatrix mat (cdr cols))))
      (cons '(mlist)
-	   (sloop for ro in (list-tableaux n (1- (length nmat)))
+	   (loop for ro in (list-tableaux n (1- (length nmat)))
 	    do (show ro)
-	    collect (cons '($matrix)
-					(sloop for i in ro
-					       collect (nth i nmat)))))))
+	    collect (cons '($matrix) (loop for i in ro
+					collect (nth i nmat)))))))
 
-(sloop for i below 5 collect i)
+(loop for i below 5 collect i)
+
 ;(setq he '(1 2))
+
 (defun cartesian-product (&rest l)
   (cond ((null l) (list nil))
 	(t
-	 (sloop for v in (car l)
-	  append (sloop
-		   for w in (apply 'cartesian-product (cdr l)) collect (cons  v w))))))
+	 (loop for v in (car l)
+	  append (loop
+		   for w in (apply #'cartesian-product (cdr l)) collect (cons  v w))))))
 
-(defun $cartesian_product(&rest l) (lis (apply 'cartesian-product
-					       (mapcar 'cdr l))))
+(defun $cartesian_product(&rest l)
+  (lis (apply #'cartesian-product
+	      (mapcar #'cdr l))))
 
-(defun sublist (l pred) (sloop for v in l when (apply pred v ) collect v))
-(defun lis (l) (cons '(mlist) (sloop for w in l collect (cons '(mlist) w))))
+(defun sublist (l pred)
+  (loop for v in l when (apply pred v) collect v))
+
+(defun lis (l)
+  (cons '(mlist) (loop for w in l collect (cons '(mlist) w))))
+
 ;(setq $lis1 (lis (sublist (cartesian-product he he he he) #'(lambda ( i j l m) (and (< i j) (<= m l))))))
 
 ;(setq $lis2 (lis		 (sublist (cartesian-product he he he he) #'(lambda ( i j l m) (and (<= i j) (< m l))))))
@@ -305,9 +310,9 @@ list of lists call this function on each of the lists independently."
 (defun monoms (polys degs &optional (cross '(nil)))
   (cond ((null polys) '(1))
  	(t
-	  (sloop for v in (monoms (cdr polys) (cdr degs))
+	  (loop for v in (monoms (cdr polys) (cdr degs))
 		 append
-		 (sloop for j to (car degs)
+		 (loop for j to (car degs)
 			collect (n* (pexpt (car polys) j) v))))))
 
 (defun $extract_c_equations(poly vars-to-exclude)
@@ -316,17 +321,18 @@ list of lists call this function on each of the lists independently."
     (assert ($listp poly))
   (let (ans all-monoms some-monoms)
     (setq ans
-    (sloop for v in (cdr poly)
+    (loop for v in (cdr poly)
 	   do (setq v (function-numerator (st-rat v)))
-	   (setq degs (sloop for w in vars1
+	   (setq degs (loop for w in vars1
 			     collect (pdegree v w)))
 	   (setq some-monoms (monoms monoms degs))
-	   (setq all-monoms (append all-monoms some-monoms))		
+	   (setq all-monoms (append all-monoms some-monoms))
 	   nconc
-	   (sloop for w in some-monoms
+	   (loop for w in some-monoms
 		  collect (new-disrep (pcoeff v w vars1)))))
     (list '(mlist)
       (cons '(mlist) ans)
       (cons '(mlist) (mapcar 'new-disrep all-monoms))))))
 
-(defun $pb () (save-linenumbers :file "/tmp/lines"))
+(defun $pb ()
+  (save-linenumbers :file "/tmp/lines"))

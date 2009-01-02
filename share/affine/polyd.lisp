@@ -12,13 +12,13 @@
 
 (defun which-centrals-to-add (&aux *previously-checked-pairs* ($dot_simplifications))
   "Checks you aren't adding a trivial product of centrals etc.
-It affects the dot simplifications which become the dot simplifications 
+It affects the dot simplifications which become the dot simplifications
 modulo ones-to-add checked thru the highest degree of ones to add."
 					;  (unwind-protect
   (progn
-    (sloop for v in (cdr $centrals_so_far)
+    (loop for v in (cdr $centrals_so_far)
 	   until (eq (length ones-to-add) 3)
-	   do 
+	   do
 	   (cond (($zerop ($dotsimp v))(setq v 0))
 		 (t (format t "~%Supposedly checking overlaps to deg ~a" ($nc_degree v))
 		    (setq $rank_function (hilbert-modulo
@@ -29,27 +29,27 @@ modulo ones-to-add checked thru the highest degree of ones to add."
 	   collecting v into ones-to-add
 	   and do ($add_relation_to_dot_simplifications v)
 	   finally (return ones-to-add))))
-;    nil)					
+;    nil)
  ; (setq $dot_simplifications dot-simps)))
- 
+
 (defun find-number-of-centrals
        (n &optional(from-degree 2) (to-degree 10) (reset-centrals-so-far nil))
   "Finds at least  n centrals if there are n thru to-degree
 It also checks overlaps and so affects the dot_simplifications.  It stores
-them in $centrals_so_far.  If later asked it won't check below the centrals so 
+them in $centrals_so_far.  If later asked it won't check below the centrals so
 far degree"
   (cond (reset-centrals-so-far (setq $centrals_so_far '((mlist)))))
   (cond ((> 1 (length $centrals_so_far))
 	 (setq from-degree (1+ (apply 'max from-degree
 				     (mapcar '$nc_degree (cdr $centrals_so_far)))))))
-  (sloop for i from (1+ from-degree) to (1+ to-degree) 
+  (loop for i from (1+ from-degree) to (1+ to-degree)
 	do ($check_overlaps i t nil (1- i ))
 ;	(show i )(format t "~~%*****************")
 ;        (displa $centrals_so_far)
-	(sloop for j from 1 to i
+	(loop for j from 1 to i
 	      when
 	      (and $rank_function
-                   (not (eql ($length ($mono $current_variables  j))
+		   (not (eql ($length ($mono $current_variables  j))
 			(funcall $rank_function j))))
 	      do
 	      (format t "~%Using Current Variables of..")(displa $current_variables)
@@ -68,7 +68,7 @@ far degree"
 	(return 'done)))
 
 (defun monomials-and-rank-function-agree (n &aux mono rank)
-  (sloop for i from 1 to n
+  (loop for i from 1 to n
 	do
 	(setq mono ($length ($mono $current_variables i))
 	      rank (funcall $rank_function i))
@@ -87,7 +87,7 @@ far degree"
   (cond ((not (member 'hilbert *all-rank-functions* :test #'eq))
 	 (push 'hilbert *all-rank-functions*))))
 
-(defun $check_a_case 
+(defun $check_a_case
        (relations  &optional (to-degree 10) (rank-function '$global_dimension_3)
 	(variables nil)
 	&aux tem ones-to-add dims answer free-dot-simps full-dot-simps)
@@ -95,8 +95,8 @@ far degree"
   (setq $centrals_so_far '((mlist)))
   (cond (variables (setq $current_variables variables))
 	(t (setq $current_variables ($list_variables relations "X" "Y" "Z"))
-	   (sloop for v in (cdr $current_variables)
-		 when (or ($scalarp v) (string-search "%" (string v)))
+	   (loop for v in (cdr $current_variables)
+		 when (or ($scalarp v) (search "%" (string v) :test #'char-equal))
 		 do (setq $current_variables (delete v $current_variables :test #'equal)))))
   (show $current_variables)
   (funcall '$set_up_dot_simplifications  relations )
@@ -104,12 +104,12 @@ far degree"
   (setq answer
 	(catch 'check_a_case
 	  (setq free-dot-simps $dot_simplifications)
-	  (sloop for i from 3 until (or (eq i 6) (eq (length ones-to-add) 3))
+	  (loop for i from 3 until (or (eq i 6) (eq (length ones-to-add) 3))
 		;; 6 ;;enough?
 		do
 		(setq $dot_simplifications full-dot-simps)
 		(setq $rank_function rank-function)
-		(setq *previously-checked-pairs* nil) 
+		(setq *previously-checked-pairs* nil)
 		;;you've changed them in ones-to-add
 		(find-number-of-centrals i 2 (1+ to-degree))
 		;;gets centrals thru to-degree.
@@ -121,7 +121,7 @@ far degree"
 		finally
 		(cond ((>= (length ones-to-add) 3)
 		       (setq to-degree ($nc_degree (car (last ones-to-add))))))
-		(setq $rank_function 
+		(setq $rank_function
 		      (hilbert-modulo ones-to-add))
 		(cond (ones-to-add
 		       (cond((setq dims
@@ -160,7 +160,7 @@ far degree"
 	  (1-  (length (setq tem (cdddr (delete 0 (nth 6 $last_answer) :test #'equal))))))
   (format t "  ~A "  tem)
   'qed)
- 
+
 (defvar $last_answer nil)
 (defun te (&aux tem)
  (format t "~%Conclusion:~%The algebra is a finite module of rank ~D over a polynomial with 3 generators.
@@ -171,7 +171,7 @@ far degree"
  (format t "  ~A "  tem) 'qed)
 
 (defun $check_programs (list-relations)
-  (sloop for v in (cdr list-relations)
+  (loop for v in (cdr list-relations)
 	do (reset-vgp)
 	collecting ($check_a_case v) into tem
 	finally (return (cons '(mlist) tem))))
@@ -197,8 +197,8 @@ far degree"
 
 ;;This is only for $new_fast_dotsimp  tried to avoid calling itself and
 ;;added an unwind protect so that the dotsimps don't get screwed up if
-;;you abort part way thru.  
-(defun $simplify_dot_simplifications (&optional (from-degree 0) &aux 
+;;you abort part way thru.
+(defun $simplify_dot_simplifications (&optional (from-degree 0) &aux
 				      relat resimplify dot-simps leng)
   (check-arg $new_fast_dotsimp (eq $new_fast_dotsimp t) "Use the old $simplify_dot_simplifications in polynomials.lisp for other dotsimps")
    ($sort_dot_simplifications)
@@ -207,7 +207,7 @@ far degree"
 	   (t (format t "~%There are ~A of them." (truncate leng 2))))
 
    (setq dot-simps $dot_simplifications)
-   (sloop named sue for v on (cdr $dot_simplifications) by 'cddr
+   (loop named sue for v on (cdr $dot_simplifications) by #'cddr
 	 for i from 1 by 2
 	 do
 	 (unwind-protect
@@ -241,8 +241,8 @@ far degree"
   (cond ((< n 0) 0)
 	((eq n 0) 1)
 	((null l)($global_dimension_3 n))
-	(t (f- (apply 'hilbert n (cdr l))
-	      (apply 'hilbert (f- n (car l)) (cdr l))))))
+	(t (- (apply 'hilbert n (cdr l))
+	      (apply 'hilbert (- n (car l)) (cdr l))))))
 
 ;(defun $global_dimension_3 (n)
 ;  (case ($length $current_variables)
@@ -250,13 +250,13 @@ far degree"
 ;    (3 (polynomial-ring-1-1-1 n))))
 
 
-(defun our-dimensions (n) 
+(defun our-dimensions (n)
  "for 2 3 and 4 variables we have unique sequences so we plug them in here."
   (case (length (cdr $current_variables))
 	(0 (fsignal "no variables"))
 	(1 1)
 	(2 (dimension-from-sequence '(1 2 2 1) '(1 2 1) n 2))
-        (3 (dimension-from-sequence '(1 3 3 1) '(1 1 1) n 3))
+	(3 (dimension-from-sequence '(1 3 3 1) '(1 1 1) n 3))
 	(4  (dimension-from-sequence '(1 4 6 4 1) '(1 1 1 1) n 4))
 	(t (fsignal "not handled yet"))))
 
@@ -271,19 +271,19 @@ far degree"
 	((eq 1 degree) number-variables)
 	;;(< degree degree-relations) (expt  number-variables degree))
 	(t
-	 (sloop for deg-map in  list-degree-maps
+	 (loop for deg-map in  list-degree-maps
 	       for u in (cdr list-powers)
 	       for i from 0
-	       with j = degree 
+	       with j = degree
 	       while (>= j 0)
-	       do (setq j (f- j deg-map ))	;(show (list degree j answ))
-	       (setq answ (f+ answ (f* (expt  -1 i) u  (dimension-from-sequence list-powers list-degree-maps j
+	       do (setq j (- j deg-map))	;(show (list degree j answ))
+	       (setq answ (+ answ (* (expt -1 i) u  (dimension-from-sequence list-powers list-degree-maps j
 									  number-variables ))))
 ;	       (show answ)(show u)
 	       finally (return (abs answ))))))
 
 (defun $sum_hilbert (&rest l &aux tem)
-  (sloop for i below 100  until (zerop (setq tem (apply #'hilbert i 3 l)))
+  (loop for i below 100  until (zerop (setq tem (apply #'hilbert i 3 l)))
 	summing tem))
 
 ;;for creating a one argument function that can be funcalled
@@ -304,7 +304,7 @@ far degree"
 
 (defun $rat_the_dot_simplifications (&aux res v)
  "Does the new-rat for New_fast_dotsimp"
-  (sloop for w on (cdr $dot_simplifications) by 'cddr
+  (loop for w on (cdr $dot_simplifications) by #'cddr
 	do (push (car w) res)
 	(setq v (cadr w))
 	(push (if ($ratp v) (header-poly (new-rat (ratdisrep v))) (header-poly  (new-rat v)))
@@ -323,15 +323,15 @@ far degree"
 ;  (setf (fill-pointer *my-stream* ) 0)
 ;  (cond ((eq #\$ (tyipeek t stream))(send stream :tyi)
 ;	 (setq meval-flag nil)))
-;  (with-output-to-string (st *my-stream*) 
+;  (with-output-to-string (st *my-stream*)
 ;    (let (char)
-;      (sloop while (not (eql char #\$))
+;      (loop while (not (eql char #\$))
 ;	    do
 ;	    (setq char (send stream :tyi))
 ;	    (send st :tyo char)
 ;	    finally (cond ((not (eql  char #\$))
 ;			   (zwei:barf "There was no matching $" ))))))
-;  (cond (meval-flag 
+;  (cond (meval-flag
 ;	 (list 'meval* (list 'quote   (parse-string *my-stream*))))
 ;	(t  (list 'quote   (parse-string *my-stream*)))))
 ;
@@ -340,7 +340,7 @@ far degree"
 ;;the following will get the arg x of h into the list before the meval*.
 ;;it is hard to see any other way of accomplishing this since the form must
 ;;;be evaluated by simplifya etc, and so we need to have the
-;(defun h (x)     
+;(defun h (x)
 ; (declare (special x))       ;;these all work including the binding of x to ?x.
 ;       #$3*[?x,y,z]$)        ;; maybe better form to use (defun h ($x) and avoid the
 ;(setq me #$$y.y.y$)
@@ -366,8 +366,8 @@ far degree"
  This is useful in conjunction with the #$ reader macro so that variables bound
  in the arglist  will get declared and so can be referred to in the meval"
   (setq l (copy-list l))
- 
-  (sloop for v in (second l)
+
+  (loop for v in (second l)
 	when  (and (symbolp v) (eq (char v 0) #\$))
 	collecting v into tem
 	when   (and (listp v) (symbolp  (setq v (car v))) (eq (char  v 0) #\$))
@@ -380,8 +380,8 @@ far degree"
 				    (cddr l))))))
 
 ;
-;(def$fun te ($x &aux $i (u 3) ($z 4)) 
-;   (sloop for  $i below $z
+;(def$fun te ($x &aux $i (u 3) ($z 4))
+;   (loop for  $i below $z
 ;	 collecting #$y^i+3*x^z$))
 
 
@@ -391,14 +391,14 @@ far degree"
 ;    (LET ((Y 3)) (MEVAL* '((MPLUS) $X 1))))
 ;(te 2)==> 3
 ;(def$fun te ($x n &aux $i)
-;	 (sloop for $i below n
+;	 (loop for $i below n
 ;	       collecting #$x^i+3+y^i$
 ;	       into tem
 ;	       finally (return (cons '(mlist) tem))))
 ;;expands to which does collect the right thing.
 ;(DEFUN TE ($X N &AUX $I)
 ;    (DECLARE (SPECIAL $X $I))
-;    (SLOOP FOR
+;    (LOOP FOR
 ;          $I
 ;          BELOW
 ;          N
@@ -409,7 +409,7 @@ far degree"
 ;          FINALLY
 ;          (RETURN (CONS '(MLIST) TEM))))
 ;(def$fun te ($x n &aux $i)
-;	 (sloop for $i below n
+;	 (loop for $i below n
 ;	       collecting #$x^i+3+y^i$
 ;	       into tem
 ;	       finally (return (cons '(mlist) tem))))
@@ -436,22 +436,22 @@ far degree"
     (setq f ($ratsimp ($sublis answer f)))
     (setq $centralizers (append `((mlist) xy ,f) (cdr $commutators)))
     (displa f)
-    (sloop for v in (nthcdr ($length used_var) (cdr variables))
+    (loop for v in (nthcdr ($length used_var) (cdr variables))
 	  do
   	  (setq unknowns ($list_variables f "aa" "par"))
-	  (setq parameters (sloop for vv in (cdr unknowns)
-				 when (string-search "par" (string vv))
+	  (setq parameters (loop for vv in (cdr unknowns)
+				 when (search "par" (string vv) :test #'char-equal)
 				 collecting vv))
 	  (setq tem1 (cdr $aaaa))
-	  (sloop for vv in parameters
-		do (sloop while tem1
+	  (loop for vv in parameters
+		do (loop while tem1
 			 when (not (member (car tem1) unknowns :test #'eq))
 			 do (setq f (subst (car tem1) vv f))
 			 (setq unknowns (subst (car tem1) vv unknowns))
 			 (format t "~%Replacing ~A by ~A in f." vv (car tem1))
 			 (setq tem1 (cdr tem1)) (return 'done)
 			 do (setq tem1 (cdr tem1))))
-	  
+
 	  (setq tem1 (list '(mlist) ($com f v)))
 	  (setq $commutators (append `((mlist) ,v ,(second tem1)) (cdr $commutators)))
 ;	  (setq eqns ($extract_linear_equations tem1 monoms-higher))
@@ -476,27 +476,27 @@ far degree"
   (setq *previously-checked-pairs* nil)
   (setq $rank_function nil)
   ($check_overlaps 10 t nil)
-  (sloop for i from 1 below 8
+  (loop for i from 1 below 8
 	when (setq tem (cdr  ($fast_central_elements $current_variables i)))
-	do (sloop for v in tem do ($add_relation_to_dot_simplifications v))
+	do (loop for v in tem do ($add_relation_to_dot_simplifications v))
 	(setq centrals (append centrals tem))
 	($check_overlaps 10 t nil)
-        finally (return (cons '(mlist) centrals))))
+	finally (return (cons '(mlist) centrals))))
 
 (defun list-variables (expr &aux *all-vars*)
     (declare (special *all-vars*))
   (list-variables1 expr)
   *all-vars*)
-  
+
 (defun list-variables1 (expr)
   (declare (special *all-vars*))
    (cond   ((atom expr) nil)
 	   ((polynomialp expr)(pushnew (p-var expr) *all-vars*)
-	    (sloop for (deg cof) on (cdr expr) by 'cddr
+	    (loop for (deg cof) on (cdr expr) by #'cddr
 		  do (list-variables1 cof)))
 	   ((rational-functionp expr)(list-variables1 (car expr))
 	    (list-variables1 (cdr expr)))
-	   (t (sloop for v in expr do (list-variables1 v)))))
+	   (t (loop for v in expr do (list-variables1 v)))))
 
 (defun reset-rat (tree &aux tem)
   (cond ((atom tree)

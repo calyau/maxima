@@ -7,7 +7,6 @@
 
 (in-package :maxima)
 
-
 (defvar *varlist* nil)
 (defvar *genvar* nil)
 
@@ -48,7 +47,7 @@
   "does a general sublis : a-list of form (list (cons old-var repl-poly)....)
    denom is a poly "
   (let ((tem (cond (vars-to-sub vars-to-sub)
-		   (t (sloop for v in a-list collecting (car v)))))
+		   (t (loop for v in a-list collecting (car v)))))
 	deg)
     (cond ((polynomialp poly)
 	   (cond (degree (setq deg degree))
@@ -58,29 +57,27 @@
 	  ((rational-functionp poly) (rsublis a-list denom poly :degree degree :vars-to-sub
 					      vars-to-sub :reduce t))
 	  ((atom poly) poly)
-	  (t (sloop for v in poly collecting (psublis a-list denom v :degree degree
+	  (t (loop for v in poly collecting (psublis a-list denom v :degree degree
 						   :vars-to-sub vars-to-sub))))))
 
 ;;should take into account when the variables don't need replacing.
 (defun psublis1 (a-list denom poly degree varl)
    (cond ((atom poly) (ptimes poly (pexpt denom degree)))
 	((member (p-var poly) varl :test #'eq)
-	 (sloop for (deg cof) on (cdr poly) by 'cddr
+	 (loop for (deg cof) on (cdr poly) by #'cddr
 	       with answer = 0
 	       do (setq answer
 			(pplus answer
 			       (ptimes
 					(psublis1 a-list denom cof
-
-						      (f- degree deg) varl)
+						      (- degree deg) varl)
 				       (pexpt (cdr (assoc (p-var poly) a-list :test #'equal))
 					      deg))))
 
 	       finally (return answer)))
 	((> (valget (p-var poly))
-	     (sloop for v in varl
-			     minimize (valget v)))
-	 (sloop for (deg cof) on  (cdr poly ) by 'cddr
+	     (loop for v in varl minimize (valget v)))
+	 (loop for (deg cof) on  (cdr poly ) by #'cddr
 	       with answer = 0
 	       with mon = (list (p-var poly ) 1 1)
 	       do (setq answer (pplus answer
@@ -96,8 +93,8 @@
 
 (defun pcomplexity  (poly)
   (cond ((atom poly) 0)
-	(t (sloop for (deg cof) on (cdr poly) by 'cddr
-		 summing (f+ deg (pcomplexity cof))))))
+	(t (loop for (deg cof) on (cdr poly) by #'cddr
+		 summing (+ deg (pcomplexity cof))))))
 
 (defun $numerator (expr)
   (cond ((atom expr) expr)
@@ -107,8 +104,6 @@
 	 (with-polynomial-area ()
 	   ($totaldisrep (header-poly (cons (num (new-rat expr)) 1)))))))
 
-
-
 (defmacro allow-rest-argument (new-funct binary-op  answer-for-null-argument rest-arg)
  `(cond  ((null ,rest-arg) ,answer-for-null-argument)
 	(t	(case (length ,rest-arg)
@@ -116,8 +111,6 @@
 	  (,1 (car ,rest-arg))
 	  (otherwise (apply ',new-funct (,binary-op (first ,rest-arg)
 					   (second ,rest-arg)) (cddr ,rest-arg)))))))
-
-
 
 (defmacro polyop (x y identity-x identity-y number-op poly-op rat-op &optional rat-switch )
   (cond (rat-switch (setq rat-switch '(t))))
@@ -157,13 +150,13 @@
 		   (:number (,poly-op ,x ,y))
 		   (:polynomial (,poly-op ,x ,y))
 		   (:rational-function (,rat-op (cons ,x 1) ,y,@ rat-switch))
-		   (otherwise (ferror "unknown type for polyop "))))
+		   (otherwise (merror "unknown type for polyop "))))
 		(:rational-function
 		 (case yy
 		   (:number (,rat-op ,x  (cons ,y 1) ,@ rat-switch))
 		   (:polynomial (,rat-op ,x (cons ,y 1)  ,@ rat-switch))
 		   (:rational-function (,rat-op ,x ,y ,@ rat-switch))))
-		(otherwise (ferror "unknown arg"))))
+		(otherwise (merror "unknown arg"))))
 	(cond ((polynomialp answer) answer)
 	      ((rational-functionp answer)
 	       (cond ((eq 1 (cdr answer))(car answer))
@@ -213,21 +206,21 @@
  (defun poly-degree (poly varl)
   (cond ((atom poly) 0)
 	((member (p-var poly) varl :test #'eq)
-	 (sloop for (deg cof) on (cdr poly) by 'cddr
-	       maximize (f+ deg (poly-degree cof varl))))
+	 (loop for (deg cof) on (cdr poly) by #'cddr
+	       maximize (+ deg (poly-degree cof varl))))
 	(t
-	 (sloop for (deg cof) on (cdr poly) by 'cddr
+	 (loop for (deg cof) on (cdr poly) by #'cddr
 	       maximize (poly-degree cof varl)))))
 
 (defun shl (l)
   (cond ($display2d (mapcar 'sh l))
-       (t (sloop for v in l
+       (t (loop for v in l
 		for i from 0
 		initially (format t "~%[")
 		when (numberp v) do (princ v)
 		else
 		do  (sh (header-poly v))
-		when (< i (f1- (length l))) do(format t ",~%")
+		when (< i (1- (length l))) do(format t ",~%")
 		finally (format t "]")))))
 
 (defun sh (expr &optional (stream *standard-output*) &aux (disp 'string-grind) answ)
@@ -274,8 +267,6 @@
 
 (defvar *check-order* nil)
 
-
-
 (defun find-in-ordered-list (x a-list &optional  (order-function (function alphalessp))
 			     (order-equal #'nc-equal)
 			     &aux (offset 0)
@@ -286,37 +277,33 @@
 
   (cond ((funcall order-function x (car a-list))(setq after -1))
 	((funcall order-equal  x (car a-list))(setq after 0)(setq already-there a-list))
-	((funcall order-equal  x (car(setq tem  (last a-list))))(setq after (f1- leng))
+	((funcall order-equal  x (car(setq tem  (last a-list))))(setq after (1- leng))
 	 (setq already-there tem))
-	((not (funcall order-function x (car tem)))(setq after (f1- leng)))
+	((not (funcall order-function x (car tem)))(setq after (1- leng)))
 
-	(t (setq offset 0 lbound 0 ub (f1- leng))
-	   (sloop while (> (f- ub lbound) 1)
+	(t (setq offset 0 lbound 0 ub (1- leng))
+	   (loop while (> (- ub lbound) 1)
 		 do
-		 (setq mid (truncate (f+ ub lbound) 2))
+		 (setq mid (truncate (+ ub lbound) 2))
 		 (cond ((funcall order-function x (car(setq tem
 							(nthcdr mid a-list))))(setq ub mid))
-		       ((funcall order-equal  (car tem) x)(setq after (f+ offset mid)
+		       ((funcall order-equal  (car tem) x)(setq after (+ offset mid)
 					   already-there tem)(return 'done))
-		       (t (setq offset (f+ mid offset)
+		       (t (setq offset (+ mid offset)
 				a-list tem
-				ub (f- ub mid))))
+				ub (- ub mid))))
 		 finally(setq after offset))))
   (and *check-order*
        (cond ((setq tem (member x a-list :test order-equal))
 	      (iassert (eql (not already-there) (not t)))
-	      (iassert (eql after (f- leng (length tem )))))))
+	      (iassert (eql after (- leng (length tem )))))))
   (values after already-there a-list))
-
-
-
 
 (defun disrep-list (expr)
   "Just substitutes the any disrep property for a symbol for the symbol"
   (cond ((atom expr)(cond ((symbolp expr)(get expr 'disrep))
 			  (t expr)))
 		(t (cons (disrep-list (car expr)) (disrep-list (cdr expr))))))
-
 
 ;;Perhaps we should have our own prep1 function
 ;;It just goes through a general form converting it to cre, and
@@ -331,13 +318,13 @@
 
 
 (defun check-repeats (varl)
-  (sloop for v on varl
+  (loop for v on varl
 	when (member (car v) (cdr v) :test 'nc-equal)
 	  do (show (car v) ) (fsignal "repeat in varlist")))
 
 (defun check-order (varl)
   (declare (special $order_function))
-  (sloop for (v w) on varl
+  (loop for (v w) on varl
 	while w
 	  when (not (funcall $order_function  v w))
 	    do (fsignal "bad order ~A and ~A "  v w )))
@@ -366,10 +353,10 @@
 
 (defun zl-union (&rest l)
   (case (length l)
-	(1 (sloop for v on (car l) unless (member (car v) (cdr v))
+	(1 (loop for v on (car l) unless (member (car v) (cdr v))
 		   collect (car v)))
-	(2 (sloop for v in (car l) with sec = (second l)
+	(2 (loop for v in (car l) with sec = (second l)
 		  unless (member v sec)
 		  collect v into result
 		  finally (return (nconc result (zl-union sec)))))
-	(t (zl-union (car l) (apply 'zl-union (cdr l))))))
+	(t (zl-union (car l) (apply #'zl-union (cdr l))))))

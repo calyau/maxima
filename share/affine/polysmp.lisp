@@ -8,7 +8,7 @@
 (in-package :maxima)
 
 (defun get-altq (item a-list)
-  (sloop for v on a-list by 'cddr
+  (loop for v on a-list by #'cddr
 	when (eq item  (car v))
 	do (return (second v))))
 
@@ -27,25 +27,25 @@
 
   (cond ((null monomial-degs)poly)
 	((numberp monomial-degs) poly)
-	((numberp poly)(cond ((sloop for w in (cdr monomial-degs) by 'cddr
+	((numberp poly)(cond ((loop for w in (cdr monomial-degs) by #'cddr
 				    when (not (eq w 0))
 				    do(return t)) nil)
 			     (t poly)))
 	(t (let ((deg))
 	     (cond ((eq (car monomial-degs)(car poly))
-		    (setq deg (f1- (second monomial-degs)))
+		    (setq deg (1- (second monomial-degs)))
 		    (setq monomial-degs (cddr monomial-degs)))
 		   (t  (setq deg (get-altq (car poly) monomial-degs))
-		       (cond (deg (setq deg (f1- deg)))
+		       (cond (deg (setq deg (1- deg)))
 			     (t (setq deg -1)))))
-	     (sloop for v  on (cdr poly) by 'cddr
+	     (loop for v  on (cdr poly) by #'cddr
 		   while (> (car v)  deg)
 		   when (setq tem (part-above-degree (second v)  monomial-degs))
 		   collecting (car v) into the-cof
 		   and
 		   collecting tem into the-cof
 		   finally (cond (the-cof (setq the-cof  (cons (car poly) the-cof))
-					  (loop-return the-cof))
+					  (return the-cof))
 				 (t nil)))))))
 
 (defun part-above (poly monom)
@@ -58,21 +58,21 @@
 	((numberp poly) nil)
 	(t (let ((deg))
 	     (cond ((eq (p-var monom) (p-var poly))
-		    (setq deg (f1- (second monom)))
+		    (setq deg (1- (second monom)))
 		    (setq true-deg (second monom))
 		    (setq monom (caddr monom)))
 		   (t (setq deg (mdegree monom (car poly)))
-		      (cond (deg (setq deg (f1- deg)))
+		      (cond (deg (setq deg (1- deg)))
 			    (t (setq deg -1)))))
-	     (sloop for v on (cdr poly) by 'cddr
+	     (loop for v on (cdr poly) by #'cddr
 		    while (> (car v) deg)
 		    when (setq tem (part-above1 (second v) monom))
-		    collecting (f- (car v) true-deg)
+		    collecting (- (car v) true-deg)
 		    into the-cof
 		    and
 		    collecting tem into the-cof
 		    finally (cond (the-cof (setq the-cof (cons (car poly) the-cof))
-					   (loop-return the-cof))
+					   (return the-cof))
 				  (t nil)))))))
 ;
 ;(defmacro push-new (item llist)
@@ -91,14 +91,14 @@
 ;	((polynomialp expr) (list-variables1 expr))
 ;	((rational-functionp expr) (list-variables2 (car expr))
 ;	 (list-variables2 (cdr EXPR)))
-;       (t(sloop for v on expr while (listp v) do (list-variables2 (car v))))))
+;       (t(loop for v on expr while (listp v) do (list-variables2 (car v))))))
 ;
 ;(defun list-variables1 (u)
 ;   (declare (special a-list))
 ;  (cond ((atom u) niL)
 ;	(t
 ;	 (push-new (car u) a-list)
-;	 (sloop for (def cof) on (cdr u) by 'cddr
+;	 (loop for (def cof) on (cdr u) by #'cddr
 ;	       do (list-variables1 cof)))))
 ;
 
@@ -132,24 +132,24 @@ substituting them to be zero."
 		    (setq true-deg 0))
 		   (t (setq first-case nil)))
 	     (cond (first-case
-		    (sloop for (deg cof) on (cdr poly) by 'cddr
+		    (loop for (deg cof) on (cdr poly) by #'cddr
 			  when (eq deg true-deg)
 			  do
-			  (loop-return (pcoeff1 cof monom
+			  (return (pcoeff1 cof monom
 					      variables-to-exclude-from-cof))))
 		   ((or (numberp monom)(pointergp (car poly) (car monom)))
-		    (sloop for (deg cof) on (cdr poly) by 'cddr
+		    (loop for (deg cof) on (cdr poly) by #'cddr
 			  when (setq tem (pcoeff1 cof monom variables-to-exclude-from-cof))
 			  collecting deg into temm
 			  and collecting tem into temm
 			  finally (cond (temm
 					 (cond ((eql (car temm) 0)
-						(loop-return (second temm)))
-					       (t (loop-return (cons (car poly) temm)))))))))))))
+						(return (second temm)))
+					       (t (return (cons (car poly) temm)))))))))))))
 
 
 (defun replacements (&optional (simps *poly-simplifications*))
-  (sloop for v in simps by 'cddr collecting v))
+  (loop for v in simps by #'cddr collecting v))
 
 ;;These check for  occurence of seq in poly.  But using this seems to
 ;;be slower than just checking the part-above just in case we will need
@@ -167,12 +167,12 @@ substituting them to be zero."
 	  (t (let ((var (first seq))
 		   (deg (second seq)))
 	       (cond ((pointergp (car poly) var)
-		      (sloop for (deg cof) on (cdr poly) by 'cddr
+		      (loop for (deg cof) on (cdr poly) by #'cddr
 			    do (occurs-in1 cof seq)))
 		     ((eq (car poly) var)
 		      (cond ((< (second poly ) deg)
 			     (throw 'not-in-this-one nil))
-			    (t (sloop for (degg cof) on (cdr poly) by 'cddr
+			    (t (loop for (degg cof) on (cdr poly) by #'cddr
 				     while (>= degg deg)
 				     do (occurs-in1 cof (cddr seq))))))
 		     (t (throw 'not-in-this-one nil))))))))
@@ -186,27 +186,28 @@ substituting them to be zero."
 		 (t (list (car sequ) (second sequ) 1))))))
 
 (defun constant-deg-sequencep (seq)
-  (sloop for w in seq by 'cddr
+  (loop for w in seq by #'cddr
 	when (not (eq w 0))
-	do (loop-return nil)
-	finally (loop-return t)))
+	do (return nil)
+	finally (return t)))
 
 (defun $declare_constant_list( ll)
-  (apply 'declare-constant (cdr ll)))
+  (apply #'declare-constant (cdr ll)))
 
 (defun declare-constant (&rest l)
-  (sloop for v in l
+  (loop for v in l
 	 when (get v 'disrep)
 	 do (putprop v t 'constant)
 	 else do
 	 (putprop  (car (num (new-rat v)))  t 'constant)))
 
 (defun show-constants ()
-  (sloop for v in *genvar* when (get v 'constant)
+  (loop for v in *genvar* when (get v 'constant)
 	do (format t "~A disreps to ~A and is constant." v (get v 'disrep))))
+
 (defun remove-constant-property (&rest a-list)
-  (sloop for u in a-list do
-  (sloop for v in *varlist*
+  (loop for u in a-list do
+  (loop for v in *varlist*
 	for w in *genvar*
 	when (or (eq v u) (eq w u))
 	do (remprop w 'constant))))
@@ -223,7 +224,7 @@ substituting them to be zero."
 (defun find-main-monomial (poly &aux cof seq)
   (cond ((numberp poly) (values nil poly))
 	(t
-	 (setq seq (sloop while poly
+	 (setq seq (loop while poly
 			 collecting (car poly)
 			 collecting (second poly)
 			 do (setq poly (third poly))
@@ -231,7 +232,7 @@ substituting them to be zero."
 	 (values seq cof))))
 
 (defun find-least-main-monomial (poly &aux   tem mono-so-far cof)
-  (sloop while poly
+  (loop while poly
 	do
 	(setq tem (last2 poly))
 	(cond ((not  (and (null mono-so-far)(zerop (car tem)) (numberp (second tem))))
@@ -251,7 +252,7 @@ substituting them to be zero."
 (defvar  *monomial-order-function* 'xyz-order-sequence)
 
 (defun deg-sequence (variables degrees)
-  (sloop for v in variables
+  (loop for v in variables
 	for w in degrees
 	unless (eq w 0)
 	collecting v
@@ -264,8 +265,8 @@ substituting them to be zero."
 	 poly)
 	(t
 	 (let ((deg (get-altq (car poly)  monomial-degs)))
-	   (sloop
-	     for v on poly by 'cddr
+	   (loop
+	     for v on poly by #'cddr
 	     while (third v)
 	     when deg
 	     do
@@ -274,7 +275,7 @@ substituting them to be zero."
 				 (third v)
 				 monomial-degs
 				 nil))
-	     finally (loop-return poly))))))
+	     finally (return poly))))))
 
 (defun replace-monomial (poly replacement monomial-degs
 			 &optional part-above &aux to-replace denom-replacement)
@@ -396,7 +397,7 @@ substituting them to be zero."
 (defun grobner-basis (list-polys &key homogeneous)
   (setq *poly-simplifications* nil)
   (setq *degenerate-conditions* nil)
-  (sloop for v in list-polys
+  (loop for v in list-polys
 	do (add-to-poly-simplifications v))
   (check-overlaps 40 :reset t :homogeneous homogeneous)
   *poly-simplifications*)
@@ -404,7 +405,7 @@ substituting them to be zero."
 
 ;(defun ideal-subsetp (id1 id2 &key (reset-basis t) &aux tem)
 ; (cond (reset-basis  (grobner-basis id2)))
-;  (sloop for v in id1
+;  (loop for v in id1
 ;	when (not (rzerop (setq tem  (polysimp v))))
 ;	do (format t "~A is not zero modulo the second ideal. It is congruent to ~A"
 ;		   v tem)
@@ -413,23 +414,24 @@ substituting them to be zero."
 
 (defun ideal-subsetp (id1 id2 &key ( verbose t) (reset-basis t) &aux tem)
   (cond (reset-basis  (grobner-basis id2)))
-  (sloop for v in id1
+  (loop for v in id1
 	when (not (rzerop (setq tem  (polysimp v))))
 	do
 	(cond (verbose (format t "~A is not zero modulo the second ideal. It is congruent to ~A"
 			       id2 tem)))
-	(loop-return nil)
-	finally (loop-return t)))
+	(return nil)
+	finally (return t)))
 
 (defun $set_up_poly_simplifications(a-list)
   (check-arg a-list '$listp nil)
   (setq *poly-simplifications* nil)
-  (sloop for v in (cdr a-list)
+  (loop for v in (cdr a-list)
 	do
 	(add-to-poly-simplifications (st-rat v))
-  finally (loop-return (convert-poly-simplifications-to-macsyma-form *poly-simplifications*))))
+  finally (return (convert-poly-simplifications-to-macsyma-form *poly-simplifications*))))
+
 (defun $show_simps ()
-	      (convert-poly-simplifications-to-macsyma-form *poly-simplifications*))
+  (convert-poly-simplifications-to-macsyma-form *poly-simplifications*))
 
 ;;tried using occurs-in instead of part-above-degree but wasted time...
 
@@ -439,10 +441,10 @@ substituting them to be zero."
   (fmakunbound 'must-replacep)
   (defun must-replacep ( poly &aux part-above monom  replace)
 					;  (declare (values part-above monom replace))
-    (sloop for (seq repl) on *poly-simplifications* by 'cddr
+    (loop for (seq repl) on *poly-simplifications* by #'cddr
 	   when (setq part-above (part-above-degree poly seq))
 	   do (setq monom (convert-deg-sequence-to-monomial seq) replace repl)
-	   (loop-return 'found))
+	   (return 'found))
     (setq *must-replace-data* (list part-above monom replace))
     (values part-above monom replace)))
 
@@ -471,79 +473,80 @@ substituting them to be zero."
 		(throw 'its-proven t))
 	       (t (format t "no good yet"))))))
 
-(defun new-zerop (x)(or (eq x  0)
-			(and (listp x) (eq (car x) 0))))
+(defun new-zerop (x)
+  (or (eq x  0)
+      (and (listp x) (eq (car x) 0))))
+
 (defvar *simplify-rhs* t)
 
-(defun simplify-poly-simplifications
-  ( &aux seq repl hi old-simps repl-simp try-conclusion
-	 resimplify mono dif leng replacement-of-mono)
+(defun simplify-poly-simplifications (&aux seq repl hi old-simps repl-simp try-conclusion
+				      resimplify mono dif leng replacement-of-mono)
   ;;  (if test-all-theorems (check-proof-time))
   (cond
-   (*show-grob*
-    (setq leng (length *poly-simplifications*))
-    (format t "~%Starting to simplify ~A poly-simplifications " (truncate leng 2))
-    (cond ((> 10 leng )
-	   (show-simps))
-	  (t (format t "~%Replacements are :") (show-replacements)))))
+    (*show-grob*
+     (setq leng (length *poly-simplifications*))
+     (format t "~%Starting to simplify ~A poly-simplifications " (truncate leng 2))
+     (cond ((> 10 leng )
+	    (show-simps))
+	   (t (format t "~%Replacements are :") (show-replacements)))))
   (cond
-   ((sloop
-     for v in *poly-simplifications* by 'cddr
-     when (numberp v)
-     do (setq *poly-simplifications*
-	      (list 1 (rzero)))(loop-return 'unit-ideal)))
-   (t
-    (sort-poly-simplifications)
-    (sloop
-     ;;for (seq repl) on *poly-simplifications* by 'cddr
-     for i from 2 by 2 while (<= i (length *poly-simplifications*))
-     do
-     (setq seq (nth (f- i 2) *poly-simplifications*)
-	   repl(nth (f- i 1) *poly-simplifications*))
-     (setq old-simps *poly-simplifications*)
-     (setq *poly-simplifications* (append     ;;;nconac ok..
-				   (subseq *poly-simplifications* 0 (- i 2))
-				   (nthcdr i *poly-simplifications*)))
-     (cond ((must-replacep (setq mono (convert-deg-sequence-to-monomial seq)))
-	    (cond (*show-grob*  (sh mono) (format t "   is not  reduced")))
+    ((loop
+	for v in *poly-simplifications* by #'cddr
+	when (numberp v)
+	do (setq *poly-simplifications*
+		 (list 1 (rzero))) (return 'unit-ideal)))
+    (t
+     (sort-poly-simplifications)
+     (loop
+	;;for (seq repl) on *poly-simplifications* by #'cddr
+	for i from 2 by 2 while (<= i (length *poly-simplifications*))
+	do
+	  (setq seq (nth (- i 2) *poly-simplifications*)
+		repl(nth (- i 1) *poly-simplifications*))
+	  (setq old-simps *poly-simplifications*)
+	  (setq *poly-simplifications* (append     ;;;nconac ok..
+					(subseq *poly-simplifications* 0 (- i 2))
+					(nthcdr i *poly-simplifications*)))
+	  (cond ((must-replacep (setq mono (convert-deg-sequence-to-monomial seq)))
+		 (cond (*show-grob*  (sh mono) (format t "   is not  reduced")))
 
-	    (cond ((equal (setq replacement-of-mono
-				;;  (polysimp mono)
-				(monomial-finish-replace))
-			  repl)
-		   (setq i (f- i 2))
-		   (format t "eliminated one")
-		   ;;  (check-simp mono replacement-of-mono 'a)
-		   )
-		  (t (setq dif
-			   (pdifference	  ;;;just need the numerator...
-			    (ptimes (num replacement-of-mono)
-				    (denom repl))
-			    (ptimes (num repl) (denom replacement-of-mono))))
+		 (cond ((equal (setq replacement-of-mono
+				     ;;  (polysimp mono)
+				     (monomial-finish-replace))
+			       repl)
+			(setq i (- i 2))
+			(format t "eliminated one")
+			;;  (check-simp mono replacement-of-mono 'a)
+			)
+		       (t (setq dif
+				(pdifference	  ;;;just need the numerator...
+				 (ptimes (num replacement-of-mono)
+					 (denom repl))
+				 (ptimes (num repl) (denom replacement-of-mono))))
 
-		     (cond (*simplify-rhs*
-			    (setq dif (polysimp dif))))
-		     (cond ((not (new-zerop dif))
-			    (add-to-poly-simplifications   dif nil)
-			    (setq try-conclusion t)))
-		     (setq       resimplify t)
-		     ; (format t "~%having to resimplify.." ) (sh dif)
-		     (loop-return 'added))))
-	   ((and *simplify-rhs*
-		 (must-replacep (num repl)))
-	    ;;replace the replacement only so monom ok..
-	    (setq repl-simp (polysimp (num repl)))
-	    (setq repl-simp
-		  (ratreduce (num repl-simp)
-			     (ptimes (denom repl-simp) (denom repl))))
-	    ;(check-simp (nth (f1- i) old-simps) repl-simp 'c)
-	    (setf (nth (f1- i) old-simps ) repl-simp)
-	    (setq *poly-simplifications* old-simps))
-	   (t (setq *poly-simplifications* old-simps))))))
+			  (cond (*simplify-rhs*
+				 (setq dif (polysimp dif))))
+			  (cond ((not (new-zerop dif))
+				 (add-to-poly-simplifications   dif nil)
+				 (setq try-conclusion t)))
+			  (setq       resimplify t)
+					; (format t "~%having to resimplify.." ) (sh dif)
+			  (return 'added))))
+		((and *simplify-rhs*
+		      (must-replacep (num repl)))
+		 ;;replace the replacement only so monom ok..
+		 (setq repl-simp (polysimp (num repl)))
+		 (setq repl-simp
+		       (ratreduce (num repl-simp)
+				  (ptimes (denom repl-simp) (denom repl))))
+					;(check-simp (nth (1- i) old-simps) repl-simp 'c)
+		 (setf (nth (1- i) old-simps ) repl-simp)
+		 (setq *poly-simplifications* old-simps))
+		(t (setq *poly-simplifications* old-simps))))))
   ;;?? this was not in earlier version:
-   (cond (resimplify (simplify-poly-simplifications)))
-   ;;  (cond (try-conclusion (conclusionp)))  ;;moved to add-to-simps..
-   *poly-simplifications*)
+  (cond (resimplify (simplify-poly-simplifications)))
+  ;;  (cond (try-conclusion (conclusionp)))  ;;moved to add-to-simps..
+  *poly-simplifications*)
 
 
 (defun seq-op (seqa seqb &optional (op #'-))
@@ -566,7 +569,7 @@ substituting them to be zero."
 
 (defun seq-minus (seqa)
   (setq seqa (copy-list seqa))
-  (sloop for v on (cdr seqa) by 'cddr
+  (loop for v on (cdr seqa) by #'cddr
 	do (setf (first v) (- (first v))))
   seqa)
 ;;see other one above
@@ -578,7 +581,7 @@ substituting them to be zero."
 ;				      (cond ((equal x y) nil)
 ;					    (t (funcall *monomial-order-function* y x))))))
 ;  (cond (*show-grob*  (format t "~%Starting to simplify ..") (show-simps)))
-;  (sloop for (deg repl) on *poly-simplifications* by 'cddr
+;  (loop for (deg repl) on *poly-simplifications* by #'cddr
 ;	for i from 2 by 2
 ;        do
 ;	(setq new-simps nil)
@@ -599,45 +602,43 @@ substituting them to be zero."
 
 (defun basis_from_simps(&optional(simps *poly-simplifications*))
   (cons '(mlist)
-	(sloop for (u v) on simps
-	       by 'cddr
+	(loop for (u v) on simps by #'cddr
 	       collecting (n- u v))))
 
 (defun convert-poly-simplifications-to-macsyma-form (simps)
-  (sloop for (u v) on simps
-	by 'cddr
+  (loop for (u v) on simps by #'cddr
 	collecting (list '(mlist) (header-poly (convert-deg-sequence-to-monomial u))
 			 (header-poly v)) into tem
-	finally (loop-return (cons '(mlist) tem))))
+	finally (return (cons '(mlist) tem))))
 
 
 (defun overlap-degree (seqa seqb &aux answer temm  tem)
- (setq answer (f+ (sloop for v on seqa by 'cddr
+ (setq answer (+ (loop for v on seqa by #'cddr
 	when (and (setq tem (get-altq (car v) seqb))
 		  (not (zerop (setq temm (min tem (second v))))))
-	summing (f- (second v) temm)
+	summing (- (second v) temm)
 	else summing (second v))
       (degree-of-deg-sequence seqb))))
 
 (defun overlap (seqa seqb &aux tem)
-  (sloop for v on seqa by 'cddr
+  (loop for v on seqa by #'cddr
 	when (and (setq tem (get-altq (car v) seqb))
 		  (not (zerop (setq tem (min tem (second v))))))
 	collecting (car v)
 	and
 	collecting tem))
 (defun degree-of-deg-sequence (seq)
-  (sloop for v in (cdr seq)  by 'cddr
+  (loop for v in (cdr seq)  by #'cddr
 	summing v))
 
 (defun replacement-sequences ()
-  (sloop for v in *poly-simplifications* by 'cddr collecting v))
+  (loop for v in *poly-simplifications* by #'cddr collecting v))
 (defun show-replacements ()
   (displa ($poly_replacements)))
 (defun $polY_replacements()
-  (sloop for v in (replacements)
+  (loop for v in (replacements)
 	collecting (header-poly (convert-deg-sequence-to-monomial v))
-	into tem finally (loop-return (cons '(mlist) tem))))
+	into tem finally (return (cons '(mlist) tem))))
 
 (defun degree-of-worst-monomial (poly)
   (degree-of-deg-sequence (find-main-monomial poly)))
@@ -660,10 +661,10 @@ substituting them to be zero."
 
 (defvar *show-complexity* t)
 
-(defun check-overlaps ( deg  &key reset  homogeneous (from-degree 1)
-			     (add-to-simps t) (maybe-reset t)
-			     (initial-time (get-internal-run-time))
-			     &aux tem associator v)
+(defun check-overlaps (deg  &key reset  homogeneous (from-degree 1)
+		       (add-to-simps t) (maybe-reset t)
+		       (initial-time (get-internal-run-time))
+		       &aux tem associator v)
   (cond (*homogeneous-relations*
 	 (show *homogeneous-relations*)
 	 (format t "Assuming homogeneous relations")
@@ -673,46 +674,41 @@ substituting them to be zero."
 	(maybe-reset
 	 (cond ((y-or-n-p "Reset  *overlaps-already-checked* to nil")
 		(setq  *overlaps-already-checked* nil)))))
-  (sloop named big-sue
-    for  i from from-degree to deg
-    do
-    (sloop named sue  for subl on (nreverse (replacement-sequences))
-      do (setq v (car subl))
-      (sloop for (w) on (cdr subl)
-	when
-	(and w
-	     (= (overlap-degree v w) i)
-	     (setq tem (overlap v w));;could check without consing
-	     (not (member (list v w) *overlaps-already-checked* :test #'equal)))
-	do
-	(timedbasis initial-time)
-	(setq associator (check-associative v tem w))
-	(push (list v w) *overlaps-already-checked* )
-	(cond
-	 ((rzerop associator) (setq initial-time (f+ initial-time 30))
-	  (if-verbose (show (- (get-internal-run-time) initial-time))
-		      (format t " zero associator, "nil)))
-	 (add-to-simps
-	  (add-to-poly-simplifications associator)
-	  (cond (*show-complexity*
-		 (terpri)
-		 (sloop for v in (cdr *poly-simplifications*) by 'cddr
-		   do (format t " . ~a" (f+  (pcomplexity (num v) )
-					     (pcomplexity (denom v)))
-			      ))))
-	  (conclusionp)
-	  (cond ((null homogeneous)
-		 (setq from-degree (min from-degree
-					(degree-of-worst-monomial
-					 (car associator))))))
-	  (check-overlaps
-	   deg :homogeneous homogeneous
-	   :from-degree from-degree :initial-time initial-time
-	   :add-to-simps add-to-simps :maybe-reset nil)
-	  (return-from big-sue 'done))
-	 (t (break 'found-non-associative))))
-      finally (loop-return *poly-simplifications*))
-    (cond (homogeneous (setq from-degree i))))
+  (loop for i from from-degree to deg do
+       (block big-sue
+	 (loop for subl on (nreverse (replacement-sequences))
+	    do (setq v (car subl))
+	      (loop for (w) on (cdr subl)
+		 when
+		   (and w
+			(= (overlap-degree v w) i)
+			(setq tem (overlap v w));;could check without consing
+			(not (member (list v w) *overlaps-already-checked* :test #'equal)))
+		 do
+		   (timedbasis initial-time)
+		   (setq associator (check-associative v tem w))
+		   (push (list v w) *overlaps-already-checked* )
+		   (cond ((rzerop associator)
+			  (setq initial-time (+ initial-time 30))
+			  (if-verbose (show (- (get-internal-run-time) initial-time))
+				      (format t " zero associator, ")))
+			 (add-to-simps
+			  (add-to-poly-simplifications associator)
+			  (cond (*show-complexity*
+				 (terpri)
+				 (loop for v in (cdr *poly-simplifications*) by #'cddr
+				    do (format t " . ~a" (+ (pcomplexity (num v))
+							    (pcomplexity (denom v)))))))
+			  (conclusionp)
+			  (cond ((null homogeneous)
+				 (setq from-degree (min from-degree (degree-of-worst-monomial (car associator))))))
+			  (check-overlaps deg :homogeneous homogeneous
+					  :from-degree from-degree :initial-time initial-time
+					  :add-to-simps add-to-simps :maybe-reset nil)
+			  (return-from big-sue 'done))
+			 (t (break 'found-non-associative))))
+	    finally (return *poly-simplifications*)))
+       (cond (homogeneous (setq from-degree i))))
   *poly-simplifications*)
 
 
@@ -768,12 +764,12 @@ substituting them to be zero."
   (and (not (equal seqa seqb))(not (z-order-sequence seqb seqa))))
 
 (defun z-order-sequence (seqa seqb)
-   (sloop for v on seqa by 'cddr
-	 for w on seqb by 'cddr
-	 when (or (< (symbol-value (car v))(symbol-value (car w)))
+   (loop for v on seqa by #'cddr
+	 for w on seqb by #'cddr
+	 when (or (< (symbol-value (car v)) (symbol-value (car w)))
 		  (< (second v)(second w)))
-	 do (loop-return nil)
-	 finally (loop-return (not (equal v w)))))
+	 do (return nil)
+	 finally (return (not (equal v w)))))
 
 (defun n** (&rest l)
   (case (length l)
@@ -786,20 +782,20 @@ substituting them to be zero."
 (defun xyz-order-sequence (seqa seqb)
   " so x<x^2<z<z^2<z^2*x<z^2*x*t the worst monomial  is the most main monomial ie
   highest degree in z then highest in y etc. "
-  (sloop for (var deg) on seqb by 'cddr while seqa
-	do
-	(cond ((eq (car seqa) var)
-	       (cond ((> (second seqa) deg)(loop-return nil))
-		     ((< (second seqa) deg) (loop-return t))
-		     (t (setq seqa (cddr seqa)))))
-	      ((pointergp (car seqa) var)(loop-return nil))
-	      (t (loop-return t)))
-	finally(cond ((null seqa) (loop-return (and seqb)))
-		     (t (loop-return nil)))))
+  (loop for (var deg) on seqb by #'cddr while seqa
+     do
+       (cond ((eq (car seqa) var)
+	      (cond ((> (second seqa) deg) (return nil))
+		    ((< (second seqa) deg) (return t))
+		    (t (setq seqa (cddr seqa)))))
+	     ((pointergp (car seqa) var) (return nil))
+	     (t (return t)))
+     finally (cond ((null seqa) (return (and seqb)))
+		   (t (return nil)))))
 
 
 (defun degree-of-sequence (seq)
-  (sloop for v on (cdr seq) by 'cddr
+  (loop for v on (cdr seq) by #'cddr
 	summing (car v)))
 (defun xyz-and-degree (seqa seqb &aux (d1 (degree-of-sequence seqa))
 			  (d2 (degree-of-sequence seqb)))
@@ -808,15 +804,15 @@ substituting them to be zero."
 	(t nil)))
 
 (defun remove-0 (lis)
-  (sloop for (var deg) on lis by 'cddr
+  (loop for (var deg) on lis by #'cddr
 	unless (zerop deg)
 	collecting var and collecting deg))
 
 ;(defun xyz-order-sequence (seqa seqb)
 ;  " so x<x^2<z<z^2<z^2*x<z^2*x*t the worst monomial  is the most main monomial ie
 ;  highest degree in z then highest in y etc. "
-;  (sloop for v on seqa by 'cddr
-;	for w on seqb by 'cddr
+;  (loop for v on seqa by #'cddr
+;	for w on seqb by #'cddr
 ;	do
 ;	(cond ((eq (car v) (car w))
 ;	       (cond ((eq (second w)(second v))nil)
@@ -834,9 +830,9 @@ substituting them to be zero."
 ;	(t (setq poly (new-rat poly))))
 ;  (cond ((constant-functionp poly) (values  poly nil))
 ;	(t
-;	 (sloop while changes
+;	 (loop while changes
 ;	       do (setq changes nil)
-;	       (sloop for v on *poly-simplifications* by 'cddr
+;	       (loop for v on *poly-simplifications* by #'cddr
 ;		     for i from 0 by 2
 ;		     when (setq tem (part-above-degree (num poly) (car v)))
 ;		     do (setq changes t changed t)
@@ -867,16 +863,16 @@ substituting them to be zero."
 	      (t  (cons (num (new-rat poly)) 1))))
   (cond ((constant-functionp poly) nil)
 	(t
-	 (sloop while changes
+	 (loop while changes
 	       do (setq changes nil)
-	       (sloop for v on *poly-simplifications* by 'cddr
+	       (loop for v on *poly-simplifications* by #'cddr
 		     when (setq tem (part-above-degree (num poly) (car v)))
 		     do (setq changes t changed t)
 		     (setq repl (replace-monomial-rat  poly (second v) (car v) tem ))
 		     (cond ((eq (num repl) 0)(setq changes nil)))
 		     (setq poly (cons (num repl) 1))
-		     (loop-return 'changed))
-	       finally (loop-return 'done))))
+		     (return 'changed))
+	       finally (return 'done))))
   (function-numerator poly))
 
 (defun polysimp (poly &aux (changes t) changed tem repl)
@@ -887,16 +883,16 @@ substituting them to be zero."
 	 (cond ((get-altq 1 *poly-simplifications*)(values 0 nil))
 	       (t (values  poly nil))))
 	(t
-	 (sloop while changes
+	 (loop while changes
 	       do (setq changes nil)
-	       (sloop for v on *poly-simplifications* by 'cddr
+	       (loop for v on *poly-simplifications* by #'cddr
 		     when (setq tem (part-above-degree (num poly) (car v)))
 		     do (setq changes t changed t)
 		     (setq repl (replace-monomial-rat  poly (second v) (car v) tem ))
 		     (cond ((eq (num repl) 0)(setq changes nil)))
 		     (setq poly repl)
-		     (loop-return 'changed))
-	       finally (loop-return 'done))
+		     (return 'changed))
+	       finally (return 'done))
 	 (values poly changed))))
 ;(defun polysimp (poly &aux (changes t) changed tem repl)
 ;  (cond ((polynomialp poly)(setq poly (cons poly 1)))
@@ -904,9 +900,9 @@ substituting them to be zero."
 ;	(t (setq poly (new-rat poly))))
 ;  (cond ((constant-functionp poly) (values  poly nil))
 ;	(t
-;	 (sloop while changes
+;	 (loop while changes
 ;	       do (setq changes nil)
-;	       (sloop for v on *poly-simplifications* by 'cddr
+;	       (loop for v on *poly-simplifications* by #'cddr
 ;		     when (setq tem (part-above-degree (num poly) (car v)))
 ;		     do (setq changes t changed t)
 ;		     (setq repl (replace-monomial (num poly) (second v) (car v) tem ))
@@ -920,9 +916,9 @@ substituting them to be zero."
 ;  (cond ((polynomialp poly)nil)
 ;	((rational-functionp poly) nil)
 ;	(t (setq poly (new-rat poly))))
-;  (sloop while changes
+;  (loop while changes
 ;	do (setq changes nil)
-;	(sloop for v on *poly-simplifications* by 'cddr
+;	(loop for v on *poly-simplifications* by #'cddr
 ;	      when (setq tem (part-above-degree poly (car v)))
 ;	      do (setq changes t)
 ;	      (setq poly (replace-monomial poly (second v) (car v)))
@@ -943,7 +939,7 @@ substituting them to be zero."
 ;;;initially  to all *poly-simplifications* and then gradually reduced by rat-polysimp-once
 ;(defun rat-polysimp-once (poly &aux new-denom tem)
 ;  (cond ((not (numberp poly))
-;	 (sloop for (deg-seq repl) on *poly-simplifications* by 'cddr
+;	 (loop for (deg-seq repl) on *poly-simplifications* by #'cddr
 ;	       when (setq tem (part-above-degree poly deg-seq))
 ;	       do
 ;	       (setq new-denom (denom repl))
@@ -961,7 +957,7 @@ substituting them to be zero."
 ;;  (format t "~%beginning to rat-polysimp..") (sh rat-poly)
 ;  (setq a (num rat-poly) b (denom rat-poly))
 ;  (setq answer
-;	(sloop while changes
+;	(loop while changes
 ;	      do (setq changes nil)
 ;	      (multiple-value-bind (new-poly changed-denom)
 ;		  (rat-polysimp-once  a)
@@ -978,22 +974,17 @@ substituting them to be zero."
 ;;  (format t "~%ending rat-polysimp with answer...")  (sh answer)
 ;  (values answer changed-at-least-once))
 
-
-
-
 (defun $current_grobner_basis (&optional (simps *poly-simplifications*))
-  (sloop for (seq repl) on simps by 'cddr
-
-	when (numberp seq) do (loop-return '((mlist) 1))
+  (loop for (seq repl) on simps by #'cddr
+	when (numberp seq) do (return '((mlist) 1))
 	collecting (header-poly
 		     (cons  (pdifference
 			      (num repl)
 			      (ptimes (convert-deg-sequence-to-monomial seq)
 				      (denom repl)))
-
 			    1))
 	into tem
-	finally (loop-return (cons '(mlist) tem))))
+	finally (return (cons '(mlist) tem))))
 
 (defun $grobner_basis (ideal &optional no-concl homogeneous (upto 100))
   (cond (no-concl (setq *conclusion* nil)))
@@ -1007,19 +998,19 @@ substituting them to be zero."
 
 (defun delete-pair (first-item a-list )
   "deletes first occurrence"
-  (sloop
-	for w on a-list by 'cddr
-	when (not (equal (car w) first-item))
-	collecting (car w) into tem
-	and
-	collecting (second w) into tem
-	else do (loop-return  (nconc tem (cddr w)))))
+  (loop
+     for w on a-list by #'cddr
+     when (not (equal (car w) first-item))
+     collecting (car w) into tem
+     and
+     collecting (second w) into tem
+     else do (return  (nconc tem (cddr w)))))
 
 (defun seq-subset (seqa seqb &aux answer)
   (setq answer (catch 'not-in
 		 (seq-op seqa seqb #'(lambda (.a. b) (cond ( (<= .a. b)
-							 (- b .a.))
-							(t (throw 'not-in 'no)))))))
+							    (- b .a.))
+							   (t (throw 'not-in 'no)))))))
   (cond ((eq answer 'no) nil)
 	(t answer)))
 
@@ -1030,53 +1021,55 @@ substituting them to be zero."
 ;;this is dangerous for some reason...
 (defun substitute-real-symbols-for-genvar (&optional a-list)
   (cond ((null a-list)
-	(setq a-list (sloop for v in *genvar* collecting
+	(setq a-list (loop for v in *genvar* collecting
 			   (intern (string-trim "$" (get v 'disrep)))))))
   (check-arg a-list  (eq (length a-list) (length *genvar*)) "not right length")
-  (Sloop for v in *genvar*
+  (loop for v in *genvar*
 	for w in a-list
-	do (set w (symbol-value v))
+	do
+	(setf (symbol-value w) (symbol-value v))
 	(setf (symbol-plist w) (symbol-plist v))
 	finally (setq *genvar* a-list *old-genvar* *genvar*)))
 
 (defun $generate_matrix (funct rows cols)
-  (sloop for i from 1 to rows
+  (loop for i from 1 to rows
 	collecting
-	(sloop for j from 1 to cols
+	(loop for j from 1 to cols
 	      collecting (mfuncall funct i j)
 	      into tem
-	      finally (loop-return (cons '(mlist) tem)))
+	      finally (return (cons '(mlist) tem)))
 	into temm
-	finally (loop-return (cons '($matrix) temm))))
+	finally (return (cons '($matrix) temm))))
 
-(DEFUN $NILPOTENT ($F &aux (OLD-SIMPS *POLY-SIMPLIFICATIONS*) )
+(defun $nilpotent ($f &aux (old-simps *poly-simplifications*) )
  (unwind-protect
-   (LET (*conclusion* (ME (SUB* (MUL* $F '$GGGGG) 1)) MEE)
-    (SETQ MEE (NEW-RAT ME))
-    (ADD-TO-POLY-SIMPLIFICATIONS MEE)
-    (CHECK-OVERLAPS 10 :ADD-TO-SIMPS T :RESET T)
+   (let (*conclusion* (me (sub* (mul* $f '$ggggg) 1)) mee)
+    (setq mee (new-rat me))
+    (add-to-poly-simplifications mee)
+    (check-overlaps 10 :add-to-simps t :reset t)
       (cond ((eq 0 ($polysimp '$ggggg)) t)
 	    (t nil)))
       (setq *poly-simplifications* old-simps)))
 
 (defun rat-variable( a-var)
-  (sloop for v in *varlist*
+  (loop for v in *varlist*
 	for w in *genvar*
 	when (eq v a-var)
-	do (loop-return (list w 1 1))
+	do (return (list w 1 1))
 	finally (show a-var  v w)(new-rat (mul* a-var 2))
-	(loop-return (rat-variable a-var))))
+	(return (rat-variable a-var))))
 
 (defun must-replace-monom (monom repl)
-  (sloop for seq in repl
+  (loop for seq in repl
 	when (occurs-in monom seq)
-	do (loop-return t)))
+	do (return t)))
+
 (defun sort-list-of-monomials (a-list &aux grouped)
  (setq grouped
-       (sloop for v in a-list collecting (convert-monomial-to-deg-sequence v)
+       (loop for v in a-list collecting (convert-monomial-to-deg-sequence v)
 	collecting v))
        (setq grouped (sort-grouped-list grouped 2 *monomial-order-function*))
-       (sloop for w in (cdr grouped) by 'cddr collecting w))
+       (loop for w in (cdr grouped) by #'cddr collecting w))
 ;
 ;(user:defremember grobner-monomials(variables n &optional (replacements
 ;							     (replacements))
@@ -1090,15 +1083,15 @@ substituting them to be zero."
 ;  (cond ((= n 0)(cond ((member 1 replacements :test #'eq) nil)
 ;		      (t (list 1))))
 ;	((= n 1)
-;	 (setq rat-vars (sloop for v in (cdr variables)
+;	 (setq rat-vars (loop for v in (cdr variables)
 ;			      do (setq vv (rat-variable v))
 ;			      when (not (must-replacep  vv))
 ;			      collecting vv ))
 ;	 (setq rat-vars (sort rat-vars #'(lambda (x y) (pointergp (car x) (car  y)))))
 ;	 rat-vars)
-;	(t (sloop for w in (grobner-monomials variables (f1- n) replacements reset)
+;	(t (loop for w in (grobner-monomials variables (1- n) replacements reset)
 ;		 appending
-;		 (sloop for uu in (grobner-monomials variables 1 replacements reset)
+;		 (loop for uu in (grobner-monomials variables 1 replacements reset)
 ;		 when (and
 ;			(>= (symbol-value (car uu))
 ;			    (symbol-value (car w)))
@@ -1107,7 +1100,7 @@ substituting them to be zero."
 
 
 (defun $poly_monomial_dimensions (variables to-deg &aux tem)
-  (sloop for i from 0 to to-deg
+  (loop for i from 0 to to-deg
 	do (format t "~%There are ~A independent monomials in degree ~A"
 		   (setq tem (length (grobner-monomials variables i))) i)
 		summing tem into tot
@@ -1124,9 +1117,9 @@ substituting them to be zero."
 	 (grobner-monomials variables-y n-y replacements reset))
 	((= n-y 0)
 	 (grobner-monomials variables-x n-x replacements reset))
-	(t (sloop for w in (grobner-bi-monomials variables-y variables-x  (f1- n-y) n-x replacements reset)
+	(t (loop for w in (grobner-bi-monomials variables-y variables-x  (1- n-y) n-x replacements reset)
 		 appending
-		 (sloop for uu in (grobner-monomials variables-y 1 replacements reset)
+		 (loop for uu in (grobner-monomials variables-y 1 replacements reset)
 		 when (and
 			(>= (symbol-value (car uu))
 			    (symbol-value (car w)))
@@ -1143,15 +1136,15 @@ substituting them to be zero."
   (cond ((= n 0)(cond ((member 1 replacements :test #'eq) nil)
 		      (t (list 1))))
 	((= n 1)
-	 (setq rat-vars (sloop for v in (cdr variables)
+	 (setq rat-vars (loop for v in (cdr variables)
 			      do (setq vv (rat-variable v))
 			      when (not (must-replace-monom  vv replacements))
 			      collecting vv ))
 	 (setq rat-vars (sort rat-vars #'(lambda (x y) (pointergp (car x) (car  y)))))
 	 rat-vars)
-	(t (sloop for w in (grobner-monomials variables (f1- n) replacements reset)
+	(t (loop for w in (grobner-monomials variables (1- n) replacements reset)
 		 appending
-		 (sloop for uu in (grobner-monomials variables 1 replacements reset)
+		 (loop for uu in (grobner-monomials variables 1 replacements reset)
 		 when (and
 			(>= (symbol-value (car uu))
 			    (symbol-value (car w)))
@@ -1165,19 +1158,19 @@ substituting them to be zero."
 
 
 (defun $list_relations (&rest l)
-  (sloop for v in l
+  (loop for v in l
 	when ($listp v)
 	appending (cdr (apply '$list_relations (cdr v))) into tem
 	else
 	 when (equal (caar v) 'mequal)
 	 collecting (sub* (second v) (third v))into tem
 	  else collecting v into tem
-	  finally (loop-return (cons '(mlist) tem))))
+	  finally (return (cons '(mlist) tem))))
 
 (defun rat-degree (poly var)
   (cond ((numberp poly)0)
 	((eq (car poly) var)(second poly))
-	(t (sloop for (deg cof) on (cdr poly) by 'cddr
+	(t (loop for (deg cof) on (cdr poly) by #'cddr
 		 maximize (rat-degree cof var)))))
 
 (defun rational-sub  (poly var new-denom &aux numerator)
@@ -1190,11 +1183,11 @@ substituting them to be zero."
 (defun rational-sub1 (poly var new-denom degree)
   (cond ((atom poly)(setq poly (ptimes poly (pexpt new-denom degree) )))
 	((eq (car poly) var)
-	 (sloop for tail  on (cdr poly) by 'cddr
-		for (deg cof) on (cdr poly) by 'cddr
+	 (loop for tail  on (cdr poly) by #'cddr
+		for (deg cof) on (cdr poly) by #'cddr
 		do (setf (second tail)
-			 (ptimes cof (pexpt new-denom (f- degree deg))))))
-	(t (sloop for tail on (cdr poly) by 'cddr
+			 (ptimes cof (pexpt new-denom (- degree deg))))))
+	(t (loop for tail on (cdr poly) by #'cddr
 		  do (setf (second tail)
 			   (rational-sub1 (second tail) var new-denom degree)))))
   Poly)
@@ -1204,23 +1197,12 @@ substituting them to be zero."
 
 (defun $te (poly var)
   (rat-degree(num (new-rat poly )) (caar (new-rat var))))
-;
-;si:
-;;Return the storage occupied by a bignum
-;(defun unmake-bignum (bignum)
-;  (cond ((eq default-cons-area working-storage-area)
-;  (%unmake-structure bignum (1+ (bignum-length bignum))))))
-
-;;si:
-;Return the storage occupied by a bignum
-;(defun unmake-bignum (ignore))
-;;  (%unmake-structure bignum (1+ (bignum-length bignum)))
 
 (defun $Contract_to_variables (a-list upto-variable &optional (before-var nil) &aux tem)
    (check-arg a-list $listp "Macsyma list")
-   (cond ((null before-var)(setq before-var (f+ (symbol-value (get-genvar upto-variable)) .5)))
+   (cond ((null before-var)(setq before-var (+ (symbol-value (get-genvar upto-variable)) .5)))
 	 (t (setq before-var  (symbol-value  (get-genvar before-var)))))
-   (sloop for v in (cdr a-list)
+   (loop for v in (cdr a-list)
 	 do
 	 (setq tem nil)
 	 (case (poly-type v)
@@ -1232,7 +1214,7 @@ substituting them to be zero."
 	       (t (setq tem nil)))
 	 when tem
 	 collecting tem into llist
-	 finally (loop-return (cons '(mlist ) llist))))
+	 finally (return (cons '(mlist ) llist))))
 ;
 ;(defun st-rat (x &aux answer)
 ;  "Returns a a number or cre polynomial or rational-function corresponding to x
@@ -1249,7 +1231,7 @@ substituting them to be zero."
 ;	       ((and (rational-functionp x)(eq (denom x) 1))(num x))
 ;	       (t x)))
 ;	(t (cond ((member (poly-type x) '(:rational-function :polynomial :number) :test #'eq)
-;		  (ferror "not in standard rat form ~A " x))
+;		  (merror "not in standard rat form ~A " x))
 ;		 (t (setq answer (new-rat x))(show (denom answer))
 ;		    (cond ((and (rational-functionp answer)
 ;				(eq (denom answer) 1)) (num answer))
@@ -1283,9 +1265,9 @@ substituting them to be zero."
 	gen	basis)
     (setq gen (get-genvar new-var))
     (setq basis (append
-		  (sloop for w in (cdr ideal1)
+		  (loop for w in (cdr ideal1)
 			collecting (n* new-var w))
-		  (sloop for w in (cdr ideal2)
+		  (loop for w in (cdr ideal2)
 			collecting (n* (n- 1 new-var ) w))))
     (setq basis ($grobner_basis (cons '(mlist)basis)))
     ($contract_to_variables basis nil new-var)))
@@ -1295,7 +1277,7 @@ substituting them to be zero."
   (check-arg original-relations '$listp "macsyma list")
   (setq relats
 	(append
-	  (sloop for u in (cdr slices )
+	  (loop for u in (cdr slices )
 		collecting (bring-to-left-side u))
 	  (cdr original-relations)))
   (displa (setq relats (cons '(mlist) relats)))
@@ -1307,7 +1289,7 @@ substituting them to be zero."
 ;
 ;
 ;(defmacro vb (&rest l)
-;  (sloop for v in l
+;  (loop for v in l
 ;	collecting (list 'eval? v) into tem
 ;    finally (return (cons 'list  tem))))
 ;
@@ -1437,7 +1419,7 @@ substituting them to be zero."
   (cond ((atom expr)(displa expr))
 	((or (polynomialp expr)(rational-functionp expr))(sh expr))
 	((or (polynomialp (car expr))(rational-functionp (car expr)))
-	 (sloop for v in expr do (display v)))
+	 (loop for v in expr do (display v)))
 	(t (displa expr))))
 
 

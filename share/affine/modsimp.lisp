@@ -63,10 +63,10 @@
   (setq monoms ($mono $current_variables (1- degn)))
   (setq monoms
 	(cons '(mlist)
-	(sloop for v in (cdr monoms)
-	collecting (ncmul* v '$x)
-	collecting (ncmul* v '$y))))
-   (mshow monoms)
+	      (loop for v in (cdr monoms)
+		 collecting (ncmul* v '$x)
+		 collecting (ncmul* v '$y))))
+  (mshow monoms)
   (setq general-term ($general_sum monoms $aaaa))
   (setq simp ($ratdisrep ($dotsimp general-term)))
   (mshow simp)
@@ -79,21 +79,20 @@
 
  
 (defun $find_sygy (degn matrix
-		   &aux monoms  eqns sols pref general-image  general-from from-n to-n simp scal )
+		   &aux monoms  eqns sols pref general-image  general-from from-n to-n simp scal)
   " find_sygy(2,matrix([x],[y]))===> pq"
   (setq from-n ($length matrix))
   (setq to-n ($length (second matrix)))
   (setq monoms ($mono $current_variables degn))
-  (setq pref(sloop for i
-	from 1 to from-n
-	collecting ($concat '$aa i)))
+  (setq pref (loop for i
+		from 1 to from-n
+		collecting ($concat '$aa i)))
   (setq general-from
-     (cons '(mlist)(sloop for u in pref
-	do
-	(setq scal (sloop for i below ($length monoms)
-			 collecting ($concat u i)))
-	($declare_scalar_list (setq scal(cons '(mlist) scal)))
-	collecting ($general_sum monoms scal))))
+	(cons '(mlist) (loop for u in pref	do
+			    (setq scal (loop for i below ($length monoms)
+					  collecting ($concat u i)))
+			    ($declare_scalar_list (setq scal(cons '(mlist) scal)))
+			  collecting ($general_sum monoms scal))))
   (mshow general-from)
   (setq general-image (ncmul* general-from matrix))
   (mshow general-image)
@@ -112,12 +111,13 @@
   ($separate_parameters ($sublis sols general-from)))
 
 (defmacro matrix-row (mat n)`(nth ,n ,mat))
+
 (defun matrix-column (mat n)
- (cons '(mlist) (sloop for v in (cdr mat)
+ (cons '(mlist) (loop for v in (cdr mat)
 	collecting (nth n v))))
 
 (defvar $module_simp_for_kernel nil)
-(defun $find_kernel (in-deg matrix &optional multiply-on-left 
+(defun $find_kernel (in-deg matrix &optional multiply-on-left
 		   &aux first eqns sols general-image $general_from   simp  )
 "if matrix is m x n then it finds the kernel of the MAPL on the right
 multiplication B:A^m-->A^n     v |---> vB or   the kernel of the left
@@ -125,14 +125,14 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   (cond (multiply-on-left (setq first (matrix-row matrix 1)))
 	(t
 	 (setq first (matrix-column matrix 1))))
-	
+
   ;;in-deg refers to degree of image in 1-1 position
   (setq $general_from (cons '(mlist)
-			    (sloop for u in (cdr first)
+			    (loop for u in (cdr first)
 				  for i from 1
 			   collecting ($scalar_sum ($concat '$ff i)
 						   ($mono $current_variables
-							  (f- in-deg ($nc_degree u)))))))
+							  (- in-deg ($nc_degree u)))))))
   (mshow $general_from)
   (cond (multiply-on-left
 	 (setq general-image (ncmul*   matrix ($transpose  $general_from) )))
@@ -161,7 +161,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 
 (defun $scalar_sum (prefix monoms &aux scal )
 ;  (declare (values general-sum scalars))
-  (setq scal (sloop for i below ($length monoms)
+  (setq scal (loop for i below ($length monoms)
 		   collecting ($concat prefix i)))
   ($declare_scalar_list (setq scal(cons '(mlist) scal)))
   (values ($general_sum monoms scal) scal))
@@ -169,16 +169,16 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 (defun replace-parameters-by (expr prefix &aux olds pars tem )
   (setq pars (cdr ($list_variables expr "par")))
   (setq olds ($list_variables expr prefix))
-  (sloop for i from 0 while pars
+  (loop for i from 0 while pars
 	when (not (member (setq tem ($concat prefix i)) olds :test #'equal))
 	  collecting (cons (car pars) tem) into repl
 	and
 	do (setq pars (cdr pars))
 	finally (cond (repl
-		       (sloop for v in repl do (format t "~%Replacing ~A by ~A" (car v) (cdr v)))
-		       (loop-return (sublis repl expr)))
-		      (t (loop-return expr)))))
-		    
+		       (loop for v in repl do (format t "~%Replacing ~A by ~A" (car v) (cdr v)))
+		       (return (sublis repl expr)))
+		      (t (return expr)))))
+
 (defun $leftsocle (in-degree module-relations rad &aux h newh relats allrelats
 		   monoms eqns vari solns  hh condition tem)
   "currently the modulue is a cyclic left module M=A/A.module-relations and
@@ -186,18 +186,18 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   everything is supposed to be homogeneous"
   (setq h ($scalar_sum '$bbb ($mono $current_variables in-degree)))
   (setq relats
-  (sloop for v in (cdr module-relations)
+  (loop for v in (cdr module-relations)
 	for i from 0
 	do
 	(setq tem  ($scalar_sum ($concat '$ccc i)
 				($mono $current_variables
-				       (1+ (f- in-degree ($nc_degree v))))))
+				       (1+ (- in-degree ($nc_degree v))))))
 	collecting (ncmul* tem v)))
  (setq allrelats (meval* (cons '(mplus) relats)))
   (mshow allrelats)
   (setq monoms ($mono $current_variables in-degree))
   ;;impose condition x.h-general-sum module-relations
-  (sloop for v in (cdr rad)
+  (loop for v in (cdr rad)
 	with all-rel = (num (new-rat  allrelats))
 	do (setq v (st-rat v))
 	   (setq hh (n. v (num (new-rat h))))
@@ -215,29 +215,28 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	(setq solns ($fast_linsolve eqns vari))
 	(setq newh ($ratsimp($sublis solns h)))
 	(cond (($zerop newh)
-	       (loop-return '((mlist)))))
+	       (return '((mlist)))))
 	(setq h (replace-parameters-by newh '$bbb))
 	(displa h)
-	finally (loop-return ($separate_parameters newh "bbb" "par"))))
+	finally (return ($separate_parameters newh "bbb" "par"))))
 
 (defun $try_bezout( f g  &optional (linears   #$[z-a*x,y-b*x]$) &aux (deg ($nc_degree f))  eqns cofs cof-eqns answ det tem)
   "solve f=f1*(z-a*x)+f2*(z-b*x),g=g1*(z-a*x)+g2*(z-b*x)"
-  (setq cofs   (sloop for v in '(f1 f2 g1 g2)
+  (setq cofs (loop for v in '(f1 f2 g1 g2)
 		     do (setq tem 
 			      ($scalar_sum ($concat '$ccc v)
-					   ($mono $current_variables (f- deg 1))))
+					   ($mono $current_variables (- deg 1))))
 		     collecting tem))
   (setq eqns
-	(sloop for (aa bb) on cofs by 'cddr
+	(loop for (aa bb) on cofs by #'cddr
 	      for ff in (list f g)
 	      collecting
-		(sloop 
-                  for lin in (cdr linears)
+		(loop  for lin in (cdr linears)
 		  for acof in (list aa bb)
 		  with eqn = ff
 		  do (setq eqn (sub* eqn (ncmul* acof lin)))
-		  finally (loop-return eqn))))
-  (setq eqns (sloop for v in eqns collecting ($ratdisrep ($dotsimp v))))
+		  finally (return eqn))))
+  (setq eqns (loop for v in eqns collecting ($ratdisrep ($dotsimp v))))
   (setq cof-eqns ($extract_linear_equations (cons '(mlist) eqns) ($mono $current_variables deg)))
   (mshow cof-eqns)
   (setq answ ($fast_linsolve cof-eqns ($list_variables cof-eqns "cc")))
@@ -248,8 +247,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 			      &aux  $g1 $g2 eqn eqns )
   "Af1 intersect f2A yielding g1.f1=f2.g2, and returns a equations.."
   (declare (special $g1 $g2 $f1 $f2))
-	 (setq $g1 ($scalar_sum '$gg1 ($mono $current_variables (f- in-deg ($nc_degree $f1)))))
-	 (setq $g2 ($scalar_sum '$gg2 ($mono $current_variables (f- in-deg ($nc_degree $f2)))))
+	 (setq $g1 ($scalar_sum '$gg1 ($mono $current_variables (- in-deg ($nc_degree $f1)))))
+	 (setq $g2 ($scalar_sum '$gg2 ($mono $current_variables (- in-deg ($nc_degree $f2)))))
 	 	 (setq eqn #$[g1.f1-f2.g2]$)
 	 (cond (in-free-ring nil)
 	       (t  (setq eqn ($totaldisrep ($dotsimp eqn)))))
@@ -266,8 +265,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	 (setq result  ($intersect_principals $f1 $f2 in-deg))
 	 ($nc_matrix_quotient result free-result))
 	(t
-	 (setq $g1 ($scalar_sum '$gg1 ($mono $current_variables (f- in-deg ($nc_degree $f1)))))
-	 (setq $g2 ($scalar_sum '$gg2 ($mono $current_variables (f- in-deg ($nc_degree $f2)))))
+	 (setq $g1 ($scalar_sum '$gg1 ($mono $current_variables (- in-deg ($nc_degree $f1)))))
+	 (setq $g2 ($scalar_sum '$gg2 ($mono $current_variables (- in-deg ($nc_degree $f2)))))
 	 (setq eqn #$totaldisrep(dotsimp([g1.f1-f2.g2]))$)
 	 (mshow eqn)
 	 (setq $eqns (setq eqns ($extract_linear_equations eqn)))
@@ -275,13 +274,6 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	 (setq result ($sublis solns #$[g1,g2]$))
 	 (cons '($matrix) (cdr ($separate_parameters result "par" "gg")))
 	 )))
-
-#-cl
-(def$fun $int ($f1 $f2 in-deg &aux $g1 $g2 eqn)
-	 (setq $g1 ($scalar_sum '$gg1 ($mono $current_variables (f- in-deg ($nc_degree $f1)))))
-	 (setq $g2 ($scalar_sum '$gg2 ($mono $current_variables (f- in-deg ($nc_degree $f2)))))
-	 (setq eqn #$totaldisrep(dotsimp([g1.f1-f2.g2]))$))
-
 
 ;(defun $find_basis_module (in-deg matrix-relations &optional right)
 ;  "given matrix([[f1,f2,..,fr],[g1,g2,..,gr],...]) compute a basis
@@ -295,33 +287,32 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	 (setq repl (member monom (cdr $module_simplifications) :test #'eq))
 	 (cond (repl (list monom (second repl)))))
 	(t
-	 (sloop for v on (cdr $module_simplifications) by 'cddr
+	 (loop for v on (cdr $module_simplifications) by #'cddr
 	       with leng =  (length monom)
 	       with leng-first-v
 	       when
-		 (or (and (zl-listp (car v))
+		 (or (and (listp (car v))
 			  (>= leng (setq leng-first-v(length (car v))))
-			  (equal (nthcdr (f- leng leng-first-v) (cdr monom)) (cdar v)))
+			  (equal (nthcdr (- leng leng-first-v) (cdr monom)) (cdar v)))
 		     (eql (car v) (nth (1- (length monom)) monom)))
-		 do (loop-return (list (first v) (cond ((numberp (second v)) (second v))
+		 do (return (list (first v) (cond ((numberp (second v)) (second v))
 						  (t (cdr (second v))))))))))
 ;(defun module-must-replacep (poly)
 ;  (*catch 'found-replace
 ;    (mod-must-replace1 poly)))
 
 (defun module-must-replacep (poly &aux monom)
-  (sloop while poly
+  (loop while poly
 	do
-    (cond ((atom poly) (loop-return nil))
+    (cond ((atom poly) (return nil))
 	  ((module-monom-must-replacep (setq monom (get (car poly) 'disrep)))
-	   (loop-return (cons (car poly)   (module-monom-must-replacep monom))))
+	   (return (cons (car poly)   (module-monom-must-replacep monom))))
 	  (t (setq poly (fifth poly))))))
 
 (defun rat-simplifications (simps)
- (cons '(mlist) (sloop for (mon rep) on (cdr simps ) by 'cddr
+ (cons '(mlist) (loop for (mon rep) on (cdr simps ) by #'cddr
 	collecting mon
 	collecting (cons *fake-rat* (new-rat rep)))))
-	
 
 (defun module-simp (fun &aux did-replace num-fun den-fun
 		    mon actual-repl repl den prev-mon lft symbo num-repl     repl-data )
@@ -330,8 +321,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	((rational-functionp fun)(desetq (num-fun . den-fun) fun))
 	(t (fsignal "takes poly or rat'l function for argument")))
 ;  (show $module_simplifications)
-  (sloop while (setq repl-data	     (module-must-replacep  num-fun))
-	do
+  (loop while (setq repl-data (module-must-replacep num-fun)) do
     (desetq (symbo mon repl) repl-data)
     (setq prev-mon (get symbo 'disrep))
     (setq did-replace t)
@@ -343,15 +333,14 @@ multiplication A^m <--- A^n:B    Bv<----|v"
     (format t "~%Module simp replacing ~A" (get symbo 'disrep))
     (setq num-fun (psublis(list  (cons symbo num-repl)) den num-fun))
     (setq den-fun (n* den den-fun))
-	finally (loop-return (cond (did-replace (ratreduce num-fun den-fun))
+	finally (return (cond (did-replace (ratreduce num-fun den-fun))
 		      (t fun)))))
 
-
 (defun delete-from-simps (simps mon repl)
-  (sloop for v on (cdr simps) by 'cdr
+  (loop for v on (cdr simps) by #'cdr
 	when (and (equal (car v) mon)
 		  (equal (second v) repl))
-	  do ( loop-return (cons '(mlist)(nconc tem (cddr v))))
+	  do (return (cons '(mlist)(nconc tem (cddr v))))
 	  else
 	  nconc (subseq v 0 2) into tem))
 
@@ -363,10 +352,10 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;;;list.   Also if you do a replacement you could not get earlier in the list
 ;;;if  they are sorted by degree, and within degree by worst monom
 ;(defun simplify-module-simplifications ()
-;  (sloop named sue for (mon rep) on (cdr $dot_simplifications) by 'cddr
+;  (loop named sue for (mon rep) on (cdr $dot_simplifications) by #'cddr
 ;          do
 ;	  (let (($module_simplifications (delete-from-simps $module_simplifications mon repl)))
-;	      (sloop for (mon1 rep1) on (cdr $dot_simplifications) by 'cddr
+;	      (loop for (mon1 rep1) on (cdr $dot_simplifications) by #'cddr
 ;		    when (or (module-monom-must-replacep mon1)
 ;			     (module-must-replacep rep1))
 ;		      do
@@ -396,15 +385,15 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 
 
 (defun module-and-dot-simp (pol  &aux (changed  t))
-  (sloop
+  (loop
     do
     (cond ((module-must-replacep pol)
 	   (setq pol (module-simp pol)) (setq changed t)))
-    (cond(($must_replacep pol)
+    (cond (($must_replacep pol)
 	  (setq pol (cdr (new-rat-dotsimp pol)))
 	  (setq changed t)))
     while changed
-    finally (loop-return pol)))
+    finally (return pol)))
 
 (defun gen-dot-check-associative (a b c &optional (simplifier 'module-and-dot-simp) &aux answ)
   "simplifier should return a polynomial or rational function"
@@ -434,7 +423,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;  (and answ
 ;
 ;
-;       (sloop for v on answ
+;       (loop for v on answ
 ;	     for a in answ
 ;	     do 
 ;
@@ -444,9 +433,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   "nil-->1, '(a) -->a '(x y z) --> x.y.z , x.y--> x.y"
 	 (cond ((null a)
                    1)
-	       ((zl-listp a)
-	       
-		(cond ((zl-listp (car a))
+	       ((listp a)
+		(cond ((listp (car a))
 		       (cond ((eql (caar a) 'mnctimes)
 			      (cond ((null (cdr a)) 1)
 				    ((cddr a) a)
@@ -463,16 +451,15 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	((atom mon)
 	 (and (equal ($nc_degree mon) n)
 	      mon))
-	(t (sloop 
+	(t (loop 
 		 for i downfrom (1- (length mon)) to 1
 		 for u = (nth i mon)
 		 summing ($nc_degree u) into tot
 		 when (>= tot n)
 		   do
 		     (cond ((eql tot n)
-			    (loop-return (coerce-nctimes (nthcdr i mon))))
-			   (t (loop-return nil)))))))
-
+			    (return (coerce-nctimes (nthcdr i mon))))
+			   (t (return nil)))))))
 
 (defun $firstn_ncdegree (mon n)
   "Returns an initial segment of mon of degree n if possible, otherwise nil"
@@ -480,14 +467,14 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	((atom mon)
 	 (and (equal ($nc_degree mon) n)
 	      mon))
-	(t (sloop for u in (cdr mon)
+	(t (loop for u in (cdr mon)
 		 for i from 2
 		 summing ($nc_degree u) into tot
 		 when (>= tot n)
 		   do
 		     (cond ((eql tot n)
-			    (loop-return (coerce-nctimes (subseq mon 0 i))))
-			   (t (loop-return nil)))))))
+			    (return (coerce-nctimes (subseq mon 0 i))))
+			   (t (return nil)))))))
 
 
 
@@ -496,37 +483,37 @@ multiplication A^m <--- A^n:B    Bv<----|v"
    of right since it is presumed the right is in reduced form "
   (let ((ld ($nc_degree left))
 	(rd ($nc_degree right)))
-    (setq size-lap (f- (f+ ld rd) tot-deg ))
+    (setq size-lap (- (+ ld rd) tot-deg))
     (cond ((<= size-lap 0) nil)
 	  (t (setq a-lap ($lastn_ncdegree left size-lap))
 	    (cond((and a-lap
 		 (or
 		   (equal a-lap right)
-		   (cond ((zl-listp right)
-			  (cond ((zl-listp a-lap)
+		   (cond ((listp right)
+			  (cond ((listp a-lap)
 				 (initial-seg (cdr a-lap) (cdr right)))
 				(t (equal (second right) a-lap)))))))
-		   (list ($firstn_ncdegree left (f- ld size-lap))
+		   (list ($firstn_ncdegree left (- ld size-lap))
 			 a-lap
-			 ($lastn_ncdegree right (f- rd size-lap)))))))))
+			 ($lastn_ncdegree right (- rd size-lap)))))))))
 
 (defun $find_right_lap (left right tot-deg &aux size-lap a-lap )
   "tot-deg is the degree of the lapped left and right. It will not catch left a subset
    of right since it is presumed the right is in reduced form "
   (let ((ld ($nc_degree left))
 	(rd ($nc_degree right)))
-    (setq size-lap (f- (f+ ld rd) tot-deg ))
+    (setq size-lap (- (+ ld rd) tot-deg))
     (cond ((<= size-lap 0) nil)
 	  (t (setq a-lap ($lastn_ncdegree left size-lap))
 	   (cond ((and a-lap  ;;have match
 		    (cond ((equal a-lap right))
-			  ((and (zl-listp a-lap) (zl-listp right)
+			  ((and (listp a-lap) (listp right)
 			      (initial-seg (cdr a-lap) (cdr right))))
-			  ((and (atom a-lap) (zl-listp right)
+			  ((and (atom a-lap) (listp right)
 				(equal (second right) a-lap)))))
-		(list ($firstn_ncdegree left (f- ld size-lap))
+		(list ($firstn_ncdegree left (- ld size-lap))
 		      a-lap
-		      ($lastn_ncdegree right (f- rd size-lap)))))))))
+		      ($lastn_ncdegree right (- rd size-lap)))))))))
 
 ;
 ;(defun $find_right_lap (left right tot-deg &aux size-lap a-lap )
@@ -534,7 +521,7 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;   of right since it is presumed the right is in reduced form "
 ;  (let ((ld ($nc_degree left))
 ;	(rd ($nc_degree right)))
-;    (setq size-lap (- (f+ ld rd) tot-deg ))
+;    (setq size-lap (- (+ ld rd) tot-deg ))
 ;    (cond ((<= size-lap 0) nil)
 ;	  (t (setq a-lap ($lastn_ncdegree left size-lap))
 ;;	    (cond( a-lap
@@ -606,8 +593,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 		(setq answ (butlast a)))
 	       (t (fsignal "not tail"))))
 	(t
-	 (sloop for v in (cdr b)
-	       for w in (nthcdr (setq tem  (1+ (f- (length a) (length b)))) a)
+	 (loop for v in (cdr b)
+	       for w in (nthcdr (setq tem  (1+ (- (length a) (length b)))) a)
 ;	       do ;(show v w tem)
 	       when (not (equal v w))
 		 do (fsignal "b is not a tail of a"))
@@ -621,28 +608,28 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 (defun simplify-module-simps (to-deg &aux changed new-simps ( present-deg 0))
   (declare (special present-deg))
   (user-supply *module-overlaps-checked*)
-  (sloop	do (setq changed nil)
-	   (sloop for f in '(type-i-simp type-ii-simp)
-		 do
-	     (multiple-value-setq
-	       (new-simps changed)
-	       (funcall f present-deg to-deg ))
-	     (setq $module_simplifications new-simps)
-	     (cond (changed (loop-return 'try-again))))
-	while changed
-	finally (loop-return $module_simplifications)))
+  (loop	do (setq changed nil)
+       (loop for f in '(type-i-simp type-ii-simp) do
+	    (multiple-value-setq
+		(new-simps changed)
+	      (funcall f present-deg to-deg ))
+	    (setq $module_simplifications new-simps)
+	    (cond (changed (return 'try-again))))
+     while changed
+     finally (return $module_simplifications)))
 
 (defun type-i-simp (&rest ignore &aux old-simps relat new-relat)
+  (declare (ignore ignore))
   "eliminate simps such that one leading term is a left multiple of another, ie common right overlap"
   (setq old-simps (setq $module_simplifications (sort-simps-by-degree $module_simplifications)))
-  (sloop named sue for tail-simps on (cdr old-simps) by 'cddr
+  (loop named sue for tail-simps on (cdr old-simps) by #'cddr
 	for i from 3 by  2
 	do
     (let (($module_simplifications (cons '(mlist) (subseq tail-simps 0 2))))
-      (sloop for  (mon repl) on (cddr tail-simps) by 'cddr
-	    for jj from (f+ i 2) by 2
+      (loop for (mon repl) on (cddr tail-simps) by #'cddr
+	    for jj from (+ i 2) by 2
 	    when (or  (module-monom-must-replacep mon)
-		      (and (zl-listp repl)
+		      (and (listp repl)
 			   (module-must-replacep (function-numerator (cdr repl)))))
 	      do (setq relat  (make-relation mon repl))
 		 (setq new-relat (module-simp relat))
@@ -667,53 +654,52 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	 number-or-rational-function)
 	((rational-functionp number-or-rational-function)
 	 number-or-rational-function)
-	((and (zl-listp number-or-rational-function)
-	      (zl-listp (setq tem (car number-or-rational-function)))
+	((and (listp number-or-rational-function)
+	      (listp (setq tem (car number-or-rational-function)))
 	      (eql (car tem) 'mrat))
 	 (cdr number-or-rational-function))
 	(t (fsignal "not right type"))))
 
-(defun type-ii-simp (from-deg to-deg &aux old-simps new-repl tem  tem1  a b c)
+(defun type-ii-simp (from-deg to-deg &aux old-simps new-repl tem tem1 a b c)
   "checks overlaps of type (a b c) where a.b is a dotsimp and b.c is a modsimp and deg(a.b.c)<=i
    then replacement(a.b).c is a module relation to be added."
   (declare (special present-deg))
   (setq old-simps (setq $module_simplifications (sort-simps-by-degree $module_simplifications)))
-  (sloop named sue for i from from-deg to to-deg
-	do  (setq present-deg i)
-	    (sloop for  (mon repl) on (cdr $dot_simplifications)
-			    by 'cddr
-		  do
-	      (sloop for (monmod repmod) on (cdr old-simps) by  'cddr 
-		    when (setq tem  ($find_right_lap mon monmod i))
-		      do ;(show (list mon monmod))
-			 ;;should really use
-			 ;;(setq tem (list mon monmod i)) ;but only maximal overlaps need to be checked and since we go up in degree
-			 (setq tem1 (cons mon monmod)) 
-			 (cond ((not (member tem1 *module-overlaps-checked* :test #'equal))
-				(push tem1 *module-overlaps-checked*)
-				(iassert (nc-equal (ncmul* (first tem) (second tem)) mon))
-				(iassert (nc-equal (ncmul* (second tem) (third tem)) monmod))
-				(iassert (nc-equal ($nc_degree  (ncmul*  mon (third tem))) i))
-				(iassert (not (numberp (second tem))))
-				;;(setq mod-prod (n. (first tem)(function-numerator repmod)))
-				;;(setq new-repl (n-  (n. (function-numerator repl) (third tem)) mod-prod))
-				;; rep.c - a.repmod is in the ideal defining the module!
-				(desetq (a b c) tem)
-				(setq new-repl (n- (n. (ratl-function-id repl) c)
-						   (n. a (ratl-function-id repmod))))
-				(setq new-repl (dotsimp new-repl))
-				(setq new-repl (function-numerator new-repl))
-				(setq new-repl (function-numerator (module-simp new-repl)))
-				(mshow new-repl)
-				(mapcar 'displa (make-simp new-repl))
-
-				(cond ((pzerop new-repl) nil)
-				      (t (return-from sue (values (append old-simps (make-simp new-repl)) t))))))))
-	finally (loop-return (values old-simps nil))))
+  (loop for i from from-deg to to-deg do
+       (block sue
+	 (setq present-deg i)
+	 (loop for (mon repl) on (cdr $dot_simplifications) by #'cddr do
+	      (loop for (monmod repmod) on (cdr old-simps) by #'cddr 
+		 when (setq tem ($find_right_lap mon monmod i))
+		 do
+		 ;;(show (list mon monmod))
+		 ;;should really use
+		 ;;(setq tem (list mon monmod i)) ;but only maximal overlaps need to be checked and since we go up in degree
+		   (setq tem1 (cons mon monmod)) 
+		   (cond ((not (member tem1 *module-overlaps-checked* :test #'equal))
+			  (push tem1 *module-overlaps-checked*)
+			  (iassert (nc-equal (ncmul* (first tem) (second tem)) mon))
+			  (iassert (nc-equal (ncmul* (second tem) (third tem)) monmod))
+			  (iassert (nc-equal ($nc_degree  (ncmul*  mon (third tem))) i))
+			  (iassert (not (numberp (second tem))))
+			  ;;(setq mod-prod (n. (first tem)(function-numerator repmod)))
+			  ;;(setq new-repl (n-  (n. (function-numerator repl) (third tem)) mod-prod))
+			  ;; rep.c - a.repmod is in the ideal defining the module!
+			  (desetq (a b c) tem)
+			  (setq new-repl (n- (n. (ratl-function-id repl) c)
+					     (n. a (ratl-function-id repmod))))
+			  (setq new-repl (dotsimp new-repl))
+			  (setq new-repl (function-numerator new-repl))
+			  (setq new-repl (function-numerator (module-simp new-repl)))
+			  (mshow new-repl)
+			  (mapcar #'displa (make-simp new-repl))
+			  (cond ((pzerop new-repl) nil)
+				(t (return-from sue (values (append old-simps (make-simp new-repl)) t)))))))))
+     finally (return (values old-simps nil))))
 
 ;(defun type-II-simp ( to-deg &aux old-simps new-repl repl-data tem)
 ;  (setq old-simps (setq $module_simplifications (sort-simps-by-degree $module_simplifications)))
-;  (sloop for  (mon repl) on (cdr $dot_simplifications) by 'cddr 
+;  (loop for  (mon repl) on (cdr $dot_simplifications) by #'cddr 
 ;	when (setq repl-data (module-monom-must-replacep mon))
 ;	  do (cond ((not (member (setq tem (cons mon (car repl-data))) *module-overlaps-checked*))
 ;		    (push tem *module-overlaps-checked*)
@@ -723,10 +709,8 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 ;			     t))))
 ;	finally (return (values old-simps nil))))
 
-	 
-
 ;(let (($module_simplifications)(*module-overlaps-checked*))
-;  (sloop for v in (st-rat #$[x,-(y.z+x.x)]$)
+;  (loop for v in (st-rat #$[x,-(y.z+x.x)]$)
 ;           do (plain-add-to-module-simps v))
 ;  ( simplify-module-simps))
 
@@ -747,46 +731,45 @@ multiplication A^m <--- A^n:B    Bv<----|v"
   (cyclic-module-basis variables degree ($replacements) ($module_replacements)))
 
 (defun $module_replacements( &optional (module-simps $module_simplifications))
-  (cons '(mlist) (sloop for (mon rep) on (cdr module-simps) by 'cddr
+  (cons '(mlist) (loop for (mon rep) on (cdr module-simps) by #'cddr
 		       collecting mon)))
 
-(defremember  cyclic-module-basis (variables deg  dot-replacements module-replacements &aux tem
-					     (default-cons-area working-storage-area))
-  (cond ((eql deg 0)(cond ((not (or (member 1 dot-replacements :test #'equal)
-				    (member 1 module-replacements :test #'equal)))
-			   '((mlist) 1))
-			  (t '((mlist)))))
+(defremember  cyclic-module-basis (variables deg  dot-replacements module-replacements &aux tem)
+  (cond ((eql deg 0)
+	 (cond ((not (or (member 1 dot-replacements :test #'equal)
+			 (member 1 module-replacements :test #'equal)))
+		'((mlist) 1))
+	       (t '((mlist)))))
 	(t
 	 (cons '(mlist)
-	       (sloop for v in (cdr variables)
-		     appending
-		       (sloop for w in   (cdr (cyclic-module-basis variables (1- deg) dot-replacements module-replacements))
+	       (loop for v in (cdr variables)
+		      appending
+		      (loop for w in   (cdr (cyclic-module-basis variables (1- deg) dot-replacements module-replacements))
 			     do (setq tem (ncmul* v w ))
 			     unless (or (module-monom-must-replacep tem) ($must_replacep tem))
-			       collecting tem))))))
+			     collecting tem))))))
 
 
 (defun $module_dimensions (to-n &optional (variables $current_variables) &aux tem)
-  (sloop for i from 0 to to-n
+  (loop for i from 0 to to-n
 	collecting (setq tem ($length ($cyclic_module_basis i variables))) into dims
 	summing tem into tot
 	do (format t "~%The dimension of the cyclic module in deg ~A is ~A." i tem)
 	   finally (format t "~%The total dimension through degree ~A is ~A." to-n tot)
-		   (loop-return (cons '(mlist) dims ))))
+		   (return (cons '(mlist) dims ))))
 
 
 (defun $set_up_module_simplifications(relations &optional to-deg)
   (setq $module_simplifications nil)
   (setq *module-overlaps-checked* nil)
-    
-  (sloop for v in (st-rat relations)
-           do (plain-add-to-module-simps  v))
+  (loop for v in (st-rat relations) do
+       (plain-add-to-module-simps  v))
   (cond (to-deg
-  ( simplify-module-simps to-deg)))
+	 (simplify-module-simps to-deg)))
   $module_simplifications)
 
 (defun $cyclic_module_basis (deg &optional (variables $current_variables))
- (cons '(mlist) (sloop for v in (cdr  ($mono variables deg))
+ (cons '(mlist) (loop for v in (cdr  ($mono variables deg))
     when (not (module-monom-must-replacep v))
       collecting v)))
 
@@ -798,18 +781,16 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	(t ($append (cons '(mlist) tem) ($rest seq  n)))))
 
 (defun $euler_sum (deg-seq size-of-module map-degs)
-  (sloop for v in (reverse (cdr map-degs))
+  (loop for v in (reverse (cdr map-degs))
 	for s in (cdr size-of-module)
 	for i from 1
 	with ans = deg-seq
 		 summing v into tot
 	do (mshow ans)
 	when (evenp i)
-	  do (setq ans (add* ans (mul* s ($shift_sequence deg-seq (f- tot)))))
-	else do (setq ans (sub* ans (mul* s ($shift_sequence deg-seq (f- tot)))))
-	  finally (loop-return ans)))
-
-
+	  do (setq ans (add* ans (mul* s ($shift_sequence deg-seq (- tot)))))
+	else do (setq ans (sub* ans (mul* s ($shift_sequence deg-seq (- tot)))))
+	  finally (return ans)))
 
 (defun $solve_sp (try eqns &aux  simp syst solns ld)
  (setq eqns  ($sublis try eqns))
@@ -817,20 +798,20 @@ multiplication A^m <--- A^n:B    Bv<----|v"
  (des ld)
  (setq simp (simplify-ldata ld))
  (des simp)
- (setq syst (sloop for u in simp collecting (cons '(mlist) (mapcar 'new-disrep (ldata-eqns u)))))
- (setq solns (sloop for v in syst collecting ($append try  ($fast_linsolve v ($list_variables v)))))
+ (setq syst (loop for u in simp collecting (cons '(mlist) (mapcar 'new-disrep (ldata-eqns u)))))
+ (setq solns (loop for v in syst collecting ($append try  ($fast_linsolve v ($list_variables v)))))
  (cons '(mlist) solns))
 
 
 (defun $nc_linear_factor (pol &aux answ (deg ($nc_degree pol)) lin fac2 result eqns solns general)
   (setq lin ($scalar_sum '$bb ($mono $current_variables 1)))
-  (setq fac2 ($scalar_sum '$cc ($mono $current_variables (f- deg 1))))
+  (setq fac2 ($scalar_sum '$cc ($mono $current_variables (- deg 1))))
   (setq result (sub* pol (ncmul* lin fac2)))
   (setq result ($dotsimp result))
   (setq eqns  ($extract_linear_equations (list '(mlist) result)))
   (mshow eqns)
   (setq answ
-	(sloop
+	(loop
      with try
      do
 	  (format t "~%Supply a macsyma list of possible solns")
@@ -841,14 +822,13 @@ multiplication A^m <--- A^n:B    Bv<----|v"
 	  (setq solns ($ratsimp solns))
 	  (cond ((null (y-or-n-p "Try again?"))
 		 (setq general (list '(mlist) lin fac2))
-		 (loop-return (cons '(mlist) (sloop for v in (cdr solns)
+		 (return (cons '(mlist) (loop for v in (cdr solns)
 					      appending (cdr ($separate_parameters ($sublis v general) "bb" "cc" "par")))))))))
   (cond((y-or-n-p "Verify factors:?")
-	(sloop    for v in (cdr answ)
+	(loop for v in (cdr answ)
 	      for i from 1
 	      with simp
 	      do (setq simp ($dotsimp (sub* pol  (ncmul* (meval*(second v)) (meval* (third v))))))
-		 
 		 (cond ((pzerop simp)(format t "~%soln ~A is correct:" i)
 			(displa (list '(mequal) pol (cons '(mnctimes) (cdr v) ))))
 		       (t(format t "~%soln ~A is not correct ****************"))))))

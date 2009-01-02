@@ -351,4 +351,4 @@ source path for joe and compile him into the object path for :uinfor"
   (cond ((and sys (atom sys) )(pushnew sys *files*))
 	((eq (car sys) :serial) (get-files1 (cdr sys)))
 	((keywordp (car sys)))
-	(t (sloop for v in sys do (get-files1 v)))))
+	(t (loop for v in sys do (get-files1 v)))))

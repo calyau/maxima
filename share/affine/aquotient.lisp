@@ -26,10 +26,6 @@
       `(first ,terms)))
 
 
-(defmacro macsyma-module (&rest l)
-  (declare (ignore l))
-  nil)
-
 ;;(make-poly var x)==> (list x 1 1)
 
 (defun make-polynomial (&key var terms)
@@ -48,7 +44,7 @@
 (defmacro working-modulo (list-of-monic-polynomials &body body
 			  &aux (old-tellrats (make-symbol "old-tellrats")))
   "The computations in body are done modulo the list-of-monic-polynomials.  The
-   results of squareing,multiplication, and exponentiating should be of lower degree in each of the 
+   results of squareing,multiplication, and exponentiating should be of lower degree in each of the
    monic polynomials than the degree of the monic polynomial"
   `(let ((,old-tellrats (list-previous-tellrats ,list-of-monic-polynomials)))
   (unwind-protect
@@ -61,19 +57,19 @@
 ;;(working-modulo (st-rat #$[x^2+x+1,y^4+y]$) (ptimes ...))
 
 (defun list-previous-tellrats (new-tellrats)
-  (sloop for v in new-tellrats
+  (loop for v in new-tellrats
 	collecting (cons (car  v) (get (car v) 'tellrat))))
 
 (defun set-tellrats (new-tellrats)
-  (sloop for v in new-tellrats
+  (loop for v in new-tellrats
 	do (putprop (car v) (cdr v) 'tellrat)))
 
 (defun undo-tellrats (old-list)
-  (sloop for v in old-list
+  (loop for v in old-list
 	when (null (cdr v))
 	  do (remprop (car v) 'tellrat)
 	else do (putprop (car v) (cdr v) 'tellrat)))
- 
+
 ;;version for possibly some zero terms resulting
 ;;using nconc less space but slower since (list a b) is cdr coded and it has to fix up.
 (defmacro term-operation (f g operation-function &optional deg-shift-result)
@@ -83,8 +79,8 @@
   (let ((cof (make-symbol "cof"))
 	(deg (make-symbol "deg"))
 	(tem (gensym)))
-    `(afp-psimp  (p-var ,f) 
-		      (sloop for (,deg ,cof) on (cdr ,f) by 'cddr
+    `(afp-psimp  (p-var ,f)
+		      (loop for (,deg ,cof) on (cdr ,f) by #'cddr
 			    with ,tem
 			    do (setq ,tem (,operation-function ,cof ,g))
 			    when (not (pzerop ,tem))
@@ -98,7 +94,7 @@
   (let ((cof (make-symbol "cof"))
 	(deg (make-symbol "deg"))
 	(tem (gensym)))
-    `(sloop for (,deg ,cof) on ,terms-f by 'cddr
+    `(loop for (,deg ,cof) on ,terms-f by #'cddr
 	   with ,tem
 	   do (setq ,tem (,operation-function ,cof ,terms-g))
 	   when (not (pzerop ,tem))
@@ -137,8 +133,8 @@
    coefficients reduced by modulus."
   (cond
     (terms-g (setq answ (plain-term-operation terms-g (term-cof terms-f) afp-times (term-deg terms-f)))
-       (sloop for (f-exp f-cof ) on (cddr terms-f) by 'cddr
-	     do 
+       (loop for (f-exp f-cof ) on (cddr terms-f) by #'cddr
+	     do
 	 (setq terms-g g-orig)
 	 (prog ()
 	    first-product
@@ -162,7 +158,7 @@
 	       ;;coefficient whose corresponding degree is definitely
 	       ;;higher than any prod-exp to be encountered.
 	       (setq tail (cdr answ))
-	    tail-certain 
+	    tail-certain
 	       (cond ((and (cdr tail)(> (second tail) prod-exp))
 		      (setq tail (cddr tail))               (go tail-certain)))
 	       (cond ((or (null (cdr tail))(< (second tail) prod-exp))
@@ -171,7 +167,7 @@
 	       (cond ((pzerop (setq prod-cof (pplus (third tail) prod-cof)))
 		      (setf (cdr tail) (cdddr tail)))
 		     (t (setf (third tail) prod-cof) (setq  tail (cddr tail))))
-	    next-product 
+	    next-product
 	       (setq terms-g (cddr terms-g))
 	       (cond ((null terms-g) (return nil)))
 	       (setq prod-exp (+ f-exp (car terms-g)))
@@ -180,7 +176,7 @@
 	       (go tail-certain)))))
   answ)
 
-(defmacro afp-main-plus-non-main (constant  f-main)	
+(defmacro afp-main-plus-non-main (constant  f-main)
   "Adds a polynomial CONSTANT to a polynomial whose main variable is higher than
    any in F-MAIN"
   `(afp-psimp (p-var ,f-main) (afp-constant-term-plus ,constant (cdr ,f-main))))
@@ -200,7 +196,7 @@
 	((pointergp (p-var f) (p-var g)) (afp-main-plus-non-main g f))
 	(t  (afp-main-plus-non-main f g))))
 
-(defun afp-constant-term-plus (constant terms)	
+(defun afp-constant-term-plus (constant terms)
   "Adds a polynomial (CONSTANT) not involving the main variable of a polynomial whose
   terms are TERMS.  Naturally the main variable is assumed higher than any in the CONSTANT. ~
   The result is the terms of the sum polynomial"
@@ -241,8 +237,8 @@
 	(t (cons (car f) (afp-terms-minus (cdr f))))))
 
 (defun afp-terms-minus (terms-f)
-  (sloop for (deg pol) on terms-f by 'cddr
-	nconc (list deg (afp-minus pol))))
+  (loop for (deg pol) on terms-f by #'cddr nconc nil)
+  (list deg (afp-minus pol)))
 
 
 (defmacro add-one-term (deg cof terms)
@@ -310,26 +306,26 @@
 	((numberp g)
 	 (term-operation f g afp-quotient))
 	((pointergp (p-var f) (p-var g))
-         (term-operation f g afp-quotient))
+	 (term-operation f g afp-quotient))
 	((eq (p-var f) (p-var g))
-	 (sloop
+	 (loop
 	       with quot with deg-dif with main-var = (p-var f) with minus-quot
-               do
+	       do
 	       (setq  deg-dif (- (p-deg f) (p-deg g)))
 	       while (>= deg-dif 0)
        	       collecting deg-dif into q
 	       collecting  (setq quot (afp-quotient (p-cof f) (p-cof g)))
-	       into q  
+	       into q
 	       do (setq minus-quot (pminus quot))
 	       (setq f (pplus
 			f
 			(term-operation g
 					;;-fn/gm
-                                        minus-quot
+					minus-quot
 					ptimes
-				        deg-dif)))
+					deg-dif)))
 	       while (not (and (numberp f) (zerop f)))
-               when (or (numberp f) (not (eq main-var (p-var f)))
+	       when (or (numberp f) (not (eq main-var (p-var f)))
 			(< (p-deg f) (p-deg g)))
 		 do (quotient-not-exact)
 	       finally (return (make-polynomial :terms q :var main-var))))
@@ -354,46 +350,40 @@
    to the main variable of f."
   (cond ((numberp f)
 	 (cond ((numberp g)
-		(apply 'values (nconc '(1) (multiple-value-list (afc-remainder f g)))))
+		(apply #'values (append '(1) (multiple-value-list (afc-remainder f g)))))
 	       (t (values 0 f 1))))
 	((numberp g)
 	 (values f 0 g))
 	((pointergp (p-var f) (p-var g))
 	 (values f 0 g))
 	((eq (p-var f) (p-var g))
-	 (sloop with quot with deg-dif with main-var = (p-var f)
-	       with remainder =
-		 (cond ((and (numberp (p-cof g)) modulus) f)
-		       ((and (numberp (p-cof g))
-			     (eql (abs (p-cof g)) 1)) f)
-		       (t 	(ptimes f (setq creqd (pexpt (p-cof g)
-							      (+ 1 (- (p-deg f) (p-deg g))))))))
-               do
-	   (setq  deg-dif (- (p-deg remainder) (p-deg g)))
-	       while (>= deg-dif 0)
-       	       collecting deg-dif into q
-	       collecting  (setq quot (afp-quotient (p-cof remainder) (p-cof g)))
-		 into q
-	       do
-	   (setq remainder (pplus
-			     remainder
-			     (term-operation g
-					     ;;-fn/gm
-					     (pminus
-					       quot)
-					     ptimes
-					     deg-dif)))
-	       while (and (not (numberp remainder))
-			  (eql (p-var remainder) main-var))
-	       finally
-		 (setq quot  (make-polynomial :terms q :var main-var))
-;		 (iassert (eql 0 (pdifference  (ptimes f creqd ) (Pplus remainder (ptimes quot g)))))
-		 (return (values quot
-				 remainder creqd))))
+	 (loop with quot with deg-dif with main-var = (p-var f)
+	    with remainder =
+	      (cond ((and (numberp (p-cof g)) modulus) f)
+		    ((and (numberp (p-cof g))
+			  (eql (abs (p-cof g)) 1)) f)
+		    (t 	(ptimes f (setq creqd (pexpt (p-cof g)
+						     (+ 1 (- (p-deg f) (p-deg g))))))))
+	    do
+	      (setq deg-dif (- (p-deg remainder) (p-deg g)))
+	    while (>= deg-dif 0)
+	    collecting deg-dif into q
+	    collecting  (setq quot (afp-quotient (p-cof remainder) (p-cof g)))
+	    into q
+	    do
+	      (setq remainder (pplus
+			       remainder
+			       (term-operation g
+					       ;;-fn/gm
+					       (pminus quot)
+					       ptimes deg-dif)))
+	    while (and (not (numberp remainder))
+		       (eql (p-var remainder) main-var))
+	    finally
+	      (setq quot (make-polynomial :terms q :var main-var))
+					;		 (iassert (eql 0 (pdifference  (ptimes f creqd ) (Pplus remainder (ptimes quot g)))))
+	      (return (values quot remainder creqd))))
 	(t (values 0 f 1))))
-
-
-
 
 (defmacro assume-pointerg-or-equal-p (f g &optional reverse-flag)
   `(cond (( gen-pointergp ,f ,g) nil)
@@ -405,7 +395,6 @@
    (cond ((numberp g) t)
 	 ((numberp f) nil)
 	 (t (pointergp (p-var f) (p-var g)))))
-
 
 (defun gen-degree (f)
   (cond ((numberp f) 0)
@@ -422,7 +411,7 @@
   "Returns the gcd of the coefficients of f (with respect to the main variable) ~
    if f is a polynomial"
   (cond ((numberp f) f)
-	(t (sloop for (deg cof) on (cdddr f) by 'cddr
+	(t (loop for (deg cof) on (cdddr f) by #'cddr
 		 with cont = (p-cof f)
 		 do (setq cont (afp-gcd cont cof))
 		 finally (return cont)))))
@@ -439,7 +428,7 @@
    (case *afp-gcd*
 	    (euclidean (afp-euclidean-gcd f g))
 	    (subresultant (afp-subresultant-gcd f g))
-	    (t (ferror "~%The value of the switch *afp-gcd* ~A is not legal." *afp-gcd*))))
+	    (t (merror "~%The value of the switch *afp-gcd* ~A is not legal." *afp-gcd*))))
    (cond (modulus (afp-try-make-monic answer))
 	 (t answer)))
 
@@ -452,7 +441,7 @@
   (cond ((numberp f)(gcd f g))
 	((gen-pointergp f g)
 	 (afp-gcd (afp-content f) g))
-;	 (sloop for (deg cof) on (p-terms f) by 'cddr
+;	 (loop for (deg cof) on (p-terms f) by #'cddr
 ;			with gcd = g
 ;			do (setq gcd (afp-gcd cof gcd))
 ;			   finally (return gcd)))
@@ -462,7 +451,7 @@
 	 (setq u (afp-quotient f contf))
 	 (setq v (afp-quotient g contg))
 	 (assume-greater-equal-degree u v)
-	 (sloop with unused
+	 (loop with unused
 	    do (multiple-value-setq (unused  r) (afp-pseudo-quotient u v))
 	    when (pzerop r)
 	      do (return (ptimes d v))
@@ -470,7 +459,7 @@
 	      do (return  d)
 	    do (setq u v)
 	       (setq v (afp-quotient r (afp-content r)))))
-        (t (fsignal 'should-not-get-here))))
+	(t (fsignal 'should-not-get-here))))
 
 
 ;;This was about twice as fast as the regular maxima pgcd on
@@ -494,7 +483,7 @@
 	 (setq u (afp-quotient f contf))
 	 (setq v (afp-quotient g contg))
 	 (assume-greater-equal-degree u v)
-	 (setq answ (sloop with gg = 1 with h = 1 with g^delta with unused
+	 (setq answ (loop with gg = 1 with h = 1 with g^delta with unused
 			  do
 		      (setq delta (- (p-deg u) (p-deg v)))
 		      (multiple-value-setq (unused  r) (afp-pseudo-quotient u v))
@@ -516,37 +505,37 @@
 
 (defun one-ptimes (f g)
   (cond ((eql f 1) g)
-        ((eql g 1) f)
-        (t (ptimes f g))))
+	((eql g 1) f)
+	(t (ptimes f g))))
 
 (defun exponent-product (&rest alternating-factor-exponent-list)
   "Exponents may be positive or negative, but assumes result is poly"
-  (sloop for (fact deg) on alternating-factor-exponent-list by 'cddr
-        with numer = 1 with  denom = 1
-        when (= deg 1)
-        do (setq numer (one-ptimes numer fact))
-        else
-        when (> deg 1)
-        do (setq numer (one-ptimes numer (pexpt fact deg)))
-        else
-        when (= deg -1)
-        do (setq denom (one-ptimes denom fact))
-        else
-        when (< deg -1)
-        do (setq denom (one-ptimes denom (pexpt fact (- deg))))
-        finally (return (afp-quotient numer denom))))
+  (loop for (fact deg) on alternating-factor-exponent-list by #'cddr
+	with numer = 1 with  denom = 1
+	when (= deg 1)
+	do (setq numer (one-ptimes numer fact))
+	else
+	when (> deg 1)
+	do (setq numer (one-ptimes numer (pexpt fact deg)))
+	else
+	when (= deg -1)
+	do (setq denom (one-ptimes denom fact))
+	else
+	when (< deg -1)
+	do (setq denom (one-ptimes denom (pexpt fact (- deg))))
+	finally (return (afp-quotient numer denom))))
 
 (defun same-main-and-degree (f g)
   (cond ((numberp f)(numberp g))
-        ((numberp g)(numberp f))
-        (t
-         (and (eq (car f) (car g))
-              (eq (second f) (second g))))))
+	((numberp g)(numberp f))
+	(t
+	 (and (eq (car f) (car g))
+	      (eq (second f) (second g))))))
 ;;unfinished.
 ;(defun afp-sqfr (f &aux deriv d)
 ;  (cond ((numberp f) f)
 ;        (t
-;         (sloop
+;         (loop
 ;	 do
 ;         (setq deriv (pderivative f (p-var f)))
 ;        (setq d (afp-gcd f deriv))
@@ -554,7 +543,7 @@
 ;               ((same-main-and-degree d f)
 ;                (make-polynomial :var (p-var f)
 ;                                 :teerms
-;                                 (sloop for (deg cof) on (cdr f) by 'cddr
+;                                 (loop for (deg cof) on (cdr f) by #'cddr
 ;                                       collecting (quotient deg modulus)
 ;                                       collecting cof)))
 ;               (t (setq f (afp-quotient f d))))))))
@@ -593,10 +582,10 @@
 		 ;;deriv is 0
 		 (t (check-arg deriv (eql 0 deriv) "zero")
 		    (setq root (psimp (p-var u)
-				      (sloop for (deg cof) on (cdr u) by 'cddr
+				      (loop for (deg cof) on (cdr u) by #'cddr
 					    collecting (quotient deg modulus)
 					    collecting cof)))
-		    (sloop for (pol deg) on  (afp-square-free-with-modulus root) by 'cddr
+		    (loop for (pol deg) on  (afp-square-free-with-modulus root) by #'cddr
 			  collecting pol collecting (* deg modulus)))))))
 
 ;;timing on factoring the (x+y+z)^10 2.6 sec 10,047 words
@@ -605,7 +594,7 @@
 (defun afp-square-free-factorization (u &aux d tx v1 w1 some-factors unit)
   "returns an alternating list of factors and exponents. In the characteristic 0 case each factor is ~
   guaranteed square free and relatively prime to the other factors. Note that if
-  modulus is not zero then u should be univariate.  Otherwise for eg mod 3, x^3-t 
+  modulus is not zero then u should be univariate.  Otherwise for eg mod 3, x^3-t
   is not square free in the field with cube root of t adjoined, and it can't be factored
   in Z/3Z[x,t]."
   (cond
@@ -625,50 +614,50 @@
 	     (cond
 	       ((eql tx 1) (list u 1))
 	       ((numberp tx) (fsignal 'how-did-this-happen))
-	       (t(sloop for i from 1
+	       (t (loop for i from 1
 		       with vi = v1 with wi = w1 with videriv with vi+1 with ui with wi+1
 		       with main-var = (p-var u)
 		       do; (show i)
 			  (setq videriv (pderivative vi main-var))
 ;			  (show factor-list)
 		       when (equal wi videriv)
-			 do 
+			 do
 			   (return (append factor-list (list vi i)))
-		       do 
+		       do
 		   (multiple-value-setq (ui vi+1 wi+1)
 					(afp-big-gcd vi (pdifference wi
 								     videriv)))
 ;		   (show vi wi ui  vi+1 wi+1)
 		       when (not (eql ui 1))
 			 nconc (list ui i) into factor-list
-		       do 
+		       do
 			  (setq vi vi+1)
 			  (setq wi wi+1)
 			  ))))
 ;       (show some-factors)
        ;;this is all to collect some numbers and fix the unit multiple.
-       (sloop for (pol deg) on some-factors by 'cddr
+       (loop for (pol deg) on some-factors by #'cddr
 	     with answ = d
 	     do (setq answ (ptimes answ (pexpt (p-cof pol) deg)))
 		finally
 		  (setq unit (afp-quotient (p-cof u) answ))
 		  (cond ((eql unit 1) nil)
-			((eql unit -1)(sloop for (pol1 deg1) on some-factors by 'cddr
+			((eql unit -1) (loop for (pol1 deg1) on some-factors by #'cddr
 					    for i from 0 by 2
 					    when (oddp deg1) do (setf (nth i some-factors)
 								   (pminus pol1))
 							      (return 'done)
-					     finally (ferror "no odd factors yet differs by minus ")))
+					     finally (merror "no odd factors yet differs by minus ")))
 			(t (fsignal "not handled yet"))))
        (cond ((eql d 1) some-factors)
 	     (t (append (afp-square-free-factorization d) some-factors)))))))))
 
 
 
-;;tested on (x+y+z)^10 times itself and got about 
+;;tested on (x+y+z)^10 times itself and got about
 ;;the same time as ptimes 3100 milliseconds. in temporary area.
 ;;It used 10% more space. 205,000 for (x+y+z)^20*(x+y+z)^10 for ptimes.
-;;note on the st-rat form it only takes 510 msec. for (x+y+z)^10  and 
+;;note on the st-rat form it only takes 510 msec. for (x+y+z)^10  and
 ;;2.00 sec for (x+y+z)^20  as opposed to 3 sec and 15 sec resp with
 ;;;50000
 ;                         afp-square-free-factorization   pfactor
@@ -680,10 +669,10 @@
 ;
 ;(compare-functions
 ;(defun af-fake-times (f g)
-; (user:tim (with-polynomial-area-new () 
+; (user:tim (with-polynomial-area-new ()
 ;    (afp-times f g) nil)))
 ;(defun reg-fake-times (f g)
-; (user:tim   (with-polynomial-area-new () 
+; (user:tim   (with-polynomial-area-new ()
 ;  (ptimes f g) nil)))
 ;)
 
@@ -707,11 +696,11 @@
 	(t(psimp (p-var g) (plain-term-operation (cdr g)  f afp-times)))))
 
 
-;;;the following shuffles the terms together and is about the same speed as the 
+;;;the following shuffles the terms together and is about the same speed as the
 ;;;corresponding maxima function ptimes1
 ;(defun afp-terms-times (terms-f terms-g &aux prev to-add repl new-deg one-product)
 ;  "assumes same main variable"
-;  (sloop while terms-f
+;  (loop while terms-f
 ;	do
 ;    (setq one-product
 ;	  (plain-term-operation terms-g (term-cof terms-f) afp-times (term-deg terms-f)))
@@ -719,12 +708,12 @@
 ;	do (setq terms-f (cddr terms-f)))
 ;  (cond ((null one-product) nil)
 ;	(t
-;	 (sloop for (deg-f cof-f) on (cddr terms-f) by 'cddr
+;	 (loop for (deg-f cof-f) on (cddr terms-f) by 'cddr
 ;	       do
-;	   (sloop for (deg cof) on terms-g by 'cddr     ;;sue
+;	   (loop for (deg cof) on terms-g by #'cddr     ;;sue
 ;		 ;;computes the coeff of x^deg+deg-g and adds it in to
 ;		 ;;the terms of one-product.  Prev stands for the terms beginning
-;		 ;;with where the previous one was added on, or 
+;		 ;;with where the previous one was added on, or
 ;		 initially
 ;		   (setq prev one-product)
 ;		 do (setq new-deg (+ deg deg-f))
@@ -737,7 +726,7 @@
 ;				 (t
 ;				  ;;claim this can't happen unless prev = one-product
 ;				  ;;Since otherwise have had a non-trivial to-add already in the sue
-;				  ;;sloop and this would have added something in degree new-deg, but back
+;				  ;;loop and this would have added something in degree new-deg, but back
 ;				  ;;one step, and prev  would have that new-deg as its first element.
 ;				  ;;That new-deg must be bigger than the current new-deg.
 ;				  (iassert (eq prev one-product))
@@ -745,7 +734,7 @@
 ;					 (setq prev (setq one-product (cddr prev))))
 ;					(t(setf (second prev) repl))))))
 ;			  (t ;;each to-add term has lower new-deg than the previous (or to-add=0)
-;			   (sloop for vvv on  (cddr prev) by 'cddr
+;			   (loop for vvv on  (cddr prev) by #'cddr
 ;				   do
 ;			       (cond ((> (term-deg vvv) new-deg) (setq prev vvv))
 ;				     ((eql (term-deg vvv) new-deg)
@@ -760,9 +749,9 @@
 ;				   finally (setf (cddr prev)(list new-deg to-add))))))
 ;	       finally (return one-product)))))
 
- 
+
 (defun test-decrease (terms)
-  (sloop for (deg cof) on terms by 'cddr
+  (loop for (deg cof) on terms by #'cddr
 	with d0 = 1000
 	when (not (> d0 deg)) do (fsignal 'bad-order)
 				 else do (setq d0 deg)))
@@ -771,12 +760,12 @@
   "Its first argument must be a polynomial and second argument a number,~
     and it returns the product"
   (cond ((atom poly)(ctimes poly number))
-	(t (term-operation poly number afp-pctimes))))  
+	(t (term-operation poly number afp-pctimes))))
 
 (defmacro butlastn (n list)
   "knocks off the last n items of a list"
   `(setf ,list  (cond ((< ,n (length ,list))
-		       (setf (cdr (lastn (f1+ ,n) ,list)) nil) ,list)
+		       (setf (cdr (lastn (1+ ,n) ,list)) nil) ,list)
 		      (t nil))))
 
 (defun test-times (f g &key empty)
@@ -796,7 +785,7 @@
 
 (defun remove-zero-coefficients (poly)
   (cond ((numberp poly)poly)
-	(t (sloop with v = poly 
+	(t (loop with v = poly
 		 while (cdr v)
 		 do  (setf (third v) (remove-zero-coefficients (third v)))
 		 when (pzerop (third v))
@@ -819,7 +808,7 @@
   (cond ((numberp g)(setq g (cmod g))
 	 (cond ((zerop g)(values f 1 0))
 	       (t (values 1 0  (crecip g)))))
-	((not (eql (p-var g) (p-var f)))(ferror 'not-function-of-one-variable))
+	((not (eql (p-var g) (p-var f)))(merror 'not-function-of-one-variable))
 	(t(multiple-value-bind (quot zl-rem creqd)
 	      (afp-pseudo-quotient f g)
 	    creqd ;;ignore
@@ -833,7 +822,7 @@
   "assumes that f and g are polynomials of one variable and that modulus is non trivial
    It returns (gcd a b) such that gcd = a*f +b*g , and deg a < deg g, deg b < deg f where
    gcd is the gcd of f and g in the polynomial ring modulo modulus."
-  (cond ((null modulus)(ferror "polynomials over the integers are not a PID")))
+  (cond ((null modulus) (merror "polynomials over the integers are not a PID")))
    (assume-pointerg-or-equal-p f g rev?)
    (cond ((numberp f)(values 1 (crecip f) 0))
 	 (t (multiple-value-bind (gcd a b)
@@ -861,75 +850,64 @@
 	(t
   (check-arg sum (and (consp sum)(eql (caar sum) 'mplus)) "macsyma sum")
 	 (let ((pol   $e_poles))
-	  (cons (car pol)  (sloop for u in (cdr pol)
+	  (cons (car pol)  (loop for u in (cdr pol)
 		 collecting
-	   (sloop for v in (cdr sum)
+	   (loop for v in (cdr sum)
 		 when (equal u v)
 		   collecting 1 into cof
 		 else
 		 when (and (listp v) (member u  (cdr v) :test 'equal))
 		  collecting
 		    (cond ((eql (length v) 3)
-			   (sloop for vv in (cdr v )
+			   (loop for vv in (cdr v )
 				   when (not (equal vv u))
 				     do (return vv)))
-			  (t (sloop for vv in v
+			  (t (loop for vv in v
 				   when (not (equal vv u))
 				     collecting vv)))
 		    into cof
 		 finally (return  (cond ((null cof) 0)
 			       ((eql (length cof) 1) (car cof))
 			       (t (apply 'add* cof)))))))))))
-       
-
 
 (defun constant-psublis (alist polynomial)
   (setq alist (sort alist #'pointergp :key #'car))
   (constant-psublis1 alist polynomial))
 
 (defun constant-psublis1 (alist polynomial)
-  (cond
-   ((numberp polynomial) polynomial)
-   ((null alist) polynomial)
-   (t
-    (block
-     sue
-     (prog
-      (main-var tem )
-	 
-      (setq main-var (p-var polynomial))
-      reduce-subs
-      (cond ((and alist (pointergp (caar alist) main-var))
-	     (setq alist (cdr alist)) (go reduce-subs)))
-      (cond ((null alist) (return polynomial))
-	    ((eql (caar alist) main-var)
-	     (sloop for (deg cof) on (p-next-term (p-terms polynomial))
-		    by 'p-next-term
-		    with repl = (cdr (car alist))
-		    with answ =  (afp-pctimes
-				  (constant-psublis1
-				   (cdr alist) (p-cof polynomial))
-				  (cexpt repl (p-deg polynomial)))
-		    do (setq answ
-			     (pplus answ
-				    (cond ((zerop deg)
-					   (constant-psublis1 (cdr alist) cof))
-						    
-					  (t  (afp-pctimes
-					       (constant-psublis1
-						(cdr alist) cof)
-					       (cexpt repl deg))))))
-		    finally (return-from sue  answ)))
-	    (t (return
-		(afp-psimp main-var
-			   (sloop for (deg cof)
-				  on (p-terms polynomial) by 'p-next-term
-				  unless
-				  (pzerop
-				   (setq tem
-					 (constant-psublis1 alist cof)))
-				  nconc (list deg tem)))))))))))
-
+  (cond ((numberp polynomial) polynomial)
+	((null alist) polynomial)
+	(t
+	 (block sue
+	   (prog
+	       (main-var tem)
+	      (setq main-var (p-var polynomial))
+	      reduce-subs
+	      (cond ((and alist (pointergp (caar alist) main-var))
+		     (setq alist (cdr alist)) (go reduce-subs)))
+	      (cond ((null alist) (return polynomial))
+		    ((eql (caar alist) main-var)
+		     (loop for (deg cof) on (p-next-term (p-terms polynomial))
+			by #'p-next-term
+			with repl = (cdr (car alist))
+			with answ =  (afp-pctimes
+				      (constant-psublis1
+				       (cdr alist) (p-cof polynomial))
+				      (cexpt repl (p-deg polynomial)))
+			do (setq answ
+				 (pplus answ
+					(cond ((zerop deg)
+					       (constant-psublis1 (cdr alist) cof))
+					      (t  (afp-pctimes (constant-psublis1
+								(cdr alist) cof)
+							       (cexpt repl deg))))))
+			finally (return-from sue  answ)))
+		    (t (return
+			 (afp-psimp main-var
+				    (loop for (deg cof)
+				       on (p-terms polynomial) by #'p-next-term
+				       unless (pzerop (setq tem (constant-psublis1 alist cof)))
+				       nconc (list deg tem)))))))))))
 
 ;;afp-pcsubsty used 1/2 space and was twice as fast as pcsubsty on substituting for one variable y
 ;;in (x+y+z)^10  (33.5 msec. and 70 msec respect).
@@ -945,24 +923,24 @@
    (and (equal (ash nn 1) n) nn))
 
 ;;On symbolics the regular gcd is only 40% of the speed of fast-gcd.
-;;and I compared the values on several hundred random 
+;;and I compared the values on several hundred random
 ;;m n and it was correct.
-;;on (test 896745600000 7890012  1000) of 1000 repeats 
+;;on (test 896745600000 7890012  1000) of 1000 repeats
 ;;the fast-gcd was .725 sec and the regualar gcd was 5.6 sec. using 0 and 23000 words resp.
 ;;On Explorer: Release 1.0)the fast-gcd was 1.9 sec and the regualar gcd was .102 sec. using 0 and 0 words resp.
 ;(defun test (m n rep &aux a b)
-;  (tim (sloop for i below rep
+;  (tim (loop for i below rep
 ;	do (setq a (fast-gcd m n))))
-;  (tim (sloop for i below rep
+;  (tim (loop for i below rep
 ;	      do (setq b (\\\\ m n))))
 ;  (assert (equal a b)))
 ;;for testing two gcd's give same results.
 ;(defun test ( rep &aux m n a b)
-;  (sloop for i below rep
+;  (loop for i below rep
 ;	do (setq m (* (random (expt2 32))(setq n (random (^ 2 32)))))
 ;	when (oddp i) do(setq n (- n))
 ;	do
-;	(setq n (* n (random (^ 2 32)))) 
+;	(setq n (* n (random (^ 2 32))))
 ;	do (setq a (gcd m n))
 ;	do (setq b (\\\\ m n))
 ;	(show (list m n a))
@@ -982,22 +960,22 @@
 
 
 (defun bin-gcd (u v &aux (k 0)u2 v2 t2 tt)
-  (sloop 
+  (loop
 	do (setq u2 (ash u -1))
 	when (not (eql (ash u2 1) u))
 	  do (return k)
 	do (setq v2 (ash v -1))
 	when (not (eql (ash v2 1) v))
 	  do (return k)
-       do (setq u u2 v v2 k (f1+ k)))
+       do (setq u u2 v v2 k (1+ k)))
   (prog ()
      b2
 	(cond ((oddp u) (setq tt (- v)))
-	      (t(setq tt (ash u -1))))
+	      (t (setq tt (ash u -1))))
      b3b4
-        (sloop  do (setq t2 (ash tt -1))
+	(loop  do (setq t2 (ash tt -1))
 	       when  (eql (ash t2 1) tt)
-               do (setq tt t2)
+	       do (setq tt t2)
 		  else do (return nil))
 	(cond ((> tt 0) (setq u tt))
 	      (t (setq v (- tt))))
@@ -1009,18 +987,18 @@
   (cond ((numberp poly ) 0)
 	(t (length (cdr poly)))))
 
-
-  
-
 (defun poly-to-row (poly &optional row &aux leng)
-  (cond (row (cond ((< (array-total-size row)
-		       (length poly))(adjust-array row (+ 10 (poly-length poly))
-						   :fill-pointer (fill-pointer  row)))))
-	(t (setq row (make-array (+ 10 (setq leng (poly-length poly))) :fill-pointer 0 :adjustable t))))
-  (cond ((numberp poly)(vector-push  0 row)
-	 (vector-push  poly row))
-	(t (sloop for u in (cdr poly)
-		 do(vector-push   u row))))
+  (cond (row
+	 (cond ((< (array-total-size row) (length poly))
+		(setq row (adjust-array row (+ 10 (poly-length poly)) :fill-pointer (fill-pointer row))))))
+	(t
+	 (setq row (make-array (+ 10 (setq leng (poly-length poly))) :fill-pointer 0 :adjustable t))))
+  (cond ((numberp poly)
+	 (vector-push 0 row)
+	 (vector-push poly row))
+	(t
+	 (loop for u in (cdr poly) do
+	      (vector-push u row))))
   row)
 
 (defun row-to-terms (row)
@@ -1084,7 +1062,7 @@
 		       (setq answ (plain-term-operation p2-terms (term-cof p-terms) afp-times (term-deg p-terms)))
 		       (setq lead (afp-square (term-cof p-terms)))
 		       (cond ((pzerop lead) nil)
-			     (t (setq answ (cons (f* 2 (term-deg p-terms))
+			     (t (setq answ (cons (* 2 (term-deg p-terms))
 						 (cons lead
 						       answ)))))
 		       (cond ((null answ)
@@ -1118,15 +1096,15 @@
 	(setq p2-terms orig-p2-terms)
 	(setq tail (cdr answ))
 	(cond ((pzerop prod-cof) (go next-double-product)))
-	(setq prod-exp (f* 2 (term-deg p-terms)))
+	(setq prod-exp (* 2 (term-deg p-terms)))
 	(go tail-certain)))
 
 
 (defmacro def-test (f1 f2)
   `(defun ,(intern (format nil "~A-~A" '#:test f1)) (&rest rest-args)
      (let (empty (*print-level* 2)(*print-length* 3) ansa ansb)
-       
-       
+
+
        (cond ((member ':empty rest-args :test #'eq)
 	      (setq rest-args (subseq rest-args 0 (- (length rest-args)
 						     (length (member ':empty rest-args :test #'eq)))))
@@ -1146,14 +1124,14 @@
 				(apply ',f2 rest-args)
 				nil))
 		    (reset-paa))
-	     (t (with-polynomial-area () 
+	     (t (with-polynomial-area ()
 		  (iassert (equal (setq ansa (tim (apply ',f1 rest-args )))
 				  (setq ansb(tim (apply ',f2 rest-args)))))))))))
 
 
 ;;timings for afp-expt and pexpt respectively with 5 th power
-;(x+y+z)^4  
-;For functions AFP-EXPT and PEXPT respectively, 
+;(x+y+z)^4
+;For functions AFP-EXPT and PEXPT respectively,
 ;with argument list (POLY EXPONENT) being ((Z 4 1 ...) 5)
 ;All computations done in a temporary area:
 ;2223.207 msec. at priority 1
@@ -1161,8 +1139,8 @@
 ;3029.429 msec. at priority 1
 ;Reclaiming 50,579 in polynomial space (total 4,226,649).14:20:56"
 ;
-;(x+1)^10                 
-;For functions AFP-EXPT and PEXPT respectively, 
+;(x+1)^10
+;For functions AFP-EXPT and PEXPT respectively,
 ;with argument list (POLY EXPONENT) being ((X 10 1 ...) 10)
 ;All computations done in a temporary area:
 ;1972.551 msec. at priority 1
@@ -1175,7 +1153,7 @@
 ;;simple exponent function.
 ;(def-test afp-expt pexpt-simple)
 ;(defun pexpt-simple (u n)
-;		       (sloop for i from 1 to n
+;		       (loop for i from 1 to n
 ;			     with answ = 1
 ;			     do (setq answ (ptimes answ u))
 ;				finally (return answ)))
@@ -1186,14 +1164,14 @@
 (defun afp-expt (poly exponent)
   "Raises the polynomial POLY to EXPONENT.  It never performs more
   than a squaring before simplifying, so that if modulus or tellrat are
-  in effect, it will still be reasonable." 
+  in effect, it will still be reasonable."
   (cond ((eql exponent 1) poly)
 	((eql exponent 0) poly)
-	((< exponent 0) (ferror "Use positive exponents"))
+	((< exponent 0) (merror "Use positive exponents"))
 	(t (cond ((numberp poly)(cexpt poly exponent))
 		 ((or (cdddr poly) (alg poly))
 		  ;;main case
-		  (sloop   for i from 0
+		  (loop for i from 0
 			with  2^i-power-poly =  poly
 			with answer = 1
 			do
@@ -1211,7 +1189,7 @@
 		    (cond ((pzerop pow) 0)
 			  (t
 			   (afp-psimp (p-var poly)
-				     (list(f* (p-deg poly) exponent)
+				     (list (* (p-deg poly) exponent)
 				      pow))))))))))
 (defmacro push-poly-number-deg-cof (rows poly-number deg cof &aux (row (make-symbol "row")))
   `(let ((,row (aref ,rows ,deg)))
@@ -1221,60 +1199,55 @@
   ;;want to find sol'ns of v^p-v=0 (mod u)
 (defun berlekamp-set-up-and-reduce-matrix ( u p &aux rows powers estimated-size  sp)
   (setq rows (make-array (p-deg u) :fill-pointer (p-deg u)))
-  
   (let ((modulus p)(tellratlist (list u)))
     (working-modulo (list u)
-    (setq powers
-	  (sloop for i from 0 
-		with pol = (afp-expt (list (p-var u) 1 1) p)
-		with pow = 1 with belo =  (f1- (p-deg u))
-		collecting pow
-		while (< i belo)
-		when (eql pow 1)
-		  do (setq pow pol)
-		else do (setq pow (afp-times pol pow)))))
-    (sloop for i below (max 5 (length powers))
-	  for vv in powers
-	  summing (or (and (atom vv) 0) (length vv)) into count
-	  finally (setq estimated-size (+ 10 (quotient count 5))))
-    (sloop for i below (fill-pointer rows)
-	  do (setf (aref rows i) (make-array estimated-size :fill-pointer 0 :adjustable t)))
+		    (setq powers
+			  (loop for i from 0
+			     with pol = (afp-expt (list (p-var u) 1 1) p)
+			     with pow = 1 with belo =  (1- (p-deg u))
+			     collecting pow
+			     while (< i belo)
+			     when (eql pow 1)
+			     do (setq pow pol)
+			     else do (setq pow (afp-times pol pow)))))
+    (loop for i below (max 5 (length powers))
+       for vv in powers
+       summing (or (and (atom vv) 0) (length vv)) into count
+       finally (setq estimated-size (+ 10 (quotient count 5))))
+    (loop for i below (fill-pointer rows)
+       do (setf (aref rows i) (make-array estimated-size :fill-pointer 0 :adjustable t)))
     ;;putting the entries in the sparse matrix.  Each polynomial is a column.
-    (sloop for vv  in (cdr powers)
-	  for i from 1
-	  when (numberp vv)
+    (loop for vv  in (cdr powers)
+       for i from 1
+       when (numberp vv)
+       do
+	 (push-poly-number-deg-cof rows i 0 vv)
+	 (push-poly-number-deg-cof rows i i -1)
+       else
+       do
+	 (loop for (deg cof) on (p-terms vv) by #'p-next-term
+	    with subtracted-it
+	    when (eql i deg)
 	    do
-	      (push-poly-number-deg-cof rows i 0 vv)
-	      (push-poly-number-deg-cof rows i i -1)
-	  else
+	      (setq cof (- cof 1))
+	      (setq subtracted-it t)
 	    do
-	      (sloop for (deg cof) on (p-terms vv) by 'p-next-term
-		    with subtracted-it
-		    when (eql i deg)
-		      do 
-			(setq cof (- cof 1))
-			(setq subtracted-it t)
-		    do
-		(cond ((not (zerop cof))
-		       (push-poly-number-deg-cof rows i deg cof)))
-		finally (cond ((null subtracted-it)
-			       (push-poly-number-deg-cof rows i i -1))))
-	      
-	      )
-			       
-    (setq sp   (make-sparse-matrix :rows rows
-				   :type-of-entries p
-				   :columns-used-to-pivot (make-hash-table :test 'equal)))
-			
-			
-    (sp-set-rows sp rows 	   (sloop for i from 1 below (p-deg u) collecting i))
-     (sp-reduce sp)
+	      (cond ((not (zerop cof))
+		     (push-poly-number-deg-cof rows i deg cof)))
+	    finally (cond ((null subtracted-it)
+			   (push-poly-number-deg-cof rows i i -1))))
+	 )
+    (setq sp (make-sparse-matrix :rows rows
+				 :type-of-entries p
+				 :columns-used-to-pivot (make-hash-table :test 'equal)))
+    (sp-set-rows sp rows (loop for i from 1 below (p-deg u) collecting i))
+    (sp-reduce sp)
     sp))
 
 (defun berlekamp-polynomial-solutions (sp polynomial &aux sp-sols)
    (sp-solve sp )
     (setq sp-sols (sp-solutions sp))
-    (sloop for i below (row-length (sp-rows sp-sols))
+    (loop for i below (row-length (sp-rows sp-sols))
 	  collecting (psimp (p-var polynomial)(listarray (sort-grouped-array (sp-row sp-sols i) 2 '>)))))
 
 
@@ -1287,13 +1260,13 @@
 	 factor-list)
 	(t (setq b-polys (berlekamp-polynomial-solutions
 			   reduced-sparse-matrix u))
-	   (sloop named sue
+	   (loop named sue
 		 for v in b-polys
 		 with half-p = (ash prime -1)
 		 do
-	     (sloop for j from (- half-p) to half-p
+	     (loop for j from (- half-p) to half-p
 		   do
-               (sloop for u-fact in factor-list
+	       (loop for u-fact in factor-list
 		     do
 	       ;;make more efficient.
 	       (setq poly (pplus v j))
@@ -1308,7 +1281,7 @@
 			when (eql (length factor-list) number-of-factors)
 			  do (return-from sue factor-list)))))))
 
-(defun berlekamp-get-factors-big-prime (u reduced-sparse-matrix prime &aux number-of-factors b-polys 
+(defun berlekamp-get-factors-big-prime (u reduced-sparse-matrix prime &aux number-of-factors b-polys
 			      (factor-list (list u)))
   (setq number-of-factors   (- (p-deg u) (sp-number-of-pivots reduced-sparse-matrix)  ))
   	(show number-of-factors)
@@ -1321,7 +1294,7 @@
 		 (setq half-p (ash prime -1))
 	      added-factor
 		 (cond ((>= (length factor-list) number-of-factors)(return factor-list)))
-		 (setq v (sloop for vv in (cdr b-polys)
+		 (setq v (loop for vv in (cdr b-polys)
 			       with answ = (afp-pctimes (car b-polys) (random (max 500 prime)))
 			       do (setq answ (pplus answ (afp-pctimes vv (random prime))))
 			       finally (return answ)))
@@ -1329,12 +1302,12 @@
 		   (list u)
 		   (setq pow (pdifference (afp-expt v half-p) 1)))
 		 (setq factor-list
-		       (sloop for w in factor-list
+		       (loop for w in factor-list
 		       do (setq tem (afp-make-monic  (afp-gcd pow w)))
 		       when (not (or (numberp tem)
 				     (eql (p-deg tem) (p-deg w))))
 			 collecting tem
-		       and 
+		       and
 		       collecting (afp-quotient w tem)
 		       else collecting w))
 		 (go added-factor)))))
@@ -1342,7 +1315,7 @@
 (defun afp-make-monic (poly)
   (cond ((numberp poly) 1)
 	((not (or modulus (eql (abs (p-cof poly)) 1)))
-	 (ferror "not finite modulus or unit coefficient"))
+	 (merror "not finite modulus or unit coefficient"))
 	(t (let ((inv (crecip (p-cof poly ))))
 	      (afp-pctimes poly inv)))))
 
@@ -1366,7 +1339,7 @@
   (setq sp  (berlekamp-set-up-and-reduce-matrix pol p) )
  (cond ((and (null use-big)(or use-little (< p 13))) (setq answ  (berlekamp-get-factors-little-prime pol sp p)))
        (t  (setq answ  (berlekamp-get-factors-big-prime pol sp p))))
- (sloop for v in answ
+ (loop for v in answ
        with ans = 1
        do (setq ans (ptimes ans v))
       finally (show ans) (iassert (equal (afp-mod pol) ans)))
@@ -1386,12 +1359,12 @@
 		    (cond ((cdr vars) (fsignal 'not-univariate))
 			  (t (setq factor-function  *mod-p-factor* )
 			     (setq answ
-				   (sloop for (pol deg)  on facts by 'cddr
+				   (loop for (pol deg)  on facts by #'cddr
 					 with const = 1
 					 when (consp pol)
 					   appending
-					     (sloop for fa in (funcall factor-function pol)
-						   collecting fa 
+					     (loop for fa in (funcall factor-function pol)
+						   collecting fa
 						   collecting deg) into all
 					 else do (setq const  (ctimes const pol))
 						 (iassert (eql deg 1))
@@ -1408,9 +1381,9 @@
 
 (defun get-factors (u use-for-gcd p &aux tem)
   (let ((modulus p))
-    (sloop for w in use-for-gcd
+    (loop for w in use-for-gcd
 	  appending
-	    (sloop for i below p
+	    (loop for i below p
 		  when (not (numberp (setq tem (afp-gcd (pplus w i) u))))
 		    do (show i) and
 		  collecting (monize tem)))))
@@ -1418,33 +1391,32 @@
 
 (defun afp-distinct-degree-factor (u &optional ( prime modulus) &aux (v u )(ww (list (p-var u) 1 1)) (d 0) gd
 				   mon (modulus prime) answer)
-  "U should be univariate and square free.  Calculations are done modulo PRIME.  It 
+  "U should be univariate and square free.  Calculations are done modulo PRIME.  It
   returns an alternating list of factors"
   (setq mon ww)
   (setq answer
-	(sloop
-     do (cond ((numberp v) (return answ))
-              ((> (f* 2 (f1+ d)) (p-deg v))(return (cons v answ))))
-	  (incf d)
-	   (working-modulo (list v) (setq ww(afp-expt ww prime)))
-	  (setq gd (afp-gcd (pdifference ww mon) v))
-	  (cond ((and (consp gd) (> d (p-deg gd)))(fsignal 'big)))
-     when (not (numberp gd))
-       do 
-	 (setq v (afp-quotient v gd))
-	 (and (consp v) (consp ww) (setq ww (palgsimp (p-var v) (cdr ww) (cdr v))))
-     when (not (numberp gd))
-       appending (one-degree-factors (afp-try-make-monic gd) d prime) into answ))
+	(loop do (cond ((numberp v) (return answ))
+		       ((> (* 2 (1+ d)) (p-deg v))(return (cons v answ))))
+	     (incf d)
+	     (working-modulo (list v) (setq ww(afp-expt ww prime)))
+	     (setq gd (afp-gcd (pdifference ww mon) v))
+	     (cond ((and (consp gd) (> d (p-deg gd)))(fsignal 'big)))
+	   when (not (numberp gd))
+	   do
+	     (setq v (afp-quotient v gd))
+	     (and (consp v) (consp ww) (setq ww (palgsimp (p-var v) (cdr ww) (cdr v))))
+	   when (not (numberp gd))
+	   appending (one-degree-factors (afp-try-make-monic gd) d prime) into answ))
   (iassert (eql (p-deg  u)
-		(sloop for v in answer
-		      summing (p-deg v) )))
+		(loop for v in answer
+		       summing (p-deg v) )))
   answer)
 
 #+debug
 (defun tel (u n p &aux (modulus p))
   (check-arg p (oddp p) "odd")
     (iassert (eql (p-deg  u)
-		(sloop for v in answ
+		(loop for v in answ
 		 summing (p-deg v) )))
 
   (eql (p-deg u) n))
@@ -1456,14 +1428,14 @@
   (cond((eql (p-deg u) deg)(setq answ (list u )))
        (t (setq pow (quotient  (- (expt  p deg) 1) 2))
 	  (setq facts (list u))
-	  (sloop named sue for i from 1
+	  (loop named sue for i from 1
 		do
-	    (sloop  do (setq tt (generate-t-for-one-degree-factors u deg p i))
+	    (loop  do (setq tt (generate-t-for-one-degree-factors u deg p i))
 		   unless (or  (numberp tt) (member tt used-tt :test #'equal))
 		     do (push tt used-tt) (return tt))
 	    (working-modulo (list u)
 	      (setq tt  (afp-expt tt pow) ))
-	    (sloop for v in facts
+	    (loop for v in facts
 		  do
 	      (setq  tem (afp-gcd v (pplus tt 1)))
 	      (cond ((not (or (numberp tem) (eql (p-deg tem) (p-deg v))))
@@ -1477,40 +1449,36 @@
 		  when (null facts) do (return-from sue answ)))))
   (cond ((member 1 answ) (fsignal 'bad)))
   (iassert (eql (p-deg  u)
-		(sloop for pol  in answ  
+		(loop for pol  in answ
 		      when (and (consp pol))
 		 summing  (p-deg pol) )))
-	
    answ)
 
 (defun generate-t-for-one-degree-factors (u deg p i &aux tem)
   (cond ((< i 5)
 	 (list (p-var u) 1 1 0 (random p)))
-	((psimp (p-var u)(sloop for j downfrom (setq tem (+ 1  (random (- (* 2 deg ) 1)))) to 0
+	((psimp (p-var u) (loop for j downfrom (setq tem (+ 1 (random (- (* 2 deg) 1)))) to 0
 				   ;;make semi sparse
 			       	       when (evenp (random 2))
-				   collecting j and collecting (f1+ (random (f1- p))))))))
+				   collecting j and collecting (1+ (random (1- p))))))))
 
 (defun ff (u &optional ( prime modulus) &aux fact1 facts)
-  
   (let ((modulus prime))
     (setq facts (afp-square-free-factorization u))
-    (sort-grouped-list 
-      (sloop for (pol pow) on  facts  by 'cddr
-	    do (show pol pow)
-	       (setq fact1 (afp-distinct-degree-factor pol prime))
-	    appending
-	      (sloop for ww in fact1
-		    collecting ww collecting pow))
-      2
-      'alphagreatp)))
+    (sort-grouped-list
+     (loop for (pol pow) on facts by #'cddr
+	do (show pol pow)
+	  (setq fact1 (afp-distinct-degree-factor pol prime))
+	appending
+	  (loop for ww in fact1
+		 collecting ww collecting pow))
+     2
+     'alphagreatp)))
+
 (defun nnpfactor (pol)
   (sort-grouped-list (npfactor pol) 2 'alphagreatp))
 
-
-
 (def-test nnpfactor afp-factor)
-
 
 ;(setq w2 (st-rat  #$x^2+91*x+11$))
 ;(setq v2 (st-rat  #$x^2+19*x+11$))
@@ -1521,14 +1489,14 @@
 (defun hensel-lift (product v w prime up-to-size &aux a b gcd
 			    (facts (list v w)))
   "Lifts v and w which satisfy product=v*w mod(prime) to a list FACTS = (uu vv)
-   satisfying product = uu*vv mod (up-to-size).  Product, v, and w are assumed to 
+   satisfying product = uu*vv mod (up-to-size).  Product, v, and w are assumed to
    have leading coefficient 1"
 ;  (declare (values fact-pair power))
   (let ((modulus prime)) (multiple-value-setq (gcd a b)
 					      (recursive-ideal-gcd v w))
        (cond ((not (numberp gcd))(fsignal "must have gcd of factors a unit")))
        (check-arg v (eql 1 (afp-mod (p-cof v))) "monic"))
-  (sloop	with power = 1
+  (loop	with power = 1
 	do (setq power (* power prime))
 	while (< power up-to-size)
 	do
@@ -1553,7 +1521,7 @@
 				      (t (second lis)))))))
 
 (defun smallest-power-bigger (p up-to)
-  (sloop	with pow = p
+  (loop	with pow = p
 	 while (< pow up-to)
 	do (setq pow (* p pow))
 	finally (return pow)))
@@ -1575,7 +1543,7 @@
   (cond ((pzerop dif)(list ve we))
 	(t
   (let ((modulus prime) )
-    (cond ((null a)    
+    (cond ((null a)
 	   (multiple-value-setq (gcd a b)
 	     (recursive-ideal-gcd ve we)))))
   (let ((modulus new-modulus))
@@ -1587,17 +1555,17 @@
     (setq h zl-rem)
     (setq kk (pplus kk (ptimes quot we)))
     (list (pplus ve h) (pplus we kk))))))
-   ;(let ((modulus (expt  prime (f1+ e)))) (values (pplus ve h) (pplus we kk))))
+   ;(let ((modulus (expt  prime (1+ e)))) (values (pplus ve h) (pplus we kk))))
 
 
 (defun collect-number-factors (fact-list &aux answ)
   "Makes sure there are no factors with leading cof = -1 and collects all constants together
    and puts them first"
-  (sloop for (pol deg) on fact-list by 'cddr
+  (loop for (pol deg) on fact-list by #'cddr
 	with constant = 1
 	do
 	(cond ((numberp pol)
-	        (setq constant (ctimes constant (cexpt pol deg))))
+		(setq constant (ctimes constant (cexpt pol deg))))
 	      ((eql (p-cof pol) -1)
 	       (setq constant (ctimes constant (cexpt (p-cof pol) deg)))
 	       (setq pol (pminus pol))
@@ -1609,12 +1577,12 @@
 
 (defun integer-univariate-factor (poly &aux facts)
   "returns an alternating list of irreducible polynomials and their powers in the factorization over the integers
-   there will be at most one factor which is a number and it will be to the first power.  The other irreducible 
+   there will be at most one factor which is a number and it will be to the first power.  The other irreducible
    polynomials will be relatively prime"
   (setq facts (afp-square-free-factorization poly))
   (show facts)
-  (collect-number-factors (sloop for (pol deg) on facts by 'cddr
-				appending(sloop for pol1 in  (integer-univariate-factor1 pol)
+  (collect-number-factors (loop for (pol deg) on facts by #'cddr
+				appending (loop for pol1 in  (integer-univariate-factor1 pol)
 					       collecting pol1 collecting deg))))
 
 ;;(defvar *small-primes* '(3 5 7 11 13 17 19)) ; overrides *small-primes* in src/ifactor.lisp; not used
@@ -1627,7 +1595,7 @@
   (setq cof (pcoeff poly (list variable (pdegree poly variable) 1)))
   (cond ( (eql *mod-p-factor* 'afp-distinct-degree-factor)
 	(setq prime-start (max prime-start 3))))
-  (sloop for p from prime-start
+  (loop for p from prime-start
 	when  (> (- p prime-start) 500) do (format t "~%I hope you have given me a square free polynomial!!")
 	when (and (q-primep p)
 		  (let ((modulus p))(and (not (pzerop (afp-mod cof)))
@@ -1639,7 +1607,7 @@
   (setq p (find-small-prime-so-square-free pol ))
   (let ((modulus p)) (setq facts (afp-factor pol :square-free-arg t)))
   (setq mod  (smallest-power-bigger p up-to))
-  (setq facts (sloop for (pol deg) on facts by 'cddr
+  (setq facts (loop for (pol deg) on facts by #'cddr
 		    when (not (eql deg 1)) do (fsignal "bad-degree-for-square-free")
 		    collecting pol))
   (setq lifts (hensel-lift-list pol facts p up-to))
@@ -1650,8 +1618,8 @@
   (cond ((zerop leng) nil)
 	((eql 1 leng)(mapcar 'list list))
 	(t
-	 (sloop for v on list
-	       appending (sloop for w in (sub-lists (f1- leng) (cdr v))
+	 (loop for v on list
+	       appending (loop for w in (sub-lists (1- leng) (cdr v))
 			       collecting (cons (car v) w))))))
 
 (defun correct-factors (pol factors p mod &aux tried  d answ quot prod)
@@ -1659,15 +1627,15 @@
    what the factors are over the integers.  It is assumed that MOD is sufficiently
    large so that any real factors of POL lie in the range -MOD/2 to MOD/2.  Also
    POL is assumed square free so that the factors are listed without their multiplicities"
-  p 
-  (prog () 
+  p
+  (prog ()
 	(setq d 1)
      look-for-factors
 	(cond ((> (* d 2) (length factors))
 	       (push pol answ) (return answ)))
-	(sloop for v in (sub-lists d factors)
+	(loop for v in (sub-lists d factors)
 	      when (member v tried :test #'equal)
-		do nil
+		nconc nil
 	      else
 		do (push v tried)
 		   (let ((modulus mod)) (setq prod (apply 'gen-ptimes v)))
@@ -1675,7 +1643,7 @@
 		   (cond ((setq quot (afp-test-divide pol prod))
 			  (setq pol quot)
 			  (push prod answ)
-			  (sloop for vv in v
+			  (loop for vv in v
 				do (setq factors (delete vv factors :count 1 :test #'equal)))
 			  (go look-for-factors)))
 	      finally (incf d)
@@ -1685,7 +1653,7 @@
 (defun q-primep (i &aux lis)
   (cond ((car (member i (setq lis '(2 3 5 7 11 13)))))
 	((evenp i) nil)
-	((sloop for v in (cdr lis)
+	((loop for v in (cdr lis)
 			 when  (zerop (mod i v))
 			   do (return t))
 	 nil)
@@ -1699,12 +1667,12 @@
 
 
 (defun subs-translate-sublis ( point &optional inv)
-  (cond (inv  (sloop for v in point
+  (cond (inv  (loop for v in point
 		    when (not (pzerop (cdr v)))
 		    collecting (cons (car v)
 				     (pplus (list (car v) 1 1) (cdr v)))))
 	(t
-	 (sloop for v in point
+	 (loop for v in point
 	       when (not (pzerop (cdr v)))
 	       collecting (cons (car v)
 				(pdifference (list (car v) 1 1) (cdr v)))))))
@@ -1745,33 +1713,31 @@
   (setq varl (delete (car u) (list-variables u) :test #'equal))
   (setq f0 fi)
   (setq g0 gi)
-  (sloop for i from 1 to up-to-k
-	 do 
-	 (setq w (pdifference  (afp-times fi gi) u))
-	 (setq w (afp-truncate-powers w varl i))
-	 (mshow  w)
-	 (cond ((pzerop w) 'nothing-to-do)
-	       (t
-		(cond   ((or (numberp w) (not (eql (p-var w) main-var)))
-			 (setq aw (afp-times w (first (setq tem (express-x^i f0 g0 0)))))
-			 (setq aw (afp-times w (second tem))))
-			(t
-			 (sloop for (deg cof) on (cdr w) by 'cddr
-				initially  (setq aw 0 bw 0)
-				do
-				(setq aw (afp-plus aw (afp-times (first (setq tem
-									      (express-x^i f0 g0 deg))) cof)))
-				(setq bw (afp-plus bw (afp-times (second tem) cof))))
-		    
-			 (setq fi+1 (pdifference fi bw))
-			 (setq gi+1 (pdifference gi aw))
-		    
-			 (setq fi fi+1 gi gi+1)
-			 (mshow aw bw fi gi)))))
-	 finally
-	 (show (pdifference v (ptimes fi gi)))
-	 (return (list fi gi))))
-  
+  (loop for i from 1 to up-to-k
+     do
+       (setq w (pdifference  (afp-times fi gi) u))
+       (setq w (afp-truncate-powers w varl i))
+       (mshow  w)
+       (cond ((pzerop w) 'nothing-to-do)
+	     (t
+	      (cond ((or (numberp w) (not (eql (p-var w) main-var)))
+		     (setq aw (afp-times w (first (setq tem (express-x^i f0 g0 0)))))
+		     (setq aw (afp-times w (second tem))))
+		    (t
+		     (loop for (deg cof) on (cdr w) by #'cddr
+			initially  (setq aw 0 bw 0)
+			do
+			  (setq aw (afp-plus aw (afp-times (first (setq tem (express-x^i f0 g0 deg))) cof)))
+			  (setq bw (afp-plus bw (afp-times (second tem) cof))))
+
+		     (setq fi+1 (pdifference fi bw))
+		     (setq gi+1 (pdifference gi aw))
+
+		     (setq fi fi+1 gi gi+1)
+		     (mshow aw bw fi gi)))))
+     finally
+       (show (pdifference v (ptimes fi gi)))
+       (return (list fi gi))))
 
 (defun afp-truncate-powers (pol varl deg)
   (setq varl  (sort varl 'pointergp))
@@ -1783,16 +1749,16 @@
 	((null varl) pol)
 	((member (p-var pol) varl :test #'eq)
 	 (psimp (p-var pol)
-         	(sloop for (exp cof) on (cdr pol) by 'cddr
+		(loop for (exp cof) on (cdr pol) by #'cddr
 		      do (setq tem (- above-deg exp))
 		      when (< tem 0)
-			do nil
+			nconc nil
 		      else
 			do (setq new-cof (afp-truncate-powers1 cof (cdr varl) tem))
 			and when (not(pzerop new-cof))
 			      nconc (list exp new-cof))))
 	(t(psimp (p-var pol)
-		 (sloop for (exp cof) on (cdr pol) by 'cddr
+		 (loop for (exp cof) on (cdr pol) by #'cddr
 		       when(not (pzerop (setq new-cof (afp-truncate-powers1 cof varl above-deg))))
 			 nconc (list exp new-cof))))))
 
@@ -1805,21 +1771,21 @@
 	   (setq numerical-factor (subseq facts 0 2))
 	   (setq facts (cddr facts))))
     (nconc numerical-factor
-	   (sloop for (pol deg) on facts by 'cddr
-		 for rest-facts on facts by 'cddr
+	   (loop for (pol deg) on facts by #'cddr
+		 for rest-facts on facts by #'cddr
 		 do (show facts deg)
 		 when deg
 		 do (setq tot-deg
 			  (+ deg
-			     (sloop for v on (cddr rest-facts) by 'cddr
+			     (loop for v on (cddr rest-facts) by #'cddr
 				   when (and (second v) (equal pol (car v)))
-				   summing (second v) 
+				   summing (second v)
 				   and do (setf (second v) nil))))
-		 and 
+		 and
 		 collecting pol and collecting tot-deg))))
 
 (defmacro while (test &body body)
-  `(sloop (cond ((null ,test) (return)))
+  `(loop (cond ((null ,test) (return)))
 	 ,@ body))
 
 (defun find-factor-list-given-irreducible-factors (pol fact-list &aux deg divisor answ final-answ)
@@ -1851,14 +1817,14 @@
       (prog
 	((newfacs (try-multi-factor1 fac)))
 	next-factor
-	   (push (f* (second newfacs) deg) result)
+	   (push (* (second newfacs) deg) result)
 	   (push (car newfacs) result)
 	   (setq newfacs (cddr newfacs))
 	   (and newfacs (go next-factor)))
       (and facs (go next-factor))
       (return result)))
-   
-   
+
+
 (defun afp-degvector (pol vars &aux (result (make-list (length vars))))
   (do  ((v vars (cdr v))
 	(w result (cdr result)))
@@ -1877,9 +1843,9 @@
 ;1) make U squarefree and content 1
 ;2) make main variable be smallest degree variable
 ;3) factor leading coefficient into F1,f2,..fk,fk+1 (fk+1 = content)
-;4) find a point in x2,...,xn space such that 
+;4) find a point in x2,...,xn space such that
 ;there exist p1,..,pk+1, pi|fj iff i = j
-;and 
+;and
 ;such that we have the right number of factors of U mod (point, B) (B big bound).
 ;5) Match up pi, and the univariate factors.
 ;6)

@@ -16,7 +16,7 @@
 (defun reset-vgp ()  (setq *genpairs* nil  *genvar*  nil  *varlist* nil)
        (setq *xxx*
 	     (let ((*nopoint t) *print-radix*)
-	       (sloop for i from 1 to 30 collecting
+	       (loop for i from 1 to 30 collecting
 		      (add-newvar (intern (format nil "$X~A" i))))))
        'done)
 
@@ -27,7 +27,7 @@
 (defvar vlist nil)
 
 (defun put-tellrat-property (va the-gensym)
-  (sloop for v in tellratlist
+  (loop for v in tellratlist
 	when (equal va (car v))
 	do (putprop the-gensym (cdr v) 'tellrat)))
 
@@ -48,7 +48,7 @@
 		  (cond ((and (eq (second poly) 1)(eq (fourth poly) 0))
 			 (poly-ncmul1 mon (fifth poly) mon1))
 			((eq (second poly) 1) 0)
-			(t (ferror "There is a bad order in nc polynomial ~A" poly))))
+			(t (merror "There is a bad order in nc polynomial ~A" poly))))
 		 (t
 		  (setq gen-sym (add-newvar new-monom))
 		  (cond ((and (eq (second poly) 1)(eq (fourth poly) 0))
@@ -60,7 +60,7 @@
 				   tem))))
 			((eq (second poly) 1)
 			 (list gen-sym 1 (third poly)))
-			(t (ferror "There is a bad order in nc polynomial ~A" poly))))))))
+			(t (merror "There is a bad order in nc polynomial ~A" poly))))))))
 
 
 ;the above checks for terms in the radical and zero simplifications.
@@ -82,13 +82,13 @@
 ;		  (list gen-sym 1 (third poly) 0 (poly-ncmul1 mon (fifth poly) mon1)))
 ;		 ((eq (second poly) 1)
 ;		  (list gen-sym 1 (third poly)))
-;		 (t (ferror "There is a bad order in nc polynomial ~A" poly))))))
+;		 (t (merror "There is a bad order in nc polynomial ~A" poly))))))
 ;(defun new-rat-ncmul (a nc-rat-expr c)
 ;  (cons (poly-ncmul1 a (num nc-rat-expr) c) (denom nc-rat-expr)))
 
 (defun poly-ncmul (&rest ll)
   "broken"
-  (sloop for v in ll when (not (polynomialp v))do (break t))
+  (loop for v in ll when (not (polynomialp v))do (break t))
   (cond ((null ll) 1)
 	((eq (length ll) 1) (car ll))
 	((numberp (car ll))(n* (car ll) (apply 'poly-ncmul (cdr ll))))
@@ -97,7 +97,7 @@
 				  'poly-ncmul (poly-ncmul1 1 (car ll) (second ll))
 				  (nthcdr 2 ll)))
 	((polynomialp (second ll))
-	 (cond ((polynomialp (third ll)) (ferror "poly-ncmul can't have two 'polynomialp objects in its arg yet"))
+	 (cond ((polynomialp (third ll)) (merror "poly-ncmul can't have two 'polynomialp objects in its arg yet"))
 	       (t (apply 'poly-ncmul
 				 (poly-ncmul1 (car ll)  (second ll) (third ll))
 				 (nthcdr 3 ll)))))))
@@ -105,7 +105,7 @@
 (defun reset-gen () (setq genvar nil varlist nil genpairs nil))
 
 (defun show-vg (&optional (varl *varlist* ) (genv *genvar*))
-  (sloop for v in varl
+  (loop for v in varl
 	for w in genv
 	do (format t "~%~A ~A disrep ~A value ~A" w v (get w 'disrep) (symbol-value w))
 	when (not (equal (get w 'disrep) v))do (format t" **** bad disrep ***")
@@ -114,35 +114,32 @@
 
 
 (defun last2 (a-list)
-  (sloop for v on a-list
+  (loop for v on a-list
 	while (cddr v)
 	finally (return v)))
 
 (defun lastn (n a-list)
-  (sloop for v on a-list
+  (loop for v on a-list
 	while (nthcdr n v)
 	finally (return v)))
 
 
 
 (defun choose (m n)
- (quotient (factorial m) (f* (factorial n) (factorial (f- m n)))))
+ (quotient (factorial m) (* (factorial n) (factorial (- m n)))))
+
 (defun polynomial-ring-1-1-1  (deg)
-	(choose (f+ deg 2) deg))
+	(choose (+ deg 2) deg))
 
-
-(defun three-times-n (n) (f* 3 n))
-
-
-
+(defun three-times-n (n) (* 3 n))
 
 (defun list-equations1 (expr)
   "converts a single macsyma equation into a lisp list of cons's suitable for sublis"
   (cond ((and (listp (car expr))(eq (caar expr) 'mequal))(setq expr (cdr expr)))
-	(t (ferror "not a equation ~A " expr)))
+	(t (merror "not a equation ~A " expr)))
   (cond ((atom (first expr))(list (cons (first expr) (second expr))))
 	((member (caar (first expr)) '($matrix mlist) :test #'eq)
-	 (sloop for v in (cdr (first expr))
+	 (loop for v in (cdr (first expr))
 	       for w in (cdr (second expr))
 	       appending (list-equations1 (list v w))))))
 
@@ -154,11 +151,11 @@
 		  (cond ((member (caar (first expr)) '($matrix mlist) :test #'eq)
 			 (cond ((or (atom (second expr))(not (eql (caar (first expr))
 							    (caar (second expr)))))
-				(sloop for v in (cdr (first expr))
+				(loop for v in (cdr (first expr))
 				      appending (list-equations-macsyma1
 						  (list '(mequal) v (second expr)))))
 			       (t
-			 (sloop for v in (cdr (first expr))
+			 (loop for v in (cdr (first expr))
 			       for w in (cdr (second expr))
 			       appending (list-equations-macsyma1
 					   (list '(mequal) v w))))))))))))
@@ -174,7 +171,7 @@
 
 (defun $list_equations (a-list)
   (check-arg a-list '$listp "macsyma list")
-  (sloop for v in (cdr a-list)
+  (loop for v in (cdr a-list)
 	appending (list-equations-macsyma1 v) into tem
 	finally (return (cons '(mlist) tem))))
 
@@ -183,7 +180,7 @@
   (setq eqns ($list_equations eqns))
   ($sublis eqns expr))
 
-;  (setq eqns (sloop for v in (cdr eqns)
+;  (setq eqns (loop for v in (cdr eqns)
 ;	appending (list-equations1 v) ))
 ;  (new-sublis eqns expr))
 
@@ -196,7 +193,7 @@
 
 (defun remove-from-*genpairs* (expr)
   (setq *genvar* (delete (get-genvar expr) *genvar* :test #'equal))
-  (sloop for v in *genpairs*
+  (loop for v in *genpairs*
 	for i from 0
 	when (equal (car v) expr)
 	do
@@ -229,7 +226,7 @@
 
 (defvar $homework_done '((mlist)))
 (defquote $homework ( a-list &aux answer work )
-  (sloop for v in (cdr a-list)
+  (loop for v in (cdr a-list)
 	when (symbolp v)
 	do (setq $homework_done (append $homework_done (list  (setq work (meval* v)) )))
 	else
@@ -245,7 +242,7 @@
 (defun $unipotent_invariant_vectors (representation n1 n2 &aux answer eqns)
   "representation should take two arguments a (size n1) and b (size n2) where a is
    in GLn1 and b is a macsyma list of length n2. It returns the general vector b left invariant  by the upper triangular (unipotent)  matrices."
-  (sloop for i from 1 below n1
+  (loop for i from 1 below n1
      appending (cdr ($list_equations
 		      (list '(mlist)
 			    (list '(mequal)
@@ -258,41 +255,42 @@
 (defun $matrix_from_list (a-list &aux tem)
   (let ((n (round (setq tem (expt ($length a-list) .5)))))
     (cond ((eq (expt  n 2) ($length a-list)) 'fine)
-	  (t (ferror "The length of list is not a square")))
+	  (t (merror "The length of list is not a square")))
     (setq a-list (cdr a-list))
-    (sloop while a-list
+    (loop while a-list
 	  collecting (cons '(mlist) (subseq a-list 0 n)) into tem1
 	  do (setq a-list (nthcdr n a-list))
 	  finally (return  (cons '($matrix ) tem1)))))
 
 (defun kronecker-row-product (a b)
-  (sloop for v in (cdr b)
+  (loop for v in (cdr b)
 	appending
-	(sloop for w in (cdr a)
-		 collecting (mul* v w) )
+	(loop for w in (cdr a)
+		 collecting (mul* v w))
 	into tem
 	finally (return (cons '(mlist) tem))))
 
 (defun $kronecker_product (m n)
-  (sloop for row in (cdr n)
+  (loop for row in (cdr n)
 	appending
-	(sloop for rowm in (cdr m)
+	(loop for rowm in (cdr m)
 	      collecting (kronecker-row-product rowm row))
 	into tem1
 	finally (return (cons '($matrix) tem1))))
 
 (defun $standard_rep (mat v)($list_matrix_entries(ncmul* mat v)))
+
 (defun $unlist_matrix_entries (vect &optional size  )
   (cond (size nil)
 	(t (setq size (round (expt  (length vect) .5)))))
   (setq vect (cdr vect))
-  (sloop for i below size
+  (loop for i below size
 	collecting (cons '(mlist) (subseq vect 0 size)) into tem
 	do (setq vect (nthcdr  size vect))
 	finally (return (cons '($matrix) tem))))
 
 (defun sub-list (a-list expr)
-  (sloop for v on a-list by 'cddr
+  (loop for v on a-list by 'cddr
 	collecting `((mequal) ,(car v) ,(second v)) into tem
 	finally (return ($sub_list (cons '(mlist) tem) expr))))
 (defmacro defrep (name argu &rest body &aux v mat)
@@ -384,7 +382,7 @@
 
 (defun $sum5_standard_rep(mat v)
   (let ((size ($length mat)))
-    (sloop for i below 5
+    (loop for i below 5
 	  appending (cdr ($standard_rep mat ($firstn size v))) into tem
 	  do (setq v (cons '(mlist) (nthcdr size (cdr v))))
 	  finally (return (cons '(mlist) tem)))))
@@ -406,26 +404,26 @@
 
 (defun list-ind-to-tensor-ind (dimv tensor-power ind)
   (setq ind (1- ind))
-  (sloop for i below tensor-power
+  (loop for i below tensor-power
 	collecting (1+ (mod ind dimv) )
 	do (setq ind (quotient ind dimv))))
 
 
 (defun tensor-ind-to-list-ind (dimv &rest ll)
-  (sloop for m in ll
+  (loop for m in ll
 	for i from 0
-	summing (f* (expt  dimv i) (1- m)) into tem
+	summing (* (expt  dimv i) (1- m)) into tem
 	finally (return (1+ tem))))
 
 (defun tensor-ind-to-list-ind (dimv &rest ll)
-  (sloop for m in ll
+  (loop for m in ll
 	for i to 0 downfrom (1- (length ll))
-	summing (f* (expt  dimv i) (1- m)) into tem
+	summing (* (expt  dimv i) (1- m)) into tem
 	finally (return (1+ tem))))
 
 (defun list-ind-to-tensor-ind (dimv tensor-power ind)
   (setq ind (1- ind))
-  (sloop for i below tensor-power
+  (loop for i below tensor-power
 	collecting (1+ (mod ind dimv) ) into tem
 	do (setq ind (quotient ind dimv))
 	finally (return (nreverse tem))))
@@ -443,28 +441,26 @@
 
 (defun $find_matrix_of_operator (operator basis )
   "operator acts on the space spanned by basis"
-  (let ( answer zero-b
-	 unknowns gen-a gen-sum gen-b)
+  (let (answer zero-b unknowns gen-a gen-sum gen-b)
     (setq gen-b ($firstn ($length basis) $bbbb))
     (setq gen-sum ($general_sum basis $bbbb))
     (setq answer ($fast_linsolve
-		   ($list_equations
-		     (list '(mlist)
-			   (list '(mequal)
-				 (mfuncall operator gen-sum)
-				 ($general_sum basis (setq unknowns
-							   (subseq $aaaa 0 (length basis)))))))
-		   unknowns))
+		  ($list_equations
+		   (list '(mlist)
+			 (list '(mequal)
+			       (mfuncall operator gen-sum)
+			       ($general_sum basis (setq unknowns
+							 (subseq $aaaa 0 (length basis)))))))
+		  unknowns))
     (setq gen-a ($sublis answer unknowns))
-    (setq zero-b (sloop for w in (cdr gen-b)
-		       collecting (cons w 0)))
+    (setq zero-b (loop for w in (cdr gen-b)
+		    collecting (cons w 0)))
 
-
-    (sloop for v in (cdr gen-b)
-	  collecting (meval* (sublis zero-b (subst 1 v  gen-a)))
-	  into tem
-	  finally (return
-		    ($transpose  (cons '($matrix simp) tem))))))
+    (loop for v in (cdr gen-b)
+       collecting (meval* (sublis zero-b (subst 1 v  gen-a)))
+       into tem
+       finally (return
+		 ($transpose  (cons '($matrix simp) tem))))))
 
 (defun $find_matrix_of_operator (operator basis &aux answer zero-b
 				 unknowns gen-a gen-sum gen-b rhs lhs eqns)
@@ -477,11 +473,8 @@
   (setq eqns ($list_equations (list '(mlist) (list '(mequal) lhs rhs))))
   (setq answer ($fast_linsolve eqns unknowns))
   (setq gen-a ($sublis answer unknowns))
-  (setq zero-b (sloop for w in (cdr gen-b)
-		     collecting (cons w 0)))
-
-
-  (sloop for v in (cdr gen-b)
+  (setq zero-b (loop for w in (cdr gen-b) collecting (cons w 0)))
+  (loop for v in (cdr gen-b)
 	collecting (meval* (sublis zero-b (subst 1 v  gen-a)))
 	into tem
 	finally (return
@@ -505,23 +498,23 @@
 (defun $diagonalize_torus (representation n1 n2 basis &aux diag tem mat cpoly answer eigen-values weight-vector)
   "here operator has args a and b where a is in torus and b is a sum of elements of basis"
   (setq diag ($ident n1))
-  (sloop for i from 1 to n1
-	do
-	(setq diag ($setelmx (nth (1- i) *some-primes* ) i i diag )))
+  (loop for i from 1 to n1
+     do
+       (setq diag ($setelmx (nth (1- i) *some-primes*) i i diag)))
 
   (setq tem `(lambda (x)
 	       (mfuncall ',representation ',diag x)))
   (setq mat  ($find_matrix_of_operator tem basis))
   (setq cpoly ($charpoly mat '$x))
   (setq answer ($solve cpoly '$x) )
-  (setq eigen-values (sloop for u in (cdr answer)
-  collecting (third u)))
-  (sloop for u in eigen-values
-	collecting ($find_eigenvectors mat u) into part-basis
-	collecting (setq weight-vector (exponent-vector u n1)) into weight-vectors
-	do (show weight-vector)
-	finally (return (list '(mlist) (cons '(mlist) part-basis)
-			      (cons '(mlist) weight-vectors)))))
+  (setq eigen-values (loop for u in (cdr answer)
+			collecting (third u)))
+  (loop for u in eigen-values
+     collecting ($find_eigenvectors mat u) into part-basis
+     collecting (setq weight-vector (exponent-vector u n1)) into weight-vectors
+     do (show weight-vector)
+     finally (return (list '(mlist) (cons '(mlist) part-basis)
+			   (cons '(mlist) weight-vectors)))))
 (defun $find_eigenvectors (mat eigenvalue &aux answer eqns)
   (let* ((row-length ($length (second mat)))
 	(gen-vector ($firstn row-length $aaaa)))
@@ -538,7 +531,7 @@
 (defun $rank_of_representation (rep n1 list-of-generators &aux mat)
   (setq mat ($general_matrix n1 $cccc))
   ($find_rank_of_list_of_polynomials
-    (sloop for v in (cdr list-of-generators)
+    (loop for v in (cdr list-of-generators)
 	  appending (cdr (mfuncall rep mat v))
 	  into tem
 	  finally (return (cons '(mlist) tem)))))
@@ -546,38 +539,38 @@
 (defun $general_matrix (n a-list)
   (cond ((listp a-list)
   ($unlist_matrix_entries a-list n))
-	(t (sloop for i from 1 to n
+	(t (loop for i from 1 to n
 		 appending
-		 (sloop for j from 1 to n
+		 (loop for j from 1 to n
 		       collecting (new-concat a-list i j))
 		 into tem
 		 finally (return ($unlist_matrix_entries (cons '(mlist ) tem) n ))))))
 
 (defun exponent-vector (n &optional (length-vector 10) &aux wnum denom num wdnom)
   (cond ((numberp n)
-  (sloop for u in *some-primes*
+  (loop for u in *some-primes*
 	for j below length-vector
 	collecting
-	(sloop for i from 1
+	(loop for i from 1
 	      when (not (zerop (mod n (expt  u i))))
 	      do (return (1- i)))))
 	((equal (caar n) 'rat)(setq num (second n) denom (third n))
 	 (setq wnum (exponent-vector num length-vector))
 	 (setq wdnom (exponent-vector denom length-vector))
-	 (sloop for v in wnum
+	 (loop for v in wnum
 	       for w in wdnom
-	       collecting (f- v w)))))
+	       collecting (- v w)))))
 
 
 (defun replace-parameters-by-aa (expr &aux unknowns  parameters tem1)
 	  (setq unknowns ($list_variables expr "aa" "par"))
-	  (setq parameters (sloop for vv in (cdr unknowns)
-				 when (string-search "par" (string vv))
+	  (setq parameters (loop for vv in (cdr unknowns)
+				 when (search "par" (string vv) :test #'char-equal)
 				 collecting vv))
 	  (setq tem1 (cdr $aaaa))
 
-      (sloop for vv in parameters
-	    appending (sloop while tem1
+      (loop for vv in parameters
+	    appending (loop while tem1
 			    when (not (member (car tem1) unknowns :test #'eq))
 			    collecting (cons vv (car tem1)) into subs1
 			    and do
@@ -620,11 +613,11 @@
     (check-vgp-correspond)))
 
 (defun check-vgp-correspond()
-  (sloop for v in varlist
+  (loop for v in varlist
 	for w in genvar
 	when (or (not (equal v (get w 'disrep)))
 		 (not (eq w (get-genvar v))))
-       do (ferror "bad ~A and ~A" v w)))
+       do (merror "bad ~A and ~A" v w)))
 
 
 (defun $slow_gcdlist (&rest ll)
@@ -688,13 +681,13 @@
 ;		   (:number (,poly-op ,x ,y))
 ;		   (:polynomial (,poly-op ,x ,y))
 ;		   (:rational-function (,rat-op (cons ,x 1) ,y,@ rat-switch))
-;		   (otherwise (ferror "unknown type for polyop "))))
+;		   (otherwise (merror "unknown type for polyop "))))
 ;		(:rational-function
 ;		 (case yy
 ;		   (:number (,rat-op ,x  (cons ,y 1) ,@ rat-switch))
 ;		   (:polynomial (,rat-op ,x (cons ,y 1)  ,@ rat-switch))
 ;		   (:rational-function (,rat-op ,x ,y ,@ rat-switch))))
-;		(otherwise (ferror "unknown arg"))))
+;		(otherwise (merror "unknown arg"))))
 ;	(cond ((polynomialp answer) answer)
 ;	      ((rational-functionp answer)
 ;	       (cond ((eq 1 (cdr answer))(car answer))
@@ -792,9 +785,9 @@
 (defun $coefficient_matrix (a-list variables)
   (check-arg a-list  '$listp nil)
   (check-arg variables  '$listp nil)
-  (sloop for w in (cdr a-list)
+  (loop for w in (cdr a-list)
 	collecting
-	(sloop for v in (cdr variables)
+	(loop for v in (cdr variables)
 	      collecting
 	      ($nc_coeff w v) into tem
 	      finally (return (cons '(mlist) tem)))
@@ -848,7 +841,7 @@
 ;	  (SETQ *WITHINRATF* T)
 ;	  (WHEN (EQ '%% (CATCH 'RATF (new-NEWVAR L)))
 ;	    (SETQ *WITHINRATF* NIL) (RETURN (SRF L)))
-;	  (sloop for v in varlist
+;	  (loop for v in varlist
 ;		for i from 1
 ;		when  (setq tem (get-genvar v))
 ;		collecting tem into a-list
@@ -860,7 +853,7 @@
 ;		       (push (cons v (rget tem)) genpairs )
 ;		       )
 ;		into a-list
-;		do (set tem i)
+;		do (setf (symbol-value tem) i)
 ;		finally (setq genvar a-list))
 ;	  (SETQ U (CATCH 'RATF (new-RATREP* L)))	; for truncation routines
 ;	  (RETURN (OR U (PROG2 (SETQ *WITHINRATF* NIL) (SRF L)))))))
@@ -878,7 +871,7 @@
   (cond
     ((and ($ratp expr)(equal *genvar* (genvar expr))(equal *varlist* (varlist expr)))
      expr)
-    (($ratp expr)(cond ((sloop for v in (varlist expr)   ;;what about minimize varlist here.
+    (($ratp expr)(cond ((loop for v in (varlist expr)   ;;what about minimize varlist here.
 			      for w in (genvar expr)	;or in new-ratf
 			      when
 			      (not (eq w (get-genvar v)))
@@ -895,14 +888,14 @@
 
 
 (defun $shift (expr &optional (variables $current_variables) &aux tem)
- (sublis  (sloop for v on (cdr variables)
+ (sublis (loop for v on (cdr variables)
 	when (second v)
 	do (setq tem  (second v))
 	else do (setq tem (second variables))
 
 	collecting (cons (car v) tem)) expr))
 (defun $spur (expr function n &aux (tem expr) (answer 0))
-  (sloop for i below n
+  (loop for i below n
 	do
 	(setq answer (add* answer (setq tem (funcall function tem)))))
  ($ratsimp answer))
@@ -911,7 +904,7 @@
 (defun $basis_of_invariant_ring (n &optional (variables $current_variables) &aux
 				 monoms trace_monoms f new-f eqns solns tem ar sp pivots)
      (setq monoms ($mono variables n))
-	(setq trace_monoms (sloop for u in (cdr monoms)
+	(setq trace_monoms (loop for u in (cdr monoms)
 			    collecting ($spur u '$shift (1- (length variables)) ) into tem
 			    finally (return (cons '(mlist ) tem))))
 	(break t)
@@ -921,20 +914,18 @@
 	(setq solns ($fast_linsolve eqns (subseq $aaaa 0 (length monoms))))
 	(setq sp(send $poly_vector :the-sparse-matrix))
     (setq ar (send sp ':column-used-in-row))
-   (setq pivots  (sloop for i below (length (the cl:array ar))
+   (setq pivots (loop for i below (length (the cl:array ar))
 	  when (setq tem (aref ar i))
 	  collecting tem into tem1
 	  finally (return  tem1)))
-   (sloop	 for i in pivots
+   (loop for i in pivots
 		 collecting (nth (1+ i) trace_monoms)
 		 into tem1
-		 finally (return (cons '(mlist ) tem1))))
+		 finally (return (cons '(mlist) tem1))))
 
-
-
-
-(defvar $mmm )
+(defvar $mmm)
 (defvar $conditions_on_q nil)
+
 (defun $case_rep (mat vect triple  &aux  answer  subs ($expop 100)
 		 ind-used vmmm prod mat.rtx relat-mat)
   (setq triple (cdr triple))
@@ -945,7 +936,7 @@
   (let ((mmm (sublis subs $mmm)))
     (setq mmm ($ratsimp mmm))
     (displa mmm)
-    (sloop for  v in (cdr $conditions_on_q)
+    (loop for  v in (cdr $conditions_on_q)
 	  for i from 1
 	  when ($zerop ($ratsimp (sublis subs v)))
 	  collecting (nth i mmm) into tem
@@ -955,7 +946,7 @@
     (format t "~%Dimension of representation is ~A." (length ind-used))
     (show ind-used)
     (setq vmmm
-	  (sloop for i from 1 to (length ind-used)
+	  (loop for i from 1 to (length ind-used)
 		collecting (mul* (nth i vect)(nth (1- i) relat-mat)) into tem
 		finally (return (meval* (cons '(mplus) tem)))))
     (setq mat.rtx (ncmul* mat '(($matrix simp)
@@ -969,7 +960,7 @@
 							     ((mlist simp) $z))
 					      ,mat.rtx)) vmmm) mat))
     (setq answer (mfuncall '$cof prod))
-    (sloop for i in ind-used
+    (loop for i in ind-used
 	  collecting (nth i answer) into tem
 	  finally (return (cons '(mlist) tem)))))
 
