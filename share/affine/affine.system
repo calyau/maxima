@@ -10,7 +10,6 @@
     :components ((:file "sys-declaim" :load-only t)
 		 (:file "compat")
 		 (:file "amacros")
-		 (:file "dummy-gc")
 		 (:file "polybas")
 		 (:file "sparsemat")
 		 (:file "aquotient")
