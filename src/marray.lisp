@@ -66,7 +66,7 @@
 (defmspec $rearray (l)
   (setq l (cdr l))
   (let ((ar (car l))
-	(dims (cdr l)))
+	(dims (mapcar #'meval (cdr l))))
     (cond ($use_fast_arrays
 	   (setf (symbol-value ar) (rearray-aux ar (getvalue ar) dims)))
 	  (t
