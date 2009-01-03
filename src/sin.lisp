@@ -565,7 +565,14 @@
 
 (defun integrallookups (exp)
   (let (form dummy-args real-args)
-  (cond ((eq (caar exp) '%log)
+  (cond 
+        ((eq (caar exp) 'mqapply)
+	 ;; Transform to functional form and try again.
+	 ;; For example:
+	 ;; ((MQAPPLY SIMP) (($PSI SIMP ARRAY) 1) $X)
+	 ;; => (($PSI) 1 $X)
+	 (integrallookups `((,(caaadr exp)) ,@(cdadr exp) ,@(cddr exp))))
+        ((eq (caar exp) '%log)
 	 (maxima-substitute (cadr exp)
 			    'x
 			    '((mplus)
@@ -593,7 +600,7 @@
 		(setq form (apply form real-args))))
 	 (when *debug-integrate*
 	   (format t "~&INTEGRALLOOKUPS: Found integral ~A~.~%" (caar exp)))
-	 (substitutel real-args dummy-args form))
+	 (maxima-substitute-list real-args dummy-args form))
 
 	((eq (caar exp) 'mplus)
 	 (muln (list '((rat simp) 1 2) exp exp) nil))
