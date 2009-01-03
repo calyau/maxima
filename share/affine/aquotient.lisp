@@ -14,7 +14,8 @@
     (defmacro p-cof (f)			;leading coefficient of f
       `(third ,f))
 
-    (defmacro p-next-term (f) `(cddr ,f))
+    (defmacro p-next-term (f)
+      `(cddr ,f))
 
     (defmacro p-deg (f)
       `(second ,f))
@@ -24,7 +25,6 @@
 
     (defmacro term-deg (terms)
       `(first ,terms)))
-
 
 ;;(make-poly var x)==> (list x 1 1)
 
@@ -37,12 +37,7 @@
 (defun fsignal (&rest l)
   (error (car l)))
 
-(and (fboundp 'psimp)
-     (deff afp-psimp #'psimp))
-
-
-(defmacro working-modulo (list-of-monic-polynomials &body body
-			  &aux (old-tellrats (make-symbol "old-tellrats")))
+(defmacro working-modulo (list-of-monic-polynomials &body body &aux (old-tellrats (make-symbol "old-tellrats")))
   "The computations in body are done modulo the list-of-monic-polynomials.  The
    results of squareing,multiplication, and exponentiating should be of lower degree in each of the
    monic polynomials than the degree of the monic polynomial"
@@ -50,7 +45,7 @@
   (unwind-protect
       (progn
 	(set-tellrats ,list-of-monic-polynomials)
-	,@ body)
+	,@body)
      (undo-tellrats ,old-tellrats))))
 
 ;;sample usage
@@ -79,7 +74,7 @@
   (let ((cof (make-symbol "cof"))
 	(deg (make-symbol "deg"))
 	(tem (gensym)))
-    `(afp-psimp  (p-var ,f)
+    `(psimp  (p-var ,f)
 		      (loop for (,deg ,cof) on (cdr ,f) by #'cddr
 			    with ,tem
 			    do (setq ,tem (,operation-function ,cof ,g))
@@ -179,7 +174,7 @@
 (defmacro afp-main-plus-non-main (constant  f-main)
   "Adds a polynomial CONSTANT to a polynomial whose main variable is higher than
    any in F-MAIN"
-  `(afp-psimp (p-var ,f-main) (afp-constant-term-plus ,constant (cdr ,f-main))))
+  `(psimp (p-var ,f-main) (afp-constant-term-plus ,constant (cdr ,f-main))))
 
 (defmacro afp-number-plus (number poly)
   "Adds a NUMBER to a polynomial POLY, returning the result"
@@ -191,7 +186,7 @@
   (cond ((numberp f) (afp-number-plus f g))
 	((numberp g) (afp-number-plus g f))
 	((eq (p-var f) (p-var g))
-	 (afp-psimp (p-var f)
+	 (psimp (p-var f)
 		    (afp-terms-plus (cdr f) (cdr g))))
 	((pointergp (p-var f) (p-var g)) (afp-main-plus-non-main g f))
 	(t  (afp-main-plus-non-main f g))))
@@ -237,9 +232,7 @@
 	(t (cons (car f) (afp-terms-minus (cdr f))))))
 
 (defun afp-terms-minus (terms-f)
-  (loop for (deg pol) on terms-f by #'cddr nconc nil)
-  (list deg (afp-minus pol)))
-
+  (loop for (deg pol) on terms-f by #'cddr nconc (list deg (afp-minus pol))))
 
 (defmacro add-one-term (deg cof terms)
   (cond ((symbolp cof)
@@ -253,15 +246,15 @@
 (defun afp-difference (f g)
   (cond ((numberp f)
 	 (cond ((numberp g)(cdifference f g))
-	       (t (afp-psimp (p-var g) (afp-terms-constant-main-differ f (cdr g))))))
+	       (t (psimp (p-var g) (afp-terms-constant-main-differ f (cdr g))))))
 	((numberp g)
-	 (afp-psimp (p-var f) (afp-terms-main-constant-differ (cdr f)  g)))
+	 (psimp (p-var f) (afp-terms-main-constant-differ (cdr f)  g)))
 	((eq (p-var f) (p-var g))
-	 (afp-psimp (p-var f) (afp-terms-differ (p-terms f) (p-terms g))))
+	 (psimp (p-var f) (afp-terms-differ (p-terms f) (p-terms g))))
 	((pointergp (p-var f) (p-var g))
-	 (afp-psimp (p-var f) (afp-terms-main-constant-differ
+	 (psimp (p-var f) (afp-terms-main-constant-differ
 				   (cdr f) g)))
-	(t(afp-psimp (p-var g) (afp-terms-main-constant-differ
+	(t(psimp (p-var g) (afp-terms-main-constant-differ
 				 f (cdr g))))))
 
 
@@ -772,11 +765,9 @@
 	(empty (tim (progn
 		      (afp-times f g)
 		      nil))
-	       (reset-paa)
 	       (tim (progn
 		      (ptimes f g)
-		      nil))
-	       (reset-paa))
+		      nil)))
 	(t	     (iassert (equal (tim (afp-times f g))
 				     (tim (ptimes f g)))))))
 
@@ -797,10 +788,8 @@
 
 (defmacro with-area-used (&rest body)
   `(progn
-     (reset-paa)
      (prog1
-	 (progn ,@body)
-       (reset-paa))))
+	 (progn ,@body))))
 
 (defun recursive-ideal-gcd1 (f g )
    "assumes that f and g are polynomials of one variable and that modulus is non trivial
@@ -903,7 +892,7 @@
 							       (cexpt repl deg))))))
 			finally (return-from sue  answ)))
 		    (t (return
-			 (afp-psimp main-var
+			 (psimp main-var
 				    (loop for (deg cof)
 				       on (p-terms polynomial) by #'p-next-term
 				       unless (pzerop (setq tem (constant-psublis1 alist cof)))
@@ -1007,10 +996,9 @@
 ;;seems afp-square is roughly twice as fast on univariate.
 ;(user:compare-recursive-functions
 
-(defun afp-square (poly )
+(defun afp-square (poly)
   (cond ((numberp poly)(ctimes poly poly))
-	(t (palgsimp (p-var poly) (afp-terms-square (p-terms poly)) (alg  poly)))))
-
+	(t (palgsimp (p-var poly) (afp-terms-square (p-terms poly)) (alg poly)))))
 
 ;;comparison for squaring (x+y+z)^10 and (x+y+z)^4 (x+1)^10
 ;;;done in temp area:
@@ -1019,34 +1007,31 @@
 ;(x+y+z)^4      80 ms.   1,443            111ms  2,099
 ;(x+1)^10       82 ms.     527            190ms  2,911
 
+;; (defun test-square (f &key empty)
+;;   (cond (modulus
+;; 	 (iassert (equal (tim (afp-square f)) (remove-zero-coefficients (tim (pexpt f 2 ))))))
+;; 	(empty
+;; 	 (tim (progn
+;; 		(afp-square f)
+;; 		nil))
+;; 	       (tim (progn
+;; 		      (pexpt f 2)
+;; 		      nil)))
+;; 	(t
+;; 	 (iassert (equal (tim (afp-square f)) (tim (pexpt f 2)))))))
 
-(defun test-square (f  &key empty)
-  (cond (modulus (iassert (equal (tim (afp-square f))
-				 (remove-zero-coefficients (tim (pexpt f 2 ))))))
-	(empty (tim (progn
-		      (afp-square f )
-		      nil))
-	       (reset-paa)
-	       (tim (progn
-		      (pexpt f 2)
-		      nil))
-	       (reset-paa))
-	(t	     (iassert (equal (tim (afp-square f ))
-				     (tim (pexpt f 2)))))))
-(defun test-square (f  &key empty)
-  (cond (modulus (iassert (equal (tim (afp-square f))
-				 (remove-zero-coefficients (tim (ptimes f f ))))))
-	(empty (tim (progn
-		      (afp-square f )
-		      nil))
-	       (reset-paa)
-	       (tim (progn
-		      (pexpt f 2)
-		      nil))
-	       (reset-paa))
-	(t	     (iassert (equal (tim (afp-square f ))
-				     (tim (ptimes f f)))))))
-
+;; (defun test-square (f &key empty)
+;;   (cond (modulus
+;; 	 (iassert (equal (tim (afp-square f)) (remove-zero-coefficients (tim (ptimes f f))))))
+;; 	(empty
+;; 	 (tim (progn
+;; 		(afp-square f)
+;; 		nil))
+;; 	       (tim (progn
+;; 		      (pexpt f 2)
+;; 		      nil)))
+;; 	(t
+;; 	 (iassert (equal (tim (afp-square f)) (tim (ptimes f f)))))))
 
 ;;pexpt is not accurate for modulus=9
 ;;note example set al:(x+y+z)^4 in polynomial form.
@@ -1108,8 +1093,7 @@
 	      (setq rest-args (subseq rest-args 0 (- (length rest-args)
 						     (length (member ':empty rest-args :test #'eq)))))
 	      (setq empty t)))
-       (format t "~%For functions ~A and ~A respectively, ~
-      ~%with argument list ~A being ~A" ',f1 ',f2 (arglist ',f1) rest-args)
+       (format t "~%For functions ~A and ~A respectively, ~%with argument list being ~A" ',f1 ',f2 rest-args)
        (cond (empty (format t  "~%All computations done in a temporary area:")))
        (cond ((and (null empty)modulus)
 	      (progn
@@ -1118,15 +1102,12 @@
 	     (empty (tim (progn
 			   (apply ',f1 rest-args )
 			   nil))
-		    (reset-paa)
 		    (tim (progn
 			   (apply ',f2 rest-args)
-			   nil))
-		    (reset-paa))
+			   nil)))
 	     (t (progn
 		  (iassert (equal (setq ansa (tim (apply ',f1 rest-args )))
 				  (setq ansb(tim (apply ',f2 rest-args)))))))))))
-
 
 ;;timings for afp-expt and pexpt respectively with 5 th power
 ;(x+y+z)^4
@@ -1187,7 +1168,7 @@
 		  (let ((pow (afp-expt (p-cof poly) exponent)))
 		    (cond ((pzerop pow) 0)
 			  (t
-			   (afp-psimp (p-var poly)
+			   (psimp (p-var poly)
 				     (list (* (p-deg poly) exponent)
 				      pow))))))))))
 (defmacro push-poly-number-deg-cof (rows poly-number deg cof &aux (row (make-symbol "row")))
@@ -1343,11 +1324,13 @@
        do (setq ans (ptimes ans v))
       finally (show ans) (iassert (equal (afp-mod pol) ans)))
  (show answ)
- (mapcar 'afp-mod answ))
+ (mapcar #'afp-mod answ))
 
 (defvar *mod-p-factor* 'afp-berlekamp-factor)
 ;(defvar *mod-p-factor* 'afp-distinct-degree-factor)
+
 (defvar *sort-factors* t)
+
 (defun afp-factor (pol &key square-free-arg &aux factor-function facts vars    lead  answ)
   (cond (modulus  (setq lead (p-cof pol))
 		  (setq pol (afp-try-make-monic pol))))
@@ -1782,20 +1765,20 @@
 		 and
 		 collecting pol and collecting tot-deg))))
 
-(defmacro while (test &body body)
-  `(loop (cond ((null ,test) (return)))
-	 ,@ body))
+;; (defmacro while (test &body body)
+;;   `(loop (cond ((null ,test) (return)))
+;; 	 ,@ body))
 
 (defun find-factor-list-given-irreducible-factors (pol fact-list &aux deg divisor answ final-answ)
-   (while   (setq divisor (car fact-list))
-     (setq deg 1)
-     (while (setq answ (test-divide pol divisor))
-       (setq pol answ)
-       (incf deg))
-     (setq final-answ (cons deg final-answ))
-     (setq final-answ (cons pol final-answ))
-     )
-  (cond ((not (equal final-answ 1)) (fsignal "bad factorization")))
+  (while (setq divisor (car fact-list))
+    (setq deg 1)
+    (while (setq answ (test-divide pol divisor))
+      (setq pol answ)
+      (incf deg))
+    (setq final-answ (cons deg final-answ))
+    (setq final-answ (cons pol final-answ)))
+  (unless (equal final-answ 1)
+    (fsignal "bad factorization"))
   final-answ)
 
 ;(defun afp-multi-factor (pol)
@@ -1804,7 +1787,6 @@
 ;		     (append (afp-multi-factor content)
 ;			     (afp-multi-factor (afp-quotient pol content )))))
 ;	  (t (afp-)))))
-
 
 (defun try-multi-factor0 (pol &aux facs fac deg)
   "input may be non square free"
