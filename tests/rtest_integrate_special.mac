@@ -175,3 +175,10 @@ integrate(bessel_j(2,x),x);
 
 integrate(bessel_j(n,x),n);
 'integrate(bessel_j(n,x),n);
+
+/* Examples of a subscripted function */
+integrate(psi[0](x),x);
+log_gamma(x);
+
+integrate(psi[1](x),x);
+psi[0](x);
