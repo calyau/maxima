@@ -1078,15 +1078,14 @@ Perhaps you meant to enter `~a'.~%"
 	  (0 
 	   ;; integrate(bessel_i(0,z)
 	   ;; = (1/2)*z*(bessel_i(0,z)*(%pi*lstruve[1](z)+2)
-	   ;;            -%pi*bessel_i(1,z)**lstruve[0](z))
+	   ;;            -%pi*bessel_i(1,z)*lstruve[0](z))
 	   '((mtimes) ((rat) 1 2) z
 	     ((mplus)
-	      ((mtimes) -1 $%pi
-	       ((mexpt) ((%bessel_i) 1 z)
-		((mqapply) (($lstruve array) 0) z)))
+	      ((mtimes) -1 $%pi ((%bessel_i) 1 z)
+	       ((mqapply) (($lstruve array) 0) z))
 	      ((mtimes) ((%bessel_i) 0 z)
 	       ((mplus) 2
-		((mtimes) $%pi ((mqapply) (($lstruve array) 1) $z)))))))
+		((mtimes) $%pi ((mqapply) (($lstruve array) 1) z)))))))
 	  (1
 	   ;; integrate(bessel_j(1,z) = -bessel_i(0,z)
 	   '((mtimes) -1 ((%bessel_i) 0 z)))

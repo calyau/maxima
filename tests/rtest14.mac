@@ -1710,7 +1710,7 @@ integrate(bessel_y(11,x),x);
 -2*'sum(bessel_y(2*i,x),i,1,5)-bessel_y(0,x);
 
 integrate(bessel_i(0,x),x);
-x*(bessel_i(0,x)*(%pi*lstruve[1](z)+2)-%pi*bessel_i(1,x)^lstruve[0](x))/2;
+x*(bessel_i(0,x)*(%pi*lstruve[1](x)+2)-%pi*bessel_i(1,x)*lstruve[0](x))/2;
 
 integrate(bessel_i(1,x),x);
 -bessel_i(0,x);
