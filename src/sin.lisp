@@ -593,7 +593,7 @@
 		(setq form (apply form real-args))))
 	 (when *debug-integrate*
 	   (format t "~&INTEGRALLOOKUPS: Found integral ~A~.~%" (caar exp)))
-	 (maxima-substitute-list real-args dummy-args form))
+	 (substitutel real-args dummy-args form))
 
 	((eq (caar exp) 'mplus)
 	 (muln (list '((rat simp) 1 2) exp exp) nil))

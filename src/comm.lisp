@@ -115,14 +115,6 @@
 	   (subst2 z)))
      nil)))
 
-(defun maxima-substitute-list (b a exp)
-  "a is a list of variables.  b is a list of expressions. For each 
-   element in list a, substitute corresponding element of b into exp"
-  (do ((x a (cdr x))
-       (y b (cdr y)))
-      ((or (null x) (null y)) exp)
-      (setq exp (maxima-substitute (car y) (car x) exp))))
-
 ;;Remainder of page is update from F302 --gsb
 
 ;;Used only in COMM2 (AT), and below.
@@ -556,6 +548,8 @@
 	     (if (not (mequalp u)) (return t))))))
 
 (defmfun substitutel (l1 l2 e)
+  "l1 is a list of expressions.  l2 is a list of variables. For each 
+   element in list l2, substitute corresponding element of l1 into e"
   (do ((l1 l1 (cdr l1))
        (l2 l2 (cdr l2)))
       ((null l1) e)
