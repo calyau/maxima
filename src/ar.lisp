@@ -32,9 +32,13 @@
      (or (cdr (assoc (array-element-type x) '((flonum . $float) (fixnum . $fixnum))))
 	 (mgenarray-type x)))))
 
-
 (defmfun $make_array (type &rest diml)
   (let ((ltype (assoc type '(($float . flonum) ($flonum . flonum) ($fixnum . fixnum)))))
+    ;; Check the dimensions. No check for upper number of dimensions. (01/2009)
+    (cond ((null diml)
+           (wna-err '$make_array))
+          ((member nil (mapcar #'(lambda (u) (eq (ml-typep u) 'fixnum)) diml) :test #'eq)
+           (merror "Non-integer dimension - `make_array'")))
     (if (not ltype)
 	(case type
 	  ($any
