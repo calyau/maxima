@@ -1652,7 +1652,12 @@ wrapper for this."
 (defmspec $array (x)
   (setq x (cdr x))
   (cond ($use_fast_arrays
-	 (mset (car x) (apply '$make_array '$any (mapcar #'1+ (cdr x)))))
+         (mset (car x) 
+               (apply '$make_array '$any 
+                      (mapcar #'(lambda (dim)
+                                  ;; let make_array catch bad vals
+                                  (add 1 (meval dim)))
+                              (cdr x)))))
 	((symbolp (car x))
 	 (let ((compp (assoc (cadr x) '(($complete . t) ($integer . fixnum) ($fixnum . fixnum)
 					($float . flonum) ($flonum . flonum)))))
