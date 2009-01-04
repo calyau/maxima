@@ -86,6 +86,7 @@
 						  
 ;;; The generic simplifying function for user simplification functions
 (defun user-simplifying (l ignore simpflag)
+  (declare (ignore ignore))
   (let* ((op (caar l))	 
 	 (simplifier (get op 'user-simplifying))
 	 ;; args are (re)simplified *outside* the simplification fnc
