@@ -456,6 +456,8 @@
                                      (:file "zero")
                                      (:file "logarc") 
                                      (:file "rpart")))
+	       (:module numeric-bigfloat :source-pathname ""
+			:components ((:file "numeric")))
 	       (:module server :source-pathname ""
 			:components ((:file "server")))
                (:module i-o :source-pathname ""

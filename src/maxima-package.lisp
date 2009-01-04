@@ -29,7 +29,7 @@
   (:import-from :cl-sloop #:sloop)
   (:shadow continue		 ;(macsys): part of the top-level loop
 	   //                           ;(clmacs): arithmetic operator
-	   float		;(clmacs): has 1.0 as default format
+	   float		  ;(clmacs): has 1.0 as default format
 	   functionp                    ;(commac): accepts symbols
 	   array                        ;(commac)
 	   exp			   ;various files declare this special
@@ -78,5 +78,122 @@
        #+cmu #:%random-double-double-float
        #:random-chunk
        #:init-random-state))
+
+(defpackage numeric
+  (:use :cl)
+  (:shadow #:+
+	   #:-
+	   #:*
+	   #:/
+	   #:1+
+	   #:1-
+	   #:zerop
+	   #:plusp
+	   #:minusp
+	   #:abs
+	   #:sqrt
+	   #:log
+	   #:exp
+	   #:sin
+	   #:cos
+	   #:tan
+	   #:asin
+	   #:acos
+	   #:atan
+	   #:sinh
+	   #:cosh
+	   #:tanh
+	   #:asinh
+	   #:acosh
+	   #:atanh
+	   #:expt
+	   #:=
+	   #:/=
+	   #:<
+	   #:>
+	   #:<=
+	   #:>=
+	   #:scale-float
+	   #:realpart
+	   #:imagpart
+	   #:complex
+	   #:conjugate
+	   #:max
+	   #:min
+	   #:cis
+	   #:phase
+	   #:floor
+	   #:ffloor
+	   )
+  
+  ;; Not yet implemented
+  #+nil
+  (:shadow #:float
+	   #:ceiling
+	   #:fceiling
+	   #:truncate
+	   #:ftruncate
+	   #:round
+	   #:fround
+	   #:signum
+	   #:coerce
+	   #:random
+	   #:realp
+	   #:complexp
+	   #:numberp
+	   #:incf
+	   #:decf
+	   #:float-digits
+	   #:rational
+	   #:rationalize
+	   #:float-sign
+	   )
+    ;; Export types
+  (:export #:bigfloat
+	   #:complex-bigfloat)
+  ;; Export functions
+  (:export #:bigfloat
+	   #:+
+	   #:-
+	   #:*
+	   #:/
+	   #:1+
+	   #:1-
+	   #:zerop
+	   #:plusp
+	   #:minusp
+	   #:abs
+	   #:sqrt
+	   #:log
+	   #:exp
+	   #:sin
+	   #:cos
+	   #:tan
+	   #:asin
+	   #:acos
+	   #:atan
+	   #:sinh
+	   #:cosh
+	   #:tanh
+	   #:asinh
+	   #:acosh
+	   #:atanh
+	   #:=
+	   #:/=
+	   #:<
+	   #:>
+	   #:<=
+	   #:>=
+	   #:complex
+	   #:realpart
+	   #:imagpart
+	   #:conjugate
+	   #:max
+	   #:min
+	   #:cis
+	   #:phase
+	   #:floor
+	   #:ffloor
+	   ))
 
 (provide :maxima)

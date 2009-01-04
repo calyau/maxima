@@ -401,6 +401,7 @@ nrat4.lisp \
 nregex.lisp \
 nset.lisp \
 nummod.lisp \
+numeric.lisp \
 numth.lisp \
 openmath.lisp \
 opers.lisp \
