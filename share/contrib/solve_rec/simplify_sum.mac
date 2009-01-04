@@ -126,7 +126,7 @@ simplify_sum(expr) :=
       if use_gosper and not(atom(sm1)) and not freeof_sum(sm1) then block(
         [hi1 : ?gensym(), lo1 : ?gensym()],
         ss_print_message(1, "Trying with Gosper ..."),
-        sm1 : nusum(summand, var, lo1, hi1),
+        sm1 : block([ttyoff:true], nusum(summand, var, lo1, hi1)),
         if freeof_sum(sm1) then (
           ss_print_message(1, "Gosper returns:", sm1),
           if lo=minf or lo=-inf then
@@ -221,7 +221,7 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   [vars : delete(%k%, listofvars(expr)), %n%, eq, sm, zb, deg,
    cond, eq_rhs, cert, %i%, expr1, ihom,
    upper_bound_implicit : false, lower_bound_implicit : false,
-   solve_rec_warn : false],
+   solve_rec_warn : false, warnings:false],
 
   if lo=-inf then lo:minf,
   
