@@ -13,7 +13,6 @@ affine/aquotient.lisp\
 affine/compat.lisp\
 affine/dim-3.lisp\
 affine/dim4-help.lisp\
-affine/dummy-gc.lisp\
 affine/macbasic.mac\
 affine/make.lisp\
 affine/makefile\
@@ -108,6 +107,7 @@ contrib/Zeilberger/zb_prover.mac\
 contrib/Zeilberger/zeilberger_algorithm.mac\
 contrib/Zeilberger/zeilberger_linear_algebra.mac\
 contrib/Zeilberger/zeilberger.mac\
+contrib/altsimp/altsimp.lisp\
 contrib/amatrix/amatrix.dem\
 contrib/amatrix/amatrix.lisp\
 contrib/amatrix/amatrix.mac\
@@ -318,6 +318,7 @@ contrib/graphs/graphs.mac\
 contrib/graphs/isomorphism.lisp\
 contrib/graphs/load-graphs.lisp\
 contrib/graphs/matching.lisp\
+contrib/graphs/rtest_graphs.mac\
 contrib/graphs/spring_embedding.lisp\
 contrib/impdiff.mac\
 contrib/implicit_plot.lisp\
@@ -463,6 +464,7 @@ contrib/sarag/signDetermination.mac\
 contrib/sarag/topology_examples.mac\
 contrib/sarag/topology.mac\
 contrib/sarag/whatsnew.txt\
+contrib/simplex/rtest_simplex.mac\
 contrib/simplex/simplex.mac\
 contrib/simplex/simplex_algorithm.lisp\
 contrib/simplex/minimize_sx.mac\
@@ -484,6 +486,7 @@ contrib/simplex/Tests/share2b_c.csv\
 contrib/simplex/Tests/share2b_b.csv\
 contrib/simplex/Tests/share2b_A.csv\
 contrib/simplex/Readme.txt\
+contrib/simplifying.lisp\
 contrib/solve_rat_ineq.mac\
 contrib/solve_rec/simplify_sum.mac\
 contrib/solve_rec/simplify_sum_test.mac\
