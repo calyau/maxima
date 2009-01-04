@@ -440,20 +440,27 @@
 	      (,cl-name x))
 	    (defmethod ,name ((x rational))
 	      (,cl-name x))))))
-  (frob zerop)
   (frob plusp)
   (frob minusp))
+
+(defmethod zerop ((x number))
+  (cl:zerop x))
 
 (defmethod zerop ((x bigfloat))
   (let ((r (real-value x)))
     (and (zerop (first r))
 	 (zerop (second r)))))
 
+(defmethod zerop ((a complex-bigfloat))
+  (and (equal (real-value a) '(0 0))
+       (equal (imag-value a) '(0 0))))
+
 (defmethod plusp ((x bigfloat))
   (cl:plusp (first (real-value x))))
 
 (defmethod minusp ((x bigfloat))
   (cl:minusp (first (real-value x))))
+
 
 
 ;;; Equality 
@@ -611,6 +618,12 @@
 (defmethod abs ((x bigfloat))
   (make-instance 'bigfloat :real (maxima::fpabs (real-value x))))
 
+(defmethod abs ((z complex-bigfloat))
+  (let ((x (make-instance 'bigfloat :real (real-value z)))
+	(y (make-instance 'bigfloat :real (imag-value z))))
+    ;; Bigfloats don't overflow, so we don't need anything special.
+    (sqrt (+ (* x x) (* y y)))))
+
 (defmethod exp ((x bigfloat))
   (make-instance 'bigfloat :real (maxima::fpexp (real-value x))))
 
@@ -715,10 +728,6 @@
 		       :imag (cdr (maxima::$imagpart value))))))
 
 ;;; Complex arguments
-(defmethod zerop ((a complex-bigfloat))
-  (and (equal (real-value a) '(0 0))
-       (equal (imag-value a) '(0 0))))
-
 
 ;;; Special functions for complex args
 (macrolet
