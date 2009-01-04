@@ -102,7 +102,8 @@ GosperVerboseOpt(f,k,mode) :=
   fRat : shiftQuoOnlyHyp(factor(f),k), /* factor might not be necessary */
   if fRat = [] then
     (
-    print(f, " is not hypergeometric in ", k),
+      if warnings then
+        print(f, " is not hypergeometric in ", k),
     return(NON_HYPERGEOMETRIC)
     ),
 

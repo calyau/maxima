@@ -279,7 +279,7 @@ block([sq_num,sq_den,sq_base,sq_exp],
          return([shiftFactPoly(expr,k,1)/expr,hyp_flag])
        else
          (
-         print("Unknown operator : ", zb_op(expr)),
+         if warnings then print("Unknown operator : ", zb_op(expr)),
          return([expr,NO_HYP])
          )
 );

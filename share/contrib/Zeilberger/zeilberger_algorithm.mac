@@ -189,7 +189,7 @@ nFTrivial : niceForm(f,n,'_z,ZAnsatzDegree,k),
 
 if nFTrivial = [] then
   (
-  print(f, " is not hypergeometric in ", n),
+  if warnings then print(f, " is not hypergeometric in ", n),
   return([NON_PROPER_HYPERGEOMETRIC])
   ),
 
@@ -215,7 +215,7 @@ parFRat : shiftQuoOnlyHyp(factor(f/denNF),k), /* We temporarily forget about the
 
 if parFRat = [] then
  (
- print(f, " is not hypergeometric in ", k),
+ if warnings then print(f, " is not hypergeometric in ", k),
  return([NON_PROPER_HYPERGEOMETRIC])
  ),
 
