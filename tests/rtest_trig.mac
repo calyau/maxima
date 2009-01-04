@@ -114,7 +114,11 @@ mtrig - subst(x=-5.6, append(trig,htrig));
 
 /* Test half angles */
 
-(halfangles : true, 0);
+/* Because we have generalized the half-angle-transformation, we have to
+   restrict the arguments to a positive intervall (0,%pi). We take not %pi
+   but the number 3 as upper limit, because of problems with assume. */
+
+(assume(x>0,x<3),halfangles : true, 0);
 0$
 
 (xtrig : subst(x/2,x, append(trig,htrig)),0);
@@ -125,6 +129,9 @@ mtrig - subst(x=-5.6, append(trig,htrig));
 
 xtrig : taylor(xtrig - subst(x/2,x, append(trig, htrig)),x,0,5);
 ''(makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig))))$
+
+(forget(x>0,x<3),0);
+0;
 
 /* Test trig expand */
 
@@ -356,3 +363,177 @@ sqrt(?%realpart(u)^2+?%imagpart(u)^2);
 /* [ 617699 ] carg([1]) is bogus */
 carg([1]);
 [0];
+
+/* Tests for half-angles simplification */
+
+kill(all);
+done;
+
+(old_halfangles:halfangles,halfangles:true,old_%iargs:%iargs,%iargs:false,done);
+done;
+
+/* Sin function: The general result for real argument */
+
+sin(x/2);
+(-1)^floor(x/(2*%pi))*sqrt(1-cos(x))/sqrt(2);
+
+/* The square simplifies correctly */
+
+sin(x/2)^2;
+(1-cos(x))/2;
+
+/* Correct sign for negative and positive real argument */
+
+(assume(x1>0,x1<2*%pi),done);
+done;
+
+sin(x1/2);
+sqrt(1-cos(x1))/sqrt(2);
+
+(assume(x2>-2*%pi,x2<0),done);
+done;
+
+sin(x2/2);
+-sqrt(1-cos(x2))/sqrt(2);
+
+/* Correct sign for pure imaginary argument
+   and complex argument with realpart a multiple of 2*%pi */
+
+(assume(y1>0,y2<0),done);
+done;
+
+sin(%i*y1/2);
+sqrt(1-cos(%i*y1))/sqrt(2);
+
+sin(%i*y2/2);
+-sqrt(1-cos(%i*y2))/sqrt(2);
+
+sin((2*%pi+%i*y2)/2);
+sqrt(1-cos(2*%pi+%i*y2))/sqrt(2);
+
+sin((2*%pi+%i*y1)/2);
+-sqrt(1-cos(2*%pi+%i*y1))/sqrt(2);
+
+/* Simplification for negative or postive imaginary part */
+(assume(yneg<0,ypos>0),done);
+done;
+
+sin((x1+%i*yneg)/2);
+sqrt(1-cos(x1+%i*yneg))/sqrt(2);
+
+sin((2*%pi+%i*yneg)/2);
+sqrt(1-cos(2*%pi+%i*yneg))/sqrt(2);
+
+sin((x1+%i*ypos)/2);
+sqrt(1-cos(x1+%i*ypos))/sqrt(2);
+
+sin((2*%pi+%i*ypos)/2);
+-sqrt(1-cos(2*%pi+%i*ypos))/sqrt(2); /* for this case an -1 */
+
+/* Cos function: The general result for real argument */
+
+cos(x/2);
+(-1)^floor((x+%pi)/(2*%pi))*sqrt(1+cos(x))/sqrt(2);
+
+/* The square simplifies correctly */
+
+cos(x/2)^2;
+(1+cos(x))/2;
+
+/* Correct sign for real argument in (-%pi,%pi) */
+
+(forget(x1<2*%pi,x1>0),assume(x1>-%pi,x1<%pi),done);
+done;
+
+cos(x1/2);
+sqrt(1+cos(x1))/sqrt(2);
+
+/* Correct sign for pure imaginary argument
+   and complex argument with realpart a multiple of %pi */
+
+cos(%i*y1/2);
+sqrt(1+cos(%i*y1))/sqrt(2);
+
+cos(%i*y2/2);
+sqrt(1+cos(%i*y2))/sqrt(2);
+
+cos((%pi+%i*y2)/2);
+sqrt(1+cos(%pi+%i*y2))/sqrt(2);
+
+cos((%pi+%i*y1)/2);
+-sqrt(1+cos(%pi+%i*y1))/sqrt(2);
+
+/* Simplification for negative or postive imaginary part */
+(assume(yneg<0,ypos>0),done);
+done;
+
+cos((x1+%i*yneg)/2);
+sqrt(1+cos(x1+%i*yneg))/sqrt(2);
+
+cos((%pi+%i*yneg)/2);
+sqrt(1+cos(%pi+%i*yneg))/sqrt(2);
+
+cos((x1+%i*ypos)/2);
+sqrt(1+cos(x1+%i*ypos))/sqrt(2);
+
+cos((%pi+%i*ypos)/2);
+-sqrt(1+cos(%pi+%i*ypos))/sqrt(2); /* for this case an -1 */
+
+/* Sinh function with Real arguments */
+
+(assume(xpos>0,xneg<0),done);
+done;
+
+sinh(x/2);
+abs(x)/x*sqrt((cosh(x)-1)/2);
+
+sinh(x/2)^2;
+(cosh(x)-1)/2;
+
+sinh(xpos/2);
+sqrt((cosh(xpos)-1)/2);
+
+sinh(xneg/2);
+-sqrt((cosh(xneg)-1)/2);
+
+/* Sinh function with Complex arguments */
+
+/* x1 is in (-%pi,%pi) */
+sinh(%i*x1/2);
+abs(x1)/x1*sqrt((cosh(%i*x1)-1)/2);
+
+sinh((xpos+%i*x1)/2);
+sqrt((xpos+%i*x1)^2)/(xpos+%i*x1)*sqrt((cosh(xpos+%i*x1)-1)/2);
+
+sinh((xneg+%i*x1)/2);
+sqrt((xneg+%i*x1)^2)/(xneg+%i*x1)*sqrt((cosh(xneg+%i*x1)-1)/2);
+
+/* Cosh function with Real arguments */
+
+cosh(x/2);
+sqrt((cosh(x)+1)/2);
+
+cosh(x/2)^2;
+(cosh(x)+1)/2;
+
+cosh(xpos/2);
+sqrt((cosh(xpos)+1)/2);
+
+cosh(xneg/2);
+sqrt((cosh(xneg)+1)/2);
+
+/* Cosh function with Complex arguments */
+
+/* x1 is in (-%pi,%pi) */
+cosh(%i*x1/2);
+sqrt((cosh(%i*x1)+1)/2);
+
+cosh((xpos+%i*x1)/2);
+sqrt((cosh(xpos+%i*x1)+1)/2);
+
+cosh((xneg+%i*x1)/2);
+sqrt((cosh(xneg+%i*x1)+1)/2);
+
+/* Restore global flags */
+(halfangles:old_halfangles,%iargs:old_%iargs,done);
+done;
