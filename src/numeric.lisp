@@ -321,13 +321,13 @@
       `(unary-divide ,number)))
 
 (macrolet
-    ((frob (name))
-     (let ((cl-name (intern (symbol-name name) :cl)))
-       `(progn
-	  (defmethod ,name ((x float))
-	    (,cl-name x))
-	  (defmethod ,name ((x rational))
-	    (,cl-name x)))))
+    ((frob (name)
+       (let ((cl-name (intern (symbol-name name) :cl)))
+	 `(progn
+	    (defmethod ,name ((x float))
+	      (,cl-name x))
+	    (defmethod ,name ((x rational))
+	      (,cl-name x))))))
   (frob zerop)
   (frob plusp)
   (frob minusp))
