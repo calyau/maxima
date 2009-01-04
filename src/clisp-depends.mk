@@ -169,6 +169,7 @@ binary-clisp/maxima.mem : csimp2.lisp
 binary-clisp/maxima.mem : zero.lisp
 binary-clisp/maxima.mem : logarc.lisp
 binary-clisp/maxima.mem : rpart.lisp
+binary-clisp/maxima.mem : numeric.lisp
 binary-clisp/maxima.mem : server.lisp
 binary-clisp/maxima.mem : macsys.lisp
 binary-clisp/maxima.mem : mload.lisp

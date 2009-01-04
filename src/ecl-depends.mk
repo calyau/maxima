@@ -170,6 +170,7 @@ binary-ecl/maxima : csimp2.lisp
 binary-ecl/maxima : zero.lisp
 binary-ecl/maxima : logarc.lisp
 binary-ecl/maxima : rpart.lisp
+binary-ecl/maxima : numeric.lisp
 binary-ecl/maxima : server.lisp
 binary-ecl/maxima : macsys.lisp
 binary-ecl/maxima : mload.lisp
