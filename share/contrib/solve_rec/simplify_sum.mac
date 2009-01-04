@@ -534,7 +534,7 @@ factor_with_solve(expr, n) := block(
  *******************/
 
 to_hgfred(expr, var, lo, hi) := block(
-  [quo, upper, lower, a:[], b:[], x, c],
+  [quo, upper, lower, a:[], b:[], x, c, warnings:false],
 
   while subst(var=lo, expr)=0 do lo : lo+1,
   expr:subst(var=var+lo, expr),
