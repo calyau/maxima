@@ -242,15 +242,15 @@ test_sum(
   [],
   true,
   [ratsimp, multthru],
-  (sqrt(5)*psi[0]((sqrt(5)+1)/sqrt(5)))/10-(sqrt(5)*psi[0]((sqrt(5)-1)/sqrt(5)))/10);
+  (sqrt(5)*harmonic_number(1/sqrt(5))-sqrt(5)*harmonic_number(-1/sqrt(5)))/10);
 0;
 
 test_sum(
   sum(1/(5*n^2-3),n,1,inf),
   [],
   true,
-  [ratsimp, multthru],
-  (sqrt(3)*sqrt(5)*psi[0]((sqrt(3)*sqrt(5)+3)/(sqrt(3)*sqrt(5))))/30-(sqrt(3)*sqrt(5)*psi[0]((sqrt(3)*sqrt(5)-3)/(sqrt(3)*sqrt(5))))/30);
+  [radcan],
+  (sqrt(3)*sqrt(5)*harmonic_number((sqrt(3)/sqrt(5)))-sqrt(3)*sqrt(5)*harmonic_number(-(sqrt(3)/sqrt(5))))/30);
 0;
 
 test_sum(
@@ -258,7 +258,7 @@ test_sum(
   [],
   true,
   [ratsimp, multthru],
-  (%i*psi[0](1-%i))/2-(%i*psi[0](%i+1))/2);
+  -(%i*harmonic_number(%i)-%i*harmonic_number(-%i))/2);
 0;
 
 test_sum(
@@ -266,7 +266,15 @@ test_sum(
   [],
   true,
   [ratsimp, multthru],
-  psi[0](a+1)/a+%gamma/a);
+  harmonic_number(a)/a);
+0;
+
+test_sum(
+  sum(1/(5*k+1)^2,k,2,inf),
+  [],
+  false,
+  [],
+  (psi[1](1/5)-925/36)/25);
 0;
 
 test_sum(
@@ -345,4 +353,37 @@ test_sum(
   [lambda([u], scanmap(factor, u, 'bottomup))],
   1/sqrt((x*y-2*x-1)*(x*y+2*x-1))
 ), use_zeilberger=false$
+0;
+
+test_sum(
+  sum(1/k, k, 1, n),
+  [],
+  false,
+  [],
+  harmonic_number(n))$
+0;
+
+test_sum(
+  sum(k*harmonic_number(k),k,1,n),
+  [],
+  false,
+  [ratsimp],
+  ((n^2+n)*(harmonic_number(n)+1/(n+1)))/2-(n^2+n)/4);
+0;
+
+test_sum(
+  sum(k^2*harmonic_number(k),k,1,n),
+  [],
+  false,
+  [ratsimp],
+  ((12*n^3+18*n^2+6*n)*harmonic_number(n)-4*n^3+3*n^2+n)/36);
+0;
+
+test_sum(
+  sum(k^2*harmonic_number(n+k),k,1,n),
+  [],
+  false,
+  [ratsimp],
+  ((24*n^3+36*n^2+12*n)*harmonic_number(2*n)+(-12*n^3-18*n^2-6*n)*harmonic_number(n)-10*n^3-9*n^2+n)/36),
+  harmonic_number_expand=true;
 0;

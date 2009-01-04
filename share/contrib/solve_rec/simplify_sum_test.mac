@@ -301,3 +301,31 @@ test_sum(
   false,
   [lambda([u], scanmap(factor, u, 'bottomup))]
 ), use_zeilberger=false$
+
+test_sum(
+  sum(1/k, k, 1, n),
+  [],
+  false,
+  []
+)$
+
+test_sum(
+  sum(k*harmonic_number(k),k,1,n),
+  [],
+  false,
+  [ratsimp]
+);
+
+test_sum(
+  sum(k^2*harmonic_number(k),k,1,n),
+  [],
+  false,
+  [ratsimp]
+);
+
+test_sum(
+  sum(k^2*harmonic_number(n+k),k,1,n),
+  [],
+  false,
+  [lambda([u], u:ev(u, harmonic_number_expand=true), ratsimp(u))]
+);
