@@ -267,7 +267,7 @@
 		     (dimension dummy result lop 'mfunction nil 0))))
      (cond ((not (checkfit (setq width (+ w width))))
 	    (return (dimension-function (cons '(subscript) (cons dummy (cdr x))) result)))
-	   ((char= #\) (car bas))
+	   ((and (atom (car bas)) (char= #\ (car bas))) ; Adding the test (atom (car bas))
 	    (setq result (cons (cons 0 (cons (- h) sub)) bas) depth (max (+ h d) depth)))
 	   (t (setq result (cons (cons 0 (cons (- (+ depth h)) sub)) bas)
 		    depth (+ h d depth))))
