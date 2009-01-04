@@ -849,6 +849,7 @@
 	;;        (t (add2 (log (- y)) (mul2 '$%i %pi-val)))))
 	((and $lognegint (maxima-integerp y) (eq ($sign y) '$neg))
 	 (add (mul '$%i '$%pi) (take '(%log) (neg y))))
+        ((taylorize (mop x) (second x)))
 	(t (eqtest (list '(%log) y) x))))
 
 (defun simpln1 (w)
@@ -1617,7 +1618,14 @@
 		       ;;	(return (exp pot)))
 		       ((and $logsimp (among '%log pot)) (return (%etolog pot)))
 		       ((and $demoivre (setq z (demoivre pot))) (return z))
-		       ((and $%emode (setq z (%especial pot))) (return z))))
+		       ((and $%emode (setq z (%especial pot))) (return z))
+                       (($taylorp (third x))
+                        ;; taylorize %e^taylor(...)
+                        (return
+                          (meval
+                            (list '($taylor)
+                                  (list '(mexpt) '$%e ($ratdisrep (third x)))
+                                  (cadr ($taylorinfo (third x)))))))))
 		(t
 		 (let ((y (mget gr '$numer)))
 		   (and y
