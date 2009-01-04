@@ -223,6 +223,11 @@
 (defmethod unary-minus ((a bigfloat))
   (make-instance 'bigfloat :real (maxima::fpminus (real-value a))))
 
+(defmethod unary-minus ((a complex-bigfloat))
+  (make-instance 'complex-bigfloat
+		 :real (maxima::fpminus (real-value a))
+		 :imag (maxima::fpminus (imag-value a))))
+
 ;;; Subtract two numbers
 (defmethod two-arg-- ((a number) (b number))
   (cl:- a b))
@@ -337,6 +342,24 @@
 (defmethod unary-divide ((a bigfloat))
   (make-instance 'bigfloat :real (maxima::fpquotient (maxima::fpone) (real-value a))))
 
+(defmethod unary-divide ((b complex-bigfloat))
+  ;; Could just call two-arg-/, but let's optimize this a little
+  (let ((a-re (maxima::fpone))
+	(b-re (real-value b))
+	(b-im (imag-value b)))
+    (if (maxima::fpgreaterp (maxima::fpabs b-re) (maxima::fpabs b-im))
+	(let* ((r (maxima::fpquotient b-im b-re))
+	       (dn (maxima::fpplus b-re (maxima::fptimes* r b-im))))
+	  (make-instance 'complex-bigfloat
+			 :real (maxima::fpquotient a-re dn)
+			 :imag (maxima::fpquotient (maxima::fpminus r)
+						   dn)))
+	(let* ((r (maxima::fpquotient b-re b-im))
+	       (dn (maxima::fpplus b-im (maxima::fptimes* r b-re))))
+	  (make-instance 'complex-bigfloat
+			 :real (maxima::fpquotient r dn)
+			 :imag (maxima::fpquotient (maxima::fpminus a-re)
+						   dn))))))
 ;;; Divide two numbers
 (defmethod two-arg-/ ((a number) (b number))
   (cl:/ a b))
