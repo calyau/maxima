@@ -82,6 +82,15 @@ simplify_sum(expr) :=
   /* Check if we have a sum - if not then simplify all arguments.       */
   if mapatom(expr) then expr
   else if part(expr, 0)#nounify(sum) then map(simplify_sum, expr)
+  
+  else if catch(
+    scanmap(
+      lambda([u], if not atom(u) and member(part(u,0), [sin, cos, sinh, cosh]) then throw(true)),
+      expr,
+      bottomup))=true then block(
+    [sm1 : simplify_sum(split_sum(expand(exponentialize(expr))))],
+    if freeof_sum(sm1) then sm1
+    else expr)
 
   else block(
     [summand : ratsimp(part(expr, 1)),
