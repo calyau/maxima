@@ -79,7 +79,7 @@
        #:random-chunk
        #:init-random-state))
 
-(defpackage numeric
+(defpackage bigfloat
   (:use :cl)
   (:shadow #:+
 	   #:-
@@ -124,6 +124,8 @@
 	   #:phase
 	   #:floor
 	   #:ffloor
+	   #:incf
+	   #:decf
 	   )
   
   ;; Not yet implemented
@@ -141,8 +143,6 @@
 	   #:realp
 	   #:complexp
 	   #:numberp
-	   #:incf
-	   #:decf
 	   #:float-digits
 	   #:rational
 	   #:rationalize
@@ -152,7 +152,7 @@
   (:export #:bigfloat
 	   #:complex-bigfloat)
   ;; Export functions
-  (:export #:bigfloat
+  (:export #:to
 	   #:+
 	   #:-
 	   #:*
@@ -194,6 +194,8 @@
 	   #:phase
 	   #:floor
 	   #:ffloor
+	   #:incf
+	   #:decf
 	   ))
 
 (provide :maxima)

@@ -8,10 +8,11 @@
 ;;; faster, but this allows users to write bigfloat routines in a more
 ;;; "natural" Lisp style.
 
-(in-package #-gcl #:numeric #+gcl "NUMERIC")
+(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 
 (defun intofp (re)
   ;; Kind of like Maxima's INTOFP, but we only handle numeric types.
+  ;; We should return a list of mantissa and exponent.
   (cond ((floatp re)
 	 (maxima::floattofp re))
 	((eql re 0)
@@ -23,6 +24,8 @@
 	 ;; numerator and denominator to floats and dividing?
 	 (maxima::fpquotient (intofp (numerator re))
 			     (intofp (denominator re))))
+	((maxima::$bfloatp re)
+	 (cdr re))
 	(t
 	 (error "Don't know how to convert ~S to a BIGFLOAT" re))))
 
@@ -39,6 +42,8 @@
   (:documentation "Big float, roughly equivalent to a Maxima bfloat object"))
 
 (defclass complex-bigfloat (numeric)
+  ;; Currently, the real and imaginary parts contain a list of the
+  ;; mantissa and exponent.  Should they be bigfloat objects instead?
   ((real :initform (intofp 0)
 	 :reader real-value
 	 :initarg :real
@@ -53,15 +58,55 @@
   (declare (ignore environment))
   `(make-instance ',(class-of x)
 		  :real ',(real-value x)))
-
-(defun bigfloat (re &optional im)
+;;; TO - External
+;;;
+;;;    TO converts a number to a BIGFLOAT or COMPLEX-BIGFLOAT.  This is
+;;; intended to convert CL numbers or Maxima (internal) numbers to
+;;; an bigfloat object.
+(defun to (re &optional im)
   "Convert RE to a BIGFLOAT.  If IM is given, return a COMPLEX-BIGFLOAT"
   (cond (im
 	 (make-instance 'complex-bigfloat
 			:real (intofp re)
 			:imag (intofp im)))
+	((cl:realp re)
+	 (make-instance 'bigfloat :real (intofp re)))
+	((maxima::$bfloatp re)
+	 (make-instance 'bigfloat :real (intofp re)))
+	((maxima::complex-number-p re 'maxima::bigfloat-or-number-p)
+	 (make-instance 'complex-bigfloat
+			:real (intofp (maxima::$realpart re))
+			:imag (intofp (maxima::$imagpart re))))
 	(t
 	 (make-instance 'bigfloat :real (intofp re)))))
+
+;;; MAXIMA::TO - External
+;;;
+;;;    Convert a CL number, a BIGFLOAT, or a COMPLEX-BIGFLOAT to
+;;; Maxima's internal representation of the number.
+(defmethod maxima::to ((z float))
+  z)
+
+(defmethod maxima::to ((z rational))
+  (if (typep z 'ratio)
+      (maxima::div (numerator z) (denominator z))
+      z))
+
+(defmethod maxima::to ((z cl:complex))
+  (maxima::add (cl:realpart z)
+	       (maxima::mul 'maxima::$%i
+			    (cl:imagpart z))))
+
+(defmethod maxima::to ((z bigfloat))
+  "Convert BIGFLOAT  object to a maxima number"
+  (maxima::bcons (real-value z)))
+
+(defmethod maxima::to ((z complex-bigfloat))
+  "Convert COMPLEX-BIGFLOAT  object to a maxima number"
+  (maxima::add (maxima::bcons (real-value z))
+	       (maxima::mul 'maxima::$%i
+			    (maxima::bcons (imag-value z)))))
+  
 
 (defmethod make-load-form ((x complex-bigfloat) &optional environment)
   (declare (ignore environment))
@@ -69,6 +114,8 @@
 		  :real ',(real-value x)
 		  :imag ',(imag-value x)))
 
+;; The print-object and describe-object methods are mostly for
+;; debugging purposes.  Maxima itself shouldn't ever see such objects.
 (defmethod print-object ((x bigfloat) stream)
   (let ((r (real-value x)))
     (multiple-value-bind (sign output-list)
@@ -260,8 +307,8 @@
 
 (defmethod two-arg-- ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
-      (two-arg-- a (bigfloat (cl:realpart b) (cl:imagpart b)))
-      (two-arg-- a (bigfloat b))))
+      (two-arg-- a (to (cl:realpart b) (cl:imagpart b)))
+      (two-arg-- a (to b))))
 
 (defmethod two-arg-- ((a bigfloat) (b complex-bigfloat))
   (make-instance 'complex-bigfloat
@@ -272,7 +319,7 @@
   (if (cl:complexp a)
       (two-arg-- (make-instance 'complex-bigfloat :real (cl:realpart a) :imag (cl:imagpart a))
 		 b)
-      (two-arg-- (bigfloat a) b)))
+      (two-arg-- (to a) b)))
 
 (defun - (number &rest more-numbers)
   (if more-numbers
@@ -318,8 +365,8 @@
 
 (defmethod two-arg-* ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
-      (two-arg-* a (bigfloat (cl:realpart b) (cl:imagpart b)))
-      (two-arg-* a (bigfloat b))))
+      (two-arg-* a (to (cl:realpart b) (cl:imagpart b)))
+      (two-arg-* a (to b))))
 
 (defmethod two-arg-* ((a bigfloat) (b complex-bigfloat))
   (two-arg-* b a))
@@ -408,8 +455,8 @@
 
 (defmethod two-arg-/ ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
-      (two-arg-/ a (bigfloat (cl:realpart b) (cl:imagpart b)))
-      (two-arg-/ a (bigfloat b))))
+      (two-arg-/ a (to (cl:realpart b) (cl:imagpart b)))
+      (two-arg-/ a (to b))))
 
 (defmethod two-arg-/ ((a bigfloat) (b complex-bigfloat))
   (two-arg-/ (make-instance 'complex-bigfloat :real (real-value a))
@@ -419,7 +466,7 @@
   (if (cl:complexp a)
       (two-arg-/ (make-instance 'complex-bigfloat :real (cl:realpart a) :imag (cl:imagpart a))
 		 b)
-      (two-arg-/ (bigfloat a) b)))
+      (two-arg-/ (to a) b)))
 
 
 (defun / (number &rest more-numbers)
@@ -592,6 +639,32 @@
   (or (equal (real-value x) (intofp y))
       (maxima::fpgreaterp (real-value x) (intofp y))))
 
+;; Need to define incf and decf to call our generic +/- methods.
+(defmacro incf (place &optional (delta 1) &environment env)
+  "The first argument is some location holding a number. This number is
+  incremented by the second argument, DELTA, which defaults to 1."
+  (multiple-value-bind (dummies vals newval setter getter)
+      (#-gcl get-setf-expansion #+gcl get-setf-method
+	     place env)
+    (let ((d (gensym)))
+      `(let* (,@(mapcar #'list dummies vals)
+              (,d ,delta)
+              (,(car newval) (+ ,getter ,d)))
+         ,setter))))
+
+(defmacro decf (place &optional (delta 1) &environment env)
+  "The first argument is some location holding a number. This number is
+  decremented by the second argument, DELTA, which defaults to 1."
+  (multiple-value-bind (dummies vals newval setter getter)
+      (#-gcl get-setf-expansion #+gcl get-setf-method
+	     place env)
+    (let ((d (gensym)))
+      `(let* (,@(mapcar #'list dummies vals)
+              (,d ,delta)
+              (,(car newval) (- ,getter ,d)))
+         ,setter))))
+
+    
 
 ;;; Special functions for real-valued arguments
 (macrolet
