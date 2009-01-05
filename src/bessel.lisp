@@ -959,7 +959,7 @@ Perhaps you meant to enter `~a'.~%"
 	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))   ; Is there a better way?
-	    (simplify ($niceindices answer) nil))))
+	    (simplify ($niceindices answer)))))
        (($evenp n)
 	;; integrate(bessel_y(2*N,z)) , N > 0
 	;; = (1/2)*%pi*z*(bessel_y(0,z)*hstruve[-1](z)
