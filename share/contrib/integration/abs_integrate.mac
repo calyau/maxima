@@ -14,7 +14,7 @@ I gratefully thank Robert Dodier and Richard Fateman for their suggestions, advi
 */
 qput(abs_integrate, 1, version);
 
-eval_when(translate,declare_translated(signum_int,signum_int_helper,abs_defint,abs_int_extra))$
+eval_when(translate, error("abs_integrate does not translate or compile correctly."));
 
 load("opsubst");
 load("unwind_protect");
@@ -34,7 +34,7 @@ real_linear_factors(e,x) := (
   e : factor(e),
   e : if (safe_op(e) = "*") then args(e) else [e],
   if every(lambda([w], polynomialp(w, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1)))),e) then (
-     e : sublist(args(e), lambda([s], is(equal(s, conjugate(s))) and not freeof(x,s))),
+     e : sublist(args(e), lambda([s], is(is(equal(s, conjugate(s))) = true) and not freeof(x,s))),
      map(lambda([s], rhs(first(linsolve(s,x)))), e))
   else false);	
  
@@ -92,12 +92,12 @@ make_dummy(e,x) := block([listconstvars : true, v : listofvars(e)],
 
 /* integrate(q(x) * signum(x - l[1]) * signum(x - l[2]) * ...,x). The list l is nonempty. */
 
-signum_int_helper(q,l,x) := block([v, xo, f, noun_int : nounify('integrate)],
+signum_int_helper(q,l,x) := block([v, xo, f, x%],
   if emptyp(rest(l)) then (
     f : integrate(q,x),
-    if (nounify(safe_op(f)) = noun_int) then (
-      v : make_dummy(q,x),
-      f : funmake(noun_int, [subst(x = v, q), v, first(l), x])),
+    if not(freeof('integrate, f)) then (
+        v : make_dummy(q,x%),
+        f : funmake(nounify('integrate), [subst(x = v, q), v, first(l), x])),
     signum(x - first(l)) * (f - subst(x = first(l), f)))
   else (
     xo : first(l),
@@ -111,7 +111,7 @@ dint(e,x,l) := block([xo, acc : 0, i],
   l : rest(l),
   for xi in l do (
     i : errcatch(integrate(e,x,xo,xi)),
-    if i = [ ] then return(acc : false) else acc : acc + first(i),
+    if i = [ ] then return(false) else acc : acc + first(i),
     xo : xi),
   acc);
 
@@ -122,7 +122,7 @@ abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate), f, es 
     else (
       e : convert_to_signum(e),
       l : flatten(gatherargs(e, 'signum)),
-      knots : flatten(map(lambda([s], (real_linear_factors(s,x))), l)),
+      knots : flatten(map(lambda([s], real_linear_factors(s,x)), l)),
       if every('numberp, knots) then (
         knots : listify(setify(knots)),
         knots : sublist(knots, lambda([s], is(s > lo) and is(s < hi))),
