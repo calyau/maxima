@@ -58,7 +58,7 @@ test_sum(
   [],
   false,
   [],
-  ((product(2*%l+1,%l,0,n-1))*(-1)^n*2^n)/n!);
+  ((product(2*%l+1,%l,1,n-1))*(-1)^n*2^n)/n!);
 0;
 
 test_sum(
@@ -66,7 +66,7 @@ test_sum(
   [],
   false,
   [],
-  ((product(3*%j+2,%j,0,n-1))*(product(3*%j+4,%j,0,n-1))*3^n)/((product(2*%j+3,%j,0,n-1))*2^n*n!));
+  ((product(3*%j1-1,%j1,1,n))*(product(3*%j1+1,%j1,1,n))*3^n)/((product(2*%j1+1,%j1,1,n))*2^n*n!));
 0;
 
 test_sum(
@@ -98,7 +98,7 @@ test_sum(
   [],
   false,
   [],
-  ((product(3*%l+1,%l,0,m-1))*(product(3*%l+2,%l,0,m-1))*(-1)^m*3^m)/m!^2);
+  (2*(product(3*%l+1,%l,1,m-1))*(product(3*%l+2,%l,1,m-1))*(-1)^m*3^m)/m!^2);
 0;
 
 test_sum(
@@ -114,7 +114,7 @@ test_sum(
   [n>0],
   false,
   [],
-  ((product(3*%l+1,%l,0,n-1))^2*(product(3*%l+2,%l,0,n-1))^2*9^n)/((product(2*%l+1,%l,0,n-1))^2*4^n*n!^2));
+  (4*(product(3*%l+1,%l,1,n-1))^2*(product(3*%l+2,%l,1,n-1))^2*9^n)/((product(2*%l+1,%l,1,n-1))^2*4^n*n!^2));
 0;
 
 test_sum(
@@ -386,4 +386,20 @@ test_sum(
   [ratsimp],
   ((24*n^3+36*n^2+12*n)*harmonic_number(2*n)+(-12*n^3-18*n^2-6*n)*harmonic_number(n)-10*n^3-9*n^2+n)/36),
   harmonic_number_expand=true;
+0;
+
+test_sum(
+  sum(sin(n*x), n, 1, N),
+  [],
+  false,
+  [rectform, trigrat],
+  -(cos(((2*N+1)*x)/2)-cos(x/2))/(2*sin(x/2)));
+0;
+
+test_sum(
+  sum(((-4)^k*binomial(k,m)*binomial(n+k,2*k))*n/(n+k),k,m,n),
+  [m>1, n>0],
+  false,
+  [factcomb, radcan],
+  (2^(2*m)*n*(-1)^n*(n+m-1)!)/((2*m)!*(n-m)!)), sum_min=m;
 0;

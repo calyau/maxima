@@ -8,12 +8,13 @@
  *
  ***************************************/
 
-test_sum(sm, ass, use_gamma, smp) := block(
+test_sum(sm, ass, use_gamma, smp, [comment]) := block(
   [product_use_gamma : use_gamma, cs, f],
   if length(ass)>0 then apply(assume, ass),
   cs : simplify_sum(sm),
   for f in smp do cs : apply(f, [cs]),
   print("|----------------------------------------------------------|"),
+  if length(comment)>0 then apply(print, comment),
   if length(ass)>0 then print("Assuming:", ass),
   print(sm = cs),
   print("|----------------------------------------------------------|"),
@@ -329,3 +330,11 @@ test_sum(
   false,
   [lambda([u], u:ev(u, harmonic_number_expand=true), ratsimp(u))]
 );
+
+test_sum(
+  sum(((-4)^k*binomial(k,m)*binomial(n+k,2*k))*n/(n+k),k,m,n),
+  [m>1, n>0],
+  false,
+  [factcomb, radcan],
+  "With sum_min=m"
+), sum_min=m;
