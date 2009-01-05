@@ -317,10 +317,13 @@ solve_rec_ic1(gen_sol, %f, %n, cond, var) := block(
 solve_rec_lin_1(%a, %b, %f, %n, cond) := block(
   [gen_sol, simpsum:true, ap, %j, %l, lo, prodhack:true],
 
-  if %b#0 then
-    lo : get_lower_bound(%a*%b, %n)
-  else
-    lo : get_lower_bound(%a, %n),
+  if length(cond)=0 then (
+    if %b#0 then
+      lo : get_lower_bound(%a*%b, %n)
+    else
+      lo : get_lower_bound(%a, %n)
+  )
+  else lo : part(cond, 1, 1, 1),
 
   %b : subst(%j, %n, %b),
   %a : subst(%l, %n, %a),
@@ -931,7 +934,7 @@ reduce_order(eqn, sol, fn) := block(
 
 simplify_product(prod) := block(
   [term, %n, lo, hi, %kk : 0, nu, de, comm : [], p% : 1,
-   deg : simplify_products_deg],
+   deg : simplify_products_deg, %j1],
   if simplify_products=false then return(prod),
   if atom(prod) then return(prod),
   if member(part(prod, 0), ["+", "-", "*", "/", "^"]) then
@@ -943,6 +946,8 @@ simplify_product(prod) := block(
   lo : part(prod, 3),
   hi : part(prod, 4),
   term : factor(part(prod, 1)),
+
+  if lo#1 then return(simplify_product(changevar(prod, %j1=%n-lo+1, %j1, %n))),
 
   /* Check for simple cases.   */
   if term=%n then return(hi!/(lo-1)!),
