@@ -653,6 +653,12 @@
 		     :imag (maxima::fproot (maxima::bcons (maxima::fpabs (real-value x))) 2))
       (make-instance 'bigfloat :real (maxima::fproot (maxima::bcons (real-value x)) 2))))
 
+(defmethod sqrt ((z complex-bigfloat))
+  (multiple-value-bind (rx ry)
+      (maxima::complex-sqrt (maxima::bcons (real-value z))
+			    (maxima::bcons (imag-value z)))
+    (make-instance 'complex-bigfloat :real rx :imag ry)))
+
 (defmethod one-arg-log ((a number))
   (cl:log a))
 
@@ -771,6 +777,15 @@
 
 (defmethod one-arg-atan ((a bigfloat))
   (make-instance 'bigfloat :real (maxima::fpatan (real-value a))))
+
+(defmethod one-arg-atan ((a complex-bigfloat))
+  ;; We should do something better than calling mevalp
+  (let* ((arg (maxima::add (maxima::bcons (real-value a))
+			   (maxima::mul 'maxima::$%i (maxima::bcons (imag-value a)))))
+	 (result (maxima::mevalp `((maxima::%atan maxima::simp) ,arg))))
+    (make-instance 'complex-bigfloat
+		   :real (cdr (maxima::$realpart result))
+		   :imag (cdr (maxima::$imagpart result)))))
 
 ;; Really want type real, but gcl doesn't like that.
 (defmethod two-arg-atan ((a #-gcl real #+gcl number) (b #-gcl real #+gcl number))
