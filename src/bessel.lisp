@@ -959,7 +959,7 @@ Perhaps you meant to enter `~a'.~%"
 	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))   ; Is there a better way?
-	    (simplifya ($niceindices answer)))))
+	    (simplify ($niceindices answer) nil))))
        (($evenp n)
 	;; integrate(bessel_y(2*N,z)) , N > 0
 	;; = (1/2)*%pi*z*(bessel_y(0,z)*hstruve[-1](z)
@@ -980,7 +980,7 @@ Perhaps you meant to enter `~a'.~%"
 	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))  ; Is there a better way?
-	    (simplifya ($niceindices answer)))))
+	    (simplify ($niceindices answer)))))
       ))
      (t nil))))
   integral)
@@ -1205,7 +1205,7 @@ Perhaps you meant to enter `~a'.~%"
 	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))   ; Is there a better way?
-	    (simplifya ($niceindices answer)))))
+	    (simplify ($niceindices answer) nil))))
        (($evenp n)
 	;; integrate(bessel_k(2*N,z)) , N > 0
 	;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*lstruve[-1](z)
@@ -1231,7 +1231,7 @@ Perhaps you meant to enter `~a'.~%"
 	  ;; expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))  ; Is there a better way?
-	    (simplifya ($niceindices answer)))))))
+	    (simplify ($niceindices answer)))))))
       (t nil))))
   integral)
 
