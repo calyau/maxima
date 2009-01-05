@@ -595,9 +595,9 @@
 		   (y (cdr form) (cdr y)))
 		  ((or (null x) (null y)) nil)
 		  (if (not (freevar (car x))) (return (car y)))))
-	    ;; If form is a function then evaluate it with actual args
-	    (or (not (functionp form))
-		(setq form (apply form real-args))))
+	    ;; If form is a lambda expression then evaluate it with real args
+	    (or (not (eql (car form) 'lambda))
+		(setq form (apply (coerce form 'function) real-args))))
 	 (when *debug-integrate*
 	   (format t "~&INTEGRALLOOKUPS: Found integral ~A~.~%" (caar exp)))
 	 (substitutel real-args dummy-args form))
