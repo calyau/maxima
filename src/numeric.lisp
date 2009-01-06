@@ -352,6 +352,9 @@
 (defmethod two-arg-* ((a bigfloat) (b cl:float))
   (make-instance 'bigfloat :real (maxima::fptimes* (real-value a) (intofp b))))
 
+(defmethod two-arg-* ((a bigfloat) (b cl:rational))
+  (make-instance 'bigfloat :real (maxima::fptimes* (real-value a) (intofp b))))
+
 (defmethod two-arg-* ((a float) (b bigfloat))
   (two-arg-* b a))
 
@@ -443,9 +446,16 @@
 (defmethod two-arg-/ ((a bigfloat) (b cl:float))
   (make-instance 'bigfloat :real (maxima::fpquotient (real-value a) (intofp b))))
 
+(defmethod two-arg-/ ((a bigfloat) (b cl:rational))
+  (make-instance 'bigfloat :real (maxima::fpquotient (real-value a) (intofp b))))
+
 (defmethod two-arg-/ ((a cl:float) (b bigfloat))
   (make-instance 'bigfloat :real (maxima::fpquotient (intofp a)
-					      (real-value b))))
+						     (real-value b))))
+
+(defmethod two-arg-/ ((a cl:rational) (b bigfloat))
+  (make-instance 'bigfloat :real (maxima::fpquotient (intofp a)
+						     (real-value b))))
 
 
 (defmethod two-arg-/ ((a complex-bigfloat) (b bigfloat))
@@ -673,6 +683,7 @@
 	 `(progn
 	    (defmethod ,name ((x number))
 	      (,cl-name x))))))
+  (frob sqrt)
   (frob abs)
   (frob exp)
   (frob sin)
@@ -713,10 +724,10 @@
 				     (maxima::fpsin r nil)))))
 
 (defmethod asin ((x bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpasin (real-value x))))
+  (make-instance 'bigfloat :real (cdr (maxima::fpasin (maxima::bcons (real-value x))))))
 
 (defmethod acos ((x bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpacos (real-value x))))
+  (make-instance 'bigfloat :real (cdr (maxima::fpacos (maxima::bcons (real-value x))))))
 
 
 (defmethod sqrt ((x bigfloat))
@@ -831,7 +842,6 @@
 		  (make-instance 'complex-bigfloat
 				 :real (cdr (maxima::$realpart result))
 				 :imag (cdr (maxima::$imagpart result)))))))))
-  (frob sqrt t)
   (frob exp)
   (frob sin)
   (frob cos)
@@ -1024,6 +1034,22 @@
 
 (defmethod expt (a (b numeric))
   (exp (* b (log a))))
+
+;; Return the float epsilon value for the given float type
+(defmethod epsilon ((x cl:float))
+  (etypecase x
+    (short-float short-float-epsilon)
+    (single-float single-float-epsilon)
+    (double-float double-float-epsilon)
+    (long-float long-float-epsilon)))
+
+(defmethod epsilon ((x bigfloat))
+  ;; epsilon is just above 2^(-fpprec).
+  (make-instance 'bigfloat
+		 :real (list (1+ (ash 1 (1- maxima::fpprec)))
+			     (- (1- maxima::fpprec)))))
+
+      
 
 ;; Compiler macros to convert + to multiple calls to two-arg-+.  Same
 ;; for -, *, and /.

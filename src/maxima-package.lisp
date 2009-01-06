@@ -196,6 +196,7 @@
 	   #:ffloor
 	   #:incf
 	   #:decf
+	   #:epsilon
 	   ))
 
 (provide :maxima)
