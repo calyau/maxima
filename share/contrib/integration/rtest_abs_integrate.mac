@@ -208,7 +208,7 @@ integrate(1/(1 + abs(x))^2,x,minf,inf);
 2$
 
 integrate((5*sin(3*x)*signum(x+3))/x,x);
-5*signum(3*x+9)*integrate(sin(x%)/x%,x%,-9,3*x)$
+5*signum(x+3)*'integrate(sin(3*x%)/x%,x%,-3,x)$
 
 
 
