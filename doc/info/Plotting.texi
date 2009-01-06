@@ -431,7 +431,7 @@ without any line breaks.)
 'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
 
 (%i21) plot2d([cos(x), sin(x), tan(x), cot(x)],
-       [x, -2*%pi, 2.1*%pi], [y, -2, 2], [axes, x]
+       [x, -2*%pi, 2.1*%pi], [y, -2, 2], [axes, x],
        [gnuplot_preamble, my_preamble]);
 @end example
 
