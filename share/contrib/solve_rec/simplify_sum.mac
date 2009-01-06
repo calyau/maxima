@@ -40,6 +40,7 @@
 load("zeilberger")$
 load("solve_rec/solve_rec")$
 load("simplifying.lisp")$
+load("opsubst")$
 
 eval_when(batch,
           ttyoff : true,
@@ -51,6 +52,7 @@ define_variable(zeilberger_check, true, boolean)$
 define_variable(sum_min, 1, any)$
 define_variable(use_simpsum, true, boolean)$
 define_variable(use_harmonic, true, boolean)$
+define_variable(use_integral, true, boolean)$
 define_variable(use_gosper, true, boolean)$
 define_variable(use_ratfun, true, boolean)$
 define_variable(use_zeilberger, true, boolean)$
@@ -119,16 +121,25 @@ simplify_sum(expr) :=
       ss_print_message(1, "sum with simpsum=true returns:", sm1)),
 
     /*** Sums with harmonic_number(n) by parts. *************************/
-    if use_harmonic=true and not freeof_sum(sm1) then block(
+    if use_harmonic=true and not freeof_sum(sm1) and hi#inf then block(
       [a, b, harmonic_number_args: get_harmonic_number_args(summand), harmonic_part],
       if length(harmonic_number_args)>0 then (
         harmonic_part : apply(gen_harmonic_number, first(harmonic_number_args)),
         [a, b]:bothcoef(summand, harmonic_part),
-        ss_print_message(1, "harmonic_number by parts"),
+        ss_print_message(1, "Trying with sum_by_parts"),
+        ss_print_message(2, "harmonic_number by parts"),
         ss_print_message(2, "Coefficients", a, b),
         if a#0 then
           sm1: simplify_sum(sum_by_parts(summand-b, a, var, lo, hi)) +
-               simplify_sum(apply('sum, [b, var, lo, hi])))),
+               simplify_sum(apply('sum, [b, var, lo, hi]))),
+        ss_print_message(1, "sum_by_parts returns", sm1)),
+
+    /*** Try with integral representation *******************************/
+    if use_integral=true and not freeof_sum(sm1) then (
+      ss_print_message(1, "Trying with integral representation."),
+      sm1 : sum_by_integral(summand, var, lo, hi),
+      ss_print(1, "Integral representation returns", sm1)),
+ 
 
     /*** Now let's try the Gosper algorithm *****************************/
     if errcatch(
@@ -217,6 +228,12 @@ simplify_sum(expr) :=
 freeof_sum(expr) :=
   if atom(expr) then true
   else if part(expr, 0)=nounify(sum) then false
+  else if expr=[] then true
+  else xreduce("and", map(freeof_sum, args(expr)))$
+
+freeof_integrate(expr) :=
+  if atom(expr) then true
+  else if part(expr, 0)=nounify(integrate) then false
   else if expr=[] then true
   else xreduce("and", map(freeof_sum, args(expr)))$
 
@@ -648,6 +665,45 @@ sum_by_parts(fkgk, gk, k__, m__, n__) := block(
     gj: subst(k__=j__, gk),
     oth: (subst(k__=k__+1, fk) - fk) * apply('sum, [gj, j__, m__, k__]),
     subst(k__=n__+1, fk) * apply('sum, [gj, j__, m__, n__]) - apply('sum, [oth, k__, m__, n__]))$
+
+
+/*******************
+ *
+ * sum_by_integral:
+ * - currently only handles harmonic_number, but could be extended to other functions.
+ *
+ *******************/
+
+define_variable(sum_by_integral_transforms, [], list)$
+
+sum_by_integral(expr, var, lo, hi) :=
+  /* Integral representation of harmonic_number */
+  if catch(
+    scanmap(
+      lambda([u], if not atom(u) and member(part(u,0), [harmonic_number]) then throw(true)),
+      expr,
+      bottomup))=true then
+  block(
+    [expr1, x_:?gensym()],
+    
+    apply(supcontext, [concat('sum_by_integral, simplify_sum_depth)]),
+    assume(x_>0, x_<1, var>=lo, var<=hi),
+
+    expr1 : opsubst(harmonic_number=lambda([u], (1-x_^u)/(1-x_)), expr),
+    if errcatch(
+      expr1 : simplify_sum(split_sum(expand(apply('sum, [expr1, var, lo, hi]))))
+      ) = [] then expr1 : false,
+
+    killcontext(concat('sum_by_integral, simplify_sum_depth)),
+
+    for tr in sum_by_integral_transforms do (
+      expr1 : apply(tr, [expr1])),
+    if expr1 # false then expr1: integrate(expr1, x_, 0, 1)
+    else expr1 : apply('sum, [expr, var, lo, hi]),
+    if freeof_integrate(expr1) then expr1
+    else apply('sum, [expr, var, lo, hi]))
+  
+  else apply('sum, [expr, var, lo, hi])$
 
 eval_when(batch,
           ttyoff : false,

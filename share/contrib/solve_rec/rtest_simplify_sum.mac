@@ -403,3 +403,48 @@ test_sum(
   [factcomb, radcan],
   (2^(2*m)*n*(-1)^n*(n+m-1)!)/((2*m)!*(n-m)!)), sum_min=m;
 0;
+
+test_sum(
+  sum(harmonic_number(n)/2^n, n, 1, inf),
+  [],
+  false,
+  [],
+  2*log(2));
+0;
+
+test_sum(
+  sum(harmonic_number(n)/n/(n+1), n, 1, inf),
+  [],
+  false,
+  [],
+  %pi^2/6);
+0;
+
+
+test_sum(
+  sum(n*harmonic_number(n)/2^n, n, 1, inf),
+  [],
+  false,
+  [],
+  2*log(2)+2
+);
+0;
+
+test_sum(
+  sum(harmonic_number(n)/n/2^n, n, 1, inf),
+  [],
+  false,
+  [],
+  %pi^2/12
+), sum_by_integral_transforms=[logcontract];
+0;
+
+
+test_sum(
+  sum(n^2*harmonic_number(2*n)/2^n, n, 1, inf),
+  [],
+  false,
+  [],
+  -(17*sqrt(2)*log(3-2*sqrt(2))-24*log(2)-68)/8
+);
+0;

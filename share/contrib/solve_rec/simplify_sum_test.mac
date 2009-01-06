@@ -338,3 +338,40 @@ test_sum(
   [factcomb, radcan],
   "With sum_min=m"
 ), sum_min=m;
+
+
+test_sum(
+  sum(harmonic_number(n)/2^n, n, 1, inf),
+  [],
+  false,
+  []
+);
+
+test_sum(
+  sum(harmonic_number(n)/n/(n+1), n, 1, inf),
+  [],
+  false,
+  []
+);
+
+test_sum(
+  sum(n*harmonic_number(n)/2^n, n, 1, inf),
+  [],
+  false,
+  []
+);
+
+test_sum(
+  sum(harmonic_number(n)/n/2^n, n, 1, inf),
+  [],
+  false,
+  [],
+  "With sum_by_integral_transforms=[logcontract]"
+), sum_by_integral_transforms=[logcontract];
+
+test_sum(
+  sum(n^2*harmonic_number(2*n)/2^n, n, 1, inf),
+  [],
+  false,
+  []
+);
