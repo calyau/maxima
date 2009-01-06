@@ -111,7 +111,7 @@ dint(e,x,l) := block([xo, acc : 0, i],
   l : rest(l),
   for xi in l do (
     i : errcatch(integrate(e,x,xo,xi)),
-    if i = [ ] then return(false) else acc : acc + first(i),
+    if i = [ ] then return(acc : false) else acc : acc + first(i),
     xo : xi),
   acc);
 
@@ -163,3 +163,5 @@ abs_int_extra(q,x) := block([q1,q2,k,xo,kk],
         (q1 + q2)/2 - (q2 - q1) * signum(xo)/2)
       else false)
     else false));
+  
+
