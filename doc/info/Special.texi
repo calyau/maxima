@@ -6,6 +6,8 @@
 * Exponential Integrals::
 * Error Function::
 * Struve Functions::
+* Hypergeometric Functions::
+* Parabolic Cylinder Functions::
 * Functions and Variables for Special Functions::  
 @end menu
 
@@ -228,6 +230,16 @@ Identical to @code{scaled_bessel_i(1,z)}.
 @category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
+
+@deffn {Function} %s [@var{u},@var{v}] (@var{z}) 
+Lommel's little s[u,v](z) function.  
+Probably Gradshteyn & Ryzhik 8.570.1.
+@opencatbox
+@category{Bessel functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+
 
 @node Airy Functions, Gamma and factorial Functions, Bessel Functions, Special Functions
 @section Airy Functions
@@ -678,13 +690,14 @@ Enables transformation to a Hypergeometric
 representation for fresnel_s and fresnel_c
 @end defvr
 
-@node Struve Functions, Functions and Variables for Special Functions, Error Function, Special Functions
+@node Struve Functions, Hypergeometric Functions, Error Function, Special Functions
 @section Struve Functions
 
 The Struve functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 12.
 
-Maxima has very limited knowledge of Struve functions.
+Maxima has very limited knowledge of these functions.  They
+can be returned from function @code{hgfred}.
 
 
 @deffn {Function} hstruve [@var{v}] (@var{z}) 
@@ -705,7 +718,64 @@ The Modified Struve Function L of order v and argument z. (A&S 12.2.1)
 @end deffn
 
 
-@node Functions and Variables for Special Functions,  , Struve Functions, Special Functions
+
+@node Hypergeometric Functions, Parabolic Cylinder Functions, Struve Functions, Special Functions
+@section Hypergeometric Functions
+
+The Hypergeometric Functions are defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Chapters 13 and 15.
+
+Maxima has very limited knowledge of these functions.  They
+can be returned from function @code{hgfred}.
+
+@deffn {Function} %m [@var{k},@var{u}] (@var{z}) 
+Whittaker M function
+@code{M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}.  
+(A&S 13.1.32)
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} %w [@var{k},@var{u}] (@var{z}) 
+Whittaker W function.  (A&S 13.1.33)
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+
+@deffn {Function} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
+The pFq(a1,a2,..ap;b1,b2,..bq;z) hypergeometric function,
+where @code{a} a list of length @code{p} and 
+@code{b} a list of length @code{q}.
+@opencatbox
+@category{Bessel functions} @category{Special functions}
+@closecatbox
+@end deffn
+
+
+
+@node Parabolic Cylinder Functions, Functions and Variables for Special Functions, Hypergeometric Functions, Special Functions
+@section  Parabolic Cylinder Functions
+
+The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Chapter 19.
+
+Maxima has very limited knowledge of these functions.  They
+can be returned from function @code{hgfred}.
+
+@deffn {Function} %d [@var{v}] (@var{z}) 
+Tha parabolic cylinder function @code{%d[v](z)}. (A&s 19.3.1)
+@opencatbox
+@category{Special functions}
+@closecatbox
+@end deffn
+
+
+
+
+@node Functions and Variables for Special Functions,  , Parabolic Cylinder Functions, Special Functions
 @section Functions and Variables for Special Functions
 
 
