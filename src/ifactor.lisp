@@ -434,7 +434,7 @@
 	  ((> q2 n))
 	(when (= 1 (sbit sieve q2))
 	  (when (>= i (length *prime-diffs*))
-	    (adjust-array *prime-diffs* (* 2 (length *prime-diffs*))))
+	    (setq *prime-diffs* (adjust-array *prime-diffs* (* 2 (length *prime-diffs*)))))
 	  (setq *prime-diffs-limit* q2)
 	  (let ((diff (- q2 q1)))
 	    (setf (aref *prime-diffs* i) diff)
@@ -448,8 +448,9 @@
 ;;; inv-mod returns a positive modulo or `nil' in case of a zero divisor
 
 (defun inv-mod (a m)
-  (when (minusp a) (setq a (mod a m)))
-  (let ((u1 1) (u2 a) (v1 0) (v2 m) q)
+  (let ((u1 1) (u2 (mod a m))
+	(v1 0) (v2 m)
+	q)
     (do ()
 	((zerop v2) (if (= 1 u2) (mod u1 m) nil))
       (setq q (truncate u2 v2))
