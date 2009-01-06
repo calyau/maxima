@@ -499,8 +499,8 @@
 
 (defun $polar_to_xy (pts &aux (r 0.0) (th 0.0))
   (declare (type flonum r th))
-  (declare (type (cl:array flonum) pts))
-  (assert (typep pts '(vector flonum)))
+  (declare (type (cl:array t) pts))
+  (assert (typep pts '(vector t)))
   (loop for i below (length pts) by 3
          do (setq r (aref pts i))
          (setq th (aref pts (+ i 1)))
@@ -1750,8 +1750,10 @@
 	(and (not plot-format-in-arguments)
 	     (not (member plot-format-in-plot-options gnuplot-formats :test #'eq))))
 
-      (merror "contour_plot: plot_format = ~a not understood; must be a gnuplot format."
-              (ensure-string (or plot-format-in-arguments plot-format-in-plot-options)))
+      (progn
+        (mtell "contour_plot: plot_format = ~a not understood; must be a gnuplot format.~%"
+               (ensure-string (or plot-format-in-arguments plot-format-in-plot-options)))
+        (return-from $contour_plot))
 
       ; Prepend contour preamble to preamble in arguments (if given)
       ; and pass concatenated preamble as an argument to plot3d.
