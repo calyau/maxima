@@ -123,6 +123,7 @@ contrib/bode.mac\
 contrib/boolsimp/boolsimp.lisp\
 contrib/boolsimp/rtest_boolsimp.mac\
 contrib/clebsch_gordan.mac\
+contrib/colorterm.lisp\
 contrib/descriptive/biomed.data\
 contrib/descriptive/descriptive.mac\
 contrib/descriptive/pidigits.data\
