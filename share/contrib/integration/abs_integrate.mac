@@ -10,11 +10,11 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 I gratefully thank Robert Dodier and Richard Fateman for their suggestions, advice, assistance, and bug fixes.
+Also, Richard Hennessy identified several bugs in this code. */
 
-*/
 qput(abs_integrate, 1, version);
 
-eval_when(translate, error("abs_integrate does not translate or compile correctly."));
+eval_when(translate, error("abs_integrate does not translate or compile correctly.")); 
 
 load("opsubst");
 load("unwind_protect");
@@ -116,7 +116,7 @@ dint(e,x,l) := block([xo, acc : 0, i],
   acc);
 
 abs_defint(e,x,lo,hi) := block([l, knots, noun_int : nounify('integrate), f, es : e],
-  if (numberp(lo) or lo = 'minf or hi = inf) and (numberp(hi) or hi = 'minf or hi = 'inf) then (
+  if (numberp(lo) or lo = 'minf or hi = 'inf) and (numberp(hi) or hi = 'minf or hi = 'inf) then (
     if (hi < lo) then abs_defint(-es,x,hi,lo)
     else if (lo = hi) then 0
     else (
