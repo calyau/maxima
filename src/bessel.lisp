@@ -647,10 +647,11 @@ Perhaps you meant to enter `~a'.~%"
   grad)
 
 ;; Integral of the Bessel function wrt z
-(defprop %bessel_j
-  ((n z)
+(putprop '%bessel_j
+  `((n z)
    nil
-  (lambda (n unused)
+  ,(lambda (n unused)
+   (declare (ignore unused))
     (case n
 	  (0 
 	   ;; integrate(bessel_j(0,z)
@@ -667,7 +668,7 @@ Perhaps you meant to enter `~a'.~%"
 	   ;; integrate(bessel_j(1,z) = -bessel_j(0,z)
 	   '((mtimes) -1 ((%bessel_j) 0 z)))
 	  (otherwise nil))))
-  integral)
+  'integral)
 
 
 ;; If E is a maxima ratio with a denominator of DEN, return the ratio
@@ -941,10 +942,11 @@ Perhaps you meant to enter `~a'.~%"
 
 ;; Integral of the Bessel Y function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselY/21/01/01/
-(defprop %bessel_y
-  ((n z)
+(putprop '%bessel_y
+  `((n z)
    nil
-  (lambda (n unused)
+  ,(lambda (n unused)
+   (declare (ignore unused))
    (cond 
      ((and ($integerp n) (<= 0 n))
       (cond
@@ -983,7 +985,7 @@ Perhaps you meant to enter `~a'.~%"
 	    (simplify ($niceindices answer)))))
       ))
      (t nil))))
-  integral)
+  'integral)
 
 (defun simp-bessel-y (exp ignored z)
   (declare (ignore ignored))
@@ -1070,10 +1072,11 @@ Perhaps you meant to enter `~a'.~%"
 
 ;; Integral of the Bessel I function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselI/21/01/01/
-(defprop %bessel_i
-  ((n z)
+(putprop '%bessel_i
+  `((n z)
    nil
-  (lambda (n unused)
+  ,(lambda (n unused)
+    (declare (ignore unused))
     (case n
 	  (0 
 	   ;; integrate(bessel_i(0,z)
@@ -1090,7 +1093,7 @@ Perhaps you meant to enter `~a'.~%"
 	   ;; integrate(bessel_j(1,z) = -bessel_i(0,z)
 	   '((mtimes) -1 ((%bessel_i) 0 z)))
 	  (otherwise nil))))
-  integral)
+  'integral)
 
 (defun simp-bessel-i (exp ignored z)
   (declare (ignore ignored))
@@ -1179,10 +1182,11 @@ Perhaps you meant to enter `~a'.~%"
 
 ;; Integral of the Bessel K function wrt z
 ;; http://functions.wolfram.com/Bessel-TypeFunctions/BesselK/21/01/01/
-(defprop %bessel_k
-  ((n z)
+(putprop '%bessel_k
+  `((n z)
    nil
-  (lambda (n unused)
+  ,(lambda (n unused)
+   (declare (ignore unused))
    (cond 
      ((and ($integerp n) (<= 0 n))
       (cond
@@ -1205,7 +1209,7 @@ Perhaps you meant to enter `~a'.~%"
 	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))   ; Is there a better way?
-	    (simplify ($niceindices answer) nil))))
+	    (simplify ($niceindices answer)))))
        (($evenp n)
 	;; integrate(bessel_k(2*N,z)) , N > 0
 	;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*lstruve[-1](z)
@@ -1233,7 +1237,7 @@ Perhaps you meant to enter `~a'.~%"
 	    (meval `(($ev) ,answer $sum))  ; Is there a better way?
 	    (simplify ($niceindices answer)))))))
       (t nil))))
-  integral)
+  'integral)
 
 (defun simp-bessel-k (exp ignored z)
   (declare (ignore ignored))

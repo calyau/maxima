@@ -188,17 +188,18 @@
 (defprop $psi psisimp specsimp)
 
 ;; Integral of psi function psi[n](x)
-(defprop $psi
-  ((n x)
+(putprop '$psi
+  `((n x)
    nil
-   (lambda (n unused)
+   ,(lambda (n unused)
+     (declare (ignore unused))
      (cond 
       ((and ($integerp n) (>= n 0))
        (cond 
 	((= n 0) '((%log_gamma) x))
 	(t '((mqapply) (($psi simp array) ((mplus) -1 n)) x))))
       (t nil))))
-     integral)
+     'integral)
 
 (mapcar #'(lambda (var val)
 	    (and (not (boundp var)) (setf (symbol-value var) val)))
