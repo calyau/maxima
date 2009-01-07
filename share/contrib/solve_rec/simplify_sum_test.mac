@@ -375,3 +375,18 @@ test_sum(
   false,
   []
 );
+
+
+test_sum(
+  sum(((x-1)^(2*n+1)*(x+1)^(-2*n-1))/(2*n+1),n,0,inf),
+  [x<1, x>0],
+  false,
+  [rootscontract, lambda([u], scanmap(factor, u)), ratsimp]
+);
+
+test_sum(
+  sum(-1/(2*k)+1/(2*2*k+1)+1/(2*2*k+3), k, 1, inf),
+  [],
+  false,
+  [ratsimp]
+);

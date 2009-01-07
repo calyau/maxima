@@ -448,3 +448,21 @@ test_sum(
   -(17*sqrt(2)*log(3-2*sqrt(2))-24*log(2)-68)/8
 );
 0;
+
+test_sum(
+  sum(((x-1)^(2*n+1)*(x+1)^(-2*n-1))/(2*n+1),n,0,inf),
+  [x<1, x>0],
+  false,
+  [rootscontract, lambda([u], scanmap(factor, u)), ratsimp],
+  log(x)/2
+);
+0;
+
+test_sum(
+  sum(-1/(2*k)+1/(2*2*k+1)+1/(2*2*k+3), k, 1, inf),
+  [],
+  [ratsimp],
+  (9*log(2)-8)/6
+);
+0;
+  

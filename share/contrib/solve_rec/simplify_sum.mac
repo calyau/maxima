@@ -565,7 +565,7 @@ to_hgfred(expr, var, lo, hi) := block(
   while subst(var=lo, expr)=0 do lo : lo+1,
   expr:subst(var=var+lo, expr),
   
-  quo : ratsimp(shiftQuo(makefact(expr)*var!, var)),
+  quo : ratsimp(shiftQuo(factor(makefact(expr)*var!), var)),
   if not(?ratp(quo, var)) then return(false),
   
   ss_print_message(2, "Shift quotient", quo),
