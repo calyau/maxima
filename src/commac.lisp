@@ -375,13 +375,12 @@ values")
     (assert (stringp string))
     (coerce string 'list)))
 
-(defun explodec (symb &aux tem)		;is called for symbols and numbers
-  (loop for v on (setq tem (coerce (print-invert-case symb) 'list))
-	 do (setf (car v) (intern (string (car v)))))
-  tem)
+(defun explodec (symb)		;is called for symbols and numbers
+  (loop for v in (coerce (print-invert-case symb) 'list)
+     collect (intern (string v))))
 
 (defvar *string-for-implode*
-  (make-array 20 :fill-pointer 0 :adjustable t :element-type ' #.(array-element-type "a")))
+  (make-array 20 :fill-pointer 0 :adjustable t :element-type '#.(array-element-type "a")))
 
 ;;; If the 'string is all the same case, invert the case.  Otherwise,
 ;;; do nothing.
@@ -477,25 +476,24 @@ values")
 	       converted-str)))
 	(t (princ-to-string sym))))
 
-(defun implode (lis &aux (ar *string-for-implode*) (leng 0))
-  (declare (type string ar) (fixnum leng))
-  (or (> (array-total-size ar) (setq leng (length lis)))
-      (adjust-array ar (+ leng 20)))
-  (setf (fill-pointer ar) leng)
-  (loop for v in lis
-	 for i below leng
-	 do
-	 (cond ((typep v 'character))
-	       ((symbolp v) (setq v (char (symbol-name v) 0)))
-	       ((numberp v) (setq v (code-char v))))
-	 (setf (aref ar i) v))
-  (intern-invert-case ar))
+(defun implode (lis)
+  (let ((ar *string-for-implode*)
+	(leng (length lis)))
+    (unless (> (array-total-size ar) leng)
+      (setq ar (adjust-array ar (+ leng 20))))
+    (setf (fill-pointer ar) leng)
+    (loop for v in lis
+       for i below leng
+       do
+	 (setf (aref ar i) (cond ((characterp v) v)
+				 ((symbolp v) (char (symbol-name v) 0))
+				 ((numberp v) (code-char v)))))
+    (intern-invert-case ar)))
 
-(defun explode (symb &aux tem)
-  ;; Note:  symb can also be a number, not just a symbol.
-  (loop for v on (setq tem (coerce (format nil "~S" symb) 'list))
-	 do (setf (car v) (intern (string (car v)))))
-  tem)
+;; Note:  symb can also be a number, not just a symbol.
+(defun explode (symb)
+  (loop for v in (coerce (format nil "~S" symb) 'list)
+     collect (intern (string v))))
 
 (defun getcharn (symb i)
   (let ((strin (string symb)))
