@@ -1,4 +1,4 @@
-;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
+;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;     The data in this file contains enhancments.                    ;;;;;
 ;;;                                                                    ;;;;;
@@ -1449,13 +1449,16 @@ relational knowledge is contained in the default context GLOBAL."
 			($minf . $inf))
 		      body))))
 
-(defun sign-minmax (op l)
+(defun sign-minmax (op args)
   (do ((sgn (minmaxforms op '$pos)	;identity element for min
 	    (sminmax op sgn (sign* (car l))))
        (end (minmaxforms op '$neg))
-       (l l (cdr l)))
+       (l args (cdr l)))
       ((or (null l) (eq sgn end))
-       (setq minus nil odds nil evens nil
+       (setq minus nil 
+	     odds (if (not (member sgn '($pos $neg $zero) :test #'eq)) 
+		      (ncons (cons (list op) args)))
+	     evens nil
 	     sign sgn))))
 
 ;; sign(op(a,b)) = sminmax(sign(a),sign(b))
