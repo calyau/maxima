@@ -183,9 +183,8 @@ is EQ to FNNAME if the latter is non-NIL."
       (declare (type (vector t) ar))
       (unwind-protect
 	   (progn
-	     (or (> (array-total-size ar) (+ (fill-pointer ar) 10))
-		 (adjust-array ar (+ (array-total-size ar) 50)
-			       :fill-pointer (fill-pointer ar)))
+	     (unless (> (array-total-size ar) (+ (fill-pointer ar) 10))
+	       (setq ar (adjust-array ar (+ (array-total-size ar) 50)	:fill-pointer (fill-pointer ar))))
 	     (vector-push bindlist ar)
 	     ;; rather than pushing all on baktrcl it might be good
 	     ;; to make a *last-form* global that is set in meval1

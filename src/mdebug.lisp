@@ -231,17 +231,16 @@
 	 (cond ((< i (fill-pointer ar))
 		(or (aref ar i)
 		    (setf (aref ar i) form)))
-	       (t (or (< i (array-total-size ar))
-		      (adjust-array ar (+ i 20) :fill-pointer (fill-pointer ar)
-				    ))
-		  
-		  (loop for j from (fill-pointer ar) below i
-			 do (setf (aref ar j) nil))
-		  (setf (fill-pointer ar) (f + i 1))
-		  (setf (aref ar i) form)))
+	       (t
+		(unless (< i (array-total-size ar))
+		  (setq ar (adjust-array ar (+ i 20) :fill-pointer (fill-pointer ar))))
+		(loop for j from (fill-pointer ar) below i
+		   do (setf (aref ar j) nil))
+		(setf (fill-pointer ar) (f + i 1))
+		(setf (aref ar i) form)))
 	 (loop for v in (cdr form)
-		do (or (atom v)
-		       (walk-get-lineinfo v ar))))))
+	    do (or (atom v)
+		   (walk-get-lineinfo v ar))))))
 
 (defun first-form-line (form line &aux tem)
   (cond ((atom form) nil)
