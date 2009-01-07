@@ -590,7 +590,7 @@
 	    (setq real-args (cdr exp))
 	    ;; search through the args of exp and find the arg containing var
 	    ;; look up the integral wrt this arg from form
-	    (setq form 
+	    (setq form
 	      (do ((x real-args (cdr x))
 		   (y (cdr form) (cdr y)))
 		  ((or (null x) (null y)) nil)
@@ -599,7 +599,7 @@
 	    (or (not (functionp form))
 		(setq form (apply form real-args))))
 	 (when *debug-integrate*
-	   (format t "~&INTEGRALLOOKUPS: Found integral ~A~.~%" (caar exp)))
+	   (format t "~&INTEGRALLOOKUPS: Found integral ~A.~%" (caar exp)))
 	 (substitutel real-args dummy-args form))
 
 	((eq (caar exp) 'mplus)
