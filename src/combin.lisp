@@ -13,10 +13,9 @@
 (macsyma-module combin)
 
 (declare-top (special *mfactl *factlist donel nn* dn* *ans* *var*
-		      dict ans var
-		      a* $zerobern *a *n $cflength *a* $prevfib hi lo
+		      ans var $zerobern *n $cflength *a* $prevfib hi lo
 		      *infsumsimp *times *plus sum usum makef
-		      varlist genvar $sumsplitfact gensim $ratfac $simpsum
+		      varlist genvar $sumsplitfact $ratfac $simpsum
 		      $prederror $listarith
 		      $ratprint $zeta%pi $bftorat))
 
@@ -472,23 +471,28 @@
 
 (defmfun $fib (n)
   (cond ((fixnump n) (ffib n))
-	(t (setq $prevfib (list '($fib) (add2* n -1)))
-	   (list '($fib) n))))
+	(t (setq $prevfib `(($fib) ,(add2* n -1)))
+	   `(($fib) ,n))))
 
 (defun ffib (%n)
-  (cond ((or (eql %n -1) (zerop %n))
-	 (setq $prevfib (boole boole-ior %n 1) *a (- %n)))
+  (declare (fixnum %n))
+  (cond ((= %n -1)
+	 (setq $prevfib -1)
+	 1)
+	((zerop %n)
+	 (setq $prevfib 1)
+	 0)
 	(t
-	 (let ((x (+ (ffib (ash (boole  boole-andc2 %n 1) -1)) $prevfib))
-	       (y (* $prevfib $prevfib))
-	       (z (* *a *a)))
-	   (setq *a (- (* x x) y)
-		 $prevfib (+ y z)))
-	 (cond ((oddp %n)
-		(setq *a (prog1
-			     (+ *a $prevfib)
-			   (setq $prevfib *a))))
-	       (*a)))))
+	 (let* ((f2 (ffib (ash (logandc2 %n 1) -1))) ; f2 = fib(n/2) or fib((n-1)/2)
+		(x (+ f2 $prevfib))
+		(y (* $prevfib $prevfib))
+		(z (* f2 f2)))
+	   (setq f2 (- (* x x) y)
+		 $prevfib (+ y z))
+	   (when (oddp %n)
+	     (psetq $prevfib f2
+		    f2 (+ f2 $prevfib)))
+	   f2))))
 
 ;; continued fraction stuff
 
@@ -959,7 +963,7 @@
 
 (defun fpolysum (e)			;returns *ans*
   (let ((a (fpoly1 (setq e ($expand ($ratdisrep ($rat e *var*))))))
-	(b) ($prederror))
+	($prederror))
     (cond ((null a) 0)
 	  ((member lo '(0 1))
 	   (maxima-substitute hi 'foo a))
@@ -1070,17 +1074,13 @@
 	      (r1 (if (oddp (car d)) 1 0))
 	      (l1 (if (oddp (car d))
 		      (m+ l (truncate (1- (car d)) 2))
-		      (m+ l (truncate (car d) 2))))
-	      (h1 (if (oddp (car d))
-		      (m+ h (truncate (1- (car d)) 2))
-		      (m+ h (truncate (car d) 2)))))
-	  (if (and (integerp l1)
-		   (member (asksign (m- a hi)) '($zero $positive) :test #'eq))
-	      (progn
-		(adsum (m* y (m^ 2 (m- a 1))))
-		(when (> l1 0)
-		  (adsum (m* -1 y (dosum (list '(%binomial) a (m+ *var* *var* r1))
-					 *var* 0 (m- l1 1) t :evaluate-summand nil))))))))
+		      (m+ l (truncate (car d) 2)))))
+	  (when (and (integerp l1)
+		     (member (asksign (m- a hi)) '($zero $positive) :test #'eq))
+	    (adsum (m* y (m^ 2 (m- a 1))))
+	    (when (> l1 0)
+	      (adsum (m* -1 y (dosum (list '(%binomial) a (m+ *var* *var* r1))
+				     *var* 0 (m- l1 1) t :evaluate-summand nil)))))))
 
        ;; other sums we can't do
        (t
@@ -1350,5 +1350,5 @@
 	       (cons lin 1)))))
 
 (declare-top (unspecial *mfactl *factlist donel nn* dn* ans var
-			dict *var* *ans* a* *a *n *a*  hi lo
-			*infsumsimp *times *plus sum usum makef gensim))
+			*var* *ans* *n *a* hi lo
+			*infsumsimp *times *plus sum usum makef))
