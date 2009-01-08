@@ -1,4 +1,4 @@
-(kill(all), load("abs_integrate.mac"), 0);
+(kill(all), load("abs_integrate.mac"), extra_integration_methods : ['signum_int], 0);
 0$
 
 integrate(abs(x),x);

@@ -20,10 +20,25 @@ load("opsubst");
 load("unwind_protect");
 
 matchdeclare(x, symbolp, q, true, [a,b], lambda([s], numberp(s) or is(s = 'minf) or is(s = 'inf)));
+block([simp : false], tellsimpafter('integrate(q,x), extra_integrate(q,x)),
+	     	      tellsimpafter('integrate(q,x,a,b), extra_definite_integrate(q,x,a,b)));
 
-block([simp : false], tellsimpafter('integrate(q,x), signum_int(q,x)),
-	     	      tellsimpafter('integrate(q,x,a,b), abs_defint(q,x,a,b)));
-                                     
+extra_integration_methods : ['signum_int];
+
+extra_integrate(q,x) := block([i, ii : funmake(nounify('integrate),[q,x])],
+  for f in extra_integration_methods do (
+    i : apply(f, [q,x]),
+    if (i # false) then if freeof('integrate, i) then return(ii : i) else ii : i),
+  ii);
+
+extra_definite_integration_methods : ['abs_defint];
+
+extra_definite_integrate(q,x,lo,hi) := block([i, ii : funmake(nounify('integrate),[q,x, lo, hi])],
+  for f in extra_definite_integration_methods do (
+    i : apply(f, [q,x, lo, hi]),
+    if (i # false) and freeof('integrate, i) then return(ii : i)),
+  ii);
+
 gradef(signum(x),0);
 gradef(abs(x), abs(x) / x);
 

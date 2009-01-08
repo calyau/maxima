@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from abs_integrate.texi on 26 December 2008 -->
+<!-- Created by texi2html 1.56k from abs_integrate.texi on 8 January 2009 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -103,8 +103,83 @@ language user documentation.
 
 <P>
 <DL>
-<DT><U>Function:</U> <B>signum_to_abs</B> <I>(<VAR>e</VAR>)</I>
+<DT><U>Option:</U> <B>extra_integration_methods</B>
 <DD><A NAME="IDX1"></A>
+Default value: <CODE>['signum_int]</CODE>
+
+
+<P>
+The list <CODE>extra_integration_methods</CODE> is a list of functions for
+integration. When <CODE>integrate</CODE> is unable to find an
+antiderivative, Maxima uses the methods in
+<CODE>extra_integration_methods</CODE> to attempt to determine an
+antiderivative.
+
+
+<P>
+Each function <CODE>f</CODE> in <CODE>extra_integration_methods</CODE> should have
+the form <CODE>f(integrand, variable)</CODE>. The function <CODE>f</CODE> may
+either return <CODE>false</CODE> to indicate failure, or it may return an
+expression involving an integration noun form. The integration methods
+are tried from the first to the last member of
+<CODE>extra_integration_methods</CODE>; when no method returns an expression
+that does not involve an integration noun form, the value of the
+integral is the last value that does not fail (or a pure noun form if
+all methods fail).
+
+
+<P>
+<B>Related options</B> <I>extra_definite_integration_methods</I>
+
+
+<P>
+<B>To use</B> <TT>`load(abs_integrate)'</TT>
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Option:</U> <B>extra_definite_integration_methods</B>
+<DD><A NAME="IDX2"></A>
+Default value: <CODE>['abs_defint]</CODE>
+
+
+<P>
+The list <CODE>extra_definite_integration_methods</CODE> is a list of extra
+functions for <I>definite</I> integration.  When <CODE>integrate</CODE> is
+unable to find a definite integral, Maxima uses the methods in
+<CODE>extra_definite_integration_methods</CODE> to attempt to determine an
+antiderivative.
+
+
+<P>
+Each function <CODE>f</CODE> in <CODE>extra_definite_integration_methods</CODE>
+should have the form <CODE>f(integrand, variable, lo, hi)</CODE>, where
+<CODE>lo</CODE> and <CODE>hi</CODE> are the lower and upper limits of integration,
+respectively.  The function <CODE>f</CODE> may either return <CODE>false</CODE> to
+indicate failure, or it may return an expression involving an
+integration noun form. The integration methods are tried from the
+first to the last member of <CODE>extra_definite_integration_methods</CODE>;
+when no method returns an expression that does not involve an
+integration noun form, the value of the integral is the last value
+that does not fail (or a pure noun form if all methods fail).
+
+
+<P>
+<B>Related options</B> <I>extra_integration_methods</I>
+
+
+<P>
+<B>To use</B> <TT>`load(abs_integrate)'</TT>
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>signum_to_abs</B> <I>(<VAR>e</VAR>)</I>
+<DD><A NAME="IDX3"></A>
  
 This function replaces subexpressions of the form <EM>q signum(q)</EM> by
 <EM>abs(q)</EM>.  Before it does these substitutions, it replaces
@@ -127,7 +202,7 @@ subexpressions of the form <EM>signum(p) * signum(q)</EM> by
 <P>
 <DL>
 <DT><U>Macro:</U> <B>simp_assuming</B> <I>(<VAR>e</VAR>, <VAR>f_1</VAR>, <VAR>f_2</VAR>, ..., <VAR>f_n</VAR>)</I>
-<DD><A NAME="IDX2"></A>
+<DD><A NAME="IDX4"></A>
 
 
 <P>
@@ -168,7 +243,7 @@ this allows
 <P>
 <DL>
 <DT><U>Function:</U> <B>convert_to_signum</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX3"></A>
+<DD><A NAME="IDX5"></A>
 
 
 <P>
@@ -201,7 +276,7 @@ uses <EM>unit_step(x) = (1 + signum(x))/2</EM>.
 <P>
 <DL>
 <DT><U>Function:</U> <B>make_dummy(e,x)</B>
-<DD><A NAME="IDX4"></A>
+<DD><A NAME="IDX6"></A>
 
 
 <P>
@@ -222,7 +297,7 @@ Append "%" to the symbol <EM>x</EM> until <EM>x</EM> is <I>not</I> a variable in
 
 
 <P><HR><P>
-This document was generated on 26 December 2008 using
+This document was generated on 8 January 2009 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>

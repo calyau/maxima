@@ -71,6 +71,61 @@ language user documentation.
 
 @b{To use} @file{load(abs_integrate)}
 
+@defvr {Option} extra_integration_methods
+Default value: @code{['signum_int]}
+
+The list @code{extra_integration_methods} is a list of functions for
+integration. When @code{integrate} is unable to find an
+antiderivative, Maxima uses the methods in
+@code{extra_integration_methods} to attempt to determine an
+antiderivative.
+
+Each function @code{f} in @code{extra_integration_methods} should have
+the form @code{f(integrand, variable)}. The function @code{f} may
+either return @code{false} to indicate failure, or it may return an
+expression involving an integration noun form. The integration methods
+are tried from the first to the last member of
+@code{extra_integration_methods}; when no method returns an expression
+that does not involve an integration noun form, the value of the
+integral is the last value that does not fail (or a pure noun form if
+all methods fail).
+
+
+@b{Related options} @i{extra_definite_integration_methods}
+
+@b{To use} @file{load(abs_integrate)}
+
+
+@end defvr
+
+@defvr {Option} extra_definite_integration_methods
+Default value: @code{['abs_defint]}
+
+The list @code{extra_definite_integration_methods} is a list of extra
+functions for @i{definite} integration.  When @code{integrate} is
+unable to find a definite integral, Maxima uses the methods in
+@code{extra_definite_integration_methods} to attempt to determine an
+antiderivative.
+
+Each function @code{f} in @code{extra_definite_integration_methods}
+should have the form @code{f(integrand, variable, lo, hi)}, where
+@code{lo} and @code{hi} are the lower and upper limits of integration,
+respectively.  The function @code{f} may either return @code{false} to
+indicate failure, or it may return an expression involving an
+integration noun form. The integration methods are tried from the
+first to the last member of @code{extra_definite_integration_methods};
+when no method returns an expression that does not involve an
+integration noun form, the value of the integral is the last value
+that does not fail (or a pure noun form if all methods fail).
+
+
+@b{Related options} @i{extra_integration_methods}
+
+@b{To use} @file{load(abs_integrate)}
+
+
+@end defvr
+
 @deffn {Function} signum_to_abs (@var{e})
  
 This function replaces subexpressions of the form @math{q signum(q)} by
