@@ -1,11 +1,11 @@
 ;;; Compiled by f2cl version:
-;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
+;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
+;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
 ;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
@@ -121,13 +121,13 @@
            :calls '(fortran-to-lisp::lsame))))
 
 ;;; Compiled by f2cl version:
-;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
+;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
+;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
 ;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
@@ -301,13 +301,13 @@
            :calls 'nil)))
 
 ;;; Compiled by f2cl version:
-;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
+;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
+;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
 ;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
@@ -619,13 +619,13 @@
            :calls '(fortran-to-lisp::dlamc1))))
 
 ;;; Compiled by f2cl version:
-;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
+;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
+;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
 ;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
@@ -657,13 +657,13 @@
            :calls 'nil)))
 
 ;;; Compiled by f2cl version:
-;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
+;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
+;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
 ;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
@@ -750,13 +750,13 @@
            :calls '(fortran-to-lisp::dlamc3))))
 
 ;;; Compiled by f2cl version:
-;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
-;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
+;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
+;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
+;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
 ;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
