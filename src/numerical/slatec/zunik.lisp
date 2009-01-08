@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zunik.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunik.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunik.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunik.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunik.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunik.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunik.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -96,9 +104,9 @@
                                        1.2470092935127103e9
                                        -2.9188388122220814e7
                                        118838.42625678325))))
-  (declare (type (simple-array double-float (120)) c)
+  (declare (type (double-float) zeror zeroi coner conei)
            (type (simple-array double-float (2)) con)
-           (type (double-float) conei coner zeroi zeror))
+           (type (simple-array double-float (120)) c))
   (defun zunik
          (zrr zri fnu ikflg ipmtr tol init phir phii zeta1r zeta1i zeta2r
           zeta2i sumr sumi cwrkr cwrki)
@@ -131,7 +139,7 @@
       (setf sr (+ coner (- (* tr tr) (* ti ti))))
       (setf si (+ conei (+ (* tr ti) (* ti tr))))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt sr si srr sri)
+          (zsqrt$ sr si srr sri)
         (declare (ignore var-0 var-1))
         (setf srr var-2)
         (setf sri var-3))
@@ -160,7 +168,7 @@
       (setf srr (* tr rfn))
       (setf sri (* ti rfn))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt srr sri (f2cl-lib:fref cwrkr (16) ((1 16)))
+          (zsqrt$ srr sri (f2cl-lib:fref cwrkr (16) ((1 16)))
            (f2cl-lib:fref cwrki (16) ((1 16))))
         (declare (ignore var-0 var-1))
         (setf (f2cl-lib:fref cwrkr (16) ((1 16))) var-2)
@@ -293,5 +301,5 @@
                             fortran-to-lisp::sumr fortran-to-lisp::sumi nil
                             nil)
            :calls '(fortran-to-lisp::zlog fortran-to-lisp::zdiv
-                    fortran-to-lisp::zsqrt fortran-to-lisp::d1mach))))
+                    fortran-to-lisp::zsqrt$ fortran-to-lisp::d1mach))))
 

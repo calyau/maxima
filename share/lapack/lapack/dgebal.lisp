@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dgebal.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgebal.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgebal.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgebal.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgebal.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgebal.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgebal.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -13,7 +21,8 @@
   (declare (type (double-float 0.0 0.0) zero)
            (type (double-float 1.0 1.0) one)
            (type (double-float 8.0 8.0) sclfac)
-           (type (double-float 0.95 0.95) factor))
+           (type (double-float 0.95 0.95) factor)
+           (ignorable zero one sclfac factor))
   (defun dgebal (job n a lda ilo ihi scale info)
     (declare (type (array double-float (*)) scale a)
              (type (f2cl-lib:integer4) info ihi ilo lda n)

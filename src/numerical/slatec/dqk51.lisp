@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dqk51.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk51.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk51.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk51.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk51.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk51.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk51.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -57,8 +65,8 @@
                                        0.06053945537604586 0.061128509717053046
                                        0.061471189871425316
                                        0.061580818067832936))))
-  (declare (type (array double-float (26)) wgk xgk)
-           (type (array double-float (13)) wg))
+  (declare (type (array double-float (13)) wg)
+           (type (array double-float (26)) xgk wgk))
   (defun dqk51 (f a b result abserr resabs resasc)
     (declare (type (double-float) resasc resabs abserr result b a))
     (prog ((fv1 (make-array 25 :element-type 'double-float))

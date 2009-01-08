@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dqng.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqng.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqng.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqng.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqng.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqng.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqng.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -122,14 +130,14 @@
                                        0.0360769896228887 0.03669860449845609
                                        0.037120549269832576 0.03733422875193504
                                        0.037361073762679026))))
-  (declare (type (array double-float (23)) w87b)
-           (type (array double-float (21)) w87a)
-           (type (array double-float (22)) x4)
-           (type (array double-float (12)) w43b)
-           (type (array double-float (10)) w43a)
-           (type (array double-float (11)) x3)
+  (declare (type (array double-float (5)) x1 w10 x2 w21a)
            (type (array double-float (6)) w21b)
-           (type (array double-float (5)) w21a x2 w10 x1))
+           (type (array double-float (11)) x3)
+           (type (array double-float (10)) w43a)
+           (type (array double-float (12)) w43b)
+           (type (array double-float (22)) x4)
+           (type (array double-float (21)) w87a)
+           (type (array double-float (23)) w87b))
   (defun dqng (f a b epsabs epsrel result abserr neval ier)
     (declare (type (f2cl-lib:integer4) ier neval)
              (type (double-float) abserr result epsrel epsabs b a))

@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: djairy.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: djairy.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: djairy.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: djairy.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: djairy.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: djairy.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: djairy.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -245,14 +253,14 @@
                                        -1.77253430678112e-14
                                        5.55950610442662e-15
                                        -7.1179333757953e-16))))
-  (declare (type (simple-array double-float (24)) dak2)
-           (type (simple-array double-float (15)) db da b a)
-           (type (simple-array double-float (19)) dajn dajp ajn ajp)
+  (declare (type (f2cl-lib:integer4) n1 n2 n3 n4 m1 m2 m3 m4 n1d n2d n3d n4d
+                                     m1d m2d m3d m4d)
+           (type (double-float) fpi12 con2 con3 con4 con5)
+           (type (simple-array double-float (14)) ak1 ak3 dak1 dak3)
            (type (simple-array double-float (23)) ak2)
-           (type (simple-array double-float (14)) dak3 dak1 ak3 ak1)
-           (type (double-float) con5 con4 con3 con2 fpi12)
-           (type (f2cl-lib:integer4) m4d m3d m2d m1d n4d n3d n2d n1d m4 m3 m2
-                                     m1 n4 n3 n2 n1))
+           (type (simple-array double-float (19)) ajp ajn dajp dajn)
+           (type (simple-array double-float (15)) a b da db)
+           (type (simple-array double-float (24)) dak2))
   (defun djairy (x rx c ai dai)
     (declare (type (double-float) dai ai c rx x))
     (prog ((ccv 0.0) (cv 0.0) (ec 0.0) (e1 0.0) (e2 0.0) (f1 0.0) (f2 0.0)

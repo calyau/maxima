@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlngam.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dlngam.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dlngam.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dlngam.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dlngam.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dlngam.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dlngam.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -15,14 +23,13 @@
       (sqpi2l 0.22579135264472744)
       (pi$ 3.141592653589793)
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
-           (type (double-float) pi$ sqpi2l sq2pil dxrel xmax))
+  (declare (type (double-float) xmax dxrel sq2pil sqpi2l pi$)
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun dlngam (x)
     (declare (type (double-float) x))
-    (prog ((sinpiy 0.0) (y 0.0) (temp 0.0) (dlngam 0.0) (log$ 0))
-      (declare (type (integer) log$)
-               (type (double-float) dlngam temp y sinpiy))
+    (prog ((sinpiy 0.0) (y 0.0) (temp 0.0) (dlngam 0.0))
+      (declare (type (double-float) dlngam temp y sinpiy))
       (cond
         (first$
          (setf temp (/ 1.0 (f2cl-lib:flog (f2cl-lib:d1mach 2))))

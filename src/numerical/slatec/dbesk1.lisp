@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbesk1.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk1.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk1.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk1.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk1.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk1.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk1.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -32,10 +40,10 @@
                                        -7.513040716215723e-29
                                        -9.155085717654187e-32)))
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
+  (declare (type (integer) ntk1)
+           (type (double-float) xmin xsml xmax)
            (type (simple-array double-float (16)) bk1cs)
-           (type (double-float) xmax xsml xmin)
-           (type (integer) ntk1))
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun dbesk1 (x)
     (declare (type (double-float) x))

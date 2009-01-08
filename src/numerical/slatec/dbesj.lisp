@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbesj.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesj.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesj.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesj.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesj.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesj.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesj.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -23,10 +31,10 @@
        (make-array 2
                    :element-type 'double-float
                    :initial-contents '(100.0 60.0))))
-  (declare (type (simple-array double-float (2)) fnulim)
-           (type (f2cl-lib:integer4) inlim)
+  (declare (type (double-float) rtwo pdf rttp pidt)
            (type (simple-array double-float (4)) pp)
-           (type (double-float) pidt rttp pdf rtwo))
+           (type (f2cl-lib:integer4) inlim)
+           (type (simple-array double-float (2)) fnulim))
   (defun dbesj (x alpha n y nz)
     (declare (type (array double-float (*)) y)
              (type (f2cl-lib:integer4) nz n)
@@ -37,17 +45,17 @@
            (dtm 0.0) (earg 0.0) (elim1 0.0) (etx 0.0) (fidal 0.0) (flgjy 0.0)
            (fn 0.0) (fnf 0.0) (fni 0.0) (fnp1 0.0) (fnu 0.0) (gln 0.0)
            (rden 0.0) (relb 0.0) (rtx 0.0) (rzden 0.0) (s 0.0) (sa 0.0)
-           (sb 0.0) (sxo2 0.0) (s1 0.0) (s2 0.0) (ta 0.0) (tau 0.0) (tb 0.0)
-           (tfn 0.0) (tm 0.0) (tol 0.0) (tolln 0.0) (trx 0.0) (tx 0.0) (t1 0.0)
-           (t2 0.0) (xo2 0.0) (xo2l 0.0) (slim 0.0) (rtol 0.0) (i 0) (ialp 0)
-           (idalp 0) (iflw 0) (in 0) (is 0) (i1 0) (i2 0) (k 0) (kk 0) (km 0)
-           (kt 0) (nn 0) (ns 0) (t$ 0.0))
+           (sb 0.0) (sxo2 0.0) (s1 0.0) (s2 0.0) (t$ 0.0) (ta 0.0) (tau 0.0)
+           (tb 0.0) (tfn 0.0) (tm 0.0) (tol 0.0) (tolln 0.0) (trx 0.0) (tx 0.0)
+           (t1 0.0) (t2 0.0) (xo2 0.0) (xo2l 0.0) (slim 0.0) (rtol 0.0) (i 0)
+           (ialp 0) (idalp 0) (iflw 0) (in 0) (is 0) (i1 0) (i2 0) (k 0) (kk 0)
+           (km 0) (kt 0) (nn 0) (ns 0))
       (declare (type (f2cl-lib:integer4) ns nn kt km kk k i2 i1 is in iflw
                                          idalp ialp i)
                (type (simple-array double-float (7)) wk)
                (type (simple-array double-float (3)) temp)
-               (type (double-float) t$ rtol slim xo2l xo2 t2 t1 tx trx tolln
-                                    tol tm tfn tb tau ta s2 s1 sxo2 sb sa s
+               (type (double-float) rtol slim xo2l xo2 t2 t1 tx trx tolln tol
+                                    tm tfn tb tau ta t$ s2 s1 sxo2 sb sa s
                                     rzden rtx relb rden gln fnu fnp1 fni fnf fn
                                     flgjy fidal etx elim1 earg dtm dfn dalpha
                                     coef arg ap ans akm ak))

@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbie.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbie.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbie.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbie.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbie.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbie.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbie.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -224,19 +232,18 @@
       (atr 8.750690570848434)
       (btr -2.0938363213560542)
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
-           (type (simple-array double-float (88)) bip2cs)
+  (declare (type (integer) nbif nbig nbif2 nbig2 nbip1 nbip2)
+           (type (double-float) x3sml x32sml xbig atr btr)
+           (type (simple-array double-float (13)) bifcs bigcs)
+           (type (simple-array double-float (15)) bif2cs big2cs)
            (type (simple-array double-float (47)) bip1cs)
-           (type (simple-array double-float (15)) big2cs bif2cs)
-           (type (simple-array double-float (13)) bigcs bifcs)
-           (type (double-float) btr atr xbig x32sml x3sml)
-           (type (integer) nbip2 nbip1 nbig2 nbif2 nbig nbif))
+           (type (simple-array double-float (88)) bip2cs)
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun dbie (x)
     (declare (type (double-float) x))
-    (prog ((sqrtx 0.0) (theta 0.0) (xm 0.0) (z 0.0) (dbie 0.0) (sqrt$ 0.0f0)
-           (eta 0.0f0))
-      (declare (type (single-float) eta sqrt$)
+    (prog ((sqrtx 0.0) (theta 0.0) (xm 0.0) (z 0.0) (dbie 0.0) (eta 0.0f0))
+      (declare (type (single-float) eta)
                (type (double-float) dbie z xm theta sqrtx))
       (cond
         (first$

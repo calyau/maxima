@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zhpr2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zhpr2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zhpr2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zhpr2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zhpr2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zhpr2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zhpr2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -10,7 +18,7 @@
 
 
 (let* ((zero (f2cl-lib:cmplx 0.0 0.0)))
-  (declare (type (f2cl-lib:complex16) zero))
+  (declare (type (f2cl-lib:complex16) zero) (ignorable zero))
   (defun zhpr2 (uplo n alpha x incx y incy ap)
     (declare (type (array f2cl-lib:complex16 (*)) ap y x)
              (type (f2cl-lib:complex16) alpha)

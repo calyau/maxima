@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlacon.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlacon.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlacon.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlacon.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlacon.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlacon.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlacon.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -13,17 +21,18 @@
   (declare (type (f2cl-lib:integer4 5 5) itmax)
            (type (double-float 0.0 0.0) zero)
            (type (double-float 1.0 1.0) one)
-           (type (double-float 2.0 2.0) two))
-  (let ((altsgn 0.0)
-        (estold 0.0)
-        (temp 0.0)
-        (i 0)
-        (iter 0)
-        (j 0)
+           (type (double-float 2.0 2.0) two)
+           (ignorable itmax zero one two))
+  (let ((jump 0)
         (jlast 0)
-        (jump 0))
-    (declare (type (f2cl-lib:integer4) itmax jump jlast j iter i)
-             (type (double-float) two one zero temp estold altsgn))
+        (j 0)
+        (iter 0)
+        (i 0)
+        (temp 0.0)
+        (estold 0.0)
+        (altsgn 0.0))
+    (declare (type (f2cl-lib:integer4) jump jlast j iter i)
+             (type (double-float) temp estold altsgn))
     (defun dlacon (n v x isgn est kase)
       (declare (type (double-float) est)
                (type (array f2cl-lib:integer4 (*)) isgn)

@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: ilaenv.lisp,v 1.4 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: ilaenv.lisp,v 1.4 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: ilaenv.lisp,v 1.4 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: ilaenv.lisp,v 1.4 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: ilaenv.lisp,v 1.4 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: ilaenv.lisp,v 1.4 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: ilaenv.lisp,v 1.4 2009-01-08 18:25:24 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -22,9 +30,8 @@
            (c2 (make-array '(2) :element-type 'character :initial-element #\ ))
            (c4 (make-array '(2) :element-type 'character :initial-element #\ ))
            (c1 (make-array '(1) :element-type 'character :initial-element #\ ))
-           (cname nil) (sname nil) (ilaenv 0) (char$ 0.0f0))
-      (declare (type (single-float) char$)
-               (type f2cl-lib:logical sname cname)
+           (cname nil) (sname nil) (ilaenv 0))
+      (declare (type f2cl-lib:logical sname cname)
                (type (simple-array character (1)) c1)
                (type (simple-array character (2)) c4 c2)
                (type (simple-array character (3)) c3)

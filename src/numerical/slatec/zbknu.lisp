@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zbknu.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zbknu.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zbknu.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zbknu.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zbknu.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zbknu.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zbknu.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -31,10 +39,10 @@
                                        -2.013485478078824e-5
                                        1.133027231981696e-6
                                        6.116095104481416e-9))))
-  (declare (type (simple-array double-float (8)) cc)
-           (type (double-float) tth fpi hpi spi rthpi dpi r1 ctwor conei coner
-                                czeroi czeror)
-           (type (f2cl-lib:integer4) kmax))
+  (declare (type (f2cl-lib:integer4) kmax)
+           (type (double-float) czeror czeroi coner conei ctwor r1 dpi rthpi
+                                spi hpi fpi tth)
+           (type (simple-array double-float (8)) cc))
   (defun zbknu (zr zi fnu kode n yr yi nz tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
              (type (f2cl-lib:integer4) nz n kode)
@@ -283,7 +291,7 @@
       (go label210)
      label110
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt zr zi str sti)
+          (zsqrt$ zr zi str sti)
         (declare (ignore var-0 var-1))
         (setf str var-2)
         (setf sti var-3))
@@ -682,7 +690,7 @@
            :return-values '(nil nil nil nil nil nil nil fortran-to-lisp::nz nil
                             nil nil)
            :calls '(fortran-to-lisp::zkscl fortran-to-lisp::zuchk
-                    fortran-to-lisp::i1mach fortran-to-lisp::zsqrt
+                    fortran-to-lisp::i1mach fortran-to-lisp::zsqrt$
                     fortran-to-lisp::zmlt fortran-to-lisp::zdiv
                     fortran-to-lisp::zexp fortran-to-lisp::dgamln
                     fortran-to-lisp::zshch fortran-to-lisp::zlog

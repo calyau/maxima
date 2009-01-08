@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlasq4.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq4.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq4.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq4.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq4.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq4.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq4.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -28,20 +36,19 @@
            (type (double-float 0.0 0.0) zero)
            (type (double-float 1.0 1.0) one)
            (type (double-float 2.0 2.0) two)
-           (type (double-float 100.0 100.0) hundrd))
+           (type (double-float 100.0 100.0) hundrd)
+           (ignorable cnst1 cnst2 cnst3 qurtr third$ half zero one two hundrd))
   (let ((g zero))
     (declare (type (double-float) g))
-    (defun dlasq4
-           (i0 n0 z pp n0in dmin f2cl-lib:dmin1 dmin2 dn dn1 dn2 tau ttype)
-      (declare (type (double-float) tau dn2 dn1 dn dmin2 f2cl-lib:dmin1 dmin)
+    (defun dlasq4 (i0 n0 z pp n0in dmin dmin1$ dmin2 dn dn1 dn2 tau ttype)
+      (declare (type (double-float) tau dn2 dn1 dn dmin2 dmin1$ dmin)
                (type (array double-float (*)) z)
                (type (f2cl-lib:integer4) ttype n0in pp n0 i0))
       (f2cl-lib:with-multi-array-data
           ((z double-float z-%data% z-%offset%))
         (prog ((a2 0.0) (b1 0.0) (b2 0.0) (gam 0.0) (gap1 0.0) (gap2 0.0)
-               (s 0.0) (i4 0) (nn 0) (np 0) (sqrt$ 0.0f0))
-          (declare (type (single-float) sqrt$)
-                   (type (double-float) a2 b1 b2 gam gap1 gap2 s)
+               (s 0.0) (i4 0) (nn 0) (np 0))
+          (declare (type (double-float) a2 b1 b2 gam gap1 gap2 s)
                    (type (f2cl-lib:integer4) i4 nn np))
           (cond
             ((<= dmin zero)
@@ -88,7 +95,7 @@
                                         ((1 *))
                                         z-%offset%)))
                 (cond
-                  ((and (= dmin dn) (= f2cl-lib:dmin1 dn1))
+                  ((and (= dmin dn) (= dmin1$ dn1))
                    (setf gap2 (- dmin2 a2 (* dmin2 qurtr)))
                    (cond
                      ((and (> gap2 zero) (> gap2 b2))
@@ -337,10 +344,10 @@
                 (setf ttype -6))))
             ((= n0in (f2cl-lib:int-add n0 1))
              (cond
-               ((and (= f2cl-lib:dmin1 dn1) (= dmin2 dn2))
+               ((and (= dmin1$ dn1) (= dmin2 dn2))
                 (tagbody
                   (setf ttype -7)
-                  (setf s (* third$ f2cl-lib:dmin1))
+                  (setf s (* third$ dmin1$))
                   (if
                    (>
                     (f2cl-lib:fref z-%data%
@@ -399,7 +406,7 @@
                      label50))
                  label60
                   (setf b2 (f2cl-lib:fsqrt (* cnst3 b2)))
-                  (setf a2 (/ f2cl-lib:dmin1 (+ one (expt b2 2))))
+                  (setf a2 (/ dmin1$ (+ one (expt b2 2))))
                   (setf gap2 (- (* half dmin2) a2))
                   (cond
                     ((and (> gap2 zero) (> gap2 (* b2 a2)))
@@ -411,8 +418,8 @@
                      (setf s (max s (* a2 (- one (* cnst2 b2)))))
                      (setf ttype -8)))))
                (t
-                (setf s (* qurtr f2cl-lib:dmin1))
-                (if (= f2cl-lib:dmin1 dn1) (setf s (* half f2cl-lib:dmin1)))
+                (setf s (* qurtr dmin1$))
+                (if (= dmin1$ dn1) (setf s (* half dmin1$)))
                 (setf ttype -9))))
             ((= n0in (f2cl-lib:int-add n0 2))
              (cond

@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dqk15w.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk15w.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk15w.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk15w.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk15w.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk15w.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqk15w.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -28,8 +36,8 @@
                    :element-type 'double-float
                    :initial-contents '(0.1294849661688697 0.2797053914892767
                                        0.3818300505051889 0.4179591836734694))))
-  (declare (type (array double-float (4)) wg)
-           (type (array double-float (8)) wgk xgk))
+  (declare (type (array double-float (8)) xgk wgk)
+           (type (array double-float (4)) wg))
   (defun dqk15w (f w p1 p2 p3 p4 kp a b result abserr resabs resasc)
     (declare (type (f2cl-lib:integer4) kp)
              (type (double-float) resasc resabs abserr result b a p4 p3 p2 p1))

@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: derfc.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: derfc.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: derfc.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: derfc.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: derfc.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: derfc.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: derfc.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -154,12 +162,12 @@
                                        1.5258772641103575e-31)))
       (sqrtpi 1.772453850905516)
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
-           (type (simple-array double-float (59)) erfccs)
-           (type (simple-array double-float (49)) erc2cs)
+  (declare (type (integer) nterf nterfc nterc2)
+           (type (double-float) xsml xmax sqeps sqrtpi)
            (type (simple-array double-float (21)) erfcs)
-           (type (double-float) sqrtpi sqeps xmax xsml)
-           (type (integer) nterc2 nterfc nterf))
+           (type (simple-array double-float (49)) erc2cs)
+           (type (simple-array double-float (59)) erfccs)
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun derfc (x)
     (declare (type (double-float) x))

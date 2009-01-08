@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dqagpe.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqagpe.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqagpe.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqagpe.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqagpe.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqagpe.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dqagpe.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -30,27 +38,25 @@
            (rlist2 (make-array 52 :element-type 'double-float)) (extrap nil)
            (noext nil) (i 0) (id 0) (ierro 0) (ind1 0) (ind2 0) (ip1 0)
            (iroff1 0) (iroff2 0) (iroff3 0) (j 0) (jlow 0) (jupbnd 0) (k 0)
-           (ksgn 0) (ktmin 0) (levcur 0) (levmax 0) (maxerr 0)
-           (f2cl-lib:nint 0) (nintp1 0) (npts 0) (nres 0) (nrmax 0) (numrl2 0)
-           (abseps 0.0) (area 0.0) (area1 0.0) (area12 0.0) (area2 0.0)
-           (a1 0.0) (a2 0.0) (b1 0.0) (b2 0.0) (correc 0.0) (defabs 0.0)
-           (defab1 0.0) (defab2 0.0) (dres 0.0) (epmach 0.0) (erlarg 0.0)
-           (erlast 0.0) (errbnd 0.0) (errmax 0.0) (error1 0.0) (erro12 0.0)
-           (error2 0.0) (errsum 0.0) (ertest 0.0) (oflow 0.0) (resa 0.0)
-           (resabs 0.0) (reseps 0.0) (f2cl-lib:sign 0.0) (temp 0.0)
-           (uflow 0.0))
+           (ksgn 0) (ktmin 0) (levcur 0) (levmax 0) (maxerr 0) (nintp1 0)
+           (npts 0) (nres 0) (nrmax 0) (numrl2 0) (abseps 0.0) (area 0.0)
+           (area1 0.0) (area12 0.0) (area2 0.0) (a1 0.0) (a2 0.0) (b1 0.0)
+           (b2 0.0) (correc 0.0) (defabs 0.0) (defab1 0.0) (defab2 0.0)
+           (dres 0.0) (epmach 0.0) (erlarg 0.0) (erlast 0.0) (errbnd 0.0)
+           (errmax 0.0) (error1 0.0) (erro12 0.0) (error2 0.0) (errsum 0.0)
+           (ertest 0.0) (oflow 0.0) (resa 0.0) (resabs 0.0) (reseps 0.0)
+           (sign$ 0.0) (temp 0.0) (uflow 0.0) (nint$ 0))
       (declare (type (array double-float (52)) rlist2)
                (type (array double-float (3)) res3la)
-               (type (double-float) uflow temp f2cl-lib:sign reseps resabs resa
-                                    oflow ertest errsum error2 erro12 error1
-                                    errmax errbnd erlast erlarg epmach dres
-                                    defab2 defab1 defabs correc b2 b1 a2 a1
-                                    area2 area12 area1 area abseps)
-               (type (f2cl-lib:integer4) numrl2 nrmax nres npts nintp1
-                                         f2cl-lib:nint maxerr levmax levcur
-                                         ktmin ksgn k jupbnd jlow j iroff3
-                                         iroff2 iroff1 ip1 ind2 ind1 ierro id
-                                         i)
+               (type (double-float) uflow temp sign$ reseps resabs resa oflow
+                                    ertest errsum error2 erro12 error1 errmax
+                                    errbnd erlast erlarg epmach dres defab2
+                                    defab1 defabs correc b2 b1 a2 a1 area2
+                                    area12 area1 area abseps)
+               (type (f2cl-lib:integer4) nint$ numrl2 nrmax nres npts nintp1
+                                         maxerr levmax levcur ktmin ksgn k
+                                         jupbnd jlow j iroff3 iroff2 iroff1 ip1
+                                         ind2 ind1 ierro id i)
                (type f2cl-lib:logical noext extrap))
       (setf epmach (f2cl-lib:d1mach 4))
       (setf ier 0)
@@ -71,8 +77,8 @@
            (and (<= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.0e-29))))
        (setf ier 6))
       (if (= ier 6) (go label999))
-      (setf f2cl-lib:sign 1.0)
-      (if (> a b) (setf f2cl-lib:sign -1.0))
+      (setf sign$ 1.0)
+      (if (> a b) (setf sign$ -1.0))
       (setf (f2cl-lib:fref pts-%data% (1) ((1 *)) pts-%offset%) (min a b))
       (if (= npts 0) (go label15))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
@@ -90,12 +96,12 @@
                            ((1 *))
                            pts-%offset%)
               (max a b))
-      (setf f2cl-lib:nint (f2cl-lib:int-add npts 1))
+      (setf nint$ (f2cl-lib:int-add npts 1))
       (setf a1 (f2cl-lib:fref pts-%data% (1) ((1 *)) pts-%offset%))
       (if (= npts 0) (go label40))
-      (setf nintp1 (f2cl-lib:int-add f2cl-lib:nint 1))
+      (setf nintp1 (f2cl-lib:int-add nint$ 1))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                    ((> i f2cl-lib:nint) nil)
+                    ((> i nint$) nil)
         (tagbody
           (setf ip1 (f2cl-lib:int-add i 1))
           (f2cl-lib:fdo (j ip1 (f2cl-lib:int-add j 1))
@@ -108,8 +114,8 @@
               (setf temp (f2cl-lib:fref pts-%data% (i) ((1 *)) pts-%offset%))
               (setf (f2cl-lib:fref pts-%data% (i) ((1 *)) pts-%offset%)
                       (f2cl-lib:fref pts-%data% (j) ((1 *)) pts-%offset%))
-              (setf (f2cl-lib:fref pts-%data% (j) ((1 *)) pts-%offset%)
-                      temp)))))
+              (setf (f2cl-lib:fref pts-%data% (j) ((1 *)) pts-%offset%) temp)
+             label20))))
      label20
       (if
        (or (/= (f2cl-lib:fref pts-%data% (1) ((1 *)) pts-%offset%) (min a b))
@@ -120,7 +126,7 @@
      label40
       (setf resabs 0.0)
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                    ((> i f2cl-lib:nint) nil)
+                    ((> i nint$) nil)
         (tagbody
           (setf b1
                   (f2cl-lib:fref pts-%data%
@@ -150,7 +156,7 @@
          label50))
       (setf errsum 0.0)
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                    ((> i f2cl-lib:nint) nil)
+                    ((> i nint$) nil)
         (tagbody
           (if (= (f2cl-lib:fref ndin-%data% (i) ((1 *)) ndin-%offset%) 1)
               (setf (f2cl-lib:fref elist-%data% (i) ((1 *)) elist-%offset%)
@@ -159,20 +165,20 @@
                   (+ errsum
                      (f2cl-lib:fref elist-%data% (i) ((1 *)) elist-%offset%)))
          label55))
-      (setf last$ f2cl-lib:nint)
-      (setf neval (f2cl-lib:int-mul 21 f2cl-lib:nint))
+      (setf last$ nint$)
+      (setf neval (f2cl-lib:int-mul 21 nint$))
       (setf dres (abs result))
       (setf errbnd (max epsabs (* epsrel dres)))
       (if (and (<= abserr (* 100.0 epmach resabs)) (> abserr errbnd))
           (setf ier 2))
-      (if (= f2cl-lib:nint 1) (go label80))
+      (if (= nint$ 1) (go label80))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i npts) nil)
         (tagbody
           (setf jlow (f2cl-lib:int-add i 1))
           (setf ind1 (f2cl-lib:fref iord-%data% (i) ((1 *)) iord-%offset%))
           (f2cl-lib:fdo (j jlow (f2cl-lib:int-add j 1))
-                        ((> j f2cl-lib:nint) nil)
+                        ((> j nint$) nil)
             (tagbody
               (setf ind2 (f2cl-lib:fref iord-%data% (j) ((1 *)) iord-%offset%))
               (if
@@ -434,7 +440,7 @@
       (setf abserr errsum)
      label210
       (if (> ier 2) (setf ier (f2cl-lib:int-sub ier 1)))
-      (setf result (* result f2cl-lib:sign))
+      (setf result (* result sign$))
      label999
       (go end_label)
      end_label

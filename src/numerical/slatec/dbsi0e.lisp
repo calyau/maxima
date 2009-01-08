@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbsi0e.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsi0e.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsi0e.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsi0e.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsi0e.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsi0e.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsi0e.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -153,17 +161,17 @@
                                        -1.6054541249197432e-31
                                        1.9653529845942905e-32)))
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
-           (type (simple-array double-float (69)) ai02cs)
-           (type (simple-array double-float (46)) ai0cs)
-           (type (simple-array double-float (18)) bi0cs)
+  (declare (type (integer) nti0 ntai0 ntai02)
            (type (double-float) xsml)
-           (type (integer) ntai02 ntai0 nti0))
+           (type (simple-array double-float (18)) bi0cs)
+           (type (simple-array double-float (46)) ai0cs)
+           (type (simple-array double-float (69)) ai02cs)
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun dbsi0e (x)
     (declare (type (double-float) x))
-    (prog ((y 0.0) (dbsi0e 0.0) (sqrt$ 0.0f0) (eta 0.0f0))
-      (declare (type (single-float) eta sqrt$) (type (double-float) dbsi0e y))
+    (prog ((y 0.0) (dbsi0e 0.0) (eta 0.0f0))
+      (declare (type (single-float) eta) (type (double-float) dbsi0e y))
       (cond
         (first$
          (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))

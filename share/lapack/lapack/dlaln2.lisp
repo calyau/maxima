@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlaln2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaln2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaln2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaln2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaln2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaln2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaln2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -12,15 +20,16 @@
 (let* ((zero 0.0) (one 1.0) (two 2.0))
   (declare (type (double-float 0.0 0.0) zero)
            (type (double-float 1.0 1.0) one)
-           (type (double-float 2.0 2.0) two))
-  (let ((zswap
-         (make-array 4 :element-type 't :initial-contents '(nil nil t t)))
-        (rswap
-         (make-array 4 :element-type 't :initial-contents '(nil t nil t)))
-        (ipivot
+           (type (double-float 2.0 2.0) two)
+           (ignorable zero one two))
+  (let ((ipivot
          (make-array 16
                      :element-type 'f2cl-lib:integer4
-                     :initial-contents '(1 2 3 4 2 1 4 3 3 4 1 2 4 3 2 1))))
+                     :initial-contents '(1 2 3 4 2 1 4 3 3 4 1 2 4 3 2 1)))
+        (rswap
+         (make-array 4 :element-type 't :initial-contents '(nil t nil t)))
+        (zswap
+         (make-array 4 :element-type 't :initial-contents '(nil nil t t))))
     (declare (type (array f2cl-lib:integer4 (16)) ipivot)
              (type (array f2cl-lib:logical (4)) rswap zswap))
     (defun dlaln2

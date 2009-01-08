@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlasda.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasda.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasda.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasda.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasda.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasda.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasda.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -11,7 +19,8 @@
 
 (let* ((zero 0.0) (one 1.0))
   (declare (type (double-float 0.0 0.0) zero)
-           (type (double-float 1.0 1.0) one))
+           (type (double-float 1.0 1.0) one)
+           (ignorable zero one))
   (defun dlasda
          (icompq smlsiz n sqre d e u ldu vt k difl difr z poles givptr givcol
           ldgcol perm givnum c s work iwork info)
@@ -109,9 +118,15 @@
              (f2cl-lib:array-slice iwork f2cl-lib:integer4 (ndiml) ((1 *)))
              (f2cl-lib:array-slice iwork f2cl-lib:integer4 (ndimr) ((1 *)))
              smlsiz)
-          (declare (ignore var-0 var-3 var-4 var-5 var-6))
-          (setf nlvl var-1)
-          (setf nd var-2))
+          (declare (ignore var-3 var-4 var-5))
+          (when var-0
+            (setf n var-0))
+          (when var-1
+            (setf nlvl var-1))
+          (when var-2
+            (setf nd var-2))
+          (when var-6
+            (setf smlsiz var-6)))
         (setf ndb1 (the f2cl-lib:integer4 (truncate (+ nd 1) 2)))
         (f2cl-lib:fdo (i ndb1 (f2cl-lib:int-add i 1))
                       ((> i nd) nil)
@@ -508,8 +523,8 @@
        end_label
         (return
          (values nil
-                 nil
-                 nil
+                 smlsiz
+                 n
                  nil
                  nil
                  nil
@@ -554,10 +569,10 @@
                         (array double-float (*)) (array double-float (*))
                         (array fortran-to-lisp::integer4 (*))
                         (fortran-to-lisp::integer4))
-           :return-values '(nil nil nil nil nil nil nil nil nil nil nil nil nil
-                            nil nil nil nil nil nil nil nil nil nil
-                            fortran-to-lisp::info)
-           :calls '(fortran-to-lisp::dlasdt fortran-to-lisp::dlasd6
-                    fortran-to-lisp::dcopy fortran-to-lisp::dlaset
-                    fortran-to-lisp::dlasdq fortran-to-lisp::xerbla))))
+           :return-values '(nil fortran-to-lisp::smlsiz fortran-to-lisp::n nil
+                            nil nil nil nil nil nil nil nil nil nil nil nil nil
+                            nil nil nil nil nil nil fortran-to-lisp::info)
+           :calls '(fortran-to-lisp::dlasd6 fortran-to-lisp::dcopy
+                    fortran-to-lisp::dlaset fortran-to-lisp::dlasdq
+                    fortran-to-lisp::xerbla))))
 

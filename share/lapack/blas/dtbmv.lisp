@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dtbmv.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dtbmv.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dtbmv.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dtbmv.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dtbmv.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dtbmv.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dtbmv.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -10,7 +18,7 @@
 
 
 (let* ((zero 0.0))
-  (declare (type (double-float 0.0 0.0) zero))
+  (declare (type (double-float 0.0 0.0) zero) (ignorable zero))
   (defun dtbmv (uplo trans diag n k a lda x incx)
     (declare (type (array double-float (*)) x a)
              (type (f2cl-lib:integer4) incx lda k n)

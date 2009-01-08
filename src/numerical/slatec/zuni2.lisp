@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zuni2.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zuni2.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zuni2.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zuni2.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zuni2.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zuni2.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zuni2.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -22,8 +30,8 @@
                    :initial-contents '(0.0 1.0 0.0 -1.0)))
       (hpi 1.5707963267948966)
       (aic 1.2655121234846454))
-  (declare (type (simple-array double-float (4)) cipi cipr)
-           (type (double-float) aic hpi coner zeroi zeror))
+  (declare (type (double-float) zeror zeroi coner hpi aic)
+           (type (simple-array double-float (4)) cipr cipi))
   (defun zuni2 (zr zi fnu kode n yr yi nz nlast fnul tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
              (type (f2cl-lib:integer4) nlast nz n kode)

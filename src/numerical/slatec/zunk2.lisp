@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zunk2.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunk2.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunk2.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunk2.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunk2.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunk2.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunk2.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -27,9 +35,9 @@
        (make-array 4
                    :element-type 'double-float
                    :initial-contents '(0.0 -1.0 0.0 1.0))))
-  (declare (type (simple-array double-float (4)) cipi cipr)
-           (type (double-float) aic pi$ hpi cr2i cr2r cr1i cr1r coner zeroi
-                                zeror))
+  (declare (type (double-float) zeror zeroi coner cr1r cr1i cr2r cr2i hpi pi$
+                                aic)
+           (type (simple-array double-float (4)) cipr cipi))
   (defun zunk2 (zr zi fnu kode mr n yr yi nz tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
              (type (f2cl-lib:integer4) nz n mr kode)

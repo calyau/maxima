@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlasq5.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq5.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq5.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq5.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq5.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq5.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dlasq5.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -10,10 +18,10 @@
 
 
 (let* ((zero 0.0))
-  (declare (type (double-float 0.0 0.0) zero))
-  (defun dlasq5 (i0 n0 z pp tau dmin f2cl-lib:dmin1 dmin2 dn dnm1 dnm2 ieee)
+  (declare (type (double-float 0.0 0.0) zero) (ignorable zero))
+  (defun dlasq5 (i0 n0 z pp tau dmin dmin1$ dmin2 dn dnm1 dnm2 ieee)
     (declare (type f2cl-lib:logical ieee)
-             (type (double-float) dnm2 dnm1 dn dmin2 f2cl-lib:dmin1 dmin tau)
+             (type (double-float) dnm2 dnm1 dn dmin2 dmin1$ dmin tau)
              (type (array double-float (*)) z)
              (type (f2cl-lib:integer4) pp n0 i0))
     (f2cl-lib:with-multi-array-data
@@ -32,8 +40,7 @@
                                z-%offset%))
         (setf d (- (f2cl-lib:fref z-%data% (j4) ((1 *)) z-%offset%) tau))
         (setf dmin d)
-        (setf f2cl-lib:dmin1
-                (- (f2cl-lib:fref z-%data% (j4) ((1 *)) z-%offset%)))
+        (setf dmin1$ (- (f2cl-lib:fref z-%data% (j4) ((1 *)) z-%offset%)))
         (cond
           (ieee
            (cond
@@ -159,7 +166,7 @@
                                        z-%offset%)))
                     tau))
            (setf dmin (min dmin dnm1))
-           (setf f2cl-lib:dmin1 dmin)
+           (setf dmin1$ dmin)
            (setf j4 (f2cl-lib:int-add j4 4))
            (setf j4p2
                    (f2cl-lib:int-sub
@@ -354,7 +361,7 @@
                                           z-%offset%)))
                        tau))))
            (setf dmin (min dmin dnm1))
-           (setf f2cl-lib:dmin1 dmin)
+           (setf dmin1$ dmin)
            (setf j4 (f2cl-lib:int-add j4 4))
            (setf j4p2
                    (f2cl-lib:int-sub
@@ -407,18 +414,7 @@
         (go end_label)
        end_label
         (return
-         (values nil
-                 nil
-                 nil
-                 nil
-                 nil
-                 dmin
-                 f2cl-lib:dmin1
-                 dmin2
-                 dn
-                 dnm1
-                 dnm2
-                 nil))))))
+         (values nil nil nil nil nil dmin dmin1$ dmin2 dn dnm1 dnm2 nil))))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
@@ -432,7 +428,7 @@
                         (double-float) (double-float) (double-float)
                         (double-float) fortran-to-lisp::logical)
            :return-values '(nil nil nil nil nil fortran-to-lisp::dmin
-                            fortran-to-lisp::dmin1 fortran-to-lisp::dmin2
+                            fortran-to-lisp::dmin1$ fortran-to-lisp::dmin2
                             fortran-to-lisp::dn fortran-to-lisp::dnm1
                             fortran-to-lisp::dnm2 nil)
            :calls 'nil)))

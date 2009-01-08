@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp Snapshot 2006-12 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zlange.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: zlange.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: zlange.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: zlange.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: zlange.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: zlange.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: zlange.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -11,7 +19,8 @@
 
 (let* ((one 1.0) (zero 0.0))
   (declare (type (double-float 1.0 1.0) one)
-           (type (double-float 0.0 0.0) zero))
+           (type (double-float 0.0 0.0) zero)
+           (ignorable one zero))
   (defun zlange (norm m n a lda work)
     (declare (type (array double-float (*)) work)
              (type (array f2cl-lib:complex16 (*)) a)
@@ -134,5 +143,5 @@
                         (array fortran-to-lisp::complex16 (*))
                         (fortran-to-lisp::integer4) (array double-float (*)))
            :return-values '(nil nil nil nil nil nil)
-           :calls '(fortran-to-lisp::lsame fortran-to-lisp::zlassq))))
+           :calls '(fortran-to-lisp::zlassq fortran-to-lisp::lsame))))
 

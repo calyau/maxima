@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbesi.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi.lisp,v 1.12 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -10,7 +18,7 @@
 
 
 (let ((rttpi 0.398942280401433) (inlim 80))
-  (declare (type (f2cl-lib:integer4) inlim) (type (double-float) rttpi))
+  (declare (type (double-float) rttpi) (type (f2cl-lib:integer4) inlim))
   (defun dbesi (x alpha kode n y nz)
     (declare (type (array double-float (*)) y)
              (type (f2cl-lib:integer4) nz n kode)
@@ -22,12 +30,12 @@
              (tolln 0.0) (dfn 0.0) (dtm 0.0) (dx 0.0) (earg 0.0) (elim 0.0)
              (etx 0.0) (flgik 0.0) (fn 0.0) (fnf 0.0) (fni 0.0) (fnp1 0.0)
              (fnu 0.0) (gln 0.0) (ra 0.0) (s 0.0) (sx 0.0) (sxo2 0.0) (s1 0.0)
-             (s2 0.0) (ta 0.0) (tb 0.0) (tfn 0.0) (tm 0.0) (tol 0.0) (trx 0.0)
-             (t2 0.0) (xo2 0.0) (xo2l 0.0) (z 0.0) (i 0) (ialp 0) (in 0) (is 0)
-             (i1 0) (k 0) (kk 0) (km 0) (kt 0) (nn 0) (ns 0) (t$ 0.0))
+             (s2 0.0) (t$ 0.0) (ta 0.0) (tb 0.0) (tfn 0.0) (tm 0.0) (tol 0.0)
+             (trx 0.0) (t2 0.0) (xo2 0.0) (xo2l 0.0) (z 0.0) (i 0) (ialp 0)
+             (in 0) (is 0) (i1 0) (k 0) (kk 0) (km 0) (kt 0) (nn 0) (ns 0))
         (declare (type (f2cl-lib:integer4) ns nn kt km kk k i1 is in ialp i)
                  (type (array double-float (3)) temp)
-                 (type (double-float) t$ z xo2l xo2 t2 trx tol tm tfn tb ta s2
+                 (type (double-float) z xo2l xo2 t2 trx tol tm tfn tb ta t$ s2
                                       s1 sxo2 sx s ra gln fnu fnp1 fni fnf fn
                                       flgik etx elim earg dx dtm dfn tolln atol
                                       arg ap ans akm ak ain))

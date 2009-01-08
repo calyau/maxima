@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dyairy.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dyairy.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dyairy.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dyairy.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dyairy.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dyairy.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dyairy.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -280,13 +288,13 @@
                                        1.62098952568741e-13
                                        -2.40765247974057e-14
                                        1.69384811284491e-16))))
-  (declare (type (simple-array double-float (21)) dbk1)
-           (type (simple-array double-float (19)) dbjn dbjp bjn bjp)
-           (type (simple-array double-float (14)) dbb daa dbk4 bb aa bk4)
-           (type (simple-array double-float (20)) dbk3 dbk2 bk3 bk2 bk1)
-           (type (double-float) con3 con2 con1 spi12 fpi12)
-           (type (f2cl-lib:integer4) m4d m3d m2d m1d n4d n3d n2d n1d m3 m2 m1
-                                     n3 n2 n1))
+  (declare (type (f2cl-lib:integer4) n1 n2 n3 m1 m2 m3 n1d n2d n3d n4d m1d m2d
+                                     m3d m4d)
+           (type (double-float) fpi12 spi12 con1 con2 con3)
+           (type (simple-array double-float (20)) bk1 bk2 bk3 dbk2 dbk3)
+           (type (simple-array double-float (14)) bk4 aa bb dbk4 daa dbb)
+           (type (simple-array double-float (19)) bjp bjn dbjp dbjn)
+           (type (simple-array double-float (21)) dbk1))
   (defun dyairy (x rx c bi dbi)
     (declare (type (double-float) dbi bi c rx x))
     (prog ((ax 0.0) (cv 0.0) (d1 0.0) (d2 0.0) (ex 0.0) (e1 0.0) (e2 0.0)

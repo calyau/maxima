@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbsknu.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsknu.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsknu.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsknu.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsknu.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsknu.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsknu.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -20,8 +28,8 @@
                                        -0.0421977345555443 0.007218943246663
                                        -2.152416741149e-4 -2.01348547807e-5
                                        1.133027232e-6 6.116095e-9))))
-  (declare (type (simple-array double-float (8)) cc)
-           (type (double-float) rthpi pi$ x2 x1))
+  (declare (type (double-float) x1 x2 pi$ rthpi)
+           (type (simple-array double-float (8)) cc))
   (defun dbsknu (x fnu kode n y nz)
     (declare (type (simple-array double-float (*)) y)
              (type (f2cl-lib:integer4) nz n kode)

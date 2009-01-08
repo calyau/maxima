@@ -4,27 +4,6 @@
 ;;;;;;;;;;Hamilton, New Zealand 1992-95 - all rights reserved;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; edit here so that the root of the f2cl directory tree is appropriate
-;; for your installation and the filename extension is valid
-;;#+(or sparc sun4)(defvar *f2cl_dir* "/d/sen/f2cl/wrk/")
-;;#+vms (defvar *f2cl_dir* "d:[sen.f2cl.wrk]")
-;;(defvar *ext* 
-;;          #+clisp ".fas" #+allegro ".fasl" #+vms ".fas" #+lucid ".sbin")
-;;
-;;(defun load-f2cl (x) 
-;;(load (concatenate 'string *f2cl_dir* x *ext*) :print nil :verbose t))
-;;
-;;(load-f2cl "f2cl1" )
-;;(load-f2cl "f2cl2" )
-;;(load-f2cl "f2cl3" )
-;;(load-f2cl "f2cl4" )
-;;(load-f2cl "f2cl5" )
-;;(load-f2cl "f2cl6" )
-;;(load-f2cl "f2cl7" )
-;;(load-f2cl "macros" )
-;;
-;;(format t "~&The f2cl software has been loaded.~%")
-
 (in-package :common-lisp-user)
 
 (defpackage :f2cl-lib
@@ -36,6 +15,7 @@
    #:%false% #:%true%
    ;; User-settable runtime options
    #:*check-array-bounds*
+   #:*stop-signals-error-p*
    ;; Types
    #:integer4 #:integer2 #:integer1 #:real8 #:real4 #:complex8 #:complex16
    #:array-double-float #:array-single-float #:array-integer4 #:array-strings
@@ -57,7 +37,7 @@
    #:amin1 #:amod #:anint #:asin #:atan #:atan2
    #:cabs #:cexp #:fchar #:clog #:cmplx #:dcmplx #:conjg #:ccos
    #:csin #:csqrt #:zsqrt #:dabs #:dacos #:dasin
-   #:datan #:datan2 #:dble #:dcos #:dcosh #:dexp #:dim
+   #:datan #:datan2 #:dble #:dcos #:dcosh #:dexp #:dfloat #:dim
    #:dint #:dlog #:dlog10 #:dmax1 #:dmin1 #:dmod
    #:dnint #:dprod #:dsign #:dsin #:dsinh #:dsqrt #:dtan
    #:dtanh #:ffloat #:iabs #:ichar #:idim #:idint
@@ -79,14 +59,45 @@
    ;; Main routines
    #:f2cl
    #:f2cl-compile
+   #:f2cl-version
    ))
 
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.10 2007-04-07 19:09:01 dtc Exp $
+;;; $Id: f2cl-package.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.10  2007-04-07 19:09:01  dtc
+;;; Revision 1.11  2009-01-08 18:25:34  rtoy
+;;; Update f2cl to latest version of f2cl, and regenerate all of the lisp
+;;; code.
+;;;
+;;; The testsuite works fine, so I assume the quadpack and other slatec
+;;; routines are ok.
+;;;
+;;; The lsquares tests runs fine, so the lbfgs routines appear to be ok.
+;;;
+;;; src/numerical/f2cl-lib.lisp:
+;;; o Update from f2cl macros.l, 2009/01/08
+;;;
+;;; src/numerical/f2cl-package.lisp:
+;;; o Update from f2cl f2cl0.l, 2009/01/08
+;;;
+;;; src/numerical/slatec:
+;;; o Regenerate lisp files
+;;;
+;;; share/lbfgs:
+;;; o Split lbfgs.f into one function per file and add these new files.
+;;; o Generate new lisp files
+;;; o Update lbfgs.mac to load the new list files.
+;;; o Added lbfgs-lisp.system so we know how to regenerate the lisp files
+;;;   in the future.
+;;;
+;;; share/lapack:
+;;; o Add lapack-lisp.system so we know how to regenerate the lisp files
+;;;   in the future.
+;;; o Regenerate all of the lisp files.
+;;;
+;;; Revision 1.10  2007/04/07 19:09:01  dtc
 ;;; o Fix some symbol case issues.  This enables the Lapack code to run in a
 ;;;   lowercase Common Lisp variant.
 ;;;
@@ -154,42 +165,6 @@
 ;;;
 ;;; Revision 1.1  2002/04/26 13:04:46  rtoy
 ;;; Initial revision.
-;;;
-;;; Revision 1.13  2002/03/11 16:40:21  rtoy
-;;; Export INT-ADD, INT-SUB, INT-MUL.
-;;;
-;;; Revision 1.12  2002/02/17 15:50:17  rtoy
-;;; Export with-array-data.
-;;;
-;;; Revision 1.11  2002/02/10 03:41:53  rtoy
-;;; Export ARRAY-STRINGS type.
-;;;
-;;; Revision 1.10  2002/01/13 16:24:24  rtoy
-;;; All of the exported symbols in macros.l have been moved from the F2CL
-;;; package to the F2CL-LIB package.
-;;;
-;;; Revision 1.9  2002/01/05 18:52:12  rtoy
-;;; Add in-package.
-;;;
-;;; Revision 1.8  2001/04/26 17:49:50  rtoy
-;;; Export new functions D1MACH and R1MACH
-;;;
-;;; Revision 1.7  2001/02/26 15:38:22  rtoy
-;;; Move *check-array-bounds* from f2cl1.l to macros.l since the generated
-;;; code refers to it.  Export this variable too.
-;;;
-;;; Revision 1.6  2000/09/01 13:51:20  rtoy
-;;; AMAX1 and DIM were repeated.
-;;;
-;;; Revision 1.5  2000/08/05 19:06:34  rtoy
-;;; Export F2CL-COMPILE.
-;;;
-;;; Revision 1.4  2000/07/28 22:07:44  rtoy
-;;; It's FORTRAN, not FORTAN!
-;;;
-;;; Revision 1.3  2000/07/28 16:56:48  rtoy
-;;; f2cl0.l isn't the (unused) f2cl loader anymore.  Use it to define the
-;;; package used by f2cl.
 ;;;
 ;;; Revision 1.2  2000/07/13 16:55:34  rtoy
 ;;; To satisfy the Copyright statement, we have placed the RCS logs in

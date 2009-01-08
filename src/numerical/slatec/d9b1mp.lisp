@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: d9b1mp.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: d9b1mp.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: d9b1mp.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: d9b1mp.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: d9b1mp.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: d9b1mp.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: d9b1mp.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -185,13 +193,13 @@
                                        -2.817224786123364e-32)))
       (pi4 0.7853981633974483)
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
-           (type (simple-array double-float (44)) bth1cs)
-           (type (simple-array double-float (40)) bm12cs)
-           (type (simple-array double-float (39)) bt12cs)
+  (declare (type (integer) nbm1 nbt12 nbm12 nbth1)
+           (type (double-float) xmax pi4)
            (type (simple-array double-float (37)) bm1cs)
-           (type (double-float) pi4 xmax)
-           (type (integer) nbth1 nbm12 nbt12 nbm1))
+           (type (simple-array double-float (39)) bt12cs)
+           (type (simple-array double-float (40)) bm12cs)
+           (type (simple-array double-float (44)) bth1cs)
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun d9b1mp (x ampl theta)
     (declare (type (double-float) theta ampl x))

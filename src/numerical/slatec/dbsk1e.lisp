@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbsk1e.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsk1e.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsk1e.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsk1e.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsk1e.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsk1e.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbsk1e.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -108,17 +116,17 @@
                                        1.2020219393698158e-31
                                        -2.412930801459409e-32)))
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
-           (type (simple-array double-float (33)) ak12cs)
-           (type (simple-array double-float (38)) ak1cs)
+  (declare (type (integer) ntk1 ntak1 ntak12)
+           (type (double-float) xmin xsml)
            (type (simple-array double-float (16)) bk1cs)
-           (type (double-float) xsml xmin)
-           (type (integer) ntak12 ntak1 ntk1))
+           (type (simple-array double-float (38)) ak1cs)
+           (type (simple-array double-float (33)) ak12cs)
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun dbsk1e (x)
     (declare (type (double-float) x))
-    (prog ((y 0.0) (dbsk1e 0.0) (sqrt$ 0.0f0) (eta 0.0f0))
-      (declare (type (single-float) eta sqrt$) (type (double-float) dbsk1e y))
+    (prog ((y 0.0) (dbsk1e 0.0) (eta 0.0f0))
+      (declare (type (single-float) eta) (type (double-float) dbsk1e y))
       (cond
         (first$
          (setf eta (* 0.1f0 (f2cl-lib:freal (f2cl-lib:d1mach 3))))

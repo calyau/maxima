@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlaexc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaexc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaexc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaexc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaexc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaexc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaexc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -14,7 +22,8 @@
            (type (double-float 1.0 1.0) one)
            (type (double-float 10.0 10.0) ten)
            (type (f2cl-lib:integer4 4 4) ldd)
-           (type (f2cl-lib:integer4 2 2) ldx))
+           (type (f2cl-lib:integer4 2 2) ldx)
+           (ignorable zero one ten ldd ldx))
   (defun dlaexc (wantq n t$ ldt q ldq j1 n1 n2 work info)
     (declare (type (array double-float (*)) work q t$)
              (type (f2cl-lib:integer4) info n2 n1 j1 ldq ldt n)

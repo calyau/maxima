@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dtrsna.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrsna.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrsna.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrsna.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrsna.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrsna.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrsna.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -12,7 +20,8 @@
 (let* ((zero 0.0) (one 1.0) (two 2.0))
   (declare (type (double-float 0.0 0.0) zero)
            (type (double-float 1.0 1.0) one)
-           (type (double-float 2.0 2.0) two))
+           (type (double-float 2.0 2.0) two)
+           (ignorable zero one two))
   (defun dtrsna
          (job howmny select n t$ ldt vl ldvl vr ldvr s sep mm m work ldwork
           iwork info)
@@ -37,9 +46,8 @@
              (lnrm 0.0) (mu 0.0) (prod 0.0) (prod1 0.0) (prod2 0.0) (rnrm 0.0)
              (scale 0.0) (smlnum 0.0) (sn 0.0) (i 0) (ierr 0) (ifst 0) (ilst 0)
              (j 0) (k 0) (kase 0) (ks 0) (n2 0) (nn 0) (pair nil) (somcon nil)
-             (wantbh nil) (wants nil) (wantsp nil) (/=$ 0.0f0))
-        (declare (type (single-float) /=$)
-                 (type (array double-float (1)) dummy)
+             (wantbh nil) (wants nil) (wantsp nil))
+        (declare (type (array double-float (1)) dummy)
                  (type (double-float) bignum cond$ cs delta dumm eps est lnrm
                                       mu prod prod1 prod2 rnrm scale smlnum sn)
                  (type (f2cl-lib:integer4) i ierr ifst ilst j k kase ks n2 nn)

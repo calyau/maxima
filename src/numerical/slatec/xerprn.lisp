@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: xerprn.lisp,v 1.13 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: xerprn.lisp,v 1.13 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: xerprn.lisp,v 1.13 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: xerprn.lisp,v 1.13 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: xerprn.lisp,v 1.13 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: xerprn.lisp,v 1.13 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: xerprn.lisp,v 1.13 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,7 +18,7 @@
 
 
 (let* ((newlin "$$"))
-  (declare (type (simple-array character (2)) newlin))
+  (declare (type (simple-array character (2)) newlin) (ignorable newlin))
   (defun xerprn (prefix npref messg nwrap)
     (declare (type (f2cl-lib:integer4) nwrap npref)
              (type (simple-array character (*)) messg prefix))
@@ -69,7 +77,7 @@
                        ((> i nunit) nil)
            (tagbody
              (f2cl-lib:fformat (f2cl-lib:fref iu (i) ((1 5)))
-                               (("~A~%"))
+                               (t (("~A")) "~%")
                                (f2cl-lib:fref-string cbuff
                                                      (1
                                                       (f2cl-lib:int-add lpref
@@ -170,7 +178,7 @@
                     ((> i nunit) nil)
         (tagbody
           (f2cl-lib:fformat (f2cl-lib:fref iu (i) ((1 5)))
-                            (("~A~%"))
+                            (t (("~A")) "~%")
                             (f2cl-lib:fref-string cbuff
                                                   (1
                                                    (f2cl-lib:int-add lpref

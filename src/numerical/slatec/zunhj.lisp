@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zunhj.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunhj.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunhj.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunhj.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunhj.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunhj.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zunhj.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -511,12 +519,12 @@
       (zeroi 0.0)
       (coner 1.0)
       (conei 0.0))
-  (declare (type (double-float) conei coner zeroi zeror thpi gpi hpi ex2 ex1)
-           (type (simple-array double-float (30)) gama)
-           (type (simple-array double-float (210)) beta)
-           (type (simple-array double-float (180)) alfa)
+  (declare (type (simple-array double-float (14)) ar br)
            (type (simple-array double-float (105)) c)
-           (type (simple-array double-float (14)) br ar))
+           (type (simple-array double-float (180)) alfa)
+           (type (simple-array double-float (210)) beta)
+           (type (simple-array double-float (30)) gama)
+           (type (double-float) ex1 ex2 hpi gpi thpi zeror zeroi coner conei))
   (defun zunhj
          (zr zi fnu ipmtr tol phir phii argr argi zeta1r zeta1i zeta2r zeta2i
           asumr asumi bsumr bsumi)
@@ -617,12 +625,12 @@
       (setf argr (* zetar fn23))
       (setf argi (* zetai fn23))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt sumar sumai zar zai)
+          (zsqrt$ sumar sumai zar zai)
         (declare (ignore var-0 var-1))
         (setf zar var-2)
         (setf zai var-3))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt w2r w2i str sti)
+          (zsqrt$ w2r w2i str sti)
         (declare (ignore var-0 var-1))
         (setf str var-2)
         (setf sti var-3))
@@ -635,7 +643,7 @@
       (setf zar (+ zar zar))
       (setf zai (+ zai zai))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt zar zai str sti)
+          (zsqrt$ zar zai str sti)
         (declare (ignore var-0 var-1))
         (setf str var-2)
         (setf sti var-3))
@@ -730,7 +738,7 @@
       (go end_label)
      label130
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt w2r w2i wr wi)
+          (zsqrt$ w2r w2i wr wi)
         (declare (ignore var-0 var-1))
         (setf wr var-2)
         (setf wi var-3))
@@ -786,7 +794,7 @@
       (setf tzar (+ zar zar))
       (setf tzai (+ zai zai))
       (multiple-value-bind (var-0 var-1 var-2 var-3)
-          (zsqrt tzar tzai str sti)
+          (zsqrt$ tzar tzai str sti)
         (declare (ignore var-0 var-1))
         (setf str var-2)
         (setf sti var-3))
@@ -1000,6 +1008,6 @@
                             fortran-to-lisp::asumi fortran-to-lisp::bsumr
                             fortran-to-lisp::bsumi)
            :calls '(fortran-to-lisp::zlog fortran-to-lisp::zdiv
-                    fortran-to-lisp::zsqrt fortran-to-lisp::zabs
+                    fortran-to-lisp::zsqrt$ fortran-to-lisp::zabs
                     fortran-to-lisp::d1mach))))
 

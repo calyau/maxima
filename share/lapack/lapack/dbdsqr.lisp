@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbdsqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -24,7 +32,8 @@
            (type (double-float 10.0 10.0) ten)
            (type (double-float 100.0 100.0) hndrd)
            (type (double-float) meigth)
-           (type (f2cl-lib:integer4 6 6) maxitr))
+           (type (f2cl-lib:integer4 6 6) maxitr)
+           (ignorable zero one negone hndrth ten hndrd meigth maxitr))
   (defun dbdsqr (uplo n ncvt nru ncc d e vt ldvt u ldu c ldc work info)
     (declare (type (array double-float (*)) work c u vt e d)
              (type (f2cl-lib:integer4) info ldc ldu ldvt ncc nru ncvt n)

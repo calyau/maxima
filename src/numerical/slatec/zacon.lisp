@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zacon.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zacon.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zacon.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zacon.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zacon.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zacon.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: zacon.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,7 +18,7 @@
 
 
 (let ((pi$ 3.141592653589793) (zeror 0.0) (coner 1.0))
-  (declare (type (double-float) coner zeror pi$))
+  (declare (type (double-float) pi$ zeror coner))
   (defun zacon (zr zi fnu kode mr n yr yi nz rl fnul tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
              (type (f2cl-lib:integer4) nz n mr kode)

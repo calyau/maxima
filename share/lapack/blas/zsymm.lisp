@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: zsymm.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zsymm.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zsymm.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zsymm.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zsymm.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zsymm.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: zsymm.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -10,7 +18,9 @@
 
 
 (let* ((one (f2cl-lib:cmplx 1.0 0.0)) (zero (f2cl-lib:cmplx 0.0 0.0)))
-  (declare (type (f2cl-lib:complex16) one) (type (f2cl-lib:complex16) zero))
+  (declare (type (f2cl-lib:complex16) one)
+           (type (f2cl-lib:complex16) zero)
+           (ignorable one zero))
   (defun zsymm (side uplo m n alpha a lda b ldb$ beta c ldc)
     (declare (type (array f2cl-lib:complex16 (*)) c b a)
              (type (f2cl-lib:complex16) beta alpha)

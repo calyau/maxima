@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dormlq.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dormlq.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dormlq.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dormlq.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dormlq.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dormlq.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dormlq.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -11,7 +19,8 @@
 
 (let* ((nbmax 64) (ldt (+ nbmax 1)))
   (declare (type (f2cl-lib:integer4 64 64) nbmax)
-           (type (f2cl-lib:integer4) ldt))
+           (type (f2cl-lib:integer4) ldt)
+           (ignorable nbmax ldt))
   (defun dormlq (side trans m n k a lda tau c ldc work lwork info)
     (declare (type (array double-float (*)) work c tau a)
              (type (f2cl-lib:integer4) info lwork ldc lda k n m)

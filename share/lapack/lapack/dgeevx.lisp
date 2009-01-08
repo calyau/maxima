@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dgeevx.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgeevx.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgeevx.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgeevx.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgeevx.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgeevx.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dgeevx.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -11,7 +19,8 @@
 
 (let* ((zero 0.0) (one 1.0))
   (declare (type (double-float 0.0 0.0) zero)
-           (type (double-float 1.0 1.0) one))
+           (type (double-float 1.0 1.0) one)
+           (ignorable zero one))
   (defun dgeevx
          (balanc jobvl jobvr sense n a lda wr wi vl ldvl vr ldvr ilo ihi scale
           abnrm rconde rcondv work lwork iwork info)
@@ -673,10 +682,10 @@
                             fortran-to-lisp::ilo fortran-to-lisp::ihi nil
                             fortran-to-lisp::abnrm nil nil nil nil nil
                             fortran-to-lisp::info)
-           :calls '(fortran-to-lisp::dtrsna fortran-to-lisp::drot
-                    fortran-to-lisp::dlartg fortran-to-lisp::idamax
-                    fortran-to-lisp::dlapy2 fortran-to-lisp::dscal
-                    fortran-to-lisp::dnrm2 fortran-to-lisp::dgebak
+           :calls '(fortran-to-lisp::drot fortran-to-lisp::dlartg
+                    fortran-to-lisp::idamax fortran-to-lisp::dlapy2
+                    fortran-to-lisp::dscal fortran-to-lisp::dnrm2
+                    fortran-to-lisp::dgebak fortran-to-lisp::dtrsna
                     fortran-to-lisp::dtrevc fortran-to-lisp::dhseqr
                     fortran-to-lisp::dorghr fortran-to-lisp::dlacpy
                     fortran-to-lisp::dgehrd fortran-to-lisp::dgebal

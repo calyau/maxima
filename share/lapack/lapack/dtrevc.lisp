@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dtrevc.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrevc.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrevc.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrevc.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrevc.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrevc.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $"
+;;;  "$Id: dtrevc.lisp,v 1.3 2009-01-08 18:25:24 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -11,7 +19,8 @@
 
 (let* ((zero 0.0) (one 1.0))
   (declare (type (double-float 0.0 0.0) zero)
-           (type (double-float 1.0 1.0) one))
+           (type (double-float 1.0 1.0) one)
+           (ignorable zero one))
   (defun dtrevc (side howmny select n t$ ldt vl ldvl vr ldvr mm m work info)
     (declare (type (array double-float (*)) work vr vl t$)
              (type (f2cl-lib:integer4) info m mm ldvr ldvl ldt n)
@@ -31,9 +40,8 @@
              (vcrit 0.0) (vmax 0.0) (wi 0.0) (wr 0.0) (xnorm 0.0) (i 0)
              (ierr 0) (ii 0) (ip 0) (is 0) (j 0) (j1 0) (j2 0) (jnxt 0) (k 0)
              (ki 0) (n2 0) (allv nil) (bothv nil) (leftv nil) (over nil)
-             (pair nil) (rightv nil) (somev nil) (sqrt$ 0.0f0))
-        (declare (type (single-float) sqrt$)
-                 (type (array double-float (4)) x)
+             (pair nil) (rightv nil) (somev nil))
+        (declare (type (array double-float (4)) x)
                  (type (double-float) beta bignum emax ovfl rec remax scale
                                       smin smlnum ulp unfl vcrit vmax wi wr
                                       xnorm)

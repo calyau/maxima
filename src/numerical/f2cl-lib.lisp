@@ -5,45 +5,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (in-package :f2cl-lib)
 
-;; macros:
-;;	rexpt
-;;	fexport
-;;	fproclaim
-;;	fuse-package 
-;;	fin-package
-;;	map-defvar
-;;	do1 
-;;	do!
-;;	double-cdr
-;;	putproperty
-;;	defprop
-;;	array-cl
-;;	store-cl
-;;	apply!
-
-;;	rfref
-;;	rfset
-;;	fref
-;;	fset
-
-;;	while
-;;       fdo
-;;	reset-vble - a defun
-;;       arithmetic-if
-;;	computed-goto
-;;	assigned-goto
-;;	eqv
-;;	constant-list
-;;----------------------------------------------------------------------------
+(defparameter *f2cl-macros-version*
+  "Id: macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
 (eval-when
     #+gcl (compile load eval)
     #-gcl (:compile-toplevel :load-toplevel :execute)
     (proclaim '(special *verbose*)))
 ;;----------------------------------------------------------------------------
-#+aclpc (defmacro rexpt (x y) `(realpart (expt ,x ,y)))
-#-aclpc (defmacro rexpt (x y) `(expt ,x ,y))
-
 (defvar *check-array-bounds* nil
   "If non-NIL, generated code checks for array bounds.  If NIL, checking
 is not included")
@@ -206,19 +175,6 @@ is not included")
 ;;
 ;; This is done by making a displaced array to VNAME with the
 ;; appropriate offset.
-#+nil
-(defmacro array-slice (vname type indices bounds)
-  (let ((dims `(* ,@(mapcar #'(lambda (idx bnd)
-				(if (and (numberp idx)
-					 (numberp (second bnd)))
-				    (+ (- (second bnd) idx) 1)
-				    `(+ (- ,(second bnd) ,idx) 1)))
-			    indices bounds))))
-    `(make-array ,dims
-      :element-type ',type
-      :displaced-to ,vname
-      :displaced-index-offset ,(col-major-index indices bounds))))
-
 (defmacro array-slice (vname type indices bounds)
   ;; To figure the size of the sliced array, use ARRAY-TOTAL-SIZE
   ;; instead of the f2cl derived/declared BOUNDS, just in case we
@@ -246,11 +202,6 @@ is not included")
     :displaced-to ,vname
     :displaced-index-offset (min (array-total-size ,vname) ,(col-major-index indices bounds))))
 
-#+nil
-(defmacro array-slice (vname type indices bounds)
-  (declare (ignore type indices bounds))
-  vname)
-
 ;; Compute an initializer for make-array given the data in the list
 ;; DATA.  The array has en element type of TYPE and has dimensions of
 ;; DIMS.
@@ -258,7 +209,7 @@ is not included")
   (let ((data-list (gensym))
 	(data-len (length data))
 	(total-length (gensym)))
-    `(let* ((,data-list ',data)
+    `(let* ((,data-list (list ,@data))
 	    (,total-length (reduce #'* (list ,@dims))))
        (cond ((< ,data-len ,total-length)
 	      ;; Need to append some data.
@@ -309,38 +260,6 @@ is not included")
 			  `((setq ,loop-var (the integer4 ,(third do_vble_clause))
 			     ,iteration_count (the integer4 (1- ,iteration_count)))))
 		  '((go loop)))))))))
-
-;;(defmacro fdo (do-vbles predicate-clause &rest body)
-;;   `(prog nil
-;;          (setq ,(caar do-vbles) ,(cadar do-vbles)) 
-;;          loop
-;;          (return
-;;          (cond ,(reset-vble predicate-clause)
-;;                ,(cons 't 
-;;                       (append 
-;;                        (append body `((setq ,(caar do-vbles) ,(caddar do-vbles))))
-;;                        '((go loop))))))))
-;;(defmacro fdo (do-vbles predicate-clause &rest body)
-;;   `(prog (iteration-count)
-;;          ,(append '(psetq) 
-;;                   (do ((do-vars do-vbles (cdr do-vars))
-;;                        (ret nil (append ret (list (caar do-vars) (cadar do-vars)))))
-;;                       ((null do-vars) ret)))
-;;          loop
-;;          (return
-;;          (cond ,predicate-clause
-;;                ,(cons 't 
-;;                       (append 
-;;                        (append body
-;;                                (list
-;;                                (append '(psetq)
-;;                                (do ((do-vars do-vbles (cdr do-vars))
-;;                                     (ret nil (append ret (if (null (caddar do-vars)) 
-;;                                                              nil 
-;;                                                              (list (caar do-vars) 
-;;                                                                    (caddar do-vars))))))
-;;                                    ((null do-vars) ret)))))
-;;                        '((go loop))))))))
 
 ;;----------------------------------------------------------------------------
 ;; macro for division 
@@ -407,16 +326,9 @@ is not included")
     ,@(computed-goto-aux tag-lst)))
 
 ;; macro for a lisp equivalent of Fortran assigned GOTOs
-#+nil
-(defmacro assigned-goto (i &optional tag-lst)
-   `(if ,tag-lst
-        (if (member ,i ,tag-lst) 
-            (go ,i)
-            (error "bad statement number in assigned goto"))
-        (go ,i)))
-
-
-(eval-when (:load-toplevel :compile-toplevel :execute)
+(eval-when
+    #+gcl (compile load eval)
+    #-gcl (:load-toplevel :compile-toplevel :execute)
 (defun make-label (n) 
   (read-from-string (concatenate 'string (symbol-name :label) (princ-to-string n))))
 
@@ -431,6 +343,7 @@ is not included")
 )
 
 
+;; macro for a lisp equivalent of Fortran assigned GOTOs
 (defmacro assigned-goto (var tag-list)
   `(case ,var
      ,@(assigned-goto-aux tag-list)))
@@ -514,13 +427,12 @@ is not included")
 ;;     return (r-X)+X;
 ;; }
 ;;
-;; We modified this to do truncation instead of directed rounding.
 ;; This assumes that we in round-to-nearest mode (the default).
 ;;
 ;; These only work if you have IEEE FP arithmetic.  There are 2
-;; versions given below.  One is for non-x86, which assumes that
+;; versions given below.  One is for non-x87, which assumes that
 ;; single and double FP numbers are properly rounded after each
-;; operation.  The version for x86 stores away a value to make sure
+;; operation.  The version for x87 stores away a value to make sure
 ;; the rounding happens correctly.
 ;;
 ;; Finally, the last version if for platforms where none of this
@@ -530,44 +442,72 @@ is not included")
 ;; cost of MPNORM (from MPFUN) from 48.89 sec to 24.88 sec (a factor
 ;; of 2!) when computing pi to 29593 digits or os.
 
-#+(and cmu (not x86))
+(declaim (inline rint-s rint-d))
+#+(and cmu (or :sse2 (not x86)))
+(progn
+(defun rint-s (x)
+  (declare (single-float x))
+  (let ((const (scale-float 1f0 24)))
+    (if (>= x 0)
+	(+ (- x const) const)
+	(- (+ x const) const))))
+
+(defun rint-d (x)
+  (declare (double-float x))
+  (let ((const (scale-float 1d0 53)))
+    (if (>= x 0)
+	(+ (- x const) const)
+	(- (+ x const) const))))
+)
+
+#+(and cmu (and x86 x87))
+(progn
+(defun rint-s (x)
+  (declare (single-float x))
+  (let ((junks (make-array 1 :element-type 'single-float))
+	(const (scale-float 1f0 24)))
+    (if (>= x 0)
+	(progn
+	  (setf (aref junks 0) (- x const))
+	  (+ (aref junks 0) const))
+	(progn
+	  (setf (aref junks 0) (+ x const))
+	  (- (aref junks 0) const)))))
+
+(defun rint-d (x)
+  (declare (double-float x))
+  (let ((junkd (make-array 1 :element-type 'double-float))
+	(const (scale-float 1d0 53)))
+    (if (>= x 0)
+	(progn
+	  (setf (aref junkd 0) (- x const))
+	  (+ (aref junkd 0) const))
+	(progn
+	  (setf (aref junkd 0) (+ x const))
+	  (- (aref junkd 0) const)))))
+)
+
+;; Truncate x to an integer.
+#+cmu
 (defun aint (x)
+  ;; rint above is fast.  We use it to round the number, and then
+  ;; adjust the result to truncate.
   (etypecase x
     (single-float
-     (let ((const (scale-float 1f0 24)))
-       (if (>= x 0)
-	 (+ (- (- x 0.5f0) const) const)
-	 (- (+ (+ x 0.5f0) const) const))))
+     (let ((r (rint-s x)))
+       (if (> (abs r) (abs x))
+	   (if (> r 0)
+	       (- r 1)
+	       (+ r 1))
+	   r)))
     (double-float
-     (let ((const (scale-float 1d0 53)))
-       (if (>= x 0)
-	 (+ (- (- x 0.5d0) const) const)
-	 (- (+ (+ x 0.5d0) const) const))))))
-
-#+(and cmu x86)
-(let ((junks (make-array 1 :element-type 'single-float))
-      (junkd (make-array 1 :element-type 'double-float)))
-  (defun aint (x)
-    ;; ftruncate is exactly what we want.
-    (etypecase x
-      (single-float
-       (let ((const (scale-float 1f0 24)))
-	 (if (>= x 0)
-	     (progn
-	       (setf (aref junks 0) (- x 0.5f0))
-	       (+ (- (aref junks 0) const) const))
-	     (progn
-	       (setf (aref junks 0) (+ x 0.5f0))
-	       (- (+ (aref junks 0) const) const)))))
-      (double-float
-       (let ((const (scale-float 1d0 53)))
-	 (if (>= x 0)
-	     (progn
-	       (setf (aref junkd 0) (- x 0.5d0))
-	       (+ (- (aref junkd 0) const) const))
-	     (progn
-	       (setf (aref junkd 0) (+ x 0.5d0))
-	       (- (+ (aref junkd 0) const) const))))))))
+     (let ((r (rint-d x)))
+       (if (> (abs r) (abs x))
+	   (if (> r 0)
+	       (- r 1)
+	       (+ r 1))
+	   r)))))
+    
 
 #-cmu
 (defun aint (x)
@@ -601,7 +541,7 @@ is not included")
 ;; also return the real part of a complex number.  CMPLX takes one or
 ;; two args and creates a complex number.
 
-(declaim (inline freal sngl dble cmplx))
+(declaim (inline freal sngl dble dfloat cmplx))
 (defun freal (x)
   (coerce (realpart x) 'single-float))
 
@@ -609,6 +549,9 @@ is not included")
   (coerce (realpart x) 'single-float))
 
 (defun dble (x)
+  (coerce (realpart x) 'double-float))
+
+(defun dfloat (x)
   (coerce (realpart x) 'double-float))
 
 (defun cmplx (x &optional y)
@@ -776,8 +719,19 @@ is not included")
 (defun len (s)
   (length s))
 
+;; From http://www.fortran.com/fortran/F77_std/rjcnf0001-sh-15.html#sh-15.10:
+;;
+;; INDEX(a1 ,a2) returns an integer value indicating the starting
+;; position within the character string a1 of a substring identical
+;; to string a2 . If a2 occurs more than once in a1 , the starting
+;; position of the first occurrence is returned.
+;;
+;; If a2 does not occur in a1 , the value zero is returned. Note
+;; that zero is returned if LEN(a1) < LEN(a2).
+;;
+;; Thus the arguments are in the opposite order for CL's SEARCH function.
 (defun index (s1 s2)
-  (or (search s1 s2) 0))
+  (or (search s2 s1) 0))
 
 ;; These string operations need some work!
 (defun lge (s1 s2)
@@ -940,30 +894,8 @@ is not included")
 (defun ffloat (x)
   (coerce x 'single-float))
 
-#+nil
-(defun process-implied-do (ido low-bnds init)
-  (let* ((implied-do (remove '|,| ido))
-	 (array (first implied-do))
-	 (do-var (elt implied-do (1- (position '= implied-do))))
-	 (limits (rest (member '= implied-do)))
-	 (start (first limits))
-	 (end (second limits))
-	 (step (if (>= (length limits) 3)
-		   (third limits)
-		   1)))
-    (cond ((atom array)
-	   `(do ((,do-var ,start (+ ,do-var ,step)))
-	     ((> ,do-var ,end))
-	     (declare (type integer4 ,do-var))
-	     (fset (fref ,array ,(remove '|,| (second implied-do)) ,low-bnds) (pop ,init))))
-	  (t
-	   `(do ((,do-var ,start (+ ,do-var ,step)))
-	     ((> ,do-var ,end))
-	     (declare (type integer4 ,do-var))
-	     ,(process-implied-do (remove '|,| array) low-bnds init))))))
-
-(defun process-implied-do (ido low-bnds var-types init)
-  (destructuring-bind (data-vars (index-var start end &optional step))
+(defun process-implied-do (ido array-bnds var-types init)
+  (destructuring-bind (data-vars &rest looping)
       ido
     (labels
 	((convert-type (type)
@@ -972,26 +904,35 @@ is not included")
 	       `(coerce (pop ,init) ',type)))
 	 (map-vars (v)
 	   (mapcar #'(lambda (x b vt)
-		       `(fset (fref ,(first x) ,(second x) ((,b)))
-			 ,(convert-type vt)))
-		   v low-bnds var-types)))
-    `(do ((,index-var ,start (+ ,index-var ,(or step 1))))
-         ((> ,index-var ,end))
-       ,@(map-vars data-vars))
-    )))
+		       `(fset (fref ,(first x) ,(second x) ,b)
+			      ,(convert-type vt)))
+		   v array-bnds var-types)))
+      (let ((body (map-vars data-vars)))
+	(dolist (loopvar looping)
+	  (destructuring-bind (index-var start end &optional step)
+	      loopvar
+	    (setf body `((do ((,index-var ,start (+ ,index-var ,(or step 1))))
+			    ((> ,index-var ,end))
+			  ,@body)))))
+	(car body)))))
 
 
 ;; Process implied do loops for data statements
-(defmacro data-implied-do (implied-do low-bnds var-types vals)
+(defmacro data-implied-do (implied-do array-bnds var-types vals)
   (let ((v (gensym)))
-    `(let ((,v ',vals))
-      ,(process-implied-do implied-do low-bnds var-types v))))
+    `(let ((,v (list ,@vals)))
+      ,(process-implied-do implied-do array-bnds var-types v))))
 
-;;-----------------------------------------------------------------------------  ; end of macros.l
+;;-----------------------------------------------------------------------------
    
 ;; Map Fortran logical unit numbers to Lisp streams
 
+#-gcl
 (defparameter *lun-hash*
+  (make-hash-table))
+
+#+gcl
+(defvar *lun-hash*
   (make-hash-table))
 
 (defun lun->stream (lun &optional readp)
@@ -1031,10 +972,11 @@ causing all pending operations to be flushed"
 	       (when (and (streamp val) (not (member key '(5 6 t))))
 		 (format t "Closing unit ~A: ~A~%" key val)
 		 (close val)))
-	   *lun-hash*))
+	       *lun-hash*))
 
-(defun %open-file (&key file status access recl blank unit form)
-  ;; We should also check for values of access, form that we don't support.
+(defun %open-file (&key unit file status access form recl blank)
+  (declare (ignore unit))
+  ;; We should also check for values of form that we don't support.
   (when recl
     (error "F2CL-LIB does not support record lengths"))
   (when blank
@@ -1042,10 +984,13 @@ causing all pending operations to be flushed"
   (when (and access (not (string-equal "sequential"
 				       (string-right-trim " " access))))
     (error "F2CL-LIB does not support ACCESS mode ~S" access))
+  (when (and form (not (string-equal "unformatted"
+				     (string-right-trim " " form))))
+    (error "F2CL-LIB does not support FORM ~S" form))
   (let ((s (and status (string-right-trim " " status))))
     (finish-output)
     (cond ((or (null s) (string-equal s "unknown"))
-	   (open file :direction :io :if-exists :append
+	   (open file :direction :io :if-exists :supersede
 		 :if-does-not-exist :create))
 	  ((string-equal s "old")
 	   (open file :direction :io :if-does-not-exist nil))
@@ -1070,16 +1015,20 @@ causing all pending operations to be flushed"
 (defmacro rewind (&key unit iostat err)
   (let ((result (gensym)))
     `(prog ((,result (%rewind ,unit)))
+	(declare (ignorable ,result))
 	,(if err `(unless ,result (go ,(f2cl-lib::make-label err))))
 	,(if iostat `(setf ,iostat (if ,result 0 1))))))
 	  
 
 (defun %close (&key unit status)
+  (when status
+    (error "F2CL-LIB does not support STATUS"))
   (cl:close (lun->stream unit)))
 
 (defmacro close$ (&key unit iostat err status)
   (let ((result (gensym)))
     `(prog ((,result (%close :unit ,unit  :status ,status)))
+	(declare (ignorable ,result))
 	,(if err `(unless ,result (go ,(f2cl-lib::make-label err))))
 	,(if iostat `(setf ,iostat (if ,result 0 1))))))
 
@@ -1101,89 +1050,202 @@ causing all pending operations to be flushed"
       ((or (null arg-list)
 	   (and (not top)
 		(null formats)))
-       ;;(format t "~&formats = ~S~%" formats)
+       #+nil
+       (progn
+	 (format t "~&end formats = ~S~%" formats)
+	 (format t "~&end arg-list = ~S~%" arg-list))
        (do ((more formats (rest more)))
 	   ((not (stringp (first more))))
 	 (format stream (first more)))
        arg-list)
+
     (when (null formats)
-      (setf formats format))
+      ;; We're out of formats but not arguments.  I think Fortran says
+      ;; we should start over at the last repeat spec.  So we look
+      ;; over all the formats until we find the first number.  That
+      ;; means it's a repeat spec.
+      ;;
+      ;; This is probably wrong for complicated format statements.
+      (do ((f format (cdr f))
+	   (last-rep nil))
+	  ((null f)
+	   (setf formats last-rep))
+	(when (or (eq (car f) t)
+		  (numberp (car f)))
+	  (setf last-rep f)))
+
+      (when (null formats)
+	;; Now what?  We couldn't find a repeat spec, so should we
+	;; just start over?
+	(setf formats format)))
     #+nil
     (let ((*print-circle* t))
+      (format t "~&arg-list = ~S~%" arg-list)
       (format t "~&formats = ~S~%" formats))
     (cond ((listp (first formats))
 	   (format stream (caar formats) (pop arg-list)))
+	  ((eq (first formats) #\:)
+	   ;; Terminate control if there are no more items
+	   (when (null arg-list)
+	     (return-from execute-format)))
 	  ((numberp (first formats))
 	   ;; Repeat a group some fixed number of times
 	   (dotimes (k (first formats))
 	     ;;(format t "k = ~A, format = ~S~%" k (second formats))
 	     (setf arg-list
-		   (execute-format nil stream (second formats) arg-list)))
+		   (execute-format nil stream (second formats) arg-list))
+	     ;; Gotta exit if we're out of arguments to print!
+	     (unless arg-list
+	       (return)))
 	   (setf formats (rest formats))
+	   ;; Output a newline after the repeat (I think Fortran says this)
+	   ;;(format stream "~&")
 	   ;;(format t "  cont with format = ~S~%" formats)
 	   )
-	   ((eq (first formats) t)
-	    ;; Repeat "forever" (until we run out of data)
-	    (loop while arg-list do
-		  (setf arg-list
-			(execute-format nil stream (second formats) arg-list))
-		  ;; Output a newline after the repeat (I think Fortran says this)
-		  (format stream "~%")))
+	  ((eq (first formats) t)
+	   ;; Repeat "forever" (until we run out of data)
+	   (loop while arg-list do
+		(setf arg-list
+		      (execute-format nil stream (second formats) arg-list))
+	      ;; Output a newline after the repeat (I think Fortran says this)
+		(format stream "~%")))
 	  (t
 	   (format stream (car formats))))))
 	   
-       
+(defun flatten-list (x)
+  (labels ((flatten-helper (x r);; 'r' is the stuff to the 'right'.
+	     (cond ((null x) r)
+		   ((atom x)
+		    (cons x r))
+		   (t (flatten-helper (car x)
+				      (flatten-helper (cdr x) r))))))
+    (flatten-helper x nil)))
+
+;; Fortran G format, roughly.  We use ~F for numbers "near" 1, and use
+;; ~E otherwise.
+;;
+;; Note that g77 seems to use an exponent marker of E for single and
+;; double floats, but Sun Fortran uses E and D.  I think I like E and
+;; D to distinguish between them.  Also note that g77 uses just enough
+;; digits for the numbers, but Sun Fortran seems to specify the number
+;; of printed digits to be 16 or so.  Thus 1.0 is "1.0" with g77, but
+;; "1.0000000000000" with Sun Fortran.  I like g77's style better.
+(defun fortran-format-g (stream arg colon-p at-p &rest args)
+  (declare (ignore colon-p at-p args))
+  (let* ((marker (typecase arg
+		   (single-float "E")
+		   (double-float "D")))
+	 (a (abs arg))
+	 ;; g77 uses limits 1d-4 and 1d9.  Sun Fortran uses 1 and
+	 ;; 1d15.
+	 (format-string (if (or (zerop a)
+				(and (>= a 1d-4)
+				     (< a 1d9)))
+			    "~F"
+			    (concatenate 'string "~,,2,,,,'"
+					 marker
+					 "E"))))
+    (format stream format-string arg)))
+
+;; Output objects in Fortran style, roughly.  This basically means
+;; complex numbers are printed as "(<re>, <im>)", floats use
+;; FORTRAN-FORMAT-G, integers use ~D, strings are printed as is, and
+;; T/NIL become "T" or "F".
+(defun fortran-format (stream arg colon-p at-p &rest args)
+  (declare (ignore colon-p at-p args))
+  (etypecase arg
+    (complex
+     #-gcl
+     (format stream "(~/f2cl-lib::fortran-format-g/, ~/f2cl-lib::fortran-format-g/)"
+	     (realpart arg) (imagpart arg))
+     #+gcl
+     (progn
+       (fortran-format-g stream (realpart arg) nil nil)
+       (fortran-format-g stream (imagpart arg) nil nil)))
+    (float
+     #-gcl
+     (format stream "  ~/f2cl-lib::fortran-format-g/" arg)
+     #+gcl
+     (fortran-format-g stream arg nil nil))
+    (integer
+     (format stream "  ~D" arg))
+    (string
+     (format stream "~A" arg))
+    ((member t nil)
+     (format stream (if arg "T " "F ")))))
+     
 (defun execute-format-main (stream format &rest args)
-  (let ((format-list (copy-tree format))
-	(arg-list (apply #'append (map 'list #'(lambda (x)
-						 (cond ((numberp x)
-							(list x))
-						       ((stringp x)
-							(list x))
-						       (t
-							(coerce x 'list))))
-				       args))))
-    (execute-format t stream format-list arg-list)))
+  (cond
+    ((eq format :list-directed)
+     ;; This prints out the args separated by spaces and puts a line
+     ;; break after about 80 columns.
+     (format stream "~& ~{~<~%~1,81:;~?~>~^~}~%"
+	     (let (pars)
+	       (dolist (v args)
+		 ;; Some special cases.  Let FORTRAN-FORMAT handle
+		 ;; most cases, except strings, which we just print
+		 ;; out ourselves.  Lists (from implied-do loops) and
+		 ;; arrays use FORTRAN-FORMAT for each element.
+		 (typecase v
+		   (string
+		    (push "~A"  pars)
+		    (push (list v) pars))
+		   (cons
+		    (dolist (item v)
+		      #-gcl
+		      (progn
+			(push "~/f2cl-lib::fortran-format/" pars)
+			(push (list item) pars))
+		      (progn
+			(push "~A" pars)
+			(push (fortran-format nil item nil nil) pars))))
+		   (array
+		    (dotimes (k (length v))
+		      #-gcl
+		      (progn
+			(push "~/f2cl-lib::fortran-format/" pars)
+			(push (list (aref v k)) pars))
+		      #+gcl
+		      (progn
+			(push "~A" pars)
+			(push (fortran-format nil (list (aref v k)) nil nil)
+			      pars))))
+		   (t
+		    #-gcl
+		    (progn
+		      (push "~/f2cl-lib::fortran-format/" pars)
+		      (push (list v) pars))
+		    #+gcl
+		    (progn
+		      (push "~A" pars)
+		      (push (fortran-format nil (list v) nil nil) pars)))))
+	       ;;(format t "~S~%" (reverse pars))
+	       (nreverse pars))))
+    (t
+     (let ((format-list (copy-tree format))
+	   (arg-list
+	    (apply #'append
+		   (map 'list #'(lambda (x)
+				  (cond ((numberp x)
+					 (list x))
+					((stringp x)
+					 (list x))
+					((member x '(t nil))
+					 ;; Convert T and NIL to :T
+					 ;; and :F so we print out T
+					 ;; and F, respectively.
+					 (case x
+					   ((t)
+					    (list :t))
+					   ((nil)
+					    (list :f))
+					   (t
+					    (list x))))
+					(t
+					 (coerce x 'list))))
+			args))))
+       (execute-format t stream format-list arg-list)))))
 
-
-#||
-(defmacro fformat1 (dest directive arg)
-  (let ((val (gensym)))
-    `(let ((,val ,arg))
-      (cond ((and (arrayp ,val)
-		  (not (stringp ,val)))
-	     (dotimes (k (array-total-size ,val))
-	       (format ,dest ,directive (row-major-aref ,val k))
-	       (terpri ,dest)))
-	    ((listp ,val)
-	     (dolist (item ,val)
-	       (format ,dest ,directive item)
-	       (terpri ,dest)))
-	    (t
-	     (format ,dest ,directive ,val))))))
-
-(defun expand-format (dest cilist args)
-  (if (equal cilist '("~A~%"))
-      (append (mapcar #'(lambda (arg) `(fformat1 ,dest "~A " ,arg)) args)
-	   `((format ,dest "~%")))
-
-      ;loop through directives, consume arguments
-      (do ((res '())
-	   (directives cilist (cdr directives))
-	   (arglist args arglist))
-	  ((null directives)
-	   (nreverse res))
-	(cond ((stringp (first directives))
-	       ;;(format t "~a~%" (first directives))
-	       (push `(format ,dest ,(first directives))
-		     res))
-	      (t
-	       (push `(fformat1 ,dest
-		       ,(car (first directives)) 
-		       ,(first arglist))
-		     res)
-	       (setq arglist (cdr arglist)))))))
-||#
 
 ;; Initialize a multi-dimensional array of character strings. I think
 ;; we need to do it this way to appease some picky compilers (like
@@ -1207,7 +1269,7 @@ causing all pending operations to be flushed"
 	   (let ((k 0)
 		 (forms nil))
 	     (dolist (val inits)
-	       (push `(replace (aref ,init ,k) ,(car val)) forms)
+	       (push `(replace (aref ,init ,k) ,val) forms)
 	       (incf k))
 	     (nreverse forms)))
 		
@@ -1264,8 +1326,11 @@ causing all pending operations to be flushed"
   (ecase i
     (1 least-positive-normalized-double-float)
     (2 most-positive-double-float)
-    (3 #-(or gcl ecl) double-float-epsilon #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105))
-    (4 (scale-float #-(or gcl ecl) double-float-epsilon #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105) 1))
+    (3 #-(or gcl ecl) double-float-epsilon
+       #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105))
+    (4 (scale-float #-(or gcl ecl) double-float-epsilon
+		    #+(or gcl ecl) (scale-float (float #X10000000000001 1d0) -105)
+		    1))
     (5 (log (float (float-radix 1d0) 1d0) 10d0))))
 
 (defun r1mach (i)
@@ -1383,18 +1448,56 @@ causing all pending operations to be flushed"
 	  (declare (ignore frac sign))
 	  (- exp 1)))
     ))
-     
+
+;; F2cl cannot tell if a STOP statement is an error condition or just
+;; the end of the program.  So, by default, we signal a continuable
+;; error.  However, we give the user the option of silently returning
+;; or not.
+(defvar *stop-signals-error-p* nil
+  "When non-NIL, STOP will signal an continuable error.  Otherwise, STOP just returns")
+
 (defun stop (&optional arg)
   (when arg
     (format cl::*error-output* "~A~%" arg))
-  (cerror "Continue anyway" "STOP reached"))
+  (unless *stop-signals-error-p*
+    (cerror "Continue anyway" "STOP reached")))
 
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.19 2008-07-27 07:04:15 robert_dodier Exp $
+;;; $Id: f2cl-lib.lisp,v 1.20 2009-01-08 18:25:34 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.19  2008-07-27 07:04:15  robert_dodier
+;;; Revision 1.20  2009-01-08 18:25:34  rtoy
+;;; Update f2cl to latest version of f2cl, and regenerate all of the lisp
+;;; code.
+;;;
+;;; The testsuite works fine, so I assume the quadpack and other slatec
+;;; routines are ok.
+;;;
+;;; The lsquares tests runs fine, so the lbfgs routines appear to be ok.
+;;;
+;;; src/numerical/f2cl-lib.lisp:
+;;; o Update from f2cl macros.l, 2009/01/08
+;;;
+;;; src/numerical/f2cl-package.lisp:
+;;; o Update from f2cl f2cl0.l, 2009/01/08
+;;;
+;;; src/numerical/slatec:
+;;; o Regenerate lisp files
+;;;
+;;; share/lbfgs:
+;;; o Split lbfgs.f into one function per file and add these new files.
+;;; o Generate new lisp files
+;;; o Update lbfgs.mac to load the new list files.
+;;; o Added lbfgs-lisp.system so we know how to regenerate the lisp files
+;;;   in the future.
+;;;
+;;; share/lapack:
+;;; o Add lapack-lisp.system so we know how to regenerate the lisp files
+;;;   in the future.
+;;; o Regenerate all of the lisp files.
+;;;
+;;; Revision 1.19  2008/07/27 07:04:15  robert_dodier
 ;;; Merge patches-for-ecl-branch into main trunk.
 ;;; With these changes, Maxima builds without errors with Clisp, CMUCL, SBCL, and GCL,
 ;;; and run_testsuite does not appear to report any errors that are not reported
@@ -1462,235 +1565,5 @@ causing all pending operations to be flushed"
 ;;; distribution.  Most of the changes done for maxima have been merged to
 ;;; the f2cl version, and we're just picking up the changes in the f2cl
 ;;; version.
-;;;
-;;; Revision 1.62  2005/05/16 15:50:25  rtoy
-;;; o Replace single semicolons with multiple semicolons as appropriate.
-;;; o GCL apparently doesn't like some declarations, so comment them out
-;;;   for GCL.
-;;; o GCL doesn't like the defparameter for *lun-hash*.
-;;; o GCL doesn't seem to have least-positive-normalized-double-float, so
-;;;   make it the same as least-positive-double-float.  Likewise for
-;;;   single-float.
-;;;
-;;; These changes come from maxima.
-;;;
-;;; Revision 1.61  2005/03/28 20:38:18  rtoy
-;;; Make strings with an element-type of character instead of base-char,
-;;; in case the Lisp implementation has unicode support.
-;;;
-;;; Revision 1.60  2004/09/01 14:17:57  rtoy
-;;; atan2 takes single-float args, not double-float.
-;;;
-;;; Revision 1.59  2004/08/14 22:29:16  marcoxa
-;;; Added an EVAL-WHEN to silence the LW compiler.
-;;;
-;;; Revision 1.58  2004/08/14 04:17:45  rtoy
-;;; Need a definition for MAKE-LABEL.
-;;;
-;;; Revision 1.57  2003/11/23 14:10:11  rtoy
-;;; FDO should not call function that are not in the F2CL-LIB package.
-;;; Macros.l should be self-contained.
-;;;
-;;; Revision 1.56  2003/11/13 05:37:11  rtoy
-;;; Add macro WITH-MULTI-ARRAY-DATA.  Basically like WITH-ARRAY-DATA, but
-;;; takes a list of array info so we don't get deeply nested code when
-;;; there are lots of arrays.
-;;;
-;;; Keep WITH-ARRAY-DATA around for backward compatibility.
-;;;
-;;; Revision 1.55  2003/11/12 05:33:22  rtoy
-;;; Macro to handle assigned gotos was wrong.  Fix it.
-;;;
-;;; Revision 1.54  2003/09/25 03:43:43  rtoy
-;;; Need to check for reserved names in the fdo macro.  (I think.)
-;;;
-;;; Revision 1.53  2003/01/07 18:44:52  rtoy
-;;; Add new implementations of aint.  Speeds up mpnorm by a factor of 5 on
-;;; CMUCL/sparc!
-;;;
-;;; Revision 1.52  2002/09/13 17:50:19  rtoy
-;;; From Douglas Crosher:
-;;;
-;;; o Make this work with lower-case Lisps
-;;; o Fix a few typos
-;;; o Make a safer fortran reader.
-;;;
-;;; Revision 1.51  2002/06/30 13:08:51  rtoy
-;;; Add some declarations to AINT so that CMUCL can completely inline the
-;;; call to ftruncate.
-;;;
-;;; Revision 1.50  2002/05/05 23:41:17  rtoy
-;;; Typo: extra paren.
-;;;
-;;; Revision 1.49  2002/05/05 23:38:47  rtoy
-;;; The int-sub macro didn't handle things like (- 3 m m) correctly.  It
-;;; was returning (- 3 (- m m)) instead of (- (- 3 m) m)!
-;;;
-;;; Revision 1.48  2002/05/03 17:48:06  rtoy
-;;; GCL doesn't have least-positive-normalized-{single/double}-float, so
-;;; use just least-positive-{single/double}-float.
-;;;
-;;; Revision 1.47  2002/05/03 17:44:36  rtoy
-;;; Replace row-major-aref with just aref because we don't need it and
-;;; because gcl doesn't have it.
-;;;
-;;; Revision 1.46  2002/03/19 02:23:09  rtoy
-;;; According to the rules of Fortran, the initializers in a DATA
-;;; statement are supposed to be converted to match the type of the
-;;; variable that is being initialized.  Make it so by passing the
-;;; variable type to the macro DATA-IMPLIED-DO so that the conversion can
-;;; be done.
-;;;
-;;; Revision 1.45  2002/03/18 23:34:16  rtoy
-;;; Was not correctly handling some implied do loops containing multiple
-;;; variables in the loop in data statements.  Fix that and clean up some
-;;; of the processing.  (Should probably do this kind of work in the f2cl
-;;; compiler instead of at runtime, but it's only done once at runtime, so
-;;; it's not a big deal.)
-;;;
-;;; Revision 1.44  2002/03/11 16:44:00  rtoy
-;;; o Remove an extra paren.
-;;; o Indent FIND-ARRAY-DATA better.
-;;; o Declare the iteration count to be of type INTEGER4.
-;;; o Added macros INT-ADD, INT-SUB, INT-MUL to tell the compiler that the
-;;;   integer operation can't overflow.  (First try.)
-;;; o Tell the compiler that the result of truncate is an INTEGER4 in INT.
-;;;
-;;; Revision 1.43  2002/03/06 23:07:19  rtoy
-;;; o Make INT return an integer4 type, not integer.
-;;; o log10 was thinking it could generate complex result, but that's not
-;;;   true.  Declare the arg correctly so the compiler knows it can't.
-;;;
-;;; Revision 1.42  2002/03/06 03:21:16  rtoy
-;;; o Speed up FIND-ARRAY-DATA a little by declaring the offset to be a
-;;;   fixnum, which it has to be since it's an index to an array.
-;;; o Remove the truncate/ftruncate-towards-zero functions.
-;;; o For INT, AINT, and friends, TRUNCATE and FTRUNCATE are the right
-;;;   functions we want to use.  (Stupid me!)
-;;; o Update/correct some random comments.
-;;;
-;;; Revision 1.41  2002/02/17 15:55:29  rtoy
-;;; o For all array accessors, wrap the offset calculations with (the
-;;;   fixnum ...) since they have to be anyway.  Speeds up calculations
-;;;   quite a bit.
-;;; o FREF takes an additional optional OFFSET arg to specify an offset
-;;;   for the new array slicing method.
-;;; o Added WITH-ARRAY-DATA and FIND-ARRAY-DATA to support the new
-;;;   array-slicing method.
-;;; o For FDO, add (the integer4 ...) for loop index calculations.
-;;; o Add some more assertions for ISIGN and LOG10 to help the compiler
-;;;   generate better code.
-;;;
-;;; Revision 1.40  2002/02/10 03:43:51  rtoy
-;;; Partial support for WRITE statements writing to a string instead of
-;;; logical unit.
-;;;
-;;; Revision 1.39  2002/02/09 15:59:26  rtoy
-;;; o Add more and better comments
-;;; o AINT was broken because it should accept any range of floats.
-;;; o DIM and friends computed the wrong thing!
-;;; o Change DPROD to convert to doubles first.
-;;; o Some cleanup of MAX and MIN
-;;;
-;;; Revision 1.38  2002/02/08 23:38:36  rtoy
-;;; Use ARRAY-TOTAL-SIZE to compute how many elements are in the slice
-;;; instead of the f2cl declared/derived bounds so that we can dynamically
-;;; change the size of the array.  Useful for an array in a common block.
-;;;
-;;; Revision 1.37  2002/02/07 03:23:15  rtoy
-;;; Add functions to initialize F2CL's Fortran I/O and to close all of
-;;; F2CL's open units.
-;;;
-;;; Revision 1.36  2002/02/04 03:23:46  rtoy
-;;; o Make *lun-hash* a defparameter instead of a defvar.
-;;; o Fix up i1mach so that the unit numbers match *lun-hash*.
-;;;
-;;; Revision 1.35  2002/01/13 16:29:00  rtoy
-;;; o This file is in the f2cl-lib package now
-;;; o Deleted some unused code.
-;;; o Moved *INTRINSIC-FUNCTION-NAMES* to f2cl1.l
-;;;
-;;; Revision 1.34  2002/01/06 23:11:04  rtoy
-;;; o Rename *intrinsic_function_names* to use dashes.
-;;; o Comment out some unused functions and macros.
-;;;
-;;; Revision 1.33  2001/04/30 15:38:12  rtoy
-;;; Add a version of I1MACH.
-;;;
-;;; Revision 1.32  2001/04/26 17:49:19  rtoy
-;;; o SIGN and DIM are Fortran generic instrinsics.  Make it so.
-;;; o Added D1MACH and R1MACH because they're very common in Fortran
-;;;   libraries.
-;;;
-;;; Revision 1.31  2001/02/26 15:38:23  rtoy
-;;; Move *check-array-bounds* from f2cl1.l to macros.l since the generated
-;;; code refers to it.  Export this variable too.
-;;;
-;;; Revision 1.30  2000/08/30 17:00:42  rtoy
-;;; o In EXECUTE-FORMAT, handle the case where the group is supposed to be
-;;;   repeated "forever" (as indicated by a repetition factor of T).
-;;; o Remove some more unused code.
-;;;
-;;; Revision 1.29  2000/08/27 16:36:07  rtoy
-;;; Clean up handling of format statements.  Should handle many more
-;;; formats correctly now.
-;;;
-;;; Revision 1.28  2000/08/07 19:00:47  rtoy
-;;; Add type ARRAY-STRINGS to denote an array of strings.
-;;;
-;;; Revision 1.27  2000/08/03 13:45:53  rtoy
-;;; Make FFORMAT1 handle lists that we get from implied do loops.
-;;;
-;;; The whole FFORMAT stuff needs to be rethought if we really want to
-;;; support Fortran output.
-;;;
-;;; Revision 1.26  2000/08/01 22:10:41  rtoy
-;;; o Try to make the Fortran functions to convert to integers work the
-;;;   way Fortran says they should.
-;;; o Declaim most of the intrinsics as inline so we don't have an
-;;;   additional function call for simple things.
-;;; o Add some compiler macros for Fortran max/min functions to call the
-;;;   Lisp max/min functions withouth using #'apply.
-;;; o Try to declare the args to functions with branchs appropriately,
-;;;   even in the face of signed zeroes.
-;;;
-;;; Revision 1.25  2000/07/28 22:10:05  rtoy
-;;; Remove unused var from ARRAY-SLICE.
-;;;
-;;; Revision 1.24  2000/07/28 17:09:13  rtoy
-;;; o We are in the f2cl package now.
-;;; o Remove the export expression.
-;;; o // is now called F2CL-//, to prevent problems with the lisp variable
-;;;   //.
-;;; o REAL is now called FREAL, to prevent problems with the lisp type
-;;;   REAL.
-;;;
-;;; Revision 1.23  2000/07/27 16:39:17  rtoy
-;;; We want to be in the CL-USER package, not the USER package.
-;;;
-;;; Revision 1.22  2000/07/20 13:44:38  rtoy
-;;; o Remove old fref macro
-;;; o Add some comments
-;;; o Add macro ARRAY-INITIALIZE to handle creating the appropriate for to
-;;;   give to make-array :initial-contents.
-;;;
-;;; Revision 1.21  2000/07/19 13:54:27  rtoy
-;;; o Add the types ARRAY-DOUBLE-FLOAT, ARRAY-SINGLE-FLOAT, and
-;;;   ARRAY-INTEGER4.
-;;; o All arrays are 1-D now to support slicing of Fortran arrays
-;;;   correctly.
-;;; o All arrays are in column-major order just like Fortran (and the
-;;;   opposite of Lisp).  This is to support slicing of arrays.  Modified
-;;;   FREF to support this by taking an extra arg for the dimensions of
-;;;   the array.
-;;; o Added macro ARRAY-SLICE to slice the array properly.
-;;; o Optimized routine DMIN1 a bit.   (Need to do that for more routines.)
-;;;
-;;; Revision 1.20  2000/07/14 15:50:59  rtoy
-;;; Get rid of *dummy_var*.  It's not used anymore.
-;;;
-;;; Revision 1.19  2000/07/13 16:55:34  rtoy
-;;; To satisfy the Copyright statement, we have placed the RCS logs in
-;;; each source file in f2cl.  (Hope this satisfies the copyright.)
 ;;;
 ;;;-----------------------------------------------------------------------------

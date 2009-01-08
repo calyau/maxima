@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dhseqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dhseqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dhseqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dhseqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dhseqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dhseqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dhseqr.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -15,7 +23,8 @@
            (type (double-float 2.0 2.0) two)
            (type (double-float 1.5 1.5) const)
            (type (f2cl-lib:integer4 15 15) nsmax)
-           (type (f2cl-lib:integer4) lds))
+           (type (f2cl-lib:integer4) lds)
+           (ignorable zero one two const nsmax lds))
   (defun dhseqr (job compz n ilo ihi h ldh wr wi z ldz work lwork info)
     (declare (type (array double-float (*)) work z wi wr h)
              (type (f2cl-lib:integer4) info lwork ldz ldh ihi ilo n)

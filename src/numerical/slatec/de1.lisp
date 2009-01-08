@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: de1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: de1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: de1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: de1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: de1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: de1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: de1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -350,15 +358,15 @@
                                        1.1272598189275103e-31
                                        -5.069814875800461e-32)))
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
-           (type (simple-array double-float (64)) ae14cs)
-           (type (simple-array double-float (25)) e12cs)
-           (type (simple-array double-float (29)) e11cs)
-           (type (simple-array double-float (41)) ae12cs)
-           (type (simple-array double-float (60)) ae11cs)
-           (type (simple-array double-float (50)) ae13cs ae10cs)
+  (declare (type (integer) ntae10 ntae11 ntae12 nte11 nte12 ntae13 ntae14)
            (type (double-float) xmax)
-           (type (integer) ntae14 ntae13 nte12 nte11 ntae12 ntae11 ntae10))
+           (type (simple-array double-float (50)) ae10cs ae13cs)
+           (type (simple-array double-float (60)) ae11cs)
+           (type (simple-array double-float (41)) ae12cs)
+           (type (simple-array double-float (29)) e11cs)
+           (type (simple-array double-float (25)) e12cs)
+           (type (simple-array double-float (64)) ae14cs)
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun de1 (x)
     (declare (type (double-float) x))

@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbdsdc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsdc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsdc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsdc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsdc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsdc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dbdsdc.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -12,7 +20,8 @@
 (let* ((zero 0.0) (one 1.0) (two 2.0))
   (declare (type (double-float 0.0 0.0) zero)
            (type (double-float 1.0 1.0) one)
-           (type (double-float 2.0 2.0) two))
+           (type (double-float 2.0 2.0) two)
+           (ignorable zero one two))
   (defun dbdsdc (uplo compq n d e u ldu vt ldvt q iq work iwork info)
     (declare (type (array f2cl-lib:integer4 (*)) iwork iq)
              (type (array double-float (*)) work q vt u e d)
@@ -522,10 +531,12 @@
                                              (wstart)
                                              ((1 *)))
                        iwork info)
-                    (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6
-                                     var-7 var-8 var-9 var-10 var-11 var-12
-                                     var-13 var-14 var-15 var-16 var-17 var-18
-                                     var-19 var-20 var-21 var-22))
+                    (declare (ignore var-0 var-3 var-4 var-5 var-6 var-7 var-8
+                                     var-9 var-10 var-11 var-12 var-13 var-14
+                                     var-15 var-16 var-17 var-18 var-19 var-20
+                                     var-21 var-22))
+                    (setf smlsiz var-1)
+                    (setf nsize var-2)
                     (setf info var-23))
                   (cond
                     ((/= info 0)

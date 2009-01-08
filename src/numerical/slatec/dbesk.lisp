@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbesk.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesk.lisp,v 1.10 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -22,9 +30,8 @@
            (elim 0.0) (etx 0.0) (flgik 0.0) (fn 0.0) (fnn 0.0) (gln 0.0)
            (gnu 0.0) (rtz 0.0) (s 0.0) (s1 0.0) (s2 0.0) (t$ 0.0) (tm 0.0)
            (trx 0.0) (xlim 0.0) (zn 0.0) (i 0) (j 0) (k 0) (mz 0) (nb 0) (nd 0)
-           (nn 0) (nud 0) (log$ 0))
-      (declare (type (integer) log$)
-               (type (f2cl-lib:integer4) nud nn nd nb mz k j i)
+           (nn 0) (nud 0))
+      (declare (type (f2cl-lib:integer4) nud nn nd nb mz k j i)
                (type (simple-array double-float (2)) w)
                (type (double-float) zn xlim trx tm t$ s2 s1 s rtz gnu gln fnn
                                     fn flgik etx elim dnu cn))

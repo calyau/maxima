@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlasq2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasq2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasq2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasq2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasq2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasq2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlasq2.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -22,7 +30,8 @@
            (type (double-float 1.0 1.0) one)
            (type (double-float 2.0 2.0) two)
            (type (double-float 4.0 4.0) four)
-           (type (double-float 100.0 100.0) hundrd))
+           (type (double-float 100.0 100.0) hundrd)
+           (ignorable cbias zero half one two four hundrd))
   (defun dlasq2 (n z info)
     (declare (type (array double-float (*)) z)
              (type (f2cl-lib:integer4) info n))
@@ -30,13 +39,13 @@
         ((z double-float z-%data% z-%offset%))
       (prog ((d 0.0) (desig 0.0) (dmin 0.0) (e 0.0) (emax 0.0) (emin 0.0)
              (eps 0.0) (oldemn 0.0) (qmax 0.0) (qmin 0.0) (s 0.0) (safmin 0.0)
-             (sigma 0.0) (temp 0.0) (tol 0.0) (tol2 0.0) (zmax 0.0) (i0 0)
-             (i4 0) (iinfo 0) (ipn4 0) (iter 0) (iwhila 0) (iwhilb 0) (k 0)
-             (n0 0) (nbig 0) (ndiv 0) (nfail 0) (pp 0) (splt 0) (ieee nil)
-             (trace$ 0.0) (t$ 0.0))
-        (declare (type (double-float) t$ trace$ d desig dmin e emax emin eps
-                                      oldemn qmax qmin s safmin sigma temp tol
-                                      tol2 zmax)
+             (sigma 0.0) (t$ 0.0) (temp 0.0) (tol 0.0) (tol2 0.0) (trace$ 0.0)
+             (zmax 0.0) (i0 0) (i4 0) (iinfo 0) (ipn4 0) (iter 0) (iwhila 0)
+             (iwhilb 0) (k 0) (n0 0) (nbig 0) (ndiv 0) (nfail 0) (pp 0)
+             (splt 0) (ieee nil))
+        (declare (type (double-float) d desig dmin e emax emin eps oldemn qmax
+                                      qmin s safmin sigma t$ temp tol tol2
+                                      trace$ zmax)
                  (type (f2cl-lib:integer4) i0 i4 iinfo ipn4 iter iwhila iwhilb
                                            k n0 nbig ndiv nfail pp splt)
                  (type f2cl-lib:logical ieee))

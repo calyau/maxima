@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dbesi1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dbesi1.lisp,v 1.11 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -33,10 +41,10 @@
                                        6.973231093919471e-30
                                        1.43679482206208e-32)))
       (first$ nil))
-  (declare (type f2cl-lib:logical first$)
+  (declare (type (integer) nti1)
+           (type (double-float) xmin xsml xmax)
            (type (simple-array double-float (17)) bi1cs)
-           (type (double-float) xmax xsml xmin)
-           (type (integer) nti1))
+           (type f2cl-lib:logical first$))
   (setq first$ f2cl-lib:%true%)
   (defun dbesi1 (x)
     (declare (type (double-float) x))

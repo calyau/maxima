@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -11,21 +19,21 @@
 
 (let* ((one 1.0) (zero 0.0))
   (declare (type (double-float 1.0 1.0) one)
-           (type (double-float 0.0 0.0) zero))
-  (let ((eps 0.0)
-        (sfmin 0.0)
-        (base 0.0)
-        (t$ 0.0f0)
-        (rnd 0.0)
-        (emin 0.0)
-        (rmin 0.0)
-        (emax 0.0)
+           (type (double-float 0.0 0.0) zero)
+           (ignorable one zero))
+  (let ((prec 0.0)
         (rmax 0.0)
-        (prec 0.0)
-        (first$ nil))
-    (declare (type f2cl-lib:logical first$)
-             (type (single-float) t$)
-             (type (double-float) prec rmax emax rmin emin rnd base sfmin eps))
+        (emax 0.0)
+        (rmin 0.0)
+        (emin 0.0)
+        (rnd 0.0)
+        (t$ 0.0f0)
+        (base 0.0)
+        (sfmin 0.0)
+        (eps 0.0)
+        (first$ 0.0f0))
+    (declare (type (double-float) prec rmax emax rmin emin rnd base sfmin eps)
+             (type (single-float) t$ first$))
     (setq first$ f2cl-lib:%true%)
     (defun dlamch (cmach)
       (declare (type (simple-array character (*)) cmach))
@@ -43,14 +51,22 @@
                    (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
                  (dlamc2 beta it lrnd eps imin rmin imax rmax)
                (declare (ignore))
-               (setf beta var-0)
-               (setf it var-1)
-               (setf lrnd var-2)
-               (setf eps var-3)
-               (setf imin var-4)
-               (setf rmin var-5)
-               (setf imax var-6)
-               (setf rmax var-7))
+               (when var-0
+                 (setf beta var-0))
+               (when var-1
+                 (setf it var-1))
+               (when var-2
+                 (setf lrnd var-2))
+               (when var-3
+                 (setf eps var-3))
+               (when var-4
+                 (setf imin var-4))
+               (when var-5
+                 (setf rmin var-5))
+               (when var-6
+                 (setf imax var-6))
+               (when var-7
+                 (setf rmax var-7)))
              (setf base (coerce (the f2cl-lib:integer4 beta) 'double-float))
              (setf t$ (coerce (the f2cl-lib:integer4 it) 'double-float))
              (cond
@@ -102,10 +118,18 @@
           (fortran-to-lisp::make-f2cl-finfo
            :arg-types '((simple-array character (1)))
            :return-values '(nil)
-           :calls '(fortran-to-lisp::dlamc2 fortran-to-lisp::lsame))))
+           :calls '(fortran-to-lisp::lsame))))
 
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -115,16 +139,18 @@
 (in-package :lapack)
 
 
-(let ((lieee1 nil) (lbeta 0) (lrnd nil) (f2cl-lib:lt 0) (first$ nil))
-  (declare (type (f2cl-lib:integer4) f2cl-lib:lt lbeta)
-           (type f2cl-lib:logical first$ lrnd lieee1))
+(let ((lieee1 nil) (lbeta 0) (lrnd nil) (lt$ 0) (first$ nil))
+  (declare (type f2cl-lib:logical lieee1 lrnd first$)
+           (type (f2cl-lib:integer4) lbeta)
+           (type (integer) lt$))
   (setq first$ f2cl-lib:%true%)
   (defun dlamc1 (beta t$ rnd ieee1)
     (declare (type f2cl-lib:logical ieee1 rnd)
              (type (f2cl-lib:integer4) t$ beta))
     (prog ((a 0.0) (b 0.0) (c 0.0) (f 0.0) (one 0.0) (qtr 0.0) (savec 0.0)
-           (t1 0.0) (t2 0.0))
-      (declare (type (double-float) t2 t1 savec qtr one f c b a))
+           (t1 0.0) (t2 0.0) (lt$ 0))
+      (declare (type (f2cl-lib:integer4) lt$)
+               (type (double-float) t2 t1 savec qtr one f c b a))
       (cond
         (first$
          (tagbody
@@ -140,14 +166,17 @@
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 a one)
                         (declare (ignore))
-                        (setf a var-0)
-                        (setf one var-1)
+                        (when var-0
+                          (setf a var-0))
+                        (when var-1
+                          (setf one var-1))
                         ret-val))
               (setf c
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 c (- a))
                         (declare (ignore var-1))
-                        (setf c var-0)
+                        (when var-0
+                          (setf c var-0))
                         ret-val))
               (go label10)))
            (setf b (coerce (the f2cl-lib:integer4 1) 'double-float))
@@ -155,8 +184,10 @@
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 a b)
                      (declare (ignore))
-                     (setf a var-0)
-                     (setf b var-1)
+                     (when var-0
+                       (setf a var-0))
+                     (when var-1
+                       (setf b var-1))
                      ret-val))
           label20
            (cond
@@ -166,8 +197,10 @@
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 a b)
                         (declare (ignore))
-                        (setf a var-0)
-                        (setf b var-1)
+                        (when var-0
+                          (setf a var-0))
+                        (when var-1
+                          (setf b var-1))
                         ret-val))
               (go label20)))
            (setf qtr (/ one 4))
@@ -176,7 +209,8 @@
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 c (- a))
                      (declare (ignore var-1))
-                     (setf c var-0)
+                     (when var-0
+                       (setf c var-0))
                      ret-val))
            (setf lbeta (f2cl-lib:int (+ c qtr)))
            (setf b (coerce (the f2cl-lib:integer4 lbeta) 'double-float))
@@ -185,8 +219,10 @@
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 f a)
                      (declare (ignore))
-                     (setf f var-0)
-                     (setf a var-1)
+                     (when var-0
+                       (setf f var-0))
+                     (when var-1
+                       (setf a var-1))
                      ret-val))
            (cond
              ((= c a)
@@ -198,47 +234,54 @@
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 f a)
                      (declare (ignore))
-                     (setf f var-0)
-                     (setf a var-1)
+                     (when var-0
+                       (setf f var-0))
+                     (when var-1
+                       (setf a var-1))
                      ret-val))
            (if (and lrnd (= c a)) (setf lrnd f2cl-lib:%false%))
            (setf t1
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 (/ b 2) a)
                      (declare (ignore var-0))
-                     (setf a var-1)
+                     (when var-1
+                       (setf a var-1))
                      ret-val))
            (setf t2
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 (/ b 2) savec)
                      (declare (ignore var-0))
-                     (setf savec var-1)
+                     (when var-1
+                       (setf savec var-1))
                      ret-val))
            (setf lieee1 (and (= t1 a) (> t2 savec) lrnd))
-           (setf f2cl-lib:lt 0)
+           (setf lt$ 0)
            (setf a (coerce (the f2cl-lib:integer4 1) 'double-float))
            (setf c (coerce (the f2cl-lib:integer4 1) 'double-float))
           label30
            (cond
              ((= c one)
-              (setf f2cl-lib:lt (f2cl-lib:int-add f2cl-lib:lt 1))
+              (setf lt$ (f2cl-lib:int-add lt$ 1))
               (setf a (* a lbeta))
               (setf c
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 a one)
                         (declare (ignore))
-                        (setf a var-0)
-                        (setf one var-1)
+                        (when var-0
+                          (setf a var-0))
+                        (when var-1
+                          (setf one var-1))
                         ret-val))
               (setf c
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 c (- a))
                         (declare (ignore var-1))
-                        (setf c var-0)
+                        (when var-0
+                          (setf c var-0))
                         ret-val))
               (go label30))))))
       (setf beta lbeta)
-      (setf t$ f2cl-lib:lt)
+      (setf t$ lt$)
       (setf rnd lrnd)
       (setf ieee1 lieee1)
       (go end_label)
@@ -255,10 +298,18 @@
                         fortran-to-lisp::logical fortran-to-lisp::logical)
            :return-values '(fortran-to-lisp::beta fortran-to-lisp::t$
                             fortran-to-lisp::rnd fortran-to-lisp::ieee1)
-           :calls '(fortran-to-lisp::dlamc3))))
+           :calls 'nil)))
 
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -274,12 +325,13 @@
       (leps 0.0)
       (lrmax 0.0)
       (lrmin 0.0)
-      (f2cl-lib:lt 0)
+      (lt$ 0)
       (first$ nil)
       (iwarn nil))
-  (declare (type f2cl-lib:logical iwarn first$)
-           (type (double-float) lrmin lrmax leps)
-           (type (f2cl-lib:integer4) f2cl-lib:lt lemin lemax lbeta))
+  (declare (type (f2cl-lib:integer4) lbeta lemax lemin)
+           (type (double-float) leps lrmax lrmin)
+           (type (integer) lt$)
+           (type f2cl-lib:logical first$ iwarn))
   (setq first$ f2cl-lib:%true%)
   (setq iwarn f2cl-lib:%false%)
   (defun dlamc2 (beta t$ rnd eps emin rmin emax rmax)
@@ -289,9 +341,9 @@
     (prog ((a 0.0) (b 0.0) (c 0.0) (half 0.0) (one 0.0) (rbase 0.0)
            (sixth$ 0.0) (small 0.0) (third$ 0.0) (two 0.0) (zero 0.0) (gnmin 0)
            (gpmin 0) (i 0) (ngnmin 0) (ngpmin 0) (ieee nil) (lieee1 nil)
-           (lrnd nil))
+           (lrnd nil) (lt$ 0))
       (declare (type f2cl-lib:logical lrnd lieee1 ieee)
-               (type (f2cl-lib:integer4) ngpmin ngnmin i gpmin gnmin)
+               (type (f2cl-lib:integer4) lt$ ngpmin ngnmin i gpmin gnmin)
                (type (double-float) zero two third$ small sixth$ rbase one half
                                     c b a))
       (cond
@@ -302,14 +354,14 @@
            (setf one (coerce (the f2cl-lib:integer4 1) 'double-float))
            (setf two (coerce (the f2cl-lib:integer4 2) 'double-float))
            (multiple-value-bind (var-0 var-1 var-2 var-3)
-               (dlamc1 lbeta f2cl-lib:lt lrnd lieee1)
+               (dlamc1 lbeta lt$ lrnd lieee1)
              (declare (ignore))
              (setf lbeta var-0)
-             (setf f2cl-lib:lt var-1)
+             (setf lt$ var-1)
              (setf lrnd var-2)
              (setf lieee1 var-3))
            (setf b (coerce (the f2cl-lib:integer4 lbeta) 'double-float))
-           (setf a (expt b (f2cl-lib:int-sub f2cl-lib:lt)))
+           (setf a (expt b (f2cl-lib:int-sub lt$)))
            (setf leps a)
            (setf b (/ two 3))
            (setf half (/ one 2))
@@ -317,27 +369,33 @@
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 b (- half))
                      (declare (ignore var-1))
-                     (setf b var-0)
+                     (when var-0
+                       (setf b var-0))
                      ret-val))
            (setf third$
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 sixth$ sixth$)
                      (declare (ignore))
-                     (setf sixth$ var-0)
-                     (setf sixth$ var-1)
+                     (when var-0
+                       (setf sixth$ var-0))
+                     (when var-1
+                       (setf sixth$ var-1))
                      ret-val))
            (setf b
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 third$ (- half))
                      (declare (ignore var-1))
-                     (setf third$ var-0)
+                     (when var-0
+                       (setf third$ var-0))
                      ret-val))
            (setf b
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 b sixth$)
                      (declare (ignore))
-                     (setf b var-0)
-                     (setf sixth$ var-1)
+                     (when var-0
+                       (setf b var-0))
+                     (when var-1
+                       (setf sixth$ var-1))
                      ret-val))
            (setf b (abs b))
            (if (< b leps) (setf b leps))
@@ -351,27 +409,33 @@
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 half (- c))
                         (declare (ignore var-1))
-                        (setf half var-0)
+                        (when var-0
+                          (setf half var-0))
                         ret-val))
               (setf b
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 half c)
                         (declare (ignore))
-                        (setf half var-0)
-                        (setf c var-1)
+                        (when var-0
+                          (setf half var-0))
+                        (when var-1
+                          (setf c var-1))
                         ret-val))
               (setf c
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 half (- b))
                         (declare (ignore var-1))
-                        (setf half var-0)
+                        (when var-0
+                          (setf half var-0))
                         ret-val))
               (setf b
                       (multiple-value-bind (ret-val var-0 var-1)
                           (dlamc3 half c)
                         (declare (ignore))
-                        (setf half var-0)
-                        (setf c var-1)
+                        (when var-0
+                          (setf half var-0))
+                        (when var-1
+                          (setf c var-1))
                         ret-val))
               (go label10)))
            (if (< a leps) (setf leps a))
@@ -384,32 +448,51 @@
                        (multiple-value-bind (ret-val var-0 var-1)
                            (dlamc3 (* small rbase) zero)
                          (declare (ignore var-0))
-                         (setf zero var-1)
+                         (when var-1
+                           (setf zero var-1))
                          ret-val))
               label20))
            (setf a
                    (multiple-value-bind (ret-val var-0 var-1)
                        (dlamc3 one small)
                      (declare (ignore))
-                     (setf one var-0)
-                     (setf small var-1)
+                     (when var-0
+                       (setf one var-0))
+                     (when var-1
+                       (setf small var-1))
                      ret-val))
            (multiple-value-bind (var-0 var-1 var-2)
                (dlamc4 ngpmin one lbeta)
-             (declare (ignore var-1 var-2))
-             (setf ngpmin var-0))
+             (declare (ignore))
+             (when var-0
+               (setf ngpmin var-0))
+             (when var-1
+               (setf one var-1))
+             (when var-2
+               (setf lbeta var-2)))
            (multiple-value-bind (var-0 var-1 var-2)
                (dlamc4 ngnmin (- one) lbeta)
-             (declare (ignore var-1 var-2))
-             (setf ngnmin var-0))
+             (declare (ignore var-1))
+             (when var-0
+               (setf ngnmin var-0))
+             (when var-2
+               (setf lbeta var-2)))
            (multiple-value-bind (var-0 var-1 var-2)
                (dlamc4 gpmin a lbeta)
-             (declare (ignore var-1 var-2))
-             (setf gpmin var-0))
+             (declare (ignore))
+             (when var-0
+               (setf gpmin var-0))
+             (when var-1
+               (setf a var-1))
+             (when var-2
+               (setf lbeta var-2)))
            (multiple-value-bind (var-0 var-1 var-2)
                (dlamc4 gnmin (- a) lbeta)
-             (declare (ignore var-1 var-2))
-             (setf gnmin var-0))
+             (declare (ignore var-1))
+             (when var-0
+               (setf gnmin var-0))
+             (when var-2
+               (setf lbeta var-2)))
            (setf ieee f2cl-lib:%false%)
            (cond
              ((and (= ngpmin ngnmin) (= gpmin gnmin))
@@ -417,9 +500,7 @@
                 ((= ngpmin gpmin)
                  (setf lemin ngpmin))
                 ((= (f2cl-lib:int-add gpmin (f2cl-lib:int-sub ngpmin)) 3)
-                 (setf lemin
-                         (f2cl-lib:int-add (f2cl-lib:int-sub ngpmin 1)
-                                           f2cl-lib:lt))
+                 (setf lemin (f2cl-lib:int-add (f2cl-lib:int-sub ngpmin 1) lt$))
                  (setf ieee f2cl-lib:%true%))
                 (t
                  (setf lemin
@@ -453,7 +534,7 @@
                            (max (the f2cl-lib:integer4 ngpmin)
                                 (the f2cl-lib:integer4 ngnmin))
                            1)
-                          f2cl-lib:lt)))
+                          lt$)))
                 (t
                  (setf lemin
                          (min (the f2cl-lib:integer4 ngpmin)
@@ -490,19 +571,27 @@
                        (multiple-value-bind (ret-val var-0 var-1)
                            (dlamc3 (* lrmin rbase) zero)
                          (declare (ignore var-0))
-                         (setf zero var-1)
+                         (when var-1
+                           (setf zero var-1))
                          ret-val))
               label30))
            (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
-               (dlamc5 lbeta f2cl-lib:lt lemin ieee lemax lrmax)
-             (declare (ignore var-1))
-             (setf lbeta var-0)
-             (setf lemin var-2)
-             (setf ieee var-3)
-             (setf lemax var-4)
-             (setf lrmax var-5)))))
+               (dlamc5 lbeta lt$ lemin ieee lemax lrmax)
+             (declare (ignore))
+             (when var-0
+               (setf lbeta var-0))
+             (when var-1
+               (setf lt$ var-1))
+             (when var-2
+               (setf lemin var-2))
+             (when var-3
+               (setf ieee var-3))
+             (when var-4
+               (setf lemax var-4))
+             (when var-5
+               (setf lrmax var-5))))))
       (setf beta lbeta)
-      (setf t$ f2cl-lib:lt)
+      (setf t$ lt$)
       (setf rnd lrnd)
       (setf eps leps)
       (setf emin lemin)
@@ -527,11 +616,18 @@
                             fortran-to-lisp::rnd fortran-to-lisp::eps
                             fortran-to-lisp::emin fortran-to-lisp::rmin
                             fortran-to-lisp::emax fortran-to-lisp::rmax)
-           :calls '(fortran-to-lisp::dlamc5 fortran-to-lisp::dlamc4
-                    fortran-to-lisp::dlamc3 fortran-to-lisp::dlamc1))))
+           :calls '(fortran-to-lisp::dlamc1))))
 
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -560,8 +656,16 @@
            :return-values '(fortran-to-lisp::a fortran-to-lisp::b)
            :calls 'nil)))
 
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -645,8 +749,16 @@
            :return-values '(fortran-to-lisp::emin nil nil)
            :calls '(fortran-to-lisp::dlamc3))))
 
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlamch.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -658,7 +770,8 @@
 
 (let* ((zero 0.0) (one 1.0))
   (declare (type (double-float 0.0 0.0) zero)
-           (type (double-float 1.0 1.0) one))
+           (type (double-float 1.0 1.0) one)
+           (ignorable zero one))
   (defun dlamc5 (beta p emin ieee emax rmax)
     (declare (type (double-float) rmax)
              (type f2cl-lib:logical ieee)

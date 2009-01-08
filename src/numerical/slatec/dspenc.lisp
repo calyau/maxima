@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2007/05/04 17:29:50 
-;;; Using Lisp CMU Common Lisp Snapshot 2007-05 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dspenc.lisp,v 1.5 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dspenc.lisp,v 1.5 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dspenc.lisp,v 1.5 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dspenc.lisp,v 1.5 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dspenc.lisp,v 1.5 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dspenc.lisp,v 1.5 2009-01-08 18:25:34 rtoy Exp $"
+;;;  "$Id: dspenc.lisp,v 1.5 2009-01-08 18:25:34 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -52,9 +60,9 @@
       (pi26 1.6449340668482264)
       (nspenc 0)
       (xbig 0.0))
-  (declare (type (integer) nspenc)
-           (type (double-float) xbig pi26)
-           (type (simple-array double-float (38)) spencs))
+  (declare (type (simple-array double-float (38)) spencs)
+           (type (double-float) pi26 xbig)
+           (type (integer) nspenc))
   (defun dspenc (x)
     (declare (type (double-float) x))
     (prog ((aln 0.0) (dspenc 0.0))

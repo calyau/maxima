@@ -1,5 +1,13 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2006/12/21 03:42:11 
-;;; Using Lisp CMU Common Lisp CVS Head 2006-12-02 00:15:46 (19D)
+;;; Compiled by f2cl version:
+;;; ("$Id: dlaed6.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaed6.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaed6.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaed6.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaed6.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaed6.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $"
+;;;  "$Id: dlaed6.lisp,v 1.3 2009-01-08 18:25:23 rtoy Exp $")
+
+;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -22,15 +30,16 @@
            (type (double-float 2.0 2.0) two)
            (type (double-float 3.0 3.0) three)
            (type (double-float 4.0 4.0) four)
-           (type (double-float 8.0 8.0) eight))
-  (let ((small1 0.0)
-        (sminv1 0.0)
-        (small2 0.0)
+           (type (double-float 8.0 8.0) eight)
+           (ignorable maxit zero one two three four eight))
+  (let ((eps 0.0)
         (sminv2 0.0)
-        (eps 0.0)
-        (first$ nil))
-    (declare (type f2cl-lib:logical first$)
-             (type (double-float) eps sminv2 small2 sminv1 small1))
+        (small2 0.0)
+        (sminv1 0.0)
+        (small1 0.0)
+        (first$ 0.0f0))
+    (declare (type (double-float) eps sminv2 small2 sminv1 small1)
+             (type (single-float) first$))
     (setq first$ f2cl-lib:%true%)
     (defun dlaed6 (kniter orgati rho d z finit tau info)
       (declare (type (array double-float (*)) z d)
