@@ -1089,7 +1089,6 @@ verbose
 weyl
 with_stdout
 writefile
-xgraph_curves
 xthru
 zerobern
 zeroequiv

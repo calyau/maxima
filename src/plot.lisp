@@ -249,10 +249,9 @@
                                               $gnuplot_pipes
                                               $mgnuplot
                                               $openmath
-                                              $xgraph
                                               )
                                         ))
-                            (merror "plot_format: only gnuplot, mgnuplot, openmath, geomview, and xgraph are recognized"))
+                            (merror "plot_format: only gnuplot, mgnuplot, openmath, and geomview are recognized"))
                         value)
           ($gnuplot_term (or (symbolp (third value)) (stringp (third value))
                              (merror "gnuplot_term: must be symbol or string"))
@@ -1485,8 +1484,6 @@
                            (t (format nil "Fun~a" i))))))
 
            (case plot-format
-             ($xgraph
-              (format st "~%~% \"~a\"~%" plot-name))
              ($gnuplot
               (if (> i 1)
                 (format st "e~%")))
@@ -1526,8 +1523,6 @@
       ($mgnuplot 
        ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) 
                 (format nil " -plot2d \"~a\" -title '~a'" file plot-name)))
-      ($xgraph
-       ($system (format nil "xgraph -t 'Maxima Plot' < \"~a\" &" file)))
       )
     output-file))
 
@@ -1584,31 +1579,6 @@
         (t (tcl-output-list st (car lis))
            (tcl-output-list st (cdr lis)))))
 
-
-(defun $xgraph_curves (lis &rest options &aux w)
-  options
-  (with-open-file (st  "xgraph-out" :direction :output :if-exists :supersede)
-    (format st "=600x600~%")
-    (loop for v in (cdr lis)
-           do
-           (setq v (cdr v))
-           (format st "~%~%")
-           (loop while v
-                  do
-                  (cond
-                    ((symbolp (car v))
-                     (mformat st "~M~%" ($concat (car v)))
-                     (setq v (cdr v)))
-                    (t (cond       ((numberp (car v))
-                                    (setq w v) (setq v (cddr v)))
-                                   (($listp (car v))
-                                    (setq w (cdar v))
-                                    (setq v (cdr v))))
-                       (format st "~g ~g ~%" (car w) (second w)))))))
-  ($system "xgraph -t 'Maxima Plot' < xgraph-out &"))
-
-
-     
 
 (defun $view_zic ()
   (let ((izdir (maxima-getenv "IZICDIR")))
