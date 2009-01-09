@@ -55,6 +55,7 @@ real_linear_factors(e,x) := (
  
 /* Convert abs, max, min, and unit_step to signum expressions */
 convert_to_signum(e) := block([opsubst : true],
+  e : unit_step_mult_simp(e),
   e : subst('unit_step = lambda([s], (signum(s) + 1) / 2), e),
   e : subst('max = lambda([[x]], xreduce(lambda([a,b], (a + b +abs(a-b))/2),x)),e),
   e : subst('min = lambda([[x]], xreduce(lambda([a,b], (a + b -abs(a-b))/2),x)),e),
@@ -71,6 +72,18 @@ apply_signum_mult_id (e) := block([p : 1, q : 1, inflag : true],
    signum(p) * q)
  else map('apply_signum_mult_id, e));
 
+/* Do unit_step(a) * unit_step(b) --> unit_step(min(a,b)). This is an identity
+for either a left or right continuous unit_step. */
+
+unit_step_mult_simp(e) := block([p : [], q : 1, inflag : true],
+ if mapatom(e) then e
+ else if safe_op(e) = "*" then (
+   for ek in e do (
+     if safe_op(ek) = 'unit_step then p : cons(first(ek),p) else q : q * ek),
+   p : xreduce('min, p),
+   if freeof('max, 'min, p) then q * unit_step(p) else e)
+ else map('unit_step_mult_simp, e));
+         
 /* Do signum(a) * signum(b) --> signum(a * b) and e * signum(e) --> abs(e) */
 signum_to_abs(e) := block([l],
   e : apply_signum_mult_id(e),

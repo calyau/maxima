@@ -210,6 +210,20 @@ integrate(1/(1 + abs(x))^2,x,minf,inf);
 integrate((5*sin(3*x)*signum(x+3))/x,x);
 5*signum(x+3)*'integrate(sin(3*x%)/x%,x%,-3,x)$
 
+map('unit_step_mult_simp, [5,5.6, -28.6b0,%i, 1 - sqrt(5), 42]);
+[5,5.6,-2.86b1,%i,1-sqrt(5),42]$
+
+unit_step_mult_simp(unit_step(3*x));
+unit_step(3*x)$
+
+unit_step_mult_simp(unit_step(x) * unit_step(x - 1));
+unit_step(x - 1)$
+
+unit_step_mult_simp(1909 + unit_step(x) * unit_step(x - 1));
+1909 + unit_step(x - 1)$
+
+
+
 
 
 
