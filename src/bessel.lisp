@@ -1199,7 +1199,7 @@ Perhaps you meant to enter `~a'.~%"
 			 ((mtimes) -1 ((%bessel_k) 0 z)
 			  ((mexpt) -1
 			   ((mtimes) ((rat) 1 2) ((mplus) -1 ,n))))
-			 ((mtimes simp) 2
+			 ((mtimes) 2
 			  ((%sum)
 			   ((mtimes) ((%bessel_k) ((mtimes) 2 ,k) z)
 			    ((mexpt) -1
