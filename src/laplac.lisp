@@ -15,6 +15,14 @@
 (declare-top (special dvar var-list var-parm-list var parm $savefactors
 		      checkfactors $ratfac $keepfloat nounl nounsflag))
 
+;;; The properties NOUN and VERB give correct linear display
+
+(defprop $laplace %laplace verb)
+(defprop %laplace $laplace noun)
+
+(defprop $ilt %ilt verb)
+(defprop %ilt $ilt noun)
+
 (defun exponentiate (pow)
        ;;;COMPUTES %E**Z WHERE Z IS AN ARBITRARY EXPRESSION TAKING SOME OF THE WORK AWAY FROM SIMPEXPT
   (cond ((zerop1 pow) 1)
