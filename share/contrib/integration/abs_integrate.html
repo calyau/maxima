@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from abs_integrate.texi on 8 January 2009 -->
+<!-- Created by texi2html 1.56k from abs_integrate.texi on 12 January 2009 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -94,7 +94,10 @@ functions of the form <EM>F(x, |x - a|)</EM>; examples
 <P>
 Barton Willis (Professor of Mathematics, University of Nebraska at
 Kearney) wrote the <CODE>abs_integrate</CODE> package and its English
-language user documentation.
+language user documentation. This documentation also describes the
+<CODE>partition</CODE> package for integration. Richard Fateman wrote
+<CODE>partition</CODE>. Additional documentation for <CODE>partition</CODE> is
+located at http://www.cs.berkeley.edu/~fateman/papers/partition.pdf.
 
 
 <P>
@@ -178,8 +181,132 @@ that does not fail (or a pure noun form if all methods fail).
 
 <P>
 <DL>
-<DT><U>Function:</U> <B>signum_to_abs</B> <I>(<VAR>e</VAR>)</I>
+<DT><U>Function:</U> <B>intfudu(<VAR>e</VAR>,</B> <I><VAR>x</VAR>)</I>
 <DD><A NAME="IDX3"></A>
+
+
+<P>
+This function uses the derivative divides rule for integrands of the
+form <EM>f(w(x)) * diff(w(x),x)</EM> When <CODE>infudu</CODE> is unable to find
+an antiderivative, it returns false.
+
+
+
+<PRE>
+(%i1) intfudu(cos(x^2) * x,x);
+(%o1) sin(x^2)/2
+
+(%i3) intfudu(x * sqrt(1+x^2),x);
+(%o3) (x^2+1)^(3/2)/3
+
+(%i4) intfudu(x * sqrt(1 + x^4),x);
+(%o4) false
+</PRE>
+
+<P>
+For the last example, the derivative divides rule fails, so
+<CODE>intfudu</CODE> returns false. 
+
+
+<P>
+A hashed array <CODE>intable</CODE> contains the antiderivative data. To append a fact
+to the hash table, say <EM>integrate(f) = g</EM>, do this:
+
+
+
+<PRE>
+(%i1) intable[f] : lambda([u],  [g(u),diff(u,%voi)]);
+(%o1) lambda([u],[g(u),diff(u,%voi)])
+
+(%i2) intfudu(f(z),z);
+(%o2) g(z)
+
+(%i3) intfudu(f(w(x)) * diff(w(x),x),x);
+(%o3) g(w(x))
+</PRE>
+
+<P>
+An alternative to calling <CODE>intfudu</CODE> directly is to use the <CODE>extra_integration_methods</CODE>
+mechanism; an example:
+
+<PRE>
+(%i1) load("abs_integrate.mac")$
+(%i2) load(basic)$
+(%i3) load("partition.mac")$
+
+(%i4) integrate(bessel_j(1,x^2) * x,x);
+(%o4) integrate(bessel_j(1,x^2)*x,x)
+
+(%i5) push('intfudu, extra_integration_methods)$
+
+(%i6) integrate(bessel_j(1,x^2) * x,x);
+(%o6) -bessel_j(0,x^2)/2
+</PRE>
+
+<P>
+<B>To use</B> <TT>`load(partition)'</TT>
+
+
+<P>
+<B>Additional documentation</B> http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
+
+
+<P>
+<B>Related functions</B> <I>intfugudu</I>
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>intfugudu</B> <I>(<VAR>e</VAR>, <VAR>x</VAR>)</I>
+<DD><A NAME="IDX4"></A>
+
+
+<P>
+This function uses the derivative divides rule for integrands of the
+form <EM>f(w(x)) * g(w(x)) * diff(w(x),x)</EM>. When <CODE>infudu</CODE> is
+unable to find an antiderivative, it returns false. 
+
+
+
+<PRE>
+(%i1) diff(jacobi_sn(x,2/3),x);
+(%o1) jacobi_cn(x,2/3)*jacobi_dn(x,2/3)
+
+(%i2) intfugudu(%,x);
+(%o2) jacobi_sn(x,2/3)
+
+(%i3) diff(jacobi_dn(x^2,a),x);
+(%o3) -2*a*x*jacobi_cn(x^2,a)*jacobi_sn(x^2,a)
+
+(%i4) intfugudu(%,x);
+(%o4) jacobi_dn(x^2,a)
+</PRE>
+
+<P>
+For a method for automatically calling <CODE>infugudu</CODE> from <CODE>integrate</CODE>, see
+the documenation for <CODE>intfudu</CODE>.
+
+
+<P>
+<B>To use</B> <TT>`load(partition)'</TT>
+
+
+<P>
+<B>Additional documentation</B> http://www.cs.berkeley.edu/~fateman/papers/partition.pdf
+
+
+<P>
+<B>Related functions</B> <I>intfudu</I>
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>signum_to_abs</B> <I>(<VAR>e</VAR>)</I>
+<DD><A NAME="IDX5"></A>
  
 This function replaces subexpressions of the form <EM>q signum(q)</EM> by
 <EM>abs(q)</EM>.  Before it does these substitutions, it replaces
@@ -202,7 +329,7 @@ subexpressions of the form <EM>signum(p) * signum(q)</EM> by
 <P>
 <DL>
 <DT><U>Macro:</U> <B>simp_assuming</B> <I>(<VAR>e</VAR>, <VAR>f_1</VAR>, <VAR>f_2</VAR>, ..., <VAR>f_n</VAR>)</I>
-<DD><A NAME="IDX4"></A>
+<DD><A NAME="IDX6"></A>
 
 
 <P>
@@ -243,7 +370,7 @@ this allows
 <P>
 <DL>
 <DT><U>Function:</U> <B>convert_to_signum</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX5"></A>
+<DD><A NAME="IDX7"></A>
 
 
 <P>
@@ -276,7 +403,7 @@ uses <EM>unit_step(x) = (1 + signum(x))/2</EM>.
 <P>
 <DL>
 <DT><U>Function:</U> <B>make_dummy(e,x)</B>
-<DD><A NAME="IDX6"></A>
+<DD><A NAME="IDX8"></A>
 
 
 <P>
@@ -296,8 +423,9 @@ Append "%" to the symbol <EM>x</EM> until <EM>x</EM> is <I>not</I> a variable in
 <B>To use</B> <TT>`load(abs_integrate)'</TT>
 
 
+</DL>
 <P><HR><P>
-This document was generated on 8 January 2009 using
+This document was generated on 12 January 2009 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>
