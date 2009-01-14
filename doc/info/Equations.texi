@@ -21,13 +21,13 @@ It's recommended to use this list rather than
 doing @code{concat ('%r, j)}.
 
 @c ===beg===
-solve ([x + y = 3], [x,y]);
-%rnum_list;
-sol : solve ([x + 2*y + 3*z = 4], [x,y,z]);
-%rnum_list;
-for i : 1 thru length (%rnum_list) do
-  sol : subst (t[i], %rnum_list[i], sol)$
-sol;
+@c solve ([x + y = 3], [x,y]);
+@c %rnum_list;
+@c sol : solve ([x + 2*y + 3*z = 4], [x,y,z]);
+@c %rnum_list;
+@c for i : 1 thru length (%rnum_list) do
+@c   sol : subst (t[i], %rnum_list[i], sol)$
+@c sol;
 @c ===end===
 @example
 @group
