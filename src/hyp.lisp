@@ -1777,13 +1777,23 @@
   ;; expanded to (-1)^x*z^x because that's wrong for this.
   (let* (($radexpand nil)
 	 (a (first arg-l1))
+	 (b (second arg-l1))
 	 (c (first arg-l2))
 	 (m (sub 1 c))
 	 (n (mul -1 a))
 	 (z (sub 1 (mul 2 var))))
+    (when $trace2f1
+      (format t "~&legf14~%"))
     ;; A&S 15.4.16, 15.4.17
-    (cond ((and (eq (asksign var) '$positive)
+    (cond ((not (alike1 (add a b) 1))
+	   ;; I think 15.4.16 and 15.4.17 require the form
+	   ;; F(a,1-a;c;x).  That is, a+b = 1.  If we don't have it
+	   ;; exit now.
+	   nil)
+	  ((and (eq (asksign var) '$positive)
 		(eq (asksign (sub 1 var)) '$positive))
+	   (when $trace2f1
+	     (format t " A&S 15.4.17~%"))
 	   ;; A&S 15.4.17
 	   ;;
 	   ;; F(a,1-a;c;x) = gamma(c)*x^(1/2-c/2)*(1-x)^(c/2-1/2)*
@@ -1799,6 +1809,8 @@
 	   ;;
 	   ;; F(a,1-a;c;z) = gamma(c)*(-z)^(1/2-c/2)*(1-z)^(c/2-1/2)*
 	   ;;                 assoc_legendre_p(-a,1-c,1-2*z)
+	   (when $trace2f1
+	     (format t " A&S 15.4.17~%"))
 	   (mul (gm c)
 		(power (mul -1 var) (div (sub 1 c) 2))
 		(power (sub 1 var) (div (sub c 1) 2))
@@ -1855,11 +1867,12 @@
 	     ,n ,m ,x)))))
 
 
-(defun legpol (a b c)
-  ;; Why do we insist that a be a negative (numerical) integer?
-  (when (not (hyp-negp-in-l (list a)))
-    (print 'fail-1-in-c-1-case)
-    (return-from legpol nil))
+(defun legpol-core (a b c)
+  ;; I think for this to be correct, we need a to be a negative
+  ;; integer.
+  (unless (and (eq '$yes (ask-integerp a))
+	       (eq (asksign a) '$negative))
+    (return-from legpol-core nil))
   (let* ((l (vfvp (div (add b a) 2)))
 	 (v (cdr (assoc 'v l :test #'equal))))
     ;; v is (a+b)/2
@@ -1873,6 +1886,8 @@
 
       ((and (alike1 c '((rat simp) 1 2))
 	    (alike1 (add b a) '((rat simp) 1 2)))
+       ;; c = 1/2, a+b = 1/2
+       ;;
        ;; A&S 22.5.52
        ;; P(2*n,x) = (-1)^n*(2*n)!/2^(2*n)/(n!)^2*F(-n,n+1/2;1/2;x^2)
        ;;
@@ -1880,14 +1895,16 @@
        ;;
        (let ((n (mul -1 a)))
 	 (mul (power -1 n)
-	      (power (factorial n) 2)
-	      (inv (factorial (mul 2 n)))
+	      (power (gm (add n 1)) 2)
+	      (inv (gm (add 1 (mul 2 n))))
 	      (power 2 (mul 2 n))
 	      (legenpol (mul 2 n)
 			(power var (div 1 2))))))
 
       ((and (alike1 c '((rat simp) 3 2))
 	    (alike1 (add b a) '((rat simp) 3 2)))
+       ;; c = 3/2, a+b = 3/2
+       ;;
        ;; A&S 22.5.53
        ;; P(2*n+1,x) = (-1)^n*(2*n+1)!/2^(2*n)/(n!)^2*F(-n,n+3/2;3/2;x^2)*x
        ;;
@@ -1895,8 +1912,8 @@
        ;;
        (let ((n (mul -1 a)))
 	 (mul (power -1 n)
-	      (power (factorial n) 2)
-	      (inv (factorial (add 1 (mul 2 n))))
+	      (power (gm (add 1 n)) 2)
+	      (inv (gm (add 2 (mul 2 n))))
 	      (power 2 (mul 2 n))
 	      (legenpol (add 1 (mul 2 n))
 			(power var (div 1 2)))
@@ -1904,40 +1921,51 @@
      
       ((and (zerp (sub b a))
 	    (zerp (sub c (add a b))))
+       ;; a = b, c = a + b
+       ;;
        ;; A&S 22.5.50
        ;; P(n,x) = binomial(2*n,n)*((x-1)/2)^n*F(-n,-n;-2*n;2/(1-x))
        ;;
        ;; F(-n,-n;-2*n;x) = P(n,1-2/x)/binomial(2*n,n)(-1/x)^(-n)
-       (mul (power (factorial (mul -1 a)) 2)
-	    (inv (factorial (mul -2 a)))
+       (mul (power (gm (add 1 (mul -1 a))) 2)
+	    (inv (gm (add 1 (mul -2 a))))
 	    (power (mul -1 var) (mul -1 a))
 	    (legenpol (mul -1 a)
 		      (add 1 (div -2 var)))))
       ((and (alike1 (sub a b) '((rat simp) 1 2))
 	    (alike1 (sub c (mul 2 b)) '((rat simp) 1 2)))
+       ;; a - b = 1/2, c - 2*b = 1/2
+       ;;
        ;; A&S 22.5.51
        ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
        ;;
        ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
-       (mul (power (factorial (mul -2 b)) 2)
-	    (inv (factorial (mul -4 b)))
+       (mul (power (gm (add 1 (mul -2 b))) 2)
+	    (inv (gm (add 1 (mul -4 b))))
 	    (power (mul 2 (power var (div 1 2))) (mul -2 b))
 	    (legenpol (mul -2 b)
 		      (power var (div -1 2)))))
       ((and (alike1 (sub b a) '((rat simp) 1 2))
 	    (alike1 (sub c (mul 2 a)) '((rat simp) 1 2)))
+       ;; b - a = 1/2, c + 2*a = 1/2
+       ;;
        ;; A&S 22.5.51
        ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
        ;;
        ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
-       (mul (power (factorial (mul -2 a)) 2)
-	    (inv (factorial (mul -4 a)))
+       (mul (power (gm (add 1 (mul -2 a))) 2)
+	    (inv (gm (add 1 (mul -4 a))))
 	    (power (mul 2 (power var (div 1 2))) (mul -2 a))
 	    (legenpol (mul -2 a)
 		      (power var (div -1 2)))))
       (t 
        nil))))
 
+(defun legpol (a b c)
+  ;; See if F(a,b;c;z) is a Legendre polynomial.  If not, try
+  ;; F(b,a;c;z).
+  (or (legpol-core a b c)
+      (legpol-core b a c)))
 
 
 ;; See A&S 15.3.3:
