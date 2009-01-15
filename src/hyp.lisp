@@ -3,6 +3,8 @@
 
 (in-package :maxima)
 
+;;; References:  http://dspace.mit.edu/handle/1721.1/16269
+
 (macsyma-module hyp)
 
 (declare-top (special $true $false))
@@ -1446,6 +1448,12 @@
 
 
 ;; Is F(a, b; c; z) is Legendre function?
+;;
+;; Lemma 29 (see ref) says F(a, b; c; z) can be reduced to a Legendre
+;; function if two of the numbers 1-c, +/-(a-b), and +/- (c-a-b) are
+;; equal to each other or one of them equals +/- 1/2.
+;;
+;; This routine checks for each of the possibilities.
 (defun legfun (a b c)			   
   (let ((1-c (sub 1 c))
 	(a-b (sub a b))
@@ -1918,7 +1926,7 @@
 	      (legenpol (add 1 (mul 2 n))
 			(power var (div 1 2)))
 	      (inv (power var (div 1 2))))))
-     
+
       ((and (zerp (sub b a))
 	    (zerp (sub c (add a b))))
        ;; a = b, c = a + b
