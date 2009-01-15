@@ -637,11 +637,10 @@
   (cond ((= n 1) nil)
 	((evenp n) (= n 2))
 	((member n *small-primes*) t)
-	((< n 1373653) (primep-small n '(2 3)))
-	((< n 25326001) (primep-small n '(2 3 5)))
+	((< n 9080191) (primep-small n '(31 73)))
+	((< n 4759123141) (primep-small n '(2 7 61)))
 	((< n 2152302898747) (primep-small n '(2 3 5 7 11)))
 	((= n 46856248255981) nil)
-	;((< n 341550071728321) (primep-small n '(2 3 5 7 11 13 17)))
 	((< n 10000000000000000) (primep-small n '(2 3 7 61 24251)))
 	((member n *large-primes*) t)
 	(t (primep-prob n))))
@@ -707,7 +706,7 @@
       (power-mod b n m)
       (let ((inv (inv-mod b m)))
 	(if inv
-	    (power-mod inv (neg n) m)))))
+	    (power-mod inv (- n) m)))))
 
 (defun power-mod (b n m)
   (if (zerop n)
