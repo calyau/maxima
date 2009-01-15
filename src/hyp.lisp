@@ -1038,8 +1038,10 @@
 	 (c-prime (add 1 (mul 2 a-prime))))
     ;; Ok, p and q are integers.  We can compute something.  There are
     ;; four cases to handle depending on the sign of p and r.
-
-    (let ((fun (hyp-cos a-prime (add a-prime 1//2) c-prime)))
+    ;;
+    ;; We need to differentiate some hypergeometric forms, so use 'ell
+    ;; as the variable.
+    (let ((fun (hyp-cos a-prime (add a-prime 1//2) c-prime 'ell)))
       ;; fun is F(a',a'+1/2;2*a'+1;z)
       (when $trace2f1
 	(format t "step7-core~%")
@@ -1048,52 +1050,55 @@
 	(format t " a', c' = ~A ~A~%" a-prime c-prime)
 	(format t " F(a',a'+1/2; 1+2*a';z) =~%")
 	(maxima-display fun))
-      (cond ((>= p 0)
-	     (cond ((>= r 0)
-		    (step-7-pp a-prime b c-prime p r var fun))
+      ;; Compute the result, and substitute the actual argument into
+      ;; result.
+      (subst var 'ell
+	     (cond ((>= p 0)
+		    (cond ((>= r 0)
+			   (step-7-pp a-prime b c-prime p r 'ell fun))
+			  (t
+			   (step-7-pm a-prime b c-prime p r 'ell fun))))
 		   (t
-		    (step-7-pm a-prime b c-prime p r var fun))))
-	    (t
-	     (cond ((>= r 0)
-		    (step-7-mp a-prime b c-prime p r var fun))
-		   (t
-		    (step-7-mm a-prime b c-prime p r var fun))))))))
+		    (cond ((>= r 0)
+			   (step-7-mp a-prime b c-prime p r 'ell fun))
+			  (t
+			   (step-7-mm a-prime b c-prime p r 'ell fun)))))))))
   
 ;; F(a,b;c;z) in terms of F(a',b;c';z)
 ;;
 ;; F(a'+p,b;c'-r;z) where p >= 0, r >= 0.
-(defun step-7-pp (a b c p r var fun)
+(defun step-7-pp (a b c p r z fun)
   ;; Apply A&S 15.2.4 and 15.2.3
-  (let ((res (as-15.2.4 a b c r var fun)))
-    (as-15.2.3 a b (sub c r) p var res)))
+  (let ((res (as-15.2.4 a b c r z fun)))
+    (as-15.2.3 a b (sub c r) p z res)))
 
 ;; p >= 0, r < 0
 ;;
 ;; Let r' = -r
 ;; F(a'+p,b;c'-r;z) = F(a'+p,b;c'+r';z)
-(defun step-7-pm (a b c p r var fun)
+(defun step-7-pm (a b c p r z fun)
   ;; Apply A&S 15.2.6 and 15.2.3
-  (let ((res (as-15.2.6 a b c (- r) var fun)))
-    (as-15.2.3 a b (sub c r) p var res)))
+  (let ((res (as-15.2.6 a b c (- r) z fun)))
+    (as-15.2.3 a b (sub c r) p z res)))
 ;;
 ;; p < 0, r >= 0
 ;;
 ;; Let p' = -p
 ;; F(a'+p,b;c'-r;z) = F(a'-p',b;c'-r;z)
-(defun step-7-mp (a b c p r var fun)
+(defun step-7-mp (a b c p r z fun)
   ;; Apply A&S 15.2.4 and 15.2.5
-  (let ((res (as-15.2.4 a b c r var fun)))
-    (as-15.2.5 a b (sub c r) (- p) var res)))
+  (let ((res (as-15.2.4 a b c r z fun)))
+    (as-15.2.5 a b (sub c r) (- p) z res)))
 
 ;; p < 0 r < 0
 ;;
 ;; Let p' = - p, r' = -r
 ;;
 ;; F(a'+p,b;c'-r;z) = F(a'-p',b;c'+r';z)
-(defun step-7-mm (a b c p r var fun)
+(defun step-7-mm (a b c p r z fun)
   ;; Apply A&S 15.2.6 and A&S 15.2.5
-  (let ((res (as-15.2.6 a b c (- r) var fun)))
-    (as-15.2.5 a b (sub c r) (- p) var res)))
+  (let ((res (as-15.2.6 a b c (- r) z fun)))
+    (as-15.2.5 a b (sub c r) (- p) z res)))
 
 ;; F(a,b;c;z) when a and b are integers (or declared to be integers)
 ;; and c is an integral number.
@@ -1228,11 +1233,14 @@
 				(mul -1 (sub c 1)))))))
      ))
 
-(defun hyp-cos (a b c)
+;; Handle F(a, b; c; z) for certain values of a, b, and c.  See the
+;; comments below for these special values.  The optional arg z
+;; defaults to var, which is usually the argument of hgfred.
+(defun hyp-cos (a b c &optional (z var))
   (let ((a1 (div (sub (add a b) (div 1 2)) 2))
-	(z1 (sub 1 var)))
+	(z1 (sub 1 z)))
     ;; a1 = (a+b-1/2)/2
-    ;; z1 = 1-var
+    ;; z1 = 1-z
     (cond ((alike1 (sub (add a b)
 			(div 1 2))
 		   c)
@@ -1255,7 +1263,7 @@
 		    (mul (power 2 2a-1)
 			 (inv (power z1 1//2))
 			 (power (sub 1 (power z1 1//2)) 2a-1)
-			 (inv (power var 2a-1))))
+			 (inv (power z 2a-1))))
 		   (t
 		    ;; 2^(2*a-1)*(1-z)^(-1/2)*(1+sqrt(1-z))^(1-2*a)
 		    (mul (power 2 (sub (mul a1 2) 1))
@@ -1283,7 +1291,7 @@
 		    (mul (power 2 2a)
 			 (power (sub 1 (power z1 1//2))
 				2a)
-			 (power var (mul -1 2a))))
+			 (power z (mul -1 2a))))
 		   (t
 		    ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a)
 		    (mul (power 2 2a)

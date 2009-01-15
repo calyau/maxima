@@ -585,5 +585,15 @@ jacobi_sn(elliptic_kc(1-m)*%i/2,m);
 jacobi_sc(elliptic_kc(m)+u,m);
 -jacobi_cs(u,m)/sqrt(1-m)$
 
+/*
+ * Bug [ 2505945 ] - hgfred([2,-1/2],[3],-x^2);
+ *
+ * Shouldn't signal from diff about non-variable second arg.
+ *
+ * The expected value here is computed from
+ * factor(ratsimp(subst([z=-x^2],hgfred([2,-1/2],[3],z))))
+ */
+factor(ratsimp(hgfred([2,-1/2],[3],-x^2)));
+4*(3*x^4*sqrt(x^2+1)+x^2*sqrt(x^2+1)-2*sqrt(x^2+1)+2)/(15*x^4)$
 end;
 end$
