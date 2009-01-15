@@ -270,7 +270,7 @@
 		(cond ($solveradcan (setq exp (radcan1 exp))
 				    (if (atom exp) (go a))))
 	      
-		(cond ((easy-cases exp *var)
+		(cond ((easy-cases exp *var mult)
 		       (cond (symbol (setq *roots (subst temp *var *roots))
 				     (setq *failures (subst temp *var *failures))))
 		       (rootsort *roots)
@@ -330,12 +330,12 @@
 ;;; Solve is not fully recursive when it due to globals, $MULTIPLICIES
 ;;; may be screwed here. (Solve should be made recursive)
 
-(defun easy-cases (*exp *var)
+(defun easy-cases (*exp *var mult)
   (cond ((or (atom *exp) (atom (car *exp))) nil)
 	((eq (caar *exp) 'mtimes)
 	 (do ((terms (cdr *exp) (cdr terms)))
 	     ((null terms))
-	   (solve (car terms) *var 1))
+	   (solve (car terms) *var mult))
 	 'mtimes)))
 
 ;; This code is commented out because it exposes a bug in the way
