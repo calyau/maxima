@@ -596,7 +596,7 @@ wrapper for this."
 			  (memalike (caar x) (cdr $setcheck))))
 		 (not (eq x y)))
 	    (displa (list '(mtext) (disp2 x) '| set to | y))
-	    (if $setcheckbreak
+	    (if (and $setcheckbreak (not (eq x '$setval)))
 		(let (($setval y))
 		  (merrbreak t)
 		  (setq y $setval)))))
