@@ -336,18 +336,21 @@
 	 (do ((terms (cdr *exp) (cdr terms)))
 	     ((null terms))
 	   (solve (car terms) *var mult))
-	 'mtimes)))
+	 'mtimes)
 
-;; This code is commented out because it exposes a bug in the way
-;; solve (or its friends) handles multiplicities. A previous 
-;; version (1.2) had a typo (caar *exp) 'mexp ...) that prevented this
-;; bug from manifesting.  Barton Willis, 12 May 2004
-
-;;	     ((EQ (CAAR *EXP) 'MEXPT)
-;;	      (COND ((AND (INTEGERP  (CADDR *EXP))
-;;			  (PLUSP (CADDR *EXP)))
-;;		     (SOLVE (CADR *EXP) *VAR (CADDR *EXP))
-;;		     'MEXPRAT)))))
+	;; This code is commented out because it exposes a bug in the way
+	;; solve (or its friends) handles multiplicities. A previous 
+	;; version (1.2) had a typo (caar *exp) 'mexp ...) that prevented this
+	;; bug from manifesting.  Barton Willis, 12 May 2004
+	;;
+	;; In particular it causes test 137 in rtest15 and test 45 in
+	;; rtestint to fail.
+	#+nil
+	((eq (caar *exp) 'mexpt)
+	 (cond ((and (integerp  (caddr *exp))
+		     (plusp (caddr *exp)))
+		(solve (cadr *exp) *var (caddr *exp))
+		'mexprat)))))
 
 ;;; Predicate to test for presence of troublesome trig functions to be
 ;;; canonicalized.  A  table of when to make substitutions should
