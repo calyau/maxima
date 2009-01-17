@@ -145,13 +145,13 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
   [l11,l1s,lk1,lk2,indd,res,
 /* l1:listify(intersect(setify(covi(forma)),setify(first(indices(forma))))),*/
    l1:listify(intersect(setify(covind(forma)),setify(first(indices(forma))))),
-   div,ind:if length(optind)>0 then optind[1] else idummy()],
-  if l1=[] then return(idiff(forma,ind))
+   div,ind1:if length(optind)>0 then optind[1] else idummy()],
+  if l1=[] then return(idiff(forma,ind1))
   else
   (
     l11:makelist(idummy(),i,1,length(l1)),
     l1s:map("=",l1,l11),
-    lk1:append([ind],l1),
+    lk1:append([ind1],l1),
     indd:idummy(),
     lk2:append(l11,[indd]),
     res:sublis(l1s,forma),
@@ -162,7 +162,7 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
     (
       l1s:map("=",[l1[i]],[indd]),
       res:res+(if evenp(length(l1)) then 1 else -1)*
-              'ifb([l1[i],ind],[indd])*sublis(l1s,forma)
+              'ifb([l1[i],ind1],[indd])*sublis(l1s,forma)
     ),
     div:if igeowedge_flag then (length(lk1)-1)! else length(lk1)!,
     factor(res/div)
@@ -183,7 +183,7 @@ declare("|",additive);
 /* VTT: ADDITIVE doesn't always do the trick so we break up sums manually */
 "|"(forma,vec):=block
 (
-  [ind,perm],
+  [ind1,perm],
   forma:distrib(forma),
   if not(atom(forma)) and (op(forma)="+" or op(forma)="=") then
     apply(op(forma),[part(forma,1)|vec,rest(forma)|vec])
@@ -209,8 +209,8 @@ declare("|",additive);
     if perm[2]=[] then 0
     else perm[1]*(contract(canform(expand(forma*
                  vec([],[first(sort(indices(forma)[1]))])))))*/
-    ind:first(sort(first(indices(forma)))),
-    contract(canform(expand(forma*vec([],[ind]))))
+    ind1:first(sort(first(indices(forma)))),
+    contract(canform(expand(forma*vec([],[ind1]))))
   )
 );
 
