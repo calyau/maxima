@@ -461,8 +461,17 @@ test_sum(
 test_sum(
   sum(-1/(2*k)+1/(2*2*k+1)+1/(2*2*k+3), k, 1, inf),
   [],
+  false,
   [ratsimp],
   (9*log(2)-8)/6
 );
 0;
-  
+
+test_sum(
+  sum(log((2*k+1)/(2*k-1)), k, 1, n),
+  [],
+  false,
+  [ratsimp],
+  log(2*n+1)
+);
+0;
