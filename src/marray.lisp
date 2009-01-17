@@ -42,8 +42,10 @@
 	      ((hash-table-p ary)
 	       (let (vals (tab ary))
 		 (declare (special vals tab))
-		 (maphash #'(lambda (x &rest l)l (push (gethash x tab) vals)) ary )
-		 vals))
+                 (maphash #'(lambda (x &rest l) l 
+                              (unless (eq x 'dim1) (push (gethash x tab) vals)))
+                            ary)
+                 (reverse vals)))
 	      (t 
 	       (merror "Argument to `listarray' must be an array:~%~M" ary)))))
 
