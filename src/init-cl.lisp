@@ -567,12 +567,17 @@
     (catch 'to-lisp
       (initialize-real-and-run-time)
       (set-locale)
+      (adjust-character-encoding)
       (set-pathnames)
       (setf (values input-stream batch-flag)
 	    (process-maxima-args input-stream batch-flag))
       (loop
 	 (with-simple-restart (macsyma-quit "Maxima top-level")
 	   (macsyma-top-level input-stream batch-flag))))))
+
+(defun adjust-character-encoding ()
+  #+clisp (progn (setf custom:*default-file-encoding* (ext:make-encoding :input-error-action #\?))
+                 (setf custom:*terminal-encoding* custom:*default-file-encoding*)))
 
 (import 'cl-user::run)
 
