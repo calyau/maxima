@@ -1,4 +1,8 @@
-;; very simple server started on port
+;; Connect Maxima to a socket which has been opened by
+;; some third party, typically a GUI program which supplies
+;; input to Maxima.
+;; Note that this code DOES NOT create a Maxima server:
+;; Maxima is the client!
 
 (in-package :maxima)
 
@@ -12,7 +16,7 @@
 (defvar $show_openplot t)
 (defvar *socket-connection*)
 
-(defun setup-server (port &optional (host "localhost"))
+(defun setup-client (port &optional (host "localhost"))
   (let* ((sock (open-socket host port)))
     #+gcl (setq si::*sigpipe-action* 'si::bye)
     (setq *socket-connection* sock)
@@ -31,7 +35,7 @@
     (setq *debug-io* sock))
   (values))
 
-(defun close-server ()
+(defun close-client ()
   #+ecl (setq *standard-input* *old-stdin*
 	      *standard-output* *old-stdout*
 	      *error-output* *old-stderr*
@@ -70,11 +74,11 @@
 
 
 
-(defun start-server (port &optional (host "localhost"))
-  (format t "jfa: starting server on port ~a~%" port)
+(defun start-client (port &optional (host "localhost"))
+  (format t "Connecting Maxima to server on port ~a~%" port)
   (setq $in_netmath t)
   (setq $show_openplot nil)
-  (setup-server port host))
+  (setup-client port host))
 
 #-gcl
 (defun getpid-from-environment ()

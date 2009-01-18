@@ -78,7 +78,8 @@ Suppress Maxima start-up message.
 Process \fIstring\fR in interactive mode.
 .TP
 \fB\-s\fR \fIport\fR, \fB\-\-server=\fR\fIport\fR
-Start Maxima server on \fIport\fR.
+Connect Maxima to server on \fIport\fR.
+Note that this does not create a Maxima server; Maxima is the client.
 .TP
 \fB\-u\fR \fIversion\fR, \fB\-\-use-version=\fR\fIversion\fR 
 Launch Maxima version \fIversion\fR. Use \fB\-\-list-avail\fR to see

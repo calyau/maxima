@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.26 2007-02-25 10:34:36 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.27 2009-01-18 20:17:24 robert_dodier Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -412,7 +412,7 @@ proc vMAXSetMaximaCommand {} {
 	#mike FIXME: this means xmaxima on windows is GCL only
         # vvz: We need this only on Windows 9X/ME
 
-	lappend command -eval "(maxima::start-server PORT)" -eval "(run)" -f
+	lappend command -eval "(maxima::start-client PORT)" -eval "(run)" -f
     } else { 
         # vvz: Windows NT/2000/XP
 	if {$tcl_platform(platform) == "windows"} {
@@ -420,7 +420,7 @@ proc vMAXSetMaximaCommand {} {
         # vvz: Unix. Should be as above but we need this due to
         # weird behaviour with some lisps - Why?
 	} else {
-          lappend command -r ":lisp (start-server PORT)"
+          lappend command -r ":lisp (start-client PORT)"
         }
     }
 

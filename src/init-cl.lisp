@@ -527,9 +527,9 @@
 	   (make-cl-option :names '("-s" "--server")
 			   :argument "<port>"
 			   :action #'(lambda (port-string)
-				       (start-server (parse-integer
+				       (start-client (parse-integer
 						      port-string)))
-			   :help-string "Start maxima server on <port>.")
+			   :help-string "Connect Maxima to server on <port>.")
 	   (make-cl-option :names '("-u" "--use-version")
 			   :argument "<version>"
 			   :action nil
