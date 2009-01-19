@@ -3,11 +3,11 @@
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -42,16 +42,15 @@
                                n
                                m)
              (f2cl-lib:fformat mp
-                               (" F= " nil (("~22,15,2,1,'*,,'DE"))
-                                "   GNORM= " nil (("~22,15,2,1,'*,,'DE")) "~%")
+                               (" F= " 1 (("~22,15,2,1,'*,,'DE")) "   GNORM= "
+                                1 (("~22,15,2,1,'*,,'DE")) "~%")
                                f
                                gnorm)
              (cond
                ((>= (f2cl-lib:fref iprint (2) ((1 2))) 1)
                 (f2cl-lib:fformat mp (" VECTOR X= " "~%"))
                 (f2cl-lib:fformat mp
-                                  (4 ("~2@T" nil (("~22,15,2,1,'*,,'DE")))
-                                   "~%")
+                                  (4 ("~2@T" 1 (("~22,15,2,1,'*,,'DE"))) "~%")
                                   (do ((i 1 (f2cl-lib:int-add i 1))
                                        (%ret nil))
                                       ((> i n) (nreverse %ret))
@@ -64,8 +63,7 @@
                                      %ret)))
                 (f2cl-lib:fformat mp (" GRADIENT VECTOR G= " "~%"))
                 (f2cl-lib:fformat mp
-                                  (4 ("~2@T" nil (("~22,15,2,1,'*,,'DE")))
-                                   "~%")
+                                  (4 ("~2@T" 1 (("~22,15,2,1,'*,,'DE"))) "~%")
                                   (do ((i 1 (f2cl-lib:int-add i 1))
                                        (%ret nil))
                                       ((> i n) (nreverse %ret))
@@ -108,8 +106,7 @@
                                        "GNORM" "~19@T" "STEPLENGTH" "~%" "~%")))
                    (f2cl-lib:fformat mp
                                      (2 (1 (("~4D")) "~1@T") "~3@T" 3
-                                      (nil (("~22,15,2,1,'*,,'DE")) "~2@T")
-                                      "~%")
+                                      (1 (("~22,15,2,1,'*,,'DE")) "~2@T") "~%")
                                      iter
                                      nfun
                                      f
@@ -128,7 +125,7 @@
                                     "GNORM" "~19@T" "STEPLENGTH" "~%" "~%")))
                 (f2cl-lib:fformat mp
                                   (2 (1 (("~4D")) "~1@T") "~3@T" 3
-                                   (nil (("~22,15,2,1,'*,,'DE")) "~2@T") "~%")
+                                   (1 (("~22,15,2,1,'*,,'DE")) "~2@T") "~%")
                                   iter
                                   nfun
                                   f
@@ -143,8 +140,7 @@
                   (t
                    (f2cl-lib:fformat mp (" VECTOR X= " "~%"))))
                 (f2cl-lib:fformat mp
-                                  (4 ("~2@T" nil (("~22,15,2,1,'*,,'DE")))
-                                   "~%")
+                                  (4 ("~2@T" 1 (("~22,15,2,1,'*,,'DE"))) "~%")
                                   (do ((i 1 (f2cl-lib:int-add i 1))
                                        (%ret nil))
                                       ((> i n) (nreverse %ret))
@@ -159,7 +155,7 @@
                   ((= (f2cl-lib:fref iprint (2) ((1 2))) 3)
                    (f2cl-lib:fformat mp (" GRADIENT VECTOR G= " "~%"))
                    (f2cl-lib:fformat mp
-                                     (4 ("~2@T" nil (("~22,15,2,1,'*,,'DE")))
+                                     (4 ("~2@T" 1 (("~22,15,2,1,'*,,'DE")))
                                       "~%")
                                      (do ((i 1 (f2cl-lib:int-add i 1))
                                           (%ret nil))
