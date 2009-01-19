@@ -1,0 +1,95 @@
+;;;; -*- Mode: lisp -*-
+
+;;; System to convert the Fortran code to Lisp
+
+(in-package #-gcl #:cl-user #+gcl "CL-USER")
+
+#-gcl
+(progn
+  (defun lapack-source-pathname (subdir)
+    (merge-pathnames (make-pathname :directory (list :relative subdir))
+		     (make-pathname :directory (pathname-directory *load-truename*))))
+(defun lapack-binary-pathname (subdir)
+  (merge-pathnames
+   (make-pathname
+    :name (concatenate 'string "binary-"
+		       #+clisp "clisp"
+		       #+cmu "cmucl"
+		       #+scl "scl"
+		       #+sbcl "sbcl"
+		       #+allegro "acl"
+		       #+openmcl "openmcl"
+		       #+abcl "abcl"
+		       #+ecl "ecl"
+		       #-(or clisp cmu scl sbcl gcl allegro openmcl abcl ecl) "unknownlisp")
+    :directory (list :relative subdir))
+   (make-pathname :directory (pathname-directory *load-truename*))))
+)
+
+#+gcl
+(progn
+  (defun lapack-source-pathname (subdir)
+    (merge-pathnames (make-pathname :directory (list subdir))
+		     (make-pathname :directory (pathname-directory sys:*load-pathname*))))
+(defun lapack-binary-pathname (subdir)
+  (merge-pathnames (make-pathname :directory (list subdir))
+		   (make-pathname :directory (pathname-directory sys:*load-pathname*))))
+)
+
+
+
+(mk:defsystem minpack
+  :source-pathname (lapack-source-pathname ".")
+  :binary-pathname (lapack-binary-pathname ".")
+  :depends-on ("minpack-package")
+  :components
+  ((:module "lisp"
+	    :binary-pathname "."
+	    :components
+	    (
+	     (:file "dpmpar")
+	     (:file "enorm")
+	     (:file "fdjac1"
+		    :depends-on ("dpmpar"))
+	     (:file "fdjac2"
+		    :depends-on ("dpmpar"))
+	     (:file "qrsolv")
+	     (:file "lmpar"
+		    :depends-on ("dpmpar" "enorm" "qrsolv"))
+	     (:file "qrfac"
+		    :depends-on ("dpmpar" "enorm"))
+	     (:file "lmdif"
+		    :depends-on ("dpmpar" "enorm" "fdjac2" "lmpar" "qrfac"))
+	     (:file "lmdif1"
+		    :depends-on ("lmdif"))
+	     (:file "lmder"
+		    :depends-on ("dpmpar" "enorm" "lmpar" "qrfac"))
+	     (:file "lmder1"
+		    :depends-on ("lmder"))
+	     (:file "dogleg"
+		    :depends-on ("dpmpar" "enorm"))
+	     (:file "qform")
+	     (:file "r1mpyq")
+	     (:file "r1updt"
+		    :depends-on ("dpmpar"))
+	     (:file "hybrd"
+		    :depends-on ("dogleg" "dpmpar" "enorm" "fdjac1"
+					  "qform" "qrfac" "r1mpyq" "r1updt"))
+	     (:file "hybrd1"
+		    :depends-on ("hybrd"))
+	     (:file "hybrj"
+		    :depends-on ("dogleg" "dpmpar" "enorm" "qform" "qrfac"
+					  "r1mpyq" "r1updt"))
+	     (:file "hybrj1"
+		    :depends-on ("hybrj"))
+	     ))))
+
+(mk:defsystem minpack-package
+  :source-pathname (lapack-source-pathname ".")
+  :source-extension "lisp"
+  :components
+  ((:file "minpack-package")
+   (:file "minpack-interface"
+	  :depends-on ("minpack-package"))))
+
+
