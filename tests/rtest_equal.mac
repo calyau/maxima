@@ -711,3 +711,15 @@ true$
 
 is(notequal(exp(minf),0));
 false$
+
+is(equal(sqrt(1-x^2), conjugate(sqrt(1-x^2))));
+unknown$
+
+(assume(-1 < x, x < 1),0);
+0$
+
+is(equal(sqrt(1-x^2), conjugate(sqrt(1-x^2))));
+true$
+
+(forget(-1 < x, x < 1),0);
+0$
