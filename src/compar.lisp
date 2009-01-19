@@ -851,7 +851,7 @@ relational knowledge is contained in the default context GLOBAL."
 ;; niceindicespref.
 
 (defun meqp-by-csign (z a b)
-  (let ((sgn) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
+  (let ((sgn) (*complexsign* t) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
     (cond ((and (mexptp z) (eq t (mnqp (third z) '$minf)) (eq t (mnqp (second z) 0))) nil)
 	  (t
 	   (setq z ($niceindices z))
@@ -996,23 +996,25 @@ relational knowledge is contained in the default context GLOBAL."
     (throw 'done nil)))
 
 (defun mgrp (a b)
-  (setq a (sub a b))
-  (let ((sgn (csign a)))
-    (cond ((eq sgn '$pos) t)
-	  ((eq sgn t) nil) ;; csign thinks a - b isn't real
-	  ((member sgn '($neg $zero $nz) :test #'eq) nil)
-	  (t `((mgreaterp) ,a 0)))))
+  (let ((*complexsign* t))
+    (setq a (sub a b))
+    (let ((sgn (csign a)))
+      (cond ((eq sgn '$pos) t)
+	    ((eq sgn t) nil) ;; csign thinks a - b isn't real
+	    ((member sgn '($neg $zero $nz) :test #'eq) nil)
+	    (t `((mgreaterp) ,a 0))))))
 
 (defun mlsp (x y)
   (mgrp y x))
 
 (defun mgqp (a b)
-  (setq a (sub a b))
-  (let ((sgn (csign a)))
-    (cond ((member sgn '($pos $zero $pz) :test #'eq) t)
-	  ((eq sgn t) nil) ;; csign thinks a - b isn't real 
-	  ((eq sgn '$neg) nil)
-	  (t `((mgeqp) ,a 0)))))
+  (let ((*complexsign* t))
+    (setq a (sub a b))
+    (let ((sgn (csign a)))
+      (cond ((member sgn '($pos $zero $pz) :test #'eq) t)
+	    ((eq sgn t) nil) ;; csign thinks a - b isn't real 
+	    ((eq sgn '$neg) nil)
+	    (t `((mgeqp) ,a 0))))))
 
 (defun mnqp (x y)
   (let ((b (meqp x y)))
