@@ -10,33 +10,7 @@
 (defmacro get-integrand (fun var)
   `(coerce-float-fun ,fun `((mlist) ,,var)))
 
-(defun lispify-maxima-keyword-options (options &optional valid-keywords)
-  ;; options looks like (((mequal) $opt1 val1) ((mequal) $opt2 val2) ...)
-  ;;
-  ;; Convert to a new list that looks like ($opt1 val1 $opt2 val2 ...)
-  ;;
-  (unless (listp options)
-    (merror "Invalid Maxima keyword options: ~M" options))
-  (when (every #'(lambda (o)
-		   ;; Make sure every option has the right form.
-		   (let ((ok (and (listp o)
-				  (= (length o) 3)
-				  (eq (caar o) 'mequal))))
-		     (unless ok
-		       (merror "Badly formed keyword option: ~M" o))
-		     ok))
-		 options)
-    (mapcan #'(lambda (o)
-	      (destructuring-bind (mequal opt val)
-		  o
-		(declare (ignore mequal))
-		(if (or (null valid-keywords)
-			(member opt valid-keywords))
-		    (flet ((keywordify (x)
-			     (intern (subseq (symbol-name x) 1) :keyword)))
-		      (list (keywordify opt) val))
-		    (merror "Unrecognized keyword: ~M" opt))))
-	  options)))
+
 
 (defun quad-qag (fun var a b key &key
 		 (epsrel 1e-8)
