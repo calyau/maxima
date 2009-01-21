@@ -4,46 +4,25 @@
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 
-#-gcl
-(progn
-  (defun lapack-source-pathname (subdir)
-    (merge-pathnames (make-pathname :directory (list :relative subdir))
-		     (make-pathname :directory (pathname-directory *load-truename*))))
-(defun lapack-binary-pathname (subdir)
+(defun minpack-source-pathname (subdir)
+  (merge-pathnames (make-pathname :directory (list #-gcl :relative subdir))
+		   (make-pathname :directory (pathname-directory #-gcl *load-truename*
+								 #+gcl sys:*load-pathname*))))
+(defun minpack-binary-pathname (subdir)
   (merge-pathnames
    (make-pathname
-    :name (concatenate 'string "binary-"
-		       #+clisp "clisp"
-		       #+cmu "cmucl"
-		       #+scl "scl"
-		       #+sbcl "sbcl"
-		       #+allegro "acl"
-		       #+openmcl "openmcl"
-		       #+abcl "abcl"
-		       #+ecl "ecl"
-		       #-(or clisp cmu scl sbcl gcl allegro openmcl abcl ecl) "unknownlisp")
-    :directory (list :relative subdir))
-   (make-pathname :directory (pathname-directory *load-truename*))))
-)
-
-#+gcl
-(progn
-  (defun lapack-source-pathname (subdir)
-    (merge-pathnames (make-pathname :directory (list subdir))
-		     (make-pathname :directory (pathname-directory sys:*load-pathname*))))
-(defun lapack-binary-pathname (subdir)
-  (merge-pathnames (make-pathname :directory (list subdir))
-		   (make-pathname :directory (pathname-directory sys:*load-pathname*))))
-)
-
-
+    :name (concatenate 'string "binary-"  maxima::*maxima-lispname*)
+    :directory (list #-gcl :relative subdir))
+   (make-pathname :directory (pathname-directory #-gcl *load-truename*
+						 #+gcl sys:*load-pathname*))))
 
 (mk:defsystem minpack
-  :source-pathname (lapack-source-pathname ".")
-  :binary-pathname (lapack-binary-pathname ".")
+  :source-pathname (minpack-source-pathname ".")
+  :binary-pathname (minpack-binary-pathname ".")
   :depends-on ("minpack-package")
   :components
   ((:module "lisp"
+	    :source-extension "lisp"
 	    :binary-pathname "."
 	    :components
 	    (
@@ -85,7 +64,7 @@
 	     ))))
 
 (mk:defsystem minpack-package
-  :source-pathname (lapack-source-pathname ".")
+  :source-pathname (minpack-source-pathname ".")
   :source-extension "lisp"
   :components
   ((:file "minpack-package")
