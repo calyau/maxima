@@ -220,7 +220,7 @@
 		   (minpack:enorm n fvec)
 		   info))))))))
 
-(defun $minpack_lsquares (vars init-x fcns &rest options)
+(defun $minpack_lsquares (fcns vars init-x &rest options)
   "Minimize the sum of the squares of m functions in n unknowns (n <= m)
 
    VARS    list of the variables
@@ -236,7 +236,7 @@
   (let ((args (lispify-maxima-keyword-options options '($jacobian $tolerance))))
     (apply #'least-squares vars init-x fcns args)))
 
-(defun $minpack_solve (vars init-x fcns &rest options)
+(defun $minpack_solve (fcns vars init-x &rest options)
   "Solve the system of n equations in n unknowns
 
    VARS    list of the n variables
