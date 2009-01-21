@@ -6,4 +6,4 @@
 		       #-gcl *load-pathname*
 		       #+gcl sys:*load-pathname*))
 
-(mk:oos "minpack" :compile)
+(mk:oos "minpack-interface" :compile)

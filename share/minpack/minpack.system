@@ -67,8 +67,13 @@
   :source-pathname (minpack-source-pathname ".")
   :source-extension "lisp"
   :components
-  ((:file "minpack-package")
-   (:file "minpack-interface"
-	  :depends-on ("minpack-package"))))
+  ((:file "minpack-package")))
+
+(mk:defsystem minpack-interface
+  :source-pathname (minpack-source-pathname ".")
+  :source-extension "lisp"
+  :depends-on ("minpack")
+  :components
+  ((:file "minpack-interface")))
 
 
