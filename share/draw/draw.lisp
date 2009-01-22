@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2008 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2009 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -39,26 +39,34 @@
 
 (defvar $data_file_name "data.gnuplot")
 
-(defvar *multiplot-is-active* nil)
+;; this variable is used when working with
+;; multiple windows. Empty string means
+;; we are working with only one window
+(defvar *terminal-number* "")
 
+
+;; one-window multiplot: consecutive calls
+;; to draw allways plot on the same window
+(defvar *multiplot-is-active* nil)
 (defun $multiplot_mode (term)
-  (case term
-    ($screen
-      ($multiplot_mode '$none)
-      (send-gnuplot-command
-        (format nil "set terminal x11 ~a~%set multiplot~%" (write-font-type)))
-      (setf *multiplot-is-active* t))
-    ($wxt
-      ($multiplot_mode '$none)
-      (send-gnuplot-command
-        (format nil "set terminal wxt ~a~%set multiplot~%" (write-font-type)))
-      (setf *multiplot-is-active* t))
-    ($none
-      (send-gnuplot-command
-        (format nil "unset multiplot~%"))
-      (setf *multiplot-is-active* nil))
-    (otherwise
-      (merror "draw: ~M is not recognized as a multiplot mode" x)) ))
+  (when (not *windows-OS*)
+    (case term
+      ($screen
+        ($multiplot_mode '$none)
+        (send-gnuplot-command
+          (format nil "set terminal x11 ~a~%set multiplot~%" (write-font-type)))
+        (setf *multiplot-is-active* t))
+      ($wxt
+        ($multiplot_mode '$none)
+        (send-gnuplot-command
+          (format nil "set terminal wxt ~a~%set multiplot~%" (write-font-type)))
+        (setf *multiplot-is-active* t))
+      ($none
+        (send-gnuplot-command
+          (format nil "unset multiplot~%"))
+        (setf *multiplot-is-active* nil))
+      (otherwise
+        (merror "draw: ~M is not recognized as a multiplot mode" x)))))
 
 
 ;; This variable stores actual graphics options
@@ -85,13 +93,14 @@
 (defun ini-gr-options ()
   (setf
       ; global options to control general aspects of graphics
-      (gethash '$xrange *gr-options*) nil      ; nil => automatic computation
-      (gethash '$yrange *gr-options*) nil      ; nil => automatic computation
-      (gethash '$zrange *gr-options*) nil      ; nil => automatic computation
-      (gethash '$logx *gr-options*)   nil
-      (gethash '$logy *gr-options*)   nil
-      (gethash '$logz *gr-options*)   nil
-      (gethash '$title *gr-options*)  ""
+      (gethash '$xrange *gr-options*)  nil      ; nil => automatic computation
+      (gethash '$yrange *gr-options*)  nil      ; nil => automatic computation
+      (gethash '$y2range *gr-options*) nil      ; nil => automatic computation
+      (gethash '$zrange *gr-options*)  nil      ; nil => automatic computation
+      (gethash '$logx *gr-options*)    nil
+      (gethash '$logy *gr-options*)    nil
+      (gethash '$logz *gr-options*)    nil
+      (gethash '$title *gr-options*)   ""
       (gethash '$rot_vertical *gr-options*)   60   ; range: [0,180] (vertical rotation)
       (gethash '$rot_horizontal *gr-options*) 30   ; range: [0,360] (horizontal rotation)
       (gethash '$xy_file *gr-options*)        ""
@@ -113,16 +122,19 @@
       (gethash '$z_voxel *gr-options*)       10
 
       ; tics
-      (gethash '$grid *gr-options*)         nil
-      (gethash '$xtics *gr-options*)        "autofreq"
-      (gethash '$ytics *gr-options*)        "autofreq"
-      (gethash '$ztics *gr-options*)        "autofreq"
-      (gethash '$xtics_rotate *gr-options*) nil
-      (gethash '$ytics_rotate *gr-options*) nil
-      (gethash '$ztics_rotate *gr-options*) nil
-      (gethash '$xtics_axis *gr-options*)   nil
-      (gethash '$ytics_axis *gr-options*)   nil
-      (gethash '$ztics_axis *gr-options*)   nil
+      (gethash '$grid *gr-options*)          nil
+      (gethash '$xtics *gr-options*)         "autofreq"
+      (gethash '$ytics *gr-options*)         "autofreq"
+      (gethash '$y2tics *gr-options*)        nil   ; no tics in right y-axis
+      (gethash '$ztics *gr-options*)         "autofreq"
+      (gethash '$xtics_rotate *gr-options*)  nil
+      (gethash '$ytics_rotate *gr-options*)  nil
+      (gethash '$y2tics_rotate *gr-options*) nil
+      (gethash '$ztics_rotate *gr-options*)  nil
+      (gethash '$xtics_axis *gr-options*)    nil
+      (gethash '$ytics_axis *gr-options*)    nil
+      (gethash '$y2tics_axis *gr-options*)   nil
+      (gethash '$ztics_axis *gr-options*)    nil
 
       ; axis
       (gethash '$axis_bottom *gr-options*) t
@@ -173,8 +185,9 @@
       ; function options
       (gethash '$nticks *gr-options*)      30
       (gethash '$adapt_depth *gr-options*) 10
-      (gethash '$key *gr-options*)         ""    ; by default, no keys
-      (gethash '$filled_func *gr-options*) nil   ; false, true (y axis) or an expression
+      (gethash '$key *gr-options*)         ""          ; by default, no keys
+      (gethash '$filled_func *gr-options*) nil         ; false, true (y axis) or an expression
+      (gethash '$right_yaxis *gr-options*) nil
 
       ; 3d options
       (gethash '$xu_grid *gr-options*)        30
@@ -267,7 +280,7 @@
       ($points_joined ; defined as true, false or $impulses
             (if (member val '(t nil $impulses))
               (setf (gethash opt *gr-options*) val)
-              (merror "draw: nllegal points_joined option: ~M " val)) )
+              (merror "draw: illegal points_joined option: ~M " val)) )
       (($line_type $xaxis_type $yaxis_type $zaxis_type) ; defined as $solid or $dots
             (case val
                ($solid (setf (gethash opt *gr-options*) 1))
@@ -310,17 +323,17 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "draw: unknown contour level description: ~M " val))))
-      (($transparent $border $logx $logy $logz $head_both $grid 
+      (($transparent $border $logx $logy $logz $head_both $grid $right_yaxis
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
-        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ztics_rotate
-        $xtics_axis $ytics_axis $ztics_axis $meshed_surface) ; true or false
+        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $y2tics_rotate
+        $ztics_rotate $xtics_axis $ytics_axis $y2tics_axis $ztics_axis $meshed_surface) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: non boolean value: ~M " val)))
       (($filled_func $enhanced3d) ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
-      (($xtics $ytics $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
+      (($xtics $ytics $y2tics $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
             (cond ((member val '($none nil))   ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((member val '($auto t))     ; t is maintained for back-portability
@@ -366,10 +379,22 @@
                                          ")")))))
                   (t
                      (merror "draw: illegal tics allocation: ~M" val)) ))
-      ($terminal ; defined as screen, png, jpg, gif, eps, eps_color, pdf, pdfcairo or wxt
-            (if (member val '($screen $png $jpg $gif $eps $eps_color $pdf $pdfcairo $wxt $animated_gif $aquaterm $wxtmultiplot))
-                (setf (gethash opt *gr-options*) val)
-                (merror "draw: this is not a terminal: ~M" val)))
+      ($terminal ; defined as screen, png, jpg, gif, eps, eps_color, pdf, pdfcairo, wxt or aquaterm.
+                 ; A list of type [term, number] is also admited if term is screen, wxt or aquaterm
+            (let ((terms '($screen $png $jpg $gif $eps $eps_color $pdf $pdfcairo $wxt $animated_gif $aquaterm)))
+              (cond
+                ((member val terms)
+                   (setf (gethash opt *gr-options*) val
+                         *terminal-number* ""))
+                ((and ($listp val)
+                      (= ($length val) 2)
+                      (member (cadr val) '($screen $wxt $aquaterm))
+                      (integerp (caddr val))
+                      (>= (caddr val) 0))
+                   (setf (gethash opt *gr-options*) (cadr val)
+                         *terminal-number* (caddr val)))
+                (t
+                   (merror "draw: illegal terminal specification: ~M" val)))))
       ($head_type ; defined as $filled, $empty and $nofilled
             (if (member val '($filled $empty $nofilled))
                 (setf (gethash opt *gr-options*) val)
@@ -402,7 +427,7 @@
                                             (format nil (if (string= str "") "~a" "~%~a") st)))))
                 (t (merror "draw: illegal user preamble especification")))
               (setf (gethash opt *gr-options*) str))  )
-      (($xrange $yrange $zrange) ; defined as a Maxima list with two numbers in increasing order
+      (($xrange $yrange $y2range $zrange) ; defined as a Maxima list with two numbers in increasing order
             (cond ((member val '($auto nil))     ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((or (not ($listp val))
@@ -493,27 +518,26 @@
 ;; length 3 (with a dummy 0), object constructors should make the necessary changes
 ;; to fit the objects in the window; if they are nil, default
 ;; value, constructors are also allowed to make changes.
-(defun update-ranges (xmin xmax ymin ymax &optional zmin zmax)
-   ; update x-ranges if necessary
-   (case (length (gethash '$xrange *gr-options*))
-      (0 (setf (gethash '$xrange *gr-options*) (list xmin xmax 0)))
-      (3 (setf (gethash '$xrange *gr-options*) (list (min xmin (first  (gethash '$xrange *gr-options*)))
-                                                    (max xmax (second (gethash '$xrange *gr-options*)))
-                                                    0))) )
-   ; update y-ranges if necessary
-   (case (length (gethash '$yrange *gr-options*))
-      (0 (setf (gethash '$yrange *gr-options*) (list ymin ymax 0)))
-      (3 (setf (gethash '$yrange *gr-options*) (list (min ymin (first  (gethash '$yrange *gr-options*)))
-                                                    (max ymax (second (gethash '$yrange *gr-options*)))
-                                                    0))) )
+(defmacro update-range (axi vmin vmax)
+   `(case (length (gethash ,axi *gr-options*))
+          (0 (setf (gethash ,axi *gr-options*) (list ,vmin ,vmax 0)))
+          (3 (setf (gethash ,axi *gr-options*) (list (min ,vmin (first  (gethash ,axi *gr-options*)))
+                                                        (max ,vmax (second (gethash ,axi *gr-options*)))
+                                                        0))) ))
 
-   ; update z-ranges if necessary
-   (if (and zmin zmax)
-       (case (length (gethash '$zrange *gr-options*))
-          (0 (setf (gethash '$zrange *gr-options*) (list zmin zmax 0)))
-          (3 (setf (gethash '$zrange *gr-options*) (list (min zmin (first  (gethash '$zrange *gr-options*)))
-                                                        (max zmax (second (gethash '$zrange *gr-options*)))
-                                                        0))) )))
+(defun update-ranges-2d (xmin xmax ymin ymax)
+   (update-range '$xrange xmin xmax)
+   (if (get-option '$right_yaxis)
+      (update-range '$y2range ymin ymax)
+      (update-range '$yrange ymin ymax)) )
+
+(defun update-ranges-3d (xmin xmax ymin ymax zmin zmax)
+   (update-ranges-2d xmin xmax ymin ymax)
+   (update-range '$zrange zmin zmax))
+
+
+
+
 
 
 
@@ -545,6 +569,7 @@
 ;;     key
 ;;     line_type
 ;;     color
+;;     right_yaxis
 (defun points-command ()
   (let ((opt (get-option '$points_joined)))
     (cond
@@ -616,7 +641,7 @@
             ymin ($tree_reduce 'min (cons '(mlist simp) y))
             ymax ($tree_reduce 'max (cons '(mlist simp) y)) )
       ;; update x-y ranges if necessary
-      (update-ranges xmin xmax ymin ymax)
+      (update-ranges-2d xmin xmax ymin ymax)
       (make-gr-object
          :name 'points
          :command (points-command)
@@ -683,7 +708,7 @@
             zmin ($tree_reduce 'min (cons '(mlist simp) z))
             zmax ($tree_reduce 'max (cons '(mlist simp) z)) )
       ;; update x-y-y ranges if necessary
-      (update-ranges xmin xmax ymin ymax zmin zmax)
+      (update-ranges-3d xmin xmax ymin ymax zmin zmax)
       (make-gr-object
          :name 'points
          :command (points-command)
@@ -730,7 +755,7 @@
             ymin ($tree_reduce 'min (cons '(mlist simp) y))
             ymax ($tree_reduce 'max (cons '(mlist simp) y)) )
       ;; update x-y ranges if necessary
-      (update-ranges xmin xmax ymin ymax)
+      (update-ranges-2d xmin xmax ymin ymax)
       (cond
          ((get-option '$transparent)  ; if transparent, draw only the border
              (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a'"
@@ -875,7 +900,7 @@
           xmax (max fxc xmax)
           ymin (min fyc ymin)
           ymax (max fyc ymax))
-    (update-ranges xmin xmax ymin ymax)
+    (update-ranges-2d xmin xmax ymin ymax)
     (cond
        ((get-option '$transparent)  ; if transparent, draw only the border
            (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a'"
@@ -951,7 +976,7 @@
                         (if (or (not (floatp fx)) 
                                 (not (floatp fy)))
                             (merror "draw (label): non real 2d coordinates"))
-                        (update-ranges fx fx fy fy)
+                        (update-ranges-2d fx fx fy fy)
                         (setf result (append (list fx fy (format nil "\"~a\"" text)) result)))))
                   (t ; labels in 3d
                     (let (fx fy fz text)
@@ -964,7 +989,7 @@
                                 (not (floatp fy))
                                 (not (floatp fz)))
                             (merror "draw (label): non real 3d coordinates"))
-                        (update-ranges fx fx fy fy fz fz)
+                        (update-ranges-3d fx fx fy fy fz fz)
                         (setf result (append (list fx fy fz text) result)))))) )
           (t (merror "draw (label): illegal arguments")))
     (make-gr-object
@@ -1020,7 +1045,7 @@
              xmax (max xmax (+ x w2))
              ymin (min ymin h)
              ymax (max ymax h)) )
-    (update-ranges xmin xmax ymin ymax)
+    (update-ranges-2d xmin xmax ymin ymax)
     (make-gr-object
        :name 'bars
        :command (format nil " ~a w boxes fs solid ~a border lw ~a lc rgb '~a'"
@@ -1068,7 +1093,7 @@
                   dy (/ dy module)  )))
       (setf xdx (convert-to-float (+ x dx))
             ydy (convert-to-float (+ y dy)))
-      (update-ranges (min x xdx) (max x xdx) (min y ydy) (max y ydy))
+      (update-ranges-2d (min x xdx) (max x xdx) (min y ydy) (max y ydy))
       (make-gr-object
          :name 'vector
          :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc rgb '~a'"
@@ -1128,7 +1153,7 @@
       (setf xdx (convert-to-float (+ x dx))
             ydy (convert-to-float (+ y dy))
             zdz (convert-to-float (+ z dz)) )
-      (update-ranges (min x xdx) (max x xdx) (min y ydy) (max y ydy) (min z zdz) (max z zdz))
+      (update-ranges-3d (min x xdx) (max x xdx) (min y ydy) (max y ydy) (min z zdz) (max z zdz))
       (make-gr-object
          :name 'vector
          :command (format nil " ~a w vect ~a ~a size ~a, ~a lw ~a lt ~a lc rgb '~a'"
@@ -1166,6 +1191,7 @@
 ;;     filled_func
 ;;     fill_color
 ;;     key
+;;     right_yaxis
 (defun explicit (fcn var minval maxval)
   (let* ((nticks (gethash '$nticks  *gr-options*))
          (depth (gethash '$adapt_depth  *gr-options*))
@@ -1213,15 +1239,16 @@
                   (setf yy (car y))
                   (if (> yy ymax) (setf ymax yy))
                   (if (< yy ymin) (setf ymin yy)))
-               (update-ranges xstart xend ymin ymax)
+               (update-ranges-2d xstart xend ymin ymax)
                (setf result-array (make-array (length result)
                                               :element-type 'flonum 
                                               :initial-contents result))
-               (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc rgb '~a'"
+               (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$line_width)
                                         (get-option '$line_type)
-                                        (get-option '$color)))
+                                        (get-option '$color)
+                                        (if (get-option '$right_yaxis) "x1y2" "x1y1")))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1233,13 +1260,14 @@
                   (setf yy (car y))
                   (if (> yy ymax) (setf ymax yy))
                   (if (< yy ymin) (setf ymin yy)))
-               (update-ranges xstart xend ymin ymax)
+               (update-ranges-2d xstart xend ymin ymax)
                (setf result-array (make-array (length result)
                                               :element-type 'flonum 
                                               :initial-contents result))
-               (setf pltcmd (format nil " ~a w filledcurves x1 lc rgb '~a'"
+               (setf pltcmd (format nil " ~a w filledcurves x1 lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
-                                        (get-option '$fill_color)))
+                                        (get-option '$fill_color)
+                                        (if (get-option '$right_yaxis) "x1y2" "x1y1")))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1259,10 +1287,11 @@
                       (setf (aref result-array (incf count)) (first xx)
                             (aref result-array (incf count)) yy
                             (aref result-array (incf count)) yy2) )  ))
-               (update-ranges xstart xend ymin ymax)
-               (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a'"
+               (update-ranges-2d xstart xend ymin ymax)
+               (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
-                                        (get-option '$fill_color)))
+                                        (get-option '$fill_color)
+                                        (if (get-option '$right_yaxis) "x1y2" "x1y1")  ))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1378,8 +1407,7 @@
     (setq e (coerce-float-fun (convert-to-float (imp-pl-prepare-expr expr))
 			      `((mlist simp)
 				,x ,y)))
-
-    (update-ranges xmin xmax ymin ymax)
+    (update-ranges-2d xmin xmax ymin ymax)
 
     (sample-data e xmin xmax ymin ymax sample ip-grid)
     (do ((i 0 (1+ i)))
@@ -1559,7 +1587,7 @@
 
     (when (null vertices)
       (merror "draw3d (implicit): no surface within these ranges"))
-    (update-ranges xmin xmax ymin ymax zmin zmax)
+    (update-ranges-3d xmin xmax ymin ymax zmin zmax)
     (setf pltcmd
           (cons (format nil " ~a w l lt ~a lc rgb '~a'"
                         (make-obj-title (get-option '$key))
@@ -1648,7 +1676,7 @@
                            (funcall fcn4d x y)))
                   (setq x (+ x epsx)))
            (setq y (+ y epsy)))
-    (update-ranges fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
+    (update-ranges-3d fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
     (make-gr-object
        :name   'explicit
        :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
@@ -1709,7 +1737,7 @@
           do (setq tt (+ tt eps))
              (if (>= tt tmax) (setq tt tmax)) ))
     ; update x-y ranges if necessary
-    (update-ranges xmin xmax ymin ymax)
+    (update-ranges-2d xmin xmax ymin ymax)
     (make-gr-object
        :name 'parametric
        :command (format nil " ~a w l lw ~a lt ~a lc rgb '~a'"
@@ -1855,7 +1883,7 @@
           do (setq tt (+ tt eps))
              (if (>= tt tmax) (setq tt tmax)) ))
     ; update x-y ranges if necessary
-    (update-ranges xmin xmax ymin ymax zmin zmax)
+    (update-ranges-3d xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric
        :command (format nil " ~a w l lw ~a lt ~a lc rgb '~a'"
@@ -1938,8 +1966,8 @@
                   (if (> uu umax) (setf uu umax)))
            (setq vv (+ vv veps))
            (if (> vv vmax) (setf vv vmax)))
-    ; update x-y ranges if necessary
-    (update-ranges xmin xmax ymin ymax zmin zmax)
+    ; update x-y-z ranges if necessary
+    (update-ranges-3d xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric_surface
        :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
@@ -2038,7 +2066,7 @@
           (t
              (merror "draw2d (image): Argument not recognized")))
     ; update x-y ranges if necessary
-    (update-ranges fx0 (+ fx0 fwidth) fy0 (+ fy0 fheight))
+    (update-ranges-2d fx0 (+ fx0 fwidth) fy0 (+ fy0 fheight))
     (make-gr-object
        :name 'image
        :command (case n
@@ -2091,7 +2119,7 @@
              (setf (aref resi (incf count)) x
                    (aref resi (incf count)) y)))
          collect resi))
-     (update-ranges xmin xmax ymin ymax)
+     (update-ranges-2d xmin xmax ymin ymax)
      res ))
 
 ;; Mercator cylindrical projection
@@ -2124,7 +2152,7 @@
              (setf (aref resi (incf count)) x
                    (aref resi (incf count)) y)))
          collect resi))
-     (update-ranges xmin xmax ymin ymax)
+     (update-ranges-2d xmin xmax ymin ymax)
      res ))
 
 ;; Miller cylindrical projection
@@ -2156,7 +2184,7 @@
              (setf (aref resi (incf count)) x
                    (aref resi (incf count)) y)))
          collect resi))
-     (update-ranges xmin xmax ymin ymax)
+     (update-ranges-2d xmin xmax ymin ymax)
      res ))
 
 ;; Kavrayskiy VII pseudocylindrical projection
@@ -2191,7 +2219,7 @@
              (setf (aref resi (incf count)) x
                    (aref resi (incf count)) y)))
          collect resi))
-     (update-ranges xmin xmax ymin ymax)
+     (update-ranges-2d xmin xmax ymin ymax)
      res ))
 
 (defun geomap (lis &optional (proj nil))
@@ -2287,7 +2315,7 @@
                    (aref resi (incf count)) y
                    (aref resi (incf count)) z)))
          collect resi))
-     (update-ranges xmin xmax ymin ymax zmin zmax)
+     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
      res ))
 
 ;; cylinder of radius rc with its axis passing through the poles of the sphere
@@ -2329,7 +2357,7 @@
                    (aref resi (incf count)) y
                    (aref resi (incf count)) z)))
          collect resi))
-     (update-ranges xmin xmax ymin ymax zmin zmax)
+     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
      res ))
 
 ;; cone with angle a and axis passing through the poles of the sphere
@@ -2376,7 +2404,7 @@
                    (aref resi (incf count)) y
                    (aref resi (incf count)) z)))
          collect resi))
-     (update-ranges xmin xmax ymin ymax zmin zmax)
+     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
      res ))
 
 (defun geomap3d (lis &optional (proj nil))
@@ -2461,14 +2489,26 @@
             (let ((xi (first  (get-option '$xrange)))
                   (xf (second (get-option '$xrange)))
                   (yi (first  (get-option '$yrange)))
-                  (yf (second (get-option '$yrange))))
+                  (yf (second (get-option '$yrange)))
+                  (y2i (first  (get-option '$y2range)))
+                  (y2f (second (get-option '$y2range))) )
                (when (= xi xf)
                   (setf xi (- xi 0.01)
                         xf (+ xf 0.01)))
-               (when (= yi yf)
+               (when (and (get-option '$yrange) (= yi yf))
                   (setf yi (- yi 0.01)
                         yf (+ yf 0.01)))
-               (format nil "set xrange [~a:~a]~%set yrange [~a:~a]~%" xi xf yi yf)  )
+               (when (and (get-option '$y2range) (= y2i y2f))
+                  (setf y2i (- y2i 0.01)
+                        y2f (+ y2f 0.01)))
+               (format nil "set xrange [~a:~a]~%~a~a"
+                       xi xf
+                       (if (get-option '$yrange)
+                         (format nil "set yrange [~a:~a]~%" yi yf)
+                         "")
+                       (if (get-option '$y2range)
+                         (format nil "set y2range [~a:~a]~%" y2i y2f)
+                         "") ) )
             (if (get-option '$logx)
                (format nil "set logscale x~%")
                (format nil "unset logscale x~%"))
@@ -2511,6 +2551,12 @@
                        (if (get-option '$ytics_rotate) "rotate" "norotate")
                        (if (get-option '$ytics_axis) "axis" "border")
                        (get-option '$ytics)))
+            (if (null (get-option '$y2tics))
+               (format nil "unset y2tics~%")
+               (format nil "set y2tics ~a ~a ~a~%"
+                       (if (get-option '$y2tics_rotate) "rotate" "norotate")
+                       (if (get-option '$y2tics_axis) "axis" "border")
+                       (get-option '$y2tics)))
             (if (get-option '$colorbox)
                (format nil "set colorbox~%")
                (format nil "unset colorbox~%"))
@@ -2668,6 +2714,7 @@
                                         (car pal) (cadr pal) (caddr pal))) ) )
             (if (not (string= (get-option '$user_preamble) ""))
                (format nil "~a~%" (get-option '$user_preamble)))  ))
+
       ; scene description: (dimensions, gnuplot preamble in string format, list of objects)
       (list
          3       ; it's a 3d scene
@@ -2751,9 +2798,9 @@
                 :direction :output :if-exists :supersede))
     (setf datapath (format nil "'~a'" (plot-temp-file $data_file_name)))
 
-    ; write global options
-    (if (not *multiplot-is-active*) 
-      (case (gethash '$terminal *gr-options*)
+    ; when one window multiplot is active, change os terminal is not allowed
+    (if (not *multiplot-is-active*)
+    (case (gethash '$terminal *gr-options*)
         ($png (format cmdstorage "set terminal png ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
                            (get-option '$pic_width)
@@ -2799,14 +2846,21 @@
                            (get-option '$delay)
                            (get-option '$file_bgcolor)
                            (get-option '$file_name)))
-        ($aquaterm (format cmdstorage "set terminal aqua ~a~%" (write-font-type)))
-        ($wxt (format cmdstorage "set terminal wxt ~a~%" (write-font-type)))
+        ($aquaterm (format cmdstorage "set terminal aqua ~a ~a~%"
+                           *terminal-number*
+                           (write-font-type)))
+        ($wxt (format cmdstorage "set terminal wxt ~a ~a~%"
+                           *terminal-number*
+                           (write-font-type)))
         (otherwise ; default screen output
           (cond
             (*windows-OS*  ; running on windows operating system
-              (format cmdstorage "set terminal windows ~a" (write-font-type)))
+              (format cmdstorage "set terminal windows ~a~%"
+                          (write-font-type)))
             (t  ; other platforms
-              (format cmdstorage "set terminal x11 ~a" (write-font-type))))) ) )
+              (format cmdstorage "set terminal x11 ~a ~a~%"
+                           *terminal-number*
+                           (write-font-type))))) ))
 
     ; compute some parameters for multiplot
     (when (not isanimatedgif)
@@ -2922,10 +2976,11 @@
                                                (plot-temp-file $gnuplot_file_name)))) )
                 (t  ; non windows operating system
                    (check-gnuplot-process)
-                   (when (not *multiplot-is-active*)
+                   (when (not *multiplot-is-active*) ; not in a one window multiplot
                      (send-gnuplot-command "unset output"))
                    (send-gnuplot-command "reset")
-                   (send-gnuplot-command (format nil "load '~a'" (plot-temp-file $gnuplot_file_name))) ))))
+                   (send-gnuplot-command
+                        (format nil "load '~a'" (plot-temp-file $gnuplot_file_name)))  ))))
 
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)) )
@@ -3008,4 +3063,22 @@
                            (get-option '$file_name))))
       (otherwise (merror "draw: unknown file format" )))
    (send-gnuplot-command (format nil "~a~%replot" str)) ))
+
+
+;; When working with multiple windows, for example
+;; terminal = [wxt, 5], only the newest window is active.
+;; This function activates any other previous window at will.
+(defun $activate_window (term num)
+   (when (or (not (member term '($screen $wxt $aquaterm)))
+             (not (integerp num))
+             (< num 0) )
+      (merror "draw: Incorrect terminal or window number"))
+   (when *windows-OS*
+      (merror "draw: Multiple windows are not allowed in Windows systems"))
+   (let (str)
+      (case term
+         ($wxt      (setf str "wxt"))
+         ($aquaterm (setf str "aquaterm"))
+         (otherwise (setf str "x11")))
+      (send-gnuplot-command (format nil "set terminal ~a ~a~%" str num))   ))
 
