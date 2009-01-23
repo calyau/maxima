@@ -1,186 +1,137 @@
 ;;; -*- Mode: lisp -*-
 
-#||
-(print #-gcl *load-truename* #+gcl sys:*load-pathname*)
-
-(print (merge-pathnames
-	(make-pathname
-	 :name (concatenate 'string "binary-"
-			    #+clisp "clisp"
-			    #+cmu "cmucl"
-			    #+scl "scl"
-			    #+sbcl "sbcl"
-			    #+allegro "acl"
-			    #+openmcl "openmcl"
-                #+abcl "abcl"
-			    #-(or clisp cmu scl sbcl gcl allegro openmcl abcl) "unknownlisp")
-	 :directory '(#-gcl :relative "blas"))
-	(make-pathname :directory (pathname-directory #-gcl *load-truename*
-						      #+gcl sys:*load-pathname*))))
-||#
-
-#-gcl
-(progn
-  (defun lapack-source-pathname (subdir)
-    (merge-pathnames (make-pathname :directory (list :relative subdir))
-		     (make-pathname :directory (pathname-directory *load-truename*))))
-(defun lapack-binary-pathname (subdir)
-  (merge-pathnames
-   (make-pathname
-    :name (concatenate 'string "binary-"
-		       #+clisp "clisp"
-		       #+cmu "cmucl"
-		       #+scl "scl"
-		       #+sbcl "sbcl"
-		       #+allegro "acl"
-		       #+openmcl "openmcl"
-		       #+abcl "abcl"
-		       #+ecl "ecl"
-		       #-(or clisp cmu scl sbcl gcl allegro openmcl abcl ecl) "unknownlisp")
-    :directory (list :relative subdir))
-   (make-pathname :directory (pathname-directory *load-truename*))))
-)
-
-#+gcl
-(progn
-  (defun lapack-source-pathname (subdir)
-    (merge-pathnames (make-pathname :directory (list subdir))
-		     (make-pathname :directory (pathname-directory sys:*load-pathname*))))
-(defun lapack-binary-pathname (subdir)
-  (merge-pathnames (make-pathname :directory (list subdir))
-		   (make-pathname :directory (pathname-directory sys:*load-pathname*))))
-)
+;;; Defsystem for building LaPACK for Maxima.
+;;;
+;;; Use (mk:oos "lapack-interface" :compile) to compile the maxima
+;;; interface.
 
 (mk:defsystem lapack-package
-  :source-pathname (lapack-source-pathname ".")
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "lapack")
   :source-extension "lisp"
   :components
   ((:file "lapack-package")))
 
 (mk:defsystem blas
-  :source-pathname (merge-pathnames (make-pathname :directory '(#-gcl :relative "blas"))
-				    (make-pathname :directory (pathname-directory #-gcl *load-truename*
-										  #+gcl sys:*load-pathname*)))
-  :binary-pathname (lapack-binary-pathname "blas")
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "lapack")
   :source-extension "lisp"
   :depends-on ("lapack-package")
   :components
-  (
-   (:file "daxpy")
-   (:file "dcopy")
-   (:file "ddot")
-   (:file "dnrm2")
-   (:file "dscal")
-   (:file "idamax")
+  ((:module blas
+	    :components
+	    ((:file "daxpy")
+	     (:file "dcopy")
+	     (:file "ddot")
+	     (:file "dnrm2")
+	     (:file "dscal")
+	     (:file "idamax")
 
-   (:file "dasum")
-   (:file "dcabs1")
-   (:file "dgbmv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dgemm"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dgemv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dger"
-	  :depends-on ("xerbla"))
-   (:file "drot")
-   (:file "drotg")
-   (:file "dsbmv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dspmv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dspr"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dspr2"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dswap")
-   (:file "dsymm"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dsymv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dsyr"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dsyr2"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dsyr2k"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dsyrk"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtbmv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtbsv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtpmv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtpsv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtrmm"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtrmv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtrsm"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dtrsv"
-	  :depends-on ("lsame" "xerbla"))
-   (:file "dzasum"
-	  :depends-on ("dcabs1"))
-   (:file "dznrm2")
-   (:file "icamax")
-   (:file "isamax")
-   (:file "izamax"
-	  :depends-on ("dcabs1"))
-   (:file "lsame")
-   (:file "xerbla")
+	     (:file "dasum")
+	     (:file "dcabs1")
+	     (:file "dgbmv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dgemm"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dgemv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dger"
+		    :depends-on ("xerbla"))
+	     (:file "drot")
+	     (:file "drotg")
+	     (:file "dsbmv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dspmv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dspr"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dspr2"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dswap")
+	     (:file "dsymm"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dsymv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dsyr"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dsyr2"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dsyr2k"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dsyrk"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtbmv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtbsv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtpmv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtpsv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtrmm"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtrmv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtrsm"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dtrsv"
+		    :depends-on ("lsame" "xerbla"))
+	     (:file "dzasum"
+		    :depends-on ("dcabs1"))
+	     (:file "dznrm2")
+	     (:file "icamax")
+	     (:file "isamax")
+	     (:file "izamax"
+		    :depends-on ("dcabs1"))
+	     (:file "lsame")
+	     (:file "xerbla")
 
-   ;; Complex versions.
-   (:file "zaxpy"
-	  :depends-on ("dcabs1"))
-   (:file "zcopy")
-   (:file "zdotc")
-   (:file "zdotu")
-   (:file "zdscal")
-   (:file "zgbmv")
-   (:file "zgemm")
-   (:file "zgemv")
-   (:file "zgerc")
-   (:file "zgeru")
-   (:file "zhbmv")
-   (:file "zhemm")
-   (:file "zhemv")
-   (:file "zher")
-   (:file "zher2")
-   (:file "zher2k")
-   (:file "zherk")
-   (:file "zhpmv")
-   (:file "zhpr")
-   (:file "zhpr2")
-   (:file "zrotg")
-   (:file "zscal")
-   (:file "zswap")
-   (:file "zsymm")
-   (:file "zsyr2k")
-   (:file "zsyrk")
-   (:file "ztbmv")
-   (:file "ztbsv")
-   (:file "ztpmv")
-   (:file "ztpsv")
-   (:file "ztrmm")
-   (:file "ztrmv")
-   (:file "ztrsm")
-   (:file "ztrsv")
-   ))
+	     ;; Complex versions.
+	     (:file "zaxpy"
+		    :depends-on ("dcabs1"))
+	     (:file "zcopy")
+	     (:file "zdotc")
+	     (:file "zdotu")
+	     (:file "zdscal")
+	     (:file "zgbmv")
+	     (:file "zgemm")
+	     (:file "zgemv")
+	     (:file "zgerc")
+	     (:file "zgeru")
+	     (:file "zhbmv")
+	     (:file "zhemm")
+	     (:file "zhemv")
+	     (:file "zher")
+	     (:file "zher2")
+	     (:file "zher2k")
+	     (:file "zherk")
+	     (:file "zhpmv")
+	     (:file "zhpr")
+	     (:file "zhpr2")
+	     (:file "zrotg")
+	     (:file "zscal")
+	     (:file "zswap")
+	     (:file "zsymm")
+	     (:file "zsyr2k")
+	     (:file "zsyrk")
+	     (:file "ztbmv")
+	     (:file "ztbsv")
+	     (:file "ztpmv")
+	     (:file "ztpsv")
+	     (:file "ztrmm")
+	     (:file "ztrmv")
+	     (:file "ztrsm")
+	     (:file "ztrsv")
+	     ))))
 
 (mk:defsystem lapack
-  :source-pathname (directory-namestring #-gcl *load-truename*
-					 #+gcl sys:*load-pathname*)
-;;  :binary-pathname (make-pathname :directory (pathname-directory *load-truename*))
-  :binary-pathname (lapack-binary-pathname "lapack")
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "lapack")
   :source-extension "lisp"
   :depends-on ("lapack-package" "blas")
   :components
   (
    (:module lapack
-	    :binary-pathname ""
 	    :components
 	    ((:file "dgeev"
 		    :depends-on ("dlartg" "dlapy2" "dgebak" "dtrevc" "dhseqr"
@@ -372,8 +323,8 @@
 	     ))))
 
 (mk:defsystem lapack-interface
-  :source-pathname (directory-namestring #-gcl *load-truename*
-					 #+gcl sys:*load-pathname*)
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "lapack")
   :source-extension "lisp"
   :depends-on ("lapack")
   :components

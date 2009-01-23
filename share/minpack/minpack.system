@@ -1,24 +1,13 @@
 ;;;; -*- Mode: lisp -*-
 
-;;; System to convert the Fortran code to Lisp
+;;; System to compile minpack and the maxima interface
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 
-(defun minpack-source-pathname (subdir)
-  (merge-pathnames (make-pathname :directory (list #-gcl :relative subdir))
-		   (make-pathname :directory (pathname-directory #-gcl *load-truename*
-								 #+gcl sys:*load-pathname*))))
-(defun minpack-binary-pathname (subdir)
-  (merge-pathnames
-   (make-pathname
-    :name (concatenate 'string "binary-"  maxima::*maxima-lispname*)
-    :directory (list #-gcl :relative subdir))
-   (make-pathname :directory (pathname-directory #-gcl *load-truename*
-						 #+gcl sys:*load-pathname*))))
 
 (mk:defsystem minpack
-  :source-pathname (minpack-source-pathname ".")
-  :binary-pathname (minpack-binary-pathname ".")
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "minpack")
   :depends-on ("minpack-package")
   :components
   ((:module "lisp"
@@ -64,13 +53,15 @@
 	     ))))
 
 (mk:defsystem minpack-package
-  :source-pathname (minpack-source-pathname ".")
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "minpack")
   :source-extension "lisp"
   :components
   ((:file "minpack-package")))
 
 (mk:defsystem minpack-interface
-  :source-pathname (minpack-source-pathname ".")
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "minpack")
   :source-extension "lisp"
   :depends-on ("minpack")
   :components
