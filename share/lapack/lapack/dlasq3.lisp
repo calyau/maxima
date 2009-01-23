@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -37,11 +37,10 @@
         (dn1 zero)
         (dn zero)
         (dmin2 zero)
-        (ttype 0)
-        (dmin1$ 0.0f0))
-    (declare (type (double-float) tau dn2 dn1 dn dmin2)
-             (type (f2cl-lib:integer4) ttype)
-             (type (single-float) dmin1$))
+        (dmin1$ zero)
+        (ttype 0))
+    (declare (type (double-float) tau dn2 dn1 dn dmin2 dmin1$)
+             (type (f2cl-lib:integer4) ttype))
     (defun dlasq3 (i0 n0 z pp dmin sigma desig qmax nfail iter ndiv ieee)
       (declare (type f2cl-lib:logical ieee)
                (type (double-float) qmax desig sigma dmin)

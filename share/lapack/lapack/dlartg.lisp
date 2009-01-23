@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -22,9 +22,9 @@
            (type (double-float 1.0 1.0) one)
            (type (double-float 2.0 2.0) two)
            (ignorable zero one two))
-  (let ((safmn2 0.0) (safmin 0.0) (safmx2 0.0) (first$ 0.0f0))
-    (declare (type (double-float) safmn2 safmin safmx2)
-             (type (single-float) first$))
+  (let ((first$ nil) (safmn2 0.0) (safmin 0.0) (safmx2 0.0))
+    (declare (type f2cl-lib:logical first$)
+             (type (double-float) safmn2 safmin safmx2))
     (setq first$ f2cl-lib:%true%)
     (defun dlartg (f g cs sn r)
       (declare (type (double-float) r sn cs g f))

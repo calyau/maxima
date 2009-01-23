@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -21,29 +21,30 @@
   (declare (type (double-float 1.0 1.0) one)
            (type (double-float 0.0 0.0) zero)
            (ignorable one zero))
-  (let ((prec 0.0)
+  (let ((first$ nil)
+        (prec 0.0)
         (rmax 0.0)
         (emax 0.0)
         (rmin 0.0)
         (emin 0.0)
         (rnd 0.0)
-        (t$ 0.0f0)
+        (t$ 0.0)
         (base 0.0)
         (sfmin 0.0)
-        (eps 0.0)
-        (first$ 0.0f0))
-    (declare (type (double-float) prec rmax emax rmin emin rnd base sfmin eps)
-             (type (single-float) t$ first$))
+        (eps 0.0))
+    (declare (type f2cl-lib:logical first$)
+             (type (double-float) prec rmax emax rmin emin rnd t$ base sfmin
+                                  eps))
     (setq first$ f2cl-lib:%true%)
     (defun dlamch (cmach)
       (declare (type (simple-array character (*)) cmach))
       (f2cl-lib:with-multi-array-data
           ((cmach character cmach-%data% cmach-%offset%))
-        (prog ((rmach 0.0) (small 0.0) (t$ 0.0) (beta 0) (imax 0) (imin 0)
-               (it 0) (lrnd nil) (dlamch 0.0))
+        (prog ((rmach 0.0) (small 0.0) (beta 0) (imax 0) (imin 0) (it 0)
+               (lrnd nil) (dlamch 0.0))
           (declare (type (f2cl-lib:integer4) beta imax imin it)
                    (type f2cl-lib:logical lrnd)
-                   (type (double-float) rmach small t$ dlamch))
+                   (type (double-float) rmach small dlamch))
           (cond
             (first$
              (setf first$ f2cl-lib:%false%)
@@ -121,15 +122,15 @@
            :calls '(fortran-to-lisp::lsame))))
 
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -141,16 +142,14 @@
 
 (let ((lieee1 nil) (lbeta 0) (lrnd nil) (lt$ 0) (first$ nil))
   (declare (type f2cl-lib:logical lieee1 lrnd first$)
-           (type (f2cl-lib:integer4) lbeta)
-           (type (integer) lt$))
+           (type (f2cl-lib:integer4) lbeta lt$))
   (setq first$ f2cl-lib:%true%)
   (defun dlamc1 (beta t$ rnd ieee1)
     (declare (type f2cl-lib:logical ieee1 rnd)
              (type (f2cl-lib:integer4) t$ beta))
     (prog ((a 0.0) (b 0.0) (c 0.0) (f 0.0) (one 0.0) (qtr 0.0) (savec 0.0)
-           (t1 0.0) (t2 0.0) (lt$ 0))
-      (declare (type (f2cl-lib:integer4) lt$)
-               (type (double-float) t2 t1 savec qtr one f c b a))
+           (t1 0.0) (t2 0.0))
+      (declare (type (double-float) t2 t1 savec qtr one f c b a))
       (cond
         (first$
          (tagbody
@@ -301,15 +300,15 @@
            :calls 'nil)))
 
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -328,9 +327,8 @@
       (lt$ 0)
       (first$ nil)
       (iwarn nil))
-  (declare (type (f2cl-lib:integer4) lbeta lemax lemin)
+  (declare (type (f2cl-lib:integer4) lbeta lemax lemin lt$)
            (type (double-float) leps lrmax lrmin)
-           (type (integer) lt$)
            (type f2cl-lib:logical first$ iwarn))
   (setq first$ f2cl-lib:%true%)
   (setq iwarn f2cl-lib:%false%)
@@ -341,9 +339,9 @@
     (prog ((a 0.0) (b 0.0) (c 0.0) (half 0.0) (one 0.0) (rbase 0.0)
            (sixth$ 0.0) (small 0.0) (third$ 0.0) (two 0.0) (zero 0.0) (gnmin 0)
            (gpmin 0) (i 0) (ngnmin 0) (ngpmin 0) (ieee nil) (lieee1 nil)
-           (lrnd nil) (lt$ 0))
+           (lrnd nil))
       (declare (type f2cl-lib:logical lrnd lieee1 ieee)
-               (type (f2cl-lib:integer4) lt$ ngpmin ngnmin i gpmin gnmin)
+               (type (f2cl-lib:integer4) ngpmin ngnmin i gpmin gnmin)
                (type (double-float) zero two third$ small sixth$ rbase one half
                                     c b a))
       (cond
@@ -619,15 +617,15 @@
            :calls '(fortran-to-lisp::dlamc1))))
 
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -657,15 +655,15 @@
            :calls 'nil)))
 
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -750,15 +748,15 @@
            :calls '(fortran-to-lisp::dlamc3))))
 
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.213 2009/01/23 14:28:12 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
