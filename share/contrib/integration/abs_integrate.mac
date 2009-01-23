@@ -112,7 +112,7 @@ signum_int(q,x) := block([p : 1, w : 1, l, v, inflag : true, f, qsave : q, listc
       funmake(noun_int, [qsave,x]))
     else signum_int_helper(p, l, x))
   else if (safe_op(q) = "+") then map(lambda([s], signum_int(s,x)), q)
-  else integrate(qsave,x));
+  else funmake(noun_int, [qsave,x]));
 
 make_dummy(e,x) := block([listconstvars : true, v : listofvars(e)],
  while member(x, v) do x : concat(x,"%"),
