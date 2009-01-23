@@ -7,14 +7,16 @@
 
 (mk:defsystem lapack-package
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "lapack")
+  :binary-pathname (maxima::maxima-objdir "share" "lapack"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
   :source-extension "lisp"
   :components
   ((:file "lapack-package")))
 
 (mk:defsystem blas
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "lapack")
+  :binary-pathname (maxima::maxima-objdir "share" "lapack"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
   :source-extension "lisp"
   :depends-on ("lapack-package")
   :components
@@ -126,7 +128,8 @@
 
 (mk:defsystem lapack
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "lapack")
+  :binary-pathname (maxima::maxima-objdir "share" "lapack"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
   :source-extension "lisp"
   :depends-on ("lapack-package" "blas")
   :components
@@ -324,7 +327,8 @@
 
 (mk:defsystem lapack-interface
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "lapack")
+  :binary-pathname (maxima::maxima-objdir "share" "lapack"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
   :source-extension "lisp"
   :depends-on ("lapack")
   :components

@@ -7,7 +7,8 @@
 
 (mk:defsystem minpack
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "minpack")
+  :binary-pathname (maxima::maxima-objdir "share" "minpack"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
   :depends-on ("minpack-package")
   :components
   ((:module "lisp"
@@ -54,14 +55,16 @@
 
 (mk:defsystem minpack-package
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "minpack")
+  :binary-pathname (maxima::maxima-objdir "share" "minpack"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
   :source-extension "lisp"
   :components
   ((:file "minpack-package")))
 
 (mk:defsystem minpack-interface
   :source-pathname (maxima::maxima-load-pathname-directory)
-  :binary-pathname (maxima::maxima-objdir "share" "minpack")
+  :binary-pathname (maxima::maxima-objdir "share" "minpack"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
   :source-extension "lisp"
   :depends-on ("minpack")
   :components
