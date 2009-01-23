@@ -24,11 +24,11 @@ specified by either a string or a symbol.  By default, all tests are
 run.  The complete set of tests is specified by @code{testsuite_files}.
 @end table
 
-For example @code{run_testsuite(display_known_bugs = t, tests=[rtest5])}
+For example @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
 runs just test @code{rtest5} and displays the test that are marked as
 known bugs.
 
-@code{run_testsuite(display_all = t, tests=["rtest1", rtest1a])} will
+@code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])} will
 run tests @code{rtest1} and @code{rtest2}, and displays each test.
 
 @code{run_testsuite} changes the Maxima environment.
