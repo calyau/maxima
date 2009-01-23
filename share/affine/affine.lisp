@@ -1,8 +1,6 @@
 (in-package :maxima)
 
-(defvar *maxima-affinedir*  (combine-path *maxima-sharedir* "affine"))
-
-(load (combine-path *maxima-affinedir* "affine.system"))
+(load (combine-path *maxima-sharedir* "affine" "affine.system"))
 
 (mk:compile-system "affine" :load-source-if-no-binary t)
 
