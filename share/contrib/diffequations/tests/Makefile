@@ -24,5 +24,5 @@ check.log: $(TEST_FILES)
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
 	echo "put('contrib_ode,true,'verbose);";\
-	echo 'run_testsuite(t,t);') | $(MAXIMA) > $@ 2>&1
+	echo 'run_testsuite(display_all=true);') | $(MAXIMA) > $@ 2>&1
 
