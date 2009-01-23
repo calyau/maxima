@@ -31,14 +31,37 @@
 (defvar *maxima-tempdir*)
 (defvar *maxima-lang-subdir*)
 (defvar *maxima-demodir*)
+(defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
-(defmvar $maxima_tempdir)
-(putprop '$maxima_tempdir 'shadow-string-assignment 'assign)
-(putprop '$maxima_tempdir '*maxima-tempdir* 'lisp-shadow)
+(eval-when (load compile eval)
+(defmacro def-lisp-shadow (root-name)
+  "Create a maxima variable $root_name that is an alias for the lisp name *root-name*.
+When one changes, the other does too."
+  (let ((maxima-name (intern (concatenate 'string "$"
+					  (substitute #\_ #\- (string root-name)))))
+	(lisp-name (intern (concatenate 'string "*" (string root-name) "*"))))
+  `(progn
+    (defmvar ,maxima-name)
+    (putprop ',maxima-name 'shadow-string-assignment 'assign)
+    (putprop ',maxima-name ',lisp-name 'lisp-shadow)))))
 
-(defmvar $maxima_userdir)
-(putprop '$maxima_userdir 'shadow-string-assignment 'assign)
-(putprop '$maxima_userdir '*maxima-userdir* 'lisp-shadow)
+(def-lisp-shadow maxima-tempdir)
+(def-lisp-shadow maxima-userdir)
+(def-lisp-shadow maxima-objdir)
+#+nil
+(progn
+  (defmvar $maxima_tempdir)
+  (putprop '$maxima_tempdir 'shadow-string-assignment 'assign)
+  (putprop '$maxima_tempdir '*maxima-tempdir* 'lisp-shadow)
+
+  (defmvar $maxima_userdir)
+  (putprop '$maxima_userdir 'shadow-string-assignment 'assign)
+  (putprop '$maxima_userdir '*maxima-userdir* 'lisp-shadow)
+
+  (defmvar $maxima_objdir)
+  (putprop '$maxima_objdir 'shadow-string-assignment 'assign)
+  (putprop '$maxima_objdir '*maxima-objdir* 'lips-shadow)
+  )
 
 (defun shadow-string-assignment (var value)
   (cond
@@ -64,9 +87,11 @@
   (format t "maxima-userdir=~a~%" *maxima-userdir*)
   (format t "maxima-tempdir=~a~%" *maxima-tempdir*)
   (format t "maxima-lang-subdir=~a~%" *maxima-lang-subdir*)
+  (format t "maxima-objdir=~A~%" *maxima-objdir*)
   ($quit))
 
-(defvar *maxima-lispname* #+clisp "clisp"
+(defvar *maxima-lispname*
+        #+clisp "clisp"
 	#+cmu "cmucl"
 	#+scl "scl"
 	#+sbcl "sbcl"
@@ -233,7 +258,8 @@
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
 	(maxima-userdir-env (maxima-getenv "MAXIMA_USERDIR"))
-	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR")))
+	(maxima-tempdir-env (maxima-getenv "MAXIMA_TEMPDIR"))
+	(maxima-objdir-env (maxima-getenv "MAXIMA_OBJDIR")))
     ;; MAXIMA_DIRECTORY is a deprecated substitute for MAXIMA_PREFIX
     (unless maxima-prefix-env
       (setq maxima-prefix-env (maxima-getenv "MAXIMA_DIRECTORY")))
@@ -254,6 +280,12 @@
     (if maxima-tempdir-env
 	(setq *maxima-tempdir* (maxima-parse-dirstring maxima-tempdir-env))
 	(setq *maxima-tempdir* (default-tempdir)))
+    ;; Default objdir is userdir, because it's almost surely writable,
+    ;; and because we don't want to clutter up random directories with
+    ;; maxima stuff.
+    (setq *maxima-objdir* (if maxima-objdir-env
+			      (maxima-parse-dirstring maxima-objdir-env)
+			      *maxima-userdir*))
 
     ; On Windows Vista gcc requires explicit include
     #+gcl (when (string= *autoconf-win32* "true")
@@ -268,7 +300,9 @@
     (setq $maxima_userdir *maxima-userdir*)
     (setf (gethash '$maxima_userdir *variable-initial-values*) *maxima-userdir*)
     (setq $maxima_tempdir *maxima-tempdir*)
-    (setf (gethash '$maxima_tempdir *variable-initial-values*) *maxima-tempdir*))
+    (setf (gethash '$maxima_tempdir *variable-initial-values*) *maxima-tempdir*)
+    (setq $maxima_objdir *maxima-objdir*)
+    (setf (gethash '$maxima_objdir *variable-initial-values*) *maxima-objdir*))
 
   (let* ((ext #+gcl "o"
 	      #+(or cmu scl) (c::backend-fasl-file-type c::*target-backend*)
@@ -640,6 +674,17 @@
 
 (setf *builtin-$props* (copy-list $props))
 (setf *builtin-$rules* (copy-list $rules))
+
+(defun maxima-objdir (&rest subdirs)
+  "Return a pathname string such that subdirs is a subdirectory of maxima_objdir"
+  (apply #'combine-path *maxima-objdir* subdirs))
+
+;; The directory part of *load-pathname*.  GCL doesn't seem to have a
+;; usable *LOAD-PATHNAME*, but it does have SYS:*LOAD-PATHNAME*.
+(defun maxima-load-pathname-directory ()
+  "Return the directory part of *load-pathname*."
+  (make-pathname :directory (pathname-directory #-gcl *load-pathname*
+						#+gcl sys:*load-pathname*)))
 
 ;; Work around: ABCL handles special variables incorrectly
 ;; unless they have DEFVAR or DEFPARAMETER.
