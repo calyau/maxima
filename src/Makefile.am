@@ -192,7 +192,7 @@ clean: clean-gcl
 distclean: clean-gcl
 
 sys-proclaim:
-	rm -r binary-gcl
+	rm -rf binary-gcl
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
