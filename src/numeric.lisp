@@ -1057,10 +1057,14 @@
 		       (bigfloat maxima-num))
 		      ((maxima::mplusp maxima-num)
 		       ;; Hope this is a Maxima number of the form x+%i*y
-		       (to (maxima::$realpart maxima-num)
-			   (maxima::$imagpart maxima-num)))))
+		       (let ((re (maxima::$realpart maxima-num))
+			     (im (maxima::$imagpart maxima-num)))
+			 (when (or (maxima::mplusp re)
+				   (maxima::mplusp im))
+			   (maxima::merror "BIGFLOAT:  Unable to convert ~M to a CL or BIGFLOAT number" maxima-num))
+			 (to re im)))))
 	       (t
-		(merror "Unable to convert ~M" maxima-num))))))
+		(maxima::merror "BIGFLOAT:  Unable to convert ~M to a CL or BIGFLOAT number" maxima-num))))))
 
 ;;; EPSILON - External
 ;;;
