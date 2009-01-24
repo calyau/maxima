@@ -834,7 +834,7 @@
 		  (make-instance 'complex-bigfloat
 				 :real (cdr (maxima::$realpart res))
 				 :imag (cdr (maxima::$imagpart res))))))
-	   (let ((max-op (intern (concatenate 'string "%" (string name)) '#:maxima)))
+	   (let ((max-op (intern (concatenate 'string "$" (string name)) '#:maxima)))
 	     `(defmethod ,name ((a complex-bigfloat))
 		;; We should do something better than calling mevalp
 		(let* ((arg (maxima::add (maxima::bcons (real-value a))
