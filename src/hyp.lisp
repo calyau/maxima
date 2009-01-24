@@ -3,12 +3,16 @@
 
 (in-package :maxima)
 
-;;; Reference: 
+;;; References:
+;;; 
 ;;; Definite integration using the generalized hypergeometric functions
 ;;; Avgoustis, Ioannis Dimitrios
 ;;; Thesis. 1977. M.S.--Massachusetts Institute of Technology. Dept. 
 ;;; of Electrical Engineering and Computer Science
 ;;; http://dspace.mit.edu/handle/1721.1/16269
+;;;
+;;; Avgoustis, I. D., Symbolic Laplace Transforms of Special Functions,
+;;; Proceedings of the 1977 MACSYMA Users' Conference, pp 21-41
 
 (macsyma-module hyp)
 
