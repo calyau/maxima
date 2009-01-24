@@ -58,12 +58,12 @@
   (declare (ignore environment))
   `(make-instance ',(class-of x)
 		  :real ',(real-value x)))
-;;; TO - External
+;;; BIGFLOAT - External
 ;;;
-;;;    TO converts a number to a BIGFLOAT or COMPLEX-BIGFLOAT.  This is
-;;; intended to convert CL numbers or Maxima (internal) numbers to
-;;; an bigfloat object.
-(defun to (re &optional im)
+;;;    BIGFLOAT converts a number to a BIGFLOAT or COMPLEX-BIGFLOAT.
+;;; This is intended to convert CL numbers or Maxima (internal)
+;;; numbers to an bigfloat object.
+(defun bigfloat (re &optional im)
   "Convert RE to a BIGFLOAT.  If IM is given, return a COMPLEX-BIGFLOAT"
   (cond (im
 	 (make-instance 'complex-bigfloat
@@ -79,6 +79,7 @@
 			:imag (intofp (maxima::$imagpart re))))
 	(t
 	 (make-instance 'bigfloat :real (intofp re)))))
+
 
 ;;; MAXIMA::TO - External
 ;;;
@@ -307,8 +308,8 @@
 
 (defmethod two-arg-- ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
-      (two-arg-- a (to (cl:realpart b) (cl:imagpart b)))
-      (two-arg-- a (to b))))
+      (two-arg-- a (bigfloat (cl:realpart b) (cl:imagpart b)))
+      (two-arg-- a (bigfloat b))))
 
 (defmethod two-arg-- ((a bigfloat) (b complex-bigfloat))
   (make-instance 'complex-bigfloat
@@ -319,7 +320,7 @@
   (if (cl:complexp a)
       (two-arg-- (make-instance 'complex-bigfloat :real (cl:realpart a) :imag (cl:imagpart a))
 		 b)
-      (two-arg-- (to a) b)))
+      (two-arg-- (bigfloat a) b)))
 
 (defun - (number &rest more-numbers)
   (if more-numbers
@@ -368,8 +369,8 @@
 
 (defmethod two-arg-* ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
-      (two-arg-* a (to (cl:realpart b) (cl:imagpart b)))
-      (two-arg-* a (to b))))
+      (two-arg-* a (bigfloat (cl:realpart b) (cl:imagpart b)))
+      (two-arg-* a (bigfloat b))))
 
 (defmethod two-arg-* ((a bigfloat) (b complex-bigfloat))
   (two-arg-* b a))
@@ -465,8 +466,8 @@
 
 (defmethod two-arg-/ ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
-      (two-arg-/ a (to (cl:realpart b) (cl:imagpart b)))
-      (two-arg-/ a (to b))))
+      (two-arg-/ a (bigfloat (cl:realpart b) (cl:imagpart b)))
+      (two-arg-/ a (bigfloat b))))
 
 (defmethod two-arg-/ ((a bigfloat) (b complex-bigfloat))
   (two-arg-/ (make-instance 'complex-bigfloat :real (real-value a))
@@ -476,7 +477,7 @@
   (if (cl:complexp a)
       (two-arg-/ (make-instance 'complex-bigfloat :real (cl:realpart a) :imag (cl:imagpart a))
 		 b)
-      (two-arg-/ (to a) b)))
+      (two-arg-/ (bigfloat a) b)))
 
 
 (defun / (number &rest more-numbers)
@@ -1035,7 +1036,35 @@
 (defmethod expt (a (b numeric))
   (exp (* b (log a))))
 
-;; Return the float epsilon value for the given float type
+;;; TO - External
+;;;
+;;;    TO takes a maxima number and converts it.  Floats remain
+;;; floats, maxima rationals are converted to CL rationals.  Maxima
+;;; bigfloats are convert to BIGFLOATS.  Maxima complex numbers are
+;;; converted to CL complex numbers or to COMPLEX-BIGFLOAT's.
+(defun to (maxima-num &optional imag)
+  (cond (imag
+	 (complex (to maxima-num) (to imag)))
+	(t
+	 (cond ((cl:realp maxima-num)
+		maxima-num)
+	       ((consp maxima-num)
+		;; Some kind of maxima number
+		(cond ((maxima::ratnump maxima-num)
+		       ;; Maxima rational ((mrat ...) num den)
+		       (/ (second maxima-num) (third maxima-num)))
+		      ((maxima::$bfloatp maxima-num)
+		       (bigfloat maxima-num))
+		      ((maxima::mplusp maxima-num)
+		       ;; Hope this is a Maxima number of the form x+%i*y
+		       (to (maxima::$realpart maxima-num)
+			   (maxima::$imagpart maxima-num)))))
+	       (t
+		(merror "Unable to convert ~M" maxima-num))))))
+
+;;; EPSILON - External
+;;;
+;;;   Return the float epsilon value for the given float type.
 (defmethod epsilon ((x cl:float))
   (etypecase x
     (short-float short-float-epsilon)
