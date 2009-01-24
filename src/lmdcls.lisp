@@ -109,7 +109,7 @@
 	  -sqrt2//2 -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
 	  aliaslist alpha *alphabet* arrays aryp assigns atp atvars baktrcl
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
-	  bigprimes bindlist bvars *mdebug*
+	  bindlist bvars *mdebug*
 	  declares defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  dumping envlist errorsw errrjfflag evarrp evp expandflag expandp
