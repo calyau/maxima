@@ -744,6 +744,12 @@ lapack/lapack/lapack-lisp.system\
 lapack/lapack/lapack-package.lisp\
 lapack/lapack/zlange.lisp\
 lapack/lapack/zlassq.lisp\
+lbfgs/daxpy.lisp\
+lbfgs/ddot.lisp\
+lbfgs/lb1.lisp\
+lbfgs/lb2.lisp\
+lbfgs/mcstep.lisp\
+lbfgs/mcsrch.lisp\
 lbfgs/lbfgs.lisp\
 lbfgs/maxima-lbfgs.lisp\
 lbfgs/lbfgs.mac\
