@@ -11,6 +11,13 @@
 ;;
 ;;   This program uses the programs on ELL;HYP FASL.
 
+;;; Reference: 
+;;; Definite integration using the generalized hypergeometric functions
+;;; Avgoustis, Ioannis Dimitrios
+;;; Thesis. 1977. M.S.--Massachusetts Institute of Technology. Dept. 
+;;; of Electrical Engineering and Computer Science
+;;; http://dspace.mit.edu/handle/1721.1/16269
+
 (macsyma-module hypgeo)
 
 (declare-top (special var *par* zerosigntest productcase checkcoefsignlist
