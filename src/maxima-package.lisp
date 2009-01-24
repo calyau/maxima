@@ -178,6 +178,7 @@
 	   #:asinh
 	   #:acosh
 	   #:atanh
+	   #:expt
 	   #:=
 	   #:/=
 	   #:<
