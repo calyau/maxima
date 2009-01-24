@@ -1055,13 +1055,12 @@
 		       (/ (second maxima-num) (third maxima-num)))
 		      ((maxima::$bfloatp maxima-num)
 		       (bigfloat maxima-num))
-		      ((maxima::mplusp maxima-num)
-		       ;; Hope this is a Maxima number of the form x+%i*y
+		      ((maxima::complex-number-p maxima-num #'(lambda (x)
+								(or (cl:realp x)
+								    (maxima::$bfloatp x))))
+		       ;; We have some kind of complex number
 		       (let ((re (maxima::$realpart maxima-num))
 			     (im (maxima::$imagpart maxima-num)))
-			 (when (or (maxima::mplusp re)
-				   (maxima::mplusp im))
-			   (maxima::merror "BIGFLOAT:  Unable to convert ~M to a CL or BIGFLOAT number" maxima-num))
 			 (to re im)))))
 	       (t
 		(maxima::merror "BIGFLOAT:  Unable to convert ~M to a CL or BIGFLOAT number" maxima-num))))))
