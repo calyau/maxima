@@ -254,6 +254,133 @@ When one changes, the other does too."
 				(setq *maxima-lang-subdir* (concatenate 'string *maxima-lang-subdir* ".koi8r")))))
 			(t  (setq *maxima-lang-subdir* nil))))))))
 
+;; Return a list of all the subdirectories of the sharedir.  If
+;; sharedir has directories /foo/share/affine and
+;; /foo/share/contrib/bitwise, the we want to return the list
+;; ("affine" "contrib/bitwise").
+#+cmu
+(defun share-subdirs-list ()
+  (let* ((share-root (pathname (concatenate 'string *maxima-sharedir* "/")))
+	 (file-list (directory (merge-pathnames (make-pathname :directory '(:relative :wild-inferiors)
+							       :name :wild :type :wild)
+						share-root)
+			       :truenamep nil)))
+    ;; Remove stuff we don't want like files and CVS directories.
+    ;; Anything else?
+    (setf file-list (remove-if #'(lambda (x)
+				   (or
+				    ;; Remove files (pathnames that have a name or type)
+				    (or (pathname-name x)
+					(pathname-type x))
+				    ;; Remove CVS directories
+				    (equal "CVS" (car (last (pathname-directory x))))
+				    ))
+			       file-list))
+    ;; Now just want the part after the *maxima-sharedir*, and we want
+    ;; strings.  
+    (mapcar #'(lambda (x)
+		(let ((dir (make-pathname :directory (butlast (pathname-directory x))
+					  :name (car (last (pathname-directory x))))))
+		  (enough-namestring dir share-root)))
+	    file-list)))
+
+#+(or clisp ecl)
+(defun share-subdirs-list ()
+  (let* ((share-root (pathname (concatenate 'string *maxima-sharedir* "/")))
+	 (dir-list (directory (merge-pathnames (make-pathname :directory '(:relative :wild-inferiors))
+						share-root))))
+    ;; dir-list contains all of the directories.  Remove stuff we
+    ;; don't want like CVS directories.  Anything else?
+    (setf dir-list (delete-if #'(lambda (x)
+				  ;; Remove CVS directories
+				  (or (equal x share-root)
+				      (equal "CVS" (car (last (pathname-directory x))))))
+			       dir-list))
+    ;; Now just want the part after the *maxima-sharedir*, and we want
+    ;; strings.
+    (setf dir-list
+	  (mapcar #'(lambda (x)
+		      (let ((dir (make-pathname :directory (butlast (pathname-directory x))
+						:name (car (last (pathname-directory x))))))
+			(enough-namestring dir share-root)))
+		  dir-list))
+    ;; Sort in alphabetical order
+    (sort dir-list #'string-lessp)))
+
+
+#-(or cmu clisp ecl)
+(defun share-subdirs-list ()
+  ;; Default implementation.  Eventually this should go away.
+  '("affine"
+    "algebra"
+    "algebra/charsets"
+    "algebra/solver"
+    "calculus"
+    "combinatorics"
+    "contrib"
+    "contrib/amatrix"
+    "contrib/bitwise"
+    "contrib/boolsimp"
+    "contrib/descriptive"
+    "contrib/diffequations"
+    "contrib/diffequations/tests"
+    "contrib/distrib"
+    "contrib/ezunits"
+    "contrib/finance"
+    "contrib/format"
+    "contrib/fourier_elim"
+    "contrib/fractals"
+    "contrib/fresnel"
+    "contrib/gentran"
+    "contrib/gentran/test"
+    "contrib/gf"
+    "contrib/graphs"
+    "contrib/Grobner"
+    "contrib/integration"
+    "contrib/levin"
+    "contrib/lurkmathml"
+    "contrib/maximaMathML"
+    "contrib/mcclim"
+    "contrib/namespaces"
+    "contrib/noninteractive"
+    "contrib/numericalio"
+    "contrib/pdiff"
+    "contrib/prim"
+    "contrib/rand"
+    "contrib/sarag"
+    "contrib/simplex"
+    "contrib/simplex/Tests"
+    "contrib/solve_rec"
+    "contrib/state"
+    "contrib/stats"
+    "contrib/stringproc"
+    "contrib/vector3d"
+    "contrib/unit"
+    "contrib/Zeilberger"
+    "diff_form"
+    "diffequations"
+    "dynamics"
+    "draw"
+    "lapack"
+    "lbfgs"
+    "linearalgebra"
+    "integequations"
+    "integration"
+    "macro"
+    "matrix"
+    "minpack"
+    "misc"
+    "numeric"
+    "orthopoly"
+    "physics"
+    "simplification"
+    "sym"
+    "tensor"
+    "tensor/tests"
+    "trigonometry"
+    "utils"
+    "vector"))
+
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
 	(maxima-layout-autotools-env (maxima-getenv "MAXIMA_LAYOUT_AUTOTOOLS"))
@@ -288,13 +415,14 @@ When one changes, the other does too."
 			      *maxima-userdir*))
 
     ; On Windows Vista gcc requires explicit include
-    #+gcl (when (string= *autoconf-win32* "true")
-              (let ((mingw-gccver (maxima-getenv "mingw_gccver")))
-	          (when mingw-gccver
-	              (setq compiler::*cc*
-	                  (concatenate 'string compiler::*cc* " -I\"" *maxima-prefix* "\\include\""
-		                                              " -I\"" *maxima-prefix* "\\lib\\gcc-lib\\mingw32\\"
-							       mingw-gccver "\\include\" ")))))
+    #+gcl
+    (when (string= *autoconf-win32* "true")
+      (let ((mingw-gccver (maxima-getenv "mingw_gccver")))
+	(when mingw-gccver
+	  (setq compiler::*cc*
+		(concatenate 'string compiler::*cc* " -I\"" *maxima-prefix* "\\include\""
+			     " -I\"" *maxima-prefix* "\\lib\\gcc-lib\\mingw32\\"
+			     mingw-gccver "\\include\" ")))))
 
     ; Assign initial values for Maxima shadow variables
     (setq $maxima_userdir *maxima-userdir*)
@@ -318,78 +446,7 @@ When one changes, the other does too."
 	 (maxima-patterns "###.{mac,mc}")
 	 (demo-patterns "###.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "##.{usg,texi}")
-	 (share-subdirs-list
-	  ;; It would be nice if we could find these at runtime
-	  ;; instead of hardwiring them here.
-	  '("affine"
-	    "algebra"
-	    "algebra/charsets"
-	    "algebra/solver"
-	    "calculus"
-	    "combinatorics"
-	    "contrib"
-	    "contrib/amatrix"
-	    "contrib/bitwise"
-	    "contrib/boolsimp"
-	    "contrib/descriptive"
-	    "contrib/diffequations"
-	    "contrib/diffequations/tests"
-	    "contrib/distrib"
-	    "contrib/ezunits"
-            "contrib/finance"
-	    "contrib/format"
-	    "contrib/fourier_elim"
-	    "contrib/fractals"
-	    "contrib/fresnel"
-	    "contrib/gentran"
-	    "contrib/gentran/test"
-	    "contrib/gf"
-	    "contrib/graphs"
-	    "contrib/Grobner"
-	    "contrib/integration"
-	    "contrib/levin"
-	    "contrib/lurkmathml"
-	    "contrib/maximaMathML"
-	    "contrib/mcclim"
-	    "contrib/namespaces"
-	    "contrib/noninteractive"
-	    "contrib/numericalio"
-	    "contrib/pdiff"
-	    "contrib/prim"
-	    "contrib/rand"
-	    "contrib/sarag"
-	    "contrib/simplex"
-	    "contrib/simplex/Tests"
-	    "contrib/solve_rec"
-	    "contrib/state"
-	    "contrib/stats"
-	    "contrib/stringproc"
-	    "contrib/vector3d"
-	    "contrib/unit"
-	    "contrib/Zeilberger"
-	    "diff_form"
-	    "diffequations"
-	    "dynamics"
-	    "draw"
-	    "lapack"
-	    "lbfgs"
-	    "linearalgebra"
-	    "integequations"
-	    "integration"
-	    "macro"
-	    "matrix"
-	    "minpack"
-	    "misc"
-	    "numeric"
-	    "orthopoly"
-	    "physics"
-	    "simplification"
-	    "sym"
-	    "tensor"
-	    "tensor/tests"
-	    "trigonometry"
-	    "utils"
-	    "vector"))
+	 (share-subdirs-list (share-subdirs-list))
 	 ;; Smash the list of share subdirs into a string of the form
 	 ;; "{affine,algebra,...,vector}" .
 	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list)))
