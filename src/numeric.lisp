@@ -831,18 +831,14 @@
 	     `(defmethod ,name ((a complex-bigfloat))
 		(let ((res (,big-op (maxima::bcons (real-value a))
 				    (maxima::bcons (imag-value a)))))
-		  (make-instance 'complex-bigfloat
-				 :real (cdr (maxima::$realpart res))
-				 :imag (cdr (maxima::$imagpart res))))))
+		  (to res))))
 	   (let ((max-op (intern (concatenate 'string "$" (string name)) '#:maxima)))
 	     `(defmethod ,name ((a complex-bigfloat))
 		;; We should do something better than calling mevalp
 		(let* ((arg (maxima::add (maxima::bcons (real-value a))
 					 (maxima::mul 'maxima::$%i (maxima::bcons (imag-value a)))))
 		       (result (maxima::mevalp `((,',max-op maxima::simp) ,arg))))
-		  (make-instance 'complex-bigfloat
-				 :real (cdr (maxima::$realpart result))
-				 :imag (cdr (maxima::$imagpart result)))))))))
+		  (to result)))))))
   (frob exp)
   (frob sin)
   (frob cos)
