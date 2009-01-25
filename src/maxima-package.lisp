@@ -152,7 +152,10 @@
   (:export #:bigfloat
 	   #:complex-bigfloat)
   ;; Export functions
-  (:export #:to
+  (:export #:bigfloat
+	   #:to
+	   #:epsilon
+	   ;; CL equivalents
 	   #:+
 	   #:-
 	   #:*
@@ -197,7 +200,6 @@
 	   #:ffloor
 	   #:incf
 	   #:decf
-	   #:epsilon
 	   ))
 
 (provide :maxima)
