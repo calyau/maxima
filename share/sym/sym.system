@@ -2,8 +2,7 @@
 
 (mk:defsystem "sym"
     :source-extension "lisp"
-    :binary-pathname (maxima::maxima-objdir "share" "sym"
-        (concatenate 'string "binary-" maxima::*maxima-lispname*))
+    :binary-pathname (maxima::maxima-objdir "share" "sym")
     :components
     ;; Reflects the order in sym1.mac.
     ((:module macros 

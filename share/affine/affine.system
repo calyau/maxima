@@ -5,8 +5,7 @@
 (mk:defsystem "affine"
     :source-extension "lisp"
     :source-pathname (maxima-load-pathname-directory)
-    :binary-pathname (maxima-objdir "share" "affine"
-				    (concatenate 'string "binary-" *maxima-lispname*))
+    :binary-pathname (maxima-objdir "share" "affine")
     :components ((:file "sys-declaim" :load-only t)
 		 (:file "compat")
 		 (:file "amacros")

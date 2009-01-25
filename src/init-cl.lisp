@@ -403,12 +403,16 @@ When one changes, the other does too."
     (if maxima-tempdir-env
 	(setq *maxima-tempdir* (maxima-parse-dirstring maxima-tempdir-env))
 	(setq *maxima-tempdir* (default-tempdir)))
-    ;; Default objdir is userdir, because it's almost surely writable,
-    ;; and because we don't want to clutter up random directories with
-    ;; maxima stuff.
-    (setq *maxima-objdir* (if maxima-objdir-env
-			      (maxima-parse-dirstring maxima-objdir-env)
-			      *maxima-userdir*))
+    ;; Default *MAXIMA-OBJDIR* is <userdir>/binary/binary-<foo>lisp,
+    ;; because userdir is almost surely writable, and we don't want to clutter up
+    ;; random directories with Maxima stuff.
+    ;; Append binary-<foo>lisp whether objdir is the default or obtained from environment.
+    (setq *maxima-objdir*
+          (concatenate 'string
+                       (if maxima-objdir-env
+                         (maxima-parse-dirstring maxima-objdir-env)
+                         (concatenate 'string *maxima-userdir* "/binary"))
+                       "/binary-" *maxima-lispname*))
 
     ; On Windows Vista gcc requires explicit include
     #+gcl
