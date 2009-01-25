@@ -93,21 +93,21 @@
 (defun ini-gr-options ()
   (setf
       ; global options to control general aspects of graphics
-      (gethash '$xrange *gr-options*)  nil      ; nil => automatic computation
-      (gethash '$yrange *gr-options*)  nil      ; nil => automatic computation
-      (gethash '$y2range *gr-options*) nil      ; nil => automatic computation
-      (gethash '$zrange *gr-options*)  nil      ; nil => automatic computation
-      (gethash '$logx *gr-options*)    nil
-      (gethash '$logy *gr-options*)    nil
-      (gethash '$logz *gr-options*)    nil
-      (gethash '$title *gr-options*)   ""
-      (gethash '$rot_vertical *gr-options*)   60   ; range: [0,180] (vertical rotation)
-      (gethash '$rot_horizontal *gr-options*) 30   ; range: [0,360] (horizontal rotation)
-      (gethash '$xy_file *gr-options*)        ""
-      (gethash '$user_preamble *gr-options*)  ""
-      (gethash '$xyplane *gr-options*)        nil
-      (gethash '$font *gr-options*)           "";
-      (gethash '$font_size *gr-options*)      12;
+      (gethash '$xrange *gr-options*)           nil      ; nil => automatic computation
+      (gethash '$yrange *gr-options*)           nil      ; nil => automatic computation
+      (gethash '$yrange_secondary *gr-options*) nil      ; nil => automatic computation
+      (gethash '$zrange *gr-options*)           nil      ; nil => automatic computation
+      (gethash '$logx *gr-options*)             nil
+      (gethash '$logy *gr-options*)             nil
+      (gethash '$logz *gr-options*)             nil
+      (gethash '$title *gr-options*)            ""
+      (gethash '$rot_vertical *gr-options*)     60   ; range: [0,180] (vertical rotation)
+      (gethash '$rot_horizontal *gr-options*)   30   ; range: [0,360] (horizontal rotation)
+      (gethash '$xy_file *gr-options*)          ""
+      (gethash '$user_preamble *gr-options*)    ""
+      (gethash '$xyplane *gr-options*)          nil
+      (gethash '$font *gr-options*)             "";
+      (gethash '$font_size *gr-options*)        12;
 
       ; colors are specified by name
       (gethash '$color *gr-options*)      "black"   ; for lines, points, borders and labels
@@ -122,19 +122,19 @@
       (gethash '$z_voxel *gr-options*)       10
 
       ; tics
-      (gethash '$grid *gr-options*)          nil
-      (gethash '$xtics *gr-options*)         "autofreq"
-      (gethash '$ytics *gr-options*)         "autofreq"
-      (gethash '$y2tics *gr-options*)        nil   ; no tics in right y-axis
-      (gethash '$ztics *gr-options*)         "autofreq"
-      (gethash '$xtics_rotate *gr-options*)  nil
-      (gethash '$ytics_rotate *gr-options*)  nil
-      (gethash '$y2tics_rotate *gr-options*) nil
-      (gethash '$ztics_rotate *gr-options*)  nil
-      (gethash '$xtics_axis *gr-options*)    nil
-      (gethash '$ytics_axis *gr-options*)    nil
-      (gethash '$y2tics_axis *gr-options*)   nil
-      (gethash '$ztics_axis *gr-options*)    nil
+      (gethash '$grid *gr-options*)            nil
+      (gethash '$xtics *gr-options*)           "autofreq"
+      (gethash '$ytics *gr-options*)           "autofreq"
+      (gethash '$ytics_secondary *gr-options*) nil   ; no tics in right y-axis
+      (gethash '$ztics *gr-options*)           "autofreq"
+      (gethash '$xtics_rotate *gr-options*)    nil
+      (gethash '$ytics_rotate *gr-options*)    nil
+      (gethash '$ytics_secondary_rotate *gr-options*) nil
+      (gethash '$ztics_rotate *gr-options*)    nil
+      (gethash '$xtics_axis *gr-options*)      nil
+      (gethash '$ytics_axis *gr-options*)      nil
+      (gethash '$ytics_secondary_axis *gr-options*)   nil
+      (gethash '$ztics_axis *gr-options*)      nil
 
       ; axis
       (gethash '$axis_bottom *gr-options*) t
@@ -183,11 +183,11 @@
       (gethash '$line_type *gr-options*)  1    ; two options: 1 (solid) and 0 (dots)
 
       ; function options
-      (gethash '$nticks *gr-options*)      30
-      (gethash '$adapt_depth *gr-options*) 10
-      (gethash '$key *gr-options*)         ""          ; by default, no keys
-      (gethash '$filled_func *gr-options*) nil         ; false, true (y axis) or an expression
-      (gethash '$right_yaxis *gr-options*) nil
+      (gethash '$nticks *gr-options*)          30
+      (gethash '$adapt_depth *gr-options*)     10
+      (gethash '$key *gr-options*)             ""          ; by default, no keys
+      (gethash '$filled_func *gr-options*)     nil         ; false, true (y axis) or an expression
+      (gethash '$yaxis_secondary *gr-options*) nil
 
       ; 3d options
       (gethash '$xu_grid *gr-options*)        30
@@ -226,7 +226,7 @@
 (ini-global-options)
 
 
-;; Gives value of option(s)
+;; Gives value of option
 (defun get-option (opt) (gethash opt *gr-options*))
 
 
@@ -323,17 +323,17 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "draw: unknown contour level description: ~M " val))))
-      (($transparent $border $logx $logy $logz $head_both $grid $right_yaxis
+      (($transparent $border $logx $logy $logz $head_both $grid $yaxis_secondary
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
-        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $y2tics_rotate
-        $ztics_rotate $xtics_axis $ytics_axis $y2tics_axis $ztics_axis $meshed_surface) ; true or false
+        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ytics_secondary_rotate
+        $ztics_rotate $xtics_axis $ytics_axis $ytics_secondary_axis $ztics_axis $meshed_surface) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: non boolean value: ~M " val)))
       (($filled_func $enhanced3d) ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
-      (($xtics $ytics $y2tics $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
+      (($xtics $ytics $ytics_secondary $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
             (cond ((member val '($none nil))   ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((member val '($auto t))     ; t is maintained for back-portability
@@ -427,7 +427,7 @@
                                             (format nil (if (string= str "") "~a" "~%~a") st)))))
                 (t (merror "draw: illegal user preamble especification")))
               (setf (gethash opt *gr-options*) str))  )
-      (($xrange $yrange $y2range $zrange) ; defined as a Maxima list with two numbers in increasing order
+      (($xrange $yrange $yrange_secondary $zrange) ; defined as a Maxima list with two numbers in increasing order
             (cond ((member val '($auto nil))     ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((or (not ($listp val))
@@ -527,8 +527,8 @@
 
 (defun update-ranges-2d (xmin xmax ymin ymax)
    (update-range '$xrange xmin xmax)
-   (if (get-option '$right_yaxis)
-      (update-range '$y2range ymin ymax)
+   (if (get-option '$yaxis_secondary)
+      (update-range '$yrange_secondary ymin ymax)
       (update-range '$yrange ymin ymax)) )
 
 (defun update-ranges-3d (xmin xmax ymin ymax zmin zmax)
@@ -569,7 +569,7 @@
 ;;     key
 ;;     line_type
 ;;     color
-;;     right_yaxis
+;;     yaxis_secondary
 (defun points-command ()
   (let ((opt (get-option '$points_joined)))
     (cond
@@ -1191,7 +1191,7 @@
 ;;     filled_func
 ;;     fill_color
 ;;     key
-;;     right_yaxis
+;;     yaxis_secondary
 (defun explicit (fcn var minval maxval)
   (let* ((nticks (gethash '$nticks  *gr-options*))
          (depth (gethash '$adapt_depth  *gr-options*))
@@ -1248,7 +1248,7 @@
                                         (get-option '$line_width)
                                         (get-option '$line_type)
                                         (get-option '$color)
-                                        (if (get-option '$right_yaxis) "x1y2" "x1y1")))
+                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1267,7 +1267,7 @@
                (setf pltcmd (format nil " ~a w filledcurves x1 lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
-                                        (if (get-option '$right_yaxis) "x1y2" "x1y1")))
+                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1291,7 +1291,7 @@
                (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
-                                        (if (get-option '$right_yaxis) "x1y2" "x1y1")  ))
+                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1")  ))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -2490,15 +2490,15 @@
                   (xf (second (get-option '$xrange)))
                   (yi (first  (get-option '$yrange)))
                   (yf (second (get-option '$yrange)))
-                  (y2i (first  (get-option '$y2range)))
-                  (y2f (second (get-option '$y2range))) )
+                  (y2i (first  (get-option '$yrange_secondary)))
+                  (y2f (second (get-option '$yrange_secondary))) )
                (when (= xi xf)
                   (setf xi (- xi 0.01)
                         xf (+ xf 0.01)))
                (when (and (get-option '$yrange) (= yi yf))
                   (setf yi (- yi 0.01)
                         yf (+ yf 0.01)))
-               (when (and (get-option '$y2range) (= y2i y2f))
+               (when (and (get-option '$yrange_secondary) (= y2i y2f))
                   (setf y2i (- y2i 0.01)
                         y2f (+ y2f 0.01)))
                (format nil "set xrange [~a:~a]~%~a~a"
@@ -2506,7 +2506,7 @@
                        (if (get-option '$yrange)
                          (format nil "set yrange [~a:~a]~%" yi yf)
                          "")
-                       (if (get-option '$y2range)
+                       (if (get-option '$yrange_secondary)
                          (format nil "set y2range [~a:~a]~%" y2i y2f)
                          "") ) )
             (if (get-option '$logx)
@@ -2551,12 +2551,12 @@
                        (if (get-option '$ytics_rotate) "rotate" "norotate")
                        (if (get-option '$ytics_axis) "axis" "border")
                        (get-option '$ytics)))
-            (if (null (get-option '$y2tics))
+            (if (null (get-option '$ytics_secondary))
                (format nil "unset y2tics~%")
-               (format nil "set y2tics ~a ~a ~a~%"
-                       (if (get-option '$y2tics_rotate) "rotate" "norotate")
-                       (if (get-option '$y2tics_axis) "axis" "border")
-                       (get-option '$y2tics)))
+               (format nil "set ytics nomirror~%set y2tics ~a ~a ~a~%"
+                       (if (get-option '$ytics_secondary_rotate) "rotate" "norotate")
+                       (if (get-option '$ytics_secondary_axis) "axis" "border")
+                       (get-option '$ytics_secondary)))
             (if (get-option '$colorbox)
                (format nil "set colorbox~%")
                (format nil "unset colorbox~%"))
