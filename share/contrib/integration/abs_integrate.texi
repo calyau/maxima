@@ -206,7 +206,7 @@ unable to find an antiderivative, it returns false.
 @end example
 
 For a method for automatically calling @code{infugudu} from @code{integrate}, see
-the documenation for @code{intfudu}.
+the documentation for @code{intfudu}.
 
 @b{To use} @file{load(partition)}
 
