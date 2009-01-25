@@ -188,24 +188,21 @@
                     (and (< j 0)
                          (zerop (nth-value 1 (truncate j))))))
            (merror "gamma(~:M) is undefined." j))
-          ((floatp j) (gammafloat j))
+          ((float-numerical-eval-p j) (gammafloat ($float j)))
           ((and ($bfloatp j)
                 (or (zerop1 j)
                     (and (eq ($sign j) '$neg)
                          (zerop1 (sub j ($truncate j))))))
            (merror "gamma(~:M) is undefined." j))
-          (($bfloatp j) 
+          ((bigfloat-numerical-eval-p j) 
            ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
            ;; and an argument up to about 500.0 the accuracy of the result is
            ;; better than 10^(-$fpprec).
-           (mfuncall '$bffac (m+ j -1) (+ $fpprec 4)))
-	  ((and (complex-number-p j 'float-or-rational-p)
-		(or $numer (floatp ($realpart j)) (floatp ($imagpart j))))
-	   (complexify (gamma-lanczos (complex ($float ($realpart j))
-					       ($float ($imagpart j))))))
-          ((and (complex-number-p j 'bigfloat-or-number-p)
-                (or $numer ($bfloatp ($realpart j)) 
-                           ($bfloatp ($imagpart j))))
+           (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4)))
+	  ((complex-float-numerical-eval-p j)
+           (complexify (gamma-lanczos (complex ($float ($realpart j))
+                                               ($float ($imagpart j))))))
+          ((complex-bigfloat-numerical-eval-p j)
            ;; Adding 4 digits in the call to cbffac. See comment above.
            (mfuncall '$cbffac 
                      (add -1 ($bfloat ($realpart j)) 
@@ -239,7 +236,6 @@
                  ;; Negative integer. Throw a Maxima error.
 		 (errorsw (throw 'errorsw t))
 		 (t (merror "gamma(~:M) is undefined" j))))
-	  ($numer (gammafloat (fpcofrat j)))
 	  ((alike1 j '((rat) 1 2))
 	   (list '(mexpt simp) '$%pi j))
           ((and (mnump j)
