@@ -595,5 +595,12 @@ jacobi_sc(elliptic_kc(m)+u,m);
  */
 factor(ratsimp(hgfred([2,-1/2],[3],-x^2)));
 4*(3*x^4*sqrt(x^2+1)+x^2*sqrt(x^2+1)-2*sqrt(x^2+1)+2)/(15*x^4)$
+
+/*
+ * Bug 2534420: asinh(%i*2b0) causes error
+ */
+is(abs(asinh(%i*2b0)-expand(bfloat(asinh(%i*2)))) < 3b-17);
+true;
+
 end;
 end$

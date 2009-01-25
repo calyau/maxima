@@ -1508,11 +1508,19 @@ One extra decimal digit in actual representation for rounding purposes.")
 	;; Realpart is atan(x/Re(sqrt(1-z)*sqrt(1+z)))
 	;; Imagpart is asinh(Im(conj(sqrt(1-z))*sqrt(1+z)))
 	(values (bcons
-		 (fpatan (fpquotient x
-				     (fpdifference (fptimes* re-sqrt-1-z
-							     re-sqrt-1+z)
-						   (fptimes* im-sqrt-1-z
-							     im-sqrt-1+z)))))
+		 (let ((d (fpdifference (fptimes* re-sqrt-1-z
+						  re-sqrt-1+z)
+					(fptimes* im-sqrt-1-z
+						  im-sqrt-1+z))))
+		   ;; Check for division by zero.  If we would divide
+		   ;; by zero, return pi/2 or -pi/2 according to the
+		   ;; sign of X.
+		   (cond ((equal d '(0 0))
+			  (if (fplessp x '(0 0))
+			      (fpminus (fpquotient (fppi) (intofp 2)))
+			      (fpquotient (fppi) (intofp 2))))
+			 (t
+			  (fpatan (fpquotient x d))))))
 		(fpasinh (bcons
 			  (fpdifference (fptimes* re-sqrt-1-z
 						  im-sqrt-1+z)
