@@ -234,6 +234,11 @@
 (defmethod two-arg-+ ((a bigfloat) (b rational))
   (make-instance 'bigfloat :real (maxima::fpplus (real-value a) (intofp b))))
 
+(defmethod two-arg-+ ((a bigfloat) (b cl:complex))
+  (make-instance 'complex-bigfloat
+		 :real (maxima::fpplus (real-value a) (intofp (realpart b)))
+		 :imag (intofp (imagpart b))))
+
 (defmethod two-arg-+ ((a float) (b bigfloat))
   (two-arg-+ b a))
 
@@ -295,6 +300,11 @@
 (defmethod two-arg-- ((a bigfloat) (b rational))
   (make-instance 'bigfloat :real (maxima::fpdifference (real-value a) (intofp b))))
 
+(defmethod two-arg-- ((a bigfloat) (b cl:complex))
+  (make-instance 'complex-bigfloat
+		 :real (maxima::fpdifference (real-value a) (intofp (realpart b)))
+		 :imag (maxima::fpminus (intofp (imagpart b)))))
+
 (defmethod two-arg-- ((a float) (b bigfloat))
   (make-instance 'bigfloat :real (maxima::fpdifference (intofp a) (real-value b))))
 
@@ -355,6 +365,11 @@
 
 (defmethod two-arg-* ((a bigfloat) (b cl:rational))
   (make-instance 'bigfloat :real (maxima::fptimes* (real-value a) (intofp b))))
+
+(defmethod two-arg-* ((a bigfloat) (b cl:complex))
+  (make-instance 'complex-bigfloat
+		 :real (maxima::fptimes* (real-value a) (intofp (realpart b)))
+		 :imag (maxima::fptimes* (real-value a) (intofp (imagpart b)))))
 
 (defmethod two-arg-* ((a float) (b bigfloat))
   (two-arg-* b a))
@@ -449,6 +464,9 @@
 
 (defmethod two-arg-/ ((a bigfloat) (b cl:rational))
   (make-instance 'bigfloat :real (maxima::fpquotient (real-value a) (intofp b))))
+
+(defmethod two-arg-/ ((a bigfloat) (b cl:complex))
+  (two-arg-/ (complex a) b))
 
 (defmethod two-arg-/ ((a cl:float) (b bigfloat))
   (make-instance 'bigfloat :real (maxima::fpquotient (intofp a)
