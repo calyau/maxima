@@ -1090,6 +1090,9 @@
 	(t
 	 (cond ((cl:realp maxima-num)
 		maxima-num)
+	       ((eq maxima-num 'maxima::$%i)
+		;; Convert %i to an exact complex rational.
+		#c(0 1))
 	       ((consp maxima-num)
 		;; Some kind of maxima number
 		(cond ((maxima::ratnump maxima-num)
@@ -1099,8 +1102,12 @@
 		       (bigfloat maxima-num))
 		      ((maxima::complex-number-p maxima-num #'(lambda (x)
 								(or (cl:realp x)
-								    (maxima::$bfloatp x))))
-		       ;; We have some kind of complex number
+								    (maxima::$bfloatp x)
+								    (and (consp x)
+									 (eq (caar x) 'maxima::rat)))))
+		       ;; We have some kind of complex number whose
+		       ;; parts are a cl:real, a bfloat, or a Maxima
+		       ;; rational.
 		       (let ((re (maxima::$realpart maxima-num))
 			     (im (maxima::$imagpart maxima-num)))
 			 (to re im)))))
