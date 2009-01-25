@@ -538,11 +538,6 @@
 
 
 
-
-
-
-
-
 (defstruct gr-object
    name command groups points)
 
@@ -574,25 +569,28 @@
   (let ((opt (get-option '$points_joined)))
     (cond
       ((null opt) ; draws isolated points
-         (format nil " ~a w p ps ~a pt ~a lc rgb '~a'"
+         (format nil " ~a w p ps ~a pt ~a lc rgb '~a' axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$point_size)
                  (get-option '$point_type)
-                 (get-option '$color)))
+                 (get-option '$color)
+                 (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
       ((eq opt t) ; draws joined points
-         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
+         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a' axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$point_size)
                  (get-option '$point_type)
                  (get-option '$line_width)
                  (get-option '$line_type)
-                 (get-option '$color)))
+                 (get-option '$color)
+                 (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
       (t  ; draws impulses
-         (format nil " ~a w i lw ~a lt ~a lc rgb '~a'"
+         (format nil " ~a w i lw ~a lt ~a lc rgb '~a' axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$line_width)
                  (get-option '$line_type)
-                 (get-option '$color))))) )
+                 (get-option '$color)
+                 (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))))) )
 
 (defun points (arg1 &optional (arg2 nil))
    (let (x y xmin xmax ymin ymax pts)
@@ -733,6 +731,7 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     yaxis_secondary
 (defun polygon (arg1 &optional (arg2 nil))
    (if (and (gethash '$transparent  *gr-options*)
             (not (gethash '$border  *gr-options*)))
@@ -758,32 +757,35 @@
       (update-ranges-2d xmin xmax ymin ymax)
       (cond
          ((get-option '$transparent)  ; if transparent, draw only the border
-             (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a'"
+             (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a' axis ~a"
                                       (make-obj-title (get-option '$key))
                                       (get-option '$line_width)
                                       (get-option '$line_type)
-                                      (get-option '$color)))
+                                      (get-option '$color)
+                                      (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
              (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (+ (* 2 (length x)) 2)
                                          :element-type 'flonum
                                          :initial-contents (append (mapcan #'list x y)
                                                                    (list (first x) (first y))) )) ) )
          ((not (get-option '$border)) ; no transparent, no border
-             (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a'"
+             (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                       (make-obj-title (get-option '$key))
-                                      (get-option '$fill_color)))
+                                      (get-option '$fill_color)
+                                      (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
              (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
                                          :element-type 'flonum
                                          :initial-contents (mapcan #'list x y)) ) ))
          (t ; no transparent with border
-             (setf pltcmd (list (format nil " ~a w filledcurves lc rgb '~a'"
+             (setf pltcmd (list (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color))
                                 (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
                                         (get-option '$line_width)
                                         (get-option '$line_type)
-                                        (get-option '$color))))
+                                        (get-option '$color)
+                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))))
 
              (setf grps '((2 0) (2 0)))  ; both sets of vertices (interior and border)
                                      ; are sent to gnuplot in groups of 2
@@ -805,8 +807,6 @@
 
 
 
-
-
 ;; Object: 'rectangle'
 ;; Usage:
 ;;     rectangle([x1,y1], [x2,y2]), being [x1,y1] & [x2,y2] opposite vertices
@@ -818,6 +818,7 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     yaxis_secondary
 (defun rectangle (arg1 arg2)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 2))
@@ -856,6 +857,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     yaxis_secondary
 (defun ellipse (xc yc a b ang1 ang2)
   (if (and (gethash '$transparent  *gr-options*)
            (not (gethash '$border  *gr-options*)))
@@ -903,31 +905,35 @@
     (update-ranges-2d xmin xmax ymin ymax)
     (cond
        ((get-option '$transparent)  ; if transparent, draw only the border
-           (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a'"
+           (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a' axis ~a"
                                     (make-obj-title (get-option '$key))
                                     (get-option '$line_width)
                                     (get-option '$line_type)
-                                    (get-option '$color)))
+                                    (get-option '$color)
+                                    (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
            (setf grps '((2 0)))
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
-           (setf pltcmd (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a'"
+           (setf pltcmd (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a' axis ~a"
                                     (make-obj-title (get-option '$key))
                                     fxc fyc
-                                    (get-option '$fill_color)))
+                                    (get-option '$fill_color)
+                                    (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
            (setf grps '((2 0)))
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        (t ; no transparent with border
-             (setf pltcmd (list (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a'"
+             (setf pltcmd (list (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a' axis ~a"
                                             (make-obj-title (get-option '$key))
                                             fxc fyc
-                                            (get-option '$fill_color))
-                                (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                                            (get-option '$fill_color)
+                                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))
+                                (format nil " t '' w l lw ~a lt ~a lc rgb '~a' axis ~a"
                                             (get-option '$line_width)
                                             (get-option '$line_type)
-                                            (get-option '$color))))
+                                            (get-option '$color)
+                                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))))
            (setf grps '((2 0) (2 0)))
            (setf pts (list (make-array (length result) :element-type 'flonum
                                                        :initial-contents result)
@@ -945,6 +951,7 @@
 
 
 
+
 ;; Object: 'label'
 ;; Usage in 2d:
 ;;     label([string1,x1,y1],[string2,x2,y2],...)
@@ -954,6 +961,7 @@
 ;;     label_alignment
 ;;     label_orientation
 ;;     color
+;;     yaxis_secondary
 (defun label (lab)
   (let ((n (length lab))
         (result nil)
@@ -994,7 +1002,7 @@
           (t (merror "draw (label): illegal arguments")))
     (make-gr-object
        :name 'label
-       :command (format nil " t '' w labels ~a ~a tc rgb '~a'"
+       :command (format nil " t '' w labels ~a ~a tc rgb '~a' axis ~a"
                               (case (get-option '$label_alignment)
                                  ($center "center")
                                  ($left   "left")
@@ -1002,10 +1010,10 @@
                               (case (get-option '$label_orientation)
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
-                              (get-option '$color) )
+                              (get-option '$color)
+                              (if (get-option '$yaxis_secondary) "x1y2" "x1y1") )
        :groups (if is2d '((3 0)) '((4 0)))
        :points (list (make-array (length result) :initial-contents result))) ))
-
 
 
 
@@ -1020,6 +1028,7 @@
 ;;     fill_color
 ;;     fill_density
 ;;     line_width
+;;     yaxis_secondary
 (defun bars (boxes)
   (let ((n (length boxes))
         (count -1)
@@ -1048,13 +1057,15 @@
     (update-ranges-2d xmin xmax ymin ymax)
     (make-gr-object
        :name 'bars
-       :command (format nil " ~a w boxes fs solid ~a border lw ~a lc rgb '~a'"
+       :command (format nil " ~a w boxes fs solid ~a border lw ~a lc rgb '~a' axis ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$fill_density)
                             (get-option '$line_width)
-                            (get-option '$fill_color) )
+                            (get-option '$fill_color)
+                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1") )
        :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
        :points (list (make-array (length result) :initial-contents result))) ))
+
 
 
 
@@ -1075,6 +1086,7 @@
 ;;     key
 ;;     color
 ;;     unit_vectors
+;;     yaxis_secondary
 (defun vect (arg1 arg2)
    (if (or (not ($listp arg1))
            (not (= ($length arg1) 2))
@@ -1096,7 +1108,7 @@
       (update-ranges-2d (min x xdx) (max x xdx) (min y ydy) (max y ydy))
       (make-gr-object
          :name 'vector
-         :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc rgb '~a'"
+         :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc rgb '~a' axis ~a"
                               (make-obj-title (get-option '$key))
                               (if (get-option '$head_both) "heads" "head")
                               (get-option '$head_length)
@@ -1107,7 +1119,8 @@
                                  ($nofilled "nofilled"))
                               (get-option '$line_width)
                               (get-option '$line_type)
-                              (get-option '$color) )
+                              (get-option '$color)
+                              (if (get-option '$yaxis_secondary) "x1y2" "x1y1") )
          :groups '((4 0))
          :points `(,(make-array 4 :element-type 'flonum
                                   :initial-contents (list x y dx dy))) ) ))
@@ -1315,6 +1328,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     yaxis_secondary
 ;; Note: taken from implicit_plot.lisp
 
 (defvar pts ())
@@ -1423,17 +1437,20 @@
 			   ssample ip-grid-in)
 	      (print-square xxmin xxmax yymin yymax
 			    ssample ip-grid-in) )) ))
-    (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc rgb '~a'"
+    (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc rgb '~a' axis ~a"
                               (make-obj-title (get-option '$key))
                               (get-option '$line_width)
                               (get-option '$line_type)
-                              (get-option '$color)))
+                              (get-option '$color)
+                              (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
     (make-gr-object
        :name   'implicit
        :command pltcmd
        :groups '((2 2))
        :points  `(,(make-array (length pts) :element-type 'flonum
                                             :initial-contents pts)) ) ))
+
+
 
 
 
@@ -1706,6 +1723,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     yaxis_secondary
 ;; Note: similar to draw2d-parametric in plot.lisp
 (defun parametric (xfun yfun par parmin parmax)
   (let* ((nticks (gethash '$nticks  *gr-options*))
@@ -1740,11 +1758,12 @@
     (update-ranges-2d xmin xmax ymin ymax)
     (make-gr-object
        :name 'parametric
-       :command (format nil " ~a w l lw ~a lt ~a lc rgb '~a'"
+       :command (format nil " ~a w l lw ~a lt ~a lc rgb '~a' axis ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$line_width)
                             (get-option '$line_type)
-                            (get-option '$color))
+                            (get-option '$color)
+                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))
        :groups '((2 0))
        :points `(,(make-array (length result) :element-type 'flonum
                                               :initial-contents result)))   ) )
@@ -1764,6 +1783,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     yaxis_secondary
 ;; This object is constructed as a parametric function
 (defun polar (radius ang minang maxang)
   (let ((grobj (parametric `((mtimes simp) ,radius ((%cos simp) ,ang))
