@@ -718,6 +718,19 @@ errcatch(gamma(-2.0));
 errcatch(gamma(-2.b0));
 [];
 
+/* Check the correct handling of the $numer flag */
+
+gamma(%e),numer;
+gamma(%e);
+gamma(%e),numer,%enumer;
+1.5674682557740529;
+gamma(a+b),numer;
+gamma(a+b);
+gamma(%i);
+gamma(%i);
+gamma(%i),numer;
+gamma(1.0*%i);   /* Evaluates to a complex number */
+
 /* Check half integral integers as values */
 
 gamma(1/2);
