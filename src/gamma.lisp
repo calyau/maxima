@@ -25,6 +25,8 @@
 ;;;   fresnel_s(z)
 ;;;   fresnel_c(z)
 ;;;
+;;;   beta_incomplete(a,b,z)
+;;;
 ;;; Maxima User variable:
 ;;;
 ;;;   $factorial_expand    - Allows argument simplificaton for expressions like
@@ -2580,5 +2582,195 @@
            (setq c (cmul (add 0.25 (mul -1 '$%i 0.25))
                          (add erf+ (mul '$%i erf-))))))))
     (values s c)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Incomplete Beta function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *beta-incomplete-maxit* 10000)
+(defvar *beta-incomplete-eps* 1.0e-15)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $beta_incomplete (a b z)
+  (simplify (list '(%beta_incomplete) a b z)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $beta_incomplete %beta_incomplete alias)
+(defprop $beta_incomplete %beta_incomplete verb)
+
+(defprop %beta_incomplete $beta_incomplete reversealias)
+(defprop %beta_incomplete $beta_incomplete noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %beta_incomplete simp-beta-incomplete operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %beta_incomplete
+  ((a b z)
+   ;; Derivative wrt a
+   ((mplus) 
+      ((%beta_incomplete) a b z)
+      ((mtimes) -1 
+         ((mexpt) ((%gamma) a) 2)
+         (($hypergeometric_generalized)
+           ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
+           ((mlist) ((mplus) 1 a) ((mplus) 1 a)) 
+           z)
+         ((mexpt) z a)))
+   ;; Derivative wrt b
+   ((mplus)
+      ((mtimes) 
+         (($beta) a b)
+         ((mplus) 
+            ((mqapply) 
+               (($psi array 0) b)
+               ((mtimes) -1 ((mqapply) (($psi array) 0) ((mplus) a b)))))
+         ((mtimes) -1
+            ((%beta_incomplete) b a ((mplus) 1 ((mtimes) -1 z)))
+            ((%log) ((mplus) 1 ((mtimes) -1 z))))
+         ((mtimes) 
+            ((mexpt) ((%gamma) b) 2)
+            (($hypergeometric_generalized)
+               ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
+               ((mlist) ((mplus) 1 b) ((mplus) 1 b))
+               ((mplus) 1 ((mtimes) -1 z)))
+            ((mexpt) ((mplus) 1 ((mtimes) -1 z)) b))))
+   ;; The derivative wrt z
+   ((mtimes)
+      ((mexpt) ((mplus) 1 ((mtimes) -1 z)) ((mplus) -1 b)
+      ((mexpt) z ((mplus) -1 a)))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-beta-incomplete (expr ignored simpflag)
+  (declare (ignore ignored))
+  (if (not (= (length expr) 4)) (wna-err '$beta_incomplete))
+  (let ((a (simpcheck (cadr expr)   simpflag))
+        (b (simpcheck (caddr expr)  simpflag))
+        (z (simpcheck (cadddr expr) simpflag)))
+    (when *debug-gamma* 
+         (format t "~&SIMP-BETA-INCOMPLETE:~%")
+         (format t "~&   : a = ~A~%" a)
+         (format t "~&   : b = ~A~%" b)
+         (format t "~&   : z = ~A~%" z))
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg) 
+                (domain-error 0 'gamma_incomplete))
+               ((eq sgn '$zero) 
+                (domain-error 0 'gamma_incomplete))
+               ((member sgn '($pos $pz)) 
+                0)
+               (t 
+                (eqtest (list '(%beta_incomplete) a b z) expr)))))
+
+      ((and (onep1 z) (or (not (mnump a)) (not (mnump b))))
+       (let ((sgn ($sign ($realpart b))))
+         (cond ((member sgn '($pos $pz)) 
+                (simplify (list '($beta) a b)))
+               (t 
+                (eqtest (list '(%beta_incomplete) a b z) expr)))))
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((complex-float-numerical-eval-p a b z)
+       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
+         (to (beta-incomplete (bigfloat:to a) 
+                              (bigfloat:to b) 
+                              (bigfloat:to z)))))
+           
+      ((complex-bigfloat-numerical-eval-p a b z)
+       (let ((*beta-incomplete-eps* 
+               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+         (to (beta-incomplete (bigfloat:to a) 
+                              (bigfloat:to b) 
+                              (bigfloat:to z)))))
+
+      (t 
+       (eqtest (list '(%beta_incomplete) a b z) expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun beta-incomplete (a b z)
+  (when *debug-gamma*
+    (format t "~&BETA-INCOMPLETE with a=~A,b=~A and z=~A~%" a b z))
+  (cond
+    ((bigfloat:> (bigfloat:realpart z)
+                 (bigfloat:realpart (bigfloat:/ (bigfloat:+ a 1.0) 
+                                                (bigfloat:+ a b 2.0))))
+     (bigfloat:- 
+       (bigfloat:/ (bigfloat:* (bigfloat:to ($gamma (to a))) 
+                               (bigfloat:to ($gamma (to b))))
+                   (bigfloat:to ($gamma (to (bigfloat:+ a b)))))
+       (beta-incomplete b a (bigfloat:- 1.0 z))))
+    (t
+     (when *debug-gamma*
+       (format t "~&BETA-INCOMPLETE enters continued fractions~%"))
+     (do* ((beta-maxit *beta-incomplete-maxit*)
+           (beta-eps   *beta-incomplete-eps*)
+           (beta-min   (bigfloat:* beta-eps beta-eps))
+           (ab (bigfloat:+ a b))
+           (ap (bigfloat:+ a 1.0))
+           (am (bigfloat:- a 1.0))
+           (c  1.0)
+           (d  (bigfloat:- 1.0 (bigfloat:/ (bigfloat:* z ab) ap)))
+           (d  (if (bigfloat:< (bigfloat:abs d) beta-min) beta-min d))
+           (d  (bigfloat:/ 1.0 d))
+           (h  d)
+           (aa 0.0)
+           (de 0.0)
+           (m2 0)
+           (m 1 (+ m 1)))
+          ((> m beta-maxit)
+           (merror "Continued fractions failed in `beta_incomplete'"))
+       (setq m2 (+ m m))
+       (setq aa (bigfloat:/ (bigfloat:* m z (bigfloat:- b m))
+                            (bigfloat:* (bigfloat:+ am m2)
+                                        (bigfloat:+ a m2))))
+       (setq d  (bigfloat:+ 1.0 (bigfloat:* aa d)))
+       (when (bigfloat:< (bigfloat:abs d) beta-min) (setq d beta-min))
+       (setq c (bigfloat:+ 1.0 (bigfloat:/ aa c)))
+       (when (bigfloat:< (bigfloat:abs c) beta-min) (setq c beta-min))
+       (setq d (bigfloat:/ 1.0 d))
+       (setq h (bigfloat:* h d c))
+       (setq aa (bigfloat:/ (bigfloat:* -1 
+                                        (bigfloat:+ a m) 
+                                        (bigfloat:+ ab m) z) 
+                            (bigfloat:* (bigfloat:+ a m2) 
+                                        (bigfloat:+ ap m2))))
+       (setq d (bigfloat:+ 1.0 (bigfloat:* aa d)))
+       (when (bigfloat:< (bigfloat:abs d) beta-min) (setq d beta-min))
+       (setq c (bigfloat:+ 1.0 (bigfloat:/ aa c)))
+       (when (bigfloat:< (bigfloat:abs c) beta-min) (setq c beta-min))
+       (setq d (bigfloat:/ 1.0 d))
+       (setq de (bigfloat:* d c))
+       (setq h (bigfloat:* h de))
+       (when (bigfloat:< (bigfloat:abs (bigfloat:- de 1.0)) beta-eps)
+         (when *debug-gamma* 
+           (format t "~&Continued fractions finished.~%")
+           (format t "~&  z = ~A~%" z)
+           (format t "~&  a = ~A~%" a)
+           (format t "~&  b = ~A~%" b)
+           (format t "~&  h = ~A~%" h))
+         (return
+          (let ((result
+           (bigfloat:/ 
+             (bigfloat:* h 
+                         (bigfloat:expt z a)
+                         (bigfloat:expt (bigfloat:- 1.0 z) b)) a)))
+            (when *debug-gamma*
+              (format t "~& result = ~A~%" result))
+            result)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
