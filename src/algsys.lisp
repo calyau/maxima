@@ -333,6 +333,9 @@
   (and l (cons (car l) (deletmult (cddr l)))))
 
 (defun punivarp (poly)
+  ;; Check if called with the number zero, return nil. 
+  ;; Related bugs: SF[609466], SF[1430379], SF[1663399]
+  (when (and (numberp poly) (= poly 0)) (return-from punivarp nil))
   (do ((l (cdr poly) (cddr l)))
       ((null l) t)
     (or (numberp (cadr l))
