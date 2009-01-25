@@ -1044,11 +1044,39 @@
   (cl:expt a b))
 
 ;; This needs more work
-(defmethod expt ((a numeric) b)
-  (exp (* b (log a))))
+(defmethod expt ((a numeric) (b numeric))
+  (if (zerop b)
+      ;; CLHS says if the power is 0, the answer is 1 of the appropriate type.
+      (if (or (typep a 'complex-bigfloat)
+	      (typep b 'complex-bigfloat))
+	  (complex (bigfloat 1))
+	  (bigfloat 1))
+      (if (and (zerop a) (plusp (realpart b)))
+	  (* a b)
+	  (exp (* b (log a))))))
 
-(defmethod expt (a (b numeric))
-  (exp (* b (log a))))
+(defmethod expt ((a cl:number) (b numeric))
+  (if (zerop b)
+      ;; CLHS says if the power is 0, the answer is 1 of the appropriate type.
+      (if (or (typep a 'complex)
+	      (typep b 'complex-bigfloat))
+	  (complex (bigfloat 1))
+	  (bigfloat 1))
+      (if (and (zerop a) (plusp (realpart b)))
+	  (* a b)
+	  (exp (* b (log (bigfloat a)))))))
+
+(defmethod expt ((a numeric) (b cl:number))
+  (if (zerop b)
+      ;; CLHS says if the power is 0, the answer is 1 of the appropriate type.
+      (if (or (typep a 'complex-bigfloat)
+	      (typep b 'complex))
+	  (complex (bigfloat 1))
+	  (bigfloat 1))
+      (if (and (zerop a) (plusp (realpart b)))
+	  (* a b)
+	  (exp (* (bigfloat b) (log a))))))
+
 
 ;;; TO - External
 ;;;
