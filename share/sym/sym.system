@@ -2,15 +2,8 @@
 
 (mk:defsystem "sym"
     :source-extension "lisp"
-    :binary-pathname *maxima-symdir*
-    ;; Don't use separate directories because the files should be in $chemin
-    ;; #+clisp "binary-clisp"
-    ;; #+cmu "binary-cmucl"
-    ;; #+sbcl "binary-sbcl"
-    ;; #+gcl "binary-gcl"
-    ;; #+allegro "binary-acl6"
-    ;; #+openmcl "binary-openmcl"
-    ;; #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
+    :binary-pathname (maxima::maxima-objdir "share" "sym"
+        (concatenate 'string "binary-" maxima::*maxima-lispname*))
     :components
     ;; Reflects the order in sym1.mac.
     ((:module macros 

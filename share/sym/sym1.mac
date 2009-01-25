@@ -19,8 +19,6 @@
 */
 
 
-if (chemin = 'chemin) then
-chemin:"/usr/local/maxima/sym/";
 /* valeurs par defauts qui ne doivent pas ecraser celles deja donnees
 par l'utilisateur */
 
@@ -43,7 +41,4 @@ print("");
 print("NOTE: To compile the system do");
 print("load(\"sym/compile\");");
 
-block([file_search_maxima:chemin,
-  file_search_lisp:chemin],
-  load("load-sym-lisp-files"),
-  'done);
+block (load ("load-sym-lisp-files"), 'done);

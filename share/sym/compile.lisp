@@ -16,5 +16,5 @@
 ;       *              e-mail : avb@sysal.ibp.fr                      *
 ;       ***************************************************************
 
-(load (concatenate 'string *maxima-symdir* "/" "sym.system"))
+(load ($file_search "sym.system"))
 (mk:compile-system "sym")
