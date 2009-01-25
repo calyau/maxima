@@ -1,4 +1,4 @@
-@c version 1.33
+@c version 1.34
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -83,6 +83,37 @@ Ejemplo:
 @end example
 
 V@'eanse tambi@'en @code{xrange} y @code{zrange}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} yrange_secondary
+Valor por defecto: @code{auto}
+
+Cuando @code{yrange_secondary} vale @code{auto}, el rango del eje @var{y}
+secundario se calcula de forma autom@'atica.
+
+Si el usuario quiere especificar un intervalo para el eje @var{y} secundario, @'este debe
+expresarse como una lista de Maxima, como en @code{yrange_secondary=[-2, 3]}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         explicit(sin(x),x,0,10),
+         yaxis_secondary = true,
+         ytics_secondary = true,
+         yrange = [-3, 3],
+         yrange_secondary = [-20, 20],
+         color = blue,
+         explicit(100*sin(x+0.1)+2,x,0,10)) $
+@end example
+
+V@'eanse tambi@'en @code{xrange}, @code{yrange} y @code{zrange}.
 @end defvr
 
 
@@ -187,6 +218,12 @@ Selecciona el terminal a utilizar por Gnuplot; valores posibles son:
 @code{screen} (por defecto), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
 @code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt} y @code{aquaterm}.
 
+Los terminales @code{screen}, @code{wxt} y @code{aquaterm} tambi@'en se pueden 
+definir como una lista de dos elementos: el propio nombre del terminal y un 
+n@'umero entero no negativo. De esta forma se pueden abrir varias ventanas al
+mismo tiempo, cada una de ellas con su n@'umero correspondiente. Esta modalidad
+no funciona en plataformas Windows.
+
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
 usarse como argumento de la funci@'on @code{draw}.
@@ -225,7 +262,14 @@ Ejemplos:
              terminal  = 'wxt)$
 @end example
 
-Un fichero gif animado,
+Ventanas m@'ultiples.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^5,x,-2,2), terminal=[screen, 3])$
+(%i3) draw2d(explicit(x^2,x,-2,2), terminal=[screen, 0])$
+@end example
+
+Un fichero gif animado.
 @example
 (%i1) load(draw)$
 (%i2) draw(
@@ -569,6 +613,17 @@ V@'ease @code{xtics} para una descripci@'on completa.
 
 
 
+@defvr {Opci@'on gr@'afica} ytics_secondary
+Valor por defecto: @code{auto}
+
+Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
+del eje @var{y} secundario.
+
+V@'ease @code{xtics} para una descripci@'on completa.
+@end defvr
+
+
+
 @defvr {Opci@'on gr@'afica} ztics
 Valor por defecto: @code{auto}
 
@@ -595,6 +650,17 @@ Valor por defecto: @code{false}
 
 Si @code{ytics_rotate} vale @code{true}, las marcas del eje @var{y} se giran 
 90 grados.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
+
+@defvr {Opci@'on gr@'afica} ytics_rotate_secondary
+Valor por defecto: @code{false}
+
+Si @code{ytics_rotate_secondary} vale @code{true}, las marcas del eje @var{y} 
+secundario se giran 90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -633,6 +699,19 @@ del gr@'afico.
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
 @end defvr
+
+
+@defvr {Opci@'on gr@'afica} ytics_axis_secondary
+Valor por defecto: @code{false}
+
+Si @code{ytics_axis_secondary} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
+el propio eje @var{y} secundario, si vale @code{false} las marcas se colocan a lo largo del borde
+del gr@'afico.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
 
 @defvr {Opci@'on gr@'afica} ztics_axis
 Valor por defecto: @code{false}
@@ -757,6 +836,31 @@ Ejemplo:
 V@'eanse tambi@'en @code{yaxis_width}, @code{yaxis_type} y @code{yaxis_color}.
 @end defvr
 
+
+@defvr {Opci@'on gr@'afica} yaxis_secondary
+Valor por defecto: @code{false}
+
+Si @code{yaxis_secondary} vale @code{true}, los valores de las funciones se pueden representar
+respecto del eje @var{y} secundario, el cual se dibuja al lado derecho de la escena.
+
+N@'otese que esta es una opci@'on gr@'afica local que s@'olo afecta a objetos 2d.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         explicit(sin(x),x,0,10),
+         yaxis_secondary = true,
+         ytics_secondary = true,
+         color = blue,
+         explicit(100*sin(x+0.1)+2,x,0,10));
+@end example
+
+V@'eanse tambi@'en @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary}
+y @code{ytics_axis_secondary}.
+
+@end defvr
 
 
 @defvr {Opci@'on gr@'afica} yaxis_width
@@ -1061,6 +1165,18 @@ Ejemplo:
 
 V@'eanse tambi@'en @code{terminal}, @code{pic_width} y @code{pic_height}.
 @end defvr
+
+
+@defvr {Opci@'on gr@'afica} file_bgcolor
+Valor por defecto: @code{"xffffff"}
+
+Establece el color de fondo en los terminales png, jpg y gif. 
+Los colores deben definirse en c@'odigo hexadecimal @i{rgb}.
+Nombres de colores no est@'an permitidos. El color de fondo
+por defecto es blanco.
+@end defvr
+
+
 
 @defvr {Opci@'on gr@'afica} delay
 Valor por defecto: 5
@@ -2394,6 +2510,34 @@ por el algoritmo @i{marching cubes} implementado por el objeto
 
 
 
+@deffn {Funci@'on} set_draw_defaults (@var{Opci@'on gr@'afica}, ..., @var{Opci@'on gr@'afica}, ...)
+
+Establece las opciones gr@'aficas de usuario. Esta funci@'on es @'util 
+para dibujar varios gr@'aficos con las mismas opciones. Llamando
+a la funci@'on sin argumentos se borran las opciones de usuario por defecto.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) set_draw_defaults(
+         xrange = [-10,10],
+         yrange = [-2, 2],
+         color  = blue,
+         grid   = true)$
+(%i3) /* dibujo con opciones de usuario */
+      draw2d(explicit(((1+x)**2/(1+x*x))-1,x,-10,10))$
+(%i4) set_draw_defaults()$
+(%i5) /* dibujo con opciones por defecto */
+      draw2d(explicit(((1+x)**2/(1+x*x))-1,x,-10,10))$
+@end example
+
+Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
+@end deffn
+
+
+
+
 @deffn {Constructor de escena} gr2d (@var{Opci@'on gr@'afica}, ..., @var{graphic_object}, ...)
 
 La funci@'on @code{gr2d} construye un objeto que describe una escena 2d. Los
@@ -3390,6 +3534,62 @@ Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 V@'eanse tambi@'en @code{draw} y @code{gr3d}.
 @end deffn
 
+
+
+@deffn {Funci@'on} draw_file (@var{Opci@'on gr@'afica}, ..., @var{Opci@'on gr@'afica}, ...)
+
+Almacena el gr@'afico actual en un fichero. Las opciones gr@'aficas que
+acepta son: @code{terminal}, @code{pic_width}, @code{pic_height}, 
+@code{eps_width}, @code{eps_height}, @code{file_name} y @code{file_bgcolor}. 
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) /* dibujo en pantalla */
+      draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)))$
+(%i3) /* mismo dibujo en formato eps */
+      draw_file(terminal  = eps,
+                eps_width = 5,
+                eps_height = 5) $
+@end example
+@end deffn
+
+
+
+@deffn {Funci@'on} multiplot_mode (@var{term})
+
+Esta funci@'on permite a Maxima trabajar en modo de gr@'aficos m@'ultiples en
+una sola ventana del terminal @var{term}; argumentos v@'alidos para esta funci@'on 
+son @code{screen}, @code{wxt}, @code{aquaterm} y @code{none}.
+
+Cuando el modo de gr@'aficos m@'ultiples est@'a activo, cada llamada a @code{draw}
+env@'{@dotless{i}}a un nuevo gr'afico a la misma ventana, sin borrar los anteriores.
+Para desactivar el modo de gr@'aficos m@'ultiples escr@'{@dotless{i}}base
+@code{multiplot_mode(none)}.
+
+Cuando el modo de gr@'aficos m@'ultiples est@'a activo, la opci@'on global @code{terminal} 
+se bloquea; para desbloquearla y cambiar de terminal es necesario desactivar 
+previamente el modo de gr@'aficos m@'ultiples.
+
+Este modo de trabajo no funciona en plataformas Windows.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) set_draw_defaults(
+         xrange = [-1,1],
+         yrange = [-1,1],
+         grid   = true,
+         title  = "Step by step plot" )$
+(%i3) multiplot_mode(screen)$
+(%i4) draw2d(color=blue,  explicit(x^2,x,-1,1))$
+(%i5) draw2d(color=red,   explicit(x^3,x,-1,1))$
+(%i6) draw2d(color=brown, explicit(x^4,x,-1,1))$
+(%i7) multiplot_mode(none)$
+@end example
+@end deffn
 
 
 
