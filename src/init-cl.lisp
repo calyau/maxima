@@ -282,30 +282,33 @@ When one changes, the other does too."
 
 #+(or clisp ecl)
 (defun share-subdirs-list ()
-  (let* ((share-root (pathname (concatenate 'string *maxima-sharedir* "/")))
-	 (dir-list (directory (merge-pathnames (make-pathname :directory '(:relative :wild-inferiors))
-						share-root))))
-    ;; dir-list contains all of the directories.  Remove stuff we
-    ;; don't want like CVS directories.  Anything else?
-    (setf dir-list (delete-if #'(lambda (x)
-				  ;; Remove CVS directories
-				  (or (equal x share-root)
-				      (equal "CVS" (car (last (pathname-directory x))))))
-			       dir-list))
-    ;; Now just want the part after the *maxima-sharedir*, and we want
-    ;; strings.
-    (setf dir-list
-	  (mapcar #'(lambda (x)
-		      (let ((dir (make-pathname :directory (butlast (pathname-directory x))
-						:name (car (last (pathname-directory x))))))
-			(enough-namestring dir share-root)))
-		  dir-list))
-    ;; Sort in alphabetical order
-    (sort dir-list #'string-lessp)))
+  ;; This doesn't work yet on windows.  Give up in that case and use
+  ;; the default list.
+  (if (string= *autoconf-win32* "true")
+      (default-share-subdirs-list)
+      (let* ((share-root (pathname (concatenate 'string *maxima-sharedir* "/")))
+	     (dir-list (directory (merge-pathnames (make-pathname :directory '(:relative :wild-inferiors))
+						   share-root))))
+	;; dir-list contains all of the directories.  Remove stuff we
+	;; don't want like CVS directories.  Anything else?
+	(setf dir-list (delete-if #'(lambda (x)
+				      ;; Remove CVS directories
+				      (or (equal x share-root)
+					  (equal "CVS" (car (last (pathname-directory x))))))
+				  dir-list))
+	;; Now just want the part after the *maxima-sharedir*, and we want
+	;; strings.
+	(setf dir-list
+	      (mapcar #'(lambda (x)
+			  (let ((dir (make-pathname :directory (butlast (pathname-directory x))
+						    :name (car (last (pathname-directory x))))))
+			    (enough-namestring dir share-root)))
+		      dir-list))
+	;; Sort in alphabetical order
+	(sort dir-list #'string-lessp))))
 
 
-#-(or cmu clisp ecl)
-(defun share-subdirs-list ()
+(defun default-share-subdirs-list ()
   ;; Default implementation.  Eventually this should go away.
   '("affine"
     "algebra"
@@ -376,6 +379,10 @@ When one changes, the other does too."
     "trigonometry"
     "utils"
     "vector"))
+
+#-(or cmu clisp ecl)
+(defun share-subdirs-list ()
+  (default-share-subdirs-list))
 
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
