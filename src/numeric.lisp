@@ -109,8 +109,20 @@
 			    (maxima::bcons (imag-value z)))))
   
 ;;; REALP
+
+;; GCL doesn't have the REAL class!
+#-gcl
 (defmethod realp ((x cl:real))
   t)
+
+#+gcl
+(progn
+  (defmethod realp ((x cl:rational))
+    t)
+  (defmethod realp ((x cl:float))
+    t)
+  )
+  
 
 (defmethod realp ((x bigfloat))
   t)
