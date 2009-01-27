@@ -126,6 +126,9 @@
 	   #:ffloor
 	   #:incf
 	   #:decf
+	   #:realp
+	   #:complexp
+	   #:numberp
 	   )
   
   ;; Not yet implemented
@@ -140,9 +143,6 @@
 	   #:signum
 	   #:coerce
 	   #:random
-	   #:realp
-	   #:complexp
-	   #:numberp
 	   #:float-digits
 	   #:rational
 	   #:rationalize
@@ -200,6 +200,9 @@
 	   #:ffloor
 	   #:incf
 	   #:decf
+	   #:realp
+	   #:complexp
+	   #:numberp
 	   ))
 
 (provide :maxima)

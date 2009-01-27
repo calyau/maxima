@@ -108,6 +108,38 @@
 	       (maxima::mul 'maxima::$%i
 			    (maxima::bcons (imag-value z)))))
   
+;;; REALP
+(defmethod realp ((x cl:real))
+  t)
+
+(defmethod realp ((x bigfloat))
+  t)
+
+(defmethod realp ((x t))
+  nil)
+
+;;; COMPLEXP
+(defmethod complexp ((x cl:complex))
+  t)
+
+(defmethod complexp ((x complex-bigfloat))
+  t)
+
+(defmethod complexp ((x t))
+  nil)
+
+;;; NUMBERP
+(defmethod numberp ((x cl:number))
+  t)
+
+(defmethod numberp ((x bigfloat))
+  t)
+
+(defmethod numberp ((x complex-bigfloat))
+  t)
+
+(defmethod numberp ((x t))
+  nil)
 
 (defmethod make-load-form ((x complex-bigfloat) &optional environment)
   (declare (ignore environment))
@@ -1124,11 +1156,17 @@
     (double-float double-float-epsilon)
     (long-float long-float-epsilon)))
 
+(defmethod epsilon ((x cl:complex))
+  (epsilon (cl:realpart x)))
+
 (defmethod epsilon ((x bigfloat))
   ;; epsilon is just above 2^(-fpprec).
   (make-instance 'bigfloat
 		 :real (list (1+ (ash 1 (1- maxima::fpprec)))
 			     (- (1- maxima::fpprec)))))
+
+(defmethod epsilon ((x complex-bigfloat))
+  (epsilon (realpart x)))
 
       
 
