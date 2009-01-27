@@ -112,7 +112,7 @@ recip(e) := if listp(e) or equation_p(e) then map('recip, e)
 solution_subst(sol, v, f) := (
   if is(sol = %union()) then sol
   else if if_p(sol) then %if(first(sol), solution_subst(second(sol),v,f), solution_subst(third(sol),v,f))
-  else v = apply('f, [subst(sol,v)]));
+  else v = apply(f, [subst(sol,v)]));
 
 safer_subst(l, e) := block([algebraic : true, r, cnd, error_save : errormsg],
   unwind_protect(
