@@ -1580,7 +1580,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	  ((fpgreaterp fp-x (cdr bfhalf))
 	   ;; atanh(x) = 1/2*log1p(2*x/(1-x))
 	   (bcons
-	    (fptimes* bfhalf
+	    (fptimes* (cdr bfhalf)
 		      (fplog1p (fpquotient (fptimes* (intofp 2) fp-x)
 					   (fpdifference (fpone) fp-x))))))
 	  (t
