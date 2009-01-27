@@ -113,6 +113,8 @@ rtest_expintegral.mac \
 rtest_signum.mac \
 rtest_lambert_w.mac \
 rtest_elliptic.mac \
+rtest_integrate.mac \
+rtest_integrate_special.mac \
 README.how-to \
 testsuite.lisp \
 wester_problems/wester-gpl-permission-message.txt \
