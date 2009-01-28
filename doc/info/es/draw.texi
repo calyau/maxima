@@ -1,4 +1,4 @@
-@c version 1.34
+@c version 1.35
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2170,7 +2170,7 @@ V@'ease tambi@'en @code{line_width}.
 
 
 @defvr {Opci@'on gr@'afica} nticks
-Valor por defecto: 30
+Valor por defecto: 29
 
 En 2d, @code{nticks} es el n@'umero de puntos a utilizar por el programa
 adaptativo que genera las funciones expl@'{@dotless{i}}citas. Tambi@'en es el n@'umero de

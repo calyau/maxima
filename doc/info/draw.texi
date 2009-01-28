@@ -2528,7 +2528,7 @@ See also @code{line_width}.
 
 
 @defvr {Graphic option} nticks
-Default value: 30
+Default value: 29
 
 In 2d, @code{nticks} gives the initial number of points used by the
 adaptive plotting routine for explicit objects. It is also the

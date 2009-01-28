@@ -500,7 +500,7 @@ Ejemplo:
 @example
 [nticks, 20]
 @end example
-El valor por defecto para @code{nticks} es 10.
+El valor por defecto para @code{nticks} es 29.
 
 @item
 Opci@'on: @code{adapt_depth}

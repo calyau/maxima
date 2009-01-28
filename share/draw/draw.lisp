@@ -183,7 +183,7 @@
       (gethash '$line_type *gr-options*)  1    ; two options: 1 (solid) and 0 (dots)
 
       ; function options
-      (gethash '$nticks *gr-options*)          30
+      (gethash '$nticks *gr-options*)          29
       (gethash '$adapt_depth *gr-options*)     10
       (gethash '$key *gr-options*)             ""          ; by default, no keys
       (gethash '$filled_func *gr-options*)     nil         ; false, true (y axis) or an expression

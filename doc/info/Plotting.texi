@@ -547,7 +547,7 @@ Example:
 @example
 [nticks, 20]
 @end example
-The default for @code{nticks} is 10.
+The default for @code{nticks} is 29.
 
 @item
 Option: @code{adapt_depth}
