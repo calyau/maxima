@@ -201,15 +201,31 @@ One extra decimal digit in actual representation for rounding purposes.")
 		  (ncons '|b|)
 		  (explodec (1- (cadr l))))))))
 
+;; Tells you if you have a bigfloat object.  BUT, if it is a bigfloat,
+;; it will normalize it by making the precision of the bigfloat match
+;; the current precision setting in fpprec.  And it will also convert
+;; bogus zeroes (mantissa is zero, but exponent is not) to a true
+;; zero.
 (defun bigfloatp (x)
+  ;; A bigfloat object looks like '((bigfloat simp <prec>) <mantissa> <exp>)
   (prog nil
      (cond ((not ($bfloatp x)) (return nil))
-	   ((= fpprec (caddar x)) (return x))
+	   ((= fpprec (caddar x))
+	    ;; Precision matches.  (Should we fix up bogus bigfloat
+	    ;; zeros?)
+	    (return x))
 	   ((> fpprec (caddar x))
+	    ;; Current precision is higher than bigfloat precision.
+	    ;; Scale up mantissa and adjust exponent to get the
+	    ;; correct precision.
 	    (setq x (bcons (list (fpshift (cadr x) (- fpprec (caddar x)))
 				 (caddr x)))))
-	   (t (setq x (bcons (list (fpround (cadr x))
-				   (+ (caddr x) *m fpprec (- (caddar x))))))))
+	   (t
+	    ;; Current precision is LOWER than bigfloat precision.
+	    ;; Round the number to the desired precision.
+	    (setq x (bcons (list (fpround (cadr x))
+				 (+ (caddr x) *m fpprec (- (caddar x))))))))
+     ;; Fix up any bogus zeros that we might have created.
      (return (if (equal (cadr x) 0) (bcons (list 0 0)) x))))
 
 (defun bigfloat2rat (x)
@@ -1052,9 +1068,12 @@ One extra decimal digit in actual representation for rounding purposes.")
 		 (simplify (list '(mtimes) fans nfans))))))
 
 (defun invertbigfloat (a)
-  (if (bigfloatp a)
-      (bcons (fpquotient (fpone) (cdr a)))
-      (simplify (list '(mexpt) a -1))))
+  ;; If A is a bigfloat, be sure to round it to the current precision.
+  ;; (See Bug 2543079 for one of the symptoms.)
+  (let ((b (bigfloatp a)))
+    (if b
+	(bcons (fpquotient (fpone) (cdr b)))
+	(simplify (list '(mexpt) a -1)))))
 
 (defun *fpexp (a)
   (fpend (let ((fpprec (+ 8. fpprec)))
