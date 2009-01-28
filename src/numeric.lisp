@@ -27,7 +27,7 @@
 	((maxima::$bfloatp re)
 	 ;; Call bigfloatp to make sure we round/scale the bigfloat to
 	 ;; the correct precision!
-	 (cdr (bigfloatp re)))
+	 (cdr (maxima::bigfloatp re)))
 	(t
 	 (error "Don't know how to convert ~S to a BIGFLOAT" re))))
 
