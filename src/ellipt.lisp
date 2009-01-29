@@ -886,7 +886,7 @@
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; asn(x,m) = F(asin(x),m)
-	   (elliptic-f (cl:asin (float u)) m))
+	   (complexify (elliptic-f (cl:asin (float u)) m)))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (complexify (elliptic-f (cl:asin (complex ($realpart u) ($imagpart u)))
@@ -924,7 +924,7 @@
 	   ;; Numerically evaluate acn
 	   ;;
 	   ;; acn(x,m) = F(acos(x),m)
-	   (elliptic-f (cl:acos (float u)) m))
+	   (complexify (elliptic-f (cl:acos (float u)) m)))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (complexify (elliptic-f (cl:acos (complex ($realpart u) ($imagpart u)))
@@ -967,7 +967,7 @@
 		  (m (float m))
 		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
 			  (sqrt m))))
-	     (elliptic-f (cl:asin phi) m)))
+	     (complexify (elliptic-f (cl:asin phi) m))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (let* ((u (complex ($realpart u) ($imagpart u)))
@@ -3555,7 +3555,7 @@ first kind:
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; ans(x,m) = asn(1/x,m) = F(asin(1/x),m)
-	   (elliptic-f (cl:asin (/ (float u))) (float m)))
+	   (complexify (elliptic-f (cl:asin (/ (float u))) (float m))))
 	  ((and $numer (complex-number-p u)
 		(complex-number-p m))
 	   (complexify (elliptic-f (cl:asin (/ (complex ($realpart u) ($imagpart u))))
