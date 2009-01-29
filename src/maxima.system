@@ -551,6 +551,7 @@
 			:components ((:file "specfn")))
 	       (:module matrix-algebra :source-pathname ""
 			:components ((:file "mat") 
+                     (:file "linnew")
 				     (:file "matrix")))
 	       (:module determinants :source-pathname ""
 			:components ((:file "sprdet") 

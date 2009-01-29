@@ -239,6 +239,7 @@ binary-ecl/maxima : defint.lisp
 binary-ecl/maxima : residu.lisp
 binary-ecl/maxima : specfn.lisp
 binary-ecl/maxima : mat.lisp
+binary-ecl/maxima : linnew.lisp
 binary-ecl/maxima : matrix.lisp
 binary-ecl/maxima : sprdet.lisp
 binary-ecl/maxima : newinv.lisp

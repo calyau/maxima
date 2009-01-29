@@ -237,6 +237,7 @@ binary-acl/maxima.dxl : defint.lisp
 binary-acl/maxima.dxl : residu.lisp
 binary-acl/maxima.dxl : specfn.lisp
 binary-acl/maxima.dxl : mat.lisp
+binary-acl/maxima.dxl : linnew.lisp
 binary-acl/maxima.dxl : matrix.lisp
 binary-acl/maxima.dxl : sprdet.lisp
 binary-acl/maxima.dxl : newinv.lisp

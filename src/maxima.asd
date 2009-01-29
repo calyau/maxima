@@ -492,6 +492,7 @@
 			:components ((:file "specfn")))
 	       (:module matrix-algebra :pathname ""
 			:components ((:file "mat") 
+                     (:file "linnew")
 				     (:file "matrix")))
 	       (:module determinants :pathname ""
 			:components ((:file "sprdet") 

@@ -238,6 +238,7 @@ binary-clisp/maxima.mem : defint.lisp
 binary-clisp/maxima.mem : residu.lisp
 binary-clisp/maxima.mem : specfn.lisp
 binary-clisp/maxima.mem : mat.lisp
+binary-clisp/maxima.mem : linnew.lisp
 binary-clisp/maxima.mem : matrix.lisp
 binary-clisp/maxima.mem : sprdet.lisp
 binary-clisp/maxima.mem : newinv.lisp

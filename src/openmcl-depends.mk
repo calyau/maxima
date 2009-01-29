@@ -196,6 +196,7 @@ binary-openmcl/maxima.image : trigo.lisp
 binary-openmcl/maxima.image : trgred.lisp
 binary-openmcl/maxima.image : specfn.lisp
 binary-openmcl/maxima.image : mat.lisp
+binary-openmcl/maxima.image : linnew.lisp
 binary-openmcl/maxima.image : matrix.lisp
 binary-openmcl/maxima.image : sprdet.lisp
 binary-openmcl/maxima.image : newinv.lisp
