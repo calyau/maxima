@@ -819,11 +819,9 @@
       (make-instance 'bigfloat :real (maxima::fplog (real-value a)))))
 
 (defmethod one-arg-log ((a complex-bigfloat))
-  (let ((res (maxima::big-float-log (maxima::bcons (real-value a))
-				    (maxima::bcons (imag-value a)))))
-    (make-instance 'complex-bigfloat
-		   :real (cdr (maxima::$realpart res))
-		   :imag (cdr (maxima::$imagpart res)))))
+  (let* ((res (maxima::big-float-log (maxima::bcons (real-value a))
+				     (maxima::bcons (imag-value a)))))
+    (bigfloat res)))
 
 (defmethod two-arg-log ((a number) (b number))
   (cl:log a b))
@@ -1104,7 +1102,7 @@
 (defmethod expt ((a cl:number) (b numeric))
   (if (zerop b)
       ;; CLHS says if the power is 0, the answer is 1 of the appropriate type.
-      (if (or (typep a 'complex)
+      (if (or (typep a 'cl:complex)
 	      (typep b 'complex-bigfloat))
 	  (complex (bigfloat 1))
 	  (bigfloat 1))
@@ -1116,7 +1114,7 @@
   (if (zerop b)
       ;; CLHS says if the power is 0, the answer is 1 of the appropriate type.
       (if (or (typep a 'complex-bigfloat)
-	      (typep b 'complex))
+	      (typep b 'cl:complex))
 	  (complex (bigfloat 1))
 	  (bigfloat 1))
       (if (and (zerop a) (plusp (realpart b)))
