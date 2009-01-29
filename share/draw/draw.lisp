@@ -780,7 +780,8 @@
          (t ; no transparent with border
              (setf pltcmd (list (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
-                                        (get-option '$fill_color))
+                                        (get-option '$fill_color)
+                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))
                                 (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
                                         (get-option '$line_width)
                                         (get-option '$line_type)
@@ -1235,10 +1236,11 @@
            (y-mid (cdr y-samples) (cddr y-mid))
            (y-end (cddr y-samples) (cddr y-end)))
           ((null x-end))
+
         ;; The region is x-start to x-end, with mid-point x-mid.
         (let ((sublst (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
-                                         (car y-start) (car y-mid) (car y-end)
-                                          depth 1e-5)))
+                                           (car y-start) (car y-mid) (car y-end)
+                                           depth 1e-5)))
           (when (not (null result))
             (setf sublst (cddr sublst)))
           ;; clean non numeric pairs
