@@ -789,10 +789,10 @@
 				     (maxima::fpsin r nil)))))
 
 (defmethod asin ((x bigfloat))
-  (make-instance 'bigfloat :real (cdr (maxima::fpasin (maxima::bcons (real-value x))))))
+  (bigfloat (maxima::fpasin (maxima::bcons (real-value x)))))
 
 (defmethod acos ((x bigfloat))
-  (make-instance 'bigfloat :real (cdr (maxima::fpacos (maxima::bcons (real-value x))))))
+  (bigfloat (maxima::fpacos (maxima::bcons (real-value x)))))
 
 
 (defmethod sqrt ((x bigfloat))
