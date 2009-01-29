@@ -2455,6 +2455,30 @@ first kind:
 
 (in-package :maxima)
 
+;; Define Carlson's elliptic integrals so we can test their
+;; implementation.  We only support bigfloat
+
+(defun $carlson_rc (x y)
+  (to (bigfloat::bf-rc (bigfloat:bigfloat ($bfloat x))
+		       (bigfloat:bigfloat ($bfloat y)))))
+
+(defun $carlson_rd (x y z)
+  (to (bigfloat::bf-rd (bigfloat:bigfloat ($bfloat x))
+		       (bigfloat:bigfloat ($bfloat y))
+		       (bigfloat:bigfloat ($bfloat z)))))
+
+(defun $carlson_rf (x y z)
+  (to (bigfloat::bf-rf (bigfloat:bigfloat ($bfloat x))
+		       (bigfloat:bigfloat ($bfloat y))
+		       (bigfloat:bigfloat ($bfloat z)))))
+
+(defun $carlson_rj (x y z p)
+  (to (bigfloat::bf-rj (bigfloat:bigfloat ($bfloat x))
+		       (bigfloat:bigfloat ($bfloat y))
+		       (bigfloat:bigfloat ($bfloat z))
+		       (bigfloat:bigfloat ($bfloat p)))))
+  
+
 ;;; Other Jacobian elliptic functions
 
 ;; jacobi_ns(u,m) = 1/jacobi_sn(u,m)
