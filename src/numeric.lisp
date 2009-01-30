@@ -73,6 +73,10 @@
 			:imag (intofp im)))
 	((cl:realp re)
 	 (make-instance 'bigfloat :real (intofp re)))
+	((cl:complexp re)
+	 (make-instance 'complex-bigfloat
+			:real (intofp (cl:realpart re))
+			:imag (intofp (cl:imagpart re))))
 	((maxima::$bfloatp re)
 	 (make-instance 'bigfloat :real (intofp re)))
 	((maxima::complex-number-p re 'maxima::bigfloat-or-number-p)
@@ -262,7 +266,7 @@
   (sub1 x))
 
 ;; Add two numbers
-(defmethod two-arg-+ ((a number) (b number))
+(defmethod two-arg-+ ((a cl:number) (b cl:number))
   (cl:+ a b))
 
 (defmethod two-arg-+ ((a bigfloat) (b bigfloat))
@@ -285,10 +289,7 @@
 		 :real (maxima::fpplus (real-value a) (intofp (realpart b)))
 		 :imag (intofp (imagpart b))))
 
-(defmethod two-arg-+ ((a float) (b bigfloat))
-  (two-arg-+ b a))
-
-(defmethod two-arg-+ ((a rational) (b bigfloat))
+(defmethod two-arg-+ ((a cl:number) (b bigfloat))
   (two-arg-+ b a))
 
 (defmethod two-arg-+ ((a complex-bigfloat) (b bigfloat))
@@ -357,6 +358,9 @@
 (defmethod two-arg-- ((a rational) (b bigfloat))
   (make-instance 'bigfloat :real (maxima::fpdifference (intofp a) (real-value b))))
 
+(defmethod two-arg-- ((a cl:complex) (b bigfloat))
+  (two-arg-- (bigfloat (cl:realpart a) (cl:imagpart a)) b))
+
 (defmethod two-arg-- ((a complex-bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
 		 :real (maxima::fpdifference (real-value a) (real-value b))
@@ -374,7 +378,7 @@
 
 (defmethod two-arg-- ((a number) (b complex-bigfloat))
   (if (cl:complexp a)
-      (two-arg-- (make-instance 'complex-bigfloat :real (cl:realpart a) :imag (cl:imagpart a))
+      (two-arg-- (bigfloat (cl:realpart a) (cl:imagpart a))
 		 b)
       (two-arg-- (bigfloat a) b)))
 
@@ -417,10 +421,7 @@
 		 :real (maxima::fptimes* (real-value a) (intofp (realpart b)))
 		 :imag (maxima::fptimes* (real-value a) (intofp (imagpart b)))))
 
-(defmethod two-arg-* ((a float) (b bigfloat))
-  (two-arg-* b a))
-
-(defmethod two-arg-* ((a rational) (b bigfloat))
+(defmethod two-arg-* ((a cl:number) (b bigfloat))
   (two-arg-* b a))
 
 (defmethod two-arg-* ((a complex-bigfloat) (b bigfloat))
@@ -522,6 +523,9 @@
   (make-instance 'bigfloat :real (maxima::fpquotient (intofp a)
 						     (real-value b))))
 
+(defmethod two-arg-/ ((a cl:complex) (b bigfloat))
+  (two-arg-/ (bigfloat a) b))
+
 
 (defmethod two-arg-/ ((a complex-bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
@@ -539,7 +543,7 @@
 
 (defmethod two-arg-/ ((a number) (b complex-bigfloat))
   (if (cl:complexp a)
-      (two-arg-/ (make-instance 'complex-bigfloat :real (cl:realpart a) :imag (cl:imagpart a))
+      (two-arg-/ (bigfloat (cl:realpart a) (cl:imagpart a))
 		 b)
       (two-arg-/ (bigfloat a) b)))
 
@@ -829,16 +833,10 @@
 (defmethod two-arg-log ((a numeric) (b numeric))
   (two-arg-/ (one-arg-log a) (one-arg-log b)))
 
-(defmethod two-arg-log ((a numeric) (b float))
+(defmethod two-arg-log ((a numeric) (b cl:number))
   (two-arg-/ (one-arg-log a) (one-arg-log (bigfloat b))))
 
-(defmethod two-arg-log ((a numeric) (b rational))
-  (two-arg-/ (one-arg-log a) (one-arg-log (bigfloat b))))
-
-(defmethod two-arg-log ((a float) (b numeric))
-  (two-arg-/ (one-arg-log (bigfloat a)) (one-arg-log b)))
-
-(defmethod two-arg-log ((a rational) (b numeric))
+(defmethod two-arg-log ((a cl:number) (b numeric))
   (two-arg-/ (one-arg-log (bigfloat a)) (one-arg-log b)))
 
 (defun log (a &optional b)
@@ -1010,7 +1008,7 @@
   (let ((r (real-value a)))
     (if (cl:>= (car r) 0)
 	(make-instance 'bigfloat :real (list 0 0))
-	(make-instance 'bigfloat :real (maxima::fpquotient (maxima::fppi) (intofp 2))))))
+	(make-instance 'bigfloat :real (maxima::fppi)))))
 
 (defmethod phase ((a complex-bigfloat))
   (make-instance 'bigfloat :real (maxima::fpatan2 (imag-value a) (real-value a))))
