@@ -830,16 +830,16 @@
   (two-arg-/ (one-arg-log a) (one-arg-log b)))
 
 (defmethod two-arg-log ((a numeric) (b float))
-  (two-arg-/ (one-arg-log a) (one-arg-log (intofp b))))
+  (two-arg-/ (one-arg-log a) (one-arg-log (bigfloat b))))
 
 (defmethod two-arg-log ((a numeric) (b rational))
-  (two-arg-/ (one-arg-log a) (one-arg-log (intofp b))))
+  (two-arg-/ (one-arg-log a) (one-arg-log (bigfloat b))))
 
 (defmethod two-arg-log ((a float) (b numeric))
-  (two-arg-/ (one-arg-log (intofp a)) (one-arg-log b)))
+  (two-arg-/ (one-arg-log (bigfloat a)) (one-arg-log b)))
 
 (defmethod two-arg-log ((a rational) (b numeric))
-  (two-arg-/ (one-arg-log (intofp a)) (one-arg-log b)))
+  (two-arg-/ (one-arg-log (bigfloat a)) (one-arg-log b)))
 
 (defun log (a &optional b)
   (if b
