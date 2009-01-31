@@ -314,6 +314,10 @@
 	     (setq orig (simplify (list '(%erf) (add (car ris) (mul '$%i (cdr ris))))))
 	     (setq cc (simplify (list '(%erf) (sub (car ris) (mul '$%i (cdr ris))))))
 	     (cons (div (add orig cc) 2) (div (sub orig cc) (mul 2 '$%i)))))
+          ;; Look for a risplit-function on the property list to handle the
+          ;; realpart and imagpart for this function.
+          ((setq func (get (mop l) 'risplit-function))
+           (funcall func l))
 ;;; ^ All the above are guaranteed pure real.
 ;;; The handling of lists and matrices below has to be thought through.
 	  ((eq (caar l) 'mlist) (dsrl l))
