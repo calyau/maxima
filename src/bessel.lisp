@@ -1277,3 +1277,131 @@ Perhaps you meant to enter `~a'.~%"
 	  (t
 	   (eqtest (list '(%bessel_k) order arg)
 		   exp)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; realpart und imagpart of Bessel function
+;;;
+;;; We handle the special cases when we know that the Bessel function
+;;; is pure real or pure imaginary. In all other cases Maxima generates 
+;;; a general noun form as result.
+;;;
+;;; To get the complex sign of the order an argument of the Bessel function
+;;; the function $csign is used which calls $sign in a complex mode.
+;;;
+;;; This is an extension of of the algorithm of the function risplit in 
+;;; the file rpart.lisp. risplit looks for a risplit-function on the 
+;;; property list and call it if available.
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *debug-bessel* nil)
+
+;;; Put the risplit-function for Bessel J and Bessel I on the property list
+
+(defprop %bessel_j risplit-bessel-j-or-i risplit-function)
+(defprop %bessel_i risplit-bessel-j-or-i risplit-function)
+
+;;; realpart und imagpart for Bessel J and Bessel I function
+
+(defun risplit-bessel-j-or-i (expr)
+  (when *debug-bessel*
+    (format t "~&RISPLIT-BESSEL-J with ~A~%" expr))
+  (let ((order (cadr  expr))
+        (arg   (caddr expr))
+        (sign-order ($csign (cadr  expr)))
+        (sign-arg   ($csign (caddr expr))))
+    
+    (when *debug-bessel*
+      (format t "~&   : order      = ~A~%" order)
+      (format t "~&   : arg        = ~A~%" arg)
+      (format t "~&   : sign-order = ~A~%" sign-order)
+      (format t "~&   : sign-arg   = ~A~%" sign-arg))
+    
+    (cond
+      ((or (member sign-order '($complex $imaginary))
+           (eq sign-arg '$complex))
+       ;; order or arg are complex, return general noun-form
+       (risplit-noun expr))
+      ((eq sign-arg '$imaginary)
+       ;; arg is pure imaginary
+       (cond 
+         ((or ($oddp  order)
+              ($featurep order '$odd)) 
+          ;; order is an odd integer, pure imaginary noun-form
+          (cons 0 expr))
+         ((or ($evenp order)
+              ($featurep order '$even))
+           ;; order is an even integer, real noun-form
+           (cons expr 0))
+         (t
+          ;; order is not an odd or even integer, or Maxima can not
+          ;; determine it, return general noun-form 
+          (risplit-noun expr))))
+      ;; At this point order and arg are real.
+      ;; We have to look for some special cases involing a negative arg
+      ((or (maxima-integerp order)
+           (member sign-arg '($pos $pz)))
+       ;; arg is positive or order an integer, real noun-form
+       (cons expr 0))
+      ;; At this point we know that arg is negative or the sign is not known
+      ((zerop1 (sub ($truncate ($multthru 2 order)) ($multthru 2 order)))
+       ;; order is half integral
+       (cond
+          ((eq sign-arg '$neg)
+           ;; order is half integral and arg negative, imaginary noun-form
+           (cons 0 expr))
+          (t
+            ;; the sign of arg or order is not known
+            (risplit-noun expr))))
+      (t
+        ;; the sign of arg or order is not known
+        (risplit-noun expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Put the risplit-function for Bessel K and Bessel Y on the property list
+
+(defprop %bessel_k risplit-bessel-k-or-y risplit-function)
+(defprop %bessel_y risplit-bessel-k-or-y risplit-function)
+
+;;; realpart und imagpart for Bessel K and Bessel Y function
+
+(defun risplit-bessel-k-or-y (expr)
+  (when *debug-bessel*
+    (format t "~&RISPLIT-BESSEL-K with ~A~%" expr))
+  (let ((order (cadr  expr))
+        (arg   (caddr expr))
+        (sign-order ($csign (cadr  expr)))
+        (sign-arg   ($csign (caddr expr))))
+    
+    (when *debug-bessel*
+      (format t "~&   : order      = ~A~%" order)
+      (format t "~&   : arg        = ~A~%" arg)
+      (format t "~&   : sign-order = ~A~%" sign-order)
+      (format t "~&   : sign-arg   = ~A~%" sign-arg))
+    
+    (cond
+      ((or (member sign-order '($complex $imaginary))
+           (member sign-arg '($complex '$imaginary)))
+       (risplit-noun expr))
+      ;; At this point order and arg are real valued.
+      ;; We have to look for some special cases involing a negative arg
+      ((member sign-arg '($pos $pz))
+       ;; arg is positive
+       (cons expr 0))
+      ;; At this point we know that arg is negative or the sign is not known
+      ((and (not (maxima-integerp order))
+            (zerop1 (sub ($truncate ($multthru 2 order)) ($multthru 2 order))))
+       ;; order is half integral
+       (cond
+          ((eq sign-arg '$neg)
+           (cons 0 expr))
+          (t
+            ;; the sign of arg is not known
+            (risplit-noun expr))))
+      (t
+        ;; the sign of arg is not known
+        (risplit-noun expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
