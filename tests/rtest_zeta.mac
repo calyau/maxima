@@ -19,8 +19,20 @@ zeta(-1);
 zeta(0);
 -1/2$
 
+zeta(0.0);
+-0.5$
+
+zeta(0.0b0);
+-0.5b0$
+
 zeta(1);
-'inf$
+'infinity$  /* change to complex infinity */
+
+zeta(1.0);
+'infinity$
+
+zeta(1.0b0);
+'infinity$
 
 zeta(2);
 %pi^2 /6$
