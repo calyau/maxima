@@ -448,7 +448,72 @@
 
 ;; zeta and fibonacci stuff
 
-(defmfun $zeta (s)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Riemann Zeta function as a simplifying function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $zeta (z)
+  (simplify (list '(%zeta) z)))
+
+;;; Set properties to give full support to the parser and display
+
+(defprop $zeta %zeta alias)
+(defprop $zeta %zeta verb)
+
+(defprop %zeta $zeta reversealias)
+(defprop %zeta $zeta noun)
+
+;;; The Riemann Zeta function is a simplifying function
+
+(defprop %zeta simp-zeta operators)
+
+;;; The Riemann Zeta functon has mirror symmetry
+
+(defprop %zeta t commutes-with-conjugate)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-zeta (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+
+    ;; Check for special values
+    ((eq z '$inf) 1)
+    ((zerop1 z) 
+     (cond (($bfloatp z) ($bfloat '((rat) -1 2)))
+           ((floatp z) -0.5)
+           (t '((rat) -1 2))))
+    ((onep1 z) '$infinity)
+
+    ;; Check for numerical evaluation
+    (($bfloatp z) (mfuncall '$bfzeta z $fpprec))
+    ((or (floatp z) (and (or $numer $float) (integerp z)))
+         (let (($float2bf t))
+           ($float (mfuncall '$bfzeta z 18))))
+
+    ;; Check for transformations and argument simplifications
+    ((integerp z)
+     (cond
+       ((oddp z)
+        (cond ((> z 1)
+               (eqtest (list '(%zeta) z) expr))
+              ((setq z (sub 1 z))
+               (mul -1 (div ($bern z) z)))))
+       ((minusp z) 0)
+       ((not $zeta%pi) (eqtest (list '(%zeta) z) expr))
+       (t (let ($numer $float)
+            (mul (power '$%pi z)
+                 (mul (div (expt 2 (1- z)) 
+                           (simplify (list '(mfactorial) z)))
+                      (simplify (list '(mabs) ($bern z)))))))))
+    (t
+     (eqtest (list '(%zeta) z) expr))))
+
+;;; The original algorithm
+(defmfun $zeta-old (s)
   (cond (($bfloatp s) (mfuncall '$bfzeta s $fpprec))
 	((or (floatp s) (and (or $numer $float) (integerp s)))
 	 (let (($float2bf t))
@@ -468,6 +533,8 @@
 			   (timesk (*red (expt 2 (1- s)) (factorial s))
 				   (simpabs (list 'mabs ($bern s)) 1 nil)))))
 	   (resimplify s))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $fib (n)
   (cond ((fixnump n) (ffib n))
