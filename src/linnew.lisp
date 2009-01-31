@@ -29,39 +29,34 @@
 ;; cre form.  It now seems tminverse  and tmlinsolve, now seem to work. --wfs.
 
 ;;these are arrays
-(declare-top(special  *tmarrays*  *a2*  *b*  *aa* 
-		      *row*  *col*  *rowinv*  *colinv*  *indx* ))
+(declare-top (special *tmarrays* *a2* *b* *aa* *row* *col* *rowinv* *colinv* *indx*))
 
-(declare-top(special n nx ix)) 
+(declare-top (special n nx ix))
 
-(declare-top(special $linenum $dispflag $linechar $wise $fool)) 
+(declare-top (special $linenum $dispflag $linechar $wise $fool))
 
 (defvar *tmarrays* nil)
 
 ;; If N < threshold declared array is used, otherwise hashed array.
 
+(defparameter *threshold* 10)
 
-(defmacro threshold () 10.)
-
-(defun tminitialflag nil 
-  (cond ((not (boundp '$wise)) (setq $wise nil)))
-  (cond ((not (boundp '$fool)) (setq $fool nil))))
+(defun tminitialflag nil
+  (unless (boundp '$wise) (setq $wise nil))
+  (unless (boundp '$fool) (setq $fool nil)))
 
 ;; TMDET returns the determinant of N*N matrix A2 which is in an globally
 ;; declared array A2.
 
-(defun tmdet (a4 n) 
-  (prog (index result ix) 
+(defun tmdet (a4 n)
+  (prog (index ix)
      (tminitialflag)
-     (tmheading)
-     (setq ix 0. nx 0.)
-     (do ((i 1. (f1+ i)))
+     (setq ix 0 nx 0)
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (setq index (cons i index)))
-     (setq index			;(REVERSE INDEX)
-	   (nreverse index))
-     (setq result (tminor a4 n 1. index 0.))
-     (return result)))
+       (push i index))
+     (setq index (nreverse index))
+     (tminor a4 n 1 index 0)))
 
 ;; TMLIN SOLVES M SETS OF LINEAR EQUATIONS WHITH N UNKNOWN VARIABLES. IT SOLVES
 ;; ONLY FOR THE FIRST NX UNKNOWNS OUT OF N. THE EQUATIONS ARE EXPRESSED IN
@@ -73,38 +68,26 @@
 ;; DETERMINANT OF THE COEFFICIENT MATRIX AND X1=U1/DET, X2=U2/DET, Y1=V1/DET,
 ;; Y2=V2/DET ETC.
 
-(defun tmlin (a4 n m nx) 
-  (prog (index r) 
+(defun tmlin (a4 n m nx)
+  (prog (index r)
      (tmdefarray n)
      (tminitialflag)
-     (tmheading)
-     (do ((i 1. (f1+ i)))
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (setq index (cons i index)))
+       (push i index))
      (setq index (reverse index))
      (setq r
-	   (do ((ix 0. (f1+ ix)) (result))
+	   (do ((ix 0 (1+ ix))
+		(result))
 	       ((> ix nx) (reverse result))
-	     (setq result
-		   (cons (do ((i 1. (f1+ i)) (res))
-			     ((> i
-				 (cond ((= ix 0.) 1.)
-				       (t m)))
-			      (reverse res))
-			   (cond ((not $wise)
-				  (tmkillarray ix)))
-			   (setq res
-				 (cons (tminor a4
-					       n
-					       1.
-					       index
-					       i)
-				       res)))
-			 result))
-	     (cond ((and (= ix 0.)
-			 (equal (car result)
-				'(0. . 1.)))
-		    (merror "Coefficient matrix is singular")))))
+	     (push (do ((i 1 (1+ i)) (res))
+		       ((> i (if (= ix 0) 1 m))
+			(reverse res))
+		     (unless $wise (tmkillarray ix))
+		     (push (tminor a4 n 1 index i) res))
+		   result)
+	     (when (and (= ix 0) (equal (car result) '(0 . 1)))
+	       (merror "Coefficient matrix is singular"))))
      (tmrearray n)
      (return r)))
 
@@ -116,352 +99,305 @@
 ;; ABTAINING IX-TH UNKNOWN. IN OTHER WORDS, JRIGHT SPECIFIES JRIGHT-TH
 ;; EQUATION.
 
-
-(defun tminor (a4 n k index jright) 
+(defun tminor (a4 n k index jright)
   (prog (subindx l result name aorb)
      (setq a4 (get-array-pointer a4))
-     (cond
-       ((= k n)
-	(setq result
-	      (cond ((= k ix) (aref a4 (car index) (f+ jright n)))
-		    (t (aref a4 (car index) k)))))
-       (t
-	(do
-	 ((j 1. (f1+ j)) (sum '(0. . 1.)))
-	 ((> j (f1+ (f- n k))) (setq result sum))
-	  (setq l (extract index j))
-	  (setq subindx (cadr l))
-	  (setq l (car l))
-	  (setq aorb (cond ((= k ix) (aref a4 l (f+ jright n)))
-			   (t (aref a4 l k))))
-	  (cond
-	    ((not (equal aorb '(0. . 1.)))
-	     (setq name (tmaccess subindx))
-	     (setq 
-	      sum
-	      (funcall (cond ((oddp j) 'ratplus)
-			     (t 'ratdifference))
-		       sum
-		       (rattimes
-			aorb
-			(cond ($fool (tminor a4 n (f1+ k) subindx jright))
-			      (t (cond ((not (null (tmeval name)))
-					(tmeval name))
-				       ((tmnomoreuse j l k)
-					(tmstore name nil)
-					(tminor a4
-						n
-						(f1+ k)
-						subindx
-						jright))
-				       (t (tmstore name
-						   (tminor a4
-							   n
-							   (f1+ k)
-							   subindx
-							   jright))))))
-			t)))))
-	  (cond ($wise (cond ((tmnomoreuse j l k)
-			      (tmkill subindx k))))))))
-     (return result))) 
+     (cond ((= k n)
+	    (setq result
+		  (if (= k ix)
+		      (aref a4 (car index) (+ jright n))
+		      (aref a4 (car index) k))))
+	   (t
+	    (do
+	     ((j 1 (1+ j))
+	      (sum '(0 . 1)))
+	     ((> j (1+ (- n k))) (setq result sum))
+	      (setq l (extract index j))
+	      (setq subindx (cadr l))
+	      (setq l (car l))
+	      (setq aorb (if (= k ix)
+			     (aref a4 l (+ jright n))
+			     (aref a4 l k)))
+	      (unless (equal aorb '(0 . 1))
+		(setq name (tmaccess subindx))
+		(setq sum
+		      (funcall (if (oddp j) #'ratplus #'ratdifference)
+			       sum
+			       (rattimes
+				aorb
+				(if $fool
+				    (tminor a4 n (1+ k) subindx jright)
+				    (cond ((not (null (tmeval name)))
+					   (tmeval name))
+					  ((tmnomoreuse j l k)
+					   (tmstore name nil)
+					   (tminor a4 n (1+ k) subindx jright))
+					  (t
+					   (tmstore name (tminor a4 n (1+ k) subindx jright)))))
+				t))))
+	      (when $wise
+		(when (tmnomoreuse j l k)
+		  (tmkill subindx k))))))
+     (return result)))
 
-(defun extract (index j) 
-  (do ((ind index (cdr ind)) (count 1. (f1+ count)) (subindx))
+(defun extract (index j)
+  (do ((ind index (cdr ind))
+       (count 1 (1+ count))
+       (subindx))
       ((null ind))
-    (cond ((= count j)
-	   (return (list (car ind) (nconc subindx (cdr ind)))))
-	  (t (setq subindx (nconc subindx (list (car ind)))))))) 
+    (if (= count j)
+	(return (list (car ind) (nconc subindx (cdr ind))))
+	(setq subindx (nconc subindx (list (car ind)))))))
 
-(declare-top(special vlist varlist genvar)) 
-
+(declare-top (special vlist varlist genvar))
 
-(defun tmratconv (bbb n m) 
+(defun tmratconv (bbb n m)
   (prog (ccc)
      (declare (special ccc))   ;Tell me this worked in Maclisp.  --gsb
 					;Actually, i suspect it didn't, at least ever since
 					; (sstatus punt).
-     (set 'ccc bbb)
-     (do ((k 1. (f1+ k)))
+     (setf (symbol-value 'ccc) bbb)
+     (do ((k 1 (1+ k)))
 	 ((> k n))
-       (do ((j 1. (f1+ j)))
+       (do ((j 1 (1+ j)))
 	   ((> j m))
-	 (newvar1 (store (aref *a2* k j)
+	 (newvar1 (setf (aref *a2* k j)
 			 (maref ccc k j)
-			 ;;				     (nth j (nth k *a2*))
-			 ;;				     (MEVAL (LIST (LIST 'CCC 'array) K J))  ;;just the
+			 ;; (nth j (nth k *a2*))
+			 ;; (MEVAL (LIST (LIST 'CCC 'array) K J))  ;;just the
 			 ))))
-	     
-     (newvar (cons '(mtimes) vlist))
-     (do ((k 1. (f1+ k)))
-	 ((> k n))
-       (do ((j 1. (f1+ j)))
-	   ((> j m))
-	 (store (aref *a2* k j)
-		(cdr (ratrep* (aref *a2* k j)))))))) 
 
-(defmfun $tmnewdet n 
-  (prog (*aa* r vlist) 
-     (cond ((= n 2.)
-	    (cond ((not (integerp (setq n (arg 2.))))
-		   (merror  "Wrong arg")))
-	    (setq *aa* (arg 1.)))
-	   ((and (= n 1.) ($matrixp (setq *aa* (arg 1.))))
-	    (setq n (length (cdr (arg 1.)))))
-	   (t (merror "Wrong arg")))
-     (setq  *a2* (*array nil 't (f1+ n) (f1+ n)))
+     (newvar (cons '(mtimes) vlist))
+     (do ((k 1 (1+ k)))
+	 ((> k n))
+       (do ((j 1 (1+ j)))
+	   ((> j m))
+	 (setf (aref *a2* k j) (cdr (ratrep* (aref *a2* k j))))))))
+
+(defmfun $tmnewdet (mat &optional (dim nil dim?))
+  (prog (*aa* r vlist n)
+     (cond (dim?
+	    (unless (integerp dim)
+	      (merror "wrong second arg"))
+	    (setq n dim))
+	   (($matrixp mat)
+	    (setq n (length (cdr mat))))
+	   (t
+	    (merror "wrong args")))
+     (setq *aa* mat)
+     (setq *a2* (make-array (list (1+ n) (1+ n)) :initial-element nil))
      (tmdefarray n)
      (tmratconv *aa* n n)
-     (setq r (cons (list 'mrat
-			 'simp
-			 varlist
-			 genvar)
-		   (tmdet '*a2* n)))
-     (*tmrearray '*a2*)
+     (setq r (cons (list 'mrat 'simp varlist genvar) (tmdet '*a2* n)))
      (tmrearray n)
-     (return r))) 
+     (return r)))
 
-(defmfun $tmlinsolve narg (tmlinsolve (listify narg))) 
-
-(defun tmlinsolve (arglist) 
-  (prog (equations vars outvars result *aa*) 
-     (setq equations (cdar arglist) 
-	   vars (cdadr arglist) 
+(defun $tmlinsolve (&rest arglist)
+  (prog (equations vars outvars result *aa*)
+     (setq equations (cdar arglist)
+	   vars (cdadr arglist)
 	   outvars (cond ((null (cddr arglist)) vars)
-			 (t (cdaddr arglist))) 
-	   arglist nil)
+			 (t (cdaddr arglist))))
      (setq vars (tmerge vars outvars))
      (setq nx (length outvars))
      (setq n (length vars))
-     (cond ((not (= n (length equations)))
-	    (return (print 'too-few-or-much-equations))))
-     (setq 
-      *aa*
-      (cons
-       '($matrix simp)
-       (mapcar 
-	#'(lambda (exp) 
-	    (append
-	     '((mlist))
-	     (mapcar #'(lambda (v) 
-			 (prog (r) 
-			    (setq exp
-				  ($bothcoef exp v)
-				  r
-				  (cadr exp)
-				  exp
-				  (meval (caddr exp)))
-			    (return r)))
-		     vars)
-	     (list (list '(mminus) exp))))
-	(mapcar #'(lambda (e) (meval (list '(mplus)
-					   ($lhs e)
-					   (list '(mminus)
-						 ($rhs e)))))
-		equations))))
-     (setq result (cdr ($tmlin *aa* n 1. nx)))
+     (unless (= n (length equations))
+       (return (print 'too-few-or-much-equations)))
+     (setq *aa*
+	   (cons '($matrix simp)
+		 (mapcar #'(lambda (exp)
+			     (append
+			      '((mlist))
+			      (mapcar #'(lambda (v)
+					  (prog (r)
+					     (setq exp ($bothcoef exp v)
+						   r (cadr exp)
+						   exp (meval (caddr exp)))
+					     (return r)))
+				      vars)
+			      (list (list '(mminus) exp))))
+			 (mapcar #'(lambda (e)
+				     (meval (list '(mplus)
+						  ($lhs e)
+						  (list '(mminus) ($rhs e)))))
+				 equations))))
+     (setq result (cdr ($tmlin *aa* n 1 nx)))
      (return
-       (do
-	((vars (cons nil outvars) (cdr vars))
-	 (labels)
-	 (dlabel)
-	 (name))
-	((null vars)
-	 (cons '(mlist) (cdr (reverse labels))))
+       (do ((vars (cons nil outvars) (cdr vars))
+	    (labels)
+	    (dlabel)
+	    (name))
+	   ((null vars)
+	    (cons '(mlist) (cdr (reverse labels))))
 	 (setq name (makelabel $linechar))
-	 (setq $linenum (f1+ $linenum))
-	 (set name
-	      (cond ((null (car vars))
-		     (setq dlabel name)
-		     (cadar result))
-		    (t (list '(mequal)
-			     (car vars)
-			     (list '(mtimes simp)
-				   (cadar result)
-				   (list '(mexpt simp)
-					 dlabel
-					 -1.))))))
-	 (setq labels (cons name labels))
+	 (incf $linenum)
+	 (setf (symbol-value name)
+	       (cond ((null (car vars))
+		      (setq dlabel name)
+		      (cadar result))
+		     (t (list '(mequal)
+			      (car vars)
+			      (list '(mtimes simp)
+				    (cadar result)
+				    (list '(mexpt simp) dlabel -1))))))
+	 (push name labels)
 	 (setq result (cdr result))
-	 (cond
-	   ($dispflag (mtell-open "~M" (nconc (ncons '(mlable))
-					      (ncons name)
-					      (ncons (eval name)))))))))) 
+	 (when $dispflag
+	   (mtell-open "~M" (nconc (ncons '(mlable))
+				   (ncons name)
+				   (ncons (eval name)))))))))
 
-(defun tmerge (vars outvars) 
+(defun tmerge (vars outvars)
   (append outvars
-	  (prog (l) 
-	     (mapcar #'(lambda (v) 
-			 (cond ((zl-member v outvars) nil)
-			       (t (setq l (cons v l)))))
+	  (prog (l)
+	     (mapcar #'(lambda (v)
+			 (if (member v outvars) nil (push v l)))
 		     vars)
-	     (return (reverse l))))) 
+	     (return (reverse l)))))
 
-(defmfun $tmlin (*aa* n m nx) 
-  (prog (r vlist) 
-     (setq  *a2* (*array nil 't (f1+ n) (f1+ (f+ m n))))
+(defmfun $tmlin (*aa* n m nx)
+  (prog (r vlist)
+     (setq *a2* (make-array (list (1+ n) (+ 1 m n)) :initial-element nil))
      (show *a2*)
-     (tmratconv *aa* n (f+ m n))
-     (setq 
-      r
-      (cons
-       '(mlist)
-       (mapcar 
-	#'(lambda (res) 
-	    (cons '(mlist)
-		  (mapcar #'(lambda (result) 
-			      (cons (list 'mrat
-					  'simp
-					  varlist
-					  genvar)
-				    result))
-			  res)))
-	(tmlin '*a2* n m nx))))
-     (*tmrearray '*a2*)
+     (tmratconv *aa* n (+ m n))
+     (setq r
+	   (cons '(mlist)
+		 (mapcar
+		  #'(lambda (res)
+		      (cons '(mlist)
+			    (mapcar #'(lambda (result)
+					(cons (list 'mrat 'simp varlist genvar) result))
+				    res)))
+		  (tmlin '*a2* n m nx))))
      (show *a2*)
-     (return r))) 
+     (return r)))
 
-(defun tmkill (*indx* k) 
-  (prog (name subindx j l) 
-     (cond ((null *indx*) (return nil)))
+(defun tmkill (*indx* k)
+  (prog (name subindx j l)
+     (when (null *indx*) (return nil))
      (setq name (tmaccess *indx*))
-     (cond ((not (null (tmeval name))) (tmstore name nil))
-	   (t (do ((ind *indx* (cdr ind)) (count 1. (f1+ count)))
-		  ((null ind))
-		(setq l (extract *indx* count) 
-		      j (car l) 
-		      subindx (cadr l))
-		(cond ((= j count)
-		       (tmkill subindx (f1+ k))))))))) 
+     (cond ((not (null (tmeval name)))
+	    (tmstore name nil))
+	   (t
+	    (do ((ind *indx* (cdr ind))
+		 (count 1 (1+ count)))
+		((null ind))
+	      (setq l (extract *indx* count)
+		    j (car l)
+		    subindx (cadr l))
+	      (when (= j count)
+		(tmkill subindx (1+ k))))))))
 
-(defun tmnomoreuse (j l k) 
-  (cond ((and (= j l) (or (> k nx) (< k (f1+ ix)))) t) (t nil))) 
-
-(defun tmdefarray (n) 
-  (prog (name) 
-     (cond
-       (				;(GET '*TMARRAYS* 'array)
-	(setq *tmarrays* (get-array-pointer *tmarrays*))
-	(tmrearray (f1- (cond ((cadr (arraydims *tmarrays*)))
-			      (t 1.))))))
-     (setq  *tmarrays* (*array nil 't (f1+ n)))
-     (do ((i 1. (f1+ i)))
+(defun tmnomoreuse (j l k)
+  (if (and (= j l) (or (> k nx) (< k (1+ ix))))
+      t
+      nil))
+
+(defun tmdefarray (n)
+  (prog (name)
+     (cond ((setq *tmarrays* (get-array-pointer *tmarrays*))
+	    (tmrearray (1- (cond ((cadr (arraydims *tmarrays*)))
+				 (t 1))))))
+     (setq *tmarrays* (make-array (1+ n) :initial-element nil))
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (setq name (cond ((= i 1.) (make-symbol "M"))
-			(t (gensym))))
-       (cond ((< n (threshold))
-					;(STORE (aref *TMARRAYS* I) NAME)
-	      (set name (*array nil t (f1+ (tmcombi n i))))
-	      (store (aref *tmarrays* i) (get-array-pointer name))
-	      )
-		       
-	     (t (store (aref *tmarrays* i)
-		       (list name
-			     'simp
-			     'array)))))
+       (setq name (if (= i 1) (make-symbol "M") (gensym)))
+       (cond ((< n *threshold*)
+	      (setf (symbol-value name) (make-array (1+ (tmcombi n i)) :initial-element nil))
+	      (setf (aref *tmarrays* i) (get-array-pointer name)))
+	     (t
+	      (setf (aref *tmarrays* i) (list name 'simp 'array)))))
      (gensym "G")))
 
 ;; TMREARRAY kills the TMARRAYS which holds pointers to minors. If (TMARRAYS I)
 ;; is an atom, it is declared array.  Otherwise it is hashed array.
 
-(defun tmrearray (n) 
-  (prog nil 
-     (do ((i 1. (f1+ i)))
+(defun tmrearray (n)
+  (prog nil
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (cond ((atom (aref *tmarrays* i)) (*tmrearray (aref *tmarrays* i)))
-	     (t (tm$kill (car (aref *tmarrays* i))))))
-     (*tmrearray '*tmarrays*))) 
-
-(defun tmaccess (index) 
-  (prog (l) 
+       (unless (atom (aref *tmarrays* i))
+	 (tm$kill (car (aref *tmarrays* i)))))))
+
+(defun tmaccess (index)
+  (prog (l)
      (cond ($fool (return nil)))
      (setq l (length index))
      (return
-       (cond ((< n (threshold))
+       (cond ((< n *threshold*)
 	      (list 'aref (aref *tmarrays* l)
-		    (do ((i 1. (f1+ i))
-			 (x 0. (car y))
+		    (do ((i 1 (1+ i))
+			 (x 0 (car y))
 			 (y index (cdr y))
-			 (sum 0.))
-			((> i l) (f1+ sum))
-		      (do ((j (f1+ x) (f1+ j)))
+			 (sum 0))
+			((> i l) (1+ sum))
+		      (do ((j (1+ x) (1+ j)))
 			  ((= j (car y)))
-			(setq sum (f+ sum
-				      (tmcombi (f- n j)
-					       (f- l i))))))))
+			(incf sum (tmcombi (- n j) (- l i)))))))
 	     (t (cons 'aref (cons (aref *tmarrays* l) index)))))) )
 
-(defun tmcombi (n i) 
-  (cond ((> (f- n i) i)
-	 (// (tmfactorial n (f- n i)) (tmfactorial i 0.)))
-	(t (// (tmfactorial n i) (tmfactorial (f- n i) 0.))))) 
+(defun tmcombi (n i)
+  (if (> (- n i) i)
+      (/ (tmfactorial n (- n i)) (tmfactorial i 0))
+      (/ (tmfactorial n i) (tmfactorial (- n i) 0))))
 
-(defun tmfactorial (i j) 
-  (cond ((= i j) 1.) (t (f* i (tmfactorial (f1- i) j))))) 
+(defun tmfactorial (i j)
+  (if (= i j)
+      1
+      (* i (tmfactorial (1- i) j))))
 
-(defun tmstore (name x) 
-  (cond ((< n (threshold))
+(defun tmstore (name x)
+  (cond ((< n *threshold*)
 	 (eval (list 'store name (list 'quote x))))
-	(t (mset name (list '(mquote simp) x)) x)))
+	(t
+	 (mset name (list '(mquote simp) x))
+	 x)))
 
 ;; TMKILLARRAY kills all (N-IX+1)*(N-IX+1) minors which are not necessary for
 ;; the computation of IX-TH variable in the linear equation.  Otherwise, they
 ;; will do harm.
 
-(defun tmkillarray (ix) 
-  (do ((i (f1+ (f- n ix)) (f1+ i)))
+(defun tmkillarray (ix)
+  (do ((i (1+ (- n ix)) (1+ i)))
       ((> i n))
-    (cond ((< n (threshold))
-	   (fillarray (aref *tmarrays* i) '(nil)))
-	  (t (tm$kill (car (aref *tmarrays* i))))))) 
+    (if (< n *threshold*)
+	(fillarray (aref *tmarrays* i) '(nil))
+	(tm$kill (car (aref *tmarrays* i))))))
 
-(defun tmheading nil nil) 
+(defun tmeval (e)
+  (prog (result)
+     (return (cond ((< n *threshold*)
+		    (eval e))
+		   (t
+		    (setq result (meval e))
+		    (if (equal result e) nil (cadr result)))))))
 
-(defun tmeval (e) 
-  (prog (result) 
-     (return (cond ((< n (threshold)) (eval e))
-		   (t (setq result (meval e))
-		      (cond ((equal result e) nil)
-			    (t (cadr result)))))))) 
+(defun tm$kill (e)
+  (kill1 e))
 
-(defun tm$kill (e) (kill1 e))
-
-(defmfun $tminverse ( *aa*) 
-  (prog (r vlist n m nx) 
+(defmfun $tminverse (*aa*)
+  (prog (r vlist n m nx)
      (setq n (length (cdr *aa*)) m n nx n)
-     (setq  *a2* (*array nil 't (f1+ n) (f1+ (f+ m n))))
+     (setq *a2* (make-array (list (1+ n) (+ 1 m n)) :initial-element nil))
      (tmratconv *aa* n n)
-     (do ((i 1. (f1+ i)))
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (do ((j 1. (f1+ j)))
+       (do ((j 1 (1+ j)))
 	   ((> j m))
-	 (store (aref *a2* i (f+ n j))
-		(cond ((= i j) '(1. . 1.))
-		      (t '(0. . 1.))))))
-     (setq 
-      r
-      (mapcar 
-       #'(lambda (res) 
-	   (cons
-	    '(mlist)
-	    (mapcar 
-	     #'(lambda (result) 
-		 ($ratdisrep (cons (list 'mrat
-					 'simp
-					 varlist
-					 genvar)
-				   result)))
-	     res)))
-       (tmlin '*a2* n m nx)))
-     (setq r
-	   (list '(mtimes simp)
-		 (list '(mexpt simp) (cadar r) -1.)
-		 (cons '($matrix simp) (cdr r))))
-     (*tmrearray '*a2*)
-     (return r))) 
+	 (setf (aref *a2* i (+ n j))
+	       (if (= i j) '(1 . 1) '(0 . 1)))))
+     (setq r (mapcar #'(lambda (res)
+			 (cons '(mlist)
+			       (mapcar #'(lambda (result)
+					   ($ratdisrep (cons (list 'mrat 'simp varlist genvar) result)))
+				       res)))
+		     (tmlin '*a2* n m nx)))
+     (setq r (list '(mtimes simp)
+		   (list '(mexpt simp) (cadar r) -1)
+		   (cons '($matrix simp) (cdr r))))
+     (return r)))
 
-(defun *tmrearray (x) (*rearray x)) 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;			       
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;THIS IS A UTILITY PACKAGE FOR SPARSE
 ;;MATRIX INVERSION. A3 IS A N*N MATRIX.
 ;;IT RETURNS A LIST OF LISTS, SUCH AS
@@ -475,33 +411,33 @@
 ;; (DEFUN TMISOLATE (A3 N)
 ;;        (PROG (NODELIST)
 ;; 	     (SETQ A3 (GET A3 'ARRAY))
-;; 	     (setq  B (*ARRAY nil 'T (f1+ N) (f1+ N)))
-;; 	     (setq  ROW (*ARRAY nil 'T (f1+ N)))
-;; 	     (setq  COL (*ARRAY nil 'T (f1+ N)))
-;; 	     (DO ((I 1. (f1+ I)))
+;; 	     (setq  B (*ARRAY nil 'T (1+ N) (1+ N)))
+;; 	     (setq  ROW (*ARRAY nil 'T (1+ N)))
+;; 	     (setq  COL (*ARRAY nil 'T (1+ N)))
+;; 	     (DO ((I 1 (1+ I)))
 ;; 		 ((> I N))
 ;; 		 (STORE (ROW I) I)
 ;; 		 (STORE (COL I) I))
-;; 	     (DO ((I 1. (f1+ I)))
+;; 	     (DO ((I 1 (1+ I)))
 ;; 		 ((> I N))
-;; 		 (DO ((J 1. (f1+ J)))
+;; 		 (DO ((J 1 (1+ J)))
 ;; 		     ((> J N))
 ;; 		     (STORE (B I J)
 ;; 			    (NOT (EQUAL (AREF A3 I J)
-;; 					'(0. . 1.))))))
-;; 	     (COND ((NULL (TMPIVOT-ISOLATE 1.))
+;; 					'(0 . 1))))))
+;; 	     (COND ((NULL (TMPIVOT-ISOLATE 1))
 ;; 		    (SETQ NODELIST NIL)
 ;; 		    (GO EXIT)))
-;; 	     (DO ((I 1. (f1+ I)))
+;; 	     (DO ((I 1 (1+ I)))
 ;; 		 ((> I N))
-;; 		 (DO ((J 1. (f1+ J)))
+;; 		 (DO ((J 1 (1+ J)))
 ;; 		     ((> J I))
 ;; 		     (STORE (B (ROW J) (COL I))
 ;; 			    (OR (B (ROW I) (COL J))
 ;; 				(B (ROW J) (COL I))))
 ;; 		     (STORE (B (ROW I) (COL J)) (B (ROW J) (COL I))))
 ;; 		 (STORE (B (ROW I) (COL I)) T))
-;; 	     (DO ((I 1. (f1+ I)))
+;; 	     (DO ((I 1 (1+ I)))
 ;; 		 ((> I N))
 ;; 		 (COND ((EQ (B (ROW I) (COL I)) T)
 ;; 			(SETQ NODELIST
@@ -510,17 +446,17 @@
 ;; 	     (*TMREARRAY 'B)
 ;; 	     (*TMREARRAY 'ROW)
 ;; 	     (*TMREARRAY 'COL)
-;; 	     (RETURN (REVERSE NODELIST))))) 
+;; 	     (RETURN (REVERSE NODELIST)))))
 
-;; (DEFUN TMPULL-OVER (P N) 
-;;        (PROG (Q) 
+;; (DEFUN TMPULL-OVER (P N)
+;;        (PROG (Q)
 ;; 	     (STORE (B (ROW P) (COL P)) NIL)
-;; 	     (DO ((J 1. (f1+ J)))
+;; 	     (DO ((J 1 (1+ J)))
 ;; 		 ((> J N) (SETQ Q NIL))
 ;; 		 (COND ((EQ (B (ROW P) (COL J)) T)
 ;; 			(RETURN (SETQ Q J)))))
 ;; 	     (COND ((NULL Q) (RETURN (LIST (ROW P))))
-;; 		   (T (DO ((J 1. (f1+ J)))
+;; 		   (T (DO ((J 1 (1+ J)))
 ;; 			  ((> J N))
 ;; 			  (STORE (B (ROW Q) (COL J))
 ;; 				 (OR (B (ROW Q) (COL J))
@@ -528,38 +464,37 @@
 ;; 			  (STORE (B (ROW J) (COL Q))
 ;; 				 (B (ROW Q) (COL J))))
 ;; 		      (TMCRIP P)
-;; 		      (RETURN (CONS (ROW P) (TMPULL-OVER Q N))))))) 
-
-;; (DEFUN TMCRIP (P) 
-;;        (DO ((I 1. (f1+ I)))
+;; 		      (RETURN (CONS (ROW P) (TMPULL-OVER Q N)))))))
+
+;; (DEFUN TMCRIP (P)
+;;        (DO ((I 1 (1+ I)))
 ;; 	   ((> I N))
 ;; 	   (STORE (B (ROW P) (COL I)) NIL)
-;; 	   (STORE (B (ROW I) (COL P)) NIL)))		
+;; 	   (STORE (B (ROW I) (COL P)) NIL)))
 
 ;;TMPIVOT-ISOLATE CARRIES OUT PIVOTTING
 ;;SO THAT THE ALL DIAGONAL ELEMENTS ARE
 ;;NONZERO. THIS GARANTIES WE HAVE MAXIMUM
 ;;NUMBER OF BLOCKS ISOLATED.
 
-(defun tmpivot-isolate (k) 
+(defun tmpivot-isolate (k)
   (cond ((> k n) t)
-	(t (do ((i k (f1+ i)))
+	(t (do ((i k (1+ i)))
 	       ((> i n) nil)
-	     (cond ((aref *b* (aref *row* i) (aref *col* k))
-		    (tmexchange '*row* k i)
-		    (cond ((tmpivot-isolate (f1+ k)) (return t))
-			  (t (tmexchange '*row*
-					 k
-					 i))))))))) 
+	     (when (aref *b* (aref *row* i) (aref *col* k))
+	       (tmexchange '*row* k i)
+	       (if (tmpivot-isolate (1+ k))
+		   (return t)
+		   (tmexchange '*row* k i)))))))
 
-(defun tmexchange (rowcol i j) 
-  (prog (dummy) 
+(defun tmexchange (rowcol i j)
+  (prog (dummy)
      (setq rowcol (get-array-pointer rowcol))
      (setq dummy (aref rowcol i))
-     (store (aref rowcol i) (aref rowcol j))
-     (store (aref rowcol j) dummy)))	
+     (setf (aref rowcol i) (aref rowcol j))
+     (setf (aref rowcol j) dummy)))
 
-
+
 ;; PROGRAM TO PREDICT ZERO ELEMENTS IN
 ;; THE SOLUTION OF INVERSE OR LINEAR
 ;; EQUATION. A IS THE COEFFICIENT MATRIX.
@@ -577,56 +512,56 @@
 ;; (DEFUN TMPREDICT (A3 B X N M)
 ;;   (PROG (FLAGINV FLAG-NONSINGULAR)
 ;; 	(SETQ A3 (GET A3 'ARRAY) B (GET B 'ARRAY) X (GET X 'ARRAY))
-;; 	(setq  AA (*ARRAY nil 'T (f1+ N) (f1+ N)))
-;; 	(setq  ROW (*ARRAY nil 'T (f1+ N)))
-;; 	(SETQ FLAGINV (= M 0.))
+;; 	(setq  AA (*ARRAY nil 'T (1+ N) (1+ N)))
+;; 	(setq  ROW (*ARRAY nil 'T (1+ N)))
+;; 	(SETQ FLAGINV (= M 0))
 ;; 	(COND (FLAGINV (SETQ M N)))
-;; 	(DO ((I 1. (f1+ I)))
+;; 	(DO ((I 1 (1+ I)))
 ;; 	    ((> I N))
-;; 	    (DO ((J 1. (f1+ J)))
+;; 	    (DO ((J 1 (1+ J)))
 ;; 		((> J N))
 ;; 		(STORE (AA I J)
-;; 		       (NOT (EQUAL (AREF A3 I J) '(0. . 1.))))))
-;; 	(DO ((I 1. (f1+ I)))
+;; 		       (NOT (EQUAL (AREF A3 I J) '(0 . 1))))))
+;; 	(DO ((I 1 (1+ I)))
 ;; 	    ((> I N))
-;; 	    (DO ((J 1. (f1+ J)))
+;; 	    (DO ((J 1 (1+ J)))
 ;; 		((> J M))
 ;; 		(STORE (AREF X I J)
 ;; 		       (COND (FLAGINV (EQ I J))
 ;; 			     (T (EQUAL (AREF B I J)
-;; 				       '(0. . 1.)))))))
-;; 	(DO ((I 1. (f1+ I))) ((> I N)) (STORE (ROW I) I))
+;; 				       '(0 . 1)))))))
+;; 	(DO ((I 1 (1+ I))) ((> I N)) (STORE (ROW I) I))
 ;; 		;FORWARD ELIMINATION.
-;; 	(DO ((I 1. (f1+ I)))
+;; 	(DO ((I 1 (1+ I)))
 ;; 	    ((> I N))
 ;; 	    (SETQ FLAG-NONSINGULAR
-;; 		  (DO ((II I (f1+ II)))
+;; 		  (DO ((II I (1+ II)))
 ;; 		      ((> II N) NIL)
 ;; 		      (COND ((AA (ROW II) I)
 ;; 			     (TMEXCHANGE 'ROW II I)
 ;; 			     (RETURN T)))))
 ;; 	    (COND ((NULL FLAG-NONSINGULAR) (RETURN NIL)))
-;; 	    (DO ((II (f1+ I) (f1+ II)))
+;; 	    (DO ((II (1+ I) (1+ II)))
 ;; 		((> II N))
 ;; 		(COND ((AA (ROW II) I)
-;; 		       (DO ((JJ (f1+ I) (f1+ JJ)))
+;; 		       (DO ((JJ (1+ I) (1+ JJ)))
 ;; 			   ((> JJ N))
 ;; 			   (STORE (AA (ROW II) JJ)
 ;; 				  (OR (AA (ROW I) JJ)
 ;; 				      (AA (ROW II) JJ))))
-;; 		       (DO ((JJ 1. (f1+ JJ)))
+;; 		       (DO ((JJ 1 (1+ JJ)))
 ;; 			   ((> JJ M))
 ;; 			   (STORE (AREF X (ROW II) JJ)
 ;; 				  (OR (AREF X (ROW I) JJ)
 ;; 				      (AREF X (ROW II) JJ))))))))
 ;; 	(COND ((NULL FLAG-NONSINGULAR) (GO EXIT)))       ;GET OUT  BACKWARD SUBSTITUTION
-;; 	(DO ((I (f1- N) (f1- I)))
-;; 	    ((< I 1.))
-;; 	    (DO ((L 1. (f1+ L)))
+;; 	(DO ((I (1- N) (1- I)))
+;; 	    ((< I 1))
+;; 	    (DO ((L 1 (1+ L)))
 ;; 		((> L M))
 ;; 		(STORE (AREF X (ROW I) L)
 ;; 		       (OR (AREF X (ROW I) L)
-;; 			   (DO ((J (f1+ I) (f1+ J)) (SUM))
+;; 			   (DO ((J (1+ I) (1+ J)) (SUM))
 ;; 			       ((> J N) SUM)
 ;; 			       (SETQ SUM
 ;; 				     (OR SUM
@@ -636,9 +571,9 @@
 ;; 							 (ROW J)
 ;; 							 L)))))))))
 ;; 	       ;RECOVER THE ORDER.
-;; 	(TMPERMUTE 'X N M 0. 0. 'ROW N 'ROW)
+;; 	(TMPERMUTE 'X N M 0 0 'ROW N 'ROW)
 ;;    EXIT (*TMREARRAY 'ROW) (*TMREARRAY 'AA) (RETURN FLAG-NONSINGULAR)))
-
+
 ;;TMPERMUTE PERMUTES THE ROWS OR COLUMNS
 ;;OF THE N*M MATRIX AX ACCORDING TO THE
 ;;SPECIFICATION OF INDEXLIST. THE FLAG
@@ -647,89 +582,56 @@
 ;;IS IN AX. NM IS THE DIMENSION OF
 ;;INDEXLIST.
 
-(defun tmpermute (ax n m rbias cbias indexlist nm flag) 
-  (prog (k l) 
-     ;;	     (SETQ AX (GET AX 'array) 
+(defun tmpermute (ax n m rbias cbias indexlist nm flag)
+  (prog (k l)
+     ;;	     (SETQ AX (GET AX 'array)
      ;;		   INDEXLIST (GET INDEXLIST 'array))
      (setq ax (get-array-pointer ax))
      (setq indexlist (get-array-pointer indexlist))
-     (array *indx* t (f1+ nm))
-     (do ((i 1. (f1+ i)))
+     (setf (symbol-array *indx*) (make-array (1+ nm) :initial-element nil))
+     (do ((i 1 (1+ i)))
 	 ((> i nm))
-       (store (aref *indx* i) (aref indexlist i)))
-     (do ((i 1. (f1+ i)))
+       (setf (aref *indx* i) (aref indexlist i)))
+     (do ((i 1 (1+ i)))
 	 ((> i nm))
        (cond ((not (= (aref *indx* i) i))
-	      (prog nil 
-		 (tmmove ax n m rbias cbias i 0. flag)
+	      (prog nil
+		 (tmmove ax n m rbias cbias i 0 flag)
 		 (setq l i)
 		 loop (setq k (aref *indx* l))
-		 (store (aref *indx* l) l)
+		 (setf (aref *indx* l) l)
 		 (cond ((= k i)
-			(tmmove ax
-				n
-				m
-				rbias
-				cbias
-				0.
-				l
-				flag))
-		       (t (tmmove ax
-				  n
-				  m
-				  rbias
-				  cbias
-				  k
-				  l
-				  flag)
+			(tmmove ax n m rbias cbias 0 l flag))
+		       (t (tmmove ax n m rbias cbias k l flag)
 			  (setq l k)
-			  (go loop)))))))
-     (*tmrearray '*indx*))) 
-
-(defun tmmove (ax n m rbias cbias i j flag) 
+			  (go loop)))))))))
+
+(defun tmmove (ax n m rbias cbias i j flag)
   (prog (ll)
      (setq ax (get-array-pointer ax))
-     (setq ll (cond ((eq flag '*row*) (f- m cbias))
-		    (t (f- n rbias))))
-     (do ((k 1. (f1+ k)))
+     (setq ll (if (eq flag '*row*)
+		  (- m cbias)
+		  (- n rbias)))
+     (do ((k 1 (1+ k)))
 	 ((> k ll))
        (cond ((eq flag '*row*)
-	      (store (aref
-		      ax
-		      (f+ rbias j)
-		      (f+ cbias k))
-		     (aref
-		      ax
-		      (f+ rbias i)
-		      (f+ cbias k))))
-	     (t (store (aref
-			ax
-			(f+ rbias k)
-			(f+ cbias j))
-		       (aref
-			ax
-			(f+ rbias k)
-			(f+ cbias i))))))))
+	      (setf (aref ax (+ rbias j) (+ cbias k))
+		    (aref ax (+ rbias i) (+ cbias k))))
+	     (t (setf (aref ax (+ rbias k) (+ cbias j))
+		      (aref ax	(+ rbias k) (+ cbias i))))))))
 
 ;;TMSYMETRICP CHECKS THE SYMETRY OF THE MATRIX.
 
-(defun tmsymetricp        (a3 n)
+(defun tmsymetricp (a3 n)
   (setq a3 (get-array-pointer a3))
-  (do ((i 1. (f1+ i)))
+  (do ((i 1 (1+ i)))
       ((> i n) t)
-    (cond ((null (do ((j (f1+ i) (f1+ j)))
+    (cond ((null (do ((j (1+ i) (1+ j)))
 		     ((> j n) t)
-		   (cond ((not (equal (aref
-				       a3
-				       i
-				       j)
-				      (aref
-				       a3
-				       j
-				       i)))
-			  (return nil)))))
+		   (unless (equal (aref a3 i j) (aref a3 j i))
+		     (return nil))))
 	   (return nil)))))
-
+
 ;;TMLATTICE CHECKS THE "LATTICE"
 ;;STRUCTURE OF THE MATRIX A. IT RETURNS
 ;;NIL IF THE MATRIX IS "OBVIOUSLY"
@@ -742,127 +644,119 @@
 ;;(R2 C2) ...) WHERE R R'S ARE ROWS AND
 ;;C'S ARE COLUMMS.
 
-(defun tmlattice (a3 xrow xcol n) 
-  (prog (res) 
-     (setq a3 (get-array-pointer a3))
-     (setq xrow (get-array-pointer xrow))
-     (setq xcol (get-array-pointer xcol))
-     (setq *b* (*array nil t (f1+ n) (f1+ n)))
-     (setq *row* (*array nil t (f1+ n)))
-     (setq *col* (*array nil  t (f1+ n)))
-     (do ((i 1. (f1+ i)))
-	 ((> i n))
-       (do ((j 1. (f1+ j)))
-	   ((> j n))
-	 (store (aref *b* i j)
-		(not (equal (aref a3 i j)
-			    '(0. . 1.))))))
-     (do ((i 0. (f1+ i)))
-	 ((> i n))
-       (store (aref *row* i) i)
-       (store (aref *col* i) i))
-     (cond ((null (tmpivot-isolate 1.))
-	    (setq res nil)
-	    (go exit)))
-     (do ((i 1. (f1+ i)))
-	 ((> i n))
-       (store (aref *b* (aref *row* i) (aref *col* i)) i)
-       (store (aref *b* (aref *row* i) (aref *col* 0.)) t
-	      ))
-     (tmlattice1 1.)
-     (setq res (tmsort-lattice xrow xcol))
-     exit (*tmrearray '*b*)
-     (*tmrearray '*row*)
-     (*tmrearray '*col*)
-     (return res))) 
+(defun tmlattice (a3 xrow xcol n)
+  (setq a3 (get-array-pointer a3))
+  (setq xrow (get-array-pointer xrow))
+  (setq xcol (get-array-pointer xcol))
+  (setq *b* (make-array (list (1+ n) (1+ n)) :initial-element nil))
+  (setq *row* (make-array (1+ n) :initial-element nil))
+  (setq *col* (make-array (1+ n) :initial-element nil))
+  (do ((i 1 (1+ i)))
+      ((> i n))
+    (do ((j 1 (1+ j)))
+	((> j n))
+      (setf (aref *b* i j)
+	    (not (equal (aref a3 i j) '(0 . 1))))))
+  (do ((i 0 (1+ i)))
+      ((> i n))
+    (setf (aref *row* i) i)
+    (setf (aref *col* i) i))
+  (when (null (tmpivot-isolate 1))
+    (return-from tmlattice nil))
+  (do ((i 1 (1+ i)))
+      ((> i n))
+    (setf (aref *b* (aref *row* i) (aref *col* i)) i)
+    (setf (aref *b* (aref *row* i) (aref *col* 0)) t))
+  (tmlattice1 1)
+  (tmsort-lattice xrow xcol))
 
-(defun tmlattice1 (k) 
-  (cond ((= k n) nil)
-	(t (tmlattice1 (f1+ k))
-	   (do ((looppath))
-	       (nil)
-	     (cond ((setq looppath (tmpathp k k))
-		    (tmunify-loop k (cdr looppath)))
-		   (t (return nil))))))) 
+(defun tmlattice1 (k)
+  (cond ((= k n)
+	 nil)
+	(t
+	 (tmlattice1 (1+ k))
+	 (do ((looppath))
+	     (nil)
+	   (if (setq looppath (tmpathp k k))
+	       (tmunify-loop k (cdr looppath))
+	       (return nil))))))
 
-(defun tmpathp (j k) 
-  (cond ((equal (aref *b* (aref *row* j) (aref *col* k)) t) (list j k))
-	(t (do ((jj k (f1+ jj)) (path))
-	       ((> jj n))
-	     (cond ((and (equal (aref *b* (aref *row* j) (aref *col* jj)) t)
-			 (setq path (tmpathp jj k)))
-		    (return (cons j path)))))))) 
-
-(defun tmunify-loop (k chain) 
-  (prog (l dummyk dummyl) 
+(defun tmpathp (j k)
+  (cond ((equal (aref *b* (aref *row* j) (aref *col* k)) t)
+	 (list j k))
+	(t
+	 (do ((jj k (1+ jj)) (path))
+	     ((> jj n))
+	   (when (and (equal (aref *b* (aref *row* j) (aref *col* jj)) t)
+		      (setq path (tmpathp jj k)))
+	     (return (cons j path)))))))
+
+(defun tmunify-loop (k chain)
+  (prog (l dummyk dummyl)
      (setq l (car chain))
      (cond ((= l k) (return nil)))
      (setq dummyk (aref *b* (aref *row* k) (aref *col* k)))
      (setq dummyl (aref *b* (aref *row* l) (aref *col* l)))
-     (store (aref *b* (aref *row* k) (aref *col* k)) nil)
-     (store (aref *b* (aref *row* l) (aref *col* l)) nil)
-     (do ((i 1. (f1+ i)))
+     (setf (aref *b* (aref *row* k) (aref *col* k)) nil)
+     (setf (aref *b* (aref *row* l) (aref *col* l)) nil)
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (store (aref *b* (aref *row* k) (aref *col* i))
-	      (or (aref *b* (aref *row* k) (aref *col* i)) (aref *b* (aref *row* l) (aref *col* i))))
-       (store (aref *b* (aref *row* i) (aref *col* k))
-	      (or (aref *b* (aref *row* i) (aref *col* k)) (aref *b* (aref *row* i) (aref *col* l))))
-       (store (aref *b* (aref *row* l) (aref *col* i)) nil)
-       (store (aref *b* (aref *row* i) (aref *col* l)) nil))
-     (store (aref *b* (aref *row* k) (aref *col* k)) dummyl)
-     (store (aref *b* (aref *row* l) (aref *col* l)) dummyk)
-     (store (aref *b* (aref *row* k) (aref *col* 0.)) t)
-     (store (aref *b* (aref *row* l) (aref *col* 0.)) nil)
-     (tmunify-loop k (cdr chain)))) 
-
-(defun tmsort-lattice (xrow xcol) 
-  (prog (nodelist result) 
+       (setf (aref *b* (aref *row* k) (aref *col* i))
+	     (or (aref *b* (aref *row* k) (aref *col* i)) (aref *b* (aref *row* l) (aref *col* i))))
+       (setf (aref *b* (aref *row* i) (aref *col* k))
+	     (or (aref *b* (aref *row* i) (aref *col* k)) (aref *b* (aref *row* i) (aref *col* l))))
+       (setf (aref *b* (aref *row* l) (aref *col* i)) nil)
+       (setf (aref *b* (aref *row* i) (aref *col* l)) nil))
+     (setf (aref *b* (aref *row* k) (aref *col* k)) dummyl)
+     (setf (aref *b* (aref *row* l) (aref *col* l)) dummyk)
+     (setf (aref *b* (aref *row* k) (aref *col* 0)) t)
+     (setf (aref *b* (aref *row* l) (aref *col* 0)) nil)
+     (tmunify-loop k (cdr chain))))
+
+(defun tmsort-lattice (xrow xcol)
+  (prog (nodelist result)
      (setq nodelist (tmsort1))
-     (setq 
-      result
-      (do ((x nodelist (cdr x)) (result))
-	  ((null x) result)
-	(setq result
-	      (cons (do ((next (aref *b* (aref *row* (car x))
-				     (aref *col* (car x)))
-			       (aref *b* (aref *row* next) (aref *col* next)))
-			 (res))
-			((= next (car x))
-			 (cons (list (aref *row* next) (aref *col* next))
-			       res))
-		      (setq res
-			    (cons (list (aref *row* next)
-					(aref *col* next))
-				  res)))
-		    result))))
-     (do ((list1 result (cdr list1)) (i 1.))
+     (setq result
+	   (do ((x nodelist (cdr x)) (result))
+	       ((null x) result)
+	     (setq result
+		   (cons (do ((next (aref *b* (aref *row* (car x)) (aref *col* (car x)))
+				    (aref *b* (aref *row* next) (aref *col* next)))
+			      (res))
+			     ((= next (car x))
+			      (cons (list (aref *row* next) (aref *col* next)) res))
+			   (push (list (aref *row* next) (aref *col* next)) res))
+			 result))))
+     (do ((list1 result (cdr list1))
+	  (i 1))
 	 ((null list1))
        (do ((list2 (car list1) (cdr list2)))
 	   ((null list2))
-	 (store (aref xrow i) (caar list2))
-	 (store (aref xcol i) (cadar list2))
-	 (setq i (f1+ i))))
-     (return result))) 
+	 (setf (aref xrow i) (caar list2))
+	 (setf (aref xcol i) (cadar list2))
+	 (incf i)))
+     (return result)))
 
-;; (DEFUN TMLESS (I J) (B (ROW I) (COL J))) 
+;; (DEFUN TMLESS (I J) (B (ROW I) (COL J)))
 
-(defun tmsort1 nil 
-  (do ((i 1. (f1+ i)) (result))
+(defun tmsort1 nil
+  (do ((i 1 (1+ i))
+       (result))
       ((> i n) result)
-    (cond ((and (aref *b* (aref *row* i) (aref *col* 0.)) (tmmaxp i))
-	   (do ((j 1. (f1+ j)))
+    (cond ((and (aref *b* (aref *row* i) (aref *col* 0)) (tmmaxp i))
+	   (do ((j 1 (1+ j)))
 	       ((> j n))
-	     (cond ((not (= j i))
-		    (store (aref *b* (aref *row* i) (aref *col* j)) nil))))
-	   (store (aref *b* (aref *row* i) (aref *col* 0.)) nil)
-	   (setq result (cons i result))
-	   (setq i 0.))))) 
+	     (unless (= j i)
+	       (setf (aref *b* (aref *row* i) (aref *col* j)) nil)))
+	   (setf (aref *b* (aref *row* i) (aref *col* 0)) nil)
+	   (push i result)
+	   (setq i 0)))))
 
-(defun tmmaxp (i) 
-  (do ((j 1. (f1+ j)))
+(defun tmmaxp (i)
+  (do ((j 1 (1+ j)))
       ((> j n) t)
-    (cond ((and (not (= i j)) (aref *b* (aref *row* j) (aref *col* i)))
-	   (return nil)))))
+    (when (and (not (= i j)) (aref *b* (aref *row* j) (aref *col* i)))
+      (return nil))))
 
 ;;UNPIVOT IS USED IN PAUL WANG'S PROGRAM
 ;;TO RECOVER THE PIVOTTING. TO GET THE
@@ -877,64 +771,19 @@
 ;; AND V, RESPECTIVELY, IT COMPUTES V*Y*U
 ;;AND RETURNS IT TO THE SAME ARGUMENT A.
 
-(defun tmunpivot (a3 *row* *col* n m) 
-  (prog nil 
+(defun tmunpivot (a3 *row* *col* n m)
+  (prog nil
      (setq *col* (get-array-pointer *col*))
      (setq *row* (get-array-pointer *row*))
-     (setq *rowinv* (*array nil t (f1+ n)))
-     (setq *colinv* (*array nil t (f1+ n)))
-     (do ((i 1. (f1+ i)))
+     (setq *rowinv* (make-array (1+ n) :initial-element nil))
+     (setq *colinv* (make-array (1+ n) :initial-element nil))
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (store (aref *rowinv* (aref *row* i)) i))
-     (do ((i 1. (f1+ i)))
+       (setf (aref *rowinv* (aref *row* i)) i))
+     (do ((i 1 (1+ i)))
 	 ((> i n))
-       (store (aref *colinv* (aref *col* i)) i))
-     (tmpermute a3 n m 0. n '*colinv* n '*row*)
-     (tmpermute a3 n m 0. n '*rowinv* n '*col*)
-     (*tmrearray '*rowinv*)
-     (*tmrearray '*colinv*))) 
+       (setf (aref *colinv* (aref *col* i)) i))
+     (tmpermute a3 n m 0 n '*colinv* n '*row*)
+     (tmpermute a3 n m 0 n '*rowinv* n '*col*)))
 
-#-nil
-(declare-top(unspecial n  #-cl vlist nx ix))
-
-;; BEGIN R1.6 SRC/MISC.LISP (COPIED IN EXTENSO, NOW DEFUNCT)
-
-;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;     The data in this file contains enhancments.                    ;;;;;
-;;;                                                                    ;;;;;
-;;;  Copyright (c) 1984,1987 by William Schelter,University of Texas   ;;;;;
-;;;     All rights reserved                                            ;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(in-package :maxima)
-
-;;  Maclisp compatibility package
-
-;;  This function should really bash the array or use an invisible pointer
-;;  to be compatible with maclisp.  ARRAY-SYMBOL can be either an array object
-;;  or a symbol.  This only works for one dimensional arrays right now.
-;;  *REARRAY of one arg is supposed to return the array.
-;;  Rewrite at some point to use ADJUST-ARRAY-SIZE.
-
-(defun *rearray (array-symbol &optional ign &rest dims)
-  (declare (ignore ign))
-  (check-arg array-symbol (or (symbolp array-symbol) (arrayp array-symbol))
-	     "a symbol or an array")
-  ;; All references to *rearray now are to symbols with the
-  ;; value cell being used for the array.
-  (cond ((null dims))
-	((null (cdr dims))
-	 (let ((old-array (if (symbolp array-symbol)
-			      (symbol-value array-symbol) array-symbol))
-	       (new-array (make-array (car dims)))
-	       (min-array-length))
-	   (setq min-array-length (min (array-dimension old-array 0)
-				       (array-dimension new-array 0)))
-	   (do ((i 0 (1+ i)))
-	       ((= i min-array-length))
-	     (setf (aref new-array i) (aref old-array i)))
-	   (when (symbolp array-symbol)
-	     (setf (symbol-value array-symbol) new-array))
-	   new-array))
-	(t (maxima-error  "Can't handle *rearray with more than one dimension"))))
+(declare-top (unspecial n vlist nx ix))
