@@ -189,7 +189,7 @@ It appears in LIMIT and DEFINT.......")
 								  ($expand (hide exp) 1 0) var))))))
 
 	      (if (not (or (real-epsilonp val)		;; if direction of limit not specified
-			   (real-infinityp val)))
+			   (infinityp val)))
 		  (setq ans (both-side exp var val))	;; compute from both sides
 		(let ((d (catch 'mabs (mabs-subst exp var val))))
 		  (cond 				;; otherwise try to remove absolute value
@@ -232,8 +232,8 @@ It appears in LIMIT and DEFINT.......")
   (cond (limit-top
 	 (if (atom var)	; declare and facts don't work on subscripted vars
 	     (mapc #'forget (setq global-assumptions (cdr ($facts var)))))
-	 (assume '((mgreaterp) epsilon 0))
-	 (assume '((mlessp) epsilon 1e-8))
+	 (assume '((mgreaterp) lim-epsilon 0))
+	 (assume '((mlessp) lim-epsilon 1e-8))
 	 (assume '((mgreaterp) prin-inf 1e+8))
 	 (setq limit-assumptions (make-limit-assumptions global-assumptions var val direction))
 	 (setq limit-top ()))
@@ -292,8 +292,8 @@ It appears in LIMIT and DEFINT.......")
   (do ((assumption-list limit-assumptions (cdr assumption-list)))
       ((null assumption-list) t)
     (forget (car assumption-list)))
-  (forget '((mgreaterp) epsilon 0))
-  (forget '((mlessp) epsilon 1.0e-8))
+  (forget '((mgreaterp) lim-epsilon 0))
+  (forget '((mlessp) lim-epsilon 1.0e-8))
   (forget '((mgreaterp) prin-inf 1.0e+8))
   (cond ((and (not (null integer-info))
 	      (not limitp))
@@ -452,9 +452,9 @@ It appears in LIMIT and DEFINT.......")
 		  (not (free small '$zerob))))
 	 (throw 'limit t))		;Terrible loss, can do better
 	(t (let ((preserve-direction t)
-		 (new-small (subst 'epsilon '$zeroa
-				   (subst (m- 'epsilon) '$zerob small))))
-	     (limit new-small 'epsilon '$zeroa 'think)))))
+		 (new-small (subst 'lim-epsilon '$zeroa
+				   (subst (m- 'lim-epsilon) '$zerob small))))
+	     (limit new-small 'lim-epsilon '$zeroa 'think)))))
 
 
 ;;;*I* INDICATES: T => USE LIMIT1,THINK, NIL => USE SIMPLIMIT.
@@ -960,12 +960,14 @@ It appears in LIMIT and DEFINT.......")
 ;; if result is defined and e is continuous, we have the limit.
 (defun simplimsubst (v e)
   (let (ans)
-    (setq ans (no-err-sub (ridofab v) e))
-    (cond ((eq ans t) nil)
-	  ((involve e '(mfactorial)) nil)
+    (cond ((involve e '(mfactorial)) nil)
 
 	  ;; functions that are defined at their discontinuities
 	  ((amongl '($atan2 $floor $round $ceiling) e) nil)
+
+	  ;; substitute value into expression
+	  ((eq (setq ans (no-err-sub (ridofab v) e)) t)
+	   nil)
 
 	  ((and (member v '($zeroa $zerob) :test #'eq) (=0 ans))
 	   (setq ans (behavior e var v))
@@ -3064,20 +3066,22 @@ It appears in LIMIT and DEFINT.......")
 (defmfun $gruntz (exp var val &rest rest)
   (cond ((> (length rest) 1)
 	 (merror "too many arguments")))
-  (let ((dir (car rest)))
-    (cond ((eq val '$inf))
+  (let ((newvar (gensym "w"))
+	(dir (car rest)))
+    (cond ((eq val '$inf)
+	   (setq newvar var))
 	  ((eq val '$minf)
-	   (setq exp (maxima-substitute (m* -1 var) var exp)))
+	   (setq exp (maxima-substitute (m* -1 newvar) var exp)))
 	  ((eq val '$zeroa)
-	   (setq exp (maxima-substitute (m// 1 var) var exp)))
+	   (setq exp (maxima-substitute (m// 1 newvar) var exp)))
 	  ((eq val '$zerob)
-	   (setq exp (maxima-substitute (m// -1 var) var exp)))
+	   (setq exp (maxima-substitute (m// -1 newvar) var exp)))
 	  ((eq dir '$plus)
-	   (setq exp (maxima-substitute (m+ val (m// 1 var)) var exp)))
+	   (setq exp (maxima-substitute (m+ val (m// 1 newvar)) var exp)))
 	  ((eq dir '$minus)
-	   (setq exp (maxima-substitute (m+ val (m// -1 var)) var exp)))
-	  (t (merror "direction must be plus or minus"))))
-  (limitinf exp var))
+	   (setq exp (maxima-substitute (m+ val (m// -1 newvar)) var exp)))
+	  (t (merror "direction must be plus or minus")))
+    (limitinf exp newvar)))
 
 
 
