@@ -714,20 +714,25 @@ When one changes, the other does too."
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.
 
-;;; The symbols in problematic-symbols contain properties with
-;;; circular data structures. Attempting to copy a circular structure
-;;; into *builtin-symbol-props* would cause a hang. Lacking a better
-;;; solution, we simply avoid those symbols.
-(let ((problematic-symbols '($%gamma $%phi $global $%pi $%e))
-      (maxima-package (find-package :maxima)))
+;;; The assume database structures for numeric constants such as $%pi and $%e
+;;; are circular.  Attempting to copy a circular structure
+;;; into *builtin-symbol-props* would cause a hang.  Therefore
+;;; the properties are copied into *builtin-symbol-props* before
+;;; initializing the assume database.
+(let ((maxima-package (find-package :maxima)))
   (do-symbols (s maxima-package)
     (when (and (eql (symbol-package s) maxima-package)
 	       (not (eq s '||))
 	       (member (char (symbol-name s) 0) '(#\$ #\%) :test #'char=))
       (push s *builtin-symbols*)
-      (unless (member s problematic-symbols :test #'eq)
-	(setf (gethash s *builtin-symbol-props*)
-	      (copy-tree (symbol-plist s)))))))
+      (setf (gethash s *builtin-symbol-props*)
+	    (copy-tree (symbol-plist s))))))
+
+(defvar *builtin-numeric-constants* '($%e $%pi $%phi $%gamma))
+
+;; Initialize assume database for $%pi, $%e, etc
+(mapcar (lambda (c) (initialize-numeric-constant c))
+	*builtin-numeric-constants*)
 
 (dolist (s *builtin-symbols*)
   (when (boundp s)

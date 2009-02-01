@@ -372,6 +372,8 @@
 		 (gethash x *builtin-symbol-props*))
 	(setf (symbol-plist x)
 	      (copy-tree (gethash x *builtin-symbol-props*))))
+      (when (member x *builtin-numeric-constants*)
+	(initialize-numeric-constant x))	;; reset db value for $%pi, $%e, etc
       (if z (kill1 z)))))
 
 (defmfun kill1 (x)

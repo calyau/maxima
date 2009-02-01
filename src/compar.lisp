@@ -546,10 +546,6 @@ relational knowledge is contained in the default context GLOBAL."
 	(flag (true* (munformat pat)))
 	(t (untrue (munformat pat)))))
 
-(defmacro def-learn (nname pat flag)
-  (declare (ignore nname))
-  `(learn ,pat ,flag))
-
 (defmspec $forget (x)
   (setq x (cdr x))
   (do ((nl))
@@ -2034,18 +2030,15 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;; %initiallearnflag is only necessary so that %PI, %E, etc. can be LEARNed.
 
+(defun initialize-numeric-constant (c)
+  (setq %initiallearnflag t)
+  (let ((context '$global))
+    (learn `((mequal) ,c ,(mget c '$numer)) t))
+  (setq %initiallearnflag nil))
+
 (eval-when
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
-
-  (setq %initiallearnflag t)
-
-  (def-learn $%e `((mequal) $%e ,(mget '$%e '$numer)) t)
-  (def-learn $%pi `((mequal) $%pi ,(mget '$%pi '$numer)) t)
-  (def-learn $%phi `((mequal) $%phi ,(mget '$%phi '$numer)) t)
-  (def-learn $%gamma `((mequal) $%gamma ,(mget '$%gamma '$numer)) t)
-
-  (setq %initiallearnflag nil)
 
   (mapc #'true*
 	'((par ($even $odd) $integer)
