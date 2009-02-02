@@ -101,7 +101,7 @@ matchdeclare
     xx%, nonconstantp);
 
 simp: false$
-tellsimp (uu% `` nd%, convert_units [units(uu%), nd%] (qty(uu%)) ` nd%);
+tellsimp (uu% `` nd%, apply_units_conversion (uu%, nd%));
 tellsimp (pp% `` nd%, apply ("+", map (buildq ([nd%], lambda ([e], e `` nd%)), args (pp%))));
 tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` simplify_units (units(uu%)^ccn1%));
 tellsimpafter (nd% * uu%, multiply_with_units (nd%, uu%));
@@ -369,6 +369,7 @@ conversions_customary_customary :
     cfm = feet^3/minute,
 
     ft = feet,
+    foot = feet,
     lbm = pound_mass,
     oz = ounce,
     lbf = pound_force
@@ -410,6 +411,25 @@ compute_conversions_to_base_units () :=
   linsolve (map (lambda ([e], lhs (e) - rhs (e)), %%), map (lhs, %%)),
   conversions_to_base_units : map (lambda ([e], map (exp, e)), %%));
 
+apply_units_conversion (uu%, nd%) :=
+  if listp (nd%)
+    /* Handle conversions of the form foo `` [u1, u2, u3].
+     * May want to ensure dimensions of u1, u2, u3 are all the same.
+     * Might change list to some other operator, e.g. noncommutative plus
+     * (which would have to be invented for the purpose).
+     */
+    then block ([q%, r%],
+        q% : convert_units [units (uu%), first (nd%)] (qty (uu%)),
+        r% : [(if rest (nd%) = [] then q% else floor (q%)) ` first (nd%)],
+        while rest (nd%) # []
+            do
+               (q% : convert_units [first (nd%), second (nd%)] (q% - floor (q%)),
+                nd% : rest (nd%),
+                r% : cons ((if rest (nd%) = [] then q% else floor (q%)) ` first (nd%), r%)),
+        reverse (r%))
+
+    else convert_units [units(uu%), nd%] (qty(uu%)) ` nd%;
+    
 convert_units [u1%, u2%] := block ([a%],
   a% : compute_conversion_factor (u1%, u2%),
   if constantp (a%)

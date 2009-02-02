@@ -387,3 +387,78 @@ sqrt(10)*sqrt(2001)*sqrt(1039309)/(100*sqrt(2)) ` m/s;
 
 e, numer;
 1019.719890214955 ` m/s;
+
+/* decomposing units into multiple units of different "size" */
+
+xx : 1000 ` m `` [foot];
+[1250000/381 ` foot];
+
+xx : map (lambda ([x], x `` m), xx);
+[1000 ` m];
+
+xx : 1000 ` m `` [foot, inch];
+[3280 ` foot, 1280/127 ` inch];
+
+xx : map (lambda ([x], x `` m), xx);
+[124968/125 ` m, 32/125 ` m];
+
+apply ("+", xx);
+1000 ` m;
+
+(declare_unit_conversion (hairs_breadth = 1/100 * inch),
+ xx : 1000 ` m `` [foot, inch, hairs_breadth]);
+[3280 ` foot, 10 ` inch, 1000/127 ` hairs_breadth];
+
+xx : map (lambda ([x], x `` m), xx);
+[124968/125 ` m, 127/500 ` m, 1/500 ` m];
+
+apply ("+", xx);
+1000 ` m;
+
+xx : 10^9 ` s `` [year, month, day, hour, minute, s];
+[31 ` year, 8 ` month, 7 ` day, 19 ` hour, 46 ` minute, 40 ` s];
+
+xx : map (lambda ([x], x `` s), xx);
+[978285600 ` s, 21038400 ` s, 604800 ` s, 68400 ` s, 2760 ` s, 40 ` s];
+
+apply ("+", xx);
+1000000000 ` s;
+
+xx : 10^7 ` m^2 `` [mile^2, acre, yard^2, feet^2, inch^2];
+[3 ` mile^2, 551 ` acre, 260 ` yard^2, 4 ` feet^2, 388096/16129 ` inch^2];
+
+xx : map (lambda ([x], x `` m^2), xx);
+[121405692672/15625 ` m^2, 174204522558/78125 ` m^2, 16983837/78125 ` m^2, 145161/390625 ` m^2, 6064/390625 ` m^2];
+
+apply ("+", xx);
+10000000 ` m^2;
+
+86400 ` s `` [hour, minute, s];
+[24 ` hour, 0 ` minute, 0 ` s];
+
+86401 ` s `` [day, hour, minute, s];
+[1 ` day, 0 ` hour, 0 ` minute, 1 ` s];
+
+xx : n ` m `` [yard, foot, inch];
+[floor(1250*n/1143) ` yard,
+ floor(3*(1250*n/1143-floor(1250*n/1143))) ` foot,
+ 12*(3*(1250*n/1143-floor(1250*n/1143)) -floor(3*(1250*n/1143-floor(1250*n/1143)))) ` inch];
+
+xx : ev (xx, n = 100);
+[109 ` yard, 1 ` foot, 128/127 ` inch];
+
+xx : map (lambda ([x], x `` m), xx);
+[124587/1250 ` m, 381/1250 ` m, 16/625 ` m];
+
+apply ("+", xx);
+100 ` m;
+
+(declare_units (xyz, kg), xx : xyz `` [metric_ton, kg, mg]);
+[floor('qty(xyz)/1000) ` metric_ton,
+ floor(1000*('qty(xyz)/1000-floor('qty(xyz)/1000))) ` kg,
+ 1000000*(1000*('qty(xyz)/1000-floor('qty(xyz)/1000))
+  - floor(1000*('qty(xyz)/1000-floor('qty(xyz)/1000)))) ` mg];
+
+ev (xx, xyz = (1729 + 42/99) ` kg, nouns);
+[1 ` metric_ton, 729 ` kg, 14000000/33 ` mg];
+
