@@ -37,7 +37,7 @@
 
 (defun simp-%and (e yy z)
   (declare (ignore yy))
-  (let ((not-e) (acc) (b) (dosimp nil))
+  (let ((not-e) (acc) (b))
 
     ;; flatten and simplify each argument
     (setq e (margs e))
@@ -84,7 +84,7 @@
 
 (defun simp-%or (e yy z)
   (declare (ignore yy))
-  (let ((not-e) (acc) (b) (dosimp nil))
+  (let ((not-e) (acc) (b))
 
     ;; flatten and simplify each argument
     (setq e (margs e))
@@ -134,17 +134,14 @@
 
 (defun simp-%if (e yy z)
   (declare (ignore yy))
-  ;; I'm not sure what dosimp <-- t does, but dosimp <--- t slows the solver and causes no bugs.
-   (let ((cnd) (a) (b) (dosimp nil) ($domain '$complex))
+   (let ((cnd) ($domain '$complex))
     (setq cnd (simplifya (second e) z))
     (setq cnd (standardize-inequality ($substitute '%or 'mor ($substitute '%and 'mand cnd))))
     (setq cnd ($substitute '%or 'mor ($substitute '%and 'mand cnd)))
-    (setq a (simplifya (third e) z))
-    (setq b (simplifya (fourth e) z))
     (if (fifth e) (wna-err (caar e)))
-    (cond ((eq cnd t) a)
-	  ((eq cnd nil) b) 
-	  (t `(($%if simp) ,cnd ,a ,b)))))
+    (cond ((eq cnd t) (simplifya (third e) z))
+	  ((eq cnd nil) (simplifya (fourth e) z))
+	  (t `(($%if simp) ,cnd ,(simplifya (third e) z) ,(simplifya (fourth e) z))))))
 
 (setf (get '$%integerp 'operators) 'simp-%integerp)
 
