@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 21 December 2008 -->
+<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 4 February 2009 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -1070,8 +1070,84 @@ other Maxima functions.
 
 <P>
 <DL>
-<DT><U>Function:</U> <B>to_poly</B> <I>(<VAR>e</VAR>, <VAR>l</VAR>)</I>
+<DT><U>Function:</U> <B>subst_parallel</B> <I>(<VAR>l</VAR>, <VAR>e</VAR>)</I>
 <DD><A NAME="IDX18"></A>
+
+
+<P>
+When <CODE>l</CODE> is a single equation or a list of equations, substitute
+the right hand side of each equation for the left hand side. The
+substitutions are made in parallel; for example
+
+<PRE>
+ (%i2) subst_parallel([x=y,y=x], [x,y]);
+ (%o2) [y,x]
+</PRE>
+
+<P>
+Compare this to substitutions made serially:
+
+<PRE>
+ (%i3) subst([x=y,y=x],[x,y]);
+ (%o3) [x,x]
+</PRE>
+
+<P>
+The function <CODE>subst_parallel</CODE> is similar to <CODE>sublis</CODE> except that
+<CODE>subst_parallel</CODE> allows for substitution of nonatoms; for example
+
+<PRE>
+ (%i6) subst_parallel([x^2 = a, y = b], x^2 * y);
+ (%o6) a*b
+
+ (%i7) sublis([x^2 = a, y = b], x^2 * y);
+  `sublis': Bad 1st arg
+</PRE>
+
+<P>
+The substitutions made by <CODE>subst_parallel</CODE> are literal, not semantic; thus 
+<CODE>subst_parallel</CODE> <I>does not</I> recognize that <EM>x * y</EM> is a subexpression 
+of <EM>x^2 * y</EM>
+
+<PRE>
+ (%i9) subst_parallel([x * y = a], x^2 * y);
+ (%o9) x^2*y
+</PRE>
+
+<P>
+The function <CODE>subst_parallel</CODE> completes all substitutions
+<I>before</I> simplifications. This allows for substitutions into
+conditional expressions where errors might occur if the
+simplifications were made earlier:
+
+<PRE>
+ (%i12) subst_parallel([x = 0], %if(x &#60; 1, 5, log(x)));
+ (%o12) 5
+
+ (%i13) subst([x = 0], %if(x &#60; 1, 5, log(x)));
+  log(0) has been generated.
+</PRE>
+
+<P>
+<B>Related functions</B> <I>subst, sublis, ratsubst</I>
+
+
+<P>
+<B>To use</B> <TT>`load(to_poly_solve_extra.lisp)'</TT>
+
+
+<P>
+<B>Status</B> The function <CODE>subst_parallel</CODE> is experimental; the
+specifications of this function might change might change and its
+functionality might be merged into other Maxima functions.
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>to_poly</B> <I>(<VAR>e</VAR>, <VAR>l</VAR>)</I>
+<DD><A NAME="IDX19"></A>
 
 
 <P>
@@ -1148,7 +1224,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>to_poly_solve</B> <I>(<VAR>e</VAR>, <VAR>l</VAR>, [options])</I>
-<DD><A NAME="IDX19"></A>
+<DD><A NAME="IDX20"></A>
 
 
 <P>
@@ -1356,7 +1432,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 </DL>
 <P><HR><P>
-This document was generated on 21 December 2008 using
+This document was generated on 4 February 2009 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>

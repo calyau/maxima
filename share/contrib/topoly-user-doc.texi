@@ -747,6 +747,59 @@ other Maxima functions.
 
 @end deffn
 
+@deffn {Function} subst_parallel (@var{l}, @var{e})
+
+When @code{l} is a single equation or a list of equations, substitute
+the right hand side of each equation for the left hand side. The
+substitutions are made in parallel; for example
+@example
+ (%i2) subst_parallel([x=y,y=x], [x,y]);
+ (%o2) [y,x]
+@end example
+Compare this to substitutions made serially:
+@example
+ (%i3) subst([x=y,y=x],[x,y]);
+ (%o3) [x,x]
+@end example
+The function @code{subst_parallel} is similar to @code{sublis} except that
+@code{subst_parallel} allows for substitution of nonatoms; for example
+@example
+ (%i6) subst_parallel([x^2 = a, y = b], x^2 * y);
+ (%o6) a*b
+
+ (%i7) sublis([x^2 = a, y = b], x^2 * y);
+  `sublis': Bad 1st arg
+@end example
+The substitutions made by @code{subst_parallel} are literal, not semantic; thus 
+@code{subst_parallel} @i{does not} recognize that @math{x * y} is a subexpression 
+of @math{x^2 * y}
+@example
+ (%i9) subst_parallel([x * y = a], x^2 * y);
+ (%o9) x^2*y
+@end example
+
+The function @code{subst_parallel} completes all substitutions
+@i{before} simplifications. This allows for substitutions into
+conditional expressions where errors might occur if the
+simplifications were made earlier:
+@example
+ (%i12) subst_parallel([x = 0], %if(x < 1, 5, log(x)));
+ (%o12) 5
+
+ (%i13) subst([x = 0], %if(x < 1, 5, log(x)));
+  log(0) has been generated.
+@end example
+
+@b{Related functions} @i{subst, sublis, ratsubst}
+
+@b{To use} @file{load(to_poly_solve_extra.lisp)}
+
+@b{Status} The function @code{subst_parallel} is experimental; the
+specifications of this function might change might change and its
+functionality might be merged into other Maxima functions.
+
+@end deffn
+
 @deffn {Function} to_poly (@var{e}, @var{l})
 
 The function @code{to_poly} attempts to convert the equation @code{e}
