@@ -14,16 +14,17 @@ Also, Richard Hennessy identified several bugs in this code. */
 
 qput(abs_integrate, 1, version);
 
-eval_when(translate, error("abs_integrate does not translate or compile correctly.")); 
+eval_when(translate, error("abs_integrate does not translate or compile correctly."));
 
 load("opsubst");
 load("unwind_protect");
+load("to_poly_solve_extra");
 
 matchdeclare(x, symbolp, q, true, [a,b], lambda([s], numberp(s) or is(s = 'minf) or is(s = 'inf)));
 block([simp : false], tellsimpafter('integrate(q,x), extra_integrate(q,x)),
 	     	      tellsimpafter('integrate(q,x,a,b), extra_definite_integrate(q,x,a,b)));
 
-extra_integration_methods : ['signum_int];
+extra_integration_methods : ['signum_int,'abs_integrate_use_if];
 
 extra_integrate(q,x) := block([i, ii : funmake(nounify('integrate),[q,x])],
   for f in extra_integration_methods do (
@@ -168,7 +169,11 @@ simp_assuming(e, [fcts]) ::=
 
 /* For integrands of the form F(x, |x-c|), integrate F(x,-x+c) and F(x,x-c). Return a signum expression
 that is continuous at c; when the integrand doesn't have this form, return false. The error catch
-on integrate is needed: try integrate(1/(x + abs(x)),x), for example. */
+on integrate is needed: try integrate(1/(x + abs(x)),x), for example.
+
+The function sublis does all substitutions before simplification. This allows things such as
+sublis([x = 0], %if(x < 1, 5, log(x))) --> 5. The subst function simplifies along the way
+so subst([x = 0], %if(x < 1, 5, log(x))) --> error. */
 
 abs_int_extra(q,x) := block([q1,q2,k,xo,kk],
   q : convert_to_signum(q),
@@ -185,12 +190,37 @@ abs_int_extra(q,x) := block([q1,q2,k,xo,kk],
         q2 : first(q2),
         xo : linsolve(k,x),
         /* make both q1 and q2 vanish at xo */
-        q1 : q1 - subst(xo, q1),
-        q2 : q2 - subst(xo, q2),
+        q1 : q1 - sublis(xo, q1),
+        q2 : q2 - sublis(xo, q2),
         xo : first(xo),
         xo : rhs(xo) - lhs(xo),
         (q1 + q2)/2 - (q2 - q1) * signum(xo)/2)
-      else false)
-    else false));
-  
+      else false))
+  else false);
+ 
+abs_integrate_use_if(q,x) := block([k,%x,xo],
+  q : convert_to_signum(q),
+  k : flatten(gatherargs(q,'signum)),
+  if k # [] and every(lambda([s], polynomialp(s,[x], 'numberp, lambda([k],is(k=0 or k=1)))), k) then (
+    k : map(lambda([s], rhs(first(linsolve(s,x)))),k),
+    %x : make_dummy(q,x),
+    q : sublis([x = %x],q),
+    k : listify(setify(k)),
+    k : sort(k, lambda([a,b], is(compare(a,b) = "<"))),
+    q : errcatch(interval_integrate(q,%x,k)),
+    if q = [] then false else subst(%x = x, first(q)))
+  else false);
 
+interval_integrate(q,x,l) :=  block([xo,q1,q2,i1],
+  if l = [ ] then integrate(q,x)
+  else (
+    xo : first(l),
+    q1 : simp_assuming(integrate(q,x), x < xo),
+    q2 : simp_assuming(interval_integrate(q,x,rest(l)), x > xo),
+    if freeof(nounify('integrate), q2 - q1) then (
+      i1 : errcatch(sublis([x = xo], q2 - q1)))
+    else i1 : [ ],
+    if i1 = [ ] then false else %if(x < xo, q1 + first(i1), q2)));
+ 
+    
+   
