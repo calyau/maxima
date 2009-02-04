@@ -199,3 +199,15 @@
 	  ((eq nil is-real) nil)
 	  (t `(($isnonnegative_p simp) ,e)))))
 
+;; Similar to sublis, but allow for substitutions of nonatoms.
+
+(defun $subst_parallel (l e)
+  (let ((alist nil))
+    (setq l (if ($listp l) (margs l) (list l)))
+
+    ;; Build an association list for the Common Lisp sublis function.
+    (dolist (lk l) 
+      (if (mequalp lk) 
+	  (push (cons ($ratdisrep (cadr lk)) ($ratdisrep (caddr lk))) alist)
+	(merror "Each substitution must be an equation; found" lk)))
+    (resimplify (sublis alist ($ratdisrep e) :test #'alike))))
