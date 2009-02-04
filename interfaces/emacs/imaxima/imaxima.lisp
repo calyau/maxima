@@ -9,7 +9,7 @@
 ;; Created: 14 Nov 2001
 ;; Version: 1.0b
 ;; Keywords: maxima
-;; $Id: imaxima.lisp,v 1.4 2009-01-17 16:56:42 yasu-honda Exp $
+;; $Id: imaxima.lisp,v 1.5 2009-02-04 16:53:26 yasu-honda Exp $
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -52,6 +52,7 @@
 
 (in-package :maxima)
 
+(defvar *old-tex-atom* #'tex-atom)
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 (defmvar $wxplot_size '((mlist simp) 400 250))
 (defmvar $wxplot_old_gnuplot nil)
@@ -185,16 +186,28 @@ nor Gnuplot is not recognized by maxima"))))
 
 ;; (defun tex (... is removed
 
+#|
 (defun tex-atom (x l r) ;; atoms: note: can we lose by leaving out {}s ?
   (append l 
 	  (list (cond ((numberp x) (texnumformat x))
-		      ((and (symbolp x)
-			    (print-case-sensitive (get x 'texword))))
+		      ((and (symbolp x) (or (get x 'texword) (get (get x 'reversealias) 'texword))))
+		      ;; This is different from the one in mactex.lisp
                       ((mstringp x) (texstring x))
                       ((characterp x) (texchar x))
-		      (t (tex-stripdollar x))))
+		      (t (tex-stripdollar (or (get x 'reversealias) x)))))
 	  
 	  r))
+|#
+
+(defun tex-atom (x l r &aux other-case) ;; atoms: note: can we lose by leaving out {}s ?
+  (let ((result (append l
+			(list (cond ((mstringp x) (texstring x))
+				    ((characterp x) (texchar x))
+				    (t (setq other-case t))))
+			r)))
+    (if other-case
+	(funcall *old-tex-atom* x l r)
+      result)))
 
 (defun texstring (x)
   (let ((sym-name
@@ -531,6 +544,7 @@ nor Gnuplot is not recognized by maxima"))))
 	(declare (special $display2d))
 	(displa x)
 	(return-from latex)))
+  (fresh-line)
   (mapc #'princ
 	(if (and (listp x) (cdr x) (stringp (cadr x))
 		 (equal (string-right-trim '(#\Space) (cadr x)) "Is"))
