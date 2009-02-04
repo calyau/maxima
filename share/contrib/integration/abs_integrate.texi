@@ -74,7 +74,7 @@ located at http://www.cs.berkeley.edu/~fateman/papers/partition.pdf.
 @b{To use} @file{load(abs_integrate)}
 
 @defvr {Option} extra_integration_methods
-Default value: @code{['signum_int]}
+Default value: @code{['signum_int, 'abs_integrate_use_if]}
 
 The list @code{extra_integration_methods} is a list of functions for
 integration. When @code{integrate} is unable to find an
@@ -92,6 +92,25 @@ that does not involve an integration noun form, the value of the
 integral is the last value that does not fail (or a pure noun form if
 all methods fail).
 
+When the function @code{abs_integrate_use_if} is successful, it returns
+a conditional expression; for example
+@example
+ (%i2) integrate(1/(1 + abs(x+1) + abs(x-1)),x);
+ (%o2) %if(-(x+1)>0,-log(1-2*x)/2+log(3)-2/3,%if(-(x-1)>0,x/3+log(3)/2-1/3,log(2*x+1)/2))
+
+ (%i3) integrate(exp(-abs(x-1) - abs(x)),x);
+ (%o3) %if(-x>0,%e^(2*x-1)/2-2*%e^(-1),%if(-(x-1)>0,%e^(-1)*x-(3*%e^(-1))/2,-%e^(1-2*x)/2))
+@end example
+For definite integration, these conditional expressions can cause trouble:
+@example
+ (%i4) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf);
+ (%o4) limit(%if(-x>0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)>0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,inf,minus)-limit(%if(-x>0,(%e^(-1)*(%e^(2*x)-4))/2,%if(-(x-1)>0,(%e^(-1)*(2*x-3))/2,-%e^(1-2*x)/2)),x,-inf,plus)
+@end example
+For such definite integrals, try disallowing the method @code{abs_integrate_use_if}:
+@example
+(%i9) integrate(exp(-abs(x-1) - abs(x)),x, minf,inf), extra_integration_methods : ['signum_int];
+(%o9) 2*%e^(-1)
+@end example
 
 @b{Related options} @i{extra_definite_integration_methods}
 
