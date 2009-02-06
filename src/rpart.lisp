@@ -331,6 +331,14 @@
 ;;; to functions known by risplit, such as the more useless trigonometrics.
 	  (((lambda (foot) (and foot (risplit foot)))
 	    (coversinemyfoot l)))
+          ((or (get (mop l) 'commutes-with-conjugate)
+               (get (mop l) 'conjugate-function))
+           ;; A function with Mirror symmetry. The general expressions for 
+           ;; the realpart and imagpart simplifies accordingly.
+           (cons (mul (div 1 2)
+                      (add (simplify (list '($conjugate) l)) l))
+                 (mul (div 1 2) '$%i
+                      (sub (simplify (list '($conjugate) l)) l))))
 ;;; A MAJOR ASSUMPTION:
 ;;;  All random functions are pure real, regardless of argument.
 ;;;  This is evidently assumed by some of the integration functions.
