@@ -2686,91 +2686,94 @@
 
       ((complex-float-numerical-eval-p a b z)
        (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
-         (to (beta-incomplete (bigfloat:to a) 
-                              (bigfloat:to b) 
-                              (bigfloat:to z)))))
+         (beta-incomplete ($float a) ($float b) ($float z))))
            
       ((complex-bigfloat-numerical-eval-p a b z)
-       (let ((*beta-incomplete-eps* 
+       (let ((*beta-incomplete-eps*
                (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
-         (to (beta-incomplete (bigfloat:to a) 
-                              (bigfloat:to b) 
-                              (bigfloat:to z)))))
-
-      (t 
+         (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))))
+      
+      (t
        (eqtest (list '(%beta_incomplete) a b z) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun beta-incomplete (a b z)
-  (when *debug-gamma*
-    (format t "~&BETA-INCOMPLETE with a=~A,b=~A and z=~A~%" a b z))
   (cond
-    ((bigfloat:> (bigfloat:realpart z)
-                 (bigfloat:realpart (bigfloat:/ (bigfloat:+ a 1.0) 
-                                                (bigfloat:+ a b 2.0))))
-     (bigfloat:- 
-       (bigfloat:/ (bigfloat:* (bigfloat:to ($gamma (to a))) 
-                               (bigfloat:to ($gamma (to b))))
-                   (bigfloat:to ($gamma (to (bigfloat:+ a b)))))
-       (beta-incomplete b a (bigfloat:- 1.0 z))))
+    ((eq ($sign (sub ($realpart z)
+                     ($realpart (div (add a 1.0) (add a b 2.0)))))
+         '$pos)
+     ($rectform
+       (sub
+         (div
+           (cmul
+             (simplify (list '(%gamma) a))
+             (simplify (list '(%gamma) b)))
+           (simplify (list '(%gamma) (add a b))))
+         (to (numeric-beta-incomplete b a (sub 1.0 z))))))
     (t
-     (when *debug-gamma*
-       (format t "~&BETA-INCOMPLETE enters continued fractions~%"))
-     (do* ((beta-maxit *beta-incomplete-maxit*)
-           (beta-eps   *beta-incomplete-eps*)
-           (beta-min   (bigfloat:* beta-eps beta-eps))
-           (ab (bigfloat:+ a b))
-           (ap (bigfloat:+ a 1.0))
-           (am (bigfloat:- a 1.0))
-           (c  1.0)
-           (d  (bigfloat:- 1.0 (bigfloat:/ (bigfloat:* z ab) ap)))
-           (d  (if (bigfloat:< (bigfloat:abs d) beta-min) beta-min d))
-           (d  (bigfloat:/ 1.0 d))
-           (h  d)
-           (aa 0.0)
-           (de 0.0)
-           (m2 0)
-           (m 1 (+ m 1)))
-          ((> m beta-maxit)
-           (merror "Continued fractions failed in `beta_incomplete'"))
-       (setq m2 (+ m m))
-       (setq aa (bigfloat:/ (bigfloat:* m z (bigfloat:- b m))
-                            (bigfloat:* (bigfloat:+ am m2)
-                                        (bigfloat:+ a m2))))
-       (setq d  (bigfloat:+ 1.0 (bigfloat:* aa d)))
-       (when (bigfloat:< (bigfloat:abs d) beta-min) (setq d beta-min))
-       (setq c (bigfloat:+ 1.0 (bigfloat:/ aa c)))
-       (when (bigfloat:< (bigfloat:abs c) beta-min) (setq c beta-min))
-       (setq d (bigfloat:/ 1.0 d))
-       (setq h (bigfloat:* h d c))
-       (setq aa (bigfloat:/ (bigfloat:* -1 
-                                        (bigfloat:+ a m) 
-                                        (bigfloat:+ ab m) z) 
-                            (bigfloat:* (bigfloat:+ a m2) 
-                                        (bigfloat:+ ap m2))))
-       (setq d (bigfloat:+ 1.0 (bigfloat:* aa d)))
-       (when (bigfloat:< (bigfloat:abs d) beta-min) (setq d beta-min))
-       (setq c (bigfloat:+ 1.0 (bigfloat:/ aa c)))
-       (when (bigfloat:< (bigfloat:abs c) beta-min) (setq c beta-min))
-       (setq d (bigfloat:/ 1.0 d))
-       (setq de (bigfloat:* d c))
-       (setq h (bigfloat:* h de))
-       (when (bigfloat:< (bigfloat:abs (bigfloat:- de 1.0)) beta-eps)
-         (when *debug-gamma* 
-           (format t "~&Continued fractions finished.~%")
-           (format t "~&  z = ~A~%" z)
-           (format t "~&  a = ~A~%" a)
-           (format t "~&  b = ~A~%" b)
-           (format t "~&  h = ~A~%" h))
-         (return
-          (let ((result
-           (bigfloat:/ 
-             (bigfloat:* h 
-                         (bigfloat:expt z a)
-                         (bigfloat:expt (bigfloat:- 1.0 z) b)) a)))
-            (when *debug-gamma*
-              (format t "~& result = ~A~%" result))
-            result)))))))
+      (to (numeric-beta-incomplete a b z)))))
+
+(defun numeric-beta-incomplete (a b z)
+  (when *debug-gamma*
+    (format t "~&NUMERIC-BETA-INCOMPLETE enters continued fractions~%"))
+  (let ((a (bigfloat:to a))
+        (b (bigfloat:to b))
+        (z (bigfloat:to z)))
+  (do* ((beta-maxit *beta-incomplete-maxit*)
+        (beta-eps   *beta-incomplete-eps*)
+        (beta-min   (bigfloat:* beta-eps beta-eps))
+        (ab (bigfloat:+ a b))
+        (ap (bigfloat:+ a 1.0))
+        (am (bigfloat:- a 1.0))
+        (c  1.0)
+        (d  (bigfloat:- 1.0 (bigfloat:/ (bigfloat:* z ab) ap)))
+        (d  (if (bigfloat:< (bigfloat:abs d) beta-min) beta-min d))
+        (d  (bigfloat:/ 1.0 d))
+        (h  d)
+        (aa 0.0)
+        (de 0.0)
+        (m2 0)
+        (m 1 (+ m 1)))
+       ((> m beta-maxit)
+        (merror "Continued fractions failed in `beta_incomplete'"))
+    (setq m2 (+ m m))
+    (setq aa (bigfloat:/ (bigfloat:* m z (bigfloat:- b m))
+                         (bigfloat:* (bigfloat:+ am m2)
+                                     (bigfloat:+ a m2))))
+    (setq d  (bigfloat:+ 1.0 (bigfloat:* aa d)))
+    (when (bigfloat:< (bigfloat:abs d) beta-min) (setq d beta-min))
+    (setq c (bigfloat:+ 1.0 (bigfloat:/ aa c)))
+    (when (bigfloat:< (bigfloat:abs c) beta-min) (setq c beta-min))
+    (setq d (bigfloat:/ 1.0 d))
+    (setq h (bigfloat:* h d c))
+    (setq aa (bigfloat:/ (bigfloat:* -1 
+                                     (bigfloat:+ a m) 
+                                     (bigfloat:+ ab m) z) 
+                         (bigfloat:* (bigfloat:+ a m2) 
+                                     (bigfloat:+ ap m2))))
+    (setq d (bigfloat:+ 1.0 (bigfloat:* aa d)))
+    (when (bigfloat:< (bigfloat:abs d) beta-min) (setq d beta-min))
+    (setq c (bigfloat:+ 1.0 (bigfloat:/ aa c)))
+    (when (bigfloat:< (bigfloat:abs c) beta-min) (setq c beta-min))
+    (setq d (bigfloat:/ 1.0 d))
+    (setq de (bigfloat:* d c))
+    (setq h (bigfloat:* h de))
+    (when (bigfloat:< (bigfloat:abs (bigfloat:- de 1.0)) beta-eps)
+      (when *debug-gamma* 
+        (format t "~&Continued fractions finished.~%")
+        (format t "~&  z = ~A~%" z)
+        (format t "~&  a = ~A~%" a)
+        (format t "~&  b = ~A~%" b)
+        (format t "~&  h = ~A~%" h))
+      (return
+        (let ((result
+          (bigfloat:/ 
+            (bigfloat:* h 
+                        (bigfloat:expt z a)
+                        (bigfloat:expt (bigfloat:- 1.0 z) b)) a)))
+          (when *debug-gamma*
+            (format t "~& result = ~A~%" result))
+          result))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
