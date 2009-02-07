@@ -116,7 +116,7 @@
 	 (not (pcoefp (setq p0 (pcsubsty l gv (pmod p)))))
 	 (pcoefp (pgcd p0 (pderivative p0 (car p0))))
 	 (list l gv p0))))
-	 
+
 (defun monom->facl (p)
   (cond ((pcoefp p) (if (equal p 1) nil (list p 1)))
 	(t (list* (pget (car p)) (cadr p) (monom->facl (caddr p))))))
@@ -151,7 +151,7 @@
      a (setq r (pgcdcofacts r p)
 	     p (caddr r)
 	     mult (1+ mult))
-     (and algfac* (cadddr r) (setq adn* (ptimes adn* (cadddr r)))) 
+     (and algfac* (cadddr r) (setq adn* (ptimes adn* (cadddr r))))
      (cond ((not (pcoefp (cadr r)))
 	    (setq factors
 		  (cons (cadr r)
@@ -330,9 +330,9 @@
 			     minpoly*)))
      (mapc #'(lambda (y z) (putprop y z (quote disrep)))
 	   genvar
-	   varlist)		 
+	   varlist)
      (return (retfactor (cdr q) fn l))))
-	 
+
 (defun factorout1 (l p)
   (do ((gv genvar (cdr gv))
        (dl l (cdr dl))
@@ -354,23 +354,20 @@
 	(t (setq p (factorout p))
 	   (cond ((equal (cadr p) 1) (car p))
 		 ((numberp (cadr p)) (append (cfactor (cadr p)) (car p)))
-		 (t ((lambda (cont)
-		       (nconc
-			(cond ((equal (car cont) 1) nil)
-			      (algfac*
-			       (cond (modulus (list (car cont) 1))
-				     ((equal (car cont) '(1 . 1)) nil)
-				     ((equal (cdar cont) 1)
-				      (list (caar cont) 1))
-				     (t (list (caar cont) 1 (cdar cont) -1))))
-			      (t (cfactor (car cont))))
-			(pfactor11 (psqfr (cadr cont)))
-			(car p)))
-		     (cond (modulus (list (leadalgcoef (cadr p))
-					  (monize (cadr p))))
-			   (algfac* (algcontent (cadr p)))
-			   (t (pcontent (cadr p))))))))))
-	 
+		 (t (let ((cont (cond (modulus (list (leadalgcoef (cadr p)) (monize (cadr p))))
+				      (algfac* (algcontent (cadr p)))
+				      (t (pcontent (cadr p))))))
+		      (nconc
+		       (cond ((equal (car cont) 1) nil)
+			     (algfac*
+			      (cond (modulus (list (car cont) 1))
+				    ((equal (car cont) '(1 . 1)) nil)
+				    ((equal (cdar cont) 1) (list (caar cont) 1))
+				    (t (list (caar cont) 1 (cdar cont) -1))))
+			     (t (cfactor (car cont))))
+		       (pfactor11 (psqfr (cadr cont)))
+		       (car p))))))))
+
 (defun pfactor11 (p)
   (cond ((null p) nil)
 	((numberp (car p))
@@ -450,5 +447,5 @@
   (cond ((null x) nil)
 	(t (cons (car x)
 		 (cons (- (cadr x)) (revsign (cddr x)))))))
-	 
+
 ;;	THIS IS THE END OF THE NEW RATIONAL FUNCTION PACKAGE PART 4

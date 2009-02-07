@@ -12,7 +12,7 @@
 
 (macsyma-module nrat4)
 
-(declare-top (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag 
+(declare-top (special $ratsimpexpons *exp *exp2 *radsubst *loglist $radsubstflag
 		      $radexpand $logsimp *v *var fr-factor radcanp ratsubvl))
 
 (load-macsyma-macros rzmac ratmac)
@@ -111,7 +111,7 @@
 
 (setq *radsubst nil ratsubvl t)		;SUBST ON VARLIST
 
-(defmfun $ratsubst (a b c)		;NEEDS CODE FOR FAC. FORM 
+(defmfun $ratsubst (a b c)		;NEEDS CODE FOR FAC. FORM
   (prog (varlist newvarlist dontdisrepit $ratfac genvar)
      ;;hard to maintain user ordering info.
      (if ($ratp c) (setq dontdisrepit t))
@@ -226,7 +226,7 @@
 	       ((pcoefp b)
 		(list (setq maxpow
 			    (do ((b b (quotient b a))
-				 (ans 0 (f1+ ans)))
+				 (ans 0 (1+ ans)))
 				((or (> (abs a) (abs b))
 				     (eqn maxpow ans))
 				 ans)))
@@ -241,26 +241,29 @@
 	(t (everysubst1 a b maxpow))))
 
 (defun everypterms (x p n maxpow)
-  (if (< (cadr x) n) (list 0 x)
+  (if (< (cadr x) n)
+      (list 0 x)
       (prog (k ans q part)
 	 (setq k (car x))
 	 (setq x (cdr x))
 	 l    (setq q (min maxpow (quotient (car x) n)))
-	 m    (cond ((eqn q 0)
-		     (return (cond ((null x) ans)
-				   (t (cons 0
-					    (cons (psimp k x) ans)))))))
+	 m    (when (eqn q 0)
+		(return (if (null x)
+			    ans
+			    (cons 0 (cons (psimp k x) ans)))))
 	 (setq part (everysubst p (cadr x) q))
 	 (setq ans (nconc (everypterms1 part k n (car x)) ans))
 	 (setq x (cddr x))
-	 (cond ((null x) (setq q 0) (go m)))
+	 (when (null x)
+	   (setq q 0)
+	   (go m))
 	 (go l))))
 
 (defun everypterms1 (l k n j)
   (do ((ptr l (cddr ptr)))
       ((null ptr) l)
     (setf (cadr ptr)
-	  (ptimes (psimp k (list (- j (f* n (car ptr))) 1))
+	  (ptimes (psimp k (list (- j (* n (car ptr))) 1))
 		  (cadr ptr)))))
 
 (defun substforsum (a b maxpow)
@@ -307,7 +310,7 @@
 	   (null (cdddr x))
 	   (pureprod (caddr x)))))
 
-(defmfun $bothcoef (r var) 
+(defmfun $bothcoef (r var)
   (prog (*var h varlist genvar $ratfac)
      (unless ($ratp r)
        (return `((mlist)
@@ -326,10 +329,10 @@
 			  (rdis* (ratreduce (car var) (cdr r)))
 			  (rdis* (ratreduce (cdr var) (cdr r))))))
 	   (t (merror "Bad arguments to `bothcoeff'")))))
-	 
+
 ;;COEFF OF A IN B
 
-(defun bothprodcoef (a b) 
+(defun bothprodcoef (a b)
   (let ((c (prodcoef a b)))
     (if (pzerop c) (cons (pzero) b) (cons c (pdifference b (ptimes c a))))))
 
@@ -337,7 +340,7 @@
 
 (defmfun argsfreeof (var e)
   (let ((argsfreeofp t)) (freeof var e)))
- 
+
 ;;; This is a version of freeof for a list first argument
 (defmfun $lfreeof (l e) "`freeof' for a list first argument"
 	 (unless ($listp l) (merror "First argument must be a list"))
@@ -346,20 +349,20 @@
 	     (unless (freeof ($totaldisrep var) exp) (return nil)))))
 
 (defmfun $freeof (&rest args)
-  (prog (l e) 
+  (prog (l e)
      (setq l (mapcar #'$totaldisrep (nreverse args))
 	   e (car l))
      loop (or (setq l (cdr l)) (return t))
      (if (freeof (getopr (car l)) e) (go loop))
      (return nil)))
 
-(defun freeof (var e) 
+(defun freeof (var e)
   (cond ((alike1 var e) nil)
 	((atom e) t)
 	((and (not argsfreeofp)
-          (or
-            (alike1 var ($verbify (caar e)))
-            (alike1 var ($nounify (caar e)))))
+	  (or
+	    (alike1 var ($verbify (caar e)))
+	    (alike1 var ($nounify (caar e)))))
      nil)
 	((and (or (member (caar e) '(%product %sum %laplace) :test #'eq)
 		  (and (eq (caar e) '%integrate) (cdddr e))
@@ -406,7 +409,7 @@
 	     (fr1 (rdis *exp) nil)))))
 
 (defun spc0 ()
-  (prog (*v *loglist) 
+  (prog (*v *loglist)
      (if (allatoms varlist) (return nil))
      (setq varlist (mapcar #'spc1 varlist)) ;make list of logs
      (setq *loglist (factorlogs *loglist))
@@ -421,7 +424,7 @@
 (defun allatoms (l)
   (loop for x in l always (atom x)))
 
-(defun rjfsimp (x &aux expon) 
+(defun rjfsimp (x &aux expon)
   (cond ((and *radsubst $radsubstflag) x)
 	((not (m$exp? (setq x (let ($logsimp) (resimplify x))))) x)
 	((mlogp (setq expon (caddr x))) (cadr expon))
@@ -438,7 +441,7 @@
 				nil))))
 		   (rischflag (return x)))))))
 
-(defun dsubsta (x y zl) 
+(defun dsubsta (x y zl)
   (cond ((null zl) zl)
 	(t (cond ((alike1 y (car zl)) (rplaca zl x))
 		 ((not (atom (car zl))) (dsubsta x y (cdar zl))))
@@ -469,28 +472,25 @@
   (dsubsta (cdr p) (car p) varlist))
 
 (defun spc2a (x)			;CONVERTS FACTORED
-  ((lambda (sum)			;RFORM LOGAND TO SUM 
-     (if (cdr sum) (cons '(mplus) sum)	;OF LOGS
-	 (car sum)))
-   (mapcar #'spc2b x)))
-	 
+  (let ((sum (mapcar #'spc2b x)))	;RFORM LOGAND TO SUM
+    (if (cdr sum)		        ;OF LOGS
+	(cons '(mplus) sum)
+	(car sum))))
+
 (defun spc2b (x)
   (let ((log `((%log simp ratsimp irreducible) ,(pdis (car x)))))
     (if (equal 1 (cdr x)) log
 	(list '(mtimes) (cdr x) log))))
-	 
-(defun spc3 (x v &aux y) 
-  (when
-      (and (m$exp? x)
-	   (not (atom (setq y (caddr x))))
-	   (mplusp (setq y (expand1 (if *var ($partfrac y *var) y)
-				    10 10))))
-    (setq y (cons '(mtimes) (mapcar #'(lambda (z) ($ratsimp ($exp z)))
-				    (cdr y))))
+
+(defun spc3 (x v &aux y)
+  (when (and (m$exp? x)
+	     (not (atom (setq y (caddr x))))
+	     (mplusp (setq y (expand1 (if *var ($partfrac y *var) y) 10 10))))
+    (setq y (cons '(mtimes) (mapcar #'(lambda (z) ($ratsimp ($exp z))) (cdr y))))
     (radsubst (rform y) (rget v))
     (dsubsta y x varlist)))
 
-(defun spc4 (x) 
+(defun spc4 (x)
   (if (and (m$exp? x)
 	   (not (memalike (caddr x) *v)))
       (push (caddr x) *v)))
@@ -505,7 +505,7 @@
 ;;(GCMnpair occurrencepairn1 occurrencepairn2 ...))
 ;;where GCMpairs are lists of ratforms and prefix forms for the greatest common
 ;;multiple of the occurrencepairs.  Each of these pairs is a list of a ratform
-;;and a prefix form.  The prefix form is a pointer into the varlist.  
+;;and a prefix form.  The prefix form is a pointer into the varlist.
 ;;The occurrences are exponents of the base %E.
 
 (defun spc5 (vl oldvarlist oldgenvar &aux gcdlist varlist genvar)
@@ -522,17 +522,17 @@
       (rplaca g ($exp (div rd (cadr g))))))
   (spc5b gcdlist oldvarlist oldgenvar))
 
-;;(DEFUN SPC5B (V VARLIST GENVAR) 
+;;(DEFUN SPC5B (V VARLIST GENVAR)
 ;;  (DOLIST (L V)
 ;;     (DOLIST (X (CDDR L))
 ;;	     (UNLESS (EQUAL (CADR L) (CADR X))
 ;;		     (RADSUBST (RATEXPT (RFORM (CAR L))
 ;;					(CAR (QUOTIENT (CADR X) (CADR L))))
 ;;				      (RFORM (CAR X))))))
-;;  (CONS VARLIST GENVAR)) 
+;;  (CONS VARLIST GENVAR))
 
- 
-(defun spc5b (v varlist genvar) 
+
+(defun spc5b (v varlist genvar)
   (dolist (l v)
     (dolist (x (cddr l))
       (unless (equal (cadr l) (cadr x))

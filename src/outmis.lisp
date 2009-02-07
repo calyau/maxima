@@ -19,15 +19,15 @@
 (macsyma-module outmis)
 
 
-(declare-top (special *xvar $exptisolate $labels $dispflag errorsw)) 
+(declare-top (special *xvar $exptisolate $labels $dispflag errorsw))
 
 (defmvar $exptisolate nil)
 (defmvar $isolate_wrt_times nil)
 
 (defmfun $isolate (e *xvar)
-  (setq *xvar (getopr *xvar)) (iso1 e)) 
+  (setq *xvar (getopr *xvar)) (iso1 e))
 
-(defun iso1 (e) 
+(defun iso1 (e)
   (cond ((specrepp e) (iso1 (specdisrep e)))
 	((and (free e 'mplus) (or (null $isolate_wrt_times) (free e 'mtimes))) e)
 	((freeof *xvar e) (mgen2 e))
@@ -48,8 +48,8 @@
 			  (t u))))))
 	(t (cons (car e) (mapcar #'iso1 (cdr e))))))
 
-(defun iso2 (e) 
-  (prog (hasit doesnt op) 
+(defun iso2 (e)
+  (prog (hasit doesnt op)
      (setq op (ncons (caar e)))
      (do ((i (cdr e) (cdr i))) ((null i))
        (cond ((freeof *xvar (car i)) (setq doesnt (cons (car i) doesnt)))
@@ -62,20 +62,20 @@
 			 (free doesnt 'mtimes)))))
 	   (t (setq doesnt (mgen2 doesnt))))
      (setq doesnt (ncons doesnt))
-     ret  (return (simplifya (cons op (nconc hasit doesnt)) nil)))) 
+     ret  (return (simplifya (cons op (nconc hasit doesnt)) nil))))
 
 (defun mgen2 (h)
   (cond ((memsimilarl h (cdr $labels) (getlabcharn $linechar)))
-	(t (setq h (displine h)) (and $dispflag (mterpri)) h))) 
+	(t (setq h (displine h)) (and $dispflag (mterpri)) h)))
 
-(defun memsimilarl (item list linechar) 
+(defun memsimilarl (item list linechar)
   (cond ((null list) nil)
 	((and (char= (getlabcharn (car list)) linechar)
 	      (boundp (car list))
 	      (memsimilar item (car list) (symbol-value (car list)))))
-	(t (memsimilarl item (cdr list) linechar)))) 
+	(t (memsimilarl item (cdr list) linechar))))
 
-(defun memsimilar (item1 item2 item2ev) 
+(defun memsimilar (item1 item2 item2ev)
   (cond ((equal item2ev 0) nil)
 	((alike1 item1 item2ev) item2)
 	(t (let ((errorsw t) r)
@@ -89,17 +89,17 @@
 	((or (atom x) (and (eq (caar x) 'mminus) (atom (cadr x)))) x)
 	((= lev 0) (mgen2 x))
 	((and (atom (cdr x)) (cdr x)) x)
-	(t (cons (car x) (mapcar #'(lambda (y) ($pickapart y (1- lev))) (cdr x)))))) 
+	(t (cons (car x) (mapcar #'(lambda (y) ($pickapart y (1- lev))) (cdr x))))))
 
-(defmfun $reveal (e lev) 
+(defmfun $reveal (e lev)
   (setq e (format1 e))
   (cond ((and (eq (ml-typep lev) 'fixnum) (> lev 0)) (reveal e 1 lev))
 	(t (merror "Second argument to reveal must be positive integer."))))
 
 (defun simple (x)
-  (or (atom x) (member (caar x) '(rat bigfloat) :test #'eq))) 
+  (or (atom x) (member (caar x) '(rat bigfloat) :test #'eq)))
 
-(defun reveal (e nn lev) 
+(defun reveal (e nn lev)
   (cond ((simple e) e)
 	((= nn lev)
 	 (cond ((eq (caar e) 'mplus) (cons '(|$Sum| simp) (ncons (length (cdr e)))))
@@ -117,7 +117,7 @@
 		   (t (cons u v)))))))
 
 (declare-top (special atvars munbound $props $gradefs $features opers
-		      $contexts $activecontexts $aliases)) 
+		      $contexts $activecontexts $aliases))
 
 (defmspec $properties (x)
   (setq x (getopr (fexprcheck x)))
@@ -133,22 +133,22 @@
       '((mlist) $alphabetic)
       '((mlist)))
     (do ((y (symbol-plist x) (cddr y))
-         (l (cons '(mlist simp) (and (boundp x)
+	 (l (cons '(mlist simp) (and (boundp x)
   				   (if (optionp x) (ncons "system value")
   				       (ncons '$value)))))
-         (prop))
-        ((null y)
-         
-         (if (member x (cdr $features) :test #'eq) (nconc l (ncons '$feature)))
-         (if (member x (cdr $contexts) :test #'eq) (nconc l (ncons '$context)))
-         (if (member x (cdr $activecontexts) :test #'eq)
+	 (prop))
+	((null y)
+
+	 (if (member x (cdr $features) :test #'eq) (nconc l (ncons '$feature)))
+	 (if (member x (cdr $contexts) :test #'eq) (nconc l (ncons '$context)))
+	 (if (member x (cdr $activecontexts) :test #'eq)
   	   (nconc l (ncons '$activecontext)))
-         (cond  ((null (symbol-plist x))
+	 (cond  ((null (symbol-plist x))
   	       (if (fboundp x) (nconc l (list "system function")))))
-  
-         l)
-      
-      ;; TOP-LEVEL PROPERTIES 
+
+	 l)
+
+      ;; TOP-LEVEL PROPERTIES
       (cond ((setq prop (assoc (car y)
   			    `((bindtest . $bindtest)
   			      (sp2 . $deftaylor) (sp2subs . $deftaylor)
@@ -233,46 +233,45 @@
 		  ((eq s '$matchdeclare) (dispmatchdeclares r))
 		  (t (merror "Unknown `property' - `printprops':  ~:M" s)))))
 
-(defun dispatvalues (l) 
+(defun dispatvalues (l)
   (do ((l l (cdr l)))
       ((null l))
     (do ((ll (mget (car l) 'atvalues) (cdr ll)))
 	((null ll))
       (mtell-open "~M~%"
-		  (list '(mlable) nil 
+		  (list '(mlable) nil
 			(list '(mequal)
 			      (atdecode (car l) (caar ll) (cadar ll)) (caddar ll))))))
   '$done)
 
 ;;(declare-top (FIXNUM N))
 
-(defun atdecode (fun dl vl) 
+(defun atdecode (fun dl vl)
   (setq vl (copy-list vl))
   (atvarschk vl)
-  ((lambda (eqs nvarl)
-     (cond ((not (member nil (mapcar #'(lambda (x) (signp e x)) dl) :test #'eq))
-	    (do ((vl vl (cdr vl)) (varl atvars (cdr varl)))
-		((null vl))
-	      (and (eq (car vl) munbound) (rplaca vl (car varl))))
-	    (cons (list fun) vl))
-	   (t (setq fun (cons (list fun)
-			      (do ((n (length vl) (1- n))
-				   (varl atvars (cdr varl))
-				   (l nil (cons (car varl) l)))
-				  ((zerop n) (nreverse l)))))
-	      (do ((vl vl (cdr vl)) (varl atvars (cdr varl)))
-		  ((null vl))
-		(and (not (eq (car vl) munbound))
-		     (setq eqs (cons (list '(mequal) (car varl) (car vl)) eqs))))
-	      (setq eqs (cons '(mlist) (nreverse eqs)))
-	      (do ((varl atvars (cdr varl)) (dl dl (cdr dl)))
-		  ((null dl) (setq nvarl (nreverse nvarl)))
-		(and (not (zerop (car dl)))
-		     (setq nvarl (cons (car dl) (cons (car varl) nvarl)))))
-	      (list '(%at) (cons '(%derivative) (cons fun nvarl)) eqs))))
-   nil nil)) 
+  (let ((eqs nil) (nvarl nil))
+    (cond ((not (member nil (mapcar #'(lambda (x) (signp e x)) dl) :test #'eq))
+	   (do ((vl vl (cdr vl)) (varl atvars (cdr varl)))
+	       ((null vl))
+	     (and (eq (car vl) munbound) (rplaca vl (car varl))))
+	   (cons (list fun) vl))
+	  (t (setq fun (cons (list fun)
+			     (do ((n (length vl) (1- n))
+				  (varl atvars (cdr varl))
+				  (l nil (cons (car varl) l)))
+				 ((zerop n) (nreverse l)))))
+	     (do ((vl vl (cdr vl)) (varl atvars (cdr varl)))
+		 ((null vl))
+	       (and (not (eq (car vl) munbound))
+		    (setq eqs (cons (list '(mequal) (car varl) (car vl)) eqs))))
+	     (setq eqs (cons '(mlist) (nreverse eqs)))
+	     (do ((varl atvars (cdr varl)) (dl dl (cdr dl)))
+		 ((null dl) (setq nvarl (nreverse nvarl)))
+	       (and (not (zerop (car dl)))
+		    (setq nvarl (cons (car dl) (cons (car varl) nvarl)))))
+	     (list '(%at) (cons '(%derivative) (cons fun nvarl)) eqs)))))
 
-(defun dispatomgrads (l) 
+(defun dispatomgrads (l)
   (do ((i l (cdr i)))
       ((null i))
     (do ((j (mget (car i) '$atomgrad) (cdr j)))
@@ -281,9 +280,9 @@
 		  (list '(mlable) nil
 			(list '(mequal)
 			      (list '(%derivative) (car i) (caar j) 1) (cdar j))))))
-  '$done) 
+  '$done)
 
-(defun dispgradefs (l) 
+(defun dispgradefs (l)
   (do ((i l (cdr i)))
       ((null i))
     (setq l (get (car i) 'grad))
@@ -294,9 +293,9 @@
       (mtell-open "~M~%"
 		  (list '(mlable)
 			nil (list '(mequal) (list '(%derivative) thing (car j) 1.) (car k))))))
-  '$done) 
+  '$done)
 
-(defun dispmatchdeclares (l) 
+(defun dispmatchdeclares (l)
   (do ((i l (cdr i))
        (ret))
       ((null i) (cons '(mlist) ret))
@@ -308,7 +307,7 @@
 (declare-top (special trans ovar nvar tfun invfun $programmode nfun
 		      *roots *failures varlist genvar $ratfac))
 
-(defmfun $changevar (expr trans nvar ovar) 
+(defmfun $changevar (expr trans nvar ovar)
   (let (invfun nfun $ratfac)
     (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))  expr)
 	  ((atom trans) (merror "2nd arg must not be atomic"))
@@ -341,7 +340,7 @@
 					 deriv)
 				    (kernsubst ($ratsimp (mul (cadr expr)
 							      deriv))
-					       trans ovar)))) 
+					       trans ovar))))
 		    (cond ;; DEFINITE INTEGRAL,SUMMATION, OR PRODUCT
 		      ((cdddr expr)
 		       (or invfun (setq invfun (solvable trans nvar t)))
@@ -355,7 +354,7 @@
 				     '$minus)))
 		      (t		;INDEFINITE INTEGRAL
 		       (list '(%integrate) nfun nvar))))
-		   (t expr)))))) 
+		   (t expr))))))
 
 (defun kernsubst (expr form ovar)
   (let (varlist genvar nvarlist)
@@ -367,22 +366,22 @@
 	(prog2 (setq expr (ratrep* expr)
 		     varlist nvarlist)
 	    (rdis (cdr expr))))))
-	  
-(declare-top (special $listconstvars facfun)) 
+
+(declare-top (special $listconstvars facfun))
 
 (defmfun $factorsum (e)
-  (factorsum0 e '$factor)) 
+  (factorsum0 e '$factor))
 
 (defmfun $gfactorsum (e)
-  (factorsum0 e '$gfactor)) 
+  (factorsum0 e '$gfactor))
 
-(defun factorsum0 (e facfun) 
+(defun factorsum0 (e facfun)
   (cond ((mplusp (setq e (funcall facfun e)))
 	 (factorsum1 (cdr e)))
-	(t (factorsum2 e)))) 
+	(t (factorsum2 e))))
 
-(defun factorsum1 (e) 
-  (prog (f lv llv lex cl lt c) 
+(defun factorsum1 (e)
+  (prog (f lv llv lex cl lt c)
    loop (setq f (car e))
    (setq lv (cdr ($showratvars f)))
    (cond ((null lv) (setq cl (cons f cl)) (go skip)))
@@ -417,41 +416,41 @@
 		       (rplaca q (cons (dcon f) (car q)))
 		       (return (setq f nil)))))
 	      (and f
-		   (setq lv (cons c lv) 
+		   (setq lv (cons c lv)
 			 lt (cons (ncons (dcon f)) lt))))))
    (setq lex
-	 (mapcar #'(lambda (s q) 
+	 (mapcar #'(lambda (s q)
 		     (simptimes (list '(mtimes) s
 				      (cond ((cdr q)
 					     (cons '(mplus) q))
 					    (t (car q))))
 				1 nil))
 		 lv lt))
-   (return (simplus (cons '(mplus) (nconc cl lex llv)) 1 nil)))) 
+   (return (simplus (cons '(mplus) (nconc cl lex llv)) 1 nil))))
 
-(defun dcon (mt) 
-  (cond ((cdddr mt) (cons (car mt) (cddr mt))) (t (caddr mt)))) 
+(defun dcon (mt)
+  (cond ((cdddr mt) (cons (car mt) (cddr mt))) (t (caddr mt))))
 
-(defun factorsum2 (e) 
+(defun factorsum2 (e)
   (cond ((not (mtimesp e)) e)
 	(t (cons '(mtimes)
-		 (mapcar #'(lambda (f) 
+		 (mapcar #'(lambda (f)
 			     (cond ((mplusp f)
 				    (factorsum1 (cdr f)))
 				   (t f)))
-			 (cdr e)))))) 
+			 (cdr e))))))
 
 (declare-top (special $combineflag))
 
 (defmvar $combineflag t)
 
-(defmfun $combine (e) 
+(defmfun $combine (e)
   (cond ((or (atom e) (eq (caar e) 'rat)) e)
 	((eq (caar e) 'mplus) (combine (cdr e)))
-	(t (recur-apply #'$combine e)))) 
+	(t (recur-apply #'$combine e))))
 
-(defun combine (e) 
-  (prog (term r ld sw nnu d ln xl) 
+(defun combine (e)
+  (prog (term r ld sw nnu d ln xl)
    again(setq term (car e) e (cdr e))
    (when (or (not (or (ratnump term) (mtimesp term) (mexptp term)))
 	     (equal (setq d ($denom term)) 1))
@@ -470,8 +469,8 @@
    end  (and e (go again))
    (and xl (setq xl (cond ((cdr xl) ($xthru (addn xl t)))
 			  (t (car xl)))))
-   (mapc 
-    #'(lambda (nu de) 
+   (mapc
+    #'(lambda (nu de)
 	(setq r (cons (mul2 (addn nu nil) (power* de -1)) r)))
     ln ld)
    (return (addn (if xl (cons xl r) r) nil))))

@@ -23,7 +23,7 @@
 ;;; Sum of divisors and Totient functions
 
 (defmfun $divsum (n &optional (k 1))
-  (let (($intfaclim nil)) 
+  (let (($intfaclim nil))
     (if (and (integerp k) (integerp n))
 	(let ((n (abs n)))
 	  (cond ((= n 1) 1)
@@ -79,11 +79,10 @@
   (abs (cexpt i (ash (1- modulus) -2) )))
 
 (defun psumsq (p)
-  ((lambda (x)
-     (cond ((equal p 2) (list 1 1))
-	   ((null x) nil)
-	   (t (psumsq1 p x))))
-   (imodp p)))
+  (let ((x (imodp p)))
+    (cond ((equal p 2) (list 1 1))
+	  ((null x) nil)
+	  (t (psumsq1 p x)))))
 
 (defun psumsq1 (p x)
   (do ((sp ($isqrt p))
@@ -120,8 +119,8 @@
 	   (if (equal rp 0)
 	       ip
 	       (list '(mplus) rp ip))))))
-	
-(defun gcfactor (a b &aux tem) 
+
+(defun gcfactor (a b &aux tem)
   (prog (gl cd dc econt p e1 e2 ans plis nl $intfaclim )
      (setq e1 0
 	   e2 0
@@ -169,12 +168,12 @@
      (and (not (zerop e2))
 	  (setq ans (cons (reverse cd) (cons e2 ans)))
 	  (setq e2 0))
-     (go loop) 
+     (go loop)
      ret    (setq cd (gcexpt (list 0 -1)
 			     (rem econt 4)))
      (setq a (gctimes a b (car cd) (cadr cd)))
      ;;a hasn't been divided by p yet..
-     (setq a (mapcar 'signum a)) 
+     (setq a (mapcar 'signum a))
      #+cl (assert (or (zerop (car a))(zerop (second a))))
      (cond ((or (equal (car a) -1) (equal (cadr a) -1))
 	    (setq plis (cons -1 (cons 1 plis)))))

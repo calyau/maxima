@@ -499,65 +499,65 @@
     (nth 2 r)))
 
 (defmfun errbreak (y)		       ; The ERRSET interrupt function
-  (cond
-    (*mdebug*
-     ((lambda (brklvl varlist genvar errbrkl linelable)
-	(declare (special $help))
-	(prog (x ^q #.ttyoff o^r tim $%% $backtrace retval oldst)
-	   (setq  errset 'errbreak1)
-	   (setq tim (get-internal-run-time)
-		 $%% '$%%
-		 ;; just in case baktrcl is cons'd on the stack
-		 $backtrace (cons '(mlist simp) (copy-list baktrcl)))
-	   (setq o^r #.writefilep #.writefilep (and #.writefilep (not dskfnp)))
-	   (cond ((eq y 'noprint))
-		 (t
-		  (mterpri)
-		  (if y (princ 'macsyma-break) (princ 'error-break))
-		  (unless (zerop brklvl) (princ " level ") (princ brklvl))
-		  (princ " Type exit; to quit, help; for more help.")))
-	   (setq $help
-		 "BACKTRACE; will give a successive list of forms
+  (cond (*mdebug*
+	 (let ((brklvl (1+ brklvl))
+	       (varlist varlist)
+	       (genvar genvar)
+	       (errbrkl (cons bindlist loclist))
+	       (linelable linelable))
+	   (declare (special $help))
+	   (prog (x ^q #.ttyoff o^r tim $%% $backtrace retval oldst)
+	      (setq  errset 'errbreak1)
+	      (setq tim (get-internal-run-time)
+		    $%% '$%%
+		    ;; just in case baktrcl is cons'd on the stack
+		    $backtrace (cons '(mlist simp) (copy-list baktrcl)))
+	      (setq o^r #.writefilep #.writefilep (and #.writefilep (not dskfnp)))
+	      (cond ((eq y 'noprint))
+		    (t
+		     (mterpri)
+		     (if y (princ 'macsyma-break) (princ 'error-break))
+		     (unless (zerop brklvl) (princ " level ") (princ brklvl))
+		     (princ " Type exit; to quit, help; for more help.")))
+	      (setq $help
+		    "BACKTRACE; will give a successive list of forms
  (you must have already set ?DEBUG:ALL; for BACKTRACE to record)
      LISP; goes to lisp
      TOPLEVEL; goes all the way to top level
      EXIT; exits one level of the error break")
-	   (mterpri)
-	   a    (cond
-		  ((null
-		    (catch 'macsyma-break
-		      (let ((state-pdl (cons 'macsyma-break state-pdl)))
-			(errset
-			 (cond ((eq (setq x
-					  (retrieve1 nil
-						     (if y "_ " "(debug) "
-							 ))) '$exit)
-				(timeorg tim)
-				(setq retval 'exit) (go end))
-			       ((eq x '$lisp)
-				(setq retval 'lisp)
-				(go end))
-			       ((eq x '$toplevel)
-				(cond ((catch 'mbreak
-					 (let (st oldst rephrase
-						  (mbreak (cons bindlist loclist)))
-					   (incf $linenum)
-					   (continue)))
+	      (mterpri)
+	      a    (cond ((null
+			   (catch 'macsyma-break
+			     (let ((state-pdl (cons 'macsyma-break state-pdl)))
+			       (errset
+				(cond ((eq (setq x
+						 (retrieve1 nil
+							    (if y "_ " "(debug) "
+								))) '$exit)
+				       (timeorg tim)
+				       (setq retval 'exit) (go end))
+				      ((eq x '$lisp)
+				       (setq retval 'lisp)
 				       (go end))
-				      (t (mtell-open "Back to the break~%"))))
-			       (t (let (($dispflag dispflag)) (setq $%% (meval x)))
-				  (if dispflag (displa $%%) (mterpri))))))))
-		   (errlfun1 errbrkl)
-		   (mtell-open "~%(Still in break loop)~%")))
-	   (go a)
-	   end  (unless (eq y 'noprint)
-		  (princ "Exited from the break ")
-		  (if (not (zerop brklvl)) (princ brklvl))
-		  (mterpri)
-		  )
-	   (if o^r (setq #.writefilep t))
-	   (return retval)))
-      (1+ brklvl) varlist genvar (cons bindlist loclist) linelable))))
+				      ((eq x '$toplevel)
+				       (cond ((catch 'mbreak
+						(let (st oldst rephrase
+							 (mbreak (cons bindlist loclist)))
+						  (incf $linenum)
+						  (continue)))
+					      (go end))
+					     (t (mtell-open "Back to the break~%"))))
+				      (t (let (($dispflag dispflag)) (setq $%% (meval x)))
+					 (if dispflag (displa $%%) (mterpri))))))))
+			  (errlfun1 errbrkl)
+			  (mtell-open "~%(Still in break loop)~%")))
+	      (go a)
+	      end  (unless (eq y 'noprint)
+		     (princ "Exited from the break ")
+		     (unless (zerop brklvl) (princ brklvl))
+		     (mterpri))
+	      (if o^r (setq #.writefilep t))
+	      (return retval))))))
 
 (defun errbreak1 (ign)
   (declare (ignore ign))
@@ -669,27 +669,28 @@
        (do ((i numbp (1- i)) (l2)) ((zerop i) (setq l1 (nconc l1 l2)))
 	 (setq l2 (cons (car l) l2) l (cdr l)))
        loop (if (null l1) (return '$done))
-       ((lambda (errset incharp)
-	  (errset
-	   (cond ((and (not nostringp) incharp)
-		  (let ((linelable (car l1))) (mterpri) (printlabel))
-		  (if grindp
-		      (mgrind (meval1 (car l1)) nil)
-		      (mapc #'(lambda (x) (write-char x)) (mstring (meval1 (car l1)))))	;gcl doesn't like a
+       (let ((errset 'errbreak2)
+	     (incharp (char= (getlabcharn (car l1)) inchar)))
+	 (errset
+	  (cond ((and (not nostringp) incharp)
+		 (let ((linelable (car l1))) (mterpri) (printlabel))
+		 (if grindp
+		     (mgrind (meval1 (car l1)) nil)
+		     (mapc #'(lambda (x) (write-char x)) (mstring (meval1 (car l1))))) ;gcl doesn't like a
 					; simple write-char, therefore wrapped it up in a lambda - are_muc
-		  (if (get (car l1) 'nodisp) (princ "$") (princ ";"))
-		  (mterpri))
-		 ((or incharp
-		      (prog2 (when (and timep (setq l (get (car l1) 'time)))
-			       (setq x (gctimep timep (cdr l)))
-			       (mtell-open "~A sec." (car l))
-			       (if x (mtell-open "  GCtime= ~A sec." (cdr l)))
-			       (mterpri))
-			  (not (or inputp (get (car l1) 'nodisp)))))
-		  (mterpri) (displa (list '(mlable) (car l1) (meval1 (car l1)))))
-		 (t (go a)))))
-	'errbreak2 (char= (getlabcharn (car l1)) inchar))
-       (if (and slowp (cdr l1) (not (continuep))) (return '$terminated))
+		 (if (get (car l1) 'nodisp) (princ "$") (princ ";"))
+		 (mterpri))
+		((or incharp
+		     (prog2 (when (and timep (setq l (get (car l1) 'time)))
+			      (setq x (gctimep timep (cdr l)))
+			      (mtell-open "~A sec." (car l))
+			      (if x (mtell-open "  GCtime= ~A sec." (cdr l)))
+			      (mterpri))
+			 (not (or inputp (get (car l1) 'nodisp)))))
+		 (mterpri) (displa (list '(mlable) (car l1) (meval1 (car l1)))))
+		(t (go a)))))
+       (when (and slowp (cdr l1) (not (continuep)))
+	 (return '$terminated))
        a    (setq l1 (cdr l1))
        (go loop))))
 
@@ -1041,15 +1042,12 @@
 	 (setq *features* (delete ($mkey item) *features*)) t)
 	(t (error "know only how to set and remove feature status"))))
 
-(do ((l '($sqrt $sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
-	  $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
-	  $acosh $atanh $acsch $asech $acoth $binomial $gamma $genfact $del)
-	(cdr l)))
-    ((null l))
-  ((lambda (x)
-     (putprop (car l) x 'alias)
-     (putprop x (car l) 'reversealias))
-   ($nounify (car l))))
+(dolist (l '($sqrt $sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
+	     $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
+	     $acosh $atanh $acsch $asech $acoth $binomial $gamma $genfact $del))
+  (let ((x ($nounify l)))
+    (putprop l x 'alias)
+    (putprop x l 'reversealias)))
 
 ($nounify '$sum)
 ($nounify '$product)
