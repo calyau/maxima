@@ -4370,3 +4370,72 @@ first kind:
   nil)
   integral)
 
+
+;; Real and imaginary part for Jacobi elliptic functions.
+(defprop %jacobi_sn risplit-sn-cn-dn risplit-function)
+(defprop %jacobi_cn risplit-sn-cn-dn risplit-function)
+(defprop %jacobi_dn risplit-sn-cn-dn risplit-function)
+
+(defun risplit-sn-cn-dn (expr)
+  (let* ((arg (second expr))
+	 (param (third expr)))
+    ;; We only split on the argument, not the order
+    (destructuring-bind (arg-r . arg-i)
+	(risplit arg)
+      (cond ((=0 arg-i)
+	     ;; Pure real
+	     (cons (take (first expr) arg-r param)
+		   0))
+	    (t
+	     (let* ((s (take '(%jacobi_sn) arg-r param))
+		    (c (take '(%jacobi_cn) arg-r param))
+		    (d (take '(%jacobi_dn) arg-r param))
+		    (s1 (take '(%jacobi_sn) arg-i (sub 1 param)))
+		    (c1 (take '(%jacobi_cn) arg-i (sub 1 param)))
+		    (d1 (take '(%jacobi_dn) arg-i (sub 1 param)))
+		    (den (add (mul c1 c1)
+			      (mul param
+				   (mul (mul s s)
+					(mul s1 s1))))))
+	       ;; Let s = jacobi_sn(x,m)
+	       ;;     c = jacobi_cn(x,m)
+	       ;;     d = jacobi_dn(x,m)
+	       ;;     s1 = jacobi_sn(y,1-m)
+	       ;;     c1 = jacobi_cn(y,1-m)
+	       ;;     d1 = jacobi_dn(y,1-m)
+	       (case (caar expr)
+		 (%jacobi_sn
+		  ;; A&S 16.21.1
+		  ;; jacobi_sn(x+%i*y,m) =
+		  ;;
+		  ;;  s*d1 + %i*c*d*s1*c1
+		  ;;  -------------------
+		  ;;    c1^2+m*s^2*s1^2
+		  ;;
+		  (cons (div (mul s d1) den)
+			(div (mul c (mul d (mul s1 c1)))
+			     den)))
+		 (%jacobi_cn
+		  ;; A&S 16.21.2
+		  ;;
+		  ;; cn(x+%i_y, m) =
+		  ;;
+		  ;;  c*c1 - %i*s*d*s1*d1
+		  ;;  -------------------
+		  ;;    c1^2+m*s^2*s1^2
+		  (cons (div (mul c c1) den)
+			(div (mul -1
+				  (mul s (mul d (mul s1 d1))))
+			     den)))
+		 (%jacobi_dn
+		  ;; A&S 16.21.3
+		  ;;
+		  ;; dn(x+%i_y, m) =
+		  ;;
+		  ;;  d*c1*d1 - %i*m*s*c*s1
+		  ;;  ---------------------
+		  ;;    c1^2+m*s^2*s1^2
+		  (cons (div (mul d (mul c1 d1))
+			     den)
+			(div (mul -1 (mul param (mul s (mul c s1))))
+			     den))))))))))
