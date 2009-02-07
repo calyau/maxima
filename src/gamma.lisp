@@ -1555,7 +1555,7 @@
              bigfloat%pi '$%i
              (simplify (list '($floor) ($realpart z)))
              (simplify (list '(%signum) ($imagpart z)))))
-         (bfloat-log-gamma z))))
+         (complex-bfloat-log-gamma z))))
     (t
      (let* ((k (* 2 (+ 1 ($entier (* 0.41 $fpprec)))))
             (m ($bfloat bigfloatone))
