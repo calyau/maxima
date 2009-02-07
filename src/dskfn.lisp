@@ -54,20 +54,21 @@
     (and fl (nconc list (ncons (car x))))))
 
 (defun infolstchk (x)
-  ((lambda (iteml)
-     (if (eq iteml t) x (append (or iteml '(nil)) (cdr x))))
-   (cond ((not (and x (or (member (car x) '($all $contexts) :test #'eq)
-			  (member (car x) (cdr $infolists) :test #'eq))))
-	  t)
-	 ((eq (car x) '$all)
-	  (infolstchk (append (cdr $infolists)
-			      '($linenum $ratvars $weightlevels *ratweights
-				tellratlist *alphabet* $dontfactor $features $contexts))))
-	 ((eq (car x) '$labels) (reverse (cdr $labels)))
-	 ((member (car x) '($functions $macros $gradefs $dependencies) :test #'eq)
-	  (mapcar #'caar (cdr (symbol-value (car x)))))
-	 ((eq (car x) '$contexts) (delete '$global (reverse (cdr $contexts)) :count 1 :test #'eq))
-	 (t (cdr (symbol-value (car x)))))))
+  (let ((iteml (cond ((not (and x (or (member (car x) '($all $contexts) :test #'eq)
+				      (member (car x) (cdr $infolists) :test #'eq))))
+		      t)
+		     ((eq (car x) '$all)
+		      (infolstchk (append (cdr $infolists)
+					  '($linenum $ratvars $weightlevels *ratweights
+					    tellratlist *alphabet* $dontfactor $features $contexts))))
+		     ((eq (car x) '$labels) (reverse (cdr $labels)))
+		     ((member (car x) '($functions $macros $gradefs $dependencies) :test #'eq)
+		      (mapcar #'caar (cdr (symbol-value (car x)))))
+		     ((eq (car x) '$contexts) (delete '$global (reverse (cdr $contexts)) :count 1 :test #'eq))
+		     (t (cdr (symbol-value (car x)))))))
+    (if (eq iteml t)
+	x
+	(append (or iteml '(nil)) (cdr x)))))
 
 
 (defun filelength (file)

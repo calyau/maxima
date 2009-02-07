@@ -61,32 +61,32 @@
 	(t ($at (sdiff (cadr e) x) (caddr e)))))
 
 (defmfun diffncexpt (e x)
-  ((lambda (base* pow)
-     (cond ((and (mnump pow) (or (not (eq (ml-typep pow) 'fixnum)) (< pow 0))) ; POW cannot be 0
-	    (diff%deriv (list e x 1)))
-	   ((and (atom base*) (eq base* x) (free pow base*))
-	    (mul2* pow (list '(mncexpt) base* (add2 pow -1))))
-	   ((ml-typep pow 'fixnum)
-	    ((lambda (deriv ans)
-	       (do ((i 0 (1+ i))) ((= i pow))
-		 (setq ans (cons (list '(mnctimes) (list '(mncexpt) base* i)
-				       (list '(mnctimes) deriv
-					     (list '(mncexpt) base* (- pow 1 i))))
-				 ans)))
-	       (addn ans nil))
-	     (sdiff base* x) nil))
-	   ((and (not (depends pow x)) (or (atom pow) (and (atom base*) (free pow base*))))
-	    ((lambda (deriv index)
-	       (simplifya
-		(list '(%sum)
-		      (list '(mnctimes) (list '(mncexpt) base* index)
-			    (list '(mnctimes) deriv
-				  (list '(mncexpt) base*
-					(list '(mplus) pow -1 (list '(mtimes) -1 index)))))
-		      index 0 (list '(mplus) pow -1)) nil))
-	     (sdiff base* x) (gensumindex)))
-	   (t (diff%deriv (list e x 1)))))
-   (cadr e) (caddr e)))
+  (let ((base* (cadr e))
+	(pow (caddr e)))
+    (cond ((and (mnump pow) (or (not (eq (ml-typep pow) 'fixnum)) (< pow 0))) ; POW cannot be 0
+	   (diff%deriv (list e x 1)))
+	  ((and (atom base*) (eq base* x) (free pow base*))
+	   (mul2* pow (list '(mncexpt) base* (add2 pow -1))))
+	  ((ml-typep pow 'fixnum)
+	   (let ((deriv (sdiff base* x))
+		 (ans nil))
+	     (do ((i 0 (1+ i))) ((= i pow))
+	       (push (list '(mnctimes) (list '(mncexpt) base* i)
+			   (list '(mnctimes) deriv
+				 (list '(mncexpt) base* (- pow 1 i))))
+		     ans))
+	     (addn ans nil)))
+	  ((and (not (depends pow x)) (or (atom pow) (and (atom base*) (free pow base*))))
+	   (let ((deriv (sdiff base* x))
+		 (index (gensumindex)))
+	     (simplifya
+	      (list '(%sum)
+		    (list '(mnctimes) (list '(mncexpt) base* index)
+			  (list '(mnctimes) deriv
+				(list '(mncexpt) base*
+				      (list '(mplus) pow -1 (list '(mtimes) -1 index)))))
+		    index 0 (list '(mplus) pow -1)) nil)))
+	  (t (diff%deriv (list e x 1))))))
 
 (defmfun stotaldiff (e)
   (cond ((or (mnump e) (constant e)) 0)
@@ -105,7 +105,7 @@
 	((eq (caar e) 'mncexpt)
 	 (if (and (ml-typep (caddr e) 'fixnum) (> (caddr e) 0))
 	     (stotaldiff (list '(mnctimes) (cadr e)
-			       (ncpower (cadr e) (f1- (caddr e)))))
+			       (ncpower (cadr e) (1- (caddr e)))))
 	     (list '(%derivative) e)))
 	(t (addn (cons 0 (mapcar #'(lambda (x)
 				     (mul2 (sdiff e x) (list '(%del simp) x)))
@@ -293,8 +293,9 @@
 (defmvar $rootsconmode t)
 
 (defun $rootscontract (e)	       ; E is assumed to be simplified
-  ((lambda (radpe $radexpand) (rtcon e))
-   (and $radexpand (not (eq $radexpand '$all)) (eq $domain '$real)) nil))
+  (let ((radpe (and $radexpand (not (eq $radexpand '$all)) (eq $domain '$real)))
+	($radexpand nil))
+    (rtcon e)))
 
 (defun rtcon (e)
   (cond ((atom e) e)

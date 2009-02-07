@@ -12,8 +12,8 @@
 
 (macsyma-module csimp)
 
-(declare-top (special rsn* $factlim $exponentialize 
-		      var varlist genvar $%emode $ratprint 
+(declare-top (special rsn* $factlim $exponentialize
+		      var varlist genvar $%emode $ratprint
 		      nn* dn* $errexp sqrt3//2 sqrt2//2 -sqrt2//2 -sqrt3//2
 		      $demoivre errorsw islinp $keepfloat $ratfac))
 
@@ -23,19 +23,19 @@
 		      $abconvtest complex-limit plogabs $intanalysis))
 
 
-(setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4 
+(setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4
       $tlimswitch t $limsubst nil $abconvtest nil
       complex-limit nil plogabs nil $intanalysis t)
 
 (defmvar %p%i '((mtimes) $%i $%pi))
 (defmvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi))
 (defmvar half%pi '((mtimes) ((rat simp) 1 2) $%pi))
-(defmvar %pi2 '((mtimes) 2 $%pi)) 
-(defmvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi)) 
+(defmvar %pi2 '((mtimes) 2 $%pi))
+(defmvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
 ;(defmvar $gammalim 1000000.) Moved to csimp2.lisp
 
-(loop for (a b) on 
+(loop for (a b) on
        '(%sin %asin %cos %acos %tan %atan
 	 %cot %acot %sec %asec %csc %acsc
 	 %sinh %asinh %cosh %acosh %tanh %atanh
@@ -51,21 +51,22 @@
 	   nexp)
 	  (t (recur-apply #'$demoivre exp)))))
 
-(defun demoivre (l) 
+(defun demoivre (l)
   (cond ($exponentialize
 	 (merror "Demoivre and Exponentialize may not both be true"))
 	(t (setq l (islinear l '$%i))
 	   (and l (not (equal (car l) 0))
 		(m* (m^ '$%e (cdr l))
 		    (m+ (list '(%cos) (car l))
-			(m* '$%i (list '(%sin) (car l))))))))) 
+			(m* '$%i (list '(%sin) (car l)))))))))
 
-(defun islinear (exp var1) 
-       ;;;If exp is of the form a*var1+b where a is freeof var1
-       ;;; then (a . b) is returned else nil
-  ((lambda (a) (cond ((freeof var1 a)
-		      (cons a (maxima-substitute 0 var1 exp)))))
-   ((lambda (islinp) (sdiff exp var1)) t)))
+;;;If exp is of the form a*var1+b where a is freeof var1
+;;; then (a . b) is returned else nil
+(defun islinear (exp var1)
+  (let ((a (let ((islinp t))
+	     (sdiff exp var1))))
+    (if (freeof var1 a)
+	(cons a (maxima-substitute 0 var1 exp)))))
 
 (defmfun $partition (e var1)
   (prog (k)
@@ -103,13 +104,13 @@
      (go loop)))
 
 ;;To use this INTEGERINFO and *ASK* need to be special.
-;;(defun integerpw (x) 
-;; ((lambda (*ask*) 
-;;    (integerp10 (ssimplifya (sublis '((z** . 0) (*z* . 0)) x)))) 
+;;(defun integerpw (x)
+;; ((lambda (*ask*)
+;;    (integerp10 (ssimplifya (sublis '((z** . 0) (*z* . 0)) x))))
 ;;  t))
 
-;;(defun integerp10 (x) 
-;; ((lambda (d) 
+;;(defun integerp10 (x)
+;; ((lambda (d)
 ;;   (cond ((or (null x) (not (free x '$%i))) nil)
 ;;	 ((mnump x) (integerp x))
 ;;	 ((setq d (assolike x integerinfo)) (eq d 'yes))
@@ -118,10 +119,10 @@
 ;;		(eq d 'yes))))
 ;; nil))
 
-(setq var (make-symbol "foo")) 
+(setq var (make-symbol "foo"))
 
 (defun numden (e)
-  (prog (varlist) 
+  (prog (varlist)
      (setq varlist (list var))
      (newvar (setq e (fmt e)))
      (setq e (cdr (ratrep* e)))
@@ -132,8 +133,8 @@
 	   (simplifya (pdis (ratnumerator e))
 		      nil))))
 
-(defun fmt (exp) 
-  (let (nn*) 
+(defun fmt (exp)
+  (let (nn*)
     (cond ((atom exp) exp)
 	  ((mnump exp) exp)
 	  ((eq (caar exp) 'mexpt)
@@ -167,7 +168,7 @@
 			  (mapcar #'fmt (cdr exp))))))
 	  (t (cons (delsimp (car exp)) (mapcar #'fmt (cdr exp)))))))
 
-(defun spexp (expl dn*) 
+(defun spexp (expl dn*)
   (cons '(mtimes) (mapcar #'(lambda (e) (list '(mexpt) dn* e)) expl)))
 
 (defun subin (y x)
@@ -200,32 +201,32 @@
      (if (atom rel)
        0
        (if (or (member (caar rel) (append relational-ops other-infix-ops) :test #'eq)
-               ;; This test catches user-defined infix operators.
-               (eq (get (caar rel) 'led) 'parse-infix))
-         (caddr rel)
-         0)))
+	       ;; This test catches user-defined infix operators.
+	       (eq (get (caar rel) 'led) 'parse-infix))
+	 (caddr rel)
+	 0)))
 
   (defmfun $lhs (rel)
      (if (atom rel)
        rel
-       (if (or (member (caar rel) (append relational-ops other-infix-ops) :test #'eq) 
-               ;; This test catches user-defined infix operators.
-               (eq (get (caar rel) 'led) 'parse-infix))
-         (cadr rel)
-         rel))))
+       (if (or (member (caar rel) (append relational-ops other-infix-ops) :test #'eq)
+	       ;; This test catches user-defined infix operators.
+	       (eq (get (caar rel) 'led) 'parse-infix))
+	 (cadr rel)
+	 rel))))
 
 (defun ratgreaterp (x y)
   (cond ((and (mnump x) (mnump y))
 	 (great x y))
 	((equal ($asksign (m- x y)) '$pos))))
 
-(defun %especial (e) 
+(defun %especial (e)
   (prog (varlist y k j ans $%emode $ratprint genvar)
-     ((lambda ($float $keepfloat) 
-	(cond ((not (setq y (pip ($ratcoef e '$%i)))) (return nil)))
-	(setq j (trigred y))
-	(setq k ($expand (m+ e (m* -1 '$%pi '$%i y)) 1))
-	(setq ans (spang1 j t))) nil nil)
+     (let (($float nil) ($keepfloat nil))
+       (unless (setq y (pip ($ratcoef e '$%i))) (return nil))
+       (setq j (trigred y))
+       (setq k ($expand (m+ e (m* -1 '$%pi '$%i y)) 1))
+       (setq ans (spang1 j t)))
      (cond ((among '%sin ans)
 	    (cond ((equal y j) (return nil))
 		  ((equal k 0)
@@ -238,8 +239,8 @@
      (setq y (spang1 j nil))
      (return (mul2 (m^ '$%e k) (m+ y (m* '$%i ans))))))
 
-(defun trigred (r) 
-  (prog (m n eo flag) 
+(defun trigred (r)
+  (prog (m n eo flag)
      (cond ((numberp r) (return (cond ((even r) 0) (t 1)))))
      (setq m (cadr r))
      (cond ((minusp m) (setq m (- m)) (setq flag t)))
@@ -252,10 +253,10 @@
 		   (cond (flag (- m)) (t m))
 		   n))
      (return (cond (eo (addk m (cond (flag 1) (t -1))))
-		   (t m))))) 
+		   (t m)))))
 
-(defun polyinx (exp x ind) 
-  (prog (genvar varlist var $ratfac) 
+(defun polyinx (exp x ind)
+  (prog (genvar varlist var $ratfac)
      (setq var x)
      (cond ((numberp exp)(return t))
 	   ((polyp exp)
@@ -317,8 +318,8 @@
      (setq c (pterm (cdr c) 0))
      (go loop)))
 
-(defun spang1 (j ind) 
-  (prog (ang ep $exponentialize $float $keepfloat) 
+(defun spang1 (j ind)
+  (prog (ang ep $exponentialize $float $keepfloat)
      (cond ((floatp j) (setq j (maxima-rationalize j))
 	    (setq j (list '(rat simp) (car j) (cdr j)))))
      (setq ang j)
@@ -363,9 +364,9 @@
 					   -1
 					   (list '(%sin simp) ang)))
 				 (t (list '(%sin simp) ang))))
-		      (t (list '(%cos simp) ang)))))))) 
+		      (t (list '(%cos simp) ang))))))))
 
-(defun archk (a b v) 
+(defun archk (a b v)
   (simplify
    (cond ((and (equal a 1) (equal b 1)) v)
 	 ((and (equal b -1) (equal 1 a))

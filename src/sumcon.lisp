@@ -45,11 +45,9 @@
 					e))
 			       (t (simpsum
 				   (let ((new-index
-					  (cond ((free (cons nil notsum)
-						       (caddr sum))
-						 (caddr sum))
-						(t (get-free-index
-						    (cons nil (cons sum notsum)))))))
+					  (if (free (cons nil notsum) (caddr sum))
+					      (caddr sum)
+					      (get-free-index (cons nil (cons sum notsum))))))
 				     (setq sum (subst new-index (caddr sum) sum))
 				     (rplaca (cdr sum) (muln (cons (cadr sum) notsum) t))
 				     (rplacd (car sum) nil)
@@ -65,13 +63,14 @@
 					 notsum))))))
 	  (t (recur-apply #'$intosum e)))))
 
-(defun sumcontract1 (sums) (addn (sumcontract2 nil sums) t))
+(defun sumcontract1 (sums)
+  (addn (sumcontract2 nil sums) t))
 
 (defun sumcontract2 (result left)
-  (cond ((null left) result)
-	(t ((lambda (x) (sumcontract2 (append (car x) result)
-				      (cdr x)))
-	    (sumcombine1 (car left) (cdr left))))))
+  (if (null left)
+      result
+      (let ((x (sumcombine1 (car left) (cdr left))))
+	(sumcontract2 (append (car x) result) (cdr x)))))
 
 (defun sumcombine1 (pattern llist)
   (do ((sum pattern) (non-sums nil)
@@ -83,47 +82,41 @@
     (setq try-this-one (car llist))
     (cond ((and (numberp (sub* (caddr sum) (caddr try-this-one)))
 		(numberp (sub* (cadddr sum) (cadddr try-this-one))))
-	   ((lambda (x) (setq sum (cdar x)
-			      non-sums (cons (cdr x) non-sums)))
-	    (sumcombine2 try-this-one sum)))
+	   (let ((x (sumcombine2 try-this-one sum)))
+	     (setq sum (cdar x)
+		   non-sums (cons (cdr x) non-sums))))
 	  (t (setq un-matched-sums (cons try-this-one un-matched-sums))))))
 
 (defun sumcombine2 (sum1 sum2)
-  ((lambda (e1 e2 i1 i2 l1 l2 h1 h2)
-     ((lambda (newl newh newi extracted new-sum)
-	(setq e1 (subst newi i1 e1))
-	(setq e2 (subst newi i2 e2))
-	(setq new-sum (list '(%sum)
-			    (add2 e1 e2)
-			    newi
-			    newl
-			    newh))
-	(setq extracted
-	      (addn
-	       (mapcar #'dosum
-		       (list e1 e1 e2 e2)
-		       (list newi newi newi newi)
-		       (list l1 (add2 newh 1)
-			     l2 (add2 newh 1))
-		       (list (sub* newl 1) h1
-			     (sub* newl 1) h2)
-		       '(t t t t))
-	       t))
-	(cons new-sum extracted))
-      (simplify `(($max) ,l1 ,l2)) (simplify `(($min) ,h1 ,h2))
-      (cond ((eq i1 i2) i1)
-	    ((free e1 i2) i2)
-	    ((free e2 i1) i1)
-	    (t (get-free-index (list nil
-				     i1 i2
-				     e1 e2
-				     l1 l2
-				     h1 h2))))
-      nil nil))
-   (car sum1) (car sum2)
-   (cadr sum1) (cadr sum2)
-   (caddr sum1) (caddr sum2)
-   (cadddr sum1) (cadddr sum2)))
+  (let* ((e1 (car sum1))
+	 (e2 (car sum2))
+	 (i1 (cadr sum1))
+	 (i2 (cadr sum2))
+	 (l1 (caddr sum1))
+	 (l2 (caddr sum2))
+	 (h1 (cadddr sum1))
+	 (h2 (cadddr sum2))
+	 (newl (simplify `(($max) ,l1 ,l2)))
+	 (newh (simplify `(($min) ,h1 ,h2)))
+	 (newi (cond ((eq i1 i2) i1)
+		     ((free e1 i2) i2)
+		     ((free e2 i1) i1)
+		     (t (get-free-index (list nil i1 i2 e1 e2	l1 l2 h1 h2)))))
+	 (extracted nil)
+	 (new-sum nil))
+    (setq e1 (subst newi i1 e1))
+    (setq e2 (subst newi i2 e2))
+    (setq new-sum (list '(%sum) (add2 e1 e2) newi newl newh))
+    (setq extracted
+	  (addn
+	   (mapcar #'dosum
+		   (list e1 e1 e2 e2)
+		   (list newi newi newi newi)
+		   (list l1 (add2 newh 1) l2 (add2 newh 1))
+		   (list (sub* newl 1) h1 (sub* newl 1) h2)
+		   '(t t t t))
+	   t))
+    (cons new-sum extracted)))
 
 (defmvar $niceindicespref '((mlist simp) $i $j $k $l $m $n))
 
@@ -146,7 +139,8 @@
 	  (t (recur-apply #'$bashindices e)))))
 
 (defmfun $niceindices (e)
-  (if (atom e) e
+  (if (atom e)
+      e
       (let ((e (recur-apply #'$niceindices e)))
 	(cond ((atom e) e)
 	      ((member (caar e) '(%sum %product) :test #'eq)

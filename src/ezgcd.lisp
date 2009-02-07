@@ -146,7 +146,8 @@
 		  maximize (multideg x)))
      (setq zfactr (z1 builder (car factrs) (cadr factrs)))
      (setq zfactr (pmod (oldrep (car zfactr))))
-     (return (cadr ((lambda (modulus) (fastcont zfactr)) nil)))))
+     (return (cadr (let ((modulus nil))
+		     (fastcont zfactr))))))
 
 (defun getd0 (tpl tvals)
   (prog (c)

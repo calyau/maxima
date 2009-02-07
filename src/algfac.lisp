@@ -21,19 +21,21 @@
 (declare-top (special tra* trl* *xn var intbs* plim many* split* alc ind p l))
 
 (defun ziredup (p)
-  ((lambda (modulus alpha minpoly* algfac* gauss tellratlist many* mm* $gcd)
-     (null (cddr(pfactor p))))
-   nil nil nil nil nil nil nil 1 '$ez))
+  (let ((modulus nil) (alpha nil) (minpoly* nil) (algfac* nil)
+	(gauss nil) (tellratlist nil) (many* nil)
+	(mm* 1)
+	($gcd '$ez))
+    (null (cddr(pfactor p)))))
 
 (defun intbasehk (p)
   (prog (modulus)
      (setq modulus plim)
      (setq p (pctimes intbs* p))
      (setq modulus nil)
-     (return (car (ratreduce p intbs*))))) 
+     (return (car (ratreduce p intbs*)))))
 
-(defun findibase (p) 
-  (prog (mainvar) 
+(defun findibase (p)
+  (prog (mainvar)
      (setq mainvar (car p))
      (setq p (redresult p (pderivative p mainvar)))
      (setq p (cfactorw p))
@@ -44,10 +46,13 @@
      (go loop)))
 
 
-(defun cpbgzass (qlist v m) 
-  (prog (f y vj factors u w lc j p2 fnj fnq oldfac) 
-     (cond ((equal m 1) (return (list v)))
-	   ((equal m (cadr v)) (return ((lambda (var) (gfsplit v)) (list var 1 1)))))
+(defun cpbgzass (qlist v m)
+  (prog (f y vj factors u w lc j p2 fnj fnq oldfac)
+     (cond ((equal m 1)
+	    (return (list v)))
+	   ((equal m (cadr v))
+	    (return (let ((var (list var 1 1)))
+		      (gfsplit v)))))
      (setq f (pmod v))
      (setq lc (caddr f))
      (setq f (monize f))
@@ -82,28 +87,28 @@
 		(j (go incrj))
 		(qlist (go nextq)))
      out  (setq fnq (nconc fnq fnj (cdr oldfac)))
-     (return (cons (ptimes lc (car fnq)) (cdr fnq))))) 
+     (return (cons (ptimes lc (car fnq)) (cdr fnq)))))
 
 
 ;; The function PMONZ used to be defined here.  It is also defined in
 ;; RAT;RAT3A and BMT claims the definitions are equivalent.
 
-(defun findses (g f) 
-  (prog (var tra* trl*) 
+(defun findses (g f)
+  (prog (var tra* trl*)
      (setq g (zassg (cdr g) (cdr f) (car g)))
      (setq var (list (car f) 1 1))
      (setq f (gfsplit g))
-     (return (mapcar #'(lambda (a) (car (last a))) f)))) 
+     (return (mapcar #'(lambda (a) (car (last a))) f))))
 
-(defun coefvec (p n vec) 
-  (prog nil 
+(defun coefvec (p n vec)
+  (prog nil
    loop (when (zerop n) (return vec))
    (decf n)
    (push (pterm p n) vec)
-   (go loop))) 
+   (go loop)))
 
-(defun zassg (g f var) 
-  (prog (i mat gn ans n) 
+(defun zassg (g f var)
+  (prog (i mat gn ans n)
      (setq n (car f))
      (setq gn g)
      (setq i 1
@@ -113,30 +118,30 @@
      (setq gn (pgcd1 (ptimes1 gn g) f))
      on   (setq ans (lindep mat (coefvec gn n (list (list var i 1)))))
      (cond (ans (return ans)))
-     (go loop))) 
+     (go loop)))
 
 (defun divl (j a)
-  (mapcar #'(lambda (l) (car (pmodquo l a))) j)) 
+  (mapcar #'(lambda (l) (car (pmodquo l a))) j))
 
 ;; (DEFUN PADDROWS (A B) (MAPCAR (FUNCTION PPLUS) A B))
 
 (defun pdifrows (a b)
-  (mapcar #'pdifference a b)) 
+  (mapcar #'pdifference a b))
 
 (defun ptimesrow (var row)
-  (mapcar #'(lambda (a) (ptimes var a)) row)) 
+  (mapcar #'(lambda (a) (ptimes var a)) row))
 
-(defun ddiv (j) 
-  (prog (a b) 
+(defun ddiv (j)
+  (prog (a b)
      (setq b j)
      ag   (setq a (car b))
      (cond ((zerop a)
 	    (setq b (cdr b))
 	    (go ag)))
-     (return (divl j a)))) 
+     (return (divl j a))))
 
-(defun lindep (mat vec) 
-  (prog (e d m row rowd vecd) 
+(defun lindep (mat vec)
+  (prog (e d m row rowd vecd)
      (setq m mat)
      (cond ((equal 0. (car vec)) (setq vec (cdr vec)))
 	   (t (setq vec (pdifrows (cdr vec) (ptimesrow (car vec) (cdar mat))))))
@@ -162,11 +167,11 @@
      (setq m (cdr m))
      (go loop)))
 
-(defun gfsplit (f) 
+(defun gfsplit (f)
   (prog (tr fl (n 0) ans tra* (i 0) nfl)
      (setq fl (list f) n (cadr f))
      loop (cond ((null fl)
-		 (cond ((null nfl)  
+		 (cond ((null nfl)
 			(cond ((= n (length ans))
 			       (setq trl* nil)
 			       (return ans))
@@ -189,8 +194,8 @@
      (setq nfl (nconc nfl (cdr f)))
      (go loop)))
 
-(defun cpbg0 (tr f) 
-  (prog (m f1 f2 g alc trm) 
+(defun cpbg0 (tr f)
+  (prog (m f1 f2 g alc trm)
      (setq m 0)
      (cond ((and (not (numberp (caddr tr))) (alg (caddr tr)))
 	    (setq alc (painvmod (caddr tr)) tr (ptimes alc tr)))
@@ -224,8 +229,8 @@
 	   i (1+ i))
      (go loop)))
 
-(defun tracemod (v) 
-  (prog (ans tr qlarge term) 
+(defun tracemod (v)
+  (prog (ans tr qlarge term)
      (setq ans 0
 	   tr (nreverse trl*)
 	   trl* nil)
@@ -240,8 +245,8 @@
      (setq trl* (cons term trl*))
      (go loop)))
 
-(defun otracemod (term q m prime) 
-  (prog (ans i) 
+(defun otracemod (term q m prime)
+  (prog (ans i)
      (setq ans term
 	   i 1
 	   trl* (list term))
@@ -251,8 +256,8 @@
      (incf i)
      (go loop)))
 
-(defun tracemod0 (q i) 
-  (prog (l ans a dl) 
+(defun tracemod0 (q i)
+  (prog (l ans a dl)
      (cond ((= i 0) (return (if trl*
 				(tracemod (car q))
 				(otracemod var q mm* modulus))))
@@ -320,7 +325,7 @@
 
 (defvar thr* 100)
 
-(defun cptom (p m u n) 
+(defun cptom (p m u n)
   (prog (( q (expt p m)) l s *xn (j 0) (i 0) ind n-1)
      (declare (special q i j))
      (setq  n-1 (1- n))
@@ -348,8 +353,8 @@
      on   (setf (a j j) (pdifference (a j j) 1))
      (go loop)))
 
-(defun cptimesxa (p i) 
-  (prog (xn q lc) 
+(defun cptimesxa (p i)
+  (prog (xn q lc)
    ag    (when (= i 0) (return p))
    (setq xn *xn
 	 q p
@@ -357,22 +362,22 @@
    loop (cond ((cdr q)
 	       (rplaca q (pplus (cadr q) (ptimes lc (car xn))))
 	       (setq q (cdr q) xn (cdr xn)))
-	      (t (rplaca q (ptimes lc (car xn))) 
+	      (t (rplaca q (ptimes lc (car xn)))
 		 (decf i)
 		 (go ag)))
    (go loop)))
 
-(defun x**q (x p m) 
+(defun x**q (x p m)
   (prog ((i 1)  (pp 1) (d 0))
      (setq i 1 trl* (list x) pp 1)
-     loop (when (= i m) (return (cptimesxa x (- (f* pp p) pp))))
+     loop (when (= i m) (return (cptimesxa x (- (* pp p) pp))))
      (setq d pp)
-     (cptimesxa x (- (setq pp(f* pp p)) d))
+     (cptimesxa x (- (setq pp (* pp p)) d))
      (setq trl* (cons (copy-tree x) trl*))
      (incf i)
      (go loop)))
 
-(defun cmnull (n) 
+(defun cmnull (n)
   (prog (nullsp (sub1n (1- n)) mone (k 1) (j 0) (s 0) nullv (i 0) vj m aks)
      (setq mone (cmod -1))
      sharp    (when (> i sub1n) (go on))
@@ -396,11 +401,11 @@
      (setf (a s j) (ptimes m (a s j)))
      (incf s)
      (go sharp1)
-     on1 
+     on1
      (setq s 0)
      sharp2   (when (> s sub1n) (go nextk))
      (cond ((= s j) nil)
-	   (t (prog (i) 
+	   (t (prog (i)
 		 (setq aks (a k s))
 		 (setq i k)
 		 sharp3   (when (> i sub1n) (return nil))
