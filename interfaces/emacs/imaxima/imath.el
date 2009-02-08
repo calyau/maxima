@@ -8,7 +8,7 @@
 ;; Version: 1.0b
 ;; Keywords: maxima
 
-;; $Id: imath.el,v 1.3 2008-11-03 06:16:23 yasu-honda Exp $
+;; $Id: imath.el,v 1.4 2009-02-08 07:44:32 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -289,6 +289,8 @@ is surrounding the current point into a formula image."
 	    (yank)
 	    (insert ";")
 	    (comint-send-input))))
+      (if continuation
+	  (debug-imaxima-filter "continuation exits"))
       (setq continuation (list (if (string-match "[ 	]*wx\\(plot2d\\|plot3d\\|draw\\|draw2d\\|draw3d\\|implicit_plot\\|contour_plot\\).*" maxcmd)
 				   #'get-inline-graph
 				 #'get-image-from-imaxima-1)
@@ -317,8 +319,10 @@ is surrounding the current point into a formula image."
 	(yank)
 	(insert ";")
 	(comint-send-input))
-  (setq continuation (list (if (string-match "[ 	]*wx\\(plot2d\\|plot3d\\|draw\\|draw2d\\|draw3d\\|implicit_plot\\|contour_plot\\).*" maxcmd)
-			       #'(lambda (arg)
+      (if continuation
+	  (debug-imaxima-filter "continuation exits"))
+      (setq continuation (list (if (string-match "[ 	]*wx\\(plot2d\\|plot3d\\|draw\\|draw2d\\|draw3d\\|implicit_plot\\|contour_plot\\).*" maxcmd)
+				   #'(lambda (arg)
 				   (let ((cont continuation))
 				     (funcall #'get-inline-graph arg)
 				     (save-current-buffer
@@ -392,7 +396,7 @@ placed right after the form."
   (if (featurep 'xemacs)
       (let ((ext (extent-at 0 latex-string)))
 	(if ext (set-extent-property ext 'duplicable nil))))
-  (when (string-match "^([\\%a-zA-Z0-9]+)" latex-string)
+  (while (string-match "^([\\%a-zA-Z0-9]+)" latex-string)
     (setq latex-string (replace-match "" t t latex-string)))
   (if continuation
       (let ((maxima-string (save-current-buffer

@@ -10,7 +10,7 @@
 ;; Copyright (C) 2006 Stephen Eglen (imaxima-print-buffer)
 ;; Copyright (C) 2007, 2008 Yasuaki Honda (imaxima-to-html, inline graph)
 
-;; $Id: imaxima.el,v 1.5 2009-02-04 16:53:26 yasu-honda Exp $
+;; $Id: imaxima.el,v 1.6 2009-02-08 07:44:32 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -945,10 +945,12 @@ Argument STR contains output received from Maxima.
   (if imaxima-filter-running
       (progn
 	(setq imaxima-output (concat imaxima-output str))
+	(debug-imaxima-filter "reenter")
 	(return-from imaxima-filter "")))
   (setq imaxima-filter-running t)
   (debug-imaxima-filter str)
-  (let* ((len (length str)))
+  (let* ((len (length str))
+	 main-output)
     (if (zerop len)
 	""
       (setq imaxima-output (concat imaxima-output str))
@@ -960,22 +962,32 @@ Argument STR contains output received from Maxima.
 	(message "Processing Maxima output...")
 	(while (not (string= imaxima-output ""))
 	  (let ((1stchar (substring imaxima-output 0 1)))
-	    (debug-imaxima-filter (concat "1stchar is " 1stchar " imaxima-output is " imaxima-output))
 	    (cond ((string= 1stchar "")
 		   (if (string-match "\\([^]*\\)\\(\\(.\\|\n\\)*\\)" imaxima-output)
 		       (let ((iprompt (match-string 1 imaxima-output))
 			     (rest (match-string 2 imaxima-output)))
 			 (setq imaxima-output rest)
-			 (setq output (concat output iprompt)))
+			 (setq output (concat output iprompt))
+			 ;; All the output for a maxima command are processed.
+			 ;; We can call continuation if necessary.
+			 (cond ((and continuation main-output)
+				(funcall (car continuation) main-output))
+			       ((and continuation (null main-output))
+				(funcall (car continuation) ""))))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
 		     (return-from imaxima-filter output)))
 		  ((string= 1stchar "")
 		   (if (string-match "\\([^]*\\)\\(\\(.\\|\n\\)*\\)" imaxima-output)
 		       (let ((match (match-string 1 imaxima-output))
-			     (rest (match-string 2 imaxima-output)))
+			     (rest (match-string 2 imaxima-output))
+			     image)
 			 (setq imaxima-output rest)
-			 (setq output (concat output (imaxima-make-image match 'latex))))
+			 (setq output (concat output (setq image (imaxima-make-image match 'latex))))
+			 ;; Remember the image into main-output if this is the first output.
+			 ;; This will be passed to continuation
+			 (if (null main-output)
+			     (setq main-output image)))
 		     ;; imaxima-output is incomplete.
 		     (setq imaxima-filter-running nil)
 		     (return-from imaxima-filter output)))
@@ -996,8 +1008,6 @@ Argument STR contains output received from Maxima.
 		       ;; This should not happen.
 		       (message "Unexpected error encountered in imaxima-filter"))))))
 	(message "Processing Maxima output...done")
-	(if continuation
-	    (funcall (car continuation) output))
 	(setq imaxima-filter-running nil)
 	(return-from imaxima-filter output)))))
 
