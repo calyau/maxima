@@ -556,6 +556,9 @@
 ;;     points([x1,x2,x3,...], [y1,y2,y3,...])
 ;;     points([y1,y2,y3,...]), abscissas are automatically chosen: 1,2,3,...
 ;;     points(matrix), one-column, one-row, two-column or two-row matrix
+;;     points(array1d)
+;;     points(array1d, array1d)
+;;     points(array2d), two-column or two-row array
 ;; Options:
 ;;     point_size
 ;;     point_type
@@ -592,9 +595,98 @@
                  (get-option '$color)
                  (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))))) )
 
-(defun points (arg1 &optional (arg2 nil))
+(defun points-array-2d (arg)
+   (let ((xmin 1.75555970201398e+305)
+         (xmax -1.75555970201398e+305)
+         (ymin 1.75555970201398e+305)
+         (ymax -1.75555970201398e+305)
+         (pos -1)
+         (dim (array-dimensions arg))
+         n xx yy pts twocolumns)
+      (cond
+         ((and (= (length dim) 2)   ; two-column array
+               (= (cadr dim) 2))
+            (setf n (car dim))
+            (setf twocolumns t))
+         ((and (= (length dim) 2)   ; two-row array
+               (= (car dim) 2))
+            (setf n (cadr dim))
+            (setf twocolumns nil))
+         (t (merror "draw (points2d): bad 2d array input format")))
+      (setf pts (make-array (* 2 n) :element-type 'flonum))
+      (loop for k below n do
+         (if twocolumns
+            (setf xx ($float (aref arg k 0))
+                  yy ($float (aref arg k 1)))
+            (setf xx ($float (aref arg 0 k))
+                  yy ($float (aref arg 1 k))))
+         (if (< xx xmin)
+            (setf xmin xx)
+            (when (> xx xmax)
+               (setf xmax xx)))
+         (if (< yy ymin)
+            (setf ymin yy)
+            (when (> yy ymax)
+               (setf ymax yy)))
+         (setf (aref pts (incf pos)) xx)
+         (setf (aref pts (incf pos)) yy))
+      (update-ranges-2d xmin xmax ymin ymax)
+      (make-gr-object
+         :name 'points
+         :command (points-command)
+         :groups '((2 0)) ; numbers are sent to gnuplot in groups of 2
+         :points (list pts))))
+
+(defun points-array-1d (arg1 &optional (arg2 nil))
+   (let ((xmin 1.75555970201398e+305)
+         (xmax -1.75555970201398e+305)
+         (ymin 1.75555970201398e+305)
+         (ymax -1.75555970201398e+305)
+         (pos -1)
+         (dim (array-dimensions arg1))
+         n x y xx yy pts)
+      (cond
+         ((and (null arg2)
+               (= (length dim) 1))  ; y format
+            (setf n (car dim))
+            (setf x (make-array n
+                                :element-type 'flonum
+                                :initial-contents (loop for k from 1 to n collect ($float k)) ))
+            (setf y (make-array n
+                                :element-type 'flonum
+                                :initial-contents (loop for k below n collect ($float (aref arg1 k))))))
+         ((and (arrayp arg2)   ; xx yy format
+               (= (length dim) 1)
+               (equal dim (array-dimensions arg2)))
+            (setf n (car dim))
+            (setf x arg1
+                  y arg2))
+         (t (merror "draw (points2d): bad 1d array input format")))
+      (setf pts (make-array (* 2 n) :element-type 'flonum))
+      (loop for k below n do
+         (setf xx ($float (aref x k))
+               yy ($float (aref y k)))
+         (if (< xx xmin)
+             (setf xmin xx)
+             (when (> xx xmax)
+                (setf xmax xx)))
+         (if (< yy ymin)
+             (setf ymin yy)
+             (when (> yy ymax)
+                (setf ymax yy)))
+         (setf (aref pts (incf pos)) xx)
+         (setf (aref pts (incf pos)) yy))
+      (update-ranges-2d xmin xmax ymin ymax)
+      (make-gr-object
+         :name 'points
+         :command (points-command)
+         :groups '((2 0)) ; numbers are sent to gnuplot in groups of 2
+         :points (list pts))))
+
+(defun points-list (arg1 &optional (arg2 nil))
    (let (x y xmin xmax ymin ymax pts)
-      (cond ((and ($listp arg1)
+      (cond 
+            ((and ($listp arg1)
                   (null arg2)
                   (every #'$listp (rest arg1)))     ; xy format
                (let ((tmp (mapcar #'rest (rest arg1))))
@@ -644,9 +736,14 @@
          :name 'points
          :command (points-command)
          :groups '((2 0)) ; numbers are sent to gnuplot in groups of 2
-         :points (if (arrayp arg1)
-                     (list arg1) 
-                     (list pts) ) ) ))
+         :points (list pts) ) ))
+
+(defun points (arg1 &optional (arg2 nil))
+   (if (arrayp arg1)
+      (if (= (length (array-dimensions arg1)) 2)
+         (points-array-2d arg1)
+         (points-array-1d arg1 arg2))
+      (points-list arg1 arg2)))
 
 
 
@@ -658,6 +755,8 @@
 ;;     points([[x1,y1,z1], [x2,y2,z2], [x3,y3,z3],...])
 ;;     points([x1,x2,x3,...], [y1,y2,y3,...], [z1,z2,z3,...])
 ;;     points(matrix), three-column or three-row matrix
+;;     points(array2d),  three-column or three-row array
+;;     points(array1d, array1d, array1d, array1d)
 ;; Options:
 ;;     point_size
 ;;     point_type
@@ -666,7 +765,95 @@
 ;;     key
 ;;     line_type
 ;;     color
-(defun points3d (arg1 &optional (arg2 nil) (arg3 nil))
+
+(defun points3d-command ()
+  (let ((opt (get-option '$points_joined)))
+    (cond
+      ((null opt) ; draws isolated points
+         (format nil " ~a w p ps ~a pt ~a lc rgb '~a'"
+                 (make-obj-title (get-option '$key))
+                 (get-option '$point_size)
+                 (get-option '$point_type)
+                 (get-option '$color)))
+      ((eq opt t) ; draws joined points
+         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
+                 (make-obj-title (get-option '$key))
+                 (get-option '$point_size)
+                 (get-option '$point_type)
+                 (get-option '$line_width)
+                 (get-option '$line_type)
+                 (get-option '$color)))
+      (t  ; draws impulses
+         (format nil " ~a w i lw ~a lt ~a lc rgb '~a'"
+                 (make-obj-title (get-option '$key))
+                 (get-option '$line_width)
+                 (get-option '$line_type)
+                 (get-option '$color))))) )
+
+(defun points3d-array (arg1 arg2 arg3)
+   (let ((xmin 1.75555970201398e+305)
+         (xmax -1.75555970201398e+305)
+         (ymin 1.75555970201398e+305)
+         (ymax -1.75555970201398e+305)
+         (zmin 1.75555970201398e+305)
+         (zmax -1.75555970201398e+305)
+         (pos -1)
+         (twodimarray t)
+         (threecolumns nil)
+         (dim (array-dimensions arg1))
+         n xx yy zz pts)
+      (cond
+         ((and (= (length dim) 2)   ; three-column array
+               (= (cadr dim) 3))
+            (setf n (car dim))
+            (setf threecolumns t))
+         ((and (= (length dim) 2)   ; three-row array
+               (= (car dim) 3))
+            (setf n (cadr dim)))
+         ((and (= (length dim) 1)   ; three 1d arrays
+               (arrayp arg2)
+               (arrayp arg3)
+               (equal dim (array-dimensions arg2))
+               (equal dim (array-dimensions arg3)))
+            (setf n (car dim))
+            (setf twodimarray nil))
+         (t (merror "draw (points3d): bad array input format")))
+      (setf pts (make-array (* 3 n) :element-type 'flonum))
+      (loop for k below n do
+         (if twodimarray
+            (if threecolumns
+               (setf xx ($float (aref arg1 k 0))
+                     yy ($float (aref arg1 k 1))
+                     zz ($float (aref arg1 k 2)))
+               (setf xx ($float (aref arg1 0 k))
+                     yy ($float (aref arg1 1 k))
+                     zz ($float (aref arg1 2 k))))
+            (setf xx ($float (aref arg1 k))
+                  yy ($float (aref arg2 k))
+                  zz ($float (aref arg3 k))))
+         (if (< xx xmin)
+             (setf xmin xx)
+             (when (> xx xmax)
+                (setf xmax xx)))
+         (if (< yy ymin)
+             (setf ymin yy)
+             (when (> yy ymax)
+                (setf ymax yy)))
+         (if (< zz zmin)
+             (setf zmin zz)
+             (when (> zz zmax)
+                (setf zmax zz)))
+         (setf (aref pts (incf pos)) xx)
+         (setf (aref pts (incf pos)) yy)
+         (setf (aref pts (incf pos)) zz))
+      (update-ranges-3d xmin xmax ymin ymax zmin zmax)
+      (make-gr-object
+         :name 'points
+         :command (points3d-command)
+         :groups '((3 0)) ; numbers are sent to gnuplot in groups of 3, without blank lines
+         :points (list pts))))
+
+(defun points3d-list (arg1 &optional (arg2 nil) (arg3 nil))
    (let (pts x y z xmin xmax ymin ymax zmin zmax)
       (cond ((and ($listp arg1)
                   (every #'$listp (rest arg1)))     ; xyz format
@@ -709,12 +896,14 @@
       (update-ranges-3d xmin xmax ymin ymax zmin zmax)
       (make-gr-object
          :name 'points
-         :command (points-command)
+         :command (points3d-command)
          :groups '((3 0)) ; numbers are sent to gnuplot in groups of 3, without blank lines
          :points (list pts) )  ))
 
-
-
+(defun points3d (arg1 &optional (arg2 nil) (arg3 nil))
+   (if (arrayp arg1)
+      (points3d-array arg1 arg2 arg3)
+      (points3d-list arg1 arg2 arg3)))
 
 
 

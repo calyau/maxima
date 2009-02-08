@@ -3042,6 +3042,12 @@ To make use of this function, write first @code{load(draw)}.
 @deffnx {Graphic object} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
 @deffnx {Graphic object} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
 @deffnx {Graphic object} points (@var{matrix})
+@deffnx {Graphic object} points (@var{1d_y_array})
+@deffnx {Graphic object} points (@var{1d_x_array}, @var{1d_y_array})
+@deffnx {Graphic object} points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})
+@deffnx {Graphic object} points (@var{2d_xy_array})
+@deffnx {Graphic object} points (@var{2d_xyz_array})
+
 Draws points in 2D and 3D.
 
 This object is affected by the following @i{graphic options}: @code{point_size}, 
@@ -3059,7 +3065,13 @@ If @var{matrix} is a two-column or two-row matrix, @code{points (@var{matrix})}
 draws the associated points. If @var{matrix} is a one-column or one-row matrix,
 abscissas are assigned automatically.
 
-Example:
+If @var{1d_y_array} is a 1D lisp array of numbers, @code{points (@var{1d_y_array})} plots them
+setting abscissas to consecutive positive integers. @code{points (@var{1d_x_array}, @var{1d_y_array})}
+plots points with their coordinates taken from the two arrays passed as arguments. If
+@var{2d_xy_array} is a 2D array with two columns, or with two rows, @code{points (@var{2d_xy_array})}
+plots the corresponding points on the plane.
+
+Examples:
 
 @example
 (%i1) load(draw)$
@@ -3086,6 +3098,33 @@ Example:
         points(makelist([random(20),random(50)],k,1,10)))$
 @end example
 
+@example
+(%i1) load(draw)$
+(%i2) a: make_array (flonum, 100) $
+(%i3) for i:0 thru 99 do a[i]: random(1.0) $
+(%i4) draw2d(points(a)) $
+@end example
+
+@example
+(%i1) load(draw)$
+(%i2) x: make_array (flonum, 100) $
+(%i3) y: make_array (fixnum, 100) $
+(%i4) for i:0 thru 99 do (
+        x[i]: float(i/100),
+        y[i]: random(10) ) $
+(%i5) draw2d(points(x, y)) $
+@end example
+
+@example
+(%i1) load(draw)$
+(%i2) xy: make_array(flonum, 100, 2) $
+(%i3) for i:0 thru 99 do (
+        xy[i, 0]: float(i/100),
+        xy[i, 1]: random(10) ) $
+(%i4) draw2d(points(xy)) $
+@end example
+
+
 @b{3D}
 
 @code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} or 
@@ -3093,6 +3132,10 @@ Example:
 plots points @code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]}, etc.
 If @var{matrix} is a three-column or three-row matrix, @code{points (@var{matrix})}
 draws the associated points.
+
+When arguments are lisp arrays, @code{points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})}
+takes coordinates from the three 1D arrays.  If @var{2d_xyz_array} is a 2D array with three columns,
+or with three rows, @code{points (@var{2d_xyz_array})} plots the corresponding points.
 
 Examples:
 
@@ -3119,6 +3162,30 @@ Two tridimensional samples,
          point_type = 4,
          key        = "Sample from stations 1, 4 and 5",
          points(args(submatrix (s2, 2, 3))) )$
+@end example
+
+Unidimensional arrays,
+@example
+(%i1) load(draw)$
+(%i2) x: make_array (fixnum, 10) $
+(%i3) y: make_array (fixnum, 10) $
+(%i4) z: make_array (fixnum, 10) $
+(%i5) for i:0 thru 9 do (
+        x[i]: random(10),
+        y[i]: random(10),
+        z[i]: random(10) ) $
+(%i6) draw3d(points(x,y,z)) $
+@end example
+
+Bidimensional array,
+@example
+(%i1) load(draw)$
+(%i2) xyz: make_array(fixnum, 10, 3) $
+(%i3) for i:0 thru 9 do (
+        xyz[i, 0]: random(10),
+        xyz[i, 1]: random(10),
+        xyz[i, 2]: random(10) ) $
+(%i4) draw3d(points(xyz)) $
 @end example
 
 @opencatbox

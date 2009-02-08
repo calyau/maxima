@@ -1,4 +1,4 @@
-@c version 1.35
+@c version 1.36
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2613,6 +2613,12 @@ Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 @deffnx {Objeto gr@'afico} points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])
 @deffnx {Objeto gr@'afico} points ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...], [@var{z1},@var{z2},...])
 @deffnx {Objeto gr@'afico} points (@var{matrix})
+@deffnx {Objeto gr@'afico} points (@var{1d_y_array})
+@deffnx {Objeto gr@'afico} points (@var{1d_x_array}, @var{1d_y_array})
+@deffnx {Objeto gr@'afico} points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})
+@deffnx {Objeto gr@'afico} points (@var{2d_xy_array})
+@deffnx {Objeto gr@'afico} points (@var{2d_xyz_array})
+
 Dibuja puntos en 2D y 3D.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
@@ -2629,7 +2635,14 @@ dibuja los puntos @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]}, etc. S
 Si @var{matrix} es una matriz de dos columnas o de dos filas, @code{points (@var{matrix})}
 dibuja los puntos asociados.
 
-Ejemplo:
+Si @var{1d_y_array} es un array lisp de n@'umeros en 1D, @code{points (@var{1d_y_array})}
+los dibujar@'a asignando las abscisas a n@'umeros enteros consecutivos.
+@code{points (@var{1d_x_array}, @var{1d_y_array})} dibuja los puntos cuyas coordenadas
+se toman de los dos arrays pasados como argumentos. Si @var{2d_xy_array} es un array lisp
+2D de dos filas, o de dos columnas, @code{points (@var{2d_xy_array})} dibuja los correspondientes
+puntos del plano.
+
+Ejemplos:
 
 @example
 (%i1) load(draw)$
@@ -2656,6 +2669,32 @@ Ejemplo:
         points(makelist([random(20),random(50)],k,1,10)))$
 @end example
 
+@example
+(%i1) load(draw)$
+(%i2) a: make_array (flonum, 100) $
+(%i3) for i:0 thru 99 do a[i]: random(1.0) $
+(%i4) draw2d(points(a)) $
+@end example
+
+@example
+(%i1) load(draw)$
+(%i2) x: make_array (flonum, 100) $
+(%i3) y: make_array (fixnum, 100) $
+(%i4) for i:0 thru 99 do (
+        x[i]: float(i/100),
+        y[i]: random(10) ) $
+(%i5) draw2d(points(x, y)) $
+@end example
+
+@example
+(%i1) load(draw)$
+(%i2) xy: make_array(flonum, 100, 2) $
+(%i3) for i:0 thru 99 do (
+        xy[i, 0]: float(i/100),
+        xy[i, 1]: random(10) ) $
+(%i4) draw2d(points(xy)) $
+@end example
+
 @b{3D}
 
 @code{points ([[@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}],...])} o 
@@ -2665,7 +2704,11 @@ Si @var{matrix} es una matriz de tres columnas o de tres filas, @code{points (@v
 dibuja los puntos asociados. Si @var{matrix} es una matriz columna o fila, las abscisas 
 se asignan autom@'aticamente. 
 
-Ejemplo:
+En caso de que los argumentos sean arrays lisp, @code{points (@var{1d_x_array}, @var{1d_y_array}, @var{1d_z_array})}
+toma las coordenadas de los tres arrays unidimensionales. Si @var{2d_xyz_array} es un array 2D de tres columnas,
+o de tres filas, entonces @code{points (@var{2d_xyz_array})} dibuja los puntos correspondientes.
+
+Ejemplos:
 
 Una muestra tridimensional,
 @example
@@ -2690,6 +2733,30 @@ Dos muestras tridimensionales,
          point_type = 4,
          key        = "Sample from stations 1, 4 and 5",
          points(args(submatrix (s2, 2, 3))) )$
+@end example
+
+Arrays unidimensionales,
+@example
+(%i1) load(draw)$
+(%i2) x: make_array (fixnum, 10) $
+(%i3) y: make_array (fixnum, 10) $
+(%i4) z: make_array (fixnum, 10) $
+(%i5) for i:0 thru 9 do (
+        x[i]: random(10),
+        y[i]: random(10),
+        z[i]: random(10) ) $
+(%i6) draw3d(points(x,y,z)) $
+@end example
+
+Array bidimensional,
+@example
+(%i1) load(draw)$
+(%i2) xyz: make_array(fixnum, 10, 3) $
+(%i3) for i:0 thru 9 do (
+        xyz[i, 0]: random(10),
+        xyz[i, 1]: random(10),
+        xyz[i, 2]: random(10) ) $
+(%i4) draw3d(points(xyz)) $
 @end example
 @end deffn
 
