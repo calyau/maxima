@@ -908,7 +908,7 @@
 	   ;; asn(x,0) = F(asin(x),0) = asin(x)
 	   `((%elliptic_f) ((%asin) ,u) 0))
 	  ((onep1 m)
-	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/2+asin(x)/2))
+	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/4+asin(x)/2))
 	   `((%elliptic_f) ((%asin) ,u) 1))
 	  (t
 	   ;; Nothing to do
@@ -1192,6 +1192,10 @@ first kind:
 	       (m (float m-arg)))
 	   (cond ((> m 1)
 		  ;; A&S 17.4.15
+		  ;;
+		  ;; F(phi|m) = 1/sqrt(m)*F(theta|1/m)
+		  ;;
+		  ;; with sin(theta) = sqrt(m)*sin(phi)
 		  (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))))
 		 ((< m 0)
 		  ;; A&S 17.4.17
@@ -1208,7 +1212,10 @@ first kind:
 		  phi)
 		 ((= m 1)
 		  ;; A&S 17.4.21
-		  (log (cl:tan (+ (/ phi 2) (float (/ pi 2))))))
+		  ;;
+		  ;; F(phi,1) = log(sec(phi)+tan(phi))
+		  ;;          = log(tan(pi/4+pi/2))
+		  (log (cl:tan (+ (/ phi 2) (float (/ pi 4))))))
 		 ((minusp phi)
 		  (- (elliptic-f (- phi) m)))
 		 ((> phi pi)
