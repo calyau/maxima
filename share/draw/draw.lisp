@@ -66,7 +66,7 @@
           (format nil "unset multiplot~%"))
         (setf *multiplot-is-active* nil))
       (otherwise
-        (merror "draw: ~M is not recognized as a multiplot mode" x)))))
+        (merror "draw: ~M is not recognized as a multiplot mode" term)))))
 
 
 ;; This variable stores actual graphics options
@@ -971,7 +971,7 @@
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
                                         (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))
-                                (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                                (format nil " t '' w l lw ~a lt ~a lc rgb '~a' axis ~a"
                                         (get-option '$line_width)
                                         (get-option '$line_type)
                                         (get-option '$color)
