@@ -100,9 +100,9 @@
       z))
 
 (defmethod maxima::to ((z cl:complex))
-  (maxima::add (cl:realpart z)
+  (maxima::add (maxima::to (cl:realpart z))
 	       (maxima::mul 'maxima::$%i
-			    (cl:imagpart z))))
+			    (maxima::to (cl:imagpart z)))))
 
 (defmethod maxima::to ((z bigfloat))
   "Convert BIGFLOAT  object to a maxima number"
