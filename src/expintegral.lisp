@@ -1284,7 +1284,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun $expintegral_si (z)
-  (simplify (list '(%expintegral_si) (resimplify z))))
+  (simplify (list '(%expintegral_si) z)))
 
 ;;; Set properties to give full support to the parser and display
 
@@ -1437,7 +1437,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun $expintegral_shi (z)
-  (simplify (list '(%expintegral_shi) (resimplify z))))
+  (simplify (list '(%expintegral_shi) z)))
 
 ;;; Set properties to give full support to the parser and display
 
