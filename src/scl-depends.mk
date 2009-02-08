@@ -226,6 +226,7 @@ binary-scl/maxima.core : ezgcd.lisp
 binary-scl/maxima.core : option.lisp
 binary-scl/maxima.core : macdes.lisp
 binary-scl/maxima.core : inmis.lisp
+binary-scl/maxima.core : intl.lisp
 binary-scl/maxima.core : db.lisp
 binary-scl/maxima.core : compar.lisp
 binary-scl/maxima.core : askp.lisp

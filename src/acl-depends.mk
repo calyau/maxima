@@ -226,6 +226,7 @@ binary-acl/maxima.dxl : ezgcd.lisp
 binary-acl/maxima.dxl : option.lisp
 binary-acl/maxima.dxl : macdes.lisp
 binary-acl/maxima.dxl : inmis.lisp
+binary-acl/maxima.dxl : intl.lisp
 binary-acl/maxima.dxl : db.lisp
 binary-acl/maxima.dxl : compar.lisp
 binary-acl/maxima.dxl : askp.lisp

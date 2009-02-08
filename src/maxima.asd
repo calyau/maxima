@@ -52,6 +52,7 @@
 					  (:file "autoconf-variables" :depends-on ("maxima-package"))))
 	       (:module info :pathname ""
 			:components ((:file "nregex")
+                     (:file "intl")
 				     (:file "cl-info")))
 	       (:module sloop :pathname ""
 			:components ((:file "sloop")))

@@ -122,6 +122,7 @@
 				     (:file "autoconf-variables")))
 	       (:module info :source-pathname ""
 			:components ((:file "nregex")
+                     (:file "intl")
 				     (:file "cl-info")))
 	       (:module sloop :source-pathname ""
 			:components ((:file "sloop")))

@@ -177,6 +177,7 @@ binary-openmcl/maxima.image : ezgcd.lisp
 binary-openmcl/maxima.image : option.lisp
 binary-openmcl/maxima.image : macdes.lisp
 binary-openmcl/maxima.image : inmis.lisp
+binary-openmcl/maxima.image : intl.lisp
 binary-openmcl/maxima.image : db.lisp
 binary-openmcl/maxima.image : compar.lisp
 binary-openmcl/maxima.image : maxmin.lisp

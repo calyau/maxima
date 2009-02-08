@@ -352,6 +352,7 @@ hypgeo.lisp \
 ifactor.lisp \
 init-cl.lisp \
 inmis.lisp \
+intl.lisp \
 intpol.lisp \
 invert.lisp \
 irinte.lisp \

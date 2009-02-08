@@ -227,6 +227,7 @@ binary-clisp/maxima.mem : ezgcd.lisp
 binary-clisp/maxima.mem : option.lisp
 binary-clisp/maxima.mem : macdes.lisp
 binary-clisp/maxima.mem : inmis.lisp
+binary-clisp/maxima.mem : intl.lisp
 binary-clisp/maxima.mem : db.lisp
 binary-clisp/maxima.mem : compar.lisp
 binary-clisp/maxima.mem : askp.lisp
