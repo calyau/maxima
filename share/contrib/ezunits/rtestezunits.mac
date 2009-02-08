@@ -436,6 +436,12 @@ apply ("+", xx);
 86400 ` s `` [hour, minute, s];
 [24 ` hour, 0 ` minute, 0 ` s];
 
+60 ` s `` [hour, minute, s];
+[0 ` hour, 1 ` minute, 0 ` s];
+
+1 ` s `` [hour, minute, s];
+[0 ` hour, 0 ` minute, 1 ` s];
+
 86401 ` s `` [day, hour, minute, s];
 [1 ` day, 0 ` hour, 0 ` minute, 1 ` s];
 
