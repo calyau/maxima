@@ -65,6 +65,27 @@ See also @code{yrange} and @code{zrange}.
 
 
 
+@defvr {Graphic option} xrange_secondary
+Default value: @code{auto}
+
+If @code{xrange_secondary} is @code{auto}, the range for the second @var{x} axis is
+computed automatically.
+
+If the user wants a specific interval for the second @var{x} axis, it must be given as a 
+Maxima list, as in @code{xrange_secondary=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+See also @code{xrange}, @code{yrange}, @code{zrange} and @code{yrange_secondary}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
+
+
 @defvr {Graphic option} yrange
 Default value: @code{auto}
 
@@ -673,6 +694,21 @@ See also @code{ytics}, and @code{ztics}.
 
 
 
+@defvr {Graphic option} xtics_secondary
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the second @var{x} axis.
+
+See @code{xtics} for a complete description.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
 @defvr {Graphic option} ytics
 Default value: @code{auto}
 
@@ -721,6 +757,22 @@ See @code{xtics} for a complete description.
 Default value: @code{false}
 
 If @code{xtics_rotate} is @code{true}, tic marks on the @var{x} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+@defvr {Graphic option} xtics_rotate_secondary
+Default value: @code{false}
+
+If @code{xtics_rotate_secondary} is @code{true}, tic marks on the secondary @var{x} axis are rotated 
 90 degrees.
 
 Since this is a global graphics option, its position in the scene description
@@ -798,6 +850,23 @@ does not matter.
 
 @end defvr
 
+
+@defvr {Graphic option} xtics_secondary_axis
+Default value: @code{false}
+
+If @code{xtics_secondary_axis} is @code{true}, tic marks and their labels are plotted just
+along the secondary @var{x} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
 @defvr {Graphic option} ytics_axis
 Default value: @code{false}
 
@@ -814,10 +883,10 @@ does not matter.
 @end defvr
 
 
-@defvr {Graphic option} ytics_axis_secondary
+@defvr {Graphic option} ytics_secondary_axis
 Default value: @code{false}
 
-If @code{ytics_axis_secondary} is @code{true}, tic marks and their labels are plotted just
+If @code{ytics_secondary_axis} is @code{true}, tic marks and their labels are plotted just
 along the secondary @var{y} axis, if it is @code{false} tics are plotted on the border.
 
 Since this is a global graphics option, its position in the scene description
@@ -864,6 +933,25 @@ Example:
 @end example
 
 See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xaxis_secondary
+Default value: @code{false}
+
+If @code{xaxis_secondary} is @code{true}, function values can be plotted with 
+respect to the second @var{x} axis, which will be drawn on top of the scene.
+
+Note that this is a local graphics option which only affects to 2d plots.
+
+See also @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary},
+@code{ytics_axis_secondary} and @code{yaxis_secondary}.
 
 @opencatbox
 @category{Package draw}
@@ -3073,6 +3161,8 @@ plots the corresponding points on the plane.
 
 Examples:
 
+Two types of arguments for @code{points}, a list of pairs and two lists
+of separate coordinates.
 @example
 (%i1) load(draw)$
 (%i2) draw2d(
@@ -3089,6 +3179,7 @@ Examples:
         points([2,12,8]))$
 @end example
 
+Drawing impulses.
 @example
 (%i1) load(draw)$
 (%i2) draw2d(
@@ -3098,6 +3189,7 @@ Examples:
         points(makelist([random(20),random(50)],k,1,10)))$
 @end example
 
+Array with ordinates.
 @example
 (%i1) load(draw)$
 (%i2) a: make_array (flonum, 100) $
@@ -3105,6 +3197,7 @@ Examples:
 (%i4) draw2d(points(a)) $
 @end example
 
+Two arrays with separate coordinates.
 @example
 (%i1) load(draw)$
 (%i2) x: make_array (flonum, 100) $
@@ -3115,6 +3208,7 @@ Examples:
 (%i5) draw2d(points(x, y)) $
 @end example
 
+A two-column 2D array.
 @example
 (%i1) load(draw)$
 (%i2) xy: make_array(flonum, 100, 2) $
@@ -3124,6 +3218,13 @@ Examples:
 (%i4) draw2d(points(xy)) $
 @end example
 
+Drawing an array filled with function @code{read_array}.
+@example
+(%i1) load(draw)$
+(%i2) a: make_array(flonum,100) $
+(%i3) read_array (file_search ("pidigits.data"), a) $
+(%i4) draw2d(points(a)) $
+@end example
 
 @b{3D}
 

@@ -94,6 +94,7 @@
   (setf
       ; global options to control general aspects of graphics
       (gethash '$xrange *gr-options*)           nil      ; nil => automatic computation
+      (gethash '$xrange_secondary *gr-options*) nil      ; nil => automatic computation
       (gethash '$yrange *gr-options*)           nil      ; nil => automatic computation
       (gethash '$yrange_secondary *gr-options*) nil      ; nil => automatic computation
       (gethash '$zrange *gr-options*)           nil      ; nil => automatic computation
@@ -124,14 +125,17 @@
       ; tics
       (gethash '$grid *gr-options*)            nil
       (gethash '$xtics *gr-options*)           "autofreq"
+      (gethash '$xtics_secondary *gr-options*) nil   ; no tics in top x-axis
       (gethash '$ytics *gr-options*)           "autofreq"
       (gethash '$ytics_secondary *gr-options*) nil   ; no tics in right y-axis
       (gethash '$ztics *gr-options*)           "autofreq"
       (gethash '$xtics_rotate *gr-options*)    nil
+      (gethash '$xtics_secondary_rotate *gr-options*) nil
       (gethash '$ytics_rotate *gr-options*)    nil
       (gethash '$ytics_secondary_rotate *gr-options*) nil
       (gethash '$ztics_rotate *gr-options*)    nil
       (gethash '$xtics_axis *gr-options*)      nil
+      (gethash '$xtics_secondary_axis *gr-options*)   nil
       (gethash '$ytics_axis *gr-options*)      nil
       (gethash '$ytics_secondary_axis *gr-options*)   nil
       (gethash '$ztics_axis *gr-options*)      nil
@@ -187,6 +191,7 @@
       (gethash '$adapt_depth *gr-options*)     10
       (gethash '$key *gr-options*)             ""          ; by default, no keys
       (gethash '$filled_func *gr-options*)     nil         ; false, true (y axis) or an expression
+      (gethash '$xaxis_secondary *gr-options*) nil
       (gethash '$yaxis_secondary *gr-options*) nil
 
       ; 3d options
@@ -323,17 +328,17 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "draw: unknown contour level description: ~M " val))))
-      (($transparent $border $logx $logy $logz $head_both $grid $yaxis_secondary
+      (($transparent $border $logx $logy $logz $head_both $grid $xaxis_secondary $yaxis_secondary
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
-        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $ytics_secondary_rotate
-        $ztics_rotate $xtics_axis $ytics_axis $ytics_secondary_axis $ztics_axis $meshed_surface) ; true or false
+        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate
+        $ztics_rotate $xtics_axis $ytics_axis $xtics_secondary_axis $ytics_secondary_axis $ztics_axis $meshed_surface) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: non boolean value: ~M " val)))
       (($filled_func $enhanced3d) ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
-      (($xtics $ytics $ytics_secondary $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
+      (($xtics $ytics $xtics_secondary $ytics_secondary $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
             (cond ((member val '($none nil))   ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((member val '($auto t))     ; t is maintained for back-portability
@@ -427,7 +432,7 @@
                                             (format nil (if (string= str "") "~a" "~%~a") st)))))
                 (t (merror "draw: illegal user preamble especification")))
               (setf (gethash opt *gr-options*) str))  )
-      (($xrange $yrange $yrange_secondary $zrange) ; defined as a Maxima list with two numbers in increasing order
+      (($xrange $yrange $xrange_secondary $yrange_secondary $zrange) ; defined as a Maxima list with two numbers in increasing order
             (cond ((member val '($auto nil))     ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((or (not ($listp val))
@@ -526,7 +531,9 @@
                                                         0))) ))
 
 (defun update-ranges-2d (xmin xmax ymin ymax)
-   (update-range '$xrange xmin xmax)
+   (if (get-option '$xaxis_secondary)
+      (update-range '$xrange_secondary xmin xmax)
+      (update-range '$xrange xmin xmax))
    (if (get-option '$yaxis_secondary)
       (update-range '$yrange_secondary ymin ymax)
       (update-range '$yrange ymin ymax)) )
@@ -534,6 +541,24 @@
 (defun update-ranges-3d (xmin xmax ymin ymax zmin zmax)
    (update-ranges-2d xmin xmax ymin ymax)
    (update-range '$zrange zmin zmax))
+
+
+
+
+
+;; Controls whether the actual graphics object must
+;; be plotted against the primary or the secondary axes,
+;; both horizontal and vertical. Secondary axes in 3D
+;; are not yet supported.
+(defun axes-to-plot ()
+   (format nil "~a~a"
+           (if (get-option '$xaxis_secondary)
+               "x2"
+               "x1")
+           (if (get-option '$yaxis_secondary)
+               "y2"
+               "y1")))
+
 
 
 
@@ -567,6 +592,7 @@
 ;;     key
 ;;     line_type
 ;;     color
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun points-command ()
   (let ((opt (get-option '$points_joined)))
@@ -577,7 +603,7 @@
                  (get-option '$point_size)
                  (get-option '$point_type)
                  (get-option '$color)
-                 (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                 (axes-to-plot)))
       ((eq opt t) ; draws joined points
          (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a' axis ~a"
                  (make-obj-title (get-option '$key))
@@ -586,14 +612,14 @@
                  (get-option '$line_width)
                  (get-option '$line_type)
                  (get-option '$color)
-                 (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                 (axes-to-plot)))
       (t  ; draws impulses
          (format nil " ~a w i lw ~a lt ~a lc rgb '~a' axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$line_width)
                  (get-option '$line_type)
                  (get-option '$color)
-                 (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))))) )
+                 (axes-to-plot))))) )
 
 (defun points-array-2d (arg)
    (let ((xmin 1.75555970201398e+305)
@@ -620,14 +646,10 @@
                   yy ($float (aref arg k 1)))
             (setf xx ($float (aref arg 0 k))
                   yy ($float (aref arg 1 k))))
-         (if (< xx xmin)
-            (setf xmin xx)
-            (when (> xx xmax)
-               (setf xmax xx)))
-         (if (< yy ymin)
-            (setf ymin yy)
-            (when (> yy ymax)
-               (setf ymax yy)))
+         (when (< xx xmin) (setf xmin xx))
+         (when (> xx xmax) (setf xmax xx))
+         (when (< yy ymin) (setf ymin yy))
+         (when (> yy ymax) (setf ymax yy))
          (setf (aref pts (incf pos)) xx)
          (setf (aref pts (incf pos)) yy))
       (update-ranges-2d xmin xmax ymin ymax)
@@ -666,14 +688,10 @@
       (loop for k below n do
          (setf xx ($float (aref x k))
                yy ($float (aref y k)))
-         (if (< xx xmin)
-             (setf xmin xx)
-             (when (> xx xmax)
-                (setf xmax xx)))
-         (if (< yy ymin)
-             (setf ymin yy)
-             (when (> yy ymax)
-                (setf ymax yy)))
+         (when (< xx xmin) (setf xmin xx))
+         (when (> xx xmax) (setf xmax xx))
+         (when (< yy ymin) (setf ymin yy))
+         (when (> yy ymax) (setf ymax yy))
          (setf (aref pts (incf pos)) xx)
          (setf (aref pts (incf pos)) yy))
       (update-ranges-2d xmin xmax ymin ymax)
@@ -691,7 +709,7 @@
                   (every #'$listp (rest arg1)))     ; xy format
                (let ((tmp (mapcar #'rest (rest arg1))))
                   (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
-                        y (map 'list #'convert-to-float (map 'list #'second tmp)) ) ) )
+                        y (map 'list #'convert-to-float (map 'list #'second tmp)))) )
             ((and ($matrixp arg1)
                   (= (length (cadr arg1)) 3)
                   (null arg2))                 ; two-column matrix
@@ -788,7 +806,7 @@
                  (make-obj-title (get-option '$key))
                  (get-option '$line_width)
                  (get-option '$line_type)
-                 (get-option '$color))))) )
+                 (get-option '$color))))))
 
 (defun points3d-array (arg1 arg2 arg3)
    (let ((xmin 1.75555970201398e+305)
@@ -831,18 +849,12 @@
             (setf xx ($float (aref arg1 k))
                   yy ($float (aref arg2 k))
                   zz ($float (aref arg3 k))))
-         (if (< xx xmin)
-             (setf xmin xx)
-             (when (> xx xmax)
-                (setf xmax xx)))
-         (if (< yy ymin)
-             (setf ymin yy)
-             (when (> yy ymax)
-                (setf ymax yy)))
-         (if (< zz zmin)
-             (setf zmin zz)
-             (when (> zz zmax)
-                (setf zmax zz)))
+         (when (< xx xmin) (setf xmin xx))
+         (when (> xx xmax) (setf xmax xx))
+         (when (< yy ymin) (setf ymin yy))
+         (when (> yy ymax) (setf ymax yy))
+         (when (< zz zmin) (setf zmin zz))
+         (when (> zz zmax) (setf zmax z))
          (setf (aref pts (incf pos)) xx)
          (setf (aref pts (incf pos)) yy)
          (setf (aref pts (incf pos)) zz))
@@ -920,6 +932,7 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun polygon (arg1 &optional (arg2 nil))
    (if (and (gethash '$transparent  *gr-options*)
@@ -951,7 +964,7 @@
                                       (get-option '$line_width)
                                       (get-option '$line_type)
                                       (get-option '$color)
-                                      (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                                      (axes-to-plot)))
              (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (+ (* 2 (length x)) 2)
                                          :element-type 'flonum
@@ -961,7 +974,7 @@
              (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                       (make-obj-title (get-option '$key))
                                       (get-option '$fill_color)
-                                      (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                                      (axes-to-plot)))
              (setf grps '((2 0)))  ; numbers are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
                                          :element-type 'flonum
@@ -970,12 +983,12 @@
              (setf pltcmd (list (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
-                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))
+                                        (axes-to-plot))
                                 (format nil " t '' w l lw ~a lt ~a lc rgb '~a' axis ~a"
                                         (get-option '$line_width)
                                         (get-option '$line_type)
                                         (get-option '$color)
-                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))))
+                                        (axes-to-plot))))
 
              (setf grps '((2 0) (2 0)))  ; both sets of vertices (interior and border)
                                      ; are sent to gnuplot in groups of 2
@@ -1008,6 +1021,7 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun rectangle (arg1 arg2)
    (if (or (not ($listp arg1))
@@ -1047,6 +1061,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun ellipse (xc yc a b ang1 ang2)
   (if (and (gethash '$transparent  *gr-options*)
@@ -1100,7 +1115,7 @@
                                     (get-option '$line_width)
                                     (get-option '$line_type)
                                     (get-option '$color)
-                                    (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                                    (axes-to-plot)))
            (setf grps '((2 0)))
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
@@ -1109,7 +1124,7 @@
                                     (make-obj-title (get-option '$key))
                                     fxc fyc
                                     (get-option '$fill_color)
-                                    (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                                    (axes-to-plot)))
            (setf grps '((2 0)))
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
@@ -1118,12 +1133,12 @@
                                             (make-obj-title (get-option '$key))
                                             fxc fyc
                                             (get-option '$fill_color)
-                                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))
+                                            (axes-to-plot))
                                 (format nil " t '' w l lw ~a lt ~a lc rgb '~a' axis ~a"
                                             (get-option '$line_width)
                                             (get-option '$line_type)
                                             (get-option '$color)
-                                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))))
+                                            (axes-to-plot))))
            (setf grps '((2 0) (2 0)))
            (setf pts (list (make-array (length result) :element-type 'flonum
                                                        :initial-contents result)
@@ -1151,6 +1166,7 @@
 ;;     label_alignment
 ;;     label_orientation
 ;;     color
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun label (lab)
   (let ((n (length lab))
@@ -1201,7 +1217,7 @@
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
                               (get-option '$color)
-                              (if (get-option '$yaxis_secondary) "x1y2" "x1y1") )
+                              (axes-to-plot) )
        :groups (if is2d '((3 0)) '((4 0)))
        :points (list (make-array (length result) :initial-contents result))) ))
 
@@ -1218,6 +1234,7 @@
 ;;     fill_color
 ;;     fill_density
 ;;     line_width
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun bars (boxes)
   (let ((n (length boxes))
@@ -1252,7 +1269,7 @@
                             (get-option '$fill_density)
                             (get-option '$line_width)
                             (get-option '$fill_color)
-                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1") )
+                            (axes-to-plot) )
        :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
        :points (list (make-array (length result) :initial-contents result))) ))
 
@@ -1276,6 +1293,7 @@
 ;;     key
 ;;     color
 ;;     unit_vectors
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun vect (arg1 arg2)
    (if (or (not ($listp arg1))
@@ -1310,7 +1328,7 @@
                               (get-option '$line_width)
                               (get-option '$line_type)
                               (get-option '$color)
-                              (if (get-option '$yaxis_secondary) "x1y2" "x1y1") )
+                              (axes-to-plot) )
          :groups '((4 0))
          :points `(,(make-array 4 :element-type 'flonum
                                   :initial-contents (list x y dx dy))) ) ))
@@ -1394,6 +1412,7 @@
 ;;     filled_func
 ;;     fill_color
 ;;     key
+;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun explicit (fcn var minval maxval)
   (let* ((nticks (gethash '$nticks  *gr-options*))
@@ -1452,7 +1471,7 @@
                                         (get-option '$line_width)
                                         (get-option '$line_type)
                                         (get-option '$color)
-                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                                        (axes-to-plot)))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1471,7 +1490,7 @@
                (setf pltcmd (format nil " ~a w filledcurves x1 lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
-                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                                        (axes-to-plot)))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1495,7 +1514,7 @@
                (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
-                                        (if (get-option '$yaxis_secondary) "x1y2" "x1y1")  ))
+                                        (axes-to-plot)  ))
                (make-gr-object
                   :name   'explicit
                   :command pltcmd
@@ -1519,6 +1538,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     xaxis_secondary
 ;;     yaxis_secondary
 ;; Note: taken from implicit_plot.lisp
 
@@ -1633,7 +1653,7 @@
                               (get-option '$line_width)
                               (get-option '$line_type)
                               (get-option '$color)
-                              (if (get-option '$yaxis_secondary) "x1y2" "x1y1")))
+                              (axes-to-plot)))
     (make-gr-object
        :name   'implicit
        :command pltcmd
@@ -1914,6 +1934,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     xaxis_secondary
 ;;     yaxis_secondary
 ;; Note: similar to draw2d-parametric in plot.lisp
 (defun parametric (xfun yfun par parmin parmax)
@@ -1954,7 +1975,7 @@
                             (get-option '$line_width)
                             (get-option '$line_type)
                             (get-option '$color)
-                            (if (get-option '$yaxis_secondary) "x1y2" "x1y1"))
+                            (axes-to-plot))
        :groups '((2 0))
        :points `(,(make-array (length result) :element-type 'flonum
                                               :initial-contents result)))   ) )
@@ -1974,6 +1995,7 @@
 ;;     line_type
 ;;     key
 ;;     color
+;;     xaxis_secondary
 ;;     yaxis_secondary
 ;; This object is constructed as a parametric function
 (defun polar (radius ang minang maxang)
@@ -2701,19 +2723,29 @@
                   (xf (second (get-option '$xrange)))
                   (yi (first  (get-option '$yrange)))
                   (yf (second (get-option '$yrange)))
+                  (x2i (first  (get-option '$xrange_secondary)))
+                  (x2f (second (get-option '$xrange_secondary)))
                   (y2i (first  (get-option '$yrange_secondary)))
                   (y2f (second (get-option '$yrange_secondary))) )
-               (when (= xi xf)
+               (when (and (get-option '$xrange) (= xi xf))
                   (setf xi (- xi 0.01)
                         xf (+ xf 0.01)))
+               (when (and (get-option '$xrange_secondary) (= x2i x2f))
+                  (setf x2i (- x2i 0.01)
+                        x2f (+ x2f 0.01)))
                (when (and (get-option '$yrange) (= yi yf))
                   (setf yi (- yi 0.01)
                         yf (+ yf 0.01)))
                (when (and (get-option '$yrange_secondary) (= y2i y2f))
                   (setf y2i (- y2i 0.01)
                         y2f (+ y2f 0.01)))
-               (format nil "set xrange [~a:~a]~%~a~a"
-                       xi xf
+               (format nil "~a~a~a~a"
+                       (if (get-option '$xrange)
+                         (format nil "set xrange [~a:~a]~%" xi xf)
+                         "")
+                       (if (get-option '$xrange_secondary)
+                         (format nil "set x2range [~a:~a]~%" x2i x2f)
+                         "")
                        (if (get-option '$yrange)
                          (format nil "set yrange [~a:~a]~%" yi yf)
                          "")
@@ -2756,6 +2788,12 @@
                        (if (get-option '$xtics_rotate) "rotate" "norotate")
                        (if (get-option '$xtics_axis) "axis" "border")
                        (get-option '$xtics)))
+            (if (null (get-option '$xtics_secondary))
+               (format nil "unset x2tics~%")
+               (format nil "set xtics nomirror~%set x2tics ~a ~a ~a~%"
+                       (if (get-option '$xtics_secondary_rotate) "rotate" "norotate")
+                       (if (get-option '$xtics_secondary_axis) "axis" "border")
+                       (get-option '$xtics_secondary)))
             (if (null (get-option '$ytics))
                (format nil "unset ytics~%")
                (format nil "set ytics ~a ~a ~a~%"

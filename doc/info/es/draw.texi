@@ -61,6 +61,23 @@ V@'eanse tambi@'en @code{yrange} y @code{zrange}.
 
 
 
+@defvr {Opci@'on gr@'afica} xrange_secondary
+Valor por defecto: @code{auto}
+
+Cuando @code{xrange_secondary} vale @code{auto}, el rango del eje @var{x}
+secundario se calcula de forma autom@'atica.
+
+Si el usuario quiere especificar un intervalo para el eje @var{x} secundario, @'este debe
+expresarse como una lista de Maxima, como en @code{xrange_secondary=[-2, 3]}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+V@'eanse tambi@'en @code{xrange}, @code{yrange}, @code{zrange} y @code{yrange_secondary}.
+@end defvr
+
+
+
 @defvr {Opci@'on gr@'afica} yrange
 Valor por defecto: @code{auto}
 
@@ -602,6 +619,17 @@ Marcas etiquetadas.
 
 
 
+@defvr {Opci@'on gr@'afica} xtics_secondary
+Valor por defecto: @code{auto}
+
+Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
+del eje @var{x} secundario.
+
+V@'ease @code{xtics} para una descripci@'on completa.
+@end defvr
+
+
+
 @defvr {Opci@'on gr@'afica} ytics
 Valor por defecto: @code{auto}
 
@@ -639,6 +667,17 @@ Valor por defecto: @code{false}
 
 Si @code{xtics_rotate} vale @code{true}, las marcas del eje @var{x} se giran 
 90 grados.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
+
+@defvr {Opci@'on gr@'afica} xtics_rotate_secondary
+Valor por defecto: @code{false}
+
+Si @code{xtics_rotate_secondary} vale @code{true}, las marcas del eje @var{x} 
+secundario se giran 90 grados.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
@@ -689,6 +728,19 @@ Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
 @end defvr
 
+
+@defvr {Opci@'on gr@'afica} xtics_secondary_axis
+Valor por defecto: @code{false}
+
+Si @code{xtics_secondary_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
+el propio eje @var{x} secundario, si vale @code{false} las marcas se colocan a lo largo del borde
+del gr@'afico.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+@end defvr
+
+
 @defvr {Opci@'on gr@'afica} ytics_axis
 Valor por defecto: @code{false}
 
@@ -701,10 +753,10 @@ descripci@'on de la escena no reviste importancia.
 @end defvr
 
 
-@defvr {Opci@'on gr@'afica} ytics_axis_secondary
+@defvr {Opci@'on gr@'afica} ytics_secondary_axis
 Valor por defecto: @code{false}
 
-Si @code{ytics_axis_secondary} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
+Si @code{ytics_secondary_axis} vale @code{true}, las marcas y sus etiquetas se dibujan sobre
 el propio eje @var{y} secundario, si vale @code{false} las marcas se colocan a lo largo del borde
 del gr@'afico.
 
@@ -743,6 +795,20 @@ Ejemplo:
 @end example
 
 V@'eanse tambi@'en @code{xaxis_width}, @code{xaxis_type} y @code{xaxis_color}.
+@end defvr
+
+
+@defvr {Opci@'on gr@'afica} xaxis_secondary
+Valor por defecto: @code{false}
+
+Si @code{xaxis_secondary} vale @code{true}, los valores de las funciones se pueden representar
+respecto del eje @var{x} secundario, el cual se dibuja en la parte superior de la escena.
+
+N@'otese que esta es una opci@'on gr@'afica local que s@'olo afecta a objetos 2d.
+
+V@'eanse tambi@'en @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary},
+@code{ytics_axis_secondary} y @code{yaxis_secondary}.
+
 @end defvr
 
 
@@ -2644,6 +2710,8 @@ puntos del plano.
 
 Ejemplos:
 
+Dos tipos de argumentos para @code{points}, una lista de pares ordenados
+y dos listas con las coordenadas separadas.
 @example
 (%i1) load(draw)$
 (%i2) draw2d(
@@ -2660,6 +2728,7 @@ Ejemplos:
         points([2,12,8]))$
 @end example
 
+Dibujando impulsos.
 @example
 (%i1) load(draw)$
 (%i2) draw2d(
@@ -2669,6 +2738,7 @@ Ejemplos:
         points(makelist([random(20),random(50)],k,1,10)))$
 @end example
 
+Array con ordenadas.
 @example
 (%i1) load(draw)$
 (%i2) a: make_array (flonum, 100) $
@@ -2676,6 +2746,7 @@ Ejemplos:
 (%i4) draw2d(points(a)) $
 @end example
 
+Dos arrays con coordenadas separadas.
 @example
 (%i1) load(draw)$
 (%i2) x: make_array (flonum, 100) $
@@ -2686,6 +2757,7 @@ Ejemplos:
 (%i5) draw2d(points(x, y)) $
 @end example
 
+Un array 2D de dos columnas.
 @example
 (%i1) load(draw)$
 (%i2) xy: make_array(flonum, 100, 2) $
@@ -2693,6 +2765,14 @@ Ejemplos:
         xy[i, 0]: float(i/100),
         xy[i, 1]: random(10) ) $
 (%i4) draw2d(points(xy)) $
+@end example
+
+Dibujando un array rellenado con la funci@'on @code{read_array}.
+@example
+(%i1) load(draw)$
+(%i2) a: make_array(flonum,100) $
+(%i3) read_array (file_search ("pidigits.data"), a) $
+(%i4) draw2d(points(a)) $
 @end example
 
 @b{3D}
