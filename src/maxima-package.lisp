@@ -205,4 +205,8 @@
 	   #:numberp
 	   ))
 
+(defpackage :intl
+  (:export #:setlocale #:textdomain #:gettext #:dgettext
+           #:*translatable-dump-stream*))
+
 (provide :maxima)

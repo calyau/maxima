@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.1 $
+;;; $Revision: 1.2 $
 ;;; Copyright © 1999 Paul Foley (mycroft@actrix.gen.nz)
 
 ;;; Released under terms of the GNU General Public License, version 2 or later,
@@ -26,11 +26,9 @@ On Sat, Feb 7, 2009 at 7:57 AM, <robert.dodier@gmail.com> wrote:
 Sure; no problem at all!
 |#
 
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.1 2009-02-09 03:09:49 robert_dodier Exp $")
-
-(defpackage "INTL"
-  (:export "SETLOCALE" "TEXTDOMAIN" "GETTEXT" "DGETTEXT"
-           "*TRANSLATABLE-DUMP-STREAM*"))
+#+CMU
+(ext:file-comment
+ "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.2 2009-02-09 16:13:29 rtoy Exp $")
 
 (in-package "INTL")
 
