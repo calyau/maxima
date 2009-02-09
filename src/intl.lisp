@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.2 $
-;;; Copyright © 1999 Paul Foley (mycroft@actrix.gen.nz)
+;;; $Revision: 1.3 $
+;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
 
 ;;; Released under terms of the GNU General Public License, version 2 or later,
 ;;; by permission of Paul Foley to Robert Dodier as shown in this message:
@@ -28,7 +28,7 @@ Sure; no problem at all!
 
 #+CMU
 (ext:file-comment
- "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.2 2009-02-09 16:13:29 rtoy Exp $")
+ "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.3 2009-02-09 20:32:53 rtoy Exp $")
 
 (in-package "INTL")
 
