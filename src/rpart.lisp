@@ -316,8 +316,8 @@
 	     (cons (div (add orig cc) 2) (div (sub orig cc) (mul 2 '$%i)))))
           ;; Look for a risplit-function on the property list to handle the
           ;; realpart and imagpart for this function.
-          ((setq func (get (mop l) 'risplit-function))
-           (funcall func l))
+          ((setq op (get (mop l) 'risplit-function))
+           (funcall op l))
 ;;; ^ All the above are guaranteed pure real.
 ;;; The handling of lists and matrices below has to be thought through.
 	  ((eq (caar l) 'mlist) (dsrl l))
