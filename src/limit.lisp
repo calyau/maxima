@@ -89,11 +89,6 @@ It appears in LIMIT and DEFINT.......")
   (let ((exp (cons '(%limit) (list e var val))))
     (assolike exp limit-answers)))
 
-#+ecl
-(eval-when (compile load)
-  (when (si:specialp 'ans)
-    (error "ANS variable is special")))
- 
 (defmacro limit-catch (exp var val)
   `(let ((errorsw t))
     (let ((ans (catch 'errorsw
