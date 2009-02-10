@@ -408,7 +408,9 @@
   (throw 'macsyma-quit t))
 
 (defmfun $writefile (x)
- (dribble (maxima-string x)))
+  (let ((msg (dribble (maxima-string x))))
+    (format t "~&~A~&" msg)
+    '$done))
 
 (defvar $appendfile nil )
 (defvar *appendfile-data*)
@@ -429,21 +431,23 @@
 	  *terminal-io* $appendfile)
     (multiple-value-bind (sec min hour day month year)
 	(get-decoded-time)
-      (format t "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/"
+      (format t "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/~&"
 	      name year month day hour min sec))
     '$done))
 
 (defmfun $closefile ()
   (cond ($appendfile
 	 (cond ((eq $appendfile *terminal-io*)
-		(format t "~&/*Finished dribbling to ~A.*/"
+		(format t "~&/*Finished dribbling to ~A.*/~&"
 			(nth 2 *appendfile-data*))
 		(setq *terminal-io* (nth 1 *appendfile-data*)))
 	       (t (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
 		   You may miss some dribble output.")))
 	 (close (nth 0 *appendfile-data*))
 	 (setq *appendfile-data* nil $appendfile nil))
-	(t (dribble))))
+	(t (let ((msg (dribble)))
+             (format t "~&~A~&" msg))))
+  '$done)
 
 (defmfun $ed (x)
   (ed (maxima-string x)))
