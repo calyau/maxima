@@ -45,6 +45,12 @@
 (defvar *terminal-number* "")
 
 
+(defmacro write-font-type ()
+   '(if (string= (get-option '$font) "")
+      ""
+      (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
+
+
 ;; one-window multiplot: consecutive calls
 ;; to draw allways plot on the same window
 (defvar *multiplot-is-active* nil)
@@ -854,7 +860,7 @@
          (when (< yy ymin) (setf ymin yy))
          (when (> yy ymax) (setf ymax yy))
          (when (< zz zmin) (setf zmin zz))
-         (when (> zz zmax) (setf zmax z))
+         (when (> zz zmax) (setf zmax zz))
          (setf (aref pts (incf pos)) xx)
          (setf (aref pts (incf pos)) yy)
          (setf (aref pts (incf pos)) zz))
@@ -2987,10 +2993,7 @@
                 #'(lambda (z) (format nil "~a " z))
                 ,arr))))
 
-(defmacro write-font-type ()
-   '(if (string= (get-option '$font) "")
-      ""
-      (format nil "font '~a,~a'" (get-option '$font) (get-option '$font_size))))
+
 
 ;; This is the function to be called at Maxima level.
 ;; Some examples:
