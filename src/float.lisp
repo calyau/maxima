@@ -158,7 +158,7 @@ One extra decimal digit in actual representation for rounding purposes.")
       (setq l (cons (cons (caar l) (cons 'simp (cdar l))) (cdr l))))
   (cond ((equal (cadr l) 0)
 	 (if (not (equal (caddr l) 0))
-	     (mtell "Warning - an incorrect form for 0.0b0 has been generated."))
+	     (mtell "FPFORMAT: warning: detected an incorrect form of 0.0b0.~%"))
 	 (list '|0| '|.| '|0| '|b| '|0|))
 	(t ;; L IS ALWAYS POSITIVE FP NUMBER
 	 (let ((extradigs (floor (1+ (quotient (integer-length (caddr l)) #.(/ (log 10.0) (log 2.0))))))
@@ -307,7 +307,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   (if (float-inf-p x)
     (merror "Attempted float-to-bigfloat conversion of floating-point infinity.~%"))
   (unless $float2bf
-    (mtell "Warning:  Float to bigfloat conversion of ~S~%" x))
+    (mtell "FLOATTOFP: warning: float to bigfloat conversion of ~S.~%" x))
 
   (multiple-value-bind (frac exp sign)
       (integer-decode-float x)

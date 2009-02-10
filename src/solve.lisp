@@ -134,10 +134,10 @@
 
      ;; Some sanity checks and warning messages.
      (when (and (null varl) $solvenullwarn)
-       (mtell "~&Got a null variable list, continuing - `solve'~%"))
+       (mtell "~&solve: variable list is empty, continuing anyway.~%"))
 
      (when (and (null eql) $solvenullwarn)
-       (mtell "~&Got a null equation list, continuing - `solve'~%"))
+       (mtell "~&solve: equation list is empty, continuing anyway.~%"))
 
      (when (some #'mnump varl)
        (merror
@@ -220,10 +220,10 @@
 							   (nconc *roots *failures)))))
 		      (setq $multiplicities (make-mlist-l (nreverse multi)))))
 		   (t (when (and *failures (not $solveexplicit))
-			(when $dispflag (mtell "The roots of:~%"))
+			(when $dispflag (mtell "solve: the roots of:~%"))
 			(solve2 *failures))
 		      (when *roots
-			(when $dispflag (mtell "Solution:~%"))
+			(when $dispflag (mtell "solve: solution:~%"))
 			(solve2 *roots))
 		      (make-mlist-l equations)))))))
 
@@ -868,8 +868,7 @@
 	     ((setq inverse (get op '$inverse))
 	      (when (and $solvetrigwarn
 			 (member op '(%sin %cos %tan %sec %csc %cot %cosh %sech) :test #'eq))
-		(mtell "~&`solve' is using arc-trig functions to get ~
-			    a solution.~%Some solutions will be lost.~%")
+		(mtell "~&solve: using arc-trig functions to get a solution.~%Some solutions will be lost.~%")
 		(setq $solvetrigwarn nil))
 	      `((mplus) ((mminus) ,(cadr *myvar))
 		((,inverse) ,exp)))
@@ -935,7 +934,7 @@
 		  (t (merror "`linsolve' ran into a nonlinear equation.")))))
      (setq ans (tfgeli 'xa* xn* xm*))
      (if (and $linsolvewarn (car ans))
-	 (mtell "~&Dependent equations eliminated:  ~A~%" (car ans)))
+	 (mtell "~&solve: dependent equations eliminated: ~A~%" (car ans)))
      (if (cadr ans)
 	 (return '((mlist simp))))
      (do ((j 0 (1+ j)))

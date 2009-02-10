@@ -81,7 +81,9 @@
      (setq topreflist (list e))
      (cond ((atom (errset (compilematch e pt)))
 	    (merror "Match processing aborted~%"))
-	   (t (mtell "~M Will be matched uniquely since sub-parts would otherwise be ambigious.~%" pt)
+	   (t
+         ;; NOTE TO TRANSLATORS: MEANING OF FOLLOWING TEXT IS UNKNOWN
+         (mtell "DEFMATCH1: ~M will be matched uniquely since sub-parts would otherwise be ambigious.~%" pt)
 	      (return (list 'lambda
 			    (list e)
 			    `(declare (special ,e))
@@ -112,7 +114,7 @@
 		      (setq leftover (delete (car f) leftover :test #'equal))
 		      (go a1))
 		     (t
-		      (mtell "~M partitions `sum'" (cons '(mplus) leftover))
+		      (mtell "COMPILEPLUS: ~M partitions '+' expression.~%" (cons '(mplus) leftover))
 		      (setq boundlist (append boundlist (atomson leftover)))
 		      (return (emit (list 'cond
 					  (list (list 'part+
@@ -199,7 +201,7 @@
 	       (genref)
 	       (list 'findfun e (memqargs (caaar p)) ''mplus)))
    (cond ((eq (caaar p) 'mplus)
-	  (mtell "~M~%Warning: + within +~%" (car p))
+	  (mtell "COMPILEPLUS: warning: '+' within '+' in:~%~M~%" (car p))
 	  (compileplus (car reflist) (car p)))
 	 (t (emit (list 'setq (genref) (list 'kdr (cadr reflist))))
 	    (compileeach (car reflist) (cdar p))))
@@ -228,7 +230,7 @@
 		      (setq leftover (delete (car f) leftover :test #'equal))
 		      (go a1))
 		     (t
-		      (mtell "~M partitions `product'" (cons '(mtimes) leftover))
+		      (mtell "COMPILETIMES: ~M partitions '*' expression.~%" (cons '(mtimes) leftover))
 		      (setq boundlist (append boundlist (atomson leftover)))
 		      (return (emit (list 'cond
 					  (list (list 'part*
@@ -294,7 +296,7 @@
 	       (genref)
 	       (list 'findfun e (memqargs (caaar p)) ''mtimes)))
    (cond ((eq (caaar p) 'mtimes)
-	  (mtell "~M~%Warning: * within *" (car p))
+	  (mtell "COMPILETIMES: warning: '*' within '*' in:~%~M~%" (car p))
 	  (compiletimes (car reflist) (car p)))
 	 (t (emit (list 'setq (genref) (list 'kdr (cadr reflist))))
 	    (compileeach (car reflist) (cdar p))))
@@ -315,9 +317,9 @@
      (setq pt (copy-tree (setq pt* (simplify (cadr l)))))
      (cond ((atom pt)
 	    (setq pt (copy-tree (setq pt* (meval pt))))
-	    (mtell "~M~%Is the pattern~%" pt)))
+	    (mtell "defmatch: the pattern is:~%~M~%" pt)))
      (setq args (cddr l))
-     (cond ((null (allatoms args)) (mtell "Non-atomic pattern variables")
+     (cond ((null (allatoms args)) (mtell "defmatch: non-atomic pattern variables.")
 	    (return nil)))
      (setq boundlist args)
      (setq *a* (genref))
@@ -366,7 +368,7 @@
 	   ((or (atom pt) (mget (setq name (caar pt)) 'matchdeclare))
 	    (merror "~%~A unsuitable~%" (fullstrip1 (getop name))))
 	   ((member name '(mplus mtimes) :test #'eq)
-	    (mtell "Warning: Putting rules on '+' or '*' is inefficient, and may not work.~%")))
+	    (mtell "tellsimp: warning: putting rules on '+' or '*' is inefficient, and may not work.~%")))
      (setq *a* (genref))
      (cond ((atom (errset (compileeach *a* (cdr pt))))
 	    (merror "Match processing aborted~%")))

@@ -1226,7 +1226,7 @@
 		       (not (= (length fun) 2))))))
      (merror "Bad argument to `deftaylor':~%~M" fun))
    (when (oldget op 'sp2)
-     (mtell "~:M being redefined in `deftaylor'.~%" op))
+     (mtell "deftaylor: redefining ~:M.~%" op))
    (when param (setq series (subst 'sp2var param series)))
    (setq series (subsum '*index series))
    (putprop op series 'sp2)

@@ -606,7 +606,7 @@
        next (decf ix)
        (go loop)
        out
-       (cond ($dispflag (mtell "Solution~%")))
+       (cond ($dispflag (mtell "Solution:~%")))
        (setq sol (list '(mlist)) chk (checklabel $linechar))
        (do ((ll zz (cdr ll)))
 	   ((null ll))

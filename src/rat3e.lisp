@@ -891,7 +891,7 @@
 
 (defun prepfloat (f)
   (cond (modulus (merror "Floating point meaningless unless `modulus' = `false'"))
-	($ratprint (mtell "~&`rat' replaced ~A by" f)))
+	($ratprint (mtell "~&rat: replaced ~A by" f)))
   (setq f (maxima-rationalize f))
   (when $ratprint
     (mtell " ~A/~A = ~A~%"  (car f) (cdr f) (fpcofrat1 (car f) (cdr f))))

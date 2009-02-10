@@ -216,29 +216,28 @@
 
 (defun macsyma-trace-sub (fun handler ilist &aux temp)
   (cond ((not (symbolp (setq fun (getopr fun))))
-	 (mtell "~%Bad arg to `trace': ~M~%" fun)
+	 (mtell "trace: argument is apparently not a function or operator: ~M~%" fun)
 	 nil)
 	((trace-p fun)
 	 ;; Things which redefine should be expected to reset this
 	 ;; to NIL.
-	 (if (not trace-allp) (mtell "~%~@:M is already traced.~%" fun))
+	 (if (not trace-allp) (mtell "trace: function ~@:M is already traced.~%" fun))
 	 nil)
 	((member fun hard-to-trace :test #'eq)
-	 (mtell "~%The function ~:@M cannot be traced.~%" fun)
+	 (mtell "trace: ~@:M cannot be traced.~%" fun)
 	 nil)
 	((not (setq temp (car (macsyma-fsymeval fun))))
-	 (mtell "~%~@:M has no functional properties.~%" fun)
+	 (mtell "trace: ~@:M has no functional properties.~%" fun)
 	 nil)
 	((member temp '(mmacro translated-mmacro) :test #'eq)
-	 (mtell "~%~@:M is a macro, won't trace well, so use ~
-		     the `macroexpand' function to debug it.~%" fun)
+	 (mtell "trace: ~@:M is a macro, so it won't trace well; try 'macroexpand' to debug it.~%" fun)
 	 nil)
 	((get temp 'shadow)
 	 (put-trace-info fun temp ilist)
 	 (trace-fshadow fun temp (make-trace-hook fun temp handler))
 	 (list fun))
 	(t
-	 (mtell "~%~@:M has functional properties not understood by `trace'~%" fun)
+	 (mtell "trace: ~@:M is an unknown type of function.~%" fun)
 	 nil)))
 
 (defvar trace-handling-stack ())
@@ -249,10 +248,10 @@
 (defun macsyma-untrace-sub (fun handler ilist)
   (prog1
       (cond ((not (symbolp (setq fun (getopr fun))))
-	     (mtell "~%Bad arg to `untrace': ~M~%" fun)
+	     (mtell "untrace: argument is apparently not a function or operator: ~M~%" fun)
 	     nil)
 	    ((not (trace-p fun))
-	     (mtell "~%~:@M is not traced.~%" fun)
+	     (mtell "untrace: ~@:M is not traced.~%" fun)
 	     nil)
 	    (t
 	     (trace-unfshadow fun (trace-type fun))
@@ -412,7 +411,7 @@
 		       (return ret-val))
 		      ((retry)
 		       (setq largs ret-val)
-		       (mtell "~%Re applying the function ~:@M~%" fun))
+		       (mtell "TRACE-HANDLER: reapplying the function ~:@M~%" fun))
 		      ((maxima-error)
 		       (merror "~%Signaling `maxima-error' for function ~:@M~%" fun))))))))
 
@@ -431,7 +430,7 @@
 	  (cond ((null options) nil)
 		(($listp options) (cdr options))
 		(t
-		 (mtell "Trace options for ~:@M not a list, so ignored.~%" function)
+		 (mtell "TRACE-OPTION-P: trace options for ~:@M not a list, so ignored.~%" function)
 		 nil)))
 	(cdr options))
        (option))
@@ -479,8 +478,7 @@
 	(cond (($listp $trace_break_arg)
 	       (return (cdr $trace_break_arg)))
 	      (t
-	       (mtell "~%Trace_break_arg set to nonlist, ~
-			      please try again"))))
+	       (mtell "TRACE-ENTER-BREAK: 'trace_break_arg' must be a list.~%"))))
       largs))
 
 (defun trace-exit-break (fun lev ret-val)
@@ -495,7 +493,7 @@
   (do ((ans))(nil)
     (setq ans (apply #'$read argl))
     (if (funcall predicate ans) (return ans))
-    (mtell "~%Unacceptable input, ~A~%" bad-message)))
+    (mtell "PRED-$READ: unacceptable input: ~A~%" bad-message)))
 
 (declare-top (special upper))
 
@@ -547,8 +545,7 @@
 	   (load-and-tell (get fun 'autoload))
 	   (setq try (macsyma-fsymeval-sub fun))
 	   (or try
-	       (mtell "~%~:@M has no functional~
-			      properties after autoloading.~%"
+	       (mtell "trace: ~@:M has no functional properties after autoloading.~%"
 		      fun))
 	   try)
 	  (t try))))

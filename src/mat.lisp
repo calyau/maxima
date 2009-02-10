@@ -436,7 +436,7 @@
 		   (nconc equations (list (displine equatn))))
 	     (push multipl $multiplicities)
 	     (if (and (> multipl 1) $dispflag)
-		 (mtell "Multiplicity ~A~%" multipl)))
+		 (mtell "SOLVE2: multiplicity ~A~%" multipl)))
 	 llist)
   (setq $multiplicities (cons '(mlist simp) (nreverse $multiplicities))))
 

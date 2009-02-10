@@ -1104,7 +1104,7 @@ wrapper for this."
 	 (cond ((null y))
 	       ((integerp y)
 		(if (or (not (primep y)) (member y '(1 0 -1)))
-		    (mtell "Warning: `modulus' being set to ~:M, a non-prime.~%" y)))
+		    (mtell "warning: assigning ~:M, a non-prime, to 'modulus'.~%" y)))
 	       (t (mseterr x y))))
 	((eq x '$setcheck)
 	 (if (not (or (member y '($all t nil) :test #'eq) ($listp y))) (mseterr x y)))
@@ -1154,7 +1154,7 @@ wrapper for this."
        (cdrl nil (or flag (cons (margs argi) cdrl))))
       ((= i 1) (if flag
 		   (cond ((not $maperror)
-			  (when $mapprint (mtell "`map' is doing an `apply'.~%"))
+			  (when $mapprint (mtell "map: calling 'apply'.~%"))
 			  (funcer (arg 1) argl))
 			 ((and (= n 2) (mapatom (arg 2)))
 			  (improper-arg-err (arg 2) '$map))
@@ -1180,7 +1180,7 @@ wrapper for this."
 		       (when (arg j) (return t))))
 	     (when $maperror
 	       (merror "Arguments to `mapl' are not of the same length."))
-	     (when $mapprint (mtell "`map' is truncating.~%")))
+	     (when $mapprint (mtell "map: truncating one or more arguments.~%")))
 	   (return t))
 	 (push (car (arg i)) argl)
 	 (setarg i (cdr (arg i))))
@@ -1212,7 +1212,7 @@ wrapper for this."
 		      (when $maperror
 			(merror "`fullmap' found arguments with incompatible structure."))
 		      (when $mapprint
-			(mtell "`fullmap' is truncating.~%")))
+			(mtell "fullmap: truncating one or more arguments.~%")))
 		    t)))
 	   (done (mcons-op-args op (nreverse ans)))
 	 (do ((op (or (setq bottom (or (zerop fmaplvl) (mapatom (caar cdrl))))
@@ -1222,7 +1222,7 @@ wrapper for this."
 	      (when (and done (dolist (e cdrargl) (if e (return t))))
 		(if $maperror
 		    (merror "`fullmap' found arguments with incompatible structure."))
-		(if $mapprint (mtell "`fullmap' is truncating.~%"))))
+		(if $mapprint (mtell "fullmap: truncating one or more arguments.~%"))))
 	   (setq caareleml (caar eleml))
 	   (or bottom
 	       (setq bottom
@@ -1237,7 +1237,7 @@ wrapper for this."
 	    (not (alike1 op (mop argi)))
 	    (and fmapcaarl (not (eq (caar argi) fmapcaarl))))
 	(cond ($maperror (merror "Incorrect call to `fullmap'."))
-	      (t (if $mapprint (mtell "`fullmap' is doing an `apply'.~%"))
+	      (t (if $mapprint (mtell "fullmap: calling 'apply'.~%"))
 		 (return (funcer fn argl)))))))
 
 (defmspec $matrixmap (l)
@@ -1952,8 +1952,7 @@ wrapper for this."
 			 fnname ($verbify (caar fun)))
 		   (if (and (not (mgetl fnname '(hashar array)))
 			    (get fnname 'specsimp))
-		       (mtell "Warning - you are redefining the Maxima ~
-			    subscripted function ~:M.~%"
+		       (mtell "warning: redefining the Maxima subscripted function ~:M.~%"
 			      fnname)))
 	    ((prog2 (setq fnname ($verbify (caar fun)))
 		 (or (mopp fnname) (member fnname '($all $allbut $%) :test #'eq)))

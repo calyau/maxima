@@ -467,7 +467,7 @@
 		 (transp (setf (symbol-value x) x) t)
 		 ((eq x '$default_let_rule_package) t)
 		 (t
-		  (mtell "Warning: Illegal `remvalue' attempt:~%~M" x) nil))))))
+		  (mtell "remvalue: warning: cannot remove value of:~%~M" x) nil))))))
 
 (defmfun ruleof (rule)
   (or (mget rule 'ruleof)

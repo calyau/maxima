@@ -102,4 +102,4 @@
 		  nil))
     (cond ((member answer '($yes |$Y| |$y| |$N| |$n| $no $unknown $uk) :test #'eq)
 	   (setq end-flag t))
-	  (t (mtell "~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))
+	  (t (mtell "~%Acceptable answers are: yes, y, Y, no, n, N, unknown, uk~%")))))

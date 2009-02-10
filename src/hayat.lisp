@@ -1374,7 +1374,7 @@
       (setq answer (retrieve `((mtext) |Is  | ,d1 | stronger than | ,d2 |?|)
 			     nil))
       (if (member answer '($yes $y $no $n) :test #'eq) (setq end-flag 't)
-	 (mtell "~%Acceptable answers are Yes, Y, No, N~%"))))
+	 (mtell "~%Acceptable answers are: yes, y, no, n~%"))))
 
 (defun datum-lim (datum)
    (if (not (tvar? (datum-var datum)))

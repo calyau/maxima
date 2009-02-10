@@ -399,9 +399,9 @@
 
 (defun sp1log2 (e)
   (and $verbose
-       (prog2 (mtell "Can't expand ")
+       (prog2 (mtell "trigreduce: can't expand ")
 	   (show-exp (list '(%log) e))
-	 (mtell "So we'll try again after applying the rule:~2%~M~%~%"
+	 (mtell "trigreduce: try again after applying the rule:~2%~M~%~%"
 		(list '(mlable) nil
 		      (out-of
 		       (list '(mequal)

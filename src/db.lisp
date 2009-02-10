@@ -320,7 +320,7 @@
 
 (defmfun clear ()
   (if dbtrace
-      (mtell "~%Clearing ~A" marks))
+      (mtell "CLEAR: clearing ~A~%" marks))
   (mapc #'(lambda (sym) (_ (sel sym +labs) nil)) +labs)
   (mapc #'(lambda (sym) (_ (sel sym -labs) nil)) -labs)
   (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
@@ -674,7 +674,7 @@
 (defun mark+ (cl lab)
   (when dbtrace
     (incf marks)
-    (mtell "~%Marking ~A +" cl) (prlab lab))
+    (mtell "MARK+: marking ~A +~%" cl) (prlab lab))
   (mapc #'(lambda (lis) (mark+0 cl lab lis)) (sel cl data)))
 
 (defun mark+3 (cl lab dat)
@@ -685,7 +685,7 @@
 
 (defun mark+0 (cl lab fact)
   (when dbcheck
-    (mtell "~%checking ~a from ~A+" (car fact) cl)
+    (mtell "MARK+0: checking ~a from ~A+~%" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))
@@ -713,13 +713,13 @@
 (defun mark- (cl lab)
   (when dbtrace
     (incf marks)
-    (mtell "Marking ~A -" cl)
+    (mtell "MARK-: marking ~A -~%" cl)
     (prlab lab))
   (mapc #'(lambda (lis) (mark-0 cl lab lis)) (sel cl data)))
 
 (defun mark-0 (cl lab fact)
   (when dbcheck
-    (mtell "~%Checking ~A from ~A-" (car fact) cl)
+    (mtell "MARK-0: checking ~A from ~A-~%" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))

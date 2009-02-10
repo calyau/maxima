@@ -121,7 +121,7 @@
 	(prog1
 	    x
 	  (when $macsyma_extend_warnp
-	    (mtell "Warning: ~M is not a built-in type; assuming it is a Maxima extend type" x))))))
+	    (mtell "modedeclare: warning: ~M is not a built-in type; assuming it is a Maxima extension type." x))))))
 
 (def%tr $modedeclare (form)
   (do ((l (cdr form) (cddr l)))
@@ -229,7 +229,7 @@
 
 (defun signal-mode-error (object mode value)
   (cond ((and $mode_check_warnp (not $mode_check_errorp))
-	 (mtell "Warning: ~:M was declared mode ~:M, has value: ~M" object mode value))
+	 (mtell "warning: ~:M was declared with mode ~:M, but it has value: ~M" object mode value))
 	($mode_check_errorp
 	 (merror "Error: ~:M was declared mode ~:M, has value: ~M" object mode value))))
 			  
@@ -258,8 +258,7 @@
     (t (udm-err x) x)))
 
 (defun udm-err (mode)
-  (mtell "Warning:  ~:M is not a known mode declaration ~
-maybe you want ~:M mode.~%"
+  (mtell "warning: ~:M is not a known mode declaration; maybe you want ~:M mode.~%"
 	 mode
 	 (case mode
 	   (($integer $integerp) '$fixnum)

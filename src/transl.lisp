@@ -98,7 +98,7 @@
   (cond ((eq (symbol-value var) '$obsolete))
 	(t
 	 (setf (symbol-value var) '$obsolete)
-	 (mtell "~%Warning, setting obsolete variable: ~:M~%" var))))
+	 (mtell "warning: assigning to obsolete variable: ~:M~%" var))))
 
 (putprop '$transbind #'obsolete-variable 'assign)
 

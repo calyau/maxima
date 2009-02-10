@@ -163,7 +163,7 @@ relational knowledge is contained in the default context GLOBAL."
 (defmfun $newcontext (x)
   (cond ((not (symbolp x)) (nc-err))
 	((member x $contexts :test #'eq)
-	 (mtell "Context ~M already exists." x) nil)
+	 (mtell "newcontext: context ~M already exists." x) nil)
 	(t (setq $contexts (mcons x $contexts))
 	   (putprop x '($global) 'subc)
 	   (setq context x $context x))))
@@ -210,14 +210,14 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun killcontext (x)
   (cond ((not (member x $contexts :test #'eq))
-	 (mtell "The context ~M doesn't exist." x))
+	 (mtell "killcontext: no such context \"~M\"." x))
 	((eq x '$global) '$global)
 	((eq x '$initial)
 	 (mapc #'remov (zl-get '$initial 'data))
 	 (remprop '$initial 'data)
 	 '$initial)
 	((and (not (eq $context x)) (contextmark) (< 0 (zl-get x 'cmark)))
-	 (mtell "The context ~M is currently active." x))
+	 (mtell "killcontext: context ~M is currently active." x))
 	(t (setq $contexts ($delete x $contexts))
 	   (cond ((and (eq x $context)
 		       (equal ;;replace eq ?? wfs
@@ -1800,7 +1800,7 @@ relational knowledge is contained in the default context GLOBAL."
   (cond ((eq m (sel x +labs)))
 	((and dbtrace (prog1
 			  t
-			(mtell "marking ~M ~M" (if (atom x) x (car x)) m))
+			(mtell "DMARK: marking ~M ~M" (if (atom x) x (car x)) m))
 	      nil))
 	(t
 	 (setq +labs (cons x +labs))
