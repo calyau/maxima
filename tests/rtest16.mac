@@ -608,5 +608,14 @@ true;
 bfloat(gamma(3/4)/gamma(1/4));
 3.379891200336424b-1;
 
+/*
+ * Bug 2582034 - hgfred([a/2,-a/2],[1/2],z) causes error
+ */
+(assume(zn<0), done);
+done;
+
+hgfred([a/2,-a/2],[1/2],zn);
+((%i*sqrt(zn)+sqrt(1-zn))^a+(sqrt(1-zn)-%i*sqrt(zn))^a)/2$
+ 
 end;
 end$

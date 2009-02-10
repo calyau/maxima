@@ -2289,7 +2289,7 @@
 	 (m (cdras 'm match))
 	 (s (cdras 's match))
 	 (b (if s
-		(if (and m (plusp m))
+		(if (and m (eq (checksigntm m) '$positive))
 		    a
 		    b)
 		(if (eq (checksigntm a) '$negative)
