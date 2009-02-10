@@ -1182,7 +1182,6 @@
 
 ;; Compiler macros to convert + to multiple calls to two-arg-+.  Same
 ;; for -, *, and /.
-#-gcl
 (define-compiler-macro + (&whole form &rest args)
   (declare (ignore form))
   (if (null args)
@@ -1192,7 +1191,6 @@
 		`(two-arg-+ ,res ,(car args))))
 	  ((null args) res))))
 
-#-gcl
 (define-compiler-macro - (&whole form number &rest more-numbers)
   (declare (ignore form))
   (if more-numbers
@@ -1203,7 +1201,6 @@
 	 (setq result `(two-arg-- ,result ,(car nlist))))
       `(unary-minus ,number)))
 
-#-gcl
 (define-compiler-macro * (&whole form &rest args)
   (declare (ignore form))
   (if (null args)
@@ -1213,7 +1210,6 @@
 		`(two-arg-* ,res ,(car args))))
 	  ((null args) res))))
 
-#-gcl
 (define-compiler-macro / (number &rest more-numbers)
   (if more-numbers
       (do ((nlist more-numbers (cdr nlist))
@@ -1223,7 +1219,6 @@
 	 (setq result `(two-arg-/ ,result ,(car nlist))))
       `(unary-divide ,number)))
 
-#-gcl
 (define-compiler-macro /= (&whole form number &rest more-numbers)
   ;; Convert (/= x y) to (not (two-arg-= x y)).  Should we try to
   ;; handle a few more cases?
@@ -1233,7 +1228,6 @@
 
 ;; Compiler macros to convert <, >, <=, and >= into multiple calls of
 ;; the corresponding two-arg-<foo> function.
-#-gcl
 (macrolet
     ((frob (op)
        (let ((method (intern (concatenate 'string

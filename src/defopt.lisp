@@ -14,4 +14,4 @@
 ;; (defopt <name> <arlist> <body-boo>)
 
 (defmacro defopt (&rest other)
-  `(#-gcl define-compiler-macro #+gcl si::define-compiler-macro ,@other)) 
+  `(define-compiler-macro ,@other))
