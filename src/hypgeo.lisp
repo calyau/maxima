@@ -12,10 +12,10 @@
 ;;   This program uses the programs on ELL;HYP FASL.
 
 ;;; References:
-;;; 
+;;;
 ;;; Definite integration using the generalized hypergeometric functions
 ;;; Avgoustis, Ioannis Dimitrios
-;;; Thesis. 1977. M.S.--Massachusetts Institute of Technology. Dept. 
+;;; Thesis. 1977. M.S.--Massachusetts Institute of Technology. Dept.
 ;;; of Electrical Engineering and Computer Science
 ;;; http://dspace.mit.edu/handle/1721.1/16269
 ;;;
@@ -101,7 +101,7 @@
   (m2 exp
       '((mplus)
 	((coeffpt)
-	 (c freevar) ; more special to ensure that c is constant 
+	 (c freevar) ; more special to ensure that c is constant
 	 ((mexpt)(u hasvar)(v freevar)))
 	((coeffpp)(a zerp)))
       nil))
@@ -109,20 +109,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Recognize c*t^v*(a+b*t)^w + d and d=0
 ;;;
-;;; This is a generalization of arbpow1. The most general Laplace Transform 
+;;; This is a generalization of arbpow1. The most general Laplace Transform
 ;;; can be expressed as a Hypergeometric U function.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun m2-arbpow2 (exp)
   (m2 exp
       '((mplus)
-        ((mtimes)
-         ((coefftt) (c freevar))
-         ((mexpt) (t equal var) (v freevar))
-         ((mexpt) 
-          ((mplus) (a freevar) ((coefft) (b freevar) (t equal var))) 
-          (w freevar0)))
-        ((coeffpp)(d zerp)))
+	((mtimes)
+	 ((coefftt) (c freevar))
+	 ((mexpt) (t equal var) (v freevar))
+	 ((mexpt)
+	  ((mplus) (a freevar) ((coefft) (b freevar) (t equal var)))
+	  (w freevar0)))
+	((coeffpp)(d zerp)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -467,7 +467,7 @@
     (exp)
   (m2 exp
       '((mplus)
-        ;; erfc is implemented as a simplifying function. Change $erfc to %erfc.
+	;; erfc is implemented as a simplifying function. Change $erfc to %erfc.
 	((coeffpt)(u nonzerp)((%erfc)(w true)))
 	((coeffpp)(a zerp)))
       nil))
@@ -806,102 +806,102 @@
 
     (when (atom form)
       (cond ((and (numberp form) (zerop form)) (return-from defintegrate 0))
-            (t (return-from defintegrate (list '(%specint) form var)))))
+	    (t (return-from defintegrate (list '(%specint) form var)))))
 
     ;; We try to find a constant denominator. This is necessary to get results
     ;; for integrands like u(t)/(a+b+c+...).
 
     (let ((den ($denom form)))
       (when (and (not (equal 1 den)) ($freeof var den))
-        (when *debug-hypgeo*
-          (format t "~&DEFINTEGRATE: We have found a denominator.~%")
-          (format t "~&   : denom = ~A~%" den))
-        (return-from defintegrate 
-          (div (defintegrate (mul den form) var) den))))
+	(when *debug-hypgeo*
+	  (format t "~&DEFINTEGRATE: We have found a denominator.~%")
+	  (format t "~&   : denom = ~A~%" den))
+	(return-from defintegrate
+	  (div (defintegrate (mul den form) var) den))))
 
     ;; We search for a sum of Exponential functions which we can integrate.
-    ;; This code finds result for Trigonometric or Hyperbolic functions with 
+    ;; This code finds result for Trigonometric or Hyperbolic functions with
     ;; a factor t^-1 or t^-2 e.g. t^-1*sin(a*t).
 
     (let* ((l (defltep form))
-           (s (mul -1 (cdras 'a l)))
-           (u ($expand (cdras 'u l)))
-           (l1))
+	   (s (mul -1 (cdras 'a l)))
+	   (u ($expand (cdras 'u l)))
+	   (l1))
       (when *debug-hypgeo*
-        (format t "~&DEFINTEGRATE:~%")
-        (format t "~&   : l    = ~A~%" l))
+	(format t "~&DEFINTEGRATE:~%")
+	(format t "~&   : l    = ~A~%" l))
       (cond
-        ((setq l1 (m2-sum-with-exp-case1 u))
-         ;;  c * t^-1 * (%e^(-a*t) - %e^(-b*t)) + d
-         (let ((c (cdras 'c l1))
-               (a (mul -1 (cdras 'a l1)))
-               (b (mul -1 (cdras 'b l1)))
-               (d (cdras 'd l1)))
-           (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
-           (add
-             (mul c (list '(%log) (div (add s b) (add s a))))
-             (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+	((setq l1 (m2-sum-with-exp-case1 u))
+	 ;;  c * t^-1 * (%e^(-a*t) - %e^(-b*t)) + d
+	 (let ((c (cdras 'c l1))
+	       (a (mul -1 (cdras 'a l1)))
+	       (b (mul -1 (cdras 'b l1)))
+	       (d (cdras 'd l1)))
+	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
+	   (add
+	     (mul c (list '(%log) (div (add s b) (add s a))))
+	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
-        ((setq l1 (m2-sum-with-exp-case2 u))
-         ;;  c * t^(-3/2) * (%e^(-a*t) - %e^(-b*t)) + d
-         (let ((c (cdras 'c l1))
-               (a (mul -1 (cdras 'a l1)))
-               (b (mul -1 (cdras 'b l1))) 
-               (d (cdras 'd l1)))
-           (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
-           (add
-             (mul 
-               2 c 
-               (power '$%pi (div 1 2))
-               (sub
-                 (power (add s b) (inv 2))
-                 (power (add s a) (inv 2))))
-             (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+	((setq l1 (m2-sum-with-exp-case2 u))
+	 ;;  c * t^(-3/2) * (%e^(-a*t) - %e^(-b*t)) + d
+	 (let ((c (cdras 'c l1))
+	       (a (mul -1 (cdras 'a l1)))
+	       (b (mul -1 (cdras 'b l1)))
+	       (d (cdras 'd l1)))
+	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
+	   (add
+	     (mul
+	       2 c
+	       (power '$%pi (div 1 2))
+	       (sub
+		 (power (add s b) (inv 2))
+		 (power (add s a) (inv 2))))
+	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
-        ((setq l1 (m2-sum-with-exp-case3 u))
-         ;; c * t^-2 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
-         (let ((c (cdras 'c l1))
-               (a (div (cdras 'a l1) -2))
-               (d (cdras 'd l1)))
-           (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
-           (add
-             (mul
-               c
-               (add
-                 (mul (add s a a) (list '(%log) (add s a a)))
-                 (mul s (list '(%log) s))
-                 (mul -2 (add s a) (list '(%log) (add s a)))))
-             (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+	((setq l1 (m2-sum-with-exp-case3 u))
+	 ;; c * t^-2 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
+	 (let ((c (cdras 'c l1))
+	       (a (div (cdras 'a l1) -2))
+	       (d (cdras 'd l1)))
+	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
+	   (add
+	     (mul
+	       c
+	       (add
+		 (mul (add s a a) (list '(%log) (add s a a)))
+		 (mul s (list '(%log) s))
+		 (mul -2 (add s a) (list '(%log) (add s a)))))
+	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
-        ((setq l1 (m2-sum-with-exp-case4 u))
-         ;; c * t^-1 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
-         (let ((c (cdras 'c l1))
-               (a (div (cdras 'a l1) (mul 4 '$%i)))
-               (d (cdras 'd l1)))
-           (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
-           (add
-             (mul
-               -1 c
-               (list '(%log) 
-                 (add 1 
-                   (div 
-                     (mul 4 a a)
-                     (mul (sub s (mul 2 '$%i a)) (sub s (mul 2 '$%i a)))))))
-             (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+	((setq l1 (m2-sum-with-exp-case4 u))
+	 ;; c * t^-1 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
+	 (let ((c (cdras 'c l1))
+	       (a (div (cdras 'a l1) (mul 4 '$%i)))
+	       (d (cdras 'd l1)))
+	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
+	   (add
+	     (mul
+	       -1 c
+	       (list '(%log)
+		 (add 1
+		   (div
+		     (mul 4 a a)
+		     (mul (sub s (mul 2 '$%i a)) (sub s (mul 2 '$%i a)))))))
+	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
        ((setq l1 (m2-sum-with-exp-case5 u))
-         ;; c * t^-1 * (1 - %e^(2*a*t)) + d
-         (let ((c (cdras 'c l1))
-               (a (cdras 'a l1))
-               (d (cdras 'd l1)))
-           (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
-           (add
-             (mul c (list '(%log) (div (sub s a) s)))
-             (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+	 ;; c * t^-1 * (1 - %e^(2*a*t)) + d
+	 (let ((c (cdras 'c l1))
+	       (a (cdras 'a l1))
+	       (d (cdras 'd l1)))
+	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
+	   (add
+	     (mul c (list '(%log) (div (sub s a) s)))
+	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
-        (t
-          ;; At this point we expand the integrand.
-         (distrdefexecinit ($expand form)))))))
+	(t
+	  ;; At this point we expand the integrand.
+	 (distrdefexecinit ($expand form)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -914,21 +914,21 @@
 (defun m2-sum-with-exp-case1 (exp)
   (m2 exp
       '((mplus)
-        ((coefft) 
-         (c freevar)
-         ((mexpt) (t varp) -1)
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (a  nonzerp) (t varp))
-              ((coeffpp) (z1 zerp)))))
-        ((coefft) 
-         (c2 equal-times-minus-one c)
-         ((mexpt) (t varp) -1)
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (b  nonzerp) (t varp))
-              ((coeffpp) (z2 zerp)))))
-        ((coeffpp) (d true)))
+	((coefft)
+	 (c freevar)
+	 ((mexpt) (t varp) -1)
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (a  nonzerp) (t varp))
+	      ((coeffpp) (z1 zerp)))))
+	((coefft)
+	 (c2 equal-times-minus-one c)
+	 ((mexpt) (t varp) -1)
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (b  nonzerp) (t varp))
+	      ((coeffpp) (z2 zerp)))))
+	((coeffpp) (d true)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -938,21 +938,21 @@
 (defun m2-sum-with-exp-case2 (exp)
   (m2 exp
       '((mplus)
-        ((coefft) 
-         (c freevar)
-         ((mexpt) (t varp) ((rat) -3 2))    
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (a  nonzerp) (t varp))
-              ((coeffpp) (z1 zerp)))))
-        ((coefft) 
-         (c2 equal-times-minus-one c)
-         ((mexpt) (t varp) ((rat) -3 2))
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (b  nonzerp) (t varp))
-              ((coeffpp) (z2 zerp)))))
-        ((coeffpp) (d true)))
+	((coefft)
+	 (c freevar)
+	 ((mexpt) (t varp) ((rat) -3 2))
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (a  nonzerp) (t varp))
+	      ((coeffpp) (z1 zerp)))))
+	((coefft)
+	 (c2 equal-times-minus-one c)
+	 ((mexpt) (t varp) ((rat) -3 2))
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (b  nonzerp) (t varp))
+	      ((coeffpp) (z2 zerp)))))
+	((coeffpp) (d true)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -962,24 +962,24 @@
 (defun m2-sum-with-exp-case3 (exp)
   (m2 exp
       '((mplus)
-        ((coefft)                 
-         (c freevar)
-         ((mexpt) (t varp) -2))
-        ((coefft)                 
-         (c2 equal c)
-         ((mexpt) (t varp) -2)
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (a  nonzerp) (t varp))
-              ((coeffpp) (z1 zerp)))))
-        ((coefft) 
-         (c3 equal-times-minus-two c)
-         ((mexpt) (t varp) -2)
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (b  equal-div-two a) (t varp))
-              ((coeffpp) (z2 zerp)))))        
-        ((coeffpp) (d true)))
+	((coefft)
+	 (c freevar)
+	 ((mexpt) (t varp) -2))
+	((coefft)
+	 (c2 equal c)
+	 ((mexpt) (t varp) -2)
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (a  nonzerp) (t varp))
+	      ((coeffpp) (z1 zerp)))))
+	((coefft)
+	 (c3 equal-times-minus-two c)
+	 ((mexpt) (t varp) -2)
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (b  equal-div-two a) (t varp))
+	      ((coeffpp) (z2 zerp)))))
+	((coeffpp) (d true)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -989,24 +989,24 @@
 (defun m2-sum-with-exp-case4 (exp)
   (m2 exp
       '((mplus)
-        ((coefft)                 
-         (c freevar)
-         ((mexpt) (t varp) -1))
-        ((coefft)                  
-         (c2 equal c)
-         ((mexpt) (t varp) -1)
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (a  nonzerp) (t varp))
-              ((coeffpp) (z1 zerp)))))
-        ((coefft) 
-         (c3 equal-times-minus-two c)
-         ((mexpt) (t varp) -1)
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (b  equal-div-two a) (t varp))
-              ((coeffpp) (z2 zerp)))))        
-        ((coeffpp) (d true)))
+	((coefft)
+	 (c freevar)
+	 ((mexpt) (t varp) -1))
+	((coefft)
+	 (c2 equal c)
+	 ((mexpt) (t varp) -1)
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (a  nonzerp) (t varp))
+	      ((coeffpp) (z1 zerp)))))
+	((coefft)
+	 (c3 equal-times-minus-two c)
+	 ((mexpt) (t varp) -1)
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (b  equal-div-two a) (t varp))
+	      ((coeffpp) (z2 zerp)))))
+	((coeffpp) (d true)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1016,17 +1016,17 @@
 (defun m2-sum-with-exp-case5 (exp)
   (m2 exp
       '((mplus)
-        ((coefft)                 
-         (c freevar)
-         ((mexpt) (t varp) -1))
-        ((coefft)                  
-         (c2 equal-times-minus-one c)
-         ((mexpt) (t varp) -1)
-            ((mexpt) $%e 
-             ((mplus)
-              ((coeffpt) (a  nonzerp) (t varp))
-              ((coeffpp) (z1 zerp)))))        
-        ((coeffpp) (d true)))
+	((coefft)
+	 (c freevar)
+	 ((mexpt) (t varp) -1))
+	((coefft)
+	 (c2 equal-times-minus-one c)
+	 ((mexpt) (t varp) -1)
+	    ((mexpt) $%e
+	     ((mplus)
+	      ((coeffpt) (a  nonzerp) (t varp))
+	      ((coeffpp) (z1 zerp)))))
+	((coeffpp) (d true)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1053,9 +1053,9 @@
 
 (defun defexec (exp var)
   (let* ((*hyp-return-noun-form-flag* nil) ; We reset the flag.
-         (form (simplifya exp nil))
+	 (form (simplifya exp nil))
 	 (l (defltep exp))
-         (s (cdras 'a l))) ; Get the parameter of the Laplace transform.
+	 (s (cdras 'a l))) ; Get the parameter of the Laplace transform.
 
     ;; If we have not found a parameter, we try to factor the integrand.
 
@@ -1064,23 +1064,23 @@
        (setq s (cdras 'a l))
 
        (when *debug-hypgeo*
-         (format t "~&DEFEXC: We try to factor.~%")
-         (format t "~&   : l = ~A~%" l)))
+	 (format t "~&DEFEXC: We try to factor.~%")
+	 (format t "~&   : l = ~A~%" l)))
 
     (cond (l
 	   ;; EXP is an expression of the form u*%e^(s*t+e*f+c).  So s
 	   ;; is basically the parameter of the Laplace transform.
 	   (let ((result (negtest l s)))
-             ;; At this point we construct the noun form if one of the
-             ;; called routines set the global flag. If the global flag
-             ;; is not set, the noun form has been allready constructed.
-             (if (and *hyp-return-noun-form-p* *hyp-return-noun-form-flag*)
-               (list '($specint) exp var)
-               result)))
+	     ;; At this point we construct the noun form if one of the
+	     ;; called routines set the global flag. If the global flag
+	     ;; is not set, the noun form has been allready constructed.
+	     (if (and *hyp-return-noun-form-p* *hyp-return-noun-form-flag*)
+	       (list '($specint) exp var)
+	       result)))
 	  (t
-           ;; If necessary we construct the noun form.
-           (if *hyp-return-noun-form-p*
-             (list '($specint) exp var)
+	   ;; If necessary we construct the noun form.
+	   (if *hyp-return-noun-form-p*
+	     (list '($specint) exp var)
   	     'other-defint-to-follow-defexec)))))
 
 ;; L is the integrand of the transform, after pattern matching.  S is
@@ -1104,23 +1104,23 @@
 	    ;; But that doesn't occur in the original expression, so
 	    ;; it's very confusing.  What should we do?
 
-            ;; We know psey must be positive. psey is a substitution
-            ;; for the paratemter a and we have checked the sign.
-            ;; So it is the best to add a rule for the sign of psey.
+	    ;; We know psey must be positive. psey is a substitution
+	    ;; for the paratemter a and we have checked the sign.
+	    ;; So it is the best to add a rule for the sign of psey.
 
-            (mfuncall '$assume `((mgreaterp) psey 0))
+	    (mfuncall '$assume `((mgreaterp) psey 0))
 
-            (return
-              (prog1 
-                (maxima-substitute 
-                  (mul -1 s)
-                  'psey
-                  (ltscale u var 'psey c 0 e f))
+	    (return
+	      (prog1
+		(maxima-substitute
+		  (mul -1 s)
+		  'psey
+		  (ltscale u var 'psey c 0 e f))
 
-                ;; We forget the rule after finishing the calculation.
-                (mfuncall '$forget `((mgreaterp) psey 0))))))
+		;; We forget the rule after finishing the calculation.
+		(mfuncall '$forget `((mgreaterp) psey 0))))))
 
-     (return 
+     (return
        (setq *hyp-return-noun-form-flag* 'other-defint-to-follow-negtest))))
 
 ;; Compute the transform of
@@ -1164,7 +1164,7 @@
 
 (defun substl
     (p1 p2 p3)
-  (cond ((eq p1 p2) p3)(t (maxima-substitute p1 p2 p3)))) 
+  (cond ((eq p1 p2) p3)(t (maxima-substitute p1 p2 p3))))
 
 ;; Compute the transform of u*%e^(-p*t+e*f)
 #+nil
@@ -1182,32 +1182,32 @@
   (declare (special *asinx* *atanx*))
   (let (l a)
     (cond ((setq l (m2-sum u))
-           ;; We have found a summation.
-           (when *debug-hypgeo* 
-             (format t "~&LT-EXEC: SUM gefunden~%")
-             (format t "~&   : l = ~A~%" l))
-           (mul
-             (cdras 'c l)
-             (list 
-              '(%sum) 
-               (sendexec (cdras 'u l) 1)
-               (cdras 'i l) (cdras 'l l) (cdras 'h l))))
+	   ;; We have found a summation.
+	   (when *debug-hypgeo*
+	     (format t "~&LT-EXEC: SUM gefunden~%")
+	     (format t "~&   : l = ~A~%" l))
+	   (mul
+	     (cdras 'c l)
+	     (list
+	      '(%sum)
+	       (sendexec (cdras 'u l) 1)
+	       (cdras 'i l) (cdras 'l l) (cdras 'h l))))
 
-          ((setq l (m2-unit_step u))
-           ;; We have found the Unit Step function.
-           (setq u (cdras 'u l)
-                 a (cdras 'a l))
-           (when *debug-hypgeo* 
-             (format t "~&We have found unit_step:~%")
-             (format t "~&   : l = ~A~%" l))
-           (mul
-             (power '$%e (mul a *par*))
-             (sendexec 
-               (cond (($freeof var u) u)
-                     (t (maxima-substitute (sub var a) var u)))
-               1)))
-          
-          ((or *asinx* *atanx*)
+	  ((setq l (m2-unit_step u))
+	   ;; We have found the Unit Step function.
+	   (setq u (cdras 'u l)
+		 a (cdras 'a l))
+	   (when *debug-hypgeo*
+	     (format t "~&We have found unit_step:~%")
+	     (format t "~&   : l = ~A~%" l))
+	   (mul
+	     (power '$%e (mul a *par*))
+	     (sendexec
+	       (cond (($freeof var u) u)
+		     (t (maxima-substitute (sub var a) var u)))
+	       1)))
+
+	  ((or *asinx* *atanx*)
 	   ;; We've already determined that we have an asin or atan
 	   ;; expression, so use lt-asinatan to find the transform.
 	   (lt-asinatan u e))
@@ -1231,10 +1231,10 @@
 (defun m2-sum (exp)
   (m2 exp
       '((mplus)
-        ((coeffpt)
-         (c freevar)
-         ((%sum) (u true) (i true) (l true) (h true)))
-        ((coeffpp) (d zerp)))
+	((coeffpt)
+	 (c freevar)
+	 ((%sum) (u true) (i true) (l true) (h true)))
+	((coeffpp) (d zerp)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1244,10 +1244,10 @@
 (defun m2-unit_step (exp)
   (m2 exp
       '((mplus)
-        ((coeffpt)
-         (u nonzerp)
-         (($unit_step) ((mplus) (t equal var) ((coeffpp) (a true)))))
-        ((coeffpp) (d zerp)))
+	((coeffpt)
+	 (u nonzerp)
+	 (($unit_step) ((mplus) (t equal var) ((coeffpp) (a true)))))
+	((coeffpp) (d zerp)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1283,8 +1283,8 @@
 	   (setq e (inv (mul -8 e)) v (add v 1))
 	   (f24p146test c v e))
 	  ((sqroott f)
-           ;; We don't do the transformation at this place. Because we take the
-           ;; square of e we lost the sign and get wrong results.
+	   ;; We don't do the transformation at this place. Because we take the
+	   ;; square of e we lost the sign and get wrong results.
 	   ;(setq e (mul* e e (inv 4)) v (add v 1))
 	   (f35p147test c v e))
 	  ((t^-1 f)
@@ -1358,8 +1358,8 @@
 	 ;; v must be positive
 	 (f35p147 c v a))
 	(t
-         ;; Set a global flag. When *hyp-return-noun-form-p* is T the noun
-         ;; form will be constructed in the routine DEFEXEC.
+	 ;; Set a global flag. When *hyp-return-noun-form-p* is T the noun
+	 ;; form will be constructed in the routine DEFEXEC.
 	 (setq *hyp-return-noun-form-flag* 'fail-on-f35p147test))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1444,7 +1444,7 @@
   ;; We have not done the calculation v->v+1 and a-> a^2/4
   ;; and subsitute here accordingly.
   (let ((v (add v 1)))
-    (mul 
+    (mul
       c
       (list '(%gamma) (add v v))
       (power 2 (sub 1 v))		; Is this supposed to be here?
@@ -1464,8 +1464,8 @@
 ;;   -> a^(-p)*gamma(p,a)
 (defun f36p147 (c a)
   (let ((-a (mul -1 a)))
-    (mul* c 
-          (power -a (mul -1 *par*))
+    (mul* c
+	  (power -a (mul -1 *par*))
 	 `(($gammagreek) ,*par* ,-a))))
 
 ;; Table of Integral Transforms
@@ -1477,7 +1477,7 @@
 (defun f37p147 (c a)
   (let ((-a (mul -1 a)))
     (mul* c
-          (power -a *par*)
+	  (power -a *par*)
 	 `((%gamma_incomplete) ,(mul -1 *par*) ,-a))))
 
 
@@ -1515,9 +1515,8 @@
 ;;
 #+nil
 (defun dtford (z v)
-  (cond (((lambda(inv4)
-	    (whittindtest (add (div v 2) inv4) inv4))
-	  (inv 4))
+  (cond ((let ((inv4 (inv 4)))
+	   (whittindtest (add (div v 2) inv4) inv4))
 	 (parcyl z v))
 	(t (simpdtf z v))))
 
@@ -2018,8 +2017,8 @@
      (cond ((setq l (onei u))
 	    (setq index1 (cdras 'v l)
 		  arg1   (mul* '$%i (cdras 'w l))
-                  rest   (mul* (inv (power '$%i index1)) (cdras 'u l)))
-            (return (lt1j rest arg1 index1))))
+		  rest   (mul* (inv (power '$%i index1)) (cdras 'u l)))
+	    (return (lt1j rest arg1 index1))))
 
      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2068,13 +2067,13 @@
     ;; It is possible to combine arbpow2 and arbpow.
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    (cond 
+    (cond
       ((setq l (m2-arbpow2 u))
        (setq rest   (cdras 'c l)
-             arg1   (cdras 'a l)
-             arg2   (cdras 'b l)
-             index1 (cdras 'v l)
-             index2 (cdras 'w l))
+	     arg1   (cdras 'a l)
+	     arg2   (cdras 'b l)
+	     index1 (cdras 'v l)
+	     index2 (cdras 'w l))
        (return (lt-arbpow2 rest arg1 arg2 index1 index2))))
 
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2101,8 +2100,8 @@
 (defun lt-arbpow (exp pow)
   (cond ((or (eq exp var) (zerp pow))
 	 (f1p137test pow))
-	(t 
-         (setq *hyp-return-noun-form-flag* 'lt-arbow-failed))))
+	(t
+	 (setq *hyp-return-noun-form-flag* 'lt-arbow-failed))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Laplace transfor of c*t^v*(1+t)^w
@@ -2122,54 +2121,54 @@
       ((equal pow1 0)
        ;; The Laplace transform is an Incomplete Gamma function.
        (mul
-         c
-         (power a (add pow2 1))
-         (inv b)
-         (power (mul *par* a (inv b)) (mul -1 (add pow2 1)))
-         (power '$%e (mul *par* a (inv b)))
-         (list '(%gamma_incomplete) (add pow2 1) (mul *par* a (inv b)))))
+	 c
+	 (power a (add pow2 1))
+	 (inv b)
+	 (power (mul *par* a (inv b)) (mul -1 (add pow2 1)))
+	 (power '$%e (mul *par* a (inv b)))
+	 (list '(%gamma_incomplete) (add pow2 1) (mul *par* a (inv b)))))
       ((not (maxima-integerp (add pow1 pow2 2)))
-       ;; The general result is a Hypergeometric U function U(a,b,z) which can 
+       ;; The general result is a Hypergeometric U function U(a,b,z) which can
        ;; be represented by two Hypergeometic 1F1 functions for the special
        ;; case that the index b is not an integer value.
        (add
-         (mul
-           c
-           (power a (add pow1 pow2 1))
-           (inv (power b (add pow1 1)))
-           (list '(%gamma) (add pow1 pow2 1))
-           (power (mul *par* a (inv b)) (mul -1 (add pow1 pow2 1)))
-           (hgfsimp-exec
-             (list (mul -1 pow2))
-             (list (mul -1 (add pow1 pow2)))
-             (mul *par* a (inv b))))
-         (mul
-           c
-           (power a (add pow1 pow2 1))
-           (inv (power b (add pow1 1)))
-           (list '(%gamma) (add pow1 1))
-           (list '(%gamma) (mul -1 (add pow1 pow2 1)))
-           (inv (list '(%gamma) (mul -1 pow2)))
-           (hgfsimp-exec
-             (list (add pow1 1))
-             (list (add pow1 pow2 2))
-             (mul *par* a (inv b))))))
+	 (mul
+	   c
+	   (power a (add pow1 pow2 1))
+	   (inv (power b (add pow1 1)))
+	   (list '(%gamma) (add pow1 pow2 1))
+	   (power (mul *par* a (inv b)) (mul -1 (add pow1 pow2 1)))
+	   (hgfsimp-exec
+	     (list (mul -1 pow2))
+	     (list (mul -1 (add pow1 pow2)))
+	     (mul *par* a (inv b))))
+	 (mul
+	   c
+	   (power a (add pow1 pow2 1))
+	   (inv (power b (add pow1 1)))
+	   (list '(%gamma) (add pow1 1))
+	   (list '(%gamma) (mul -1 (add pow1 pow2 1)))
+	   (inv (list '(%gamma) (mul -1 pow2)))
+	   (hgfsimp-exec
+	     (list (add pow1 1))
+	     (list (add pow1 pow2 2))
+	     (mul *par* a (inv b))))))
       (t
-        ;; The most general case is a result with the Hypergeometric U function.
-        (mul
-          c
-          (power a (add pow1 pow2 1))
-          (inv (power b (add pow1 1)))
-          (list '(%gamma) (add pow1 1))
-          (list 
-           '(%hypergeometric_u) 
-            (add pow1 1) 
-            (add pow1 pow2 2) 
-            (mul *par* a (inv b))))))
+	;; The most general case is a result with the Hypergeometric U function.
+	(mul
+	  c
+	  (power a (add pow1 pow2 1))
+	  (inv (power b (add pow1 1)))
+	  (list '(%gamma) (add pow1 1))
+	  (list
+	   '(%hypergeometric_u)
+	    (add pow1 1)
+	    (add pow1 pow2 2)
+	    (mul *par* a (inv b))))))
     (setq *hyp-return-noun-form-flag* 'lt-arbpow2-failed)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Logarithmic function 
+;;; Logarithmic function
 ;;;
 ;;;    c*t^(v-1)*log(a*t)
 ;;;       -> c*gamma(v)*s^(-v)*(psi[0](v)-log(s/a))
@@ -2183,9 +2182,9 @@
 (defun lt-log (rest arg)
 
   (let* ((l (c*t^v rest))
-         (c (cdras 'c l))
-         (v (add (cdras 'v l) 1)) ; because v -> v-1
-        )
+	 (c (cdras 'c l))
+	 (v (add (cdras 'v l) 1)) ; because v -> v-1
+	)
 
     (when *debug-hypgeo*
       (format t "~&LT-LOG (rest arg):~%")
@@ -2196,19 +2195,19 @@
     (cond
       ((and l (eq (asksign v) '$positive))
        (let* ((l1 (m2-a*t arg))
-              (a  (cdras 'a l1)))
-         (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
-         (cond 
-           (l1
-             (mul*
-               c
-               (simplify (list '(%gamma) v))
-               (inv (power *par* v))
-               (sub
-                 (simplify (list '(mqapply) (list '($psi array) 0) v))
-                 (list '(%log) (div *par* a)))))
-           (t
-            (setq *hyp-return-noun-form-flag* 'lt-log-failed)))))
+	      (a  (cdras 'a l1)))
+	 (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
+	 (cond
+	   (l1
+	     (mul*
+	       c
+	       (simplify (list '(%gamma) v))
+	       (inv (power *par* v))
+	       (sub
+		 (simplify (list '(mqapply) (list '($psi array) 0) v))
+		 (list '(%log) (div *par* a)))))
+	   (t
+	    (setq *hyp-return-noun-form-flag* 'lt-log-failed)))))
       (t
        (setq *hyp-return-noun-form-flag* 'lt-log-failed)))))
 
@@ -2323,8 +2322,8 @@
 			  (eitgammaincomplete a1))
 			 ((eq flg 'slommel)
 			  (slommeltjandy i1 i11 a1)))))
-	(t 
-          (setq *hyp-return-noun-form-flag* 'y-of-nofract-index))))
+	(t
+	  (setq *hyp-return-noun-form-flag* 'y-of-nofract-index))))
 
 ;; Laplace transform of a single Bessel Y function.
 ;;
@@ -2348,7 +2347,7 @@
 		 (list index1 index2 index3)))
 	(t 'ind-should-be-an-integer-in-polys)))
 
-(defun eqrat(a)(cond ((numberp a) nil)(t (equal (caar a) 'rat)))) 
+(defun eqrat(a)(cond ((numberp a) nil)(t (equal (caar a) 'rat))))
 
 (defun integertest
     (r arg i1 i2 flg)
@@ -2364,7 +2363,7 @@
 		  ((eq flg 't)(ttpjac x i1))
 		  ((eq flg 'u)(utpjac x i1)))))
 
-(defun sendexec(r a)(distrexecinit ($expand (mul (init r) a)))) 
+(defun sendexec(r a)(distrexecinit ($expand (mul (init r) a))))
 
 ;; Test for Whittaker W function.  Simplify this if possible, or
 ;; convert to Whittaker M function.
@@ -2416,7 +2415,7 @@
 				    (list (add (sub v i1) 1))
 				    (div (sub *par* (div a 2))
 					 (add *par* (div a 2)))))))))))))
-  
+
 (defun whittindtest (i1 i2)
   (or (maxima-integerp (add i2 i2))
       (neginp (sub (sub (1//2) i2) i1))
@@ -2451,19 +2450,18 @@
 
 #+nil
 (defun ltw (x n a)
-  ((lambda (diva2)
-     (mul* (power -1 n)
-	   (inv (factorial n))
-	   (power x (sub (inv -2) diva2))
-	   (power '$%e (div x 2))
-	   (wwhit x (add (1//2) diva2 n) diva2)))
-   (div a 2)))
+  (let ((diva2 (div a 2)))
+    (mul* (power -1 n)
+	  (inv (factorial n))
+	  (power x (sub (inv -2) diva2))
+	  (power '$%e (div x 2))
+	  (wwhit x (add (1//2) diva2 n) diva2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun ltw (x n a)
   (let ((diva2 (div a 2)))
-    (mul 
+    (mul
       ;; Use the Gamma function and not the Factorial function.
       (list '(%gamma) (add n a 1))
       (inv (list '(%gamma) (add a 1)))
@@ -2475,37 +2473,31 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun ctpjac
-    (x n v)
-  ((lambda(inv2)
-     (mul* (gm (add v v n))
-	   (inv (gm (add v v)))
-	   (gm (add inv2 v))
-	   (inv (gm (add v inv2 n)))
-	   (pjac x n (sub v inv2)(sub v inv2))))
-   (1//2)))
+(defun ctpjac (x n v)
+  (let ((inv2 (1//2)))
+    (mul* (gm (add v v n))
+	  (inv (gm (add v v)))
+	  (gm (add inv2 v))
+	  (inv (gm (add v inv2 n)))
+	  (pjac x n (sub v inv2)(sub v inv2)))))
 
-(defun ttpjac
-    (x n)
-  ((lambda(inv2)
-     (mul* (factorial n)
-	   (gm inv2)
-	   (inv (gm (add inv2 n)))
-	   (pjac x n (mul -1 inv2)(mul -1 inv2))))
-   (1//2)))
+(defun ttpjac (x n)
+  (let ((inv2 (1//2)))
+    (mul* (factorial n)
+	  (gm inv2)
+	  (inv (gm (add inv2 n)))
+	  (pjac x n (mul -1 inv2)(mul -1 inv2)))))
 
-(defun utpjac
-    (x n)
-  ((lambda(inv2)
-     (mul* (factorial (add n 1))
-	   inv2
-	   (gm inv2)
-	   (inv (gm (add inv2 n 1)))
-	   (pjac x n inv2 inv2)))
-   (1//2)))
+(defun utpjac (x n)
+  (let ((inv2 (1//2)))
+    (mul* (factorial (add n 1))
+	  inv2
+	  (gm inv2)
+	  (inv (gm (add inv2 n 1)))
+	  (pjac x n inv2 inv2))))
 
 ;; Hermite He function as a parabolic cylinder function
-;; 
+;;
 ;; Tables of Integral Transforms
 ;;
 ;; p. 386
@@ -2533,14 +2525,12 @@
 ;; So
 ;;
 ;; erfc(x) = %pi^(-1/2)*2^(1/4)*exp(-x^2/2)*D[-1](x*sqrt(2))
-(defun erfctd
-    (x)
-  ((lambda(inv2)
-     (mul* (power 2 inv2)		; Should this be 2^(1/4)?
-	   (power '$%pi (mul* -1 inv2))
-	   (power '$%e (mul* -1 inv2 x x))
-	   (parcyl (mul* (power 2 inv2) x) -1)))
-   (1//2)))
+(defun erfctd (x)
+  (let ((inv2 (1//2)))
+    (mul* (power 2 inv2)		; Should this be 2^(1/4)?
+	  (power '$%pi (mul* -1 inv2))
+	  (power '$%e (mul* -1 inv2 x x))
+	  (parcyl (mul* (power 2 inv2) x) -1))))
 
 ;; The exponential integral Ei can be written in terms of the
 ;; incomplete gamma function.
@@ -2560,16 +2550,14 @@
 ;; S[u,v](z) = s[u,v](z) + {2^(u-1)*gamma((u-v+1)/2)*gamma((u+v+1)/2)}
 ;;                 * {sin[(u-v)*%pi/2]*bessel_j(v,z)
 ;;                     - cos[(u-v)*%pi/2]*bessel_y(v,z)
-(defun slommeltjandy
-    (m n z)
-  ((lambda(arg)
-     (add (littleslommel m n z)
-	  (mul* (power 2 (sub m 1))
-		(gm (div (sub (add m 1) n) 2))
-		(gm (div (add m n 1) 2))
-		(sub (mul* (sin% arg)(bess n z 'j))
-		     (mul* (cos% arg)(bess n z 'y))))))
-   (mul* (1//2) '$%pi (sub m n))))
+(defun slommeltjandy (m n z)
+  (let ((arg (mul* (1//2) '$%pi (sub m n))))
+    (add (littleslommel m n z)
+	 (mul* (power 2 (sub m 1))
+	       (gm (div (sub (add m 1) n) 2))
+	       (gm (div (add m n 1) 2))
+	       (sub (mul* (sin% arg)(bess n z 'j))
+		    (mul* (cos% arg)(bess n z 'y)))))))
 
 ;; Whittaker W function in terms of Whittaker M function
 ;;
@@ -2604,8 +2592,8 @@
 ;;;
 ;;;   gamma_incomplete(a,x) = gamma(a)- gammagreek(a,x)
 ;;;
-;;; The Gammagreek function will be further transformed to a Hypergeometric 1F1 
-;;; representation. With this change we get more simple and correct results for 
+;;; The Gammagreek function will be further transformed to a Hypergeometric 1F1
+;;; representation. With this change we get more simple and correct results for
 ;;; the Laplace transform of the Incomplete Gamma function.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3047,13 +3035,13 @@
 	    ;; what prop4 is.
 	    ;;
 	    ;; FIXME:  Implement prop4.
-            (when *debug-hypgeo*
+	    (when *debug-hypgeo*
   	      (format t "~&   : const = ~A~%" const)
 	      (format t "~&   : f     = ~A~%" arg))
 
-            ;; We have to add the return of a noun form.
-	    (return 
-              (setq *hyp-return-noun-form-flag* 'prop4-to-be-applied))))
+	    ;; We have to add the return of a noun form.
+	    (return
+	      (setq *hyp-return-noun-form-flag* 'prop4-to-be-applied))))
      labl1
      ;; No const term, if we're here.
      (cond ((eq flg 'oney)
@@ -3069,10 +3057,10 @@
 						      flg
 						      index
 						      arg)))))))
-            (when *debug-hypgeo*
-              (format t "~&LT-LTP - labl1:~%")
-              (format t "~&   : l1 = ~A~%" l1)
-              (format t "~&   : l  = ~A~%" l))
+	    (when *debug-hypgeo*
+	      (format t "~&LT-LTP - labl1:~%")
+	      (format t "~&   : l1 = ~A~%" l1)
+	      (format t "~&   : l  = ~A~%" l))
 
 	    ;; Convert the special function to a hypgergeometric
 	    ;; function.  L1 is the special function converted to the
@@ -3081,7 +3069,7 @@
 	    (return (%$etest l l1))))
      ;; We currently don't know how to handle this yet.
      ;; We add the return of a noun form.
-     (return 
+     (return
        (setq *hyp-return-noun-form-flag* 'other-ca-later))))
 
 (defun lty
@@ -3147,7 +3135,7 @@
     (hyp-onep (ptf (car index) (cadr index) arg))
     (oneq (qtf (car index) (cadr index) arg))
     (gammagreek (gammagreektf index arg))
-    (onepjac 
+    (onepjac
      (pjactf (car index) (cadr index) (caddr index) arg))
     (asin (asintf arg))
     (atan (atantf arg))))
@@ -3196,12 +3184,11 @@
 ;;
 ;; asin(z) = z*F(1/2,1/2; 3/2; z^2)
 (defun asintf (arg)
-  ((lambda(inv2)
-     (list arg
-	   (ref-fpq (list inv2 inv2)
-		    (list (div 3 2))
-		    (mul arg arg))))
-   (1//2)))
+  (let ((inv2 (1//2)))
+    (list arg
+	  (ref-fpq (list inv2 inv2)
+		   (list (div 3 2))
+		   (mul arg arg)))))
 
 ;; atan(x)
 ;;
@@ -3239,7 +3226,7 @@
 ;;
 ;; assoc_legendre_q(v,u,z)
 ;;    = exp(%i*u*%pi)*2^(-v-1)*sqrt(%pi) *
-;;       gamma(v+u+1)/gamma(v+3/2)*z^(-v-u-1)*(z^2-1)^(u/2) * 
+;;       gamma(v+u+1)/gamma(v+3/2)*z^(-v-u-1)*(z^2-1)^(u/2) *
 ;;        F(1+v/2+u/2, 1/2+v/2+u/2; v+3/2; 1/z^2)
 ;;
 ;; FIXME:  What about the branch cut?
@@ -3350,7 +3337,7 @@
 	((mexpt)
 	 (q expor1p)
 	 ((mtimes)((coefftt)(a freevarpar)) (x varp))))
-      nil)) 
+      nil))
 
 (defun execf19
     (l1 l2)
@@ -3360,7 +3347,7 @@
 	    (return (dionarghyp l1 l2 (cadr ans)))))
      ;; We specialized the pattern for the argument. Now the test fails
      ;; correctly and we have to add the return of a noun form.
-     (return 
+     (return
        (setq *hyp-return-noun-form-flag* 'next-for-other-args))))
 
 (defun execfy
@@ -3442,7 +3429,7 @@
     (dotimes (n abs-k)
       (push (div (add s n) k) res))
     (nreverse res)))
-    
+
 
 (defun f19cond
     (a m l1 l2)
@@ -3469,10 +3456,10 @@
 				       a
 				       m)))))
      (return
-        ;; With the orginal code we don't get a nice noun form in all cases.
-        ;; We use the mechanism to set the global flag.
-        (setq *hyp-return-noun-form-flag* 
-              'failed-on-f19cond-multiply-the-other-cases-with-d))))
+	;; With the orginal code we don't get a nice noun form in all cases.
+	;; We use the mechanism to set the global flag.
+	(setq *hyp-return-noun-form-flag*
+	      'failed-on-f19cond-multiply-the-other-cases-with-d))))
 
 ;; Table of Laplace transforms, p 220, formula 19:
 ;;
@@ -3480,7 +3467,7 @@
 ;;
 ;;    t^(s-1)*%f[m,n]([a1,...,am],[p1,...,pn],(c*t)^k)
 ;; is
-;; 
+;;
 ;;    gamma(s)/p^s*%f[m+k,n]([a1,...,am,s/k,(s+1)/k,...,(s+k-1)/k],[p1,...,pm],(k*c/p)^k)
 ;;
 ;; with Re(p) > 0 if m + k <= n, Re(p+k*c*exp(2*%pi*%i*r/k)) > 0 for r
@@ -3494,7 +3481,7 @@
 		      l2
 		      (mul* cf
 			    (power k k)
-			    (power (inv *par*) k))))) 
+			    (power (inv *par*) k)))))
 
 ;; Bessel function expressed as a hypergeometric function.
 ;;
@@ -3514,10 +3501,10 @@
 		 (list (add v 1))
 		 (mul (inv -4)(power z 2)))))
 
-(defun dionarghyp-y (l index arg) 
-  (prog (a m c) 
-     (setq a (cdras 'a arg) 
-	   m (cdras 'm arg) 
+(defun dionarghyp-y (l index arg)
+  (prog (a m c)
+     (setq a (cdras 'a arg)
+	   m (cdras 'm arg)
 	   c (cdras 'c arg))
      (cond ((and (zerp c) (equal m 1.))
 	    (let ((ans (f2p105v2cond a l index)))
@@ -3539,8 +3526,8 @@
 		   ,var))
 	 (return 'fail-in-dionarghyp-y))))
 
-(defun f2p105v2cond (a l index) 
-  (prog (d m) 
+(defun f2p105v2cond (a l index)
+  (prog (d m)
      (setq d (cdras 'd l) m (cdras 'm l))
      (setq m (add m 1.))
      (cond ((eq (checksigntm ($realpart (sub m index)))
@@ -3548,11 +3535,11 @@
 	    (return (f2p105v2cond-simp m index a))))
      (return 'fail-in-f2p105v2cond)))
 
-(defun f50cond (a l v) 
-  (prog (d m) 
-     (setq d (cdras 'd l) 
-	   m (cdras 'm l) 
-	   m (add m (inv 2.)) 
+(defun f50cond (a l v)
+  (prog (d m)
+     (setq d (cdras 'd l)
+	   m (cdras 'm l)
+	   m (add m (inv 2.))
 	   v (div v 2.))
      (cond
        ((and (eq (checksigntm ($realpart (add m v (inv 2.))))
@@ -3564,7 +3551,7 @@
 					(inv 2.)))))
 	(setq a (mul a a (inv 4.)))
 	(return (f50p188-simp d m v a))))
-     (return 'fail-in-f50cond))) 
+     (return 'fail-in-f50cond)))
 
 ;; Table of Integral Transforms
 ;;
@@ -3612,8 +3599,8 @@
 ;;
 ;;    -2/%pi*gamma(u+v)*sqrt(a)*(a^2+p^2)^(-u/2)*assoc_legendre_q(u-1,-v,p/sqrt(a^2+p^2))
 ;;
-;; 
-(defun f2p105v2cond-simp (m v a) 
+;;
+(defun f2p105v2cond-simp (m v a)
   (mul -2.
        (power '$%pi -1.)
        (gm (add m v))
@@ -3623,7 +3610,7 @@
 		  (mul -1. v)
 		  (mul *par*
 		       (power (add (mul a a) (mul *par* *par*))
-			      (inv -2.)))))) 
+			      (inv -2.))))))
 
 ;; This doesn't seem to be used anywhere.
 ;;
@@ -3637,12 +3624,12 @@
 ;; Note: The args here are reversed from our definition of
 ;; assoc_legendre_p!
 #+nil
-(defun leg1fsimp (m v z) 
+(defun leg1fsimp (m v z)
   (mul (inv (gm (sub 1. m)))
        (power (div (add z 1.) (sub z 1.)) (div m 2.))
        (hgfsimp-exec (list (mul -1. v) (add v 1.))
 		     (list (sub 1. m))
-		     (sub (inv 2.) (div z 2.))))) 
+		     (sub (inv 2.) (div z 2.)))))
 
 ;; A&S 8.1.3:
 ;;
@@ -3673,4 +3660,3 @@
 				  (div (add m v 2.) 2.))
 			    (list (add v (mul 3. (inv 2.))))
 			    (inv (mul z z)))))))
-

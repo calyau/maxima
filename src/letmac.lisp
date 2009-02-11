@@ -22,20 +22,16 @@
        (tem))
       ((null pairs)
        (cond ((not (null vars))
-					;`((lambda ,(reverse vars) . ,body) .
-					;,(reverse *let-macro-vals*))
-	      `(cl:let ,(nreverse (loop for v in vars for w in
-					   *let-macro-vals* collect
-					   (list v w)))
-		,@ body)
-	      )
+	      `(cl:let ,(nreverse (loop for v in vars
+				     for w in *let-macro-vals*
+				     collect (list v w)))
+		,@body))
 	     ((null (cdr body))
 	      (car body))
 	     (t `(progn . ,body))))
     (cond ((atom (car pairs))
 	   (or (symbolp (car pairs))
-	       (error 
-		"Garbage found in `let' pattern: ~S" (car pairs)))
+	       (error "Garbage found in `let' pattern: ~S" (car pairs)))
 	   (setq vars (cons (car pairs) vars))
 	   (setq *let-macro-vals* (cons nil *let-macro-vals*)))
 	  (t
@@ -51,8 +47,7 @@
   (cond ((null pattern) vars)
 	((atom pattern)
 	 (or (symbolp pattern)
-	     (error 
-	      "Garbage found in `let' pattern: ~S" pattern))
+	     (error "Garbage found in `let' pattern: ~S" pattern))
 	 (setq *let-macro-vals* (cons nil *let-macro-vals*))
 	 (cons pattern vars))
 	(t (let-macro-get-vars (cdr pattern)
@@ -65,15 +60,12 @@
       ((null p)
        `(progn . ,body))
     (cond ((atom (cdr p))
-	   (error 
-	    "Odd number of args to `desetq': ~S" p))
+	   (error "Odd number of args to `desetq': ~S" p))
 	  ((atom (car p))
 	   (or (symbolp (car p))
-	       (error 
-		"Garbage found in `desetq' pattern: ~S" (car p)))
+	       (error "Garbage found in `desetq' pattern: ~S" (car p)))
 	   (and (null (car p))
-		(error 
-		 "Bad `desetq' pattern: ~S" (car p)))
+		(error "Bad `desetq' pattern: ~S" (car p)))
 	   (setq body (nconc body `((setq ,(car p) ,(cadr p))))))
 	  (t
 	   (setq tem (cons nil nil))
@@ -95,31 +87,22 @@
 	 (rplaca cell code)
 	 nil)
 	(t
-	 ((lambda (avar dvar)
-	    (cond ((null avar)
-		   (cond ((null dvar) nil)
-			 (t (let-macro-hair (cdr pattern)
-					    `(cdr ,code)
-					    cell))))
-		  ((null dvar)
-		   (let-macro-hair (car pattern)
-				   `(car ,code)
-				   cell))
-		  (t
-		   (rplaca cell code)
-		   ((lambda (acell dcell)
-		      (cons `(setq ,avar . ,acell)
-			    (nconc (let-macro-hair (car pattern)
-						   `(car ,dvar)
-						   acell)
-				   (cons `(setq ,dvar . ,dcell)
-					 (let-macro-hair (cdr pattern)
-							 `(cdr ,dvar)
-							 dcell)))))
-		    (cons nil nil)
-		    (cons nil nil)))))
-	  (let-macro-get-last-var (car pattern))
-	  (let-macro-get-last-var (cdr pattern))))))
+	 (let ((avar (let-macro-get-last-var (car pattern)))
+	       (dvar (let-macro-get-last-var (cdr pattern))))
+	   (cond ((null avar)
+		  (if (null dvar)
+		      nil
+		      (let-macro-hair (cdr pattern) `(cdr ,code) cell)))
+		 ((null dvar)
+		  (let-macro-hair (car pattern) `(car ,code) cell))
+		 (t
+		  (rplaca cell code)
+		  (let ((acell (cons nil nil))
+			(dcell (cons nil nil)))
+		    (cons `(setq ,avar . ,acell)
+			  (nconc (let-macro-hair (car pattern) `(car ,dvar) acell)
+				 (cons `(setq ,dvar . ,dcell)
+				       (let-macro-hair (cdr pattern) `(cdr ,dvar) dcell)))))))))))
 
 (defmacro destructuring-let* (pairs &body body)
   (cond ((loop for v in pairs

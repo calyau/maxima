@@ -179,11 +179,10 @@
 ;;ARE TO BE PRECEEDED BY A "%"
 
 (defmfun m2 (e p splist)
-  ((lambda (ans)
-     (cond ((null (m1 (copy-tree e) p)) nil)
-	   ((null (cdr ans)))
-	   ((cdr ans))))
-   (list nil)))
+  (let ((ans (list nil)))
+    (cond ((null (m1 (copy-tree e) p)) nil)
+	  ((null (cdr ans)))
+	  ((cdr ans)))))
 
 (defun sav&del (x)
   (preserve x)
@@ -240,11 +239,10 @@
 			  ((restore))))))
      (setq x e)
      l5	(cond ((null (cdr x))
-	       ((lambda (ident)
-		  (cond ((and ident (m1 ident (car z)))
-			 (go loop))
-			((return (restore)))))
-		(opident (caar p))))
+	       (let ((ident (opident (caar p))))
+		 (cond ((and ident (m1 ident (car z)))
+			(go loop))
+		       ((return (restore))))))
 	      ((or (atom (car z)) (var-pat (car z)))
 	       (cond ((m1 (cadr x) (car z))
 		      (sav&del x) (go loop))))
@@ -360,19 +358,18 @@
   (do ((z (cond ((mplusp e) e) ((list '(mplus) e))))
        (zz (cons '(coefft) (cdr p)))) ;THIS ROUTINE IS THE ONE WHICH PUTS
 					;MOST OF THE THE GARBAGE ON ANS IT
-      ((null (cdr z))		       ;IT CANNOT USE THE SPLIST HACK
+      ((null (cdr z))			;IT CANNOT USE THE SPLIST HACK
        (setq z (findit (cond ((eq (caadr p) 'var*) ;BECAUSE IT COULD BE USING
 			      (car (cddadr p)))	;MANY DIFFERENT VARIABLES ALTHOUGH
 			     ((caadr p))))) ;THOUGHT THE FIRST IS THE ONLY ONE
-       ((lambda (q fl)	       ;WHICH BECOMES A SUM AND MIGHT BE RESET
-	  (cond ((null (testa (cadr p) q fl))
-		 (restore))
-		(ind (restore1))
-		(t (restore2) q)))
-	(cond ((null z) 0)
-	      ((null (cdr z)) (car z))
-	      ((simplus (cons '(mplus) z) 1 nil)))
-	(cond ((and z (cdr z)) 'coeffpt))))
+       (let ((q (cond ((null z) 0)
+		      ((null (cdr z)) (car z))
+		      ((simplus (cons '(mplus) z) 1 nil))))
+	     (fl (if (and z (cdr z)) 'coeffpt))) ;WHICH BECOMES A SUM AND MIGHT BE RESET
+	 (cond ((null (testa (cadr p) q fl))
+		(restore))
+	       (ind (restore1))
+	       (t (restore2) q))))
     (cond ((null (m1 (cadr z) zz))	;THIS IS THE DO BODY
 	   (setq z (cdr z)))
 	  ((sav&del z)))))
@@ -602,21 +599,20 @@
   (replac exp1))
 
 (defun replac (exp1)
-  ((lambda (w1)
-     (cond ((null exp1) nil)
-	   ((not (atom exp1))
-	    (cond ((eq (car exp1) 'eval)
-		   (simplifya (eval (replac (cadr exp1))) nil))
-		  ((eq (car exp1) 'quote) (cadr exp1))
-		  (t (setq w1 (mapcar 'replac (cdr exp1)))
-		     (cond ((equal w1 (cdr exp1))
-			    exp1)
-			   ((simplifya (cons (list (caar exp1)) w1) t))))))
-	   ((numberp exp1) exp1)
-	   ((setq w1 (assoc exp1 dict :test #'eq))
-	    (cdr w1))
-	   (exp1)))
-   nil))
+  (let ((w1 nil))
+    (cond ((null exp1) nil)
+	  ((not (atom exp1))
+	   (cond ((eq (car exp1) 'eval)
+		  (simplifya (eval (replac (cadr exp1))) nil))
+		 ((eq (car exp1) 'quote) (cadr exp1))
+		 (t (setq w1 (mapcar 'replac (cdr exp1)))
+		    (cond ((equal w1 (cdr exp1))
+			   exp1)
+			  ((simplifya (cons (list (caar exp1)) w1) t))))))
+	  ((numberp exp1) exp1)
+	  ((setq w1 (assoc exp1 dict :test #'eq))
+	   (cdr w1))
+	  (exp1))))
 
 (declare-top (unspecial var splist dict ans bindlist speclist))
 
