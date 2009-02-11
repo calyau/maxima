@@ -276,3 +276,89 @@ done;
 test_table('carlson_rd, mrd, 6e-14);
 [];
 
+/* Some tests of the Jacobian elliptic functions.  
+ * Just some tests at random points, to verify that we are accurate.
+ * The reference values were obtained from Mathematica, but we could 
+ * also just compute the values using a much larger fpprec.
+ */
+
+test_table('jacobi_sn,
+           [[[1b0+%i*1b0, .7b0], 1.134045971912365274954b0 + 0.352252346922494477621b0*%i],
+            [[1b0+%i*1b0, 2b0], 0.98613318109123804740b0 + 0.09521910819727230780b0*%i],
+            [[1b0+%i*1b0, 2b0+3b0*%i], 0.94467077879445294981b0 - 0.19586410083100945528b0* %i],
+            [[1.785063352082689082581887b0 *%i + 8.890858759528509578661528b-1,
+              9.434463451695984398149033b-1 - 1.476052973708684178844821b-1 * %i],
+             1.345233534539675700312281b0 - 7.599023926615176284214056b-2 * %i]],
+           1b-15);
+[];
+
+test_table('jacobi_cn,
+           [[[1b0+%i*1b0, .7b0], 0.571496591371764254029b0 - 0.698989917271916772991b0*%i ],
+            [[1b0+%i*1b0, 2b0], 0.33759463268642431412b0 - 0.27814044708010806377b0*%i],
+            [[1b0+%i*1b0, 2b0+3b0*%i], -0.52142079485827170824b0 - 0.35485177134179601850b0*%i],
+            [[100b0, .7b0], 0.93004753815774770476196b0]], 
+           3b-14);
+[];
+
+test_table('jacobi_dn,
+           [[[1b0+%i*1b0, .7b0], 0.62297154372331777630564880787568b0 - 0.448863598031509643267241389621738b0 *%i ],
+            [[1b0+%i*1b0, 2b0], 0.1913322443206041462495606602242b0 - 0.9815253294150083432282549919753b0 * %i],
+            [[1b0+%i*1b0, 2b0+3b0*%i], 0.6147387452173944656984656771134b0 - 1.4819401302071697495918834416787b0 * %i],
+            [[100b0, .7b0], 0.95157337933724324055428565654872978b0],
+            [[1.785063352082689082581887b0 *%i + 8.890858759528509578661528b-1,
+              9.434463451695984398149033b-1 - 1.476052973708684178844821b-1 * %i],
+             -8.617730683333292717095686b-1 *%i - 2.663978258141280808361839b-1]], 
+           2b-15);
+[];
+
+/* These routines for cn and dn work well for small (<= 1?) values of
+ * u and m.  They have known issues for large real values of u.
+ */
+(ascending_transform(u,m) :=
+  block([root_m : expand(rectform(sqrt(m))), mu, root_mu1, v],
+    mu : expand(rectform(4*root_m/(1+root_m)^2)),
+    root_mu1 : expand(rectform((1-root_m)/(1+root_m))),
+    v : expand(rectform(u/(1+root_mu1))),
+    [v, mu, root_mu1]),
+ elliptic_dn_ascending(u,m) :=
+  if is(abs(m-1) < 4*10^(-fpprec)) then sech(u)
+  else
+    block([v, mu, root_mu1, new],
+      [v, mu, root_mu1] : ascending_transform(u,m),
+      new : elliptic_dn_ascending(v, mu),
+      expand(rectform((1-root_mu1)/mu*(new^2 + root_mu1)/new))),
+ elliptic_cn_ascending(u,m) :=
+  if is(abs(m-1) < 4*10^(-fpprec)) then sech(u)
+  else
+    block([v, mu, root_mu1, new],
+      [v, mu, root_mu1] : ascending_transform(u,m),
+      new : elliptic_dn_ascending(v, mu),
+      expand(rectform((1+root_mu1)/mu*(new^2-root_mu1)/new))),
+ done);
+done;
+
+/* Test with random values for the argument and parameter. */
+(test_random(n, eps, testf, truef) :=
+  block([badpoints : [], maxerr : -1],
+    for k : 1 thru n do
+      block([z : bfloat(1-2*random(1d0) + %i * (1-2*random(1d0))),
+             m : bfloat(1-2*random(1d0) + %i * (1-2*random(1d0))),
+             ans, expected, abserr],
+        ans : testf(z, m),
+        expected : truef(z, m),
+        abserr : abs(ans-expected),
+        maxerr : max(maxerr, abserr),
+        if abserr > eps then
+          badpoints : cons([[z,m], ans, expected, abserr], badpoints)),
+    if badpoints # [] then
+      cons(maxerr, badpoints)
+    else
+      badpoints),
+ done);
+done;
+
+test_random(50, 2b-15, 'jacobi_dn, 'elliptic_dn_ascending);
+[];
+
+test_random(50, 2b-15, 'jacobi_cn, 'elliptic_cn_ascending);
+[];

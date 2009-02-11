@@ -49,105 +49,115 @@
 ;; cn(100,.7) > 1e10.  This is clearly not right since |cn| <= 1.
 ;;
 
-;; Leave this here for now.  We may remove this at some later date.
-#+nil
-(flet ((ascending-transform (u m)
-	 ;; A&S 16.14.1
-	 ;;
-	 ;; Take care in computing this transform.  For the case where
-	 ;; m is complex, we should compute sqrt(mu1) first as
-	 ;; (1-sqrt(m))/(1+sqrt(m)), and then square this to get mu1.
-	 ;; If not, we may choose the wrong branch when computing
-	 ;; sqrt(mu1).
-	 (let* ((root-m (cl:sqrt m))
-		(mu (/ (* 4 root-m)
-		       (cl:expt (1+ root-m) 2)))
-		(root-mu1 (/ (- 1 root-m) (+ 1 root-m)))
-		(v (/ u (1+ root-mu1))))
-	   (values v mu root-mu1)))
-       (descending-transform (u m)
-	 ;; Note: Don't calculate mu first, as given in 16.12.1.  We
-	 ;; should calculate sqrt(mu) = (1-sqrt(m1)/(1+sqrt(m1)), and
-	 ;; then compute mu = sqrt(mu)^2.  If we calculate mu first,
-	 ;; sqrt(mu) loses information when m or m1 is complex.
-	 (let* ((root-m1 (cl:sqrt (- 1 m)))
-		(root-mu (/ (- 1 root-m1) (+ 1 root-m1)))
-		(mu (* root-mu root-mu))
-		(v (/ u (1+ root-mu))))
-	   (values v mu root-mu))))
-  (declare (inline descending-transform ascending-transform))
-
-
-  ;; Could use the descending transform, but some of my tests show
-  ;; that it has problems with roundoff errors.
-  (defun elliptic-dn-ascending (u m)
-    (cond ((zerop m)
-	   ;; A&S 16.6.3
-	   1.0)
-	  ((< (abs (- 1 m)) (* 4 flonum-epsilon))
-	   ;; A&S 16.6.3
-	   (/ (cl:cosh u)))
-	  (t
-	   (multiple-value-bind (v mu root-mu1)
-	       (ascending-transform u m)
-	     (format t "dn-ascend: v, mu, root-mu1 = ~A ~A ~A~%" v mu root-mu1)
-	     ;; A&S 16.14.4
-	     (let* ((new-dn (elliptic-dn-ascending v mu)))
-	       (* (/ (- 1 root-mu1) mu)
-		  (/ (+ root-mu1 (* new-dn new-dn))
-		     new-dn)))))))
-
-  ;; Don't use the descending version because it requires cn, dn, and
-  ;; sn.
-  (defun elliptic-cn-ascending (u m)
-    (cond ((zerop m)
-	   ;; A&S 16.6.2
-	   (cl:cos u))
-	  ((< (abs (- 1 m)) (* 4 flonum-epsilon))
-	   ;; A&S 16.6.2
-	   (/ (cl:cosh u)))
-	  (t
-	   (multiple-value-bind (v mu root-mu1)
-	       (ascending-transform u m)
-	     ;; A&S 16.14.3
-	     (format t "cn-ascend: v, mu, root-mu1 = ~A ~A ~A~%" v mu root-mu1)
-	     (let* ((new-dn (elliptic-dn-ascending v mu)))
-	       (* (/ (+ 1 root-mu1) mu)
-		  (/ (- (* new-dn new-dn) root-mu1)
-		     new-dn)))))))
-
-  ;; We don't use the ascending transform here because it requires
-  ;; evaluating sn, cn, and dn.  The ascending transform only needs
-  ;; sn.
-  (defun elliptic-sn-descending (u m)
-    (cond ((= m 1)
-	   ;; A&S 16.6.1
-	   (cl:tanh u))
-	  ((< (abs m) flonum-epsilon)
-	   ;; A&S 16.6.1
-	   (cl:sin u))
-	  (t
-	   (multiple-value-bind (v mu root-mu)
-	       (descending-transform u m)
-	     (let* ((new-sn (elliptic-sn-descending v mu)))
-	       (/ (* (1+ root-mu) new-sn)
-		  (1+ (* root-mu new-sn new-sn))))))))
-  #+nil
-  (defun elliptic-sn-ascending (u m)
-    (if (< (abs (- 1 m)) (* 4 flonum-epsilon))
-	;; A&S 16.6.1
-	(tanh u)
-	(multiple-value-bind (v mu root-mu1)
-	    (ascending-transform u m)
-	  ;; A&S 16.14.2
-	  (let* ((new-cn (elliptic-cn-ascending v mu))
-		 (new-dn (elliptic-dn-ascending v mu))
-		 (new-sn (elliptic-sn-ascending v mu)))
-	    (/ (* (+ 1 root-mu1) new-sn new-cn)
-	       new-dn)))))
-  )
-
 (in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+
+(declaim (inline descending-transform ascending-transform))
+
+(defun ascending-transform (u m)
+  ;; A&S 16.14.1
+  ;;
+  ;; Take care in computing this transform.  For the case where
+  ;; m is complex, we should compute sqrt(mu1) first as
+  ;; (1-sqrt(m))/(1+sqrt(m)), and then square this to get mu1.
+  ;; If not, we may choose the wrong branch when computing
+  ;; sqrt(mu1).
+  (let* ((root-m (sqrt m))
+	 (mu (/ (* 4 root-m)
+		(expt (1+ root-m) 2)))
+	 (root-mu1 (/ (- 1 root-m) (+ 1 root-m)))
+	 (v (/ u (1+ root-mu1))))
+    (values v mu root-mu1)))
+
+(defun descending-transform (u m)
+  ;; Note: Don't calculate mu first, as given in 16.12.1.  We
+  ;; should calculate sqrt(mu) = (1-sqrt(m1)/(1+sqrt(m1)), and
+  ;; then compute mu = sqrt(mu)^2.  If we calculate mu first,
+  ;; sqrt(mu) loses information when m or m1 is complex.
+  (let* ((root-m1 (sqrt (- 1 m)))
+	 (root-mu (/ (- 1 root-m1) (+ 1 root-m1)))
+	 (mu (* root-mu root-mu))
+	 (v (/ u (1+ root-mu))))
+    (values v mu root-mu)))
+
+
+;; Could use the descending transform, but some of my tests show
+;; that it has problems with roundoff errors.
+
+;; WARNING: This doesn't work very well for u > 1000 or so.  For
+;; example (elliptic-dn-ascending 1000b0 .5b0) -> 3.228b324, but dn <= 1.
+#+nil
+(defun elliptic-dn-ascending (u m)
+  (cond ((zerop m)
+	 ;; A&S 16.6.3
+	 1.0)
+	((< (abs (- 1 m)) (* 4 (epsilon u)))
+	 ;; A&S 16.6.3
+	 (/ (cosh u)))
+	(t
+	 (multiple-value-bind (v mu root-mu1)
+	     (ascending-transform u m)
+	   ;; A&S 16.14.4
+	   (let* ((new-dn (elliptic-dn-ascending v mu)))
+	     (* (/ (- 1 root-mu1) mu)
+		(/ (+ root-mu1 (* new-dn new-dn))
+		   new-dn)))))))
+
+;; Don't use the descending version because it requires cn, dn, and
+;; sn.
+;;
+;; WARNING: This doesn't work very well for large u.
+;; (elliptic-cn-ascending 1000b0 .5b0) -> 4.565b324.  But |cn| <= 1.
+#+nil
+(defun elliptic-cn-ascending (u m)
+  (cond ((zerop m)
+	 ;; A&S 16.6.2
+	 (cos u))
+	((< (abs (- 1 m)) (* 4 (epsilon u)))
+	 ;; A&S 16.6.2
+	 (/ (cl:cosh u)))
+	(t
+	 (multiple-value-bind (v mu root-mu1)
+	     (ascending-transform u m)
+	   ;; A&S 16.14.3
+	   (let* ((new-dn (elliptic-dn-ascending v mu)))
+	     (* (/ (+ 1 root-mu1) mu)
+		(/ (- (* new-dn new-dn) root-mu1)
+		   new-dn)))))))
+
+;;
+;; This appears to work quite well for both real and complex values
+;; of u.
+(defun elliptic-sn-descending (u m)
+  (cond ((= m 1)
+	 ;; A&S 16.6.1
+	 (tanh u))
+	((< (abs m) (epsilon u))
+	 ;; A&S 16.6.1
+	 (sin u))
+	(t
+	 (multiple-value-bind (v mu root-mu)
+	     (descending-transform u m)
+	   (let* ((new-sn (elliptic-sn-descending v mu)))
+	     (/ (* (1+ root-mu) new-sn)
+		(1+ (* root-mu new-sn new-sn))))))))
+
+;; We don't use the ascending transform here because it requires
+;; evaluating sn, cn, and dn.  The ascending transform only needs
+;; sn.
+#+nil
+(defun elliptic-sn-ascending (u m)
+  (if (< (abs (- 1 m)) (* 4 flonum-epsilon))
+      ;; A&S 16.6.1
+      (tanh u)
+      (multiple-value-bind (v mu root-mu1)
+	  (ascending-transform u m)
+	;; A&S 16.14.2
+	(let* ((new-cn (elliptic-cn-ascending v mu))
+	       (new-dn (elliptic-dn-ascending v mu))
+	       (new-sn (elliptic-sn-ascending v mu)))
+	  (/ (* (+ 1 root-mu1) new-sn new-cn)
+	     new-dn)))))
+
 ;; AGM scale.  See A&S 17.6
 ;;
 ;; The AGM scale is
@@ -165,6 +175,16 @@
 	       b (sqrt (* a b))
 	       c (/ (- a b) 2))))
 
+;; WARNING: This seems to have accuracy problems when u is complex.  I
+;; (rtoy) do not know why.  For example (jacobi-agm #c(1d0 1d0) .7d0)
+;; returns
+;;
+;; #C(1.134045970915582 0.3522523454566013)
+;; #C(0.57149659007575 -0.6989899153338323)
+;; #C(0.6229715431044184 -0.4488635962149656)
+;;
+;; But the actual value of sn(1+%i, .7) is .3522523469224946 %i +
+;; 1.134045971912365.  We've lost about 7 digits of accuracy!
 (defun jacobi-agm (u m)
   ;; A&S 16.4.
   ;;
@@ -196,48 +216,85 @@
 
 (defun sn (u m)
   (cond ((zerop m)
-	 ;; jacobi_sn(u,0) = sin(u)
+	 ;; jacobi_sn(u,0) = sin(u).  Should we use A&S 16.13.1 if m
+	 ;; is small enough?
+	 ;;
+	 ;; sn(u,m) = sin(u) - 1/4*m(u-sin(u)*cos(u))*cos(u)
 	 (sin u))
 	((= m 1)
-	 ;; jacobi_sn(u,1) = tanh(u)
+	 ;; jacobi_sn(u,1) = tanh(u).  Should we use A&S 16.15.1 if m
+	 ;; is close enough to 1?
+	 ;;
+	 ;; sn(u,m) = tanh(u) + 1/4*(1-m)*(sinh(u)*cosh(u)-u)*sech(u)^2
 	 (tanh u))
 	(t
-	 (multiple-value-bind (s c d)
-	     (jacobi-agm u m)
-	   (declare (ignore c d))
+	 ;; Use the ascending Landen transformation to compute sn.
+	 (let ((s (elliptic-sn-descending u m)))
 	   (if (and (realp u) (realp m))
 	       (realpart s)
 	       s)))))
 
-(defun cn (u m)
-  (cond ((zerop m)
-	 ;; jacobi_cn(u,0) = cos(u)
-	 (cos u))
-	((= m 1)
-	 ;; jacobi_cn(u,1) = sech(u)
-	 (/ (cosh u)))
-	(t
-	 (multiple-value-bind (s c d)
-	     (jacobi-agm u m)
-	   (declare (ignore s d))
-	   (if (and (realp u) (realp m))
-	       (realpart c)
-	       c)))))
-
 (defun dn (u m)
   (cond ((zerop m)
-	 ;; jacobi_dn(u,0) = 1
+	 ;; jacobi_dn(u,0) = 1.  Should we use A&S 16.13.3 for small m?
+	 ;;
+	 ;; dn(u,m) = 1 - 1/2*m*sin(u)^2
 	 1)
 	((= m 1)
-	 ;; jacobi_dn(u,1) = sech(u)
-	 (/ (cl:cosh u)))
+	 ;; jacobi_dn(u,1) = sech(u).  Should we use A&S 16.15.3 if m
+	 ;; is close enough to 1?
+	 ;;
+	 ;; dn(u,m) = sech(u) + 1/4*(1-m)*(sinh(u)*cosh(u)+u)*tanh(u)*sech(u)
+	 (/ (cosh u)))
 	(t
-	 (multiple-value-bind (s c d)
-	     (jacobi-agm u m)
-	   (declare (ignore s c))
-	   (if (and (realp u) (realp m))
-	       (realpart d)
-	       d)))))
+	 ;; Use the Gauss transformation from
+	 ;; http://functions.wolfram.com/09.29.16.0013.01:
+	 ;;
+	 ;;
+	 ;; dn((1+sqrt(m))*z, 4*sqrt(m)/(1+sqrt(m))^2)
+	 ;;   =  (1-sqrt(m)*sn(z, m)^2)/(1+sqrt(m)*sn(z,m)^2)
+	 ;;
+	 ;; So
+	 ;;
+	 ;; dn(y, mu) = (1-sqrt(m)*sn(z, m)^2)/(1+sqrt(m)*sn(z,m)^2)
+	 ;;
+	 ;; where z = y/(1+sqrt(m)) and mu=4*sqrt(m)/(1+sqrt(m))^2.
+	 ;;
+	 ;; Solve for m, and we get
+	 ;;
+	 ;; sqrt(m) = - (mu+2*sqrt(1-mu)-2)/mu or (-mu+2*sqrt(1-mu)+2)/mu.
+	 ;;
+	 ;; I don't think it matters which sqrt we use, so I (rtoy)
+	 ;; arbitrarily choose the first one above.
+ 	 (let* ((root (- (/ (+ m (* 2 (sqrt (- 1 m))) -2)
+			    m)))
+		(z (/ u (+ 1 root)))
+		(s (elliptic-sn-descending z (* root root)))
+		(p (* root s s )))
+	   (/ (- 1 p)
+	      (+ 1 p))))))
+
+(defun cn (u m)
+  (cond ((zerop m)
+	 ;; jacobi_cn(u,0) = cos(u).  Should we use A&S 16.13.2 for
+	 ;; small m?
+	 ;;
+	 ;; cn(u,m) = cos(u) + 1/4*m*(u-sin(u)*cos(u))*sin(u)
+	 (cos u))
+	((= m 1)
+	 ;; jacobi_cn(u,1) = sech(u).  Should we use A&S 16.15.3 if m
+	 ;; is close enough to 1?
+	 ;;
+	 ;; cn(u,m) = sech(u) - 1/4*(1-m)*(sinh(u)*cosh(u)-u)*tanh(u)*sech(u)
+	 (/ (cosh u)))
+	(t
+	 ;; Use the ascending Landen transformation, A&S 16.14.13.
+	 (multiple-value-bind (v mu root-mu1)
+	     (ascending-transform u m)
+	   (let ((d (dn v mu)))
+	     (* (/ (+ 1 root-mu1) mu)
+		(/ (- (* d d) root-mu1)
+		   d)))))))
 
 (in-package :maxima)
 
