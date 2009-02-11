@@ -213,6 +213,7 @@
 	   ))
 
 (defpackage :intl
+  (:use :common-lisp)
   (:export #:setlocale #:textdomain #:gettext #:dgettext
            #:*translatable-dump-stream*))
 

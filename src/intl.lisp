@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.3 $
+;;; $Revision: 1.4 $
 ;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
 
 ;;; Released under terms of the GNU General Public License, version 2 or later,
@@ -28,7 +28,7 @@ Sure; no problem at all!
 
 #+CMU
 (ext:file-comment
- "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.3 2009-02-09 20:32:53 rtoy Exp $")
+ "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.4 2009-02-11 06:21:35 are_muc Exp $")
 
 (in-package "INTL")
 
@@ -236,10 +236,9 @@ Sure; no problem at all!
 	`(dgettext ,*default-domain* ,string))))
 
 (defun install ()
-  (unless #+(or CMU SBCL) (eq (get-macro-character #\_)
-			      #'lisp::read-dispatch-char)
-	  #-(or CMU SBCL) (get-macro-character #\_)
-    (make-dispatch-macro-character #\_ t))
+  (unless #+CMU (eq (get-macro-character #\_) #'lisp::read-dispatch-char)
+	  #-CMU (get-macro-character #\_)
+	  (make-dispatch-macro-character #\_ t))
   (set-dispatch-macro-character #\_ #\" #'read-translatable-string)
   (set-dispatch-macro-character #\# #\" #'read-translatable-string)
   t)
