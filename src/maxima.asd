@@ -391,6 +391,8 @@
                                      (:file "zero")
                                      (:file "logarc") 
                                      (:file "rpart")))
+	       (:module numeric-bigfloat :pathname ""
+			:components ((:file "numeric")))
 	       (:module server :pathname ""
 			:components ((:file "server")))
                (:module i-o :pathname ""
