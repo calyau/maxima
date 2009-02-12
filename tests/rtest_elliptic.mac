@@ -362,3 +362,14 @@ test_random(50, 2b-15, 'jacobi_dn, 'elliptic_dn_ascending);
 
 test_random(50, 2b-15, 'jacobi_cn, 'elliptic_cn_ascending);
 [];
+
+/* Test elliptic_f by using the fact that
+
+inverse_jacobi_sn(x,m) = elliptic_f(asin(x), m)
+
+*/
+(test_ef(x,m) := jacobi_sn(elliptic_f(asin(x),m), m), id(x,m):=x, done);
+done;
+
+test_random(100, 6b-13, 'test_ef, 'id);
+[];
