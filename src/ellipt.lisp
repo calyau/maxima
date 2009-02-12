@@ -614,7 +614,7 @@
 			     (and (mtimesp (a2 x)) (N*i (a2 x))))))
 	   (N*i (x) (and (null (a3+ x))	     ; mtimes test is precondition
 			 (N (a1 x))
-			 (i (a2 x)))))
+			 (eq (a2 x) '$%i))))
     (declare (inline a1 a2 a3+ N i N+i N*i))
     (cond ((N u))			     ;2.3
 	  ((atom u) (i u))		     ;%i
