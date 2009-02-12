@@ -1,4 +1,4 @@
-(kill(all), load("abs_integrate.mac"), extra_integration_methods : ['signum_int], 0);
+(kill(all), load("abs_integrate.mac"), 0);
 0$
 
 integrate(abs(x),x);
@@ -14,7 +14,7 @@ signum_to_abs(integrate(abs(x - 5),x));
 (x*abs(x-5)-5*abs(x-5))/2$
 
 integrate(abs(%pi * x + 1),x);
-((%pi*x^2+2*x+1/%pi)*signum(x+1/%pi))/2$
+(%pi*x^2+2*x+1/%pi)*signum(x+1/%pi)/2$
 
 integrate(x*abs(x),x);
 (x^3*signum(x))/3$
@@ -195,20 +195,21 @@ integrate(cos(x + abs(x)),x);
 signum_to_abs(expand(integrate(diff(abs(x) * cos(x),x),x)));
 cos(x)*abs(x)$
 
-integrate(abs(x) * exp(-abs(x-9)),x,minf,inf);
+block([extra_integration_methods : ['signum_int]], integrate(abs(x) * exp(-abs(x-9)),x,minf,inf));
 18 + 2 * exp(-9)$
 
-integrate(exp(-abs((x-1)*(x-7))),x,minf,inf);
+block([extra_integration_methods : ['signum_int]], integrate(exp(-abs((x-1)*(x-7))),x,minf,inf));
 -%e^(-9)*sqrt(%pi)*%i*erf(3*%i)-%e^9*sqrt(%pi)*erf(3)+%e^9*sqrt(%pi)$
 
-integrate(exp(-abs((x-1)*(x+1))),x,minf,inf);
+block([extra_integration_methods : ['signum_int]], integrate(exp(-abs((x-1)*(x+1))),x,minf,inf));
 -%e^(-1)*sqrt(%pi)*%i*erf(%i)-sqrt(%pi)*%e*erf(1)+sqrt(%pi)*%e$
 
 integrate(1/(1 + abs(x))^2,x,minf,inf);
 2$
 
 integrate((5*sin(3*x)*signum(x+3))/x,x);
-5*signum(x+3)*'integrate(sin(3*x%)/x%,x%,-3,x)$
+- (5* %i * (gamma_incomplete(0, 3 * %i * x) - gamma_incomplete(0, - 3 * %i * x)
+  + gamma_incomplete(0, 9 * %i) - gamma_incomplete(0, - 9 * %i)) * signum(3 *x + 9))/2$
 
 map('unit_step_mult_simp, [5,5.6, -28.6b0,%i, 1 - sqrt(5), 42]);
 [5,5.6,-2.86b1,%i,1-sqrt(5),42]$
@@ -222,6 +223,14 @@ unit_step(x - 1)$
 unit_step_mult_simp(1909 + unit_step(x) * unit_step(x - 1));
 1909 + unit_step(x - 1)$
 
+(i : integrate(1/(1 + abs(x) + abs(x-1)),x), sublis([x = 5], i) - sublis([x=-7], i));
+log(16)/2+log(5)/2-log(2)/2+1/2$
+
+(i : integrate(1/(1 + abs(x) + abs(x-1)),x,-7,5));
+log(16)/2+log(5)/2-log(2)/2+1/2$
+
+(remvalue(i,di),0);
+0$
 
 
 
