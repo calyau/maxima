@@ -1766,6 +1766,14 @@ first kind:
 	       (and $numer (numberp phi) (numberp m)))
 	   ;; Numerically evaluate it
 	   (elliptic-e (float phi) (float m)))
+	  ((and (complex-number-p phi)
+		(complex-number-p m))
+	   (complexify (bigfloat::bf-elliptic-e (complex ($realpart phi) ($imagpart phi))
+						(complex ($realpart m) ($imagpart m)))))
+	  ((or (bigfloat-numerical-eval-p phi m)
+	       (complex-bigfloat-numerical-eval-p phi m))
+	   (to (bigfloat::bf-elliptic-e (bigfloat:to ($bfloat phi))
+					(bigfloat:to ($bfloat m)))))
 	  ((zerop1 phi)
 	   0)
 	  ((zerop1 m)
@@ -2516,6 +2524,23 @@ first kind:
   (let ((s (sin phi))
 	(c (cos phi)))
     (* s (bf-rf (* c c) (- 1 (* m s s)) 1))))
+
+;; elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
+;;    - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
+;;
+;; elliptic_kc(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
+;;
+;; or 
+;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
+;;    - (m/3)*sin(phi)^3*rd(cos(phi)^2, 1-m*sin(phi)^2,1)
+;;
+(defun bf-elliptic-e (phi m)
+  (let* ((s (sin phi))
+	 (c (cos phi))
+	 (c2 (* c c))
+	 (s2 (- 1 (* m s s))))
+    (- (* s (bf-rf c2 s2 1))
+       (* (/ m 3) (* s s s) (bf-rd c2 s2 1)))))
 
 (in-package :maxima)
 
