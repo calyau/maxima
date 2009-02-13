@@ -1813,6 +1813,10 @@ first kind:
 	       (and $numer (numberp m)))
 	   ;; Numerically evaluate it
 	   (elliptic-k (float m)))
+	  ((complex-number-p m)
+	   (complexify (bigfloat::bf-elliptic-k (complex ($realpart m) ($imagpart m)))))
+	  ((complex-bigfloat-numerical-eval-p m)
+	   (to (bigfloat::bf-elliptic-k (bigfloat:to ($bfloat m)))))
 	  ((zerop1 m)
 	   '((mtimes) ((rat) 1 2) $%pi))
 	  (t
@@ -1840,6 +1844,10 @@ first kind:
 	       (and $numer (numberp m)))
 	   ;; Numerically evaluate it
 	   (elliptic-ec (float m)))
+	  ((complex-number-p m)
+	   (complexify (bigfloat::bf-elliptic-ec (complex ($realpart m) ($imagpart m)))))
+	  ((complex-bigfloat-numerical-eval-p m)
+	   (to (bigfloat::bf-elliptic-ec (bigfloat:to ($bfloat m)))))
 	  ((zerop1 m)
 	   '((mtimes) ((rat) 1 2) $%pi))
 	  ;; Some special cases we know about.
@@ -2525,10 +2533,22 @@ first kind:
 	(c (cos phi)))
     (* s (bf-rf (* c c) (- 1 (* m s s)) 1))))
 
+;; elliptic_kc(k) = rf(0, 1-k^2,1)
+;;
+;; or
+;; elliptic_kc(m) = rf(0, 1-m,1)
+
+(defun bf-elliptic-k (m)
+  (cond ((= m 0)
+	 (if (maxima::$bfloatp m)
+	     (maxima::$bfloat (maxima::div 'maxima::$%pi 2))
+	     (float (/ pi 2))))
+	(t
+	 (bf-rf 0 (- 1 m) 1))))
+
 ;; elliptic_e(phi, k) = sin(phi)*rf(cos(phi)^2,1-k^2*sin(phi)^2,1)
 ;;    - (k^2/3)*sin(phi)^3*rd(cos(phi)^2, 1-k^2*sin(phi)^2,1)
 ;;
-;; elliptic_kc(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
 ;;
 ;; or 
 ;; elliptic_e(phi, m) = sin(phi)*rf(cos(phi)^2,1-m*sin(phi)^2,1)
@@ -2541,6 +2561,25 @@ first kind:
 	 (s2 (- 1 (* m s s))))
     (- (* s (bf-rf c2 s2 1))
        (* (/ m 3) (* s s s) (bf-rd c2 s2 1)))))
+
+;; elliptic_ec(k) = rf(0,1-k^2,1) - (k^2/3)*rd(0,1-k^2,1);
+;;
+;; or
+;; elliptic_ec(m) = rf(0,1-m,1) - (m/3)*rd(0,1-m,1);
+
+(defun bf-elliptic-ec (m)
+  (cond ((= m 0)
+	 (if (typep m 'bigfloat)
+	     (bigfloat (maxima::$bfloat (maxima::div 'maxima::$%pi 2)))
+	     (float (/ pi 2))))
+	((= m 1)
+	 (if (typep m 'bigfloat)
+	     (bigfloat 1)
+	     1d0))
+	(t
+	 (let ((m1 (- 1 m)))
+	   (- (bf-rf 0 m1 1)
+	      (* m 1/3 (bf-rd 0 m1 1)))))))
 
 (in-package :maxima)
 
