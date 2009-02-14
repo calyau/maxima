@@ -479,6 +479,7 @@ contrib/rand/vandpol.usg\
 contrib/rtest_opproperties.mac\
 contrib/rtestdefstruct.mac\
 contrib/rtest_lsquares.mac\
+contrib/rtest_z_transform.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/arag_test.mac\
 contrib/sarag/constants.mac\
@@ -560,6 +561,7 @@ contrib/tocl.lisp\
 contrib/multiadditive.lisp\
 contrib/tocl.lisp\
 contrib/unwind_protect.lisp\
+contrib/z_transform.mac\
 diff_form/cartan_new.lisp\
 diff_form/curvture2.mac\
 diff_form/diff_form.mac\
