@@ -735,29 +735,22 @@
   (cl:= a b))
 
 (defmethod two-arg-= ((a bigfloat) (b bigfloat))
-  (equal (cdr (real-value a)) (cdr (real-value b))))
+  (zerop (two-arg-- a b)))
 
 (defmethod two-arg-= ((a complex-bigfloat) (b complex-bigfloat))
-  (and (equal (cdr (real-value a)) (cdr (real-value b)))
-       (equal (cdr (imag-value a)) (cdr (imag-value b)))))
+  (zerop (two-arg-- a b)))
 
 ;; Handle contagion for two-arg-=.  This needs some work.  CL says
 ;; floats and rationals are compared by converting the float to a
 ;; rational before converting.
 (defmethod two-arg-= ((a bigfloat) (b number))
-  (if (cl:realp b)
-      (equal (cdr (real-value a)) (cdr (intofp b)))
-      nil))
+  (zerop (two-arg-- a b)))
 
 (defmethod two-arg-= ((a number) (b bigfloat))
-  (if (cl:realp a)
-      (equal (cdr (intofp a)) (cdr (real-value b)))
-      (and (equal (cdr (intofp a)) (cdr (real-value b)))
-	   (equal (cdr (real-value b)) '(0 0)))))
+  (two-arg-= b a))
 
 (defmethod two-arg-= ((a complex-bigfloat) (b number))
-  (and (two-arg-= (make-instance 'bigfloat :real (real-value a)) (cl:realpart b))
-       (two-arg-= (make-instance 'bigfloat :real (imag-value a)) (cl:imagpart b))))
+  (zerop (two-arg-- a b)))
 
 (defmethod two-arg-= ((a number) (b complex-bigfloat))
   (two-arg-= b a))
