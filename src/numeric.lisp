@@ -1135,8 +1135,15 @@
   (frob realpart)
   (frob imagpart)
   (frob conjugate)
-  (frob phase)
-  (frob floor))
+  (frob phase))
+
+(macrolet
+    ((frob (name)
+       (let ((cl-name (intern (string name) '#:cl)))
+	 `(defmethod ,name ((a number) &optional (divisor 1))
+	    (,cl-name a divisor)))))
+  (frob floor)
+  (frob ffloor))
   
   
 (defmethod realpart ((a bigfloat))
@@ -1244,11 +1251,30 @@
       (two-arg-complex a b)
       (one-arg-complex a)))
 
-(defmethod floor ((a bigfloat))
-  (maxima::fpentier (real-value a)))
+(defmethod unary-floor ((a bigfloat))
+  ;; fpentier truncates to zero, so adjust for negative numbers.
+  (if (minusp a)
+      (maxima::fpentier (real-value (- a 1)))
+      (maxima::fpentier (real-value a))))
 
-(defmethod ffloor ((a bigfloat))
+(defmethod unary-ffloor ((a bigfloat))
+  ;; We can probably do better than converting to an integer and
+  ;; converting back to a float.
   (make-instance 'bigfloat :real (intofp (floor a))))
+
+(defmethod floor ((a bigfloat) &optional (divisor 1))
+  (if (= divisor 1)
+      (let ((int (unary-floor a)))
+	(values int (- a int)))
+      (let ((q (unary-floor (/ a divisor))))
+	(values q (- a (* q divisor))))))
+
+(defmethod ffloor ((a bigfloat) &optional (divisor 1))
+  (if (= divisor 1)
+      (let ((int (unary-ffloor a)))
+	(values int (- a int)))
+      (let ((q (unary-ffloor (/ a divisor))))
+	(values q (- a (* q divisor))))))
 
 (defmethod expt ((a number) (b number))
   (cl:expt a b))
