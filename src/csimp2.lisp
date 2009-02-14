@@ -153,21 +153,112 @@
   (let ((u (simpcheck (cadr x) z)) (v (simpcheck (caddr x) z)))
     (cond ((or (zerop1 u) (zerop1 v))
 	   (if errorsw (throw 'errorsw t) (merror "Zero argument to `beta'")))
-	  ((or (and (floatp u) (floatp v))
-	       (and $numer (numberp u) (numberp v)))
-	   ($makegamma (list '($beta) u v)))
-	  ((or (and (integerp u) (plusp u)) (and (integerp v) (plusp v)))
-	   (setq x (add2 u v))
-	   (power (mul2 (sub x 1)
-			(simplifya (list '(%binomial)
-					 (sub x 2)
-					 (sub (if (and (integerp u) (plusp u)) u v) 1))
-				   t))
-		  -1))
-	  ((and (integerp u) (integerp v))
-	   (mul2* (div* (list '(mfactorial) (1- u))
-			(list '(mfactorial) (+ u v -1)))
-		  (list '(mfactorial) (1- v))))
+
+          ;; Check for numerical evaluation in float precision
+      	  ((complex-float-numerical-eval-p u v)
+           (cond
+             ;; We use gamma(u)*gamma(v)/gamma(u+v) for numerical evaluation.
+             ;; Therefore u, v or u+v can not be a negative integer or a
+             ;; floating point representation of a negative integer.
+             ((and (or (not (numberp u))
+                       (> u 0)
+                       (not (= (nth-value 1 (truncate u)) 0)))
+              (and (or (not (numberp v))
+                       (> v 0)
+                       (not (= (nth-value 1 (truncate v)) 0)))
+              (and (or (not (numberp (add u v)))
+                       (> (add v u) 0)
+                       (not (= (nth-value 1 ($truncate (add u v))) 0))))))
+	      ($rectform 
+	        (power ($float '$%e)
+	               (add ($log_gamma ($float u))
+                            ($log_gamma ($float v))
+                            (mul -1 ($log_gamma ($float (add u v))))))))
+             ((or (and (numberp u)
+                       (> u 0)
+                       (= (nth-value 1 (truncate u)) 0)
+                       (not (and (mnump v)
+                                 (eq ($sign (sub ($truncate v) v)) '$zero)
+                                 (eq ($sign v) '$neg)
+                                 (eq ($sign (add u v)) '$pos)))
+                       (setq u (truncate u)))
+                  (and (numberp v)
+                       (> v 0)
+                       (= (nth-value 1 (truncate u)) 0)
+                       (not (and (mnump u)
+                                 (eq ($sign (sub ($truncate u) u)) '$zero)
+                                 (eq ($sign u) '$neg)
+                                 (eq ($sign (add u v)) '$pos)))
+                       (setq v (truncate v))))
+              ;; One value is representing a negative integer, the other a
+              ;; positive integer and the sum is negative. Expand.
+              ($rectform ($float (beta-expand-integer u v))))
+             (t
+               (eqtest (list '($beta) u v) check))))
+
+          ;; Check for numerical evaluation in bigfloat precision
+          ((complex-bigfloat-numerical-eval-p u v)
+           (let (($ratprint nil))
+             (cond
+               ((and (or (not (mnump u))
+                         (eq ($sign u) '$pos)
+                         (not (eq ($sign (sub ($truncate u) u)) '$zero)))
+                     (or (not (mnump v))
+                         (eq ($sign v) '$pos)
+                         (not (eq ($sign (sub ($truncate v) v)) '$zero)))
+                     (or (not (mnump (add u v)))
+                         (eq ($sign (add u v)) '$pos)
+                         (not (eq ($sign (sub ($truncate (add u v))
+                                              (add u v)))
+                                  '$zero))))
+                ($rectform 
+                  (power ($bfloat'$%e)
+                         (add ($log_gamma ($bfloat u))
+                              ($log_gamma ($bfloat v))
+                              (mul -1 ($log_gamma ($bfloat (add u v))))))))
+               ((or (and (mnump u)
+                         (eq ($sign u) '$pos)
+                         (eq ($sign (sub ($truncate u) u)) '$zero)
+                         (not (and (mnump v)
+                              (eq ($sign (sub ($truncate v) v)) '$zero)
+                              (eq ($sign v) '$neg)
+                              (eq ($sign (add u v)) '$pos)))
+                         (setq u ($truncate u)))
+                    (and (mnump v)
+                         (eq ($sign v) '$pos)
+                         (eq ($sign (sub ($truncate v) v)) '$zero)
+                         (not (and (mnump u)
+                              (eq ($sign (sub ($truncate u) u)) '$zero)
+                              (eq ($sign u) '$neg)
+                              (eq ($sign (add u v)) '$pos)))
+                         (setq v ($truncate v))))
+                ($rectform ($bfloat (beta-expand-integer u v))))
+               (t
+                 (eqtest (list '($beta) u v) check)))))
+
+      	  ((or (and (and (integerp u)
+	                 (plusp u))
+	            (not (and (mnump v)
+	                      (eq ($sign (sub ($truncate v) v)) '$zero)
+      	                      (eq ($sign v) '$neg)
+	                      (eq ($sign (add u v)) '$pos))))
+	       (and (and (integerp v) 
+	                 (plusp v))
+                    (not (and (mnump u)
+                              (eq ($sign (sub ($truncate u) u)) '$zero)
+                              (eq ($sign u) '$neg)
+                              (eq ($sign (add u v)) '$pos)))))
+           ;; Expand for a positive integer. But not if the other argument is 
+           ;; a negative integer and the sum of the integers is not negative.
+           (beta-expand-integer u v))
+
+;;; At this point both integers are negative. This code does not work for
+;;; negative integers. The factorial function is not defined.
+;	  ((and (integerp u) (integerp v))
+;	   (mul2* (div* (list '(mfactorial) (1- u))
+;			(list '(mfactorial) (+ u v -1)))
+;		  (list '(mfactorial) (1- v))))
+
 	  ((or (and (ratnump u) (ratnump v) (integerp (setq x (addk u v))))
 	       (and $beta_args_sum_to_integer
 		    (integerp (setq x (expand1 (add2 u v) 1 1)))))
@@ -178,6 +269,20 @@
 				(1- x)))
 		   `((%sin) ((mtimes) ,w $%pi)))))
 	  (t (eqtest (list '($beta) u v) check)))))
+
+(defun beta-expand-integer (u v)
+  ;; One of the arguments is a positive integer. Do an expansion.
+  ;; BUT for a negative integer as second argument the expansion is only
+  ;; possible when the sum of the integers is negative too.
+  ;; This routine expects that the calling routine has checked this.
+  (let ((x (add u v)))
+    (power
+      (mul (sub x 1)
+           (simplify
+             (list '(%binomial)
+                   (sub x 2)
+                   (sub (if (and (integerp u) (plusp u)) u v) 1))))
+      -1)))
 
 (defmfun simpgamma (x vestigial z)
   (declare (ignore vestigial))
