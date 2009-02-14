@@ -4,30 +4,32 @@
 ;;; purpose is to allow users to write numerical algorithms that
 ;;; support double-float, (complex double-float) and Maxima bfloat and
 ;;; complex bfloat arithmetic, without having to write separate
-;;; versions for each.  Of course, specially written versions will be
-;;; faster, but this allows users to write bigfloat routines in a more
-;;; "natural" Lisp style.
+;;; versions for each.  Of course, specially written versions for
+;;; double-float and (cmoplex double-float) will probably be much
+;;; faster, but this allows users to write just one routine that can
+;;; handle all of the data types in a more "natural" Lisp style.
 
 (in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 
 (defun intofp (re)
   ;; Kind of like Maxima's INTOFP, but we only handle numeric types.
-  ;; We should return a list of mantissa and exponent.
+  ;; We should return a Maxima bigfloat object (list of bigfloat
+  ;; marker, mantissa, and exponent).
   (cond ((floatp re)
-	 (maxima::floattofp re))
+	 (maxima::bcons (maxima::floattofp re)))
 	((eql re 0)
-	 '(0 0))
+	 (maxima::bcons '(0 0)))
 	((integerp re)
-	 (list (maxima::fpround re) (cl:+ maxima::*m maxima::fpprec)))
+	 (maxima::bcons (list (maxima::fpround re) (cl:+ maxima::*m maxima::fpprec))))
 	((typep re 'ratio)
 	 ;; Should we do something better than converting the
 	 ;; numerator and denominator to floats and dividing?
-	 (maxima::fpquotient (intofp (numerator re))
-			     (intofp (denominator re))))
+	 (maxima::bcons (maxima::fpquotient (cdr (intofp (numerator re)))
+					    (cdr (intofp (denominator re))))))
 	((maxima::$bfloatp re)
 	 ;; Call bigfloatp to make sure we round/scale the bigfloat to
 	 ;; the correct precision!
-	 (cdr (maxima::bigfloatp re)))
+	 (maxima::bigfloatp re))
 	(t
 	 (error "Don't know how to convert ~S to a BIGFLOAT" re))))
 
@@ -36,30 +38,51 @@
   (:documentation "Basic class, like CL's NUMBER type"))
 
 (defclass bigfloat (numeric)
+  ;; We store the Maxima internal bigfloat format because we also need
+  ;; the precision in case we have mixed size bigfloat operations.
+  ;; (We could recompute it from the size of the mantissa part, but
+  ;; why bother?
   ((real :initform (intofp 0)
-	 :reader real-value
 	 :initarg :real
-	 :documentation "A Maxima bigfloat.  This contains just the mantissa and exponent of
-                         a bigfloat.  The bigfloat marker is not stored." ))
-  (:documentation "Big float, roughly equivalent to a Maxima bfloat object"))
+	 :documentation "A Maxima bigfloat.  This contains the full
+	 Maxima bigfloat object including the mantissa, the exponent
+	 and the bigfloat marker and precision." ))
+  (:documentation "Big float, equivalent to a Maxima bfloat object"))
+
+;; Extract the internal representation of a bigfloat, and adjust the
+;; precision to the current value of fpprec.
+(defmethod real-value ((b bigfloat))
+  (maxima::bigfloatp (slot-value b 'real)))
 
 (defclass complex-bigfloat (numeric)
-  ;; Currently, the real and imaginary parts contain a list of the
-  ;; mantissa and exponent.  Should they be bigfloat objects instead?
+  ;; Currently, the real and imaginary parts contain a Maxima bigfloat
+  ;; including the bigfloat marker and the mantissa and exponent.
+  ;; Should they be BIGFLOAT objects instead?
   ((real :initform (intofp 0)
-	 :reader real-value
 	 :initarg :real
 	 :documentation "Real part of a complex bigfloat")
    (imag :initform (intofp 0)
-	 :reader imag-value
 	 :initarg :imag
 	 :documentation "Imaginary part of a complex bigfloat"))
   (:documentation "Complex bigfloat"))
+
+;; Extract the internal representation of the real part of a
+;; complex-bigfloat, and adjust the precision to the current value of
+;; fpprec.
+(defmethod real-value ((b complex-bigfloat))
+  (maxima::bigfloatp (slot-value b 'real)))
+
+;; Extract the internal representation of the imaginary part of a
+;; complex-bigfloat, and adjust the precision to the current value of
+;; fpprec.
+(defmethod imag-value ((b complex-bigfloat))
+  (maxima::bigfloatp (slot-value b 'imag)))
 
 (defmethod make-load-form ((x bigfloat) &optional environment)
   (declare (ignore environment))
   `(make-instance ',(class-of x)
 		  :real ',(real-value x)))
+
 ;;; BIGFLOAT - External
 ;;;
 ;;;    BIGFLOAT converts a number to a BIGFLOAT or COMPLEX-BIGFLOAT.
@@ -83,6 +106,16 @@
 	 (make-instance 'complex-bigfloat
 			:real (intofp (maxima::$realpart re))
 			:imag (intofp (maxima::$imagpart re))))
+	((typep re 'bigfloat)
+	 ;; Done this way so the new bigfloat updates the precision of
+	 ;; the given bigfloat, if necessary.
+	 (make-instance 'bigfloat :real (real-value re)))
+	((typep re 'complex-bigfloat)
+	 ;; Done this way so the new bigfloat updates the precision of
+	 ;; the given bigfloat, if necessary.
+	 (make-instance 'complex-bigfloat
+			:real (real-value re)
+			:imag (imag-value re)))
 	(t
 	 (make-instance 'bigfloat :real (intofp re)))))
 
@@ -106,13 +139,13 @@
 
 (defmethod maxima::to ((z bigfloat))
   "Convert BIGFLOAT  object to a maxima number"
-  (maxima::bcons (real-value z)))
+  (real-value z))
 
 (defmethod maxima::to ((z complex-bigfloat))
   "Convert COMPLEX-BIGFLOAT  object to a maxima number"
-  (maxima::add (maxima::bcons (real-value z))
+  (maxima::add (real-value z)
 	       (maxima::mul 'maxima::$%i
-			    (maxima::bcons (imag-value z)))))
+			    (imag-value z))))
   
 ;;; REALP
 
@@ -168,7 +201,7 @@
 ;; The print-object and describe-object methods are mostly for
 ;; debugging purposes.  Maxima itself shouldn't ever see such objects.
 (defmethod print-object ((x bigfloat) stream)
-  (let ((r (real-value x)))
+  (let ((r (cdr (real-value x))))
     (multiple-value-bind (sign output-list)
 	(if (cl:minusp (first r))
 	    (values "-" (maxima::fpformat (maxima::bcons (list (cl:- (first r)) (second r)))))
@@ -179,14 +212,14 @@
   (format stream "~A~A*%i" (realpart x) (imagpart x)))
 
 (defmethod describe-object ((x bigfloat) stream)
-  (let ((r (real-value x)))
-    (format stream "~&~S is a BIGFLOAT with mantissa ~D and exponent ~D~%"
-	    x (first r) (second r))))
+  (let ((r (slot-value x 'real)))
+    (format stream "~&~S is a ~D-bit BIGFLOAT with mantissa ~D and exponent ~D~%"
+	    x (third (first r)) (second r) (third r))))
 
 (defmethod describe-object ((x complex-bigfloat) stream)
   (format stream "~S is a COMPLEX-BIGFLOAT~%" x)
-  (describe-object (realpart x) stream)
-  (describe-object (imagpart x) stream))
+  (describe-object (make-instance 'bigfloat :real (slot-value x 'real)) stream)
+  (describe-object (make-instance 'bigfloat :real (slot-value x 'imag)) stream))
 
 
 (defgeneric add1 (a)
@@ -239,22 +272,32 @@
   (cl::1+ a))
 
 (defmethod add1 ((a bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpplus (real-value a) (maxima::fpone))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(maxima::fpone)))))
 
 (defmethod add1 ((a complex-bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpplus (real-value a) (maxima::fpone))
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(maxima::fpone)))
 		 :imag (imag-value a)))
 
 (defmethod sub1 ((a number))
   (cl::1- a))
 
 (defmethod sub1 ((a bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpdifference (real-value a) (maxima::fpone))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (maxima::fpone)))))
 
 (defmethod sub1 ((a complex-bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpdifference (real-value a) (maxima::fpone))
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (maxima::fpone)))
 		 :imag (imag-value a)))
 
 (declaim (inline 1+ 1-))
@@ -270,23 +313,38 @@
   (cl:+ a b))
 
 (defmethod two-arg-+ ((a bigfloat) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpplus (real-value a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(cdr (real-value b))))))
 
 (defmethod two-arg-+ ((a complex-bigfloat) (b complex-bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpplus (real-value a) (real-value b))
-		 :imag (maxima::fpplus (imag-value a) (imag-value b))))
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(cdr (real-value b))))
+		 :imag (maxima::bcons
+			(maxima::fpplus (cdr (imag-value a))
+					(cdr (imag-value b))))))
 
 ;; Handle contagion for two-arg-+
 (defmethod two-arg-+ ((a bigfloat) (b float))
-  (make-instance 'bigfloat :real (maxima::fpplus (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(cdr (intofp b))))))
 
 (defmethod two-arg-+ ((a bigfloat) (b rational))
-  (make-instance 'bigfloat :real (maxima::fpplus (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(cdr (intofp b))))))
 
 (defmethod two-arg-+ ((a bigfloat) (b cl:complex))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpplus (real-value a) (intofp (realpart b)))
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(cdr (intofp (realpart b)))))
 		 :imag (intofp (imagpart b))))
 
 (defmethod two-arg-+ ((a cl:number) (b bigfloat))
@@ -294,13 +352,19 @@
 
 (defmethod two-arg-+ ((a complex-bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpplus (real-value a) (real-value b))
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(cdr (real-value b))))
 		 :imag (imag-value a)))
 
 (defmethod two-arg-+ ((a complex-bigfloat) (b number))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpplus (real-value a) (intofp (cl:realpart b)))
-		 :imag (maxima::fpplus (imag-value a) (intofp (cl:imagpart b)))))
+		 :real (maxima::bcons
+			(maxima::fpplus (cdr (real-value a))
+					(cdr (intofp (cl:realpart b)))))
+		 :imag (maxima::bcons
+			(maxima::fpplus (cdr (imag-value a))
+					(cdr (intofp (cl:imagpart b)))))))
 
 (defmethod two-arg-+ ((a bigfloat) (b complex-bigfloat))
   (two-arg-+ b a))
@@ -321,49 +385,76 @@
   (cl:- a))
 
 (defmethod unary-minus ((a bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpminus (real-value a))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpminus (cdr (real-value a))))))
 
 (defmethod unary-minus ((a complex-bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpminus (real-value a))
-		 :imag (maxima::fpminus (imag-value a))))
+		 :real (maxima::bcons
+			(maxima::fpminus (cdr (real-value a))))
+		 :imag (maxima::bcons
+			(maxima::fpminus (cdr (imag-value a))))))
 
 ;;; Subtract two numbers
 (defmethod two-arg-- ((a number) (b number))
   (cl:- a b))
 
 (defmethod two-arg-- ((a bigfloat) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpdifference (real-value a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (cdr (real-value b))))))
 
 (defmethod two-arg-- ((a complex-bigfloat) (b complex-bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpdifference (real-value a) (real-value b))
-		 :imag (maxima::fpdifference (imag-value a) (imag-value b))))
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (cdr (real-value b))))
+		 :imag (maxima::bcons
+			(maxima::fpdifference (cdr (imag-value a))
+					      (cdr (imag-value b))))))
 
 ;; Handle contagion for two-arg--
 (defmethod two-arg-- ((a bigfloat) (b float))
-  (make-instance 'bigfloat :real (maxima::fpdifference (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (cdr (intofp b))))))
 
 (defmethod two-arg-- ((a bigfloat) (b rational))
-  (make-instance 'bigfloat :real (maxima::fpdifference (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (cdr (intofp b))))))
 
 (defmethod two-arg-- ((a bigfloat) (b cl:complex))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpdifference (real-value a) (intofp (realpart b)))
-		 :imag (maxima::fpminus (intofp (imagpart b)))))
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (cdr (intofp (realpart b)))))
+		 :imag (maxima::bcons (maxima::fpminus (intofp (imagpart b))))))
 
 (defmethod two-arg-- ((a float) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpdifference (intofp a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (intofp a))
+					      (cdr (real-value b))))))
 
 (defmethod two-arg-- ((a rational) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpdifference (intofp a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (intofp a))
+					      (cdr (real-value b))))))
 
 (defmethod two-arg-- ((a cl:complex) (b bigfloat))
   (two-arg-- (bigfloat (cl:realpart a) (cl:imagpart a)) b))
 
 (defmethod two-arg-- ((a complex-bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpdifference (real-value a) (real-value b))
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (cdr (real-value b))))
 		 :imag (imag-value a)))
 
 (defmethod two-arg-- ((a complex-bigfloat) (b number))
@@ -373,8 +464,10 @@
 
 (defmethod two-arg-- ((a bigfloat) (b complex-bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpdifference (real-value a) (real-value b))
-		 :imag (maxima::fpminus (imag-value b))))
+		 :real (maxima::bcons
+			(maxima::fpdifference (cdr (real-value a))
+					      (cdr (real-value b))))
+		 :imag (maxima::bcons (maxima::fpminus (cdr (imag-value b))))))
 
 (defmethod two-arg-- ((a number) (b complex-bigfloat))
   (if (cl:complexp a)
@@ -396,38 +489,57 @@
   (cl:* a b))
 
 (defmethod two-arg-* ((a bigfloat) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fptimes* (real-value a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fptimes* (cdr (real-value a))
+					  (cdr (real-value b))))))
 
 (defmethod two-arg-* ((a complex-bigfloat) (b complex-bigfloat))
-  (let ((a-re (real-value a))
-	(a-im (imag-value a))
-	(b-re (real-value b))
-	(b-im (imag-value b)))
+  (let ((a-re (cdr (real-value a)))
+	(a-im (cdr (imag-value a)))
+	(b-re (cdr (real-value b)))
+	(b-im (cdr (imag-value b))))
     (make-instance 'complex-bigfloat
-		   :real (maxima::fpdifference (maxima::fptimes* a-re b-re)
-					       (maxima::fptimes* a-im b-im))
-		   :imag (maxima::fpplus (maxima::fptimes* a-re b-im)
-					 (maxima::fptimes* a-im b-re)))))
+		   :real (maxima::bcons
+			  (maxima::fpdifference (maxima::fptimes* a-re b-re)
+						(maxima::fptimes* a-im b-im)))
+		   :imag (maxima::bcons
+			  (maxima::fpplus (maxima::fptimes* a-re b-im)
+					  (maxima::fptimes* a-im b-re))))))
 
 ;; Handle contagion for two-arg-*
 (defmethod two-arg-* ((a bigfloat) (b cl:float))
-  (make-instance 'bigfloat :real (maxima::fptimes* (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fptimes* (cdr (real-value a))
+					  (cdr (intofp b))))))
 
 (defmethod two-arg-* ((a bigfloat) (b cl:rational))
-  (make-instance 'bigfloat :real (maxima::fptimes* (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fptimes* (cdr (real-value a))
+					  (cdr (intofp b))))))
 
 (defmethod two-arg-* ((a bigfloat) (b cl:complex))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fptimes* (real-value a) (intofp (realpart b)))
-		 :imag (maxima::fptimes* (real-value a) (intofp (imagpart b)))))
+		 :real (maxima::bcons
+			(maxima::fptimes* (cdr (real-value a))
+					  (cdr (intofp (realpart b)))))
+		 :imag (maxima::bcons
+			(maxima::fptimes* (cdr (real-value a))
+					  (cdr (intofp (imagpart b)))))))
 
 (defmethod two-arg-* ((a cl:number) (b bigfloat))
   (two-arg-* b a))
 
 (defmethod two-arg-* ((a complex-bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fptimes* (real-value a) (real-value b))
-		 :imag (maxima::fptimes* (imag-value a) (real-value b))))
+		 :real (maxima::bcons
+			(maxima::fptimes* (cdr (real-value a))
+					  (cdr (real-value b))))
+		 :imag (maxima::bcons
+			(maxima::fptimes* (cdr (imag-value a))
+					  (cdr (real-value b))))))
 
 (defmethod two-arg-* ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
@@ -453,75 +565,100 @@
   (cl:/ a))
 
 (defmethod unary-divide ((a bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpquotient (maxima::fpone) (real-value a))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpquotient (maxima::fpone)
+					    (cdr (real-value a))))))
 
 (defmethod unary-divide ((b complex-bigfloat))
   ;; Could just call two-arg-/, but let's optimize this a little
   (let ((a-re (maxima::fpone))
-	(b-re (real-value b))
-	(b-im (imag-value b)))
+	(b-re (cdr (real-value b)))
+	(b-im (cdr (imag-value b))))
     (if (maxima::fpgreaterp (maxima::fpabs b-re) (maxima::fpabs b-im))
 	(let* ((r (maxima::fpquotient b-im b-re))
 	       (dn (maxima::fpplus b-re (maxima::fptimes* r b-im))))
 	  (make-instance 'complex-bigfloat
-			 :real (maxima::fpquotient a-re dn)
-			 :imag (maxima::fpquotient (maxima::fpminus r)
-						   dn)))
-	(let* ((r (maxima::fpquotient b-re b-im))
-	       (dn (maxima::fpplus b-im (maxima::fptimes* r b-re))))
-	  (make-instance 'complex-bigfloat
-			 :real (maxima::fpquotient r dn)
-			 :imag (maxima::fpquotient (maxima::fpminus a-re)
-						   dn))))))
+			 :real (maxima::bcons (maxima::fpquotient a-re dn))
+			 :imag (maxima::bcons
+				(maxima::fpquotient (maxima::fpminus r)
+						    dn)))
+	  (let* ((r (maxima::fpquotient b-re b-im))
+		 (dn (maxima::fpplus b-im (maxima::fptimes* r b-re))))
+	    (make-instance 'complex-bigfloat
+			   :real (maxima::bcons (maxima::fpquotient r dn))
+			   :imag (maxima::bcons
+				  (maxima::fpquotient (maxima::fpminus a-re)
+						      dn))))))))
 ;;; Divide two numbers
 (defmethod two-arg-/ ((a number) (b number))
   (cl:/ a b))
 
 (defmethod two-arg-/ ((a bigfloat) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpquotient (real-value a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpquotient (cdr (real-value a))
+					    (cdr (real-value b))))))
 
 (defmethod two-arg-/ ((a complex-bigfloat) (b complex-bigfloat))
-  (let ((a-re (real-value a))
-	(a-im (imag-value a))
-	(b-re (real-value b))
-	(b-im (imag-value b)))
+  (let ((a-re (cdr (real-value a)))
+	(a-im (cdr (imag-value a)))
+	(b-re (cdr (real-value b)))
+	(b-im (cdr (imag-value b))))
     (if (maxima::fpgreaterp (maxima::fpabs b-re) (maxima::fpabs b-im))
 	(let* ((r (maxima::fpquotient b-im b-re))
 	       (dn (maxima::fpplus b-re (maxima::fptimes* r b-im))))
 	  (make-instance 'complex-bigfloat
-			 :real (maxima::fpquotient (maxima::fpplus a-re
-								   (maxima::fptimes* a-im r))
-						   dn)
-			 :imag (maxima::fpquotient (maxima::fpdifference a-im
-									 (maxima::fptimes* a-re r))
-						   dn)))
+			 :real (maxima::bcons
+				(maxima::fpquotient
+				 (maxima::fpplus a-re
+						 (maxima::fptimes* a-im r))
+				 dn))
+			 :imag (maxima::bcons
+				(maxima::fpquotient
+				 (maxima::fpdifference a-im
+						       (maxima::fptimes* a-re r))
+				 dn))))
 	(let* ((r (maxima::fpquotient b-re b-im))
 	       (dn (maxima::fpplus b-im (maxima::fptimes* r b-re))))
 	  (make-instance 'complex-bigfloat
-			 :real (maxima::fpquotient (maxima::fpplus (maxima::fptimes* a-re r)
-								   a-im)
-						   dn)
-			 :imag (maxima::fpquotient (maxima::fpdifference
-						    (maxima::fptimes* a-im r)
-						    a-re)
-						   dn))))))
+			 :real (maxima::bcons
+				(maxima::fpquotient
+				 (maxima::fpplus (maxima::fptimes* a-re r)
+						 a-im)
+				 dn))
+			 :imag (maxima::bcons
+				(maxima::fpquotient (maxima::fpdifference
+						     (maxima::fptimes* a-im r)
+						     a-re)
+						    dn)))))))
 ;; Handle contagion for two-arg-/
 (defmethod two-arg-/ ((a bigfloat) (b cl:float))
-  (make-instance 'bigfloat :real (maxima::fpquotient (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpquotient (cdr (real-value a))
+					    (cdr (intofp b))))))
 
 (defmethod two-arg-/ ((a bigfloat) (b cl:rational))
-  (make-instance 'bigfloat :real (maxima::fpquotient (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpquotient (cdr (real-value a))
+					    (cdr (intofp b))))))
 
 (defmethod two-arg-/ ((a bigfloat) (b cl:complex))
   (two-arg-/ (complex a) b))
 
 (defmethod two-arg-/ ((a cl:float) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpquotient (intofp a)
-						     (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpquotient (cdr (intofp a))
+					    (cdr (real-value b))))))
 
 (defmethod two-arg-/ ((a cl:rational) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpquotient (intofp a)
-						     (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpquotient (cdr (intofp a))
+					    (cdr (real-value b))))))
 
 (defmethod two-arg-/ ((a cl:complex) (b bigfloat))
   (two-arg-/ (bigfloat a) b))
@@ -529,8 +666,12 @@
 
 (defmethod two-arg-/ ((a complex-bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpquotient (real-value a) (real-value b))
-		 :imag (maxima::fpquotient (imag-value a) (real-value b))))
+		 :real (maxima::bcons
+			(maxima::fpquotient (cdr (real-value a))
+					    (cdr (real-value b))))
+		 :imag (maxima::bcons
+			(maxima::fpquotient (cdr (imag-value a))
+					    (cdr (real-value b))))))
 
 (defmethod two-arg-/ ((a complex-bigfloat) (b number))
   (if (cl:complexp b)
@@ -573,19 +714,19 @@
   (cl:zerop x))
 
 (defmethod zerop ((x bigfloat))
-  (let ((r (real-value x)))
+  (let ((r (cdr (real-value x))))
     (and (zerop (first r))
 	 (zerop (second r)))))
 
 (defmethod zerop ((a complex-bigfloat))
-  (and (equal (real-value a) '(0 0))
-       (equal (imag-value a) '(0 0))))
+  (and (equal (cdr (real-value a)) '(0 0))
+       (equal (cdr (imag-value a)) '(0 0))))
 
 (defmethod plusp ((x bigfloat))
-  (cl:plusp (first (real-value x))))
+  (cl:plusp (first (cdr (real-value x)))))
 
 (defmethod minusp ((x bigfloat))
-  (cl:minusp (first (real-value x))))
+  (cl:minusp (first (cdr (real-value x)))))
 
 
 
@@ -594,25 +735,25 @@
   (cl:= a b))
 
 (defmethod two-arg-= ((a bigfloat) (b bigfloat))
-  (equal (real-value a) (real-value b)))
+  (equal (cdr (real-value a)) (cdr (real-value b))))
 
 (defmethod two-arg-= ((a complex-bigfloat) (b complex-bigfloat))
-  (and (equal (real-value a) (real-value b))
-       (equal (imag-value a) (imag-value b))))
+  (and (equal (cdr (real-value a)) (cdr (real-value b)))
+       (equal (cdr (imag-value a)) (cdr (imag-value b)))))
 
 ;; Handle contagion for two-arg-=.  This needs some work.  CL says
 ;; floats and rationals are compared by converting the float to a
 ;; rational before converting.
 (defmethod two-arg-= ((a bigfloat) (b number))
   (if (cl:realp b)
-      (equal (real-value a) (intofp b))
+      (equal (cdr (real-value a)) (cdr (intofp b)))
       nil))
 
 (defmethod two-arg-= ((a number) (b bigfloat))
   (if (cl:realp a)
-      (equal (intofp a) (real-value b))
-      (and (equal (intofp a) (real-value b))
-	   (equal (real-value b) '(0 0)))))
+      (equal (cdr (intofp a)) (cdr (real-value b)))
+      (and (equal (cdr (intofp a)) (cdr (real-value b)))
+	   (equal (cdr (real-value b)) '(0 0)))))
 
 (defmethod two-arg-= ((a complex-bigfloat) (b number))
   (and (two-arg-= (make-instance 'bigfloat :real (real-value a)) (cl:realpart b))
@@ -677,46 +818,46 @@
   (frob >=))
 
 (defmethod two-arg-< ((x bigfloat) (y bigfloat))
-  (maxima::fplessp (real-value x) (real-value y)))
+  (maxima::fplessp (cdr (real-value x)) (cdr (real-value y))))
 
 (defmethod two-arg-< ((x bigfloat) (y float))
-  (maxima::fplessp (real-value x) (intofp y)))
+  (maxima::fplessp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-< ((x bigfloat) (y rational))
-  (maxima::fplessp (real-value x) (intofp y)))
+  (maxima::fplessp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-> ((x bigfloat) (y bigfloat))
-  (maxima::fpgreaterp (real-value x) (real-value y)))
+  (maxima::fpgreaterp (cdr (real-value x)) (cdr (real-value y))))
 
 (defmethod two-arg-> ((x bigfloat) (y float))
-  (maxima::fpgreaterp (real-value x) (intofp y)))
+  (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-> ((x bigfloat) (y rational))
-  (maxima::fpgreaterp (real-value x) (intofp y)))
+  (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-<= ((x bigfloat) (y bigfloat))
-  (or (equal (real-value x) (real-value y))
-      (maxima::fplessp (real-value x) (real-value y))))
+  (or (equal (cdr (real-value x)) (cdr (real-value y)))
+      (maxima::fplessp (cdr (real-value x)) (cdr (real-value y)))))
 
 (defmethod two-arg-<= ((x bigfloat) (y float))
-  (or (equal (real-value x) (intofp y))
-      (maxima::fplessp (real-value x) (intofp y))))
+  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+      (maxima::fplessp (cdr (real-value x)) (cdr (intofp y)))))
 
 (defmethod two-arg-<= ((x bigfloat) (y rational))
-  (or (equal (real-value x) (intofp y))
-      (maxima::fplessp (real-value x) (intofp y))))
+  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+      (maxima::fplessp (cdr (real-value x)) (cdr (intofp y)))))
 
 (defmethod two-arg->= ((x bigfloat) (y bigfloat))
-  (or (equal (real-value x) (real-value y))
-      (maxima::fpgreaterp (real-value x) (real-value y))))
+  (or (equal (cdr (real-value x)) (cdr (real-value y)))
+      (maxima::fpgreaterp (cdr (real-value x)) (cdr (real-value y)))))
 
 (defmethod two-arg->= ((x bigfloat) (y float))
-  (or (equal (real-value x) (intofp y))
-      (maxima::fpgreaterp (real-value x) (intofp y))))
+  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+      (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y)))))
 
 (defmethod two-arg->= ((x bigfloat) (y rational))
-  (or (equal (real-value x) (intofp y))
-      (maxima::fpgreaterp (real-value x) (intofp y))))
+  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+      (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y)))))
 
 ;; Need to define incf and decf to call our generic +/- methods.
 (defmacro incf (place &optional (delta 1) &environment env)
@@ -769,7 +910,8 @@
   )
 
 (defmethod abs ((x bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpabs (real-value x))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpabs (cdr (real-value x))))))
 
 (defmethod abs ((z complex-bigfloat))
   (let ((x (make-instance 'bigfloat :real (real-value z)))
@@ -778,39 +920,48 @@
     (sqrt (+ (* x x) (* y y)))))
 
 (defmethod exp ((x bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpexp (real-value x))))
+  (make-instance 'bigfloat 
+		 :real (maxima::bcons (maxima::fpexp (cdr (real-value x))))))
 
 (defmethod sin ((x bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpsin (real-value x) t)))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpsin (cdr (real-value x)) t))))
 
 (defmethod cos ((x bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpsin (real-value x) nil)))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpsin (cdr (real-value x)) nil))))
 
 (defmethod tan ((x bigfloat))
-  (let ((r (real-value x)))
+  (let ((r (cdr (real-value x))))
     (make-instance 'bigfloat
-		   :real (maxima::fpquotient (maxima::fpsin r t)
-				     (maxima::fpsin r nil)))))
+		   :real (maxima::bcons
+			  (maxima::fpquotient (maxima::fpsin r t)
+					      (maxima::fpsin r nil))))))
 
 (defmethod asin ((x bigfloat))
-  (bigfloat (maxima::fpasin (maxima::bcons (real-value x)))))
+  (bigfloat (maxima::fpasin (real-value x))))
 
 (defmethod acos ((x bigfloat))
-  (bigfloat (maxima::fpacos (maxima::bcons (real-value x)))))
+  (bigfloat (maxima::fpacos (real-value x))))
 
 
 (defmethod sqrt ((x bigfloat))
   (if (minusp x)
       (make-instance 'complex-bigfloat
 		     :real (intofp 0)
-		     :imag (maxima::fproot (maxima::bcons (maxima::fpabs (real-value x))) 2))
-      (make-instance 'bigfloat :real (maxima::fproot (maxima::bcons (real-value x)) 2))))
+		     :imag (maxima::bcons
+			    (maxima::fproot (maxima::bcons (maxima::fpabs (cdr (real-value x)))) 2)))
+      (make-instance 'bigfloat
+		     :real (maxima::bcons
+			    (maxima::fproot (real-value x) 2)))))
 
 (defmethod sqrt ((z complex-bigfloat))
   (multiple-value-bind (rx ry)
-      (maxima::complex-sqrt (maxima::bcons (real-value z))
-			    (maxima::bcons (imag-value z)))
-    (make-instance 'complex-bigfloat :real rx :imag ry)))
+      (maxima::complex-sqrt (real-value z)
+			    (imag-value z))
+    (make-instance 'complex-bigfloat
+		   :real (maxima::bcons rx)
+		   :imag (maxima::bcons ry))))
 
 (defmethod one-arg-log ((a number))
   (cl:log a))
@@ -818,13 +969,15 @@
 (defmethod one-arg-log ((a bigfloat))
   (if (minusp a)
       (make-instance 'complex-bigfloat
-		     :real (maxima::fplog (maxima::fpabs (real-value a)))
-		     :imag (maxima::fppi))
-      (make-instance 'bigfloat :real (maxima::fplog (real-value a)))))
+		     :real (maxima::bcons
+			    (maxima::fplog (maxima::fpabs (cdr (real-value a)))))
+		     :imag (maxima::bcons (maxima::fppi)))
+      (make-instance 'bigfloat
+		     :real (maxima::bcons (maxima::fplog (cdr (real-value a)))))))
 
 (defmethod one-arg-log ((a complex-bigfloat))
-  (let* ((res (maxima::big-float-log (maxima::bcons (real-value a))
-				     (maxima::bcons (imag-value a)))))
+  (let* ((res (maxima::big-float-log (real-value a)
+				     (imag-value a))))
     (bigfloat res)))
 
 (defmethod two-arg-log ((a number) (b number))
@@ -845,38 +998,38 @@
       (one-arg-log a)))
 
 (defmethod sinh ((x bigfloat))
-  (let ((r (maxima::bcons (real-value x))))
-    (make-instance 'bigfloat :real (cdr (maxima::fpsinh r)))))
+  (let ((r (real-value x)))
+    (make-instance 'bigfloat :real (maxima::fpsinh r))))
 
 (defmethod cosh ((x bigfloat))
-  (let ((r (maxima::bcons (real-value x))))
-    (make-instance 'bigfloat :real (cdr (maxima::$bfloat `((maxima::%cosh) ,r))))))
+  (let ((r (real-value x)))
+    (make-instance 'bigfloat :real (maxima::$bfloat `((maxima::%cosh) ,r)))))
 
 (defmethod tanh ((x bigfloat))
-  (let ((r (maxima::bcons (real-value x))))
-    (make-instance 'bigfloat :real (cdr (maxima::fptanh r)))))
+  (let ((r (real-value x)))
+    (make-instance 'bigfloat :real (maxima::fptanh r))))
 
 (defmethod asinh ((x bigfloat))
   (let ((r (real-value x)))
-    (make-instance 'bigfloat :real (cdr (maxima::fpasinh (maxima::bcons r))))))
+    (make-instance 'bigfloat :real (maxima::fpasinh r))))
 
 (defmethod atanh ((x bigfloat))
-  (let ((r (maxima::big-float-atanh (maxima::bcons (real-value x)))))
+  (let ((r (maxima::big-float-atanh (real-value x))))
     (if (maxima::bigfloatp r)
-	(make-instance 'bigfloat :real (cdr r))
+	(make-instance 'bigfloat :real r)
 	(make-instance 'complex-bigfloat
-		       :real (cdr (maxima::$realpart r))
-		       :imag (cdr (maxima::$imagpart r))))))
+		       :real (maxima::$realpart r)
+		       :imag (maxima::$imagpart r)))))
 
 (defmethod acosh ((x bigfloat))
   (let* ((r (real-value x))
 	 (value (maxima::mevalp `((maxima::%acosh maxima::simp)
-				  ,(maxima::bcons r)))))
+				  ,r))))
     (if (maxima::bigfloatp value)
-	(make-instance 'bigfloat :real (cdr value))
+	(make-instance 'bigfloat :real value)
 	(make-instance 'complex-bigfloat
-		       :real (cdr (maxima::$realpart value))
-		       :imag (cdr (maxima::$imagpart value))))))
+		       :real (maxima::$realpart value)
+		       :imag (maxima::$imagpart value)))))
 
 ;;; Complex arguments
 
@@ -889,14 +1042,14 @@
 					      (string name))
 				 '#:maxima)))
 	     `(defmethod ,name ((a complex-bigfloat))
-		(let ((res (,big-op (maxima::bcons (real-value a))
-				    (maxima::bcons (imag-value a)))))
+		(let ((res (,big-op (real-value a)
+				    (imag-value a))))
 		  (to res))))
 	   (let ((max-op (intern (concatenate 'string "$" (string name)) '#:maxima)))
 	     `(defmethod ,name ((a complex-bigfloat))
 		;; We should do something better than calling mevalp
-		(let* ((arg (maxima::add (maxima::bcons (real-value a))
-					 (maxima::mul 'maxima::$%i (maxima::bcons (imag-value a)))))
+		(let* ((arg (maxima::add (real-value a)
+					 (maxima::mul 'maxima::$%i (imag-value a))))
 		       (result (maxima::mevalp `((,',max-op maxima::simp) ,arg))))
 		  (to result)))))))
   (frob exp)
@@ -916,35 +1069,47 @@
   (cl:atan a))
 
 (defmethod one-arg-atan ((a bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpatan (real-value a))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpatan (cdr (real-value a))))))
 
 (defmethod one-arg-atan ((a complex-bigfloat))
   ;; We should do something better than calling mevalp
-  (let* ((arg (maxima::add (maxima::bcons (real-value a))
-			   (maxima::mul 'maxima::$%i (maxima::bcons (imag-value a)))))
+  (let* ((arg (maxima::add (real-value a)
+			   (maxima::mul 'maxima::$%i (imag-value a))))
 	 (result (maxima::mevalp `((maxima::%atan maxima::simp) ,arg))))
     (make-instance 'complex-bigfloat
-		   :real (cdr (maxima::$realpart result))
-		   :imag (cdr (maxima::$imagpart result)))))
+		   :real (maxima::$realpart result)
+		   :imag (maxima::$imagpart result))))
 
 ;; Really want type real, but gcl doesn't like that.
 (defmethod two-arg-atan ((a #-gcl real #+gcl number) (b #-gcl real #+gcl number))
   (cl:atan a b))
 
 (defmethod two-arg-atan ((a bigfloat) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpatan2 (real-value a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons
+			(maxima::fpatan2 (cdr (real-value a))
+					 (cdr (real-value b))))))
 
 (defmethod two-arg-atan ((a bigfloat) (b float))
-  (make-instance 'bigfloat :real (maxima::fpatan2 (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpatan2 (cdr (real-value a))
+						       (cdr (intofp b))))))
 
 (defmethod two-arg-atan ((a bigfloat) (b rational))
-  (make-instance 'bigfloat :real (maxima::fpatan2 (real-value a) (intofp b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpatan2 (cdr (real-value a))
+						       (cdr (intofp b))))))
 
 (defmethod two-arg-atan ((a float) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpatan2 (intofp a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpatan2 (cdr (intofp a))
+						       (cdr (real-value b))))))
 
 (defmethod two-arg-atan ((a rational) (b bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpatan2 (intofp a) (real-value b))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpatan2 (cdr (intofp a))
+						       (cdr (real-value b))))))
 
 (defun atan (a &optional b)
   (if b
@@ -956,10 +1121,10 @@
 
 (defmethod scale-float ((a bigfloat) (n integer))
   (if (cl:zerop (car (real-value a)))
-      (make-instance 'bigfloat :real (list 0 0))
+      (make-instance 'bigfloat :real (maxima::bcons (list 0 0)))
       (destructuring-bind (mantissa exp)
 	  (real-value a)
-	(make-instance 'bigfloat :real (list mantissa (+ exp n))))))
+	(make-instance 'bigfloat :real (maxima::bcons (list mantissa (+ exp n)))))))
 
 (macrolet
     ((frob (name)
@@ -991,7 +1156,7 @@
 (defmethod conjugate ((a complex-bigfloat))
   (make-instance 'complex-bigfloat
 		 :real (real-value a)
-		 :imag (maxima::fpminus (imag-value a))))
+		 :imag (maxima::bcons (maxima::fpminus (cdr (imag-value a))))))
 
 (defmethod cis ((a float))
   (cl:cis a))
@@ -1001,17 +1166,19 @@
 
 (defmethod cis ((a bigfloat))
   (make-instance 'complex-bigfloat
-		 :real (maxima::fpsin (real-value a) t)
-		 :imag (maxima::fpsin (real-value a) nil)))
+		 :real (maxima::bcons (maxima::fpsin (cdr (real-value a)) t))
+		 :imag (maxima::bcons (maxima::fpsin (cdr (real-value a)) nil))))
 
 (defmethod phase ((a bigfloat))
-  (let ((r (real-value a)))
+  (let ((r (cdr (real-value a))))
     (if (cl:>= (car r) 0)
-	(make-instance 'bigfloat :real (list 0 0))
-	(make-instance 'bigfloat :real (maxima::fppi)))))
+	(make-instance 'bigfloat :real (maxima::bcons (list 0 0)))
+	(make-instance 'bigfloat :real (maxima::bcons (maxima::fppi))))))
 
 (defmethod phase ((a complex-bigfloat))
-  (make-instance 'bigfloat :real (maxima::fpatan2 (imag-value a) (real-value a))))
+  (make-instance 'bigfloat
+		 :real (maxima::bcons (maxima::fpatan2 (cdr (imag-value a))
+						       (cdr (real-value a))))))
 
 (defun max (number &rest more-numbers)
   "Returns the greatest of its arguments."
@@ -1077,7 +1244,7 @@
       (one-arg-complex a)))
 
 (defmethod floor ((a bigfloat))
-  (maxima::fpentier (maxima::bcons (real-value a))))
+  (maxima::fpentier (real-value a)))
 
 (defmethod ffloor ((a bigfloat))
   (make-instance 'bigfloat :real (intofp (floor a))))
@@ -1172,8 +1339,8 @@
 (defmethod epsilon ((x bigfloat))
   ;; epsilon is just above 2^(-fpprec).
   (make-instance 'bigfloat
-		 :real (list (1+ (ash 1 (1- maxima::fpprec)))
-			     (- (1- maxima::fpprec)))))
+		 :real (maxima::bcons (list (1+ (ash 1 (1- maxima::fpprec)))
+					    (- (1- maxima::fpprec))))))
 
 (defmethod epsilon ((x complex-bigfloat))
   (epsilon (realpart x)))
