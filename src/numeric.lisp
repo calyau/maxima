@@ -1143,7 +1143,11 @@
 	 `(defmethod ,name ((a number) &optional (divisor 1))
 	    (,cl-name a divisor)))))
   (frob floor)
-  (frob ffloor))
+  (frob ffloor)
+  (frob truncate)
+  (frob ftruncate)
+  (frob round)
+  (frob fround))
   
   
 (defmethod realpart ((a bigfloat))
@@ -1260,7 +1264,7 @@
 (defmethod unary-ffloor ((a bigfloat))
   ;; We can probably do better than converting to an integer and
   ;; converting back to a float.
-  (make-instance 'bigfloat :real (intofp (floor a))))
+  (make-instance 'bigfloat :real (intofp (unary-floor a))))
 
 (defmethod floor ((a bigfloat) &optional (divisor 1))
   (if (= divisor 1)
@@ -1275,6 +1279,79 @@
 	(values int (- a int)))
       (let ((q (unary-ffloor (/ a divisor))))
 	(values q (- a (* q divisor))))))
+
+(defmethod unary-truncate ((a bigfloat))
+  (maxima::fpentier (real-value a)))
+
+(defmethod unary-ftruncate ((a bigfloat))
+  ;; We can probably do better than converting to an integer and
+  ;; converting back to a float.
+  (make-instance 'bigfloat :real (intofp (unary-truncate a))))
+
+(defmethod truncate ((a bigfloat) &optional (divisor 1))
+  (if (eql divisor 1)
+      (let ((int (unary-truncate a)))
+	(values int (- a int)))
+      (let ((q (unary-truncate (/ a divisor))))
+	(values q (- a (* q divisor))))))
+
+(defmethod ftruncate ((a bigfloat) &optional (divisor 1))
+  (if (eql divisor 1)
+      (let ((int (unary-ftruncate a)))
+	(values int (- a int)))
+      (let ((q (unary-ftruncate (/ a divisor))))
+	(values q (- a (* q divisor))))))
+
+(defmethod unary-ceiling ((a bigfloat))
+  ;; fpentier truncates to zero, so adjust for positive numbers.
+  (if (minusp a)
+      (maxima::fpentier (real-value a))
+      (maxima::fpentier (real-value (+ a 1)))))
+
+(defmethod unary-fceiling ((a bigfloat))
+  ;; We can probably do better than converting to an integer and
+  ;; converting back to a float.
+  (make-instance 'bigfloat :real (intofp (unary-ceiling a))))
+
+(defmethod ceiling ((a bigfloat) &optional (divisor 1))
+  (if (eql divisor 1)
+      (let ((int (unary-ceiling a)))
+	(values int (- a int)))
+      (let ((q (unary-ceiling (/ a divisor))))
+	(values q (- a (* q divisor))))))
+
+(defmethod fceiling ((a bigfloat) &optional (divisor 1))
+  (if (eql divisor 1)
+      (let ((int (unary-fceiling a)))
+	(values int (- a int)))
+      (let ((q (unary-fceiling (/ a divisor))))
+	(values q (- a (* q divisor))))))
+
+;; Stolen from CMUCL.
+(defmethod round ((a bigfloat) &optional (divisor 1))
+  (multiple-value-bind (tru rem)
+      (truncate a divisor)
+    (if (zerop rem)
+	(values tru rem)
+	(let ((thresh (/ (abs divisor) 2)))
+	  (cond ((or (> rem thresh)
+		     (and (= rem thresh) (oddp tru)))
+		 (if (minusp divisor)
+		     (values (- tru 1) (+ rem divisor))
+		     (values (+ tru 1) (- rem divisor))))
+		((let ((-thresh (- thresh)))
+		   (or (< rem -thresh)
+		       (and (= rem -thresh) (oddp tru))))
+		 (if (minusp divisor)
+		     (values (+ tru 1) (- rem divisor))
+		     (values (- tru 1) (+ rem divisor))))
+		(t (values tru rem)))))))
+
+(defmethod fround ((number bigfloat) &optional (divisor 1))
+  "Same as ROUND, but returns first value as a float."
+  (multiple-value-bind (res rem)
+      (round number divisor)
+    (values (bigfloat res) rem)))
 
 (defmethod expt ((a number) (b number))
   (cl:expt a b))
@@ -1513,3 +1590,48 @@
       (maxima::fp2flo (real-value x))
       (fp2single (real-value x))))
 
+(defmethod random ((x cl:float) &optional (state cl:*random-state*))
+  (cl:random x state))
+(defmethod random ((x integer) &optional (state cl:*random-state*))
+  (cl:random x state))
+
+(defmethod random ((x bigfloat) &optional (state cl:*random-state*))
+  ;; Generate an integer with fpprec bits, and convert to a bigfloat
+  ;; by making the exponent 0.  Then multiply by the arg to get the
+  ;; correct range.
+  (if (plusp x)
+      (let ((int (cl:random (ash 1 maxima::fpprec) state)))
+	(* x (bigfloat (maxima::bcons (list int 0)))))
+      (error "Argument is not a positive bigfloat: ~A~%" x)))
+
+(defmethod signum ((x number))
+  (cl:signum x))
+
+(defmethod signum ((x bigfloat))
+  (cond ((minusp x)
+	 (bigfloat -1))
+	((plusp x)
+	 (bigfloat 1))
+	(t
+	 x)))
+
+(defmethod signum ((x complex-bigfloat))
+  (/ x (abs x)))
+
+(defmethod float-sign ((x cl:float))
+  (cl:float-sign x))
+
+(defmethod float-sign ((x bigfloat))
+  (if (minusp x)
+      (bigfloat -1)
+      (bigfloat 1)))
+
+(defmethod float-digits ((x cl:float))
+  (cl:float-digits x))
+
+(defmethod float-digits ((x bigfloat))
+  ;; Should we just return fpprec or should we get the actual number
+  ;; of bits in the bigfloat number?  We choose the latter in case the
+  ;; number and fpprec don't match.
+  (let ((r (slot-value x 'real)))
+    (third (first r))))

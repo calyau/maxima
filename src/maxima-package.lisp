@@ -139,23 +139,23 @@
 	   #:integer-decode-float
 	   #:decode-float
 	   #:float
-	   )
-  
-  ;; Not yet implemented
-  #+nil
-  (:shadow #:ceiling
+	   #:ceiling
 	   #:fceiling
 	   #:truncate
 	   #:ftruncate
 	   #:round
 	   #:fround
-	   #:signum
-	   #:coerce
 	   #:random
+	   #:signum
+	   #:float-sign
 	   #:float-digits
+	   )
+  
+  ;; Not yet implemented
+  #+nil
+  (:shadow #:coerce
 	   #:rational
 	   #:rationalize
-	   #:float-sign
 	   )
     ;; Export types
   (:export #:bigfloat
@@ -215,6 +215,16 @@
 	   #:integer-decode-float
 	   #:decode-float
 	   #:float
+	   #:ceiling
+	   #:fceiling
+	   #:truncate
+	   #:ftruncate
+	   #:round
+	   #:fround
+	   #:random
+	   #:signum
+	   #:float-sign
+	   #:float-digits
 	   ))
 
 (defpackage :intl
