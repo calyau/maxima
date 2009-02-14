@@ -1261,7 +1261,12 @@
 (defmfun simpexp (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
-  (simplifya (list '(mexpt) '$%e (cadr x)) z))
+  (cond (($taylorp (second x))
+         ;; taylorize exp(taylor(...))
+         (meval
+           (list '(mexpt) '$%e ($ratdisrep (second x)))
+           (cadr ($taylorinfo (second x)))))
+        (t (simplifya (list '(mexpt) '$%e (cadr x)) z))))
 
 (defmfun simplambda (x vestigial simp-flag)
   (declare (ignore vestigial simp-flag))
