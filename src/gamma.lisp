@@ -2642,9 +2642,20 @@
             ((mexpt) ((mplus) 1 ((mtimes) -1 z)) b))))
    ;; The derivative wrt z
    ((mtimes)
-      ((mexpt) ((mplus) 1 ((mtimes) -1 z)) ((mplus) -1 b)
-      ((mexpt) z ((mplus) -1 a)))))
+      ((mexpt) ((mplus) 1 ((mtimes) -1 z)) ((mplus) -1 b))
+      ((mexpt) z ((mplus) -1 a))))
   grad)
+
+;;; Integral of the Incomplete Beta function
+
+(defprop %beta_incomplete
+  ((a b z)
+   nil 
+   nil
+   ((mplus)
+      ((mtimes) -1 ((%beta_incomplete) ((mplus) 1 a) b z))
+      ((mtimes) ((%beta_incomplete) a b z) z)))
+  integral)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2691,6 +2702,54 @@
        (let ((*beta-incomplete-eps*
                (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
          (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))))
+
+      ;; Argument simplifications and transformations
+      
+      ((and (integerp b) 
+            (plusp b)
+            (or (not (integerp a))
+                (plusp a)))
+       ;; Expand for b a positive integer and a not a negative integer.
+       (mul
+         (simplify (list '($beta) a b))
+         (power z a)
+         (let ((index (gensumindex)))
+           (dosum
+             (div
+               (mul
+                 (list '($pochhammer) a index)
+                 (power (sub 1 z) index))
+              (simplify (list '(mfactorial) index)))
+             index 0 (sub b 1) t))))
+      
+      ((and (integerp a) (plusp a))
+       ;; Expand for a a positive integer.
+       (mul
+         (simplify (list '($beta) a b))
+         (sub 1
+           (mul
+             (power (sub 1 z) b)
+             (let ((index (gensumindex)))
+               (dosum 
+                 (div
+                   (mul
+                     (list '($pochhammer) b index)
+                     (power z index))
+                 (simplify (list '(mfactorial) index)))
+               index 0 (sub a 1) t))))))
+      
+      ((and (integerp a) (minusp a) (integerp b) (plusp b) (<= b (- a)))
+       ;; Expand for a a negative integer and b an integer with b <= -a.
+       (mul
+         (power z a)
+         (let ((index (gensumindex)))
+           (dosum
+             (div
+               (mul (list '($pochhammer) (sub 1 b) index)
+                    (power z index))
+               (mul (add index a)
+                    (simplify (list '(mfactorial) index))))
+             index 0 (sub b 1) t))))
       
       (t
        (eqtest (list '(%beta_incomplete) a b z) expr)))))
