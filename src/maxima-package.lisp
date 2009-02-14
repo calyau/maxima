@@ -138,12 +138,12 @@
 	   #:numberp
 	   #:integer-decode-float
 	   #:decode-float
+	   #:float
 	   )
   
   ;; Not yet implemented
   #+nil
-  (:shadow #:float
-	   #:ceiling
+  (:shadow #:ceiling
 	   #:fceiling
 	   #:truncate
 	   #:ftruncate
@@ -214,6 +214,7 @@
 	   #:numberp
 	   #:integer-decode-float
 	   #:decode-float
+	   #:float
 	   ))
 
 (defpackage :intl

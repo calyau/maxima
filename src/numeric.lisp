@@ -124,7 +124,7 @@
 ;;;
 ;;;    Convert a CL number, a BIGFLOAT, or a COMPLEX-BIGFLOAT to
 ;;; Maxima's internal representation of the number.
-(defmethod maxima::to ((z float))
+(defmethod maxima::to ((z cl:float))
   z)
 
 (defmethod maxima::to ((z rational))
@@ -328,7 +328,7 @@
 					(cdr (imag-value b))))))
 
 ;; Handle contagion for two-arg-+
-(defmethod two-arg-+ ((a bigfloat) (b float))
+(defmethod two-arg-+ ((a bigfloat) (b cl:float))
   (make-instance 'bigfloat
 		 :real (maxima::bcons
 			(maxima::fpplus (cdr (real-value a))
@@ -416,7 +416,7 @@
 					      (cdr (imag-value b))))))
 
 ;; Handle contagion for two-arg--
-(defmethod two-arg-- ((a bigfloat) (b float))
+(defmethod two-arg-- ((a bigfloat) (b cl:float))
   (make-instance 'bigfloat
 		 :real (maxima::bcons
 			(maxima::fpdifference (cdr (real-value a))
@@ -435,7 +435,7 @@
 					      (cdr (intofp (realpart b)))))
 		 :imag (maxima::bcons (maxima::fpminus (intofp (imagpart b))))))
 
-(defmethod two-arg-- ((a float) (b bigfloat))
+(defmethod two-arg-- ((a cl:float) (b bigfloat))
   (make-instance 'bigfloat
 		 :real (maxima::bcons
 			(maxima::fpdifference (cdr (intofp a))
@@ -703,7 +703,7 @@
     ((frob (name)
        (let ((cl-name (intern (symbol-name name) :cl)))
 	 `(progn
-	    (defmethod ,name ((x float))
+	    (defmethod ,name ((x cl:float))
 	      (,cl-name x))
 	    (defmethod ,name ((x rational))
 	      (,cl-name x))))))
@@ -795,11 +795,11 @@
 					  (symbol-name op))))
 	     (cl-fun (find-symbol (symbol-name op) :cl)))
 	 `(progn
-	    (defmethod ,method ((a float) (b float))
+	    (defmethod ,method ((a cl:float) (b cl:float))
 	      (,cl-fun a b))
-	    (defmethod ,method ((a float) (b rational))
+	    (defmethod ,method ((a cl:float) (b rational))
 	      (,cl-fun a b))
-	    (defmethod ,method ((a rational) (b float))
+	    (defmethod ,method ((a rational) (b cl:float))
 	      (,cl-fun a b))
 	    (defmethod ,method ((a rational) (b rational))
 	      (,cl-fun a b))
@@ -820,7 +820,7 @@
 (defmethod two-arg-< ((x bigfloat) (y bigfloat))
   (maxima::fplessp (cdr (real-value x)) (cdr (real-value y))))
 
-(defmethod two-arg-< ((x bigfloat) (y float))
+(defmethod two-arg-< ((x bigfloat) (y cl:float))
   (maxima::fplessp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-< ((x bigfloat) (y rational))
@@ -829,7 +829,7 @@
 (defmethod two-arg-> ((x bigfloat) (y bigfloat))
   (maxima::fpgreaterp (cdr (real-value x)) (cdr (real-value y))))
 
-(defmethod two-arg-> ((x bigfloat) (y float))
+(defmethod two-arg-> ((x bigfloat) (y cl:float))
   (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-> ((x bigfloat) (y rational))
@@ -839,7 +839,7 @@
   (or (equal (cdr (real-value x)) (cdr (real-value y)))
       (maxima::fplessp (cdr (real-value x)) (cdr (real-value y)))))
 
-(defmethod two-arg-<= ((x bigfloat) (y float))
+(defmethod two-arg-<= ((x bigfloat) (y cl:float))
   (or (equal (cdr (real-value x)) (cdr (intofp y)))
       (maxima::fplessp (cdr (real-value x)) (cdr (intofp y)))))
 
@@ -851,7 +851,7 @@
   (or (equal (cdr (real-value x)) (cdr (real-value y)))
       (maxima::fpgreaterp (cdr (real-value x)) (cdr (real-value y)))))
 
-(defmethod two-arg->= ((x bigfloat) (y float))
+(defmethod two-arg->= ((x bigfloat) (y cl:float))
   (or (equal (cdr (real-value x)) (cdr (intofp y)))
       (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y)))))
 
@@ -1091,7 +1091,7 @@
 			(maxima::fpatan2 (cdr (real-value a))
 					 (cdr (real-value b))))))
 
-(defmethod two-arg-atan ((a bigfloat) (b float))
+(defmethod two-arg-atan ((a bigfloat) (b cl:float))
   (make-instance 'bigfloat
 		 :real (maxima::bcons (maxima::fpatan2 (cdr (real-value a))
 						       (cdr (intofp b))))))
@@ -1101,7 +1101,7 @@
 		 :real (maxima::bcons (maxima::fpatan2 (cdr (real-value a))
 						       (cdr (intofp b))))))
 
-(defmethod two-arg-atan ((a float) (b bigfloat))
+(defmethod two-arg-atan ((a cl:float) (b bigfloat))
   (make-instance 'bigfloat
 		 :real (maxima::bcons (maxima::fpatan2 (cdr (intofp a))
 						       (cdr (real-value b))))))
@@ -1116,7 +1116,7 @@
       (two-arg-atan a b)
       (one-arg-atan a)))
       
-(defmethod scale-float ((a float) (n integer))
+(defmethod scale-float ((a cl:float) (n integer))
   (cl:scale-float a n))
 
 (defmethod scale-float ((a bigfloat) (n integer))
@@ -1159,7 +1159,7 @@
 		 :real (real-value a)
 		 :imag (maxima::bcons (maxima::fpminus (cdr (imag-value a))))))
 
-(defmethod cis ((a float))
+(defmethod cis ((a cl:float))
   (cl:cis a))
 
 (defmethod cis ((a rational))
@@ -1219,7 +1219,7 @@
 		 :real (real-value a)
 		 :imag (real-value b)))
 
-(defmethod two-arg-complex ((a float) (b bigfloat))
+(defmethod two-arg-complex ((a cl:float) (b bigfloat))
   (make-instance 'complex-bigfloat
 		 :real (intofp a)
 		 :imag (real-value b)))
@@ -1229,7 +1229,7 @@
 		 :real (intofp a)
 		 :imag (real-value b)))
 
-(defmethod two-arg-complex ((a bigfloat) (b float))
+(defmethod two-arg-complex ((a bigfloat) (b cl:float))
   (make-instance 'complex-bigfloat
 		 :real (real-value a)
 		 :imag (intofp b)))
@@ -1413,7 +1413,7 @@
   (frob <=)
   (frob >=))
 
-(defmethod integer-decode-float ((x float))
+(defmethod integer-decode-float ((x cl:float))
   (cl:integer-decode-float x))
 
 (defmethod integer-decode-float ((x bigfloat))
@@ -1422,7 +1422,7 @@
 	    (- (third r) (third (first r)))
 	    (signum (second r)))))
 
-(defmethod decode-float ((x float))
+(defmethod decode-float ((x cl:float))
   (cl:decode-float x))
 
 (defmethod decode-float ((x bigfloat))
@@ -1431,3 +1431,59 @@
 			   :real (maxima::bcons (list (abs (second r)) 0)))
 	    (third r)
 	    (bigfloat (signum (second r))))))
+
+;; GCL doesn't have a REAL class!
+#+gcl
+(progn
+(defmethod float ((x cl:float) (y cl:float))
+  (cl:float x y))
+
+(defmethod float ((x rational) (y cl:float))
+  (cl:float x y))
+
+(defmethod float ((x cl:float) (y bigfloat))
+  (bigfloat x))
+
+(defmethod float ((x rational) (y bigfloat))
+  (bigfloat x))
+)
+
+#-gcl
+(progn
+(defmethod float ((x real) (y cl:float))
+  (cl:float x y))
+
+(defmethod float ((x real) (y bigfloat))
+  (bigfloat x))
+)
+
+;; Like Maxima's fp2flo, but for single-float numbers.
+(defun fp2single (l)
+  (let ((precision (caddar l))
+	(mantissa (cadr l))
+	(exponent (caddr l))
+	(fpprec (float-digits 1f0))
+	(maxima::*m 0))
+    ;; Round the mantissa to the number of bits of precision of the
+    ;; machine, and then convert it to a floating point fraction.  We
+    ;; have 0.5 <= mantissa < 1
+    (setq mantissa (maxima::quotient (maxima::fpround mantissa)
+				     (expt 2f0 fpprec)))
+    ;; Multiply the mantissa by the exponent portion.  I'm not sure
+    ;; why the exponent computation is so complicated.
+    ;;
+    ;; GCL doesn't signal overflow from scale-float if the number
+    ;; would overflow.  We have to do it this way.  0.5 <= mantissa <
+    ;; 1.  The largest double-float is .999999 * 2^128.  So if the
+    ;; exponent is 128 or higher, we have an overflow.
+    (let ((e (+ exponent (- precision) maxima::*m fpprec)))
+      (if (>= (abs e) 129)
+	  (maxima::merror "Floating point overflow in converting ~:M to flonum" l)
+	  (cl:scale-float mantissa e)))))
+
+
+(defmethod float ((x bigfloat) (y cl:float))
+  (if (typep y 'double-float)
+      (maxima::fp2flo (real-value x))
+      (fp2single (real-value x))))
+
