@@ -146,6 +146,9 @@
 
 (defmvar $beta_args_sum_to_integer nil)
 
+;;; The Beta funtion has mirror symmetry
+(defprop $beta t commutes-with-conjugate)
+
 (defmfun simpbeta (x vestigial z &aux check)
   (declare (ignore vestigial))
   (twoargcheck x)
