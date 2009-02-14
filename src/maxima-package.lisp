@@ -136,6 +136,8 @@
 	   #:realp
 	   #:complexp
 	   #:numberp
+	   #:integer-decode-float
+	   #:decode-float
 	   )
   
   ;; Not yet implemented
@@ -210,6 +212,8 @@
 	   #:realp
 	   #:complexp
 	   #:numberp
+	   #:integer-decode-float
+	   #:decode-float
 	   ))
 
 (defpackage :intl

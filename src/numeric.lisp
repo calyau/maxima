@@ -1120,10 +1120,11 @@
   (cl:scale-float a n))
 
 (defmethod scale-float ((a bigfloat) (n integer))
-  (if (cl:zerop (car (real-value a)))
+  (if (cl:zerop (second (real-value a)))
       (make-instance 'bigfloat :real (maxima::bcons (list 0 0)))
-      (destructuring-bind (mantissa exp)
+      (destructuring-bind (marker mantissa exp)
 	  (real-value a)
+	(declare (ignore marker))
 	(make-instance 'bigfloat :real (maxima::bcons (list mantissa (+ exp n)))))))
 
 (macrolet
@@ -1412,3 +1413,21 @@
   (frob <=)
   (frob >=))
 
+(defmethod integer-decode-float ((x float))
+  (cl:integer-decode-float x))
+
+(defmethod integer-decode-float ((x bigfloat))
+  (let ((r (real-value x)))
+    (values (abs (second r))
+	    (- (third r) (third (first r)))
+	    (signum (second r)))))
+
+(defmethod decode-float ((x float))
+  (cl:decode-float x))
+
+(defmethod decode-float ((x bigfloat))
+  (let ((r (real-value x)))
+    (values (make-instance 'bigfloat
+			   :real (maxima::bcons (list (abs (second r)) 0)))
+	    (third r)
+	    (bigfloat (signum (second r))))))
