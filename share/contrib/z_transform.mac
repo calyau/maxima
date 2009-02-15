@@ -22,8 +22,10 @@ defrule (r0,
     block ([nn% : nn, zz% : zz],
         apply1
            (z_transform (aa, nn, zz),
-            r913_1a, r913_1b, r913_2a, r913_2b, r913_3, r913_4, r913_5, r913_6, r913_7, r913_10, r913_12,
-            r914_4, r914_6, /* r914_9, */ r914_10, r914_11, r914_12, r914_13, r914_14, r914_15a, r914_16)));
+            r913_1a, r913_1b, r913_2a, r913_2b, r913_3a, r913_3b,
+            r913_4, r913_5, r913_6, r913_7, r913_10, r913_12, r914_4,
+            r914_6, /* r914_9, */ r914_10, r914_11a, r914_11b, r914_12,
+            r914_13, r914_14, r914_15a, r914_16)));
 
 /* Some specific transforms.
  * Table 9.1.3 at: http://math.fullerton.edu/mathews/c2003/ZTransformIntroMod.html
@@ -59,9 +61,13 @@ defrule (r913_2b,
 
 matchdeclare (bb, freeof (nn%, zz%));
 
-defrule (r913_3,
+defrule (r913_3a,
     z_transform (bb^nn%, nn%, zz%),
     zz/(zz - bb));
+
+defrule (r913_3b,
+    z_transform (1/(bb^nn%), nn%, zz%),
+    zz/(zz - 1/bb));
 
 /* (4) b^(n - 1) * u[n - 1] --> 1/(z - b) */
 
@@ -181,9 +187,13 @@ defrule (r914_10,
 matchdeclare (xx, all);
 matchdeclare (bb, freeof (nn%, zz%));
 
-defrule (r914_11,
+defrule (r914_11a,
     z_transform (bb^nn% * xx, nn%, zz%),
     'subst (zz/bb, zz, z_transform (xx, nn, zz)));
+
+defrule (r914_11b,
+    z_transform (1/(bb^nn%) * xx, nn%, zz%),
+    'subst (zz*bb, zz, z_transform (xx, nn, zz)));
 
 /* (12) n*x[n] --> -z X'(z)
  * (differentiation)

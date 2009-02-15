@@ -85,3 +85,42 @@ apply_z_transform (z_transform (sin (m*omega) - %i * sin (m*omega) * c^m + %pi, 
       - %i * 'subst (u/c, u, sin(omega)*u / (u^2 - 2*cos(omega)*u + 1))
       + %pi * u/(u - 1);
 
+/* from the mailing list 2009-02-14 */
+
+e1a : apply_z_transform (z_transform (a+b*(e^(-p*T))^(m) , m, z));
+b*z/(z-1/e^(p*T))+a*z/(z-1);
+
+e1b : apply_z_transform (z_transform (a+b*(e^(p*T))^(m) , m, z));
+b*z/(z-e^(p*T))+a*z/(z-1);
+
+e2a : apply_z_transform (z_transform (a+b*(%e^(-p*T))^(m) , m, z));
+(b*z)/(z - exp(-p*T)) + (a*z)/(z - 1);
+
+e2b : apply_z_transform (z_transform (a+b*(%e^(p*T))^(m) , m, z));
+(b*z)/(z - exp(p*T)) + (a*z)/(z - 1);
+
+is (equal (e2a, subst (e=%e, e1a)));
+true;
+
+is (equal (e2b, subst (e=%e, e1b)));
+true;
+
+/* more about negative exponents */
+
+apply_z_transform (z_transform (b^-n, n, z));
+    z/(z - 1/b);
+
+apply_z_transform (z_transform ((b^-a)^m, m, u));
+    u/(u - 1/b^a);
+
+apply_z_transform (z_transform (b^-n * n, n, z));
+    'subst (z*b, z, -z * 'diff (z/(z - 1), z, 1));
+
+apply_z_transform (z_transform ((a + b)^-m * m, m, s));
+    'subst (s*(a + b), s, -s * 'diff (s/(s - 1), s, 1));
+
+apply_z_transform (z_transform (b^-n * sin (a*n), n, z));
+    'subst (z*b, z, z*sin(a) / (z^2 - 2*cos(a)*z + 1));
+    
+apply_z_transform (z_transform ((%pi - 1)^-k * cos (a*k), k, y));
+    'subst (y*(%pi - 1), y, y * (y - cos(a)) / (y^2 - 2*cos(a)*y + 1));
