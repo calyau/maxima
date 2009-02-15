@@ -38,9 +38,9 @@ block
         rtestode_kamke_2_3,
         rtestode_kamke_2_4,
         rtestode_kamke_2_5,
-        rtestode_odelin,
-
+     
      */
+        rtest_odelin,	
         rtestezunits,
         rtest_numericalio,
         rtest_simplify_sum,

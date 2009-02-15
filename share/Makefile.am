@@ -177,6 +177,7 @@ contrib/diffequations/ode1_lie.mac\
 contrib/diffequations/ode1_nonlinear.mac\
 contrib/diffequations/ode1_riccati.mac\
 contrib/diffequations/odelin.lisp\
+contrib/diffequations/rtest_odelin.mac\
 contrib/diffequations/odeutils.lisp\
 contrib/diffequations/tests/Makefile\
 contrib/diffequations/tests/README\
@@ -208,7 +209,6 @@ contrib/diffequations/tests/rtestode_murphy_2_2.mac\
 contrib/diffequations/tests/rtestode_murphy_2_3.mac\
 contrib/diffequations/tests/rtestode_murphy_2_4.mac\
 contrib/diffequations/tests/rtestode_murphy_2_5.mac\
-contrib/diffequations/tests/rtestode_odelin.mac\
 contrib/diffequations/tests/rtestode_utils.mac\
 contrib/diffequations/tests/testsuite.lisp\
 contrib/distrib/distrib.mac\
