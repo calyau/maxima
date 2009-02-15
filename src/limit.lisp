@@ -322,7 +322,7 @@ It appears in LIMIT and DEFINT.......")
 (defun limunknown1 (f)
   (cond ((mapatom f) nil)
 	((or (not (safe-get (caar f) 'operators))
-	     (member (caar f) '(%sum %product %signum mncexpt) :test #'eq)
+	     (member (caar f) '(%sum %product mncexpt) :test #'eq)
 	     ;;Special function code here i.e. for li[2](x).
 	     (and (eq (caar f) 'mqapply)
 		  (not (get (subfunname f) 'specsimp))))
@@ -335,12 +335,12 @@ It appears in LIMIT and DEFINT.......")
 	 (setq e (simplify ($minfactorial e))))
 	(t e)))
 
+;; returns 1, 0, -1
+;; or nil if sign unknown
 (defun getsignl (z)
   (let ((z (ridofab z)))
     (if (not (free z var)) (setq z ($limit z var val)))
-    (let ((sign ($asksign z)))
-      ;; FIXME: What happens if sign isn't any of these choices?  Is
-      ;; returning NIL ok?
+    (let ((sign ($sign z)))
       (cond ((eq sign '$pos) 1)
 	    ((eq sign '$neg) -1)
 	    ((eq sign '$zero) 0)))))
@@ -958,7 +958,7 @@ It appears in LIMIT and DEFINT.......")
     (cond ((involve e '(mfactorial)) nil)
 
 	  ;; functions that are defined at their discontinuities
-	  ((amongl '($atan2 $floor $round $ceiling) e) nil)
+	  ((amongl '($atan2 $floor $round $ceiling %signum) e) nil)
 
 	  ;; substitute value into expression
 	  ((eq (setq ans (no-err-sub (ridofab v) e)) t)
