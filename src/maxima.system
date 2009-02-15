@@ -458,6 +458,8 @@
                                      (:file "logarc") 
                                      (:file "rpart")))
 	       (:module numeric-bigfloat :source-pathname ""
+			:depends-on (#-gcl "package"
+				     #+gcl "proclaim")
 			:components ((:file "numeric")))
 	       (:module server :source-pathname ""
 			:components ((:file "server")))
