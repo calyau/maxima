@@ -292,7 +292,7 @@
 (defun polynomial-filter (p x f)
   (let (($gcd '$spmod) ($algebraic t) ($ratfac nil) 
 	($ratprint nil) ($radexpand nil))
-    (setq p (sratsimp p x)) ;; Get rid of terms like sqr(5)^2, %i^2...
+    (setq p (sratsimp p)) ;; Get rid of terms like sqr(5)^2, %i^2...
     (setq p ($mysqfr p x))
     (setq p (if (mtimesp p) (margs p) (list p)))
     (let ((q 1) (n))
