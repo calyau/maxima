@@ -21,8 +21,8 @@
   :source-extension "f"
   :language :f2cl-lisp
   :components
-  ((:file "daxpy")
-   (:file "ddot")
+  ((:file "lbfgs-daxpy")
+   (:file "lbfgs-ddot")
    (:file "lb1"
 	  :depends-on ("lb2"))
    (:file "lb2"

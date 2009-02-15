@@ -1,5 +1,5 @@
-load ("daxpy.lisp");
-load ("ddot.lisp");
+load ("lbfgs-daxpy.lisp");
+load ("lbfgs-ddot.lisp");
 load ("lb2.lisp");
 load ("lb1.lisp");
 load ("mcstep.lisp");
