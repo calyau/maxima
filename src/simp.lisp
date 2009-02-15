@@ -1264,8 +1264,9 @@
   (cond (($taylorp (second x))
          ;; taylorize exp(taylor(...))
          (meval
-           (list '(mexpt) '$%e ($ratdisrep (second x)))
-           (cadr ($taylorinfo (second x)))))
+           (list '($taylor)
+                 (list '(mexpt) '$%e ($ratdisrep (second x)))
+                 (cadr ($taylorinfo (second x))))))
         (t (simplifya (list '(mexpt) '$%e (cadr x)) z))))
 
 (defmfun simplambda (x vestigial simp-flag)
