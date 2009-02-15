@@ -127,7 +127,7 @@
 (defmethod maxima::to ((z cl:float))
   z)
 
-(defmethod maxima::to ((z rational))
+(defmethod maxima::to ((z cl:rational))
   (if (typep z 'ratio)
       (maxima::div (numerator z) (denominator z))
       z))
@@ -334,7 +334,7 @@
 			(maxima::fpplus (cdr (real-value a))
 					(cdr (intofp b))))))
 
-(defmethod two-arg-+ ((a bigfloat) (b rational))
+(defmethod two-arg-+ ((a bigfloat) (b cl:rational))
   (make-instance 'bigfloat
 		 :real (maxima::bcons
 			(maxima::fpplus (cdr (real-value a))
@@ -422,7 +422,7 @@
 			(maxima::fpdifference (cdr (real-value a))
 					      (cdr (intofp b))))))
 
-(defmethod two-arg-- ((a bigfloat) (b rational))
+(defmethod two-arg-- ((a bigfloat) (b cl:rational))
   (make-instance 'bigfloat
 		 :real (maxima::bcons
 			(maxima::fpdifference (cdr (real-value a))
@@ -441,7 +441,7 @@
 			(maxima::fpdifference (cdr (intofp a))
 					      (cdr (real-value b))))))
 
-(defmethod two-arg-- ((a rational) (b bigfloat))
+(defmethod two-arg-- ((a cl:rational) (b bigfloat))
   (make-instance 'bigfloat
 		 :real (maxima::bcons
 			(maxima::fpdifference (cdr (intofp a))
@@ -705,7 +705,7 @@
 	 `(progn
 	    (defmethod ,name ((x cl:float))
 	      (,cl-name x))
-	    (defmethod ,name ((x rational))
+	    (defmethod ,name ((x cl:rational))
 	      (,cl-name x))))))
   (frob plusp)
   (frob minusp))
@@ -790,11 +790,11 @@
 	 `(progn
 	    (defmethod ,method ((a cl:float) (b cl:float))
 	      (,cl-fun a b))
-	    (defmethod ,method ((a cl:float) (b rational))
+	    (defmethod ,method ((a cl:float) (b cl:rational))
 	      (,cl-fun a b))
-	    (defmethod ,method ((a rational) (b cl:float))
+	    (defmethod ,method ((a cl:rational) (b cl:float))
 	      (,cl-fun a b))
-	    (defmethod ,method ((a rational) (b rational))
+	    (defmethod ,method ((a cl:rational) (b cl:rational))
 	      (,cl-fun a b))
 	    (defun ,op (number &rest more-numbers)
 	      "Returns T if its arguments are in strictly increasing order, NIL otherwise."
@@ -816,7 +816,7 @@
 (defmethod two-arg-< ((x bigfloat) (y cl:float))
   (maxima::fplessp (cdr (real-value x)) (cdr (intofp y))))
 
-(defmethod two-arg-< ((x bigfloat) (y rational))
+(defmethod two-arg-< ((x bigfloat) (y cl:rational))
   (maxima::fplessp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-> ((x bigfloat) (y bigfloat))
@@ -825,7 +825,7 @@
 (defmethod two-arg-> ((x bigfloat) (y cl:float))
   (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y))))
 
-(defmethod two-arg-> ((x bigfloat) (y rational))
+(defmethod two-arg-> ((x bigfloat) (y cl:rational))
   (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y))))
 
 (defmethod two-arg-<= ((x bigfloat) (y bigfloat))
@@ -836,7 +836,7 @@
   (or (equal (cdr (real-value x)) (cdr (intofp y)))
       (maxima::fplessp (cdr (real-value x)) (cdr (intofp y)))))
 
-(defmethod two-arg-<= ((x bigfloat) (y rational))
+(defmethod two-arg-<= ((x bigfloat) (y cl:rational))
   (or (equal (cdr (real-value x)) (cdr (intofp y)))
       (maxima::fplessp (cdr (real-value x)) (cdr (intofp y)))))
 
@@ -848,7 +848,7 @@
   (or (equal (cdr (real-value x)) (cdr (intofp y)))
       (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y)))))
 
-(defmethod two-arg->= ((x bigfloat) (y rational))
+(defmethod two-arg->= ((x bigfloat) (y cl:rational))
   (or (equal (cdr (real-value x)) (cdr (intofp y)))
       (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y)))))
 
@@ -1089,7 +1089,7 @@
 		 :real (maxima::bcons (maxima::fpatan2 (cdr (real-value a))
 						       (cdr (intofp b))))))
 
-(defmethod two-arg-atan ((a bigfloat) (b rational))
+(defmethod two-arg-atan ((a bigfloat) (b cl:rational))
   (make-instance 'bigfloat
 		 :real (maxima::bcons (maxima::fpatan2 (cdr (real-value a))
 						       (cdr (intofp b))))))
@@ -1099,7 +1099,7 @@
 		 :real (maxima::bcons (maxima::fpatan2 (cdr (intofp a))
 						       (cdr (real-value b))))))
 
-(defmethod two-arg-atan ((a rational) (b bigfloat))
+(defmethod two-arg-atan ((a cl:rational) (b bigfloat))
   (make-instance 'bigfloat
 		 :real (maxima::bcons (maxima::fpatan2 (cdr (intofp a))
 						       (cdr (real-value b))))))
@@ -1137,6 +1137,8 @@
 	    (,cl-name a divisor)))))
   (frob floor)
   (frob ffloor)
+  (frob ceiling)
+  (frob fceiling)
   (frob truncate)
   (frob ftruncate)
   (frob round)
@@ -1166,7 +1168,7 @@
 (defmethod cis ((a cl:float))
   (cl:cis a))
 
-(defmethod cis ((a rational))
+(defmethod cis ((a cl:rational))
   (cl:cis a))
 
 (defmethod cis ((a bigfloat))
@@ -1228,7 +1230,7 @@
 		 :real (intofp a)
 		 :imag (real-value b)))
 
-(defmethod two-arg-complex ((a rational) (b bigfloat))
+(defmethod two-arg-complex ((a cl:rational) (b bigfloat))
   (make-instance 'complex-bigfloat
 		 :real (intofp a)
 		 :imag (real-value b)))
@@ -1238,7 +1240,7 @@
 		 :real (real-value a)
 		 :imag (intofp b)))
 
-(defmethod two-arg-complex ((a bigfloat) (b rational))
+(defmethod two-arg-complex ((a bigfloat) (b cl:rational))
   (make-instance 'complex-bigfloat
 		 :real (real-value a)
 		 :imag (intofp b)))
@@ -1387,7 +1389,7 @@
 ;;; TO - External
 ;;;
 ;;;    TO takes a maxima number and converts it.  Floats remain
-;;; floats, maxima rationals are converted to CL rationals.  Maxima
+;;; floats, maxima cl:rationals are converted to CL cl:rationals.  Maxima
 ;;; bigfloats are convert to BIGFLOATS.  Maxima complex numbers are
 ;;; converted to CL complex numbers or to COMPLEX-BIGFLOAT's.
 (defun to (maxima-num &optional imag)
@@ -1397,12 +1399,12 @@
 	 (cond ((cl:realp maxima-num)
 		maxima-num)
 	       ((eq maxima-num 'maxima::$%i)
-		;; Convert %i to an exact complex rational.
+		;; Convert %i to an exact complex cl:rational.
 		#c(0 1))
 	       ((consp maxima-num)
 		;; Some kind of maxima number
 		(cond ((maxima::ratnump maxima-num)
-		       ;; Maxima rational ((mrat ...) num den)
+		       ;; Maxima cl:rational ((mrat ...) num den)
 		       (/ (second maxima-num) (third maxima-num)))
 		      ((maxima::$bfloatp maxima-num)
 		       (bigfloat maxima-num))
@@ -1413,7 +1415,7 @@
 									 (eq (caar x) 'maxima::rat)))))
 		       ;; We have some kind of complex number whose
 		       ;; parts are a cl:real, a bfloat, or a Maxima
-		       ;; rational.
+		       ;; cl:rational.
 		       (let ((re (maxima::$realpart maxima-num))
 			     (im (maxima::$imagpart maxima-num)))
 			 (to re im)))))
@@ -1534,13 +1536,13 @@
 (defmethod float ((x cl:float) (y cl:float))
   (cl:float x y))
 
-(defmethod float ((x rational) (y cl:float))
+(defmethod float ((x cl:rational) (y cl:float))
   (cl:float x y))
 
 (defmethod float ((x cl:float) (y bigfloat))
   (bigfloat x))
 
-(defmethod float ((x rational) (y bigfloat))
+(defmethod float ((x cl:rational) (y bigfloat))
   (bigfloat x))
 )
 
@@ -1628,3 +1630,133 @@
   ;; number and fpprec don't match.
   (let ((r (slot-value x 'real)))
     (third (first r))))
+
+#-gcl
+(defmethod rational ((x real))
+  (cl:rational x))
+
+#+gcl
+(progn
+(defmethod rational ((x float))
+  (cl:rational x))
+(defmethod rational ((x cl:rational))
+  (cl:rational x))
+)
+
+(defmethod rational ((x bigfloat))
+  (destructuring-bind ((marker simp prec) mantissa exp)
+      (real-value x)
+    (declare (ignore marker simp))
+    (* mantissa (expt 2 (- exp prec)))))
+
+#-gcl
+(defmethod rationalize ((x real))
+  (cl:rationalize x))
+
+#+gcl
+(progn
+(defmethod rationalize ((x float))
+  (cl:rationalize x))
+(defmethod rationalize ((x cl:rational))
+  (cl:rationalize x))
+)
+
+
+;;; This routine taken from CMUCL, which, in turn is a routine from
+;;; CLISP, which is GPL.
+;;;
+;;; I (rtoy) have modified it from CMUCL so that it only handles bigfloats.
+;;;
+;;; RATIONALIZE  --  Public
+;;;
+;;; The algorithm here is the method described in CLISP.  Bruno Haible has
+;;; graciously given permission to use this algorithm.  He says, "You can use
+;;; it, if you present the following explanation of the algorithm."
+;;;
+;;; Algorithm (recursively presented):
+;;;   If x is a rational number, return x.
+;;;   If x = 0.0, return 0.
+;;;   If x < 0.0, return (- (rationalize (- x))).
+;;;   If x > 0.0:
+;;;     Call (integer-decode-float x). It returns a m,e,s=1 (mantissa,
+;;;     exponent, sign).
+;;;     If m = 0 or e >= 0: return x = m*2^e.
+;;;     Search a rational number between a = (m-1/2)*2^e and b = (m+1/2)*2^e
+;;;     with smallest possible numerator and denominator.
+;;;     Note 1: If m is a power of 2, we ought to take a = (m-1/4)*2^e.
+;;;       But in this case the result will be x itself anyway, regardless of
+;;;       the choice of a. Therefore we can simply ignore this case.
+;;;     Note 2: At first, we need to consider the closed interval [a,b].
+;;;       but since a and b have the denominator 2^(|e|+1) whereas x itself
+;;;       has a denominator <= 2^|e|, we can restrict the seach to the open
+;;;       interval (a,b).
+;;;     So, for given a and b (0 < a < b) we are searching a rational number
+;;;     y with a <= y <= b.
+;;;     Recursive algorithm fraction_between(a,b):
+;;;       c := (ceiling a)
+;;;       if c < b
+;;;         then return c       ; because a <= c < b, c integer
+;;;         else
+;;;           ; a is not integer (otherwise we would have had c = a < b)
+;;;           k := c-1          ; k = floor(a), k < a < b <= k+1
+;;;           return y = k + 1/fraction_between(1/(b-k), 1/(a-k))
+;;;                             ; note 1 <= 1/(b-k) < 1/(a-k)
+;;;
+;;; You can see that we are actually computing a continued fraction expansion.
+;;;
+;;; Algorithm (iterative):
+;;;   If x is rational, return x.
+;;;   Call (integer-decode-float x). It returns a m,e,s (mantissa,
+;;;     exponent, sign).
+;;;   If m = 0 or e >= 0, return m*2^e*s. (This includes the case x = 0.0.)
+;;;   Create rational numbers a := (2*m-1)*2^(e-1) and b := (2*m+1)*2^(e-1)
+;;;   (positive and already in lowest terms because the denominator is a
+;;;   power of two and the numerator is odd).
+;;;   Start a continued fraction expansion
+;;;     p[-1] := 0, p[0] := 1, q[-1] := 1, q[0] := 0, i := 0.
+;;;   Loop
+;;;     c := (ceiling a)
+;;;     if c >= b
+;;;       then k := c-1, partial_quotient(k), (a,b) := (1/(b-k),1/(a-k)),
+;;;            goto Loop
+;;;   finally partial_quotient(c).
+;;;   Here partial_quotient(c) denotes the iteration
+;;;     i := i+1, p[i] := c*p[i-1]+p[i-2], q[i] := c*q[i-1]+q[i-2].
+;;;   At the end, return s * (p[i]/q[i]).
+;;;   This rational number is already in lowest terms because
+;;;   p[i]*q[i-1]-p[i-1]*q[i] = (-1)^i.
+;;;
+(defmethod rationalize ((x bigfloat))
+  (multiple-value-bind (frac expo sign)
+      (integer-decode-float x)
+    (cond ((or (zerop frac) (>= expo 0))
+	   (if (minusp sign)
+	       (- (ash frac expo))
+	       (ash frac expo)))
+	  (t
+	   ;; expo < 0 and (2*m-1) and (2*m+1) are coprime to 2^(1-e),
+	   ;; so build the fraction up immediately, without having to do
+	   ;; a gcd.
+	   (let ((a (/ (- (* 2 frac) 1) (ash 1 (- 1 expo))))
+		 (b (/ (+ (* 2 frac) 1) (ash 1 (- 1 expo))))
+		 (p0 0)
+		 (q0 1)
+		 (p1 1)
+		 (q1 0))
+	     (do ((c (ceiling a) (ceiling a)))
+		 ((< c b)
+		  (let ((top (+ (* c p1) p0))
+			(bot (+ (* c q1) q0)))
+		    (/ (if (minusp sign)
+			   (- top)
+			   top)
+		       bot)))
+	       (let* ((k (- c 1))
+		      (p2 (+ (* k p1) p0))
+		      (q2 (+ (* k q1) q0)))
+		 (psetf a (/ (- b k))
+			b (/ (- a k)))
+		 (setf p0 p1
+		       q0 q1
+		       p1 p2
+		       q1 q2))))))))

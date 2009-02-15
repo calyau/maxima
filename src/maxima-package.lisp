@@ -149,13 +149,13 @@
 	   #:signum
 	   #:float-sign
 	   #:float-digits
+	   #:rational
+	   #:rationalize
 	   )
   
   ;; Not yet implemented
   #+nil
   (:shadow #:coerce
-	   #:rational
-	   #:rationalize
 	   )
     ;; Export types
   (:export #:bigfloat
@@ -225,6 +225,8 @@
 	   #:signum
 	   #:float-sign
 	   #:float-digits
+	   #:rational
+	   #:rationalize
 	   ))
 
 (defpackage :intl
