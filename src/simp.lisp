@@ -1261,13 +1261,7 @@
 (defmfun simpexp (x vestigial z)
   (declare (ignore vestigial))
   (oneargcheck x)
-  (cond (($taylorp (second x))
-         ;; taylorize exp(taylor(...))
-         (meval
-           (list '($taylor)
-                 (list '(mexpt) '$%e ($ratdisrep (second x)))
-                 (cadr ($taylorinfo (second x))))))
-        (t (simplifya (list '(mexpt) '$%e (cadr x)) z))))
+  (if ($taylorp (cadr x)) ($taylor x) (simplifya (list '(mexpt) '$%e (cadr x)) z)))
 
 (defmfun simplambda (x vestigial simp-flag)
   (declare (ignore vestigial simp-flag))
@@ -1627,11 +1621,7 @@
 		       ((and $%emode (setq z (%especial pot))) (return z))
                        (($taylorp (third x))
                         ;; taylorize %e^taylor(...)
-                        (return
-                          (meval
-                            (list '($taylor)
-                                  (list '(mexpt) '$%e ($ratdisrep (third x)))
-                                  (cadr ($taylorinfo (third x)))))))))
+			(return ($taylor x)))))                    
 		(t
 		 (let ((y (mget gr '$numer)))
 		   (and y
