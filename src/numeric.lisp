@@ -1637,7 +1637,7 @@
 
 #+gcl
 (progn
-(defmethod rational ((x float))
+(defmethod rational ((x cl:float))
   (cl:rational x))
 (defmethod rational ((x cl:rational))
   (cl:rational x))
@@ -1655,7 +1655,7 @@
 
 #+gcl
 (progn
-(defmethod rationalize ((x float))
+(defmethod rationalize ((x cl:float))
   (cl:rationalize x))
 (defmethod rationalize ((x cl:rational))
   (cl:rationalize x))
