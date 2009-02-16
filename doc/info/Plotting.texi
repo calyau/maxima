@@ -786,7 +786,7 @@ option @code{psfile} instead, which will also work in Openmath, and does
 the same thing with just one option.
 
 @example
-[gnuplot_term, png], [gnuplot_outfile, "graph3.png"]
+[gnuplot_term, png], [gnuplot_out_file, "graph3.png"]
 @end example
 
 @item
