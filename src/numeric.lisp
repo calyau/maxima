@@ -819,6 +819,12 @@
 (defmethod two-arg-< ((x bigfloat) (y cl:rational))
   (maxima::fplessp (cdr (real-value x)) (cdr (intofp y))))
 
+(defmethod two-arg-< ((x cl:float) (y bigfloat))
+  (maxima::fplessp (cdr (intofp x)) (cdr (real-value y))))
+
+(defmethod two-arg-< ((x cl:rational) (y bigfloat))
+  (maxima::fplessp (cdr (intofp x)) (cdr (real-value y))))
+
 (defmethod two-arg-> ((x bigfloat) (y bigfloat))
   (maxima::fpgreaterp (cdr (real-value x)) (cdr (real-value y))))
 
@@ -828,29 +834,51 @@
 (defmethod two-arg-> ((x bigfloat) (y cl:rational))
   (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y))))
 
+(defmethod two-arg-> ((x cl:float) (y bigfloat))
+  (maxima::fpgreaterp (cdr (intofp x)) (cdr (real-value y))))
+
+(defmethod two-arg-> ((x cl:rational) (y bigfloat))
+  (maxima::fpgreaterp (cdr (intofp x)) (cdr (real-value y))))
+
 (defmethod two-arg-<= ((x bigfloat) (y bigfloat))
-  (or (equal (cdr (real-value x)) (cdr (real-value y)))
+  (or (zerop (two-arg-- x y))
       (maxima::fplessp (cdr (real-value x)) (cdr (real-value y)))))
 
 (defmethod two-arg-<= ((x bigfloat) (y cl:float))
-  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+  (or (zerop (two-arg-- x y))
       (maxima::fplessp (cdr (real-value x)) (cdr (intofp y)))))
 
 (defmethod two-arg-<= ((x bigfloat) (y cl:rational))
-  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+  (or (zerop (two-arg-- x y))
       (maxima::fplessp (cdr (real-value x)) (cdr (intofp y)))))
 
+(defmethod two-arg-<= ((x cl:float) (y bigfloat))
+  (or (zerop (two-arg-- x y))
+      (maxima::fplessp (cdr (intofp x)) (cdr (real-value y)))))
+
+(defmethod two-arg-<= ((x cl:rational) (y bigfloat))
+  (or (zerop (two-arg-- x y))
+      (maxima::fplessp (cdr (intofp x)) (cdr (real-value y)))))
+
 (defmethod two-arg->= ((x bigfloat) (y bigfloat))
-  (or (equal (cdr (real-value x)) (cdr (real-value y)))
+  (or (zerop (two-arg-- x y))
       (maxima::fpgreaterp (cdr (real-value x)) (cdr (real-value y)))))
 
 (defmethod two-arg->= ((x bigfloat) (y cl:float))
-  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+  (or (zerop (two-arg-- x y))
       (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y)))))
 
 (defmethod two-arg->= ((x bigfloat) (y cl:rational))
-  (or (equal (cdr (real-value x)) (cdr (intofp y)))
+  (or (zerop (two-arg-- x y))
       (maxima::fpgreaterp (cdr (real-value x)) (cdr (intofp y)))))
+
+(defmethod two-arg->= ((x cl:float) (y bigfloat))
+  (or (zerop (two-arg-- x y))
+      (maxima::fpgreaterp (cdr (intofp x)) (cdr (real-value y)))))
+
+(defmethod two-arg->= ((x cl:rational) (y bigfloat))
+  (or (zerop (two-arg-- x y))
+      (maxima::fpgreaterp (cdr (intofp x)) (cdr (real-value y)))))
 
 ;; Need to define incf and decf to call our generic +/- methods.
 (defmacro incf (place &optional (delta 1) &environment env)
