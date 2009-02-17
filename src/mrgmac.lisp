@@ -34,13 +34,13 @@
   (push 's-mode x)
   (cond ((eq 'c (third x)) `(first ,(second x)))
 	((eq 'sel (third x)) `(second ,(second x)))
-	((eq '_ (third x)) `(third ,(second x)))))
+	((eq 'push+sto (third x)) `(third ,(second x)))))
 
 (defmacro a-mode (&rest x)
   (push 'a-mode x)
   (cond ((eq 'c (third x)) `(rplaca (second x) ,(fourth x)))
 	((eq 'sel (third x)) `(rplaca (cdr ,(second x)) ,(fourth x)))
-	((eq '_ (third x)) `(rplaca (cddr ,(second x)) ,(fourth x)))))
+	((eq 'push+sto (third x)) `(rplaca (cddr ,(second x)) ,(fourth x)))))
 
 (defmacro defmode (&rest x)
   (push 'defmode x)
@@ -188,10 +188,10 @@
   (declare (ignore env))
   (if (null (cddr x))
       `(sel ,(second x) ,(car x))
-      `(_ (sel ,(second x) ,(car x)) ,(third x))))
+      `(push+sto (sel ,(second x) ,(car x)) ,(third x))))
 
-(defmacro _ (&rest x)
-  (push '_ x )
+(defmacro push+sto (&rest x)
+  (push 'push+sto x )
   `(sto ,@(cdr x)))
 
 (defmacro sto (&rest x)

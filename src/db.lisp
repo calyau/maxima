@@ -321,8 +321,8 @@
 (defmfun clear ()
   (if dbtrace
       (mtell "CLEAR: clearing ~A~%" marks))
-  (mapc #'(lambda (sym) (_ (sel sym +labs) nil)) +labs)
-  (mapc #'(lambda (sym) (_ (sel sym -labs) nil)) -labs)
+  (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
+  (mapc #'(lambda (sym) (push+sto (sel sym -labs) nil)) -labs)
   (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
   (setq +s nil
 	+sm nil
@@ -417,10 +417,10 @@
 
 
 (defmfun addf (dat nd)
-  (_ (sel nd data) (cons dat (sel nd data))))
+  (push+sto (sel nd data) (cons dat (sel nd data))))
 
 (defmfun maxima-remf (dat nd)
-  (_ (sel nd data) (fdel dat (sel nd data))))
+  (push+sto (sel nd data) (fdel dat (sel nd data))))
 
 (defun fdel (fact data)
   (cond
@@ -436,7 +436,7 @@
 	 (cond ((and (eq (car fact) (car d))
 		     (eq (cadr fact) (cadr d))
 		     (eq (caddr fact) (caddr d)))
-		(_ (sel d con data) (delete d (sel d con data) :test #'eq))
+		(push+sto (sel d con data) (delete d (sel d con data) :test #'eq))
 		(rplacd ds (cddr ds)) (return t))))
        data)))
 
@@ -502,7 +502,7 @@
 (defun kill2 (fun arg val cl)
   (cond ((not (atom cl)) (mapc #'(lambda (lis) (kill2 fun arg val lis)) cl))
 	((numberp cl))
-	(t (_ (sel cl data) (kill3 fun arg val (sel cl data))))))
+	(t (push+sto (sel cl data) (kill3 fun arg val (sel cl data))))))
 
 (defun kill3 (fun arg val data)
   (cond ((and (eq fun (caaar data))
@@ -518,7 +518,7 @@
 			  (eq arg (cadr d))
 			  (eq val (caddr d))))
 		t)
-	       (t (_ (sel d con data) (delete d (sel d con data) :test #'eq))
+	       (t (push+sto (sel d con data) (delete d (sel d con data) :test #'eq))
 		  (rplacd ds (cddr ds)) (return t))))
 	 data)))
 
@@ -535,7 +535,7 @@
   (cond ((or (symbolp cl)		;if CL is a symbol or
 	     (and (consp cl) ;an interned number, then we want to REMOV4 FACT
 		  (mnump (car cl))))	;from its property list.
-	 (_ (sel cl data) (delete fact (sel cl data) :test #'eq)))
+	 (push+sto (sel cl data) (delete fact (sel cl data) :test #'eq)))
 	((or (atom cl) (atom (car cl)))) ;if CL is an atom (not a symbol)
 					;or its CAR is an atom then we don't want to do
 					;anything to it.
