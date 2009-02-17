@@ -673,7 +673,7 @@ When one changes, the other does too."
       (adjust-character-encoding)
       (set-pathnames)
       (when (and intl::*locale* (boundp '*maxima-prefix*))
-	(intl:load-domain "maxima" intl::*locale*
+	(intl::load-domain "maxima" intl::*locale*
 			  (concatenate 'string *maxima-prefix* "/share/locale/")))
       (setf (values input-stream batch-flag)
 	    (process-maxima-args input-stream batch-flag))
