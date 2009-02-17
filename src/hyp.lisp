@@ -644,26 +644,19 @@
 	(t (trigredplus n z))))
 
 (defun trigredplus (n z)
-  ((lambda(npinv2)
-     (mul (ctr z)
-	  (add (mul (sin% (sub z npinv2))
-		    (firstsum n z))
-	       (mul (cos% (sub z npinv2))
-		    (secondsum n z)))))
-   (mul n '$%pi (inv 2))))
-
+  (let ((npinv2 (mul n '$%pi (inv 2))))
+    (mul (ctr z)
+	 (add (mul (sin% (sub z npinv2)) (firstsum n z))
+	      (mul (cos% (sub z npinv2)) (secondsum n z))))))
 
 (defun trigredminus (n z)
-  ((lambda(npinv2)
-     (mul (ctr z)
-	  (sub (mul (cos% (add z npinv2))
-		    (firstsum n z))
-	       (mul (sin% (add z npinv2))
-		    (secondsum n z)))))
-   (mul n '$%pi (inv 2))))
+  (let ((npinv2 (mul n '$%pi (inv 2))))
+    (mul (ctr z)
+	 (sub (mul (cos% (add z npinv2)) (firstsum n z))
+	      (mul (sin% (add z npinv2)) (secondsum n z))))))
 
 (defun firstsum (n z)
-  (prog(count result 2r n1)
+  (prog (count result 2r n1)
      (setq n1 ($entier (div n 2)) count 0 result 1)
      loop
      (cond ((eq count n1)(return result)))
@@ -2747,39 +2740,31 @@
 ;;
 ;; I think this routine uses Method 2.
 #+nil
-(defun thno33
-    (n m x)
-  ((lambda(m-n)
-     (subst x
-	    'yannis
-	    (mul (div (mul (power -1 m-n)
-			   (fctrl (div 3 2) m-n)
-			   (fctrl (add m-n
-				       (div 3 2))
-				  n))
-		      (mul (fctrl 1 m-n)
-			   (fctrl (inv 2) n)))
-		 ;; diff(M(1/2,m-n+3/2,z),z,n)
-		 (meval (list '($diff)
-			      ;; Kummer's transformation
-			      (mul (power '$%e
-					  'yannis)
-				   ;; diff(M(1,3/2,z),z,m-n)
-				   (meval (list '($diff)
-						;; M(1,3/2,-z) = e^(-z)*M(1/2,3/2,z)
-						(mul
-						 (power
-						  '$%e
-						  (mul
-						   -1
-						   'yannis))
-						 (hyprederf
-						  'yannis))
-						'yannis
-						m-n)))
-			      'yannis
-			      n)))))
-   (sub m n)))
+(defun thno33 (n m x)
+  (let ((m-n (sub m n)))
+    (subst x
+	   'yannis
+	   (mul (div (mul (power -1 m-n)
+			  (fctrl (div 3 2) m-n)
+			  (fctrl (add m-n (div 3 2)) n))
+		     (mul (fctrl 1 m-n)
+			  (fctrl (inv 2) n)))
+		;; diff(M(1/2,m-n+3/2,z),z,n)
+		(meval (list '($diff)
+			     ;; Kummer's transformation
+			     (mul (power '$%e 'yannis)
+				  ;; diff(M(1,3/2,z),z,m-n)
+				  (meval (list '($diff)
+					       ;; M(1,3/2,-z) = e^(-z)*M(1/2,3/2,z)
+					       (mul
+						(power
+						 '$%e
+						 (mul -1 'yannis))
+						(hyprederf 'yannis))
+					       'yannis
+					       m-n)))
+			     'yannis
+			     n))))))
 
 (defun thno33 (n m x)
   ;; M(n+1/2,m+3/2,z) = diff(M(1/2,m-n+3/2,z),z,n)*poch(m-n+3/2,n)/poch(1/2,n)
