@@ -210,25 +210,29 @@ When one changes, the other does too."
     (maxima-parse-dirstring base-dir)))
 
 (defun set-locale ()
-  (let (locale language territory codeset)
+  (setq intl::*locale*
+        (or
+         (let ((x (maxima-getenv "LANGUAGE"))) (if (and x (not (equal x ""))) x))
+	 (let ((x (maxima-getenv "LC_ALL"))) (if (and x (not (equal x ""))) x))
+	 (let ((x (maxima-getenv "LC_MESSAGES"))) (if (and x (not (equal x ""))) x))
+	 (let ((x (maxima-getenv "LANG"))) (if (and x (not (equal x ""))) x))
+	 "C")))
+
+(defun set-locale-subdir ()
+  (let (language territory codeset)
     ;; Determine *maxima-lang-subdir*
     ;;   1. from MAXIMA_LANG_SUBDIR environment variable
-    ;;   2. if 1. isn't set from user locale
+    ;;   2. from INTL::*LOCALE* if (1) fails
     (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
-      (setq locale
-	    (or
-	      (let ((x (maxima-getenv "LC_ALL"))) (if (and x (not (equal x ""))) x))
-	      (let ((x (maxima-getenv "LC_MESSAGES"))) (if (and x (not (equal x ""))) x))
-	      (let ((x (maxima-getenv "LANG"))) (if (and x (not (equal x ""))) x))))
-	(cond ((or (null locale) (equal locale ""))
+      (cond ((or (null intl::*locale*) (equal intl::*locale* ""))
+	     (setq *maxima-lang-subdir* nil))
+	      ((member intl::*locale* '("C" "POSIX" "c" "posix") :test #'equal)
 	       (setq *maxima-lang-subdir* nil))
-	      ((member locale '("C" "POSIX" "c" "posix") :test #'equal)
-	       (setq *maxima-lang-subdir* nil))
-	      (t  (when (eql (position #\. locale) 5)
-		    (setq codeset (string-downcase (subseq locale 6))))
-		  (when (eql (position #\_ locale) 2)
-		    (setq territory (string-downcase (subseq locale 3 5))))
-		  (setq language (string-downcase (subseq locale 0 2)))
+	      (t  (when (eql (position #\. intl::*locale*) 5)
+		    (setq codeset (string-downcase (subseq intl::*locale* 6))))
+		  (when (eql (position #\_ intl::*locale*) 2)
+		    (setq territory (string-downcase (subseq intl::*locale* 3 5))))
+		  (setq language (string-downcase (subseq intl::*locale* 0 2)))
 		  ;; Set *maxima-lang-subdir* only for known languages.
 		  ;; Extend procedure below as soon as new translation
 		  ;; is available.
@@ -665,8 +669,12 @@ When one changes, the other does too."
     (catch 'to-lisp
       (initialize-real-and-run-time)
       (set-locale)
+      (set-locale-subdir)
       (adjust-character-encoding)
       (set-pathnames)
+      (when (and intl::*locale* (boundp '*maxima-prefix*))
+	(intl:load-domain "maxima" intl::*locale*
+			  (concatenate 'string *maxima-prefix* "/share/locale/")))
       (setf (values input-stream batch-flag)
 	    (process-maxima-args input-stream batch-flag))
       (loop
