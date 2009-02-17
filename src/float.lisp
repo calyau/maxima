@@ -158,7 +158,8 @@ One extra decimal digit in actual representation for rounding purposes.")
       (setq l (cons (cons (caar l) (cons 'simp (cdar l))) (cdr l))))
   (cond ((equal (cadr l) 0)
 	 (if (not (equal (caddr l) 0))
-	     (mtell "FPFORMAT: warning: detected an incorrect form of 0.0b0.~%"))
+	     (mtell "FPFORMAT: warning: detected an incorrect form of 0.0b0: ~M, ~M~%"
+		    (cadr l) (caddr l)))
 	 (list '|0| '|.| '|0| '|b| '|0|))
 	(t ;; L IS ALWAYS POSITIVE FP NUMBER
 	 (let ((extradigs (floor (1+ (quotient (integer-length (caddr l)) #.(/ (log 10.0) (log 2.0))))))
@@ -309,13 +310,19 @@ One extra decimal digit in actual representation for rounding purposes.")
   (unless $float2bf
     (mtell "FLOATTOFP: warning: float to bigfloat conversion of ~S.~%" x))
 
-  (multiple-value-bind (frac exp sign)
-      (integer-decode-float x)
-    ;; Scale frac to the desired number of bits, and adjust the
-    ;; exponent accordingly.
-    (let ((scale (- fpprec (integer-length frac))))
-      (list (ash (* sign frac) scale)
-	    (+ fpprec (- exp scale))))))
+  ;; Need to check for zero because different lisps return different
+  ;; values for integer-decode-float of a 0.  In particular CMUCL
+  ;; returns 0, -1075.  A bigfloat zero needs to have an exponent and
+  ;; mantissa of zero.
+  (if (zerop x)
+      (list 0 0)
+      (multiple-value-bind (frac exp sign)
+	  (integer-decode-float x)
+	;; Scale frac to the desired number of bits, and adjust the
+	;; exponent accordingly.
+	(let ((scale (- fpprec (integer-length frac))))
+	  (list (ash (* sign frac) scale)
+		(+ fpprec (- exp scale)))))))
 
 ;; Convert a bigfloat into a floating point number.
 (defmfun fp2flo (l)
