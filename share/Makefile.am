@@ -82,7 +82,6 @@ calculus/qualsp.lisp\
 calculus/revert.mac\
 calculus/taylor1.mac\
 combinatorics/README\
-colnew/bv_ode.mac\
 colnew/colnew-package.lisp\
 colnew/colnew.system\
 colnew/lisp/approx.lisp\
@@ -778,8 +777,8 @@ lapack/lapack/lapack-lisp.system\
 lapack/lapack/lapack-package.lisp\
 lapack/lapack/zlange.lisp\
 lapack/lapack/zlassq.lisp\
-lbfgs/daxpy.lisp\
-lbfgs/ddot.lisp\
+lbfgs/lbfgs-daxpy.lisp\
+lbfgs/lbfgs-ddot.lisp\
 lbfgs/lb1.lisp\
 lbfgs/lb2.lisp\
 lbfgs/mcstep.lisp\
