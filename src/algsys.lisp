@@ -72,9 +72,9 @@
   ;;  (declare (special varxlist)) ;;??
   (setq $%rnum_list (list '(mlist)))
   (cond ((not ($listp lhslist))
-	 (merror  "Wrong type arg to `algsys':~%~M" lhslist))
+	 (merror (intl:gettext "algsys: first argument must be a list; found ~M") lhslist))
 	((not ($listp varxlist))
-	 (merror "Wrong type arg to `algsys':~%~M" varxlist)))
+	 (merror (intl:gettext "algsys: second argument must be a list; found ~M") varxlist)))
   ((lambda (tlhslist *tvarxlist* solnlist $ratprint $ratepsilon
 	    $keepfloat varlist genvar $ratfac $breakup
 	    $solvefactors *roots *failures *ivar* $polyfactor
@@ -90,7 +90,7 @@
      (setq *tvarxlist*
 	   (mapcar #'(lambda (q)
 		       (cond ((mnump q)
-			      (merror "Unacceptable variable to `algsys':~%~M"
+			      (merror (intl:gettext "algsys: variable cannot be a number; found ~M")
 				      q))
 			     (t (caadr (ratf q)))))
 		   (cdr varxlist)))
@@ -456,7 +456,7 @@
 
 (defun callapprs (poly)
   (or (punivarp poly)
-      (merror "`algsys' cannot solve - system too complicated."))
+      (merror (intl:gettext "algsys: tried and failed to reduce system to a polynomial in one variable; give up.")))
   (let ($rootsquad $dispflag)
     (cond ($realonly
 	   (mapcar #'(lambda (q)
@@ -475,7 +475,8 @@
 	(t
 	 (do ((tlhsl lhsl (cdr tlhsl))) (nil)
 	   (cond ((null tlhsl)
-		  (merror "`algsys' cannot solve - system too complicated."))
+          ;; SHOULD TRY TO BE MORE SPECIFIC: "TOO COMPLICATED" IN WHAT SENSE??
+		  (merror (intl:gettext "algsys: system too complicated; give up.")))
 		 ((pconstp (car tlhsl)) (return nil))
 		 ((punivarp (car tlhsl))
 		  (return (bakalevel (callapprs (car tlhsl))

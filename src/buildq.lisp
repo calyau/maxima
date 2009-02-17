@@ -70,7 +70,7 @@
 (defmspec $buildq (form) (setq form (cdr form))
 	  (cond ((or (null (cdr form))
 		     (cddr form))
-		 (merror "`buildq' takes 2 args:~%~M" `(($buildq) ,@form)))
+		 (merror (intl:gettext "buildq: expected exactly two arguments; found ~M") `(($buildq) ,@form)))
 		(t (mbuildq (car form) (cadr form)))))
 
 ;; this macro definition is NOT equivalent because of the way lisp macros
@@ -94,7 +94,7 @@
 
 (defun mbuildq (substitutions expression)
   (cond ((not ($listp substitutions))
-	 (merror "First arg to `buildq' not a list: ~M" substitutions)))
+	 (merror (intl:gettext "buildq: first argument must be a list; found ~M") substitutions)))
   (mbuildq-subst
    (mapcar #'(lambda (form)             ; make a variable/value alist
 	       (cond ((symbolp form)
@@ -103,7 +103,7 @@
 			   (symbolp (cadr form)))
 		      (cons (cadr form) (meval (caddr form))))
 		     (t
-		      (merror "Illegal form in variable list--`buildq': ~M"
+		      (merror (intl:gettext "buildq: variable must be a symbol or an assignment to a symbol; found ~M")
 			      form
 			      ))))
 	   (cdr substitutions))
@@ -125,7 +125,7 @@
 					; if the expression is a legal SPLICE, this clause is taken.
 					; a SPLICE should never occur here.  It corresponds to `,@form
 
-	    (merror "`splice' used in illegal context: ~M" expression))
+	    (merror (intl:gettext "splice: encountered 'splice' in an unexpected place: ~M") expression))
 	   ((atom (caar expression))
 	    (setq new-car (mbuildq-associate (caar expression) alist))
 	    (cond ((eq new-car (caar expression))
@@ -186,6 +186,6 @@
        (let ((match (assoc (cadr expression) alist :test #'eq)))
 	 (cond ((null match) () )
 	       ((not ($listp (cdr match)))
-		(merror "~M returned ~M~%But `splice' must return a list"
+		(merror (intl:gettext "buildq: 'splice' must return a list, but ~M returned: ~M~%")
 			expression (cdr match)))
 	       (t (cdr match))))))

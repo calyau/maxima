@@ -47,7 +47,7 @@
      (setq var (delete '$%i (cdr ($listofvars expr)) :test #'eq))
      (or var (setq var (list (gensym))))
      (cond ((not (= (length var) 1))
-	    (merror "`allroots': polynomial not univariate: ~M" var))
+	    (merror (intl:gettext "allroots: expected a polynomial in one variable; found variables ~M") `((mlist) ,@var)))
 	   ((setq var (car var))))
      (setq expr ($rat expr '$%i var)
 	   res (reverse (car (cdddar expr))))
@@ -121,12 +121,12 @@
 	 (setq res (errset (cpoly-sl degree)))
 	 (setq res (errset (rpoly-sl degree))))
      (unless res
-       (mtell "allroots: unexpected error; treat results with caution.~%"))
+       (mtell (intl:gettext "allroots: unexpected error; treat results with caution.~%")))
      (when (= *nn* degree)
-       (merror "~%No roots found"))
+       (merror (intl:gettext "allroots: no roots found.")))
      (setq res nil)
      (cond ((not (zerop *nn*))
-	    (mtell "allroots: only ~S out of ~S roots found.~%" (- degree *nn*) degree)
+	    (mtell (intl:gettext "allroots: only ~S out of ~S roots found.~%") (- degree *nn*) degree)
 	    (setq expr 0.0)
 	    (do ((i 0 (1+ i)))
 		((> i *nn*))
@@ -170,7 +170,7 @@
 			   (cons '(mlist) (nreverse res))))))) 
 
 (defun cpoly-err (expr)
-  (merror "`allroots': not a polynomial:~%~M" expr))
+  (merror (intl:gettext "allroots: expected a polynomial; found ~M") expr))
 
 (defun cpoly-sl (degree) 
   ((lambda (*logbas* *infin* *are* *mre* xx yy cosr sinr *cr* *ci* *sr* *si* *tr*
@@ -837,7 +837,7 @@
 ;; bfloats instead of floats.
 
 (defun bf-cpoly-err (expr)
-  (merror "`bfallroots': not a polynomial:~%~M" expr))
+  (merror (intl:gettext "bfallroots: expected a polynomial; found ~M") expr))
 
 (defun fpzerop (x)
   (equal '(0 0) x))
@@ -1284,7 +1284,7 @@
      (setq var (delete '$%i (cdr ($listofvars expr)) :test #'eq))
      (or var (setq var (list (gensym))))
      (cond ((not (= (length var) 1))
-	    (merror "`bfallroots': polynomial not univariate: ~M" var))
+	    (merror (intl:gettext "bfallroots: expected a polynomial in one variable; found variables ~M") `((mlist) ,@var)))
 	   ((setq var (car var))))
      (setq expr ($rat expr '$%i var)
 	   res (reverse (car (cdddar expr))))
@@ -1369,12 +1369,12 @@
 	 (setq res (errset (bf-cpoly-sl degree)))
 	 (setq res (bf-rpoly-sl degree)))
      (unless res
-       (mtell "bfallroots: unexpected error; treat results with caution.~%"))
+       (mtell (intl:gettext "bfallroots: unexpected error; treat results with caution.~%")))
      (when (= *nn* degree)
-       (merror "~%No roots found"))
+       (merror (intl:gettext "bfallroots: no roots found.")))
      (setq res nil)
      (cond ((not (zerop *nn*))
-	    (mtell "bfallroots: only ~S out of ~S roots found.~%" (- degree *nn*) degree)
+	    (mtell (intl:gettext "bfallroots: only ~S out of ~S roots found.~%") (- degree *nn*) degree)
 	    (setq expr (intofp 0))
 	    (do ((i 0 (1+ i)))
 		((> i *nn*))

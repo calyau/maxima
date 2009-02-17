@@ -175,7 +175,7 @@
 			(cond ((= n (length ans))
 			       (setq trl* nil)
 			       (return ans))
-			      (t (merror "`gfsplit'"))))
+			      (t (merror (intl:gettext "GFSPLIT: unknown error.")))))
 		       (t
 			(setq fl nfl
 			      nfl nil
@@ -183,7 +183,7 @@
      (setq f (car fl)
 	   fl (cdr fl))
      (cond ((> i mm*)
-	    (merror "`gfsplit'")))
+	    (merror (intl:gettext "GFSPLIT: unknown error."))))
      (setq tr (tracemod0 f i))
      (cond ((or (pcoefp tr) (and algfac* (alg tr)))
 	    (setq nfl (cons f nfl))
@@ -202,7 +202,8 @@
 	   (t (setq alc 1.)))
      bk   (cond ((pcoefp f)
 		 (return (cond ((and (null f1) (null f2))
-				(merror "Wrong trace"))
+                ;; NOTE TO TRANSLATORS: MEANING OF NEXT MESSAGE IS OBSCURE
+				(merror (intl:gettext "CPBG0: wrong trace.")))
 			       (t
 				(cons f1 f2)))))
 		((equal (cadr f) 1)

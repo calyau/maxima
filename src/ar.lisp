@@ -36,7 +36,7 @@
   (let ((ltype (assoc type '(($float . flonum) ($flonum . flonum) ($fixnum . fixnum)))))
     ;; Check the dimensions. No check for upper number of dimensions. (01/2009)
     (when (member nil (mapcar #'(lambda (u) (eq (ml-typep u) 'fixnum)) diml) :test #'eq)
-      (merror "Non-integer dimension - `make_array'"))
+      (merror (intl:gettext "make_array: dimensions must be integers; found ~M") `((mlist) ,@diml)))
     (if (not ltype)
 	(case type
 	  ($any
@@ -44,12 +44,12 @@
 	  ($hashed
 	   (let ((kludge (gensym)))
 	     (unless (integerp (car diml))
-	       (merror "non-integer number of dimensions: ~M" (car diml)))
+	       (merror (intl:gettext "make_array: number of dimensions must be an integer; found ~M") (car diml)))
 	     (insure-array-props kludge () (car diml))
 	     (make-mgenarray :type '$hashed :content kludge)))
 	  ($functional ;; MAKE_ARRAY('FUNCTIONAL,LAMBDA(...),'ARRAY_TYPE,...)
 	   (unless (> (length diml) 1)
-	     (merror "not enough arguments for functional array specification"))
+	     (merror (intl:gettext "make_array: not enough arguments for functional array specification.")))
 	   (let ((ar (apply #'$make_array (cdr diml)))
 		 (the-null))
 	     (case (marray-type ar)
@@ -65,7 +65,7 @@
 		(setq the-null 'notexist)))
 	     (make-mgenarray :type '$functional :content ar :generator (car diml) :null the-null)))
 	  (t
-	   (merror "Array type of ~M is not recognized by `make_array'" type)))
+	   (merror (intl:gettext "make_array: array type ~M not recognized.") type)))
 	(make-array diml :initial-element (case (cdr ltype)
 					    (fixnum 0)
 					    (flonum 0.0)
@@ -106,16 +106,16 @@
 	(($any) (mgenarray-content a))
 	(($hashed $functional)
 	 ;; BUG: It does have a number of dimensions! Gosh. -GJC
-	 (merror "Hashed array has no dimension info: ~M" a))
+	 (merror (intl:gettext "MARRAY-CHECK: hashed array ~M has no dimension data.") a))
 	(t
 	 (marray-type-unknown a)))
-      (merror "Not an array: ~M" a)))
+      (merror (intl:gettext "MARRAY-CHECK: not an array: ~M") a)))
 
 (defmfun $array_dimension_n (n a)
   (array-dimension (marray-check a) n))
 
 (defun marray-type-unknown (x)
-  (merror "Bug: Array of unhandled type: ~S" x))
+  (merror (intl:gettext "MARRAY-TYPE-UNKNOWN: array type ~S not recognized.") x))
 
 (defun marrayref-gensub (aarray ind1 inds)
   (case (marray-type aarray)

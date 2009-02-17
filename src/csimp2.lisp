@@ -28,7 +28,7 @@
      (oneargcheck x)
      (setq check x)
      (setq x (simpcheck (cadr x) z))
-     (cond ((equal 0 x) (merror "plog(0) is undefined"))
+     (cond ((equal 0 x) (merror (intl:gettext "plog: plog(0) is undefined.")))
 	   ((among var x)	;This is used in DEFINT. 1/19/81. -JIM
 	    (return (eqtest (list '(%plog) x) check))))
      (newvar x)
@@ -52,11 +52,11 @@
 	      ((eq y '$neg)
 	       (return (add2 %p%i
 			     (simpln (list '(%log) (list '(mtimes) -1 x)) 1 nil))))
-	      (t (merror "plog(0) is undefined"))))
+	      (t (merror (intl:gettext "plog: plog(0) is undefined.")))))
        ((and (equal ($imagpart (setq z (div* x '$%i))) 0)
 	     (setq y ($asksign z)))
 	(cond
-	  ((equal y '$zero) (merror "plog(0) is undefined"))
+	  ((equal y '$zero) (merror (intl:gettext "plog(0) is undefined.")))
 	  (t (cond ((eq y '$pos) (setq y 1))
 		   ((eq y '$neg) (setq y -1)))
 	     (return (add2* (simpln (list '(%log)
@@ -74,13 +74,13 @@
 	      (cond ((equal i '$pos) (return (simplify half%pi)))
 		    ((equal i '$neg)
 		     (return (mul2 -1 (simplify half%pi))))
-		    (t (merror "atan(0//0) has been generated."))))
+		    (t (merror (intl:gettext "plog: encountered atan(0/0).")))))
 	     ((zerop1 i)
 	      (cond ((floatp r) (setq $numer t)))
 	      (setq r ($asksign r))
 	      (cond ((equal r '$pos) (return 0))
 		    ((equal r '$neg) (return (simplify '$%pi)))
-		    (t (merror "atan(0//0) has been generated."))))
+		    (t (merror (intl:gettext "plog: encountered atan(0/0).")))))
 	     ((and (among '%cos r) (among '%sin i))
 	      (setq var 'xz)
 	      (numden (div* r i))
@@ -155,7 +155,7 @@
   (setq check x)
   (let ((u (simpcheck (cadr x) z)) (v (simpcheck (caddr x) z)))
     (cond ((or (zerop1 u) (zerop1 v))
-	   (if errorsw (throw 'errorsw t) (merror "Zero argument to `beta'")))
+	   (if errorsw (throw 'errorsw t) (merror (intl:gettext "beta: expected nonzero arguments; found ~M, ~M") u v)))
 
           ;; Check for numerical evaluation in float precision
       	  ((complex-float-numerical-eval-p u v)
@@ -295,13 +295,13 @@
                 (or (zerop j)
                     (and (< j 0)
                          (zerop (nth-value 1 (truncate j))))))
-           (merror "gamma(~:M) is undefined." j))
+           (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
           ((float-numerical-eval-p j) (gammafloat ($float j)))
           ((and ($bfloatp j)
                 (or (zerop1 j)
                     (and (eq ($sign j) '$neg)
                          (zerop1 (sub j ($truncate j))))))
-           (merror "gamma(~:M) is undefined." j))
+           (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))
           ((bigfloat-numerical-eval-p j) 
            ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
            ;; and an argument up to about 500.0 the accuracy of the result is
@@ -343,7 +343,7 @@
                         (t (eqtest (list '(%gamma) j) x))))
                  ;; Negative integer. Throw a Maxima error.
 		 (errorsw (throw 'errorsw t))
-		 (t (merror "gamma(~:M) is undefined" j))))
+		 (t (merror (intl:gettext "gamma: gamma(~:M) is undefined.") j))))
 	  ((alike1 j '((rat) 1 2))
 	   (list '(mexpt simp) '$%pi j))
           ((and (mnump j)
@@ -464,11 +464,11 @@
 			(* (/ zp (exp zgh)) zp))))))
             (cond ((null result)
                    ;; No result. Overflow.
-                   (merror "Overflow in `gamma-lanczos'."))
+                   (merror (intl:gettext "gamma: overflow in GAMMA-LANCZOS.")))
                   ((or (float-nan-p (realpart result))
                        (float-inf-p (realpart result)))
                    ;; Result, but beyond extreme values. Overflow.
-                   (merror "Overflow in `gamma-lanczos'."))
+                   (merror (intl:gettext "gamma: overflow in GAMMA-LANCZOS.")))
                   (t result)))))))
 
 (defun gammafloat (a)
@@ -489,7 +489,7 @@
 			 c)))))
 	     (if (or (float-nan-p result)
 		     (float-inf-p result))
-		 (merror "Overflow in `gammafloat'")
+		 (merror (intl:gettext "gamma: overflow in GAMMAFLOAT."))
 		 result))))))
 
 
@@ -528,7 +528,7 @@
 	   ((not (and (fixnump m) (fixnump n)
 		      (fixnump i) (fixnump j)
 		      (> m 0) (> n 0) (> i 0) (> j 0)))
-	    (merror "Incorrect argument to `ematrix':~%~M"
+	    (merror (intl:gettext "ematrix: arguments must be positive integers; found ~M")
 		    (list '(mlist simp) m n i j) )))
      loop (cond ((= m i) (setq row (onen j n var 0)) (go on))
 		((zerop m) (return (cons '($matrix) (mxc ans)))))
@@ -554,7 +554,7 @@
      (if (not ($listp varl)) (improper-arg-err varl '$coefmatrix))
      (dolist (v (cdr varl))
        (if (and (not (atom v)) (member (caar v) '(mplus mtimes) :test #'eq))
-	   (merror "Improper variable to `coefmatrix':~%~M" v)))
+	   (merror (intl:gettext "coefmatrix: variables cannot be '+' or '*' expressions; found ~M") v)))
      (setq eql (nreverse (mapcar #'meqhk (cdr eql)))
 	   varl (reverse (cdr varl)))
      loop1(if (null eql) (return (cons '($matrix) (mxc ans))))
@@ -574,7 +574,7 @@
   (prog (row column vector matrix sym symvector)
      (cond ((or (not (fixnump rows))
 		(not (fixnump columns)))
-	    (merror "`entermatrix' called with non-integer arguments")))
+	    (merror (intl:gettext "entermatrix: arguments must be integers; found ~M, ~M") rows columns)))
      (setq row 0)
      (unless (= rows columns) (setq sym nil) (go oloop))
      quest (format t "~%Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General~%")
@@ -714,7 +714,7 @@
        next (decf ix)
        (go loop)
        out
-       (cond ($dispflag (mtell "Solution:~%")))
+       (cond ($dispflag (mtell (intl:gettext "Solution:~%"))))
        (setq sol (list '(mlist)) chk (checklabel $linechar))
        (do ((ll zz (cdr ll)))
 	   ((null ll))

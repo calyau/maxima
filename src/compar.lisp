@@ -102,23 +102,23 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmfun $activate (&rest args)
   (dolist (c args)
-    (cond ((not (symbolp c)) (nc-err))
+    (cond ((not (symbolp c)) (nc-err '$activate c))
 	  ((member c (cdr $activecontexts) :test #'eq))
 	  ((member c (cdr $contexts) :test #'eq)
 	   (setq $activecontexts (mcons c $activecontexts))
 	   (activate c))
-	  (t (merror "There is no context named ~:M" c))))
+	  (t (merror (intl:gettext "activate: no such context ~:M") c))))
   '$done)
 
 ;;; This "turns off" a context, keeping the facts, but making them invisible
 
 (defmfun $deactivate (&rest args)
   (dolist (c args)
-    (cond ((not (symbolp c)) (nc-err))
+    (cond ((not (symbolp c)) (nc-err '$deactivate c))
 	  ((member c (cdr $contexts) :test #'eq)
 	   (setq $activecontexts ($delete c $activecontexts))
 	   (deactivate c))
-	  (t (merror "There is no context named ~:M" c))))
+	  (t (merror (intl:gettext "deactivate: no such context ~:M") c))))
   '$done)
 
 ;;; This function prints out a list of the facts in the specified context.
@@ -153,7 +153,7 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun asscontext (xx y)
   (declare (ignore xx))
-  (cond ((not (symbolp y)) (nc-err))
+  (cond ((not (symbolp y)) (nc-err "context assignment" y))
 	((member y $contexts :test #'eq) (setq context y $context y))
 	(t ($newcontext y))))
 
@@ -161,9 +161,9 @@ relational knowledge is contained in the default context GLOBAL."
 ;;; It also switches contexts to the newly created one.
 
 (defmfun $newcontext (x)
-  (cond ((not (symbolp x)) (nc-err))
+  (cond ((not (symbolp x)) (nc-err '$newcontext x))
 	((member x $contexts :test #'eq)
-	 (mtell "newcontext: context ~M already exists." x) nil)
+	 (mtell (intl:gettext "newcontext: context ~M already exists.") x) nil)
 	(t (setq $contexts (mcons x $contexts))
 	   (putprop x '($global) 'subc)
 	   (setq context x $context x))))
@@ -175,13 +175,13 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmspec $supcontext (x)
   (setq x (cdr x))
-  (cond ((null x) (merror "You must supply a name for the context."))
-	((caddr x) (merror "`supcontext' takes either one or two arguments."))
-	((not (symbolp (car x))) (nc-err))
+  (cond ((null x) (merror (intl:gettext "supcontext: expected one or two arguments; found none.")))
+	((caddr x) (merror (intl:gettext "supcontext: expected one or two arguments; found more than two.")))
+	((not (symbolp (car x))) (nc-err '$supcontext (car x)))
 	((member (car x) $contexts :test #'eq)
-	 (merror "Context ~M already exists." (car x)))
+	 (merror (intl:gettext "supcontext: context ~M already exists.") (car x)))
 	((and (cadr x) (not (member (cadr x) $contexts :test #'eq)))
-	 (merror "Nonexistent context ~M." (cadr x)))
+	 (merror (intl:gettext "supcontext: no such context ~M") (cadr x)))
 	(t (setq $contexts (mcons (car x) $contexts))
 	   (putprop (car x) (ncons (or (cadr x) $context)) 'subc)
 	   (setq context (car x) $context (car x)))))
@@ -192,7 +192,7 @@ relational knowledge is contained in the default context GLOBAL."
   (dolist (c args)
     (if (symbolp c)
 	(killcontext c)
-	(nc-err)))
+	(nc-err '$killcontext c)))
   (if (and (= (length args) 1) (eq (car args) '$global))
       '$not_done
       '$done))
@@ -210,14 +210,14 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun killcontext (x)
   (cond ((not (member x $contexts :test #'eq))
-	 (mtell "killcontext: no such context \"~M\"." x))
+	 (mtell (intl:gettext "killcontext: no such context ~M.") x))
 	((eq x '$global) '$global)
 	((eq x '$initial)
 	 (mapc #'remov (zl-get '$initial 'data))
 	 (remprop '$initial 'data)
 	 '$initial)
 	((and (not (eq $context x)) (contextmark) (< 0 (zl-get x 'cmark)))
-	 (mtell "killcontext: context ~M is currently active." x))
+	 (mtell (intl:gettext "killcontext: context ~M is currently active.") x))
 	(t (setq $contexts ($delete x $contexts))
 	   (cond ((and (eq x $context)
 		       (equal ;;replace eq ?? wfs
@@ -230,8 +230,8 @@ relational knowledge is contained in the default context GLOBAL."
 	   (killc x)
 	   x)))
 
-(defun nc-err ()
-  (merror "Contexts must be symbolic atoms."))
+(defun nc-err (fn x)
+  (merror (intl:gettext "~M: context name must be a symbol; found ~M") fn x))
 
 ;; Simplification and evaluation of boolean expressions
 ;;
@@ -461,7 +461,7 @@ relational knowledge is contained in the default context GLOBAL."
 	(t (isp (munformat patevalled)))))
 
 (defmfun pre-err (pat)
-  (merror "Maxima was unable to evaluate the predicate:~%~M" pat))
+  (merror (intl:gettext "Unable to evaluate predicate ~M") pat))
 
 (defun is-mnot (pred)
   (setq pred (mevalp pred))
@@ -512,11 +512,11 @@ relational knowledge is contained in the default context GLOBAL."
 	  ((eq 'mnot (caaar x))
 	   (setq nl (cons (assume (meval (pred-reverse (cadar x)))) nl)))
 	  ((eq 'mor (caaar x))
-	   (merror "`assume': Maxima is unable to handle assertions involving `or'."))
+	   (merror (intl:gettext "assume: argument cannot be an 'or' expression; found ~M") (car x)))
 	  ((eq (caaar x) 'mequal)
-	   (merror "`assume': `=' means syntactic equality in Maxima. Maybe you want to use `equal'."))
+	   (merror (intl:gettext "assume: argument cannot be an '=' expression; found ~M~%assume: maybe you want 'equal'.") (car x)))
 	  ((eq (caaar x) 'mnotequal)
-	   (merror "`assume': `#' means syntactic nonequality in Maxima. Maybe you want to use `not equal'."))
+	   (merror (intl:gettext "assume: argument cannot be a '#' expression; found ~M~%assume: maybe you want 'not equal'.") (car x)))
 	  (t (setq nl (cons (assume (meval (car x))) nl))))
     (setq x (cdr x))))
 
@@ -556,7 +556,7 @@ relational knowledge is contained in the default context GLOBAL."
 	  ((eq 'mnot (caaar x))
 	   (setq nl (cons (forget (meval (pred-reverse (cadar x)))) nl)))
 	  ((eq 'mor (caaar x))
-	   (merror "Maxima is unable to handle assertions involving `or'."))
+	   (merror (intl:gettext "forget: argument cannot be an 'or' expression; found ~M") (car x)))
 	  (t (setq nl (cons (forget (meval (car x))) nl))))
     (setq x (cdr x))))
 
@@ -727,8 +727,7 @@ relational knowledge is contained in the default context GLOBAL."
 	   (cond ((and (null temp1) (null temp2)) temp3)
 		 ((and (null temp2) (null temp3)) temp1)
 		 ((and (null temp1) (null temp3)) temp2)
-		 (t (merror
-		     "~%`asksign': Internal error. See Maintainers.")))))))
+		 (t (merror (intl:gettext "asksign: internal error."))))))))
 
 (defun eps-coef-sign (exp epskind)
   (let ((eps-power ($lopow exp epskind)) eps-coef)
@@ -748,7 +747,7 @@ relational knowledge is contained in the default context GLOBAL."
 				      (eq epskind '$zerob))))
 			 '$pos)
 			(t '$neg)))
-		 (t (merror "~%`asksign' or `sign': Insufficient information.~%"))))
+		 (t (merror (intl:gettext "sign or asksign: insufficient information.")))))
 	  (t (let ((deriv (sdiff exp epskind)) deriv-sign)
 	       (cond ((not (eq (setq deriv-sign ($asksign deriv)) '$zero))
 		      (total-sign epskind deriv-sign))
@@ -757,7 +756,7 @@ relational knowledge is contained in the default context GLOBAL."
 			     (setq deriv-sign ($asksign deriv)))
 			   '$zero))
 		      deriv-sign)
-		     (t (merror "~%`asksign' or `sign': Insufficient data.~%"))))))))
+		     (t (merror (intl:gettext "sign or asksign: insufficient data.")))))))))
 
 ;;; The above code does a partial Taylor series analysis of something
 ;;; that isn't a polynomial.
@@ -1053,7 +1052,7 @@ relational knowledge is contained in the default context GLOBAL."
     (when *debug-compar* (format t "~& in sign1 detect $infintiy.~%"))
     (return-from sign1 '$complex))
   (if (member x '($und $ind $infinity) :test #'eq)
-      (if limitp '$pnz (merror "The sign of ~:M is undefined" x)))
+      (if limitp '$pnz (merror (intl:gettext "sign: sign of ~:M is undefined.") x)))
   (prog (dum exp)
      (setq dum (constp x) exp x)
      (cond ((or (numberp x) (ratnump x)))
@@ -1536,11 +1535,11 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun imag-err (x)
   (if sign-imag-errp
-      (merror "`sign' called on an imaginary argument:~%~M" x)
+      (merror (intl:gettext "sign: argument cannot be imaginary; found ~M") x)
       (throw 'sign-imag-err t)))
 
 (defun dbzs-err (x)
-  (merror "Division by zero detected in `sign':~%~M" x))
+  (merror (intl:gettext "sign: division by zero in ~M") x))
 
 ;; Return true iff e is an expression with operator op1, op2,...,or opn.
 
@@ -1558,7 +1557,7 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmfun $featurep (e ind)
   (setq e ($ratdisrep e))
-  (cond ((not (symbolp ind)) (merror "The second argument to 'featurep' must be a symbol"))
+  (cond ((not (symbolp ind)) (merror (intl:gettext "featurep: second argument must be a symbol; found ~M") ind))
 	((eq ind '$integer) (maxima-integerp e))
 	((eq ind '$noninteger) (nonintegerp e))
 	((eq ind '$even) (mevenp e))
@@ -1800,11 +1799,11 @@ relational knowledge is contained in the default context GLOBAL."
   (cond ((eq m (sel x +labs)))
 	((and dbtrace (prog1
 			  t
-			(mtell "DMARK: marking ~M ~M" (if (atom x) x (car x)) m))
+			(mtell (intl:gettext "DMARK: marking ~M ~M") (if (atom x) x (car x)) m))
 	      nil))
 	(t
 	 (setq +labs (cons x +labs))
-	 (_ (sel x +labs) m)
+	 (push+sto (sel x +labs) m)
 	 nil)))
 
 (defun daddgr (flag x)
@@ -1942,7 +1941,7 @@ relational knowledge is contained in the default context GLOBAL."
 					     ($oddfun . $evenfun)
 					     ($evenfun . $oddfun)) :test #'eq))
 		    (truep (list 'kind var (cdr prop2)))))
-	   (merror "Inconsistent Declaration: ~:M" `(($declare) ,var ,prop)))
+	   (merror (intl:gettext "declare: inconsistent declaration ~:M") `(($declare) ,var ,prop)))
 	  (t (mkind var prop) t))))
 
 ;;;  These functions reformat expressions to be stored in the data base.

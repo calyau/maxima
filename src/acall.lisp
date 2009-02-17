@@ -25,7 +25,7 @@
 (transl-module acall)
 
 (defmfun interval-error (fun low high)
-  (merror "Lower bound to ~:@M : ~M, not less than upper bound: ~M" fun low high))
+  (merror (intl:gettext "~@:M: lower bound ~M is greater than upper bound ~M") fun low high))
 
 (defmfun mfuncall (f &rest l)
   (cond ((functionp f)
@@ -45,7 +45,7 @@
        ((flonum fixnum t)
 	(apply #'aref aarray ind1 inds))
        (t
-	(merror "Bug: Non-handled array created. ~M" aarray))))
+	(merror (intl:gettext "MARRAYREF: encountered array ~M of unknown type.") aarray))))
     ((hash-table)
      (gethash (if inds (cons ind1 inds) inds) aarray))
     ((symbol)
@@ -73,7 +73,7 @@
 				     ((flonum) (= val flounbound))
 				     ((fixnum) (= val fixunbound))
 				     ((t) (eq val munbound))
-				     (t (merror "Bug: Array pointer of unknown type: ~S" ap)))
+				     (t (merror (intl:gettext "MARRAYREF: encountered array pointer ~S of unknown type.") ap)))
 				   (arrfind `((,aarray ,aarray) ,ind1 ,@inds))
 				   val)))
 			    ((setq ap (mget aarray 'array))
@@ -89,16 +89,16 @@
 		   (list-ref aarray (cons ind1 inds))
 		   `((mqapply aarray) ,aarray ,ind1 ,@inds))))
     (t
-     (merror "Bad object to reference as an array: ~M" aarray))))
+     (merror (intl:gettext "MARRAYREF: cannot retrieve an element of ~M") aarray))))
 
 (defmfun $arrayapply (ar inds)
   (unless ($listp inds)
-    (merror "The second arg to `arrayapply' must be a list."))
+    (merror (intl:gettext "arrayapply: second argument must be a list; found ~M") inds))
   (apply #'marrayref ar (cdr inds)))
 
 (defmfun $arraysetapply (ar inds val)
   (unless ($listp inds)
-    (merror "The second arg to `arrayapply' must be a list."))
+    (merror (intl:gettext "arraysetapply: second argument must be a list; found ~M") inds))
   (apply #'marrayset val ar (cdr inds)))
 
 (defmfun marrayset (val aarray &rest all-inds &aux ap (ind1 (first all-inds)) (inds (cdr all-inds)))
@@ -108,7 +108,7 @@
        ((fixnum flonum t)
 	(setf (apply #'aref aarray ind1 inds) val))
        (t
-	(merror "Bug: unhandled array type. ~M" aarray))))
+	(merror (intl:gettext "MARRAYSET: encountered array ~M of unknown type.") aarray))))
     ((hash-table)
      (setf (gethash (if (cdr all-inds)
 			(copy-list all-inds)
@@ -138,9 +138,9 @@
 		      val))))
     (list (if (member (caar aarray) '(mlist $matrix) :test #'eq)
 	      (list-ref aarray all-inds t val)
-	      (merror "Bad use of `:' on~%~M" aarray)))
+	      (merror (intl:gettext "MARRAYSET: cannot assign to an element of ~M") aarray)))
     (t
-     (merror "Bad argument to set as an array.~%~M" aarray)))
+     (merror (intl:gettext "MARRAYSET: ~M is not an array.") aarray)))
   val)
 
 ;;; Note that all these have HEADERS on the list. The CAR of a list I
@@ -148,7 +148,7 @@
 
 (defun list-ref (l indexl &optional set-flag val)
   (cond ((atom l)
-	 (merror "Error-> tried to take part of an atom."))
+	 (merror (intl:gettext "LIST-REF: argument must be a list; found ~M") l))
 	((null (cdr indexl))
 	 (let ((n (car indexl)))
 	   (cond ((and (integerp n) (plusp n)
@@ -158,14 +158,14 @@
 				  (l (cdr l) (cdr l)))
 				 ((or (null l) (= j n))
 				  (cond ((null l)
-					 (merror "Improper index to list or matrix: ~M" n))
+					 (merror (intl:gettext "LIST-REF: invalid subscript: ~M") n))
 					(set-flag
 					 (rplaca l val))
 					(t
 					 (car l)))))))
 		    (if set-flag l ret)))
 		 (t
-		  (merror "Error-> ~M  bad part subscript." n)))))
+		  (merror (intl:gettext "LIST-REF: invalid subscript: ~M") n)))))
 	(set-flag
 	 (list-ref (list-ref l `(,(car indexl))) (cdr indexl) set-flag val)
 	 l)
@@ -226,7 +226,7 @@
 			(funcall (cadr ary) 2)
 			(length (cdr (arraydims (cadr ary)))))
 		    number-of-args)
-	   (merror "~:@M Array already defined with different dimensions" fnname)))
+	   (merror (intl:gettext "INSURE-ARRAY-PROPS: array ~:@M already defined with different dimensions.") fnname)))
 	(t
 	 (setq ary (gensym))
 	 (mputprop fnname ary 'hashar)
@@ -239,7 +239,7 @@
 
 (defmfun mapply-tr (fun list)
   (unless ($listp list)
-    (merror "Second arg to `apply' was not a list:~%~M" list))
+    (merror (intl:gettext "apply: second argument must be a list; found ~M") list))
   (mapply1 fun (cdr list) '|the first arg to a translated `apply'| list))
 
 (defmfun assign-check (var val)
@@ -333,7 +333,7 @@
     ((aarray)
      (case (array-element-type aarray)
        ((flonum) (aref aarray index))
-       (t (merror "Bad type of array to call for `float' value: ~M" aarray))))
+       (t (merror (intl:gettext "MARRAYREF1$: array must be an array of floats; found ~M") aarray))))
     (t
      (float (marrayref aarray index)))))
 
@@ -342,7 +342,7 @@
     ((aarray)
      (case (array-element-type aarray)
        ((flonum) (setf (aref aarray index) value))
-       (t (merror "Bad type of array to set `float' into: ~M" aarray))))
+       (t (merror (intl:gettext "MARRAYSET1$: array must be an array of floats; found ~M") aarray))))
     (t
      (float (marrayset value aarray index)))))
 

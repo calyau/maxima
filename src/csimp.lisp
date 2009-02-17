@@ -53,7 +53,7 @@
 
 (defun demoivre (l)
   (cond ($exponentialize
-	 (merror "Demoivre and Exponentialize may not both be true"))
+	 (merror (intl:gettext "demoivre: 'demoivre' and 'exponentialize' cannot both be true.")))
 	(t (setq l (islinear l '$%i))
 	   (and l (not (equal (car l) 0))
 		(m* (m^ '$%e (cdr l))
@@ -82,7 +82,7 @@
 	   ((mplusp e) (setq e (cons '(mtimes) (cdr e)) k 0))
 	   ((mtimesp e) (setq k 1))
 	   (t
-	    (merror "~M is an incorrect arg to `partition'" e)))
+	    (merror (intl:gettext "partition: first argument must be a list or '+' or '*' expression; found ~M") e)))
      (setq e (partition e var1 k))
      (return (list '(mlist simp) (car e) (cdr e)))))
 
