@@ -16,7 +16,7 @@ MSGMERGE=msgmerge
 XGETTEXT=xgettext
 XARGS=xargs
 
-XGETTEXT_ARGS=-s -c -j --language=Lisp
+XGETTEXT_ARGS=-s -c -j
 
 %.mo: %.po
 	$(MSGFMT) -o $@ $<
@@ -29,10 +29,10 @@ maxima.pot:
 	touch $@
 	find ../src -name "*.lisp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o maxima.pot
 
-allpo: maxima.pot
+allpo: force-update maxima.pot
 	@for t in $(TRANSLATIONS); do $(MAKE) $$t.po; done
 
-allmo: force-update allpo
+allmo:
 	@for t in $(TRANSLATIONS); do $(MAKE) $$t.mo; done
 
 force-update:
