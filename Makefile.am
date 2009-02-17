@@ -1,4 +1,4 @@
-SUBDIRS = src lisp-utils tests doc interfaces share demo plotting
+SUBDIRS = src lisp-utils tests doc interfaces share demo plotting locale
 EXTRA_DIST = \
   common.mk maxima.iss.in \
   README.lisps README.rpms README.i18n README.external \
