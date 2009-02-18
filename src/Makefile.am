@@ -7,6 +7,7 @@ bin_SCRIPTS = maxima rmaxima
 endif
 
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
+LOADMAKEPROCLAIM = (load "$(top_srcdir)/lisp-utils/make-proclaim.lisp")
 LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
 DEFSYSTEMCOMPILE = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :compile :verbose t)
 DEFSYSTEMLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t)
@@ -196,7 +197,7 @@ sys-proclaim:
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
-	$(EXECUTEGCL) '(load "generate-sys-proclaim.lisp")'
+	$(EXECUTEGCL) '(progn $(LOADMAKEPROCLAIM) (load "generate-sys-proclaim.lisp")'
 
 gcl:binary-gcl/maxima
 
@@ -212,10 +213,10 @@ else
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 if WIN32
-	$(EXECUTEGCL) '(progn (compiler::emit-fn t))' -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (compiler::make-all-proclaims "*/*.fn" "*/*/*/*.fn"))' && \
+	$(EXECUTEGCL) '(progn (compiler::emit-fn t))' -eval '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(LOADMAKEPROCLAIM) (compiler::make-all-proclaims "*/*.fn" "*/*/*/*.fn"))' && \
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima"))'
 else
-	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) (compiler::emit-fn t) $(DEFSYSTEMCOMPILE) (compiler::make-all-proclaims "*/*.fn" "*/*/*/*.fn"))' && \
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) (compiler::emit-fn t) $(DEFSYSTEMCOMPILE) $(LOADMAKEPROCLAIM) (compiler::make-all-proclaims "*/*.fn" "*/*/*/*.fn"))' && \
 	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (when (fboundp (quote si::sgc-on))(si::sgc-on t)) (si:save-system "binary-gcl/maxima"))'
 endif	
 endif
