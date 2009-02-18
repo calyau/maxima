@@ -2,7 +2,8 @@ TRANSLATIONS =
 
 localedir = $(datadir)/locale
 
-install-data-local: install-maxima-catalogs
+install-data-local:
+	echo "No translations"
 
 install-maxima-catalogs:
 	for i in $(TRANSLATIONS) ; do \
@@ -38,4 +39,5 @@ allmo:
 force-update:
 	$(RM) maxima.pot
 
-all: allmo
+all:
+	echo "No translations"
