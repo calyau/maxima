@@ -262,12 +262,17 @@
 	 ;;
 	 ;; Solve for m, and we get
 	 ;;
-	 ;; sqrt(m) = - (mu+2*sqrt(1-mu)-2)/mu or (-mu+2*sqrt(1-mu)+2)/mu.
+	 ;; sqrt(m) = -(mu+2*sqrt(1-mu)-2)/mu or (-mu+2*sqrt(1-mu)+2)/mu.
 	 ;;
 	 ;; I don't think it matters which sqrt we use, so I (rtoy)
 	 ;; arbitrarily choose the first one above.
- 	 (let* ((root (- (/ (+ m (* 2 (sqrt (- 1 m))) -2)
-			    m)))
+	 ;;
+	 ;; Note that (1-sqrt(1-mu))/(1+sqrt(1-mu)) is the same as
+	 ;; -(mu+2*sqrt(1-mu)-2)/mu.  Also, the former is more
+	 ;; accurate for small mu.
+	 (let* ((root (let ((root-1-m (sqrt (- 1 m))))
+			(/ (- 1 root-1-m)
+			   (+ 1 root-1-m))))
 		(z (/ u (+ 1 root)))
 		(s (elliptic-sn-descending z (* root root)))
 		(p (* root s s )))
@@ -1208,8 +1213,7 @@ first kind:
     (let ((x (coerce x '(complex flonum)))
 	  (y (coerce y '(complex flonum)))
 	  (z (coerce z '(complex flonum))))
-      (declare (type (complex flonum) x y z)
-	       (optimize (speed 3)))
+      (declare (type (complex flonum) x y z))
       (loop
 	 (let* ((mu (/ (+ x y z) 3))
 		(x-dev (- 2 (/ (+ mu x) mu)))
@@ -1471,8 +1475,7 @@ first kind:
 	  (sigma 0.0)
 	  (power4 1.0))
       (declare (type (flonum 0.0) x y power4 sigma)
-	       (type (flonum (0.0)) z)
-	       (optimize (speed 3)))
+	       (type (flonum (0.0)) z))
       (loop
        (let* ((mu (* 1/5 (+ x y (* 3 z))))
 	      (x-dev (/ (- mu x) mu))
@@ -2044,8 +2047,7 @@ first kind:
   (declare (type flonum errtol c1 c2))
   (defun drc (x y)
     (declare (type (flonum 0.0) x)
-	     (type (flonum (0.0)) y)
-	     (optimize (speed 3)))
+	     (type (flonum (0.0)) y))
     (let ((xn x)
 	  (yn y))
       (declare (type (flonum 0.0) xn)
@@ -2542,7 +2544,7 @@ first kind:
   (cond ((= m 0)
 	 (if (maxima::$bfloatp m)
 	     (maxima::$bfloat (maxima::div 'maxima::$%pi 2))
-	     (float (/ pi 2))))
+	     (float (/ pi 2) 1d0)))
 	(t
 	 (bf-rf 0 (- 1 m) 1))))
 
@@ -2571,7 +2573,7 @@ first kind:
   (cond ((= m 0)
 	 (if (typep m 'bigfloat)
 	     (bigfloat (maxima::$bfloat (maxima::div 'maxima::$%pi 2)))
-	     (float (/ pi 2))))
+	     (float (/ pi 2) 1d0)))
 	((= m 1)
 	 (if (typep m 'bigfloat)
 	     (bigfloat 1)
