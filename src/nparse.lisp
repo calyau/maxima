@@ -240,7 +240,7 @@
 (defun scan-token (flag)
   (do ((c (parse-tyipeek) (parse-tyipeek))
        (l () (cons c l)))
-      ((and flag (not (or (digit-char-p c) (alphabetp c) (char= c #\\))))
+      ((and flag (not (or (digit-char-p c *read-base*) (alphabetp c) (char= c #\\))))
        (nreverse (or l (ncons (parse-tyi))))) ; Read at least one char ...
     (when (char= (parse-tyi) #\\)
       (setq c (parse-tyi)))
@@ -298,7 +298,7 @@
 (defun scan-digits (data continuation? continuation &optional exponent-p)
   (do ((c (parse-tyipeek) (parse-tyipeek))
        (l () (cons c l)))
-      ((not (and (characterp c) (digit-char-p c)))
+      ((not (and (characterp c) (digit-char-p c *read-base*)))
        (cond ((member c continuation?)
 	      (funcall continuation (list* (ncons (char-upcase
 						   (parse-tyi)))
@@ -425,7 +425,7 @@
 			  (scan-one-token-g eof-ok? eof-obj))
 			 (t '$/)))
 		  ((eql test #\.) (parse-tyi)	; Read the dot
-		   (if (digit-char-p (parse-tyipeek))
+		   (if (digit-char-p (parse-tyipeek) *read-base*)
 		       (scan-number-after-dot (list (ncons #\.) nil))
 		       '|$.|))
 		  ((eql test #\")
