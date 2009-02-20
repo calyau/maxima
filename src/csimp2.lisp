@@ -306,16 +306,21 @@
            ;; Adding 4 digits in the call to bffac. For $fpprec up to about 256
            ;; and an argument up to about 500.0 the accuracy of the result is
            ;; better than 10^(-$fpprec).
-           (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4)))
+	   (let ((result (mfuncall '$bffac (m+ ($bfloat j) -1) (+ $fpprec 4))))
+	     ;; bigfloatp will round the result to the correct fpprec
+	     (bigfloatp result)))
 	  ((complex-float-numerical-eval-p j)
            (complexify (gamma-lanczos (complex ($float ($realpart j))
                                                ($float ($imagpart j))))))
           ((complex-bigfloat-numerical-eval-p j)
            ;; Adding 4 digits in the call to cbffac. See comment above.
-           (mfuncall '$cbffac 
-                     (add -1 ($bfloat ($realpart j)) 
-                             (mul '$%i ($bfloat ($imagpart j))))
-                     (+ $fpprec 4)))
+	   (let ((result
+		  (mfuncall '$cbffac 
+			    (add -1 ($bfloat ($realpart j)) 
+				 (mul '$%i ($bfloat ($imagpart j))))
+			    (+ $fpprec 4))))
+	     (add (bigfloatp ($realpart result))
+		  (mul '$%i (bigfloatp ($imagpart result))))))
           ((eq j '$inf) '$inf) ; Simplify to $inf to be more consistent.
           ((and $gamma_expand
                 (mplusp j) 
