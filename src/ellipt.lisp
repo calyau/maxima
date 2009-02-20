@@ -1845,7 +1845,7 @@ first kind:
     (cond ((float-numerical-eval-p m)
 	   ;; Numerically evaluate it
 	   (elliptic-ec (float m)))
-	  ((complex-numerical-eval-p m)
+	  ((complex-float-numerical-eval-p m)
 	   (complexify (bigfloat::bf-elliptic-ec (complex ($realpart m) ($imagpart m)))))
 	  ((complex-bigfloat-numerical-eval-p m)
 	   (to (bigfloat::bf-elliptic-ec (bigfloat:to ($bfloat m)))))
