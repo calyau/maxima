@@ -1257,8 +1257,8 @@ first kind:
 		  ;; F(phi|m) = 1/sqrt(m)*F(theta|1/m)
 		  ;;
 		  ;; with sin(theta) = sqrt(m)*sin(phi)
-		  (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))
-		     (sqrt m)))
+		  (complexify (/ (elliptic-f (cl:asin (* (sqrt m) (sin phi))) (/ m))
+				 (sqrt m))))
 		 ((< m 0)
 		  ;; A&S 17.4.17
 		  (let* ((m (- m))
@@ -1315,7 +1315,8 @@ first kind:
   (declare (type flonum m))
   (cond ((> m 1)
 	 ;; A&S 17.4.15
-	 (/ (elliptic-f (cl:asin (sqrt m)) (/ m))))
+	 (complexify (/ (elliptic-f (cl:asin (sqrt m)) (/ m))
+			(sqrt m))))
 	((< m 0)
 	 ;; A&S 17.4.17
 	 (let* ((m (- m))
