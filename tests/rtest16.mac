@@ -627,5 +627,11 @@ done;
 hgfred([a/2,-a/2],[1/2],zn);
 ((%i*sqrt(zn)+sqrt(1-zn))^a+(sqrt(1-zn)-%i*sqrt(zn))^a)/2$
  
+/*
+ * Bug 2618401 - bfloat produces incorrect answer
+ */
+is(abs(bfloat((sqrt(2)+2)*%pi^(3/2)/(8*gamma(3/4)^2))-float((sqrt(2)+2)*%pi^(3/2)/(8*gamma(3/4)^2))) < 1d-15);
+true;
+
 end;
 end$
