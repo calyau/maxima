@@ -26,11 +26,14 @@
 ;;;   fresnel_c(z)
 ;;;
 ;;;   beta_incomplete(a,b,z)
+;;;   beta_incomplete_generalized(a,b,z1,z2)
 ;;;
 ;;; Maxima User variable:
 ;;;
 ;;;   $factorial_expand    - Allows argument simplificaton for expressions like
 ;;;                          factorial_double(n-1) and factorial_double(2*k+n)
+;;;   $beta_expand         - Switch on further expansions for the Beta functions
+;;;
 ;;;   $erf_representation  - When T erfc, erfi, erf_generalized, fresnel_s 
 ;;;                          and fresnel_c are transformed to erf.
 ;;;   $erf_%iargs          - Enable simplification of Erf and Erfi for
@@ -71,6 +74,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar $factorial_expand nil)
+(defvar $beta_expand nil)
 
 (defvar $erf_representation nil
   "When T erfc, erfi and erf_generalized are transformed to erf.")
@@ -2677,9 +2681,9 @@
       ((zerop1 z)
        (let ((sgn ($sign ($realpart a))))
          (cond ((eq sgn '$neg) 
-                (domain-error 0 'gamma_incomplete))
+                (domain-error 0 'beta_incomplete))
                ((eq sgn '$zero) 
-                (domain-error 0 'gamma_incomplete))
+                (domain-error 0 'beta_incomplete))
                ((member sgn '($pos $pz)) 
                 0)
                (t 
@@ -2833,5 +2837,318 @@
           (when *debug-gamma*
             (format t "~& result = ~A~%" result))
           result))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Generalized Incomplete Beta function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $beta_incomplete_generalized (a b z1 z2)
+  (simplify (list '(%beta_incomplete_generalized) a b z1 z2)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $beta_incomplete_generalized %beta_incomplete_generalized alias)
+(defprop $beta_incomplete_generalized %beta_incomplete_generalized verb)
+
+(defprop %beta_incomplete_generalized $beta_incomplete_generalized reversealias)
+(defprop %beta_incomplete_generalized $beta_incomplete_generalized noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %beta_incomplete_generalized 
+         simp-beta-incomplete-generalized operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %beta_incomplete__generalized 
+         simp-beta-incomplete-generalized operators)
+
+;;; Generalized Incomplete Gamma function has not mirror symmetry for z1 or z2 
+;;; but not on the negative real axis and for z1 or z2 real and > 1.
+;;; We support a conjugate-function which test these cases.
+
+(defprop %beta_incomplete_generalized
+         conjugate-beta-incomplete-generalized conjugate-function)
+
+(defun conjugate-beta-incomplete-generalized (args)
+  (let ((a  (first args))
+        (b  (second args))
+        (z1 (third args))
+        (z2 (fourth args)))
+    (cond ((and (off-negative-real-axisp z1)
+                (not (and (zerop1 ($imagpart z1))
+                          (eq ($sign (sub ($realpart z1) 1)) '$pos)))
+                (off-negative-real-axisp z2)
+                (not (and (zerop1 ($imagpart z2))
+                          (eq ($sign (sub ($realpart z2) 1)) '$pos))))
+           (simplify
+             (list
+              '(%beta_incomplete_generalized)
+               (simplify (list '($conjugate) a))
+               (simplify (list '($conjugate) b))
+               (simplify (list '($conjugate) z1))
+               (simplify (list '($conjugate) z2)))))
+          (t
+           (list
+            '($conjugate simp)
+             (simplify (list '(%beta_incomplete_generalized)
+                             a b z1 z2)))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %beta_incomplete_generalized
+  ((a b z1 z2)
+   ;; Derivative wrt a
+   ((mplus)
+      ((mtimes) -1 
+         ((%beta_incomplete) a b z1)
+         ((%log) z1))
+      ((mtimes) 
+         ((mexpt) ((%gamma) a) 2)
+         ((mplus)
+            ((mtimes)
+               (($hypergeometric_generalized)
+                  ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
+                  ((mlist) ((mplus) 1 a) ((mplus) 1 a)) 
+                  z1)
+               ((mexpt) z1 1))
+            ((mtimes) -1
+               (($hypergeometric_generalized)
+                  ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
+                  ((mlist) ((mplus) 1 a) ((mplus) 1 a)) 
+                  z2)
+               ((mexpt) z2 a))))
+      ((mtimes) ((%beta_incomplete) a b z2) ((%log) z2)))
+   ;; Derivative wrt b
+   ((mplus)
+      ((mtimes)
+         ((%beta_incomplete) b a ((mplus) 1 ((mtimes) -1 z1)))
+         ((%log) ((mplus) 1 ((mtimes) -1 z1))))
+      ((mtimes) -1
+         ((%beta_incomplete) b a ((mplus) 1 ((mtimes) -1 z2)))
+         ((%log) ((mplus) 1 ((mtimes) -1 z2))))
+      ((mtimes) -1 
+         ((mexpt) ((%gamma) b) 2)
+         ((mplus)
+            ((mtimes)
+               (($hypergeometric_generalized)
+                  ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
+                  ((mlist) ((mplus) 1 b) ((mplus) 1 b))
+                  ((mplus) 1 ((mtimes) -1 z1)))
+               ((mexpt) ((mplus) 1 ((mtimes) -1 z1)) b))
+            ((mtimes) -1
+               (($hypergeometric_generalized)
+                  ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
+                  ((mlist) ((mplus) 1 b) ((mplus) 1 b))
+                  ((mplus) 1 ((mtimes) -1 z2)))
+               ((mexpt) ((mplus) 1 ((mtimes) -1 z2)) b)))))
+   ;; The derivative wrt z1
+   ((mtimes) -1
+      ((mexpt) 
+         ((mplus) 1 ((mtimes) -1 z1))
+         ((mplus) -1 b))
+      ((mexpt) z1 ((mplus) -1 a)))
+   ;; The derivative wrt z2
+   ((mtimes)
+      ((mexpt) 
+         ((mplus) 1 ((mtimes) -1 z2))
+         ((mplus) -1 b))
+      ((mexpt) z2 ((mplus) -1 a))))
+  grad)
+
+;;; Integral of the Incomplete Beta function
+
+(defprop %beta_incomplete_generalized
+  ((a b z1 z2)
+   nil 
+   nil
+   ;; Integral wrt z1
+   ((mplus) 
+      ((%beta_incomplete) ((mplus) 1 a) b z1)
+      ((mtimes) ((%beta_incomplete_generalized) a b z1 z2) z1))
+   ;; Integral wrt z2
+   ((mplus)
+      ((mtimes) -1
+         ((%beta_incomplete) ((mplus) 1 a) b z2))
+      ((mtimes) ((%beta_incomplete_generalized) a b z1 z2) z2)))
+  integral)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-beta-incomplete-generalized (expr ignored simpflag)
+  (declare (ignore ignored))
+  (if (not (= (length expr) 5)) (wna-err '$beta_incomplete_generalized))
+  (let ((a  (simpcheck (second expr) simpflag))
+        (b  (simpcheck (third expr)  simpflag))
+        (z1 (simpcheck (fourth expr) simpflag))
+        (z2 (simpcheck (fifth expr)  simpflag)))
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z2)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg)
+                (domain-error 0 'beta_incomplete_generalized))
+               ((member sgn '($pos $pz)) 
+                (mul -1 ($beta_incomplete a b z1)))
+               (t 
+                (eqtest 
+                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
+
+      ((zerop1 z1)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg)
+                (domain-error 0 'beta_incomplete_generalized))
+               ((member sgn '($pos $pz)) 
+                (mul -1 ($beta_incomplete a b z2)))
+               (t 
+                (eqtest 
+                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
+
+      ((and (onep1 z2) (or (not (mnump a)) (not (mnump b)) (not (mnump z1))))
+       (let ((sgn ($sign ($realpart b))))
+         (cond ((member sgn '($pos $pz)) 
+                (sub (simplify (list '($beta) a b))
+                     ($beta_incomplete a b z1)))
+               (t 
+                (eqtest 
+                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
+
+      ((and (onep1 z1) (or (not (mnump a)) (not (mnump b)) (not (mnump z2))))
+       (let ((sgn ($sign ($realpart b))))
+         (cond ((member sgn '($pos $pz)) 
+                (sub ($beta_incomplete a b z2) 
+                     (simplify (list '($beta) a b))))
+               (t 
+                (eqtest 
+                  (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((complex-float-numerical-eval-p a b z1 z2)
+       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
+         (sub (beta-incomplete ($float a) ($float b) ($float z2))
+              (beta-incomplete ($float a) ($float b) ($float z1)))))
+           
+      ((complex-bigfloat-numerical-eval-p a b z1 z2)
+       (let ((*beta-incomplete-eps*
+               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+         (sub (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z2))
+              (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z1)))))
+
+      ;; Check for argument simplifications and transformations
+
+      ((and (integerp a) (plusp a))
+       (mul
+         (simplify (list '($beta) a b))
+         (sub
+           (mul
+             (power (sub 1 z1) b)
+             (let ((index (gensumindex)))
+               (dosum
+                 (div
+                   (mul
+                     (simplify (list '($pochhammer) b index))
+                     (power z1 index))
+                   (simplify (list '(mfactorial) index)))
+                index 0 (sub a 1) t)))
+           (mul
+             (power (sub 1 z2) b)
+             (let ((index (gensumindex)))
+               (dosum
+                 (div
+                   (mul 
+                     (simplify (list '($pochhammer) b index))
+                     (power z2 index))
+                   (simplify (list '(mfactorial) index)))
+                 index 0 (sub a 1) t))))))
+
+      ((and (integerp b) (plusp b))
+       (mul
+         (simplify (list '($beta) a b))
+         (sub
+           (mul
+             (power z2 a)
+             (let ((index (gensumindex)))
+               (dosum
+                 (div
+                   (mul
+                     (simplify (list '($pochhammer) a index))
+                     (power (sub 1 z2) index))
+                   (simplify (list '(mfactorial) index)))
+                index 0 (sub b 1) t)))
+           (mul
+             (power z1 a)
+             (let ((index (gensumindex)))
+               (dosum
+                 (div
+                   (mul 
+                     (simplify (list '($pochhammer) a index))
+                     (power (sub 1 z1) index))
+                   (simplify (list '(mfactorial) index)))
+                 index 0 (sub b 1) t))))))
+      
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (add
+           (mul
+             (div
+               (simplify (list '($pochhammer) a n))
+               (simplify (list '($pochhammer) (add a b) n)))
+             ($beta_incomplete_generalized a b z1 z2))
+           (mul
+             (power (add a b n -1) -1)
+             (let ((index (gensumindex)))
+               (dosum
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) 
+                                     (add 1 (mul -1 a) (mul -1 n))
+                                     index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
+                                     index)))
+                   (sub
+                     (mul (power (sub 1 z1) b)
+                          (power z1 (add a n (mul -1 index) -1)))
+                     (mul (power (sub 1 z2) b)
+                          (power z2 (add a n (mul -1 index) -1)))))
+                index 0 (sub n 1) t))))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
+       (let ((n (- (cadr a)))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           (mul
+             (div
+               (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             ($beta_incomplete_generalized a b z1 z2))
+           (mul
+             (div
+               (simplify 
+                 (list '($pochhammer) (add 2 (mul -1 a) (mul -1 b)) (sub n 1)))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             (let ((index (gensumindex)))
+               (dosum
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) (sub 1 a) index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b))
+                                     index)))
+                   (sub
+                     (mul (power (sub 1 z2) b)
+                          (power z2 (add a (mul -1 index) -1)))
+                     (mul (power (sub 1 z1) b)
+                          (power z1 (add a (mul -1 index) -1)))))
+                index 0 (sub n 1) t))))))
+      
+      (t
+       (eqtest (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
