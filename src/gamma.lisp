@@ -2754,6 +2754,57 @@
                (mul (add index a)
                     (simplify (list '(mfactorial) index))))
              index 0 (sub b 1) t))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           (mul
+             (div
+               (simplify (list '($pochhammer) a n))
+               (simplify (list '($pochhammer) (add a b) n)))
+             ($beta_incomplete a b z))
+           (mul
+             (power (add a b n -1) -1)
+             (let ((index (gensumindex)))
+               (dosum
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) 
+                                     (add 1 (mul -1 a) (mul -1 n))
+                                     index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
+                                     index)))
+                   (mul (power (sub 1 z) b)
+                        (power z (add a n (mul -1 index) -1))))
+                index 0 (sub n 1) t))))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
+       (let ((n (- (cadr a)))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           (mul
+             (div
+               (simplify (list '($pochhammer) (add 1 (mul -1 a) (mul -1 b)) n))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             ($beta_incomplete a b z))
+           (mul
+             (div
+               (simplify 
+                 (list '($pochhammer) (add 2 (mul -1 a) (mul -1 b)) (sub n 1)))
+               (simplify (list '($pochhammer) (sub 1 a) n)))
+             (let ((index (gensumindex)))
+               (dosum
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) (sub 1 a) index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b))
+                                     index)))
+                   (mul (power (sub 1 z) b)
+                        (power z (add a (mul -1 index) -1))))
+                index 0 (sub n 1) t))))))
       
       (t
        (eqtest (list '(%beta_incomplete) a b z) expr)))))
