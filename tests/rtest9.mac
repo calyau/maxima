@@ -212,3 +212,7 @@ rm . rm^^-1;
 
 modulus : false;
 false;
+
+/* [ 2604950 ] rats with keepfloat */
+ratsimp ((a*b - 0.5*a*(b - c))/a), keepfloat;
+0.5*c + 0.5*b;

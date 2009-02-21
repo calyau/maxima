@@ -36,10 +36,12 @@
 (defmacro bctimes (&rest l)
   `(rem (* ,@l) modulus))
 
+;; coefficient quotient a / b
+;; a and b may be integers (possibly with modulus) or floats if keepfloat=true
 (defun cquotient (a b)
   (cond ((equal a 0) 0)
 	((null modulus)
-	 (cond ((equal 0 (cremainder a b)) (truncate a b))
+	 (cond ((equal 0 (cremainder a b)) (/ a b))
 	       (t (errrjf "quotient is not exact"))))
 	(t (ctimes a (crecip b)))))
 
