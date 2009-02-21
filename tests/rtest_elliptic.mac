@@ -190,12 +190,11 @@ done;
 (test_table(func,table,eps) :=
 block([badpoints : [],
        abserr    : 0,
-       maxerr    : -1,
-       numer     : true],
+       maxerr    : -1],
   for entry in table do
     block([z : entry[1],
 	   result, answer],
-      z : entry[1],
+      z : expand(rectform(bfloat(entry[1]))),
       result : rectform(apply(func, z)),
       answer : expand(rectform(bfloat(entry[2]))),
       abserr : abs(result-answer),
@@ -297,7 +296,7 @@ test_table('jacobi_cn,
             [[1b0+%i*1b0, 2b0], 0.33759463268642431412b0 - 0.27814044708010806377b0*%i],
             [[1b0+%i*1b0, 2b0+3b0*%i], -0.52142079485827170824b0 - 0.35485177134179601850b0*%i],
             [[100b0, .7b0], 0.93004753815774770476196b0]], 
-           3b-14);
+           6b-14);
 [];
 
 test_table('jacobi_dn,
@@ -373,3 +372,17 @@ done;
 
 test_random(100, 6b-13, 'test_ef, 'id);
 [];
+
+/* Test elliptic_kc These values are from 
+ *
+ * http://functions.wolfram.com/EllipticIntegrals/EllipticK/03/01/
+ */
+
+block([oldfpprec : fpprec, fpprec:100],
+  test_table('elliptic_kc,
+	     [[[1/2], 8*%pi^(3/2)/gamma(-1/4)^2],
+	      [[17-12*sqrt(2)], 2*(2+sqrt(2))*%pi^(3/2)/gamma(-1/4)^2],
+	      [[-1], gamma(1/4)^2/4/sqrt(2*%pi)]],
+	     2b-100));
+[];
+

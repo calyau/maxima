@@ -293,7 +293,7 @@
 	 ;; cn(u,m) = sech(u) - 1/4*(1-m)*(sinh(u)*cosh(u)-u)*tanh(u)*sech(u)
 	 (/ (cosh u)))
 	(t
-	 ;; Use the ascending Landen transformation, A&S 16.14.13.
+	 ;; Use the ascending Landen transformation, A&S 16.14.3.
 	 (multiple-value-bind (v mu root-mu1)
 	     (ascending-transform u m)
 	   (let ((d (dn v mu)))
@@ -2268,7 +2268,11 @@ first kind:
 ;;
 
 
-(defvar *bferrtol* (bigfloat 1d-6))
+(defun bferrtol ()
+  ;; Compute error tolerance as sqrt(2^(-fpprec)).  Not sure this is
+  ;; quite right, but it makes the routines more accurate as fpprec
+  ;; increases.
+  (bigfloat (sqrt (scale-float (bigfloat 1) (- maxima::fpprec)))))
 
 ;; rc(x,y) = integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)
 ;;
@@ -2294,7 +2298,7 @@ first kind:
 	   (setf z yn)
 	   (setf w (bigfloat 1))))
     (setf a (/ (+ xn yn yn) 3))
-    (setf epslon (/ (abs (- a xn)) *bferrtol*))
+    (setf epslon (/ (abs (- a xn)) (bferrtol)))
     (setf an a)
     (setf pwr4 (bigfloat 1))
     (setf n 0)
@@ -2335,7 +2339,7 @@ first kind:
 	 (epslon (/ (max (abs (- a xn))
 			 (abs (- a yn))
 			 (abs (- a zn)))
-		    *bferrtol*))
+		    (bferrtol)))
 	 (an a)
 	 (sigma 0)
 	 (power4 1)
@@ -2391,7 +2395,7 @@ first kind:
 	 (epslon (/ (max (abs (- a xn))
 			 (abs (- a yn))
 			 (abs (- a zn)))
-		    *bferrtol*))
+		    (bferrtol)))
 	 (an a)
 	 (power4 1)
 	 (n 0)
@@ -2439,7 +2443,7 @@ first kind:
 			 (abs (- a yn))
 			 (abs (- a zn))
 			 (abs (- a pn)))
-		    *bferrtol*))
+		    (bferrtol)))
 	 (an a)
 	 xnroot ynroot znroot pnroot lam dn)
     (loop while (> (* power4 epslon) (abs an))
