@@ -682,8 +682,12 @@ When one changes, the other does too."
 	   (macsyma-top-level input-stream batch-flag))))))
 
 (defun adjust-character-encoding ()
-  #+clisp (progn (setf custom:*default-file-encoding* (ext:make-encoding :input-error-action #\?))
-                 (setf custom:*terminal-encoding* custom:*default-file-encoding*)))
+  (unwind-protect
+    #+clisp (progn (setf custom:*default-file-encoding*
+                         (ext:make-encoding :input-error-action #\?))
+                   (setf custom:*terminal-encoding*
+                         custom:*default-file-encoding*))
+    #-clisp nil))
 
 (import 'cl-user::run)
 
