@@ -682,7 +682,7 @@ When one changes, the other does too."
 	   (macsyma-top-level input-stream batch-flag))))))
 
 (defun adjust-character-encoding ()
-  (unwind-protect
+  (ignore-errors
     #+clisp (progn (setf custom:*default-file-encoding*
                          (ext:make-encoding :input-error-action #\?))
                    (setf custom:*terminal-encoding*
