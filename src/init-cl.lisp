@@ -686,8 +686,7 @@ When one changes, the other does too."
     #+clisp (progn (setf custom:*default-file-encoding*
                          (ext:make-encoding :input-error-action #\?))
                    (setf custom:*terminal-encoding*
-                         custom:*default-file-encoding*))
-    #-clisp nil))
+                         custom:*default-file-encoding*))))
 
 (import 'cl-user::run)
 
