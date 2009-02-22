@@ -1830,11 +1830,14 @@ first kind:
 	   (div (mul 8 (power '$%pi (div 3 2)))
 		(power (gm (div -1 4)) 2)))
 	  ((eql -1 m)
-	   ;; http://functions.wolfram.com/EllipticIntegrals/EllipticK/03/01/
-	   ;;
 	   ;; elliptic_kc(-1) = gamma(1/4)^2/(4*sqrt(2*%pi))
 	   (div (power (gm (div 1 4)) 2)
 		(mul 4 (power (mul 2 '$%pi) 1//2))))
+	  ((alike1 m (add 17 (mul -12 (power 2 1//2))))
+	   ;; elliptic_kc(17-12*sqrt(2)) = 2*(2+sqrt(2))*%pi^(3/2)/gamma(-1/4)^2
+	   (div (mul 2 (mul (add 2 (power 2 1//2))
+			    (power '$%pi (div 3 2))))
+		(power (gm (div -1 4)) 2)))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%elliptic_kc) m) form)))))
