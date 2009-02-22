@@ -10,7 +10,7 @@
 ;; Copyright (C) 2006 Stephen Eglen (imaxima-print-buffer)
 ;; Copyright (C) 2007, 2008 Yasuaki Honda (imaxima-to-html, inline graph)
 
-;; $Id: imaxima.el,v 1.6 2009-02-08 07:44:32 yasu-honda Exp $
+;; $Id: imaxima.el,v 1.7 2009-02-22 09:18:27 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -952,7 +952,9 @@ Argument STR contains output received from Maxima.
   (let* ((len (length str))
 	 main-output)
     (if (zerop len)
-	""
+	(progn
+	  (setq imaxima-filter-running nil)
+	  (return-from imaxima-filter ""))
       (setq imaxima-output (concat imaxima-output str))
       (let ((lastchar (aref str (1- len)))
 	    (output ""))

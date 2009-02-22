@@ -8,7 +8,7 @@
 ;; Version: 1.0b
 ;; Keywords: maxima
 
-;; $Id: imath.el,v 1.4 2009-02-08 07:44:32 yasu-honda Exp $
+;; $Id: imath.el,v 1.5 2009-02-22 09:18:27 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as

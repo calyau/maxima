@@ -1,7 +1,7 @@
 ;; Copyright (C) 2007, 2008 Yasuaki Honda
 
 ;; Author: Yasuaki Honda (yhonda@mac.com)
-;; $Id: setup-imaxima-imath.el,v 1.5 2009-02-04 16:53:26 yasu-honda Exp $
+;; $Id: setup-imaxima-imath.el,v 1.6 2009-02-22 09:18:27 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as

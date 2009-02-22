@@ -9,7 +9,7 @@
 ;; Created: 14 Nov 2001
 ;; Version: 1.0b
 ;; Keywords: maxima
-;; $Id: imaxima.lisp,v 1.5 2009-02-04 16:53:26 yasu-honda Exp $
+;; $Id: imaxima.lisp,v 1.6 2009-02-22 09:18:27 yasu-honda Exp $
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -294,23 +294,6 @@ nor Gnuplot is not recognized by maxima"))))
                 r (nconc (tex-list (cdr x) nil (list "}") ",") r))
           (nconc  l (list "}{") r )))))
 
-
-;; we could patch this so sin x rather than sin(x), but instead we made sin a prefix
-;; operator
-
-;; greek letter gamma is treated in a special way. If it appears in the position of
-;; a function name, then it is displayed in the capital letter. Otherwise it is 
-;; displayed in a small letter.
-;;
-(defun tex-function (x l r op) op
-      (let ((texw))
-        (if (eql (caar x) '%gamma)
-	    (setq texw "\\Gamma")
-	  (setq texw (caar x)))
-	(setq l (tex texw l nil 'mparen 'mparen)
-	      r (tex (cons '(mprogn) (cdr x)) nil r 'mparen 'mparen))
-	(nconc l r)))
-
 ;; set up a list , separated by symbols (, * ...)  and then tack on the
 ;; ending item (e.g. "]" or perhaps ")"
 
@@ -359,9 +342,7 @@ nor Gnuplot is not recognized by maxima"))))
 (defun tex-bigfloat (x l r) (tex-list (fpformat x) l r nil))
 
 ;;absolute value
-
 (defprop $%phi "\\phi" texword) ;; yhonda
-(defprop %gamma "\\gamma" texword)
 
 ;; reported conjugate treatment in imaxima be fixed.
 (defprop $conjugate ("^{\\star}") texsym)

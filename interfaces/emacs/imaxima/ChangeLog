@@ -1,3 +1,23 @@
+2009-02-07 Yasuaki Honda <yasuaki.honda@gmail.com>
+	* As for inline graph, if the emacs buffer window is too small for
+	the generated graph image, the graph is not displayed, but a file
+	name is displayed instead. Now, the graph is resized to fit to the
+	current imaxima buffer size and correctly displayed. Thanks go to
+	Bertram for his patch.  
+
+	* A bug in setup-imaxima-imath.el, which is used in "Easy Install
+	on Windows XP / Vista" is fixed so that it can now correctly
+	handles the set up of info files.
+
+	* Now csetup() function in ctensor package displays interactive
+	messages correctly.
+
+	* derivabbrev:true is correctly handled.
+
+	* A lot of lisp code in imaxima.lisp that are common in
+	mactex.lisp are removed.
+
+
 2008-10-26 Yasuaki Honda <yasuaki.honda@gmail.com>
 	* A workaround for OpenSUSE Linux 10.3 is incorporated.
 
