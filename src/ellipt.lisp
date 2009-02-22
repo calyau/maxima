@@ -1823,6 +1823,18 @@ first kind:
 	   (to (bigfloat::bf-elliptic-k (bigfloat:to ($bfloat m)))))
 	  ((zerop1 m)
 	   '((mtimes) ((rat) 1 2) $%pi))
+	  ((alike1 m 1//2)
+	   ;; http://functions.wolfram.com/EllipticIntegrals/EllipticK/03/01/
+	   ;;
+	   ;; elliptic_kc(1/2) = 8*%pi^(3/2)/gamma(-1/4)^2
+	   (div (mul 8 (power '$%pi (div 3 2)))
+		(power (gm (div -1 4)) 2)))
+	  ((eql -1 m)
+	   ;; http://functions.wolfram.com/EllipticIntegrals/EllipticK/03/01/
+	   ;;
+	   ;; elliptic_kc(-1) = gamma(1/4)^2/(4*sqrt(2*%pi))
+	   (div (power (gm (div 1 4)) 2)
+		(mul 4 (power (mul 2 '$%pi) 1//2))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%elliptic_kc) m) form)))))
