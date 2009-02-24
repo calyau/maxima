@@ -1046,27 +1046,28 @@
     ;; We need to differentiate some hypergeometric forms, so use 'ell
     ;; as the variable.
     (let ((fun (hyp-cos a-prime (add a-prime 1//2) c-prime 'ell)))
-      ;; fun is F(a',a'+1/2;2*a'+1;z)
-      (when $trace2f1
-	(format t "step7-core~%")
-	(format t " a,b,c = ~A ~A ~A~%" a b c)
-	(format t " p,q,r = ~A ~A ~A~%" p q r)
-	(format t " a', c' = ~A ~A~%" a-prime c-prime)
-	(format t " F(a',a'+1/2; 1+2*a';z) =~%")
-	(maxima-display fun))
-      ;; Compute the result, and substitute the actual argument into
-      ;; result.
-      (subst var 'ell
-	     (cond ((>= p 0)
-		    (cond ((>= r 0)
-			   (step-7-pp a-prime b c-prime p r 'ell fun))
-			  (t
-			   (step-7-pm a-prime b c-prime p r 'ell fun))))
-		   (t
-		    (cond ((>= r 0)
-			   (step-7-mp a-prime b c-prime p r 'ell fun))
-			  (t
-			   (step-7-mm a-prime b c-prime p r 'ell fun)))))))))
+      ;; fun is F(a',a'+1/2;2*a'+1;z), or NIL
+      (when fun
+	(when $trace2f1
+	  (format t "step7-core~%")
+	  (format t " a,b,c = ~A ~A ~A~%" a b c)
+	  (format t " p,q,r = ~A ~A ~A~%" p q r)
+	  (format t " a', c' = ~A ~A~%" a-prime c-prime)
+	  (format t " F(a',a'+1/2; 1+2*a';z) =~%")
+	  (maxima-display fun))
+	;; Compute the result, and substitute the actual argument into
+	;; result.
+	(subst var 'ell
+	       (cond ((>= p 0)
+		      (cond ((>= r 0)
+			     (step-7-pp a-prime b c-prime p r 'ell fun))
+			    (t
+			     (step-7-pm a-prime b c-prime p r 'ell fun))))
+		     (t
+		      (cond ((>= r 0)
+			     (step-7-mp a-prime b c-prime p r 'ell fun))
+			    (t
+			     (step-7-mm a-prime b c-prime p r 'ell fun))))))))))
   
 ;; F(a,b;c;z) in terms of F(a',b;c';z)
 ;;
@@ -1300,9 +1301,7 @@
 		    ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a)
 		    (mul (power 2 2a)
 			 (power (add 1 (power z1 1//2))
-				(mul -1 2a)))))))
-	  (t
-	   (error "Shouldn't happen!  hyp-cos precondition true, but hyp-cos failed")))))
+				(mul -1 2a))))))))))
 
 ;; Is A a non-negative integer?
 (defun nni (a)
