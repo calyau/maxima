@@ -427,3 +427,6 @@ complex_float_approx_equal
      v = 1.75*%i]);
 true;
 
+/* [ 940835 ] rectform fails with float/numer flags */
+rectform(log(-%i)),float;
+-0.5 * %i * %pi;

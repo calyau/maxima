@@ -406,14 +406,18 @@
 	 (cond ((and (mnump (cadr exp))
 		     (eq (caddr exp) '$%pi)
 		     (null (cdddr exp)))
-		(cond ((integerp (cadr exp)) ;5*%pi
-		       (mul (abs (rem (cadr exp) 2)) '$%pi))
-					;Neither 0 nor 1 appears as a coef
+		(cond ((integerp (cadr exp))	; 5*%pi
+		       (mul (mod (cadr exp) 2) '$%pi))
+		      ((floatp (cadr exp))	; 1.5*%pi
+		       (mul (1- (mod (1+ (cadr exp)) 2))
+			    '$%pi))
+		      ;; Neither 0 nor 1 appears as a coef
 		      ((and (listp (cadr exp))
 			    (eq 'rat (caaadr exp))) ;5/2*%pi
 		       (mul (list* '(rat simp)
-				   (1- (rem (1+ (cadadr exp))
-					    (* 2 (car (cddadr exp)))))
+				   (- (mod (+ (cadadr exp) (car (cddadr exp)))
+					   (* 2 (car (cddadr exp))))
+				      (car (cddadr exp)))
 				   (cddadr exp))
 			    '$%pi))
 		      (t exp)))
