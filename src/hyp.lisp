@@ -1245,9 +1245,9 @@
 	(z1 (sub 1 z)))
     ;; a1 = (a+b-1/2)/2
     ;; z1 = 1-z
-    (cond ((alike1 (sub (add a b)
-			(div 1 2))
-		   c)
+    (cond ((eql 0 ($ratsimp (sub (sub (add a b)
+				      (div 1 2))
+				 c)))
 	   ;; a+b-1/2 = c
 	   ;;
 	   ;; A&S 15.1.14
@@ -1277,7 +1277,7 @@
 					    (div 1
 						 2)))
 				(sub 1 (mul 2 a1))))))))
-	  ((alike1 (add 1 (mul 2 a1)) c)
+	  ((eql 0 ($ratsimp (sub (add 1 (mul 2 a1)) c)))
 	   ;; c = 1+2*a1 = a+b+1/2
 	   ;;
 	   ;; A&S 15.1.13:
@@ -1300,7 +1300,9 @@
 		    ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a)
 		    (mul (power 2 2a)
 			 (power (add 1 (power z1 1//2))
-				(mul -1 2a))))))))))
+				(mul -1 2a)))))))
+	  (t
+	   (error "Shouldn't happen!  hyp-cos precondition true, but hyp-cos failed")))))
 
 ;; Is A a non-negative integer?
 (defun nni (a)
