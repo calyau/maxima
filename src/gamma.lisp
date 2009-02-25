@@ -139,6 +139,19 @@
         (setq flag t)))
     (if (or $numer flag) t nil)))
 
+;;; Check for an integer or a float or bigfloat representation. When we
+;;; have a float or bigfloat representation return the integer value.
+
+(defun integer-representation-p (x)
+  (let ((val nil))
+    (cond ((integerp x) x)
+          ((and (floatp x) (= 0 (nth-value 1 (truncate x))))
+           (nth-value 0 (truncate x)))
+          ((and ($bfloatp x) 
+                (eq ($sign (sub (setq val ($truncate x)) x)) '$zero))
+           val)
+          (t nil))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; The changes to the parser to connect the operator !! to double_factorial(z)
@@ -2685,27 +2698,56 @@
                ((eq sgn '$zero) 
                 (domain-error 0 'beta_incomplete))
                ((member sgn '($pos $pz)) 
-                0)
+                z)
                (t 
                 (eqtest (list '(%beta_incomplete) a b z) expr)))))
 
-      ((and (onep1 z) (or (not (mnump a)) (not (mnump b))))
-       (let ((sgn ($sign ($realpart b))))
-         (cond ((member sgn '($pos $pz)) 
-                (simplify (list '($beta) a b)))
-               (t 
-                (eqtest (list '(%beta_incomplete) a b z) expr)))))
+      ((and (onep1 z) (eq ($sign ($realpart b)) '$pos))
+       ;; z=1 and realpart(b)>0. Simplify to a Beta function.
+       ;; If we have to evaluate numerically preserve the type.
+       (cond
+         ((complex-float-numerical-eval-p a b z)
+          (simplify (list '($beta) ($float a) ($float b))))
+         ((complex-bigfloat-numerical-eval-p a b z)
+          (simplify (list '($beta) ($bfloat a) ($bfloat b))))
+         (t
+          (simplify (list '($beta) a b)))))
+      
+      ((or (zerop1 a)
+           (and (integer-representation-p a)
+                (eq ($sign a) '$neg)
+                (or (and (mnump b) 
+                         (not (integer-representation-p b)))
+                    (eq ($sign (add a b)) '$pos))))
+       ;; The argument a is zero or a is negative and the argument b is
+       ;; not in a valid range. Beta incomplete is undefined.
+       ;; It would be more correct to return Complex infinity.
+       (merror "beta_incomplete: Not defined for a=~:M and b=~:M." a b))
 
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
       ((complex-float-numerical-eval-p a b z)
-       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
-         (beta-incomplete ($float a) ($float b) ($float z))))
+       (cond
+         ((not (and (integer-representation-p a) (< a 0.0)))
+          (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
+            (beta-incomplete ($float a) ($float b) ($float z))))
+         (t
+           ;; Negative integer a and b is in a valid range. Expand.
+           ($rectform 
+             (beta-incomplete-expand-negative-integer 
+               (truncate a) ($float b) ($float z))))))
            
       ((complex-bigfloat-numerical-eval-p a b z)
-       (let ((*beta-incomplete-eps*
-               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
-         (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))))
+       (cond
+         ((not (and (integer-representation-p a) (eq ($sign a) '$neg)))
+          (let ((*beta-incomplete-eps*
+                  (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+            (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))))
+         (t
+           ;; Negative integer a and b is in a valid range. Expand.          
+           ($rectform
+             (beta-incomplete-expand-negative-integer
+               ($truncate a) ($bfloat b) ($bfloat z))))))
 
       ;; Argument simplifications and transformations
       
@@ -2809,20 +2851,26 @@
       (t
        (eqtest (list '(%beta_incomplete) a b z) expr)))))
 
+(defun beta-incomplete-expand-negative-integer (a b z)
+  (mul
+    (power z a)
+    (let ((index (gensumindex)))
+      (dosum
+        (div
+          (mul (list '($pochhammer) (sub 1 b) index) (power z index))
+          (mul (add index a) (simplify (list '(mfactorial) index))))
+        index 0 (sub b 1) t))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun beta-incomplete (a b z)
   (cond
-    ((eq ($sign (sub ($realpart z)
-                     ($realpart (div (add a 1.0) (add a b 2.0)))))
+    ((eq ($sign (sub (mul ($realpart z) ($realpart (add a b 2)))
+                     ($realpart (add a 1))))
          '$pos)
      ($rectform
        (sub
-         (div
-           (cmul
-             (simplify (list '(%gamma) a))
-             (simplify (list '(%gamma) b)))
-           (simplify (list '(%gamma) (add a b))))
+         (simplify (list '($beta) a b))
          (to (numeric-beta-incomplete b a (sub 1.0 z))))))
     (t
       (to (numeric-beta-incomplete a b z)))))
