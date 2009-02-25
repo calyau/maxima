@@ -3127,6 +3127,152 @@ errcatch(beta_incomplete(am,b,0));
 (forget(am<0, ap>0,b>0),done);
 done;
 
+/* b is a positive integer */
+
+beta_incomplete(a,1,z);
+z^a/a;
+beta_incomplete(a,2,z);
+(a*(1-z)+1)*z^a/(a*(a+1));
+beta_incomplete(1,1,z);
+z;
+
+/* b is a positive integer.
+   Check the handling of float and bigfloat numbers */
+fpprec:16;
+16;
+
+beta_incomplete(1.0,1,z);
+1.0*z;
+beta_incomplete(1.0b0,1,z);
+1.0b0*z;
+beta_incomplete(1.0,1,1/2);
+0.5;
+beta_incomplete(1.0b0,1,1/2);
+0.5b0;
+beta_incomplete(1,1,1/2+%i);
+%i+1/2;
+beta_incomplete(1.0,1,1/2+%i);
+1.0*%i+0.5;
+beta_incomplete(1.0b0,1,1/2+%i);
+1.0b0*%i+0.5b0;
+beta_incomplete(1,2,1/2);
+3/8;
+beta_incomplete(1.0,2,1/2);
+0.375;
+beta_incomplete(1.0b0,2,1/2);
+0.375b0;
+beta_incomplete(1,2,1/2+%i);
+(3/2-%i)*(1/2+%i)/2;
+beta_incomplete(1.0,2,1/2+%i);
+0.875+0.5*%i;
+beta_incomplete(1.0b0,2,1/2+%i);
+0.875b0+0.5b0*%i;
+
+/* We check the expansion for b positive against the numerical evaluation */
+closeto(
+  float(beta_incomplete(1,1,1/2)) - beta_incomplete(1.0,1.0,0.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(3/2,2,1/2)) - beta_incomplete(1.5,2.0,0.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(2,3,1/2)) - beta_incomplete(2.0,3.0,0.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(5/2,4,1/2)) - beta_incomplete(2.5,4.0,0.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(3,5,1/2)) - beta_incomplete(3.0,5.0,0.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(2,6,1/2+%i)) - beta_incomplete(2.0,6.0,0.5+%i),
+  0.0,
+  1e-15);
+true;
+closeto(
+  /* We do this extra rectform, because of a bug in abs for expressions
+     with a complex exponent */
+  rectform(float(beta_incomplete(2+%i,7,1/2+%i)) 
+               - beta_incomplete(2.0+%i,7.0,0.5+%i)),
+  0.0,
+  1e-15);
+true;
+
+/* a is a positive integer we expand */
+beta_incomplete(1,b,z);
+(1-(1-z)^b)/b;
+beta_incomplete(2,b,z);
+ (1-(1-z)^b*(b*z+1))/(b*(b+1));
+beta_incomplete(3,b,z);
+ 2*(1-(1-z)^b*(b*(b+1)*z^2/2+b*z+1))/(b*(b+1)*(b+2));
+
+/* a is a positive integer. 
+   Check the expansion against numerically evaluation.
+   First we test for b a positive value. */
+
+closeto(
+  float(beta_incomplete(1,2,3/2))-beta_incomplete(1.0,2.0,1.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(2,5/2,3/2))-beta_incomplete(2.0,2.5,1.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(3,3,3/2))-beta_incomplete(3.0,3.0,1.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(2,7/2,3/2))-beta_incomplete(2.0,3.5,1.5),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(beta_incomplete(2,5/2,3/2+%i))-beta_incomplete(2.0,2.5,1.5+%i),
+  0.0,
+  1e-15);
+true;
+closeto(
+  float(rectform(beta_incomplete(2,5/2,-3/2+%i)))
+                -beta_incomplete(2.0,2.5,-1.5+%i),
+  0.0,
+  2.5e-15); /* we have lost accuracy. More tests necessary? */
+true;
+
+/* Incomplete Beta is definied for negative integers a and b >= (-a) 
+   Add this point we have a problem. functions.wolfram.com gives different
+   numerical results for this cases. When b not equal -a Maxima and 
+   functions.wolfram.com differ by a factor 2. For other valid integer b
+   functions.wolfram.com gives ComplexInfinity and not an expected result.
+   What is wrong?
+*/
+
+beta_incomplete(-1,1,z);
+-1/z;
+beta_incomplete(-2,1,z);
+-1/(2*z^2);
+beta_incomplete(-2,2,z);
+(z-1/2)/z^2;
+beta_incomplete(-3,1,z);
+-1/(3*z^3);
+beta_incomplete(-3,2,z);
+(z/2-1/3)/z^3;
+beta_incomplete(-3,3,z);
+(-z^2+z-1/3)/z^3;
+
 /* Some numerical tests in double float precision */
 
 closeto(
@@ -3162,25 +3308,25 @@ true;
 closeto(
   beta_incomplete(0.5,1.0,0.75),
   1.732050807568877293527446341505872366942805253810380628055806979b0,
-  1e-15);
+  2.0e-15);
 true;
 
 closeto(
   beta_incomplete(0.5,1.0,1.00),
   2.000000000000000000000000000000000000000000000000000000000000000b0,
-  1e-15);
+  2.0e-15);
 true;
 
 closeto(
   beta_incomplete(0.5,1.0,1.25),
   2.236067977499789696409173668731276235440618359611525724270897245b0,
-  1e-15);
+  2.0e-15);
 true;
 
 closeto(
   beta_incomplete(0.5,1.0,1.50),
   2.449489742783178098197284074705891391965947480656670128432692567b0,
-  1e-15);
+  2.0e-15);
 true;
 
 closeto(
