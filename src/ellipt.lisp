@@ -1913,6 +1913,11 @@ first kind:
     (cond ((float-numerical-eval-p n phi m)
 	   ;; Numerically evaluate it
 	   (elliptic-pi (float n) (float phi) (float m)))
+	  ((or (bigfloat-numerical-eval-p n phi m)
+	       (complex-bigfloat-numerical-eval-p n phi m))
+	   (to (bigfloat::bf-elliptic-pi (bigfloat:to n)
+					 (bigfloat:to phi)
+					 (bigfloat:to m))))
 	  ((zerop1 n)
 	   `(($elliptic_f) ,phi ,m))
 	  ((zerop1 m)
@@ -1920,21 +1925,15 @@ first kind:
 	   (let ((s (asksign `((mplus) -1 ,n))))
 	     (case s
 	       ($positive
-		`((mtimes)
-		  ((mexpt) ((mplus) -1 ,n) ((rat) -1 2))
-		  ((%atanh)
-		   ((mtimes) ((mexpt) ((mplus) -1 ,n) ((rat) 1 2))
-		    ((%tan) ,phi)))))
+		(div (take '($atanh) (mul (power (add n -1) 1//2)
+					  (take '($tan) phi)))
+		     (power (add n -1) 1//2)))
 	       ($negative
-		`((mtimes)
-		  ((mexpt) ((mplus) 1 ((mtimes) -1 ,n)) ((rat) -1 2))
-		  ((%atan)
-		   ((mtimes) ((mexpt)
-			      ((mplus) 1 ((mtimes) -1 ,n))
-			      ((rat) 1 2))
-		    ((%tan) ,phi)))))
+		(div (take '($atanh) (mul (power (sub 1 n) 1//2)
+					  (take '($tan) phi)))
+		     (power (sub 1 n) 1//2)))
 	       ($zero
-		`((%tan) ,phi)))))
+		(take '($tan) phi)))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '($elliptic_pi) n phi m) form)))))
@@ -2600,6 +2599,20 @@ first kind:
 	 (let ((m1 (- 1 m)))
 	   (- (bf-rf 0 m1 1)
 	      (* m 1/3 (bf-rd 0 m1 1)))))))
+
+(defun bf-elliptic-pi (n phi m)
+  ;; Note: Carlson's DRJ has n defined as the negative of the n given
+  ;; in A&S.
+  (let* ((nn (- n))
+	 (sin-phi (sin phi))
+	 (cos-phi (cos phi))
+	 (k (sqrt m))
+	 (k2sin (* (- 1 (* k sin-phi))
+		   (+ 1 (* k sin-phi)))))
+    (- (* sin-phi (bf-rf (expt cos-phi 2) k2sin 1.0))
+       (* (/ nn 3) (expt sin-phi 3)
+	  (bf-rj (expt cos-phi 2) k2sin 1.0
+		 (- 1 (* n (expt sin-phi 2))))))))
 
 (in-package :maxima)
 
