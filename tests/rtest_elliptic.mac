@@ -386,3 +386,19 @@ block([oldfpprec : fpprec, fpprec:100],
 	     2b-100));
 [];
 
+/* Some tests for specific values */
+inverse_jacobi_sn(1,m);
+elliptic_kc(m);
+
+inverse_jacobi_sn(x,0);
+asin(x);
+
+inverse_jacobi_sn(x,1);
+log(tan(asin(x)/2 + %pi/4));
+
+inverse_jacobi_sd(1/sqrt(1-m),m);
+elliptic_kc(m);
+
+inverse_jacobi_ds(sqrt(1-m),m);
+elliptic_kc(m);
+
