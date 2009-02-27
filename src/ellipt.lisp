@@ -962,16 +962,16 @@
 	   0)
 	  ((onep1 u)
 	   ;; asn(1,m) = elliptic_kc(m)
-	   `(($elliptic_kc) ,m))
+	   ($elliptic_kc m))
 	  ((and (numberp u) (onep1 (- u)))
 	   ;; asn(-1,m) = -elliptic_kc(m)
-	   `((mtimes) -1 ((%elliptic_kc) ,m)))
+	   (mul -1 ($elliptic_kc m)))
 	  ((zerop1 m)
 	   ;; asn(x,0) = F(asin(x),0) = asin(x)
-	   `((%elliptic_f) ((%asin) ,u) 0))
+	   (take '($asin) u))
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/4+asin(x)/2))
-	   `((%elliptic_f) ((%asin) ,u) 1))
+	   (take '($elliptic_f) (take '(%asin) u) 1))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sn) u m) form)))))
@@ -3926,6 +3926,13 @@ first kind:
 			       m))
 	  ((zerop1 u)
 	   0)
+	  ((eql 0 ($ratsimp (sub u (div 1 (power (sub 1 m) 1//2)))))
+	   ;; inverse_jacobi_sd(1/sqrt(1-m), m) = elliptic_kc(m)
+	   ;;
+	   ;; We can see this from inverse_jacobi_sd(x,m) =
+	   ;; inverse_jacobi_sn(x/sqrt(1+m*x^2), m).  So
+	   ;; inverse_jacobi_sd(1/sqrt(1-m),m) = inverse_jacobi_sn(1,m)
+	   ($elliptic_kc m))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sd) u m) form)))))
@@ -4061,6 +4068,13 @@ first kind:
 	   ($inverse_jacobi_sd (div 1 u) m))
 	  ((and $trigsign (mminusp* u))
 	   (neg (cons-exp '%inverse_jacobi_ds (neg u) m)))
+	  ((eql 0 ($ratsimp (sub u (power (sub 1 m) 1//2))))
+	   ;; inverse_jacobi_ds(sqrt(1-m),m) = elliptic_kc(m)
+	   ;;
+	   ;; Since inverse_jacobi_ds(sqrt(1-m), m) =
+	   ;; inverse_jacobi_sd(1/sqrt(1-m),m).  And we know from
+	   ;; above that this is elliptic_kc(m)
+	   ($elliptic_kc m))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_ds) u m) form)))))
