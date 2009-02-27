@@ -18,16 +18,9 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 */
-
-load("graph_core.lisp")$
-load("spring_embedding.lisp")$
-load("isomorphism.lisp")$
-load("demoucron.lisp")$
-load("matching.lisp")$
+load("load-graphs.lisp")$
 load("draw_graph.mac")$
 load("graph_polynomials.mac")$
 load("create_graph.mac")$
 load("graphio.mac")$
-load("graph6.lisp")$
-load("dijkstra.lisp")$
 load("connectivity.mac")$
