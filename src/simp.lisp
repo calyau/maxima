@@ -891,7 +891,7 @@
 	((taylorize 'mabs (second x)))
 	((member y '($inf $infinity $minf) :test #'eq) '$inf)
 	((member y '($ind $und) :test #'eq) y)
-	((eq (setq z (csign y)) t) (cabs y))
+	((eq (setq z (csign y)) t) ($cabs y))
 	((member z '($pos $pz) :test #'eq) y)
 	((member z '($neg $nz) :test #'eq) (neg y))
 	((eq z '$zero) 0)
