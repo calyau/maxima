@@ -58,8 +58,8 @@
        (return `((mlist) ,@(nreverse all)))))))
 
 (defun mread-noprompt (&rest read-args)
-  (let ((*mread-prompt* ""))
-    (declare (special *mread-prompt*))
+  (let ((*mread-prompt* "") (*prompt-on-read-hang*))
+    (declare (special *mread-prompt* *prompt-on-read-hang*))
     (unless read-args (setq read-args (list *query-io*)))
     (caddr (apply #'mread read-args))))
 
