@@ -454,6 +454,8 @@
       (simplify '$%pi)
       0))
 
+;; returns pair (abs . arg)
+;; if absflag is true, arg result is not guaranteed to be correct
 (defun absarg (l)
   (setq l ($expand l))
   (cond ((atom l)
@@ -486,7 +488,8 @@
 	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
 	   (setq abars (absarg (car n)))))
 	((eq (caar l) 'mexpt)
-	 (let ((aa (absarg (cadr l)))
+	 (let ((aa (let ((absflag nil))	;; we always need arg of base of exponent
+		     (absarg (cadr l))))
 	       (sp (risplit (caddr l)))
 	       ($radexpand nil))
 	   (cons (mul (powers (car aa) (car sp))

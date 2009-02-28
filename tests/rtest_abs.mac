@@ -232,4 +232,4 @@ abs(taylor(exp(x),x,0,3)) - taylor(exp(x),x,0,3);
 /* bug SF[2631766] abs((1+%i)^%i) is wrong */
 
 abs((1+%i)^%i);
-sqrt(%e^-(%pi/2)*sin(log(2)/2)^2+%e^-(%pi/2)*cos(log(2)/2)^2);
+%e^(-%pi/4);

@@ -215,10 +215,9 @@ limit(a/n, n, inf);
 /*
  * Bug [ 1661490 ] An integral gives a wrong result.
  */
-(assume(a>0, b>0, sqrt(sqrt(b^2+a^2)-a)*(sqrt(b^2+a^2)+a)^(3/2)-b^2>0,
-        equal(sin(b)^2+cos(b)^2,1)),0);
+(assume(a>0, b>0, sqrt(sqrt(b^2+a^2)-a)*(sqrt(b^2+a^2)+a)^(3/2)-b^2>0),0);
 0;
-radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/(sqrt(%pi)/sqrt(a+%i*b)));
+radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b)));
 1;
 
 /*
@@ -379,6 +378,10 @@ tlimit(x*(atan(x)-%pi/2),x,inf);
 
 tlimit(atan(x^-1), x, 0, minus);
 -%pi/2;
+
+/* [ 1973399 ] F(x) := 1/%pi*(atan(x) + %pi/2) */
+(assume(c>0), limit(((1/%pi)*(atan(n/%pi) + %pi/2))^n, n, inf));
+%e^(-1);
 
 /* [ 1103515 ] limit(atan2(x,-1),x,0) wrong */
 limit(atan2(x,-1), x, 0, minus);
