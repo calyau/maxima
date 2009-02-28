@@ -692,10 +692,63 @@
 	   (neg (cons-exp '%jacobi_sn (neg u) m)))
 	  ((and $triginverses
 		(listp u)
-		(eq (caar u) '%inverse_jacobi_sn)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
 		(alike1 (third u) m))
-	   ;; jacobi_sn(inverse_jacobi_sn(u,m), m) = u
-	   (second u))
+	   (let ((inv-arg (second u)))
+	     (ecase (caar u)
+	       (%inverse_jacobi_sn
+		;; jacobi_sn(inverse_jacobi_sn(u,m), m) = u
+		inv-arg)
+	       (%inverse_jacobi_ns
+		;; inverse_jacobi_ns(u,m) = inverse_jacobi_sn(1/u,m)
+		(div 1 inv-arg))
+	       (%inverse_jacobi_cn
+		;; sn(x)^2 + cn(x)^2 = 1 so sn(x) = sqrt(1-cn(x)^2)
+		(power (sub 1 (mul inv-arg inv-arg)) 1//2))
+	       (%inverse_jacobi_nc
+		;; inverse_jacobi_nc(u) = inverse_jacobi_cn(1/u)
+		($jacobi_sn ($inverse_jacobi_cn (div 1 inv-arg) m)
+			    m))
+	       (%inverse_jacobi_dn
+		;; dn(x)^2 + m*sn(x)^2 = 1 so
+		;; sn(x) = 1/sqrt(m)*sqrt(1-dn(x)^2)
+		(mul (div 1 (power m 1//2))
+		     (power (sub 1 (mul inv-arg inv-arg)) 1//2)))
+	       (%inverse_jacobi_nd
+		;; inverse_jacobi_nd(u) = inverse_jacobi_dn(1/u)
+		($jacobi_sn ($inverse_jacobi_dn (div 1 inv-arg) m)
+			    m))
+	       (%inverse_jacobi_sc
+		;; See below for inverse_jacobi_sc.
+		(div inv-arg (power (add 1 (mul inv-arg inv-arg)) 1//2)))
+	       (%inverse_jacobi_cs
+		;; inverse_jacobi_cs(u) = inverse_jacobi_sc(1/u)
+		($jacobi_sn ($inverse_jacobi_sc (div 1 inv-arg) m)
+			    m))
+	       (%inverse_jacobi_sd
+		;; See below for inverse_jacobi_sd
+		(div inv-arg (power (add 1 (mul m (mul inv-arg inv-arg))) 1//2)))
+	       (%inverse_jacobi_ds
+		;; inverse_jacobi_ds(u) = inverse_jacobi_sd(1/u)
+		($jacobi_sn ($inverse_jacobi_sd (div 1 inv-arg) m)
+			    m))
+	       (%inverse_jacobi_cd
+		;; See below
+		(div (power (sub 1 (mul inv-arg inv-arg)) 1//2)
+		     (power (sub 1 (mul m (mul inv-arg inv-arg))) 1//2)))
+	       (%inverse_jacobi_dc
+		($jacobi_dn ($inverse_jacobi_cd (div 1 inv-arg) m) m)))))
 	  ;; A&S 16.20.1 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   (mul '$%i
@@ -785,10 +838,26 @@
 	   (cons-exp '%jacobi_cn (neg u) m))
 	  ((and $triginverses
 		(listp u)
-		(eq (caar u) '%inverse_jacobi_cn)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
 		(alike1 (third u) m))
-	   ;; jacobi_cn(inverse_jacobi_cn(u,m), m) = u
-	   (second u))
+	   (cond ((eq (caar u) '%inverse_jacobi_cn)
+		  (second u))
+		 (t
+		  ;; I'm lazy.  Use cn(x) = sqrt(1-sn(x)^2).  Hope
+		  ;; this is right.
+		  (power (sub 1 (power ($jacobi_sn u (third u)) 2))
+			 1//2))))
 	  ;; A&S 16.20.2 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   (cons-exp '%jacobi_nc (coeff u '$%i 1) (add 1 (neg m))))
@@ -882,10 +951,28 @@
 	   (cons-exp '%jacobi_dn (neg u) m))
 	  ((and $triginverses
 		(listp u)
-		(eq (caar u) '%inverse_jacobi_dn)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
 		(alike1 (third u) m))
-	   ;; jacobi_dn(inverse_jacobi_dn(u,m), m) = u
-	   (second u))
+	   (cond ((eq (caar u) '%inverse_jacobi_dn)
+		  ;; jacobi_dn(inverse_jacobi_dn(u,m), m) = u
+		  (second u))
+		 (t
+		  ;; Express in terms of sn:
+		  ;; dn(x) = sqrt(1-m*sn(x)^2)
+		  (power (sub 1 (mul m
+				     (power ($jacobi_sn u m) 2)))
+			 1//2))))
 	  ((zerop1 ($ratsimp (sub u (power (sub 1 m) 1//2))))
 	   ;; A&S 16.5.3
 	   ;; dn(sqrt(1-m),m) = K(m)
@@ -2686,6 +2773,27 @@ first kind:
 	  ((and $trigsign (mminusp* u))
 	   ;; ns is odd
 	   (neg (cons-exp '%jacobi_ns (neg u) m)))
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_ns)
+		  (second u))
+		 (t
+		  ;; Express in terms of sn:
+		  ;; ns(x) = 1/sn(x)
+		  (div 1 ($jacobi_sn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; ns(i*u) = 1/sn(i*u) = -i/sc(u,m1) = -i*cs(u,m1)
@@ -2784,7 +2892,28 @@ first kind:
 	  ((and $trigsign (mminusp* u))
 	   ;; nc is even
 	   (cons-exp '%jacobi_nc (neg u) m))
-	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_nc)
+		  (second u))
+		 (t
+		  ;; Express in terms of cn:
+		  ;; nc(x) = 1/cn(x)
+		  (div 1 ($jacobi_cn u m)))))
+	   ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; nc(i*u) = 1/cn(i*u) = 1/nc(u,1-m) = cn(u,1-m)
 	   (cons-exp '%jacobi_cn (coeff u '$%i 1) (add 1 (neg m))))
@@ -2893,7 +3022,28 @@ first kind:
 	  ((and $trigsign (mminusp* u))
 	   ;; nd is even
 	   (cons-exp '%jacobi_nd (neg u) m))
-	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_nd)
+		  (second u))
+		 (t
+		  ;; Express in terms of dn:
+		  ;; nd(x) = 1/dn(x)
+		  (div 1 ($jacobi_dn u m)))))
+	   ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; nd(i*u) = 1/dn(i*u) = 1/dc(u,1-m) = cd(u,1-m)
 	   (cons-exp '%jacobi_cd (coeff u '$%i 1) (add 1 (neg m))))
@@ -2999,6 +3149,28 @@ first kind:
 	  ((and $trigsign (mminusp* u))
 	   ;; sc is odd
 	   (neg (cons-exp '%jacobi_sc (neg u) m)))
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_sc)
+		  (second u))
+		 (t
+		  ;; Express in terms of sn and cn
+		  ;; sc(x) = sn(x)/cn(x)
+		  (div ($jacobi_sn u m)
+		       ($jacobi_cn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; sc(i*u) = sn(i*u)/cn(i*u) = i*sc(u,m1)/nc(u,m1) = i*sn(u,m1)
@@ -3105,6 +3277,27 @@ first kind:
 	  ((and $trigsign (mminusp* u))
 	   ;; sd is odd
 	   (neg (cons-exp '%jacobi_sd (neg u) m)))
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_sd)
+		  (second u))
+		 (t
+		  ;; Express in terms of sn and dn
+		  (div ($jacobi_sn u m)
+		       ($jacobi_dn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; sd(i*u) = sn(i*u)/dn(i*u) = i*sc(u,m1)/dc(u,m1) = i*sd(u,m1)
@@ -3241,6 +3434,27 @@ first kind:
 	  ((and $trigsign (mminusp* u))
 	   ;; cs is odd
 	   (neg (cons-exp '%jacobi_cs (neg u) m)))
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_cs)
+		  (second u))
+		 (t
+		  ;; Express in terms of cn an sn
+		  (div ($jacobi_cn u m)
+		       ($jacobi_sn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; cs(i*u) = cn(i*u)/sn(i*u) = -i*nc(u,m1)/sc(u,m1) = -i*ns(u,m1)
@@ -3353,6 +3567,27 @@ first kind:
 	  ((and $trigsign (mminusp* u))
 	   ;; cd is even
 	   (cons-exp '%jacobi_cd (neg u) m))
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_cd)
+		  (second u))
+		 (t
+		  ;; Express in terms of cn and dn
+		  (div ($jacobi_cn u m)
+		       ($jacobi_dn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; cd(i*u) = cn(i*u)/dn(i*u) = nc(u,m1)/dc(u,m1) = nd(u,m1)
@@ -3477,6 +3712,27 @@ first kind:
 	   (dbz-err1 'jacobi_ds))
 	  ((and $trigsign (mminusp* u))
 	   (neg (cons-exp '%jacobi_ds (neg u) m)))
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_ds)
+		  (second u))
+		 (t
+		  ;; Express in terms of dn and sn
+		  (div ($jacobi_dn u m)
+		       ($jacobi_sn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; ds(i*u) = dn(i*u)/sn(i*u) = -i*dc(u,m1)/sc(u,m1) = -i*ds(u,m1)
@@ -3614,6 +3870,27 @@ first kind:
 	   1)
 	  ((and $trigsign (mminusp* u))
 	   (cons-exp '%jacobi_dc (neg u) m))
+	  ((and $triginverses
+		(listp u)
+		(member (caar u) '(%inverse_jacobi_sn
+				   %inverse_jacobi_ns
+				   %inverse_jacobi_cn
+				   %inverse_jacobi_nc
+				   %inverse_jacobi_dn
+				   %inverse_jacobi_nd
+				   %inverse_jacobi_sc
+				   %inverse_jacobi_cs
+				   %inverse_jacobi_sd
+				   %inverse_jacobi_ds
+				   %inverse_jacobi_cd
+				   %inverse_jacobi_dc))
+		(alike1 (third u) m))
+	   (cond ((eq (caar u) '%inverse_jacobi_dc)
+		  (second u))
+		 (t
+		  ;; Express in terms of dn and cn
+		  (div ($jacobi_dn u m)
+		       ($jacobi_cn u m)))))
 	  ;; A&S 16.20 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   ;; dc(i*u) = dn(i*u)/cn(i*u) = dc(u,m1)/nc(u,m1) = dn(u,m1)
