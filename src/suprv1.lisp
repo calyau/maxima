@@ -194,7 +194,7 @@
 (defun checklabel (x)	; CHECKLABEL returns T iff label is not in use
   (not (or $nolabels
 	   (= $linenum 0)
-	   (boundp (intern (format nil "~a~a"x $linenum))))))
+	   (boundp ($concat '|| x $linenum)))))
 
 (defun gctimep (timep tim)
   (cond ((and (eq timep '$all) (not (zerop tim))) (princ "Totaltime= ") t)
