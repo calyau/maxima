@@ -134,24 +134,24 @@
 	 (simptimes (list '(mtimes) -1 (sdiff (laptimes (cdr fun)) parm))
 		    1
 		    t))
-	(t ((lambda (op)
-	      (cond ((eq op 'mexpt)
-		     (lapexpt (car fun) (cdr fun)))
-		    ((eq op 'mplus)
-		     (laplus ($multthru (fixuprest (cdr fun)) (car fun))))
-		    ((eq op '%sin)
-		     (lapsin (car fun) (cdr fun) nil))
-		    ((eq op '%cos)
-		     (lapsin (car fun) (cdr fun) t))
-		    ((eq op '%sinh)
-		     (lapsinh (car fun) (cdr fun) nil))
-		    ((eq op '%cosh)
-		     (lapsinh (car fun) (cdr fun) t))
-		    ((eq op '$delta)
-		     (lapdelta (car fun) (cdr fun)))
-
-		    (t (lapshift (car fun) (cdr fun)))))
-	    (caaar fun)))))
+	(t
+	 (let ((op (caaar fun)))
+	   (cond ((eq op 'mexpt)
+		  (lapexpt (car fun) (cdr fun)))
+		 ((eq op 'mplus)
+		  (laplus ($multthru (fixuprest (cdr fun)) (car fun))))
+		 ((eq op '%sin)
+		  (lapsin (car fun) (cdr fun) nil))
+		 ((eq op '%cos)
+		  (lapsin (car fun) (cdr fun) t))
+		 ((eq op '%sinh)
+		  (lapsinh (car fun) (cdr fun) nil))
+		 ((eq op '%cosh)
+		  (lapsinh (car fun) (cdr fun) t))
+		 ((eq op '$delta)
+		  (lapdelta (car fun) (cdr fun)))
+		 (t
+		  (lapshift (car fun) (cdr fun))))))))
 
 (defun lapexpt (fun rest)
        ;;;HANDLES %E**(A*T+B)*REST(T), %E**(A*T**2+B*T+C),
@@ -295,16 +295,12 @@
 				rest))))
 	 (t (lapshift fun rest))))))
 
+;;;INTEGRAL FROM A TO INFINITY OF F(X)
 (defun mydefint (f x a)
-       ;;;INTEGRAL FROM A TO INFINITY OF F(X)
-  ((lambda (tryint) (cond (tryint (car tryint))
-			  (t (list '(%integrate simp)
-				   f
-				   x
-				   a
-				   '$inf))))
-   (and (not ($unknown f))
-	(errset ($defint f x a '$inf)))))
+  (let ((tryint (and (not ($unknown f)) (errset ($defint f x a '$inf)))))
+    (if tryint
+	(car tryint)
+	(list '(%integrate simp) f x a '$inf))))
 
  ;;;CREATES UNIQUE NAMES FOR VARIABLE OF INTEGRATION
 (defun createname (head tail)
@@ -313,7 +309,8 @@
 ;;;REDUCES LAPLACE(F(T)/T**N,T,S) CASE TO LAPLACE(F(T)/T**(N-1),T,S) CASE
 (defun hackit (exponent rest)
   (cond ((equal exponent -1)
-	 ((lambda (parm) (laptimes rest)) (createname parm 1)))
+	 (let ((parm (createname parm 1)))
+	   (laptimes rest)))
 	(t (mydefint (hackit (1+ exponent) rest)
 		     (createname parm (- -1 exponent))
 		     (createname parm (- exponent))))))
@@ -334,80 +331,72 @@
 						  '(laplace))
 					  (cdr fun))))))))
 
+;;;COMPUTES %E**(W*B*%I)*F(S-W*A*%I) WHERE W=-1 IF SIGN IS T ELSE W=1
 (defun mostpart (f parm sign a b)
-       ;;;COMPUTES %E**(W*B*%I)*F(S-W*A*%I) WHERE W=-1 IF SIGN IS T ELSE W=1
-  ((lambda (substinfun)
-     (cond ((zerop1 b) substinfun)
-	   (t (list '(mtimes)
-		    (exponentiate (afixsign (list '(mtimes)
-						  b
-						  '$%i)
-					    (null sign)))
-		    substinfun))))
-   ($at f
-	(list '(mequal simp)
-	      parm
-	      (list '(mplus simp)
-		    parm
-		    (afixsign (list '(mtimes) a '$%i) sign))))))
+  (let ((substinfun ($at f
+			 (list '(mequal simp)
+			       parm
+			       (list '(mplus simp) parm (afixsign (list '(mtimes) a '$%i) sign))))))
+    (if (zerop1 b)
+	substinfun
+	(list '(mtimes)
+	      (exponentiate (afixsign (list '(mtimes) b '$%i) (null sign)))
+	      substinfun))))
 
  ;;;IF WHICHSIGN IS NIL THEN SIN TRANSFORM ELSE COS TRANSFORM
 (defun compose (fun parm whichsign a b)
-  ((lambda (result)
-     ($ratsimp (simptimes (cons '(mtimes)
-				(cond (whichsign result)
-				      (t (cons '$%i result))))
-			  1 nil)))
-   (list '((rat) 1 2)
-	 (list '(mplus)
-	       (mostpart fun parm t a b)
-	       (afixsign (mostpart fun parm nil a b)
-			 whichsign)))))
+  (let ((result (list '((rat) 1 2)
+		      (list '(mplus)
+			    (mostpart fun parm t a b)
+			    (afixsign (mostpart fun parm nil a b)
+				      whichsign)))))
+    ($ratsimp (simptimes (cons '(mtimes)
+			       (if whichsign
+				   result
+				   (cons '$%i result)))
+			 1 nil))))
 
  ;;;FUN IS OF THE FORM SIN(A*T+B)*REST(T) OR COS
 (defun lapsin (fun rest trigswitch)
-  ((lambda (ab)
-     (cond
-       (ab
-	(cond
-	  (rest (compose (laptimes rest)
-			 parm
-			 trigswitch
-			 (car ab)
-			 (cdr ab)))
-	  (t (simptimes
-	      (list
-	       '(mtimes)
-	       (cond
-		 ((zerop1 (cdr ab))
-		  (cond (trigswitch parm) (t (car ab))))
-		 (t (cond (trigswitch (list '(mplus)
-					    (list '(mtimes)
-						  parm
-						  (list '(%cos)
-							(cdr ab)))
-					    (list '(mtimes)
-						  -1
-						  (car ab)
-						  (list '(%sin)
-							(cdr ab)))))
-			  (t (list '(mplus)
-				   (list '(mtimes)
-					 parm
-					 (list '(%sin)
-					       (cdr ab)))
-				   (list '(mtimes)
-					 (car ab)
-					 (list '(%cos)
-					       (cdr ab))))))))
-	       (list '(mexpt)
-		     (list '(mplus)
-			   (list '(mexpt) parm 2)
-			   (list '(mexpt) (car ab) 2))
-		     -1))
-	      1 nil))))
-       (t (lapshift fun rest))))
-   (islinear (cadr fun) var)))
+  (let ((ab (islinear (cadr fun) var)))
+    (cond (ab
+	   (cond (rest
+		  (compose (laptimes rest)
+			   parm
+			   trigswitch
+			   (car ab)
+			   (cdr ab)))
+		 (t
+		  (simptimes
+		   (list '(mtimes)
+		    (cond ((zerop1 (cdr ab))
+			   (if trigswitch parm (car ab)))
+			  (t
+			   (cond (trigswitch
+				  (list '(mplus)
+					(list '(mtimes)
+					      parm
+					      (list '(%cos) (cdr ab)))
+					(list '(mtimes)
+					      -1
+					      (car ab)
+					      (list '(%sin) (cdr ab)))))
+				 (t
+				  (list '(mplus)
+					(list '(mtimes)
+					      parm
+					      (list '(%sin) (cdr ab)))
+					(list '(mtimes)
+					      (car ab)
+					      (list '(%cos) (cdr ab))))))))
+		    (list '(mexpt)
+			  (list '(mplus)
+				(list '(mexpt) parm 2)
+				(list '(mexpt) (car ab) 2))
+			  -1))
+		   1 nil))))
+	  (t
+	   (lapshift fun rest)))))
 
  ;;;FUN IS OF THE FORM SINH(A*T+B)*REST(T) OR IS COSH
 (defun lapsinh (fun rest switch)
@@ -436,74 +425,64 @@
 
  ;;;FUN IS OF THE FORM LOG(A*T)
 (defun laplog (fun)
-  ((lambda (ab)
-     (cond ((and ab (zerop1 (cdr ab)))
-	    (simptimes (list '(mtimes)
-			     (list '(mplus)
-				   (subfunmake '$psi '(0) (ncons 1))
-				   (list '(%log) (car ab))
-				   (list '(mtimes)
-					 -1
-					 (list '(%log) parm)))
-			     (list '(mexpt) parm -1))
-		       1 nil))
-	   (t (lapdefint fun))))
-   (islinear (cadr fun) var)))
+  (let ((ab (islinear (cadr fun) var)))
+    (cond ((and ab (zerop1 (cdr ab)))
+	   (simptimes (list '(mtimes)
+			    (list '(mplus)
+				  (subfunmake '$psi '(0) (ncons 1))
+				  (list '(%log) (car ab))
+				  (list '(mtimes) -1 (list '(%log) parm)))
+			    (list '(mexpt) parm -1))
+		      1 nil))
+	  (t
+	   (lapdefint fun)))))
 
 (defun raiseup (fbase exponent)
-  (cond ((equal exponent 1) fbase)
-	(t (list '(mexpt) fbase exponent))))
+  (if (equal exponent 1)
+      fbase
+      (list '(mexpt) fbase exponent)))
 
+;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
 (defun lapdelta (fun rest)
-  ;;TAKES TRANSFORM OF DELTA(A*T+B)*F(T)
-  ((lambda (ab sign recipa)
-     (cond
-       (ab
-	(setq recipa (power (car ab) -1) ab (div (cdr ab) (car ab)))
-	(setq sign (asksign ab) recipa (simplifya (list '(mabs) recipa) nil))
-	(simplifya (cond ((eq sign '$positive) 0)
-			 ((eq sign '$zero)
-			  (list '(mtimes)
-				(maxima-substitute 0 var (fixuprest rest))
-				recipa))
-			 (t (list '(mtimes)
-				  (maxima-substitute (neg ab)
-						     var
-						     (fixuprest rest))
-				  (list '(mexpt)
-					'$%e
-					(cons '(mtimes)
-					      (cons parm (ncons ab))))
-				  recipa)))
-		   nil))
-       (t (lapshift fun rest))))
-   (islinear (cadr fun) var) nil nil))
+  (let ((ab (islinear (cadr fun) var))
+	(sign nil)
+	(recipa nil))
+    (cond (ab
+	   (setq recipa (power (car ab) -1) ab (div (cdr ab) (car ab)))
+	   (setq sign (asksign ab) recipa (simplifya (list '(mabs) recipa) nil))
+	   (simplifya (cond ((eq sign '$positive)
+			     0)
+			    ((eq sign '$zero)
+			     (list '(mtimes)
+				   (maxima-substitute 0 var (fixuprest rest))
+				   recipa))
+			    (t
+			     (list '(mtimes)
+				   (maxima-substitute (neg ab) var (fixuprest rest))
+				   (list '(mexpt) '$%e (cons '(mtimes) (cons parm (ncons ab))))
+				   recipa)))
+		      nil))
+	  (t
+	   (lapshift fun rest)))))
 
 (defun laperf (fun)
-  ((lambda (ab)
-     (cond ((and ab (equal (cdr ab) 0))
-	(simptimes (list '(mtimes)
-			 (div* (exponentiate (div* (list '(mexpt)
-							 parm
-							 2)
-						   (list '(mtimes)
-							 4
-							 (list '(mexpt)
-							       (car ab)
-							       2))))
-			       parm)
-			 (list '(mplus)
-			       1
-			       (list '(mtimes)
-				     -1
-				     (list '(%erf)
-					   (div* parm
-						 (list '(mtimes)
-						       2
-						       (car ab))))
-				     ))) 1 nil))
-       (t (lapdefint fun))))
-   (islinear (cadr fun) var)))
+  (let ((ab (islinear (cadr fun) var)))
+    (cond ((and ab (equal (cdr ab) 0))
+	   (simptimes (list '(mtimes)
+			    (div* (exponentiate (div* (list '(mexpt) parm 2)
+						      (list '(mtimes)
+							    4
+							    (list '(mexpt) (car ab) 2))))
+				  parm)
+			    (list '(mplus)
+				  1
+				  (list '(mtimes)
+					-1
+					(list '(%erf) (div* parm (list '(mtimes) 2 (car ab)))))))
+		      1
+		      nil))
+	  (t
+	   (lapdefint fun)))))
 
 (defun lapdefint (fun)
   (prog (tryint mult)

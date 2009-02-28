@@ -163,20 +163,20 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 (list '|0| '|.| '|0| '|b| '|0|))
 	(t ;; L IS ALWAYS POSITIVE FP NUMBER
 	 (let ((extradigs (floor (1+ (quotient (integer-length (caddr l)) #.(/ (log 10.0) (log 2.0))))))
-	       (*m 1) (*cancelled 0))
+	       (*m 1)
+	       (*cancelled 0))
 	   (setq l
-		 ((lambda (*decfp fpprec of l expon)
-		    (setq expon (- (cadr l) of))
-		    (setq l (if (minusp expon)
-				(fpquotient (intofp (car l)) (fpintexpt 2 (- expon) of))
-				(fptimes* (intofp (car l)) (fpintexpt 2 expon of))))
-		    (incf fpprec (- extradigs))
-		    (list (fpround (car l)) (+ (- extradigs) *m (cadr l))))
-		  t
-		  (+ extradigs (decimalsin (- (caddar l) 2)))
-		  (caddar l)
-		  (cdr l)
-		  nil)))
+		 (let ((*decfp t)
+		       (fpprec (+ extradigs (decimalsin (- (caddar l) 2))))
+		       (of (caddar l))
+		       (l (cdr l))
+		       (expon nil))
+		   (setq expon (- (cadr l) of))
+		   (setq l (if (minusp expon)
+			       (fpquotient (intofp (car l)) (fpintexpt 2 (- expon) of))
+			       (fptimes* (intofp (car l)) (fpintexpt 2 expon of))))
+		   (incf fpprec (- extradigs))
+		   (list (fpround (car l)) (+ (- extradigs) *m (cadr l))))))
 	 (let ((*print-base* 10.)
 	       *print-radix*
 	       (l1 nil))
@@ -231,49 +231,52 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 (defun bigfloat2rat (x)
   (setq x (bigfloatp x))
-  ((lambda ($float2bf exp y sign)
-     (setq exp (cond ((minusp (cadr x))
-		      (setq sign t y (fpration1 (cons (car x) (fpabs (cdr x)))))
-		      (rplaca y (* -1 (car y))))
-		     (t (fpration1 x))))
-     (cond ($ratprint (princ "`rat' replaced ")
-		      (when sign (princ "-"))
-		      (princ (maknam (fpformat (cons (car x) (fpabs (cdr x))))))
-		      (princ " by ")
-		      (princ (car exp))
-		      (write-char #\/)
-		      (princ (cdr exp))
-		      (princ " = ")
-		      (setq x ($bfloat (list '(rat simp) (car exp) (cdr exp))))
-		      (when sign (princ "-"))
-		      (princ (maknam (fpformat (cons (car x) (fpabs (cdr x))))))
-		      (terpri)))
-     exp)
-   t nil nil nil))
+  (let (($float2bf t)
+	(exp nil)
+	(y nil)
+	(sign nil))
+    (setq exp (cond ((minusp (cadr x))
+		     (setq sign t
+			   y (fpration1 (cons (car x) (fpabs (cdr x)))))
+		     (rplaca y (* -1 (car y))))
+		    (t (fpration1 x))))
+    (when $ratprint
+      (princ "`rat' replaced ")
+      (when sign (princ "-"))
+      (princ (maknam (fpformat (cons (car x) (fpabs (cdr x))))))
+      (princ " by ")
+      (princ (car exp))
+      (write-char #\/)
+      (princ (cdr exp))
+      (princ " = ")
+      (setq x ($bfloat (list '(rat simp) (car exp) (cdr exp))))
+      (when sign (princ "-"))
+      (princ (maknam (fpformat (cons (car x) (fpabs (cdr x))))))
+      (terpri))
+    exp))
 
 (defun fpration1 (x)
-  ((lambda (fprateps)
-     (or (and (equal x bigfloatzero) (cons 0 1))
-	 (prog (y a)
-	    (return (do ((xx x (setq y (invertbigfloat
-					(bcons (fpdifference (cdr xx) (cdr ($bfloat a)))))))
-			 (num (setq a (fpentier x))
-			      (+ (* (setq a (fpentier y)) num) onum))
-			 (den 1 (+ (* a den) oden))
-			 (onum 1 num)
-			 (oden 0 den))
-			((and (not (zerop den))
-			      (not (fpgreaterp
-				    (fpabs (fpquotient
-					    (fpdifference (cdr x)
-							  (fpquotient (cdr ($bfloat num))
-								      (cdr ($bfloat den))))
-					    (cdr x)))
-				    fprateps)))
-			 (cons num den)))))))
-   (cdr ($bfloat (if $bftorat
-		     (list '(rat simp) 1 (exptrl 2 (1- fpprec)))
-		     $ratepsilon)))))
+  (let ((fprateps (cdr ($bfloat (if $bftorat
+				    (list '(rat simp) 1 (exptrl 2 (1- fpprec)))
+				    $ratepsilon)))))
+    (or (and (equal x bigfloatzero) (cons 0 1))
+	(prog (y a)
+	   (return (do ((xx x (setq y (invertbigfloat
+				       (bcons (fpdifference (cdr xx) (cdr ($bfloat a)))))))
+			(num (setq a (fpentier x))
+			     (+ (* (setq a (fpentier y)) num) onum))
+			(den 1 (+ (* a den) oden))
+			(onum 1 num)
+			(oden 0 den))
+		       ((and (not (zerop den))
+			     (not (fpgreaterp
+				   (fpabs (fpquotient
+					   (fpdifference (cdr x)
+							 (fpquotient (cdr ($bfloat num))
+								     (cdr ($bfloat den))))
+					   (cdr x)))
+				   fprateps)))
+			(cons num den))))))))
 
 (defun float-nan-p (x)
   (and (floatp x) (not (= x x))))
@@ -629,16 +632,18 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; r = floor(x).
 (defun fpexp (x)
   (prog (r s)
-     (if (not (signp ge (car x)))
-	 (return (fpquotient (fpone) (fpexp (fpabs x)))))
+     (unless (signp ge (car x))
+       (return (fpquotient (fpone) (fpexp (fpabs x)))))
      (setq r (fpintpart x))
-     (return (cond ((< r 2) (fpexp1 x))
-		   (t (setq s (fpexp1 (fpdifference x (intofp r))))
-		      (fptimes* s
-				(cdr (bigfloatp
-				      ((lambda (fpprec r) (bcons (fpexpt (fpe) r))) ; patch for full precision %E
-				       (+ fpprec (integer-length r) -1)
-				       r)))))))))
+     (return (cond ((< r 2)
+		    (fpexp1 x))
+		   (t
+		    (setq s (fpexp1 (fpdifference x (intofp r))))
+		    (fptimes* s
+			      (cdr (bigfloatp
+				    (let ((fpprec (+ fpprec (integer-length r) -1))
+					  (r r))
+				      (bcons (fpexpt (fpe) r))))))))))) ; patch for full precision %E
 
 ;; exp(x) for small x, using Taylor series.
 (defun fpexp1 (x)
@@ -722,26 +727,26 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defun fpe1 nil
   (bcons (list (fpround (compe (+ fpprec 12))) (+ -12 *m))))
 ;;
-;; compe is the bignum part of the bfloat(%e) computation  
+;; compe is the bignum part of the bfloat(%e) computation
 ;; (compe N)/(2.0^N) is an approximation to E
 ;; The algorithm is based on the series
 ;;
 ;; %e = sum( 1/i! ,i,0,inf )
-;; 
+;;
 ;; but sums up 1001 terms to one.
-;; 
+;;
 (defun compe (prec)
   (let (s h (n 1) d (k 1001))
      (setq h (ash 1 prec))
      (setq s h)
      (do ((i k (+ i k)))
-              ((zerop h))
+	      ((zerop h))
        (setq d (do ((j 1 (1+ j)) (p i))
-                   ((> j (1- k)) (* p n))
-                 (setq p (* p (- i j)))) )
+		   ((> j (1- k)) (* p n))
+		 (setq p (* p (- i j)))) )
        (setq n (do ((j (- k 2) (1- j)) (p 1))
-                   ((< j 0) p)  
-                 (setq p (1+ (* p (- i j))))) )
+		   ((< j 0) p)
+		 (setq p (1+ (* p (- i j))))) )
        (setq h (*quo (* h n) d))
        (setq s (+ s h)))
      s))
@@ -753,33 +758,33 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; fppi1 is the bigfloat part of the bfloat(%pi) computation
 ;;
 (defun fppi1 nil
-  (bcons 
-    (fpquotient 
+  (bcons
+    (fpquotient
       (fprt18231_)
       (list (fpround (comppi (+ fpprec 12))) (+ -12 *m)) )))
 ;;
-;; comppi is the bignum part of the bfloat(%pi) computation  
+;; comppi is the bignum part of the bfloat(%pi) computation
 ;; (comppi N)/(2.0^N) is an approximation to 640320^(3/2)/12 * 1/PI
 ;;
 ;; Chudnovsky & Chudnovsky (1987):
 ;;
-;; 640320^(3/2) / (12 * %pi) = 
+;; 640320^(3/2) / (12 * %pi) =
 ;;
 ;; sum( (-1)^i*(6*i)!*(545140134*i+13591409) / (i!^3*(3*i)!*640320^(3*i)) ,i,0,inf )
-;; 
+;;
 (defun comppi (prec)
-  (let (s h n d)     
+  (let (s h n d)
      (setq s (ash 13591409 prec))
      (setq h (neg (*quo (ash 67047785160 prec) 262537412640768000)))
      (setq s (+ s h))
      (do ((i 2 (1+ i)))
-         ((zerop h))
+	 ((zerop h))
        (setq n (* 12 (- (* 6 i) 5) (- (* 6 i) 4) (- (* 2 i) 1) (- (* 6 i) 1) (+ (* i 545140134) 13591409) ))
        (setq d (* (- (* 3 i) 2) (expt i 3) (- (* i 545140134) 531548725) 262537412640768000))
        (setq h (neg (*quo (* h n) d)))
        (setq s (+ s h)))
      s ))
-;;     
+;;
 ;; fprt18231_ computes sqrt(640320^3/12^2)
 ;;                   = sqrt(1823176476672000) = 42698670.666333...
 ;;
@@ -796,11 +801,11 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; quadratic Heron algorithm: x[0] = ----,                          , sqrt(a) = ------
 ;;                                   d[0]   d[i+1] = 2*n[i]*d[i]                d[inf]
 #+gcl
-(defun fprt18231_ ()  
+(defun fprt18231_ ()
   (let ((a 1823176476672000)
-        (n 42698670666)
-        (d 1000)
-	h )    
+	(n 42698670666)
+	(d 1000)
+	h )
     (do ((prec 32 (* 2 prec)))
 	((> prec fpprec))
       (setq h n)
@@ -999,8 +1004,9 @@ One extra decimal digit in actual representation for rounding purposes.")
 	((and (< (cadr p) 0) (ratnump n))
 	 ($bfloat
 	  ($expand (list '(mtimes)
-			 ($bfloat ((lambda ($domain $m1pbranch) (power -1 n))
-				   '$complex t))
+			 ($bfloat (let (($domain '$complex)
+					($m1pbranch t))
+				    (power -1 n)))
 			 (exptbigfloat (bcons (fpminus (cdr p))) n)))))
 	((and (< (cadr p) 0) (not (integerp n)))
 	 (cond ((or (equal n 0.5) (equal n bfhalf))
@@ -1024,16 +1030,13 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 (cond
 	   ((not ($bfloatp n)) (list '(mexpt) p n))
 	   (t
-	    ((lambda (extrabits)
-	       (setq p
-		     ((lambda (fpprec)
-			(fpexp (fptimes* (cdr (bigfloatp n)) (fplog (cdr (bigfloatp p))))))
-		      (+ extrabits fpprec)))
-	       (setq p (list (fpround (car p))
-			     (+ (- extrabits) *m (cadr p))))
-	       (bcons p))
-	     (max 1 (+ (caddr n) (integer-length (caddr p))))))))
-					; The number of extra bits required
+	    (let ((extrabits (max 1 (+ (caddr n) (integer-length (caddr p))))))
+	      (setq p
+		    (let ((fpprec (+ extrabits fpprec)))
+		      (fpexp (fptimes* (cdr (bigfloatp n)) (fplog (cdr (bigfloatp p)))))))
+	      (setq p (list (fpround (car p)) (+ (- extrabits) *m (cadr p))))
+	      (bcons p)))))
+	;; The number of extra bits required
 	((< n 0) (invertbigfloat (exptbigfloat p (- n))))
 	(t (bcons (fpexpt (cdr p) n)))))
 
@@ -1142,35 +1145,35 @@ One extra decimal digit in actual representation for rounding purposes.")
      (return
        (cdr
 	(bigfloatp
-	 ((lambda (fpprec xt *cancelled oldprec)
-	    (prog (x)
-	     loop (setq x (cdr (bigfloatp xt)))
-	     (setq piby2 (fpquotient (fppi) (intofp 2)))
-	     (setq r (fpintpart (fpquotient x piby2)))
-	     (setq x (fpplus x (fptimes* (intofp (- r)) piby2)))
-	     (setq k *cancelled)
-	     (fpplus x (fpminus piby2))
-	     (setq *cancelled (max k *cancelled))
-	     (when *fpsincheck*
-	       (print `(*canc= ,*cancelled fpprec= ,fpprec oldprec= ,oldprec)))
-	     (cond ((not (> oldprec (- fpprec *cancelled)))
-		    (setq r (rem r 4))
-		    (setq res
-			  (cond (fl (cond ((= r 0) (fpsin1 x))
-					  ((= r 1) (fpcos1 x))
-					  ((= r 2) (fpminus (fpsin1 x)))
-					  ((= r 3) (fpminus (fpcos1 x)))))
-				(t (cond ((= r 0) (fpcos1 x))
-					 ((= r 1) (fpminus (fpsin1 x)))
-					 ((= r 2) (fpminus (fpcos1 x)))
-					 ((= r 3) (fpsin1 x))))))
-		    (return (bcons (if sign res (fpminus res)))))
-		   (t (incf fpprec *cancelled)
-		      (go loop)))))
-	  (max fpprec (+ fpprec (cadr x)))
-	  (bcons x)
-	  0
-	  fpprec))))))
+	 (let ((fpprec (max fpprec (+ fpprec (cadr x))))
+	       (xt (bcons x))
+	       (*cancelled 0)
+	       (oldprec fpprec))
+	   (prog (x)
+	    loop (setq x (cdr (bigfloatp xt)))
+	    (setq piby2 (fpquotient (fppi) (intofp 2)))
+	    (setq r (fpintpart (fpquotient x piby2)))
+	    (setq x (fpplus x (fptimes* (intofp (- r)) piby2)))
+	    (setq k *cancelled)
+	    (fpplus x (fpminus piby2))
+	    (setq *cancelled (max k *cancelled))
+	    (when *fpsincheck*
+	      (print `(*canc= ,*cancelled fpprec= ,fpprec oldprec= ,oldprec)))
+	    (cond ((not (> oldprec (- fpprec *cancelled)))
+		   (setq r (rem r 4))
+		   (setq res
+			 (cond (fl (cond ((= r 0) (fpsin1 x))
+					 ((= r 1) (fpcos1 x))
+					 ((= r 2) (fpminus (fpsin1 x)))
+					 ((= r 3) (fpminus (fpcos1 x)))))
+			       (t (cond ((= r 0) (fpcos1 x))
+					((= r 1) (fpminus (fpsin1 x)))
+					((= r 2) (fpminus (fpcos1 x)))
+					((= r 3) (fpsin1 x))))))
+		   (return (bcons (if sign res (fpminus res)))))
+		  (t
+		   (incf fpprec *cancelled)
+		     (go loop))))))))))
 
 (defun fpcos1 (x)
   (fpsincos1 x nil))
@@ -1210,25 +1213,24 @@ One extra decimal digit in actual representation for rounding purposes.")
 		 (* (car f) (expt 2 (- m)))))))
 
 (defun logbigfloat (a)
-  ((lambda (minus)
-     (setq a ((lambda (fpprec)
-		(cond (($bfloatp (car a))
-		       (setq a ($bfloat (car a)))
-		       (cond ((zerop (cadr a)) (merror "log(0.0b0) has been generated"))
-			     ((minusp (cadr a))
-			      (setq minus t) (fplog (list (- (cadr a)) (caddr a))))
-			     (t (fplog (cdr a)))))
-		      (t (list '(%log) (car a)))))
-	      (+ 2 fpprec)))
-     (when (numberp (car a))
-       (setq a (if (zerop (car a))
-		   (list 0 0)
-		   (list (fpround (car a)) (+ -2 *m (cadr a)))))
-       (setq a (bcons a)))
-     (if minus
-	 (add a (mul '$%i ($bfloat '$%pi)))
-	 a))
-   nil))
+  (let ((minus nil))
+    (setq a (let ((fpprec (+ 2 fpprec)))
+	      (cond (($bfloatp (car a))
+		     (setq a ($bfloat (car a)))
+		     (cond ((zerop (cadr a)) (merror "log(0.0b0) has been generated"))
+			   ((minusp (cadr a))
+			    (setq minus t) (fplog (list (- (cadr a)) (caddr a))))
+			   (t (fplog (cdr a)))))
+		    (t
+		     (list '(%log) (car a))))))
+    (when (numberp (car a))
+      (setq a (if (zerop (car a))
+		  (list 0 0)
+		  (list (fpround (car a)) (+ -2 *m (cadr a)))))
+      (setq a (bcons a)))
+    (if minus
+	(add a (mul '$%i ($bfloat '$%pi)))
+	a)))
 
 ;;; Computes the log of a bigfloat number.
 ;;;
