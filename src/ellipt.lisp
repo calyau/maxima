@@ -1057,6 +1057,12 @@
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/4+asin(x)/2))
 	   (take '($elliptic_f) (take '(%asin) u) 1))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_sn))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_sn(sn(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sn) u m) form)))))
@@ -1088,6 +1094,12 @@
 	   `((%elliptic_kc) ,m))
 	  ((onep1 u)
 	   0)
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_cn))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_cn(cn(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cn) u m) form)))))
@@ -1136,6 +1148,12 @@
 	   ;; jacobi_dn(K(m),m) = sqrt(1-m) so
 	   ;; inverse_jacobi_dn(sqrt(1-m),m) = K(m)
 	   ($elliptic_kc m))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_dn))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_dn(dn(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dn) u m) form)))))
@@ -4002,6 +4020,12 @@ first kind:
 	   `((%elliptic_kc) ,m))
 	  ((alike1 u -1)
 	   (neg `((%elliptic_kc) ,m)))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_ns))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_ns(ns(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_ns) u m) form)))))
@@ -4048,6 +4072,12 @@ first kind:
 	   0)
 	  ((alike1 u -1)
 	   `((mtimes) 2 ((%elliptic_kc) ,m)))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_nc))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_nc(nc(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_nc) u m) form)))))
@@ -4094,6 +4124,12 @@ first kind:
 	   ;; jacobi_nd(1/sqrt(1-m),m) = K(m).  This follows from
 	   ;; jacobi_dn(sqrt(1-m),m) = K(m).
 	   ($elliptic_kc m))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_nd))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_nd(nd(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_nd) u m) form)))))
@@ -4144,6 +4180,12 @@ first kind:
 	  ((zerop1 u)
 	   ;; jacobi_sc(0,m) = 0
 	   0)
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_sc))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_sc(sc(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sc) u m) form)))))
@@ -4202,6 +4244,12 @@ first kind:
 	   ;; inverse_jacobi_sn(x/sqrt(1+m*x^2), m).  So
 	   ;; inverse_jacobi_sd(1/sqrt(1-m),m) = inverse_jacobi_sn(1,m)
 	   ($elliptic_kc m))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_sd))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_sd(sd(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_sd) u m) form)))))
@@ -4295,6 +4343,12 @@ first kind:
 	   0)
 	  ((zerop1 u)
 	   `((%elliptic_kc) ,m))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_cd))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_cd(cd(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_cd) u m) form)))))
@@ -4344,6 +4398,12 @@ first kind:
 	   ;; inverse_jacobi_sd(1/sqrt(1-m),m).  And we know from
 	   ;; above that this is elliptic_kc(m)
 	   ($elliptic_kc m))
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_ds))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_ds(ds(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_ds) u m) form)))))
@@ -4387,6 +4447,12 @@ first kind:
 	   ($inverse_jacobi_cd (div 1 u) m))
 	  ((onep1 u)
 	   0)
+	  ((and (eq $triginverses '$all)
+		(listp u)
+		(member (caar u) '(%jacobi_dc))
+		(alike1 (third u) m))
+	   ;; inverse_jacobi_dc(dc(u)) = u
+	   (second u))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '(%inverse_jacobi_dc) u m) form)))))
