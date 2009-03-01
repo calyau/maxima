@@ -2534,6 +2534,7 @@ It appears in LIMIT and DEFINT.......")
 		       (log-form `((%log) ,arg))
 		       ((rp . ip) (if (or (and (mnump arglim)
 					       (ratgreaterp arglim 0))
+					  (eq arglim '$zeroa)
 					  (eq arglim '$inf))	; if limit is real pos
 				      (cons arglim 0)		; avoid asking user q's
 				    (trisplit log-form))))	; otherwise find real part
