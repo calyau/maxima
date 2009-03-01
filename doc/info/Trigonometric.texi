@@ -541,7 +541,7 @@ will take place only if @code{trigexpandtimes} is @code{true}.
 @end defvr
 
 @defvr {Option variable} triginverses
-Default value: @code{all}
+Default value: @code{true}
 
 @code{triginverses} controls the simplification of the
 composition of trigonometric and hyperbolic functions with their inverse
