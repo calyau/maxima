@@ -232,6 +232,7 @@
 (defpackage :intl
   (:use :common-lisp)
   (:export #:setlocale #:textdomain #:gettext #:dgettext
-           #:*translatable-dump-stream* #:load-domain))
+           #:*translatable-dump-stream* #:*locale*
+	   #:*locale-directories*))
 
 (provide :maxima)

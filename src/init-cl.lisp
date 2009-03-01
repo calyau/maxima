@@ -209,15 +209,6 @@ When one changes, the other does too."
 		  "/tmp")))
     (maxima-parse-dirstring base-dir)))
 
-(defun set-locale ()
-  (setq intl::*locale*
-        (or
-         (let ((x (maxima-getenv "LANGUAGE"))) (if (and x (not (equal x ""))) x))
-	 (let ((x (maxima-getenv "LC_ALL"))) (if (and x (not (equal x ""))) x))
-	 (let ((x (maxima-getenv "LC_MESSAGES"))) (if (and x (not (equal x ""))) x))
-	 (let ((x (maxima-getenv "LANG"))) (if (and x (not (equal x ""))) x))
-	 "C")))
-
 (defun set-locale-subdir ()
   (let (language territory codeset)
     ;; Determine *maxima-lang-subdir*
@@ -668,13 +659,13 @@ When one changes, the other does too."
 
     (catch 'to-lisp
       (initialize-real-and-run-time)
-      (set-locale)
+      (intl::setlocale)
       (set-locale-subdir)
       (adjust-character-encoding)
       (set-pathnames)
-      (when (and intl::*locale* (boundp '*maxima-prefix*))
-	(intl::load-domain "maxima" intl::*locale*
-			  (concatenate 'string *maxima-prefix* "/share/locale/")))
+      (when (boundp '*maxima-prefix*)
+	(push (pathname (concatenate 'string *maxima-prefix* "/share/locale/"))
+	      intl::*locale-directories*))
       (setf (values input-stream batch-flag)
 	    (process-maxima-args input-stream batch-flag))
       (loop

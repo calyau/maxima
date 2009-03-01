@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.5 $
+;;; $Revision: 1.6 $
 ;;; Copyright © 1999 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
@@ -23,20 +23,14 @@
 ;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 ;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ;;; DAMAGE.
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.5 2009-03-01 17:53:54 andrejv Exp $")
+#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.6 2009-03-01 17:56:32 andrejv Exp $")
 
-(defpackage "INTL"
-  (:use "COMMON-LISP")
-  (:export "SETLOCALE" "TEXTDOMAIN" "GETTEXT" "DGETTEXT"
-           "*TRANSLATABLE-DUMP-STREAM*" "READ-TRANSLATABLE-STRING"
-	   "*LOCALE-DIRECTORIES*"))
-
-(in-package "INTL")
+(in-package :intl)
 
 (defvar *locale-directories* '(#p"/usr/share/locale/"))
 (defvar *locale* "C")
 
-(defvar *default-domain* "you need to set this")
+(defvar *default-domain* "maxima")
 (defvar *loaded-domains* (make-hash-table :test #'equal))
 (defvar *locale-aliases* (make-hash-table :test #'equal))
 (defvar *locale-encoding* (make-hash-table :test #'equal))
