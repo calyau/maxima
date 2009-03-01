@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.6 $
-;;; Copyright © 1999 Paul Foley (mycroft@actrix.gen.nz)
+;;; $Revision: 1.7 $
+;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
 ;;; a copy of this Software to deal in the Software without restriction,
@@ -23,7 +23,7 @@
 ;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 ;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ;;; DAMAGE.
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.6 2009-03-01 17:56:32 andrejv Exp $")
+#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.7 2009-03-01 22:43:30 rtoy Exp $")
 
 (in-package :intl)
 
