@@ -33,6 +33,37 @@
 ;;; Note that m = k^2 and k = sin(alpha).
 ;;;
 
+;; Setup noun/verb for elliptic functions
+
+(macrolet
+    ((frob (root)
+       (let* ((s (string root))
+	      (forward (concatenate 'string (string 'jacobi_) s))
+	      (f-noun (intern (concatenate 'string "%" forward)))
+	      (f-verb (intern (concatenate 'string "$" forward)))
+	      (inverse (concatenate 'string (string 'inverse_jacobi_) s))
+	      (i-noun (intern (concatenate 'string "%" inverse)))
+	      (i-verb (intern (concatenate 'string "$" inverse))))
+	 `(progn
+	    (defprop ,f-verb ,f-noun verb)
+	    (defprop ,f-noun ,f-verb noun)
+	    (defprop ,f-noun ,f-verb reversealias)
+	    (defprop ,i-verb ,i-noun verb)
+	    (defprop ,i-noun ,i-verb noun)
+	    (defprop ,i-noun ,i-verb reversealias)))))
+  (frob sn)
+  (frob cn)
+  (frob dn)
+  (frob ns)
+  (frob nc)
+  (frob nd)
+  (frob sc)
+  (frob cs)
+  (frob sd)
+  (frob ds)
+  (frob cd)
+  (frob dc))
+
 ;;
 ;; Routines for computing the basic elliptic functions sn, cn, and dn.
 ;;
