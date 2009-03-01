@@ -1,12 +1,11 @@
-TRANSLATIONS =
+TRANSLATIONS = es
 
 localedir = $(datadir)/locale
 
-install-data-local:
-	echo "No translations"
+install-data-local: install-maxima-catalogs
 
 install-maxima-catalogs:
-	for i in $(TRANSLATIONS) ; do \
+	@for i in $(TRANSLATIONS) ; do \
 		$(mkinstalldirs) $(DESTDIR)$(localedir)/$$i/LC_MESSAGES ; \
 		$(INSTALL_DATA) $$i.mo $(DESTDIR)$(localedir)/$$i/LC_MESSAGES/maxima.mo ; \
 	done
@@ -39,5 +38,7 @@ allmo:
 force-update:
 	$(RM) maxima.pot
 
-all:
-	echo "No translations"
+all: allmo
+
+EXTRA_DIST = es.po es.mo
+
