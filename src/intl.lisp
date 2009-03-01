@@ -1,78 +1,97 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.4 $
-;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
+;;; $Revision: 1.5 $
+;;; Copyright © 1999 Paul Foley (mycroft@actrix.gen.nz)
+;;;
+;;; Permission is hereby granted, free of charge, to any person obtaining
+;;; a copy of this Software to deal in the Software without restriction,
+;;; including without limitation the rights to use, copy, modify, merge,
+;;; publish, distribute, sublicense, and/or sell copies of the Software,
+;;; and to permit persons to whom the Software is furnished to do so,
+;;; provided that the above copyright notice and this permission notice
+;;; are included in all copies or substantial portions of the Software.
+;;;
+;;; THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+;;; OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+;;; WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+;;; ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE
+;;; LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+;;; CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+;;; OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+;;; BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+;;; LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+;;; DAMAGE.
+#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.5 2009-03-01 17:53:54 andrejv Exp $")
 
-;;; Released under terms of the GNU General Public License, version 2 or later,
-;;; by permission of Paul Foley to Robert Dodier as shown in this message:
-
-#|
-On Sat, Feb 7, 2009 at 7:57 AM, <robert.dodier@gmail.com> wrote:
-
-    Hello Paul,
-
-    I have found your program intl.lisp at:
-    http://users.actrix.co.nz/mycroft/intl.lisp
-
-    I am considering incorporating intl.lisp into another
-    program (namely Maxima). As it stands, the license for
-    intl.lisp as stated in the file itself might already allow that.
-    However, since Maxima as a whole is licensed under terms
-    of the GNU General Public License,
-    I would like to ask you if I can license intl.lisp under terms of
-    the GNU General Public License, version 2 or later.
-
-
-Sure; no problem at all!
-|#
-
-#+CMU
-(ext:file-comment
- "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.4 2009-02-11 06:21:35 are_muc Exp $")
+(defpackage "INTL"
+  (:use "COMMON-LISP")
+  (:export "SETLOCALE" "TEXTDOMAIN" "GETTEXT" "DGETTEXT"
+           "*TRANSLATABLE-DUMP-STREAM*" "READ-TRANSLATABLE-STRING"
+	   "*LOCALE-DIRECTORIES*"))
 
 (in-package "INTL")
 
-(defvar *locale-directory* "/usr/share/locale/")
+(defvar *locale-directories* '(#p"/usr/share/locale/"))
 (defvar *locale* "C")
 
-(defvar *default-domain* "maxima")
+(defvar *default-domain* "you need to set this")
 (defvar *loaded-domains* (make-hash-table :test #'equal))
 (defvar *locale-aliases* (make-hash-table :test #'equal))
+(defvar *locale-encoding* (make-hash-table :test #'equal))
 
 (defstruct domain-entry
   (domain "" :type simple-base-string)
   (locale "" :type simple-base-string)
   (file #p"" :type pathname)
-  (hash (make-hash-table :test #'equal) :type hash-table))
+  (hash (make-hash-table :test #'equal) :type hash-table)
+  (encoding nil))
 
 (declaim (inline read-lelong)
 	 (ftype (function (stream) (unsigned-byte 32)) read-lelong))
 (defun read-lelong (stream)
   (declare (optimize (speed 3) (space 2) (safety 0) (debug 0)))
-  (let ((a (read-char stream))
-	(b (read-char stream))
-	(c (read-char stream))
-	(d (read-char stream)))
-    (+ (ash (char-code d) 24) (ash (char-code c) 16) (ash (char-code b) 8)
-       (char-code a))))
+  (+ (the (unsigned-byte 8) (read-byte stream))
+     (ash (the (unsigned-byte 8) (read-byte stream)) 8)
+     (ash (the (unsigned-byte 8) (read-byte stream)) 16)
+     (ash (the (unsigned-byte 8) (read-byte stream)) 24)))
 
 (defun locate-domain-file (domain locale locale-dir)
-  (flet ((path (locale)
+  (flet ((path (locale base)
 	   (merge-pathnames (make-pathname :directory (list :relative locale
 							    "LC_MESSAGES")
 					   :name domain :type "mo")
-			    locale-dir)))
+			    base)))
     (let ((locale (or (gethash locale *locale-aliases*) locale)))
-      (or (probe-file (path locale))
-          (let ((dot (position #\. locale)))
-            (and dot (probe-file (path (subseq locale 0 dot)))))
-          (let ((us (position #\_ locale)))
-            (and us (probe-file (path (subseq locale 0 us)))))))))
+      (dolist (base (if (listp locale-dir) locale-dir (list locale-dir)))
+	(let ((probe
+	       (or (probe-file (path locale base))
+		   (let ((dot (position #\. locale)))
+		     (and dot (probe-file (path (subseq locale 0 dot) base))))
+		   (let ((at (position #\@ locale)))
+		     (and at (probe-file (path (subseq locale 0 at) base))))
+		   (let ((us (position #\_ locale)))
+		     (and us (probe-file (path (subseq locale 0 us) base)))))))
+	  (when probe (return probe)))))))
 
-(defun load-domain (domain locale &optional (locale-dir *locale-directory*))
+(defun guess-locale-encoding (locale)
+  (let ((locale (or (gethash locale *locale-aliases*) locale)))
+    (or (let ((dot (position #\. locale)))
+	  (and dot (intern (string-upcase (subseq locale (1+ dot)))
+			   "KEYWORD")))
+	(gethash locale *locale-encoding*)
+	(let ((at (position #\@ locale)))
+	  (and at (gethash (subseq locale 0 at) *locale-encoding*)))
+	(let ((us (position #\_ locale)))
+	  (and us (gethash (subseq locale 0 us) *locale-encoding*)))
+	:utf-8)))
+
+(defun load-domain (domain locale &optional (locale-dir *locale-directories*))
   (let ((file (locate-domain-file domain locale locale-dir)))
     (unless file (return-from load-domain nil))
-    (with-open-file (stream file :direction :input :if-does-not-exist nil)
+    (with-open-file (stream file :direction :input :if-does-not-exist nil
+			    :element-type '(unsigned-byte 8))
       (unless stream (return-from load-domain nil))
       (unless (= (read-lelong stream) #x950412de)
 	(error "Bad magic number in \"~A.mo\"." domain))
@@ -92,28 +111,61 @@ Sure; no problem at all!
 	    (setf (gethash length (domain-entry-hash entry))
 		  (acons start (+ translation (* 8 msg))
 			 (gethash length (domain-entry-hash entry))))))
+	(setf (domain-entry-encoding entry) (guess-locale-encoding locale))
 	(setf (gethash domain *loaded-domains*) entry)))))
 
-(defun find-domain (domain locale &optional (locale-dir *locale-directory*))
+(defun find-domain (domain locale &optional (locale-dir *locale-directories*))
   (let ((found (gethash domain *loaded-domains*)))
     (if (and found (string= (domain-entry-locale found) locale))
 	found
 	(load-domain domain locale locale-dir))))
 
+(defun string-to-octets (string encoding)
+  #+(and CMU Unicode)
+  (ext:string-to-octets string :external-format encoding)
+  ;;@@ add other implementations
+  #-(or (and CMU Unicode) #|others|#)
+  (map-into (make-array (length string) :element-type '(unsigned-byte 8))
+	    #'char-code string))
+
+(defun octets-to-string (octets encoding)
+  #+(and CMU Unicode)
+  (ext:octets-to-string octets :external-format encoding)
+  ;;@@ add other implementations
+  #-(or (and CMU Unicode) #|others|#)
+  (map-into (make-string (length octets)) #'code-char octets))
+
+(defun octets= (a b &key (start1 0) (end1 (length a))
+			 (start2 0) (end2 (length b)))
+  (declare (type (simple-array (unsigned-byte 8) (*)) a b)
+	   (type (integer 0 #.array-dimension-limit) start1 end1 start2 end2)
+	   (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+  (loop
+    (unless (= (aref a start1) (aref b start2)) (return nil))
+    (when (or (= (incf start1) end1) (= (incf start2) end2)) (return t))))
+
 (defun domain-lookup (string domain)
-  (or (gethash string (domain-entry-hash domain))
-      (let ((pos (gethash (length string) (domain-entry-hash domain)))
-	    (length (length string))
-	    (temp (make-string 120)))
+  (declare (type string string) (type domain-entry domain)
+	   (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+  (or (if (null (domain-entry-encoding domain)) string)
+      (gethash string (domain-entry-hash domain))
+      (let* ((octets (string-to-octets string
+				       (domain-entry-encoding domain)))
+	     (length (length octets))
+	     (pos (gethash length (domain-entry-hash domain)))
+	     (temp (make-array 120 :element-type '(unsigned-byte 8))))
+	(declare (type (simple-array (unsigned-byte 8) (*)) octets)
+		 (type list pos))
 	(when pos
 	  (with-open-file (stream (domain-entry-file domain)
-				  :direction :input)
+				  :direction :input
+				  :element-type '(unsigned-byte 8))
 	    (dolist (entry pos)
 	      (file-position stream (car entry))
 	      (let ((off 0)
 		    (end (read-sequence temp stream
 					:end (min 120 length))))
-		(loop while (string= string temp
+		(loop while (octets= octets temp
 				     :start1 off
 				     :end1 (min (+ off 120) length)
 				     :end2 end)
@@ -126,9 +178,14 @@ Sure; no problem at all!
 		  (file-position stream (cdr entry))
 		  (let* ((len (read-lelong stream))
 			 (off (read-lelong stream))
-			 (str (make-string len)))
+			 (tmp (make-array len
+					  :element-type '(unsigned-byte 8)))
+			 str)
 		    (file-position stream off)
-		    (read-sequence str stream)
+		    (read-sequence tmp stream)
+		    (setq str (octets-to-string tmp
+						(domain-entry-encoding
+						 domain)))
 		    (setf (gethash (copy-seq string)
 				   (domain-entry-hash domain))
 			  str)
@@ -141,21 +198,26 @@ Sure; no problem at all!
 				   (domain-entry-hash domain))))
 		    (return-from domain-lookup str))))))))))
 
-#+CMU
 (declaim (inline getenv)
 	 (ftype (function (string) (or null string)) getenv))
-#+CMU
 (defun getenv (var)
-  (cdr (assoc (intern var "KEYWORD") ext:*environment-list*)))
-#+Allegro
-(import 'sys:getenv)
+  (let ((val #+(or CMU SCL) (cdr (assoc (intern var "KEYWORD")
+					ext:*environment-list*))
+	     #+SBCL (sb-ext:posix-getenv var)
+	     #+Allegro (system:getenv var)
+	     #+LispWorks (hcl:getenv var)
+	     #+clisp (ext:getenv var)
+	     #+(or openmcl mcl) (ccl::getenv var)
+	     #+(or gcl ecl) (si::getenv var)))
+    (if (equal val "") nil val)))
 
 (defun setlocale (&optional locale)
   (setf *locale* (or locale
 		     (getenv "LANGUAGE")
 		     (getenv "LC_ALL")
 		     (getenv "LC_MESSAGES")
-		     (getenv "LANG"))))
+		     (getenv "LANG")
+		     *locale*)))
 
 ;; This is a macro so that it can take effect at compile-time, in order
 ;; to allow the _" reader macro to define the correct domain.
@@ -166,17 +228,6 @@ Sure; no problem at all!
 ;; This is a macro so that it can capture the correct value of *default-domain*
 (defmacro gettext (string)
   `(dgettext ,*default-domain* ,string))
-#||
-(declaim (inline gettext))
-(defun gettext (string)
-  "Look up STRING in the default message domain and return its translation."
-  (declare (optimize (speed 3) (space 2) (safety 0) (debug 0)))
-  (unless (and *current-domain*
-	       (eq (domain-entry-domain *current-domain*) *default-domain*)
-	       (eq (domain-entry-locale *current-domain*) *locale*))
-    (setf *current-domain* (find-domain *default-domain* *locale*)))
-  (or (and *current-domain* (domain-lookup string *current-domain*)) string))
-||#
 
 (declaim (inline dgettext))
 (defun dgettext (domain string)
@@ -238,7 +289,6 @@ Sure; no problem at all!
 (defun install ()
   (unless #+CMU (eq (get-macro-character #\_) #'lisp::read-dispatch-char)
 	  #-CMU (get-macro-character #\_)
-	  (make-dispatch-macro-character #\_ t))
+    (make-dispatch-macro-character #\_ t))
   (set-dispatch-macro-character #\_ #\" #'read-translatable-string)
-  (set-dispatch-macro-character #\# #\" #'read-translatable-string)
   t)
