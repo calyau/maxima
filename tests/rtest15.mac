@@ -637,10 +637,17 @@ factor(expand(sqrtdenest(integrate (1/((x-3)^4+1/2), x,0,1))));
 /*
  * Bug [ 1607567 ] trigreduce([atan(sin(a)/cos(a))]) => [ atan(tan(a)) ] (FIX)
  */
+(assume(a>-%pi/2, a<%pi/2),0);
+0;
+
 trigreduce(atan(sin(a)/cos(a)));
 a;
 trigreduce([atan(sin(a)/cos(a))]);
 [a];
+
+(forget(a>-%pi/2, a<%pi/2),0);
+0;
+
 trigreduce([sin(x)^2]);
 [(1-cos(2*x))/2];
 
