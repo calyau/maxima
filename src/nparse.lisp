@@ -240,7 +240,7 @@
 (defun scan-token (flag)
   (do ((c (parse-tyipeek) (parse-tyipeek))
        (l () (cons c l)))
-      ((and flag (not (or (digit-char-p c *read-base*) (alphabetp c) (char= c #\\))))
+      ((and flag (not (or (digit-char-p c (max 10. *read-base*)) (alphabetp c) (char= c #\\))))
        (nreverse (or l (ncons (parse-tyi))))) ; Read at least one char ...
     (when (char= (parse-tyi) #\\)
       (setq c (parse-tyi)))
@@ -273,7 +273,7 @@
   ;; markers to the flonum-exponent-marker.
   (let ((marker (car (nth 3 data))))
     (unless (eql marker flonum-exponent-marker)
-      (when (member marker '(#\E #\S #\D #\L #+cmu #\W))
+      (when (member marker '(#\E #\F #\S #\D #\L #+cmu #\W))
         (setf (nth 3 data) (list flonum-exponent-marker)))))
   (if (not (equal (nth 3 data) '(#\B)))
       (readlist (apply #'append data))
@@ -298,7 +298,7 @@
 (defun scan-digits (data continuation? continuation &optional exponent-p)
   (do ((c (parse-tyipeek) (parse-tyipeek))
        (l () (cons c l)))
-      ((not (and (characterp c) (digit-char-p c *read-base*)))
+      ((not (and (characterp c) (digit-char-p c (max 10. *read-base*))))
        (cond ((member c continuation?)
 	      (funcall continuation (list* (ncons (char-upcase
 						   (parse-tyi)))
@@ -314,7 +314,7 @@
     (parse-tyi)))
 
 (defun scan-number-after-dot (data)
-  (scan-digits data '(#\E #\e #\B #\b #\D #\d #\S #\s) #'scan-number-exponent))
+  (scan-digits data '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s) #'scan-number-exponent))
 
 (defun scan-number-exponent (data)
   (push (ncons (if (or (char= (parse-tyipeek) #\+)
@@ -425,7 +425,7 @@
 			  (scan-one-token-g eof-ok? eof-obj))
 			 (t '$/)))
 		  ((eql test #\.) (parse-tyi)	; Read the dot
-		   (if (digit-char-p (parse-tyipeek) *read-base*)
+		   (if (digit-char-p (parse-tyipeek) 10.)
 		       (scan-number-after-dot (list (ncons #\.) nil))
 		       '|$.|))
 		  ((eql test #\")
@@ -441,7 +441,7 @@
 			 (t
 			  (scan-lisp-token))))
 		  (t
-		   (if (digit-char-p test)
+		   (if (digit-char-p test 10.)
 		       (scan-number-before-dot ())
 		       (scan-macsyma-token))))))))
 
@@ -472,7 +472,7 @@
     (cond ((member c '(#\.))
 	   ;; We found a dot
 	   (scan-number-after-dot data))
-	  ((member c '(#\E #\e #\B #\b #\D #\d #\S #\s))
+	  ((member c '(#\E #\e #\F #\f #\B #\b #\D #\d #\S #\s))
 	   ;; Dot missing but found exponent marker.  Fake it.
 	   (setf data (push (ncons #\.) (rest data)))
 	   (push (ncons #\0) data)
@@ -480,7 +480,7 @@
 	   (scan-number-exponent data)))))
 
 (defun scan-number-before-dot (data)
-  (scan-digits data '(#\. #\E #\e #\B #\b #\D #\d #\S #\s)
+  (scan-digits data '(#\. #\E #\e #\F #\f #\B #\b #\D #\d #\S #\s)
 	       #'scan-number-rest))
 
 

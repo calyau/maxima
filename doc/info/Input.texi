@@ -1058,23 +1058,88 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @defvr {Option variable} ibase
 Default value: 10
 
-Integers entered into Maxima are interpreted
-with respect to the base @code{ibase}.
+@code{ibase} is the base for integers read by Maxima.
 
-@code{ibase} may be assigned any integer between 2 and 35 (decimal), inclusive.
-@c WHY NOT 36, BY THE WAY ??
-When @code{ibase} is greater than 10, the numerals comprise the decimal numerals 0 through 9
-@c UPPERCASE/LOWERCASE DISTINCTION HERE ??
-plus capital letters of the alphabet A, B, C, ..., as needed.
-The numerals for base 35, the largest acceptable base,
-comprise 0 through 9 and A through Y.
-@c HOW, EXACTLY, DOES ONE TYPE IN THE LETTERS ??
-@c ibase: 11$ 1A; YIELDS AN ERROR
-@c \1A; #1A; \#1A; DON'T WORK EITHER
+@code{ibase} may be assigned any integer between 2 and 36 (decimal), inclusive.
+When @code{ibase} is greater than 10,
+the numerals comprise the decimal numerals 0 through 9
+plus letters of the alphabet A, B, C, ...,
+as needed to make @code{ibase} digits in all.
+Letters are interpreted as digits only if the first digit is 0 through 9.
+Uppercase and lowercase letters are not distinguished.
+The numerals for base 36, the largest acceptable base,
+comprise 0 through 9 and A through Z.
+
+Whatever the value of @code{ibase},
+when an integer is terminated by a decimal point,
+it is interpreted in base 10.
 
 See also @code{obase}.
 
-@c NEED EXAMPLES HERE
+Examples:
+
+@code{ibase} less than 10.
+
+@c ===beg===
+@c ibase : 2 $
+@c obase;
+@c 1111111111111111;
+@c ===end===
+@example
+(%i1) ibase : 2 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1111111111111111;
+(%o3)                         65535
+@end example
+
+@code{ibase} greater than 10.
+Letters are interpreted as digits only if the first digit is 0 through 9.
+
+@c ===beg===
+@c ibase : 16 $
+@c obase;
+@c 1000;
+@c abcd;
+@c symbolp (abcd);
+@c 0abcd;
+@c symbolp (0abcd);
+@c ===end===
+@example
+(%i1) ibase : 16 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1000;
+(%o3)                         4096
+(%i4) abcd;
+(%o4)                         abcd
+(%i5) symbolp (abcd);
+(%o5)                         true
+(%i6) 0abcd;
+(%o6)                         43981
+(%i7) symbolp (0abcd);
+(%o7)                         false
+@end example
+
+When an integer is terminated by a decimal point,
+it is interpreted in base 10.
+
+@c ===beg===
+@c ibase : 36 $
+@c obase;
+@c 1234;
+@c 1234.;
+@c ===end===
+@example
+(%i1) ibase : 36 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1234;
+(%o3)                         49360
+(%i4) 1234.;
+(%o4)                         1234
+@end example
+
 @opencatbox
 @category{Console interaction}
 @closecatbox
@@ -1330,16 +1395,47 @@ Default value: 10
 
 @code{obase} is the base for integers displayed by Maxima.
 
-@code{obase} may be assigned any integer between 2 and 35 (decimal), inclusive.
-@c WHY NOT 36, BY THE WAY ??
-When @code{obase} is greater than 10, the numerals comprise the decimal numerals 0 through 9
+@code{obase} may be assigned any integer between 2 and 36 (decimal), inclusive.
+When @code{obase} is greater than 10,
+the numerals comprise the decimal numerals 0 through 9
 plus capital letters of the alphabet A, B, C, ..., as needed.
-The numerals for base 35, the largest acceptable base,
-comprise 0 through 9, and A through Y.
+A leading 0 digit is displayed if the leading digit is otherwise a letter.
+The numerals for base 36, the largest acceptable base,
+comprise 0 through 9, and A through Z.
 
 See also @code{ibase}.
 
-@c NEED EXAMPLES HERE
+Examples:
+
+@c ===beg===
+@c obase : 2;
+@c 2^8 - 1;
+@c obase : 8;
+@c 8^8 - 1;
+@c obase : 16;
+@c 16^8 - 1;
+@c obase : 36;
+@c 36^8 - 1;
+@c ===end===
+@example
+(%i1) obase : 2;
+(%o1)                          10
+(%i2) 2^8 - 1;
+(%o10)                      11111111
+(%i3) obase : 8;
+(%o3)                          10
+(%i4) 8^8 - 1;
+(%o4)                       77777777
+(%i5) obase : 16;
+(%o5)                          10
+(%i6) 16^8 - 1;
+(%o6)                       0FFFFFFFF
+(%i7) obase : 36;
+(%o7)                          10
+(%i8) 36^8 - 1;
+(%o8)                       0ZZZZZZZZ
+@end example
+
 @opencatbox
 @category{Display flags and variables} @category{Console interaction}
 @closecatbox
