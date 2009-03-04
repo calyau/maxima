@@ -4127,8 +4127,8 @@ first kind:
 
 (defprop %inverse_jacobi_nd
     ((x m)
-     ;; -1/sqrt(1-x^2)/sqrt(x^2+m-1)
-     ((mtimes) -1
+     ;; 1/sqrt(1-x^2)/sqrt(x^2+m-1)
+     ((mtimes) 
       ((mexpt) ((mplus) -1 ((mexpt simp ratsimp) x 2))
        ((rat) -1 2))
       ((mexpt)
