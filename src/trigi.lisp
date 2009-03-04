@@ -714,7 +714,7 @@
 	((and (not (atom y)) (member (caar y) '(%cot %tan))
 	      (if ($constantp (cadr y))
 		  (let ((y-val (mfuncall '$mod 
-					 (if (eq (caar y) '%tan) (cadr y) (m- %pi//s (cadr y)))
+					 (if (eq (caar y) '%tan) (cadr y) (m- %pi//2 (cadr y)))
 					 '$%pi)))
 		    (cond ((eq (mlsp y-val %pi//2) t) y-val)
 			  ((eq (mlsp y-val '$%pi) t) (m- y-val '$%pi)))))))
