@@ -13,7 +13,8 @@
 (macsyma-module laplac)
 
 (declare-top (special dvar var-list var-parm-list var parm $savefactors
-		      checkfactors $ratfac $keepfloat nounl nounsflag))
+		      checkfactors $ratfac $keepfloat nounl nounsflag
+                      errcatch $errormsg))
 
 ;;; The properties NOUN and VERB give correct linear display
 
@@ -78,7 +79,9 @@
 	  ((or (atom fun) (freeof var fun))
 	   (cond ((zerop1 parm) (mul2 fun (simplify (list '($delta) 0))))
 		 (t (mul2 fun (power parm -1)))))
-	  (t (let ((op (caar fun)))
+	  (t 
+           (let ((op (caar fun)))
+             (let ((result ; We store the result of laplace for further work.
 	       (cond ((eq op 'mplus)
 		      (laplus fun))
 		     ((eq op 'mtimes)
@@ -109,12 +112,44 @@
 		      (laperf fun))
 		     ((and (eq op '%ilt)(eq (cadddr fun) var))
 		      (cond ((eq parm (caddr fun))(cadr fun))
-			    (t (subst parm (caddr fun)(cadr fun))))
-		      )					((eq op '$delta)
+			    (t (subst parm (caddr fun)(cadr fun)))))
+                     ((eq op '$delta)
 		      (lapdelta fun nil))
 		     ((setq op ($get op '$laplace))
 		      (mcall op fun var parm))
-		     (t (lapdefint fun))))))))
+		     (t (lapdefint fun)))))
+              (when (isinop result '%integrate)
+                ;; Laplace has not found a result but returns a definit
+                ;; integral. This integral can contain internal integration 
+                ;; variables. Replace such a result with the noun form.
+                (setq result (list '(%laplace) fun var parm)))
+              ;; Check if we have a result, when not call $specint.
+              (check-call-to-$specint result fun)))))))
+
+;;; Check if laplace has found a result, when not try $specint.
+
+(defun check-call-to-$specint (result fun)
+  (cond 
+    ((or (isinop result '%laplace)
+         (isinop result '%limit)   ; Try $specint for incomplete results
+         (isinop result '%at))     ; which contain %limit or %at too.
+     ;; laplace returns a noun form or a result which contains %limit or %at.
+     ;; We pass the function to $specint to look for more results.
+     (let (res)
+       ;; laplace assumes the parameter s to be positive and does a
+       ;; declaration before an integration is done. Therefore we declare
+       ;; the parameter of the Laplace transform to be positive before 
+       ;; we call $specint too.
+       (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
+       (setq res ($specint (mul fun (power '$%e (mul -1 var parm))) var))
+       (meval `(($forget) ,@(list (list '(mgreaterp) parm 0))))
+       (if (or (isinop res '%specint)  ; Both symobls are possible, that is
+               (isinop res '$specint)) ; not consistent! Check it! 02/2009
+           ;; $specint has not found a result.
+           result
+           ;; $specint has found a result
+           res)))
+       (t result)))
 
 (defun laplus (fun)
   (simplus (cons '(mplus) (mapcar #'laplace (cdr fun))) 1 t))
@@ -297,14 +332,19 @@
 
 ;;;INTEGRAL FROM A TO INFINITY OF F(X)
 (defun mydefint (f x a)
-  (let ((tryint (and (not ($unknown f)) (errset ($defint f x a '$inf)))))
+  (let ((tryint (and (not ($unknown f))
+                     ;; $defint should not throw a Maxima error,
+                     ;; therefore we set the flags errcatch and $errormsg.
+                     ;; errset catches the error and returns nil
+                     (let ((errcatch t) ($errormsg nil))
+                       (errset ($defint f x a '$inf))))))
     (if tryint
 	(car tryint)
 	(list '(%integrate simp) f x a '$inf))))
 
  ;;;CREATES UNIQUE NAMES FOR VARIABLE OF INTEGRATION
 (defun createname (head tail)
-  (gentemp (format nil "~S~S" head tail)))
+  (intern (format nil "~S~S" head tail)))
 
 ;;;REDUCES LAPLACE(F(T)/T**N,T,S) CASE TO LAPLACE(F(T)/T**(N-1),T,S) CASE
 (defun hackit (exponent rest)
@@ -490,7 +530,12 @@
      (setq mult (simptimes (list '(mtimes) (exponentiate
 					    (list '(mtimes simp) -1 var parm)) fun) 1 nil))
      (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
-     (setq tryint (errset ($defint mult var 0 '$inf)))
+     (setq tryint
+           ;; $defint should not throw a Maxima error.
+           ;; therefore we set the flags errcatch and errormsg.
+           ;; errset catches an error and returns nil.
+           (let ((errcatch t) ($errormsg nil))
+             (errset ($defint mult var 0 '$inf))))
      (meval `(($forget) ,@(list (list '(mgreaterp) parm 0))))
      (and tryint (not (eq (caaar tryint) '%integrate))  (return (car tryint)))
      skip (return (list '(%laplace simp) fun var parm))))
