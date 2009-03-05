@@ -1065,7 +1065,7 @@
 	   ;; Numerically evaluate asn
 	   ;;
 	   ;; asn(x,m) = F(asin(x),m)
-	   (complexify (elliptic-f (cl:asin (float u)) m)))
+	   (complexify (elliptic-f (cl:asin ($float u)) ($float m))))
 	  ((complex-float-numerical-eval-p u m)
 	   (complexify (elliptic-f (cl:asin (complex ($realpart u) ($imagpart u)))
 				   (complex ($realpart m) ($imagpart m)))))
@@ -1107,7 +1107,7 @@
 	   ;; Numerically evaluate acn
 	   ;;
 	   ;; acn(x,m) = F(acos(x),m)
-	   (complexify (elliptic-f (cl:acos (float u)) m)))
+	   (complexify (elliptic-f (cl:acos ($float u)) ($float m))))
 	  ((complex-float-numerical-eval-p u m)
 	   (complexify (elliptic-f (cl:acos (complex ($realpart u) ($imagpart u)))
 				   (complex ($realpart m) ($imagpart m)))))
@@ -1150,8 +1150,8 @@
 	(m (simpcheck (caddr form) z)))
     (cond ((float-numerical-eval-p u m)
 	   ;; Numerically evaluate adn
-	   (let* ((u (float u))
-		  (m (float m))
+	   (let* ((u ($float u))
+		  (m ($float m))
 		  (phi (/ (* (sqrt (- 1 u)) (sqrt (+ 1 u)))
 			  (sqrt m))))
 	     (complexify (elliptic-f (cl:asin phi) m))))
