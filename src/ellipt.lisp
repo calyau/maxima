@@ -25,6 +25,7 @@
 ;;;
 ;;; [1] Abramowitz and Stegun
 ;;; [2] Lawden, Elliptic Functions and Applications, Springer-Verlag, 1989
+;;; [3] Whittaker & Watson, A Course of Modern Analysis
 ;;;
 ;;; We use the definitions from Abramowitz and Stegun where our
 ;;; sn(u,m) is sn(u|m).  That is, the second arg is the parameter,
@@ -494,7 +495,9 @@
 ;; so asn(u,m) = F(asin(u)|m)
 (defprop %inverse_jacobi_sn
     ((x m)
-     ;; 1/sqrt(1-x^2)/sqrt(1-m*x^2)
+     ;; Lawden 3.1.2:
+     ;; inverse_jacobi_sn(x) = integrate(1/sqrt(1-t^2)/sqrt(1-m*t^2),t,0,x)
+     ;; -> 1/sqrt(1-x^2)/sqrt(1-m*x^2)
      ((mtimes simp)
       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2)))
        ((rat simp) -1 2))
@@ -523,7 +526,9 @@
 ;;
 (defprop %inverse_jacobi_cn
     ((x m)
-     ;; -1/sqrt(1-x^2)/sqrt(1-m+m*x^2)
+     ;; Whittaker and Watson, 22.121
+     ;; inverse_jacobi_cn(u,m) = integrate(1/sqrt(1-t^2)/sqrt(1-m+m*t^2), t, u, 1)
+     ;; -> -1/sqrt(1-x^2)/sqrt(1-m+m*x^2)
      ((mtimes simp) -1
       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2)))
        ((rat simp) -1 2))
@@ -564,7 +569,9 @@
 ;; or u = inverse_jacobi_sn(sqrt(1-x^2)/sqrt(m))
 (defprop %inverse_jacobi_dn
     ((x m)
-     ;; -1/sqrt(1-x^2)/sqrt(x^2+m-1)
+     ;; Whittaker and Watson, 22.121
+     ;; inverse_jacobi_dn(u,m) = integrate(1/sqrt(1-t^2)/sqrt(t^2-(1-m)), t, u, 1)
+     ;; -> -1/sqrt(1-x^2)/sqrt(x^2+m-1)
      ((mtimes simp)
       ((mexpt simp) ((mplus simp) 1 ((mtimes simp) -1 ((mexpt simp) x 2)))
        ((rat simp) -1 2))
@@ -4010,7 +4017,9 @@ first kind:
 
 (defprop %inverse_jacobi_ns
     ((x m)
-     ;; -1/sqrt(1-x^2)/sqrt(x^2+m-1)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_ns(u,m) = integrate(1/sqrt(t^2-1)/sqrt(t^2-m), t, u, inf)
+     ;; -> -1/sqrt(x^2-1)/sqrt(x^2-m)
      ((mtimes) -1
       ((mexpt) ((mplus) -1 ((mexpt) x 2)) ((rat) -1 2))
       ((mexpt)
@@ -4075,7 +4084,9 @@ first kind:
 
 (defprop %inverse_jacobi_nc
     ((x m)
-     ;; 1/sqrt((x^2-1)*(m+(1-m)*x^2)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_nc(u,m) = integrate(1/sqrt(t^2-1)/sqrt((1-m)*t^2+m), t, 1, u)
+     ;; -> 1/sqrt(x^2-1)/sqrt((1-m)*x^2+m)
      ((mtimes)
       ((mexpt) ((mplus) -1 ((mexpt) x 2)) ((rat) -1 2))
       ((mexpt)
@@ -4127,7 +4138,9 @@ first kind:
 
 (defprop %inverse_jacobi_nd
     ((x m)
-     ;; 1/sqrt(1-x^2)/sqrt(x^2+m-1)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_nd(u,m) = integrate(1/sqrt(t^2-1)/sqrt(1-(1-m)*t^2), t, 1, u)
+     ;; -> 1/sqrt(u^2-1)/sqrt(1-(1-m)*t^2)
      ((mtimes) 
       ((mexpt) ((mplus) -1 ((mexpt simp ratsimp) x 2))
        ((rat) -1 2))
@@ -4187,6 +4200,9 @@ first kind:
 
 (defprop %inverse_jacobi_sc
     ((x m)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_sc(u,m) = integrate(1/sqrt(1+t^2)/sqrt(1+(1-m)*t^2), t, 0, u)
+     ;; -> 1/sqrt(1+x^2)/sqrt(1+(1-m)*x^2)
      ((mtimes)
       ((mexpt) ((mplus) 1 ((mexpt) x 2))
        ((rat) -1 2))
@@ -4243,6 +4259,9 @@ first kind:
 
 (defprop %inverse_jacobi_sd
     ((x m)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_sd(u,m) = integrate(1/sqrt(1-(1-m)*t^2)/sqrt(1+m*t^2), t, 0, u)
+     ;; -> 1/sqrt(1-(1-m)*x^2)/sqrt(1+m*x^2)
      ((mtimes)
       ((mexpt)
        ((mplus) 1 ((mtimes) ((mplus) -1 m) ((mexpt) x 2)))
@@ -4298,6 +4317,9 @@ first kind:
 
 (defprop %inverse_jacobi_cs
     ((x m)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_cs(u,m) = integrate(1/sqrt(t^2+1)/sqrt(t^2+(1-m)), t, u, inf)
+     ;; -> -1/sqrt(x^2+1)/sqrt(x^2+(1-m))
      ((mtimes) -1
       ((mexpt) ((mplus) 1 ((mexpt simp ratsimp) x 2))
        ((rat) -1 2))
@@ -4347,6 +4369,9 @@ first kind:
 
 (defprop %inverse_jacobi_cd
     ((x m)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_cd(u,m) = integrate(1/sqrt(1-t^2)/sqrt(1-m*t^2), t, u, 1)
+     ;; -> 1/sqrt(1-x^2)/sqrt(1-m*x^2)
      ((mtimes)
       ((mexpt)
        ((mplus) 1 ((mtimes) -1 ((mexpt) x 2)))
@@ -4397,6 +4422,9 @@ first kind:
 
 (defprop %inverse_jacobi_ds
     ((x m)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_ds(u,m) = integrate(1/sqrt(t^2-(1-m))/sqrt(t^2+m), t, u, inf)
+     ;; -> -1/sqrt(x^2-(1-m))/sqrt(x^2+m)
      ((mtimes) -1
       ((mexpt)
        ((mplus) -1 m ((mexpt simp ratsimp) x 2))
@@ -4453,6 +4481,9 @@ first kind:
 
 (defprop %inverse_jacobi_dc
     ((x m)
+     ;; Whittaker and Watson, example in 22.122
+     ;; inverse_jacobi_dc(u,m) = integrate(1/sqrt(t^2-1)/sqrt(t^2-m), t, u, 1)
+     ;; -> -1/sqrt(x^2-1)/sqrt(x^2-m)
      ((mtimes) -1
       ((mexpt)
        ((mplus) -1 ((mexpt simp ratsimp) x 2))
