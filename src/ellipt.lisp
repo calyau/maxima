@@ -786,7 +786,7 @@
 		(div (power (sub 1 (mul inv-arg inv-arg)) 1//2)
 		     (power (sub 1 (mul m (mul inv-arg inv-arg))) 1//2)))
 	       (%inverse_jacobi_dc
-		($jacobi_dn ($inverse_jacobi_cd (div 1 inv-arg) m) m)))))
+		($jacobi_sn ($inverse_jacobi_cd (div 1 inv-arg) m) m)))))
 	  ;; A&S 16.20.1 (Jacobi's Imaginary transformation)
 	  ((and $%iargs (multiplep u '$%i))
 	   (mul '$%i
