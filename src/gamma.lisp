@@ -27,6 +27,7 @@
 ;;;
 ;;;   beta_incomplete(a,b,z)
 ;;;   beta_incomplete_generalized(a,b,z1,z2)
+;;;   beta_incomplete_regularized(a,b,z)
 ;;;
 ;;; Maxima User variable:
 ;;;
@@ -3249,5 +3250,204 @@
       
       (t
        (eqtest (list '(%beta_incomplete_generalized) a b z1 z2) expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of the Regularized Incomplete Beta function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $beta_incomplete_regularized (a b z)
+  (simplify (list '(%beta_incomplete_regularized) a b z)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $beta_incomplete_regularized %beta_incomplete_regularized alias)
+(defprop $beta_incomplete_regularized %beta_incomplete_regularized verb)
+
+(defprop %beta_incomplete_regularized $beta_incomplete_regularized reversealias)
+(defprop %beta_incomplete_regularized $beta_incomplete_regularized noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %beta_incomplete_regularized
+         simp-beta-incomplete-regularized operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop %beta_incomplete_regularized
+  ((a b z)
+   ;; Derivative wrt a
+   ((mplus)
+      ((mtimes) -1 
+         ((%gamma) a)
+         (($hypergeometric_generalized)
+            ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
+            ((mlist) ((mplus) 1 a) ((mplus) 2 a)) z)
+         ((mexpt) ((%gamma) b) -1) 
+         ((%gamma) ((mplus) a b))
+         ((mexpt) z a))
+      ((mtimes) 
+         ((%beta_incomplete_regularized) a b z)
+         ((mplus) 
+            ((mtimes) -1 ((mqapply) (($psi array) 0) a))
+            ((mqapply) (($psi array) 0) ((mplus) a b))
+            ((%log) z))))
+   ;; Derivative wrt b
+   ((mplus)
+      ((mtimes)
+         ((%beta_incomplete_regularized) b a ((mplus) 1 ((mtimes) -1 z)))
+         ((mplus) 
+            ((mqapply) (($psi array) 0) b)
+            ((mtimes) -1 ((mqapply) (($psi array) 0) ((mplus) a b)))
+            ((mtimes) -1 ((%log) ((mplus) 1 ((mtimes) -1 z))))))
+      ((mtimes) 
+         ((mexpt) ((%gamma) a) -1) 
+         ((%gamma) b)
+         ((%gamma) ((mplus) a b))
+         (($hypergeometric_generalized)
+            ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
+            ((mlist) ((mplus) 1 b) ((mplus) 1 b))
+            ((mplus) 1 ((mtimes) -1 z)))
+         ((mexpt) ((mplus) 1 ((mtimes) -1 z)) b)))
+   ;; The derivative wrt z
+   ((mtimes) 
+      ((mexpt) (($beta) a b) -1)
+      ((mexpt) ((mplus) 1 ((mtimes) -1 z)) ((mplus) -1 b))
+      ((mexpt) z ((mplus) -1 a))))
+  grad)
+
+;;; Integral of the Generalized Incomplete Beta function
+
+(defprop %beta_incomplete_regularized
+  ((a b z)
+   nil 
+   nil
+   ;; Integral wrt z
+   ((mplus)
+      ((mtimes) -1 a
+         ((%beta_incomplete_regularized) ((mplus) 1 a) b z)
+         ((mexpt) ((mplus) a b) -1))
+      ((mtimes) ((%beta_incomplete_regularized) a b z) z)))
+  integral)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-beta-incomplete-regularized (expr ignored simpflag)
+  (declare (ignore ignored))
+  (if (not (= (length expr) 4)) (wna-err '$beta_incomplete_regularized))
+  (let ((a (simpcheck (second expr) simpflag))
+        (b (simpcheck (third expr)  simpflag))
+        (z (simpcheck (fourth expr) simpflag)))
+    (cond
+
+      ;; Check for specific values
+
+      ((zerop1 z)
+       (let ((sgn ($sign ($realpart a))))
+         (cond ((eq sgn '$neg)
+                (domain-error 0 'beta_incomplete_regularized))
+               ((member sgn '($pos $pz)) 
+                0)
+               (t 
+                (eqtest 
+                  (list '(%beta_incomplete_regularized) a b z) expr)))))
+
+      ((and (onep1 z) 
+            (or (not (mnump a)) 
+                (not (mnump b)) 
+                (not (mnump z))))
+       (let ((sgn ($sign ($realpart b))))
+         (cond ((member sgn '($pos $pz)) 
+                1)
+               (t 
+                (eqtest 
+                  (list '(%beta_incomplete_regularized) a b z) expr)))))
+
+      ((and (integer-representation-p b) (minusp b))
+       ;; Problem: for b a negative integer the Regularized Incomplete 
+       ;; Beta function is defined to be zero. BUT: When we calculate
+       ;; e.g. beta_incomplete(1.0,-2.0,1/2)/beta(1.0,-2.0) we get the 
+       ;; result -3.0, because beta_incomplete and beta are defined for
+       ;; for this case. How do we get a consistent behaviour?
+       0)
+
+      ((and (integer-representation-p a) (minusp a))
+       (cond
+         ((and (integer-representation-p b) (<= b (- a)))
+          (div ($beta_incomplete a b z)
+               (simplify (list '($beta) a b))))
+         (t 
+          1)))
+
+      ;; Check for numerical evaluation in Float or Bigfloat precision
+
+      ((complex-float-numerical-eval-p a b z)
+       (let ((*beta-incomplete-eps* (bigfloat:epsilon ($float 1.0))))
+         ($rectform 
+           (div (beta-incomplete ($float a) ($float b) ($float z))
+                (simplify (list '($beta) ($float a) ($float b)))))))
+           
+      ((complex-bigfloat-numerical-eval-p a b z)
+       (let ((*beta-incomplete-eps*
+               (bigfloat:epsilon (bigfloat:bigfloat 1.0))))
+         ($rectform 
+           (div (beta-incomplete ($bfloat a) ($bfloat b) ($bfloat z))
+                (simplify (list '($beta) ($float a) ($float b)))))))
+
+      ;; Check for argument simplifications and transformations
+
+      ((and (integerp b) (plusp b))
+       (div ($beta_incomplete a b z)
+            (simplify (list '($beta) a b))))
+
+      ((and (integerp a) (plusp a))
+       (div ($beta_incomplete a b z)
+            (simplify (list '($beta) a b))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (plusp (cadr a)))
+       (let ((n (cadr a))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           ($beta_incomplete_regularized a b z)
+           (mul
+             (power (add a b n -1) -1)
+             (power (simplify (list '($beta) (add a n) b)) -1)
+             (let ((index (gensumindex)))
+               (dosum
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) 
+                                     (add 1 (mul -1 a) (mul -1 n))
+                                     index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b) (mul -1 n))
+                                     index)))
+                   (power (sub 1 z) b)
+                   (power z (add a n (mul -1 index) -1)))
+                index 0 (sub n 1) t))))))
+
+      ((and $beta_expand (mplusp a) (integerp (cadr a)) (minusp (cadr a)))
+       (let ((n (- (cadr a)))
+             (a (simplify (cons '(mplus) (cddr a)))))
+         (sub
+           ($beta_incomplete_regularized a b z)
+           (mul
+             (power (add a b -1) -1)
+             (power (simplify (list '($beta) a b)) -1)
+             (let ((index (gensumindex)))
+               (dosum
+                 (mul
+                   (div
+                     (simplify (list '($pochhammer) (sub 1 a) index))
+                     (simplify (list '($pochhammer)
+                                     (add 2 (mul -1 a) (mul -1 b))
+                                     index)))
+                   (power (sub 1 z) b)
+                   (power z (add a (mul -1 index) -1)))
+                index 0 (sub n 1) t))))))
+
+      (t
+       (eqtest (list '(%beta_incomplete_regularized) a b z) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
