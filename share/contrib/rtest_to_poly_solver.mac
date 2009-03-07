@@ -177,7 +177,7 @@ nicedummies(to_poly_solve(cos(x)=1/2,x));
 %union([x=2*%pi*%z0-%pi/3],[x=2*%pi*%z1+%pi/3])$
 
 nicedummies(to_poly_solve(sin(x) = cos(x), x, simpfuncs = ['expand]));
-%union([x=2*%pi*%z0+(5*%pi)/4],[x=2*%pi*%z1+%pi/4])$
+%union([x = 2*%pi*%z0-3*%pi/4],[x = 2*%pi*%z1+%pi/4])$
 
 nicedummies(to_poly_solve(tan(x) = 1, x, simpfuncs = ['expand]));
 %union([x=%pi*%z0+%pi/4])$
@@ -363,7 +363,7 @@ nicedummies(to_poly_solve(sinh(x) + cosh(x) = 1,x));
 /* miscelaneous */
 
 nicedummies(to_poly_solve(sin(x) = cos(x), x,simpfuncs = ['expand]));
-%union([x=2*%pi*%z0+(5*%pi)/4],[x=2*%pi*%z1+%pi/4])$
+%union([x = 2*%pi*%z0-3*%pi/4],[x = 2*%pi*%z1+%pi/4])$
 
 nicedummies(to_poly_solve(42*cos(x)+sin(x)=42*cos(%pi/4)+sin(%pi/4),x, simpfuncs =['logcontract,'trigreduce]));
 %union([x=2*%pi*%z0+%pi/4],[x=2*%pi*%z1-atan(1679/1847)])$
