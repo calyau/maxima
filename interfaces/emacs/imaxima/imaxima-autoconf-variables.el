@@ -2,7 +2,7 @@
 ;; Copyright (C) 2007, 2008 Yasuaki Honda
 
 ;; Author: Yasuaki Honda (yhonda@mac.com)
-;; $Id: imaxima-autoconf-variables.el,v 1.6 2009-02-22 09:18:27 yasu-honda Exp $
+;; $Id: imaxima-autoconf-variables.el,v 1.7 2009-03-07 13:38:25 yasu-honda Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -19,6 +19,6 @@
 ;; Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 ;; MA 02111-1307 USA
 (defconst *imaxima-autoconf-package* "imaxima-imath")
-(defconst *imaxima-autoconf-version* "1.0rc2")
+(defconst *imaxima-autoconf-version* "1.0")
 
 (provide 'imaxima-autoconf-variables)
