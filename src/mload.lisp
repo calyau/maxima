@@ -110,7 +110,7 @@
 	    (merror "Bad file spec: ~:M" user-object)))))
 
 (defun $batchload (filename &aux expr (*mread-prompt* ""))
-  (declare (special *mread-prompt*))
+  (declare (special *mread-prompt* *prompt-on-read-hang*))
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
   (with-open-file (in-stream filename)
     (when $loadprint
@@ -118,7 +118,7 @@
     (cleanup)
     (newline in-stream)
     (loop while (and
-		  (setq  expr (mread in-stream nil))
+		  (setq  expr (let (*prompt-on-read-hang*) (mread in-stream nil)))
 		  (consp expr))
 	   do (meval* (third expr)))
 		  (cl:namestring (truename in-stream))))
