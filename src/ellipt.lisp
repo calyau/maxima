@@ -4371,8 +4371,8 @@ first kind:
     ((x m)
      ;; Whittaker and Watson, example in 22.122
      ;; inverse_jacobi_cd(u,m) = integrate(1/sqrt(1-t^2)/sqrt(1-m*t^2), t, u, 1)
-     ;; -> 1/sqrt(1-x^2)/sqrt(1-m*x^2)
-     ((mtimes)
+     ;; -> -1/sqrt(1-x^2)/sqrt(1-m*x^2)
+     ((mtimes) -1
       ((mexpt)
        ((mplus) 1 ((mtimes) -1 ((mexpt) x 2)))
        ((rat) -1 2))
