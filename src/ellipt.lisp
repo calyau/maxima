@@ -4481,10 +4481,14 @@ first kind:
 
 (defprop %inverse_jacobi_dc
     ((x m)
-     ;; Whittaker and Watson, example in 22.122
-     ;; inverse_jacobi_dc(u,m) = integrate(1/sqrt(t^2-1)/sqrt(t^2-m), t, u, 1)
-     ;; -> -1/sqrt(x^2-1)/sqrt(x^2-m)
-     ((mtimes) -1
+     ;; Note: Whittaker and Watson, example in 22.122 says
+     ;; inverse_jacobi_dc(u,m) = integrate(1/sqrt(t^2-1)/sqrt(t^2-m),
+     ;; t, u, 1) but that seems wrong.  A&S 17.4.47 says
+     ;; integrate(1/sqrt(t^2-1)/sqrt(t^2-m), t, a, u) =
+     ;; inverse_jacobi_cd(x,m).  Lawden 3.2.8 says the same.
+     ;; functions.wolfram.com says the derivative is
+     ;; 1/sqrt(t^2-1)/sqrt(t^2-m).
+     ((mtimes)
       ((mexpt)
        ((mplus) -1 ((mexpt simp ratsimp) x 2))
        ((rat) -1 2))
