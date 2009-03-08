@@ -623,7 +623,12 @@ integrate((atan(x^(1/3)) + atan(x^(-1/3)))*log(x)/(x^2+1),x,0,inf);
 0;
 
 integrate(log(x^(7/2)+1)/x^2,x,0,inf);
-%pi/sin(5*%pi/7);
+/*%pi/sin(5*%pi/7);*/
+/* The result of the integral is beta(5/7,2/7). This simplifies to 
+   %pi/sin(5*%pi/z). Because we have introduced a symmetry rule for
+   the beta function, Maxima first simplifies to beta(2/7,5/7). 
+   The equivalent result is %pi/sin(2*%pi/7). 03/2009 (DK) */
+%pi/sin(2*%pi/7);
 
 (intanalysis:true, 0);
 0;
