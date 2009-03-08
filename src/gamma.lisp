@@ -2602,6 +2602,24 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; Implementation of the Beta function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; The code for the implementation of the beta function is in the files
+;;; csimp2.lisp, simp.lisp and mactex.lisp.
+;;; At this place we only implement the operator property SYMMETRIC.
+
+;;; Beta is symmetric beta(a,b) = beta(b,a)
+
+(eval-when
+    #+gcl (load eval)
+    #-gcl (:load-toplevel :execute)
+    (let (($context '$global) (context '$global))
+      (meval '(($declare) $beta $symmetric))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Implementation of the Incomplete Beta function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
