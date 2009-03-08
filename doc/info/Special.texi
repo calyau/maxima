@@ -305,17 +305,6 @@ The gamma function and the related beta, psi and incomplete gamma
 functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 6.
 
-@deffn {Function} beta (@var{x}, @var{y})
-The beta function A&S 6.2.1, 
-defined as @code{gamma(x) gamma(y)/gamma(x + y)}.
-@c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
-@c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
-
-@opencatbox
-@category{Gamma and factorial functions}
-@closecatbox
-@end deffn
-
 @deffn {Function} gamma (@var{x})
 The gamma function A&S 6.1.1.
 
@@ -397,6 +386,152 @@ See also @code{makefact}.
 @category{Gamma and factorial functions}
 @closecatbox
 @end deffn
+
+@deffn {Function} beta (@var{a}, @var{b})
+The beta function is defined as @code{beta(a,b) = gamma(a) gamma(b)/gamma(a+b)} 
+(A&S 6.2.1).
+
+Maxima simplifies the beta function for positive integers and rational 
+numbers, which sum to an integer. When @code{beta_args_sum_to_integer} is 
+@code{true}, Maxima simplifies also general expressions which sum to an integer. 
+
+For @var{a} or @var{b} equal to zero the beta function is not defined.
+
+In general the beta function is not defined for negative integers as an 
+argument. There is an exception. For @var{a=-n}, @var{n} a positive integer 
+and a positive integer @var{b} with @var{b<=n}, it is possible to define an 
+analytic continuation. Maxima gives for this case a result.
+
+When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
+@code{beta(a-n,b)} or @code{beta(a,b+n)} and @code{beta(a,b-n)} with @code{n} 
+an integer are simplified.
+
+Maxima can evaluate the beta function for real and complex values in float and 
+bigfloat precision.
+
+Maxima knows that the beta function is symmetric and has mirror symmetry.
+
+Maxima knows the derivatives of the beta function with respect to @var{a} or 
+@var{b}.
+
+To express the beta function as a ratio of gamma functions see @code{makegamma}. 
+
+Examples:
+
+Simplification, when one of the arguments is an integer:
+@example
+(%i1) [beta(2,3),beta(2,1/3),beta(2,a)];
+                               1   9      1
+(%o1)                         [--, -, ---------]
+                               12  4  a (a + 1)
+@end example
+
+Simplification for two rational numbers as arguments which sum to an integer:
+@example
+(%i2) [beta(1/2,5/2),beta(1/3,2/3),beta(1/4,3/4)];
+                          3 %pi   2 %pi
+(%o2)                    [-----, -------, sqrt(2) %pi]
+                            8    sqrt(3)
+@end example
+
+When setting @code{beta_args_sum_to_integer} to @code{true} more general 
+expression are simplified, when the sum of the arguments is an integer:
+@example
+(%i3) beta_args_sum_to_integer:true$
+(%i4) beta(a+1,-a+2);
+                                %pi (a - 1) a
+(%o4)                         ------------------
+                              2 sin(%pi (2 - a))
+@end example
+
+The possible results, when one of the arguments is a negative integer: 
+@example
+(%i5) [beta(-3,1),beta(-3,2),beta(-3,3)];
+                                    1  1    1
+(%o5)                            [- -, -, - -]
+                                    3  6    3
+@end example
+
+@code{beta(a+n,b)} or @code{beta(a-n)} with @code{n} an integer simplifies when 
+@code{beta_expand} is @code{true}:
+@example
+(%i6) [beta(a+1,b),beta(a-1,b),beta(a+1,b)/beta(a,b+1)],beta_expand:true;
+                    a beta(a, b)  beta(a, b) (b + a - 1)  a
+(%o6)              [------------, ----------------------, -]
+                       b + a              a - 1           b
+
+@end example
+
+Beta is not definied, when one of the arguments is zero:
+@example
+(%i7) beta(0,b);
+beta: expected nonzero arguments; found 0, b
+ -- an error.  To debug this try debugmode(true);
+@end example
+
+Numercial evaluation for real and complex arguments in float or bigfloat 
+precision:
+@example
+(%i8) [beta(2.5,2.3),beta(2.5,1.4+%i)];
+(%o8)  [.08694748611299981, 0.0640144950796695 - .1502078053286415 %i]
+(%i9) [beta(2.5b0,2.3b0),beta(2.5b0,1.4b0+%i)];
+(%o9) [8.694748611299969b-2, 6.401449507966944b-2 - 1.502078053286415b-1 %i]
+@end example
+
+Beta is symmetric and has mirror symmetry:
+@example
+(%i14) beta(a,b)-beta(b,a);
+(%o14)                                 0
+(%i15) declare(a,complex,b,complex)$
+(%i16) conjugate(beta(a,b));
+(%o16)                 beta(conjugate(a), conjugate(b))
+@end example
+
+The derivative of the beta function wrt @code{a}:
+@example
+(%i17) diff(beta(a,b),a);
+(%o17)               - beta(a, b) (psi (b + a) - psi (a))
+                                      0             0
+@end example
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} beta_incomplete (@var{a}, @var{b}, @var{z})
+The incomplete beta function A&S 6.6.1,
+defined as @code{integrate(t^(a-1)*(1-t)^(b-1), t, 0, z)}.
+@c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
+@c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
+The regularized incomplete beta function A&S 6.6.2,
+defined as @code{beta_incomplete(a,b,z)/beta(a,b)}.
+@c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
+@c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end deffn
+
+@deffn {Function} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
+The generalized incomplete beta function,
+defined as @code{integrate(t^(a-1)*(1-t)^(b-1), t, z1, z2)}.
+@c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
+@c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end deffn
+
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
 @c I (rtoy) don't think there is a plain psi(x) function anymore.
