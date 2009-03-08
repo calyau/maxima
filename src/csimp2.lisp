@@ -14,7 +14,8 @@
 
 (load-macsyma-macros rzmac)
 
-(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim))
+(declare-top (special var %p%i varlist plogabs half%pi nn* dn* $factlim
+                      $beta_expand))
 
 (defmvar $gammalim 10000
   "Controls simplification of gamma for rational number arguments.")
@@ -271,6 +272,19 @@
 				(add2 (1- x) (neg w))
 				(1- x)))
 		   `((%sin) ((mtimes) ,w $%pi)))))
+          
+          ((and $beta_expand (mplusp u))
+           ;; Expand beta(a+n,b) where n is an integer.
+           (let ((n (cadr u))
+                 (u (simplify (cons '(mplus) (cddr u)))))
+             (beta-expand-add-integer n u v)))
+          
+          ((and $beta_expand (mplusp v))
+           ;; Expand beta(a,b+n) where n is an integer.
+           (let ((n (cadr v))
+                 (v (simplify (cons '(mplus) (cddr v)))))
+             (beta-expand-add-integer n v u)))
+                  
 	  (t (eqtest (list '($beta) u v) check)))))
 
 (defun beta-expand-integer (u v)
@@ -286,6 +300,15 @@
                    (sub x 2)
                    (sub (if (and (integerp u) (plusp u)) u v) 1))))
       -1)))
+
+(defun beta-expand-add-integer (n u v)
+  (if (plusp n)
+      (mul (simplify (list '($pochhammer) u n))
+           (power (simplify (list '($pochhammer) (add u v) n)) -1)
+           (simplify (list '($beta) u v)))
+      (mul (simplify (list '($pochhammer) (add u v n) (- n)))
+           (power (simplify (list '($pochhammer) (add u n) (- n))) -1)
+           (simplify (list '($beta) u v)))))
 
 (defmfun simpgamma (x vestigial z)
   (declare (ignore vestigial))
