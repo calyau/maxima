@@ -340,7 +340,7 @@ The incomplete upper gamma function A&S 6.5.2.
 @deffn {Function} gamma_incomplete_regularized (@var{a},@var{z})
 The regularized incomplete upper gamma function A&S 6.5.1.  
 
-@code{ gamma_incomplete_regularized(a,z)=gamma_incomplete(a,z)/gamma(a)}
+@code{gamma_incomplete_regularized(a,z)=gamma_incomplete(a,z)/gamma(a)}
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
@@ -388,7 +388,7 @@ See also @code{makefact}.
 @end deffn
 
 @deffn {Function} beta (@var{a}, @var{b})
-The beta function is defined as @code{beta(a,b) = gamma(a) gamma(b)/gamma(a+b)} 
+The beta function is defined as @code{gamma(a) gamma(b)/gamma(a+b)} 
 (A&S 6.2.1).
 
 Maxima simplifies the beta function for positive integers and rational 
@@ -398,8 +398,8 @@ numbers, which sum to an integer. When @code{beta_args_sum_to_integer} is
 For @var{a} or @var{b} equal to zero the beta function is not defined.
 
 In general the beta function is not defined for negative integers as an 
-argument. There is an exception. For @var{a=-n}, @var{n} a positive integer 
-and a positive integer @var{b} with @var{b<=n}, it is possible to define an 
+argument. The exception is for @var{a=-n}, @var{n} a positive integer 
+and @var{b} a positive integer with @var{b<=n}, it is possible to define an 
 analytic continuation. Maxima gives for this case a result.
 
 When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and 
@@ -407,7 +407,12 @@ When @code{beta_expand} is @code{true}, expressions like @code{beta(a+n,b)} and
 an integer are simplified.
 
 Maxima can evaluate the beta function for real and complex values in float and 
-bigfloat precision.
+bigfloat precision. For numerical evaluation Maxima uses @code{log_gamma}:
+
+@example
+           - log_gamma(b + a) + log_gamma(b) + log_gamma(a)
+         %e
+@end example
 
 Maxima knows that the beta function is symmetric and has mirror symmetry.
 
@@ -455,9 +460,10 @@ The possible results, when one of the arguments is a negative integer:
 @code{beta(a+n,b)} or @code{beta(a-n)} with @code{n} an integer simplifies when 
 @code{beta_expand} is @code{true}:
 @example
-(%i6) [beta(a+1,b),beta(a-1,b),beta(a+1,b)/beta(a,b+1)],beta_expand:true;
+(%i6) beta_expand:true$
+(%i7) [beta(a+1,b),beta(a-1,b),beta(a+1,b)/beta(a,b+1)];
                     a beta(a, b)  beta(a, b) (b + a - 1)  a
-(%o6)              [------------, ----------------------, -]
+(%o7)              [------------, ----------------------, -]
                        b + a              a - 1           b
 
 @end example
@@ -472,10 +478,17 @@ beta: expected nonzero arguments; found 0, b
 Numercial evaluation for real and complex arguments in float or bigfloat 
 precision:
 @example
-(%i8) [beta(2.5,2.3),beta(2.5,1.4+%i)];
-(%o8)  [.08694748611299981, 0.0640144950796695 - .1502078053286415 %i]
-(%i9) [beta(2.5b0,2.3b0),beta(2.5b0,1.4b0+%i)];
-(%o9) [8.694748611299969b-2, 6.401449507966944b-2 - 1.502078053286415b-1 %i]
+(%i8) beta(2.5,2.3);
+(%o8) .08694748611299981
+
+(%i9) beta(2.5,1.4+%i);
+(%o9) 0.0640144950796695 - .1502078053286415 %i
+
+(%i10) beta(2.5b0,2.3b0);
+(%o10) 8.694748611299969b-2
+
+(%i11) beta(2.5b0,1.4b0+%i);
+(%o11) 6.401449507966944b-2 - 1.502078053286415b-1 %i
 @end example
 
 Beta is symmetric and has mirror symmetry:
@@ -500,10 +513,159 @@ The derivative of the beta function wrt @code{a}:
 @end deffn
 
 @deffn {Function} beta_incomplete (@var{a}, @var{b}, @var{z})
-The incomplete beta function A&S 6.6.1,
-defined as @code{integrate(t^(a-1)*(1-t)^(b-1), t, 0, z)}.
-@c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
-@c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
+The basic definition of the incomplete beta function (A&S 6.6.1) is
+
+@example
+                       z
+                      /
+                      [         b - 1  a - 1
+                      I  (1 - t)      t      dt
+                      ]
+                      /
+                       0
+@end example
+
+This definition is possible for @math{realpart(a)>0} and @math{realpart(b)>0} 
+and @math{abs(z)<1}. For other values the incomplete beta function can be 
+defined through a generalized hypergeometric function:
+
+@example
+   gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
+@end example
+(See functions.wolfram.com for a complete definition of the incomplete beta 
+function.)
+
+For negative integers @math{a = -n} and positive integers @math{b=m} with 
+@math{m<=n} the incomplete beta function is defined through
+
+@example
+                            m - 1           k
+                            ====  (1 - m)  z
+                      n - 1 \            k
+                     z       >    -----------
+                            /     k! (n - k)
+                            ====
+                            k = 0
+@end example
+Maxima uses this definition to simplify @code{beta_incomplete} for @var{a} a 
+negative integer.
+
+For @var{a} a positive integer, @code{beta_incomplete} simplifies for any 
+argument @var{b} and @var{z} and for @var{b} a positive integer for any 
+argument @var{a} and @var{z}, with the exception of @var{a} a negative integer.
+
+For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete} has the 
+specific value zero. For @var{z=1} and @math{realpart(b)>0}, 
+@code{beta_incomplete} simplifies to the beta function @code{beta(a,b)}.
+
+Maxima evaluates @code{beta_incomplete} numerically for real and complex values 
+in float or bigfloat precision. For the numerical evaluation an expansion of the 
+incomplete beta function in continued fractions is used.
+
+When @code{beta_expand} is @code{true}, Maxima expands expressions like 
+@code{beta_incomplete(a+n,b,z)} and @code{beta_incomplete(a-n,b,z)} where n is 
+a positive integer.
+
+Maxima knows the derivatives of @code{beta_incomplete} with respect to the 
+variables @var{a}, @var{b} and @var{z} and the integral with respect to the 
+variable @var{z}.
+
+Examples:
+
+Simplification for @var{a} a positive integer:
+@example
+(%i1) beta_incomplete(2,b,z);
+                                       b
+                            1 - (1 - z)  (b z + 1)
+(%o1)                       ----------------------
+                                  b (b + 1)
+@end example
+
+Simplification for @var{b} a positive integer:
+@example
+(%i2) beta_incomplete(a,2,z);
+                                               a
+                              (a (1 - z) + 1) z
+(%o2)                         ------------------
+                                  a (a + 1)
+@end example
+
+Simplification for @var{a} and @var{b} a positive integer:
+@example
+(%i3) beta_incomplete(3,2,z);
+                                               3
+                              (3 (1 - z) + 1) z
+(%o3)                         ------------------
+                                      12
+@end example
+
+@var{a} is a negative integer and @math{b<=(-a)}, Maxima simplifies:
+@example
+(%i4) beta_incomplete(-3,1,z);
+                                       1
+(%o4)                              - ----
+                                        3
+                                     3 z
+@end example
+
+For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
+@example
+(%i5) assume(a>0,b>0)$
+(%i6) beta_incomplete(a,b,0);
+(%o6)                                 0
+(%i7) beta_incomplete(a,b,1);
+(%o7)                            beta(a, b)
+@end example
+
+Numerical evaluation in float or bigfloat precision:
+@example
+(%i8) beta_incomplete(0.25,0.50,0.9);
+(%o8)                          4.594959440269333
+(%i9)  fpprec:25$
+(%i10) beta_incomplete(0.25,0.50,0.9b0);
+(%o10)                    4.594959440269324086971203b0
+@end example
+
+For @math{abs(z)>1} @code{beta_incomplete} returns a complex result:
+@example
+(%i11) beta_incomplete(0.25,0.50,1.7);
+(%o11)              5.244115108584249 - 1.45518047787844 %i
+@end example
+
+Results for more general complex arguments:
+@example
+(%i14) beta_incomplete(0.25+%i,1.0+%i,1.7+%i);
+(%o14)             2.726960675662536 - .3831175704269199 %i
+(%i15) beta_incomplete(1/2,5/4*%i,2.8+%i);
+(%o15)             13.04649635168716 %i - 5.802067956270001
+(%i16) 
+@end example
+
+Expansion, when @code{beta_expand} is @code{true}:
+@example
+(%i23) beta_incomplete(a+1,b,z),beta_expand:true;
+                                                       b  a
+                   a beta_incomplete(a, b, z)   (1 - z)  z
+(%o23)             -------------------------- - -----------
+                             b + a                 b + a
+
+(%i24) beta_incomplete(a-1,b,z),beta_expand:true;
+                                                           b  a - 1
+           beta_incomplete(a, b, z) (- b - a + 1)   (1 - z)  z
+(%o24)     -------------------------------------- - ---------------
+                           1 - a                         1 - a
+@end example
+ 
+Derivative and integral for @code{beta_incomplete}:
+@example
+(%i34) diff(beta_incomplete(a,b,z),z);
+                                     b - 1  a - 1
+(%o34)                        (1 - z)      z
+(%i35) integrate(beta_incomplete(a,b,z),z);
+(%o35)     beta_incomplete(a, b, z) z - beta_incomplete(a + 1, b, z)
+(%i36) diff(%,z);
+(%o36)                     beta_incomplete(a, b, z)
+@end example
 
 @opencatbox
 @category{Gamma and factorial functions}
@@ -513,8 +675,98 @@ defined as @code{integrate(t^(a-1)*(1-t)^(b-1), t, 0, z)}.
 @deffn {Function} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
 The regularized incomplete beta function A&S 6.6.2,
 defined as @code{beta_incomplete(a,b,z)/beta(a,b)}.
-@c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
-@c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
+
+As for @code{beta_incomplete} this definition is not complete. See 
+functions.wolfram.com for a complete definition of 
+@code{beta_incomplete_regularized}.
+
+@code{beta_incomplete_regularized} simplifies @var{a} or @var{b} a positive 
+integer.
+
+For @math{z=0} and @math{realpart(a)>0}, @code{beta_incomplete_regularized} has 
+the specific value 0. For @var{z=1} and @math{realpart(b)>0}, 
+@code{beta_incomplete_regularized} simplifies to 1.
+
+Maxima can evaluate @code{beta_incomplete_regularized} for real and complex 
+arguments in float and bigfloat precision.
+
+When @code{beta_expand} is @code{true}, Maxima expands 
+@code{beta_incomplete_regularized} for arguments @math{a+n} or @math{a-n}, 
+where n is an integer.
+
+Maxima knows the derivatives of @code{beta_incomplete_regularized} with respect 
+to the variables @var{a}, @var{b}, and @var{z} and the integral with respect to 
+the variable @var{z}.
+
+Examples:
+
+Simplification for @var{a} or @var{b} a positive integer:
+@example
+(%i1) beta_incomplete_regularized(2,b,z);
+                                       b
+(%o1)                       1 - (1 - z)  (b z + 1)
+
+(%i2) beta_incomplete_regularized(a,2,z);
+                                               a
+(%o2)                         (a (1 - z) + 1) z
+
+(%i3) beta_incomplete_regularized(3,2,z);
+                                               3
+(%o3)                         (3 (1 - z) + 1) z
+@end example
+
+For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
+@example
+(%i4) assume(a>0,b>0)$
+(%i5) beta_incomplete_regularized(a,b,0);
+(%o5)                                 0
+(%i6) beta_incomplete_regularized(a,b,1);
+(%o6)                                 1
+@end example
+
+Numerical evaluation for real and complex arguments in float and bigfloat 
+precision:
+@example
+(%i7) beta_incomplete_regularized(0.12,0.43,0.9);
+(%o7)                         .9114011367359802
+(%i8) fpprec:32$
+(%i9) beta_incomplete_regularized(0.12,0.43,0.9b0);
+(%o9)               9.1140113673598075519946998779975b-1
+(%i10) beta_incomplete_regularized(1+%i,3/3,1.5*%i);
+(%o10)             .2865367499935403 %i - 0.122995963334684
+(%i11) fpprec:20$
+(%i12) beta_incomplete_regularized(1+%i,3/3,1.5b0*%i);
+(%o12)      2.8653674999354036142b-1 %i - 1.2299596333468400163b-1
+@end example
+
+Expansion, when @code{beta_expand} is @code{true}:
+@example
+(%i13) beta_incomplete_regularized(a+1,b,z);
+                                                            b  a
+                                                     (1 - z)  z
+(%o13)        beta_incomplete_regularized(a, b, z) - ------------
+                                                     a beta(a, b)
+(%i14) beta_incomplete_regularized(a-1,b,z);
+                                                          b  a - 1
+                                                   (1 - z)  z
+(%o14)   beta_incomplete_regularized(a, b, z) - ----------------------
+                                                beta(a, b) (b + a - 1)
+@end example
+
+The derivative and the integral wrt @var{z}:
+@example
+(%i15) diff(beta_incomplete_regularized(a,b,z),z);
+                                     b - 1  a - 1
+                              (1 - z)      z
+(%o15)                        -------------------
+                                  beta(a, b)
+
+(%i16) integrate(beta_incomplete_regularized(a,b,z),z);
+(%o16) beta_incomplete_regularized(a, b, z) z
+                           a beta_incomplete_regularized(a + 1, b, z)
+                         - ------------------------------------------
+                                             b + a
+@end example
 
 @opencatbox
 @category{Gamma and factorial functions}
@@ -522,15 +774,162 @@ defined as @code{beta_incomplete(a,b,z)/beta(a,b)}.
 @end deffn
 
 @deffn {Function} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
-The generalized incomplete beta function,
-defined as @code{integrate(t^(a-1)*(1-t)^(b-1), t, z1, z2)}.
-@c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
-@c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
+The basic definition of the generalized incomplete beta function is
+
+@example
+                      z2
+                     /
+                     [          b - 1  a - 1
+                     I   (1 - t)      t      dt
+                     ]
+                     /
+                      z1
+@end example
+
+Maxima simplifies @code{beta_incomplete_regularized} for @var{a} and @var{b} 
+a positive integer.
+
+For @math{realpart(a)>0} and @math{z1=0} or @math{z2=0}, Maxima simplifies
+@code{beta_incomplete_generalized} to @code{beta_incomplete}. For 
+@math{realpart(b)>0} and @math{z1=1} or @var{z2=1}, Maxima simplifies to an 
+expression with @code{beta} and @code{beta_incomplete}.
+
+Maxima evaluates @code{beta_incomplete_regularized} for real and complex values 
+in float and bigfloat precision.
+
+When @code{beta_expand} is @code{true}, Maxima expands 
+@code{beta_incomplete_generalized} for @math{a+n} and @math{a-n}, @var{n} a 
+positive integer.
+
+Maxima knows the derivative of @code{beta_incomplete_generalized} with respect 
+to the variables @var{a}, @var{b}, @var{z1}, and @var{z2} and the integrals with
+respect to the variables @var{z1} and @var{z2}.
+
+Examples:
+
+Maxima simplifies @code{beta_incomplete_generalized} for @var{a} and @var{b} a 
+positive integer:
+@example
+(%i1) beta_incomplete_generalized(2,b,z1,z2);
+                          b                      b
+                  (1 - z1)  (b z1 + 1) - (1 - z2)  (b z2 + 1)
+(%o1)             -------------------------------------------
+                                   b (b + 1)
+
+(%i2) beta_incomplete_generalized(a,2,z1,z2);
+                                     a                      a
+                  (a (1 - z2) + 1) z2  - (a (1 - z1) + 1) z1
+(%o2)             -------------------------------------------
+                                   a (a + 1)
+
+(%i3) beta_incomplete_generalized(3,2,z1,z2);
+                  2      2                       2      2
+          (1 - z1)  (3 z1  + 2 z1 + 1) - (1 - z2)  (3 z2  + 2 z2 + 1)
+(%o3)     -----------------------------------------------------------
+                                      12
+@end example
+
+Simplification for specific values @math{z1=0}, @math{z2=0}, @math{z1=1}, or 
+@math{z2=1}:
+@example
+(%i4) assume(a > 0, b > 0)$
+(%i5) beta_incomplete_generalized(a,b,z1,0);
+(%o5)                    - beta_incomplete(a, b, z1)
+
+(%i6) beta_incomplete_generalized(a,b,0,z2);
+(%o6)                    - beta_incomplete(a, b, z2)
+
+(%i7) beta_incomplete_generalized(a,b,z1,1);
+(%o7)              beta(a, b) - beta_incomplete(a, b, z1)
+
+(%i8) beta_incomplete_generalized(a,b,1,z2);
+(%o8)              beta_incomplete(a, b, z2) - beta(a, b)
+@end example
+
+Numerical evaluation for real arguments in float or bigfloat precision:
+@example
+(%i9) beta_incomplete_generalized(1/2,3/2,0.25,0.31);
+(%o9)                        .09638178086368676
+
+(%i10) fpprec:32$
+(%i10) beta_incomplete_generalized(1/2,3/2,0.25,0.31b0);
+(%o10)               9.6381780863686935309170054689964b-2
+@end example
+
+Numerical evaluation for complex arguments in float or bigfloat precision:
+@example
+(%i11) beta_incomplete_generalized(1/2+%i,3/2+%i,0.25,0.31);
+(%o11)           - .09625463003205376 %i - .003323847735353769
+(%i12) fpprec:20$
+(%i13) beta_incomplete_generalized(1/2+%i,3/2+%i,0.25,0.31b0);
+(%o13)     - 9.6254630032054178691b-2 %i - 3.3238477353543591914b-3
+@end example
+
+Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when 
+@code{beta_expand} is @code{true}: 
+@example
+(%i14) beta_expand:true$
+(%i15) beta_incomplete_generalized(a+1,b,z1,z2);
+               b   a           b   a
+       (1 - z1)  z1  - (1 - z2)  z2
+(%o15) -----------------------------
+                   b + a
+                            a beta_incomplete_generalized(a, b, z1, z2)
+                          + -------------------------------------------
+                                               b + a
+
+(%i16) beta_incomplete_generalized(a-1,b,z1,z2);
+       beta_incomplete_generalized(a, b, z1, z2) (- b - a + 1)
+(%o16) -------------------------------------------------------
+                                1 - a
+                                          b   a - 1           b   a - 1
+                                  (1 - z2)  z2      - (1 - z1)  z1
+                                - -------------------------------------
+                                                  1 - a
+@end example
+
+Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
+@example
+(%i17) diff(beta_incomplete_generalized(a,b,z1,z2),z1);
+                                      b - 1   a - 1
+(%o17)                      - (1 - z1)      z1
+
+(%i18) integrate(beta_incomplete_generalized(a,b,z1,z2),z1);
+(%o18) beta_incomplete_generalized(a, b, z1, z2) z1
+                                        + beta_incomplete(a + 1, b, z1)
+
+(%i19) integrate(beta_incomplete_generalized(a,b,z1,z2),z2);
+(%o19) beta_incomplete_generalized(a, b, z1, z2) z2
+                                        - beta_incomplete(a + 1, b, z2)
+@end example
 
 @opencatbox
 @category{Gamma and factorial functions}
 @closecatbox
 @end deffn
+
+@defvr {Option variable} beta_expand
+Default value: false
+
+When @code{beta_expand} is @code{true}, @code{beta(a,b)} and related 
+functions are expanded for arguments like @math{a+n} or @math{a-n}, 
+where @math{n} is an integer.
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
+
+@defvr {Option variable} beta_args_sum_to_integer
+Default value: false
+
+When @code{beta_args_sum_to_integer} is @code{true}, Maxima simplifies 
+@code{beta(a,b)}, when the arguments @var{a} and @var{b} sum to an integer.
+
+@opencatbox
+@category{Gamma and factorial functions} @category{Simplification flags and variables}
+@closecatbox
+@end defvr
 
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
