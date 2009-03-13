@@ -759,15 +759,18 @@ for which partial derivatives have been defined by @code{gradef}.
 @end defvr
 
 @deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
-Attempts to compute the Laplace transform of @var{expr} with respect to the variable @var{t}
-and transform parameter @var{s}.
-If @code{laplace} cannot find a solution, a noun @code{'laplace} is returned.
+Attempts to compute the Laplace transform of @var{expr} with respect to the 
+variable @var{t} and transform parameter @var{s}.
 
-@code{laplace} recognizes in @var{expr} the functions
-@code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
-as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}.
-If some other functions are present,
-@code{laplace} may not be able to compute the transform.
+@code{laplace} recognizes in @var{expr} the functions @code{delta}, @code{exp},
+@code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
+as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}. If
+laplace fails to find a transform the function @code{specint} is called.
+@code{specint} can find the laplace transform for expressions with special
+functions like the bessel functions @code{bessel_j}, @code{bessel_i}, ... and
+can handle the @code{unit_step} function. See also @code{specint}.
+
+If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
 
 @c REPHRASE THIS
 @var{expr} may also be a linear, constant coefficient differential equation in
@@ -818,6 +821,37 @@ Examples:
 (%o4)        - -- (delta(t))!      + s  - delta(0) s
                dt           !
                             !t = 0
+(%i5) assume(a>0)$
+(%i6) laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
+                                              - a - 1
+                         gamma(a)   gamma(a) s
+(%o6)                    -------- - -----------------
+                            s            1     a
+                                        (- + 1)
+                                         s
+(%i7) factor(laplace(gamma_incomplete(1/2,t),t,s));
+                                              s + 1
+                      sqrt(%pi) (sqrt(s) sqrt(-----) - 1)
+                                                s
+(%o7)                 -----------------------------------
+                                3/2      s + 1
+                               s    sqrt(-----)
+                                           s
+(%i8) assume(exp(%pi*s)>1)$
+(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),simpsum;
+                         %i                         %i
+              ------------------------ - ------------------------
+                              - %pi s                    - %pi s
+              (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
+(%o9)         ---------------------------------------------------
+                                       2
+(%i9) factor(%);
+                                      %pi s
+                                    %e
+(%o9)                   -------------------------------
+                                             %pi s
+                        (s - %i) (s + %i) (%e      - 1)
+
 @end example
 
 @opencatbox
