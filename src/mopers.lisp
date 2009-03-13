@@ -12,11 +12,8 @@
 
 (macsyma-module mopers macro)
 
-(load-macsyma-macros defopt)
-(load-macsyma-macros-at-runtime 'defopt)
-
 ;; This file is the compile-time half of the OPERS package, an interface to the
-;; Macsyma general representaton simplifier.  When new expressions are being
+;; Maxima general representaton simplifier.  When new expressions are being
 ;; created, the macros in this file or the functions in NOPERS should be called
 ;; rather than the entrypoints in SIMP such as SIMPLIFYA or SIMPLUS.
 
@@ -35,50 +32,62 @@
 (defmacro =0 (x) `(equal ,x 0))
 (defmacro =1 (x) `(equal ,x 1))
 
-;; Addition -- call ADD with simplified operands; ADD* with unsimplified
-;; operands.
+;; Addition -- call ADD with simplified operands,
+;;             ADD* with unsimplified operands.
 
-(defopt add (&rest terms)
-  (cond ((= (length terms) 2) `(add2 . ,terms))
-	(t `(addn (list . ,terms) t))))
 (defun add (&rest terms)
-  (cond ((= (length terms) 2) (apply #'add2 terms))
-        (t (apply #'addn `(,terms t)))))
+  (if (= (length terms) 2)
+      (apply #'add2 terms)
+      (apply #'addn `(,terms t))))
 
-(defopt add* (&rest terms)
-  (cond ((= (length terms) 2) `(add2* . ,terms))
-	(t `(addn (list . ,terms) nil))))
+(define-compiler-macro add (&rest terms)
+  (if (= (length terms) 2)
+      `(add2 ,@terms)
+      `(addn (list ,@terms) t)))
+
 (defun add* (&rest terms)
-  (cond ((= (length terms) 2) (apply #'add2* terms))
-        (t (apply #'addn `(,terms nil)))))
+  (if (= (length terms) 2)
+      (apply #'add2* terms)
+      (apply #'addn `(,terms nil))))
 
-;; Multiplication -- call MUL or NCMUL with simplified operands; MUL* or NCMUL*
-;; with unsimplified operands.
+(define-compiler-macro add* (&rest terms)
+  (if (= (length terms) 2)
+      `(add2* ,@terms)
+      `(addn (list ,@terms) nil)))
 
-(defopt mul (&rest factors)
-  (cond ((= (length factors) 2) `(mul2 . ,factors))
-	((= (length factors) 3) `(mul3 . ,factors))
-	(t `(muln (list . ,factors) t))))
+;; Multiplication -- call MUL or NCMUL with simplified operands,
+;;                        MUL* or NCMUL* with unsimplified operands.
+
 (defun mul (&rest factors)
   (cond ((= (length factors) 2) (apply #'mul2 factors))
         ((= (length factors) 3) (apply #'mul3 factors))
         (t (apply #'muln `(,factors t)))))
 
-(defopt mul* (&rest factors)
-  (cond ((= (length factors) 2) `(mul2* . ,factors))
-	(t `(muln (list . ,factors) nil))))
+(define-compiler-macro mul (&rest factors)
+  (cond ((= (length factors) 2) `(mul2 ,@factors))
+	((= (length factors) 3) `(mul3 ,@factors))
+	(t `(muln (list ,@factors) t))))
+
 (defun mul* (&rest factors)
-  (cond ((= (length factors) 2) (apply #'mul2* factors))
-        (t (apply #'muln `(,factors nil)))))
+  (if (= (length factors) 2)
+      (apply #'mul2* factors)
+      (apply #'muln `(,factors nil))))
 
-;; the rest here can't be DEFOPT's because there aren't interpreted versions yet.
+(define-compiler-macro mul* (&rest factors)
+  (if (= (length factors) 2)
+      `(mul2* ,@factors)
+      `(muln (list ,@factors) nil)))
 
-(defmacro inv (x) `(power ,x -1))
-(defmacro inv* (x) `(power* ,x -1))
+(defmacro inv (x)
+  `(power ,x -1))
+
+(defmacro inv* (x)
+  `(power* ,x -1))
 
 (defmacro ncmul (&rest factors)
-  (cond ((= (length factors) 2) `(ncmul2 . ,factors))
-	(t `(ncmuln (list . ,factors) t))))
+  (if (= (length factors) 2)
+      `(ncmul2 ,@factors)
+      `(ncmuln (list ,@factors) t)))
 
 ;; (TAKE '(%TAN) X) = tan(x)
 ;; This syntax really loses.  Not only does this syntax lose, but this macro
@@ -88,20 +97,19 @@
 ;; (TAKE A B) --> (SIMPLIFYA (LIST A B) T)
 ;; (TAKE '(%SIN) A) --> (SIMP-%SIN (LIST '(%SIN) A) 1 T)
 
-(defmacro take (operator &rest args &aux simplifier)
-  (setq simplifier
-	(and (not (atom operator))
-	     (eq (car operator) 'quote)
-	     (cdr (assoc (caadr operator) '((%atan  . simp-%atan)
-					   (%tan   . simp-%tan)
-					   (%log   . simpln)
-					   (mabs   . simpabs)
-					   (%sin   . simp-%sin)
-					   (%cos   . simp-%cos)
-					   ($atan2 . simpatan2)
-					   ) :test #'eq))))
-  (cond (simplifier `(,simplifier (list ,operator . ,args) 1 t))
-	(t `(simplifya (list ,operator . ,args) t))))
+(defmacro take (operator &rest args)
+  (let ((simplifier (and (not (atom operator))
+			 (eq (car operator) 'quote)
+			 (cdr (assoc (caadr operator) '((%atan  . simp-%atan)
+							(%tan   . simp-%tan)
+							(%log   . simpln)
+							(mabs   . simpabs)
+							(%sin   . simp-%sin)
+							(%cos   . simp-%cos)
+							($atan2 . simpatan2)) :test #'eq)))))
+    (if simplifier
+	`(,simplifier (list ,operator ,@args) 1 t)
+	`(simplifya (list ,operator ,@args) t))))
 
 (defmacro min%i () ''((mtimes simp) -1 $%i)) ;-%I
 (defmacro 1//2 () ''((rat simp) 1 2))	;1/2
@@ -112,20 +120,20 @@
 (defun simplify (x)
   (simplifya x nil))
 
-;; A hand-made DEFSTRUCT for dealing with the Macsyma MDO structure.
+;; A hand-made DEFSTRUCT for dealing with the Maxima MDO structure.
 ;; Used in GRAM, etc. for storing/retrieving from DO structures.
 
 (defmacro make-mdo () '(list (list 'mdo) nil nil nil nil nil nil nil))
 
 (defmacro mdo-op (x)     `(car (car ,x)))
 
-(defmacro mdo-for (x)    `(car (cdr ,x)))
-(defmacro mdo-from (x)   `(car (cddr ,x)))
-(defmacro mdo-step (x)   `(car (cdddr ,x)))
-(defmacro mdo-next (x)   `(car (cddddr ,x)))
-(defmacro mdo-thru (x)   `(car (cdr (cddddr ,x))))
-(defmacro mdo-unless (x) `(car (cddr (cddddr ,x))))
-(defmacro mdo-body (x)	 `(car (cdddr (cddddr ,x))))
+(defmacro mdo-for (x)    `(second ,x))
+(defmacro mdo-from (x)   `(third ,x))
+(defmacro mdo-step (x)   `(fourth ,x))
+(defmacro mdo-next (x)   `(fifth ,x))
+(defmacro mdo-thru (x)   `(sixth ,x))
+(defmacro mdo-unless (x) `(seventh ,x))
+(defmacro mdo-body (x)	 `(eighth ,x))
 
-(defmacro defgrad (name arguments . body)
-  `(defprop ,name (,arguments . ,body) grad))
+(defmacro defgrad (name arguments &body body)
+  `(defprop ,name (,arguments ,@body) grad))
