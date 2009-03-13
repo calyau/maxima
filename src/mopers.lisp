@@ -108,13 +108,9 @@
 (defmacro half () ''((rat simp) 1 2))	;1/2
 (defmacro i//2 () ''((mtimes simp) ((rat simp) 1 2) $%i)) ;%I/2
 
-;; On PDP-10s, this is a function so as to save address space.  A one argument
-;; call is shorter than a two argument call, and this function is called
-;; several places.  In Franz, Multics, and the LISPM, this macros out on the
-;; assumption that calls are more expensive than the additional memory.
-
-(defopt simplify (x) `(simplifya ,x nil))
-(defun simplify (x) (simplifya x nil))
+(declaim (inline simplify))
+(defun simplify (x)
+  (simplifya x nil))
 
 ;; A hand-made DEFSTRUCT for dealing with the Macsyma MDO structure.
 ;; Used in GRAM, etc. for storing/retrieving from DO structures.

@@ -164,11 +164,3 @@
 
 (defmfun porm (s x) (if s x (neg x)))
 (defmfun morp (s x) (if s (neg x) x))
-
-;; On PDP-10s, this is a function so as to save address space.  A one argument
-;; call is shorter than a two argument call, and this function is called
-;; several places.  In Franz, Multics, and the LISPM, this macros out on the
-;; assumption that calls are more expensive than the additional memory.
-
-(defmfun simplify (x)
-  (simplifya x nil))
