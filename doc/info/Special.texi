@@ -305,16 +305,99 @@ The gamma function and the related beta, psi and incomplete gamma
 functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 6.
 
-@deffn {Function} gamma (@var{x})
-The gamma function A&S 6.1.1.
+@deffn {Function} gamma (@var{z})
+The basic definition of the gamma function (A&S 6.1.1) is
 
-@c SEEMS POINTLESS TO MENTION THE FOLLOWING IDENTITY, 
-@c AS MAXIMA DOESN'T SEEM TO CARRY OUT THIS SIMPLIFICATION
-@c GAMMA(I)=(I-1)!  for I a positive integer.
+@example
+                               inf
+                              /
+                              [     z - 1   - t
+                   gamma(z) = I    t      %e    dt
+                              ]
+                              /
+                               0
+@end example
+
+Maxima simplifies @code{gamma} for positive integer and positive and negative 
+rational numbers. For half integral values the result is a rational number times 
+@code{sqrt(%pi)}. The simplification for integer values is controlled by 
+@code{factlim}. For integers greater than @code{factlim} the numerical result of 
+the factorial function, which is used to calculate @code{gamma}, will overflow. 
+The simplification for rational numbers is controlled by @code{gammalim} to 
+avoid internal overflow. See @code{factlim} and @code{gammalim}.
+
+For negative integers @code{gamma} is not definied.
+
+Maxima can evalute @code{gamma} numerically for real and complex values in float 
+and bigfloat precision.
+
+@code{gamma} has mirror symmetry.
+
+When @code{gamma_expand} is @code{true}, Maxima expands @code{gamma} for 
+arguments @code{z+n} and @code{z-n} where @code{n} is an integer.
+
+Maxima knows the derivate of @code{gamma}.
+
+Examples:
+
+Simplification for integer, half integral, and rational numbers:
+
+@example
+(%i1) map('gamma,[1,2,3,4,5,6,7,8,9]);
+(%o1)               [1, 1, 2, 6, 24, 120, 720, 5040, 40320]
+
+(%i2) map('gamma,[1/2,3/2,5/2,7/2]);
+                           sqrt(%pi)  3 sqrt(%pi)  15 sqrt(%pi)
+(%o2)          [sqrt(%pi), ---------, -----------, ------------]
+                               2           4            8
+
+(%i3) map('gamma,[2/3,5/3,7/3]);
+                                        2           1
+                                2 gamma(-)  4 gamma(-)
+                            2           3           3
+(%o3)                [gamma(-), ----------, ----------]
+                            3       3           9
+@end example
+
+Numerical evaluation for real and complex values:
+
+@example
+(%i4) map('gamma,[2.5,2.5b0]);
+(%o4)             [1.329340388179137, 1.329340388179137b0]
+
+(%i5) map('gamma,[1.0+%i,1.0b0+%i]);
+(%o5) [.4980156681183558 - .1549498283018108 %i, 
+                      4.980156681183561b-1 - 1.549498283018107b-1 %i]
+@end example
+
+@code{gamma} has mirror symmetry:
+
+@example
+(%i8) declare(z,complex)$
+(%i9) conjugate(gamma(z));
+(%o9)                         gamma(conjugate(z))
+@end example
+
+Maxima expands @code{gamma(z+n)} and @code{gamma(z-n)}, when @code{gamma_expand} 
+is @code{true}:
+
+@example
+(%i10) gamma_expand:true$
+(%i11) [gamma(z+1),gamma(z-1),gamma(z+2)/gamma(z+1)];
+                                      gamma(z)
+(%o11)                   [z gamma(z), --------, z + 1]
+                                       z - 1
+@end example
+
+The deriviative of @code{gamma}:
+
+@example
+(%i12) diff(gamma(z),z);
+(%o12)                         psi (z) gamma(z)
+                                  0
+@end example
 
 See also @code{makegamma}.
-
-The variable @code{gammalim} controls simplification of the gamma function.
 
 The Euler-Mascheroni constant is @code{%gamma}.
 
@@ -424,6 +507,7 @@ To express the beta function as a ratio of gamma functions see @code{makegamma}.
 Examples:
 
 Simplification, when one of the arguments is an integer:
+
 @example
 (%i1) [beta(2,3),beta(2,1/3),beta(2,a)];
                                1   9      1
@@ -432,6 +516,7 @@ Simplification, when one of the arguments is an integer:
 @end example
 
 Simplification for two rational numbers as arguments which sum to an integer:
+
 @example
 (%i2) [beta(1/2,5/2),beta(1/3,2/3),beta(1/4,3/4)];
                           3 %pi   2 %pi
@@ -441,6 +526,7 @@ Simplification for two rational numbers as arguments which sum to an integer:
 
 When setting @code{beta_args_sum_to_integer} to @code{true} more general 
 expression are simplified, when the sum of the arguments is an integer:
+
 @example
 (%i3) beta_args_sum_to_integer:true$
 (%i4) beta(a+1,-a+2);
@@ -450,6 +536,7 @@ expression are simplified, when the sum of the arguments is an integer:
 @end example
 
 The possible results, when one of the arguments is a negative integer: 
+
 @example
 (%i5) [beta(-3,1),beta(-3,2),beta(-3,3)];
                                     1  1    1
@@ -459,6 +546,7 @@ The possible results, when one of the arguments is a negative integer:
 
 @code{beta(a+n,b)} or @code{beta(a-n)} with @code{n} an integer simplifies when 
 @code{beta_expand} is @code{true}:
+
 @example
 (%i6) beta_expand:true$
 (%i7) [beta(a+1,b),beta(a-1,b),beta(a+1,b)/beta(a,b+1)];
@@ -469,6 +557,7 @@ The possible results, when one of the arguments is a negative integer:
 @end example
 
 Beta is not definied, when one of the arguments is zero:
+
 @example
 (%i7) beta(0,b);
 beta: expected nonzero arguments; found 0, b
@@ -477,6 +566,7 @@ beta: expected nonzero arguments; found 0, b
 
 Numercial evaluation for real and complex arguments in float or bigfloat 
 precision:
+
 @example
 (%i8) beta(2.5,2.3);
 (%o8) .08694748611299981
@@ -492,6 +582,7 @@ precision:
 @end example
 
 Beta is symmetric and has mirror symmetry:
+
 @example
 (%i14) beta(a,b)-beta(b,a);
 (%o14)                                 0
@@ -532,6 +623,7 @@ defined through a generalized hypergeometric function:
 @example
    gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
 @end example
+
 (See functions.wolfram.com for a complete definition of the incomplete beta 
 function.)
 
@@ -547,6 +639,7 @@ For negative integers @math{a = -n} and positive integers @math{b=m} with
                             ====
                             k = 0
 @end example
+
 Maxima uses this definition to simplify @code{beta_incomplete} for @var{a} a 
 negative integer.
 
@@ -573,6 +666,7 @@ variable @var{z}.
 Examples:
 
 Simplification for @var{a} a positive integer:
+
 @example
 (%i1) beta_incomplete(2,b,z);
                                        b
@@ -582,6 +676,7 @@ Simplification for @var{a} a positive integer:
 @end example
 
 Simplification for @var{b} a positive integer:
+
 @example
 (%i2) beta_incomplete(a,2,z);
                                                a
@@ -591,6 +686,7 @@ Simplification for @var{b} a positive integer:
 @end example
 
 Simplification for @var{a} and @var{b} a positive integer:
+
 @example
 (%i3) beta_incomplete(3,2,z);
                                                3
@@ -600,6 +696,7 @@ Simplification for @var{a} and @var{b} a positive integer:
 @end example
 
 @var{a} is a negative integer and @math{b<=(-a)}, Maxima simplifies:
+
 @example
 (%i4) beta_incomplete(-3,1,z);
                                        1
@@ -609,6 +706,7 @@ Simplification for @var{a} and @var{b} a positive integer:
 @end example
 
 For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
+
 @example
 (%i5) assume(a>0,b>0)$
 (%i6) beta_incomplete(a,b,0);
@@ -618,6 +716,7 @@ For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
 @end example
 
 Numerical evaluation in float or bigfloat precision:
+
 @example
 (%i8) beta_incomplete(0.25,0.50,0.9);
 (%o8)                          4.594959440269333
@@ -627,12 +726,14 @@ Numerical evaluation in float or bigfloat precision:
 @end example
 
 For @math{abs(z)>1} @code{beta_incomplete} returns a complex result:
+
 @example
 (%i11) beta_incomplete(0.25,0.50,1.7);
 (%o11)              5.244115108584249 - 1.45518047787844 %i
 @end example
 
 Results for more general complex arguments:
+
 @example
 (%i14) beta_incomplete(0.25+%i,1.0+%i,1.7+%i);
 (%o14)             2.726960675662536 - .3831175704269199 %i
@@ -642,6 +743,7 @@ Results for more general complex arguments:
 @end example
 
 Expansion, when @code{beta_expand} is @code{true}:
+
 @example
 (%i23) beta_incomplete(a+1,b,z),beta_expand:true;
                                                        b  a
@@ -657,6 +759,7 @@ Expansion, when @code{beta_expand} is @code{true}:
 @end example
  
 Derivative and integral for @code{beta_incomplete}:
+
 @example
 (%i34) diff(beta_incomplete(a,b,z),z);
                                      b - 1  a - 1
@@ -701,6 +804,7 @@ the variable @var{z}.
 Examples:
 
 Simplification for @var{a} or @var{b} a positive integer:
+
 @example
 (%i1) beta_incomplete_regularized(2,b,z);
                                        b
@@ -716,6 +820,7 @@ Simplification for @var{a} or @var{b} a positive integer:
 @end example
 
 For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
+
 @example
 (%i4) assume(a>0,b>0)$
 (%i5) beta_incomplete_regularized(a,b,0);
@@ -726,6 +831,7 @@ For the specific values @math{z=0} and @math{z=1}, Maxima simplifies:
 
 Numerical evaluation for real and complex arguments in float and bigfloat 
 precision:
+
 @example
 (%i7) beta_incomplete_regularized(0.12,0.43,0.9);
 (%o7)                         .9114011367359802
@@ -740,6 +846,7 @@ precision:
 @end example
 
 Expansion, when @code{beta_expand} is @code{true}:
+
 @example
 (%i13) beta_incomplete_regularized(a+1,b,z);
                                                             b  a
@@ -754,6 +861,7 @@ Expansion, when @code{beta_expand} is @code{true}:
 @end example
 
 The derivative and the integral wrt @var{z}:
+
 @example
 (%i15) diff(beta_incomplete_regularized(a,b,z),z);
                                      b - 1  a - 1
@@ -809,6 +917,7 @@ Examples:
 
 Maxima simplifies @code{beta_incomplete_generalized} for @var{a} and @var{b} a 
 positive integer:
+
 @example
 (%i1) beta_incomplete_generalized(2,b,z1,z2);
                           b                      b
@@ -831,6 +940,7 @@ positive integer:
 
 Simplification for specific values @math{z1=0}, @math{z2=0}, @math{z1=1}, or 
 @math{z2=1}:
+
 @example
 (%i4) assume(a > 0, b > 0)$
 (%i5) beta_incomplete_generalized(a,b,z1,0);
@@ -847,6 +957,7 @@ Simplification for specific values @math{z1=0}, @math{z2=0}, @math{z1=1}, or
 @end example
 
 Numerical evaluation for real arguments in float or bigfloat precision:
+
 @example
 (%i9) beta_incomplete_generalized(1/2,3/2,0.25,0.31);
 (%o9)                        .09638178086368676
@@ -857,6 +968,7 @@ Numerical evaluation for real arguments in float or bigfloat precision:
 @end example
 
 Numerical evaluation for complex arguments in float or bigfloat precision:
+
 @example
 (%i11) beta_incomplete_generalized(1/2+%i,3/2+%i,0.25,0.31);
 (%o11)           - .09625463003205376 %i - .003323847735353769
@@ -867,6 +979,7 @@ Numerical evaluation for complex arguments in float or bigfloat precision:
 
 Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when 
 @code{beta_expand} is @code{true}: 
+
 @example
 (%i14) beta_expand:true$
 (%i15) beta_incomplete_generalized(a+1,b,z1,z2);
@@ -889,6 +1002,7 @@ Expansion for @math{a+n} or @math{a-n}, @var{n} a positive integer, when
 @end example
 
 Derivative wrt the variable @var{z1} and integrals wrt @var{z1} and @var{z2}:
+
 @example
 (%i17) diff(beta_incomplete_generalized(a,b,z1,z2),z1);
                                       b - 1   a - 1
@@ -1447,3 +1561,4 @@ Returns @code{imagpart(nzeta(z))}.
 @category{Special functions}
 @closecatbox
 @end deffn
+
