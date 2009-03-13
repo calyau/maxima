@@ -41,7 +41,7 @@
 	(list level)
       (mtell-open "~%~S Enter ~:@M~%" level op)
       (mgrind form nil)
-      (setq form (subrcall nil (get op 'otranslate) form))
+      (setq form (apply (get op 'otranslate) form))
       (mtell-open "~%~S Exit  ~:@M" level op)
       (pprint form)
       form)))
