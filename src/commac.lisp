@@ -7,17 +7,10 @@
 
 (in-package :maxima)
 
-(eval-when
-    #+gcl (compile load eval)
-    #-gcl (:compile-toplevel :load-toplevel :execute)
-
-    (defmacro defun-prop (f arg &body body)
-      (assert (listp f))
-      #+gcl (eval-when (eval)
-	      (compiler::compiler-def-hook (car f) body))
-      `(progn 'compile
-	(setf (get ',(car f) ',(second f))
-	 #'(lambda ,arg ,@body)))))
+(defmacro defun-prop (f arg &body body)
+  (assert (listp f))
+  #+gcl (eval-when (eval) (compiler::compiler-def-hook (first f) body))
+  `(setf (get ',(first f) ',(second f)) #'(lambda ,arg ,@body)))
 
 (defvar *prin1* nil)		  ;a function called instead of prin1.
 
