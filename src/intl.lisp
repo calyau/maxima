@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.7 $
+;;; $Revision: 1.8 $
 ;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
@@ -23,7 +23,7 @@
 ;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 ;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ;;; DAMAGE.
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.7 2009-03-01 22:43:30 rtoy Exp $")
+#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.8 2009-03-13 14:49:17 are_muc Exp $")
 
 (in-package :intl)
 
@@ -115,6 +115,7 @@
 	(load-domain domain locale locale-dir))))
 
 (defun string-to-octets (string encoding)
+  (declare (ignorable encoding))
   #+(and CMU Unicode)
   (ext:string-to-octets string :external-format encoding)
   ;;@@ add other implementations
@@ -123,6 +124,7 @@
 	    #'char-code string))
 
 (defun octets-to-string (octets encoding)
+  (declare (ignorable encoding))
   #+(and CMU Unicode)
   (ext:octets-to-string octets :external-format encoding)
   ;;@@ add other implementations
