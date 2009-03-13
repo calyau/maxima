@@ -33,9 +33,8 @@
   "Return noun form instead of internal Lisp symbols for integrals
   that we don't support")
 
-(defvar *hyp-return-noun-form-flag* nil)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar *hyp-return-noun-flag* nil
+  "Flag to signal that we have no result and to return a noun.")
 
 (defvar *debug-hypgeo* nil
   "Print debug information if enabled.")
@@ -128,8 +127,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Recognize u*asin(x)
-(defun u*asinx
-    (exp)
+(defun u*asinx (exp)
   (m2 exp
       '((mplus)
 	((coeffpt) (u nonzerp)((%asin)(x hasvar)))
@@ -137,8 +135,7 @@
       nil))
 
 ;; Recognize u*atan(x)
-(defun u*atanx
-    (exp)
+(defun u*atanx (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)((%atan)(x hasvar)))
@@ -146,14 +143,12 @@
       nil))
 
 
-
 ;; I (rtoy) think this is the tail of the incomplete gamma function.
 (defun gminc (a b)
   (list '(%gamma_incomplete) a b))
 
 ;; Lommel's little s[u,v](z) function.
-(defun littleslommel
-    (m n z)
+(defun littleslommel (m n z)
   (list '(mqapply)(list '($%s array) m n) z))
 
 ;; Whittaker's M function
@@ -172,11 +167,12 @@
 (defun parcyl (x n)
   (list '(mqapply) (list '($%d array) n) x))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;...HOPEFULLY AMONG WHATEVER GARBAGE IT RECOGNIZES J[V](W).
+;;; The pattern to match special functions
 
-(defun onej
-    (exp)
+;; Recognize bessel(v,w)
+(defun onej (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -286,10 +282,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize %h[v1,v11](w1)*%h[v2,v21](w2), the product of 2 Hankel
-;; functions.
-(defun twoh
-    (exp)
+;; Recognize %h[v1,v11](w1)*%h[v2,v21](w2), the product of 2 Hankel functions.
+(defun twoh (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -339,8 +333,7 @@
       nil))
 
 ;; Recognize bessel_k(v1,w1)*%h[v2,v21](w2)
-(defun onekoneh
-    (exp)
+(defun onekoneh (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -353,8 +346,7 @@
       nil))
 
 ;; Recognize bessel_i(v1,w1)*bessel_j(v2,w2)
-(defun oneionej
-    (exp)
+(defun oneionej (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -365,8 +357,7 @@
       nil))
 
 ;; Recognize bessel_i(v1,w1)*%h[v2,v21](w2)
-(defun oneioneh
-    (exp)
+(defun oneioneh (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -379,8 +370,7 @@
       nil))
 
 ;; Recognize %h[v1,v11](w1)*bessel_j(v2,w2)
-(defun onehonej
-    (exp)
+(defun onehonej (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -393,8 +383,7 @@
       nil))
 
 ;; Recognize bessel_i(v1,w1)*bessel_y(v2,w2)
-(defun oneioney
-    (exp)
+(defun oneioney (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -405,8 +394,7 @@
       nil))
 
 ;; Recognize bessel_i(v1,w1)*bessel_k(v2,w2)
-(defun oneionek
-    (exp)
+(defun oneionek (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -417,8 +405,7 @@
       nil))
 
 ;; Recognize bessel_i(v,w)^2
-(defun onei^2
-    (exp)
+(defun onei^2 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -430,8 +417,7 @@
       nil))
 
 ;; Recognize %h[v1,v2](w)^2
-(defun oneh^2
-    (exp)
+(defun oneh^2 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -444,130 +430,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize erf(w)
-(defun onerf
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)(u nonzerp)((%erf)(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize log(w)
-(defun onelog
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)(u nonzerp)((%log)(w hasvar)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize erfc(w)
-(defun onerfc
-    (exp)
-  (m2 exp
-      '((mplus)
-	;; erfc is implemented as a simplifying function. Change $erfc to %erfc.
-	((coeffpt)(u nonzerp)((%erfc)(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-(defun oneei
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)(u nonzerp)(($%ei)(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-(defun onekelliptic
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)(u nonzerp)(($kelliptic)(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-(defun onee
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)(u nonzerp)(($%e)(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize gamma_incomplete(w1, w2), the tail of the incomplete gamma
-;; function.
-(defun onegammaincomplete
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%gamma_incomplete)(w1 freevarpar)(w2 true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize gammagreek(w1,w2), the incomplete gamma function,
-;; integrate(t^(v-1)*exp(-t),t,0,x)
-(defun onegammagreek
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 (($gammagreek)(w1 freevarpar)(w2 true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize hstruve[v](w), Struve's H function.
-(defun onehstruve
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($hstruve array)(v true))(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize lstruve[v](w), Struve's L function.
-(defun onelstruve
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($lstruve array)(v true))(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-
-;; Recognize Lommel s[v1,v2](w) function.
-(defun ones
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%s array)(v1 true)(v2 true))(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Lommel S[v1,v2](w) function
-(defun oneslommel
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($slommel array)(v1 true)(v2 true))
-	  (w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize u*bessel_y(v,w)
+;; Recognize bessel_y(v,w)
 (defun oney (exp)
   (m2 exp
       '((mplus)
@@ -577,9 +440,8 @@
 	((coeffpp) (a zerp)))
       nil))
 
-;; Recognize u*bessel_k(v,w)
-(defun onek
-    (exp)
+;; Recognize bessel_k(v,w)
+(defun onek (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -588,30 +450,8 @@
 	((coeffpp) (a zerp)))
       nil))
 
-;; Recognize %d[v](w), parabolic cylinder function
-(defun oned
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%d array) (v true)) (w true)))
-	((coeffpp) (a zerp)))
-      nil))
-
-(defun onekbateman
-    (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($kbateman array) (v true)) (w true)))
-	((coeffpp) (a zerp)))
-      nil))
-
-;; Recognize %h[v1,v2](w)
-(defun oneh
-    (exp)
+;; Recognize %h[v1,v2](w), hankel 1 or 2 function
+(defun oneh (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -622,21 +462,212 @@
 	((coeffpp) (a zerp)))
       nil))
 
-;; Recognize %m[v1,v2](w), Whittaker M function
-(defun onem
-    (exp)
+;; Recognize log(w)
+(defun onelog (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%log)(w hasvar)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize erf(w)
+(defun onerf (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%erf)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize erfc(w)
+(defun onerfc (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%erfc)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize fresnel_s(w)
+(defun onefresnel_s (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%fresnel_s)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize fresnel_c(w)
+(defun onefresnel_c (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%fresnel_c)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize %ei(w) (new is expintegral_ei)
+(defun oneei (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)(($%ei)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize expintegral_e(v,w)
+(defun oneexpintegral_e (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((%expintegral_e) (v true) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize expintegral_ei(w)
+(defun oneexpintetral_ei (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%expintegral_ei)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize expintegral_e1(w)
+(defun oneexpintetral_e1 (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%expintegral_e1)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize expintegral_si(w)
+(defun oneexpintetral_si (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%expintegral_si)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize expintegral_shi(w)
+(defun oneexpintetral_shi (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%expintegral_shi)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize expintegral_ci(w)
+(defun oneexpintetral_ci (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%expintegral_ci)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize expintegral_chi(w)
+(defun oneexpintetral_chi (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%expintegral_chi)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize kelliptic(w), (new would be elliptic_kc)
+(defun onekelliptic (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)(($kelliptic)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize %e(w), (new would be elliptic_ec)
+(defun onee (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)(($%e)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize gamma_incomplete(w1, w2), Incomplete Gamma function
+(defun onegammaincomplete (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((%gamma_incomplete)(w1 freevarpar)(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize gammagreek(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
+(defun onegammagreek (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 (($gammagreek)(w1 freevarpar)(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize hstruve[v](w), Struve's H function.
+(defun onehstruve (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($hstruve array)(v true))(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize lstruve[v](w), Struve's L function.
+(defun onelstruve (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($lstruve array)(v true))(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize Lommel s[v1,v2](w) function.
+(defun ones (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%s array)(v1 true)(v2 true))(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize S[v1,v2](w), Lommel function
+(defun oneslommel (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
 	 ((mqapply)
-	  (($%m array) (v1 true)(v2 true))
+	  (($slommel array)(v1 true)(v2 true))
 	  (w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize %d[v](w), Parabolic Cylinder function
+(defun oned (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%d array) (v true)) (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
-(defun onel
-    (exp)
+;; Recognize kbatmann(v,w), Batemann function
+(defun onekbateman (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($kbateman array) (v true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize %l[v1,v2](w), Generalized Laguerre function
+(defun onel (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -647,8 +678,8 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun onec
-    (exp)
+;; Recognize %c[v1,v2](w), Gegenbauer function
+(defun onec (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -659,8 +690,8 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun onet
-    (exp)
+;; Recognize %t[v1,v2](w), Chebyshev function of the first kind
+(defun onet (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -669,8 +700,8 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun oneu
-    (exp)
+;; Recognize %u[v1,v2](w), Chebyshev function of the second kind
+(defun oneu (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -679,8 +710,8 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun onepjac
-    (exp)
+;; Recognize %p[v1,v2,v3](w), Jacobi function
+(defun onepjac (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -691,26 +722,19 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun onehe (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%he array) (v1 true)) (w true)))
-	((coeffpp) (a zerp)))
-      nil))
-
-(defun oneq (exp)
+;; Recognize %p[v1,v2](w), Jacobi function
+(defun hyp-onep (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
 	 ((mqapply)
-	  (($%q array) (v1 true)(v2 true))
+	  (($%p array) (v1 true)(v2 true))
 	  (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize %p[v1](w), Jacobi function
 (defun onep0 (exp)
   (m2 exp
       '((mplus)
@@ -720,13 +744,24 @@
 	((coeffpp) (a zerp)))
       nil))
 
-(defun hyp-onep (exp)
+;; Recognize %he[v1](w), Hermite function
+(defun onehe (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%he array) (v1 true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize %q[v1,v2](w), Associated Legendre function of the second kind
+(defun oneq (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
 	 ((mqapply)
-	  (($%p array) (v1 true)(v2 true))
+	  (($%q array) (v1 true)(v2 true))
 	  (w true)))
 	((coeffpp) (a zerp)))
       nil))
@@ -743,10 +778,23 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize %m[v1,v2](w), Whittaker M function
+(defun onem (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%m array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;...RECOGNIZES L.T.E. "U*%E^(A*X+E*F(X)-P*X+C)+D".
 
-(defun ltep
-    (exp)
+(defun ltep (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
@@ -839,7 +887,7 @@
 	       (d (cdras 'd l1)))
 	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	   (add
-	     (mul c (list '(%log) (div (add s b) (add s a))))
+	     (mul c (simplify (list '(%log) (div (add s b) (add s a)))))
 	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
 	((setq l1 (m2-sum-with-exp-case2 u))
@@ -868,26 +916,27 @@
 	     (mul
 	       c
 	       (add
-		 (mul (add s a a) (list '(%log) (add s a a)))
-		 (mul s (list '(%log) s))
-		 (mul -2 (add s a) (list '(%log) (add s a)))))
+		 (mul (add s a a) (simplify (list '(%log) (add s a a))))
+		 (mul s (simplify (list '(%log) s)))
+		 (mul -2 (add s a) (simplify (list '(%log) (add s a))))))
 	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
-	((setq l1 (m2-sum-with-exp-case4 u))
-	 ;; c * t^-1 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
-	 (let ((c (cdras 'c l1))
-	       (a (div (cdras 'a l1) (mul 4 '$%i)))
-	       (d (cdras 'd l1)))
-	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
-	   (add
-	     (mul
-	       -1 c
-	       (list '(%log)
-		 (add 1
-		   (div
-		     (mul 4 a a)
-		     (mul (sub s (mul 2 '$%i a)) (sub s (mul 2 '$%i a)))))))
-	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+        ((setq l1 (m2-sum-with-exp-case4 u))
+         ;; c * t^-1 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
+         (let ((c (cdras 'c l1))
+               (a (div (cdras 'a l1) (mul 4 '$%i)))
+               (d (cdras 'd l1)))
+           (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
+           (add
+             (mul
+               -1 c
+               (simplify 
+                 (list '(%log)
+                   (add 1
+                     (div
+                       (mul 4 a a)
+                       (mul (sub s (mul 2 '$%i a)) (sub s (mul 2 '$%i a))))))))
+             (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
        ((setq l1 (m2-sum-with-exp-case5 u))
 	 ;; c * t^-1 * (1 - %e^(2*a*t)) + d
@@ -896,7 +945,7 @@
 	       (d (cdras 'd l1)))
 	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	   (add
-	     (mul c (list '(%log) (div (sub s a) s)))
+	     (mul c (simplify (list '(%log) (div (sub s a) s))))
 	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
 
 	(t
@@ -1033,11 +1082,14 @@
 ;;; Test functions for the pattern m2-sum-with-exp-case<n>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun equal-times-minus-one (a b) (equal a (mul -1 b)))
+(defun equal-times-minus-one (a b) 
+  (equal a (mul -1 b)))
 
-(defun equal-times-minus-two (a b) (equal a (mul -2 b)))
+(defun equal-times-minus-two (a b) 
+  (equal a (mul -2 b)))
 
-(defun equal-div-two (a b) (equal a (div b 2)))
+(defun equal-div-two (a b) 
+  (equal a (div b 2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1052,7 +1104,7 @@
      (return 'other-defint-to-follow-defexec)))
 
 (defun defexec (exp var)
-  (let* ((*hyp-return-noun-form-flag* nil) ; We reset the flag.
+  (let* ((*hyp-return-noun-flag* nil) ; We reset the flag.
 	 (form (simplifya exp nil))
 	 (l (defltep exp))
 	 (s (cdras 'a l))) ; Get the parameter of the Laplace transform.
@@ -1073,14 +1125,14 @@
 	   (let ((result (negtest l s)))
 	     ;; At this point we construct the noun form if one of the
 	     ;; called routines set the global flag. If the global flag
-	     ;; is not set, the noun form has been allready constructed.
-	     (if (and *hyp-return-noun-form-p* *hyp-return-noun-form-flag*)
-	       (list '($specint) exp var)
+	     ;; is not set, the noun form has been already constructed.
+	     (if (and *hyp-return-noun-form-p* *hyp-return-noun-flag*)
+	       (list '(%specint) exp var)
 	       result)))
 	  (t
 	   ;; If necessary we construct the noun form.
 	   (if *hyp-return-noun-form-p*
-	     (list '($specint) exp var)
+	     (list '(%specint) exp var)
   	     'other-defint-to-follow-defexec)))))
 
 ;; L is the integrand of the transform, after pattern matching.  S is
@@ -1121,7 +1173,7 @@
 		(mfuncall '$forget `((mgreaterp) psey 0))))))
 
      (return
-       (setq *hyp-return-noun-form-flag* 'other-defint-to-follow-negtest))))
+       (setq *hyp-return-noun-flag* 'other-defint-to-follow-negtest))))
 
 ;; Compute the transform of
 ;;
@@ -1146,9 +1198,10 @@
 	((coeffpp) (d zerp)))
       nil))
 
-(defun hasvarnovarp (a) (and (hasvar a) (not (varp a))))
-;;it dispatches according to the kind of transform it matches
+(defun hasvarnovarp (a) 
+  (and (hasvar a) (not (varp a))))
 
+;;it dispatches according to the kind of transform it matches
 
 (defun hypgeo-exec (exp var *par*)
   (prog (l u a c e f)
@@ -1162,8 +1215,7 @@
 	    (return (ltscale u var *par* c a e f))))
      (return 'other-trans-to-follow)))
 
-(defun substl
-    (p1 p2 p3)
+(defun substl (p1 p2 p3)
   (cond ((eq p1 p2) p3)(t (maxima-substitute p1 p2 p3))))
 
 ;; Compute the transform of u*%e^(-p*t+e*f)
@@ -1188,10 +1240,11 @@
 	     (format t "~&   : l = ~A~%" l))
 	   (mul
 	     (cdras 'c l)
-	     (list
-	      '(%sum)
-	       (sendexec (cdras 'u l) 1)
-	       (cdras 'i l) (cdras 'l l) (cdras 'h l))))
+	     (simplify 
+               (list
+	        '(%sum)
+	         (sendexec (cdras 'u l) 1)
+	         (cdras 'i l) (cdras 'l l) (cdras 'h l)))))
 
 	  ((setq l (m2-unit_step u))
 	   ;; We have found the Unit Step function.
@@ -1253,8 +1306,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Match c*t^v
-(defun c*t^v
-    (exp)
+(defun c*t^v (exp)
   (m2 exp
       '((mtimes)
 	((coefftt)(c freevar))
@@ -1268,8 +1320,8 @@
   (cond ((zerp e)
 	 (cond (*asinx* (lt-ltp 'asin u var nil))
 	       (*atanx* (lt-ltp 'atan u var nil))
-	       (t 'lt-asinatan-failed-1)))
-	(t 'lt-asinatan-failed-2)))
+	       (t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-1))))
+	(t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Laplace transform of c*t^v*exp(-p*t+e*f).  L contains the pattern
@@ -1294,15 +1346,19 @@
 	   (f36p147 c e))             ; with the constant c.
 	  ((and (equal v 0) (e^t f))
 	   (f37p147 c e))
-	  (t 'other-lt-exponential-to-follow))))
+	  (t 
+           (setq *hyp-return-noun-flag* 'other-lt-exponential-to-follow)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun t^2(exp)(m2 exp '((mexpt)(t varp) 2) nil))
+(defun t^2 (exp)
+  (m2 exp '((mexpt)(t varp) 2) nil))
 
-(defun sqroott(exp)(m2 exp '((mexpt)(t varp)((rat) 1 2)) nil))
+(defun sqroott (exp)
+  (m2 exp '((mexpt)(t varp)((rat) 1 2)) nil))
 
-(defun t^-1(exp)(m2 exp '((mexpt)(t varp) -1) nil))
+(defun t^-1 (exp)
+  (m2 exp '((mexpt)(t varp) -1) nil))
 
 (defun e^-t (exp)
   (m2 exp
@@ -1321,14 +1377,7 @@
 	 ;; Both a and v must be positive
 	 (f24p146 c v a))
 	(t
-	 (if *hyp-return-noun-form-p*
-	     `((%specint) ,(mul* c
-				 (pow var (add v -1))
-				 (pow '$%e (div (mul -1 var var)
-						(mul 8 a)))
-				 (pow '$%e (mul -1 *par* var)))
-	       ,var)
-	     'fail-on-f24p146test))))
+         (setq *hyp-return-noun-flag* 'fail-on-f24p146test))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Check if conditions for f35p147 hold
@@ -1360,7 +1409,7 @@
 	(t
 	 ;; Set a global flag. When *hyp-return-noun-form-p* is T the noun
 	 ;; form will be constructed in the routine DEFEXEC.
-	 (setq *hyp-return-noun-form-flag* 'fail-on-f35p147test))))
+	 (setq *hyp-return-noun-flag* 'fail-on-f35p147test))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1369,24 +1418,14 @@
   (cond ((eq (asksign a) '$positive)
 	 (f29p146 c v a))
 	(t
-	 (if *hyp-return-noun-form-p*
-	     `((%specint) ,(mul (pow var (add v -1))
-				(pow '$%e (div (mul -1 a)
-					       (mul 4 var)))
-				(pow '$%e (mul -1 *par* var)))
-	       ,var)
-	     'fail-on-f29p146test))))
+         (setq *hyp-return-noun-flag* 'fail-on-f29p146test))))
 
 ;; Check if conditions for f1p137 hold
 (defun f1p137test (pow)
   (cond ((eq (asksign (add pow 1)) '$positive)
 	 (f1p137 pow))
 	(t
-	 (if *hyp-return-noun-form-p*
-	     `((%specint) ,(mul (pow var pow)
-				(pow '$%e (mul -1 *par* var)))
-	       ,var)
-	     'fail-in-arbpow))))
+         (setq *hyp-return-noun-flag* 'fail-in-arbpow))))
 
 ;; Table of Integral Transforms
 ;;
@@ -1446,7 +1485,7 @@
   (let ((v (add v 1)))
     (mul
       c
-      (list '(%gamma) (add v v))
+      (simplify (list '(%gamma) (add v v)))
       (power 2 (sub 1 v))		; Is this supposed to be here?
       (power *par* (mul -1 v))
       (power '$%e (mul a a (inv 8) (inv *par*)))
@@ -1476,10 +1515,9 @@
 ;;   -> a^(-p)*gamma_incomplete(-p,a)
 (defun f37p147 (c a)
   (let ((-a (mul -1 a)))
-    (mul* c
-	  (power -a *par*)
-	 `((%gamma_incomplete) ,(mul -1 *par*) ,-a))))
-
+    (mul c
+         (power -a *par*)
+         ($gamma_incomplete (mul -1 *par*) -a))))
 
 ;; Table of Integral Transforms
 ;;
@@ -1527,7 +1565,6 @@
     (cond ((or $prefer_d (whittindtest (add (div v 2) inv4) inv4))
 	   (parcyl z v))
 	  (t (simpdtf z v)))))
-
 
 ;; Express parabolic cylinder function as a hypergeometric function.
 ;;
@@ -2016,8 +2053,8 @@
 
      (cond ((setq l (onei u))
 	    (setq index1 (cdras 'v l)
-		  arg1   (mul* '$%i (cdras 'w l))
-		  rest   (mul* (inv (power '$%i index1)) (cdras 'u l)))
+		  arg1   (mul '$%i (cdras 'w l))
+		  rest   (mul (inv (power '$%i index1)) (cdras 'u l)))
 	    (return (lt1j rest arg1 index1))))
 
      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2089,7 +2126,7 @@
      ;; We have specialized the pattern for arbpow1. Now a lot of integrals
      ;; will fail correctly and we have to return a noun form.
 
-     (return (setq *hyp-return-noun-form-flag* 'other-j-cases-next))))
+     (return (setq *hyp-return-noun-flag* 'other-j-cases-next))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Laplace transform of c*t^v*%e(-p*t)
@@ -2101,7 +2138,7 @@
   (cond ((or (eq exp var) (zerp pow))
 	 (f1p137test pow))
 	(t
-	 (setq *hyp-return-noun-form-flag* 'lt-arbow-failed))))
+	 (setq *hyp-return-noun-flag* 'lt-arbow-failed))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Laplace transfor of c*t^v*(1+t)^w
@@ -2126,7 +2163,7 @@
 	 (inv b)
 	 (power (mul *par* a (inv b)) (mul -1 (add pow2 1)))
 	 (power '$%e (mul *par* a (inv b)))
-	 (list '(%gamma_incomplete) (add pow2 1) (mul *par* a (inv b)))))
+	 ($gamma_incomplete (add pow2 1) (mul *par* a (inv b)))))
       ((not (maxima-integerp (add pow1 pow2 2)))
        ;; The general result is a Hypergeometric U function U(a,b,z) which can
        ;; be represented by two Hypergeometic 1F1 functions for the special
@@ -2136,7 +2173,7 @@
 	   c
 	   (power a (add pow1 pow2 1))
 	   (inv (power b (add pow1 1)))
-	   (list '(%gamma) (add pow1 pow2 1))
+	   (simplify (list '(%gamma) (add pow1 pow2 1)))
 	   (power (mul *par* a (inv b)) (mul -1 (add pow1 pow2 1)))
 	   (hgfsimp-exec
 	     (list (mul -1 pow2))
@@ -2146,9 +2183,9 @@
 	   c
 	   (power a (add pow1 pow2 1))
 	   (inv (power b (add pow1 1)))
-	   (list '(%gamma) (add pow1 1))
-	   (list '(%gamma) (mul -1 (add pow1 pow2 1)))
-	   (inv (list '(%gamma) (mul -1 pow2)))
+	   (simplify (list '(%gamma) (add pow1 1)))
+	   (simplify (list '(%gamma) (mul -1 (add pow1 pow2 1))))
+	   (inv (simplify (list '(%gamma) (mul -1 pow2))))
 	   (hgfsimp-exec
 	     (list (add pow1 1))
 	     (list (add pow1 pow2 2))
@@ -2159,13 +2196,13 @@
 	  c
 	  (power a (add pow1 pow2 1))
 	  (inv (power b (add pow1 1)))
-	  (list '(%gamma) (add pow1 1))
+	  (simplify (list '(%gamma) (add pow1 1)))
 	  (list
 	   '(%hypergeometric_u)
 	    (add pow1 1)
 	    (add pow1 pow2 2)
 	    (mul *par* a (inv b))))))
-    (setq *hyp-return-noun-form-flag* 'lt-arbpow2-failed)))
+    (setq *hyp-return-noun-flag* 'lt-arbpow2-failed)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Logarithmic function
@@ -2183,8 +2220,7 @@
 
   (let* ((l (c*t^v rest))
 	 (c (cdras 'c l))
-	 (v (add (cdras 'v l) 1)) ; because v -> v-1
-	)
+	 (v (add (cdras 'v l) 1))) ; because v -> v-1
 
     (when *debug-hypgeo*
       (format t "~&LT-LOG (rest arg):~%")
@@ -2199,17 +2235,17 @@
 	 (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	 (cond
 	   (l1
-	     (mul*
+	     (mul
 	       c
 	       (simplify (list '(%gamma) v))
 	       (inv (power *par* v))
 	       (sub
 		 (simplify (list '(mqapply) (list '($psi array) 0) v))
-		 (list '(%log) (div *par* a)))))
+		 (simplify (list '(%log) (div *par* a))))))
 	   (t
-	    (setq *hyp-return-noun-form-flag* 'lt-log-failed)))))
+	    (setq *hyp-return-noun-flag* 'lt-log-failed)))))
       (t
-       (setq *hyp-return-noun-form-flag* 'lt-log-failed)))))
+       (setq *hyp-return-noun-flag* 'lt-log-failed)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Pattern for lt-log.
@@ -2252,7 +2288,8 @@
 			 ((eq flg '2kti)
 			  (mul (kti i1 a1)
 			       (kti i2 a2))))))
-	(t 'product-of-y-with-nofract-indices)))
+	(t 
+         (setq *hyp-return-noun-flag* 'product-of-y-with-nofract-indices))))
 
 ;; Laplace transform of a product of Bessel functions.  A1, A2 are
 ;; the args of the two functions. I1, I2 are the indices of each
@@ -2284,7 +2321,8 @@
 			 ((eq flg 'htjorykti)
 			  (mul (htjory i1 i a1)
 			       (kti i2 a2))))))
-	(t 'product-of-i-y-of-nofract-index)))
+	(t 
+         (setq *hyp-return-noun-flag* 'product-of-i-y-of-nofract-index))))
 
 ;; Laplace transform of a single special function.  A is the arg of
 ;; the special function. I1, I11 are the indices of the function.  FLG
@@ -2323,7 +2361,7 @@
 			 ((eq flg 'slommel)
 			  (slommeltjandy i1 i11 a1)))))
 	(t
-	  (setq *hyp-return-noun-form-flag* 'y-of-nofract-index))))
+	  (setq *hyp-return-noun-flag* 'y-of-nofract-index))))
 
 ;; Laplace transform of a single Bessel Y function.
 ;;
@@ -2338,24 +2376,24 @@
 	 (lt1y rest arg1  index1))
 	(t (fractest2 rest arg1 index1 nil 'ytj))))
 
-(defun pjactest
-    (rest arg index1 index2 index3)
+(defun pjactest (rest arg index1 index2 index3)
   (cond ((maxima-integerp index1)
 	 (lt-ltp 'onepjac
 		 rest
 		 arg
 		 (list index1 index2 index3)))
-	(t 'ind-should-be-an-integer-in-polys)))
+	(t 
+         (setq *hyp-return-noun-flag* 'ind-should-be-an-integer-in-polys))))
 
-(defun eqrat(a)(cond ((numberp a) nil)(t (equal (caar a) 'rat))))
+(defun eqrat (a)
+  (cond ((numberp a) nil)(t (equal (caar a) 'rat))))
 
-(defun integertest
-    (r arg i1 i2 flg)
+(defun integertest (r arg i1 i2 flg)
   (cond ((maxima-integerp i1)(dispatchpoltrans r arg i1 i2 flg))
-	(t 'index-should-be-an-integer-in-polys)))
+	(t 
+         (setq *hyp-return-noun-flag* 'index-should-be-an-integer-in-polys))))
 
-(defun dispatchpoltrans
-    (r x i1 i2 flg)
+(defun dispatchpoltrans (r x i1 i2 flg)
   (sendexec r
 	    (cond ((eq flg 'l)(ltw x i1 i2))
 		  ((eq flg 'he)(hetd x i1))
@@ -2363,7 +2401,8 @@
 		  ((eq flg 't)(ttpjac x i1))
 		  ((eq flg 'u)(utpjac x i1)))))
 
-(defun sendexec(r a)(distrexecinit ($expand (mul (init r) a))))
+(defun sendexec (r a)
+  (distrexecinit ($expand (mul (init r) a))))
 
 ;; Test for Whittaker W function.  Simplify this if possible, or
 ;; convert to Whittaker M function.
@@ -2463,9 +2502,9 @@
   (let ((diva2 (div a 2)))
     (mul
       ;; Use the Gamma function and not the Factorial function.
-      (list '(%gamma) (add n a 1))
-      (inv (list '(%gamma) (add a 1)))
-      (inv (list '(%gamma) (add n 1)))
+      (simplify (list '(%gamma) (add n a 1)))
+      (inv (simplify (list '(%gamma) (add a 1))))
+      (inv (simplify (list '(%gamma) (add n 1))))
       (power x (sub (inv -2) diva2))
       (power '$%e (div x 2))
       ;; Correct is Whittaker M not W
@@ -2542,7 +2581,7 @@
 ;;         = gamma_incomplete(0,x)
 ;;
 (defun eitgammaincomplete (x)
-  (mul* -1 (gminc 0 (mul -1 x))))
+  (mul -1 ($gamma_incomplete 0 (mul -1 x))))
 
 ;; Express Lommel S function in terms of J and Y.
 ;; Luke gives
@@ -2606,7 +2645,7 @@
       (wwhit x (div (sub a 1) 2) (div a 2)))
     ;; In all other cases the representation as a Gammagreek function
     (sub
-      (list '(%gamma) a)
+      (simplify (list '(%gamma) a))
       (list '($gammagreek) a x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2699,8 +2738,6 @@
 (defun kmodbes(z v)
   `((%bessel_k) ,v ,z))
 
-
-
 (defun tan% (arg)
   (list '(%tan) arg))
 
@@ -2789,37 +2826,42 @@
 		   (list 'list index1 index2)))))
 
 ;; Transform of a square of a Bessel J function
-(defun lt1j^2
-    (rest arg index)
+(defun lt1j^2 (rest arg index)
   (lt-ltp 'twoj rest arg (list 'list index index)))
 
 ;; Transform of incomplete Gamma function
-(defun lt1gammagreek
-    (rest arg1 arg2)
+(defun lt1gammagreek (rest arg1 arg2)
   (lt-ltp 'gammagreek rest arg2 arg1))
 
 ;; Laplace transform of r*%m[i1,i2](a)
 (defun lt1m (r a i1 i2)
   (lt-ltp 'onem r a (list i1 i2)))
 
-(defun lt1p(r a i1 i2)(lt-ltp 'hyp-onep r a (list i1 i2)))
+(defun lt1p (r a i1 i2)
+  (lt-ltp 'hyp-onep r a (list i1 i2)))
 
-(defun lt1q(r a i1 i2)(lt-ltp 'oneq r a (list i1 i2)))
+(defun lt1q (r a i1 i2)
+  (lt-ltp 'oneq r a (list i1 i2)))
 
-(defun lt1erf(rest arg)(lt-ltp 'onerf rest arg nil))
+(defun lt1erf (rest arg)
+  (lt-ltp 'onerf rest arg nil))
 
-(defun lt1log(rest arg)(lt-ltp 'onelog rest arg nil))
+(defun lt1log (rest arg)
+  (lt-ltp 'onelog rest arg nil))
 
-(defun lt1kelliptic(rest arg)(lt-ltp 'onekelliptic rest arg nil))
+(defun lt1kelliptic (rest arg)
+  (lt-ltp 'onekelliptic rest arg nil))
 
-(defun lt1e(rest arg)(lt-ltp 'onee rest arg nil))
+(defun lt1e (rest arg)
+  (lt-ltp 'onee rest arg nil))
 
-(defun lt1hstruve(rest arg1 index1)(lt-ltp 'hs rest arg1 index1))
+(defun lt1hstruve (rest arg1 index1)
+  (lt-ltp 'hs rest arg1 index1))
 
-(defun lt1lstruve(rest arg1 index1)(lt-ltp 'hl rest arg1 index1))
+(defun lt1lstruve (rest arg1 index1)
+  (lt-ltp 'hl rest arg1 index1))
 
-(defun lt1s
-    (rest arg1 index1 index2)
+(defun lt1s (rest arg1 index1 index2)
   (lt-ltp 's rest arg1 (list index1 index2)))
 
 ;; Express the Struve H function as a hypergeometric function.
@@ -3041,7 +3083,7 @@
 
 	    ;; We have to add the return of a noun form.
 	    (return
-	      (setq *hyp-return-noun-form-flag* 'prop4-to-be-applied))))
+	      (setq *hyp-return-noun-flag* 'prop4-to-be-applied))))
      labl1
      ;; No const term, if we're here.
      (cond ((eq flg 'oney)
@@ -3070,17 +3112,15 @@
      ;; We currently don't know how to handle this yet.
      ;; We add the return of a noun form.
      (return
-       (setq *hyp-return-noun-form-flag* 'other-ca-later))))
+       (setq *hyp-return-noun-flag* 'other-ca-later))))
 
-(defun lty
-    (rest arg index)
+(defun lty (rest arg index)
   (prog(l)
      (cond ((setq l (d*x^m*%e^a*x rest))
 	    (return (execfy l arg index))))
-     (return 'fail-in-lty)))
+     (return (setq *hyp-return-noun-flag* 'fail-in-lty))))
 
-(defun %$etest
-    (l l1)
+(defun %$etest (l l1)
   (prog(a q)
      (setq q (cdras 'q l))
      (cond ((equal q 1)(setq a 0)(go loop)))
@@ -3328,8 +3368,7 @@
 
 ;; Match d*x^m*%e^(a*x).  If we match, Q is the e^(a*x) part, A is a,
 ;; M is M, and D is d.
-(defun d*x^m*%e^a*x
-    (exp)
+(defun d*x^m*%e^a*x (exp)
   (m2 exp
       '((mtimes)
 	((coefftt)(d freevarpar))
@@ -3339,8 +3378,7 @@
 	 ((mtimes)((coefftt)(a freevarpar)) (x varp))))
       nil))
 
-(defun execf19
-    (l1 l2)
+(defun execf19 (l1 l2)
   (prog(ans)
      (setq ans (execargmatch (car (cddddr l2))))
      (cond ((eq (car ans) 'dionimo)
@@ -3348,15 +3386,14 @@
      ;; We specialized the pattern for the argument. Now the test fails
      ;; correctly and we have to add the return of a noun form.
      (return
-       (setq *hyp-return-noun-form-flag* 'next-for-other-args))))
+       (setq *hyp-return-noun-flag* 'next-for-other-args))))
 
-(defun execfy
-    (l arg index)
+(defun execfy (l arg index)
   (prog(ans)
      (setq ans (execargmatch arg))
      (cond ((eq (car ans) 'dionimo)
 	    (return (dionarghyp-y l index (cadr ans)))))
-     (return 'fail-in-execfy)))
+     (return (setq *hyp-return-noun-flag* 'fail-in-execfy))))
 
 ;; Executive for recognizing the sort of argument to the
 ;; hypergeometric function.  We look to see if the arg is of the form
@@ -3374,8 +3411,7 @@
 ;; We have hypergeometric function whose arg looks like a*x^m+c.  L1
 ;; matches the d*x^m... part, L2 is the hypergeometric function and
 ;; arg is the match for a*x^m+c.
-(defun dionarghyp
-    (l1 l2 arg)
+(defun dionarghyp (l1 l2 arg)
   (prog(a m c)
      (setq a
 	   (cdras 'a arg)
@@ -3385,12 +3421,11 @@
 	   (cdras 'c arg))
      (cond ((and (maxima-integerp m)(zerp c))
 	    (return (f19cond a m l1 l2))))
-     (return 'prop4-and-other-cases-to-follow)))
+     (return (setq *hyp-return-noun-flag* 'prop4-and-other-cases-to-follow))))
 
 
 ;; Match f(x)+c
-(defun f+c
-    (exp)
+(defun f+c (exp)
   (m2 exp
       '((mplus)((coeffpt)(f hasvar))((coeffpp)(c freevar)))
       nil))
@@ -3406,7 +3441,8 @@
 	((coeffpp) (c freevar)))
       nil))
 
-(defun freevar0(m)(cond ((equal m 0) nil)(t (freevar m))))
+(defun freevar0 (m)
+  (cond ((equal m 0) nil)(t (freevar m))))
 
 #+nil
 (defun addarglist
@@ -3431,8 +3467,7 @@
     (nreverse res)))
 
 
-(defun f19cond
-    (a m l1 l2)
+(defun f19cond (a m l1 l2)
   (prog(p q s d)
      (setq p (caadr l2)
 	   q (cadadr l2)
@@ -3458,8 +3493,8 @@
      (return
 	;; With the orginal code we don't get a nice noun form in all cases.
 	;; We use the mechanism to set the global flag.
-	(setq *hyp-return-noun-form-flag*
-	      'failed-on-f19cond-multiply-the-other-cases-with-d))))
+	(setq *hyp-return-noun-flag* 
+              'failed-on-f19cond-multiply-the-other-cases-with-d))))
 
 ;; Table of Laplace transforms, p 220, formula 19:
 ;;
@@ -3514,17 +3549,7 @@
 	    (let ((ans (f50cond a l index)))
 	      (unless (symbolp ans)
 		(return ans)))))
-     (if *hyp-return-noun-form-p*
-	 (return `((%specint) ,(mul (cdras 'd l)
-				    (pow var (cdras 'm l))
-				    (cdras 'q l)
-				    (bessy index
-					   (add c
-						(mul a
-						     (pow var m))))
-				    (pow '$%e (mul -1 *par* var)))
-		   ,var))
-	 (return 'fail-in-dionarghyp-y))))
+     (return (setq *hyp-return-noun-flag* 'fail-in-dionarghyp-y))))
 
 (defun f2p105v2cond (a l index)
   (prog (d m)
@@ -3533,7 +3558,7 @@
      (cond ((eq (checksigntm ($realpart (sub m index)))
 		'$positive)
 	    (return (f2p105v2cond-simp m index a))))
-     (return 'fail-in-f2p105v2cond)))
+     (return (setq *hyp-return-noun-flag* 'fail-in-f2p105v2cond))))
 
 (defun f50cond (a l v)
   (prog (d m)
@@ -3551,7 +3576,7 @@
 					(inv 2.)))))
 	(setq a (mul a a (inv 4.)))
 	(return (f50p188-simp d m v a))))
-     (return 'fail-in-f50cond)))
+     (return (setq *hyp-return-noun-flag* 'fail-in-f50cond))))
 
 ;; Table of Integral Transforms
 ;;
