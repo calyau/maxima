@@ -1788,3 +1788,58 @@
 		       q0 q1
 		       p1 p2
 		       q1 q2))))))))
+
+(defun coerce (obj type)
+  (flet ((coerce-error ()
+	   (error "Cannot coerce ~A to type ~S" obj type)))
+    (cond ((typep obj type)
+	   obj)
+	  ((subtypep type 'bigfloat)
+	   ;; (coerce foo 'bigfloat).  Foo has to be a real
+	   (cond ((typep obj 'real)
+		  (bigfloat obj))
+		 (t
+		  (coerce-error))))
+	  ((subtypep type 'complex-bigfloat)
+	   ;; (coerce foo 'complex-bigfloat).  Foo has to be a real or complex
+	   (cond ((typep obj 'real)
+		  (bigfloat obj 0))
+		 ((typep obj 'complex)
+		  (bigfloat obj))
+		 ((typep obj 'bigfloat)
+		  (bigfloat obj 0))
+		 (t
+		  (coerce-error))))
+	  ((typep obj 'bigfloat)
+	   ;; (coerce bigfloat foo)
+	   (cond ((subtypep type 'cl:float)
+		  (float obj (cl:coerce 0 type)))
+		 ((subtypep type '(cl:complex double-float))
+		  (cl:complex (float (realpart obj) 1d0)
+			      (float (imagpart obj) 1d0)))
+		 ((subtypep type '(cl:complex single-float))
+		  (cl:complex (float (realpart obj) 1f0)
+			      (float (imagpart obj) 1f0)))
+		 ((subtypep type 'cl:complex)
+		  ;; What should we do here?  Return a
+		  ;; complex-bigfloat?  A complex double-float?
+		  ;; complex single-float?  I arbitrarily select
+		  ;; complex double-float for now.
+		  (cl:complex (float (realpart obj) 1d0)
+			      (float (imagpart obj) 1d0)))
+		 (t
+		  (coerce-error))))
+	  ((typep obj 'complex-bigfloat)
+	   ;; (coerce complex-bigfloat foo)
+	   (cond ((subtypep type 'complex-bigfloat)
+		  obj)
+		 ((subtypep type '(cl:complex double-float))
+		  (cl:complex (float (realpart obj) 1d0)
+			      (float (imagpart obj) 1d0)))
+		 ((subtypep type '(cl:complex single-float))
+		  (cl:complex (float (realpart obj) 1f0)
+			      (float (imagpart obj) 1f0)))
+		 (t
+		  (coerce-error))))
+	  (t
+	   (cl:coerce obj type)))))

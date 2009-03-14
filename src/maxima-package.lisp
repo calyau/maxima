@@ -151,13 +151,10 @@
 	   #:float-digits
 	   #:rational
 	   #:rationalize
+	   #:coerce
 	   )
   
-  ;; Not yet implemented
-  #+nil
-  (:shadow #:coerce
-	   )
-    ;; Export types
+  ;; Export types
   (:export #:bigfloat
 	   #:complex-bigfloat)
   ;; Export functions
@@ -227,6 +224,7 @@
 	   #:float-digits
 	   #:rational
 	   #:rationalize
+	   #:coerce
 	   ))
 
 (defpackage :intl
