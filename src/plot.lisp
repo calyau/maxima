@@ -2,7 +2,28 @@
 
 (in-package :maxima)
 
-;; see bottom of file for examples
+#|
+Examples
+
+/* plot of z^(1/3)...*/
+plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
+
+/* plot of z^(1/2)...*/
+plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
+
+/* moebius */
+plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],[x,-%pi,%pi],[y,-1,1],['grid,50,15]) ;
+
+/* klein bottle */
+plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
+-5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
+5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))],[x,-%pi,%pi],[y,-%pi,%pi],
+['grid,40,40])                          ;
+/* torus */
+plot3d([cos(y)*(10.0+6*cos(x)),
+sin(y)*(10.0+6*cos(x)),
+-6*sin(x)], [x,0,2*%pi],[y,0,2*%pi],['grid,40,40]) ;
+|#
 
 (defun ensure-string (x)
   (cond
@@ -127,8 +148,6 @@
                                                          :input :stream
                                                          :output nil :wait nil
                                                          :search t)))
-;;  #+gcl (setq *gnuplot-stream*
-;;            (si::fp-output-stream (si:run-process path nil)))
   #+gcl (setq *gnuplot-stream*
               (open (concatenate 'string "| " path) :direction :output))
   #+ecl (progn
@@ -420,18 +439,6 @@
     (declare (type (cl:array flonum) rot))
     ($copy_pts rotation-matrix *rot* 0)
         
-    ;;    (setf (rot rot  0 0) (* cosphi costh))
-    ;;    (setf (rot rot  1 0) (- sinth))
-    ;;    (setf (rot rot 2 0) (* costh sinphi))
-    ;;
-    ;;    (setf (rot rot  0 1) (* cosphi sinth))
-    ;;    (setf (rot rot  1 1) costh)
-    ;;    (setf (rot rot 2 1) (* sinth sinphi))
-    ;;
-    ;;    (setf (rot rot  0 2) (- sinphi))
-    ;;    (setf (rot rot  1 2) 0.0)
-    ;;    (setf (rot rot 2 2) cosphi)
-
     (loop with j = 0
            while (< j l)
            do
@@ -1042,10 +1049,6 @@
                     (adaptive-plot #'fun (car x-start) (car x-mid) (car x-end)
                                    (car y-start) (car y-mid) (car y-end)
                                    depth 1e-5))))
-          
-
-        ;; jfa: I don't think this is necessary any longer
-        ;;      (format t "Points = ~D~%" (length result))
 
         ;; Fix up out-of-range values
         (do ((x result (cddr x))
@@ -1265,8 +1268,8 @@
           ($style (setq styles (cddr v)))
           ($legend (setq legend (cddr v)))
 	  ($psfile
-	   ($set_plot_option '((MLIST SIMP) $GNUPLOT_TERM $PS))
-	   ($set_plot_option `((MLIST SIMP) $GNUPLOT_OUT_FILE ,(third v)))
+	   ($set_plot_option '((mlist simp) $gnuplot_term $ps))
+	   ($set_plot_option `((mlist simp) $gnuplot_out_file ,(third v)))
 	   (setq psfile t))
           (t ($set_plot_option v)))
         (merror "Option ~M should be a list" v)))
@@ -1531,22 +1534,9 @@
       )
     output-file))
 
-;;(defun maxima-bin-search (command)
-;;  (or ($file_search command
-;;                  `((mlist) , (maxima-path "bin" "###")))
-;;               command))
-    
 
-; Adapted from MSTRINGP (change & to $).
 (defun msymbolp (x)
   (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
-
-
-;; $SHOW_FILE APPEARS TO BE ESSENTIALLY THE SAME AS $PRINTFILE
-
-;;(defun $show_file(file)
-;;  (princ (file-to-string ($file_search file)))
-;;  '$done)
 
 
 (defun $tcl_output  (lis i &optional (skip 2))
@@ -1786,14 +1776,11 @@
           ($zlabel (setq zlabel (ensure-string (third v))))
           ($legend (setq legend (cddr v)))
  	  ($psfile
-	   ($set_plot_option '((MLIST SIMP) $GNUPLOT_TERM $PS))
-	   ($set_plot_option `((MLIST SIMP) $GNUPLOT_OUT_FILE ,(third v)))
+	   ($set_plot_option '((mlist simp) $gnuplot_term $ps))
+	   ($set_plot_option `((mlist simp) $gnuplot_out_file ,(third v)))
 	   (setq psfile t))
           (t ($set_plot_option v)))
         (merror "Option ~M should be a list" v)))
-;  (cond (options
-;         (dolist (v options)
-;           ($set_plot_option v))))
   (setf plot-format  ($get_plot_option '$plot_format 2))
   (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
   (if ($get_plot_option '$gnuplot_out_file 2)
@@ -2016,27 +2003,3 @@
                    ))))
       ))
   output-file)
-  
-
-#|
-Examples
-
-/* plot of z^(1/3)...*/
-plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
-
-/* plot of z^(1/2)...*/
-plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
-
-/* moebius */
-plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],[x,-%pi,%pi],[y,-1,1],['grid,50,15]) ;
-
-/* klein bottle */
-plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
--5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
-5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))],[x,-%pi,%pi],[y,-%pi,%pi],
-['grid,40,40])                          ;
-/* torus */
-plot3d([cos(y)*(10.0+6*cos(x)),
-sin(y)*(10.0+6*cos(x)),
--6*sin(x)], [x,0,2*%pi],[y,0,2*%pi],['grid,40,40]) ;
-|#
