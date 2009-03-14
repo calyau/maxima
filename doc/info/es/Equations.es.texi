@@ -1,4 +1,4 @@
-@c english version 1.29
+@c english version 1.31
 @menu
 * Funciones y variable para las ecuaciones::
 @end menu
@@ -13,7 +13,42 @@ Valor por defecto: @code{[]}
 La variable @code{%rnum_list} es la lista de variables introducidas en las soluciones por la funci@'on @code{algsys}.
 Las variables @code{%r} se a@~naden a @code{%rnum_list} en su orden de creaci@'on. Esto es @'util para hacer sustituciones en la soluci@'on.
 
-@c NEED EXAMPLE HERE
+@c ===beg===
+@c solve ([x + y = 3], [x,y]);
+@c %rnum_list;
+@c sol : solve ([x + 2*y + 3*z = 4], [x,y,z]);
+@c %rnum_list;
+@c for i : 1 thru length (%rnum_list) do
+@c   sol : subst (t[i], %rnum_list[i], sol)$
+@c sol;
+@c ===end===
+@example
+@group
+(%i1) solve ([x + y = 3], [x,y]);
+(%o1)              [[x = 3 - %r1, y = %r1]]
+@end group
+@group
+(%i2) %rnum_list;
+(%o2)                       [%r1]
+@end group
+@group
+(%i3) sol : solve ([x + 2*y + 3*z = 4], [x,y,z]);
+(%o3)   [[x = - 2 %r3 - 3 %r2 + 4, y = %r3, z = %r2]]
+@end group
+@group
+(%i4) %rnum_list;
+(%o4)                     [%r2, %r3]
+@end group
+@group
+(%i5) for i : 1 thru length (%rnum_list) do
+        sol : subst (t[i], %rnum_list[i], sol)$
+@end group
+@group
+(%i6) sol;
+(%o6)     [[x = - 2 t  - 3 t  + 4, y = t , z = t ]]
+                     2      1           2       1
+@end group
+@end example
 @end defvr
 
 @defvr {Variable opcional} algexact
@@ -173,7 +208,35 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @end deffn
 
-@c FALTA AQUI LA DEFINICION DE backsubst
+
+@defvr {Variable opcional} backsubst
+Valor por defecto: @code{true}
+
+@c --- According to the documentation, to linsolve
+Si @code{backsubst} vale @code{false}, evita la retrosustituci@'on 
+en @code{linsolve} tras la triangularizaci@'on de las ecuaciones. 
+Esto puede ser de utilidad en problemas muy grandes, en los que la
+retrosustituci@'on puede provocar la generaci@'on de expresiones
+extremadamente largas.
+
+@example
+(%i1) eq1 : x + y + z = 6$
+(%i2) eq2 : x - y + z = 2$
+(%i3) eq3 : x + y - z = 0$
+(%i4) backsubst : false$
+@group
+(%i5) linsolve ([eq1, eq2, eq3], [x,y,z]);
+(%o5)             [x = z - y, y = 2, z = 3]
+@end group
+(%i6) backsubst : true$
+@group
+(%i7) linsolve ([eq1, eq2, eq3], [x,y,z]);
+(%o7)               [x = 1, y = 2, z = 3]
+@end group
+@end example
+
+@end defvr
+
 
 @defvr {Variable opcional} breakup
 Valor por defecto: @code{true}

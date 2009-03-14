@@ -1,4 +1,4 @@
-@c version 1.21
+@c version 1.22
 @menu
 * Introducci@'on a la trigonometr@'{@dotless{i}}a::  
 * Funciones y variables para trigonometr@'{@dotless{i}}a:: 
@@ -411,7 +411,7 @@ La variable @code{trigexpandtimes} controla la regla del producto para @code{tri
 @end defvr
 
 @defvr {Variable optativa} triginverses
-Valor por defecto: @code{all}
+Valor por defecto: @code{true}
 
 La variable @code{triginverses} controla la simplificaci@'on de la composici@'on de funciones trigonom@'etricas e hiperb@'olicas con sus funciones inversas.
 

@@ -1,4 +1,4 @@
-@c version 1.11
+@c version 1.14
 @menu
 * Funciones y variables para la detecci@'on e informe de fallos::
 @end menu
@@ -6,26 +6,35 @@
 
 @node Funciones y variables para la detecci@'on e informe de fallos
 @section Funciones y variables para la detecci@'on e informe de fallos
-@deffn {Funci@'on} run_testsuite ()
-@deffnx {Funci@'on} run_testsuite (@var{boolean})
-@deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean})
-@deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+@deffn {Funci@'on} run_testsuite ([@var{options}])
 
 Ejecuta el conjunto de pruebas de Maxima. Los tests que producen las 
 respuestas deseadas son considerados como ``pruebas superadas'', como
 los tests que no producen las respuestas deseadas, son marcados como
 fallos conocidos. 
 
-@code{run_testsuite ()} muestra s@'olo los test que no pasaron la prueba.
+@code{run_testsuite} admite las siguientes opciones:
 
-@code{run_testsuite (true)} muestra los tests que son marcados como fallos
-conocidos, adem@'as de fallos. 
+@table @var
+@item display_all
+Muestra todas las pruebas. Normalmente no se muestran las pruebas,
+a menos que produzcan fallos. (Su valor por defecto es @code{false}).
+@item display_known_bugs
+Muestra las pruebas marcadas como fallos ya conocidos. (Su valor
+por defecto es @code{false}).
+@item tests
+Esta es la lista de las pruebas que se deben ejecutar. Cada prueba
+se puede especificar, tanto mediante una cadena de texto como
+por un s@'{@dotless{i}}mbolo. Por defecto, todas las pruebas se ejecutan. El
+conjunto completo de pruebas est@'a especificado en @code{testsuite_files}.
+@end table
 
-@code{run_testsuite (true, true)} muestra todos los tests. 
+Por ejemplo, @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
+ejecuta la prueba @code{rtest5} y muestra si est@'a marcada como fallo
+conocido.
 
-Si se incluye el tercer argumento opcional, se ejecutar@'a una parte de los tests.
-Los tests a ejecutar se especifican formando una lista con los nombres de los mismos. La
-lista completa de tests est@'a en @code{testsuite_files}.
+@code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])} ejecutar@'a
+las pruebas @code{rtest1} y @code{rtest2}, mostrando cada una de ellas.
 
 @code{run_testsuite} cambia el entorno de Maxima. 
 T@'{@dotless{i}}picamente un script de test ejecuta @code{kill} para establecer un entorno conocido (ll@'amese uno sin funciones ni variables definidas por el usuario) y entonces define una serie de funciones y variables apropiadas para el test. 
