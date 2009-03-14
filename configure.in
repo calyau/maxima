@@ -343,6 +343,17 @@ if test x"${ecl}" = xtrue ; then
 	fi
 fi
 
+dnl xgettext
+AC_ARG_ENABLE(gettext,[  --enable-gettext                 Locale support],
+	[case "${enableval}" in
+	       yes) enable_gettext=true  ;;
+ 	       no)  enable_gettext=false ;;
+	       *) AC_MSG_ERROR(bad value ${enableval} for --enable-gettext) ;;
+	 esac],
+	 [enable_gettext=false])
+
+AM_CONDITIONAL(ENABLE_GETTEXT, test x$enable_gettext = xtrue)
+
 dnl languages
 AC_ARG_ENABLE(lang-es,[  --enable-lang-es                 Spanish language support],
      	[case "${enableval}" in

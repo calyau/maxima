@@ -1,4 +1,9 @@
-SUBDIRS = src lisp-utils tests doc interfaces share demo plotting locale
+if ENABLE_GETTEXT
+   LOCALE_DIR = locale
+endif
+
+SUBDIRS = src lisp-utils tests doc interfaces share demo plotting $(LOCALE_DIR)
+
 EXTRA_DIST = \
   common.mk maxima.iss.in \
   README.lisps README.rpms README.i18n README.external \
@@ -30,4 +35,3 @@ iss: extradocinstall
 rpm: $(distdir).tar.gz
 	$(SUDO) cp $(distdir).tar.gz /usr/src/redhat/SOURCES && \
 	$(SUDO) rpmbuild -ba maxima.spec
-
