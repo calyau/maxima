@@ -912,12 +912,13 @@ radcan(specint(%e^(-s*t)*t^(k-1)/gamma(k)*(psi[0](k)-log(t)),t));
 1/s^k*log(s);
 
 /*****************************************************************************
-   Problem 118: A&S: 29.3.100 (OK noun form New)
+   Problem 118: A&S: 29.3.100 (OK new result)
+   We support the expintegral_e1 and get a new result.
    Tabulated result: log(s)/(s-a);
 ******************************************************************************/
 
-specint(%e^(-s*t)*%e^(a*t)*(log(a)+E1(a*t)),t);
-specint(%e^(a*t-s*t)*E1(a*t),t)+log(a)/(s-a);
+ratsimp(specint(%e^(-s*t)*%e^(a*t)*(log(a)+expintegral_e1(a*t)),t));
+log(s)/(s-a);
 
 /*****************************************************************************
    Problem 119: A&S: 29.3.101 (OK noun form New) 
@@ -936,12 +937,13 @@ specint(%e^(-s*t)*(-sin(t)*Si(t)-cos(t)*Ci(t)),t);
 (specint(%i*%e^(%i*t-s*t)*Si(t),t)+specint(-%i*%e^(-s*t-%i*t)*Si(t),t)+specint(-%e^(%i*t-s*t)*Ci(t),t)+specint(-%e^(-s*t-%i*t)*Ci(t),t))/2;
 
 /*****************************************************************************
-   Problem 121: A&S: 29.3.103 (OK noun form New)
+   Problem 121: A&S: 29.3.103 (OK New)
+   We support the expintegral_e1 and get a new result.
    Tabulated result: 1/s*log(1+k*s)
 ******************************************************************************/
 
-specint(%e^(-s*t)*E1(t/k),t);
-specint(%e^(-s*t)*E1(t/k),t);
+specint(%e^(-s*t)*expintegral_e1(t/k),t);
+log(1+k*s)/s;
 
 /*****************************************************************************
    Problem 122: A&S: 29.3.104 OK New
