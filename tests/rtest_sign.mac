@@ -297,6 +297,14 @@ done;
 assume(x32 < 1);
 [x32 < 1];
 
+/* [ 1981623 ] wrong sign of sqrt() */
+(assume(xx >= 0, xx <= 1), 0);
+0$
+
+sqrt(a/(xx-1)^2);
+sqrt(a)/(1-xx);
+
+
 /*****************************************************************************
 
  Add tests for the function $csign

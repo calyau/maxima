@@ -1770,7 +1770,7 @@ relational knowledge is contained in the default context GLOBAL."
 (defun dlq (x y)
   (cond ((member (sel x +labs) '($neg $zero) :test #'eq) nil)
 	((eq '$pz (sel x +labs)) (deq x y))
-	((eq '$pn (sel x +labs)) (dgr x y))
+	((eq '$pn (sel x +labs)) (dls x y))
 	((dmark x '$nz) nil)
 	((eq x y) (setq mlqp t) nil)
 	(t (do ((l (sel x data) (cdr l))) ((null l))
@@ -1795,6 +1795,8 @@ relational knowledge is contained in the default context GLOBAL."
   (cond ((eq 'meqp (caar f))
 	 (if (eq x (cadar f)) (dnq (caddar f) y) (dnq (cadar f) y)))))
 
+;; mark sign of x to be m, relative to current comparison point for dcomp.
+;; returns true if this fact is already known, nil otherwise.
 (defun dmark (x m)
   (cond ((eq m (sel x +labs)))
 	((and dbtrace (prog1
