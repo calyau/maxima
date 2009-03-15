@@ -331,8 +331,13 @@
                        (list '($pochhammer) (sub 1 order) (add index order)))
                      index (sub 1 order) -1 t)))))))
 
+         ((eq $expintrep '%gamma_incomplete)
+          ;; We transform to the Incomplete Gamma function.
+          (mul (power arg (sub order 1))
+               ($gamma_incomplete (sub 1 order) arg)))
+
          (t
-           (eqtest (list '(%expintegral_e) order arg) expr))))
+          (eqtest (list '(%expintegral_e) order arg) expr))))
 
       ((complex-float-numerical-eval-p order arg)
        (cond
@@ -443,7 +448,7 @@
                         index (- n) -1 t))))))))))
 
       ((eq $expintrep '%gamma_incomplete)
-       ;; We transform to the Gammincomplete function.
+       ;; We transform to the Incomplete Gamma function.
        (mul
          (power arg (sub order 1))
          ($gamma_incomplete (sub 1 order) arg)))
