@@ -2111,6 +2111,23 @@
                   ($logexpand '$all))
               (return ($ratsimp (sendexec rest ($expintegral_ei arg1)))))))
 
+     ;; Laplace transform of expintegral_e1
+     (cond ((setq l (oneexpintegral_e1 u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (let (($expintrep '%gamma_incomplete)
+                  ($logexpand '$all))
+              (return ($ratsimp (sendexec rest ($expintegral_e1 arg1)))))))
+
+     ;; Laplace transform of expintegral_e
+     (cond ((setq l (oneexpintegral_e u))
+            (setq arg1 (cdras 'v l)
+                  arg2 (cdras 'w l)
+                  rest (cdras 'u l))
+            (let (($expintrep '%gamma_incomplete)
+                  ($logexpand '$all))
+              (return ($ratsimp (sendexec rest ($expintegral_e arg1 arg2)))))))
+
      (cond ((setq l (onekelliptic u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
@@ -2664,16 +2681,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun gamma_incomplete-to-gammagreek (a x)
-  (if (eq (asksign a) '$zero)
-    ;; The representation as a Whittaker W function for a=0
-    (mul
-      (power x (div (sub a 1) 2))
-      (power '$%e (div x -2))
-      (wwhit x (div (sub a 1) 2) (div a 2)))
+  (if (or (eq ($sign a) '$zero)
+          (and (integerp a) (< a 0)))
+    ;; The representation as a Whittaker W function for a=0 or a negative 
+    ;; integer (The gamma function is not defined for this case.)
+    (mul (power x (div (sub a 1) 2))
+         (power '$%e (div x -2))
+         (wwhit x (div (sub a 1) 2) (div a 2)))
     ;; In all other cases the representation as a Gammagreek function
-    (sub
-      (simplify (list '(%gamma) a))
-      (list '($gammagreek) a x))))
+    (sub (simplify (list '(%gamma) a))
+         (list '($gammagreek) a x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
