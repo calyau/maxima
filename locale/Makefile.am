@@ -18,10 +18,12 @@ XARGS=xargs
 
 XGETTEXT_ARGS=-s -c -j
 
-%.mo: %.po
+SUFFIXES=	.mo .po
+
+.po.mo:
 	$(MSGFMT) -o $@ $<
 
-%.po: maxima.pot
+es.po: maxima.pot	# TODO: patterns
 	touch $@
 	$(MSGMERGE) $@ maxima.pot > $@.new && mv $@.new $@;
 
