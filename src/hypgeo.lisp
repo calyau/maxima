@@ -50,7 +50,6 @@
 	  '%bessel_i))
     ,v ,z))
 
-
 ;;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
 
 ;; Gamma function
@@ -521,7 +520,7 @@
       nil))
 
 ;; Recognize expintegral_ei(w)
-(defun oneexpintetral_ei (exp)
+(defun oneexpintegral_ei (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)((%expintegral_ei)(w true)))
@@ -529,7 +528,7 @@
       nil))
 
 ;; Recognize expintegral_e1(w)
-(defun oneexpintetral_e1 (exp)
+(defun oneexpintegral_e1 (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)((%expintegral_e1)(w true)))
@@ -537,7 +536,7 @@
       nil))
 
 ;; Recognize expintegral_si(w)
-(defun oneexpintetral_si (exp)
+(defun oneexpintegral_si (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)((%expintegral_si)(w true)))
@@ -545,7 +544,7 @@
       nil))
 
 ;; Recognize expintegral_shi(w)
-(defun oneexpintetral_shi (exp)
+(defun oneexpintegral_shi (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)((%expintegral_shi)(w true)))
@@ -553,7 +552,7 @@
       nil))
 
 ;; Recognize expintegral_ci(w)
-(defun oneexpintetral_ci (exp)
+(defun oneexpintegral_ci (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)((%expintegral_ci)(w true)))
@@ -561,7 +560,7 @@
       nil))
 
 ;; Recognize expintegral_chi(w)
-(defun oneexpintetral_chi (exp)
+(defun oneexpintegral_chi (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)((%expintegral_chi)(w true)))
@@ -787,6 +786,20 @@
 	 ((mqapply)
 	  (($%m array) (v1 true)(v2 true))
 	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize %f[v1,v2](w1,w2,w3), Hypergeometric function
+(defun onef (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%f array) (v1 true)(v2 true))
+          (w1 freevarpar)
+          (w2 freevarpar)
+	  (w3 true)))
 	((coeffpp) (a zerp)))
       nil))
 
@@ -2045,19 +2058,14 @@
 			     (cdras 'u l)))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
 
-     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-     ;; Bessel I: We use I[v](w)=%i^n*J[n](%i*w)
+     ;; Laplace transform of Bessel I. We use I[v](w)=%i^n*J[n](%i*w).
      ;; Insert %i directly and don't use the function 1fact to avoid extra
      ;; phase factors in the results.
-     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
      (cond ((setq l (onei u))
 	    (setq index1 (cdras 'v l)
 		  arg1   (mul '$%i (cdras 'w l))
 		  rest   (mul (inv (power '$%i index1)) (cdras 'u l)))
 	    (return (lt1j rest arg1 index1))))
-
-     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
      (cond ((setq l (onei^2 u))
 	    (setq index1 (cdras 'v l)
@@ -2069,27 +2077,40 @@
 		  rest (cdras 'u l))
 	    (return (lt1erf rest arg1))))
 
-     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-     ;; Logarithmic function:
+     ;; Laplace transform of the logarithmic function.
      ;; We add an algorithm for the Laplace transform and call the routine
      ;; lt-log. The old code is still present, but isn't called.
-     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
      (cond ((setq l (onelog u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt-log rest arg1))))
 
-     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
      (cond ((setq l (onerfc u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 nil nil 'erfc))))
+
+     ;; Laplace transform of %ei, the Exponential Integral Ei.
+     ;; This is the "old" symbol for the function. The integral is wrong, 
+     ;; because of a missing phase term in the transformation of %ei to
+     ;; gamma_incomplete.
      (cond ((setq l (oneei u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 nil nil 'ei))))
+
+     ;; Laplace transform of expintegral_ei.
+     ;; The new function. Maxima uses the build in transformation to the
+     ;; gamma_incomplete function and simplifies the log functions of the
+     ;; transformation. We do not use the dispatch mechanism of fractest2,
+     ;; but call sendexec directly with the transformed function.
+     (cond ((setq l (oneexpintegral_ei u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (let (($expintrep '%gamma_incomplete)
+                  ($logexpand '$all))
+              (return ($ratsimp (sendexec rest ($expintegral_ei arg1)))))))
+
      (cond ((setq l (onekelliptic u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
@@ -2099,24 +2120,28 @@
 		  rest (cdras 'u l))
 	    (return (lt1e rest arg1))))
 
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; CASE: c * t^v * (a+t)^w
-    ;; It is possible to combine arbpow2 and arbpow.
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ;; Laplace transform of %f[v1,v2](w1,w2,w3), Hypergeometric function
+     ;; We support the Laplace transform of the build in symbol %f. We do
+     ;; not use the mechanism of defining an "Expert on Laplace transform",
+     ;; the expert function does a call to lt-ltp. We do this call directly.
+     (cond ((setq l (onef u))
+            (setq rest   (cdras 'u l)
+                  arg1   (cdras 'w3 l)
+                  index1 (list (cdras 'w1 l) (cdras 'w2 l)))
+            (return (lt-ltp 'f rest arg1 index1))))
 
-    (cond
-      ((setq l (m2-arbpow2 u))
-       (setq rest   (cdras 'c l)
-	     arg1   (cdras 'a l)
-	     arg2   (cdras 'b l)
-	     index1 (cdras 'v l)
-	     index2 (cdras 'w l))
-       (return (lt-arbpow2 rest arg1 arg2 index1 index2))))
+     ;; Laplace transform of c * t^v * (a+t)^w
+     ;; It is possible to combine arbpow2 and arbpow.
+     (cond
+       ((setq l (m2-arbpow2 u))
+        (setq rest   (cdras 'c l)
+              arg1   (cdras 'a l)
+              arg2   (cdras 'b l)
+              index1 (cdras 'v l)
+              index2 (cdras 'w l))
+        (return (lt-arbpow2 rest arg1 arg2 index1 index2))))
 
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; CASE: c * t^v
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+     ;; Laplace transform of c * t^v
      (cond ((setq l (arbpow1 u))
 	    (setq arg1 (cdras 'u l)
 		  arg2 (cdras 'c l)
@@ -2125,7 +2150,6 @@
 
      ;; We have specialized the pattern for arbpow1. Now a lot of integrals
      ;; will fail correctly and we have to return a noun form.
-
      (return (setq *hyp-return-noun-flag* 'other-j-cases-next))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2580,6 +2604,9 @@
 ;;
 ;;         = gamma_incomplete(0,x)
 ;;
+;; In the transformation to the incomplete gamma function a phase term is
+;; missing. See e.g. A&S 5.1.7: -Ei(x)-%i*%pi=E1(-x)=gamma_incomplete(0,x)
+;; Therefore the result with this transformation is wrong. (DK)
 (defun eitgammaincomplete (x)
   (mul -1 ($gamma_incomplete 0 (mul -1 x))))
 
@@ -2966,7 +2993,7 @@
     (format t "~&   : flg   = ~A~%" flg)
     (format t "~&   : rest  = ~A~%" rest)
     (format t "~&   : arg   = ~A~%" arg)
-    (format T "~&   : index = ~A~%" index))
+    (format t "~&   : index = ~A~%" index))
 
   (prog (index1 index2 argl const l l1)
      (when (or (zerp index)
@@ -2982,7 +3009,8 @@
 	       (eq flg 'oneq)
 	       (eq flg 'gammagreek)
 	       (eq flg 'asin)
-	       (eq flg 'atan))
+	       (eq flg 'atan)
+               (eq flg 'f))         ; hypergeometric function
 	    (go labl))
      (cond ((or (eq flg 'hyp-onep)
 		(eq flg 'onelog))
@@ -3178,7 +3206,10 @@
     (onepjac
      (pjactf (car index) (cadr index) (caddr index) arg))
     (asin (asintf arg))
-    (atan (atantf arg))))
+    (atan (atantf arg))
+    (f
+     ;; Transform %f to internal representation FPQ
+     (list 1 (ref-fpq (rest (car index)) (rest (cadr index)) arg)))))
 
 ;; Create a hypergeometric form that we recognize.  The function is
 ;; %f[n,m](p; q; arg).  We represent this as a list of the form
@@ -3490,11 +3521,8 @@
 				       l2
 				       a
 				       m)))))
-     (return
-	;; With the orginal code we don't get a nice noun form in all cases.
-	;; We use the mechanism to set the global flag.
-	(setq *hyp-return-noun-flag* 
-              'failed-on-f19cond-multiply-the-other-cases-with-d))))
+     (return (setq *hyp-return-noun-flag*
+                   'failed-on-f19cond-multiply-the-other-cases-with-d))))
 
 ;; Table of Laplace transforms, p 220, formula 19:
 ;;
