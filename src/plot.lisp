@@ -1293,8 +1293,6 @@ sin(y)*(10.0+6*cos(x)),
             ($set_plot_option `((mlist) $y ,ymin ,ymax))))
         (merror "plot2d: upper bound must be positive when 'logy' in effect; found: ~M" ymax)))
 
-    (when (and xlabel log-x) (setq xlabel (format nil "log(~a)" xlabel)))
-    (when (and ylabel log-y) (setq ylabel (format nil "log(~a)" ylabel)))
     ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
 
     (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
