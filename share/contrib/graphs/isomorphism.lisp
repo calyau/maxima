@@ -20,8 +20,9 @@
 
 
 (defun $is_isomorphic (gr1 gr2)
-  (and (= ($graph_order gr1) ($graph_order gr2))
-       (= ($length ($isomorphism gr1 gr2)) ($graph_order gr1))))
+  (or (= 0 ($graph_order gr1) ($graph_order gr2))
+      (and (graph-p gr1) (graph-p gr2) (isomorphism-graphs gr1 gr2) t)
+      (and (digraph-p gr1) (digraph-p gr2) (isomorphism-digraphs gr1 gr2) t)))
 
 (defun $isomorphism (gr1 gr2)
   (cond ((graph-p gr1)
@@ -32,7 +33,7 @@
 		 (maphash
 		  (lambda (key val)
 		    (setq res (cons `((marrow simp) ,key ,val) res)))
-		  (isomorphism-graphs gr1 gr2)))
+		  iso))
 	       (cons '(mlist simp) res))
 	     (merror "Wrong inputs to isomorphism")))
 	((digraph-p gr1)
@@ -43,7 +44,7 @@
 		 (maphash
 		  (lambda (key val)
 		    (setq res (cons `((marrow simp) ,key ,val) res)))
-		  (isomorphism-digraphs gr1 gr2)))
+		  iso))
 	       (cons '(mlist simp) res))
 	     (merror "Wrong inputs to isomorphism")))
 	(t

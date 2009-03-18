@@ -85,7 +85,7 @@ with_parameters ([L]) ::= buildq (
 draw_graph(G, [options]) := block(
   [
    maperror : false, mapprint : false,
-   wxplot_size : [300,300],
+   wxplot_size : [400,400],
    program : draw_graph_program, 
    show_id : false, show_label : false, show_weight : false,
    vertex_color : 'red, text_color : 'blue, edge_color : 'black,
@@ -115,7 +115,9 @@ draw_graph(G, [options]) := block(
    edge_coloring : [],
    edge_types : [],
    edge_widths : [],
-   dimension : 2
+   dimension : 2,
+   transform : false,
+   scene
   ],
 
   if not(is_graph(G)) and not(is_digraph(G)) then
@@ -154,9 +156,9 @@ draw_graph(G, [options]) := block(
             if length(embedding[i])>length(c) then c:embedding[i]),
           v_pos : spring_embedding(G, spring_embedding_depth, c, 2)))
       else
-        v_pos : circular_positions(G),
-      set_positions(v_pos, G))
-    else dimension : length(second(first(v_pos))),
+        v_pos : apply(program, [G]),
+      set_positions(v_pos, G)),
+    dimension : length(second(first(v_pos))),
 
     /* Normalize positions into [-1,1]x[-1,1] */
     if length(v_pos)>1 then block(
@@ -277,7 +279,7 @@ draw_graph(G, [options]) := block(
     else gp_options : [],
 
     /* plot the graph */
-    apply(command, append(
+    scene : append(
        [
         'point_type = 0,
         'line_type = edge_type,
@@ -311,9 +313,13 @@ draw_graph(G, [options]) := block(
         'ytics = false,
         'xtics = false
        ],
-        gp_options)
-      )),
-    'done)$
+        gp_options),
+
+      if transform=false then (
+        apply(command, scene),
+        'done)
+      else
+        scene))$
 
 vertices_to_path(lst) := block(
   [path : []],
@@ -325,3 +331,8 @@ vertices_to_path(lst) := block(
   path)$
 
 vertices_to_cycle(lst) := vertices_to_path(append(lst, [first(lst)]))$
+
+draw_graph_transform(arg) :=
+  apply(draw_graph, append(args(arg),[transform=true]))$
+
+put(graph, draw_graph_transform, draw2d_transform)$
