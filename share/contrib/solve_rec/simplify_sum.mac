@@ -486,10 +486,9 @@ expand_sum(expr, k%%, lo%%, hi%%) :=
   else
     apply(sum, [expr, k%%, lo%%, hi%%]);
 
-split_sum(expr) := block(
-  [opsubst:true, s],
-  s: subst(nounify(sum)=expand_sum, expr),
-  ev(s, expand_sum))$
+split_sum(expr) :=
+  block([sm%%: opsubst(nounify(sum)=expand_sum, expr)],
+    ev(sm%%, expand_sum))$
 
 /*******************
  *
