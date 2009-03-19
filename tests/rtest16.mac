@@ -637,5 +637,13 @@ hgfred([a/2,-a/2],[1/2],zn);
 is(abs(bfloat((sqrt(2)+2)*%pi^(3/2)/(8*gamma(3/4)^2))-float((sqrt(2)+2)*%pi^(3/2)/(8*gamma(3/4)^2))) < 1d-15);
 true;
 
+/*
+ * Bug [ 2688847 ] float of rats rounds incorrectly
+ */
+float((2^60-1)/2^60)-1;
+0.0;
+float((2^1000-1)/2^1000)-1;
+0.0;
+
 end;
 end$

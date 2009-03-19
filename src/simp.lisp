@@ -625,17 +625,6 @@
 ;;--- fpcofrat1  :: Floating Point Conversion OF RATional number routine
 ;;  find floating point approximation to rational number
 ;;  fpcofrat1 computes the quotient of nu/d
-;;  It checks for the case of the division of two bignums because
-;;  simply computing (quotient (float nu) (float d)) may cause one of
-;;  the floats to overflow even if the quotient is within the floating
-;;  point range.
-;;  If both nu and d are bignums, then the smaller one is reduced to the
-;;  'machine-mantissa-precision' most significant bits.  The other one is
-;;  then reduced by stripping off the exact same number of rightmost bits.
-;;  'machine-mantissa-precision' is related to the length of the significand
-;;  in the floating point representation: it doesn't make sense to maintain
-;;  any more bits than can be represented in the significand of a floating
-;;  point number.
 
 (eval-when
     #+gcl (compile load eval)
@@ -643,16 +632,7 @@
     (defconstant machine-mantissa-precision (float-digits 1.0)))
 
 (defun fpcofrat1 (nu d)
-  (if (and (bignump nu) (bignump d))
-      (let ((sign (if (minusp nu) (plusp d) (minusp d)))
-	    (ln (integer-length nu)) (ld (integer-length d)))
-	(if (> ln ld)
-	    (setq d (haipart d #.machine-mantissa-precision)
-		  nu (haipart nu (- ln (- ld #.machine-mantissa-precision))))
-	    (setq nu (haipart nu #.machine-mantissa-precision)
-		  d (haipart d (- ld (- ln #.machine-mantissa-precision)))))
-	(if sign (setq nu (- nu)))))
-  (/ (float nu) d))
+  (float (/ nu d)))
 
 (defun expta (x y)
   (cond ((equal y 1)
