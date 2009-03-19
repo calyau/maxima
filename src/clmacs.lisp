@@ -159,7 +159,13 @@
 (defun haipart (x n)
   (let ((x (abs x)))
     (if (< n 0)
-	(logand x (1- (ash 1 (- n))))
+	;; If the desired number of bits is larger than the actual
+	;; number, just return the number.  (Prevents gratuitously
+	;; generating a huge bignum if n is very large, as can happen
+	;; with bigfloats.)
+	(if (< (integer-length x) (- n))
+	    x
+	    (logand x (1- (ash 1 (- n)))))
 	(ash x (min (- n (integer-length x)) 0)))))
 
 ;; also correct but slower.
