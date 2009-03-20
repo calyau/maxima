@@ -131,29 +131,29 @@ hgfred([a,a+1/2],[2*a],z);
 2^(2*a-1)/sqrt(1-z)*(1+sqrt(1-z))^(1-2*a)$
 
 /* A&S 15.1.15 */
-hgfred([a,1-a],[3/2],sin(z)^2);
+hgfred([a,1-a],[3/2],sin(z)^2),triginverses:all;
 sin((1-2*a)*z)/sin(z)/(1-2*a)$
 
 /* A&S 15.1.16 */
-hgfred([a,2-a],[3/2],sin(z)^2);
+hgfred([a,2-a],[3/2],sin(z)^2),triginverses:all;
 sin((2-2*a)*z)/(2-2*a)/(sin(z)*cos(z))$
 
 /* A&S 15.1.17 */
 assume(not(equal(sin(z),0)));
 [not equal(sin(z),0)]$
 
-hgfred([-a,a],[1/2],sin(z)^2);
+hgfred([-a,a],[1/2],sin(z)^2),triginverses:all;
 cos(2*a*z)$
 
 /* A&S 15.1.18 */
-hgfred([a,1-a],[1/2],sin(z)^2);
+hgfred([a,1-a],[1/2],sin(z)^2),triginverses:all;
 cos((2*a-1)*z)/cos(z)$
 
 /* A&S 15.1.19 */
 assume(not(equal(tan(z),0)));
 [not equal(tan(z), 0)]$
 
-hgfred([a,a+1/2],[1/2],-tan(z)^2);
+hgfred([a,a+1/2],[1/2],-tan(z)^2),triginverses:all;
 cos(z)^(2*a)*cos(2*a*z)$
 
 /* A&S 15.4.3 */

@@ -645,5 +645,13 @@ float((2^60-1)/2^60)-1;
 float((2^1000-1)/2^1000)-1;
 0.0;
 
+/*
+ * Bug [ 2687962 ] hgfred([-3/2,1],[-1/2],-t) division by zero
+ *
+ * Solution from functions.wolfram.com
+ */
+ratsimp(hgfred([-3/2,1],[-1/2], t));
+1+3*t-3*t^(3/2)*atanh(sqrt(t));
+
 end;
 end$

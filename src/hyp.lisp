@@ -3257,6 +3257,62 @@
 		   fun)
 	      arg n)))
 
+;; Transform F(a,b;c;z) to F(a+n, b; c+n; z)
+(defun as-15.2.7 (a b c n arg fun)
+  ;; A&S 15.2.7
+  ;; F(a+n,b;c+n;z) = (-1)^n*poch(c,n)/poch(a,n)/poch(c-b,n)*(1-z)^(1-a)
+  ;;                    *diff((1-z)^(a+n-1)*fun, z, n)
+  (assert (>= n 0))
+  (mul (power -1 n)
+       (factf c n)
+       (inv (factf a n))
+       (inv (factf (sub c b) n))
+       (power (sub 1 arg) (sub 1 a))
+       ($diff (mul (power (sub 1 arg) (sub (add a n) 1))
+		   fun)
+	      arg n)))
+
+;; Transform F(a,b;c;z) to F(a-n, b; c-n; z)
+(defun as-15.2.8 (a b c n arg fun)
+  ;; A&S 15.2.8
+  ;;  F(a-n,b;c-n;z) = 1/poch(c-n,n)/(z^(c-n-1)*(1-z)^(b-c))
+  ;;                    *diff(z^(c-1)*(1-z^(b-c+n)*fun, z, n))
+  (declare (ignore a))
+  (assert (>= n 0))
+  (mul (inv (factf (sub c n) n))
+       (inv (mul (power arg (sub (sub c n) 1))
+		 (power (sub 1 arg) (sub b c))))
+       ($diff (mul (power arg (sub c 1))
+		   (power (sub 1 arg) (add (sub b c) n))
+		   fun)
+	      arg n)))
+
+;; Transform F(a,b;c;z) to F(a+n,b+n;c+n;z)
+(defun as-15.2.2 (a b c n arg fun)
+  ;; A&S 15.2.2
+  ;; F(a+n,b+n; c+n;z) = poch(c,n)/poch(a,n)/poch(b,n)
+  ;;                      *diff(fun, z, n)
+  (assert (>= n 0))
+  (mul (factf c n)
+       (inv (factf a n))
+       (inv (factf b n))
+       ($diff fun arg n)))
+
+;; Transform F(a,b;c;z) to F(a-n,b-n;c-n;z)
+(defun as-15.2.9 (a b c n arg fun)
+  ;; A&S 15.2.9
+  ;; F(a-n,b-n; c-n;z) = 1/poch(c-n,n)/(z^(c-n-1)*(1-z)^(a+b-c-n))
+  ;;                      *diff(z^(c-1)*(1-z)^(a+b-c)*fun, z, n)
+  (assert (>= n 0))
+  (mul (inv (factf (sub c n) n))
+       (inv (mul (power arg (sub (sub c n) 1))
+		 (power (sub 1 arg) (sub (add a b)
+					 (add c n)))))
+       ($diff (mul (power arg (sub c 1))
+		   (power (sub 1 arg) (sub (add a b) c))
+		   fun)
+	      arg n)))
+
 (defun step4-int (a b c)
   (if (> a b)
       (step4-int b a c)
@@ -3575,27 +3631,40 @@
       (format t "a ,b ,c   = ~a ~a ~a~%" a b c)
       (format t "n, m, ell = ~a ~a ~a~%" n m ell)
       (format t "init a b c = ~a ~a ~a~%" new-a new-b new-c))
-    (cond ((plusp ell)
-	   (setf res (as-15.2.6 new-a new-b new-c ell s res))
-	   (setf new-c (add new-c ell)))
+    (cond ((alike1 (sub n ell) 0)
+	   ;; n = ell so we can use A&S 15.2.7 or A&S 15.2.8
+	   (cond ((plusp n)
+		  (setf res (as-15.2.7 new-a new-b new-c n s res)))
+		 (t
+		  (setf res (as-15.2.8 new-a new-b new-c (- n) s res))))
+	   (setf new-a (add new-a n))
+	   (setf new-c (add new-c n)))
 	  (t
-	   (setf res (as-15.2.4 new-a new-b new-c (- ell) s res))
-	   (setf new-c (add new-c ell))))
-    #+nil
-    (progn 
-      (maxima-display res)
-      (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c))
-    (cond ((plusp n)
-	   ;; A&S 15.2.3
-	   (setf res (as-15.2.3 new-a new-b new-c n s res))
-	   (setf new-a (add new-a n)))
-	  (t
-	   (setf res (as-15.2.5 new-a new-b new-c (- n) s res))
-	   (setf new-a (add new-a n))))
+	   ;; Adjust ell and then n.  (Does order matter?)
+	   (cond ((plusp ell)
+		  (setf res (as-15.2.6 new-a new-b new-c ell s res))
+		  (setf new-c (add new-c ell)))
+		 (t
+		  (setf res (as-15.2.4 new-a new-b new-c (- ell) s res))
+		  (setf new-c (add new-c ell))))
+	   #+nil
+	   (progn 
+	     (maxima-display res)
+	     (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c))
+	   (cond ((plusp n)
+		  ;; A&S 15.2.3
+		  (setf res (as-15.2.3 new-a new-b new-c n s res))
+		  (setf new-a (add new-a n)))
+		 (t
+		  ;; A&S 15.2.5
+		  (setf res (as-15.2.5 new-a new-b new-c (- n) s res))
+		  (setf new-a (add new-a n))))))
     #+nil
     (progn
       (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c)
       (maxima-display res))
+    ;; Finally adjust m by swapping the a and b parameters, since the
+    ;; hypergeometric function is symmetric in a and b.
     (cond ((plusp m)
 	   (setf res (as-15.2.3 new-b new-a new-c m s res))
 	   (setf new-b (add new-b m)))
