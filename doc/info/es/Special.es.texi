@@ -1,4 +1,4 @@
-@c version 1.44
+@c version 1.49
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -7,6 +7,8 @@
 * Integral exponencial::
 * Funci@'on de error::
 * Funciones de Struve::
+* Funciones hipergeom@'etricas::
+* Funciones de cilindro parab@'olico::
 * Funciones y variables para las funciones especiales::
 @end menu
 
@@ -38,7 +40,7 @@ erfc (z)                  Complemento de la funci@'on de error, erf
 ei (z)                    Integral exponencial (?)
 kelliptic (z)             Integral el@'{@dotless{i}}ptica completa
                                   de primera especie (K)
-%d [n] (z)                Funci@'on cil@'{@dotless{i}}ndrica parab@'olica
+%d [n] (z)                Funci@'on de cilindro parab@'olico
 @end example
 
 
@@ -205,11 +207,10 @@ Id@'entica a @code{scaled_bessel_i(1,z)}.
 @end deffn
 
 
-@deffn {Funci@'on} bessel (@var{z}, @var{order}) 
-Funci@'on de Bessel de primera especie.
+@deffn {Funci@'on} %s [@var{u},@var{v}] (@var{z}) 
 
-Esta funci@'on ha sido eliminada. 
-Util@'{@dotless{i}}cese @code{bessel_j (@var{order}, @var{z})} en su lugar.
+Funci@'on s[u,v](z) de Lommel.
+Gradshteyn & Ryzhik 8.570.1.
 
 @end deffn
 
@@ -274,17 +275,105 @@ Las funciones gamma, beta, psi y gamma incompleta est@'an
 definidas en el cap@'{@dotless{i}}tulo 6 de Abramowitz y Stegun,
 @i{Handbook of Mathematical Functions}.
 
-@deffn {Funci@'on} beta (@var{x}, @var{y})
-Funci@'on beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}
-en A&S 6.2.1.
-@end deffn
 
 @deffn {Funci@'on} gamma (@var{x})
-Funci@'on gamma A&S 6.1.1.
+
+La definici@'on b@'asica de la funci@'on gamma (A&S 6.1.1) es
+
+@example
+                               inf
+                              /
+                              [     z - 1   - t
+                   gamma(z) = I    t      %e    dt
+                              ]
+                              /
+                               0
+@end example
+
+Maxima simplifica @code{gamma} para enteros positivos y para fracciones positivas
+o negativas. Para fracciones de denominador dos, el resultado es un n@'umero 
+racional multiplicado por @code{sqrt(%pi)}. La simplificaci@'on para valores
+enteros la controla @code{factlim}. Para enteros mayores que @code{factlim}
+el resultado num@'erico de la funci@'on factorial, la cual se utiliza para
+calcular @code{gamma}, producir@'a un desbordamiento. La simplificaci@'on
+para n@'umeros racionales la controla @code{gammalim} para evitar desbordamientos.
+V@'eanse tambi@'en @code{factlim} y @code{gammalim}.
+
+Para enteros negativos, @code{gamma} no est@'a definida.
+
+Maxima puede evaluar @code{gamma} num@'ericamente para valores reales
+y complejos, tanto en formato float (doble precisi@'on) como big float 
+(precisi@'on arbitraria).
+
+La funci@'on @code{gamma} tiene simetr@'{@dotless{i}}a especular.
+
+Si @code{gamma_expand} vale @code{true}, Maxima expande @code{gamma}
+para argumentos del tipo @code{z+n} y @code{z-n}, siendo @code{n}
+un entero.
+
+Maxima conoce la derivada de @code{gamma}.
+
+Ejemplos:
+
+Simplificaci@'on para enteros, fracciones de denominador dos
+y n@'umeros racionales:
+
+@example
+(%i1) map('gamma,[1,2,3,4,5,6,7,8,9]);
+(%o1)               [1, 1, 2, 6, 24, 120, 720, 5040, 40320]
+
+(%i2) map('gamma,[1/2,3/2,5/2,7/2]);
+                           sqrt(%pi)  3 sqrt(%pi)  15 sqrt(%pi)
+(%o2)          [sqrt(%pi), ---------, -----------, ------------]
+                               2           4            8
+
+(%i3) map('gamma,[2/3,5/3,7/3]);
+                                        2           1
+                                2 gamma(-)  4 gamma(-)
+                            2           3           3
+(%o3)                [gamma(-), ----------, ----------]
+                            3       3           9
+@end example
+
+Evaluaci@'on num@'erica para valores reales y complejos:
+
+@example
+(%i4) map('gamma,[2.5,2.5b0]);
+(%o4)             [1.329340388179137, 1.329340388179137b0]
+
+(%i5) map('gamma,[1.0+%i,1.0b0+%i]);
+(%o5) [.4980156681183558 - .1549498283018108 %i, 
+                      4.980156681183561b-1 - 1.549498283018107b-1 %i]
+@end example
+
+Simetr@'{@dotless{i}}a especular:
+
+@example
+(%i8) declare(z,complex)$
+(%i9) conjugate(gamma(z));
+(%o9)                         gamma(conjugate(z))
+@end example
+
+Maxima expande @code{gamma(z+n)} y @code{gamma(z-n)} si 
+@code{gamma_expand} vale @code{true}:
+
+@example
+(%i10) gamma_expand:true$
+(%i11) [gamma(z+1),gamma(z-1),gamma(z+2)/gamma(z+1)];
+                                      gamma(z)
+(%o11)                   [z gamma(z), --------, z + 1]
+                                       z - 1
+@end example
+
+Derivada de @code{gamma}:
+
+@example
+(%i12) diff(gamma(z),z);
+(%o12)                         psi (z) gamma(z)
+                                  0
+@end example
 
 V@'ease tambi@'en @code{makegamma}.
-
-La variable @code{gammalim} controla la simplificaci@'on de la funci@'on gamma.
 
 La constante de Euler-Mascheroni es @code{%gamma}.
 @end deffn
@@ -325,6 +414,566 @@ Transforma las funciones @code{binomial}, @code{factorial} y @code{beta} que apa
 V@'ease tambi@'en @code{makefact}.
 
 @end deffn
+
+
+@deffn {Funci@'on} beta (@var{a}, @var{b})
+La funci@'on beta se define como @code{gamma(a) gamma(b)/gamma(a+b)}
+(A&S 6.2.1).
+
+Maxima simplifica la funci@'on beta para enteros positivos y n@'umeros
+racionales cuya suma sea entera. Si @code{beta_args_sum_to_integer}
+vale @code{true}, Maxima tambi@'en simplifica expresiones generales
+cuya suma sea tambi@'en entera.
+
+Cuando @var{a} o @var{b} sean nulos, la funci@'on beta no est@'a definida.
+
+En general, la funci@'on beta no est@'a definida para enteros negativos. 
+La excepci@'on es para @var{a=-n}, siendo @var{n} un entero positivo
+y @var{b} otro entero positivo tal que @var{b<=n}, entonces es posible
+definir una continuaci@'on anal@'{@dotless{i}}tica. En este caso Maxima
+devuelve un resultado.
+
+Si @code{beta_expand} vale @code{true}, expresiones como @code{beta(a+n,b)},
+@code{beta(a-n,b)}, @code{beta(a,b+n)} o @code{beta(a,b-n)}, siendo @code{n}
+entero, se simplifican.
+
+Maxima puede evaluar la funci@'on beta para valores reales y complejos, tanto
+de tipo decimal flotante o big float. Para la evaluaci@'on num@'erica
+Maxima utiliza @code{log_gamma}:
+
+@example
+           - log_gamma(b + a) + log_gamma(b) + log_gamma(a)
+         %e
+@end example
+
+Maxima reconoce la simetr@'{@dotless{i}}a de la funci@'on beta.
+
+Maxima conoce las derivadas de la funci@'on beta, tanto respecto de @var{a}
+como de @var{b}.
+
+Para expresar la funci@'on beta como un cociente de funciones gamma,
+v@'ease @code{makegamma}.
+
+Ejemplos:
+
+Simplificaci@'on cuando uno de sus argumentos es entero:
+
+@example
+(%i1) [beta(2,3),beta(2,1/3),beta(2,a)];
+                               1   9      1
+(%o1)                         [--, -, ---------]
+                               12  4  a (a + 1)
+@end example
+
+Simplificaci@'on para argumentos racionales que suman un entero:
+
+@example
+(%i2) [beta(1/2,5/2),beta(1/3,2/3),beta(1/4,3/4)];
+                          3 %pi   2 %pi
+(%o2)                    [-----, -------, sqrt(2) %pi]
+                            8    sqrt(3)
+@end example
+
+Cuando se iguala @code{beta_args_sum_to_integer} a @code{true} se
+simplifican expresiones m@'as generales si la suma de los argumentos
+se reduce a un entero:
+
+@example
+(%i3) beta_args_sum_to_integer:true$
+(%i4) beta(a+1,-a+2);
+                                %pi (a - 1) a
+(%o4)                         ------------------
+                              2 sin(%pi (2 - a))
+@end example
+
+Posibles valores cuando uno de los argumentos es entero negativo: 
+
+@example
+(%i5) [beta(-3,1),beta(-3,2),beta(-3,3)];
+                                    1  1    1
+(%o5)                            [- -, -, - -]
+                                    3  6    3
+@end example
+
+@code{beta(a+n,b)} o @code{beta(a-n)} con @code{n} entero se simplifica
+si @code{beta_expand} vale @code{true}:
+
+@example
+(%i6) beta_expand:true$
+(%i7) [beta(a+1,b),beta(a-1,b),beta(a+1,b)/beta(a,b+1)];
+                    a beta(a, b)  beta(a, b) (b + a - 1)  a
+(%o7)              [------------, ----------------------, -]
+                       b + a              a - 1           b
+
+@end example
+
+La funci@'on beta no est@'a definida si uno de sus argumentos es cero:
+
+@example
+(%i7) beta(0,b);
+beta: expected nonzero arguments; found 0, b
+ -- an error.  To debug this try debugmode(true);
+@end example
+
+Evaluaci@'on num@'erica para argumentos reales y complejos de tipo
+decimal flotante o big float:
+
+@example
+(%i8) beta(2.5,2.3);
+(%o8) .08694748611299981
+
+(%i9) beta(2.5,1.4+%i);
+(%o9) 0.0640144950796695 - .1502078053286415 %i
+
+(%i10) beta(2.5b0,2.3b0);
+(%o10) 8.694748611299969b-2
+
+(%i11) beta(2.5b0,1.4b0+%i);
+(%o11) 6.401449507966944b-2 - 1.502078053286415b-1 %i
+@end example
+
+La funci@'on beta es sim@'etrica con simetr@'{@dotless{i}}a especular:
+
+@example
+(%i14) beta(a,b)-beta(b,a);
+(%o14)                                 0
+(%i15) declare(a,complex,b,complex)$
+(%i16) conjugate(beta(a,b));
+(%o16)                 beta(conjugate(a), conjugate(b))
+@end example
+
+Derivada de la funci@'on beta respecto de @code{a}:
+
+@example
+(%i17) diff(beta(a,b),a);
+(%o17)               - beta(a, b) (psi (b + a) - psi (a))
+                                      0             0
+@end example
+@end deffn
+
+@deffn {Funci@'on} beta_incomplete (@var{a}, @var{b}, @var{z})
+La definici@'on b@'asica de la funci@'on beta incompleta (A&S 6.6.1) es
+
+@example
+                       z
+                      /
+                      [         b - 1  a - 1
+                      I  (1 - t)      t      dt
+                      ]
+                      /
+                       0
+@end example
+
+Esta definici@'on es posible para @math{realpart(a)>0}, @math{realpart(b)>0}
+y @math{abs(z)<1}. Para otras situaciones, la funci@'on beta incompleta puede
+definirse por medio de una funci@'on hipergeom@'etrica generalizada:
+
+@example
+   gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
+@end example
+(V@'ease functions.wolfram.com para una completa definici@'on de la funci@'on beta 
+incompleta.)
+
+Para enteros negativos @math{a = -n} y enteros positivos @math{b=m} con 
+@math{m<=n} la funci@'on beta incompleta se define como
+
+@example
+                            m - 1           k
+                            ====  (1 - m)  z
+                      n - 1 \            k
+                     z       >    -----------
+                            /     k! (n - k)
+                            ====
+                            k = 0
+@end example
+Maxima utiliza esta definici@'on para simplificar @code{beta_incomplete} 
+cuando @var{a} es entero negativo.
+
+Cuando @var{a} es entero positivo, @code{beta_incomplete} se simplifica
+para cualesquiera argumentos @var{b} y @var{z}, y para @var{b} entero
+positivo para cualesquiera argumentos @var{a} y @var{z}, con la 
+excepci@'on de cuando @var{a} sea entero negativo.
+
+Para @math{z=0} y @math{realpart(a)>0}, @code{beta_incomplete} se anula.
+Para @var{z=1} y @math{realpart(b)>0}, @code{beta_incomplete} se reduce a
+la funci@'on @code{beta(a,b)}.
+
+Maxima eval@'ua @code{beta_incomplete} num@'ericamente para valores reales
+y complejos en forma decimal y big float. La evaluaci@'on num@'erica se
+realiza expandiendo la funci@'on beta incompleta en fracciones continuas.
+
+Si @code{beta_expand} vale @code{true}, Maxima expande las expresiones
+@code{beta_incomplete(a+n,b,z)} y @code{beta_incomplete(a-n,b,z)},
+siendo @var{n} entero positivo.
+
+Maxima conoce las derivadas de @code{beta_incomplete} con respecto a
+las variables @var{a}, @var{b} y @var{z}, as@'{@dotless{i}} como la
+integral respecto de la variable @var{z}.
+
+Ejemplos:
+
+Simplificaci@'on para @var{a} entero positivo:
+
+@example
+(%i1) beta_incomplete(2,b,z);
+                                       b
+                            1 - (1 - z)  (b z + 1)
+(%o1)                       ----------------------
+                                  b (b + 1)
+@end example
+
+Simplificaci@'on para @var{b} entero positivo:
+
+@example
+(%i2) beta_incomplete(a,2,z);
+                                               a
+                              (a (1 - z) + 1) z
+(%o2)                         ------------------
+                                  a (a + 1)
+@end example
+
+Simplificaci@'on para @var{a} y @var{b} enteros positivos:
+
+@example
+(%i3) beta_incomplete(3,2,z);
+                                               3
+                              (3 (1 - z) + 1) z
+(%o3)                         ------------------
+                                      12
+@end example
+
+Para @var{a} entero negativo y @math{b<=(-a)}:
+
+@example
+(%i4) beta_incomplete(-3,1,z);
+                                       1
+(%o4)                              - ----
+                                        3
+                                     3 z
+@end example
+
+Simplificaci@'on para los valores @math{z=0} y @math{z=1}:
+
+@example
+(%i5) assume(a>0,b>0)$
+(%i6) beta_incomplete(a,b,0);
+(%o6)                                 0
+(%i7) beta_incomplete(a,b,1);
+(%o7)                            beta(a, b)
+@end example
+
+Evaluaci@'on num@'erica, tanto con float (precisi@'on doble)
+como big float (precisi@'on arbitraria):
+
+@example
+(%i8) beta_incomplete(0.25,0.50,0.9);
+(%o8)                          4.594959440269333
+(%i9)  fpprec:25$
+(%i10) beta_incomplete(0.25,0.50,0.9b0);
+(%o10)                    4.594959440269324086971203b0
+@end example
+
+Para @math{abs(z)>1}, @code{beta_incomplete} devuelve un
+resultado complejo:
+
+@example
+(%i11) beta_incomplete(0.25,0.50,1.7);
+(%o11)              5.244115108584249 - 1.45518047787844 %i
+@end example
+
+Resultados para argumentos complejos m@'as generales:
+
+@example
+(%i14) beta_incomplete(0.25+%i,1.0+%i,1.7+%i);
+(%o14)             2.726960675662536 - .3831175704269199 %i
+(%i15) beta_incomplete(1/2,5/4*%i,2.8+%i);
+(%o15)             13.04649635168716 %i - 5.802067956270001
+(%i16) 
+@end example
+
+Expansi@'on cuando @code{beta_expand} vale @code{true}:
+
+@example
+(%i23) beta_incomplete(a+1,b,z),beta_expand:true;
+                                                       b  a
+                   a beta_incomplete(a, b, z)   (1 - z)  z
+(%o23)             -------------------------- - -----------
+                             b + a                 b + a
+
+(%i24) beta_incomplete(a-1,b,z),beta_expand:true;
+                                                           b  a - 1
+           beta_incomplete(a, b, z) (- b - a + 1)   (1 - z)  z
+(%o24)     -------------------------------------- - ---------------
+                           1 - a                         1 - a
+@end example
+ 
+Derivada e integral de @code{beta_incomplete}:
+
+@example
+(%i34) diff(beta_incomplete(a,b,z),z);
+                                     b - 1  a - 1
+(%o34)                        (1 - z)      z
+(%i35) integrate(beta_incomplete(a,b,z),z);
+(%o35)     beta_incomplete(a, b, z) z - beta_incomplete(a + 1, b, z)
+(%i36) diff(%,z);
+(%o36)                     beta_incomplete(a, b, z)
+@end example
+@end deffn
+
+@deffn {Funci@'on} beta_incomplete_regularized (@var{a}, @var{b}, @var{z})
+Funci@'on beta incompleta regularizada A&S 6.6.2,
+definida como @code{beta_incomplete(a,b,z)/beta(a,b)}.
+
+Al igual que @code{beta_incomplete}, esta definici@'on no es completa.
+V@'ease functions.wolfram.com para una definici@'on completa de 
+@code{beta_incomplete_regularized}.
+
+@code{beta_incomplete_regularized} se simplifica para @var{a} o @var{b} 
+entero positivo.
+
+Para @math{z=0} y @math{realpart(a)>0}, @code{beta_incomplete_regularized} se anula.
+Para @var{z=1} y @math{realpart(b)>0}, @code{beta_incomplete_regularized} se reduce a 1.
+
+Maxima eval@'ua @code{beta_incomplete_regularized} num@'ericamente para valores reales
+y complejos en forma decimal y big float.
+
+Si @code{beta_expand} vale @code{true}, Maxima expande 
+@code{beta_incomplete_regularized} para los argumentos @math{a+n} o @math{a-n},
+siendo @var{n} entero.
+
+Maxima conoce las derivadas de @code{beta_incomplete_regularized} con respecto a
+las variables @var{a}, @var{b} y @var{z}, as@'{@dotless{i}} como la
+integral respecto de la variable @var{z}.
+
+Ejemplos:
+
+Simplificaci@'on para @var{a} o @var{b} enteros positivos:
+
+@example
+(%i1) beta_incomplete_regularized(2,b,z);
+                                       b
+(%o1)                       1 - (1 - z)  (b z + 1)
+
+(%i2) beta_incomplete_regularized(a,2,z);
+                                               a
+(%o2)                         (a (1 - z) + 1) z
+
+(%i3) beta_incomplete_regularized(3,2,z);
+                                               3
+(%o3)                         (3 (1 - z) + 1) z
+@end example
+
+Simplificaci@'on para los valores @math{z=0} y @math{z=1}:
+
+@example
+(%i4) assume(a>0,b>0)$
+(%i5) beta_incomplete_regularized(a,b,0);
+(%o5)                                 0
+(%i6) beta_incomplete_regularized(a,b,1);
+(%o6)                                 1
+@end example
+
+Evaluaci@'on num@'erica, tanto con float (precisi@'on doble)
+como big float (precisi@'on arbitraria):
+
+@example
+(%i7) beta_incomplete_regularized(0.12,0.43,0.9);
+(%o7)                         .9114011367359802
+(%i8) fpprec:32$
+(%i9) beta_incomplete_regularized(0.12,0.43,0.9b0);
+(%o9)               9.1140113673598075519946998779975b-1
+(%i10) beta_incomplete_regularized(1+%i,3/3,1.5*%i);
+(%o10)             .2865367499935403 %i - 0.122995963334684
+(%i11) fpprec:20$
+(%i12) beta_incomplete_regularized(1+%i,3/3,1.5b0*%i);
+(%o12)      2.8653674999354036142b-1 %i - 1.2299596333468400163b-1
+@end example
+
+Expansi@'on cuando @code{beta_expand} vale @code{true}:
+
+@example
+(%i13) beta_incomplete_regularized(a+1,b,z);
+                                                            b  a
+                                                     (1 - z)  z
+(%o13)        beta_incomplete_regularized(a, b, z) - ------------
+                                                     a beta(a, b)
+(%i14) beta_incomplete_regularized(a-1,b,z);
+                                                          b  a - 1
+                                                   (1 - z)  z
+(%o14)   beta_incomplete_regularized(a, b, z) - ----------------------
+                                                beta(a, b) (b + a - 1)
+@end example
+
+Derivada e integral respecto de @var{z}:
+
+@example
+(%i15) diff(beta_incomplete_regularized(a,b,z),z);
+                                     b - 1  a - 1
+                              (1 - z)      z
+(%o15)                        -------------------
+                                  beta(a, b)
+
+(%i16) integrate(beta_incomplete_regularized(a,b,z),z);
+(%o16) beta_incomplete_regularized(a, b, z) z
+                           a beta_incomplete_regularized(a + 1, b, z)
+                         - ------------------------------------------
+                                             b + a
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} beta_incomplete_generalized (@var{a}, @var{b}, @var{z1}, @var{z2})
+La definici@'on b@'asica de la funci@'on beta incompleta generalizada es
+
+The basic definition of the generalized incomplete beta function is
+
+@example
+                      z2
+                     /
+                     [          b - 1  a - 1
+                     I   (1 - t)      t      dt
+                     ]
+                     /
+                      z1
+@end example
+
+Maxima simplifica @code{beta_incomplete_regularized} para @var{a} y @var{b} 
+enteros positivos.
+
+Para @math{realpart(a)>0} y @math{z1=0} o @math{z2=0}, Maxima reduce
+@code{beta_incomplete_generalized} a @code{beta_incomplete}. Para
+@math{realpart(b)>0} y @math{z1=1} o @var{z2=1}, Maxima reduce a
+una expresi@'on con @code{beta} y @code{beta_incomplete}.
+
+Maxima eval@'ua @code{beta_incomplete_generalized} num@'ericamente para valores reales
+y complejos en forma decimal y big float.
+
+Si @code{beta_expand} vale @code{true}, Maxima expande 
+@code{beta_incomplete_generalized} para los argumentos @math{a+n} y @math{a-n},
+siendo @var{n} entero positivo.
+
+Maxima conoce las derivadas de @code{beta_incomplete_generalized} con respecto a
+las variables @var{a}, @var{b}, @var{z1} y @var{z2}, as@'{@dotless{i}} como la
+integral respecto de las variables @var{z1} y @var{z2}.
+
+Ejemplos:
+
+Maxima simplifica @code{beta_incomplete_generalized} para @var{a} y @var{b}
+enteros positivos:
+@example
+(%i1) beta_incomplete_generalized(2,b,z1,z2);
+                          b                      b
+                  (1 - z1)  (b z1 + 1) - (1 - z2)  (b z2 + 1)
+(%o1)             -------------------------------------------
+                                   b (b + 1)
+
+(%i2) beta_incomplete_generalized(a,2,z1,z2);
+                                     a                      a
+                  (a (1 - z2) + 1) z2  - (a (1 - z1) + 1) z1
+(%o2)             -------------------------------------------
+                                   a (a + 1)
+
+(%i3) beta_incomplete_generalized(3,2,z1,z2);
+                  2      2                       2      2
+          (1 - z1)  (3 z1  + 2 z1 + 1) - (1 - z2)  (3 z2  + 2 z2 + 1)
+(%o3)     -----------------------------------------------------------
+                                      12
+@end example
+
+Simplificaci@'on para los valores @math{z1=0}, @math{z2=0}, @math{z1=1}
+o @math{z2=1}:
+@example
+(%i4) assume(a > 0, b > 0)$
+(%i5) beta_incomplete_generalized(a,b,z1,0);
+(%o5)                    - beta_incomplete(a, b, z1)
+
+(%i6) beta_incomplete_generalized(a,b,0,z2);
+(%o6)                    - beta_incomplete(a, b, z2)
+
+(%i7) beta_incomplete_generalized(a,b,z1,1);
+(%o7)              beta(a, b) - beta_incomplete(a, b, z1)
+
+(%i8) beta_incomplete_generalized(a,b,1,z2);
+(%o8)              beta_incomplete(a, b, z2) - beta(a, b)
+@end example
+
+Evaluaci@'on num@'erica para argumentos reales, tanto con float
+(precisi@'on doble) como big float (precisi@'on arbitraria):
+@example
+(%i9) beta_incomplete_generalized(1/2,3/2,0.25,0.31);
+(%o9)                        .09638178086368676
+
+(%i10) fpprec:32$
+(%i10) beta_incomplete_generalized(1/2,3/2,0.25,0.31b0);
+(%o10)               9.6381780863686935309170054689964b-2
+@end example
+
+Evaluaci@'on num@'erica para argumentos complejos, tanto con float
+(precisi@'on doble) como big float (precisi@'on arbitraria):
+@example
+(%i11) beta_incomplete_generalized(1/2+%i,3/2+%i,0.25,0.31);
+(%o11)           - .09625463003205376 %i - .003323847735353769
+(%i12) fpprec:20$
+(%i13) beta_incomplete_generalized(1/2+%i,3/2+%i,0.25,0.31b0);
+(%o13)     - 9.6254630032054178691b-2 %i - 3.3238477353543591914b-3
+@end example
+
+Expansi@'on para @math{a+n} o @math{a-n}, siendo @var{n} entero positivo
+con @code{beta_expand} igual @code{true}:
+@example
+(%i14) beta_expand:true$
+(%i15) beta_incomplete_generalized(a+1,b,z1,z2);
+               b   a           b   a
+       (1 - z1)  z1  - (1 - z2)  z2
+(%o15) -----------------------------
+                   b + a
+                            a beta_incomplete_generalized(a, b, z1, z2)
+                          + -------------------------------------------
+                                               b + a
+
+(%i16) beta_incomplete_generalized(a-1,b,z1,z2);
+       beta_incomplete_generalized(a, b, z1, z2) (- b - a + 1)
+(%o16) -------------------------------------------------------
+                                1 - a
+                                          b   a - 1           b   a - 1
+                                  (1 - z2)  z2      - (1 - z1)  z1
+                                - -------------------------------------
+                                                  1 - a
+@end example
+
+Derivada respecto de la variable @var{z1} e integrales respecto de 
+@var{z1} y @var{z2}:
+@example
+(%i17) diff(beta_incomplete_generalized(a,b,z1,z2),z1);
+                                      b - 1   a - 1
+(%o17)                      - (1 - z1)      z1
+
+(%i18) integrate(beta_incomplete_generalized(a,b,z1,z2),z1);
+(%o18) beta_incomplete_generalized(a, b, z1, z2) z1
+                                        + beta_incomplete(a + 1, b, z1)
+
+(%i19) integrate(beta_incomplete_generalized(a,b,z1,z2),z2);
+(%o19) beta_incomplete_generalized(a, b, z1, z2) z2
+                                        - beta_incomplete(a + 1, b, z2)
+@end example
+@end deffn
+
+
+@defvr {Variable opcional} beta_expand
+Valor por defecto: false
+
+Si @code{beta_expand} vale @code{true}, @code{beta(a,b)} y sus
+funciones relacionadas se expanden para argumentos del tipo 
+@math{a+n} o @math{a-n}, siendo @math{n} un n@'umero entero.
+@end defvr
+
+@defvr {Variable opcional} beta_args_sum_to_integer
+Valor por defecto: false
+
+Si @code{beta_args_sum_to_integer} vale @code{true}, Maxima simplifica 
+@code{beta(a,b)} cuando la suma de los argumentos @var{a} y @var{b} sea un entero.
+@end defvr
+
 
 
 @deffn {Funci@'on} psi [@var{n}](@var{x})
@@ -421,7 +1070,7 @@ Devuelve el factor num@'erico que multiplica a la expresi@'on @var{expr}, la cua
 
 
 @node Integral exponencial, Funci@'on de error, Funciones Gamma y factorial, Funciones Especiales
-@section Funciones Gamma y factorial
+@section Integral exponencial
 
 La integral exponencial y sus funciones relacionadas se 
 definen en el cap@'{@dotless{i}}tulo 5 de Abramowitz y Stegun, 
@@ -559,13 +1208,14 @@ de las funciones fresnel_s y fresnel_c.
 
 
 
-@node Funciones de Struve, Funciones y variables para las funciones especiales, Funci@'on de error, Funciones Especiales
+@node Funciones de Struve, Funciones hipergeom@'etricas, Funci@'on de error, Funciones Especiales
 @section Funciones de Struve
 
 Las funciones de Struve se definen en el cap@'{@dotless{i}}tulo
 12 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}.
 
-Maxima tiene un soporte limitado a las funciones de Struve.
+Maxima tiene un soporte limitado sobre estas funciones, que pueden
+aparecer en resultados devueltos por @code{hgfred}.
 
 @deffn {Funci@'on} hstruve [@var{v}] (@var{z}) 
 Funci@'on de Struve H de orden @var{v} y argumento @var{z}. (A&S 12.1.1)
@@ -581,11 +1231,51 @@ Funci@'on de Struve modificada L de orden @var{v} y argumento @var{z}. (A&S 12.2
 
 
 
+@node Funciones hipergeom@'etricas, Funciones de cilindro parab@'olico, Funciones de Struve, Funciones Especiales
+@section Funciones hipergeom@'etricas
+
+Las funciones hipergeom@'etricas se definen en los cap@'{@dotless{i}}tulos
+13 y 15 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}. 
+
+Maxima tiene un soporte limitado sobre estas funciones, que pueden
+aparecer en resultados devueltos por @code{hgfred}.
+
+@deffn {Funci@'on} %m [@var{k},@var{u}] (@var{z}) 
+Funci@'on M de Whittaker
+@code{M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)}.  
+(A&S 13.1.32)
+@end deffn
+
+@deffn {Funci@'on} %w [@var{k},@var{u}] (@var{z}) 
+Funci@'on W de Whittaker.  (A&S 13.1.33)
+@end deffn
+
+
+@deffn {Funci@'on} %f [@var{p},@var{q}] (@var{[a],[b],z}) 
+Es la funci@'on hipergeom@'etrica pFq(a1,a2,..ap;b1,b2,..bq;z),
+donde @code{a} es una lista de longitud @code{p} y 
+@code{b} otra lista de longitud @code{q}.
+@end deffn
+
+
+
+@node Funciones de cilindro parab@'olico, Funciones y variables para las funciones especiales, Funciones hipergeom@'etricas, Funciones Especiales
+@section  Funciones de cilindro parab@'olico
+
+Las funciones de cilindro parab@'olico se definen en el cap@'{@dotless{i}}tulo
+19 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}. 
+
+Maxima tiene un soporte limitado sobre estas funciones, que pueden
+aparecer en resultados devueltos por @code{hgfred}.
+
+@deffn {Funci@'on} %d [@var{v}] (@var{z}) 
+Es la funci@'on de cilindro parab@'olico @code{%d[v](z)}. (A&S 19.3.1)
+@end deffn
 
 
 
 
-@node Funciones y variables para las funciones especiales,  , Funciones de Struve, Funciones Especiales
+@node Funciones y variables para las funciones especiales,  , Funciones de cilindro parab@'olico, Funciones Especiales
 @section Funciones y variables para las funciones especiales
 
 

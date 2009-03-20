@@ -276,6 +276,8 @@ Funciones Especiales
 * Integral exponencial::
 * Funci@'on de error::
 * Funciones de Struve::
+* Funciones hipergeom@'etricas::
+* Funciones de cilindro parab@'olico::
 * Funciones y variables para las funciones especiales::
 
 Funciones el@'{@dotless{i}}pticas
