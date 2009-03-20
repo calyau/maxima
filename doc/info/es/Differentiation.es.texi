@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.22
 @menu
 * Funciones y variables para la diferenciaci@'on::  
 @end menu
@@ -544,16 +544,28 @@ La variable @code{gradefs} contiene la lista de las funciones para las que se ha
 @end defvr
 
 @deffn {Funci@'on} laplace (@var{expr}, @var{t}, @var{s})
-Calcula la transformada de Laplace de @var{expr} con respecto de la variable @var{t} y par@'ametro de transformaci@'on @var{s}. Si @code{laplace} no puede encontrar la soluci@'on, se devuelve la forma nominal @code{'laplace}.
+Calcula la transformada de Laplace de @var{expr} con respecto
+de la variable @var{t} y par@'ametro de transformaci@'on @var{s}.
 
 La funci@'on @code{laplace} reconoce en @var{expr} las funciones
-@code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh} y @code{erf},
-as@'{@dotless{i}} como @code{derivative}, @code{integrate}, @code{sum} y @code{ilt}. Bajo la presencia de otras funciones, @code{laplace} puede que no sea capaz de calcular la transformada.
+@code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos},
+@code{sinh}, @code{cosh} y @code{erf}, as@'{@dotless{i}} como 
+@code{derivative}, @code{integrate}, @code{sum} y @code{ilt}. 
+Si @code{laplace} no encuentra una transformada, entonces
+llama a la funci@'on @code{specint}, la cual puede encontrar
+la transformada de Laplace de expresiones con funciones especiales,
+tales como las de Bessel. @code{specint} tambi@'en puede manipular la 
+funci@'on @code{unit_step}. V@'ease @code{specint} para m@'as informaci@'on.
+
+Cuando tampoco @code{specint} sea capaz de encontrar una soluci@'on,
+se devolver@'a una forma nominal.
+
 
 @c REPHRASE THIS
 @c FALTA AQUI UN PARRAFO
 
-La funci@'on @code{laplace} reconoce integrales de convoluci@'on de la forma @code{integrate (f(x) * g(t - x), x, 0, t)},
+La funci@'on @code{laplace} reconoce integrales de convoluci@'on 
+de la forma @code{integrate (f(x) * g(t - x), x, 0, t)},
 no pudiendo reconocer otros tipos de convoluciones.
 
 Las relaciones funcionales se deben representar expl@'{@dotless{i}}citamente en @var{expr}; las relaciones impl@'{@dotless{i}}citas establecidas por @code{depends} no son reconocidas. As@'{@dotless{i}}, si @var{f} depende de @var{x} y @var{y}, @code{f (x, y)} debe aparecer en @var{expr}.
@@ -588,6 +600,37 @@ Ejemplos:
 (%o4)        - -- (delta(t))!      + s  - delta(0) s
                dt           !
                             !t = 0
+(%i5) assume(a>0)$
+(%i6) laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
+                                              - a - 1
+                         gamma(a)   gamma(a) s
+(%o6)                    -------- - -----------------
+                            s            1     a
+                                        (- + 1)
+                                         s
+(%i7) factor(laplace(gamma_incomplete(1/2,t),t,s));
+                                              s + 1
+                      sqrt(%pi) (sqrt(s) sqrt(-----) - 1)
+                                                s
+(%o7)                 -----------------------------------
+                                3/2      s + 1
+                               s    sqrt(-----)
+                                           s
+(%i8) assume(exp(%pi*s)>1)$
+(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),simpsum;
+                         %i                         %i
+              ------------------------ - ------------------------
+                              - %pi s                    - %pi s
+              (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
+(%o9)         ---------------------------------------------------
+                                       2
+(%i9) factor(%);
+                                      %pi s
+                                    %e
+(%o9)                   -------------------------------
+                                             %pi s
+                        (s - %i) (s + %i) (%e      - 1)
+
 @end example
 
 @end deffn
