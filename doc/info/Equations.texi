@@ -209,6 +209,7 @@ Examples:
 @closecatbox
 @end deffn
 
+@anchor{allroots}
 @deffn {Function} allroots (@var{expr})
 @deffnx {Function} allroots (@var{eqn})
 Computes numerical approximations of the real and complex roots of the
@@ -277,6 +278,21 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
  + 1.098699797110288)
 @end example
+
+@opencatbox
+@category{Polynomials} @category{Numerical methods}
+@closecatbox
+
+@end deffn
+
+@deffn {Function} bfallroots (@var{expr})
+@deffnx {Function} bfallroots (@var{eqn})
+Computes numerical approximations of the real and complex roots of the
+polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
+
+In all respects, @code{bfallroots} is identical to @code{allroots} except 
+that @code{bfallroots} computes the roots using bigfloats.  See 
+@ref{allroots} for more information.
 
 @opencatbox
 @category{Polynomials} @category{Numerical methods}
