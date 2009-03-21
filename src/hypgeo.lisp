@@ -2863,7 +2863,7 @@
 ;; must be the same, but the orders may be different.
 (defun lt2j (rest arg1 arg2 index1 index2)
   (cond ((not (equal arg1 arg2))
-	 'product-of-bessel-with-different-args)
+         (setq *hyp-return-noun-flag* 'product-of-bessel-with-different-args))
 	(t (lt-ltp 'twoj
 		   rest
 		   arg1
