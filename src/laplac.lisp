@@ -239,7 +239,7 @@
      %e-case-lin
      (setq result
       (cond
-	(rest ($ratsimp ($at (laptimes rest)
+	(rest (sratsimp ($at (laptimes rest)
 			     (list '(mequal simp)
 				   parm
 				   (list '(mplus simp)
@@ -390,7 +390,7 @@
 			    (mostpart fun parm t a b)
 			    (afixsign (mostpart fun parm nil a b)
 				      whichsign)))))
-    ($ratsimp (simptimes (cons '(mtimes)
+    (sratsimp (simptimes (cons '(mtimes)
 			       (if whichsign
 				   result
 				   (cons '$%i result)))
@@ -441,7 +441,7 @@
  ;;;FUN IS OF THE FORM SINH(A*T+B)*REST(T) OR IS COSH
 (defun lapsinh (fun rest switch)
   (cond ((islinear (cadr fun) var)
-	 ($ratsimp
+	 (sratsimp
 	  (laplus
 	   (simplus
 	    (list '(mplus)
@@ -624,7 +624,7 @@
 	    (setq parm-list (cons f parm-list)))
 	   ((freeof var f) (setq var-list (cons f var-list)))
 	   ((freeof dvar
-		    ($ratsimp (maxima-substitute (list '(mplus)
+		    (sratsimp (maxima-substitute (list '(mplus)
 						       var
 						       dvar)
 						 var
