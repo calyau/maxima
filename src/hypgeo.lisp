@@ -677,6 +677,26 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize gen_laguerre(v1,v2,w), Generalized Laguerre function
+(defun one-gen-laguerre (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         ((%gen_laguerre) (v1 true) (v2 true) (w true)))
+        ((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize laguerre(v1,w), Laguerre function
+(defun one-laguerre (exr)
+  (m2 exr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         ((%laguerre) (v1 true) (w true)))
+        ((coeffpp) (a zerp)))
+      nil))
+
 ;; Recognize %c[v1,v2](w), Gegenbauer function
 (defun onec (exp)
   (m2 exp
@@ -750,6 +770,16 @@
 	((coeffpt)
 	 (u nonzerp)
 	 ((mqapply)(($%he array) (v1 true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize hermite(v1,w), Hermite function
+(defun one-hermite (expr)
+  (m2 expr
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((%hermite) (v1 true) (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
@@ -1226,7 +1256,7 @@
 		  e (cdras 'e l)
 		  f (cdras 'f l))
 	    (return (ltscale u var *par* c a e f))))
-     (return 'other-trans-to-follow)))
+     (return (setq *hyp-return-noun-flag* 'other-trans-to-follow))))
 
 (defun substl (p1 p2 p3)
   (cond ((eq p1 p2) p3)(t (maxima-substitute p1 p2 p3))))
@@ -1925,6 +1955,8 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1m rest arg1 index1 index11))))
+
+     ;; Laplace transform for the Generalized Laguerre function, %l[v1,v2](w)
      (cond ((setq l (onel u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
@@ -1935,6 +1967,25 @@
 				 index1
 				 index11
 				 'l))))
+
+     ;; Laplace transform for the Generalized Laguerre function
+     ;; We call the routine for %l[v1,v2](w).
+     (cond ((setq l (one-gen-laguerre u))
+            (setq index1  (cdras 'v1 l)
+                  index11 (cdras 'v2 l)
+                  arg1    (cdras 'w l)
+                  rest    (cdras 'u l))
+            (return (integertest rest arg1 index1 index11 'l))))
+        
+     ;; Laplace transform for the Laguerre function
+     ;; We call the routine for %l[v1,0](w).
+     (cond ((setq l (one-laguerre u))
+            (setq index1  (cdras 'v1 l)
+                  index11 0
+                  arg1    (cdras 'w l)
+                  rest    (cdras 'u l))
+            (return (integertest rest arg1 index1 index11 'l))))
+ 
      (cond ((setq l (onec u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
@@ -1963,15 +2014,37 @@
 				 index1
 				 nil
 				 'u))))
+
+     ;; Laplace transform for the Hermite function, %he[index1](arg1)
      (cond ((setq l (onehe u))
 	    (setq index1 (cdras 'v1 l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
-	    (return (integertest rest
-				 arg1
-				 index1
-				 nil
-				 'he))))
+	    (return 
+              (cond ((maxima-integerp index1)
+                     ;; When index1 is an integer, we transform directly
+                     ;; to a hypergeometric function. For this case we
+                     ;; get a Laplace transform when the arg is the
+                     ;; square root of the variable.
+                     (sendexec rest (hermite-to-hypergeometric index1 arg1)))
+                    (t
+                     (integertest rest
+ 				 arg1
+ 				 index1
+ 				 nil
+ 				 'he))))))
+
+     ;; Laplace transform for the Hermite function, hermite(index1,arg1)
+     (cond ((setq l (one-hermite u))
+            (setq index1 (cdras 'v1 l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return 
+              (cond ((maxima-integerp index1)
+                     (sendexec rest (hermite-to-hypergeometric index1 arg1)))
+                    (t
+                     (integertest rest arg1 index1 nil 'he))))))
+
      (cond ((setq l (hyp-onep u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
@@ -2844,6 +2917,48 @@
 	 ;; (bessel_y(-v,z) - exp(v*%pi*%i)*bessel_y(v,z))/sin(v*%pi)
 	 (div (numjory v sort z 'y)
 	      (sin% (mul v '$%pi))))))
+
+;; The algorithm of the implemented Hermite function %he does not work for
+;; the known Laplace transforms. For an even or odd integer order, we 
+;; can represent the Hermite function by the Hypergeometric function 1F1.
+;; With this representations we get the expected Laplace transforms.
+(defun hermite-to-hypergeometric (order arg)
+  (cond
+    ((and (maxima-integerp order)
+          (or (and (integerp order) (evenp order))
+              (and (symbolp order) (kindp order '$even))))
+     ;; Transform to 1F1 for order an even integer
+     (mul
+        (power 2 order)
+        (power '$%pi (div 1 2))
+        (inv (simplify (list '(%gamma) (div (sub 1 order) 2))))
+        (list '(mqapply) (list '($%f array) 1 1)
+                         (list '(mlist) (div order -2)) 
+                         (list '(mlist) (div 1 2))
+                         (mul arg arg))))
+
+     ((and (maxima-integerp order) 
+           (or (and (integerp order) (oddp order))
+               (and (symbolp order) (kindp order '$odd))))
+      ;; Transform to 1F1 for order an odd integer
+      (mul -2 arg
+        (power 2 order)
+        (power '$%pi (div 1 2))
+        (inv (simplify (list '(%gamma) (div order -2))))
+        (list '(mqapply) (list '($%f array) 1 1)
+                         (list '(mlist) (div (sub 1 order) 2))
+                         (list '(mlist) (div 3 2))
+                         (mul arg arg))))
+     (t
+      ;; The general case, transform to 2F0
+      ;; For this case we have no Laplace transform.
+      (mul
+        (power (mul 2 arg) order)
+        (list '(mqapply) (list '($%f array) 2 0)
+                         (list '(mlist) (div order 2) 
+                                        (div (sub 1 order) 2))
+                         (list '(mlist))
+                         (div -1 (mul arg arg)))))))
 
 ;;; LT<foo> functions are various experts on Laplace transforms of the
 ;;; function <foo>.  The expression being transformed is
