@@ -1,5 +1,5 @@
 ;; 8/8 | 5/5 
-;; Copyright (C) 2000, 2001, 2003, 2008 Barton Willis
+;; Copyright (C) 2000, 2001, 2003, 2008, 2009 Barton Willis
 
 #|
   This is free software; you can redistribute it and/or
@@ -235,42 +235,80 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	    ((mexpt) ,x ,$genindex)) 
 	   ,$genindex 0 ,n))))
    
-;; When n is an integer with n > -1, return the product 
-;; x (x + 1) (x + 2) ... (x + n - 1).  This is the same as
-;; gamma(x + n) / gamma(x).  See A&S 6.1.22, page 256.  When
-;; n isn't an integer or n < 0, return the form (($pochhammer) x n))
-;; Also notice that pochhammer(1,n) = n!.
 
-(meval `(($declare) $pochhammer $complex))
+(eval-when
+    #+gcl (load eval)
+    #-gcl (:load-toplevel :execute)
+    (let (($context '$global) (context '$global))
+      (meval '(($declare) $pochhammer $complex))))
+
 (defmvar $pochhammer_max_index 100)
 
+;; This disallows noninteger assignments to $max_pochhammer_index.
+
+(setf (get '$pochhammer_max_index 'assign)
+      #'(lambda (a b) 
+	  (declare (ignore a))
+	  (if (not (and (atom b) (integerp b)))
+	      (progn
+		(mtell "The value of `max_pochhammer_index' must be an integer.")
+		'munbindp))))
+
 (defun $pochhammer (x n)
-  (simplify `(($pochhammer) ,x ,n)))
+  (take '($pochhammer) x n))
+
+(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
+
+;; Numerical evaluation of pochhammer using the bigfloat package.
+(defun pochhammer (x n)
+  (let ((acc 1))
+    (if (< n 0) (/ 1 (pochhammer (+ x n) (- n)))
+      (dotimes (k n acc)
+	(setq acc (* acc (+ k x)))))))
+
+(in-package :maxima)
 
 (defun simp-pochhammer (e y z)
   (declare (ignore y))
-  (let ((x) (n))
+  (let ((x) (n) (return-a-rat))
     (twoargcheck e)
+    (setq return-a-rat ($ratp (second e)))
     (setq x (simplifya (specrepcheck (second e)) z))
     (setq n (simplifya (specrepcheck (third e)) z))
  
-    (cond ((eq t (meqp n 0)) 1)
+    (cond ((or ($taylorp (second e)) ($taylorp (third e)))
+	   (setq x (simplifya (second e) z))
+	   (setq n (simplifya (third e) z))
+	   ($taylor (div (take '(%gamma) (add x n)) (take '(%gamma) x))))
+	   
+	  ((eq n 0) 1)
 	  
-	  ;; Use reflection rule when (great (neg n) n) is true or when n is a negative integer.
-	  
-	  ((and (integerp n) (< n 0))
-	   (div (power -1 n) (simplify `(($pochhammer) ,(sub 1 x) ,(neg n)))))
-	  
-	  ((eq t (eq x 1)) (take '(mfactorial) n))
+	  ;; pochhammer(1,n) = n! (factorial is faster than bigfloat::pochhammer.)
+	  ((eq x 1) (take '(mfactorial) n))
+     
+	  ;; pure numeric evaluation--use numeric package.
+	  ((and (integerp n) (complex-number-p x '$numberp))
+	   (maxima::to (bigfloat::pochhammer (bigfloat::to x) (bigfloat::to n))))
 
-	  ((and (integerp n) (> n -1) (<=  n $pochhammer_max_index)) 
-	   (let ((acc 1))
-	     (dotimes (i n)
-	       (setq acc (mul acc (add i x))))
-	     (if (complex-number-p x #'(lambda (s) (or (floatp s) ($bfloatp s)))) ($expand acc) acc)))
+	  ((and (integerp (mul 2 n)) (integerp (mul 2 x)) (> (mul 2 n) 0) (> (mul 2 x) 0))
+	   (div (take '(%gamma) (add x n)) (take '(%gamma) x)))
 
+	  ;; Use a reflection identity when (great (neg n) n) is true. Specifically,
+	  ;; use pochhammer(x,-n) * pochhammer(x-n,n) = 1; thus pochhammer(x,n) = 1/pochhammer(x+n,-n).
+	  ((great (neg n) n)
+	   (div 1 (take '($pochhammer) (add x n) (neg n))))
+	  
+	  ;; Expand when n is an integer and either abs(n) < $expop or abs(n) < $pochhammer_max_index.
+	  ;; Let's give $expand a bit of early help.
+	  ((and (integerp n) (or (< (abs n) $expop) (< (abs n) $pochhammer_max_index)))
+	   (if (< n 0) (div 1 (take '(%pochhammer) (add x n) (neg n)))
+	     (let ((acc 1))
+	       (if (or (< (abs n) $expop) return-a-rat) (setq acc ($rat acc) x ($rat x)))
+	       (dotimes (k n (if return-a-rat acc ($ratdisrep acc)))
+		 (setq acc (mul acc (add k x)))))))
+	   
+	  ;; return a nounform.
 	  (t `(($pochhammer simp) ,x ,n)))))
-
 
 (putprop '$pochhammer
 	 '((x n)

@@ -398,7 +398,7 @@ check_zero_list(foo)$
 
 test_name : "jacobi normalization"$
 
-stand(n) := jacobi_p(n,a,b,1) - binomial(n+a,n)$
+stand(n) := expand(jacobi_p(n,a,b,1) - binomial(n+a,n))$
 check_zero_list(makelist(stand(n),n,0, 7))$
 
 test_name : "A&S 22.2.3"$
@@ -1290,18 +1290,18 @@ check_zero_list([foo])$
 remvalue([x,n,k])$
 
 test_name : "pochhammer-1"$
-check_zero_list([pochhammer(x,0) - 1, pochhammer(x,1) - x,
-pochhammer(x,2) - x*(x+1), pochhammer(x,5)/pochhammer(x,4) - (x+4)])$
+check_zero_list(ratsimp([pochhammer(x,0) - 1, pochhammer(x,1) - x,
+pochhammer(x,2) - x*(x+1), pochhammer(x,5)/pochhammer(x,4) - (x+4)]))$
 
 test_name : "pochhammer-2"$
-check_zero_list(makelist(pochhammer(x,-k) * pochhammer(1-x,k) - (-1)^k,k,-5,5))$
+check_zero_list(makelist(ratsimp(pochhammer(x,-k) * pochhammer(1-x,k) - (-1)^k),k,-5,5))$
 
 test_name : "pochhammer-grad"$
 foo : pochhammer(x,n)$
 dfoo : diff(foo,x)$
 goober : makelist(diff(ev(foo,n = k),x) - ev(dfoo,n = k),k,-5,5)$
-check_zero_list(ev(goober,x=7/2,rat))$
-check_zero_list(ev(goober,x=-7/2,rat))$
+check_zero_list(expand(subst([x = 7/2], goober)));
+check_zero_list(expand(subst([x = -7/2], goober)));
 
 /*-----------------*/
 
