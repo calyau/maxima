@@ -159,8 +159,8 @@ Note also that arguments of subexpressions are not affected.
 
 @var{expr_1} may be an atom or a non-atomic expression.
 @var{expr_2} may be any non-atomic expression.
-@code{delete} always returns a new expression,
-even if no arguments are removed.
+@code{delete} returns a new expression;
+it does not modify @var{expr_2}.
 
 @code{delete(@var{expr_1}, @var{expr_2}, @var{n})}
 removes from @var{expr_2} the first @var{n} arguments of the top-level operator
