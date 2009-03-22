@@ -912,6 +912,7 @@ orthopoly/orthopoly.lisp\
 orthopoly/README\
 orthopoly/test_orthopoly.mac\
 orthopoly/variational_method.dem\
+orthopoly/rtest_pochhammer.mac\
 physics/battex.sty\
 physics/dimen.dem\
 physics/dimen.mac\
