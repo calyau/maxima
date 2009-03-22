@@ -2021,9 +2021,11 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return 
-              (cond ((maxima-integerp index1)
-                     ;; When index1 is an integer, we transform directly
-                     ;; to a hypergeometric function. For this case we
+              (cond ((and (maxima-integerp index1)
+                         (or (mevenp index1)
+                             (moddp index1)))
+                     ;; When index1 is an even or odd integer, we transform 
+                     ;; directly to a hypergeometric function. For this case we
                      ;; get a Laplace transform when the arg is the
                      ;; square root of the variable.
                      (sendexec rest (hermite-to-hypergeometric index1 arg1)))
@@ -2040,7 +2042,9 @@
                   arg1 (cdras 'w l)
                   rest (cdras 'u l))
             (return 
-              (cond ((maxima-integerp index1)
+              (cond ((and (maxima-integerp index1)
+                         (or (mevenp index1)
+                             (moddp index1)))
                      (sendexec rest (hermite-to-hypergeometric index1 arg1)))
                     (t
                      (integertest rest arg1 index1 nil 'he))))))
@@ -2925,8 +2929,7 @@
 (defun hermite-to-hypergeometric (order arg)
   (cond
     ((and (maxima-integerp order)
-          (or (and (integerp order) (evenp order))
-              (and (symbolp order) (kindp order '$even))))
+          (mevenp order))
      ;; Transform to 1F1 for order an even integer
      (mul
         (power 2 order)
@@ -2938,8 +2941,7 @@
                          (mul arg arg))))
 
      ((and (maxima-integerp order) 
-           (or (and (integerp order) (oddp order))
-               (and (symbolp order) (kindp order '$odd))))
+           (moddp order))
       ;; Transform to 1F1 for order an odd integer
       (mul -2 arg
         (power 2 order)
