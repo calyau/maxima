@@ -301,7 +301,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 	  ;; Expand when n is an integer and either abs(n) < $expop or abs(n) < $pochhammer_max_index.
 	  ;; Let's give $expand a bit of early help.
 	  ((and (integerp n) (or (< (abs n) $expop) (< (abs n) $pochhammer_max_index)))
-	   (if (< n 0) (div 1 (take '(%pochhammer) (add x n) (neg n)))
+	   (if (< n 0) (div 1 (take '($pochhammer) (add x n) (neg n)))
 	     (let ((acc 1))
 	       (if (or (< (abs n) $expop) return-a-rat) (setq acc ($rat acc) x ($rat x)))
 	       (dotimes (k n (if return-a-rat acc ($ratdisrep acc)))
