@@ -150,33 +150,104 @@ depend on the current value of @code{i}.
 
 @deffn {Function} delete (@var{expr_1}, @var{expr_2})
 @deffnx {Function} delete (@var{expr_1}, @var{expr_2}, @var{n})
-Removes all occurrences of @var{expr_1} from @var{expr_2}.  @var{expr_1}
-may be a term of @var{expr_2} (if it is a sum) or a factor of @var{expr_2}
-(if it is a product).
+
+@code{delete(@var{expr_1}, @var{expr_2})}
+removes from @var{expr_2} any arguments of its top-level operator
+which are the same (as determined by "=") as @var{expr_1}.
+Note that "=" tests for formal equality, not equivalence.
+Note also that arguments of subexpressions are not affected.
+
+@var{expr_1} may be an atom or a non-atomic expression.
+@var{expr_2} may be any non-atomic expression.
+@code{delete} always returns a new expression,
+even if no arguments are removed.
+
+@code{delete(@var{expr_1}, @var{expr_2}, @var{n})}
+removes from @var{expr_2} the first @var{n} arguments of the top-level operator
+which are the same as @var{expr_1}.
+If there are fewer than @var{n} such arguments,
+then all such arguments are removed.
+
+Examples:
+
+Removing elements from a list.
 
 @c ===beg===
-@c delete(sin(x), x+sin(x)+y);
+@c delete (y, [w, x, y, z, z, y, x, w]);
 @c ===end===
 @example
-(%i1) delete(sin(x), x+sin(x)+y);
-(%o1)                         y + x
-
+(%i1) delete (y, [w, x, y, z, z, y, x, w]);
+(%o1)                  [w, x, z, z, x, w]
 @end example
 
-@code{delete(@var{expr_1}, @var{expr_2}, @var{n})} removes the first @var{n} occurrences of
-@var{expr_1} from @var{expr_2}.  If there are fewer than @var{n}
-occurrences of @var{expr_1} in @var{expr_2} then all occurrences will be deleted.
+Removing terms from a sum.
 
 @c ===beg===
-@c delete(a, f(a,b,c,d,a));
-@c delete(a, f(a,b,a,c,d,a), 2);
+@c delete (sin(x), x + sin(x) + y);
 @c ===end===
 @example
-(%i1) delete(a, f(a,b,c,d,a));
-(%o1)                      f(b, c, d)
-(%i2) delete(a, f(a,b,a,c,d,a), 2);
-(%o2)                     f(b, c, d, a)
+(%i1) delete (sin(x), x + sin(x) + y);
+(%o1)                         y + x
+@end example
 
+Removing factors from a product.
+
+@c ===beg===
+@c delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
+@c ===end===
+@example
+(%i1) delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
+(%o1)                (u - w) (u - y) (u - z)
+@end example
+
+Removing arguments from an arbitrary expression.
+
+@c ===beg===
+@c delete (a, foo (a, b, c, d, a));
+@c ===end===
+@example
+(%i1) delete (a, foo (a, b, c, d, a));
+(%o1)                     foo(b, c, d)
+@end example
+
+Limit the number of removed arguments.
+
+@c ===beg===
+@c delete (a, foo (a, b, a, c, d, a), 2);
+@c ===end===
+@example
+(%i1) delete (a, foo (a, b, a, c, d, a), 2);
+(%o1)                    foo(b, c, d, a)
+@end example
+
+Whether arguments are the same as @var{expr_1} is determined by "=".
+Arguments which are @code{equal} but not "=" are not removed.
+
+@c ===beg===
+@c [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+@c [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
+@c delete (0, [0, 0.0, 0b0]);
+@c is (equal ((x + y)*(x - y), x^2 - y^2));
+@c is ((x + y)*(x - y) = x^2 - y^2);
+@c delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
+@c ===end===
+@example
+(%i1) [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+
+`rat' replaced 0.0 by 0/1 = 0.0
+`rat' replaced 0.0B0 by 0/1 = 0.0B0
+(%o1)                  [true, true, true]
+(%i2) [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
+(%o2)                 [true, false, false]
+(%i3) delete (0, [0, 0.0, 0b0]);
+(%o3)                     [0.0, 0.0b0]
+(%i4) is (equal ((x + y)*(x - y), x^2 - y^2));
+(%o4)                         true
+(%i5) is ((x + y)*(x - y) = x^2 - y^2);
+(%o5)                         false
+(%i6) delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
+                              2    2
+(%o6)                       [x  - y ]
 @end example
 
 @opencatbox
