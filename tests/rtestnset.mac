@@ -1542,3 +1542,57 @@ sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
 sublist_indices ('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], lambda ([x], evenp(x) and primep(x)));
 [3];
 
+/* SF bug 2698078  set_partitions does not produce simplified sets */
+(l : set_partitions({1,2,3,4},3),0);
+0$
+
+is(l = expand(l));
+true$
+
+map(lambda([s], xreduce('union,s)), l);
+set(set(1,2,3,4))$
+
+map(lambda([s], xreduce('intersection,s)), l);
+set(set())$
+
+(l : set_partitions({1,2,3,4}),0);
+0$
+
+is(l = expand(l));
+true$
+
+map(lambda([s], xreduce('union,s)), l);
+set(set(1,2,3,4))$
+
+map(lambda([s], xreduce('intersection,s)), l);
+set(set(), set(1,2,3,4))$
+
+(l : set_partitions(set(a,b, set(c)),2),0);
+0$
+
+is(l = expand(l));
+true$
+
+map(lambda([s], xreduce('union,s)), l);
+set(set(a,b,set(c)))$
+
+map(lambda([s], xreduce('intersection,s)), l);
+set(set())$
+
+(l : set_partitions(set(a,b, set(c))),0);
+0$
+
+is(l = expand(l));
+true$
+
+map(lambda([s], xreduce('union,s)), l);
+set(set(a,b,set(c)))$
+
+map(lambda([s], xreduce('intersection,s)), l);
+set(set(),set(a,b,set(c)))$
+
+(remvalue(l),0);
+0$
+
+
+
