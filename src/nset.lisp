@@ -709,7 +709,7 @@ a positive integer; instead found ~:M" n-sub))))
 	     (setq s (cdr pj))
 	     (while (not (null s))
 	       (setq z (pop s))
-	       (setq acc (cons `(($set) ,@w ,($adjoin x z) ,@s) acc))
+	       (setq acc (cons (simplifya `(($set) ,@w ,($adjoin x z) ,@s) t) acc))
 	       (setq w (cons z w))))
 	     	   
 	   (setq x `(($set) ,x))
