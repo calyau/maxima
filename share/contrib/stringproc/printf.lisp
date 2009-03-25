@@ -82,7 +82,7 @@
               (go tag3) )))
         (setq pos2 (setq pos1a (spec-position ctrls pos1)))
         (setq spec (subseq ctrls (1- pos2) pos2))
-        (if (search spec "}]>;%&t") (progn (setq start pos2) (go tag1)))
+        (if (search spec "}]>;%&t~") (progn (setq start pos2) (go tag1)))
         (setq params (subseq ctrls (1+ pos1) (1- pos2)))
 ;;
 ;; pre-test for ~nr, ~vr, ~#r :
