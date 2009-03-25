@@ -140,9 +140,10 @@
        ;; declaration before an integration is done. Therefore we declare
        ;; the parameter of the Laplace transform to be positive before 
        ;; we call $specint too.
-       (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
-       (setq res ($specint (mul fun (power '$%e (mul -1 var parm))) var))
-       (meval `(($forget) ,@(list (list '(mgreaterp) parm 0))))
+       (with-new-context (context)
+         (progn
+           (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
+           (setq res ($specint (mul fun (power '$%e (mul -1 var parm))) var))))
        (if (or (isinop res '%specint)  ; Both symobls are possible, that is
                (isinop res '$specint)) ; not consistent! Check it! 02/2009
            ;; $specint has not found a result.
@@ -336,8 +337,13 @@
                      ;; $defint should not throw a Maxima error,
                      ;; therefore we set the flags errcatch and $errormsg.
                      ;; errset catches the error and returns nil
-                     (let ((errcatch t) ($errormsg nil))
-                       (errset ($defint f x a '$inf))))))
+                     (with-new-context (context)
+                       (progn
+                         (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
+                         (meval `(($assume) ,@(list (list '(mgreaterp) x 0))))
+                         (meval `(($assume) ,@(list (list '(mgreaterp) a 0))))
+                         (let ((errcatch t) ($errormsg nil))
+                           (errset ($defint f x a '$inf))))))))
     (if tryint
 	(car tryint)
 	(list '(%integrate simp) f x a '$inf))))
@@ -529,14 +535,15 @@
      (and ($unknown fun)(go skip))
      (setq mult (simptimes (list '(mtimes) (exponentiate
 					    (list '(mtimes simp) -1 var parm)) fun) 1 nil))
-     (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
-     (setq tryint
-           ;; $defint should not throw a Maxima error.
-           ;; therefore we set the flags errcatch and errormsg.
-           ;; errset catches an error and returns nil.
-           (let ((errcatch t) ($errormsg nil))
-             (errset ($defint mult var 0 '$inf))))
-     (meval `(($forget) ,@(list (list '(mgreaterp) parm 0))))
+     (with-new-context (context)
+       (progn
+         (meval `(($assume) ,@(list (list '(mgreaterp) parm 0))))
+         (setq tryint
+               ;; $defint should not throw a Maxima error.
+               ;; therefore we set the flags errcatch and errormsg.
+               ;; errset catches an error and returns nil.
+               (let ((errcatch t) ($errormsg nil))
+                 (errset ($defint mult var 0 '$inf))))))
      (and tryint (not (eq (caaar tryint) '%integrate))  (return (car tryint)))
      skip (return (list '(%laplace simp) fun var parm))))
 
