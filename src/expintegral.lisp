@@ -151,7 +151,7 @@
                            (simplify (list '($conjugate) z)))))
           (t
             ;; On the negative real axis or no information. Unsimplified.
-            (list '($conjutate simp)
+            (list '($conjugate simp)
                   (simplify (list '(%expintegral_e) n z)))))))
 
 ;;; Differentiation of Exponential Integral E
@@ -890,7 +890,7 @@
            ($expintegral_e1 (simplify (list '($conjugate) z))))
           (t
             ;; On the negative real axis or no information. Unsimplified.
-            (list '($conjutate simp) ($expintegral_e1 z))))))
+            (list '($conjugate simp) ($expintegral_e1 z))))))
 
 ;;; Differentiation of Exponential Integral E1
 
@@ -1172,7 +1172,7 @@
            ($expintegral_li (simplify (list '($conjugate) z))))
           (t
             ;; On the negative real axis or no information. Unsimplified.
-            (list '($conjutate simp) ($expintegral_li z))))))
+            (list '($conjugate simp) ($expintegral_li z))))))
 
 ;;; Differentiation of Exponential Integral Li 
 
@@ -1620,7 +1620,7 @@
            ($expintegral_ci (simplify (list '($conjugate) z))))
           (t
             ;; On the negative real axis or no information. Unsimplified.
-            (list '($conjutate simp) ($expintegral_ci z))))))
+            (list '($conjugate simp) ($expintegral_ci z))))))
 
 ;;; Differentiation of Exponential Integral Ci
 
@@ -1792,7 +1792,7 @@
            ($expintegral_chi (simplify (list '($conjugate) z))))
           (t
             ;; On the negative real axis or no information. Unsimplified.
-            (list '($conjutate simp) ($expintegral_chi z))))))
+            (list '($conjugate simp) ($expintegral_chi z))))))
 
 ;;; Differentiation of Exponential Integral Chi
 
