@@ -405,7 +405,7 @@ compute_conversion_factor (u1%, u2%) :=
   ev (simplify_units (u1% / u2%), conversions_to_base_units));
 
 compute_conversions_to_base_units () :=
- (print ("Computing conversions to base units; may take a moment."),
+ (print ("ezunits: computing conversions to base units; may take a moment."),
   listify (known_unit_conversions),
   ev (map (lambda ([e], map (log, e)), %%), logexpand = all),
   linsolve (map (lambda ([e], lhs (e) - rhs (e)), %%), map (lhs, %%)),
@@ -549,7 +549,9 @@ fundamental_units (e) :=
         then map ('fundamental_units, e)
         else
            (dimensions_as_list (e),
-            apply ("*", map ("^", %fundamental_units, %%)));
+            if listp (%%)
+                then apply ("*", map ("^", %fundamental_units, %%))
+                else 'fundamental_units (e));
 
 /* Adapted from dimensionless in share/physics/dimension.mac.
  * Thanks to Barton Willis.
@@ -597,3 +599,22 @@ known_units () :=
 
 display_known_unit_conversions () := 
     for x in known_unit_conversions do display (x);
+
+/* Rules to unit-ify 'diff and 'integrate expressions.
+ */
+
+simp : false;
+
+matchdeclare ([uu%, vv%, aa%, bb%], unitp);
+
+tellsimp ('diff (uu%, vv%, 1), 'diff (qty (uu%), qty (vv%), 1) ` (units (uu%) / units (vv%)));
+
+tellsimp ('integrate (uu%, vv%), 'integrate (qty (uu%), qty (vv%)) ` (units (uu%) * units (vv%)));
+
+tellsimp
+   ('integrate (uu%, vv%, aa%, bb%),
+    if units (aa%) = units (vv%) and units (bb%) = units (vv%)
+        then 'integrate (qty (uu%), qty (vv%), qty (aa%), qty (bb%)) ` (units (uu%) * units (vv%))
+        else 'integrate (qty (uu%), qty (vv%), qty (aa% `` units (vv%)), qty (bb% `` units (vv%))) ` (units (uu%) * units (vv%)));
+
+simp : true;

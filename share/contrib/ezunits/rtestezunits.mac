@@ -328,6 +328,15 @@ map (constantp, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 map (units, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 ''([m/s, N/A^2, s^2*A^2/(m^2*N), m*N/(s*A^2), m^3/(kg*s^2), J*s, J*s]);
 
+dimensions (foobar);
+'dimensions (foobar);
+
+dimensions_as_list (foobar);
+'dimensions_as_list ('dimensions (foobar));
+
+fundamental_units (foobar);
+'fundamental_units (foobar);
+
 map (dimensions, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 [length/time,
  length*mass/(charge^2*time^2),
@@ -467,4 +476,14 @@ apply ("+", xx);
 
 ev (xx, xyz = (1729 + 42/99) ` kg, nouns);
 [1 ` metric_ton, 729 ` kg, 14000000/33 ` mg];
+
+/* needs more work to get rule for diff to apply to verb ... oh well. */
+'diff (x (t) ` inch, t ` year, 1);
+'diff (x (t), t, 1) ` inch / year;
+
+'integrate (f (x) ` N, x ` m, 1 ` m, 10 ` m);
+('integrate (f (x), x, 1, 10)) ` N*m;
+
+'integrate (f (x) ` N, x ` m, 1 ` inch, 10 ` inch);
+('integrate (f (x), x, 127/5000, 127/500)) ` N*m;
 
