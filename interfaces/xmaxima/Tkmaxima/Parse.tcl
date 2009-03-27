@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Parse.tcl,v 1.7 2006-10-01 23:58:30 villate Exp $
+#       $Id: Parse.tcl,v 1.8 2009-03-27 00:14:45 villate Exp $
 #
 ###### Parse.tcl ######
 ############################################################
@@ -12,7 +12,7 @@ global Parser parse_table
 if {[info exists Parser]} {catch { unset Parser }}
 
 foreach v  { { ( 120 } { \[ 120 } { ) 120 } { \] 120 }  { ^ 110}
-{* 100} { / 100} {% 100}  {- 90 } { + 90 }
+{ ^- 110} {* 100} { / 100} {% 100}  {- 90 } { + 90 }
 { << 80} { >> 80 } { < 70 } { > 70 } { <= 70 } {>= 70}
 { == 60 } { & 50} { | 40 } { , 40 } {= 40}
 { && 30 } { || 20 } { ? 10 } { : 10 }  { ; 5 }}  {
@@ -129,7 +129,8 @@ proc parseToSuffixLists { a }  {
 	append ans "[list	$Parser(result)] "
 	set Parser(result) "" 	
     }
-    return $ans
+    regsub \\^- $ans {PRE_MINUS ^} ans2
+    return $ans2
 }
 
 proc parseMatch { t } {
