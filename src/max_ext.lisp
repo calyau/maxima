@@ -307,3 +307,20 @@
 
 (defprop $pochhammer simp-pochhammer operators)
 (autof 'simp-pochhammer "orthopoly")
+
+(dolist (f
+  '($julia
+    $mandelbrot
+    $plotdf
+    $ploteq))
+  (setf (get f 'autoload) "dynamics"))
+
+(dolist (mexpr       
+  '($evolution
+    $staircase
+    $evolution2d
+    $chaosgame
+    $ifs
+    $orbits
+    $rk))
+  ($auto_mexpr mexpr "dynamics"))
