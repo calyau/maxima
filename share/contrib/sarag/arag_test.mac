@@ -1,6 +1,6 @@
 /* This is a test for the examples from   */
 /* the interactive electronic version of  */
-/* "Algorithms in Real Algebraic Geometry */
+/* "Algorithms in Real Algebraic Geometry"*/
 /* by S. Basu, R. Pollack, M.-F. Roy      */
 /* coded by F. Caruso                     */
 
@@ -8,6 +8,9 @@
 /* -------------------------------------- */
 /* Chapter                              8 */
   
+(kill(all), load(sarag),0);
+0$
+
 list2poly(getCoeffFromNewton([3,0,2,0]),x);
 x^3-x;
 
