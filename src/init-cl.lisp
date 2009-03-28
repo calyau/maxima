@@ -85,8 +85,7 @@ When one changes, the other does too."
   (format t "maxima-userdir=~a~%" *maxima-userdir*)
   (format t "maxima-tempdir=~a~%" *maxima-tempdir*)
   (format t "maxima-lang-subdir=~a~%" *maxima-lang-subdir*)
-  (format t "maxima-objdir=~A~%" *maxima-objdir*)
-  ($quit))
+  (format t "maxima-objdir=~A~%" *maxima-objdir*))
 
 (defvar *maxima-lispname*
         #+clisp "clisp"
@@ -573,7 +572,7 @@ When one changes, the other does too."
 			   :help-string
 			   "Process maxima command(s) <string> in batch mode.")
 	   (make-cl-option :names '("-d" "--directories")
-			   :action 'print-directories
+			   :action #'(lambda () (print-directories) ($quit))
 			   :help-string
 			   "Display maxima internal directory information.")
 	   (make-cl-option :names '("--disable-readline")
