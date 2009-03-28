@@ -1,4 +1,4 @@
-if get ('amatrix, 'version) = false then load (amatrix) else 'already_loaded;
+if ?get ('amatrix, 'present) = false then load (amatrix) else 'already_loaded;
 
 "... Hilbert matrix ..."$
 
