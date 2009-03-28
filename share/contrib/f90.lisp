@@ -23,9 +23,20 @@
 ;;;;     All rights reserved
 ;;;;  (c) Copyright 1980 Massachusetts Institute of Technology
 
+;;;; Output from f90 is "free form": no special attention to columns.
+;;;; Lines longer than *F90-OUTPUT-LINE-LENGTH-MAX* are broken with
+;;;; trailing ampersand (no additional spaces).
+
+;;;; Commentary from the Texinfo for f90:
+;;;; "The @code{f90} implementation was done as a quick hack.
+;;;; It is not a necessarily a good example upon which to base
+;;;; other language translations."
+
 (in-package :maxima)
 
 (macsyma-module f90)
+
+(defvar *f90-output-line-length-max* 65.)
 
 (defun f90-print (x
 		  &aux
@@ -43,35 +54,34 @@
     (defprop mminus 100 lbp)
 
     (defprop msetq (#\:) strsym)
-    (setq x (mstring x))
+    (setq x (coerce (mstring x) 'string))
     ;; Make sure this gets done before exiting this frame.
     (defprop mexpt msz-mexpt grind)
     (remprop 'mminus 'lbp))
-  (do ((char 0 (1+ char))
-       (line ""))
-      ((>= char (length x)))
-    (setf line (concatenate 'string line (make-sequence
-					  'string 1
-					  :initial-element (nth char x))))
-    (if (>= (length line) 65)
-	(let ((break_point -1))
-	  (mapc #'(lambda (x)
-		    (let ((p (search x line :from-end t)))
-		      (if (and p (> p 0))
-			  (setf break_point p))))
-		'("+" "-" "*" "/"))
-	  (incf break_point)
-	  (if (= break_point 0)
-	      (progn (princ line) (setf line "     "))
-	      (progn
-		(princ (subseq line 0 break_point))
-		(princ " &")
-		(terpri)
-		(setf line (concatenate 'string "     "
-					(subseq line break_point
-						(length line))))))))
-    (if (and (= char (1- (length x))) (not (equal line "     ")))
-	(princ line)))
+
+  (if (>= (length x) *f90-output-line-length-max*)
+
+    ;; Split this line and print it with trailing ampersand.
+    ;; Previous scheme to break the lines nicely had some bugs;
+    ;; it's simpler to break at a fixed length.
+
+    (let ((line x) (break-point *f90-output-line-length-max*))
+      (princ (subseq line 0 break-point))
+      (princ "&")
+      (terpri)
+      (setf line (subseq line break-point))
+      
+      (loop while (> (length line) break-point) do
+        (princ (subseq line 0 break-point))
+        (princ "&")
+        (terpri)
+        (setf line (subseq line break-point)))
+
+      (if (> (length line) 0)
+        (princ line)))
+
+    (princ x))
+
   (terpri)
   '$done)
 
@@ -91,8 +101,8 @@
       (f90-print `((mequal) ((,name) ,i ,j) ,(car m)))))
   '$done)
 
-(defmspec $f90 (l)
-  (setq l (fexprcheck l))
+(defmspec $f90 (expr)
+  (dolist (l (cdr expr))
   (let ((value (strmeval l)))
     (cond ((msetqp l) (setq value `((mequal) ,(cadr l) ,(meval l)))))
     (cond ((and (symbolp l) ($matrixp value))
@@ -100,4 +110,4 @@
 	  ((and (not (atom value)) (eq (caar value) 'mequal)
 		(symbolp (cadr value)) ($matrixp (caddr value)))
 	   ($f90mx (cadr value) (caddr value)))
-	  (t (f90-print value)))))
+	  (t (f90-print value))))))
