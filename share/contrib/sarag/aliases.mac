@@ -160,3 +160,49 @@ topology(pol,x,y) :=
 topologyVerbose(pol,x,y,verbosity) :=
   archimedianTopologyVerbose(pol,deCasteljauIsolateRoots,x,y,verbosity);
 
+
+
+/* Certificate of positivity */
+
+
+
+
+sqFreeCertificateVerbose(pol,var,verbosity):=
+  deCasteljauSqFreeCertificateBetweenVerbose(pol,var,
+                               [DEFAULT_LEFT_END,DEFAULT_RIGHT_END],verbosity);
+
+  
+sqFreeCertificate(pol,var) :=
+  deCasteljauSqFreeCertificateBetween(pol,var,[DEFAULT_LEFT_END,DEFAULT_RIGHT_END]);
+
+noCheckCertificate(pol,var) :=
+  sqFreeCertificate(pol,var);
+
+
+sqFreeCertificateBetween(pol,var,search_interval) :=
+  deCasteljauSqFreeCertificateBetween(pol,var,search_interval);
+
+
+noCheckCertificateBetween(pol,var,search_interval) :=
+  sqFreeCertificateBetween(pol,var,search_interval);
+
+deCasteljauSqFreeCertificateBetween(pol,var,search_interval) :=
+  deCasteljauSqFreeCertificateBetweenVerbose(pol,var,search_interval,DEFAULT_VERBOSITY);
+ 
+deCasteljauSqFreeCertificateBetweenVerbose(pol,var,
+                                           search_interval,verbosity):=
+    deCasteljauNoCheckCertificateBetweenVerbose(pol,var,
+                                                search_interval,verbosity);
+
+
+certificate(pol,var) :=
+  deCasteljauCertificateBetween(pol,var,[DEFAULT_LEFT_END,DEFAULT_RIGHT_END]);
+
+certificateVerbose(pol,var,verbosity) :=
+ deCasteljauCertificateBetweenVerbose(pol,var,[DEFAULT_LEFT_END, DEFAULT_RIGHT_END],verbosity);
+
+certificateBetween(pol,var,search_interval):=
+  deCasteljauCertificateBetween(pol,var,search_interval);
+
+deCasteljauCertificateBetween(pol,var,search_interval) :=
+  deCasteljauCertificateBetweenVerbose(pol,var,search_interval,DEFAULT_VERBOSITY);

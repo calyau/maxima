@@ -4,7 +4,7 @@
 
        SOME ALGORITHMS IN REAL ALGEBRAIC GEOMETRY
 
-                    BETA Version 0.4
+                       Version 1.0
 
 ---------------------------------------------------------------
 developed by Fabrizio Caruso 
@@ -43,12 +43,22 @@ THE SARAG LIBRARY
 
 This is a free open source Maxima library for 
 real algebraic geometry.
+As of this version it focuses on 
+univariate real root counting and isolation, 
+topology of bivariate polynomials and 
+certificate (computer-generated simple proof 
+for the positivity/negativity of a univariate polynomial 
+in a given interval)
 
-As of this version, SARAG provides functions for linear algebra,
-theory of subresultants, Cauchy Index and its application
-to real root counting, isolation of real roots,
-sign determination and Thom encodings.
 
+In particular SARAG provides functions for 
+(1) linear algebra,
+(2) theory of subresultants, 
+(3) Cauchy Index and its application to real root counting, 
+(4) isolation of real roots,
+(5) sign determination and Thom encodings,
+(6) study of the topology of bivariate polynomials
+(7) certificate of positivity for univariate polynomials
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
@@ -65,7 +75,8 @@ The latest version of Maxima is available on line at
 http://maxima.sourceforge.net/
 
 - GNUPLOT (3.7.x, 4.0.x or above)
-The library uses Gnuplot for plotting graphs
+The function "drawTopology" in this library uses 
+Gnuplot for plotting graphs
 and it has been tested successfully on Gnuplot 3.7.x 
 and 4.0.x.
 
@@ -92,13 +103,20 @@ rootIsolation.mac (root isolation by De Casteljau method)
 signDetermination.mac (sign determination)
 intervalArithmetic.mac (interval arithmetic)
 topology.mac (topology of curves)
+certificateOfPositivity.mac (certificate of positivity)
 
 arag_test.mac (test file for "Alg. in Real Alg. Geom.")
-hard_test.mac (test files with mostly topology computations)
+hard_test.mac (heavy test files with mostly topology computations)
+other_test.mac (test of functions not included in the book)
 
 readme.txt (this manual)
 
-In order to load the library either load each single file
+This library is included in the latest versions of Maxima
+and it is simply loaded by the command
+load(sarag);
+
+For previous versions of the library
+either load each single file
 with the "LOAD" Maxima command
 or edit a file that takes care of loading all the files 
 or load the file "sarag.mac" that will load the files 
@@ -108,6 +126,8 @@ In order to test the library use:
 batch(<path>/arag_test.mac,test);
 and
 batch(<path>/hard_test.mac,test);
+and
+batch(<path>/other_test.mac,test);
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
@@ -143,7 +163,7 @@ settings.mac
 
 The library contains some settings in the file "settings.mac".
 
-The settings and their default values are:
+The main settings and their default values are:
 
 - DEFAULT_VERBOSITY [0 (non-verbose)] (**)
 Verbosity level of the commands.
@@ -176,6 +196,9 @@ Printable file output for "drawTopology"
 - PS_OUTPUT_FILE_NAME  ["test.eps"]
 Name of the postscript file output for "drawTopology"
 
+
+For the other settings we refer to file 
+settings.mac
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
@@ -611,7 +634,6 @@ describing the open interval "]a,b["
 
 
 
-
 - findRoots[withZ](pol,x,threshold)
 INPUT : polynomial pol in x, theshold for the intervals
 METHOD:
@@ -859,3 +881,73 @@ INPUT : polynomial P in var, an interval describing a root of P
 OUTPUT : an interval describing the value of P at the root
 described by the input
 
+-----------------------------------------------------------------
+CERTIFICATE OF POSITIVITY
+
+certificateOfPositivity.mac
+-----------------------------------------------------------------
+
+Note:
+
+[0] A certificate is an elementrary proof of the positivity
+of a given polynomial in a given interval.
+
+[1] A certificate of positivity/negativity for a polynomial 
+P in a given interval R is 
+a LIST of :
+[<sub-interval of R>, C, <Bernstein basis of C P>]
+where the sub-intervals cover entirely R.
+
+
+[2] The output of the main functions for a given polynomial P 
+are of the following form:
+
+(a) When the polynomial P has a root in the considered interval:
+[ 0, 
+<interval [a,b] such that Q(a)Q(b)<0 for a polynomial divisor Q>, 
+<A polynomial divisor Q of P>]
+
+(b) When the polynomial P is positive/negative in the given interval:
+[ 1/-1, 
+<list of certificates covering the considered interval>] 
+
+
+-----------------------------------------------------------------
+
+Auxiliary functions
+
+- sqFreeCertificate(pol,var)
+
+INPUT : square-free polynomial in var
+MODIFIER :sqFreeCertificateBetween(pol,var,search_interval)
+OUTPUT : list of local "certificates" of positivity/negativity
+that cover the default interval ([-1]).
+
+
+- bernsteinMerge(lhsBern, rhsBern)
+
+INPUT : certificates lhsBern, rhsBern
+OUTPUT : a certificate for the interval covering both lhsBern and rhsBern 
+
+
+- compressCertificate(cert_list)
+
+INPUT  : a list of certificates
+OUTPUT : a possibly shorter and equivalent list of certificates  
+
+-----------------------------------------------------------------
+Main functions
+
+
+- certificate(pol,var)
+INPUT : polynomial in var
+MODIFIER : certificateBetween
+OUTPUT : list of local "certificates" of positivity/negativity
+that cover entirely the default interval ([-1,1]).
+
+
+- certificateProof(pol,var,search_interval)
+INPUT : a polynomial in var, a search interval (ex. [-1,-1])         
+OUTPUT : number of subintervals used for proving the positivity/negativity 
+EFFECT : it prints a formal proof of positivity/negativity of pol in    
+search_interval or of the existence of a root

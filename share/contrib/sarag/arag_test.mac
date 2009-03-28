@@ -1,6 +1,6 @@
 /* This is a test for the examples from   */
 /* the interactive electronic version of  */
-/* "Algorithms in Real Algebraic Geometry"*/
+/* "Algorithms in Real Algebraic Geometry */
 /* by S. Basu, R. Pollack, M.-F. Roy      */
 /* coded by F. Caruso                     */
 
@@ -8,9 +8,6 @@
 /* -------------------------------------- */
 /* Chapter                              8 */
   
-(kill(all), load(sarag),0);
-0$
-
 list2poly(getCoeffFromNewton([3,0,2,0]),x);
 x^3-x;
 
@@ -271,3 +268,43 @@ thomCompare(
 /* not yet in the book */
 archimedianTopology(x^2+y^2-1,deCasteljauIsolateRoots,x,y);
 [0,[0,[1,1],2,[1,1],0]];
+
+
+/* ------------------------------------------------------- */
+/* Not in the book */
+/* ------------------------------------------------------- */
+
+
+/* Certificate of positivity */
+
+
+certificate(5*x^2-4*x+1,x);
+[1,
+[
+[[- 1, 0], 1, [10, 3, 1]],
+[[0, 1/2], 4, [4, 0, 1]],
+[[1/2, 1], 4, [1, 2, 8]]
+]
+];
+
+
+certificate(x^4+(8*x-1)^2,x);
+[1,
+[
+[[- 1, 0], 3, [246, 135, 59, 15, 3]],
+[[0, 1/8], 12288, [12288, 6144, 2048, 0, 3]],
+[[1/8, 1], 12288, [3, 24, 100544, 302592, 614400]]
+]
+];
+
+
+certificate(x^4 + (2*x-1)^2,x);
+[1,
+[
+[[- 1, 0], 3, [30, 18, 11, 6, 3]],
+[[0, 1/2], 48, [48, 24, 8, 0, 3]],
+[[1/2, 1], 48, [3, 6, 20, 48, 96]]
+]
+];
+
+

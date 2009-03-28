@@ -42,4 +42,17 @@ more computation  (mostly topology computations)
 
 (4) updated "readme.txt"
 
+--------------------------------------------------
 
+SARAG 1.0
+
+(1) certificate of positivity: 
+- "certificateOfPositivity.mac"
+This files contains routines for the certificate of
+positivity, which can be used to produce formal
+proof of positivity/negativity or existence of roots
+for univariate polynomials. Try for example
+"certificateProof((2*x-1)^2+x^4,x,[-1,1]);"
+for a proof of positivity in [-1,1]. 
+
+(2) updated "readme.txt" and "arag_test.mac". 

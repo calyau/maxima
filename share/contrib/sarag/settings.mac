@@ -81,3 +81,13 @@ SARAG_POINT_STYLE_NONCRITICAL : 1;
 
 /* unimplemented */
 SARAG_POINT_STYLE_AT_INFINITY : 1;
+
+
+/* default interval for the certificate of positivity */
+DEFAULT_LEFT_END : -1;
+DEFAULT_RIGHT_END : 1;
+
+/* compression of the certificate */
+COMPRESS_CERTIFICATE : true;
+
+
