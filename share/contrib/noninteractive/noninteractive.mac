@@ -35,6 +35,7 @@
  * integrate (cos(x) - cos(x - c), x, 0, c/2) = %pi - c - integrate (cos (x - c), x, c, %pi / 2 + c);
  * integrate (cot(x), x, 0, %pi/2);
  * integrate (r, z, - sqrt (20 - r^2), sqrt (20 - r^2));
+ * integrate ((x^2 + x + 2)/(x^2 + x + c), c);
  * specint (sqrt(t) * %e^(- p*t - a/t), t);
  *
  * (f(x) := x - 2 * log ((exp(x) + 1) / 2) + x**2/4,
