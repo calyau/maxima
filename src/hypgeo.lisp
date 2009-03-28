@@ -2205,6 +2205,46 @@
                   ($logexpand '$all))
               (return (sratsimp (sendexec rest ($expintegral_e arg1 arg2)))))))
 
+     ;; Laplace transform of expintegral_si
+     (cond ((setq l (oneexpintegral_si u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            ;; We transform to the hypergeometric representation.
+            (return 
+              (sendexec rest (expintegral_si-to-hypergeometric arg1)))))
+
+     ;; Laplace transform of expintegral_shi
+     (cond ((setq l (oneexpintegral_shi u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            ;; We transform to the hypergeometric representation.
+            (return 
+              (sendexec rest (expintegral_shi-to-hypergeometric arg1)))))
+
+     ;; Laplace transform of expintegral_ci
+     (cond ((setq l (oneexpintegral_ci u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            ;; We transform to the hypergeometric representation.
+            ;; Because we have Logarithmic terms in the transformation, 
+            ;; we switch on the flag $logexpand and do a ratsimp.
+            (let (($logexpand '$super))
+            (return
+              (sratsimp
+                (sendexec rest (expintegral_ci-to-hypergeometric arg1)))))))
+
+     ;; Laplace transform of expintegral_chi
+     (cond ((setq l (oneexpintegral_chi u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            ;; We transform to the hypergeometric representation.
+            ;; Because we have Logarithmic terms in the transformation, 
+            ;; we switch on the flag $logexpand and do a ratsimp.
+            (let (($logexpand '$super))
+            (return
+              (sratsimp
+                (sendexec rest (expintegral_chi-to-hypergeometric arg1)))))))
+
      (cond ((setq l (onekelliptic u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
@@ -2961,6 +3001,46 @@
                                         (div (sub 1 order) 2))
                          (list '(mlist))
                          (div -1 (mul arg arg)))))))
+
+;;; Hypergeometric representation of the Exponential Integral Si
+;;; Si(z) = z*1F2([1/2],[3/2,3/2],-z^2/4)
+(defun expintegral_si-to-hypergeometric (arg)
+  (mul arg
+       (list '(mqapply) (list '($%f array) 1 2)
+             (list '(mlist) (div 1 2))
+             (list '(mlist) (div 3 2) (div 3 2))
+             (div (mul -1 arg arg) 4))))
+
+;;; Hypergeometric representation of the Exponential Integral Shi
+;;; Shi(z) = z*1F2([1/2],[3/2,3/2],z^2/4)
+(defun expintegral_shi-to-hypergeometric (arg)
+  (mul arg
+       (list '(mqapply) (list '($%f array) 1 2)
+             (list '(mlist) (div 1 2))
+             (list '(mlist) (div 3 2) (div 3 2))
+             (div (mul arg arg) 4))))
+
+;;; Hypergeometric representation of the Exponential Integral Ci
+;;; Ci(z) = -z^2/4*2F3([1,1],[2,2,3/2],-z^2/4)+log(z)+%gamma
+(defun expintegral_ci-to-hypergeometric (arg)
+  (add (mul (div (mul -1 arg arg) 4)
+            (list '(mqapply) (list '($%f array) 2 3)
+                  (list '(mlist) 1 1)
+                  (list '(mlist) 2 2 (div 3 2))
+                  (div (mul -1 arg arg) 4)))
+            (simplify (list '(%log) arg))
+            '$%gamma))
+
+;;; Hypergeometric representation of the Exponential Integral Chi
+;;; Chi(z) = z^2/4*2F3([1,1],[2,2,3/2],z^2/4)+log(z)+%gamma
+(defun expintegral_chi-to-hypergeometric (arg)
+  (add (mul (div (mul arg arg) 4)
+            (list '(mqapply) (list '($%f array) 2 3)
+                  (list '(mlist) 1 1)
+                  (list '(mlist) 2 2 (div 3 2))
+                  (div (mul arg arg) 4)))
+            (simplify (list '(%log) arg))
+            '$%gamma))
 
 ;;; LT<foo> functions are various experts on Laplace transforms of the
 ;;; function <foo>.  The expression being transformed is
