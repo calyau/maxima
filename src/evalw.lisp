@@ -27,7 +27,7 @@
   (when (or (< (length argl) 2)
 	    (not (or (atom (car argl))
 		     ($listp (car argl)))))
-    (merror "Bad whens form to `eval_when'~%~M" (car argl)))
+    (merror "eval_when: incorrect arguments; found: ~M" (car argl)))
   (if (member '$batch (if ($listp (car argl))
 			  (cdar argl)
 			  (list (car argl))))

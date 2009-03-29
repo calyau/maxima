@@ -81,7 +81,7 @@
 	 (apply f list-argl))
 	((macro-function f)
 	 (eval (cons f list-argl)))
-	((not (symbolp f)) (error "expected symbol or function"))
+	((not (symbolp f)) (merror "apply: expected symbol or function; found: ~M" f))
 	((setq f-prop (get f 'mfexpr*))
 	 (funcall f-prop (cons nil argl)))
 	((setq f-prop (mget f 'mexpr))
@@ -92,7 +92,7 @@
 		(mlambda f-prop list-argl f nil nil))))
 	((setq f-prop (get f 'autoload))
 	 (cond (autoloaded-already?
-		(merror "~:@M, Function undefined after loading file:~A " f (namestring (get f 'autoload))))
+		(merror "apply: function ~:@M undefined after loading file ~A" f (namestring (get f 'autoload))))
 	       (t
 		(funcall autoload (cons f f-prop))
 		(lispm-mfunction-call-aux f argl list-argl t))))

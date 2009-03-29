@@ -66,7 +66,7 @@
 	  ((integerp x)
 	   (if rbp (setq lbp rbp))
 	   (setq rbp x))
-	  (t (maxima-error "Random object in `displa-def' form: ~a" x))))
+	  (t (merror "DISPLA-DEF: unrecognized object: ~a" x))))
   (when l-dissym
     (setq l-dissym (if r-dissym
 		       (cons (exploden l-dissym) (exploden r-dissym))

@@ -48,7 +48,7 @@ block([context:'foobar],
 []$
 
 error;
-''([sconcat("Integral is divergent")])$
+["defint: integral is divergent."];
 
 killcontext('foobar);
 done$

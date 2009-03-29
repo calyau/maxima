@@ -195,21 +195,19 @@
 	     (setq ll (ratdisrep ll))
 	     (setq ul (ratdisrep ul))
 	     (cond (($constantp var)
-		    (merror "Variable of integration not a variable: ~M"
-			    var))
+		    (merror "defint: variable of integration cannot be a constant; found ~M" var))
 		   (($subvarp var)  (setq var (stripdollar (caar var)))
 		    (setq exp ($substitute var orig-var exp))))
 	     (cond ((not (atom var))
-		    (merror "Improper variable of integration: ~M" var))
+		    (merror "defint: variable of integration must be a simple or subscripted variable.~%defint: found ~M" var))
 		   ((or (among var ul)
 			(among var ll))
 		    (setq var (stripdollar var))
 		    (setq exp ($substitute var orig-var exp))))
 	     (cond ((not (equal (sratsimp ($imagpart ll)) 0))
-		    (merror "Defint: Lower limit of integration must be real."))
+		    (merror "defint: lower limit of integration must be real; found ~M" ll))
 		   ((not (equal (sratsimp ($imagpart ul)) 0))
-		    (merror
-		     "Defint: Upper limit of integration must be real.")))
+		    (merror "defint: upper limit of integration must be real; found ~M" ul)))
 
 	     (cond ((setq ans (defint exp var ll ul))
 		    (setq ans (subst orig-var var ans))
@@ -717,7 +715,7 @@
 
 (defun diverg nil
   (cond (*nodiverg (throw 'divergent 'divergent))
-	(t (merror "Integral is divergent"))))
+	(t (merror "defint: integral is divergent."))))
 
 (defun make-defint-assumptions (ask-or-not)
   (cond ((null (order-limits ask-or-not))  ())
@@ -1244,7 +1242,7 @@
 	((setq n (let ((plogabs ()))
 		   (keyhole (m* `((%plog) ,(m- var)) n) d var)))
 	 (m- n))
-	(t (merror "Keyhole failed"))))
+	(t (merror "defint: keyhole integration failed."))))
 
 (setq *dflag nil)
 
@@ -1462,7 +1460,7 @@
 	  (return (list (car d)
 			(- (cadr d))
 			(ptimes (cadr f) (caddr d)))))
-     (merror "Bug from `pfrnum' in `residu'")))
+     (merror "defint: bug from PFRNUM in RESIDU.")))
 
 (defun partnum (n dl)
   (let ((n2 1)  ans nl)
@@ -3355,7 +3353,7 @@
   (let ((order (ask-greateq ul ll)))
     (cond ((eq order '$yes))
 	  ((eq order '$no) (let ((temp ul)) (setq ul ll ll temp)))
-	  (t (merror "Incorrect limits given to `defint':~%~M"
+	  (t (merror "defint: failed to order limits of integration:~%~M"
 		     (list '(mlist simp) ll ul)))))
   (if (not (equal ($imagpart place) 0))
       '$no

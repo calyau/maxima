@@ -320,7 +320,7 @@
 
 (defmfun clear ()
   (if dbtrace
-      (mtell "CLEAR: clearing ~A~%" marks))
+      (mtell "CLEAR: clearing ~A" marks))
   (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
   (mapc #'(lambda (sym) (push+sto (sel sym -labs) nil)) -labs)
   (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
@@ -368,7 +368,7 @@
 
 (defmfun kindp (x y)
   (if (not (symbolp x))
-      (merror "`kindp' called on a non-symbolic atom."))
+      (merror "declare: argument must be a symbol; found ~M" x))
   (clear)
   (beg x 1)
   (do ((p (dq+) (dq+)))
@@ -595,7 +595,7 @@
     #+gc (gc)
     (gccon1)
     (when (> conindex connumber)
-      (merror "~%Too many contexts."))))
+      (merror "context: too many contexts."))))
 
 (defun gccon1 ()
   (setq conindex 0)
@@ -674,7 +674,7 @@
 (defun mark+ (cl lab)
   (when dbtrace
     (incf marks)
-    (mtell "MARK+: marking ~A +~%" cl) (prlab lab))
+    (mtell "MARK+: marking ~A +" cl) (prlab lab))
   (mapc #'(lambda (lis) (mark+0 cl lab lis)) (sel cl data)))
 
 (defun mark+3 (cl lab dat)
@@ -685,7 +685,7 @@
 
 (defun mark+0 (cl lab fact)
   (when dbcheck
-    (mtell "MARK+0: checking ~a from ~A+~%" (car fact) cl)
+    (mtell "MARK+0: checking ~a from ~A+" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))
@@ -713,13 +713,13 @@
 (defun mark- (cl lab)
   (when dbtrace
     (incf marks)
-    (mtell "MARK-: marking ~A -~%" cl)
+    (mtell "MARK-: marking ~A -" cl)
     (prlab lab))
   (mapc #'(lambda (lis) (mark-0 cl lab lis)) (sel cl data)))
 
 (defun mark-0 (cl lab fact)
   (when dbcheck
-    (mtell "MARK-0: checking ~A from ~A-~%" (car fact) cl)
+    (mtell "MARK-0: checking ~A from ~A-" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))

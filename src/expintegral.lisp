@@ -218,7 +218,7 @@
             ;; we handle the special case E[v](0) = 1/(v-1), for realpart(v)>1
             (inv (add order -1)))
            ((member sgn '($neg $zero))
-            (merror "expintegral_e(~:M,~:M) is undefined." order arg))
+            (merror "expintegral_e: expintegral_e(~:M,~:M) is undefined." order arg))
            (t (eqtest (list '(%expintegral_e) order arg) expr)))))
 
       ((or (and (symbolp order) (member order infinities :test #'eq))
@@ -562,7 +562,7 @@
          (do* ((i 1 (+ i 1))
                (a (* -1 n) (* (- i) (+ n1 i))))
               ((> i *expint-maxit*)
-               (merror "Continued fractions failed in expintegral."))
+               (merror "expintegral_e: continued fractions failed."))
 
            (setq b (+ b 2.0))
            (setq d (/ 1.0 (+ (* a d) b)))
@@ -585,7 +585,7 @@
               (e 0.0))
          (do ((i 1 (+ i 1)))
              ((> i *expint-maxit*)
-              (merror "Series failed in expintegral."))
+              (merror "expintegral_e: series failed."))
            (setq f (* -1 f (/ z i)))
            (cond 
              ((= i n1)
@@ -631,7 +631,7 @@
          (do* ((i 1 (+ i 1))
                (a (* -1 n) (* (- i) (+ n1 i))))
               ((> i *expint-maxit*)
-               (merror "Continued fractions failed in expintegral."))
+               (merror "expintegral_e: continued fractions failed."))
 
            (setq b (+ b 2.0))
            (setq d (/ 1.0 (+ (* a d) b)))
@@ -669,7 +669,7 @@
               (e 0.0))
          (do ((i 1 (+ i 1)))
              ((> i *expint-maxit*)
-              (merror "Series failed in expintegral."))
+              (merror "expintegral_e: series failed."))
            (setq f (* -1 f (/ z (float i))))
            (setq e (/ (- f) (- (float i) n1)))
            (setq r (+ r e))
@@ -727,7 +727,7 @@
          (do* ((i 1 (+ i 1))
                (a (* -1 n) (* (- i) (+ n1 i))))
               ((> i *expint-maxit*)
-               (merror "Continued fractions failed in expintegral."))
+               (merror "expintegral_e: continued fractions failed."))
 
            (setq b (add b bigfloattwo))
            (setq d (cdiv bigfloatone (add (mul a d) b)))
@@ -752,7 +752,7 @@
               (e bigfloatzero))
          (do* ((i 1 (+ i 1)))
               ((> i *expint-maxit*)
-               (merror "Series failed in expintegral."))
+               (merror "expintegral_e: series failed."))
            (setq f (mul -1 (cmul f (cdiv z i))))
            (cond
              ((= i n1)
@@ -804,7 +804,7 @@
          (do* ((i 1 (+ i 1))
                (a (mul -1 n) (cmul (- i) (add n1 i))))
               ((> i *expint-maxit*)
-               (merror "Continued fractions failed in expintegral."))
+               (merror "expintegral_e: continued fractions failed."))
 
            (setq b (add b bigfloattwo))
            (setq d (cdiv bigfloatone (add (mul a d) b)))
@@ -846,7 +846,7 @@
               (e bigfloatzero))
          (do ((i 1 (+ i 1)))
              ((> i *expint-maxit*)
-              (merror "Series failed in expintegral."))
+              (merror "expintegral_e: series failed."))
            (setq f (cmul (mul -1 bigfloatone) (cmul f (cdiv z i))))
            (setq e (cdiv (mul -1 f) (sub i n1)))
            (setq r (add r e))
@@ -918,7 +918,7 @@
       ;; Check for special values
       ((eq arg '$inf) 0)
       ((zerop1 arg) 
-       (merror "expintegral_e1(~:M) is undefined." arg))
+       (merror "expintegral_e1: expintegral_e1(~:M) is undefined." arg))
 
       ;; Check for numerical evaluation
       ((complex-float-numerical-eval-p arg)
@@ -1017,7 +1017,7 @@
     (cond
       ;; Check special values
       ((zerop1 arg) 
-       (merror "expintegral_ei(~:M) is undefined." arg))
+       (merror "expintegral_ei: expintegral_ei(~:M) is undefined." arg))
       ((eq arg '$inf) '$inf)
       ((or (eq arg '$minf) (alike1 arg '((mtimes) -1 $inf))) 0)
       ((alike1 arg '((mtimes) $%i $inf)) (mul '$%i '$%pi))
@@ -1199,7 +1199,7 @@
     (cond
       ((zerop1 arg) arg)
       ((onep1 arg)
-       (merror "expintegral_li(~:M) is undefined." arg))
+       (merror "expintegral_li: expintegral_li(~:M) is undefined." arg))
       ((eq arg '$inf) '$inf)
       ((eq arg '$infinity) '$infinity)
 
@@ -1646,7 +1646,7 @@
   (let ((arg (simpcheck (cadr expr) z)))
     (cond
       ;; Check for special values
-      ((zerop1 arg) (merror "expintegral_ci(~:M) is undefined." arg))
+      ((zerop1 arg) (merror "expintegral_ci: expintegral_ci(~:M) is undefined." arg))
       ((eq arg '$inf) 0)
       ((eq arg '$minf) (mul '$%i '$%pi))
       ((alike1 arg '((mtimes) -1 $inf)) (mul '$%pi '$%pi))
@@ -1820,7 +1820,7 @@
       ;; Check for special values
       ((zerop1 arg) 
        ;; First check for zero argument. Throw Maxima error.
-       (merror "expintegral_chi(~:M) is undefined." arg))
+       (merror "expintegral_chi: expintegral_chi(~:M) is undefined." arg))
       ((alike1 arg '((mtimes) $%i $inf)) (div (mul '$%pi '$%i) 2))
       ((alike1 arg '((mtimes) -1 $%i $inf)) (div (mul -1 '$%pi '$%i) 2))
 
