@@ -147,9 +147,9 @@
 
 (defmfun $fortmx (name mat &optional (stream *standard-output*) &aux ($loadprint nil))
   (cond ((not (symbolp name))
-	 (merror "fortmx: first argument must be a symbol; found: ~M" name))
+	 (merror (intl:gettext "fortmx: first argument must be a symbol; found: ~M") name))
 	((not ($matrixp mat))
-	 (merror "fortmx: second argument must be a matrix; found: ~M" mat)))
+	 (merror (intl:gettext "fortmx: second argument must be a matrix; found: ~M") mat)))
   (do ((mat (cdr mat) (cdr mat)) (i 1 (1+ i)))
       ((null mat))
     (do ((m (cdar mat) (cdr m)) (j 1 (1+ j)))

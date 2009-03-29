@@ -1163,7 +1163,7 @@
 	 (do ((l (cdr form) (cdr l)))
 	     ((null l))
 	   (cond ((atom l)
-		  (merror "display: not a well-formed Maxima expression: ~S" form))
+		  (merror (intl:gettext "display: not a well-formed Maxima expression: ~S") form))
 		 ((setq form (checkrat (car l)))
 		  (return form)))))))
 
@@ -1174,14 +1174,14 @@
   (cond ((not break))
 	((> (- (setq w (+ w break)) bkptout) linel)
 	 (if (or (null bkpt) (eq result bkpt))
-	     (merror "display: failed to break up a long expression.~%display: change 'linel' slightly and try again."))
+	     (merror (intl:gettext "display: failed to break up a long expression.~%display: change 'linel' slightly and try again.")))
 	 (do ((l result (cdr l)))
 	     ;; THE NEED FOR EQUAL HERE IS PROBABLY THE SYMPTOM OF A BUG IN ECL !!
 	     ;; PROBABLY RELATED TO SIDE-EFFECTS OF NRECONC, RPLACD, ETC !!
 	     ((#+ecl equal #-ecl eq bkpt (cdr l)) (rplacd l nil))
 	   (if (null l)
          ;; MEANING OF FOLLOWING MESSAGE IS OBSCURE.
-         (merror "display: 'checkbreak' not found.")))
+         (merror (intl:gettext "display: 'checkbreak' not found."))))
 	 (output bkpt 0)
 	 (let ((#.ttyoff (or #.ttyoff more-^w))))
 	 (setq lines (1+ lines)
@@ -1258,7 +1258,7 @@
     ;; something else random, then draw equations line by line.
     ((> (+ bkptht bkptdp) 80.)
      ;; IS IT STILL POSSIBLE TO EVER TRIGGER THE FOLLOWING MESSAGE ??
-     (merror "display: expression is too tall to be displayed."))
+     (merror (intl:gettext "display: expression is too tall to be displayed.")))
     ((or (not (and smart-tty $cursordisp))
 	 #.writefilep scrollp (> (+ bkptht bkptdp) (- ttyheight 2)))
      (output-linear (nreverse result) w))

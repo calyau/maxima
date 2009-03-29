@@ -669,7 +669,7 @@
   ;; Convert a Lisp number to a maxima number
   (cond ((realp x) x)
 	((complexp x) (add (realpart x) (mul '$%i (imagpart x))))
-	(t (merror "COMPLEXIFY: argument must be a Lisp real or complex number.~%COMPLEXIFY: found: ~:M" x))))
+	(t (merror (intl:gettext "COMPLEXIFY: argument must be a Lisp real or complex number.~%COMPLEXIFY: found: ~:M") x))))
    
 (defun kc-arg (exp m)
   ;; Replace elliptic_kc(m) in the expression with sym.  Check to see

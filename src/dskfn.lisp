@@ -86,7 +86,7 @@
   (let (prinlength prinlevel file (fname (meval (car x)))
 		   *print-gensym* list fasdeqlist fasdnoneqlist maxima-error)
     (unless (stringp fname)
-      (merror "~a: first argument must be a string; found: ~M" fn fname))
+      (merror (intl:gettext "~a: first argument must be a string; found: ~M") fn fname))
     (setq savefile
 	  (if (or (eq $file_output_append '$true) (eq $file_output_append t))
 	      (open fname :direction :output :if-exists :append :if-does-not-exist :create)
@@ -379,7 +379,7 @@
   (let ((defaultf defaultf) (eof (list nil)) item)
     (setq file (open file))
     (setq item (do ((item (read file eof) (read file eof)))
-		   ((eq item eof) (merror "unstore: ~:M not found." name))
+		   ((eq item eof) (merror (intl:gettext "unstore: ~:M not found.") name))
 		 (if (or (and (not (atom item)) (eq (car item) 'dsksetq)
 			      (eq flag 'value) (eq (cadr item) name))
 			 (and (not (atom item)) (= (length item) 4)

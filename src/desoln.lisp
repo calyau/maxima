@@ -11,7 +11,7 @@
       (setq flag t))
     (setq ovar (maref vars 1))
     (unless (= ($length ovar) 1)
-      (merror "desolve: more than one independent variable: ~M" ovar))
+      (merror (intl:gettext "desolve: more than one independent variable: ~M") ovar))
     (setq ovar (simplify ($inpart ovar 1)))
     (setq teqns
      (simplify (map1 (getopr (m-tlambda&env (($z) (ovar lvar))
@@ -32,7 +32,7 @@
     (when (or (like teqns '((mlist)))
 	      (like teqns (list '(mlist) '((mlist)))))
       ;; NOT CLEAR WHAT IS THE PROBLEM. SHOULD BE MORE EXPLICIT.
-      (merror "desolve: can't handle this case."))
+      (merror (intl:gettext "desolve: can't handle this case.")))
     (setq teqns (simplify ($first teqns)))
     (unless (like flag t)
       (setq teqns (simplify ($first teqns))))

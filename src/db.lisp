@@ -368,7 +368,7 @@
 
 (defmfun kindp (x y)
   (if (not (symbolp x))
-      (merror "declare: argument must be a symbol; found ~M" x))
+      (merror (intl:gettext "declare: argument must be a symbol; found ~M") x))
   (clear)
   (beg x 1)
   (do ((p (dq+) (dq+)))
@@ -595,7 +595,7 @@
     #+gc (gc)
     (gccon1)
     (when (> conindex connumber)
-      (merror "context: too many contexts."))))
+      (merror (intl:gettext "context: too many contexts.")))))
 
 (defun gccon1 ()
   (setq conindex 0)
