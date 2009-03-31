@@ -311,6 +311,7 @@
 (defvar *builtin-$rules* nil)
 (defvar *builtin-symbols-with-values* nil)
 (defvar *builtin-symbol-values* (make-hash-table))
+(defvar *builtin-numeric-constants* '($%e $%pi $%phi $%gamma))
 
 (defun kill1-atom (x)
   (let ((z (or (and (member x (cdr $aliases) :test #'equal) (get x 'noun)) (get x 'verb))))

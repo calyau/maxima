@@ -729,11 +729,9 @@ When one changes, the other does too."
       (setf (gethash s *builtin-symbol-props*)
 	    (copy-tree (symbol-plist s))))))
 
-(defvar *builtin-numeric-constants* '($%e $%pi $%phi $%gamma))
-
 ;; Initialize assume database for $%pi, $%e, etc
-(mapcar (lambda (c) (initialize-numeric-constant c))
-	*builtin-numeric-constants*)
+(dolist (c *builtin-numeric-constants*)
+  (initialize-numeric-constant c))
 
 (dolist (s *builtin-symbols*)
   (when (boundp s)
