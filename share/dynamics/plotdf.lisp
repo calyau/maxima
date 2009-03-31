@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.6 2008-11-07 15:05:14 villate Exp $
+;; $Id: plotdf.lisp,v 1.7 2009-03-31 22:33:01 villate Exp $
 
 (in-package :maxima)
 
@@ -41,7 +41,8 @@
         ($trajectory_at
          (check-list-items name (rest (rest value)) 'number 2))
         ($bbox (check-list-items name (rest (rest value)) 'number 4))
-        (($xfun $parameters $sliders $vector $trajectory $orthogonal) value)
+        (($xfun $parameters $sliders $vectors $fieldlines $curves
+		$windowtitle) value)
         ('$direction
          (or (member (third value) '($forward $backward $both))
              (merror "direction: choose one of [forward,backward,both]")) 
@@ -146,13 +147,23 @@
 			   (expr_to_str (mfuncall '$diff mfun '$x))
 			   "\" -dydt \""
 			   (expr_to_str (mfuncall '$diff mfun '$y)) 
-			   "\" -vector {} -trajectory {} -orthogonal {red} "))
+			   "\" "))
     
     ;; parse options and copy them to string opts
     (cond (options
            (dolist (v options) 
              (setq opts (concatenate 'string opts " "
                                   (plotdf-option-to-tcl v s1 s2))))))
+
+    (unless (search "-vectors " opts)
+      (setq opts (concatenate 'string opts " -vectors {}")))
+    (unless (search "-fieldlines " opts)
+      (setq opts (concatenate 'string opts " -fieldlines {}")))
+    (unless (search "-curves " opts)
+      (setq opts (concatenate 'string opts " -curves {red}")))
+    (unless (search "-windowtitle " opts)
+      (setq opts (concatenate 'string opts " -windowtitle {Ploteq}")))
+							      
     (show-open-plot
      (with-output-to-string (st)
                   (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.18 2009-03-31 19:50:54 villate Exp $
+#       $Id: Plotdf.tcl,v 1.19 2009-03-31 22:33:39 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -12,9 +12,9 @@ set plotdfOptions {
     {dxdt "x-y^2+sin(x)*.3" {specifies dx/dt = dxdt.  eg -dxdt "x+y+sin(x)^2"} }
     {dydt "x+y" {specifies dy/dt = dydt.  eg -dydt "x-y^2+exp(x)"} }
     {dydx "" { may specify dy/dx = x^2+y,instead of dy/dt = x^2+y and dx/dt=1 }}
-    {vector blue "Color for the vectors"}
-    {trajectory red "Color for the trajectories"}
-    {orthogonal "" "Color for the orthogonal curves"}
+    {vectors blue "Color for the vectors"}
+    {fieldlines red "Color for the fieldlines"}
+    {curves "" "Color for the orthogonal curves"}
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
     {width 560 "Width of canvas in pixels"}
@@ -30,6 +30,7 @@ set plotdfOptions {
     {direction "both" "May be both, forward or backward" }
     {versus_t 0 "Plot in a separate window x and y versus t, after each trajectory" }
     {windowname ".dfplot" "window name"}
+    {windowtitle "Plotdf" "window title"}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
     {linecolors { green black  brown gray black} "colors for functions plots"}
     {sliders "" "List of parameters ranges k=3:5,u"}
@@ -59,7 +60,7 @@ proc makeFrameDf { win } {
     catch { set top [winfo parent $win]}
     catch {
 
-	wm title $top [mc "Openmath: Plotdf"]
+	wm title $top [oget $win windowtitle]
 	wm iconname $top "plotdf"
 	#    wm geometry $top 750x700-0+20
     }
@@ -166,7 +167,7 @@ proc doIntegrate { win x0 y0 } {
 	both { set todo "-1 1" }
     }
     set methods ""
-    foreach method { trajectory orthogonal } {
+    foreach method { fieldlines curves } {
 				    set color [oget $win $method]
 				    if {"$color" != "" && "$color" != "blank"} {
 					lappend methods $method
@@ -179,13 +180,13 @@ proc doIntegrate { win x0 y0 } {
 			     set linecolor [assoc $method $useColors ]
 			     #    puts method=$method
 			     set signs $todo
-			     if {"$method" == "orthogonal"} {
+			     if {"$method" == "curves"} {
 				 set signs "-1 1"
 				 set coords {}
 			     }
 			     foreach sgn $signs {
 				 set arrow "none"
-				 if { "$method"=="trajectory" } {
+				 if { "$method"=="fieldlines" } {
 				     if { $sgn < 0 } {
 					 set arrow "first"
 					 set coords {}
@@ -337,7 +338,7 @@ proc drawArrowScreen { c atx aty dfx dfy color } {
 
 proc drawDF { win tinitial } {
     global  axisGray
-    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vector
+    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vectors
 
     # flush stdout
     set rtosx rtosx$win ; set rtosy rtosy$win
@@ -357,7 +358,7 @@ proc drawDF { win tinitial } {
 #    set uptoy [expr {[$rtosy $ymin] + $extra}]
     # draw the axes:
     #puts "draw [$rtosx $xmin] to $uptox"
-    if { "$vector" != "" && "$vector" != "blank" } {
+    if { "$vectors" != "" && "$vectors" != "blank" } {
 	for { set x [expr {[$rtosx $xmin] + $extra}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
 	    for { set y [expr {[$rtosy $ymax] + $extra}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
 		set args "$t0 [$storx $x] [$story $y]"
@@ -397,7 +398,7 @@ proc drawDF { win tinitial } {
 		set dfy [lindex $all [incr i]]
 		#puts "[$storx $x] [$story $y] x=$x y=$y dfx=$dfx dfy=$dfy fac=$fac"
 		# puts "$len $dfx $dfy"
-		drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy} ] $vector
+		drawArrowScreen $c $x $y [expr {$fac * $dfx}] [expr {$fac * $dfy} ] $vectors
 	    }
 	}
     }
@@ -522,7 +523,7 @@ proc doConfigdf { win } {
     pack $frdydx.dxdt  $frdydx.dydt -side bottom  -fill x -expand 1
     pack $frdydx.dydxbut $frdydx.dydtbut -side left -fill x -expand 1
 
-    foreach w {parameters xfun linewidth xradius yradius xcenter ycenter tinitial versus_t nsteps direction orthogonal vector trajectory } {
+    foreach w {parameters xfun linewidth xradius yradius xcenter ycenter tinitial versus_t nsteps direction curves vectors fieldlines } {
 	mkentry $wb1.$w [oloc $win $w] $w $buttonFont
 	pack $wb1.$w -side bottom -expand 1 -fill x
     }
