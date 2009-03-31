@@ -1163,17 +1163,81 @@ integration variables.  This function is autoloaded from
 @closecatbox
 @end deffn
 
-@c NEEDS WORK
 @deffn {Function} dispform (@var{expr})
-Returns the external representation of @var{expr} with respect to its
-main operator.  This should be useful in conjunction with @code{part} which
-also deals with the external representation.  Suppose @var{expr} is -A .
-Then the internal representation of @var{expr} is "*"(-1,A), while the
-external representation is "-"(A). @code{dispform (@var{expr}, all)} converts the
-entire expression (not just the top-level) to external format.  For
-example, if @code{expr: sin (sqrt (x))}, then @code{freeof (sqrt, expr)} and
-@code{freeof (sqrt, dispform (expr))} give @code{true}, while
-@code{freeof (sqrt, dispform (expr, all))} gives @code{false}.
+@deffnx {Function} dispform (@var{expr}, all)
+Returns the external representation of @var{expr}.
+
+@code{dispform(@var{expr})} returns the external representation
+with respect to the main (top-level) operator.
+@code{dispform(@var{expr}, all)} returns the external representation
+with respect to all operators in @var{expr}.
+
+See also @code{part}, @code{inpart}, and @code{inflag}.
+
+Examples:
+
+The internal representation of @code{- x} is "negative one times @code{x}"
+while the external representation is "minus @code{x}".
+
+@c ===beg===
+@c - x;
+@c ?format (true, "~S~%", %);
+@c dispform (- x);
+@c ?format (true, "~S~%", %);
+@c ===end===
+@example
+(%i1) - x;
+(%o1)                          - x
+(%i2) ?format (true, "~S~%", %);
+((MTIMES SIMP) -1 $X)
+(%o2)                         false
+(%i3) dispform (- x);
+(%o3)                          - x
+(%i4) ?format (true, "~S~%", %);
+((MMINUS SIMP) $X)
+(%o4)                         false
+@end example
+
+The internal representation of @code{sqrt(x)} is "@code{x} to the power 1/2"
+while the external representation is "square root of @code{x}".
+
+@c ===beg===
+@c sqrt (x);
+@c ?format (true, "~S~%", %);
+@c dispform (sqrt (x));
+@c ?format (true, "~S~%", %);
+@c ===end===
+@example
+(%i1) sqrt (x);
+(%o1)                        sqrt(x)
+(%i2) ?format (true, "~S~%", %);
+((MEXPT SIMP) $X ((RAT SIMP) 1 2))
+(%o2)                         false
+(%i3) dispform (sqrt (x));
+(%o3)                        sqrt(x)
+(%i4) ?format (true, "~S~%", %);
+((%SQRT SIMP) $X)
+(%o4)                         false
+@end example
+
+Use of the optional argument @code{all}.
+
+@c ===beg===
+@c expr : sin (sqrt (x));
+@c freeof (sqrt, expr);
+@c freeof (sqrt, dispform (expr));
+@c freeof (sqrt, dispform (expr, all));
+@c ===end===
+@example
+(%i1) expr : sin (sqrt (x));
+(%o1)                     sin(sqrt(x))
+(%i2) freeof (sqrt, expr);
+(%o2)                         true
+(%i3) freeof (sqrt, dispform (expr));
+(%o3)                         true
+(%i4) freeof (sqrt, dispform (expr, all));
+(%o4)                         false
+@end example
 
 @opencatbox
 @category{Expressions}
