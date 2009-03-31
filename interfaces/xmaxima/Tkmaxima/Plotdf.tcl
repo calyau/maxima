@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.17 2008-11-07 14:56:15 villate Exp $
+#       $Id: Plotdf.tcl,v 1.18 2009-03-31 19:50:54 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -163,7 +163,7 @@ proc doIntegrate { win x0 y0 } {
     switch -- $direction {
 	forward { set todo "1" }
 	backward { set todo "-1" }
-	both { set todo "1 -1" }
+	both { set todo "-1 1" }
     }
     set methods ""
     foreach method { trajectory orthogonal } {
@@ -180,16 +180,19 @@ proc doIntegrate { win x0 y0 } {
 			     #    puts method=$method
 			     set signs $todo
 			     if {"$method" == "orthogonal"} {
-				 set signs "1 -1"
+				 set signs "-1 1"
+				 set coords {}
 			     }
 			     foreach sgn $signs {
 				 set arrow "none"
 				 if { "$method"=="trajectory" } {
 				     if { $sgn < 0 } {
 					 set arrow "first"
+					 set coords {}
 				     } else {
 					 if { "$direction" == "forward"} {
 					     set arrow "last"
+					     set coords {}
 					 }
 				     }
 				 }
@@ -201,7 +204,6 @@ proc doIntegrate { win x0 y0 } {
 
 				 #puts "doing: $form"
 				 set i -1
-				 set coords {}
 				 set lim [expr {$steps * 2}]
 				 catch {
 				     while { $i <= $lim } {
@@ -225,6 +227,9 @@ proc doIntegrate { win x0 y0 } {
 				     $c create line $coords -tags path \
 					 -width $linewidth -fill $linecolor \
 					 -arrow $arrow
+				     if { "$direction" == "both" } {
+					 set coords [lrange $coords 2 3]
+				     }
 				 }
 			     }
 			 }
