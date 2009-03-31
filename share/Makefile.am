@@ -594,6 +594,7 @@ draw/wbd.lisp\
 dynamics/complex_dynamics.lisp\
 dynamics/dynamics.mac\
 dynamics/plotdf.lisp\
+dynamics/rtest_dynamics.mac\
 integequations/inteqn.mac\
 integequations/inteqn.usg\
 integequations/intexs.mac\
