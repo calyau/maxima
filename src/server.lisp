@@ -69,7 +69,8 @@
     #+lispworks (comm:open-tcp-stream host port :direction :io :element-type
                                       (if bin 'unsigned-byte 'base-char))
     #+ecl (si::open-client-stream host port)
-    #-(or allegro clisp cmu scl sbcl gcl lispworks ecl)
+    #+ccl (ccl::make-socket :remote-host host :remote-port port)
+    #-(or allegro clisp cmu scl sbcl gcl lispworks ecl ccl)
     (error 'not-implemented :proc (list 'open-socket host port bin))))
 
 
@@ -96,7 +97,8 @@
 #+openmcl (ccl::getpid)
 #+lispworks (system::getpid)
 #+ecl (si:getpid)
-#-(or clisp cmu scl sbcl gcl openmcl lispworks ecl) (getpid-from-environment)
+#+ccl (ccl::getpid)
+#-(or clisp cmu scl sbcl gcl openmcl lispworks ecl ccl) (getpid-from-environment)
 )
 
 #+(or gcl clisp cmu scl sbcl lispworks ecl)

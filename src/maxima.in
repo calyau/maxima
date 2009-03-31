@@ -136,7 +136,7 @@ elif [ "$MAXIMA_LISP" = "acl" ]; then
 elif [ "$MAXIMA_LISP" = "openmcl" ]; then
 # FIXME: arguments need in a manner consistent with the way they are extracted
 #        in the function get-application-args in command-line.lisp
-    exec "@OPENMCL_NAME@" -I "$maxima_image_base.image" "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    exec "@OPENMCL_NAME@" -I "$maxima_image_base.image" -e '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "ecl" ]; then
     exec "$maxima_image_base"  -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then

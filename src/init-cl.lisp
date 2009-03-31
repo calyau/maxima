@@ -649,6 +649,7 @@ When one changes, the other does too."
   (in-package :maxima)
   (setf *load-verbose* nil)
   (setf *debugger-hook* #'maxima-lisp-debugger)
+  #+ccl (setf ccl::*invoke-debugger-hook-on-interrupt* t)
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
     #+allegro

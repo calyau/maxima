@@ -247,8 +247,8 @@ distclean: clean-openmcl
 openmcl:binary-openmcl/maxima.image
 
 binary-openmcl/maxima.image:
-	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
-	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ccl:save-application "binary-openmcl/maxima.image" :toplevel-function (function cl-user::run)) (ccl::quit))'
+	$(EXECUTEOPENMCL) '(progn (require :defsystem)  $(DEFSYSTEMCOMPILE) (ccl::quit))' && \
+	$(EXECUTEOPENMCL) '(progn (require :defsystem) $(DEFSYSTEMLOAD) (ccl:save-application "binary-openmcl/maxima.image") (ccl::quit))'
 
 install-openmcl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-openmcl"

@@ -134,6 +134,7 @@
       
   #+lispworks (rest system:*line-arguments-list*)
 
-  #+openmcl
-  (rest (ccl::command-line-arguments))
+  #+openmcl (let ((result  (rest (ccl::command-line-arguments))))
+	      (do ((removed-arg nil (pop result)))
+		  ((or (equal removed-arg "--") (equal nil result)) result)))
   )
