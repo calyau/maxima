@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.9 2009-04-01 01:56:21 villate Exp $
+;; $Id: plotdf.lisp,v 1.10 2009-04-01 04:29:31 villate Exp $
 
 (in-package :maxima)
 
@@ -41,9 +41,20 @@
         ($trajectory_at
          (check-list-items name (rest (rest value)) 'number 2))
         ($bbox (check-list-items name (rest (rest value)) 'number 4))
-        (($xfun $parameters $sliders $vectors $fieldlines $curves $axes
-		$windowtitle $xaxislabel $yaxislabel $nobox $psfile) value)
-        ('$direction
+        (($xfun $parameters $sliders $vectors $fieldlines $curves 
+		$windowtitle $xaxislabel $yaxislabel $psfile) value)
+	($axes
+	 (if (not (third value))
+	     (setq value '((mlist simp) $axes 0))  
+	   (case (third value)
+		 ($x (setq value '((mlist simp) $axes "x")))
+		 ($y (setq value '((mlist simp) $axes "y")))
+		 (t (setq value '((mlist simp) $axes "xy"))))))
+	($box
+	 (if (not (third value))
+	     (setq value '((mlist simp) $nobox 1))
+	   (setq value '((mlist simp) $nobox 0))))
+        ($direction
          (or (member (third value) '($forward $backward $both))
              (merror "direction: choose one of [forward,backward,both]")) 
          value)
