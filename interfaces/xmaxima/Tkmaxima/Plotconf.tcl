@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.21 2009-04-01 00:36:47 villate Exp $
+#       $Id: Plotconf.tcl,v 1.22 2009-04-01 02:10:55 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -309,20 +309,20 @@ proc writePostscript { win } {
     # 	    -anchor center -text $title -tag title
 
     update
-    set diag [vectorlength [expr {$y1-$x1}] [expr {$y2-$x2}]]
+    #set diag [vectorlength [expr {$y1-$x1}] [expr {$y2-$x2}]]
     #  get rid of little arrows that creep onto the outside, ie let
     #  the blank rectangle cover them.
-    set x1 [expr {$x1+.01 * $diag}]
-    set x2 [expr {$x2-.01 * $diag}]
-    set y1 [expr {$y1+.01 * $diag}]
-    set y2 [expr {$y2-.01 * $diag}]
+    #set x1 [expr {$x1+.01 * $diag}]
+    #set x2 [expr {$x2-.01 * $diag}]
+    #set y1 [expr {$y1+.01 * $diag}]
+    #set y2 [expr {$y2-.01 * $diag}]
 
     # Set up font replacement list
-    set fontMap([font create -family {Bitstream Vera Sans Mono} -size 10]) [list Helvetica 10]
-
+    set fontMap([font create -family {Bitstream Vera Sans Mono} -size 10]) [list Courier 10]
+    set fontMap([font create {helvetica 16 normal}]) [list Helvetica 16]
     set com "$c postscript  \
-      	    -x [expr {($x1 - 55)}] -y [expr {($y1 -25)}] \
-	    -width [expr {($x2 - $x1 + 55)}] \
+      	    -x [expr {($x1 - 35)}] -y [expr {($y1 -25)}] \
+	    -width [expr {($x2 - $x1 + 60)}] \
             -height [expr {($y2 - $y1 + 45)}] \
             -fontmap fontMap \
 	    [getPageOffsets [expr {($x2 - $x1 + 55)/(1.0*($y2 - $y1 + 45))}] ]"
