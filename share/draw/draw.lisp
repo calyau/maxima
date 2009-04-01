@@ -1192,19 +1192,19 @@
                       (dolist (k lab)
                         (setf fx   (convert-to-float ($second k))
                               fy   (convert-to-float ($third k))
-                              text ($first k)  )
+                              text (format nil "\"~a\"" ($first k))  )
                         (if (or (not (floatp fx)) 
                                 (not (floatp fy)))
                             (merror "draw (label): non real 2d coordinates"))
                         (update-ranges-2d fx fx fy fy)
-                        (setf result (append (list fx fy (format nil "\"~a\"" text)) result)))))
+                        (setf result (append (list fx fy text) result)))))
                   (t ; labels in 3d
                     (let (fx fy fz text)
                       (dolist (k lab)
                         (setf fx   (convert-to-float ($second k))
                               fy   (convert-to-float ($third k))
                               fz   (convert-to-float ($fourth k))
-                              text ($first k) )
+                              text (format nil "\"~a\"" ($first k)) )
                         (if (or (not (floatp fx)) 
                                 (not (floatp fy))
                                 (not (floatp fz)))
@@ -1214,7 +1214,7 @@
           (t (merror "draw (label): illegal arguments")))
     (make-gr-object
        :name 'label
-       :command (format nil " t '' w labels ~a ~a tc rgb '~a' axis ~a"
+       :command (format nil " t '' w labels ~a ~a tc rgb '~a' ~a"
                               (case (get-option '$label_alignment)
                                  ($center "center")
                                  ($left   "left")
@@ -1223,7 +1223,9 @@
                                  ($horizontal "norotate")
                                  ($vertical  "rotate"))
                               (get-option '$color)
-                              (axes-to-plot) )
+                              (if is2d
+                                 (format nil "axis ~a" (axes-to-plot))
+                                 "") )
        :groups (if is2d '((3 0)) '((4 0)))
        :points (list (make-array (length result) :initial-contents result))) ))
 
