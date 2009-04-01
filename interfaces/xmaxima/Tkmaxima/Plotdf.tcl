@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.19 2009-03-31 22:33:39 villate Exp $
+#       $Id: Plotdf.tcl,v 1.20 2009-04-01 02:11:50 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -45,6 +45,8 @@ set plotdfOptions {
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
     {labelposition "10 15" "Position for the curve labels nw corner"}
+    {xaxislabel "" "Label for the x axis"}
+    {yaxislabel "" "Label for the y axis"}
     {psfile "" "A filename where the graph will be saved in PostScript."}
     {nobox 0 "if not zero, do not draw the box around the plot."}
     {axes "xy" "if zero, no axes are drawn. x, y or xy to draw the axes."}
@@ -337,8 +339,9 @@ proc drawArrowScreen { c atx aty dfx dfy color } {
 }
 
 proc drawDF { win tinitial } {
-    global  axisGray
-    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vectors
+    global axisGray
+    makeLocal  $win xmin xmax xcenter ycenter c ymin ymax transform vectors xaxislabel yaxislabel
+    linkLocal $win nobox axes
 
     # flush stdout
     set rtosx rtosx$win ; set rtosy rtosy$win
@@ -403,26 +406,57 @@ proc drawDF { win tinitial } {
 	}
     }
 
+    set x1 [rtosx$win $xmin]
+    set y1 [rtosy$win $ymax]
+    set x2 [rtosx$win $xmax]
+    set y2 [rtosy$win $ymin]
     # Draw the two axes
-    if { $xmin*$xmax < 0 } {
-	$c create line [$rtosx 0 ] [$rtosy $ymax] [$rtosx 0] [$rtosy $ymin] \
-                       -fill $axisGray
+    $c del axes
+    if { $xmin*$xmax < 0 && ($axes == {y} || $axes == {xy}) } {
+	if { $nobox == 0 } {
+	    $c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -fill $axisGray \
+		-tags axes
+	} else {
+	    $c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -width 2 \
+		-arrow "first" -tags axes
+	}
     }
-    if { $ymin*$ymax < 0 } {
-	$c create line [$rtosx $xmin] [$rtosy 0] [$rtosx $xmax] [$rtosy 0] \
-                       -fill $axisGray
+    if { $ymin*$ymax < 0  && ($axes == {x} || $axes == {xy}) } {
+	if { $nobox == 0 } {
+	    $c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -fill $axisGray \
+		-tags axes
+	} else {
+	    $c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -width 2 \
+		-arrow "last" -tags axes
+	}
     }
     # Draw the plot box
-    if { "[$c find withtag printrectangle]" == "" } {
-	set x1 [rtosx$win $xmin]
-	set y1 [rtosy$win $ymax]
-	set x2 [rtosx$win $xmax]
-	set y2 [rtosy$win $ymin]
+    if { "[$c find withtag printrectangle]" == "" && $nobox == 0 } {
 	$c create rectangle $x1 $y1 $x2 $y2 -tags printrectangle -width 2
 	marginTicks $c [storx$win $x1] [story$win $y2] [storx$win $x2] \
 	    [story$win $y1] "printrectangle marginticks"
 
     }
+    # Write down the axes labels
+    $c del axislabel
+    if {$nobox != 0  && $xmin*$xmax < 0  && ($axes == {y} || $axes == {xy})} {
+	set xbound [expr { [$rtosx 0] - 30}]
+    } else {
+	set xbound [expr {$x1 - 30}]
+    }
+    $c create text $xbound [expr {$y1 - 6}] -anchor sw \
+       -text [oget $win yaxislabel] -font {helvetica 16 normal} -tags axislabel
+    if {$nobox != 0  && $ymin*$ymax < 0  && ($axes == {x} || $axes == {xy})} {
+	$c create text [expr {$x2 - 5}] [expr { [$rtosy 0] + 15}] \
+	    -anchor ne -text [oget $win xaxislabel] \
+	    -font {helvetica 16 normal} \
+	    -tags axislabel
+    } else {
+	$c create text [expr {($x1 + $x2)/2}] [expr {$y2 + 35}] \
+	    -anchor center -text [oget $win xaxislabel] \
+	    -font {helvetica 16 normal} -tags axislabel
+    }
+
 }
 
 proc parseOdeArg {  s } {
@@ -476,8 +510,8 @@ proc plotdf { args } {
 }
 
 proc replotdf { win } {
-    global plotdfOptions
-    linkLocal $win xfundata data
+    global printOption plotdfOptions
+    linkLocal $win xfundata data psfile
     if { ![info exists data] } {
 	set data ""
 	
@@ -501,6 +535,14 @@ proc replotdf { win } {
 		 0 xversusy]
     }
     redraw2dData $win -tags path
+
+    # Create a PostScript file, if requested
+    if { $psfile != "" } {
+	set printOption(psfilename) $psfile
+	writePostscript $win
+	$c delete printoptions
+	eval [$win.menubar.close cget -command]
+    }
 }
 
 proc setXffYff { dxdt dydt parameters } {
