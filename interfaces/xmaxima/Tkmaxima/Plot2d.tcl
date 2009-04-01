@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.17 2008-04-04 23:09:32 villate Exp $
+#       $Id: Plot2d.tcl,v 1.18 2009-04-01 00:37:39 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -404,10 +404,11 @@ proc replot2d {win } {
 
     }
     # Write down the axes labels
-    $c create text [expr {$x1 - 50}] [expr {$y1 - 5}] -anchor sw \
-	           -text [oget $win yaxislabel] -font {helvetica 20 normal}
-    $c create text [expr {$x2 - 20}] [expr {$y2 + 30}] -anchor ne \
-                   -text [oget $win xaxislabel] -font {helvetica 20 normal}
+    $c del axislabel
+    $c create text [expr {$x1 - 50}] [expr {$y1 - 4}] -anchor sw \
+       -text [oget $win yaxislabel] -font {helvetica 16 normal} -tags axislabel
+    $c create text [expr {$x2 - 20}] [expr {$y2 + 15}] -anchor ne \
+       -text [oget $win xaxislabel] -font {helvetica 16 normal} -tags axislabel
 
     # Create a PostScript file, if requested
     if { $psfile != "" } {
