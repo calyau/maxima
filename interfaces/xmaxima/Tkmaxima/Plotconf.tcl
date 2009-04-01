@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.20 2007-12-07 14:02:22 villate Exp $
+#       $Id: Plotconf.tcl,v 1.21 2009-04-01 00:36:47 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -318,14 +318,14 @@ proc writePostscript { win } {
     set y2 [expr {$y2-.01 * $diag}]
 
     # Set up font replacement list
-    set fontMap([font create -family {Bitstream Vera Sans Mono} -size 10]) [list Courier 10]
+    set fontMap([font create -family {Bitstream Vera Sans Mono} -size 10]) [list Helvetica 10]
 
     set com "$c postscript  \
-      	    -x  $x1  -y $y1 \
-	    -width [expr {($x2 - $x1)}] \
-            -height [expr {($y2 - $y1)}] \
+      	    -x [expr {($x1 - 55)}] -y [expr {($y1 -25)}] \
+	    -width [expr {($x2 - $x1 + 55)}] \
+            -height [expr {($y2 - $y1 + 45)}] \
             -fontmap fontMap \
-	    [getPageOffsets [expr {($x2 - $x1)/(1.0*($y2 - $y1))}] ] "
+	    [getPageOffsets [expr {($x2 - $x1 + 55)/(1.0*($y2 - $y1 + 45))}] ]"
 
     #puts com=$com
     set output [eval $com]
