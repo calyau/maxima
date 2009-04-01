@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.8 2009-04-01 00:39:38 villate Exp $
+;; $Id: plotdf.lisp,v 1.9 2009-04-01 01:56:21 villate Exp $
 
 (in-package :maxima)
 
@@ -64,7 +64,7 @@
              (format st "{~a}" (/ (- (third vv) (second vv)) 2)))
             (t
              (format st "-~(~a~) " (first vv))
-             (format st "{~{~(~a~)~^ ~}}" (rest vv)))))))
+             (format st "{~{~a~^ ~}}" (rest vv)))))))
 
 ;; applies float(ev(expression, numer)) to an expression, and returns a string
 
