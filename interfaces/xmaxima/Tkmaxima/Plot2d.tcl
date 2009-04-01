@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.18 2009-04-01 00:37:39 villate Exp $
+#       $Id: Plot2d.tcl,v 1.19 2009-04-01 02:24:02 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -382,10 +382,22 @@ proc replot2d {win } {
     # Draw the two axes
     $c del axes
     if { $xmin*$xmax < 0 && ($axes == {y} || $axes == {xy}) } {
-	$c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -fill $axisGray -tags axes
+	if { $nobox == 0 } {
+	    $c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -fill $axisGray \
+		-tags axes
+	} else {
+	    $c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -width 2 \
+		-arrow "first" -tags axes
+	}
     }
-    if { $ymin*$ymax < 0 && ($axes == {x} || $axes == {xy}) } {
-	$c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -fill $axisGray -tags axes
+    if { $ymin*$ymax < 0  && ($axes == {x} || $axes == {xy}) } {
+	if { $nobox == 0 } {
+	    $c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -fill $axisGray \
+		-tags axes
+	} else {
+	    $c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -width 2 \
+		-arrow "last" -tags axes
+	}
     }
 
     if { "$xfun" != "" } {
@@ -405,10 +417,23 @@ proc replot2d {win } {
     }
     # Write down the axes labels
     $c del axislabel
-    $c create text [expr {$x1 - 50}] [expr {$y1 - 4}] -anchor sw \
+    if {$nobox != 0  && $xmin*$xmax < 0  && ($axes == {y} || $axes == {xy})} {
+	set xbound [expr { [$rtosx 0] - 30}]
+    } else {
+	set xbound [expr {$x1 - 30}]
+    }
+    $c create text $xbound [expr {$y1 - 6}] -anchor sw \
        -text [oget $win yaxislabel] -font {helvetica 16 normal} -tags axislabel
-    $c create text [expr {$x2 - 20}] [expr {$y2 + 15}] -anchor ne \
-       -text [oget $win xaxislabel] -font {helvetica 16 normal} -tags axislabel
+    if {$nobox != 0  && $ymin*$ymax < 0  && ($axes == {x} || $axes == {xy})} {
+	$c create text [expr {$x2 - 5}] [expr { [$rtosy 0] + 15}] \
+	    -anchor ne -text [oget $win xaxislabel] \
+	    -font {helvetica 16 normal} \
+	    -tags axislabel
+    } else {
+	$c create text [expr {($x1 + $x2)/2}] [expr {$y2 + 35}] \
+	    -anchor center -text [oget $win xaxislabel] \
+	    -font {helvetica 16 normal} -tags axislabel
+    }
 
     # Create a PostScript file, if requested
     if { $psfile != "" } {
