@@ -22,50 +22,54 @@
 
 ;; External specials
 
-(defmvar context 'global)
-(defmvar contexts nil)
-(defmvar current 'global)
-(defmvar +labs nil)
-(defmvar -labs nil)
-(defmvar dbtrace nil)
-(defmvar dbcheck nil)
-(defmvar dobjects nil)
-(defmvar nobjects nil)
+(defvar context 'global)
+(defvar contexts nil)
+(defvar current 'global)
+(defvar +labs nil)
+(defvar -labs nil)
+(defvar dbtrace nil)
+(defvar *dbcheck* nil)
+(defvar dobjects nil)
+(defvar *nobjects* nil)
 
 ;; Internal specials
 
-(defmvar marks 0)
-(defmvar +l)
-(defmvar -l)
-(defmvar ulabs nil)
+(defvar *marks* 0)
+(defvar +l)
+(defvar -l)
+(defvar ulabs nil)
 
-(defmvar conindex 0)
-(defmvar connumber 50.)
+(defvar *conindex* 0)
+(defvar *connumber* 50)
 
-;; The most negative fixnum.
-
-(defmvar lab-high-bit most-negative-fixnum)
+(defconstant +lab-high-bit+ most-negative-fixnum)
 
 ;; One less than the number of bits in a fixnum.
-(defmvar labnumber (1- (integer-length lab-high-bit)))
+(defconstant +labnumber+ (1- (integer-length +lab-high-bit+)))
 
 ;; A cell with the high bit turned on.
-(defmvar lab-high-lab (list lab-high-bit))
+(defvar *lab-high-lab* (list +lab-high-bit+))
 
-(declare-top (special +s +sm +sl -s -sm -sl labs lprs labindex lprindex world db*))
+(defvar +s)
+(defvar +sm)
+(defvar +sl)
+(defvar -s)
+(defvar -sm)
+(defvar -sl)
+(defvar *labs*)
+(defvar *lprs*)
+(defvar *labindex*)
+(defvar *lprindex*)
+(defvar *world*)
+(defvar *db*)
 
 ;; Macro for indirecting through the contents of a cell.
 
 (defmacro unlab (cell)
   `(car ,cell))
 
-(defmacro setq-unlab (cell)
-  `(setq ,cell (unlab ,cell)))
-
-(defmacro setq-copyn (cell)
-  `(setq ,cell (copyn ,cell)))
-
-(defmacro copyn (n) `(list ,n))
+(defmacro copyn (n)
+  `(list ,n))
 
 (defmacro iorm (cell n)
   `(rplaca ,cell (logior (car ,cell) (car ,n))))
@@ -75,8 +79,8 @@
 
 (defprop global 1 cmark)
 
-(defvar conunmrk (make-array (1+ connumber) :initial-element nil))
-(defvar conmark  (make-array (1+ connumber) :initial-element nil))
+(defvar conunmrk (make-array (1+ *connumber*) :initial-element nil))
+(defvar conmark  (make-array (1+ *connumber*) :initial-element nil))
 
 (defmfun mark (x)
   (putprop x t 'mark))
@@ -159,52 +163,45 @@
   (ash 1 (1- n)))
 
 (defun lpr (m n)
-  (cond ((do ((l lprs (cdr l)))
+  (cond ((do ((l *lprs* (cdr l)))
 	     ((null l))
 	   (if (and (labeq m (caaar l)) (labeq n (cdaar l)))
 	       (return (cdar l)))))
-	((= (setq lprindex (1- lprindex)) labindex)
+	((= (decf *lprindex*) *labindex*)
 	 (break))
-	(t (setq lprs (cons (cons (cons m n) (ash 1 lprindex)) lprs))
-	   (cdar lprs))))
+	(t
+	 (push (cons (cons m n) (ash 1 *lprindex*)) *lprs*)
+	 (cdar *lprs*))))
 
 (defun labeq (x y)
-  (equal (logior x lab-high-bit) (logior y lab-high-bit)))
+  (= (logior x +lab-high-bit+) (logior y +lab-high-bit+)))
 
 (defun marknd (nd)
   (cond ((+labs nd))
-	((= lprindex (setq labindex (1+ labindex)))
+	((= *lprindex* (incf *labindex*))
 	 (break))
-	(t (setq labs (cons (cons nd (lab labindex)) labs))
-	   (beg nd (lab labindex))
-	   (cdar labs))))
+	(t (push (cons nd (lab *labindex*)) *labs*)
+	   (beg nd (lab *labindex*))
+	   (cdar *labs*))))
 
 (defun dbv (x r)
-  (do ((l lprs (cdr l))
+  (do ((l *lprs* (cdr l))
        (y 0))
       ((null l) y)
-    (if (and (not (= 0 (logand r (cdar l)))) (not (= 0 (logand x (caaar l)))))
-	(setq y (logior (cdaar l) y)))))
+    (unless (or (zerop (logand r (cdar l))) (zerop (logand x (caaar l))))
+      (setq y (logior (cdaar l) y)))))
 
 (defun dba (r y)
-  (do ((l lprs (cdr l))
+  (do ((l *lprs* (cdr l))
        (x 0))
       ((null l) x)
-    (if (and (not (= 0 (logand r (cdar l)))) (not (= 0 (logand (cdaar l) y))))
-	(setq x (logior x (caaar l))))))
+    (unless (or (zerop (logand r (cdar l))) (zerop (logand (cdaar l) y)))
+      (setq x (logior x (caaar l))))))
 
 (defun prlab (x)
-  (setq-unlab x)
-  (setq x (let ((*print-base* 2)
-		(*read-base* 2))
-	    (and x (exploden (boole boole-andc1 lab-high-bit x)))))
-  (do ((i (rem (length x) 3) 3))
-      ((null x))
-    (do ((j i (1- j)))
-	((= 0 j))
-      (write-char (car x))
-      (setq x (cdr x)))
-    (write-char #\space)))
+  (setq x (unlab x))
+  (when x
+    (format t " ~,,' ,3:B" (logandc1 +lab-high-bit+ x))))
 
 (defun onp (cl lab)
   (subp lab (+labz cl)))
@@ -219,108 +216,134 @@
   (and (not (ulabs dat)) (cntp dat)))
 
 (defun cancel (lab dat)
-  (cond ((setq db* (ulabs dat))
-	 (iorm db* lab))
-	(t (setq ulabs (cons dat ulabs))
-	   (setq-unlab lab)
-	   (putprop dat (copyn lab) 'ulabs))))
+  (cond ((setq *db* (ulabs dat))
+	 (iorm *db* lab))
+	(t
+	 (push dat ulabs)
+	 (setq lab (unlab lab))
+	 (putprop dat (copyn lab) 'ulabs))))
 
 (defun queue+p (nd lab)
-  (cond ((null (setq db* (+labs nd)))
-	 (setq +labs (cons nd +labs))
-	 (setq-unlab lab)
-	 (putprop nd (copyn (logior lab-high-bit lab)) '+labs))
-	((subp lab db*) nil)
-	((subp lab-high-lab db*)
-	 (iorm db* lab) nil)
+  (cond ((null (setq *db* (+labs nd)))
+	 (push nd +labs)
+	 (setq lab (unlab lab))
+	 (putprop nd (copyn (logior +lab-high-bit+ lab)) '+labs))
+	((subp lab *db*)
+	 nil)
+	((subp *lab-high-lab* *db*)
+	 (iorm *db* lab)
+	 nil)
 	(t
-	 (iorm db* (logior lab-high-bit (unlab lab))))))
+	 (iorm *db* (logior +lab-high-bit+ (unlab lab))))))
 
 (defun beg (nd lab)
-  (setq-copyn lab)
+  (setq lab (copyn lab))
   (if (queue+p nd lab)
       (if (null +s)
-	  (setq +s (ncons nd) +sm +s +sl +s)
-	  (setq +s (cons nd +s)))))
+	  (setq +s (ncons nd)
+		+sm +s
+		+sl +s)
+	  (push nd +s))))
 
 (defun queue-p (nd lab)
-  (cond ((null (setq db* (-labs nd)))
-	 (setq -labs (cons nd -labs))
-	 (setq-unlab lab)
-	 (putprop nd (copyn (logior lab-high-bit lab)) '-labs))
-	((subp lab db*)
+  (cond ((null (setq *db* (-labs nd)))
+	 (push nd -labs)
+	 (setq lab (unlab lab))
+	 (putprop nd (copyn (logior +lab-high-bit+ lab)) '-labs))
+	((subp lab *db*)
 	 nil)
-	((subp lab-high-lab db*)
-	 (iorm db* lab) nil)
+	((subp *lab-high-lab* *db*)
+	 (iorm *db* lab)
+	 nil)
 	(t
-	 (iorm db* (logior lab-high-bit (unlab lab))))))
+	 (iorm *db* (logior +lab-high-bit+ (unlab lab))))))
 
 (defun beg- (nd lab)
-  (setq-copyn lab)
+  (setq lab (copyn lab))
   (if (queue-p nd lab)
       (if (null -s)
-	  (setq -s (ncons nd) -sm -s -sl -s)
+	  (setq -s (ncons nd)
+		-sm -s
+		-sl -s)
 	  (setq -s (cons nd -s)))))
 
 (defun mid (nd lab)
   (if (queue+p nd lab)
       (cond ((null +sm)
-	     (setq +s (ncons nd) +sm +s +sl +s))
-	    (t (rplacd +sm (cons nd (cdr +sm)))
-	       (if (eq +sm +sl)
-		   (setq +sl (cdr +sl)))
-	       (setq +sm (cdr +sm))))))
+	     (setq +s (ncons nd)
+		   +sm +s
+		   +sl +s))
+	    (t
+	     (rplacd +sm (cons nd (cdr +sm)))
+	     (if (eq +sm +sl)
+		 (setq +sl (cdr +sl)))
+	     (setq +sm (cdr +sm))))))
 
 (defun mid- (nd lab)
   (if (queue-p nd lab)
       (cond ((null -sm)
-	     (setq -s (ncons nd) -sm -s -sl -s))
-	    (t (rplacd -sm (cons nd (cdr -sm)))
-	       (if (eq -sm -sl)
-		   (setq -sl (cdr -sl)))
-	       (setq -sm (cdr -sm))))))
+	     (setq -s (ncons nd)
+		   -sm -s
+		   -sl -s))
+	    (t
+	     (rplacd -sm (cons nd (cdr -sm)))
+	     (when (eq -sm -sl)
+	       (setq -sl (cdr -sl)))
+	     (setq -sm (cdr -sm))))))
 
 (defun end (nd lab)
   (if (queue+p nd lab)
       (cond ((null +sl)
-	     (setq +s (ncons nd) +sm +s +sl +s))
-	    (t (rplacd +sl (ncons nd))
-	       (setq +sl (cdr +sl))))))
+	     (setq +s (ncons nd)
+		   +sm +s
+		   +sl +s))
+	    (t
+	     (rplacd +sl (ncons nd))
+	     (setq +sl (cdr +sl))))))
 
 (defun end- (nd lab)
   (if (queue-p nd lab)
       (cond ((null -sl)
-	     (setq -s (ncons nd) -sm -s -sl -s))
-	    (t (rplacd -sl (ncons nd))
-	       (setq -sl (cdr -sl))))))
+	     (setq -s (ncons nd)
+		   -sm -s
+		   -sl -s))
+	    (t
+	     (rplacd -sl (ncons nd))
+	     (setq -sl (cdr -sl))))))
 
 (defun dq+ ()
   (if +s
       (prog2
-	  (xorm (zl-get (car +s) '+labs) lab-high-lab)
+	  (xorm (zl-get (car +s) '+labs) *lab-high-lab*)
 	  (car +s)
 	(cond ((not (eq +s +sm))
 	       (setq +s (cdr +s)))
 	      ((not (eq +s +sl))
-	       (setq +s (cdr +s) +sm +s))
+	       (setq +s (cdr +s)
+		     +sm +s))
 	      (t
-	       (setq +s nil +sm nil +sl nil))))))
+	       (setq +s nil
+		     +sm nil
+		     +sl nil))))))
 
 (defun dq- ()
   (if -s
       (prog2
-	  (xorm (-labs (car -s)) lab-high-lab)
+	  (xorm (-labs (car -s)) *lab-high-lab*)
 	  (car -s)
 	(cond ((not (eq -s -sm))
 	       (setq -s (cdr -s)))
 	      ((not (eq -s -sl))
-	       (setq -s (cdr -s) -sm -s))
+	       (setq -s (cdr -s)
+		     -sm -s))
 	      (t
-	       (setq -s nil -sm nil -sl nil))))))
+	       (setq -s nil
+		     -sm nil
+		     -sl nil))))))
 
 (defmfun clear ()
-  (if dbtrace
-      (mtell "CLEAR: clearing ~A" marks))
+  (when dbtrace
+    (format *trace-output* "~%CLEAR: clearing ~A" *marks*))
   (mapc #'(lambda (sym) (push+sto (sel sym +labs) nil)) +labs)
   (mapc #'(lambda (sym) (push+sto (sel sym -labs) nil)) -labs)
   (mapc #'(lambda (sym) (zl-remprop sym 'ulabs)) ulabs)
@@ -330,11 +353,11 @@
 	-s nil
 	-sm nil
 	-sl nil
-	labs nil
-	lprs nil
-	labindex 0
-	lprindex labnumber
-	marks 0
+	*labs* nil
+	*lprs* nil
+	*labindex* 0
+	*lprindex* +labnumber+
+	*marks* 0
 	+labs nil
 	-labs nil
 	ulabs nil)
@@ -367,8 +390,8 @@
 	(t 'unknown)))
 
 (defmfun kindp (x y)
-  (if (not (symbolp x))
-      (merror (intl:gettext "declare: argument must be a symbol; found ~M") x))
+  (unless (symbolp x)
+    (merror (intl:gettext "declare: argument must be a symbol; found ~M") x))
   (clear)
   (beg x 1)
   (do ((p (dq+) (dq+)))
@@ -415,7 +438,6 @@
       (unmrk nd)
       (mapc #'ind2 nd)))
 
-
 (defmfun addf (dat nd)
   (push+sto (sel nd data) (cons dat (sel nd data))))
 
@@ -423,22 +445,21 @@
   (push+sto (sel nd data) (fdel dat (sel nd data))))
 
 (defun fdel (fact data)
-  (cond
-    ((and (eq (car fact) (caaar data))
-	  (eq (cadr fact) (cadaar data))
-	  (eq (caddr fact) (caddar (car data))))
-     (cdr data))
-    (t
-     (do ((ds data (cdr ds))
-	  (d))
-	 ((null (cdr ds)))
-	 (setq d (caadr ds))
-	 (cond ((and (eq (car fact) (car d))
-		     (eq (cadr fact) (cadr d))
-		     (eq (caddr fact) (caddr d)))
-		(push+sto (sel d con data) (delete d (sel d con data) :test #'eq))
-		(rplacd ds (cddr ds)) (return t))))
-       data)))
+  (cond ((and (eq (car fact) (caaar data))
+	      (eq (cadr fact) (cadaar data))
+	      (eq (caddr fact) (caddar (car data))))
+	 (cdr data))
+	(t
+	 (do ((ds data (cdr ds))
+	      (d))
+	     ((null (cdr ds)))
+	   (setq d (caadr ds))
+	   (cond ((and (eq (car fact) (car d))
+		       (eq (cadr fact) (cadr d))
+		       (eq (caddr fact) (caddr d)))
+		  (push+sto (sel d con data) (delete d (sel d con data) :test #'eq))
+		  (rplacd ds (cddr ds)) (return t))))
+	 data)))
 
 (defun semantics (pat)
   (if (atom pat)
@@ -469,25 +490,29 @@
 	   (car dobjects))))
 
 (defun dintnum (x)
-  (cond ((assol x nobjects))
+  (cond ((assol x *nobjects*))
 	((progn (setq x (dbnode x)) nil))
-	((null nobjects) (setq nobjects (list x)) x)
-	((eq '$pos (rgrp (car x) (caar nobjects)))
+	((null *nobjects*)
+	 (setq *nobjects* (list x))
+	 x)
+	((eq '$pos (rgrp (car x) (caar *nobjects*)))
 	 (let ((context 'global))
-	   (fact 'mgrp x (car nobjects)))
-	 (setq nobjects (cons x nobjects))  x)
-	(t (do ((lis nobjects (cdr lis))
-		(context '$global))
-	       ((null (cdr lis))
-		(let ((context 'global))
-		  (fact 'mgrp (car lis) x))
-		(rplacd lis (list x)) x)
-	     (cond ((eq '$pos (rgrp (car x) (caadr lis)))
-		    (let ((context 'global))
-		      (fact 'mgrp (car lis) x)
-		      (fact 'mgrp x (cadr lis)))
-		    (rplacd lis (cons x (cdr lis)))
-		    (return x)))))))
+	   (fact 'mgrp x (car *nobjects*)))
+	 (push x *nobjects*)
+	 x)
+	(t
+	 (do ((lis *nobjects* (cdr lis))
+	      (context '$global))
+	     ((null (cdr lis))
+	      (let ((context 'global))
+		(fact 'mgrp (car lis) x))
+	      (rplacd lis (list x)) x)
+	   (cond ((eq '$pos (rgrp (car x) (caadr lis)))
+		  (let ((context 'global))
+		    (fact 'mgrp (car lis) x)
+		    (fact 'mgrp x (cadr lis)))
+		  (rplacd lis (cons x (cdr lis)))
+		  (return x)))))))
 
 (defmfun doutern (x)
   (if (atom x) x (car x)))
@@ -533,18 +558,19 @@
 
 (defun remov4 (fact cl)
   (cond ((or (symbolp cl)		;if CL is a symbol or
-	     (and (consp cl) ;an interned number, then we want to REMOV4 FACT
+	     (and (consp cl)            ;an interned number, then we want to REMOV4 FACT
 		  (mnump (car cl))))	;from its property list.
 	 (push+sto (sel cl data) (delete fact (sel cl data) :test #'eq)))
 	((or (atom cl) (atom (car cl)))) ;if CL is an atom (not a symbol)
 					;or its CAR is an atom then we don't want to do
 					;anything to it.
-	(t (mapc #'(lambda (lis) (remov4 fact lis))
-		 (cond ((atom (caar cl)) (cdr cl)) ;if CL's CAAR is
+	(t
+	 (mapc #'(lambda (lis) (remov4 fact lis))
+	       (cond ((atom (caar cl)) (cdr cl)) ;if CL's CAAR is
 					;an atom, then CL is an expression, and
 					;we want to REMOV4 FACT from the parts
 					;of the expression.
-		       ((atom (caaar cl)) (cdar cl)))))))
+		     ((atom (caaar cl)) (cdar cl)))))))
 					;if CL's CAAAR is an atom, then CL is a
 					;fact, and we want to REMOV4 FACT from
 					;the parts of the fact.
@@ -566,66 +592,71 @@
 
 (defmfun deactivate (&rest l)
   (dolist (e l)
-    (cond ((not (member e contexts :test #'eq)) nil)
-	  (t (cunmrk e)
-	     (setq contexts (delete e contexts :test #'eq))))))
+    (cond ((not (member e contexts :test #'eq))
+	   nil)
+	  (t
+	   (cunmrk e)
+	   (setq contexts (delete e contexts :test #'eq))))))
 
 (defmfun context (&rest l)
   (newcon l))
 
 (defun newcon (c)
-  (if (> conindex connumber) (gccon))
+  (when (> *conindex* *connumber*)
+    (gccon))
   (setq c (if (null c)
 	      (list '*gc nil)
 	      (list '*gc nil 'subc c)))
-  (setf (aref conunmrk conindex) c)
-  (setf (aref conmark conindex) (cdr c))
-  (incf conindex)
+  (setf (aref conunmrk *conindex*) c)
+  (setf (aref conmark *conindex*) (cdr c))
+  (incf *conindex*)
   c)
 
 ;; To be used with the WITH-NEW-CONTEXT macro.
 (defun context-unwinder ()
-  (killc (aref conmark conindex))
-  (decf conindex)
-  (setf (aref conunmrk conindex) nil))
+  (killc (aref conmark *conindex*))
+  (decf *conindex*)
+  (setf (aref conunmrk *conindex*) nil))
 
 (defun gccon ()
   (gccon1)
-  (when (> conindex connumber)
+  (when (> *conindex* *connumber*)
     #+gc (gc)
     (gccon1)
-    (when (> conindex connumber)
+    (when (> *conindex* *connumber*)
       (merror (intl:gettext "context: too many contexts.")))))
 
 (defun gccon1 ()
-  (setq conindex 0)
+  (setq *conindex* 0)
   (do ((i 0 (1+ i)))
-      ((> i connumber))
+      ((> i *connumber*))
     (cond ((not (eq (aref conmark i) (cdr (aref conunmrk i))))
 	   (killc (aref conmark i)))
-	  (t (setf (aref conunmrk conindex) (aref conunmrk i))
-	     (setf (aref conmark conindex) (aref conmark i))
-	     (incf conindex)))))
+	  (t
+	   (setf (aref conunmrk *conindex*) (aref conunmrk i))
+	   (setf (aref conmark *conindex*) (aref conmark i))
+	   (incf *conindex*)))))
 
 (defmfun cntxt (dat con)
-  (if (not (atom con))
-      (setq con (cdr con)))
+  (unless (atom con)
+    (setq con (cdr con)))
   (putprop con (cons dat (zl-get con 'data)) 'data)
-  (if (not (eq 'global con))
-      (putprop dat con 'con))
+  (unless (eq 'global con)
+    (putprop dat con 'con))
   dat)
 
 (defmfun kcntxt (fact con)
-  (if (not (atom con))
-      (setq con (cdr con)))
+  (unless (atom con)
+    (setq con (cdr con)))
   (putprop con (fdel fact (zl-get con 'data)) 'data)
-  (if (not (eq 'global con))
-      (zl-remprop fact 'con))
+  (unless (eq 'global con)
+    (zl-remprop fact 'con))
   fact)
 
 (defun cntp (f)
   (cond ((not (setq f (sel f con))))
-	((setq f (zl-get f 'cmark)) (> f 0))))
+	((setq f (zl-get f 'cmark))
+	 (> f 0))))
 
 (defmfun contextmark ()
   (let ((con context))
@@ -635,8 +666,8 @@
       (cmark con))))
 
 (defun cmark (con)
-  (if (not (atom con))
-      (setq con (cdr con)))
+  (unless (atom con)
+    (setq con (cdr con)))
   (let ((cm (zl-get con 'cmark)))
     (putprop con (if cm (1+ cm) 1) 'cmark)
     (mapc #'cmark (zl-get con 'subc))))
@@ -663,47 +694,51 @@
       (nil)
     (cond ((setq x (dq+))
 	   (setq lab (+labs x))
-	   (if (= 0 (logand (unlab lab) (unlab (-labz x))))
-	       (mark+ x lab) (return t)))
+	   (if (zerop (logand (unlab lab) (unlab (-labz x))))
+	       (mark+ x lab)
+	       (return t)))
 	  ((setq x (dq-))
 	   (setq lab (-labs x))
-	   (if (= 0 (logand (unlab lab) (unlab (+labz x))))
-	       (mark- x lab) (return t)))
+	   (if (zerop (logand (unlab lab) (unlab (+labz x))))
+	       (mark- x lab)
+	       (return t)))
 	  (t (return nil)))))
 
 (defun mark+ (cl lab)
   (when dbtrace
-    (incf marks)
-    (mtell "MARK+: marking ~A +" cl) (prlab lab))
+    (incf *marks*)
+    (format *trace-output* "~%MARK+: marking ~A +" cl)
+    (prlab lab))
   (mapc #'(lambda (lis) (mark+0 cl lab lis)) (sel cl data)))
 
-(defun mark+3 (cl lab dat)
-  (declare (ignore cl lab))
-  (cond ((not (= 0 (logand (unlab (+labz (caddar dat)))
-			   (unlab (dbv (+labz (cadar dat)) (-labz (caar dat)))))))
-	 (beg- (sel dat wn) world))))
+(defun mark+3 (dat)
+  (if (/= 0 (logand (unlab (+labz (caddar dat)))
+		    (unlab (dbv (+labz (cadar dat)) (-labz (caar dat))))))
+      (beg- (sel dat wn) *world*)))
 
 (defun mark+0 (cl lab fact)
-  (when dbcheck
-    (mtell "MARK+0: checking ~a from ~A+" (car fact) cl)
+  (when *dbcheck*
+    (format *trace-output* "~%MARK+0: checking ~a from ~A+" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))
 	((null (sel fact wn)) (mark+1 cl lab fact))
-	((onp (sel fact wn) world) (mark+1 cl lab fact))
-	((offp (sel fact wn) world) nil)
-	(t (mark+3 cl lab fact))))
+	((onp (sel fact wn) *world*) (mark+1 cl lab fact))
+	((offp (sel fact wn) *world*) nil)
+	(t (mark+3 fact))))
 
 (defun mark+1 (cl lab dat)
   (cond ((eq (caar dat) 'kind)
 	 (if (eq (cadar dat) cl) (mid (caddar dat) lab))) ; E1
 	((eq (caar dat) 'par)
 	 (if (not (eq (caddar dat) cl))
-	     (progn (cancel lab dat)	; PR1
-		    (mid (caddar dat) lab)
-		    (do ((lis (cadar dat) (cdr lis)))
-			((null lis))
-		      (if (not (eq (car lis) cl)) (mid- (car lis) lab))))))
+	     (progn
+	       (cancel lab dat)		; PR1
+	       (mid (caddar dat) lab)
+	       (do ((lis (cadar dat) (cdr lis)))
+		   ((null lis))
+		 (if (not (eq (car lis) cl))
+		     (mid- (car lis) lab))))))
 	((eq (cadar dat) cl)
 	 (if (+labs (caar dat))		; V1
 	     (end (caddar dat) (dbv lab (+labs (caar dat)))))
@@ -712,20 +747,20 @@
 
 (defun mark- (cl lab)
   (when dbtrace
-    (incf marks)
-    (mtell "MARK-: marking ~A -" cl)
+    (incf *marks*)
+    (format *trace-output* "~%MARK-: marking ~A -" cl)
     (prlab lab))
   (mapc #'(lambda (lis) (mark-0 cl lab lis)) (sel cl data)))
 
 (defun mark-0 (cl lab fact)
-  (when dbcheck
-    (mtell "MARK-0: checking ~A from ~A-" (car fact) cl)
+  (when *dbcheck*
+    (format *trace-output* "~%MARK-0: checking ~A from ~A-" (car fact) cl)
     (prlab lab))
   (cond ((onpu lab fact))
 	((not (cntp fact)))
 	((null (sel fact wn)) (mark-1 cl lab fact))
-	((onp (sel fact wn) world) (mark-1 cl lab fact))
-	((offp (sel fact wn) world) nil)))
+	((onp (sel fact wn) *world*) (mark-1 cl lab fact))
+	((offp (sel fact wn) *world*) nil)))
 
 (defun mark-1 (cl lab dat)
   (cond ((eq (caar dat) 'kind)
@@ -738,11 +773,11 @@
 		     ((null lis))
 		   (mid- (car lis) lab)))
 	     (progn
-	       (setq-unlab lab)	; ALL4
+	       (setq lab (unlab lab))	; ALL4
 	       (do ((lis (cadar dat) (cdr lis)))
 		   ((null lis))
 		 (setq lab (logand (unlab (-labz (car lis))) lab)))
-	       (setq-copyn lab)
+	       (setq lab (copyn lab))
 	       (cancel lab dat)
 	       (mid- (caddar dat) lab))))
 	((eq (caddar dat) cl)
