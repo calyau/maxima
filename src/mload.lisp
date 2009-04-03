@@ -296,11 +296,6 @@
 
 (defvar *collect-errors* t)
 
-(defun in-list (item list)
-  (dolist (element list)
-    (if (equal item element) (return-from in-list t))) nil)
-
-
 (defun test-batch (filename expected-errors
 			    &key (out *standard-output*) (show-expected nil)
 			    (show-all nil))
@@ -342,17 +337,16 @@
 	  
 	    (setq next-result (third next))
 	    (let* ((correct (batch-equal-check next-result result))
-		   (expected-error (in-list i expected-errors))
+		   (expected-error (member i expected-errors))
 		   (pass (or correct expected-error)))
-	      (if (or show-all (not pass) (and correct expected-error)
-		      (and expected-error show-expected))
-		  (progn
-		    (format out "~%********************** Problem ~A ***************" i)
-		    (format out "~%Input:~%" )
-		    (displa (third expr))
-		    (format out "~%~%Result:~%")
-		    (format out "~a" (get-output-stream-string tmp-output))
-		    (displa $%)))
+	      (when (or show-all (not pass) (and correct expected-error)
+			(and expected-error show-expected))
+		(format out "~%********************** Problem ~A ***************" i)
+		(format out "~%Input:~%" )
+		(displa (third expr))
+		(format out "~%~%Result:~%")
+		(format out "~a" (get-output-stream-string tmp-output))
+		(displa $%))
 	      (cond ((and correct expected-error)
 		     (format t "~%... Which was correct, but was expected to be wrong due to a known bug in~% Maxima.~%"))
 		    (correct
@@ -604,10 +598,6 @@
 		    (merror "Unrecognized keyword: ~M" opt))))
 	    options)))
 
-
 (defun $run_testsuite (&rest options)
-  (let ((keylist (lispify-maxima-keyword-options options
-						 '($display_all
-						   $display_known_bugs
-						   $tests))))
-    (apply #'run-testsuite keylist)))
+  (apply #'run-testsuite
+	 (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests))))
