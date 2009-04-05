@@ -22,25 +22,26 @@
 
 ;; External specials
 
-(defvar context 'global)
-(defvar contexts nil)
-(defvar current 'global)
-(defvar +labs nil)
-(defvar -labs nil)
-(defvar dbtrace nil)
-(defvar *dbcheck* nil)
-(defvar dobjects nil)
-(defvar *nobjects* nil)
+(defmvar context 'global)
+(defmvar contexts nil)
+(defmvar current 'global)
+(defmvar +labs nil)
+(defmvar -labs nil)
+(defmvar dbtrace nil)
+(defmvar dobjects nil)
+
 
 ;; Internal specials
 
-(defvar *marks* 0)
-(defvar +l)
-(defvar -l)
-(defvar ulabs nil)
+(defmvar *nobjects* nil)
+(defmvar *dbcheck* nil)
+(defmvar *marks* 0)
+(defmvar +l)
+(defmvar -l)
+(defmvar ulabs nil)
 
-(defvar *conindex* 0)
-(defvar *connumber* 50)
+(defmvar *conindex* 0)
+(defmvar *connumber* 50)
 
 (defconstant +lab-high-bit+ most-negative-fixnum)
 
@@ -48,7 +49,7 @@
 (defconstant +labnumber+ (1- (integer-length +lab-high-bit+)))
 
 ;; A cell with the high bit turned on.
-(defvar *lab-high-lab* (list +lab-high-bit+))
+(defmvar *lab-high-lab* (list +lab-high-bit+))
 
 (defvar +s)
 (defvar +sm)
