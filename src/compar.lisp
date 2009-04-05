@@ -701,6 +701,14 @@ relational knowledge is contained in the default context GLOBAL."
 	      (t '$pnz)))	       ; Confess ignorance if COMPLEX.
       x))
 
+;; don't ask about internal variables created by gruntz 
+(defun has-int-symbols (e)
+  (cond ((and (symbolp e) (get e 'internal))
+	 t)
+	((atom e) nil)
+	(t (or (has-int-symbols (car e))
+	       (has-int-symbols (cdr e))))))
+
 ;;; Do substitutions for special symbols.
 (defmfun nmr (a)
   (if (not (free a '$zeroa)) (setq a ($limit a '$zeroa 0 '$plus)))
@@ -712,7 +720,8 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;;; Get the sign of EPSILON-like terms.  Could be made MUCH hairier.
 (defun eps-sign (b)
-  (let (temp1 temp2 temp3 free1 free2 free3)
+  (let (temp1 temp2 temp3 free1 free2 free3 limitp)
+    ;; unset limitp to prevent infinite recursion
     (cond ((not (free b '$zeroa))
 	   (setq temp1 (eps-coef-sign b '$zeroa)))
 	  (t (setq free1 t)))
@@ -736,9 +745,9 @@ relational knowledge is contained in the default context GLOBAL."
 			    0))
 		(eq (ask-integer eps-power '$integer) '$yes))
 	   (cond ((eq (ask-integer eps-power '$even) '$yes)
-		  ($asksign eps-coef))
+		  ($sign eps-coef))
 		 ((eq (ask-integer eps-power '$odd) '$yes)
-		  (setq eps-coef ($asksign eps-coef))
+		  (setq eps-coef ($sign eps-coef))
 		  (cond ((or (and (eq eps-coef '$pos)
 				  (or (eq epskind 'epsilon)
 				      (eq epskind '$zeroa)))
@@ -749,11 +758,11 @@ relational knowledge is contained in the default context GLOBAL."
 			(t '$neg)))
 		 (t (merror (intl:gettext "sign or asksign: insufficient information.")))))
 	  (t (let ((deriv (sdiff exp epskind)) deriv-sign)
-	       (cond ((not (eq (setq deriv-sign ($asksign deriv)) '$zero))
+	       (cond ((not (eq (setq deriv-sign ($sign deriv)) '$zero))
 		      (total-sign epskind deriv-sign))
 		     ((not
 		       (eq (let ((deriv (sdiff deriv epskind)))
-			     (setq deriv-sign ($asksign deriv)))
+			     (setq deriv-sign ($sign deriv)))
 			   '$zero))
 		      deriv-sign)
 		     (t (merror (intl:gettext "sign or asksign: insufficient data.")))))))))
@@ -780,7 +789,9 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun asksign1 ($askexp)
   (let ($radexpand) (sign1 $askexp))
-  (cond ((member sign '($pos $neg $zero) :test #'eq) sign)
+  (cond ((has-int-symbols $askexp)
+	 '$pnz)
+	((member sign '($pos $neg $zero) :test #'eq) sign)
 	((null odds)
 	 (setq $askexp (lmul evens)
 	       sign (cdr (assol $askexp locals)))
