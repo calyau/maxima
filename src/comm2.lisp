@@ -438,7 +438,8 @@
 		      ;; *Atan* should handle sqrt(3) etc., so all cases will work
 		      ((and (equal y 1) (alike1 x '((mexpt simp) 3 ((rat simp) 1 2))))
 		       (mul2* '((rat simp) 1 6) '$%pi)))))
-	  ($logarc (logarc '%atan (div y x)))
+          ($logarc
+           (logarc '%atan2 (list ($logarc y) ($logarc x))))
 	  ((and $trigsign (mminusp* y))
 	   (neg (simplifya (list '($atan2) (neg y) x) t)))
 					; atan2(y,x) = atan(y/x) + pi sign(y) (1-sign(x))/2
