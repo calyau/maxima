@@ -43,7 +43,15 @@
 					  "dlaset"))
  	     (:file "dlabad")
  	     (:file "dlacpy")
- 	     (:file "dlamch")
+ 	     (:file "dlamch"
+		    :depends-on ("dlamc2" "dlamc3" "dlamc4" "dlamc5"))
+	     (:file "dlamc1"
+		    :depends-on ("dlamc3"))
+	     (:file "dlamc2"
+		    :depends-on ("dlamc1" "dlamc3" "dlamc4" "dlamc5"))
+	     (:file "dlamc3")
+	     (:file "dlamc4")
+	     (:file "dlamc5")
  	     (:file "dlange"
 		    :depends-on ("dlassq"))
  	     (:file "dlapy2")
@@ -144,7 +152,7 @@
 	     (:file "dlasd0"
 		    :depends-on ("dlasdt" "dlasd1" "dlasdq"))
 	     (:file "dlasda"
-		    :depends-on ("dlasd6" "dlaset" "dlasdq"))
+		    :depends-on ("dlasd6" "dlaset" "dlasdq" "dlasdt"))
 	     (:file "dlasr")
 	     (:file "dlabrd"
 		    :depends-on ("dlarfg"))
