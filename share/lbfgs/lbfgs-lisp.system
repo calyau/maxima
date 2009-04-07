@@ -28,7 +28,7 @@
    (:file "lb2"
 	  :compiler-options (:declare-common t))
    (:file "lbfgs"
-	  :depends-on ("mcsrch" "lb2"))
+	  :depends-on ("mcsrch" "lb2" "lbfgs-ddot" "lbfgs-daxpy"))
    (:file "mcsrch"
 	  :depends-on ("mcstep" "lb2"))
    (:file "mcstep")))
