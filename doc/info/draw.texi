@@ -3603,6 +3603,39 @@ See also @code{filled_func} for filled functions.
 @end deffn
 
 
+
+@deffn  {Graphic object} mesh (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
+Draws matrix @var{mat} in 3D space. @var{z} values are taken from @var{mat},
+the abscissas range from @var{x0} to @math{@var{x0} + @var{width}}
+and ordinates from @var{y0} to @math{@var{y0} + @var{height}}.
+
+This object is affected by the following @i{graphic options}: @code{line_type},
+@code{line_width}, @code{key}, @code{enhanced3d}, @code{meshed_surface} and @code{color}.
+
+This graphic object ignores @code{enhanced3d} values other than @code{true} and @code{false}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) m: apply(
+            matrix,
+            makelist(makelist(random(10.0),k,1,30),i,1,20)) $
+(%i3) draw3d(
+         color = blue,
+         mesh(m,0,0,3,2),
+         xlabel = "x",
+         ylabel = "y",
+         surface_hide = true);
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
 @deffn  {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
 @deffnx {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
 Draws implicit functions in 2D and 3D.

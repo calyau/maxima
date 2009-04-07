@@ -1,4 +1,4 @@
-@c version 1.36
+@c version 1.37
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -3117,6 +3117,36 @@ Ejemplo:
 
 V@'ease tambi@'en @code{filled_func} para el relleno de curvas.
 @end deffn
+
+
+
+@deffn  {Objeto gr@'afico} mesh (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
+Dibuja la matriz @var{mat} en 3D. Los valores @var{z} se toman de @var{mat},
+las abscisas van desde @var{x0} hasta @math{@var{x0} + @var{width}}
+y las ordenadas desde @var{y0} hasta @math{@var{y0} + @var{height}}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_type},
+@code{line_width}, @code{key}, @code{enhanced3d}, @code{meshed_surface} y @code{color}.
+
+Este objeto gr@'afico ignora valores de @code{enhanced3d} distintos de @code{true} o @code{false}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) m: apply(
+            matrix,
+            makelist(makelist(random(10.0),k,1,30),i,1,20)) $
+(%i3) draw3d(
+         color = blue,
+         mesh(m,0,0,3,2),
+         xlabel = "x",
+         ylabel = "y",
+         surface_hide = true);
+@end example
+
+@end deffn
+
 
 
 @deffn  {Objeto gr@'afico} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})

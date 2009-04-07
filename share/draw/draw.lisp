@@ -1867,7 +1867,6 @@
 ;;     key
 ;;     enhanced3d
 ;;     meshed_surface
-;;     surface_hide
 ;; Note: implements a clon of draw3d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
 ;;       Read source in plot.lisp for more information
@@ -1926,6 +1925,72 @@
                             (get-option '$color))
        :groups `((,ncols ,nx))
        :points  (list result))))
+
+
+
+
+
+
+
+
+;; Object: 'mesh'
+;; Usage:
+;;     mesh(mat,x0,y0,width,height)
+;; Options:
+;;     line_type
+;;     line_width
+;;     color
+;;     key
+;;     enhanced3d
+;;     meshed_surface
+(defun mesh (mat x0 y0 width height)
+  (let ( (fx0 (convert-to-float x0))
+         (fy0 (convert-to-float y0))
+         (fwidth (convert-to-float width))
+         (fheight (convert-to-float height))
+         (zmin 1.75555970201398e+305)
+         (zmax -1.75555970201398e+305)
+         result nrows ncols dx dy n)
+    (cond (($matrixp mat)
+             (let ((xi 0.0)
+                   (yi (+ fy0 fheight))
+                   (zi 0.0)
+                   (count -1)
+                   dx dy)
+                (setf ncols (length (cdadr mat))
+                      nrows (length (cdr mat)))
+                (setf dx (/ fwidth ncols)
+                      dy (/ fheight nrows))
+                (setf result (make-array (* 3 ncols nrows) :element-type 'flonum))
+                (loop for row on (cdr mat) by #'cdr do
+                   (setf xi fx0)
+                   (loop for col on (cdar row) by #'cdr do
+                      (setf zi (convert-to-float (car col)))
+                      (if (> zi zmax) (setf zmax zi))
+                      (if (< zi zmin) (setf zmin zi))
+                      (setf (aref result (incf count)) xi
+                            (aref result (incf count)) yi
+                            (aref result (incf count)) zi)
+                      (setf xi (+ xi dx)))
+                   (setf yi (- yi dy)))))
+          (t
+             (merror "draw2d (mesh): Argument not recognized")))
+    (update-ranges-3d fx0 (+ fx0 fwidth) fy0 (+ fy0 fheight) zmin zmax)
+    (make-gr-object
+       :name   'mesh
+       :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
+                            (make-obj-title (get-option '$key))
+                            (if (and (get-option '$enhanced3d)
+                                     (not (get-option '$meshed_surface)))
+                                "pm3d"
+                                "l")
+                            (get-option '$line_width)
+                            (get-option '$line_type)
+                            (get-option '$color))
+       :groups `((3 ,ncols))
+       :points  (list result)) ))
+
+
 
 
 
@@ -2854,6 +2919,7 @@
                             objects 
                             (list (case (caar x)
                                      ($points             (apply #'points3d (rest x)))
+                                     ($mesh               (apply #'mesh (rest x)))
                                      ($explicit           (apply #'explicit3d (rest x)))
                                      ($implicit           (apply #'implicit3d (rest x)))
                                      ($vector             (apply #'vect3d (rest x)))
