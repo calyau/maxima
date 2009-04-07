@@ -134,8 +134,13 @@ Name: "{group}\{cm:ReferenceManualBrazilianPortuguese}"; Filename: "{app}\share\
 [Registry]
 Root: HKCR; Subkey: ".wxm"; ValueType: string; ValueName: ""; ValueData: "Maxima.wxMaxima"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "Maxima.wxMaxima"; ValueType: string; ValueName: ""; ValueData: "{cm:wxMaximaSession}"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "Maxima.wxMaxima\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxMaxima.exe,0"
+Root: HKCR; Subkey: "Maxima.wxMaxima\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxMaxima.exe,1"
 Root: HKCR; Subkey: "Maxima.wxMaxima\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\wxMaxima\wxMaxima.exe"" ""%1"""
+
+Root: HKCR; Subkey: ".wxmx"; ValueType: string; ValueName: ""; ValueData: "Maxima.wxMaximaX"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "Maxima.wxMaximaX"; ValueType: string; ValueName: ""; ValueData: "{cm:wxMaximaSession}"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "Maxima.wxMaximaX\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\wxMaxima\wxMaxima.exe,1"
+Root: HKCR; Subkey: "Maxima.wxMaximaX\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\wxMaxima\wxMaxima.exe"" ""%1"""
 
 
 [CustomMessages]
