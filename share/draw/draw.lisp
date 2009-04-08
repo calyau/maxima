@@ -442,7 +442,7 @@
             (cond ((member val '($auto nil))     ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((or (not ($listp val))
-                       (not (member ($length val) '(2 3))))
+                       (/=  ($length val) 2))
                      (merror "draw: illegal range: ~M " val))
                   (t
                      (let ((fval1 (convert-to-float (cadr val)))
@@ -533,8 +533,8 @@
    `(case (length (gethash ,axi *gr-options*))
           (0 (setf (gethash ,axi *gr-options*) (list ,vmin ,vmax 0)))
           (3 (setf (gethash ,axi *gr-options*) (list (min ,vmin (first  (gethash ,axi *gr-options*)))
-                                                        (max ,vmax (second (gethash ,axi *gr-options*)))
-                                                        0))) ))
+                                                     (max ,vmax (second (gethash ,axi *gr-options*)))
+                                                     0))) ))
 
 (defun update-ranges-2d (xmin xmax ymin ymax)
    (if (get-option '$xaxis_secondary)
