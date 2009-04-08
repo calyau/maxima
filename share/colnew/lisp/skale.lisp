@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -34,12 +34,12 @@
            (scale double-float scale-%data% scale-%offset%)
            (dscale double-float dscale-%data% dscale-%offset%)
            (xi double-float xi-%data% xi-%offset%))
-        (prog ((np1 0) (idmz 0) (mj 0) (scal 0.0d0) (icomp 0) (l 0) (h 0.0d0)
+        (prog ((np1 0) (idmz 0) (mj 0) (scal 0.0) (icomp 0) (l 0) (h 0.0)
                (iz 0) (j 0) (basm (make-array 5 :element-type 'double-float)))
           (declare (type (array double-float (5)) basm)
                    (type double-float h scal)
                    (type (integer) j iz l icomp mj idmz np1))
-          (setf (f2cl-lib:fref basm (1) ((1 5))) 1.0d0)
+          (setf (f2cl-lib:fref basm (1) ((1 5))) 1.0)
           (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                         ((> j n) nil)
             (tagbody
@@ -75,8 +75,8 @@
                                              (iz (f2cl-lib:int-add j 1))
                                              ((1 mstar) (1 1))
                                              z-%offset%)))
-                            0.5d0)
-                           1.0d0))
+                            0.5)
+                           1.0))
                   (setf mj (f2cl-lib:fref m (icomp) ((1 20))))
                   (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                                 ((> l mj) nil)

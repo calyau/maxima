@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -27,7 +27,7 @@
       ((coef double-float coef-%data% coef-%offset%)
        (rkb double-float rkb-%data% rkb-%offset%)
        (dm double-float dm-%data% dm-%offset%))
-    (prog ((t$ (make-array 10 :element-type 'double-float)) (j 0) (p 0.0d0)
+    (prog ((t$ (make-array 10 :element-type 'double-float)) (j 0) (p 0.0)
            (lb 0) (l 0) (i 0) (kpm1 0))
       (declare (type double-float p)
                (type (integer) kpm1 i l lb j)
@@ -98,8 +98,8 @@
          label60))
       (go end_label)
      label70
-      (setf (f2cl-lib:fref rkb-%data% (1 1) ((1 7) (1 1)) rkb-%offset%) 1.0d0)
-      (setf (f2cl-lib:fref dm-%data% (1) ((1 1)) dm-%offset%) 1.0d0)
+      (setf (f2cl-lib:fref rkb-%data% (1 1) ((1 7) (1 1)) rkb-%offset%) 1.0)
+      (setf (f2cl-lib:fref dm-%data% (1) ((1 1)) dm-%offset%) 1.0)
       (go end_label)
      end_label
       (return (values nil nil nil nil nil nil nil)))))

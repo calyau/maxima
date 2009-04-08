@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,23 +7,23 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((one 1.0d0)
-      (p1 0.1d0)
-      (p5 0.5d0)
-      (p25 0.25d0)
-      (p75 0.75d0)
-      (p0001 1.0d-4)
-      (zero 0.0d0))
+(let ((one 1.0)
+      (p1 0.1)
+      (p5 0.5)
+      (p25 0.25)
+      (p75 0.75)
+      (p0001 1.0e-4)
+      (zero 0.0))
   (declare (type (double-float) one p1 p5 p25 p75 p0001 zero))
   (defun lmder
          (fcn m n x fvec fjac ldfjac ftol xtol gtol maxfev diag mode factor
@@ -45,11 +45,10 @@
          (wa3 double-float wa3-%data% wa3-%offset%)
          (wa4 double-float wa4-%data% wa4-%offset%)
          (ipvt f2cl-lib:integer4 ipvt-%data% ipvt-%offset%))
-      (prog ((actred 0.0d0) (delta 0.0d0) (dirder 0.0d0) (epsmch 0.0d0)
-             (fnorm 0.0d0) (fnorm1 0.0d0) (gnorm 0.0d0) (par 0.0d0)
-             (pnorm 0.0d0) (prered 0.0d0) (ratio 0.0d0) (sum 0.0d0)
-             (temp 0.0d0) (temp1 0.0d0) (temp2 0.0d0) (xnorm 0.0d0) (i 0)
-             (iflag 0) (iter 0) (j 0) (l 0))
+      (prog ((actred 0.0) (delta 0.0) (dirder 0.0) (epsmch 0.0) (fnorm 0.0)
+             (fnorm1 0.0) (gnorm 0.0) (par 0.0) (pnorm 0.0) (prered 0.0)
+             (ratio 0.0) (sum 0.0) (temp 0.0) (temp1 0.0) (temp2 0.0)
+             (xnorm 0.0) (i 0) (iflag 0) (iter 0) (j 0) (l 0))
         (declare (type (f2cl-lib:integer4) l j iter iflag i)
                  (type (double-float) xnorm temp2 temp1 temp sum ratio prered
                                       pnorm par gnorm fnorm1 fnorm epsmch

@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -64,7 +64,7 @@
            (z double-float z-%data% z-%offset%)
            (dmz double-float dmz-%data% dmz-%offset%)
            (valstr double-float valstr-%data% valstr-%offset%))
-        (prog ((mj 0) (lj 0) (ltjz 0) (ltolj 0) (l 0) (x 0.0d0) (kstore 0)
+        (prog ((mj 0) (lj 0) (ltjz 0) (ltolj 0) (l 0) (x 0.0) (kstore 0)
                (knew 0) (i 0) (iback 0) (j 0)
                (dummy (make-array 1 :element-type 'double-float))
                (errest (make-array 40 :element-type 'double-float))
@@ -77,7 +77,7 @@
           (setf mshflg 1)
           (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                         ((> j mstar) nil)
-            (tagbody label10 (setf (f2cl-lib:fref errest (j) ((1 40))) 0.0d0)))
+            (tagbody label10 (setf (f2cl-lib:fref errest (j) ((1 40))) 0.0)))
           (f2cl-lib:fdo (iback 1 (f2cl-lib:int-add iback 1))
                         ((> iback n) nil)
             (tagbody
@@ -108,8 +108,8 @@
                                            ((1 1))
                                            xi-%offset%)
                             (f2cl-lib:fref xi-%data% (i) ((1 1)) xi-%offset%))
-                           2.0d0)
-                          3.0d0)))
+                           2.0)
+                          3.0)))
               (multiple-value-bind
                     (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
                      var-9 var-10 var-11 var-12 var-13 var-14 var-15 var-16)
@@ -164,7 +164,7 @@
                                           ((1 1))
                                           xi-%offset%)
                            (f2cl-lib:fref xi-%data% (i) ((1 1)) xi-%offset%))
-                          3.0d0)))
+                          3.0)))
               (multiple-value-bind
                     (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
                      var-9 var-10 var-11 var-12 var-13 var-14 var-15 var-16)
@@ -222,7 +222,7 @@
                          (+
                           (f2cl-lib:dabs
                            (f2cl-lib:fref z-%data% (ltjz) ((1 1)) z-%offset%))
-                          1.0d0)))
+                          1.0)))
                    (setf ifin 0))
                  label50))
              label60))

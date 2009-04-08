@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -23,11 +23,11 @@
   (f2cl-lib:with-multi-array-data
       ((dx double-float dx-%data% dx-%offset%)
        (dy double-float dy-%data% dy-%offset%))
-    (prog ((i 0) (ix 0) (iy 0) (m 0) (mp1 0) (dtemp 0.0d0) (ddot 0.0d0))
+    (prog ((i 0) (ix 0) (iy 0) (m 0) (mp1 0) (dtemp 0.0) (ddot 0.0))
       (declare (type (double-float) ddot dtemp)
                (type (f2cl-lib:integer4) mp1 m iy ix i))
-      (setf ddot 0.0d0)
-      (setf dtemp 0.0d0)
+      (setf ddot 0.0)
+      (setf dtemp 0.0)
       (if (<= n 0) (go end_label))
       (if (and (= incx 1) (= incy 1)) (go label20))
       (setf ix 1)

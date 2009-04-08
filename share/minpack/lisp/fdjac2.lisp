@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,17 +7,17 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((zero 0.0d0))
+(let ((zero 0.0))
   (declare (type (double-float) zero))
   (defun fdjac2 (fcn m n x fvec fjac ldfjac iflag epsfcn wa)
     (declare (type (double-float) epsfcn)
@@ -28,7 +28,7 @@
          (fvec double-float fvec-%data% fvec-%offset%)
          (fjac double-float fjac-%data% fjac-%offset%)
          (wa double-float wa-%data% wa-%offset%))
-      (prog ((eps 0.0d0) (epsmch 0.0d0) (h 0.0d0) (temp 0.0d0) (i 0) (j 0))
+      (prog ((eps 0.0) (epsmch 0.0) (h 0.0) (temp 0.0) (i 0) (j 0))
         (declare (type (f2cl-lib:integer4) j i)
                  (type (double-float) temp h epsmch eps))
         '"     **********"

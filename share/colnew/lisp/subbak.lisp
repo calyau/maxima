@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -24,7 +24,7 @@
   (f2cl-lib:with-multi-array-data
       ((w double-float w-%data% w-%offset%)
        (x double-float x-%data% x-%offset%))
-    (prog ((t$ 0.0d0) (i 0) (j 0) (k 0) (km1 0) (lm1 0) (lp1 0) (kb 0))
+    (prog ((t$ 0.0) (i 0) (j 0) (k 0) (km1 0) (lm1 0) (lp1 0) (kb 0))
       (declare (type (integer) kb)
                (type (f2cl-lib:integer4) lp1 lm1 km1 k j i)
                (type (double-float) t$))
@@ -34,7 +34,7 @@
                     ((> j ncol) nil)
         (tagbody
           (setf t$ (- (f2cl-lib:fref x-%data% (j) ((1 ncol)) x-%offset%)))
-          (if (= t$ 0.0d0) (go label20))
+          (if (= t$ 0.0) (go label20))
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i last$) nil)
             (tagbody
@@ -63,7 +63,7 @@
                                     ((1 nrow) (1 ncol))
                                     w-%offset%)))
           (setf t$ (- (f2cl-lib:fref x-%data% (k) ((1 ncol)) x-%offset%)))
-          (if (= t$ 0.0d0) (go label50))
+          (if (= t$ 0.0) (go label50))
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i km1) nil)
             (tagbody

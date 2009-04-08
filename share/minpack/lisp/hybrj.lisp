@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,22 +7,17 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((one 1.0d0)
-      (p1 0.1d0)
-      (p5 0.5d0)
-      (p001 0.001d0)
-      (p0001 1.0d-4)
-      (zero 0.0d0))
+(let ((one 1.0) (p1 0.1) (p5 0.5) (p001 0.001) (p0001 1.0e-4) (zero 0.0))
   (declare (type (double-float) one p1 p5 p001 p0001 zero))
   (defun hybrj
          (fcn n x fvec fjac ldfjac xtol maxfev diag mode factor nprint info
@@ -43,9 +38,9 @@
          (wa2 double-float wa2-%data% wa2-%offset%)
          (wa3 double-float wa3-%data% wa3-%offset%)
          (wa4 double-float wa4-%data% wa4-%offset%))
-      (prog ((actred 0.0d0) (delta 0.0d0) (epsmch 0.0d0) (fnorm 0.0d0)
-             (fnorm1 0.0d0) (pnorm 0.0d0) (prered 0.0d0) (ratio 0.0d0)
-             (sum 0.0d0) (temp 0.0d0) (xnorm 0.0d0) (jeval nil) (sing nil)
+      (prog ((actred 0.0) (delta 0.0) (epsmch 0.0) (fnorm 0.0) (fnorm1 0.0)
+             (pnorm 0.0) (prered 0.0) (ratio 0.0) (sum 0.0) (temp 0.0)
+             (xnorm 0.0) (jeval nil) (sing nil)
              (iwa (make-array 1 :element-type 'f2cl-lib:integer4)) (i 0)
              (iflag 0) (iter 0) (j 0) (jm1 0) (l 0) (ncfail 0) (ncsuc 0)
              (nslow1 0) (nslow2 0))

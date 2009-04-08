@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,24 +7,24 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((one 1.0d0) (zero 0.0d0) (rdwarf 3.834d-20) (rgiant 1.304d19))
+(let ((one 1.0) (zero 0.0) (rdwarf 3.834e-20) (rgiant 1.304e19))
   (declare (type (double-float) one zero rdwarf rgiant))
   (defun enorm (n x)
     (declare (type (array double-float (*)) x) (type (f2cl-lib:integer4) n))
     (f2cl-lib:with-multi-array-data
         ((x double-float x-%data% x-%offset%))
-      (prog ((agiant 0.0d0) (floatn 0.0d0) (s1 0.0d0) (s2 0.0d0) (s3 0.0d0)
-             (xabs 0.0d0) (x1max 0.0d0) (x3max 0.0d0) (i 0) (enorm 0.0d0))
+      (prog ((agiant 0.0) (floatn 0.0) (s1 0.0) (s2 0.0) (s3 0.0) (xabs 0.0)
+             (x1max 0.0) (x3max 0.0) (i 0) (enorm 0.0))
         (declare (type (f2cl-lib:integer4) i)
                  (type (double-float) enorm x3max x1max xabs s3 s2 s1 floatn
                                       agiant))

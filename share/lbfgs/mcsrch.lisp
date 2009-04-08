@@ -1,47 +1,47 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :common-lisp-user)
 
 
-(let ((dg 0.0d0)
-      (dgm 0.0d0)
-      (dginit 0.0d0)
-      (dgtest 0.0d0)
-      (dgx 0.0d0)
-      (dgxm 0.0d0)
-      (dgy 0.0d0)
-      (dgym 0.0d0)
-      (finit 0.0d0)
-      (ftest1 0.0d0)
-      (fm 0.0d0)
-      (fx 0.0d0)
-      (fxm 0.0d0)
-      (fy 0.0d0)
-      (fym 0.0d0)
-      (p5 0.5d0)
-      (p66 0.66d0)
-      (stx 0.0d0)
-      (sty 0.0d0)
-      (stmin 0.0d0)
-      (stmax 0.0d0)
-      (width 0.0d0)
-      (width1 0.0d0)
-      (xtrapf 4.0d0)
-      (zero 0.0d0)
+(let ((dg 0.0)
+      (dgm 0.0)
+      (dginit 0.0)
+      (dgtest 0.0)
+      (dgx 0.0)
+      (dgxm 0.0)
+      (dgy 0.0)
+      (dgym 0.0)
+      (finit 0.0)
+      (ftest1 0.0)
+      (fm 0.0)
+      (fx 0.0)
+      (fxm 0.0)
+      (fy 0.0)
+      (fym 0.0)
+      (p5 0.5)
+      (p66 0.66)
+      (stx 0.0)
+      (sty 0.0)
+      (stmin 0.0)
+      (stmax 0.0)
+      (width 0.0)
+      (width1 0.0)
+      (xtrapf 4.0)
+      (zero 0.0)
       (brackt nil)
       (stage1 nil)
       (infoc 0)

@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,17 +7,17 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((one 1.0d0) (p05 0.05d0) (zero 0.0d0))
+(let ((one 1.0) (p05 0.05) (zero 0.0))
   (declare (type (double-float) one p05 zero))
   (defun qrfac (m n a lda pivot ipvt lipvt rdiag acnorm wa)
     (declare (type (array f2cl-lib:integer4 (*)) ipvt)
@@ -30,8 +30,8 @@
          (acnorm double-float acnorm-%data% acnorm-%offset%)
          (wa double-float wa-%data% wa-%offset%)
          (ipvt f2cl-lib:integer4 ipvt-%data% ipvt-%offset%))
-      (prog ((ajnorm 0.0d0) (epsmch 0.0d0) (sum 0.0d0) (temp 0.0d0) (i 0) (j 0)
-             (jp1 0) (k 0) (kmax 0) (minmn 0))
+      (prog ((ajnorm 0.0) (epsmch 0.0) (sum 0.0) (temp 0.0) (i 0) (j 0) (jp1 0)
+             (k 0) (kmax 0) (minmn 0))
         (declare (type (f2cl-lib:integer4) minmn kmax k jp1 j i)
                  (type (double-float) temp sum epsmch ajnorm))
         '"     **********"

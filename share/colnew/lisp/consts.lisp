@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -20,26 +20,23 @@
 (let ((cnsts1
        (make-array 28
                    :element-type 'double-float
-                   :initial-contents '(0.25d0 0.0625d0 0.072169d0 0.018342d0
-                                       0.019065d0 0.05819d0 0.0054658d0
-                                       0.005337d0 0.01889d0 0.027792d0
-                                       0.0016095d0 0.0014964d0 0.0075938d0
-                                       0.0057573d0 0.018342d0 0.004673d0
-                                       4.15d-4 0.001919d0 0.001468d0 0.006371d0
-                                       0.00461d0 1.342d-4 1.138d-4 4.889d-4
-                                       4.177d-4 0.001374d0 0.001654d0
-                                       0.002863d0)))
+                   :initial-contents '(0.25 0.0625 0.072169 0.018342 0.019065
+                                       0.05819 0.0054658 0.005337 0.01889
+                                       0.027792 0.0016095 0.0014964 0.0075938
+                                       0.0057573 0.018342 0.004673 4.15e-4
+                                       0.001919 0.001468 0.006371 0.00461
+                                       1.342e-4 1.138e-4 4.889e-4 4.177e-4
+                                       0.001374 0.001654 0.002863)))
       (cnsts2
        (make-array 28
                    :element-type 'double-float
-                   :initial-contents '(0.125d0 0.002604d0 0.008019d0 2.17d-5
-                                       7.453d-5 5.208d-4 9.689d-8 3.689d-7
-                                       3.1d-6 2.451d-5 2.691d-10 1.12d-9
-                                       1.076d-8 9.405d-8 1.033d-6 5.097d-13
-                                       2.29d-12 2.446d-11 2.331d-10 2.936d-9
-                                       3.593d-8 7.001d-16 3.363d-15 3.921d-14
-                                       4.028d-13 5.646d-12 7.531d-11
-                                       1.129d-9))))
+                   :initial-contents '(0.125 0.002604 0.008019 2.17e-5 7.453e-5
+                                       5.208e-4 9.689e-8 3.689e-7 3.1e-6
+                                       2.451e-5 2.691e-10 1.12e-9 1.076e-8
+                                       9.405e-8 1.033e-6 5.097e-13 2.29e-12
+                                       2.446e-11 2.331e-10 2.936e-9 3.593e-8
+                                       7.001e-16 3.363e-15 3.921e-14 4.028e-13
+                                       5.646e-12 7.531e-11 1.129e-9))))
   (declare (type (array double-float (28)) cnsts1 cnsts2))
   (defun consts (k rho coef)
     (declare (type (array double-float (*)) coef)
@@ -150,7 +147,7 @@
                 (setf (f2cl-lib:fref jtol (i) ((1 40))) jcomp)
                 (setf (f2cl-lib:fref wgtmsh (i) ((1 40)))
                         (/
-                         (* 10.0d0
+                         (* 10.0
                             (f2cl-lib:fref cnsts2
                                            ((f2cl-lib:int-sub
                                              (f2cl-lib:int-add koff ltoli)
@@ -158,7 +155,7 @@
                                            ((1 28))))
                          (f2cl-lib:fref tolin (i) ((1 40)))))
                 (setf (f2cl-lib:fref root (i) ((1 40)))
-                        (/ 1.0d0
+                        (/ 1.0
                            (f2cl-lib:dfloat
                             (f2cl-lib:int-add
                              (f2cl-lib:int-sub (f2cl-lib:int-add k mtot) ltoli)
@@ -168,26 +165,26 @@
              (label50 label60 label70 label80 label90 label100 label110)
              k)
            label50
-            (setf (f2cl-lib:fref rho-%data% (1) ((1 7)) rho-%offset%) 0.0d0)
+            (setf (f2cl-lib:fref rho-%data% (1) ((1 7)) rho-%offset%) 0.0)
             (go label120)
            label60
             (setf (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%)
-                    0.5773502691896257d0)
+                    0.5773502691896257)
             (setf (f2cl-lib:fref rho-%data% (1) ((1 7)) rho-%offset%)
                     (- (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%)))
             (go label120)
            label70
             (setf (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%)
-                    0.7745966692414834d0)
-            (setf (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%) 0.0d0)
+                    0.7745966692414834)
+            (setf (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%) 0.0)
             (setf (f2cl-lib:fref rho-%data% (1) ((1 7)) rho-%offset%)
                     (- (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%)))
             (go label120)
            label80
             (setf (f2cl-lib:fref rho-%data% (4) ((1 7)) rho-%offset%)
-                    0.8611363115940526d0)
+                    0.8611363115940526)
             (setf (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%)
-                    0.33998104358485626d0)
+                    0.33998104358485626)
             (setf (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%)
                     (- (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%)))
             (setf (f2cl-lib:fref rho-%data% (1) ((1 7)) rho-%offset%)
@@ -195,10 +192,10 @@
             (go label120)
            label90
             (setf (f2cl-lib:fref rho-%data% (5) ((1 7)) rho-%offset%)
-                    0.906179845938664d0)
+                    0.906179845938664)
             (setf (f2cl-lib:fref rho-%data% (4) ((1 7)) rho-%offset%)
-                    0.5384693101056831d0)
-            (setf (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%) 0.0d0)
+                    0.5384693101056831)
+            (setf (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%) 0.0)
             (setf (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%)
                     (- (f2cl-lib:fref rho-%data% (4) ((1 7)) rho-%offset%)))
             (setf (f2cl-lib:fref rho-%data% (1) ((1 7)) rho-%offset%)
@@ -206,11 +203,11 @@
             (go label120)
            label100
             (setf (f2cl-lib:fref rho-%data% (6) ((1 7)) rho-%offset%)
-                    0.932469514203152d0)
+                    0.932469514203152)
             (setf (f2cl-lib:fref rho-%data% (5) ((1 7)) rho-%offset%)
-                    0.6612093864662645d0)
+                    0.6612093864662645)
             (setf (f2cl-lib:fref rho-%data% (4) ((1 7)) rho-%offset%)
-                    0.2386191860831969d0)
+                    0.2386191860831969)
             (setf (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%)
                     (- (f2cl-lib:fref rho-%data% (4) ((1 7)) rho-%offset%)))
             (setf (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%)
@@ -220,12 +217,12 @@
             (go label120)
            label110
             (setf (f2cl-lib:fref rho-%data% (7) ((1 7)) rho-%offset%)
-                    0.9491079912342758d0)
+                    0.9491079912342758)
             (setf (f2cl-lib:fref rho-%data% (6) ((1 7)) rho-%offset%)
-                    0.7415311855993945d0)
+                    0.7415311855993945)
             (setf (f2cl-lib:fref rho-%data% (5) ((1 7)) rho-%offset%)
-                    0.4058451513773972d0)
-            (setf (f2cl-lib:fref rho-%data% (4) ((1 7)) rho-%offset%) 0.0d0)
+                    0.4058451513773972)
+            (setf (f2cl-lib:fref rho-%data% (4) ((1 7)) rho-%offset%) 0.0)
             (setf (f2cl-lib:fref rho-%data% (3) ((1 7)) rho-%offset%)
                     (- (f2cl-lib:fref rho-%data% (5) ((1 7)) rho-%offset%)))
             (setf (f2cl-lib:fref rho-%data% (2) ((1 7)) rho-%offset%)
@@ -237,8 +234,8 @@
                           ((> j k) nil)
               (tagbody
                 (setf (f2cl-lib:fref rho-%data% (j) ((1 7)) rho-%offset%)
-                        (* 0.5d0
-                           (+ 1.0d0
+                        (* 0.5
+                           (+ 1.0
                               (f2cl-lib:fref rho-%data%
                                              (j)
                                              ((1 7))
@@ -255,17 +252,17 @@
                                          (i j)
                                          ((1 k) (1 1))
                                          coef-%offset%)
-                            0.0d0)))
+                            0.0)))
                 (setf (f2cl-lib:fref coef-%data%
                                      (j j)
                                      ((1 k) (1 1))
                                      coef-%offset%)
-                        1.0d0)
+                        1.0)
                 (vmonde rho
                  (f2cl-lib:array-slice coef double-float (1 j) ((1 k) (1 1)))
                  k)
                label140))
-            (rkbas 1.0d0 coef k mmax b dummy 0)
+            (rkbas 1.0 coef k mmax b dummy 0)
             (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                           ((> i k) nil)
               (tagbody
@@ -274,16 +271,16 @@
                  (f2cl-lib:array-slice acol double-float (1 i) ((1 28) (1 7)))
                  dummy 0)
                label150))
-            (rkbas (/ 1.0d0 6.0d0) coef k mmax
+            (rkbas (/ 1.0 6.0) coef k mmax
              (f2cl-lib:array-slice asave double-float (1 1) ((1 28) (1 4)))
              dummy 0)
-            (rkbas (/ 1.0d0 3.0d0) coef k mmax
+            (rkbas (/ 1.0 3.0) coef k mmax
              (f2cl-lib:array-slice asave double-float (1 2) ((1 28) (1 4)))
              dummy 0)
-            (rkbas (/ 2.0d0 3.0d0) coef k mmax
+            (rkbas (/ 2.0 3.0) coef k mmax
              (f2cl-lib:array-slice asave double-float (1 3) ((1 28) (1 4)))
              dummy 0)
-            (rkbas (/ 5.0d0 6.0d0) coef k mmax
+            (rkbas (/ 5.0 6.0) coef k mmax
              (f2cl-lib:array-slice asave double-float (1 4) ((1 28) (1 4)))
              dummy 0)
             (go end_label)

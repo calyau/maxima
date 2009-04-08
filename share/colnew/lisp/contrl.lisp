@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -79,23 +79,22 @@
            (ipvtg f2cl-lib:integer4 ipvtg-%data% ipvtg-%offset%)
            (integs f2cl-lib:integer4 integs-%data% integs-%offset%)
            (ipvtw f2cl-lib:integer4 ipvtw-%data% ipvtw-%offset%))
-        (prog ((ifin 0) (lj 0) (j 0) (fact 0.0d0) (factor 0.0d0) (arg 0.0d0)
-               (anfix 0.0d0) (anorm 0.0d0) (ipred 0) (rlxold 0.0d0)
-               (andif 0.0d0) (anscl 0.0d0) (np1 0) (iz 0) (inz 0) (it 0)
-               (ifrz 0) (rnold 0.0d0) (ifreez 0) (relax 0.0d0) (rnorm 0.0d0)
-               (msing 0) (noconv 0) (icor 0) (iconv 0) (imesh 0) (i 0)
-               (check 0.0d0) (lmtfrz 0) (rstart 0.0d0) (relmin 0.0d0)
-               (dummy (make-array 1 :element-type 'double-float)))
+        (prog ((ifin 0) (lj 0) (j 0) (fact 0.0) (factor 0.0) (arg 0.0)
+               (anfix 0.0) (anorm 0.0) (ipred 0) (rlxold 0.0) (andif 0.0)
+               (anscl 0.0) (np1 0) (iz 0) (inz 0) (it 0) (ifrz 0) (rnold 0.0)
+               (ifreez 0) (relax 0.0) (rnorm 0.0) (msing 0) (noconv 0) (icor 0)
+               (iconv 0) (imesh 0) (i 0) (check 0.0) (lmtfrz 0) (rstart 0.0)
+               (relmin 0.0) (dummy (make-array 1 :element-type 'double-float)))
           (declare (type (array double-float (1)) dummy)
                    (type double-float relmin rstart check rnorm relax rnold
                                       anscl andif rlxold anorm anfix arg factor
                                       fact)
                    (type (integer) lmtfrz i imesh iconv icor noconv msing
                                    ifreez ifrz it inz iz np1 ipred j lj ifin))
-          (setf relmin 0.001d0)
-          (setf rstart 0.01d0)
+          (setf relmin 0.001)
+          (setf rstart 0.01)
           (setf lmtfrz 4)
-          (setf check 0.0d0)
+          (setf check 0.0)
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i ntol) nil)
             (tagbody
@@ -140,7 +139,7 @@
           (setf iflag 0)
           (go end_label)
          label50
-          (setf relax 1.0d0)
+          (setf relax 1.0)
           (if (or (= icare 1) (= icare -1)) (setf relax rstart))
           (if (= iconv 0) (go label160))
           (setf ifreez 0)
@@ -230,7 +229,7 @@
          label110
           (setf ifrz (f2cl-lib:int-add ifrz 1))
           (if (>= ifrz lmtfrz) (setf ifreez 0))
-          (if (< rnold (* 4.0d0 rnorm)) (setf ifreez 0))
+          (if (< rnold (* 4.0 rnorm)) (setf ifreez 0))
           (f2cl-lib:fdo (it 1 (f2cl-lib:int-add it 1))
                         ((> it ntol) nil)
             (tagbody
@@ -246,7 +245,7 @@
                        (+
                         (f2cl-lib:dabs
                          (f2cl-lib:fref z-%data% (iz) ((1 1)) z-%offset%))
-                        1.0d0)))
+                        1.0)))
                    (go label60))
                  label120))))
          label120
@@ -321,7 +320,7 @@
           (setf rnold rnorm)
           (if (>= iter limit) (go label430))
           (skale n mstar kd z xi scale dscale)
-          (setf anscl 0.0d0)
+          (setf anscl 0.0)
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i nz) nil)
             (tagbody
@@ -371,7 +370,7 @@
             (setf msing var-0)
             (setf rnorm var-15))
           (if (/= msing 0) (go label30))
-          (setf andif 0.0d0)
+          (setf andif 0.0)
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i nz) nil)
             (tagbody
@@ -418,7 +417,7 @@
                    (+ (/ andif (f2cl-lib:dfloat (f2cl-lib:int-add nz ndmz)))
                       precis)))
           (setf relax (/ (* relax anscl) andif))
-          (if (> relax 1.0d0) (setf relax 1.0d0))
+          (if (> relax 1.0) (setf relax 1.0))
          label220
           (setf rlxold relax)
           (setf ipred 1)
@@ -468,8 +467,8 @@
                              var-17 var-18 var-19 var-20 var-21))
             (setf msing var-0)
             (setf rnorm var-15))
-          (setf anorm 0.0d0)
-          (setf anfix 0.0d0)
+          (setf anorm 0.0)
+          (setf anfix 0.0)
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i nz) nil)
             (tagbody
@@ -579,19 +578,18 @@
          label300
           (if (>= iter limit) (go label430))
           (setf ipred 0)
-          (setf arg (+ (/ (- (/ anfix anorm) 1.0d0) relax) 1.0d0))
-          (if (< arg 0.0d0) (go label170))
-          (if (<= arg (+ (* 0.25d0 relax) (* 0.125d0 (expt relax 2))))
+          (setf arg (+ (/ (- (/ anfix anorm) 1.0) relax) 1.0))
+          (if (< arg 0.0) (go label170))
+          (if (<= arg (+ (* 0.25 relax) (* 0.125 (expt relax 2))))
               (go label310))
-          (setf factor (- (f2cl-lib:dsqrt (+ 1.0d0 (* 8.0d0 arg))) 1.0d0))
-          (if (< (f2cl-lib:dabs (- factor 1.0d0)) (* 0.1d0 factor))
-              (go label170))
-          (if (< factor 0.5d0) (setf factor 0.5d0))
+          (setf factor (- (f2cl-lib:dsqrt (+ 1.0 (* 8.0 arg))) 1.0))
+          (if (< (f2cl-lib:dabs (- factor 1.0)) (* 0.1 factor)) (go label170))
+          (if (< factor 0.5) (setf factor 0.5))
           (setf relax (/ relax factor))
           (go label320)
          label310
-          (if (>= relax 0.9d0) (go label170))
-          (setf relax 1.0d0)
+          (if (>= relax 0.9) (go label170))
+          (setf relax 1.0)
          label320
           (setf icor 1)
           (if (< relax relmin) (go label440))
@@ -636,7 +634,7 @@
                        (+
                         (f2cl-lib:dabs
                          (f2cl-lib:fref z-%data% (iz) ((1 1)) z-%offset%))
-                        1.0d0)))
+                        1.0)))
                    (go label170))
                  label360))))
          label360

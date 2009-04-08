@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,17 +7,17 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((one 1.0d0) (zero 0.0d0))
+(let ((one 1.0) (zero 0.0))
   (declare (type (double-float) one zero))
   (defun dogleg (n r lr diag qtb delta x wa1 wa2)
     (declare (type (double-float) delta)
@@ -30,9 +30,9 @@
          (x double-float x-%data% x-%offset%)
          (wa1 double-float wa1-%data% wa1-%offset%)
          (wa2 double-float wa2-%data% wa2-%offset%))
-      (prog ((alpha 0.0d0) (bnorm 0.0d0) (epsmch 0.0d0) (gnorm 0.0d0)
-             (qnorm 0.0d0) (sgnorm 0.0d0) (sum 0.0d0) (temp 0.0d0) (i 0) (j 0)
-             (jj 0) (jp1 0) (k 0) (l 0))
+      (prog ((alpha 0.0) (bnorm 0.0) (epsmch 0.0) (gnorm 0.0) (qnorm 0.0)
+             (sgnorm 0.0) (sum 0.0) (temp 0.0) (i 0) (j 0) (jj 0) (jp1 0) (k 0)
+             (l 0))
         (declare (type (f2cl-lib:integer4) l k jp1 jj j i)
                  (type (double-float) temp sum sgnorm qnorm gnorm epsmch bnorm
                                       alpha))

@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -131,7 +131,7 @@
                         (ldelz 0) (ldmz 0) (lz 0) (lv 0) (lw 0) (lxiold 0)
                         (lg 0) (lxi 0) (nmaxi 0) (nmaxf 0) (nsizef 0) (nfixf 0)
                         (nsizei 0) (nfixi 0) (ib 0) (nrec 0) (ip 0) (nfxpnt 0)
-                        (ndimi 0) (ndimf 0) (iread 0) (i 0) (precp1 0.0d0)
+                        (ndimi 0) (ndimf 0) (iread 0) (i 0) (precp1 0.0)
                         (dummy (make-array 1 :element-type 'double-float)))
                    (declare (type (array double-float (1)) dummy)
                             (type double-float precp1)
@@ -151,12 +151,12 @@
                                        " VERSION *COLNEW* OF COLSYS .    " "~%"
                                        "~%" "~%")))
                    (setf iout 6)
-                   (setf precis 1.0d0)
+                   (setf precis 1.0)
                   label10
-                   (setf precis (/ precis 2.0d0))
-                   (setf precp1 (+ precis 1.0d0))
-                   (if (> precp1 1.0d0) (go label10))
-                   (setf precis (* precis 100.0d0))
+                   (setf precis (/ precis 2.0))
+                   (setf precp1 (+ precis 1.0))
+                   (if (> precp1 1.0) (go label10))
+                   (setf precis (* precis 100.0))
                    (setf iflag -3)
                    (if (or (< ncomp 1) (> ncomp 20)) (go end_label))
                    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
@@ -690,7 +690,7 @@
                                               i))
                                             ((1 1))
                                             fspace-%offset%)
-                               0.0d0)))
+                               0.0)))
                    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                                  ((> i ndmz) nil)
                      (tagbody
@@ -701,7 +701,7 @@
                                               i))
                                             ((1 1))
                                             fspace-%offset%)
-                               0.0d0)))
+                               0.0)))
                   label230
                    (if (>= iguess 2) (setf iguess 0))
                    (multiple-value-bind

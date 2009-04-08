@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,17 +7,17 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((one 1.0d0) (p5 0.5d0) (p25 0.25d0) (zero 0.0d0))
+(let ((one 1.0) (p5 0.5) (p25 0.25) (zero 0.0))
   (declare (type (double-float) one p5 p25 zero))
   (defun r1updt (m n s ls u v w sing)
     (declare (type f2cl-lib:logical sing)
@@ -28,8 +28,8 @@
          (u double-float u-%data% u-%offset%)
          (v double-float v-%data% v-%offset%)
          (w double-float w-%data% w-%offset%))
-      (prog ((cos 0.0d0) (cotan 0.0d0) (giant 0.0d0) (sin 0.0d0) (tan 0.0d0)
-             (tau 0.0d0) (temp 0.0d0) (i 0) (j 0) (jj 0) (l 0) (nmj 0) (nm1 0))
+      (prog ((cos 0.0) (cotan 0.0) (giant 0.0) (sin 0.0) (tan 0.0) (tau 0.0)
+             (temp 0.0) (i 0) (j 0) (jj 0) (l 0) (nmj 0) (nm1 0))
         (declare (type (f2cl-lib:integer4) nm1 nmj l jj j i)
                  (type (double-float) temp tau tan sin giant cotan cos))
         '"     **********"

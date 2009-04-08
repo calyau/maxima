@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,17 +7,17 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
 
-(let ((factor 100.0d0) (zero 0.0d0))
+(let ((factor 100.0) (zero 0.0))
   (declare (type (double-float) factor zero))
   (defun lmdif1 (fcn m n x fvec tol info iwa wa lwa)
     (declare (type (array f2cl-lib:integer4 (*)) iwa)
@@ -29,8 +29,8 @@
          (fvec double-float fvec-%data% fvec-%offset%)
          (wa double-float wa-%data% wa-%offset%)
          (iwa f2cl-lib:integer4 iwa-%data% iwa-%offset%))
-      (prog ((epsfcn 0.0d0) (ftol 0.0d0) (gtol 0.0d0) (xtol 0.0d0) (maxfev 0)
-             (mode 0) (mp5n 0) (nfev 0) (nprint 0))
+      (prog ((epsfcn 0.0) (ftol 0.0) (gtol 0.0) (xtol 0.0) (maxfev 0) (mode 0)
+             (mp5n 0) (nfev 0) (nprint 0))
         (declare (type (f2cl-lib:integer4) nprint nfev mp5n mode maxfev)
                  (type (double-float) xtol gtol ftol epsfcn))
         '"     **********"

@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -36,9 +36,9 @@
            (dmval double-float dmval-%data% dmval-%offset%)
            (a double-float a-%data% a-%offset%)
            (m f2cl-lib:integer4 m-%data% m-%offset%))
-        (prog ((fact 0.0d0) (lb 0) (ll 0) (zsum 0.0d0) (ind 0) (mj 0) (jcomp 0)
-               (idmz 0) (ir 0) (s 0.0d0) (iright 0) (l 0) (ileft 0) (j 0)
-               (iz 0) (dm (make-array 7 :element-type 'double-float))
+        (prog ((fact 0.0) (lb 0) (ll 0) (zsum 0.0) (ind 0) (mj 0) (jcomp 0)
+               (idmz 0) (ir 0) (s 0.0) (iright 0) (l 0) (ileft 0) (j 0) (iz 0)
+               (dm (make-array 7 :element-type 'double-float))
                (bm (make-array 4 :element-type 'double-float)))
           (declare (type (array double-float (4)) bm)
                    (type (array double-float (7)) dm)
@@ -161,7 +161,7 @@
                             ((> l mj) nil)
                 (tagbody
                   (setf ind (f2cl-lib:int-add idmz jcomp))
-                  (setf zsum 0.0d0)
+                  (setf zsum 0.0)
                   (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                                 ((> j k) nil)
                     (tagbody
@@ -202,7 +202,7 @@
             (tagbody
              label150
               (setf (f2cl-lib:fref dmval-%data% (jcomp) ((1 1)) dmval-%offset%)
-                      0.0d0)))
+                      0.0)))
           (setf idmz (f2cl-lib:int-add idmz 1))
           (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                         ((> j k) nil)

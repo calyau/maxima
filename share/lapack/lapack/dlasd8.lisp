@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -68,28 +68,12 @@
           (tagbody
             (setf (f2cl-lib:fref dsigma-%data% (i) ((1 *)) dsigma-%offset%)
                     (-
-                     (multiple-value-bind (ret-val var-0 var-1)
-                         (dlamc3
-                          (f2cl-lib:fref dsigma-%data%
-                                         (i)
-                                         ((1 *))
-                                         dsigma-%offset%)
-                          (f2cl-lib:fref dsigma-%data%
-                                         (i)
-                                         ((1 *))
-                                         dsigma-%offset%))
-                       (declare (ignore))
-                       (setf (f2cl-lib:fref dsigma-%data%
-                                            (i)
-                                            ((1 *))
-                                            dsigma-%offset%)
-                               var-0)
-                       (setf (f2cl-lib:fref dsigma-%data%
-                                            (i)
-                                            ((1 *))
-                                            dsigma-%offset%)
-                               var-1)
-                       ret-val)
+                     (dlamc3
+                      (f2cl-lib:fref dsigma-%data% (i) ((1 *)) dsigma-%offset%)
+                      (f2cl-lib:fref dsigma-%data%
+                                     (i)
+                                     ((1 *))
+                                     dsigma-%offset%))
                      (f2cl-lib:fref dsigma-%data%
                                     (i)
                                     ((1 *))
@@ -285,21 +269,12 @@
                         (/
                          (/ (f2cl-lib:fref z-%data% (i) ((1 *)) z-%offset%)
                             (-
-                             (multiple-value-bind (ret-val var-0 var-1)
-                                 (dlamc3
-                                  (f2cl-lib:fref dsigma-%data%
-                                                 (i)
-                                                 ((1 *))
-                                                 dsigma-%offset%)
-                                  dsigj)
-                               (declare (ignore))
-                               (setf (f2cl-lib:fref dsigma-%data%
-                                                    (i)
-                                                    ((1 *))
-                                                    dsigma-%offset%)
-                                       var-0)
-                               (setf dsigj var-1)
-                               ret-val)
+                             (dlamc3
+                              (f2cl-lib:fref dsigma-%data%
+                                             (i)
+                                             ((1 *))
+                                             dsigma-%offset%)
+                              dsigj)
                              diflj))
                          (+
                           (f2cl-lib:fref dsigma-%data%
@@ -315,21 +290,12 @@
                         (/
                          (/ (f2cl-lib:fref z-%data% (i) ((1 *)) z-%offset%)
                             (+
-                             (multiple-value-bind (ret-val var-0 var-1)
-                                 (dlamc3
-                                  (f2cl-lib:fref dsigma-%data%
-                                                 (i)
-                                                 ((1 *))
-                                                 dsigma-%offset%)
-                                  dsigjp)
-                               (declare (ignore))
-                               (setf (f2cl-lib:fref dsigma-%data%
-                                                    (i)
-                                                    ((1 *))
-                                                    dsigma-%offset%)
-                                       var-0)
-                               (setf dsigjp var-1)
-                               ret-val)
+                             (dlamc3
+                              (f2cl-lib:fref dsigma-%data%
+                                             (i)
+                                             ((1 *))
+                                             dsigma-%offset%)
+                              dsigjp)
                              difrj))
                          (+
                           (f2cl-lib:fref dsigma-%data%

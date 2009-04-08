@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -85,10 +85,10 @@
            (integs f2cl-lib:integer4 integs-%data% integs-%offset%)
            (ipvtg f2cl-lib:integer4 ipvtg-%data% ipvtg-%offset%)
            (ipvtw f2cl-lib:integer4 ipvtw-%data% ipvtw-%offset%))
-        (prog ((izet 0) (iz 0) (value 0.0d0) (jj 0) (xcol 0.0d0) (hrho 0.0d0)
-               (j 0) (gval 0.0d0) (h 0.0d0) (xii 0.0d0) (l 0) (lw 0) (nrow 0)
-               (ncol 0) (iold 0) (lside 0) (iv 0) (iw 0) (ig 0) (irhs 0)
-               (idmzo 0) (idmz 0) (i 0) (m1 0)
+        (prog ((izet 0) (iz 0) (value 0.0) (jj 0) (xcol 0.0) (hrho 0.0) (j 0)
+               (gval 0.0) (h 0.0) (xii 0.0) (l 0) (lw 0) (nrow 0) (ncol 0)
+               (iold 0) (lside 0) (iv 0) (iw 0) (ig 0) (irhs 0) (idmzo 0)
+               (idmz 0) (i 0) (m1 0)
                (dummy (make-array 1 :element-type 'double-float))
                (at (make-array 28 :element-type 'double-float))
                (df (make-array 800 :element-type 'double-float))
@@ -110,7 +110,7 @@
          label10
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i mstar) nil)
-            (tagbody label20 (setf (f2cl-lib:fref zval (i) ((1 40))) 0.0d0)))
+            (tagbody label20 (setf (f2cl-lib:fref zval (i) ((1 40))) 0.0)))
          label30
           (setf idmz 1)
           (setf idmzo 1)
@@ -122,7 +122,7 @@
           (setf lside 0)
           (setf iold 1)
           (setf ncol (f2cl-lib:int-mul 2 mstar))
-          (setf rnorm 0.0d0)
+          (setf rnorm 0.0)
           (if (> mode 1) (go label80))
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i n) nil)
@@ -170,7 +170,7 @@
                         ((> l lw) nil)
             (tagbody
              label84
-              (setf (f2cl-lib:fref w-%data% (l) ((1 1)) w-%offset%) 0.0d0)))
+              (setf (f2cl-lib:fref w-%data% (l) ((1 1)) w-%offset%) 0.0)))
          label90
           (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                         ((> i n) nil)

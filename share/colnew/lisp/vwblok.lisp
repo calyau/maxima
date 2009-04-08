@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -43,9 +43,9 @@
            (zval double-float zval-%data% zval-%offset%)
            (dmzo double-float dmzo-%data% dmzo-%offset%)
            (acol double-float acol-%data% acol-%offset%))
-        (prog ((bl 0.0d0) (jdf 0) (ll 0) (lp1 0) (iw 0) (ajl 0.0d0) (jw 0)
-               (jv 0) (mj 0) (jcomp 0) (jn 0) (i2 0) (i1 0) (i0 0) (ir 0)
-               (jcol 0) (j 0) (l 0) (fact 0.0d0) (id 0)
+        (prog ((bl 0.0) (jdf 0) (ll 0) (lp1 0) (iw 0) (ajl 0.0) (jw 0) (jv 0)
+               (mj 0) (jcomp 0) (jn 0) (i2 0) (i1 0) (i0 0) (ir 0) (jcol 0)
+               (j 0) (l 0) (fact 0.0) (id 0)
                (basm (make-array 5 :element-type 'double-float))
                (ha (make-array 28 :element-type 'double-float)))
           (declare (type (array double-float (28)) ha)
@@ -61,10 +61,10 @@
                                    (id id)
                                    ((1 kd) (1 1))
                                    wi-%offset%)
-                      1.0d0)
+                      1.0)
              label10))
          label30
-          (setf fact 1.0d0)
+          (setf fact 1.0)
           (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
                         ((> l mmax) nil)
             (tagbody
@@ -91,7 +91,7 @@
                                        (ir jcol)
                                        ((1 ncomp) (1 1))
                                        df-%offset%)
-                          0.0d0)))))
+                          0.0)))))
          label40
           (multiple-value-bind (var-0 var-1 var-2)
               (funcall dfsub xcol zval df)

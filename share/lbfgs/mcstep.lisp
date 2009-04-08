@@ -1,18 +1,18 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :common-lisp-user)
 
@@ -21,14 +21,14 @@
   (declare (type (f2cl-lib:integer4) info)
            (type f2cl-lib:logical brackt)
            (type (double-float) stpmax stpmin dp fp stp dy fy sty dx fx stx))
-  (prog ((gamma 0.0d0) (p 0.0d0) (q 0.0d0) (r 0.0d0) (s 0.0d0) (sgnd 0.0d0)
-         (stpc 0.0d0) (stpf 0.0d0) (stpq 0.0d0) (theta 0.0d0) (bound nil))
+  (prog ((gamma 0.0) (p 0.0) (q 0.0) (r 0.0) (s 0.0) (sgnd 0.0) (stpc 0.0)
+         (stpf 0.0) (stpq 0.0) (theta 0.0) (bound nil))
     (declare (type f2cl-lib:logical bound)
              (type (double-float) theta stpq stpf stpc sgnd s r q p gamma))
     (setf info 0)
     (if
      (or (and brackt (or (<= stp (min stx sty)) (>= stp (max stx sty))))
-         (>= (* dx (- stp stx)) 0.0d0)
+         (>= (* dx (- stp stx)) 0.0)
          (< stpmax stpmin))
      (go end_label))
     (setf sgnd (* dp (/ dx (f2cl-lib:dabs dx))))
@@ -60,7 +60,7 @@
          (t
           (setf stpf (+ stpc (/ (- stpq stpc) 2)))))
        (setf brackt f2cl-lib:%true%))
-      ((< sgnd 0.0d0)
+      ((< sgnd 0.0)
        (setf info 2)
        (setf bound f2cl-lib:%false%)
        (setf theta (+ (/ (* 3 (- fx fp)) (- stp stx)) dx dp))
@@ -95,13 +95,13 @@
        (setf gamma
                (* s
                   (f2cl-lib:dsqrt
-                   (max 0.0d0 (- (expt (/ theta s) 2) (* (/ dx s) (/ dp s)))))))
+                   (max 0.0 (- (expt (/ theta s) 2) (* (/ dx s) (/ dp s)))))))
        (if (> stp stx) (setf gamma (- gamma)))
        (setf p (+ (- gamma dp) theta))
        (setf q (+ gamma (- dx dp) gamma))
        (setf r (/ p q))
        (cond
-         ((and (< r 0.0d0) (/= gamma 0.0d0))
+         ((and (< r 0.0) (/= gamma 0.0))
           (setf stpc (+ stp (* r (- stx stp)))))
          ((> stp stx)
           (setf stpc stpmax))
@@ -154,7 +154,7 @@
        (setf dy dp))
       (t
        (cond
-         ((< sgnd 0.0d0)
+         ((< sgnd 0.0)
           (setf sty stx)
           (setf fy fx)
           (setf dy dx)))
@@ -168,9 +168,9 @@
       ((and brackt bound)
        (cond
          ((> sty stx)
-          (setf stp (min (+ stx (* 0.66d0 (- sty stx))) stp)))
+          (setf stp (min (+ stx (* 0.66 (- sty stx))) stp)))
          (t
-          (setf stp (max (+ stx (* 0.66d0 (- sty stx))) stp))))))
+          (setf stp (max (+ stx (* 0.66 (- sty stx))) stp))))))
     (go end_label)
    end_label
     (return (values stx fx dx sty fy dy stp nil nil brackt nil nil info))))

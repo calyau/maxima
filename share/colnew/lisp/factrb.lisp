@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -26,14 +26,14 @@
       ((w double-float w-%data% w-%offset%)
        (d double-float d-%data% d-%offset%)
        (ipivot f2cl-lib:integer4 ipivot-%data% ipivot-%offset%))
-    (prog ((dabs$ 0.0d0) (dmax1$ 0.0d0) (colmax 0.0d0) (t$ 0.0d0) (s 0.0d0)
-           (i 0) (j 0) (k 0) (l 0) (kp1 0))
+    (prog ((dabs$ 0.0) (dmax1$ 0.0) (colmax 0.0) (t$ 0.0) (s 0.0) (i 0) (j 0)
+           (k 0) (l 0) (kp1 0))
       (declare (type (f2cl-lib:integer4) kp1 l k j i)
                (type (double-float) s t$ colmax dmax1$ dabs$))
       (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                     ((> i nrow) nil)
         (tagbody
-          (setf (f2cl-lib:fref d-%data% (i) ((1 nrow)) d-%offset%) 0.0d0)
+          (setf (f2cl-lib:fref d-%data% (i) ((1 nrow)) d-%offset%) 0.0)
          label10))
       (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                     ((> j ncol) nil)
@@ -53,7 +53,7 @@
      label20
       (setf k 1)
      label30
-      (if (= (f2cl-lib:fref d-%data% (k) ((1 nrow)) d-%offset%) 0.0d0)
+      (if (= (f2cl-lib:fref d-%data% (k) ((1 nrow)) d-%offset%) 0.0)
           (go label90))
       (if (= k nrow) (go label80))
       (setf l k)
@@ -99,7 +99,7 @@
            (f2cl-lib:fref d-%data% (k) ((1 nrow)) d-%offset%))
         (f2cl-lib:fref d-%data% (k) ((1 nrow)) d-%offset%))
        (go label90))
-      (setf t$ (/ -1.0d0 t$))
+      (setf t$ (/ -1.0 t$))
       (f2cl-lib:fdo (i kp1 (f2cl-lib:int-add i 1))
                     ((> i nrow) nil)
         (tagbody
@@ -128,7 +128,7 @@
           (setf (f2cl-lib:fref w-%data% (k j) ((1 nrow) (1 ncol)) w-%offset%)
                   t$)
          label62
-          (if (= t$ 0.0d0) (go label70))
+          (if (= t$ 0.0) (go label70))
           (f2cl-lib:fdo (i kp1 (f2cl-lib:int-add i 1))
                         ((> i nrow) nil)
             (tagbody

@@ -1,18 +1,18 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.199 2009/01/07 19:16:59 rtoy Exp $"
+;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2008-12 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :common-lisp-user)
 
@@ -33,18 +33,18 @@
       (inmc 0)
       (iycn 0)
       (iscn 0)
-      (one 1.0d0)
-      (zero 0.0d0)
-      (gnorm 0.0d0)
-      (stp1 0.0d0)
-      (ftol 0.0d0)
-      (stp 0.0d0)
-      (ys 0.0d0)
-      (yy 0.0d0)
-      (sq 0.0d0)
-      (yr 0.0d0)
-      (beta 0.0d0)
-      (xnorm 0.0d0))
+      (one 1.0)
+      (zero 0.0)
+      (gnorm 0.0)
+      (stp1 0.0)
+      (ftol 0.0)
+      (stp 0.0)
+      (ys 0.0)
+      (yy 0.0)
+      (sq 0.0)
+      (yr 0.0)
+      (beta 0.0)
+      (xnorm 0.0))
   (declare (type f2cl-lib:logical finish)
            (type (f2cl-lib:integer4) iter nfun point ispt iypt maxfev info
                                      bound npt cp i nfev inmc iycn iscn)
@@ -74,14 +74,14 @@
             (setf iter 0)
             (if (or (<= n 0) (<= m 0)) (go label196))
             (cond
-              ((<= gtol 1.0d-4)
+              ((<= gtol 1.0e-4)
                (if (> lp 0)
                    (f2cl-lib:fformat lp
                                      ("~%"
                                       "  GTOL IS LESS THAN OR EQUAL TO 1.D-04"
                                       "~%" " IT HAS BEEN RESET TO 9.D-01"
                                       "~%")))
-               (setf gtol 0.9d0)))
+               (setf gtol 0.9)))
             (setf nfun 1)
             (setf point 0)
             (setf finish f2cl-lib:%false%)
@@ -101,7 +101,7 @@
                  (tagbody
                   label40
                    (setf (f2cl-lib:fref diag-%data% (i) ((1 n)) diag-%offset%)
-                           1.0d0)))))
+                           1.0)))))
             (setf ispt (f2cl-lib:int-add n (f2cl-lib:int-mul 2 m)))
             (setf iypt (f2cl-lib:int-add ispt (f2cl-lib:int-mul n m)))
             (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
@@ -124,9 +124,17 @@
                                           (i)
                                           ((1 n))
                                           diag-%offset%)))))
-            (setf gnorm (f2cl-lib:dsqrt (ddot n g 1 g 1)))
+            (setf gnorm
+                    (f2cl-lib:dsqrt
+                     (multiple-value-bind
+                           (ret-val var-0 var-1 var-2 var-3 var-4)
+                         (ddot n g 1 g 1)
+                       (declare (ignore var-1 var-2 var-3 var-4))
+                       (when var-0
+                         (setf n var-0))
+                       ret-val)))
             (setf stp1 (/ one gnorm))
-            (setf ftol 1.0d-4)
+            (setf ftol 1.0e-4)
             (setf maxfev 20)
             (if
              (>= (f2cl-lib:fref iprint-%data% (1) ((1 2)) iprint-%offset%) 0)
@@ -138,63 +146,75 @@
             (if (= iter 1) (go label165))
             (if (> iter m) (setf bound m))
             (setf ys
-                    (ddot n
-                     (f2cl-lib:array-slice w
-                                           double-float
-                                           ((+ iypt npt 1))
-                                           ((1
-                                             (f2cl-lib:int-add
-                                              (f2cl-lib:int-mul n
-                                                                (f2cl-lib:int-add
-                                                                 (f2cl-lib:int-mul
-                                                                  2
-                                                                  m)
-                                                                 1))
-                                              (f2cl-lib:int-mul 2 m)))))
-                     1
-                     (f2cl-lib:array-slice w
-                                           double-float
-                                           ((+ ispt npt 1))
-                                           ((1
-                                             (f2cl-lib:int-add
-                                              (f2cl-lib:int-mul n
-                                                                (f2cl-lib:int-add
-                                                                 (f2cl-lib:int-mul
-                                                                  2
-                                                                  m)
-                                                                 1))
-                                              (f2cl-lib:int-mul 2 m)))))
-                     1))
+                    (multiple-value-bind
+                          (ret-val var-0 var-1 var-2 var-3 var-4)
+                        (ddot n
+                         (f2cl-lib:array-slice w
+                                               double-float
+                                               ((+ iypt npt 1))
+                                               ((1
+                                                 (f2cl-lib:int-add
+                                                  (f2cl-lib:int-mul n
+                                                                    (f2cl-lib:int-add
+                                                                     (f2cl-lib:int-mul
+                                                                      2
+                                                                      m)
+                                                                     1))
+                                                  (f2cl-lib:int-mul 2 m)))))
+                         1
+                         (f2cl-lib:array-slice w
+                                               double-float
+                                               ((+ ispt npt 1))
+                                               ((1
+                                                 (f2cl-lib:int-add
+                                                  (f2cl-lib:int-mul n
+                                                                    (f2cl-lib:int-add
+                                                                     (f2cl-lib:int-mul
+                                                                      2
+                                                                      m)
+                                                                     1))
+                                                  (f2cl-lib:int-mul 2 m)))))
+                         1)
+                      (declare (ignore var-1 var-2 var-3 var-4))
+                      (when var-0
+                        (setf n var-0))
+                      ret-val))
             (cond
               ((not diagco)
                (setf yy
-                       (ddot n
-                        (f2cl-lib:array-slice w
-                                              double-float
-                                              ((+ iypt npt 1))
-                                              ((1
-                                                (f2cl-lib:int-add
-                                                 (f2cl-lib:int-mul n
-                                                                   (f2cl-lib:int-add
-                                                                    (f2cl-lib:int-mul
-                                                                     2
-                                                                     m)
-                                                                    1))
-                                                 (f2cl-lib:int-mul 2 m)))))
-                        1
-                        (f2cl-lib:array-slice w
-                                              double-float
-                                              ((+ iypt npt 1))
-                                              ((1
-                                                (f2cl-lib:int-add
-                                                 (f2cl-lib:int-mul n
-                                                                   (f2cl-lib:int-add
-                                                                    (f2cl-lib:int-mul
-                                                                     2
-                                                                     m)
-                                                                    1))
-                                                 (f2cl-lib:int-mul 2 m)))))
-                        1))
+                       (multiple-value-bind
+                             (ret-val var-0 var-1 var-2 var-3 var-4)
+                           (ddot n
+                            (f2cl-lib:array-slice w
+                                                  double-float
+                                                  ((+ iypt npt 1))
+                                                  ((1
+                                                    (f2cl-lib:int-add
+                                                     (f2cl-lib:int-mul n
+                                                                       (f2cl-lib:int-add
+                                                                        (f2cl-lib:int-mul
+                                                                         2
+                                                                         m)
+                                                                        1))
+                                                     (f2cl-lib:int-mul 2 m)))))
+                            1
+                            (f2cl-lib:array-slice w
+                                                  double-float
+                                                  ((+ iypt npt 1))
+                                                  ((1
+                                                    (f2cl-lib:int-add
+                                                     (f2cl-lib:int-mul n
+                                                                       (f2cl-lib:int-add
+                                                                        (f2cl-lib:int-mul
+                                                                         2
+                                                                         m)
+                                                                        1))
+                                                     (f2cl-lib:int-mul 2 m)))))
+                            1)
+                         (declare (ignore var-1 var-2 var-3 var-4))
+                         (when var-0
+                           (setf n var-0))
+                         ret-val))
                (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                              ((> i n) nil)
                  (tagbody
@@ -251,22 +271,29 @@
                 (setf cp (f2cl-lib:int-sub cp 1))
                 (if (= cp -1) (setf cp (f2cl-lib:int-sub m 1)))
                 (setf sq
-                        (ddot n
-                         (f2cl-lib:array-slice w
-                                               double-float
-                                               ((+ ispt
-                                                   (f2cl-lib:int-mul cp n)
-                                                   1))
-                                               ((1
-                                                 (f2cl-lib:int-add
-                                                  (f2cl-lib:int-mul n
-                                                                    (f2cl-lib:int-add
-                                                                     (f2cl-lib:int-mul
-                                                                      2
-                                                                      m)
-                                                                     1))
-                                                  (f2cl-lib:int-mul 2 m)))))
-                         1 w 1))
+                        (multiple-value-bind
+                              (ret-val var-0 var-1 var-2 var-3 var-4)
+                            (ddot n
+                             (f2cl-lib:array-slice w
+                                                   double-float
+                                                   ((+ ispt
+                                                       (f2cl-lib:int-mul cp n)
+                                                       1))
+                                                   ((1
+                                                     (f2cl-lib:int-add
+                                                      (f2cl-lib:int-mul n
+                                                                        (f2cl-lib:int-add
+                                                                         (f2cl-lib:int-mul
+                                                                          2
+                                                                          m)
+                                                                         1))
+                                                      (f2cl-lib:int-mul 2
+                                                                        m)))))
+                             1 w 1)
+                          (declare (ignore var-1 var-2 var-3 var-4))
+                          (when var-0
+                            (setf n var-0))
+                          ret-val))
                 (setf inmc (f2cl-lib:int-add n m cp 1))
                 (setf iycn (f2cl-lib:int-add iypt (f2cl-lib:int-mul cp n)))
                 (setf (f2cl-lib:fref w-%data%
@@ -294,31 +321,36 @@
                                            (f2cl-lib:int-mul 2 m))))
                                         w-%offset%)
                          sq))
-                (daxpy n
-                 (-
-                  (f2cl-lib:fref w-%data%
-                                 (inmc)
-                                 ((1
-                                   (f2cl-lib:int-add
-                                    (f2cl-lib:int-mul n
-                                                      (f2cl-lib:int-add
-                                                       (f2cl-lib:int-mul 2 m)
-                                                       1))
-                                    (f2cl-lib:int-mul 2 m))))
-                                 w-%offset%))
-                 (f2cl-lib:array-slice w
-                                       double-float
-                                       ((+ iycn 1))
-                                       ((1
-                                         (f2cl-lib:int-add
-                                          (f2cl-lib:int-mul n
-                                                            (f2cl-lib:int-add
-                                                             (f2cl-lib:int-mul
-                                                              2
-                                                              m)
-                                                             1))
-                                          (f2cl-lib:int-mul 2 m)))))
-                 1 w 1)
+                (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
+                    (daxpy n
+                     (-
+                      (f2cl-lib:fref w-%data%
+                                     (inmc)
+                                     ((1
+                                       (f2cl-lib:int-add
+                                        (f2cl-lib:int-mul n
+                                                          (f2cl-lib:int-add
+                                                           (f2cl-lib:int-mul 2
+                                                                             m)
+                                                           1))
+                                        (f2cl-lib:int-mul 2 m))))
+                                     w-%offset%))
+                     (f2cl-lib:array-slice w
+                                           double-float
+                                           ((+ iycn 1))
+                                           ((1
+                                             (f2cl-lib:int-add
+                                              (f2cl-lib:int-mul n
+                                                                (f2cl-lib:int-add
+                                                                 (f2cl-lib:int-mul
+                                                                  2
+                                                                  m)
+                                                                 1))
+                                              (f2cl-lib:int-mul 2 m)))))
+                     1 w 1)
+                  (declare (ignore var-1 var-2 var-3 var-4 var-5))
+                  (when var-0
+                    (setf n var-0)))
                label125))
             (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                           ((> i n) nil)
@@ -353,22 +385,29 @@
                           ((> i bound) nil)
               (tagbody
                 (setf yr
-                        (ddot n
-                         (f2cl-lib:array-slice w
-                                               double-float
-                                               ((+ iypt
-                                                   (f2cl-lib:int-mul cp n)
-                                                   1))
-                                               ((1
-                                                 (f2cl-lib:int-add
-                                                  (f2cl-lib:int-mul n
-                                                                    (f2cl-lib:int-add
-                                                                     (f2cl-lib:int-mul
-                                                                      2
-                                                                      m)
-                                                                     1))
-                                                  (f2cl-lib:int-mul 2 m)))))
-                         1 w 1))
+                        (multiple-value-bind
+                              (ret-val var-0 var-1 var-2 var-3 var-4)
+                            (ddot n
+                             (f2cl-lib:array-slice w
+                                                   double-float
+                                                   ((+ iypt
+                                                       (f2cl-lib:int-mul cp n)
+                                                       1))
+                                                   ((1
+                                                     (f2cl-lib:int-add
+                                                      (f2cl-lib:int-mul n
+                                                                        (f2cl-lib:int-add
+                                                                         (f2cl-lib:int-mul
+                                                                          2
+                                                                          m)
+                                                                         1))
+                                                      (f2cl-lib:int-mul 2
+                                                                        m)))))
+                             1 w 1)
+                          (declare (ignore var-1 var-2 var-3 var-4))
+                          (when var-0
+                            (setf n var-0))
+                          ret-val))
                 (setf beta
                         (*
                          (f2cl-lib:fref w-%data%
@@ -401,20 +440,26 @@
                                         w-%offset%)
                          beta))
                 (setf iscn (f2cl-lib:int-add ispt (f2cl-lib:int-mul cp n)))
-                (daxpy n beta
-                 (f2cl-lib:array-slice w
-                                       double-float
-                                       ((+ iscn 1))
-                                       ((1
-                                         (f2cl-lib:int-add
-                                          (f2cl-lib:int-mul n
-                                                            (f2cl-lib:int-add
-                                                             (f2cl-lib:int-mul
-                                                              2
-                                                              m)
-                                                             1))
-                                          (f2cl-lib:int-mul 2 m)))))
-                 1 w 1)
+                (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
+                    (daxpy n beta
+                     (f2cl-lib:array-slice w
+                                           double-float
+                                           ((+ iscn 1))
+                                           ((1
+                                             (f2cl-lib:int-add
+                                              (f2cl-lib:int-mul n
+                                                                (f2cl-lib:int-add
+                                                                 (f2cl-lib:int-mul
+                                                                  2
+                                                                  m)
+                                                                 1))
+                                              (f2cl-lib:int-mul 2 m)))))
+                     1 w 1)
+                  (declare (ignore var-2 var-3 var-4 var-5))
+                  (when var-0
+                    (setf n var-0))
+                  (when var-1
+                    (setf beta var-1)))
                 (setf cp (f2cl-lib:int-add cp 1))
                 (if (= cp m) (setf cp 0))
                label145))
@@ -552,9 +597,25 @@
                                           w-%offset%)))))
             (setf point (f2cl-lib:int-add point 1))
             (if (= point m) (setf point 0))
-            (setf gnorm (f2cl-lib:dsqrt (ddot n g 1 g 1)))
-            (setf xnorm (f2cl-lib:dsqrt (ddot n x 1 x 1)))
-            (setf xnorm (f2cl-lib:dmax1 1.0d0 xnorm))
+            (setf gnorm
+                    (f2cl-lib:dsqrt
+                     (multiple-value-bind
+                           (ret-val var-0 var-1 var-2 var-3 var-4)
+                         (ddot n g 1 g 1)
+                       (declare (ignore var-1 var-2 var-3 var-4))
+                       (when var-0
+                         (setf n var-0))
+                       ret-val)))
+            (setf xnorm
+                    (f2cl-lib:dsqrt
+                     (multiple-value-bind
+                           (ret-val var-0 var-1 var-2 var-3 var-4)
+                         (ddot n x 1 x 1)
+                       (declare (ignore var-1 var-2 var-3 var-4))
+                       (when var-0
+                         (setf n var-0))
+                       ret-val)))
+            (setf xnorm (f2cl-lib:dmax1 1.0 xnorm))
             (if (<= (/ gnorm xnorm) eps) (setf finish f2cl-lib:%true%))
             (if
              (>= (f2cl-lib:fref iprint-%data% (1) ((1 2)) iprint-%offset%) 0)
@@ -603,19 +664,7 @@
             (go end_label)
            end_label
             (return
-             (values nil
-                     nil
-                     nil
-                     nil
-                     nil
-                     nil
-                     nil
-                     nil
-                     nil
-                     nil
-                     nil
-                     iflag
-                     nil))))))))
+             (values n nil nil nil nil nil nil nil nil nil nil iflag nil))))))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
@@ -629,8 +678,7 @@
                         (array fortran-to-lisp::integer4 (2)) (double-float)
                         (double-float) (array double-float (*))
                         (fortran-to-lisp::integer4) (array double-float (*)))
-           :return-values '(nil nil nil nil nil nil nil nil nil nil nil
-                            fortran-to-lisp::iflag nil)
-           :calls '(fortran-to-lisp::mcsrch fortran-to-lisp::daxpy
-                    fortran-to-lisp::lb1 fortran-to-lisp::ddot))))
+           :return-values '(fortran-to-lisp::n nil nil nil nil nil nil nil nil
+                            nil nil fortran-to-lisp::iflag nil)
+           :calls '(fortran-to-lisp::mcsrch fortran-to-lisp::lb1))))
 

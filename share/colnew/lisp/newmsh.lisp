@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :colnew)
 
@@ -87,12 +87,12 @@
            (slope double-float slope-%data% slope-%offset%)
            (accum double-float accum-%data% accum-%offset%)
            (fixpnt double-float fixpnt-%data% fixpnt-%offset%))
-        (prog ((lcarry 0) (l 0) (tsum 0.0d0) (accr 0.0d0) (lnew 0) (lold 0)
-               (accl 0.0d0) (in 0) (nmax2 0) (nmx 0) (naccum 0) (degequ 0.0d0)
-               (avrg 0.0d0) (temp 0.0d0) (iflip 0) (slphmx 0.0d0) (jz 0) (jj 0)
-               (oneovh 0.0d0) (hiold 0.0d0) (x 0.0d0) (hd6 0.0d0) (kstore 0)
-               (n2 0) (dx 0.0d0) (nregn 0) (nmin 0) (iright 0) (xright 0.0d0)
-               (xleft 0.0d0) (ileft 0) (np1 0) (j 0) (i 0) (noldp1 0) (nfxp1 0)
+        (prog ((lcarry 0) (l 0) (tsum 0.0) (accr 0.0) (lnew 0) (lold 0)
+               (accl 0.0) (in 0) (nmax2 0) (nmx 0) (naccum 0) (degequ 0.0)
+               (avrg 0.0) (temp 0.0) (iflip 0) (slphmx 0.0) (jz 0) (jj 0)
+               (oneovh 0.0) (hiold 0.0) (x 0.0) (hd6 0.0) (kstore 0) (n2 0)
+               (dx 0.0) (nregn 0) (nmin 0) (iright 0) (xright 0.0) (xleft 0.0)
+               (ileft 0) (np1 0) (j 0) (i 0) (noldp1 0) (nfxp1 0)
                (d2 (make-array 40 :element-type 'double-float))
                (d1 (make-array 40 :element-type 'double-float))
                (dummy (make-array 1 :element-type 'double-float)))
@@ -167,7 +167,7 @@
                        (+
                         (* (/ (- xright aleft) (- aright aleft))
                            (f2cl-lib:dfloat n))
-                        1.5d0)))
+                        1.5)))
               (if (> nmin (f2cl-lib:int-add (f2cl-lib:int-sub n nfxpnt) j))
                   (setf nmin (f2cl-lib:int-add (f2cl-lib:int-sub n nfxpnt) j)))
               (setf iright (f2cl-lib:max0 (f2cl-lib:int-add ileft 1) nmin))
@@ -221,7 +221,7 @@
                                        (i)
                                        ((1 1))
                                        xiold-%offset%))
-                       6.0d0))
+                       6.0))
               (setf x
                       (+
                        (f2cl-lib:fref xiold-%data% (i) ((1 1)) xiold-%offset%)
@@ -241,7 +241,7 @@
                                  var-15 var-16))
                 (setf i var-0)
                 (setf x var-1))
-              (setf x (+ x (* 4.0d0 hd6)))
+              (setf x (+ x (* 4.0 hd6)))
               (setf kstore
                       (f2cl-lib:int-add kstore (f2cl-lib:int-mul 3 mstar)))
               (multiple-value-bind
@@ -276,7 +276,7 @@
                                        ((1 1))
                                        xi-%offset%)
                         (f2cl-lib:fref xi-%data% (i) ((1 1)) xi-%offset%))
-                       6.0d0))
+                       6.0))
               (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                             ((> j 4) nil)
                 (tagbody
@@ -320,7 +320,7 @@
                                        ((f2cl-lib:int-add i 1))
                                        ((1 1))
                                        xiold-%offset%))
-                       2.0d0))
+                       2.0))
               (setf (f2cl-lib:fref xi-%data%
                                    ((f2cl-lib:int-add j 1))
                                    ((1 1))
@@ -345,10 +345,10 @@
                   (- (f2cl-lib:fref xiold-%data% (3) ((1 1)) xiold-%offset%)
                      (f2cl-lib:fref xiold-%data% (2) ((1 1)) xiold-%offset%)))
           (horder 2 d2 hiold dmz ncomp k)
-          (setf (f2cl-lib:fref accum-%data% (1) ((1 1)) accum-%offset%) 0.0d0)
-          (setf (f2cl-lib:fref slope-%data% (1) ((1 1)) slope-%offset%) 0.0d0)
+          (setf (f2cl-lib:fref accum-%data% (1) ((1 1)) accum-%offset%) 0.0)
+          (setf (f2cl-lib:fref slope-%data% (1) ((1 1)) slope-%offset%) 0.0)
           (setf oneovh
-                  (/ 2.0d0
+                  (/ 2.0
                      (- (f2cl-lib:fref xiold-%data% (3) ((1 1)) xiold-%offset%)
                         (f2cl-lib:fref xiold-%data%
                                        (1)
@@ -371,7 +371,7 @@
                               (f2cl-lib:fref d1 (jj) ((1 40)))))
                           (f2cl-lib:fref wgtmsh (j) ((1 40)))
                           oneovh)
-                         (+ 1.0d0
+                         (+ 1.0
                             (f2cl-lib:dabs
                              (f2cl-lib:fref z-%data%
                                             (jz)
@@ -403,7 +403,7 @@
               (if (= iflip -1) (horder i d1 hiold dmz ncomp k))
               (if (= iflip 1) (horder i d2 hiold dmz ncomp k))
               (setf oneovh
-                      (/ 2.0d0
+                      (/ 2.0
                          (-
                           (f2cl-lib:fref xiold-%data%
                                          ((f2cl-lib:int-add i 1))
@@ -414,7 +414,7 @@
                                          ((1 1))
                                          xiold-%offset%))))
               (setf (f2cl-lib:fref slope-%data% (i) ((1 1)) slope-%offset%)
-                      0.0d0)
+                      0.0)
               (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                             ((> j ntol) nil)
                 (tagbody
@@ -439,7 +439,7 @@
                                   (f2cl-lib:fref d1 (jj) ((1 40)))))
                               (f2cl-lib:fref wgtmsh (j) ((1 40)))
                               oneovh)
-                             (+ 1.0d0
+                             (+ 1.0
                                 (f2cl-lib:dabs
                                  (f2cl-lib:fref z-%data%
                                                 (jz)
@@ -483,7 +483,7 @@
                                    ((f2cl-lib:int-add nold 1))
                                    ((1 1))
                                    accum-%offset%)
-                    1.0d0)))
+                    1.0)))
           (if (< iprint 0)
               (f2cl-lib:fformat iout
                                 ("~%" " MESH SELECTION INFO," "~%"
@@ -494,7 +494,7 @@
                                 degequ
                                 naccum))
           (if (< avrg precis) (go label100))
-          (if (>= degequ 0.5d0) (go label100))
+          (if (>= degequ 0.5) (go label100))
           (setf nmx
                   (the f2cl-lib:integer4
                        (truncate (f2cl-lib:max0 (+ nold 1) naccum) 2)))
@@ -510,7 +510,7 @@
               (setf mshalt (f2cl-lib:int-add mshalt 1)))
           (setf mshflg 0)
           (setf in 1)
-          (setf accl 0.0d0)
+          (setf accl 0.0)
           (setf lold 2)
           (setf (f2cl-lib:fref xi-%data% (1) ((1 1)) xi-%offset%) aleft)
           (setf (f2cl-lib:fref xi-%data%
@@ -563,7 +563,7 @@
                                            ((1 1))
                                            accum-%offset%))
                          (f2cl-lib:dfloat n))
-                        0.5d0)))
+                        0.5)))
               (setf nregn
                       (f2cl-lib:min0 nregn
                                      (f2cl-lib:int-add

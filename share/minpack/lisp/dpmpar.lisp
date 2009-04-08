@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.212 2009/01/08 18:58:49 rtoy Exp $"
+;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -7,12 +7,12 @@
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp Snapshot 2009-01 (19E)
+;;; Using Lisp CMU Common Lisp 19f (19F)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls nil)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
 (in-package :minpack)
 
@@ -20,15 +20,15 @@
 (let ((dmach
        (make-array 3
                    :element-type 'double-float
-                   :initial-contents '(2.22044604926d-16 2.22507385852d-308
-                                       1.79769313485d308))))
+                   :initial-contents '(2.22044604926e-16 2.22507385852e-308
+                                       1.79769313485e308))))
   (declare (type (array double-float (3)) dmach))
   (defun dpmpar (i)
     (declare (type (f2cl-lib:integer4) i))
     (prog ((maxmag (make-array 4 :element-type 'f2cl-lib:integer4))
            (minmag (make-array 4 :element-type 'f2cl-lib:integer4))
            (mcheps (make-array 4 :element-type 'f2cl-lib:integer4))
-           (dpmpar 0.0d0))
+           (dpmpar 0.0))
       (declare (type (double-float) dpmpar)
                (type (array f2cl-lib:integer4 (4)) mcheps minmag maxmag))
       '"     **********"
