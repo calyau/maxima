@@ -791,8 +791,7 @@ sin(y)*(10.0+6*cos(x)),
 (defun draw2d-parametric (param range1 &aux range tem)
   (cond ((and ($listp (setq tem (nth 4 param)))
               (symbolp (cadr tem))
-              (eql ($length tem) 3)
-              (<= (length (symbol-name (cadr tem))) 2))
+              (eql ($length tem) 3))
          ;; sure looks like a range
          (setq range tem)))
   (let* (($plot_options ($append ($rest param 3)
