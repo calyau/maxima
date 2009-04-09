@@ -1669,7 +1669,7 @@
     ((bigfloat-numerical-eval-p z)
      (bfloat-erf ($bfloat z)))
     ((complex-bigfloat-numerical-eval-p z)
-     (complex-bfloat-erf 
+     (complex-bfloat-erf
        (add ($bfloat ($realpart z)) (mul '$%i ($bfloat ($imagpart z))))))
 
     ;; Argument simplification
@@ -1724,27 +1724,28 @@
         result))))
 
 (defun bfloat-erf (z)
+  (let ((1//2 ($bfloat (div 1 2))))
   ;; The argument is real, the result is real too
-  ($realpart
-    (mul
-      (simplify (list '(%signum) z))
-      (sub 1.0
-        (mul 
-          (div 1.0 (power ($bfloat '$%pi) 0.5))
-          (bfloat-gamma-incomplete ($bfloat 0.5) ($bfloat (power z 2))))))))
+    ($realpart
+      (mul
+        (simplify (list '(%signum) z))
+        (sub 1
+          (mul 
+            (div 1 (power ($bfloat '$%pi) 1//2))
+            (bfloat-gamma-incomplete 1//2 ($bfloat (power z 2)))))))))
 
 (defun complex-bfloat-erf (z)
   (let* (($ratprint nil)
-         (result 
-           ($rectform
-             (mul
-               ($rectform (div (power (power z 2) 0.5) z))
-               (sub 1.0
-                 (mul 
-                   (div 1.0 (power ($bfloat '$%pi) 0.5))
-                   (complex-bfloat-gamma-incomplete 
-                     ($bfloat 0.5) 
-                     ($bfloat (power z 2)))))))))
+         (1//2 ($bfloat (div 1 2)))
+         (result
+           (cmul
+             (cdiv (cpower (cpower z 2) 1//2) z)
+             (sub 1
+               (cmul 
+                 (div 1 (power ($bfloat '$%pi) 1//2))
+                 (complex-bfloat-gamma-incomplete 
+                   1//2
+                   ($bfloat (cpower z 2))))))))
     (cond
       ((zerop1 ($imagpart z))
        ;; Pure real argument, the result is real
