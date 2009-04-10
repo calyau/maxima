@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.10 2009-04-01 04:29:31 villate Exp $
+;; $Id: plotdf.lisp,v 1.11 2009-04-10 13:46:28 villate Exp $
 
 (in-package :maxima)
 
@@ -155,7 +155,7 @@
 	      (if (listp expr)
 		  (mapcar #'subxy expr)
 		(cond ((eq expr s1) '$x) ((eq expr s2) '$y) (t expr))))
-	    (setf fun (mapcar #'subxy fun))
+	    (setf mfun (mapcar #'subxy mfun))
 	    (setf options (cdr options)))))
 ;; the next two lines should take into account parameters given in the options
 ;;    (if (delete '$y (delete '$x (rest (mfuncall '$listofvars ode))))
