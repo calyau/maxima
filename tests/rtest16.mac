@@ -161,7 +161,7 @@ limit(atan2(y,x),y,minf);
 
 /* Bug 1548643 */
 limit(abs(sqrt(1-1/x)-1),x,0);
-'limit(abs(sqrt(1-1/x)-1),x,0);
+inf;
 
 /* Bug 671574 */
 limit(x*atan(x)/(x+1),x,inf);
@@ -396,7 +396,7 @@ und;
 
 /* [ 1587235 ] limit(floor(x),x,1) wrong */
 limit(floor(x),x,0);
-'limit(floor(x),x,0);
+und;
 
 /* [ 1885377 ] wrong limit evaluation in 5.14.0 */
 limit((3/4)^(5*n+1), n, inf);
@@ -408,6 +408,10 @@ minf;
 /* [ 2083561 ] Limit of the Wallis product */
 limit((%pi*4^N*N!^2)/(2*2^(2*N)*gamma(N+1/2)*gamma(N+3/2)), N, inf);
 %pi/2;
+
+/* wrong limit(log(gamma(x+1))/x,x,0) - ID: 2727078 */
+limit(log(gamma(x+1))/x, x, 0);
+-%gamma;
 
 /* [ 635606 ] limit(abs(log(x))) internal error, UND */
 limit(abs(log(x)), x, 0);

@@ -247,9 +247,11 @@ It appears in LIMIT and DEFINT.......")
 	  ((eq val '$minf)
 	   `(,(assume `((mgreaterp) -1e+8 ,var)) ,@new-assumptions))
 	  ((eq direction '$plus)
-	   `(,(assume `((mgreaterp) ,var 0)) ,@new-assumptions)) ;All limits around 0
+	   `(,(assume `((mgreaterp) 1e-8 ,var))
+	     ,(assume `((mgreaterp) ,var 0)) ,@new-assumptions)) ;All limits around 0
 	  ((eq direction '$minus)
-	   `(,(assume `((mgreaterp) 0 ,var)) ,@new-assumptions))
+	   `(,(assume `((mgreaterp) ,var -1e-8)) 
+	     ,(assume `((mgreaterp) 0 ,var)) ,@new-assumptions))
 	  (t
 	   ()))))
 
@@ -918,10 +920,10 @@ It appears in LIMIT and DEFINT.......")
 	((and (setq e (cons (car e) (mapcar 'stirling0 (cdr e))))
 	      nil))
 	((and (eq (caar e) '%gamma)
-	      (among var (cadr e)))
+	      (eq (limit (cadr e) var val 'think) '$inf))
 	 (stirling (cadr e)))
 	((and (eq (caar e) 'mfactorial)
-	      (among var (cadr e)))
+	      (eq (limit (cadr e) var val 'think) '$inf))
 	 (m* (cadr e) (stirling (cadr e))))
 	(t e)))
 
