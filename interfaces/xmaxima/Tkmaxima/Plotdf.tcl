@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.20 2009-04-01 02:11:50 villate Exp $
+#       $Id: Plotdf.tcl,v 1.21 2009-04-13 01:16:15 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -206,12 +206,13 @@ proc doIntegrate { win x0 y0 } {
 				 lappend didLast $form
 
 				 #puts "doing: $form"
-				 set i -1
-				 set lim [expr {$steps * 2}]
+				 set i 0
+				 set lim [expr {$steps * 3}]
 				 catch {
 				     while { $i <= $lim } {
 					 set xn [$rtosx [lindex $ans [incr i]]]
 					 set yn [$rtosy [lindex $ans [incr i]]]
+					 incr i
 					 # puts "$xn $yn"
 					 # Tests if point is inside the domain.
 					 # In version 1.14 there was an if:
@@ -241,7 +242,7 @@ proc doIntegrate { win x0 y0 } {
 
 
 proc plotVersusT {win } {
-    linkLocal $win didLast dydt dxdt parameters xcenter xradius
+    linkLocal $win didLast dydt dxdt parameters xcenter xradius ycenter yradius
     set nwin .versust.plot2d
     if { "$parameters" != ""  } {
 	set pars ", $parameters"
@@ -251,10 +252,18 @@ proc plotVersusT {win } {
     oset $nwin themaintitle "dy/dt=$dydt, dx/dt=$dxdt $pars"
     lappend plotdata [list maintitle [list oget $nwin themaintitle]]
 
+    set max [expr {$xcenter + $xradius}]
+    set min [expr {$xcenter - $xradius}]
+    if { ($ycenter + $yradius) > $max } {
+	set max [expr {$ycenter + $yradius}]
+    }
+    if { ($ycenter - $yradius) < $min } {
+	set min [expr {$ycenter - $yradius}]
+    }
 
     foreach v $didLast {
 	set ans [eval $v]
-	desetq "tinitial x0 y0 h" [lrange $v 3 end]
+	desetq "tinitial x0 y0 hx hy steps sgn" [lrange $v 3 end]
 	set this [lrange $v 0 5]
 	if { [info exists doing($this) ] } { set tem $doing($this) } else {
 	    set tem ""
@@ -262,33 +271,33 @@ proc plotVersusT {win } {
 	set doing($this) ""
 	set allx "" ; set ally "" ; set allt ""
 	set ii 0
-	foreach {x y } $ans {
+	foreach {t x y } $ans {
 	    lappend allx $x
 	    lappend ally $y
-	    lappend allt [expr $tinitial + $h*$ii]
+	    lappend allt $t
 	    incr ii
 	}
 	
 	foreach u $tem v [list $allx $ally $allt] {
-	    if { $h > 0 } { lappend doing($this) [concat $u $v]} else {
+	    if { $sgn > 0 } { lappend doing($this) [concat $u $v]} else {
 		lappend doing($this) [concat [lreverse $v] $u]
 	    }
 	}
     }
 
     foreach {na val } [array get doing] {
-	lappend plotdata [list label "x(t)"] [list plotpoints 2]
+	lappend plotdata [list xaxislabel "t"]
+	lappend plotdata [list label [oget $win xaxislabel]] [list plotpoints 0]
 	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 0] ]
-	lappend plotdata [list label "y(t)"]	
+	lappend plotdata [list label [oget $win yaxislabel]]	
 	lappend plotdata [list xversusy [lindex $val 2] [lindex $val 1] ]
     }
     if { ![winfo exists .versust] } {
 	toplevel .versust
     }
 
-
-    plot2d -data $plotdata -windowname $nwin -ycenter $xcenter -yradius $xradius
-    wm title .versust [mc "X and Y versus t"]
+    plot2d -data $plotdata -windowname $nwin -ycenter [expr {($max+$min)/2.0}] -yradius [expr {($max-$min)/2.0}]
+    wm title .versust [concat [oget $win xaxislabel] [mc " and "] [oget $win yaxislabel] [mc " versus t"]]
 }
 
 proc lreverse { lis } {
