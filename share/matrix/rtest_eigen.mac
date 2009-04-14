@@ -16,3 +16,27 @@ map (innerproduct, [y[1], y[2], y[3]], [y[2], y[3], y[1]]);
 
 map (ip, [y[1], y[2], y[3]], [y[2], y[3], y[1]]), a= -%pi/2, b=%pi/2;
 [0, 0, 0];
+
+(load("nchrpl"),0);
+0$
+
+mattrace(matrix());
+0$
+
+mattrace(matrix([]));
+0$
+
+mattrace(matrix([a,b],[c,d]));
+a + d$
+
+mattrace(matrix([a,b],[c,d],[p,q]));
+a + d$
+
+/* Regression test for SF bug 2721670 */
+(a[1,1] : 42, mattrace(matrix([1,2],[5,6])));
+7$
+
+(remarray(a),0);
+0$
+
+

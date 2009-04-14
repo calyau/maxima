@@ -12,7 +12,14 @@ altogether.
 
 Programmed by DRB@MC. */
 
-mattrace(a):=block([ans:0],for i thru length(a) do ans:ans+a[i,i],ans);
+mattrace(a) := block([acc : 0, i],
+  if matrixp(a) then (
+    i : lmin(matrix_size(a)),
+    while i > 0 do (
+      acc : acc + inpart(a,i,i),
+      i : i - 1),
+    acc)
+  else funmake('mattrace, [a]));
 
 ncharpoly(a,var):=
   block
