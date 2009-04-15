@@ -28,12 +28,14 @@
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
 (declare-top (special errorsw errrjfflag raterr origval $lhospitallim low*
-		      ind* *indicator half%pi nn* dn* numer denom exp var val varlist
+		      *indicator half%pi nn* dn* numer denom exp var val varlist
 		      *zexptsimp? $tlimswitch $logarc taylored logcombed
 		      $exponentialize lhp? lhcount $ratfac genvar complex-limit lnorecurse
 		      loginprod? $limsubst $logabs a context global-assumptions limit-assumptions
-		      limit-top limitp integer-info old-integer-info
-		      behavior-count behavior-count-now $keepfloat $logexpand))
+		      limit-top limitp integer-info old-integer-info $keepfloat $logexpand))
+
+(defconstant +behavior-count+ 4)
+(defvar *behavior-count-now*)
 
 (load-macsyma-macros rzmac)
 
@@ -65,8 +67,6 @@ It appears in LIMIT and DEFINT.......")
 
 (unless (boundp 'integer-info) (setq integer-info ()))
 
-(unless (boundp 'behavior-count) (setq behavior-count 4))
-
 ;; This should be made to give more information about the error.
 ;;(DEFun DISCONT ()
 ;;       (cond (errorsw (throw 'errorsw t))
@@ -82,7 +82,7 @@ It appears in LIMIT and DEFINT.......")
 (defun putlimval (e v &aux exp)
   (setq exp `((%limit) ,e ,var ,val))
   (unless (assolike exp limit-answers)
-    (setq limit-answers (cons (cons exp v) limit-answers)))
+    (push (cons exp v) limit-answers))
   v)
 
 (defun getlimval (e)
@@ -110,14 +110,14 @@ It appears in LIMIT and DEFINT.......")
       (setq integer-info ()))
 
     (unwind-protect
-	 (let ((exp1 ()) (rd* t) (lhcount $lhospitallim) (behavior-count-now 0)
+	 (let ((exp1 ()) (rd* t) (lhcount $lhospitallim) (*behavior-count-now* 0)
 	       (exp ()) (var ()) (val ()) (dr ())
 	       (*indicator ()) (taylored ()) (origval ())
 	       (logcombed ()) (lhp? ()) ($logexpand t)
 	       (varlist ()) (ans ()) (genvar ()) (loginprod? ())
 	       (limit-answers ()) (limitp t) (simplimplus-problems ())
 	       (lenargs (length args)))
-	   (declare (special lhcount behaviour-count-now exp var val *indicator
+	   (declare (special lhcount *behavior-count-now* exp var val *indicator
 			     taylored origval logcombed lhp?
 			     $logexpand varlist genvar loginprod? limitp))
 	   (prog ()
@@ -133,8 +133,7 @@ It appears in LIMIT and DEFINT.......")
 		     (setq var (second args))
 		       (when ($constantp var)
 			 (merror "Second argument cannot be a constant - `limit'"))
-		       (when (not (or ($subvarp var)
-				      (atom var)))
+		       (unless (or ($subvarp var) (atom var))
 			 (merror "Improper limit variable - `limit'"))
 		       (setq val (infsimp (third args)))
 		       ;; infsimp converts -inf to minf.  it also converts -infinity to
@@ -200,7 +199,7 @@ It appears in LIMIT and DEFINT.......")
 		  (setq ans (catch 'taylor-catch
 			      (let ((silent-taylor-flag t))
 				($gruntz exp var val)))))
-	      
+
 	      ;; try taylor series expansion if simple limit didn't work
 	      (if (and (null ans)		;; if no limit found and
 		       $tlimswitch		;; user says ok to use taylor and
@@ -250,7 +249,7 @@ It appears in LIMIT and DEFINT.......")
 	   `(,(assume `((mgreaterp) 1e-8 ,var))
 	     ,(assume `((mgreaterp) ,var 0)) ,@new-assumptions)) ;All limits around 0
 	  ((eq direction '$minus)
-	   `(,(assume `((mgreaterp) ,var -1e-8)) 
+	   `(,(assume `((mgreaterp) ,var -1e-8))
 	     ,(assume `((mgreaterp) 0 ,var)) ,@new-assumptions))
 	  (t
 	   ()))))
@@ -978,7 +977,7 @@ It appears in LIMIT and DEFINT.......")
   (let ((e (factor (simplify e)))
 	(numer ())  (denom ()))
     (cond ((atom e)
-	   (setq numer (cons e numer)))
+	   (push e numer))
 	  ((mtimesp e)
 	   (mapc 'forq (cdr e)))
 	  (t (forq e)))
@@ -1000,8 +999,8 @@ It appears in LIMIT and DEFINT.......")
   (cond ((and (mexptp e)
 	      (not (freeof var e))
 	      (null (pos-neg-p (caddr e))))
-	 (setq denom (cons (m^ (cadr e) (m* -1. (caddr e))) denom)))
-	(t (setq numer (cons e numer)))))
+	 (push (m^ (cadr e) (m* -1. (caddr e))) denom))
+	(t (push e numer))))
 
 ;;;Predicate to tell whether an expression is pos,zero or neg as var -> val.
 ;;;returns T if pos,zero. () if negative or don't know.
@@ -1186,9 +1185,9 @@ It appears in LIMIT and DEFINT.......")
       (car (last n))))
 
 (defun behavior (exp var val)		; returns either -1, 0, 1.
-  (if (= behavior-count-now behavior-count)
+  (if (= *behavior-count-now* +behavior-count+)
       0
-      (let ((behavior-count-now (1+ behavior-count-now)) pair sign)
+      (let ((*behavior-count-now* (1+ *behavior-count-now*)) pair sign)
 	(cond ((real-infinityp val)
 	       (setq val (cond ((eq val '$inf) '$zeroa)
 			       ((eq val '$minf) '$zerob)))
@@ -1297,7 +1296,7 @@ It appears in LIMIT and DEFINT.......")
 
     (setq n (stirling0 n))	;; replace factorial and %gamma
     (setq d (stirling0 d))  	;;  with approximations
-    
+
     (setq n (sdiff n var)	;; take derivatives for l'hospital
 	  d (sdiff d var))
 
@@ -1719,7 +1718,7 @@ It appears in LIMIT and DEFINT.......")
 	 (let ((ans (expfactor (cons '(mtimes) exp) 1 var)))
 	   (if ans
 	       (return ans))))
-	
+
      (setq prod (setq num (setq denom 1)) exp1 exp)
      loop
      (setq y (let ((loginprod? (involve (car exp1) '(%log))))
@@ -2238,11 +2237,11 @@ It appears in LIMIT and DEFINT.......")
 (defun pofx (e)
   (cond ((atom e)
 	 (cond ((eq e var)
-		(setq nn* (cons 1 nn*)))
+		(push 1 nn*))
 	       (t ())))
 	((or (mnump e) (not (among var e))) nil)
 	((and (mexptp e) (eq (cadr e) var))
-	 (setq nn* (cons (caddr e) nn*)))
+	 (push (caddr e) nn*))
 	((simplerd e) nil)
 	(t (mapc #'pofx (cdr e)))))
 
@@ -2258,7 +2257,7 @@ It appears in LIMIT and DEFINT.......")
      loop (cond ((null l)
 		 (return (list ind (m*l ans))))
 		((equal (caar l) ind)
-		 (setq ans (cons (cadar l) ans))))
+		 (push (cadar l) ans)))
      (setq l (cdr l))
      (go loop)))
 
@@ -2910,7 +2909,7 @@ It appears in LIMIT and DEFINT.......")
 ;; class.  returns MRV set of the union of the inputs - either f or g
 ;; or the union of f and g.
 (defun mrv-max (f g var)
-  (prog () 
+  (prog ()
 	(cond ((not f)
 	       (return g))
 	      ((not g)
@@ -2960,7 +2959,7 @@ It appears in LIMIT and DEFINT.......")
 				      (m* (car c) logg))))))
 		    omega))
     (cons exp logw)))
-    
+
 ;; returns list of two elements: coeff and exponent of leading term of exp,
 ;; after rewriting exp in term of its MRV set omega.
 (defun mrv-leadterm (exp var omega)
@@ -2969,7 +2968,7 @@ It appears in LIMIT and DEFINT.......")
 	       (return (list exp 0))))
 	(dolist (term omega)
 	  (cond ((subexp exp term)
-		 (setq new-omega (cons term new-omega)))))
+		 (push term new-omega))))
 	(setq omega new-omega)
 	(cond ((not omega)
 	       (setq omega (mrv exp var))))
@@ -2999,7 +2998,7 @@ It appears in LIMIT and DEFINT.......")
 	    (simplify-log-of-exp
 	     (syntactic-substitute `((mexpt) $%e ,var) var exp)))
 	  l))
-    
+
 (defun mrv-movedown (l var)
   (mapcar (lambda (exp) (syntactic-substitute `((%log) ,var) var exp))
 	  l))
@@ -3042,7 +3041,7 @@ It appears in LIMIT and DEFINT.......")
 	((mplusp exp)
 	 (mrv-sign (limitinf exp var) var))
 	(t (tay-error " cannot determine mrv-sign" exp))))
-					   
+
 ;; gruntz algorithm for limit of exp as var goes to positive infinity
 (defun limitinf (exp var)
   (prog (($exptsubst nil))
