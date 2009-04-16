@@ -182,6 +182,41 @@ See also @code{xrange} and @code{yrange}.
 @end defvr
 
 
+@defvr {Graphic option} cbrange
+Default value: @code{auto}
+
+If @code{cbrange} is @code{auto}, the range for the values which are
+colored when @code{enhanced3d} is not @code{false} is computed
+automatically. Values outside of the color range use color of the
+nearest extreme.
+
+When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{cbrange} has
+no effect.
+
+If the user wants a specific interval for the colored values, it must
+be given as a Maxima list, as in @code{cbrange=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d     = true,
+        color          = green,
+        cbrange = [-3,10],
+        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
+@end example
+
+See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
 
 @defvr {Graphic option} logx
 Default value: @code{false}
@@ -255,6 +290,41 @@ Example:
 @end example
 
 See also @code{logx} and @code{logy}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} logcb
+Default value: @code{false}
+
+If @code{logcb} is @code{true}, the tics in the colorbox will be drawn in the
+logarithmic scale.
+
+When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{logcb} has
+no effect.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d = true,
+        color      = green,
+        logcb = true,
+        logz  = true,
+        palette = [-15,24,-9],
+        explicit(exp(x^2-y^2), x,-2,2,y,-2,2)) $
+@end example
+
+See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
 @opencatbox
 @category{Package draw}
@@ -751,6 +821,40 @@ See @code{xtics} for a complete description.
 @closecatbox
 
 @end defvr
+
+
+
+@defvr {Graphic option} cbtics
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the colorbox
+when option @code{enhanced3d} is not @code{false}.
+
+When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{cbtics} has
+no effect.
+
+See @code{xtics} for a complete description.
+
+Example :
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d = true,
+        color      = green,
+        cbtics  = @{["High",10],["Medium",05],["Low",0]@},
+        cbrange = [0, 10],
+        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
+@end example
+
+See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
 
 
 @defvr {Graphic option} xtics_rotate
@@ -1931,49 +2035,18 @@ Examples:
          /* in explicit below:        */
          enhanced3d   = sin(x*y),
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+(%i4) draw3d(
+         color = blue,
+         nticks = 60,
+         line_width = 3,
+         enhanced3d = (u-1)^2,
+         parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2))$
 @end example
 
 @opencatbox
 @category{Package draw}
 @closecatbox
 
-@end defvr
-
-
-
-@defvr {Graphic option} meshed_surface
-Default value: @code{false}
-
-Option @code{meshed_surface} has effect only when option @code{enhanced3d} is
-not @code{false}. In such case, if @code{meshed_surface} is @code{false},
-only the colored surface is plotted. If its value is @code{true}, both the
-colored surface and the mesh lines are plotted.
-
-Only @code{explicit} functions in 3d and @code{parametric_surface} objects are
-affected by this option.
-
-See also @code{enhanced3d}.
-
-Examples:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d (
-         enhanced3d     = true,
-         color          = green,
-         meshed_surface = true,
-         explicit(x^2+y^2, x,-2,2,y,-2,2)) $
-(%i3) draw3d (
-         enhanced3d     = true,
-         surface_hide   = true,
-         color          = green,
-         meshed_surface = true,
-         parametric_surface(x^2,y,x+y, x,-2,2,y,-2,2)) $
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
 @end defvr
 
 
@@ -3578,7 +3651,7 @@ from @var{minval2} to @var{maxval2}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
-@code{meshed_surface} and @code{color}.
+ and @code{color}.
 
 Example:
 
@@ -3610,7 +3683,7 @@ the abscissas range from @var{x0} to @math{@var{x0} + @var{width}}
 and ordinates from @var{y0} to @math{@var{y0} + @var{height}}.
 
 This object is affected by the following @i{graphic options}: @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d}, @code{meshed_surface} and @code{color}.
+@code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
 
 This graphic object ignores @code{enhanced3d} values other than @code{true} and @code{false}.
 
@@ -3786,7 +3859,7 @@ Example:
 Draws parametric functions in 2D and 3D.
 
 This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key} and @code{color}.
+@code{line_width}, @code{line_type}, @code{key}, @code{color} and @code{enhanced3d}.
 
 @b{2D}
 
@@ -4119,7 +4192,7 @@ taking values from @var{par2min} to @var{par2max}.
 
 This object is affected by the following @i{graphic options}: @code{xu_grid}, 
 @code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
-@code{meshed_surface} and @code{color}.
+ and @code{color}.
 
 Example:
 

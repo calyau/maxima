@@ -103,7 +103,6 @@ V@'eanse tambi@'en @code{xrange} y @code{zrange}.
 @end defvr
 
 
-
 @defvr {Opci@'on gr@'afica} yrange_secondary
 Valor por defecto: @code{auto}
 
@@ -162,10 +161,43 @@ V@'eanse tambi@'en @code{xrange} y @code{yrange}.
 
 
 
+@defvr {Opci@'on gr@'afica} cbrange
+Valor por defecto: @code{auto}
+
+Cuando @code{cbrange} vale @code{auto}, el rango de los valores que se
+colorean cuando @code{enhanced3d} es diferente de @code{false} se calcula
+autom@'aticamente. Valores fuera del rango utilizan el color del valor
+extremo m@'as cercano.
+
+Cuando @code{enhanced3d} o @code{colorbox} vale @code{false}, la 
+opci@'on @code{cbrange} no tiene efecto alguno.
+
+Si el usuario quiere especificar un intervalo para los valores a colorear,
+@'este debe expresarse como una lista de Maxima, como en @code{cbrange=[-2, 3]}.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d     = true,
+        color          = green,
+        cbrange = [-3,10],
+        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
+@end example
+
+V@'eanse tambi@'en @code{enhanced3d} y @code{cbtics}.
+@end defvr
+
+
+
 @defvr {Opci@'on gr@'afica} logx
 Valor por defecto: @code{false}
 
-Cuando @code{logx} vale @code{true}, el eje @var{x} se dibujar@'a
+Cuando @code{logx} vale @code{true}, el eje @var{x} se dibuja
 en la escala logar@'{@dotless{i}}tmica.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -187,7 +219,7 @@ V@'eanse tambi@'en @code{logy} y @code{logz}.
 @defvr {Opci@'on gr@'afica} logy
 Valor por defecto: @code{false}
 
-Cuando @code{logy} vale @code{true}, el eje @var{y} se dibujar@'a
+Cuando @code{logy} vale @code{true}, el eje @var{y} se dibuja
 en la escala logar@'{@dotless{i}}tmica.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -209,7 +241,7 @@ V@'eanse tambi@'en @code{logx} y @code{logz}.
 @defvr {Opci@'on gr@'afica} logz
 Valor por defecto: @code{false}
 
-Cuando @code{logz} vale @code{true}, el eje @var{z} se dibujar@'a
+Cuando @code{logz} vale @code{true}, el eje @var{z} se dibuja
 en la escala logar@'{@dotless{i}}tmica.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
@@ -224,6 +256,36 @@ Ejemplo:
 @end example
 
 V@'eanse tambi@'en @code{logx} y @code{logy}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} logcb
+Valor por defecto: @code{false}
+
+Cuando @code{logcb} vale @code{true}, la escala de colores se dibuja 
+logar@'{@dotless{i}}tmicamente.
+
+Cuando @code{enhanced3d} o @code{colorbox} vale @code{false}, la 
+opci@'on @code{logcb} no tiene efecto alguno.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d = true,
+        color      = green,
+        logcb = true,
+        logz  = true,
+        palette = [-15,24,-9],
+        explicit(exp(x^2-y^2), x,-2,2,y,-2,2)) $
+@end example
+
+V@'eanse tambi@'en @code{enhanced3d}, @code{colorbox} y @code{cbrange}.
 @end defvr
 
 
@@ -659,6 +721,35 @@ Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an las marcas
 del eje @var{z}.
 
 V@'ease @code{xtics} para una descripci@'on completa.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} cbtics
+Valor por defecto: @code{auto}
+
+Esta opci@'on gr@'afica controla la forma en la que se dibujar@'an
+las marcas en la escala de color cuando la opci@'on @code{enhanced3d}
+sea diferente de @code{false}.
+
+Cuando @code{enhanced3d} o @code{colorbox} vale @code{false}, la 
+opci@'on @code{cbtics} no tiene efecto alguno.
+
+V@'ease @code{xtics} para una descripci@'on completa.
+
+Ejemplo :
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d = true,
+        color      = green,
+        cbtics  = @{["High",10],["Medium",05],["Low",0]@},
+        cbrange = [0, 10],
+        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
+@end example
+
+See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 @end defvr
 
 
@@ -1635,42 +1726,14 @@ Ejemplos:
          /* en explicit mas abajo:     */
          enhanced3d   = sin(x*y),
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
+(%i4) draw3d(
+         color = blue,
+         nticks = 60,
+         line_width = 3,
+         enhanced3d = (u-1)^2,
+         parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2))$
 @end example
 @end defvr
-
-
-@defvr {Opci@'on gr@'afica} meshed_surface
-Valor por defecto: @code{false}
-
-La opci@'on @code{meshed_surface} s@'olo tiene efecto cuando la opci@'on
-@code{enhanced3d} no es @code{false}. En tal caso, si @code{meshed_surface} 
-vale tambi@'en @code{false}, solamente se dibujar@'a la superficie coloreada. Si su
-valor es @code{true}, entonces se dibujar@'an tanto la superficie coloreada
-como las l@'{@dotless{i}}neas de la malla.
-
-Solamente las funciones @code{explicit} en 3d y los objetos @code{parametric_surface}
-se ven afectados por esta opci@'on.
-
-V@'ease tambi@'en @code{enhanced3d}.
-
-Ejemplos:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d (
-         enhanced3d     = true,
-         color          = green,
-         meshed_surface = true,
-         explicit(x^2+y^2, x,-2,2,y,-2,2)) $
-(%i3) draw3d (
-         enhanced3d     = true,
-         surface_hide   = true,
-         color          = green,
-         meshed_surface = true,
-         parametric_surface(x^2,y,x+y, x,-2,2,y,-2,2)) $
-@end example
-@end defvr
-
 
 
 @defvr {Opci@'on gr@'afica} point_size
@@ -3098,8 +3161,8 @@ dibuja la funci@'on expl@'{@dotless{i}}cita @var{fcn}, con la variable
 la variable @var{var2} tomando valores desde @var{minval2} hasta @var{maxval2}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}:  @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
-@code{meshed_surface} y @code{color}.
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d}
+ y @code{color}.
 
 Ejemplo:
 
@@ -3126,7 +3189,7 @@ las abscisas van desde @var{x0} hasta @math{@var{x0} + @var{width}}
 y las ordenadas desde @var{y0} hasta @math{@var{y0} + @var{height}}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d}, @code{meshed_surface} y @code{color}.
+@code{line_width}, @code{key}, @code{enhanced3d} y @code{color}.
 
 Este objeto gr@'afico ignora valores de @code{enhanced3d} distintos de @code{true} o @code{false}.
 
@@ -3281,7 +3344,7 @@ Ejemplo:
 Dibuja funciones param@'etricas en 2D y 3D.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key} y @code{color}.
+@code{line_width}, @code{line_type}, @code{key}, @code{color} y @code{enhanced3d}.
 
 @b{2D}
 
@@ -3588,12 +3651,6 @@ hay ejemplos m@'as elaborados.
 
 
 
-
-
-
-
-
-
 @deffn  {Objeto gr@'afico} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
 Dibuja superficies param@'etricas en 3D.
 
@@ -3605,8 +3662,8 @@ con el par@'ametro @var{par1} tomando valores desde @var{par1min} hasta @var{par
 y el par@'ametro @var{par2} tomando valores desde @var{par2min} hasta @var{par2max}.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
-@code{meshed_surface} y @code{color}.
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d}
+y @code{color}.
 
 Ejemplo:
 

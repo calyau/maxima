@@ -104,9 +104,11 @@
       (gethash '$yrange *gr-options*)           nil      ; nil => automatic computation
       (gethash '$yrange_secondary *gr-options*) nil      ; nil => automatic computation
       (gethash '$zrange *gr-options*)           nil      ; nil => automatic computation
+      (gethash '$cbrange *gr-options*)          nil      ; nil => automatic computation
       (gethash '$logx *gr-options*)             nil
       (gethash '$logy *gr-options*)             nil
       (gethash '$logz *gr-options*)             nil
+      (gethash '$logcb *gr-options*)            nil
       (gethash '$title *gr-options*)            ""
       (gethash '$rot_vertical *gr-options*)     60   ; range: [0,180] (vertical rotation)
       (gethash '$rot_horizontal *gr-options*)   30   ; range: [0,360] (horizontal rotation)
@@ -135,6 +137,7 @@
       (gethash '$ytics *gr-options*)           "autofreq"
       (gethash '$ytics_secondary *gr-options*) nil   ; no tics in right y-axis
       (gethash '$ztics *gr-options*)           "autofreq"
+      (gethash '$cbtics *gr-options*)          "autofreq"
       (gethash '$xtics_rotate *gr-options*)    nil
       (gethash '$xtics_secondary_rotate *gr-options*) nil
       (gethash '$ytics_rotate *gr-options*)    nil
@@ -205,7 +208,6 @@
       (gethash '$yv_grid *gr-options*)        30
       (gethash '$surface_hide *gr-options*)   nil
       (gethash '$enhanced3d *gr-options*)     nil     ; false, true (z levels) or an expression
-      (gethash '$meshed_surface *gr-options*) nil     ; false or true, works together with enhanced3d
       (gethash '$contour *gr-options*)        '$none  ; other options are: $base, $surface, $both and $map
       (gethash '$contour_levels *gr-options*) 5       ; 1-50, [lowest_level,step,highest_level] or {z1,z2,...}
       (gethash '$colorbox *gr-options*)       t       ; in pm3d mode, always show colorbox
@@ -334,17 +336,17 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "draw: unknown contour level description: ~M " val))))
-      (($transparent $border $logx $logy $logz $head_both $grid $xaxis_secondary $yaxis_secondary
+      (($transparent $border $logx $logy $logz $logcb $head_both $grid $xaxis_secondary $yaxis_secondary
         $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
         $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate
-        $ztics_rotate $xtics_axis $ytics_axis $xtics_secondary_axis $ytics_secondary_axis $ztics_axis $meshed_surface) ; true or false
+        $ztics_rotate $xtics_axis $ytics_axis $xtics_secondary_axis $ytics_secondary_axis $ztics_axis) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: non boolean value: ~M " val)))
       (($filled_func $enhanced3d) ; true, false or an expression
          (setf (gethash opt *gr-options*) val))
-      (($xtics $ytics $xtics_secondary $ytics_secondary $ztics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
+      (($xtics $ytics $xtics_secondary $ytics_secondary $ztics $cbtics)  ; $auto or t, $none or nil, number, increment, set, set of pairs
             (cond ((member val '($none nil))   ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((member val '($auto t))     ; t is maintained for back-portability
@@ -438,7 +440,8 @@
                                             (format nil (if (string= str "") "~a" "~%~a") st)))))
                 (t (merror "draw: illegal user preamble especification")))
               (setf (gethash opt *gr-options*) str))  )
-      (($xrange $yrange $xrange_secondary $yrange_secondary $zrange) ; defined as a Maxima list with two numbers in increasing order
+      (($xrange $yrange $xrange_secondary $yrange_secondary
+        $zrange $cbrange) ; defined as a Maxima list with two numbers in increasing order
             (cond ((member val '($auto nil))     ; nil is maintained for back-portability
                      (setf (gethash opt *gr-options*) nil))
                   ((or (not ($listp val))
@@ -458,11 +461,11 @@
                             (setf (gethash opt *gr-options*) (list fval1 fval2 0)) ))  ))) )
       (($ip_grid $ip_grid_in)
        (if (not ($listp val))
-	   (merror "draw: illegal value for grid")
-	   (if (not (and (integerp ($first val))
-			 (integerp ($second val))))
-	       (merror "draw: illegal value for grid")
-	       (setf (gethash opt *gr-options*) val))))
+           (merror "draw: illegal value for grid")
+           (if (not (and (integerp ($first val))
+                         (integerp ($second val))))
+               (merror "draw: illegal value for grid")
+               (setf (gethash opt *gr-options*) val))))
       ($palette ; defined as $color, $gray or [f1,f2,f3], with -36<=fi<=36
             (cond ((member val '($color $gray))
                     (setf (gethash opt *gr-options*) val))
@@ -1621,18 +1624,18 @@
 
 (defun implicit (expr x xmin xmax y ymin ymax)
   (let* (($numer t) ($plot_options $plot_options)
-	 (pts ())
-	 (expr (m- ($rhs expr) ($lhs expr)))
-	 (ip-grid (gethash '$ip_grid *gr-options*))
-	 (ip-grid-in (gethash '$ip_grid_in *gr-options*))
-	 e pltcmd
+         (pts ())
+         (expr (m- ($rhs expr) ($lhs expr)))
+         (ip-grid (gethash '$ip_grid *gr-options*))
+         (ip-grid-in (gethash '$ip_grid_in *gr-options*))
+         e pltcmd
          (xmin (convert-to-float xmin))
          (xmax (convert-to-float xmax))
          (ymin (convert-to-float ymin))
          (ymax (convert-to-float ymax))
-	 (xdelta (/ (- xmax xmin) ($first ip-grid)))
-	 (ydelta (/ (- ymax ymin) ($second ip-grid)))
-	 (sample (make-array `(,(1+ ($first ip-grid))
+         (xdelta (/ (- xmax xmin) ($first ip-grid)))
+         (ydelta (/ (- ymax ymin) ($second ip-grid)))
+         (sample (make-array `(,(1+ ($first ip-grid))
 			       ,(1+ ($second ip-grid)))))
 	 (ssample (make-array `(,(1+ ($first ip-grid-in))
 				,(1+ ($second ip-grid-in))))) )
@@ -1866,7 +1869,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
-;;     meshed_surface
+;;     surface_hide
 ;; Note: implements a clon of draw3d (plot.lisp) with some
 ;;       mutations to fit the draw environment.
 ;;       Read source in plot.lisp for more information
@@ -1916,10 +1919,7 @@
        :name   'explicit
        :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
-                            (if (and (get-option '$enhanced3d)
-                                     (not (get-option '$meshed_surface)))
-                                "pm3d"
-                                "l")
+                            (if (get-option '$enhanced3d) "pm3d" "l")
                             (get-option '$line_width)
                             (get-option '$line_type)
                             (get-option '$color))
@@ -1942,7 +1942,7 @@
 ;;     color
 ;;     key
 ;;     enhanced3d
-;;     meshed_surface
+
 (defun mesh (mat x0 y0 width height)
   (let ( (fx0 (convert-to-float x0))
          (fy0 (convert-to-float y0))
@@ -1950,7 +1950,7 @@
          (fheight (convert-to-float height))
          (zmin 1.75555970201398e+305)
          (zmax -1.75555970201398e+305)
-         result nrows ncols dx dy n)
+         result nrows ncols )
     (cond (($matrixp mat)
              (let ((xi 0.0)
                    (yi (+ fy0 fheight))
@@ -1974,16 +1974,13 @@
                       (setf xi (+ xi dx)))
                    (setf yi (- yi dy)))))
           (t
-             (merror "draw2d (mesh): Argument not recognized")))
+             (merror "draw3d (mesh): Argument not recognized")))
     (update-ranges-3d fx0 (+ fx0 fwidth) fy0 (+ fy0 fheight) zmin zmax)
     (make-gr-object
        :name   'mesh
        :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
-                            (if (and (get-option '$enhanced3d)
-                                     (not (get-option '$meshed_surface)))
-                                "pm3d"
-                                "l")
+                            (if (get-option '$enhanced3d) "pm3d" "l")
                             (get-option '$line_width)
                             (get-option '$line_type)
                             (get-option '$color))
@@ -2152,6 +2149,8 @@
 ;;     line_type
 ;;     color
 ;;     key
+;;     enhanced3d
+;;     surface_hide
 (defun parametric3d (xfun yfun zfun par parmin parmax)
   (let* ((nticks (gethash '$nticks  *gr-options*))
          ($numer t)
@@ -2165,39 +2164,45 @@
          (zmax -1.75555970201398e+305)
          (tt parmin)
          (eps (/ (- tmax tmin) (- nticks 1)))
-         result f1 f2 f3 x y z)
+         (enhanced4d (not (member (get-option '$enhanced3d) '(nil t))))
+         (ncols (if enhanced4d 4 3))
+         result f1 f2 f3 x y z fcn4d)
     (if (< tmax tmin)
        (merror "draw3d (parametric): illegal range"))
-    (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist), par)))
-    (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist), par)))
-    (setq f3 (coerce-float-fun (convert-to-float zfun) `((mlist), par)))
-    (setf result
-       (loop
-          do (setf x (funcall f1 tt))
-             (if (> x xmax) (setf xmax x))
-             (if (< x xmin) (setf xmin x))
-             (setf y (funcall f2 tt))
-             (if (> y ymax) (setf ymax y))
-             (if (< y ymin) (setf ymin y))
-             (setf z (funcall f3 tt))
-             (if (> z zmax) (setf zmax z))
-             (if (< z zmin) (setf zmin z))
-          collect x
-          collect y
-          collect z
+    (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist) ,par)))
+    (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist) ,par)))
+    (setq f3 (coerce-float-fun (convert-to-float zfun) `((mlist) ,par)))
+    (if enhanced4d
+       (setq fcn4d (coerce-float-fun (convert-to-float (get-option '$enhanced3d)) `((mlist) ,par))))
+    (loop
+       do (setf x (funcall f1 tt))
+          (if (> x xmax) (setf xmax x))
+          (if (< x xmin) (setf xmin x))
+          (setf y (funcall f2 tt))
+          (if (> y ymax) (setf ymax y))
+          (if (< y ymin) (setf ymin y))
+          (setf z (funcall f3 tt))
+          (if (> z zmax) (setf zmax z))
+          (if (< z zmin) (setf zmin z))
+          (if enhanced4d
+             (setf result (append result (list x y z (funcall fcn4d tt))))
+             (setf result (append result (list x y z))) )
           when (>= tt tmax) do (loop-finish)
           do (setq tt (+ tt eps))
-             (if (>= tt tmax) (setq tt tmax)) ))
+             (if (>= tt tmax) (setq tt tmax)) )
     ; update x-y ranges if necessary
     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric
-       :command (format nil " ~a w l lw ~a lt ~a lc rgb '~a'"
+       :command (format nil " ~a w l lw ~a lt ~a lc ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$line_width)
                             (get-option '$line_type)
-                            (get-option '$color))
-       :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3, without blank lines
+                            (if (get-option '$enhanced3d)
+                               "palette"
+                               (format nil "rgb '~a'" (get-option '$color))))
+       :groups `((,ncols 0))  ; numbers are sent to gnuplot in groups of 4 or 3 
+                              ; (depending on colored 4th dimension or not), without blank lines
        :points `(,(make-array (length result) :element-type 'flonum
                                               :initial-contents result))  )) )
 
@@ -2217,10 +2222,9 @@
 ;;     line_type
 ;;     line_width
 ;;     color
-;;     enhanced3d
 ;;     key
+;;     enhanced3d
 ;;     surface_hide
-;;     meshed_surface
 (defun parametric_surface (xfun yfun zfun par1 par1min par1max par2 par2min par2max)
   (let* ((ugrid (gethash '$xu_grid  *gr-options*))
          (vgrid (gethash '$yv_grid  *gr-options*))
@@ -2245,9 +2249,9 @@
     (if (or (< umax umin)
             (< vmax vmin))
        (merror "draw3d (parametric_surface): illegal range"))
-    (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist), par1 ,par2)))
-    (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist), par1 ,par2)))
-    (setq f3 (coerce-float-fun (convert-to-float zfun) `((mlist), par1 ,par2)))
+    (setq f1 (coerce-float-fun (convert-to-float xfun) `((mlist) ,par1 ,par2)))
+    (setq f2 (coerce-float-fun (convert-to-float yfun) `((mlist) ,par1 ,par2)))
+    (setq f3 (coerce-float-fun (convert-to-float zfun) `((mlist) ,par1 ,par2)))
     (if enhanced4d
        (setq fcn4d (coerce-float-fun (convert-to-float (get-option '$enhanced3d))
                                      `((mlist) ,par1 ,par2))))
@@ -2278,10 +2282,7 @@
        :name 'parametric_surface
        :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
                             (make-obj-title (get-option '$key))
-                            (if (and (get-option '$enhanced3d)
-                                     (not (get-option '$meshed_surface)))
-                                "pm3d"
-                                "l")
+                            (if (get-option '$enhanced3d) "pm3d" "l")
                             (get-option '$line_width)
                             (get-option '$line_type)
                             (get-option '$color))
@@ -2825,12 +2826,20 @@
                        (if (get-option '$yrange_secondary)
                          (format nil "set y2range [~a:~a]~%" y2i y2f)
                          "") ) )
+            (if (get-option '$cbrange)
+               (format nil "set cbrange [~a:~a]~%"
+                  (first (get-option '$cbrange))
+                  (second (get-option '$cbrange)))
+               (format nil "set cbrange [*:*]~%") )
             (if (get-option '$logx)
                (format nil "set logscale x~%")
                (format nil "unset logscale x~%"))
             (if (get-option '$logy)
                (format nil "set logscale y~%")
                (format nil "unset logscale y~%"))
+            (if (get-option '$logcb)
+               (format nil "set logscale cb~%")
+               (format nil "unset logscale cb~%") )
             (if (get-option '$grid)
                 (format nil "set grid~%")
                 (format nil "unset grid~%"))
@@ -2879,6 +2888,9 @@
                        (if (get-option '$ytics_secondary_rotate) "rotate" "norotate")
                        (if (get-option '$ytics_secondary_axis) "axis" "border")
                        (get-option '$ytics_secondary)))
+            (if (null (get-option '$cbtics))
+               (format nil "unset cbtics~%")
+               (format nil "set cbtics ~a~%" (get-option '$cbtics) ))
             (if (get-option '$colorbox)
                (format nil "set colorbox~%")
                (format nil "unset colorbox~%"))
@@ -2952,6 +2964,11 @@
                         zf (+ zf 0.01)))
                (format nil "set xrange [~a:~a]~%set yrange [~a:~a]~%set zrange [~a:~a]~%"
                            xi xf yi yf zi zf))
+            (if (get-option '$cbrange)
+               (format nil "set cbrange [~a:~a]~%" 
+                  (first (get-option '$cbrange))
+                  (second (get-option '$cbrange) ))
+               (format nil "set cbrange [*:*]~%") )
             (case (get-option '$contour)
                ($surface (format nil "set contour surface;set cntrparam levels ~a~%"
                                       (get-option '$contour_levels) ))
@@ -2974,6 +2991,9 @@
             (if (get-option '$logz)
                (format nil "set logscale z~%")
                (format nil "unset logscale z~%"))
+            (if (get-option '$logcb)
+               (format nil "set logscale cb~%")
+               (format nil "unset logscale cb~%") )
             (if (get-option '$grid)
                 (format nil "set grid~%")
                 (format nil "unset grid~%"))
@@ -3013,6 +3033,10 @@
                        (if (get-option '$ztics_rotate) "rotate" "norotate")
                        (if (get-option '$ztics_axis) "axis" "border")
                        (get-option '$ztics)))
+            (if (null (get-option '$cbtics))
+               (format nil "unset cbtics~%")
+               (format nil "set cbtics ~a~%"
+                       (get-option '$cbtics)) )
             (if (eql (get-option '$contour) '$map)  ; if contour = map
                (format nil "set view map~%")
                (format nil "set view ~a, ~a, 1, 1~%"
@@ -3020,10 +3044,9 @@
                             (get-option '$rot_horizontal))  )
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
-            (if (get-option '$enhanced3d)
-                (format nil "set pm3d at s depthorder~%")
-                (if (get-option '$surface_hide)
-                    (format nil "set hidden3d~%")))
+            (format nil "set pm3d at s depthorder explicit~%")
+            (if (get-option '$surface_hide)
+               (format nil "set hidden3d nooffset~%"))
             (if (get-option '$xyplane)
                (format nil "set xyplane at ~a~%" (get-option '$xyplane)))
             (if (get-option '$colorbox)
@@ -3320,8 +3343,8 @@
   (if (atom expr)
       (list expr)
       (if ($get (caar expr) transform)
-	  (cdr (mfuncall ($get (caar expr) transform) expr))
-	  (list expr))))
+          (cdr (mfuncall ($get (caar expr) transform) expr))
+          (list expr))))
 
 (defun draw-transform (expr transform)
   (if (null expr) ()
