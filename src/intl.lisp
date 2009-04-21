@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.10 $
+;;; $Revision: 1.11 $
 ;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
@@ -23,7 +23,7 @@
 ;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 ;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ;;; DAMAGE.
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.10 2009-03-29 08:17:25 andrejv Exp $")
+#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.11 2009-04-21 16:27:31 are_muc Exp $")
 
 (in-package :intl)
 
@@ -46,7 +46,7 @@
 (declaim (inline read-lelong)
 	 (ftype (function (stream) (unsigned-byte 32)) read-lelong))
 (defun read-lelong (stream)
-  (declare (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+  (declare (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
   (+ (the (unsigned-byte 8) (read-byte stream))
      (ash (the (unsigned-byte 8) (read-byte stream)) 8)
      (ash (the (unsigned-byte 8) (read-byte stream)) 16)
@@ -335,7 +335,7 @@
 			 (start2 0) (end2 (length b)))
   (declare (type (simple-array (unsigned-byte 8) (*)) a b)
 	   (type (integer 0 #.array-dimension-limit) start1 end1 start2 end2)
-	   (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
   (loop
     (unless (= (aref a start1) (aref b start2)) (return nil))
     (when (or (= (incf start1) end1) (= (incf start2) end2)) (return t))))
@@ -344,7 +344,7 @@
   (declare (type (simple-array (unsigned-byte 8) (*)) octets)
 	   (type domain-entry domain)
 	   (type list pos)
-	   (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
   (when pos
     (let ((temp (make-array 120 :element-type '(unsigned-byte 8)))
 	  (length (length octets)))
@@ -377,7 +377,7 @@
 
 (defun domain-lookup (string domain)
   (declare (type string string) (type domain-entry domain)
-	   (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
   (or (if (null (domain-entry-encoding domain)) string)
       (gethash string (domain-entry-hash domain))
       (let* ((octets (string-to-octets string
@@ -397,7 +397,7 @@
 
 (defun domain-lookup-plural (singular plural domain)
   (declare (type string singular plural) (type domain-entry domain)
-	   (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
   (or (if (null (domain-entry-encoding domain)) nil)
       (gethash (cons singular plural) (domain-entry-hash domain))
       (let* ((octets (let* ((a (string-to-octets singular
@@ -468,14 +468,14 @@
 (declaim (inline dgettext))
 (defun dgettext (domain string)
   "Look up STRING in the specified message domain and return its translation."
-  (declare (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+  (declare (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
   (let ((domain (find-domain domain *locale*)))
     (or (and domain (domain-lookup string domain)) string)))
 
 (defun dngettext (domain singular plural n)
   "Look up the singular or plural form of a message in the specified domain."
   (declare (type integer n)
-	   (optimize (speed 3) (space 2) (safety 0) (debug 0)))
+	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
   (let* ((domain (find-domain domain *locale*))
 	 (list (and domain (domain-lookup-plural singular plural domain))))
     (if list
