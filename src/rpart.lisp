@@ -321,7 +321,7 @@
 	     (cons (div (add orig cc) 2) (div (sub orig cc) (mul 2 '$%i)))))
 	  ;; Look for a risplit-function on the property list to handle the
 	  ;; realpart and imagpart for this function.
-	  ((setq op (get (mop l) 'risplit-function))
+          ((setq op (safe-get (mop l) 'risplit-function))
 	   (funcall op l))
 ;;; ^ All the above are guaranteed pure real.
 ;;; The handling of lists and matrices below has to be thought through.
@@ -336,8 +336,8 @@
 ;;; to functions known by risplit, such as the more useless trigonometrics.
 	  ((let ((foot (coversinemyfoot l)))
 	     (and foot (risplit foot))))
-	  ((or (get (mop l) 'commutes-with-conjugate)
-	       (get (mop l) 'conjugate-function))
+          ((or (safe-get (mop l) 'commutes-with-conjugate)
+               (safe-get (mop l) 'conjugate-function))
 	   ;; A function with Mirror symmetry. The general expressions for
 	   ;; the realpart and imagpart simplifies accordingly.
 	   (cons (mul (div 1 2)
