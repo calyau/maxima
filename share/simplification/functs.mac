@@ -75,7 +75,8 @@ series&&  arithmetic(a,d,n):=a+(n-1)*d$
 
 gauss&&  gaussprob(x):=1/sqrt(2*%pi)*%e^(-x^2/2)$
 
-gd&&  gd(x):=2*atan(%e^x-%pi/2)$
+/* See, for example, http://en.wikipedia.org/wiki/Gudermannian_function */
+gd&&  gd(x):=2*atan(%e^x)-%pi/2$
 	agd(x):=log(tan(%pi/4+x/2))$
 
 trig&&  vers(x):=1-cos(x)$
