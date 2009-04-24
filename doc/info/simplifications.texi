@@ -451,7 +451,7 @@ To use this function write first @code{load(functs)}.
 
 @deffn {Function} gd (@var{x})
 Returns the Gudermannian function
-@code{2 * atan(%e^@var{x} - %pi/2)}.
+@code{2*atan(%e^x)-%pi/2}.
 
 To use this function write first @code{load(functs)}.
 
