@@ -25,15 +25,12 @@
 ;;;; Schatchen is Yiddish for "matchmaker" and Schatchen here is a
 ;;;; pattern matching routine.
 
-(eval-when
-    #+gcl (eval compile)
-    #-gcl (:execute :compile-toplevel)
-    (setq old-ibase *read-base* *read-base* 10.))
+(declare-top (special splist dict ans))
 
-(declare-top (special splist dict ans *schatfactor bindlist speclist))
+(defvar *schatfactor* nil)	 ;DETERMINES WHETHER FACTORING SHOULD BE USED.
 
 (defmacro push-context ()
-  '(setq ans (cons nil ans)))
+  '(push nil ans))
 
 (defmacro push-loop-context ()
   '(rplacd ans (cons '*loop (cdr ans))))
@@ -47,18 +44,15 @@
 (defmacro var-pat (x)
   `(atom (car ,x)))
 
-(setq *schatfactor nil)	 ;DETERMINES WHETHER FACTORING SHOULD BE USED.
-
-;;
 ;;VARIOUS SIMPLE PATTERNS
-;;
 
 (defun free1 (a)
   (declare (special var))
   (and (null (pzerop a)) (free a var)))
 
 (defun not-zero-free (a var)
-  (declare (special var)) (free1 a))
+  (declare (special var))
+  (free1 a))
 
 (defun linear* (e var)
   (declare(special var))
@@ -226,7 +220,8 @@
   (prog (x z)
      (setq e (cond  ((atom e) (list (car p) e))
 		    ((null (eq (caar p) (caar e)))
-		     (cond ((and *schatfactor (eq (caar e) 'mplus)
+		     (cond ((and *schatfactor*
+				 (eq (caar e) 'mplus)
 				 (mtimesp (setq x ($factor e))))
 			    x)
 			   ((list (car p) e))))
@@ -244,8 +239,9 @@
 			(go loop))
 		       ((return (restore))))))
 	      ((or (atom (car z)) (var-pat (car z)))
-	       (cond ((m1 (cadr x) (car z))
-		      (sav&del x) (go loop))))
+	       (when (m1 (cadr x) (car z))
+		 (sav&del x)
+		 (go loop)))
 	      ((eq (caaar z) 'coefft)
 	       (cond ((coefft e (car z) nil)
 		      (go loop))
@@ -264,13 +260,15 @@
 	       (cond ((coefftt e (cadar z) nil 'mplus) (go loop))
 		     ((return (restore)))))
 	      ((member (caaar z) '(mexpt zepow) :test #'eq)
-	       (cond ((zepow (cadr x) (car z) t)
-		      (sav&del x) (go loop))))
+	       (when (zepow (cadr x) (car z) t)
+		 (sav&del x)
+		 (go loop)))
 	      ((eq (caaar z) 'loop)
 	       (cond ((sch-loop e (cdar z)) (go loop))
 		     ((return (restore)))))
 	      ((m1 (cadr x) (car z))
-	       (sav&del x) (go loop)))
+	       (sav&del x)
+	       (go loop)))
      (setq x (cdr x))
      (go l5)))
 
@@ -309,7 +307,7 @@
 		  (sav&del x)
 		  (return (restore2))))))
 	((and (mplusp e) (cddr e))
-	 (cond ((and *schatfactor (mtimesp (setq e ($factor e))))
+	 (cond ((and *schatfactor* (mtimesp (setq e ($factor e))))
 		(coeffport e p 1 ind))
 	       ((restore))))
 	(t (coeffport (cond ((mtimesp e) e) ((list '(mtimes) e)))
@@ -387,7 +385,10 @@
 		 ((and (m1 e (cadr p)) (m1 1 (caddr p)))
 		  (restore1))
 		 ((restore))))
-	  ((and *schatfactor (mplusp e) (setq e ($factor e)) nil))
+	  ((and *schatfactor*
+		(mplusp e)
+		(setq e ($factor e))
+		nil))
 	  ((and (eq (caar e) 'mtimes)
 		(mexptp (cadr e)))
 	   (do ((e (cddr e) (cdr e))
@@ -434,21 +435,25 @@
 	   (setq z (cdr z))		;NEXT ARG FOR LOOP
 	   (cond ((cdr z))
 		 ((eq x lp) (return (restore)))
-		 (t (setq x (caar y) z (cdar y))
-		    (setq y (cdr y) ans (cdr ans))
-		    (pop-loop-context))))
-	  (t (setq y (cons (cons x z) y))
-	     (sav&del z)
-	     (setq x (cdr x))
-	     (cond ((null x) (return (restore2)))
-		   (t (push-loop-context)
-		      (setq z e)))))))
+		 (t
+		  (setq x (caar y)
+			z (cdar y))
+		  (setq y (cdr y)
+			ans (cdr ans))
+		  (pop-loop-context))))
+	  (t
+	   (push (cons x z) y)
+	   (sav&del z)
+	   (setq x (cdr x))
+	   (cond ((null x) (return (restore2)))
+		 (t (push-loop-context)
+		    (setq z e)))))))
 
 (defun coefftt (exp pat ind opind)	;OPIND IS MPLUS OR MTIMES
   (push-context)
   (cond ((or (atom exp) (and ind (not (eq (caar exp) opind))))
 	 (setq exp (list (list opind) exp))))
-  (setq splist (cons (car pat) splist))	;SAVE VAR NAME HERE
+  (push (car pat) splist)		;SAVE VAR NAME HERE
   (do ((z exp) (res))
       ((null (cdr z))
        (setq splist (cdr splist))	;KILL NAME SAVED
@@ -465,7 +470,7 @@
 	     (ind (restore1))
 	     ((restore2))))
     (cond ((testa pat (cadr z) nil)
-	   (setq res (cons (cadr z) res))
+	   (push (cadr z) res)
 	   (sav&del z))
 	  (t (setq z (cdr z))))))
 
@@ -584,7 +589,7 @@
 		    (cond ((atom q)
 			   (or (cdr (assoc q ans :test #'eq))
 			       (eval q)))
-			  ( q )))
+			  (q)))
 		args)))
 
 (defun findit (a)
@@ -614,9 +619,4 @@
 	   (cdr w1))
 	  (exp1))))
 
-(declare-top (unspecial var splist dict ans bindlist speclist))
-
-(eval-when
-    #+gcl (eval compile)
-    #-gcl (:execute :compile-toplevel)
-    (setq *read-base* old-ibase))
+(declare-top (unspecial var splist dict ans))
