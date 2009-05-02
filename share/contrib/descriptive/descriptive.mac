@@ -647,11 +647,12 @@ barsplot(m,[select]):=
 
 
 random_color():=
-  block([obase:16],
-    concat("#",
-           random(16),random(16),  /* red */
-           random(16),random(16),  /* green */
-           random(16),random(16))  /* blue */    )$
+  block([obase : 16, col : "#"],
+    for i : 1 thru 6 do
+       col : concat(col,
+                    block([sz : concat(random(16))],
+                          substring(sz, slength(sz)))),
+    col)$
 
 
 /* Plots pie charts for discrete or categorical data. Argument 'm' must be a  */
