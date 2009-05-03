@@ -51,7 +51,7 @@
 the 3rd argument should evaluate to a list:~%~M" a)))
 		    (t
 		     (setq b (meval (cadddr x)))
-		     (if (or (not (fixnump (setq d (sub* b a)))) (< d -1))
+		     (if (or (not (integerp (setq d (sub* b a)))) (< d -1))
 			 (merror "If 4 arguments are given to MAKELIST, the difference of the 3rd ~
 and 4th arguments should evaluate to a non-negative integer:~%~M" d)
 			 (interval a b)))))
