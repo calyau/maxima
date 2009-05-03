@@ -126,6 +126,7 @@ binary-openmcl/maxima.image : csimp2.lisp
 binary-openmcl/maxima.image : zero.lisp
 binary-openmcl/maxima.image : logarc.lisp
 binary-openmcl/maxima.image : rpart.lisp
+binary-openmcl/maxima.image : numeric.lisp
 binary-openmcl/maxima.image : macsys.lisp
 binary-openmcl/maxima.image : mload.lisp
 binary-openmcl/maxima.image : suprv1.lisp

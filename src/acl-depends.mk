@@ -169,6 +169,7 @@ binary-acl/maxima.dxl : csimp2.lisp
 binary-acl/maxima.dxl : zero.lisp
 binary-acl/maxima.dxl : logarc.lisp
 binary-acl/maxima.dxl : rpart.lisp
+binary-acl/maxima.dxl : numeric.lisp
 binary-acl/maxima.dxl : server.lisp
 binary-acl/maxima.dxl : macsys.lisp
 binary-acl/maxima.dxl : mload.lisp

@@ -169,6 +169,7 @@ binary-sbcl/maxima.core : csimp2.lisp
 binary-sbcl/maxima.core : zero.lisp
 binary-sbcl/maxima.core : logarc.lisp
 binary-sbcl/maxima.core : rpart.lisp
+binary-sbcl/maxima.core : numeric.lisp
 binary-sbcl/maxima.core : server.lisp
 binary-sbcl/maxima.core : macsys.lisp
 binary-sbcl/maxima.core : mload.lisp
