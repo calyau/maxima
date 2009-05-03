@@ -748,7 +748,7 @@
 (defun psexpt (p n)
     (cond ((rczerop n)			;; p^0
 	   (if (rczerop p)		;; 0^0
-	       (merror "~&Indeterminate form 0^0 generated inside `psexpt'~%")
+	       (merror (intl:gettext "taylor: 0^0 is undefined."))
 	      (rcone)))			;; Otherwise can let p^0 = 1
 	  ((or (equal n (rcone)) (equal n (rcfone))) p)	;; p^1 cases
 	  ((pscoefp p) (rcexpt p n))
@@ -829,7 +829,7 @@
 	 (when (infp tr)
 	    (if (rcintegerp s)
 		(setq tr (e* s (le (last l))))
-	       (merror "Bad power series arg in `psexpt'")))
+	       (merror (intl:gettext "taylor: expected an integer, instead found: ~:M") s)))
 	 (when (infp tr) (setq tr (t-o-var (car varh))))
 	 b (and (e> mr tr) (go end))
 	   (setq kr inc ak l ma0 (pstimes (cons 1 m) linv)
@@ -987,7 +987,8 @@
 	       (setq trunc (trunc-lvl p)
 		     inc (psexpon-gcd l) ea0 (rcone))
 	       (unless (e> (le l) (rczero))
-		  (merror "Unreachable point in psexpt-fn"))
+		  ;; MEANING OF FOLLOWING MESSAGE IS OBSCURE
+		  (merror "PSEXPT-FN: unreachable point."))
 	       (setq ans
 		     (if (or (pscoefp ea0) (null (eq (gvar p) (gvar ea0))))
 			 (list 0 (term (rczero) ea0))
@@ -1532,7 +1533,7 @@
 		       (return (psplus lterm (pslog p))))
 		    (when (pscoefp p)
 		       (unless (equal p (rcone))
-			  (merror "Internal `taylor' maxima-error in `pslog'"))
+			  (merror "PSLOG: internal error."))
 		       (return lterm))
 		    (setq l (terms p) inc (psexpon-gcd l))
 		    (if gt (setq l (delete (last l) l :test #'equal))
@@ -1642,8 +1643,7 @@
 		       ((eq p '$%i) log%i)
 		       ((eq p '$%e) 1)
 		       ((equal p 0)
-			(merror "Log(0) generated while `taylor' expanding ~M"
-				last-exp))
+			(merror (intl:gettext "taylor: log(0) encountered while processing ~:M") last-exp))
 		       (t `((%log) ,p)))))
 	 ((eq (caar p) 'rat)
 	  (prep1 (cond ((not $taylor_logexpand) `((%log) ,p))
@@ -1677,7 +1677,7 @@
 		   ;;      (setq 0p-funord (le (n-term exp-datum))))
 	       (if (psp exp-datum) (ps-lt exp-datum)
 		   (term (rczero) exp-datum)))
-	      (t (merror "~&~A---Unknown function in getfun-lt~%" fun)))))
+	      (t (merror "GETFUN-LT: unknown function ~A" fun)))))
 
 (declare-top (special var))
 
@@ -1688,15 +1688,14 @@
 	  ((null exp-datum)
 	   (if (null (setq exp-datum
 			   (get-ps-form (if (atom fun) fun (caar fun)))))
-	       (merror "~&~A---power series unavailable, internal error~%" fun)
+	       (merror (intl:gettext "taylor: power series unavailable for function ~A") fun)
 	       (progn
 		 (unless (atom fun)
 		   (do ((subvals (cdr fun) (cdr subvals))
 			(subs (safe-get (caar fun) 'sp2subs) (cdr subs)))
 		       ((or (null subvals) (null subs))
 			(when (or subvals subs)
-			  (merror "~&Incorrect number of subscripts to the ~
-					`deftaylor'-ed function ~A" (caar fun))))
+			  (merror (intl:gettext "taylor: incorrect number of subscripts to the deftaylor'd function ~A") (caar fun))))
 		     (setq exp-datum (maxima-substitute (car subvals) (car subs)
 							exp-datum))))
 		 (ts-formula exp-datum var pw))))
@@ -1878,7 +1877,7 @@
 	  (cond ((eq n '$inf) (ncons (inf)))
 		((null n) (wna-err '$taylor))
 		((null (mnump n))
-		 (merror "~&~:M---non-numeric expansion order~%" n))
+		 (merror (intl:gettext "taylor: expansion order must be a number; found: ~:M") n))
 		(t (ncons (prep1 n))))))
 
 (defun re-erat (head exp)
@@ -1887,8 +1886,7 @@
 (defun parse-tay-args (l)
    (cond ((null l) )
 	 ((numberp (car l))
-	  (merror "Variable of expansion cannot be a number: ~M"
-	 	  (car l)))
+	  (merror (intl:gettext "taylor: variable of expansion cannot be a number: ~M") (car l)))
 	 ((or (symbolp (car l)) (not (eq (caaar l) 'mlist)))
 	  (parse-tay-args1 (list (car l) ($ratdisrep (cadr l)) (caddr l)))
 	  (parse-tay-args (cdddr l)))
@@ -1924,7 +1922,7 @@
 	(do ((a vs (cdr a))
 	     (l (cdr ord) (cdr l)))
 	    ((null a) (setq ord (cdr ord)))
-	  (cond ((not l) (merror "ran out of truncation levels"))
+	  (cond ((not l) (merror "PARSE-TAY-ARGS2: ran out of truncation levels."))
 		(t (setq lcm (lcm lcm (car l)) max (max max (car l)))))))
     (push (list label (tay-order max) 0
 		(ncons (list 'multivar lcm vs)))
@@ -1933,7 +1931,7 @@
 	 (ordl ord (cdr ordl))
 	 (ptl pts (cdr ptl)))
 	((null vl) )
-      (cond ((not ptl) (merror "~&ran out of matching pts of expansion~%"))
+      (cond ((not ptl) (merror "PARSE-TAY-ARGS2: ran out of matching points of expansion."))
 	    (t
 	     (push
 	      (list (car vl) (tay-order (car ordl)) (car ptl)
@@ -1957,9 +1955,7 @@
 	 (do ((ll (cadr a) (cdr ll)))
 	     ((null ll) )
 	    (cond ((equal (cadr (switch 'multi (get-datum (car ll)))) 1) )
-		  (sw (merror "Can't have two sets of multi dependent ~
-			       variables which require~%different orders ~
-			       of expansion"))
+		  (sw (merror (intl:gettext "taylor: multiple dependent variables must all have the same order of expansion.")))
 		  ('t (setq sw 't) (return 't)))))))
 
 (defmvar $taylor_order_coefficients t
@@ -1990,9 +1986,7 @@
 	(do ((tl tlist (cdr tl)))
 	    ((null tl) )
 	   (unless (mfree (exp-pt (car tl)) tvars)
-	      (merror
-	       "`taylor': attempt to expand ~M~&at a point depending on ~M"
-	       e (caar tl))))
+	      (merror (intl:gettext "taylor: attempt to expand ~M at a point depending on ~M.") e (caar tl))))
 	;; This drastic initialization ensures that ALGEBRAIC, TELLRAT, DISREP,
 	;; etc. prop's are removed from our gensyms. RATSETUP does not appear
 	;; to do this correctly, e.g. see ASB's bug of 1/10/83 (MQUERY 17).
@@ -2156,7 +2150,7 @@
 	      (push (list (datum-var temp) (trunc-stack temp)
 			  (exp-pt temp) (switches temp))
 		    tlist)
-	      (merror "Illegal taylor variable ~M" (datum-var temp)))
+	      (merror (intl:gettext "taylor: ~M cannot be a variable.") (datum-var temp)))
 	  (progn
 	    (if $maxtayorder
 		;; We must take the max truncation level when $maxtayorder
@@ -2166,8 +2160,7 @@
 		(unless (e> (current-trunc (car a_tlist)) (current-trunc temp))
 		  (setf (current-trunc temp) (current-trunc (car a_tlist)))))
 	    (unless (alike1 (exp-pt temp) (exp-pt (car a_tlist)))
-	      (merror "Cannot combine two expressions expanded at ~
-			different points"))
+	      (merror (intl:gettext "taylor: cannot combine expressions expanded at different points.")))
 	    (setf (switches temp)
 		  (union* (switches temp) (switches (car a_tlist)))))))))
 
@@ -2191,7 +2184,7 @@
 		      (push e zerolist))
 		   e-simp)
 	       (prep1 e))))
-	((null (atom (caar e))) (merror "Bad arg `taylor2' - internal error"))
+	((null (atom (caar e))) (merror "TAYLOR2: internal error."))
 	(($taylorp e)
 	 (if (and (compatvarlist varlist (mrat-varlist e)
 				 genvar (mrat-genvar e))
@@ -2276,11 +2269,10 @@
   (let (($keepfloat) ($float) (modulus))
      (setq exp (prep1 exp)))		;; exp must be a rational integer
   (let ((temp (get-datum var 't)))
-     (cond ((null temp) (merror "Invalid call to var-expand"))
+     (cond ((null temp) (merror "VAR-EXPAND: invalid call."))
 	   ((member (exp-pt temp) '($inf $minf $infinity) :test #'eq)
 	    (cond ((switch '$asymp temp)
-		     (merror
-		      "Cannot create an asymptotic expansion at infinity"))
+		     (merror (intl:gettext "taylor: cannot create an asymptotic expansion at infinity.")))
 		    ((e> (setq exp (rcminus exp)) (current-trunc temp))
 		     (rczero))
 		    (t (make-ps (int-var temp)
@@ -2450,8 +2442,7 @@
 		(psminus (expand (m- a const)
 				 (cond ((eq func '%tan) '%cot)
 				       ((eq func '%cot) '%tan)
-				       (t (merror "Internal maxima-error in `taylor'"
-						  ))))))))))
+				       (t (merror "MULTIPLE-%PI: internal error in Taylor expansion."))))))))))
 
 (setq *pscirc '(%cot %tan %csc %sin %sec %cos %coth
 		%tanh %csch %sinh %sech %cosh)
@@ -3103,7 +3094,7 @@
 		     ((null tl) (cons (list 'mrat 'simp vs gens tlist 'trunc) (srconvert1 (cdr r))))
 		   (setq temp (cdr (assoc (car tl) gps :test #'eq)))
 		   (cond ((null (member (car tl) (cdr trunclist) :test #'eq)))
-			 ((mplusp temp) (merror "foo"))
+			 ((mplusp temp) (merror "SRCONVERT: internal error."))
 			 (t
 			  (setq tlist
 				(cons (list* temp (tay-order (cadr tl)) 0 nil
@@ -3124,23 +3115,23 @@
 (defun tay-error (msg exp)
   (if silent-taylor-flag (throw 'taylor-catch ())
       (if exp
-	  (merror "`taylor'~A~%~%~M" msg exp)
-	  (merror "`taylor'~A" msg))))
+	  (merror "taylor: ~A~%~M" msg exp)
+	  (merror "taylor: ~A" msg))))
 
 (defun exp-pt-err ()
-       (tay-err " unable to expand at a point specified in:"))
+       (tay-err (intl:gettext "unable to expand at a point specified in:")))
 
 (defun essen-sing-err ()
-       (tay-err " encountered an essential singularity in:"))
+       (tay-err (intl:gettext "encountered an essential singularity in:")))
 
 (defun unfam-sing-err ()
-       (tay-err " encountered an unfamiliar singularity in:"))
+       (tay-err (intl:gettext "encountered an unfamiliar singularity in:")))
 
 (defun infin-ord-err ()
-       (tay-err ": Expansion to infinite order?"))
+       (tay-err (intl:gettext "expansion to infinite order?")))
 
 (defun tay-depth-err ()
-       (tay-err ": `taylordepth' exceeded while expanding:"))
+       (tay-err (intl:gettext "'taylordepth' exceeded while expanding:")))
 
 ;;;		 Subtitle TAYLORINFO
 

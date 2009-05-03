@@ -48,7 +48,7 @@
 	  ((null l) (setf (aref arr i j) 0))
 	(setf (aref arr i j) (car l))))
     (setq mat (tfgeli1 arr n (1+ m)))
-    (and (cadr mat) (merror "Inconsistent")) ;shouldn't happen
+    (and (cadr mat) (merror "HLINSOLVE: inconsistent equations.")) ;shouldn't happen
 					; # indep equations = n - (car mat)
 					; # dependent vars = # indep equations
 					; # indep vars = m - # dependent vars

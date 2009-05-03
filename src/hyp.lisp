@@ -93,9 +93,9 @@
 	   (and (listp a)
 		(eq (caar a) 'mlist))))
     (unless (arg-ok arg-l1)
-      (merror "First argument must be a Maxima list"))
+      (merror (intl:gettext "hgfred: first argument must be a list; found: ~:M") arg-l1))
     (unless (arg-ok arg-l2)
-      (merror "Second argument must be a Maxima list")))
+      (merror (intl:gettext "hgfred: second argument must be a list; found: ~:M") arg-l2)))
   
   ;; Do we really want $radexpand set to '$all?  This is probably a
   ;; bad idea in general, but we'll leave this in for now until we can

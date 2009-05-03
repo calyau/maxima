@@ -229,7 +229,7 @@
           (eq ($sign z) '$neg)          
           (zerop1 (sub (simplify (list '(%truncate) (div z 2))) (div z 2))))
      ;; Even negative integer or real representation. Not defined.
-     (merror "double_factorial(~:M) is undefined." z))
+     (merror (intl:gettext "double_factorial: double_factorial(~:M) is undefined.") z))
 
     ((or (integerp z)   ; at this point odd negative integer. Evaluate.
          (complex-float-numerical-eval-p z))
@@ -712,7 +712,7 @@
              (h d)
              (del 0.0))
             ((> i gm-maxit)
-             (merror "Continued fractions failed in `gamma_incomplete'"))
+             (merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
          (setq d (+ (* an d) b))
          (when (< (abs d) gm-min) (setq d gm-min))
          (setq c (+ b (/ an c)))
@@ -744,7 +744,7 @@
               (del (/ 1.0 a) (* del (/ x ap)))
               (sum del (+ sum del)))
              ((> i gm-maxit)
-              (merror "Series expansion failed in `gamma_incomplete"))
+              (merror (intl:gettext "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M).") a x))
           (when (< (abs del) (* (abs sum) gm-eps))
             (when *debug-gamma* (format t "~&Series converged.~%"))
             (return
@@ -790,7 +790,7 @@
              (h d)
              (del 0.0))
             ((> i gm-maxit)
-             (merror "Continued fractions failed in `gamma_incomplete"))
+             (merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
          (when *debug-gamma* 
            (format t "~&in coninued fractions:~%")
            (format t "~&   : i = ~A~%" i)
@@ -818,7 +818,7 @@
              (del (div 1.0 a) (mul del (div x ap)))
              (sum del (add sum del)))
             ((> i gm-maxit)
-             (merror "Series expansion failed in `gamma-incomplete'"))
+             (merror (intl:gettext "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M).") a x))
          (when *debug-gamma* 
            (format t "~&GAMMA-INCOMPLETE in series:~%")
            (format t "~&   : i    = ~A~%" i)
@@ -872,7 +872,7 @@
              (h d)
              (del 0.0))
             ((> i gm-maxit)
-             (merror "Continued fractions failed in `gamma_incomplete"))
+             (merror (intl:gettext "gamma_incomplete: continued fractions failed for gamma_incomplete(~:M, ~:M).") a x))
          (setq d (add (cmul an d) b))
          (when (eq ($sign (sub (simplify (list '(mabs) d)) gm-min)) '$neg)
            (setq d gm-min))
@@ -901,7 +901,7 @@
              (del (cdiv 1.0 a) (cmul del (cdiv x ap)))
              (sum del (add sum del)))
             ((> i gm-maxit)
-             (merror "Series expansion failed in `gamma-incomplete'"))
+             (merror (intl:gettext "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M).") a x))
          (when (eq ($sign (sub (simplify (list '(mabs) del)) 
                                (mul (cabs sum) gm-eps)))
                    '$neg)
@@ -1400,7 +1400,7 @@
               (and (eq ($sign z) '$neg)
                    (zerop1 (sub z ($truncate z))))))
      ;; We have zero, a negative integer or a float or bigfloat representation.
-     (merror "log_gamma(~:M) is undefined." z))
+     (merror (intl:gettext "log_gamma: log_gamma(~:M) is undefined.") z))
 
     ((eq z '$inf) '$inf)
 
@@ -2373,7 +2373,7 @@
                 (test 0.0)
                 (n 3 (+ n 2))
                 (k 1 (+ k 1)))
-               ((> k maxit) (merror "Series expansion failed in fresnel."))
+               ((> k maxit) (merror (intl:gettext "fresnel: series expansion failed for (FRESNEL ~:M).") x))
              (setq term (* term (/ fact k)))
              (setq sum (+ sum (/ (* sign term) n)))
              (setq test (* (abs sum) eps))
@@ -2400,7 +2400,7 @@
                 (n 1 (+ n 2))
                 (k 2 (+ k 1)))
                ((> k maxit)
-                (merror "Continued fractions fails in `fresnel'."))
+                (merror (intl:gettext "fresnel: continued fractions failed for (FRESNEL ~:M).") x))
              (setq a (* (- n) (+ n 1)))
              (setq b (+ b (complex 4.0 0.0)))
              (setq d (/ 1.0 (+ (* a d) b)))
@@ -2443,7 +2443,7 @@
                 (test 0.0)
                 (n 3 (+ n 2))
                 (k 1 (+ k 1)))
-               ((> k maxit) (merror "Series expansion failed in `fresnel'."))
+               ((> k maxit) (merror (intl:gettext "fresnel: series expansion failed for (COMPLEX-FRESNEL ~:M).") z))
              (setq term (* term (/ fact k)))
              (setq sum (+ sum (/ (* sign term) n)))
              (setq test (* (abs sum) eps))
@@ -2494,7 +2494,7 @@
                 (test bigfloatzero)
                 (n 3 (+ n 2))
                 (k 1 (+ k 1)))
-               ((> k maxit) (merror "Series expansion failed in `fresnel'."))
+               ((> k maxit) (merror (intl:gettext "fresnel: series expansion failed for (BFLOAT-FRESNEL ~:M).") x))
              (when *debug-gamma*
                (format t "~& in DO-LOOP~%")
                (format t "~&   : sums = ~A~%" sums)
@@ -2525,7 +2525,7 @@
                 (n 1 (+ n 2))
                 (k 2 (+ k 1)))
                ((> k maxit)
-                (merror "Continued fractions fails in `fresnel'."))
+                (merror (intl:gettext "fresnel: continued fractions failed for (BFLOAT-FRESNEL ~:M).") x))
              (setq a (* (- n) (+ n 1)))
              (setq b (add b 4.0))
              (setq d (cdiv 1.0 (add (mul a d) b)))
@@ -2572,7 +2572,7 @@
                 (test bigfloatzero)
                 (n 3 (+ n 2))
                 (k 1 (+ k 1)))
-               ((> k maxit) (merror "Series expansion failed in `fresnel'."))
+               ((> k maxit) (merror (intl:gettext "fresnel: series expansion failed for (COMPLEX-BFLOAT-FRESNEL ~:M).") z))
              (setq term (cmul term (div fact k)))
              (setq sum (add sum (cdiv (mul sign term) n)))
              (setq test (mul (simplify (list '(mabs) sum)) eps))
@@ -2742,7 +2742,7 @@
        ;; The argument a is zero or a is negative and the argument b is
        ;; not in a valid range. Beta incomplete is undefined.
        ;; It would be more correct to return Complex infinity.
-       (merror "beta_incomplete: Not defined for a=~:M and b=~:M." a b))
+       (merror (intl:gettext "beta_incomplete: beta_incomplete(~:M, ~:M) is not defined.") a b))
 
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
@@ -2917,7 +2917,7 @@
         (m2 0)
         (m 1 (+ m 1)))
        ((> m beta-maxit)
-        (merror "Continued fractions failed in `beta_incomplete'"))
+        (merror (intl:gettext "beta_incomplete: continued fractions failed for beta_incomplete(~:M, ~:M, ~:M).") a b z))
     (setq m2 (+ m m))
     (setq aa (bigfloat:/ (bigfloat:* m z (bigfloat:- b m))
                          (bigfloat:* (bigfloat:+ am m2)
