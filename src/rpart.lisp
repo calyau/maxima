@@ -52,7 +52,7 @@
 ;;; be syntactically real without being real (e.g. sqrt(x), x<0).  Thus
 ;;; Cabs must lead an independent existence from Abs.
 
-(defmfun $cabs (xx) (cabs ($rectform xx)))
+(defmfun $cabs (xx) (cabs xx))
 
 ;;; Carg gives the complex argument.
 (defmfun $carg (xx)
@@ -465,16 +465,19 @@
 		(cons (abs l) (argnum l)))
 	       ((member l '($%e $%pi) :test #'eq) (cons l 0))
 	       ((eq l '$infinity) (cons '$inf '$ind))
-	       ((kindp l '$complex) (cons (list '($cabs) l)
+	       ((kindp l '$complex) (cons (list '(mabs) l) ; noun form with mabs
 					  (list '($carg) l)))
 	       (absflag (cons (take '(mabs) l) 0))
 	       (t
-		(let ((gs (if (eq rischp l) '$positive (asksign l))))
-		  (cond ((eq gs '$positive) (cons l 0))
+                ;; At this point l is representing a real value. Try to 
+                ;; determine the sign and return a general form when the sign is
+                ;; unknown.
+		(let ((gs (if (eq rischp l) '$pos ($sign l))))
+		  (cond ((member gs '($pos $pz)) (cons l 0))
 			((eq gs '$zero) (cons 0 0))
-			((eq gs '$negative)
+			((eq gs '$neg)
 			 (cons (neg l) (simplify '$%pi)))
-			(t (cons (take '(mabs) l) 0)))))))
+			(t (cons (take '(mabs) l) (genatan 0 l))))))))
 	((member (caar l) '(rat bigfloat) :test #'eq)
 	 (cons (list (car l) (abs (cadr l)) (caddr l))
 	       (argnum (cadr l))))
@@ -536,6 +539,13 @@
 	(take '(%atan) (m// num den)))))
 
 (defun absarg-mabs (l)
-  (if (eq (csign l) t)
-      (if (member (caar l) '(mabs %cabs) :test #'eq) l (list '(%cabs simp) l))
-      (take '(mabs) l)))
+  (cond ((eq (csign l) t)
+         (if (member (caar l) '(mabs %cabs) :test #'eq) 
+             l 
+             (list '(mabs simp) l))) ; mabs and not %cabs as noun form
+        ((member ($csign l) '($complex $imaginary))
+         ;; Do not try to simplify a complex expression at this point,
+         ;; this would cause an endless loop. Return a noun form.
+         (list '(mabs simp) l))
+        (t 
+         (take '(mabs) l))))
