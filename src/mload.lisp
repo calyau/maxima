@@ -203,7 +203,7 @@
 	 (with-open-file (in-stream filename)
 	   (format t "~%batching ~A~%"
 		   (truename in-stream))
-	   (continue in-stream demo)
+	   (catch 'macsyma-quit (continue in-stream demo))
 	   (namestring in-stream)))))
 
 ;; Return true if $float converts both a and b to floats and 
