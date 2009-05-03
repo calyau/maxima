@@ -408,6 +408,19 @@
     (setq y (simpcheck (cadr e) z) x (simpcheck (caddr e) z))
     (cond ((and (zerop1 y) (zerop1 x))
 	   (merror (intl:gettext "atan2: atan2(0,0) is undefined.")))
+          ;; Simplifify infinities.
+          ((or (eq x '$inf)
+               (alike1 x '((mtimes) -1 $minf)))
+           ;; The argument x is inf or -minf.
+           0)
+          ((or (eq x '$minf)
+               (alike1 x '((mtimes) -1 $inf)))
+           ;; The argument x is minf or -inf. Determine the sign of y.
+           ;; When unknown, return a noun form.
+           (setq signy ($sign y))
+           (cond ((eq signy '$pos) '$%pi)
+                 ((eq signy '$neg) (mul -1 '$%pi))
+                 (t (eqtest (list '($atan2) y x) e))))
 	  ( ;; float contagion
 	   (and (or (numberp x) (ratnump x)) ; both numbers
 		(or (numberp y) (ratnump y)) ; ...but not bigfloats
@@ -456,7 +469,11 @@
 	  (t (eqtest (list '($atan2) y x) e)))))
 
 (defun atan2negp (e) (eq ($sign e) '$neg))
-(defun atan2posp (e) (eq ($sign e) '$pos))
+
+(defun atan2posp (e)
+  ;; Include $pz for this check. With this extension expessions like
+  ;; abs(z) will be positive and further simplified.
+  (member ($sign e) '($pos $pz)))
 
 ;;;; ARITHF
 
