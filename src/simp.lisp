@@ -871,26 +871,39 @@
 	((taylorize 'mabs (second x)))
 	((member y '($inf $infinity $minf) :test #'eq) '$inf)
 	((member y '($ind $und) :test #'eq) y)
+
+        ;; Simplify $conjugate before handling complex expressions.
+	((op-equalp y '$conjugate) 
+         (simplifya `((mabs) ,(first (margs y))) nil))
+
+        ;; Check for a complex expression with $csign, but not when in limit.
+        ((and (not limitp) 
+              (member (setq z ($csign y)) '($complex $imaginary)))
+         (cond ((symbolp y)
+                ;; Do not call cabs for complex symbols.
+                (cond ((eq y '$%i) 1)
+                      (t (eqtest (list '(mabs) y) x))))
+               (t (cabs y))))
+
+        ;; Check for a complex expression with csign, when in limit.
 	((eq (setq z (csign y)) t) (cabs y))
+        ;; Check for the sign of the expression.
 	((member z '($pos $pz) :test #'eq) y)
 	((member z '($neg $nz) :test #'eq) (neg y))
 	((eq z '$zero) 0)
-
 	;; If csign(y) = pn, we have abs(signum(y)) = 1.
 	((and (eq z '$pn) (op-equalp y '%signum)) 1)
 
 	((and (mexptp y) ($featurep (caddr y) '$integer))
-	 ;;(list (car y) (simpabs (list '(mabs) (cadr y)) nil t) (caddr y)))
 	 (list (car y) (simplifya (list '(mabs) (cadr y)) nil) (caddr y)))
 	((mtimesp y)
-	 ;; (muln (mapcar #'(lambda (u) (simpabs (list '(mabs) u) nil t)) (cdr y)) t)
-	 (muln (mapcar #'(lambda (u) (simplifya (list '(mabs) u) nil)) (cdr y)) t))
+	 (muln 
+           (mapcar #'(lambda (u) (simplifya (list '(mabs) u) nil)) (cdr y)) t))
 	((mminusp y) (list '(mabs simp) (neg y)))
 	((mbagp y)
 	 (cons (car y)
-	       (mapcar #'(lambda (u);;(simpabs (list '(mabs) u) nil t)
+	       (mapcar #'(lambda (u)
 			   (simplifya (list '(mabs) u) nil)) (cdr y))))
-	((op-equalp y '$conjugate) (simplifya `((mabs) ,(first (margs y))) nil))
 	(t (eqtest (list '(mabs) y) x))))
 
 
