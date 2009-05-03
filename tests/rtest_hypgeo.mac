@@ -707,7 +707,7 @@ factor(radcan(specint(%e^(-s*t)*(unit_step(t)+2*sum(unit_step(t-2*n*k),n,1,inf))
 ******************************************************************************/
 
 specint(%e^(-s*t)*abs(sin(k*t)),t);
-specint(%e^-(s*t)*cabs(%i*%e^-(%i*k*t)/2-%i*%e^(%i*k*t)/2),t);
+specint(%e^(-s*t)*abs(sin(k*t)),t);
 
 /*****************************************************************************
    Problem 92: A&S: 29.3.74 OK New
@@ -1388,7 +1388,7 @@ a/(s^2+a^2);
 */
 
 specint(%e^(-s*t)*(abs(sin(a*t))),t);
-specint(%e^-(s*t)*cabs(%i*%e^-(%i*a*t)/2-%i*%e^(%i*a*t)/2),t);
+specint(%e^(-s*t)*(abs(sin(a*t))),t);
 
 /* Problem 179: No. 3 (OK noun form New)
    The result of EqWorld includes a product:

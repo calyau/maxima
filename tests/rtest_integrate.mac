@@ -42,7 +42,7 @@ integrate(%e^(a*z),z);
 integrate(%e^z,z);
 %e^z;
 
-/* Problem 10: NEW 1 */
+/* Problem 10: NEW Type 1 */
 integrate(a^(b*z^r),z);
 -gamma_incomplete(1/r,-log(a)*b*z^r)*z/(b^(1/r)*r*(-log(a)*z^r)^(1/r));
 
@@ -54,7 +54,7 @@ sqrt(%pi)*erf(sqrt(-log(a))*sqrt(b)*z)/(2*sqrt(-log(a))*sqrt(b));
 integrate(a^(b*sqrt(z)),z);
 2*(log(a)*b*sqrt(z)-1)*%e^(log(a)*b*sqrt(z))/(log(a)^2*b^2);
 
-/* Problem 13: NEW */
+/* Problem 13: NEW Type 1 */
 integrate(a^(b*(z^r)^p),z);
 -gamma_incomplete(1/(p*r),-log(a)*b*(z^r)^p)*z
  /(b^(1/(p*r))*p*r*(-log(a)*(z^r)^p)^(1/(p*r)));
@@ -71,7 +71,7 @@ integrate(a^(b*sqrt(z)),z);
 integrate(a^(b*sqrt(z^2)),z);
 %e^(log(a)*b*z)/(log(a)*b);
 
-/* Problem 17: NEW */
+/* Problem 17: NEW Type 1 */
 integrate(%e^(a*z^r),z);
 -gamma_incomplete(1/r,-a*z^r)*z/(a^(1/r)*r*(-z^r)^(1/r));
 
@@ -83,7 +83,7 @@ integrate(%e^(a*z^2),z);
 integrate(%e^(a*sqrt(z)),z);
 2*(a*sqrt(z)-1)*%e^(a*sqrt(z))/a^2;
 
-/* Problem 20: NEW */
+/* Problem 20: NEW Type 1 */
 integrate(%e^(a*(z^r)^p),z);
 -gamma_incomplete(1/(p*r),-a*(z^r)^p)*z/(a^(1/(p*r))*p*r*(-(z^r)^p)^(1/(p*r)));
 
@@ -95,31 +95,31 @@ integrate(%e^(a*(z^r)^(1/r)),z);
 integrate(%e^(a*sqrt(z^2)),z);
 %e^(a*z)/a;
 
-/* Problem 23: NEW */
+/* Problem 23: NEW Type 2 */
 integrate(z^(v-1)*a^(b*z),z);
 -gamma_incomplete(v,-log(a)*b*z)*z^v/(b^v*(-log(a)*z)^v);
 
-/* Problem 24: NEW */
+/* Problem 24: NEW Type 2 */
 integrate(a^(b*z)/z,z);
 -gamma_incomplete(0,-log(a)*b*z);
 
-/* Problem 25: NEW */
+/* Problem 25: NEW Type 2 */
 integrate(z^(v-1)*a^z,z);
 -gamma_incomplete(v,-log(a)*z)*z^v/(-log(a)*z)^v;
 
-/* Problem 26: NEW */
+/* Problem 26: NEW Type 2 */
 integrate(a^z/z,z);
 -gamma_incomplete(0,-log(a)*z);
 
-/* Problem 27: NEW */
+/* Problem 27: NEW Type 2 */
 integrate(z^(v-1)*%e^(a*z),z);
 -gamma_incomplete(v,-a*z)*z^v/(a^v*(-z)^v);
 
-/* Problem 28: NEW */
+/* Problem 28: NEW Type 2 */
 integrate(z^(v-1)*%e^z,z);
 -gamma_incomplete(v,-z)*z^v/(-z)^v;
 
-/* Problem 29: NEW */
+/* Problem 29: NEW Type 2 */
 integrate(z^n*%e^(a*z),z);
 -a^(-n-1)*(-1)^(n+1)*gamma_incomplete(n+1,-a*z);
 
@@ -167,27 +167,27 @@ integrate(z^8*%e^(a*z),z);
         *%e^(a*z)
         /a^9;
 
-/* Problem 39: NEW 2 */
+/* Problem 39: NEW Type 2 */
 integrate(%e^(a*z)/z,z);
 -gamma_incomplete(0,-a*z);
 
-/* Problem 40: NEW 2 */
+/* Problem 40: NEW Type 2 */
 integrate(%e^(a*z)/z^2,z);
 gamma_incomplete(-1,-a*z)*a;
 
-/* Problem 41: NEW 2 */
+/* Problem 41: NEW Type 2 */
 integrate(%e^(a*z)/z^3,z);
 -gamma_incomplete(-2,-a*z)*a^2;
 
-/* Problem 42: NEW 2 */
+/* Problem 42: NEW Type 2 */
 integrate(%e^(a*z)/z^4,z);
 gamma_incomplete(-3,-a*z)*a^3;
 
-/* Problem 43: NEW 2 */
+/* Problem 43: NEW Type 2 */
 integrate(%e^(a*z)/z^5,z);
 -gamma_incomplete(-4,-a*z)*a^4;
 
-/* Problem 44: NEW */
+/* Problem 44: NEW Type 2 */
 expand(integrate(z^(1/2+n)*%e^(a*z),z)-
 -a^(-(2*n+1)/2-1)*gamma_incomplete((2*n+1)/2+1,-a*z)*(-z)^(-(2*n+1)/2-1)
                  *z^((2*n+1)/2+1));
@@ -226,27 +226,27 @@ integrate(z^(9/2)*%e^(a*z),z);
 integrate(%e^(a*z)/sqrt(z),z);
 -sqrt(%pi)*%i*erf(%i*sqrt(a)*sqrt(z))/sqrt(a);
 
-/* Problem 51: NEW 2 */
+/* Problem 51: NEW Type 2 */
 integrate(%e^(a*z)/z^(3/2),z);
 -%i*gamma_incomplete(-1/2,-a*z)*sqrt(a);
 
-/* Problem 52: NEW 2 */
+/* Problem 52: NEW Type 2 */
 integrate(%e^(a*z)/sqrt(z^3),z);
 -%i*gamma_incomplete(-1/2,-a*z)*sqrt(a);
 
-/* Problem 53: NEW 2 */
+/* Problem 53: NEW Type 2 */
 integrate(%e^(a*z)/z^(5/2),z);
 %i*gamma_incomplete(-3/2,-a*z)*a^(3/2);
 
-/* Problem 54: NEW 2 */
+/* Problem 54: NEW Type 2 */
 integrate(%e^(a*z)/z^(7/2),z);
 -%i*gamma_incomplete(-5/2,-a*z)*a^(5/2);
 
-/* Problem 55: NEW 2 */
+/* Problem 55: NEW Type 2 */
 integrate(%e^(a*z)/z^(9/2),z);
 %i*gamma_incomplete(-7/2,-a*z)*a^(7/2);
 
-/* Problem 56: NEW 2 */
+/* Problem 56: NEW Type 2 */
 integrate(z^(v-1)*a^(b*z+d),z);
 -a^d*gamma_incomplete(v,-log(a)*b*z)*z^v/(b^v*(-log(a)*z)^v);
 
@@ -609,34 +609,34 @@ integrate(%e^(c+b/z^2+a*z^2),z);
  /(4*sqrt(a));
 
 /* Problem 130: NEW 5 */
-integrate(d^(c+a*z+sqrt(z)*b),z);
--d^(c-b^2/(4*a))*(gamma_incomplete(1/2,-log(d)*(2*a*sqrt(z)+b)^2/(4*a))
+integrate(d^(c+a*x+sqrt(x)*b),x);
+-d^(c-b^2/(4*a))*(gamma_incomplete(1/2,-log(d)*(2*a*sqrt(x)+b)^2/(4*a))
                  *b*sqrt(-log(d))
                  /(2*a*sqrt(log(d)))
-                 -gamma_incomplete(1,-log(d)*(2*a*sqrt(z)+b)^2/(4*a))
+                 -gamma_incomplete(1,-log(d)*(2*a*sqrt(x)+b)^2/(4*a))
                   /(sqrt(a)*sqrt(log(d))))
  /(sqrt(a)*sqrt(log(d)));
 
 /* Problem 131: NEW 5 */
-expand(integrate(%e^(c+a*z+sqrt(z)*b),z) -
--(%i*gamma_incomplete(1/2,-(2*a*sqrt(z)+b)^2/(4*a))*b/(2*a)
- -gamma_incomplete(1,-(2*a*sqrt(z)+b)^2/(4*a))/sqrt(a))
+expand(integrate(%e^(c+a*x+sqrt(x)*b),x) -
+-(%i*gamma_incomplete(1/2,-(2*a*sqrt(x)+b)^2/(4*a))*b/(2*a)
+ -gamma_incomplete(1,-(2*a*sqrt(x)+b)^2/(4*a))/sqrt(a))
  *%e^(c-b^2/(4*a))
  /sqrt(a));
 0;
 
 /* Problem 132: NEW 5 */
-expand(integrate(d^(a*z+sqrt(z)*b),z) -
--(gamma_incomplete(1/2,-log(d)*(2*a*sqrt(z)+b)^2/(4*a))*b*sqrt(-log(d))
+expand(integrate(d^(a*x+sqrt(x)*b),x) -
+-(gamma_incomplete(1/2,-log(d)*(2*a*sqrt(x)+b)^2/(4*a))*b*sqrt(-log(d))
  /(2*a*sqrt(log(d)))
- -gamma_incomplete(1,-log(d)*(2*a*sqrt(z)+b)^2/(4*a))/(sqrt(a)*sqrt(log(d))))
+ -gamma_incomplete(1,-log(d)*(2*a*sqrt(x)+b)^2/(4*a))/(sqrt(a)*sqrt(log(d))))
  /(sqrt(a)*d^(b^2/(4*a))*sqrt(log(d))));
 0;
 
 /* Problem 133: NEW 5 */
-expand(integrate(%e^(a*z+sqrt(z)*b),z) -
--(%i*gamma_incomplete(1/2,-(2*a*sqrt(z)+b)^2/(4*a))*b/(2*a)
- -gamma_incomplete(1,-(2*a*sqrt(z)+b)^2/(4*a))/sqrt(a))
+expand(integrate(%e^(a*x+sqrt(x)*b),x) -
+-(%i*gamma_incomplete(1/2,-(2*a*sqrt(x)+b)^2/(4*a))*b/(2*a)
+ -gamma_incomplete(1,-(2*a*sqrt(x)+b)^2/(4*a))/sqrt(a))
  *%e^-(b^2/(4*a))
  /sqrt(a));
 0;
@@ -843,7 +843,7 @@ expand(integrate(z^n*d^(b*z+a*sqrt(z)),z) -
                                                   /(4*b))),i8,0,i7),i7,0,n))
  *2^(-n-1)
  /(b^(2*(n+1))*d^(a^2/(4*b))*log(d)^(2*(n+1))));
-0;
+ 0;
 
 /* Problem 176: NEW 6 */
 expand(integrate(z^n*%e^(b*z+a*sqrt(z)),z) -
@@ -1336,12 +1336,12 @@ sqrt(%pi)*%e^(f^2*log(h)^2/(4*(-c*log(h)-log(a)*b)))
          /(2*sqrt(-c*log(h)-log(a)*b));
 
 /* Problem 254: NEW 10 (8) */
-expand(integrate(a^(b*sqrt(z))*h^(f*z+c*sqrt(z)),z)-
+expand(integrate(a^(b*sqrt(x))*h^(f*x+c*sqrt(x)),x)-
 -%e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))
- *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
-  *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(z)+c)+log(a)*b)
-  /(2*abs(log(h)*(2*f*sqrt(z)+c)+log(a)*b))
-  -gamma_incomplete(1,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
+ *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
+  *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(x)+c)+log(a)*b)
+  /(2*abs(log(h)*(2*f*sqrt(x)+c)+log(a)*b))
+  -gamma_incomplete(1,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
    *f*log(h))
  /(f^2*log(h)^2));
 0;
@@ -1354,12 +1354,12 @@ sqrt(%pi)*a^e*%e^(f^2*log(h)^2/(4*(-c*log(h)-log(a)*b)))
          /(2*sqrt(-c*log(h)-log(a)*b));
 
 /* Problem 256: NEW 10 (8) */
-expand(integrate(a^(e+b*sqrt(z))*h^(f*z+c*sqrt(z)),z)-
+expand(integrate(a^(e+b*sqrt(x))*h^(f*x+c*sqrt(x)),x)-
 -a^e*%e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))
-    *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
-     *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(z)+c)+log(a)*b)
-     /(2*abs(log(h)*(2*f*sqrt(z)+c)+log(a)*b))
-     -gamma_incomplete(1,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
+    *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
+     *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(x)+c)+log(a)*b)
+     /(2*abs(log(h)*(2*f*sqrt(x)+c)+log(a)*b))
+     -gamma_incomplete(1,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
       *f*log(h))
  /(f^2*log(h)^2));
 0;
@@ -1372,16 +1372,16 @@ sqrt(%pi)*%e^((-f*log(h)-log(a)*d)^2/(4*(-c*log(h)-log(a)*b)))
          /(2*sqrt(-c*log(h)-log(a)*b));
 
 /* Problem 258: NEW 10 */
-expand(integrate(a^(d*z+b*sqrt(z))*h^(f*z+c*sqrt(z)),z)-
+expand(integrate(a^(d*x+b*sqrt(x))*h^(f*x+c*sqrt(x)),x)-
 -%e^-((c*log(h)+log(a)*b)^2/(4*(f*log(h)+log(a)*d)))
  *(gamma_incomplete(1/2,
-                    -(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))^2
+                    -(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))^2
                      /(4*(f*log(h)+log(a)*d)))
   *(-c*log(h)-log(a)*b)*sqrt(-f*log(h)-log(a)*d)
-  *(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))
-  /(2*abs(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b)))
+  *(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))
+  /(2*abs(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b)))
   +gamma_incomplete(1,
-                    -(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))^2
+                    -(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))^2
                      /(4*(f*log(h)+log(a)*d)))
    *(-f*log(h)-log(a)*d))
  /(f*log(h)+log(a)*d)^2);
@@ -1430,12 +1430,12 @@ sqrt(%pi)*h^g*%e^(f^2*log(h)^2/(4*(-c*log(h)-log(a)*b)))
          /(2*sqrt(-c*log(h)-log(a)*b));
 
 /* Problem 264: NEW 10 (8) */
-expand(integrate(a^(b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z)-
+expand(integrate(a^(b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x)-
 -h^g*%e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))
-    *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
-     *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(z)+c)+log(a)*b)
-     /(2*abs(log(h)*(2*f*sqrt(z)+c)+log(a)*b))
-     -gamma_incomplete(1,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
+    *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
+     *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(x)+c)+log(a)*b)
+     /(2*abs(log(h)*(2*f*sqrt(x)+c)+log(a)*b))
+     -gamma_incomplete(1,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
       *f*log(h))
  /(f^2*log(h)^2));
 0;
@@ -1448,12 +1448,12 @@ sqrt(%pi)*a^e*h^g*%e^(f^2*log(h)^2/(4*(-c*log(h)-log(a)*b)))
          /(2*sqrt(-c*log(h)-log(a)*b));
 
 /* Problem 266: NEW 10 (8) */
-expand(integrate(a^(e+b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z)-
+expand(integrate(a^(e+b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x)-
 -a^e*h^g*%e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))
-    *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
-     *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(z)+c)+log(a)*b)
-     /(2*abs(log(h)*(2*f*sqrt(z)+c)+log(a)*b))
-     -gamma_incomplete(1,-(log(h)*(2*f*sqrt(z)+c)+log(a)*b)^2/(4*f*log(h)))
+    *(gamma_incomplete(1/2,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
+     *sqrt(-f*log(h))*(-c*log(h)-log(a)*b)*(log(h)*(2*f*sqrt(x)+c)+log(a)*b)
+     /(2*abs(log(h)*(2*f*sqrt(x)+c)+log(a)*b))
+     -gamma_incomplete(1,-(log(h)*(2*f*sqrt(x)+c)+log(a)*b)^2/(4*f*log(h)))
       *f*log(h))
  /(f^2*log(h)^2));
 0;
@@ -1466,16 +1466,16 @@ sqrt(%pi)*h^g*%e^((-f*log(h)-log(a)*d)^2/(4*(-c*log(h)-log(a)*b)))
          /(2*sqrt(-c*log(h)-log(a)*b));
 
 /* Problem 268: NEW 10 */
-expand(integrate(a^(d*z+b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z)-
+expand(integrate(a^(d*x+b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x)-
 -h^g*%e^-((c*log(h)+log(a)*b)^2/(4*(f*log(h)+log(a)*d)))
     *(gamma_incomplete(1/2,
-                       -(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))^2
+                       -(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))^2
                         /(4*(f*log(h)+log(a)*d)))
      *(-c*log(h)-log(a)*b)*sqrt(-f*log(h)-log(a)*d)
-     *(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))
-     /(2*abs(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b)))
+     *(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))
+     /(2*abs(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b)))
      +gamma_incomplete(1,
-                       -(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))^2
+                       -(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))^2
                         /(4*(f*log(h)+log(a)*d)))
       *(-f*log(h)-log(a)*d))
  /(f*log(h)+log(a)*d)^2);
@@ -1489,16 +1489,16 @@ sqrt(%pi)*a^e*h^g*%e^((-f*log(h)-log(a)*d)^2/(4*(-c*log(h)-log(a)*b)))
          /(2*sqrt(-c*log(h)-log(a)*b));
 
 /* Problem 270: NEW 10 */
-expand(integrate(a^(e+d*z+b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z)-
+expand(integrate(a^(e+d*x+b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x)-
 -a^e*h^g*%e^-((c*log(h)+log(a)*b)^2/(4*(f*log(h)+log(a)*d)))
     *(gamma_incomplete(1/2,
-                       -(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))^2
+                       -(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))^2
                         /(4*(f*log(h)+log(a)*d)))
      *(-c*log(h)-log(a)*b)*sqrt(-f*log(h)-log(a)*d)
-     *(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))
-     /(2*abs(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b)))
+     *(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))
+     /(2*abs(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b)))
      +gamma_incomplete(1,
-                       -(log(h)*(2*f*sqrt(z)+c)+log(a)*(2*d*sqrt(z)+b))^2
+                       -(log(h)*(2*f*sqrt(x)+c)+log(a)*(2*d*sqrt(x)+b))^2
                         /(4*(f*log(h)+log(a)*d)))
       *(-f*log(h)-log(a)*d))
  /(f*log(h)+log(a)*d)^2);
@@ -1531,11 +1531,11 @@ integrate(%e^(b*z^2)*(%e^(c*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 277: NEW 5 */
-expand(integrate(%e^(b*sqrt(z))*(%e^(c*z))^v,z) -
--%e^-(b^2/(4*c*v))*(-gamma_incomplete(1/2,-(2*c*v*sqrt(z)+b)^2/(4*c*v))
-                   *b*sqrt(-c*v)*(2*c*v*sqrt(z)+b)
-                   /(2*(c*v)^(3/2)*abs(2*c*v*sqrt(z)+b))
-                   -gamma_incomplete(1,-(2*c*v*sqrt(z)+b)^2/(4*c*v))*c*v
+expand(integrate(%e^(b*sqrt(x))*(%e^(c*x))^v,x) -
+-%e^-(b^2/(4*c*v))*(-gamma_incomplete(1/2,-(2*c*v*sqrt(x)+b)^2/(4*c*v))
+                   *b*sqrt(-c*v)*(2*c*v*sqrt(x)+b)
+                   /(2*(c*v)^(3/2)*abs(2*c*v*sqrt(x)+b))
+                   -gamma_incomplete(1,-(2*c*v*sqrt(x)+b)^2/(4*c*v))*c*v
                     /(c*v)^(3/2))
  /sqrt(c*v));
 0;
@@ -1547,11 +1547,11 @@ integrate(%e^(e+b*z^2)*(%e^(c*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 279: NEW 5 */
-expand(integrate(%e^(e+b*sqrt(z))*(%e^(c*z))^v,z)-
--%e^(e-b^2/(4*c*v))*(-gamma_incomplete(1/2,-(2*c*v*sqrt(z)+b)^2/(4*c*v))
-                    *b*sqrt(-c*v)*(2*c*v*sqrt(z)+b)
-                    /(2*(c*v)^(3/2)*abs(2*c*v*sqrt(z)+b))
-                    -gamma_incomplete(1,-(2*c*v*sqrt(z)+b)^2/(4*c*v))*c*v
+expand(integrate(%e^(e+b*sqrt(x))*(%e^(c*x))^v,x)-
+-%e^(e-b^2/(4*c*v))*(-gamma_incomplete(1/2,-(2*c*v*sqrt(x)+b)^2/(4*c*v))
+                    *b*sqrt(-c*v)*(2*c*v*sqrt(x)+b)
+                    /(2*(c*v)^(3/2)*abs(2*c*v*sqrt(x)+b))
+                    -gamma_incomplete(1,-(2*c*v*sqrt(x)+b)^2/(4*c*v))*c*v
                      /(c*v)^(3/2))
  /sqrt(c*v));
 0;
@@ -1563,14 +1563,14 @@ integrate(%e^(d*z+b*z^2)*(%e^(c*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 281: NEW 10 (8) */
-expand(integrate(%e^(d*z+b*sqrt(z))*(%e^(c*z))^v,z)-
+expand(integrate(%e^(d*x+b*sqrt(x))*(%e^(c*x))^v,x)-
 -%e^-(b^2/(4*(c*v+d)))*(gamma_incomplete(1,
-                                         -(2*(c*v+d)*sqrt(z)+b)^2/(4*(c*v+d)))
+                                         -(2*(c*v+d)*sqrt(x)+b)^2/(4*(c*v+d)))
                        *(-c*v-d)
                        -gamma_incomplete(1/2,
-                                         -(2*(c*v+d)*sqrt(z)+b)^2/(4*(c*v+d)))
-                        *b*sqrt(-c*v-d)*(2*(c*v+d)*sqrt(z)+b)
-                        /(2*abs(2*(c*v+d)*sqrt(z)+b)))
+                                         -(2*(c*v+d)*sqrt(x)+b)^2/(4*(c*v+d)))
+                        *b*sqrt(-c*v-d)*(2*(c*v+d)*sqrt(x)+b)
+                        /(2*abs(2*(c*v+d)*sqrt(x)+b)))
  /(c*v+d)^2);
 0;
 
@@ -1581,16 +1581,16 @@ integrate(%e^(e+d*z+b*z^2)*(%e^(c*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 283: NEW 10 (8) */
-expand(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(c*z))^v,z)-
+expand(integrate(%e^(e+d*x+b*sqrt(x))*(%e^(c*x))^v,x)-
 -%e^(e-b^2/(4*(c*v+d)))*(gamma_incomplete(1,
-                                          -(2*(c*v+d)*sqrt(z)+b)^2
+                                          -(2*(c*v+d)*sqrt(x)+b)^2
                                            /(4*(c*v+d)))
                         *(-c*v-d)
                         -gamma_incomplete(1/2,
-                                          -(2*(c*v+d)*sqrt(z)+b)^2
+                                          -(2*(c*v+d)*sqrt(x)+b)^2
                                            /(4*(c*v+d)))
-                         *b*sqrt(-c*v-d)*(2*(c*v+d)*sqrt(z)+b)
-                         /(2*abs(2*(c*v+d)*sqrt(z)+b)))
+                         *b*sqrt(-c*v-d)*(2*(c*v+d)*sqrt(x)+b)
+                         /(2*abs(2*(c*v+d)*sqrt(x)+b)))
  /(c*v+d)^2);
 0;
 
@@ -1601,11 +1601,11 @@ integrate(%e^(b*z^2)*(%e^(g+f*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 285: NEW 5 */
-expand(integrate(%e^(b*sqrt(z))*(%e^(g+f*z))^v,z) -
--%e^(g*v-b^2/(4*f*v))*(-gamma_incomplete(1/2,-(2*f*v*sqrt(z)+b)^2/(4*f*v))
-                      *b*sqrt(-f*v)*(2*f*v*sqrt(z)+b)
-                      /(2*(f*v)^(3/2)*abs(2*f*v*sqrt(z)+b))
-                      -gamma_incomplete(1,-(2*f*v*sqrt(z)+b)^2/(4*f*v))*f*v
+expand(integrate(%e^(b*sqrt(x))*(%e^(g+f*x))^v,x) -
+-%e^(g*v-b^2/(4*f*v))*(-gamma_incomplete(1/2,-(2*f*v*sqrt(x)+b)^2/(4*f*v))
+                      *b*sqrt(-f*v)*(2*f*v*sqrt(x)+b)
+                      /(2*(f*v)^(3/2)*abs(2*f*v*sqrt(x)+b))
+                      -gamma_incomplete(1,-(2*f*v*sqrt(x)+b)^2/(4*f*v))*f*v
                        /(f*v)^(3/2))
  /sqrt(f*v));
 0;
@@ -1617,11 +1617,11 @@ integrate(%e^(e+b*z^2)*(%e^(g+f*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 287: NEW 5 */
-expand(integrate(%e^(e+b*sqrt(z))*(%e^(g+f*z))^v,z) -
--%e^(g*v-b^2/(4*f*v)+e)*(-gamma_incomplete(1/2,-(2*f*v*sqrt(z)+b)^2/(4*f*v))
-                        *b*sqrt(-f*v)*(2*f*v*sqrt(z)+b)
-                        /(2*(f*v)^(3/2)*abs(2*f*v*sqrt(z)+b))
-                        -gamma_incomplete(1,-(2*f*v*sqrt(z)+b)^2/(4*f*v))*f*v
+expand(integrate(%e^(e+b*sqrt(x))*(%e^(g+f*x))^v,x) -
+-%e^(g*v-b^2/(4*f*v)+e)*(-gamma_incomplete(1/2,-(2*f*v*sqrt(x)+b)^2/(4*f*v))
+                        *b*sqrt(-f*v)*(2*f*v*sqrt(x)+b)
+                        /(2*(f*v)^(3/2)*abs(2*f*v*sqrt(x)+b))
+                        -gamma_incomplete(1,-(2*f*v*sqrt(x)+b)^2/(4*f*v))*f*v
                          /(f*v)^(3/2))
  /sqrt(f*v));
 0;
@@ -1633,16 +1633,16 @@ integrate(%e^(d*z+b*z^2)*(%e^(g+f*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 289: NEW 10 (8) */
-expand(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+f*z))^v,z)-
+expand(integrate(%e^(d*x+b*sqrt(x))*(%e^(g+f*x))^v,x)-
 -%e^(g*v-b^2/(4*(f*v+d)))*(gamma_incomplete(1,
-                                            -(2*(f*v+d)*sqrt(z)+b)^2
+                                            -(2*(f*v+d)*sqrt(x)+b)^2
                                              /(4*(f*v+d)))
                           *(-f*v-d)
                           -gamma_incomplete(1/2,
-                                            -(2*(f*v+d)*sqrt(z)+b)^2
+                                            -(2*(f*v+d)*sqrt(x)+b)^2
                                              /(4*(f*v+d)))
-                           *b*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+b)
-                           /(2*abs(2*(f*v+d)*sqrt(z)+b)))
+                           *b*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+b)
+                           /(2*abs(2*(f*v+d)*sqrt(x)+b)))
  /(f*v+d)^2);
 0;
 
@@ -1653,16 +1653,16 @@ integrate(%e^(e+d*z+b*z^2)*(%e^(g+f*z))^v,z);
          /(2*sqrt(b));
 
 /* Problem 291: NEW 10 (8) */
-expand(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z))^v,z)-
+expand(integrate(%e^(e+d*x+b*sqrt(x))*(%e^(g+f*x))^v,x)-
 -%e^(-b^2/(4*(f*v+d))+g*v+e)*(gamma_incomplete(1,
-                                               -(2*(f*v+d)*sqrt(z)+b)^2
+                                               -(2*(f*v+d)*sqrt(x)+b)^2
                                                 /(4*(f*v+d)))
                              *(-f*v-d)
                              -gamma_incomplete(1/2,
-                                               -(2*(f*v+d)*sqrt(z)+b)^2
+                                               -(2*(f*v+d)*sqrt(x)+b)^2
                                                 /(4*(f*v+d)))
-                              *b*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+b)
-                              /(2*abs(2*(f*v+d)*sqrt(z)+b)))
+                              *b*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+b)
+                              /(2*abs(2*(f*v+d)*sqrt(x)+b)))
  /(f*v+d)^2);
 0;
 
@@ -1672,11 +1672,11 @@ sqrt(%pi)*%e^-(b^2/(4*c*v))*erf(sqrt(-c*v)*z-b/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 293: NEW 5 */
-expand(integrate(%e^(b*z)*(%e^(c*sqrt(z)))^v,z) -
--%e^-(c^2*v^2/(4*b))*(%i*gamma_incomplete(1/2,-(2*b*sqrt(z)+c*v)^2/(4*b))*c*v
-                        *(2*b*sqrt(z)+c*v)
-                     /(2*b*abs(2*b*sqrt(z)+c*v))
-                     -gamma_incomplete(1,-(2*b*sqrt(z)+c*v)^2/(4*b))/sqrt(b))
+expand(integrate(%e^(b*x)*(%e^(c*sqrt(x)))^v,x) -
+-%e^-(c^2*v^2/(4*b))*(%i*gamma_incomplete(1/2,-(2*b*sqrt(x)+c*v)^2/(4*b))*c*v
+                        *(2*b*sqrt(x)+c*v)
+                     /(2*b*abs(2*b*sqrt(x)+c*v))
+                     -gamma_incomplete(1,-(2*b*sqrt(x)+c*v)^2/(4*b))/sqrt(b))
  /sqrt(b));
 0;
 
@@ -1686,11 +1686,11 @@ sqrt(%pi)*%e^(e-d^2/(4*c*v))*erf(sqrt(-c*v)*z-d/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 295: NEW 5 */
-expand(integrate(%e^(d*z+e)*(%e^(c*sqrt(z)))^v,z) -
--%e^(e-c^2*v^2/(4*d))*(-gamma_incomplete(1/2,-(2*d*sqrt(z)+c*v)^2/(4*d))
-                      *c*sqrt(-d)*v*(2*d*sqrt(z)+c*v)
-                      /(2*d^(3/2)*abs(2*d*sqrt(z)+c*v))
-                      -gamma_incomplete(1,-(2*d*sqrt(z)+c*v)^2/(4*d))/sqrt(d))
+expand(integrate(%e^(d*x+e)*(%e^(c*sqrt(x)))^v,x) -
+-%e^(e-c^2*v^2/(4*d))*(-gamma_incomplete(1/2,-(2*d*sqrt(x)+c*v)^2/(4*d))
+                      *c*sqrt(-d)*v*(2*d*sqrt(x)+c*v)
+                      /(2*d^(3/2)*abs(2*d*sqrt(x)+c*v))
+                      -gamma_incomplete(1,-(2*d*sqrt(x)+c*v)^2/(4*d))/sqrt(d))
  /sqrt(d));
 0;
 
@@ -1727,11 +1727,11 @@ sqrt(%pi)*%e^(d^2/(4*(-c*v-b)))*erf(sqrt(-c*v-b)*z-d/(2*sqrt(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 303: NEW 10 (8) */
-expand(integrate(%e^(d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z)-
--%e^-((c*v+b)^2/(4*d))*(gamma_incomplete(1/2,-(2*d*sqrt(z)+c*v+b)^2/(4*d))
-                       *sqrt(-d)*(-c*v-b)*(2*d*sqrt(z)+c*v+b)
-                       /(2*abs(2*d*sqrt(z)+c*v+b))
-                       -gamma_incomplete(1,-(2*d*sqrt(z)+c*v+b)^2/(4*d))*d)
+expand(integrate(%e^(d*x+b*sqrt(x))*(%e^(c*sqrt(x)))^v,x)-
+-%e^-((c*v+b)^2/(4*d))*(gamma_incomplete(1/2,-(2*d*sqrt(x)+c*v+b)^2/(4*d))
+                       *sqrt(-d)*(-c*v-b)*(2*d*sqrt(x)+c*v+b)
+                       /(2*abs(2*d*sqrt(x)+c*v+b))
+                       -gamma_incomplete(1,-(2*d*sqrt(x)+c*v+b)^2/(4*d))*d)
  /d^2);
 0;
 
@@ -1742,11 +1742,11 @@ sqrt(%pi)*%e^(d^2/(4*(-c*v-b))+e)
          /(2*sqrt(-c*v-b));
 
 /* Problem 305: NEW 10 (8) */
-expand(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^v,z)-
--%e^(e-(c*v+b)^2/(4*d))*(gamma_incomplete(1/2,-(2*d*sqrt(z)+c*v+b)^2/(4*d))
-                        *sqrt(-d)*(-c*v-b)*(2*d*sqrt(z)+c*v+b)
-                        /(2*abs(2*d*sqrt(z)+c*v+b))
-                        -gamma_incomplete(1,-(2*d*sqrt(z)+c*v+b)^2/(4*d))*d)
+expand(integrate(%e^(e+d*x+b*sqrt(x))*(%e^(c*sqrt(x)))^v,x)-
+-%e^(e-(c*v+b)^2/(4*d))*(gamma_incomplete(1/2,-(2*d*sqrt(x)+c*v+b)^2/(4*d))
+                        *sqrt(-d)*(-c*v-b)*(2*d*sqrt(x)+c*v+b)
+                        /(2*abs(2*d*sqrt(x)+c*v+b))
+                        -gamma_incomplete(1,-(2*d*sqrt(x)+c*v+b)^2/(4*d))*d)
  /d^2);
 0;
 
@@ -1756,11 +1756,11 @@ sqrt(%pi)*%e^(g*v-d^2/(4*c*v))*erf(sqrt(-c*v)*z-d/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 307: NEW 5 */
-expand(integrate(%e^(d*z)*(%e^(g+c*sqrt(z)))^v,z)-
--%e^(g*v-c^2*v^2/(4*d))*(-gamma_incomplete(1/2,-(2*d*sqrt(z)+c*v)^2/(4*d))
-                        *c*sqrt(-d)*v*(2*d*sqrt(z)+c*v)
-                        /(2*d^(3/2)*abs(2*d*sqrt(z)+c*v))
-                        -gamma_incomplete(1,-(2*d*sqrt(z)+c*v)^2/(4*d))
+expand(integrate(%e^(d*x)*(%e^(g+c*sqrt(x)))^v,x)-
+-%e^(g*v-c^2*v^2/(4*d))*(-gamma_incomplete(1/2,-(2*d*sqrt(x)+c*v)^2/(4*d))
+                        *c*sqrt(-d)*v*(2*d*sqrt(x)+c*v)
+                        /(2*d^(3/2)*abs(2*d*sqrt(x)+c*v))
+                        -gamma_incomplete(1,-(2*d*sqrt(x)+c*v)^2/(4*d))
                          /sqrt(d))
  /sqrt(d));
 0;
@@ -1771,11 +1771,11 @@ sqrt(%pi)*%e^(g*v-d^2/(4*c*v)+e)*erf(sqrt(-c*v)*z-d/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 309: NEW 5 */
-expand(integrate(%e^(d*z+e)*(%e^(g+c*sqrt(z)))^v,z) -
--%e^(-c^2*v^2/(4*d)+g*v+e)*(-gamma_incomplete(1/2,-(2*d*sqrt(z)+c*v)^2/(4*d))
-                           *c*sqrt(-d)*v*(2*d*sqrt(z)+c*v)
-                           /(2*d^(3/2)*abs(2*d*sqrt(z)+c*v))
-                           -gamma_incomplete(1,-(2*d*sqrt(z)+c*v)^2/(4*d))
+expand(integrate(%e^(d*x+e)*(%e^(g+c*sqrt(x)))^v,x) -
+-%e^(-c^2*v^2/(4*d)+g*v+e)*(-gamma_incomplete(1/2,-(2*d*sqrt(x)+c*v)^2/(4*d))
+                           *c*sqrt(-d)*v*(2*d*sqrt(x)+c*v)
+                           /(2*d^(3/2)*abs(2*d*sqrt(x)+c*v))
+                           -gamma_incomplete(1,-(2*d*sqrt(x)+c*v)^2/(4*d))
                             /sqrt(d))
  /sqrt(d));
 0;
@@ -1790,9 +1790,9 @@ integrate(%e^(b*z^2)*(%e^(g+c*z^2))^v,z);
 sqrt(%pi)*%e^(g*v)*erf(sqrt(-c*v-b)*z)/(2*sqrt(-c*v-b));
 
 /* Problem 312: OK */
-integrate(%e^(b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z);
-2*((c*v*%e^(g*v)+b*%e^(g*v))*sqrt(z)-%e^(g*v))
-         *%e^(c*v*sqrt(z)+b*sqrt(z))
+integrate(%e^(b*sqrt(x))*(%e^(g+c*sqrt(x)))^v,x);
+2*((c*v*%e^(g*v)+b*%e^(g*v))*sqrt(x)-%e^(g*v))
+         *%e^(c*v*sqrt(x)+b*sqrt(x))
          /(c^2*v^2+2*b*c*v+b^2);
 
 /* Problem 313: NEW 9 */
@@ -1805,9 +1805,9 @@ integrate(%e^(e+b*z^2)*(%e^(g+c*z^2))^v,z);
 sqrt(%pi)*%e^(g*v+e)*erf(sqrt(-c*v-b)*z)/(2*sqrt(-c*v-b));
 
 /* Problem 315: OK */
-integrate(%e^(e+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z);
-2*((c*v*%e^(g*v+e)+b*%e^(g*v+e))*sqrt(z)-%e^(g*v+e))
-         *%e^(c*v*sqrt(z)+b*sqrt(z))
+integrate(%e^(e+b*sqrt(x))*(%e^(g+c*sqrt(x)))^v,x);
+2*((c*v*%e^(g*v+e)+b*%e^(g*v+e))*sqrt(x)-%e^(g*v+e))
+         *%e^(c*v*sqrt(x)+b*sqrt(x))
          /(c^2*v^2+2*b*c*v+b^2);
 
 /* Problem 316: OK */
@@ -1817,11 +1817,11 @@ sqrt(%pi)*%e^(d^2/(4*(-c*v-b))+g*v)
          /(2*sqrt(-c*v-b));
 
 /* Problem 317: NEW 10 (8) */
-expand(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z)-
--%e^(g*v-(c*v+b)^2/(4*d))*(gamma_incomplete(1/2,-(2*d*sqrt(z)+c*v+b)^2/(4*d))
-                          *sqrt(-d)*(-c*v-b)*(2*d*sqrt(z)+c*v+b)
-                          /(2*abs(2*d*sqrt(z)+c*v+b))
-                          -gamma_incomplete(1,-(2*d*sqrt(z)+c*v+b)^2/(4*d))*d)
+expand(integrate(%e^(d*x+b*sqrt(x))*(%e^(g+c*sqrt(x)))^v,x)-
+-%e^(g*v-(c*v+b)^2/(4*d))*(gamma_incomplete(1/2,-(2*d*sqrt(x)+c*v+b)^2/(4*d))
+                          *sqrt(-d)*(-c*v-b)*(2*d*sqrt(x)+c*v+b)
+                          /(2*abs(2*d*sqrt(x)+c*v+b))
+                          -gamma_incomplete(1,-(2*d*sqrt(x)+c*v+b)^2/(4*d))*d)
  /d^2);
 0;
 
@@ -1832,12 +1832,12 @@ sqrt(%pi)*%e^(d^2/(4*(-c*v-b))+g*v+e)
          /(2*sqrt(-c*v-b));
 
 /* Problem 319: NEW 10 (8) */
-expand(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(e+d*x+b*sqrt(x))*(%e^(g+c*sqrt(x)))^v,x)-
 -%e^(-(c*v+b)^2/(4*d)+g*v+e)*(gamma_incomplete(1/2,
-                                               -(2*d*sqrt(z)+c*v+b)^2/(4*d))
-                             *sqrt(-d)*(-c*v-b)*(2*d*sqrt(z)+c*v+b)
-                             /(2*abs(2*d*sqrt(z)+c*v+b))
-                             -gamma_incomplete(1,-(2*d*sqrt(z)+c*v+b)^2/(4*d))
+                                               -(2*d*sqrt(x)+c*v+b)^2/(4*d))
+                             *sqrt(-d)*(-c*v-b)*(2*d*sqrt(x)+c*v+b)
+                             /(2*abs(2*d*sqrt(x)+c*v+b))
+                             -gamma_incomplete(1,-(2*d*sqrt(x)+c*v+b)^2/(4*d))
                               *d)
  /d^2);
 0;
@@ -1849,16 +1849,16 @@ sqrt(%pi)*%e^-((-f*v-d)^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 321: NEW 10 (8) */
-expand(integrate(%e^(d*z)*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(d*x)*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^-(c^2*v^2/(4*(f*v+d)))*(gamma_incomplete(1,
-                                             -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                             -(2*(f*v+d)*sqrt(x)+c*v)^2
                                               /(4*(f*v+d)))
                            *(-f*v-d)
                            -gamma_incomplete(1/2,
-                                             -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                             -(2*(f*v+d)*sqrt(x)+c*v)^2
                                               /(4*(f*v+d)))
-                            *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+c*v)
-                            /(2*abs(2*(f*v+d)*sqrt(z)+c*v)))
+                            *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+c*v)
+                            /(2*abs(2*(f*v+d)*sqrt(x)+c*v)))
  /(f*v+d)^2);
 0;
 
@@ -1869,16 +1869,16 @@ sqrt(%pi)*%e^(e-(-f*v-d)^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 323: NEW 10 (8) */
-expand(integrate(%e^(d*z+e)*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(d*x+e)*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^(e-c^2*v^2/(4*(f*v+d)))*(gamma_incomplete(1,
-                                              -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                              -(2*(f*v+d)*sqrt(x)+c*v)^2
                                                /(4*(f*v+d)))
                             *(-f*v-d)
                             -gamma_incomplete(1/2,
-                                              -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                              -(2*(f*v+d)*sqrt(x)+c*v)^2
                                                /(4*(f*v+d)))
-                             *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+c*v)
-                             /(2*abs(2*(f*v+d)*sqrt(z)+c*v)))
+                             *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+c*v)
+                             /(2*abs(2*(f*v+d)*sqrt(x)+c*v)))
  /(f*v+d)^2);
 0;
 
@@ -1889,12 +1889,12 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 325: NEW 10 (8) */
-expand(integrate(%e^(b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^-((c*v+b)^2/(4*f*v))*(gamma_incomplete(1/2,
-                                           -(2*f*v*sqrt(z)+c*v+b)^2/(4*f*v))
-                         *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(z)+c*v+b)
-                         /(2*abs(2*f*v*sqrt(z)+c*v+b))
-                         -gamma_incomplete(1,-(2*f*v*sqrt(z)+c*v+b)^2/(4*f*v))
+                                           -(2*f*v*sqrt(x)+c*v+b)^2/(4*f*v))
+                         *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(x)+c*v+b)
+                         /(2*abs(2*f*v*sqrt(x)+c*v+b))
+                         -gamma_incomplete(1,-(2*f*v*sqrt(x)+c*v+b)^2/(4*f*v))
                           *f*v)
  /(f^2*v^2));
 0;
@@ -1906,13 +1906,13 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b))+e)
          /(2*sqrt(-c*v-b));
 
 /* Problem 327: NEW 10 (8) */
-expand(integrate(%e^(e+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(e+b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^(e-(c*v+b)^2/(4*f*v))*(gamma_incomplete(1/2,
-                                            -(2*f*v*sqrt(z)+c*v+b)^2/(4*f*v))
-                          *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(z)+c*v+b)
-                          /(2*abs(2*f*v*sqrt(z)+c*v+b))
+                                            -(2*f*v*sqrt(x)+c*v+b)^2/(4*f*v))
+                          *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(x)+c*v+b)
+                          /(2*abs(2*f*v*sqrt(x)+c*v+b))
                           -gamma_incomplete(1,
-                                            -(2*f*v*sqrt(z)+c*v+b)^2/(4*f*v))
+                                            -(2*f*v*sqrt(x)+c*v+b)^2/(4*f*v))
                            *f*v)
  /(f^2*v^2));
 0;
@@ -1924,14 +1924,14 @@ sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b)))
          /(2*sqrt(-c*v-b));
 
 /* Problem 329: NEW 10 (8) */
-expand(integrate(%e^(d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(d*x+b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^-((c*v+b)^2/(4*(f*v+d)))*(gamma_incomplete(1/2,
-                                               -(2*(f*v+d)*sqrt(z)+c*v+b)^2
+                                               -(2*(f*v+d)*sqrt(x)+c*v+b)^2
                                                 /(4*(f*v+d)))
-                             *(-c*v-b)*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+c*v+b)
-                             /(2*abs(2*(f*v+d)*sqrt(z)+c*v+b))
+                             *(-c*v-b)*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+c*v+b)
+                             /(2*abs(2*(f*v+d)*sqrt(x)+c*v+b))
                              +gamma_incomplete(1,
-                                               -(2*(f*v+d)*sqrt(z)+c*v+b)^2
+                                               -(2*(f*v+d)*sqrt(x)+c*v+b)^2
                                                 /(4*(f*v+d)))
                               *(-f*v-d))
  /(f*v+d)^2);
@@ -1944,14 +1944,14 @@ sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b))+e)
          /(2*sqrt(-c*v-b));
 
 /* Problem 331: NEW 10 (8) */
-expand(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(e+d*x+b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^(e-(c*v+b)^2/(4*(f*v+d)))*(gamma_incomplete(1/2,
-                                                -(2*(f*v+d)*sqrt(z)+c*v+b)^2
+                                                -(2*(f*v+d)*sqrt(x)+c*v+b)^2
                                                  /(4*(f*v+d)))
-                              *(-c*v-b)*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+c*v+b)
-                              /(2*abs(2*(f*v+d)*sqrt(z)+c*v+b))
+                              *(-c*v-b)*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+c*v+b)
+                              /(2*abs(2*(f*v+d)*sqrt(x)+c*v+b))
                               +gamma_incomplete(1,
-                                                -(2*(f*v+d)*sqrt(z)+c*v+b)^2
+                                                -(2*(f*v+d)*sqrt(x)+c*v+b)^2
                                                  /(4*(f*v+d)))
                                *(-f*v-d))
  /(f*v+d)^2);
@@ -1964,16 +1964,16 @@ sqrt(%pi)*%e^(g*v-(-f*v-d)^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 333: NEW 10 (8) */
-expand(integrate(%e^(d*z)*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(d*x)*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(g*v-c^2*v^2/(4*(f*v+d)))*(gamma_incomplete(1,
-                                                -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                                -(2*(f*v+d)*sqrt(x)+c*v)^2
                                                  /(4*(f*v+d)))
                               *(-f*v-d)
                               -gamma_incomplete(1/2,
-                                                -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                                -(2*(f*v+d)*sqrt(x)+c*v)^2
                                                  /(4*(f*v+d)))
-                               *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+c*v)
-                               /(2*abs(2*(f*v+d)*sqrt(z)+c*v)))
+                               *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+c*v)
+                               /(2*abs(2*(f*v+d)*sqrt(x)+c*v)))
  /(f*v+d)^2);
 0;
 
@@ -1984,16 +1984,16 @@ sqrt(%pi)*%e^(-(-f*v-d)^2/(4*c*v)+g*v+e)
          /(2*sqrt(-c*v));
 
 /* Problem 335: NEW 10 (8) */
-expand(integrate(%e^(d*z+e)*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(d*x+e)*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(-c^2*v^2/(4*(f*v+d))+g*v+e)*(gamma_incomplete(1,
-                                                   -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                                   -(2*(f*v+d)*sqrt(x)+c*v)^2
                                                     /(4*(f*v+d)))
                                  *(-f*v-d)
                                  -gamma_incomplete(1/2,
-                                                   -(2*(f*v+d)*sqrt(z)+c*v)^2
+                                                   -(2*(f*v+d)*sqrt(x)+c*v)^2
                                                     /(4*(f*v+d)))
-                                  *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(z)+c*v)
-                                  /(2*abs(2*(f*v+d)*sqrt(z)+c*v)))
+                                  *c*v*sqrt(-f*v-d)*(2*(f*v+d)*sqrt(x)+c*v)
+                                  /(2*abs(2*(f*v+d)*sqrt(x)+c*v)))
  /(f*v+d)^2);
 0;
 
@@ -2004,14 +2004,14 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b))+g*v)
          /(2*sqrt(-c*v-b));
 
 /* Problem 337: NEW 10 (8) */
-expand(integrate(%e^(b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(g*v-(c*v+b)^2/(4*f*v))*(gamma_incomplete(1/2,
-                                              -(2*f*v*sqrt(z)+c*v+b)^2
+                                              -(2*f*v*sqrt(x)+c*v+b)^2
                                                /(4*f*v))
-                            *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(z)+c*v+b)
-                            /(2*abs(2*f*v*sqrt(z)+c*v+b))
+                            *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(x)+c*v+b)
+                            /(2*abs(2*f*v*sqrt(x)+c*v+b))
                             -gamma_incomplete(1,
-                                              -(2*f*v*sqrt(z)+c*v+b)^2
+                                              -(2*f*v*sqrt(x)+c*v+b)^2
                                                /(4*f*v))
                              *f*v)
  /(f^2*v^2));
@@ -2024,14 +2024,14 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b))+g*v+e)
          /(2*sqrt(-c*v-b));
 
 /* Problem 339: NEW 10 (8) */
-expand(integrate(%e^(e+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(e+b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(-(c*v+b)^2/(4*f*v)+g*v+e)*(gamma_incomplete(1/2,
-                                                 -(2*f*v*sqrt(z)+c*v+b)^2
+                                                 -(2*f*v*sqrt(x)+c*v+b)^2
                                                   /(4*f*v))
-                               *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(z)+c*v+b)
-                               /(2*abs(2*f*v*sqrt(z)+c*v+b))
+                               *sqrt(-f*v)*(-c*v-b)*(2*f*v*sqrt(x)+c*v+b)
+                               /(2*abs(2*f*v*sqrt(x)+c*v+b))
                                -gamma_incomplete(1,
-                                                 -(2*f*v*sqrt(z)+c*v+b)^2
+                                                 -(2*f*v*sqrt(x)+c*v+b)^2
                                                   /(4*f*v))
                                 *f*v)
  /(f^2*v^2));
@@ -2044,15 +2044,15 @@ sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b))+g*v)
          /(2*sqrt(-c*v-b));
 
 /* Problem 341: NEW 10 (8) */
-expand(integrate(%e^(d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(d*x+b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(g*v-(c*v+b)^2/(4*(f*v+d)))*(gamma_incomplete(1/2,
-                                                  -(2*(f*v+d)*sqrt(z)+c*v+b)^2
+                                                  -(2*(f*v+d)*sqrt(x)+c*v+b)^2
                                                    /(4*(f*v+d)))
                                 *(-c*v-b)*sqrt(-f*v-d)
-                                *(2*(f*v+d)*sqrt(z)+c*v+b)
-                                /(2*abs(2*(f*v+d)*sqrt(z)+c*v+b))
+                                *(2*(f*v+d)*sqrt(x)+c*v+b)
+                                /(2*abs(2*(f*v+d)*sqrt(x)+c*v+b))
                                 +gamma_incomplete(1,
-                                                  -(2*(f*v+d)*sqrt(z)+c*v+b)^2
+                                                  -(2*(f*v+d)*sqrt(x)+c*v+b)^2
                                                    /(4*(f*v+d)))
                                  *(-f*v-d))
  /(f*v+d)^2);
@@ -2065,17 +2065,17 @@ sqrt(%pi)*%e^((-f*v-d)^2/(4*(-c*v-b))+g*v+e)
          /(2*sqrt(-c*v-b));
 
 /* Problem 343: NEW 10 (8) */
-expand(integrate(%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate(%e^(e+d*x+b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(-(c*v+b)^2/(4*(f*v+d))+g*v+e)*(gamma_incomplete(1/2,
-                                                     -(2*(f*v+d)*sqrt(z)
+                                                     -(2*(f*v+d)*sqrt(x)
                                                       +c*v+b)
                                                       ^2
                                                       /(4*(f*v+d)))
                                    *(-c*v-b)*sqrt(-f*v-d)
-                                   *(2*(f*v+d)*sqrt(z)+c*v+b)
-                                   /(2*abs(2*(f*v+d)*sqrt(z)+c*v+b))
+                                   *(2*(f*v+d)*sqrt(x)+c*v+b)
+                                   /(2*abs(2*(f*v+d)*sqrt(x)+c*v+b))
                                    +gamma_incomplete(1,
-                                                     -(2*(f*v+d)*sqrt(z)
+                                                     -(2*(f*v+d)*sqrt(x)
                                                       +c*v+b)
                                                       ^2
                                                       /(4*(f*v+d)))
@@ -2101,11 +2101,11 @@ sqrt(%pi)*%e^-(b^2*u^2/(4*c*v))*erf(sqrt(-c*v)*z-b*u/(2*sqrt(-c*v)))
          /(2*sqrt(-c*v));
 
 /* Problem 348: NEW 5 */
-expand(integrate((%e^(b*z))^u*(%e^(c*sqrt(z)))^v,z) -
--%e^-(c^2*v^2/(4*b*u))*(-gamma_incomplete(1/2,-(2*b*u*sqrt(z)+c*v)^2/(4*b*u))
-                       *c*sqrt(-u)*v*(2*b*u*sqrt(z)+c*v)
-                       /(2*b*u^(3/2)*abs(2*b*u*sqrt(z)+c*v))
-                       -gamma_incomplete(1,-(2*b*u*sqrt(z)+c*v)^2/(4*b*u))
+expand(integrate((%e^(b*x))^u*(%e^(c*sqrt(x)))^v,x) -
+-%e^-(c^2*v^2/(4*b*u))*(-gamma_incomplete(1/2,-(2*b*u*sqrt(x)+c*v)^2/(4*b*u))
+                       *c*sqrt(-u)*v*(2*b*u*sqrt(x)+c*v)
+                       /(2*b*u^(3/2)*abs(2*b*u*sqrt(x)+c*v))
+                       -gamma_incomplete(1,-(2*b*u*sqrt(x)+c*v)^2/(4*b*u))
                         /(sqrt(b)*sqrt(u)))
  /(sqrt(b)*sqrt(u)));
 0;
@@ -2117,12 +2117,12 @@ sqrt(%pi)*%e^(e*u-d^2*u^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 350: NEW 5 */
-expand(integrate((%e^(d*z+e))^u*(%e^(c*sqrt(z)))^v,z)-
+expand(integrate((%e^(d*x+e))^u*(%e^(c*sqrt(x)))^v,x)-
 -%e^(e*u-c^2*v^2/(4*d*u))*(-gamma_incomplete(1/2,
-                                             -(2*d*u*sqrt(z)+c*v)^2/(4*d*u))
-                          *c*sqrt(-d*u)*v*(2*d*u*sqrt(z)+c*v)
-                          /(2*(d*u)^(3/2)*abs(2*d*u*sqrt(z)+c*v))
-                          -gamma_incomplete(1,-(2*d*u*sqrt(z)+c*v)^2/(4*d*u))
+                                             -(2*d*u*sqrt(x)+c*v)^2/(4*d*u))
+                          *c*sqrt(-d*u)*v*(2*d*u*sqrt(x)+c*v)
+                          /(2*(d*u)^(3/2)*abs(2*d*u*sqrt(x)+c*v))
+                          -gamma_incomplete(1,-(2*d*u*sqrt(x)+c*v)^2/(4*d*u))
                            *d*u
                            /(d*u)^(3/2))
  /sqrt(d*u));
@@ -2138,8 +2138,8 @@ integrate((%e^(b*z^2))^u*(%e^(c*z^2))^v,z);
 sqrt(%pi)*erf(sqrt(-c*v-b*u)*z)/(2*sqrt(-c*v-b*u));
 
 /* Problem 353: OK */
-integrate((%e^(b*sqrt(z)))^u*(%e^(c*sqrt(z)))^v,z);
-2*((c*v+b*u)*sqrt(z)-1)*%e^(c*v*sqrt(z)+b*u*sqrt(z))
+integrate((%e^(b*sqrt(x)))^u*(%e^(c*sqrt(x)))^v,x);
+2*((c*v+b*u)*sqrt(x)-1)*%e^(c*v*sqrt(x)+b*u*sqrt(x))
          /(c^2*v^2+2*b*c*u*v+b^2*u^2);
 
 /* Problem 354: OK */
@@ -2149,12 +2149,12 @@ sqrt(%pi)*%e^(g*v-d^2*u^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 355: NEW 5 */
-expand(integrate((%e^(d*z))^u*(%e^(g+c*sqrt(z)))^v,z) -
+expand(integrate((%e^(d*x))^u*(%e^(g+c*sqrt(x)))^v,x) -
 -%e^(g*v-c^2*v^2/(4*d*u))*(-gamma_incomplete(1/2,
-                                             -(2*d*u*sqrt(z)+c*v)^2/(4*d*u))
-                          *c*sqrt(-d*u)*v*(2*d*u*sqrt(z)+c*v)
-                          /(2*(d*u)^(3/2)*abs(2*d*u*sqrt(z)+c*v))
-                          -gamma_incomplete(1,-(2*d*u*sqrt(z)+c*v)^2/(4*d*u))
+                                             -(2*d*u*sqrt(x)+c*v)^2/(4*d*u))
+                          *c*sqrt(-d*u)*v*(2*d*u*sqrt(x)+c*v)
+                          /(2*(d*u)^(3/2)*abs(2*d*u*sqrt(x)+c*v))
+                          -gamma_incomplete(1,-(2*d*u*sqrt(x)+c*v)^2/(4*d*u))
                            *d*u
                            /(d*u)^(3/2))
  /sqrt(d*u));
@@ -2167,14 +2167,14 @@ sqrt(%pi)*%e^(g*v-d^2*u^2/(4*c*v)+e*u)
          /(2*sqrt(-c*v));
 
 /* Problem 357: NEW 5 */
-expand(integrate((%e^(d*z+e))^u*(%e^(g+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(d*x+e))^u*(%e^(g+c*sqrt(x)))^v,x)-
 -%e^(-c^2*v^2/(4*d*u)+g*v+e*u)*(-gamma_incomplete(1/2,
-                                                  -(2*d*u*sqrt(z)+c*v)^2
+                                                  -(2*d*u*sqrt(x)+c*v)^2
                                                    /(4*d*u))
-                               *c*sqrt(-d*u)*v*(2*d*u*sqrt(z)+c*v)
-                               /(2*(d*u)^(3/2)*abs(2*d*u*sqrt(z)+c*v))
+                               *c*sqrt(-d*u)*v*(2*d*u*sqrt(x)+c*v)
+                               /(2*(d*u)^(3/2)*abs(2*d*u*sqrt(x)+c*v))
                                -gamma_incomplete(1,
-                                                 -(2*d*u*sqrt(z)+c*v)^2
+                                                 -(2*d*u*sqrt(x)+c*v)^2
                                                   /(4*d*u))
                                 *d*u
                                 /(d*u)^(3/2))
@@ -2191,9 +2191,9 @@ integrate((%e^(b*z^2))^u*(%e^(g+c*z^2))^v,z);
 sqrt(%pi)*%e^(g*v)*erf(sqrt(-c*v-b*u)*z)/(2*sqrt(-c*v-b*u));
 
 /* Problem 360: OK */
-integrate((%e^(b*sqrt(z)))^u*(%e^(g+c*sqrt(z)))^v,z);
-2*((c*v*%e^(g*v)+b*u*%e^(g*v))*sqrt(z)-%e^(g*v))
-         *%e^(c*v*sqrt(z)+b*u*sqrt(z))
+integrate((%e^(b*sqrt(x)))^u*(%e^(g+c*sqrt(x)))^v,x);
+2*((c*v*%e^(g*v)+b*u*%e^(g*v))*sqrt(x)-%e^(g*v))
+         *%e^(c*v*sqrt(x)+b*u*sqrt(x))
          /(c^2*v^2+2*b*c*u*v+b^2*u^2);
 
 /* Problem 361: NEW 9 */
@@ -2207,9 +2207,9 @@ integrate((%e^(e+b*z^2))^u*(%e^(g+c*z^2))^v,z);
 sqrt(%pi)*%e^(g*v+e*u)*erf(sqrt(-c*v-b*u)*z)/(2*sqrt(-c*v-b*u));
 
 /* Problem 363: OK */
-integrate((%e^(e+b*sqrt(z)))^u*(%e^(g+c*sqrt(z)))^v,z);
-2*((c*v*%e^(g*v+e*u)+b*u*%e^(g*v+e*u))*sqrt(z)-%e^(g*v+e*u))
-         *%e^(c*v*sqrt(z)+b*u*sqrt(z))
+integrate((%e^(e+b*sqrt(x)))^u*(%e^(g+c*sqrt(x)))^v,x);
+2*((c*v*%e^(g*v+e*u)+b*u*%e^(g*v+e*u))*sqrt(x)-%e^(g*v+e*u))
+         *%e^(c*v*sqrt(x)+b*u*sqrt(x))
          /(c^2*v^2+2*b*c*u*v+b^2*u^2);
 
 /* Problem 364: OK */
@@ -2219,16 +2219,16 @@ sqrt(%pi)*%e^-((-f*v-d*u)^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 365: NEW 10 (8) */
-expand(integrate((%e^(d*z))^u*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(d*x))^u*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^-(c^2*v^2/(4*(f*v+d*u)))*(gamma_incomplete(1,
-                                               -(2*(f*v+d*u)*sqrt(z)+c*v)^2
+                                               -(2*(f*v+d*u)*sqrt(x)+c*v)^2
                                                 /(4*(f*v+d*u)))
                              *(-f*v-d*u)
                              -gamma_incomplete(1/2,
-                                               -(2*(f*v+d*u)*sqrt(z)+c*v)^2
+                                               -(2*(f*v+d*u)*sqrt(x)+c*v)^2
                                                 /(4*(f*v+d*u)))
-                              *c*v*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(z)+c*v)
-                              /(2*abs(2*(f*v+d*u)*sqrt(z)+c*v)))
+                              *c*v*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(x)+c*v)
+                              /(2*abs(2*(f*v+d*u)*sqrt(x)+c*v)))
  /(f*v+d*u)^2);
 0;
 
@@ -2239,16 +2239,16 @@ sqrt(%pi)*%e^(e*u-(-f*v-d*u)^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 367: NEW 10 (8) */
-expand(integrate((%e^(e+d*z))^u*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(e+d*x))^u*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^(e*u-c^2*v^2/(4*(f*v+d*u)))*(gamma_incomplete(1,
-                                                  -(2*(f*v+d*u)*sqrt(z)+c*v)^2
+                                                  -(2*(f*v+d*u)*sqrt(x)+c*v)^2
                                                    /(4*(f*v+d*u)))
                                 *(-f*v-d*u)
                                 -gamma_incomplete(1/2,
-                                                  -(2*(f*v+d*u)*sqrt(z)+c*v)^2
+                                                  -(2*(f*v+d*u)*sqrt(x)+c*v)^2
                                                    /(4*(f*v+d*u)))
-                                 *c*v*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(z)+c*v)
-                                 /(2*abs(2*(f*v+d*u)*sqrt(z)+c*v)))
+                                 *c*v*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(x)+c*v)
+                                 /(2*abs(2*(f*v+d*u)*sqrt(x)+c*v)))
  /(f*v+d*u)^2);
 0;
 
@@ -2259,14 +2259,14 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 369: NEW 10 (8) */
-expand(integrate((%e^(b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(b*sqrt(x)))^u*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^-((c*v+b*u)^2/(4*f*v))*(gamma_incomplete(1/2,
-                                             -(2*f*v*sqrt(z)+c*v+b*u)^2
+                                             -(2*f*v*sqrt(x)+c*v+b*u)^2
                                               /(4*f*v))
-                           *sqrt(-f*v)*(-c*v-b*u)*(2*f*v*sqrt(z)+c*v+b*u)
-                           /(2*abs(2*f*v*sqrt(z)+c*v+b*u))
+                           *sqrt(-f*v)*(-c*v-b*u)*(2*f*v*sqrt(x)+c*v+b*u)
+                           /(2*abs(2*f*v*sqrt(x)+c*v+b*u))
                            -gamma_incomplete(1,
-                                             -(2*f*v*sqrt(z)+c*v+b*u)^2
+                                             -(2*f*v*sqrt(x)+c*v+b*u)^2
                                               /(4*f*v))
                             *f*v)
  /(f^2*v^2));
@@ -2279,14 +2279,14 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u))+e*u)
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 371: NEW 10 (8) */
-expand(integrate((%e^(e+b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(e+b*sqrt(x)))^u*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^(e*u-(c*v+b*u)^2/(4*f*v))*(gamma_incomplete(1/2,
-                                                -(2*f*v*sqrt(z)+c*v+b*u)^2
+                                                -(2*f*v*sqrt(x)+c*v+b*u)^2
                                                  /(4*f*v))
-                              *sqrt(-f*v)*(-c*v-b*u)*(2*f*v*sqrt(z)+c*v+b*u)
-                              /(2*abs(2*f*v*sqrt(z)+c*v+b*u))
+                              *sqrt(-f*v)*(-c*v-b*u)*(2*f*v*sqrt(x)+c*v+b*u)
+                              /(2*abs(2*f*v*sqrt(x)+c*v+b*u))
                               -gamma_incomplete(1,
-                                                -(2*f*v*sqrt(z)+c*v+b*u)^2
+                                                -(2*f*v*sqrt(x)+c*v+b*u)^2
                                                  /(4*f*v))
                                *f*v)
  /(f^2*v^2));
@@ -2299,17 +2299,17 @@ sqrt(%pi)*%e^((-f*v-d*u)^2/(4*(-c*v-b*u)))
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 373: NEW 10 (8) */
-expand(integrate((%e^(d*z+b*sqrt(z)))^u*(%e^(f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(d*x+b*sqrt(x)))^u*(%e^(f*x+c*sqrt(x)))^v,x)-
 -%e^-((c*v+b*u)^2/(4*(f*v+d*u)))*(gamma_incomplete(1/2,
-                                                   -(2*(f*v+d*u)*sqrt(z)
+                                                   -(2*(f*v+d*u)*sqrt(x)
                                                     +c*v+b*u)
                                                     ^2
                                                     /(4*(f*v+d*u)))
                                  *(-c*v-b*u)*sqrt(-f*v-d*u)
-                                 *(2*(f*v+d*u)*sqrt(z)+c*v+b*u)
-                                 /(2*abs(2*(f*v+d*u)*sqrt(z)+c*v+b*u))
+                                 *(2*(f*v+d*u)*sqrt(x)+c*v+b*u)
+                                 /(2*abs(2*(f*v+d*u)*sqrt(x)+c*v+b*u))
                                  +gamma_incomplete(1,
-                                                   -(2*(f*v+d*u)*sqrt(z)
+                                                   -(2*(f*v+d*u)*sqrt(x)
                                                     +c*v+b*u)
                                                     ^2
                                                     /(4*(f*v+d*u)))
@@ -2324,16 +2324,16 @@ sqrt(%pi)*%e^(g*v-(-f*v-d*u)^2/(4*c*v))
          /(2*sqrt(-c*v));
 
 /* Problem 375: NEW 10 (8) */
-expand(integrate((%e^(d*z))^u*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(d*x))^u*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(g*v-c^2*v^2/(4*(f*v+d*u)))*(gamma_incomplete(1,
-                                                  -(2*(f*v+d*u)*sqrt(z)+c*v)^2
+                                                  -(2*(f*v+d*u)*sqrt(x)+c*v)^2
                                                    /(4*(f*v+d*u)))
                                 *(-f*v-d*u)
                                 -gamma_incomplete(1/2,
-                                                  -(2*(f*v+d*u)*sqrt(z)+c*v)^2
+                                                  -(2*(f*v+d*u)*sqrt(x)+c*v)^2
                                                    /(4*(f*v+d*u)))
-                                 *c*v*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(z)+c*v)
-                                 /(2*abs(2*(f*v+d*u)*sqrt(z)+c*v)))
+                                 *c*v*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(x)+c*v)
+                                 /(2*abs(2*(f*v+d*u)*sqrt(x)+c*v)))
  /(f*v+d*u)^2);
 0;
 
@@ -2344,21 +2344,21 @@ sqrt(%pi)*%e^(-(-f*v-d*u)^2/(4*c*v)+g*v+e*u)
          /(2*sqrt(-c*v));
 
 /* Problem 377: NEW 10 (8) */
-expand(integrate((%e^(e+d*z))^u*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(e+d*x))^u*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(-c^2*v^2/(4*(f*v+d*u))+g*v+e*u)*(gamma_incomplete(1,
-                                                       -(2*(f*v+d*u)*sqrt(z)
+                                                       -(2*(f*v+d*u)*sqrt(x)
                                                         +c*v)
                                                         ^2
                                                         /(4*(f*v+d*u)))
                                      *(-f*v-d*u)
                                      -gamma_incomplete(1/2,
-                                                       -(2*(f*v+d*u)*sqrt(z)
+                                                       -(2*(f*v+d*u)*sqrt(x)
                                                         +c*v)
                                                         ^2
                                                         /(4*(f*v+d*u)))
                                       *c*v*sqrt(-f*v-d*u)
-                                      *(2*(f*v+d*u)*sqrt(z)+c*v)
-                                      /(2*abs(2*(f*v+d*u)*sqrt(z)+c*v)))
+                                      *(2*(f*v+d*u)*sqrt(x)+c*v)
+                                      /(2*abs(2*(f*v+d*u)*sqrt(x)+c*v)))
  /(f*v+d*u)^2);
 0;
 
@@ -2369,14 +2369,14 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u))+g*v)
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 379: NEW 10 (8) */
-expand(integrate((%e^(b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(b*sqrt(x)))^u*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(g*v-(c*v+b*u)^2/(4*f*v))*(gamma_incomplete(1/2,
-                                                -(2*f*v*sqrt(z)+c*v+b*u)^2
+                                                -(2*f*v*sqrt(x)+c*v+b*u)^2
                                                  /(4*f*v))
-                              *sqrt(-f*v)*(-c*v-b*u)*(2*f*v*sqrt(z)+c*v+b*u)
-                              /(2*abs(2*f*v*sqrt(z)+c*v+b*u))
+                              *sqrt(-f*v)*(-c*v-b*u)*(2*f*v*sqrt(x)+c*v+b*u)
+                              /(2*abs(2*f*v*sqrt(x)+c*v+b*u))
                               -gamma_incomplete(1,
-                                                -(2*f*v*sqrt(z)+c*v+b*u)^2
+                                                -(2*f*v*sqrt(x)+c*v+b*u)^2
                                                  /(4*f*v))
                                *f*v)
  /(f^2*v^2));
@@ -2389,16 +2389,16 @@ sqrt(%pi)*%e^(f^2*v^2/(4*(-c*v-b*u))+g*v+e*u)
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 381: NEW 10 (8) */
-expand(integrate((%e^(e+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(e+b*sqrt(x)))^u*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(-(c*v+b*u)^2/(4*f*v)+g*v+e*u)*(gamma_incomplete(1/2,
-                                                     -(2*f*v*sqrt(z)+c*v+b*u)
+                                                     -(2*f*v*sqrt(x)+c*v+b*u)
                                                       ^2
                                                       /(4*f*v))
                                    *sqrt(-f*v)*(-c*v-b*u)
-                                   *(2*f*v*sqrt(z)+c*v+b*u)
-                                   /(2*abs(2*f*v*sqrt(z)+c*v+b*u))
+                                   *(2*f*v*sqrt(x)+c*v+b*u)
+                                   /(2*abs(2*f*v*sqrt(x)+c*v+b*u))
                                    -gamma_incomplete(1,
-                                                     -(2*f*v*sqrt(z)+c*v+b*u)
+                                                     -(2*f*v*sqrt(x)+c*v+b*u)
                                                       ^2
                                                       /(4*f*v))
                                     *f*v)
@@ -2412,17 +2412,17 @@ sqrt(%pi)*%e^((-f*v-d*u)^2/(4*(-c*v-b*u))+g*v)
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 383: NEW 10 (8) */
-expand(integrate((%e^(d*z+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(d*x+b*sqrt(x)))^u*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(g*v-(c*v+b*u)^2/(4*(f*v+d*u)))*(gamma_incomplete(1/2,
-                                                      -(2*(f*v+d*u)*sqrt(z)
+                                                      -(2*(f*v+d*u)*sqrt(x)
                                                        +c*v+b*u)
                                                        ^2
                                                        /(4*(f*v+d*u)))
                                     *(-c*v-b*u)*sqrt(-f*v-d*u)
-                                    *(2*(f*v+d*u)*sqrt(z)+c*v+b*u)
-                                    /(2*abs(2*(f*v+d*u)*sqrt(z)+c*v+b*u))
+                                    *(2*(f*v+d*u)*sqrt(x)+c*v+b*u)
+                                    /(2*abs(2*(f*v+d*u)*sqrt(x)+c*v+b*u))
                                     +gamma_incomplete(1,
-                                                      -(2*(f*v+d*u)*sqrt(z)
+                                                      -(2*(f*v+d*u)*sqrt(x)
                                                        +c*v+b*u)
                                                        ^2
                                                        /(4*(f*v+d*u)))
@@ -2437,12 +2437,12 @@ sqrt(%pi)*%e^((-f*v-d*u)^2/(4*(-c*v-b*u))+g*v+e*u)
          /(2*sqrt(-c*v-b*u));
 
 /* Problem 385: NEW 10 (8) */
-expand(integrate((%e^(e+d*z+b*sqrt(z)))^u*(%e^(g+f*z+c*sqrt(z)))^v,z)-
+expand(integrate((%e^(e+d*x+b*sqrt(x)))^u*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 -%e^(-(c*v+b*u)^2/(4*(f*v+d*u))+g*v+e*u)
- *(gamma_incomplete(1/2,-(2*(f*v+d*u)*sqrt(z)+c*v+b*u)^2/(4*(f*v+d*u)))
-  *(-c*v-b*u)*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(z)+c*v+b*u)
-  /(2*abs(2*(f*v+d*u)*sqrt(z)+c*v+b*u))
-  +gamma_incomplete(1,-(2*(f*v+d*u)*sqrt(z)+c*v+b*u)^2/(4*(f*v+d*u)))
+ *(gamma_incomplete(1/2,-(2*(f*v+d*u)*sqrt(x)+c*v+b*u)^2/(4*(f*v+d*u)))
+  *(-c*v-b*u)*sqrt(-f*v-d*u)*(2*(f*v+d*u)*sqrt(x)+c*v+b*u)
+  /(2*abs(2*(f*v+d*u)*sqrt(x)+c*v+b*u))
+  +gamma_incomplete(1,-(2*(f*v+d*u)*sqrt(x)+c*v+b*u)^2/(4*(f*v+d*u)))
    *(-f*v-d*u))
  /(f*v+d*u)^2);
 0;
@@ -3046,22 +3046,22 @@ expand(niceindices(integrate(z^n*(%e^(b*z+a*z^2))^u,z))-
 0;
 
 /* Problem 511: NEW 6 */
-expand(niceindices(integrate(z^n*(%e^(b*z+a*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(b*x+a*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-(a^2*u/(4*b))
         *('sum(4^j*binomial(n,j)
                   *'sum(a^(2*n-j-i)*b^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
                                    *(-u)^((j+i+1)/2)*u^(2*n-j-i)
-                                   *abs(2*b*u*sqrt(z)+a*u)^(-j-i-1)
-                                   *(2*b*u*sqrt(z)+a*u)^(j+i)
+                                   *abs(2*b*u*sqrt(x)+a*u)^(-j-i-1)
+                                   *(2*b*u*sqrt(x)+a*u)^(j+i)
                                    *(a*gamma_incomplete((j+i+1)/2,
-                                                        -(2*b*u*sqrt(z)+a*u)^2
+                                                        -(2*b*u*sqrt(x)+a*u)^2
                                                          /(4*b*u))*u
-                                      *(2*b*u*sqrt(z)+a*u)
+                                      *(2*b*u*sqrt(x)+a*u)
                                     +2*sqrt(b)
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*b*u*sqrt(z)+a*u)^2
+                                                        -(2*b*u*sqrt(x)+a*u)^2
                                                          /(4*b*u))*u
-                                      *abs(2*b*u*sqrt(z)+a*u)
+                                      *abs(2*b*u*sqrt(x)+a*u)
                                      /sqrt(-u)),i,0,j),j,0,n))
  /(b^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -3079,22 +3079,22 @@ expand(niceindices(integrate(z^n*(%e^(c+b*z+a*z^2))^u,z))-
 0;
 
 /* Problem 513: NEW 6 */
-expand(niceindices(integrate(z^n*(%e^(c+b*z+a*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(c+b*x+a*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(c*u-a^2*u/(4*b))
         *('sum(4^j*binomial(n,j)
                   *'sum(a^(2*n-j-i)*b^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
                                    *(-u)^((j+i+1)/2)*u^(2*n-j-i)
-                                   *abs(2*b*u*sqrt(z)+a*u)^(-j-i-1)
-                                   *(2*b*u*sqrt(z)+a*u)^(j+i)
+                                   *abs(2*b*u*sqrt(x)+a*u)^(-j-i-1)
+                                   *(2*b*u*sqrt(x)+a*u)^(j+i)
                                    *(a*gamma_incomplete((j+i+1)/2,
-                                                        -(2*b*u*sqrt(z)+a*u)^2
+                                                        -(2*b*u*sqrt(x)+a*u)^2
                                                          /(4*b*u))*u
-                                      *(2*b*u*sqrt(z)+a*u)
+                                      *(2*b*u*sqrt(x)+a*u)
                                     +2*sqrt(b)
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*b*u*sqrt(z)+a*u)^2
+                                                        -(2*b*u*sqrt(x)+a*u)^2
                                                          /(4*b*u))*u
-                                      *abs(2*b*u*sqrt(z)+a*u)
+                                      *abs(2*b*u*sqrt(x)+a*u)
                                      /sqrt(-u)),i,0,j),j,0,n))
  /(b^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -3165,7 +3165,7 @@ expand(niceindices(integrate(z^n*a^(b*z)*h^(c*z^2),z))-
 0;
 
 /* Problem 524: NEW 11 */
-expand(niceindices(integrate(z^n*a^(b*z)*h^(c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(b*x)*h^(c*sqrt(x)),x))-
 %e^-(c^2*log(h)^2/(4*log(a)*b))*2^(-2*n-1)
                                *('sum(4^j*binomial(n,j)
                                          *'sum(
@@ -3173,25 +3173,25 @@ expand(niceindices(integrate(z^n*a^(b*z)*h^(c*sqrt(z)),z))-
                                            *b^((j+i+1)/2)*c^(2*n-j-i)
                                            *log(h)^(2*n-j-i)*(-1)^(i-j)
                                            *binomial(j,i)
-                                           *abs(2*log(a)*b*sqrt(z)+c*log(h))
+                                           *abs(2*log(a)*b*sqrt(x)+c*log(h))
                                             ^(-j-i-1)
-                                           *(2*log(a)*b*sqrt(z)+c*log(h))
+                                           *(2*log(a)*b*sqrt(x)+c*log(h))
                                             ^(j+i)
                                            *(c*log(h)
                                               *gamma_incomplete(
                                                (j+i+1)/2,
-                                               -(2*log(a)*b*sqrt(z)+c*log(h))
+                                               -(2*log(a)*b*sqrt(x)+c*log(h))
                                                 ^2
                                                 /(4*log(a)*b))
-                                              *(2*log(a)*b*sqrt(z)+c*log(h))
+                                              *(2*log(a)*b*sqrt(x)+c*log(h))
                                             +2*log(a)*sqrt(b)
                                               *gamma_incomplete(
                                                (j+i+2)/2,
-                                               -(2*log(a)*b*sqrt(z)+c*log(h))
+                                               -(2*log(a)*b*sqrt(x)+c*log(h))
                                                 ^2
                                                 /(4*log(a)*b))
                                               *abs(
-                                               2*log(a)*b*sqrt(z)+c*log(h))
+                                               2*log(a)*b*sqrt(x)+c*log(h))
                                              /sqrt(-log(a))),i,0,j),j,0,n))
  /(log(a)^(2*(n+1))*b^(2*(n+1))));
 0;
@@ -3209,27 +3209,27 @@ expand(niceindices(integrate(z^n*a^(e+d*z)*h^(c*z^2),z))-
 0;
 
 /* Problem 526: NEW 11 */
-expand(niceindices(integrate(z^n*a^(e+d*z)*h^(c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(e+d*x)*h^(c*sqrt(x)),x))-
 a^e*%e^-(c^2*log(h)^2/(4*log(a)*d))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum(c^(2*n-j-i)*(-log(a)*d)^((j+i+1)/2)*log(h)^(2*n-j-i)
                               *(-1)^(i-j)*binomial(j,i)
-                              *abs(2*log(a)*d*sqrt(z)+c*log(h))^(-j-i-1)
-                              *(2*log(a)*d*sqrt(z)+c*log(h))^(j+i)
+                              *abs(2*log(a)*d*sqrt(x)+c*log(h))^(-j-i-1)
+                              *(2*log(a)*d*sqrt(x)+c*log(h))^(j+i)
                               *(c*log(h)
                                  *gamma_incomplete((j+i+1)/2,
-                                                   -(2*log(a)*d*sqrt(z)
+                                                   -(2*log(a)*d*sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*log(a)*d))
-                                 *(2*log(a)*d*sqrt(z)+c*log(h))
+                                 *(2*log(a)*d*sqrt(x)+c*log(h))
                                +2*log(a)*d
                                  *gamma_incomplete((j+i+2)/2,
-                                                   -(2*log(a)*d*sqrt(z)
+                                                   -(2*log(a)*d*sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*log(a)*d))
-                                 *abs(2*log(a)*d*sqrt(z)+c*log(h))
+                                 *abs(2*log(a)*d*sqrt(x)+c*log(h))
                                 /sqrt(-log(a)*d)),i,0,j),j,0,n))
  /(log(a)^(2*(n+1))*d^(2*(n+1))));
 0;
@@ -3265,9 +3265,9 @@ expand(integrate(z^(1+2*n)*a^(b*z^2)*h^(c*z^2),z)-
 0;
 
 /* Problem 531: NEW 7 */
-expand(integrate(z^n*a^(b*sqrt(z))*h^(c*sqrt(z)),z)-
+expand(integrate(x^n*a^(b*sqrt(x))*h^(c*sqrt(x)),x)-
 -2*(c*log(h)+log(a)*b)^(2*(-n-1))
-  *gamma_incomplete(2*(n+1),-(c*log(h)+log(a)*b)*sqrt(z)));
+  *gamma_incomplete(2*(n+1),-(c*log(h)+log(a)*b)*sqrt(x)));
 0;
 
 /* Problem 532: NEW 10 */
@@ -3284,27 +3284,27 @@ expand(niceindices(integrate(z^n*a^(d*z)*h^(g+c*z^2),z))-
 0;
 
 /* Problem 533: NEW 11 */
-expand(niceindices(integrate(z^n*a^(d*z)*h^(g+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(d*x)*h^(g+c*sqrt(x)),x))-
 h^g*%e^-(c^2*log(h)^2/(4*log(a)*d))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum(c^(2*n-j-i)*(-log(a)*d)^((j+i+1)/2)*log(h)^(2*n-j-i)
                               *(-1)^(i-j)*binomial(j,i)
-                              *abs(2*log(a)*d*sqrt(z)+c*log(h))^(-j-i-1)
-                              *(2*log(a)*d*sqrt(z)+c*log(h))^(j+i)
+                              *abs(2*log(a)*d*sqrt(x)+c*log(h))^(-j-i-1)
+                              *(2*log(a)*d*sqrt(x)+c*log(h))^(j+i)
                               *(c*log(h)
                                  *gamma_incomplete((j+i+1)/2,
-                                                   -(2*log(a)*d*sqrt(z)
+                                                   -(2*log(a)*d*sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*log(a)*d))
-                                 *(2*log(a)*d*sqrt(z)+c*log(h))
+                                 *(2*log(a)*d*sqrt(x)+c*log(h))
                                +2*log(a)*d
                                  *gamma_incomplete((j+i+2)/2,
-                                                   -(2*log(a)*d*sqrt(z)
+                                                   -(2*log(a)*d*sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*log(a)*d))
-                                 *abs(2*log(a)*d*sqrt(z)+c*log(h))
+                                 *abs(2*log(a)*d*sqrt(x)+c*log(h))
                                 /sqrt(-log(a)*d)),i,0,j),j,0,n))
  /(log(a)^(2*(n+1))*d^(2*(n+1))));
 0;
@@ -3322,27 +3322,27 @@ expand(niceindices(integrate(z^n*a^(e+d*z)*h^(g+c*z^2),z))-
 0;
 
 /* Problem 535: NEW 11 */
-expand(niceindices(integrate(z^n*a^(e+d*z)*h^(g+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(e+d*x)*h^(g+c*sqrt(x)),x))-
 a^e*h^g*%e^-(c^2*log(h)^2/(4*log(a)*d))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum(c^(2*n-j-i)*(-log(a)*d)^((j+i+1)/2)*log(h)^(2*n-j-i)
                               *(-1)^(i-j)*binomial(j,i)
-                              *abs(2*log(a)*d*sqrt(z)+c*log(h))^(-j-i-1)
-                              *(2*log(a)*d*sqrt(z)+c*log(h))^(j+i)
+                              *abs(2*log(a)*d*sqrt(x)+c*log(h))^(-j-i-1)
+                              *(2*log(a)*d*sqrt(x)+c*log(h))^(j+i)
                               *(c*log(h)
                                  *gamma_incomplete((j+i+1)/2,
-                                                   -(2*log(a)*d*sqrt(z)
+                                                   -(2*log(a)*d*sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*log(a)*d))
-                                 *(2*log(a)*d*sqrt(z)+c*log(h))
+                                 *(2*log(a)*d*sqrt(x)+c*log(h))
                                +2*log(a)*d
                                  *gamma_incomplete((j+i+2)/2,
-                                                   -(2*log(a)*d*sqrt(z)
+                                                   -(2*log(a)*d*sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*log(a)*d))
-                                 *abs(2*log(a)*d*sqrt(z)+c*log(h))
+                                 *abs(2*log(a)*d*sqrt(x)+c*log(h))
                                 /sqrt(-log(a)*d)),i,0,j),j,0,n))
  /(log(a)^(2*(n+1))*d^(2*(n+1))));
 0;
@@ -3434,31 +3434,31 @@ expand(niceindices(integrate(z^n*a^(d*z)*h^(f*z+c*z^2),z))-
 0;
 
 /* Problem 547: NEW 11 */
-expand(niceindices(integrate(z^n*a^(d*z)*h^(f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(d*x)*h^(f*x+c*sqrt(x)),x))-
 %e^-(c^2*log(h)^2/(4*(f*log(h)+log(a)*d)))
  *2^(-2*n-1)
  *('sum(4^j*binomial(n,j)
            *'sum(c^(2*n-j-i)*log(h)^(2*n-j-i)*(-f*log(h)-log(a)*d)^((j+i+1)/2)
                             *(-1)^(i-j)*binomial(j,i)
-                            *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                            *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                              ^(-j-i-1)
-                            *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))^(j+i)
+                            *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))^(j+i)
                             *(c*log(h)
                                *gamma_incomplete((j+i+1)/2,
                                                  -(2*(f*log(h)+log(a)*d)
-                                                    *sqrt(z)
+                                                    *sqrt(x)
                                                   +c*log(h))
                                                   ^2
                                                   /(4*(f*log(h)+log(a)*d)))
-                               *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                               *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                              +2*(f*log(h)+log(a)*d)
                                *gamma_incomplete((j+i+2)/2,
                                                  -(2*(f*log(h)+log(a)*d)
-                                                    *sqrt(z)
+                                                    *sqrt(x)
                                                   +c*log(h))
                                                   ^2
                                                   /(4*(f*log(h)+log(a)*d)))
-                               *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                               *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                               /sqrt(-f*log(h)-log(a)*d)),i,0,j),j,0,n))
  /(f*log(h)+log(a)*d)^(2*(n+1)));
 0;
@@ -3478,31 +3478,31 @@ expand(niceindices(integrate(z^n*a^(e+d*z)*h^(f*z+c*z^2),z))-
 0;
 
 /* Problem 549: NEW 11 */
-expand(niceindices(integrate(z^n*a^(e+d*z)*h^(f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(e+d*x)*h^(f*x+c*sqrt(x)),x))-
 a^e*%e^-(c^2*log(h)^2/(4*(f*log(h)+log(a)*d)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum(c^(2*n-j-i)*log(h)^(2*n-j-i)
                               *(-f*log(h)-log(a)*d)^((j+i+1)/2)*(-1)^(i-j)
                               *binomial(j,i)
-                              *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                              *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                ^(-j-i-1)
-                              *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))^(j+i)
+                              *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))^(j+i)
                               *(c*log(h)
                                  *gamma_incomplete((j+i+1)/2,
                                                    -(2*(f*log(h)+log(a)*d)
-                                                      *sqrt(z)
+                                                      *sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*(f*log(h)+log(a)*d)))
-                                 *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                                 *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                +2*(f*log(h)+log(a)*d)
                                  *gamma_incomplete((j+i+2)/2,
                                                    -(2*(f*log(h)+log(a)*d)
-                                                      *sqrt(z)
+                                                      *sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*(f*log(h)+log(a)*d)))
-                                 *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                                 *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                 /sqrt(-f*log(h)-log(a)*d)),i,0,j),j,0,n))
  /(f*log(h)+log(a)*d)^(2*(n+1)));
 0;
@@ -3528,37 +3528,37 @@ expand(niceindices(integrate(z^n*a^(b*z^2)*h^(f*z+c*z^2),z))-
 0;
 
 /* Problem 551: NEW 11 */
-expand(niceindices(integrate(z^n*a^(b*sqrt(z))*h^(f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(b*sqrt(x))*h^(f*x+c*sqrt(x)),x))-
 %e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))
  *2^(-2*n-1)
  *('sum(4^j*binomial(n,j)
            *'sum((-f*log(h))^((j+i+1)/2)*(c*log(h)+log(a)*b)^(2*n-j-i)
                                         *(-1)^(i-j)*binomial(j,i)
                                         *abs(
-                                         2*f*log(h)*sqrt(z)+c*log(h)+log(a)*b)
+                                         2*f*log(h)*sqrt(x)+c*log(h)+log(a)*b)
                                          ^(-j-i-1)
-                                        *(2*f*log(h)*sqrt(z)
+                                        *(2*f*log(h)*sqrt(x)
                                          +c*log(h)+log(a)*b)
                                          ^(j+i)
                                         *((c*log(h)+log(a)*b)
                                          *gamma_incomplete((j+i+1)/2,
                                                            -(2*f*log(h)
-                                                              *sqrt(z)
+                                                              *sqrt(x)
                                                             +c*log(h)
                                                             +log(a)*b)
                                                             ^2
                                                             /(4*f*log(h)))
-                                         *(2*f*log(h)*sqrt(z)
+                                         *(2*f*log(h)*sqrt(x)
                                           +c*log(h)+log(a)*b)
                                          +2*f*log(h)
                                            *gamma_incomplete(
                                             (j+i+2)/2,
-                                            -(2*f*log(h)*sqrt(z)
+                                            -(2*f*log(h)*sqrt(x)
                                              +c*log(h)+log(a)*b)
                                              ^2
                                              /(4*f*log(h)))
                                            *abs(
-                                            2*f*log(h)*sqrt(z)
+                                            2*f*log(h)*sqrt(x)
                                              +c*log(h)+log(a)*b)
                                           /sqrt(-f*log(h))),i,0,j),j,0,n))
  /(f^(2*(n+1))*log(h)^(2*(n+1))));
@@ -3577,36 +3577,36 @@ expand(niceindices(integrate(z^n*a^(e+b*z^2)*h^(f*z+c*z^2),z))-
 0;
 
 /* Problem 553: NEW 11 */
-expand(niceindices(integrate(z^n*a^(e+b*sqrt(z))*h^(f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(e+b*sqrt(x))*h^(f*x+c*sqrt(x)),x))-
 a^e*%e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum((-f*log(h))^((j+i+1)/2)*(c*log(h)+log(a)*b)^(2*n-j-i)
                                           *(-1)^(i-j)*binomial(j,i)
                                           *abs(
-                                           2*f*log(h)*sqrt(z)
+                                           2*f*log(h)*sqrt(x)
                                             +c*log(h)+log(a)*b)
                                            ^(-j-i-1)
-                                          *(2*f*log(h)*sqrt(z)
+                                          *(2*f*log(h)*sqrt(x)
                                            +c*log(h)+log(a)*b)
                                            ^(j+i)
                                           *((c*log(h)+log(a)*b)
                                            *gamma_incomplete(
                                             (j+i+1)/2,
-                                            -(2*f*log(h)*sqrt(z)
+                                            -(2*f*log(h)*sqrt(x)
                                              +c*log(h)+log(a)*b)
                                              ^2
                                              /(4*f*log(h)))
-                                           *(2*f*log(h)*sqrt(z)
+                                           *(2*f*log(h)*sqrt(x)
                                             +c*log(h)+log(a)*b)
                                            +2*f*log(h)
                                              *gamma_incomplete(
                                               (j+i+2)/2,
-                                              -(2*f*log(h)*sqrt(z)
+                                              -(2*f*log(h)*sqrt(x)
                                                +c*log(h)+log(a)*b)
                                                ^2
                                                /(4*f*log(h)))
                                              *abs(
-                                              2*f*log(h)*sqrt(z)
+                                              2*f*log(h)*sqrt(x)
                                                +c*log(h)+log(a)*b)
                                             /sqrt(-f*log(h))),i,0,j),j,0,n))
  /(f^(2*(n+1))*log(h)^(2*(n+1))));
@@ -3632,33 +3632,33 @@ expand(niceindices(integrate(z^n*a^(d*z+b*z^2)*h^(f*z+c*z^2),z))-
 0;
 
 /* Problem 555: NEW 11 */
-expand(niceindices(integrate(z^n*a^(d*z+b*sqrt(z))*h^(f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(d*x+b*sqrt(x))*h^(f*x+c*sqrt(x)),x))-
 %e^-((c*log(h)+log(a)*b)^2/(4*(f*log(h)+log(a)*d)))
  *2^(-2*n-1)
  *('sum(4^j*binomial(n,j)
            *'sum((c*log(h)+log(a)*b)^(2*n-j-i)
                   *(-f*log(h)-log(a)*d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
-                  *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                  *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                    ^(-j-i-1)
-                  *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)^(j+i)
+                  *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)^(j+i)
                   *((c*log(h)+log(a)*b)*gamma_incomplete((j+i+1)/2,
                                                          -(2
                                                           *(f*log(h)+log(a)*d)
-                                                          *sqrt(z)
+                                                          *sqrt(x)
                                                           +c*log(h)+log(a)*b)
                                                           ^2
                                                           /(4
                                                            *(f*log(h)
                                                             +log(a)*d)))
-                                       *(2*(f*log(h)+log(a)*d)*sqrt(z)
+                                       *(2*(f*log(h)+log(a)*d)*sqrt(x)
                                         +c*log(h)+log(a)*b)
                    +2*(f*log(h)+log(a)*d)
                      *gamma_incomplete((j+i+2)/2,
-                                       -(2*(f*log(h)+log(a)*d)*sqrt(z)
+                                       -(2*(f*log(h)+log(a)*d)*sqrt(x)
                                         +c*log(h)+log(a)*b)
                                         ^2
                                         /(4*(f*log(h)+log(a)*d)))
-                     *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                     *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                     /sqrt(-f*log(h)-log(a)*d)),i,0,j),j,0,n))
  /(f*log(h)+log(a)*d)^(2*(n+1)));
 0;
@@ -3680,31 +3680,31 @@ expand(niceindices(integrate(z^n*a^(d*z)*h^(g+f*z+c*z^2),z))-
 0;
 
 /* Problem 557: NEW 11 */
-expand(niceindices(integrate(z^n*a^(d*z)*h^(g+f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(d*x)*h^(g+f*x+c*sqrt(x)),x))-
 h^g*%e^-(c^2*log(h)^2/(4*(f*log(h)+log(a)*d)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum(c^(2*n-j-i)*log(h)^(2*n-j-i)
                               *(-f*log(h)-log(a)*d)^((j+i+1)/2)*(-1)^(i-j)
                               *binomial(j,i)
-                              *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                              *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                ^(-j-i-1)
-                              *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))^(j+i)
+                              *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))^(j+i)
                               *(c*log(h)
                                  *gamma_incomplete((j+i+1)/2,
                                                    -(2*(f*log(h)+log(a)*d)
-                                                      *sqrt(z)
+                                                      *sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*(f*log(h)+log(a)*d)))
-                                 *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                                 *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                +2*(f*log(h)+log(a)*d)
                                  *gamma_incomplete((j+i+2)/2,
                                                    -(2*(f*log(h)+log(a)*d)
-                                                      *sqrt(z)
+                                                      *sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*(f*log(h)+log(a)*d)))
-                                 *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                                 *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                 /sqrt(-f*log(h)-log(a)*d)),i,0,j),j,0,n))
  /(f*log(h)+log(a)*d)^(2*(n+1)));
 0;
@@ -3724,31 +3724,31 @@ expand(niceindices(integrate(z^n*a^(e+d*z)*h^(g+f*z+c*z^2),z))-
 0;
 
 /* Problem 559: NEW 11 */
-expand(niceindices(integrate(z^n*a^(e+d*z)*h^(g+f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(e+d*x)*h^(g+f*x+c*sqrt(x)),x))-
 a^e*h^g*%e^-(c^2*log(h)^2/(4*(f*log(h)+log(a)*d)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum(c^(2*n-j-i)*log(h)^(2*n-j-i)
                               *(-f*log(h)-log(a)*d)^((j+i+1)/2)*(-1)^(i-j)
                               *binomial(j,i)
-                              *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                              *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                ^(-j-i-1)
-                              *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))^(j+i)
+                              *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))^(j+i)
                               *(c*log(h)
                                  *gamma_incomplete((j+i+1)/2,
                                                    -(2*(f*log(h)+log(a)*d)
-                                                      *sqrt(z)
+                                                      *sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*(f*log(h)+log(a)*d)))
-                                 *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                                 *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                +2*(f*log(h)+log(a)*d)
                                  *gamma_incomplete((j+i+2)/2,
                                                    -(2*(f*log(h)+log(a)*d)
-                                                      *sqrt(z)
+                                                      *sqrt(x)
                                                     +c*log(h))
                                                     ^2
                                                     /(4*(f*log(h)+log(a)*d)))
-                                 *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h))
+                                 *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h))
                                 /sqrt(-f*log(h)-log(a)*d)),i,0,j),j,0,n))
  /(f*log(h)+log(a)*d)^(2*(n+1)));
 0;
@@ -3766,36 +3766,36 @@ expand(niceindices(integrate(z^n*a^(b*z^2)*h^(g+f*z+c*z^2),z))-
 0;
 
 /* Problem 561: NEW 11 */
-expand(niceindices(integrate(z^n*a^(b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x))-
 h^g*%e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum((-f*log(h))^((j+i+1)/2)*(c*log(h)+log(a)*b)^(2*n-j-i)
                                           *(-1)^(i-j)*binomial(j,i)
                                           *abs(
-                                           2*f*log(h)*sqrt(z)
+                                           2*f*log(h)*sqrt(x)
                                             +c*log(h)+log(a)*b)
                                            ^(-j-i-1)
-                                          *(2*f*log(h)*sqrt(z)
+                                          *(2*f*log(h)*sqrt(x)
                                            +c*log(h)+log(a)*b)
                                            ^(j+i)
                                           *((c*log(h)+log(a)*b)
                                            *gamma_incomplete(
                                             (j+i+1)/2,
-                                            -(2*f*log(h)*sqrt(z)
+                                            -(2*f*log(h)*sqrt(x)
                                              +c*log(h)+log(a)*b)
                                              ^2
                                              /(4*f*log(h)))
-                                           *(2*f*log(h)*sqrt(z)
+                                           *(2*f*log(h)*sqrt(x)
                                             +c*log(h)+log(a)*b)
                                            +2*f*log(h)
                                              *gamma_incomplete(
                                               (j+i+2)/2,
-                                              -(2*f*log(h)*sqrt(z)
+                                              -(2*f*log(h)*sqrt(x)
                                                +c*log(h)+log(a)*b)
                                                ^2
                                                /(4*f*log(h)))
                                              *abs(
-                                              2*f*log(h)*sqrt(z)
+                                              2*f*log(h)*sqrt(x)
                                                +c*log(h)+log(a)*b)
                                             /sqrt(-f*log(h))),i,0,j),j,0,n))
  /(f^(2*(n+1))*log(h)^(2*(n+1))));
@@ -3814,36 +3814,36 @@ expand(niceindices(integrate(z^n*a^(e+b*z^2)*h^(g+f*z+c*z^2),z))-
 0;
 
 /* Problem 563: NEW 11 */
-expand(niceindices(integrate(z^n*a^(e+b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(e+b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x))-
 a^e*h^g*%e^-((c*log(h)+log(a)*b)^2/(4*f*log(h)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum((-f*log(h))^((j+i+1)/2)*(c*log(h)+log(a)*b)^(2*n-j-i)
                                           *(-1)^(i-j)*binomial(j,i)
                                           *abs(
-                                           2*f*log(h)*sqrt(z)
+                                           2*f*log(h)*sqrt(x)
                                             +c*log(h)+log(a)*b)
                                            ^(-j-i-1)
-                                          *(2*f*log(h)*sqrt(z)
+                                          *(2*f*log(h)*sqrt(x)
                                            +c*log(h)+log(a)*b)
                                            ^(j+i)
                                           *((c*log(h)+log(a)*b)
                                            *gamma_incomplete(
                                             (j+i+1)/2,
-                                            -(2*f*log(h)*sqrt(z)
+                                            -(2*f*log(h)*sqrt(x)
                                              +c*log(h)+log(a)*b)
                                              ^2
                                              /(4*f*log(h)))
-                                           *(2*f*log(h)*sqrt(z)
+                                           *(2*f*log(h)*sqrt(x)
                                             +c*log(h)+log(a)*b)
                                            +2*f*log(h)
                                              *gamma_incomplete(
                                               (j+i+2)/2,
-                                              -(2*f*log(h)*sqrt(z)
+                                              -(2*f*log(h)*sqrt(x)
                                                +c*log(h)+log(a)*b)
                                                ^2
                                                /(4*f*log(h)))
                                              *abs(
-                                              2*f*log(h)*sqrt(z)
+                                              2*f*log(h)*sqrt(x)
                                                +c*log(h)+log(a)*b)
                                             /sqrt(-f*log(h))),i,0,j),j,0,n))
  /(f^(2*(n+1))*log(h)^(2*(n+1))));
@@ -3871,28 +3871,28 @@ expand(niceindices(integrate(z^n*a^(d*z+b*z^2)*h^(g+f*z+c*z^2),z))-
 0;
 
 /* Problem 565: NEW 11 */
-expand(niceindices(integrate(z^n*a^(d*z+b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(d*x+b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x))-
 h^g*%e^-((c*log(h)+log(a)*b)^2/(4*(f*log(h)+log(a)*d)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum((c*log(h)+log(a)*b)^(2*n-j-i)
                     *(-f*log(h)-log(a)*d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
-                    *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                    *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                      ^(-j-i-1)
-                    *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)^(j+i)
+                    *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)^(j+i)
                     *((c*log(h)+log(a)*b)
                      *gamma_incomplete((j+i+1)/2,
-                                       -(2*(f*log(h)+log(a)*d)*sqrt(z)
+                                       -(2*(f*log(h)+log(a)*d)*sqrt(x)
                                         +c*log(h)+log(a)*b)
                                         ^2
                                         /(4*(f*log(h)+log(a)*d)))
-                     *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                     *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                      +2*(f*log(h)+log(a)*d)
                        *gamma_incomplete((j+i+2)/2,
-                                         -(2*(f*log(h)+log(a)*d)*sqrt(z)
+                                         -(2*(f*log(h)+log(a)*d)*sqrt(x)
                                           +c*log(h)+log(a)*b)
                                           ^2
                                           /(4*(f*log(h)+log(a)*d)))
-                       *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                       *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                       /sqrt(-f*log(h)-log(a)*d)),i,0,j),j,0,n))
  /(f*log(h)+log(a)*d)^(2*(n+1)));
 0;
@@ -3919,28 +3919,28 @@ expand(niceindices(integrate(z^n*a^(e+d*z+b*z^2)*h^(g+f*z+c*z^2),z))-
 0;
 
 /* Problem 567: NEW 11 */
-expand(niceindices(integrate(z^n*a^(e+d*z+b*sqrt(z))*h^(g+f*z+c*sqrt(z)),z))-
+expand(niceindices(integrate(x^n*a^(e+d*x+b*sqrt(x))*h^(g+f*x+c*sqrt(x)),x))-
 a^e*h^g*%e^-((c*log(h)+log(a)*b)^2/(4*(f*log(h)+log(a)*d)))*2^(-2*n-1)
    *('sum(4^j*binomial(n,j)
              *'sum((c*log(h)+log(a)*b)^(2*n-j-i)
                     *(-f*log(h)-log(a)*d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
-                    *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                    *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                      ^(-j-i-1)
-                    *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)^(j+i)
+                    *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)^(j+i)
                     *((c*log(h)+log(a)*b)
                      *gamma_incomplete((j+i+1)/2,
-                                       -(2*(f*log(h)+log(a)*d)*sqrt(z)
+                                       -(2*(f*log(h)+log(a)*d)*sqrt(x)
                                         +c*log(h)+log(a)*b)
                                         ^2
                                         /(4*(f*log(h)+log(a)*d)))
-                     *(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                     *(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                      +2*(f*log(h)+log(a)*d)
                        *gamma_incomplete((j+i+2)/2,
-                                         -(2*(f*log(h)+log(a)*d)*sqrt(z)
+                                         -(2*(f*log(h)+log(a)*d)*sqrt(x)
                                           +c*log(h)+log(a)*b)
                                           ^2
                                           /(4*(f*log(h)+log(a)*d)))
-                       *abs(2*(f*log(h)+log(a)*d)*sqrt(z)+c*log(h)+log(a)*b)
+                       *abs(2*(f*log(h)+log(a)*d)*sqrt(x)+c*log(h)+log(a)*b)
                       /sqrt(-f*log(h)-log(a)*d)),i,0,j),j,0,n))
  /(f*log(h)+log(a)*d)^(2*(n+1)));
 0;
@@ -4022,22 +4022,22 @@ expand(niceindices(integrate(z^n*%e^(b*z^2)*(%e^(c*z))^u,z))-
 0;
 
 /* Problem 581: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(c*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(b*sqrt(x))*(%e^(c*x))^u,x))-
 2^(-n-1)*%e^-(b^2/(4*c*u))
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-c*u)^((j+i+1)/2)
-                                   *abs(2*c*u*sqrt(z)+b)^(-j-i-1)
-                                   *(2*c*u*sqrt(z)+b)^(j+i)
+                                   *abs(2*c*u*sqrt(x)+b)^(-j-i-1)
+                                   *(2*c*u*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*c*u*sqrt(z)+b)^2
+                                                        -(2*c*u*sqrt(x)+b)^2
                                                          /(4*c*u))
-                                      *(2*c*u*sqrt(z)+b)
+                                      *(2*c*u*sqrt(x)+b)
                                     +2*c
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*c*u*sqrt(z)+b)^2
+                                                        -(2*c*u*sqrt(x)+b)^2
                                                          /(4*c*u))*u
-                                      *abs(2*c*u*sqrt(z)+b)
+                                      *abs(2*c*u*sqrt(x)+b)
                                      /sqrt(-c*u)),i,0,j),j,0,n))
  /(c^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4055,22 +4055,22 @@ expand(niceindices(integrate(z^n*%e^(e+b*z^2)*(%e^(c*z))^u,z))-
 0;
 
 /* Problem 583: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(c*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+b*sqrt(x))*(%e^(c*x))^u,x))-
 2^(-n-1)*%e^(e-b^2/(4*c*u))
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-c*u)^((j+i+1)/2)
-                                   *abs(2*c*u*sqrt(z)+b)^(-j-i-1)
-                                   *(2*c*u*sqrt(z)+b)^(j+i)
+                                   *abs(2*c*u*sqrt(x)+b)^(-j-i-1)
+                                   *(2*c*u*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*c*u*sqrt(z)+b)^2
+                                                        -(2*c*u*sqrt(x)+b)^2
                                                          /(4*c*u))
-                                      *(2*c*u*sqrt(z)+b)
+                                      *(2*c*u*sqrt(x)+b)
                                     +2*c
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*c*u*sqrt(z)+b)^2
+                                                        -(2*c*u*sqrt(x)+b)^2
                                                          /(4*c*u))*u
-                                      *abs(2*c*u*sqrt(z)+b)
+                                      *abs(2*c*u*sqrt(x)+b)
                                      /sqrt(-c*u)),i,0,j),j,0,n))
  /(c^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4087,23 +4087,23 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*z^2)*(%e^(c*z))^u,z))-
 0;
 
 /* Problem 585: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(c*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x+b*sqrt(x))*(%e^(c*x))^u,x))-
 2^(-n-1)*%e^-(b^2/(4*(c*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-c*u-d)^((j+i+1)/2)
-                                   *abs(2*(c*u+d)*sqrt(z)+b)^(-j-i-1)
-                                   *(2*(c*u+d)*sqrt(z)+b)^(j+i)
+                                   *abs(2*(c*u+d)*sqrt(x)+b)^(-j-i-1)
+                                   *(2*(c*u+d)*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(c*u+d)*sqrt(z)+b)
+                                                        -(2*(c*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(c*u+d)))
-                                      *(2*(c*u+d)*sqrt(z)+b)
+                                      *(2*(c*u+d)*sqrt(x)+b)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(c*u+d)*sqrt(z)+b)
+                                                        -(2*(c*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(c*u+d)))*(c*u+d)
-                                      *abs(2*(c*u+d)*sqrt(z)+b)
+                                      *abs(2*(c*u+d)*sqrt(x)+b)
                                      /sqrt(-c*u-d)),i,0,j),j,0,n))
  /(c*u+d)^(2*(n+1)));
 0;
@@ -4120,23 +4120,23 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*z^2)*(%e^(c*z))^u,z))-
 0;
 
 /* Problem 587: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(c*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x+b*sqrt(x))*(%e^(c*x))^u,x))-
 2^(-n-1)*%e^(e-b^2/(4*(c*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-c*u-d)^((j+i+1)/2)
-                                   *abs(2*(c*u+d)*sqrt(z)+b)^(-j-i-1)
-                                   *(2*(c*u+d)*sqrt(z)+b)^(j+i)
+                                   *abs(2*(c*u+d)*sqrt(x)+b)^(-j-i-1)
+                                   *(2*(c*u+d)*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(c*u+d)*sqrt(z)+b)
+                                                        -(2*(c*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(c*u+d)))
-                                      *(2*(c*u+d)*sqrt(z)+b)
+                                      *(2*(c*u+d)*sqrt(x)+b)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(c*u+d)*sqrt(z)+b)
+                                                        -(2*(c*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(c*u+d)))*(c*u+d)
-                                      *abs(2*(c*u+d)*sqrt(z)+b)
+                                      *abs(2*(c*u+d)*sqrt(x)+b)
                                      /sqrt(-c*u-d)),i,0,j),j,0,n))
  /(c*u+d)^(2*(n+1)));
 0;
@@ -4154,22 +4154,22 @@ expand(niceindices(integrate(z^n*%e^(b*z^2)*(%e^(g+f*z))^u,z))-
 0;
 
 /* Problem 589: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(g+f*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(b*sqrt(x))*(%e^(g+f*x))^u,x))-
 2^(-n-1)*%e^(g*u-b^2/(4*f*u))
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-f*u)^((j+i+1)/2)
-                                   *abs(2*f*u*sqrt(z)+b)^(-j-i-1)
-                                   *(2*f*u*sqrt(z)+b)^(j+i)
+                                   *abs(2*f*u*sqrt(x)+b)^(-j-i-1)
+                                   *(2*f*u*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*f*u*sqrt(z)+b)^2
+                                                        -(2*f*u*sqrt(x)+b)^2
                                                          /(4*f*u))
-                                      *(2*f*u*sqrt(z)+b)
+                                      *(2*f*u*sqrt(x)+b)
                                     +2*f
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*f*u*sqrt(z)+b)^2
+                                                        -(2*f*u*sqrt(x)+b)^2
                                                          /(4*f*u))*u
-                                      *abs(2*f*u*sqrt(z)+b)
+                                      *abs(2*f*u*sqrt(x)+b)
                                      /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4190,22 +4190,22 @@ expand(niceindices(integrate(z^n*%e^(e+b*z^2)*(%e^(g+f*z))^u,z))-
 0;
 
 /* Problem 591: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(g+f*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+b*sqrt(x))*(%e^(g+f*x))^u,x))-
 2^(-n-1)*%e^(g*u-b^2/(4*f*u)+e)
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-f*u)^((j+i+1)/2)
-                                   *abs(2*f*u*sqrt(z)+b)^(-j-i-1)
-                                   *(2*f*u*sqrt(z)+b)^(j+i)
+                                   *abs(2*f*u*sqrt(x)+b)^(-j-i-1)
+                                   *(2*f*u*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*f*u*sqrt(z)+b)^2
+                                                        -(2*f*u*sqrt(x)+b)^2
                                                          /(4*f*u))
-                                      *(2*f*u*sqrt(z)+b)
+                                      *(2*f*u*sqrt(x)+b)
                                     +2*f
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*f*u*sqrt(z)+b)^2
+                                                        -(2*f*u*sqrt(x)+b)^2
                                                          /(4*f*u))*u
-                                      *abs(2*f*u*sqrt(z)+b)
+                                      *abs(2*f*u*sqrt(x)+b)
                                      /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4222,23 +4222,23 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*z^2)*(%e^(g+f*z))^u,z))-
 0;
 
 /* Problem 593: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(g+f*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x+b*sqrt(x))*(%e^(g+f*x))^u,x))-
 2^(-n-1)*%e^(g*u-b^2/(4*(f*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-f*u-d)^((j+i+1)/2)
-                                   *abs(2*(f*u+d)*sqrt(z)+b)^(-j-i-1)
-                                   *(2*(f*u+d)*sqrt(z)+b)^(j+i)
+                                   *abs(2*(f*u+d)*sqrt(x)+b)^(-j-i-1)
+                                   *(2*(f*u+d)*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d)*sqrt(z)+b)
+                                                        -(2*(f*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(f*u+d)))
-                                      *(2*(f*u+d)*sqrt(z)+b)
+                                      *(2*(f*u+d)*sqrt(x)+b)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d)*sqrt(z)+b)
+                                                        -(2*(f*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(f*u+d)))*(f*u+d)
-                                      *abs(2*(f*u+d)*sqrt(z)+b)
+                                      *abs(2*(f*u+d)*sqrt(x)+b)
                                      /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4256,23 +4256,23 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*z^2)*(%e^(g+f*z))^u,z))-
 0;
 
 /* Problem 595: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x+b*sqrt(x))*(%e^(g+f*x))^u,x))-
 2^(-n-1)*%e^(-b^2/(4*(f*u+d))+g*u+e)
         *('sum(4^j*binomial(n,j)
                   *'sum(b^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-f*u-d)^((j+i+1)/2)
-                                   *abs(2*(f*u+d)*sqrt(z)+b)^(-j-i-1)
-                                   *(2*(f*u+d)*sqrt(z)+b)^(j+i)
+                                   *abs(2*(f*u+d)*sqrt(x)+b)^(-j-i-1)
+                                   *(2*(f*u+d)*sqrt(x)+b)^(j+i)
                                    *(b*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d)*sqrt(z)+b)
+                                                        -(2*(f*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(f*u+d)))
-                                      *(2*(f*u+d)*sqrt(z)+b)
+                                      *(2*(f*u+d)*sqrt(x)+b)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d)*sqrt(z)+b)
+                                                        -(2*(f*u+d)*sqrt(x)+b)
                                                          ^2
                                                          /(4*(f*u+d)))*(f*u+d)
-                                      *abs(2*(f*u+d)*sqrt(z)+b)
+                                      *abs(2*(f*u+d)*sqrt(x)+b)
                                      /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4287,21 +4287,21 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(c*z^2))^u,z))-
 0;
 
 /* Problem 597: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x)*(%e^(c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-(c^2*u^2/(4*d))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
-                                   *u^(2*n-j-i)*abs(2*d*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*sqrt(z)+c*u)^(j+i)
+                                   *u^(2*n-j-i)*abs(2*d*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))*u
-                                      *(2*d*sqrt(z)+c*u)
+                                      *(2*d*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))
-                                      *abs(2*d*sqrt(z)+c*u)
+                                      *abs(2*d*sqrt(x)+c*u)
                                      /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4316,21 +4316,21 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(c*z^2))^u,z))-
 0;
 
 /* Problem 599: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x)*(%e^(c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e-c^2*u^2/(4*d))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
-                                   *u^(2*n-j-i)*abs(2*d*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*sqrt(z)+c*u)^(j+i)
+                                   *u^(2*n-j-i)*abs(2*d*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))*u
-                                      *(2*d*sqrt(z)+c*u)
+                                      *(2*d*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))
-                                      *abs(2*d*sqrt(z)+c*u)
+                                      *abs(2*d*sqrt(x)+c*u)
                                      /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4359,8 +4359,8 @@ expand(integrate(z^(1+2*n)*%e^(b*z^2)*(%e^(c*z^2))^u,z)-
 0;
 
 /* Problem 604: NEW */
-expand(integrate(z^n*%e^(b*sqrt(z))*(%e^(c*sqrt(z)))^u,z)-
--2*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(z))/(c*u+b)^(2*(n+1)));
+expand(integrate(x^n*%e^(b*sqrt(x))*(%e^(c*sqrt(x)))^u,x)-
+-2*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(x))/(c*u+b)^(2*(n+1)));
 0;
 
 /* Problem 605: NEW */
@@ -4387,8 +4387,8 @@ expand(integrate(z^(1+2*n)*%e^(e+b*z^2)*(%e^(c*z^2))^u,z)-
 0;
 
 /* Problem 609: NEW */
-expand(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(c*sqrt(z)))^u,z)-
--2*%e^e*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(z))/(c*u+b)^(2*(n+1)));
+expand(integrate(x^n*%e^(e+b*sqrt(x))*(%e^(c*sqrt(x)))^u,x)-
+-2*%e^e*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(x))/(c*u+b)^(2*(n+1)));
 0;
 
 /* Problem 610: NEW 10 */
@@ -4403,24 +4403,24 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*z^2)*(%e^(c*z^2))^u,z))-
 0;
 
 /* Problem 611: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x+b*sqrt(x))*(%e^(c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-((c*u+b)^2/(4*d))
         *('sum(4^j*binomial(n,j)
                   *'sum((-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
                                         *(c*u+b)^(2*n-j-i)
-                                        *abs(2*d*sqrt(z)+c*u+b)^(-j-i-1)
-                                        *(2*d*sqrt(z)+c*u+b)^(j+i)
+                                        *abs(2*d*sqrt(x)+c*u+b)^(-j-i-1)
+                                        *(2*d*sqrt(x)+c*u+b)^(j+i)
                                         *(gamma_incomplete((j+i+1)/2,
-                                                           -(2*d*sqrt(z)
+                                                           -(2*d*sqrt(x)
                                                             +c*u+b)
                                                             ^2
                                                             /(4*d))
-                                         *(c*u+b)*(2*d*sqrt(z)+c*u+b)
+                                         *(c*u+b)*(2*d*sqrt(x)+c*u+b)
                                          +2*d
                                            *gamma_incomplete(
                                             (j+i+2)/2,
-                                            -(2*d*sqrt(z)+c*u+b)^2/(4*d))
-                                           *abs(2*d*sqrt(z)+c*u+b)
+                                            -(2*d*sqrt(x)+c*u+b)^2/(4*d))
+                                           *abs(2*d*sqrt(x)+c*u+b)
                                           /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4437,24 +4437,24 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*z^2)*(%e^(c*z^2))^u,z))-
 0;
 
 /* Problem 613: NEW */
-expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x+b*sqrt(x))*(%e^(c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e-(c*u+b)^2/(4*d))
         *('sum(4^j*binomial(n,j)
                   *'sum((-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
                                         *(c*u+b)^(2*n-j-i)
-                                        *abs(2*d*sqrt(z)+c*u+b)^(-j-i-1)
-                                        *(2*d*sqrt(z)+c*u+b)^(j+i)
+                                        *abs(2*d*sqrt(x)+c*u+b)^(-j-i-1)
+                                        *(2*d*sqrt(x)+c*u+b)^(j+i)
                                         *(gamma_incomplete((j+i+1)/2,
-                                                           -(2*d*sqrt(z)
+                                                           -(2*d*sqrt(x)
                                                             +c*u+b)
                                                             ^2
                                                             /(4*d))
-                                         *(c*u+b)*(2*d*sqrt(z)+c*u+b)
+                                         *(c*u+b)*(2*d*sqrt(x)+c*u+b)
                                          +2*d
                                            *gamma_incomplete(
                                             (j+i+2)/2,
-                                            -(2*d*sqrt(z)+c*u+b)^2/(4*d))
-                                           *abs(2*d*sqrt(z)+c*u+b)
+                                            -(2*d*sqrt(x)+c*u+b)^2/(4*d))
+                                           *abs(2*d*sqrt(x)+c*u+b)
                                           /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4469,21 +4469,21 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(g+c*z^2))^u,z))-
 0;
 
 /* Problem 615: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(g+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x)*(%e^(g+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-c^2*u^2/(4*d))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
-                                   *u^(2*n-j-i)*abs(2*d*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*sqrt(z)+c*u)^(j+i)
+                                   *u^(2*n-j-i)*abs(2*d*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))*u
-                                      *(2*d*sqrt(z)+c*u)
+                                      *(2*d*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))
-                                      *abs(2*d*sqrt(z)+c*u)
+                                      *abs(2*d*sqrt(x)+c*u)
                                      /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4498,21 +4498,21 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(g+c*z^2))^u,z))-
 0;
 
 /* Problem 617: NEW 6 */
-expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(g+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x)*(%e^(g+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-c^2*u^2/(4*d)+g*u+e)
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
-                                   *u^(2*n-j-i)*abs(2*d*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*sqrt(z)+c*u)^(j+i)
+                                   *u^(2*n-j-i)*abs(2*d*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))*u
-                                      *(2*d*sqrt(z)+c*u)
+                                      *(2*d*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*sqrt(z)+c*u)^2
+                                                        -(2*d*sqrt(x)+c*u)^2
                                                          /(4*d))
-                                      *abs(2*d*sqrt(z)+c*u)
+                                      *abs(2*d*sqrt(x)+c*u)
                                      /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4541,8 +4541,8 @@ expand(integrate(z^(1+2*n)*%e^(b*z^2)*(%e^(g+c*z^2))^u,z)-
 0;
 
 /* Problem 622: NEW */
-expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(g+c*sqrt(z)))^u,z))-
--2*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(z))*%e^(g*u)/(c*u+b)^(2*(n+1)));
+expand(niceindices(integrate(x^n*%e^(b*sqrt(x))*(%e^(g+c*sqrt(x)))^u,x))-
+-2*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(x))*%e^(g*u)/(c*u+b)^(2*(n+1)));
 0;
 
 /* Problem 623: NEW */
@@ -4569,8 +4569,8 @@ expand(integrate(z^(1+2*n)*%e^(e+b*z^2)*(%e^(g+c*z^2))^u,z)-
 0;
 
 /* Problem 627: NEW */
-expand(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(g+c*sqrt(z)))^u,z)-
--2*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(z))*%e^(g*u+e)/(c*u+b)^(2*(n+1)));
+expand(integrate(x^n*%e^(e+b*sqrt(x))*(%e^(g+c*sqrt(x)))^u,x)-
+-2*gamma_incomplete(2*(n+1),-(c*u+b)*sqrt(x))*%e^(g*u+e)/(c*u+b)^(2*(n+1)));
 0;
 
 /* Problem 628: NEW 10 */
@@ -4585,24 +4585,24 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*z^2)*(%e^(g+c*z^2))^u,z))-
 0;
 
 /* Problem 629: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x+b*sqrt(x))*(%e^(g+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-(c*u+b)^2/(4*d))
         *('sum(4^j*binomial(n,j)
                   *'sum((-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
                                         *(c*u+b)^(2*n-j-i)
-                                        *abs(2*d*sqrt(z)+c*u+b)^(-j-i-1)
-                                        *(2*d*sqrt(z)+c*u+b)^(j+i)
+                                        *abs(2*d*sqrt(x)+c*u+b)^(-j-i-1)
+                                        *(2*d*sqrt(x)+c*u+b)^(j+i)
                                         *(gamma_incomplete((j+i+1)/2,
-                                                           -(2*d*sqrt(z)
+                                                           -(2*d*sqrt(x)
                                                             +c*u+b)
                                                             ^2
                                                             /(4*d))
-                                         *(c*u+b)*(2*d*sqrt(z)+c*u+b)
+                                         *(c*u+b)*(2*d*sqrt(x)+c*u+b)
                                          +2*d
                                            *gamma_incomplete(
                                             (j+i+2)/2,
-                                            -(2*d*sqrt(z)+c*u+b)^2/(4*d))
-                                           *abs(2*d*sqrt(z)+c*u+b)
+                                            -(2*d*sqrt(x)+c*u+b)^2/(4*d))
+                                           *abs(2*d*sqrt(x)+c*u+b)
                                           /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4619,24 +4619,24 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*z^2)*(%e^(g+c*z^2))^u,z))-
 0;
 
 /* Problem 631: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(g+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x+b*sqrt(x))*(%e^(g+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-(c*u+b)^2/(4*d)+g*u+e)
         *('sum(4^j*binomial(n,j)
                   *'sum((-d)^((j+i+1)/2)*(-1)^(i-j)*binomial(j,i)
                                         *(c*u+b)^(2*n-j-i)
-                                        *abs(2*d*sqrt(z)+c*u+b)^(-j-i-1)
-                                        *(2*d*sqrt(z)+c*u+b)^(j+i)
+                                        *abs(2*d*sqrt(x)+c*u+b)^(-j-i-1)
+                                        *(2*d*sqrt(x)+c*u+b)^(j+i)
                                         *(gamma_incomplete((j+i+1)/2,
-                                                           -(2*d*sqrt(z)
+                                                           -(2*d*sqrt(x)
                                                             +c*u+b)
                                                             ^2
                                                             /(4*d))
-                                         *(c*u+b)*(2*d*sqrt(z)+c*u+b)
+                                         *(c*u+b)*(2*d*sqrt(x)+c*u+b)
                                          +2*d
                                            *gamma_incomplete(
                                             (j+i+2)/2,
-                                            -(2*d*sqrt(z)+c*u+b)^2/(4*d))
-                                           *abs(2*d*sqrt(z)+c*u+b)
+                                            -(2*d*sqrt(x)+c*u+b)^2/(4*d))
+                                           *abs(2*d*sqrt(x)+c*u+b)
                                           /sqrt(-d)),i,0,j),j,0,n))
  /d^(2*(n+1)));
 0;
@@ -4651,25 +4651,25 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 633: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x)*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-(c^2*u^2/(4*(f*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d)^((j+i+1)/2)
-                                   *abs(2*(f*u+d)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*u
-                                      *(2*(f*u+d)*sqrt(z)+c*u)
+                                      *(2*(f*u+d)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*(f*u+d)
-                                      *abs(2*(f*u+d)*sqrt(z)+c*u)
+                                      *abs(2*(f*u+d)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4684,25 +4684,25 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 635: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x)*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e-c^2*u^2/(4*(f*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d)^((j+i+1)/2)
-                                   *abs(2*(f*u+d)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*u
-                                      *(2*(f*u+d)*sqrt(z)+c*u)
+                                      *(2*(f*u+d)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*(f*u+d)
-                                      *abs(2*(f*u+d)*sqrt(z)+c*u)
+                                      *abs(2*(f*u+d)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4720,23 +4720,23 @@ expand(niceindices(integrate(z^n*%e^(b*z^2)*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 637: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-((c*u+b)^2/(4*f*u))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b)^2
+                                                     -(2*f*u*sqrt(x)+c*u+b)^2
                                                       /(4*f*u))
-                                   *(c*u+b)*(2*f*u*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*f*u*sqrt(x)+c*u+b)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)+c*u+b)
+                                                       -(2*f*u*sqrt(x)+c*u+b)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b)
+                                     *abs(2*f*u*sqrt(x)+c*u+b)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4754,23 +4754,23 @@ expand(niceindices(integrate(z^n*%e^(e+b*z^2)*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 639: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e-(c*u+b)^2/(4*f*u))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b)^2
+                                                     -(2*f*u*sqrt(x)+c*u+b)^2
                                                       /(4*f*u))
-                                   *(c*u+b)*(2*f*u*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*f*u*sqrt(x)+c*u+b)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)+c*u+b)
+                                                       -(2*f*u*sqrt(x)+c*u+b)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b)
+                                     *abs(2*f*u*sqrt(x)+c*u+b)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4787,25 +4787,25 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*z^2)*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 641: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x+b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-((c*u+b)^2/(4*(f*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(c*u+b)^(2*n-j-i)
                                   *(-f*u-d)^((j+i+1)/2)
-                                  *abs(2*(f*u+d)*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*(f*u+d)*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*(f*u+d)*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*(f*u+d)*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*(f*u+d)*sqrt(z)
+                                                     -(2*(f*u+d)*sqrt(x)
                                                       +c*u+b)
                                                       ^2
                                                       /(4*(f*u+d)))
-                                   *(c*u+b)*(2*(f*u+d)*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*(f*u+d)*sqrt(x)+c*u+b)
                                    +2*gamma_incomplete((j+i+2)/2,
-                                                       -(2*(f*u+d)*sqrt(z)
+                                                       -(2*(f*u+d)*sqrt(x)
                                                         +c*u+b)
                                                         ^2
                                                         /(4*(f*u+d)))*(f*u+d)
-                                     *abs(2*(f*u+d)*sqrt(z)+c*u+b)
+                                     *abs(2*(f*u+d)*sqrt(x)+c*u+b)
                                     /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4822,25 +4822,25 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*z^2)*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 643: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x+b*sqrt(x))*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e-(c*u+b)^2/(4*(f*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(c*u+b)^(2*n-j-i)
                                   *(-f*u-d)^((j+i+1)/2)
-                                  *abs(2*(f*u+d)*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*(f*u+d)*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*(f*u+d)*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*(f*u+d)*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*(f*u+d)*sqrt(z)
+                                                     -(2*(f*u+d)*sqrt(x)
                                                       +c*u+b)
                                                       ^2
                                                       /(4*(f*u+d)))
-                                   *(c*u+b)*(2*(f*u+d)*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*(f*u+d)*sqrt(x)+c*u+b)
                                    +2*gamma_incomplete((j+i+2)/2,
-                                                       -(2*(f*u+d)*sqrt(z)
+                                                       -(2*(f*u+d)*sqrt(x)
                                                         +c*u+b)
                                                         ^2
                                                         /(4*(f*u+d)))*(f*u+d)
-                                     *abs(2*(f*u+d)*sqrt(z)+c*u+b)
+                                     *abs(2*(f*u+d)*sqrt(x)+c*u+b)
                                     /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4855,25 +4855,25 @@ expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 645: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z)*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x)*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-c^2*u^2/(4*(f*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d)^((j+i+1)/2)
-                                   *abs(2*(f*u+d)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*u
-                                      *(2*(f*u+d)*sqrt(z)+c*u)
+                                      *(2*(f*u+d)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*(f*u+d)
-                                      *abs(2*(f*u+d)*sqrt(z)+c*u)
+                                      *abs(2*(f*u+d)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4888,25 +4888,25 @@ expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 647: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+d*z)*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x)*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-c^2*u^2/(4*(f*u+d))+g*u+e)
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d)^((j+i+1)/2)
-                                   *abs(2*(f*u+d)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*u
-                                      *(2*(f*u+d)*sqrt(z)+c*u)
+                                      *(2*(f*u+d)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d)*sqrt(z)
+                                                        -(2*(f*u+d)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d)))*(f*u+d)
-                                      *abs(2*(f*u+d)*sqrt(z)+c*u)
+                                      *abs(2*(f*u+d)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -4924,23 +4924,23 @@ expand(niceindices(integrate(z^n*%e^(b*z^2)*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 649: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-(c*u+b)^2/(4*f*u))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b)^2
+                                                     -(2*f*u*sqrt(x)+c*u+b)^2
                                                       /(4*f*u))
-                                   *(c*u+b)*(2*f*u*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*f*u*sqrt(x)+c*u+b)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)+c*u+b)
+                                                       -(2*f*u*sqrt(x)+c*u+b)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b)
+                                     *abs(2*f*u*sqrt(x)+c*u+b)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4958,23 +4958,23 @@ expand(niceindices(integrate(z^n*%e^(e+b*z^2)*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 651: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-(c*u+b)^2/(4*f*u)+g*u+e)
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b)^2
+                                                     -(2*f*u*sqrt(x)+c*u+b)^2
                                                       /(4*f*u))
-                                   *(c*u+b)*(2*f*u*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*f*u*sqrt(x)+c*u+b)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)+c*u+b)
+                                                       -(2*f*u*sqrt(x)+c*u+b)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b)
+                                     *abs(2*f*u*sqrt(x)+c*u+b)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -4991,25 +4991,25 @@ expand(niceindices(integrate(z^n*%e^(d*z+b*z^2)*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 653: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(d*x+b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-(c*u+b)^2/(4*(f*u+d)))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(c*u+b)^(2*n-j-i)
                                   *(-f*u-d)^((j+i+1)/2)
-                                  *abs(2*(f*u+d)*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*(f*u+d)*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*(f*u+d)*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*(f*u+d)*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*(f*u+d)*sqrt(z)
+                                                     -(2*(f*u+d)*sqrt(x)
                                                       +c*u+b)
                                                       ^2
                                                       /(4*(f*u+d)))
-                                   *(c*u+b)*(2*(f*u+d)*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*(f*u+d)*sqrt(x)+c*u+b)
                                    +2*gamma_incomplete((j+i+2)/2,
-                                                       -(2*(f*u+d)*sqrt(z)
+                                                       -(2*(f*u+d)*sqrt(x)
                                                         +c*u+b)
                                                         ^2
                                                         /(4*(f*u+d)))*(f*u+d)
-                                     *abs(2*(f*u+d)*sqrt(z)+c*u+b)
+                                     *abs(2*(f*u+d)*sqrt(x)+c*u+b)
                                     /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -5026,25 +5026,25 @@ expand(niceindices(integrate(z^n*%e^(e+d*z+b*z^2)*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 655: NEW 11 */
-expand(niceindices(integrate(z^n*%e^(e+d*z+b*sqrt(z))*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*%e^(e+d*x+b*sqrt(x))*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-(c*u+b)^2/(4*(f*u+d))+g*u+e)
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(c*u+b)^(2*n-j-i)
                                   *(-f*u-d)^((j+i+1)/2)
-                                  *abs(2*(f*u+d)*sqrt(z)+c*u+b)^(-j-i-1)
-                                  *(2*(f*u+d)*sqrt(z)+c*u+b)^(j+i)
+                                  *abs(2*(f*u+d)*sqrt(x)+c*u+b)^(-j-i-1)
+                                  *(2*(f*u+d)*sqrt(x)+c*u+b)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*(f*u+d)*sqrt(z)
+                                                     -(2*(f*u+d)*sqrt(x)
                                                       +c*u+b)
                                                       ^2
                                                       /(4*(f*u+d)))
-                                   *(c*u+b)*(2*(f*u+d)*sqrt(z)+c*u+b)
+                                   *(c*u+b)*(2*(f*u+d)*sqrt(x)+c*u+b)
                                    +2*gamma_incomplete((j+i+2)/2,
-                                                       -(2*(f*u+d)*sqrt(z)
+                                                       -(2*(f*u+d)*sqrt(x)
                                                         +c*u+b)
                                                         ^2
                                                         /(4*(f*u+d)))*(f*u+d)
-                                     *abs(2*(f*u+d)*sqrt(z)+c*u+b)
+                                     *abs(2*(f*u+d)*sqrt(x)+c*u+b)
                                     /sqrt(-f*u-d)),i,0,j),j,0,n))
  /(f*u+d)^(2*(n+1)));
 0;
@@ -5108,22 +5108,22 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(c*z^2))^u,z))-
 0;
 
 /* Problem 666: NEW 6 */
-expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(d*x))^q*(%e^(c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-(c^2*u^2/(4*d*q))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                     *(-d*q)^((j+i+1)/2)*u^(2*n-j-i)
-                                   *abs(2*d*q*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*q*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*d*q*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*q*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*u
-                                      *(2*d*q*sqrt(z)+c*u)
+                                      *(2*d*q*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*q
-                                      *abs(2*d*q*sqrt(z)+c*u)
+                                      *abs(2*d*q*sqrt(x)+c*u)
                                      /sqrt(-d*q)),i,0,j),j,0,n))
  /(d^(2*(n+1))*q^(2*(n+1))));
 0;
@@ -5140,22 +5140,22 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(c*z^2))^u,z)) -
 0;
 
 /* Problem 668: NEW 6 */
-expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(e+d*x))^q*(%e^(c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e*q-c^2*u^2/(4*d*q))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-d*q)^((j+i+1)/2)*u^(2*n-j-i)
-                                   *abs(2*d*q*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*q*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*d*q*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*q*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*u
-                                      *(2*d*q*sqrt(z)+c*u)
+                                      *(2*d*q*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*q
-                                      *abs(2*d*q*sqrt(z)+c*u)
+                                      *abs(2*d*q*sqrt(x)+c*u)
                                      /sqrt(-d*q)),i,0,j),j,0,n))
  /(d^(2*(n+1))*q^(2*(n+1))));
 0;
@@ -5184,8 +5184,8 @@ expand(integrate(z^(1+2*n)*(%e^(b*z^2))^q*(%e^(c*z^2))^u,z)-
 0;
 
 /* Problem 673: NEW */
-expand(integrate(z^n*(%e^(b*sqrt(z)))^q*(%e^(c*sqrt(z)))^u,z)-
--2*gamma_incomplete(2*(n+1),-(c*u+b*q)*sqrt(z))/(c*u+b*q)^(2*(n+1)));
+expand(integrate(x^n*(%e^(b*sqrt(x)))^q*(%e^(c*sqrt(x)))^u,x)-
+-2*gamma_incomplete(2*(n+1),-(c*u+b*q)*sqrt(x))/(c*u+b*q)^(2*(n+1)));
 0;
 
 /* Problem 674: NEW 5 */
@@ -5199,22 +5199,22 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(g+c*z^2))^u,z))-
 0;
 
 /* Problem 675: NEW 6 */
-expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(g+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(d*x))^q*(%e^(g+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-c^2*u^2/(4*d*q))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-d*q)^((j+i+1)/2)*u^(2*n-j-i)
-                                   *abs(2*d*q*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*q*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*d*q*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*q*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*u
-                                      *(2*d*q*sqrt(z)+c*u)
+                                      *(2*d*q*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*q
-                                      *abs(2*d*q*sqrt(z)+c*u)
+                                      *abs(2*d*q*sqrt(x)+c*u)
                                      /sqrt(-d*q)),i,0,j),j,0,n))
  /(d^(2*(n+1))*q^(2*(n+1))));
 0;
@@ -5230,22 +5230,22 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(g+c*z^2))^u,z))-
 0;
 
 /* Problem 677: NEW 6 */
-expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(g+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(e+d*x))^q*(%e^(g+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-c^2*u^2/(4*d*q)+g*u+e*q)
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)
                                    *(-d*q)^((j+i+1)/2)*u^(2*n-j-i)
-                                   *abs(2*d*q*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*d*q*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*d*q*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*d*q*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*u
-                                      *(2*d*q*sqrt(z)+c*u)
+                                      *(2*d*q*sqrt(x)+c*u)
                                     +2*d
                                       *gamma_incomplete((j+i+2)/2,
-                                                        -(2*d*q*sqrt(z)+c*u)^2
+                                                        -(2*d*q*sqrt(x)+c*u)^2
                                                          /(4*d*q))*q
-                                      *abs(2*d*q*sqrt(z)+c*u)
+                                      *abs(2*d*q*sqrt(x)+c*u)
                                      /sqrt(-d*q)),i,0,j),j,0,n))
  /(d^(2*(n+1))*q^(2*(n+1))));
 0;
@@ -5274,8 +5274,8 @@ expand(integrate(z^(1+2*n)*(%e^(b*z^2))^q*(%e^(g+c*z^2))^u,z)-
 0;
 
 /* Problem 682: NEW */
-expand(integrate(z^n*(%e^(b*sqrt(z)))^q*(%e^(g+c*sqrt(z)))^u,z)-
--2*gamma_incomplete(2*(n+1),-(c*u+b*q)*sqrt(z))*%e^(g*u)/(c*u+b*q)^(2*(n+1)));
+expand(integrate(x^n*(%e^(b*sqrt(x)))^q*(%e^(g+c*sqrt(x)))^u,x)-
+-2*gamma_incomplete(2*(n+1),-(c*u+b*q)*sqrt(x))*%e^(g*u)/(c*u+b*q)^(2*(n+1)));
 0;
 
 /* Problem 683: NEW */
@@ -5318,25 +5318,25 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 689: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(d*x))^q*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-(c^2*u^2/(4*(f*u+d*q)))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d*q)^((j+i+1)/2)
-                                   *abs(2*(f*u+d*q)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d*q)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d*q)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d*q)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))*u
-                                      *(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(2*(f*u+d*q)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))
-                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d*q)),i,0,j),j,0,n))
  /(f*u+d*q)^(2*(n+1)));
 0;
@@ -5351,25 +5351,25 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 691: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(e+d*x))^q*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e*q-c^2*u^2/(4*(f*u+d*q)))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d*q)^((j+i+1)/2)
-                                   *abs(2*(f*u+d*q)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d*q)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d*q)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d*q)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))*u
-                                      *(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(2*(f*u+d*q)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))
-                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d*q)),i,0,j),j,0,n))
  /(f*u+d*q)^(2*(n+1)));
 0;
@@ -5387,25 +5387,25 @@ expand(niceindices(integrate(z^n*(%e^(b*z^2))^q*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 693: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(b*sqrt(z)))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(b*sqrt(x)))^q*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-((c*u+b*q)^2/(4*f*u))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b*q)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b*q)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b*q)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b*q)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b*q)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b*q)
+                                                     -(2*f*u*sqrt(x)+c*u+b*q)
                                                       ^2
                                                       /(4*f*u))
-                                   *(c*u+b*q)*(2*f*u*sqrt(z)+c*u+b*q)
+                                   *(c*u+b*q)*(2*f*u*sqrt(x)+c*u+b*q)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)
+                                                       -(2*f*u*sqrt(x)
                                                         +c*u+b*q)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b*q)
+                                     *abs(2*f*u*sqrt(x)+c*u+b*q)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -5423,25 +5423,25 @@ expand(niceindices(integrate(z^n*(%e^(e+b*z^2))^q*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 695: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(e+b*sqrt(z)))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(e+b*sqrt(x)))^q*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(e*q-(c*u+b*q)^2/(4*f*u))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b*q)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b*q)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b*q)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b*q)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b*q)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b*q)
+                                                     -(2*f*u*sqrt(x)+c*u+b*q)
                                                       ^2
                                                       /(4*f*u))
-                                   *(c*u+b*q)*(2*f*u*sqrt(z)+c*u+b*q)
+                                   *(c*u+b*q)*(2*f*u*sqrt(x)+c*u+b*q)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)
+                                                       -(2*f*u*sqrt(x)
                                                         +c*u+b*q)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b*q)
+                                     *abs(2*f*u*sqrt(x)+c*u+b*q)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -5459,26 +5459,26 @@ expand(niceindices(integrate(z^n*(%e^(d*z+b*z^2))^q*(%e^(f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 697: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(d*z+b*sqrt(z)))^q*(%e^(f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(d*x+b*sqrt(x)))^q*(%e^(f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^-((c*u+b*q)^2/(4*(f*u+d*q)))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(c*u+b*q)^(2*n-j-i)
                                   *(-f*u-d*q)^((j+i+1)/2)
-                                  *abs(2*(f*u+d*q)*sqrt(z)+c*u+b*q)^(-j-i-1)
-                                  *(2*(f*u+d*q)*sqrt(z)+c*u+b*q)^(j+i)
+                                  *abs(2*(f*u+d*q)*sqrt(x)+c*u+b*q)^(-j-i-1)
+                                  *(2*(f*u+d*q)*sqrt(x)+c*u+b*q)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*(f*u+d*q)*sqrt(z)
+                                                     -(2*(f*u+d*q)*sqrt(x)
                                                       +c*u+b*q)
                                                       ^2
                                                       /(4*(f*u+d*q)))
-                                   *(c*u+b*q)*(2*(f*u+d*q)*sqrt(z)+c*u+b*q)
+                                   *(c*u+b*q)*(2*(f*u+d*q)*sqrt(x)+c*u+b*q)
                                    +2*gamma_incomplete((j+i+2)/2,
-                                                       -(2*(f*u+d*q)*sqrt(z)
+                                                       -(2*(f*u+d*q)*sqrt(x)
                                                         +c*u+b*q)
                                                         ^2
                                                         /(4*(f*u+d*q)))
                                      *(f*u+d*q)
-                                     *abs(2*(f*u+d*q)*sqrt(z)+c*u+b*q)
+                                     *abs(2*(f*u+d*q)*sqrt(x)+c*u+b*q)
                                     /sqrt(-f*u-d*q)),i,0,j),j,0,n))
  /(f*u+d*q)^(2*(n+1)));
 0;
@@ -5493,25 +5493,25 @@ expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 699: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(d*z))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(d*x))^q*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-c^2*u^2/(4*(f*u+d*q)))
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d*q)^((j+i+1)/2)
-                                   *abs(2*(f*u+d*q)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d*q)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d*q)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d*q)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))*u
-                                      *(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(2*(f*u+d*q)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))
-                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d*q)),i,0,j),j,0,n))
  /(f*u+d*q)^(2*(n+1)));
 0;
@@ -5526,25 +5526,25 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 701: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(e+d*x))^q*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-c^2*u^2/(4*(f*u+d*q))+g*u+e*q)
         *('sum(4^j*binomial(n,j)
                   *'sum(c^(2*n-j-i)*(-1)^(i-j)*binomial(j,i)*u^(2*n-j-i)
                                    *(-f*u-d*q)^((j+i+1)/2)
-                                   *abs(2*(f*u+d*q)*sqrt(z)+c*u)^(-j-i-1)
-                                   *(2*(f*u+d*q)*sqrt(z)+c*u)^(j+i)
+                                   *abs(2*(f*u+d*q)*sqrt(x)+c*u)^(-j-i-1)
+                                   *(2*(f*u+d*q)*sqrt(x)+c*u)^(j+i)
                                    *(c*gamma_incomplete((j+i+1)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))*u
-                                      *(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(2*(f*u+d*q)*sqrt(x)+c*u)
                                     +2*gamma_incomplete((j+i+2)/2,
-                                                        -(2*(f*u+d*q)*sqrt(z)
+                                                        -(2*(f*u+d*q)*sqrt(x)
                                                          +c*u)
                                                          ^2
                                                          /(4*(f*u+d*q)))
-                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(z)+c*u)
+                                      *(f*u+d*q)*abs(2*(f*u+d*q)*sqrt(x)+c*u)
                                      /sqrt(-f*u-d*q)),i,0,j),j,0,n))
  /(f*u+d*q)^(2*(n+1)));
 0;
@@ -5562,25 +5562,25 @@ expand(niceindices(integrate(z^n*(%e^(b*z^2))^q*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 703: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(b*sqrt(z)))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(b*sqrt(x)))^q*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-(c*u+b*q)^2/(4*f*u))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b*q)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b*q)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b*q)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b*q)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b*q)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b*q)
+                                                     -(2*f*u*sqrt(x)+c*u+b*q)
                                                       ^2
                                                       /(4*f*u))
-                                   *(c*u+b*q)*(2*f*u*sqrt(z)+c*u+b*q)
+                                   *(c*u+b*q)*(2*f*u*sqrt(x)+c*u+b*q)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)
+                                                       -(2*f*u*sqrt(x)
                                                         +c*u+b*q)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b*q)
+                                     *abs(2*f*u*sqrt(x)+c*u+b*q)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -5598,25 +5598,25 @@ expand(niceindices(integrate(z^n*(%e^(e+b*z^2))^q*(%e^(g+f*z+c*z^2))^u,z))-
 0;
 
 /* Problem 705: NEW 11 */
-expand(niceindices(integrate(z^n*(%e^(e+b*sqrt(z)))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+expand(niceindices(integrate(x^n*(%e^(e+b*sqrt(x)))^q*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-(c*u+b*q)^2/(4*f*u)+g*u+e*q)
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(-f*u)^((j+i+1)/2)
                                   *(c*u+b*q)^(2*n-j-i)
-                                  *abs(2*f*u*sqrt(z)+c*u+b*q)^(-j-i-1)
-                                  *(2*f*u*sqrt(z)+c*u+b*q)^(j+i)
+                                  *abs(2*f*u*sqrt(x)+c*u+b*q)^(-j-i-1)
+                                  *(2*f*u*sqrt(x)+c*u+b*q)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*f*u*sqrt(z)+c*u+b*q)
+                                                     -(2*f*u*sqrt(x)+c*u+b*q)
                                                       ^2
                                                       /(4*f*u))
-                                   *(c*u+b*q)*(2*f*u*sqrt(z)+c*u+b*q)
+                                   *(c*u+b*q)*(2*f*u*sqrt(x)+c*u+b*q)
                                    +2*f
                                      *gamma_incomplete((j+i+2)/2,
-                                                       -(2*f*u*sqrt(z)
+                                                       -(2*f*u*sqrt(x)
                                                         +c*u+b*q)
                                                         ^2
                                                         /(4*f*u))*u
-                                     *abs(2*f*u*sqrt(z)+c*u+b*q)
+                                     *abs(2*f*u*sqrt(x)+c*u+b*q)
                                     /sqrt(-f*u)),i,0,j),j,0,n))
  /(f^(2*(n+1))*u^(2*(n+1))));
 0;
@@ -5635,26 +5635,26 @@ expand(niceindices(integrate(z^n*(%e^(d*z+b*z^2))^q*(%e^(g+f*z+c*z^2))^u,z))-
 
 /* Problem 707: NEW 11 */
 expand(
-  niceindices(integrate(z^n*(%e^(d*z+b*sqrt(z)))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+  niceindices(integrate(x^n*(%e^(d*x+b*sqrt(x)))^q*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(g*u-(c*u+b*q)^2/(4*(f*u+d*q)))
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(c*u+b*q)^(2*n-j-i)
                                   *(-f*u-d*q)^((j+i+1)/2)
-                                  *abs(2*(f*u+d*q)*sqrt(z)+c*u+b*q)^(-j-i-1)
-                                  *(2*(f*u+d*q)*sqrt(z)+c*u+b*q)^(j+i)
+                                  *abs(2*(f*u+d*q)*sqrt(x)+c*u+b*q)^(-j-i-1)
+                                  *(2*(f*u+d*q)*sqrt(x)+c*u+b*q)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*(f*u+d*q)*sqrt(z)
+                                                     -(2*(f*u+d*q)*sqrt(x)
                                                       +c*u+b*q)
                                                       ^2
                                                       /(4*(f*u+d*q)))
-                                   *(c*u+b*q)*(2*(f*u+d*q)*sqrt(z)+c*u+b*q)
+                                   *(c*u+b*q)*(2*(f*u+d*q)*sqrt(x)+c*u+b*q)
                                    +2*gamma_incomplete((j+i+2)/2,
-                                                       -(2*(f*u+d*q)*sqrt(z)
+                                                       -(2*(f*u+d*q)*sqrt(x)
                                                         +c*u+b*q)
                                                         ^2
                                                         /(4*(f*u+d*q)))
                                      *(f*u+d*q)
-                                     *abs(2*(f*u+d*q)*sqrt(z)+c*u+b*q)
+                                     *abs(2*(f*u+d*q)*sqrt(x)+c*u+b*q)
                                     /sqrt(-f*u-d*q)),i,0,j),j,0,n))
  /(f*u+d*q)^(2*(n+1)));
 0;
@@ -5673,26 +5673,26 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z+b*z^2))^q*(%e^(g+f*z+c*z^2))^u,z))-
 
 /* Problem 709: NEW 11 */
 expand(
-  niceindices(integrate(z^n*(%e^(e+d*z+b*sqrt(z)))^q*(%e^(g+f*z+c*sqrt(z)))^u,z))-
+  niceindices(integrate(x^n*(%e^(e+d*x+b*sqrt(x)))^q*(%e^(g+f*x+c*sqrt(x)))^u,x))-
 2^(-n-1)*%e^(-(c*u+b*q)^2/(4*(f*u+d*q))+g*u+e*q)
         *('sum(4^j*binomial(n,j)
                   *'sum((-1)^(i-j)*binomial(j,i)*(c*u+b*q)^(2*n-j-i)
                                   *(-f*u-d*q)^((j+i+1)/2)
-                                  *abs(2*(f*u+d*q)*sqrt(z)+c*u+b*q)^(-j-i-1)
-                                  *(2*(f*u+d*q)*sqrt(z)+c*u+b*q)^(j+i)
+                                  *abs(2*(f*u+d*q)*sqrt(x)+c*u+b*q)^(-j-i-1)
+                                  *(2*(f*u+d*q)*sqrt(x)+c*u+b*q)^(j+i)
                                   *(gamma_incomplete((j+i+1)/2,
-                                                     -(2*(f*u+d*q)*sqrt(z)
+                                                     -(2*(f*u+d*q)*sqrt(x)
                                                       +c*u+b*q)
                                                       ^2
                                                       /(4*(f*u+d*q)))
-                                   *(c*u+b*q)*(2*(f*u+d*q)*sqrt(z)+c*u+b*q)
+                                   *(c*u+b*q)*(2*(f*u+d*q)*sqrt(x)+c*u+b*q)
                                    +2*gamma_incomplete((j+i+2)/2,
-                                                       -(2*(f*u+d*q)*sqrt(z)
+                                                       -(2*(f*u+d*q)*sqrt(x)
                                                         +c*u+b*q)
                                                         ^2
                                                         /(4*(f*u+d*q)))
                                      *(f*u+d*q)
-                                     *abs(2*(f*u+d*q)*sqrt(z)+c*u+b*q)
+                                     *abs(2*(f*u+d*q)*sqrt(x)+c*u+b*q)
                                     /sqrt(-f*u-d*q)),i,0,j),j,0,n))
  /(f*u+d*q)^(2*(n+1)));
 0;

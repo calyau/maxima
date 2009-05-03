@@ -355,10 +355,11 @@ acot(0.0);
 0;
 
 rectform(log(u));
-log(cabs(u)) + %i*carg(u);
+log(abs(u)) + %i*carg(u);
 
 cabs(u);
-sqrt(?%realpart(u)^2+?%imagpart(u)^2);
+abs(u); /* for a symbol we get a noun form with abs */
+/*sqrt(?%realpart(u)^2+?%imagpart(u)^2);*/
 
 /* [ 617699 ] carg([1]) is bogus */
 carg([1]);

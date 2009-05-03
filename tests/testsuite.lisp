@@ -35,7 +35,7 @@
 	"rtestint"
 	"rtestifactor"
 	((mlist) "rtest_equal" 157 160)
-	((mlist) "rtest_abs" 42 43)
+	"rtest_abs"
 	((mlist) "rtest_taylor" 88 91 94 96 99 104 118 119 120 121 123 124)
 	((mlist) "rtest_dot")
 	"rtest_mset"
