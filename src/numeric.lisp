@@ -433,7 +433,7 @@
 		 :real (maxima::bcons
 			(maxima::fpdifference (cdr (real-value a))
 					      (cdr (intofp (realpart b)))))
-		 :imag (maxima::bcons (maxima::fpminus (intofp (imagpart b))))))
+		 :imag (maxima::bcons (maxima::fpminus (cdr (intofp (imagpart b)))))))
 
 (defmethod two-arg-- ((a cl:float) (b bigfloat))
   (make-instance 'bigfloat
