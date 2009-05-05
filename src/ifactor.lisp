@@ -376,7 +376,6 @@
 	   (setq count 0)
 	   (setq d (gcd z n))
 	   (when (> d 1)
-	     (format t "bpv: ~d~%" d)
 	     (return-from big-prime-var d))))
     d))
 
