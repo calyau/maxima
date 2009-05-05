@@ -168,7 +168,7 @@ simplify_sum(expr) :=
       [ratfun, expr1: expr],
       ss_print_message(1, "Trying ratfun -> psi ..."),
       ratfun : part(expr1, 1),
-      if hi1=inf and hipow(num(ratfun), var) > hipow(denom(ratfun), var)-2 then
+      if hi=inf and hipow(num(ratfun), var) > hipow(denom(ratfun), var)-2 then
         error("Sum is divergent"),
       polypart : first(divide(num(ratfun), denom(ratfun), var)),
       expr1 : intosum(substpart(ratsimp(ratfun - polypart), expr1, 1)),
