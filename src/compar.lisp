@@ -14,12 +14,9 @@
 
 (load-macsyma-macros mrgmac)
 
-(declare-top (special $float2bf $radexpand $ratprint $ratsimpexpons $listconstvars
-		     success $props *x* $%enumer)
-	    ;; Variables defined in DB
-	    (special context current dobjects dbtrace +labs))
+(declare-top (special success $props))
 
-(defvar *debug-compar* nil 
+(defvar *debug-compar* nil
   "Enables debugging code for this file.")
 
 (defvar %initiallearnflag)
@@ -71,16 +68,19 @@ relational knowledge is contained in the default context GLOBAL."
 (defmvar lhs nil)
 (defmvar rhs nil)
 
+(defvar $useminmax t)
+
 ;; This variable is also initialized in DB for its own purposes.
 ;; COMPAR is loaded after DB.
 (setq context '$global)
 
 ;; Load-time environment for COMPAR.  $CONTEXT and $CONTEXTS will be
 ;; reset at the end of the file via a call to ($newcontext '$initial).
-(setq $context '$global $contexts '((mlist) $global))
+(setq $context '$global
+      $contexts '((mlist) $global))
 
 (defmacro ask (&rest x)
- `(retrieve (list '(mtext) ,@x) nil))
+  `(retrieve (list '(mtext) ,@x) nil))
 
 (defmacro pow (&rest x)
   `(power ,@x))
@@ -287,14 +287,15 @@ relational knowledge is contained in the default context GLOBAL."
 (defprop $maybe simp-$is operators)
 (defprop %maybe simp-$is operators)
 
-; I'VE ASSUMED (NULL Z) => SIMPLIFIY ARGUMENTS
-; SAME WITH SIMPCHECK (SRC/SIMP.LISP)
-; SAME WITH TELLSIMP-GENERATED SIMPLIFICATION FUNCTIONS
-; SAME WITH SIMPLIFICATION OF %SIN
-; PRETTY SURE I'VE SEEN OTHER EXAMPLES AS WELL
-; Z SEEMS TO SIGNIFY "ARE THE ARGUMENTS SIMPLIFIED YET"
+					; I'VE ASSUMED (NULL Z) => SIMPLIFIY ARGUMENTS
+					; SAME WITH SIMPCHECK (SRC/SIMP.LISP)
+					; SAME WITH TELLSIMP-GENERATED SIMPLIFICATION FUNCTIONS
+					; SAME WITH SIMPLIFICATION OF %SIN
+					; PRETTY SURE I'VE SEEN OTHER EXAMPLES AS WELL
+					; Z SEEMS TO SIGNIFY "ARE THE ARGUMENTS SIMPLIFIED YET"
 
-(defun maybe-simplifya (x z) (if z x (simplifya x z)))
+(defun maybe-simplifya (x z)
+  (if z x (simplifya x z)))
 
 (defun maybe-simplifya-protected (x z)
   (let ((errcatch t) ($errormsg nil))
@@ -305,25 +306,22 @@ relational knowledge is contained in the default context GLOBAL."
   (declare (ignore yy))
   (let ((a (maybe-simplifya (cadr x) z)))
     (if (or (eq a t) (eq a nil))
-      a
-      `((,(caar x) simp) ,a))))
+	a
+	`((,(caar x) simp) ,a))))
 
 (defmspec $is (form)
-  (let*
-    ((pat (cadr form))
-     (x (mevalp1 pat))
-     (ans (car x))
-     (patevalled (cadr x)))
-    (cond
-      ((member ans '(t nil) :test #'eq) ans)
-      ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
-      ($prederror (pre-err patevalled))
-      (t '$unknown))))
+  (let* ((pat (cadr form))
+	 (x (mevalp1 pat))
+	 (ans (car x))
+	 (patevalled (cadr x)))
+    (cond ((member ans '(t nil) :test #'eq) ans)
+	  ;; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
+	  ($prederror (pre-err patevalled))
+	  (t '$unknown))))
 
 (defmspec $maybe (form)
-  (let*
-    ((pat (cadr form))
-     (x (let (($prederror nil)) (mevalp1 pat)))
+  (let* ((pat (cadr form))
+	 (x (let (($prederror nil)) (mevalp1 pat)))
 	 (ans (car x)))
     (if (member ans '(t nil) :test #'eq)
 	ans
@@ -333,9 +331,9 @@ relational knowledge is contained in the default context GLOBAL."
   (let (($prederror t))
     (mevalp pred)))
 
-; The presence of OPERS tells SIMPLIFYA to call OPER-APPLY,
-; which calls NARY1 to flatten nested "and" and "or" expressions
-; (due to $NARY property of MAND and MOR, declared elsewhere).
+					; The presence of OPERS tells SIMPLIFYA to call OPER-APPLY,
+					; which calls NARY1 to flatten nested "and" and "or" expressions
+					; (due to $NARY property of MAND and MOR, declared elsewhere).
 
 (putprop 'mand t 'opers)
 (putprop 'mor t 'opers)
@@ -346,80 +344,74 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun simp-mand (x yy z)
   (declare (ignore yy))
-  (do ((l (cdr x) (cdr l)) (a) (simplified))
-    ((null l)
-    (cond
-      ((= (length simplified) 0) t)
-      ((= (length simplified) 1) (car simplified))
-      (t (cons '(mand simp) (reverse simplified)))))
-  (setq a (maybe-simplifya (car l) z))
-  (cond
-    ((null a) (return nil))
-    ((eq a '$unknown) (if (not (member '$unknown simplified :test #'eq)) (push a simplified)))
-    ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
+  (do ((l (cdr x) (cdr l))
+       (a)
+       (simplified))
+      ((null l)
+       (cond ((= (length simplified) 0) t)
+	     ((= (length simplified) 1) (car simplified))
+	     (t (cons '(mand simp) (reverse simplified)))))
+    (setq a (maybe-simplifya (car l) z))
+    (cond ((null a) (return nil))
+	  ((eq a '$unknown) (unless (member '$unknown simplified :test #'eq) (push a simplified)))
+	  ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
 
 (defun simp-mor (x yy z)
   (declare (ignore yy))
-  (do ((l (cdr x) (cdr l)) (a) (simplified))
-    ((null l)
-    (cond
-      ((= (length simplified) 0) nil)
-      ((= (length simplified) 1) (car simplified))
-      (t (cons '(mor simp) (reverse simplified)))))
-  (setq a (maybe-simplifya (car l) z))
-  (cond
-    ((eq a t) (return t))
-    ((eq a '$unknown) (if (not (member '$unknown simplified :test #'eq)) (push a simplified)))
-    ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
+  (do ((l (cdr x) (cdr l))
+       (a)
+       (simplified))
+      ((null l)
+       (cond ((= (length simplified) 0) nil)
+	     ((= (length simplified) 1) (car simplified))
+	     (t (cons '(mor simp) (reverse simplified)))))
+    (setq a (maybe-simplifya (car l) z))
+    (cond ((eq a t) (return t))
+	  ((eq a '$unknown) (unless (member '$unknown simplified :test #'eq) (push a simplified)))
+	  ((not (member a '(t nil) :test #'eq)) (push a simplified)))))
 
-; ALSO CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
+					; ALSO CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
 
 (defun simp-mnot (x yy z)
   (declare (ignore yy))
   (let ((arg (maybe-simplifya (cadr x) z)))
     (if (atom arg)
-      (cond
-        ((or (eq arg t) (eq arg '$true))
-         nil)
-        ((or (eq arg nil) (eq arg '$false))
-         t)
-        ((eq arg '$unknown)
-         '$unknown)
-        (t `((mnot simp) ,arg)))
-      (let ((arg-op (caar arg)) (arg-arg (cdr arg)))
-        (setq arg-arg (mapcar #'(lambda (a) (maybe-simplifya a z)) arg-arg))
-        (cond
-          ((eq arg-op 'mlessp)
-           `((mgeqp simp) ,@arg-arg))
-          ((eq arg-op 'mleqp)
-           `((mgreaterp simp) ,@arg-arg))
-          ((eq arg-op 'mequal)
-           `((mnotequal simp) ,@arg-arg))
-          ((eq arg-op '$equal)
-           `(($notequal simp) ,@arg-arg))
-          ((eq arg-op 'mnotequal)
-           `((mequal simp) ,@arg-arg))
-          ((eq arg-op '$notequal)
-           `(($equal simp) ,@arg-arg))
-          ((eq arg-op 'mgeqp)
-           `((mlessp simp) ,@arg-arg))
-          ((eq arg-op 'mgreaterp)
-           `((mleqp simp) ,@arg-arg))
-          ((eq arg-op 'mnot)
-           (car arg-arg))
-
-          ; Distribute negation over conjunction and disjunction;
-          ; analogous to '(- (a + b)) --> - a - b.
-
-          ((eq arg-op 'mand)
-           (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
-             (simplifya `((mor) ,@L) nil)))
-
-          ((eq arg-op 'mor)
-           (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
-             (simplifya `((mand) ,@L) nil)))
-
-          (t `((mnot simp) ,arg)))))))
+	(cond ((or (eq arg t) (eq arg '$true))
+	       nil)
+	      ((or (eq arg nil) (eq arg '$false))
+	       t)
+	      ((eq arg '$unknown)
+	       '$unknown)
+	      (t `((mnot simp) ,arg)))
+	(let ((arg-op (caar arg)) (arg-arg (cdr arg)))
+	  (setq arg-arg (mapcar #'(lambda (a) (maybe-simplifya a z)) arg-arg))
+	  (cond ((eq arg-op 'mlessp)
+		 `((mgeqp simp) ,@arg-arg))
+		((eq arg-op 'mleqp)
+		 `((mgreaterp simp) ,@arg-arg))
+		((eq arg-op 'mequal)
+		 `((mnotequal simp) ,@arg-arg))
+		((eq arg-op '$equal)
+		 `(($notequal simp) ,@arg-arg))
+		((eq arg-op 'mnotequal)
+		 `((mequal simp) ,@arg-arg))
+		((eq arg-op '$notequal)
+		 `(($equal simp) ,@arg-arg))
+		((eq arg-op 'mgeqp)
+		 `((mlessp simp) ,@arg-arg))
+		((eq arg-op 'mgreaterp)
+		 `((mleqp simp) ,@arg-arg))
+		((eq arg-op 'mnot)
+		 (car arg-arg))
+		;; Distribute negation over conjunction and disjunction;
+		;; analogous to '(- (a + b)) --> - a - b.
+		((eq arg-op 'mand)
+		 (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
+		   (simplifya `((mor) ,@L) nil)))
+		((eq arg-op 'mor)
+		 (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
+		   (simplifya `((mand) ,@L) nil)))
+		(t `((mnot simp) ,arg)))))))
 
 ;; =>* N.B. *<=
 ;; The function IS-BOOLE-CHECK, used by the translator, depends
@@ -427,26 +419,24 @@ relational knowledge is contained in the default context GLOBAL."
 ;; ACALL before proceeding.
 
 (defmfun mevalp (pat)
-  (let*
-    ((x (mevalp1 pat))
-     (ans (car x))
-     (patevalled (cadr x)))
-    (cond ((member ans '(#.(not ()) ()) :test #'eq)
-       ans)
-      ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
-      ($prederror (pre-err patevalled))
-      (t (or patevalled ans)))))
+  (let* ((x (mevalp1 pat))
+	 (ans (car x))
+	 (patevalled (cadr x)))
+    (cond ((member ans '(#.(not ()) ()) :test #'eq) ans)
+	  ;; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
+	  ($prederror (pre-err patevalled))
+	  (t (or patevalled ans)))))
 
 (defun mevalp1 (pat)
   (let (patevalled ans)
-    (setq ans 
-      (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
-	   (cond ((eq 'mnot (caar pat)) (is-mnot (cadr pat)))
-	         ((eq 'mand (caar pat)) (is-mand (cdr pat)))
-	         (t (is-mor (cdr pat)))))
-	  ((atom (setq patevalled (meval pat))) patevalled)
-	  ((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1 patevalled))
-	  (t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))
+    (setq ans
+	  (cond ((and (not (atom pat)) (member (caar pat) '(mnot mand mor) :test #'eq))
+		 (cond ((eq 'mnot (caar pat)) (is-mnot (cadr pat)))
+		       ((eq 'mand (caar pat)) (is-mand (cdr pat)))
+		       (t (is-mor (cdr pat)))))
+		((atom (setq patevalled (meval pat))) patevalled)
+		((member (caar patevalled) '(mnot mand mor) :test #'eq) (mevalp1 patevalled))
+		(t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))
     (list ans patevalled)))
 
 (defmfun mevalp2 (patevalled pred arg1 arg2)
@@ -483,41 +473,43 @@ relational knowledge is contained in the default context GLOBAL."
 	(t (list '(mnot) pred))))
 
 (defun is-mand (pl)
-  (do ((dummy) (npl))
+  (do ((dummy)
+       (npl))
       ((null pl) (cond ((null npl))
 		       ((null (cdr npl)) (car npl))
 		       (t (cons '(mand) (nreverse npl)))))
     (setq dummy (mevalp (car pl)) pl (cdr pl))
     (cond ((eq t dummy))
 	  ((null dummy) (return nil))
-	  (t (setq npl (cons dummy npl))))))
+	  (t (push dummy npl)))))
 
 (defun is-mor (pl)
-  (do ((dummy) (npl))
+  (do ((dummy)
+       (npl))
       ((null pl) (cond ((null npl) nil)
 		       ((null (cdr npl)) (car npl))
 		       (t (cons '(mor) (nreverse npl)))))
     (setq dummy (mevalp (car pl)) pl (cdr pl))
     (cond ((eq t dummy) (return t))
 	  ((null dummy))
-	  (t (setq npl (cons dummy npl))))))
+	  (t (push dummy npl)))))
 
 (defmspec $assume (x)
   (setq x (cdr x))
   (do ((nl)) ((null x) (cons '(mlist) (nreverse nl)))
-    (cond ((atom (car x)) (setq nl (cons (assume (meval (car x))) nl)))
+    (cond ((atom (car x)) (push (assume (meval (car x))) nl))
 	  ((eq 'mand (caaar x))
-	   (mapc #'(lambda (l) (setq nl (cons (assume (meval l)) nl)))
+	   (mapc #'(lambda (l) (push (assume (meval l)) nl))
 		 (cdar x)))
 	  ((eq 'mnot (caaar x))
-	   (setq nl (cons (assume (meval (pred-reverse (cadar x)))) nl)))
+	   (push (assume (meval (pred-reverse (cadar x)))) nl))
 	  ((eq 'mor (caaar x))
 	   (merror (intl:gettext "assume: argument cannot be an 'or' expression; found ~M") (car x)))
 	  ((eq (caaar x) 'mequal)
 	   (merror (intl:gettext "assume: argument cannot be an '=' expression; found ~M~%assume: maybe you want 'equal'.") (car x)))
 	  ((eq (caaar x) 'mnotequal)
 	   (merror (intl:gettext "assume: argument cannot be a '#' expression; found ~M~%assume: maybe you want 'not equal'.") (car x)))
-	  (t (setq nl (cons (assume (meval (car x))) nl))))
+	  (t (push (assume (meval (car x))) nl)))
     (setq x (cdr x))))
 
 (defmfun assume (pat)
@@ -550,14 +542,14 @@ relational knowledge is contained in the default context GLOBAL."
   (setq x (cdr x))
   (do ((nl))
       ((null x) (cons '(mlist) (nreverse nl)))
-    (cond ((atom (car x)) (setq nl (cons (forget (meval (car x))) nl)))
+    (cond ((atom (car x)) (push (forget (meval (car x))) nl))
 	  ((eq 'mand (caaar x))
-	   (mapc #'(lambda (l) (setq nl (cons (forget (meval l)) nl))) (cdar x)))
+	   (mapc #'(lambda (l) (push (forget (meval l)) nl)) (cdar x)))
 	  ((eq 'mnot (caaar x))
-	   (setq nl (cons (forget (meval (pred-reverse (cadar x)))) nl)))
+	   (push (forget (meval (pred-reverse (cadar x)))) nl))
 	  ((eq 'mor (caaar x))
 	   (merror (intl:gettext "forget: argument cannot be an 'or' expression; found ~M") (car x)))
-	  (t (setq nl (cons (forget (meval (car x))) nl))))
+	  (t (push (forget (meval (car x))) nl)))
     (setq x (cdr x))))
 
 (defmfun forget (pat)
@@ -580,7 +572,6 @@ relational knowledge is contained in the default context GLOBAL."
 	  ((eq (caar fact) '$par))
 	  (t (assume fact)))))
 
-
 (defmacro compare (a b)
   `(sign1 (sub* ,a ,b)))
 
@@ -590,35 +581,38 @@ relational knowledge is contained in the default context GLOBAL."
 (defmfun minimum (l)
   (maximin l '$min))
 
-(defmspec mand (form) (setq form (cdr form))
-  (do ((l form (cdr l)) (x) (unevaluated))
-    ((null l)
-    (cond
-      ((= (length unevaluated) 0) t)
-      ((= (length unevaluated) 1) (car unevaluated))
-      (t (cons '(mand) (reverse unevaluated)))))
-  (setq x (mevalp (car l)))
-  (cond
-    ((null x) (return nil))
-    ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
+(defmspec mand (form)
+  (setq form (cdr form))
+  (do ((l form (cdr l))
+       (x)
+       (unevaluated))
+      ((null l)
+       (cond ((= (length unevaluated) 0) t)
+	     ((= (length unevaluated) 1) (car unevaluated))
+	     (t (cons '(mand) (reverse unevaluated)))))
+    (setq x (mevalp (car l)))
+    (cond ((null x) (return nil))
+	  ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
 
-(defmspec mor (form) (setq form (cdr form))
-  (do ((l form (cdr l)) (x) (unevaluated))
-  ((null l)
-    (cond
-      ((= (length unevaluated) 0) nil)
-      ((= (length unevaluated) 1) (car unevaluated))
-      (t (cons '(mor) (reverse unevaluated)))))
-  (setq x (mevalp (car l)))
-  (cond
-    ((eq x t) (return t))
-    ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
+(defmspec mor (form)
+  (setq form (cdr form))
+  (do ((l form (cdr l))
+       (x)
+       (unevaluated))
+      ((null l)
+       (cond ((= (length unevaluated) 0) nil)
+	     ((= (length unevaluated) 1) (car unevaluated))
+	     (t (cons '(mor) (reverse unevaluated)))))
+    (setq x (mevalp (car l)))
+    (cond ((eq x t) (return t))
+	  ((not (member x '(t nil) :test #'eq)) (push x unevaluated)))))
 
-(defmspec mnot (form) (setq form (cdr form))
+(defmspec mnot (form)
+  (setq form (cdr form))
   (let ((x (mevalp (car form))))
-    (cond
-      ((member x '(t nil) :test #'eq) (not x))
-      (t `((mnot) ,x)))))
+    (if (member x '(t nil) :test #'eq)
+	(not x)
+	`((mnot) ,x))))
 
 ;;;Toplevel functions- $ASKSIGN, $SIGN.
 ;;;Switches- LIMITP If TRUE $ASKSIGN and $SIGN will look for special
@@ -654,7 +648,7 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;; csign returns t if x appears to be complex.
 ;; Else, it returns the sign.
-(defmfun csign (x) 
+(defmfun csign (x)
   (or (not (free x '$%i))
       (let (sign-imag-errp limitp) (catch 'sign-imag-err ($sign x)))))
 
@@ -670,15 +664,15 @@ relational knowledge is contained in the default context GLOBAL."
   (let ((x (specrepcheck x))
 	sign minus odds evens factored)
     (sign01 (cond (limitp (restorelim x))
-                  (*complexsign* 
-                   ;; No rectform in Complex mode. Rectform ask unnecessary
-                   ;; questions about complex expressions and can not handle
-                   ;; imaginary expressions completely. Thus $csign can not
-                   ;; handle something like (1+%i)*(1-%i) which is real. 
-                   ;; After improving rectform, we can change this. (12/2008)
-                   (when *debug-compar*
-                     (format t "~&$SIGN with ~A~%" x))
-                   x)
+		  (*complexsign*
+		   ;; No rectform in Complex mode. Rectform ask unnecessary
+		   ;; questions about complex expressions and can not handle
+		   ;; imaginary expressions completely. Thus $csign can not
+		   ;; handle something like (1+%i)*(1-%i) which is real.
+		   ;; After improving rectform, we can change this. (12/2008)
+		   (when *debug-compar*
+		     (format t "~&$SIGN with ~A~%" x))
+		   x)
 		  ((not (free x '$%i)) ($rectform x))
 		  (t x)))))
 
@@ -692,16 +686,16 @@ relational knowledge is contained in the default context GLOBAL."
 (defun sign-prep (x)
   (if limitp
       (destructuring-let (((rpart . ipart) (trisplit x)))
-	(cond ((and (equal (sratsimp ipart) 0)
-		    (free rpart '$infinity))
-	       (setq x (nmr (sratsimp rpart)))
-	       (if (free x 'prin-inf)
-		   x
-		   ($limit x 'prin-inf '$inf '$minus)))
-	      (t '$pnz)))	       ; Confess ignorance if COMPLEX.
+			 (cond ((and (equal (sratsimp ipart) 0)
+				     (free rpart '$infinity))
+				(setq x (nmr (sratsimp rpart)))
+				(if (free x 'prin-inf)
+				    x
+				    ($limit x 'prin-inf '$inf '$minus)))
+			       (t '$pnz)))	       ; Confess ignorance if COMPLEX.
       x))
 
-;; don't ask about internal variables created by gruntz 
+;; don't ask about internal variables created by gruntz
 (defun has-int-symbols (e)
   (cond ((and (symbolp e) (get e 'internal))
 	 t)
@@ -711,11 +705,11 @@ relational knowledge is contained in the default context GLOBAL."
 
 ;;; Do substitutions for special symbols.
 (defmfun nmr (a)
-  (if (not (free a '$zeroa)) (setq a ($limit a '$zeroa 0 '$plus)))
-  (if (not (free a '$zerob)) (setq a ($limit a '$zerob 0 '$minus)))
-  (if (not (free a 'z**)) (setq a ($limit a 'z** 0 '$plus)))
-  (if (not (free a '*z*)) (setq a ($limit a '*z* 0 '$plus)))
-  (if (not (free a 'epsilon)) (setq a ($limit a 'epsilon 0 '$plus)))
+  (unless (free a '$zeroa) (setq a ($limit a '$zeroa 0 '$plus)))
+  (unless (free a '$zerob) (setq a ($limit a '$zerob 0 '$minus)))
+  (unless (free a 'z**) (setq a ($limit a 'z** 0 '$plus)))
+  (unless (free a '*z*) (setq a ($limit a '*z* 0 '$plus)))
+  (unless (free a 'epsilon) (setq a ($limit a 'epsilon 0 '$plus)))
   a)  ;;; Give A back.
 
 ;;; Get the sign of EPSILON-like terms.  Could be made MUCH hairier.
@@ -788,7 +782,9 @@ relational knowledge is contained in the default context GLOBAL."
 	(t '$zero)))
 
 (defun asksign1 ($askexp)
-  (let ($radexpand) (sign1 $askexp))
+  (let ($radexpand)
+    (declare (special $radexpand))
+    (sign1 $askexp))
   (cond ((has-int-symbols $askexp)
 	 '$pnz)
 	((member sign '($pos $neg $zero) :test #'eq) sign)
@@ -882,57 +878,48 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun maxima-declared-arrayp (x)
   (and
-    (symbolp x)
-    (mget x 'array)
-    (get (mget x 'array) 'array)))
+   (symbolp x)
+   (mget x 'array)
+   (get (mget x 'array) 'array)))
 
 (defun maxima-undeclared-arrayp (x)
   (and
-    (symbolp x)
-    (mget x 'hashar)
-    (get (mget x 'hashar) 'array)))
+   (symbolp x)
+   (mget x 'hashar)
+   (get (mget x 'hashar) 'array)))
 
 (defun meqp (a b)
   ;; Check for some particular types before falling into the general case.
-  (cond
-    ((stringp a)
-     (and (stringp b) (equal a b)))
-    ((stringp b) nil)
-
-    ((arrayp a)
-     (and (arrayp b) (array-meqp a b)))
-    ((arrayp b) nil)
-
-    ((maxima-declared-arrayp a)
-     (and (maxima-declared-arrayp b) (maxima-declared-array-meqp a b)))
-    ((maxima-declared-arrayp b) nil)
-
-    ((maxima-undeclared-arrayp a)
-     (and (maxima-undeclared-arrayp b) (maxima-undeclared-array-meqp a b)))
-    ((maxima-undeclared-arrayp b) nil)
-
-    (t
-      (let ((z))
-        (setq a (specrepcheck a))
-        (setq b (specrepcheck b))
-        (cond ((or (like a b)) (not (member a indefinites)))
-
-          ((or (member a indefinites) (member b indefinites)
-               (member a infinities) (member b infinities)) nil)
-
-          ((and (symbolp a) (or (eq t a) (eq nil a) (get a 'sysconst))
-            (symbolp b) (or (eq t b) (eq nil b) (get b 'sysconst))) nil)
-
-          ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b))
-           (cond ((and (or (and (mbagp a) (mbagp b)) (and (mrelationp a) (mrelationp b)))
-                   (eq (mop a) (mop b)) (= (length (margs a)) (length (margs b))))
-              (setq z (list-meqp (margs a) (margs b)))
-              (if (or (eq z t) (eq z nil)) z `(($equal) ,a ,b)))
-             (t nil)))
-
-          ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
-          (($setp a) (set-meqp a b))
-          (t (meqp-by-csign (equal-facts-simp (sratsimp (sub a b))) a b)))))))
+  (cond ((stringp a)
+	 (and (stringp b) (equal a b)))
+	((stringp b) nil)
+	((arrayp a)
+	 (and (arrayp b) (array-meqp a b)))
+	((arrayp b) nil)
+	((maxima-declared-arrayp a)
+	 (and (maxima-declared-arrayp b) (maxima-declared-array-meqp a b)))
+	((maxima-declared-arrayp b) nil)
+	((maxima-undeclared-arrayp a)
+	 (and (maxima-undeclared-arrayp b) (maxima-undeclared-array-meqp a b)))
+	((maxima-undeclared-arrayp b) nil)
+	(t
+	 (let ((z))
+	   (setq a (specrepcheck a))
+	   (setq b (specrepcheck b))
+	   (cond ((or (like a b)) (not (member a indefinites)))
+		 ((or (member a indefinites) (member b indefinites)
+		      (member a infinities) (member b infinities)) nil)
+		 ((and (symbolp a) (or (eq t a) (eq nil a) (get a 'sysconst))
+		       (symbolp b) (or (eq t b) (eq nil b) (get b 'sysconst))) nil)
+		 ((or (mbagp a) (mrelationp a) (mbagp b) (mrelationp b))
+		  (cond ((and (or (and (mbagp a) (mbagp b)) (and (mrelationp a) (mrelationp b)))
+			      (eq (mop a) (mop b)) (= (length (margs a)) (length (margs b))))
+			 (setq z (list-meqp (margs a) (margs b)))
+			 (if (or (eq z t) (eq z nil)) z `(($equal) ,a ,b)))
+			(t nil)))
+		 ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
+		 (($setp a) (set-meqp a b))
+		 (t (meqp-by-csign (equal-facts-simp (sratsimp (sub a b))) a b)))))))
 
 ;; Two arrays are equal (according to MEQP)
 ;; if (1) they have the same dimensions,
@@ -940,23 +927,26 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun array-meqp (p q)
   (and
-    (equal (array-dimensions p) (array-dimensions q))
-    (progn
-      (dotimes (i (array-total-size p))
-        (let ((z (let ($ratprint) (meqp (row-major-aref p i) (row-major-aref q i)))))
-          (cond
-            ((eq z nil) (return-from array-meqp nil))
-            ((eq z t))
-            (t (return-from array-meqp `(($equal) ,p ,q))))))
-      t)))
+   (equal (array-dimensions p) (array-dimensions q))
+   (progn
+     (dotimes (i (array-total-size p))
+       (let ((z (let ($ratprint)
+		  (declare (special $ratprint))
+		  (meqp (row-major-aref p i) (row-major-aref q i)))))
+	 (cond ((eq z nil) (return-from array-meqp nil))
+	       ((eq z t))
+	       (t (return-from array-meqp `(($equal) ,p ,q))))))
+     t)))
 
 (defun maxima-declared-array-meqp (p q)
   (array-meqp (get (mget p 'array) 'array) (get (mget q 'array) 'array)))
 
 (defun maxima-undeclared-array-meqp (p q)
   (and
-    (alike1 (mfuncall '$arrayinfo p) (mfuncall '$arrayinfo q))
-    (let ($ratprint) (meqp ($listarray p) ($listarray q)))))
+   (alike1 (mfuncall '$arrayinfo p) (mfuncall '$arrayinfo q))
+   (let ($ratprint)
+     (declare (special $ratprint))
+     (meqp ($listarray p) ($listarray q)))))
 
 (defun list-meqp (p q)
   (let ((z))
@@ -977,20 +967,15 @@ relational knowledge is contained in the default context GLOBAL."
 	  (t nil))))
 
 (defun set-meqp (a b)
-  (let ((aa) (bb))
-    (setq aa (equal-facts-simp a))
-    (setq bb (equal-facts-simp b))
-
+  (let ((aa (equal-facts-simp a))
+	(bb (equal-facts-simp b)))
     (cond ((or (not ($setp bb))
 	       (and ($emptyp aa) (not ($emptyp bb)))
 	       (and ($emptyp bb) (not ($emptyp aa))))
 	   nil)
-
 	  ((and (= (length aa) (length bb))
 		(every #'(lambda (p q) (eq t (meqp p q))) (margs aa) (margs bb))) t)
-
 	  ((set-not-eqp (margs aa) (margs bb)) nil)
-
 	  (t `(($equal ,a ,b))))))
 
 (defun set-not-eqp (a b)
@@ -1018,7 +1003,7 @@ relational knowledge is contained in the default context GLOBAL."
     (setq a (sub a b))
     (let ((sgn (csign a)))
       (cond ((member sgn '($pos $zero $pz) :test #'eq) t)
-	    ((eq sgn t) nil) ;; csign thinks a - b isn't real 
+	    ((eq sgn t) nil) ;; csign thinks a - b isn't real
 	    ((eq sgn '$neg) nil)
 	    (t `((mgeqp) ,a 0))))))
 
@@ -1121,10 +1106,10 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmfun sign (x)
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
-        ((and *complexsign* (atom x) (eq x '$%i))
-         ;; In Complex Mode the sign of %i is $imaginary.
-         (when *debug-compar* (format t "~& in sign detected $%i~~%"))
-         (setq sign '$imaginary))
+	((and *complexsign* (atom x) (eq x '$%i))
+	 ;; In Complex Mode the sign of %i is $imaginary.
+	 (when *debug-compar* (format t "~& in sign detected $%i~~%"))
+	 (setq sign '$imaginary))
 	((atom x) (if (eq x '$%i) (imag-err x)) (sign-any x))
 	((eq (caar x) 'mtimes) (sign-mtimes x))
 	((eq (caar x) 'mplus) (sign-mplus x))
@@ -1150,50 +1135,48 @@ relational knowledge is contained in the default context GLOBAL."
   (and (symbolp sym)
        (kindp sym '$complex)
        (not (or (kindp sym '$real)
-                (kindp sym '$rational)
-                (kindp sym '$integer)))))
+		(kindp sym '$rational)
+		(kindp sym '$integer)))))
 
 (defun sign-any (x)
-  (cond
-    ((and *complexsign*
-          (or (and (atom x) (declared-complex-p x))
-              (and (not (atom x)) (declared-complex-p (caar x)))))
-     ;; In Complex Mode look for symbols declared to be complex.
-     (when *debug-compar*
-       (format t "~&SIGN-ANY with ~A" x)
-       (format t "~&   Symbol declared to be complex found.~%"))
-     (cond ((and (atom x) ($featurep x '$imaginary))
-            (setq sign '$imaginary))
-           (t (setq sign '$complex))))
-    (t
-     (dcompare x 0)
-     (if (and $assume_pos
-              (member sign '($pnz $pz $pn) :test #'eq)
-              (if $assume_pos_pred 
-                  (let ((*x* x)) (is '(($assume_pos_pred) *x*)))
-                  (mapatom x)))
-         (setq sign '$pos))
-     (setq minus nil evens nil
-           odds (if (not (member sign '($pos $neg $zero) :test #'eq)) 
-                    (ncons x))))))
+  (cond ((and *complexsign*
+	      (or (and (atom x) (declared-complex-p x))
+		  (and (not (atom x)) (declared-complex-p (caar x)))))
+	 ;; In Complex Mode look for symbols declared to be complex.
+	 (when *debug-compar*
+	   (format t "~&SIGN-ANY with ~A~&   Symbol declared to be complex found.~%" x))
+	 (if (and (atom x) ($featurep x '$imaginary))
+	     (setq sign '$imaginary)
+	     (setq sign '$complex)))
+	(t
+	 (dcompare x 0)
+	 (if (and $assume_pos
+		  (member sign '($pnz $pz $pn) :test #'eq)
+		  (if $assume_pos_pred
+		      (let ((*x* x))
+			(declare (special *x*))
+			(is '(($assume_pos_pred) *x*)))
+		      (mapatom x)))
+	     (setq sign '$pos))
+	 (setq minus nil evens nil
+	       odds (if (not (member sign '($pos $neg $zero) :test #'eq))
+			(ncons x))))))
 
 (defun sign-mtimes (x)
   (setq x (cdr x))
   (do ((s '$pos) (m) (o) (e)) ((null x) (setq sign s minus m odds o evens e))
     (sign1 (car x))
     (cond ((eq sign '$zero) (return t))
-
-          ((and *complexsign* (eq sign '$complex))
-           ;; Found a complex factor. Return immediatly. The sign is $complex.
-           (return t))
-          ((and *complexsign* (eq sign '$imaginary))
-           ;; Found an imaginary factor. Look if we have already one.
-           (cond ((eq s '$imaginary)
-                  ;; imaginary*imaginary is real. But remember the sign in m.
-                  (setq s (if m '$pos '$neg) m (not m)))
-                 (t (setq s sign))))
-          ((and *complexsign* (eq s '$imaginary))) ; continue the loop
-
+	  ((and *complexsign* (eq sign '$complex))
+	   ;; Found a complex factor. Return immediatly. The sign is $complex.
+	   (return t))
+	  ((and *complexsign* (eq sign '$imaginary))
+	   ;; Found an imaginary factor. Look if we have already one.
+	   (cond ((eq s '$imaginary)
+		  ;; imaginary*imaginary is real. But remember the sign in m.
+		  (setq s (if m '$pos '$neg) m (not m)))
+		 (t (setq s sign))))
+	  ((and *complexsign* (eq s '$imaginary))) ; continue the loop
 	  ((eq sign '$pos))
 	  ((eq sign '$neg) (setq s (flip s) m (not m)))
 	  ((prog2 (setq m (not (eq m minus)) o (nconc odds o) e (nconc evens e))
@@ -1276,19 +1259,19 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun signsum (x)
   (do ((l (cdr x) (cdr l)) (s '$zero))
-      ((null l) (setq sign s minus nil odds (list x) evens nil) 
-                (cond (*complexsign*
-                       ;; Because we have continued the loop in Complex Mode
-                       ;; we have to look for the sign '$pnz and return nil.
-                       (if (eq s '$pnz) nil t))
-                      (t t))) ; in Real Mode return T
+      ((null l) (setq sign s minus nil odds (list x) evens nil)
+       (cond (*complexsign*
+	      ;; Because we have continued the loop in Complex Mode
+	      ;; we have to look for the sign '$pnz and return nil.
+	      (if (eq s '$pnz) nil t))
+	     (t t))) ; in Real Mode return T
     (sign (car l))
     (cond ((and *complexsign*
-                (or (eq sign '$complex) (eq sign '$imaginary)))
-           ;; Found a complex or imaginary expression. The sign is $complex.
-           (setq sign '$complex odds nil evens nil minus nil)
-           (return t))
-          ((or (and (eq sign '$zero)
+		(or (eq sign '$complex) (eq sign '$imaginary)))
+	   ;; Found a complex or imaginary expression. The sign is $complex.
+	   (setq sign '$complex odds nil evens nil minus nil)
+	   (return t))
+	  ((or (and (eq sign '$zero)
 		    (setq x (sub x (car l))))
 	       (and (eq s sign) (not (eq s '$pn))) ; $PN + $PN = $PNZ
 	       (and (eq s '$pos) (eq sign '$pz))
@@ -1297,69 +1280,68 @@ relational knowledge is contained in the default context GLOBAL."
 	       (and (member sign '($nz $neg) :test #'eq) (member s '($zero $nz) :test #'eq))
 	       (and (eq sign '$pn) (eq s '$zero)))
 	   (setq s sign))
-          (t
-            (cond
-              (*complexsign*
-               ;; In Complex Mode we have to continue the loop to look further
-               ;; for a complex or imaginay expression.
-               (setq s '$pnz))
-              (t
-               ;; In Real mode the loop stops when the sign is 'pnz.
-               (setq sign '$pnz odds (list x) evens nil minus nil)
-               (return nil)))))))
+	  (t
+	   (cond (*complexsign*
+		  ;; In Complex Mode we have to continue the loop to look further
+		  ;; for a complex or imaginay expression.
+		  (setq s '$pnz))
+		 (t
+		  ;; In Real mode the loop stops when the sign is 'pnz.
+		  (setq sign '$pnz odds (list x) evens nil minus nil)
+		  (return nil)))))))
 
 (defun signfactor (x)
   (let (y (factored t))
     (setq y (factor-if-small x))
     (cond ((or (mplusp y) (> (conssize y) 50.))
-	   (prog2
-	       (setq sign '$pnz)
-	       nil))
+	   (setq sign '$pnz)
+	   nil)
 	  (t (sign y)))))
 
 (defun factor-if-small (x)
   (if (< (conssize x) 51.)
       (let ($ratprint)
+	(declare (special $ratprint))
 	(factor x)) x))
 
-;(defmvar complexsign nil)
+					;(defmvar complexsign nil)
 
 (defun sign-mexpt (x)
   (let* ((expt (caddr x)) (base1 (cadr x))
 	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
 	 (evod (evod expt)))
     (cond ((and *complexsign* (or (eq sign-expt '$complex)
-                                  (eq sign-expt '$imaginary)
-                                  (eq sign-base '$complex)))
-           ;; Base is complex or exponent is complex or imaginary.
-           ;; The sign is $complex.
-           (when *debug-compar* 
-             (format t "~&in SIGN-MEXPT for ~A, sign is complex.~%" x))
-           (setq sign '$complex))
+				  (eq sign-expt '$imaginary)
+				  (eq sign-base '$complex)))
+	   ;; Base is complex or exponent is complex or imaginary.
+	   ;; The sign is $complex.
+	   (when *debug-compar*
+	     (format t "~&in SIGN-MEXPT for ~A, sign is complex.~%" x))
+	   (setq sign '$complex))
 
-          ((and *complexsign* 
-                (eq sign-base '$neg)
-                (eq (evod ($expand (mul 2 expt))) '$odd))
-           ;; Base is negative and the double of the exponent is odd.
-           ;; Result is imaginary.
-           (when *debug-compar* 
-             (format t "~&in SIGN-MEXPT for ~A, sign is $imaginary.~%" x))
-           (setq sign '$imaginary))
+	  ((and *complexsign*
+		(eq sign-base '$neg)
+		(eq (evod ($expand (mul 2 expt))) '$odd))
+	   ;; Base is negative and the double of the exponent is odd.
+	   ;; Result is imaginary.
+	   (when *debug-compar*
+	     (format t "~&in SIGN-MEXPT for ~A, sign is $imaginary.~%" x))
+	   (setq sign '$imaginary))
 
-          ((and *complexsign*
-                (eq sign-base '$imaginary))
-           ;; An imaginary base. Look for even or odd exponent.
-           (when *debug-compar* 
-             (format t "~&in SIGN-MEXPT for ~A, base is $imaginary.~%" x))
-           (cond
-             ((and (integerp expt) (eq evod '$even))
-              (setq sign (if (eq (mod expt 4) 0) '$pz '$nz)))
-             ((and (integerp expt) (eq evod '$odd))
-              (setq sign '$imaginary 
-                    minus (if (eq (mod (- expt 1) 4) 0) t nil)))
-             (t (setq sign '$complex))))
+	  ((and *complexsign*
+		(eq sign-base '$imaginary))
+	   ;; An imaginary base. Look for even or odd exponent.
+	   (when *debug-compar*
+	     (format t "~&in SIGN-MEXPT for ~A, base is $imaginary.~%" x))
+	   (cond
+	     ((and (integerp expt) (eq evod '$even))
+	      (setq sign (if (eq (mod expt 4) 0) '$pz '$nz)))
+	     ((and (integerp expt) (eq evod '$odd))
+	      (setq sign '$imaginary
+		    minus (if (eq (mod (- expt 1) 4) 0) t nil)))
+	     (t (setq sign '$complex))))
 
-          ((and (eq sign-base '$zero)
+	  ((and (eq sign-base '$zero)
 		(member sign-expt '($zero $neg) :test #'eq))
 	   (dbzs-err x))
 	  ((eq sign-expt '$zero) (setq sign '$pos) (tdzero (sub x 1)))
@@ -1396,16 +1378,16 @@ relational knowledge is contained in the default context GLOBAL."
 			   (setq evens (nconc odds evens)
 				 odds nil minus nil))
 			  ((mevenp (caddr expt))
-                           (cond ((and *complexsign* (eq sign-base '$neg))
-                                  ;; In Complex Mode the sign is $complex.
-                                  (setq sign-base (setq sign-expt '$complex)))
-                                 (complexsign
-                                  ;; The only place the variable complexsign
-                                  ;; is used. Unfortunately, one routine in 
-                                  ;; topoly.lisp in /share/contrib depends on 
-                                  ;; this piece of code. Perhaps we can remove
-                                  ;; the dependency. (12/2008)
-                                  (setq sign-base (setq sign-expt '$pnz)))
+			   (cond ((and *complexsign* (eq sign-base '$neg))
+				  ;; In Complex Mode the sign is $complex.
+				  (setq sign-base (setq sign-expt '$complex)))
+				 (complexsign
+				  ;; The only place the variable complexsign
+				  ;; is used. Unfortunately, one routine in
+				  ;; topoly.lisp in /share/contrib depends on
+				  ;; this piece of code. Perhaps we can remove
+				  ;; the dependency. (12/2008)
+				  (setq sign-base (setq sign-expt '$pnz)))
 				 ((eq sign-base '$neg) (imag-err x))
 				 ((eq sign-base '$pn)
 				  (setq sign-base '$pos)
@@ -1441,21 +1423,22 @@ relational knowledge is contained in the default context GLOBAL."
 ;;; Used to avoid writing min and max code separately: just write the min code
 ;;; in such a way that its dual works for max
 (defmacro minmaxforms (op &rest body)
-  `(cond ((eq ,op '$min) ,@body)
-	 (t ,@(sublis '(($neg . $pos)
-			($nz . $pz)
-			($pz . $nz)
-			($pos . $neg)
-			;;($zero . $zero)
-			;;($pn . $pn)
-			;;($pnz . $pnz)
-			;;
-			($max . $min)
-			($min . $max)
-			;;
-			($inf . $minf)
-			($minf . $inf))
-		      body))))
+  `(if (eq ,op '$min)
+       ,@body
+       ,@(sublis '(($neg . $pos)
+		   ($nz . $pz)
+		   ($pz . $nz)
+		   ($pos . $neg)
+		   ;;($zero . $zero)
+		   ;;($pn . $pn)
+		   ;;($pnz . $pnz)
+		   ;;
+		   ($max . $min)
+		   ($min . $max)
+		   ;;
+		   ($inf . $minf)
+		   ($minf . $inf))
+		 body)))
 
 (defun sign-minmax (op args)
   (do ((sgn (minmaxforms op '$pos)	;identity element for min
@@ -1463,8 +1446,8 @@ relational knowledge is contained in the default context GLOBAL."
        (end (minmaxforms op '$neg))
        (l args (cdr l)))
       ((or (null l) (eq sgn end))
-       (setq minus nil 
-	     odds (if (not (member sgn '($pos $neg $zero) :test #'eq)) 
+       (setq minus nil
+	     odds (if (not (member sgn '($pos $neg $zero) :test #'eq))
 		      (ncons (cons (list op) args)))
 	     evens nil
 	     sign sgn))))
@@ -1486,33 +1469,26 @@ relational knowledge is contained in the default context GLOBAL."
 	 ((eq s2 '$zero) (if (eq s2 '$pz) '$zero '$nz))
 	 (t '$pnz))))
 
-(setq $useminmax t)
-
 (defun minmaxp (ex)
   (cond ((atom ex) nil)
-	((member (caar ex) '($min $max)) (caar ex) :test #'eq)
+	((member (caar ex) '($min $max) :test #'eq) (caar ex))
 	(t nil)))
-
-(setq tryhard t)
 
 (defun signdiff-minmax (l r)
   ;; sign of l-r; nil if unknown (not PNZ)
-  (let ((lm (minmaxp l))
-	(rm (minmaxp r))
-	(sgn nil)			;distinguish between < and <=
-	ll rr)				;argument lists of min/max
-    (if lm (setq ll (cdr l)))
-    (if rm (setq rr (cdr r)))
+  (let* ((lm (minmaxp l))
+	 (rm (minmaxp r))
+	 (ll (if lm (cdr l)))
+	 (rr (if rm (cdr r)))) ;distinguish between < and <= argument lists of min/max
     (minmaxforms
      (or rm lm)
      (cond ((eq lm rm)			; min(a,...) - min(b,...)
-	    (multiple-value-bind (both onlyl onlyr)
-		(intersect-info ll rr)
-	      (cond
-	       ((null onlyl) '$pz)	; min(a,b) - min(a,b,c)
-	       ((null onlyr) '$nz)	; min(a,b,c) - min(a,b)
-	       ;; TBD: add processing for full onlyl/onlyr case
-	       (t nil))))
+	    (multiple-value-bind (both onlyl onlyr) (intersect-info ll rr)
+	      (declare (ignore both))
+	      (cond ((null onlyl) '$pz)	; min(a,b) - min(a,b,c)
+		    ((null onlyr) '$nz)	; min(a,b,c) - min(a,b)
+		    ;; TBD: add processing for full onlyl/onlyr case
+		    (t nil))))
 	   ;; TBD: memalike and set-disjointp are crude approx.
 	   ((null lm) (if (memalike l rr) '$pz)) ; a - min(a,b)
 	   ((null rm) (if (memalike r ll) '$nz)) ; min(a,b) - a
@@ -1524,22 +1500,25 @@ relational knowledge is contained in the default context GLOBAL."
 	(onlya nil)
 	(onlyb nil))
     (do-merge-asym
-     a b
-     #'like
-     #'$orderlessp
-     #'(lambda (x) (push x both))
-     #'(lambda (x) (push x onlya))
-     #'(lambda (x) (push x onlyb)))
+	a b
+	#'like
+	#'$orderlessp
+	#'(lambda (x) (push x both))
+	#'(lambda (x) (push x onlya))
+	#'(lambda (x) (push x onlyb)))
     (values
-     (nreverse both)
-     (nreverse onlya)
-     (nreverse onlyb))))
+     (reverse both)
+     (reverse onlya)
+     (reverse onlyb))))
 
 ;;; end compare min/max
 
 (defun sign-posfun (xx)
   (declare (ignore xx))
-  (setq sign '$pos minus nil odds nil evens nil))
+  (setq sign '$pos
+	minus nil
+	odds nil
+	evens nil))
 
 (defun sign-oddinc (x)
   (sign (cadr x)))
@@ -1634,21 +1613,17 @@ relational knowledge is contained in the default context GLOBAL."
 	  ((specrepp e) (nonintegerp (specdisrep e)))
 	  ((and (eq (caar e) 'mplus) (ratnump (cadr e)) (intp (cdr e))) t)
 	  ((and (integerp (setq num ($num e)))
-		(prog2 (setq e ($denom e))
+		(prog2
+		    (setq e ($denom e))
 		    (or (eq (csign (sub e num)) '$pos)
 			(eq (csign (add2 e num)) '$neg))))
 	   t))))
 
 (defun intp (l)
-  (setq l (cdr l))
-  (do () ((null l) t)
-    (if (maxima-integerp (car l))
-	(setq l (cdr l))
-	(return nil))))
+  (every #'maxima-integerp (cdr l)))
 
 (defun intp-mexpt (e)
   (and (integerp (caddr e)) (not (minusp (caddr e))) (maxima-integerp (cadr e))))
-
 
 (defmfun mevenp (e)
   (cond ((integerp e) (not (oddp e)))
@@ -1693,7 +1668,6 @@ relational knowledge is contained in the default context GLOBAL."
   (when (and (integerp (caddr x)) (not (minusp (caddr x))))
     (evod (cadr x))))
 
-
 (declare-top (special mgqp mlqp))
 
 (defmode cl ()
@@ -1715,7 +1689,6 @@ relational knowledge is contained in the default context GLOBAL."
     (cond ((or (null x) (null y)) '$pnz)
 	  ((progn (clear) (deq x y) (sel y +labs)))
 	  (t '$pnz))))
-
 
 (defun deq (x y)
   (cond ((dmark x '$zero) nil)
@@ -1815,7 +1788,7 @@ relational knowledge is contained in the default context GLOBAL."
 			(mtell (intl:gettext "DMARK: marking ~M ~M") (if (atom x) x (car x)) m))
 	      nil))
 	(t
-	 (setq +labs (cons x +labs))
+	 (push x +labs)
 	 (push+sto (sel x +labs) m)
 	 nil)))
 
@@ -1858,28 +1831,29 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun tdpos (x)
   (daddgr t x)
-  (setq locals (cons (cons x '$pos) locals)))
+  (push (cons x '$pos) locals))
 
 (defun tdneg (x)
   (daddgr t (neg x))
-  (setq locals (cons (cons x '$neg) locals)))
+  (push (cons x '$neg) locals))
 
 (defun tdzero (x)
   (daddeq t x)
-  (setq locals (cons (cons x '$zero) locals)))
+  (push (cons x '$zero) locals))
 
 (defun tdpn (x)
   (daddnq t x)
-  (setq locals (cons (cons x '$pn) locals)))
+  (push (cons x '$pn) locals))
 
 (defun tdpz (x)
   (daddgq t x)
-  (setq locals (cons (cons x '$pz) locals)))
+  (push (cons x '$pz) locals))
 
 (defun compsplt-eq (x)
   (compsplt x)
-  (if (equal lhs 0)
-      (setq lhs rhs rhs 0))
+  (when (equal lhs 0)
+    (setq lhs rhs
+	  rhs 0))
   (if (and (equal rhs 0)
 	   (or (mexptp lhs)
 	       (and (not (atom lhs))
@@ -1909,11 +1883,15 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defmfun rgrp (x y)
   (cond ((or ($bfloatp x) ($bfloatp y))
-	 (setq x (let (($float2bf t)) (cadr ($bfloat (sub x y)))) y 0))
+	 (setq x (let (($float2bf t))
+		   (declare (special $float2bf))
+		   (cadr ($bfloat (sub x y)))) y 0))
 	((numberp x)
 	 (cond ((numberp y))
-	       (t (setq x (* x (caddr y)) y (cadr y)))))
-	((numberp y) (setq y (* (caddr x) y) x (cadr x)))
+	       (t (setq x (* x (caddr y))
+			y (cadr y)))))
+	((numberp y)
+	 (setq y (* (caddr x) y) x (cadr x)))
 	(t (let ((dummy x))
 	     (setq x (* (cadr x) (caddr y)))
 	     (setq y (* (caddr dummy) (cadr y))))))
@@ -1946,13 +1924,13 @@ relational knowledge is contained in the default context GLOBAL."
     (cond ((truep (list 'kind var prop)) t)
 	  ((or (falsep (list 'kind var prop))
 	       (and (setq prop2 (assoc prop '(($integer . $noninteger)
-					     ($noninteger . $integer)
-					     ($increasing . $decreasing)
-					     ($decreasing . $increasing)
-					     ($symmetric . $antisymmetric)
-					     ($antisymmetric . $symmetric)
-					     ($oddfun . $evenfun)
-					     ($evenfun . $oddfun)) :test #'eq))
+					      ($noninteger . $integer)
+					      ($increasing . $decreasing)
+					      ($decreasing . $increasing)
+					      ($symmetric . $antisymmetric)
+					      ($antisymmetric . $symmetric)
+					      ($oddfun . $evenfun)
+					      ($evenfun . $oddfun)) :test #'eq))
 		    (truep (list 'kind var (cdr prop2)))))
 	   (merror (intl:gettext "declare: inconsistent declaration ~:M") `(($declare) ,var ,prop)))
 	  (t (mkind var prop) t))))
@@ -2038,6 +2016,7 @@ relational knowledge is contained in the default context GLOBAL."
 
 (defun symbols (x)
   (let (($listconstvars %initiallearnflag))
+    (declare (special $listconstvars))
     (cdr ($listofvars x))))
 
 ;; %initiallearnflag is only necessary so that %PI, %E, etc. can be LEARNed.
@@ -2048,10 +2027,7 @@ relational knowledge is contained in the default context GLOBAL."
     (learn `((mequal) ,c ,(mget c '$numer)) t))
   (setq %initiallearnflag nil))
 
-(eval-when
-    #+gcl (load eval)
-    #-gcl (:load-toplevel :execute)
-
+(eval-when (:load-toplevel :execute)
   (mapc #'true*
 	'((par ($even $odd) $integer)
 
