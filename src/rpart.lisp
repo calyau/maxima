@@ -226,6 +226,7 @@
 (defun risplit-noun (l)
   (cons (simplify (list '(%realpart) l)) (simplify (list '(%imagpart) l))))
 
+
 (defun absarg1 (arg)
   (let ((arg1 arg) ($keepfloat t))
     (cond ((and (or (free arg '$%i)
@@ -264,6 +265,9 @@
 	   (let ((ris (risplit (cadr l))))
 	     (cons (simplify (list* (ncons (caar l)) (car ris) (cddr l)))
 		   (simplify (list* (ncons (caar l)) (cdr ris) (cddr l))))))
+          ((eq (caar l) '$conjugate)
+           (cons (simplify (list '(%realpart) (cadr l)))
+                 (mul -1 (simplify (list '(%imagpart) (cadr l))))))
 	  ((let ((ass (assoc (caar l)
 			     '((%sin %cosh %cos . %sinh)
 			       (%cos %cosh %sin . %sinh)
@@ -356,7 +360,9 @@
 	   (risplit-noun l))
 	  ((and (eq (caar l) '%product) (not (free (cadr l) '$%i)))
 	   (risplit-noun l))
-	  (t (cons l 0)))))
+          (t
+           (cons (list '(%realpart) l)
+                 (list '(%imagpart) l))))))
 
 (defun coversinemyfoot (l)
   (prog (recip)
