@@ -2,6 +2,7 @@ binary-ecl/maxima : maxima-package.lisp
 binary-ecl/maxima : ecl-port.lisp
 binary-ecl/maxima : autoconf-variables.lisp
 binary-ecl/maxima : nregex.lisp
+binary-ecl/maxima : intl.lisp
 binary-ecl/maxima : cl-info.lisp
 binary-ecl/maxima : sloop.lisp
 binary-ecl/maxima : lmdcls.lisp
@@ -228,7 +229,6 @@ binary-ecl/maxima : ezgcd.lisp
 binary-ecl/maxima : option.lisp
 binary-ecl/maxima : macdes.lisp
 binary-ecl/maxima : inmis.lisp
-binary-ecl/maxima : intl.lisp
 binary-ecl/maxima : db.lisp
 binary-ecl/maxima : compar.lisp
 binary-ecl/maxima : askp.lisp

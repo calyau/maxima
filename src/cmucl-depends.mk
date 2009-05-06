@@ -1,6 +1,7 @@
 binary-cmucl/maxima.core : maxima-package.lisp
 binary-cmucl/maxima.core : autoconf-variables.lisp
 binary-cmucl/maxima.core : nregex.lisp
+binary-cmucl/maxima.core : intl.lisp
 binary-cmucl/maxima.core : cl-info.lisp
 binary-cmucl/maxima.core : sloop.lisp
 binary-cmucl/maxima.core : lmdcls.lisp
@@ -227,7 +228,6 @@ binary-cmucl/maxima.core : ezgcd.lisp
 binary-cmucl/maxima.core : option.lisp
 binary-cmucl/maxima.core : macdes.lisp
 binary-cmucl/maxima.core : inmis.lisp
-binary-cmucl/maxima.core : intl.lisp
 binary-cmucl/maxima.core : db.lisp
 binary-cmucl/maxima.core : compar.lisp
 binary-cmucl/maxima.core : askp.lisp

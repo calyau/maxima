@@ -1,6 +1,7 @@
 binary-clisp/maxima.mem : maxima-package.lisp
 binary-clisp/maxima.mem : autoconf-variables.lisp
 binary-clisp/maxima.mem : nregex.lisp
+binary-clisp/maxima.mem : intl.lisp
 binary-clisp/maxima.mem : cl-info.lisp
 binary-clisp/maxima.mem : sloop.lisp
 binary-clisp/maxima.mem : lmdcls.lisp
@@ -227,7 +228,6 @@ binary-clisp/maxima.mem : ezgcd.lisp
 binary-clisp/maxima.mem : option.lisp
 binary-clisp/maxima.mem : macdes.lisp
 binary-clisp/maxima.mem : inmis.lisp
-binary-clisp/maxima.mem : intl.lisp
 binary-clisp/maxima.mem : db.lisp
 binary-clisp/maxima.mem : compar.lisp
 binary-clisp/maxima.mem : askp.lisp

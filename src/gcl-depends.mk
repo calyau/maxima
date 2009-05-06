@@ -6,6 +6,7 @@ binary-gcl/maxima : nregex.lisp
 binary-gcl/maxima : sys-proclaim.lisp
 binary-gcl/maxima : autoconf-variables.lisp
 binary-gcl/maxima : nregex.lisp
+binary-gcl/maxima : intl.lisp
 binary-gcl/maxima : cl-info.lisp
 binary-gcl/maxima : sloop.lisp
 binary-gcl/maxima : lmdcls.lisp
@@ -233,7 +234,6 @@ binary-gcl/maxima : ezgcd.lisp
 binary-gcl/maxima : option.lisp
 binary-gcl/maxima : macdes.lisp
 binary-gcl/maxima : inmis.lisp
-binary-gcl/maxima : intl.lisp
 binary-gcl/maxima : db.lisp
 binary-gcl/maxima : compar.lisp
 binary-gcl/maxima : askp.lisp
