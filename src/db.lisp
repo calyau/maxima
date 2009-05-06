@@ -25,8 +25,6 @@
 (defmvar context 'global)
 (defmvar contexts nil)
 (defmvar current 'global)
-(defmvar +labs nil)
-(defmvar -labs nil)
 (defmvar dbtrace nil)
 (defmvar dobjects nil)
 
@@ -35,10 +33,8 @@
 
 (defmvar *nobjects* nil)
 (defmvar *dbcheck* nil)
-(defmvar *marks* 0)
 (defmvar +l)
 (defmvar -l)
-(defmvar ulabs nil)
 
 (defmvar *conindex* 0)
 (defmvar *connumber* 50)
@@ -51,6 +47,7 @@
 ;; A cell with the high bit turned on.
 (defmvar *lab-high-lab* (list +lab-high-bit+))
 
+;; Variables that are set by (clear)
 (defvar +s)
 (defvar +sm)
 (defvar +sl)
@@ -61,8 +58,14 @@
 (defvar *lprs*)
 (defvar *labindex*)
 (defvar *lprindex*)
-(defvar *world*)
-(defvar *db*)
+(defvar *marks* 0)
+(defvar +labs nil)
+(defvar -labs nil)
+(defvar ulabs nil)
+
+
+(defmvar *world*)
+(defmvar *db*)
 
 ;; Macro for indirecting through the contents of a cell.
 

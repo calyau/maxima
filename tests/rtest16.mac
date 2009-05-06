@@ -1,6 +1,10 @@
 kill (all);
 done;
 
+/* make sure things work after a reset().  ID: 1986726 and ID: 2787047 */
+(reset(),0);
+0;
+
 /* Tests from Bug 1036900 */
 /* These bugs were fixed in limit.lisp rev 1.7, 2004/10/04 */
 limit(7^n/8^n,n,inf);

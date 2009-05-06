@@ -297,6 +297,7 @@
   `(if specp (setq filepos (filepos file-obj))))
 
 (defmspec $kill (form)
+  (clear)	;; get assume db into consistent state
   (mapc #'kill1 (cdr form))
   '$done)
 

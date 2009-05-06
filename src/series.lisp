@@ -49,7 +49,7 @@
 	   ($cauchysum t)
 	   ($ratsimpexpons t) $ratexpand
 	   *infsumsimp *ratexp *trigred *noexpand)
-    (mkind *index '$integer)
+    (meval `(($declare) ,*index $integer))
     (setq x (catch 'psex (sp2expand (seriespass1 x))))
     (cond ((and x (atom x)) x)
 	  ((and x (not (eq (car x) 'err))) x)
