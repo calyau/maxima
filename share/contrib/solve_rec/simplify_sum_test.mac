@@ -390,3 +390,10 @@ test_sum(
   false,
   [ratsimp]
 );
+
+test_sum(
+  sum(k*(k/2)!,k,1,n),
+  [],
+  false,
+  []
+);

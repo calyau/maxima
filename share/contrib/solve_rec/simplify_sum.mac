@@ -162,6 +162,25 @@ simplify_sum(expr) :=
             sm1 : subst(hi1=hi, sm1))
           else sm1 : expr)) = [] then sm1 : expr,
 
+
+    /*** Try the extended Gosper algorithm ******************************/
+    if errcatch(
+      if use_gosper and not(atom(sm1)) and not freeof_sum(sm1) then block(
+        [hi1 : ?gensym(), lo1 : ?gensym()],
+        ss_print_message(1, "Trying with extended Gosper ..."),
+        sm1 : block([ttyoff:true], extended_nusum(summand, var, lo1, hi1)),
+        if freeof_sum(sm1) then (
+          ss_print_message(1, "Extended Gosper returns:", sm1),
+          if lo=minf or lo=-inf then
+            sm1 : limit(sm1, lo1, lo)
+          else
+            sm1 : subst(lo1=lo, sm1),
+          if hi=inf then
+            sm1 : limit(sm1, hi1, hi)
+          else
+            sm1 : subst(hi1=hi, sm1))
+          else sm1 : expr)) = [] then sm1 : expr,
+
     /*** Try converting the sum to finite sum of psi functions **********/
     if use_ratfun and not(atom(sm1)) and not( freeof_sum(sm1) ) and ?ratp(summand, var)
     then block(
@@ -239,6 +258,45 @@ freeof_integrate(expr) :=
   else if part(expr, 0)=nounify(integrate) then false
   else if expr=[] then true
   else xreduce("and", map(freeof_sum, args(expr)))$
+
+/*******************
+ *
+ * The extended Gosper algorithm
+ *
+ *******************/
+
+ss_linearp(expr, var) := block(
+  [a,b],
+  [a,b]: bothcoeff(expand(expr), var),
+  if freeof(var, a) and freeof(var, b) then [a,b]
+  else [])$
+
+find_coeffs(expr, var) := block([coeffs],
+  coeffs: ss_linearp(expr, var),
+  if coeffs=[] then (
+    if member(part(expr, 0), ["+", "-", "*", "/", gamma, "!", binomial])
+      then apply(append, map(lambda([e], find_coeffs(e, var)), args(expr)))
+    else if part(expr, 0)="^" and freeof(var, part(expr, 2))
+      then find_coeffs(part(expr, 1), var)
+    else if part(expr, 0)="^" and freeof(var, part(expr, 1))
+      then find_coeffs(part(expr, 2), var)
+    else
+      error())
+  else
+  [coeffs[1]])$
+
+find_mfold(expr, var) := block(
+  [coeffs: find_coeffs(expr, var)],
+  coeffs: map(denom, coeffs),
+  xreduce(lambda([a,b], a*b/gcd(a,b)), coeffs))$
+
+extended_nusum(expr, var, lo, hi) := block(
+  [m: find_mfold(expr, var), exprm, tk, sk],
+  exprm: subst(var=m*var, expr),
+  tk: nusum(exprm, var, 1, var),
+  if not freeof_sum(tk) then error(),
+  sk: subst(var=var/m, tk),
+  apply('sum, [sk, var, hi-m+1, hi]) - apply('sum, [sk, var, lo-m, lo-1]))$
 
 /*******************
  *
