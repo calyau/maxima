@@ -119,11 +119,12 @@
       $grindswitch nil $algepsilon 100000000 $algdelta 1e-5)
 
 (defmvar $listarith t)
+(defmvar $logabs nil)
 
 (setq $listarith t wflag nil $lognumer nil expandp nil $domain '$real
       $m1pbranch nil $%e_to_numlog nil $%emode t timesinp nil
       $true t $false nil $on t $off nil %e-val (mget '$%e '$numer)
-      %pi-val (mget '$%pi '$numer) $logabs nil $lognegint nil
+      %pi-val (mget '$%pi '$numer) $lognegint nil
       derivflag nil $ratsimpexpons nil exptrlsw nil $logexpand t
       expandflag nil $radexpand t *zexptsimp? nil $subnumsimp nil
       rischpf nil $limitdomain '$complex $logsimp t
