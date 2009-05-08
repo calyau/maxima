@@ -3213,7 +3213,7 @@ Draws points in 2D and 3D.
 
 This object is affected by the following @i{graphic options}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
-@code{line_type} and @code{color}.
+@code{line_type} and @code{color}. In 3D mode, it is also affected by @code{enhanced3d}.
 
 @b{2D}
 
@@ -3351,7 +3351,7 @@ Unidimensional arrays,
 (%i6) draw3d(points(x,y,z)) $
 @end example
 
-Bidimensional array,
+Bidimensional colored array,
 @example
 (%i1) load(draw)$
 (%i2) xyz: make_array(fixnum, 10, 3) $
@@ -3359,7 +3359,10 @@ Bidimensional array,
         xyz[i, 0]: random(10),
         xyz[i, 1]: random(10),
         xyz[i, 2]: random(10) ) $
-(%i4) draw3d(points(xyz)) $
+(%i4) draw3d(
+         enhanced3d = true,
+         points_joined = true,
+         points(xyz)) $
 @end example
 
 @opencatbox

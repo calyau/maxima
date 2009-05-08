@@ -1,4 +1,4 @@
-@c version 1.37
+@c version 1.39
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -2752,7 +2752,7 @@ Dibuja puntos en 2D y 3D.
 
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{point_size}, 
 @code{point_type}, @code{points_joined}, @code{line_width}, @code{key},
-@code{line_type} y @code{color}.
+@code{line_type} y @code{color}. En modo 3D tambi@'en se ve afectado por @code{enhanced3d}.
 
 @b{2D}
 
@@ -2891,7 +2891,7 @@ Arrays unidimensionales,
 (%i6) draw3d(points(x,y,z)) $
 @end example
 
-Array bidimensional,
+Array bidimensional coloreado,
 @example
 (%i1) load(draw)$
 (%i2) xyz: make_array(fixnum, 10, 3) $
@@ -2899,8 +2899,12 @@ Array bidimensional,
         xyz[i, 0]: random(10),
         xyz[i, 1]: random(10),
         xyz[i, 2]: random(10) ) $
-(%i4) draw3d(points(xyz)) $
+(%i4) draw3d(
+         enhanced3d = true,
+         points_joined = true,
+         points(xyz)) $
 @end example
+
 @end deffn
 
 

@@ -21,8 +21,8 @@
 ;;; http://www.telefonica.net/web2/biomates/maxima/gpdraw
 ;;; for examples
 
-;;; The code for implicit functions was written by
-;;; Andrej Vodopivec. Thanks!
+;;; Some portions of this package were written by 
+;;; Andrej Vodopivec and Joan Pau Beltran. Thanks!
 
 ;;; For questions, suggestions, bugs and the like, feel free
 ;;; to contact me at
@@ -119,8 +119,8 @@
       (gethash '$font_size *gr-options*)        12;
 
       ; colors are specified by name
-      (gethash '$color *gr-options*)      "black"   ; for lines, points, borders and labels
-      (gethash '$fill_color *gr-options*) "red"     ; for filled regions
+      (gethash '$color *gr-options*)      "rgb 'black'"   ; for lines, points, borders and labels
+      (gethash '$fill_color *gr-options*) "rgb 'red'"     ; for filled regions
       (gethash '$fill_density *gr-options*) 0       ; in [0,1], only for object 'bars
 
       ; implicit plot options
@@ -158,15 +158,15 @@
       (gethash '$xaxis *gr-options*)       nil   ; no xaxis by default
       (gethash '$xaxis_width *gr-options*) 1
       (gethash '$xaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
-      (gethash '$xaxis_color *gr-options*) "black"
+      (gethash '$xaxis_color *gr-options*) "rgb 'black'"
       (gethash '$yaxis *gr-options*)       nil  ; no yaxis by default
       (gethash '$yaxis_width *gr-options*) 1
       (gethash '$yaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
-      (gethash '$yaxis_color *gr-options*) "black"
+      (gethash '$yaxis_color *gr-options*) "rgb 'black'"
       (gethash '$zaxis *gr-options*)       nil  ; no zaxis by default
       (gethash '$zaxis_width *gr-options*) 1
       (gethash '$zaxis_type *gr-options*)  0    ; two options: 1 (solid) and 0 (dots)
-      (gethash '$zaxis_color *gr-options*) "black"
+      (gethash '$zaxis_color *gr-options*) "rgb 'black'"
       (gethash '$xlabel *gr-options*) ""
       (gethash '$ylabel *gr-options*) ""
       (gethash '$zlabel *gr-options*) ""
@@ -496,12 +496,12 @@
                        "dark-khaki" "goldenrod" "light-goldenrod" "dark-goldenrod" "gold"
                        "beige" "brown" "orange" "dark-orange" "violet" "dark-violet"
                        "plum" "purple"))
-                 (setf (gethash opt *gr-options*) str))
+                 (setf (gethash opt *gr-options*) (format nil "rgb '~a'" str)))
               ((and (= (length str) 7)
                     (char= (schar str 0) #\#)
                     (every #'(lambda (z) (position z "0123456789abcdef"))
                            (subseq str 1)))
-                 (setf (gethash opt *gr-options*) str))
+                 (setf (gethash opt *gr-options*) (format nil "rgb '~a'" str)))
               (t
                  (merror "draw: illegal color specification: ~M" str)))))
       ($file_bgcolor ; defined as hexadecimal #rrggbb
@@ -607,14 +607,14 @@
   (let ((opt (get-option '$points_joined)))
     (cond
       ((null opt) ; draws isolated points
-         (format nil " ~a w p ps ~a pt ~a lc rgb '~a' axis ~a"
+         (format nil " ~a w p ps ~a pt ~a lc ~a axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$point_size)
                  (get-option '$point_type)
                  (get-option '$color)
                  (axes-to-plot)))
       ((eq opt t) ; draws joined points
-         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a' axis ~a"
+         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc ~a axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$point_size)
                  (get-option '$point_type)
@@ -623,7 +623,7 @@
                  (get-option '$color)
                  (axes-to-plot)))
       (t  ; draws impulses
-         (format nil " ~a w i lw ~a lt ~a lc rgb '~a' axis ~a"
+         (format nil " ~a w i lw ~a lt ~a lc ~a axis ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$line_width)
                  (get-option '$line_type)
@@ -792,121 +792,116 @@
 ;;     key
 ;;     line_type
 ;;     color
+;;     enhanced3d
 
 (defun points3d-command ()
   (let ((opt (get-option '$points_joined)))
     (cond
       ((null opt) ; draws isolated points
-         (format nil " ~a w p ps ~a pt ~a lc rgb '~a'"
+         (format nil " ~a w p ps ~a pt ~a lc ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$point_size)
                  (get-option '$point_type)
-                 (get-option '$color)))
+                 (if (get-option '$enhanced3d) "palette" (get-option '$color) ) ))
       ((eq opt t) ; draws joined points
-         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc rgb '~a'"
+         (format nil " ~a w lp ps ~a pt ~a lw ~a lt ~a lc ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$point_size)
                  (get-option '$point_type)
                  (get-option '$line_width)
                  (get-option '$line_type)
-                 (get-option '$color)))
+                 (if (get-option '$enhanced3d) "palette" (get-option '$color) ) ))
       (t  ; draws impulses
-         (format nil " ~a w i lw ~a lt ~a lc rgb '~a'"
+         (format nil " ~a w i lw ~a lt ~a lc ~a"
                  (make-obj-title (get-option '$key))
                  (get-option '$line_width)
                  (get-option '$line_type)
-                 (get-option '$color))))))
+                 (if (get-option '$enhanced3d) "palette" (get-option '$color) ) )))))
 
-(defun points3d-array (arg1 arg2 arg3)
-   (let ((xmin 1.75555970201398e+305)
-         (xmax -1.75555970201398e+305)
-         (ymin 1.75555970201398e+305)
-         (ymax -1.75555970201398e+305)
-         (zmin 1.75555970201398e+305)
-         (zmax -1.75555970201398e+305)
-         (pos -1)
-         (twodimarray t)
-         (threecolumns nil)
-         (dim (array-dimensions arg1))
-         n xx yy zz pts)
-      (cond
-         ((and (= (length dim) 2)   ; three-column array
-               (= (cadr dim) 3))
-            (setf n (car dim))
-            (setf threecolumns t))
-         ((and (= (length dim) 2)   ; three-row array
-               (= (car dim) 3))
-            (setf n (cadr dim)))
-         ((and (= (length dim) 1)   ; three 1d arrays
-               (arrayp arg2)
-               (arrayp arg3)
-               (equal dim (array-dimensions arg2))
-               (equal dim (array-dimensions arg3)))
-            (setf n (car dim))
-            (setf twodimarray nil))
-         (t (merror "draw (points3d): bad array input format")))
-      (setf pts (make-array (* 3 n) :element-type 'flonum))
-      (loop for k below n do
-         (if twodimarray
-            (if threecolumns
-               (setf xx ($float (aref arg1 k 0))
-                     yy ($float (aref arg1 k 1))
-                     zz ($float (aref arg1 k 2)))
-               (setf xx ($float (aref arg1 0 k))
-                     yy ($float (aref arg1 1 k))
-                     zz ($float (aref arg1 2 k))))
-            (setf xx ($float (aref arg1 k))
-                  yy ($float (aref arg2 k))
-                  zz ($float (aref arg3 k))))
-         (when (< xx xmin) (setf xmin xx))
-         (when (> xx xmax) (setf xmax xx))
-         (when (< yy ymin) (setf ymin yy))
-         (when (> yy ymax) (setf ymax yy))
-         (when (< zz zmin) (setf zmin zz))
-         (when (> zz zmax) (setf zmax zz))
-         (setf (aref pts (incf pos)) xx)
-         (setf (aref pts (incf pos)) yy)
-         (setf (aref pts (incf pos)) zz))
-      (update-ranges-3d xmin xmax ymin ymax zmin zmax)
-      (make-gr-object
-         :name 'points
-         :command (points3d-command)
-         :groups '((3 0)) ; numbers are sent to gnuplot in groups of 3, without blank lines
-         :points (list pts))))
-
-(defun points3d-list (arg1 &optional (arg2 nil) (arg3 nil))
-   (let (pts x y z xmin xmax ymin ymax zmin zmax)
-      (cond ((and ($listp arg1)
-                  (every #'$listp (rest arg1)))     ; xyz format
-               (let ((tmp (mapcar #'rest (rest arg1))))
-                  (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
-                        y (map 'list #'convert-to-float (map 'list #'second tmp))
-                        z (map 'list #'convert-to-float (map 'list #'third tmp)) ) ) )
-            ((and ($matrixp arg1)
-                  (= (length (cadr arg1)) 4)
-                  (null arg2)
-                  (null arg3))                 ; three-column matrix
-               (let ((tmp (mapcar #'rest (rest arg1))))
-                  (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
-                        y (map 'list #'convert-to-float (map 'list #'second tmp))
-                        z (map 'list #'convert-to-float (map 'list #'third tmp)) ) ) )
-            ((and ($listp arg1)
-                  ($listp arg2)
-                  ($listp arg3)
-                  (= (length arg1) (length arg2) (length arg3)))  ; xx yy zz format
-               (setf x (map 'list #'convert-to-float (rest arg1))
-                     y (map 'list #'convert-to-float (rest arg2))
-                     z (map 'list #'convert-to-float (rest arg3))  ))
-            ((and ($matrixp arg1)
-                  (= ($length arg1) 3)
-                  (null arg2)
-                  (null arg3))            ; two-row matrix
-               (setf x (map 'list #'convert-to-float (cdadr arg1))
-                     y (map 'list #'convert-to-float (cdaddr arg1))
-                     z (map 'list #'convert-to-float (cdaddr (rest arg1)))   ))
-            (t (merror "draw (points3d): bad input format"))  )
-      (setf pts (make-array (* 3 (length x)) :element-type 'flonum
-                                             :initial-contents (mapcan #'list x y z)))
+(defun points3d (arg1 &optional (arg2 nil) (arg3 nil))
+   (let (pts x y z xmin xmax ymin ymax zmin zmax ncols
+        (c (get-option '$enhanced3d)))
+      (cond (($listp arg1)   ; list input
+               (cond ((and (every #'$listp (rest arg1))   ; xyz format
+                           (null arg2)
+                           (null arg3))
+                        (let ((tmp (mapcar #'rest (rest arg1))))
+                        (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
+                              y (map 'list #'convert-to-float (map 'list #'second tmp))
+                              z (map 'list #'convert-to-float (map 'list #'third tmp)) ) ) )
+                     ((and ($listp arg2)                  ; xx yy zz format
+                           ($listp arg3)
+                           (= (length arg1) (length arg2) (length arg3)))
+                        (setf x (map 'list #'convert-to-float (rest arg1))
+                              y (map 'list #'convert-to-float (rest arg2))
+                              z (map 'list #'convert-to-float (rest arg3)) )) 
+                     (t (merror "draw (points3d): bad list input format"))))
+            (($matrixp arg1)   ; matrix input
+               (cond ((and (= (length (cadr arg1)) 4)     ; three-column matrix
+                           (null arg2)
+                           (null arg3))
+                        (let ((tmp (mapcar #'rest (rest arg1))))
+                        (setf x (map 'list #'convert-to-float (map 'list #'first tmp))
+                              y (map 'list #'convert-to-float (map 'list #'second tmp))
+                              z (map 'list #'convert-to-float (map 'list #'third tmp)) ) ) )
+                     ((and (= ($length arg1) 3)           ; three-row matrix
+                           (null arg2)
+                           (null arg3))
+                        (setf x (map 'list #'convert-to-float (cdadr arg1))
+                              y (map 'list #'convert-to-float (cdaddr arg1))
+                              z (map 'list #'convert-to-float (cdaddr (rest arg1)) ) ) )
+                     (t (merror "draw (points3d): bad matrix input format"))))
+            ((arrayp arg1)   ; array input
+               (let ((dim (array-dimensions arg1))) 
+               (cond ((and (= (length dim) 2)   ; three-row array
+                           (= (first dim) 3)
+                           (null arg2)
+                           (null arg3))
+                        (setf x (loop for k from 0 below (second dim) collect (convert-to-float (aref arg1 0 k)))
+                              y (loop for k from 0 below (second dim) collect (convert-to-float (aref arg1 1 k)))
+                              z (loop for k from 0 below (second dim) collect (convert-to-float (aref arg1 2 k))) ))
+                     ((and (= (length dim) 2)   ; three-column array
+                           (= (second dim) 3)
+                           (null arg2)
+                           (null arg3))
+                        (setf x (loop for k from 0 below (first dim) collect (convert-to-float (aref arg1 k 0)))
+                              y (loop for k from 0 below (first dim) collect (convert-to-float (aref arg1 k 1)))
+                              z (loop for k from 0 below (first dim) collect (convert-to-float (aref arg1 k 2))) ))
+                     ((and (= (length dim) 1)   ; three 1d arrays
+                           (arrayp arg2)
+                           (arrayp arg3)
+                           (equal dim (array-dimensions arg2))
+                           (equal dim (array-dimensions arg3)))
+                        (setf x (map 'list #'convert-to-float arg1)
+                              y (map 'list #'convert-to-float arg2)
+                              z (map 'list #'convert-to-float arg3) ) )
+                     (t (merror "draw (points3d): bad array input format")) ) ) )
+            (t (merror "draw (points3d): bad input format")) )
+      (cond ((member c '(nil t))
+                (setf ncols 3)
+                (setf pts (make-array (* ncols (length x))
+                                      :element-type 'flonum
+                                      :initial-contents (mapcan #'list x y z))))
+            (t
+                (cond ((and ($listp c)   ; list color coordinates
+                            (= (length (cdr c)) (length x)) )
+                         (setf c (map 'list #'convert-to-float (rest c))))
+                      ((and ($matrixp c)   ; 1 row matrix color coordinates
+                            (= ($length c) 1)
+                            (= (length (cdadr c)) (length x)) )
+                         (setf c (map 'list #'convert-to-float (cdadr c))))
+                      ((and ($matrixp c)   ; 1 column matrix color coordinates
+                            (= (length (cadr c)) 2)
+                            (= (length (cdr c)) (length x)) )
+                         (setf c (map 'list #'convert-to-float (map 'list #'second (rest c)))))
+                      ((and (arrayp c)   ; 1 dimension array color coordinates
+                            (equal (array-dimensions c) (list (length x)) ) )
+                         (setf c (map 'list #'convert-to-float c)) )
+                      (t (merror "draw (points3d): bad color coordinate (enhanced3d) input")) )
+                (setf ncols 4)
+                (setf pts (make-array (* ncols (length x))
+                                      :element-type 'flonum
+                                      :initial-contents (mapcan #'list x y z c))) ) )
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
             ymin ($tree_reduce 'min (cons '(mlist simp) y))
@@ -918,13 +913,10 @@
       (make-gr-object
          :name 'points
          :command (points3d-command)
-         :groups '((3 0)) ; numbers are sent to gnuplot in groups of 3, without blank lines
+         :groups `((,ncols 0)) ; numbers are sent to gnuplot in groups of 4 or 3 
+                               ; (depending on colored 4th dimension or not), without blank lines
          :points (list pts) )  ))
 
-(defun points3d (arg1 &optional (arg2 nil) (arg3 nil))
-   (if (arrayp arg1)
-      (points3d-array arg1 arg2 arg3)
-      (points3d-list arg1 arg2 arg3)))
 
 
 
@@ -968,7 +960,7 @@
       (update-ranges-2d xmin xmax ymin ymax)
       (cond
          ((get-option '$transparent)  ; if transparent, draw only the border
-             (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a' axis ~a"
+             (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc ~a axis ~a"
                                       (make-obj-title (get-option '$key))
                                       (get-option '$line_width)
                                       (get-option '$line_type)
@@ -980,7 +972,7 @@
                                          :initial-contents (append (mapcan #'list x y)
                                                                    (list (first x) (first y))) )) ) )
          ((not (get-option '$border)) ; no transparent, no border
-             (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
+             (setf pltcmd (format nil " ~a w filledcurves lc ~a axis ~a"
                                       (make-obj-title (get-option '$key))
                                       (get-option '$fill_color)
                                       (axes-to-plot)))
@@ -989,16 +981,15 @@
                                          :element-type 'flonum
                                          :initial-contents (mapcan #'list x y)) ) ))
          (t ; no transparent with border
-             (setf pltcmd (list (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
+             (setf pltcmd (list (format nil " ~a w filledcurves lc ~a axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
                                         (axes-to-plot))
-                                (format nil " t '' w l lw ~a lt ~a lc rgb '~a' axis ~a"
+                                (format nil " t '' w l lw ~a lt ~a lc ~a axis ~a"
                                         (get-option '$line_width)
                                         (get-option '$line_type)
                                         (get-option '$color)
                                         (axes-to-plot))))
-
              (setf grps '((2 0) (2 0)))  ; both sets of vertices (interior and border)
                                      ; are sent to gnuplot in groups of 2
              (setf pts (list (make-array (* 2 (length x))
@@ -1119,7 +1110,7 @@
     (update-ranges-2d xmin xmax ymin ymax)
     (cond
        ((get-option '$transparent)  ; if transparent, draw only the border
-           (setf pltcmd (format nil " ~a  w l lw ~a lt ~a lc rgb '~a' axis ~a"
+           (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
                                     (make-obj-title (get-option '$key))
                                     (get-option '$line_width)
                                     (get-option '$line_type)
@@ -1129,7 +1120,7 @@
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        ((not (get-option '$border)) ; no transparent, no border
-           (setf pltcmd (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a' axis ~a"
+           (setf pltcmd (format nil " ~a w filledcurves xy=~a,~a lc ~a axis ~a"
                                     (make-obj-title (get-option '$key))
                                     fxc fyc
                                     (get-option '$fill_color)
@@ -1138,12 +1129,12 @@
            (setf pts `( ,(make-array (length result) :element-type 'flonum
                                                     :initial-contents result)))  )
        (t ; no transparent with border
-             (setf pltcmd (list (format nil " ~a w filledcurves xy=~a,~a lc rgb '~a' axis ~a"
+             (setf pltcmd (list (format nil " ~a w filledcurves xy=~a,~a lc ~a axis ~a"
                                             (make-obj-title (get-option '$key))
                                             fxc fyc
                                             (get-option '$fill_color)
                                             (axes-to-plot))
-                                (format nil " t '' w l lw ~a lt ~a lc rgb '~a' axis ~a"
+                                (format nil " t '' w l lw ~a lt ~a lc ~a axis ~a"
                                             (get-option '$line_width)
                                             (get-option '$line_type)
                                             (get-option '$color)
@@ -1217,7 +1208,7 @@
           (t (merror "draw (label): illegal arguments")))
     (make-gr-object
        :name 'label
-       :command (format nil " t '' w labels ~a ~a tc rgb '~a' ~a"
+       :command (format nil " t '' w labels ~a ~a tc ~a ~a"
                               (case (get-option '$label_alignment)
                                  ($center "center")
                                  ($left   "left")
@@ -1275,7 +1266,7 @@
     (update-ranges-2d xmin xmax ymin ymax)
     (make-gr-object
        :name 'bars
-       :command (format nil " ~a w boxes fs solid ~a border lw ~a lc rgb '~a' axis ~a"
+       :command (format nil " ~a w boxes fs solid ~a border lw ~a lc ~a axis ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$fill_density)
                             (get-option '$line_width)
@@ -1327,7 +1318,7 @@
       (update-ranges-2d (min x xdx) (max x xdx) (min y ydy) (max y ydy))
       (make-gr-object
          :name 'vector
-         :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc rgb '~a' axis ~a"
+         :command (format nil " ~a w vect ~a size ~a, ~a ~a lw ~a lt ~a lc ~a axis ~a"
                               (make-obj-title (get-option '$key))
                               (if (get-option '$head_both) "heads" "head")
                               (get-option '$head_length)
@@ -1388,7 +1379,7 @@
       (update-ranges-3d (min x xdx) (max x xdx) (min y ydy) (max y ydy) (min z zdz) (max z zdz))
       (make-gr-object
          :name 'vector
-         :command (format nil " ~a w vect ~a ~a size ~a, ~a lw ~a lt ~a lc rgb '~a'"
+         :command (format nil " ~a w vect ~a ~a size ~a, ~a lw ~a lt ~a lc ~a"
                               (make-obj-title (get-option '$key))
                               (if (get-option '$head_both) "heads" "head")
                               (case (get-option '$head_type)
@@ -1477,7 +1468,7 @@
                (setf result-array (make-array (length result)
                                               :element-type 'flonum 
                                               :initial-contents result))
-               (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc rgb '~a' axis ~a"
+               (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$line_width)
                                         (get-option '$line_type)
@@ -1498,7 +1489,7 @@
                (setf result-array (make-array (length result)
                                               :element-type 'flonum 
                                               :initial-contents result))
-               (setf pltcmd (format nil " ~a w filledcurves x1 lc rgb '~a' axis ~a"
+               (setf pltcmd (format nil " ~a w filledcurves x1 lc ~a axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
                                         (axes-to-plot)))
@@ -1522,7 +1513,7 @@
                             (aref result-array (incf count)) yy
                             (aref result-array (incf count)) yy2) )  ))
                (update-ranges-2d xstart xend ymin ymax)
-               (setf pltcmd (format nil " ~a w filledcurves lc rgb '~a' axis ~a"
+               (setf pltcmd (format nil " ~a w filledcurves lc ~a axis ~a"
                                         (make-obj-title (get-option '$key))
                                         (get-option '$fill_color)
                                         (axes-to-plot)  ))
@@ -1659,7 +1650,7 @@
 			   ssample ip-grid-in)
 	      (print-square xxmin xxmax yymin yymax
 			    ssample ip-grid-in) )) ))
-    (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc rgb '~a' axis ~a"
+    (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
                               (make-obj-title (get-option '$key))
                               (get-option '$line_width)
                               (get-option '$line_type)
@@ -1828,12 +1819,12 @@
       (merror "draw3d (implicit): no surface within these ranges"))
     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
     (setf pltcmd
-          (cons (format nil " ~a w l lt ~a lc rgb '~a'"
+          (cons (format nil " ~a w l lt ~a lc ~a"
                         (make-obj-title (get-option '$key))
                         (get-option '$line_type)
                         (get-option '$color))
                 (make-list (- (/ (length vertices) 3) 1)
-                           :initial-element (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                           :initial-element (format nil " t '' w l lw ~a lt ~a lc ~a"
                                               (get-option '$line_width)
                                               (get-option '$line_type)
                                               (get-option '$color)))))
@@ -1910,14 +1901,13 @@
                   (setf (aref result (incf count)) y)
                   (setf (aref result (incf count)) z)
                   (when enhanced4d
-                     (setf (aref result (incf count))
-                           (funcall fcn4d x y)))
+                     (setf (aref result (incf count)) (funcall fcn4d x y)))
                   (setq x (+ x epsx)))
            (setq y (+ y epsy)))
     (update-ranges-3d fminval1 fmaxval1 fminval2 fmaxval2 zmin zmax)
     (make-gr-object
        :name   'explicit
-       :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
+       :command (format nil " ~a w ~a lw ~a lt ~a lc ~a"
                             (make-obj-title (get-option '$key))
                             (if (get-option '$enhanced3d) "pm3d" "l")
                             (get-option '$line_width)
@@ -1978,7 +1968,7 @@
     (update-ranges-3d fx0 (+ fx0 fwidth) fy0 (+ fy0 fheight) zmin zmax)
     (make-gr-object
        :name   'mesh
-       :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
+       :command (format nil " ~a w ~a lw ~a lt ~a lc ~a"
                             (make-obj-title (get-option '$key))
                             (if (get-option '$enhanced3d) "pm3d" "l")
                             (get-option '$line_width)
@@ -2040,7 +2030,7 @@
     (update-ranges-2d xmin xmax ymin ymax)
     (make-gr-object
        :name 'parametric
-       :command (format nil " ~a w l lw ~a lt ~a lc rgb '~a' axis ~a"
+       :command (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$line_width)
                             (get-option '$line_type)
@@ -2198,9 +2188,7 @@
                             (make-obj-title (get-option '$key))
                             (get-option '$line_width)
                             (get-option '$line_type)
-                            (if (get-option '$enhanced3d)
-                               "palette"
-                               (format nil "rgb '~a'" (get-option '$color))))
+                            (if (get-option '$enhanced3d) "palette" (get-option '$color)) )
        :groups `((,ncols 0))  ; numbers are sent to gnuplot in groups of 4 or 3 
                               ; (depending on colored 4th dimension or not), without blank lines
        :points `(,(make-array (length result) :element-type 'flonum
@@ -2280,7 +2268,7 @@
     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
     (make-gr-object
        :name 'parametric_surface
-       :command (format nil " ~a w ~a lw ~a lt ~a lc rgb '~a'"
+       :command (format nil " ~a w ~a lw ~a lt ~a lc ~a"
                             (make-obj-title (get-option '$key))
                             (if (get-option '$enhanced3d) "pm3d" "l")
                             (get-option '$line_width)
@@ -2548,7 +2536,7 @@
       :name 'geomap
       :command (make-list (length lis) 
                   :initial-element
-                     (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                     (format nil " t '' w l lw ~a lt ~a lc ~a"
                              (get-option '$line_width)
                              (get-option '$line_type)
                              (get-option '$color)))
@@ -2733,7 +2721,7 @@
       :name 'geomap
       :command (make-list (length lis) 
                   :initial-element
-                     (format nil " t '' w l lw ~a lt ~a lc rgb '~a'"
+                     (format nil " t '' w l lw ~a lt ~a lc ~a"
                              (get-option '$line_width)
                              (get-option '$line_type)
                              (get-option '$color)))
@@ -2853,13 +2841,13 @@
               (if (get-option '$axis_right) (setf suma (+ suma 8)))
               (format nil "set border ~a~%" suma) )
             (if (get-option '$xaxis)
-               (format nil "set xzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+               (format nil "set xzeroaxis lw ~a lt ~a lc ~a~%"
                            (get-option '$xaxis_width)
                            (get-option '$xaxis_type)
                            (get-option '$xaxis_color) )
                (format nil "unset xzeroaxis~%"))
             (if (get-option '$yaxis)
-               (format nil "set yzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+               (format nil "set yzeroaxis lw ~a lt ~a lc ~a~%"
                            (get-option '$yaxis_width)
                            (get-option '$yaxis_type)
                            (get-option '$yaxis_color) )
@@ -2967,7 +2955,7 @@
             (if (get-option '$cbrange)
                (format nil "set cbrange [~a:~a]~%" 
                   (first (get-option '$cbrange))
-                  (second (get-option '$cbrange) ))
+                  (second (get-option '$cbrange)) )
                (format nil "set cbrange [*:*]~%") )
             (case (get-option '$contour)
                ($surface (format nil "set contour surface;set cntrparam levels ~a~%"
@@ -2998,19 +2986,19 @@
                 (format nil "set grid~%")
                 (format nil "unset grid~%"))
             (if (get-option '$xaxis)
-               (format nil "set xzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+               (format nil "set xzeroaxis lw ~a lt ~a lc ~a~%"
                            (get-option '$xaxis_width)
                            (get-option '$xaxis_type)
                            (get-option '$xaxis_color) )
                (format nil "unset xzeroaxis~%"))
             (if (get-option '$yaxis)
-               (format nil "set yzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+               (format nil "set yzeroaxis lw ~a lt ~a lc ~a~%"
                            (get-option '$yaxis_width)
                            (get-option '$yaxis_type)
                            (get-option '$yaxis_color) )
                (format nil "unset yzeroaxis~%"))
             (if (get-option '$zaxis)
-               (format nil "set zzeroaxis lw ~a lt ~a lc rgb '~a'~%"
+               (format nil "set zzeroaxis lw ~a lt ~a lc ~a~%"
                            (get-option '$zaxis_width)
                            (get-option '$zaxis_type)
                            (get-option '$zaxis_color) )
