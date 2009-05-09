@@ -1126,22 +1126,10 @@ relational knowledge is contained in the default context GLOBAL."
 	 (sign-oddinc x))
 	(t (sign-any x))))
 
-;;; Test if a symbol is declared to be complex or imaginary.
-;;; There are more definitions of similiar functions in Maxima.
-;;; These functions are more or less complete. Perhaps we can choose one
-;;; style and convention for all of such functions. (12/2008)
-
-(defun declared-complex-p (sym)
-  (and (symbolp sym)
-       (kindp sym '$complex)
-       (not (or (kindp sym '$real)
-		(kindp sym '$rational)
-		(kindp sym '$integer)))))
-
 (defun sign-any (x)
   (cond ((and *complexsign*
-	      (or (and (atom x) (declared-complex-p x))
-		  (and (not (atom x)) (declared-complex-p (caar x)))))
+	      (or (and (atom x) (decl-complexp x))
+		  (and (not (atom x)) (decl-complexp (caar x)))))
 	 ;; In Complex Mode look for symbols declared to be complex.
 	 (when *debug-compar*
 	   (format t "~&SIGN-ANY with ~A~&   Symbol declared to be complex found.~%" x))
