@@ -340,6 +340,10 @@
 ;;; to functions known by risplit, such as the more useless trigonometrics.
 	  ((let ((foot (coversinemyfoot l)))
 	     (and foot (risplit foot))))
+          ((or (safe-get (mop l) 'real-valued)
+               (decl-realp (mop l)))
+           ;; Simplification for a real-valued function
+           (cons l 0))
           ((or (safe-get (mop l) 'commutes-with-conjugate)
                (safe-get (mop l) 'conjugate-function))
 	   ;; A function with Mirror symmetry. The general expressions for
