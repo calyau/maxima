@@ -60,19 +60,8 @@
 	 (cons (car xx) (mapcar #'$carg (cdr xx))))
 	(t (cdr (absarg xx)))))
 
-(defvar absflag nil)
-
-;; The function of Absflag is to communicate to Absarg that only the absolute
-;; value part of the result is wanted.  This allows Absarg to avoid asking
-;; questions irrelevant to the absolute value.  For instance, Cabs(x) is
-;; invariably Abs(x), while the complex phase may be 0 or %pi.  Note also
-;; the steps taken in Absarg to assure that Asksign's will happen before Sign's
-;; as often as possible, so that, for instance, Abs(x) can be simplified to
-;; x or -x if the sign of x must be known for some other reason.  These
-;; techniques, however, are not perfect.
-
 ;; The internal cabs, used by other Macsyma programs.
-(defmfun cabs (xx) (let ((absflag t)) (car (absarg xx))))
+(defmfun cabs (xx) (car (absarg xx t)))
 
 ;; Some objects can only appear at the top level of a legal simplified
 ;; expression: CRE forms and equations in particular.
@@ -464,9 +453,21 @@
       (simplify '$%pi)
       0))
 
+
+;; absarg
 ;; returns pair (abs . arg)
 ;; if absflag is true, arg result is not guaranteed to be correct
-(defun absarg (l)
+
+;; The function of Absflag is to communicate that only the absolute
+;; value part of the result is wanted.  This allows Absarg to avoid asking
+;; questions irrelevant to the absolute value.  For instance, Cabs(x) is
+;; invariably Abs(x), while the complex phase may be 0 or %pi.  Note also
+;; the steps taken in Absarg to assure that Asksign's will happen before Sign's
+;; as often as possible, so that, for instance, Abs(x) can be simplified to
+;; x or -x if the sign of x must be known for some other reason.  These
+;; techniques, however, are not perfect.
+
+(defun absarg (l &optional (absflag nil))
   (setq l ($expand l))
   (cond ((atom l)
 	 (cond ((eq l '$%i)
@@ -499,10 +500,9 @@
 	     (())
 	   (unless n
 	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
-	   (setq abars (absarg (car n)))))
+	   (setq abars (absarg (car n) absflag))))
 	((eq (caar l) 'mexpt)
-	 (let ((aa (let ((absflag nil))	;; we always need arg of base of exponent
-		     (absarg (cadr l))))
+	 (let ((aa (absarg (cadr l) nil))  ;; we always need arg of base of exponent
 	       (sp (risplit (caddr l)))
 	       ($radexpand nil))
 	   (cons (mul (powers (car aa) (car sp))
@@ -525,9 +525,9 @@
 		       (if (eq (caar l) '%tan)
 			   (div (take '(%sinh) 2frst) (take '(%sin) 2scnd))
 			   (div (take '(%sin) 2frst) (take '(%sinh) 2scnd)))))))
-	((specrepp l) (absarg (specdisrep l)))
+	((specrepp l) (absarg (specdisrep l) absflag))
 	((let ((foot (coversinemyfoot l)))
-	   (and foot (not (=0 (cdr (risplit (cadr l))))) (absarg foot))))
+	   (and foot (not (=0 (cdr (risplit (cadr l))))) (absarg foot absflag))))
 	(t
 	 (let ((ris (trisplit l)))
 	   (xcons
