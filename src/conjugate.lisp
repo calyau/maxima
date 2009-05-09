@@ -202,6 +202,7 @@
 (setf (get '%imagpart 'real-valued) t)
 (setf (get 'mabs 'real-valued) t)
 (setf (get '%realpart 'real-valued) t)
+(setf (get '%signum 'real-valued) t)
 
 ;; manifestly-real-p isn't a great name, but it's OK. Since (manifestly-real-p '$inf) --> true
 ;; it might be called manifestly-extended-real-p. A nonscalar isn't real.
