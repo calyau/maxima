@@ -1990,11 +1990,15 @@
 		   (simplifya (cons (cons (cadr u) (cdar u)) (cddr u)) z)
 		   u)))))
 
+;; TRUE, if the symbol e is declared to be $complex or $imaginary.
 (defmfun decl-complexp (e)
   (and (symbolp e)
        (kindp e '$complex)
        (not (kindp e '$real))))
 
+;; TRUE, if the symbol e is NOT declared to be $complex or $imaginary,
+;; but has any of the following declarations:
+;;   $integer, $noninteger, $even, $odd, $rational, $irrational, $real
 (defmfun decl-realp (e)
   (and (symbolp e) (kindp e '$real)))
 
