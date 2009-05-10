@@ -70,6 +70,8 @@ to contact me at
 mario @@@ edu DOT xunta DOT es
 */
 
+put('distrib, 1, 'version) $
+
 /* Sets the random state according to the computer clock time */
 set_random_state(make_random_state(true))$
 

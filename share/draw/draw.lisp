@@ -29,6 +29,10 @@
 ;;; mario @@@ edu DOT xunta DOT es
 
 
+($put '$draw 1 '$version)
+
+;; the following variable will be removed in the future,
+;; since some packages are still using it. 
 (defvar $draw_loaded t)
 
 (defvar $draw_compound t)

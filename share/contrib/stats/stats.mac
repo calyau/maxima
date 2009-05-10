@@ -24,10 +24,14 @@ procedures.
 
 */
 
+put('stats, 1, 'version) $
 
+if not get('descriptive, 'version)
+   then load("descriptive")$
 
-load("descriptive")$
-load("distrib")$
+if not get('distrib, 'version)
+   then load("distrib")$
+
 load("inference_result")$
 load("numstats")$
 
