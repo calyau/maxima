@@ -29,17 +29,59 @@
 (defmvar generate-atan2 t "Controls whether RPART will generate ATAN's
 			or ATAN2's, default is to make ATAN2's")
 
+;;; Realpart gives the real part of an expr.
+
 (defmfun $realpart (xx) (car (trisplit xx)))
+
+(defprop $realpart %realpart verb)
+(defprop %realpart $realpart noun)
+(defprop %realpart simp-realpart operators)
+
+(defun simp-realpart (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (let ((sgn nil))
+    (cond ((mnump z) z)
+          ((eq (setq sgn ($csign z)) '$imaginary)
+           0)
+          ((eq sgn '$complex)
+           (cond ((complex-number-p ($expand z) 'bigfloat-or-number-p)
+                  ($realpart z))
+                 (t 
+                  (eqtest (list '(%realpart) z) expr))))
+          (t 
+           (eqtest (list '(%realpart) z) expr)))))
+
+;;; Imagpart gives the imaginary part of an expr.
 
 (defmfun $imagpart (xx) (cdr (trisplit xx)))
 
-;;;Rectform gives a result of the form a+b*%i.
+(defprop $imagpart %imagpart verb)
+(defprop %imagpart $imagpart noun)
+(defprop %imagpart simp-imagpart operators)
+
+(defun simp-imagpart (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (let ((sgn nil))
+    (cond ((mnump z) 0)
+          ((eq (setq sgn ($csign z)) '$imaginary)
+           (mul -1 '$%i z))
+          ((eq sgn '$complex)
+           (cond ((complex-number-p ($expand z) 'bigfloat-or-number-p)
+                  ($imagpart z))
+                 (t 
+                  (eqtest (list '(%imagpart) z) expr))))
+          (t 
+           (eqtest (list '(%imagpart) z) expr)))))
+
+;;; Rectform gives a result of the form a+b*%i.
 
 (defmfun $rectform (xx)
   (let ((ris (trisplit xx)))
     (add (car ris) (mul (cdr ris) '$%i))))
 
-;;;Polarform gives a result of the form a*%e^(%i*b).
+;;; Polarform gives a result of the form a*%e^(%i*b).
 
 (defmfun $polarform (xx)
   (cond ((and (not (atom xx)) (member (caar xx) '(mequal mlist $matrix) :test #'eq))
@@ -54,11 +96,57 @@
 
 (defmfun $cabs (xx) (cabs xx))
 
+(defprop $cabs %cabs verb)
+(defprop %cabs $cabs noun)
+(defprop %cabs simp-cabs operators)
+
+(defun simp-cabs (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (let ((sgn nil))
+    (cond ((member (setq sgn ($csign z)) '($complex $imaginary))
+           (cond ((complex-number-p ($expand z) 'bigfloat-or-number-p)
+                  (simplify (list '(mabs) z)))
+                 (t
+                  (eqtest (list '(mabs) z) expr))))
+          ((eq sgn '$zero)
+           0)
+          ((member sgn '($pos $pz))
+           z)
+          ((eq sgn '$neg)
+            (mul -1 z))
+          (t 
+           (eqtest (list '(mabs) z) expr)))))
+
 ;;; Carg gives the complex argument.
+
 (defmfun $carg (xx)
-  (cond ((and (not (atom xx)) (member (caar xx) '(mequal mlist $matrix) :test #'eq))
+  (cond ((and (not (atom xx)) 
+              (member (caar xx) '(mequal mlist $matrix) :test #'eq))
 	 (cons (car xx) (mapcar #'$carg (cdr xx))))
 	(t (cdr (absarg xx)))))
+
+(defprop $carg %carg verb)
+(defprop %carg $carg noun)
+(defprop %carg simp-carg operators)
+
+(defun simp-carg (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (let ((sgn nil))
+    (cond ((eq z '$%i)
+           (div '$%pi 2))
+          ((member (setq sgn ($csign z)) '($complex $imaginary))
+           (cond ((complex-number-p ($expand z) 'bigfloat-or-number-p)
+                  ($carg z))
+                 (t 
+                  (eqtest (list '(%carg) z) expr))))
+          ((member sgn '($pos $pz $zero))
+           0)
+          ((eq sgn '$neg)
+            '$%pi)
+          (t 
+           (eqtest (list '(%carg) z) expr)))))
 
 ;; The internal cabs, used by other Macsyma programs.
 (defmfun cabs (xx) (car (absarg xx t)))
