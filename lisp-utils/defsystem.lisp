@@ -4613,6 +4613,7 @@ the system definition, if provided."
  ;; A very gross implementation of ensure-directories-exist.  Just
  ;; call /bin/mkdir with our desired path.
  (let* ((dir (make-pathname :host (pathname-host pathspec)
+							:device (pathname-device pathspec)
                             :directory (pathname-directory pathspec)))
         (cmd (if (member :win32 *features*)
                  (format nil "mkdir \"~a\""
