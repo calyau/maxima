@@ -159,10 +159,10 @@
 (defprop %expintegral_e 
   ((n z)
     ;; The derivative wrt the parameter n is expressed in terms of the
-    ;; Generalized Hypergeometric function 2F2 (see functions.wolfram.com)
+    ;; Regularized Hypergeometric function 2F2 (see functions.wolfram.com)
     ((mplus)
        ((mtimes) -1
-          (($hypergeometric_generalized)
+          (($hypergeometric_regularized)
              ((mlist) 
                ((mplus) 1 ((mtimes) -1 n))
                ((mplus) 1 ((mtimes) -1 n)))

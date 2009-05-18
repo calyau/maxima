@@ -361,13 +361,13 @@
 
 (defprop %gamma_incomplete
   ((a z)
-   ;; The derivative wrt a in terms of hypergeometric_generalized 2F2 function
+   ;; The derivative wrt a in terms of hypergeometric_regularized 2F2 function
    ;; and the Generalized Incomplete Gamma function (functions.wolfram.com)
    ((mplus)
       ((mtimes)
          ((mexpt) ((%gamma) a) 2)
          ((mexpt) z a)
-         (($hypergeometric_generalized)
+         (($hypergeometric_regularized)
             ((mlist) a a)
             ((mlist) ((mplus) 1 a) ((mplus) 1 a))
             ((mtimes) -1 z)))
@@ -972,20 +972,20 @@
 
 (defprop %gamma_incomplete_generalized
   ((a z1 z2)
-   ;; The derivative wrt a in terms of hypergeometric_generalized 2F2 function
+   ;; The derivative wrt a in terms of hypergeometric_regularized 2F2 function
    ;; and the Generalized Incomplete Gamma function (functions.wolfram.com)
    ((mplus)
       ((mtimes)
          ((mexpt) ((%gamma) a) 2)
          ((mexpt) z1 a)
-         (($hypergeometric_generalized)
+         (($hypergeometric_regularized)
             ((mlist) a a)
             ((mlist) ((mplus) 1 a) ((mplus) 1 a))
             ((mtimes) -1 z1)))
       ((mtimes) -1
          ((mexpt) ((%gamma) a) 2)
          ((mexpt) z2 a)
-         (($hypergeometric_generalized)
+         (($hypergeometric_regularized)
             ((mlist) a a)
             ((mlist) ((mplus) 1 a) ((mplus) 1 a))
             ((mtimes) -1 z2)))
@@ -1181,14 +1181,14 @@
 
 (defprop %gamma_incomplete_regularized
   ((a z)
-   ;; The derivative wrt a in terms of hypergeometric_generalized 2F2 function
+   ;; The derivative wrt a in terms of hypergeometric_regularized 2F2 function
    ;; and the Regularized Generalized Incomplete Gamma function 
    ;; (functions.wolfram.com)
    ((mplus)
       ((mtimes)
          ((%gamma) a)
          ((mexpt) z a)
-         (($hypergeometric_generalized)
+         (($hypergeometric_regularized)
             ((mlist) a a)
             ((mlist) ((mplus) 1 a) ((mplus) 1 a))
             ((mtimes) -1 z)))
@@ -2654,7 +2654,7 @@
       ((%beta_incomplete) a b z)
       ((mtimes) -1 
          ((mexpt) ((%gamma) a) 2)
-         (($hypergeometric_generalized)
+         (($hypergeometric_regularized)
            ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
            ((mlist) ((mplus) 1 a) ((mplus) 1 a)) 
            z)
@@ -2672,7 +2672,7 @@
             ((%log) ((mplus) 1 ((mtimes) -1 z))))
          ((mtimes) 
             ((mexpt) ((%gamma) b) 2)
-            (($hypergeometric_generalized)
+            (($hypergeometric_regularized)
                ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
                ((mlist) ((mplus) 1 b) ((mplus) 1 b))
                ((mplus) 1 ((mtimes) -1 z)))
@@ -3028,13 +3028,13 @@
          ((mexpt) ((%gamma) a) 2)
          ((mplus)
             ((mtimes)
-               (($hypergeometric_generalized)
+               (($hypergeometric_regularized)
                   ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
                   ((mlist) ((mplus) 1 a) ((mplus) 1 a)) 
                   z1)
                ((mexpt) z1 1))
             ((mtimes) -1
-               (($hypergeometric_generalized)
+               (($hypergeometric_regularized)
                   ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
                   ((mlist) ((mplus) 1 a) ((mplus) 1 a)) 
                   z2)
@@ -3052,13 +3052,13 @@
          ((mexpt) ((%gamma) b) 2)
          ((mplus)
             ((mtimes)
-               (($hypergeometric_generalized)
+               (($hypergeometric_regularized)
                   ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
                   ((mlist) ((mplus) 1 b) ((mplus) 1 b))
                   ((mplus) 1 ((mtimes) -1 z1)))
                ((mexpt) ((mplus) 1 ((mtimes) -1 z1)) b))
             ((mtimes) -1
-               (($hypergeometric_generalized)
+               (($hypergeometric_regularized)
                   ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
                   ((mlist) ((mplus) 1 b) ((mplus) 1 b))
                   ((mplus) 1 ((mtimes) -1 z2)))
@@ -3300,7 +3300,7 @@
    ((mplus)
       ((mtimes) -1 
          ((%gamma) a)
-         (($hypergeometric_generalized)
+         (($hypergeometric_regularized)
             ((mlist) a a ((mplus) 1 ((mtimes) -1 b)))
             ((mlist) ((mplus) 1 a) ((mplus) 2 a)) z)
          ((mexpt) ((%gamma) b) -1) 
@@ -3324,7 +3324,7 @@
          ((mexpt) ((%gamma) a) -1) 
          ((%gamma) b)
          ((%gamma) ((mplus) a b))
-         (($hypergeometric_generalized)
+         (($hypergeometric_regularized)
             ((mlist) b b ((mplus) 1 ((mtimes) -1 a)))
             ((mlist) ((mplus) 1 b) ((mplus) 1 b))
             ((mplus) 1 ((mtimes) -1 z)))
