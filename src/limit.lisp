@@ -1199,7 +1199,7 @@ It appears in LIMIT and DEFINT.......")
 	       (setq sign (getsignl (car pair)))
 	       (if (not (fixnump sign))
 		   0
-		   (* sign (behavior (cdr pair) var val))))
+		   (mul sign (behavior (cdr pair) var val))))
 	      ((and (=0 (no-err-sub (ridofab val) exp))
 		    (mexptp exp)
 		    (free (caddr exp) var)
