@@ -114,19 +114,23 @@ solution_subst(sol, v, f) := (
   else if if_p(sol) then %if(first(sol), solution_subst(second(sol),v,f), solution_subst(third(sol),v,f))
   else v = apply(f, [subst(sol,v)]));
 
-safer_subst(l, e) := block([algebraic : true, r, cnd, error_save : errormsg],
-  unwind_protect(
-    (errormsg : false,
-    if listp(e) or equation_p(e) or %union_p(e) then map(lambda([s], safer_subst(l,s)), e)
-    else if if_p(e) then (
-      cnd : simp_inequality(safer_subst(l, first(e))),
-      if is(cnd = false) then safer_subst(l, third(e))
-      else if is(cnd = true) then safer_subst(l, second(e))
-      else map(lambda([s], safer_subst(l,s)), e))
-    else (
-      r : errcatch(subst(l,e)),
-      if emptyp(r) then recip(safer_subst(l, ratsimp(1/e))) else first(r))),
-   errormsg : error_save));
+safer_subst(l, e, [nretry]) := block([algebraic : true, r, cnd, error_save : errormsg],
+  if nretry = [] or first (nretry) >= 0
+  then
+   (nretry : if nretry = [] then 1 else first (nretry),
+    unwind_protect(
+      (errormsg : false,
+      if listp(e) or equation_p(e) or %union_p(e) then map(lambda([s], safer_subst(l,s,1)), e)
+      else if if_p(e) then (
+        cnd : simp_inequality(safer_subst(l, first(e), 1)),
+        if is(cnd = false) then safer_subst(l, third(e), 1)
+        else if is(cnd = true) then safer_subst(l, second(e), 1)
+        else map(lambda([s], safer_subst(l,s,1)), e))
+      else (
+        r : errcatch(subst(l,e)),
+        if emptyp(r) then recip(safer_subst(l, ratsimp(1/e), nretry - 1)) else first(r))),
+     errormsg : error_save))
+  else e);
 
 /* Solve equations that involve both x and conjugate(x). This is not a user-level function:
 

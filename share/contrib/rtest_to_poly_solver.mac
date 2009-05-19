@@ -1005,6 +1005,11 @@ to_poly_solve([sqrt(x) = min(x,35)],[x]);
 to_poly_solve([sqrt(x-y) = 2, sqrt(x+y) = 5],[x,y]);
 %union([x = 29/2,y = 21/2])$
 
+/* problem from sage mailing list circa 2009-05-18 */
+
+to_poly_solve (Q*sqrt(Q^2 + 2) - 1, Q);
+%union([Q = -1/sqrt(1-sqrt(2))], [Q = 1/sqrt(1-sqrt(2))], [Q = 1/sqrt(sqrt(2)+1)]);
+
 (remvalue(e,s), remfunction(chk_sol),0);
 0$
 
