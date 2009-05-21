@@ -235,7 +235,12 @@
 (defmfun sratsimp (e) (simplifya ($ratsimp e) nil))
 
 (defmfun simpcheck (e flag)
-  (cond ((specrepp e) (specdisrep e)) (flag e) (t (simplifya e nil))))
+  (cond ((specrepp e) (specdisrep e))
+        (flag e)
+        (t (let (($%enumer $numer))
+             ;; Switch $%enumer on, when $numer is TRUE to allow
+             ;; simplification of $%e to its numerical value.
+             (simplifya e nil)))))
 
 (defmfun mratcheck (e) (if ($ratp e) (ratdisrep e) e))
 
@@ -455,7 +460,10 @@
 	     (cond ((not (freeargs (car l) var)) (return nil)))))))
 
 (defmfun simplifya (x y)
-  (cond ((or (atom x) (not $simp)) x) 
+  (cond ((and $%enumer $numer (atom x) (eq x '$%e))
+         ;; Replace $%e with its numerical value, when %enumer and $numer TRUE
+         (setq x %e-val))
+        ((or (atom x) (not $simp)) x)
 	((atom (car x))
 	 (cond ((and (cdr x) (atom (cdr x)))
 		(merror "~%~S is a cons with an atomic cdr - `simplifya'" x))
@@ -911,6 +919,9 @@
 (defun pls (x out)
   (prog (fm plusflag)
      (if (mtimesp x) (setq x (testtneg x)))
+     (when (and $numer (atom x) (eq x '$%e))
+       ;; Replace $%e with its numerical value, when $numer ist TRUE
+       (setq x %e-val))
      (cond ((null out)
 	    (return
 	      (cons '(mplus)
@@ -1466,7 +1477,12 @@
      (cond (z (setq gr (cadr x) pot (caddr x)) (go cont)))
      (twoargcheck x)
      (setq gr (simplifya (cadr x) nil))
-     (setq pot (simplifya (if $ratsimpexpons ($ratsimp (caddr x)) (caddr x)) nil))
+     (setq pot
+           (let (($%enumer $numer))
+             ;; Switch $%enumer on, when $numer is TRUE to allow 
+             ;; simplification of $%e to its numerical value.
+             (simplifya (if $ratsimpexpons ($ratsimp (caddr x)) (caddr x)) 
+                        nil)))
      cont	(cond (($ratp pot) (setq pot (ratdisrep pot)) (go cont))
 		      (($ratp gr)
 		       (cond ((member 'trunc (car gr) :test #'eq)
