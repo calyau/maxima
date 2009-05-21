@@ -1947,7 +1947,13 @@ first kind:
   (declare (ignore yy))
   (oneargcheck form)
   (let ((m (simpcheck (cadr form) z)))
-    (cond ((float-numerical-eval-p m)
+    (cond ((onep1 m)
+           ;; elliptic_kc(1) is complex infinity. Maxima can not handle
+           ;; infinities correctly, throw a Maxima error.
+           (merror
+             (intl:gettext "elliptic_kc: elliptic_kc(~:M) is undefined.")
+             m))
+          ((float-numerical-eval-p m)
 	   ;; Numerically evaluate it
 	   (elliptic-k (float m)))
 	  ((complex-float-numerical-eval-p m)
