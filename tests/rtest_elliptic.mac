@@ -402,3 +402,10 @@ elliptic_kc(m);
 inverse_jacobi_ds(sqrt(1-m),m);
 elliptic_kc(m);
 
+/* elliptic_kc(1) is undefined */
+errcatch(elliptic_kc(1));
+[];
+errcatch(elliptic_kc(1.0));
+[];
+errcatch(elliptic_kc(1.0b0));
+[];
