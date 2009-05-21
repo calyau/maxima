@@ -721,7 +721,7 @@ errcatch(gamma(-2.b0));
 /* Check the correct handling of the $numer flag */
 
 gamma(%e),numer;
-gamma(%e);
+1.5674682557740529;
 gamma(%e),numer,%enumer;
 1.5674682557740529;
 gamma(a+b),numer;

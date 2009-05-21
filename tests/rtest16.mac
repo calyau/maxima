@@ -672,5 +672,53 @@ integrate((g32475^n*(g32475*n-n-1)/(g32475-1)^2+1/(g32475-1)^2)/(1-g32475)
   /(1-g32475),g32475,0,1);
 (n+1)^2/2-1/2;
 
+/*
+ * Bug 609464 : 1+%e,numer and %e^%e,numer
+ *
+ * The simplifier has been extended to handle %e like other constants.
+ * In addition functions with arguments which involve %e simplify
+ * accordingly.
+ */
+
+%e,numer;
+2.7182818284590451;
+
+%e+1,numer;
+3.7182818284590451;
+
+%e^%e,numer;
+15.154262241479262;
+
+%e^x,numer;
+%e^x;
+
+sin(%e),numer;
+0.41078129050290885;
+
+sin(%e+1),numer;
+-0.54525155669233449;
+
+/* Do not simplify, when %e is the base of an expression and %enumer FALSE*/
+
+sin(%e^(2*x+1)),numer;
+sin(%e^(2*x+1));
+
+sin(%e^(%e^(2*x+1))),numer;
+sin(%e^(%e^(2*x+1)));
+
+/* Additionally simplifications when %enumer TRUE */
+
+%enumer:true;
+true;
+
+sin(%e^x),numer;
+sin(2.7182818284590451^x);
+
+sin(%e^(%e^(2*x+1))),numer;
+sin(2.7182818284590451^(2.7182818284590451^(2*x+1)));
+
+%enumer:false;
+false;
+
 end;
 end$
