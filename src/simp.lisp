@@ -435,11 +435,26 @@
 (defun constmx (*const* x)
   (simplifya (fmapl1 'constfun x) t))
 
-(defmfun isinop (exp var)		; VAR is assumed to be an atom
-  (cond ((atom exp) nil)
-	((and (eq (caar exp) var) (not (member 'array (cdar exp) :test #'eq))))
-	(t (do ((exp (cdr exp) (cdr exp))) ((null exp))
-	     (cond ((isinop (car exp) var) (return t)))))))
+;(defmfun isinop (exp var)		; VAR is assumed to be an atom
+;  (cond ((atom exp) nil)
+;	((and (eq (caar exp) var) (not (member 'array (cdar exp) :test #'eq))))
+;	(t (do ((exp (cdr exp) (cdr exp))) ((null exp))
+;	     (cond ((isinop (car exp) var) (return t)))))))
+
+;;; A modification of the old isinop. This version returns the complete 
+;;; subexpression with the operator OP, when the operator OP is found in EXPR.
+
+(defun isinop (expr op)    ; OP is assumed to be an atom
+  (cond ((atom expr) nil)
+        ((and (eq (caar expr) op)
+              (not (member 'array (cdar expr) :test #'eq)))
+         expr)
+        (t 
+         (do ((expr (cdr expr) (cdr expr))
+              (res nil))
+             ((null expr))
+           (when (setq res (isinop (car expr) op)) 
+             (return res))))))
 
 (defmfun free (exp var)
   (cond ((alike1 exp var) nil)
