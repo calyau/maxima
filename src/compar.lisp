@@ -524,6 +524,8 @@ relational knowledge is contained in the default context GLOBAL."
 	  (t (learn pat t)))))
 
 (defmfun learn (pat flag)
+  ;; Check if the function abs is in the pattern.
+  (learn-abs pat flag)
   (cond ((atom pat))
 	((zl-get (caar pat) (if flag 'learn 'unlearn))
 	 (funcall (zl-get (caar pat) (if flag 'learn 'unlearn)) pat))
@@ -537,6 +539,21 @@ relational knowledge is contained in the default context GLOBAL."
 	((eq (caar pat) 'mlessp) (daddgr flag (sub (caddr pat) (cadr pat))))
 	(flag (true* (munformat pat)))
 	(t (untrue (munformat pat)))))
+
+;;; When abs(x)<a is in the pattern, where a is a positive expression,
+;;; then learn x<a and -x<a too.
+
+(defun learn-abs (pat flag)
+  (let (tmp)
+    (when (and (setq tmp (isinop pat 'mabs))
+               (or (and (eq (caar pat) 'mlessp)
+                        (isinop (cadr pat) 'mabs)
+                        (member ($sign (caddr pat)) '($pos $pz)))
+                   (and (eq (caar pat) 'mgreaterp)
+                        (member ($sign (cadr pat)) '($pos $pz))
+                        (isinop (caddr pat) 'mabs))))
+      (learn ($substitute (cadr tmp) tmp pat) flag)
+      (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag))))
 
 (defmspec $forget (x)
   (setq x (cdr x))
