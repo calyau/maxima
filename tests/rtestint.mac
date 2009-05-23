@@ -806,13 +806,7 @@ integrate(log(x)^k1,x,0,1);
 (-1)^k1*gamma(k1+1);
 */
 integrate((-log(x))^k1,x,0,1);
-/* gamma(k1+1);
-   Because of adding more integrals for the power function Maxima give an
-   result in terms of the gamma_incomplete function. But Maxima now can not
-   simplifiy the limits to get the more easy result gamma(k1+1).
-   Mathematically the following new result is equivalent. 12/2008 */
-'limit(gamma_incomplete(k1+1,-log(x+1)),x,0,minus)
- -'limit(gamma_incomplete(k1+1,-log(x)),x,0,plus);
+gamma(k1+1);
 
 /* p. 120 */
 integrate(sqrt(log(x))/x^2,x,1,inf);
