@@ -395,6 +395,32 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; We support a simplim%function. The function is looked up in simplimit and 
+;;; handles specific values of the function.
+
+(defprop %gamma_incomplete simplim%gamma_incomplete simplim%function)
+
+(defun simplim%gamma_incomplete (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((a (limit (cadr expr) var val 'think))
+        (z (limit (caddr expr) var val 'think)))
+  (cond
+    ;; Handle an argument 0 at this place.
+    ((or (zerop1 z)
+         (eq z '$zeroa)
+         (eq z '$zerob))
+     (let ((sgn ($sign ($realpart a))))
+       (cond ((zerop1 a) '$inf)
+             ((member sgn '($neg $nz)) '$infinity)
+             ((eq sgn '($pos)) ($gamma a))
+             ;; Call the simplifier of the function.
+             (t (simplify (list '(%gamma_incomplete) a z))))))
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%gamma_incomplete) a z))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun simp-gamma-incomplete (expr ignored simpflag)
   (declare (ignore ignored))
   (twoargcheck expr)
