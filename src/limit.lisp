@@ -1638,7 +1638,7 @@ It appears in LIMIT and DEFINT.......")
 	 (or (equal 1. bl) (equal bl -1.)))
 	(t (equal (getsignl (m1- `((mabs) ,bl))) 0))))
 
-(defmfun simplimit (exp var val)
+(defmfun simplimit (exp var val &aux op)
   (cond
     ((eq var exp) val)
     ((or (atom exp) (mnump exp)) exp)
@@ -1696,6 +1696,9 @@ It appears in LIMIT and DEFINT.......")
 		       (free sub-exp var))
 		   (cdr exp)))
      exp)				;LIMIT(B[I],B,INF); -> B[I]
+    ((setq op (safe-get (mop exp) 'simplim%function))
+     ;; Lookup a simplim%function from the property list
+     (funcall op exp var val))
     (t (if $limsubst
 	   (simplify (cons (operator-with-array-flag exp)
 			   (mapcar #'(lambda (a)
