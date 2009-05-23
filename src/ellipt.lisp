@@ -1943,6 +1943,25 @@ first kind:
 (defprop %elliptic_kc simp-%elliptic_kc operators)
 (defprop %elliptic_ec simp-%elliptic_ec operators)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; We support a simplim%function. The function is looked up in simplimit and 
+;;; handles specific values of the function.
+
+(defprop %elliptic_kc simplim%elliptic_kc simplim%function)
+
+(defun simplim%elliptic_kc (expr var val)
+  ;; Look for the limit of the argument
+  (let ((m (limit (cadr expr) var val 'think)))
+    (cond ((onep1 m)
+           ;; For an argument 1 return $infinity.
+           '$infinity)
+          (t 
+            ;; All other cases are handled by the simplifier of the function.
+            (simplify (list '(%elliptic_kc) m))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defmfun simp-%elliptic_kc (form yy z)
   (declare (ignore yy))
   (oneargcheck form)
