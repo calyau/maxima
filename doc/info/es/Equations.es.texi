@@ -1,4 +1,4 @@
-@c english version 1.31
+@c english version 1.32
 @menu
 * Funciones y variable para las ecuaciones::
 @end menu
@@ -206,6 +206,20 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
  + 1.098699797110288)
 @end example
 
+@end deffn
+
+
+@deffn {Funci@'on} bfallroots (@var{expr})
+@deffnx {Funci@'on} bfallroots (@var{eqn})
+Calcula aproximaciones num@'ericas de las ra@'{@dotless{i}}ces
+reales y complejas del polinomio @var{expr} o de la ecuaci@'on
+polin@'omica @var{eqn} de una variable.
+
+En todos los aspectos, @code{bfallroots} es id@'entica a @code{allroots},
+excepto que @code{bfallroots} calcula las ra@'{@dotless{i}}ces en 
+formato bigfloat (n@'umeros decimales de precisi@'on arbitraria).
+
+V@'ease @code{allroots} para m@'as informaci@'on.
 @end deffn
 
 

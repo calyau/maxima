@@ -1,4 +1,4 @@
-@c english version 1.69
+@c english version 1.70
 @menu
 * Comentarios::
 * Archivos::
@@ -809,19 +809,91 @@ n do (for j from i+1 thru n do L[i,j]:0),L)
 @defvr {Variable opcional} ibase
 Valor por defecto: 10
 
-Los enteros que se escriban en Maxima se interpretan como dados en base @code{ibase}.
+@code{ibase} es la base en la que Maxima lee valores enteros.
 
-A la variable @code{ibase} se le puede asignar cualquier entero entre 2 y 35 (decimal), ambos inclusive.
-@c WHY NOT 36, BY THE WAY ??
-Si @code{ibase} es mayor que 10, las cifras ser@'an los n@'umeros decimales entre 0 y 9, m@'as las letras may@'usculas A, B, C, ..., sg@'un sea necesario.
-Las cifras en base 35, la mayor base que acepta Maxima, son los d@'{@dotless{i}}gitos de 0 a 9 y las letras de A a Y.
-@c HOW, EXACTLY, DOES ONE TYPE IN THE LETTERS ??
-@c ibase: 11$ 1A; YIELDS AN ERROR
-@c \1A; #1A; \#1A; DON'T WORK EITHER
+A @code{ibase} se le puede asignar cualquier entero entre
+2 y 36 (base decimal), ambos inclusive.
+Si @code{ibase} es mayor que 10,
+las cifras a utilizar ser@'an los d@'{@dotless{i}}gitos de
+0 a 9, junto con las letras del alfabeto A, B, C, ..., 
+tantas como sean necesarias para completar la base @code{ibase}.
+Las letras se interpretar@'an como cifras s@'olo cuando el 
+primer d@'{@dotless{i}}gito sea un valor entre 9.
+Es indiferente hacer uso de letras may@'usculas o min@'usculas.
+Las cifras para la base 36, la mayor posible, son los 
+d@'{@dotless{i}}gitos num@'ericos de 0 a 9 y las letras desde
+la A hasta la Z.
+
+Cualquiera que sea el valor de @code{ibase}, si un entero termina
+con un punto decimal, se interpretar@'a en base 10.
 
 V@'ease tambi@'en @code{obase}.
 
-@c NEED EXAMPLES HERE
+Ejemplos:
+
+@code{ibase} menor que 10.
+
+@c ===beg===
+@c ibase : 2 $
+@c obase;
+@c 1111111111111111;
+@c ===end===
+@example
+(%i1) ibase : 2 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1111111111111111;
+(%o3)                         65535
+@end example
+
+@code{ibase} mayor que 10.
+Las letras se interpretan como d@'{@dotless{i}}gitos s@'olo
+si el primer d@'{@dotless{i}}gito es una cifra entre 0 y 9.
+
+@c ===beg===
+@c ibase : 16 $
+@c obase;
+@c 1000;
+@c abcd;
+@c symbolp (abcd);
+@c 0abcd;
+@c symbolp (0abcd);
+@c ===end===
+@example
+(%i1) ibase : 16 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1000;
+(%o3)                         4096
+(%i4) abcd;
+(%o4)                         abcd
+(%i5) symbolp (abcd);
+(%o5)                         true
+(%i6) 0abcd;
+(%o6)                         43981
+(%i7) symbolp (0abcd);
+(%o7)                         false
+@end example
+
+Independientemente del valor de @code{ibase}, si el entero
+termina con un punto decimal, se interpretar@'a en base
+diez.
+
+@c ===beg===
+@c ibase : 36 $
+@c obase;
+@c 1234;
+@c 1234.;
+@c ===end===
+@example
+(%i1) ibase : 36 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1234;
+(%o3)                         49360
+(%i4) 1234.;
+(%o4)                         1234
+@end example
 @end defvr
 
 @defvr {Variable opcional} inchar
@@ -1004,13 +1076,54 @@ Si @code{loadprint} vale @code{false}, nunca mostrar@'a mensajes.
 @defvr {Variable opcional} obase
 Valor por defecto: 10
 
-La variable @code{obase} es la base de los enteros mostrados por Maxima; se le puede asignar cualquier entero entre 2 y 35 (decimal), ambos inclusive. Si @code{obase} es mayor que 10, las cifras ser@'an los n@'umeros decimales entre 0 y 9, m@'as las letras may@'usculas A, B, C, ..., sg@'un sea necesario.
-Las cifras en base 35, la mayor base que acepta Maxima, son los d@'{@dotless{i}}gitos de 0 a 9 y las letras de A a Y.
+@code{obase} es la base en la que Maxima imprime los n@'umeros enteros.
+
+A @code{obase} se le puede asignar cualquier entero entre
+2 y 36 (base decimal), ambos inclusive.
+Si @code{obase} es mayor que 10,
+las cifras a utilizar ser@'an los d@'{@dotless{i}}gitos de
+0 a 9, junto con las letras del alfabeto A, B, C, ..., 
+tantas como sean necesarias para completar la base @code{obase}.
+Si el primer d@'{@dotless{i}}gito resulta ser una letra, se le
+a@~nadir@'a el cero como prefijo.
+Las cifras para la base 36, la mayor posible, son los 
+d@'{@dotless{i}}gitos num@'ericos de 0 a 9 y las letras desde
+la A hasta la Z.
 
 V@'ease tambi@'en @code{ibase}.
 
-@c NEED EXAMPLES HERE
+Ejemplos:
+
+@c ===beg===
+@c obase : 2;
+@c 2^8 - 1;
+@c obase : 8;
+@c 8^8 - 1;
+@c obase : 16;
+@c 16^8 - 1;
+@c obase : 36;
+@c 36^8 - 1;
+@c ===end===
+@example
+(%i1) obase : 2;
+(%o1)                          10
+(%i2) 2^8 - 1;
+(%o10)                      11111111
+(%i3) obase : 8;
+(%o3)                          10
+(%i4) 8^8 - 1;
+(%o4)                       77777777
+(%i5) obase : 16;
+(%o5)                          10
+(%i6) 16^8 - 1;
+(%o6)                       0FFFFFFFF
+(%i7) obase : 36;
+(%o7)                          10
+(%i8) 36^8 - 1;
+(%o8)                       0ZZZZZZZZ
+@end example
 @end defvr
+
 
 @defvr {Variable opcional} outchar
 Valor por defecto: @code{%o}
