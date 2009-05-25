@@ -7,7 +7,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; This file containts the following Maxima User functions:
+;;; This file contains the following Maxima User functions:
 ;;;
 ;;;   double_factorial(z)
 ;;;
@@ -21,6 +21,9 @@
 ;;;   erfc(z)
 ;;;   erfi(z)
 ;;;   erf_generalized(z1,z2)
+;;;
+;;;   inverse_erf(z)
+;;;   inverse_erfc(z)
 ;;;
 ;;;   fresnel_s(z)
 ;;;   fresnel_c(z)
@@ -2093,6 +2096,251 @@
 
     (t
      (eqtest (list '(%erfi) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; The implementation of the Inverse Error function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $inverse_erf (z)
+  (simplify (list '(%inverse_erf) z)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Set properties to give full support to the parser and display
+
+(defprop $inverse_erf %inverse_erf alias)
+(defprop $inverse_erf %inverse_erf verb)
+
+(defprop %inverse_erf $inverse_erf reversealias)
+(defprop %inverse_erf $inverse_erf noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; The Inverse Error function is a simplifying function
+
+(defprop %inverse_erf simp-inverse-erf operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Differentiation of the Inverse Error function
+
+(defprop %inverse_erf
+  ((z)
+   ((mtimes) 
+      ((rat) 1 2) 
+      ((mexpt) $%pi ((rat) 1 2))
+      ((mexpt) $%e ((mexpt) ((%inverse_erf) z) 2))))
+  grad)
+
+;;; Integral of the Inverse Error function
+
+(defprop %inverse_erf
+    ((z)
+     ((mtimes) -1 
+        ((mexpt) $%pi ((rat) -1 2))
+        ((mexpt) $%e ((mtimes) -1 ((mexpt) ((%inverse_erf) z) 2)))))
+  integral)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; We support a simplim%function. The function is looked up in simplimit and 
+;;; handles specific values of the function.
+
+(defprop %inverse_erf simplim%inverse_erf simplim%function)
+
+(defun simplim%inverse_erf (expr var val)
+  ;; Look for the limit of the argument.
+  (let ((z (limit (cadr expr) var val 'think)))
+  (cond
+    ;; Handle an argument 0 at this place
+    ((onep1 z) '$inf)
+    ((onep1 (mul -1 z)) '$minf)
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%inverse_erf) z))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+          
+(defun simp-inverse-erf (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+    ((or (onep1 z)
+         (onep1 (mul -1 z)))
+     (merror (intl:gettext "inverse_erf: inverse_erf(~:M) is not defined.") z))
+    ((zerop1 z) z)
+    ((float-numerical-eval-p z)
+     (let ((x (gensym))
+           (z ($float z)))
+       (cond ((and (> z -1) (< z 1))
+              (float-newton (sub ($erf x) z) 
+                            x 
+                            ($float (div (mul z (power '$%pi (div 1 2))) 2))
+                            ;; Adjusted so that newton will converge within
+                            ;; the valid intervall.
+                            1.2e-16))
+             (t
+              (eqtest (list '(%inverse_erf) z) expr)))))
+    ((bigfloat-numerical-eval-p z)
+     (let ((x (gensym))
+           (z ($bfloat z)))
+       (cond ((eq ($sign (sub 1 (simplify (list '(mabs) z)))) '$pos)
+              (bfloat-newton (sub ($erf x) z)
+                             x
+                             ($bfloat (div (mul z (power '$%pi (div 1 2))) 2))
+                             (power ($bfloat 10) (- $fpprec))))
+             (t
+              (eqtest (list '(%inverse_erf) z) expr)))))
+    ((taylorize (mop expr) (cadr expr)))
+    (t
+     (eqtest (list '(%inverse_erf) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; The implementation of the Inverse Complementary Error function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $inverse_erfc (z)
+  (simplify (list '(%inverse_erfc) z)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Set properties to give full support to the parser and display
+
+(defprop $inverse_erfc %inverse_erfc alias)
+(defprop $inverse_erfc %inverse_erfc verb)
+
+(defprop %inverse_erfc $inverse_erfc reversealias)
+(defprop %inverse_erfc $inverse_erfc noun)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; The Inverse Complementary Error function is a simplifying function
+
+(defprop %inverse_erfc simp-inverse-erfc operators)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Differentiation of the Inverse Complementary Error function
+
+(defprop %inverse_erfc
+  ((z)
+   ((mtimes) 
+      ((rat) -1 2) 
+      ((mexpt) $%pi ((rat) 1 2))
+      ((mexpt) $%e ((mexpt) ((%inverse_erfc) z) 2))))
+  grad)
+
+;;; Integral of the Inverse Complementary Error function
+
+(defprop %inverse_erfc
+    ((z)
+     ((mtimes)
+        ((mexpt) $%pi ((rat) -1 2))     
+        ((mexpt) $%e
+         ((mtimes) -1 ((mexpt) ((%inverse_erfc) z) 2)))))
+  integral)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; We support a simplim%function. The function is looked up in simplimit and 
+;;; handles specific values of the function.
+
+(defprop %inverse_erfc simplim%inverse_erfc simplim%function)
+
+(defun simplim%inverse_erfc (expr var val)
+  ;; Look for the limit of the argument.
+  (let ((z (limit (cadr expr) var val 'think)))
+  (cond
+    ;; Handle an argument 0 at this place
+    ((or (zerop1 z) 
+         (eq z '$zeroa)
+         (eq z '$zerob)) 
+     '$inf)
+    ((zerop1 (add z -2)) '$minf)
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%inverse_erfc) z))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+          
+(defun simp-inverse-erfc (expr z simpflag)
+  (oneargcheck expr)
+  (setq z (simpcheck (cadr expr) simpflag))
+  (cond
+    ((or (zerop1 z)
+         (zerop1 (add z -2)))
+     (merror (intl:gettext "inverse_erfc: inverse_erfc(~:M) is not defined.") 
+             z))
+    ((onep1 z) 0)
+    ((float-numerical-eval-p z)
+     (let ((x (gensym))
+           (z ($float z)))
+       (cond ((and (> z 0) (< z 2))
+              (float-newton (sub ($erfc x) z)
+                            x
+                            ($float (div (mul (sub 1 z) 
+                                              (power '$%pi (div 1 2))) 
+                            2))
+                            ;; Adjusted so that newton will converge within
+                            ;; the valid intervall.
+                            1.2e-16))
+             (t
+              (eqtest (list '(%inverse_erfc) z) expr)))))
+    ((bigfloat-numerical-eval-p z)
+     (let ((x (gensym))
+           (z ($bfloat z)))
+       (cond ((eq ($sign (sub 2 z)) '$pos)
+              (bfloat-newton (sub ($erfc x) z)
+                             x
+                             ($bfloat (div (mul (sub 1 z) 
+                                                (power '$%pi (div 1 2))) 
+                                           2))
+                             (power ($bfloat 10) (- $fpprec))))
+             (t
+              (eqtest (list '(%inverse_erfc) z) expr)))))
+    ((taylorize (mop expr) (cadr expr)))
+    (t
+     (eqtest (list '(%inverse_erfc) z) expr))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the Newton algorithm to calculate numerical values
+;;; of the Inverse Error functions in float or bigfloat precision.
+;;; The algorithm is a modified version of the routine in newton1.mac.
+
+(defvar *debug-newton* nil)
+(defvar *newton-maxcount* 1000)
+
+(defun float-newton (expr var x0 eps)
+  (do ((s (sdiff expr var))
+       (xn x0)
+       (sn)
+       (count 0 (+ count 1)))
+      ((> count *newton-maxcount*)
+       (merror 
+         (intl:gettext "float-newton: Newton does not converge for ~:M") expr))
+    (setq sn ($float (maxima-substitute xn var expr)))
+    (when (< (abs sn) eps) (return xn))
+    (when *debug-newton* (format t "~&xn = ~A~%" xn))
+    (setq xn ($float (sub xn (div sn (maxima-substitute xn var s)))))))
+
+(defun bfloat-newton (expr var x0 eps)
+  (do ((s (sdiff expr var))
+       (xn x0)
+       (sn)
+       (count 0 (+ count 1)))
+      ((> count *newton-maxcount*)
+       (merror 
+         (intl:gettext "bfloat-newton: Newton does not converge for ~:M") expr))
+    (setq sn ($bfloat (maxima-substitute xn var expr)))
+    (when (eq ($sign (sub (simplify (list '(mabs) sn)) eps)) '$neg)
+      (return xn))
+    (when *debug-newton* (format t "~&xn = ~A~%" xn))
+    (setq xn ($bfloat (sub xn (div sn (maxima-substitute xn var s)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
