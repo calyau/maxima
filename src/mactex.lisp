@@ -657,8 +657,11 @@
   (let ((op (cond ((eq (caar x) '%lsum) "\\sum_{")
 		  ;; extend here
 		  ))
-	;; gotta be one of those above 
-	(s1 (tex (cadr x) nil nil 'mparen rop))	;; summand
+	;; gotta be one of those above
+	;; 4th arg of tex is changed from mparen to (caar x)
+	;; to reflect the operator preceedance correctly.
+	;; This change improves the how to put paren.
+	(s1 (tex (cadr x) nil nil (caar x) rop))	;; summand
 	(index ;; "index = lowerlimit"
 	 (tex `((min simp) , (caddr x), (cadddr x))  nil nil 'mparen 'mparen)))
     (append l `( ,op ,@index "}}{" ,@s1 "}") r)))
@@ -669,7 +672,10 @@
 		  ;; extend here
 		  ))
 	;; gotta be one of those above
-	(s1 (tex (cadr x) nil nil 'mparen rop))	;; summand
+	;; 4th arg of tex is changed from mparen to (caar x)
+	;; to reflect the operator preceedance correctly.
+	;; This change improves the how to put paren.
+	(s1 (tex (cadr x) nil nil (caar x) rop))	;; summand
 	(index ;; "index = lowerlimit"
 	 (tex `((mequal simp) ,(caddr x),(cadddr x)) nil nil 'mparen 'mparen))
 	(toplim (tex (car(cddddr x)) nil nil 'mparen 'mparen)))
@@ -811,7 +817,8 @@
     (setf (get a 'tex) 'tex-prefix)
     (setf (get a 'texword) b)	;This means "sin" will always be roman
     (setf (get a 'texsym) (list b))
-    (setf (get a 'tex-rbp) 130)))
+    (setf (get a 'tex-rbp) 119)))
+;;    (setf (get a 'tex-rbp) 130)))
 
 
 ;; I WONDER IF ALL BUILT-IN FUNCTIONS SHOULD BE SET IN ROMAN TYPE
