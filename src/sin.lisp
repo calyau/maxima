@@ -503,15 +503,20 @@
 	     finally (return (cons exp trigl)))))
 
 ;; Integrates exponential * sin or cos, all with linear args.
+
 (defun sce-int (exp s-c var)		; EXP is non-trivial
-  (let ((e-coef (car (islinear (caddr exp) var)))
-	(sc-coef (car (islinear (cadr s-c) var)))
-	(sc-arg (cadr s-c)))
-       (mul (div exp (add (power e-coef 2) (power sc-coef 2)))
-	    (add (mul e-coef s-c)
-		 (if (eq (caar s-c) '%sin)
-		     (mul* (neg sc-coef) `((%cos) ,sc-arg))
-		     (mul* sc-coef `((%sin) ,sc-arg)))))))
+  (let* ((e-coef (car (islinear (caddr exp) var)))
+         (sc-coef (car (islinear (cadr s-c) var)))
+         (sc-arg (cadr s-c))
+         (abs-val (add (power e-coef 2) (power sc-coef 2))))
+    (if (zerop1 abs-val)
+        ;; The numerator is zero. Exponentialize the integrand and try again.
+        (integrator ($exponentialize (mul exp s-c)) var)
+        (mul (div exp abs-val)
+             (add (mul e-coef s-c)
+                  (if (eq (caar s-c) '%sin)
+                      (mul* (neg sc-coef) `((%cos) ,sc-arg))
+                      (mul* sc-coef `((%sin) ,sc-arg))))))))
 
 (defun checkderiv (expr)
   (checkderiv1 (cadr expr) (cddr expr) () ))
@@ -2525,3 +2530,4 @@
        (setq result (cons (car l) result))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
