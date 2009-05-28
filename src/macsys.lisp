@@ -211,6 +211,7 @@
 	    (if (= 0 gctime) nil (format t " including GC time  ~s sec ,"(* 0.001 gctime)))
 	    (format t " using ~s cons-cells and ~s other bytes.~%" conses other)))
 	(unless $nolabels
+          (putprop '$% (cons time-used 0) 'time)
 	  (putprop d-tag (cons time-used  0) 'time))
 	(if (eq (caar r) 'displayinput)
 	    (displa `((mlable) ,d-tag ,$%))) ;; consistently misspelling label.
