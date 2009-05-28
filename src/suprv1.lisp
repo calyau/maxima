@@ -23,7 +23,7 @@
 
 (defmvar mopl nil)
 
-(declare-top  (special $debugmode $lasttime $disptime
+(declare-top  (special $debugmode $disptime
 		       bindlist loclist errset $labels linelable $filesize
 		       st rephrase $dispflag refchkl baktrcl
 		       dskfnp dsksavep *rset ^q lf tab ff cr
@@ -57,8 +57,7 @@
 			       (t (cadr x)))))
       '((tab #\tab) (lf #\linefeed) (ff #\page) (cr #\return) (sp #\space)))
 
-(setq $lasttime '((mlist) 0 0)
-      thistime 0
+(setq thistime 0
       $disptime nil)
 
 (setq $strdisp t $grind nil)
@@ -963,13 +962,11 @@
 
 (defmspec $time (l)
   (setq l (cdr l))
-  ;;(format t "~&Time:")
   (cons '(mlist simp)
 	(mapcar
 	 #'(lambda (x)
 	     (or (and (symbolp x)
-		      (setq x (or (get x 'time)
-				  (and (eq x '$%) (cons (cadr $lasttime) (caddr $lasttime)))))
+		      (setq x (get x 'time))
 		      (if (= (cdr x) 0)
 			  (car x)
 			  (list '(mlist simp) (car x) (cdr x))))
