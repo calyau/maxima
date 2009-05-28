@@ -749,5 +749,21 @@ x/2-%i*%e^(2*%i*x)/4;
 expand(integrate(exp(x)*cos(%i*x),x));
 %e^(2*x)/4+x/2;
 
+/*
+ * Bug ID: 826623 "simplifer returns %i*%i"
+ * 
+ * Some examples to show simplification of expressions of the form
+ * (a*b*...)^q*(a*b*...)^r, where q+r=1
+ */
+
+sqrt(-%i)*sqrt(-%i)*%i;
+1;
+
+sqrt(a*b)*sqrt(a*b)*a*b;
+a^2*b^2;
+
+(a*b*c)^(3/4)*(a*b*c)^(1/4)*c;
+a*b*c^2;
+
 end;
 end$
