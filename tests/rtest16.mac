@@ -720,5 +720,34 @@ sin(2.7182818284590451^(2.7182818284590451^(2*x+1)));
 %enumer:false;
 false;
 
+/*
+ * Bug ID: 2797885 - "problem with integration"
+ *
+ * integrate(exp(%i*x)*sin(x),x) generates a Lisp error.
+ *
+ * This is a special case for the integrand: exp(a*x)*sin(b*x),
+ * with a^2+b^2 equal to zero.
+ */
+
+/* This is the general case for an integetral with exp and sin or cos */
+integrate(exp(a*x)*sin(b*x),x);
+%e^(a*x)*(a*sin(b*x)-b*cos(b*x))/(b^2+a^2);
+
+integrate(exp(a*x)*cos(b*x),x);
+%e^(a*x)*(b*sin(b*x)+a*cos(b*x))/(b^2+a^2);
+
+/* Now the special case with a=%i and b=1 */
+expand(integrate(exp(%i*x)*sin(x),x));
+%i*x/2-%e^(2*%i*x)/4;
+
+expand(integrate(exp(x)*sin(%i*x),x));
+%i*%e^(2*x)/4-%i*x/2;
+
+expand(integrate(exp(%i*x)*cos(x),x));
+x/2-%i*%e^(2*%i*x)/4;
+
+expand(integrate(exp(x)*cos(%i*x),x));
+%e^(2*x)/4+x/2;
+
 end;
 end$
