@@ -1771,7 +1771,15 @@
 			 ((maxima-constantp (car x))
 			  (go const))
 			 ((onep1 w)
-			  (return (rplaca (cdr fm) (car x))))
+                          (cond ((mtimesp (car x))
+                                 ;; A base which is a mtimes expression.
+                                 ;; Remove the factor from the lists of products.
+                                 (rplacd fm (cddr fm))
+                                 ;; Multiply the factors of the base with 
+                                 ;; the list of all remaining products.
+                                 (setq rulesw t)
+                                 (return (muln (nconc y (cdar x)) t)))
+                                (t (return (rplaca (cdr fm) (car x))))))
 			 (t
 			  (go spcheck))))
 		  ((or (maxima-constantp (car x))
