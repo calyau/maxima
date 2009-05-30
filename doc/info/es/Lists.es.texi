@@ -1,4 +1,4 @@
-@c version 1.33
+@c version 1.36
 @menu
 * Introducci@'on a las listas::       
 * Funciones y variables para listas::       
@@ -115,22 +115,105 @@ del valor actual de @code{i}.
 @deffn {Funci@'on} delete (@var{expr_1}, @var{expr_2})
 @deffnx {Funci@'on} delete (@var{expr_1}, @var{expr_2}, @var{n})
 
-Elimina las expresiones @var{expr_1} de @var{expr_2}. La expresi@'on  @var{expr_1} a eliminar puede ser un sumando de @var{expr_2} (en caso de que @'esta sea una suma) o un factor de @var{expr_2} (si se trata de un producto).
+@code{delete(@var{expr_1}, @var{expr_2})}
+elimina de @var{expr_2} cualesquiera argumentos del operador
+del nivel superior que sean iguales a @var{expr_1}.
+N@'otese que los argumentos de las subexpresiones no se ven
+afectados por esta funci@'on.
 
+@var{expr_1} puede ser un @'atomo o una expresi@'on no
+at@'omica. @var{expr_2} puede ser cualquier expresi@'on no
+at@'omica. La funci@'on @code{delete} devuelve una
+nueva expresi@'on sin modificar @var{expr_2}.
+
+@code{delete(@var{expr_1}, @var{expr_2}, @var{n})}
+elimina de @var{expr_2} los primeros @var{n} argumentos
+del operador del nivel superior que sean iguales a @var{expr_1}.
+Si hay menos de @var{n} argumentos iguales, entonces se
+eliminan todos ellos.
+
+Ejemplos:
+
+Eliminando elementos de una lista.
+
+@c ===beg===
+@c delete (y, [w, x, y, z, z, y, x, w]);
+@c ===end===
 @example
-(%i1) delete(sin(x), x+sin(x)+y);
+(%i1) delete (y, [w, x, y, z, z, y, x, w]);
+(%o1)                  [w, x, z, z, x, w]
+@end example
+
+Eliminando t@'erminos de una suma.
+
+@c ===beg===
+@c delete (sin(x), x + sin(x) + y);
+@c ===end===
+@example
+(%i1) delete (sin(x), x + sin(x) + y);
 (%o1)                         y + x
 @end example
 
-La llamada @code{delete(@var{expr_1}, @var{expr_2}, @var{n})} elimina las primeras @var{n} apariciones de @var{expr_1} en  @var{expr_2}.  En caso de que @var{expr_1} aparezca menos de @var{n} veces dentro de la expresi@'on de referencia @var{expr_2} entonces se eliminan todas ellas.
+Eliminando factores de un producto.
 
+@c ===beg===
+@c delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
+@c ===end===
 @example
-(%i1) delete(a, f(a,b,c,d,a));
-(%o1)                      f(b, c, d)
-(%i2) delete(a, f(a,b,a,c,d,a), 2);
-(%o2)                     f(b, c, d, a)
+(%i1) delete (u - x, (u - w)*(u - x)*(u - y)*(u - z));
+(%o1)                (u - w) (u - y) (u - z)
 @end example
 
+Eliminando argumentos de una expresi@'on arbitraria.
+
+@c ===beg===
+@c delete (a, foo (a, b, c, d, a));
+@c ===end===
+@example
+(%i1) delete (a, foo (a, b, c, d, a));
+(%o1)                     foo(b, c, d)
+@end example
+
+Limitando el n@'umero de argumentos a eliminar.
+
+@c ===beg===
+@c delete (a, foo (a, b, a, c, d, a), 2);
+@c ===end===
+@example
+(%i1) delete (a, foo (a, b, a, c, d, a), 2);
+(%o1)                    foo(b, c, d, a)
+@end example
+
+Los argumentos se comparan respecto de "=".
+Aquellos argumentos que verifiquen la condici@'on @code{equal},
+pero no "=" no ser@'an eliminados.
+
+@c ===beg===
+@c [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+@c [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
+@c delete (0, [0, 0.0, 0b0]);
+@c is (equal ((x + y)*(x - y), x^2 - y^2));
+@c is ((x + y)*(x - y) = x^2 - y^2);
+@c delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
+@c ===end===
+@example
+(%i1) [is (equal (0, 0)), is (equal (0, 0.0)), is (equal (0, 0b0))];
+
+`rat' replaced 0.0 by 0/1 = 0.0
+`rat' replaced 0.0B0 by 0/1 = 0.0B0
+(%o1)                  [true, true, true]
+(%i2) [is (0 = 0), is (0 = 0.0), is (0 = 0b0)];
+(%o2)                 [true, false, false]
+(%i3) delete (0, [0, 0.0, 0b0]);
+(%o3)                     [0.0, 0.0b0]
+(%i4) is (equal ((x + y)*(x - y), x^2 - y^2));
+(%o4)                         true
+(%i5) is ((x + y)*(x - y) = x^2 - y^2);
+(%o5)                         false
+(%i6) delete ((x + y)*(x - y), [(x + y)*(x - y), x^2 - y^2]);
+                              2    2
+(%o6)                       [x  - y ]
+@end example
 @end deffn
 
 @deffn {Funci@'on} eighth (@var{expr})
