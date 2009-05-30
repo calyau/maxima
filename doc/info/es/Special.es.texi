@@ -1,4 +1,4 @@
-@c version 1.49
+@c version 1.50
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -1285,27 +1285,39 @@ Calcula la transformada de Laplace de @var{expr} respecto de
 la variable @var{t}. El integrando @var{expr} puede contener
 funciones especiales.
 
-Si @code{specint} no puede calcular la integral, le valor devuelto
-puede contener s@'{@dotless{i}}mbolos de Lisp, incluyendo
-@code{other-defint-to-follow-negtest},
-@code{other-lt-exponential-to-follow},
-@code{product-of-y-with-nofract-indices}, etc.; se trata de un
-fallo pendiente de correcci@'on.
+La funci@'on @code{specint} admite las funciones especiales siguientes:
+la gamma incompleta, las funciones de error (pero no @code{erfi}, siendo
+sencillo transformar @code{erfi} en la funci@'on de error @code{erf}),
+integrales exponenciales, funciones de Bessel (incluidos productos de
+funciones de Bessel), funciones de Hankel, de Hermite y los polinomios de
+Laguerre.
 
-La ejecuci@'on de @code{demo(hypgeo)} muestra algunso ejemplos de
+Adem@'as, @code{specint} tambi@'en admite la funci@'on hipergeom@'etrica
+@code{%f[p,q]([],[],z)}, la funci@'on de Whittaker de primera especie
+@code{%m[u,k](z)} y la de segunda especie @code{%w[u,k](z)}.
+
+El resultado puede darse en t@'erminos de funciones especiales y es
+posible que incluya tambi@'en funciones hipergeom@'etricas sin
+simplificar.
+
+Cuando @code{laplace} es incapaz de calcular la transformada de Laplace,
+entonces llama a la funci@'on @code{specint}. Puesto que @code{laplace}
+tiene programadas m@'as reglas para calcular transformadas de Laplace,
+es preferible utilizar @code{laplace} en lugar de @code{specint}.
+
+La ejecuci@'on de @code{demo(hypgeo)} muestra algunos ejemplos de
 transformadas de Laplace calculadas con @code{specint}.
 
-Examples:
+Ejemplos:
 @c ===beg===
-@c assume (p > 0, a > 0);
+@c assume (p > 0, a > 0)$
 @c specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
 @c specint (t^(1/2) * bessel_j(1, 2 * a^(1/2) * t^(1/2))
 @c               * exp(-p*t), t);
 @c ===end===
 
 @example
-(%i1) assume (p > 0, a > 0);
-(%o1)                    [p > 0, a > 0]
+(%i1) assume (p > 0, a > 0)$
 (%i2) specint (t^(1/2) * exp(-a*t/4) * exp(-p*t), t);
                            sqrt(%pi)
 (%o2)                     ------------
@@ -1321,6 +1333,58 @@ Examples:
                                p
 @end example
 
+Ejemplos para integrales exponenciales:
+
+@example
+(%i4) assume(s>0,a>0,s-a>0)$
+(%i5) ratsimp(specint(%e^(a*t)*(log(a)+expintegral_e1(a*t))*%e^(-s*t),t));
+                                    log(s)
+(%o5)                               ------
+                                    s - a
+
+(%i6) logarc:true$
+(%i7) gamma_expand:true$
+(%i8) radcan(specint((cos(t)*expintegral_si(t)
+                     -sin(t)*expintegral_ci(t))*%e^(-s*t),t));
+                                    log(s)
+(%o8)                               ------
+                                     2
+                                    s  + 1
+
+(%i9) ratsimp(specint((2*t*log(a)+2/a*sin(a*t)
+                      -2*t*expintegral_ci(a*t))*%e^(-s*t),t));
+                                      2    2
+                                 log(s  + a )
+(%o9)                            ------------
+                                       2
+                                      s
+@end example
+
+Resultados cuando se utiliza la expansi@'on de @code{gamma_incomplete}
+y se cambia la representaci@'on de @code{expintegral_e1}:
+
+@example
+(%i10) assume(s>0)$
+(%i11) specint(1/sqrt(%pi*t)*unit_step(t-k)*%e^(-s*t),t);
+                                            1
+                            gamma_incomplete(-, k s)
+                                            2
+(%o11)                      ------------------------
+                               sqrt(%pi) sqrt(s)
+
+(%i12) gamma_expand:true$
+(%i13) specint(1/sqrt(%pi*t)*unit_step(t-k)*%e^(-s*t),t);
+                              erfc(sqrt(k) sqrt(s))
+(%o13)                        ---------------------
+                                     sqrt(s)
+
+(%i14) expintrep:expintegral_e1$
+(%i15) ratsimp(specint(1/(t+a)^2*%e^(-s*t),t));
+                              a s
+                        a s %e    expintegral_e1(a s) - 1
+(%o15)                - ---------------------------------
+                                        a
+@end example
 @end deffn
 
 
