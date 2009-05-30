@@ -817,8 +817,7 @@
     (setf (get a 'tex) 'tex-prefix)
     (setf (get a 'texword) b)	;This means "sin" will always be roman
     (setf (get a 'texsym) (list b))
-    (setf (get a 'tex-rbp) 119)))
-;;    (setf (get a 'tex-rbp) 130)))
+    (setf (get a 'tex-rbp) 130)))
 
 
 ;; I WONDER IF ALL BUILT-IN FUNCTIONS SHOULD BE SET IN ROMAN TYPE
