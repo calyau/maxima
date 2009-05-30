@@ -292,6 +292,21 @@ See also @code{erf}.
 @deffn {Function} quantile_normal (@var{q},@var{m},@var{s})
 Returns the @var{q}-quantile of a @math{Normal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_normal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
+@c ===beg===
+@c load (distrib)$
+@c quantile_normal(95/100,0,1);
+@c float(%);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) quantile_normal(95/100,0,1);
+                                      9
+(%o2)             sqrt(2) inverse_erf(--)
+                                      10
+(%i3) float(%);
+(%o3)               1.644853626951472
+@end example
+
 @opencatbox
 @category{Package distrib}
 @closecatbox
@@ -374,21 +389,23 @@ Returns the value at @var{x} of the density function of a Student random variabl
 
 
 @deffn {Function} cdf_student_t (@var{x},@var{n})
-Returns the value at @var{x} of the distribution function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom. This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Returns the value at @var{x} of the distribution function of a Student random variable @math{t(n)}, with @math{n>0} degrees of freedom.
 
 @c ===beg===
 @c load (distrib)$
 @c cdf_student_t(1/2, 7/3);
-@c %,numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_student_t(1/2, 7/3);
-                                     1  7
-(%o2)                  cdf_student_t(-, -)
-                                     2  3
-(%i3) %,numer;
-(%o3)                   .6698450596140417
+                                         7  1  28
+             beta_incomplete_regularized(-, -, --)
+                                         6  2  31
+(%o2)    1 - -------------------------------------
+                               2
+(%i3) float(%);
+(%o3)                .6698450596140415
 @end example
 
 @opencatbox
@@ -1005,21 +1022,21 @@ Returns the value at @var{x} of the density function of a F random variable @mat
 
 
 @deffn {Function} cdf_f (@var{x},@var{m},@var{n})
-Returns the value at @var{x} of the distribution function of a F random variable @math{F(m,n)}, with @math{m,n>0}. This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Returns the value at @var{x} of the distribution function of a F random variable @math{F(m,n)}, with @math{m,n>0}.
 
 @c ===beg===
 @c load (distrib)$
 @c cdf_f(2,3,9/4);
-@c %,numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_f(2,3,9/4);
-                                     9
-(%o2)                    cdf_f(2, 3, -)
-                                     4
-(%i3) %,numer;
-(%o3)                   0.66756728179008
+                                         9  3  3
+(%o2)    1 - beta_incomplete_regularized(-, -, --)
+                                         8  2  11
+(%i3) float(%);
+(%o3)                 0.66756728179008
 @end example
 
 @opencatbox
@@ -1411,6 +1428,20 @@ See also @code{erf}.
 @deffn {Function} quantile_lognormal (@var{q},@var{m},@var{s})
 Returns the @var{q}-quantile of a @math{Lognormal(m,s)} random variable, with @math{s>0}; in other words, this is the inverse of @code{cdf_lognormal}. Argument @var{q} must be an element of @math{[0,1]}. To make use of this function, write first @code{load(distrib)}.
 
+@c ===beg===
+@c load (distrib)$
+@c quantile_lognormal(95/100,0,1);
+@c float(%);
+@c ===end===
+@example
+(%i1) load (distrib)$
+(%i2) quantile_lognormal(95/100,0,1);
+                  sqrt(2) inverse_erf(9/10)
+(%o2)           %e
+(%i3) float(%);
+(%o3)               5.180251602233015
+@end example
+
 @opencatbox
 @category{Package distrib}
 @closecatbox
@@ -1607,23 +1638,21 @@ Returns the value at @var{x} of the density function of a @math{Beta(a,b)} rando
 
 
 @deffn {Function} cdf_beta (@var{x},@var{a},@var{b})
-Returns the value at @var{x} of the distribution function of a @math{Beta(a,b)} random variable, with @math{a,b>0}. 
-
-This function has no closed form and it is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
+Returns the value at @var{x} of the distribution function of a @math{Beta(a,b)} random variable, with @math{a,b>0}.
 
 @c ===beg===
 @c load (distrib)$
 @c cdf_beta(1/3,15,2);
-@c %,numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_beta(1/3,15,2);
-                                 1
-(%o2)                   cdf_beta(-, 15, 2)
-                                 3
-(%i3) %,numer;
-(%o3)                 7.666089131388224E-7
+                             11
+(%o2)                     --------
+                          14348907
+(%i3) float(%);
+(%o3)              7.666089131388195E-7
 @end example
 
 @opencatbox
@@ -2631,21 +2660,19 @@ Returns the value at @var{x} of the probability function of a @math{Binomial(n,p
 @deffn {Function} cdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the distribution function of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer.
 
-This function is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
-
 @c ===beg===
 @c load (distrib)$
 @c cdf_binomial(5,7,1/6);
-@c cdf_binomial(5,7,1/6), numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_binomial(5,7,1/6);
-                                         1
-(%o2)                 cdf_binomial(5, 7, -)
-                                         6
-(%i3) cdf_binomial(5,7,1/6), numer;
-(%o3)                   .9998713991769548
+                            7775
+(%o2)                       ----
+                            7776
+(%i3) float(%);
+(%o3)               .9998713991769548
 @end example
 
 @opencatbox
@@ -3325,21 +3352,19 @@ Returns the value at @var{x} of the probability function of a @math{Negative Bin
 @deffn {Function} cdf_negative_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the distribution function of a @math{Negative Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer.
 
-This function is numerically computed if the global variable @code{numer} equals @code{true},  otherwise it returns a nominal expression.
-
 @c ===beg===
 @c load (distrib)$
 @c cdf_negative_binomial(3,4,1/8);
-@c cdf_negative_binomial(3,4,1/8), numer;
+@c float(%);
 @c ===end===
 @example
 (%i1) load (distrib)$
 (%i2) cdf_negative_binomial(3,4,1/8);
-                                             1
-(%o2)            cdf_negative_binomial(3, 4, -)
-                                             8
-(%i3) cdf_negative_binomial(3,4,1/8), numer;
-(%o3)                  .006238937377929698
+                            3271
+(%o2)                      ------
+                           524288
+(%i3) float(%);
+(%o3)              .006238937377929687
 @end example
 
 @opencatbox

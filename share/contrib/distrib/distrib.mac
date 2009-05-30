@@ -200,15 +200,13 @@ cdf_normal(x,m,s):=block([cp:control1(s)],
    if cp=0 then return(funmake('cdf_normal,[x,m,s])),
    1/2+erf((x-m)/(s*sqrt(2)))/2  )$
 
-quantile_normal(q,m,s):=block([cp:control1(s), fq:float(q), cq:controlq(q)],
+/* R: qnorm(q,m,s) */
+quantile_normal(q,m,s):=block([cp:control1(s), cq:controlq(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0 then return(funmake('quantile_normal,[q,m,s])),
-   if fq=0.0 then return('minf),
-   if fq=1.0 then return('inf),
-   if numberp(q) and numberp(m) and numberp(s) and
-      (numer or ?floatp(q) or ?floatp(m) or ?floatp(s))
-      then return(m + s * ?ppnd16(fq)),
-   funmake('quantile_normal,[q,m,s]))$
+   if sign(q)='zero then return('minf),
+   if sign(q-1)='zero then return('inf),
+   m + sqrt(2)*s*inverse_erf(2*q-1))$
 
 mean_normal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
@@ -254,17 +252,14 @@ pdf_student_t(x,n):=block([cp:control1(n)],
    gamma((n+1)/2) * (1+x*x/n)^(-(n+1)/2) / (sqrt(n*%pi) * gamma(n/2)) )$
 
 /* R: pt(x,n) */
-cdf_student_t(x,n):=block([cp:control1(n),fn,fx],
+cdf_student_t(x,n):=block([cp:control1(n)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_student_t,[x,n])),
    if sign(x)='zero then return(1/2),
-   if numberp(x) and numberp(n) and 
-      (numer or ?floatp(x) or ?floatp(n))
-      then (fn: float(n),
-            fx: float(x),
-            if x>0
-              then return(1.0 - ?ibeta(fn/(fn+fx^2),fn/2,0.5) / 2)
-              else return(?ibeta(fn/(fn+fx^2),fn/2,0.5) / 2)  ),
+   if member(sign(x), ['pos, 'pz])
+      then return(1 - beta_incomplete_regularized(n/2,1/2,n/(n+x^2)) / 2),
+   if member(sign(x), ['neg, 'nz])
+      then return(beta_incomplete_regularized(n/2,1/2,n/(n+x^2)) / 2),
    funmake('cdf_student_t,[x,n]) )$
 
 /* R: qt(q,n) */
@@ -563,20 +558,20 @@ pdf_f(x,m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('pdf_f,[x,m,n])),
    if member(sign(x), ['nz,'neg,'zero])
-      then 0
-      else if sign(x)='pos
-              then gamma((m+n)/2)*(m/n)^(m/2)*x^(m/2-1)*(1+m*x/n)^(-(m+n)/2) /
-                    (gamma(m/2)*gamma(n/2))
-              else funmake('pdf_f,[x,m,n]) )$
+      then return(0),
+   if member(sign(x), ['pz,'pos])
+      then return(gamma((m+n)/2)*(m/n)^(m/2)*x^(m/2-1)*(1+m*x/n)^(-(m+n)/2) /
+                    (gamma(m/2)*gamma(n/2))),
+   funmake('pdf_f,[x,m,n]) )$
 
+/* R: pf(x,m,n) */
 cdf_f(x,m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_f,[x,m,n])),
    if member(sign(x), ['nz,'neg,'zero])
-      then return(0)
-      else if numberp(x) and x>0 and numberp(m) and numberp(n) and 
-              (numer or ?floatp(x) or ?floatp(m) or ?floatp(n))
-              then return(1-?ibeta(float(n/(n+m*x)),float(n/2),float(m/2))),
+      then return(0),
+   if member(sign(x), ['pz,'pos])
+      then return(1 - beta_incomplete_regularized(n/2, m/2, n/(n+m*x))),
    funmake('cdf_f,[x,m,n]) )$
 
 /* R: qf(q,m,n) */
@@ -706,15 +701,12 @@ cdf_lognormal(x,m,s):=block([cp:control1(s)],
               else funmake('cdf_lognormal,[x,m,s])  )$
 
 /* R: qlnorm(p,m,s)*/
-quantile_lognormal(q,m,s):=block([cp:control1(s), cq:controlq(q), fq:float(q)],
+quantile_lognormal(q,m,s):=block([cp:control1(s), cq:controlq(q)],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0 then return(funmake('quantile_lognormal,[q,m,s])),
-   if fq=0.0 then return(0),
-   if fq=1.0 then return('inf),
-   if numberp(q) and numberp(m) and numberp(s) and
-      (numer or ?floatp(q) or ?floatp(m) or ?floatp(s))
-      then return(exp(m + s * ?ppnd16(float(q)))),
-   funmake('quantile_lognormal,[q,m,s]))$
+   if sign(q)='zero then return(0),
+   if sign(q-1)='zero then return('inf),
+   exp(m + sqrt(2)*s*inverse_erf(2*q-1)) )$
 
 mean_lognormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
@@ -832,9 +824,9 @@ pdf_beta(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('pdf_beta,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero]) or member(sign(x-1), ['pos,'pz,'zero])
-      then return(0)
-      else if sign(x)='pos and sign(x-1)='neg
-              then return(x^(a-1)*(1-x)^(b-1)/beta(a,b)),
+      then return(0),
+   if sign(x)='pos and sign(x-1)='neg
+      then return(x^(a-1)*(1-x)^(b-1)/beta(a,b)),
    funmake('pdf_beta,[x,a,b]) )$
 
 /* R: pbeta(x,a,b) */
@@ -842,13 +834,12 @@ cdf_beta(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_beta,[x,a,b])),
    if member(sign(x-1), ['pos,'pz,'zero])
-      then return(1)
-      else if member(sign(x), ['nz,'neg,'zero])
-              then return(0)
-              else if numberp(x) and numberp(a) and numberp(b) and
-                      (numer or ?floatp(x) or ?floatp(a) or ?floatp(b))
-                      then return(?ibeta(float(x),float(a),float(b))),
-   funmake('cdf_beta,[x,a,b])  )$
+      then return(1),
+   if member(sign(x), ['nz,'neg,'zero])
+      then return(0),
+   if member(sign(x), ['pz,'pos])
+      then return(beta_incomplete_regularized(a,b,x)),
+   funmake('cdf_beta,[x,a,b]))$
 
 /* R: qbeta(q,a,b) */
 quantile_beta(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
@@ -1421,6 +1412,7 @@ pdf_binomial(x,n,p):=block([cp:controlip(n,p)],
                       then return(binomial(n,x)*p^x*(1-p)^(n-x)),
    funmake('pdf_binomial,[x,n,p]) )$
 
+/* R: pbinom(x,n,p) */
 cdf_binomial(x,n,p):=block([cp:controlip(n,p),xx],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_binomial,[x,n,p])),
@@ -1429,11 +1421,9 @@ cdf_binomial(x,n,p):=block([cp:controlip(n,p),xx],
               then return(0)
               else if member(sign(x-n),['pos,'pz,'zero])
                       then return(1)
-                      else if numberp(x) and numberp(p) and numberp(n) and 
-                              (numer or ?floatp(x) or ?floatp(p) or ?floatp(n))
-                              then (xx: floor(x),
-                                    return(?ibeta(float(1-p),float(n-xx),float(xx+1)))),
-   funmake('cdf_binomial,[x,n,p])  )$
+                      else (xx: floor(x),
+                            return(beta_incomplete_regularized(n-xx,xx+1,1-p))),
+   funmake('cdf_binomial,[x,n,p]))$
 
 /* R: qbinom(q,n,p) */
 quantile_binomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
@@ -1872,19 +1862,19 @@ pdf_negative_binomial(x,n,p):=block([cp:controlip(n,p)],
               then binomial(x+n-1,x)*p^n*(1-p)^x
               else funmake('pdf_negative_binomial,[x,n,p]) )$
 
+/* R: pnbinom(x,n,p) */
 cdf_negative_binomial(x,n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('cdf_negative_binomial,[x,n,p])),
    if sign(x)='neg
-      then return(0)
-      else if numberp(x) and numberp(n) and numberp(p) and
-              (numer or ?floatp(x) or ?floatp(n) or ?floatp(p))
-              then ?ibeta(float(p),float(n),float(floor(x)+1))
-              else funmake('cdf_negative_binomial,[x,n,p]) )$
+      then return(0),
+   if member(sign(x), ['zero,'pos,'pz])
+      then return(beta_incomplete_regularized(n,floor(x)+1,p)),
+   funmake('cdf_negative_binomial,[x,n,p]) )$
 
 /* R: qnbinom(q,n,p) */
-quantile_negative_binomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
-                         a, b, m],
+quantile_negative_binomial(q,n,p):=
+  block([cp:controlip(n,p), cq:controlq(q), fq:float(q), a, b, m, numer],
    if cp=-1 or cq=-1 then error("Illegal parameter"),
    if cp=0 or cq=0
       then return(funmake('quantile_negative_binomial,[q,n,p])),
@@ -1893,12 +1883,13 @@ quantile_negative_binomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:
    if not numberp(q) or not numberp(n) or not numberp(p)
       then return(funmake('quantile_negative_binomial,[q,n,p])),
    /* let's use the partition method */
+   numer:true,
    b: 1,
-   while (?ibeta(float(p),float(n),float(floor(b)+1)) < fq) do b: b*2,
+   while (beta_incomplete_regularized(n,floor(b)+1,p) < fq) do b: b*2,
    a: b/2,
    while (b-a > 1) do(
       m: floor(0.5*(a+b)),
-      if ?ibeta(float(p),float(n),float(m)) < q
+      if beta_incomplete_regularized(n,m,p) < q
          then a: m
          else b: m ),
    b-1 )$

@@ -18,8 +18,8 @@ pdf_normal(4/3,n,1);
 (assume(s>0), cdf_normal(x,m,s));
 erf((x-m)/(sqrt(2)*s))/2+1/2;
 
-quantile_normal(1/7,2,1.0);
-0.9324294761218583;
+quantile_normal(1/7,2,1);
+sqrt(2)*inverse_erf(-5/7)+2;
 
 random_normal(2,1/3,3);
 [1.967829590026135, 2.120195623477506, 2.230155261001342];
@@ -32,11 +32,11 @@ random_normal(2,1/3,3);
 pdf_student_t(2,5/9);
 3*5^(5/18)*gamma(7/9)/(41^(7/9)*sqrt(%pi)*gamma(5/18));
 
-cdf_student_t(2.0,5/9);
-0.7894199987914601;
+cdf_student_t(2,5/9);
+1-beta_incomplete_regularized(5/18,1/2,5/41)/2;
 
-cdf_student_t(0.1,50);
-0.5396278931735136;
+cdf_student_t(1/10,5);
+1-beta_incomplete_regularized(5/2,1/2,500/501)/2;
 
 quantile_student_t(0.01,26);
 -2.478629732546409;
@@ -63,8 +63,8 @@ random_chi2(500,3);
 
 /* noncentral chi square distribution */
 
-pdf_noncentral_chi2(1.3,2,8);
-0.02804627311001073;
+pdf_noncentral_chi2(13/10,2,8);
+%e^-(93/20)*bessel_i(0,2*sqrt(13)/sqrt(5))/2;
 
 cdf_noncentral_chi2(13.1,2,8);
 0.7364674817837453;
@@ -83,8 +83,8 @@ random_noncentral_chi2(12,6.5,3);
 float(pdf_f(2,3,8/3));
 0.1303747102124378;
 
-cdf_f(2,30,5.6);
-0.7922520343013054;
+cdf_f(2,30,5);
+1-542856937402935361/(665416609183179841*sqrt(13));
 
 quantile_f(2/3,2,20.1);
 1.160908609712148;
@@ -111,14 +111,14 @@ random_exp(302.5,3);
 
 /* lognormal distribution */
 
-float(pdf_lognormal(55.5,-56,3.2));
-9.309894021313939E-80;
+pdf_lognormal(55,-56,3);
+%e^-((log(55)+56)^2/18)/(165*sqrt(2)*sqrt(%pi));
 
 cdf_lognormal(3.5,2,1.2);
 1/2-erf(0.62269752625386/sqrt(2))/2;
 
 quantile_lognormal(2/5,2.2,0.2);
-8.57911343899687;
+%e^(0.2*sqrt(2)*inverse_erf(-1/5)+2.2);
 
 random_lognormal(10,15.23,3);
 [2.353791985229249E-11,0.187574637106219,2.9149310594062033E-9];
@@ -131,8 +131,8 @@ random_lognormal(10,15.23,3);
 pdf_gamma(5,2.1,3.5);
 0.09686570955466306;
 
-cdf_gamma(5,2.1,3.5);
-0.3873403292846522;
+cdf_gamma(5,2,3);
+1-gamma_incomplete_regularized(2,5/3);
 
 cdf_gamma(5,2.1,30.5);
 0.009139841119737905;
@@ -154,8 +154,8 @@ random_gamma(1/2,12,3);
 pdf_beta(1/8,5/8,666/57);
 282475249*7^(13/19)/(1073741824*8^(47/152)*beta(5/8,222/19));
 
-cdf_beta(0.5,3.2,8.1);
-0.9385857027031206;
+cdf_beta(1/2,3,8);
+121/128;
 
 quantile_beta(1/8,2,3.2);
 0.1534071622832576;
@@ -231,8 +231,8 @@ pdf_laplace(2.5,-5,3);
 cdf_laplace(2/5,-5,30);
 1-%e^-(9/50)/2;
 
-cdf_laplace(2/5,-5,30.0);
-0.582364894294364;
+cdf_laplace(2/5,-5,30);
+1-%e^-(9/50)/2;
 
 random_laplace(-12,17,3);
 [12.6464246671848,-28.88305575541671,-25.390527331018];
@@ -274,10 +274,10 @@ random_gumbel(80,1/6,3);
 /* binomial distribution */
 
 cdf_binomial(3.2,6,1/8);
-0.9970321655273437;
+130683/131072;
 
-cdf_binomial(4.0,6,1/8);
-0.9998359680175781;
+cdf_binomial(4,6,1/8);
+262101/262144;
 
 quantile_binomial(0.74,23,1/5);
 6;
@@ -290,8 +290,8 @@ random_binomial(50,1/8,3);
 
 /* poisson distribution */
 
-cdf_poisson(13,9.5);
-0.8981359305376498;
+cdf_poisson(13,19/2);
+gamma_incomplete_regularized(14,19/2);
 
 cdf_poisson(0.1,0.5);
 0.6065306597126336;
@@ -338,8 +338,8 @@ random_hypergeometric(19,22,31,3);
 pdf_negative_binomial(4,7,1/8);
 252105/4294967296;
 
-cdf_negative_binomial(4.0,7,1/8);
-9.91506967693572E-5;
+cdf_negative_binomial(4,7,1/8);
+425849/4294967296;
 
 quantile_negative_binomial(7/10,10,1/7);
 69;
