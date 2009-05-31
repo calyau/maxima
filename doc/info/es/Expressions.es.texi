@@ -1,4 +1,4 @@
-@c english version 1.63
+@c english version 1.64
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -1078,14 +1078,86 @@ Es similar a @code{isolate (@var{expr}, @var{x})}, excepto que permite al usuari
 @end deffn
 
 @deffn {Funci@'on} dispform (@var{expr})
-Devuelve la representaci@'on externa de @var{expr} con respecto a su operador principal. Es @'util cuando se usa conjuntamente con @code{part}, que tambi@'en trata de la representaci@'on externa.  Sip@'ongase que  @var{expr} es -A .
-Entonces la representaci@'on interna de  @var{expr} es "*"(-1,A), mientras que la representaci@'on externa es "-"(A). La llamada @code{dispform (@var{expr}, all)} convierte la expresi@'on entera al formato externo.  Por ejemplo, si @code{expr: sin (sqrt (x))}, entonces @code{freeof (sqrt, expr)} y @code{freeof (sqrt, dispform (expr))} dan @code{true}, mientras que
-@code{freeof (sqrt, dispform (expr, all))} da @code{false}.
+@deffnx {Function} dispform (@var{expr}, all)
 
+@code{dispform(@var{expr})} devuelve la representaci@'on externa de
+@var{expr} respecto del operador del nivel superior.
+@code{dispform(@var{expr}, all)} devuelve la representaci@'on
+externa respecto de todos los operadores que haya en @var{expr}.
+
+V@'ease tambi@'en @code{part}, @code{inpart} y @code{inflag}.
+
+Ejemplos:
+
+La representaci@'on interna de @code{- x} es "menos uno 
+multiplicado por @code{x}", mientras que la representaci@'on externa es
+"menos @code{x}".
+
+@c ===beg===
+@c - x;
+@c ?format (true, "~S~%", %);
+@c dispform (- x);
+@c ?format (true, "~S~%", %);
+@c ===end===
+@example
+(%i1) - x;
+(%o1)                          - x
+(%i2) ?format (true, "~S~%", %);
+((MTIMES SIMP) -1 $X)
+(%o2)                         false
+(%i3) dispform (- x);
+(%o3)                          - x
+(%i4) ?format (true, "~S~%", %);
+((MMINUS SIMP) $X)
+(%o4)                         false
+@end example
+
+La representaci@'on interna de @code{sqrt(x)} es 
+"@code{x} elevado a 1/2", mientras que su representaci@'on
+externa es "ra@'{@dotless{i}}z de @code{x}".
+
+@c ===beg===
+@c sqrt (x);
+@c ?format (true, "~S~%", %);
+@c dispform (sqrt (x));
+@c ?format (true, "~S~%", %);
+@c ===end===
+@example
+(%i1) sqrt (x);
+(%o1)                        sqrt(x)
+(%i2) ?format (true, "~S~%", %);
+((MEXPT SIMP) $X ((RAT SIMP) 1 2))
+(%o2)                         false
+(%i3) dispform (sqrt (x));
+(%o3)                        sqrt(x)
+(%i4) ?format (true, "~S~%", %);
+((%SQRT SIMP) $X)
+(%o4)                         false
+@end example
+
+Utilizaci@'on del argumento opcional @code{all}.
+
+@c ===beg===
+@c expr : sin (sqrt (x));
+@c freeof (sqrt, expr);
+@c freeof (sqrt, dispform (expr));
+@c freeof (sqrt, dispform (expr, all));
+@c ===end===
+@example
+(%i1) expr : sin (sqrt (x));
+(%o1)                     sin(sqrt(x))
+(%i2) freeof (sqrt, expr);
+(%o2)                         true
+(%i3) freeof (sqrt, dispform (expr));
+(%o3)                         true
+(%i4) freeof (sqrt, dispform (expr, all));
+(%o4)                         false
+@end example
 @end deffn
 
+
 @deffn {Funci@'on} distrib (@var{expr})
-Diistribuye sumas sobre productos.  Difiere de @code{expand}
+Distribuye sumas sobre productos. Difiere de @code{expand}
 en que trabaja s@'olo al nivel superior de una expresi@'on, siendo m@'as r@'apida que @code{expand}.  Difiere de  @code{multthru} en que expande todas las sumas del nivel superior.
 
 Ejemplos:
@@ -1182,6 +1254,7 @@ Si @code{exptsubst} vale @code{true} permite la sustituci@'on @code{y} por @code
 @end defvr
 
 @deffn {Funci@'on} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+
 @code{freeof (@var{x_1}, @var{expr})}
 Devuelve @code{true} si ninguna subexpresi@'on de @var{expr} coincide con @var{x_1},
 o si @var{x_1} aparece como variable muda en @var{expr}, o si @var{x_1} no es ni
