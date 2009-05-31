@@ -11,5 +11,6 @@
    (:file "matching")
    (:file "graph6")
    (:file "demoucron")
-   (:file "dijkstra")))
+   (:file "dijkstra")
+   (:file "wiener_index")))
 
