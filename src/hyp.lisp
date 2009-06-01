@@ -736,7 +736,7 @@
 (defun hyp-negp-in-l (l)
   (let ((max-neg nil))
     (dolist (x l)
-      (when (and (numberp x) (minusp x))
+      (when (and (integerp x) (minusp x))
 	(if max-neg
 	    (setf max-neg (max max-neg x))
 	    (setf max-neg x))))
