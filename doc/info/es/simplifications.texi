@@ -1,4 +1,4 @@
-@c english version 1.9
+@c english version 1.10
 @menu
 * Introducci@'on a simplification::
 * Funciones y variables para simplification::
@@ -345,7 +345,7 @@ Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 
 @deffn {Funci@'on} gd (@var{x})
 Devuelve la funci@'on de Gudermann,
-@code{2 * atan(%e^@var{x} - %pi/2)}.
+@code{2*atan(%e^x)-%pi/2}.
 
 Para hacer uso de esta funci@'on ejecutar @code{load(functs)}.
 @end deffn
