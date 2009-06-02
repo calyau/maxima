@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                              
-;;;  $Id: grobner.lisp,v 1.5 2008-05-05 08:47:28 andrejv Exp $		 
+;;;  $Id: grobner.lisp,v 1.6 2009-06-02 07:49:49 andrejv Exp $		 
 ;;;  Copyright (C) 1999, 2002 Marek Rychlik <rychlik@u.arizona.edu>		 
 ;;;  		       								 
 ;;;  This program is free software; you can redistribute it and/or modify	 
@@ -28,10 +28,7 @@
     #+gcl (load eval)
     #-gcl (:load-toplevel :execute)
     (format t "~&Loading maxima-grobner ~a ~a~%"
-	    "$Revision: 1.5 $" "$Date: 2008-05-05 08:47:28 $"))
-
-;;FUNCTS is loaded because it contains the definition of LCM
-($load "functs")
+	    "$Revision: 1.6 $" "$Date: 2009-06-02 07:49:49 $"))
 
 ;; Macros for making lists with iterators - an exammple of GENSYM
 ;; MAKELIST-1 makes a list with one iterator, while MAKELIST accepts an
@@ -627,7 +624,7 @@ in the coefficient ring."
 (defun monom-times-term (m term)
   (make-term (monom-mul m (term-monom term)) (term-coeff term)))
 
-(declaim (ftype (function (monom list) list) monom-times-poly))
+(declaim (ftype (function (monom list) list) monom-times-termlist))
 
 (defun monom-times-termlist (m f)
   (cond
@@ -1957,7 +1954,7 @@ polynomials in the list IDEAL-LIST."
      :mul #'(lambda (x y) (m* x y))
      ;;(defun coeff-div (x y) (cadr ($divide x y)))
      :div #'(lambda (x y) (sratsimp (m// x y)))
-     :lcm #'(lambda (x y) (meval1 `((|$lcm|) ,x ,y)))
+     :lcm #'(lambda (x y) (sratsimp (m// (m* x y) (second ($ezgcd x y)))))
      :ezgcd #'(lambda (x y) (apply #'values (cdr ($ezgcd x y))))
      :gcd #'(lambda (x y) (second ($ezgcd x y)))))
 
