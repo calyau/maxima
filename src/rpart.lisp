@@ -263,29 +263,56 @@
 		    (setq ris (risplit (cadr l)))
 		    (or (= (caddr pow) 2) (=0 (cdr ris)))))
 	   (cond ((=0 (cdr ris))
-		  (case (cond ((mnegp (car ris)) '$negative)
-			      (implicit-real '$positive)
-			      (t (asksign (car ris))))
-		    ($negative (risplit (mul2 (power -1 pow) (power (neg (car ris)) pow))))
+		  (case (cond ((mnegp (car ris)) '$neg)
+			      (implicit-real '$pos)
+			      (t ($sign (car ris)))) ; Use $sign not asksign
+		    ($neg (risplit (mul2 (power -1 pow) 
+                                         (power (neg (car ris)) pow))))
 		    ($zero (cons (power 0 pow) 0))
-		    (t (cons (power (car ris) pow) 0))))
+                    ($pos (cons (power (car ris) pow) 0)) ; Add the case $pos
+                    (t
+                     ;; The sign is unknown. Return a general form.
+                     (let ((sp (risplit (caddr l)))
+		           (aa (absarg1 (cadr l))))
+                       (let ((pre (mul (powers '$%e (mul (cdr aa) (mul (cdr sp) -1)))
+                                       (powers (car aa) (car sp))))
+                             (post (add (mul (cdr sp) (take '(%log) (car aa)))
+                                        (mul (car sp) (cdr aa)))))
+                       (cons (mul pre (take '(%cos) post))
+                             (mul pre (take '(%sin) post))))))))
 		 (t
 		  (let ((abs2 (spabs ris))
 			(n (abs (cadr pow)))
 			(pos? (> (cadr pow) -1)))
-		    (let ((abs (power abs2 (1//2))))
-		      (divcarcdr
-		       (expanintexpt
-			(cons (power (add abs (car ris)) (1//2))
-			      (porm (let ((a pos?)
-					  (b (eq (asksign (cdr ris)) '$negative)))
-				      (cond (a (not b))
-					    (b t)))
-				    (power (sub abs (car ris)) (1//2))))
-			n)
-		       (if pos?
-			   (power 2 (div n 2))
-			   (power (mul 2 abs2) (div n 2)))))))))
+		    (let ((abs (power abs2 (1//2)))
+                          (sign-imagpart ($sign (cdr ris)))) ; Do we know the sign?
+                      (cond ((member sign-imagpart '($neg $pos))
+                             (divcarcdr
+                               (expanintexpt
+                                 (cons (power (add abs (car ris)) (1//2))
+                                       (porm (let ((a pos?)
+                                                   (b (eq (asksign (cdr ris)) 
+                                                          '$negative)))
+                                               (cond (a (not b))
+                                                     (b t)))
+                                             (power (sub abs (car ris)) (1//2))))
+                                 n)
+                               (if pos?
+                                   (power 2 (div n 2))
+                                   (power (mul 2 abs2) (div n 2)))))
+                            (t
+                             ;; The sign is unknown. Return a general form.
+                             (let ((sp (risplit (caddr l)))
+                                   (aa (absarg1 (cadr l))))
+                               (let ((pre (mul (powers '$%e 
+                                                       (mul (cdr aa) 
+                                                       (mul (cdr sp) -1)))
+                                               (powers (car aa) (car sp))))
+                                     (post (add (mul (cdr sp) 
+                                                     (take '(%log) (car aa)))
+                                                (mul (car sp) (cdr aa)))))
+                                 (cons (mul pre (take '(%cos) post))
+                                       (mul pre (take '(%sin) post))))))))))))
 	  ((and (floatp (setq ris (cadr l))) (floatp pow))
 	   (risplit (let (($numer t))
 		      (exptrl ris pow))))
