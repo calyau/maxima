@@ -592,6 +592,10 @@ When one changes, the other does too."
 				       (list-cl-options maxima-options)
 				       (bye))
 			   :help-string "Display this usage message.")
+	   (make-cl-option :names '("--userdir")
+			   :argument "<directory>"
+			   :action nil
+			   :help-string "Use  <directory> for user directory (default is $HOME/.maxima)")
 	   (make-cl-option :names '("-l" "--lisp")
 			   :argument "<lisp>"
 			   :action nil

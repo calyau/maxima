@@ -49,6 +49,23 @@ unsetup_vars () {
   unset MAXIMA_LISP
 }
 
+process_userdir_argument() {
+    while [ -n "$1" ]; do
+        case $1 in 
+        --userdir ) MAXIMA_USERDIR=$2 ; shift;;
+        --userdir=* ) MAXIMA_USERDIR=`echo "$1" | sed 's/--userdir=//'` ;;
+        esac
+        shift
+    done
+if [ -n "$MAXIMA_USERDIR" ]; then
+    export MAXIMA_USERDIR
+fi
+}
+
+# make a special check for --userdir argument, because it influences location
+# of maximarc, which is sourced before  other command-line options are
+# processed
+process_userdir_argument "$@"
 
 if [ -z "$MAXIMA_USERDIR" ]; then
   maximarc_path="$HOME/.maxima/maximarc"
@@ -83,6 +100,8 @@ while [ -n "$1" ]; do
 	--use-version ) MAXIMA_VERSION=$2 ; shift;;
 	--use-version=*) MAXIMA_VERSION=`echo "$1" | sed 's/--use-version=//'` 
 	    ;;
+    --userdir ) : ; shift;; # noop; handled by process_userdir_argument
+    --userdir=*) : ;; # noop; handled by process_userdir_argument
 	-v ) verbose=true;;
 	--verbose ) verbose=true;;
 	*) ;;
