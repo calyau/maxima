@@ -3115,9 +3115,15 @@
                 ($delay        (update-gr-option '$delay ($rhs x)))
                 (otherwise (merror "draw: unknown global option ~M " ($lhs x)))  ))
             ((equal (caar x) '$gr3d)
-              (setf scenes (append scenes (list (funcall #'make-scene-3d (rest x))))))
+              (setf scenes
+                    (append scenes
+                            (list (funcall #'make-scene-3d
+                                           (draw-transform (rest x) '$draw3d_transform))))))
             ((equal (caar x) '$gr2d)
-              (setf scenes (append scenes (list (funcall #'make-scene-2d (rest x))))))
+              (setf scenes
+                    (append scenes
+                            (list (funcall #'make-scene-2d
+                                           (draw-transform (rest x) '$draw2d_transform))))))
             (t
               (merror "draw: item ~M is not recognized" x)))   )
 
@@ -3324,12 +3330,11 @@
 
 ;; Equivalent to draw2d(opt & obj)
 (defun $draw2d (&rest args)
-   ($draw (cons '($gr2d) (draw-transform args '$draw2d_transform))) )
-
+   ($draw (cons '($gr2d) args)) )
 
 ;; Equivalent to draw3d(opt & obj)
 (defun $draw3d (&rest args)
-   ($draw (cons '($gr3d) (draw-transform args '$draw3d_transform))) )
+   ($draw (cons '($gr3d) args)) )
 
 (defun draw-transform-one (expr transform)
   (if (atom expr)
