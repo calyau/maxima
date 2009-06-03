@@ -274,13 +274,43 @@ When one changes, the other does too."
 		  (enough-namestring dir share-root)))
 	    file-list)))
 
-#+(or clisp ecl)
+#+clisp
 (defun share-subdirs-list ()
   ;; This doesn't work yet on windows.  Give up in that case and use
   ;; the default list.
   (if (string= *autoconf-win32* "true")
       (default-share-subdirs-list)
       (let* ((share-root (pathname (concatenate 'string *maxima-sharedir* "/")))
+	     (dir-list (directory (merge-pathnames (make-pathname :directory '(:relative :wild-inferiors))
+						   share-root))))
+	;; dir-list contains all of the directories.  Remove stuff we
+	;; don't want like CVS directories.  Anything else?
+	(setf dir-list (delete-if #'(lambda (x)
+				      ;; Remove CVS directories
+				      (or (equal x share-root)
+					  (equal "CVS" (car (last (pathname-directory x))))))
+				  dir-list))
+	;; Now just want the part after the *maxima-sharedir*, and we want
+	;; strings.
+	(setf dir-list
+	      (mapcar #'(lambda (x)
+			  (let ((dir (make-pathname :directory (butlast (pathname-directory x))
+						    :name (car (last (pathname-directory x))))))
+			    (enough-namestring dir share-root)))
+		      dir-list))
+	;; Sort in alphabetical order
+	(sort dir-list #'string-lessp))))
+
+#+ecl
+(defun share-subdirs-list ()
+  ;; This doesn't work yet on windows.  Give up in that case and use
+  ;; the default list.
+  (if (string= *autoconf-win32* "true")
+      (default-share-subdirs-list)
+      ;; The call to DIRECTORY is to get ecl to follow any symlinks so
+      ;; that the subsequent call to directory all start with the same
+      ;; initial path.
+      (let* ((share-root (first (directory (pathname (concatenate 'string *maxima-sharedir* "/")))))
 	     (dir-list (directory (merge-pathnames (make-pathname :directory '(:relative :wild-inferiors))
 						   share-root))))
 	;; dir-list contains all of the directories.  Remove stuff we
