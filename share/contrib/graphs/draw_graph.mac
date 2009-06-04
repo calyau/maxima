@@ -160,7 +160,7 @@ draw_graph(G, [options]) := block(
       set_positions(v_pos, G)),
     dimension : length(second(first(v_pos))),
 
-    /* Normalize positions into [-1,1]x[-1,1] */
+    /* Normalize positions into [-1,1]x[-1,1]
     if length(v_pos)>1 then block(
       [xyz_min, xyz_max, xyz],
       xyz : args(transpose(apply(matrix, map(second, v_pos)))),
@@ -172,7 +172,7 @@ draw_graph(G, [options]) := block(
            map(lambda([xx, xx_max, xx_min],
                2*(xx - (xx_min, xx_max)/2) / (xx_max - xx_min)),
              u[2], xyz_max, xyz_min)]),
-         v_pos)),
+         v_pos)),*/
      
     /* Setup edges */
     if show_edges#[] then (
@@ -233,10 +233,11 @@ draw_graph(G, [options]) := block(
       vertex_sizes : [vertex_size],
       vertex_types : [vertex_type],
       vertex_partition : [vertices(G)]),
-      
+
     vertices : apply(append,
       map(lambda([c,t,s,vrt],
-          ['color=c, 'point_type=t, 'point_size=s, points(map(lambda([u], assoc(u, v_pos)), vrt))]),
+          if vrt=[] then []
+          else ['color=c, 'point_type=t, 'point_size=s, points(map(lambda([u], assoc(u, v_pos)), vrt))]),
         makelist(vertex_colors[mod(i, length(vertex_colors))+1], i, 0, length(vertex_partition)-1),
         if vertex_types=[] then makelist(vertex_type, i, 1, length(vertex_partition)) else vertex_types,
         if vertex_sizes=[] then makelist(vertex_size, i, 1, length(vertex_partition)) else vertex_sizes,
