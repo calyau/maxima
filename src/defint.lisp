@@ -879,7 +879,11 @@
 		;; expression.  If no errors are produced, we're done.
 		(let ((ll-val (no-err-sub ll e))
 		      (ul-val (no-err-sub ul e)))
-		  (cond ((and ll-val ul-val)
+		  (cond ((or (eq ll-val t)
+                             (eq ul-val t))
+                         ;; no-err-sub has returned T. An error was catched.
+                         nil)
+                        ((and ll-val ul-val)
 			 (m- ul-val ll-val))
 			(t nil))))
 	       (t nil)))))
