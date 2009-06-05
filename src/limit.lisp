@@ -116,7 +116,8 @@ It appears in LIMIT and DEFINT.......")
 	       (logcombed ()) (lhp? ()) ($logexpand t)
 	       (varlist ()) (ans ()) (genvar ()) (loginprod? ())
 	       (limit-answers ()) (limitp t) (simplimplus-problems ())
-	       (lenargs (length args)))
+	       (lenargs (length args))
+	       (genfoo ()))
 	   (declare (special lhcount *behavior-count-now* exp var val *indicator
 			     taylored origval logcombed lhp?
 			     $logexpand varlist genvar loginprod? limitp))
@@ -127,8 +128,13 @@ It appears in LIMIT and DEFINT.......")
 	      (when (setq ans (apply #'limit-list args))
 		(return ans))
 	      (setq exp1 (specrepcheck (first args)))
+              (when (and (atom exp1)
+                         (member exp1 '(nil t)))
+                ;; The expression is 'T or 'NIL. Return immediately.
+                (return exp1))
 	      (cond ((= lenargs 1)
-		     (setq var 'foo val 0))
+		     (setq var (setq genfoo (gensym)) ; Use a gensym. Not foo.
+		           val 0))
 		    (t
 		     (setq var (second args))
 		       (when ($constantp var)
@@ -154,7 +160,7 @@ It appears in LIMIT and DEFINT.......")
 		    (setq var (gensym))
 		    (setq exp (maxima-substitute var realvar exp1))
 		    (putprop var realvar 'limitsub)))
-	      (unless (or $limsubst (eq var 'foo))
+	      (unless (or $limsubst (eq var genfoo))
 		(when (limunknown exp)
 		  (return `((%limit) ,@(cons exp1 (cdr args))))))
 	      (setq varlist (ncons var) genvar nil origval val)
@@ -452,7 +458,6 @@ It appears in LIMIT and DEFINT.......")
 				   (subst (m- 'lim-epsilon) '$zerob small))))
 	     (limit new-small 'lim-epsilon '$zeroa 'think)))))
 
-
 ;;;*I* INDICATES: T => USE LIMIT1,THINK, NIL => USE SIMPLIMIT.
 (defmfun limit (exp var val *i*)
   (cond
@@ -462,6 +467,9 @@ It appears in LIMIT and DEFINT.......")
     ((not (among var exp))
      (cond ((amongl '($inf $minf $infinity $ind) exp)
 	    (simpinf exp))
+           ((amongl '($zeroa $zerob) exp)
+            ;; Simplify expression with zeroa or zerob.
+            (simpab exp))
 	   (t exp)))
     ((getlimval exp))
     (t (putlimval exp (cond ((and limit-using-taylor
