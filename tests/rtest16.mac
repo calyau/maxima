@@ -729,7 +729,7 @@ false;
  * with a^2+b^2 equal to zero.
  */
 
-/* This is the general case for an integetral with exp and sin or cos */
+/* This is the general case for an integral with exp and sin or cos */
 integrate(exp(a*x)*sin(b*x),x);
 %e^(a*x)*(a*sin(b*x)-b*cos(b*x))/(b^2+a^2);
 
@@ -770,6 +770,22 @@ a*b*c^2;
  */
 hgfred([1],[-5.2],x);
 %f[1,1]([-6.2],[-5.2],-x)*%e^x$
+
+/*
+ * Bug ID: 1315837 limit(?foo)
+ * Bug ID: 1119228 limit(1/zeraoa)
+ */
+
+limit(?foo);
+?foo;
+limit(true);
+true;
+limit(false);
+false;
+limit(1/zeroa);
+inf;
+limit(1/zerob);
+minf;
 
 end;
 end$
