@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.22 2009-04-01 02:10:55 villate Exp $
+#       $Id: Plotconf.tcl,v 1.23 2009-06-06 09:43:57 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -318,8 +318,8 @@ proc writePostscript { win } {
     #set y2 [expr {$y2-.01 * $diag}]
 
     # Set up font replacement list
-    set fontMap([font create -family {Bitstream Vera Sans Mono} -size 10]) [list Courier 10]
-    set fontMap([font create {helvetica 16 normal}]) [list Helvetica 16]
+    catch {set fontMap([font create -family {BitstreamVeraSansMono} -size 10]) [list Courier 14]}
+    catch {set fontMap([font create {helvetica 16 normal}]) [list Helvetica 16]}
     set com "$c postscript  \
       	    -x [expr {($x1 - 35)}] -y [expr {($y1 -25)}] \
 	    -width [expr {($x2 - $x1 + 60)}] \
