@@ -447,6 +447,10 @@ sqrt(2);
 limit( ((1/%pi)*(atan(n/%pi) + %pi/2))^n, n, inf);
 %e^-1;
 
+/* limit(x*expintegral_ei(x),x,0) --> Error - ID: 2801821 */
+limit(x*expintegral_ei(x), x, 0);
+0;
+
 /* tests for gruntz limit algorithm */
 gruntz(exp(x), x, inf);
 inf;

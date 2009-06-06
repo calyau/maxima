@@ -115,6 +115,11 @@
                        $expintegral_trig $expintegral_hyp %gamma_incomplete)
   "Allowed flags to transform the Exponential Integral.")
 
+(defun simp-domain-error (&rest args)
+  (if errorsw
+      (throw 'errorsw t)
+    (applay #'merror args)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Part 1: The implementation of the Exponential Integral En
@@ -242,7 +247,7 @@
             ;; we handle the special case E[v](0) = 1/(v-1), for realpart(v)>1
             (inv (add order -1)))
            ((member sgn '($neg $ nz $zero))
-            (merror (intl:gettext "expintegral_e: expintegral_e(~:M,~:M) is undefined.") order arg))
+            (simp-domain-error (intl:gettext "expintegral_e: expintegral_e(~:M,~:M) is undefined.") order arg))
            (t (eqtest (list '(%expintegral_e) order arg) expr)))))
 
       ((or (and (symbolp order) (member order infinities :test #'eq))
@@ -962,7 +967,8 @@
       ;; Check for special values
       ((eq arg '$inf) 0)
       ((zerop1 arg) 
-       (merror (intl:gettext "expintegral_e1: expintegral_e1(~:M) is undefined.") arg))
+       (simp-domain-error
+	(intl:gettext "expintegral_e1: expintegral_e1(~:M) is undefined.") arg))
 
       ;; Check for numerical evaluation
       ((complex-float-numerical-eval-p arg)
@@ -1081,7 +1087,7 @@
     (cond
       ;; Check special values
       ((zerop1 arg) 
-       (merror (intl:gettext "expintegral_ei: expintegral_ei(~:M) is undefined.") arg))
+       (simp-domain-error (intl:gettext "expintegral_ei: expintegral_ei(~:M) is undefined.") arg))
       ((eq arg '$inf) '$inf)
       ((or (eq arg '$minf) (alike1 arg '((mtimes) -1 $inf))) 0)
       ((alike1 arg '((mtimes) $%i $inf)) (mul '$%i '$%pi))
@@ -1280,7 +1286,8 @@
     (cond
       ((zerop1 arg) arg)
       ((onep1 arg)
-       (merror (intl:gettext "expintegral_li: expintegral_li(~:M) is undefined.") arg))
+       (simp-domain-error
+	(intl:gettext "expintegral_li: expintegral_li(~:M) is undefined.") arg))
       ((eq arg '$inf) '$inf)
       ((eq arg '$infinity) '$infinity)
 
@@ -1747,7 +1754,9 @@
   (let ((arg (simpcheck (cadr expr) z)))
     (cond
       ;; Check for special values
-      ((zerop1 arg) (merror (intl:gettext "expintegral_ci: expintegral_ci(~:M) is undefined.") arg))
+      ((zerop1 arg)
+       (simp-domain-error
+	(intl:gettext "expintegral_ci: expintegral_ci(~:M) is undefined.") arg))
       ((eq arg '$inf) 0)
       ((eq arg '$minf) (mul '$%i '$%pi))
       ((alike1 arg '((mtimes) -1 $inf)) (mul '$%pi '$%pi))
@@ -1941,7 +1950,8 @@
       ;; Check for special values
       ((zerop1 arg) 
        ;; First check for zero argument. Throw Maxima error.
-       (merror (intl:gettext "expintegral_chi: expintegral_chi(~:M) is undefined.") arg))
+       (simp-domain-error
+	(intl:gettext "expintegral_chi: expintegral_chi(~:M) is undefined.") arg))
       ((alike1 arg '((mtimes) $%i $inf)) (div (mul '$%pi '$%i) 2))
       ((alike1 arg '((mtimes) -1 $%i $inf)) (div (mul -1 '$%pi '$%i) 2))
 
