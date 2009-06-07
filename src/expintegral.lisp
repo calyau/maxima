@@ -118,7 +118,7 @@
 (defun simp-domain-error (&rest args)
   (if errorsw
       (throw 'errorsw t)
-    (applay #'merror args)))
+    (apply #'merror args)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
