@@ -232,7 +232,9 @@
           (eq ($sign z) '$neg)          
           (zerop1 (sub (simplify (list '(%truncate) (div z 2))) (div z 2))))
      ;; Even negative integer or real representation. Not defined.
-     (merror (intl:gettext "double_factorial: double_factorial(~:M) is undefined.") z))
+     (simp-domain-error 
+       (intl:gettext 
+         "double_factorial: double_factorial(~:M) is undefined.") z))
 
     ((or (integerp z)   ; at this point odd negative integer. Evaluate.
          (complex-float-numerical-eval-p z))
@@ -436,8 +438,11 @@
 
       ((zerop1 z)
        (let ((sgn ($sign ($realpart a))))
-         (cond ((eq sgn '$neg) (domain-error 0 'gamma_incomplete))
-               ((eq sgn '$zero) (domain-error 0 'gamma_incomplete))
+         (cond ((member sgn '($neg $zero))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "gamma_incomplete: gamma_incomplete(~:M,~:M) is undefined.")
+                    a z))
                ((member sgn '($pos $pz)) ($gamma a))
                (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
               
@@ -1248,8 +1253,11 @@
 
       ((zerop1 z)
        (let ((sgn ($sign ($realpart a))))
-         (cond ((eq sgn '$neg) (domain-error 0 'gamma_incomplete_regularized))
-               ((eq sgn '$zero) (domain-error 0 'gamma_incomplete))
+         (cond ((member sgn '($neg $zero))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "gamma_incomplete_regularized: gamma_incomplete_regularized(~:M,~:M) is undefined.")
+                    a z))
                ((member sgn '($pos $pz)) 1)
                (t (eqtest (list '(%gamma_incomplete) a z) expr)))))  
 
@@ -1429,7 +1437,8 @@
               (and (eq ($sign z) '$neg)
                    (zerop1 (sub z ($truncate z))))))
      ;; We have zero, a negative integer or a float or bigfloat representation.
-     (merror (intl:gettext "log_gamma: log_gamma(~:M) is undefined.") z))
+     (simp-domain-error 
+       (intl:gettext "log_gamma: log_gamma(~:M) is undefined.") z))
 
     ((eq z '$inf) '$inf)
 
@@ -2169,7 +2178,8 @@
   (cond
     ((or (onep1 z)
          (onep1 (mul -1 z)))
-     (merror (intl:gettext "inverse_erf: inverse_erf(~:M) is not defined.") z))
+     (simp-domain-error 
+       (intl:gettext "inverse_erf: inverse_erf(~:M) is undefined.") z))
     ((zerop1 z) z)
     ((float-numerical-eval-p z)
      (let ((x (gensym))
@@ -2273,8 +2283,8 @@
   (cond
     ((or (zerop1 z)
          (zerop1 (add z -2)))
-     (merror (intl:gettext "inverse_erfc: inverse_erfc(~:M) is not defined.") 
-             z))
+     (simp-domain-error 
+       (intl:gettext "inverse_erfc: inverse_erfc(~:M) is undefined.") z))
     ((onep1 z) 0)
     ((float-numerical-eval-p z)
      (let ((x (gensym))
@@ -2987,10 +2997,11 @@
 
       ((zerop1 z)
        (let ((sgn ($sign ($realpart a))))
-         (cond ((eq sgn '$neg) 
-                (domain-error 0 'beta_incomplete))
-               ((eq sgn '$zero) 
-                (domain-error 0 'beta_incomplete))
+         (cond ((member sgn '($neg $zero))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete: beta_incomplete(~:M,~:M,~:M) is undefined.") 
+                    a b z))
                ((member sgn '($pos $pz)) 
                 z)
                (t 
@@ -3016,7 +3027,9 @@
        ;; The argument a is zero or a is negative and the argument b is
        ;; not in a valid range. Beta incomplete is undefined.
        ;; It would be more correct to return Complex infinity.
-       (merror (intl:gettext "beta_incomplete: beta_incomplete(~:M, ~:M) is not defined.") a b))
+       (simp-domain-error 
+         (intl:gettext 
+           "beta_incomplete: beta_incomplete(~:M,~:M,~:M) is undefined.") a b z))
 
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
@@ -3384,7 +3397,10 @@
       ((zerop1 z2)
        (let ((sgn ($sign ($realpart a))))
          (cond ((eq sgn '$neg)
-                (domain-error 0 'beta_incomplete_generalized))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
+                    a b z1 z2))
                ((member sgn '($pos $pz)) 
                 (mul -1 ($beta_incomplete a b z1)))
                (t 
@@ -3394,7 +3410,10 @@
       ((zerop1 z1)
        (let ((sgn ($sign ($realpart a))))
          (cond ((eq sgn '$neg)
-                (domain-error 0 'beta_incomplete_generalized))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete_generalized: beta_incomplete_generalized(~:M,~:M,~:M,~:M) is undefined.") 
+                    a b z1 z2))
                ((member sgn '($pos $pz)) 
                 (mul -1 ($beta_incomplete a b z2)))
                (t 
@@ -3639,7 +3658,10 @@
       ((zerop1 z)
        (let ((sgn ($sign ($realpart a))))
          (cond ((eq sgn '$neg)
-                (domain-error 0 'beta_incomplete_regularized))
+                (simp-domain-error 
+                  (intl:gettext 
+                    "beta_incomplete_regularized: beta_incomplete_regularized(~:M,~:M,~:M) is undefined.") 
+                    a b z))
                ((member sgn '($pos $pz)) 
                 0)
                (t 
