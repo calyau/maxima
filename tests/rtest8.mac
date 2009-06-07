@@ -430,3 +430,41 @@ true;
 /* [ 940835 ] rectform fails with float/numer flags */
 rectform(log(-%i)),float;
 -0.5 * %i * %pi;
+
+/* verify that exp(foo) evaluates to a number
+ * probably should try several variations on this
+ * adapted from sage mailing list
+ */
+
+first (quad_qags (sin (%pi * exp (x / 2)), x, 0, 2));
+- 0.4373454748252497;
+
+/* verify that nested numerical integral is handled correctly
+ * adapted from sage mailing list
+ */
+
+quad_qags (w^2 * quad_qags (1/(s - w), s, 1, 5) [1], w, -5, -1) [1];
+25.83639378805382;
+
+/* find_root example from sage mailing list */
+
+find_root (.05^(x + 1) = (x + 1)*10^(-10), x, 5, 100);
+6.034992572983213;
+
+/* another nested example, collected from mma user forum */
+
+(f : diff (1/(1 + (1 + (a - b)^2)), a),
+ g : quad_qags (f*b*(1 - b)^2, b, 0, 1) [1],
+ find_root (g = 0, a, 0, 1));
+0.3978613590133817;
+
+/* a variation -- not sure what g:=... means in mma */
+
+(f : diff (1/(1 + (1 + (a - b)^2)), a),
+ g : 'quad_qags (f*b*(1 - b)^2, b, 0, 1) [1],
+ find_root (g = 0, a, 0, 1));
+0.3978613590133817;
+
+reset (float_approx_equal_tolerance);
+[float_approx_equal_tolerance];
+
