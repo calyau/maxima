@@ -238,13 +238,36 @@ plot2d ([discrete, [1, 2, 3, 4], [1/%e, 1/%pi, 1/%phi, 1/%gamma]]);
 
 plot2d ([discrete, [1, 2, 3, 4], [1b0, 0.5b0, 0.33b0, 0.25b0]]);
 
-/* SF bug [ 2672976 ] wxMaxima 0.8.1: set logscale x gives error */
+"SF bug [ 2672976 ] wxMaxima 0.8.1: set logscale x gives error";
 
 plot2d (sin(x), [x, 0, 1], [logx, true]);
 
 plot2d (sin(u), [u, 0, 1], [logx, true]);
 
 plot2d (sin(u), [u, 0, 1], [logx, true], [y, 0, 1], [logy, true]);
+
+"verify that nested numerical integral is handled correctly";
+
+plot2d (w^2 * quad_qags (1/(s - w), s, 1, 5) [1], [w, -5, -1], [adapt_depth, 0]);
+
+"another nested numerical integral";
+
+(kill (W, R, A),
+ W(t) := 95*sqrt(t)*sin(t/6)^2,
+ R(t) := 275*sin(t/3)^2,
+ A(t) := 1200 + quad_qags (W(x) - R(x), x, 0, t) [1],
+ plot2d (A(t), [t, 0, 18], [adapt_depth, 0]));
+
+"plotting realpart and imagpart";
+
+plot3d (realpart (asin (x + y*%i)), [x, -2, 2], [y, -2, 2], [grid, 20, 20]);
+
+plot3d (imagpart (asin (x + y*%i)), [x, -2, 2], [y, -2, 2], [grid, 20, 20]);
+
+plot3d (realpart (exp (x + y*%i)), [x, -2, 2], [y, -2, 2], [grid, 20, 20]);
+
+plot3d (imagpart (exp (x + y*%i)), [x, -2, 2], [y, -2, 2], [grid, 20, 20]);
+
 
 "FINIS" $
 
