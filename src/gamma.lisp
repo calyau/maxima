@@ -3268,9 +3268,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defprop %beta_incomplete__generalized 
-         simp-beta-incomplete-generalized operators)
-
 ;;; Generalized Incomplete Gamma function has not mirror symmetry for z1 or z2 
 ;;; but not on the negative real axis and for z1 or z2 real and > 1.
 ;;; We support a conjugate-function which test these cases.
