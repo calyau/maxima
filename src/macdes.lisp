@@ -107,5 +107,42 @@
 	(cl-info::info-exact topic)
 	(cl-info::info topic))))
 
-(defun $apropos (s)
-  (cons '(mlist) (apropos-list s :maxima)))
+; The old implementation
+;(defun $apropos (s)
+;  (cons '(mlist) (apropos-list s :maxima)))
+
+;;; Utility function for apropos to filter a list LST with a function FN
+;;; it is semiliar to remove-if-not, but take the return value of the function
+;;; and build up a new list with this values.
+;;; e.g. (filter #'(lambda(x) (if (oddp x) (inc x)) '(1 2 3 4 5)) --> (2 4 6)
+
+(defun filter (fn lst)
+  (let ((acc nil))
+    (dolist (x lst)
+      (let ((val (funcall fn x)))
+        (if val (push val acc))))
+    (nreverse acc)))
+
+(defmspec $apropos (s)
+  (let (acc y)
+    (setq s (car (margs s)))
+    (cond ((stringp s)
+           ;; A list of all Maxima names which contain the string S.
+           (setq acc (append acc (apropos-list (stripdollar s) :maxima)))
+           ;; Filter the names which are Maxima User symbols starting
+           ;; with % or $ and remove duplicates.
+           ($listify
+             ($setify
+               (cons '(mlist)
+                      (filter #'(lambda (x)
+                                  (cond ((eq (getcharn x 1) #\$) x)
+                                        ((eq (getcharn x 1) #\%)
+                                         ;; Change to a verb, when present.
+                                         (if (setq y (get x 'noun))
+                                             y
+                                             x))
+                                        (t nil)))
+                              acc)))))
+          (t
+           (merror
+             (intl:gettext "apropos: The argument has to be a string."))))))
