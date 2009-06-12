@@ -74,22 +74,7 @@ Example:
 
 @end defvr
 
-@c REPHRASE
-@c DOES apropos RETURN THE SAME THING AS THE LIST SHOWN BY describe ??
-@deffn {Function} apropos (@var{string})
-Searches for Maxima names which have @var{string} appearing anywhere within
-them.  Thus, @code{apropos (exp)} returns a list of all the flags
-and functions which have @code{exp} as part of their names, such as @code{expand},
-@code{exp}, and @code{exponentialize}.  Thus if you can only remember part of the name
-of something you can use this command to find the rest of the name.
-Similarly, you could say @code{apropos (tr_)} to find a list of many of the
-switches relating to the translator, most of which begin with @code{tr_}.
-
-@opencatbox
-@category{Help}
-@closecatbox
-
-@end deffn
+@c THE FUNCTION APRPOS IS MOVED TO THE FILE HELP.TEXI
 
 @deffn {Function} args (@var{expr})
 Returns the list of arguments of @code{expr},

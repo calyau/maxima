@@ -194,6 +194,40 @@ and additional output.
 @node Functions and Variables for Help,  , Documentation, Help
 @section Functions and Variables for Help
 
+@deffn {Function} apropos (@var{string})
+Searches for Maxima names which have @var{string} appearing anywhere within
+them.  Thus, @code{apropos (exp)} returns a list of all the flags and functions
+which have @code{exp} as part of their names, such as @code{expand}, @code{exp},
+and @code{exponentialize}.  Thus if you can only remember part of the name of
+something you can use this command to find the rest of the name. Similarly, you
+could say @code{apropos (tr_)} to find a list of many of the switches relating
+to the translator, most of which begin with @code{tr_}.
+
+@code{apropos("")} returns a list with all Maxima names. 
+
+@code{apropos} returns the empty list @code{[]}, if no name is found.
+
+Example:
+
+Show all Maxima symbols wich have @code{"gamma"} in the name:
+
+@c ===beg===
+@c apropos("gamma");
+@c ===end===
+@example
+(%i1) apropos("gamma");
+(%o1) [%gamma, %gammagreek, gamma, gammagreek, gammalim, gamma_expand, 
+gamma_imag, gamma_incomplete, gamma_incomplete_generalized, 
+gamma_incomplete_regularized, gamma_radius, Gamma, log_gamma, makegamma, 
+gamma_incomplete_generalized_regularized]
+@end example
+
+@opencatbox
+@category{Help}
+@closecatbox
+
+@end deffn
+
 @deffn {Function} demo (@var{filename})
 Evaluates Maxima expressions in @var{filename} and displays the results.
 @code{demo} pauses after evaluating each expression
@@ -283,7 +317,7 @@ _
 @end example
 
 @opencatbox
-@category{Console interaction} @category{File input}
+@category{Help} @category{Console interaction} @category{File input}
 @closecatbox
 
 @end deffn
@@ -394,7 +428,7 @@ Examples:
 @end example
 
 @opencatbox
-@category{Console interaction}
+@category{Help} @category{Console interaction}
 @closecatbox
 @end deffn
 
