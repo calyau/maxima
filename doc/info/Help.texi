@@ -225,7 +225,6 @@ gamma_incomplete_generalized_regularized]
 @opencatbox
 @category{Help}
 @closecatbox
-
 @end deffn
 
 @deffn {Function} demo (@var{filename})
@@ -399,36 +398,66 @@ which can be abbreviated @code{a} or @code{n}, respectively.
 
 @deffn {Function} example (@var{topic})
 @deffnx {Function} example ()
-@code{example (@var{topic})} displays some examples of @var{topic},
-which is a symbol (not a string).
-Most topics are function names.
+@code{example (@var{topic})} displays some examples of @var{topic}, which is a
+symbol or a string. To get examples for operators like @code{if}, @code{do}, or
+@code{lambda} the argument must be a string, e.g. @code{example ("do")}. 
+@code{example} is not case sensitive. Most topics are function names.
+
 @code{example ()} returns the list of all recognized topics.
 
-The name of the file containing the examples is given by the
-global variable @code{manual_demo}, which defaults to @code{"manual.demo"}.
+The name of the file containing the examples is given by the global option 
+variable @code{manual_demo}, which defaults to @code{"manual.demo"}.
 
-@code{example} quotes its argument.
-@code{example} returns @code{done}
-unless there is an error or there is no argument, in which case @code{example}
+@code{example} quotes its argument. @code{example} returns @code{done} unless
+no examples are found or there is no argument, in which case @code{example}
 returns the list of all recognized topics.
 
 Examples:
 
+@c ===beg===
+@c example(append);
+@c example("lambda");
+@c example("allROOTS");
+@c ===end===
 @example
-(%i1) example (append);
+(%i1) example(append);
 (%i2) append([x+y,0,-3.2],[2.5E+20,x])
-(%o2)             [y + x, 0, - 3.2, 2.5E+20, x]
-(%o2)                         done
-(%i3) example (coeff);
-(%i4) coeff(b+tan(x)+2*a*tan(x) = 3+5*tan(x),tan(x))
-(%o4)                      2 a + 1 = 5
-(%i5) coeff(1+x*%e^x+y,x,0)
-(%o5)                         y + 1
-(%o5)                         done
+(%o2)                    [y + x, 0, - 3.2, 2.5E+20, x]
+(%o2)                                done
+(%i3) example("lambda");
+(%i4) lambda([x,y,z],z^2+y^2+x^2)
+                                           2    2    2
+(%o4)                   lambda([x, y, z], z  + y  + x )
+(%i5) %(1,2,a)
+                                     2
+(%o5)                               a  + 5
+(%i6) a+2+1
+(%o6)                                a + 3
+(%o6)                                done
+(%i7) example("allROOTS");
+(%i8) (1+2*x)^3 = 13.5*(1+x^5)
+                                   3          5
+(%o8)                     (2 x + 1)  = 13.5 (x  + 1)
+(%i9) allroots(%)
+(%o9) [x = .8296749902129361, x = - 1.015755543828121, 
+x = .9659625152196369 %i - .4069597231924075, 
+x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
+(%o9)                                done
 @end example
 
 @opencatbox
 @category{Help} @category{Console interaction}
 @closecatbox
 @end deffn
+
+@defvr {Option variable} manual_demo
+Default value: @code{"manual.demo"}
+
+@code{manual_demo} specifies the name of the file containing the examples for 
+the function @code{example}. See @code{example}.
+
+@opencatbox
+@category{Help} @category{Global variables}
+@closecatbox
+@end defvr
 
