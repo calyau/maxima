@@ -13,8 +13,15 @@
 (defmspec $example (l)
   (declare (special *need-prompt*))
   (let ((example (second l)))
-    (unless (symbolp example)
-      (merror "First arg to example must be a symbol, eg example(functions)"))
+    (when (symbolp example)
+      ;; Coerce a symbol to be a string. Remove the first character,
+      ;; it is a $-char.
+      (setq example (coerce (cdr (exploden example)) 'string)))
+    (unless (stringp example)
+      (merror 
+        (intl:gettext "example: Argument must be a symbol or a string.")))
+    ;; Downcase the string. $example is not case sensitive.
+    (setq example (string-downcase example))
     (with-open-file (st ($file_search1 $manual_demo '((mlist) $file_search_demo)))
       (prog (tem all c-tag d-tag)
        again
@@ -27,15 +34,22 @@
 
        (setq tem (read st nil nil))
        (unless tem (go notfound))
-       (setq tem (makealias tem))
-       (cond ((eql tem example)
+       ;; Coerce the topic in tem to be a string.
+       (setq tem (coerce (exploden tem) 'string))
+       (cond ((string= tem example)
 	      (go doit))
 	     (t (push tem all)
 		(go again)))
        ;; at this stage we read maxima forms and print and eval
-       ;; until a peek sees '&' as the first character of next expression.
-       doit
-       (setq tem (peek-char nil st nil))
+       ;; until a peek sees '&' as the first character of next expression,
+       ;; but at first skip over whitespaces.
+       doit       
+       (when (member (setq tem (peek-char nil st nil)) 
+                     '(#\tab #\space #\newline #\linefeed #\return #\page))
+         ;; Found whitespace. Read char and look for next char.
+         ;; The && label can be positioned anywhere before the next topic.
+         (setq tem (read-char st nil))
+         (go doit))
        (cond ((or (null tem) (eql tem #\&))
 	      (setf *need-prompt* t)
 	      (return '$done)))
