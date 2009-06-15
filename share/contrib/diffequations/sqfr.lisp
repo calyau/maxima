@@ -33,7 +33,7 @@
 (defun $strictmysqfr (p x)
   (setq p ($expand ($ratdisrep p)))
   (setq x (require-symbol x "$mysqfr"))
-  (let ((i 1) (lc 1) (r) (n) (ai) (w) (bad) (acc nil) (q) (s) 
+  (let ((i 1) (lc 1) (r) (ai) (w) (bad) (acc nil) (q) (s) 
 	($gcd '$spmod) ($algebraic t) ($resultant '$red) ($ratfac nil) 
 	($ratprint nil))
     
@@ -49,7 +49,6 @@
       (incf i))
   
     (setq acc (reverse acc))
-    (setq n (length acc))
     (setq r lc)
   
     (setq i 0)
