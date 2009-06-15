@@ -134,14 +134,20 @@
 
 (defun simp-%if (e yy z)
   (declare (ignore yy))
-   (let ((cnd) ($domain '$complex))
-    (setq cnd (simplifya (second e) z))
+  (pop e) ;; remove ($%if simp)
+  (let (($domain '$complex)
+	(cnd (if e (simpcheck (pop e) z) (wna-err '$%if)))
+	(a (if e (pop e) (wna-err '$%if)))
+	(b (if e (pop e) (wna-err '$%if))))
+    (if e (wna-err '$%if))
     (setq cnd (standardize-inequality ($substitute '%or 'mor ($substitute '%and 'mand cnd))))
     (setq cnd ($substitute '%or 'mor ($substitute '%and 'mand cnd)))
-    (if (fifth e) (wna-err (caar e)))
-    (cond ((eq cnd t) (simplifya (third e) z))
-	  ((eq cnd nil) (simplifya (fourth e) z))
-	  (t `(($%if simp) ,cnd ,(simplifya (third e) z) ,(simplifya (fourth e) z))))))
+    (cond ((eq cnd t) (simpcheck a z))
+	  ((eq cnd nil) (simpcheck b z))
+	  (t
+	   (setq a (simpcheck a z))
+	   (setq b (simpcheck b z))
+	   (if (like a b) a `(($%if simp) ,cnd ,a ,b))))))
 
 (setf (get '$%integerp 'operators) 'simp-%integerp)
 
