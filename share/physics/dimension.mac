@@ -8,17 +8,16 @@ put('dimension,2,'version)$
 
 /* 
 If e is a list, return true if either e is empty or if e[i] = e[j]
-for all 1 <= i,j <= length(e). If e isn't a list, return false.
+for all 1 <= i,j <= length(e). If e isn't a list, return false. 
 */
 
 all_equalp (e) := listp(e) and cardinality(setify(e))< 2;
-
 
 /*
 fundamental_dimensions is a Maxima list that is used by the functions
 dimensionless, natural_unit, and dimension_as_list; the function
 dimension doesn't use this list.  A user may insert or remove elements
-form the list; for example, to use quantities that involve
+from the list; for example, to use quantities that involve
 temperature, you could append temp onto fundamental_dimensions.
 
 You'll get into trouble if you call any one of the functions
