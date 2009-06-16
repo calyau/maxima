@@ -341,7 +341,7 @@
 	  	   
 (defun $fourier_elim (l vars)
  
-  (let ((eq-list nil) (pos-list nil) (other-list nil) (acc) (elim-vars) ($listconstvars nil) ($ratprint nil))
+  (let ((eq-list nil) (pos-list nil) (other-list nil) (acc) ($listconstvars nil) ($ratprint nil))
     
     ;; Check the arguments
 
@@ -389,7 +389,7 @@
 	   
 	   (cond ((eq '$emptyset eq-list) (setq pos-list '$emptyset))
 		 (t
-		  (setq elim-vars ($third eq-list))
+		  ;;;(setq elim-vars ($third eq-list))
 		  (setq other-list (append other-list (margs ($second eq-list))))
 		  (setq eq-list ($first eq-list))
 		  (setq pos-list ($substitute eq-list pos-list))
