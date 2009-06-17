@@ -1991,13 +1991,13 @@ See also @code{histogram}.
 @end deffn
 
 
-@deffn {Function} barsplot (@var{list})
-@deffnx {Function} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Function} barsplot (@var{one_column_matrix})
-@deffnx {Function} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Function} barsplot (@var{one_row_matrix})
-@deffnx {Function} barsplot (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
-Similar to @code{histogram} but for discrete, numeric or categorical, statistical variables.
+@deffn {Function} barsplot (@var{data1}, @var{data2}, ..., @var{option_1}, @var{option_2}, ...)
+Plots bars diagrams for discrete statistical variables,
+both for one or multiple samples.
+
+@var{data} can be a list of outcomes representing one sample, or a 
+matrix of @var{m} rows and @var{n} columns, representing @var{n} samples of size 
+@var{m} each.
 
 Available options are:
 
@@ -2007,28 +2007,172 @@ Those defined in the @code{draw} package.
 @item
 @var{box_width}: relative width of rectangles (@code{3/4} by default). This 
 value must be in the range @code{[0,1]}.
+
+@item
+@var{groups_gap}: a positive integer number representing the gap between
+two consecutive groups of bars. Default value is 1.
+
+@item
+@var{bars_colors}: a list of colors for multiple samples. Defaults to
+the empty list @code{[]}. When there are more samples than specified
+colors, the extra necesary colors are chosen at random. See @code{color}
+to learn more about them.
+
+@item
+@var{relative_frequencies}: if @code{false}, absolute frequencies are
+used; if @code{true}, tics on the @var{y}-axis are relative frequencies.
+Default value is @code{false}.
+
+@item
+@var{ordering}: possible values are @code{orderlessp} or @code{ordergreatp},
+indicating how statistical outcomes should be ordered on the @var{x}-axis.
+Default value is @code{orderlessp}.
+
+@item
+@var{sample_keys}: a list with the strings to be used in the legend. Defaults to
+the empty list @code{[]}. When the list length is other than 0 or the number
+of samples, an error message is returned.
+
 @end itemize
 
-Example:
+Examples:
+
+Univariate sample in matrix form. Absolute frequencies.
 
 @c ===beg===
 @c load (descriptive)$
-@c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot(col(s3,2),
+@c m : read_matrix (file_search ("biomed.data"))$
+@c barsplot(
+@c   col(m,2),
 @c   title        = "Ages",
 @c   xlabel       = "years",
 @c   box_width    = 1/2,
-@c   fill_density = 0.3)$
+@c   fill_density = 3/4)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+(%i2) m : read_matrix (file_search ("biomed.data"))$
 @group
-(%i3) barsplot(col(s3,2),
+(%i3) barsplot(
+        col(m,2),
         title        = "Ages",
         xlabel       = "years",
         box_width    = 1/2,
-        fill_density = 0.3)$
+        fill_density = 3/4)$
+@end group
+@end example
+
+Two samples of different sizes, with
+relative frequencies and user declared colors.
+
+@c ===beg===
+@c load (descriptive)$
+@c l1:makelist(random(10),k,1,50)$
+@c l2:makelist(random(10),k,1,100)$
+@c barsplot(
+@c    l1,l2,
+@c    box_width = 1,
+@c    fill_density = 1,
+@c    bars_colors = [black, grey],
+@c    relative_frequencies = true,
+@c    sample_keys = ["A", "B"])$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) l1:makelist(random(10),k,1,50)$
+(%i3) l2:makelist(random(10),k,1,100)$
+@group
+(%i4) barsplot(
+        l1,l2,
+        box_width    = 1,
+        fill_density = 1,
+        bars_colors  = [black, grey],
+        relative_frequencies = true,
+        sample_keys = ["A", "B"])$
+@end group
+@end example
+
+Four non numeric samples of equal size.
+
+@c ===beg===
+@c load (descriptive)$
+@c barsplot(
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   title      = "Asking for something to four groups",
+@c   ylabel     = "# of individuals",
+@c   groups_gap = 3,
+@c   fill_density = 0.5,
+@c   ordering = ordergreatp)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) barsplot(
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        title  = "Asking for something to four groups",
+        ylabel = "# of individuals",
+        groups_gap   = 3,
+        fill_density = 0.5,
+        ordering     = ordergreatp)$
+@end group
+@end example
+
+@code{barsplot} in a multiplot context.
+
+@c ===beg===
+@c load (descriptive)$
+@c l1:makelist(random(10),k,1,50)$
+@c l2:makelist(random(10),k,1,100)$
+@c draw_compound : false $
+@c bp1 : 
+@c   barsplot(
+@c    l1,
+@c    box_width = 1,
+@c    fill_density = 0.5,
+@c    bars_colors = [blue],
+@c    relative_frequencies = true)$
+@c bp2 : 
+@c   barsplot(
+@c    l2,
+@c    box_width = 1,
+@c    fill_density = 0.5,
+@c    bars_colors = [red],
+@c    relative_frequencies = true)$
+@c draw(apply(gr2d,bp1), 
+@c      apply(gr2d,bp2)) $
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) l1:makelist(random(10),k,1,50)$
+(%i3) l2:makelist(random(10),k,1,100)$
+(%i4) draw_compound : false $
+@group
+(%i5) bp1 : 
+        barsplot(
+         l1,
+         box_width = 1,
+         fill_density = 0.5,
+         bars_colors = [blue],
+         relative_frequencies = true)$
+@end group
+@group
+(%i6) bp2 : 
+        barsplot(
+         l2,
+         box_width = 1,
+         fill_density = 0.5,
+         bars_colors = [red],
+         relative_frequencies = true)$
+@end group
+@group
+(%i7) draw(apply(gr2d,bp1), 
+           apply(gr2d,bp2)) $
 @end group
 @end example
 

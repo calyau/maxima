@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2007 Mario Rodriguez Riotorto
+Copyright (C) 2005-2009 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -123,6 +123,9 @@ www.biomates.net
 
 
 put('descriptive, 1, 'version) $
+
+if not get('draw,'version) then load("draw") $
+
 
 
 /*            AUXILIARY FUCTIONS                   */
@@ -535,7 +538,16 @@ extract_options(s,[mo]):=
     [ss,mmo] )$
 
 
-/* Plots scatter diagrams.                                                 */
+random_color():=
+  block([obase : 16, col : "#"],
+    for i : 1 thru 6 do
+       col : concat(col,
+                    block([sz : concat(random(16))],
+                          substring(sz, slength(sz)))),
+    col)$
+
+
+/* Plots scatter diagrams. */
 scatterplot(m,[select]):=
   block([scen,localopts,nclass:10],
     [select, localopts]: extract_options(select,'nclasses),
@@ -614,47 +626,120 @@ histogram(m,[select]):=
 
 
 
-/* Plots bar charts for discrete or categorical data. Argument 'm' must be a   */
-/* list, a one column matrix or a one row matrix. The second and consecutive   */
-/* arguments are either draw options or the specific 'box_width' option (3/4   */
-/*  by default) to control boxes widths.                                       */
-barsplot(m,[select]):=
-   block([fr,tot,scen,localopts,boxwidth:3/4],
-      [select, localopts]: extract_options(select,'box_width),
-      for k in localopts do
-        if lhs(k) = 'box_width then boxwidth: float(rhs(k)),
+/* Plots bar charts for discrete or categorical data, both for one or more */
+/* samples.  This function admits an arbitrary number of arguments.        */
+/* The first arguments are lists or matrices with sample data. The rest of */
+/* arguments are options in equation format (option = value). Options can  */
+/* be the same used by package draw and/or those which are specific to this*/
+/* function, namely            */
+/*    - box_width,             */
+/*    - groups_gap,            */
+/*    - bars_colors,           */
+/*    - relative_frequencies,  */
+/*    - ordering,              */
+/*    - sample_keys            */
+barsplot([args]):=
+  block([lastsample: 0, nargs: length(args), drawopts, localopts,
+          freqs: [], samplespace, sspacesize, nsamples, scene, totalgap,
+         /* default options */
+         my_box_width: 3/4, my_groups_gap: 1, my_relative_frequencies: false,
+         my_ordering: 'orderlessp, my_bars_colors: [], my_sample_keys: [] ],
 
-      if boxwidth > 1 or boxwidth < 0
-         then error("boxes width is out of range"),
-      if listofnumbersp(m) or matrixp(m) and (length(m)=1 or length(m[1])=1)
-        then (/* transform input data into a list */
-              if matrixp(m)
-                then if length(m)=1
-                       then m: m[1]
-                       else m: transpose(m)[1],
+    /* check for data */
+    for i:1 thru nargs do
+      if listp(args[i]) or matrixp(args[i])
+        then lastsample: lastsample + 1,
 
-               /* frequency table */
-               fr: discrete_freq(m),
-               tot: length(fr[1]),
-               scen:append(select,
-                           [apply('bars,
-                                  makelist([k, fr[2][k], boxwidth],k,1,tot)),
-                            'xtics = setify(map("[", map('string, fr[1]), makelist(k,k,1,tot))),
-                            'xrange = (tot-1)*0.05*[-1,+1.5]+[0.5,tot+0.5],
-                            'yrange = tree_reduce('max,fr[2])*[-0.05, 1.05] ] ),
-              if draw_compound
-                then apply('draw2d,scen)
-                else scen )
-        else error("sorry, can't plot the barsplot for these data") )$
+    /* check for barsplot options */
+    [drawopts, localopts]: extract_options(makelist(args[k],k,lastsample + 1,nargs),
+                                           'box_width, 'groups_gap, 'bars_colors,
+                                           'relative_frequencies, 'ordering, 'sample_keys),
+    for k in localopts do
+      if lhs(k) = 'box_width
+        then my_box_width: float(rhs(k))
+      elseif lhs(k) = 'groups_gap
+        then my_groups_gap: rhs(k)
+      elseif lhs(k) = 'bars_colors
+        then my_bars_colors: rhs(k)
+      elseif lhs(k) = 'relative_frequencies
+        then my_relative_frequencies: rhs(k)
+      elseif lhs(k) = 'ordering
+        then my_ordering: rhs(k)
+      elseif lhs(k) = 'sample_keys
+        then my_sample_keys: rhs(k),
+    if my_box_width > 1 or my_box_width < 0
+      then error("barsplot: illegal value for box_width"),
+    if not integerp(my_groups_gap) or my_groups_gap < 1
+      then error("barsplot: illegal value for groups_gap"),
+    if not listp(my_bars_colors)
+      then error("barsplot: illegal value for bars_colors"),
+    if my_relative_frequencies # true and my_relative_frequencies # false
+      then error("barsplot: illegal value for relative_frequencies"),
+    if not member(my_ordering, [orderlessp, ordergreatp])
+      then error("barsplot: illegal value for ordering"),
+    if not (my_sample_keys = []
+            or listp(my_sample_keys) and every('stringp, my_sample_keys))
+      then error("barsplot: illegal value for sample_keys"),
+
+    /* get absolute frequencies */
+    for k: 1 thru lastsample do (
+      if listp(args[k])
+        then freqs: cons(discrete_freq(args[k]), freqs)
+      elseif matrixp(args[k])
+        then for c in args(transpose(args[k])) do
+               freqs: cons(discrete_freq(c), freqs)
+        else error("barsplot: unknown data format")),
+
+    /* transform freqs into a more suitable form */
+    samplespace: listify(setify(apply('append,map('first,freqs)))),
+    samplespace : sort(samplespace, my_ordering),
+    sspacesize: length(samplespace),
+    nsamples: length(freqs),
+    if my_sample_keys = []
+      then my_sample_keys : makelist("",k,1,nsamples),
+    if nsamples # length(my_sample_keys)
+      then error("barsplot: incorrect number of elements in sample_keys"),
+    freqs: makelist(
+             makelist(
+               block([pos: ?position(k,first(i))],
+                    if pos = false
+                       then 0
+                       else second(i)[pos]),
+               i, freqs),
+             k,samplespace),
+
+    /* transform to relative frequencies, if necessary */
+    if my_relative_frequencies
+      then block([samplesizes: apply("+",freqs)],
+                 freqs: map(lambda([z], z/samplesizes), freqs)),
+
+    /* complete my_bars_colors with random colors, if necessary */
+    if nsamples > length(my_bars_colors)
+      then my_bars_colors: append(my_bars_colors,
+                              makelist(random_color(),k,length(my_bars_colors)+1,nsamples)),
+    totalgap: nsamples + my_groups_gap,
+    scene: append(drawopts,
+                  ['yrange = [0, lmax(flatten(freqs)) * 1.05],
+                   xtics = setify(makelist([string(samplespace[k]),
+                                            (k-1)*totalgap + (nsamples+1)/2],
+                                           k, 1, sspacesize))],
+                  apply(append,
+                        makelist(
+                          [fill_color = my_bars_colors[m],
+                           key = my_sample_keys[m],
+                           apply('bars,
+                                 makelist(
+                                   block(
+                                     [pos: (k-1)*totalgap + m],
+                                     [pos, freqs[k][m], my_box_width]),
+                                   k,1,sspacesize))],
+                        m,1,nsamples)) ),
+
+    if draw_compound
+      then apply('draw2d,scene)
+      else scene)$
 
 
-random_color():=
-  block([obase : 16, col : "#"],
-    for i : 1 thru 6 do
-       col : concat(col,
-                    block([sz : concat(random(16))],
-                          substring(sz, slength(sz)))),
-    col)$
 
 
 /* Plots pie charts for discrete or categorical data. Argument 'm' must be a  */

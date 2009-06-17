@@ -1,4 +1,4 @@
-@c english version: 1.22
+@c english version: 1.23
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -1823,45 +1823,190 @@ V@'ease tambi@'en @code{histogram}.
 @end deffn
 
 
-@deffn {Funci@'on} barsplot (@var{list})
-@deffnx {Funci@'on} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Funci@'on} barsplot (@var{one_column_matrix})
-@deffnx {Funci@'on} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Funci@'on} barsplot (@var{one_row_matrix})
-@deffnx {Funci@'on} barsplot (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
-Similar a @code{histogram}, pero para variables estad@'{@dotless{i}}sticas
-discretas, num@'ericas o categ@'oricas.
+@deffn {Funci@'on} barsplot (@var{data1}, @var{data2}, ..., @var{option_1}, @var{option_2}, ...)
+Dibuja diagramas de barras para variables estad@'{@dotless{i}}sticas
+discretas, tanto para una como para m@'as muestras.
 
-Opciones disponibles:
+@var{data} puede ser una lista de resultados provenientes de una muestra
+o una matriz de @var{m} filas y @var{n} columnas, representando @var{n} 
+muestras de tama@~no @var{m} cada una.
+
+Las opciones disponibles son:
 
 @itemize @bullet
 @item
 Las definidas en el paquete @code{draw}.
 @item
-@var{box_width}: ancho relativo de los rect@'angulos (por defecto, @code{3/4}). Este
-valor debe estar en el rango @code{[0,1]}.
+@var{box_width}: ancho relativo de los rect@'angulos (@code{3/4} por defecto). Este 
+valor debe pertenecer al rango @code{[0,1]}.
+
+@item
+@var{groups_gap}: un n@'umero positivo que representa la separaci@'on entre
+dos grupos consecutivos de barras. El valor por defecto es 1.
+
+@item
+@var{bars_colors}: una lista de colores para m@'ultiples muestras. El valor
+por defecto es la lista vac@'{@dotless{i}}a @code{[]}. Cuando el n@'umero de
+muestras sea mayor que el de colores especificados, los colores adicionales
+necesarios se seleccionan aleatoriamente. V@'ease @code{color} para m@'as
+informaci@'on.
+
+@item
+@var{relative_frequencies}: si vale @code{false}, se utilizar@'an frecuencias
+absolutas; si vale @code{true}, las marcas del eje-@var{y} ser@'an frecuencias
+relativas. El valor por defecto es @code{false}.
+
+@item
+@var{ordering}: los valores admitidos para esta opci@'on son: @code{orderlessp}
+y @code{ordergreatp}, indicando c@'omo se deben ordenar los resultados muestrales
+sobre el eje-@var{x}. El valor por defecto es @code{orderlessp}.
+
+@item
+@var{sample_keys}: es una lista de cadenas de texto a usar como leyendas.
+Su valor por defecto es la lista vac@'{@dotless{i}}a @code{[]}.
+Cuando la lista tenga una longitud diferente de cero o del n@'umero de muestras,
+se devolver@'a un mensaje de error.
+
 @end itemize
 
-Ejemplo:
+Ejemplos:
+
+Muestra univariante en formato matricial. Frecuencias absolutas.
 
 @c ===beg===
 @c load (descriptive)$
-@c s3 : read_matrix (file_search ("biomed.data"))$
-@c barsplot(col(s3,2),
+@c m : read_matrix (file_search ("biomed.data"))$
+@c barsplot(
+@c   col(m,2),
 @c   title        = "Ages",
 @c   xlabel       = "years",
 @c   box_width    = 1/2,
-@c   fill_density = 0.3)$
+@c   fill_density = 3/4)$
 @c ===end===
 @example
 (%i1) load (descriptive)$
-(%i2) s3 : read_matrix (file_search ("biomed.data"))$
+(%i2) m : read_matrix (file_search ("biomed.data"))$
 @group
-(%i3) barsplot(col(s3,2),
-  title        = "Ages",
-  xlabel       = "years",
-  box_width    = 1/2,
-  fill_density = 0.3)$
+(%i3) barsplot(
+        col(m,2),
+        title        = "Ages",
+        xlabel       = "years",
+        box_width    = 1/2,
+        fill_density = 3/4)$
+@end group
+@end example
+
+Dos muestras de diferente tama@~no, con frecuencias
+relativas y colores definidos por el usuario.
+
+@c ===beg===
+@c load (descriptive)$
+@c l1:makelist(random(10),k,1,50)$
+@c l2:makelist(random(10),k,1,100)$
+@c barsplot(
+@c    l1,l2,
+@c    box_width = 1,
+@c    fill_density = 1,
+@c    bars_colors = [black, grey],
+@c    relative_frequencies = true,
+@c    sample_keys = ["A", "B"])$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) l1:makelist(random(10),k,1,50)$
+(%i3) l2:makelist(random(10),k,1,100)$
+@group
+(%i4) barsplot(
+        l1,l2,
+        box_width    = 1,
+        fill_density = 1,
+        bars_colors  = [black, grey],
+        relative_frequencies = true,
+        sample_keys = ["A", "B"])$
+@end group
+@end example
+
+Cuatro muestras no num@'ericas de igual tama@~no.
+
+@c ===beg===
+@c load (descriptive)$
+@c barsplot(
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+@c   title      = "Asking for something to four groups",
+@c   ylabel     = "# of individuals",
+@c   groups_gap = 3,
+@c   fill_density = 0.5,
+@c   ordering = ordergreatp)$
+@c ===end===
+@example
+(%i1) load (descriptive)$
+@group
+(%i2) barsplot(
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        makelist([Yes, No, Maybe][random(3)+1],k,1,50),
+        title  = "Asking for something to four groups",
+        ylabel = "# of individuals",
+        groups_gap   = 3,
+        fill_density = 0.5,
+        ordering     = ordergreatp)$
+@end group
+@end example
+
+@code{barsplot} en un contexto multiplot.
+
+@c ===beg===
+@c load (descriptive)$
+@c l1:makelist(random(10),k,1,50)$
+@c l2:makelist(random(10),k,1,100)$
+@c draw_compound : false $
+@c bp1 : 
+@c   barsplot(
+@c    l1,
+@c    box_width = 1,
+@c    fill_density = 0.5,
+@c    bars_colors = [blue],
+@c    relative_frequencies = true)$
+@c bp2 : 
+@c   barsplot(
+@c    l2,
+@c    box_width = 1,
+@c    fill_density = 0.5,
+@c    bars_colors = [red],
+@c    relative_frequencies = true)$
+@c draw(apply(gr2d,bp1), 
+@c      apply(gr2d,bp2)) $
+@c ===end===
+@example
+(%i1) load (descriptive)$
+(%i2) l1:makelist(random(10),k,1,50)$
+(%i3) l2:makelist(random(10),k,1,100)$
+(%i4) draw_compound : false $
+@group
+(%i5) bp1 : 
+        barsplot(
+         l1,
+         box_width = 1,
+         fill_density = 0.5,
+         bars_colors = [blue],
+         relative_frequencies = true)$
+@end group
+@group
+(%i6) bp2 : 
+        barsplot(
+         l2,
+         box_width = 1,
+         fill_density = 0.5,
+         bars_colors = [red],
+         relative_frequencies = true)$
+@end group
+@group
+(%i7) draw(apply(gr2d,bp1), 
+           apply(gr2d,bp2)) $
 @end group
 @end example
 
