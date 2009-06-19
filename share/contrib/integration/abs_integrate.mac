@@ -1,5 +1,5 @@
 /*
-  Copyright 2008 by Barton Willis
+  Copyright 2008, 2009 by Barton Willis
   Maxima code for integration of signum, abs, max, min, and unit_step.
 
   This is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@ Also, Richard Hennessy identified several bugs in this code. */
 
 qput(abs_integrate, 1, version);
 
-eval_when(translate, error("abs_integrate does not translate or compile correctly."));
+eval_when(translate, error("abs_integrate does not translate or compile correctly.")); 
 
 load("opsubst");
 load("unwind_protect");
@@ -93,8 +93,34 @@ signum_to_abs(e) := block([l],
      e : ratsubst(abs(lk), lk * signum(lk),e)),
   e);
 
-signum_int(q,x) := block([p : 1, w : 1, l, v, inflag : true, f, qsave : q, listconstvars : true,
-  noun_int : nounify('integrate)],
+/* Do signum(a*b) --> signum(a) * signum(b) */
+
+signum_expand(e) := block([sublis_apply_lambda : true],
+  sublis(['signum = lambda([s],
+      (s : factor(s),
+        if safe_op(s) = "*" then xreduce("*", map('signum, args(s))) else signum(s)))], e));
+
+/* If e has the form w * signum(p1(x)) * signum(p2(x)) * ... * signum(pn(x)), where w
+is either freeof signum terms or free of x, return [w, append(q1,q2,...,qn)],
+where qk are the factors of pk; otherwise, return false. */
+
+partition_as_signum(e,x) := block([w : 1, acc : [], OK : true, inflag : true, sgn],
+  e : factor(e),
+  e : if safe_op(e) = 'signum then [e] else if safe_op(e) = "*" then args(e) else OK : false,
+  if e # false then (
+    for ek in e while OK do (
+      if freeof('signum, ek) or freeof(x,ek) then w : w * ek
+      else if safe_op(ek) = 'signum then (
+        ek : factor(first(ek)),
+        ek : if safe_op(ek) = "*" then args(ek) else [ek],
+        acc : append(ek,acc))
+      else OK : false)),
+  if OK = true and acc # [ ] then [w, acc] else false);
+
+linear_in_p(e,x) :=
+  polynomialp(e,[x], lambda([s], freeof(x,s)), lambda([k], is(k=0) or is(k = 1))) and numberp(diff(e,x));
+
+signum_int(q,x) := block([w : 1, acc : [], sgn, v, inflag : true, f, listconstvars : true],
   q : convert_to_signum(q),
   
   /* maybe expand */
@@ -103,18 +129,16 @@ signum_int(q,x) := block([p : 1, w : 1, l, v, inflag : true, f, qsave : q, listc
     q : ratexpand(q)),
 
   if (f : abs_int_extra(q,x)) # false then f
-  else if (safe_op(q) = 'signum) or (safe_op(q) = "*" and not freeof('signum, q)) then (
-    if op(q) = 'signum then (p : 1, w : first(q))
-    else (
-      for qk in q do (
-        if mapatom(qk) then p : p * qk else if (op(qk)='signum) then w : w * first(qk) else p : p * qk)),
-    l : real_linear_factors(w,x),
-    if (l = false) or (not (freeof('signum, p))) or emptyp(l) then (
-      funmake(noun_int, [qsave,x]))
-    else signum_int_helper(p, l, x))
+  else if (f : partition_as_signum(q,x)) # false then (
+    w : first(f),
+    acc : second(f),
+    if every(lambda([s], linear_in_p(s,x)), acc) then (
+      sgn : xreduce("*", map(lambda([s], diff(s,x)),acc)),
+      acc : map(lambda([s], rhs(first(linsolve(s, x)))),acc),
+     signum_int_helper(signum(sgn) * w, sort(acc), x)))
   else if (safe_op(q) = "+") then map(lambda([s], signum_int(s,x)), q)
   else block([extra_integration_methods : [], extra_definite_integration_methods : []],
-      integrate(qsave,x)));
+    integrate(q,x)));
 
 make_dummy(e,x) := block([listconstvars : true, v : listofvars(e)],
  while member(x, v) do x : concat(x,"%"),
@@ -221,6 +245,3 @@ interval_integrate(q,x,l) :=  block([xo,q1,q2,i1],
       i1 : errcatch(sublis([x = xo], q2 - q1)))
     else i1 : [ ],
     if i1 = [ ] then false else %if(x < xo, q1 + first(i1), q2)));
- 
-    
-   

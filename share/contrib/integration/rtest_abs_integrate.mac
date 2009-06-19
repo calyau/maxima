@@ -26,8 +26,11 @@ integrate(x*abs(x),x);
 0$
 
 integrate(abs((x-a)*(x-b)),x);
-signum(x-a)*(((2*x^3+(-3*b-3*a)*x^2+6*a*b*x)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(x-b)+
-((6*a^2*b+a^2*(-3*b-3*a)+2*a^3)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(b-a))$
+signum(x-a)*(((2*x^3+(-3*b-3*a)*x^2+6*a*b*x)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(x-b)+((6*a^2*b+a^2*(-3*b-3*a)+2*a^3)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(b-a))$
+
+
+signum_to_abs(factor(diff(%,x)));
+abs((x-a)*(x-b))$
 
 factor(signum_to_abs(integrate(abs((x-a)*(x-b)),x,a,b)));
 (b-a)^3/6$
@@ -63,7 +66,7 @@ integrate(x + max(x,0),x);
 (x^2*signum(x))/4+(3*x^2)/4$
 
 i : integrate(max(x,x^2),x);
-signum(x-1)*((x^3*signum(x))/6-1/6)+signum(x-1)*(1/4-(x^2*signum(x))/4)+x^3/6+x^2/4$
+((x^3/6-1/6)*signum(x-1)-1/6)*signum(x)+((1/4-x^2/4)*signum(x-1)+1/4)*signum(x)+x^3/6+x^2/4$
 
 di : diff(i,x);
 (x^2*signum(x-1)*signum(x))/2-(x*signum(x-1)*signum(x))/2+x^2/2+x/2$
@@ -92,14 +95,17 @@ subst(a = 1,i);
 (remvalue(i),0);
 0$
 
-signum_to_abs(integrate(unit_step(a * x + b),x));
-(abs(x+b/a)+x)/2$
+signum_to_abs(integrate(unit_step(x + b),x));
+(abs(x+b)+x+b)/2$
 
 integrate(unit_step(x) + cos(x^2) * x,x);
 (sin(x^2)+x*signum(x)+x)/2$
 
 integrate(unit_step(x^2-1),x);
-signum(x-1)*((x/2+1/2)*signum(x+1)-1)+x/2$
+((x/2-1/2)*signum(x-1)-1)*signum(x+1)+x/2$
+
+expand(apply_signum_mult_id(convert_to_signum(diff(%,x) - unit_step(x^2-1))));
+0$
 
 integrate(abs(x),x,1,2);
 3/2$
@@ -126,7 +132,10 @@ signum_to_abs(integrate(unit_step(x),x,a,b));
 (abs(b)+b-abs(a)-a)/2$
 
 (i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
-(x^3/3-a^3/3)*signum(x-a)-a*(x^2/2-a^2/2)*signum(x-a)$
+((2*x^3-3*a*x^2)/6+a^3/6)*signum(x-a)$
+
+signum_to_abs(diff(%,x));
+x*abs(x-a)$
 
 (i : integrate(f(x) * max(x,-x),x,0,1), ev(i, f(x) := x,integrate));
 1/3$
@@ -147,8 +156,7 @@ is(equal(gruntz(i,x,1,'minus), gruntz(i,x,1,'plus)));
 true$
 
 (i : integrate(abs(x^2-1)*exp(-x),x));
-signum(x-1)*(((-x^2-2*x-2)*%e^(-x)+%e)*signum(x+1)-%e+5*%e^(-1))+signum(x-1)
-   *((%e^(-x)-%e)*signum(x+1)+%e-%e^(-1))$
+(((-x^2-2*x-2)*%e^(-x)+%e^(-x)+4*%e^(-1))*signum(x-1)+4*%e^(-1))*signum(x+1)$
 
 signum_to_abs(diff(i,x));
 %e^(-x)*abs(x-1)*abs(x+1)$
@@ -184,7 +192,10 @@ is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
 
 integrate(abs(x-1)/ ( 1 + x^2),x);
-(signum(x-1)*(log(x^2+1)-log(2)))/2+(signum(x-1)*(%pi/2-2*atan(x)))/2$
+signum(x-1)*(log(x^2+1)/2-atan(x)-log(2)/2+%pi/4)$
+
+signum_to_abs(factor(diff(%,x)));
+abs(x-1)/ (1 + x^2)$
 
 integrate(exp(-abs(x)), x);
 ((-%e^x-%e^(-x)+2)*signum(x))/2+(%e^x-%e^(-x))/2$
@@ -229,7 +240,24 @@ log(16)/2+log(5)/2-log(2)/2+1/2$
 (i : integrate(1/(1 + abs(x) + abs(x-1)),x,-7,5));
 log(16)/2+log(5)/2-log(2)/2+1/2$
 
-(remvalue(i,di),0);
+integrate(exp(-abs(x)),x,-1,inf);
+%e^(-1)*(%e-1)+1$
+
+(convolution(f,g,x) := block([t : make_dummy([e,x],t)],
+ integrate(subst(x = t,f) * subst(x = x - t, g),t,minf,inf)),
+unit_box(x) := (unit_step(x) - unit_step(x-1)),0);
+0$ 
+
+f1 : convolution(unit_box(x),unit_box(x),x);
+(x*signum(x))/2-x*signum(x-1)+signum(x-1)+(x*signum(x-2))/2-signum(x-2)$
+
+integrate(f1,x,minf,inf);
+1$
+
+subst(x = 1, f1);
+1$
+
+(remfunction(convolution, unit_box), remvalue(i,di,f1),0);
 0$
 
 
