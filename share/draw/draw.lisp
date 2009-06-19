@@ -39,10 +39,6 @@
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
-(defvar $gnuplot_file_name "maxout.gnuplot")
-
-(defvar $data_file_name "data.gnuplot")
-
 ;; this variable is used when working with
 ;; multiple windows. Empty string means
 ;; we are working with only one window
@@ -233,6 +229,8 @@
       (gethash '$pdf_width *gr-options*)    21.0   ; cm for pdf pictures (A4 portrait width)
       (gethash '$pdf_height *gr-options*)   29.7   ; cm for pdf pictures (A4 portrait height)
       (gethash '$file_name *gr-options*)    "maxima_out"
+      (gethash '$gnuplot_file_name *gr-options*) "maxout.gnuplot"
+      (gethash '$data_file_name *gr-options*)    "data.gnuplot"
       (gethash '$file_bgcolor *gr-options*) "xffffff"
       (gethash '$delay *gr-options*)        5      ; delay for animated gif's, default 5*(1/100) sec
    ) )
@@ -428,7 +426,8 @@
             (if (member val '($horizontal $vertical))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal label orientation: ~M" val)))
-      (($key $file_name $xy_file $title $xlabel $ylabel $zlabel $font)  ; defined as strings
+      (($key $file_name $xy_file $title $xlabel $ylabel $zlabel $font
+        $gnuplot_file_name $data_file_name)  ; defined as strings
             (setf (gethash opt *gr-options*) val))
       ($user_preamble ; defined as a string or a Maxima list of strings
             (let ((str ""))
@@ -3092,13 +3091,15 @@
   (user-defaults)
   (let ((counter 0)
         (scenes-list '((mlist simp)))  ; these two variables will be used
+        gfn ; gnuplot_file_name
+        dfn ; data_file_name
         scene-short-description        ; to build the text output
         scenes
         cmdstorage  ; file maxout.gnuplot
         datastorage ; file data.gnuplot
         datapath    ; path to data.gnuplot
         ncols nrows width height ; multiplot parameters
-        isanimatedgif is1stobj biglist grouplist)
+        isanimatedgif is1stobj biglist grouplist )
     (dolist (x args)
       (cond ((equal ($op x) "=")
               (case ($lhs x)
@@ -3111,6 +3112,8 @@
                 ($pdf_width    (update-gr-option '$pdf_width ($rhs x)))
                 ($pdf_height   (update-gr-option '$pdf_height ($rhs x)))
                 ($file_name    (update-gr-option '$file_name ($rhs x)))
+                ($gnuplot_file_name (update-gr-option '$gnuplot_file_name ($rhs x)))
+                ($data_file_name    (update-gr-option '$data_file_name ($rhs x)))
                 ($file_bgcolor (update-gr-option '$file_bgcolor ($rhs x)))
                 ($delay        (update-gr-option '$delay ($rhs x)))
                 (otherwise (merror "draw: unknown global option ~M " ($lhs x)))  ))
@@ -3130,14 +3133,18 @@
     (setf isanimatedgif
           (equal (get-option '$terminal) '$animated_gif))
 
+    (setf
+       gfn (plot-temp-file (get-option '$gnuplot_file_name))
+       dfn (plot-temp-file (get-option '$data_file_name)))
+
     ; we now create two files: maxout.gnuplot and data.gnuplot
     (setf cmdstorage
-          (open (plot-temp-file $gnuplot_file_name)
+          (open gfn
                 :direction :output :if-exists :supersede))
     (setf datastorage
-          (open (plot-temp-file $data_file_name)
+          (open dfn
                 :direction :output :if-exists :supersede))
-    (setf datapath (format nil "'~a'" (plot-temp-file $data_file_name)))
+    (setf datapath (format nil "'~a'" dfn))
 
     ; when one window multiplot is active, change os terminal is not allowed
     (if (not *multiplot-is-active*)
@@ -3290,7 +3297,7 @@
              (close cmdstorage)
              ($system (format nil "~a \"~a\"" 
                                   $gnuplot_command
-                                  (plot-temp-file $gnuplot_file_name)) ))
+                                  gfn) ))
           (t ; non animated gif
              ; command file maxout.gnuplot is now ready
              (format cmdstorage "~%")
@@ -3311,17 +3318,17 @@
                    ($system (if (equal (gethash '$terminal *gr-options*) '$screen)
                                    (format nil "~a ~a"
                                                $gnuplot_command
-                                               (format nil $gnuplot_view_args (plot-temp-file $gnuplot_file_name)))
+                                               (format nil $gnuplot_view_args gfn))
                                    (format nil "~a \"~a\"" 
                                                $gnuplot_command
-                                               (plot-temp-file $gnuplot_file_name)))) )
+                                               gfn))) )
                 (t  ; non windows operating system
                    (check-gnuplot-process)
                    (when (not *multiplot-is-active*) ; not in a one window multiplot
                      (send-gnuplot-command "unset output"))
                    (send-gnuplot-command "reset")
                    (send-gnuplot-command
-                        (format nil "load '~a'" (plot-temp-file $gnuplot_file_name)))  ))))
+                        (format nil "load '~a'" gfn))  ))))
 
     ; the output is a simplified description of the scene(s)
     (reverse scenes-list)) )

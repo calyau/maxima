@@ -1,4 +1,4 @@
-@c version 1.39
+@c version 1.40
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1322,6 +1322,50 @@ Ejemplo:
 
 V@'eanse tambi@'en @code{terminal}, @code{pic_width} y @code{pic_height}.
 @end defvr
+
+
+@defvr {Opci@'on gr@'afica} gnuplot_file_name
+Valor por defecto: @code{"maxout.gnuplot"}
+
+@code{gnuplot_file_name} es el nombre del fichero que 
+almacena las instrucciones a ser procesadas por Gnuplot.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+       file_name = "my_file",
+       gnuplot_file_name = "my_commands_for_gnuplot",
+       data_file_name    = "my_data_for_gnuplot",
+       terminal          = png,
+       explicit(x^2,x,-1,1)) $
+@end example
+
+V@'ease tambi@'en @code{data_file_name}.
+
+@end defvr
+
+
+@defvr {Opci@'on gr@'afica} data_file_name
+Valor por defecto: @code{"data.gnuplot"}
+
+@code{data_file_name} es el nombre del fichero que almacena
+la informaci@'on num@'erica que necesita Gnuplot para crear
+el gr@'afico solicitado.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia. Tambi@'en puede
+usarse como argumento de la funci@'on @code{draw}.
+
+V@'ease ejemplo en @code{gnuplot_file_name}.
+
+@end defvr
+
 
 
 @defvr {Opci@'on gr@'afica} file_bgcolor

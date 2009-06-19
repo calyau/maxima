@@ -1570,6 +1570,54 @@ See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
 @end defvr
 
 
+@defvr {Graphic option} gnuplot_file_name
+Default value: @code{"maxout.gnuplot"}
+
+This is the name of the file with the necessary commands to
+be processed by Gnuplot.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+       file_name = "my_file",
+       gnuplot_file_name = "my_commands_for_gnuplot",
+       data_file_name    = "my_data_for_gnuplot",
+       terminal          = png,
+       explicit(x^2,x,-1,1)) $
+@end example
+
+See also @code{data_file_name}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+@defvr {Graphic option} data_file_name
+Default value: @code{"data.gnuplot"}
+
+This is the name of the file with the numeric data needed
+by Gnuplot to build the requested plot.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+See example in @code{gnuplot_file_name}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
 @defvr {Graphic option} file_bgcolor
 Default value: @code{"xffffff"}
 
