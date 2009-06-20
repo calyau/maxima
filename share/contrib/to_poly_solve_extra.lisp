@@ -159,6 +159,7 @@
     (setq sgn ($compare e (take '($floor) e)))
     (cond ((equal sgn "=") t)
 	  ((member sgn '("<" ">" "#") :test #'equal) nil)
+	  ((and (symbolp e) ($featurep e '$noninteger)) nil)
 	  (t `(($%integerp simp) ,e)))))
     		  
 (setf (get '$isreal_p 'operators) 'simp-isreal-p)
