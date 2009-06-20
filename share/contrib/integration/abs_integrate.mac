@@ -19,12 +19,13 @@ eval_when(translate, error("abs_integrate does not translate or compile correctl
 load("opsubst");
 load("unwind_protect");
 load("to_poly_solve_extra");
+load("partition");
 
 matchdeclare(x, symbolp, q, true, [a,b], lambda([s], numberp(s) or is(s = 'minf) or is(s = 'inf)));
 block([simp : false], tellsimpafter('integrate(q,x), extra_integrate(q,x)),
 	     	      tellsimpafter('integrate(q,x,a,b), extra_definite_integrate(q,x,a,b)));
 
-extra_integration_methods : ['signum_int,'abs_integrate_use_if];
+extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'abs_integrate_use_if, 'floor_int, 'if_int];
 
 extra_integrate(q,x) := block([i, ii : funmake(nounify('integrate),[q,x])],
   for f in extra_integration_methods do (
@@ -40,7 +41,11 @@ extra_definite_integrate(q,x,lo,hi) := block([i, ii : funmake(nounify('integrate
     if (i # false) and freeof('integrate, i) then return(ii : i)),
   ii);
 
+/* The conditional gradefs work OK, but they complicate testing and they can generate messy expressions. */
+/* gradef(signum(x),%if(x # 0, 0, 'und)); */
 gradef(signum(x),0);
+
+/* gradef(abs(x), %if(x # 0, abs(x) / x, 'und)); */
 gradef(abs(x), abs(x) / x);
 
 safe_op(e) := block([inflag : true], if mapatom(e) then false else op(e));
@@ -245,3 +250,53 @@ interval_integrate(q,x,l) :=  block([xo,q1,q2,i1],
       i1 : errcatch(sublis([x = xo], q2 - q1)))
     else i1 : [ ],
     if i1 = [ ] then false else %if(x < xo, q1 + first(i1), q2)));
+
+gradef(floor(x),%if(%integerp(x), 'und, 0));
+gradef(ceiling(x),%if(%integerp(x), 'und, 0));
+
+/* integrate(G(x,floor(x), ceiling(x)),x)
+
+We have:
+
+  integrate(G(t, floor(t), ceiling(t)),t,0,x) = sum(integrate(G(t,k,k+1),t),k,0, floor(x)-1) +
+       integrate(G(t, floor(x), ceiling(x),t),floor(x),x). */
+
+intable[floor] : lambda([u], [-(floor(u)*(floor(u)-2*u+1))/2, diff(u,%voi)]);
+intable[ceiling] : lambda([u], [(floor(u)^2-2*ceiling(u)*floor(u)+floor(u)+2*u*ceiling(u))/2, diff(u,%voi)]);
+
+floor_int(q, x) := block([l, dl, fl, cl, t, s, k, simpsum : true],
+  l : setify(xreduce('append, gatherargs(q,'floor))),
+  l : union(l, setify(xreduce('append, gatherargs(q,'ceiling)))),
+  l : subset(l, lambda([s], not(freeof(x, s)))),
+  if l = set(x) then (
+    fl : make_dummy([q,x], 'fl),
+    cl : make_dummy([q, x, fl], 'cl),
+    q : subst([floor(x) = fl, ceiling(x) = cl], q),
+    q : integrate(q, x),
+    if freeof('integrate, q) then (
+      s : errcatch(apply('sum, [subst([x = k + 1, fl = k, cl = k + 1], q)
+          - subst([x = k,fl = k, cl = k + 1], q),k,0, floor(x)-1])),
+      if s = [ ] or  not(freeof('sum,s)) then false else (
+        s : first(s) + subst([fl = floor(x), cl = ceiling(x)], q)
+        - subst([fl = floor(x), cl = ceiling(x), x = floor(x)], q),
+        s))
+    else false));
+
+if_int(q,x) := block([p,f,g,fi,gi,c],
+  if safe_op(q) = '%if then (
+    p : first(q),
+    if safe_op(p) = ">"  or freeof(x,p) then (
+      f : second(q),
+      g : third(q),
+      fi : integrate(f,x),
+      gi : integrate(g,x),
+      /* ahhh, I'm not sure why it seems that extra_integrate isn't automatically called? */
+      if not(freeof('integrate, gi)) then gi : extra_integrate(g,x),
+      if not(freeof('integrate, fi)) then fi : extra_integrate(f,x),
+      if freeof(x,p) then (
+        %if(p,fi,gi))
+      else if linear_in_p(lhs(p),x) and rhs(p) = 0 and freeof('integrate, 'limit, [fi,gi]) then (
+        c : sublis(linsolve(lhs(p),x), fi - gi),
+        if freeof(x,c) then %if(p,fi, gi + c) else false)
+      else false)
+    else false));
