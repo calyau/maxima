@@ -140,11 +140,11 @@
 (defvar $namespaces '((mlist)))
 (setq $infolists (append $infolists '($namespaces)))
 ;!! ;; CONSTANT DECLARATION DOESN'T PREVENT REASSIGNMENT ... SEEMS LIKE A BUG
-;!! (mputprop '$namespaces t '$constant)
+;!! (kind '$namespaces '$constant)
 
 (defvar $maxima (find-package :maxima))
 ;!! ;; CONSTANT DECLARATION DOESN'T PREVENT REASSIGNMENT ... SEEMS LIKE A BUG
-;!! (mputprop '$maxima t '$constant)
+;!! (kind '$maxima '$constant)
 
 (defun $symbols (p)
   (let ((symbols nil))
