@@ -100,7 +100,8 @@
     (if args
       (mapcar
         #'(lambda (key)
-            (maybe-reset key (gethash key *variable-initial-values*) actually-reset reset-verbose))
+            (multiple-value-bind (val found-p) (gethash key *variable-initial-values*)
+              (if found-p (maybe-reset key val actually-reset reset-verbose))))
         args)
 
       (maphash
