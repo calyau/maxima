@@ -991,6 +991,7 @@ sin(y)*(10.0+6*cos(x)),
            (x-step (/ (- xend x-start) (coerce-float nticks) 2))
            (ymin (coerce-float (third yrange)))
            (ymax (coerce-float (fourth yrange)))
+           (n-clipped 0) (n-non-numeric 0)
            ;; What is a good EPS value for adaptive plotting?
                                         ;(eps 1e-5)
            x-samples y-samples result
@@ -1050,6 +1051,8 @@ sin(y)*(10.0+6*cos(x)),
                                    depth 1e-5))))
 
         ;; Fix up out-of-range values
+        ;; and clobber non-numeric values.
+
         (do ((x result (cddr x))
              (y (cdr result) (cddr y)))
             ((null y))
@@ -1057,10 +1060,15 @@ sin(y)*(10.0+6*cos(x)),
             (setf (car x) (exp (car x))))
           (when log-y-p
             (setf (car y) (exp (car y))))
-          (unless (and (numberp (car y))
-                       (<= ymin (car y) ymax))
-            (setf (car x) 'moveto)
-            (setf (car y) 'moveto)))
+          (if (numberp (car y))
+            (unless (<= ymin (car y) ymax)
+              (incf n-clipped)
+              (setf (car x) 'moveto)
+              (setf (car y) 'moveto))
+            (progn
+              (incf n-non-numeric)
+              (setf (car x) 'moveto)
+              (setf (car y) 'moveto))))
 
         ;; Filter out any MOVETO's which do not precede a number.
         ;; Code elsewhere in this file expects MOVETO's to
@@ -1078,12 +1086,20 @@ sin(y)*(10.0+6*cos(x)),
               (setf (nth i result) nil)
               (setf (nth (1+ i) result) nil))))
 
-        (let ((n-nil (count nil result))
-              (result-sans-nil (delete nil result)))
+        (let ((result-sans-nil (delete nil result)))
           (if (null result-sans-nil)
-            (mtell "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")
-            (if (> n-nil 0)
-              (mtell "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
+            (cond
+              ((= n-non-numeric 0)
+               (mtell "plot2d: all values were clipped.~%"))
+              ((= n-clipped 0)
+               (mtell "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%"))
+              (t
+                (mtell "plot2d: all values are non-numeric, or clipped.~%")))
+            (progn
+              (if (> n-non-numeric 0)
+                (mtell "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%"))
+              (if (> n-clipped 0)
+                (mtell "plot2d: some values were clipped.~%"))))
           (cons '(mlist) result-sans-nil))))))
 
 (defun get-range (lis)
