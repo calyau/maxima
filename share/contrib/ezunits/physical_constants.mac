@@ -56,7 +56,7 @@ texput (%Z_0, "Z_0");
 declare (%G, physical_constant);
 declare (%G, constant);
 qput (%G, "Newtonian constant of gravitation", description);
-declare_constvalue (%G, 6.67428 ` m^3/kg/s^2);
+declare_constvalue (%G, 667428/100000*10^(-11) ` m^3/kg/s^2);
 qput (%G, 10^-4, RSU);
 texput (%G, "G");
 
