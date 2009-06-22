@@ -303,12 +303,12 @@ lsquares_estimates_exact (MSE, parameters) := block
 
 lsquares_estimates_approximate (MSE, parameters, [optional_args]) := block
 
-  ([initial_guess : makelist (1, i, 1, length (parameters)),
+  ([initial : makelist (1, i, 1, length (parameters)),
     iprint : [1, 0],
     tol : 1e-3],
 
     with_parameters (optional_args,
-        lbfgs (MSE, parameters, initial_guess, tol, iprint),
+        lbfgs (MSE, parameters, initial, tol, iprint),
         [%%]));
 
 lsquares_residuals (data, variables, equation, parameters_estimates) :=
