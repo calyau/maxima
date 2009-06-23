@@ -68,9 +68,13 @@ powerseries((1)/(1-x-x^2), x, 0);
  *x^i2,i2,0,inf);
 
 /* 1 1 2 2 4 4 8 8 */
-powerseries((1+x)/(1-2*x^2), x, 0);
+factor(powerseries((1+x)/(1-2*x^2), x, 0));
+/*
 'sum( (-1*(1/-(1/sqrt(2)))*(1/sqrt(2)-1)*(1/-(4/sqrt(2)))*(1/-(1/sqrt(2)))^i3 + 
-      -1*(1/(1/sqrt(2)))*(-(1/sqrt(2))-1)*(1/(4/sqrt(2)))*(1/(1/sqrt(2)))^i3 ) * x^i3,i3,0,inf);
+      -1*(1/(1/sqrt(2)))*(-1/sqrt(2)-1)*(1/(4/sqrt(2)))*(1/(1/sqrt(2)))^i3 ) * x^i3,i3,0,inf);
+*/
+
+'sum(2^(i3/2-3/2)*((sqrt(2)-1)*(-1)^i3+sqrt(2)+1)*x^i3,i3,0,inf);
 
 /* multiple root */
 powerseries((1+x)/(1-x)^2, x, 0);
@@ -816,6 +820,46 @@ limit(1/zeroa);
 inf;
 limit(1/zerob);
 minf;
+
+/* BUG ID: 721575 2/sqrt(2) doesn\'t simplify */
+2/sqrt(2);
+sqrt(2);
+
+(1/2)*sqrt(2);
+1/sqrt(2);
+
+sqrt(2)*(1/2);
+1/sqrt(2);
+
+/* BUG ID 2029041 a*sqrt(2)/2 unsimplified */
+
+a*sqrt(2)/2;
+a/sqrt(2);
+
+/* BUG ID 1923119 1/sqrt(8)-sqrt(8)/8 */
+
+1/sqrt(8)-sqrt(8)/8;
+0;
+
+/* BUG ID 1927178 integrate(sin(t),t,%pi/4,3*%pi/4) */
+
+integrate(sin(t),t,%pi/4,3*%pi/4);
+sqrt(2);
+
+/* BUG ID: 1480562 2*a*2^k isn't simplified to a*2^(k+1) */
+
+2*a*2^k;
+a*2^(k+1);
+
+a*2^k*2;
+a*2^(k+1);
+
+/* BUG ID: 1996354 unsimplifed result from expand */
+
+expand((%e^(-2*sqrt(2))*(%e^(2*sqrt(2))+2*%e^sqrt(2)+1)^2)/16
+       +(%e^(-2*sqrt(2))*(%e^(2*sqrt(2))-2*%e^sqrt(2)+1)^2)/16
+       -(%e^(-2*sqrt(2))*(%e^(2*sqrt(2))-1)^2)/8);
+1;
 
 end;
 end$

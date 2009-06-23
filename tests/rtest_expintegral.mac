@@ -210,7 +210,11 @@ test_value(%,expintegral_e(2.5,0.5),15),numer;
 true;
 
 expintegral_e(-5/2,1/2);
+/*
 8*sqrt(2)*(15*sqrt(%pi)*(1-erf(1/sqrt(2)))/8+21/(4*sqrt(2)*sqrt(%e)));
+*/
+
+2^(7/2)*(15*sqrt(%pi)*(1-erf(1/sqrt(2)))/8+(5/sqrt(2)+1/2^(5/2))/sqrt(%e));
 
 test_value(%,expintegral_e(-2.5,0.5),13),numer;
 true;

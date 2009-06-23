@@ -12,8 +12,11 @@ deftaylor(f(x),x^2+sum(x^i/(2^i*i!^2),i,4,inf));
 [f]$
 taylor(%e^sqrt(f(x)),x,0,4);
 1+x+x^2/2+3073*x^3/18432+12817*x^4/307200$
-powerseries(log(sin(x)/x),x,0);
-('sum((-1)^i1*2^(2*i1)*bern(2*i1)*x^(2*i1)/(i1*(2*i1)!),i1,1,inf))/2$
+
+niceindices(powerseries(log(sin(x)/x),x,0));
+/*('sum((-1)^i1*2^(2*i1)*bern(2*i1)*x^(2*i1)/(i1*(2*i1)!),i1,1,inf))/2$*/
+'sum((-1)^i*2^(2*i-1)*bern(2*i)*x^(2*i)/(i*(2*i)!),i,1,inf);
+
 ev(x+sin(3*x)/sin(x),trigexpand,expand);
 -sin(x)^2+3*cos(x)^2+x$
 trigexpand(sin(10*x+y));

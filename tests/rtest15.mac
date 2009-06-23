@@ -559,7 +559,7 @@ limit (abs(x), x, 0);
  * n*integrate(1/(sin(x)^2+1),x,0,2*%pi), for positive integer n.  We
  * were just returning the same value.  
  */
-integrate(1/(sin(x)^2+1),x,0,2*%pi);
+factor(integrate(1/(sin(x)^2+1),x,0,2*%pi));
 sqrt(2)*%pi;
 
 integrate(1/(sin(x)^2+1),x,0,4*%pi);
@@ -585,7 +585,7 @@ integrate(sqrt(x^3/(2*a-x)),x,0,2*a);
  *
  * But there are other bugs related to this one.
  */
-integrate(1/(sin(x)^2+1),x,0,3*%pi);
+factor(integrate(1/(sin(x)^2+1),x,0,3*%pi));
 (3 / 2) * sqrt(2)*%pi;
 
 /*
@@ -629,12 +629,22 @@ logcontract(ratsimp(factor(integrate (1/((x-3)^4+1), x,0,1)))),algebraic;
  */
 (load(sqdnst), true);
 true;
-factor(expand(sqrtdenest(integrate (1/((x-3)^4+1/2), x,0,1))));
+factor(expand(sqrtdenest(integrate (1/((x-3)^4+1/2), x,0,1))))
+/* we factor the result and subtract it */
+-factor(-(2*atan((2^(13/4)+2^(5/2)+2^(3/4))/(-2^(13/4)+2^(3/4)-98))
+ +2*atan((-2^(13/4)+2^(5/2)-2^(3/4))/(-2^(13/4)+2^(3/4)+98))
+ +log((3*2^(9/4)-2^(3/4)+sqrt(2)+73)/33)
+ -log((-3*2^(9/4)+2^(3/4)+sqrt(2)+73)/33))
+ /2^(7/4));
+0;
+
+/*
 (2*atan((sqrt(2)-4*2^(1/4)+8)/(49*2^(3/4)+sqrt(2)-8))
  -log((2^(3/4)+12*sqrt(2)+73*2^(1/4)-2)/(33*2^(1/4)))
  +log((2^(3/4)-12*sqrt(2)+73*2^(1/4)+2)/(33*2^(1/4)))
  -2*atan((sqrt(2)+4*2^(1/4)+8)/(-49*2^(3/4)+sqrt(2)-8)))
  /(2*2^(3/4))$
+ */
 
 /*
  * Bug [ 1607567 ] trigreduce([atan(sin(a)/cos(a))]) => [ atan(tan(a)) ] (FIX)
@@ -799,8 +809,11 @@ integrate( (x^3+1)/(x^4 + 4*x + 1), x, 0, 1);
 log(6)/4;
 
 /* [ 1884711 ] bug when adding fractions involving square roots */
-sqrt(2)/6-2*sqrt(2)/6;
+factor(sqrt(2)/6-2*sqrt(2)/6);
 -sqrt(2)/6;
+
+sqrt(3)/12 - 5*sqrt(3)/12;
+-1/sqrt(3);
 
 /* Bug reported to mailing list 2008-03-23
  * Bug causes a Lisp error in FREEL (eventually called by $DEFINT).

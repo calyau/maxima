@@ -167,12 +167,21 @@ true$
 (assume(b>0),true);
 true$
 
-ratsimp(specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t));
+specint(t^(3/4)*%e^(-t^2/2/b)*%e^(-p*t),t);
+
+/*
 -sqrt(%pi)*b^(5/8)
           *(3*gamma(3/8)*gamma(3/4)*%e^(b*p^2/4)*%m[-5/8,1/4](b*p^2/2)
            -4*gamma(3/4)*gamma(7/8)*%e^(b*p^2/4)
              *%m[-5/8,-1/4](b*p^2/2))
  /(2*2^(5/8)*gamma(3/8)*gamma(7/8)*sqrt(p))$
+ */
+
+3*gamma(3/4)*b^(7/8)
+ *%e^(b*p^2/4)
+ *(2^(19/8)*sqrt(%pi)*%m[-5/8,-1/4](b*p^2/2)/(3*gamma(3/8)*b^(1/4)*sqrt(p))
+  -2^(3/8)*sqrt(%pi)*%m[-5/8,1/4](b*p^2/2)/(gamma(7/8)*b^(1/4)*sqrt(p)))
+ /4;
 
 /*
  * Sec. 4.5, formula (33):

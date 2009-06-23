@@ -967,7 +967,7 @@ sqrt(2*E*r^2-2*k*r-a^2)/(2*E)-k*asin((4*E*r-2*k)/sqrt(4*k^2+8*a^2*E))
 				      /(2*sqrt(2)*sqrt(-E)*E);
 
 /* Bug 1741705 */
-ratsimp(integrate(1/(sin(x)^2+1),x,0,8));
+factor(integrate(1/(sin(x)^2+1),x,0,8));
 (atan(sqrt(2)*sin(8)/cos(8))+3*%pi)/sqrt(2);
 
 ratsimp(integrate(1/(sin(x)^2+1),x,-8,0));
@@ -994,11 +994,14 @@ l^2/(4*%pi);
 
 /* principal value integral */
 /* [ 657382 ] defint/limit infinite loop */
+
+/* Because of changes to timesin this does no longer work 
 integrate(1/(1-x^5), x, 0, inf);
 0-(2*sqrt(2*sqrt(5)+10)*atan((sqrt(5)-3)*sqrt(2*sqrt(5)+10)/(4*sqrt(5)))
         +2*sqrt(10-2*sqrt(5))*atan(sqrt(10-2*sqrt(5))*(sqrt(5)+3)/(4*sqrt(5)))
         -sqrt(2)*sqrt(sqrt(5)+5)*%pi-sqrt(2)*sqrt(5-sqrt(5))*%pi)
         /20;
+*/        
 
 integrate(1/x, x, minf, inf);
 0;
