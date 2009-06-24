@@ -1107,9 +1107,9 @@
 		   (integerp c))
 	      (progn
 		(adsum (m* y (m^ 2 (car n))))
-		(when (member (asksign (m- h1 (car n))) '($zero $negative) :test #'eq)
+		(when (member (asksign (m- (m+ h1 c) (car n))) '($zero $negative) :test #'eq)
 		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*)
-					 *var* (m+ h1 1) (car n) t :evaluate-summand nil))))
+					 *var* (m+ h1 c 1) (car n) t :evaluate-summand nil))))
 		(when (> c 0)
 		  (adsum (m* -1 y (dosum (list '(%binomial) (car n) *var*)
 					 *var* 0 (m- c 1) t :evaluate-summand nil)))))
