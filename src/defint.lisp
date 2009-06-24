@@ -345,6 +345,7 @@
 				   (t (intcv1 d ind nv))))
 			    ))))
 		 (t
+		  (putprop 'yx t 'internal);; keep var from appearing in questions to user
 		  (solve (m+t 'yx (m*t -1 nv)) var 1.)
 		  (cond (*roots
 			 (setq d (subst var 'yx (caddar *roots)))
@@ -531,8 +532,6 @@
 		(intsubs result ll ul)))
 	  ((and (ratp exp var)
 		(setq result (ratfnt exp))))
-	  ((and (setq result (antideriv exp))
-		(intsubs result ll ul)))
 	  ((and (not *scflag*)
 		(not (eq ul '$inf))
 		(radic exp var)
@@ -565,9 +564,6 @@
 		  (intsubs anti-deriv (m+ (caar previous-pole) 'epsilon)
 			   (m+ (caar current-pole) (m- 'epsilon))))))
 
-  ;;Hack answer to simplify "Correctly".
-  (cond ((not (freeof '%log ans))
-	 (setq ans ($logcontract ans))))
   (setq ans (get-limit (get-limit ans 'epsilon 0 '$plus) 'prin-inf '$inf))
   ;;Return section.
   (cond ((or (null ans)
@@ -1783,26 +1779,37 @@
 ;;; is zero.
 (defun intsc1 (a b e)
   ;; integrate(e,var,a,b)
-  (let ((limit-diff (m+ b (m* -1 a)))
+  (let ((trigarg (find-first-trigarg e))
+	(var var)
 	($%emode t)
 	($trigsign t)
 	(*sin-cos-recur* t))		;recursion stopper
-    (prog (ans d nzp2 l int-zero-to-d int-nzp2 int-zero-to-c)
+    (prog (ans d nzp2 l int-zero-to-d int-nzp2 int-zero-to-c limit-diff)
+       (let* ((arg (simple-trig-arg trigarg))	;; pattern match sin(cc*x + bb)
+	      (cc (cdras 'c arg))
+	      (bb (cdras 'b arg))
+	      (new-var (gensym "NEW-VAR-")))
+	 (when (or (not arg)
+		   (not (every-trigarg-alike e trigarg)))
+	   (return nil))
+	 (when (not (and (equal cc 1) (equal bb 0)))
+	   (setq e (div (maxima-substitute (div (sub new-var bb) cc)
+					   var e)
+			cc))
+	   (setq var new-var)	;; change of variables to get sin(new-var)
+	   (setq a (add bb (mul a cc)))
+	   (setq b (add bb (mul b cc)))))
+       (setq limit-diff (m+ b (m* -1 a)))
        (when (or (not (period %pi2 e var))
 		 (not (and ($constantp a)
 			   ($constantp b))))
 	 ;; Exit if b or a is not a constant or if the integrand
 	 ;; doesn't appear to have a period of 2 pi.
 	 (return nil))
+       
        ;; Multiples of 2*%pi in limits.
        (cond ((integerp (setq d (let (($float nil))
 				 (m// limit-diff %pi2))))
-	      ;; This looks wrong.  We never multiply by d because of
-	      ;; the return!
-	      #+nil
-	      (setq ans (m* d (cond ((setq ans (intsc e %pi2 var))
-				     (return ans))
-				    (t (return nil)))))
 	      (cond ((setq ans (intsc e %pi2 var))
 		     (return (m* d ans)))
 		    (t (return nil)))))

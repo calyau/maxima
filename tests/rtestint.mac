@@ -973,6 +973,16 @@ factor(integrate(1/(sin(x)^2+1),x,0,8));
 ratsimp(integrate(1/(sin(x)^2+1),x,-8,0));
 (atan(sqrt(2)*sin(8)/cos(8))+3*%pi)/sqrt(2);
 
+ratsimp(integrate(1/(sin(x/3)^2+1),x,0,24));
+(3*atan(sqrt(2)*sin(8)/cos(8))+9*%pi)/sqrt(2);
+
+ratsimp(integrate(1/(sin(x-3)^2+1),x,3,11));
+(atan(sqrt(2)*sin(8)/cos(8))+3*%pi)/sqrt(2);
+
+/* defint log(sqrt(q^2-1)+1) asks about YX - ID: 924868 */
+ratsimp(integrate( log(sqrt(q^2-1)+1),q,0,1));
+-((4*asinh(1)+(2-sqrt(2))*%i*%pi+(-2^(3/2)))/2^(3/2));
+
 /* Bug 1748168 */
 integrate(1/(2+cos(x)),x,-%pi/2,%pi/2);
 (2/9)*sqrt(3)*%pi;
