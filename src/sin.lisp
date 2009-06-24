@@ -1637,6 +1637,14 @@
 		    (every-trigarg-alike exp arg))
 		  (cdr y)))))
 
+;; return argument of first trig operation encountered in y
+(defun find-first-trigarg (y)
+  (cond ((atom y) nil)
+	((optrig (caar y)) (cadr y))
+	(t (some (lambda (exp)
+		   (find-first-trigarg exp))
+		 (cdr y))))))
+
 
 (defun matchsum (alist blist)
   (prog (r s *c* *d*)
