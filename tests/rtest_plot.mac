@@ -224,6 +224,9 @@ plot2d (x, [x, 1e-5, 100], [logx]);
 
 plot2d ([f, g, h, i, sin, k], [u, 0, 1]);
 
+/* "j" in list of functions tickles a bug -- quote marks not sanitized
+ * work around it by explicit legend spec
+ */
 plot2d (["+", "j"], [u, 0, 1], [legend, "+", "j"]);
 
 "(not a plot example, maybe it should be moved elsewhere)" $
@@ -268,6 +271,58 @@ plot3d (realpart (exp (x + y*%i)), [x, -2, 2], [y, -2, 2], [grid, 20, 20]);
 
 plot3d (imagpart (exp (x + y*%i)), [x, -2, 2], [y, -2, 2], [grid, 20, 20]);
 
+"messages about non-numeric values and clipped values";
+
+plot2d (sqrt (x), [x, 0, 1]); /* no message */
+
+plot2d (sqrt (x), [x, -1, 1]); /* some non-numeric */
+
+plot2d (sqrt (x), [x, 0, 1], [y, 0, 1/2]); /* some clipped */
+
+plot2d (sqrt (x), [x, -1, 1], [y, 0, 1/2]); /* some non-numeric, some clipped */
+
+plot2d (sqrt (x), [x, -2, -1]); /* all non-numeric */
+
+plot2d (sqrt (x), [x, 0, 1], [y, -2, -1]); /* all clipped */
+
+plot2d (sqrt (x), [x, -1, 1], [y, -2, -1]); /* all non-numeric or clipped */
+
+"coping with overflow in intermediate results";
+
+/* from the mailing list "plot numerical question" 2009-03-11 */
+
+(r4(s) := block ([s : bfloat(s)], s!/(((s/4)!)^4 * 4^s)),
+ plot2d (r4, [s, 200, 300], [adapt_depth, 0], [nticks, 5]));
+
+plot2d ('r4(s), [s, 200, 300], [adapt_depth, 0], [nticks, 5]);
+
+/* from mailing list 2009-02-18
+ * "Re: [Maxima] I want to tell maxima (-1)^0.33333333333333=-1, what should i do?"
+ * This is entirely a problem in COERCE-FLOAT-FUN, hence the quad_qags and find_root here.
+ */
+
+foo(x):=(sqrt(-16*x^4-16*x^3+20*x^2+12*x+23)/(6*sqrt(3))+(16*x^3-12*x^2-6*x-25)/54)^(1/3)$
+
+plot2d (foo (u), [u, -1, 0]);
+
+plot2d (foo, [u, -1, 0]);
+
+quad_qags (foo (u), u, -1, 0);
+
+quad_qags (foo, u, -1, 0);
+
+find_root (foo (u) = -0.2, u, -1, 0);
+
+bar (u) := foo (u) + 0.2;
+find_root (bar, u, -1, 0);
+
+compile (foo);
+
+plot2d (foo, [u, -1, 0]);
+
+quad_qags (foo, u, -1, 0);
+
+find_root (bar, u, -1, 0);
 
 "FINIS" $
 
