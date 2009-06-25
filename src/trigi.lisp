@@ -282,7 +282,7 @@
   (frob $imagpart #'cl:imagpart)
   (frob $max #'cl:max)
   (frob $min #'cl:min)
-  (frob %signnum #'cl:signum)
+  (frob %signum #'cl:signum)
   (frob $atan2 #'cl:atan)
   (frob %log #'(lambda (x)
 		 (let ((y (ignore-errors (cl:log x))))
