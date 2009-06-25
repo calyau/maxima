@@ -814,6 +814,9 @@
                  (mxorlistp (caddr (cadr fm))))
             (return (rplacd fm 
                             (cons (constmx 0 (caddr (cadr fm))) (cddr fm))))))
+     ;; (cadadr fm) is zero.
+     ;; Add it to the first term of fm to preserve the type.
+     (rplaca fm (add (car fm) (cadadr fm)))
      (return (rplacd fm (cddr fm)))
   equt
      ;; Call muln to get a simplified product.
@@ -1443,8 +1446,14 @@
 
 (defmfun exptrl (r1 r2)
   (cond ((equal r2 1) r1)
-	((equal r2 1.0) (cond ((mnump r1) (addk 0.0 r1)) (t r1)))
-	((equal r2 bigfloatone) (cond ((mnump r1) ($bfloat r1)) (t r1)))
+        ((equal r2 1.0) 
+         (cond ((mnump r1) (addk 0.0 r1))
+               ;; Do not simplify the type of the number away.
+               (t (list '(mexpt simp) r1 1.0))))
+        ((equal r2 bigfloatone)
+         (cond ((mnump r1) ($bfloat r1))
+               ;; Do not simplify the type of the number away.
+               (t (list '(mexpt simp) r1 bigfloatone))))
 	((zerop1 r1)
 	 (cond ((or (zerop1 r2) (mnegp r2))
 		(if (not errorsw)
