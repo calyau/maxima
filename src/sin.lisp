@@ -1643,7 +1643,7 @@
 	((optrig (caar y)) (cadr y))
 	(t (some (lambda (exp)
 		   (find-first-trigarg exp))
-		 (cdr y))))))
+		 (cdr y)))))
 
 
 (defun matchsum (alist blist)
