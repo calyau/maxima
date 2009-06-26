@@ -174,7 +174,12 @@
                 (setf summ2 0.0)
                 (do ((i 1 (1+ i)))
                    ((> i n2) 'done)
-                   (setf (aref a i) (coerce (ppnd16 (/ (- i 0.375) an25)) 'flonum))
+                   (setf (aref a i)
+                         (coerce (mul* 1.414213562373095
+                                       (simplify
+                                          (list '(%inverse_erf)
+                                                (add* (mul* 2.0 (/ (- i 0.375) an25)) -1))))
+                                 'flonum))
                    (setf summ2 (+ summ2 (* (aref a i) (aref a i)))))
                 (setf summ2 (* summ2 2.0))
                 (setf ssumm2 (sqrt summ2))
