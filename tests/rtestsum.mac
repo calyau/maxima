@@ -983,7 +983,7 @@ sum(binomial(n,2*k), k, 1, n), simpsum;
 2^(n-1)-1;
 
 sum(binomial(n+1,k), k, 1, n), simpsum;
-2^(n+1)-n-3;
+2^(n+1)-2;
 
 sum(binomial(n,k), k, -1, n+1), simpsum;
 2^n;
