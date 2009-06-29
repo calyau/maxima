@@ -1413,6 +1413,17 @@
 	  (* a b)
 	  (exp (* (bigfloat b) (log a))))))
 
+(defmethod expt ((a bigfloat) (b integer))
+  (cond ((zerop b)
+	 (bigfloat 1))
+	((and (zerop a) (plusp (realpart b)))
+	 (* a b))
+	(t
+	 ;; a^b = exp(b*log(|a|) + %i*%pi*b)
+	 ;;     = exp(b*log(|a|))*exp(%i*%pi*b)
+	 ;;     = (-1)^b*exp(b*log(|a|))
+	 (* (exp (* b (log (abs a))))
+	    (expt -1 b)))))
 
 ;;; TO - External
 ;;;
@@ -1804,7 +1815,7 @@
 	   ;; (coerce foo 'complex-bigfloat).  Foo has to be a real or complex
 	   (cond ((typep obj 'real)
 		  (bigfloat obj 0))
-		 ((typep obj 'complex)
+		 ((typep obj 'cl:complex)
 		  (bigfloat obj))
 		 ((typep obj 'bigfloat)
 		  (bigfloat obj 0))
