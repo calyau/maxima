@@ -804,7 +804,8 @@
   del  
      (cond ((not (mtimesp (cadr fm)))
             (go check))
-           ((onep1 (cadadr fm))
+           ((onep (cadadr fm))
+            ;; Do this simplification for an integer 1, not for 1.0 and 1.0b0
             (rplacd (cadr fm) (cddadr fm))
             (return (cdr fm)))
            ((not (zerop1 (cadadr fm))) 
@@ -814,9 +815,10 @@
                  (mxorlistp (caddr (cadr fm))))
             (return (rplacd fm 
                             (cons (constmx 0 (caddr (cadr fm))) (cddr fm))))))
-     ;; (cadadr fm) is zero.
-     ;; Add it to the first term of fm to preserve the type.
-     (rplaca fm (add (car fm) (cadadr fm)))
+     ;; (cadadr fm) is zero. If the first term of fm is a number, 
+     ;;  add it to preserve the type.
+     (when (mnump (car fm))
+       (rplaca fm (add (car fm) (cadadr fm))))
      (return (rplacd fm (cddr fm)))
   equt
      ;; Call muln to get a simplified product.
@@ -825,12 +827,13 @@
                            w)
                    x) t))
      (if (or (zerop1 x1)
-             (onep1 x))
+             (onep1 x1))
          (setq x1 (list* '(mtimes) x1 x))
          (setq x1 (if (not (atom x1)) (testtneg x1) x1)))
      (rplaca (cdr fm) x1)
      (if (not (mtimesp x1)) (go check))
-     (when (and (onep1 (cadadr fm)) flag (null (cdddr (cadr fm))))
+     (when (and (onep (cadadr fm)) flag (null (cdddr (cadr fm))))
+       ;; Do this simplification for an integer 1, not for 1.0 and 1.0b0
        (rplaca (cdr fm) (caddr (cadr fm))) (go check))
      (go del)
   check
