@@ -783,6 +783,14 @@ x/2-%i*%e^(2*%i*x)/4;
 expand(integrate(exp(x)*cos(%i*x),x));
 %e^(2*x)/4+x/2;
 
+/* Bug ID: 932076 -  ode2( 'diff(y,x)=%i*y+sin(x), y, x) => div by 0
+ *
+ * This bug is related to the Bug ID: 2797885 - "problem with integration"
+ */
+
+ode2('diff(y,x)-%i*y-sin(x),y,x);
+y = (%c-%i*(x-%i*%e^-(2*%i*x)/2)/2)*%e^(%i*x);
+
 /*
  * Bug ID: 826623 "simplifer returns %i*%i"
  * 
@@ -853,6 +861,25 @@ a*2^(k+1);
 
 a*2^k*2;
 a*2^(k+1);
+
+/* Some examples to show simplification of expressions
+ * with floating point and bigfloat numbers after improvement
+ * of plusin
+ */
+
+(4.0*x-4.0*x);
+0.0;
+(4.0*x-3.0*x);
+1.0*x;
+(4.0*x-3.0*x)/2;
+0.5*x;
+
+(4.0b0*x-4.0*x);
+0.0b0;
+(4.0b0*x-3.0*x);
+1.0b0*x;
+(4.0b0*x-3.0*x)/2;
+0.5b0*x;
 
 /* BUG ID: 1996354 unsimplifed result from expand */
 
