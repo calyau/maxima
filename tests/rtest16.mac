@@ -888,5 +888,14 @@ expand((%e^(-2*sqrt(2))*(%e^(2*sqrt(2))+2*%e^sqrt(2)+1)^2)/16
        -(%e^(-2*sqrt(2))*(%e^(2*sqrt(2))-1)^2)/8);
 1;
 
+/* BUG ID: 631216 - "horner([...],x)/FIX" 
+   horner now maps over lists, matrices and equations.
+ */
+
+horner(x^2+x=a*x^2+b*x);
+x*(x+1) = x*(a*x+b);
+horner([x^2+x,x^3+x,x^4+x]);
+[x*(x+1),x*(x^2+1),x*(x^3+1)];
+
 end;
 end$
