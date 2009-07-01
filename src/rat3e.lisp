@@ -63,14 +63,24 @@
 (defprop mrat mrateval mfexpr*)
 
 (defmfun $ratnumer (x)
-  (setq x (taychk2rat x)) (cons (car x) (cons (cadr x) 1)))
+  (cond ((mbagp x)
+         (cons (car x) (mapcar '$ratnumer (cdr x))))
+        (t
+         (setq x (taychk2rat x))
+         (cons (car x) (cons (cadr x) 1)))))
 
 (defmfun $ratdenom (x)
-  (setq x (taychk2rat x)) (cons (car x) (cons (cddr x) 1)))
+  (cond ((mbagp x)
+         (cons (car x) (mapcar '$ratdenom (cdr x))))
+        (t
+         (setq x (taychk2rat x))
+         (cons (car x) (cons (cddr x) 1)))))
 
 (defun taychk2rat (x)
-  (cond ((and ($ratp x) (member 'trunc (cdar x) :test #'eq)) ($taytorat x)) (t (ratf x))))
-
+  (cond ((and ($ratp x)
+              (member 'trunc (cdar x) :test #'eq))
+         ($taytorat x))
+        (t ($rat x))))
 
 (defmvar tellratlist nil)
 
