@@ -192,7 +192,6 @@
   				       ($atomgrad . $atomgrad)
   				       ($numer . $numer)
   				       (depends . $dependency)
-  				       ($constant . $constant)
   				       ($nonscalar . $nonscalar)
   				       ($scalar . $scalar)
   				       (matchdeclare . $matchdeclare)

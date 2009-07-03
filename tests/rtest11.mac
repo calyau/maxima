@@ -318,3 +318,59 @@ bar(x);
 bar(y);
 [2345];
 
+/* constant declaration -- bug reported to mailing list 2009-05-02 */
+
+(kill (xx, yy, zz), sort (listofvars (xx + yy * zz)));
+[xx, yy, zz];
+
+declare (zz, constant);
+done;
+
+[featurep (xx, constant), featurep (yy, constant), featurep (zz, constant)];
+[false, false, true];
+
+constantp (zz);
+true;
+
+sort (listofvars (xx + yy * zz));
+[xx, yy];
+
+constantp (sin(xx)/exp(yy) + %pi^zz);
+false;
+
+declare ([xx, yy], constant);
+done;
+
+[featurep (xx, constant), featurep (yy, constant), featurep (zz, constant)];
+[true, true, true];
+
+constantp (sin(xx)/exp(yy) + %pi^zz);
+true;
+
+kill (zz);
+done;
+
+[featurep (xx, constant), featurep (yy, constant), featurep (zz, constant)];
+[true, true, false];
+
+constantp (zz);
+false;
+
+listofvars (xx + yy * zz);
+[zz];
+
+constantp (sin(xx)/exp(yy));
+true;
+
+constantp (sin(xx)/exp(yy) + %pi^zz);
+false;
+
+kill (xx, yy);
+done;
+
+[constantp (xx), constantp (yy), constantp (zz), constantp (xx + yy + zz)];
+[false, false, false, false];
+
+sort (listofvars (xx + yy * zz));
+[xx, yy, zz];
+

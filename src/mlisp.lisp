@@ -51,7 +51,7 @@ or if apply is being used are printed.")
       transp nil noevalargs nil
       $piece '$piece $setval '$setval fexprerrp nil rulefcnl nil
       featurel  '($integer $noninteger $even $odd $rational $irrational $real $imaginary
-		  $complex $analytic $increasing $decreasing $oddfun $evenfun $posfun
+		  $complex $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
 		  $commutative $lassociative $rassociative $symmetric $antisymmetric)
       $features (cons '(mlist simp) (append featurel nil)))
 
@@ -1345,7 +1345,7 @@ wrapper for this."
 	   (declare1 vars t (stripdollar (cadr l)) nil))
 	  ((eq (cadr l) '$noun)
 	   (dolist (var vars) (alias (getopr var) ($nounify var))))
-	  ((member (cadr l) '($constant $nonscalar $scalar $mainvar) :test #'eq)
+	  ((member (cadr l) '($nonscalar $scalar $mainvar) :test #'eq)
 	   (declare1 vars t (cadr l) t))
 	  ((eq (cadr l) '$alphabetic) (declare1 vars t t '$alphabetic))
 	  ((member (cadr l) opers :test #'eq)
@@ -1419,7 +1419,7 @@ wrapper for this."
 	   (remove1 vars (stripdollar (cadr l)) nil t nil))
 	  ((member (cadr l) '($mode $modedeclare) :test #'eq) (remove1 vars 'mode nil 'foo nil))
 	  ((eq (cadr l) '$atvalue) (remove1 vars 'atvalues t t nil))
-	  ((member (cadr l) '($constant $nonscalar $scalar $mainvar $numer $atomgrad) :test #'eq)
+	  ((member (cadr l) '($nonscalar $scalar $mainvar $numer $atomgrad) :test #'eq)
 	   (remove1 vars (cadr l) t t nil))
 	  ((member (cadr l) opers :test #'eq) (remove1 (mapcar #'linchk vars) (cadr l) nil t nil))
 	  ((member (cadr l) (cdr $features) :test #'eq) (remove1 vars (cadr l) nil t nil))
@@ -1508,7 +1508,7 @@ wrapper for this."
         (or
           (not (symbolp var))
           (and
-            (not (mgetl var '($constant $nonscalar $scalar $mainvar $numer
+            (not (mgetl var '($nonscalar $scalar $mainvar $numer
                                         matchdeclare $atomgrad atvalues t-mfexpr)))
             (not (getl var '(evfun evflag translated nonarray bindtest
                                    sp2 operators opers special data autoload mode)))))

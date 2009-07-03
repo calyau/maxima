@@ -130,15 +130,6 @@
       rischpf nil $limitdomain '$complex $logsimp t
       rischp nil rp-polylogp nil *const* 0)
 
-(eval-when
-	#+gcl (load eval)
-	#-gcl (:load-toplevel :execute)
-	(mapc #'(lambda (x) (mputprop x t '$constant) (setf (get x 'sysconst) t))
-	'($%pi $%i $%e $%phi %i $%gamma	;numeric constants
-	       $inf $minf $und $ind $infinity ;pseudo-constants
-	       t nil)			;logical constants (Maxima names: true, false)
-	))
-
 (defprop mnctimes t associative)
 (defprop lambda t lisp-no-simp)
 
@@ -348,21 +339,21 @@
   (if flag (not ($nonscalarp x)) ($scalarp x)))
 
 (defmfun $constantp (x)
-  (cond ((atom x) (or ($numberp x) (mget x '$constant)))
+  (cond ((atom x) (or ($numberp x) (kindp x '$constant)))
 	((member (caar x) '(rat bigfloat) :test #'eq) t)
 	((specrepp x) ($constantp (specdisrep x)))
-	((or (mopp (caar x)) (mget (caar x) '$constant))
+	((or (mopp (caar x)) (kindp (caar x) '$constant))
 	 (do ((x (cdr x) (cdr x))) ((null x) t)
 	   (if (not ($constantp (car x))) (return nil))))))
 
 (defmfun constant (x)
-  (cond ((symbolp x) (mget x '$constant))
+  (cond ((symbolp x) (kindp x '$constant))
 	(($subvarp x)
-	 (and (mget (caar x) '$constant)
+	 (and (kindp (caar x) '$constant)
 	      (do ((x (cdr x) (cdr x))) ((null x) t)
 		(if (not ($constantp (car x))) (return nil)))))))
 
-(defun maxima-constantp (x) (or (numberp x) (mget x '$constant)))
+(defun maxima-constantp (x) (or (numberp x) (and (symbolp x) (kindp x '$constant))))
 
 (defun consttermp (x) (and ($constantp x) (not ($nonscalarp x))))
 

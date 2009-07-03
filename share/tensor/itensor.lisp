@@ -1195,7 +1195,7 @@
     )
 
     ;If g has derivative indices then F must be constant in order to contract it
-    (and e (not (mget (caar f) '$constant)) (return nil))
+    (and e (not (kindp (caar f) '$constant)) (return nil))
 
     ;Contraction property of f is a list of (a.b)'s
     (cond
@@ -1562,7 +1562,7 @@
 	     ((and (alike1 e x) (not (and (rpobj e) (rpobj x)))) 1.)
 	     ((or (atom e) (member 'array (cdar e) :test #'eq))
 	      (chainrule1 e x))
-	     ((mget (caar e) '$constant) 0.)                    ;New line added
+	     ((kindp (caar e) '$constant) 0.)                    ;New line added
 	     ((eq (caar e) 'mrat) (ratdx e x))
 	     ((eq (caar e) 'mplus)
 	      (simplus (cons '(mplus) (sdiffmap (cdr e) x))
@@ -2292,7 +2292,7 @@
 ;;	      (ichainrule e x))
 ;;        (idiff%deriv (list e x 1)))
           0)
-	     ((mget (caar e) '$constant) 0.)                    ;New line added
+	     ((kindp (caar e) '$constant) 0.)                    ;New line added
 	     ((eq (caar e) 'mrat) (ratdx e x))
 	     ((eq (caar e) 'mplus)
 	      (simplus (cons '(mplus) (idiffmap (cdr e) x))

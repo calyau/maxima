@@ -139,7 +139,7 @@
     (if (or (mopp fun) (eq fun 'mqapply)) (improper-arg-err exp '$atvalue))
     (atvarschk vl)
     (do ((vl1 vl (cdr vl1)) (l atvars (cdr l))) ((null vl1))
-      (if (and (symbolp (car vl1)) (not (mget (car vl1) '$constant)))
+      (if (and (symbolp (car vl1)) (not (kindp (car vl1) '$constant)))
 	  (setq val (maxima-substitute (car l) (car vl1) val))
 	  (improper-arg-err (cons '(mlist) vl) '$atvalue)))
     (setq eqs (if (eq (caar eqs) 'mequal) (list eqs) (cdr eqs)))

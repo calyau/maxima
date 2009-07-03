@@ -747,6 +747,16 @@ When one changes, the other does too."
   (declare (ignore dummy))
   $help)
 
+(eval-when
+	#+gcl (load eval)
+	#-gcl (:load-toplevel :execute)
+    (let ((context '$global))
+      (declare (special context))
+      (mapc #'(lambda (x) (kind x '$constant) (setf (get x 'sysconst) t))
+            '($%pi $%i $%e $%phi %i $%gamma ;numeric constants
+                   $inf $minf $und $ind $infinity ;pseudo-constants
+                   t nil)))) ;logical constants (Maxima names: true, false)
+
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.
 
