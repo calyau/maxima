@@ -324,3 +324,22 @@ block ([L : [], s : +2], for i:1 thru 10 step s do L : cons (s : -s, L), L);
 block ([L : [], s : -2], for i:10 thru 1 step s do L : cons (s : -s, L), L);
 [2, -2, 2, -2, 2];
 
+/* bug reported to mailing list 2009-05-13 "reset ( radexpand,  domain )" */
+
+(reset (), [radexpand, domain]);
+[true, real];
+
+[radexpand, domain] : [all, complex];
+[all, complex];
+
+reset (radexpand, domain);
+[radexpand, domain];
+
+[radexpand, domain];
+[true, real];
+
+([foo, bar, baz] : [1, 2, 3],
+ /* should ignore these non-defmvar's */
+ reset (foo, bar, baz));
+[];
+

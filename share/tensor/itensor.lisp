@@ -2192,7 +2192,9 @@
     (list (if (pzerop u) 0 (mul2 u (maxima-substitute (cadddr e) y (car e))))
       (if (pzerop v) 0 (mul3 v (maxima-substitute (caddr e) y (car e)) -1)))))
 
-(defun idiff%deriv (e) (let (derivflag) (simplifya (cons '(%idiff) e) t)))
+(defun idiff%deriv (e)
+  (declare (special derivflag))
+  (let (derivflag) (simplifya (cons '(%idiff) e) t)))
 
 (defun ideriv (e)
   (prog (exp z count)

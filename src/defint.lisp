@@ -130,7 +130,7 @@
 		      *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		      loopstop* var nn* nd* dn* p*
 		      ind* factors rlm*
-		      plogabs *zexptsimp? *scflag*
+		      plogabs *scflag*
 		      *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
 		      *dintexp-recur* defintdebug *defint-assumptions*
 		      *current-assumptions*

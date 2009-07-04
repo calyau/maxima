@@ -40,7 +40,7 @@
 
 ;;note if $algepsilon is too large you may lose some roots.
 
-(defmvar $algdelta 1e-4 )
+(defmvar $algdelta 1e-5 )
 
 (defmvar $%rnum_list '((mlist))
   "Upon exit from ALGSYS this is bound to a list of the %RNUMS

@@ -14,7 +14,7 @@
 
 (load-macsyma-macros ratmac)
 
-(declare-top (special rischpf genvar $savefactors checkfactors
+(declare-top (special genvar $savefactors checkfactors
 		      exp var $factorflag $ratfac $logabs $expop $expon
 		      $keepfloat ratform rootfactor pardenom $algebraic
 		      wholepart parnumer varlist logptdx switch1))

@@ -12,17 +12,15 @@
 
 (macsyma-module simp)
 
-(declare-top (special exptrlsw rulesw $%e_to_numlog *inv* substp
-		      $%emode $radexpand timesinp *const* limitp plusflag
-		      prods negprods sums negsums expandp $domain $listarith
-		      $logsimp $logexpand $lognumer $lognegint $m1pbranch
-		      expandflag $maperror $scalarmatrixp nounl
-		      derivflag $ratsimpexpons $keepfloat $ratprint
-		      $demoivre *zexptsimp? %e-val %pi-val fmaplvl
-		      bigfloatzero bigfloatone $assumescalar $subnumsimp
-		      opers-list *opers-list wflag $dontfactor *n
-		      *out *in varlist genvar $factorflag radcanp)
-	     (unspecial args))
+(declare-top (special rulesw *inv* substp
+		      limitp plusflag
+		      prods negprods sums negsums
+		      $scalarmatrixp nounl
+		      $keepfloat $ratprint
+		      $demoivre
+		      bigfloatzero bigfloatone $assumescalar
+		      opers-list *opers-list $dontfactor *n
+		      *out *in varlist genvar $factorflag radcanp))
 
 ;; General purpose simplification and conversion switches.
 
@@ -111,24 +109,40 @@
 
 (defmvar derivsimp t "Hack in `simpderiv' for `rwg'")
 
-;; The following SETQs should be replaced with DEFMVARS in the correct places.
-(declare-top (special $rootsepsilon $grindswitch $algepsilon $algdelta $true
-		      $false $on $off $logabs rischpf $limitdomain rischp rp-polylogp ))
-
-(setq $rootsepsilon 1e-7 $%rnum 0
-      $grindswitch nil $algepsilon 100000000 $algdelta 1e-5)
-
-(defmvar $listarith t)
+(defmvar $rootsepsilon 1e-7)
+(defmvar $grindswitch nil)
+(defmvar $algepsilon 100000000)
+(defmvar $true t)
+(defmvar $false nil)
+(defmvar $on t)
+(defmvar $off nil)
 (defmvar $logabs nil)
+(defmvar $limitdomain '$complex)
+(defmvar $listarith t)
+(defmvar $lognumer nil)
+(defmvar $domain '$real)
+(defmvar $m1pbranch nil)
+(defmvar $%e_to_numlog nil)
+(defmvar $%emode t)
+(defmvar $lognegint nil)
+(defmvar $ratsimpexpons nil)
+(defmvar $logexpand t)
+(defmvar $radexpand t)
+(defmvar $subnumsimp nil)
+(defmvar $logsimp t)
 
-(setq $listarith t wflag nil $lognumer nil expandp nil $domain '$real
-      $m1pbranch nil $%e_to_numlog nil $%emode t timesinp nil
-      $true t $false nil $on t $off nil %e-val (mget '$%e '$numer)
-      %pi-val (mget '$%pi '$numer) $lognegint nil
-      derivflag nil $ratsimpexpons nil exptrlsw nil $logexpand t
-      expandflag nil $radexpand t *zexptsimp? nil $subnumsimp nil
-      rischpf nil $limitdomain '$complex $logsimp t
-      rischp nil rp-polylogp nil *const* 0)
+(defvar rischp nil)
+(defvar rp-polylogp nil)
+(defvar wflag nil)
+(defvar expandp nil)
+(defvar timesinp nil)
+(defvar %e-val (mget '$%e '$numer))
+(defvar %pi-val (mget '$%pi '$numer))
+(defvar derivflag nil)
+(defvar exptrlsw nil)
+(defvar expandflag nil)
+(defvar *zexptsimp? nil)
+(defvar *const* 0)
 
 (defprop mnctimes t associative)
 (defprop lambda t lisp-no-simp)

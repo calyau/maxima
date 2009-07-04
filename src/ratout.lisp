@@ -622,7 +622,7 @@
 				    ans)))))
      (go a)))
 
-(declare-top (special y rischpf genvar $savefactors checkfactors w
+(declare-top (special y genvar $savefactors checkfactors w
 		      exp var x $factorflag $ratfac
 		      $keepfloat ratform rootfactor
 		      wholepart parnumer varlist n))
