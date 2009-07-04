@@ -596,6 +596,12 @@ dynamics/complex_dynamics.lisp\
 dynamics/dynamics.mac\
 dynamics/plotdf.lisp\
 dynamics/rtest_dynamics.mac\
+hypergeometric/hypergeometric.lisp\
+hypergeometric/hypergeometric_mac.mac\
+hypergeometric/abramowitz_id.mac\
+hypergeometric/nfloat.lisp\
+hypergeometric/rtest_hg.mac\
+hypergeometric/rtest_nfloat.mac\
 integequations/inteqn.mac\
 integequations/inteqn.usg\
 integequations/intexs.mac\
