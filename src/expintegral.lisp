@@ -246,8 +246,11 @@
            ((eq sgn '$pos)
             ;; we handle the special case E[v](0) = 1/(v-1), for realpart(v)>1
             (inv (add order -1)))
-           ((member sgn '($neg $ nz $zero))
-            (simp-domain-error (intl:gettext "expintegral_e: expintegral_e(~:M,~:M) is undefined.") order arg))
+           ((member sgn '($neg $nz $zero))
+            (simp-domain-error 
+              (intl:gettext 
+                "expintegral_e: expintegral_e(~:M,~:M) is undefined.")
+                order arg))
            (t (eqtest (list '(%expintegral_e) order arg) expr)))))
 
       ((or (and (symbolp order) (member order infinities :test #'eq))
