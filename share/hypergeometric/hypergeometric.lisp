@@ -653,42 +653,6 @@
 	   (mul ($diff z x) p (div 1 q) (take '($hypergeometric) a b z))))
 	(t (merror "Maxima does not know the derivatives of the hypergeometric functions with respect to the parameters"))))
 
-(defun sdiffgrad (e x)
-  (let ((fun (caar e)) grad args)
-   
-    (cond ((and (eq fun 'mqapply) (oldget (caaadr e) 'grad))
-	   (sdiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
-		      x))
-
-	  ;; extension for pdiff.
-	  ((and (get '$pderivop 'operators) (sdiffgrad-pdiff e x)))
-	  
-	  ;; two line extension for hypergeometric.
-	  ((and (equal fun '$hypergeometric) (get '$hypergeometric 'operators))
-	   (diff-hypergeometric (second e) (third e) (fourth e) x))
-
-	  ((or (eq fun 'mqapply) (null (setq grad (oldget fun 'grad))))
-	  
-	   (if (not (depends e x)) 0 (diff%deriv (list e x 1))))
-	  ((not (= (length (cdr e)) (length (car grad))))
-	   (merror "Wrong number of arguments for ~:M" fun))
-	  
-	  (t 
-
-	   (setq args (sdiffmap (cdr e) x))
-	     (addn (mapcar
-		    #'mul2
-		    (cdr (substitutel
-			  (cdr e) (car grad)
-			  (do ((l1 (cdr grad) (cdr l1))
-			       (args args (cdr args)) (l2))
-			      ((null l1) (cons '(mlist) (nreverse l2)))
-			    (setq l2 (cons (cond ((equal (car args) 0) 0)
-						 (t (car l1)))
-					   l2)))))
-		    args)
-		   t)))))
-
 ;; When multiple_value_return is nil, multiple_values([e1,e2,...]) --> e1; otherwise
 ;; multiple_values([e1,e2,...]) --> [e1,e2,...].
 
