@@ -60,7 +60,7 @@ dfloat(e) := block([ef : float(e)], if complex_number_p(ef) then ef else float(r
    subscripted variable, or a conjugated variable.*/
 
 variable_p(e) := block([inflag : true],
-  (symbolp(e) and not(member('constant, apply('properties, [e])))) or
+  (symbolp(e) and not(featurep(e,'constant))) or
   subvarp(e) or
   opequal_p(e,'conjugate) and variable_p(first(e)));
 
