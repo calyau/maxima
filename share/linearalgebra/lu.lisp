@@ -243,26 +243,27 @@
 (defun $invert_by_lu (m  &optional (fld '$generalring))
   ($require_square_matrix m "$first" "$invert_by_lu")
   ($lu_backsub ($lu_factor m fld) ($identfor m)))
-  
-#|					;
-(defun $determinant_by_lu (m &optional (fld $generalring))
+  					
+(defun $determinant_by_lu (m &optional (fld-name '$generalring))
   ($require_square_matrix m "$first" "$determinant_by_lu")
  
-  (let ((acc (funcall (mring-mult-id fld) nil))
-	(fmult (mring-mult fld))
-	(n ($first ($matrix_size m)))
-	(perm))
+  (let* ((fld ($require_ring fld-name "$second" "$determinant_by_lu"))
+	 (acc (funcall (mring-mult-id fld)))
+	 (fmult (mring-mult fld))
+	 (fconvert (mring-maxima-to-mring fld))
+	 (n ($first ($matrix_size m)))
+	 (perm) (d))
 
-    (setq m ($lu_factor m fld))
+    (setq m ($lu_factor m fld-name))
     (setq perm ($second m))
+   
     (setq m ($first m))
     (loop for i from 1 to n do
-      (setq d (m-elem m perm i i))
-      (displa `((mequal) d ,d))
-      (if ($matrixp d) (setq d ($determinant_by_lu d fld)))
+      (setq d (funcall fconvert (m-elem m perm i i)))
+      ;;(if ($matrixp d) (setq d ($determinant_by_lu d fld)))
       (setq acc (funcall fmult acc d)))
-    acc))
-|#
+    (bbsort1 (cdr perm))
+    (funcall (mring-mring-to-maxima fld) (if sign (funcall (mring-negate fld) acc) acc))))
 
 (defun $mat_cond (m p)
   ($require_square_matrix m "$first" "$mat_cond")
