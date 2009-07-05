@@ -156,7 +156,11 @@
   (setq check x)
   (let ((u (simpcheck (cadr x) z)) (v (simpcheck (caddr x) z)))
     (cond ((or (zerop1 u) (zerop1 v))
-	   (if errorsw (throw 'errorsw t) (merror (intl:gettext "beta: expected nonzero arguments; found ~M, ~M") u v)))
+           (if errorsw 
+               (throw 'errorsw t) 
+               (merror 
+                 (intl:gettext "beta: expected nonzero arguments; found ~M, ~M")
+                               u v)))
 
           ;; Check for numerical evaluation in float precision
       	  ((complex-float-numerical-eval-p u v)
@@ -273,13 +277,13 @@
 				(1- x)))
 		   `((%sin) ((mtimes) ,w $%pi)))))
           
-          ((and $beta_expand (mplusp u))
+          ((and $beta_expand (mplusp u) (integerp (cadr u)))
            ;; Expand beta(a+n,b) where n is an integer.
            (let ((n (cadr u))
                  (u (simplify (cons '(mplus) (cddr u)))))
              (beta-expand-add-integer n u v)))
           
-          ((and $beta_expand (mplusp v))
+          ((and $beta_expand (mplusp v) (integerp (cadr v)))
            ;; Expand beta(a,b+n) where n is an integer.
            (let ((n (cadr v))
                  (v (simplify (cons '(mplus) (cddr v)))))
