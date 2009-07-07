@@ -406,12 +406,15 @@
                 )
                 (mapcar
                   #'cdr
-                  (sort
-                    (progn
-                      (setq free-indices (nonumber (cdadr ($indices e))))
-                      (mapcar 'describe-tensor indexed)
+                  (
+                    (lambda (x) (cond ($flipflag (reverse x)) (t x)))
+                    (sort
+                      (progn
+                        (setq free-indices (nonumber (cdadr ($indices e))))
+                        (mapcar 'describe-tensor indexed)
+                      )
+                      #'tensorpred :key #'car
                     )
-                    #'tensorpred :key #'car
                   )
                 )
               )

@@ -142,7 +142,7 @@ simpW(x):=
     flipflag:not flipflag,
     x:simpmetderiv(canform(contract(simpmetderiv(x,stop))),stop),
     flipflag:not flipflag,
-    canform(conmetderiv(canform(contract(simpmetderiv(x,stop))),imetric))
+    canform(conmetderiv(canform(contract(simpmetderiv(canform(x),stop))),imetric))
 )$
 ("And here we go...")$
 ishow(W([i,j,k,l],[])*g([-i,-j],[]))$
