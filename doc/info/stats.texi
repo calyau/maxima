@@ -782,6 +782,139 @@ against the alternative that the first is greater than the second.
 
 
 
+@deffn {Function} test_binomial (@var{x}, @var{n})
+@deffnx {Function} test_binomial (@var{x}, @var{n}, @var{option_1}, @var{option_2}, ...)
+
+Inferences on a proportion. Argument @var{x} is the number of successes
+in @var{n} trials in a Bernoulli experiment with unknown probability.
+
+Options:
+
+@itemize @bullet
+
+@item
+@code{'proportion}, default @code{1/2}, is the value of the proportion to be checked.
+
+@item
+@code{'alternative}, default @code{'twosided}, is the alternative hypothesis;
+valid values are: @code{'twosided}, @code{'greater} and @code{'less}.
+
+@item
+@code{'conflevel}, default @code{95/100}, confidence level for the confidence interval; it must
+be an expression which takes a value in (0,1).
+
+@item
+@code{'asymptotic}, default @code{false}, indicates whether it performs an exact test
+based on the binomial distribution, or an asymptotic one based on the @i{Central Limit Theorem};
+valid values are @code{true} and @code{false}.
+
+@item
+@code{'correct}, default @code{true}, indicates whether Yates correction is applied or not.
+
+@end itemize
+
+The output of function @code{test_binomial} is an @code{inference_result} Maxima object
+showing the following results:
+
+@enumerate
+
+@item
+@code{'sample_proportion}: the sample proportion.
+
+@item
+@code{'conf_level}: confidence level selected by the user.
+
+@item
+@code{'conf_interval}: Wilson confidence interval for the proportion.
+
+@item
+@code{'method}: inference procedure.
+
+@item
+@code{'hypotheses}: null and alternative hypotheses to be tested.
+
+@item
+@code{'statistic}: value of the sample statistic used for testing the null hypothesis.
+
+@item
+@code{'distribution}: distribution of the sample statistic, together with its parameters.
+
+@item
+@code{'p_value}: @math{p}-value of the test.
+
+@end enumerate
+
+Examples:
+
+Performs an exact test. The null hypothesis
+is @math{H_0: p=1/2} against the one sided alternative @math{H_1: p<1/2}.
+
+@c ===beg===
+@c load (stats)$
+@c test_binomial(45, 103, alternative = less);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) test_binomial(45, 103, alternative = less);
+         |             BINOMIAL TEST               
+         |                                         
+         | sample_proportion = .4368932038834951   
+         |                                         
+         |           conf_level = 0.95             
+         |                                         
+         | conf_interval = [0, 0.522714149150231]  
+         |                                         
+(%o2)    |     method = Exact binomial test.       
+         |                                         
+         | hypotheses = H0: p = 0.5 , H1: p < 0.5  
+         |                                         
+         |             statistic = 45              
+         |                                         
+         |  distribution = [binomial, 103, 0.5]    
+         |                                         
+         |      p_value = .1184509388901454 
+@end example
+
+A two sided asymptotic test. Confidence level is 99/100.
+
+@c ===beg===
+@c load (stats)$
+@c fpprintprec:7$
+@c test_binomial(45, 103, 
+@c               conflevel = 99/100, asymptotic=true);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) fpprintprec:7$
+(%i3) test_binomial(45, 103, 
+                  conflevel = 99/100, asymptotic=true);
+      |                  BINOMIAL TEST                   
+      |                                                  
+      |           sample_proportion = .43689             
+      |                                                  
+      |                conf_level = 0.99                 
+      |                                                  
+      |        conf_interval = [.31422, .56749]          
+      |                                                  
+(%o3) | method = Asympthotic test with Yates correction.
+      |                                                  
+      |     hypotheses = H0: p = 0.5 , H1: p # 0.5       
+      |                                                  
+      |               statistic = .43689                 
+      |                                                  
+      |      distribution = [normal, 0.5, .048872]       
+      |                                                  
+      |                p_value = .19662
+@end example
+
+@opencatbox
+@category{Package stats}
+@closecatbox
+
+@end deffn
+
+
+
 
 
 @deffn {Function} test_sign (@var{x})
@@ -1319,32 +1452,6 @@ confidence interval for a new prediction when @code{x=113} are also calculated.
 @closecatbox
 
 @end deffn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

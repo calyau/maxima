@@ -1,4 +1,4 @@
-@c version 1.8
+@c version 1.10
 @menu
 * Introducci@'on a stats::
 * Funciones y variables para inference_result::
@@ -285,7 +285,7 @@ El resultado devuelto por la funci@'on  @code{test_mean} es un objeto
 @code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su(s) par@'ametro(s).
@@ -446,7 +446,7 @@ El resultado devuelto por la funci@'on  @code{test_means_difference} es un objet
 @code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su(s) par@'ametro(s).
@@ -596,7 +596,7 @@ El resultado devuelto por la funci@'on  @code{test_variance} es un objeto
 @code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su par@'ametro.
@@ -698,7 +698,7 @@ El resultado devuelto por la funci@'on  @code{test_variance_ratio} es un objeto
 @code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
@@ -755,6 +755,142 @@ a la alternativa de que la primera es mayor que la segunda.
 
 
 
+@deffn {Funci@'on} test_binomial (@var{x}, @var{n})
+@deffnx {Funci@'on} test_binomial (@var{x}, @var{n}, @var{option_1}, @var{option_2}, ...)
+
+Inferencias sobre una proporci@'on. El argumento @var{x} es el
+n@'umero de @'exitos observados en @var{n} pruebas de Bernoulli
+con probabilidad desconocida.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'proportion}, valor por defecto @code{1/2}, es el valor de la
+probabilidad a contrastar.
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
+
+@item
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo
+de confianza; debe ser una expresi@'on que tome un valor en el intervalo (0,1).
+
+@item
+@code{'asymptotic}, valor por defecto @code{false}, indica si debe realizar el test
+exacto basado en la binomial, o el asint@'otico basado en el
+@i{Teorema Central del l@'{@dotless{i}}mite}; valores v@'alidos son @code{true} y @code{false}.
+
+@item
+@code{'correct}, valor por defecto @code{true}, indica si se aplica o no la
+correcci@'on de Yates.
+
+@end itemize
+
+El resultado devuelto por la funci@'on @code{test_binomial} es un objeto
+@code{inference_result} con los siguientes resultados:
+
+@enumerate
+
+@item
+@code{'sample_proportion}: proporci@'on muestral.
+
+@item
+@code{'conf_level}: nivel de confianza seleccionado.
+
+@item
+@code{'conf_interval}: intervalo de confianza de Wilson para la proporci@'on.
+
+@item
+@code{'method}: procedimiento de inferencia.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado
+para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+Realiza un contraste exacto. La hip@'otesis nula es @math{H_0: p=1/2} 
+y la alternativa unil@'atera es @math{H_1: p<1/2}.
+
+@c ===beg===
+@c load (stats)$
+@c test_binomial(45, 103, alternative = less);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) test_binomial(45, 103, alternative = less);
+         |             BINOMIAL TEST               
+         |                                         
+         | sample_proportion = .4368932038834951   
+         |                                         
+         |           conf_level = 0.95             
+         |                                         
+         | conf_interval = [0, 0.522714149150231]  
+         |                                         
+(%o2)    |     method = Exact binomial test.       
+         |                                         
+         | hypotheses = H0: p = 0.5 , H1: p < 0.5  
+         |                                         
+         |             statistic = 45              
+         |                                         
+         |  distribution = [binomial, 103, 0.5]    
+         |                                         
+         |      p_value = .1184509388901454 
+@end example
+
+Un contraste asint@'otico bil@'atero. El nivel de confianza es 99/100.
+
+@c ===beg===
+@c load (stats)$
+@c fpprintprec:7$
+@c test_binomial(45, 103, 
+@c               conflevel = 99/100, asymptotic=true);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) fpprintprec:7$
+(%i3) test_binomial(45, 103, 
+                  conflevel = 99/100, asymptotic=true);
+      |                  BINOMIAL TEST                   
+      |                                                  
+      |           sample_proportion = .43689             
+      |                                                  
+      |                conf_level = 0.99                 
+      |                                                  
+      |        conf_interval = [.31422, .56749]          
+      |                                                  
+(%o3) | method = Asympthotic test with Yates correction. 
+      |                                                  
+      |     hypotheses = H0: p = 0.5 , H1: p # 0.5       
+      |                                                  
+      |               statistic = .43689                 
+      |                                                  
+      |      distribution = [normal, 0.5, .048872]       
+      |                                                  
+      |                p_value = .19662
+@end example
+
+@end deffn
+
+
+
+
+
+
 
 @deffn {Funci@'on} test_sign (@var{x})
 @deffnx {Funci@'on} test_sign (@var{x}, @var{option_1}, @var{option_2}, ...)
@@ -792,7 +928,7 @@ El resultado devuelto por la funci@'on @code{test_sign} es un objeto
 @code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
@@ -881,7 +1017,7 @@ un objeto @code{inference_result} con los siguientes resultados:
 @code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su(s) par@'ametro(s).
@@ -999,7 +1135,7 @@ es un objeto @code{inference_result} con los siguientes resultados:
 @code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
@@ -1202,7 +1338,7 @@ V@'eanse los ejemplos m@'as abajo.
 @code{'hypotheses}: hip@'otesis nula y altenativa sobre el par@'ametro @var{b}.
 
 @item
-@code{'statistic}: valor del estad@'istico de contraste utilizado para probar la hip@'otesis.
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado para probar la hip@'otesis.
 
 @item
 @code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con su par@'ametro.
@@ -1290,32 +1426,6 @@ cuando @code{x=113}.
 @end example
 
 @end deffn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
