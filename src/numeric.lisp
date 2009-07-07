@@ -149,7 +149,9 @@
   
 ;;; REALP
 
-;; GCL doesn't have the REAL class!
+;; GCL doesn't have the REAL class!  But since a real is a rational or
+;; float, we can fake it by defining methods on rationals and floats
+;; for gcl.
 #-gcl
 (defmethod realp ((x cl:real))
   t)
@@ -1102,9 +1104,22 @@
 		   :real (maxima::$realpart result)
 		   :imag (maxima::$imagpart result))))
 
-;; Really want type real, but gcl doesn't like that.
-(defmethod two-arg-atan ((a #-gcl real #+gcl number) (b #-gcl real #+gcl number))
+;; Really want type real, but gcl doesn't like that.  Define methods for rational and float
+#-gcl
+(defmethod two-arg-atan ((a real) (b real))
   (cl:atan a b))
+
+#+gcl
+(progn
+  (defmethod two-arg-atan ((a cl:float) (b cl:float))
+    (cl:atan a b))
+  (defmethod two-arg-atan ((a cl:rational) (b cl:rational))
+    (cl:atan a b))
+  (defmethod two-arg-atan ((a cl:float) (b cl:rational))
+    (cl:atan a b))
+  (defmethod two-arg-atan ((a cl:rational) (b cl:float))
+    (cl:atan a b))
+  )
 
 (defmethod two-arg-atan ((a bigfloat) (b bigfloat))
   (make-instance 'bigfloat
@@ -1237,16 +1252,38 @@
 
 ;; We really want a real type, but gcl doesn't like it, so use number
 ;; instead.
-(defmethod one-arg-complex ((a #-gcl real #+gcl number))
+#-gcl
+(defmethod one-arg-complex ((a real))
   (cl:complex a))
+
+#+gcl
+(progn
+(defmethod one-arg-complex ((a cl:float))
+  (cl:complex a))
+(defmethod one-arg-complex ((a cl:rational))
+  (cl:complex a))
+)
 
 (defmethod one-arg-complex ((a bigfloat))
   (make-instance 'complex-bigfloat
 		 :real (real-value a)
 		 :imag (intofp 0)))
 
-(defmethod two-arg-complex ((a #-gcl real #+gcl number) (b #-gcl real #+gcl number))
+#-gcl
+(defmethod two-arg-complex ((a real) (b real))
   (cl:complex a b))
+
+#+gcl
+(progn
+(defmethod two-arg-complex ((a cl:float) (b cl:float))
+  (cl:complex a b))
+(defmethod two-arg-complex ((a cl:rational) (b cl:rational))
+  (cl:complex a b))
+(defmethod two-arg-complex ((a cl:float) (b cl:rational))
+  (cl:complex a b))
+(defmethod two-arg-complex ((a cl:rational) (b cl:float))
+  (cl:complex a b))
+)
 
 (defmethod two-arg-complex ((a bigfloat) (b bigfloat))
   (make-instance 'complex-bigfloat
@@ -1413,17 +1450,24 @@
 	  (* a b)
 	  (exp (* (bigfloat b) (log a))))))
 
+;; Handle a^b a little more carefully because the result is known to
+;; be real when a is real and b is an integer.
 (defmethod expt ((a bigfloat) (b integer))
   (cond ((zerop b)
 	 (bigfloat 1))
-	((and (zerop a) (plusp (realpart b)))
+	((and (zerop a) (plusp b))
+	 ;; 0^b, for positive b
 	 (* a b))
-	(t
+	((eql b 1) a)
+	((eql b -1) (/ a))
+	((minusp a)
 	 ;; a^b = exp(b*log(|a|) + %i*%pi*b)
 	 ;;     = exp(b*log(|a|))*exp(%i*%pi*b)
 	 ;;     = (-1)^b*exp(b*log(|a|))
 	 (* (exp (* b (log (abs a))))
-	    (expt -1 b)))))
+	    (if (oddp b) -1 1)))
+	(t
+	 (exp (* b (log a))))))
 
 ;;; TO - External
 ;;;
