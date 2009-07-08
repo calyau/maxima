@@ -1055,7 +1055,7 @@
       ((zerop1 z2)
        (let ((sgn ($sign ($realpart a))))
          (cond 
-           ((eq sgn '$pos) 
+           ((member sgn '($pos $pz))
             (sub
               (simplify (list '(%gamma_incomplete) a z1))
               (simplify (list '(%gamma) a))))
@@ -1065,7 +1065,7 @@
       ((zerop1 z1)
        (let ((sgn ($sign ($realpart a))))
          (cond 
-           ((eq sgn '$pos) 
+           ((member sgn '($pos $pz))
             (sub
               (simplify (list '(%gamma) a))
               (simplify (list '(%gamma_incomplete) a z2))))
