@@ -9,8 +9,8 @@
 
 ;; The last time I tried, the file "hypergeometric.lisp" must be loaded before compiling nfloat; so
 
-(eval-when (compile) 
-  ($load "hypergeometric.lisp"))
+;(eval-when (compile) 
+;  ($load "hypergeometric.lisp"))
 
 (in-package :maxima)
 

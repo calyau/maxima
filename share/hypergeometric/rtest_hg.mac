@@ -1,7 +1,5 @@
 (kill(all), 
    fpprec : 25, 
-   compile_file(file_search("nfloat.lisp")),
-   compile_file(file_search("hypergeometric.lisp")),
    load("hypergeometric"), 
    expand_hypergeometric : false, 
    max_fpprec : 1000,
