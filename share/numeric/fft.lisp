@@ -5,48 +5,152 @@
 (defun mgetarray (marg) 
 "Return the lisp array which is somehow attached to MARG."
   (or (and (symbolp marg) (symbol-array (mget marg 'array)))
+      (and ($listp marg) (make-array ($length marg) :initial-contents (rest marg)))
       (and (arrayp marg) marg)))
 
-(defun fft-arg-check (ary)
+(defun fft-arg-check (user-fcn-name ary)
   ;; I don't check here if this is really a floating point array.  For maxima
   ;; arrays which are symbols this would be no problem since the type is on
   ;; the property list.  On the other hand, for "fast" arrays (i.e. lisp
   ;; arrays), using ARRAY-ELEMENT-TYPE might not be too useful.
   (or (mgetarray ary)
-      (merror
-       "arg ~M to fft//ift//recttopolar//polartorect must be floating point array" ary)))
+      (merror "~M: argument must a list or array; instead found ~:M" user-fcn-name ary)))
 
-;; I assume that the aguments of $fft are maxima arrays to be modified,
-;; whereas the arguments of fft are lisp arrays to be modified.
-(defun $fft (rary iary)
-  (let ((fast_rary (fft-arg-check rary))
-	(fast_iary (fft-arg-check iary)))
+(defun make-empty-copy (a)
+  (cond
+    (($listp a)
+     (cons '(mlist) (make-list ($length a) :initial-element 0e0)))
+    ((arrayp a)
+     (make-array (length a) :initial-element 0e0))
+    ((symbolp a)
+     (meval
+       `(($array)
+         ,(intern (symbol-name (gensym "$G")))
+         $float
+         ,(1- (length (mgetarray a))))))))
+
+(defun $fft (a)
+  (let*
+    ((a1 (cond
+           ((and (symbolp a) (mget a 'array))
+            (copy-seq (symbol-array (mget a 'array))))
+           ((arrayp a)
+            (copy-seq a))
+           ((listp a)
+            (copy-list a))
+           (t (merror "fft: expected an array or list, found ~M instead." (type-of a)))))
+     (a2 (make-empty-copy a1)))
+    (cond
+      ((arrayp a1)
+       (dotimes (i (length a1))
+         (let ((ri (risplit (aref a1 i))))
+           (setf (aref a1 i) (car ri))
+           (setf (aref a2 i) (cdr ri)))))
+      (t
+        (dotimes (i ($length a1))
+          (let ((ri (risplit (nth (1+ i) a1))))
+            (setf (nth (1+ i) a1) (car ri))
+            (setf (nth (1+ i) a2) (cdr ri))))))
+    (fft a1 a2)
+    (cond
+      ((arrayp a1)
+       (dotimes (i (length a1))
+         (setf (aref a1 i) (m+ (aref a1 i) (m* '$%i (aref a2 i)))))
+       (if (symbolp a)
+         (let ((b (make-empty-copy a)))
+           (setf (symbol-array (mget b 'array)) a1)
+           (setq a1 b))))
+      (t
+        (dotimes (i ($length a1))
+          (setf (nth (1+ i) a1) (m+ (nth (1+ i) a1) (m* '$%i (nth (1+ i) a2)))))))
+    a1))
+
+(defun fft (a1 a2)
+  (fft+ifft-common '$fft 'ifft a1 a2))
+
+(defun fft+ifft-common (user-fcn-name lisp-fcn-name rary iary)
+  (let*
+    ((fast_rary (fft-arg-check user-fcn-name rary))
+     (fast_iary (if iary (fft-arg-check user-fcn-name iary))))
+
+    (when (null iary)
+      (setq iary (make-empty-copy rary))
+      (setq fast_iary (fft-arg-check user-fcn-name iary))
+      ;; Only RARY was given as an argument.
+      ;; Put imaginary part into IARY.
+      (dotimes (i (length fast_rary))
+        (let ((ri (risplit (aref fast_rary i))))
+          (setf (aref fast_rary i) (car ri))
+          (setf (aref fast_iary i) (cdr ri)))))
+
+    ;; Try to ensure that all values are floating point numbers.
+    (dotimes (i (length fast_rary))
+      (setf (aref fast_rary i) ($float (aref fast_rary i)))
+      (setf (aref fast_iary i) ($float (aref fast_iary i))))
+    
     ;; fast_rary and fast_iary are lisp arrays (which is the same thing
     ;; as "fast" maxima arrays) and fft is supposed to modify them.
-    (ifft fast_rary fast_iary)
+    (funcall lisp-fcn-name fast_rary fast_iary)
+
     ;; return the modified arrays in their original form (i.e. either "fast"
     ;; or not, depending) 
+    (when ($listp rary)
+      (copy-into-mlist fast_rary rary)
+      (copy-into-mlist fast_iary iary))
     (list '(mlist) rary iary)))
 
-(defun $ift (rary iary)
-  (let ((fast_rary (fft-arg-check rary))
-	(fast_iary (fft-arg-check iary)))
-    ;; fast_rary and fast_iary are lisp arrays (which is the same thing
-    ;; as "fast" maxima arrays) and fft is supposed to modify them.
-    (fft fast_rary fast_iary)
-    ;; return the modified arrays in their original form (i.e. either "fast"
-    ;; or not, depending) 
-    (list '(mlist) rary iary)))
+(defun copy-into-mlist (a b)
+  ;; I wonder if there's a better way. Oh well.
+  (dotimes (i (length a)) (setf (nth (1+ i) b) (aref a i))))
+
+(defun $inverse_fft (a)
+  (let*
+    ((a1 (cond
+           ((and (symbolp a) (mget a 'array))
+            (copy-seq (symbol-array (mget a 'array))))
+           ((arrayp a)
+            (copy-seq a))
+           ((listp a)
+            (copy-list a))
+           (t (merror "fft: expected an array or list, found ~M instead." (type-of a)))))
+     (a2 (make-empty-copy a1)))
+    (cond
+      ((arrayp a1)
+       (dotimes (i (length a1))
+         (let ((ri (risplit (aref a1 i))))
+           (setf (aref a1 i) (car ri))
+           (setf (aref a2 i) (cdr ri)))))
+      (t
+        (dotimes (i ($length a1))
+          (let ((ri (risplit (nth (1+ i) a1))))
+            (setf (nth (1+ i) a1) (car ri))
+            (setf (nth (1+ i) a2) (cdr ri))))))
+    (inverse_fft a1 a2)
+    (cond
+      ((arrayp a1)
+       (dotimes (i (length a1))
+         (setf (aref a1 i) (m+ (aref a1 i) (m* '$%i (aref a2 i)))))
+       (if (symbolp a)
+         (let ((b (make-empty-copy a)))
+           (setf (symbol-array (mget b 'array)) a1)
+           (setq a1 b))))
+      (t
+        (dotimes (i ($length a1))
+          (setf (nth (1+ i) a1) (m+ (nth (1+ i) a1) (m* '$%i (nth (1+ i) a2)))))))
+    a1))
+
+(defun inverse_fft (a1 a2)
+  (fft+ifft-common '$inverse_fft 'forward-fft a1 a2))
 
 (defun $recttopolar (rary iary)
-  (let ((fast-rary (fft-arg-check rary))
-	(fast-iary (fft-arg-check iary)))
+  (let ((fast-rary (fft-arg-check '$recttopolar rary))
+	(fast-iary (fft-arg-check '$recttopolar iary)))
     (complex-to-polar fast-rary fast-iary)
     (list '(mlist) rary iary)))
 
 (defun $polartorect (rary iary)
-  (let ((fast-rary (fft-arg-check rary))
-	(fast-iary (fft-arg-check iary)))
+  (let ((fast-rary (fft-arg-check '$polartorect rary))
+	(fast-iary (fft-arg-check '$polartorect iary)))
     (polar-to-complex fast-rary fast-iary)
     (list '(mlist) rary iary)))
 
@@ -96,7 +200,8 @@ The result is returned in vec."
 	 (le size)
 	 (m (log-base2 le))
 	 (dir (if direction 1.0 -1.0)))
-    (assert (= size (ash 1 m)))
+    (unless (= size (ash 1 m))
+      (merror "fft: size of array must be a power of 2; found: ~:M" size))
     (dotimes (level m)
       (declare (fixnum level))
       (let* ((le1 (truncate le 2))
@@ -167,26 +272,27 @@ must be a power of 2."
 	)
       (setq j (+ j k)))))
 
-(defun fft (x-r x-i)
+(defun forward-fft (x-r x-i)
   "fft (x)
 
 Forward DFT of x.  Result is returned in x."
   (let ((size (length x-r)))
-    (fft-dif-internal x-r x-i nil)
-    (fft-bit-reverse x-r x-i)
-    (values x-r x-i)
-    ))
+    (when (>= size 2)
+      (fft-dif-internal x-r x-i nil)
+      (fft-bit-reverse x-r x-i))
+    (values x-r x-i)))
 
 (defun ifft (x-r x-i)
   "ifft (x)
 
 Inverse DFT of x.  Result is returned in x."
-  (let* ((len (length x-r))
-	 (flen (/ (float len))))
-    (fft-dif-internal x-r x-i t)
-    (fft-bit-reverse x-r x-i)
-    (dotimes (k len)
-      (setf (aref x-r k) (* (aref x-r k) flen))
-      (setf (aref x-i k) (* (aref x-i k) flen))))
+  (let ((size (length x-r)))
+    (if (>= size 2)
+      (let ((f1size (/ (float size))))
+        (fft-dif-internal x-r x-i t)
+        (fft-bit-reverse x-r x-i)
+        (dotimes (k size)
+          (setf (aref x-r k) (* (aref x-r k) f1size))
+          (setf (aref x-i k) (* (aref x-i k) f1size))))))
   (values x-r x-i))
   
