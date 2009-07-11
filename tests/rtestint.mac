@@ -1082,3 +1082,152 @@ integrate(exp(sqrt(x)),x,1,5);
  /* [ 1899352 ] integrate asks about (y-1)(y+1) after assume(y^2>1) */
 integrate(log(x^2+y^2),x,0,1);
 log(y^2+1)+2*atan(1/y)*y-2;
+
+/* Integrals of the type: c*z^w*log(z)^m*exp(-t^s) for 0 to inf */
+
+integrate(exp(-t),t,0,inf);
+1;
+integrate(exp(-t^2),t,0,inf);
+sqrt(%pi)/2;
+integrate(exp(-t^3),t,0,inf);
+gamma(1/3)/3;
+integrate(exp(-t^4),t,0,inf);
+gamma(1/4)/4;
+
+integrate(t*exp(-t),t,0,inf);
+1;
+integrate(t^2*exp(-t),t,0,inf);
+2;
+integrate(t^3*exp(-t),t,0,inf);
+6;
+integrate(t^4*exp(-t),t,0,inf);
+24;
+
+integrate(t*exp(-t^2),t,0,inf);
+1/2;
+integrate(t^2*exp(-t^2),t,0,inf);
+sqrt(%pi)/4;
+integrate(t^3*exp(-t^2),t,0,inf);
+1/2;
+integrate(t^4*exp(-t^2),t,0,inf);
+3*sqrt(%pi)/8;
+
+integrate(t^-2*exp(-t^-2),t,0,inf);
+sqrt(%pi)/2;
+integrate(t^-3*exp(-t^-2),t,0,inf);
+1/2;
+integrate(t^-4*exp(-t^-2),t,0,inf);
+sqrt(%pi)/4;
+
+integrate(t^(1/2)*exp(-t^2),t,0,inf);
+gamma(3/4)/2;
+integrate(t^(1/3)*exp(-t^2),t,0,inf);
+gamma(2/3)/2;
+integrate(t^(2/3)*exp(-t^2),t,0,inf);
+gamma(5/6)/2;
+
+integrate(exp(-t)*log(t),t,0,inf);
+-%gamma;
+integrate(t*exp(-t)*log(t),t,0,inf);
+1-%gamma;
+integrate(t^2*exp(-t)*log(t),t,0,inf);
+3-2*%gamma;
+
+integrate(t*exp(-t)*log(t)^2,t,0,inf);
+(%pi^2+6*%gamma^2-12*%gamma)/6;
+integrate(t*exp(-t^(1/2))*log(t)^2,t,0,inf);
+8*%pi^2+48*%gamma^2-176*%gamma+96;
+integrate(t*exp(-t^2)*log(t),t,0,inf);
+-%gamma/4;
+
+
+/* Integrals of the type: c*z^w*log(z)^m*exp(-t^s) for x to inf */
+
+(assume(x>0),done);
+done;
+
+/* Expand Gamma and Incomplete Gamma functions */
+gamma_expand:true;
+true;
+
+integrate(exp(-t),t,x,inf);
+%e^-x;
+integrate(exp(-t^2),t,x,inf);
+sqrt(%pi)*erfc(abs(x))/2;
+integrate(exp(-t^3),t,x,inf);
+gamma_incomplete(1/3,x^3)/3;
+integrate(exp(-t^4),t,x,inf);
+gamma_incomplete(1/4,x^4)/4;
+
+integrate(t*exp(-t),t,x,inf);
+(x+1)*%e^-x;
+integrate(t^2*exp(-t),t,x,inf);
+(x^2+2*x+2)*%e^-x;
+integrate(t^3*exp(-t),t,x,inf);
+(x^3+3*x^2+6*x+6)*%e^-x;
+integrate(t^4*exp(-t),t,x,inf);
+(x^4+4*x^3+12*x^2+24*x+24)*%e^-x;
+
+integrate(t*exp(-t^2),t,x,inf);
+%e^-x^2/2;
+integrate(t^2*exp(-t^2),t,x,inf);
+%e^-x^2*(sqrt(%pi)*%e^x^2*erfc(x)+2*x)/4;
+integrate(t^3*exp(-t^2),t,x,inf);
+(x^2+1)*%e^-x^2/2;
+integrate(t^4*exp(-t^2),t,x,inf);
+%e^-x^2*(3*sqrt(%pi)*%e^x^2*erfc(x)+4*x^3+6*x)/8;
+
+integrate(t^-2*exp(-t^-2),t,x,inf);
+-sqrt(%pi)*(erfc(1/x)-1)/2;
+integrate(t^-3*exp(-t^-2),t,x,inf);
+%e^-(1/x^2)*(%e^(1/x^2)-1)/2;
+integrate(t^-4*exp(-t^-2),t,x,inf);
+-%e^-(1/x^2)*(sqrt(%pi)*(erfc(1/x)-1)*x*%e^(1/x^2)+2)/(4*x);
+
+integrate(t^(1/2)*exp(-t^2),t,x,inf);
+gamma_incomplete(3/4,x^2)/2;
+integrate(t^(1/3)*exp(-t^2),t,x,inf);
+gamma_incomplete(2/3,x^2)/2;
+integrate(t^(2/3)*exp(-t^2),t,x,inf);
+gamma_incomplete(5/6,x^2)/2;
+
+integrate(exp(-t)*log(t),t,x,inf);
+-%e^-x*((%e^x-1)*log(x)+(%gamma-hypergeometric_regularized([1,1],[2,2],-x)*x)
+                        *%e^x);
+integrate(t*exp(-t)*log(t),t,x,inf);
+-%e^-x*((%e^x-x-1)*log(x)+(-hypergeometric_regularized([2,2],[3,3],-x)*x^2
+                          +%gamma-1)
+                          *%e^x);
+integrate(t^2*exp(-t)*log(t),t,x,inf);
+-%e^-x*((2*%e^x-x^2-2*x-2)*log(x)+(-4*hypergeometric_regularized(
+                                      [3,3],[4,4],-x)*x^3
+                                  +2*%gamma-3)
+                                  *%e^x);
+
+integrate(t*exp(-t)*log(t),t,x,inf);
+-%e^-x*((%e^x-x-1)*log(x)+(-hypergeometric_regularized([2,2],[3,3],-x)*x^2
+                          +%gamma-1)
+                          *%e^x);
+integrate(t*exp(-t^(1/2))*log(t),t,x,inf);
+%e^-sqrt(x)*((-12*%e^sqrt(x)+6*x+12)*log(x)+sqrt(x)*(2*x+12)*log(x)
+                                           +(144
+                                            *hypergeometric_regularized(
+                                             [4,4],[5,5],-sqrt(x))*x^2
+                                            -24*%gamma+44)
+                                            *%e^sqrt(x));
+
+/* Integrals of the type: c*z^r*log(z)^n*(1-z)^s*log(1-z)^m */
+
+integrate(t*log(t)*(1-t)*log(1-t),t,0,1);
+(3*%pi^2-37)/-108;
+integrate(t^2*log(t)*(1-t)*log(1-t),t,0,1);
+(3*%pi^2-37)/-216;
+integrate(t^2*log(t)^2*(1-t)*log(1-t),t,0,1);
+(576*zeta(3)+56*%pi^2-1317)/3456;
+integrate(t^2*log(t)^2*(1-t)^2*log(1-t),t,0,1);
+(72000*zeta(3)+9400*%pi^2-191243)/1080000;
+integrate(t^2*log(t)^2*(1-t)^2*log(1-t)^2,t,0,1);
+(3384000*zeta(3)+6000*%pi^4+747800*%pi^2-12135541)/-16200000;
+
+(forget(x>0),gamma_expand:false,done);
+done;
