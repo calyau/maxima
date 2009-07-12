@@ -1087,6 +1087,28 @@ gamma_incomplete(a-b*%i,10);
 conjugate(gamma_incomplete(a+b*%i,-10));
 conjugate(gamma_incomplete(a+b*%i,-10));
 
+/* Derivatives of the Incomplete Gamma function */
+
+diff(gamma_incomplete(a,x),x);
+-x^(a-1)*%e^(-x);
+
+/* Noun form if sign of the parameter a is not known */
+diff(gamma_incomplete(a,x),a);
+'diff(gamma_incomplete(a,x),a);
+
+/* The parameter a has a positive sign */
+(assume(a>0),done);
+done;
+
+expand(diff(gamma_incomplete(a,x),a)-
+(-(gamma(a)-gamma_incomplete(a,x))*log(x)
+       +gamma(a)^2*hypergeometric_regularized([a,a],[a+1,a+1],-x)*x^a
+       +psi[0](a)*gamma(a)));
+0;
+
+(forget(a>0),done);
+done;
+
 /* Numerical tests for the Incomplete Gamma function */
 
 /* At first tests for a=0 and negative integers for a 
