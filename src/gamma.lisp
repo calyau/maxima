@@ -364,29 +364,36 @@
 
 ;;; Derivative of the Incomplete Gamma function
 
-(defprop %gamma_incomplete
-  ((a z)
-   ;; The derivative wrt a in terms of hypergeometric_regularized 2F2 function
-   ;; and the Generalized Incomplete Gamma function (functions.wolfram.com)
-   ((mplus)
-      ((mtimes)
-         ((mexpt) ((%gamma) a) 2)
-         ((mexpt) z a)
-         (($hypergeometric_regularized)
-            ((mlist) a a)
-            ((mlist) ((mplus) 1 a) ((mplus) 1 a))
-            ((mtimes) -1 z)))
-      ((mtimes) -1
-         ((%gamma_incomplete_generalized) a 0 z)
-         ((%log) z))
-      ((mtimes)
-         ((%gamma) a)
-         ((mqapply) (($psi array) 0) a)))
-   ;; The derivative wrt z
-   ((mtimes) -1
+(putprop '%gamma_incomplete
+  `((a z)
+    ,(lambda (a unused)
+       (declare (ignore unused))
+       (cond ((member ($sign a) '($pos $pz))
+              ;; The derivative wrt a in terms of hypergeometric_regularized 2F2
+              ;; function and the Generalized Incomplete Gamma function 
+              ;; (functions.wolfram.com), only for a>0.
+              '((mplus)
+                 ((mtimes)
+                   ((mexpt) ((%gamma) a) 2)
+                   ((mexpt) z a)
+                   (($hypergeometric_regularized)
+                      ((mlist) a a)
+                      ((mlist) ((mplus) 1 a) ((mplus) 1 a))
+                      ((mtimes) -1 z)))
+                 ((mtimes) -1
+                   ((%gamma_incomplete_generalized) a 0 z)
+                   ((%log) z))
+                 ((mtimes)
+                   ((%gamma) a)
+                   ((mqapply) (($psi array) 0) a))))
+             (t
+              ;; No derivative. Maxima generates a noun form.  
+              nil)))
+    ;; The derivative wrt z
+    ((mtimes) -1
       ((mexpt) $%e ((mtimes) -1 z))
       ((mexpt) z ((mplus) -1 a))))
-  grad)
+  'grad)
 
 ;;; Integral of the Incomplete Gamma function
 
