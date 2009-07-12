@@ -897,5 +897,30 @@ x*(x+1) = x*(a*x+b);
 horner([x^2+x,x^3+x,x^4+x]);
 [x*(x+1),x*(x^2+1),x*(x^3+1)];
 
+/* BUG ID: 2699862 "derivative of polylogarithm"
+ * The noun form is not put on the property list, but NIL. The routine 
+ * sdiffgrad generates a noun form, when the derivative is not known.
+ */
+
+diff(li[n](x),n);
+'diff(li[n](x),n);
+
+diff(li[n*x](x),x);
+'diff(li[n*x](x),x);
+
+diff(li[n](x),x,1,n,1);
+'diff(li[n-1](x),n)/x;
+
+/* Not reported as a bug, but the same problem for the function psi */
+
+diff(psi[n](x),n);
+'diff(psi[n](x),n);
+
+diff(psi[n*x](x),x);
+'diff(psi[n*x](x),x);
+
+diff(psi[n](x),x,1,n,1);
+'diff(psi[n+1](x),n);
+
 end;
 end$
