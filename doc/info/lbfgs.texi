@@ -31,11 +31,16 @@ scale optimization". @i{Mathematical Programming B} 45:503--528 (1989)
 @section Functions and Variables for lbfgs
 
 @deffn {Function} lbfgs (@var{FOM}, @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
+@deffnx {Function} lbfgs ([@var{FOM}, @var{grad}] @var{X}, @var{X0}, @var{epsilon}, @var{iprint})
 
 Finds an approximate solution of the unconstrained minimization of the figure of merit @var{FOM}
 over the list of variables @var{X},
 starting from initial estimates @var{X0},
-such that @math{norm grad FOM < epsilon max(1, norm X)}.
+such that @math{norm(grad(FOM)) < epsilon*max(1, norm(X))}.
+
+@var{grad}, if present, is the gradient of @var{FOM} with respect to the variables @var{X}.
+@var{grad} is a list, with one element for each element of @var{X}.
+If not present, the gradient is computed automatically by symbolic differentiation.
 
 The algorithm applied is a limited-memory quasi-Newton (BFGS) algorithm [1].
 It is called a limited-memory method because a low-rank approximation of the
@@ -336,6 +341,80 @@ I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
                                            C = 2.528933072164854]
 (%i8) plot2d ([F(x), [discrete, X, Y]], [x, -1, 6]), ''estimates;
 (%o8) 
+@end example
+
+Gradient of FOM is specified (instead of computing it automatically).
+
+@c ===beg===
+@c load (lbfgs)$
+@c F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
+@c F_grad : map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]);
+@c estimates : lbfgs ([F(a, b, c), F_grad], [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
+@c ===end===
+@example
+(%i1) load (lbfgs)$
+(%i2) F(a, b, c) := (a - 5)^2 + (b - 3)^4 + (c - 2)^6;
+                               2          4          6
+(%o2)     F(a, b, c) := (a - 5)  + (b - 3)  + (c - 2)
+(%i3) F_grad : map (lambda ([x], diff (F(a, b, c), x)), [a, b, c]);
+                                    3           5
+(%o3)          [2 (a - 5), 4 (b - 3) , 6 (c - 2) ]
+(%i4) estimates : lbfgs ([F(a, b, c), F_grad], [a, b, c], [0, 0, 0], 1e-4, [1, 0]);
+*************************************************
+  N=    3   NUMBER OF CORRECTIONS=25
+       INITIAL VALUES
+ F=  1.700000000000000D+02   GNORM=  2.205175729958953D+02
+*************************************************
+
+@end example
+@ifnottex
+@example
+   I  NFN     FUNC                    GNORM                   STEPLENGTH
+
+   1    2     6.632967565917638D+01   6.498411132518770D+01   4.534785987412505D-03  
+   2    3     4.368890936228036D+01   3.784147651974131D+01   1.000000000000000D+00  
+   3    4     2.685298972775190D+01   1.640262125898521D+01   1.000000000000000D+00  
+   4    5     1.909064767659852D+01   9.733664001790506D+00   1.000000000000000D+00  
+   5    6     1.006493272061515D+01   6.344808151880209D+00   1.000000000000000D+00  
+   6    7     1.215263596054294D+00   2.204727876126879D+00   1.000000000000000D+00  
+   7    8     1.080252896385334D-02   1.431637116951849D-01   1.000000000000000D+00  
+   8    9     8.407195124830908D-03   1.126344579730013D-01   1.000000000000000D+00  
+   9   10     5.022091686198527D-03   7.750731829225274D-02   1.000000000000000D+00  
+  10   11     2.277152808939775D-03   5.032810859286795D-02   1.000000000000000D+00  
+  11   12     6.489384688303218D-04   1.932007150271008D-02   1.000000000000000D+00  
+  12   13     2.075791943844548D-04   6.964319310814364D-03   1.000000000000000D+00  
+  13   14     7.349472666162257D-05   4.017449067849554D-03   1.000000000000000D+00  
+  14   15     2.293617477985237D-05   1.334590390856715D-03   1.000000000000000D+00  
+  15   16     7.683645404048675D-06   6.011057038099201D-04   1.000000000000000D+00  
+@end example
+@end ifnottex
+@tex
+\halign{\hfil\tt#&\quad\hfil\tt#\quad&\tt#\hfil\quad&\tt#\hfil\quad&\tt#\hfil\cr
+I& NFN&   FUNC&                    GNORM&                   STEPLENGTH\cr
+&&&&\cr
+   1&   2&    6.632967565917638D+01&  6.498411132518770D+01&  4.534785987412505D-03\cr
+   2&   3&    4.368890936228036D+01&  3.784147651974131D+01&  1.000000000000000D+00\cr
+   3&   4&    2.685298972775190D+01&  1.640262125898521D+01&  1.000000000000000D+00\cr
+   4&   5&    1.909064767659852D+01&  9.733664001790506D+00&  1.000000000000000D+00\cr
+   5&   6&    1.006493272061515D+01&  6.344808151880209D+00&  1.000000000000000D+00\cr
+   6&   7&    1.215263596054294D+00&  2.204727876126879D+00&  1.000000000000000D+00\cr
+   7&   8&    1.080252896385334D-02&  1.431637116951849D-01&  1.000000000000000D+00\cr
+   8&   9&    8.407195124830908D-03&  1.126344579730013D-01&  1.000000000000000D+00\cr
+   9&  10&    5.022091686198527D-03&  7.750731829225274D-02&  1.000000000000000D+00\cr
+  10&  11&    2.277152808939775D-03&  5.032810859286795D-02&  1.000000000000000D+00\cr
+  11&  12&    6.489384688303218D-04&  1.932007150271008D-02&  1.000000000000000D+00\cr
+  12&  13&    2.075791943844548D-04&  6.964319310814364D-03&  1.000000000000000D+00\cr
+  13&  14&    7.349472666162257D-05&  4.017449067849554D-03&  1.000000000000000D+00\cr
+  14&  15&    2.293617477985237D-05&  1.334590390856715D-03&  1.000000000000000D+00\cr
+  15&  16&    7.683645404048675D-06&  6.011057038099201D-04&  1.000000000000000D+00\cr
+}
+@end tex
+@example
+
+ THE MINIMIZATION TERMINATED WITHOUT DETECTING ERRORS.
+ IFLAG = 0
+(%o4) [a = 5.000086823042934, b = 3.05239542970518, 
+                                           c = 1.927980629919583]
 @end example
 
 @opencatbox
