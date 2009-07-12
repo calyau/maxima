@@ -421,10 +421,19 @@
 	(t (sdiffgrad e x))))
 
 (defun sdiffgrad (e x)
-  (let ((fun (caar e)) grad args)
+  (let ((fun (caar e)) grad args result)
     (cond ((and (eq fun 'mqapply) (oldget (caaadr e) 'grad))
-	   (sdiffgrad (cons (cons (caaadr e) nil) (append (cdadr e) (cddr e)))
-		      x))
+           ;; Change the array function f[n](x) to f(n,x), call sdiffgrad again.
+           (setq result
+	         (sdiffgrad (cons (cons (caaadr e) nil) 
+	                          (append (cdadr e) (cddr e)))
+		            x))
+           ;; If noun form for f(n,x), adjust the noun form for f[n](x)
+           (if (isinop result '%derivative)
+               (if (not (depends e x))
+                   0
+                   (diff%deriv (list e x 1)))
+               result))
 
 	  ;; extension for pdiff.
 	  ((and (get '$pderivop 'operators) (sdiffgrad-pdiff e x)))
@@ -436,20 +445,39 @@
 	  ((or (eq fun 'mqapply) (null (setq grad (oldget fun 'grad))))
 	   (if (not (depends e x)) 0 (diff%deriv (list e x 1))))
 	  ((not (= (length (cdr e)) (length (car grad))))
-	   (merror (intl:gettext "~:M: expected exactly ~M arguments.") fun (length (car grad))))
-	  (t (setq args (sdiffmap (cdr e) x))
-	     (addn (mapcar
-		    #'mul2
-		    (cdr (substitutel
-			  (cdr e) (car grad)
-			  (do ((l1 (cdr grad) (cdr l1))
-			       (args args (cdr args)) (l2))
-			      ((null l1) (cons '(mlist) (nreverse l2)))
-			    (setq l2 (cons (cond ((equal (car args) 0) 0)
-						 (t (car l1)))
-					   l2)))))
-		    args)
-		   t)))))
+	   (merror (intl:gettext "~:M: expected exactly ~M arguments.") 
+	           fun 
+	           (length (car grad))))
+	  (t
+           (setq args (sdiffmap (cdr e) x))
+           (setq result
+                 (addn
+                   (mapcar 
+                     #'mul2
+                     (cdr 
+                       (substitutel
+                         (cdr e) 
+                         (car grad)
+                         (do ((l1 (cdr grad) (cdr l1))
+                              (args args (cdr args)) 
+                              (l2))
+                             ((null l1) (cons '(mlist) (nreverse l2)))
+                           (setq l2
+                                 (cons (cond ((equal (car args) 0) 0)
+                                             ((functionp (car l1))
+                                              ;; Evaluate a lambda expression
+                                              ;; given as a derivative.
+                                              (apply (car l1) (cdr e)))
+                                             (t (car l1)))
+                                       l2)))))
+                     args)
+                   t))
+           (if (or (null result) (not (freeof nil result)))
+               ;; A derivative has returned NIL. Return a noun form.
+               (if (not (depends e x))
+                   0 
+                   (diff%deriv (list e x 1)))
+               result)))))
 
 (defun sdiffmap (e x)
   (mapcar #'(lambda (term) (sdiff term x)) e))
@@ -528,12 +556,21 @@
 		 ((mtimes) -1 x ((mexpt) ((mplus) ((mexpt) x 2) ((mexpt) y 2)) -1)))
   grad)
 
-(defprop $li ((n x) ((%derivative) ((mqapply) (($li array) n) x) n 1)
-	      ((mtimes) ((mqapply) (($li array) ((mplus) -1 n)) x) ((mexpt) x -1)))
+(defprop $li 
+  ((n x)
+; Do not put a noun form on the property list, but NIL.
+; SDIFFGRAD generates the noun form.
+;   ((%derivative) ((mqapply) (($li array) n) x) n 1)
+   nil
+   ((mtimes) ((mqapply) (($li array) ((mplus) -1 n)) x) ((mexpt) x -1)))
   grad)
 
-(defprop $psi ((n x) ((%derivative) ((mqapply) (($psi array) n) x) n 1)
-	       ((mqapply) (($psi array) ((mplus) 1 n)) x))
+(defprop $psi 
+  ((n x)
+; Do not put a noun form on the property list, but NIL.
+; SDIFFGRAD generates the noun form.
+   nil
+   ((mqapply) (($psi array) ((mplus) 1 n)) x))
   grad)
 
 (defmfun atvarschk (argl)
