@@ -127,7 +127,7 @@ true$
 (m1 : cholesky(m.transpose(m), 'noncommutingring),0);
 0$
 
-zeromatrixp(m1.transpose(m1) - m.transpose(m));
+zeromatrixp(factor(m1.transpose(m1) - m.transpose(m)));
 true$
 
 /*----clean up----*/
