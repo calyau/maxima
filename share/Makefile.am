@@ -352,6 +352,7 @@ contrib/graphs/load-graphs.lisp\
 contrib/graphs/matching.lisp\
 contrib/graphs/rtest_graphs.mac\
 contrib/graphs/spring_embedding.lisp\
+contrib/graphs/wiener_index.lisp\
 contrib/impdiff.mac\
 contrib/implicit_plot.lisp\
 contrib/integration/abs_integrate.mac\
@@ -482,6 +483,7 @@ contrib/rtest_lsquares.mac\
 contrib/rtest_z_transform.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/arag_test.mac\
+contrib/sarag/certificateOfPositivity.mac\
 contrib/sarag/constants.mac\
 contrib/sarag/examples.mac\
 contrib/sarag/hard_test.mac\
