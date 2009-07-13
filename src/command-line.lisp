@@ -49,11 +49,15 @@
       (format t "    ~a" (cl-option-description (first names) arg))
       (dolist (name (rest names))
 	(format t ", ~a" (cl-option-description name arg)))
-      (format t ":")
+      (terpri)
       (if help-string
-	  (format t " ~a" help-string))
-      (format t "~%"))))
+	  (format t "        ~a" help-string))
+      (terpri))))
 
+;; Old argument processing.  Leaving this here for now, but if getopts
+;; works well enough, then these should be removed.
+#+(or)
+(progn
 (defun parse-args (args cl-option-list)
   (if (null args)
       nil
@@ -98,36 +102,84 @@
 
 (defun process-args (args cl-option-list)
   (parse-args (expand-args args) cl-option-list))
+)
+
+(defun process-args (args cl-option-list)
+  (flet ((fixup (options)
+	   ;; Massage cl-option into the format wanted by getopt.
+	   ;; Basically, remove any leading dashes, and if the
+	   ;; cl-option includes an argument, treat it as a required
+	   ;; argument.
+	   (let ((opts nil))
+	     (dolist (o options)
+	       (dolist (name (cl-option-names o))
+		 (push (list (string-left-trim "-" name)
+			     (if (cl-option-argument o)
+				 :required
+				 :none)
+			     nil)
+		       opts)))
+	     (nreverse opts))))
+    (let ((options (fixup cl-option-list)))
+      (multiple-value-bind (non-opts opts errors)
+	  (getopt:getopt args options :allow-exact-match t)
+	;; Look over all of opts and run the action
+	(dolist (o opts)
+	  ;; NOTE: This assumes every short option has an equivalent
+	  ;; long option.  If that's not true, we need a separate
+	  ;; check for matching short option names.
+	  (let ((cl-opt (find (concatenate 'string "--" (car o))
+			      cl-option-list
+			      :test #'(lambda (desired e)
+					(member desired (cl-option-names e) :test #'equal)))))
+	    (when cl-opt
+	      (cond ((and (cl-option-action cl-opt) (cl-option-argument cl-opt))
+		     (funcall (cl-option-action cl-opt) (cdr o)))
+		    ((cl-option-action cl-opt)
+		     (funcall (cl-option-action cl-opt)))))))
+	(dolist (o errors)
+	  (format t "Warning: argument ~A not recognized~%" o))
+	;; What do we do about non-option arguments?  We just ignore them for now.
+	))))
+
 
 (defun get-application-args ()
-  #+clisp (rest ext:*args*)
+  #+clisp
+  (rest ext:*args*)
     
-  #+ecl (let ((result (ext:command-args)))
-	  (do ((removed-arg nil (pop result)))
-	      ((or (equal removed-arg "--") (equal nil result)) result)))
+  #+ecl
+  (let ((result (ext:command-args)))
+    (do ((removed-arg nil (pop result)))
+	((or (equal removed-arg "--") (equal nil result)) result)))
 
-  #+cmu (let ((result lisp::lisp-command-line-list))
-	  (do ((removed-arg nil (pop result)))
-	      ((or (equal removed-arg "--") (equal nil result)) result)))
+  #+cmu
+  (let ((result lisp::lisp-command-line-list))
+    (do ((removed-arg nil (pop result)))
+	((or (equal removed-arg "--") (equal nil result)) result)))
 
-  #+scl (let ((result ext:*command-line-strings*))
-	  (do ((removed-arg nil (pop result)))
-	      ((or (equal removed-arg "--") (equal nil result)) result)))
+  #+scl
+  (let ((result ext:*command-line-strings*))
+    (do ((removed-arg nil (pop result)))
+	((or (equal removed-arg "--") (equal nil result)) result)))
 
-  #+sbcl (rest sb-ext:*posix-argv*)
+  #+sbcl
+  (rest sb-ext:*posix-argv*)
 
-  #+gcl  (let ((result  si::*command-args*))
-	   (do ((removed-arg nil (pop result)))
-	       ((or (equal removed-arg "--") (equal nil result)) result)))
+  #+gcl
+  (let ((result  si::*command-args*))
+    (do ((removed-arg nil (pop result)))
+	((or (equal removed-arg "--") (equal nil result)) result)))
 
   #+allegro
   (let ((args (system:command-line-arguments :application t)))
     ;; Skip the first arg, which is the full path to alisp.
     (rest args))
       
-  #+lispworks (rest system:*line-arguments-list*)
+  #+lispworks
+  (rest system:*line-arguments-list*)
 
-  #+openmcl (let ((result  (rest (ccl::command-line-arguments))))
-	      (do ((removed-arg nil (pop result)))
-		  ((or (equal removed-arg "--") (equal nil result)) result)))
+  #+openmcl
+  (let ((result  (rest (ccl::command-line-arguments))))
+    (do ((removed-arg nil (pop result)))
+	((or (equal removed-arg "--") (equal nil result)) result)))
   )

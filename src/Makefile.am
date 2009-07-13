@@ -344,6 +344,7 @@ fortra.lisp \
 gamma.lisp \
 generate-sys-proclaim.lisp \
 generr.lisp \
+getopt.lisp \
 gnuplot.lisp \
 grind.lisp \
 hayat.lisp \

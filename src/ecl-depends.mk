@@ -12,6 +12,7 @@ binary-ecl/maxima : clmacs.lisp
 binary-ecl/maxima : commac.lisp
 binary-ecl/maxima : mormac.lisp
 binary-ecl/maxima : compat.lisp
+binary-ecl/maxima : getopt.lisp
 binary-ecl/maxima : command-line.lisp
 binary-ecl/maxima : defopt.lisp
 binary-ecl/maxima : defcal.lisp

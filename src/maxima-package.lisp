@@ -18,6 +18,12 @@
   (:export #:cl-option #:make-cl-option #:list-cl-options #:process-args
 	   #:get-application-args))
 
+;; Kevin Rosenberg's getopt package
+(defpackage getopt
+  (:use :cl)
+  (:export #:match-unique-abbreviation
+	   #:getopt))
+
 ;; GCL has SLOOP built in but it's slightly different now...
 (defpackage :cl-sloop
   (:use :common-lisp)

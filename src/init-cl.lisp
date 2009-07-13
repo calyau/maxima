@@ -572,6 +572,10 @@ When one changes, the other does too."
   ;;    (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
   ;;    (terpri)
   (let ((maxima-options nil))
+    ;; Note: The current option parsing code expects every short
+    ;; option to have an equivalent long option.  No check is made for
+    ;; this, so please make sure this holds.  Or change the code in
+    ;; process-args in command-line.lisp.
     (setf maxima-options
 	  (list
 	   (make-cl-option :names '("-b" "--batch")
@@ -640,9 +644,9 @@ When one changes, the other does too."
 			   :action #'(lambda (file)
 				       #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file)))
 			   :help-string "Preload <lisp-file>.")
-       (make-cl-option :names '("-q" "--quiet")
-	       :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
-	       :help-string "Suppress Maxima start-up message.")
+	   (make-cl-option :names '("-q" "--quiet")
+			   :action #'(lambda () (declare (special *maxima-quiet*)) (setq *maxima-quiet* t))
+			   :help-string "Suppress Maxima start-up message.")
 	   (make-cl-option :names '("-r" "--run-string")
 			   :argument "<string>"
 			   :action #'(lambda (string)
@@ -672,10 +676,16 @@ When one changes, the other does too."
 				       ($quit))
 			   :help-string
 			   "Display the default installed version.")
-       (make-cl-option :names '("--very-quiet")
-	       :action #'(lambda () (declare (special *maxima-quiet* *display-labels-p*))
-			   (setq *maxima-quiet* t *display-labels-p* nil))
-	       :help-string "Suppress expression labels and Maxima start-up message.")))
+	   (make-cl-option :names '("--very-quiet")
+			   :action #'(lambda () (declare (special *maxima-quiet* *display-labels-p*))
+					     (setq *maxima-quiet* t *display-labels-p* nil))
+			   :help-string "Suppress expression labels and Maxima start-up message.")
+	   (make-cl-option :names '("-X" "--lisp-options")
+			   :argument "<Lisp options>"
+			   :action #'(lambda (&rest opts)
+				       (format t "Lisp options: ~A" opts))
+			   :help-string "Options to be given to the underlying Lisp")
+			   ))
     (process-args (get-application-args) maxima-options))
   (values input-stream batch-flag))
 

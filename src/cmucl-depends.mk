@@ -11,6 +11,7 @@ binary-cmucl/maxima.core : clmacs.lisp
 binary-cmucl/maxima.core : commac.lisp
 binary-cmucl/maxima.core : mormac.lisp
 binary-cmucl/maxima.core : compat.lisp
+binary-cmucl/maxima.core : getopt.lisp
 binary-cmucl/maxima.core : command-line.lisp
 binary-cmucl/maxima.core : defopt.lisp
 binary-cmucl/maxima.core : defcal.lisp
