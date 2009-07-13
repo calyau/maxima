@@ -234,7 +234,7 @@
 
 (defprop %hankel_1
     ((n x)
-     ((%derivative) ((%hankel_1) n x) n)
+     nil
      ((mtimes) 
        ((mplus) ((%hankel_1)((mplus) -1 n) x) 
         ((mtimes) -1 ((%hankel_1) ((mplus) 1 n) x))) 
@@ -306,7 +306,7 @@
 
 (defprop %hankel_2
     ((n x)
-     ((%derivative) ((%hankel_2) n x) n)
+     nil
      ((mtimes) 
        ((mplus) ((%hankel_2)((mplus) -1 n) x) 
         ((mtimes) -1 ((%hankel_2) ((mplus) 1 n) x))) 
