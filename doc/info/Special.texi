@@ -414,7 +414,8 @@ The natural logarithm of the gamma function.
 @end deffn
 
 @deffn {Function} gamma_incomplete (@var{a},@var{z})
-The incomplete upper gamma function A&S 6.5.2.
+The incomplete upper gamma function A&S 6.5.2:
+ @math{gamma_incomplete(a, x) = integrate(exp(-t)*t^(a-1), t, 0, x)}
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
 @closecatbox
