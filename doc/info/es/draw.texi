@@ -1,4 +1,4 @@
-@c version 1.41
+@c version 1.42
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -926,8 +926,22 @@ respecto del eje @var{x} secundario, el cual se dibuja en la parte superior de l
 
 N@'otese que esta es una opci@'on gr@'afica local que s@'olo afecta a objetos 2d.
 
-V@'eanse tambi@'en @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary},
-@code{ytics_axis_secondary} y @code{yaxis_secondary}.
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         key   = "Bottom x-axis",
+         explicit(x+1,x,1,2),
+         color = red,
+         key   = "Above x-axis",
+         xtics_secondary = true,
+         xaxis_secondary = true,
+         explicit(x^2,x,-1,1)) $
+@end example
+
+V@'eanse tambi@'en @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_rotate_secondary},
+@code{xtics_axis_secondary} y @code{xaxis_secondary}.
 
 @end defvr
 

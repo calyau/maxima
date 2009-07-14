@@ -1086,8 +1086,22 @@ respect to the second @var{x} axis, which will be drawn on top of the scene.
 
 Note that this is a local graphics option which only affects to 2d plots.
 
-See also @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary},
-@code{ytics_axis_secondary} and @code{yaxis_secondary}.
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         key   = "Bottom x-axis",
+         explicit(x+1,x,1,2),
+         color = red,
+         key   = "Above x-axis",
+         xtics_secondary = true,
+         xaxis_secondary = true,
+         explicit(x^2,x,-1,1)) $
+@end example
+
+See also @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_rotate_secondary},
+@code{xtics_axis_secondary} and @code{xaxis_secondary}.
 
 @opencatbox
 @category{Package draw}
