@@ -220,6 +220,7 @@
 ;; Sets default values to global options
 (defun ini-global-options ()
   (setf ; global options
+      (gethash '$proportional_axes *gr-options*) '$none ; three possible options: none, xy, xyz
       (gethash '$columns *gr-options*)      1
       (gethash '$terminal *gr-options*)     '$screen
       (gethash '$pic_width *gr-options*)    640    ; points for bitmap pictures
@@ -228,7 +229,7 @@
       (gethash '$eps_height *gr-options*)   8      ; cm for eps pictures
       (gethash '$pdf_width *gr-options*)    21.0   ; cm for pdf pictures (A4 portrait width)
       (gethash '$pdf_height *gr-options*)   29.7   ; cm for pdf pictures (A4 portrait height)
-      (gethash '$file_name *gr-options*)    "maxima_out"
+      (gethash '$file_name *gr-options*)         "maxima_out"
       (gethash '$gnuplot_file_name *gr-options*) "maxout.gnuplot"
       (gethash '$data_file_name *gr-options*)    "data.gnuplot"
       (gethash '$file_bgcolor *gr-options*) "xffffff"
@@ -418,6 +419,10 @@
             (if (member val '($base $surface $both $map))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal contour allocation: ~M" val)))
+      ($proportional_axes ; defined as $none, $xy and $xyz
+            (if (member val '($xy $xyz))
+                (setf (gethash opt *gr-options*) val)
+                (merror "draw: illegal proportional_axes specification")))
       ($label_alignment ; defined as $center, $left and $right
             (if (member val '($center $left $right))
                 (setf (gethash opt *gr-options*) val)
@@ -3103,20 +3108,21 @@
     (dolist (x args)
       (cond ((equal ($op x) "=")
               (case ($lhs x)
-                ($terminal     (update-gr-option '$terminal ($rhs x)))
-                ($columns      (update-gr-option '$columns ($rhs x)))
-                ($pic_width    (update-gr-option '$pic_width ($rhs x)))
-                ($pic_height   (update-gr-option '$pic_height ($rhs x)))
-                ($eps_width    (update-gr-option '$eps_width ($rhs x)))
-                ($eps_height   (update-gr-option '$eps_height ($rhs x)))
-                ($pdf_width    (update-gr-option '$pdf_width ($rhs x)))
-                ($pdf_height   (update-gr-option '$pdf_height ($rhs x)))
-                ($file_name    (update-gr-option '$file_name ($rhs x)))
+                ($proportional_axes (update-gr-option '$proportional_axes ($rhs x)))
+                ($terminal          (update-gr-option '$terminal ($rhs x)))
+                ($columns           (update-gr-option '$columns ($rhs x)))
+                ($pic_width         (update-gr-option '$pic_width ($rhs x)))
+                ($pic_height        (update-gr-option '$pic_height ($rhs x)))
+                ($eps_width         (update-gr-option '$eps_width ($rhs x)))
+                ($eps_height        (update-gr-option '$eps_height ($rhs x)))
+                ($pdf_width         (update-gr-option '$pdf_width ($rhs x)))
+                ($pdf_height        (update-gr-option '$pdf_height ($rhs x)))
+                ($file_name         (update-gr-option '$file_name ($rhs x)))
                 ($gnuplot_file_name (update-gr-option '$gnuplot_file_name ($rhs x)))
                 ($data_file_name    (update-gr-option '$data_file_name ($rhs x)))
-                ($file_bgcolor (update-gr-option '$file_bgcolor ($rhs x)))
-                ($delay        (update-gr-option '$delay ($rhs x)))
-                (otherwise (merror "draw: unknown global option ~M " ($lhs x)))  ))
+                ($file_bgcolor      (update-gr-option '$file_bgcolor ($rhs x)))
+                ($delay             (update-gr-option '$delay ($rhs x)))
+                (otherwise (merror "draw: unknown global option ~M " ($lhs x)))))
             ((equal (caar x) '$gr3d)
               (setf scenes
                     (append scenes
@@ -3146,7 +3152,7 @@
                 :direction :output :if-exists :supersede))
     (setf datapath (format nil "'~a'" dfn))
 
-    ; when one window multiplot is active, change os terminal is not allowed
+    ; when one multiplot window is active, change of terminal is not allowed
     (if (not *multiplot-is-active*)
     (case (gethash '$terminal *gr-options*)
         ($png (format cmdstorage "set terminal png ~a size ~a, ~a ~a~%set out '~a.png'"
@@ -3224,10 +3230,19 @@
       (dolist (scn scenes)
         ; write size and origin if necessary
         (cond (isanimatedgif
-                (format cmdstorage "~%"))
+                (format cmdstorage "~%set size ~a 1.0, 1.0~%"
+                                   (if (and (= (first scn) 2)  ; it's a 2d scene
+                                            (not (equal (get-option '$proportional_axes) '$none) ))
+                                     "ratio -1"
+                                     "")))
               (t ; it's not an animated gif
-                (format cmdstorage "~%set size ~a, ~a~%"
-                                   width height)
+                (format cmdstorage "~%set size ~a ~a, ~a~%"
+                                   (if (and (= (first scn) 2)  ; it's a 2d scene
+                                            (not (equal (get-option '$proportional_axes) '$none) ))
+                                     "ratio -1"
+                                     "")
+                                   width
+                                   height)
                 (format cmdstorage "set origin ~a, ~a~%" 
                                    (* width (mod counter ncols))
                                    (* height (- nrows 1.0 (floor (/ counter ncols)))))))

@@ -33,6 +33,38 @@ You need Gnuplot 4.2 to run this program.
 @section Functions and Variables for draw
 
 
+@defvr {Graphic option} proportional_axes
+Default value: @code{none}
+
+When @code{proportional_axes} is equal to @code{xy}, a
+2D scene will be drawn with axes proportional to their relative lengths.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+This option works only for 2D plots. Once Gnuplot 4.3 is
+officially released, @code{proportional_axes} will be
+extended for 3D plots.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        ellipse(0,0,1,1,0,360),
+        transparent=true,
+        color = blue,
+        line_width = 4,
+        ellipse(0,0,2,1/2,0,360),
+        proportional_axes = xy) $
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
 
 
 @defvr {Graphic option} xrange

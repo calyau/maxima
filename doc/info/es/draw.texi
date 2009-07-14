@@ -1,4 +1,4 @@
-@c version 1.40
+@c version 1.41
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -32,6 +32,35 @@ Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 
 @node Funciones y variables para draw, Funciones y variables para picture, Introducci@'on a draw, draw
 @section Funciones y variables para draw
+
+
+@defvr {Opci@'on gr@'afica} proportional_axes
+Valor por defecto: @code{none}
+
+Cuando @code{proportional_axes} es igual a @code{xy}, una escena
+2D se dibujar@'a con los ejes proporcionales a sus longitudes relativas.
+
+Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
+descripci@'on de la escena no reviste importancia.
+
+Esta opci@'on s@'olo funciona para gr@'aficos 2D. Una vez se haya
+liberado la versi@'on 4.3 de Gnuplot, se extender@'a
+@code{proportional_axes} a los gr@'aficos 3D.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        ellipse(0,0,1,1,0,360),
+        transparent=true,
+        color = blue,
+        line_width = 4,
+        ellipse(0,0,2,1/2,0,360),
+        proportional_axes = xy) $
+@end example
+
+@end defvr
 
 
 
