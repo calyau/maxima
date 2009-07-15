@@ -124,19 +124,31 @@
       (multiple-value-bind (non-opts opts errors)
 	  (getopt:getopt args options :allow-exact-match t)
 	;; Look over all of opts and run the action
+
+	#+nil
+	(format t "opts = ~S~%" opts)
 	(dolist (o opts)
-	  ;; NOTE: This assumes every short option has an equivalent
-	  ;; long option.  If that's not true, we need a separate
-	  ;; check for matching short option names.
-	  (let ((cl-opt (find (concatenate 'string "--" (car o))
+	  ;; Try to find the corresponding cl-option.
+	  (let ((cl-opt (find (car o)
 			      cl-option-list
 			      :test #'(lambda (desired e)
-					(member desired (cl-option-names e) :test #'equal)))))
-	    (when cl-opt
-	      (cond ((and (cl-option-action cl-opt) (cl-option-argument cl-opt))
-		     (funcall (cl-option-action cl-opt) (cdr o)))
-		    ((cl-option-action cl-opt)
-		     (funcall (cl-option-action cl-opt)))))))
+					;; Strip off any leading
+					;; dashes from the option name
+					;; and compare with the
+					;; desired option.
+					(member desired (cl-option-names e)
+						:test #'equal
+						:key #'(lambda (e)
+							 (string-left-trim "-" e)))))))
+	    #+nil
+	    (format t "Processing ~S -> ~S~%" o cl-opt)
+	    (if cl-opt
+		(cond ((and (cl-option-action cl-opt) (cl-option-argument cl-opt))
+		       (funcall (cl-option-action cl-opt) (cdr o)))
+		      ((cl-option-action cl-opt)
+		       (funcall (cl-option-action cl-opt))))
+		(warn "Could not find option ~S in cl-options: ~S.~%Please report this bug."
+		      o cl-option-list))))
 	(dolist (o errors)
 	  (format t "Warning: argument ~A not recognized~%" o))
 	;; What do we do about non-option arguments?  We just ignore them for now.
