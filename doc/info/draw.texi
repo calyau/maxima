@@ -46,7 +46,9 @@ This option works only for 2D plots. Once Gnuplot 4.3 is
 officially released, @code{proportional_axes} will be
 extended for 3D plots.
 
-Example:
+Examples:
+
+Single plot.
 
 @example
 (%i1) load(draw)$
@@ -57,6 +59,21 @@ Example:
         line_width = 4,
         ellipse(0,0,2,1/2,0,360),
         proportional_axes = xy) $
+@end example
+
+Multiplot.
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        terminal = wxt,
+        gr2d(proportional_axes = xy,
+             explicit(x^2,x,0,1)),
+        gr2d(explicit(x^2,x,0,1),
+             xrange = [0,1],
+             yrange = [0,2],
+             proportional_axes=xy),
+        gr2d(explicit(x^2,x,0,1))
 @end example
 
 @opencatbox

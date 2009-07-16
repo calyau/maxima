@@ -99,6 +99,7 @@
 (defun ini-gr-options ()
   (setf
       ; global options to control general aspects of graphics
+      (gethash '$proportional_axes *gr-options*) '$none  ; three possible options: none, xy, xyz
       (gethash '$xrange *gr-options*)           nil      ; nil => automatic computation
       (gethash '$xrange_secondary *gr-options*) nil      ; nil => automatic computation
       (gethash '$yrange *gr-options*)           nil      ; nil => automatic computation
@@ -220,7 +221,6 @@
 ;; Sets default values to global options
 (defun ini-global-options ()
   (setf ; global options
-      (gethash '$proportional_axes *gr-options*) '$none ; three possible options: none, xy, xyz
       (gethash '$columns *gr-options*)      1
       (gethash '$terminal *gr-options*)     '$screen
       (gethash '$pic_width *gr-options*)    640    ; points for bitmap pictures
@@ -420,7 +420,7 @@
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal contour allocation: ~M" val)))
       ($proportional_axes ; defined as $none, $xy and $xyz
-            (if (member val '($xy $xyz))
+            (if (member val '($none $xy $xyz))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal proportional_axes specification")))
       ($label_alignment ; defined as $center, $left and $right
@@ -2775,7 +2775,7 @@
                                      ($ellipse     (apply #'ellipse (rest x)))
                                      ($rectangle   (apply #'rectangle (rest x)))
                                      ($explicit    (apply #'explicit (rest x)))
-				     ($implicit    (apply #'implicit (rest x)))
+                                     ($implicit    (apply #'implicit (rest x)))
                                      ($parametric  (apply #'parametric (rest x)))
                                      ($vector      (apply #'vect (rest x)))
                                      ($label       (funcall #'label (rest x)))
@@ -2787,6 +2787,9 @@
       ; save in plotcmd the gnuplot preamble
       (setf plotcmd
          (concatenate 'string
+            (if (equal (get-option '$proportional_axes) '$none)
+               (format nil "set size noratio~%")
+               (format nil "set size ratio -1~%") )
             ; this let statement is to prevent error messages from gnuplot when
             ; the amplitude of the ranges equals zero
             (let ((xi (first  (get-option '$xrange)))
@@ -3034,10 +3037,17 @@
                (format nil "set cbtics ~a~%"
                        (get-option '$cbtics)) )
             (if (eql (get-option '$contour) '$map)  ; if contour = map
-               (format nil "set view map~%")
-               (format nil "set view ~a, ~a, 1, 1~%"
+               (format nil "set view map~%~a~%"
+                            (if (equal (get-option '$proportional_axes) '$none)
+                               "set size noratio"
+                               "set size ratio -1") )
+               (format nil "set view ~a, ~a, 1, 1~%~a~%"
                             (get-option '$rot_vertical)
-                            (get-option '$rot_horizontal))  )
+                            (get-option '$rot_horizontal)
+                            (case (get-option '$proportional_axes)
+                               ($xy       "" )       ; TODO: change "" for "set view equal xy " when GP4.3
+                               ($xyz      "")        ; TODO: change "" for "set view equal xyz" when GP4.3
+                               (otherwise ""  )) ) ) ; TODO: change "" for "set view noequal" when Gp4.3
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
             (format nil "set pm3d at s depthorder explicit~%")
@@ -3108,7 +3118,6 @@
     (dolist (x args)
       (cond ((equal ($op x) "=")
               (case ($lhs x)
-                ($proportional_axes (update-gr-option '$proportional_axes ($rhs x)))
                 ($terminal          (update-gr-option '$terminal ($rhs x)))
                 ($columns           (update-gr-option '$columns ($rhs x)))
                 ($pic_width         (update-gr-option '$pic_width ($rhs x)))
@@ -3230,17 +3239,9 @@
       (dolist (scn scenes)
         ; write size and origin if necessary
         (cond (isanimatedgif
-                (format cmdstorage "~%set size ~a 1.0, 1.0~%"
-                                   (if (and (= (first scn) 2)  ; it's a 2d scene
-                                            (not (equal (get-option '$proportional_axes) '$none) ))
-                                     "ratio -1"
-                                     "")))
+                (format cmdstorage "~%set size 1.0, 1.0~%") )
               (t ; it's not an animated gif
-                (format cmdstorage "~%set size ~a ~a, ~a~%"
-                                   (if (and (= (first scn) 2)  ; it's a 2d scene
-                                            (not (equal (get-option '$proportional_axes) '$none) ))
-                                     "ratio -1"
-                                     "")
+                (format cmdstorage "~%set size ~a, ~a~%"
                                    width
                                    height)
                 (format cmdstorage "set origin ~a, ~a~%" 
