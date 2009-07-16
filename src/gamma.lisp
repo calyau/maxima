@@ -868,14 +868,15 @@
            (format t "~&   : del  = ~A~%" del)
            (format t "~&   : sum  = ~A~%" sum))
          (when (eq ($sign (sub (simplify (list '(mabs) del)) 
-                               (mul (cabs sum) gm-eps)))
+                               (mul (simplify (list '(mabs) sum)) gm-eps)))
                    '$neg)
            (when *debug-gamma* (format t "~&Series converged.~%"))
            (return 
              (sub (simplify (list '(%gamma) a))
-                  (mul sum
-                       (power x a)
-                       (power ($bfloat '$%e) (mul -1 x)))))))))))
+                  ($rectform
+                    (mul sum
+                         (power x a)
+                         (power ($bfloat '$%e) (mul -1 x))))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -944,7 +945,7 @@
             ((> i gm-maxit)
              (merror (intl:gettext "gamma_incomplete: series expansion failed for gamma_incomplete(~:M, ~:M).") a x))
          (when (eq ($sign (sub (simplify (list '(mabs) del)) 
-                               (mul (cabs sum) gm-eps)))
+                               (mul (simplify (list '(mabs) sum)) gm-eps)))
                    '$neg)
            (when *debug-gamma* (format t "~&Series converged.~%"))
            (return
