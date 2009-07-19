@@ -173,12 +173,12 @@ block([numer:stats_numer, options, defaults, m, n, coef, cinterval, aux,
 /*   'varequal=false: whether variances are equal or not                       */
 /*   'conflevel=95/100: confidence level of the confidence interval; valid     */
 /*           values are: a symbol or an expression which takes a value in (0,1)*/
-/*   'asymptotic=false: whether it performs an exact t-test or an asymptotic  */
+/*   'asymptotic=false: whether it performs an exact t-test or an asymptotic   */
 /*           one; valid values are true and false                              */
 /*                                                                             */
 /* The output of this function is an 'inference_result' object                 */
 /* with the following results:                                                 */
-/*   1. 'diff_estimate= difference of means estimate (m1-m2)                  */
+/*   1. 'diff_estimate= difference of means estimate (m1-m2)                   */
 /*   2. 'conf_level= confidence level                                          */
 /*   3. 'conf_interval= confidence interval                                    */
 /*   4. 'method: assumptions about the standard deviations, asymptotic.         */
@@ -1118,8 +1118,8 @@ cdf_rank_sum(x,m,n):=block([cp:controlw(m,n),t,xbis,sum:0],
 
 
 
-/* This is the binomial test. The first argument 'x' is the number of successes,*/
-/* the second number 'n>=x' is the number of trials.                            */
+/* This is the proportions test. The first argument 'x' is the number of        */
+/* successes, the second number 'n>=x' is the number of trials.                 */
 /* It admits the following options:                                             */
 /*   'proportion=1/2: this is the value of the proportion to be checked.        */
 /*   'alternative='twosided: this is the alternative hypothesis H1; valid       */
@@ -1141,12 +1141,12 @@ cdf_rank_sum(x,m,n):=block([cp:controlw(m,n),t,xbis,sum:0],
 /*   6. 'statistic= statistic used in the procedure                            */
 /*   7. 'distribution= statistic's distribution and its parameters             */
 /*   8. 'p_value= p-value of this test                                         */
-test_binomial(x,n,[select]):= 
+test_proportion(x,n,[select]):= 
 block([numer:stats_numer, options, defaults, aux, phat, method, statistic,
        distribution, cinterval, hypo, pvalue, alpha, pl:0, pu:1, stdev],
 
   /* controlling input data */
-  if not integerp(x) or not integerp(n) or n < x or x < 0
+  if integerp(x) and integerp(n) and (n < x or x < 0)
      then error("Input data must be 0 <= x <= n"),
 
   /* updating and controlling options */
@@ -1259,7 +1259,7 @@ block([numer:stats_numer, options, defaults, aux, phat, method, statistic,
      else hypo: concat("H0: p = ", aux," , H1: p # ", aux),
 
   /* result as an 'inference_result' object*/
-  inference_result("BINOMIAL TEST",
+  inference_result("PROPORTION TEST",
                  [  ['sample_proportion, phat],
                     ['conf_level, defaults[3]],
                     ['conf_interval, cinterval],
@@ -1270,3 +1270,112 @@ block([numer:stats_numer, options, defaults, aux, phat, method, statistic,
                     ['p_value, pvalue]  ],
                  [1,2,3,4,5,6,7,8])    )$
 
+
+
+
+
+
+
+/* Test for the difference of two proportions. The first and second arguments,   */
+/* 'x1' and 'n1>=x1', are the number of successes and total number of trials in  */
+/* the first sample, respectively; and the third and fourth arguments,           */
+/* 'x2' and 'n2>=x2', are the corresponding numbers in the second sample.        */
+/* This is an asymptotic test which requieres n1 and n2 to be both >= 10,        */
+/* and both samples are considered independent.                                  */
+/* It admits the following options:                                              */
+/*   'alternative='twosided: this is the alternative hypothesis H1; valid        */
+/*            values are: 'twosided, 'greater and 'less.                         */
+/*   'conflevel=95/100: confidence level of the confidence interval; valid       */
+/*           values are: a symbol or an expression which takes a value in (0,1)  */
+/*   'correct=true: whether Yates correction must be applied or not              */
+/*                                                                               */
+/* The output of this function is an 'inference_result' object with the          */
+/* following results:                                                            */
+/*   1. 'proportions= list with the two sample proportions                       */
+/*   2. 'conf_level= confidence level                                            */
+/*   3. 'conf_interval= confidence interval                                      */
+/*   4. 'method= name of the test and/or warning message in case of n1 or n2<10  */
+/*   5. 'hypotheses= null hypothesis and alternative                             */
+/*   6. 'statistic= statistic used in the procedure, namely the difference p1-p2 */
+/*   7. 'distribution= statistic's asymptotic distribution and its parameters    */
+/*   8. 'p_value= p-value of this test                                           */
+test_proportions_difference(x1,n1,x2,n2,[select]) :=
+block([numer:stats_numer, options, defaults, aux, phat, difphat, method,
+       cinterval, hypo, sd, yates: 1/2, width],
+
+  /* controlling input data */
+  if integerp(x1) and integerp(n1) and (n1 < x1 or x1 < 0)
+     then error("Input data must be 0 <= x1 <= n1"),
+  if integerp(x2) and integerp(n2) and (n2 < x2 or x2 < 0)
+     then error("Input data must be 0 <= x2 <= n2"),
+
+  /* updating and controlling options */
+  options:  ['alternative, 'conflevel, 'correct],
+  defaults: ['twosided   ,  95/100,    true],
+  for i in select do(
+     aux: ?position(lhs(i),options),
+     if numberp(aux) and aux <= length(options) and aux >= 1
+        then defaults[aux]: rhs(i)),
+  if not member(defaults[1],['twosided, 'greater, 'less])
+     then error("Option 'alternative' is not correct"),
+  if numberp(defaults[2]) and (defaults[2] <= 0 or defaults[2] >= 1)
+     then error("Option 'conflevel' can't be outside interval (0,1)"),
+  if not member(defaults[3],[true, false])
+     then error("Option 'correct' must be true or false"),
+
+  /* proportions estimates */
+  phat: [x1/n1, x2/n2],
+  difphat: phat[1] - phat[2],
+
+  /* method */
+  method: concat("Asymptotic test.",
+                 if defaults[3]
+                   then " Yates correction."
+                   else "",
+                 if integerp(n1) and n1 < 10 or integerp(n2) and n2 < 10
+                   then " Warning: small sample."
+                   else ""),
+
+  /* confidence interval */
+  if not defaults[3] /* don't apply Yates correction */
+    then yates: 0,
+  yates: min(yates, abs(difphat) / (1/n1 + 1/n2)),
+  if /*alternative*/ defaults[1] = 'twosided
+    then aux: quantile_normal((1 + defaults[2])/2, 0, 1)
+    else aux: quantile_normal(defaults[2], 0, 1),
+  width: aux * sqrt((phat[1]*(1-phat[1]))/n1 + (phat[2]*(1-phat[2]))/n2) +
+           yates * (1/n1 + 1/n2),
+  if /*alternative*/ defaults[1] = 'twosided
+    then cinterval : [max(difphat - width, -1), min(difphat + width, 1)]
+  elseif defaults[1] = 'greater
+    then cinterval : [max(difphat - width, -1), 1]
+    else cinterval : [-1, min(difphat + width, 1)],
+
+  /* hypotheses */
+  if /*alternative*/ defaults[1] = 'greater
+     then hypo: concat("H0: p1 = p2 , H1: p1 > p2")
+  elseif /*alternative*/ defaults[1] = 'less
+     then hypo: concat("H0: p1 = p2 , H1: p1 < p2")
+     else hypo: concat("H0: p1 = p2 , H1: p1 # p2"),
+
+  /* distribution and p-value */
+  aux: (x1+x2)/(n1+n2),
+  sd: sqrt(aux * (1-aux) * (1/n1 + 1/n2)),
+  distribution: ['normal, 0, sd],
+  if /*alternative*/ defaults[1] = 'twosided
+    then pvalue : 2 * (1 - cdf_normal(abs(difphat), 0, sd))
+  elseif defaults[1] = 'greater
+    then pvalue : 1 - cdf_normal(difphat, 0, sd)
+    else pvalue : cdf_normal(difphat, 0, sd),
+
+  /* result as an 'inference_result' object*/
+  inference_result("DIFFERENCE OF PROPORTIONS TEST",
+                 [  ['proportions, phat],
+                    ['conf_level, defaults[2]],
+                    ['conf_interval, cinterval],
+                    ['method, method],
+                    ['hypotheses, hypo],
+                    ['statistic, difphat],
+                    ['distribution, distribution],
+                    ['p_value, pvalue]  ],
+                 [1,2,3,4,5,6,7,8])  ) $

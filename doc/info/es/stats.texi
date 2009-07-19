@@ -1,4 +1,4 @@
-@c version 1.10
+@c version 1.11
 @menu
 * Introducci@'on a stats::
 * Funciones y variables para inference_result::
@@ -230,7 +230,7 @@ formato simb@'olico y racional.
 
 
 @deffn {Funci@'on} test_mean (@var{x})
-@deffnx {Funci@'on} test_mean (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} test_mean (@var{x}, @var{options} ...)
 
 Es el test @var{t} de la media. El argumento @var{x} es una lista o matriz
 columna con los datos de una muestra unidimensional. Tambi@'en realiza el
@@ -265,7 +265,7 @@ exacto basado en la @var{t} de Student, o el asint@'otico basado en el
 @end itemize
 
 El resultado devuelto por la funci@'on  @code{test_mean} es un objeto
-@code{inference_result} con los siguientes resultados:
+@code{inference_result} con los siguientes apartados:
 
 @enumerate
 
@@ -379,7 +379,7 @@ procedimiento s@'olo puede aplicarse en muestras grandes.
 
 
 @deffn {Funci@'on} test_means_difference (@var{x1}, @var{x2})
-@deffnx {Funci@'on} test_means_difference (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} test_means_difference (@var{x1}, @var{x2}, @var{options} ...)
 
 Este es el test @var{t} para la diferencia de medias con muestras.
 Los argumentos @var{x1} y @var{x2} son listas o matrices columna
@@ -426,7 +426,7 @@ exacto basado en la @var{t} de Student, o el asint@'otico basado en el
 @end itemize
 
 El resultado devuelto por la funci@'on  @code{test_means_difference} es un objeto
-@code{inference_result} con los siguientes resultados:
+@code{inference_result} con los siguientes apartados:
 
 @enumerate
 
@@ -549,7 +549,7 @@ iguales.
 
 
 @deffn {Funci@'on} test_variance (@var{x})
-@deffnx {Funci@'on} test_variance (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} test_variance (@var{x}, @var{options} ...)
 
 Este es el test @var{chi^2} de la varianza. El argumento @var{x}
 es una lista o matriz columna con los datos de una muestra unidimensional
@@ -576,7 +576,7 @@ debe ser una expresi@'on que tome un valor en el intervalo (0,1).
 @end itemize
 
 El resultado devuelto por la funci@'on  @code{test_variance} es un objeto
-@code{inference_result} con los siguientes resultados:
+@code{inference_result} con los siguientes apartados:
 
 @enumerate
 
@@ -648,7 +648,7 @@ es igual o mayor que 200.
 
 
 @deffn {Funci@'on} test_variance_ratio (@var{x1}, @var{x2})
-@deffnx {Funci@'on} test_variance_ratio (@var{x1}, @var{x2}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} test_variance_ratio (@var{x1}, @var{x2}, @var{options} ...)
 
 Este es el test @var{F} del cociente de las varianzas para dos
 poblaciones normales. Los argumentos @var{x1} y @var{x2} son listas
@@ -755,8 +755,8 @@ a la alternativa de que la primera es mayor que la segunda.
 
 
 
-@deffn {Funci@'on} test_binomial (@var{x}, @var{n})
-@deffnx {Funci@'on} test_binomial (@var{x}, @var{n}, @var{option_1}, @var{option_2}, ...)
+@deffn {Funci@'on} test_proportion (@var{x}, @var{n})
+@deffnx {Funci@'on} test_proportion (@var{x}, @var{n}, @var{options} ...)
 
 Inferencias sobre una proporci@'on. El argumento @var{x} es el
 n@'umero de @'exitos observados en @var{n} pruebas de Bernoulli
@@ -789,8 +789,8 @@ correcci@'on de Yates.
 
 @end itemize
 
-El resultado devuelto por la funci@'on @code{test_binomial} es un objeto
-@code{inference_result} con los siguientes resultados:
+El resultado devuelto por la funci@'on @code{test_proportion} es un objeto
+@code{inference_result} con los siguientes apartados:
 
 @enumerate
 
@@ -828,12 +828,12 @@ y la alternativa unil@'atera es @math{H_1: p<1/2}.
 
 @c ===beg===
 @c load (stats)$
-@c test_binomial(45, 103, alternative = less);
+@c test_proportion(45, 103, alternative = less);
 @c ===end===
 @example
 (%i1) load("stats")$
-(%i2) test_binomial(45, 103, alternative = less);
-         |             BINOMIAL TEST               
+(%i2) test_proportion(45, 103, alternative = less);
+         |            PROPORTION TEST              
          |                                         
          | sample_proportion = .4368932038834951   
          |                                         
@@ -857,15 +857,15 @@ Un contraste asint@'otico bil@'atero. El nivel de confianza es 99/100.
 @c ===beg===
 @c load (stats)$
 @c fpprintprec:7$
-@c test_binomial(45, 103, 
+@c test_proportion(45, 103, 
 @c               conflevel = 99/100, asymptotic=true);
 @c ===end===
 @example
 (%i1) load("stats")$
 (%i2) fpprintprec:7$
-(%i3) test_binomial(45, 103, 
+(%i3) test_proportion(45, 103, 
                   conflevel = 99/100, asymptotic=true);
-      |                  BINOMIAL TEST                   
+      |                 PROPORTION TEST                  
       |                                                  
       |           sample_proportion = .43689             
       |                                                  
@@ -892,8 +892,141 @@ Un contraste asint@'otico bil@'atero. El nivel de confianza es 99/100.
 
 
 
+@deffn {Funci@'on} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2})
+@deffnx {Funci@'on} test_proportions_difference (@var{x1}, @var{n1}, @var{x2}, @var{n2}, @var{options} ...)
+
+Inferencias sobre la diferencia de dos proporciones. El argumento @var{x1} 
+es el n@'umero de @'exitos en @var{n1} experimentos de Bernoulli en la
+primera poblaci@'on y @var{x2} y @var{n2} son los valores correspondientes
+para la segunda poblaci@'on. Las muestras son independientes y el contraste
+es asint@'otico.
+
+Opciones:
+
+@itemize @bullet
+
+@item
+@code{'alternative}, valor por defecto @code{'twosided}, es la hip@'otesis alternativa;
+valores v@'alidos son:: @code{'twosided} (@code{p1 # p2}), @code{'greater} (@code{p1 > p2})
+and @code{'less} (@code{p1 < p2}).
+
+@item
+@code{'conflevel}, valor por defecto @code{95/100}, nivel de confianza para el intervalo
+de confianza; debe ser una expresi@'on que tome un valor en el intervalo (0,1).
+
+@item
+@code{'correct}, valor por defecto @code{true}, indica si se aplica o no la
+correcci@'on de Yates.
+
+@end itemize
+
+El resultado devuelto por la funci@'on @code{test_proportions_difference} es un objeto
+@code{inference_result} con los siguientes apartados:
+
+@enumerate
+
+@item
+@code{'proportions}: lista con las dos proporciones muestrales.
+
+@item
+@code{'conf_level}: nivel de confianza seleccionado.
+
+@item
+@code{'conf_interval}: intervalo de confianza para la diferencia de proporciones @code{p1 - p2}.
+
+@item
+@code{'method}: procedimiento de inferencia y mensaje de aviso en caso de que
+alguno de los tama@~nos muestrales sea menor de 10.
+
+@item
+@code{'hypotheses}: hip@'otesis nula y alternativa a ser contrastada.
+
+@item
+@code{'statistic}: valor del estad@'{@dotless{i}}stico de contraste utilizado
+para probar la hip@'otesis.
+
+@item
+@code{'distribution}: distribuci@'on del estad@'{@dotless{i}}stico de contraste, junto con sus par@'ametros.
+
+@item
+@code{'p_value}: @math{p}-valor del test.
+
+@end enumerate
+
+Ejemplos:
+
+Una m@'aquina produce 10 piezas defectuosas en un lote de 250.
+Despu@'es de ciertas tareas de mantenimiento, produce 4 piezas
+defectuosas de un lote de 150. A fin de saber si la tarea de 
+mantenimiento produjo alguna mejora, se contrasta la hip@'otesis
+nula @code{H0:p1=p2} contra la alternativa @code{H0:p1>p2},
+donde @code{p1} y @code{p2} son las probabilidades de que un
+art@'{@dotless{i}}culo producido por la m@'aquina sea defectuoso,
+antes y despu@'es de la reparaci@'on. De acuerdo con el p valor, no hay
+evidencia suficiente para aceptar la alternativa.
+
+@c ===beg===
+@c load (stats)$
+@c fpprintprec:7$
+@c test_proportions_difference(10, 250, 4, 150,
+@c                             alternative = greater);
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) fpprintprec:7$
+(%i3) test_proportions_difference(10, 250, 4, 150,
+                                alternative = greater);
+      |       DIFFERENCE OF PROPORTIONS TEST         
+      |                                              
+      |       proportions = [0.04, .02666667]        
+      |                                              
+      |              conf_level = 0.95               
+      |                                              
+      |      conf_interval = [- .02172761, 1]        
+      |                                              
+(%o3) | method = Asymptotic test. Yates correction.  
+      |                                              
+      |   hypotheses = H0: p1 = p2 , H1: p1 > p2     
+      |                                              
+      |            statistic = .01333333             
+      |                                              
+      |    distribution = [normal, 0, .01898069]     
+      |                                              
+      |             p_value = .2411936 
+@end example
+
+Desviaci@'on t@'{@dotless{i}}pica exacta de la
+distribuci@'on normal asint@'otica con datos
+desconocidos.
+
+@c ===beg===
+@c load(stats)$
+@c stats_numer: false$
+@c sol: test_proportions_difference(x1,n1,x2,n2)$
+@c last(take_inference('distribution,sol));
+@c ===end===
+@example
+(%i1) load("stats")$
+(%i2) stats_numer: false$
+(%i3) sol: test_proportions_difference(x1,n1,x2,n2)$
+(%i4) last(take_inference('distribution,sol));
+               1    1                  x2 + x1
+              (-- + --) (x2 + x1) (1 - -------)
+               n2   n1                 n2 + n1
+(%o4)    sqrt(---------------------------------)
+                           n2 + n1
+@end example
+
+@end deffn
+
+
+
+
+
+
+
 @deffn {Funci@'on} test_sign (@var{x})
-@deffnx {Funci@'on} test_sign (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} test_sign (@var{x}, @var{options} ...)
 
 Este es el test no param@'etrico de los signos para contrastes
 sobre la mediana de una poblaci@'on continua. El argumento @var{x}
@@ -914,7 +1047,7 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 @end itemize
 
 El resultado devuelto por la funci@'on @code{test_sign} es un objeto
-@code{inference_result} con los siguientes resultados:
+@code{inference_result} con los siguientes apartados:
 
 @enumerate
 
@@ -978,7 +1111,7 @@ la muestra es 6, frente a la alternativa @math{H_1: median > 6}.
 
 
 @deffn {Funci@'on} test_signed_rank (@var{x})
-@deffnx {Funci@'on} test_signed_rank (@var{x}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} test_signed_rank (@var{x}, @var{options} ...)
 
 Este el test de los rangos signados de Wilcoxon para hacer inferencias sobre
 la mediana de una poblaci@'on continua. El argumento @var{x} es una lista
@@ -1003,7 +1136,7 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 @end itemize
 
 El resultado devuelto por la funci@'on  @code{test_signed_rank} es
-un objeto @code{inference_result} con los siguientes resultados:
+un objeto @code{inference_result} con los siguientes apartados:
 
 @enumerate
 
@@ -1103,7 +1236,7 @@ debido a la presencia de empates.
 
 
 @deffn {Funci@'on} test_rank_sum (@var{x1}, @var{x2})
-@deffnx {Funci@'on} test_rank_sum (@var{x1}, @var{x2}, @var{option_1})
+@deffnx {Funci@'on} test_rank_sum (@var{x1}, @var{x2}, @var{option})
 
 Este es el test de Wilcoxon-Mann-Whitney para comparar las medianas
 de dos poblaciones continuas. Los dos primeros argumentos @var{x1}
@@ -1124,7 +1257,7 @@ valores v@'alidos son: @code{'twosided}, @code{'greater} y @code{'less}.
 @end itemize
 
 El resultado devuelto por la funci@'on  @code{test_rank_sum}
-es un objeto @code{inference_result} con los siguientes resultados:
+es un objeto @code{inference_result} con los siguientes apartados:
 
 @enumerate
 
@@ -1232,7 +1365,7 @@ Referencia:
   [1] Algorithm AS R94, Applied Statistics (1995), vol.44, no.4, 547-551
 
 El resultado devuelto por la funci@'on @code{test_normality} es
-un objeto @code{inference_result} con los siguientes resultados:
+un objeto @code{inference_result} con los siguientes apartados:
 
 
 @enumerate
@@ -1281,7 +1414,7 @@ de tama@~no 9.
 
 
 @deffn {Funci@'on} simple_linear_regression (@var{x})
-@deffnx {Funci@'on} simple_linear_regression (@var{x} @var{option_1})
+@deffnx {Funci@'on} simple_linear_regression (@var{x} @var{option})
 
 Regresi@'on lineal simple, @math{y_i=a+b x_i+e_i}, donde las @math{e_i}
 son variables aleatorias independientes de distribuci@'on @math{N(0,sigma)}.
@@ -1302,7 +1435,7 @@ debe ser una expresi@'on que tome un valor en el intervalo (0,1).
 @end itemize
 
 El resultado devuelto por la funci@'on  @code{simple_linear_regression} es un
-objeto @code{inference_result} con los siguientes resultados:
+objeto @code{inference_result} con los siguientes apartados:
 
 @enumerate
 
