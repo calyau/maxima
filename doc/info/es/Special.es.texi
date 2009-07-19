@@ -1,4 +1,4 @@
-@c version 1.50
+@c version 1.51
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -384,11 +384,12 @@ Logaritmo natural de la funci@'on gamma.
 @end deffn
 
 @deffn {Funci@'on} gamma_incomplete (@var{a},@var{z})
-Funci@'on gamma incompleta superior, A&S 6.5.2.
+Funci@'on gamma incompleta superior, A&S 6.5.2:
+@math{gamma_incomplete(a, x) = integrate(exp(-t)*t^(a-1), t, 0, x)}
 @end deffn
 
 @deffn {Funci@'on} gamma_incomplete_regularized (@var{a},@var{z})
-Funci@'on gamma incompleta superior regularizada, A&S 6.5.1.  
+Funci@'on gamma incompleta superior regularizada, A&S 6.5.1.
 
 @code{ gamma_incomplete_regularized(a,z)=gamma_incomplete(a,z)/gamma(a)}
 @end deffn

@@ -1,9 +1,9 @@
-@c version 1.24
+@c version 1.28
 @menu
-* Lisp y Maxima::            
-* Recolector de basura::          
-* Documentaci@'on::               
-* Funciones y variables para la ayuda::        
+* Lisp y Maxima::
+* Recolector de basura::
+* Documentaci@'on::
+* Funciones y variables para la ayuda::
 @end menu
 
 @node Lisp y Maxima, Recolector de basura, Ayuda, Ayuda
@@ -169,6 +169,46 @@ y salidas adicionales.
 
 @node Funciones y variables para la ayuda,  , Documentaci@'on, Ayuda
 @section Funciones y variables para la ayuda
+
+
+
+@deffn {Funci@'on} apropos (@var{string})
+
+Busca los s@'{@dotless{i}}mbolos de Maxima en los cuales aparezca 
+@var{cadena} en cualquier lugar dentro de su nombre. As@'{@dotless{i}}, 
+@code{apropos (exp)} devuelve una lista con todas las variables y 
+funciones que tengan  @code{exp} formando parte de sus nombres, 
+como  @code{expand}, @code{exp} y @code{exponentialize}. 
+De esta forma, si el usuario tan solo recuerda parte del nombre de algo, 
+puede utilizar este comando para encontrar el resto del nombre. 
+De manera semejante, tambi@'en se puede hacer @code{apropos (tr_)} 
+para encontrar una lista de muchas de las variables relacionadas 
+con el traductor, buena parte de las cuales comienzan con @code{tr_}.
+
+@code{apropos("")} devuelve una lista con todos los nombres de Maxima. 
+
+En caso de no encontrar informaci@'on relevante, @code{apropos} 
+devuelve la lista vac@'{@dotless{i}}a @code{[]}.
+
+Ejemplo:
+
+Devuelve todos los s@'{@dotless{i}}mbolos de Maxima que
+contienen la subcadena @code{"gamma"} en su nombre:
+
+@c ===beg===
+@c apropos("gamma");
+@c ===end===
+@example
+(%i1) apropos("gamma");
+(%o1) [%gamma, %gammagreek, gamma, gammagreek, gammalim, gamma_expand, 
+gamma_imag, gamma_incomplete, gamma_incomplete_generalized, 
+gamma_incomplete_regularized, gamma_radius, Gamma, log_gamma, makegamma, 
+gamma_incomplete_generalized_regularized]
+@end example
+
+@end deffn
+
+
 
 @deffn {Funci@'on} demo (@var{archivo})
 Evalua las expresiones Maxima contenidas en @var{archivo} y muestra los resultados. 
@@ -337,35 +377,67 @@ Todas o ninguna de las opciones pueden ser seleccionadas escribiendo
 @end deffn
 
 
-@deffn {Funci@'on} example (@var{tema})
+
+@deffn {Funci@'on} example (@var{topic})
 @deffnx {Funci@'on} example ()
-@code{example (@var{tema})} mostrar@'a algunos ejemplos de @var{tema}, 
-el cual es un s@'{@dotless{i}}mbolo (no una cadena). 
-La mayor@'{@dotless{i}}a de los temas son nombres de funciones. 
-@code{example ()} retorna la lista de todos los temas conocidos. 
 
-El nombre del archivo que contiene los ejemplos esta dado por la 
-variable global @code{manual_demo}, cuyo valor por defecto es
-@code{"manual.demo"}. 
+@code{example (@var{topic})} muestra algunos ejemplos sobre @var{topic},
+el cual debe ser un s@'{@dotless{i}}mbolo o cadena de texto. Para ver
+ejemplos sobre operadores como @code{if}, @code{do} o @code{lambda}
+el argumento debe ser necesariamente una cadena de texto, como
+@code{example ("do")}. La funci@'on @code{example} no distingue entre min@'usculas
+y may@'usculas. La mayor parte de ejemplos versan sobre funciones.
 
-@code{example} no evalua su argumento.
-@code{example} retorna @code{done}
-a menos que haya un error o que no haya argumento, en cuyo caso @code{example}
-devolver@'a la lista de todos los temas conocidos. 
+La sentencia @code{example ()} devuelve la lista de todos los ejemplos
+existentes.
+
+El nombre del fichero que contine los ejemplos existentes se guarda en
+la variable global @code{manual_demo}, cuyo valor por defecto es
+@code{"manual.demo"}.
+
+La funci@'on @code{example} no eval@'ua su argumento.
 
 Ejemplos:
 
+@c ===beg===
+@c example(append);
+@c example("lambda");
+@c example("allROOTS");
+@c ===end===
 @example
-(%i1) example (append);
+(%i1) example(append);
 (%i2) append([x+y,0,-3.2],[2.5E+20,x])
-(%o2)             [y + x, 0, - 3.2, 2.5E+20, x]
-(%o2)                         done
-(%i3) example (coeff);
-(%i4) coeff(b+tan(x)+2*a*tan(x) = 3+5*tan(x),tan(x))
-(%o4)                      2 a + 1 = 5
-(%i5) coeff(1+x*%e^x+y,x,0)
-(%o5)                         y + 1
-(%o5)                         done
+(%o2)                    [y + x, 0, - 3.2, 2.5E+20, x]
+(%o2)                                done
+(%i3) example("lambda");
+(%i4) lambda([x,y,z],z^2+y^2+x^2)
+                                           2    2    2
+(%o4)                   lambda([x, y, z], z  + y  + x )
+(%i5) %(1,2,a)
+                                     2
+(%o5)                               a  + 5
+(%i6) a+2+1
+(%o6)                                a + 3
+(%o6)                                done
+(%i7) example("allROOTS");
+(%i8) (1+2*x)^3 = 13.5*(1+x^5)
+                                   3          5
+(%o8)                     (2 x + 1)  = 13.5 (x  + 1)
+(%i9) allroots(%)
+(%o9) [x = .8296749902129361, x = - 1.015755543828121, 
+x = .9659625152196369 %i - .4069597231924075, 
+x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
+(%o9)                                done
 @end example
 
 @end deffn
+
+@defvr {Variable opcional} manual_demo
+Valor por defecto: @code{"manual.demo"}
+
+@code{manual_demo} especifica el nombre del fichero que contiene
+los ejemplo para la funci@'on @code{example}. 
+
+V@'ease @code{example}.
+
+@end defvr

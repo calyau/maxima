@@ -1,4 +1,4 @@
-@c version 1.23
+@c version 1.27
 @menu
 * Introducci@'on a la miscel@'anea de opciones::  
 * Share::  
@@ -58,11 +58,6 @@ Ejemplo:
 
 @end defvr
 
-@deffn {Funci@'on} apropos (@var{cadena})
-
-Busca nombres en Maxima en los cuales aparezca @var{cadena} en cualquier lugar dentro de ellos. As@'{@dotless{i}}, @code{apropos (exp)} devuelve una lista con todas las variables y funciones que tengan  @code{exp} formando parte de sus nombres, como  @code{expand}, @code{exp} y @code{exponentialize}. De esta forma, si el usuario tan solo recuerda parte del nombre de algo, puede utilizar este comando para encontrar el resto del nombre. De manera semejante, tambi@'en se puede hacer @code{apropos (tr_)} para encontrar una lista de muchas de las variables relacionadas con el traductor, buena parte de las cuales comienzan con @code{tr_}.
-
-@end deffn
 
 @deffn {Funci@'on} args (@var{expr})
 
