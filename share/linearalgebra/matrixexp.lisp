@@ -39,7 +39,7 @@
     (setq sp ($first mat))
     (setq p ($second mat))
     (setq sp (cons '(mlist simp) 
-		   (mapcar #'(lambda (s) (simplify ($exp (mult s x)))) (cdr sp))))
+		   (mapcar #'(lambda (s) ($exp (mult s x))) (cdr sp))))
     (setq d (mult x ($third mat)))
     (setq id ($ident n))
     (setq f id)
