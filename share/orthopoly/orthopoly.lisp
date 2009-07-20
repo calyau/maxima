@@ -1099,7 +1099,7 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 			       ($spherical_harmonic n (- m) th (mul -1 p))))
 	       (t
 		(interval-mult
-		 (mul (simplify ($exp (mul '$%i m p)))
+		 (mul ($exp (mul '$%i m p))
 		      (power (div (* (+ (* 2 n) 1) (factorial (- n m)))
 				  (mul '$%pi (* 4 (factorial (+ n m))))) 
 			     `((rat) 1 2)))
