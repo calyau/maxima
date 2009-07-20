@@ -170,9 +170,12 @@
       '((mplus simplus) (mtimes simptimes) (mncexpt simpncexpt)
 	(mminus simpmin) (%gamma simpgamma) (mfactorial simpfact)
 	(mnctimes simpnct) (mquotient simpquot) (mexpt simpexpt)
-	(%log simpln) (%sqrt simpsqrt) (%derivative simpderiv)
+	(%log simpln) 
+;        (%sqrt simpsqrt) 
+        (%derivative simpderiv)
 	(mabs simpabs) (%signum simpsignum)
-	(%integrate simpinteg) (%limit simp-limit) ($exp simpexp)
+	(%integrate simpinteg) (%limit simp-limit) 
+;        ($exp simpexp)
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
 	(mqapply simpmqapply) (%gamma simpgamma) (%erf simperf)
 	($beta simpbeta) (%sum simpsum) (%binomial simpbinocoef)
@@ -891,14 +894,27 @@
   (simplifya (list '(mtimes) (caddr w)
 		   (simplifya (list '(%log) (cadr w)) t)) t))
 
-(defmfun simpsqrt (x y z)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the Square root function
+
+(defprop $sqrt %sqrt verb)
+(defprop $sqrt %sqrt alias)
+
+(defprop %sqrt $sqrt noun)
+(defprop %sqrt $sqrt reversealias)
+
+(defprop %sqrt simp-sqrt operators)
+
+(defun $sqrt (z)
+  (simplify (list '(%sqrt) z)))
+
+(defmfun simp-sqrt (x y z)
+  (declare (ignore y))
   (oneargcheck x)
-  (setq y (simpcheck (cadr x) z))
-  (cond ((flonum-eval (mop x) y))
-	((and (not (member 'simp (car x) :test #'eq))
-	      (big-float-eval (mop x) y)))
-	(t
-	 (simplifya (list '(mexpt) (cadr x) '((rat simp) 1 2)) z))))
+  (simplifya (list '(mexpt) (cadr x) '((rat simp) 1 2)) z))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun simpquot (x y z)
   (twoargcheck x)
@@ -1313,10 +1329,40 @@
   (declare (ignore vestigial simp-flag))
   (bigfloatm* x))
 
-(defmfun simpexp (x vestigial z)
-  (declare (ignore vestigial))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the Exp function.
+
+; This is the old definition
+;(defmfun simpexp (x vestigial z)
+;  (declare (ignore vestigial))
+;  (oneargcheck x)
+;  (if ($taylorp (cadr x)) 
+;      ($taylor x) 
+;      (simplifya (list '(mexpt) '$%e (cadr x)) z)))
+
+(defprop $exp %exp verb)
+(defprop $exp %exp alias)
+
+(defprop %exp $exp noun)
+(defprop %exp $exp reversealias)
+
+(defprop %exp simp-exp operators)
+
+(defun $exp (z)
+  (simplify (list '(%exp) z)))
+
+;; Support a function for code,
+;; which depends on an unsimplified noun form. 
+(defun $exp-form (z)
+  (list '(mexpt) '$%e z))
+
+(defun simp-exp (x y z)
+  (declare (ignore y))
   (oneargcheck x)
-  (if ($taylorp (cadr x)) ($taylor x) (simplifya (list '(mexpt) '$%e (cadr x)) z)))
+  (simplifya (list '(mexpt) '$%e (cadr x)) z))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun simplambda (x vestigial simp-flag)
   (declare (ignore vestigial simp-flag))
@@ -1566,6 +1612,12 @@
 		      ((and (mnump gr) (mnump pot)
 			    (or (not (ratnump gr)) (not (ratnump pot))))
 		       (return (eqtest (exptrl gr pot) check)))
+                      ;; Check for numerical evaluation of the sqrt.
+                      ((and (alike1 pot '((rat) 1 2))
+                            (or (setq res (flonum-eval '%sqrt gr))
+                                (and (not (member 'simp (car x) :test #'eq))
+                                     (setq res (big-float-eval '%sqrt gr)))))
+                       (return res))
 		      ((eq gr '$%i) (return (%itopot pot)))
 		      ((and (numberp gr) (minusp gr) (mevenp pot)) (setq gr (- gr)) (go cont))
 		      ((and (numberp gr) (minusp gr) (moddp pot))
@@ -1663,7 +1715,7 @@
 		((eq gr '$%e)
 		 ;; Numerically evaluate if the power is a flonum.
 		 (when $%emode
-		   (let ((val (flonum-eval '$exp pot)))
+		   (let ((val (flonum-eval '%exp pot)))
 		     (when val
 		       (return val)))
 		   ;; Numerically evaluate if the power is a (complex)
@@ -1687,7 +1739,7 @@
 		       ((and $%emode (setq z (%especial pot))) (return z))
                        (($taylorp (third x))
                         ;; taylorize %e^taylor(...)
-			(return ($taylor x)))))                    
+			(return ($taylor x)))))
 		(t
 		 (let ((y (mget gr '$numer)))
 		   (and y
