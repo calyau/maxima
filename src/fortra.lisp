@@ -114,7 +114,7 @@
   (cond ((atom e) (cond ((eq e '$%i) '((mprogn) 0.0 1.0))
 			(t e)))		;%I is (0,1)
 	((and (eq (caar e) 'mexpt) (eq (cadr e) '$%e))
-	 (list '($exp simp) (fortscan (caddr e))))
+	 (list '(%exp simp) (fortscan (caddr e))))
 	((and (eq (caar e) 'mexpt) (alike1 (caddr e) 1//2))
 	 (list '(%sqrt simp) (fortscan (cadr e))))
 	((and (eq (caar e) 'mexpt) (alike1 (caddr e) -1//2))
