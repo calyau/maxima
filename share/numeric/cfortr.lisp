@@ -240,7 +240,7 @@
             (cond ((eq op '%log) (list '(%alog simp) (fortscan (cadr e))))
                   ((eq op 'mexpt)
                    (let ((expon (caddr e)) (mybase (cadr e)))
-                     (cond ((eq mybase '$%e) (list '($exp simp) (fortscan expon)))
+                     (cond ((eq mybase '$%e) (list '(%exp simp) (fortscan expon)))
                            ((alike1 expon 1//2) (list '(%sqrt simp) (fortscan mybase)))
                            ((alike1 expon -1//2)
                             (list '(mquotient simp) 1 (list '(%sqrt simp) (fortscan mybase))))

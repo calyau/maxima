@@ -264,7 +264,7 @@
 		     (if y y (domain-error x 'acoth)))))
 
   (frob %mabs #'cl:abs)
-  (frob $exp #'cl:exp)
+  (frob %exp #'cl:exp)
   (frob mexpt #'cl:expt)
   (frob %sqrt #'cl:sqrt)
   (frob %log #'(lambda (x)
