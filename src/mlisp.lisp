@@ -2267,11 +2267,12 @@ wrapper for this."
 (defmfun rat (x y)
   `((rat simp) ,x ,y))
 
-(defmfun $exp (x)
-  `((mexpt) $%e ,x))
+; The definiton of $exp and $sqrt have changed and moved to simp.lisp
+;(defmfun $exp (x)
+;  `((mexpt) $%e ,x))
 
-(defmfun $sqrt (x)
-  `((%sqrt) ,x))
+;(defmfun $sqrt (x)
+;  `((%sqrt) ,x))
 
 (defmfun add2lnc (item llist)
   (unless (memalike item (if ($listp llist) (cdr llist) llist))
