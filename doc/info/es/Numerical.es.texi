@@ -1,8 +1,8 @@
-@c version 1.27
+@c version 1.29
 @menu
-* Introducci@'on a los m@'etodos num@'ericos::   
-* Series de Fourier::                     
-* Funciones y variables para los m@'etodos num@'ericos::   
+* Introducci@'on a los m@'etodos num@'ericos::
+* Series de Fourier::
+* Funciones y variables para los m@'etodos num@'ericos::
 * Funciones y variables para las series de Fourier::
 @end menu
 
@@ -27,115 +27,296 @@ El paquete @code{fourie} contiene funciones para el c@'alculo simb@'olico de ser
 
 @deffn {Funci@'on} polartorect (@var{magnitude_array}, @var{phase_array})
 
-Transforma valores complejos de la forma @code{r %e^(%i t)} a la forma @code{a + b %i}. La instrucci@'on
-@code{load ("fft")} carga esta funci@'on en Maxima. V@'ease tambi@'en @code{fft}.
+Transforma valores complejos de la forma @code{r %e^(%i t)} a la forma
+@code{a + b %i}, siendo @var{r} el m@'odulo y @var{t} la fase.
+Ambos valores @var{r} y @var{t} son arrays unidimensionales cuyos
+tam@~nos son iguales a la misma potencia de dos.
 
-El m@'odulo y la fase, @code{r} y @code{t}, se toman de @var{magnitude_array} y @var{phase_array}, respectivamente. Los valores originales de los arreglos de entrada se reemplazan por las partes real e imaginaria, @code{a} y @code{b}. Los resultados se calculan como
+Los valores originales de los arrays de entrada son reemplazados por
+las partes real e imaginaria, @code{a} y @code{b}, de los correspondientes
+n@'umeros complejos. El resultado se calcula como
 
 @example
-a: r cos (t)
-b: r sin (t)
+a = r cos(t)
+b = r sin(t)
 @end example
 
-Los arreglos de entrada deben ser de igual tama@~no y de dimensi@'on 1. El tama@~no del arreglo no necesita ser potencia de 2.
+@code{polartorect} es la funci@'on inversa de @code{recttopolar}.
 
-La funci@'on @code{polartorect} es la inversa de  @code{recttopolar}.
+Para utilizar esta funci@'on ejec@'utese antes @code{load(fft)}.
+V@'ease tambi@'en @code{fft}.
 
 @end deffn
 
 @deffn {Funci@'on} recttopolar (@var{real_array}, @var{imaginary_array})
 
-Transforma valores complejos de la forma @code{a + b %i} a la forma @code{r %e^(%i t)}. La instrucci@'on
-@code{load ("fft")} carga esta funci@'on en Maxima. V@'ease tambi@'en @code{fft}.
+Transforma valores complejos de la forma @code{a + b %i} a la forma
+@code{r %e^(%i t)}, siendo @var{a} la parte real y @var{a} la imaginaria.
+Ambos valores @var{a} y @var{b} son arrays unidimensionales cuyos
+tam@~nos son iguales a la misma potencia de dos.
 
-Las partes real e imaginaria, @code{a} y @code{b}, se toman de @var{real_array} y @var{imaginary_array}, respectivamente. Los valores originales de los arreglos de entrada se reemplazan por el m@'odulo y el argumento, @code{r} y @code{t}. Los resultados se calculan como
+Los valores originales de los arrays de entrada son reemplazados por
+los m@'odulos y las fases, @code{r} y @code{t}, de los correspondientes
+n@'umeros complejos. El resultado se calcula como
 
 @example
-r: sqrt (a^2 + b^2)
-t: atan2 (b, a)
+r = sqrt(a^2 + b^2)
+t = atan2(b, a)
 @end example
 
-El @'angulo calculado est@'a en el rango entre @code{-%pi} y @code{%pi}. 
+El @'angulo calculado pertence al rango de @code{-%pi} a @code{%pi}. 
 
-Los arreglos de entrada deben ser de igual tama@~no y de dimensi@'on 1. El tama@~no del arreglo no necesita ser potencia de 2.
+@code{recttopolar} es la funci@'on inversa de @code{polartorect}.
 
-La funci@'on @code{recttopolar} es la inversa de @code{polartorect}.
+Para utilizar esta funci@'on ejec@'utese antes @code{load(fft)}.
+V@'ease tambi@'en @code{fft}.
 
 @end deffn
 
-@deffn {Funci@'on} ift (@var{real_array}, @var{imaginary_array})
 
-Tranformada discreta inversa de Fourier. La instrucci@'on @code{load ("fft")} carga esta funci@'on en Maxima.
 
-La funci@'on @code{ift} calcula la transformada r@'apida inversa compleja  de Fourier de arreglos unidimensionales de n@'umeros decimales en coma flotante. La transformada inversa se define como
+@deffn {Funci@'on} inverse_fft (@var{y})
+
+Calcula la transformada inversa r@'apida de Fourier.
+
+@var{y} es una lista o array (declarado o no) que contiene los datos a
+transformar. El n@'umero de elementos debe ser una potencia de dos.
+Los elementos deben ser n@'umeros literales (enteros, racionales,
+de punto flotante o decimales grandes), constantes simb@'olicas,
+expresiones del tipo @code{a + b*%i}, siendo @code{a} y @code{b}
+n@'umeros literales, o constantes simb@'olicas.
+
+La funci@'on @code{inverse_fft} devuelve un nuevo objeto del
+mismo tipo que @var{y}, el cual no se ve modificado. Los
+resultados se calculan siempre como decimales o expresiones @code{a + b*%i},
+siendo @code{a} y @code{b} decimales.
+
+La transformada inversa discreta de Fourier se define como se indica
+a continuaci@'on. Si @code{x} es el resultado de la transformada inversa,
+entonces para @code{j} entre 0 y @code{n - 1} se tiene
 
 @example
-x[j]: sum (y[j] exp (+2 %i %pi j k / n), k, 0, n-1)
+x[j] = sum(y[k] exp(+2 %i %pi j k / n), k, 0, n - 1)
 @end example
 
-V@'ease @code{fft} para m@'as detalles.
+Para utilizar esta funci@'on ejec@'utese antes @code{load(fft)}.
+
+V@'eanse tambi@'en @code{fft} (transformada directa), @code{recttopolar} y @code{polartorect}.
+
+Ejemplos:
+
+Datos reales.
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 2, 3, 4, -1, -2, -3, -4] $
+@c L1 : inverse_fft (L);
+@c L2 : fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
+(%i4) L1 : inverse_fft (L);
+(%o4) [0.0, 14.49 %i - .8284, 0.0, 2.485 %i + 4.828, 0.0, 
+                       4.828 - 2.485 %i, 0.0, - 14.49 %i - .8284]
+(%i5) L2 : fft (L1);
+(%o5) [1.0, 2.0 - 2.168L-19 %i, 3.0 - 7.525L-20 %i, 
+4.0 - 4.256L-19 %i, - 1.0, 2.168L-19 %i - 2.0, 
+7.525L-20 %i - 3.0, 4.256L-19 %i - 4.0]
+(%i6) lmax (abs (L2 - L));
+(%o6)                       3.545L-16
+@end example
+
+Datos complejos.
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+@c L1 : inverse_fft (L);
+@c L2 : fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $                 
+(%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+(%i4) L1 : inverse_fft (L);
+(%o4) [4.0, 2.711L-19 %i + 4.0, 2.0 %i - 2.0, 
+- 2.828 %i - 2.828, 0.0, 5.421L-20 %i + 4.0, - 2.0 %i - 2.0, 
+2.828 %i + 2.828]
+(%i5) L2 : fft (L1);
+(%o5) [4.066E-20 %i + 1.0, 1.0 %i + 1.0, 1.0 - 1.0 %i, 
+1.55L-19 %i - 1.0, - 4.066E-20 %i - 1.0, 1.0 - 1.0 %i, 
+1.0 %i + 1.0, 1.0 - 7.368L-20 %i]
+(%i6) lmax (abs (L2 - L));                    
+(%o6)                       6.841L-17
+@end example
 
 @end deffn
 
-@deffn {Funci@'on} fft (@var{real_array}, @var{imaginary_array})
-@deffnx {Funci@'on} ift (@var{real_array}, @var{imaginary_array})
-@deffnx {Funci@'on} recttopolar (@var{real_array}, @var{imaginary_array})
-@deffnx {Funci@'on} polartorect (@var{magnitude_array}, @var{phase_array})
+@deffn {Funci@'on} fft (@var{x})
 
-Transformada r@'apida de Fourier y funciones asociadas. La instrucci@'on @code{load ("fft")} carga estas funciones en Maxima.
+Calcula la transformada r@'apida compleja de Fourier.
 
-Las funciones @code{fft} y @code{ift} calculan la transformada r@'apida compleja de Fourier y su inversa de arreglos unidimensionales de n@'umeros decimales en coma flotante. El tama@~no de @var{imaginary_array} debe ser igual al de @var{real_array}.
+@var{x} es una lista o array (declarado o no) que contiene los datos a
+transformar. El n@'umero de elementos debe ser una potencia de dos.
+Los elementos deben ser n@'umeros literales (enteros, racionales,
+de punto flotante o decimales grandes), constantes simb@'olicas,
+expresiones del tipo @code{a + b*%i}, siendo @code{a} y @code{b}
+n@'umeros literales, o constantes simb@'olicas.
 
-Los resultados devueltos por las funciones @code{fft} y @code{ift} sustituyen al contenido original de los arreglos de entrada. La funci@'on @code{fillarray} puede hacer una copia de un array en caso de ser necesario.
+La funci@'on @code{fft} devuelve un nuevo objeto del
+mismo tipo que @var{x}, el cual no se ve modificado. Los
+resultados se calculan siempre como decimales o expresiones @code{a + b*%i},
+siendo @code{a} y @code{b} decimales.
 
-La transformada discreta de Fourier y la transformada inversa se definen como sigue. Sea @code{x} el arreglo con los datos originales, con
-
-@example
-x[i]: real_array[i] + %i imaginary_array[i]
-@end example
-  
-Sea @code{y} el arreglo con los datos transformados. Las transformadas directa e inversa son
-
-@example
-y[k]: (1/n) sum (x[j] exp (-2 %i %pi j k / n), j, 0, n-1)
-
-x[j]:       sum (y[j] exp (+2 %i %pi j k / n), k, 0, n-1)
-@end example
-
-Arreglos apropiados se pueden preparar con la funci@'on @code{array}. Por ejemplo:
+La transformada discreta de Fourier se define como se indica
+a continuaci@'on. Si @code{y} es el resultado de la transformada inversa,
+entonces para @code{k} entre 0 y @code{n - 1} se tiene
 
 @example
-array (my_array, float, n-1)$
+y[k] = (1/n) sum(x[j] exp(-2 %i %pi j k / n), j, 0, n - 1)
 @end example
 
-declara un arreglo unidimensional con @code{n} elementos, indexado de 0 a n-1, ambos inclusive. El n@'umero de elementos, @code{n}, debe ser par.
-
-La funci@'on @code{fft} se puede aplicar a datos reales (con partes imaginarias nulas) para obtener coeficientes seno y coseno. Despu@'es de llamar a la funci@'on @code{fft}, los coeficientes del seno y coseno, llam@'emosles @code{a} y @code{b}, se pueden calcular como
+Si los datos @var{x} son reales, los coeficientes reales @code{a} y @code{b}
+se pueden calcular de manera que 
 
 @example
-a[0]: real_array[0]
-b[0]: 0
+x[j] = sum (a[k] * cos (2*%pi*j*k / n) + b[k] * sin (2*%pi*j*k / n), k, 0, n/2)
+@end example
+
+con
+
+@example
+a[0] = realpart (y[0])
+b[0] = 0
+@end example
+
+y, para k entre 1 y n/2 - 1,
+
+@example
+a[k] = realpart (y[k] + y[n - k])
+b[k] = imagpart (y[n - k] - y[k])
 @end example
 
 y
 
 @example
-a[j]: real_array[j] + real_array[n-j]
-b[j]: imaginary_array[j] - imaginary_array[n-j]
+a[n/2] = realpart (y[n/2])
+b[n/2] = 0
 @end example
 
-para j tomando valores de 1 a n/2-1, y
+Para utilizar esta funci@'on ejec@'utese antes @code{load(fft)}.
 
+V@'eanse tambi@'en @code{inverse_fft} (transformada inversa), @code{recttopolar} y @code{polartorect}.
+
+Ejemplos:
+
+Datos reales.
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 2, 3, 4, -1, -2, -3, -4] $
+@c L1 : fft (L);
+@c L2 : inverse_fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
 @example
-a[n/2]: real_array[n/2]
-b[n/2]: 0
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 2, 3, 4, -1, -2, -3, -4] $
+(%i4) L1 : fft (L);
+(%o4) [0.0, - 1.811 %i - .1036, 0.0, .6036 - .3107 %i, 0.0, 
+                         .3107 %i + .6036, 0.0, 1.811 %i - .1036]
+(%i5) L2 : inverse_fft (L1);
+(%o5) [1.0, 2.168L-19 %i + 2.0, 7.525L-20 %i + 3.0, 
+4.256L-19 %i + 4.0, - 1.0, - 2.168L-19 %i - 2.0, 
+- 7.525L-20 %i - 3.0, - 4.256L-19 %i - 4.0]
+(%i6) lmax (abs (L2 - L));
+(%o6)                       3.545L-16
 @end example
 
-La funci@'on @code{recttopolar} transforma valores complejos de la forma @code{a + b %i} a la forma @code{r %e^(%i t)}. V@'ease @code{recttopolar}.
+Datos complejos.
 
-La funci@'on @code{polartorect} transforma valores complejos de la forma @code{r %e^(%i t)} a la forma @code{a + b %i}. V@'ease @code{polartorect}.
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+@c L1 : fft (L);
+@c L2 : inverse_fft (L1);
+@c lmax (abs (L2 - L));
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 1 + %i, 1 - %i, -1, -1, 1 - %i, 1 + %i, 1] $
+(%i4) L1 : fft (L);
+(%o4) [0.5, .3536 %i + .3536, - 0.25 %i - 0.25, 
+0.5 - 6.776L-21 %i, 0.0, - .3536 %i - .3536, 0.25 %i - 0.25, 
+0.5 - 3.388L-20 %i]
+(%i5) L2 : inverse_fft (L1);
+(%o5) [1.0 - 4.066E-20 %i, 1.0 %i + 1.0, 1.0 - 1.0 %i, 
+- 1.008L-19 %i - 1.0, 4.066E-20 %i - 1.0, 1.0 - 1.0 %i, 
+1.0 %i + 1.0, 1.947L-20 %i + 1.0]
+(%i6) lmax (abs (L2 - L));
+(%o6)                       6.83L-17
+@end example
 
-La instrucci@'on @code{demo ("fft")} presenta una demostarci@'on del paquete @code{fft}.
+C@'alculo de los coeficientes del seno y coseno.
+
+@c ===beg===
+@c load (fft) $
+@c fpprintprec : 4 $
+@c L : [1, 2, 3, 4, 5, 6, 7, 8] $
+@c n : length (L) $
+@c x : make_array (any, n) $
+@c fillarray (x, L) $
+@c y : fft (x) $
+@c a : make_array (any, n/2 + 1) $
+@c b : make_array (any, n/2 + 1) $
+@c a[0] : realpart (y[0]) $
+@c b[0] : 0 $
+@c for k : 1 thru n/2 - 1 do
+@c    (a[k] : realpart (y[k] + y[n - k]),
+@c     b[k] : imagpart (y[n - k] - y[k]));
+@c a[n/2] : y[n/2] $
+@c b[n/2] : 0 $
+@c listarray (a);
+@c listarray (b);
+@c f(j) := sum (a[k] * cos (2*%pi*j*k / n) + b[k] * sin (2*%pi*j*k / n), k, 0, n/2) $
+@c makelist (float (f (j)), j, 0, n - 1);
+@c ===end===
+@example
+(%i1) load (fft) $
+(%i2) fpprintprec : 4 $
+(%i3) L : [1, 2, 3, 4, 5, 6, 7, 8] $
+(%i4) n : length (L) $
+(%i5) x : make_array (any, n) $
+(%i6) fillarray (x, L) $
+(%i7) y : fft (x) $
+(%i8) a : make_array (any, n/2 + 1) $
+(%i9) b : make_array (any, n/2 + 1) $
+(%i10) a[0] : realpart (y[0]) $
+(%i11) b[0] : 0 $
+(%i12) for k : 1 thru n/2 - 1 do
+   (a[k] : realpart (y[k] + y[n - k]),
+    b[k] : imagpart (y[n - k] - y[k]));
+(%o12)                        done
+(%i13) a[n/2] : y[n/2] $
+(%i14) b[n/2] : 0 $
+(%i15) listarray (a);
+(%o15)          [4.5, - 1.0, - 1.0, - 1.0, - 0.5]
+(%i16) listarray (b);
+(%o16)           [0, - 2.414, - 1.0, - .4142, 0]
+(%i17) f(j) := sum (a[k] * cos (2*%pi*j*k / n) + b[k] * sin (2*%pi*j*k / n), k, 0, n/2) $
+(%i18) makelist (float (f (j)), j, 0, n - 1);
+(%o18)      [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+@end example
 
 @end deffn
 
