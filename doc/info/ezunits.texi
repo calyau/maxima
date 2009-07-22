@@ -21,17 +21,17 @@ the built-in and user-declared units,
 while @code{display_known_unit_conversions} displays
 the set of known conversions in an easy-to-read format.
 
-An expression @code{a ` b} represents a dimensional quantity,
+An expression @math{a ` b} represents a dimensional quantity,
 with @code{a} indicating a nondimensional quantity and @code{b} indicating the dimensional units.
 A symbol can be used as a unit without declaring it as such;
 unit symbols need not have any special properties.
-The quantity and unit of an expression @code{a ` b} can
+The quantity and unit of an expression @math{a ` b} can
 be extracted by the @code{qty} and @code{units} functions, respectively.
 
 A symbol may be declared to be a dimensional quantity,
 with specified quantity or specified units or both.
 
-An expression @code{a ` b `` c} converts from unit @code{b} to unit @code{c}.
+An expression @math{a ` b `@w{}` c} converts from unit @code{b} to unit @code{c}.
 @code{ezunits} has built-in conversions for SI base units,
 SI derived units, and some non-SI units.
 Unit conversions not already known to @code{ezunits} can be declared.
@@ -60,9 +60,9 @@ Arithmetic operations on dimensional quantities are carried out by
 conventional rules for such operations.
 
 @itemize
-@item @code{(x ` a) * (y ` b)} is equal to @code{(x * y) ` (a * b)}.
-@item @code{(x ` a) + (y ` a)} is equal to @code{(x + y) ` a}.
-@item @code{(x ` a)^y} is equal to @code{x^y ` a^y} when @code{y} is nondimensional.
+@item @math{(x ` a) * (y ` b)} is equal to @math{(x * y) ` (a * b)}.
+@item @math{(x ` a) + (y ` a)} is equal to @math{(x + y) ` a}.
+@item @math{(x ` a)^y} is equal to @math{x^y ` a^y} when @code{y} is nondimensional.
 @end itemize
 
 @code{ezunits} does not require that units in a sum have the same dimensions;
@@ -290,20 +290,20 @@ Computing conversions to base units; may take a moment.
 @deffn {Operator} `
 
 The dimensional quantity operator.
-An expression @code{a ` b} represents a dimensional quantity,
+An expression @math{a ` b} represents a dimensional quantity,
 with @code{a} indicating a nondimensional quantity and @code{b} indicating the dimensional units.
 A symbol can be used as a unit without declaring it as such;
 unit symbols need not have any special properties.
-The quantity and unit of an expression @code{a ` b} can
+The quantity and unit of an expression @math{a ` b} can
 be extracted by the @code{qty} and @code{units} functions, respectively.
 
 Arithmetic operations on dimensional quantities are carried out by
 conventional rules for such operations.
 
 @itemize
-@item @code{(x ` a) * (y ` b)} is equal to @code{(x * y) ` (a * b)}.
-@item @code{(x ` a) + (y ` a)} is equal to @code{(x + y) ` a}.
-@item @code{(x ` a)^y} is equal to @code{x^y ` a^y} when @code{y} is nondimensional.
+@item @math{(x ` a) * (y ` b)} is equal to @math{(x * y) ` (a * b)}.
+@item @math{(x ` a) + (y ` a)} is equal to @math{(x + y) ` a}.
+@item @math{(x ` a)^y} is equal to @math{x^y ` a^y} when @code{y} is nondimensional.
 @end itemize
 
 @code{ezunits} does not require that units in a sum have the same dimensions;
@@ -416,10 +416,10 @@ Arithmetic operations on dimensional quantities.
 
 @end deffn
 
-@deffn {Operator} ``
+@deffn {Operator} `@w{}`
 
 The unit conversion operator.
-An expression @code{a ` b `` c} converts from unit @code{b} to unit @code{c}.
+An expression @math{a ` b `@w{}` c} converts from unit @code{b} to unit @code{c}.
 @code{ezunits} has built-in conversions for SI base units,
 SI derived units, and some non-SI units.
 Unit conversions not already known to @code{ezunits} can be declared.
@@ -650,9 +650,9 @@ recognized by @code{constantp}.
 The @code{physical_units} package declares constant values
 for a number of physical constants.
 
-@code{load(ezunits)} loads this function.
+@code{load(ezunits)} loads these functions.
 
-Example:
+Examples:
 
 Constant value of a physical constant.
 
@@ -705,14 +705,14 @@ Declaring a new constant.
 Returns the units of a dimensional quantity @var{x},
 or returns 1 if @var{x} is nondimensional.
 
-@var{x} may be a literal dimensional expression @code{a ` b},
-a symbol with declared units, 
+@var{x} may be a literal dimensional expression @math{a ` b},
+a symbol with declared units via @code{declare_units}, 
 or an expression containing either or both of those.
-
-@code{load(ezunits)} loads these functions.
 
 @code{declare_units} declares that @code{units(@var{a})} should return @var{u},
 where @var{u} is an expression.
+
+@code{load(ezunits)} loads these functions.
 
 Examples:
 
@@ -794,7 +794,7 @@ Examples:
 
 @code{qty} returns the nondimensional part of a dimensional quantity @var{x},
 or returns @var{x} if @var{x} is nondimensional.
-@var{x} may be a literal dimensional expression @code{a ` b},
+@var{x} may be a literal dimensional expression @math{a ` b},
 a symbol with declared quantity, 
 or an expression containing either or both of those.
 
@@ -933,17 +933,17 @@ Examples:
 @deffn {Function} declare_unit_conversion (@var{u} = @var{v}, ...)
 
 Appends equations @var{u} = @var{v}, ... to the list of unit conversions
-known to the unit conversion operator @code{``}.
-Each equation is a equality of multiplicative terms,
+known to the unit conversion operator @math{`@w{}`}.
+@var{u} and @var{v} are both multiplicative terms,
 in which any variables are units,
-or literal dimensional expressions.
+or both literal dimensional expressions.
 
 At present, it is necessary to express conversions such that
 the left-hand side of each equation is a simple unit
 (not a multiplicative expression)
 or a literal dimensional expression with the quantity equal to 1
 and the unit being a simple unit.
-It is foreseen that this limitation will be relaxed in future versions.
+This limitation might be relaxed in future versions.
 
 @code{known_unit_conversions} is the list of known unit conversions.
 
@@ -994,8 +994,43 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {Function} declare_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
-@deffnx {Function} remove_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffn {Function} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
+@deffnx {Function} remove_dimensions (@var{a_1}, ..., @var{a_n})
+
+@code{declare_dimensions} declares @var{a_1}, ..., @var{a_n}
+to have dimensions @var{d_1}, ..., @var{d_n}, respectively.
+
+Each @var{a_k} is a symbol or a list of symbols.
+If it is a list, then every symbol in @var{a_k} is declared to have dimension @var{d_k}.
+
+@code{remove_dimensions} reverts the effect of @code{declare_dimensions}.
+
+@code{load(ezunits)} loads these functions.
+
+Examples:
+
+@c ===beg===
+@c load (ezunits) $
+@c declare_dimensions ([x, y, z], length, [t, u], time);
+@c dimensions (y^2/u);
+@c fundamental_units (y^2/u);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) declare_dimensions ([x, y, z], length, [t, u], time);
+(%o2)                         done
+(%i3) dimensions (y^2/u);
+                                   2
+                             length
+(%o3)                        -------
+                              time
+(%i4) fundamental_units (y^2/u);
+0 errors, 0 warnings
+                                2
+                               m
+(%o4)                          --
+                               s
+@end example
 
 @opencatbox
 @category{Package ezunits}
@@ -1005,6 +1040,43 @@ Computing conversions to base units; may take a moment.
 
 @deffn {Function} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {Function} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {Global variable} fundamental_dimensions
+
+@code{declare_fundamental_dimensions} declares fundamental dimensions.
+Symbols @var{d_1}, @var{d_2}, @var{d_3}, ... are appended to the list of
+fundamental dimensions, if they are not already on the list.
+
+@code{remove_fundamental_dimensions} reverts the effect of @code{declare_fundamental_dimensions}.
+
+@code{fundamental_dimensions} is the list of fundamental dimensions.
+By default, the list comprises several physical dimensions.
+
+@code{load(ezunits)} loads these functions.
+
+Examples:
+
+@c ===beg===
+@c load (ezunits) $
+@c fundamental_dimensions;
+@c declare_fundamental_dimensions (money, cattle, happiness);
+@c fundamental_dimensions;
+@c remove_fundamental_dimensions (cattle, happiness);
+@c fundamental_dimensions;
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) fundamental_dimensions;
+(%o2) [length, mass, time, current, temperature, quantity]
+(%i3) declare_fundamental_dimensions (money, cattle, happiness);
+(%o3)                         done
+(%i4) fundamental_dimensions;
+(%o4) [length, mass, time, current, temperature, quantity, 
+                                        money, cattle, happiness]
+(%i5) remove_fundamental_dimensions (cattle, happiness);
+(%o5)                         done
+(%i6) fundamental_dimensions;
+(%o6) [length, mass, time, current, temperature, quantity, money]
+@end example
 
 @opencatbox
 @category{Package ezunits}
@@ -1012,8 +1084,52 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {Function} declare_fundamental_units (@var{u_1}, @var{u_2}, @var{u_3}, ...)
-@deffnx {Function} remove_fundamental_units (@var{u_1}, @var{u_2}, @var{u_3}, ...)
+@deffn {Function} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
+@deffnx {Function} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
+
+@code{declare_fundamental_units} declares @var{u_1}, ..., @var{u_n}
+to have dimensions @var{d_1}, ..., @var{d_n}, respectively.
+All arguments must be symbols.
+
+After calling @code{declare_fundamental_units},
+@code{dimensions(@var{u_k})} returns @var{d_k} for each argument @var{u_1}, ..., @var{u_n},
+and @code{fundamental_units(@var{d_k})} returns @var{u_k} for each argument @var{d_1}, ..., @var{d_n}.
+
+@code{remove_fundamental_units} reverts the effect of @code{declare_fundamental_units}.
+
+@code{load(ezunits)} loads these functions.
+
+Examples:
+
+@c ===beg===
+@c load (ezunits) $
+@c declare_fundamental_dimensions (money, cattle, happiness);
+@c declare_fundamental_units (dollar, money, goat, cattle, smile, happiness);
+@c dimensions (100 ` dollar/goat/km^2);
+@c dimensions (x ` smile/kg);
+@c fundamental_units (money*cattle/happiness);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) declare_fundamental_dimensions (money, cattle, happiness);
+(%o2)                         done
+(%i3) declare_fundamental_units (dollar, money, goat, cattle, smile, happiness);
+(%o3)                 [dollar, goat, smile]
+(%i4) dimensions (100 ` dollar/goat/km^2);
+                             money
+(%o4)                    --------------
+                                      2
+                         cattle length
+(%i5) dimensions (x ` smile/kg);
+                            happiness
+(%o5)                       ---------
+                              mass
+(%i6) fundamental_units (money*cattle/happiness);
+0 errors, 0 warnings
+                           dollar goat
+(%o6)                      -----------
+                              smile
+@end example
 
 @opencatbox
 @category{Package ezunits}
@@ -1088,6 +1204,49 @@ Examples:
 @end deffn
 
 @deffn {Function} fundamental_units (@var{x})
+@deffnx {Function} fundamental_units ()
+
+@code{fundamental_units(@var{x})} returns the units
+associated with the fundamental dimensions of @var{x}.
+as determined by @code{dimensions(@var{x})}.
+
+@var{x} may be a literal dimensional expression @math{a ` b},
+a symbol with declared units via @code{declare_units}, 
+or an expression containing either or both of those.
+
+@code{fundamental_units()} returns the list of all known fundamental units,
+as declared by @code{declare_fundamental_units}.
+
+@code{load(ezunits)} loads this function.
+
+Examples:
+
+@c ===beg===
+@c load (ezunits)$
+@c fundamental_units ();
+@c fundamental_units (100 ` mile/hour);
+@c declare_units (aa, g/foot^2);
+@c fundamental_units (aa);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) fundamental_units ();
+(%o2)                 [m, kg, s, A, K, mol]
+(%i3) fundamental_units (100 ` mile/hour);
+                                m
+(%o3)                           -
+                                s
+(%i4) declare_units (aa, g/foot^2);
+                                g
+(%o4)                         -----
+                                  2
+                              foot
+(%i5) fundamental_units (aa);
+                               kg
+(%o5)                          --
+                                2
+                               m
+@end example
 
 @opencatbox
 @category{Package ezunits}
@@ -1095,7 +1254,49 @@ Examples:
 
 @end deffn
 
-@deffn {Function} dimensionless (@var{x})
+@deffn {Function} dimensionless (@var{L})
+
+Returns a basis for the dimensionless quantities which can be formed
+from a list @var{L} of dimensional quantities.
+
+@code{load(ezunits)} loads this function.
+
+Examples:
+
+@c ===beg===
+@c load (ezunits) $
+@c dimensionless ([x ` m, y ` m/s, z ` s]);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) dimensionless ([x ` m, y ` m/s, z ` s]);
+0 errors, 0 warnings
+0 errors, 0 warnings
+                               y z
+(%o2)                         [---]
+                                x
+@end example
+
+Dimensionless quantities derived from fundamental physical quantities.
+Note that the first element on the list
+is proportional to the fine-structure constant.
+
+@c ===beg===
+@c load (ezunits) $
+@c load (physical_constants) $
+@c dimensionless([%h_bar, %m_e, %m_P, %%e, %c, %e_0]);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) load (physical_constants) $
+(%i3) dimensionless([%h_bar, %m_e, %m_P, %%e, %c, %e_0]);
+0 errors, 0 warnings
+0 errors, 0 warnings
+                              2
+                           %%e        %m_e
+(%o3)                [--------------, ----]
+                      %c %e_0 %h_bar  %m_P
+@end example
 
 @opencatbox
 @category{Package ezunits}
@@ -1103,7 +1304,20 @@ Examples:
 
 @end deffn
 
-@deffn {Function} natural_unit  (@var{x})
+@c NEED TO FILL IN !!
+@deffn {Function} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
+
+Finds exponents @var{e_1}, ..., @var{e_n} such that
+@code{dimension(@var{expr}) = dimension(@var{v_1}^@var{e_1} ... @var{v_n}^@var{e_n})}.
+
+@code{load(ezunits)} loads this function.
+
+Examples:
+
+@c ===beg===
+@c ===end===
+@example
+@end example
 
 @opencatbox
 @category{Package ezunits}

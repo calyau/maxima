@@ -339,15 +339,15 @@ fundamental_units (foobar);
 
 map (dimensions, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 [length/time,
- length*mass/(charge^2*time^2),
- charge^2*time^4/(length^3*mass),
- length^2*mass/(charge^2*time^3),
+ length*mass/(current^2*time^2),
+ current^2*time^4/(length^3*mass),
+ length^2*mass/(current^2*time^3),
  length^3/(mass*time^2),
  length^2*mass/time,
  length^2*mass/time];
 
 fundamental_dimensions;
-[length, mass, time, charge, temperature, quantity];
+[length, mass, time, current, temperature, quantity];
 
 map (dimensions_as_list, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 [[1, 0, - 1, 0, 0, 0],
@@ -394,7 +394,6 @@ m/s;
 e : e `` u;
 /*sqrt(10)*sqrt(2001)*sqrt(1039309)/(100*sqrt(2)) ` m/s;*/
 10^(3/2)*sqrt(2001)*sqrt(1039309)/(125*2^(7/2)) ` m/s;
-
 
 e, numer;
 1019.719890214955 ` m/s;
@@ -489,3 +488,7 @@ ev (xx, xyz = (1729 + 42/99) ` kg, nouns);
 'integrate (f (x) ` N, x ` m, 1 ` inch, 10 ` inch);
 ('integrate (f (x), x, 127/5000, 127/500)) ` N*m;
 
+/* small example from mma mailing list circa 2009-05-29 */
+
+block ([R, w, L, x, y, z], kill (x), R : x ` Ohm, w : z ` Hz, L : y ` H, (R + w*L) `` Ohm);
+(x + y*z) ` Ohm;

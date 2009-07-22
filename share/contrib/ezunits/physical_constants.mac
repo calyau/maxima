@@ -49,7 +49,7 @@ texput (%e_0, "\\epsilon_0");
 declare (%Z_0, physical_constant);
 declare (%Z_0, constant);
 qput (%Z_0, "characteristic impedance of vacuum $\\sqrt{\\mu_0/\\epsilon_0} = \\mu_0 c$", description);
-declare_constvalue (%Z_0, %mu_0*%c);
+declare_constvalue (%Z_0, constvalue (%mu_0*%c));
 qput (%Z_0, 0, RSU);
 texput (%Z_0, "Z_0");
 
@@ -70,35 +70,35 @@ texput (%h, "h");
 declare (%h_bar, physical_constant);
 declare (%h_bar, constant);
 qput (%h_bar, "Planck constant $h/2\\pi$", description);
-declare_constvalue (%h_bar, %h/(2*%pi));
+declare_constvalue (%h_bar, constvalue (%h/(2*%pi)));
 qput (%h_bar, 5*10^-8, RSU);
 texput (%h_bar, "\\hbar");
 
 declare (%m_P, physical_constant);
 declare (%m_P, constant);
 qput (%m_P, "Planck mass $\\sqrt{\\hbar c/G}$", description);
-declare_constvalue (%m_P, sqrt(%h_bar * %c / %G));
+declare_constvalue (%m_P, constvalue (sqrt(%h_bar * %c / %G)));
 qput (%m_P, 5*10^-5, RSU);
 texput (%m_P, "m_P");
 
 declare (%T_P, physical_constant);
 declare (%T_P, constant);
 qput (%T_P, "Planck temperature $\\sqrt{\\hbar c^5/G}/k$", description);
-declare_constvalue (%T_P, sqrt (%h_bar * %c^5 / %G) / %k);
+declare_constvalue (%T_P, constvalue (sqrt (%h_bar * %c^5 / %G) / %k));
 qput (%T_P, 5*10^-5, RSU);
 texput (%T_P, "T_P");
 
 declare (%l_P, physical_constant);
 declare (%l_P, constant);
 qput (%l_P, "Planck length $\\hbar/(m_P c) = \\sqrt{\\hbar G/c^3}$", description);
-declare_constvalue (%l_P, %h_bar / (%m_P * %c));
+declare_constvalue (%l_P, constvalue (%h_bar / (%m_P * %c)));
 qput (%l_P, 5*10^-5, RSU);
 texput (%l_P, "l_P");
 
 declare (%t_P, physical_constant);
 declare (%t_P, constant);
 qput (%t_P, "Planck time $l_P/c = \\sqrt{\\hbar G/c^5}$", description);
-declare_constvalue (%t_P, %l_P / %c);
+declare_constvalue (%t_P, constvalue (%l_P / %c));
 qput (%t_P, 5*10^-5, RSU);
 texput (%t_P, "t_P");
 

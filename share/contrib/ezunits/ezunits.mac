@@ -456,40 +456,47 @@ declare_dimensions ([L%]) :=
 declare_dimensions1 (a%, b%) :=
     if listp (a%)
         then map (lambda ([a1%], declare_dimensions1 (a1%, b%)), a%)
-        elseif listp (b%)
-            then map (lambda ([b1%], declare_dimensions1 (a%, b1%)), b%)
-            else put (a%, b%, 'dimension);
+        elseif symbolp (b%)
+            then put (a%, b%, 'dimension)
+            else error ("declare_dimensions: second argument must be a symbol.");
 
-remove_dimensions ([L%]) := map (lambda ([a%], put (a%, false, 'dimension)), L%);
+remove_dimensions ([L%]) :=
+   (if not every (symbolp, L)
+        then error ("remove_dimensions: all arguments must be symbols."),
+    map (lambda ([a%], put (a%, false, 'dimension)), L%));
 
 declare_fundamental_dimensions ([L]) :=
    (if not every (symbolp, L)
         then error ("declare_fundamental_dimensions: all arguments must be symbols."),
-    if listp (fundamental_dimensions)
-        then remove_fundamental_dimensions (),
-    fundamental_dimensions : L,
-    map (lambda ([s], assume (s > 0)), fundamental_dimensions));
+    L : sublist (L, lambda ([a], not member (a, fundamental_dimensions))),
+    map (lambda ([a], assume (a > 0)), L),
+    fundamental_dimensions : append (fundamental_dimensions, L),
+    'done);
 
-remove_fundamental_dimensions () :=
-    map (lambda ([s], forget (s > 0)), fundamental_dimensions);
+remove_fundamental_dimensions ([L]) :=
+    if L = '[all]
+        then apply (remove_fundamental_dimensions, fundamental_dimensions)
+        else
+           (fundamental_dimensions : sublist (fundamental_dimensions, lambda ([x], not member (x, L))),
+            map (lambda ([a], forget (a > 0)), L),
+            'done);
 
 declare_fundamental_units ([L]) :=
-   (if length (L) # length (fundamental_dimensions)
-        then error ("declare_fundamental_units: expected one argument per fundamental dimension."),
-    if not every (symbolp, L)
+   (if not every (symbolp, L)
         then error ("declare_fundamental_units: all arguments must be symbols."),
-    if listp (%fundamental_units)
-        then remove_fundamental_units (),
-    %fundamental_units : L,
-    map (lambda ([x, y], declare_dimensions (x, y)), %fundamental_units, fundamental_dimensions));
+    map (lambda ([x, y], put (x, y, 'dimension)), odds (L), evens (L)),
+    map (lambda ([x, y], put (y, x, 'unit)), odds (L), evens (L)));
 
-remove_fundamental_units () :=
-   (apply (remove_dimensions, %fundamental_units),
-    kill (%fundamental_units));
+remove_fundamental_units ([L]) :=
+   (if not every (symbolp, L)
+        then error ("remove_fundamental_units: all arguments must be symbols."),
+    map (lambda ([x], put (get (x, 'dimension), false, 'unit)), L),
+    map (lambda ([x], put (x, false, 'dimension)), L));
 
-declare_fundamental_dimensions (length, mass, time, charge, temperature, quantity);
-
-declare_fundamental_units (m, kg, s, A, K, mol);
+fundamental_dimensions : [];
+L : [[m, length], [kg, mass], [s, time], [A, current], [K, temperature], [mol, quantity]];
+apply (declare_fundamental_dimensions, map (second, L));
+apply (declare_fundamental_units, flatten (L));
 
 /* I GUESS RULES FOR DIMENSIONS COULD RECOGNIZE EQUATIONS, DERIVATIVES, AND INTEGRALS
  */
@@ -544,14 +551,20 @@ dimensions_as_list (e) :=
                 then makelist (hipow (e, d), d, fundamental_dimensions)
                 else 'dimensions_as_list (e));
 
-fundamental_units (e) :=
-    if listp (e)
-        then map ('fundamental_units, e)
+fundamental_units ([L]) :=
+    if L = []
+        then
+            map
+               (lambda ([x], (get (x, 'unit), if %% = false then 'unit (x) else %%)),
+                fundamental_dimensions)
         else
-           (dimensions_as_list (e),
-            if listp (%%)
-                then apply ("*", map ("^", %fundamental_units, %%))
-                else 'fundamental_units (e));
+            if listp (L [1])
+                then map ('fundamental_units, L [1])
+                else block ([d],
+                    d : dimensions_as_list (L [1]),
+                    if listp (d)
+                        then apply ("*", map ("^", fundamental_units (), d))
+                        else 'fundamental_units (L [1]));
 
 /* Adapted from dimensionless in share/physics/dimension.mac.
  * Thanks to Barton Willis.
@@ -595,7 +608,7 @@ block
  */
 
 known_units () :=
-    sort (append (%fundamental_units, map (lhs, listify (known_unit_conversions))));
+    sort (append (fundamental_units (), map (lhs, listify (known_unit_conversions))));
 
 display_known_unit_conversions () := 
     for x in known_unit_conversions do display (x);

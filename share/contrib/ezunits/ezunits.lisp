@@ -36,3 +36,7 @@
 
 (defprop $\` tex-ezunits tex)
 
+(defun $odds (a) (cons '(mlist) (odds (cdr a) 1)))
+
+(defun $evens (a) (cons '(mlist) (odds (cdr a) 0)))
+
