@@ -36,11 +36,7 @@ sin(y)*(10.0+6*cos(x)),
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
     (merror "Both arguments to 'join' must be lists")))
 
-(eval-when
-    #+gcl (compile eval load)
-    #-gcl (:compile-toplevel :execute :load-toplevel)
-    (defmacro coerce-float (x)
-      `(cl:float (meval* ,x) 1.0)))
+(defun coerce-float (x) ($float (meval* x)))
 
 (defvar *maxima-plotdir* "")
 (defvar *maxima-tempdir*)
@@ -520,7 +516,7 @@ sin(y)*(10.0+6*cos(x)),
 
 ;; return a function suitable for the transform function in plot3d.
 ;; FX, FY, and FZ are functions of three arguments.
-(defun $make_transform (lvars fx fy fz  &aux ( $numer t))
+(defun $make_transform (lvars fx fy fz)
   (setq fx (coerce-float-fun fx lvars))
   (setq fy (coerce-float-fun fy lvars))
   (setq fz (coerce-float-fun fz lvars))
@@ -555,7 +551,8 @@ sin(y)*(10.0+6*cos(x)),
 
 (defun coerce-float-fun (expr &optional lvars)
   (cond ((and (consp expr) (functionp expr))
-         expr)
+         (let ((args (if lvars (cdr lvars) (list (gensym)))))
+           (coerce-lisp-function-or-lisp-lambda args expr)))
         ; expr is a string which names an operator
         ; (e.g. "!" "+" or a user-defined operator)
         ((and (stringp expr) (getopr0 expr))
@@ -564,7 +561,8 @@ sin(y)*(10.0+6*cos(x)),
         ((and (symbolp expr) (not (member expr lvars)) (not ($constantp expr)))
          (cond
        ((fboundp expr)
-        (symbol-function expr))
+        (let ((args (if lvars (cdr lvars) (list (gensym)))))
+          (coerce-lisp-function-or-lisp-lambda args expr)))
 
        ; expr is name of a Maxima function defined by := or define
        ((mget expr 'mexpr)
@@ -633,7 +631,7 @@ sin(y)*(10.0+6*cos(x)),
                  `((progn (setq ,save-list-gensym nil)
                           ,@(append subscripted-vars-save subscripted-vars-mset))))
 
-           (let (($ratprint nil) ($numer t) ($%enumer t) (nounsflag t)
+           (let (($ratprint nil) ($numer t) (nounsflag t)
                  (errorsw t)
                  (errcatch t))
              (declare (special errcatch))
@@ -677,9 +675,24 @@ sin(y)*(10.0+6*cos(x)),
          (let*
            (($ratprint nil)
             ($numer t)
-            ($%enumer t)
             (nounsflag t)
             (result (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))
+           (if ($numberp result)
+             ($float result)
+             result)))
+      'function)))
+
+;; Same as above, but call APPLY instead of MAPPLY.
+
+(defun coerce-lisp-function-or-lisp-lambda (args expr)
+  (let ((gensym-args (loop for x in args collect (gensym))))
+    (coerce
+      `(lambda ,gensym-args (declare (special ,@gensym-args))
+         (let*
+           (($ratprint nil)
+            ($numer t)
+            (nounsflag t)
+            (result (maybe-realpart (apply ',expr (list ,@gensym-args)))))
            (if ($numberp result)
              ($float result)
              result)))
@@ -802,7 +815,6 @@ sin(y)*(10.0+6*cos(x)),
          (trange (or range ($get_plot_option '$t)))
          (xrange ($get_plot_option '$x))
          (yrange ($get_plot_option '$y))
-         ($numer t)
          (tmin (coerce-float (third trange)))
          (tmax (coerce-float (fourth trange)))
          (xmin (coerce-float (third xrange)))
@@ -843,8 +855,7 @@ sin(y)*(10.0+6*cos(x)),
          (x (third f))
          (y (fourth f)))
     (let
-      (($numer t) ($float t) ($%enumer t)
-       (data
+      ((data
          (cond
            ((= (length f) 4)                 ; [discrete,x,y]
             (if (not ($listp x))
@@ -863,14 +874,7 @@ sin(y)*(10.0+6*cos(x)),
 
       ;; Encourage non-floats to become floats here.
 
-      ;; Arguments X and Y were evaluated when $PLOT2D was called.
-      ;; So theoretically calling MEVAL again is a no-no; 
-      ;; instead, RESIMPLIFY should be called.
-      ;; However, the only circumstance in which MEVAL and RESIMPLIFY yield different results
-      ;; is when X or Y contains a symbol which evaluates to a number, in which case calling
-      ;; RESIMPLIFY would cause an error (because the symbol would cause Gnuplot to barf).
-
-      (meval data))))
+      ($float data))))
 
 
 ;;; Adaptive plotting, based on the adaptive plotting code from
@@ -981,8 +985,7 @@ sin(y)*(10.0+6*cos(x)),
       (return-from draw2d (draw2d-discrete fcn)))
   (let* ((nticks (third ($get_plot_option '$nticks)))
          (yrange ($get_plot_option '$y))
-         (depth (third ($get_plot_option '$adapt_depth)))
-         ($numer t))
+         (depth (third ($get_plot_option '$adapt_depth))))
 
     (setq fcn (coerce-float-fun fcn `((mlist), (second range))))
 
@@ -1215,7 +1218,7 @@ sin(y)*(10.0+6*cos(x)),
 	"")))
 
 (defun $plot2d (fun &optional range &rest options)
-  (let (($numer t) ($display2d nil) ($float t) ($%enumer t)
+  (let (($display2d nil)
         (*plot-realpart* *plot-realpart*)
         ($plot_options $plot_options) (i 0)
 	(output-file "")
@@ -1654,12 +1657,12 @@ sin(y)*(10.0+6*cos(x)),
 128 .8 1 0
 " ncolors))
 
-(defun check-range (range &aux ($numer t) ($float t) tem a b)
+(defun check-range (range &aux tem a b)
   (or (and ($listp range)
            (setq tem (cdr range))
            (symbolp (car tem))
-           (numberp (setq a (meval* (second tem))))
-           (numberp (setq b (meval* (third tem))))
+           (numberp (setq a ($float (meval* (second tem)))))
+           (numberp (setq b ($float (meval* (third tem)))))
            (< a b))
       (if range
           (merror 
@@ -1844,17 +1847,13 @@ sin(y)*(10.0+6*cos(x)),
                       (fourth fun)))
          ; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
          (when ($constantp (fourth fun))
-           (setq const-expr (let (($numer t)) (meval (fourth fun))))
-           (if ($numberp const-expr)
-             (setq const-expr ($float const-expr))))
+           (setq const-expr ($float (meval (fourth fun)))))
          ; -----  END GNUPLOT 4.0 WORK-AROUND  -----
          (setq fun '$zero_fun))
         (t
           ; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
           (when ($constantp fun)
-           (setq const-expr (let (($numer t)) (meval fun)))
-           (if ($numberp const-expr)
-             (setq const-expr ($float const-expr))))
+           (setq const-expr ($float (meval fun))))
           ; -----  END GNUPLOT 4.0 WORK-AROUND  -----
           (setq fun (coerce-float-fun fun lvars))))
   (let* ((pl (draw3d fun

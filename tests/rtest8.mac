@@ -465,6 +465,34 @@ find_root (.05^(x + 1) = (x + 1)*10^(-10), x, 5, 100);
  find_root (g = 0, a, 0, 1));
 0.3978613590133817;
 
+/* from mailing list 2009-02-18
+ * "Re: [Maxima] I want to tell maxima (-1)^0.33333333333333=-1, what should i do?"
+ * see also tests/rtest_plot
+ */
+
+(foo17(x):=(sqrt(-16*x^4-16*x^3+20*x^2+12*x+23)/(6*sqrt(3))+(16*x^3-12*x^2-6*x-25)/54)^(1/3),
+ float_approx_equal_tolerance : 1e-12,
+ 0);
+0;
+
+first (quad_qags (foo17 (u), u, -1, 0));
+- 0.359753467469551;
+
+first (quad_qags (foo17, u, -1, 0));
+- 0.359753467469551;
+
+find_root (foo17 (u) = -0.2, u, -1, 0);
+- 0.246809031968399;
+
+(bar17 (u) := foo17 (u) + 0.2, find_root (bar17, u, -1, 0));
+- 0.246809031968399;
+
+(compile (foo17), first (quad_qags (foo17, u, -1, 0)));
+- 0.359753467469551;
+
+find_root (bar17, u, -1, 0);
+- 0.246809031968399;
+
 reset (float_approx_equal_tolerance);
 [float_approx_equal_tolerance];
 

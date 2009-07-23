@@ -1,4 +1,14 @@
-/* execute this script via demo(...) */
+/* execute this script 
+ *
+ * (1) wait for user between examples:
+ *  demo ("tests/rtest_plot.mac");
+ *
+ * (2) or noninteractively:
+ *  batch ("tests/rtest_plot.mac");
+ *
+ * Maxima waits for the user to close the Openmath window
+ * before proceeding, but otherwise it just blazes through.
+ */
 
 /* Examples copied from plot2d documentation */
 
@@ -50,7 +60,7 @@ plot2d([[discrete,xy], 2*%pi*sqrt(l/980)], [l,0,50],
 
 "To save a plot ..." $
 
-plot2d (sin(x), [x, 0, 2*%pi], [psfile, "sin.eps"])$
+plot2d (sin(x), [x, 0, 2*%pi], [psfile, concat (maxima_tempdir, "/sin.eps")])$
 
 "The next example uses the y option ..." $
 
@@ -72,7 +82,7 @@ my_preamble: "set xtics ('-2{/Symbol p}' \
 '{/Symbol p}' 3.1415,'3{/Symbol p}/2' 4.712, '2{/Symbol p}' \
 6.283)"$
 plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
- [y, -2, 2], [gnuplot_preamble, my_preamble], [psfile, "trig.eps"]);
+ [y, -2, 2], [gnuplot_preamble, my_preamble], [psfile, concat (maxima_tempdir, "/trig.eps")]);
 
 /* Examples copied from plot3d documentation */
 
@@ -298,31 +308,17 @@ plot2d ('r4(s), [s, 200, 300], [adapt_depth, 0], [nticks, 5]);
 
 /* from mailing list 2009-02-18
  * "Re: [Maxima] I want to tell maxima (-1)^0.33333333333333=-1, what should i do?"
- * This is entirely a problem in COERCE-FLOAT-FUN, hence the quad_qags and find_root here.
  */
 
-foo(x):=(sqrt(-16*x^4-16*x^3+20*x^2+12*x+23)/(6*sqrt(3))+(16*x^3-12*x^2-6*x-25)/54)^(1/3)$
+foo29(x):=(sqrt(-16*x^4-16*x^3+20*x^2+12*x+23)/(6*sqrt(3))+(16*x^3-12*x^2-6*x-25)/54)^(1/3)$
 
-plot2d (foo (u), [u, -1, 0]);
+plot2d (foo29 (u), [u, -1, 0]);
 
-plot2d (foo, [u, -1, 0]);
+plot2d (foo29, [u, -1, 0]);
 
-quad_qags (foo (u), u, -1, 0);
+compile (foo29);
 
-quad_qags (foo, u, -1, 0);
-
-find_root (foo (u) = -0.2, u, -1, 0);
-
-bar (u) := foo (u) + 0.2;
-find_root (bar, u, -1, 0);
-
-compile (foo);
-
-plot2d (foo, [u, -1, 0]);
-
-quad_qags (foo, u, -1, 0);
-
-find_root (bar, u, -1, 0);
+plot2d (foo29, [u, -1, 0]);
 
 "FINIS" $
 
