@@ -1,4 +1,4 @@
-@c version 1.2
+@c version 1.3
 @menu
 * Introducci@'on a ezunits::
 * Introducci@'on a physical_constants::
@@ -23,11 +23,11 @@ La funci@'on @code{known_units} devuelve una lista con todas las unidades
 que est@'an definidas y @code{display_known_unit_conversions} muestra
 las conversiones conocidas por el sistema en un formato de lectura sencilla.
 
-Una expresi@'on tal como @code{a ` b} representa una magnitud dimensional, siendo
+Una expresi@'on tal como @math{a ` b} representa una magnitud dimensional, siendo
 @code{a} una magnitud adimensional y @code{b} las unidades.
 Se puede utilizar un s@'{@dotless{i}}mbolo como unidad, sin necesidad
 de declararlo como tal ni de que deba cumplir propiedades especiales.
-Tanto la magnitud como la unidad de una expresi@'on de la forma @code{a ` b}
+Tanto la magnitud como la unidad de una expresi@'on de la forma @math{a ` b}
 pueden extraerse invocando las funciones @code{qty} y @code{units},
 respectivamente.
 
@@ -60,9 +60,9 @@ Las operaciones aritm@'eticas con magnitudes dimensionales se realizan
 de la forma convencional.
 
 @itemize
-@item @code{(x ` a) * (y ` b)} es igual a @code{(x * y) ` (a * b)}.
-@item @code{(x ` a) + (y ` a)} es igual a @code{(x + y) ` a}.
-@item @code{(x ` a)^y} es igual a @code{x^y ` a^y} si @code{y} es adimensional.
+@item @code{(x ` a) * (y ` b)} es igual a @math{(x * y) ` (a * b)}.
+@item @code{(x ` a) + (y ` a)} es igual a @math{(x + y) ` a}.
+@item @code{(x ` a)^y} es igual a @math{x^y ` a^y} si @code{y} es adimensional.
 @end itemize
 
 @code{ezunits} no necesita que las unidades en una suma tengan las mismas 
@@ -287,11 +287,11 @@ Computing conversions to base units; may take a moment.
 @deffn {Operador} `
 
 Operador de magnitud dimensional. 
-Una expresi@'on tal como @code{a ` b} representa una magnitud dimensional, siendo
+Una expresi@'on tal como @math{a ` b} representa una magnitud dimensional, siendo
 @code{a} una magnitud adimensional y @code{b} las unidades.
 Se puede utilizar un s@'{@dotless{i}}mbolo como unidad, sin necesidad
 de declararlo como tal ni de que deba cumplir propiedades especiales.
-Tanto la magnitud como la unidad de una expresi@'on de la forma @code{a ` b}
+Tanto la magnitud como la unidad de una expresi@'on de la forma @math{a ` b}
 pueden extraerse invocando las funciones @code{qty} y @code{units},
 respectivamente.
 
@@ -299,9 +299,9 @@ Las operaciones aritm@'eticas con magnitudes dimensionales se realizan
 de la forma convencional.
 
 @itemize
-@item @code{(x ` a) * (y ` b)} es igual a @code{(x * y) ` (a * b)}.
-@item @code{(x ` a) + (y ` a)} es igual a @code{(x + y) ` a}.
-@item @code{(x ` a)^y} es igual a @code{x^y ` a^y} si @code{y} es adimensional.
+@item @code{(x ` a) * (y ` b)} es igual a @math{(x * y) ` (a * b)}.
+@item @code{(x ` a) + (y ` a)} es igual a @math{(x + y) ` a}.
+@item @code{(x ` a)^y} es igual a @math{x^y ` a^y} si @code{y} es adimensional.
 @end itemize
 
 @code{ezunits} no necesita que las unidades en una suma tengan las mismas 
@@ -413,10 +413,10 @@ Operaciones aritm@'eticas y magnitudes dimensionales.
 
 @end deffn
 
-@deffn {Operador} ``
+@deffn {Operador} `@w{}`
 
 Operador de conversi@'on de unidades.
-Una expresi@'on tal como @code{a ` b `` c} convierte las unidades @code{b}
+Una expresi@'on tal como @math{a ` b `@w{}` c} convierte las unidades @code{b}
 en @code{c}. El paquete @code{ezunits} contiene funciones conversoras para
 unidades fundamentales del SI, unidades derivadas, as@'{@dotless{i}} como
 algunas otras unidades ajenas al SI.
@@ -694,8 +694,9 @@ Declarando una nueva constante.
 Devuelve las unidades de la magnitud dimensional @var{x},
 o 1 en caso de que @var{x} sea adimensional.
 
-@var{x} puede ser una expresi@'on literal dimensional @code{a ` b},
-un s@'{@dotless{i}}mbolo con unidades declaradas o una expresi@'on 
+@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
+un s@'{@dotless{i}}mbolo con unidades declaradas por
+medio de @code{declare_units}, o una expresi@'on 
 que contenga cualquiera o ambos de los anteriores.
 
 @code{declare_constvalue} declara que @code{units(@var{a})}
@@ -781,7 +782,7 @@ Ejemplos:
 
 @code{qty} devuelve la parte adimensional de la magnitud dimensional @var{x},
 o @var{x}, si @var{x} es adimensional.
-@var{x} puede ser una expresi@'on literal dimensional @code{a ` b},
+@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
 un s@'{@dotless{i}}mbolo con unidades declaradas o una expresi@'on 
 que contenga cualquiera o ambos de los anteriores.
 
@@ -914,8 +915,8 @@ principal se declara dimensional.
 @deffn {Funci@'on} declare_unit_conversion (@var{u} = @var{v}, ...)
 
 A@~nade las ecuaciones @var{u} = @var{v}, ... a la lista de conversiones
-de unidades conocidas por el operador de conversi@'on @code{``}.
-Cada ecuaci@'on expresa t@'erminos multiplicativos en las que las
+de unidades conocidas por el operador de conversi@'on @math{`@w{}`}.
+@var{u} y @var{v} son t@'erminos multiplicativos en las que las
 variables son unidades o expresiones dimensionales literales.
 
 De momento, es imperativo expresar las conversiones de forma
@@ -971,20 +972,140 @@ Computing conversions to base units; may take a moment.
 
 @end deffn
 
-@deffn {Funci@'on} declare_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
-@deffnx {Funci@'on} remove_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+
+@deffn {Funci@'on} declare_dimensions (@var{a_1}, @var{d_1}, ..., @var{a_n}, @var{d_n})
+@deffnx {Funci@'on} remove_dimensions (@var{a_1}, ..., @var{a_n})
+
+@code{declare_dimensions} declara @var{a_1}, ..., @var{a_n}
+con las dimensiones @var{d_1}, ..., @var{d_n}, respectivamente.
+
+Cada @var{a_k} es un s@'{@dotless{i}}mbolo o lista de s@'{@dotless{i}}mbolos.
+En caso de ser una lista, cada s@'{@dotless{i}}mbolo en @var{a_k} se
+declara de dimensi@'on @var{d_k}.
+
+@code{remove_dimensions} invierte el efecto de @code{declare_dimensions}.
+
+Ejec@'utese @code{load(ezunits)} para hacer uso de estas funciones.
+
+Ejemplos:
+
+@c ===beg===
+@c load (ezunits) $
+@c declare_dimensions ([x, y, z], length, [t, u], time);
+@c dimensions (y^2/u);
+@c fundamental_units (y^2/u);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) declare_dimensions ([x, y, z], length, [t, u], time);
+(%o2)                         done
+(%i3) dimensions (y^2/u);
+                                   2
+                             length
+(%o3)                        -------
+                              time
+(%i4) fundamental_units (y^2/u);
+0 errors, 0 warnings
+                                2
+                               m
+(%o4)                          --
+                               s
+@end example
 
 @end deffn
 
 @deffn {Funci@'on} declare_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
 @deffnx {Funci@'on} remove_fundamental_dimensions (@var{d_1}, @var{d_2}, @var{d_3}, ...)
+@deffnx {Variable global} fundamental_dimensions
+
+@code{declare_fundamental_dimensions} declara dimensiones fundamentales.
+Los s@'{@dotless{i}}mbolos @var{d_1}, @var{d_2}, @var{d_3}, ... se a@~naden a la lista
+de dimensiones fundamentales si no est@'an ya presentes en la lista.
+
+@code{remove_fundamental_dimensions} invierte el efecto de @code{declare_fundamental_dimensions}.
+
+@code{fundamental_dimensions} es la lista de dimensiones fundamentales.
+Por defecto, la lista comprende algunas dimensiones f@'{@dotless{i}}sicas.
+
+Ejec@'utese @code{load(ezunits)} para hacer uso de estas funciones.
+
+Ejemplos:
+
+@c ===beg===
+@c load (ezunits) $
+@c fundamental_dimensions;
+@c declare_fundamental_dimensions (money, cattle, happiness);
+@c fundamental_dimensions;
+@c remove_fundamental_dimensions (cattle, happiness);
+@c fundamental_dimensions;
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) fundamental_dimensions;
+(%o2) [length, mass, time, current, temperature, quantity]
+(%i3) declare_fundamental_dimensions (money, cattle, happiness);
+(%o3)                         done
+(%i4) fundamental_dimensions;
+(%o4) [length, mass, time, current, temperature, quantity, 
+                                        money, cattle, happiness]
+(%i5) remove_fundamental_dimensions (cattle, happiness);
+(%o5)                         done
+(%i6) fundamental_dimensions;
+(%o6) [length, mass, time, current, temperature, quantity, money]
+@end example
 
 @end deffn
 
-@deffn {Funci@'on} declare_fundamental_units (@var{u_1}, @var{u_2}, @var{u_3}, ...)
-@deffnx {Funci@'on} remove_fundamental_units (@var{u_1}, @var{u_2}, @var{u_3}, ...)
+
+@deffn {Funci@'on} declare_fundamental_units (@var{u_1}, @var{d_1}, ..., @var{u_n}, @var{d_n})
+@deffnx {Funci@'on} remove_fundamental_units (@var{u_1}, ..., @var{u_n})
+
+@code{declare_fundamental_units} declara @var{u_1}, ..., @var{u_n}
+de dimensiones @var{d_1}, ..., @var{d_n}, respectivamente.
+Todos los argumentos deben s@'{@dotless{i}}mbolos.
+
+Tras la llamada a @code{declare_fundamental_units},
+@code{dimensions(@var{u_k})} devuelve @var{d_k} para cada argumento @var{u_1}, ..., @var{u_n},
+y @code{fundamental_units(@var{d_k})} devuelve @var{u_k} para cada @var{d_1}, ..., @var{d_n}.
+
+@code{remove_fundamental_units} invierte el efecto de @code{declare_fundamental_units}.
+
+Ejec@'utese @code{load(ezunits)} para hacer uso de estas funciones.
+
+Ejemplos:
+
+@c ===beg===
+@c load (ezunits) $
+@c declare_fundamental_dimensions (money, cattle, happiness);
+@c declare_fundamental_units (dollar, money, goat, cattle, smile, happiness);
+@c dimensions (100 ` dollar/goat/km^2);
+@c dimensions (x ` smile/kg);
+@c fundamental_units (money*cattle/happiness);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) declare_fundamental_dimensions (money, cattle, happiness);
+(%o2)                         done
+(%i3) declare_fundamental_units (dollar, money, goat, cattle, smile, happiness);
+(%o3)                 [dollar, goat, smile]
+(%i4) dimensions (100 ` dollar/goat/km^2);
+                             money
+(%o4)                    --------------
+                                      2
+                         cattle length
+(%i5) dimensions (x ` smile/kg);
+                            happiness
+(%o5)                       ---------
+                              mass
+(%i6) fundamental_units (money*cattle/happiness);
+0 errors, 0 warnings
+                           dollar goat
+(%o6)                      -----------
+                              smile
+@end example
 
 @end deffn
+
 
 @deffn {Funci@'on} dimensions (@var{x})
 @deffnx {Funci@'on} dimensions_as_list (@var{x})
@@ -1051,16 +1172,111 @@ Ejemplos:
 
 @end deffn
 
+
+
 @deffn {Funci@'on} fundamental_units (@var{x})
+@deffnx {Funci@'on} fundamental_units ()
+
+@code{fundamental_units(@var{x})} devuelve las unidades
+asociadas a las dimensiones fundamentales de @var{x},
+tal como queda determinada por @code{dimensions(@var{x})}.
+
+@var{x} puede ser una expresi@'on literal dimensional @math{a ` b},
+un s@'{@dotless{i}}mbolo con unidades declaradas a trav@'es de
+@code{declare_units} o una expresi@'on que contenga a ambos.
+
+@code{fundamental_units()} devuelve una lista con las unidades
+fundamentales conocidas, tal como fueron declaradas por @code{declare_fundamental_units}.
+
+Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
+
+Ejemplos:
+
+@c ===beg===
+@c load (ezunits)$
+@c fundamental_units ();
+@c fundamental_units (100 ` mile/hour);
+@c declare_units (aa, g/foot^2);
+@c fundamental_units (aa);
+@c ===end===
+@example
+(%i1) load (ezunits)$
+(%i2) fundamental_units ();
+(%o2)                 [m, kg, s, A, K, mol]
+(%i3) fundamental_units (100 ` mile/hour);
+                                m
+(%o3)                           -
+                                s
+(%i4) declare_units (aa, g/foot^2);
+                                g
+(%o4)                         -----
+                                  2
+                              foot
+(%i5) fundamental_units (aa);
+                               kg
+(%o5)                          --
+                                2
+                               m
+@end example
 
 @end deffn
 
-@deffn {Funci@'on} dimensionless (@var{x})
+@deffn {Funci@'on} dimensionless (@var{L})
+
+Devuelve una expresi@'on sin dimensiones que se puede formar
+a partir de una lista @var{L} de cantidades dimensionales 
+
+Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
+
+Ejemplos:
+
+@c ===beg===
+@c load (ezunits) $
+@c dimensionless ([x ` m, y ` m/s, z ` s]);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) dimensionless ([x ` m, y ` m/s, z ` s]);
+0 errors, 0 warnings
+0 errors, 0 warnings
+                               y z
+(%o2)                         [---]
+                                x
+@end example
+
+Cantidades adimensionales obtenidas a partir de cantidades f@'{@dotless{i}}sicas.
+N@'otese que el primer elemento de la lista es proporcional a la
+constante de estructura fina.
+
+@c ===beg===
+@c load (ezunits) $
+@c load (physical_constants) $
+@c dimensionless([%h_bar, %m_e, %m_P, %%e, %c, %e_0]);
+@c ===end===
+@example
+(%i1) load (ezunits) $
+(%i2) load (physical_constants) $
+(%i3) dimensionless([%h_bar, %m_e, %m_P, %%e, %c, %e_0]);
+0 errors, 0 warnings
+0 errors, 0 warnings
+                              2
+                           %%e        %m_e
+(%o3)                [--------------, ----]
+                      %c %e_0 %h_bar  %m_P
+@end example
 
 @end deffn
 
-@deffn {Funci@'on} natural_unit  (@var{x})
+
+@deffn {Funci@'on} natural_unit (@var{expr}, [@var{v_1}, ..., @var{v_n}])
+
+Busca los exponentes @var{e_1}, ..., @var{e_n} tales que
+@code{dimension(@var{expr}) = dimension(@var{v_1}^@var{e_1} ... @var{v_n}^@var{e_n})}.
+
+Para utilizar esta funci@'on ejec@'utese primero @code{load(ezunits)}.
 
 @end deffn
+
+
 
 
