@@ -1749,10 +1749,16 @@
            ((onep1 pot)
             (let ((y (mget gr '$numer)))
               (if (and y (floatp y) (or $numer (not (equal pot 1))))
-                  (return (if (and (eq gr '$%e) (equal pot bigfloatone))
-                              ($bfloat '$%e)
+                  ;; A numeric constant like %e, %pi, ... and 
+                  ;; exponent is a float or bigfloat value.
+                  (return (if (and (member gr *builtin-numeric-constants*)
+                                   (equal pot bigfloatone))
+                              ;; Return a bigfloat value.
+                              ($bfloat gr)
+                              ;; Return a float value.
                               y))
-                  (go retno))))
+                  ;; In all other cases exptrl simplifies accordingly.
+                  (return (exptrl gr pot)))))
            ((eq gr '$%e)
             ;; Numerically evaluate if the power is a flonum.
             (when $%emode
@@ -1784,9 +1790,14 @@
                    (return ($taylor x)))))
            (t
             (let ((y (mget gr '$numer)))
+              ;; Check for a numeric constant.
               (and y
                    (floatp y)
                    (or (floatp pot)
+                       ;; The exponent is a bigfloat. Convert base to bigfloat.
+                       (and ($bfloatp pot)
+                            (member gr *builtin-numeric-constants*)
+                            (setq y ($bfloat gr)))
                        (and $numer (integerp pot)))
                    (return (exptrl y pot))))))
 
