@@ -69,7 +69,10 @@
                         :components ((:file "mormac") 
                                      (:file "compat")))
 	       (:module command-line :pathname ""
+			:depends-on (getopt)
 			:components ((:file "command-line")))
+	       (:module getopt :pathname ""
+			:components ((:file "getopt")))
                (:module fundamental-macros :pathname ""
                         :components ((:file "defopt") 
                                      (:file "defcal") 
