@@ -1784,7 +1784,14 @@
                   ;;  (return (exp pot)))
                   ((and $logsimp (among '%log pot)) (return (%etolog pot)))
                   ((and $demoivre (setq z (demoivre pot))) (return z))
-                  ((and $%emode (setq z (%especial pot))) (return z))
+                  ((and $%emode
+                        ;; Check for an expression exp(%i*%pi*p/q).
+                        (mtimesp pot)
+                        (or (not (mnump (cadr pot))) ; Special case p/q = 1
+                            (integerp (cadr pot))    ; an integer
+                            (ratnump (cadr pot)))    ; a rational
+                        (setq z (%especial pot)))    ; Try to simplify.
+                   (return z))
                   (($taylorp (third x))
                    ;; taylorize %e^taylor(...)
                    (return ($taylor x)))))
