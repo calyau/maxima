@@ -922,5 +922,14 @@ diff(psi[n*x](x),x);
 diff(psi[n](x),x,1,n,1);
 'diff(psi[n+1](x),n);
 
+/* BUG ID: 2824909 " exp(%i*%pi/4) not simplified" 
+ * Check the simplification of exp(%i*%pi/4) and exp(-%i*pi/4)
+ */
+
+exp(%i*%pi/4);
+1/sqrt(2)+%i/sqrt(2);
+exp(-%i*%pi/4);
+1/sqrt(2)-%i/sqrt(2);
+
 end;
 end$
