@@ -15,10 +15,10 @@
 ;; This is the Match Compiler.
 
 (declare-top (special *expr *rules *rulelist $rules alist $props 
-		      *afterflag args boundlist *a* pt
+		      args boundlist *a* pt
 		      reflist topreflist program $noundisp))
 
-(setq *afterflag nil)
+(defvar *afterflag nil)
 
 (defmvar $announce_rules_firing nil)
 
@@ -114,7 +114,8 @@
 		      (setq leftover (delete (car f) leftover :test #'equal))
 		      (go a1))
 		     (t
-		      (mtell "COMPILEPLUS: ~M partitions '+' expression.~%" (cons '(mplus) leftover))
+		      ;; Almost nobody knows what this means. Just suppress the noise.
+		      ;; (mtell "COMPILEPLUS: ~M partitions '+' expression.~%" (cons '(mplus) leftover))
 		      (setq boundlist (append boundlist (atomson leftover)))
 		      (return (emit (list 'cond
 					  (list (list 'part+
@@ -230,7 +231,8 @@
 		      (setq leftover (delete (car f) leftover :test #'equal))
 		      (go a1))
 		     (t
-		      (mtell "COMPILETIMES: ~M partitions '*' expression.~%" (cons '(mtimes) leftover))
+		      ;; Almost nobody knows what this means. Just suppress the noise.
+		      ;; (mtell "COMPILETIMES: ~M partitions '*' expression.~%" (cons '(mtimes) leftover))
 		      (setq boundlist (append boundlist (atomson leftover)))
 		      (return (emit (list 'cond
 					  (list (list 'part*
