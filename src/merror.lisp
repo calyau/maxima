@@ -15,8 +15,6 @@
 ;;; Macsyma error signalling. 
 ;;; 2:08pm  Tuesday, 30 June 1981 George Carrette.
 
-(defvar *mdebug* t "Enter the lisp debugger on an error if this is true")
-
 (defmvar $error `((mlist simp) "No error.")
   "During an MAXIMA-ERROR break this is bound to a list
   of the arguments to the call to MAXIMA-ERROR, with the message
@@ -41,6 +39,7 @@
   ; But RATDISREP simplifies its argument, which is a no-no if we got here
   ; because some simplification code is complaining, so inhibit simplification. Double ugh.
   (let (($simp nil))
+    (declare (special $simp))
     (setq exp (ratdisrep exp)))
 
   (if (atom exp)
@@ -97,7 +96,7 @@
   `(let ((errcatch t)
 	 *mdebug*		       ;let merror signal a lisp error
 	 $errormsg)			;don't print $error
-     (declare (special errcatch))
+     (declare (special errcatch *mdebug* $errormsg))
      ,@body))
 
 ;; Sample:

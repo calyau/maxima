@@ -23,28 +23,17 @@
 
 (defmvar mopl nil)
 
-(declare-top  (special $debugmode $disptime
-		       bindlist loclist errset $labels linelable $filesize
-		       st rephrase $dispflag refchkl baktrcl
-		       dskfnp dsksavep *rset ^q lf tab ff cr
-		       $values $functions $arrays $aliases $gradefs $dependencies
-		       $rules $props $ratvars $ratvarswitch *mdebug* errbrksw errcatch
-		       varlist genvar $device $filename $filenum
-		       $gensumnum checkfactors $features featurel $backtrace
-		       $weightlevels tellratlist $dontfactor $infolists
-		       $dskall allbutl lisperrprint dcount thistime
-		       $nolabels dispflag saveno mcatch brklvl savefile
-		       $%% $error *in-translate-file*
-		       lessorder greatorder $errorfun mbreak reprint pos $strdisp
-		       $dskuse smart-tty more-^w oldst
-		       $loadprint opers *ratweights $ratweights quitmsg
-		       loadf $grind $stringdisp $lispdisp defaultf
-		       state-pdl command
-		       transp $contexts $setcheck $macros
-		       autoload))
-
-(defvar $prompt '_)
-
+(declare-top  (special
+		       bindlist loclist errset *rset ^q lf tab ff cr
+		       $values $functions $arrays $gradefs $dependencies
+		       $rules $props $ratvars $ratvarswitch
+		       varlist genvar $filename
+		       $gensumnum checkfactors $features featurel
+		       $weightlevels tellratlist $dontfactor
+		       dispflag savefile $%% $error smart-tty
+		       opers *ratweights $ratweights
+		       $stringdisp $lispdisp defaultf command
+		       transp $contexts $setcheck $macros autoload))
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'opalias))
       '((+ $+) (- $-) (* $*) (// $//) (^ $^) (|.| |$.|) (< $<) (= $=)
@@ -57,50 +46,62 @@
 			       (t (cadr x)))))
       '((tab #\tab) (lf #\linefeed) (ff #\page) (cr #\return) (sp #\space)))
 
-(setq thistime 0
-      $disptime nil)
+(defvar thistime 0)
+(defvar refchkl nil)
+(defvar *mdebug* nil)
+(defvar baktrcl nil)
+(defvar errbrksw nil)
+(defvar mbreak nil)
+(defvar errcatch nil)
+(defvar mcatch nil)
+(defvar brklvl -1)
+(defvar allbutl nil)
+(defvar loadf nil)
+(defvar lessorder nil)
+(defvar greatorder nil)
+(defvar *in-translate-file* nil)
+(defvar linelable nil)
+(defvar rephrase nil)
+(defvar st nil)
+(defvar oldst nil)
+(defvar reprint nil)
+(defvar pos nil)
+(defvar dcount 0)
+(defvar dskfnp nil)
+(defvar dsksavep nil)
+(defvar saveno 0)
+(defvar quitmsg  " ")
+(defvar more-^w nil)
+(defvar lisperrprint t)
 
-(setq $strdisp t $grind nil)
+(defvar state-pdl (ncons 'lisp-toplevel))
 
-(setq refchkl nil
-      *mdebug* nil
-      baktrcl nil
-      errbrksw nil
-      mbreak nil
-      $errorfun nil
-      errcatch nil
-      mcatch nil
-      brklvl -1
-      allbutl nil
-      loadf nil
-      $backtrace '$backtrace)
+(defmvar $filenum 0)
+(defmvar $storenum 1000.)
+(defmvar $filesize 16.)
+(defmvar $dskall t)
+(defmvar $errorfun nil)
+(defmvar $disptime nil)
+(defmvar $strdisp t)
+(defmvar $grind nil)
+(defmvar $prompt '_)
+(defmvar $backtrace '$backtrace)
+(defmvar $debugmode nil)
+(defmvar $pagepause nil)
+(defmvar $poislim 5)
+(defmvar $loadprint nil)
+(defmvar $nolabels nil)
+(defmvar $aliases '((mlist simp)))
 
-(setq *in-translate-file* nil)
+(defmvar $infolists
+  '((mlist simp) $labels $values $functions $macros $arrays
+                 $myoptions $props $aliases $rules $gradefs
+                 $dependencies $let_rule_packages $structures))
 
-(setq $debugmode nil $pagepause nil $poislim 5)
-
-(setq $loadprint nil)
-
-(setq $nolabels nil $aliases '((mlist simp)) lessorder nil greatorder nil)
-
-(setq $infolists '((mlist simp) $labels $values $functions $macros $arrays
-		   $myoptions $props $aliases $rules $gradefs
-		   $dependencies $let_rule_packages $structures))
-
-(setq $labels (list '(mlist simp)))
-
-(setq $dskuse nil $device '$dsk $dispflag t linelable nil)
-
-(setq rephrase nil st nil oldst nil reprint nil pos nil)
-
-(setq dcount 0 $filenum 0 $storenum 1000. $filesize 16. $dskall t
-      dskfnp nil dsksavep nil saveno 0)
-
-(setq quitmsg  " "
-      more-^w nil
-      lisperrprint t)
-
-(setq state-pdl (ncons 'lisp-toplevel))
+(defmvar $labels (list '(mlist simp)))
+(defmvar $dskuse nil)
+(defmvar $device '$dsk)
+(defmvar $dispflag t)
 
 (defmvar $% '$% "The last out-line computed, corresponds to lisp *"
 	 no-reset)

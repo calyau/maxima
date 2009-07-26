@@ -23,37 +23,64 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special mspeclist mproplist bindlist loclist nounsflag
-		      derivflag derivlist mprogp mdop evp aexprp mlocp $labels
+(declare-top (special 
+		      derivflag derivlist $labels
 		      $values $functions $arrays $rules $gradefs $dependencies $aliases
 		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
-		      $float $numer aryp msump state-pdl evarrp $setval nounl
-		      $setcheckbreak $refcheck *mdebug* refchkl baktrcl maplp
-		      $norepeat $detout $doallmxops $doscmxops opers factlist opexprp
-		      $translate $transrun $maperror fmaplvl mopl
-		      $powerdisp $subscrmap $dispflag $optionset dsksetp fexprerrp
-		      $features *alphabet* $%enumer $infeval $savedef $%% %e-val
-		      featurel outfiles fundefsimp mfexprp transp
-		      $macros linel $ratfac $ratwtlvl
-		      $operators noevalargs $piece $partswitch *gcdl*
-		      scanmapp *builtin-$props* $infolists))
+		      $numer state-pdl *mdebug* refchkl baktrcl
+		      $norepeat $detout $doallmxops $doscmxops opers
+		      mopl $powerdisp $dispflag *alphabet* $%% %e-val
+		      outfiles $macros linel $ratfac $ratwtlvl
+		      $operators $partswitch *gcdl*
+		      *builtin-$props* $infolists))
 
 (declare-top (unspecial args))
 
-(setq mspeclist nil bindlist nil loclist nil mproplist nil $%enumer nil
-      $float nil nounl nil $refcheck nil scanmapp nil maplp nil
-      mprogp nil evp nil mdop nil mlocp nil
-      $subscrmap nil $translate nil $transrun t $savedef t aexprp nil
-      $maperror t fmaplvl 0 $optionset nil
-      $setcheckbreak nil dsksetp nil aryp nil msump nil evarrp nil
-      $infeval nil factlist nil fundefsimp nil
-      mfexprp t nounsflag nil opexprp nil
-      transp nil noevalargs nil
-      $piece '$piece $setval '$setval fexprerrp nil rulefcnl nil
-      featurel  '($integer $noninteger $even $odd $rational $irrational $real $imaginary
-		  $complex $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
-		  $commutative $lassociative $rassociative $symmetric $antisymmetric)
-      $features (cons '(mlist simp) (append featurel nil)))
+(defvar mspeclist nil)
+(defvar bindlist nil)
+(defvar loclist nil)
+(defvar mproplist nil)
+(defvar nounl nil)
+(defvar scanmapp nil)
+(defvar maplp nil)
+(defvar mprogp nil)
+(defvar evp nil)
+(defvar mdop nil)
+(defvar mlocp nil)
+(defvar aexprp nil)
+(defvar fmaplvl 0)
+(defvar dsksetp nil)
+(defvar aryp nil)
+(defvar msump nil)
+(defvar evarrp nil)
+(defvar factlist nil)
+(defvar fundefsimp nil)
+(defvar mfexprp t)
+(defvar nounsflag nil)
+(defvar opexprp nil)
+(defvar transp nil)
+(defvar noevalargs nil)
+(defvar fexprerrp nil)
+(defvar rulefcnl nil)
+(defvar featurel
+  '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
+             $analytic $increasing $decreasing $oddfun $evenfun $posfun $constant
+             $commutative $lassociative $rassociative $symmetric $antisymmetric))
+
+(defmvar $features (cons '(mlist simp) (append featurel nil)))
+(defmvar $%enumer nil)
+(defmvar $float nil)
+(defmvar $refcheck nil)
+(defmvar $subscrmap nil)
+(defmvar $translate nil)
+(defmvar $transrun t)
+(defmvar $savedef t)
+(defmvar $maperror t)
+(defmvar $optionset nil)
+(defmvar $setcheckbreak nil)
+(defmvar $infeval nil)
+(defmvar $piece '$piece)
+(defmvar $setval '$setval)
 
 ;; These three variables are what get stuck in array slots as magic
 ;; unbound objects.  They are for T, FIXNUM, and FLONUM type arrays
