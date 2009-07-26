@@ -9,6 +9,7 @@ binary-openmcl/maxima.image : clmacs.lisp
 binary-openmcl/maxima.image : commac.lisp
 binary-openmcl/maxima.image : mormac.lisp
 binary-openmcl/maxima.image : compat.lisp
+binary-openmcl/maxima.image : getopt.lisp
 binary-openmcl/maxima.image : defopt.lisp
 binary-openmcl/maxima.image : defcal.lisp
 binary-openmcl/maxima.image : maxmac.lisp
