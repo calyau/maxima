@@ -1019,6 +1019,7 @@ either by explicit assignment or by assignment of a value to a local variable.
 % foo (%pi);
 % bar (x) := foo (%e);
 % bar (42);
+% bar ('u);
 
 \begin{verbatim}
 (%i1) foo (y) := x - y;
@@ -1031,6 +1032,8 @@ either by explicit assignment or by assignment of a value to a local variable.
 (%o4)                   bar(x) := foo(%e)
 (%i5) bar (42);
 (%o5)                        42 - %e
+(%i6) bar ('u);
+(%o6)                        u - %e
 \end{verbatim}
 
 \end{enumerate}
