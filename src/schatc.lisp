@@ -183,7 +183,7 @@
   (rplacd x (cddr x)))
 
 (defmfun m1 (e p)
-  (cond ((eq e p) t)
+  (cond ((equal e p) t)
 	((atom p) nil)
 	((var-pat p)
 	 (push-context)
