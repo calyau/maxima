@@ -42,6 +42,19 @@
 
 (defun argument-length-check (l n)
   (if (and (consp l) (consp (first l)) (equal n (length (margs l)))) t (wna-err (caar l))))
+
+;; When multiple_value_return is nil, multiple_values([e1,e2,...]) --> e1; otherwise
+;; multiple_values([e1,e2,...]) --> [e1,e2,...].
+
+(setf (get '$multiple_values 'operators) 'simp-multiple-values)
+
+(defmvar $multiple_value_return nil)
+
+(defun simp-multiple-values (e yy z)
+  (declare (ignore yy))
+  (if $multiple_value_return
+      `(($multiple_values simp) ,@(mapcar #'(lambda (s) (simpcheck s z)) (cdr e)))
+    (simpcheck (cadr e) z)))
 	 
 ;; Detect undefined and polynomial cases. 
 
@@ -348,7 +361,7 @@
 	(while d 
 	  (setq f (if (equal region "none")
 		      `((maxima::multiple_values) ,ff t)
-		    (maxima::mfuncall 'maxima::$abramowitz_id ff region)))	  
+		    (maxima::mfuncall 'maxima::$abramowitz_id ff region)))
 	  (if (maxima::$second f)
 	      (setq d nil f (maxima::$first f)) (setq region (first (pop d)))))
 	(setq f (multiple-value-list
@@ -653,18 +666,7 @@
 	   (mul ($diff z x) p (div 1 q) (take '($hypergeometric) a b z))))
 	(t (merror "Maxima does not know the derivatives of the hypergeometric functions with respect to the parameters"))))
 
-;; When multiple_value_return is nil, multiple_values([e1,e2,...]) --> e1; otherwise
-;; multiple_values([e1,e2,...]) --> [e1,e2,...].
 
-(setf (get '$multiple_values 'operators) 'simp-multiple-values)
-
-(defmvar $multiple_value_return nil)
-
-(defun simp-multiple-values (e yy z)
-  (declare (ignore yy))
-  (if $multiple_value_return
-      `(($multiple_values simp) ,@(mapcar #'(lambda (s) (simpcheck s z)) (cdr e)))
-    (simpcheck (cadr e) z)))
 														;; TeX hypergeometric([a],[b,c],x) as $$F\left( \begin{bmatrix}a\\b\;\,c\end{bmatrix} ,x\right)$$
 ;; For no good reason, I'm not so fond of pFq notation. Some newer refereces seem don't use
 ;; the pFq notation.
