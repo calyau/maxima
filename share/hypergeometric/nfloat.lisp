@@ -14,8 +14,6 @@
 
 (in-package :maxima)
 
-(defun $test (x n)
-  (maxima::to (bigfloat::expt (bigfloat::to x) (bigfloat::to n))))
 
 (in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 
