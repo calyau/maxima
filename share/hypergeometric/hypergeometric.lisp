@@ -43,8 +43,8 @@
 (defun argument-length-check (l n)
   (if (and (consp l) (consp (first l)) (equal n (length (margs l)))) t (wna-err (caar l))))
 
-;; When multiple_value_return is nil, multiple_values([e1,e2,...]) --> e1; otherwise
-;; multiple_values([e1,e2,...]) --> [e1,e2,...].
+;; When multiple_value_return is nil, multiple_values(e1,e2,...) --> e1; otherwise
+;; multiple_values(e1,e2,...) --> multiple_values(e1,e2,...).
 
 (setf (get '$multiple_values 'operators) 'simp-multiple-values)
 
