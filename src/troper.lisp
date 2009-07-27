@@ -206,7 +206,7 @@
   (setq form (translate (cadr form)))
   (if (eq '$float (car form))
       `($float exp ,(cdr form))
-      `($any simplify (%exp ,(cdr form)))))
+      `($any simplify (list '(%exp) ,(cdr form)))))
 
 (def%tr $atan2 (form)
   (setq form (cdr form))
