@@ -225,7 +225,7 @@ true;
 *******************************************************************************/
 
 expintegral_e(3,z);
-z^2*((log(z)+(log(-1/z)-log(-z))/2+expintegral_ei(-z))/-2-(1/(2*z)-1/(2*z^2))*%e^-z);
+-z^2*(log(z)+(log(-1/z)-log(-z))/2+expintegral_ei(-z))/2-(z/2-1/2)*%e^-z;
 
 /* We compare this with numerical values */
 
