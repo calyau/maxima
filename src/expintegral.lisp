@@ -410,15 +410,17 @@
               (mul
                 (power arg (sub n '((rat simp) 1 2)))
                 (add
-                  (mul func (simplify (list '(%gamma) (sub '((rat simp) 1 2) n))))
+                  (mul func (simplify (list '(%gamma) 
+                                            (sub '((rat simp) 1 2) n))))
                   (mul
                     (power '$%e (mul -1 arg))
                     (let ((index (gensumindex)))
                       (dosum
                         (div
                           (power arg (add index '((rat simp) 1 2)))
-                          (simplify (list '($pochhammer) (sub '((rat simp) 1 2) n)
-                                                         (add index n 1))))
+                          (simplify (list '($pochhammer) 
+                                          (sub '((rat simp) 1 2) n)
+                                          (add index n 1))))
                         index 0 (mul -1 (add n 1)) t)))
                   (mul -1
                     (power '$%e (mul -1 arg))
@@ -426,8 +428,9 @@
                       (dosum
                         (div
                           (power arg (add index '((rat simp) 1 2)))
-                          (simplify (list '($pochhammer) (sub '((rat simp) 1 2) n)
-                                                         (add index n 1))))
+                          (simplify (list '($pochhammer) 
+                                          (sub '((rat simp) 1 2) n)
+                                          (add index n 1))))
                         index (- n) -1 t))))))))))
       
       ((eq $expintrep '%gamma_incomplete)
@@ -545,7 +548,8 @@
          (do* ((i 1 (+ i 1))
                (a (* -1 n) (* (- i) (+ n1 i))))
               ((> i *expint-maxit*)
-               (merror (intl:gettext "expintegral_e: continued fractions failed.")))
+               (merror 
+                 (intl:gettext "expintegral_e: continued fractions failed.")))
 
            (setq b (+ b 2.0))
            (setq d (/ 1.0 (+ (* a d) b)))
@@ -614,7 +618,8 @@
          (do* ((i 1 (+ i 1))
                (a (* -1 n) (* (- i) (+ n1 i))))
               ((> i *expint-maxit*)
-               (merror (intl:gettext "expintegral_e: continued fractions failed.")))
+               (merror 
+                 (intl:gettext "expintegral_e: continued fractions failed.")))
 
            (setq b (+ b 2.0))
            (setq d (/ 1.0 (+ (* a d) b)))
@@ -631,7 +636,7 @@
             (> (realpart n) 0)
             (= (nth-value 1 (truncate (realpart n))) 0))
        ;; We have a positive integer n or an float representation of an 
-       ;; integer. We call expintegral-e which do this calculation.
+       ;; integer. We call expintegral-e which does this calculation.
        (when *debug-expintegral*
          (format t "~&We call expintegral-e.~%"))
        (expintegral-e (truncate (realpart n)) z))
@@ -710,7 +715,8 @@
          (do* ((i 1 (+ i 1))
                (a (* -1 n) (* (- i) (+ n1 i))))
               ((> i *expint-maxit*)
-               (merror (intl:gettext "expintegral_e: continued fractions failed.")))
+               (merror 
+                 (intl:gettext "expintegral_e: continued fractions failed.")))
 
            (setq b (add b bigfloattwo))
            (setq d (cdiv bigfloatone (add (mul a d) b)))
@@ -787,7 +793,8 @@
          (do* ((i 1 (+ i 1))
                (a (mul -1 n) (cmul (- i) (add n1 i))))
               ((> i *expint-maxit*)
-               (merror (intl:gettext "expintegral_e: continued fractions failed.")))
+               (merror 
+                 (intl:gettext "expintegral_e: continued fractions failed.")))
 
            (setq b (add b bigfloattwo))
            (setq d (cdiv bigfloatone (add (mul a d) b)))
@@ -906,7 +913,8 @@
     ((or (zerop1 z)
          (eq z '$zeroa)
          (eq z '$zerob))
-     '$infinity)
+     ;; limit is inf from both sides
+     '$inf)
     (t
      ;; All other cases are handled by the simplifier of the function.
      (simplify (list '(%expintegral_e1) z))))))
@@ -919,8 +927,10 @@
   (let ((arg (simpcheck (cadr expr) z)))
     (cond
       ;; Check for special values
-      ((eq arg '$inf) 0)
-      ((zerop1 arg) 
+      ((or (eq arg '$inf)
+           (alike1 arg '((mtimes) -1 $minf)))
+       0)
+      ((zerop1 arg)
        (simp-domain-error
 	(intl:gettext "expintegral_e1: expintegral_e1(~:M) is undefined.") arg))
 
@@ -936,10 +946,8 @@
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
               (result (bfloat-expintegral-e 1 carg)))
-         (simplify 
-           (list '(mplus) 
-             (simplify (list '(mtimes) '$%i ($imagpart result)))
-             ($realpart result)))))
+         (add ($realpart result)
+              (mul '$%i ($imagpart result)))))
 
       ;; Check argument simplifications and transformations
       ((taylorize (mop expr) (second expr)))
@@ -947,24 +955,20 @@
       ((and $expintrep
             (member $expintrep *expintflag* :test #'eq)
             (not (eq $expintrep '%expintegral_e1)))
-       (when *debug-expintegral*
-         (format t "~&Transform E1 to ~A~%" $expintrep))
-
        ;; We have only implemented the Incomplete Gamma and Ei function. 
        ;; Further work is needed.
-
        (case $expintrep
-         (%gamma_incomplete
-           (list '(%gamma_incomplete) 0 arg))
+         (%gamma_incomplete 
+           ($gamma_incomplete 0 arg))
          (%expintegral_ei
            (add
              (mul -1 ($expintegral_ei (mul -1 arg)))
              (mul 
-               (inv 2)
+               '((rat simp) 1 2)
                (sub
-                 (list '(%log) (mul -1 arg))
-                 (list '(%log) (mul -1 (inv arg)))))
-             (mul -1 (list '(%log) arg))))
+                 (simplify (list '(%log) (mul -1 arg)))
+                 (simplify (list '(%log) (mul -1 (inv arg))))))
+             (mul -1 (simplify (list '(%log) arg)))))
          (t 
           (eqtest (list '(%expintegral_e1) arg) expr))))
 
@@ -1041,7 +1045,9 @@
     (cond
       ;; Check special values
       ((zerop1 arg) 
-       (simp-domain-error (intl:gettext "expintegral_ei: expintegral_ei(~:M) is undefined.") arg))
+       (simp-domain-error 
+         (intl:gettext "expintegral_ei: expintegral_ei(~:M) is undefined.") 
+         arg))
       ((eq arg '$inf) '$inf)
       ((or (eq arg '$minf) (alike1 arg '((mtimes) -1 $inf))) 0)
       ((alike1 arg '((mtimes) $%i $inf)) (mul '$%i '$%pi))
@@ -1057,10 +1063,8 @@
               (carg (add ($bfloat ($realpart arg))
                          (mul '$%i ($bfloat ($imagpart arg)))))
               (result (bfloat-expintegral-ei carg)))
-         (simplify 
-           (list '(mplus) 
-             (simplify (list '(mtimes) '$%i ($imagpart result)))
-             ($realpart result)))))
+         (add ($realpart result)
+              (mul '$%i ($imagpart result)))))
 
       ;; Check argument simplifications and transformations
       ((taylorize (mop expr) (second expr)))
@@ -1074,23 +1078,23 @@
              (mul -1 
                ($gamma_incomplete 0 (mul -1 arg)))
              (mul 
-               (inv 2) 
+               '((rat simp) 1 2)
                (sub 
-                 (list '(%log) arg) 
-                 (list '(%log) (inv arg))))
+                 (simplify (list '(%log) arg))
+                 (simplify (list '(%log) (inv arg)))))
              (mul -1  
-               (list '(%log) (mul -1 arg)))))
+               (simplify (list '(%log) (mul -1 arg))))))
          (%expintegral_e1
            (add
              (mul -1 
                ($expintegral_e1 (mul -1 arg)))
              (mul
-              (inv 2)
+              '((rat simp) 1 2)
               (sub 
-                (list '(%log) arg) 
-                (list '(%log) (inv arg))))
+                (simplify (list '(%log) arg)) 
+                (simplify (list '(%log) (inv arg)))))
              (mul -1 
-               (list '(%log) (mul -1 arg)))))
+               (simplify (list '(%log) (mul -1 arg))))))
          (%expintegral_li
            ($expintegral_li (power '$%e arg)))
          ($expintegral_trig
@@ -1098,20 +1102,20 @@
              ($expintegral_ci (mul '$%i arg))
              (mul -1 '$%i ($expintegral_si (mul '$%i arg)))
              (mul 
-               (inv -2)
+               '((rat simp) -1 2)
                (sub
-                 (list '(%log) (inv arg))
-                 (list '(%log) arg)))
-             (mul -1 (list '(%log) (mul '$%i arg)))))
+                 (simplify (list '(%log) (inv arg)))
+                 (simplify (list '(%log) arg))))
+             (mul -1 (simplify (list '(%log) (mul '$%i arg))))))
          ($expintegral_hyp
            (add
              ($expintegral_chi arg)
              ($expintegral_shi arg)
              (mul 
-               (inv -2)
+               '((rat simp) -1 2)
                (add
-                 (list '(%log) (inv arg))
-                 (list '(%log) arg)))))))
+                 (simplify (list '(%log) (inv arg)))
+                 (simplify (list '(%log) arg))))))))
 
       (t 
        (eqtest (list '(%expintegral_ei) arg) expr)))))
@@ -1154,14 +1158,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun bfloat-expintegral-ei (z)
-  (let ((mz (mul -1 z))
-        (mbigfloatone (mul -1 bigfloatone))
-        (bigfloathalf (div bigfloatone 2)))
-  (add
-    (cmul mbigfloatone (bfloat-expintegral-e 1 mz))
-    (sub
-      (cmul bigfloathalf (sub ($log z) ($log (cdiv bigfloatone z)))) 
-      ($log mz)))))
+  (let ((mz (mul -1 z)))
+  (add (cmul (mul -1 bigfloatone) 
+             (bfloat-expintegral-e 1 mz))
+       (sub (cmul (div bigfloatone 2)
+                  (sub (simplify (list '(%log) z))
+                       (simplify (list '(%log) (cdiv bigfloatone z)))))
+            (simplify (list '(%log) mz))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1905,7 +1908,8 @@
       ((zerop1 arg) 
        ;; First check for zero argument. Throw Maxima error.
        (simp-domain-error
-	(intl:gettext "expintegral_chi: expintegral_chi(~:M) is undefined.") arg))
+	(intl:gettext "expintegral_chi: expintegral_chi(~:M) is undefined.") 
+        arg))
       ((alike1 arg '((mtimes) $%i $inf)) (div (mul '$%pi '$%i) 2))
       ((alike1 arg '((mtimes) -1 $%i $inf)) (div (mul -1 '$%pi '$%i) 2))
 
