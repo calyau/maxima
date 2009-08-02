@@ -114,7 +114,7 @@ eigenvectors(mat):=
 		unknowns:endcons(concat(notknwn,index1),unknowns),
 		vectr:columnvector(unknowns),matrx:mat.vectr,
 		nondiagonalizable:false,
-		listall:[eigvals],realonly:false,algebraic:true,
+		eigvecs:[],realonly:false,algebraic:true,
 		for index1 thru count do 
 		(count:mi(count-part(multiplicities,index1)+1),
 		mmatrx:matrx-part(eigvals,1,index1)*vectr,
@@ -132,8 +132,8 @@ eigenvectors(mat):=
 		(print(" "),print("algsys failure: the eigenvector(s) for the",
 		index1,"th eigenvalue will be missing.")),
 		if hermitianmatrix and %rnum>1 then unit:gramschmidt(unit),
-		listall:append(listall,unit)),
-		return(listall)))$
+		eigvecs:append(eigvecs,[unit])),
+		return([eigvals, eigvecs])))$
 
 
 /* the first arg is of the form [r1,r2,r3].

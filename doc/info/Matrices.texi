@@ -706,10 +706,14 @@ After loading, all functions and variables in the package are available.
 
 @deffn {Function} eigenvectors (@var{M})
 @deffnx {Function} eivects (@var{M})
-takes a matrix @var{M} as its argument and returns a list
-of lists the first sublist of which is the output of @code{eigenvalues}
-and the other sublists of which are the eigenvectors of the
-matrix corresponding to those eigenvalues respectively.
+
+Computes eigenvectors of the matrix @var{M}.
+The return value is a list of two elements.
+The first is a list of the eigenvalues of @var{M}
+and a list of the multiplicities of the eigenvalues.
+The second is a list of lists of eigenvectors.
+There is one list of eigenvectors for each eigenvalue.
+There may be one or more eigenvectors in each list.
 
 @code{eivects} is a synonym for @code{eigenvectors}.
 
@@ -741,6 +745,92 @@ first finding them using @code{eigenvalues} command and then using other functio
 to reduce them to something simpler.
 Following simplification, @code{eigenvectors} can be called again
 with the @code{knowneigvals} flag set to @code{true}.
+
+See also @code{eigenvalues}.
+
+Examples:
+
+A matrix which has just one eigenvector per eigenvalue.
+
+@c ===beg===
+@c M1 : matrix ([11, -1], [1, 7]);
+@c [vals, vecs] : eigenvectors (M1);
+@c for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+@c   mult[i] = vals[2][i], vec[i] = vecs[i]);
+@c ===end===
+@example
+(%i1) M1 : matrix ([11, -1], [1, 7]);
+                           [ 11  - 1 ]
+(%o1)                      [         ]
+                           [ 1    7  ]
+(%i2) [vals, vecs] : eigenvectors (M1);
+(%o2) [[[9 - sqrt(3), sqrt(3) + 9], [1, 1]], 
+                        [[[1, sqrt(3) + 2]], [[1, 2 - sqrt(3)]]]]
+(%i3) for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+  mult[i] = vals[2][i], vec[i] = vecs[i]);
+                       val  = 9 - sqrt(3)
+                          1
+
+                            mult  = 1
+                                1
+
+                    vec  = [[1, sqrt(3) + 2]]
+                       1
+
+                       val  = sqrt(3) + 9
+                          2
+
+                            mult  = 1
+                                2
+
+                    vec  = [[1, 2 - sqrt(3)]]
+                       2
+
+(%o3)                         done
+@end example
+
+A matrix which has two eigenvectors for one eigenvalue (namely 2).
+
+@c ===beg===
+@c M1 : matrix ([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]);
+@c [vals, vecs] : eigenvectors (M1);
+@c for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+@c   mult[i] = vals[2][i], vec[i] = vecs[i]);
+@c ===end===
+@example
+(%i1) M1 : matrix ([0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 2, 0], [0, 0, 0, 2]);
+                         [ 0  1  0  0 ]
+                         [            ]
+                         [ 0  0  0  0 ]
+(%o1)                    [            ]
+                         [ 0  0  2  0 ]
+                         [            ]
+                         [ 0  0  0  2 ]
+(%i2) [vals, vecs] : eigenvectors (M1);
+(%o2) [[[0, 2], [2, 2]], [[[1, 0, 0, 0]],
+                                   [[0, 0, 1, 0], [0, 0, 0, 1]]]]
+(%i3) for i thru length (vals[1]) do disp (val[i] = vals[1][i],
+  mult[i] = vals[2][i], vec[i] = vecs[i]);
+                            val  = 0
+                               1
+
+                            mult  = 2
+                                1
+
+                      vec  = [[1, 0, 0, 0]]
+                         1
+
+                            val  = 2
+                               2
+
+                            mult  = 2
+                                2
+
+               vec  = [[0, 0, 1, 0], [0, 0, 0, 1]]
+                  2
+
+(%o3)                         done
+@end example
 
 @opencatbox
 @category{Package eigen}
