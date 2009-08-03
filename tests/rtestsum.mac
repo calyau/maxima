@@ -996,3 +996,37 @@ binomial(h+a+1,-b+a+1)-binomial(l+a+1,-b+a+1);
 
 (forget(n>1), 0);
 0;
+
+/* bug in assume database causes trouble for conditional in summation
+ * see mailing list 2009-07-29 "Fourier Series using fourie.mac"
+ */
+
+/* If ever the assume stuff is revised, this next test can go away.
+ * It's here to ensure the underlying problem is fixed.
+ */
+?dcomp (1, 1.0);
+zero;
+
+(kill (all), assume (xx >= 1), 0);
+0;
+
+is (xx > 1);
+unknown;
+
+if xx > 1 then aa else bb;
+if xx > 1 then aa else bb;
+
+sum (if xx > 1 then aa else bb, xx, 1, 3);
+2*aa + bb;
+
+foo : 'sum (if xx > 1 then aa else bb, xx, 1, 3);
+'sum (if xx > 1 then aa else bb, xx, 1, 3);
+
+ev (foo, nouns);
+2*aa + bb;
+
+foo : sum (if equal (xx, 1) then aa else bb, xx, 1, nn);
+'sum (if equal (xx, 1) then aa else bb, xx, 1, nn);
+
+ev (foo, nouns, nn=3);
+aa + 2*bb;
