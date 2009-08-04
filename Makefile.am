@@ -18,7 +18,7 @@ include common.mk
 
 extradocinstall:
 	test -d "$(docdir)" || mkdir -p "$(docdir)"
-	for file in AUTHORS LICENSES/COPYING LICENSES/getopt-license.txt INSTALL README README.lisps ; \
+	for file in AUTHORS COPYING LICENSES/getopt-license.txt INSTALL README README.lisps ; \
             do \
             $(INSTALL_DATA) $$file "$(docdir)" ; \
             done
