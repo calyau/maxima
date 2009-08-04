@@ -1,3 +1,42 @@
+---------------------------------------------------
+---------------------------------------------------
+SARAG 1.1
+
+August 3rd 2009
+
+
+by Fabrizio Caruso (caruso@dm.unipi.it)
+with a contribution by Richard Leroy
+(multivariate certificate of positivity)
+
+---------------------------------------------------
+---------------------------------------------------
+
+SARAG 1.1
+
+(1) small fix in the univariate certificate
+
+(2) integration of Richard Leroy's code 
+for the multivariate certificate of positivity
+("multiCertificateOfPositivity.mac").
+
+
+---------------------------------------------------
+
+SARAG 1.0.1
+
+(1) certificate of positivity: 
+- "certificateOfPositivity.mac"
+This files contains routines for the certificate of
+positivity, which can be used to produce formal
+proof of positivity/negativity or existence of roots
+for univariate polynomials. Try for example
+"certificateProof((2*x-1)^2+x^4,x,[-1,1]);"
+for a proof of positivity in [-1,1]. 
+
+(2) updated "readme.txt" and "arag_test.mac". 
+
+---------------------------------------------------
 SARAG 1.0
 
 (Some bug fixes)
@@ -44,15 +83,3 @@ more computation  (mostly topology computations)
 
 --------------------------------------------------
 
-SARAG 1.0
-
-(1) certificate of positivity: 
-- "certificateOfPositivity.mac"
-This files contains routines for the certificate of
-positivity, which can be used to produce formal
-proof of positivity/negativity or existence of roots
-for univariate polynomials. Try for example
-"certificateProof((2*x-1)^2+x^4,x,[-1,1]);"
-for a proof of positivity in [-1,1]. 
-
-(2) updated "readme.txt" and "arag_test.mac". 

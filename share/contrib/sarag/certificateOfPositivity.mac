@@ -305,7 +305,7 @@ localBernsteinProof(poly,local_cert,printFlag):=
       )
     else
       print("since in this interval it has "),
-    print("the following Bernstein basis ", 
+    print("the following Bernstein coefficients ", 
             (1/local_cert[2])*local_cert[3])
     )
   else
@@ -318,7 +318,7 @@ localBernsteinProof(poly,local_cert,printFlag):=
         )
       else
         print("because in this interval it has "),
-      print("the following Bernstein basis ", 
+      print("the following Bernstein coefficients ", 
             (1/local_cert[2])*local_cert[3])
       )
     else
@@ -331,7 +331,7 @@ localBernsteinProof(poly,local_cert,printFlag):=
           )
         else
           print("because in this interval it has "),
-        print("the following Bernstein basis ",
+        print("the following Bernstein coefficients ",
               (1/local_cert[2])*local_cert[3])
         ),
   return(true)

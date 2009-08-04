@@ -4,10 +4,10 @@
 
        SOME ALGORITHMS IN REAL ALGEBRAIC GEOMETRY
 
-                       Version 1.0
+                       Version 1.1
 
 ---------------------------------------------------------------
-developed by Fabrizio Caruso 
+maintained and developed by Fabrizio Caruso 
 
 under the scientific guidance of Marie-Francoise Roy
 
@@ -18,9 +18,17 @@ with support from the RAAG network
 further developed
 
 at the University of Pisa, Italy
+
+The code for the multivariate certificate of positivy
+
+has been developed by Richard Leroy.
+
 ---------------------------------------------------------------
 
-Please report bugs to: fabrizio.caruso@posso.dm.unipi.it
+Please report bugs to: 
+fabrizio.caruso@posso.dm.unipi.it
+caruso@dm.unipi.it
+caruso@science.unitn.it
 
 ---------------------------------------------------------------
 Also part of the free interactive book
@@ -951,3 +959,26 @@ INPUT : a polynomial in var, a search interval (ex. [-1,-1])
 OUTPUT : number of subintervals used for proving the positivity/negativity 
 EFFECT : it prints a formal proof of positivity/negativity of pol in    
 search_interval or of the existence of a root
+
+
+-----------------------------------------------------------------
+MULTIVARIATE CERTIFICATE OF POSITIVITY
+
+multivariateCertificateOfPositivity.mac
+-----------------------------------------------------------------
+
+- multiCertificate(P,V,vars,d,sub,cert)
+INPUT: 
+polynomial P in vars,
+simplex in V, 
+list of variables "vars",
+degree d,
+subdivision algorithm "sub",
+type of certificate "cert"
+EXAMPLE:
+f:9*y^2-24*x*y+12*y+16*x^2-16*x+5;
+Cf:certificate(f,[[0,0],[1,0],[0,1]],[x,y],2,bisection,pos);
+
+- (wx)drawMultiCertificate(C,sc)
+INPUT: output of "multiCertificate", scale sc
+EFFECT: it draws the subdivision corresponding to the certificate C

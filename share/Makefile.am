@@ -490,6 +490,7 @@ contrib/sarag/examples.mac\
 contrib/sarag/hard_test.mac\
 contrib/sarag/intervalArithmetic.mac\
 contrib/sarag/lowLevel.mac\
+contrib/sarag/multiCertificateOfPositivity.mac\
 contrib/sarag/readme.txt\
 contrib/sarag/rootCounting.mac\
 contrib/sarag/rootIsolation.mac\
