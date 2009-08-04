@@ -238,7 +238,7 @@
 	 (iorm *db* lab)
 	 nil)
 	(t
-	 (iorm *db* (logior +lab-high-bit+ (unlab lab))))))
+	 (iorm *db* (copyn (logior +lab-high-bit+ (unlab lab)))))))
 
 (defun beg (nd lab)
   (setq lab (copyn lab))
@@ -260,7 +260,7 @@
 	 (iorm *db* lab)
 	 nil)
 	(t
-	 (iorm *db* (logior +lab-high-bit+ (unlab lab))))))
+	 (iorm *db* (copyn (logior +lab-high-bit+ (unlab lab)))))))
 
 (defun beg- (nd lab)
   (setq lab (copyn lab))
