@@ -33,16 +33,15 @@
 (export '*maxima-build-time*)
 
 #+ecl
-(defun do-compile-ecl (&rest args)
+(defun do-compile-ecl (file &rest args)
   ;; Not sure about this.  Compile twice.  The first produces a .o
   ;; file.  The second produces the .fas file to keep defsystem happy
   ;; because defsystem needs to load the files while compiling so
   ;; macros and such are defined.
-  (apply #'compile-file args)
-  (let ((output (getf (cdr args) :output-file)))
-    (c:build-fasl (compile-file-pathname output :type :fasl)
-		  :lisp-files (list (compile-file-pathname output
-							   :type :object)))))
+  (let* ((output (getf args :output-file))
+	 (object-output (compile-file-pathname output :system-p t)))
+    (and (apply #'compile-file file :output-file object-output args)
+	 (c:build-fasl output :lisp-files (list object-output)))))
 
 #+ecl
 (defun build-maxima-lib ()
