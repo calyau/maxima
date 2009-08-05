@@ -27,7 +27,7 @@ takes.
 External Requirements
 =====================
 
-1) MSYS+MinGW
+1) MSYS+MinGW, including mktemp
 2) msysDTK
 3) GCL
 4) Tcl/Tk
@@ -36,7 +36,8 @@ External Requirements
 7) gnuplot
 8) wxMaxima
 9) Microsoft HTML Help Workshop
-10) ActivePerl
+10) Perl 5.8 (ActivePerl)
+11) Python
 
 Detailed Instructions
 =====================
@@ -61,15 +62,20 @@ from <http://sourceforge.net/project/showfiles.php?group_id=2435>:
       ftp://ftp.sf.net/m/mi/mingw/binutils-2.14.90-20030807-1.tar.gz
    f) Install msysDTK-1.0.1.exe
       It provides Perl and autotools (autoconf/automake).
-      msysDTK-1.0.1 comes with Perl version 5.6, which is too old for
-      Maxima 5.11, it requires version 5.8. The easiest way is to
-      download and install ActivePerl binaries provided by
-      <http://www.activestate.com>.
-      Follow the download link at 
-      <http://www.activestate.com/Products/ActivePerl/>.
+      msysDTK-1.0.1 comes with Perl version 5.6.  This is now too old.
+      Since Maxima 5.11 we require version 5.8. 
+
+      or install
+
+      - automake msys-autoconf-2.59.tar.bz2
+      - autoconf msys-automake-1.8.2.tar.bz2
+      - libtool msys-libtool-1.5.tar.bz2
+   g) Download the MinGW implementation of mktemp from: 
+      http://downloads.sourceforge.net/mingw/mktemp-1.5-MSYS.tar.bz2 (4 Kb)
+      Install by (cd /; tar xjf /path/to/mktemp-1.5-MSYS.tar.bz2)
 
 NOTE: gcc 3.3.3 and gcc 3.4.0 do NOT work; likewise binutils 2.13.90
-and 2.15.90.
+and 2.15.90, but 2.17.50-20060824 is OK.
 
 This is output of msysinfo command for MSYS system with
 all required components:
@@ -171,15 +177,28 @@ c:\msys\1.0\etc\profile and add the following line after the initial
 setting of PATH:
     export PATH="/c/gcl/bin:$PATH"
 
-10) Following components
+10) Install Perl 5.8.  ActivePerl binaries provided by
+    http://www.activestate.com work.  Again add the perl bin
+    directory to PATH.  Alternatively use a wrapper script like
+
+    $ cat /usr/local/bin/perl
+    #!/bin/sh
+    exec /c/perl/bin/perl $@
+
+11) Install Python 2.6. ActivePython binaries provided by
+    http://www.activestate.com work.
+
+11) Following components
     a) tcltk (e.g. wish84 command), 
     b) gcl (gcl command),
     c) HTML Help Workshop compiler (hhc command)
+    d) perl
+    e) python
 should also be available at the MSYS command prompt.
 
-If this is not the case, edit your PATH variable again.
+If this is not the case, edit your PATH variable or add wrapper scripts.
 
-11) You should now be ready to compile and install maxima. 
+12) You should now be ready to compile and install maxima. 
 Configure maxima so that it will install in some sort of temporary
 directory. The directory does not need to exist ahead of time.
 
@@ -193,11 +212,11 @@ make iss
 The "check" should pass all tests except those listed as known
 failures.
 
-12) Once "make iss" is complete, run Inno Setup on the maxima.iss
+13) Once "make iss" is complete, run Inno Setup on the maxima.iss
 file. It is recommended to remove the temporary maxima install
 directory (c:/maxima above) before testing the installation.
 
-13) Test the installed package.  For example
+14) Test the installed package.  For example
  o Run the maxima testsuite: run_testsuite()
  o Try compiling a function.  This has been a problem in the past
     - f(x):=x+2;
