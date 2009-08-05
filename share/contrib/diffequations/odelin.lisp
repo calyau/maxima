@@ -39,6 +39,7 @@
     ($load "extrabessel")
     ($load "lazysolver")
     ($load "gauss")
+    ($load "functs") ;; wronskian
     ($load "odeutils"))
 
 (defmvar $de_solver_is_loquacious nil)
@@ -98,14 +99,12 @@
 (defun $odelin (de y x)
   (let ((cfs (require-linear-homogeneous-de de y x)) (n))
     (setq n (length cfs))
-    (cond ((= n 2) ($expand (odelin-order-one cfs x) 0))
-	  ((= n 3) ($expand (odelin-order-two cfs x) 0))
+    (cond ((= n 2) (odelin-order-one cfs x))
+	  ((= n 3) (odelin-order-two cfs x))
 	  (t (merror "'odelin' doesn't handle DEs with order ~:M" (- n 1))))))
 
 (defun odelin-order-one (cfs x)
-  (let ((p1 (nth 1 cfs))
-	(p0 (nth 0 cfs)))
-    (fss-cleanup `(($set) ,(power '$%e ($integrate (div p0 p1) x))) x)))
+  (fss-cleanup (take '($set) ($exp ($integrate (div (car cfs) (cadr cfs)) x))) x))
 
 (defun expunge-const-factors (e x)
   (let ((acc 1))
@@ -119,12 +118,9 @@
 ;; Cleanup a fundamental solution set (FSS). 
   
 (defun fss-cleanup (fss x)
-  (let ((nfss) (k 0) ($radexpand nil) ($ratsimpexpons t))
-    (while (and (< k 5) (not (like fss (setq nfss (mbag-map #'$radcan fss)))))
-      (incf k)
-      (setq fss nfss))
-    (mbag-map #'(lambda (s) (expunge-const-factors s x)) fss)))
-
+  (let ((nfss (mbag-map #'(lambda (s) (expunge-const-factors ($radcan s) x)) fss)))
+    (if (like nfss fss) fss (fss-cleanup nfss x))))
+       
 (defun post-check-cleanup (fss)
   (setq fss ($substitute '%bessel_j '$fbessel_j fss))
   ($substitute '%bessel_y '$fbessel_y fss))
@@ -133,16 +129,15 @@
   (let ((p0 (nth 0 cfs))
 	(p1 (nth 1 cfs))
 	(p2 (nth 2 cfs))
-	(p) (m) (sol)
+	(p) (m) (sol nil)
 	(ode-methods (list 
 		      'ode-solve-by-factoring
 		      'bessel-de-solver
 		      'hypergeo01-de-solver
 		      'spherodialwave-de-solver
 		      'bessel-sqrt-de-solver
-		      'hypergeo21-de-solver))
-	($radexpand nil))
-    
+		      'hypergeo21-de-solver)))
+
     (setq p1 (div p1 p2))
     (setq p0 (div p0 p2))
 
@@ -153,14 +148,15 @@
 	(setq ode-methods nil))
       
     (setq p (add p0 (div ($diff p1 x) -2) (mul p1 p1 (div -1 4))))
-    (setq p ($rat p))
-    (setq m (power '$%e (simplify ($integrate (div p1 -2) x))))
+    (setq m ($exp ($integrate (div p1 -2) x)))
        
-    (dolist (method ode-methods)
-      (setq sol (funcall method p x))
-      (if ($setp sol) (setq sol (fss-cleanup 
-				 (mbag-map #'(lambda (s) (mul m s)) sol) x)))
-      (if (check-fss cfs sol x) (return (post-check-cleanup sol))))))
+    (while (and (not sol) ode-methods)
+      (setq sol (funcall (pop ode-methods) p x))
+      (if ($setp sol)
+	  (progn
+	    (setq sol (fss-cleanup (mbag-map #'(lambda (s) (mul m s)) sol) x))
+	    (setq sol (if (check-fss cfs sol x) (post-check-cleanup sol) nil)))))
+    sol))
    
 (defprop unk simp-unk operators)
 
@@ -185,27 +181,7 @@
      ($setp fss)
      (= (length cfs) (length fss))
      (every #'(lambda (s) (check-de-sol cfs s x)) (cdr fss))
-     (not (like 0 ($xwronskian fss x))))))
-
-(defun check-number-of-args (n arg f)
-  (if (not (= n (length arg)))
-      (merror "Function ~:M requires ~:M arguments; found ~:M arguments"
-	      f n (+ n (length arg)))))
-  
-;; Return the wronskian of the list or set of expressions s. 
-
-(defun $xwronskian (&rest arg)
-  (check-number-of-args 2 arg "$xwronskian")
-  (let ((mat) (dim)
-	(s (require-list-or-set (nth 0 arg) "$xwronskian"))
-	(x (require-symbol (nth 1 arg) "$xwronskian")))
-    (setq s `((mlist) ,@s))
-    (setq x (require-symbol (nth 1 arg) "$xwronskian"))
-    (setq dim ($length s))
-    (dotimes (i dim)
-      (push s mat)
-      (setq s ($diff s x)))
-    ($radcan ($determinant `(($matrix) ,@mat)))))
+     (not (like 0 ($radcan ($determinant (mfuncall '$wronskian ($listify fss) x))))))))
 
 ;; Return a polynomial in x with degree deg and a list of its
 ;; coefficients. Each coefficient of the polynomial is a gensym.
@@ -699,7 +675,6 @@
 (defun hypergeo21-xi-degree-bound (q v x)
   (declare (ignore q v x))
   1)
-
 
 (defun hypergeo21-de-solver (v x)
   (if $de_solver_is_loquacious (mtell "...trying the 2F1 solver~%"))
