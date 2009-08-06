@@ -1,6 +1,6 @@
 ;; Author Barton Willis
 ;; University of Nebraska at Kearney
-;; Copyright (C) 2004, Barton Willis
+;; Copyright (C) 2004, 2009, Barton Willis
 
 ;; Brief Description: Maxima code for linear homogeneous second order
 ;; differential equations.
@@ -12,7 +12,7 @@
 ;; Maxima odelin has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-($put '$odelin 19 '$version)
+($put '$odelin 20 '$version)
 
 ;; [DB 2007-04-29] I have added some comments to generic-de-solver and 
 ;; subsidiary routines.  They are just my interpretation of the code.
@@ -42,30 +42,8 @@
     ($load "functs") ;; wronskian
     ($load "odeutils"))
 
-(defmvar $de_solver_is_loquacious nil)
-
 (defun ode-polynomialp (p x)
-  (setq p ($ratdisrep p))
-  (or
-   ($freeof x p)
-   (like p x)
-   (and (or (mtimesp p) (mplusp p)) 
-	(every #'(lambda (s) (ode-polynomialp s x)) (margs p)))
-   (and (mexptp p) (ode-polynomialp (car (margs p)) x) 
-	(integerp (cadr (margs p)))
-	(> (cadr (margs p)) 0))))
-   
-(defun $okay (de y x)
-  (let ((okay t))
-  (setq de (require-linear-homogeneous-de de y x))
-  (dolist (p de)
-    (setq okay (and okay (ode-polynomialp ($ratnumer p) x) 
-		    (ode-polynomialp ($ratnumer p) x))))
-  okay))
-
-(defun $rerat (dirtyrat)
-  (let ((varlist nil) (genvar nil))
-  ($rat ($ratdisrep dirtyrat))))
+  ($polynomialp p `((mlist) ,x) `((lambda) ((mlist) s) ($freeof ,x s))))
    
 (defun require-linear-homogeneous-de (de y x)
   (setq y (require-symbol y "$odelin"))
@@ -165,7 +143,7 @@
   (merror "Maxima doesn't know the derivative of ~:M with respect the ~:M argument" (nth 2 x) (nth 1 x)))
 	  		 
 (defun check-de-sol (cfs sol x)
-  (let ((zip 0) ($gcd '$spmod) ($algebraic t) ($ratsimpexpons t))
+  (let ((zip 0))
     (dolist (cf cfs)
       (setq zip (add zip (mul cf sol)))
       (setq sol ($diff sol x)))
@@ -176,12 +154,11 @@
      (mtell "should vanish, but it does not ~:M~%" zip))))
 
 (defun check-fss (cfs fss x)
-  (let (($gcd '$spmod) ($algebraic t))
-    (and 
-     ($setp fss)
-     (= (length cfs) (length fss))
-     (every #'(lambda (s) (check-de-sol cfs s x)) (cdr fss))
-     (not (like 0 ($radcan ($determinant (mfuncall '$wronskian ($listify fss) x))))))))
+  (and 
+   ($setp fss)
+   (= (length cfs) (length fss))
+   (every #'(lambda (s) (check-de-sol cfs s x)) (cdr fss))
+   (not (like 0 ($radcan ($determinant (mfuncall '$wronskian ($listify fss) x)))))))
 
 ;; Return a polynomial in x with degree deg and a list of its
 ;; coefficients. Each coefficient of the polynomial is a gensym.
@@ -197,7 +174,7 @@
       (setq z (mul z x)))))
 
 (defun polycfs-to-eqs (p x)
-  (let ((n) (eqs) ($gcd '$spmod) ($algebraic t) ($ratfac nil) ($ratprint nil))
+  (let ((n) (eqs) ($ratfac nil) ($ratprint nil))
     (setq p ($rat p x))
     (setq n (+ 1 ($hipow p x)))
     (dotimes (i n eqs)
@@ -211,7 +188,6 @@
 ;; and f = mu * integrate(1/mu^2,x).
 
 (defun ode-solve-by-factoring (r x)
-  (if $de_solver_is_loquacious (mtell "...trying factor method~%"))
   (let ((a) (mu) ($radexpand nil))
     (cond ((setq a (factor-differential-op r x))
 	   (setq a ($radcan a)) ;; x*(x+1)*'DIFF(y,x,2)+(3*x+2)*'DIFF(y,x,1)+y
@@ -231,7 +207,7 @@
        (m ($hipow q x))
        (l ($hipow p x))
        (w) (zip) (n) (vars) (sol)
-       ($gcd '$spmod) ($algebraic t) ($ratfac nil))
+       ($ratfac nil))
   
     (setq m ($totaldisrep m))
     (setq l ($totaldisrep l))
@@ -266,8 +242,7 @@
 	   nil))))
 
 (defun polynomial-filter (p x f)
-  (let (($gcd '$spmod) ($algebraic t) ($ratfac nil) 
-	($ratprint nil) ($radexpand nil))
+  (let (($ratfac nil) ($ratprint nil))
     (setq p (sratsimp p)) ;; Get rid of terms like sqr(5)^2, %i^2...
     (setq p ($mysqfr p x))
     (setq p (if (mtimesp p) (margs p) (list p)))
@@ -284,7 +259,7 @@
 	(setq q (mult q (power pj n)))))))
   
 (defun ratfun-degree (q x)
-  (let (($gcd '$spmod) ($algebraic t) ($ratfac nil))
+  (let (($ratfac nil))
     (setq q ($rat q x))
     (- ($hipow ($ratnumer q) x) ($hipow ($ratdenom q) x))))
 
@@ -303,8 +278,7 @@
 ;; routine don't get solved. 
 
 (defun easy-eqs (cnd s x)
-  (let ((acc) (n) ($gcd '$spmod) ($algebraic t) 
-	($programmode t) 
+  (let ((acc) (n) ($programmode t) 
 	($globalsolve nil) ($solveexplicit t) ($solveradcan nil))
     
     (setq s (polynomial-filter s x #'(lambda (n) (min 1 n))))
@@ -404,8 +378,7 @@
 ;;
 (defun generic-de-solver (v x params denom-filter degree-bound de-cnd)
   (setq v ($rat v x))
-  (let ((s) (q) (p) (n) (unks) (nz) (eqs) (cnd) (sol) (xeqs)
-	($gcd '$spmod) ($algebraic t) ($ratfac nil))
+  (let ((s) (q) (p) (n) (unks) (nz) (eqs) (cnd) (sol) (xeqs) ($ratfac nil))
 
     (setq s ($ratdenom v))
     (setq q (polynomial-filter s x denom-filter))
@@ -443,8 +416,7 @@
 ;;    We return (-1) times equation above
 ;;
 (defun get-de-cnd (xi vh v x)
-  (let ((dxi) (ddxi) (dddxi) (dxi^2) ($gcd '$spmod) ($algebraic t) 
-	($ratfac nil) ($ratprint nil))
+  (let ((dxi) (ddxi) (dddxi) (dxi^2) ($ratfac nil) ($ratprint nil))
     
     (setq xi ($ratdisrep xi))
     (setq dxi ($diff xi x))
@@ -478,9 +450,6 @@
   (ceiling (+ 1 ($hipow q x) (/ (max (ratfun-degree v x) -2) 2))))
 
 (defun bessel-de-solver (v x)
-  (if $de_solver_is_loquacious
-      (mtell "...trying the Bessel solver~%"))
-
   (let* 
       ((mu (gensym)) (z) (m) ($radexpand nil)
        (xi (generic-de-solver v x 
@@ -521,9 +490,6 @@
   (+ 2 ($hipow q x) (max -2 (ratfun-degree v x))))
 
 (defun bessel-sqrt-de-solver (v x)
-  (if $de_solver_is_loquacious
-      (mtell "...trying the square root Bessel solver~%"))
-
   (let*  ((mu (gensym)) (z) (m) ($radexpand nil)
 	  (xi (generic-de-solver v x 
 				 (list mu)
@@ -563,7 +529,6 @@
   (ceiling (+ 1 ($hipow q x) (/ (max (ratfun-degree v x) -2) 2))))
 
 (defun hypergeo01-de-solver (v x)
-  (if $de_solver_is_loquacious (mtell "...trying the F01 solver~%"))
   (let* ((a (gensym)) (b (gensym)) (m) (z) ($radexpand nil)
 	 (xi (generic-de-solver v x 
 				(list a b)
@@ -618,7 +583,6 @@
   (ceiling (+ 1 ($hipow q x) (/ (max (ratfun-degree v x) -2) 2))))
 
 (defun spherodialwave-de-solver (v x)
-  (if $de_solver_is_loquacious (mtell "...trying the spherodial wave solver~%"))
   (let* ((b (gensym)) (c (gensym)) (q (gensym)) (m) (z) (x2 (mul x x))
 	 ($radexpand nil)
 	 (xi (generic-de-solver v x 
@@ -677,7 +641,6 @@
   1)
 
 (defun hypergeo21-de-solver (v x)
-  (if $de_solver_is_loquacious (mtell "...trying the 2F1 solver~%"))
   (let* ((a (gensym)) (b (gensym)) (c (gensym)) (m) (z) ($radexpand nil)
 	 (xi (generic-de-solver v x 
 				(list a b c)
