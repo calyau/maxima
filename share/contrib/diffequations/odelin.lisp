@@ -18,7 +18,7 @@
 ;; subsidiary routines.  They are just my interpretation of the code.
 
 ;; The functions mtimesp and mexptp are either missing from 
-;; commerical macsyma, or they have different names. For commerical
+;; commercial macsyma, or they have different names. For commercial
 ;; macsyma, here are the definitions.
 
 #+kcl
@@ -570,7 +570,7 @@
 ;;
 ;; Additional parameters to be determined are [b,c,q]
 ;;
-;; FIXME: [DB 2007-04-29] Need to clarify definition of the spherodial
+;; FIXME: [DB 2007-04-29] Need to clarify definition of the spheroidal
 ;; wave functions as I can't find a reference that exactly matches.
 ;; The values of a1 and a0 above:
 ;; - give an ODE that is satisfied by spherodialwave_a and spherodialwave_b, 
