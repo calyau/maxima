@@ -549,8 +549,7 @@
 	  (mabs ((mtimes) x ((mexpt) ((mabs) x) -1)))
 	  (%erf ((mtimes) 2 ((mexpt) $%pi ((rat) -1 2))
 		 ((mexpt) $%e ((mtimes) -1 ((mexpt) x 2)))))
-	  ;;	   ($LI2 ((MTIMES) -1 ((%LOG) ((MPLUS) 1 ((MTIMES) -1 X))) ((MEXPT) X -1)))
-	  ($ei ((mtimes) ((mexpt) x -1) ((mexpt) $%e x))))))
+	  )))
 
 (defprop $atan2 ((x y) ((mtimes) y ((mexpt) ((mplus) ((mexpt) x 2) ((mexpt) y 2)) -1))
 		 ((mtimes) -1 x ((mexpt) ((mplus) ((mexpt) x 2) ((mexpt) y 2)) -1)))
