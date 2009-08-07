@@ -931,5 +931,13 @@ exp(%i*%pi/4);
 exp(-%i*%pi/4);
 1/sqrt(2)-%i/sqrt(2);
 
+/*
+ * Bug ID: 2831259 - bfloat() underflow bug
+ */
+fpprec:500;
+500;
+float(0b0);
+0.0;
+
 end;
 end$

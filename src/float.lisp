@@ -346,7 +346,7 @@ One extra decimal digit in actual representation for rounding purposes.")
     ;; 1.  The largest double-float is .999999 * 2^1024.  So if the
     ;; exponent is 1025 or higher, we have an overflow.
     (let ((e (+ exponent (- precision) *m machine-mantissa-precision)))
-      (if (>= (abs e) 1025)
+      (if (>= e 1025)
 	  (merror (intl:gettext "float: floating point overflow converting ~:M") l)
 	  (scale-float mantissa e)))))
 
