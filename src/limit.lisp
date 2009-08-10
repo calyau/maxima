@@ -2633,9 +2633,11 @@ It appears in LIMIT and DEFINT.......")
 	(t (let (($exponentialize t))
 	     (resimplify (list (ncons sch) (ridofab arg)))))))
 
+;; simple limit of sin and cos
 (defun simplimsc (exp fn arg)
   (cond ((member arg '($inf $minf $ind) :test #'eq) '$ind)
-	((member arg '($und $infinity) :test #'eq) '$und)
+	((member arg '($und $infinity) :test #'eq)
+	 (throw 'limit ()))
 	((member arg '($zeroa $zerob) :test #'eq)
 	 (cond ((eq fn '%sin) arg)
 	       (t (m+ 1 '$zerob))))

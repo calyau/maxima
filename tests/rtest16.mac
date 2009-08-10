@@ -236,6 +236,10 @@ radcan(integrate(exp(-(a+%i*b)*x^2),x,minf,inf)/rectform(sqrt(%pi)/sqrt(a+%i*b))
 integrate(sin(a*x)^7/x^4,x,0,inf);
 'integrate(sin(a*x)^7/x^4,x,0,inf);
 
+/* we have assumed a>0 */
+integrate(%e^(-a*r)*sin(k*r),r,0,inf);
+k/(k^2+a^2);
+
 /*
  * [ 1646761 ] limit atanh @ -1 / 1 all wrong...
  */
