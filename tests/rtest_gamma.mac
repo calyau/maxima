@@ -1840,7 +1840,7 @@ true;
 relerror(
   gamma_incomplete(0.5,-2.5*%i),
   -0.59691417904238855062194720247331 + 0.00921495731742953647951029973386*%i,
-  2.5e-15);
+  2.8e-15);
 true;
 
 relerror(
@@ -1876,7 +1876,7 @@ true;
 relerror(
   gamma_incomplete(0.5,2.5*%i),
   -0.59691417904238855062194720247331 - 0.00921495731742953647951029973386*%i,
- 2.5e-15);
+ 2.8e-15);
 true;
 
 relerror(
@@ -3271,7 +3271,7 @@ closeto(
   float(rectform(beta_incomplete(2,5/2,-3/2+%i)))
                 -beta_incomplete(2.0,2.5,-1.5+%i),
   0.0,
-  3.0e-15); /* we have lost accuracy. More tests necessary? */
+  4.2e-15); /* we have lost accuracy. More tests necessary? */
 true;
 
 /* Incomplete Beta is definied for negative integers a and b >= (-a) 
