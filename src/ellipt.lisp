@@ -1091,7 +1091,7 @@
 	   (mul -1 ($elliptic_kc m)))
 	  ((zerop1 m)
 	   ;; asn(x,0) = F(asin(x),0) = asin(x)
-	   (take '($asin) u))
+	   (take '(%asin) u))
 	  ((onep1 m)
 	   ;; asn(x,1) = F(asin(x),1) = log(tan(pi/4+asin(x)/2))
 	   (take '($elliptic_f) (take '(%asin) u) 1))
@@ -2083,15 +2083,15 @@ first kind:
 	   (let ((s (asksign `((mplus) -1 ,n))))
 	     (case s
 	       ($positive
-		(div (take '($atanh) (mul (power (add n -1) 1//2)
-					  (take '($tan) phi)))
+		(div (take '(%atanh) (mul (power (add n -1) 1//2)
+					  (take '(%tan) phi)))
 		     (power (add n -1) 1//2)))
 	       ($negative
-		(div (take '($atanh) (mul (power (sub 1 n) 1//2)
-					  (take '($tan) phi)))
+		(div (take '(%atanh) (mul (power (sub 1 n) 1//2)
+					  (take '(%tan) phi)))
 		     (power (sub 1 n) 1//2)))
 	       ($zero
-		(take '($tan) phi)))))
+		(take '(%tan) phi)))))
 	  (t
 	   ;; Nothing to do
 	   (eqtest (list '($elliptic_pi) n phi m) form)))))

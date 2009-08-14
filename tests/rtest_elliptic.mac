@@ -409,3 +409,18 @@ errcatch(elliptic_kc(1.0));
 [];
 errcatch(elliptic_kc(1.0b0));
 [];
+
+/* Test noun/verb results from elliptic functions */
+diff(inverse_jacobi_sn(x,0),x);
+1/sqrt(1-x^2);
+
+diff(elliptic_pi(4/3,phi,0),phi);
+sec(phi)^2/(1-tan(phi)^2/3);
+
+diff(elliptic_pi(3/4,phi,0),phi);
+sec(phi)^2/(1-tan(phi)^2/4);
+
+diff(elliptic_pi(1,phi,0),phi);
+sec(phi)^2;
+
+
