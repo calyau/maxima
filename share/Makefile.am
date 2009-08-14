@@ -728,6 +728,11 @@ lapack/lapack/dlaexc.lisp\
 lapack/lapack/dlahqr.lisp\
 lapack/lapack/dlahrd.lisp\
 lapack/lapack/dlaln2.lisp\
+lapack/lapack/dlamc1.lisp\
+lapack/lapack/dlamc2.lisp\
+lapack/lapack/dlamc3.lisp\
+lapack/lapack/dlamc4.lisp\
+lapack/lapack/dlamc5.lisp\
 lapack/lapack/dlamch.lisp\
 lapack/lapack/dlamrg.lisp\
 lapack/lapack/dlange.lisp\
