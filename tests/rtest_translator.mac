@@ -64,3 +64,32 @@ false;
 [member (myvar, arrays), errcatch (listarray (myvar))];
 [false, []];
 
+/* for loop variable not special
+ * reported to mailing list 2009-08-13 "Why won't this compile?"
+ */
+
+(kill (foo1, bar1),
+ foo1 () := bar1 + 1,
+ baz1 (n) := block ([S : 0], for bar1:0 thru n - 1 do S : S + foo1 (), S),
+ translate (baz1),
+ baz1 (10));
+55;
+
+/* original example */
+
+(fun(A,b,s,VF,x,h):= block
+ ([Y],
+   Y[1]:  x,
+   for i:2 thru s do
+    Y[i]:  x + h*(sum(A[i,j]*VF(Y[j]),j,1,i-1)),
+   x: expand(x + h*sum(b[i]*VF(Y[i]),i,1,s))),
+  A: matrix([1,1],[1,1]),
+  b: [1,1],
+ 0);
+0;
+
+fun(A,b,2,f,[1,1],.01);
+0.01*f(0.01*f([1,1])+[1,1])+0.01*f([1,1])+[1,1]$
+
+(translate (fun), fun(A,b,2,f,[1,1],.01));
+0.01*f(0.01*f([1,1])+[1,1])+0.01*f([1,1])+[1,1]$

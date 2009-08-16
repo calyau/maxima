@@ -116,6 +116,7 @@ rtest_elliptic.mac \
 rtest_integrate.mac \
 rtest_integrate_special.mac \
 rtest_plot.mac \
+rtest_translator.mac \
 README.how-to \
 testsuite.lisp \
 wester_problems/wester-gpl-permission-message.txt \

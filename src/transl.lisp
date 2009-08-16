@@ -1411,10 +1411,10 @@ APPLY means like APPLY.")
       (setq var (tunbind (cond ((cadr form)) (t 'mdo))))
       `(,mode do ((,var ,(cdr init) ,(cdr next))
 		  ,@ init-end-var )
-	      (,test '$done) . 
+	      (,test '$done) . ((declare (special ,var)) .
 	      ,(cond ((atom (cdr action)) nil)
 		     ((eq 'progn (cadr action)) (cddr action))
-		     (t (list (cdr action))))))))
+		     (t (list (cdr action)))))))))
 
 (setq shit nil)
 
@@ -1438,10 +1438,10 @@ APPLY means like APPLY.")
        (return
 	 `(,mode do ((,var) (mdo (cdr ,init) (cdr mdo)))
 		 ((null mdo) '$done)
-		 (setq ,var (car mdo)) . 
+		 (setq ,var (car mdo)) . ((declare (special ,var)) .
 		 ,(cond ((atom (cdr action)) nil)
 			((eq 'progn (cadr action)) (cddr action))
-			(t (list (cdr action)))))))))
+			(t (list (cdr action))))))))))
 
 
 (defun lambda-wrap1 (tn val form)
