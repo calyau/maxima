@@ -1100,15 +1100,14 @@
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
 						var exp))
 		    (new-int
-		     (if (every-trigarg-alike exp *trigarg*)
+		     (if (every-trigarg-alike new-exp new-var)
 			 ;; avoid endless recursion when more than one
-			 ;; trigarg exists
+			 ;; trigarg exists or c is a float
 			 (div ($integrate new-exp new-var) c)
 		       (rischint exp var))))
 		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int))))
 	    (t
-	     (return-from monstertrig (rischint exp var)))
-)))
+	     (return-from monstertrig (rischint exp var))))))
   (prog (*notsame* w *a* *b* y *d*)
      (declare (special *notsame*))
 	(cond

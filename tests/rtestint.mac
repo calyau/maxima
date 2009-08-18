@@ -1229,5 +1229,9 @@ integrate(t^2*log(t)^2*(1-t)^2*log(1-t),t,0,1);
 integrate(t^2*log(t)^2*(1-t)^2*log(1-t)^2,t,0,1);
 (3384000*zeta(3)+6000*%pi^4+747800*%pi^2-12135541)/-16200000;
 
+/* 5integrate -> too many contexts - ID: 2838268 */
+integrate(t*cos(1.0*t),t);
+t*sin(t)+cos(t);
+
 (forget(x>0),gamma_expand:false,done);
 done;
