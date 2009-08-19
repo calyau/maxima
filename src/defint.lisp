@@ -185,7 +185,7 @@
 		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var var)
 		 (orig-ll ll)  (orig-ul ul)
-		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  (limitp t)
+		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  ; (limitp t)
 		 (rp-polylogp ())
 		 ($domain '$real) ($m1pbranch ())) ;Try this out.
 
@@ -384,7 +384,9 @@
   (setq exp1 (sratsimp (subst var 'yx exp1))))
 
 (defun defint (exp var ll ul)
-  (let ((old-assumptions *defint-assumptions*)  (*current-assumptions* ()))
+  (let ((old-assumptions *defint-assumptions*)  
+        (*current-assumptions* ())
+        (limitp t))
     (unwind-protect
 	 (prog ()
 	    (setq *current-assumptions* (make-defint-assumptions 'noask))
