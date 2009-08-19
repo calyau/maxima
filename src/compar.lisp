@@ -664,7 +664,8 @@ relational knowledge is contained in the default context GLOBAL."
 ;;; imagarinary or complex.
 
 (defun $csign (z)
-  (let ((*complexsign* t))
+  (let ((*complexsign* t)
+        (limitp nil))
     ($sign z)))
 
 (defmfun $sign (x)
