@@ -943,5 +943,28 @@ fpprec:500;
 float(0b0);
 0.0;
 
+/*
+ * BUG ID: 2835098 - SIGN-PREP strangeness
+ */
+ 
+block ([?limitp : true], sign (foo (x)));
+pnz;
+
+integrate(sqrt(2*m*(E[n]-U(x))),x,-x[0],x[0])=(n-1/2)*%pi*hbar;
+sqrt(2)*'integrate(sqrt(m*(E[n]-U(x))),x,-x[0],x[0]) = %pi*hbar*(n-1/2);
+
+integrate(f(x),x,x[0],x[1]);
+'integrate(f(x),x,x[0],x[1]);
+
+/*
+ * BUG  ID: 2840566 - defint fails to determine if one of its limit is real
+ */
+ 
+(assume(b>0,c>0),done);
+done;
+ 
+integrate(x,x,0,sqrt(b^2+(b-c)^2));
+(c^2-2*b*c+2*b^2)/2;
+
 end;
 end$
