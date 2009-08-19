@@ -468,6 +468,9 @@
 	   (risplit-noun l))
 	  ((and (eq (caar l) '%product) (not (free (cadr l) '$%i)))
 	   (risplit-noun l))
+          (($subvarp l)
+           ;; return a real answer for subscripted variable
+           (cons l 0))
           (t
            (cons (list '(%realpart) l)
                  (list '(%imagpart) l))))))
