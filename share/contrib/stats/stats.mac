@@ -97,11 +97,6 @@ block([numer:stats_numer, options, defaults, m, n, coef, cinterval, aux,
            if listp(coef) then coef: coef[1])
      else coef: defaults[3] / sqrt(n),
 
-  /* statistic */
-  statistic: (m - defaults[1]) / coef,
-  if /*alternative*/ defaults[2] = 'twosided
-     then statistic: abs(statistic),
-
   /* method */
   method: concat(if /*asymptotic*/ defaults[5] = true
                      then "Large sample z-test. "
@@ -112,32 +107,39 @@ block([numer:stats_numer, options, defaults, m, n, coef, cinterval, aux,
 
   /* confidence interval (one and two-sided), distribution and */
   /* p-value for alternative=less                              */
-  if /*asymptotic*/ defaults[5] = false and
-     /*standard_deviation*/ defaults[3] = 'unknown
-     then (distribution: ['student_t, n-1],
-           pvalue: cdf_student_t(statistic,n-1),
-           if /*alternative*/ defaults[2] = 'greater
-              then cinterval: [m - quantile_student_t(defaults[4], n-1) * coef,'inf]
-              else if /*alternative*/ defaults[2] = 'less
-                      then cinterval: ['minf, m + quantile_student_t(defaults[4], n-1) * coef]
-                      else cinterval: m + [-1,1] * quantile_student_t((1 + defaults[4])/2, n-1) * coef)
-     else (distribution: ['normal, 0, 1],
-           pvalue: cdf_normal(statistic,0,1),
-           if /*alternative*/ defaults[2] = 'greater
-              then cinterval: [m - quantile_normal(defaults[4],0,1) * coef, 'inf]
-              else if /*alternative*/ defaults[2] = 'less
-                      then cinterval: ['minf, m + quantile_normal(defaults[4],0,1) * coef]
-                      else cinterval: m + [-1,1] * quantile_normal((1 + defaults[4])/2,0,1) * coef),
+  if float(coef) = 0.0
+  then statistic: distribution: pvalue: cinterval: hypo: 'undefined
+  else(
+    /* statistic */
+    statistic: (m - defaults[1]) / coef,
+    if /*alternative*/ defaults[2] = 'twosided
+       then statistic: abs(statistic),
+    if /*asymptotic*/ defaults[5] = false and
+       /*standard_deviation*/ defaults[3] = 'unknown
+       then (distribution: ['student_t, n-1],
+             pvalue: cdf_student_t(statistic,n-1),
+             if /*alternative*/ defaults[2] = 'greater
+                then cinterval: [m - quantile_student_t(defaults[4], n-1) * coef,'inf]
+                else if /*alternative*/ defaults[2] = 'less
+                        then cinterval: ['minf, m + quantile_student_t(defaults[4], n-1) * coef]
+                        else cinterval: m + [-1,1] * quantile_student_t((1 + defaults[4])/2, n-1) * coef)
+       else (distribution: ['normal, 0, 1],
+             pvalue: cdf_normal(statistic,0,1),
+             if /*alternative*/ defaults[2] = 'greater
+                then cinterval: [m - quantile_normal(defaults[4],0,1) * coef, 'inf]
+                else if /*alternative*/ defaults[2] = 'less
+                        then cinterval: ['minf, m + quantile_normal(defaults[4],0,1) * coef]
+                        else cinterval: m + [-1,1] * quantile_normal((1 + defaults[4])/2,0,1) * coef),
 
-  /* hypotheses, pvalue (for alternative=greater and alternative=twosided) */
-  aux: string(defaults[1]),
-  if /*alternative*/ defaults[2] = 'greater
-     then (hypo: concat("H0: mean = ", aux," , H1: mean > ", aux),
-           pvalue: 1 - pvalue )
-     else if /*alternative*/ defaults[2] = 'less
-             then  hypo: concat("H0: mean = ", aux, " , H1: mean < ", aux)
-             else (hypo: concat("H0: mean = ", aux, " , H1: mean # ", aux),
-                   pvalue: 2 * (1 - pvalue) ),
+    /* hypotheses, pvalue (for alternative=greater and alternative=twosided) */
+    aux: string(defaults[1]),
+    if /*alternative*/ defaults[2] = 'greater
+       then (hypo: concat("H0: mean = ", aux," , H1: mean > ", aux),
+             pvalue: 1 - pvalue )
+       else if /*alternative*/ defaults[2] = 'less
+               then  hypo: concat("H0: mean = ", aux, " , H1: mean < ", aux)
+               else (hypo: concat("H0: mean = ", aux, " , H1: mean # ", aux),
+                     pvalue: 2 * (1 - pvalue) ) ),
 
   /* result as an 'inference_result' object*/
   inference_result("MEAN TEST",
@@ -237,11 +239,6 @@ block([numer:stats_numer, options, defaults, dm, n1, n2, v1, v2, coef, cinterval
               else coef: sqrt(v1 / n1 + v2 / n2)),
   if listp(coef) then coef: coef[1],
 
-  /* statistic */
-  statistic: dm / coef,
-  if /*alternative*/ defaults[1] = 'twosided
-     then statistic: abs(statistic), 
-
   /* method and Welch approximation */
   method: concat(if /*asymptotic*/ defaults[6] = true
                      then "Asymptotic z-test (for large samples). "
@@ -251,40 +248,49 @@ block([numer:stats_numer, options, defaults, dm, n1, n2, v1, v2, coef, cinterval
                              then "Unknown equal variances"
                              else "Welch approx."
                      else "Known variances."),
-  if /*asymptotic*/ defaults[6] = false and 
-     /*standard deviations*/ defaults[2] = 'unknown and 
-     /*varequal*/ defaults[4] = false
-     then /* Welch approximation */
-          df: (v1/n1+v2/n2)^2 / ((v1/n1)^2/(n1-1) + (v2/n2)^2/(n2-1))
-     else df: n1 + n2 - 2,
 
-  /* confidence interval, distribution and p-value */
-  if /*asymptotic*/ defaults[6] = false and
-     /*standard deviations*/ defaults[2] = 'unknown
-     then (distribution: ['student_t, df],
-           pvalue: cdf_student_t(statistic,df),
-           /* two or one-sided confidence interval */
-           if /*alternative*/ defaults[1] = 'greater
-             then cinterval: [dm-quantile_student_t(defaults[5], df) * coef,'inf]
-             else if /*alternative*/ defaults[1] = 'less
-                    then cinterval: ['minf, dm+quantile_student_t(defaults[5], df) * coef]
-                    else cinterval: dm + [-1,1] * quantile_student_t((1 + defaults[5])/2, df) * coef )
-     else (distribution: ['normal, 0, 1],
-           pvalue: cdf_normal(statistic, 0, 1),
-           if /*alternative*/ defaults[1] = 'greater
-             then cinterval: [dm-quantile_normal(defaults[5],0,1) * coef,'inf]
-             else if /*alternative*/ defaults[1] = 'less
-                    then cinterval: ['minf, dm+quantile_normal(defaults[5],0,1) * coef]
-                    else cinterval: dm + [-1,1] * quantile_normal((1 + defaults[5])/2, 0, 1) * coef ),
+  if float(coef) = 0.0
+    then statistic: distribution: pvalue: cinterval: hypo: 'undefined
+    else (
+      /* statistic */
+      statistic: dm / coef,
+      if /*alternative*/ defaults[1] = 'twosided
+         then statistic: abs(statistic), 
 
-  /* hypotheses, pvalue (for alternative=greater and alternative=twosided) */
-  if /*alternative*/ defaults[1] = 'greater
-     then (hypo: "H0: mean1 = mean2 , H1: mean1 > mean2",
-           pvalue: 1 - pvalue )
-     else if /*alternative*/ defaults[1] = 'less
-             then hypo: "H0: mean1 = mean2 , H1: mean1 < mean2"
-             else (hypo: "H0: mean1 = mean2 , H1: mean1 # mean2",
-                   pvalue: 2 * (1 - pvalue) ),
+      if /*asymptotic*/ defaults[6] = false and 
+         /*standard deviations*/ defaults[2] = 'unknown and 
+         /*varequal*/ defaults[4] = false
+         then /* Welch approximation */
+              df: (v1/n1+v2/n2)^2 / ((v1/n1)^2/(n1-1) + (v2/n2)^2/(n2-1))
+         else df: n1 + n2 - 2,
+
+      /* confidence interval, distribution and p-value */
+      if /*asymptotic*/ defaults[6] = false and
+         /*standard deviations*/ defaults[2] = 'unknown
+         then (distribution: ['student_t, df],
+               pvalue: cdf_student_t(statistic,df),
+               /* two or one-sided confidence interval */
+               if /*alternative*/ defaults[1] = 'greater
+                 then cinterval: [dm-quantile_student_t(defaults[5], df) * coef,'inf]
+                 else if /*alternative*/ defaults[1] = 'less
+                        then cinterval: ['minf, dm+quantile_student_t(defaults[5], df) * coef]
+                        else cinterval: dm + [-1,1] * quantile_student_t((1 + defaults[5])/2, df) * coef )
+         else (distribution: ['normal, 0, 1],
+               pvalue: cdf_normal(statistic, 0, 1),
+               if /*alternative*/ defaults[1] = 'greater
+                 then cinterval: [dm-quantile_normal(defaults[5],0,1) * coef,'inf]
+                 else if /*alternative*/ defaults[1] = 'less
+                        then cinterval: ['minf, dm+quantile_normal(defaults[5],0,1) * coef]
+                        else cinterval: dm + [-1,1] * quantile_normal((1 + defaults[5])/2, 0, 1) * coef ),
+
+      /* hypotheses, pvalue (for alternative=greater and alternative=twosided) */
+      if /*alternative*/ defaults[1] = 'greater
+         then (hypo: "H0: mean1 = mean2 , H1: mean1 > mean2",
+               pvalue: 1 - pvalue )
+         else if /*alternative*/ defaults[1] = 'less
+                 then hypo: "H0: mean1 = mean2 , H1: mean1 < mean2"
+                 else (hypo: "H0: mean1 = mean2 , H1: mean1 # mean2",
+                       pvalue: 2 * (1 - pvalue) ) ),
 
   /* result as an 'inference_result' object*/
   inference_result("DIFFERENCE OF MEANS TEST",
@@ -430,8 +436,8 @@ block([numer:stats_numer, options, defaults, s2, n, coef, df, cinterval, aux,
 /*   7. 'distribution: distribution and its parameters                          */
 /*   8. 'p_value: p-value of the sample statistic                               */
 test_variance_ratio(x1,x2,[select]):= 
-block([numer:stats_numer, options, defaults, vr, n1, n2, t1, t2, df1, df2, cinterval, aux,
-       statistic, method, distribution, hypo, pvalue, listarith:true],
+block([numer:stats_numer, options, defaults, v1, v2, vr, n1, n2, t1, t2, df1, df2,
+       cinterval, aux, statistic, method, distribution, hypo, pvalue, listarith:true],
 
   /* controlling sample format */
   if not listofexpr(x1) and not (matrixp(x1) and length(x1[1]) = 1 and every('identity,map('listofexpr,args(x1))))
@@ -456,46 +462,51 @@ block([numer:stats_numer, options, defaults, vr, n1, n2, t1, t2, df1, df2, cinte
   if numberp(defaults[4]) and (defaults[4] <= 0 or defaults[4] >= 1)
      then error("Option 'conflevel' can't be outside interval (0,1)"),
 
-  /* variance ratio estimate, degrees of freedom, */
-  if /*means*/ defaults[2] = 'unknown
-     then (vr: var1(x1) / var1(x2),
-           if listp(vr) then vr: vr[1],
-           df1: n1 - 1,
-           df2: n2 - 1)
-     else (t1: mean((x1 - defaults[2])^2),
-           t2: mean((x2 - defaults[3])^2),
-           vr: t1 / t2,
-           df1: n1,
-           df2: n2),
-
-  /* distribution, confidence interval and statistic */
-  distribution: ['f, df1, df2],
-  if /*alternative*/ defaults[1] = 'greater
-     then cinterval: [vr / quantile_f(defaults[4],df1,df2), 'inf]
-     else if /*alternative*/ defaults[1] = 'less
-             then cinterval: [0, vr / quantile_f(1-defaults[4],df1,df2)]
-             else cinterval: vr / [quantile_f((1+defaults[4])/2,df1,df2),
-                                   quantile_f((1-defaults[4])/2,df1,df2)],
-  statistic: vr,
-
   /* method */
   method: concat("Variance ratio F-test. ",
                   if /*means*/ defaults[2] = 'unknown
                      then "Unknown means."
                      else "Known means."),
+  v1: var1(x1),
+  v2: var1(x2),
 
-  /* hypotheses, pvalue */
-  pvalue: cdf_f(statistic,df1,df2), /* pvalue for alternative=less */
-  if /*alternative*/ defaults[1] = 'greater
-     then (hypo: "H0: var1 = var2 , H1: var1 > var2",
-           pvalue: 1 - pvalue )
-     else if /*alternative*/ defaults[1] = 'less
-             then hypo: "H0: var1 = var2 , H1: var1 < var2"
-             else (hypo: "H0: var1 = var2 , H1: var1 # var2",
-                   if /* compares the sample statistics to the median */
-                      statistic <= quantile_f(1/2,df1,df2)
-                     then pvalue: 2 * pvalue
-                     else pvalue: 2 * (1 - pvalue) ),
+  if float(v2) = 0.0
+    then vr: statistic: distribution: pvalue: cinterval: hypo: 'undefined
+  else (
+    /* variance ratio estimate, degrees of freedom, */
+    if /*means*/ defaults[2] = 'unknown
+       then (vr: v1 / v2,
+             if listp(vr) then vr: vr[1],
+             df1: n1 - 1,
+             df2: n2 - 1)
+       else (t1: mean((x1 - defaults[2])^2),
+             t2: mean((x2 - defaults[3])^2),
+             vr: t1 / t2,
+             df1: n1,
+             df2: n2),
+
+    /* distribution, confidence interval and statistic */
+    distribution: ['f, df1, df2],
+    if /*alternative*/ defaults[1] = 'greater
+       then cinterval: [vr / quantile_f(defaults[4],df1,df2), 'inf]
+       else if /*alternative*/ defaults[1] = 'less
+               then cinterval: [0, vr / quantile_f(1-defaults[4],df1,df2)]
+               else cinterval: vr / [quantile_f((1+defaults[4])/2,df1,df2),
+                                     quantile_f((1-defaults[4])/2,df1,df2)],
+    statistic: vr,
+
+    /* hypotheses, pvalue */
+    pvalue: cdf_f(statistic,df1,df2), /* pvalue for alternative=less */
+    if /*alternative*/ defaults[1] = 'greater
+       then (hypo: "H0: var1 = var2 , H1: var1 > var2",
+             pvalue: 1 - pvalue )
+       else if /*alternative*/ defaults[1] = 'less
+               then hypo: "H0: var1 = var2 , H1: var1 < var2"
+               else (hypo: "H0: var1 = var2 , H1: var1 # var2",
+                     if /* compares the sample statistics to the median */
+                        statistic <= quantile_f(1/2,df1,df2)
+                       then pvalue: 2 * pvalue
+                       else pvalue: 2 * (1 - pvalue))),
 
   /* result as an 'inference_result' object*/
   inference_result("VARIANCE RATIO TEST",
@@ -916,23 +927,27 @@ simple_linear_regression(dat,[select]):=block([numer:stats_numer, options, defau
   /* alternative hypothesis, it is always considered two-sided.*/
   /* I maintain these conditionals here in case there are      */
   /* changes in future releases.                               */
-  coef: sqrt(resvar / (n * covar[1,1])),
-  statistic: b / coef,
-  if /*alternative*/ defaults[1] = 'twosided
-     then statistic: abs(statistic),
-  if /*alternative*/ defaults[1] = 'greater
-     then (bconfint: [b - quantile_student_t(defaults[2], n-2) * coef,'inf],
-           hypo: "H0: b = 0 ,H1: b > 0",
-           pvalue: 1 - cdf_student_t(statistic,n-1) )
-     else if /*alternative*/ defaults[1] = 'less
-             then (bconfint: ['minf, b + quantile_student_t(defaults[2], n-2) * coef],
-                   hypo: "H0: b = 0 ,H1: b < 0",
-                   pvalue: cdf_student_t(statistic,n-1) )
-             else /* twosided alternative */
-                   (bconfint: b + [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2) * coef,
-                   hypo: "H0: b = 0 ,H1: b # 0",
-                   pvalue: 2 * (1 - cdf_student_t(statistic,n-1))  ),
-  distribution: ['student_t, n-2],
+  if float(resvar) = 0.0
+    then /* data on the straight line */
+         bconfint: statistic: hypo: statistic: distribution: pvalue: 'undefined
+    else (
+      coef: sqrt(resvar / (n * covar[1,1])),
+      statistic: b / coef,
+      if /*alternative*/ defaults[1] = 'twosided
+         then statistic: abs(statistic),
+      if /*alternative*/ defaults[1] = 'greater
+         then (bconfint: [b - quantile_student_t(defaults[2], n-2) * coef,'inf],
+               hypo: "H0: b = 0 ,H1: b > 0",
+               pvalue: 1 - cdf_student_t(statistic,n-1) )
+         else if /*alternative*/ defaults[1] = 'less
+                 then (bconfint: ['minf, b + quantile_student_t(defaults[2], n-2) * coef],
+                       hypo: "H0: b = 0 ,H1: b < 0",
+                       pvalue: cdf_student_t(statistic,n-1) )
+                 else /* twosided alternative */
+                       (bconfint: b + [-1,1] * quantile_student_t((1 + defaults[2])/2, n-2) * coef,
+                       hypo: "H0: b = 0 ,H1: b # 0",
+                       pvalue: 2 * (1 - cdf_student_t(statistic,n-1))  ),
+      distribution: ['student_t, n-2] ),
 
   /* two sided confidence interval for sigma^2 */
   vconfint: (n-2) * resvar / [quantile_chi2((1+defaults[2])/2,n-2),
@@ -966,150 +981,6 @@ simple_linear_regression(dat,[select]):=block([numer:stats_numer, options, defau
                     ['residuals, sort(args(transpose(matrix(pred,res))),
                                       lambda([x,y], orderlessp(x,y)) )] ],
                  [1,4,14,9,10,11,12,13])     )$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***************************************/
-/*  SPECIAL PROBABILITY DISTRIBUTIONS  */
-/***************************************/
-
-
-/*        SOME AUXILIARY FUNCTIONS  TO BE          */
-/*  USED BY THE SPECIAL PROBABILITY DISTRIBUTIONS  */
-
-
-/* If m and n are positive integers, it returns 1.
-   If at least one of them is not a positive integer, the 
-   function returns -1. If there is not enough information, the
-   output is 0 */
-controlw(m,n):=
-   if integerp(m) and sign(m)='pos and
-      integerp(n) and sign(n)='pos
-      then 1
-      else if numberp(m) and not integerp(m) or
-              numberp(n) and not integerp(n) or 
-              member(sign(m),['neg,'zero,'nz]) or
-              member(sign(n),['neg,'zero,'nz])
-              then -1
-              else 0  $
-
-
-/*    SIGNED RANK DISTRIBUTION     */
-
-
-/* R: dsignrank(x,n) */
-pdf_signed_rank(x,n):=block([cp:controli(n),t],
-   if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('pdf_signed_rank,[x,n])),
-   t: n * (n+1) / 2,
-   if sign(x)='neg or numberp(x) and not integerp(x) or sign(x-t)='pos
-      then return(0),
-   if numberp(x) and integerp(x) and numberp(n)
-      then (/* take advantage of the symmetry */
-            if x > t/2 then x: t - x,
-            return(?signed_rank_recursion(x,n) / 2^n)),
-   funmake('pdf_signed_rank,[x,n])  )$
-
-/* R: psignrank(x,n) */
-cdf_signed_rank(x,n):=block([cp:controli(n),t,xbis,sum:0],
-   if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('cdf_signed_rank,[x,n])),
-   t: n * (n+1) / 2,
-   if sign(x)='neg then return(0),
-   if sign(x-t)='pos then return(1),
-   if numberp(x) and numberp(n)
-      then (/* take advantage of the symmetry */
-            if x > t/2
-              then xbis: t - floor(x) - 1
-              else xbis: floor(x),
-            for k:0 thru xbis do
-              sum: sum + ?signed_rank_recursion(k,n),
-            sum: sum / 2^n,
-            if x > t/2 then sum: 1 - sum,
-            return(sum)),
-   funmake('cdf_signed_rank,[x,n])  )$
-
-
-/*    RANK SUM DISTRIBUTION     */
-
-
-/* R: dwilcox(x,m,n) */
-pdf_rank_sum(x,m,n):=block([cp:controlw(m,n),t],
-   if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('pdf_rank_sum,[x,m,n])),
-   t: m * n,
-   if sign(x)='neg or numberp(x) and not integerp(x) or sign(x-t)='pos
-      then return(0),
-   if numberp(x) and integerp(x) and numberp(m) and numberp(n)
-      then (/* take advantage of the symmetry */
-            if x > t/2 then x: t - x,
-            return(?rank_sum_recursion(x,m+n,m) / binomial(m+n,m))),
-   funmake('pdf_rank_sum,[x,m,n])  )$
-
-/* R: pwilcox(x,m,n) */
-cdf_rank_sum(x,m,n):=block([cp:controlw(m,n),t,xbis,sum:0],
-   if cp=-1 then error("Illegal parameter"),
-   if cp=0 then return(funmake('cdf_rank_sum,[x,m,n])),
-   t: m * n,
-   if sign(x)='neg then return(0),
-   if sign(x-t)='pos then return(1),
-   if numberp(x) and numberp(m) and numberp(n)
-      then (/* take advantage of the symmetry */
-            if x > t/2
-              then xbis: t - floor(x) - 1
-              else xbis: floor(x),
-            for k:0 thru xbis do
-              sum: sum + ?rank_sum_recursion(k,m+n,m),
-            sum: sum / binomial(m+n,m),
-            if x > t/2 then sum: 1 - sum,
-            return(sum)),
-   funmake('cdf_rank_sum,[x,m,n])  )$
-
-
 
 
 
@@ -1379,3 +1250,112 @@ block([numer:stats_numer, options, defaults, aux, phat, difphat, method,
                     ['distribution, distribution],
                     ['p_value, pvalue]  ],
                  [1,2,3,4,5,6,7,8])  ) $
+
+
+
+
+
+/***************************************/
+/*  SPECIAL PROBABILITY DISTRIBUTIONS  */
+/***************************************/
+
+
+/*        SOME AUXILIARY FUNCTIONS  TO BE          */
+/*  USED BY THE SPECIAL PROBABILITY DISTRIBUTIONS  */
+
+
+/* If m and n are positive integers, it returns 1.
+   If at least one of them is not a positive integer, the 
+   function returns -1. If there is not enough information, the
+   output is 0 */
+controlw(m,n):=
+   if integerp(m) and sign(m)='pos and
+      integerp(n) and sign(n)='pos
+      then 1
+      else if numberp(m) and not integerp(m) or
+              numberp(n) and not integerp(n) or 
+              member(sign(m),['neg,'zero,'nz]) or
+              member(sign(n),['neg,'zero,'nz])
+              then -1
+              else 0  $
+
+
+/*    SIGNED RANK DISTRIBUTION     */
+
+
+/* R: dsignrank(x,n) */
+pdf_signed_rank(x,n):=block([cp:controli(n),t],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('pdf_signed_rank,[x,n])),
+   t: n * (n+1) / 2,
+   if sign(x)='neg or numberp(x) and not integerp(x) or sign(x-t)='pos
+      then return(0),
+   if numberp(x) and integerp(x) and numberp(n)
+      then (/* take advantage of the symmetry */
+            if x > t/2 then x: t - x,
+            return(?signed_rank_recursion(x,n) / 2^n)),
+   funmake('pdf_signed_rank,[x,n])  )$
+
+/* R: psignrank(x,n) */
+cdf_signed_rank(x,n):=block([cp:controli(n),t,xbis,sum:0],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('cdf_signed_rank,[x,n])),
+   t: n * (n+1) / 2,
+   if sign(x)='neg then return(0),
+   if sign(x-t)='pos then return(1),
+   if numberp(x) and numberp(n)
+      then (/* take advantage of the symmetry */
+            if x > t/2
+              then xbis: t - floor(x) - 1
+              else xbis: floor(x),
+            for k:0 thru xbis do
+              sum: sum + ?signed_rank_recursion(k,n),
+            sum: sum / 2^n,
+            if x > t/2 then sum: 1 - sum,
+            return(sum)),
+   funmake('cdf_signed_rank,[x,n])  )$
+
+
+/*    RANK SUM DISTRIBUTION     */
+
+
+/* R: dwilcox(x,m,n) */
+pdf_rank_sum(x,m,n):=block([cp:controlw(m,n),t],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('pdf_rank_sum,[x,m,n])),
+   t: m * n,
+   if sign(x)='neg or numberp(x) and not integerp(x) or sign(x-t)='pos
+      then return(0),
+   if numberp(x) and integerp(x) and numberp(m) and numberp(n)
+      then (/* take advantage of the symmetry */
+            if x > t/2 then x: t - x,
+            return(?rank_sum_recursion(x,m+n,m) / binomial(m+n,m))),
+   funmake('pdf_rank_sum,[x,m,n])  )$
+
+/* R: pwilcox(x,m,n) */
+cdf_rank_sum(x,m,n):=block([cp:controlw(m,n),t,xbis,sum:0],
+   if cp=-1 then error("Illegal parameter"),
+   if cp=0 then return(funmake('cdf_rank_sum,[x,m,n])),
+   t: m * n,
+   if sign(x)='neg then return(0),
+   if sign(x-t)='pos then return(1),
+   if numberp(x) and numberp(m) and numberp(n)
+      then (/* take advantage of the symmetry */
+            if x > t/2
+              then xbis: t - floor(x) - 1
+              else xbis: floor(x),
+            for k:0 thru xbis do
+              sum: sum + ?rank_sum_recursion(k,m+n,m),
+            sum: sum / binomial(m+n,m),
+            if x > t/2 then sum: 1 - sum,
+            return(sum)),
+   funmake('cdf_rank_sum,[x,m,n])  )$
+
+
+
+
+
+
+
+
+
