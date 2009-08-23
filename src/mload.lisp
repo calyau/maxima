@@ -207,10 +207,14 @@
 	   (namestring in-stream)))))
 
 ;; Return true if $float converts both a and b to floats and 
-;; |a - b| <= float_approx_equal_tolerance * min(|a|, |b|).
-;; In all other cases, return false.
 
-(defmvar $float_approx_equal_tolerance (* 8 flonum-epsilon))
+;;   |a - b| <= float_approx_equal_tolerance * min(2^n, 2^m), 
+
+;; where a = af * 2^m, |af| < 1, and m is an integer (similarly for b); 
+;; in all other cases, return false. See, Knuth, "The Art of Computer Programming," 3rd edition,
+;; page 233.
+
+(defmvar $float_approx_equal_tolerance (* 16 flonum-epsilon))
 
 (defun $float_approx_equal (a b)
   (setq a (if (floatp a) a ($float a)))
@@ -218,21 +222,28 @@
   (and
    (floatp a)
    (floatp b)
-   (<= (abs (- a b)) (* $float_approx_equal_tolerance (min (abs a) (abs b))))))
+   (<= (abs (- a b)) (* $float_approx_equal_tolerance 
+			(min 
+			 (expt 2 (- (second (multiple-value-list (decode-float a))) 1))
+			 (expt 2 (- (second (multiple-value-list (decode-float b))) 1)))))))
 
-;; Return true if $bfloat converts both a and b to big floats and 
-;; |a - b| <= 8 * big-float-epsilon * min(|a|, |b|). The big float
-;; epsilon is determined by the number with the greatest number of bits.
+;; Big float version of float_approx_equal. But for bfloat_approx_equal, the tolerance isn't
+;; user settable; instead, it is 32 / 2^fpprec. The factor of 32 is too large, I suppose. But
+;; the test suite gives a few errors with a factor of 16. These errors might be due to 
+;; float / big float comparisons.
 
 (defun $bfloat_approx_equal (a b)
   (setq a (if ($bfloatp a) a ($bfloat a)))
   (setq b (if ($bfloatp b) b ($bfloat b)))
-  (and
-   ($bfloatp a)
-   ($bfloatp b)
-   (eq t (mgqp (mul (power 2 (- 8 (max (first (last (first a))) (first (last (first b))))))
-		    (take '($min) (take '(mabs) a) (take '(mabs) b)))
-	       (take '(mabs) (sub a b))))))
+  (let ((m) (bits))
+    (and
+     ($bfloatp a)
+     ($bfloatp b)
+     (setq bits (min (third (first a)) (third (first b))))
+     (setq m (mul 32 (expt 2 (- bits)) (min (expt 2 (- (car (last a)) 1)) (expt 2 (- (car (last b)) 1)))))
+     (setq m (if (rationalp m) (div (numerator m) (denominator m)) m))
+     (eq t (mgqp m (take '(mabs) (sub a b)))))))
+
 
 ;; The first argument 'f' is the expected result; the second argument 
 ;; 'g' is the output of the test. By explicit evaluation, the expected 
