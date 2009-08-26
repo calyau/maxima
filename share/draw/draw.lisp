@@ -1689,6 +1689,7 @@
 ;;     line_width
 ;;     line_type
 ;;     color
+;;     enhanced3d
 (simplify ($load "implicit3d.lisp"))
 
 ;; Copies multidimensional arrays.
@@ -1832,10 +1833,11 @@
                         (get-option '$line_type)
                         (get-option '$color))
                 (make-list (- (/ (length vertices) 3) 1)
-                           :initial-element (format nil " t '' w l lw ~a lt ~a lc ~a"
+                           :initial-element (format nil " t '' w ~a lw ~a lt ~a lc ~a"
+                                              (if (get-option '$enhanced3d) "pm3d" "l")
                                               (get-option '$line_width)
                                               (get-option '$line_type)
-                                              (get-option '$color)))))
+                                              (get-option '$color) ))))
     (do ((v vertices (cdddr v)))
         ((null v) 'done)
       (push (make-array 12 :element-type 'flonum
