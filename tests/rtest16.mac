@@ -459,6 +459,17 @@ limit( ((1/%pi)*(atan(n/%pi) + %pi/2))^n, n, inf);
 limit(x*expintegral_ei(x), x, 0);
 0;
 
+/* Limit of the factorial function - 4 problems - ID: 2841504 */
+limit(factorial(x),x,-2,plus);
+minf;
+
+limit(1/psi[1](x), x, inf);
+inf;
+
+/* limit of psi[i] - ID: 2843705 */
+limit(psi[i](x),x,inf);
+'limit(psi[i](x),x,inf);
+
 /* tests for gruntz limit algorithm */
 gruntz(exp(x), x, inf);
 inf;

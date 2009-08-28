@@ -378,7 +378,7 @@
 
 (defun plygam-ord (subl)
   (if (equal (car subl) -1) (ncons (rcone))
-      `((,(- (1+ (car subl))) . 1))))
+      `((,(m- (m1+ (car subl))) . 1))))
 
 (defun plygam-pole (a c func)
   (if (rcmintegerp c)
