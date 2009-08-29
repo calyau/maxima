@@ -1542,6 +1542,47 @@ sublist_indices ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
 sublist_indices ('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], lambda ([x], evenp(x) and primep(x)));
 [3];
 
+/* Tests for sublist (not part of nset but related functionality) */
+
+sublist ([], lambda([x], x='b));
+[];
+
+errcatch (sublist (1, lambda([x], x='b)));
+[];
+
+sublist ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], x='b));
+[b, b, b, b];
+
+sublist ('[a, b, b, c, 1, 2, b, 3, b], lambda ([x], integerp (x)));
+[1, 2, 3];
+
+sublist ('[a, b, b, c, 1, 2, b, 3, b], symbolp);
+[a, b, b, c, b, b];
+
+sublist ([true, false, false, true, true], identity);
+[true, true, true];
+
+sublist ([1 > 0, 1 < 0, 2 < 1, 2 > 1, 2 > 0], identity);
+[1 > 0, 2 > 1, 2 > 0];
+
+(kill (P), P(x) := ordergreatp (x, 'm), sublist ('[a, %pi, x, z, h, y, %e, 1, s], P));
+[x, z, y, s];
+
+sublist ('[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], lambda ([x], evenp(x) and primep(x)));
+[2];
+
+/* from mailing list 2009-08-27 "what happened to 'ev' ?" */
+
+block ([l1: [[2,3], [3,4], [4,5]]], local(s_list),
+  s_list(list, option) := sublist(list, lambda([x], ev(option))),
+  s_list(l1, x[2]<4));
+[[2, 3]];
+
+block ([l1: [[2,3], [3,4], [4,5]]], local(s_list_indices),
+  s_list_indices(list, option) := sublist_indices(list, lambda([x], ev(option))),
+  s_list_indices(l1, x[2]<4));
+[1];
+
 /* SF bug 2698078  set_partitions does not produce simplified sets */
 (l : set_partitions({1,2,3,4},3),0);
 0$
