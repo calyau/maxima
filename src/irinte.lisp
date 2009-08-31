@@ -1038,8 +1038,8 @@
 ;; compute below for the discriminant.)
 ;;
 (defun den1den1 (c b a x)
-  (let ((exp2 (add (mul b x) a a))	;; exp2 = b*x+2*a
-	(exp3 (inv `((mabs) ,x))))	;; exp3 = 1/abs(x)
+  (let ((exp2 (add (mul b x) a a))                ; exp2 = b*x+2*a
+        (exp3 (inv (simplify (list '(mabs) x))))) ; exp3 = 1/abs(x)
     (prog (signdiscrim
 	   (condition (add (mul b x) a a))
 	   (signa (checksigntm (simplifya a nil)))
