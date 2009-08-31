@@ -178,7 +178,11 @@
 (defun log-base2 (n)
   (declare (type (and fixnum (integer 1)) n)
 	   (optimize (speed 3)))
-  (values (truncate (/ (log (float n)) #.(log 2.0)))))
+  ;; Just find m such that 2^m <= n < 2^(m+1).  It's up to the caller
+  ;; to make sure that n is a power of two.  (The previous
+  ;; implementation using (/ (log n) (log 2)) has roundoff errors.
+  ;; This doesn't.)
+  (1- (integer-length n)))
 
 ;; Warning: What this routine thinks is the foward or inverse
 ;; direction is the "engineering" definition used in Oppenheim and
@@ -212,8 +216,7 @@ The result is returned in vec."
 	     (u-i 0.0)
 	     (tmp-r 0.0)
 	     (tmp-i 0.0)
-	     (kp 0)
-	     )
+	     (kp 0))
 	(declare (type fixnum le1)
 		 (type flonum ang)
 		 (type flonum w-r w-i u-r u-i tmp-r tmp-i)
@@ -237,11 +240,9 @@ The result is returned in vec."
 	      (psetf (aref vec-r kp) (- (* u-r diff-r) (* u-i diff-i))
 		     (aref vec-i kp) (+ (* u-r diff-i) (* u-i diff-r))))
 	    (setf (aref vec-r k) tmp-r)
-	    (setf (aref vec-i k) tmp-i)
-	    )
+	    (setf (aref vec-i k) tmp-i))
 	  (psetq u-r (- (* u-r w-r) (* u-i w-i))
-		 u-i (+ (* u-r w-i) (* u-i w-r)))
-	  )
+		 u-i (+ (* u-r w-i) (* u-i w-r))))
 	(setq le le1))))
   (values vec-r vec-i))
 
@@ -268,8 +269,7 @@ must be a power of 2."
       (do* ()
 	  ((> k j))
 	(setq j (- j k))
-	(setq k (ash k -1))
-	)
+	(setq k (ash k -1)))
       (setq j (+ j k)))))
 
 (defun forward-fft (x-r x-i)
