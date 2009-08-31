@@ -968,7 +968,7 @@ integrate(f(x),x,x[0],x[1]);
 'integrate(f(x),x,x[0],x[1]);
 
 /*
- * BUG  ID: 2840566 - defint fails to determine if one of its limit is real
+ * BUG ID: 2840566 - defint fails to determine if one of its limit is real
  */
  
 (assume(b>0,c>0),done);
@@ -976,6 +976,24 @@ done;
  
 integrate(x,x,0,sqrt(b^2+(b-c)^2));
 (c^2-2*b*c+2*b^2)/2;
+
+/*
+ * BUG ID: 2842060 - unsimplified result from integrate
+ */
+ 
+/* The result for a general symbol x */
+integrate(1/x/sqrt(x^2-1),x);
+-asin(1/abs(x));
+
+(assume(x>0), done);
+done;
+ 
+/* abs(x) simplifies to x for x>0 */
+integrate(1/x/sqrt(x^2-1),x);
+-asin(1/x);
+
+(forget(x>0), done);
+done;
 
 end;
 end$
