@@ -1660,7 +1660,7 @@ It appears in LIMIT and DEFINT.......")
     ((mexptp exp)  (simplimexpt (cadr exp) (caddr exp)
 				(limit (cadr exp) var val 'think)
 				(limit (caddr exp) var val 'think)))
-    ((mlogp exp)  (simplimln (cadr exp)))
+    ((mlogp exp)  (simplimln exp var val))
     ((member (caar exp) '(%sin %cos) :test #'eq)
      (simplimsc exp (caar exp) (limit (cadr exp) var val 'think)))
     ((eq (caar exp) '%tan) (simplim%tan (cadr exp)))
@@ -2535,34 +2535,41 @@ It appears in LIMIT and DEFINT.......")
 	   (t (return ($radcan (ridofab (subin val e))))))
      (return (simplimtimes (list n1 d1)))))
 
-(defun simplimln (arg)
+(defun simplimln (expr var val)
   ;; We need to be careful with log because of the branch cut on the
   ;; negative real axis.  So we look at the imagpart of the log.  If
   ;; it's not identically zero, we compute the limit of the real and
   ;; imaginary parts and combine them.  Otherwise, we can use the
   ;; original method for real limits.
-  (destructuring-let* ((arglim (limit arg var val 'think))
-		       (log-form `((%log) ,arg))
-		       ((rp . ip) (if (or (and (mnump arglim)
-					       (ratgreaterp arglim 0))
-					  (eq arglim '$zeroa)
-					  (eq arglim '$inf))	; if limit is real pos
-				      (cons arglim 0)		; avoid asking user q's
-				    (trisplit log-form))))	; otherwise find real part
+  (destructuring-let* ((arglim (limit (cadr expr) var val 'think))
+                       (log-form `((%log) ,(cadr expr)))
+                       ((rp . ip) (cond ((member arglim infinities)
+                                         ;; Treat infinities as real.
+                                         (cons arglim 0))
+                                        ((or (and (mnump arglim)
+                                                  (ratgreaterp arglim 0))
+					  (eq arglim '$zeroa))
+                                         ;; if limit is real pos
+                                         ;; avoid asking user q's
+                                         (cons arglim 0))
+                                        (t
+                                         ;; otherwise find real part
+                                         (trisplit log-form)))))
     (cond ((and (numberp ip) (zerop ip))
 	   (let* ((real-lim (ridofab arglim)))
 	     (if (=0 real-lim)
 		 (cond ((eq arglim '$zeroa)  '$minf)
 		       ((eq arglim '$zerob)  '$infinity)
-		       (t (let ((dir (behavior arg var val)))
+                       (t (let ((dir (behavior (cadr expr) var val)))
 			    (cond ((equal dir 1) '$minf)
 				  ((equal dir -1) '$infinity)
 				  (t (throw 'limit t))))))
 		 (cond ((eq arglim '$inf) '$inf)
-		       ((member arglim '($minf $infinity) :test #'eq) '$infinity)
+                       ((member arglim '($minf $infinity) :test #'eq)
+		        '$infinity)
 		       ((member arglim '($ind $und) :test #'eq) '$und)
 		       ((equal arglim 1)
-			(let ((dir (behavior arg var val)))
+			(let ((dir (behavior (cadr expr) var val)))
 			  (if (equal dir 1) '$zeroa 0)))
 		       (t (simplify `((%log) ,real-lim)))))))
 	  (t
