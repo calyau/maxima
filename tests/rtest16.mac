@@ -995,5 +995,11 @@ integrate(1/x/sqrt(x^2-1),x);
 (forget(x>0), done);
 done;
 
+/* 
+ * Bug ID: 2820202 - rootscontract(%i/2) 
+ */
+rootscontract(%i/2);
+%i/2;
+
 end;
 end$
