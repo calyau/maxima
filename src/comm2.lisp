@@ -300,14 +300,22 @@
 (defun rtcon (e)
   (cond ((atom e) e)
 	((eq (caar e) 'mtimes)
-	 (if (and (not (free e '$%i))
-		  (let ((num ($num e)))
-		    (and (not (alike1 e num))
-			 (or (eq num '$%i)
-			     (and (not (atom num)) (member '$%i num :test #'eq)
-				  (member '$%i (rtcon num) :test #'eq))))))
-	     (setq e (list* (car e) -1 '((mexpt) -1 ((rat simp) -1 2))
-			    (delete '$%i (copy-list (cdr e)) :count 1 :test #'eq))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; This code does the substitution %i -> (-1)*(-1)^(-1/2) for expressions
+; like %i/expr. In most cases this causes a wrong result, e.g. 
+; bug ID: 2820202 - rootscontract(%i/2) --> -%i/2. The only case this codes 
+; works is for expressions like %i/sqrt(x) --> -1/sqrt(x). It is doubtful that 
+; this simplification is useful.
+; To get correct results in general, this code is commented out. DK 08/2009.
+; 
+;	 (if (and (not (free e '$%i))
+;		  (let ((num ($num e)))
+;		    (and (not (alike1 e num))
+;			 (or (eq num '$%i)
+;			     (and (not (atom num)) (member '$%i num :test #'eq)
+;				  (member '$%i (rtcon num) :test #'eq))))))
+;	     (setq e (list* (car e) -1 '((mexpt) -1 ((rat simp) -1 2))
+;			    (delete '$%i (copy-list (cdr e)) :count 1 :test #'eq))))
 	 (do ((x (cdr e) (cdr x)) (roots) (notroots) (y))
 	     ((null x)
 	      (cond ((null roots) (subst0 (cons '(mtimes) (nreverse notroots)) e))
