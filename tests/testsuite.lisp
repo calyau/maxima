@@ -8,9 +8,9 @@
 (setf $testsuite_files
       '((mlist simp)
 	"rtestnset" "rtest1" "rtest1a" "rtest2" "rtest4"  
-	((mlist) "rtest5" 48)
+        "rtest5"
 	"rtest6" "rtest6a" "rtest6b" "rtest7"
-    ((mlist) "rtest9" 80)
+        ((mlist) "rtest9" 80)
 	"rtest9a"
 	((mlist) "rtest10" 24 25)
 	"rtest11" "rtest13" "rtest13s"
