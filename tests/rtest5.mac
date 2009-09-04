@@ -113,15 +113,10 @@ log(log(x))$
 integrate(sin(2*x+3),x);
 -cos(2*x+3)/2$
 
-/* test fails because it's not simplified -- do ?print(integrate(%e^x*erf(x),x)) */
+/* Correct simplification after change to risch.lisp revision 1.17 */
 
 integrate(%e^x*erf(x),x);
 %e^x*erf(x)-%e^(1/4)*erf(x-1/2)$
-
-/* Try again, but ratsimp -- it's not a mathematical error */
-
-ratsimp(integrate(%e^x*erf(x),x) - (%e^x*erf(x)-%e^(1/4)*erf(x-1/2)));
-0$
 
 integrate(x/(x^3+1),x);
 log(x^2-x+1)/6+atan((2*x-1)/sqrt(3))/sqrt(3)-log(x+1)/3$
