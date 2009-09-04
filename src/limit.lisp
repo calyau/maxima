@@ -176,6 +176,10 @@ It appears in LIMIT and DEFINT.......")
 	      ;; exit.
 	      (unless (= lenargs 1)
 		(limit-context (second args) origval dr))
+              
+              ;; Hide noun form of %derivative, %integrate, %limit, %sum.
+              (setq exp (hide exp))
+              
 	      ;; Transform the limit value.
 	      (unless (infinityp val)
 		(unless (zerop2 val)
@@ -184,9 +188,13 @@ It appears in LIMIT and DEFINT.......")
 				((eq dr '$minus) '$zerob)
 				(t 0)))
 		(setq origval 0))
-	      ;; Resimplify in light of new assumptions.
-	      (setq exp (resimplify (factosimp (tansc (lfibtophi (limitsimp
-								  ($expand (hide exp) 1 0) var))))))
+              
+              ;; Resimplify in light of new assumptions.
+              (setq exp (resimplify
+                          (factosimp
+                            (tansc
+                              (lfibtophi
+                                (limitsimp ($expand exp 1 0) var))))))
 
 	      (if (not (or (real-epsilonp val)		;; if direction of limit not specified
 			   (infinityp val)))
