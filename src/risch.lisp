@@ -351,6 +351,18 @@
 				      (getfncoeff (cdr a) form)))
 	((eq (caaar a) 'mtimes)
 	 (destructuring-let (((coef . newfn) (getfnsplit (cdar a))))
+           ;; (car a) is a mtimes expression. We insert coef and newfn as the
+           ;; new arguments to the mtimes expression. This causes problems if
+           ;;   (1) coef is a mtimes expression too and
+           ;;   (2) (car a) has already a simp flag
+           ;; We get a nested mtimes expression, which does not simplify.
+	   ;; We comment out the following code (DK 09/2009):
+           ;; (setf (cdar a) (list coef newfn))
+	   
+	   ;; Insert a complete mtimes expression without simpflag.
+           ;; Nested mtimes expressions simplify further.
+           (setf (car a) (list '(mtimes) coef newfn))
+	   
 	   (setf (cdar a) (list coef newfn))
 	   (cond ((zerop1 coef) (getfncoeff (cdr a) form))
 		 ((and (matanp newfn) (member '$%i varlist :test #'eq))
