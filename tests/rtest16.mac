@@ -1001,5 +1001,14 @@ done;
 rootscontract(%i/2);
 %i/2;
 
+/* 
+ * Bug ID: 1797296 - Crazy results when doing limit of 'diff
+ */
+limit('diff(x+1,x),x,2);
+'limit('diff(x+1,x),x,2);
+
+limit('integrate(x+1,x),x,2);
+'limit('integrate(x+1,x),x,2);
+
 end;
 end$
