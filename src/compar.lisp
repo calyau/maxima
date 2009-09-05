@@ -1116,13 +1116,12 @@ relational knowledge is contained in the default context GLOBAL."
   (cond ((mnump x) (setq sign (rgrp x 0) minus nil odds nil evens nil))
 	((and *complexsign* (atom x) (eq x '$%i))
 	 ;; In Complex Mode the sign of %i is $imaginary.
-	 (when *debug-compar* (format t "~& in sign detected $%i~~%"))
 	 (setq sign '$imaginary))
 	((atom x) (if (eq x '$%i) (imag-err x)) (sign-any x))
 	((eq (caar x) 'mtimes) (sign-mtimes x))
 	((eq (caar x) 'mplus) (sign-mplus x))
 	((eq (caar x) 'mexpt) (sign-mexpt x))
-	((eq (caar x) '%log) (compare (cadr x) 1))
+        ((eq (caar x) '%log) (sign-log x))
 	((eq (caar x) 'mabs) (sign-mabs x))
 	((member (caar x) '($min $max) :test #'eq) (sign-minmax (caar x) (cdr x)))
 	((member (caar x) '(%csc %csch) :test #'eq)
@@ -1300,8 +1299,6 @@ relational knowledge is contained in the default context GLOBAL."
 	(declare (special $ratprint))
 	(factor x)) x))
 
-					;(defmvar complexsign nil)
-
 (defun sign-mexpt (x)
   (let* ((expt (caddr x)) (base1 (cadr x))
 	 (sign-expt (sign1 expt)) (sign-base (sign1 base1))
@@ -1405,6 +1402,18 @@ relational knowledge is contained in the default context GLOBAL."
 			   (setq sign-base '$pn)
 			   (tdpn base1)))))
 	     (setq sign sign-base)))))
+
+;;; Determine the sign of the Logarithm function.
+
+(defun sign-log (x)
+  ;; Return a negative or positive sign only if the argument
+  ;; is a real positive value in all other cases '$pnz.
+  (cond ((member (compare (cadr x) 0) '($neg $pnz) :test #'eq)
+         ;; Negative argument or sign unkown.
+         (setq sign '$pnz))
+        (t
+         ;; Positive argument >= 0. Check if < 1 or > 1.
+         (compare (cadr x) 1))))
 
 (defun sign-mabs (x)
   (sign (cadr x))
