@@ -371,7 +371,8 @@ It appears in LIMIT and DEFINT.......")
 
 
 (defun mabs-subst (exp var val)	; RETURNS EXP WITH MABS REMOVED, OR THROWS.
-  (let ((d (involve exp '(mabs))))
+  (let ((d (involve exp '(mabs)))
+        arglim)
     (cond ((null d) exp)
 	  (t (cond
 	       ((not (and (equal ($imagpart (let ((v (limit-catch d var val)))
@@ -386,10 +387,14 @@ It appears in LIMIT and DEFINT.......")
 					      ;; fixes Bug 1548643.
 					      (unless v
 						(throw 'mabs '$und))
-					      v))
+					      (setq arglim v)))
 				 0)
 			  (equal ($imagpart var) 0)))
-		(throw 'mabs 'retn))
+                (cond ((eq arglim '$infinity)
+                       ;; Check for $infinity as limit of argument.
+                       '$inf)
+                      (t
+                       (throw 'mabs 'retn))))
 	       (t (do ((ans d (involve exp '(mabs))) (a () ()))
 		      ((null ans) exp)
 		    (setq a (mabs-subst ans var val))
@@ -2543,6 +2548,8 @@ It appears in LIMIT and DEFINT.......")
 	   (t (return ($radcan (ridofab (subin val e))))))
      (return (simplimtimes (list n1 d1)))))
 
+;;; Limit of the Logarithm function
+
 (defun simplimln (expr var val)
   ;; We need to be careful with log because of the branch cut on the
   ;; negative real axis.  So we look at the imagpart of the log.  If
@@ -2564,6 +2571,7 @@ It appears in LIMIT and DEFINT.......")
                                          ;; otherwise find real part
                                          (trisplit log-form)))))
     (cond ((and (numberp ip) (zerop ip))
+           ;; Limit of the argument is real.
 	   (let* ((real-lim (ridofab arglim)))
 	     (if (=0 real-lim)
 		 (cond ((eq arglim '$zeroa)  '$minf)
@@ -2579,10 +2587,19 @@ It appears in LIMIT and DEFINT.......")
 		       ((equal arglim 1)
 			(let ((dir (behavior (cadr expr) var val)))
 			  (if (equal dir 1) '$zeroa 0)))
-		       (t (simplify `((%log) ,real-lim)))))))
+		       (t
+		         ;; Call simplifier to get value at the limit
+		         ;; of the argument. 
+		         (simplify `((%log) ,real-lim)))))))
 	  (t
-	   (add (limit rp var val 'think)
-		(mul '$%i (limit ip var val 'think)))))))
+	   ;; Limit of the argument is complex.
+           (if (eq (setq rp (limit rp var val 'think)) '$minf)
+               ;; Realpart is minf, do not return minf+%i*ip but infinity.
+               '$infinity
+               ;; Return a complex limit value.
+               (add rp (mul '$%i (limit ip var val 'think))))))))
+
+;;; Limit of the Factorial function
 
 (defun simplimfact (expr var val)
   (let* ((arglim (limit (cadr expr) var val 'think)) ; Limit of the argument.
@@ -2607,6 +2624,7 @@ It appears in LIMIT and DEFINT.......")
                     '$inf)
                    (t (throw 'limit nil)))))
           (t
+           ;; Call simplifier to get value at the limit of the argument.
            (simplify (list '(mfactorial) arglim))))))
 
 (defun simplim%erf-%tanh (fn arg)
