@@ -991,7 +991,7 @@
 (defun principal nil
   (cond ($noprincipal (diverg))
 	((not pcprntd)
-	 (princ "Principal Value")
+	 (format t "Principal Value~%")
 	 (setq pcprntd t))))
 
 (defun rib (e s)
