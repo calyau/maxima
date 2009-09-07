@@ -117,7 +117,7 @@
 
 ;;Remainder of page is update from F302 --gsb
 
-;;Used only in COMM2 (AT), and below.
+;;Used in COMM2 (AT), limit, and below.
 (defvar dummy-variable-operators '(%product %sum %laplace %integrate %limit %at))
 
 (defun subst1 (z)			; Y is an atom
@@ -126,7 +126,7 @@
 	((eq (caar z) 'bigfloat) z)
 	((and (eq (caar z) 'rat) (or (equal y (cadr z)) (equal y (caddr z))))
 	 (div (subst1 (cadr z)) (subst1 (caddr z))))
-	((at-substp z) z)
+	((at-substp z) (subst-except-second-arg x y z))
 	((and (eq y t) (eq (caar z) 'mcond))
 	 (list (cons (caar z) nil) (subst1 (cadr z)) (subst1 (caddr z))
 	       (cadddr z) (subst1 (car (cddddr z)))))
@@ -167,6 +167,20 @@
 	     (cond ((null tail) z)
 		   (t (cons (cons (caar z) nil) (cons x (cdr tail)))))))
 	  (t (recur-apply #'subst2 z)))))
+
+;; replace y with x in z, but leave z's second arg unchanged.
+;; This is for cases like at(integrate(x, x, a, b), [x=3])
+;; where second arg of integrate binds a new variable x,
+;; and we do not wish to subst 3 for x inside integrand.
+(defun subst-except-second-arg (x y z)
+  (append 
+   (list (car z)
+	 (if (eq y (third z))	; if (third z) is new var that shadows y
+	     (second z)		; leave (second z) unchanged
+	   (subst1 (second z)))	; otherwise replace y with x in (second z)
+	 (third z))		; never change integration var
+   (mapcar (lambda (z) (subst1 z))	; do subst in limits of integral
+	   (cdddr z))))
 
 (declare-top (unspecial x y oprx opry negxpty timesp))
 

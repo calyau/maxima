@@ -177,13 +177,17 @@ It appears in LIMIT and DEFINT.......")
 	      (unless (= lenargs 1)
 		(limit-context (second args) origval dr))
               
-              ;; Hide noun form of %derivative, %integrate, %limit, %sum.
-              (setq exp (hide exp))
+              ;; Hide noun form of %derivative, %integrate.
+	      (setq exp (hide exp))
               
 	      ;; Transform the limit value.
 	      (unless (infinityp val)
 		(unless (zerop2 val)
-		  (setq exp (subin (m+ var val) exp)))
+		  (setq exp 
+			(let ((atp t))
+			  ;; atp prevents substitution from applying to vars bound
+			  ;; by %sum, %product, %integrate, %limit
+			  (subin (m+ var val) exp))))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)
 				(t 0)))
@@ -420,7 +424,11 @@ It appears in LIMIT and DEFINT.......")
 (defun infcount (exp)
   (cond ((atom exp)
 	 (if (infinityp exp) 1 0))
-	(t (+ (infcount (car exp)) (infcount (cdr exp))))))
+	((member (caar exp) dummy-variable-operators)
+	 ;; don't count inf as limit of %integrate, %sum, %product, %limit
+	 (infcount (cadr exp)))
+	(t (apply #'+ (mapcar #'infcount (cdr exp))))))
+
 
 (defun simpinf (exp)
   (declare (special exp val))
@@ -2849,39 +2857,25 @@ It appears in LIMIT and DEFINT.......")
 	 (cond ((eq val '$zeroa) '($plus))
 	       ((eq val '$zerob) '($minus)))))
 
+;; replace noun form of %derivative and indefinite %integrate with gensym.
+;; prevents substitution x -> x+1 for limit('diff(x+2,x), x, 1)
+;;
+;; however, this doesn't work for limit('diff(x+2,x)/x, x, inf)
+;; because the rest of the limit code thinks the gensym is const wrt x.
 (defun hide (exp)
   (cond ((atom exp) exp)
-	((let ((func (member (caar exp) '(%integrate %limit %derivative %sum) :test #'eq)))
-	   (cond ((not (null func))
-		  (hidelim exp (car func)))
-		 (t ()))))
+	((cond ((or (eq '%derivative (caar exp))
+		    (and (eq '%integrate (caar exp))	; indefinite integral
+			 (null (cdddr exp))))
+		(hidelim exp (caar exp)))
+	       (t ())))
 	(t (cons (car exp) (mapcar 'hide (cdr exp))))))
 
 (defun hidelim (exp func)
-  (cond ((or (eq func '%integrate) (eq func '%sum))
-	 (setq func (gensym))
-	 (putprop func
-		  (cond ((or (null (cdddr exp))
-			     (not (eq var (third exp))))
-			 (hidelima exp))
-			((and (not (among var (fourth exp)))
-			      (not (among var (fifth exp))))
-			 exp)
-			(t (nounlimit exp var val)))
-		  'limitsub))
-	((eq func '%limit)
-	 (setq func (gensym))
-	 (putprop func
-		  (cond ((eq var (fourth exp))
-			 (nconc (list (first exp)
-				      (second exp)
-				      (third exp))
-				(subst val var (cdddr exp))))
-			((eq var (caddr exp)) exp)
-			(t (hidelima exp)))
-		  'limitsub))
-	(t (setq func (gensym))
-	   (putprop func (hidelima exp) 'limitsub)))
+  (setq func (gensym))
+  (putprop func
+	   (hidelima exp)
+	   'limitsub)
   func)
 
 (defun hidelima (e)

@@ -1010,5 +1010,11 @@ limit('diff(x+1,x),x,2);
 limit('integrate(x+1,x),x,2);
 'limit('integrate(x+1,x),x,2);
 
+limit(integrate(t,t,0,x)/x,x,inf);
+inf;
+
+(assume(a>2), limit(integrate(t/log(t),t,2,a)/a,a,inf));
+inf;
+
 end;
 end$
