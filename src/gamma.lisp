@@ -454,6 +454,9 @@
                (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
               
       ((eq z '$inf) 0)
+      ((and (eq z '$minf) 
+	    (eq a 0))
+       '$infinity)
 
       ;; Check for numerical evaluation in Float or Bigfloat precision
 
