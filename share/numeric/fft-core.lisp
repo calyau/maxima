@@ -29,119 +29,121 @@
          $float
          ,(1- (length (mgetarray a))))))))
 
-(defun $fft (a)
-  (let*
-    ((a1 (cond
-           ((and (symbolp a) (mget a 'array))
-            (copy-seq (symbol-array (mget a 'array))))
-           ((arrayp a)
-            (copy-seq a))
-           ((listp a)
-            (copy-list a))
-           (t (merror "fft: expected an array or list, found ~M instead." (type-of a)))))
-     (a2 (make-empty-copy a1)))
-    (cond
-      ((arrayp a1)
-       (dotimes (i (length a1))
-         (let ((ri (risplit (aref a1 i))))
-           (setf (aref a1 i) (car ri))
-           (setf (aref a2 i) (cdr ri)))))
-      (t
-        (dotimes (i ($length a1))
-          (let ((ri (risplit (nth (1+ i) a1))))
-            (setf (nth (1+ i) a1) (car ri))
-            (setf (nth (1+ i) a2) (cdr ri))))))
-    (fft a1 a2)
-    (cond
-      ((arrayp a1)
-       (dotimes (i (length a1))
-         (setf (aref a1 i) (m+ (aref a1 i) (m* '$%i (aref a2 i)))))
-       (if (symbolp a)
-         (let ((b (make-empty-copy a)))
-           (setf (symbol-array (mget b 'array)) a1)
-           (setq a1 b))))
-      (t
-        (dotimes (i ($length a1))
-          (setf (nth (1+ i) a1) (m+ (nth (1+ i) a1) (m* '$%i (nth (1+ i) a2)))))))
-    a1))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; DATA CONVERSION FUNCTIONS for fft
+;;
+;; These convert various possible arguments for $fft:
+;; 1. maxima list
+;; 2. lisp array
+;; 3. 'maxima array'
+;; into two 'flonum' lisp arrays ('fft-arrays') holding
+;; real and imaginary parts. After fft is done, these
+;; two arrays are converted back into the same data type
+;; the $fft function was given.
+;;
+;; Real and imaginary parts are extracted with:
+;; (risplit ($float `maxima-expression'))
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun fft (a1 a2)
-  (fft+ifft-common '$fft 'ifft a1 a2))
+(defun mlist->fft-arrays (mlist)
+  "Converts a maxima list into two Lisp flonum
+arrays - to be used by FFT algorithm"
+  (let* ((lst (rest mlist))
+         (N (length lst))
+         (realparts (make-array N :element-type 'flonum))
+         (imagparts (make-array N :element-type 'flonum)))
+        (do ((element lst (rest element))
+             (index 0 (1+ index)))
+          ;; iteration end:
+          ((>= index N) (list realparts imagparts)) ;; return arrays
+          ;; do this every iteration
+          (let ((fl (risplit ($float (first element)))))
+            (setf (aref realparts index) (coerce (car fl) 'flonum))
+            (setf (aref imagparts index) (coerce (cdr fl) 'flonum))))))
 
-(defun fft+ifft-common (user-fcn-name lisp-fcn-name rary iary)
-  (let*
-    ((fast_rary (fft-arg-check user-fcn-name rary))
-     (fast_iary (if iary (fft-arg-check user-fcn-name iary))))
+(defun lisp-array->fft-arrays (arr)
+  (let* ((N (length arr))
+         (realparts (make-array N :element-type 'flonum))
+         (imagparts (make-array N :element-type 'flonum)))
+    (dotimes (index N)
+      (let ((fl (risplit ($float (aref arr index)))))
+        (setf (aref realparts index) (coerce (car fl) 'flonum))
+        (setf (aref imagparts index) (coerce (cdr fl) 'flonum))))
+    (list realparts imagparts)))
 
-    (when (null iary)
-      (setq iary (make-empty-copy rary))
-      (setq fast_iary (fft-arg-check user-fcn-name iary))
-      ;; Only RARY was given as an argument.
-      ;; Put imaginary part into IARY.
-      (dotimes (i (length fast_rary))
-        (let ((ri (risplit (aref fast_rary i))))
-          (setf (aref fast_rary i) (car ri))
-          (setf (aref fast_iary i) (cdr ri)))))
+;; Backwards data conversion (from fft arrays)
 
-    ;; Try to ensure that all values are floating point numbers.
-    (dotimes (i (length fast_rary))
-      (setf (aref fast_rary i) ($float (aref fast_rary i)))
-      (setf (aref fast_iary i) ($float (aref fast_iary i))))
-    
-    ;; fast_rary and fast_iary are lisp arrays (which is the same thing
-    ;; as "fast" maxima arrays) and fft is supposed to modify them.
-    (funcall lisp-fcn-name fast_rary fast_iary)
+(defun fft-arrays->mlist (realparts imagparts)
+  "Takes two Lisp arrays with real and imaginary
+parts and returns a Maxima list of complex numbers
+in Maxima's 'format'."
+  (let (ans)
+    (dotimes (i (length realparts))
+      (push (add (aref realparts i) (mul (aref imagparts i) '$%i))
+            ans))
+    (cons '(mlist simp) (nreverse ans))))
 
-    ;; return the modified arrays in their original form (i.e. either "fast"
-    ;; or not, depending) 
-    (when ($listp rary)
-      (copy-into-mlist fast_rary rary)
-      (copy-into-mlist fast_iary iary))
-    (list '(mlist) rary iary)))
+(defun fft-arrays->lisp-array (realparts imagparts)
+  "Outputs a Lisp array of Maxima expressions."
+  (let ((ans (make-array (length realparts))))
+    (dotimes (i (length realparts))
+      (setf (aref ans i)
+            (add (aref realparts i) (mul (aref imagparts i) '$%i))))
+    ans))
 
-(defun copy-into-mlist (a b)
-  ;; I wonder if there's a better way. Oh well.
-  (dotimes (i (length a)) (setf (nth (1+ i) b) (aref a i))))
+(defun fft-arrays->maxima-symbol-array (realparts imagparts)
+  "Outputs a Maxima array as does Maxima's 'array()' function."
+  (let ((lisp-array (fft-arrays->lisp-array realparts imagparts))
+        (maxima-symbol (meval `(($array)
+                                ,(intern (symbol-name (gensym "$G")))
+                                $float
+                                ,(1- (length realparts))))))
+    (setf (symbol-array (mget maxima-symbol 'array)) lisp-array)
+    maxima-symbol))
 
-(defun $inverse_fft (a)
-  (let*
-    ((a1 (cond
-           ((and (symbolp a) (mget a 'array))
-            (copy-seq (symbol-array (mget a 'array))))
-           ((arrayp a)
-            (copy-seq a))
-           ((listp a)
-            (copy-list a))
-           (t (merror "fft: expected an array or list, found ~M instead." (type-of a)))))
-     (a2 (make-empty-copy a1)))
-    (cond
-      ((arrayp a1)
-       (dotimes (i (length a1))
-         (let ((ri (risplit (aref a1 i))))
-           (setf (aref a1 i) (car ri))
-           (setf (aref a2 i) (cdr ri)))))
-      (t
-        (dotimes (i ($length a1))
-          (let ((ri (risplit (nth (1+ i) a1))))
-            (setf (nth (1+ i) a1) (car ri))
-            (setf (nth (1+ i) a2) (cdr ri))))))
-    (inverse_fft a1 a2)
-    (cond
-      ((arrayp a1)
-       (dotimes (i (length a1))
-         (setf (aref a1 i) (m+ (aref a1 i) (m* '$%i (aref a2 i)))))
-       (if (symbolp a)
-         (let ((b (make-empty-copy a)))
-           (setf (symbol-array (mget b 'array)) a1)
-           (setq a1 b))))
-      (t
-        (dotimes (i ($length a1))
-          (setf (nth (1+ i) a1) (m+ (nth (1+ i) a1) (m* '$%i (nth (1+ i) a2)))))))
-    a1))
+;;
+;; main function used by both fft() and inverse_fft()
+;;
+(defun fft+ifft-common (input lisp-function-to-call maxima-function-name)
+  "This function checks the type of input argument,
+does the apropriate conversion to `fft arrays', calls
+the list function given and converts the result back
+into the original datatype of `input'"
+  (multiple-value-bind (convert reverse-convert)
+      ;; set the conversion functions
+      (cond (($listp input)
+	     (values #'mlist->fft-arrays
+		     #'fft-arrays->mlist))
+	    ((arrayp input)
+	     (values  #'lisp-array->fft-arrays
+		      #'fft-arrays->lisp-array))
+	    ((and (symbolp input) (symbol-array (mget input 'array)))
+	     (values #'(lambda (x)
+			 (lisp-array->fft-arrays
+			  (symbol-array (mget x 'array))))
+		     #'fft-arrays->maxima-symbol-array))
+	    (t
+	     (merror "~A: input is not a list or an array." maxima-function-name)))
+    (multiple-value-bind (realparts imagparts)
+	;; perform fft or inverse fft
+	(apply lisp-function-to-call (funcall convert input))
+      ;; return the same data type as was the input
+      (funcall reverse-convert realparts imagparts))))
 
-(defun inverse_fft (a1 a2)
-  (fft+ifft-common '$inverse_fft 'forward-fft a1 a2))
+;;
+;; Maxima functions fft() and inverse_fft()
+;;
 
+(defun $fft (input)
+  (fft+ifft-common input #'forward-fft "fft"))
+
+(defun $inverse_fft (input)
+  (fft+ifft-common input #'inverse-fft "inverse_fft"))
+
+;; These functions perhaps need revision if they are
+;; needed at all. Output ignores the type of input.
 (defun $recttopolar (rary iary)
   (let ((fast-rary (fft-arg-check '$recttopolar rary))
 	(fast-iary (fft-arg-check '$recttopolar iary)))
@@ -199,44 +201,42 @@ fft-dif-internal (vec &optional direction)
 			   Default is forward.
 
 The result is returned in vec."
-  (declare (type (cl:array t (*)) vec-r vec-i))
+  (declare (type (simple-array flonum (*)) vec-r vec-i)
+	   (optimize speed))
   (let* ((size (length vec-r))
 	 (le size)
 	 (m (log-base2 le))
-	 (dir (if direction 1.0 -1.0)))
+	 (dir (if direction 1 -1)))
+    (declare (fixnum size le))
     (unless (= size (ash 1 m))
       (merror "fft: size of array must be a power of 2; found: ~:M" size))
     (dotimes (level m)
       (declare (fixnum level))
       (let* ((le1 (truncate le 2))
-	     (ang (/ pi le1))
+	     (ang (/ #+(and cmu flonum-double-double)
+		     kernel:dd-pi
+		     #-flonum-double-double
+		     (coerce pi 'flonum)
+		     le1))
 	     (w-r (cos ang))
 	     (w-i (- (* dir (sin ang))))
-	     (u-r 1.0)
-	     (u-i 0.0)
-	     (tmp-r 0.0)
-	     (tmp-i 0.0)
+	     (u-r (coerce 1 'flonum))
+	     (u-i (coerce 0 'flonum))
+	     (tmp-r (coerce 0 'flonum))
+	     (tmp-i (coerce 0 'flonum))
 	     (kp 0))
-	(declare (type fixnum le1)
-		 (type flonum ang)
-		 (type flonum w-r w-i u-r u-i tmp-r tmp-i)
-		 (type fixnum kp))
+	(declare (type fixnum le1 kp)
+		 (type flonum ang w-r w-i u-r u-i tmp-r tmp-i))
 	(dotimes (j le1)
 	  (declare (fixnum j))
 	  (do ((k j (+ k le)))
 	      ((>= k size))
 	    (declare (fixnum k))
 	    (setq kp (+ k le1))
-	    #|
-	    (setq tmp (+ (aref vec k) (aref vec kp)))
-	    (setf (aref vec kp) (* u (- (aref vec k) (aref vec kp))))
-	    (setf (aref vec k) tmp)
-	    |#
 	    (setq tmp-r (+ (aref vec-r k) (aref vec-r kp)))
 	    (setq tmp-i (+ (aref vec-i k) (aref vec-i kp)))
 	    (let* ((diff-r (- (aref vec-r k) (aref vec-r kp)))
 		   (diff-i (- (aref vec-i k) (aref vec-i kp))))
-	    
 	      (psetf (aref vec-r kp) (- (* u-r diff-r) (* u-i diff-i))
 		     (aref vec-i kp) (+ (* u-r diff-i) (* u-i diff-r))))
 	    (setf (aref vec-r k) tmp-r)
@@ -252,14 +252,13 @@ The result is returned in vec."
 
 Reorder vec in bit-reversed order.  The length of vec
 must be a power of 2."
+  (declare (type (simple-array flonum (*)) vec-r vec-i)
+	   (optimize speed))
   (let* ((size (length vec-r))
 	 (n/2 (/ size 2))
 	 (j 0)
 	 (k 0))
-    (declare (type fixnum size)
-	     (type fixnum n/2)
-	     (type fixnum j)
-	     (type fixnum k))
+    (declare (type fixnum size n/2 j k))
     (dotimes (i (- size 1))
       (declare (fixnum i))
       (when (< i j)
@@ -272,27 +271,28 @@ must be a power of 2."
 	(setq k (ash k -1)))
       (setq j (+ j k)))))
 
-(defun forward-fft (x-r x-i)
-  "fft (x)
+(defun forward-fft (x-real x-imag)
+  "forward-fft
+Takes two lisp arrays, one for real parts
+and the other for imaginary parts.
+Returns transformed real and imaginary arrays.
+A normalisation is performed."
+  (let ((size (length x-real)))
+    (when (> size 1)
+      (fft-dif-internal x-real x-imag t)
+      (fft-bit-reverse x-real x-imag)
+      (let ((1/N (/ (coerce 1 'flonum) size)))
+        (dotimes (k size) (setf (aref x-real k) (* (aref x-real k) 1/N)))
+        (dotimes (k size) (setf (aref x-imag k) (* (aref x-imag k) 1/N)))))
+    (values x-real x-imag)))
 
-Forward DFT of x.  Result is returned in x."
-  (let ((size (length x-r)))
-    (when (>= size 2)
-      (fft-dif-internal x-r x-i nil)
-      (fft-bit-reverse x-r x-i))
-    (values x-r x-i)))
-
-(defun ifft (x-r x-i)
-  "ifft (x)
-
-Inverse DFT of x.  Result is returned in x."
-  (let ((size (length x-r)))
-    (if (>= size 2)
-      (let ((f1size (/ (float size))))
-        (fft-dif-internal x-r x-i t)
-        (fft-bit-reverse x-r x-i)
-        (dotimes (k size)
-          (setf (aref x-r k) (* (aref x-r k) f1size))
-          (setf (aref x-i k) (* (aref x-i k) f1size))))))
-  (values x-r x-i))
-  
+(defun inverse-fft (x-real x-imag)
+  "inverse-fft
+Takes two lisp arrays, one for real parts
+and the other for imaginary parts.
+Returns transformed real and imaginary arrays."
+  (let ((size (length x-real)))
+    (when (> size 1)
+      (fft-dif-internal x-real x-imag nil)
+      (fft-bit-reverse x-real x-imag)))
+  (values x-real x-imag))
