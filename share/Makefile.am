@@ -906,6 +906,7 @@ numeric/diffeq.mac\
 numeric/expense.lisp\
 numeric/fft.dem\
 numeric/fft.lisp\
+numeric/fft-core.lisp\
 numeric/fft.usg\
 numeric/forma1.lisp\
 numeric/forma1.usg\
