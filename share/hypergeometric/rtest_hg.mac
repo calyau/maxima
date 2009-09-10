@@ -569,6 +569,19 @@ taylor(hypergeometric([a+1,b],[c,d],x)*(((b-a-1)*x)/((c-a-1)*(d-a-1))-(c*d-2*a*d
 hypergeometric([a,b],[c,d],x),x,0,15);
 ''(taylor(0,x,0,15))$
 
+/* SF bug 2855935  */
+
+hypergeometric([a],[],1);
+hypergeometric([a],[],1)$
+
+(assume(a < 0),0);
+0$
+
+hypergeometric([a],[],1);
+0$
+
+(forget(a < 0),0);
+0$
 
 
 (time : (absolute_real_time ()- start), print(time), is(time < 40));

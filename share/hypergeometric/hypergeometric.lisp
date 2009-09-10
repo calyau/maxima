@@ -239,7 +239,10 @@
 
 ;; When a or x aren't floats, do 1F0([a],[],x) --> 1/(1-x)^a. 
 (defun hypergeometric-1f0 (a x)
-  (if (use-float-hypergeometric-numerical-eval (list a) nil x) nil (div 1 (take '(mexpt) (sub 1 x) a))))
+  (cond ((use-float-hypergeometric-numerical-eval (list a) nil x) nil)
+	((onep x)
+	 (if (eq t (mgrp 0 a)) 0 nil))
+	(t  (div 1 (take '(mexpt) (sub 1 x) a)))))
   
 ;; Apply the Kummer reflection identity when either (great (neg x) x) is true and x isn't a number
 ;; or when b - a is a negative integer; otherwise, return nil. This function doesn't do floating 
