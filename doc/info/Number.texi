@@ -362,6 +362,19 @@ See @code{!}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} factorial_expand
+Default value: false
+
+The option variable @code{factorial_expand} controls the simplification of 
+expressions like @code{(n+1)!}, where @code{n} is an integer. 
+See @code{!} for an example.
+
+@opencatbox
+@category{Gamma and factorial functions}
+@closecatbox
+@end defvr
+
 @deffn {Function} fib (@var{n})
 Returns the @var{n}'th Fibonacci number.
 @code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
