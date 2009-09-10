@@ -87,7 +87,7 @@
 		     (push (tminor a4 n 1 index i) res))
 		   result)
 	     (when (and (= ix 0) (equal (car result) '(0 . 1)))
-	       (merror "Coefficient matrix is singular"))))
+	       (merror (intl:gettext "tmlin: coefficient matrix is singular.")))))
      (tmrearray n)
      (return r)))
 
@@ -178,12 +178,12 @@
   (prog (*aa* r vlist n)
      (cond (dim?
 	    (unless (integerp dim)
-	      (merror "wrong second arg"))
+	      (merror (intl:gettext "tmnewdet: second argument must be an integer; found: ~M") dim))
 	    (setq n dim))
 	   (($matrixp mat)
 	    (setq n (length (cdr mat))))
 	   (t
-	    (merror "wrong args")))
+	    (merror (intl:gettext "tmnewdet: first argument must be a matrix; found: ~M") mat)))
      (setq *aa* mat)
      (setq *a2* (make-array (list (1+ n) (1+ n)) :initial-element nil))
      (tmdefarray n)

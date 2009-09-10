@@ -68,7 +68,7 @@ When one changes, the other does too."
      (set (get var 'lisp-shadow) value)
      value)
     (t
-      (merror "Attempt to assign a non-string to ~:M" var))))
+      (merror (intl:gettext "assignment: must assign a string to ~:M; found: ~M") var value))))
 
 (defun print-directories ()
   (format t "maxima-prefix=~a~%" *maxima-prefix*)

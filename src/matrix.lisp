@@ -56,11 +56,12 @@
       nil
       (cons (ith (car x) nn) (nthcol1 (cdr x) nn))))
 
+;; MAYBE THIS FUNCTION SHOULD HAVE AN ARGUMENT TO INDICATE WHO CALLED IT (TO SMASH INTO ERROR MESSAGES)
 (defun check (x)
-  (cond ((atom x) (merror "Not matrix:~%~M" x))
+  (cond ((atom x) (merror (intl:gettext "not a matrix: ~M") x))
 	((eq (caar x) '$matrix) x)
 	((eq (caar x) 'mlist) (list '($matrix) x))
-	(t (merror "Not matrix:~%~M" x)))) 
+	(t (merror (intl:gettext "not a matrix: ~M") x)))) 
 
 (defun check1 (x)
   (cond ((atom x) nil)
@@ -73,7 +74,7 @@
 (defmfun $charpoly (mat var) 
   (setq mat (check mat))
   (unless (= (length mat) (length (cadr mat)))
-    (merror "Matrix must be square - `charpoly'")) 
+    (merror (intl:gettext "charpoly: matrix must be square; found ~M rows, ~M columns.") (length mat) (length (cadr mat))))
   (cond ((not $ratmx)
 	 (det1 (addmatrix1
 		(setq mat (mcx (cdr mat))) 
@@ -132,7 +133,7 @@
 (defun addmatrix1 (b c)
   (unless (and (= (length b) (length c))
 	       (= (length (car b)) (length (car c))))
-    (merror "Attempt to add stuff of unequal length"))
+    (merror (intl:gettext "ADDMATRIX1: attempt to add nonconformable matrices.")))
   (mapcar #'addrows b c))
  
 (defun addrows (a b)
@@ -144,7 +145,7 @@
   (cond ((not (or (mbagp mat) ($matrixp mat))) (if ($scalarp mat) mat (list '(%determinant) mat)))
 	(t (setq mat (check mat))
 	   (unless  (= (length mat) (length (cadr mat)))
-	     (merror "`determinant' called on a non-square matrix."))
+	     (merror (intl:gettext "determinant: matrix must be square; found ~M rows, ~M columns.") (length mat) (length (cadr mat))))
            (cond ((not $ratmx) (det1 (mcx (cdr mat))))
 	         (t (newvarmat1 mat) (determinant1 (mcx (cdr mat))))))))
 
@@ -295,7 +296,7 @@
   (prog (l r g i m n ei* ej* oneoff*) 
      (setq l (length k) i 1) 
      (cond ((= l (length (car k))) nil)
-	   (t(merror "Non-square matrix in inverse")))
+	   (t(merror (intl:gettext "invert: matrix must be square; found ~M rows, ~M columns.") l (length (car k)))))
      loop (cond ((null k) (go l1))) 
      (setq r (car k)) 
      (setq g (nconc g (list (nconc r (onen i l '(1 . 1) '(0 . 1)))))) 
@@ -476,7 +477,7 @@
   (cond ((not (= (length (car x)) (length y)))
 	 (cond ((and (null (cdr y)) (= (length (car x)) (length (car y))))
 		(setq y (transpose y)))
-	       (t (merror "incompatible dimensions - cannot multiply")))))
+	       (t (merror (intl:gettext "MULTIPLYMATRICES: attempt to multiply nonconformable matrices."))))))
   (cond ((not $ratmx) (multmat x y))
 	(t (setq x (replist1 x) y (replist1 y)) 
 	   (disreplist1 (multmat x y))))) 
@@ -593,7 +594,7 @@
      (go loop)))
  
 (defun deleterow (i m) 
-  (cond ((or (null m) (< i 0)) (merror "Incorrect index - `matrix'"))
+  (cond ((or (null m) (< i 0)) (merror (intl:gettext "DELETEROW: matrix is null, or index is negative.")))
 	((= i 1) (cdr m)) 
 	(t (cons (car m) (deleterow (1- i) (cdr m)))))) 
  
@@ -607,10 +608,13 @@
   (cons '($matrix) (mxc (list (ith (mcx (cdr (check mat))) m)))))
 
 (defmfun $setelmx (elm m n mat) 
-  (cond ((not (and (integerp m) (integerp n) ($matrixp mat)))
-	 (merror "Wrong arg to `setelmx'"))
+  (cond
+    ((not (and (integerp m) (integerp n)))
+	 (merror (intl:gettext "setelmx: indices must be integers; found: ~M, ~M") m n))
+    ((not ($matrixp mat))
+     (merror (intl:gettext "setelmx: last argument must be a matrix; found: ~M") mat))
 	((not (and (> m 0) (> n 0) (> (length mat) m) (> (length (cadr mat)) n)))
-	 (merror "No such entry - `setelmx'")))
+	 (merror (intl:gettext "setelmx: no such element [~M, ~M]") m n)))
   (rplaca (nthcdr n (car (nthcdr m mat))) elm) mat) 
  
 ;;; Here the function transpose can actually do simplification of
@@ -677,6 +681,6 @@
 
 (defun $list_matrix_entries (m)
   (unless ($matrixp m)
-    (merror "The argument to 'list_matrix_entries' must be a matrix"))
+    (merror (intl:gettext "list_matrix_entries: argument must be a matrix; found: ~M") m))
   (cons (if (null (cdr m)) '(mlist) (caadr m))
 	(loop for row in (cdr m) append (cdr row))))

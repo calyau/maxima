@@ -19,7 +19,7 @@
       (setq example (coerce (cdr (exploden example)) 'string)))
     (unless (stringp example)
       (merror 
-        (intl:gettext "example: Argument must be a symbol or a string.")))
+        (intl:gettext "example: argument must be a symbol or a string; found: ~M") example))
     ;; Downcase the string. $example is not case sensitive.
     (setq example (string-downcase example))
     (with-open-file (st ($file_search1 $manual_demo '((mlist) $file_search_demo)))
@@ -67,9 +67,12 @@
        (go doit)
 
        notfound
-       (format t "Not Found.  You can look at:~&")
        (setf *need-prompt* t)
-       (return `((mlist) ,@(nreverse all)))))))
+       (if (= (length l) 1)
+         (return `((mlist) ,@(nreverse all)))
+         (progn
+           (mtell (intl:gettext "example: ~M not found. 'example();' returns the list of known examples.~%") example)
+           (return '$done)))))))
 
 (defun mread-noprompt (&rest read-args)
   (let ((*mread-prompt* "") (*prompt-on-read-hang*))
@@ -88,7 +91,7 @@
 	 (setq var1 (first l)
 	       lis (second l)
 	       l (cddr l))
-	 (unless (symbolp var1) (merror "~A not a symbol" var1))
+	 (unless (symbolp var1) (merror (intl:gettext "create_list: expected a symbol; found: ~A") var1))
  	 (setq lis (meval* lis))
 	 (progv (list var1)
 	     (list nil)
@@ -106,7 +109,7 @@
 		     do (setf (symbol-value var1) v)
 		     append
 		     (apply #'create-list1 form l)))
-		 (t (merror "Bad arg")))))))
+		 (t (merror (intl:gettext "create_list: unexpected arguments."))))))))
 
 ;; The documentation is now in INFO format and can be printed using
 ;; tex, or viewed using info or gnu emacs or using a web browser.  All
@@ -159,4 +162,4 @@
                               acc)))))
           (t
            (merror
-             (intl:gettext "apropos: The argument has to be a string."))))))
+             (intl:gettext "apropos: argument must be a string; found: ~M") s)))))

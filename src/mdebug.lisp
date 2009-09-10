@@ -81,7 +81,7 @@
 			  (if (cdr v) "," "")))
 	   (princ ")" st)
 	   (and lineinfo
-		(format st "(~a line ~a)"
+		(format st (intl:gettext "(~a line ~a)")
 			(short-name (cadr lineinfo)) (car lineinfo)))
 	   (terpri st)
 	   (values fname vals params backtr lineinfo bdlist))
@@ -113,7 +113,7 @@
 		#+gcl(evalhook args nil nil *break-env*)
 		#-gcl(eval args)
 		)
-	       (t (format *debug-io* "~&~S is undefined break command.~%"
+	       (t (format *debug-io* (intl:gettext "~&~S is an undefined break command.~%")
 			  key))))
 
        (defun complete-prop (sym package prop &optional return-list)
@@ -131,11 +131,12 @@
        
 		(cond (return-list (return-from complete-prop all))
 		      ((> (length all) 1)
-		       (format t "~&Not unique with property ~(~a: ~{~s~^, ~}~)."
+               ;; NOTE TO TRANSLATORS: MEANING OF FOLLOWING IS UNKNOWN
+		       (format t (intl:gettext "~&Not unique with property ~(~a: ~{~s~^, ~}~).")
 			       prop all))
 
 		      ((null all)
-		       (format t "~& ~a is not break command" sym))
+		       (format t (intl:gettext "~& No such break command: ~a") sym))
 		      (t (return-from complete-prop
 			   (car all))))))
        )
@@ -409,7 +410,7 @@
 (defvar *quit-tags* nil)
 
 (defun set-env (bkpt)
-  (format *debug-io* "(~a ~a~@[ in ~a~])" (short-name (bkpt-file bkpt))
+  (format *debug-io* (intl:gettext "(~a ~a~@[ in ~a~])") (short-name (bkpt-file bkpt))
 	  (bkpt-file-line bkpt)
 	  nil				; (bkpt-function bkpt)
 	  )
@@ -480,8 +481,8 @@
 
 (defun break-current ()
   (if *break-level*
-      (format *debug-io* "Back to level ~:@(~S~)." (length *break-level*))
-      (format *debug-io* "~&Top level."))
+      (format *debug-io* (intl:gettext "Back to level ~:@(~S~).") (length *break-level*))
+      (format *debug-io* (intl:gettext "~&Top level.")))
   (values))
 
 (defun def-break (keyword fun doc)
@@ -500,11 +501,11 @@
 		collect (cons vv (or (get vv 'break-doc) "Undocumented"))
 		into all
 		finally (setq all (sort all 'alphalessp))
-	      (format t "~
-Break commands start with ':' Any unique substring may be used,~%~
+	      (format t (intl:gettext "~
+Break commands start with ':'. Any unique substring may be used,~%~
 eg :r :re :res all work for :resume.~2%~
 Command      Description~%~
------------  --------------------------------------")   
+-----------  --------------------------------------"))
 		(loop for vv in all
 		   do (format t "~% ~(~12s~)" (car vv))
 		     (format t (cdr vv)))

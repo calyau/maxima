@@ -367,7 +367,7 @@
 	(t (simptimes (list '(mtimes) -1 funct) 1 t))))
 
 (defun lapshift (fun rest)
-  (cond ((atom fun) (merror "Internal error"))
+  (cond ((atom fun) (merror "LAPSHIFT: expected a cons, not ~M" fun))
 	((or (member 'laplace (car fun) :test #'eq) (null rest))
 	 (lapdefint (cond (rest (simptimes (cons '(mtimes)
 						 (cons fun rest)) 1 t))

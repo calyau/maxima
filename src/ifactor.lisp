@@ -160,7 +160,7 @@
 
 (defun $ifactors (n)
   (unless (and (integerp n) (plusp n))
-    (merror "Argument to `ifactors' must be positive integer:~%~M." n))
+    (merror (intl:gettext "ifactors: argument must be a positive integer; found: ~M") n))
   (let* (($intfaclim)
 	 (factor-list (get-factor-list n))
 	 (factor-list (if $factors_only
@@ -458,7 +458,7 @@
 
 (defun $inv_mod (a m)
   (unless (and (integerp a) (integerp m))
-      (merror "Non-integer arguments to `inv_mod': ~%~M ~M" a m))
+      (merror (intl:gettext "inv_mod: arguments must be integers; found: ~M, ~M") a m))
   (inv-mod a m))
 
 ;;; computations on the elliptic curve:
@@ -630,7 +630,7 @@
 (defun $primep (n)
   (if (integerp n)
       (primep (abs n))
-      (merror "Argument to `primep' must be an integer:~%~M." n)))
+      (merror (intl:gettext "primep: argument must be an integer; found: ~M") n)))
 
 (defun primep (n)
   (cond ((= n 1) nil)
@@ -700,7 +700,7 @@
 
 (defun $power_mod (b n m)
   (unless (and (integerp b) (integerp n) (integerp m))
-    (merror "Non-integer arguments to `power_mod': ~%~M ~M ~M" b n m))
+    (merror (intl:gettext "power_mod: arguments must be integers; found: ~M, ~M, ~M") b n m))
   (if (>= n 0)
       (power-mod b n m)
       (let ((inv (inv-mod b m)))
@@ -779,14 +779,14 @@
 
 (defun $next_prime (n)
   (unless (and (integerp n) (plusp n))
-    (merror "Argument to next_prime must be a positive integer:~%~M." n))
+    (merror (intl:gettext "next_prime: argument must be a positive integer; found: ~M") n))
   (if (equal n 1)
       2
       (next-prime (1+ n) 1)))
 
 (defun $prev_prime (n)
   (unless (and (integerp n) (> n 2))
-    (merror "Argument to prev_prime must be an integer greater than 2:~%~M." n))
+    (merror (intl:gettext "prev_prime: argument must be an integer greater than 2; found: ~M") n))
   (if (= n 3)
       2
       (next-prime (1- n) -1)))
@@ -803,7 +803,7 @@
 
 (defun $primes (start end)
   (unless (and (integerp start) (integerp end))
-    (merror "`primes' needs two integer arguments."))
+    (merror (intl:gettext "primes: arguments must be integers; found: ~M, ~M") start end))
   (let ((primes nil))
     ;; take primes from *small-primes* if possible
     (dolist (n *small-primes* (incf start))

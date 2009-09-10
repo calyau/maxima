@@ -48,10 +48,9 @@ Perhaps you meant to enter `~a'.~%"
       (or (> (abs fb) $find_root_abs) (return b))
       (and (plusp (* fa fb))
 	   (cond ((eq $find_root_error t)
-		  (merror "function has same sign at endpoints~%~M"
-			  `((mlist)
-			    ((mequal) ((f) ,a) ,fa)
-			    ((mequal) ((f) ,b) ,fb))))
+              (merror (intl:gettext "find_root: function has same sign at endpoints: ~M, ~M")
+                      `((mequal) ((f) ,a) ,fa)
+                      `((mequal) ((f) ,b) ,fb)))
 		 (t (return $find_root_error))))
       (and (> fa 0.0)
 	   (setq fa (prog2 nil fb (setq fb fa)) a (prog2 nil b (setq b a))))

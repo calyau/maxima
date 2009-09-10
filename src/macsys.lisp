@@ -110,7 +110,7 @@
 		 batch-or-demo-flag)
   (declare (special *socket-connection*))
   (if (eql batch-or-demo-flag :demo)
-      (format t "~% At the _ prompt, type ';' followed by enter to get next demo~&"))
+      (format t (intl:gettext "~% At the _ prompt, type ';' and <enter> to get next demonstration.~&")))
   (catch 'abort-demo
     (do ((r)
 	 (time-before)
@@ -190,26 +190,26 @@
 	(unless $nolabels (set d-tag $%))
 	(setq $_ $__)
 	(when $showtime	;; we don't distinguish showtime:all?? /RJF
-	  (format t "Evaluation took ~,4F seconds (~,4F elapsed)"
+	  (format t (intl:gettext "Evaluation took ~,4F seconds (~,4F elapsed)")
 		  time-used etime-used )
 	  #+(or gcl ecl)
 	  (format t "~%")
 	  #+(or cmu scl sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
 	    (cond ((> total-bytes (* 1024 1024))
-		   (format t " using ~,3F MB.~%"
+		   (format t (intl:gettext " using ~,3F MB.~%")
 			   (/ total-bytes (* 1024.0 1024.0))))
 		  ((> total-bytes 1024)
-		   (format t " using ~,3F KB.~%" (/ total-bytes 1024.0)))
+		   (format t (intl:gettext " using ~,3F KB.~%") (/ total-bytes 1024.0)))
 		  (t
-		   (format t " using ~:D bytes.~%" total-bytes))))
+		   (format t (intl:gettext " using ~:D bytes.~%") total-bytes))))
 
 	  #+allegro
 	  (let ((conses (- (car area-after) (car area-before)))
 		(other (- (cadr area-after) (cadr area-before)))
 		(gctime (- (caddr area-after) (caddr area-before))))
-	    (if (= 0 gctime) nil (format t " including GC time  ~s sec ,"(* 0.001 gctime)))
-	    (format t " using ~s cons-cells and ~s other bytes.~%" conses other)))
+	    (if (= 0 gctime) nil (format t (intl:gettext " including GC time ~s s,") (* 0.001 gctime)))
+	    (format t (intl:gettext " using ~s cons-cells and ~s other bytes.~%") conses other)))
 	(unless $nolabels
           (putprop '$% (cons time-used 0) 'time)
 	  (putprop d-tag (cons time-used  0) 'time))
@@ -224,7 +224,7 @@
 		((#\page)
 		 (terpri *standard-output*)
 		 (princ "_" *standard-output*))
-		((#\?) (mtell "  Pausing.  Type a ';' and Enter to continue demo.~%_"))
+		((#\?) (mtell (intl:gettext "  Pausing. Type a ';' and <enter> to continue demo.~%")))
 		((#\space #\; #\n #\e #\x #\t))
 		((#\newline )
 		 (if quitting (throw 'abort-demo nil) (return nil)))
@@ -248,7 +248,7 @@
   (let ((*standard-input* *debug-io*)
 	(*standard-output* *debug-io*))
     (catch 'break-exit
-      (format t "~%Entering a Maxima break point. Type exit; to resume")
+      (format t (intl:gettext "~%Entering a Maxima break point. Type 'exit;' to resume."))
       (do ((r)) (nil)
 	(fresh-line)
 	(setq r (caddr (let ((*mread-prompt* (break-prompt)))
@@ -299,6 +299,7 @@
     (setf *mread-prompt* (format nil "~a~a~a" *prompt-prefix* *mread-prompt* *prompt-suffix*))
     (third (mread *query-io*))))
 
+;; FUNCTION BATCH APPARENTLY NEVER CALLED. OMIT FROM GETTEXT SWEEP AND DELETE IT EVENTUALLY
 (defun batch (filename &optional demo-p
 	      &aux (orig filename) list
 	      file-obj (accumulated-time 0.0) (abortp t))
@@ -332,32 +333,32 @@
 
 (defun $demo (&rest arg-list)
   (let ((tem ($file_search (car arg-list) $file_search_demo)))
-    (or tem (merror "Could not find ~M in  ~M: ~M"
-		    (car arg-list) '$file_search_demo $file_search_demo))
+    (or tem (merror (intl:gettext "demo: could not find ~M in ~M.")
+		    (car arg-list) '$file_search_demo))
     ($batch tem	'$demo)))
 
 (defmfun $bug_report ()
-  (format t "~%The Maxima bug database is available at~%")
+  (format t (intl:gettext "~%The Maxima bug database is available at~%"))
   (format t "    http://sourceforge.net/tracker/?atid=104933&group_id=4933&func=browse~%")
-  (format t "Submit bug reports by following the 'Add new artifact' link on that page.~%")
-  (format t "Please include the following build information with your bug report:~%")
+  (format t (intl:gettext "Submit bug reports by following the 'Add new' link on that page.~%"))
+  (format t (intl:gettext "Please include the following information with your bug report:~%"))
   (format t "-------------------------------------------------------------~%")
   ($build_info)
   (format t "-------------------------------------------------------------~%")
-  (format t "The above information is also available from the Maxima function build_info().~%~%")
+  (format t (intl:gettext "The above information is also reported by the function 'build_info'.~%~%"))
   "")
 
 (defmfun $build_info ()
-  (format t "~%Maxima version: ~a~%" *autoconf-version*)
-  (format t "Maxima build date: ~a:~a ~a/~a/~a~%"
+  (format t (intl:gettext "~%Maxima version: ~a~%") *autoconf-version*)
+  (format t (intl:gettext "Maxima build date: ~a:~a ~a/~a/~a~%")
 	  (third cl-user:*maxima-build-time*)
 	  (second cl-user:*maxima-build-time*)
 	  (fifth cl-user:*maxima-build-time*)
 	  (fourth cl-user:*maxima-build-time*)
 	  (sixth cl-user:*maxima-build-time*))
-  (format t "host type: ~a~%" *autoconf-host*)
-  (format t "lisp-implementation-type: ~a~%" (lisp-implementation-type))
-  (format t "lisp-implementation-version: ~a~%~%" (lisp-implementation-version))
+  (format t (intl:gettext "Host type: ~a~%") *autoconf-host*)
+  (format t (intl:gettext "Lisp implementation type: ~a~%") (lisp-implementation-type))
+  (format t (intl:gettext "Lisp implementation version: ~a~%~%") (lisp-implementation-version))
   "")
 
 (defvar *maxima-started* nil)
@@ -370,7 +371,7 @@
 (defun macsyma-top-level (&optional (input-stream *standard-input*) batch-flag)
   (let ((*package* (find-package :maxima)))
     (if *maxima-started*
-	(format t "Maxima restarted.~%")
+	(format t (intl:gettext "Maxima restarted.~%"))
 	(progn
 	  (if (not *maxima-quiet*) (maxima-banner))
 	  (setq *maxima-started* t)))
@@ -393,14 +394,14 @@
   (format t *maxima-prolog*)
   (format t "~&Maxima ~a http://maxima.sourceforge.net~%"
       *autoconf-version*)
-  (format t "Using Lisp ~a ~a" (lisp-implementation-type)
+  (format t (intl:gettext "using Lisp ~a ~a") (lisp-implementation-type)
       #-clisp (lisp-implementation-version)
       #+clisp (subseq (lisp-implementation-version)
 	      0 (1+ (search ")" (lisp-implementation-version)))))
-  #+gcl (format t " (aka GCL)")
-  (format t "~%Distributed under the GNU Public License. See the file COPYING.~%")
-  (format t "Dedicated to the memory of William Schelter.~%")
-  (format t "The function bug_report() provides bug reporting information.~%"))
+  #+gcl (format t " (a.k.a. GCL)")
+  (format t (intl:gettext "~%Distributed under the GNU Public License. See the file COPYING.~%"))
+  (format t (intl:gettext "Dedicated to the memory of William Schelter.~%"))
+  (format t (intl:gettext "The function bug_report() provides bug reporting information.~%")))
 
 #+kcl
 (si::putprop :t 'throw-macsyma-top 'si::break-command)
@@ -420,7 +421,7 @@
   (if (and (symbolp name)
 	   (member (char (symbol-name name) 0) '(#\$) :test #'char=))
       (setq name (maxima-string name)))
-  (if $appendfile (merror "already in appendfile, use closefile first"))
+  (if $appendfile (merror (intl:gettext "appendfile: already in appendfile, you must call closefile first.")))
   (let ((stream  (open name :direction :output
 		       :if-exists :append
 		       :if-does-not-exist :create)))
@@ -432,14 +433,14 @@
 	  *terminal-io* $appendfile)
     (multiple-value-bind (sec min hour day month year)
 	(get-decoded-time)
-      (format t "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/~&"
+      (format t (intl:gettext "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/~&")
 	      name year month day hour min sec))
     '$done))
 
 (defmfun $closefile ()
   (cond ($appendfile
 	 (cond ((eq $appendfile *terminal-io*)
-		(format t "~&/*Finished dribbling to ~A.*/~&"
+		(format t (intl:gettext "~&/*Finished dribbling to ~A.*/~&")
 			(nth 2 *appendfile-data*))
 		(setq *terminal-io* (nth 1 *appendfile-data*)))
 	       (t (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
@@ -519,8 +520,8 @@
 
 (defun maxima-lisp-debugger (condition me-or-my-encapsulation)
   (declare (ignore me-or-my-encapsulation))
-  (format t "~&Maxima encountered a Lisp error:~%~% ~A" condition)
-  (format t "~&~%Automatically continuing.~%To reenable the Lisp debugger set *debugger-hook* to nil.~%")
+  (format t (intl:gettext "~&Maxima encountered a Lisp error:~%~% ~A") condition)
+  (format t (intl:gettext "~&~%Automatically continuing.~%To enable the Lisp debugger set *debugger-hook* to nil.~%"))
   (throw 'return-from-debugger t))
 
 (let ((t0-real 0) (t0-run 0)

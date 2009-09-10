@@ -1046,7 +1046,7 @@
                       (list
                         (let ((f-x (mfuncall ',f x)))
                           (if (stringp f-x) f-x
-                            (merror "tex: function ~s did not return a string.~%" ($sconcat ',f)))))
+                            (merror (intl:gettext "tex: function ~s did not return a string.~%") ($sconcat ',f)))))
                       r)))
     (setf (symbol-function glue-f) (coerce `(lambda (x l r) ,f-body) 'function))
     (setf (get op 'tex) glue-f))
@@ -1074,7 +1074,7 @@
     ((stringp e)
      (setq e ($verbify e)))
     ((not (symbolp e))
-     (merror "texput: first argument must be a string or a symbol.")))
+     (merror (intl:gettext "texput: first argument must be a string or a symbol; found: ~M") e)))
 
   (setq s (if ($listp s) (margs s) (list s)))
   

@@ -53,7 +53,7 @@
     	((member f '(%asec %acsc %acot %asech %acsch %acoth) :test #'eq)
 	 ;; asec(x) = acos(1/x), and etc.
 	 (logarc (oldget (oldget (get f '$inverse) 'recip) '$inverse) (inv x)))
-	(t (merror "Bad argument to 'logarc'"))))
+	(t (merror "LOGARC: unrecognized argument: ~M" f))))
 
 (defmfun halfangle (f a)
   (and (mtimesp a)
