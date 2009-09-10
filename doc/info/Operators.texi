@@ -459,51 +459,71 @@ Examples:
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Operator} !
 @ifinfo
 @fnindex Factorial
 @end ifinfo
 The factorial operator.
-For any complex number @code{x} (including integer, rational, and real numbers) except for
-negative integers, @code{x!} is defined as @code{gamma(x+1)}.
 
-For an integer @code{x}, @code{x!} simplifies to the product of the integers from 1 to @code{x} inclusive.
-@code{0!} simplifies to 1.
-For a floating point number @code{x}, @code{x!} simplifies to the value of @code{gamma (x+1)}.
-For @code{x} equal to @code{n/2} where @code{n} is an odd integer,
-@code{x!} simplifies to a rational factor times @code{sqrt (%pi)}
-(since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
-If @code{x} is anything else,
-@code{x!} is not simplified.
+For any complex number @code{x}, except for negative integers, @code{x!} is 
+defined as @code{gamma(x+1)}.
 
-The variables
-@code{factlim}, @code{minfactorial}, and @code{factcomb} control the simplification
-of expressions containing factorials.
+For an integer @code{x}, @code{x!} simplifies to the product of the integers 
+from 1 to @code{x} inclusive. @code{0!} simplifies to 1. For a real or complex 
+number in float or bigfloat precision @code{x}, @code{x!} simplifies to the 
+value of @code{gamma (x+1)}. For @code{x} equal to @code{n/2} where @code{n} is 
+an odd integer, @code{x!} simplifies to a rational factor times 
+@code{sqrt (%pi)} (since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
 
-The functions @code{gamma}, @code{bffac}, and @code{cbffac}
-are varieties of the gamma function.
+The option variables @code{factlim} and @code{gammalim} control the numerical 
+evaluation of factorials for integer and rational arguments. The functions 
+@code{minfactorial} and @code{factcomb} simplifies expressions containing 
+factorials. See @code{factlim}, @code{gammalim}, @code{minfactorial} and 
+@code{factcomb}.
+
+The functions @code{gamma}, @code{bffac}, and @code{cbffac} are varieties of the
+gamma function. @code{bffac} and @code{cbffac} are called internally by 
+@code{gamma} to evaluate the gamma function for real and complex numbers in 
+bigfloat precision.
+
 @code{makegamma} substitutes @code{gamma} for factorials and related functions.
+
+Maxima knows the derivative of the factorial function and the limits for 
+specific values like negative integers.
+
+The option variable factorial_expand controls the simplification of expressions
+like @code{(n+x)!}, where @code{n} is an integer.
 
 See also @code{binomial}.
 
-The factorial of an integer, half-integer, or floating point argument is simplified
-unless the operand is greater than @code{factlim}.
+The factorial of an integer is simplified to an exact number unless the operand 
+is greater than @code{factlim}. The factorial for real and complex numbers is 
+evaluated in float or bigfloat precision.
 
 @c ===beg===
 @c factlim : 10;
-@c [0!, (7/2)!, 4.77!, 8!, 20!];
+@c [0!, (7/2)!, 8!, 20!];
+@c [4,77!, (1.0+%i)!];
+@c [2.86b0!, 1.0b0+%i)!];
 @c ===end===
 @example
-(%i1) factlim : 10;
-(%o1)                          10
-(%i2) [0!, (7/2)!, 4.77!, 8!, 20!];
-            105 sqrt(%pi)
-(%o2)   [1, -------------, 81.44668037931199, 40320, 20!]
-                 16
+(%i1) factlim:10;
+(%o1)                                 10
+(%i2) [0!, (7/2)!, 8!, 20!];
+                            105 sqrt(%pi)
+(%o2)                   [1, -------------, 40320, 20!]
+                                 16
+(%i3) [4.77!, (1.0+%i)!];
+(%o3)    [81.44668037931197, 
+          .3430658398165454 %i + .6529654964201665]
+(%i4) [2.86b0!, (1.0b0+%i)!];
+(%o4) [5.046635586910012b0, 
+       3.430658398165454b-1 %i + 6.529654964201667b-1]
 @end example
 
-The factorial of a complex number, known constant, or general expression is not simplified.
-Even so it may be possible simplify the factorial after evaluating the operand.
+The factorial of a known constant, or general expression is not simplified. Even 
+so it may be possible to simplify the factorial after evaluating the operand.
 
 @c ===beg===
 @c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
@@ -513,22 +533,24 @@ Even so it may be possible simplify the factorial after evaluating the operand.
 (%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
 (%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
 (%i2) ev (%, numer, %enumer);
-(%o2) [(%i + 1)!, 7.188082728976037, 4.260820476357, 
-                                               1.227580202486819]
+(%o2) [.3430658398165454 %i + .6529654964201665, 
+       7.188082728976031, 
+       4.260820476357003, 1.227580202486819]
 @end example
 
-The factorial of an unbound symbol is not simplified.
+@c REMOVING THIS EXAMPLE. IT IS NOT SPECIFIC FOR THE FACTORIAL FUNCTION:
+@c The factorial of an unbound symbol is not simplified.
 
-@c ===beg===
-@c kill (foo);
-@c foo!;
-@c ===end===
-@example
-(%i1) kill (foo);
-(%o1)                         done
-(%i2) foo!;
-(%o2)                         foo!
-@end example
+@c @c ===beg===
+@c @c kill (foo);
+@c @c foo!;
+@c @c ===end===
+@c @example
+@c (%i1) kill (foo);
+@c (%o1)                         done
+@c (%i2) foo!;
+@c (%o2)                         foo!
+@c @end example
 
 Factorials are simplified, not evaluated.
 Thus @code{x!} may be replaced even in a quoted expression.
@@ -542,6 +564,28 @@ Thus @code{x!} may be replaced even in a quoted expression.
 (%o1) [1, -------------, 81.44668037931199, 40320, 
                16
                                              2432902008176640000]
+@end example
+
+Maxima knows the derivative of the factorial function.
+
+@c ===beg===
+@c diff(x!,x);
+@c ===end===
+@example
+(%i1) diff(x!,x);
+(%o1)                           x! psi (x + 1)
+                                      0
+@end example
+
+The option variable factorial_expand controls expansion and simplification of
+expressions with the factorial function.
+
+@c ===beg===
+@c (n+1)!/n!,factorial_expand:true;
+@c ===end===
+@example
+(%i1) (n+1)!/n!,factorial_expand:true;
+(%o1)                                n + 1
 @end example
 
 @opencatbox
