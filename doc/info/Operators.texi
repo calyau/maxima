@@ -492,8 +492,8 @@ bigfloat precision.
 Maxima knows the derivative of the factorial function and the limits for 
 specific values like negative integers.
 
-The option variable factorial_expand controls the simplification of expressions
-like @code{(n+x)!}, where @code{n} is an integer.
+The option variable @code{factorial_expand} controls the simplification of 
+expressions like @code{(n+x)!}, where @code{n} is an integer.
 
 See also @code{binomial}.
 
@@ -577,8 +577,8 @@ Maxima knows the derivative of the factorial function.
                                       0
 @end example
 
-The option variable factorial_expand controls expansion and simplification of
-expressions with the factorial function.
+The option variable @code{factorial_expand} controls expansion and 
+simplification of expressions with the factorial function.
 
 @c ===beg===
 @c (n+1)!/n!,factorial_expand:true;
