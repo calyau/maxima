@@ -910,8 +910,8 @@ Examples:
 @c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), 
 @c        quux (%e, %pi)];
 @c remrule (foo, foorule1);
-@c remrule ("+", "+rule1");
-@c remrule ("@@", "@@rule1");
+@c remrule ("+", ?\+rule1);
+@c remrule ("@@", ?\@\@rule1);
 @c remrule (quux, all);
 @c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), 
 @c         quux (%e, %pi)];
@@ -936,9 +936,9 @@ Examples:
                                      aa
 (%i8) remrule (foo, foorule1);
 (%o8)                          foo
-(%i9) remrule ("+", "+rule1");
+(%i9) remrule ("+", ?\+rule1);
 (%o9)                           +
-(%i10) remrule ("@@@@", "@@@@rule1");
+(%i10) remrule ("@@@@", ?\@@\@@rule1);
 (%o10)                         @@@@
 (%i11) remrule (quux, all);
 (%o11)                        quux
