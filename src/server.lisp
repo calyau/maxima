@@ -54,9 +54,13 @@
                                   :format (if bin :binary :text))
     #+clisp (socket:socket-connect port host :element-type
 				   (if bin '(unsigned-byte 8) 'character))
-    #+(or cmu scl) (sys:make-fd-stream (ext:connect-to-inet-socket host port)
-				       :input t :output t :element-type
-				       (if bin '(unsigned-byte 8) 'character))
+    #+scl (sys:make-fd-stream (ext:connect-to-inet-socket host port)
+			      :input t :output t :element-type
+			      (if bin '(unsigned-byte 8) 'character))
+    #+cmu (sys:make-fd-stream (ext:connect-to-inet-socket host port)
+			      :input t :output t :element-type
+			      (if bin '(unsigned-byte 8) 'character)
+			      #+unicode :external-format #+unicode :utf-8)
     #+sbcl (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
 					:type :stream :protocol :tcp)))
 	     (sb-bsd-sockets:socket-connect
