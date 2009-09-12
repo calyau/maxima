@@ -1414,7 +1414,7 @@
 			(unless (lim-infp (tvar-lim (cadr kernel)))
 			   (break "Invalid trig kernel in tvar-lim"))
 			'$finite)
-		       (t (break "Unhandled kernel in tvar-lim"))))
+		       (t (tay-error "Unhandled kernel in tvar-lim" kernel))))
 	  lim)))))
 
 (defun coef-sign (coef)
