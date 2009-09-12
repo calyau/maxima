@@ -4,7 +4,7 @@
 
 (in-package :maxima)
 
-;;These are the main routines for finding the Laplace Transform
+;; These are the main routines for finding the Laplace Transform
 ;; of special functions   --- written by Yannis Avgoustis
 ;;                        --- modified by Edward Lafferty
 ;;                       Latest mod by jpg 8/21/81
@@ -41,35 +41,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Return the maxima presentation of a bessel function with order v
-;; and arg z.  If flg is 'J, the ti's the J function; otherwise, the I
-;; function.
-(defun bess (v z flg)
-  `((,(if (eq flg 'j)
-	  '%bessel_j
-	  '%bessel_i))
-    ,v ,z))
-
-;;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
-
-;; Gamma function
-(defun gm (expr)
-  (simplifya (list '(%gamma) expr) nil))
-
-;; sin(x)
-(defun sin% (arg)
-  (list '(%sin) arg))
-
-;; Test if X is a number, either Lisp number or a maxima rational.
-(defun nump (x)
-  (cond ((atom x)
-	 (numberp x))
-	((not (atom x))
-	 (eq (caar (simplifya x nil)) 'rat))))
-
-;; cos(x)
-(defun cos% (arg)
-  (list '(%cos) arg))
+; This function is no longer used. DK 09/2009.
+;(defun bess (v z flg)
+;  `((,(if (eq flg 'j)
+;	  '%bessel_j
+;	  '%bessel_i))
+;    ,v ,z))
 
 ;; Return T if a is a non-positive integer.
 ;; (Do we really want maxima-integerp or hyp-integerp here?)
@@ -77,15 +54,15 @@
   (cond ((maxima-integerp a)
 	 (or (zerp a) (minusp a)))))
 
-(defun notnump (x)
-  (not (nump x)))
+; Not used in Maxima core and share.
+;(defun notnump (x)
+;  (not (nump x)))
 
 #+nil
 (defun negnump (x)
   (cond ((not (maxima-integerp x))
 	 (minusp (cadr (simplifya x nil))))
 	(t (minusp x))))
-
 
 ;; Test if EXP is 1 or %e.
 (defun expor1p (exp)
@@ -143,8 +120,9 @@
 
 
 ;; I (rtoy) think this is the tail of the incomplete gamma function.
-(defun gminc (a b)
-  (list '(%gamma_incomplete) a b))
+;; No longer used in Maxima core and share.
+;(defun gminc (a b)
+;  (list '(%gamma_incomplete) a b))
 
 ;; Lommel's little s[u,v](z) function.
 (defun littleslommel (m n z)
@@ -1478,8 +1456,8 @@
 ;;   -> gamma(u+1)*p^(-u-1)
 ;;
 (defun f1p137 (pow)
-  (mul* (gm (add pow 1))
-	(power *par* (sub (mul -1 pow) 1))))
+  (mul (simplify (list '(%gamma) (add pow 1)))
+       (power *par* (sub (mul -1 pow) 1))))
 
 ;; Table of Integral Transforms
 ;;
@@ -1490,13 +1468,13 @@
 ;;
 ;; Re(a) > 0, Re(v) > 0
 (defun f24p146 (c v a)
-  (mul* c
-	(gm v)
-	(power 2 v)
-	(power a (div v 2))
-	(power '$%e (mul* a *par* *par*))
-	(dtford (mul* 2 *par* (power a (1//2)))
-		(mul -1 v))))
+  (mul c
+       (simplify (list '(%gamma) v))
+       (power 2 v)
+       (power a (div v 2))
+       (power '$%e (mul a *par* *par*))
+       (dtford (mul 2 *par* (power a (1//2)))
+               (mul -1 v))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Table of Integral Transforms
@@ -1583,7 +1561,7 @@
 (defun ktfork (a v)
   (let ((z (power (mul* a *par*) (1//2))))
     (cond ((maxima-integerp v)
-	   (kmodbes z v))
+	   (simplify (list '(%bessel_k) v z)))
 	  (t
 	   (simpktf z v)))))
 
@@ -1631,8 +1609,8 @@
 	(pow (power '$%e (mul* z z (inv -4)))))
     (add (mul* (power 2 (div (sub v 1) 2)) ; sub or add ?
 	       z
-	       (gm (inv -2))
-	       (inv (gm (mul* v -1 inv2)))
+	       (simplify (list '(%gamma) (inv -2)))
+	       (inv (simplify (list '(%gamma) (mul v -1 inv2))))
 	       pow
 	       (hgfsimp-exec (list (sub inv2
 					(div v
@@ -1640,9 +1618,9 @@
 			     (list (div 3 2))
 			     (mul* z z inv2)))
 	 (mul* (power 2 (div v 2))
-	       (gm inv2)
+	       (simplify (list '(%gamma) inv2))
 	       pow
-	       (inv (gm (sub inv2 (mul v inv2))))
+	       (inv (simplify (list '(%gamma) (sub inv2 (mul v inv2)))))
 	       (hgfsimp-exec (list (mul* v
 					 -1
 					 inv2))
@@ -1660,9 +1638,9 @@
   (let ((dz2 (div z 2)))
     (mul* '$%pi
 	  (1//2)
-	  (inv (sin% (mul v '$%pi)))
+	  (inv (simplify (list '(%sin) (mul v '$%pi))))
 	  (sub (mul* (power  dz2 (mul -1 v))
-		     (inv (gm (sub 1 v)))
+		     (inv (simplify (list '(%gamma) (sub 1 v))))
 		     (hgfsimp-exec nil
 				   (list (sub 1
 					      v))
@@ -1670,7 +1648,7 @@
 					 z
 					 (inv 4))))
 	       (mul* (power dz2 v)
-		     (inv (gm (add v 1)))
+		     (inv (simplify (list '(%gamma) (add v 1))))
 		     (hgfsimp-exec nil
 				   (list (add v
 					      1))
@@ -2465,16 +2443,16 @@
 	 ;; htjorykti?
 	 (sendexec r
 		   (cond ((eq flg 'bessytj)
-			  (mul (bess i1 a1 'j)
+			  (mul (simlify (list '(%bessel_j) i1 a1))
 			       (ytj i2 a2)))
 			 ((eq flg 'besshtjory)
-			  (mul (bess i1 a1 'j)
+			  (mul (simplify (list '(%bessel_j) i1 a1))
 			       (htjory i2 i a2)))
 			 ((eq flg 'htjoryytj)
 			  (mul (htjory i1 i a1)
 			       (ytj i2 a2)))
 			 ((eq flg 'besskti)
-			  (mul (bess i1 a1 'j)
+			  (mul (simplify (list '(%bessel_j) i1 a1))
 			       (kti i2 a2)))
 			 ((eq flg 'htjorykti)
 			  (mul (htjory i1 i a1)
@@ -2602,9 +2580,9 @@
 		;; We're ready now to compute the transform.
 		(mul* c
 		      (power a (add i2 1//2))
-		      (gm (add (add v i2) 1//2))
-		      (gm (add (sub v i2) 1//2))
-		      (inv (mul* (gm (add (sub v i1) 1))
+		      (simplify (list '(%gamma) (add (add v i2) 1//2)))
+		      (simplify (list '(%gamma) (add (sub v i2) 1//2)))
+		      (inv (mul* (simplify (list '(%gamma) (add (sub v i1) 1)))
 				 (power (add *par* (div a 2))
 					(add (add i2 v) 1//2))))
 		      (hgfsimp-exec (list (add (add i2 v 1//2))
@@ -2672,25 +2650,25 @@
 
 (defun ctpjac (x n v)
   (let ((inv2 (1//2)))
-    (mul* (gm (add v v n))
-	  (inv (gm (add v v)))
-	  (gm (add inv2 v))
-	  (inv (gm (add v inv2 n)))
-	  (pjac x n (sub v inv2)(sub v inv2)))))
+    (mul* (simplify (list '(%gamma) (add v v n)))
+	  (inv (simplify (list '(%gamma) (add v v))))
+	  (simplify (list '(%gamma) (add inv2 v)))
+	  (inv (simplify (list '(%gamma) (add v inv2 n))))
+	  (pjac x n (sub v inv2) (sub v inv2)))))
 
 (defun ttpjac (x n)
   (let ((inv2 (1//2)))
     (mul* (factorial n)
-	  (gm inv2)
-	  (inv (gm (add inv2 n)))
-	  (pjac x n (mul -1 inv2)(mul -1 inv2)))))
+	  (simplify (list '(%gamma) inv2))
+	  (inv (simplify (list '(%gamma) (add inv2 n))))
+	  (pjac x n (mul -1 inv2) (mul -1 inv2)))))
 
 (defun utpjac (x n)
   (let ((inv2 (1//2)))
     (mul* (factorial (add n 1))
 	  inv2
-	  (gm inv2)
-	  (inv (gm (add inv2 n 1)))
+	  (simplify (list '(%gamma) inv2))
+	  (inv (simplify (list '(%gamma) (add inv2 n 1))))
 	  (pjac x n inv2 inv2))))
 
 ;; Hermite He function as a parabolic cylinder function
@@ -2751,13 +2729,19 @@
 ;;                 * {sin[(u-v)*%pi/2]*bessel_j(v,z)
 ;;                     - cos[(u-v)*%pi/2]*bessel_y(v,z)
 (defun slommeltjandy (m n z)
-  (let ((arg (mul* (1//2) '$%pi (sub m n))))
+  (let ((arg (mul (1//2) '$%pi (sub m n))))
     (add (littleslommel m n z)
-	 (mul* (power 2 (sub m 1))
-	       (gm (div (sub (add m 1) n) 2))
-	       (gm (div (add m n 1) 2))
-	       (sub (mul* (sin% arg)(bess n z 'j))
-		    (mul* (cos% arg)(bess n z 'y)))))))
+         (mul (power 2 (sub m 1))
+         (simplify (list '(%gamma) (div (sub (add m 1) n) 2)))
+         (simplify (list '(%gamma) (div (add m n 1) 2)))
+         (sub (mul (simplify (list '(%sin) arg))
+              (simplify (list '(%bessel_j) n z)))
+         (mul (simplify (list '(%cos) arg))
+              ;; (bess n z 'Y) is replaced with bessel_y.
+              ;; The old code causes the use of bessel_i. 
+              ;; The Laplace transform for the S Lommel function
+              ;; needs verification. DK 09/2009.
+              (simplify (list '(bessel_y) n z))))))))
 
 ;; Whittaker W function in terms of Whittaker M function
 ;;
@@ -2766,12 +2750,12 @@
 ;; W[k,u](z) = gamma(-2*u)/gamma(1/2-u-k)*M[k,u](z)
 ;;              + gamma(2*u)/gamma(1/2+u-k)*M[k,-u](z)
 (defun wtm (a i1 i2)
-  (add (mul* (gm (mul -2 i2))
+  (add (mul* (simplify (list '(%gamma) (mul -2 i2)))
 	     (mwhit a i1 i2)
-	     (inv (gm (sub (sub (1//2) i2) i1))))
-       (mul* (gm (add i2 i2))
+	     (inv (simplify (list '(%gamma) (sub (sub (1//2) i2) i1)))))
+       (mul* (simplify (list '(%gamma) (add i2 i2)))
 	     (mwhit a i1 (mul -1 i2))
-	     (inv (gm (sub (add (1//2) i2) i1))))))
+	     (inv (simplify (list '(%gamma) (sub (add (1//2) i2) i1)))))))
 
 ;; Tail of the incomplete gamma function as a Whittaker W function
 ;;
@@ -2842,9 +2826,10 @@
 ;;
 ;; bessel_y(v,z) = bessel_j(v,z)*cot(v*%pi)-bessel_j(-v,z)/sin(v*%pi)
 (defun ytj (i a)
-  (sub (mul* (bess i a 'j) (list '(%cot) (mul i '$%pi)))
-       (mul* (bess (mul -1 i) a 'j)
-	     (inv (sin% (mul i '$%pi))))))
+  (sub (mul (simplify (list '(%bessel_j) i a)) 
+            (simplify (list '(%cot) (mul i '$%pi))))
+       (mul (simplify (list '(%bessel_j) (mul -1 i) a))
+            (inv (simplify (list '(%sin) (mul i '$%pi)))))))
 
 ;; Express parabolic cylinder function as a Whittaker W function.
 ;;
@@ -2867,7 +2852,7 @@
 ;;
 (defun kbatemantw (v a)
   (div (wwhit (add a a) (div v 2) (1//2))
-       (gm (add (div v 2) 1))))
+       (simplify (list '(%gamma) (add (div v 2) 1)))))
 
 ;; Bessel K in terms of Bessel I.
 ;;
@@ -2875,11 +2860,11 @@
 ;;
 ;; bessel_k(v,z) = %pi/2*(bessel_i(-v,z)-bessel_i(v,z))/sin(v*%pi)
 (defun kti (i a)
-  (mul* '$%pi
-	(1//2)
-	(inv (sin% (mul i '$%pi)))
-	(sub (bess (mul -1 i) a 'i)
-	     (bess i a 'i))))
+  (mul '$%pi
+       (1//2)
+       (inv (simplify (list '(%sin) (mul i '$%pi))))
+       (sub (simplify (list '(%bessel_i) (mul -1 i) a))
+            (simplify (list '(%bessel_i) i a)))))
 
 ;; If FLG is non-NIL, return exp(%pi*%i/2).  Otherwise, return
 ;; exp(-%pi*%i*v/2)
@@ -2892,22 +2877,25 @@
 		     (t (mul -1 v))))))
 
 ;; Bessel Y
-(defun bessy (v z)
-  `((%bessel_y) ,v ,z))
+;; No longer used in Maxima core and share.
+;(defun bessy (v z)
+;  `((%bessel_y) ,v ,z))
 
 ;; Bessel K
-(defun kmodbes(z v)
-  `((%bessel_k) ,v ,z))
+;; No longer used in Maxima core and share.
+;(defun kmodbes(z v)
+;  `((%bessel_k) ,v ,z))
 
-(defun tan% (arg)
-  (list '(%tan) arg))
+;; No longer used in Maxima core and share.
+;(defun tan% (arg)
+;  (list '(%tan) arg))
 
 ;; Bessel J or Y, depending on if FLG is 'J or not.
 (defun desjy (v z flg)
   (cond ((eq flg 'j)
-	 (bess v z 'j))
+	 (simplify (list '(%bessel_j) v z)))
 	(t
-	 (bessy v z))))
+	 (simplify (list '(%bessel_y) v z)))))
 
 (defun numjory (v sort z flg)
   (cond ((equal sort 1)
@@ -2930,10 +2918,10 @@
 (defun desmjy (v z flg)
   (cond ((eq flg 'j)
 	 ;; bessel_j(v,z)
-	 (bess v z 'j))
+	 (simplify (list '(%bessel_j) v z)))
 	(t
 	 ;; -bessel_y(v,z)
-	 (mul -1 (bessy v z)))))
+	 (mul -1 (simplify (list '(%bessel_y) v z))))))
 
 ;; Express Hankel function in terms of Bessel J or Y function.
 ;;
@@ -2954,13 +2942,13 @@
 	 ;;
 	 ;; (bessel_j(-v,z) - bessel_j(v,z)*exp(-v*%pi*%i))/(%i*sin(v*%pi*%i))
 	 (div (numjory v sort z 'j)
-	      (mul* '$%i (sin% (mul v '$%pi)))))
+	      (mul '$%i (simplify (list '(%sin) (mul v '$%pi))))))
 	(t
 	 ;; Otherwise, express it in terms of bessel_y.  (Why?)
 	 ;;
 	 ;; (bessel_y(-v,z) - exp(v*%pi*%i)*bessel_y(v,z))/sin(v*%pi)
 	 (div (numjory v sort z 'y)
-	      (sin% (mul v '$%pi))))))
+	      (simplify (list '(%sin) (mul v '$%pi)))))))
 
 ;; The algorithm of the implemented Hermite function %he does not work for
 ;; the known Laplace transforms. For an even or odd integer order, we 
@@ -3128,8 +3116,8 @@
 (defun hstf (v z)
   (let ((d32 (div 3 2)))
     (list (mul* (power (div z 2)(add v 1))
-		(inv (gm d32))
-		(inv (gm (add v d32))))
+		(inv (simplify (list '(%gamma) d32)))
+		(inv (simplify (list '(%gamma) (add v d32)))))
 	  (ref-fpq (list 1)
 		   (list d32 (add v d32))
 		   (mul* (inv -4) z z)))))
@@ -3174,8 +3162,8 @@
 (defun lstf (v z)
   (let ((d32 (div 3 2)))
     (list (mul* (power (div z 2) (add v 1))
-		(inv (gm d32))
-		(inv (gm (add v d32))))
+		(inv (simplify (list '(%gamma) d32)))
+		(inv (simplify (list '(%gamma) (add v d32)))))
 	  (ref-fpq (list 1)
 		   (list d32 (add v d32))
 		   (mul* (inv 4) z z)))))
@@ -3454,8 +3442,8 @@
 ;; jacobi_p(n,a,b,x) = poch(a+1,n)/n!*F(-n,a+1+b+n; a+1; (1-x)/2)
 ;;                   = gamma(a+n+1)/gamma(a+1)/n!*F(-n,a+1+b+n; a+1; (1-x)/2)
 (defun pjactf (n a b x)
-  (list (mul* (gm (add n a 1))
-	      (inv (gm (add a 1)))
+  (list (mul* (simplify (list '(%gamma) (add n a 1)))
+	      (inv (simplify (list '(%gamma) (add a 1))))
 	      (inv (factorial n)))
 	(ref-fpq (list (mul -1 n) (add* n a b 1))
 		 (list (add a 1))
@@ -3497,7 +3485,7 @@
 ;; FIXME: What about the branch cut?  8.1.2 is for z not on the real
 ;; line with -1 < z < 1.
 (defun ptf (n m z)
-  (list (mul (inv (gm (sub 1 m)))
+  (list (mul (inv (simplify (list '(%gamma) (sub 1 m))))
 	     (power (div (add z 1)
 			 (sub z 1))
 		    (div m 2)))
@@ -3518,9 +3506,9 @@
 (defun qtf (n m z)
   (list (mul* (power '$%e (mul* m '$%pi '$%i))
 	      (power '$%pi (1//2))
-	      (gm (add* m n 1))
+	      (simplify (list '(%gamma) (add* m n 1)))
 	      (power 2 (sub -1 n))
-	      (inv (gm (add n (div 3 2))))
+	      (inv (simplify (list '(%gamma) (add n (div 3 2)))))
 	      (power z (mul -1 (add* m n 1)))
 	      (power (sub (mul z z) 1)
 		     (div m 2)))
@@ -3602,8 +3590,8 @@
 ;;    = (z/2)^(u+v)/gamma(u+1)/gamma(v+1) *
 ;;        2F3((u+v+1)/2, (u+v+2)/2; u+1, v+1, u+v+1; -z^2)
 (defun j2tf (n m arg)
-  (list (mul* (inv (gm (add n 1)))
-	      (inv (gm (add m 1)))
+  (list (mul* (inv (simplify (list '(%gamma) (add n 1))))
+	      (inv (simplify (list '(%gamma) (add m 1))))
 	      (inv (power 2 (add n m)))
 	      (power arg (add n m)))
 	(ref-fpq (list (add* (1//2) (div n 2) (div m 2))
@@ -3752,7 +3740,7 @@
 ;;
 ;; The args below are s, [a's], [p's], c^k, k.
 (defun f19p220-simp (s l1 l2 cf k)
-  (mul* (gm s)
+  (mul* (simplify (list '(%gamma) s))
 	(inv (power *par* s))
 	(hgfsimp-exec (append l1 (addarglist s k))
 		      l2
@@ -3773,7 +3761,7 @@
 (defun j1tf (v z)
   (list (mul* (inv (power 2 v))
 	      (power z v)
-	      (inv (gm (add v 1))))
+	      (inv (simplify (list '(%gamma) (add v 1)))))
 	(ref-fpq nil
 		 (list (add v 1))
 		 (mul (inv -4)(power z 2)))))
@@ -3833,11 +3821,11 @@
        (power a (inv -2))
        (power *par* (mul -1 u))
        (power '$%e (div a (mul -2 *par*)))
-       (sub (mul (tan% (mul '$%pi (sub u v)))
-		 (gm (add u v (inv 2)))
-		 (inv (gm (add v v 1)))
+       (sub (mul (simplify (list '(%tan) (mul '$%pi (sub u v))))
+		 (simplify (list '(%gamma) (add u v (inv 2))))
+		 (inv (simplify (list '(%gamma) (add v v 1))))
 		 (mwhit (div a *par*) u v))
-	    (mul `((%sec) ,(mul '$%pi (sub u v)))
+	    (mul (simplify (list '(%sec) (mul '$%pi (sub u v))))
 		 (wwhit (div a *par*) u v)))))
 
 ;; Table of Integral Transforms
@@ -3870,7 +3858,7 @@
 (defun f2p105v2cond-simp (m v a)
   (mul -2.
        (power '$%pi -1.)
-       (gm (add m v))
+       (simplify (list '(%gamma) (add m v)))
        (power (add (mul a a) (mul *par* *par*))
 	      (mul -1. (inv 2.) m))
        (leg2fsimp (sub m 1.)
@@ -3892,7 +3880,7 @@
 ;; assoc_legendre_p!
 #+nil
 (defun leg1fsimp (m v z)
-  (mul (inv (gm (sub 1. m)))
+  (mul (inv (simplify (list '(%gamma) (sub 1. m))))
        (power (div (add z 1.) (sub z 1.)) (div m 2.))
        (hgfsimp-exec (list (mul -1. v) (add v 1.))
 		     (list (sub 1. m))
@@ -3918,9 +3906,9 @@
 	(nil
 	 (mul (power '$%e (mul m '$%pi '$%i))
 	      (power '$%pi (inv 2.))
-	      (gm (add m v 1.))
+	      (simplify (list '(%gamma) (add m v 1.)))
 	      (inv (power 2. (add v 1.)))
-	      (inv (gm (add v (div 3. 2.))))
+	      (inv (simplify (list '(%gamma) (add v (div 3. 2.)))))
 	      (power z (sub -1. (add m v)))
 	      (power (sub (mul z z) 1.) (mul (inv 2.) m))
 	      (hgfsimp-exec (list (div (add m v 1.) 2.)
