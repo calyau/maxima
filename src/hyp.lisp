@@ -71,6 +71,32 @@
     (defmacro =-1//2 (x) `(alike1 ,x -1//2))
     )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Functions moved from hypgeo.lisp to this place.
+;;; These functions are no longer used in hypgeo.lisp.
+
+;; Gamma function
+(defun gm (expr)
+  (simplifya (list '(%gamma) expr) nil))
+
+;; sin(x)
+(defun sin% (arg)
+  (list '(%sin) arg))
+
+;; cos(x)
+(defun cos% (arg)
+  (list '(%cos) arg))
+
+;; Test if X is a number, either Lisp number or a maxima rational.
+(defun nump (x)
+  (cond ((atom x)
+         (numberp x))
+        ((not (atom x))
+         (eq (caar (simplifya x nil)) 'rat))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun hyp-integerp (x)
   ;; In this file, maxima-integerp was used in many places.  But it
   ;; seems that this code expects maxima-integerp to return T when it
