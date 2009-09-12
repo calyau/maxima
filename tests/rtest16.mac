@@ -1010,11 +1010,28 @@ limit('diff(x+1,x),x,2);
 limit('integrate(x+1,x),x,2);
 'limit('integrate(x+1,x),x,2);
 
+limit(integrate(f(t),t,0,x),x,0,plus);
+'limit(integrate(f(t),t,0,x),x,0,plus);
+
 limit(integrate(t,t,0,x)/x,x,inf);
 inf;
 
 (assume(a>2), limit(integrate(t/log(t),t,2,a)/a,a,inf));
 inf;
+
+/* limit(1/inf-1/minf) => 0+0 - ID: 903074 */
+limit(1/inf-1/minf);
+0;
+
+/* 1-arg limit: limit(a*inf-inf) => minf - ID: 1385306 */
+limit(a*inf-inf);
+minf+inf;
+/* ideally should be inf, if two infs represent same var */
+
+/* limit(1 - (-1/2)^inf) --> inf - ID: 2853506 */
+limit(1 - (-1/2)^inf);
+1-(-1)^inf/2^inf;
+/* ideally should be 1 */
 
 end;
 end$

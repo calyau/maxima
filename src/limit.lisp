@@ -432,13 +432,13 @@ It appears in LIMIT and DEFINT.......")
 
 (defun simpinf (exp)
   (declare (special exp val))
-  (let ((infc (infcount exp)) nexp)
+  (let ((infc (infcount exp)) nexp inftype)
     (cond
       ((= infc 0)  exp)
       ((= infc 1)  (setq infc (inf-typep exp))
        ($limit (subst var infc exp) var infc))
       (t
-       (setq nexp (cons (car exp) (mapcar 'simpinf (cdr exp))))
+       (setq nexp (cons `(,(caar exp)) (mapcar 'simpinf (cdr exp))))
        (setq infc (infcount nexp))
        (cond
 	 ((among '$und nexp)  '$und)
@@ -456,12 +456,11 @@ It appears in LIMIT and DEFINT.......")
 	 ((< infc 2)  (simpinf nexp))
 	 ((mplusp nexp)
 	  (cond ((member '$infinity (cdr nexp) :test #'eq) '$infinity)
-		(t (setq infc (inf-typep nexp))
-		   (cond
-		     ((amongl (delete infc (copy-list '($infinity $minf inf)) :test #'equal)
-			      nexp)
-		      '$und)
-		     (t infc)))))
+		((eq 1 (length
+			(setq inftype (intersection '($infinity $minf $inf)
+						    nexp))))
+		 (car inftype))	; only one type of infinity found
+		(t nexp)))
 	 (t nexp))))))
 
 (defun simpab (small)
@@ -988,7 +987,8 @@ It appears in LIMIT and DEFINT.......")
     (cond ((involve e '(mfactorial)) nil)
 
 	  ;; functions that are defined at their discontinuities
-	  ((amongl '($atan2 $floor $round $ceiling %signum) e) nil)
+	  ((amongl '($atan2 $floor $round $ceiling %signum %integrate)
+		   e) nil)
 
 	  ;; substitute value into expression
 	  ((eq (setq ans (no-err-sub (ridofab v) e)) t)
@@ -2864,11 +2864,10 @@ It appears in LIMIT and DEFINT.......")
 ;; because the rest of the limit code thinks the gensym is const wrt x.
 (defun hide (exp)
   (cond ((atom exp) exp)
-	((cond ((or (eq '%derivative (caar exp))
-		    (and (eq '%integrate (caar exp))	; indefinite integral
-			 (null (cdddr exp))))
-		(hidelim exp (caar exp)))
-	       (t ())))
+	((or (eq '%derivative (caar exp))
+	     (and (eq '%integrate (caar exp))	; indefinite integral
+		  (null (cdddr exp))))
+	 (hidelim exp (caar exp)))
 	(t (cons (car exp) (mapcar 'hide (cdr exp))))))
 
 (defun hidelim (exp func)
