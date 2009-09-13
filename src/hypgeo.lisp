@@ -71,6 +71,9 @@
 (defun parp (a)
   (eq a *par*))
 
+(defun hasvarnovarp (a) 
+  (and (hasvar a) (not (varp a))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Recognize c*u^v + a and a=0
@@ -889,9 +892,9 @@
   ;; want to expand the form with $exponentialize to convert trig and
   ;; hyperbolic functions to exponential functions that we can handle.
   (let ((form (let (($exponentialize t))
-		($factor (resimplify exp))))) ; At first we factor the integrand
+		($factor (resimplify exp))))) ; At first factor the integrand.
 
-    ;; Because we call defintegrate recursivley, we add code to end the
+    ;; Because we call defintegrate recursively, we add code to end the
     ;; recursion safely.
 
     (when (atom form)
@@ -1135,15 +1138,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Evaluate the transform of a sum as sum of transforms.
+(defun distrdefexecinit (fun)
+  (cond ((equal (caar fun) 'mplus)
+         (distrdefexec (cdr fun)))
+        (t (defexec fun var))))
+
+;; FUN is a list of addends.  Compute the transform of each addend and
+;; add them up.
+(defun distrdefexec (fun)
+  (cond ((null fun) 0)
+        (t (add (defexec (car fun) var)
+                (distrdefexec (cdr fun))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; Compute transform of EXP wrt the variable of integration VAR.
-#+nil
-(defun defexec (exp var)
-  (prog(l a)
-     (setq exp (simplifya exp nil))
-     (cond ((setq l (defltep exp))
-	    (setq a (cdras 'a l))
-	    (return (negtest l a))))
-     (return 'other-defint-to-follow-defexec)))
 
 (defun defexec (exp var)
   (let* ((*hyp-return-noun-flag* nil) ; We reset the flag.
@@ -1239,9 +1249,6 @@
 	   ((coeffpp) (c freevar)))))
 	((coeffpp) (d zerp)))
       nil))
-
-(defun hasvarnovarp (a) 
-  (and (hasvar a) (not (varp a))))
 
 ;;it dispatches according to the kind of transform it matches
 
@@ -1371,8 +1378,10 @@
 ;	(t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Laplace transform of c*t^v*exp(-p*t+e*f).  L contains the pattern
-;; for c*t^v.
+;;; 
+;;; Algorithm 1: Laplace transform of c*t^v*exp(-s*t+e*f)
+;;;
+;;; L contains the pattern for c*t^v.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun lt-exp (l e f)
@@ -1398,26 +1407,46 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Pattern for the routine lt-exp
+
+;; Recognize t^2
 (defun t^2 (exp)
   (m2 exp '((mexpt)(t varp) 2) nil))
 
+;; Recognize sqrt(t)
 (defun sqroott (exp)
   (m2 exp '((mexpt)(t varp)((rat) 1 2)) nil))
 
+;; Recognize t^-1
 (defun t^-1 (exp)
   (m2 exp '((mexpt)(t varp) -1) nil))
 
+;; Recognize %e^-t
 (defun e^-t (exp)
   (m2 exp
       '((mexpt) $%e ((mtimes) -1 (t varp)))
       nil))
 
+;; Recognize %e^t
 (defun e^t (exp)
   (m2 exp
       '((mexpt) $%e (t varp))
       nil))
 
-;; Check if conditions for f24p146 hold
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Algorithm 1.1: Laplace transform of c*t^v*exp(-a*t^2)
+;;;
+;;; Table of Integral Transforms
+;;;
+;;; p. 146, formula 24:
+;;;
+;;; t^(v-1)*exp(-t^2/8/a)
+;;;   -> gamma(v)*2^v*a^(v/2)*exp(a*p^2)*D[-v](2*p*sqrt(a))
+;;;
+;;; Re(a) > 0, Re(v) > 0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun f24p146test (c v a)
   (cond ((and (eq (asksign a) '$positive)
 	      (eq (asksign v) '$positive))
@@ -1426,29 +1455,30 @@
 	(t
          (setq *hyp-return-noun-flag* 'fail-on-f24p146test))))
 
+(defun f24p146 (c v a)
+  (mul c
+       (simplify (list '(%gamma) v))
+       (power 2 v)
+       (power a (div v 2))
+       (power '$%e (mul a *par* *par*))
+       (dtford (mul 2 *par* (power a (1//2)))
+               (mul -1 v))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Algorithm 1.2: Laplace transform of c*t^v*exp(-a*sqrt(t))
+;;;
+;;; Table of Integral Transforms
+;;;
+;;; p. 147, formula 35:
+;;;
+;;; (2*t)^(v-1)*exp(-2*sqrt(a)*sqrt(t))
+;;;    -> gamma(2*v)*p^(-v)*exp(a/p/2)*D[-2*v](sqrt(2*a/p))
+;;;
+;;; Re(v) > 0, Re(p) > 0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; Check if conditions for f35p147 hold
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defun f35p147test (c v a)
-  (cond ((eq (asksign v) '$positive)
-	 ;; v must be positive
-	 (f35p147 c v a))
-	(t
-	 (if *hyp-return-noun-form-p*
-	     `((%specint) ,(mul* c
-				 (pow (mul 2 var)
-				      (add v -1))
-				 (pow '$%e (mul -2
-						(pow a 1//2)
-						(pow var 1//2)))
-				 (pow '$%e (mul -1 *par* var)))
-	       ,var)
-	     'fail-on-f35p147test))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun f35p147test (c v a)
   (cond ((eq (asksign (add v 1)) '$positive)
 	 ;; v must be positive
@@ -1458,6 +1488,94 @@
 	 ;; form will be constructed in the routine DEFEXEC.
 	 (setq *hyp-return-noun-flag* 'fail-on-f35p147test))))
 
+(defun f35p147 (c v a)
+  ;; We have not done the calculation v->v+1 and a-> a^2/4
+  ;; and subsitute here accordingly.
+  (let ((v (add v 1)))
+    (mul
+      c
+      (simplify (list '(%gamma) (add v v)))
+      (power 2 (sub 1 v))               ; Is this supposed to be here?
+      (power *par* (mul -1 v))
+      (power '$%e (mul a a (inv 8) (inv *par*)))
+      ;; We need an additional factor -1 to get the expected results.
+      ;; What is the mathematically reason?
+      (dtford (mul -1 a (inv (power (mul 2 *par*) (inv 2)))) (mul -2 v)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Express a parabolic cylinder function as either a parabolic
+;; cylinder function or as hypergeometric function.
+;;
+;; Tables of Integral Transforms, p. 386 gives this definition:
+;;
+;; D[v](z) = 2^(v/2+1/4)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
+
+(defmvar $prefer_d nil)
+
+(defun dtford (z v)
+  (let ((inv4 (inv 4)))
+    (cond ((or $prefer_d (whittindtest (add (div v 2) inv4) inv4))
+           (parcyl z v))
+          (t (simpdtf z v)))))
+
+(defun whittindtest (i1 i2)
+  (or (maxima-integerp (add i2 i2))
+      (neginp (sub (sub (1//2) i2) i1))
+      (neginp (sub (add (1//2) i2) i1))))
+
+;; Express parabolic cylinder function as a hypergeometric function.
+;;
+;; A&S 19.3.1 says
+;;
+;; U(a,x) = D[-a-1/2](x)
+;;
+;; and A&S 19.12.3 gives
+;;
+;; U(a,+/-x) = sqrt(%pi)*2^(-1/4-a/2)*exp(-x^2/4)/gamma(3/4+a/2)*M(a/2+1/4,1/2,x^2/2)
+;;              -/+ sqrt(%pi)*2^(1/4-a/2)*x*exp(-x^2/4)/gamma(1/4+a/2)*M(a/2+3/4,3/2,x^2/2)
+;;
+;; So
+;;
+;; D[v](z) = U(-v-1/2,z)
+;;         = sqrt(%pi)*2^(v/2+1/2)*x*exp(-x^2/4)*M(1/2-v/2,3/2,x^2/2)/gamma(-v/2)
+;;             + sqrt(%pi)*2^(v/2)*exp(-x^2/4)/gamma(1/2-v/2)*M(-v/2,1/2,x^2/2)
+
+(defun simpdtf (z v)
+  (let ((inv2 (1//2))
+        (pow (power '$%e (mul* z z (inv -4)))))
+    (add (mul* (power 2 (div (sub v 1) 2)) ; sub or add ?
+               z
+               (simplify (list '(%gamma) (inv -2)))
+               (inv (simplify (list '(%gamma) (mul v -1 inv2))))
+               pow
+               (hgfsimp-exec (list (sub inv2
+                                        (div v
+                                             2)))
+                             (list (div 3 2))
+                             (mul* z z inv2)))
+         (mul* (power 2 (div v 2))
+               (simplify (list '(%gamma) inv2))
+               pow
+               (inv (simplify (list '(%gamma) (sub inv2 (mul v inv2)))))
+               (hgfsimp-exec (list (mul* v
+                                         -1
+                                         inv2))
+                             (list inv2)
+                             (mul* z z inv2))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Algorithm 1.3: Laplace transform of t^v*exp(1/t)
+;;;
+;;; Table of Integral Transforms
+;;;
+;;; p. 146, formula 29:
+;;;
+;;; t^(v-1)*exp(-a/t/4)
+;;;    -> 2*(a/p/4)^(v/2)*bessel_k(v, sqrt(a)*sqrt(p))
+;;;
+;;; Re(a) > 0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Check if conditions for f29p146test hold
@@ -1466,6 +1584,94 @@
 	 (f29p146 c v a))
 	(t
          (setq *hyp-return-noun-flag* 'fail-on-f29p146test))))
+
+(defun f29p146 (c v a)
+  (mul* 2 c
+        (power (mul* a (inv 4) (inv *par*))
+               (div v 2))
+        (ktfork a v)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; bessel_k(v, sqrt(a)*sqrt(p)) in terms of bessel_k or in terms of
+;; hypergeometric functions.
+;;
+;; Choose bessel_k if the order v is an integer.  (Why?)
+
+(defun ktfork (a v)
+  (let ((z (power (mul* a *par*) (1//2))))
+    (cond ((maxima-integerp v)
+           (simplify (list '(%bessel_k) v z)))
+          (t
+           (simpktf z v)))))
+
+;; Express the Bessel K function in terms of hypergeometric functions.
+;;
+;; K[v](z) = %pi/2*(bessel_i(-v,z)-bessel(i,z))/sin(v*%pi)
+;;
+;; and
+;;
+;; bessel_i(v,z) = (z/2)^v/gamma(v+1)*0F1(;v+1;z^2/4)
+
+(defun simpktf (z v)
+  (let ((dz2 (div z 2)))
+    (mul* '$%pi
+          (1//2)
+          (inv (simplify (list '(%sin) (mul v '$%pi))))
+          (sub (mul* (power  dz2 (mul -1 v))
+                     (inv (simplify (list '(%gamma) (sub 1 v))))
+                     (hgfsimp-exec nil
+                                   (list (sub 1
+                                              v))
+                                   (mul* z
+                                         z
+                                         (inv 4))))
+               (mul* (power dz2 v)
+                     (inv (simplify (list '(%gamma) (add v 1))))
+                     (hgfsimp-exec nil
+                                   (list (add v
+                                              1))
+                                   (mul* z
+                                         z
+                                         (inv 4))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Algorithm 1.4: Laplace transform of exp(exp(-t))
+;;;
+;;; Table of Integral Transforms
+;;;
+;;; p. 147, formula 36:
+;;;
+;;; exp(-a*exp(-t))
+;;;   -> a^(-p)*gamma(p,a)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun f36p147 (c a)
+  (let ((-a (mul -1 a)))
+    (mul c
+         (power -a (mul -1 *par*))
+         `(($gammagreek) ,*par* ,-a))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Algorithm 1.5: Laplace transform of exp(exp(t))
+;;;
+;;; Table of Integral Transforms
+;;;
+;;; p. 147, formula 36:
+;;;
+;;; exp(-a*exp(t))
+;;;   -> a^(-p)*gamma_incomplete(-p,a)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun f37p147 (c a)
+  (let ((-a (mul -1 a)))
+    (mul c
+         (power -a *par*)
+         ($gamma_incomplete (mul -1 *par*) -a))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Check if conditions for f1p137 hold
 (defun f1p137test (pow)
@@ -1484,203 +1690,6 @@
 (defun f1p137 (pow)
   (mul (simplify (list '(%gamma) (add pow 1)))
        (power *par* (sub (mul -1 pow) 1))))
-
-;; Table of Integral Transforms
-;;
-;; p. 146, formula 24:
-;;
-;; t^(v-1)*exp(-t^2/8/a)
-;;   -> gamma(v)*2^v*a^(v/2)*exp(a*p^2)*D[-v](2*p*sqrt(a))
-;;
-;; Re(a) > 0, Re(v) > 0
-(defun f24p146 (c v a)
-  (mul c
-       (simplify (list '(%gamma) v))
-       (power 2 v)
-       (power a (div v 2))
-       (power '$%e (mul a *par* *par*))
-       (dtford (mul 2 *par* (power a (1//2)))
-               (mul -1 v))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Table of Integral Transforms
-;;
-;; p. 147, formula 35:
-;;
-;; (2*t)^(v-1)*exp(-2*sqrt(a)*sqrt(t))
-;;    -> gamma(2*v)*p^(-v)*exp(a/p/2)*D[-2*v](sqrt(2*a/p))
-;;
-;; Re(v) > 0, Re(p) > 0
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-#+nil
-(defun f35p147 (c v a)
-  (mul* c
-	(gm (add v v))
-	(power 2 (sub 1 v))		; Is this supposed to be here?
-	(power *par* (mul -1 v))
-	(power '$%e (mul* a (1//2) (inv *par*)))
-	(dtford (power (mul* 2 a (inv *par*))
-		       (1//2))
-		(mul -2 v))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun f35p147 (c v a)
-  ;; We have not done the calculation v->v+1 and a-> a^2/4
-  ;; and subsitute here accordingly.
-  (let ((v (add v 1)))
-    (mul
-      c
-      (simplify (list '(%gamma) (add v v)))
-      (power 2 (sub 1 v))		; Is this supposed to be here?
-      (power *par* (mul -1 v))
-      (power '$%e (mul a a (inv 8) (inv *par*)))
-      ;; We need an additional factor -1 to get the expected results.
-      ;; What is the mathematically reason?
-      (dtford (mul -1 a (inv (power (mul 2 *par*) (inv 2)))) (mul -2 v)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Table of Integral Transforms
-;;
-;; p. 147, formula 36:
-;;
-;; exp(-a*exp(-t))
-;;   -> a^(-p)*gamma(p,a)
-(defun f36p147 (c a)
-  (let ((-a (mul -1 a)))
-    (mul* c
-	  (power -a (mul -1 *par*))
-	 `(($gammagreek) ,*par* ,-a))))
-
-;; Table of Integral Transforms
-;;
-;; p. 147, formula 36:
-;;
-;; exp(-a*exp(t))
-;;   -> a^(-p)*gamma_incomplete(-p,a)
-(defun f37p147 (c a)
-  (let ((-a (mul -1 a)))
-    (mul c
-         (power -a *par*)
-         ($gamma_incomplete (mul -1 *par*) -a))))
-
-;; Table of Integral Transforms
-;;
-;; p. 146, formula 29:
-;;
-;; t^(v-1)*exp(-a/t/4)
-;;    -> 2*(a/p/4)^(v/2)*bessel_k(v, sqrt(a)*sqrt(p))
-;;
-;; Re(a) > 0
-(defun f29p146 (c v a)
-  (mul* 2 c
-	(power (mul* a (inv 4) (inv *par*))
-	       (div v 2))
-	(ktfork a v)))
-
-;; bessel_k(v, sqrt(a)*sqrt(p)) in terms of bessel_k or in terms of
-;; hypergeometric functions.
-;;
-;; Choose bessel_k if the order v is an integer.  (Why?)
-(defun ktfork (a v)
-  (let ((z (power (mul* a *par*) (1//2))))
-    (cond ((maxima-integerp v)
-	   (simplify (list '(%bessel_k) v z)))
-	  (t
-	   (simpktf z v)))))
-
-;; Express a parabolic cylinder function as either a parabolic
-;; cylinder function or as hypergeometric function.
-;;
-;; Tables of Integral Transforms, p. 386 gives this definition:
-;;
-;; D[v](z) = 2^(v/2+1/4)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
-;;
-#+nil
-(defun dtford (z v)
-  (cond ((let ((inv4 (inv 4)))
-	   (whittindtest (add (div v 2) inv4) inv4))
-	 (parcyl z v))
-	(t (simpdtf z v))))
-
-(defmvar $prefer_d nil)
-
-(defun dtford (z v)
-  (let ((inv4 (inv 4)))
-    (cond ((or $prefer_d (whittindtest (add (div v 2) inv4) inv4))
-	   (parcyl z v))
-	  (t (simpdtf z v)))))
-
-;; Express parabolic cylinder function as a hypergeometric function.
-;;
-;; A&S 19.3.1 says
-;;
-;; U(a,x) = D[-a-1/2](x)
-;;
-;; and A&S 19.12.3 gives
-;;
-;; U(a,+/-x) = sqrt(%pi)*2^(-1/4-a/2)*exp(-x^2/4)/gamma(3/4+a/2)*M(a/2+1/4,1/2,x^2/2)
-;;              -/+ sqrt(%pi)*2^(1/4-a/2)*x*exp(-x^2/4)/gamma(1/4+a/2)*M(a/2+3/4,3/2,x^2/2)
-;;
-;; So
-;;
-;; D[v](z) = U(-v-1/2,z)
-;;         = sqrt(%pi)*2^(v/2+1/2)*x*exp(-x^2/4)*M(1/2-v/2,3/2,x^2/2)/gamma(-v/2)
-;;             + sqrt(%pi)*2^(v/2)*exp(-x^2/4)/gamma(1/2-v/2)*M(-v/2,1/2,x^2/2)
-;;
-(defun simpdtf (z v)
-  (let ((inv2 (1//2))
-	(pow (power '$%e (mul* z z (inv -4)))))
-    (add (mul* (power 2 (div (sub v 1) 2)) ; sub or add ?
-	       z
-	       (simplify (list '(%gamma) (inv -2)))
-	       (inv (simplify (list '(%gamma) (mul v -1 inv2))))
-	       pow
-	       (hgfsimp-exec (list (sub inv2
-					(div v
-					     2)))
-			     (list (div 3 2))
-			     (mul* z z inv2)))
-	 (mul* (power 2 (div v 2))
-	       (simplify (list '(%gamma) inv2))
-	       pow
-	       (inv (simplify (list '(%gamma) (sub inv2 (mul v inv2)))))
-	       (hgfsimp-exec (list (mul* v
-					 -1
-					 inv2))
-			     (list inv2)
-			     (mul* z z inv2))))))
-
-;; Express the Bessel K function in terms of hypergeometric functions.
-;;
-;; K[v](z) = %pi/2*(bessel_i(-v,z)-bessel(i,z))/sin(v*%pi)
-;;
-;; and
-;;
-;; bessel_i(v,z) = (z/2)^v/gamma(v+1)*0F1(;v+1;z^2/4)
-(defun simpktf (z v)
-  (let ((dz2 (div z 2)))
-    (mul* '$%pi
-	  (1//2)
-	  (inv (simplify (list '(%sin) (mul v '$%pi))))
-	  (sub (mul* (power  dz2 (mul -1 v))
-		     (inv (simplify (list '(%gamma) (sub 1 v))))
-		     (hgfsimp-exec nil
-				   (list (sub 1
-					      v))
-				   (mul* z
-					 z
-					 (inv 4))))
-	       (mul* (power dz2 v)
-		     (inv (simplify (list '(%gamma) (add v 1))))
-		     (hgfsimp-exec nil
-				   (list (add v
-					      1))
-				   (mul* z
-					 z
-					 (inv 4))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dispatches according to the special functions involved in the
@@ -2633,11 +2642,6 @@
 				    (div (sub *par* (div a 2))
 					 (add *par* (div a 2)))))))))))))
 
-(defun whittindtest (i1 i2)
-  (or (maxima-integerp (add i2 i2))
-      (neginp (sub (sub (1//2) i2) i1))
-      (neginp (sub (add (1//2) i2) i1))))
-
 ;; Compute r*exp(-var**par*).
 ;;
 ;; (Probably r*exp(-p*t), where t is the variable of integration and p
@@ -2844,23 +2848,10 @@
 	 (distrexec (cdr fun)))
 	(t (hypgeo-exec fun var *par*))))
 
-;; Evaluate the transform of a sum as sum of transforms.
-(defun distrdefexecinit (fun)
-  (cond ((equal (caar fun) 'mplus)
-	 (distrdefexec (cdr fun)))
-	(t (defexec fun var))))
-
 (defun distrexec (fun)
   (cond ((null fun) 0)
 	(t (add (hypgeo-exec (car fun) var *par*)
 		(distrexec (cdr fun))))))
-
-;; FUN is a list of addends.  Compute the transform of each addend and
-;; add them up.
-(defun distrdefexec (fun)
-  (cond ((null fun) 0)
-	(t (add (defexec (car fun) var)
-		(distrdefexec (cdr fun))))))
 
 ;; Express bessel_y in terms of bessel_j.
 ;;
