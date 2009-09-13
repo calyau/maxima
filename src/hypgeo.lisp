@@ -47,12 +47,6 @@
 ;	  '%bessel_i))
 ;    ,v ,z))
 
-;; Return T if a is a non-positive integer.
-;; (Do we really want maxima-integerp or hyp-integerp here?)
-(defun neginp (a)
-  (cond ((maxima-integerp a)
-	 (or (zerp a) (minusp a)))))
-
 ; Not used in Maxima core and share.
 ;(defun notnump (x)
 ;  (not (nump x)))
@@ -63,10 +57,13 @@
 	 (minusp (cadr (simplifya x nil))))
 	(t (minusp x))))
 
-;; Test if EXP is 1 or %e.
+;;; Test if EXP is 1 or %e.
+
 (defun expor1p (exp)
   (or (equal exp 1)
       (eq exp '$%e)))
+
+;;; Test functions for pattern match
 
 (defun parp (a)
   (eq a *par*))
@@ -1515,7 +1512,8 @@
 
 (defun dtford (z v)
   (let ((inv4 (inv 4)))
-    (cond ((or $prefer_d (whittindtest (add (div v 2) inv4) inv4))
+    (cond ((or $prefer_d 
+               (whittindtest (add (div v 2) inv4) inv4))
            (parcyl z v))
           (t (simpdtf z v)))))
 
@@ -1523,6 +1521,13 @@
   (or (maxima-integerp (add i2 i2))
       (neginp (sub (sub (1//2) i2) i1))
       (neginp (sub (add (1//2) i2) i1))))
+
+;; Return T if a is a non-positive integer.
+;; (Do we really want maxima-integerp or hyp-integerp here?)
+(defun neginp (a)
+  (cond ((maxima-integerp a)
+         (or (zerop1 a) 
+             (eq ($sign a) '$neg)))))
 
 ;; Express parabolic cylinder function as a hypergeometric function.
 ;;
