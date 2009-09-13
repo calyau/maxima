@@ -76,7 +76,7 @@
   (let* ((lis (lire $liste ordre))
 	 (base  (grobner lis ordre)))
     (cons '(mlist)
-	  (sloop for w in base collect ($decode_poly w nil)))))
+	  (loop for w in base collect ($decode_poly w nil)))))
 
 
 
@@ -789,14 +789,14 @@
 (defun $decode_poly(poly sample &aux header)
   (cond ((and sample (consp sample)) (setq header (car sample)))
 	(t  (setq header $header))) 
-  (let ((monoms (sloop for v in (fourth header)
+  (let ((monoms (loop for v in (fourth header)
 		       collect (list v 1 1))))
-    (sloop for v in poly
+    (loop for v in poly
 	   with ans = 0
 	   do (setq ans
 		    (pplus
 		      ans
-		      (sloop for deg in (cdr v)
+		      (loop for deg in (cdr v)
 			     for mon in monoms
 			     with term = (car v)
 			     when (not (eql 0 deg))
@@ -810,5 +810,5 @@
     
 (defun show-lazard (term)
   (cond ((or (atom term) (atom (car term)))(error "bad term"))
-        ((consp (caar term)) (sloop for v in term do (show-lazard v)))
+        ((consp (caar term)) (loop for v in term do (show-lazard v)))
 	(t (displa ($decode_poly term nil)))))

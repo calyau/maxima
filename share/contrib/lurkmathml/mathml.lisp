@@ -181,7 +181,7 @@
   (let* ((pname (maybe-invert-string-case (string-left-trim '(#\$) (symbol-name sym))))
 	 (l (length pname))
 	 (begin-sub
-	  (sloop for i downfrom (1- l)
+	  (loop for i downfrom (1- l)
 		 when (not (digit-char-p (aref pname i)))
 		 do (return (1+ i)))))
     (cond ((< begin-sub l) ;; need to do subscripting

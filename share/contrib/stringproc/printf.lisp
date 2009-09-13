@@ -32,7 +32,7 @@
 ;; keeping the original return value: the first argument resp. false
 ;;
 (defun $sprint (&rest args)
-  (sloop for v in args do
+  (loop for v in args do
     ($printf t "~a " v))
   (car args))
 

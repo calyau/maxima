@@ -21,7 +21,7 @@
 ;; See graph2d.usg (which should come together with this program) for
 ;; a usage summary, and graph2d.dem for examples.
 ;;
-;; $Id: graph2d.lisp,v 1.2 2006-12-02 02:12:15 villate Exp $
+;; $Id: graph2d.lisp,v 1.3 2009-09-13 01:50:03 robert_dodier Exp $
 
 (in-package :maxima)
 
@@ -85,7 +85,7 @@
 
 ;; gets the value of a graph2d option
 (defun $get_graph2d_option (name &optional n)
-  (sloop for v in (rest $graph2d_options)
+  (loop for v in (rest $graph2d_options)
 	 when (eq (second v) name) do
 	 (return (if n (nth n  v) v))))
 
@@ -93,7 +93,7 @@
 (defun tcl-get-graph2d-option (name)
   (let (vv)
     (with-output-to-string (st)
-			   (sloop for v in (rest $graph2d_options)
+			   (loop for v in (rest $graph2d_options)
 				  when (eq (second v) name)
 				  do (setq vv (mapcar #'stripdollar (rest v)))
 				  (format st "{~a {~{~(~a~)~^ ~}}}"
@@ -131,7 +131,7 @@
 	      ($parameters value)
 	      ($sliders value)
 	      ))
-  (sloop for v on (rest $graph2d_options)
+  (loop for v on (rest $graph2d_options)
 	 when (eq (second (first v)) name)
 	 do (setf (first v) value))
   $graph2d_options
@@ -151,7 +151,7 @@
        (or (and ($listp lis) ($listp (second lis)))
 	   (merror "Needs a list of points: [x1,x2,...],[y1,y2,...] or [[x1,y1],[x2,y2],...]"))
     
-       (sloop for v in (rest lis)
+       (loop for v in (rest lis)
 	      do
 	      (or ($listp v) (merror "the dataset should be a list"))
 	      (setq l v)
@@ -165,7 +165,7 @@
 		    (format st " ~a " (tcl-get-graph2d-option (first v))))
 	     (progn
 	       (or (= points 2) (format st "~%{ xversusy  "))
-	       (sloop with (this xvals yvals)
+	       (loop with (this xvals yvals)
 		      while v
 		      do
 		      (cond   ((numberp (car v))

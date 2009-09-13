@@ -350,12 +350,12 @@
 (defun write-lisp-array-helper (A d indices out sep-ch mode)
   (cond ((equalp (length d) 1)
       (let ((L '()))
-        (sloop for i from 0 to (- (car d) 1) do
+        (loop for i from 0 to (- (car d) 1) do
           (let ((x (apply 'aref (append (list A) (reverse (cons i indices))))))
             (setq L (cons x L))))
         (write-list-lowlevel (reverse L) out sep-ch mode)))
     (t
-      (sloop for i from 0 to (- (car d) 1) do
+      (loop for i from 0 to (- (car d) 1) do
         (write-lisp-array-helper A (cdr d) (cons i indices) out sep-ch mode)
         (if (and (eq mode 'text) (> (length d) 2))
           (terpri out))))))

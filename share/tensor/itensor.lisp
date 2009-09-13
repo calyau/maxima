@@ -749,7 +749,7 @@
        (cond ((equal n 0) (merror "LORENTZ_GAUGE requires at least one argument"))
 	     ((equal n 1) (lorentz (arg 1) nil))
 	     (t (lorentz (arg 1)
-			 ((lambda (l) (cond ((sloop for v in  l
+			 ((lambda (l) (cond ((loop for v in  l
 						     always (symbolp v)) l)
 					    (t (merror
 "Invalid tensor name(s) in argument to LORENTZ_GAUGE"))))
@@ -2569,7 +2569,7 @@
        (prog (l)          ;objects by zero if they have no derivative indices.
 	     (cond ((< n 2) (merror "FLUSH takes at least 2 arguments"))
 		   ((not
-		      (sloop for v in (setq l (listify (f- 1 n)))
+		      (loop for v in (setq l (listify (f- 1 n)))
 			     always (symbolp v)))
 ;		      (apply 'and (mapcar 'symbolp
 ;					    (setq l (listify (f- 1 n))) ))
@@ -2580,7 +2580,7 @@ indexed objects")) (t (return (flush (arg 1) l t))))))
        (prog (l)          ;objects by zero if they have any derivative indices.
 	     (cond ((< n 2) (merror "FLUSH takes at least 2 arguments"))
 		   ((not
-		      (sloop for v in (setq l (listify (f- 1 n)))
+		      (loop for v in (setq l (listify (f- 1 n)))
 			     always (symbolp v))
 ;		      (apply 'and (mapcar 'symbolp
 ;					     (setq l (listify (f- 1 n)))))
@@ -2843,7 +2843,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 (defun checkindex (e f)
   (cond ((and (atom e) (not (eq e f))) e)
 	((and (eq (caar e) 'mlist)
-	      (sloop for v in (cdr e) always (atom v))
+	      (loop for v in (cdr e) always (atom v))
 ;	      (apply 'and (mapcar 'atom (cdr e)))
 	      (not (member f e :test #'eq))) e)
 	(t (merror "Indices must be atoms different from the tensor name"))))
