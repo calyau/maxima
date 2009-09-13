@@ -1912,3 +1912,23 @@ kill(all);
 done;
 /******************************************************************************/
 
+/*
+ * Bug ID: 2858045 - Laplace transform of asin or atan gives wrong noun form
+ * Check the correct noun for the asin and atan function.
+ */
+
+specint(%e^(-s*t)*asin(t),t);
+'specint(%e^(-s*t)*asin(t),t);
+
+specint(%e^(-s*t)*atan(t),t);
+'specint(%e^(-s*t)*atan(t),t);
+
+/* The results for an argument 1/sqrt(t) have to be checked. */
+
+specint(%e^(-s*t)*asin(1/sqrt(t)),t);
+sqrt(%pi)*%f[3,1]([1/2,1/2,-1/2],[3/2],-s)/sqrt(s);
+
+specint(%e^(-s*t)*atan(1/sqrt(t)),t);
+sqrt(%pi)*%f[3,1]([1/2,1,-1/2],[3/2],s)/sqrt(s);
+
+/******************************************************************************/
