@@ -24,8 +24,7 @@
 
 (macsyma-module hypgeo)
 
-(declare-top (special var *par* zerosigntest productcase checkcoefsignlist
-		      $exponentialize $radexpand))
+(declare-top (special var *par* checkcoefsignlist $exponentialize $radexpand))
 
 (load-macsyma-macros rzmac)
 
@@ -72,6 +71,10 @@
 (defun parp (a)
   (eq a *par*))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Recognize c*u^v + a and a=0
+
 (defun arbpow1 (exp)
   (m2 exp
       '((mplus)
@@ -81,12 +84,10 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Recognize c*t^v*(a+b*t)^w + d and d=0
 ;;;
 ;;; This is a generalization of arbpow1. The most general Laplace Transform
 ;;; can be expressed as a Hypergeometric U function.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun m2-arbpow2 (exp)
   (m2 exp
@@ -102,27 +103,30 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Recognize u*asin(x)
-(defun u*asinx (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt) (u nonzerp)((%asin)(x hasvar)))
-	((coeffpp)(a zerp)))
-      nil))
+; This pattern has been replaced by m2-asin
+;(defun u*asinx (exp)
+;  (m2 exp
+;      '((mplus)
+;	((coeffpt) (u nonzerp)((%asin)(x hasvar)))
+;	((coeffpp)(a zerp)))
+;      nil))
 
-;; Recognize u*atan(x)
-(defun u*atanx (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)(u nonzerp)((%atan)(x hasvar)))
-	((coeffpp)(a zerp)))
-      nil))
-
+; This pattern has been replaced by m2-atan
+;(defun u*atanx (exp)
+;  (m2 exp
+;      '((mplus)
+;	((coeffpt)(u nonzerp)((%atan)(x hasvar)))
+;	((coeffpp)(a zerp)))
+;      nil))
 
 ;; I (rtoy) think this is the tail of the incomplete gamma function.
 ;; No longer used in Maxima core and share.
 ;(defun gminc (a b)
 ;  (list '(%gamma_incomplete) a b))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Some shortcuts for special functions.
 
 ;; Lommel's little s[u,v](z) function.
 (defun littleslommel (m n z)
@@ -147,6 +151,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; The pattern to match special functions
+
+;; Recognize asin(w)
+(defun m2-asin (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt) (u nonzerp) ((%asin) (w hasvar)))
+        ((coeffpp) (a equal 0)))
+      nil))
+
+;; Recognize atan(w)
+(defun m2-atan (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt) (u nonzerp) ((%atan) (w hasvar)))
+        ((coeffpp) (a equal 0)))
+      nil))
 
 ;; Recognize bessel(v,w)
 (defun onej (exp)
@@ -835,24 +855,25 @@
 (defmfun $specint (exp var)
   (prog ($radexpand checkcoefsignlist)
      (setq $radexpand '$all)
-     (return (grasp-some-trigs exp var))))
+     (return (defintegrate exp var))))
 
-(defun grasp-some-trigs (exp var)
-  (let ((*asinx* nil)
-	(*atanx* nil))
-    (declare (special *asinx* *atanx*))
-    (prog (u x l)
-       (cond ((setq l (u*asinx exp))
-	      (setq u (cdras 'u l)
-		    x (cdras 'x l)
-		    *asinx* 't)
-	      (return (defintegrate u var))))
-       (cond ((setq l (u*atanx exp))
-	      (setq u (cdras 'u l)
-		    x (cdras 'x l)
-		    *atanx* 't)
-	      (return (defintegrate u var))))
-       (return (defintegrate exp var)))))
+; This routine is no longer called.
+;(defun grasp-some-trigs (exp var)
+;  (let ((*asinx* nil)
+;	(*atanx* nil))
+;    (declare (special *asinx* *atanx*))
+;    (prog (u x l)
+;       (cond ((setq l (u*asinx exp))
+;	      (setq u (cdras 'u l)
+;		    x (cdras 'x l)
+;		    *asinx* 't)
+;	      (return (defintegrate u var))))
+;       (cond ((setq l (u*atanx exp))
+;	      (setq u (cdras 'u l)
+;		    x (cdras 'x l)
+;		    *atanx* 't)
+;	      (return (defintegrate u var))))
+;       (return (defintegrate exp var)))))
 
 #+nil
 (defun defintegrate
@@ -1252,7 +1273,7 @@
      (return (lt-sf-log (mul* u (power '$%e (mul e f)))))))
 
 (defun lt-exec (u e f)
-  (declare (special *asinx* *atanx*))
+;  (declare (special *asinx* *atanx*)) ; No longer used.
   (let (l a)
     (cond ((setq l (m2-sum u))
 	   ;; We have found a summation.
@@ -1281,10 +1302,13 @@
 		     (t (maxima-substitute (sub var a) var u)))
 	       1)))
 
-	  ((or *asinx* *atanx*)
-	   ;; We've already determined that we have an asin or atan
-	   ;; expression, so use lt-asinatan to find the transform.
-	   (lt-asinatan u e))
+; No special handling of asin and atan. 
+; The functions are handeled by the routine lt-sf-log.
+;	  ((or *asinx* *atanx*)
+;	   ;; We've already determined that we have an asin or atan;
+;	   ;; expression, so use lt-asinatan to find the transform.
+;	   (lt-asinatan u e))
+          
 	  ((zerp e)
 	   ;; The simple case of u*%e^(-p*t)
 	   (lt-sf-log u))
@@ -1336,13 +1360,15 @@
 
 ;; Laplace transform of u*%e^(-p*t + e*f).  But we can't handle the
 ;; case where e isn't zero.
-(defun lt-asinatan (u e)
-  (declare (special *asinx* *atanx*))
-  (cond ((zerp e)
-	 (cond (*asinx* (lt-ltp 'asin u var nil))
-	       (*atanx* (lt-ltp 'atan u var nil))
-	       (t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-1))))
-	(t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-2))))
+;; This routine is no longer called. In the routine lt-sf-log
+;; lt-ltp is directly called.
+;(defun lt-asinatan (u e)
+;  (declare (special *asinx* *atanx*))
+;  (cond ((zerp e)
+;	 (cond (*asinx* (lt-ltp 'asin u var nil))
+;	       (*atanx* (lt-ltp 'atan u var nil))
+;	       (t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-1))))
+;	(t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Laplace transform of c*t^v*exp(-p*t+e*f).  L contains the pattern
@@ -1663,6 +1689,20 @@
 
 (defun lt-sf-log (u)
   (prog (l index1 index11 index2 index21 arg1 arg2 rest)
+     
+     ;; Laplace transform for asin(w)
+     (cond ((setq l (m2-asin u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt-ltp 'asin rest arg1 nil))))
+     
+     ;; Laplace transform for atan(w)
+     (cond ((setq l (m2-atan u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt-ltp 'atan rest arg1 nil))))
+     
+     ;; Laplace transform for bessel_j(v1,w1)*bessel_j(v2,w2)
      (cond ((setq l (twoj u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
@@ -1670,6 +1710,7 @@
 		  arg2 (cdras 'w2 l)
 		  rest (cdras 'u l))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
+     
      (cond ((setq l (twoh u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v11 l)
@@ -2127,6 +2168,7 @@
 		  arg1 (mul* (1fact t t)(cdras 'w l))
 		  rest (mul* (1fact nil index1)(cdras 'u l)))
 	    (return (lt1j^2 rest arg1 index1))))
+     
      (cond ((setq l (onerf u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
