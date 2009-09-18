@@ -1480,9 +1480,9 @@
 (defmfun simpsignum (x y z) 
   (oneargcheck x)
   (setq y (simpcheck (cadr x) z))
-  (setq z (csign y))
-  ;; When csign thinks y is complex, let it be.
-  (cond ((eq t z) (eqtest (list '(%signum) y) x))
+  (setq z ($csign y))
+  ;; When $csign thinks y is complex, let it be.
+  (cond ((memq z '($complex $imaginary)) (eqtest (list '(%signum) y) x))
 	(t 
 	 ;; positive * x --> x and negative * x --> -1 * x.
 	 (if (mtimesp y)
