@@ -1403,18 +1403,24 @@ relational knowledge is contained in the default context GLOBAL."
 			   (tdpn base1)))))
 	     (setq sign sign-base)))))
 
-;;; Determine the sign of the Logarithm function.
+;;; Determine the sign of log(expr). This function changes the special variable sign.
 
 (defun sign-log (x)
-  ;; Return a negative or positive sign only if the argument
-  ;; is a real positive value in all other cases '$pnz.
-  (cond ((member (compare (cadr x) 0) '($neg $pnz) :test #'eq)
-         ;; Negative argument or sign unkown.
-         (setq sign '$pnz))
-        (t
-         ;; Positive argument >= 0. Check if < 1 or > 1.
-         (compare (cadr x) 1))))
-
+  (setq x (cadr x)) ;; looking at sign of log(x)
+  (cond ((eq t (meqp x 1)) (setf sign '$zero)) ;; log(1) = 0.
+	;; for x on the unit circle and x # 1, log(x) is pure imaginary
+	((and  *complexsign* (eq t (meqp 1 (take '(mabs) x))) (eq t (mnqp x 1)))
+	 (setf sign '$imaginary))
+	;; log(x) is positive for x > 1
+	((eq t (mgrp x 1)) (setf sign '$pos))
+	;; log(x) is negative for 0 < x < 1.
+	((and (eq t (mgrp x 0)) (eq t (mgrp 1 x))) (setf sign '$neg))
+	;; Nothing is known, so return return $pnz. For the complex case, returning $complex
+	;; instead of $pnz causes some problems with the testsuite.
+	(*complexsign* (setf sign '$pnz)) 
+	(t (setf sign '$pnz)))
+  sign)
+	  
 (defun sign-mabs (x)
   (sign (cadr x))
   (cond ((member sign '($pos $zero) :test #'eq))
