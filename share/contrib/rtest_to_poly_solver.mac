@@ -625,7 +625,7 @@ to_poly_solve(x^8=1,x, simpfuncs = ['rectform]);
 [x=%i/sqrt(2)-1/sqrt(2)],[x=%i/sqrt(2)+1/sqrt(2)])$
 
 block([algexact:true],to_poly_solve(sqrt(x)+x^(3/2)=1,x,simpfuncs=['rationalize,'dfloat]));
-%union([x = 8386985705578541/18014398509481984])$
+%union([x = 4193492852789269/9007199254740992])$
 
 to_poly_solve(a*x=b, x,'simpfuncs = ['rectform]);
 %union([x=b/a])$

@@ -433,16 +433,17 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
           [second(nsol)], third(nsol)),
         nsol_vars : set_of_variables(nsol),
         %cnds : safer_subst(sk,cnds),
-        %cnds : expunge_nonrelavant_cnds(%cnds, nsol),
+        %cnds : expunge_nonrelevant_cnds(%cnds, nsol),
         nsol : %if(%cnds, nsol, %union()),
         true_sol : adjoin(nsol, true_sol))),
     xreduce('%union, true_sol, %union()));
 
 /* Maybe all this should be fixed higher up; for now ...*/
 
-expunge_nonrelavant_cnds (cnds, sol) := block([listconstvars : false, sol_vars : listofvars(sol)],
-  if is(cnds = true) or is (cnds = false) then cnds
+expunge_nonrelevant_cnds (cnds, sol) := block([listconstvars : false, sol_vars : listofvars(sol)],
+  if cnds = true or cnds = false then cnds
   else if opequal_p(cnds, "%and", "%or") then (
-    map(lambda([x], if lfreeof(sol_vars,x) then true else x), cnds))
-  else if lfreeof(sol_vars, cnds) then true else cnds);
+    map('expunge_nonrelevant_cnds, cnds))
+  else if lfreeof(sol_vars, cnds) and not constantp(cnds) then true
+  else cnds);
   
