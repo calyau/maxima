@@ -224,11 +224,15 @@
 
 (defun manifestly-pure-imaginary-p (e)
   (let (($inflag t))
-    (and ($mapatom e)
-	 (or
-	  (eq e '$%i)
-	  (and (symbolp e) (kindp e '$imaginary) (not ($nonscalarp e)))
-	  (and ($subvarp e) (manifestly-pure-imaginary-p ($op e)))))))
+    (or 
+     (and ($mapatom e)
+	  (or
+	   (eq e '$%i)
+	   (and (symbolp e) (kindp e '$imaginary) (not ($nonscalarp e)))
+	   (and ($subvarp e) (manifestly-pure-imaginary-p ($op e)))))
+     ;; For now, let's use $csign on constant expressions only; once $csign improves,
+     ;; the ban on nonconstant expressions can be removed
+     (and ($constantp e) (eq '$imaginary ($csign e))))))
 
 ;; Don't use (kindp e '$complex)!
 
