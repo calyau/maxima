@@ -82,7 +82,7 @@ block
         rtest_graphs,
 	rtest_abs_integrate,
         rtest_pochhammer,
-        [rtest_to_poly_solver, 64, 72, 74, 80, 162, 184, 185, 200, 221, 222, 223, 274, 286],
+        [rtest_to_poly_solver, 64, 72, 74, 80, 156, 184, 185, 200, 221, 222, 223, 272, 273, 274],
         rtest_hg,
         rtest_nfloat]],
     
