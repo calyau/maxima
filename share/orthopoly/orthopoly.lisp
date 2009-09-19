@@ -713,7 +713,10 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 		  (setq d 1))
 		 ((< m 0)
 		  (setq f ($assoc_legendre_p n (neg m) x))
-		  (setq d (div (factorial (+ n m)) (factorial (- n m))))
+		  ;; Adding a factor (-1)^m to the transformation to get the
+		  ;; expected results for odd negative integers. DK 09/2009
+		  (setq d (mul (power -1 m)
+		               (div (factorial (+ n m)) (factorial (- n m)))))
 		  (setq dx 1))
 		 (t
 		  (cond ((eq m 0)
