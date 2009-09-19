@@ -238,6 +238,7 @@ sqrt(a)*%e^-(a/p)/p^2$
  *
  * (Maxima can't currently compute this transform for general v due to a bug
  * in hyp.lisp.)
+ * This bug is no longer present after correction of legf24 in hyp.lisp.
  */
 factor(ratsimp(specint(t^2*bessel_j(1,a*t)*%e^(-p*t),t)));
 3*a*p/(p^2+a^2)^(5/2) $
@@ -359,7 +360,7 @@ specint(t^(5/2)*bessel_y(1/2,t^(1/2))^2*%e^(-p*t),t);
  (1/p)/2-3*p^2/4-p/2)/p^2+2*(sqrt(%pi)*%i*erf(%i/sqrt(p))*p^(3/2)*%e^-(1/p)/4 
  +sqrt(%pi)*%i*erf(%i/sqrt(p))*sqrt(p)*%e^-(1/p)/2+p/2)/p-sqrt(%pi)*%i*erf 
  (%i/sqrt(p))*sqrt(p)*%e^-(1/p)/2)/(%pi*p^4) $
-
+        
 /*
  * See formula (42), p. 187:
  *
@@ -548,7 +549,6 @@ ratsimp(specint( t^(3/2)*bessel_y(1,a*t)*%e^(-t),t));
 ''(ratsimp(15*%i*(1/(a^2+1)-1)^(3/4)*(1/(sqrt(a^2+1)+1)^(3/2)+1/(1-sqrt(a^2+1))^(3/2))/ 
  (16*sqrt(a^2+1)))) $
 
-
 /*
  * A&S 13.1.32:
  *
@@ -650,8 +650,14 @@ true$
 true$
 
 radcan(specint(t^u*bessel_j(v,a*t)*exp(-p*t),t));
+/* This is not the correct answer: see the formula above which is correct.
+   We had a bug in the routine legf24 in hyp.lisp.
 assoc_legendre_p(-u-1,-v,p/sqrt(p^2+a^2))*gamma(v+u+1)
 	/((p^2+a^2)^((u+1)/2))$
+ */
+
+assoc_legendre_p(u,-v,p/sqrt(p^2+a^2))*gamma(v+u+1)
+   /((p^2+a^2)^((u+1)/2))$
 
 /*
  * (25)
