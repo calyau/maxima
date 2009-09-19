@@ -79,6 +79,13 @@
 (setf (get '$%or 'operators) 'simp-%or)
 (setf (get '%or 'operators) 'simp-%or)
 
+(defun $disjunction_p (e)
+  (op-equalp e '%or))
+
+(defun $conjunction_p (e)
+  (op-equalp e '%and))
+
+
 ;; Efficiency hack (see nset.lisp) -- this tells xreduce that %or is nary.
 (def-nary '$%or (s) (simplify (cons '(%or) s)) nil)
 

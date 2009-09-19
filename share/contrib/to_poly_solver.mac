@@ -432,7 +432,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
         if if_p(nsol) and not(listp(second(nsol))) then nsol : %if(first(nsol),
           [second(nsol)], third(nsol)),
         nsol_vars : set_of_variables(nsol),
-        %cnds : safer_subst(sk,cnds),
+        %cnds : safer_subst(xk, cnds),
         %cnds : expunge_nonrelevant_cnds(%cnds, nsol),
         nsol : %if(%cnds, nsol, %union()),
         true_sol : adjoin(nsol, true_sol))),
@@ -442,8 +442,8 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
 
 expunge_nonrelevant_cnds (cnds, sol) := block([listconstvars : false, sol_vars : listofvars(sol)],
   if cnds = true or cnds = false then cnds
-  else if opequal_p(cnds, "%and", "%or") then (
-    map('expunge_nonrelevant_cnds, cnds))
+  else if disjunction_p(cnds) or conjunction_p(cnds) then (
+    map(lambda([s], expunge_nonrelevant_cnds(s, sol)), cnds))
   else if lfreeof(sol_vars, cnds) and not constantp(cnds) then true
   else cnds);
   
