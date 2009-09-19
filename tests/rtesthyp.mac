@@ -215,10 +215,16 @@ assume(zg1 > 1);
 [zg1 > 1];
 radcan(hgfred([a,a+1/2],[c],zg1)*2^(1-c)*zg1^(c/2-1/2)*(1-zg1)^(1/2+a-c/2)/gamma(c));
 /* Use A&S 8.2.1 to get this */
-assoc_legendre_p(c-2*a-1,1-c,1/sqrt(1-zg1))$
+/* The following is not the correct answer. See the formula above.
+   assoc_legendre_p(c-2*a-1,1-c,1/sqrt(1-zg1))$ 
+   We get the correct answer after a bug fix in the routine legf24. */
+assoc_legendre_p(2*a-c,1-c,1/sqrt(1-zg1))$
 
 radcan(2^u*(zg1^2-1)^(-u/2)*zg1^(v+u)/gamma(1-u)*hgfred([-v/2-u/2,1/2-v/2-u/2],[1-u],1-1/zg1^2));
-assoc_legendre_p(v,u,zg1)$
+/* The following answer is not correct.
+   assoc_legendre_p(v,u,zg1)$  
+   We get the correct answer after a bug fix in the routine legf24. */
+assoc_legendre_p(-v-1,u,zg1)$
 
 /* A&S 15.4.12
  *
