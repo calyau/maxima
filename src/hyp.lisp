@@ -1675,7 +1675,8 @@
 	 (a (car arg-l1))
 	 (c (car arg-l2))
 	 (m (sub 1 c))
-	 (n (mul -1 (add a a m)))
+;	 (n (mul -1 (add a a m))) ; This is not 2*a-c
+         (n (sub (add a a) c))    ; but this.
 	 (z (inv (power (sub 1 var) (inv 2)))))
     ;; A&S 15.4.10, 15.4.11
     (cond ((eq (asksign var) '$negative)
