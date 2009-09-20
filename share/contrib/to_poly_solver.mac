@@ -25,18 +25,12 @@ if get('to_poly,'version) = false then load("topoly.lisp");
 if get('to_poly,'version) < 2 then error("You need to update 'to_poly' to version 2 or greater");
 if not(?functionp('poly_reduced_grobner)) then load("grobner");
 block([inflag : true], if not(member('fullratsubst, map('op, functions))) then load("lrats"));
+block([inflag : true], if not(member('lratsubst, map('op, functions))) then load("lrats"));
 if not(?functionp('opsubst)) then load("opsubst");
 if not(?functionp('unwind_protect)) then load("unwind_protect");
 block([inflag : true], if not(member('push, map('op, macros))) then load("basic"));
 load("to_poly_solve_extra");
 
-lratsubst(l, e) := (
-  if not(listp(l)) then l : [l],
-  for lk in l do (
-    if equation_p(lk) then e : ratsubst(rhs(lk), lhs(lk), e) else
-    error("The first argument to 'lratsubst' must be an equation or a list of equations")),
-  e);
- 
 /* Return a lambda form that is the composition of the functions in the list l.
    For example, compose_functions([f,g]) --> lambda([gxxxx], f(g(gxxxx))). When
    a list member isn't a function, generally funmake will signal an error. */
@@ -239,25 +233,19 @@ catch_easy_cases(e) := block([inflag : true],
 /* Lambert Solver -- replace terms of the form w * exp(w) by a %Cxx variable and
 push %Cxx = lambert_w(w) into subs. Return both e and the list of subs.*/
 
-lambertify(e, vars) := block([a,asubs, b, bsubs, s, eqs : set(), exp_args, %g, cf,
-  subs : set(), inflag : false],
-  if mapatom(e) then [e, set()]
-  else if op(ratsimp(e)) = "/" then (
-    [a, asubs] : lambertify(ratnumer(e),vars),
-    [b, bsubs] : lambertify(ratdenom(e),vars),
-    [a/b, union(asubs,bsubs)])
-  else (
-    e : ratexpand(e),
-    exp_args : gatherargs(e, "^"),
-    for ak in exp_args do (
-      if is(first(ak) = '%e) then (
-        ak : second(ak),
-        %g : new_variable('complex),
-        cf : ratcoef(e, exp(ak)) / ak,
-        if constantp(cf) and is(cf # 0) and not(lfreeof(vars, ak)) then (
-          subs : adjoin(lambert_w(%g) = ak, subs),
-          e : ratsubst(%g, ak * exp(ak), e)))),
-    [e, subs]));
+lambertify(e, vars) := block([exp_args, subs : set(),q, ne, %g, listconstvars : false, inflag : true],
+  exp_args : gatherargs(e, "^"), 
+  for ex in exp_args do (
+    if lfreeof(vars, first(ex)) and not lfreeof(vars, second(ex)) then (
+      if opequal_p(second(ex),"+") and numberp(first(second(ex))) then (
+        ex : [first(ex),second(ex) - first(second(ex))]),
+      q : first(ex)^second(ex),
+      %g : new_variable('complex),
+      ne : ratsubst(%g / second(ex), q, e),
+      if not freeof(%g, ne) and lfreeof(listofvars(q), ne) then (
+        subs : adjoin(lambert_w(%g) = second(ex) * log(first(ex)), subs),
+        e : ne))),
+  [e, subs]);
 
 to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter_list,
                         alias_solver : false, use_grobner, maxdepth, cntx : false, simpfuncs],

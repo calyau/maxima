@@ -795,6 +795,13 @@ to_poly_solve(exp(x) = a/x,x);
 to_poly_solve(56 * %e^(x) * x - a,x);
 %union([x='lambert_w(a/56)])$
 
+to_poly_solve(5^x * x = 42,x);
+%union([x = lambert_w(42*log(5))/log(5)])$
+
+to_poly_solve(5^(x^2 - 1) * (x^2-1) / %pi = 42,x);
+%union([x = -sqrt(lambert_w(42*%pi*log(5))+log(5))/sqrt(log(5))],
+       [x = sqrt(lambert_w(42*%pi*log(5))+log(5))/sqrt(log(5))])$
+            
 /* Examples from wikipedia.org article on the Lambert function */
 
 to_poly_solve(2^x = 5*x,x);
