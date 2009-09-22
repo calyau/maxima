@@ -2550,7 +2550,7 @@
          ;; and the second function is Bessel J or Bessel I
 	 (sendexec r
 		   (cond ((eq flg 'bessytj)
-			  (mul (simlify (list '(%bessel_j) i1 a1))
+			  (mul (simplify (list '(%bessel_j) i1 a1))
 			       (ytj i2 a2)))
 			 ((eq flg 'besshtjory)
 			  (mul (simplify (list '(%bessel_j) i1 a1))
