@@ -1908,9 +1908,8 @@ radcan(specint(%e^(-s*t)*bessel_y(0,a*t),t));
 radcan(specint(%e^(-s*t)*bessel_k(0,a*t),t));
 specint(%e^(-s*t)*bessel_k(0,a*t),t);
 
-/******************************************************************************/
-
-/*
+/*******************************************************************************
+ *
  * Bug ID: 2858045 - Laplace transform of asin or atan gives wrong noun form
  * Check the correct noun for the asin and atan function.
  */
@@ -1928,6 +1927,20 @@ sqrt(%pi)*%f[3,1]([1/2,1/2,-1/2],[3/2],-s)/sqrt(s);
 
 specint(%e^(-s*t)*atan(1/sqrt(t)),t);
 sqrt(%pi)*%f[3,1]([1/2,1,-1/2],[3/2],s)/sqrt(s);
+
+/*******************************************************************************
+ *
+ * Bug ID: 2864588 - specint(exp(-s*t)*bessel_i(1/2,t)^2,t) not correct
+ *
+ * The Laplace transform of the square of the bessel_i(1/2,t) function is equal 
+ * to the Laplace transform of the expanded form 2*sinh(t)^2/(%pi*t).
+ */
+
+res1:specint(exp(-s*t)*bessel_i(1/2,t)^2,t),besselexpand:false;
+ -log(1-4/s^2)/(2*%pi);
+
+res2:specint(exp(-s*t)*bessel_i(1/2,t)^2,t),besselexpand:true;
+ -log(1-4/s^2)/(2*%pi);
 
 /******************************************************************************/
 
