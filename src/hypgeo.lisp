@@ -2145,10 +2145,12 @@
      
      ;; Laplace transform of square of Bessel I function
      (cond ((setq l (onei^2 u))
-	    (setq index1 (cdras 'v l)
-		  arg1 (mul* (1fact t t)(cdras 'w l))
-		  rest (mul* (1fact nil index1)(cdras 'u l)))
-	    (return (lt1j^2 rest arg1 index1))))
+            (setq index1 (cdras 'v l)
+                  arg1 (mul '$%i (cdras 'w l))
+                  rest (mul (power '$%i (neg index1))
+                            (power '$%i (neg index1))
+                            (cdras 'u l)))
+            (return (lt1j^2 rest arg1 index1))))
      
      ;; Laplace transform of Erf function
      (cond ((setq l (onerf u))
@@ -2809,7 +2811,7 @@
               ;; The old code causes the use of bessel_i. 
               ;; The Laplace transform for the S Lommel function
               ;; needs verification. DK 09/2009.
-              (simplify (list '(bessel_y) n z))))))))
+              (simplify (list '(%bessel_y) n z))))))))
 
 ;; Whittaker W function in terms of Whittaker M function
 ;;
