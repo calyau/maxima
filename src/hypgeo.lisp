@@ -3835,8 +3835,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Algorithm 2.6: SPECIAL HANDLING OF Bessel Y
+;;; Algorithm 2.6: SPECIAL HANDLING OF Bessel Y for an integer order
 ;;;
+;;; This is called for one Bessel Y function, when the order is an integer.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun lty (rest arg index)
@@ -3868,6 +3869,73 @@
      (return (setq *hyp-return-noun-flag* 'fail-in-dionarghyp-y))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Algorithm 2.6.1: Laplace transform of t^n*bessel_y(v,a*t)
+;;;                  v is an integer and n>=v
+;;;
+;;; Table of Integral Transforms
+;;;
+;;; Volume 2, p 105, formula 2 is a formula for the Y-transform of
+;;;
+;;;    f(x) = x^(u-3/2)*exp(-a*x)
+;;;
+;;; where the Y-transform is defined by
+;;;
+;;;    integrate(f(x)*bessel_y(v,x*y)*sqrt(x*y), x, 0, inf)
+;;;
+;;; which is
+;;;
+;;;    -2/%pi*gamma(u+v)*sqrt(y)*(y^2+a^2)^(-u/2)
+;;;          *assoc_legendre_q(u-1,-v,a/sqrt(y^2+a^2))
+;;;
+;;; with a > 0, Re u > |Re v|.
+;;;
+;;; In particular, with a slight change of notation, we have
+;;;
+;;;    integrate(x^(u-1)*exp(-p*x)*bessel_y(v,a*x)*sqrt(a), x, 0, inf)
+;:;
+;;; which is the Laplace transform of x^(u-1/2)*bessel_y(v,x).
+;;;
+;;; Thus, the Laplace transform is
+;;;
+;;;    -2/%pi*gamma(u+v)*sqrt(a)*(a^2+p^2)^(-u/2)
+;;;          *assoc_legendre_q(u-1,-v,p/sqrt(a^2+p^2))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun f2p105v2cond (a l index)
+  (prog (d m)
+     (setq d (cdras 'd l) m (cdras 'm l))
+     (setq m (add m 1.))
+     (cond ((eq (checksigntm ($realpart (sub m index)))
+                '$positive)
+            (return (f2p105v2cond-simp m index a))))
+     (return (setq *hyp-return-noun-flag* 'fail-in-f2p105v2cond))))
+
+(defun f2p105v2cond-simp (m v a)
+  (mul -2.
+       (power '$%pi -1.)
+       (simplify (list '(%gamma) (add m v)))
+       (power (add (mul a a) (mul *par* *par*))
+              (mul -1. (inv 2.) m))
+       (leg2fsimp (sub m 1.)
+                  (mul -1. v)
+                  (mul *par*
+                       (power (add (mul a a) (mul *par* *par*))
+                              (inv -2.))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Algorithm 2.6.2: Laplace transform of t^n*bessel_y(v, a*sqrt(t))
+;;;
+;;; Table of Integral Transforms
+;;;
+;;; p. 188, formula 50:
+;;;
+;;; t^(u-1/2)*bessel_y(2*v,2*sqrt(a)*sqrt(t))
+;;;    -> a^(-1/2)*p^(-u)*exp(-a/2/p)
+;;;       * [tan((u-v)*%pi)*gamma(u+v+1/2)/gamma(2*v+1)*M[u,v](a/p)
+;;;          -sec((u-v)*%pi)*W[u,v](a/p)]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun f50cond (a l v)
   (prog (d m)
@@ -3887,15 +3955,6 @@
         (return (f50p188-simp d m v a))))
      (return (setq *hyp-return-noun-flag* 'fail-in-f50cond))))
 
-;; Table of Integral Transforms
-;;
-;; p. 188, formula 50:
-;;
-;; t^(u-1/2)*bessel_y(2*v,2*sqrt(a)*sqrt(t))
-;;    -> a^(-1/2)*p^(-u)*exp(-a/2/p)
-;;       * [tan((u-v)*%pi)*gamma(u+v+1/2)/gamma(2*v+1)*M[u,v](a/p)
-;;          -sec((u-v)*%pi)*W[u,v](a/p)]
-
 (defun f50p188-simp (d u v a)
   (mul d
        (power a (inv -2))
@@ -3909,55 +3968,6 @@
                  (wwhit (div a *par*) u v)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun f2p105v2cond (a l index)
-  (prog (d m)
-     (setq d (cdras 'd l) m (cdras 'm l))
-     (setq m (add m 1.))
-     (cond ((eq (checksigntm ($realpart (sub m index)))
-                '$positive)
-            (return (f2p105v2cond-simp m index a))))
-     (return (setq *hyp-return-noun-flag* 'fail-in-f2p105v2cond))))
-
-;; Table of Integral Transforms
-;;
-;; Volume 2, p 105, formula 2 is a formula for the Y-transform of
-;;
-;;    f(x) = x^(u-3/2)*exp(-a*x)
-;;
-;; where the Y-transform is defined by
-;;
-;;    integrate(f(x)*bessel_y(v,x*y)*sqrt(x*y), x, 0, inf)
-;;
-;; which is
-;;
-;;    -2/%pi*gamma(u+v)*sqrt(y)*(y^2+a^2)^(-u/2)
-;;          *assoc_legendre_q(u-1,-v,a/sqrt(y^2+a^2))
-;;
-;; with a > 0, Re u > |Re v|.
-;;
-;; In particular, with a slight change of notation, we have
-;;
-;;    integrate(x^(u-1)*exp(-p*x)*bessel_y(v,a*x)*sqrt(a), x, 0, inf)
-;;
-;; which is the Laplace transform of x^(u-1/2)*bessel_y(v,x).
-;;
-;; Thus, the Laplace transform is
-;;
-;;    -2/%pi*gamma(u+v)*sqrt(a)*(a^2+p^2)^(-u/2)
-;;          *assoc_legendre_q(u-1,-v,p/sqrt(a^2+p^2))
-
-(defun f2p105v2cond-simp (m v a)
-  (mul -2.
-       (power '$%pi -1.)
-       (simplify (list '(%gamma) (add m v)))
-       (power (add (mul a a) (mul *par* *par*))
-              (mul -1. (inv 2.) m))
-       (leg2fsimp (sub m 1.)
-                  (mul -1. v)
-                  (mul *par*
-                       (power (add (mul a a) (mul *par* *par*))
-                              (inv -2.))))))
 
 ;; This doesn't seem to be used anywhere.
 ;;
