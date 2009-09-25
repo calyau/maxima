@@ -341,10 +341,13 @@ limit((((1+1/x)^(x^2))+1)^(1/x),x,inf);
 limit(1/n * n!^(1/n), n, inf);
 %e^-1;
 
-/* it would be nice to handle these someday
-  limit(t*(erf((t))-1),t,inf);
-  0;
+limit(t*(erf((t))-1),t,inf);
+0;
 
+limit(exp(x)*(sin(1/x+exp(-x))-sin(1/x+exp(-x^2))), x, inf);
+1;
+
+/* it would be nice to handle this someday
   limit(n - exp(psi[0](n)), n, inf);
   1/2;
 */
@@ -1032,6 +1035,10 @@ minf+inf;
 limit(1 - (-1/2)^inf);
 1-(-1)^inf/2^inf;
 /* ideally should be 1 */
+
+/* definition of derivative in terms of limit */
+limit((sin(3*(x+h)) - sin(3*(x)))/h, h, 0, plus);
+3*cos(3*x);
 
 end;
 end$
