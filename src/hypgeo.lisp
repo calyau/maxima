@@ -69,13 +69,14 @@
 
 ;; If FLG is non-NIL, return exp(%pi*%i/2), that is the polarfom of %i.
 ;; Otherwise, return exp(-%pi*%i*v/2), the polarform of %i^(-v).
-(defun 1fact (flg v)
-  (power '$%e
-         (mul* '$%pi
-               '$%i
-               (1//2)
-               (cond (flg 1)
-                     (t (mul -1 v))))))
+;; This function is no longer used.
+;(defun 1fact (flg v)
+;  (power '$%e
+;         (mul* '$%pi
+;               '$%i
+;               (1//2)
+;               (cond (flg 1)
+;                     (t (mul -1 v))))))
 
 (defun substl (p1 p2 p3)
   (cond ((eq p1 p2) p3)
@@ -1794,9 +1795,9 @@
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  index21 (cdras 'v21 l)
-		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg1 (mul '$%i (cdras 'w1 l))
 		  arg2 (cdras 'w2 l)
-		  rest (mul* (1fact nil index1)(cdras 'u l)))
+		  rest (mul (power '$%i (neg index1)) (cdras 'u l)))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
      
      ;; Laplace transform of Bessel I and Hankel functions
@@ -1804,9 +1805,9 @@
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  index21 (cdras 'v21 l)
-		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg1 (mul '$%i (cdras 'w1 l))
 		  arg2 (cdras 'w2 l)
-		  rest (mul* (1fact nil index1)(cdras 'u l)))
+		  rest (mul (power '$%i (neg index1)) (cdras 'u l)))
 	    (return (fractest1 rest arg1 arg2 index1 index2 index21 
 	                       'besshtjory))))
      
@@ -1865,18 +1866,18 @@
      (cond ((setq l (oneioney u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
-		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg1 (mul '$%i (cdras 'w1 l))
 		  arg2 (cdras 'w2 l)
-		  rest (mul* (1fact nil index1)(cdras 'u l)))
+		  rest (mul (power '$%i (neg index1)) (cdras 'u l)))
 	    (return (fractest1 rest arg1 arg2 index1 index2 nil 'bessytj))))
      
      ;; Laplace transform of Bessel I and Bessel K functions
      (cond ((setq l (oneionek u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
-		  arg1 (mul* (1fact t t)(cdras 'w1 l))
+		  arg1 (mul '$%i (cdras 'w1 l))
 		  arg2 (cdras 'w2 l)
-		  rest (mul* (1fact nil index1)(cdras 'u l)))
+		  rest (mul (power '$%i (neg index1)) (cdras 'u l)))
 	    (return (fractest1 rest arg1 arg2 index1 index2 nil 'besskti))))
      
      ;; Laplace transform of Struve H function
@@ -2127,20 +2128,18 @@
      (cond ((setq l (twoi u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
-		  arg1 (mul* (1fact t t)(cdras 'w1 l))
-		  arg2 (mul* (1fact t t) (cdras 'w2 l))
-		  rest (mul* (1fact nil index1)
-			     (1fact nil index2)
-			     (cdras 'u l)))
+		  arg1 (mul '$%i (cdras 'w1 l))
+		  arg2 (mul '$%i (cdras 'w2 l))
+		  rest (mul (power '$%i (neg index1))
+		            (power '$%i (neg index1))
+		            (cdras 'u l)))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
 
      ;; Laplace transform of Bessel I. We use I[v](w)=%i^n*J[n](%i*w).
-     ;; Insert %i directly and don't use the function 1fact to avoid extra
-     ;; phase factors in the results.
      (cond ((setq l (onei u))
 	    (setq index1 (cdras 'v l)
 		  arg1   (mul '$%i (cdras 'w l))
-		  rest   (mul (inv (power '$%i index1)) (cdras 'u l)))
+		  rest   (mul (power '$%i (neg index1)) (cdras 'u l)))
 	    (return (lt1j rest arg1 index1))))
      
      ;; Laplace transform of square of Bessel I function
@@ -2741,7 +2740,11 @@
   ;; because converting Y to J for an integer index doesn't work so
   ;; well without taking limits.
   (cond ((maxima-integerp index1)
-	 (lt1y rest arg1  index1))
+         ;; Do not call lt1y but lty directly.
+         ;; lt1y calls lt-ltp with the flag 'oney. lt-ltp checks this flag
+         ;; and calls lty. So we can do it at this place and the algorithm is
+         ;; more simple.
+	 (lty rest arg1 index1))
 	(t (fractest2 rest arg1 index1 nil 'ytj))))
 
 ; Not used in Maxima core or share
@@ -3093,9 +3096,10 @@
 (defun lt1j (rest arg index)
   (lt-ltp 'onej rest arg index))
 
-;; Laplace transform of one Bessel Y
-(defun lt1y (rest arg index)
-  (lt-ltp 'oney rest arg index))
+; This function is no longer needed. We call lty immediately and not via lt-ltp.
+;;; Laplace transform of one Bessel Y
+;(defun lt1y (rest arg index)
+;  (lt-ltp 'oney rest arg index))
 
 ;; Laplace transform of two Bessel J functions.  
 ;; The argument of each must be the same, but the orders may be different.
@@ -3295,9 +3299,12 @@
 	      (setq *hyp-return-noun-flag* 'prop4-to-be-applied))))
      labl1
      ;; No const term, if we're here.
-     (cond ((eq flg 'oney)
-	    ;; Handle bessel_y here.  We're done.
-	    (return (lty rest arg index))))
+
+; We no longer call lty via lt-ltp. This code is no longer needed.
+;     (cond ((eq flg 'oney)
+;	    ;; Handle bessel_y here.  We're done.
+;	    (return (lty rest arg index))))
+     
      ;; Try to express the function in terms of hypergeometric
      ;; functions that we can handle.
      (cond ((setq l
@@ -3912,16 +3919,20 @@
      (return (setq *hyp-return-noun-flag* 'fail-in-f2p105v2cond))))
 
 (defun f2p105v2cond-simp (m v a)
-  (mul -2.
-       (power '$%pi -1.)
+  (mul -2
+       (power '$%pi -1)
        (simplify (list '(%gamma) (add m v)))
        (power (add (mul a a) (mul *par* *par*))
-              (mul -1. (inv 2.) m))
-       (leg2fsimp (sub m 1.)
-                  (mul -1. v)
-                  (mul *par*
-                       (power (add (mul a a) (mul *par* *par*))
-                              (inv -2.))))))
+              (mul -1 (inv 2) m))
+       ;; Call Associated Legendre Q function, which simplifies accordingly.
+       ;; We have to do a Maxima function call, because $assoc_legendre_q is
+       ;; not in Maxima core and has to be autoloaded.
+       (mfuncall '$assoc_legendre_q
+                 (sub m 1)
+                 (mul -1 v)
+                 (mul *par*
+                      (power (add (mul a a) (mul *par* *par*))
+                             (inv -2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -4004,6 +4015,10 @@
 ;; So, for now, just return the Legendre Q function and hope that
 ;; someone else can simplify it.
 
+;; This code is no longer called. We call the Maxima function
+;; $assoc_legendre_q in the routine f2p105v2cond-simp.
+
+#+nil
 (defun leg2fsimp (m v z)
   (cond (t
          (legen m v z '$q))
