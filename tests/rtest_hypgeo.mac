@@ -1891,13 +1891,13 @@ block([besselexpand:true],expand(exponentialize(radcan(specint(%e^(-s*t)*bessel_
 radcan(specint(%e^(-s*t)*t^(nu/2)*bessel_i(nu,2*sqrt(a*t)),t));
 a^(nu/2)*s^(-nu-1)*%e^(a/s);
 
-/* Problem 246: No. 17 (OK Result is not verified)
-   I don't know if the result of Maxima is identical to the tabulated result.
-   -2/%pi*asinh(s/a)/sqrt(s^2+a^2);
+/* Problem 246: No. 17 OK
+   The tabulated result -2/%pi*asinh(s/a)/sqrt(s^2+a^2) is equivalent to
+   the result of Maxima.
 */
 
-radcan(specint(%e^(-s*t)*bessel_y(0,a*t),t));
--2*legendre_q(0,s/sqrt(s^2+a^2))/(%pi*sqrt(s^2+a^2));
+specint(%e^(-s*t)*bessel_y(0,a*t),t);
+ -log((sqrt(s^2+a^2)+s)/(sqrt(s^2+a^2)-s))/(%pi*sqrt(s^2+a^2));
 
 /* Problem 247: No. 18 (OK noun form New)
    We have no algorithm for bessel_k when the order is an integer or zero.
