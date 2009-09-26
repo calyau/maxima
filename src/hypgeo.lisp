@@ -3106,14 +3106,28 @@
 (defun lt2j (rest arg1 arg2 index1 index2)
   (cond ((not (equal arg1 arg2))
          (setq *hyp-return-noun-flag* 'product-of-bessel-with-different-args))
-	(t (lt-ltp 'twoj
-		   rest
-		   arg1
-		   (list 'list index1 index2)))))
+        (t 
+          ;; Call lt-ltp two transform and integrate two Bessel J functions.
+          (lt-ltp 'twoj rest arg1 (list 'list index1 index2)))))
 
 ;; Laplace transform of a square of a Bessel J function
 (defun lt1j^2 (rest arg index)
-  (lt-ltp 'twoj rest arg (list 'list index index)))
+  (cond ((alike1 index '((rat) -1 2))
+         ;; Special case: Laplace transform of bessel_j(v,arg)^2, v = -1/2.
+         ;; For this case the algorithm for the product of two Bessel functions
+         ;; does not work. Call the integrator with the hypergeometric 
+         ;; representation: 2/%pi/arg*1/2*(1+0F1([], [1/2], -arg*arg)).
+         (sendexec (mul (div 2 '$%pi)
+                        (inv arg)
+                        rest)
+                   (add '((rat simp) 1 2)
+                        (mul '((rat simp) 1 2)
+                             (list '(mqapply) (list '($%f array) 1 0)
+                                   (list '(mlist) )
+                                   (list '(mlist) '((rat simp) 1 2))
+                                   (mul -1 (mul arg arg)))))))
+        (t
+         (lt-ltp 'twoj rest arg (list 'list index index)))))
 
 ;; Laplace transform of Incomplete Gamma function
 (defun lt1gammagreek (rest arg1 arg2)
