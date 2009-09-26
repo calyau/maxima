@@ -14,7 +14,7 @@
 	"rtest9a"
 	((mlist) "rtest10" 24 25)
 	"rtest11" "rtest13" "rtest13s"
-	((mlist simp) "rtest14" 57 63)
+	"rtest14"
 	((mlist simp) "rtest15")
 	"rtest16"
 	"rtestode" "rtestode_zp"
