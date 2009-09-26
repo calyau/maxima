@@ -1936,11 +1936,35 @@ sqrt(%pi)*%f[3,1]([1/2,1,-1/2],[3/2],s)/sqrt(s);
  * to the Laplace transform of the expanded form 2*sinh(t)^2/(%pi*t).
  */
 
-res1:specint(exp(-s*t)*bessel_i(1/2,t)^2,t),besselexpand:false;
+specint(exp(-s*t)*bessel_i(1/2,t)^2,t),besselexpand:false;
  -log(1-4/s^2)/(2*%pi);
 
-res2:specint(exp(-s*t)*bessel_i(1/2,t)^2,t),besselexpand:true;
+specint(exp(-s*t)*bessel_i(1/2,t)^2,t),besselexpand:true;
  -log(1-4/s^2)/(2*%pi);
+
+/*******************************************************************************
+ *
+ * Bug ID: 2866802 - specint(exp(-s*t)*t^(5/2)*bessel_j(-1/2,sqrt(t))^2,t) wrong
+ *
+ * We add two tests to show that the square of bessel_j(v,t) works for
+ * v=-1/2 (the orignally bug) and v=1/2 as expected.
+ */
+ 
+res:factor(ratsimp(specint(exp(-s*t)*t*bessel_j(-1/2,t)^2,t))),
+    besselexpand:false;
+2*(s^2+2)/(%pi*s*(s^2+4));
+
+expand(res-ratsimp(specint(exp(-s*t)*t*bessel_j(-1/2,t)^2,t))),
+   besselexpand:true;
+0;
+
+res:factor(ratsimp(specint(exp(-s*t)*t*bessel_j(1/2,t)^2,t))),
+    besselexpand:false;
+4/(%pi*s*(s^2+4));
+
+expand(res-ratsimp(specint(exp(-s*t)*t*bessel_j(1/2,t)^2,t))),
+   besselexpand:true;
+0;
 
 /******************************************************************************/
 
