@@ -1966,6 +1966,46 @@ expand(res-ratsimp(specint(exp(-s*t)*t*bessel_j(1/2,t)^2,t))),
    besselexpand:true;
 0;
 
+/*******************************************************************************
+ *
+ * BUG ID: 2867499 -specint(exp(-s*t)*CONST*t^2*bessel_y(1,t),t) wrong
+ *
+ * Show that a constant term is not lost in the Laplace transform
+ */
+ 
+factor(ratsimp(specint(exp(-s*t)*CONST*t^2*bessel_y(1,t),t)));
+(3*s*log((sqrt(s^2+1)+s)/(sqrt(s^2+1)-s))
+        +2*s^2*sqrt(s^2+1)-4*sqrt(s^2+1))
+        *CONST
+        /(%pi*(s^2+1)^(5/2));
+
+/*******************************************************************************
+ *
+ * Bug ID: 2867434 - specint(exp(-s*t)*t^2*%h[1,1](t),t) does not work
+ *
+ * Show that the Laplace transform of Hankel functions work for an integer order
+ */
+
+res1:factor(ratsimp(specint(exp(-s*t)*t^2*hankel_1(1,t),t)));
+(3*%i*s*sqrt(s^2+1)*log((sqrt(s^2+1)+s)/(sqrt(s^2+1)-s))
+        +3*%pi*s*sqrt(s^2+1)+2*%i*s^4-2*%i*s^2-4*%i)
+        /(%pi*(s^2+1)^3);
+        
+res2:factor(ratsimp(specint(exp(-s*t)*t^2*hankel_2(1,t),t)));
+(3*%i*s*sqrt(s^2+1)*log((sqrt(s^2+1)+s)/(sqrt(s^2+1)-s))
+ -3*%pi*s*sqrt(s^2+1)+2*%i*s^4-2*%i*s^2-4*%i)
+ /(-%pi*(s^2+1)^3)$
+
+
+/* Proof that the results are equivalent to the Laplace transforms of
+   bessel_j and bessel_y.
+   */
+
+ratsimp(specint(exp(-s*t)*t^2*bessel_j(1,t),t) - 1/2*(res1+res2));
+0;
+ratsimp(specint(exp(-s*t)*t^2*bessel_y(1,t),t) - 1/(2*%i)*(res1-res2));
+0;
+
 /******************************************************************************/
 
 kill(all);
