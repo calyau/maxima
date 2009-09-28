@@ -762,12 +762,32 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize elliptic_kc
+(defun m2-elliptic_kc (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt) 
+         (u nonzerp)
+         ((%elliptic_kc) (w true)))
+        ((coeffpp)(a zerp)))
+      nil))
+
 ;; Recognize %e(w), (new would be elliptic_ec)
 (defun onee (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)(u nonzerp)(($%e)(w true)))
 	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize elliptic_ec
+(defun m2-elliptic_ec (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt) 
+         (u nonzerp)
+         ((%elliptic_ec) (w true)))
+        ((coeffpp)(a zerp)))
       nil))
 
 ;; Recognize gamma_incomplete(w1, w2), Incomplete Gamma function
@@ -800,6 +820,16 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Recognize Struve H function.
+(defun m2-struve_h (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($struve_h) (v true) (w true)))
+        ((coeffpp)(a zerp)))
+      nil))
+
 ;; Recognize lstruve[v](w), Struve's L function.
 (defun onelstruve (exp)
   (m2 exp
@@ -808,6 +838,16 @@
 	 (u nonzerp)
 	 ((mqapply)(($lstruve array)(v true))(w true)))
 	((coeffpp)(a zerp)))
+      nil))
+
+;; Recognize Struve L function.
+(defun m2-struve_l (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($struve_l) (v true) (w true)))
+        ((coeffpp)(a zerp)))
       nil))
 
 ;; Recognize Lommel s[v1,v2](w) function.
@@ -840,6 +880,16 @@
 	 (u nonzerp)
 	 ((mqapply)(($%d array) (v true)) (w true)))
 	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize parabolic_cylinder_d function
+(defun m2-parabolic_cylinder_d (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($parabolic_cylinder_d) (v true) (w true)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize kbatmann(v,w), Batemann function
@@ -928,6 +978,16 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize jacobi_p function
+(defun m2-jacobi_p (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($jacobi_p) (v1 true) (v2true) (v3 true) (w true)))
+        ((coeffpp) (a zerp)))
+      nil))
+
 ;; Recognize %p[v1,v2](w), Associated Legendre P function
 (defun hyp-onep (exp)
   (m2 exp
@@ -940,6 +1000,16 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize assoc_legendre_p function
+(defun m2-assoc_legendre_p (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($assoc_legendre_p) (v1 true) (v2 true) (w true)))
+        ((coeffpp) (a zerp)))
+      nil))
+
 ;; Recognize %p[v1](w), Legendre P function
 (defun onep0 (exp)
   (m2 exp
@@ -948,6 +1018,16 @@
 	 (u nonzerp)
 	 ((mqapply)(($%p array) (v1 true)) (w true)))
 	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize %p[v1](w), Legendre P function
+(defun m2-legendre_p (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($legendre_p) (v true)) (w true))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %he[v1](w), Hermite function
@@ -982,6 +1062,16 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize assoc_legendre_q function
+(defun m2-assoc_legendre_q (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($assoc_legendre_q) (v1 true) (v2 true) (w true)))
+        ((coeffpp) (a zerp)))
+      nil))
+
 ;; Recognize %w[v1,v2](w), Whittaker W function.
 (defun onew (exp)
   (m2 exp
@@ -992,6 +1082,16 @@
 	  (($%w array) (v1 true)(v2 true))
 	  (w true)))
 	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize whittaker_w function.
+(defun m2-whittaker_w (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($whittaker_w) (v1 true) (v2 true) (w true)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %m[v1,v2](w), Whittaker M function
@@ -1006,6 +1106,16 @@
 	((coeffpp) (a zerp)))
       nil))
 
+;; Recognize whittaker_m function.
+(defun m2-whittaker_m (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         (($whittaker_m) (v1 true) (v2 true) (w true)))
+        ((coeffpp) (a zerp)))
+      nil))
+
 ;; Recognize %f[v1,v2](w1,w2,w3), Hypergeometric function
 (defun onef (exp)
   (m2 exp
@@ -1013,11 +1123,21 @@
 	((coeffpt)
 	 (u nonzerp)
 	 ((mqapply)
-	  (($%f array) (v1 true)(v2 true))
+	  (($%f array) (v1 true) (v2 true))
           (w1 freevarpar)
           (w2 freevarpar)
 	  (w3 true)))
 	((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize hypergeometric function
+(defun m2-hypergeometric (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+          (($hypergeometric) (w1 freevarpar) (w2 freevarpar) (w3 true)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1497,7 +1617,7 @@
 	       1)))
 
 ; No special handling of asin and atan. 
-; The functions are handeled by the routine lt-sf-log.
+; The functions are handled by the routine lt-sf-log.
 ;	  ((or *asinx* *atanx*)
 ;	   ;; We've already determined that we have an asin or atan;
 ;	   ;; expression, so use lt-asinatan to find the transform.
@@ -2155,12 +2275,26 @@
 		  rest (cdras 'u l))
 	    (return (lt1hstruve rest arg1 index1))))
      
+     ;; Laplace transform of Struve H function
+     (cond ((setq l (m2-struve_h u))
+            (setq index1 (cdras 'v l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1hstruve rest arg1 index1))))
+             
      ;; Laplace transform of Struve L function
      (cond ((setq l (onelstruve u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1lstruve rest arg1 index1))))
+     
+     ;; Laplace transform of Struve L function
+     (cond ((setq l (m2-struve_l u))
+            (setq index1 (cdras 'v l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1lstruve rest arg1 index1))))
      
      ;; Laplace transform of little Lommel s function
      (cond ((setq l (ones u))
@@ -2198,6 +2332,13 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 index1 nil 'd))))
+     
+     ;; Laplace transform of Parabolic Cylinder function
+     (cond ((setq l (m2-parabolic_cylinder_d u))
+            (setq index1 (cdras 'v l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (fractest2 rest arg1 index1 nil 'd))))
      
      ;; Laplace transform of Incomplete Gamma function
      (cond ((setq l (onegammaincomplete u))
@@ -2256,6 +2397,14 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1m rest arg1 index1 index11))))
+     
+     ;; Laplace transform of Whittaker M function
+     (cond ((setq l (m2-whittaker_m u))
+            (setq index1 (cdras 'v1 l)
+                  index2 (cdras 'v2 l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1m rest arg1 index1 index2))))
 
      ;; Laplace transform of the Generalized Laguerre function, %l[v1,v2](w)
      (cond ((setq l (onel u))
@@ -2269,19 +2418,18 @@
      ;; We call the routine for %l[v1,v2](w).
      (cond ((setq l (one-gen-laguerre u))
             (setq index1  (cdras 'v1 l)
-                  index11 (cdras 'v2 l)
+                  index2  (cdras 'v2 l)
                   arg1    (cdras 'w l)
                   rest    (cdras 'u l))
-            (return (integertest rest arg1 index1 index11 'l))))
+            (return (integertest rest arg1 index1 index2 'l))))
         
      ;; Laplace transform for the Laguerre function
      ;; We call the routine for %l[v1,0](w).
      (cond ((setq l (one-laguerre u))
             (setq index1  (cdras 'v1 l)
-                  index11 0
                   arg1    (cdras 'w l)
                   rest    (cdras 'u l))
-            (return (integertest rest arg1 index1 index11 'l))))
+            (return (integertest rest arg1 index1 0 'l))))
      
      ;; Laplace transform of Gegenbauer function
      (cond ((setq l (onec u))
@@ -2343,6 +2491,14 @@
 		  rest (cdras 'u l))
 	    (return (lt1p rest arg1 index1 index11))))
      
+     ;; Laplace transform of Associated Legendre P function
+     (cond ((setq l (m2-assoc_legendre_p u))
+            (setq index1 (cdras 'v1 l)
+                  index2 (cdras 'v2 l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1p rest arg1 index1 index2))))
+     
      ;; Laplace transform of %p[v1,v2,v3](w), Jacobi function
      (cond ((setq l (onepjac u))
 	    (setq index1 (cdras 'v1 l)
@@ -2352,6 +2508,15 @@
 		  rest (cdras 'u l))
 	    (return (pjactest rest arg1 index1 index2 index21))))
      
+     ;; Laplace transform of Jacobi P function
+     (cond ((setq l (m2-jacobi_p u))
+            (setq index1 (cdras 'v1 l)
+                  index2 (cdras 'v2 l)
+                  index21 (cdras 'v3 l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (pjactest rest arg1 index1 index2 index21))))
+     
      ;; Laplace transform of Associated Legendre function of the second kind
      (cond ((setq l (oneq u))
 	    (setq index1 (cdras 'v1 l)
@@ -2359,6 +2524,14 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1q rest arg1 index1 index11))))
+     
+     ;; Laplace transform of Associated Legendre function of the second kind
+     (cond ((setq l (m2-assoc_legendre_q u))
+            (setq index1 (cdras 'v1 l)
+                  index2 (cdras 'v2 l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1q rest arg1 index1 index2))))
      
      ;; Laplace transform of %p[v1](w), Legendre P function
      (cond ((setq l (onep0 u))
@@ -2368,6 +2541,13 @@
 		  rest (cdras 'u l))
 	    (return (lt1p rest arg1 index1 index11))))
      
+     ;; Laplace transform of Legendre P function
+     (cond ((setq l (m2-legendre_p u))
+            (setq index1 (cdras 'v1 l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1p rest arg1 index1 0))))
+     
      ;; Laplace transform of Whittaker W function
      (cond ((setq l (onew u))
 	    (setq index1 (cdras 'v1 l)
@@ -2375,6 +2555,14 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (whittest rest arg1 index1 index11))))
+     
+     ;; Laplace transform of Whittaker W function
+     (cond ((setq l (m2-whittaker_w u))
+            (setq index1 (cdras 'v1 l)
+                  index2 (cdras 'v2 l)
+                  arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (whittest rest arg1 index1 index2))))
      
      ;; Laplace transform of square of Bessel J function
      (cond ((setq l (onej^2 u))
@@ -2551,17 +2739,36 @@
 		  rest (cdras 'u l))
 	    (return (lt1kelliptic rest arg1))))
      
+     ;; Laplace transform of Complete elliptic integral of the first kind
+     (cond ((setq l (m2-elliptic_kc u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1kelliptic rest arg1))))
+     
      ;; Laplace transform of Complete elliptic integral of the second kind
      (cond ((setq l (onee u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1e rest arg1))))
      
+     ;; Laplace transform of Complete elliptic integral of the second kind
+     (cond ((setq l (m2-elliptic_ec u))
+            (setq arg1 (cdras 'w l)
+                  rest (cdras 'u l))
+            (return (lt1e rest arg1))))
+     
      ;; Laplace transform of %f[v1,v2](w1,w2,w3), Hypergeometric function
      ;; We support the Laplace transform of the build in symbol %f. We do
      ;; not use the mechanism of defining an "Expert on Laplace transform",
      ;; the expert function does a call to lt-ltp. We do this call directly.
      (cond ((setq l (onef u))
+            (setq rest   (cdras 'u l)
+                  arg1   (cdras 'w3 l)
+                  index1 (list (cdras 'w1 l) (cdras 'w2 l)))
+            (return (lt-ltp 'f rest arg1 index1))))
+     
+     ;; Laplace transform of Hypergeometric function
+     (cond ((setq l (m2-hypergeometric u))
             (setq rest   (cdras 'u l)
                   arg1   (cdras 'w3 l)
                   index1 (list (cdras 'w1 l) (cdras 'w2 l)))
@@ -2756,11 +2963,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun whittest (r a i1 i2)
+  (let (n m)
   (cond ((f16p217test r a i1 i2))
+        ((and 
+           (not 
+             (and (maxima-integerp (setq n (sub (sub '((rat simp) 1 2) i2) i1)))
+                  (member ($sign n) '($zero $neg $nz))))
+           (not 
+             (and (maxima-integerp (setq m (sub (add '((rat simp) 1 2) i2) i1)))
+                  (member ($sign m) '($zero $neg $nz)))))
+           ;; 1/2-u-k and 1/2+u-k are not zero or a negative integer
+           ;; Transform to Whittaker M and try again.
+           (distrexecinit ($expand (mul (init r) (wtm a i1 i2)))))
         (t
-         ;; Convert to M function and try again.
-         (distrexecinit ($expand (mul (init r)
-                                      (wtm a i1 i2)))))))
+         ;; Both conditions fails, return a noun form.
+         (setq *hyp-return-noun-flag* 'whittest-failed)))))
 
 (defun f16p217test (r a i1 i2)
   ;; We have r*%w[i1,i2](a)
@@ -2773,11 +2990,15 @@
         (when (and (eq (asksign (add (add v i2) 1//2)) '$positive)
                    (eq (asksign (add (sub v i2) 1//2)) '$positive))
           ;; Ok, we satisfy the conditions.  Now extract the arg.
-          (let ((l (m2 a
-                       '((mplus)
-                         ((coeffpt) (f hasvar) (a freevar))
-                         ((coeffpp) (c zerp)))
-                       nil)))
+          ;; The transformation is only valid for an argument a*t. We have
+          ;; to special the pattern to make sure that we satisfy the condition.
+          (let ((l (m2-a*t a) ; more special pattern
+;                   (m2 a
+;                       '((mplus)
+;                         ((coeffpt) (f hasvar) (a freevar))
+;                         ((coeffpp) (c zerp)))
+;                       nil)
+                   ))
             (when l
               (let ((a (cdras 'a l)))
                 ;; We're ready now to compute the transform.
@@ -3680,8 +3901,8 @@
     (s (stf (car index) (cadr index) arg))
     (onerf (erftf arg))
     (onelog (logtf arg))
-    (onekelliptic (kelliptictf arg))
-    (onee (etf arg))
+    (onekelliptic (kelliptictf arg)) ; elliptic_kc
+    (onee (etf arg))                 ; elliptic_ec
     (onem (mtf (car index) (cadr index) arg))
     (hyp-onep (ptf (car index) (cadr index) arg))
     (oneq (qtf (car index) (cadr index) arg))
@@ -3840,7 +4061,7 @@
 ;;
 ;; A&S 17.3.9
 ;;
-;; K(k) = %pi/2*F(1/2,1/2; 1; k^2)
+;; K(k) = %pi/2*2F1(1/2,1/2; 1; k^2)
 
 (defun kelliptictf (k)
   (let ((inv2 (1//2)))
@@ -3853,7 +4074,7 @@
 ;;
 ;; A&S 17.3.10
 ;;
-;; E(k) = %pi/2*F(-1/2,1/2;1;k^2)
+;; E(k) = %pi/2*2F1(-1/2,1/2;1;k^2)
 
 (defun etf (k)
   (let ((inv2 (1//2)))
