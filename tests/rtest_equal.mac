@@ -721,5 +721,13 @@ unknown$
 is(equal(sqrt(1-x^2), conjugate(sqrt(1-x^2))));
 true$
 
+/* SF bug 2869181 */
+
+is(equal(exp(%i * x),0));
+false$
+
+is(equal(0, exp(%i * x)));
+false$
+
 (forget(-1 < x, x < 1),0);
 0$

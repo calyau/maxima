@@ -93,5 +93,8 @@ signum(p * x) - signum(x);
 signum(n * x) + signum(x);
 0$
 
+signum(%i * sqrt(1 - sqrt(2)));
+-1$
+
 (forget(p > 0, n < 0, pz >= 0, nz <= 0), remove(z,complex), 0);
 0$
