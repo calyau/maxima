@@ -258,7 +258,7 @@
      ;; If compare says a = b, return true.
      ((equal sgn "=") t)          
      
-     ;; If comare says a # b, return false.
+     ;; If compare says a # b, return false.
      ((member sgn '("<" ">" "#") :test 'equal) nil)
           
      ;; z^n = 0 --> false if n <= 0 else z = 0.
