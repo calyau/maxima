@@ -861,20 +861,21 @@ relational knowledge is contained in the default context GLOBAL."
 ;; niceindicespref.
 
 (defun meqp-by-csign (z a b)
-  (let ((sgn) (*complexsign* t) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
-    (cond ((and (mexptp z) (eq t (mnqp (third z) '$minf)) (eq t (mnqp (second z) 0))) nil)
-	  (t
-	   (setq z ($niceindices z))
-	   (setq sgn (csign (sratsimp z)))
-	   (cond ((eq '$zero sgn) t)
-		 ((and (eq sgn t) (islinear z '$%i))
-		  (let ((r (meqp ($realpart z) 0))
-			(i (meqp ($imagpart z) 0)))
-		    (cond ((or (eq r nil) (eq i nil)) nil)
-			  ((and (eq r t) (eq i t)) t)
-			  (t `(($equal) ,a ,b)))))
-		 ((member sgn '($pos $neg $pn)) nil)
-		 (t `(($equal) ,a ,b)))))))
+  (let ((sgn) (rsgn) (isgn) ($niceindicespref `((mlist) ,(gensym) ,(gensym) ,(gensym))))
+    (setq z ($niceindices z))
+    (setq z (if ($constantp z) ($rectform z) (sratsimp z)))
+    (setq sgn ($csign z))
+    (cond ((eq '$zero sgn) t)
+	  ((memq sgn '($pos $neg $pn)) nil)
+
+	  ((and (memq sgn '($complex $imaginary)) (linearp z '$%i))
+	   (setq rsgn ($csign ($realpart z)))
+	   (setq isgn ($csign ($imagpart z)))
+	   (cond ((and (eq '$zero rsgn) (eq '$zero isgn)) t)
+		 ((or (memq rsgn '($neg $pos $pn)) (memq isgn '($neg $pos $pn))) nil)
+		 (t `(($equal) ,a ,b))))
+
+	  (t `(($equal) ,a ,b)))))
 
 ;; For each fact of the form equal(a,b) in the active context, do e : ratsubst(b,a,e).
 
@@ -927,6 +928,10 @@ relational knowledge is contained in the default context GLOBAL."
 			(t nil)))
 		 ((and (op-equalp a 'lambda) (op-equalp b 'lambda)) (lambda-meqp a b))
 		 (($setp a) (set-meqp a b))
+		 ;; 0 isn't in the range of an exponential function.
+		 ((or (and (mexptp a) (not (eq '$minf (third a))) (zerop1 b) (eq t (mnqp (second a) 0)))
+		      (and (mexptp b) (not (eq '$minf (third b))) (zerop1 a) (eq t (mnqp (second b) 0))))
+		  nil)
 		 (t (meqp-by-csign (equal-facts-simp (sratsimp (sub a b))) a b)))))))
 
 ;; Two arrays are equal (according to MEQP)
