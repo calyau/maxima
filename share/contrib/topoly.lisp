@@ -414,61 +414,51 @@ to eliminate.
 ;; A simplifying carg function. 
 
 (setf (get '$parg 'operators) 'simp-parg)
-
-(defun simp-parg (e yy z)
+	
+(defun simp-parg(e yy z)
   (declare (ignore yy))
-  (let (($domain '$complex) (dosimp nil) (complexsign t) (ec) (x) (y) (x-sgn) (y-sgn))
+  (let (($domain '$complex) (sgn) (isgn))
+   
     (oneargcheck e)
     (setq e (simplifya (specrepcheck (cadr e)) z))
+    (setq e (sratsimp ($exponentialize e)))
     
-    (cond ((and (mtimesp e) ($numberp (cadr e))) ;; number * product
-	   (cond ((eq t (mgrp (cadr e) 0))
-		  (take '($parg) (reduce 'mul (cddr e))))
-		 
-		 ((eq t (mgrp 0 (cadr e)))
-		  (setq x (add '$%pi (take '($parg) (reduce 'mul (cddr e)))))
-		  (sub '$%pi (simplify `(($mod) ,(sub '$%pi x) ,(mul 2 '$%pi)))))
+    (cond ((zerop1 e) e) ;; parg(0) = 0,parg(0.0) = 0.0, parg(0.0b0) = 0.0b0.
+	  
+	  ;; For a complex number, use atan2
+	  ((complex-number-p e '$constantp) 
+	   (take '($atan2) ($imagpart e) ($realpart e)))
+	  
+	  ;; off the negative real axis, parg(conjugate(x)) = -parg(x)
+	  ((and (op-equalp e '$conjugate) (off-negative-real-axisp e))
+	   (neg (take '($parg) (cadr e))))
 
-		 (t `(($parg simp) ,e))))
-		 
-	  ;; parg(constant^x) = parg(imagpart(x * log(constant)))
-	  ((and (mexptp e) ($constantp (cadr e)) (eq t (mgrp (cadr e) 0)))
-	   (setq x (mul (take '(%log) (cadr e)) (caddr e)))
-	   (setq x (div (sub x (take '($conjugate) x)) (mul 2 '$%i)))
-	   (sub '$%pi (simplify `(($mod) ,(sub '$%pi x) ,(mul 2 '$%pi)))))
+	  ;; parg(a * x) = parg(x) provided a > 0.
+	  ((and (mtimesp e) (eq t (mgrp (cadr e) 0)))
+	   (take '($parg) (reduce 'mul (cddr e))))
 
-	  ((and (mexptp e) ($constantp (caddr e)) (eq t (mgrp 0 (caddr e))) (eq t (mgrp 1 (caddr e))))
+	  ;; parg exp(a + %i*b) = %pi-mod(%pi-b,2*%pi)
+	  ((and (mexptp e) (eq '$%e (second e)) (linearp (third e) '$%i))
+	   (sub '$%pi (take '($mod) (sub '$%pi ($imagpart (third e))) (mul 2 '$%pi))))
+		  	  
+	  ;; parg(x^number) = number * parg(x), provided number in (-1,1).
+	  ((and (mexptp e) ($numberp (caddr e)) (eq t (mgrp (caddr e) -1)) (eq t (mgrp 1 (caddr e))))
 	   (mul (caddr e) (take '($parg) (cadr e))))
+	  
+	  ;; sign rules parg(x) = %pi, x < 0 and parg(x) = 0, x > 0
+	  ((eq '$neg (setq sgn ($csign e))) '$%pi)
+	  ((eq '$pos sgn) 0)
 
-	  ((op-equalp e '%log)
-	   (take '($parg) (cadr e)))
+	  ;; more sign rules parg(%i * x) = %pi /2, x > 0 and -%pi / 2, x < 0.
+	  ((and (eq '$imaginary sgn) (setq isgn ($csign (div e '$%i))) (eq '$pos isgn))
+	   (div '$%pi 2))
 
-	  (t
-	   (setq ec (take '($conjugate) e))
-	   (setq x (div (add e ec) 2)) ;; the real part
-	   (setq y (div (sub e ec) (mul 2 '$%i))) ;; the imaginary part
+	  ((and (eq '$imaginary sgn) (eq '$neg isgn))
+	   (div '$%pi -2))
 
-	   (setq x-sgn (csign x))
-	   (cond ((eq x-sgn '$zero)
-		  (mul (div '$%pi 2) (take '(%signum) y))) ;; imaginary axis (include pole).
-		 (t
-		  (setq y-sgn (csign y))
-		  (cond ((eq x-sgn '$neg)
-			 (cond ((eq y-sgn '$neg) ;; 3rd quadrant
-				(sub (take '(%atan) (div y x)) '$%pi))
-			       ((memq y-sgn '($zero $pz $pos)) ;; 2nd quadrant + negative real.
-				(add (take '(%atan) (div y x)) '$%pi))
-			       (t `(($parg simp) ,e))))
-			
-			((eq y-sgn '$zero) ;; real axis
-			 (cond ((eq x-sgn '$neg) '$%pi)
-			       ((memq x-sgn '($zero $pz $pos)) 0) ;; $zero shouldn't happen.
-			       (t `(($parg simp) ,e))))
-			 
-			((eq x-sgn '$pos) (take '(%atan) (div y x))) ;; 1st and 4th quadrants.
-			(t  `(($parg simp) ,e)))))))))
-	
-		  
+	  ;; nounform return
+	  (t `(($parg simp) ,e)))))
+	  		  
 (setf (get '$isreal_p 'operators) 'simp-isreal-p)
 
 (defun simp-isreal-p (e yy z)

@@ -533,8 +533,9 @@ to_poly_solve(x - 2 * sqrt (x) = 10,x);
 to_poly_solve(sin(x)+cos(x)=0,x, 'simpfuncs = ['nicedummies,'expand]);
 %union([x=2*%pi*%z0-%pi/4],[x=2*%pi*%z0+(3*%pi)/4])$
 
-/* Fri Feb 1 05:31:56 CST 2008 */
-/* to_poly_solve(x*exp(-x)-0.05 = 0,x); */
+/* Fri Feb 1 05:31:56 CST 2008 9changed 0.05 to 5/100) */
+to_poly_solve(x*exp(-x)-5/100 = 0,x); 
+%union([x = -lambert_w(-1/20)])$
 
 /* Sun May 11 11:52:05 CDT 2008 */
 to_poly_solve(2*x=sqrt(x^2+3),x);
@@ -563,11 +564,11 @@ block([algexact:true],to_poly_solve(1+x^(5/2),x, 'simpfuncs = ['expand]));
 
 /* Thu Oct 12 14:55:03 CDT 2006 */
 nicedummies(to_poly_solve([a1+b2=r2,a1*b2=r3,a3*b1+a2*b2=r4,r4+a5+a3*b2=d5,a5*b1=0],
-[a1,a2,a3,a5,r2,r3,r4,b1,b2],'simpfuncs = ['expand]));
-%union([a1 = %c0,a2 = %c1,a3 = %c2,a5 = d5-%c2*%c3-%c1*%c3,b1 = 0,
-              b2 = %c3,r2 = %c3+%c0,r3 = %c0*%c3,r4 = %c1*%c3],
-             [a1 = %c4,a2 = d5/%c7-%c5*%c6/%c7-%c5,a3 = %c5,a5 = 0,b1 = %c6,
-              b2 = %c7,r2 = %c7+%c4,r3 = %c4*%c7,r4 = d5-%c5*%c7])$
+[a1,a2,a3,a5,r2,r3,r4,b1,b2]));
+%union([a1 = %c0,a2 = %c1,a3 = %c2,a5 = d5+(-%c2-%c1)*%c3,b1 = 0,
+               b2 = %c3,r2 = %c3+%c0,r3 = %c0*%c3,r4 = %c1*%c3],
+              [a1 = %c4,a2 = (d5-%c5*%c7-%c5*%c6)/%c7,a3 = %c5,a5 = 0,
+               b1 = %c6,b2 = %c7,r2 = %c7+%c4,r3 = %c4*%c7,r4 = d5-%c5*%c7])$
 
 /* Sun Apr 2 08:31:17 CDT 2006 */
 block([algexact : true, eq : x^3-8*x^2-197*x-502], 
@@ -1022,6 +1023,31 @@ to_poly_solve (Q*sqrt(Q^2 + 2) - 1, Q);
 
 (remvalue(e,s), remfunction(chk_sol),0);
 0$
+
+/* source code comment in /solver/linsolve.mac */
+
+nicedummies(to_poly_solve([x+y=p1-p2, x+3*y=p2-p3, 3*x-y=p1+p2+p3], [x,y], 'parameters = [p1,p2,p3]));
+union(%if((p1 = %c0) %and (p2 = %c1) %and (p3 = 8*%c1-4*%c0),
+   [x = (4*%c1-%c0)/2,y = -((6*%c1-3*%c0)/2)],%union()))$
+
+subst(a=1,to_poly_solve(log(x + sqrt(x^2-1))=a,x));
+%union([x = %e^-1*(%e^2+1)/2])$
+
+to_poly_solve(log(x+1)+log(x) = log(6)+log(5),x);
+%union([x = -6],[x = 5])$
+
+/* From RJF, Maxima mailing list, Tuesday, September 01, 2009 12:54PM */
+to_poly_solve((x-%pi)/sin(x)=0, x);
+%union()$
+
+to_poly_solve((sqrt(x)-1)/(x-1),x);
+%union()$
+
+to_poly_solve((x^2 - 2) * (sqrt(x)-1)/(x-1),x);
+%union([x = -sqrt(2)],[x = sqrt(2)])$
+
+nicedummies(to_poly_solve(sin(x)/x,x));
+%union(%if(2*%z0+1 # 0,[x = 2*%pi*%z0+%pi],%union()), %if(%z1 # 0,[x = 2*%pi*%z1],%union()))$
 
 /* clean up */
 (print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 100));

@@ -248,7 +248,7 @@ lambertify(e, vars) := block([exp_args, subs : set(),q, ne, %g, listconstvars : 
   [e, subs]);
 
 to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter_list,
-                        alias_solver : false, use_grobner, maxdepth, cntx : false, simpfuncs],
+                alias_solver : false, use_grobner, maxdepth, cntx : false, simpfuncs, ratprint : false],
  
   simpfuncs : assoc('simpfuncs, extraargs, []),
   if not(member('rectform_log_if_constant, simpfuncs)) then
