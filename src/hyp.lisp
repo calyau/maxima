@@ -892,10 +892,8 @@
 	      (when $trace2f1
 		(format t " Yes: case 2~%"))
 	      (return lgf))))
-     
-     
-     (print 'simp2f1-will-continue-in)
-     (terpri)
+     (when $trace2f1
+       (format t "'simp2f1-will-continue-in~%"))
      (return  (fpqform arg-l1 arg-l2 var))))
 
 ;; As best as I (rtoy) can tell, step7 is meant to handle an extension
