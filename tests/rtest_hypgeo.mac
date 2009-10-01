@@ -2086,7 +2086,54 @@ factor(ratsimp(specint(exp(-s*t)*t*exp(-t^2/4),t)));
 
 factor(ratsimp(specint(exp(-s*t)*%d[1](t),t)));
 'specint(exp(-s*t)*%d[1](t),t);
-                                     
+
+/*******************************************************************************
+ *
+ * Test Laplace transform of whittaker_m
+ *
+ *  Check it against two simple special cases of whittaker_m:
+ * 
+ *    whittaker_m(-1/2-u,u,z) = exp(z/2) * z^(u+1/2)
+ *    whittaker_m(1/2 +u,u,z) = exp(-z/2)* z^(u+1/2)
+ */
+
+(assume(s>0,2*u+3>0,2*s-1>0),done);
+done;
+
+res1:factor(ratsimp(specint(exp(-s*t)*whittaker_m(-1/2-u,u,t),t)));
+(2*s-1)^(-u-3/2)*2^(u+3/2)*gamma((2*u+3)/2);
+ 
+res2:factor(ratsimp(specint(exp(-s*t)*exp(t/2)*t^(u+1/2),t)));
+(2*s-1)^(-u-3/2)*2^(u+3/2)*gamma((2*u+3)/2);
+
+ratsimp(res1-res2);
+0;
+
+res1:factor(ratsimp(specint(exp(-s*t)*whittaker_m(1/2+u,u,t),t)));
+(2*s+1)^(-u-3/2)*2^(u+3/2)*gamma((2*u+3)/2);
+ 
+res2:factor(ratsimp(specint(exp(-s*t)*exp(-t/2)*t^(u+1/2),t)));
+(2*s+1)^(-u-3/2)*2^(u+3/2)*gamma((2*u+3)/2);
+
+ratsimp(res1-res2);
+0;
+
+/* The general solution for an argument t, with 2*a+2*u+1>0 */
+
+(assume(2*a+2*u+1>0),done);
+done;
+
+factor(ratsimp(specint(exp(-s*t)*t^(a-1)*whittaker_m(v,u,t),t)));
+(2*s+1)^(-u-a-1/2)*2^(u+a+1/2)*gamma((2*u+2*a+1)/2)
+                         *%f[2,1]([(2*v-2*u-1)/-2,(2*u+2*a+1)/2],[2*u+1],
+                                  2/(2*s+1));
+
+/* The general solution for an argument -t, with 2*a+2*u+1>0 */
+
+factor(ratsimp(specint(exp(-s*t)*t^(a-1)*whittaker_m(v,u,-t),t)));
+%i*(2*s-1)^(-u-a-1/2)*(-1)^u*2^(u+a+1/2)*gamma((2*u+2*a+1)/2)
+         *%f[2,1]([(2*v-2*u-1)/-2,(2*u+2*a+1)/2],[2*u+1],-2/(2*s-1));
+
 /******************************************************************************/
 
 kill(all);
