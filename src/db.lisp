@@ -389,9 +389,13 @@
 	 (propg))))
 
 (defmfun isp (pat)
-  (cond ((truep pat))
-	((falsep pat) nil)
-	(t 'unknown)))
+  (let ((isp 'unknown))
+    (ignore-errors
+      (setq isp
+	    (cond ((truep pat))
+		  ((falsep pat) nil)
+		  (t 'unknown))))
+    isp))
 
 (defmfun kindp (x y)
   (unless (symbolp x)
