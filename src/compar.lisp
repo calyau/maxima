@@ -1560,7 +1560,10 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (defmfun $featurep (e ind)
   (setq e ($ratdisrep e))
-  (cond ((not (symbolp ind)) (merror (intl:gettext "featurep: second argument must be a symbol; found ~M") ind))
+  (cond ((not (symbolp ind))
+         (merror 
+           (intl:gettext "featurep: second argument must be a symbol; found ~M")
+          ind))
 	((eq ind '$integer) (maxima-integerp e))
 	((eq ind '$noninteger) (nonintegerp e))
 	((eq ind '$even) (mevenp e))
@@ -1569,7 +1572,8 @@ relational knowledge is contained in the default context GLOBAL.")
 	 (if (atom e)
 	     (or (numberp e) (kindp e '$real) (numberp (numer e)))
 	     (free ($rectform e) '$%i)))
-	((eq ind '$complex) t)
+; Symbols and expressions are no longer by default complex (DK 10/2009).
+;	((eq ind '$complex) t)
 	((symbolp e) (kindp e ind))))
 
 ;; Give a function the maps-integers-to-integers property when it is integer
@@ -2042,13 +2046,30 @@ relational knowledge is contained in the default context GLOBAL.")
 
 (eval-when (:load-toplevel :execute)
   (mapc #'true*
-	'((par ($even $odd) $integer)
+	'(;; even and odd are integer
+	  (par ($even $odd) $integer)
 
-	  (kind $integer $rational)
-
-	  (par ($rational $irrational) $real)
-	  (par ($real $imaginary) $complex)
-
+; Cutting out inferences for integer, rational, real, complex (DK 10/2009).
+;	  (kind $integer $rational)
+;	  (par ($rational $irrational) $real)
+;	  (par ($real $imaginary) $complex)
+	  
+	  ;; imaginary is complex
+	  (kind $imaginary $complex)
+	  
+          ;; Declarations for constants
+          (kind $%i     $noninteger)
+          (kind $%i     $imaginary)
+          (kind $%e     $noninteger)
+          (kind $%e     $real)
+          (kind $%pi    $noninteger)
+          (kind $%pi    $real)
+          (kind $%gamma $noninteger)
+          (kind $%gamma $real)
+          (kind $%phi   $noninteger)
+          (kind $%phi   $real)
+          
+          ;; Declarations for functions
 	  (kind %log $increasing)
 	  (kind %atan $increasing) (kind %atan $oddfun)
 	  (kind $delta $evenfun)
