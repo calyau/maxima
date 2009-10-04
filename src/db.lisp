@@ -22,22 +22,21 @@
 
 ;; External specials
 
-(defmvar context 'global)
-(defmvar contexts nil)
-(defmvar current 'global)
-(defmvar dbtrace nil)
-(defmvar dobjects nil)
-
+(defvar context 'global)
+(defvar contexts nil)
+(defvar current 'global)
+(defvar dbtrace nil)
+(defvar dobjects nil)
 
 ;; Internal specials
 
-(defmvar *nobjects* nil)
-(defmvar *dbcheck* nil)
-(defmvar +l)
-(defmvar -l)
+(defvar *nobjects* nil)
+(defvar *dbcheck* nil)
+(defvar +l)
+(defvar -l)
 
-(defmvar *conindex* 0)
-(defmvar *connumber* 50)
+(defvar *conindex* 0)
+(defvar *connumber* 50)
 
 (defconstant +lab-high-bit+ most-negative-fixnum)
 
@@ -45,7 +44,7 @@
 (defconstant +labnumber+ (1- (integer-length +lab-high-bit+)))
 
 ;; A cell with the high bit turned on.
-(defmvar *lab-high-lab* (list +lab-high-bit+))
+(defvar *lab-high-lab* (list +lab-high-bit+))
 
 ;; Variables that are set by (clear)
 (defvar +s)
@@ -64,8 +63,8 @@
 (defvar ulabs nil)
 
 
-(defmvar *world*)
-(defmvar *db*)
+(defvar *world*)
+(defvar *db*)
 
 ;; Macro for indirecting through the contents of a cell.
 

@@ -21,23 +21,20 @@
 
 (defvar %initiallearnflag)
 
-(defmvar $context '$initial
+(defvar $context '$initial
   "Whenever a user assumes a new fact, it is placed in the context
 named as the current value of the variable CONTEXT.  Similarly, FORGET
 references the current value of CONTEXT.  To add or DELETE a fact from a
 different context, one must bind CONTEXT to the intended context and then
 perform the desired additions or deletions.  The context specified by the
 value of CONTEXT is automatically activated.  All of MACSYMA's built-in
-relational knowledge is contained in the default context GLOBAL."
-  no-reset)
+relational knowledge is contained in the default context GLOBAL.")
 
-(defmvar $contexts '((mlist) $initial $global)
-  "A list of the currently active contexts."
-  no-reset)
+(defvar $contexts '((mlist) $initial $global)
+  "A list of the currently active contexts.")
 
-(defmvar $activecontexts '((mlist))
-  "A list of the currently activated contexts"
-  no-reset)
+(defvar $activecontexts '((mlist))
+  "A list of the currently activated contexts")
 
 (defmvar sign-imag-errp t
   "If T errors out in case COMPAR meets up with an imaginary quantity.
