@@ -302,6 +302,9 @@ integrate(%if(x < 1, -x, %if(x < 2, x, 2 * x)),x,0,z);
 [subst(z = 0,%), subst(z=1,%), subst(z=2,%), subst(z=3,%)];
 [0,-1/2,1,6]$
 
+integrate(max(x^5-x^3,x*(x^4-q-y)*(1-x^2)),x);
+'integrate(max(x^5-x^3,x*(x^4-q-y)*(1-x^2)),x)$
+
 (remfunction(convolution, unit_box), remvalue(i,di,f1),0);
 0$
 

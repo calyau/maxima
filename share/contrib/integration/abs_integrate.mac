@@ -141,7 +141,9 @@ signum_int(q,x) := block([w : 1, acc : [], sgn, v, inflag : true, f, listconstva
       sgn : xreduce("*", map(lambda([s], diff(s,x)),acc)),
       acc : map(lambda([s], rhs(first(linsolve(s, x)))),acc),
      signum_int_helper(signum(sgn) * w, sort(acc), x)))
-  else if (safe_op(q) = "+") then map(lambda([s], signum_int(s,x)), q)
+  else if (safe_op(q) = "+") then (
+    f : map(lambda([s], signum_int(s,x)), args(q)),
+    if every(lambda([s], s # false), f) then xreduce("+", f) else false)
   else block([extra_integration_methods : [], extra_definite_integration_methods : []],
     integrate(q,x)));
 
