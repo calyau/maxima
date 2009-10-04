@@ -1040,5 +1040,9 @@ limit(1 - (-1/2)^inf);
 limit((sin(3*(x+h)) - sin(3*(x)))/h, h, 0, plus);
 3*cos(3*x);
 
+/* limit incorrect for -x/sqrt(1-x^2) - ID: 2869955 */
+limit(-x/sqrt(1-x^2), x, 1, minus);
+minf;
+
 end;
 end$

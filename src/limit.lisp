@@ -998,7 +998,7 @@ It appears in LIMIT and DEFINT.......")
 	   (setq ans (behavior e var v))
 	   (cond ((equal ans 1) '$zeroa)
 		 ((equal ans -1) '$zerob)
-		 (t ans)))
+		 (t nil)))	; behavior can't find direction
 	  (t ans))))
 
 ;;;returns (cons numerator denominator)
