@@ -2265,16 +2265,16 @@
 		   u)))))
 
 ;; TRUE, if the symbol e is declared to be $complex or $imaginary.
-(defmfun decl-complexp (e)
+(defun decl-complexp (e)
   (and (symbolp e)
-       (kindp e '$complex)
-       (not (kindp e '$real))))
+       (kindp e '$complex)))
 
-;; TRUE, if the symbol e is NOT declared to be $complex or $imaginary,
-;; but has any of the following declarations:
-;;   $integer, $noninteger, $even, $odd, $rational, $irrational, $real
-(defmfun decl-realp (e)
-  (and (symbolp e) (kindp e '$real)))
+;; TRUE, if the symbol e is declared to be $integer, $rational, or $real
+(defun decl-realp (e)
+  (and (symbolp e)
+       (or (kindp e '$real)
+           (kindp e '$rational)
+           (kindp e '$integer))))
 
 ;; WARNING:  Exercise extreme caution when modifying this function!
 ;;
