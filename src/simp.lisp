@@ -1912,10 +1912,12 @@
      (cond ((null (cdr fm))
             ;; The list of terms is empty. The loop is finshed.
             (go less))
-           ((and (mnump temp)
-                 (not (or (integerp temp)
-                          (ratnump temp))))
-            ;; Stop the loop for a float or bigfloat number.
+           ((or (and (mnump temp)
+                     (not (or (integerp temp)
+                              (ratnump temp))))
+                (and (integerp temp)
+                     (equal temp -1)))
+            ;; Stop the loop for a float or bigfloat number, or number -1.
             (go less))
            ((mexptp (cadr fm))
             (cond ((alike1 (car x) (cadadr fm))
