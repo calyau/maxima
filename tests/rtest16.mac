@@ -1060,5 +1060,11 @@ pn;
 (-1)^n*(-1);
 -(-1)^n;
 
+/* The initial problem which triggers this bug */
+declare(n,integer);
+done;
+limit ((sin(n*x) - n*x*cos(n*x))/n^2, x, %pi);
+-%pi*(-1)^n/n;
+
 end;
 end$
