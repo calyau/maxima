@@ -169,7 +169,7 @@ solve_rec(eq, fn, [cond]) := block(
   if length(fn)#1 then return(false),
   %f : part(fn, 0),
   %n : part(fn, 1),
-  if not(atom(%f)) or not(atom(%n)) then return(false),
+  if not(atom(%f)) or not(mapatom(%n)) then return(false),
   
   std_form : subst(cond, eq),
 
@@ -253,7 +253,7 @@ solve_rec_gen(std_form, %f, %n, cond) := block(
         if length(var)<ord then (
           sr_print("WARNING: found some rational solutions!"),
           if length(cond)#0 then
-            sr_print("WARNING: disregarding initial conditions!")
+            sol: false
         )
         else if length(cond)#0 then
           sol : solve_rec_ic1(sol, %f, %n, cond,
