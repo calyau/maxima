@@ -85,7 +85,7 @@
     ;; make error message without new symbols.
     ;; This error should not happen in compiled code because
     ;; this check is done at compile time too.
-    (maxima-error "mformat: wrng-no-args"))
+    (maxima-error "MFORMAT: expected two or more arguments."))
   (let* ((stream (arg 1))
 	 (sstring (exploden (arg 2)))
 	 (arg-index 2))
@@ -108,7 +108,7 @@
       ;; make error message without new symbols.
       ;; This error should not happen in compiled code because
       ;; this check is done at compile time too.
-      (maxima-error "mformat: wrng-no-args"))
+      (maxima-error "MFORMAT: expected two or more arguments."))
   (let ((stream (arg 1))
 	(sstring (exploden (arg 2)))
 	(arg-index 2))

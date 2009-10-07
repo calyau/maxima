@@ -63,14 +63,14 @@
 
 (defmacro pop-mformat-arg ()
   `(cond ((= arg-index n)
-	  (maxima-error "Ran out of mformat args ~a" (listify n)))
+	  (maxima-error "POP-MFORMAT-ARG: ran out of mformat args ~a" (listify n)))
 	 (t
 	  (incf arg-index)
 	  (arg arg-index))))
 
 (defmacro leftover-mformat-args? () ;; To be called after we are done.
   '(unless (= arg-index n)
-     (maxima-error "Extra mformat args ~a" (listify n))))
+     (maxima-error "LEFTOVER-MFORMAT-ARGS?: extra mformat args ~a" (listify n))))
 
 (defmacro bind-mformat-state-vars (type &rest body)
   `(let ,(do ((l nil)
@@ -83,7 +83,7 @@
 
 (defmacro pop-mformat-string ()
   '(if (null sstring) 
-    (maxima-error "Runout of `mformat' string")
+    (maxima-error "POP-MFORMAT-STRING: 'mformat' string already exhausted.")
     (pop sstring)))
 
 (defmacro null-mformat-string ()
@@ -91,7 +91,7 @@
 
 (defmacro top-mformat-string ()
   '(if (null sstring)
-    (maxima-error "Runout of `mformat' string")
+    (maxima-error "TOP-MFORMAT-STRING: 'mformat' string already exhausted.")
     (car sstring)))
 
 (defmacro cdr-mformat-string ()
@@ -109,7 +109,7 @@
 		     (get type 'mformat-ops))
 	   ;; perhaps optimize the COND to use ">" "<".
 	   (t
-	    (maxima-error "Unknown format op. _~a_ ~a" ',type (ascii char))))
+	    (maxima-error "MFORMAT-DISPATCH-ON-CHAR: unknown format op. _~a_ ~a" ',type (ascii char))))
     ,@(mapcar #'(lambda (state)
 		  `(if ,(car state)
 		    (setq ,@(apply #'append (cdr state)))))
@@ -244,13 +244,13 @@
      (progn
        (push-text-temp-c)
        (when *cant-open-compile-mformat*
-	 (maxima-error "Can't open compile `mformat' on this case ~a ." (listify n)))
+	 (maxima-error "MFORMAT-TRANSLATE-OPEN: can't open compile 'mformat' on this case: ~a" (listify n)))
        (optimize-print-inst code)))))
 
 
 (defmacro mformat-open (stream sstring &rest other-shit)
   (if (not (stringp sstring))
-      (maxima-error "~a: Not a string, can't open-compile the `mformat' call" sstring)
+      (maxima-error "MFORMAT-OPEN: ~a is not a string, can't open-compile the 'mformat' call." sstring)
       (apply #'mformat-translate-open stream sstring other-shit)))
 
 (defmacro mtell-open (message &rest other-shit)
