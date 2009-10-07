@@ -268,7 +268,7 @@ is no need to rely on the setting of this switch.")
     (cond ((zerop1 power)
 	   (if (zerop1 factor)
 	       (if (not errorsw)
-		   (merror "~M has been generated"
+		   (merror (intl:gettext "noncommutative exponent: ~M is undefined.")
 			   (list '(mncexpt) factor power))
 		   (throw 'errorsw t)))
 	   (if (mxorlistp1 factor) (identitymx factor) $dotident))

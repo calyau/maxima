@@ -78,8 +78,8 @@
   (cond (*mdebug*
 	 (let ((dispflag t) ret)
 	   (declare (special $help dispflag))
-	   (format t " -- an error.  Entering the Maxima Debugger dbm~%~
-                       Enter `:h' for help~%")
+	   (format t (intl:gettext " -- an error.  Entering the Maxima debugger.~%~
+                       Enter ':h' for help.~%"))
 	   (progn
 	     (setq ret (break-dbm-loop nil))
 	     (cond ((eql ret :resume)
@@ -88,7 +88,7 @@
 	(t
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
-	 (format t "~& -- an error.  To debug this try debugmode(true);~%")
+	 (format t (intl:gettext "~& -- an error. To debug this try: debugmode(true);~%"))
 	 (throw 'macsyma-quit 'maxima-error))))
 
 (defmacro with-$error (&body body)
@@ -113,7 +113,7 @@
 		(do ((l (cdr val) (cdr l)))
 		    ((null l) (return t))
 		  (if (not (symbolp (car l))) (return nil)))))
-      (merror "The variable ~M being set to ~M which is not a list of symbols."
+      (merror (intl:gettext "assignment: assignment to ~M must be a list of symbols; found: ~M")
 	      var val)))
 
 (defun process-error-argl (l)
@@ -155,7 +155,7 @@
       (if (null (errset
 		 (apply #'mformat nil
 			(cadr $error) (caddr the-jig))))
-	  (mtell "~%** error while printing error message **~%~A~%"
+	  (mtell (intl:gettext "~%** error while printing error message **~%~A~%")
 		 (cadr $error)
 		 )))
     (fresh-line))
@@ -164,7 +164,7 @@
 (defmfun read-only-assign (var val)
   (if munbindp
       'munbindp
-      (merror "Attempting to assign read-only variable ~:M the value:~%~M" var val)))
+      (merror (intl:gettext "assignment: attempting to assign read-only variable ~:M the value ~M") var val)))
 
 
 (defprop $error read-only-assign  assign)

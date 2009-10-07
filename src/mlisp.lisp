@@ -134,16 +134,16 @@ or if apply is being used are printed.")
 	((and aryp (member (caar fn) '(mlist $matrix) :test #'eq))
 	 (if (not (or (= (length args) 1)
 		      (and (eq (caar fn) '$matrix) (= (length args) 2))))
-	     (merror "Wrong number of indices:~%~M" (cons '(mlist) args)))
+	     (merror (intl:gettext "apply: wrong number of indices; found: ~M") (cons '(mlist) args)))
 	 (if (member 0 args :test #'eq)
-	     (merror "No such ~M element: ~M~%" (if (eq (caar fn) 'mlist) "list" "matrix")
+	     (merror (intl:gettext "apply: no such ~M element: ~M") (if (eq (caar fn) 'mlist) (intl:gettext "list") (intl:gettext "matrix"))
 		     `((mlist) ,@args)))
 	 (do ((args1 args (cdr args1)))
 	     ((null args1) (let (($piece $piece) ($partswitch 'mapply))
 			     (apply #'$inpart (cons fn args))))
 	   (unless (fixnump (car args1))
 	     (if evarrp (throw 'evarrp 'notexist))
-	     (merror "Subscript must be an integer:~%~M" (car args1)))))
+	     (merror (intl:gettext "apply: subscript must be an integer; found: ~M") (car args1)))))
 	(aryp
 	 (cons '(mqapply array) (cons fn args)))
 	((member 'array (cdar fn) :test #'eq)
@@ -189,7 +189,7 @@ is EQ to FNNAME if the latter is non-NIL."
 
 (defun mlambda (fn args fnname noeval form)
   (cond ((not ($listp (cadr fn)))
-	 (merror "First argument to `lambda' must be a list:~%~M" (cadr fn))))
+	 (merror (intl:gettext "lambda: first argument must be a list; found: ~M") (cadr fn))))
   (setq noevalargs nil)
   (let ((params  (cdadr fn))( mlocp  t))
     (setq loclist (cons nil loclist))
@@ -204,7 +204,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	     (setq p (cons (car params) p)
 		   a (cons (cond (noeval (car args))
 				 (t (meval (car args)))) a)))
-	    (t (merror "Illegal `lambda' parameter:~%~M" (car params))))
+	    (t (merror (intl:gettext "lambda: formal argument must be a symbol or quoted symbol; found: ~M") (car params))))
       (setq args (cdr args) params (cdr params)))
     (let (finish2033 (finish2032 params) (ar *mlambda-call-stack*))
       (declare (type (vector t) ar))
@@ -225,7 +225,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	     (prog1
 		 (let ((aexprp (and aexprp (not (atom (caddr fn)))
 				    (eq (caar (caddr fn)) 'lambda))))
-		   (cond ((null (cddr fn)) (merror "No `lambda' body present"))
+		   (cond ((null (cddr fn)) (merror (intl:gettext "lambda: no body present.")))
 			 ((cdddr fn) (mevaln (cddr fn)))
 			 (t (meval (caddr fn)))))
 	       nil))
@@ -253,7 +253,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	   (meval (cons (cons fn aryp) argl)))
 	  ((eq (caar fn) 'lambda)
 	   (if aryp
-	       (merror "Improper array call")
+	       (merror (intl:gettext "lambda: cannot apply lambda as an array function."))
 	       (mlambda fn argl (cadr form) noevalargs form)))
 	  (t
 	   (mapply1 fn (mevalargs argl) (cadr form) form)))))
@@ -284,7 +284,7 @@ is EQ to FNNAME if the latter is non-NIL."
 		   (return (meval1 val)))
 		  ((not (boundp form))
 		   (if (safe-get form 'bindtest)
-		       (merror "~:M unbound variable" form)
+		       (merror (intl:gettext "evaluation: unbound variable ~:M") form)
 		       (return form)))
 		  ((mfilep (setq val (symbol-value form)))
 		   (setq val
@@ -292,7 +292,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	    (when (and $refcheck (member form (cdr $values) :test #'eq)
 		       (not (member form refchkl :test #'eq)))
 	      (setq refchkl (cons form refchkl))
-	      (mtell "~:M has value.~%" form))
+	      (mtell (intl:gettext "evaluation: ~:M has a value.~%") form))
 	    (return val)))
 	((or (and (atom (car form))
 		  (setq form (cons (ncons (car form)) (cdr form))))
@@ -365,6 +365,7 @@ is EQ to FNNAME if the latter is non-NIL."
 		       (harrfind (cons (car form) (mevalargs (cdr form)))))
 		      ((member (car u) '(fexpr fsubr) :test #'eq)
 		       (if fexprerrp
+			   ;; NOT SURE WHAT THIS IS ABOUT. LET IT STAND.
 			   (merror "Attempt to call ~A ~A from Maxima level.~
 				 ~%Send a bug note."
 				   (car u) (caar form)))
@@ -420,7 +421,7 @@ is EQ to FNNAME if the latter is non-NIL."
 			 (go a))
 			((eq (caar u) 'lambda)
 			 (if aryp
-			     (merror "Improper array call")
+			     (merror (intl:gettext "lambda: cannot apply lambda as an array function."))
 			     (return (mlambda u (cdr form)
 					      (caar form) noevalargs form))))
 			(t (return (mapply1 u (mevalargs (cdr form))
