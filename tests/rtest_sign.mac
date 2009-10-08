@@ -875,3 +875,32 @@ forget(abs(cos(x)) <1);
 
 csign(log((1 + %i)/sqrt(2)));
 imaginary$
+
+/* Examples to show that learn-numer works
+ * Related bug report:
+ * Bug ID: 2477795 - "assume":problems with fractions or multiples of %pi and %e
+ */
+kill(all);
+done;
+assume(a>0,a<%pi/2);
+[a>0,%pi/2>a];
+
+is(a>%pi/2);
+false;
+is(a>%pi);
+false;
+
+assume(b>0,b<2*%pi);
+[b>0, 2*%pi>b];
+is(b>3*%pi);
+false;
+
+/* An example involving a numerical constant, the value of a function
+ * and the abs function 
+ */
+assume(abs(x) < sin(1)+%e/2);
+[sin(1)+%e/2>abs(x)];
+is(x<2*%e);
+true;
+is(x>-2*%e);
+true;
