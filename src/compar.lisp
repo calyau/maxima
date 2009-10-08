@@ -215,7 +215,13 @@ relational knowledge is contained in the default context GLOBAL.")
 	 '$initial)
 	((and (not (eq $context x)) (contextmark) (< 0 (zl-get x 'cmark)))
 	 (mtell (intl:gettext "killcontext: context ~M is currently active.") x))
-	(t (setq $contexts ($delete x $contexts))
+        (t (if (member x $activecontexts)
+               ;; Context is on the list of active contexts. The test above 
+               ;; checks for active contexts, but it seems not to work in all
+               ;; cases. So deactivate the context at this place to remove it 
+               ;; from the list of active contexts before it is deleted.
+               ($deactivate x))
+	   (setq $contexts ($delete x $contexts))
 	   (cond ((and (eq x $context)
 		       (equal ;;replace eq ?? wfs
 			(zl-get x 'subc) '($global)))
@@ -511,9 +517,13 @@ relational knowledge is contained in the default context GLOBAL.")
 	  (t (learn pat t)))))
 
 (defmfun learn (pat flag)
-  ;; Check if the function abs is in the pattern.
-  (learn-abs pat flag)
   (cond ((atom pat))
+        ;; Check for abs function in pattern.
+        ((and (not limitp)
+              (learn-abs pat flag)))
+        ;; Check for constant expression in pattern.
+        ((and (not limitp)
+              (learn-numer pat flag)))
 	((zl-get (caar pat) (if flag 'learn 'unlearn))
 	 (funcall (zl-get (caar pat) (if flag 'learn 'unlearn)) pat))
 	((eq (caar pat) 'mgreaterp) (daddgr flag (sub (cadr pat) (caddr pat))))
@@ -528,19 +538,74 @@ relational knowledge is contained in the default context GLOBAL.")
 	(t (untrue (munformat pat)))))
 
 ;;; When abs(x)<a is in the pattern, where a is a positive expression,
-;;; then learn x<a and -x<a too.
+;;; then learn x<a and -x<a too. The additional facts are put into the context
+;;; '$learndata, if the current context is user context 'initial
 
 (defun learn-abs (pat flag)
   (let (tmp)
     (when (and (setq tmp (isinop pat 'mabs))
-               (or (and (eq (caar pat) 'mlessp)
+               (or (and (member (caar pat) '(mlessp mleqp))
                         (isinop (cadr pat) 'mabs)
                         (member ($sign (caddr pat)) '($pos $pz)))
-                   (and (eq (caar pat) 'mgreaterp)
+                   (and (member (caar pat) '(mgreaterp mgeqp))
                         (member ($sign (cadr pat)) '($pos $pz))
                         (isinop (caddr pat) 'mabs))))
-      (learn ($substitute (cadr tmp) tmp pat) flag)
-      (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag))))
+      (let ((oldcontext context))
+        (if (eq oldcontext '$initial)
+            (asscontext nil '$learndata)) ; switch to context '$learndata
+        ; learn additional facts
+        (learn ($substitute (cadr tmp) tmp pat) flag)
+        (learn ($substitute (mul -1 (cadr tmp)) tmp pat) flag)
+        (when (eq oldcontext '$initial)
+          (asscontext nil oldcontext)     ; switch back to context on entry
+          ($activate '$learndata))))      ; context '$learndata is active
+    nil))
+
+;;; The value of a constant expression which can be numerically evaluated is
+;;; put into the context '$learndata.
+
+(defun learn-numer (pat flag)
+  (let (dum expr patnew)
+    (do ((x (cdr pat) (cdr x)))
+        ((null x) (setq patnew (reverse patnew)))
+      (setq dum (constp (car x))
+            expr (car x))
+      (cond ((or (numberp (car x))
+                 (ratnump (car x))))
+            ((eq dum 'bigfloat)
+             (if (prog2
+                    (setq dum ($bfloat (car x)))
+                    ($bfloatp dum))
+                 (setq expr dum)))
+            ((eq dum 'float)
+             (if (and (setq dum (numer (car x)))
+                      (numberp dum))
+                 (setq expr dum)))
+            ((and (member dum '(numer symbol) :test #'eq)
+                  (prog2 
+                     (setq dum (numer (car x)))
+                     (or (null dum)
+                         (and (numberp dum)
+                              (prog2 
+                                  (setq expr dum)
+                                  (< (abs dum) 1.0e-6))))))
+             (cond ($signbfloat
+                    (and (setq dum ($bfloat (car x)))
+                         ($bfloatp dum)
+                         (setq expr dum))))))
+      (setq patnew (cons expr patnew)))
+    (setq patnew (cons (car pat) patnew))
+    (when (and (not (alike (cdr pat) (cdr patnew)))
+               (or (not (mnump (cadr patnew)))    ; not both sides of the
+                   (not (mnump (caddr patnew))))) ; relation can be number
+      (let ((oldcontext $context))
+        (if (eq oldcontext '$initial)
+          (asscontext nil '$learndata)) ; switch to context '$learndata
+        (learn patnew flag)             ; learn additional fact
+        (when (eq oldcontext '$initial) 
+          (asscontext nil oldcontext)   ; switch back to context on entry
+          ($activate '$learndata))))    ; context '$learndata is active
+    nil))
 
 (defmspec $forget (x)
   (setq x (cdr x))
