@@ -95,7 +95,8 @@ The result is the noun form of the function call.
 @end example
 
 Applied to a parenthesized expression,
-the single quote prevents evaluation of all symbols and function calls in the expression.
+the single quote prevents evaluation of all symbols and function calls in the 
+expression.
 
 @c ===beg===
 @c aa: 1024;
@@ -215,29 +216,24 @@ to be substituted for @var{expr} in the input expression.
 @end example
 
 Applied to the operator of an expression,
-quote-quote changes the operator from a noun to a verb (if it is not already a verb).
+quote-quote changes the operator from a noun to a verb (if it is not already a 
+verb).
 
 @c ===beg==
-@c sin (1);
-@c ''sin (1);
 @c declare (foo, noun);
 @c foo (x) := x - 1729;
 @c foo (100);
 @c ''foo (100);
 @c ===end==
 @example
-(%i1) sin (1);
-(%o1)                        sin(1)
-(%i2) ''sin (1);
-(%o2)                    0.8414709848079
-(%i3) declare (foo, noun);
-(%o3)                         done
-(%i4) foo (x) := x - 1729;
-(%o4)                 ''foo(x) := x - 1729
-(%i5) foo (100);
-(%o5)                       foo(100)
-(%i6) ''foo (100);
-(%o6)                        - 1629
+(%i1) declare (foo, noun);
+(%o1)                         done
+(%i2) foo (x) := x - 1729;
+(%o2)                 ''foo(x) := x - 1729
+(%i3) foo (100);
+(%o3)                       foo(100)
+(%i4) ''foo (100);
+(%o4)                        - 1629
 @end example
 
 The quote-quote operator is applied by the input parser;
