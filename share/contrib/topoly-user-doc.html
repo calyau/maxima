@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 4 February 2009 -->
+<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 9 October 2009 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -751,49 +751,8 @@ other Maxima functions.
 
 <P>
 <DL>
-<DT><U>Function:</U> <B>lratsubst</B> <I>(<VAR>l</VAR>, <VAR>e</VAR>)</I>
-<DD><A NAME="IDX11"></A>
-
-
-<P>
-The function <CODE>lratsubst</CODE> is similar to <CODE>subst(l,e)</CODE>, except
-that <CODE>lratsubst</CODE> substitutes using the function <CODE>ratsubst</CODE>
-(<CODE>l</CODE> is a list of equations) The substitutions proceed from left
-to right:
-
-<PRE>
- (%i1) lratsubst([a=b,b=c], a);
- (%o1) c
-
- (%i2) lratsubst([a*b^2=a*b,a^2*b=c], a^2 * b^2);
- (%o2) c
-</PRE>
-
-<P>
-Maxima signals an error if the first argument isn't an equation or a list of 
-equations.
-
-
-<P>
-<B>To use</B> <TT>`load(to_poly_solver)'</TT>
-
-
-<P>
-<B>Option variables</B> radsubstflag
-
-
-<P>
-<B>Status</B> The function <CODE>lratsubst</CODE> is experimental; its
-specifications might change and its functionality might be merged into
-other Maxima functions.
-
-
-</DL>
-
-<P>
-<DL>
 <DT><U>Function:</U> <B>new_variable</B> <I>(type)</I>
-<DD><A NAME="IDX12"></A>
+<DD><A NAME="IDX11"></A>
 
 
 <P>
@@ -860,7 +819,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>nicedummies</B>
-<DD><A NAME="IDX13"></A>
+<DD><A NAME="IDX12"></A>
 
 
 <P>
@@ -899,7 +858,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>parg</B> <I>(<VAR>x</VAR>)</I>
-<DD><A NAME="IDX14"></A>
+<DD><A NAME="IDX13"></A>
 
 
 <P>
@@ -963,7 +922,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>real_imagpart_to_conjugate</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX15"></A>
+<DD><A NAME="IDX14"></A>
 
 
 <P>
@@ -994,7 +953,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>rectform_log_if_constant</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX16"></A>
+<DD><A NAME="IDX15"></A>
 
 
 <P>
@@ -1029,7 +988,7 @@ might be merged into other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>simp_inequality</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX17"></A>
+<DD><A NAME="IDX16"></A>
 
 
 <P>
@@ -1067,6 +1026,30 @@ other Maxima functions.
 
 
 </DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>standardize_inverse_trig</B> <I>(<VAR>e</VAR>)</I>
+<DD><A NAME="IDX17"></A>
+
+
+<P>
+This function applies the identities <CODE>cot(x) = atan(1/x),
+acsc(x) = asin(1/x),</CODE> and similarly for <CODE>asec, acoth, acsch</CODE>
+and <CODE>asech</CODE> to an expression. See Abramowitz and Stegun, 
+Eqs. 4.4.6 through 4.4.8 and 4.6.4 through 4.6.6.
+
+
+<P>
+<B>To use</B> <TT>`load(to_poly_solver)'</TT>
+
+
+<P>
+<B>Status</B> The function <CODE>standardize_inverse_trig</CODE> is experimental; its
+specifications might change and its functionality might be merged into
+other Maxima functions.
+</DL>
+
 
 <P>
 <DL>
@@ -1237,8 +1220,9 @@ symbols.
 
 <P>
 The function <CODE>to_poly_solve</CODE> is able to solve some, but not all,
-equations involving rational powers, absolute values, trigonometric functions,
-and minimum and maximum; some examples:
+equations involving rational powers, some nonrational powers,
+absolute values, trigonometric functions, and minimum and maximum.
+The support for inverse trigonometric functions is weak. some examples:
 
 
 
@@ -1254,6 +1238,19 @@ and minimum and maximum; some examples:
 
  (%i4) to_poly_solve(cos(x) * sin(x) = 1/2,x, 'simpfuncs = ['expand, 'nicedummies]);
  (%o4) %union([x=%pi*%z0+%pi/4])
+
+ (%i5) to_poly_solve(x^(2*a) + x^a + 1,x);
+
+ (%o5) %union([x = (-sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z10/a)/2^(1/a)],
+              [x = (sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z9/a)/2^(1/a)])
+</PRE>
+
+<P>
+For  <EM>linear</EM> inequalites, <CODE>to_poly_solve</CODE> does Fourier elimination:
+
+<PRE>
+ (%i1) to_poly_solve([x + y &#60; 1, x - y &#62;= 8],[x,y]);
+ (%o1) %union([x = y+8,y &#60; -7/2],[y+8 &#60; x,x &#60; 1-y,y &#60; -7/2])
 </PRE>
 
 <P>
@@ -1423,7 +1420,7 @@ ignores this declaration</I>.
 
 
 <P>
-<B>To use</B> <TT>`load(to_poly)solve)'</TT>
+<B>To use</B> <TT>`load(to_poly_solve)'</TT>
 
 
 <P>
@@ -1432,7 +1429,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 </DL>
 <P><HR><P>
-This document was generated on 4 February 2009 using
+This document was generated on 9 October 2009 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>

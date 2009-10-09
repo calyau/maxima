@@ -1,6 +1,6 @@
 ;;  Author Barton Willis
 ;;  University of Nebraska at Kearney
-;;  Copyright (C) 2006, 2007, 2008 Barton Willis
+;;  Copyright (C) 2006, 2007, 2008, 2009 Barton Willis
 
 ;;  This program is free software; you can redistribute it and/or modify 
 ;;  it under the terms of the GNU General Public License as published by	 
@@ -44,8 +44,9 @@
 ;; converted to polynomial form. The value of vars defaults to all variables including 
 ;; constants.
 
+
 (defun $to_poly (p &optional (vars 'convert-all-vars))
-  (let (($listconstvars t) (q) (convert-cnst nil) (proviso nil) (non-alg) (g-vars nil))
+  (let (($listconstvars t) (q) (convert-cnst nil) (proviso nil) (non-alg) (qk) (pp nil) (subs))
 
     (if (eq vars 'convert-all-vars) (setq vars ($cons 1 ($listofvars p))))
     
@@ -54,30 +55,54 @@
     
     (cond (($member 1 vars) 
 	   (setq convert-cnst t)
-	   (setq vars ($delete 1 vars))))	  
-    (setq p (meqhk p))
-    (setq q ($ratdenom p))
-    (if (not ($constantp q)) (push `((mnotequal) ,(sratsimp q) 0) proviso))
-    (multiple-value-setq (p g-vars) (non-algebraic-subst (sratsimp ($ratnumer p)) vars))
-    (setq non-alg ($second p))
-    (setq p ($first p))
+	   (setq vars ($delete 1 vars))))
     
-    (setq q ($ratdenom p))
-    (if (not ($constantp q)) (push `((mnotequal) ,(sratsimp q) 0) proviso))
-    (setq p (sratsimp ($ratnumer p)))
+    ;; If p is a list or a set, set p to the members in p; otherwise (list p)
+    (setq p (if (or ($listp p) ($setp p)) (margs p) (list p)))
 
-    (push '(mlist) g-vars)
-    (setq vars ($append vars g-vars))
+    ;; Convert each member of p that is an equation to a nonequation.
+    ;; Thus transform a = b into a - b.
+    (setq p (mapcar 'meqhk p))
 
+    ;; Extract the deomominators of p and require them to not vanish.
+    ;; Replace the list p by a list of the numerators.
+    (setq q (mapcar '$ratdenom p))
+    (setq p (mapcar '$ratnumer p))
+ 
+    (setq proviso (delete t (mapcar (lambda (s) (mnqp s 0)) q)))
+    (setq proviso (mapcar #'(lambda (s) (maxima-substitute 'mnotequal '$notequal s)) proviso))
+    (setq p (mapcar #'sratsimp p))
+    ;;(multiple-value-setq (p g-vars) (non-algebraic-subst-list p vars))
+    (setq p (non-algebraic-subst-list p vars))
+    (setq non-alg ($second p))
+    (setq p (margs ($first p)))
     ;; It's OK to send every expression through convert-from-max-min-to-abs.
     ;; I put in the conditional to skip the ratsimp for expressions that don't
     ;; involve max or min.
 
-    (setq p (if ($freeof '$max '$min p) p (sratsimp (convert-from-max-min-to-abs p))))
-    (setq p (to-polynomial p vars convert-cnst))
-    (setq proviso (opapply 'mlist (append proviso (third p))))
-    `((mlist) ((mlist) ,(first p) ,@(second p)) ,proviso ,non-alg)))
+    (setq pp nil)
+    (setq subs nil)
+    (dolist (pk p)
+      (setq pk (if ($freeof '$max '$min pk) pk (sratsimp (convert-from-max-min-to-abs pk))))
+      (setq pk (to-polynomial pk vars convert-cnst))
    
+      ;; After conversion, the members of pp can be rational expressions, not polynomials.
+      ;; This happens, for example, when there is a 2 cos(x) --> exp(%i x) + 1/exp(%i x)
+      ;; conversion. So we need to extract numerators of the members of p.
+    
+      (setq proviso (append proviso (mapcar #'sratsimp (third pk))))
+      (setq subs (append subs (mapcar #'sratsimp (second pk))))
+      (setq pk (sratsimp (first pk)))
+      (setq qk (sratsimp ($ratdenom pk)))
+      (if (not (eq t (mnqp qk 0))) (push (take '(mnotequal) qk 0) proviso))
+      (setq pk (sratsimp ($ratnumer pk)))
+      (push pk pp))
+         
+    (setq pp (append pp subs))
+    (push '(mlist) pp)
+    (push '(mlist) proviso)
+    (list '(mlist) pp proviso non-alg)))
+
 (defun to-polynomial (p vars convert-cnst)
   (let ((n) (b) (nv) (acc nil) (subs nil) (pk) (q) (inequal) (np-subs))
     (cond ((or (maxima-variable-p p)
@@ -344,13 +369,24 @@ to eliminate.
 ;;  gather-args(x^log(x) + log(s)^x, log) --> ().
 
 (defun gather-args (e op vars)
-  (cond (($mapatom e) nil)
+  (cond ((and (consp e) (consp (car e)) (eq (caar e) 'mlist))
+	 (apply 'append (mapcar #'(lambda (s) (gather-args s op vars)) (margs e))))
+	(($mapatom e) nil)
 	((and (eq (mop e) op) (not ($lfreeof vars e))) (margs e))
 	((memq (mop e) '(mplus mtimes))
 	 (let ((acc nil))
 	   (setq e (margs e))
 	   (dolist (ek e acc)
 	     (setq acc (append acc (gather-args ek op vars))))))
+	(t nil)))
+
+(defun gather-nonrational-powers (e vars)
+  (cond ((and (consp e) (consp (car e)) (eq (caar e) 'mlist))
+	 (apply 'append (mapcar #'(lambda (s) (gather-nonrational-powers s vars)) (margs e))))
+	(($mapatom e) nil)
+	((and (eq (mop e) 'mexpt) (memq (second e) vars) (not ($ratnump (third e)))) (list e))
+	((memq (mop e) '(mplus mtimes))
+	 (mapcan #'(lambda (s) (gather-nonrational-powers s vars)) (margs e)))
 	(t nil)))
 
 (defun gather-exp-args (e vars)
@@ -382,7 +418,7 @@ to eliminate.
 	(t (opapply (mop e) (mapcar #'(lambda (s) (logarc-if s vars)) (margs e))))))
  
 (defun non-algebraic-subst (e vars)
-  (let ((log-args nil) (exp-args nil) (s) (g) (p) (q) (na-subs nil) (g-vars nil) (sz))
+  (let ((log-args nil) (exp-args nil) (mexpt-args) (ee) (s) (g) (p) (q) (na-subs nil) (g-vars nil) (sz))
     
     (setq e ($ratexpand (exponentialize-if (logarc-if e vars) vars)))
     (setq log-args (gather-args e '%log vars))
@@ -392,7 +428,7 @@ to eliminate.
     (setq s (margs (simplify ($equiv_classes exp-args 'linearly-dependent-p))))
    
     (dolist (sk s)
-      (setq g (new-gentemp 'general))
+      (setq g (new-gentemp '$general))
       (push g g-vars)
       (setq sz ($first (apply '$ezgcd (margs sk))))
       (setq p (power '$%e sz))
@@ -403,19 +439,77 @@ to eliminate.
 	(setq e ($ratexpand ($substitute (power g  q) (power '$%e sl) e)))))
     
     (dolist (sk log-args)
-      (setq g (new-gentemp 'general))
+      (setq g (new-gentemp '$general))
       (push g g-vars)
       (setq p (take '(%log) sk))
       (setq e ($substitute g p e))
       (push (take '(mequal) g p) na-subs))
 
+    ;; Attempt the substitution %g = x^a, where x is in vars and a is not a rational number.
+    ;; Accept the substitution if it eliminates x from e and it changes e, otherwise reject it.
+
+    (setq mexpt-args (gather-nonrational-powers e (margs vars)))
+    (dolist (sk mexpt-args)
+      (setq g (new-gentemp '$general))
+      (setq ee ($ratsubst g sk e))
+      (if (and (freeof (second sk) ee) (not (like e ee)))
+	  (progn 
+	    (push g g-vars)
+	    (setq e ee)
+	    (push (take '(mequal) g sk) na-subs))))
+         
     (values `((mlist) ,e ((mlist) ,@na-subs)) g-vars)))
+
+(defun non-algebraic-subst-list (l vars)
+  (let ((log-args nil) (exp-args nil) (mexpt-args) (ll) (s) (g) (p) (q) (na-subs nil) (g-vars nil) (sz))
+    
+    (setq l (mapcar #'(lambda (s) ($ratexpand (exponentialize-if (logarc-if s vars) vars))) l))
+    (push '(mlist) l)
+    (setq log-args (gather-args l '%log vars))
+    (setq log-args (margs (opapply '$set log-args)))
+
+    (setq exp-args (gather-exp-args l vars))
+    (setq exp-args (opapply '$set exp-args))
+    (setq s (margs (simplify ($equiv_classes exp-args 'linearly-dependent-p))))
+   
+    (dolist (sk s)
+      (setq g (new-gentemp '$general))
+      (push g g-vars)
+      (setq sz ($first (apply '$ezgcd (margs sk))))
+      (setq p (power '$%e sz))
+      (push (take '(mequal) g p) na-subs)
+      (setq sk (margs sk))
+      (dolist (sl sk)
+	(setq q (sratsimp (div sl sz)))
+	(setq l ($ratexpand ($substitute (power g  q) (power '$%e sl) l)))))
+    
+    (dolist (sk log-args)
+      (setq g (new-gentemp '$general))
+      (push g g-vars)
+      (setq p (take '(%log) sk))
+      (setq l ($substitute g p l))
+      (push (take '(mequal) g p) na-subs))
+
+    ;; Attempt the substitution %g = x^a, where x is in vars and a is not a rational number.
+    ;; Accept the substitution if it eliminates x from e and it changes e, otherwise reject it.
+
+    (setq mexpt-args (gather-nonrational-powers l (margs vars)))
+    (dolist (sk mexpt-args)
+      (setq g (new-gentemp '$general))
+      (setq ll ($ratsubst g sk l))
+      (if (and (freeof (second sk) ll) (not (like l ll)))
+	  (progn 
+	    (push g g-vars)
+	    (setq l ll)
+	    (push (take '(mequal) g sk) na-subs))))
+         
+    (values `((mlist) ,l ((mlist) ,@na-subs)) g-vars)))
 
 ;; A simplifying carg function. 
 
 (setf (get '$parg 'operators) 'simp-parg)
 	
-(defun simp-parg(e yy z)
+(defun simp-parg (e yy z)
   (declare (ignore yy))
   (let (($domain '$complex) (sgn) (isgn))
    
@@ -535,7 +629,8 @@ to eliminate.
 	(z-vars nil) (z-k 0)
 	(n-vars nil) (n-k 0)
 	(r-vars nil) (r-k 0)
-	(c-vars nil) (c-k 0))
+	(c-vars nil) (c-k 0)
+	(g-vars nil) (g-k 0))
 	
     (mapcar #'(lambda (s) (let ((a))
 			    (cond ((get s 'integer-gentemp)
@@ -560,14 +655,20 @@ to eliminate.
 				   (setq a (concat *complex-gentemp-prefix* c-k))
 				   (mfuncall '$declare a '$complex)
 				   (incf c-k)
-				   (push `((mequal) ,s ,a) c-vars)))))
+				   (push `((mequal) ,s ,a) c-vars))
+
+				  ((get s 'general-gentemp)
+				   (setq a (concat *general-gentemp-prefix* g-k))
+				   (incf g-k)
+				   (push `((mequal) ,s ,a) g-vars)))))
 	    (margs ($sort ($listofvars e))))
     
     (push '(mlist) z-vars)
     (push '(mlist) n-vars)
     (push '(mlist) r-vars)
     (push '(mlist) c-vars)
-    ($sublis c-vars ($sublis r-vars ($sublis n-vars ($sublis z-vars e))))))
+    (push '(mlist) g-vars)
+    ($sublis g-vars ($sublis c-vars ($sublis r-vars ($sublis n-vars ($sublis z-vars e)))))))
 
 (defun $complex_number_p (e)
   (complex-number-p e #'$numberp))

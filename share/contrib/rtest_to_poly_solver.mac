@@ -1,4 +1,4 @@
-(%start : absolute_real_time(), algexact : true, load("to_poly_solver"), 0);
+(%start : absolute_real_time(), algexact : true,load("to_poly_solver"), 0);
 0$
 
 /* equation and variable coercion */
@@ -627,8 +627,10 @@ to_poly_solve(x^8=1,x, simpfuncs = ['rectform]);
 %union([x=-1],[x=1],[x=-%i],[x=%i],[x=-%i/sqrt(2)-1/sqrt(2)],[x=1/sqrt(2)-%i/sqrt(2)],
 [x=%i/sqrt(2)-1/sqrt(2)],[x=%i/sqrt(2)+1/sqrt(2)])$
 
-block([algexact:true],to_poly_solve(sqrt(x)+x^(3/2)=1,x,simpfuncs=['rationalize,'dfloat]));
-%union([x = 4193492852789269/9007199254740992])$
+block([algexact:true],to_poly_solve(sqrt(x)+x^(3/2)=1,x, simpfuncs = ['expand]));
+%union([x = sqrt(31)/(3*2^(2/3)*(sqrt(31)+3^(3/2))^(1/3))
+                +sqrt(3)/(2^(2/3)*(sqrt(31)+3^(3/2))^(1/3))
+                +2^(2/3)/(3*(sqrt(31)+3^(3/2))^(2/3))-2/3])$
 
 to_poly_solve(a*x=b, x,'simpfuncs = ['rectform]);
 %union([x=b/a])$
@@ -727,9 +729,11 @@ to_poly_solve(x^4+(8*n+2*c+4)*x^3+(24*n^2+12*c*n+24*n+c^2+7*c+5)*x^2+(32*n^3+24*
 /* [ 1663399 ] solve/algsys bug */
 nicedummies(to_poly_solve([b2 + a1 = r2, a1 * b2 = r3, a2 * b2 + a3 * b1 = r4, a3
   * b2 + a5 + r4= d5, a5 * b1 = 0],[a1, a2, a3, a5, r2, r3, r4, b1, b2], 'simpfuncs = ['expand]));
-%union([a1=%c0,a2=%c1,a3=%c2,a5=d5-%c2*%c3-%c1*%c3,b1=0,b2=%c3,r2=%c3+%c0,r3=%c0*%c3,r4=%c1*%c3],
-       [a1=%c4,a2=d5/%c7-(%c5*%c6)/%c7-%c5,a3=%c5,a5=0,b1=%c6,b2=%c7,r2=%c7+%c4,r3=%c4*%c7,r4=d5-%c5*%c7])$
 
+%union([a1 = %c0,a2 = %c1,a3 = %c2,a5 = d5-%c2*%c3-%c1*%c3,b1 = 0,
+  b2 = %c3,r2 = %c3+%c0,r3 = %c0*%c3,r4 = %c1*%c3],
+  [a1 = %c4,a2 = d5/%c7-%c5*%c6/%c7-%c5,a3 = %c5,a5 = 0,b1 = %c6,
+  b2 = %c7,r2 = %c7+%c4,r3 = %c4*%c7,r4 = d5-%c5*%c7])$
 
 /* [ 1603369 ] Solve bind stack overflow */
 to_poly_solve([product(x-i,i,1,20),x=5],x);
@@ -1049,8 +1053,52 @@ to_poly_solve((x^2 - 2) * (sqrt(x)-1)/(x-1),x);
 nicedummies(to_poly_solve(sin(x)/x,x));
 %union(%if(2*%z0+1 # 0,[x = 2*%pi*%z0+%pi],%union()), %if(%z1 # 0,[x = 2*%pi*%z1],%union()))$
 
+/* From sci.math.symbolic, 29 September 2009; OK, but could be better. In the same
+thread is -3 + cosh(x) - cos(x) = 0. The to_poly_solver either takes a long time or
+gets stuck on -3 + cosh(x) - cos(x) = 0.*/
+
+nicedummies(to_poly_solve(-3+cosh(x)-sinh(x)/tanh(x) = 0,x));
+%union(%if(tan(%pi*%z0) # 0, [x = %i*%pi*%z0], %union()));
+
+/* From Sage Mailing list 8 Oct 2009, 3:21 a.m */
+
+to_poly_solve(acot(x)=0,x);
+%union()$
+
+to_poly_solve(x * log(x) * (x-1),x);
+%union([x = 1])$
+
+/* Sage Ticket 2617; see also Sage mailing list 18 March 2008 */
+
+nicedummies(to_poly_solve(sin(x^2)/x,x));
+%union(%if(2*%z0+1 # 0,[x = -sqrt(2*%pi*%z0+%pi)],%union()),
+             %if(2*%z0+1 # 0,[x = sqrt(2*%pi*%z0+%pi)],%union()),
+             %if(%z1 # 0,[x = -sqrt(2)*sqrt(%pi)*sqrt(%z1)],%union()),
+             %if(%z1 # 0,[x = sqrt(2)*sqrt(%pi)*sqrt(%z1)],%union()))$
+
+nicedummies(to_poly_solve(sin(x^2)/x^2,x));
+%union(%if(2*%z0+1 # 0,[x = -sqrt(2*%pi*%z0+%pi)],%union()),
+             %if(2*%z0+1 # 0,[x = sqrt(2*%pi*%z0+%pi)],%union()),
+             %if(%z1 # 0,[x = -sqrt(2)*sqrt(%pi)*sqrt(%z1)],%union()),
+             %if(%z1 # 0,[x = sqrt(2)*sqrt(%pi)*sqrt(%z1)],%union()))$
+
+nicedummies(to_poly_solve(sin(x^2)/x^3,x));
+%union(%if(2*%z0+1 # 0,[x = -sqrt(2*%pi*%z0+%pi)],%union()),
+             %if(2*%z0+1 # 0,[x = sqrt(2*%pi*%z0+%pi)],%union()),
+             %if(%z1 # 0,[x = -sqrt(2)*sqrt(%pi)*sqrt(%z1)],%union()),
+             %if(%z1 # 0,[x = sqrt(2)*sqrt(%pi)*sqrt(%z1)],%union()))$
+
+nicedummies(to_poly_solve(x^a = 1,x));
+%union([x = %e^(2*%i*%pi*%z0/a)])$
+
+nicedummies(to_poly_solve(x^(2*a) + 2 * x^a + 1,x));
+%union([x = (-1)^(1/a)*%e^(2*%i*%pi*%z0/a)])$
+
+nicedummies(to_poly_solve((x^a-1)/(x^2 + 1),x));
+%union([x = %e^(2*%i*%pi*%z0/a)])$
+
 /* clean up */
-(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 100));
+(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 115));
 true$
 
 (reset(algexact), forget(z,complex), remvalue(sol,%time,eq,eqn1,eqn2,eqn3),0);

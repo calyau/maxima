@@ -203,7 +203,7 @@ noun / verb bugs, I think. */
 real_imagpart_to_conjugate(e) :=
    subst([nounify('realpart) = lambda([s], (s + conjugate(s))/2),
      nounify('imagpart) = lambda([s], (s - conjugate(s))/(2 * %i))], e);
-  
+
 merge_solutions(sol1, sol2) := block([cnd1, cnd2, a1, a2, b1, b2],
   if is(sol1 = %union()) then sol2
   else if is(sol2 = %union()) then sol1
@@ -220,7 +220,7 @@ non_symbol_subst (e, v) := block([vars, listconstvars : false],
 one_to_one_crunch(e) := block([ee, inflag : true, nv],
   ee : if opequal_p(e,"+") then first(e) = -rest(e) else e,
   if opequal_p(ee, "=") and opequal_p(lhs(ee),"^") and opequal_p(rhs(ee),"^") and
-     is(first(lhs(ee)) = first(rhs(ee))) then (
+     first(lhs(ee)) = '%e and first(rhs(ee)) = '%e then (
        nv :  new_variable('integer),
        [second(lhs(ee)) = second(rhs(ee)) + 2 * %pi * %i * nv / log(first(lhs(ee))), set(nv)])
      else [e, set()]);
@@ -230,6 +230,16 @@ catch_easy_cases(e) := block([inflag : true],
   elseif opequal_p(e, 'asin, 'atan, 'abs) then catch_easy_cases(first(e))
   else e);
 
+/* See Abramowitz and Stegun, Eqs. 4.4.6--4.4.8 and 4.6.4--4.6.6 */
+
+standardize_inverse_trig(e) :=
+ e : subst(['acot = lambda([s], atan(1/s)),
+            'acsc = lambda([s], asin(1/s)),
+            'asec = lambda([s], acos(1/s)),
+            'acoth = lambda([s], atanh(1/s)),
+            'acsch = lambda([s], asinh(1/s)),
+            'asech = lambda([s], acosh(1/s))], e);
+          
 /* Lambert Solver -- replace terms of the form w * exp(w) by a %Cxx variable and
 push %Cxx = lambert_w(w) into subs. Return both e and the list of subs.*/
 
@@ -267,10 +277,6 @@ to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, paramet
   /* Check that each member of v is a variable. */
   alias_solver : not every('variable_p, v),
 
-  /* Check that no member of e is an inequality. */
-  if some(lambda([s], not(mapatom(s)) and opequal_p(s, "<","<=", "#", ">", ">=")), e) then
-  error("The first argument to to_poly_solve must not contain any inequalities"),
-
   /* Decide if we need to dispatch the conjugate_solver. Convert real/imag part to conjugate.*/
 
   e : real_imagpart_to_conjugate(e),
@@ -284,6 +290,14 @@ to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, paramet
 
   if some(lambda([s], if_p(s)), e) then (
     error("Not yet implemented!"))
+
+  else if some(lambda([s], not(mapatom(s)) and opequal_p(s, "<","<=", "#", ">", ">=")), e) then (
+    sol : fourier_elim(e, v),
+    if opequal_p(sol, "or") then subst("or" = '%union, sol)
+    else if sol = 'emptyset then %union()
+    else if sol = 'universalset then (
+      %union(xreduce('append, makelist([s = new_variable('real)], s, v))))
+    else %union(sol)) 
   
   else if alias_solver then (
     block([ee, nonvar_sub, sol],
@@ -341,6 +355,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
   block([acc : []],
     for ek in e do (
       [ek, var_exception] : one_to_one_crunch(ek),
+      ek : standardize_inverse_trig(ek),
       ek : catch_easy_cases(lhs(ek) - rhs(ek)),
       ek : lhs(ek) - rhs(ek),
       ek :  trigexpand(logcontract(rationalize(ek))),
@@ -381,19 +396,22 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
    /* Update the set of variables we need to solve for */
    nonfree : union(setify(v), %sol_vars),
      
-   /* Each member of nonalg looks like %g = exp(blob), %g = log(blob), or
+   /* Each member of nonalg looks like %g = exp(blob), %g = log(blob), %g = variable^blob, or
       inverse_lambert_w(blob) = atom. Convert
         %g = exp(blob) --> log(%g) + 2 * %i * %pi * %ivar = blob,
+        %g = x^blob --> x = %g^(1/blob),
         %g = log(blob) --> exp(%g) = blob.
       where %ivar eventually is replaced by an integer gentemp. */
 
      nonalg : map(lambda([s],
-       if opequal_p(rhs(s),"^") then (
-         log(lhs(s)) + 2 * %i * %pi * '%ivar - second(rhs(s)))
-       elseif opequal_p(rhs(s),'log) then (
-         exp(lhs(s)) - first(args(rhs(s))))
-       else s),
-     nonalg),
+         if opequal_p(rhs(s),"^")  and first(rhs(s)) = '%e then (
+           log(lhs(s)) + 2 * %i * %pi * '%ivar - second(rhs(s)))
+        else if opequal_p(rhs(s),"^") and lfreeof(v, second(rhs(s))) then (
+           first(rhs(s)) = lhs(s)^(1/second(rhs(s))) * exp(2 * '%pi * '%i * '%ivar / second(rhs(s))))
+         else if opequal_p(rhs(s),'log) then (
+           exp(lhs(s)) - first(args(rhs(s))))
+         else s),
+       nonalg),
 
    simpfuncs_lambda : compose_functions(simpfuncs),
    

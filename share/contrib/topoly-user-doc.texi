@@ -528,31 +528,6 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 @end deffn
 
-@deffn {Function} lratsubst (@var{l}, @var{e})
-
-The function @code{lratsubst} is similar to @code{subst(l,e)}, except
-that @code{lratsubst} substitutes using the function @code{ratsubst}
-(@code{l} is a list of equations) The substitutions proceed from left
-to right:
-@example
- (%i1) lratsubst([a=b,b=c], a);
- (%o1) c
-
- (%i2) lratsubst([a*b^2=a*b,a^2*b=c], a^2 * b^2);
- (%o2) c
-@end example
-Maxima signals an error if the first argument isn't an equation or a list of 
-equations.
-
-@b{To use} @file{load(to_poly_solver)}
-
-@b{Option variables} radsubstflag
-
-@b{Status} The function @code{lratsubst} is experimental; its
-specifications might change and its functionality might be merged into
-other Maxima functions.
-
-@end deffn
 
 @deffn {Function} new_variable (type)
 
@@ -747,6 +722,20 @@ other Maxima functions.
 
 @end deffn
 
+@deffn {Function} standardize_inverse_trig (@var{e})
+
+This function applies the identities @code{cot(x) = atan(1/x),
+acsc(x) = asin(1/x),} and similarly for @code{asec, acoth, acsch}
+and @code{asech} to an expression. See Abramowitz and Stegun, 
+Eqs. 4.4.6 through 4.4.8 and 4.6.4 through 4.6.6.
+
+@b{To use} @file{load(to_poly_solver)}
+
+@b{Status} The function @code{standardize_inverse_trig} is experimental; its
+specifications might change and its functionality might be merged into
+other Maxima functions.
+@end deffn
+
 @deffn {Function} subst_parallel (@var{l}, @var{e})
 
 When @code{l} is a single equation or a list of equations, substitute
@@ -864,8 +853,9 @@ similarly, @math{l} can either be a single symbol or a list of set of
 symbols.
 
 The function @code{to_poly_solve} is able to solve some, but not all,
-equations involving rational powers, absolute values, trigonometric functions,
-and minimum and maximum; some examples:
+equations involving rational powers, some nonrational powers,
+absolute values, trigonometric functions, and minimum and maximum.
+The support for inverse trigonometric functions is weak. some examples:
 
 @example
  (%i1) to_poly_solve(set(max(x,y) = 5, x+y = 2), set(x,y));
@@ -879,6 +869,16 @@ and minimum and maximum; some examples:
 
  (%i4) to_poly_solve(cos(x) * sin(x) = 1/2,x, 'simpfuncs = ['expand, 'nicedummies]);
  (%o4) %union([x=%pi*%z0+%pi/4])
+
+ (%i5) to_poly_solve(x^(2*a) + x^a + 1,x);
+
+ (%o5) %union([x = (-sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z10/a)/2^(1/a)],
+              [x = (sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z9/a)/2^(1/a)])
+@end example
+For  @emph{linear} inequalites, @code{to_poly_solve} does Fourier elimination:
+@example
+ (%i1) to_poly_solve([x + y < 1, x - y >= 8],[x,y]);
+ (%o1) %union([x = y+8,y < -7/2],[y+8 < x,x < 1-y,y < -7/2])
 @end example
 
 When @math{to_poly_solve} is able to find the solution set, it returns
@@ -1013,7 +1013,7 @@ ignores this declaration}.
 
 @b{Related functions} @i{to_poly}
 
-@b{To use} @file{load(to_poly)solve)}
+@b{To use} @file{load(to_poly_solve)}
 
 @b{Status:} The function @code{to_poly_solve} is experimental; its
 specifications might change and its functionality might be merged into
