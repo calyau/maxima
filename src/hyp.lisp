@@ -440,10 +440,16 @@
      (format t "var = ~A~%" var)
      (format t "*par* = ~A~%" *par*)
      ||#
-     (setq l (vfvp (div (add (cadr arg-l1) n) 2)))
-
-     ;;(format t "l  = ~A~%" l)
-     (setq v (cdr (assoc 'v l :test #'equal)))
+     (cond ((mnump *par*)
+            ;; The argument of the hypergeometric function is a number.
+            ;; Avoid the following check which does not work for this case.
+            (setq v (div (add (cadr arg-l1) n) 2)))
+           (t
+            ;; Check if (b+n)/2 is free of the argument.
+            ;; At this point of the code there is no check of the return value
+            ;; of vfvp. When nil we have no solution and the result is wrong.
+            (setq l (vfvp (div (add (cadr arg-l1) n) 2)))
+            (setq v (cdr (assoc 'v l :test #'equal)))))
 
      ;; Assuming we have F(-n,b;c;z), then v is (b+n)/2.
 	    
@@ -466,15 +472,16 @@
 			       v
 			       (sub 1 (mul 2 *par*)))))))
      ;; A&S 15.4.6 says
-     ;; F(-n, n + a + 1 + b; a + 1; x) = n!*jacobi_p(n,a,b,1-2*x)/pochhammer(a+1,n);
-     ;;
+     ;; F(-n, n + a + 1 + b; a + 1; x) 
+     ;;   = n!*jacobi_p(n,a,b,1-2*x)/pochhammer(a+1,n);
      (return (mul (factorial (* -1 n))
 		  ;; I (rlt) don't think this is right, based on
 		  ;; 15.4.6, because v doesn't have the right value.
 		  #+nil(inv (factf (add 1 v) (* -1 n)))
 		  ;; Based on 15.4.6, we really want the arg-l2 arg
 		  (inv (factf (car arg-l2) (* -1 n)))
-		  (jacobpol (mul -1 n)
+                  (mfuncall '$jacobi_p
+                            (mul -1 n)
 			    (add (car arg-l2) -1)
 			    (sub (mul 2 v) (car arg-l2))
 			    (sub 1 (mul 2 *par*)))))))
@@ -3700,7 +3707,8 @@
     (progn
       (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c)
       (maxima-display res))
-    (subst var s res)))
+    ;; Substitute the argument into the expression and simplify the result.
+    (sratsimp (maxima-substitute var s res))))
   
 (eval-when
     #+gcl (compile)
