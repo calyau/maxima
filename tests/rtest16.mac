@@ -504,6 +504,9 @@ gruntz( x*(x^(1/x)-1)/log(x), x, inf);
 gruntz( (x*x^(1/x)-x)/log(x), x, inf);
 1;
 
+gruntz(exp(-1/x)/x^6,x,0,plus);
+0;
+
 /*
  * Bug [ 1854888 ] hgfred([5],[5], 1) doesn't simplify
  */

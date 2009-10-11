@@ -3002,8 +3002,8 @@ It appears in LIMIT and DEFINT.......")
 			       (merror "MRV-REWRITE: expected leading term to be constant in ~M" c)))
 			;;(mtell "logg: ~M  logf: ~M~%" logg logf)
 			(m* (m^ w (car c))
-			    ($exp (m- logf
-				      (m* (car c) logg))))))
+			    (m^ '$%e (m- logf
+					 (m* (car c) logg))))))
 		    omega))
     (cons exp logw)))
 
