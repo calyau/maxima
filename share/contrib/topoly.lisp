@@ -633,7 +633,8 @@ to eliminate.
 	(g-vars nil) (g-k 0))
 	
     (mapcar #'(lambda (s) (let ((a))
-			    (cond ((get s 'integer-gentemp)
+			    (cond (($subvarp s))
+				  ((get s 'integer-gentemp)
 				   (setq a (concat *integer-gentemp-prefix* z-k))
 				   (mfuncall '$declare a '$integer)
 				   (incf z-k)
