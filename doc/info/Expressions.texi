@@ -12,8 +12,8 @@
 @node Introduction to Expressions, Complex, Expressions, Expressions
 @section Introduction to Expressions
 
-There are a number of reserved words which cannot be used as
-variable names.   Their use would cause a possibly cryptic syntax error.
+There are a number of reserved words which should not be used as variable names.
+Their use would cause a possibly cryptic syntax error.
 
 @example
 integrate            next           from                 diff            

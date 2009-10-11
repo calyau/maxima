@@ -131,6 +131,20 @@ The single quote does not prevent simplification.
 (%o2)                          - 1
 @end example
 
+Maxima considers floating point operations by its in-built mathematical 
+functions to be a simplification.
+
+@c ===beg===
+@c sin(1.0);
+@c '(sin(1.0));
+@c ===end===
+@example
+(%i1) sin(1.0);
+(%o1)                          .8414709848078965
+(%i2) '(sin(1.0));
+(%o2)                          .8414709848078965
+@end example
+
 @opencatbox
 @category{Evaluation} @category{Operators}
 @closecatbox

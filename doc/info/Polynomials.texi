@@ -299,10 +299,10 @@ applied after a @code{factcomb}.
 
 @deffn {Function} factor (@var{expr})
 @deffnx {Function} factor (@var{expr}, @var{p})
-Factors the expression @var{expr}, containing any number of
-variables or functions, into factors irreducible over the integers.
-@code{factor (@var{expr}, @var{p})} factors @var{expr} over the field of integers with an element
-adjoined whose minimum polynomial is @var{p}.
+Factors the expression @var{expr}, containing any number of variables or 
+functions, into factors irreducible over the integers.
+@code{factor (@var{expr}, @var{p})} factors @var{expr} over the field of 
+rationals with an element adjoined whose minimum polynomial is @var{p}.
 
 @code{factor} uses @code{ifactors} function for factoring integers.
 
