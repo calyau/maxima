@@ -1,6 +1,6 @@
 /*  Author Barton Willis
     University of Nebraska at Kearney
-    Copyright (C) 2008 Barton Willis
+    Copyright (C) 2008, 2009 Barton Willis
 
     This program is free software: you can redistribute it or modify
     it under the terms of the GNU General Public License version two.
@@ -217,20 +217,101 @@ non_symbol_subst (e, v) := block([vars, listconstvars : false],
   e : fullratsubst(vars, e),
   [e, map('reverse, vars)]);
 
-one_to_one_crunch(e) := block([ee, inflag : true, nv],
-  ee : if opequal_p(e,"+") then first(e) = -rest(e) else e,
-  if opequal_p(ee, "=") and opequal_p(lhs(ee),"^") and opequal_p(rhs(ee),"^") and
-     first(lhs(ee)) = '%e and first(rhs(ee)) = '%e then (
-       nv :  new_variable('integer),
-       [second(lhs(ee)) = second(rhs(ee)) + 2 * %pi * %i * nv / log(first(lhs(ee))), set(nv)])
-     else [e, set()]);
+(one_to_one_reduce[a,b] := false,
+  one_to_one_reduce['sin,'sin] : buildq([],lambda([a,b], 
+      (a - b - 2 * %pi * new_variable('integer)) * (a + b - 2 * %pi * new_variable('integer) + %pi))),
 
-catch_easy_cases(e) := block([inflag : true],
-  if opequal_p(e, 'log, 'acos) then catch_easy_cases(first(e)-1)
-  elseif opequal_p(e, 'asin, 'atan, 'abs) then catch_easy_cases(first(e))
-  else e);
+  one_to_one_reduce['cos,'cos] : buildq([],lambda([a,b], 
+      (a - b - 2 * %pi * new_variable('integer)) * (a + b - 2 * %pi * new_variable('integer)))),
+  
+  one_to_one_reduce['cos,'sin] : buildq([],lambda([a,b], 
+      (a - b - 2 * %pi * new_variable('integer) - %pi/2) *	
+      (a + b - 2 * %pi * new_variable('integer) - %pi/2))),
+  
+  one_to_one_reduce['sin,'cos] : buildq([],lambda([b,a], 
+      (a - b - 2 * %pi * new_variable('integer) - %pi/2) *	
+      (a + b - 2 * %pi * new_variable('integer) - %pi/2))),
 
-/* See Abramowitz and Stegun, Eqs. 4.4.6--4.4.8 and 4.6.4--4.6.6 */
+  one_to_one_reduce['%exp,'%exp] : buildq([], lambda([a,b],
+      a - b - 2 * %pi * %i * new_variable('integer))));
+  
+one_to_one_crunch(e) := block([inflag : true, f, nv : set(), %exp, q, opl, opr],
+  e : subst("^" = lambda([a,b], if a = %e then funmake('%exp, [b]) else a^b),e),
+  e : if opequal_p(e,"+") then first(e) = -rest(e) else e,
+  if opequal_p(e, "=") then (
+    opl : if mapatom(lhs(e)) then false else op(lhs(e)),
+    opr : if mapatom(rhs(e)) then false else op(rhs(e)),
+    f : one_to_one_reduce[opl, opr],
+    if f # false then (
+      nv : setify(listofvars(e)),
+      q : one_to_one_crunch(f(first(lhs(e)),first(rhs(e)))),
+      e : first(q),
+      nv : union(second(q), setdifference(setify(listofvars(e)), nv)))
+    else (
+      e : lhs(e) - rhs(e))),
+  e : subst(%exp = lambda([a], %e^a),e),
+  [e, nv]);
+
+
+(function_inverse[otherwise]:= false,
+  function_inverse['acos] : lambda([s], cos(s)),
+  function_inverse['acosh] : lambda([s], cosh(s)),
+  function_inverse['asin] : lambda([s], sin(s)),
+  function_inverse['asinh] : lambda([s], sinh(s)),
+  function_inverse['atan] : lambda([s], tan(s)),
+  function_inverse['atanh] : lambda([s], tanh(s)),
+  function_inverse['log] : lambda([s], exp(s)));
+
+(function_zeros[otherwise] := false,
+  function_zeros['abs] : 0,
+  function_zeros['log] : 1,
+  function_zeros['acos] : 1,
+  function_zeros['acosh] : 1,
+  function_zeros['asin] : 0,
+  function_zeros['asinh] : 0,
+  function_zeros['atan] : 0,
+  function_zeros['atanh] : 0,
+  function_zeros['acsc] : [],
+  function_zeros['acsch] : [],
+  function_zeros['acoth] : [],
+  function_zeros['acot] : []);
+  
+top_level_ops(e) := block([inflag : false], 
+  if mapatom(e) then [ ]
+  else if opequal_p(e,"+","*") then (
+    xreduce('append, map('top_level_ops, args(e))))
+  else [op(e)]);
+
+catch_easy_cases (e, vars) := block([inflag : true, ops, finv, fzero, p, q, a, b,
+  ok : true, cnds : set(), nv : set(), listconstvars : false],
+  ops : top_level_ops(e),
+  for f in ops do (
+    finv : function_inverse[f],
+    fzero : function_zeros[f],
+    if (finv # false) or (fzero # false) then (
+      p : gatherargs(e,f),
+      p : sublist(p, lambda([s], not lfreeof(vars,s))),
+      for pk in p while ok do (
+        pk : funmake(f, pk),
+        a : ratcoef(e, pk),
+        b : e - a * pk,
+        if is(equal(b,0)) = true and lfreeof(vars,a) and fzero # false then (
+          ops : [],
+          ok : false,
+          if fzero = [] then [1, set(a # 0)]
+          else (
+            q : catch_easy_cases(first(pk)-fzero, vars),
+            e : first(q),
+            nv : union(nv, third(q)),
+            cnds : adjoin(a # 0, second(q))))
+        else if lfreeof(vars, a) and lfreeof(vars, b) and is(finv # false) then (
+          ops : [],
+          ok : false,
+          q : catch_easy_cases(first(args(pk))-finv(-b/a),vars),
+          nv : union(nv, setdifference(setify(listofvars(q)), setify(listofvars(pk)))),
+          e : first(q),
+          cnds : adjoin(a # 0, second(q)))))),
+  [e, cnds, nv]);
 
 standardize_inverse_trig(e) :=
  e : subst(['acot = lambda([s], atan(1/s)),
@@ -243,18 +324,63 @@ standardize_inverse_trig(e) :=
 /* Lambert Solver -- replace terms of the form w * exp(w) by a %Cxx variable and
 push %Cxx = lambert_w(w) into subs. Return both e and the list of subs.*/
 
-lambertify(e, vars) := block([exp_args, subs : set(),q, ne, %g, listconstvars : false, inflag : true],
-  exp_args : gatherargs(e, "^"), 
-  for ex in exp_args do (
-    if lfreeof(vars, first(ex)) and not lfreeof(vars, second(ex)) then (
-      if opequal_p(second(ex),"+") and numberp(first(second(ex))) then (
-        ex : [first(ex),second(ex) - first(second(ex))]),
-      q : first(ex)^second(ex),
-      %g : new_variable('complex),
-      ne : ratsubst(%g / second(ex), q, e),
-      if not freeof(%g, ne) and lfreeof(listofvars(q), ne) then (
-        subs : adjoin(lambert_w(%g) = second(ex) * log(first(ex)), subs),
-        e : ne))),
+lambertify(e,vars) := block([ee, eee, expargs : set(), cexpargs, nexpargs,
+  %g : new_variable('complex), logargs : set(),
+  unmatched : true, subs : set()],
+ 
+  ee : expand(lhs(e)-rhs(e),0,0),
+  expargs : setify(gatherargs(ee, "^")),
+  cexpargs : subset(expargs, lambda([s], lfreeof(vars,first(s)))),
+  nexpargs : subset(expargs, lambda([s], is(equal(first(s),second(s))))),
+  logargs : setify(gatherargs(ee,'log)),
+  
+  /* look for matches x * c^x = %g, log(c) * x = lambert_w(%g), where c is constant. */
+  
+  for qk in cexpargs while unmatched do (
+    eee : ratsubst(%g / second(qk), first(qk)^second(qk), ee),
+    eee : ratnumer(eee),
+    if eee # %g and polynomialp(eee,[%g], lambda([s], lfreeof(vars,s))) then (
+      unmatched : false,
+      e : eee,
+      subs : set(lambert_w(%g) = log(first(qk)) * second(qk)))),
+
+  /* look for matches x^x = %g, x = log(%g) / lambert_w(log(%g)) */
+  for qk in nexpargs while unmatched do (
+    eee : ratsubst(%g, first(qk)^second(qk), ee),
+    if polynomialp(eee,[%g], lambda([s], lfreeof(vars,s))) then (
+      unmatched : false,
+      e : eee,
+      subs : set(log(%g) / lambert_w(log(%g)) = first(qk)))),
+
+  /* look for matches x * c^(-x) = %g, log(c) * x = lambert_w(-%g), where c is a constant. */
+  for qk in cexpargs while unmatched do (
+    eee : ratsubst(second(qk) / %g, first(qk)^second(qk), ee),
+    eee : ratnumer(eee / second(qk)),
+    if eee # %g and polynomialp(eee,[%g], lambda([s], lfreeof(vars,s))) then (
+      unmatched : false,
+      e : eee,
+      subs : set(-lambert_w(-%g) = log(first(qk)) * second(qk)))),
+
+  /* look for matches x + log(x) = %g, x = lambert_w(exp(%g)) */
+  for qk in logargs while unmatched do (
+    qk : first(qk),
+    eee : ratsubst(%g, log(qk) + qk, ee),
+    eee : ratnumer(eee),
+    if eee # %g and polynomialp(eee,[%g], lambda([s], lfreeof(vars,s))) then (
+      unmatched : false,
+      e : eee,
+      subs : set(lambert_w(exp(%g)) = qk))),
+  
+  /* look for matches x * log(x) = %g, x = %g / lambert_w(%g) */
+  for qk in logargs while unmatched do (
+    qk : first(qk),
+    eee : ratsubst(%g, qk * log(qk), ee),
+    eee : ratnumer(eee),
+    if polynomialp(eee,[%g], lambda([s], lfreeof(vars,s))) then (
+      unmatched : false,
+      e : eee,
+      subs : set(%g / lambert_w(%g) = qk))),
+    
   [e, subs]);
 
 to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter_list,
@@ -356,7 +482,10 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
     for ek in e do (
       [ek, var_exception] : one_to_one_crunch(ek),
       ek : standardize_inverse_trig(ek),
-      ek : catch_easy_cases(lhs(ek) - rhs(ek)),
+      ek : catch_easy_cases(lhs(ek) - rhs(ek),v),
+      var_exception : union(third(ek), var_exception),
+      cnds : union(cnds, second(ek)),
+      ek : first(ek),
       ek : lhs(ek) - rhs(ek),
       ek :  trigexpand(logcontract(rationalize(ek))),
       ek :  subst(lambda([a,b], if numberp(a) and not(numberp(b)) then exp(log(a)*b) else a^b), "^", ek),
