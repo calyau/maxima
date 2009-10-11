@@ -287,11 +287,8 @@ bessel2(a,b):=block([nu,b1,intp,radexpand:'all,%k1,%k2],
    if ratsimp(a*(x-pt)) # 1 then return(false),
    nu: sqrt(b1), method: 'bessel,
    if nu = 1/2 then return(y = (%k1*sin(x-pt) + %k2*cos(x-pt))/sqrt(x-pt)),
-   if featurep(nu,'integer) then intp: 'y else if numberp(nu) then intp: 'n,
- loop,
-   if not(intp='y or intp='n)
-     then (intp: readonly("is", nu, "an integer?  type y or n."), go(loop)),
-   if intp = 'y then return(y = %k1*bessel_j(nu,x-pt) + %k2*bessel_y(nu,x-pt)),
+   intp:askinteger(nu),
+   if intp = 'yes then return(y = %k1*bessel_j(nu,x-pt) + %k2*bessel_y(nu,x-pt)),
    return(y = %k1*bessel_j(nu,x-pt) + %k2*bessel_j(-nu,x-pt)))$
 
 ic1(soln,xc,yc):=
