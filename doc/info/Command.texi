@@ -605,6 +605,8 @@ The flags which have the @code{evflag} property by default are the following:
 @code{ratmx},
 @code{ratsimpexpons},
 @code{simp},
+@c added 10/2009 (DK)
+@code{simpproduct},
 @code{simpsum},
 @code{sumexpand}, and
 @code{trigexpand}.
