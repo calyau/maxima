@@ -1,4 +1,4 @@
-(%start : absolute_real_time(), algexact : true, load("to_poly_solver"), 0);
+(kill(all), %start : absolute_real_time(),algexact : true, load("to_poly_solver"), 0);
 0$
 
 /* equation and variable coercion */
