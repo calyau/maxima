@@ -1899,14 +1899,12 @@ a^(nu/2)*s^(-nu-1)*%e^(a/s);
 specint(%e^(-s*t)*bessel_y(0,a*t),t);
  -log((sqrt(s^2+a^2)+s)/(sqrt(s^2+a^2)-s))/(%pi*sqrt(s^2+a^2));
 
-/* Problem 247: No. 18 (OK noun form New)
-   We have no algorithm for bessel_k when the order is an integer or zero.
-   Tabulated result:
-      (log(s+sqrt(s^2-a^2))-log(a))/sqrt(s^2-a^2);
-*/
+/* Problem 247: No. 18 OK New (10/2009)
+ * A special algorithm for bessel_k(0,a*t) has been added.
+ */
 
-radcan(specint(%e^(-s*t)*bessel_k(0,a*t),t));
 specint(%e^(-s*t)*bessel_k(0,a*t),t);
+acosh(s/a)/sqrt(s^2-a^2);
 
 /*******************************************************************************
  *
