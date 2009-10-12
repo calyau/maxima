@@ -131,70 +131,70 @@ s/((s+a)*(s+b));
    Problem 19: A&S: 29.3.15 OK
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*sin(a*t)/a,t));
+ratsimp(specint(%e^(-s*t)*sin(a*t)/a,t));
 1/(s^2+a^2);
 
 /*****************************************************************************
    Problem 20: A&S: 29.3.16 OK
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*cos(a*t),t));
+ratsimp(specint(%e^(-s*t)*cos(a*t),t));
 s/(s^2+a^2);
 
 /*****************************************************************************
    Problem 21: A&S: 29.3.17 OK
 ******************************************************************************/
 
-(assume(s-a>0),radcan(specint(%e^(-s*t)*sinh(a*t)/a,t)));
+(assume(s-a>0),ratsimp(specint(%e^(-s*t)*sinh(a*t)/a,t)));
 1/(s^2-a^2);
 
 /*****************************************************************************
    Problem 22: A&S: 29.3.18 OK
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*cosh(a*t),t));
+ratsimp(specint(%e^(-s*t)*cosh(a*t),t));
 s/(s^2-a^2);
 
 /*****************************************************************************
    Problem 23: A&S: 29.3.19 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(1-cos(a*t))/a^2,t)));
+factor(ratsimp(specint(%e^(-s*t)*(1-cos(a*t))/a^2,t)));
 1/(s*(s^2+a^2));
 
 /*****************************************************************************
    Problem 24: A&S: 29.3.20 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(a*t-sin(a*t))/a^3,t)));
+factor(ratsimp(specint(%e^(-s*t)*(a*t-sin(a*t))/a^3,t)));
 1/(s^2*(s^2+a^2));
 
 /*****************************************************************************
    Problem 25: A&S: 29.3.21 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(sin(a*t)-a*t*cos(a*t))/(2*a^3),t)));
+factor(ratsimp(specint(%e^(-s*t)*(sin(a*t)-a*t*cos(a*t))/(2*a^3),t)));
 1/(s^2+a^2)^2;
 
 /*****************************************************************************
    Problem 26: A&S: 29.3.22 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*t*sin(a*t)/(2*a),t)));
+factor(ratsimp(specint(%e^(-s*t)*t*sin(a*t)/(2*a),t)));
 s/(s^2+a^2)^2;
 
 /*****************************************************************************
    Problem 27: A&S: 29.3.23 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(sin(a*t)+a*t*cos(a*t))/(2*a),t)));
+factor(ratsimp(specint(%e^(-s*t)*(sin(a*t)+a*t*cos(a*t))/(2*a),t)));
 s^2/(s^2+a^2)^2;
 
 /*****************************************************************************
    Problem 28: A&S: 29.3.24 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*t*cos(a*t),t)));
+factor(ratsimp(specint(%e^(-s*t)*t*cos(a*t),t)));
 (s-a)*(s+a)/(s^2+a^2)^2;
 
 /*****************************************************************************
@@ -203,21 +203,21 @@ factor(radcan(specint(%e^(-s*t)*t*cos(a*t),t)));
    we get the correct result.
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(cos(a*t)-cos(b*t))/(b^2-a^2),t)));
+factor(ratsimp(specint(%e^(-s*t)*(cos(a*t)-cos(b*t))/(b^2-a^2),t)));
 s/((s^2+a^2)*(s^2+b^2));
 
 /*****************************************************************************
    Problem 30: A&S: 29.3.26 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(%e^(-a*t)*sin(b*t))/b,t)));
+factor(ratsimp(specint(%e^(-s*t)*(%e^(-a*t)*sin(b*t))/b,t)));
 1/(s^2+2*a*s+b^2+a^2);
 
 /*****************************************************************************
    Problem 31: A&S: 29.3.27 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(%e^(-a*t)*cos(b*t)),t)));
+factor(ratsimp(specint(%e^(-s*t)*(%e^(-a*t)*cos(b*t)),t)));
 (s+a)/(s^2+2*a*s+b^2+a^2);
 
 /*****************************************************************************
@@ -225,42 +225,43 @@ factor(radcan(specint(%e^(-s*t)*(%e^(-a*t)*cos(b*t)),t)));
 ******************************************************************************/
 
 (assume(2*s-a>0),
-factor(radcan(specint(%e^(-s*t)*(%e^(-a*t)-%e^(a*t/2)*(cos(a*t*sqrt(3)/2)-sqrt(3)*sin(a*t*sqrt(3)/2))),t))));
+factor(ratsimp(specint(%e^(-s*t)*(%e^(-a*t)-%e^(a*t/2)*(cos(a*t*sqrt(3)/2)
+                                           -sqrt(3)*sin(a*t*sqrt(3)/2))),t))));
 3*a^2/((s+a)*(s^2-a*s+a^2));  /* that's 3*a^2/(s^3+a^3) */
 
 /*****************************************************************************
    Problem 33: A&S: 29.3.29 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(sin(a*t)*cosh(a*t)-cos(a*t)*sinh(a*t)),t)));
+factor(ratsimp(specint(%e^(-s*t)*(sin(a*t)*cosh(a*t)-cos(a*t)*sinh(a*t)),t)));
 4*a^3/((s^2-2*a*s+2*a^2)*(s^2+2*a*s+2*a^2));
 
 /*****************************************************************************
    Problem 34: A&S: 29.3.30 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*sin(a*t)*sinh(a*t)/(2*a^2),t)));
+factor(ratsimp(specint(%e^(-s*t)*sin(a*t)*sinh(a*t)/(2*a^2),t)));
 s/((s^2-2*a*s+2*a^2)*(s^2+2*a*s+2*a^2));
 
 /*****************************************************************************
    Problem 35: A&S: 29.3.31 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(sinh(a*t)-sin(a*t))/(2*a^3),t)));
+factor(ratsimp(specint(%e^(-s*t)*(sinh(a*t)-sin(a*t))/(2*a^3),t)));
 1/((s-a)*(s+a)*(s^2+a^2));
 
 /*****************************************************************************
    Problem 36: A&S: 29.3.32 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(cosh(a*t)-cos(a*t))/(2*a^2),t)));
+factor(ratsimp(specint(%e^(-s*t)*(cosh(a*t)-cos(a*t))/(2*a^2),t)));
 s/((s-a)*(s+a)*(s^2+a^2));
 
 /*****************************************************************************
    Problem 37: A&S: 29.3.33 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*((1+a^2*t^2)*sin(a*t)-a*t*cos(a*t)),t)));
+factor(ratsimp(specint(%e^(-s*t)*((1+a^2*t^2)*sin(a*t)-a*t*cos(a*t)),t)));
 8*a^3*s^2/(s^2+a^2)^3;
 
 /******************************************************************************
@@ -304,25 +305,23 @@ factor(specint(%e^(-s*t)*laguerre(10,t),t));
 */
 
 /* Problem 41: OK New
-   After correction of some bugs we get the correct result.    
-*/
+ * After correction of some bugs we get the correct result.    
+ * First a test with a special value for the order of the Laguerre function.
+ */
 
-/* First a test with a special value for the order of the Laguerre function.
-   (Test is added to compensate a killed line to load orthopoly.) */
-
-factor(specint(%e^(-s*t)*%l[10,0](t),t));
+factor(specint(%e^(-s*t)*'laguerre(10,t),t));
 (s-1)^10/s^11;
 
-factor(specint(%e^(-s*t)*%l[n,0](t),t));
+factor(specint(%e^(-s*t)*'laguerre(n,t),t));
 (s-1)^n/s^(n+1);
 
-/* Problem 43: (OK We get a result. TO VERIFY) New
+/* Problem 43: OK We get a result. New
    Because n is declared to be an integer, the implemented Laguerre function
-   simplifies to a sum. The summand can be integrated. We get a result which
-   has to be verified to be equivalent to the result of Problem 42.
+   simplifies to a sum. The summand can be integrated.
+   This summand is equivalent to the general solution above.
 */
 
-(assume(i>0), radcan(specint(%e^(-s*t)*laguerre(n,t),t)));
+(assume(i>0), specint(%e^(-s*t)*laguerre(n,t),t));
 'sum(gamma(i+1)*pochhammer(-n,i)*s^(-i-1)/i!^2,i,0,n);
 
 /*****************************************************************************
@@ -337,12 +336,14 @@ s/(s+a)^(3/2);
    sqrt(s+a)-sqrt(s+b);
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*(1/(2*sqrt(%pi*t^3)))*(%e^(-b*t)-%e^(-a*t)),t));
+specint(%e^(-s*t)*(1/(2*sqrt(%pi*t^3)))*(%e^(-b*t)-%e^(-a*t)),t);
 -sqrt(s+b)+sqrt(s+a);
 
 /******************************************************************************
-  Error functions erf und erfc
-******************************************************************************/
+ *
+ * Error functions erf und erfc
+ *
+ ******************************************************************************/
 
 assume(s-a^2>0,a>0);
 [s>a^2,a>0];
@@ -351,63 +352,74 @@ assume(s-a^2>0,a>0);
    Problem 47: A&S: 29.3.37 OK
 ******************************************************************************/
 
-factor(fullratsimp(specint(%e^(-s*t)*(1/sqrt(%pi*t)-a*%e^(a^2*t)*erfc(a*sqrt(t))),t)));
+factor(ratsimp(specint(%e^(-s*t)*(1/sqrt(%pi*t)-a*%e^(a^2*t)
+                                                *erfc(a*sqrt(t))),t)));
 (sqrt(s)-a)/(s-a^2);
 
 /*****************************************************************************
    Problem 48: A&S: 29.3.38 OK
 ******************************************************************************/
 
-factor(fullratsimp(specint(%e^(-s*t)*(1/sqrt(%pi*t)+a*%e^(a^2*t)*erf(a*sqrt(t))),t)));
+factor(ratsimp(specint(%e^(-s*t)*(1/sqrt(%pi*t)+a*%e^(a^2*t)
+                                                *erf(a*sqrt(t))),t)));
 sqrt(s)/(s-a^2);
 
 /*****************************************************************************
    Problem 49: A&S: 29.3.39 OK
+   In this Laplace transform the integral represents the erfi function.
+   Maxima does the integration correct.
 ******************************************************************************/
 
-(assume(t>0),factor(fullratsimp(specint(%e^(-s*t)*(1/sqrt(%pi*t)-2*a/sqrt(%pi)*%e^(-a^2*t)*integrate(%e^(lambda^2),lambda,0,a*sqrt(t))),t))));
+(assume(t>0),
+ factor(ratsimp(specint(%e^(-s*t)*(1/sqrt(%pi*t)-2*a/sqrt(%pi)*%e^(-a^2*t)
+                            *integrate(%e^(lambda^2),lambda,0,a*sqrt(t))),t))));
 sqrt(s)/(s+a^2);
 
 /*****************************************************************************
    Problem 50: A&S: 29.3.40 OK
 ******************************************************************************/
 
-factor(fullratsimp(specint(%e^(-s*t)*1/a*%e^(a^2*t)*erf(a*sqrt(t)),t)));
+factor(ratsimp(specint(%e^(-s*t)*1/a*%e^(a^2*t)*erf(a*sqrt(t)),t)));
 1/(sqrt(s)*(s-a^2));
 
 /*****************************************************************************
    Problem 51: A&S: 29.3.41 OK
 ******************************************************************************/
 
-factor(fullratsimp(specint(%e^(-s*t)*(2/(a*sqrt(%pi))*%e^(-a^2*t)*integrate(%e^(lambda^2),lambda,0,a*sqrt(t))),t)));
+factor(ratsimp(specint(%e^(-s*t)*(2/(a*sqrt(%pi))*%e^(-a^2*t)
+                             *integrate(%e^(lambda^2),lambda,0,a*sqrt(t))),t)));
 1/(sqrt(s)*(s+a^2));
 
 /*****************************************************************************
    Problem 52: A&S: 29.3.42 OK
 ******************************************************************************/
 
-(assume(s-b^2>0,b>0),factor(fullratsimp(specint(%e^(-s*t)*(%e^(a^2*t)*(b-a*erf(a*sqrt(t)))-b*%e^(b^2*t)*erfc(b*sqrt(t))),t))));
+(assume(s-b^2>0,b>0),
+ factor(ratsimp(specint(%e^(-s*t)*(%e^(a^2*t)*(b-a*erf(a*sqrt(t)))
+                                           -b*%e^(b^2*t)*erfc(b*sqrt(t))),t))));
 (b-a)*(b+a)*(sqrt(s)-b)/((s-a^2)*(s-b^2));
 
 /*****************************************************************************
    Problem 53: A&S: 29.3.43 OK
 ******************************************************************************/
 
-factor(fullratsimp(specint(%e^(-s*t)*%e^(a^2*t)*erfc(a*sqrt(t)),t)));
+factor(ratsimp(specint(%e^(-s*t)*%e^(a^2*t)*erfc(a*sqrt(t)),t)));
 (sqrt(s)-a)/(sqrt(s)*(s-a^2));
 
 /*****************************************************************************
    Problem 54: A&S: 29.3.44 OK
 ******************************************************************************/
 
-factor(fullratsimp(specint(%e^(-s*t)*(1/sqrt(b-a))*%e^(-a*t)*erf(sqrt(b-a)*sqrt(t)),t)));
+factor(ratsimp(specint(%e^(-s*t)*(1/sqrt(b-a))*%e^(-a*t)
+                                              *erf(sqrt(b-a)*sqrt(t)),t)));
 1/((s+a)*sqrt(s+b));
 
 /*****************************************************************************
    Problem 55: A&S: 29.3.45 OK
 ******************************************************************************/
 
-factor(fullratsimp(specint(%e^(-s*t)*(%e^(a^2*t)*(b/a*erf(a*sqrt(t))-1)+%e^(b^2*t)*erfc(b*sqrt(t))),t)));
+factor(ratsimp(specint(%e^(-s*t)*(%e^(a^2*t)*(b/a*erf(a*sqrt(t))-1)
+                                              +%e^(b^2*t)*erfc(b*sqrt(t))),t)));
 ((b-a)*(b+a)*(s-b*sqrt(s)))/(s*(s-a^2)*(s-b^2));
 
 /******************************************************************************
@@ -466,29 +478,18 @@ factor(specint(%e^(-s*t)*h2(10,t),t));
    There should be the relationship: hermite(n,t) -> %he[n](t).
 
    But it doesn't work.
+   We have improved the hermite function. It works as expected.
 */
 
-/* Problem 64: (OK ???)
-   We get a result with a function assoc_legendre_p. Can this be shown
-   to be correct???
-   Tabulated result: (1-s)^n/(s^(n+1/2))
-   We have to do work on the code for the Hermite function and exclude
-   the test.
-*/
+/* AS 29.3.46 */
 
-(assume(4*?psey-1>0),factor(radcan(specint(%e^(-s*t)*n!/((2*n)!*sqrt(%pi*t))*%he[2*n](sqrt(t)),t))),done);
-done;
+laplace(1/sqrt(t)*'hermite(2*n,sqrt(t)),t,s);
+%pi*2^(2*n)*(1-1/s)^n/(gamma((2*n-1)/-2)*sqrt(s));
 
-/* Problem 65: (OK ???)
-   We get a result with a function assoc_legendre_p. Can this be shown
-   to be correct??? 
-   Tabulated result: (1-s)^n/(s^(n+1/2))
-   We have to do work on the code for the Hermite function and exclude 
-   the test.
-*/
+/* AS 29.3.47 */
 
-(factor(radcan(specint(%e^(-s*t)*n!/((2*n+1)!*sqrt(%pi))*%he[2*n+1](sqrt(t)),t))),done);
-done;
+laplace('hermite(2*n+1,sqrt(t)),t,s);
+-%pi*2^(2*n+2)*(1-1/s)^n/(2*gamma((2*n+1)/-2)*s^(3/2));
 
 /******************************************************************************
   A&S 29.3.48 to A&S 29.3.60
@@ -517,14 +518,17 @@ factor(specint(%e^(-s*t)*%e^(-(a+b)/2*t)*bessel_i(0,(a-b)/2*t),t));
    The original code gives additional phase factors.
 ******************************************************************************/
 
-(assume(2*k-1>0),factor(radcan(specint(%e^(-s*t)*sqrt(%pi)*(t/(a-b))^(k-1/2)*%e^(-(a+b)/2*t)*bessel_i(k-1/2,(a-b)/2*t),t))));
+(assume(2*k-1>0),
+ factor(radcan(specint(%e^(-s*t)*sqrt(%pi)*(t/(a-b))^(k-1/2)
+                               *%e^(-(a+b)/2*t)*bessel_i(k-1/2,(a-b)/2*t),t))));
 2*sqrt(%pi)*gamma(2*k)/(2^(2*k)*gamma((2*k+1)/2)*(s+a)^k*(s+b)^k);
 
 /*****************************************************************************
    Problem 69: A&S: 29.3.51 OK
 ******************************************************************************/
 
-factor(specint(%e^(-s*t)*t*%e^(-(a+b)/2*t)*(bessel_i(0,(a-b)/2*t)+bessel_i(1,(a-b)/2*t)),t));
+factor(specint(%e^(-s*t)*t*%e^(-(a+b)/2*t)*(bessel_i(0,(a-b)/2*t)
+                                                    +bessel_i(1,(a-b)/2*t)),t));
 1/((s+b)*sqrt(s^2+(b+a)*s+a*b));
 
 /*****************************************************************************
@@ -551,7 +555,8 @@ factor(radcan(specint(%e^(-s*t)*(k/t)*%e^(-(a+b)/2*t)*bessel_i(k,(a-b)/2*t),t)))
    The additional phase factor vanish.
 ******************************************************************************/
 
-(assume (nu>0),factor(specint(%e^(-s*t)*(1/a^nu)*%e^(-a/2*t)*bessel_i(nu,a/2*t),t)));
+(assume (nu>0),
+ factor(specint(%e^(-s*t)*(1/a^nu)*%e^(-a/2*t)*bessel_i(nu,a/2*t),t)));
 /*((sqrt(s+a)+sqrt(s))^(-2*nu))/(sqrt(s)*sqrt(s+a));*/
 1/(sqrt(s)*sqrt(s+a)*(2*sqrt(s)*sqrt(s+a)+2*s+a)^nu);
 
@@ -602,7 +607,8 @@ a^(2*nu)/(sqrt(s^2-a^2)*(sqrt(s^2-a^2)+s)^nu);
    The additional phase factors vanish.
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*sqrt(%pi)/gamma(k)*(t/(2*a))^(k-1/2)*bessel_i(k-1/2,a*t),t));
+radcan(specint(%e^(-s*t)*sqrt(%pi)/gamma(k)*(t/(2*a))^(k-1/2)
+                                                       *bessel_i(k-1/2,a*t),t));
 2*sqrt(%pi)*gamma(2*k)/(2^(2*k)*gamma(k)*gamma((2*k+1)/2)*(s-a)^k*(s+a)^k);
 
 /*****************************************************************************
@@ -624,21 +630,21 @@ radcan(specint(%e^(-s*t)*(t-k)*unit_step(t-k),t));
    Problem 81: A&S: 29.3.63 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*(t-k)^(nu-1)/gamma(nu)*unit_step(t-k),t));
+ratsimp(specint(%e^(-s*t)*(t-k)^(nu-1)/gamma(nu)*unit_step(t-k),t));
 1/s^nu*%e^(-k*s);
 
 /*****************************************************************************
    Problem 82: A&S: 29.3.64 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*(unit_step(t)-unit_step(t-k)),t));
+ratsimp(specint(%e^(-s*t)*(unit_step(t)-unit_step(t-k)),t));
 (%e^(-s*k)*(%e^(k*s)-1))/s;
 
 /*****************************************************************************
    Problem 83: A&S: 29.3.65 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*sum(unit_step(t-n*k),n,0,inf),t)),simpsum;
+ratsimp(specint(%e^(-s*t)*sum(unit_step(t-n*k),n,0,inf),t)),simpsum;
 %e^(k*s)/(s*%e^(k*s)-s);
 
 /*****************************************************************************
@@ -652,7 +658,10 @@ radcan(specint(%e^(-s*t)*sum(unit_step(t-n*k),n,0,inf),t)),simpsum;
    we get the expected result.
 ******************************************************************************/
 
-block([result],(assume(%e^(k*s)-a>0),result:radcan(specint(%e^(-s*t)*sum(a^(n-1)*unit_step(t-n*k),n,1,inf),t)),ev(result,simpsum)));
+block([result],
+ (assume(%e^(k*s)-a>0),
+ result:ratsimp(specint(%e^(-s*t)*sum(a^(n-1)*unit_step(t-n*k),n,1,inf),t)),
+ ev(result,simpsum)));
 %e^(-k*s)/(s*(1-a*%e^(-k*s)));
 
 /*****************************************************************************
@@ -660,42 +669,46 @@ block([result],(assume(%e^(k*s)-a>0),result:radcan(specint(%e^(-s*t)*sum(a^(n-1)
    The result of Maxima is equivalent to 1/s*tanh(k*s)
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(unit_step(t)+2*sum((-1)^n*unit_step(t-2*n*k),n,1,inf)),t))),simpsum;
+factor(ratsimp(specint(%e^(-s*t)*(unit_step(t)+2*sum((-1)^n*unit_step(t-2*n*k),n,1,inf)),t))),simpsum;
 (%e^(k*s)-1)*(%e^(k*s)+1)/(s*(%e^(2*k*s)+1));
 
 /*****************************************************************************
    Problem 86: A&S: 29.3.68 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*sum((-1)^n*unit_step(t-n*k),n,0,inf),t)),simpsum;
+ratsimp(specint(%e^(-s*t)*sum((-1)^n*unit_step(t-n*k),n,0,inf),t)),simpsum;
 %e^(k*s)/(s*%e^(k*s)+s);
 
 /*****************************************************************************
    Problem 87: A&S: 29.3.69 OK New
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(t*unit_step(t)+2*sum((-1)^n*(t-2*n*k)*unit_step(t-2*n*k),n,1,inf)),t))),simpsum;
+factor(ratsimp(specint(%e^(-s*t)*(t*unit_step(t)+2*sum((-1)^n*(t-2*n*k)
+                                     *unit_step(t-2*n*k),n,1,inf)),t))),simpsum;
 (%e^(k*s)-1)*(%e^(k*s)+1)/(s^2*(%e^(2*k*s)+1));
 
 /*****************************************************************************
    Problem 88: A&S: 29.3.70 OK New
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*2*sum(unit_step(t-(2*n+1)*k),n,0,inf),t))),simpsum;
+factor(ratsimp(specint(%e^(-s*t)
+                            *2*sum(unit_step(t-(2*n+1)*k),n,0,inf),t))),simpsum;
 2*%e^(k*s)/(s*(%e^(k*s)-1)*(%e^(k*s)+1));
 
 /*****************************************************************************
    Problem 89: A&S: 29.3.71 OK New
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*2*sum((-1)^n*unit_step(t-(2*n+1)*k),n,0,inf),t))),simpsum;
+factor(ratsimp(specint(%e^(-s*t)*2*sum((-1)^n
+                                  *unit_step(t-(2*n+1)*k),n,0,inf),t))),simpsum;
 2*%e^(k*s)/(s*(%e^(2*k*s)+1));
 
 /*****************************************************************************
    Problem 90: A&S: 29.3.72 OK New
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(unit_step(t)+2*sum(unit_step(t-2*n*k),n,1,inf)),t))),simpsum;
+factor(ratsimp(specint(%e^(-s*t)*(unit_step(t)
+                               +2*sum(unit_step(t-2*n*k),n,1,inf)),t))),simpsum;
 (%e^(2*k*s)+1)/(s*(%e^(k*s)-1)*(%e^(k*s)+1));
 
 /*****************************************************************************
@@ -707,13 +720,14 @@ factor(radcan(specint(%e^(-s*t)*(unit_step(t)+2*sum(unit_step(t-2*n*k),n,1,inf))
 ******************************************************************************/
 
 specint(%e^(-s*t)*abs(sin(k*t)),t);
-specint(%e^(-s*t)*abs(sin(k*t)),t);
+'specint(%e^(-s*t)*abs(sin(k*t)),t);
 
 /*****************************************************************************
    Problem 92: A&S: 29.3.74 OK New
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*sum((-1)^n*sin(t)*unit_step(t-n*%pi),n,0,inf),t))),simpsum;
+factor(ratsimp(specint(%e^(-s*t)*sum((-1)^n*sin(t)
+                                      *unit_step(t-n*%pi),n,0,inf),t))),simpsum;
 %e^(%pi*s)/((s^2+1)*(%e^(%pi*s)-1));
 
 /*****************************************************************************
@@ -727,51 +741,53 @@ factor(specint(%e^(-s*t)*bessel_j(0,2*sqrt(k*t)),t));
    Problem 94: A&S: 29.3.76 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*1/sqrt(%pi*t)*cos(2*sqrt(k*t)),t));
+ratsimp(specint(%e^(-s*t)*1/sqrt(%pi*t)*cos(2*sqrt(k*t)),t));
 %e^(-k/s)/sqrt(s);
 
 /*****************************************************************************
    Problem 95: A&S: 29.3.77 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*1/sqrt(%pi*t)*cosh(2*sqrt(k*t)),t));
+ratsimp(specint(%e^(-s*t)*1/sqrt(%pi*t)*cosh(2*sqrt(k*t)),t));
 %e^(k/s)/sqrt(s);
 
 /*****************************************************************************
    Problem 96: A&S: 29.3.78 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*1/sqrt(%pi*k)*sin(2*sqrt(k*t)),t));
+ratsimp(specint(%e^(-s*t)*1/sqrt(%pi*k)*sin(2*sqrt(k*t)),t));
 s^(-3/2)*%e^(-k/s);
 
 /*****************************************************************************
    Problem 97: A&S: 29.3.79 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*1/sqrt(%pi*k)*sinh(2*sqrt(k*t)),t));
+ratsimp(specint(%e^(-s*t)*1/sqrt(%pi*k)*sinh(2*sqrt(k*t)),t));
 s^(-3/2)*%e^(k/s);
 
 /*****************************************************************************
    Problem 98: A&S: 29.3.80 OK
 ******************************************************************************/
 
-(assume(nu-1>0),radcan(specint(%e^(-s*t)*(t/k)^((nu-1)/2)*bessel_j(nu-1,2*sqrt(k*t)),t)));
+(assume(nu-1>0),
+ ratsimp(specint(%e^(-s*t)*(t/k)^((nu-1)/2)*bessel_j(nu-1,2*sqrt(k*t)),t)));
 (1/s^nu)*%e^(-k/s);
 
 /*****************************************************************************
    Problem 99: A&S: 29.3.81 OK New
 ******************************************************************************/
 
-(assume(nu-1>0),radcan(specint(%e^(-s*t)*(t/k)^((nu-1)/2)*bessel_i(nu-1,2*sqrt(k*t)),t)));
+(assume(nu-1>0),
+ ratsimp(specint(%e^(-s*t)*(t/k)^((nu-1)/2)*bessel_i(nu-1,2*sqrt(k*t)),t)));
 (1/s^nu)*%e^(k/s);
 
 /******************************************************************************
    Problem 100: A&S: 29.3.82 OK New
 ******************************************************************************/
 
-(block [besselexpand:true], 
-  radcan(exponentialize(specint(%e^(-s*t)*k/(2*sqrt(%pi*t^3))*%e^(-k^2/(4*t)),t)))
-);
+(block [besselexpand:true],
+  ratsimp(exponentialize(
+    specint(%e^(-s*t)*k/(2*sqrt(%pi*t^3))*%e^(-k^2/(4*t)),t))));
 %e^(-k*sqrt(s));
 
 /******************************************************************************
@@ -780,14 +796,14 @@ s^(-3/2)*%e^(k/s);
    Tabulated result is: 1/s*%e^(-k*sqrt(s))
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*erfc(k/(2*sqrt(t))),t));
 specint(%e^(-s*t)*erfc(k/(2*sqrt(t))),t);
+'specint(%e^(-s*t)*erfc(k/(2*sqrt(t))),t);
 
 /*****************************************************************************
    Problem 102: A&S: 29.3.84 OK New
 ******************************************************************************/
 
-radcan(exponentialize(specint(%e^(-s*t)/sqrt(%pi*t)*%e^(-k^2/(4*t)),t)));
+ratsimp(exponentialize(specint(%e^(-s*t)/sqrt(%pi*t)*%e^(-k^2/(4*t)),t)));
 1/sqrt(s)*%e^(-k*sqrt(s));
 
 /*****************************************************************************
@@ -795,8 +811,8 @@ radcan(exponentialize(specint(%e^(-s*t)/sqrt(%pi*t)*%e^(-k^2/(4*t)),t)));
    Tabulated result: 1/s^2*%e^(-k*sqrt(s))
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*2*sqrt(t)*%i*erfc(k/(2*sqrt(t))),t));
 specint(%e^(-s*t)*2*sqrt(t)*%i*erfc(k/(2*sqrt(t))),t);
+'specint(%e^(-s*t)*2*sqrt(t)*%i*erfc(k/(2*sqrt(t))),t);
 
 /*****************************************************************************
    Problem 104: A&S: 29.3.86 (OK noun form New)
@@ -804,16 +820,18 @@ specint(%e^(-s*t)*2*sqrt(t)*%i*erfc(k/(2*sqrt(t))),t);
 ******************************************************************************/
 
 specint(%e^(-s*t)*(4*t)^(n/2)*%i*erfc(k/(2*sqrt(t))),t);
-specint(%e^(-s*t)*(4*t)^(n/2)*%i*erfc(k/(2*sqrt(t))),t);
+'specint(%e^(-s*t)*(4*t)^(n/2)*%i*erfc(k/(2*sqrt(t))),t);
 
 /*****************************************************************************
    Problem 105: A&S: 29.3.87 (OK noun form New)
-   he[n](z) is the Hermite function
+   We have no algorithm for an argument 1/sqrt(t).
    Tabulated result: s^((n-1)/2)*%e^(-k*sqrt(s));
 ******************************************************************************/
 
-specint(%e^(-s*t)*%e^(-k^2/(4*t))/(2^n*sqrt(%pi*t^(n+1)))*he[n](k/(2*sqrt(t))),t);
-specint(%e^(-s*t-(k^2/(4*t)))*t^(-n/2-1/2)*he[n](k/(2*sqrt(t))),t)/(sqrt(%pi)*2^n);
+specint(%e^(-s*t)*%e^(-k^2/(4*t))/(2^n*sqrt(%pi*t^(n+1)))
+                                                  *hermite(n,(k/(2*sqrt(t)))),t);
+'specint(hermite(n,k/(2*sqrt(t)))*t^(-n/2-1/2)*%e^(-s*t-k^2/(4*t)),t)
+ /(sqrt(%pi)*2^n);
 
 /*****************************************************************************
    Problem 106: A&S: 29.3.88 (Ok noun form New)
@@ -821,16 +839,20 @@ specint(%e^(-s*t-(k^2/(4*t)))*t^(-n/2-1/2)*he[n](k/(2*sqrt(t))),t)/(sqrt(%pi)*2^
    We have a sum with 3 terms. Maxima gives a partially result for 2 terms.
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*(1/sqrt(%pi*t)*exp(-k^2/(4*t))-a*%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t)))),t)));
-(sqrt(s)*specint(-a*%e^(-s*t+a^2*t+a*k)*erfc((2*a*t+k)/(2*sqrt(t))),t)-sinh(k*sqrt(s))+cosh(k*sqrt(s)))/sqrt(s);
+factor(ratsimp(specint(%e^(-s*t)*(1/sqrt(%pi*t)*exp(-k^2/(4*t))
+                     -a*%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t)))),t)));
+(sqrt(s)*'specint(-a*%e^(-s*t+a^2*t+a*k)*erfc((2*a*t+k)/(2*sqrt(t))),t)
+                                      -sinh(k*sqrt(s))+cosh(k*sqrt(s)))/sqrt(s);
 
 /*****************************************************************************
    Problem 107: A&S: 29.3.89 (OK noun form New)
    Tabulated result: a*e^(-k*sqrt(s))/(s*(a+sqrt(s)));
 ******************************************************************************/
 
-specint(%e^(-s*t)*(-%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t)))+erfc(k/(2*sqrt(t)))),t);
-specint(-erfc(a*sqrt(t)+k/(2*sqrt(t)))*%e^(-s*t+a^2*t+a*k),t)+specint(erfc(k/(2*sqrt(t)))*%e^-(s*t),t);
+specint(%e^(-s*t)*(-%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t)))
+                                                       +erfc(k/(2*sqrt(t)))),t);
+'specint(-erfc(a*sqrt(t)+k/(2*sqrt(t)))*%e^(-s*t+a^2*t+a*k),t)
+                                     +'specint(erfc(k/(2*sqrt(t)))*%e^-(s*t),t);
 
 /*****************************************************************************
    Problem 108: A&S: 29.3.90 (OK noun form New)
@@ -838,7 +860,7 @@ specint(-erfc(a*sqrt(t)+k/(2*sqrt(t)))*%e^(-s*t+a^2*t+a*k),t)+specint(erfc(k/(2*
 ******************************************************************************/
 
 specint(%e^(-s*t)*%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t))),t);
-specint(%e^(-s*t)*%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t))),t);
+'specint(%e^(-s*t)*%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t))),t);
 
 /*****************************************************************************
    Problem 109: A&S: 29.3.91 (Ok noun form New)
@@ -846,7 +868,7 @@ specint(%e^(-s*t)*%e^(a*k)*%e^(a^2*t)*erfc(a*sqrt(t)+k/(2*sqrt(t))),t);
 ******************************************************************************/
  
 specint(%e^(-s*t)*%e^(a*t/2)*bessel_i(0,1/2*a*sqrt(t^2-k^2))*unit_step(t-k),t);
-specint(%e^(-s*t)*%e^(a*t/2)*bessel_i(0,1/2*a*sqrt(t^2-k^2))*unit_step(t-k),t);
+'specint(%e^(-s*t)*%e^(a*t/2)*bessel_i(0,1/2*a*sqrt(t^2-k^2))*unit_step(t-k),t);
 
 /*****************************************************************************
    Problem 110: A&S: 29.3.92 (OK noun form New)
@@ -854,7 +876,7 @@ specint(%e^(-s*t)*%e^(a*t/2)*bessel_i(0,1/2*a*sqrt(t^2-k^2))*unit_step(t-k),t);
 ******************************************************************************/
 
 specint(%e^(-s*t)*bessel_j(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
-specint(%e^(-s*t)*bessel_j(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
+'specint(%e^(-s*t)*bessel_j(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
 
 /*****************************************************************************
    Problem 111: A&S: 29.3.93 (OK noun form New)
@@ -862,7 +884,7 @@ specint(%e^(-s*t)*bessel_j(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
 ******************************************************************************/
 
 specint(%e^(-s*t)*bessel_i(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
-specint(%e^(-s*t)*bessel_i(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
+'specint(%e^(-s*t)*bessel_i(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
 
 /*****************************************************************************
    Problem 112: A&S: 29.3.94 (OK noun form New)
@@ -870,7 +892,7 @@ specint(%e^(-s*t)*bessel_i(0,a*sqrt(t^2-k^2))*unit_step(t-k),t);
 ******************************************************************************/
 
 specint(%e^(-s*t)*bessel_j(0,a*sqrt(t^2+2*k*t)),t);
-specint(%e^(-s*t)*bessel_j(0,a*sqrt(t)*sqrt(t+2*k)),t);
+'specint(%e^(-s*t)*bessel_j(0,a*sqrt(t)*sqrt(t+2*k)),t);
 
 /*****************************************************************************
    Problem 113: A&S: 29.3.95 (OK noun form New)
@@ -878,7 +900,7 @@ specint(%e^(-s*t)*bessel_j(0,a*sqrt(t)*sqrt(t+2*k)),t);
 ******************************************************************************/
 
 specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_j(1,a*sqrt(t^2-k^2))*unit_step(t-k),t);
-specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_j(1,a*sqrt(t^2-k^2))*unit_step(t-k),t);
+'specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_j(1,a*sqrt(t^2-k^2))*unit_step(t-k),t);
 
 /*****************************************************************************
    Problem 114: A&S: 29.3.96 (OK noun form New)
@@ -886,7 +908,7 @@ specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_j(1,a*sqrt(t^2-k^2))*unit_step(t-k),t
 ******************************************************************************/
 
 specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_i(1,a*sqrt(t^2-k^2))*unit_step(t-k),t);
-specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_i(1,a*sqrt(t^2-k^2))*unit_step(t-k),t);
+'specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_i(1,a*sqrt(t^2-k^2))*unit_step(t-k),t);
 
 /*****************************************************************************
    Problem 115: A&S: 29.3.97 (OK noun form New)
@@ -895,24 +917,24 @@ specint(%e^(-s*t)*a*k/sqrt(t^2-k^2)*bessel_i(1,a*sqrt(t^2-k^2))*unit_step(t-k),t
 ******************************************************************************/
 
 specint(%e^(-s*t)*((t-k)/(t+k))^(nu/2)*bessel_j(nu,a*sqrt(t^2-k^2))*unit_step(t-k),t);
-specint(%e^(-s*t)*((t-k)/(t+k))^(nu/2)*bessel_j(nu,a*sqrt(t^2-k^2))*unit_step(t-k),t);
+'specint(%e^(-s*t)*((t-k)/(t+k))^(nu/2)*bessel_j(nu,a*sqrt(t^2-k^2))*unit_step(t-k),t);
 
 /*****************************************************************************
    Problem 116: A&S: 29.3.98 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*(-%gamma-log(t)),t));
+ratsimp(specint(%e^(-s*t)*(-%gamma-log(t)),t));
 1/s*log(s);
 
 /*****************************************************************************
    Problem 117: A&S: 29.3.99 OK New
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*t^(k-1)/gamma(k)*(psi[0](k)-log(t)),t));
+ratsimp(specint(%e^(-s*t)*t^(k-1)/gamma(k)*(psi[0](k)-log(t)),t));
 1/s^k*log(s);
 
 /*****************************************************************************
-   Problem 118: A&S: 29.3.100 (OK new result)
+   Problem 118: A&S: 29.3.100 OK NEW
    We support the expintegral_e1 and get a new result.
    Tabulated result: log(s)/(s-a);
 ******************************************************************************/
@@ -921,23 +943,26 @@ ratsimp(specint(%e^(-s*t)*%e^(a*t)*(log(a)+expintegral_e1(a*t)),t));
 log(s)/(s-a);
 
 /*****************************************************************************
-   Problem 119: A&S: 29.3.101 (OK noun form New) 
+   Problem 119: A&S: 29.3.101 OK NEW
+    
    Tabulated result: log(s)/(s^2+1)
 ******************************************************************************/
 
-specint(%e^(-s*t)*(cos(t)*Si(t)-sin(t)*Ci(t)),t);
-(specint(%e^(%i*t-s*t)*Si(t),t)+specint(%e^(-s*t-%i*t)*Si(t),t)+specint(%i*%e^(%i*t-s*t)*Ci(t),t)+specint(-%i*%e^(-s*t-%i*t)*Ci(t),t))/2;
+radcan(specint(%e^(-s*t)*(cos(t)*expintegral_si(t)-sin(t)*expintegral_ci(t)),t)),
+  logarc:true,logexpand:super;
+log(s)/(s^2+1);
 
 /*****************************************************************************
-   Problem 120: A&S: 29.3.102 (OK noun form New)
+   Problem 120: A&S: 29.3.102 OK NEW
    Tabulated result: s*log(s)/(s^2+1)
 ******************************************************************************/
 
-specint(%e^(-s*t)*(-sin(t)*Si(t)-cos(t)*Ci(t)),t);
-(specint(%i*%e^(%i*t-s*t)*Si(t),t)+specint(-%i*%e^(-s*t-%i*t)*Si(t),t)+specint(-%e^(%i*t-s*t)*Ci(t),t)+specint(-%e^(-s*t-%i*t)*Ci(t),t))/2;
+radcan(specint(%e^(-s*t)*(-sin(t)*expintegral_si(t)-cos(t)*expintegral_ci(t)),t)),
+   logarc:true,logexpand:super;
+s*log(s)/(s^2+1);
 
 /*****************************************************************************
-   Problem 121: A&S: 29.3.103 (OK New)
+   Problem 121: A&S: 29.3.103 OK New
    We support the expintegral_e1 and get a new result.
    Tabulated result: 1/s*log(1+k*s)
 ******************************************************************************/
@@ -953,29 +978,29 @@ specint(%e^(-s*t)*1/t*(%e^(-b*t)-%e^(-a*t)),t);
 log((s+a)/(s+b));
 
 /*****************************************************************************
-   Problem 123: A&S: 29.3.105 (OK noun form New)
+   Problem 123: A&S: 29.3.105 OK NEW
    Tabulated result: 1/s*log(1+k^2*s^2)
 ******************************************************************************/
 
-specint(%e^(-s*t)*(-2)*Ci(t/k),t);
-specint(%e^(-s*t)*(-2)*Ci(t/k),t);
+radcan(specint(%e^(-s*t)*(-2)*expintegral_ci(t/k),t));
+1/s*log(1+k^2*s^2);
 
 /*****************************************************************************
-   Problem 124: A&S: 29.3.106 (OK Noun form New)
+   Problem 124: A&S: 29.3.106 OK NEW
    Tabulated result: 1/s*log(s^2+a^2)
 ******************************************************************************/
 
-specint(%e^(-s*t)*(2*log(a)-2*Ci(a*t)),t);
-specint(-2*%e^-(s*t)*Ci(a*t),t)+2*log(a)/s;
+ratsimp(specint(%e^(-s*t)*(2*log(a)-2*expintegral_ci(a*t)),t));
+1/s*log(s^2+a^2);
 
 /*****************************************************************************
-   Problem 125: A&S: 29.3.107 (OK Noun form New)
+   Problem 125: A&S: 29.3.107 OK NEW
    We get a correct noun form with a partially evaluated integral.
    Tabulated result: 1/s^2*log(s^2+a^2)
 ******************************************************************************/
 
-specint(%e^(-s*t)*(2*t*log(a)+2/a*sin(a*t)-2*t*Ci(a*t)),t);
-(specint(-2*a*t*%e^-(s*t)*Ci(a*t),t)+%i/(s+%i*a)-%i/(s-%i*a)+2*a*log(a)/s^2)/a;
+ratsimp(specint(%e^(-s*t)*(2*t*log(a)+2/a*sin(a*t)-2*t*expintegral_ci(a*t)),t));
+1/s^2*log(s^2+a^2);
 
 /*****************************************************************************
    Problem 126: A&S: 29.3.108 OK New
@@ -1006,14 +1031,14 @@ radcan(specint(%e^(-s*t)*sin(k*t)/t,t));
    1/s*arctan(k/s);
 ******************************************************************************/
 
-specint(%e^(-s*t)*Si(k*t),t);
-specint(%e^(-s*t)*Si(k*t),t);
+specint(%e^(-s*t)*expintegral_si(k*t),t);
+1/s*atan(k/s);
 
 /*****************************************************************************
    Problem 130: A&S: 29.3.112 OK
 ******************************************************************************/
 
-factor(radcan(specint(%e^(-s*t)*1/(k*sqrt(%pi))*exp(-t^2/(4*k^2)),t)));
+factor(ratsimp(specint(%e^(-s*t)*1/(k*sqrt(%pi))*exp(-t^2/(4*k^2)),t)));
 -%e^(k^2*s^2)*(erf(k*s)-1);
 
 /*****************************************************************************
@@ -1038,16 +1063,16 @@ radcan(specint(%e^(-s*t)*sqrt(k)/(%pi*sqrt(t)*(t+k)),t));
    1/sqrt(s)*erfc(sqrt(k*s));
 ******************************************************************************/
 
-specint(%e^(-s*t)/sqrt(%pi*t)*unit_step(t-k),t);
-gamma_incomplete(1/2,k*s)/(sqrt(%pi)*sqrt(s));
+specint(%e^(-s*t)/sqrt(%pi*t)*unit_step(t-k),t),gamma_expand:true;
+1/sqrt(s)*erfc(sqrt(k)*sqrt(s));
 
 /*****************************************************************************
    Problem 134: A&S: 29.3.116 OK New
    1/sqrt(s)*%e^(k*s)*erfc(sqrt(k*s));
 ******************************************************************************/
 
-specint(%e^(-s*t)*1/sqrt(%pi*(t+k)),t);
-gamma_incomplete(1/2,k*s)*%e^(k*s)/(sqrt(%pi)*sqrt(s));
+specint(%e^(-s*t)*1/sqrt(%pi*(t+k)),t),gamma_expand:true;
+erfc(sqrt(k)*sqrt(s))*%e^(k*s)/sqrt(s);
 
 /*****************************************************************************
    Problem 135: A&S: 29.3.117 (OK noun form)
@@ -1056,13 +1081,14 @@ gamma_incomplete(1/2,k*s)*%e^(k*s)/(sqrt(%pi)*sqrt(s));
 ******************************************************************************/
 
 radcan(specint(%e^(-s*t)*sin(2*k*sqrt(t))/(%pi*t),t));
-specint(-%i*%e^(2*%i*k*sqrt(t)-s*t)/(2*%pi*t),t)+specint(%i*%e^(-s*t-2*%i*k*sqrt(t))/(2*%pi*t),t);
+'specint(-%i*%e^(2*%i*k*sqrt(t)-s*t)/(2*%pi*t),t)
+   +'specint(%i*%e^(-s*t-2*%i*k*sqrt(t))/(2*%pi*t),t);
 
 /*****************************************************************************
    Problem 136: A&S: 29.3.118 OK
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)*1/sqrt(%pi*t)*%e^(-2*k*sqrt(t)),t));
+ratsimp(specint(%e^(-s*t)*1/sqrt(%pi*t)*%e^(-2*k*sqrt(t)),t));
 -((erf(k/sqrt(s))-1)*%e^(k^2/s)/sqrt(s));
 
 /*****************************************************************************
@@ -1072,7 +1098,7 @@ radcan(specint(%e^(-s*t)*1/sqrt(%pi*t)*%e^(-2*k*sqrt(t)),t));
 ******************************************************************************/
 
 specint(%e^(-s*t)*1/sqrt(t^2-k^2)*unit_step(t-k),t);
-specint(%e^(-s*t)*1/sqrt(t^2-k^2)*unit_step(t-k),t);
+'specint(%e^(-s*t)*1/sqrt(t^2-k^2)*unit_step(t-k),t);
 
 /*****************************************************************************
    Problem 138: A&S: 29.3.120 OK New
@@ -1087,7 +1113,7 @@ bessel_k(0,k*sqrt(s));
    the tabulated result: 1/s*%e^(k*s)*bessel_k(1,k*s);
 ******************************************************************************/
 
-radcan(specint(%e^(-s*t)/k*sqrt(t*(t+2*k)),t));
+ratsimp(specint(%e^(-s*t)/k*sqrt(t*(t+2*k)),t));
 2*k*sqrt(%pi)*hypergeometric_u(3/2,3,(2*k*s));
 
 /*****************************************************************************
@@ -1104,7 +1130,7 @@ specint(%e^(-s*t)/k*%e^(-k^2/(4*t)),t);
 ******************************************************************************/
 
 specint(%e^(-s*t)*2/sqrt(%pi*t)*bessel_k(0,2*sqrt(2*k*t)),t);
-specint(2*bessel_k(0,2*sqrt(2)*sqrt(k)*sqrt(t))*%e^(-s*t)/(sqrt(%pi)*sqrt(t)),t);
+'specint(2*bessel_k(0,2*sqrt(2)*sqrt(k)*sqrt(t))*%e^(-s*t)/(sqrt(%pi)*sqrt(t)),t);
 
 /*****************************************************************************
    Problem 142: A&S: 29.3.124 OK New
@@ -1147,8 +1173,8 @@ gamma_incomplete(0,a*s)*%e^(a*s);
    (1/a-s*%e^(a*s)*E[1](a*s));
 ******************************************************************************/
 
-specint(%e^(-s*t)/(t+a)^2,t);
-gamma_incomplete(-1,a*s)*s*%e^(a*s);
+radcan(specint(%e^(-s*t)/(t+a)^2,t)),gamma_expand:true;
+(expintegral_ei(-a*s)*a*s*%e^(a*s)+1)/a;
 
 /*****************************************************************************
    Problem 146: A&S: 29.3.128 OK
@@ -1165,7 +1191,7 @@ gamma_incomplete(1-n,a*s)*s^(n-1)*%e^(a*s);
 ******************************************************************************/
 
 specint(%e^(-s*t)/(t^2+1),t);
-specint(1/(t^2*%e^(s*t)+%e^(s*t)),t);
+'specint(1/(t^2*%e^(s*t)+%e^(s*t)),t);
 
 /*****************************************************************************
    End of tests from A&S
@@ -1349,7 +1375,7 @@ block([besselexpand:true,exponentialize:true],radcan(specint(%e^(-s*t)/(t*sqrt(t
 sqrt(%pi/a)*%e^(-2*sqrt(a*s));
 
 /* Problem 174: No. 12 OK
-   We calculate for an integer, do prevent the conversion to bessel_i.
+   We calculate for an integer to prevent the conversion to bessel_i.
 */
 
 factor(specint(%e^(-s*t)*t^(n-1)*%e^(-a/t),t));
@@ -1388,7 +1414,7 @@ a/(s^2+a^2);
 */
 
 specint(%e^(-s*t)*(abs(sin(a*t))),t);
-specint(%e^(-s*t)*(abs(sin(a*t))),t);
+'specint(%e^(-s*t)*(abs(sin(a*t))),t);
 
 /* Problem 179: No. 3 (OK noun form New)
    The result of EqWorld includes a product:
@@ -1396,7 +1422,7 @@ specint(%e^(-s*t)*(abs(sin(a*t))),t);
 */
 
 specint(%e^(-s*t)*(sin(a*t))^(2*n),t);
-specint((-1)^n*(%e^(2*%i*a*t)-1)^(2*n)*%e^(-s*t-2*%i*a*n*t),t)/2^(2*n);
+'specint((-1)^n*(%e^(2*%i*a*t)-1)^(2*n)*%e^(-s*t-2*%i*a*n*t),t)/2^(2*n);
 
 /* Problem 180: No. 4 (OK noun form New) 
    The result of EqWorld includes a product:
@@ -1767,7 +1793,7 @@ radcan(specint(%e^(-s*t)*%e^(a*t)*erfc(sqrt(a*t)),t));
 */
 
 radcan(specint(%e^(-s*t)*%e^(a*t)*erfc(sqrt(a/t)/2),t));
-specint(erfc(sqrt(a)/(2*sqrt(t)))*%e^((a-s)*t),t);
+'specint(erfc(sqrt(a)/(2*sqrt(t)))*%e^((a-s)*t),t);
 
 /*******************************************************************************
 
@@ -1844,7 +1870,7 @@ a^(nu/2)*s^(-nu-1)*%e^(-a/s);
 */
 
 radcan(specint(%e^(-s*t)*bessel_j(0,a*sqrt(t^2+b*t)),t));
-specint(bessel_j(0,a*sqrt(t)*sqrt(t+b))*%e^(-s*t),t);
+'specint(bessel_j(0,a*sqrt(t)*sqrt(t+b))*%e^(-s*t),t);
 
 /* Problem 239: No. 10 OK */
 
