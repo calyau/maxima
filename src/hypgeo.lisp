@@ -2324,7 +2324,11 @@
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
-	    (return (fractest2 rest arg1 index1 nil 'kti))))
+            (cond ((zerop1 index1)
+                   ;; Special case for a zero index
+                   (return (lt-bessel_k0 rest arg1)))
+                  (t
+                   (return (fractest2 rest arg1 index1 nil 'kti))))))
      
      ;; Laplace transform of Parabolic Cylinder function
      (cond ((setq l (oned u))
@@ -3014,6 +3018,30 @@
                                     (list (add (sub v i1) 1))
                                     (div (sub *par* (div a 2))
                                          (add *par* (div a 2)))))))))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Algorithm 2.5: Laplace transfom of bessel_k(0,a*t)
+;;;
+;;; The general algorithm handles the Bessel K function for an order |v|<1.
+;;; but does not include the special case v=0. Return the Laplace transform:
+;;;
+;;;   bessel_k(0,a*t) --> acosh(s/a)/sqrt(s^2-a^2)
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun lt-bessel_k0 (rest arg)
+  (let* ((l (c*t^v rest))
+         (c (cdras 'c l))
+         (v (cdras 'v l))
+         (l (m2-a*t arg))
+         (a (cdras 'a l)))
+    (cond ((and l (zerop1 v))
+           (mul c
+                (simplify (list '(%acosh) (div *par* a)))
+                (inv (power (sub (mul *par* *par*) (mul a a))
+                            '((rat simp) 1 2)))))
+          (t
+            (setq *hyp-return-noun-flag* 'lt-bessel_k-failed)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -4243,7 +4271,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Algorithm 2.5: Laplace transform of a hypergeometric function
+;;; Algorithm 3: Laplace transform of a hypergeometric function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -4391,7 +4419,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Algorithm 2.6: SPECIAL HANDLING OF Bessel Y for an integer order
+;;; Algorithm 4: SPECIAL HANDLING OF Bessel Y for an integer order
 ;;;
 ;;; This is called for one Bessel Y function, when the order is an integer.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -4426,8 +4454,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Algorithm 2.6.1: Laplace transform of t^n*bessel_y(v,a*t)
-;;;                  v is an integer and n>=v
+;;; Algorithm 4.1: Laplace transform of t^n*bessel_y(v,a*t)
+;;;                v is an integer and n>=v
 ;;;
 ;;; Table of Integral Transforms
 ;;;
@@ -4486,7 +4514,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Algorithm 2.6.2: Laplace transform of t^n*bessel_y(v, a*sqrt(t))
+;;; Algorithm 4.2: Laplace transform of t^n*bessel_y(v, a*sqrt(t))
 ;;;
 ;;; Table of Integral Transforms
 ;;;
