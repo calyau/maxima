@@ -95,7 +95,7 @@ singular_solutions(eq, v, p, f, maxdepth) := block([cnd, free_vars, sol, vs, ps,
 equation_p(e) := block([inflag : true], not(mapatom(e)) and is(op(e) = "=")); 
 
 /* Return true if the operator of e is %if; otherwise return false. */
-if_p(e) := block([inflag : true], not(mapatom(e)) and is(op(e) = %if));
+if_p(e) := block([inflag : true], not(mapatom(e)) and is(op(e) = '%if));
 
 /* Return true if the operator of e is %union; otherwise return false. */
 %union_p(e) :=  block([inflag : true], not(mapatom(e)) and is(op(e) = '%union));
@@ -218,22 +218,22 @@ non_symbol_subst (e, v) := block([vars, listconstvars : false],
   [e, map('reverse, vars)]);
 
 (one_to_one_reduce[a,b] := false,
-  one_to_one_reduce['sin,'sin] : buildq([],lambda([a,b], 
-      (a - b - 2 * %pi * new_variable('integer)) * (a + b - 2 * %pi * new_variable('integer) + %pi))),
+  one_to_one_reduce['sin,'sin] : lambda([a,b], 
+      (a - b - 2 * %pi * new_variable('integer)) * (a + b - 2 * %pi * new_variable('integer) + %pi)),
 
-  one_to_one_reduce['cos,'cos] : buildq([],lambda([a,b], 
-      (a - b - 2 * %pi * new_variable('integer)) * (a + b - 2 * %pi * new_variable('integer)))),
+  one_to_one_reduce['cos,'cos] : lambda([a,b], 
+      (a - b - 2 * %pi * new_variable('integer)) * (a + b - 2 * %pi * new_variable('integer))),
   
-  one_to_one_reduce['cos,'sin] : buildq([],lambda([a,b], 
+  one_to_one_reduce['cos,'sin] : lambda([a,b], 
       (a - b - 2 * %pi * new_variable('integer) - %pi/2) *	
-      (a + b - 2 * %pi * new_variable('integer) - %pi/2))),
+      (a + b - 2 * %pi * new_variable('integer) - %pi/2)),
   
-  one_to_one_reduce['sin,'cos] : buildq([],lambda([b,a], 
+  one_to_one_reduce['sin,'cos] : lambda([b,a], 
       (a - b - 2 * %pi * new_variable('integer) - %pi/2) *	
-      (a + b - 2 * %pi * new_variable('integer) - %pi/2))),
+      (a + b - 2 * %pi * new_variable('integer) - %pi/2)),
 
-  one_to_one_reduce['%exp,'%exp] : buildq([], lambda([a,b],
-      a - b - 2 * %pi * %i * new_variable('integer))));
+  one_to_one_reduce['%exp,'%exp] : lambda([a,b],
+      a - b - 2 * %pi * %i * new_variable('integer)));
   
 one_to_one_crunch(e) := block([inflag : true, f, nv : set(), %exp, q, opl, opr],
   e : subst("^" = lambda([a,b], if a = %e then funmake('%exp, [b]) else a^b),e),
@@ -307,7 +307,7 @@ catch_easy_cases (e, vars) := block([inflag : true, ops, finv, fzero, p, q, a, b
         else if lfreeof(vars, a) and lfreeof(vars, b) and is(finv # false) then (
           ops : [],
           ok : false,
-          q : catch_easy_cases(first(args(pk))-finv(-b/a),vars),
+          q : catch_easy_cases(first(args(pk))-apply(finv, [-b/a]),vars),
           nv : union(nv, setdifference(setify(listofvars(q)), setify(listofvars(pk)))),
           e : first(q),
           cnds : adjoin(a # 0, second(q)))))),

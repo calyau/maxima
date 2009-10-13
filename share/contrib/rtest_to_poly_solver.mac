@@ -1,4 +1,4 @@
-(kill(all), %start : absolute_real_time(),algexact : true, load("to_poly_solver"), 0);
+(kill(all), %start : absolute_real_time(),algexact : true, load("to_poly_solver"),0);
 0$
 
 /* equation and variable coercion */
@@ -1097,7 +1097,7 @@ nicedummies(to_poly_solve(x^(2*a) + 2 * x^a + 1,x));
 nicedummies(to_poly_solve((x^a-1)/(x^2 + 1),x));
 %union([x = %e^(2*%i*%pi*%z0/a)])$
 
-/* From Axiom Developer mailing list Fri, 02 Oct 2009 13:29:29 -0600. There
+/* Two equations from Axiom Developer mailing list Fri, 02 Oct 2009 13:29:29 -0600. There
 are other equations in this thread that the to_poly_solver cannot do:
 
   solve([ tan(bt)=(a*r)/(s*(r-d)), x=100*cos(bt), y=d*sin(bt)],[x,y,bt]),
@@ -1106,6 +1106,9 @@ are other equations in this thread that the to_poly_solver cannot do:
 
 to_poly_solve([a=3+x,b=1-x,x=2],[x], 'parameters=[a,b]);
 %union(%if((a = 5) %and (b = - 1), [x = 2], %union()))$
+
+nicedummies(to_poly_solve(tan(a)=b,a, 'simpfuncs = ['ratsimp]));
+%union([a = -((%i*log(-((b-%i)/(b+%i)))-2*%pi*%z0)/2)])$
 
 nicedummies(to_poly_solve(sin(x) = sin(x - p[0]),x));
 %union([x = (2*%pi*%z0+p[0]-%pi)/2])$
