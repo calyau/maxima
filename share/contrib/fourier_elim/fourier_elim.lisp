@@ -261,6 +261,10 @@
      ;; If compare says a # b, return false.
      ((member sgn '("<" ">" "#") :test 'equal) nil)
           
+     ;; for complex numbers, look at the real and imaginary parts.
+     ((and (complex-number-p a '$numberp) (complex-number-p b '$numberp))
+      (take '(mand) (m= ($realpart a) ($realpart b)) (m= ($imagpart a) ($imagpart b))))
+
      ;; z^n = 0 --> false if n <= 0 else z = 0.
      ((and (op-equalp z 'mexpt) (mnump (third z)))
       (if (member (number-sign (third z)) '($neg $zero) :test #'eq) nil (m= (second z) 0)))
