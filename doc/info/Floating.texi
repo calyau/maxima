@@ -129,7 +129,7 @@ non-integral rational numbers and bigfloat numbers to be converted to
 floating point.
 
 @opencatbox
-@category{Numerical evaluation}
+@category{Numerical evaluation} @category{Evaluation flags}
 @closecatbox
 @end deffn
 

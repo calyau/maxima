@@ -493,7 +493,9 @@ evaluates them.  See also @code{noun}, @code{nounify}, @code{verb}, and @code{ve
 @c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
 @c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
 @c NEED TO MENTION THIS IS AN evflag
-@defvr {Special symbol} numer
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} numer
 @code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point. It causes
 variables in @code{expr} which have been given numerals to be replaced by
@@ -501,8 +503,23 @@ their values.  It also sets the @code{float} switch on.
 
 See also @code{%enumer}.
 
+Examples:
+
+@c ===beg===
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))];
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+@c ===end===
+@example
+(%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
+                                               1
+(%o1)                   [sqrt(2), sin(1), -----------]
+                                          sqrt(3) + 1
+(%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+(%o2)      [1.414213562373095, .8414709848078965, .3660254037844387]
+@end example
+
 @opencatbox
-@category{Numerical evaluation}
+@category{Numerical evaluation} @category{Evaluation flags}
 @closecatbox
 @end defvr
 
@@ -587,6 +604,30 @@ to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 
 @opencatbox
 @category{Declarations and inferences} @category{Operators}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Special symbol} pred
+As an argument in a call to @code{ev (@var{expr})}, @code{pred} causes 
+predicates (expressions which evaluate to @code{true} or @code{false}) to be 
+evaluated. See @code{ev}.
+
+Example:
+
+@c ===beg===
+@c 1<2;
+@c 1<2,pred;
+@c ===end===
+@example
+(%i1) 1<2;
+(%o1)                                1 < 2
+(%i2) 1<2,pred;
+(%o2)                                true
+@end example
+
+@opencatbox
+@category{Evaluation flags}
 @closecatbox
 @end defvr
 
@@ -697,6 +738,19 @@ the original answer.
 @category{Simplification functions}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} simp
+Default value: @code{true}
+
+@code{simp} enables simplification. This is the standard. @code{simp} is also 
+an evflag, which is recognized by the function @code{ev}. See @code{ev}.
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr
+
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @defvr {Option variable} simpsum

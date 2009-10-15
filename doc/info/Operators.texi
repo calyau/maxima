@@ -1859,19 +1859,6 @@ Examples:
 
 @end deffn
 
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c NOTE THAT eval IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
-@c BUT FOR SOME REASON eval DOES NOT HAVE THE evflag PROPERTY
-@deffn {Operator} eval
-As an argument in a call to @code{ev (@var{expr})},
-@code{eval} causes an extra evaluation of @var{expr}.
-See @code{ev}.
-
-@opencatbox
-@category{Evaluation flags}
-@closecatbox
-@end deffn
-
 @deffn {Function} evenp (@var{expr})
 Returns @code{true} if @var{expr} is an even integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
@@ -2178,20 +2165,6 @@ is @code{true} if @var{expr} is an odd integer.
 
 @opencatbox
 @category{Predicate functions}
-@closecatbox
-@end deffn
-
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@c NOTE THAT pred IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
-@c BUT FOR SOME REASON pred DOES NOT HAVE THE evflag PROPERTY
-@deffn {Operator} pred
-As an argument in a call to @code{ev (@var{expr})},
-@code{pred} causes predicates (expressions which evaluate to @code{true}
-or @code{false}) to be evaluated.
-See @code{ev}.
-
-@opencatbox
-@category{Evaluation flags}
 @closecatbox
 @end deffn
 

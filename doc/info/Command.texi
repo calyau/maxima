@@ -416,6 +416,10 @@ each element.
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causes only differentiations with respect to
 the indicated variables.
 @item
+@code{risch} causes integrals in @var{expr} to be evaluated using the Risch
+algorithm. See @code{risch}. The standard integration routine is invoked when
+using the special symbol @code{nouns}.
+@item
 @code{float} causes non-integral rational numbers to be converted to floating
 point.
 @item
@@ -469,9 +473,9 @@ substitution equations which are handled in sequence, left to right,
 and evaluation functions which are composed, e.g., @code{ev (@var{expr}, ratsimp, realpart)} is
 handled as @code{realpart (ratsimp (@var{expr}))}.
 
-The @code{simp}, @code{numer}, @code{float}, and @code{pred} switches may also be set locally in a
-block, or globally in Maxima so that they will
-remain in effect until being reset.
+The @code{simp}, @code{numer}, and @code{float} switches may also be set locally
+in a block, or globally in Maxima so that they will remain in effect until being
+reset.
 
 If @var{expr} is a canonical rational expression (CRE),
 then the expression returned by @code{ev} is also a CRE,
@@ -503,16 +507,20 @@ it are evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 For each instance of @code{eval} in the arguments, steps (3) and (4) are repeated.
 @end enumerate
 
-                     Examples
+Examples:
 
+@c ===beg===
+@c sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
+@c ev (%, numer, expand, diff, x=2, y=1);
+@c ===end===
 @example
 (%i1) sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
                                      d                    2
 (%o1)              cos(y) + sin(x) + -- (sin(w)) + (w + 1)
                                      dw
-(%i2) ev (%, sin, expand, diff, x=2, y=1);
-                          2
-(%o2)           cos(w) + w  + 2 w + cos(1) + 1.909297426825682
+(%i2) ev (%, numer, expand, diff, x=2, y=1);
+                               2
+(%o2)                cos(w) + w  + 2 w + 2.449599732693821
 @end example
 
 An alternate top level syntax has been provided for @code{ev}, whereby one
@@ -562,6 +570,38 @@ Solution
 @category{Evaluation}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Special symbol} eval
+As an argument in a call to @code{ev (@var{expr})}, @code{eval} causes an extra
+evaluation of @var{expr}. See @code{ev}.
+
+Example:
+
+@c ===beg===
+@c [a:b,b:c,c:d,d:e];
+@c a;
+@c ev(a);
+@c ev(a),eval;
+@c a,eval,eval;
+@c ===end===
+@example
+(%i1) [a:b,b:c,c:d,d:e];
+(%o1)                            [b, c, d, e]
+(%i2) a;
+(%o2)                                  b
+(%i3) ev(a);
+(%o3)                                  c
+(%i4) ev(a),eval;
+(%o4)                                  e
+(%i5) a,eval,eval;
+(%o5)                                  e
+@end example
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
+@end defvr
 
 @defvr {Property} evflag
 When a symbol @var{x} has the @code{evflag} property,

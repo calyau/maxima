@@ -348,7 +348,7 @@ Example:
 @c IT APPEARS THAT doallmxops IS CRUCIAL HERE.
 
 @opencatbox
-@category{Matrices}
+@category{Matrices} @category{Evaluation flags}
 @closecatbox
 
 @end defvr
