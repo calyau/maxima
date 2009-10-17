@@ -51,4 +51,5 @@
 	"rtest_elliptic"
 	"rtest_integrate"
 	"rtest_integrate_special"
+        "rtest_ask"
 	))

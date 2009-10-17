@@ -1698,8 +1698,10 @@ relational knowledge is contained in the default context GLOBAL.")
 		(prog2
 		    (setq e ($denom e))
 		    (or (eq (csign (sub e num)) '$pos)
-			(eq (csign (add2 e num)) '$neg))))
-	   t))))
+			(eq (csign (add2 e num)) '$neg)))) t)
+          ;; Assumes a simplified sqrt of a number is not an integer.
+          ((and (mexptp e) (mnump (second e)) (alike1 (third e) 1//2)) t)
+	  (t nil))))
 
 (defun intp (l)
   (every #'maxima-integerp (cdr l)))
