@@ -1185,14 +1185,45 @@ Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {System variable} values
 Initial value: @code{[]}
 
-@code{values} is a list of all bound user variables (not Maxima options or switches).
-The list comprises symbols bound by @code{:} , @code{::}, or @code{:=}.
+@code{values} is a list of all bound user variables (not Maxima options or
+switches). The list comprises symbols bound by @code{:}, or @code{::}.
+
+If the value of a variable is removed with the commands @code{kill}, 
+@code{remove}, or @code{remvalue} the variable is deleted from @code{values}.
+
+See @code{functions} for a list of user defined functions.
+
+Examples:
+
+First, @code{values} shows the symbols @code{a}, @code{b}, and @code{c}, but 
+not @code{d}, it is not bound to a value, and not the user function @code{f}.
+The values are removed from the variables. @code{values} is the empty list.
+
+@c ===beg===
+@c [a:99, b:: a-90, c:a-b, d, f(x):=x^2];
+@c values;
+@c [kill(a), remove(b,value), remvalue(c)];
+@c values;
+@c ===end===
+@example
+(%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
+                                                  2
+(%o1)                     [99, 9, 90, d, f(x) := x ]
+(%i2) values;
+(%o2)                              [a, b, c]
+(%i3) [kill(a), remove(b,value), remvalue(c)];
+(%o3)                          [done, done, [c]]
+(%i4) values;
+(%o4)                                 []
+@end example
 
 @opencatbox
 @category{Evaluation} @category{Global variables}
 @closecatbox
 
 @end defvr
+
