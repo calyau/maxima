@@ -1160,14 +1160,38 @@ See also @code{timer}.
 
 @end defvr
 
-@c NEEDS EXPANSION, EXAMPLES
+@c -----------------------------------------------------------------------------
 @deffn {Function} to_lisp ()
 Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
+
+Example:
+
+Define a function and enter the Lisp system under Maxima. The defintion is 
+inspected on the property list, then the function definition is extracted, 
+factored and stored in the variable $result. The variable can be used in Maxima 
+after returning to Maxima.
+
+@example
+(%i1) f(x):=x^2+x;
+                                         2
+(%o1)                           f(x) := x  + x
+(%i2) to_lisp();
+Type (to-maxima) to restart, ($quit) to quit Maxima.
+
+MAXIMA> (symbol-plist '$f)
+(MPROPS (NIL MEXPR ((LAMBDA) ((MLIST) $X) ((MPLUS) ((MEXPT) $X 2) $X))))
+MAXIMA> (setq $result ($factor (caddr (mget '$f 'mexpr))))
+((MTIMES SIMP FACTORED) $X ((MPLUS SIMP IRREDUCIBLE) 1 $X))
+MAXIMA> (to-maxima)
+Returning to Maxima
+(%o2)                                true
+(%i3) result;
+(%o3)                              x (x + 1)
+@end example
 
 @opencatbox
 @category{Console interaction}
 @closecatbox
-
 @end deffn
 
 @c -----------------------------------------------------------------------------
@@ -1209,6 +1233,5 @@ The values are removed from the variables. @code{values} is the empty list.
 @opencatbox
 @category{Evaluation} @category{Global variables}
 @closecatbox
-
 @end defvr
 
