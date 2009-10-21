@@ -1160,21 +1160,6 @@ See also @code{timer}.
 
 @end defvr
 
-@c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
-@c THIS REALLY SEEMS LIKE A HACK
-@deffn {Function} sstatus (@var{feature}, @var{package})
-Sets the status of @var{feature} in @var{package}.
-After @code{sstatus (@var{feature}, @var{package})} is executed,
-@code{status (@var{feature}, @var{package})} returns @code{true}.
-This can be useful for package writers, to
-keep track of what features they have loaded in.
-
-@opencatbox
-@category{Declarations and inferences}
-@closecatbox
-
-@end deffn
-
 @c NEEDS EXPANSION, EXAMPLES
 @deffn {Function} to_lisp ()
 Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
