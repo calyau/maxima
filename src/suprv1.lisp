@@ -1022,26 +1022,28 @@
 (defmspec $status (form)
   (setq form (cdr form))
   (let* ((keyword (car form))
-	 (feature (cadr form)))
-    (assert (symbolp keyword))
-    (assert (or (stringp feature) (symbolp feature)))
+         (feature (cadr form)))
+    (when (not (symbolp keyword))
+      (merror (intl:gettext "status: First argument must be a symbol.")))
+    (when (not (or (stringp feature) (symbolp feature)))
+      (merror
+        (intl:gettext "status: Second argument must be symbol or a string.")))
     (case keyword
       ($feature (cond ((null feature) (dollarify *features*))
-		      ((member (intern
-                         (if (stringp feature)
-                           (maybe-invert-string-case feature)
-                           (symbol-name (fullstrip1 feature)))
-                         'keyword)
-			     *features* :test #'equal) t)))
-      ($status '((mlist simp) $feature $status))
-      (t (merror "Unknown argument - `status':~%~M" keyword)))))
+                      ((member (intern (if (stringp feature)
+                                           (maybe-invert-string-case feature)
+                                           (symbol-name (fullstrip1 feature)))
+                                       'keyword)
+                               *features* :test #'equal) t)))
+      (t (merror (intl:gettext "status: Unknown argument: ~M~%") keyword)))))
 
-(defquote $sstatus (status-function item)
-  (cond ((equal status-function '$feature)
-	 (pushnew ($mkey item) *features*) t)
-	((equal status-function '$nofeature)
-	 (setq *features* (delete ($mkey item) *features*)) t)
-	(t (error "know only how to set and remove feature status"))))
+(defquote $sstatus (keyword item)
+  (cond ((equal keyword '$feature)
+         (pushnew ($mkey item) *features*) t)
+        ((equal keyword '$nofeature)
+         (setq *features* (delete ($mkey item) *features*)) t)
+        (t
+         (merror (intl:gettext "sstatus: Unknown argument: ~M~%") keyword))))
 
 (dolist (l '($sin $cos $tan $log $plog $sec $csc $cot $sinh $cosh
 	     $tanh $sech $csch $coth $asin $acos $atan $acot $acsc $asec $asinh
