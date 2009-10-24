@@ -772,24 +772,86 @@
       (setq vl (mod (- (* vl vl) 2) n)))
     uh))
 
-;;; Get smallest prime bigger than n.
-;;; Get greatest prime smaller than n.
-;;;
-;;; Passing one miller-rabin test is necessary for beeing prime.
+;;; first values of next_prime
+(defvar next_prime_ar '(0 2 3 5 5 7 7))
+
+;;; first values of prev_prime
+(defvar prev_prime_ar '(0 0 0 2 3 3 5 5 7 7 7 7))
+
+;;; gaps between numbers that are not multiples of 2,3,5,7
+(defvar deltaprimes_next
+  '(1 10 9 8 7 6 5 4 3 2 1 2 1 4 3 2 1 2 1 4 3 2 1 6 5 4 3 2 1 2
+    1 6 5 4 3 2 1 4 3 2 1 2 1 4 3 2 1 6 5 4 3 2 1 6 5 4 3 2 1 2 1
+    6 5 4 3 2 1 4 3 2 1 2 1 6 5 4 3 2 1 4 3 2 1 6 5 4 3 2 1 8 7 6
+    5 4 3 2 1 4 3 2 1 2 1 4 3 2 1 2 1 4 3 2 1 8 7 6 5 4 3 2 1 6 5
+    4 3 2 1 4 3 2 1 6 5 4 3 2 1 2 1 4 3 2 1 6 5 4 3 2 1 2 1 6 5 4
+    3 2 1 6 5 4 3 2 1 4 3 2 1 2 1 4 3 2 1 6 5 4 3 2 1 2 1 6 5 4 3
+    2 1 4 3 2 1 2 1 4 3 2 1 2 1 10 9 8 7 6 5 4 3 2 1 2))
+
+(defvar deltaprimes_prev
+  '(-1 -2 -1 -2 -3 -4 -5 -6 -7 -8 -9 -10 -1 -2 -1 -2 -3 -4 -1 -2
+    -1 -2 -3 -4 -1 -2 -3 -4 -5 -6 -1 -2 -1 -2 -3 -4 -5 -6 -1 -2 -3
+    -4 -1 -2 -1 -2 -3 -4 -1 -2 -3 -4 -5 -6 -1 -2 -3 -4 -5 -6 -1 -2
+    -1 -2 -3 -4 -5 -6 -1 -2 -3 -4 -1 -2 -1 -2 -3 -4 -5 -6 -1 -2 -3
+    -4 -1 -2 -3 -4 -5 -6 -1 -2 -3 -4 -5 -6 -7 -8 -1 -2 -3 -4 -1 -2
+    -1 -2 -3 -4 -1 -2 -1 -2 -3 -4 -1 -2 -3 -4 -5 -6 -7 -8 -1 -2 -3
+    -4 -5 -6 -1 -2 -3 -4 -1 -2 -3 -4 -5 -6 -1 -2 -1 -2 -3 -4 -1 -2
+    -3 -4 -5 -6 -1 -2 -1 -2 -3 -4 -5 -6 -1 -2 -3 -4 -5 -6 -1 -2 -3
+    -4 -1 -2 -1 -2 -3 -4 -1 -2 -3 -4 -5 -6 -1 -2 -1 -2 -3 -4 -5 -6
+    -1 -2 -3 -4 -1 -2 -1 -2 -3 -4 -1 -2 -1 -2 -3 -4 -5 -6 -7 -8 -9
+    -10))
+
+;;; product of primes in [59..2897]
+(defvar bigprimemultiple 6805598092615180737440235028147472981586738014295015027644884201753964648883910180850814465749532893719128055374719237806417537893593625321589379773764981786235326314555704406245399180879758341371676681401881451390195684863765326592983982964414393796690715805513465774520452671995927595391575142047776807977863591126244782181086547150369260177339043045082132788709080989495477932949788444703905327686499493503904132269141007955089790798876488207574072278769735865653223865994494346936718462923487228576140267887355548289736131557613540186975875834980017431190021254898173201223012171417763388931502928376549397638685218312217808199405294916194758171476025904777185780125034583816795375331627264462778001498062163759312245245590800878057927864359433868165604228946307536835897173733369926842890411102870160854438921809703357774373318146115616129588245083207631664167515206143659538759733110973189757163548882116479710800109577584318611988710048552969742803870964125788279451564113232340649434743105271873797620278073136369295820926294656549976175331880139356684249842712956493849288710258349886914201056170180503844749859595207139766052196982574437241716274871254310342540993006427120762049161745282399431514257565489)
 
 (defun $next_prime (n)
-  (unless (and (integerp n) (plusp n))
-    (merror (intl:gettext "next_prime: argument must be a positive integer; found: ~M") n))
-  (if (equal n 1)
-      2
-      (next-prime (1+ n) 1)))
+  (unless (and (integerp n))
+    (merror (intl:gettext "next_prime: argument must be an integer; found: ~M") n))
+  (cond ((< n 2) 2)
+	((<= n 6) (nth n next_prime_ar))
+	((< n 100000) (return-from $next_prime (next-prime-det n deltaprimes_next)))
+	(t (next-prime-prob n deltaprimes_next))))
 
 (defun $prev_prime (n)
   (unless (and (integerp n) (> n 2))
     (merror (intl:gettext "prev_prime: argument must be an integer greater than 2; found: ~M") n))
-  (if (= n 3)
-      2
-      (next-prime (1- n) -1)))
+  (if (<= n 11) (return-from $prev_prime (nth n prev_prime_ar)))
+  (if (< n 100000) (return-from $prev_prime (next-prime-det n deltaprimes_prev)))
+  (next-prime-prob n deltaprimes_prev))
+
+
+;;; Find next/prev prime using deterministic test that checks all
+;;; divisors < sqrt(n) and skipping all multiples of 2,3,5,7
+;;; preconditions: 11 < n < 9973*9973
+(defun next-prime-det (n deltaprimes)
+  (incf n (nth (mmod n 210) deltaprimes))
+  (loop while 1 do
+       (dolist (p *small-primes*)
+	 (if (= (mmod n p) 0) (return))
+	 (if (>= (* p p) n) (return-from next-prime-det n)))
+       (incf n (nth (mmod n 210) deltaprimes)))
+  n)
+
+;;; Find next/prev prime using probabilistic test and skipping al multiples of
+;;; 2,3,5,7 using deltaprimes list and calculating gcd's with product of
+;;; prime numbers
+(defun next-prime-prob (n deltaprimes)
+  ;; skip all multiples of 2,3,5,7
+  (incf n (nth (mmod n 210) deltaprimes))
+  (loop
+     (and
+      ;; gcd agaist product of primes in [11..31]
+      (= (gcd n 955049953) 1)
+      ;; gcd agaist product of primes in [37..53]
+      (= (gcd n 162490421) 1)
+      ;; gcd agaist product of primes in [59..2897]
+      (= (gcd n bigprimemultiple) 1)
+      (miller-rabin n)
+      (primep n) 
+      (return-from next-prime-prob n))
+     ;; skip all multiples of 2,3,5,7"
+     (incf n (nth (mmod n 210) deltaprimes))))
+
 
 (defun next-prime (n c)
   (when (evenp n) (incf n c))
@@ -811,6 +873,6 @@
 	(push n primes)
 	(setq start n)))
     ;; search for the rest of primes
-    (do ((n (next-prime start 1) (next-prime (1+ n) 1)))
+    (do ((n ($next_prime start) (next_prime (1+ n))))
 	((> n end) (cons '(mlist) (reverse primes)))
       (push n primes))))
