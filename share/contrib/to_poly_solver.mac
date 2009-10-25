@@ -27,8 +27,8 @@ if not(?functionp('poly_reduced_grobner)) then load("grobner");
 block([inflag : true], if not(member('fullratsubst, map('op, functions))) then load("lrats"));
 block([inflag : true], if not(member('lratsubst, map('op, functions))) then load("lrats"));
 if not(?functionp('opsubst)) then load("opsubst");
-if not(?functionp('unwind_protect)) then load("unwind_protect");
 block([inflag : true], if not(member('push, map('op, macros))) then load("basic"));
+if not(?functionp(simpfuncall)) then load("simplifying");
 load("to_poly_solve_extra");
 
 /* Return a lambda form that is the composition of the functions in the list l.
@@ -100,32 +100,38 @@ if_p(e) := block([inflag : true], not(mapatom(e)) and is(op(e) = '%if));
 /* Return true if the operator of e is %union; otherwise return false. */
 %union_p(e) :=  block([inflag : true], not(mapatom(e)) and is(op(e) = '%union));
 
-recip(e) := if listp(e) or equation_p(e) then map('recip, e)
-               else if is(equal(e,0))=true then 'infinity else 1/e;
-
 solution_subst(sol, v, f) := (
   if is(sol = %union()) then sol
   else if if_p(sol) then %if(first(sol), solution_subst(second(sol),v,f), solution_subst(third(sol),v,f))
   else v = apply(f, [subst(sol,v)]));
 
-safer_subst(l, e, [nretry]) := block([algebraic : true, r, cnd, error_save : errormsg],
-  if nretry = [] or first (nretry) >= 0
-  then
-   (nretry : if nretry = [] then 1 else first (nretry),
-    unwind_protect(
-      (errormsg : false,
-      if listp(e) or equation_p(e) or %union_p(e) then map(lambda([s], safer_subst(l,s,1)), e)
-      else if if_p(e) then (
-        cnd : simp_inequality(safer_subst(l, first(e), 1)),
-        if is(cnd = false) then safer_subst(l, third(e), 1)
-        else if is(cnd = true) then safer_subst(l, second(e), 1)
-        else map(lambda([s], safer_subst(l,s,1)), e))
-      else (
-        r : errcatch(subst(l,e)),
-        if emptyp(r) then recip(safer_subst(l, ratsimp(1/e), nretry - 1)) else first(r))),
-     errormsg : error_save))
-  else e);
+/* Substitute l into e. When l or e is a conditional, do the substitution in a way that
+   doesn't unnecessarily signal an error. Also, for substitutions such as safer_subst([x=y,y=z],x)
+   keep doing the substitution until the output stops changing. This can lead to an infinite loop,
+   but the solver should never give safer_subst such an infinite loop... */
 
+safer_subst(l, e) := block([algebraic : true, r, cnd, e1, e2],
+ if listp(e) or equation_p(e) or %union_p(e) then map(lambda([s], safer_subst(l,s)), e)
+ else if (e = %union()) or (e = true) or (e = false) or (l = %union()) then e
+ else if if_p(l) then (
+   cnd : simp_inequality(first(l)),
+   e1 : safer_subst(second(l),e),
+   e2 : safer_subst(third(l),e),
+   %union(%if(expunge_nonrelevant_cnds(cnd, e1), e1, %union()),
+          %if(expunge_nonrelevant_cnds(cnd, e2), e2, %union())))
+  else if if_p(e) then (
+   /* When e is a conditional, substitute and simplify the predicate before substituting into the rest of e.*/
+   cnd : simp_inequality(safer_subst(l, first(e))),
+   if is(cnd = false) then safer_subst(l, third(e))
+   else if is(cnd = true) then safer_subst(l, second(e))
+   else %if(cnd, safer_subst(l, second(e)), safer_subst(l, third(e))))
+ else (
+   r : errcatch(subst(l,e)),
+   while (r # [ ] and e # first(r)) do ( /* iterate to a fixed point */
+     e : first(r),
+     r : errcatch(subst(l,e))),
+   if emptyp(r) then error("Unable to substitute") else first(r)));
+  
 /* Solve equations that involve both x and conjugate(x). This is not a user-level function:
 
    e = list of equations to be solved,
@@ -383,7 +389,9 @@ lambertify(e,vars) := block([ee, eee, expargs : set(), cexpargs, nexpargs,
     
   [e, subs]);
 
-to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter_list,
+alias(%solve, to_poly_solve);
+
+simp_%solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter_list,
                 alias_solver : false, use_grobner, maxdepth, cntx : false, simpfuncs, ratprint : false],
  
   simpfuncs : assoc('simpfuncs, extraargs, []),
@@ -429,7 +437,9 @@ to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, paramet
     block([ee, nonvar_sub, sol],
       ee : non_symbol_subst(e,v),
       [ee, nonvar_sub] : ee,
-      safer_subst(reverse(nonvar_sub), to_poly_solve(ee, map('lhs, nonvar_sub), 'maxdepth = maxdepth))))
+      sol : %solve(ee, map('lhs, nonvar_sub), 'maxdepth = maxdepth),
+      if opequal_p(sol,'%solve) then sol else 
+      safer_subst(reverse(nonvar_sub), %solve(ee, map('lhs, nonvar_sub), 'maxdepth = maxdepth))))
   
   else if every(lambda([s], polynomialp(rhs(s)-lhs(s), v, lambda([w], lfreeof(v,w)))),e) then (
     block([freevars : setify(%rnum_list), simpfuncs_lambda : compose_functions(simpfuncs)],
@@ -439,19 +449,26 @@ to_poly_solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, paramet
       if listp(parameter_list) then (
         singular_solutions(e,v,parameter_list, simpfuncs, maxdepth))
       else (
-        sol : algsys(e, v),
-        freevars : setdifference(setify(%rnum_list), freevars),
-        for vk in freevars do (
-          sol : subst(vk = new_variable(solvedomain), sol)),
-        sol : map(lambda([s], map("=", map('lhs, s), map(simpfuncs_lambda, map('rhs, s)))), sol),
-        xreduce('%union, sol, %union()))))
+        sol : errcatch(algsys(e, v)),
+        if emptyp(sol) then (
+          simpfunmake('%solve, cons(e,cons(v,extraargs))))
+        else (
+          sol : first(sol),
+          freevars : setdifference(setify(%rnum_list), freevars),
+          for vk in freevars do (
+            sol : subst(vk = new_variable(solvedomain), sol)),
+          sol : map(lambda([s], map("=", map('lhs, s), map(simpfuncs_lambda, map('rhs, s)))), sol),
+          xreduce('%union, sol, %union())))))
   
   else if not(emptyp(vc)) then (
     conjugate_solver(e,v,vc,simpfuncs, maxdepth))
   
   else (
-    to_poly_solve_h(e,v, simpfuncs, maxdepth, use_grobner)));
-           
+    sol : errcatch(to_poly_solve_h(e,v, simpfuncs, maxdepth, use_grobner)),
+    if emptyp(sol) then simpfunmake('%solve, cons(e,(cons(v,extraargs)))) else first(sol)));
+    
+simplifying('%solve, 'simp_%solve);
+ 
 /* Try to solve the equation(s) e for the the variable(s) v. Both 'e' and 'v' can be
    a single Maxima expression, a list, or a set. Members of 'e' that aren't equations
    are (not of the form a = b) assumed to vanish. Each solution gets simplified by
@@ -559,6 +576,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
       xsol : to_poly_solve(eq, intersection(nonfree, set_of_variables(eq)),
         'simpfuncs = simpfuncs, 'maxdepth = maxdepth, 'use_grobner = grob),
       
+      if opequal_p(xsol, '%solve) then error("Unable to solve"),
       for xk in xsol do (
         xk : real_imagpart_to_conjugate(xk),
         xk : merge_solutions(sk,xk),

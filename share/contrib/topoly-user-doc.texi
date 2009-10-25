@@ -485,6 +485,83 @@ other Maxima functions.
 
 @end deffn
 
+@deffn {Function} fourier_elim ([@var{eq1}, @var{eq2}, ...], [@var{var1}, @var{var}, ...])
+
+Fourier elimination is the analog of Gauss elimination for linear inequations (equations or
+inequalities). The function call @code{fourier_elim([eq1,eq2,...], [var1,var2,...]} does 
+Fourier elimination on a list of linear inequations @code{[eq1,eq2,...]} with respect to the 
+variables @code{[var1,var2,...]}; for example
+@example
+ (%i7) fourier_elim([y-x < 5, x - y < 7, 10 < y],[x,y]);
+ (%o7) [y-5<x,x<y+7,10<y]
+
+ (%i8) fourier_elim([y-x < 5, x - y < 7, 10 < y],[y,x]);
+ (%o8) [max(10,x-7)<y,y<x+5,5<x]
+@end example
+Eliminating first with respect to @math{x} and second with respect to
+@math{y} yields lower and upper bounds for @math{x} that depend on
+@math{y}, and lower and upper bounds for @math{y} that are numbers.
+Eliminating in the other order gives @math{x} dependent lower and
+upper bounds for @math{y}, and numerical lower and upper bounds for
+@math{x}.
+
+When necessary, @code{fourier_elim} returns a @emph{disjunction} of lists of inequations:
+@example
+ (%i1) fourier_elim([x # 6],[x]);
+ (%o1) [x<6] or [6<x]
+@end example
+When the solution set is empty,  @code{fourier_elim} returns @code{emptyset},
+and when the solution set is all reals, @code{fourier_elim} returns @code{universalset};
+for example
+@example
+ (%i1) fourier_elim([x < 1, x > 1],[x]);
+ (%o1) emptyset
+
+ (%i2) fourier_elim([minf < x, x < inf],[x]);
+ (%o2) universalset
+@end example
+For nonlinear inequations, @code{fourier_elim} returns a (somewhat) 
+simplified list of inequations:
+@example
+ (%i1) fourier_elim([x^3 - 1 > 0],[x]);
+ (%o1) [1<x,x^2+x+1>0] or [x<1,-(x^2+x+1)>0]
+
+ (%i2) fourier_elim([cos(x) < 1/2],[x]);
+ (%o2) [1-2*cos(x)>0]
+@end example
+
+Instead of a list of inequations, the first argument to @code{fourier_elim}
+may be a logical disjunction or conjunction:
+@example
+ (%i1) fourier_elim((x + y < 5) and (x - y >8),[x,y]);
+ (%o1) [y+8<x,x<5-y,y<-3/2]
+
+ (%i2) fourier_elim(((x + y < 5) and x < 1) or  (x - y >8),[x,y]);
+ (%o2) [y+8<x] or [x<min(1,5-y)]
+@end example
+
+The function @code{fourier_elim} supports the inequation operators 
+@math{<, <=, >, >=, #}, and @math{=}.
+
+The Fourier elimination code has a preprocessor that converts some
+nonlinear inequations that involve the absolute value, minimum, and
+maximum functions into linear in equations. Additionally, the preprocessor
+handles some expressions that are the product or quotient of linear terms:
+@example
+ (%i9) fourier_elim([max(x,y) > 6, x # 8, abs(y-1) > 12],[x,y]);
+ (%o9) [6<x,x<8,y<-11] or [8<x,y<-11] or [x<8,13<y] or [x=y,13<y] or [8<x,x<y,13<y] or [y<x,13<y]
+
+ (%i10) fourier_elim([(x+6)/(x-9) <= 6],[x]);
+ (%o10) [x=12] or [12<x] or [x<9]
+
+ (%i11) fourier_elim([x^2 - 1 # 0],[x]);
+ (%o11) [-1<x,x<1] or [1<x] or [x<-1]
+@end example
+
+@b{To use} @file{load(fourier_elim)}
+
+@end deffn
+
 @deffn {Function} isreal_p (@var{e})
 
 The predicate @code{isreal_p} returns true when Maxima is able to
@@ -852,10 +929,15 @@ either be a single expression or a set or list of expressions;
 similarly, @math{l} can either be a single symbol or a list of set of
 symbols.
 
+The function @code{to_poly_solve} is a simplifying function. An alias
+for @code{to_poly_solve} is @code{%solve}. When @code{to_poly_solve}
+is unable to find a solution set, it returns a @code{%solve} noun form.
+
 The function @code{to_poly_solve} is able to solve some, but not all,
-equations involving rational powers, some nonrational powers,
-absolute values, trigonometric functions, and minimum and maximum.
-The support for inverse trigonometric functions is weak. some examples:
+equations involving rational powers, some nonrational powers, absolute
+values, trigonometric functions, and minimum and maximum. Also, some it can
+solve some equations that are solvable in in terms of the Lambert W function;
+some examples:
 
 @example
  (%i1) to_poly_solve(set(max(x,y) = 5, x+y = 2), set(x,y));
@@ -874,8 +956,12 @@ The support for inverse trigonometric functions is weak. some examples:
 
  (%o5) %union([x = (-sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z10/a)/2^(1/a)],
               [x = (sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z9/a)/2^(1/a)])
+
+ (%i6) to_poly_solve(x * exp(x) = a, x);
+ (%o6) %union([x = lambert_w(a)])
+
 @end example
-For  @emph{linear} inequalites, @code{to_poly_solve} does Fourier elimination:
+For  @emph{linear} inequalities, @code{to_poly_solve} does Fourier elimination:
 @example
  (%i1) to_poly_solve([x + y < 1, x - y >= 8],[x,y]);
  (%o1) %union([x = y+8,y < -7/2],[y+8 < x,x < 1-y,y < -7/2])
@@ -890,6 +976,15 @@ a solution to the equation; for example
 
  (%i2) to_poly_solve(sqrt(x) - x = 42,x);
  (%o2) %union([x=(sqrt(167)*%i-83)/2],[x=-(sqrt(167)*%i+83)/2])
+@end example
+When @math{to_poly_solve} is unable to find the solution set, it returns a
+noun form; for example,
+@example
+(%i6) to_poly_solve(a*x^9 + x^2 - 1,x);
+(%o6) %solve([a*x^9+x^2-1],[x])
+
+(%i7) subst(a=0,%);
+(%o7) %union([x = -1],[x = 1])
 @end example
 
 Each optional argument to @math{to_poly_solve} must be an equation;

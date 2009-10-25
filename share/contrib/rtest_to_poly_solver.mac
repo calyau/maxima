@@ -415,6 +415,7 @@ to_poly_solve(2*sqrt(x) + 3*x^(1/4) - 2 = 0, x);
 to_poly_solve(sqrt(log(x)) = log(sqrt(x)), x);
 %union([x=1] , [x=%e^4])$
 
+
 /* pargs isn't strong enough to simplify this, I think. For now, let me leave 
 to_poly_solve(log(acos(asin(x^(2/3) - b) - 1)) + 2 = 0, x);
 %union([x = -(b + sin(1 + cos(1/e^2)))^(3/2)] , [x = (b + sin(1 + cos(1/e^2)))^(3/2)])$
@@ -428,6 +429,26 @@ to_poly_solve(abs(2*x + 5) = abs(x - 2), x);
 
 to_poly_solve(1 - abs(x) = max(-x - 2, x - 2), x);
 %union([x=-3/2] , [x=3/2])$
+
+nicedummies(to_poly_solve( (x + 1)*(sin(x)^2 + 1)^2*cos(3*x)^3 = 0,x ));
+%union([x = -1],[x = 2*%pi*%z0-%i*(log(sqrt(2)+1)+%i*%pi)],
+             [x = 2*%pi*%z1-%i*(log(sqrt(2)-1)+%i*%pi)],
+             [x = 2*%pi*%z2-%i*log(sqrt(2)-1)],
+             [x = 2*%pi*%z3-%i*log(sqrt(2)+1)],[x = 2*%pi*%z4-%pi/2],
+             [x = 2*%pi*%z5+%pi/2],[x = 2*%pi*%z6+5*%pi/6],
+             [x = 2*%pi*%z7-%pi/6],[x = 2*%pi*%z8-5*%pi/6],
+             [x = 2*%pi*%z9+%pi/6])$
+
+nicedummies(to_poly_solve( %e^z = 1,z));
+%union([z = 2*%i*%pi*%z0])$
+
+nicedummies(to_poly_solve( tan(x) = 1,x));
+%union([x = -((-2*%pi*%z0-%pi/2)/2)])$
+
+/* Oops! to_poly_solve( sin(x) = tan(x),x); */
+
+to_poly_solve( sqrt(log(x)) = log(sqrt(x)),x);
+%union([x = 1],[x = %e^4])$
 
 /* conjugate solver */
 
@@ -1131,13 +1152,11 @@ nicedummies(to_poly_solve(cos(x^2-1)=0,x, 'simpfuncs = ['trigreduce]));
 to_poly_solve(log(x-sqrt(x-1)) = 0,x);
 %union([x = 1],[x = 2])$
 
-to_poly_solve(log(x-sqrt(x-1)) = 2009,x);
-%union([x = -((sqrt(4*%e^2009-3)-2*%e^2009-1)/2)],
-              [x = (sqrt(4*%e^2009-3)+2*%e^2009+1)/2])$
-
+to_poly_solve(log(x-sqrt(x-1)) = log(2009),x);
+%union([x = (sqrt(29)*sqrt(277)+4019)/2])$
 
 /* clean up */
-(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 125));
+(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 135));
 true$
 
 (reset(algexact), forget(z,complex), remvalue(sol,%time,eq,eqn1,eqn2,eqn3),0);

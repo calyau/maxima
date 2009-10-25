@@ -224,5 +224,5 @@
       (if (mequalp lk) 
 	  (push (cons (cadr lk) (caddr lk)) alist)
 	(merror "Each substitution must be an equation; found" lk)))
-    (setq e (resimplify (sublis alist ($ratdisrep e) :test #'like))) ;;or alike?
+    (setq e (resimplify (sublis alist ($ratdisrep e) :test #'alike))) ;;or like?
     (if is-a-rat ($rat e) e)))

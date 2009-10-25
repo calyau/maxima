@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 9 October 2009 -->
+<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 25 October 2009 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -688,8 +688,110 @@ other Maxima functions.
 
 <P>
 <DL>
-<DT><U>Function:</U> <B>isreal_p</B> <I>(<VAR>e</VAR>)</I>
+<DT><U>Function:</U> <B>fourier_elim</B> <I>([<VAR>eq1</VAR>, <VAR>eq2</VAR>, ...], [<VAR>var1</VAR>, <VAR>var</VAR>, ...])</I>
 <DD><A NAME="IDX10"></A>
+
+
+<P>
+Fourier elimination is the analog of Gauss elimination for linear inequations (equations or
+inequalities). The function call <CODE>fourier_elim([eq1,eq2,...], [var1,var2,...]</CODE> does 
+Fourier elimination on a list of linear inequations <CODE>[eq1,eq2,...]</CODE> with respect to the 
+variables <CODE>[var1,var2,...]</CODE>; for example
+
+<PRE>
+ (%i7) fourier_elim([y-x &#60; 5, x - y &#60; 7, 10 &#60; y],[x,y]);
+ (%o7) [y-5&#60;x,x&#60;y+7,10&#60;y]
+
+ (%i8) fourier_elim([y-x &#60; 5, x - y &#60; 7, 10 &#60; y],[y,x]);
+ (%o8) [max(10,x-7)&#60;y,y&#60;x+5,5&#60;x]
+</PRE>
+
+<P>
+Eliminating first with respect to <EM>x</EM> and second with respect to
+<EM>y</EM> yields lower and upper bounds for <EM>x</EM> that depend on
+<EM>y</EM>, and lower and upper bounds for <EM>y</EM> that are numbers.
+Eliminating in the other order gives <EM>x</EM> dependent lower and
+upper bounds for <EM>y</EM>, and numerical lower and upper bounds for
+<EM>x</EM>.
+
+
+<P>
+When necessary, <CODE>fourier_elim</CODE> returns a <EM>disjunction</EM> of lists of inequations:
+
+<PRE>
+ (%i1) fourier_elim([x # 6],[x]);
+ (%o1) [x&#60;6] or [6&#60;x]
+</PRE>
+
+<P>
+When the solution set is empty,  <CODE>fourier_elim</CODE> returns <CODE>emptyset</CODE>,
+and when the solution set is all reals, <CODE>fourier_elim</CODE> returns <CODE>universalset</CODE>;
+for example
+
+<PRE>
+ (%i1) fourier_elim([x &#60; 1, x &#62; 1],[x]);
+ (%o1) emptyset
+
+ (%i2) fourier_elim([minf &#60; x, x &#60; inf],[x]);
+ (%o2) universalset
+</PRE>
+
+<P>
+For nonlinear inequations, <CODE>fourier_elim</CODE> returns a (somewhat) 
+simplified list of inequations:
+
+<PRE>
+ (%i1) fourier_elim([x^3 - 1 &#62; 0],[x]);
+ (%o1) [1&#60;x,x^2+x+1&#62;0] or [x&#60;1,-(x^2+x+1)&#62;0]
+
+ (%i2) fourier_elim([cos(x) &#60; 1/2],[x]);
+ (%o2) [1-2*cos(x)&#62;0]
+</PRE>
+
+<P>
+Instead of a list of inequations, the first argument to <CODE>fourier_elim</CODE>
+may be a logical disjunction or conjunction:
+
+<PRE>
+ (%i1) fourier_elim((x + y &#60; 5) and (x - y &#62;8),[x,y]);
+ (%o1) [y+8&#60;x,x&#60;5-y,y&#60;-3/2]
+
+ (%i2) fourier_elim(((x + y &#60; 5) and x &#60; 1) or  (x - y &#62;8),[x,y]);
+ (%o2) [y+8&#60;x] or [x&#60;min(1,5-y)]
+</PRE>
+
+<P>
+The function <CODE>fourier_elim</CODE> supports the inequation operators 
+<EM>&#60;, &#60;=, &#62;, &#62;=, #</EM>, and <EM>=</EM>.
+
+
+<P>
+The Fourier elimination code has a preprocessor that converts some
+nonlinear inequations that involve the absolute value, minimum, and
+maximum functions into linear in equations. Additionally, the preprocessor
+handles some expressions that are the product or quotient of linear terms:
+
+<PRE>
+ (%i9) fourier_elim([max(x,y) &#62; 6, x # 8, abs(y-1) &#62; 12],[x,y]);
+ (%o9) [6&#60;x,x&#60;8,y&#60;-11] or [8&#60;x,y&#60;-11] or [x&#60;8,13&#60;y] or [x=y,13&#60;y] or [8&#60;x,x&#60;y,13&#60;y] or [y&#60;x,13&#60;y]
+
+ (%i10) fourier_elim([(x+6)/(x-9) &#60;= 6],[x]);
+ (%o10) [x=12] or [12&#60;x] or [x&#60;9]
+
+ (%i11) fourier_elim([x^2 - 1 # 0],[x]);
+ (%o11) [-1&#60;x,x&#60;1] or [1&#60;x] or [x&#60;-1]
+</PRE>
+
+<P>
+<B>To use</B> <TT>`load(fourier_elim)'</TT>
+
+
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>isreal_p</B> <I>(<VAR>e</VAR>)</I>
+<DD><A NAME="IDX11"></A>
 
 
 <P>
@@ -752,7 +854,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>new_variable</B> <I>(type)</I>
-<DD><A NAME="IDX11"></A>
+<DD><A NAME="IDX12"></A>
 
 
 <P>
@@ -819,7 +921,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>nicedummies</B>
-<DD><A NAME="IDX12"></A>
+<DD><A NAME="IDX13"></A>
 
 
 <P>
@@ -858,7 +960,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>parg</B> <I>(<VAR>x</VAR>)</I>
-<DD><A NAME="IDX13"></A>
+<DD><A NAME="IDX14"></A>
 
 
 <P>
@@ -922,7 +1024,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>real_imagpart_to_conjugate</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX14"></A>
+<DD><A NAME="IDX15"></A>
 
 
 <P>
@@ -953,7 +1055,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>rectform_log_if_constant</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX15"></A>
+<DD><A NAME="IDX16"></A>
 
 
 <P>
@@ -988,7 +1090,7 @@ might be merged into other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>simp_inequality</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX16"></A>
+<DD><A NAME="IDX17"></A>
 
 
 <P>
@@ -1030,7 +1132,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>standardize_inverse_trig</B> <I>(<VAR>e</VAR>)</I>
-<DD><A NAME="IDX17"></A>
+<DD><A NAME="IDX18"></A>
 
 
 <P>
@@ -1054,7 +1156,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>subst_parallel</B> <I>(<VAR>l</VAR>, <VAR>e</VAR>)</I>
-<DD><A NAME="IDX18"></A>
+<DD><A NAME="IDX19"></A>
 
 
 <P>
@@ -1130,7 +1232,7 @@ functionality might be merged into other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>to_poly</B> <I>(<VAR>e</VAR>, <VAR>l</VAR>)</I>
-<DD><A NAME="IDX19"></A>
+<DD><A NAME="IDX20"></A>
 
 
 <P>
@@ -1207,7 +1309,7 @@ other Maxima functions.
 <P>
 <DL>
 <DT><U>Function:</U> <B>to_poly_solve</B> <I>(<VAR>e</VAR>, <VAR>l</VAR>, [options])</I>
-<DD><A NAME="IDX20"></A>
+<DD><A NAME="IDX21"></A>
 
 
 <P>
@@ -1219,10 +1321,17 @@ symbols.
 
 
 <P>
+The function <CODE>to_poly_solve</CODE> is a simplifying function. An alias
+for <CODE>to_poly_solve</CODE> is <CODE>%solve</CODE>. When <CODE>to_poly_solve</CODE>
+is unable to find a solution set, it returns a <CODE>%solve</CODE> noun form.
+
+
+<P>
 The function <CODE>to_poly_solve</CODE> is able to solve some, but not all,
-equations involving rational powers, some nonrational powers,
-absolute values, trigonometric functions, and minimum and maximum.
-The support for inverse trigonometric functions is weak. some examples:
+equations involving rational powers, some nonrational powers, absolute
+values, trigonometric functions, and minimum and maximum. Also, some it can
+solve some equations that are solvable in in terms of the Lambert W function;
+some examples:
 
 
 
@@ -1243,10 +1352,14 @@ The support for inverse trigonometric functions is weak. some examples:
 
  (%o5) %union([x = (-sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z10/a)/2^(1/a)],
               [x = (sqrt(3)*%i-1)^(1/a)*%e^(2*%i*%pi*%z9/a)/2^(1/a)])
+
+ (%i6) to_poly_solve(x * exp(x) = a, x);
+ (%o6) %union([x = lambert_w(a)])
+
 </PRE>
 
 <P>
-For  <EM>linear</EM> inequalites, <CODE>to_poly_solve</CODE> does Fourier elimination:
+For  <EM>linear</EM> inequalities, <CODE>to_poly_solve</CODE> does Fourier elimination:
 
 <PRE>
  (%i1) to_poly_solve([x + y &#60; 1, x - y &#62;= 8],[x,y]);
@@ -1264,6 +1377,18 @@ a solution to the equation; for example
 
  (%i2) to_poly_solve(sqrt(x) - x = 42,x);
  (%o2) %union([x=(sqrt(167)*%i-83)/2],[x=-(sqrt(167)*%i+83)/2])
+</PRE>
+
+<P>
+When <EM>to_poly_solve</EM> is unable to find the solution set, it returns a
+noun form; for example,
+
+<PRE>
+(%i6) to_poly_solve(a*x^9 + x^2 - 1,x);
+(%o6) %solve([a*x^9+x^2-1],[x])
+
+(%i7) subst(a=0,%);
+(%o7) %union([x = -1],[x = 1])
 </PRE>
 
 <P>
@@ -1429,7 +1554,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 </DL>
 <P><HR><P>
-This document was generated on 9 October 2009 using
+This document was generated on 25 October 2009 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>
