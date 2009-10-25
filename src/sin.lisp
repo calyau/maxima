@@ -146,8 +146,11 @@
 		 (t (return nil)))))))
 
       ;; We have a special function with an integral on the property list.
-
+      ;; After the integral property was defined for the trig functions,
+      ;; in rev 1.52, need to exclude trig functions here.
       ((and (not (atom (car expres)))
+            (not (optrig (caar expres)))
+	    (not (eq (caar expres) 'mexpt))
 	    (get (caar expres) 'integral))
        (when *debug-integrate*
 	 (format t "~&INTFORM with Integral on property list~%"))
@@ -573,18 +576,11 @@
 	 ;; ((MQAPPLY SIMP) (($PSI SIMP ARRAY) 1) $X)
 	 ;; => (($PSI) 1 $X)
 	 (integrallookups `((,(caaadr exp)) ,@(cdadr exp) ,@(cddr exp))))
-	((eq (caar exp) '%log)
-	 (maxima-substitute (cadr exp)
-			    'x
-			    '((mplus)
-			      ((mtimes) x ((%log) x))
-			      ((mtimes) -1 x))))
 
-	;; The integral of the Log function is directly implemented in the
-	;; algorithm. This can be generalized to a lookup algorithm for any
-	;; special function. The integral is put on the property list.
-	;; In a first step we support functions with one and two arguments.
-
+	;; Lookup algorithm for integral of a special function. 
+	;; The integral form is put on the property list, and can be a 
+	;; lisp function of the args.  If the form is nil, or evaluates 
+        ;; to nil, then return noun form unevaluated.
 	((and (not (atom (car exp)))
 	    (setq form (get (caar exp) 'integral))
 	    (setq dummy-args (car form))
@@ -605,58 +601,42 @@
 
 	((eq (caar exp) 'mplus)
 	 (muln (list '((rat simp) 1 2) exp exp) nil))
-	((eq (caar exp) 'mexpt)
-	 (cond ((freevar (cadr exp))
-		(simplifya (maxima-substitute exp
-					      'a
-					      (maxima-substitute (cadr exp)
-								 'b
-								 '((mtimes)
-								   a
-								   ((mexpt)
-								    ((%log)
-								     b)
-								    -1))))
-			   nil))
-	       ((or (equal (caddr exp) -1)
-		    (and (not (mnump (caddr exp)))
-			 (freeof '$%i (caddr exp))
-			 (eq (asksign (power (add (caddr exp) 1) 2)) '$zero)))
-		(maxima-substitute (cadr exp) 'x (logmabs 'x)))
-	       (t (maxima-substitute (add (caddr exp) 1)
-				     'n
-				     (maxima-substitute (cadr exp)
-							'x
-							'((mtimes)
-							  ((mexpt) n -1)
-							  ((mexpt) x n)))))))
-	(t (maxima-substitute (cadr exp)
-			      'x
-			      (cdr (sassq (caar exp)
-					  '((%sin (mtimes) -1 ((%cos) x))
-					    (%cos (%sin) x)
-					    (%tan (%log)
-					     ((%sec) x))
-					    (%sec (%log) ((mplus) ((%sec) x) ((%tan) x)))
-					    (%cot (%log)
-					     ((%sin) x))
-					    (%sinh (%cosh) x)
-					    (%cosh (%sinh) x)
-					    (%tanh (%log)
-					     ((%cosh) x))
-					    (%coth (%log) ((%sinh) x))
-					    (%sech (%atan)
-					     ((%sinh) x))
-					    (%csch
-					     (%log) ((%tanh) ((mtimes) ((rat simp) 1 2) x)))
-					    (%csc (mtimes)
-					     -1
-					     ((%log)
-					      ((mplus)
-					       ((%csc) x)
-					       ((%cot)
-						x)))))
-					  'nill)))))))
+
+	(t nil))))
+
+;; Integrals of elementary special functions
+;; This may not be the best place for this definition, but it is close 
+;; to the original code.
+(defprop %log  ((x) ((mplus) ((mtimes) x ((%log) x)) ((mtimes) -1 x))) integral)
+(defprop %sin  ((x) ((mtimes) -1 ((%cos) x))) integral)
+(defprop %cos  ((x) ((%sin) x)) integral)
+(defprop %tan  ((x) ((%log) ((%sec) x))) integral)
+(defprop %csc  ((x) ((mtimes) -1 ((%log) ((mplus) ((%csc) x) ((%cot) x))))) integral)
+(defprop %sec  ((x) ((%log) ((mplus) ((%sec) x) ((%tan) x)))) integral)
+(defprop %cot  ((x) ((%log) ((%sin) x))) integral)
+(defprop %sinh ((x) ((%cosh) x))  integral)
+(defprop %cosh ((x) ((%sinh) x)) integral)
+(defprop %tanh ((x) ((%log) ((%cosh) x))) integral)
+(defprop %coth ((x) ((%log) ((%sinh) x))) integral)
+(defprop %sech ((x) ((%atan) ((%sinh)x))) integral)
+(defprop %csch ((x) ((%log) ((%tanh) ((mtimes) ((rat simp) 1 2) x)))) integral)
+
+;; Integral of a^b == ((mexpt) a b)
+(putprop 'mexpt
+  `((a b)
+  ;;integrate(a^b,a);
+  ,(lambda (a b)
+    (cond
+      ((or (equal b -1)
+	   (and (not (mnump b))
+		(freeof '$%i b)
+		(eq (asksign (power (add b 1) 2)) '$zero)))
+         (logmabs a))
+      (t
+       '((mtimes) ((mexpt) a ((mplus) b 1)) ((mexpt) ((mplus) b 1) -1)))))
+  ;; integrate(a^b,b);
+  ((mtimes) ((mexpt) a b) ((mexpt) ((%log) a) -1)))
+  'integral)
 
 (defun rat10 (ex)
   (cond ((freevar ex) t)
@@ -1613,7 +1593,14 @@
 ;;; partial-integration is an extension of the algorithm of ratlog to support
 ;;; the technique of partial integration for more cases. The integrand
 ;;; is like g(x)*f'(x) and the result is g(x)*f(x)-integrate(g'(x)*f(x),x).
-
+;;;
+;;; Adding integrals properties for elementary functions led to infinite recursion 
+;;; with integrate(z*expintegral_shi(z),z). This was resolved by limiting the 
+;;; recursion depth. *integrator-level* needs to be at least 3 to solve 
+;;;  o  integrate(expintegral_ei(1/sqrt(x)),x)
+;;;  o  integrate(sqrt(z)*expintegral_li(z),z)
+;;; while a value of 4 causes testsuite regressions with 
+;;;  o  integrate(z*expintegral_shi(z),z)
 (defun partial-integration (form var)
   (let ((g  (cdr (assoc 'a form)))   ; part g(x)
 	(df (cdr (assoc 'c form)))   ; part f'(x)
@@ -1621,7 +1608,8 @@
     (setq f (integrator df var))     ; integrate f'(x) wrt var
     (cond
       ((or (isinop f '%integrate)    ; no result or
-	   (isinop f (caar g)))      ; g in result
+	   (isinop f (caar g))       ; g in result
+	   (> *integrator-level* 3))
        nil)                          ; we return nil
       (t
        ;; Build the result: g(x)*f(x)-integrate(g'(x)*f(x))
