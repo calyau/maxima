@@ -52,7 +52,7 @@
 (setf (get '%sec 'commutes-with-conjugate) t)
 (setf (get '%csc 'commutes-with-conjugate) t)
 (setf (get '%cot 'commutes-with-conjugate) t)
-(setf (get '%atan2 'commutes-with-conjugate) t)
+(setf (get '$atan2 'commutes-with-conjugate) t)
 
 (setf (get '%jacobi_cn 'commutes-with-conjugate) t)
 (setf (get '%jacobi_sn 'commutes-with-conjugate) t)
