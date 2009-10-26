@@ -416,5 +416,10 @@ log(%pi - %i * y)$
 conjugate(atan(x));
 atan(x);
 
+/* Bug ID: 2886564 - conjugate(atan2(y,x)) not simplified */
+
+conjugate(atan2(y,x));
+atan2(y,x);
+
 kill (values);
 done;
