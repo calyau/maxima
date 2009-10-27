@@ -688,14 +688,6 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize %ei(w) (new is expintegral_ei)
-(defun oneei (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)(u nonzerp)(($%ei)(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
 ;; Recognize expintegral_e(v,w)
 (defun oneexpintegral_e (exp)
   (m2 exp
@@ -2658,21 +2650,12 @@
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 nil nil 'erfc))))
-     
-     ;; Laplace transform of %ei, the Exponential Integral Ei.
-     ;; This is the "old" symbol for the function. The integral is wrong, 
-     ;; because of a missing phase term in the transformation of %ei to
-     ;; gamma_incomplete.
-     (cond ((setq l (oneei u))
-	    (setq arg1 (cdras 'w l)
-		  rest (cdras 'u l))
-	    (return (fractest2 rest arg1 nil nil 'ei))))
-     
+       
      ;; Laplace transform of expintegral_ei.
-     ;; The new function. Maxima uses the build in transformation to the
-     ;; gamma_incomplete function and simplifies the log functions of the
-     ;; transformation. We do not use the dispatch mechanism of fractest2,
-     ;; but call sendexec directly with the transformed function.
+     ;; Maxima uses the build in transformation to the gamma_incomplete 
+     ;; function and simplifies the log functions of the transformation. We do 
+     ;; not use the dispatch mechanism of fractest2, but call sendexec directly 
+     ;; with the transformed function.
      (cond ((setq l (oneexpintegral_ei u))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
@@ -3128,7 +3111,6 @@
 	     (eq flg 'gamma_incomplete)
 	     (eq flg 'htjory)
 	     (eq flg 'erfc)
-	     (eq flg 'ei)
 	     (eq flg 'slommel)
 	     (eq flg 'ytj))
          ;; The index is a rational number or flg has the value of one of the
@@ -3148,8 +3130,6 @@
 			  (kti i1 a1))
 			 ((eq flg 'erfc)
 			  (erfctd a1))
-			 ((eq flg 'ei)
-			  (eitgammaincomplete a1))
 			 ((eq flg 'slommel)
 			  (slommeltjandy i1 i11 a1)))))
 	(t
@@ -3323,21 +3303,6 @@
 	  (power '$%pi (mul* -1 inv2))
 	  (power '$%e (mul* -1 inv2 x x))
 	  (parcyl (mul* (power 2 inv2) x) -1))))
-
-;; Exponential integral Ei in terms of the incomplete gamma function.
-;;
-;; See Table of Integral Transforms, p. 386:
-;;
-;; -Ei(-x) = E1(x) = integrate(exp(-t)/t,t,x,inf)
-;;
-;;         = gamma_incomplete(0,x)
-;;
-;; In the transformation to the incomplete gamma function a phase term is
-;; missing. See e.g. A&S 5.1.7: -Ei(x)-%i*%pi=E1(-x)=gamma_incomplete(0,x)
-;; Therefore the result with this transformation is wrong. (DK)
-
-(defun eitgammaincomplete (x)
-  (mul -1 ($gamma_incomplete 0 (mul -1 x))))
 
 ;; Lommel S function in terms of Bessel J and Bessel Y.
 ;; Luke gives
