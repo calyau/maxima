@@ -523,9 +523,10 @@ When one changes, the other does too."
 	    (combine-path *maxima-infodir* subdir-bit "maxima-index.lisp")))))
 
 (defun get-dirs (path)
-  #+(or :clisp :sbcl :ecl)
-  (directory (concatenate 'string (namestring path) "/*/"))
-  #-(or :clisp :sbcl :ecl)
+  #+(or :clisp :sbcl :ecl :openmcl)
+  (directory (concatenate 'string (namestring path) "/*/")
+	     #+openmcl :directories #+openmcl t)
+  #-(or :clisp :sbcl :ecl :openmcl)
   (directory (concatenate 'string (namestring path) "/*")))
 
 (defun unix-like-basename (path)
