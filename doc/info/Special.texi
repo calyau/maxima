@@ -36,8 +36,17 @@ slommel
 %m[u,k] (z)                    Whittaker function, 1st kind
 %w[u,k] (z)                    Whittaker function, 2nd kind
 erfc (z)                       Complement of the erf function
-ei (z)                         Exponential integral (?)
-kelliptic (z)                  Complete elliptic integral of the first
+
+expintegral_e (v,z)            Exponential integral E
+expintegral_e1 (z)             Exponential integral E1
+expintegral_ei (z)             Exponential integral Ei
+expintegral_li (z)             Logarithmic integral Li
+expintegral_si (z)             Exponential integral Si
+expintegral_ci (z)             Exponential integral Ci
+expintegral_shi (z)            Exponential integral Shi
+expintegral_chi (z)            Exponential integral Chi
+
+kelliptic (z)                  Complete elliptic integral of the first 
                                kind (K)
 %d [n] (z)                     Parabolic cylinder function
 @end example
