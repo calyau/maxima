@@ -795,24 +795,34 @@ a^(u+1/2)*(p+a/2)^(-v-u-1/2)*gamma(v-u+1/2)*gamma(v+u+1/2)
 /*
  * Bug 1376865 
  * Formula 24, p. 178.
+ * The symbol %ei has gone. The new function is expintegral_ei.
  */
-ratsimp(specint(%ei(-t)*exp(-p*t),t));
--log(p+1)/p;
+specint(expintegral_ei(t)*exp(-p*t),t);
+-log(p-1)/p;
 
 /*
  * Formula 25, p. 178 
  *
- * t^(-1/2)*%ei(-t)
+ * t^(-1/2)*expintegral_ei(-t)
  * -> -2*%pi/sqrt(p)*log(sqrt(p)+sqrt(p+1))
+ * This is equivalent to:
+ * -> -2*%pi/sqrt(p)*asinh(sqrt(p))
  *
- * Maxima will ask for the sign of 2*psey-1.  If you answer pos, you'll get the answer below.
+ * The result of Maxima is equivalent to
+ * -> -2*sqrt(%pi)/sqrt(p)*asinh(sqrt(p))
  *
+ * This differs by a factor sqrt(%pi) from the result above.
+ * I (DK) think Maxima is correct.
+ *
+ * Maxima will ask for the sign of 2*psey-1.  
+ * We add this fact to the database and get the a result.
  */
-/*
-ratsimp(specint(t^(-1/2)*%ei(-t)*exp(-p*t),t));
--sqrt(%pi)*log(-(sqrt(p)*sqrt(p+1)+p+1)/(sqrt(p)*sqrt(p+1)-p-1))
-	/sqrt(p);
-*/
+(assume(2*?psey-1>0),done);
+done;
+ratsimp(specint(t^(-1/2)*expintegral_ei(-t)*exp(-p*t),t));
+-sqrt(%pi)*(log(sqrt(p+1)+sqrt(p))-log(sqrt(p+1)-sqrt(p)))/sqrt(p);
+(forget(2*?psey-1>0),done);
+done;
 
 /*
  * Formula 26, p. 178 
@@ -820,7 +830,7 @@ ratsimp(specint(t^(-1/2)*%ei(-t)*exp(-p*t),t));
  * sin(a*t)*%ei(-t)
  * -> -(p^2+a^2)^(-1)*(a/2*log((p+1)^2+a^2) - p*atan(a/(p+1)))
  */
-ratsimp(rectform(specint(sin(a*t)*%ei(-t)*exp(-p*t),t)));
+ratsimp(rectform(specint(sin(a*t)*expintegral_ei(-t)*exp(-p*t),t)));
 (2*p*atan(a/(p+1))-a*log(p^2+2*p+a^2+1))/(2*p^2+2*a^2);
 
 /*
@@ -829,7 +839,7 @@ ratsimp(rectform(specint(sin(a*t)*%ei(-t)*exp(-p*t),t)));
  * cos(a*t)*%ei(-t)
  * -> -(p^2+a^2)^(-1)*(p/2*log((p+1)^2+a^2) + a*atan(a/(p+1)))
  */
-ratsimp(rectform(specint(cos(a*t)*%ei(-t)*exp(-p*t),t)));
+ratsimp(rectform(specint(cos(a*t)*expintegral_ei(-t)*exp(-p*t),t)));
 -((2*a*atan(a/(p+1))+p*log(p^2+2*p+a^2+1))/(2*p^2+2*a^2));
 
 /*
