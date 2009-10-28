@@ -402,7 +402,7 @@ simp_%solve(e,v,[extraargs]) := block([vc, all_vars, sol, solvedomain, parameter
   parameter_list : assoc('parameters, extraargs, false),
   maxdepth : assoc('maxdepth, extraargs, 5),
   if is(maxdepth < 0) then (
-    error("Maximum recursion depth exceeded; unable to solve", funmake('to_poly_solve, [e,v])))
+    error("Unable to solve"))
   else maxdepth : maxdepth - 1,
  
   /* Convert e and v into sets */
@@ -532,7 +532,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
    nonfree : union(setify(v), setdifference(set_of_variables(eqs), evars)),
    nonfree : setdifference(nonfree, var_exception),
    esave : union(set_of_variables(eqs), nonfree),
-   sol : to_poly_solve(eqs, nonfree, 'simpfuncs = simpfuncs, 'maxdepth = maxdepth, 'use_grobner = grob),
+   sol : to_poly_solve(eqs, nonfree, 'simpfuncs = simpfuncs, 'maxdepth = maxdepth-1, 'use_grobner = grob),
    if opequal_p(sol, '%solve) then error("Unable to solve"),
 
    /* The solve process introduces new variables. Let %sol_vars be the set 
@@ -575,7 +575,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
         eq : if emptyp(eq) then [1=0] else first(eq)),
 
       xsol : to_poly_solve(eq, intersection(nonfree, set_of_variables(eq)),
-        'simpfuncs = simpfuncs, 'maxdepth = maxdepth, 'use_grobner = grob),
+        'simpfuncs = simpfuncs, 'maxdepth = maxdepth-1, 'use_grobner = grob),
       
       if opequal_p(xsol, '%solve) then error("Unable to solve"),
       for xk in xsol do (
