@@ -21,14 +21,14 @@ eval_when(translate,declare_translated(to_poly_solve,to_poly_solve_h, safer_subs
 /* Conditionally load to_poly (version 2 or later), grobner, lrats, opsubst, unwind_protect,
 and basic (push macro). */
 
-if get('to_poly,'version) = false then load("topoly.lisp");
+if get('to_poly,'version) = false then load("topoly");
 if get('to_poly,'version) < 2 then error("You need to update 'to_poly' to version 2 or greater");
 if not(?functionp('poly_reduced_grobner)) then load("grobner");
 block([inflag : true], if not(member('fullratsubst, map('op, functions))) then load("lrats"));
 block([inflag : true], if not(member('lratsubst, map('op, functions))) then load("lrats"));
 if not(?functionp('opsubst)) then load("opsubst");
 block([inflag : true], if not(member('push, map('op, macros))) then load("basic"));
-if not(?functionp(simpfuncall)) then load("simplifying");
+if not(?functionp('simpfuncall)) then load("simplifying");
 load("to_poly_solve_extra");
 
 /* Return a lambda form that is the composition of the functions in the list l.
@@ -533,6 +533,7 @@ to_poly_solve_h(e,v, simpfuncs, maxdepth, grob) := block([eqs : set(), nonalg : 
    nonfree : setdifference(nonfree, var_exception),
    esave : union(set_of_variables(eqs), nonfree),
    sol : to_poly_solve(eqs, nonfree, 'simpfuncs = simpfuncs, 'maxdepth = maxdepth, 'use_grobner = grob),
+   if opequal_p(sol, '%solve) then error("Unable to solve"),
 
    /* The solve process introduces new variables. Let %sol_vars be the set 
    of variables introduced by to_poly_solve */
