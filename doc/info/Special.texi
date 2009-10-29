@@ -21,6 +21,10 @@ bessel_j (index, expr)         Bessel function, 1st kind
 bessel_y (index, expr)         Bessel function, 2nd kind
 bessel_i (index, expr)         Modified Bessel function, 1st kind
 bessel_k (index, expr)         Modified Bessel function, 2nd kind
+
+hankel_1 (v,z)                 Hankel function of the 1st kind
+hankel_2 (v,z)                 Hankel function of the 2nd kind
+
 %he[n] (z)                     Hermite polynomial (Nota bene: @code{he},
                                not @code{h}. See A&S 22.5.18)
 assoc_legendre_p[v,u] (z)      Legendre function of degree v and order u 
@@ -163,15 +167,106 @@ then the limit as @math{v} approaches @math{n} is taken.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} hankel_1 (@var{v}, @var{z})
-The Hankel funtion of the first kind of order @math{v} and argument @math{z}. (A&S 9.1.3)
+The Hankel function of the first kind of order @math{v} and argument @math{z}
+(A&S 9.1.3). @code{hankel_1} is defined as
+
+@example
+   bessel_j(v,z) + %i * bessel_y(v,z)
+@end example
+
+Maxima evaluates @code{hankel_1} numerically for a real order @math{v} and 
+complex argument @math{z} in float precision. The numerical evaluation in 
+bigfloat precision and for a complex order @math{v} is not supported.
+
+When @code{besselexpand} is @code{true}, @code{hankel_1} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @code{besselexpand}.
+
+Maxima knows the derivative of @code{hankel_1} wrt the argument @math{z}.
+
+Examples:
+
+Numerical evaluation:
+
+@c ===beg===
+@c hankel_1(1,0.5);
+@c hankel_1(1,0.5+%i);
+@c ===end===
+@example
+(%i1) hankel_1(1,0.5);
+(%o1)              .2422684576748738 - 1.471472392670243 %i
+(%i2) hankel_1(1,0.5+%i);
+(%o2)             - .2558287994862166 %i - 0.239575601883016
+@end example
+
+A complex order @math{v} is not supported. Maxima returns a noun form:
+
+@c ===beg===
+@c hankel_1(%i,0.5+%i);
+@c ===end===
+@example
+(%i3) hankel_1(%i,0.5+%i);
+(%o3)                       hankel_1(%i, %i + 0.5)
+@end example
+
+Expansion of @code{hankel_1} when @code{besselexpand} is @code{true}:
+
+@c ===beg===
+@c hankel_1(1/2,z),besselexpand:true;
+@c ===end===
+@example
+(%i4) hankel_1(1/2,z),besselexpand:true;
+                      sqrt(2) sin(z) - sqrt(2) %i cos(z)
+(%o4)                 ----------------------------------
+                              sqrt(%pi) sqrt(z)
+@end example
+
+Derivative of @code{hankel_1} wrt the argument @math{z}. The derivative wrt the 
+order @math{v} is not supported. Maxima returns a noun form:
+
+@c ===beg===
+@c diff(hankel_1(v,z),z);
+@c diff(hankel_1(v,z),v);
+@c ===end===
+@example
+(%i5) diff(hankel_1(v,z),z);
+                    hankel_1(v - 1, z) - hankel_1(v + 1, z)
+(%o5)               ---------------------------------------
+                                       2
+(%i6) diff(hankel_1(v,z),v);
+                             d
+(%o6)                        -- (hankel_1(v, z))
+                             dv
+@end example
+
 @opencatbox
 @category{Bessel functions} @category{Special functions}
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} hankel_2 (@var{v}, @var{z})
-The Hankel funtion of the second kind of order @math{v} and argument @math{z}. (A&S 9.1.4)
+The Hankel function of the second kind of order @math{v} and argument @math{z}
+(A&S 9.1.4). @code{hankel_2} is defined as
+
+@example
+   bessel_j(v,z) - %i * bessel_y(v,z)
+@end example
+
+Maxima evaluates @code{hankel_2} numerically for a real order @math{v} and 
+complex argument @math{z} in float precision. The numerical evaluation in 
+bigfloat precision and for a complex order @math{v} is not supported.
+
+When @code{besselexpand} is @code{true}, @code{hankel_2} is expanded in terms
+of elementary functions when the order @math{v} is half of an odd integer. 
+See @code{besselexpand}.
+
+Maxima knows the derivative of @code{hankel_2} wrt the argument @math{z}.
+
+For examples see @code{hankel_1}.
+
 @opencatbox
 @category{Bessel functions} @category{Special functions}
 @closecatbox
