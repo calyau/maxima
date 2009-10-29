@@ -217,14 +217,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Define the Hankel funtion H1[n](z)
+;;; Implementation of the Hankel 1 function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $hankel_1 (v z)
-  (simplify (list '(%hankel_1) (resimplify v) (resimplify z))))
+(defun $hankel_1 (v z)
+  (simplify (list '(%hankel_1) v z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defprop $hankel_1 %hankel_1 alias)
 (defprop $hankel_1 %hankel_1 verb)
 (defprop %hankel_1 $hankel_1 reversealias)
@@ -235,27 +236,38 @@
 (defprop %hankel_1
     ((n x)
      nil
-     ((mtimes) 
-       ((mplus) ((%hankel_1)((mplus) -1 n) x) 
-        ((mtimes) -1 ((%hankel_1) ((mplus) 1 n) x))) 
+     ((mtimes)
+       ((mplus)
+         ((%hankel_1) ((mplus) -1 n) x)
+         ((mtimes) -1 ((%hankel_1) ((mplus) 1 n) x)))
        ((rat) 1 2)))
     grad)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun simp-hankel-1 (exp ignored z)
+(defun simp-hankel-1 (expr ignored z)
   (declare (ignore ignored))
-  (let ((order (simpcheck (cadr exp) z))
-	(arg   (simpcheck (caddr exp) z)))
-    (cond 
+  (let ((order (simpcheck (cadr expr) z))
+	(arg   (simpcheck (caddr expr) z)))
+    (cond
+      ((zerop1 arg)
+       (simp-domain-error
+         (intl:gettext "hankel_1: hankel_1(~:M,~:M) is undefined.")
+         order arg))
       ((bessel-numerical-eval-p order arg)
-       (let ((result 
-	      (hankel-1 order (complex ($realpart arg) ($imagpart arg)))))
-         (simplify
-           (list '(mplus)
-             (simplify (list '(mtimes) '$%i (imagpart result)))
-             (realpart result)))))
-      (t (eqtest (list '(%hankel_1) order arg) exp)))))
+       (let ((result (hankel-1 order (complex ($realpart arg)
+                                              ($imagpart arg)))))
+         (add (mul '$%i (imagpart result)) (realpart result))))
+      ((and $besselexpand
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we can express 
+       ;; the result in terms of elementary functions.
+       ;; Use the defintion hankel_1(v,z) = bessel_j(v,z)+%i*bessel_y(v,z)
+       (sratsimp
+         (add (bessel-j-half-order rat-order arg)
+              (mul '$%i
+                   (bessel-y-half-order rat-order arg)))))
+      (t (eqtest (list '(%hankel_1) order arg) expr)))))
 
 ;; Numerically compute H1(v, z).
 ;;
@@ -289,14 +301,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Define the Hankel funtion H2[n](z)
+;;; Implementation of the Hankel 2 function
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmfun $hankel_2 (v z)
-  (simplify (list '(%hankel_2) (resimplify v) (resimplify z))))
+(defun $hankel_2 (v z)
+  (simplify (list '(%hankel_2) v z)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defprop $hankel_2 %hankel_2 alias)
 (defprop $hankel_2 %hankel_2 verb)
 (defprop %hankel_2 $hankel_2 reversealias)
@@ -307,27 +320,38 @@
 (defprop %hankel_2
     ((n x)
      nil
-     ((mtimes) 
-       ((mplus) ((%hankel_2)((mplus) -1 n) x) 
-        ((mtimes) -1 ((%hankel_2) ((mplus) 1 n) x))) 
+     ((mtimes)
+       ((mplus) 
+         ((%hankel_2) ((mplus) -1 n) x)
+         ((mtimes) -1 ((%hankel_2) ((mplus) 1 n) x)))
        ((rat) 1 2)))
     grad)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun simp-hankel-2 (exp ignored z)
+(defun simp-hankel-2 (expr ignored z)
   (declare (ignore ignored))
-  (let ((order (simpcheck (cadr exp) z))
-	(arg   (simpcheck (caddr exp) z)))
-    (cond 
+  (let ((order (simpcheck (cadr expr) z))
+	(arg   (simpcheck (caddr expr) z)))
+    (cond
+      ((zerop1 arg)
+       (simp-domain-error
+         (intl:gettext "hankel_2: hankel_2(~:M,~:M) is undefined.")
+         order arg))
       ((bessel-numerical-eval-p order arg)
-       (let ((result 
-	      (hankel-2 order (complex ($realpart arg) ($imagpart arg)))))
-         (simplify
-	  (list '(mplus)
-		(simplify (list '(mtimes) '$%i (imagpart result)))
-		(realpart result)))))
-      (t (eqtest (list '(%hankel_2) order arg) exp)))))
+       (let ((result (hankel-2 order (complex ($realpart arg)
+                                              ($imagpart arg)))))
+         (add (mul '$%i (imagpart result)) (realpart result))))
+      ((and $besselexpand
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we can express 
+       ;; the result in terms of elementary functions.
+       ;; Use the defintion hankel_1(v,z) = bessel_j(v,z)-%i*bessel_y(v,z)
+       (sratsimp
+         (sub (bessel-j-half-order rat-order arg)
+              (mul '$%i
+                   (bessel-y-half-order rat-order arg)))))
+      (t (eqtest (list '(%hankel_2) order arg) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Numerically compute H2(v, z).
