@@ -360,12 +360,40 @@ Do @code{load(atrig1);} to use them.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} halfangles
 Default value: @code{false}
 
-When @code{halfangles} is @code{true},
-trigonometric functions of arguments @code{@var{expr}/2}
-are simplified to functions of @var{expr}.
+When @code{halfangles} is @code{true}, trigonometric functions of arguments 
+@code{@var{expr}/2} are simplified to functions of @var{expr}.
+
+For a real argument @var{x} in the interval @code{0 < x < 2*%pi} the sine of 
+the half-angle simplifies to a simple formula:
+
+@example
+                         sqrt(1 - cos(x))
+                         ----------------
+                             sqrt(2)
+@end example
+
+A complicated factor is needed to make this formula correct for all complex 
+arguments @var{z}:
+
+@example
+           realpart(z)
+     floor(-----------)
+              2 %pi
+(- 1)                   (1 - unit_step(- imagpart(z))
+
+                            realpart(z)            realpart(z)
+                      floor(-----------) - ceiling(-----------)
+                               2 %pi                  2 %pi
+                ((- 1)                                          + 1))
+@end example
+
+Maxima knows this factor and similar factors for the functions @code{sin}, 
+@code{cos}, @code{sinh}, and @code{cosh}. For special values of the argument 
+@math{z} these factors simplify accordingly.
 
 Examples:
 
@@ -374,28 +402,35 @@ Examples:
 @c sin (x / 2);
 @c halfangles : true$
 @c sin (x / 2);
+@c assume(x>0, x<2*%pi)$
+@c sin(x / 2);
 @c ===end===
 @example
-(%i1) halfangles : false$
-@group
-(%i2) sin (x / 2);
-                                 x
-(%o2)                        sin(-)
-                                 2
-@end group
-(%i3) halfangles : true$
-@group
-(%i4) sin (x / 2);
-                        sqrt(1 - cos(x))
-(%o4)                   ----------------
-                            sqrt(2)
-@end group
+(%i1) halfangles:false;
+(%o1)                                false
+(%i2) sin(x/2);
+                                        x
+(%o2)                               sin(-)
+                                        2
+(%i3) halfangles:true;
+(%o3)                                true
+(%i4) sin(x/2);
+                                                    x
+                                            floor(-----)
+                                                  2 %pi
+                      sqrt(1 - cos(x)) (- 1)
+(%o4)                 ----------------------------------
+                                   sqrt(2)
+(%i5) assume(x>0, x<2*%pi)$
+(%i6) sin(x/2);
+                               sqrt(1 - cos(x))
+(%o6)                          ----------------
+                                   sqrt(2)
 @end example
 
 @opencatbox
 @category{Trigonometric functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
 @c IS THIS DESCRIPTION ACCURATE ??
