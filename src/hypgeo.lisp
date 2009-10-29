@@ -929,16 +929,6 @@
         ((coeffpp) (a zerp)))
       nil))
 
-;; Recognize %he[v1](w), Hermite function
-(defun onehe (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%he array) (v1 true)) (w true)))
-	((coeffpp) (a zerp)))
-      nil))
-
 ;; Recognize hermite(v1,w), Hermite function
 (defun one-hermite (expr)
   (m2 expr
@@ -2290,24 +2280,7 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (integertest rest arg1 index1 nil 'u))))
-
-     ;; Laplace transform for the Hermite function, %he[index1](arg1)
-     (cond ((setq l (onehe u))
-	    (setq index1 (cdras 'v1 l)
-		  arg1 (cdras 'w l)
-		  rest (cdras 'u l))
-	    (return 
-              (cond ((and (maxima-integerp index1)
-                         (or (mevenp index1)
-                             (moddp index1)))
-                     ;; When index1 is an even or odd integer, we transform 
-                     ;; directly to a hypergeometric function. For this case we
-                     ;; get a Laplace transform when the arg is the
-                     ;; square root of the variable.
-                     (sendexec rest (hermite-to-hypergeometric index1 arg1)))
-                    (t
-                     (integertest rest arg1 index1 nil 'he))))))
-
+     
      ;; Laplace transform for the Hermite function, hermite(index1,arg1)
      (cond ((setq l (one-hermite u))
             (setq index1 (cdras 'v1 l)
@@ -2317,6 +2290,10 @@
               (cond ((and (maxima-integerp index1)
                          (or (mevenp index1)
                              (moddp index1)))
+                     ;; When index1 is an even or odd integer, we transform
+                     ;; directly to a hypergeometric function. For this case we
+                     ;; get a Laplace transform when the arg is the
+                     ;; square root of the variable.
                      (sendexec rest (hermite-to-hypergeometric index1 arg1)))
                     (t
                      (integertest rest arg1 index1 nil 'he))))))
