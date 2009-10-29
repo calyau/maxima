@@ -192,7 +192,7 @@
         ((coeffpp) (a equal 0)))
       nil))
 
-;; Recognize bessel(v,w)
+;; Recognize bessel_j(v,w)
 (defun onej (exp)
   (m2 exp
       '((mplus)
@@ -303,21 +303,6 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize %h[v1,v11](w1)*%h[v2,v21](w2), the product of 2 Hankel functions.
-(defun twoh (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%h array)(v1 true)(v11 true))
-	  (w1 true))
-	 ((mqapply)
-	  (($%h array)(v2 true)(v21 true))
-	  (w2 true)))
-	((coeffpp)(a zerp)))
-      nil))
-
 ;; Recognize hankel_1(v1,w1)*hankel_1(v2,w2), product of 2 Hankel 1 functions.
 (defun m2-two-hankel_1 (expr)
   (m2 expr
@@ -373,19 +358,6 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize bessel_y(v1,w1)*%h[v2,v21](w2)
-(defun oneyoneh (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_y) (v1 true) (w1 true))
-	 ((mqapply)
-	  (($%h array)(v2 true)(v21 true))
-	  (w2 true)))
-	((coeffpp)(a zerp)))
-      nil))
-
 ;; Recognize bessel_y(v1,w1)*hankel_1(v2,w2)
 (defun m2-bessel_y*hankel_1 (expr)
   (m2 expr
@@ -408,19 +380,6 @@
         ((coeffpp)(a zerp)))
       nil))
 
-;; Recognize bessel_k(v1,w1)*%h[v2,v21](w2)
-(defun onekoneh (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_k) (v1 true) (w1 true))
-	 ((mqapply)
-	  (($%h array)(v2 true)(v21 true))
-	  (w2 true)))
-	((coeffpp)(a zerp)))
-      nil))
-
 ;; Recognize bessel_k(v1,w1)*hankel_1(v2,w2)
 (defun m2-bessel_k*hankel_1 (expr)
   (m2 expr
@@ -439,7 +398,7 @@
         ((coeffpt)
          (u nonzerp)
          ((%bessel_k) (v1 true) (w1 true))
-         ((%bessel_2) (v2 true) (w2 true)))
+         ((%hankel_2) (v2 true) (w2 true)))
         ((coeffpp)(a zerp)))
       nil))
 
@@ -451,19 +410,6 @@
 	 (u nonzerp)
 	 ((%bessel_i) (v1 true) (w1 true))
 	 ((%bessel_j) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize bessel_i(v1,w1)*%h[v2,v21](w2)
-(defun oneioneh (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_i) (v1 true) (w1 true))
-	 ((mqapply)
-	  (($%h array)(v2 true)(v21 true))
-	  (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -487,19 +433,6 @@
          ((%bessel_i) (v1 true) (w1 true))
          ((%hankel_2) (v2 true) (w2 true)))
         ((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize %h[v1,v11](w1)*bessel_j(v2,w2)
-(defun onehonej (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%h array)(v1 true)(v11 true))
-	  (w1 true))
-	 ((%bessel_j) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
       nil))
 
 ;; Recognize hankel_1(v1,w1)*bessel_j(v2,w2)
@@ -558,20 +491,6 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize %h[v1,v2](w)^2
-(defun oneh^2 (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mexpt)
-	  ((mqapply)
-	   (($%h array)(v1 true)(v2 true))
-	   (w true))
-	  2.))
-	((coeffpp)(a zerp)))
-      nil))
-
 ;; Recognize hankel_1(v,w)^2
 (defun m2-hankel_1^2 (expr)
   (m2 expr
@@ -613,18 +532,6 @@
 	((coeffpt)
 	 (u nonzerp)
 	 ((%bessel_k) (v true) (w true)))
-	((coeffpp) (a zerp)))
-      nil))
-
-;; Recognize %h[v1,v2](w), hankel 1 or 2 function
-(defun oneh (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%h array) (v1 true)(v2 true))
-	  (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
@@ -2028,19 +1935,6 @@
 		  rest (cdras 'u l))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
      
-     ;; Laplace transform of two Hankel functions
-     ;; We support the Laplace transform of hankel_1 and hankel_2.
-     (cond ((setq l (twoh u))
-	    (setq index1 (cdras 'v1 l)
-		  index11 (cdras 'v11 l)
-		  index2 (cdras 'v2 l)
-		  index21 (cdras 'v21 l)
-		  arg1 (cdras 'w1 l)
-		  arg2 (cdras 'w2 l)
-		  rest (cdras 'u l))
-	    (return (fractest rest arg1 arg2 index1 index11 index2 index21 
-	                      '2htjory))))
-     
      ;; Laplace transform of two hankel_1 functions
      (cond ((setq l (m2-two-hankel_1 u))
             (setq index1 (cdras 'v1 l)
@@ -2108,17 +2002,6 @@
 		  rest (mul (power '$%i (neg index1)) (cdras 'u l)))
 	    (return (lt2j rest arg1 arg2 index1 index2))))
      
-     ;; Laplace transform of Bessel I and Hankel functions
-     (cond ((setq l (oneioneh u))
-	    (setq index1 (cdras 'v1 l)
-		  index2 (cdras 'v2 l)
-		  index21 (cdras 'v21 l)
-		  arg1 (mul '$%i (cdras 'w1 l))
-		  arg2 (cdras 'w2 l)
-		  rest (mul (power '$%i (neg index1)) (cdras 'u l)))
-	    (return (fractest1 rest arg1 arg2 index1 index2 index21 
-	                       'besshtjory))))
-     
      ;; Laplace transform of Bessel I and Hankel 1 functions
      (cond ((setq l (m2-bessel_i*hankel_1 u))
             (setq index1 (cdras 'v1 l)
@@ -2155,17 +2038,6 @@
 		  rest (cdras 'u l))
 	    (return (fractest1 rest arg2 arg1 index2 index1 nil 'besskti))))
      
-     ;; Laplace transform of Hankel and Bessel J functions
-     (cond ((setq l (onehonej u))
-	    (setq index1 (cdras 'v1 l)
-		  index11 (cdras 'v11 l)
-		  index2 (cdras 'v2 l)
-		  arg1 (cdras 'w1 l)
-		  arg2 (cdras 'w2 l)
-		  rest (cdras 'u l))
-	    (return (fractest1 rest arg2 arg1 index2 index1 index11 
-	                       'besshtjory))))
-     
      ;; Laplace transform of Hankel 1 and Bessel J functions
      (cond ((setq l (m2-hankel_1*bessel_j u))
             (setq index1 (cdras 'v1 l)
@@ -2184,17 +2056,6 @@
                   rest (cdras 'u l))
             (return (fractest1 rest arg2 arg1 index2 index1 2 'besshtjory))))
      
-     ;; Laplace transform of Bessel Y and Hankel functions
-     (cond ((setq l (oneyoneh u))
-	    (setq index1 (cdras 'v1 l)
-		  index2 (cdras 'v2 l)
-		  index11 (cdras 'v21 l)
-		  arg1 (cdras 'w1 l)
-		  arg2 (cdras 'w2 l)
-		  rest (cdras 'u l))
-	    (return (fractest1 rest arg2 arg1 index2 index1 index11 
-	                       'htjoryytj))))
-     
      ;; Laplace transform of Bessel Y and Hankel 1 functions
      (cond ((setq l (m2-bessel_y*hankel_1 u))
             (setq index1 (cdras 'v1 l)
@@ -2212,17 +2073,6 @@
                   arg2 (cdras 'w2 l)
                   rest (cdras 'u l))
             (return (fractest1 rest arg2 arg1 index2 index1 2 'htjoryytj))))
-     
-     ;; Laplace transform of Bessel K and Hankel functions
-     (cond ((setq l (onekoneh u))
-	    (setq index1 (cdras 'v1 l)
-		  index2 (cdras 'v2 l)
-		  index11 (cdras 'v21 l)
-		  arg1 (cdras 'w1 l)
-		  arg2 (cdras 'w2 l)
-		  rest (cdras 'u l))
-	    (return (fractest1 rest arg2 arg1 index2 index1 index11 
-	                       'htjorykti))))
      
      ;; Laplace transform of Bessel K and Hankel 1 functions
      (cond ((setq l (m2-bessel_k*hankel_1 u))
@@ -2363,14 +2213,6 @@
 		  arg2 (cdras 'w2 l)
 		  rest (cdras 'u l))
 	    (return (lt1gammagreek rest arg1 arg2))))
-     
-     ;; Laplace transform of Hankel function
-     (cond ((setq l (oneh u))
-	    (setq index1 (cdras 'v1 l)
-		  index11 (cdras 'v2 l)
-		  arg1 (cdras 'w l)
-		  rest (cdras 'u l))
-	    (return (fractest2 rest arg1 index1 index11 'htjory))))
         
      ;; Laplace transform of Hankel 1 function
      (cond ((setq l (m2-hankel_1 u))
@@ -2566,15 +2408,6 @@
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1j^2 rest arg1 index1))))
-     
-     ;; Laplace transform of square of Hankel function
-     (cond ((setq l (oneh^2 u))
-	    (setq index1 (cdras 'v1 l)
-		  index11 (cdras 'v2 l)
-		  arg1 (cdras 'w l)
-		  rest (cdras 'u l))
-	    (return (fractest rest arg1 arg1 index1 index11 index1 index11 
-	                      '2htjory))))
      
      ;; Laplace transform of square of Hankel 1 function
      (cond ((setq l (m2-hankel_1^2 u))
