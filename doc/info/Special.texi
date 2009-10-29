@@ -25,8 +25,6 @@ bessel_k (index, expr)         Modified Bessel function, 2nd kind
 hankel_1 (v,z)                 Hankel function of the 1st kind
 hankel_2 (v,z)                 Hankel function of the 2nd kind
 
-%he[n] (z)                     Hermite polynomial (Nota bene: @code{he},
-                               not @code{h}. See A&S 22.5.18)
 assoc_legendre_p[v,u] (z)      Legendre function of degree v and order u 
 assoc_legendre_q[v,u] (z)      Legendre function, 2nd kind
 hstruve[n] (z)                 Struve H function
