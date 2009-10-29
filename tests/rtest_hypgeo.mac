@@ -473,20 +473,15 @@ factor(specint(%e^(-s*t)*h2(2,t),t));
 factor(specint(%e^(-s*t)*h2(10,t),t));
 ((s-1)^10/(s^(10+3/2)));
 
-/*****************************************************************************
-   The code knows the Hermite function %he[n](x).
-   There should be the relationship: hermite(n,t) -> %he[n](t).
-
-   But it doesn't work.
-   We have improved the hermite function. It works as expected.
-*/
-
-/* AS 29.3.46 */
+/* Laplace transform of hermite for even and odd order:
+ * 
+ * Problem 64: AS 29.3.46 
+ */
 
 laplace(1/sqrt(t)*'hermite(2*n,sqrt(t)),t,s);
 %pi*2^(2*n)*(1-1/s)^n/(gamma((2*n-1)/-2)*sqrt(s));
 
-/* AS 29.3.47 */
+/* Problem 65: AS 29.3.47 */
 
 laplace('hermite(2*n+1,sqrt(t)),t,s);
 -%pi*2^(2*n+2)*(1-1/s)^n/(2*gamma((2*n+1)/-2)*s^(3/2));
