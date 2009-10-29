@@ -438,7 +438,7 @@ factor(ratsimp(specint(t^(1/2)*bessel_i(1,t)*%e^(-p*t),t)));
 3*sqrt(%pi)*assoc_legendre_p(1/2,-1,p/sqrt(p^2-1))/(4*(p^2-1)^(3/4))$
 
 /*
- * %h[2/3,1](sqrt(t)) = bessel_j(2/3,sqrt(t))+%i*bessel_y(2/3,sqrt(t))
+ * hankel_1(2/3,sqrt(t)) = bessel_j(2/3,sqrt(t))+%i*bessel_y(2/3,sqrt(t))
  *
  * Formula (34) below gives:
  *
@@ -459,12 +459,6 @@ factor(ratsimp(specint(t^(1/2)*bessel_i(1,t)*%e^(-p*t),t)));
  *
  */
 
-specint(t*%h[2/3,1](t^(1/2))*%e^(-p*t),t);
--4*%i*gamma(1/3)*%m[-3/2,1/3](-1/(4*p))*%e^-(1/(8*p))/(3*(-1)^(5/6)*sqrt(3) 
- *gamma(2/3)*p^(3/2))+4*gamma(1/3)*%m[-3/2,1/3](-1/(4*p))*%e^-(1/(8*p))/(3*( 
- -1)^(5/6)*gamma(2/3)*p^(3/2))-8*%i*gamma(2/3)*%m[-3/2,-1/3](-1/(4*p))*%e^- 
- (1/(8*p))/(3*(-1)^(1/6)*sqrt(3)*gamma(1/3)*p^(3/2)) $
-
 specint(t*hankel_1(2/3,t^(1/2))*%e^(-p*t),t);
 -4*%i*gamma(1/3)*%m[-3/2,1/3](-1/(4*p))*%e^-(1/(8*p))/(3*(-1)^(5/6)*sqrt(3) 
  *gamma(2/3)*p^(3/2))+4*gamma(1/3)*%m[-3/2,1/3](-1/(4*p))*%e^-(1/(8*p))/(3*( 
@@ -472,7 +466,7 @@ specint(t*hankel_1(2/3,t^(1/2))*%e^(-p*t),t);
  (1/(8*p))/(3*(-1)^(1/6)*sqrt(3)*gamma(1/3)*p^(3/2)) $
  
 /*
- * H[3/4,2](t) = bessel_j(3/4,t)-%i*bessel_y(3/4,t)
+ * hankel_2(2,t) = bessel_j(3/4,t)-%i*bessel_y(3/4,t)
  *
  * Sec 4.14, formula (9):
  *
@@ -498,12 +492,6 @@ specint(t*hankel_1(2/3,t^(1/2))*%e^(-p*t),t);
  *    =  r^(-3/2)*(-gamma(9/4)*assoc_legendre_p(1/2,-3/4,p/r)
  *                  -gamma(3/4)*sqrt(2)*assoc_legendre_p(1/2,3/4,p/r))
  */
-ratsimp(specint(t^(1/2)*%h[3/4,2](t)*%e^(-p*t),t));
-''(ratsimp(5*gamma(1/4)/16/(p^2+1)^(3/4)*assoc_legendre_p(1/2,-3/4,p/sqrt(p^2+1))
-+sqrt(2)*%i*assoc_legendre_p(1/2,3/4,p/sqrt(p^2+1))*gamma(3/4)
-       /(p^2+1)^(3/4)
-       +5*%i*gamma(1/4)*assoc_legendre_p(1/2,-3/4,p/sqrt(p^2+1))
-	/(16*(p^2+1)^(3/4))))$
 
 ratsimp(specint(t^(1/2)*hankel_2(3/4,t)*%e^(-p*t),t));
 ''(ratsimp(5*gamma(1/4)/16/(p^2+1)^(3/4)*assoc_legendre_p(1/2,-3/4,p/sqrt(p^2+1))
@@ -513,7 +501,7 @@ ratsimp(specint(t^(1/2)*hankel_2(3/4,t)*%e^(-p*t),t));
    /(16*(p^2+1)^(3/4))))$
 
 /*
- * %h[1/2,1](t) = bessel_j(1/2,t)+%i*bessel_y(1/2,t)
+ * hankel_1(1,t) = bessel_j(1/2,t)+%i*bessel_y(1/2,t)
  *
  * So,
  *
@@ -545,9 +533,6 @@ ratsimp(specint(t^(1/2)*hankel_2(3/4,t)*%e^(-p*t),t));
  * t^(3/2)*bessel_y(1/2,t)
  *    -> -sqrt(2)*(p-1)*(p+1)/(sqrt(%pi)*(p^2+1)^2)
  */
-
-ratsimp(specint(t^(3/2)*%h[1/2,1](t)*%e^(-p*t),t));
--((sqrt(%pi)*(sqrt(2)*%i*p^2-2*sqrt(2)*p-sqrt(2)*%i))/(%pi*p^4+2*%pi*p^2+%pi))$
 
 ratsimp(specint(t^(3/2)*hankel_1(1/2,t)*%e^(-p*t),t));
 -((sqrt(%pi)*(sqrt(2)*%i*p^2-2*sqrt(2)*p-sqrt(2)*%i))/(%pi*p^4+2*%pi*p^2+%pi))$
