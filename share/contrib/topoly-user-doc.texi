@@ -1042,7 +1042,7 @@ default value for @math{maxdepth} is five. When the recursions depth is exceeded
 
 solver signals an error:
 @example
-(%i1) to_poly_solve(cos(x) = x,x, 'maxdepth = 2);
+ (%i1) to_poly_solve(cos(x) = x,x, 'maxdepth = 2);
 Maximum recursion depth exceeded; unable to solve 
 @end example
 
@@ -1059,10 +1059,47 @@ for example:
 In @math{(%o2)}, the solver introduced a dummy variable; to re-index the
 these dummy variables, use the function @math{nicedummies}:
 @example
-(%i3) nicedummies(%);
-(%o3) %union(%if(a-1=0,[x=%c0],%union()),%if(a-1#0,[x=0],%union()))
+ (%i3) nicedummies(%);
+ (%o3) %union(%if(a-1=0,[x=%c0],%union()),%if(a-1#0,[x=0],%union()))
 @end example
 @end itemize
+
+The @code{to_poly_solver} uses data stored in the hashed array
+@code{one_to_one_reduce} to solve equations of the form @math{f(a) =
+f(b)}. The assignment @code{one_to_one_reduce['f,'f] : lambda([a,b],
+a=b)} tells @code{to_poly_solver} that the solution set of @math{f(a)
+= f(b)} equals the solution set of @math{a=b}; for example
+@example
+ (%i2) one_to_one_reduce['f,'f] : lambda([a,b], a=b)$
+ (%i3) to_poly_solve(f(x^2-1) = f(0),x);
+ (%o3) %union([x = - 1], [x = 1])
+@end example
+More generally, the assignment @code{one_to_one_reduce['f,'g] : lambda([a,b],
+w(a,b)=0} tells @code{to_poly_solver} that the solution set of @math{f(a)
+= f(b)} equals the solution set of @math{w(a,b) = 0}; for example
+@example
+ (%i4) one_to_one_reduce['f,'g] : lambda([a,b], a = 1 + b/2)$
+ (%i5) to_poly_solve(f(x) - g(x),x);
+ (%o5) %union([x = 2])
+@end example
+Additionally, @code{to_poly_solver} uses data stored in the hashed array 
+@code{function_inverse} to solve equations of the form @math{f(a) = b}. 
+The assignment @code{function_inverse['f] : lambda([s], g(s))} 
+informs  @code{to_poly_solver} that solution set to @code{f(x) = b} equals
+the solution set to @code{x = g(b)}; two examples:
+@example
+ (%i6) function_inverse['Q] : lambda([s], P(s))$
+
+ (%i7) to_poly_solve(Q(x-1) = 2009,x);
+ (%o7) %union([x = P(2009) + 1])
+
+ (%i8) function_inverse['G] : lambda([s], s + new_variable(integer));
+ (%o8) lambda([s], s + new_variable(integer))
+
+ (%i9) to_poly_solve(G(x - a) = b,x);
+ (%o9) %union([x = b + a + %z1289])
+@end example
+
 
 @b{Notes}
 

@@ -245,6 +245,7 @@ one_to_one_crunch(e) := block([inflag : true, f, nv : set(), %exp, q, opl, opr],
   e : subst("^" = lambda([a,b], if a = %e then funmake('%exp, [b]) else a^b),e),
   e : if opequal_p(e,"+") then first(e) = -rest(e) else e,
   if opequal_p(e, "=") then (
+    e : block([inflag : false], if not mapatom(lhs(e)) and op(lhs(e)) = "-" then -e else e),
     opl : if mapatom(lhs(e)) then false else op(lhs(e)),
     opr : if mapatom(rhs(e)) then false else op(rhs(e)),
     f : one_to_one_reduce[opl, opr],

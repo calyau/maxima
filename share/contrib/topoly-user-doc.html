@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 25 October 2009 -->
+<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 30 October 2009 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -1460,7 +1460,7 @@ default value for <EM>maxdepth</EM> is five. When the recursions depth is exceed
 solver signals an error:
 
 <PRE>
-(%i1) to_poly_solve(cos(x) = x,x, 'maxdepth = 2);
+ (%i1) to_poly_solve(cos(x) = x,x, 'maxdepth = 2);
 Maximum recursion depth exceeded; unable to solve 
 </PRE>
 
@@ -1481,11 +1481,55 @@ In <EM>(%o2)</EM>, the solver introduced a dummy variable; to re-index the
 these dummy variables, use the function <EM>nicedummies</EM>:
 
 <PRE>
-(%i3) nicedummies(%);
-(%o3) %union(%if(a-1=0,[x=%c0],%union()),%if(a-1#0,[x=0],%union()))
+ (%i3) nicedummies(%);
+ (%o3) %union(%if(a-1=0,[x=%c0],%union()),%if(a-1#0,[x=0],%union()))
 </PRE>
 
 </UL>
+
+<P>
+The <CODE>to_poly_solver</CODE> uses data stored in the hashed array
+<CODE>one_to_one_reduce</CODE> to solve equations of the form <EM>f(a) =
+f(b)</EM>. The assignment <CODE>one_to_one_reduce['f,'f] : lambda([a,b],
+a=b)</CODE> tells <CODE>to_poly_solver</CODE> that the solution set of <EM>f(a)
+= f(b)</EM> equals the solution set of <EM>a=b</EM>; for example
+
+<PRE>
+ (%i2) one_to_one_reduce['f,'f] : lambda([a,b], a=b)$
+ (%i3) to_poly_solve(f(x^2-1) = f(0),x);
+ (%o3) %union([x = - 1], [x = 1])
+</PRE>
+
+<P>
+More generally, the assignment <CODE>one_to_one_reduce['f,'g] : lambda([a,b],
+w(a,b)=0</CODE> tells <CODE>to_poly_solver</CODE> that the solution set of <EM>f(a)
+= f(b)</EM> equals the solution set of <EM>w(a,b) = 0</EM>; for example
+
+<PRE>
+ (%i4) one_to_one_reduce['f,'g] : lambda([a,b], a = 1 + b/2)$
+ (%i5) to_poly_solve(f(x) - g(x),x);
+ (%o5) %union([x = 2])
+</PRE>
+
+<P>
+Additionally, <CODE>to_poly_solver</CODE> uses data stored in the hashed array 
+<CODE>function_inverse</CODE> to solve equations of the form <EM>f(a) = b</EM>. 
+The assignment <CODE>function_inverse['f] : lambda([s], g(s))</CODE> 
+informs  <CODE>to_poly_solver</CODE> that solution set to <CODE>f(x) = b</CODE> equals
+the solution set to <CODE>x = g(b)</CODE>; two examples:
+
+<PRE>
+ (%i6) function_inverse['Q] : lambda([s], P(s))$
+
+ (%i7) to_poly_solve(Q(x-1) = 2009,x);
+ (%o7) %union([x = P(2009) + 1])
+
+ (%i8) function_inverse['G] : lambda([s], s + new_variable(integer));
+ (%o8) lambda([s], s + new_variable(integer))
+
+ (%i9) to_poly_solve(G(x - a) = b,x);
+ (%o9) %union([x = b + a + %z1289])
+</PRE>
 
 <P>
 <B>Notes</B>
@@ -1554,7 +1598,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 </DL>
 <P><HR><P>
-This document was generated on 25 October 2009 using
+This document was generated on 30 October 2009 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>
