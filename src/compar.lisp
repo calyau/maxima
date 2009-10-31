@@ -1327,7 +1327,8 @@ relational knowledge is contained in the default context GLOBAL.")
 	      ;; we have to look for the sign '$pnz and return nil.
 	      (if (eq s '$pnz) nil t))
 	     (t t))) ; in Real Mode return T
-    (sign (car l))
+    ;; Call sign1 and not sign, because sign1 handles constant expressions.
+    (sign1 (car l))
     (cond ((and *complexsign*
 		(or (eq sign '$complex) (eq sign '$imaginary)))
 	   ;; Found a complex or imaginary expression. The sign is $complex.
