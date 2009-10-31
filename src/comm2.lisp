@@ -240,9 +240,19 @@
 		   ((logconcoeffp (car x)) (setq decints (cons (car x) decints)))
 		   (t (setq notlogs (cons (car x) notlogs))))))))
 
-(defun lgcsimp (e)		;; this is to simplify
-  (let (($logexpand nil))	;; log(%e) -> 1 and log(%e^2) -> 2
-    (simpln `((%log) ,e) 1 t)))
+;(defun lgcsimp (e)		;; this is to simplify
+;  (let (($logexpand nil))	;; log(%e) -> 1 and log(%e^2) -> 2
+;    (simpln `((%log) ,e) 1 t)))
+
+(defun lgcsimp (e)
+  (cond ((atom e)
+         ;; e.g. log(1) -> 0, or log(%e) -> 1
+         (simplify (list '(%log) e)))
+        ((and (mexptp e) (eq (cadr e) '$%e))
+         ;; log(%e^expr) -> expr
+         (simplify (list '(%log) e)))
+        (t
+         (list '(%log simp) e))))
 
 (defun lgcsimplep (e)
   (and (eq (caar e) 'mplus)
