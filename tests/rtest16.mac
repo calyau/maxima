@@ -1069,5 +1069,16 @@ done;
 limit ((sin(n*x) - n*x*cos(n*x))/n^2, x, %pi);
 -%pi*(-1)^n/n;
 
+/* Bug ID: 2835634 - logcontract broken
+ * Bug ID: 1467368 - logcontract returns unsimplified expr
+ */
+logcontract(log(x)-log(2));
+log(x/2);
+/* Check that we do not break the following again */
+logcontract(log(%e*k)-log(%e^-1*k));
+2;
+log(%e^2),logexpand:false;
+2;
+
 end;
 end$
