@@ -1080,5 +1080,14 @@ logcontract(log(%e*k)-log(%e^-1*k));
 log(%e^2),logexpand:false;
 2;
 
+/* Bug ID: 2880923 - realpart --> floating-point-overflow
+ */
+sign(exp(2009));
+pos;
+realpart(sqrt(4*%e^2009-3)-1);
+sqrt(4*%e^2009-3)-1;
+sqrt(4*exp(2009));
+2*%e^(2009/2);
+
 end;
 end$
