@@ -50,7 +50,7 @@ expintegral_chi (z)            Exponential integral Chi
 
 kelliptic (z)                  Complete elliptic integral of the first 
                                kind (K)
-%d [n] (z)                     Parabolic cylinder function
+parabolic_cylinder_d(v,z)      Parabolic cylinder D function
 @end example
 
 @opencatbox
