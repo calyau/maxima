@@ -24,18 +24,6 @@ assume(a>0);
 changevar(%,y-z^2/a,z,y);
 /* on lispm -2*('integrate(z*%e^abs(z),z,-2*sqrt(a),0))/a; */
 - 'integrate(2*z*%e^abs(z)/a,z,-2*sqrt(a),0);
-assume(p > 0);
-[p > 0]$
-t^(1/2)*%e^-(a*t/4)*%e^-(p*t);
-sqrt(t)*%e^(-p*t-a*t/4);
-/* specint(%,t); not available in distribution
-sqrt(%pi)/(2*(p+a/4)^(3/2)); */
-t^(1/2)*%j[1](2*a^(1/2)*t^(1/2))*%e^-(p*t);
-%j[1](2*sqrt(a)*sqrt(t))*sqrt(t)*%e^-(p*t);
-/* specint(%,t); not available
-sqrt(a)*%e^-(a/p)/p^2;*/
-forget(p > 0,a > 0)$
-[p > 0,a > 0]$
 x+y/z^2;
 y/z^2+x;
 part(%,1,2,2);
