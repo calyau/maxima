@@ -127,9 +127,12 @@ arbitrary depth by nesting the desired elements in lists.
 
 It is possible that one may wish to @code{facsum} with respect  to more
 complicated subexpressions,  such as  @code{log (x + y)}.  Such  arguments are
-also  permissible.   With  no  variable  specification,  for example
-@code{facsum (@var{expr})}, the  result returned  is the same  as that  returned by
-@code{ratsimp (@var{expr})}.
+also  permissible.   
+
+@c CUTTING THIS OUT, BECAUSE IT IS OBVIOUSLY NOT CORRECT
+@c SEE EXAMPLE IN BUG REPORT ID: 2834336 - ratsimp vs facsum
+@c With no variable specification, for example @code{facsum (@var{expr})}, the 
+@c result returned is the same as that returned by @code{ratsimp (@var{expr})}.
 
 Occasionally the user may wish to obtain any of the  above forms
 for expressions which are specified only by their leading operators.
