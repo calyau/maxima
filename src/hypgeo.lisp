@@ -139,10 +139,6 @@
 (defun pjac (x n a b)
   (list '(mqapply) (list '($%p array) n a b) x))
 
-;; Parabolic cylinder function D
-(defun parcyl (x n)
-  (list '(mqapply) (list '($%d array) n) x))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Two general pattern for the routine lt-sf-log.
@@ -769,16 +765,6 @@
 	  (($slommel array)(v1 true)(v2 true))
 	  (w true)))
 	((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize %d[v](w), Parabolic Cylinder function
-(defun oned (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%d array) (v true)) (w true)))
-	((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize parabolic_cylinder_d function
@@ -1709,7 +1695,11 @@
   (let ((inv4 (inv 4)))
     (cond ((or $prefer_d 
                (whittindtest (add (div v 2) inv4) inv4))
-           (parcyl z v))
+           ;; At this time the Parabolic Cylinder D function is not implemented
+           ;; as a simplifying function. We call nevertheless the simplifer
+           ;; to simplify the arguments. When we implement the function
+           ;; The symbol has to be changed to the noun form.
+           (simplify (list '($parabolic_cylinder_d) v z)))
           (t (simpdtf z v)))))
 
 (defun whittindtest (i1 i2)
@@ -2161,13 +2151,6 @@
                    (return (lt-bessel_k0 rest arg1)))
                   (t
                    (return (fractest2 rest arg1 index1 nil 'kti))))))
-     
-     ;; Laplace transform of Parabolic Cylinder function
-     (cond ((setq l (oned u))
-	    (setq index1 (cdras 'v l)
-		  arg1 (cdras 'w l)
-		  rest (cdras 'u l))
-	    (return (fractest2 rest arg1 index1 nil 'd))))
      
      ;; Laplace transform of Parabolic Cylinder function
      (cond ((setq l (m2-parabolic_cylinder_d u))
@@ -3020,7 +3003,11 @@
 
 (defun hetd (x n)
   (mul* (power '$%e (mul* x x (inv 4)))
-        (parcyl x n)))
+        ;; At this time the Parabolic Cylinder D function is not implemented
+        ;; as a simplifying function. We call nevertheless the simplifer
+        ;; to simplify the arguments. When we implement the function
+        ;; The symbol has to be changed to the noun form.
+        (simplify (list '($parabolic_cylinder_d) n x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3112,7 +3099,12 @@
     (mul* (power 2 inv2)		; Should this be 2^(1/4)?
 	  (power '$%pi (mul* -1 inv2))
 	  (power '$%e (mul* -1 inv2 x x))
-	  (parcyl (mul* (power 2 inv2) x) -1))))
+          ;; At this time the Parabolic Cylinder D function is not implemented
+          ;; as a simplifying function. We call nevertheless the simplifer
+          ;; to simplify the arguments. When we implement the function
+          ;; The symbol has to be changed to the noun form.
+          (simplify 
+            (list '($parabolic_cylinder_d) -1 (mul (power 2 inv2) x))))))
 
 ;; Lommel S function in terms of Bessel J and Bessel Y.
 ;; Luke gives
