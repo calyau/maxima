@@ -324,3 +324,6 @@
     $orbits
     $rk))
   ($auto_mexpr mexpr "dynamics"))
+
+(defprop $hypergeometric simp-hypergeometric operators)
+(autof 'simp-hypergeometric "hypergeometric")
