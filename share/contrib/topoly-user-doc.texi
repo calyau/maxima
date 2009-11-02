@@ -929,6 +929,16 @@ either be a single expression or a set or list of expressions;
 similarly, @math{l} can either be a single symbol or a list of set of
 symbols.
 
+The basic strategy of @code{to_poly_solve} is use @code{to_poly} to
+convert the input into a polynomial form and call @code{algsys} on the
+polynomial system. Thus user options that affect @code{algsys},
+especially @code{algexact}, also affect @code{to_poly_solve}. The
+default for @code{algexact} is false, but for @code{to_poly_solve},
+generally @code{algexact} should be true. The function
+@code{to_poly_solve} does not locally set @code{algexact} to true
+because this would make it impossible to find approximate solutions
+when the @code{algsys} is unable to determine an exact solution.
+
 The function @code{to_poly_solve} is a simplifying function. An alias
 for @code{to_poly_solve} is @code{%solve}. When @code{to_poly_solve}
 is unable to find a solution set, it returns a @code{%solve} noun form.

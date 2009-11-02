@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 30 October 2009 -->
+<!-- Created by texi2html 1.56k from topoly-user-doc.texi on 2 November 2009 -->
 
 <TITLE>Untitled Document</TITLE>
 </HEAD>
@@ -1321,6 +1321,18 @@ symbols.
 
 
 <P>
+The basic strategy of <CODE>to_poly_solve</CODE> is use <CODE>to_poly</CODE> to
+convert the input into a polynomial form and call <CODE>algsys</CODE> on the
+polynomial system. Thus user options that affect <CODE>algsys</CODE>,
+especially <CODE>algexact</CODE>, also affect <CODE>to_poly_solve</CODE>. The
+default for <CODE>algexact</CODE> is false, but for <CODE>to_poly_solve</CODE>,
+generally <CODE>algexact</CODE> should be true. The function
+<CODE>to_poly_solve</CODE> does not locally set <CODE>algexact</CODE> to true
+because this would make it impossible to find approximate solutions
+when the <CODE>algsys</CODE> is unable to determine an exact solution.
+
+
+<P>
 The function <CODE>to_poly_solve</CODE> is a simplifying function. An alias
 for <CODE>to_poly_solve</CODE> is <CODE>%solve</CODE>. When <CODE>to_poly_solve</CODE>
 is unable to find a solution set, it returns a <CODE>%solve</CODE> noun form.
@@ -1598,7 +1610,7 @@ specifications might change and its functionality might be merged into
 other Maxima functions.
 </DL>
 <P><HR><P>
-This document was generated on 30 October 2009 using
+This document was generated on 2 November 2009 using
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>
