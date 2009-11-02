@@ -1506,7 +1506,7 @@ where @code{a} a list of length @code{p} and
 @closecatbox
 @end deffn
 
-@deffn {Function} hypergeometric([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
+@deffn {Function} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
 The hypergeometric function. Unlike Maxima's @code{%f} hypergeometric
 function, the function @code{hypergeometric} is a simplifying
 function; also, @code{hypergeometric} supports complex double and
