@@ -33,6 +33,7 @@ lstruve[n] (z)                 Struve L function
 gamma()                        Gamma function
 gammagreek(a,z)                Incomplete gamma function
 gammaincomplete(a,z)           Tail of incomplete gamma function
+hypergeometric(l1, l2, z)      Hypergeometric function
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
 %m[u,k] (z)                    Whittaker function, 1st kind
@@ -1505,7 +1506,45 @@ where @code{a} a list of length @code{p} and
 @closecatbox
 @end deffn
 
+@deffn {Function} hypergeometric([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
+The hypergeometric function. Unlike Maxima's @code{%f} hypergeometric
+function, the function @code{hypergeometric} is a simplifying
+function; also, @code{hypergeometric} supports complex double and
+big floating point evaluation. For the Gauss hypergeometric function,
+that is @math{p = 2} and @math{q = 1}, floating point evaluation
+outside the unit circle is supported, but in general, it is not
+supported.
 
+When the option variable @code{expand_hypergeometric} is true (default
+is false) and one of the arguments @code{a1} through @code{ap} is a
+negative integer (a polynomial case), @code{hypergeometric} returns an
+expanded polynomial. 
+
+Examples:
+@example
+ (%i1)  hypergeometric([],[],x);
+ (%o1) %e^x
+@end example
+Polynomial cases automatically expand when @code{expand_hypergeometric} is true:
+@example
+ (%i2) hypergeometric([-3],[7],x);
+ (%o2) hypergeometric([-3],[7],x)
+
+ (%i3) hypergeometric([-3],[7],x), expand_hypergeometric : true;
+ (%o3) -x^3/504+3*x^2/56-3*x/7+1
+@end example
+Both double float and big float evaluation is supported:
+@example
+ (%i4) hypergeometric([5.1],[7.1 + %i],0.42);
+ (%o4) 1.346250786375334-0.0559061414208204*%i
+
+ (%i5) hypergeometric([5,6],[8], 5.7 - %i);
+ (%o5) 0.00737582400977495-0.00104981368857867*%i
+
+ (%i6) hypergeometric([5,6],[8], 5.7b0 - %i), fpprec : 30;
+ (%o6) 7.37582400977494674506442010824b-3-1.04981368857867315858055393376b-3*%i
+@end example
+@end deffn
 
 @node Parabolic Cylinder Functions, Functions and Variables for Special Functions, Hypergeometric Functions, Special Functions
 @section  Parabolic Cylinder Functions
