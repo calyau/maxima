@@ -1848,7 +1848,10 @@
 ;;; [var, pt, order, asymp]
 
 (defmfun $taylor (e &rest args)
-   (taylor* e args))
+  (when (not ($ratp e))
+    ;; Not a mrat expression. Remove the special representation.
+    (setq e (specrepcheck e)))
+  (taylor* e args))
 
 (defun taylor* (arg l)
    ;; We must bind $MAXTAYORDER to () below because of the problem of constants
