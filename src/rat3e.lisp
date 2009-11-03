@@ -151,6 +151,9 @@
 
 (defun fullratsimp (l)
   (let (($expop 0) ($expon 0) (inratsimp t) $ratsimpexpons)
+    (when (not ($ratp l))
+      ;; Not a mrat expression. Remove the special representation.
+      (setq l (specrepcheck l)))
     (setq l ($totaldisrep l))
     (fr1 l varlist)))
 
