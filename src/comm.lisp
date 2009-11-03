@@ -378,10 +378,13 @@
     (if (depends u x) (return t))))
 
 (defmfun sdiff (e x) ; The args to SDIFF are assumed to be simplified.
+  ;; Remove a special representation from the variable of differentiation
+  (setq x (specrepcheck x))
   (cond ((alike1 e x) 1)
 	((mnump e) 0)
 	((or (atom e) (member 'array (cdar e) :test #'eq)) (chainrule e x))
 	((eq (caar e) 'mrat) (ratdx e x))
+        ((eq (caar e) 'mpois) ($poisdiff e x)) ; Poisson series
 	((eq (caar e) 'mplus) (addn (sdiffmap (cdr e) x) t))
 	((mbagp e) (cons (car e) (sdiffmap (cdr e) x)))
 	((member (caar e) '(%sum %product) :test #'eq) (diffsumprod e x))
