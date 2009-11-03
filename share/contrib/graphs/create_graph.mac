@@ -244,6 +244,32 @@ tutte_graph() := sparse6_decode(
 
 pappus_graph() := graph6_decode("QhEKA?_C?O?_?P?g?I?@S?DOAG_")$
 
+truncated_cube_graph() := graph6_decode("W`CaSG??G??@?@?A?AO@A?CG?_O?K??Q@A?G_O@?o?CC_?G")$
+
+truncated_dodecahedron_graph() := sparse6_decode(":{b?GSkRI_owcUgNgSYPQeTcqi`]iWgeyHozGKqBP}?E_cgO]ERa@`{SMO_OPkIEMryLInSkjGYQIkbVssbAOkVQRKgtJEr@u\\UssjUkOUuabE~")$
+
+truncated_icosahedron_graph() := sparse6_decode(":{a_gwMQ?AqoG]HEEQX\\C`Ogt`@ISRJRHky^]AdGxUg[ifJDdDapxKiY?Q_cwPaEXoWTdxP^Srcai]dTubiYu\\Rq@Pu_kVSTi}GEMO_`QEEIo@@iAIL~")$
+
+truncated_octahedron_graph() := sparse6_decode(":W___``aBabcFdGcDefghLiMjkLkMnPoPqRsTU")$
+
+truncated_tetrahedron_graph() := sparse6_decode(":KcAKhcgUs@PEa@wfT")$
+
+cuboctahedron_graph() := sparse6_decode(":K`A?WAaIXGdcUXbsKayCi")$
+
+icosidodecahedron_graph() := sparse6_decode(":]c?`cdEabjAIbIJeF_CG`DHaBGH_`iPiQRgLMhLNTwPRVqSV_AJP`BKQcEVWdFVX")$
+
+great_rhombicosidodecahedron_graph() := sparse6_decode(":~?@w`?A@__QB@WcG_GELBGIB`GUECG[PaGcSagmKbPaMbx?UcP]QEhKZhAA`giM?_WIBaGeIIGkhbaiNIwqLhAadIYWihqm_gRaaMIKxMiomjQ}oKjCrgBQ`LYGuOIKvOYqlPJIrPiO{PIS|PYW}Pi[~P|@Kr[zNtTRStTZOsTbQstiSRDaTRTeURH\\LecyZRx`MUhdNU}`cx]Xgxue[VeQ\\VuU]WEY^WU^OXLDdseZRX|Pg[LTh[\\Xi[l\\j[~")$
+
+small_rhombicosidodecahedron_graph() := sparse6_decode(":{`?GKSHFBOGKIF?COPKGSK`apkQIObPqTWGGaaWoiMJjTzDegYiertOw]ifRyAGDLEw@OkY_dQxmCSKFGXSq\\b@r`uOOccXPIURsY\\UnXlWZeE|aqgCTauWgURTIu[iVRtY}cRVJ}BHivwkurb")$
+
+great_rhombicuboctahedron_graph() := sparse6_decode(":oa?wSE@?_og[OVDDP`K[PIdqACcbLeDH{wlA`oBCCrDaFG{W|XkUsDhB]PvsQQw`mgCtE`RSSdLXVVTJIaeigV^")$
+
+small_rhombicuboctahedron_graph() := sparse6_decode(":Wa?`_`CabE_`aGbHcGdHKeIfJM_C`DOaEObFPQgKhLSiMSjNTU")$
+
+snub_dodecahedron_graph() := sparse6_decode(":{a??SCFG??_cCEDbPwSMGEa`xCe@@jDIk?OOHOPHCf?HOQ[GGEEBgWSMLFsBDCr^nScDLBQLGCTKu`Pra`i]TLtAphGeidrYTNAEOpkWSMIHgwk]TRtAqmiVTP`S[UodbEBESLWKXWpSnXQ`il[rgDtQ}aUTjjqDCbngCQLpOJfcJYaUNgE~")$
+
+snub_cube_graph() := sparse6_decode(":Wa?@_@eCDcDab_`eIfJcGdH_AGIK`BHJL`AGJM_BHINcEGKMdFHLNdEIKNcFJLM")$
+
 add_path(lst, g) :=
   add_edges(vertices_to_path(lst), g)$
 
