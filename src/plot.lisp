@@ -534,58 +534,61 @@ sin(y)*(10.0+6*cos(x)),
 		     (setf (aref pts (+ 1 i)) (funcall fy x1 x2 x3))
 		     (setf (aref pts (+ 2 i)) (funcall fz x1 x2 x3)))))))
 
-; Return value is a Lisp function which evaluates EXPR to a float.
-; COERCE-FLOAT-FUN always returns a function and never returns a symbol,
-; even if EXPR is a symbol.
-;
-; Following cases are recognized:
-; EXPR is a symbol
-;   name of a Lisp function
-;   name of a Maxima function
-;   name of a DEFMSPEC function
-;   name of a Maxima macro
-;   a string which is the name of a Maxima operator (e.g., "!")
-;   name of a simplifying function
-; EXPR is a Maxima lambda expression
-; EXPR is a general Maxima expression
+;; Return value is a Lisp function which evaluates EXPR to a float.
+;; COERCE-FLOAT-FUN always returns a function and never returns a symbol,
+;; even if EXPR is a symbol.
+;;
+;; Following cases are recognized:
+;; EXPR is a symbol
+;;   name of a Lisp function
+;;   name of a Maxima function
+;;   name of a DEFMSPEC function
+;;   name of a Maxima macro
+;;   a string which is the name of a Maxima operator (e.g., "!")
+;;   name of a simplifying function
+;; EXPR is a Maxima lambda expression
+;; EXPR is a general Maxima expression
 
 (defun coerce-float-fun (expr &optional lvars)
   (cond ((and (consp expr) (functionp expr))
          (let ((args (if lvars (cdr lvars) (list (gensym)))))
            (coerce-lisp-function-or-lisp-lambda args expr)))
-        ; expr is a string which names an operator
-        ; (e.g. "!" "+" or a user-defined operator)
+        ;; expr is a string which names an operator
+        ;; (e.g. "!" "+" or a user-defined operator)
         ((and (stringp expr) (getopr0 expr))
          (let ((a (if lvars lvars `((mlist) ,(gensym)))))
            (coerce-float-fun `(($apply) ,(getopr0 expr) ,a) a)))
         ((and (symbolp expr) (not (member expr lvars)) (not ($constantp expr)))
          (cond
-       ((fboundp expr)
-        (let ((args (if lvars (cdr lvars) (list (gensym)))))
-          (coerce-lisp-function-or-lisp-lambda args expr)))
+	   ((fboundp expr)
+	    (let ((args (if lvars (cdr lvars) (list (gensym)))))
+	      (coerce-lisp-function-or-lisp-lambda args expr)))
 
-       ; expr is name of a Maxima function defined by := or define
-       ((mget expr 'mexpr)
-        (let*
-          ((mexpr (mget expr 'mexpr))
-           (args (cdr (second mexpr))))
-          (coerce-maxima-function-or-maxima-lambda args expr)))
+	   ;; expr is name of a Maxima function defined by := or
+	   ;; define
+	   ((mget expr 'mexpr)
+	    (let*
+		((mexpr (mget expr 'mexpr))
+		 (args (cdr (second mexpr))))
+	      (coerce-maxima-function-or-maxima-lambda args expr)))
 
-       ((or
-          ; expr is the name of a function defined by defmspec
-          (get expr 'mfexpr*)
-          ; expr is the name of a Maxima macro defined by ::=
-          (mget expr 'mmacro)
-          ; expr is the name of a simplifying function,
-          ; and the simplification property is associated with the noun form
-          (get ($nounify expr) 'operators)
-          ; expr is the name of a simplifying function,
-          ; and the simplification property is associated with the verb form
-          (get ($verbify expr) 'operators))
-        (let ((a (if lvars lvars `((mlist) ,(gensym)))))
-          (coerce-float-fun `(($apply) ,expr ,a) a)))
-       (t
-         (merror "Undefined function ~M" expr))))
+	   ((or
+	     ;; expr is the name of a function defined by defmspec
+	     (get expr 'mfexpr*)
+	     ;; expr is the name of a Maxima macro defined by ::=
+	     (mget expr 'mmacro)
+	     ;; expr is the name of a simplifying function, and the
+	     ;; simplification property is associated with the noun
+	     ;; form
+	     (get ($nounify expr) 'operators)
+	     ;; expr is the name of a simplifying function, and the
+	     ;; simplification property is associated with the verb
+	     ;; form
+	     (get ($verbify expr) 'operators))
+	    (let ((a (if lvars lvars `((mlist) ,(gensym)))))
+	      (coerce-float-fun `(($apply) ,expr ,a) a)))
+	   (t
+	    (merror "Undefined function ~M" expr))))
 
     ((and (consp expr) (eq (caar expr) 'lambda))
      (let ((args (cdr (second expr))))
@@ -597,17 +600,18 @@ sin(y)*(10.0+6*cos(x)),
             gensym-vars save-list-gensym subscripted-vars-save
             subscripted-vars-mset subscripted-vars-restore)
 
-       ; VARS and SUBSCRIPTED-VARS are Maxima lists.
-       ; Other lists are Lisp lists.
+       ;; VARS and SUBSCRIPTED-VARS are Maxima lists.  Other lists are
+       ;; Lisp lists.
        (when (cdr subscripted-vars)
 	 (setq gensym-vars (mapcar #'(lambda (ign) (declare (ignore ign)) (gensym))
 				   (cdr subscripted-vars)))
 	 (mapcar #'(lambda (a b) (setq vars (subst b a vars :test 'equal)))
 		 (cdr subscripted-vars) gensym-vars)
 
-         ; This stuff about saving and restoring array variables should go into MBINDING,
-         ; and the lambda expression constructed below should call MBINDING.
-         ; (At present MBINDING barfs on array variables.)
+         ;; This stuff about saving and restoring array variables
+         ;; should go into MBINDING, and the lambda expression
+         ;; constructed below should call MBINDING.  (At present
+         ;; MBINDING barfs on array variables.)
          (setq save-list-gensym (gensym))
          (setq subscripted-vars-save
                (mapcar #'(lambda (a) `(push (meval ',a) ,save-list-gensym))
@@ -623,10 +627,12 @@ sin(y)*(10.0+6*cos(x)),
         `(lambda ,(cdr vars)
            (declare (special ,@(cdr vars) errorsw))
 
-           ;; Nothing interpolated here when there are no subscripted variables.
+           ;; Nothing interpolated here when there are no subscripted
+           ;; variables.
            ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
 
-           ;; Nothing interpolated here when there are no subscripted variables.
+           ;; Nothing interpolated here when there are no subscripted
+           ;; variables.
            ,@(if (cdr subscripted-vars)
                  `((progn (setq ,save-list-gensym nil)
                           ,@(append subscripted-vars-save subscripted-vars-mset))))
@@ -662,7 +668,8 @@ sin(y)*(10.0+6*cos(x)),
                        (cl::error () t))
                      ))
 
-               ;; Nothing interpolated here when there are no subscripted variables.
+               ;; Nothing interpolated here when there are no
+               ;; subscripted variables.
                ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
 
                result)))
@@ -672,14 +679,14 @@ sin(y)*(10.0+6*cos(x)),
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
-         (let*
-           (($ratprint nil)
-            ($numer t)
-            (nounsflag t)
-            (result (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))
-           (if ($numberp result)
-             ($float result)
-             result)))
+         (let* (($ratprint nil)
+		($numer t)
+		(nounsflag t)
+		(result (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))
+	   ;; Just always try to convert the result to a float, which
+	   ;; handles things like $%pi.  See also BUG #2880115
+	   ;; http://sourceforge.net/tracker/?func=detail&atid=104933&aid=2880115&group_id=4933
+           ($float result)))
       'function)))
 
 ;; Same as above, but call APPLY instead of MAPPLY.
@@ -688,14 +695,13 @@ sin(y)*(10.0+6*cos(x)),
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
-         (let*
-           (($ratprint nil)
-            ($numer t)
-            (nounsflag t)
-            (result (maybe-realpart (apply ',expr (list ,@gensym-args)))))
-           (if ($numberp result)
-             ($float result)
-             result)))
+	 (let* (($ratprint nil)
+		($numer t)
+		(nounsflag t)
+		(result (maybe-realpart (apply ',expr (list ,@gensym-args)))))
+	   ;; Always use $float.  See comment for
+	   ;; coerce-maxima-function-ormaxima-lambda above.
+	   ($float result)))
       'function)))
 
 (defmacro zval (points verts i) `(aref ,points (+ 2 (* 3 (aref ,verts ,i)))))
