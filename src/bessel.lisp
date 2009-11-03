@@ -248,7 +248,8 @@
 (defun simp-hankel-1 (expr ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (cadr expr) z))
-	(arg   (simpcheck (caddr expr) z)))
+	(arg   (simpcheck (caddr expr) z))
+        rat-order)
     (cond
       ((zerop1 arg)
        (simp-domain-error
@@ -332,7 +333,8 @@
 (defun simp-hankel-2 (expr ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (cadr expr) z))
-	(arg   (simpcheck (caddr expr) z)))
+	(arg   (simpcheck (caddr expr) z))
+        rat-order)
     (cond
       ((zerop1 arg)
        (simp-domain-error
