@@ -1089,5 +1089,19 @@ sqrt(4*%e^2009-3)-1;
 sqrt(4*exp(2009));
 2*%e^(2009/2);
 
+/* Bug ID: 640332 - Need to specdisrep more systematically
+   Add the examples of the bug report.
+ */
+ratdisrep(diff(rat(x),rat(x)));
+1;
+diff(x,rat(x));
+1;
+outofpois(diff(intopois(sin(x)),x));
+cos(x);
+taylor(intopois(sin(x)),x,0,3);
+x-x^3/6;
+ratsimp(intopois(sin(x)));
+sin(x);
+
 end;
 end$
