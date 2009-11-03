@@ -143,11 +143,25 @@
 
 (defmvar $showtime nil)
 
-(defmfun meval* (test)
-  (let (refchkl baktrcl checkfactors)
-    (prog2 (if $ratvarswitch (setq varlist (cdr $ratvars)))
-	(meval test)
-      (clearsign))))
+;(defmfun meval* (test)
+;  (let (refchkl baktrcl checkfactors)
+;    (prog2 (if $ratvarswitch (setq varlist (cdr $ratvars)))
+;	(meval test)
+;      (clearsign))))
+
+;; This version of meval* makes sure that the facts from the global variable
+;; locals are cleared with a call to clearsign. The facts are added by asksign
+;; and friends. meval* function is only used for top level evaluations.
+;; For other cases the function meval can be used.
+
+(defun meval* (expr)
+  ;; Make sure that clearsign is called after the evaluation.
+  (unwind-protect
+    (let (refchkl baktrcl checkfactors)
+      (if $ratvarswitch (setq varlist (cdr $ratvars)))
+      (meval expr))
+    ;; Clear the facts from asksign and friends.
+    (clearsign)))
 
 (defmfun makelabel (x)
   (when (and $dskuse (not $nolabels) (> (incf dcount) $filesize))
