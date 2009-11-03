@@ -3,3 +3,9 @@ Makefile.in
 
 maxima.info*
 maxima_*.html
+
+contents.hhc
+include-maxima.texi
+index.hhk
+maxima.html
+maxima-index.lisp
