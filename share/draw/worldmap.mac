@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2007 Mario Rodriguez Riotorto
+Copyright (C) 2007, 2009 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -19,8 +19,7 @@ http://www.gnu.org/copyleft/gpl.html
 
 /*
 This file defines countries and continents using indices of the 
-'World Boundary Databank' (see worldmap.lisp). You need to execute
-'load(draw)' first for drawing maps.
+'World Boundary Databank' (see worldmap.lisp).
 
 Some notes:
   * Some boundaries and islands are controversial. I tried to
@@ -43,9 +42,12 @@ For questions, suggestions, bugs and the like, feel free
 to contact me at
 
 mario AT edu DOT xunta DOT es
-www.biomates.net
 */
 
+
+put('worldmap, 1, 'version) $
+
+if not get('draw,'version) then load("draw") $
 
 
 
@@ -78,7 +80,7 @@ numbered_boundaries(lista):=
       for i:0 thru n do
          s: s + [ar[2*i],ar[2*i+1]],
       s: s/(n+1),
-      labs: cons([sconc(k),s[1],s[2]],labs) ),
+      labs: cons([string(k),s[1],s[2]],labs) ),
     apply(draw2d,
           append([geomap(lista)],
                  [color=blue,
@@ -86,10 +88,9 @@ numbered_boundaries(lista):=
 
 
 
-
 /*
-Detects polygonal segments contained in the rectangle with vertices
-(x1,y1) -upper left- and (x2,y2) -bottom right-.
+Detects polygonal segments fully contained in the rectangle with
+vertices (x1,y1) -upper left- and (x2,y2) -bottom right-.
 Usage: 
 [1]  region_boundaries(-31.81,74.92,49.84,32.06);
   returns segment numbers for plotting the european region.
@@ -122,6 +123,30 @@ region_boundaries(x1,y1,x2,y2):=
         then lista: endcons(i,lista) ),
     lista )$
 
+
+
+/*
+Detects polygonal segments containing at least one vertex in the rectangle
+with vertices (x1,y1) -upper left- and (x2,y2) -bottom right-.
+*/
+region_boundaries_plus(x1,y1,x2,y2):=
+  block([n, lista:[], ncoord, x, y, isok],
+    n:arrayinfo(boundaries_array)[3][1],
+    for i:0 thru n do(
+      ncoord: ?array\-dimension(boundaries_array[i],0)/2,
+      xmin:1.75555970201398d+305,
+      xmax:-1.75555970201398d+305,
+      ymin:1.75555970201398d+305,
+      ymax:-1.75555970201398d+305,
+      isok: false,
+      for j:1 thru ncoord while not isok do(
+        x: boundaries_array[i][2*j-2],
+        y: boundaries_array[i][2*j-1],
+        if x > x1 and x < x2 and y > y2 and y < y1
+          then isok : true),
+      if isok
+        then lista: endcons(i,lista) ),
+    lista )$
 
 
 
