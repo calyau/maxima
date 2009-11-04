@@ -1,4 +1,4 @@
-@c version 1.43
+@c version 1.44
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -3672,18 +3672,17 @@ de pa@'{@dotless{i}}ses, continentes y l@'{@dotless{i}}neas
 costeras a partir de las
 componentes de @code{boundaries_array} (v@'ease el
 fichero @code{share/draw/worldmap.mac} para m@'as
-informaci@'on). El paquete @code{draw} no carga
-autom@'aticamente @code{worldmap}.
+informaci@'on). El paquete @code{worldmap} carga
+autom@'aticamente el paquete @code{draw}.
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) c1: gr2d(geomap(Canada,United_States,
+(%i1) load(worldmap)$
+(%i2) c1: gr2d(geomap(Canada,United_States,
                       Mexico,Cuba))$
-(%i4) c2: gr2d(geomap(Africa))$
-(%i5) c3: gr2d(geomap(Oceania,China,Japan))$
-(%i6) c4: gr2d(geomap(France,Portugal,Spain,
+(%i3) c2: gr2d(geomap(Africa))$
+(%i4) c3: gr2d(geomap(Oceania,China,Japan))$
+(%i5) c4: gr2d(geomap(France,Portugal,Spain,
                       Morocco,Western_Sahara))$
-(%i7) draw(columns  = 2,
+(%i6) draw(columns  = 2,
            c1,c2,c3,c4)$
 @end example
 
@@ -3695,9 +3694,8 @@ arrays, los mapas se reproducir@'an de forma m@'as lenta. V@'eanse
 tambi@'en @code{make_poly_country} y @code{make_poly_continent} para
 comprender el siguiente c@'odigo.
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) mymap: append(
+(%i1) load(worldmap)$
+(%i2) mymap: append(
    [color      = white],  /* borders are white */
    [fill_color = red],             make_poly_country(Bolivia),
    [fill_color = cyan],            make_poly_country(Paraguay),
@@ -3706,7 +3704,7 @@ comprender el siguiente c@'odigo.
    [fill_color = "#23ab0f"],       make_poly_country(Brazil),
    [fill_color = goldenrod],       make_poly_country(Argentina),
    [fill_color = "midnight-blue"], make_poly_country(Uruguay))$
-(%i4) apply(draw2d, mymap)$
+(%i3) apply(draw2d, mymap)$
 @end example
 
 @b{3D}
@@ -3722,9 +3720,8 @@ Proyecciones 3D disponibles:
 @code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: proyecta los mapas sobre la esfera de radio
 @var{r} y centro (@var{x},@var{y},@var{z}).
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) draw3d(geomap(Australia), /* default projection */
+(%i1) load(worldmap)$
+(%i2) draw3d(geomap(Australia), /* default projection */
              geomap(Australia,
                     [spherical_projection,2,2,2,3]))$
 @end example
@@ -3734,9 +3731,8 @@ Proyecciones 3D disponibles:
 sobre el cilindro de radio @var{rc} cuyo eje pasa a trav@'es de los polos del globo
 de radio @var{r} y centro (@var{x},@var{y},@var{z}).
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) draw3d(geomap([America_coastlines,Eurasia_coastlines],
+(%i1) load(worldmap)$
+(%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
                     [cylindrical_projection,2,2,2,3,4]))$
 @end example
 
@@ -3745,9 +3741,8 @@ de radio @var{r} y centro (@var{x},@var{y},@var{z}).
 conos de @'angulo @var{alpha}, cuyos ejes pasan a trav@'es de los polos del globo de radio @var{r} 
 y centro (@var{x},@var{y},@var{z}). Ambos conos, norte y sur, son tangentes a la esfera.
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) draw3d(geomap(World_coastlines,
+(%i1) load(worldmap)$
+(%i2) draw3d(geomap(World_coastlines,
                     [conic_projection,0,0,0,1,90]))$
 @end example
 @end itemize
@@ -4090,7 +4085,7 @@ Lee el fichero gr@'afico en formato xpm y devuelve un objeto @code{picture}.
 
 @deffn  {Funci@'on} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
 Detecta los segmentos poligonales almacenados en la variable global
-@code{boundaries_array} contenidos en el rect@'angulo de v@'ertices
+@code{boundaries_array} totalmente contenidos en el rect@'angulo de v@'ertices
 (@var{x1},@var{y1}) -superior izquierdo- y (@var{x2},@var{y2})
 -inferior derecho-.
 
@@ -4099,13 +4094,32 @@ Ejemplo:
 Devuelve los n@'umeros de los segmentos necesarios para
 dibujar el sur de Italia.
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) region_boundaries(10.4,41.5,20.7,35.4);
-(%o3)                [1846, 1863, 1864, 1881, 1888, 1894]
-(%i4) draw2d(geomap(%))$
+(%i1) load(worldmap)$
+(%i2) region_boundaries(10.4,41.5,20.7,35.4);
+(%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
+(%i3) draw2d(geomap(%))$
 @end example
 @end deffn
+
+
+
+@deffn  {Funci@'on} region_boundaries_plus (@var{x1},@var{y1},@var{x2},@var{y2})
+Detecta los segmentos poligonales almacenados en la variable global
+@code{boundaries_array} con al menos un v@'ertice dentro del rect@'angulo 
+definido por los extremos (@var{x1},@var{y1}) -superior izquierdo- y (@var{x2},@var{y2})
+-inferior derecho-.
+
+Ejemplo:
+
+@example
+(%i1) load(worldmap)$
+(%i2) region_boundaries(10.4,41.5,20.7,35.4);
+(%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
+(%i3) draw2d(geomap(%))$
+@end example
+@end deffn
+
+
 
 
 @deffn  {Funci@'on} numbered_boundaries (@var{nlist})
@@ -4120,11 +4134,10 @@ Ejemplo:
 Mapa de Europa con las fronteras y costas etiquetadas con
 su componente num@'erica de @code{boundaries_array}.
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) european_borders: 
-         region_boundaries(-31.81,74.92,49.84,32.06)$
-(%i4) numbered_boundaries(european_borders)$
+(%i1) load(worldmap)$
+(%i2) european_borders: 
+           region_boundaries(-31.81,74.92,49.84,32.06)$
+(%i3) numbered_boundaries(european_borders)$
 @end example
 @end deffn
 
@@ -4152,16 +4165,15 @@ en conclusi@'on, los n@'umeros de segmentos poligonales171, 173 y 1143
 (en este orden) son compatibles y el pol@'{@dotless{i}}gono
 coloreado se podr@'a dibujar.
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) Bhutan;
-(%o3)                        [[171, 173, 1143]]
-(%i4) boundaries_array[171];
-(%o4) @{Array:  
+(%i1) load(worldmap)$
+(%i2) Bhutan;
+(%o2)                        [[171, 173, 1143]]
+(%i3) boundaries_array[171];
+(%o3) @{Array:  
        #(88.750549 27.14727 88.806351 27.25305 88.901367 27.282221
          88.917877 27.321039)@}
-(%i5) boundaries_array[173];
-(%o5) @{Array:
+(%i4) boundaries_array[173];
+(%o4) @{Array:
        #(91.659554 27.76511 91.6008 27.66666 91.598022 27.62499
          91.631348 27.536381 91.765533 27.45694 91.775253 27.4161 
          92.007751 27.471939 92.11441 27.28583 92.015259 27.168051
@@ -4176,8 +4188,8 @@ coloreado se podr@'a dibujar.
          89.110237 26.829161 88.921631 26.98777 88.873016 26.95499
          88.867737 27.080549 88.843307 27.108601 88.750549 
          27.14727)@}
-(%i6) boundaries_array[1143];
-(%o6) @{Array:  
+(%i5) boundaries_array[1143];
+(%o5) @{Array:  
        #(91.659554 27.76511 91.666924 27.88888 91.65831 27.94805 
          91.338028 28.05249 91.314972 28.096661 91.108856 27.971109
          91.015808 27.97777 90.896927 28.05055 90.382462 28.07972
@@ -4185,8 +4197,8 @@ coloreado se podr@'a dibujar.
          89.83165 28.24888 89.58609 28.139999 89.35997 27.87166 
          89.225517 27.795 89.125793 27.56749 88.971077 27.47361
          88.917877 27.321039)@}
-(%i7) Bhutan_polygon: make_polygon([171,173,1143])$
-(%i8) draw2d(Bhutan_polygon)$
+(%i6) Bhutan_polygon: make_polygon([171,173,1143])$
+(%i7) draw2d(Bhutan_polygon)$
 @end example
 @end deffn
 
@@ -4199,10 +4211,9 @@ un pa@'{@dotless{i}}s tendr@'a asociados varios pol@'{@dotless{i}}gonos.
 Ejemplo:
 
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) make_poly_country(India)$
-(%i4) apply(draw2d, %)$
+(%i1) load(worldmap)$
+(%i2) make_poly_country(India)$
+(%i3) apply(draw2d, %)$
 @end example
 @end deffn
 
@@ -4215,14 +4226,13 @@ un continente o lista de pa@'{@dotless{i}}ses coloreados.
 Ejemplo:
 
 @example
-(%i1) load(draw)$
-(%i2) load(worldmap)$
-(%i3) /* A continent */
+(%i1) load(worldmap)$
+(%i2) /* A continent */
       make_poly_continent(Africa)$
-(%i4) apply(draw2d, %)$
-(%i5) /* A list of countries */
+(%i3) apply(draw2d, %)$
+(%i4) /* A list of countries */
       make_poly_continent([Germany,Denmark,Poland])$
-(%i6) apply(draw2d, %)$
+(%i5) apply(draw2d, %)$
 @end example
 @end deffn
 
