@@ -978,12 +978,17 @@
 (defmvar $ratdenomdivide t)
 
 (defmfun $ratdisrep (x)
-  (cond ((not ($ratp x)) x)
-	(t (setq x (ratdisrepd x))
-	   (if (and (not (atom x))
-		    (member 'trunc (cdar x) :test #'eq))
-	       (cons (delete 'trunc (copy-list (car x)) :count 1 :test #'eq) (cdr x))
-	       x))))
+  (cond ((mbagp x)
+         ;; Distribute over lists, equations, and matrices.
+         (cons (car x) (mapcar #'$ratdisrep (cdr x))))
+        ((not ($ratp x)) x)
+        (t
+         (setq x (ratdisrepd x))
+         (if (and (not (atom x))
+                  (member 'trunc (cdar x) :test #'eq))
+           (cons (delete 'trunc (copy-list (car x)) :count 1 :test #'eq)
+                 (cdr x))
+           x))))
 
 ;; RATDISREPD is needed by DISPLA. - JPG
 (defun ratdisrepd (x)
