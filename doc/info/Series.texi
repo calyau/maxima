@@ -335,9 +335,19 @@ By default, terms of a sum are displayed in order of decreasing power.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} powerseries (@var{expr}, @var{x}, @var{a})
-Returns the general form of the power series expansion for @var{expr}
-in the variable @var{x} about the point @var{a} (which may be @code{inf} for infinity).
+Returns the general form of the power series expansion for @var{expr} in the 
+variable @var{x} about the point @var{a} (which may be @code{inf} for infinity):
+@example
+           inf
+           ====
+           \               n
+            >    b  (x - a)
+           /      n
+           ====
+           n = 0
+@end example
 
 If @code{powerseries} is unable to expand @var{expr},
 @code{taylor} may give the first several terms of the series.
