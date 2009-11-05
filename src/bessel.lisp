@@ -255,9 +255,12 @@
        (simp-domain-error
          (intl:gettext "hankel_1: hankel_1(~:M,~:M) is undefined.")
          order arg))
-      ((bessel-numerical-eval-p order arg)
-       (let ((result (hankel-1 order (complex ($realpart arg)
-                                              ($imagpart arg)))))
+      ((and (complex-float-numerical-eval-p order arg)
+            (mnump order))
+       (let* ((order ($float order))
+              (arg (complex ($float ($realpart arg))
+                            ($float ($imagpart arg))))
+              (result (hankel-1 order arg)))
          (add (mul '$%i (imagpart result)) (realpart result))))
       ((and $besselexpand
             (setq rat-order (max-numeric-ratio-p order 2)))
@@ -340,9 +343,12 @@
        (simp-domain-error
          (intl:gettext "hankel_2: hankel_2(~:M,~:M) is undefined.")
          order arg))
-      ((bessel-numerical-eval-p order arg)
-       (let ((result (hankel-2 order (complex ($realpart arg)
-                                              ($imagpart arg)))))
+      ((and (complex-float-numerical-eval-p order arg)
+            (mnump order))
+       (let* ((order ($float order))
+              (arg (complex ($float ($realpart arg))
+                            ($float ($imagpart arg))))
+              (result (hankel-2 order arg)))
          (add (mul '$%i (imagpart result)) (realpart result))))
       ((and $besselexpand
             (setq rat-order (max-numeric-ratio-p order 2)))
@@ -891,13 +897,17 @@ Perhaps you meant to enter `~a'.~%"
 		    ;; in all other cases
 		    (domain-error arg 'bessel_j))))
 
-            ((bessel-numerical-eval-p order arg)
+            ((and (complex-float-numerical-eval-p order arg)
+                  (mnump order)) ; evaluate numerically only for a real order
 	     ;; We have numeric order and arg and $numer is true, or
 	     ;; we have either the order or arg being floating-point,
 	     ;; so let's evaluate it numerically.
-             ;; the numerical routine bessel-j returns a CL number, so we have to add
-             ;; the conversion to a Maxima-complex-number
-             (let ((result (bessel-j order (complex ($realpart arg) ($imagpart arg))))) 
+             ;; the numerical routine bessel-j returns a CL number, so we have 
+             ;; to add the conversion to a Maxima-complex-number
+             (let* ((order ($float order))
+                    (arg (complex ($float ($realpart arg))
+                                  ($float ($imagpart arg))))
+                    (result (bessel-j order arg)))
                (simplify
 		(list '(mplus)
 		      (simplify (list '(mtimes) '$%i (imagpart result)))
@@ -1023,11 +1033,15 @@ Perhaps you meant to enter `~a'.~%"
       (cond ((and (numberp arg) (= arg 0) (complex-number-p order)) 
 	     (domain-error arg 'bessel_y))
 
-	    ((bessel-numerical-eval-p order arg)
+	    ((and (complex-float-numerical-eval-p order arg)
+	          (mnump order)) ; evaluate numerically only for a real order
 	     ;; We have numeric order and arg and $numer is true, or
 	     ;; we have either the order or arg being floating-point,
 	     ;; so let's evaluate it numerically.
-             (let ((result (bessel-y order (complex ($realpart arg) ($imagpart arg)))))
+             (let* ((order ($float order))
+                    (arg (complex ($float ($realpart arg))
+                                  ($float ($imagpart arg))))
+                    (result (bessel-y order arg)))
                (simplify
 		(list '(mplus)
 		      (simplify (list '(mtimes) '$%i (imagpart result)))
@@ -1137,8 +1151,12 @@ Perhaps you meant to enter `~a'.~%"
 		    ;; in all other cases domain-error
 		    (domain-error arg 'bessel_i))))
 
-            ((bessel-numerical-eval-p order arg)
-             (let ((result (bessel-i order (complex ($realpart arg) ($imagpart arg)))))
+            ((and (complex-float-numerical-eval-p order arg)
+                  (mnump order)) ; evaluate numerically only for a real order
+             (let* ((order ($float order))
+                    (arg (complex ($float ($realpart arg))
+                                  ($float ($imagpart arg))))
+                    (result (bessel-i order arg)))
                (simplify
 		(list '(mplus)
 		      (simplify (list '(mtimes) '$%i (imagpart result)))
@@ -1274,11 +1292,15 @@ Perhaps you meant to enter `~a'.~%"
     (cond ((and (numberp arg) (= arg 0) (complex-number-p order))
 	   ;; domain-error for all cases of zero arg
            (domain-error arg 'bessel_k))
-	  ((bessel-numerical-eval-p order arg)
+          
+          ((and (complex-float-numerical-eval-p order arg)
+                (mnump order)) ; evaluate numerically only for a real order
 	   ;; A&S 9.6.6
 	   ;; K[-v](x) = K[v](x)
-	   (let ((result 
-		  (bessel-k order (complex ($realpart arg) ($imagpart arg)))))
+	   (let* ((order ($float order))
+	          (arg (complex ($float ($realpart arg))
+	                        ($float ($imagpart arg))))
+	          (result (bessel-k order arg)))
 	     (simplify
 	      (list '(mplus)
 		    (simplify (list '(mtimes) '$%i (imagpart result)))
