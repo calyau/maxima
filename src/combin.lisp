@@ -835,11 +835,17 @@
 	   (setq n (nconc n (copy-tree a)))))))
 
 (defmfun $qunit (n)
-  (let ((l (sqcont n)))
-    (list '(mplus) (pelso1 l 0 1)
-	  (list '(mtimes)
-		(list '(mexpt) n '((rat) 1 2))
-		(pelso1 l 1 0)))))
+  (let ((isqrtn ($isqrt n)))
+    (when (or (not (integerp n))
+              (minusp n)
+              (= (* isqrtn isqrtn) n))
+      (merror
+        (intl:gettext "qunit: Argument must be a positive non quadratic integer.")))
+    (let ((l (sqcont n)))
+      (list '(mplus) (pelso1 l 0 1)
+            (list '(mtimes)
+                  (list '(mexpt) n '((rat) 1 2))
+                  (pelso1 l 1 0))))))
 
 (defun pelso1 (l a b)
   (do ((i l (cdr i))) (nil)
