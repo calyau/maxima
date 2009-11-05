@@ -1103,5 +1103,14 @@ x-x^3/6;
 ratsimp(intopois(sin(x)));
 sin(x);
 
+/* Bug ID: 627759 - Ratdisrep of aggregates 
+ */
+ratdisrep(rat(x=y));
+x = y;
+ratdisrep(rat([x=a,y=b]));
+[x = a,y = b];
+ratdisrep(rat(matrix([a,b],[c,d])));
+matrix([a,b],[c,d]);
+
 end;
 end$
