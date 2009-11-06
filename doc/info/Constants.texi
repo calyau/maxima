@@ -222,3 +222,43 @@ Example:
 @category{Constants}
 @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Constant} zeroa
+@code{zeroa} represents an infinitesimal above zero. @code{zeroa} can be used in
+expressions. @code{limit} simplifies expressions which contain infinitesimals.
+
+See also @code{zerob} and @code{limit}.
+
+Example:
+
+@code{limit} simplifies expressions which contain infinitesimals:
+
+@c ===beg===
+@c limit(zeroa);
+@c limit(zeroa+x);
+@c ===end===
+@example
+(%i1) limit(zeroa);
+(%o1)                                  0
+(%i2) limit(x+zeroa);
+(%o2)                                  x
+@end example
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Constant} zerob
+@code{zerob} represents an infinitesimal below zero. @code{zerob} can be used in
+expressions. @code{limit} simplifies expressions which contain infinitesimals.
+
+See also @code{zeroa} and @code{limit}.
+
+@opencatbox
+@category{Constants}
+@closecatbox
+@end defvr
+
