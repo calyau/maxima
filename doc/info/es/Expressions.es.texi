@@ -1,4 +1,4 @@
-@c english version 1.64
+@c english version 1.65
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -13,9 +13,9 @@
 @node Introducci@'on a las expresiones, Expresiones complejas, Expresiones, Expresiones
 @section Introducci@'on a las expresiones
 
-Existe un cierto n@'umero de palabras reservadas que no pueden
+Existe un cierto n@'umero de palabras reservadas que no deber@'{@dotless{i}}an
 utilizarse como nombres de variables. Su uso podr@'{@dotless{i}}a causar 
-errores cr@'{@dotless{i}}ticos de sintaxis. 
+errores sint@'acticos. 
 
 @example
 integrate            next           from                 diff            

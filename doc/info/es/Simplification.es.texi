@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.21
 @menu
 * Funciones y variables para simplificaci@'on::  
 @end menu
@@ -255,15 +255,30 @@ El s@'{@dotless{i}}mbolo @code{nouns} es una @code{evflag}, lo que significa que
 
 @end defvr
 
-@defvr {S@'{@dotless{i}}mbolo especial} numer
+@defvr {Variable opcional} numer
 
-El s@'{@dotless{i}}mbolo @code{numer} hace algunas funciones matem@'aticas
+La variable @code{numer} hace algunas funciones matem@'aticas
 con argumentos num@'ericos se eval@'uen como decimales de punto flotante.
 Tambi@'en hace que las variables de una expresi@'on a las cuales se les ha
 asignado un n@'umero sean sustituidas por sus valores.
 Adem@'as, activa la variable @code{float}.
 
 V@'ease tambi@'en @code{%enumer}.
+
+Ejemplos:
+
+@c ===beg===
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))];
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+@c ===end===
+@example
+(%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
+                                               1
+(%o1)                   [sqrt(2), sin(1), -----------]
+                                          sqrt(3) + 1
+(%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
+@end example
 @end defvr
 
 @deffn {Funci@'on} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
@@ -304,9 +319,33 @@ Las funciones @code{sum}, @code{integrate} y @code{limit} han sido todas declara
 @end defvr
 
 @defvr {Declaraci@'on} posfun
-La instrucci@'on @code{declare (f, posfun)} declara a @code{f} como funci@'on positiva, de forma que 
+La instrucci@'on @code{declare (f, posfun)} declara a @code{f} como 
+funci@'on positiva, de forma que 
 @code{is (f(x) > 0)} devolver@'a @code{true}.
 
+@end defvr
+
+
+@defvr {S@'{@dotless{i}}mbolo especial} pred
+Cuando se utiliza como argumento en una llamada a
+@code{ev (@var{expr})}, @code{pred} provoca que los
+predicados (expresiones que se reducen a @code{true} o
+@code{false}) se eval@'uen.
+
+V@'ease @code{ev}.
+
+Ejemplo:
+
+@c ===beg===
+@c 1<2;
+@c 1<2,pred;
+@c ===end===
+@example
+(%i1) 1<2;
+(%o1)                                1 < 2
+(%i2) 1<2,pred;
+(%o2)                                true
+@end example
 @end defvr
 
 
@@ -374,18 +413,28 @@ La instrucci@'on @code{declare (g, rassociative)} le indica al simplificador de 
 
 @end defvr
 
-@c NEEDS CLARIFICATION, EXAMPLES
 @deffn {Funci@'on} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Es el "Sequential Comparative Simplification" (m@'etodo debido a Stoute).
 La funci@'on @code{scsimp} intenta simplificar @var{expr} de acuerdo con las reglas @var{rule_1}, ..., @var{rule_n}.
 Si se obtiene una expresi@'on m@'as peque@~na, el proceso se repite. En caso contrario, despu@'es de que se hayan intentado todas las simplificaciones, devuelve la respuesta original.
 
-@c MERGE EXAMPLES INTO THIS FILE
 La instrucci@'on @code{example (scsimp)} muestra algunos ejemplos.
 
 @end deffn
 
-@c NEEDS CLARIFICATION, EXAMPLES
+
+@defvr {Variable opcional} simp
+Valor por defecto: @code{true}
+
+La variable @code{simp} activa y desactiva la simplificaci@'on.
+La simplificaci@'on est@'a activada por defecto. La variable @code{simp}
+tambi@'en es reconocida por la funci@'on @code{ev} como variable de entorno.
+
+V@'ease tambi@'en @code{ev}.
+
+@end defvr
+
+
 @defvr {Variable opcional} simpsum
 Valor por defecto: @code{false}
 

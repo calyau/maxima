@@ -1,4 +1,4 @@
-@c english version 1.35
+@c english version 1.36
 @menu
 * Introducci@'on a las matrices y el @'algebra lineal::
 * Funciones y variables para las matrices y el @'algebra lineal::

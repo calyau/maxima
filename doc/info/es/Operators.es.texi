@@ -1,4 +1,4 @@
-@c english version 1.52
+@c english version 1.55
 @menu
 * n-arios::
 * no-fijos::
@@ -452,48 +452,75 @@ Ejemplos:
 @ifinfo
 @fnindex Factorial
 @end ifinfo
-El operador factorial. Para cualquier n@'umero complejo @code{x}
-(incluyendo enteros, racionales  y n@'umeros reales) excepto para
+El operador factorial. 
+
+Para cualquier n@'umero complejo @code{x}, excepto para
 enteros negativos, @code{x!} se define como @code{gamma(x+1)}. 
 
-Para un entero @code{x}, @code{x!} simplifica el producto de los enteros desde 1 hasta @code{x}.
-@code{0!} simplifica a 1.
-Para a un n@'umero de punto flotante @code{x}, @code{x!} calcula al valor de @code{gamma(x+1)}.
-Para @code{x} igual a @code{n/2} donde @code{n} es un entero impar,
-@code{x!} simplifica a un factor racional por @code{sqrt(%pi)}
-(donde @code{gamma(1/2)}) es igual a @code{sqrt(%pi)}). 
-Si @code{x} es cualquier otra cosa, @code{x!} no se simplifica. 
+Para un entero @code{x}, @code{x!} se reduce al producto de los enteros
+desde 1 hasta @code{x} inclusive. @code{0!} se reduce a 1.
+Para un n@'umero real o complejo en formato de coma flotante @code{x}, 
+@code{x!} se reduce al valor de @code{gamma(x+1)}. Cuando
+@code{x} es igual a @code{n/2}, siendo @code{n} un entero impar, entonces
+@code{x!} se reduce a un factor racional multiplicado por @code{sqrt(%pi)}
+(pues @code{gamma(1/2)}) es igual a @code{sqrt(%pi)}).
 
-Las variables 
-@code{factlim}, @code{minfactorial} y  @code{factcomb} controlan la simplificaci@'on de expresiones que contienen factoriales. 
+Las variables opcionales @code{factlim} y @code{gammalim} controlan la
+evaluaci@'on num@'erica de factoriales de argumentos enteros y racionales.
+
+Las funciones @code{minfactorial} y @code{factcomb} simplifican expresiones
+que contiene factoriales.
+
+V@'eanse tambi@'en @code{factlim}, @code{gammalim}, @code{minfactorial} y 
+@code{factcomb}.
 
 Las funciones @code{gamma}, @code{bffac} y @code{cbffac} son variaciones de
-la funci@'on gamma. 
-@code{makegamma} substituye a @code{gamma} para factoriales y funciones relacionadas. 
+la funci@'on matem@'atica gamma. Las funciones @code{bffac} y @code{cbffac} 
+son llamadas internamente desde @code{gamma} para evaluar la funci@'on gamma 
+de n@'umeros reales y complejos decimales con precisi@'on de reales grandes
+(bigfloats).
 
-Funciones relacionadas: @code{binomial} 
+Las funciones @code{makegamma} substituye a @code{gamma} para factoriales 
+y funciones relacionadas. 
 
-@itemize @bullet
-@item
-El factorial de un entero, semi-entero o de punto flotante es simplificado a menos que el operando sea mayor que @code{factlim}. 
+Maxima reconoce la derivada de la funci@'on factorial y los l@'{@dotless{i}}mites
+para ciertos valores espec@'{@dotless{i}}ficos, tales como los enteros negativos.
+
+La variable opcional @code{factorial_expand} controla la simplificaci@'on de
+expresiones como @code{(n+x)!}, para @code{n} entero.
+
+V@'ease tambi@'en @code{binomial}.
+
+Ejemplos:
+
+El factorial de un entero se reduce a un n@'umero exacto, a menos que
+el argumento sea mayor que @code{factlim}. Los factoriales de n@'umeros
+reales o complejos se eval@'uan como decimales de coma flotante.
 
 @c ===beg===
 @c factlim : 10;
-@c [0!, (7/2)!, 4.77!, 8!, 20!];
+@c [0!, (7/2)!, 8!, 20!];
+@c [4,77!, (1.0+%i)!];
+@c [2.86b0!, 1.0b0+%i)!];
 @c ===end===
 @example
-(%i1) factlim : 10;
-(%o1)                          10
-(%i2) [0!, (7/2)!, 4.77!, 8!, 20!];
-            105 sqrt(%pi)
-(%o2)   [1, -------------, 81.44668037931199, 40320, 20!]
-                 16
+(%i1) factlim:10;
+(%o1)                                 10
+(%i2) [0!, (7/2)!, 8!, 20!];
+                            105 sqrt(%pi)
+(%o2)                   [1, -------------, 40320, 20!]
+                                 16
+(%i3) [4.77!, (1.0+%i)!];
+(%o3)    [81.44668037931197, 
+          .3430658398165454 %i + .6529654964201665]
+(%i4) [2.86b0!, (1.0b0+%i)!];
+(%o4) [5.046635586910012b0, 
+       3.430658398165454b-1 %i + 6.529654964201667b-1]
 @end example
 
-@item
-El factorial de un n@'umero complejo, constante  conocida (por ejemplo @code{%e}) o una expresi@'on general no es simplificado. 
-
-Sin embargo puede ser posible simplificar el factorial despu@'es de evaluar el operando. 
+El factorial de una constante conocida o de una expresi@'on general
+no se calcula. Pero puede ser posible reducir el factorial despu@'es de
+evaluado el argumento.
 
 @c ===beg===
 @c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
@@ -503,28 +530,14 @@ Sin embargo puede ser posible simplificar el factorial despu@'es de evaluar el o
 (%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
 (%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
 (%i2) ev (%, numer, %enumer);
-(%o2) [(%i + 1)!, 7.188082728976037, 4.260820476357, 
-                                       1.227580202486819]
+(%o2) [.3430658398165454 %i + .6529654964201665, 
+       7.188082728976031, 
+       4.260820476357003, 1.227580202486819]
 @end example
 
-@item
-El factorial de un s@'{@dotless{i}}mbolo no se simplifica. 
-
-@c ===beg===
-@c kill (foo);
-@c foo!;
-@c ===end===
-@example
-(%i1) kill (foo);
-(%o1)                         done
-(%i2) foo!;
-(%o2)                         foo!
-@end example
-
-@item
-Los factoriales son simplificados, no evaluados.
+Los factoriales son simplificados o reducidos, no evaluados.
 As@'{@dotless{i}} @code{x!} puede ser reemplazado en una expresi@'on 
-precedida por el operador comilla. 
+nominal. 
 
 @c ===beg===
 @c '([0!, (7/2)!, 4.77!, 8!, 20!]);
@@ -534,10 +547,30 @@ precedida por el operador comilla.
           105 sqrt(%pi)
 (%o1) [1, -------------, 81.44668037931199, 40320, 
                16
-                                   2432902008176640000]
+                             2432902008176640000]
 @end example
-@end itemize
 
+Maxima reconoce la derivada de la funci@'on factorial.
+
+@c ===beg===
+@c diff(x!,x);
+@c ===end===
+@example
+(%i1) diff(x!,x);
+(%o1)                           x! psi (x + 1)
+                                      0
+@end example
+
+La variable opcional @code{factorial_expand} controla la simplificaci@'on de
+expresiones con la funci@'on factorial.
+
+@c ===beg===
+@c (n+1)!/n!,factorial_expand:true;
+@c ===end===
+@example
+(%i1) (n+1)!/n!,factorial_expand:true;
+(%o1)                                n + 1
+@end example
 @end deffn
 
 @deffn {Operador} !!
@@ -1695,11 +1728,6 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Operador} eval
-El operador @code{eval} realiza una evaluaci@'on extra de una expresi@'on @var{expr}.
-V@'ease @code{ev}.
-
-@end deffn
 
 @deffn {Funci@'on} evenp (@var{expr})
 Devuelve @code{true} si @var{expr} es un entero par y @code{false} en cualquier otro caso.
@@ -1938,11 +1966,6 @@ Devuelve @code{true} si @var{expr} es un entero impar y @code{false} en caso con
 
 @end deffn
 
-@deffn {Operador} pred
-El operador @code{pred} realiza una evaluaci@'on extra de un predicado (expresi@'on cuya evaluaci@'on debe dar @code{true}
-o @code{false}). V@'ease @code{ev}.
-
-@end deffn
 
 @deffn {Funci@'on} make_random_state (@var{n})
 @deffnx {Funci@'on} make_random_state (@var{s})

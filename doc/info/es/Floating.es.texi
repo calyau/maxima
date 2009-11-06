@@ -1,4 +1,4 @@
-@c version 1.22
+@c version 1.23
 @menu
 * Funciones y variables para la aritm@'etica de punto flotante::
 @end menu

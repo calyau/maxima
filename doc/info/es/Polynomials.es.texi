@@ -1,4 +1,4 @@
-@c version 1.26
+@c version 1.29
 @menu
 * Introducci@'on a los polinomios::  
 * Funciones y variables para polinomios::  
@@ -198,17 +198,32 @@ Si la variable @code{sumsplitfact} vale @code{false} har@'a que @code{minfactori
 @deffn {Funci@'on} factor (@var{expr})
 @deffnx {Funci@'on} factor (@var{expr}, @var{p})
 
-Factoriza la expresi@'on @var{expr}, que puede contener cualquier n@'umero de variables o funciones, en factores irreducibles respecto de los enteros. La llamada @code{factor (@var{expr}, @var{p})} factoriza @var{expr} en el campo de los enteros con un elemento a@~nadido cuyo polinomio m@'{@dotless{i}}nimo es @var{p}.
+Factoriza la expresi@'on @var{expr}, que puede contener
+cualquier n@'umero de variables o funciones, en factores 
+irreducibles respecto de los enteros. La llamada 
+@code{factor (@var{expr}, @var{p})} factoriza @var{expr} 
+en el campo de los racionales con un elemento a@~nadido cuyo 
+polinomio m@'{@dotless{i}}nimo es @var{p}.
 
-La funci@'on @code{factor} utiliza a @code{ifactors} para factorizar enteros.
+La funci@'on @code{factor} utiliza a @code{ifactors} 
+para factorizar enteros.
 
-Si la variable @code{factorflag} vale @code{false} suprime la factorizaci@'on de los factores enteros en las expresiones racionales.
+Si la variable @code{factorflag} vale @code{false} suprime 
+la factorizaci@'on de los factores enteros en las expresiones racionales.
 
-La variable @code{dontfactor} puede contener una lista de variables con respecto a las cuales no se factorizar@'a (inicialmente est@'a vac@'{@dotless{i}}a). Tampoco se factorizar@'a respecto de cualesquiera otra variables que sean menos importantes (seg@'un la ordenaci@'on que se sigue en el formato CRE) que aquellas que se encuentran en la lista @code{dontfactor}.
+La variable @code{dontfactor} puede contener una lista 
+de variables con respecto a las cuales no se factorizar@'a 
+(inicialmente est@'a vac@'{@dotless{i}}a). Tampoco se 
+factorizar@'a respecto de cualesquiera otra variables que sean menos importantes (seg@'un la ordenaci@'on que se sigue en el formato CRE) que aquellas que se encuentran en la lista @code{dontfactor}.
 
-Si la variable @code{savefactors} vale @code{true}, los factores de una expresi@'on en forma de producto se guardar@'an por ciertas funciones a fin de acelerar posteriores factorizaciones de expresiones que contengan algunos de estos mismos factores.
+Si la variable @code{savefactors} vale @code{true}, los 
+factores de una expresi@'on en forma de producto se guardar@'an 
+por ciertas funciones a fin de acelerar posteriores factorizaciones 
+de expresiones que contengan algunos de estos mismos factores.
 
-Si @code{berlefact} vale @code{false} entonces se utiliza el algoritmo de factorizaci@'on de Kronecker, en caso contrario se utilizar@'a el algoritmo de Berlekamp, que es el que se aplica por defecto.
+Si @code{berlefact} vale @code{false} entonces se utiliza el 
+algoritmo de factorizaci@'on de Kronecker, en caso contrario se 
+utilizar@'a el algoritmo de Berlekamp, que es el que se aplica por defecto.
 
 Si la variable @code{intfaclim} vale @code{true}, Maxima desistir@'a de
 factorizar enteros si no encuentra ning@'un factor despu@'es de las

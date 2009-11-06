@@ -1,4 +1,4 @@
-@c english version 1.29
+@c english version 1.30
 @menu
 * Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
@@ -285,6 +285,18 @@ Representa la funci@'on factorial. Maxima considera @code{factorial (@var{x})} l
 V@'ease @code{!}.
 
 @end deffn
+
+
+@defvr {Variable opcional} factorial_expand
+Valor por defecto: false
+
+La variable @code{factorial_expand} controla la simplificaci@'on
+de expresiones tales como @code{(n+1)!}, siendo @code{n} un entero. 
+
+V@'ease @code{!} para un ejemplo.
+
+@end defvr
+
 
 @deffn {Funci@'on} fib (@var{n})
 Devuelve el @var{n}-@'esimo n@'umero de Fibonacci. La llamada @code{fib(0)} es igual a 0, @code{fib(1)} devuelve 1 y
