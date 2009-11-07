@@ -1833,7 +1833,7 @@
   e1  
      (cond ((or (eq $radexpand '$all)
                 (simplexpon pot)
-                (noneg (cadr gr))
+                (member ($csign (cadr gr)) '($pos $pz $zero))
                 (equal (caddr gr) -1)
                 (and (eq $domain '$real)
                      (odnump (caddr gr))))
@@ -2250,6 +2250,8 @@
   (or (maxima-integerp e)
       (and (eq $domain '$real) (ratnump e) (oddp (caddr e)))))
 
+;; This function is not called in Maxima core or share code
+;; and can be cut out.
 (defun noneg (p)
   (and (free p '$%i) (member ($sign p) '($pos $pz $zero) :test #'eq)))
 
