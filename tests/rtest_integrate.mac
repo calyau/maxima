@@ -824,30 +824,30 @@ expand(integrate(z^n*%e^(b*z+a*z^2),z)-
 0;
 
 /* Problem 175: NEW 6 */
-expand(integrate(z^n*d^(b*z+a*sqrt(z)),z) -
-('sum(log(d)^(2*n+1)*binomial(n,i7)*(1/(2*b*sqrt(z)+a))*4^i7
+expand(integrate(x^n*d^(b*x+a*sqrt(x)),x) -
+('sum(log(d)^(2*n+1)*binomial(n,i7)*(1/(2*b*sqrt(x)+a))*4^i7
                     *'sum(a^(-i8+2*n+(-1)*i7)*b^(1/2*(1+i8+i7))
                                              *(-log(d))^((-1/2)*(1+i8+i7))
                                              *(-1)^(i8+(-1)*i7)
                                              *binomial(i7,i8)
-                                             *(a*log(d)*(2*b*sqrt(z)+a)
+                                             *(a*log(d)*(2*b*sqrt(x)+a)
                                                 *gamma_incomplete(
                                                  1/2*(1+i8+i7),
-                                                 -log(d)*(2*b*sqrt(z)+a)^2
+                                                 -log(d)*(2*b*sqrt(x)+a)^2
                                                   /(4*b))
                                               +2*sqrt(b)*sqrt(-log(d))
-                                                *(2*b*sqrt(z)+a)
+                                                *(2*b*sqrt(x)+a)
                                                 *gamma_incomplete(
                                                  1/2*(2+i8+i7),
-                                                 -log(d)*(2*b*sqrt(z)+a)^2
+                                                 -log(d)*(2*b*sqrt(x)+a)^2
                                                   /(4*b))),i8,0,i7),i7,0,n))
  *2^(-n-1)
  /(b^(2*(n+1))*d^(a^2/(4*b))*log(d)^(2*(n+1))));
  0;
 
 /* Problem 176: NEW 6 */
-expand(integrate(z^n*%e^(b*z+a*sqrt(z)),z) -
-%e^-(a^2/(4*b))*('sum(binomial(n,i9)*(1/(2*b*sqrt(z)+a))*4^i9
+expand(integrate(x^n*%e^(b*x+a*sqrt(x)),x) -
+%e^-(a^2/(4*b))*('sum(binomial(n,i9)*(1/(2*b*sqrt(x)+a))*4^i9
                                     *'sum(
                                      a^(-i10+2*n+(-1)*i9)*b^(1/2*(1+i10+i9))
                                                          *(-1)
@@ -855,17 +855,17 @@ expand(integrate(z^n*%e^(b*z+a*sqrt(z)),z) -
                                                                 +(-1/2)
                                                                  *(1+i10+i9))
                                                          *binomial(i9,i10)
-                                                         *(a*(2*b*sqrt(z)+a)
+                                                         *(a*(2*b*sqrt(x)+a)
                                                             *gamma_incomplete(
                                                              1/2*(1+i10+i9),
-                                                             -(2*b*sqrt(z)+a)
+                                                             -(2*b*sqrt(x)+a)
                                                               ^2
                                                               /(4*b))
                                                           +2*%i*sqrt(b)
-                                                            *(2*b*sqrt(z)+a)
+                                                            *(2*b*sqrt(x)+a)
                                                             *gamma_incomplete(
                                                              1/2*(2+i10+i9),
-                                                             -(2*b*sqrt(z)+a)
+                                                             -(2*b*sqrt(x)+a)
                                                               ^2
                                                               /(4*b))),i10,0,
                                      i9),i9,0,n))*2^(-n-1)
@@ -905,44 +905,44 @@ expand(integrate(z^n*%e^(c+b*z+a*z^2),z) -
 0;
 
 /* Problem 179: NEW 6 */
-expand(integrate(z^n*d^(c+b*z+a*sqrt(z)),z) -
-d^(c-a^2/(4*b))*('sum(log(d)^(2*n+1)*binomial(n,i13)*(1/(2*b*sqrt(z)+a))*4^i13
+expand(integrate(x^n*d^(c+b*x+a*sqrt(x)),x) -
+d^(c-a^2/(4*b))*('sum(log(d)^(2*n+1)*binomial(n,i13)*(1/(2*b*sqrt(x)+a))*4^i13
                                     *'sum(
                                      a^(-i14+2*n+(-1)*i13)
                                       *b^(1/2*(1+i14+i13))
                                       *(-log(d))^((-1/2)*(1+i14+i13))
                                       *(-1)^(i14+(-1)*i13)*binomial(i13,i14)
-                                      *(a*log(d)*(2*b*sqrt(z)+a)
+                                      *(a*log(d)*(2*b*sqrt(x)+a)
                                          *gamma_incomplete(1/2*(1+i14+i13),
                                                            -log(d)
-                                                            *(2*b*sqrt(z)+a)^2
+                                                            *(2*b*sqrt(x)+a)^2
                                                             /(4*b))
                                        +2*sqrt(b)*sqrt(-log(d))
-                                         *(2*b*sqrt(z)+a)
+                                         *(2*b*sqrt(x)+a)
                                          *gamma_incomplete(1/2*(2+i14+i13),
                                                            -log(d)
-                                                            *(2*b*sqrt(z)+a)^2
+                                                            *(2*b*sqrt(x)+a)^2
                                                             /(4*b))),i14,0,
                                      i13),i13,0,n))*2^(-n-1)
  /(b^(2*(n+1))*log(d)^(2*(n+1))));
 0;
 
 /* Problem 180: NEW 6 */
-expand(integrate(z^n*%e^(c+b*z+a*sqrt(z)),z) -
-%e^(c-a^2/(4*b))*('sum(binomial(n,i15)*(1/(2*b*sqrt(z)+a))*4^i15
+expand(integrate(x^n*%e^(c+b*x+a*sqrt(x)),x) -
+%e^(c-a^2/(4*b))*('sum(binomial(n,i15)*(1/(2*b*sqrt(x)+a))*4^i15
                                       *'sum(
                                        a^(-i16+2*n+(-1)*i15)
                                         *b^(1/2*(1+i16+i15))
                                         *(-1)^(-i16+i15+(-1/2)*(1+i16+i15))
                                         *binomial(i15,i16)
-                                        *(a*(2*b*sqrt(z)+a)
+                                        *(a*(2*b*sqrt(x)+a)
                                            *gamma_incomplete(
                                             1/2*(1+i16+i15),
-                                            -(2*b*sqrt(z)+a)^2/(4*b))
-                                         +2*%i*sqrt(b)*(2*b*sqrt(z)+a)
+                                            -(2*b*sqrt(x)+a)^2/(4*b))
+                                         +2*%i*sqrt(b)*(2*b*sqrt(x)+a)
                                            *gamma_incomplete(
                                             1/2*(2+i16+i15),
-                                            -(2*b*sqrt(z)+a)^2/(4*b))),i16,0,
+                                            -(2*b*sqrt(x)+a)^2/(4*b))),i16,0,
                                        i15),i15,0,n))*2^(-n-1)
  /b^(2*(n+1)));
 0;
@@ -2689,7 +2689,7 @@ log((2*sqrt(b*%e^(c*z)+a)-2*sqrt(a))/(2*sqrt(b*%e^(c*z)+a)+2*sqrt(a)))
 
 /* Problem 429: NOUN */
 integrate(((b*%e^(c*z)+a)^v)^p,z);
-'integrate((b*%e^(c*z)+a)^(p*v),z);
+'integrate(((b*%e^(c*z)+a)^v)^p,z);
 
 /* Problem 430: OK */
 integrate(((b*%e^(c*z)+a)^5)^(1/2),z);
@@ -2773,7 +2773,7 @@ integrate((b*%e^(c*z)+a)^((-5)/2)*%e^(c*z),z);
 
 /* Problem 447: NOUN */
 integrate(((b*%e^(c*z)+a)^v)^p*%e^(d*z),z);
-'integrate((b*%e^(c*z)+a)^(p*v)*%e^(d*z),z);
+'integrate(((b*%e^(c*z)+a)^v)^p*%e^(d*z),z);
 
 /* Problem 448: OK */
 integrate(((b*%e^(c*z)+a)^5)^(1/2)*%e^(c*z),z);
@@ -2861,7 +2861,7 @@ integrate((b*%e^(2*c*z)+a)^((-5)/2)*%e^(c*z),z);
 
 /* Problem 469: NOUN */
 integrate(((b*%e^(2*c*z)+a)^v)^p*%e^(c*z),z);
-'integrate(%e^(c*z)*(b*%e^(2*c*z)+a)^(p*v),z);
+'integrate(%e^(c*z)*((b*%e^(2*c*z)+a)^v)^p,z);
 
 /* Problem 470: NOUN */
 integrate(((b*%e^(2*c*z)+a)^5)^(1/2)*%e^(c*z),z);
