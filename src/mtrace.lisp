@@ -374,8 +374,13 @@
 (defvar return-to-trace-handle nil)
 
 (defun trace-handler (fun largs)
-  (if return-to-trace-handle
-      ;; we were called by the trace-handler.
+  (if (or return-to-trace-handle
+          (and (not (atom (car largs)))
+               (not (atom (caar largs)))
+               (eq (caaar largs) '$untrace)
+               (eq (cadar largs) fun)))
+      ;; We were called by the trace-handler or by $untrace and the function
+      ;; fun is to be untraced.
       (trace-apply fun largs)
       (let ((trace-indent-level (1+ trace-indent-level))
 	    (return-to-trace-handle t)
