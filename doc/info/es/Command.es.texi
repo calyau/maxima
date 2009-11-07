@@ -1,4 +1,4 @@
-@c english version 1.45
+@c english version 1.53
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
 * Funciones y variables para  la L@'{@dotless{i}}nea de Comandos::  
@@ -101,8 +101,9 @@ El resultado es una forma de nombre de la funci@'on llamada.
                                 3
 @end example
 
-Aplicado a una expresi@'on con par@'entesis, 
-la comilla simple evita la evaluaci@'on de todos los s@'{@dotless{i}}mbolos y llamadas a funciones que hayan en la expresi@'on. 
+Aplicado a una expresi@'on con par@'entesis, la comilla simple evita
+la evaluaci@'on de todos los s@'{@dotless{i}}mbolos y llamadas a 
+funciones que haya dentro en la expresi@'on. 
 
 @c ===beg===
 @c aa: 1024;
@@ -135,6 +136,20 @@ La comilla simple no evita la simplificaci@'on.
 (%o1)                          - 1
 (%i2) '(sin (17 * %pi) + cos (17 * %pi));
 (%o2)                          - 1
+@end example
+
+Internamente, Maxima considera que las operaciones con n@'umeros
+decimales de coma flotante son simples simplificaciones.
+
+@c ===beg===
+@c sin(1.0);
+@c '(sin(1.0));
+@c ===end===
+@example
+(%i1) sin(1.0);
+(%o1)                          .8414709848078965
+(%i2) '(sin(1.0));
+(%o2)                          .8414709848078965
 @end example
 
 @end deffn
@@ -219,31 +234,27 @@ el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrad
 (%o14)                         x3
 @end example
 
-Aplicado al operador de una expresi@'on, el operador comilla-comilla hace que el operador
-pase de ser un nombre a ser un verbo, a menos que ya sea un verbo.
+Aplicado al operador de una expresi@'on, la
+doble comilla simple hace que el operador
+pase de ser nominal a verbal, a menos que ya sea un verbo.
 
 @c ===beg==
-@c sin (1);
-@c ''sin (1);
 @c declare (foo, noun);
 @c foo (x) := x - 1729;
 @c foo (100);
 @c ''foo (100);
 @c ===end==
 @example
-(%i1) sin (1);
-(%o1)                        sin(1)
-(%i2) ''sin (1);
-(%o2)                    0.8414709848079
-(%i3) declare (foo, noun);
-(%o3)                         done
-(%i4) foo (x) := x - 1729;
-(%o4)                 ''foo(x) := x - 1729
-(%i5) foo (100);
-(%o5)                       foo(100)
-(%i6) ''foo (100);
-(%o6)                        - 1629
+(%i1) declare (foo, noun);
+(%o1)                         done
+(%i2) foo (x) := x - 1729;
+(%o2)                 ''foo(x) := x - 1729
+(%i3) foo (100);
+(%o3)                       foo(100)
+(%i4) ''foo (100);
+(%o4)                        - 1629
 @end example
+
 
 El operador comilla-comilla es aplicado por el analizador sint@'actico de entrada;
 no se almacena como una parte de la expresi@'on de entrada analizada.
@@ -399,6 +410,10 @@ Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @
 @item
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} realiza s@'olo las diferenciaciones con respecto a las variables indicadas. 
 @item
+@code{risch} hace que las integrales presentes en @var{expr} se eval@'uen mediante
+el algoritmo de Risch. V@'ease tambi@'en @code{risch}. Cuando se utiliza el 
+s@'{@dotless{i}}mbolo especial @code{nouns}, se aplica la rutina est@'andar de integraci@'on.
+@item
 @code{float} provoca la conversi@'on de los n@'umeros racionales no-enteros a n@'umeros decimales de coma flotante. 
 @item
 @code{numer} causa que algunas funciones matem@'aticas (incluyendo potenciaci@'on) con argumentos num@'ericos sean evaluados como punto flotante. Esto causa que las variables en @var{expr} las cuales hayan sido declaradas como variables num@'ericas sean reemplazadas por sus respectivos valores. Esto tambi@'en configura la variable interruptor @code{float} a @code{true}. 
@@ -449,7 +464,7 @@ secuencia, de izquierda a derecha y las funciones de evaluaci@'on las
 cuales son compuestas, e.g., @code{ev (@var{expr}, ratsimp, realpart)}
 es manipulada como @code{realpart (ratsimp (@var{expr}))}. 
 
-Los interruptores @code{simp}, @code{numer}, @code{float} y @code{pred} 
+Los interruptores @code{simp}, @code{numer} y @code{float} 
 pueden tambi@'en ser configurados localmente en una sentencia block, o
 globalmente en Maxima para que su efecto permanezca hasta que
 sean reconfiguradas.   
@@ -480,17 +495,22 @@ en ella y que @code{ev(F(x))} pueda comportarse como @code{F(ev(x))}.
 Por cada aparici@'on de @code{eval} en los argumentos, se repetir@'an los pasos (3) y (4).
 @end enumerate
 
-Ejemplos
+Ejemplos:
 
+@c ===beg===
+@c sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
+@c ev (%, numer, expand, diff, x=2, y=1);
+@c ===end===
 @example
 (%i1) sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
                                      d                    2
 (%o1)              cos(y) + sin(x) + -- (sin(w)) + (w + 1)
                                      dw
-(%i2) ev (%, sin, expand, diff, x=2, y=1);
-                          2
-(%o2)           cos(w) + w  + 2 w + cos(1) + 1.909297426825682
+(%i2) ev (%, numer, expand, diff, x=2, y=1);
+                               2
+(%o2)                cos(w) + w  + 2 w + 2.449599732693821
 @end example
+
 
 Una sintaxis alternativa de alto nivel ha sido proveida para @code{ev}, 
 por medio de la cual uno puede escribir solamente sus argumentos, sin 
@@ -538,6 +558,36 @@ Soluci@'on
 @end deffn
 
 
+@defvr {S@'{@dotless{i}}mbolo especial} eval
+Como argumento en una llamada a @code{ev (@var{expr})}, @code{eval} 
+fuerza una evaluaci@'on extra de @var{expr}.
+
+V@'ease tambi@'en @code{ev}.
+
+Ejemplo:
+
+@c ===beg===
+@c [a:b,b:c,c:d,d:e];
+@c a;
+@c ev(a);
+@c ev(a),eval;
+@c a,eval,eval;
+@c ===end===
+@example
+(%i1) [a:b,b:c,c:d,d:e];
+(%o1)                            [b, c, d, e]
+(%i2) a;
+(%o2)                                  b
+(%i3) ev(a);
+(%o3)                                  c
+(%i4) ev(a),eval;
+(%o4)                                  e
+(%i5) a,eval,eval;
+(%o5)                                  e
+@end example
+
+@end defvr
+
 
 @defvr {Propiedad} evflag
 Cuando un s@'{@dotless{i}}mbolo @var{x} goza de la propiedad @code{evflag},
@@ -582,6 +632,7 @@ Los interruptores que tienen la propiedad @code{evflag} son:
 @code{ratmx},
 @code{ratsimpexpons},
 @code{simp},
+@code{simpproduct},
 @code{simpsum},
 @code{sumexpand}, y
 @code{trigexpand}.
@@ -1036,28 +1087,76 @@ V@'ease tambi@'en @code{timer}.
 
 @end defvr
 
-@c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
-@c THIS REALLY SEEMS LIKE A HACK
-@deffn {Funci@'on} sstatus (@var{feature}, @var{package})
-Configura el estado de @var{feature} en @var{package}. 
-Despu@'es de que @code{sstatus (@var{feature}, @var{package})} es 
-ejecutado @code{status (@var{feature}, @var{package})} retorna
-@code{true}. 
-Esto puede ser muy @'util para escritores de paquetes, con el 
-objetivo de conservar las pistas de que caracter@'{@dotless{i}}siticas han 
-cargado estos. 
-
-@end deffn
 
 @deffn {Function} to_lisp ()
 Entra en el int@'erprete Lisp bajo Maxima. @code{(to-maxima)} retorna de nuevo a Maxima. 
 
+Ejemplo:
+
+Define una funci@'on y entra en el nivel Lisp. La definici@'on
+se consulta en la lista de propiedades, luego se extrae la definici@'on
+de la funci@'on, se factoriza y almacena el resultado en la variable @code{$result}.
+Esta variable se puede utilizar luego una vez se haya vuelto al nivel
+de Maxima.
+
+@example
+(%i1) f(x):=x^2+x;
+                                         2
+(%o1)                           f(x) := x  + x
+(%i2) to_lisp();
+Type (to-maxima) to restart, ($quit) to quit Maxima.
+
+MAXIMA> (symbol-plist '$f)
+(MPROPS (NIL MEXPR ((LAMBDA) ((MLIST) $X) ((MPLUS) ((MEXPT) $X 2) $X))))
+MAXIMA> (setq $result ($factor (caddr (mget '$f 'mexpr))))
+((MTIMES SIMP FACTORED) $X ((MPLUS SIMP IRREDUCIBLE) 1 $X))
+MAXIMA> (to-maxima)
+Returning to Maxima
+(%o2)                                true
+(%i3) result;
+(%o3)                              x (x + 1)
+@end example
 @end deffn
+
 
 @defvr {Variable del sistema} values
 Valor inicial: @code{[]}
 
-@code{values} es una lista de todas las variables que el usuario ha creado (no constituye las opciones Maxima ni los interruptores). 
-La lista comprende los s@'{@dotless{i}}mbolos @code{:} , @code{::}, o @code{:=}.
+@code{values} es una lista de todas las variables que el usuario ha creado
+(no incluye las opciones de Maxima ni los interruptores). 
+La lista comprende los s@'{@dotless{i}}mbolos a los que se ha asignado un
+valor mediante @code{:} o @code{::}.
+
+Si el valor de una variable se borra con cualquiera de las instrucciones
+@code{kill}, @code{remove} o @code{remvalue}, dicha variable desaparece
+de la lista @code{values}.
+
+V@'ease @code{functions} para una lista de funciones definidas por el
+usuario.
+
+Ejemplos:
+
+Primero, @code{values} muestra los s@'{@dotless{i}}mbolos @code{a}, 
+@code{b} y @code{c}, pero no @code{d}, pues no tiene valor asignado,
+ni la funci@'on de usuario @code{f}. Luego los valores de las variables se
+borran y @code{values} queda como una lista vac@'{@dotless{i}}a.
+
+@c ===beg===
+@c [a:99, b:: a-90, c:a-b, d, f(x):=x^2];
+@c values;
+@c [kill(a), remove(b,value), remvalue(c)];
+@c values;
+@c ===end===
+@example
+(%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
+                                                  2
+(%o1)                     [99, 9, 90, d, f(x) := x ]
+(%i2) values;
+(%o2)                              [a, b, c]
+(%i3) [kill(a), remove(b,value), remvalue(c)];
+(%o3)                          [done, done, [c]]
+(%i4) values;
+(%o4)                                 []
+@end example
 
 @end defvr

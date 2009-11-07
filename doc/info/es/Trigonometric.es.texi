@@ -1,4 +1,4 @@
-@c version 1.22
+@c version 1.23
 @menu
 * Introducci@'on a la trigonometr@'{@dotless{i}}a::  
 * Funciones y variables para trigonometr@'{@dotless{i}}a:: 
@@ -295,6 +295,34 @@ Si @code{halfangles} vale @code{true}, las funciones
 trigonom@'etricas con argumentos del tipo @code{@var{expr}/2}
 se simplifican a funciones con argumentos @var{expr}.
 
+Para un argumento real @var{x} en el intervalo @code{0 < x < 2*%pi}
+el seno del semi@'angulo se simplifica como
+
+@example
+                    sqrt(1 - cos(x))
+                    ----------------
+                        sqrt(2)
+@end example
+
+Se necesita un factor relativamente complicado para que esta f@'ormula
+sea tambi@'en v@'alida para cualquier argumento complejo @var{z}:
+
+@example
+           realpart(z)
+     floor(-----------)
+              2 %pi
+(- 1)                   (1 - unit_step(- imagpart(z))
+
+                      realpart(z)            realpart(z)
+                floor(-----------) - ceiling(-----------)
+                         2 %pi                  2 %pi
+          ((- 1)                                          + 1))
+@end example
+
+Maxima reconoce este factor y otros similares para las funciones @code{sin}, 
+@code{cos}, @code{sinh} y @code{cosh}. Para valores especiales del argumento
+@math{z}, estos factores se simplifican de forma apropiada.
+
 Ejemplos:
 
 @c ===beg===
@@ -302,24 +330,31 @@ Ejemplos:
 @c sin (x / 2);
 @c halfangles : true$
 @c sin (x / 2);
+@c assume(x>0, x<2*%pi)$
+@c sin(x / 2);
 @c ===end===
 @example
-(%i1) halfangles : false$
-@group
-(%i2) sin (x / 2);
-                                 x
-(%o2)                        sin(-)
-                                 2
-@end group
-(%i3) halfangles : true$
-@group
-(%i4) sin (x / 2);
-                        sqrt(1 - cos(x))
-(%o4)                   ----------------
-                            sqrt(2)
-@end group
+(%i1) halfangles:false;
+(%o1)                                false
+(%i2) sin(x/2);
+                                        x
+(%o2)                               sin(-)
+                                        2
+(%i3) halfangles:true;
+(%o3)                                true
+(%i4) sin(x/2);
+                                                    x
+                                            floor(-----)
+                                                  2 %pi
+                      sqrt(1 - cos(x)) (- 1)
+(%o4)                 ----------------------------------
+                                   sqrt(2)
+(%i5) assume(x>0, x<2*%pi)$
+(%i6) sin(x/2);
+                               sqrt(1 - cos(x))
+(%o6)                          ----------------
+                                   sqrt(2)
 @end example
-
 
 @end defvr
 

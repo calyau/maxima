@@ -1,4 +1,4 @@
-@c english version 1.10
+@c english version 1.11
 @menu
 * Introducci@'on a simplification::
 * Funciones y variables para simplification::
@@ -121,9 +121,7 @@ como lista de argumentos.
 
 Es posible que se quiera utilizar @code{facsum} con respecto a
 expresiones m@'as complicadas, tales como @code{log (x + y)}. Estos
-argumentos son tambi@'en admisibles. Si no se especifican variables,
-como en @code{facsum (@var{expr})}, el resultado devuelto es el mismo
-que el conseguido mediante @code{ratsimp (@var{expr})}.
+argumentos son tambi@'en admisibles.
 
 En ocasiones puede ser necesario obtener cualquiera de las formas
 anteriores especificadas por sus operadores principales. Por ejemplo,

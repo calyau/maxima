@@ -1,4 +1,4 @@
-@c version 1.22
+@c version 1.24
 @menu
 * Introducci@'on al entorno de ejecuci@'on::   
 * Interrupciones::  
@@ -122,27 +122,52 @@ Presenta una descrpci@'on del estado de almacenamiento y gesti@'on de la pila en
 
 @end deffn
 
-@deffn {Funci@'on} status (feature)
-@deffnx {Funci@'on} status (feature, @var{putative_feature})
-@deffnx {Funci@'on} status (status)
+@deffn {Funci@'on} sstatus (@var{keyword}, @var{item})
 
-Devuelve informaci@'on sobre la presencia o ausencia de ciertas caracter@'{@dotless{i}}sticas dependientes del sistema.
+Si @var{keyword} es el s@'{@dotless{i}}mbolo @code{feature}, @var{item}
+ser@'a colocado en la lista de propiedades del sistema. Una vez ejecutado
+@code{sstatus (keyword, item)}, @code{status (feature, item)} devuelve
+@code{true}. Si @var{keyword} es el s@'{@dotless{i}}mbolo @code{nofeature},
+@var{item} se borrar@'a de la lista de propiedades del sistema.
+Esto puede ser de utilidad para los autores de paquetes, permitiendo
+mantener el control sobre las propiedades que se han ido estableciendo.
+
+V@'ease tambi@'en @code{status}.
+
+@end deffn
+
+
+@deffn {Funci@'on} status (@code{feature})
+@deffnx {Funci@'on} status (@code{feature}, @var{item})
+
+Devuelve informaci@'on sobre la presencia o ausencia de ciertas
+propiedades dependientes del sistema.
 
 @itemize @bullet
 @item
-@code{status (feature)} devuelve una lista con caracter@'{@dotless{i}}sticas del sistema. @'Estas incluyen la versi@'on de Lisp, tipo de sistema operativo, etc. La lista puede variar de un Lisp a otro.
-@item @code{status (feature, @var{putative_feature})} devuelve @code{true} si @var{putative_feature}
-est@'a en la lista de elementos retornados por @code{status (feature)} y @code{false} en otro caso.
-La funci@'on @code{status} no eval@'ua el argumento @var{putative_feature}. El operador comilla-comilla, @code{'@w{}'}, permite la evaluaci@'on. Una caracter@'{@dotless{i}}stica cuyo nombre contenga un car@'acter especial debe ser suministrada como un argumento del tipo cadena alfanum@'erica. Por ejemplo,
-@code{status (feature, "ansi-cl")}.
+@code{status (feature)} devuelve una lista con caracter@'{@dotless{i}}sticas
+del sistema. @'Estas incluyen la versi@'on de Lisp, tipo de sistema 
+operativo, etc. La lista puede variar de un Lisp a otro.
+
 @item
-La llamada @code{status (status)} devuelve una lista con dos elementos @code{[feature, status]}. Los elementos @code{feature} y @code{status} son los dos argumentos que acepta la funci@'on @code{status};
-no est@'a claro si esta lista tiene alg@'un inter@'es adicional.
+@code{status (feature, item)} devuelve @code{true} si @var{item}
+est@'a en la lista de elementos retornados por @code{status (feature)}
+y @code{false} en otro caso.
+La funci@'on @code{status} no eval@'ua el argumento @var{item}. El operador
+de doble comilla simple, @code{'@w{}'}, permite la evaluaci@'on. Una 
+propiedad cuyo nombre contenga un car@'acter especial debe ser suministrada
+como un argumento del tipo cadena. Por ejemplo,
+@code{status (feature, "ansi-cl")}.
 @end itemize
 
-La variable @code{features} contiene una lista de caracter@'{@dotless{i}}sticas que se aplican a expresiones matem@'aticas. V@'eanse @code{features} y @code{featurep} para m@'as informaci@'on.
+V@'ease tambi@'en @code{sstatus}.
+
+La variable @code{features} contiene una lista de propiedades que se 
+aplican a expresiones matem@'aticas. V@'eanse @code{features} y @code{featurep}
+para m@'as informaci@'on.
 
 @end deffn
+
 
 @deffn {Funci@'on} time (%o1, %o2, %o3, ...)
 

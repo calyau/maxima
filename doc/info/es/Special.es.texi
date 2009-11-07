@@ -1,4 +1,4 @@
-@c version 1.51
+@c version 1.57
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -22,8 +22,8 @@ bessel_j (index, expr)    Funci@'on de Bessel de primera especie
 bessel_y (index, expr)    Funci@'on de Bessel de segunda especie
 bessel_i (index, expr)    Funci@'on de Bessel modificada de primera especie
 bessel_k (index, expr)    Funci@'on de Bessel modificada de segunda especie
-%he[n] (z)                Polinomio de Hermite (Ojo: @code{he}, no @code{h}.
-                                  Ver A&S 22.5.18)
+hankel_1 (v,z)            Funci@'on de Hankel de primera especie
+hankel_2 (v,z)            Funci@'on de Hankel de segunda especie
 %p[u,v] (z)               Funci@'on de Legendre de primera especie
 %q[u,v] (z)               Funci@'on de Legendre de segunda especie
 hstruve[n] (z)            Funci@'on H de Struve
@@ -32,15 +32,23 @@ lstruve[n] (z)            Funci@'on L de Struve
 gamma()                   Funci@'on Gamma
 gammagreek(a,z)           Funci@'on Gamma incompleta
 gammaincomplete(a,z)      Extremo de la funci@'on Gamma incompleta
+hypergeometric(l1, l2, z) Funci@'on hipergeom@'etrica
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
 %m[u,k] (z)               Funci@'on de Whittaker de primera especie
 %w[u,k] (z)               Funci@'on de Whittaker de segunda especie
 erfc (z)                  Complemento de la funci@'on de error, erf
-ei (z)                    Integral exponencial (?)
+expintegral_e (v,z)       Integral exponencial E
+expintegral_e1 (z)        Integral exponencial E1
+expintegral_ei (z)        Integral exponencial Ei
+expintegral_li (z)        Integral logar@'{@dotless{i}}tmica Li
+expintegral_si (z)        Integral exponencial Si
+expintegral_ci (z)        Integral exponencial Ci
+expintegral_shi (z)       Integral exponencial Shi
+expintegral_chi (z)       Integral exponencial Chi
 kelliptic (z)             Integral el@'{@dotless{i}}ptica completa
                                   de primera especie (K)
-%d [n] (z)                Funci@'on de cilindro parab@'olico
+parabolic_cylinder_d(v,z) Funci@'on D de cilindro parab@'olico
 @end example
 
 
@@ -149,11 +157,102 @@ si @math{v} no es un entero.  Si @math{v} es igual al entero @math{n}, entonces 
 
 
 @deffn {Funci@'on} hankel_1 (@var{v}, @var{z})
-Funci@'on de Hankel de primera especie de orden @math{v} y argumento @math{z}. (A&S 9.1.3)
+Funci@'on de Hankel de primera especie de orden @math{v} y argumento @math{z}
+(A&S 9.1.3). La funci@'on @code{hankel_1} se define como
+
+@example
+   bessel_j(v,z) + %i * bessel_y(v,z)
+@end example
+
+Maxima eval@'ua @code{hankel_1} num@'ericamente para el orden real @math{v}
+y el argumento complejo @math{z} en doble precisi@'on (float). La evaluaci@'on
+num@'erica en gran precisi@'on (bigfloat) y para @'ordenes complejos no est@'a
+implementada.
+
+Si @code{besselexpand} vale @code{true}, @code{hankel_1} se expande en 
+t@'erminos de funciones elementales cuando el orden @math{v} es la mitad
+de un entero impar. V@'ease al respecto @code{besselexpand}.
+
+Maxima reconoce la derivada de @code{hankel_1} con respecto del argumento @math{z}.
+
+Ejemplos:
+
+Evaluaci@'on num@'erica:
+
+@c ===beg===
+@c hankel_1(1,0.5);
+@c hankel_1(1,0.5+%i);
+@c ===end===
+@example
+(%i1) hankel_1(1,0.5);
+(%o1)              .2422684576748738 - 1.471472392670243 %i
+(%i2) hankel_1(1,0.5+%i);
+(%o2)             - .2558287994862166 %i - 0.239575601883016
+@end example
+
+No se soportan @'ordenes complejos. Maxima devuelve una forma nominal:
+
+@c ===beg===
+@c hankel_1(%i,0.5+%i);
+@c ===end===
+@example
+(%i3) hankel_1(%i,0.5+%i);
+(%o3)                       hankel_1(%i, %i + 0.5)
+@end example
+
+Expansi@'on de @code{hankel_1} cuando @code{besselexpand} vale @code{true}:
+
+@c ===beg===
+@c hankel_1(1/2,z),besselexpand:true;
+@c ===end===
+@example
+(%i4) hankel_1(1/2,z),besselexpand:true;
+                      sqrt(2) sin(z) - sqrt(2) %i cos(z)
+(%o4)                 ----------------------------------
+                              sqrt(%pi) sqrt(z)
+@end example
+
+Derivada de @code{hankel_1} respecto del argumento @math{z}. No est@'a
+soportada la derivada respecto del orden @math{v}. Maxima devuelve una forma nominal:
+
+@c ===beg===
+@c diff(hankel_1(v,z),z);
+@c diff(hankel_1(v,z),v);
+@c ===end===
+@example
+(%i5) diff(hankel_1(v,z),z);
+                    hankel_1(v - 1, z) - hankel_1(v + 1, z)
+(%o5)               ---------------------------------------
+                                       2
+(%i6) diff(hankel_1(v,z),v);
+                             d
+(%o6)                        -- (hankel_1(v, z))
+                             dv
+@end example
+
 @end deffn
 
 @deffn {Funci@'on} hankel_2 (@var{v}, @var{z})
-Funci@'on de Hankel de segunda especie de orden @math{v} y argumento @math{z}. (A&S 9.1.4)
+Funci@'on de Hankel de segunda especie de orden @math{v} y argumento @math{z}
+(A&S 9.1.4). La funci@'on @code{hankel_2} se define como
+
+@example
+   bessel_j(v,z) - %i * bessel_y(v,z)
+@end example
+
+Maxima eval@'ua @code{hankel_2} num@'ericamente para el orden real @math{v}
+y el argumento complejo @math{z} en doble precisi@'on (float). La evaluaci@'on
+num@'erica en gran precisi@'on (bigfloat) y para @'ordenes complejos no est@'a
+implementada.
+
+Si @code{besselexpand} vale @code{true}, @code{hankel_2} se expande en 
+t@'erminos de funciones elementales cuando el orden @math{v} es la mitad
+de un entero impar. V@'ease al respecto @code{besselexpand}.
+
+Maxima reconoce la derivada de @code{hankel_2} con respecto del argumento @math{z}.
+
+V@'eanse ejemplos en @code{hankel_1}.
+
 @end deffn
 
 @defvr {Variable optativa} besselexpand
@@ -1257,6 +1356,58 @@ Es la funci@'on hipergeom@'etrica pFq(a1,a2,..ap;b1,b2,..bq;z),
 donde @code{a} es una lista de longitud @code{p} y 
 @code{b} otra lista de longitud @code{q}.
 @end deffn
+
+
+@deffn {Function} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
+Es la funci@'on hipergeom@'etrica. A diferencia de la funci@'on
+hipergeom@'etrica @code{%f} de Maxima, la funci@'on @code{hypergeometric}
+es simplificadora; adem@'as, @code{hypergeometric} soporta la evaluaci@'on
+en doble (float) y gran (bigfloat) precisi@'on. La evaluaci@'on 
+num@'erica fuera del c@'{@dotless{i}}rculo unidad no est@'a en general
+soportada, pero s@'{@dotless{i}} en el caso de la funci@'on
+hipergeom@'etrica de Gauss, cuando @math{p = 2} y @math{q = 1}.
+
+Si la variable opcional @code{expand_hypergeometric} vale @code{true},
+(el valor por defecto es @code{false}) y uno de los argumentos entr @code{a1}
+y @code{ap} es entero negativo (caso polinomial), entonces @code{hypergeometric}
+devuelve un polinomio expandido.
+
+Ejemplos:
+@example
+ (%i1)  hypergeometric([],[],x);
+ (%o1) %e^x
+@end example
+
+Los polinomios se expanden autom@'aticamente cuando @code{expand_hypergeometric}
+vale @code{true}.
+
+@example
+ (%i2) hypergeometric([-3],[7],x);
+ (%o2) hypergeometric([-3],[7],x)
+
+ (%i3) hypergeometric([-3],[7],x), expand_hypergeometric : true;
+ (%o3) -x^3/504+3*x^2/56-3*x/7+1
+@end example
+
+Se soporta la evaluaci@'on en doble (float) y gran (bigfloat) precisi@'on:
+
+@example
+ (%i4) hypergeometric([5.1],[7.1 + %i],0.42);
+ (%o4) 1.346250786375334-0.0559061414208204*%i
+
+ (%i5) hypergeometric([5,6],[8], 5.7 - %i);
+ (%o5) 0.00737582400977495-0.00104981368857867*%i
+
+ (%i6) hypergeometric([5,6],[8], 5.7b0 - %i), fpprec : 30;
+ (%o6) 7.37582400977494674506442010824b-3-1.04981368857867315858055393376b-3*%i
+@end example
+@end deffn
+
+
+
+
+
+
 
 
 

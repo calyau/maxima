@@ -1,4 +1,4 @@
-@c english version 1.70
+@c english version 1.71
 @menu
 * Comentarios::
 * Archivos::
@@ -899,10 +899,22 @@ diez.
 @defvr {Variable opcional} inchar
 Valor por defecto: @code{%i}
 
-La variable @code{inchar} es el prefijo de las etiquetas de las expresiones introducidas por el usuario.
-Maxima crea autom@'aticamente una etiqueta para cada expresi@'on de entrada concatenando @code{inchar} y @code{linenum}; a
-@code{inchar} se le puede asignar cualquier s@'{@dotless{i}}mbolo o cadena, no necesariamente un carac@'acter sencillo.
+La variable @code{inchar} es el prefijo de las etiquetas de las
+expresiones introducidas por el usuario. Maxima crea autom@'aticamente 
+una etiqueta para cada expresi@'on de entrada concatenando @code{inchar} 
+y @code{linenum}.
 
+A @code{inchar} se le puede asignar cualquier s@'{@dotless{i}}mbolo 
+o cadena, no necesariamente un carac@'acter sencillo. Puesto que
+internamente Maxima solo tiene en cuenta el primer car@'acter del
+prefijo, los prefijos @code{inchar}, @code{outchar} y @code{linechar}
+deben comenzar con caracteres diferentes; en caso contrario, sentencias
+como @code{kill(inlables)} pueden dar resultados inesperados.
+
+@c ===beg===
+@c inchar: "input";
+@c expand((a+b)^3);
+@c ===end===
 @example
 (%i1) inchar: "input";
 (%o1)                                input
@@ -984,8 +996,17 @@ V@'ease tambi@'en @code{display}.
 @defvr {Variable opcional} linechar
 Valor por defecto: @code{%t}
 
-La variable @code{linechar} es el prefijo de las etiquetas que genera Maxima para expresiones intermedias. Cuando sea necesario, Maxima crear@'a una etiqueta para cada expresi@'on intermedia concatenando @code{linechar} y @code{linenum}. A 
-@code{linechar} se le puede asignar cualquier cadena o s@'{@dotless{i}}mbolo, no necesariamente un car@'acter simple.
+La variable @code{linechar} es el prefijo de las etiquetas que
+genera Maxima para expresiones intermedias. Cuando sea necesario,
+Maxima crear@'a una etiqueta para cada expresi@'on intermedia 
+concatenando @code{linechar} y @code{linenum}.
+
+A @code{linechar} se le puede asignar cualquier s@'{@dotless{i}}mbolo 
+o cadena, no necesariamente un carac@'acter sencillo. Puesto que
+internamente Maxima solo tiene en cuenta el primer car@'acter del
+prefijo, los prefijos @code{inchar}, @code{outchar} y @code{linechar}
+deben comenzar con caracteres diferentes; en caso contrario, sentencias
+como @code{kill(inlables)} pueden dar resultados inesperados.
 
 Las expresiones intermedias pueden ser mostradas o no.
 V@'eanse tambi@'en @code{programmode} y @code{labels}.
@@ -1128,10 +1149,22 @@ Ejemplos:
 @defvr {Variable opcional} outchar
 Valor por defecto: @code{%o}
 
-La variable @code{outchar} es el prefijo de las etiquetas de las expresiones calculadas por Maxima.
-Maxima crea autom@'aticamente una etiqueta para cada expresi@'on calculada concatenando @code{outchar} y @code{linenum}; a
-@code{outchar} se le puede asignar cualquier s@'{@dotless{i}}mbolo o cadena, no necesariamente un carac@'acter sencillo.
+La variable @code{outchar} es el prefijo de las etiquetas de las 
+expresiones calculadas por Maxima. Maxima crea autom@'aticamente 
+una etiqueta para cada expresi@'on calculada concatenando @code{outchar}
+y @code{linenum}.
 
+A @code{outchar} se le puede asignar cualquier s@'{@dotless{i}}mbolo 
+o cadena, no necesariamente un carac@'acter sencillo. Puesto que
+internamente Maxima solo tiene en cuenta el primer car@'acter del
+prefijo, los prefijos @code{inchar}, @code{outchar} y @code{linechar}
+deben comenzar con caracteres diferentes; en caso contrario, sentencias
+como @code{kill(inlables)} pueden dar resultados inesperados.
+
+@c ===beg===
+@c outchar: "output";
+@c expand((a+b)^3);
+@c ===end===
 @example
 (%i1) outchar: "output";
 (output1)                           output

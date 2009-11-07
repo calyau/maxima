@@ -1,4 +1,4 @@
-@c english version 1.14
+@c english version 1.15
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -181,6 +181,10 @@ Devuelve el ciclo dirigido de @var{n} v@'ertices.
 Devuelve el ciclo de @var{n} v@'ertices.
 @end deffn
 
+@deffn {Funci@'on} cuboctahedron_graph (@var{n})
+Devuelve el grafo cuboocta@'edrico.
+@end deffn
+
 @deffn {Funci@'on} cube_graph (@var{n})
 Devuelve el cubo de @var{n} dimensiones.
 @end deffn
@@ -248,6 +252,14 @@ Devuelve la uni@'on (suma) de los grafos @var{g1} y @var{g2}.
 Devuelve la rejilla @var{n x m}.
 @end deffn
 
+@deffn {Funci@'on} great_rhombicosidodecahedron_graph ()
+Devuelve el grafo gran rombicosidodeca@'edrico.
+@end deffn
+
+@deffn {Funci@'on} great_rhombicuboctahedron_graph ()
+Devuelve el grafo gran rombicocubicoocta@'edrico.
+@end deffn
+
 @deffn {Funci@'on} grotzch_graph ()
 Devuelve el grafo de Grotzch.
 @end deffn
@@ -257,7 +269,11 @@ Devuelve el grafo de Heawood.
 @end deffn
 
 @deffn {Funci@'on} icosahedron_graph ()
-Devuelve el grafo del icosaedro.
+Devuelve el grafo icosa@'edrico.
+@end deffn
+
+@deffn {Funci@'on} icosidodecahedron_graph ()
+Devuelve el grafo icosidodeca@'edrico.
 @end deffn
 
 @deffn {Funci@'on} induced_subgraph (@var{V}, @var{g})
@@ -418,6 +434,34 @@ Devuelve un torneo aleatorio de @var{n} v@'ertices.
 
 @deffn {Funci@'on} random_tree (@var{n})
 Devuelve un @'arbol aleatorio de @var{n} v@'ertices.
+@end deffn
+
+@deffn {Funci@'on} small_rhombicosidodecahedron_graph ()
+Devuelve el grafo peque@~no rombicosidodeca@'edrico.
+@end deffn
+
+@deffn {Funci@'on} small_rhombicuboctahedron_graph ()
+Devuelve el grafo peque@~no rombicocubicoocta@'edrico.
+@end deffn
+
+@deffn {Funci@'on} snub_cube_graph ()
+Devuelve el grafo c@'ubico volteado.
+@end deffn
+
+@deffn {Funci@'on} snub_dodecahedron_graph ()
+Devuelve el grafo dodeca@'edrico volteado.
+@end deffn
+
+@deffn {Funci@'on} truncated_cube_graph ()
+Devuelve el grafo c@'ubico truncado.
+@end deffn
+
+@deffn {Funci@'on} truncated_dodecahedron_graph ()
+Devuelve el grafo dodeca@'edrico truncado.
+@end deffn
+
+@deffn {Funci@'on} truncated_icosahedron_graph ()
+Devuelve el grafo icosa@'edrico truncado.
 @end deffn
 
 @deffn {Funci@'on} tutte_graph ()
@@ -1879,6 +1923,53 @@ Example
 @end example
 @end deffn
 
+@deffn {Funci@'on} vertex_coloring (@var{gr})
+Devuelve un coloreado @'optimo de los v@'ertices del grafo @var{gr}.
+
+La funci@'on devuelve el n@'umero crom@'atico y una lista 
+representando el coloreado de los v@'ertices de @var{gr}.
+
+Ejemplo:
+
+@c ===beg===
+@c load (graphs)$
+@c p:petersen_graph()$
+@c vertex_coloring(p);
+@c ===end===
+@example
+(%i1) load (graphs)$
+(%i2) p:petersen_graph()$
+(%i3) vertex_coloring(p);
+(%o3) [3, [[0, 2], [1, 3], [2, 2], [3, 3], [4, 1], [5, 3], 
+                                 [6, 1], [7, 1], [8, 2], [9, 2]]]
+@end example
+@end deffn
+
+@deffn {Funci@'on} wiener_index (@var{gr})
+Devuelve el @'{@dotless{i}}ndice de Wiener del grafo @var{gr}.
+
+Ejemplo:
+
+@c ===beg===
+@c load (graphs)$
+@c wiener_index(dodecahedron_graph());
+@c ===end===
+@example
+(%i1) wiener_index(dodecahedron_graph());
+(%o1)                          500
+@end example
+@end deffn
+
+
+
+
+
+
+
+
+
+
+
 @subsection Modificaci@'on de grafos
 
 
@@ -2135,98 +2226,6 @@ opcional @var{program}, cuyo valor por defecto es @code{program=spring_embedding
 @var{draw_graph} tambi@'en puede utilizar los programas de graphviz para
 posicionar los v@'ertices, para lo cual deber@'a instalarse separadamente el programa graphviz.
 
-Los argumentos opcionales de la funci@'on @var{draw_graph} son:
-
-@itemize @bullet
-@item
-@dfn{show_id=show}: si @var{show} vale @var{true} entonces se muestran los
-n@'umeros identificadores de los v@'ertices.
-@item
-@dfn{show_label=show}: si @var{show} vale @var{true} entonces se muestran las
-etiquetas de los v@'ertices.
-@item
-@dfn{label_alignment=pos}: indica c@'omo se deben alinear las etiquetas o n@'umeros
-identificadores de los v@'ertices. Puede ser: @code{left}, @code{center} or @code{right}.
-El valor por defecto es @code{left}.
-@item
-@dfn{show_weight=show}: si @var{show} vale @var{true} entonces se mostrar@'an 
-los pesos de las aristas.
-@item
-@dfn{vertex_type=type}: establece c@'omo se mostrar@'an los v@'ertices. V@'ease la
-opci@'on @var{point_type} del paquete @code{draw}.
-@item
-@dfn{vertex_size=size}: taman@~o de los v@'ertices.
-@item
-@dfn{vertex_color=c}: color a utilizar en los v@'ertices.
-@item
-@dfn{show_vertices=v_list}: dibuja los v@'ertices de la lista @var{v_list}
-con colores diferentes.
-@item
-@dfn{show_vertex_type=type}: establece c@'omo se mostrar@'an los v@'ertices de
-@var{show_vertices}. V@'ease la opci@'on @var{point_type} del paquete @code{draw}.
-@item
-@dfn{show_vertex_size=size}: taman@~os de los v@'ertices de @var{show_vertices}.
-@item
-@dfn{show_vertex_color=c}: color a utilizar en los v@'ertices de la lista @var{show_vertices}.
-@item
-@dfn{vertex_partition=part}: una partici@'on
-@code{[[v1,v2,...],...,[vk,...,vn]]} de los v@'ertices del grafo. Los 
-v@'ertices de cada lista se dibujar@'an de diferente color.
-@item
-@dfn{vertex_coloring=col}: colores de los v@'ertices. Los colores @var{col} deben
-especificarse en el mismo formato que el devuelto por @var{vertex_coloring}.
-@item
-@dfn{edge_color=c}: color a utilizar en las aristas.
-@item
-@dfn{edge_width=width}: ancho de las aristas.
-@item
-@dfn{edge_type=type}: establece c@'omo se dibujar@'an las aristas. V@'ease la opci@'on
-@var{line_type} del paquete @code{draw}.
-@item
-@dfn{show_edges=e_list}: dibuja las aristas de la lista @var{e_list} con colores diferentes.
-@item
-@dfn{show_edge_color=c}: color a utilizar en las aristas de la lista @var{show_edges}.
-@item
-@dfn{show_edge_width=width}: anchos de las aristas de @var{show_edges}.
-@item
-@dfn{show_edge_type=type}: establece c@'omo se dibujar@'an las aristas de @var{show_edges}.
-V@'ease la opci@'on @var{line_type} del paquete @code{draw}.
-@item
-@dfn{edge_partition=partition}: una partici@'on
-@code{[[e1,e2,...],...,[ek,...,em]]} de las aristas del grafo. Las aristas
-de cada lista se dibujar@'an de diferente color.
-@item
-@dfn{edge_coloring=col}: colores de las aristas. Los colores @var{col} deben
-especificarse en el mismo formato que el devuelto por @var{edge_coloring}.
-@item
-@dfn{redraw=r}: si @var{redraw} vale @code{true}, las posiciones de los v@'ertices se recalculan
-incluso si las posiciones est@'an almacenadas de un dibujo previo del grafo.
-@item
-@dfn{head_angle=angle}: @'angulo de las flechas de los arcos en los grafos orientados.
-Valor por defecto: 15.
-@item
-@dfn{head_length=len}: longitud de las flechas de los arcos en los grafos orientados.
-Valor por defecto: 0.1.
-@item
-@dfn{spring_embedding_depth=depth}: n@'umero de iteraciones del algoritmo de dibujo de grafos.
-Valor por defecto: 50.
-@item
-@dfn{terminal=term}: terminal utilizado para ver el gr@'afo. V@'ease la opci@'on @var{terminal}
-del paquete @code{draw}.
-@item
-@dfn{file_name=file}: nombre del fichero cuando el terminal especificado no es la pantalla.
-@item
-@dfn{program=prg}: establece el programa para posicionado de v@'ertices del grafo. Puede ser
-cualquiera de los programas graphviz (dot, neato, twopi, circ, fdp), @var{circular} o
-@var{spring_embedding} o @var{planar_embedding}; @var{planar_embedding} s@'lo est@'a
-disponible para grafos planares 2-conectados. Si @code{program=spring_embedding},
-se puede especificar un conjunto de v@'ertices de posici@'on fija con la opci@'on 
-@var{fixed_vertices}.
-@item
-@dfn{fixed_vertices=[]}: especifica una lista de v@'ertices con posiciones fijas en
-un pol@'{@dotless{i}}gono regular. Se puede utilizar cuando @code{program=spring_embedding}.
-@end itemize
-
 Ejemplo 1:
 
 @c ===beg===
@@ -2323,7 +2322,7 @@ Ejemplo 3:
     show_vertex_size=2,
     edge_color=cyan,
     edge_width=3,
-    show_id=true,
+    =true,
     text_color=brown
     )$
 @end example
@@ -2429,9 +2428,171 @@ Ejemplo 6:
 
 
 @defvr {Variable opcional} draw_graph_program
-Valor por defecto: @var{spring_embedding}.
+Valor por defecto: @var{spring_embedding}
 
 Programa a utilizar por defecto para posicionar los v@'ertices en la funci@'on @code{draw_graph}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_id
+Valor por defecto: @var{false}
+
+Si @var{show_id} vale @var{true} entonces se muestran los
+n@'umeros identificadores de los v@'ertices.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_label
+Valor por defecto: @var{false}
+
+Si @var{show_label} vale @var{true} entonces se muestran las
+etiquetas de los v@'ertices.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} label_alignment
+Valor por defecto: @var{center}
+
+Indica c@'omo se deben alinear las etiquetas o n@'umeros
+identificadores de los v@'ertices. Puede ser: @code{left}, @code{center} or @code{right}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_weight 
+Valor por defecto: @var{false}
+
+si @var{show_weight} vale @var{true} entonces se mostrar@'an 
+los pesos de las aristas.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} vertex_type
+Valor por defecto: @var{circle}
+
+Establece c@'omo se mostrar@'an los v@'ertices. V@'ease la
+opci@'on @var{point_type} del paquete @code{draw}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} vertex_size
+Taman@~o de los v@'ertices.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} vertex_color
+Color a utilizar en los v@'ertices.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_vertices
+Valor por defecto: []
+
+Dibuja los v@'ertices seleccionados en la lista con colores diferentes.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_vertex_type
+Establece c@'omo se mostrar@'an los v@'ertices de
+@var{show_vertices}. V@'ease la opci@'on @var{point_type} del paquete @code{draw}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_vertex_size
+Taman@~os de los v@'ertices de @var{show_vertices}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_vertex_color 
+Color a utilizar en los v@'ertices de la lista @var{show_vertices}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} vertex_partition
+Valor por defecto: []
+
+Una partici@'on @code{[[v1,v2,...],...,[vk,...,vn]]} de los v@'ertices del grafo. Los 
+v@'ertices de cada lista se dibujar@'an de diferente color.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} vertex_coloring
+Colores de los v@'ertices. Los colores @var{col} deben
+especificarse en el mismo formato que el devuelto por @var{vertex_coloring}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} edge_color 
+Color a utilizar en las aristas.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} edge_width
+Ancho de las aristas.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} edge_type
+Establece c@'omo se dibujar@'an las aristas. V@'ease la opci@'on
+@var{line_type} del paquete @code{draw}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_edges
+Dibuja las aristas de la lista @var{e_list} con colores diferentes.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_edge_color
+Color a utilizar en las aristas de la lista @var{show_edges}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_edge_width
+Anchos de las aristas de @var{show_edges}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} show_edge_type
+Establece c@'omo se dibujar@'an las aristas de @var{show_edges}.
+V@'ease la opci@'on @var{line_type} del paquete @code{draw}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} edge_partition
+Una partici@'on @code{[[e1,e2,...],...,[ek,...,em]]} de las aristas del grafo.
+Las aristas de cada lista se dibujar@'an de diferente color.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} edge_coloring
+Colores de las aristas. Los colores @var{col} deben
+especificarse en el mismo formato que el devuelto por @var{edge_coloring}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} redraw 
+Valor por defecto: @var{false}
+
+Si @var{redraw} vale @code{true}, las posiciones de los v@'ertices se recalculan
+incluso si las posiciones est@'an almacenadas de un dibujo previo del grafo.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} head_angle
+Valor por defecto: 15
+
+@'Angulo de las flechas de los arcos en los grafos orientados.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} head_length
+Valor por defecto: 0.1
+
+Longitud de las flechas de los arcos en los grafos orientados.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} spring_embedding_depth
+Valor por defecto: 50
+
+N@'umero de iteraciones del algoritmo de dibujo de grafos.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} terminal
+Terminal utilizado para ver el gr@'afo. V@'ease la opci@'on @var{terminal}
+del paquete @code{draw}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} file_name
+Nombre del fichero cuando el terminal especificado no es la pantalla.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} program
+establece el programa para posicionado de v@'ertices del grafo. Puede ser
+cualquiera de los programas graphviz (dot, neato, twopi, circ, fdp), @var{circular} o
+@var{spring_embedding} o @var{planar_embedding}; @var{planar_embedding} s@'lo est@'a
+disponible para grafos planares 2-conectados. Si @code{program=spring_embedding},
+se puede especificar un conjunto de v@'ertices de posici@'on fija con la opci@'on 
+@var{fixed_vertices}.
+@end defvr
+
+@defvr {Opci@'on de draw_graph} fixed_vertices
+Especifica una lista de v@'ertices con posiciones fijas en
+un pol@'{@dotless{i}}gono regular. Se puede utilizar cuando @code{program=spring_embedding}.
 @end defvr
 
 @deffn {Funci@'on} vertices_to_path (@var{v_list})
