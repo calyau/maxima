@@ -854,7 +854,9 @@
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias))
       '(($ratcoeff $ratcoef) ($ratnum $ratnumer) ($true t)
-	($binom %binomial) ($derivative $diff) ($prod $product)
+; Cut out the alias binom for binomial
+;	($binom %binomial)
+        ($derivative $diff) ($prod $product)
 	($bothcoeff $bothcoef)))
 
 (defmfun amperchk (name)
