@@ -348,6 +348,7 @@
 			    (+ $fpprec 4))))
 	     (add (bigfloatp ($realpart result))
 		  (mul '$%i (bigfloatp ($imagpart result))))))
+          ((taylorize (mop x) (cadr x)))
           ((eq j '$inf) '$inf) ; Simplify to $inf to be more consistent.
           ((and $gamma_expand
                 (mplusp j) 
