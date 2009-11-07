@@ -730,8 +730,10 @@
 (defmfun alias (x y)
   (cond ((nonsymchk x '$alias))
 	((nonsymchk y '$alias))
-	((not (eq (getcharn x 1) #\$))
-	 (merror "-ed symbols may not be aliased. ~M" x))
+        ((eq x y) y) ; x is already the alias of y
+; Not needed. We return the alias immediately if we already have one.
+;	((not (eq (getcharn x 1) #\$))
+;	 (merror "-ed symbols may not be aliased. ~M" x))
 	((get x 'reversealias)
 	 (if (not (eq x y))
 	     (merror "~M already is aliased." x)))
