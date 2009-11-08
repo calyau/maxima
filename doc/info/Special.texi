@@ -24,11 +24,12 @@ bessel_k (index, expr)         Modified Bessel function, 2nd kind
 
 hankel_1 (v,z)                 Hankel function of the 1st kind
 hankel_2 (v,z)                 Hankel function of the 2nd kind
+struve_h (v,z)                 Struve H function
+struve_l (v,z)                 Struve L function
 
 assoc_legendre_p[v,u] (z)      Legendre function of degree v and order u 
 assoc_legendre_q[v,u] (z)      Legendre function, 2nd kind
-hstruve[n] (z)                 Struve H function
-lstruve[n] (z)                 Struve L function
+
 %f[p,q] ([], [], expr)         Generalized Hypergeometric function
 gamma()                        Gamma function
 gammagreek(a,z)                Incomplete gamma function
@@ -51,7 +52,7 @@ expintegral_chi (z)            Exponential integral Chi
 
 kelliptic (z)                  Complete elliptic integral of the first 
                                kind (K)
-parabolic_cylinder_d(v,z)      Parabolic cylinder D function
+parabolic_cylinder_d (v,z)     Parabolic cylinder D function
 @end example
 
 @opencatbox
@@ -1448,11 +1449,8 @@ representation for fresnel_s and fresnel_c
 The Struve functions are defined in Abramowitz and Stegun,
 @i{Handbook of Mathematical Functions}, Chapter 12.
 
-Maxima has very limited knowledge of these functions.  They
-can be returned from function @code{hgfred}.
-
-
-@deffn {Function} hstruve [@var{v}] (@var{z}) 
+@c -----------------------------------------------------------------------------
+@deffn {Function} struve_h (@var{v}, @var{z})
 The Struve Function H of order v and argument z. (A&S 12.1.1)
 
 @opencatbox
@@ -1460,16 +1458,14 @@ The Struve Function H of order v and argument z. (A&S 12.1.1)
 @closecatbox
 @end deffn
 
-
-@deffn {Function} lstruve [@var{v}] (@var{z}) 
+@c -----------------------------------------------------------------------------
+@deffn {Function} struve_l (@var{v}, @var{z})
 The Modified Struve Function L of order v and argument z. (A&S 12.2.1)
 
 @opencatbox
 @category{Special functions}
 @closecatbox
 @end deffn
-
-
 
 @node Hypergeometric Functions, Parabolic Cylinder Functions, Struve Functions, Special Functions
 @section Hypergeometric Functions
@@ -1555,8 +1551,8 @@ The Parabolic Cylinder Functions are defined in Abramowitz and Stegun,
 Maxima has very limited knowledge of these functions.  They
 can be returned from function @code{hgfred}.
 
-@deffn {Function} %d [@var{v}] (@var{z}) 
-Tha parabolic cylinder function @code{%d[v](z)}. (A&s 19.3.1)
+@deffn {Function} parabolic_cylinder_d (@var{v}, @var{z}) 
+The parabolic cylinder function @code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1)
 @opencatbox
 @category{Special functions}
 @closecatbox
