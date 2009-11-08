@@ -165,7 +165,7 @@ integrate(diff(f(x),x)*lambert_w(f(x)),x);
 
 /* Integrals where the property is a function */
 integrate(bessel_j(0,x),x);
-x*(bessel_j(0,x)*(2-%pi*hstruve[1](x))+%pi*bessel_j(1,x)*hstruve[0](x))/2;
+x*(bessel_j(0,x)*(2-%pi*struve_h(1,x))+%pi*bessel_j(1,x)*struve_h(0,x))/2;
 
 integrate(bessel_j(1,x),x);
 -bessel_j(0,x);
