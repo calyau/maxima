@@ -78,7 +78,6 @@
 
 (defmvar $filenum 0)
 (defmvar $storenum 1000.)
-(defmvar $filesize 16.)
 (defmvar $dskall t)
 (defmvar $errorfun nil)
 (defmvar $disptime nil)
@@ -99,7 +98,6 @@
                  $dependencies $let_rule_packages $structures))
 
 (defmvar $labels (list '(mlist simp)))
-(defmvar $dskuse nil)
 (defmvar $device '$dsk)
 (defmvar $dispflag t)
 
@@ -164,9 +162,6 @@
     (clearsign)))
 
 (defmfun makelabel (x)
-  (when (and $dskuse (not $nolabels) (> (incf dcount) $filesize))
-    (setq dcount 0)
-    (dsksave))
   (setq linelable ($concat '|| x $linenum))
   (unless $nolabels
     (when (or (null (cdr $labels))
