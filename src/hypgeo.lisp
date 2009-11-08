@@ -705,34 +705,14 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize hstruve[v](w), Struve's H function.
-(defun onehstruve (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($hstruve array)(v true))(w true)))
-	((coeffpp)(a zerp)))
-      nil))
-
 ;; Recognize Struve H function.
 (defun m2-struve_h (expr)
   (m2 expr
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($struve_h) (v true) (w true)))
+         ((%struve_h) (v true) (w true)))
         ((coeffpp)(a zerp)))
-      nil))
-
-;; Recognize lstruve[v](w), Struve's L function.
-(defun onelstruve (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($lstruve array)(v true))(w true)))
-	((coeffpp)(a zerp)))
       nil))
 
 ;; Recognize Struve L function.
@@ -741,7 +721,7 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($struve_l) (v true) (w true)))
+         ((%struve_l) (v true) (w true)))
         ((coeffpp)(a zerp)))
       nil))
 
@@ -2091,25 +2071,11 @@
 	    (return (fractest1 rest arg1 arg2 index1 index2 nil 'besskti))))
      
      ;; Laplace transform of Struve H function
-     (cond ((setq l (onehstruve u))
-	    (setq index1 (cdras 'v l)
-		  arg1 (cdras 'w l)
-		  rest (cdras 'u l))
-	    (return (lt1hstruve rest arg1 index1))))
-     
-     ;; Laplace transform of Struve H function
      (cond ((setq l (m2-struve_h u))
             (setq index1 (cdras 'v l)
                   arg1 (cdras 'w l)
                   rest (cdras 'u l))
             (return (lt1hstruve rest arg1 index1))))
-             
-     ;; Laplace transform of Struve L function
-     (cond ((setq l (onelstruve u))
-	    (setq index1 (cdras 'v l)
-		  arg1 (cdras 'w l)
-		  rest (cdras 'u l))
-	    (return (lt1lstruve rest arg1 index1))))
      
      ;; Laplace transform of Struve L function
      (cond ((setq l (m2-struve_l u))
