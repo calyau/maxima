@@ -1,4 +1,4 @@
-@c english version 1.20
+@c english version 1.21
 @menu
 * Introducci@'on a las series::
 * Funciones y variables para las series::
@@ -253,11 +253,24 @@ Por defecto, los t@'erminos de una suma se muestran en el orden de las potencias
 
 
 @deffn {Funci@'on} powerseries (@var{expr}, @var{x}, @var{a})
-Devuelve la forma general del desarrollo en serie de potencias de @var{expr} para la variable @var{x} alrededor del punto @var{a} (que puede ser @code{inf}, de infinito).
+Devuelve la forma general del desarrollo en serie de potencias 
+de @var{expr} para la variable @var{x} alrededor del punto 
+@var{a} (que puede ser @code{inf}, de infinito):
+@example
+           inf
+           ====
+           \               n
+            >    b  (x - a)
+           /      n
+           ====
+           n = 0
+@end example
 
-Si @code{powerseries} no es capaz de desarrollar @var{expr}, la funci@'on @code{taylor} puede calcular los primeros t@'erminos de la serie.
+Si @code{powerseries} no es capaz de desarrollar @var{expr},
+la funci@'on @code{taylor} puede calcular los primeros t@'erminos de la serie.
 
-Si @code{verbose} vale @code{true}, @code{powerseries} va mostrando mensajes mientras progresa el c@'alculo. 
+Si @code{verbose} vale @code{true}, @code{powerseries} va 
+mostrando mensajes mientras progresa el c@'alculo. 
 
 @example
 (%i1) verbose: true$

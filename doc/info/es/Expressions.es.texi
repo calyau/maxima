@@ -1,4 +1,4 @@
-@c english version 1.65
+@c english version 1.66
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -1921,30 +1921,61 @@ Ordenaci@'on de expresiones no at@'omicas.
 
 @c NEEDS WORK
 @deffn {Funci@'on} part (@var{expr}, @var{n_1}, ..., @var{n_k})
-Devuelve partes de la forma mostrada de @code{expr}. Obtiene la parte de @code{expr} que se especifica por los @'{@dotless{i}}ndices @var{n_1}, ..., @var{n_k}.  Primero se obtiene la parte @var{n_1} de @code{expr}, despu@'es la parte @var{n_2} del resultado anterior, y as@'{@dotless{i}} sucesivamente.  El resultado que se obtiene es la parte @var{n_k} de ... la parte @var{n_2} de la parte @var{n_1} de @code{expr}.
+Devuelve partes de la forma mostrada de @code{expr}. Obtiene la 
+parte de @code{expr} que se especifica por los @'{@dotless{i}}ndices 
+@var{n_1}, ..., @var{n_k}.  Primero se obtiene la parte @var{n_1} de 
+@code{expr}, despu@'es la parte @var{n_2} del resultado anterior, 
+y as@'{@dotless{i}} sucesivamente.  El resultado que se obtiene es 
+la parte @var{n_k} de ... la parte @var{n_2} de la parte @var{n_1} de @code{expr}.
+Si no se especifican @'{@dotless{i}}ndices, devuelve @code{expr}.
 
-La funci@'on @code{part} se puede utilizar para obtener un elemento de una lista, una fila de una matriz, etc.
+La funci@'on @code{part} se puede utilizar para obtener un elemento 
+de una lista, una fila de una matriz, etc.
 
 @c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
 @c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
-Si el @'ultimo argumento de la funci@'on @code{part} es una lista de @'{@dotless{i}}ndices, entonces se toman varias subexpresiones, cada una de las cuales correspondiente a un @'{@dotless{i}}ndice de la lista.  As@'{@dotless{i}}, @code{part (x + y + z, [1, 3])} devuelve @code{z+x}.
+Si el @'ultimo argumento de la funci@'on @code{part} es una lista de 
+@'{@dotless{i}}ndices, entonces se toman varias subexpresiones, cada 
+una de las cuales correspondiente a un @'{@dotless{i}}ndice de la lista.
+As@'{@dotless{i}}, @code{part (x + y + z, [1, 3])} devuelve @code{z+x}.
 
-La variable @code{piece} guarda la @'ultima expresi@'on seleccionada con la funci@'on @code{part}. Se actualiza durante la ejecuci@'on de la funci@'on, por lo que puede ser referenciada en la misma funci@'on.
+La variable @code{piece} guarda la @'ultima expresi@'on seleccionada
+con la funci@'on @code{part}. Se actualiza durante la ejecuci@'on de
+la funci@'on, por lo que puede ser referenciada en la misma funci@'on.
 
-Si @code{partswitch} vale @code{true} entonces de devuelve @code{end} cuando no exista la parte seleccionada de una expresi@'on, si vale @code{false} se mostrar@'a un mensaje de error.
+Si @code{partswitch} vale @code{true} entonces de devuelve @code{end}
+cuando no exista la parte seleccionada de una expresi@'on, si vale
+@code{false} se mostrar@'a un mensaje de error.
 
-@c NEED "SEE ALSO" POINTING TO ALL OTHER PART FUNCTIONS
+V@'eanse tambi@'en @code{inpart}, @code{substpart}, @code{substinpart},
+@code{dpart} y @code{lpart}.
 
-Ejemplo: @code{part (z+2*y, 2, 1)} devuelve 2.
+Ejemplos:
 
-@c MERGE IN example (part) OUTPUT HERE
+@c ===beg===
+@c part(z+2*y+a,2);
+@c part(z+2*y+a,[1,3]);
+@c part(z+2*y+a,2,1);
+@c ===end===
+@example
+(%i1) part(z+2*y+a,2);
+(%o1)                                 2 y
+(%i2) part(z+2*y+a,[1,3]);
+(%o2)                                z + a
+(%i3) part(z+2*y+a,2,1);
+(%o3)                                  2
+@end example
+
 La instrucci@'on @code{example (part)} muestra m@'as ejemplos.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Funci@'on} partition (@var{expr}, @var{x})
-Devuelve una lista con dos expresiones, que son: (1) los factores de @var{expr} si es un producto, los t@'erminos de @var{expr} si es una suma, o los elementos de @var{expr}, si es una lista, que no contengan a @var{x}, (2) los factores, t@'erminos o lista que contengan a @var{x}.
+Devuelve una lista con dos expresiones, que son: (1) los factores de 
+@var{expr} si es un producto, los t@'erminos de @var{expr} si es una
+suma, o los elementos de @var{expr}, si es una lista, que no contengan
+a @var{x}, (2) los factores, t@'erminos o lista que contengan a @var{x}.
 
 @example
 (%i1) partition (2*a*x*f(x), x);

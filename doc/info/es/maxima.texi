@@ -17,7 +17,7 @@
 @documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual de Maxima
-Ver. 5.19
+Ver. 5.20
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
@@ -45,20 +45,27 @@ END-INFO-DIR-ENTRY
 @vskip 0pt plus 1filll
 @i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
 
-Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
+Maxima desciende del sistema Macsyma, desarrollado en el MIT 
+(Massachusetts Institute of Technology) entre los a@~nos 1968 y 
+1982 como parte del proyecto MAC. El MIT pas@'o una copia del 
+c@'odigo fuente al DOE (Department of Energy) en 1982, en una 
+versi@'on conocida como DOE-Macsyma. Una de estas copias fue 
+mantenida por el Profesor William F. Schelter de la Universidad 
+de Texas desde el a@~no 1982 hasta su fallecimiento en 2001.
+En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de
+Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente
+de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000
+el proyecto Maxima en SourceForge con el fin de mantener y seguir
+desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
-@i{Notas de la traducci@'on espa@~nola.}
+Los usuarios de habla hispana disponen de una lista de correos
+en la que podr@'an participar para recabar informaci@'on,
+proponer ideas y comentar sus experiencias con Maxima:
 
-La versi@'on espa@~nola del manual de Maxima la mantienen Mario
-Rodr@'{@dotless{i}}guez y Jaime Villate; para comentarios, sugerencias y
-colaboraciones, cont@'actese mediante cualquiera de las siguientes
-direcciones de correo electr@'onico:
+@url{https://lists.sourceforge.net/lists/listinfo/maxima-lang-es}
 
-@itemize @bullet
-@item mario ARROBA edu PUNTO xunta PUNTO es
 
-@item villate ARROBA fe PUNTO up PUNTO pt
-@end itemize
+
 @end titlepage
 
 @summarycontents
@@ -72,18 +79,11 @@ direcciones de correo electr@'onico:
 
 Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
-@i{Notas de la traducci@'on espa@~nola.}
+Los usuarios de habla hispana disponen de una lista de correos
+en la que podr@'an participar para recabar informaci@'on,
+proponer ideas y comentar sus experiencias con Maxima:
 
-La versi@'on espa@~nola del manual de Maxima la mantienen Mario
-Rodr@'{@dotless{i}}guez y Jaime Villate; para comentarios, sugerencias y
-colaboraciones, cont@'actese mediante cualquiera de las siguientes
-direcciones de correo electr@'onico:
-
-@itemize @bullet
-@item mario ARROBA edu PUNTO xunta PUNTO es
-
-@item villate ARROBA fe PUNTO up PUNTO pt
-@end itemize
+@url{https://lists.sourceforge.net/lists/listinfo/maxima-lang-es}
 @end ifnottex
 
 @c includes

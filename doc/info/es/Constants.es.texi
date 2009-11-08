@@ -1,4 +1,4 @@
-@c version 1.22
+@c version 1.23
 @menu
 * Funciones y variables para Constantes::   
 @end menu
@@ -190,5 +190,37 @@ Ejemplo:
 (%i1) limit (1/x, x, 0);
 (%o1)                          und
 @end example
+@end defvr
+
+@defvr {Constante} zeroa
+@code{zeroa} representa un infinitesimal mayor que cero. 
+@code{zeroa} puede utilizarse en expresiones. @code{limit}
+simplifica expresiones que contienen infinitesimales.
+
+V@'eanse tambi@'en @code{zerob} y @code{limit}.
+
+Ejemplo:
+
+@code{limit} simplifica expresiones que contienen infinitesimales:
+
+@c ===beg===
+@c limit(zeroa);
+@c limit(zeroa+x);
+@c ===end===
+@example
+(%i1) limit(zeroa);
+(%o1)                                  0
+(%i2) limit(x+zeroa);
+(%o2)                                  x
+@end example
+
+@end defvr
+
+@defvr {Constante} zerob
+@code{zerob} representa un infinitesimal menor que cero. 
+@code{zerob} puede utilizarse en expresiones. @code{limit}
+simplifica expresiones que contienen infinitesimales.
+
+V@'eanse tambi@'en @code{zeroa} y @code{limit}.
 @end defvr
 
