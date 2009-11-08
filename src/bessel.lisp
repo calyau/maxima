@@ -687,15 +687,17 @@ Perhaps you meant to enter `~a'.~%"
     (case n
 	  (0 
 	   ;; integrate(bessel_j(0,z)
-	   ;; = (1/2)*z*(%pi*bessel_j(1,z)*hstruve[0](z)
-	   ;;            +bessel_j(0,z)*(2-%pi*hstruve[1](z)))
+	   ;; = (1/2)*z*(%pi*bessel_j(1,z)*struve_h(0,z)
+	   ;;            +bessel_j(0,z)*(2-%pi*struve_h(1,z)))
 	   '((mtimes) ((rat) 1 2) z
 	     ((mplus)
-	      ((mtimes) $%pi ((%bessel_j) 1 z) 
-	       ((mqapply) (($hstruve array) 0) z))
-	      ((mtimes) ((%bessel_j) 0 z)
+	      ((mtimes) $%pi 
+	       ((%bessel_j) 1 z)
+	       ((%struve_h) 0 z))
+	      ((mtimes) 
+	       ((%bessel_j) 0 z)
 	       ((mplus) 2 ((mtimes) -1 $%pi 
-			   ((mqapply) (($hstruve array) 1) z)))))))
+	                   ((%struve_h) 1 z)))))))
 	  (1
 	   ;; integrate(bessel_j(1,z) = -bessel_j(0,z)
 	   '((mtimes) -1 ((%bessel_j) 0 z)))
@@ -1000,8 +1002,8 @@ Perhaps you meant to enter `~a'.~%"
 	    (simplify ($niceindices answer)))))
        (($evenp n)
 	;; integrate(bessel_y(2*N,z)) , N > 0
-	;; = (1/2)*%pi*z*(bessel_y(0,z)*hstruve[-1](z)
-	;;               +bessel_y(1,z)*hstruve[0](z))
+	;; = (1/2)*%pi*z*(bessel_y(0,z)*struve_h(-1,z)
+	;;               +bessel_y(1,z)*struve_h(0,z))
 	;;    - 2 * sum(bessel_y(2*k,z),k,1,n/2)
 	(let* 
 	    ((k (gensym))
@@ -1011,10 +1013,12 @@ Perhaps you meant to enter `~a'.~%"
 			 ((mtimes) ((rat) 1 2) ,n)))
 		       ((mtimes) ((rat) 1 2) $%pi z
 			((mplus)
-			 ((mtimes) ((%bessel_y) 0 z)
-			  ((mqapply) (($hstruve array) -1) z))
-			 ((mtimes) ((%bessel_y) 1 z)
-			  ((mqapply) (($hstruve array) 0) z)))))))
+			 ((mtimes) 
+			  ((%bessel_y) 0 z)
+			  ((%struve_h) -1 z))
+			 ((mtimes) 
+			  ((%bessel_y) 1 z)
+			  ((%struve_h) 0 z)))))))
 	  ;; Expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))  ; Is there a better way?
@@ -1120,15 +1124,17 @@ Perhaps you meant to enter `~a'.~%"
     (case n
 	  (0 
 	   ;; integrate(bessel_i(0,z)
-	   ;; = (1/2)*z*(bessel_i(0,z)*(%pi*lstruve[1](z)+2)
-	   ;;            -%pi*bessel_i(1,z)*lstruve[0](z))
+	   ;; = (1/2)*z*(bessel_i(0,z)*(%pi*struve_l(1,z)+2)
+	   ;;            -%pi*bessel_i(1,z)*struve_l(0,z))
 	   '((mtimes) ((rat) 1 2) z
 	     ((mplus)
-	      ((mtimes) -1 $%pi ((%bessel_i) 1 z)
-	       ((mqapply) (($lstruve array) 0) z))
-	      ((mtimes) ((%bessel_i) 0 z)
+	      ((mtimes) -1 $%pi 
+	       ((%bessel_i) 1 z)
+	       ((%struve_l) 0 z))
+	      ((mtimes) 
+	       ((%bessel_i) 0 z)
 	       ((mplus) 2
-		((mtimes) $%pi ((mqapply) (($lstruve array) 1) z)))))))
+		((mtimes) $%pi ((%struve_l) 1 z)))))))
 	  (1
 	   ;; integrate(bessel_j(1,z) = -bessel_i(0,z)
 	   '((mtimes) -1 ((%bessel_i) 0 z)))
@@ -1256,8 +1262,8 @@ Perhaps you meant to enter `~a'.~%"
 	    (simplify ($niceindices answer)))))
        (($evenp n)
 	;; integrate(bessel_k(2*N,z)) , N > 0
-	;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*lstruve[-1](z)
-	;;               +bessel_k(1,z)*lstruve[0](z))
+	;; = (1/2)*(-1)^(n/2)*%pi*z*(bessel_k(0,z)*struve_l(-1,z)
+	;;               +bessel_k(1,z)*struve_l(0,z))
 	;;    + 2 * sum((-1)^(k+n/2)*bessel_k(2*k+1,z),k,0,n/2-1)
 	(let* 
 	    ((k (gensym))
@@ -1273,9 +1279,9 @@ Perhaps you meant to enter `~a'.~%"
 			((mexpt) -1 ((mtimes) ((rat) 1 2) ,n)) z
 			((mplus)
 			 ((mtimes) ((%bessel_k) 0 z)
-			  ((mqapply) (($lstruve array) -1) z))
+			  ((%struve_l) -1 z))
 			 ((mtimes) ((%bessel_k) 1 z)
-			  ((mqapply) (($lstruve array) 0) z)))))))
+			  ((%struve_l) 0 z)))))))
 	  ;; expand out the sum if n < 10.  Otherwise fix up the indices
 	  (if (< n 10) 
 	    (meval `(($ev) ,answer $sum))  ; Is there a better way?
@@ -1451,5 +1457,493 @@ Perhaps you meant to enter `~a'.~%"
       (t
         ;; the sign of arg is not known
         (risplit-noun expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of Struve H function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $struve_h (v z)
+  (simplify (list '(%struve_h) v z)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $struve_h %struve_h alias)
+(defprop $struve_h %struve_h verb)
+(defprop %struve_h $struve_h reversealias)
+(defprop %struve_h $struve_h noun)
+
+(defprop %struve_h simp-struve-h operators)
+
+(defprop %struve_h
+  ((v z)
+   nil
+   ((mtimes) 
+    ((rat) 1 2)
+    ((mplus) 
+     ((%struve_h) ((mplus) -1 v) z)
+     ((mtimes) -1 ((%struve_h) ((mplus) 1 v) z))
+     ((mtimes) 
+      ((mexpt) $%pi ((rat) -1 2))
+      ((mexpt) 2 ((mtimes) -1 v))
+      ((mexpt) ((%gamma) ((mplus) ((rat) 3 2) v)) -1)
+      ((mexpt) z v)))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-struve-h (expr ignored z)
+  (declare (ignore ignored))
+  (let ((order (simpcheck (cadr expr) z))
+        (arg   (simpcheck (caddr expr) z)))
+    (cond
+      
+      ;; Check for special values
+      
+      ((zerop1 arg)
+       (cond ((eq ($csign (add order 1)) '$zero)
+              (cond ((or ($bfloatp order)
+                         ($bfloatp arg))
+                     ($bfloat (div 2 '$%pi)))
+                    ((or (floatp order)
+                         (floatp arg))
+                     ($float (div 2 '$%pi)))
+                    (t
+                     (div 2 '$%pi))))
+             ((eq ($sign (add ($realpart order) 1)) '$pos)
+              arg)
+             ((member ($sign (add ($realpart order) 1)) '($zero $neg $nz))
+              (simp-domain-error 
+                (intl:gettext "struve_h: struve_h(~:M,~:M) is undefined.")
+                order arg))
+             (t
+              (eqtest (list '(%struve_h) order arg) expr))))
+      
+      ;; Check for numerical evaluation
+      
+      ((complex-float-numerical-eval-p order arg)
+       (let (($numer t) ($float t))
+         ($rectform
+           ($float
+             (mul
+               ($rectform (power arg (add order 1.0)))
+               ($rectform (inv (power 2.0 order)))
+               (inv (power ($float '$%pi) 0.5))
+               (inv (simplify (list '(%gamma) (add order 1.5))))
+               (simplify (list '($hypergeometric)
+                               (list '(mlist) 1)
+                               (list '(mlist) '((rat) 3 2)
+                                     (add order '((rat) 3 2)))
+                               (div (mul arg arg) -4.0))))))))
+      
+      ((complex-bigfloat-numerical-eval-p order arg)
+       (let (($ratprint nil)
+             (arg ($bfloat arg))
+             (order ($bfloat order)))
+         ($rectform
+           ($bfloat
+             (mul
+               ($rectform (power arg (add order 1)))
+               ($rectform (inv (power 2 order)))
+               (inv (power ($bfloat '$%pi) ($bfloat '((rat) 1 2))))
+               (inv (simplify (list '(%gamma) 
+                                    (add order ($bfloat '((rat) 3 2))))))
+               (simplify (list '($hypergeometric)
+                               (list '(mlist) 1)
+                               (list '(mlist) '((rat) 3 2)
+                                     (add order '((rat) 3 2)))
+                               (div (mul arg arg) ($bfloat -4)))))))))
+      
+      ;; Transformations and argument simplifications
+      
+      ((and $besselexpand
+            (ratnump order)
+            (integerp (mul 2 order)))
+       (cond 
+         ((eq ($sign order) '$pos)
+          ;; Expansion of Struve H for a positive half integral order.
+          (sratsimp
+            (add
+              (mul
+                (inv (simplify (list '(mfactorial) (sub order '((rat) 1 2)))))
+                (inv (power '$%pi '((rat) 1 2 )))
+                (power (div arg 2) (add order -1))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (mul
+                      (simplify (list '($pochhammer) '((rat) 1 2) index))
+                      (simplify (list '($pochhammer)
+                                      (sub '((rat) 1 2) order)
+                                      index))
+                      (power (mul -1 arg arg (inv 4)) (mul -1 index)))
+                    index 0 (sub order '((rat) 1 2)) t)))
+              (mul
+                (power (div 2 '$%pi) '((rat) 1 2))
+                (power -1 (add order '((rat) 1 2)))
+                (inv (power arg '((rat) 1 2)))
+                (add
+                  (mul
+                    (simplify 
+                      (list '(%sin)
+                            (add (mul '((rat) 1 2)
+                                      '$%pi
+                                      (add order '((rat) 1 2)))
+                                 arg)))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (power -1 index)
+                          (simplify (list '(mfactorial) 
+                                          (add (mul 2 index) 
+                                               order 
+                                               '((rat) -1 2))))
+                          (inv (simplify (list '(mfactorial) (mul 2 index))))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (mul -2 index)
+                                                    order
+                                                    '((rat) -1 2)))))
+                          (inv (power (mul 2 arg) (mul 2 index))))
+                        index 0 
+                        (simplify (list '($floor) 
+                                        (div (sub (mul 2 order) 1) 4)))
+                        t)))
+                  (mul
+                    (simplify (list '(%cos)
+                                    (add (mul '((rat) 1 2)
+                                              '$%pi
+                                              (add order '((rat) 1 2)))
+                                         arg)))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (power -1 index)
+                          (simplify (list '(mfactorial) 
+                                          (add (mul 2 index) 
+                                               order 
+                                               '((rat) 1 2))))
+                          (power (mul 2 arg) (mul -1 (add (mul 2 index) 1)))
+                          (inv (simplify (list '(mfactorial) 
+                                               (add (mul 2 index) 1))))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (mul -2 index)
+                                                    order
+                                                    '((rat) -3 2))))))
+                        index 0 
+                        (simplify (list '($floor) 
+                                        (div (sub (mul 2 order) 3) 4)))
+                        t))))))))
+         
+         ((eq ($sign order) '$neg)
+          ;; Expansion of Struve H for a negative half integral order.
+          (sratsimp
+            (add
+              (mul
+                (power (div 2 '$%pi) '((rat) 1 2))
+                (power -1 (add order '((rat) 1 2)))
+                (inv (power arg '((rat) 1 2)))
+                (add
+                  (mul
+                    (simplify (list '(%sin)
+                                    (add
+                                      (mul
+                                        '((rat) 1 2)
+                                        '$%pi
+                                        (add order '((rat) 1 2)))
+                                      arg)))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (power -1 index)
+                          (simplify (list '(mfactorial)
+                                          (add (mul 2 index) 
+                                               (neg order) 
+                                               '((rat) -1 2))))
+                          (inv (simplify (list '(mfactorial) (mul 2 index))))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (mul -2 index)
+                                                    (neg order)
+                                                    '((rat) -1 2)))))
+                          (inv (power (mul 2 arg) (mul 2 index))))
+                        index 0
+                        (simplify (list '($floor) 
+                                        (div (add (mul 2 order) 1) -4)))
+                        t)))
+                  (mul
+                    (simplify (list '(%cos)
+                                    (add
+                                      (mul
+                                        '((rat) 1 2)
+                                        '$%pi
+                                        (add order '((rat) 1 2)))
+                                      arg)))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (power -1 index)
+                          (simplify (list '(mfactorial) 
+                                          (add (mul 2 index)
+                                               (neg order) 
+                                               '((rat) 1 2))))
+                          (power (mul 2 arg) (mul -1 (add (mul 2 index) 1)))
+                          (inv (simplify (list '(mfactorial) 
+                                               (add (mul 2 index) 1))))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (mul -2 index)
+                                                    (neg order)
+                                                    '((rat) -3 2))))))
+                        index 0 
+                        (simplify (list '($floor) 
+                                        (div (add (mul 2 order) 3) -4)))
+                        t))))))))))
+      (t 
+       (eqtest (list '(%struve_h) order arg) expr)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Implementation of Struve L function
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun $struve_l (v z)
+  (simplify (list '(%struve_l) v z)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defprop $struve_l %struve_l alias)
+(defprop $struve_l %struve_l verb)
+(defprop %struve_l $struve_l reversealias)
+(defprop %struve_l $struve_l noun)
+
+(defprop %struve_l simp-struve-l operators)
+
+(defprop %struve_l
+  ((v z)
+   nil
+   ((mtimes) 
+    ((rat) 1 2)
+    ((mplus) 
+     ((%struve_l) ((mplus) -1 v) z)
+     ((%struve_l) ((mplus) 1 v) z)
+     ((mtimes) 
+      ((mexpt) $%pi ((rat) -1 2))
+      ((mexpt) 2 ((mtimes) -1 v))
+      ((mexpt) ((%gamma) ((mplus) ((rat) 3 2) v)) -1)
+      ((mexpt) z v)))))
+  grad)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun simp-struve-l (expr ignored z)
+  (declare (ignore ignored))
+  (let ((order (simpcheck (cadr expr) z))
+        (arg   (simpcheck (caddr expr) z)))
+    (cond
+      
+      ;; Check for special values
+      
+      ((zerop1 arg)
+       (cond ((eq ($csign (add order 1)) '$zero)
+              (cond ((or ($bfloatp order)
+                         ($bfloatp arg))
+                     ($bfloat (div 2 '$%pi)))
+                    ((or (floatp order)
+                         (floatp arg))
+                     ($float (div 2 '$%pi)))
+                    (t
+                     (div 2 '$%pi))))
+             ((eq ($sign (add ($realpart order) 1)) '$pos)
+              arg)
+             ((member ($sign (add ($realpart order) 1)) '($zero $neg $nz))
+              (simp-domain-error 
+                (intl:gettext "struve_l: struve_l(~:M,~:M) is undefined.")
+                order arg))
+             (t
+              (eqtest (list '(%struve_l) order arg) expr))))
+      
+      ;; Check for numerical evaluation
+      
+      ((complex-float-numerical-eval-p order arg)
+       (let (($numer t) ($float t))
+         ($rectform
+           ($float
+             (mul
+               ($rectform (power arg (add order 1.0)))
+               ($rectform (inv (power 2.0 order)))
+               (inv (power ($float '$%pi) 0.5))
+               (inv (simplify (list '(%gamma) (add order 1.5))))
+               (simplify (list '($hypergeometric)
+                               (list '(mlist) 1)
+                               (list '(mlist) '((rat) 3 2) 
+                                     (add order '((rat) 3 2)))
+                               (div (mul arg arg) 4.0))))))))
+      
+      ((complex-bigfloat-numerical-eval-p order arg)
+       (let (($ratprint nil))
+         ($rectform
+           ($bfloat
+             (mul
+               ($rectform (power arg (add order 1)))
+               ($rectform (inv (power 2 order)))
+               (inv (power ($bfloat '$%pi) ($bfloat '((rat) 1 2))))
+               (inv (simplify (list '(%gamma) (add order '((rat) 3 2)))))
+               (simplify (list '($hypergeometric)
+                               (list '(mlist) 1)
+                               (list '(mlist) '((rat) 3 2) 
+                                     (add order '((rat) 3 2)))
+                               (div (mul arg arg) 4))))))))
+      
+      ;; Transformations and argument simplifications
+      
+      ((and $besselexpand
+            (ratnump order)
+            (integerp (mul 2 order)))
+       (cond 
+         ((eq ($sign order) '$pos)
+          ;; Expansion of Struve L for a positive half integral order.
+          (sratsimp
+            (add
+              (mul -1
+                (power 2 (sub 1 order))
+                (power arg (sub order 1))
+                (inv (power '$%pi '((rat) 1 2)))
+                (inv (simplify (list '(mfactorial) (sub order '((rat) 1 2)))))
+                (let ((index (gensumindex)))
+                  (dosum
+                    (mul
+                      (simplify (list '($pochhammer) '((rat) 1 2) index))
+                      (simplify (list '($pochhammer) 
+                                      (sub '((rat) 1 2) order) 
+                                      index))
+                      (power (mul arg arg (inv 4)) (mul -1 index)))
+                    index 0 (sub order '((rat) 1 2)) t)))
+              (mul -1
+                (power (div 2 '$%pi) '((rat) 1 2))
+                (inv (power arg '((rat) 1 2)))
+                ($exp (div (mul '$%pi '$%i (add order '((rat) 1 2))) 2))
+                (add
+                  (mul
+                    (let (($trigexpand t)) 
+                      (simplify (list '(%sinh) 
+                                      (sub (mul '((rat) 1 2) 
+                                                '$%pi 
+                                                '$%i 
+                                                (add order '((rat) 1 2))) 
+                                           arg))))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (simplify (list '(mfactorial)
+                                          (add (mul 2 index)
+                                               (simplify (list '(mabs) order))
+                                               '((rat) -1 2))))
+                          (inv (simplify (list '(mfactorial) (mul 2 index))))
+                          (inv (simplify (list '(mfactorial) 
+                                               (add (simplify (list '(mabs) 
+                                                                    order))
+                                                    (mul -2 index)
+                                                    '((rat) -1 2)))))
+                          (inv (power (mul 2 arg) (mul 2 index))))
+                        index 0
+                        (simplify (list '($floor)
+                                        (div (sub (mul 2 
+                                                       (simplify (list '(mabs) 
+                                                                       order))) 
+                                                  1) 
+                                             4)))
+                        t)))
+                  (mul
+                    (let (($trigexpand t)) 
+                      (simplify (list '(%cosh) 
+                                      (sub (mul '((rat) 1 2) 
+                                                '$%pi 
+                                                '$%i 
+                                                (add order '((rat) 1 2))) 
+                                           arg))))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (simplify (list '(mfactorial) 
+                                          (add (mul 2 index)
+                                               (simplify (list '(mabs) order))
+                                               '((rat) 1 2))))
+                          (power (mul 2 arg) (neg (add (mul 2 index) 1)))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (mul 2 index) 1))))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (simplify (list '(mabs) 
+                                                                    order))
+                                                    (mul -2 index)
+                                                    '((rat) -3 2))))))                    
+                        index 0
+                        (simplify (list '($floor) 
+                                        (div (sub (mul 2 
+                                                       (simplify (list '(mabs) 
+                                                                       order)))
+                                                       3)
+                                             4)))
+                        t))))))))
+         ((eq ($sign order) '$neg)
+          ;; Expansion of Struve L for a negative half integral order.
+          (sratsimp
+            (add
+              (mul -1
+                (power (div 2 '$%pi) '((rat) 1 2))
+                (inv (power arg '((rat) 1 2)))
+                ($exp (div (mul '$%pi '$%i (add order '((rat) 1 2))) 2))
+                (add
+                  (mul
+                    (let (($trigexpand t)) 
+                      (simplify (list '(%sinh) 
+                                      (sub (mul '((rat) 1 2) 
+                                                '$%pi 
+                                                '$%i 
+                                                (add order '((rat) 1 2))) 
+                                           arg))))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (simplify (list '(mfactorial)
+                                          (add (mul 2 index)
+                                               (neg order)
+                                               '((rat) -1 2))))
+                          (inv (simplify (list '(mfactorial) (mul 2 index))))
+                          (inv (simplify (list '(mfactorial) 
+                                               (add (neg order)
+                                                    (mul -2 index)
+                                                    '((rat) -1 2)))))
+                          (inv (power (mul 2 arg) (mul 2 index))))
+                        index 0
+                        (simplify (list '($floor)
+                                        (div (add (mul 2 order) 1) -4)))
+                        t)))
+                  (mul
+                    (let (($trigexpand t)) 
+                      (simplify (list '(%cosh) 
+                                      (sub (mul '((rat) 1 2) 
+                                                '$%pi 
+                                                '$%i 
+                                                (add order '((rat) 1 2))) 
+                                           arg))))
+                    (let ((index (gensumindex)))
+                      (dosum
+                        (mul
+                          (simplify (list '(mfactorial)
+                                          (add (mul 2 index)
+                                               (neg order)
+                                               '((rat) 1 2))))
+                          (power (mul 2 arg) (neg (add (mul 2 index) 1)))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (mul 2 index) 1))))
+                          (inv (simplify (list '(mfactorial)
+                                               (add (neg order)
+                                                    (mul -2 index)
+                                                    '((rat) -3 2))))))                    
+                        index 0
+                        (simplify (list '($floor) 
+                                        (div (add (mul 2 order) 3) -4)))
+                   t))))))))))
+      (t 
+       (eqtest (list '(%struve_l) order arg) expr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
