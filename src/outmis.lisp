@@ -80,7 +80,7 @@
 	((alike1 item1 item2ev) item2)
 	(t (let ((errorsw t) r)
 	     (setq r (catch 'errorsw (div item2ev item1)))
-	     (and (mnump r) (not (zerop r)) (div item2 r))))))
+	     (and (mnump r) (not (zerop1 r)) (div item2 r))))))
 
 (defmfun $pickapart (x lev)
   (setq x (format1 x))
