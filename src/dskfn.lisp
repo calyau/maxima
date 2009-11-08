@@ -13,7 +13,7 @@
 (macsyma-module dskfn)
 
 (declare-top (special $filename $device $direc $storenum $filenum $dskall
-		      $filesize filelist opers $packagefile
+		      filelist opers $packagefile
 		      fasdumpfl fasdeqlist fasdnoneqlist savenohack
 		      dsksavep aaaaa errset lessorder greatorder indlist
 		      $labels $aliases varlist mopl $props defaultf
