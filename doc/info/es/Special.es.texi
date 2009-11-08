@@ -1,4 +1,4 @@
-@c version 1.57
+@c version 1.58
 @menu
 * Introducci@'on a las funciones especiales::
 * Funciones de Bessel::
@@ -24,10 +24,10 @@ bessel_i (index, expr)    Funci@'on de Bessel modificada de primera especie
 bessel_k (index, expr)    Funci@'on de Bessel modificada de segunda especie
 hankel_1 (v,z)            Funci@'on de Hankel de primera especie
 hankel_2 (v,z)            Funci@'on de Hankel de segunda especie
+struve_h (v,z)            Funci@'on H de Struve
+struve_l (v,z)            Funci@'on L de Struve
 %p[u,v] (z)               Funci@'on de Legendre de primera especie
 %q[u,v] (z)               Funci@'on de Legendre de segunda especie
-hstruve[n] (z)            Funci@'on H de Struve
-lstruve[n] (z)            Funci@'on L de Struve
 %f[p,q] ([], [], expr)    Funci@'on hipergeom@'etrica generalizada
 gamma()                   Funci@'on Gamma
 gammagreek(a,z)           Funci@'on Gamma incompleta
@@ -671,7 +671,7 @@ definirse por medio de una funci@'on hipergeom@'etrica generalizada:
 @example
    gamma(a) hypergeometric_generalized([a, 1 - b], [a + 1], z) z
 @end example
-(V@'ease functions.wolfram.com para una completa definici@'on de la funci@'on beta 
+(V@'ease Funci@'ons.wolfram.com para una completa definici@'on de la funci@'on beta 
 incompleta.)
 
 Para enteros negativos @math{a = -n} y enteros positivos @math{b=m} con 
@@ -825,7 +825,7 @@ Funci@'on beta incompleta regularizada A&S 6.6.2,
 definida como @code{beta_incomplete(a,b,z)/beta(a,b)}.
 
 Al igual que @code{beta_incomplete}, esta definici@'on no es completa.
-V@'ease functions.wolfram.com para una definici@'on completa de 
+V@'ease Funci@'ons.wolfram.com para una definici@'on completa de 
 @code{beta_incomplete_regularized}.
 
 @code{beta_incomplete_regularized} se simplifica para @var{a} o @var{b} 
@@ -1314,19 +1314,16 @@ de las funciones fresnel_s y fresnel_c.
 Las funciones de Struve se definen en el cap@'{@dotless{i}}tulo
 12 de Abramowitz y Stegun, @i{Handbook of Mathematical Functions}.
 
-Maxima tiene un soporte limitado sobre estas funciones, que pueden
-aparecer en resultados devueltos por @code{hgfred}.
-
-@deffn {Funci@'on} hstruve [@var{v}] (@var{z}) 
-Funci@'on de Struve H de orden @var{v} y argumento @var{z}. (A&S 12.1.1)
+@deffn {Funci@'on} struve_h (@var{v}, @var{z})
+Funci@'on H de Struve de orden @var{v} y argumento @var{z}, (A&S 12.1.1).
 
 @end deffn
 
-
-@deffn {Funci@'on} lstruve [@var{v}] (@var{z}) 
-Funci@'on de Struve modificada L de orden @var{v} y argumento @var{z}. (A&S 12.2.1)
+@deffn {Funci@'on} struve_l (@var{v}, @var{z})
+Funci@'on L modificada de Struve de orden @var{v} y argumento @var{z}, (A&S 12.2.1).
 
 @end deffn
+
 
 
 
@@ -1358,7 +1355,7 @@ donde @code{a} es una lista de longitud @code{p} y
 @end deffn
 
 
-@deffn {Function} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
+@deffn {Funci@'on} hypergeometric ([@var{a1}, ..., @var{ap}],[@var{b1}, ... ,@var{bq}], x)
 Es la funci@'on hipergeom@'etrica. A diferencia de la funci@'on
 hipergeom@'etrica @code{%f} de Maxima, la funci@'on @code{hypergeometric}
 es simplificadora; adem@'as, @code{hypergeometric} soporta la evaluaci@'on
@@ -1420,9 +1417,16 @@ Las funciones de cilindro parab@'olico se definen en el cap@'{@dotless{i}}tulo
 Maxima tiene un soporte limitado sobre estas funciones, que pueden
 aparecer en resultados devueltos por @code{hgfred}.
 
-@deffn {Funci@'on} %d [@var{v}] (@var{z}) 
-Es la funci@'on de cilindro parab@'olico @code{%d[v](z)}. (A&S 19.3.1)
+@deffn {Funci@'on} parabolic_cylinder_d (@var{v}, @var{z}) 
+Funci@'on de cilindro parab@'olico @code{parabolic_cylinder_d(v,z)}. (A&s 19.3.1)
 @end deffn
+
+
+
+
+
+
+
 
 
 
