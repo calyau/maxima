@@ -1,4 +1,4 @@
-@c english version 1.15
+@c english version 1.16
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -462,6 +462,10 @@ Devuelve el grafo dodeca@'edrico truncado.
 
 @deffn {Funci@'on} truncated_icosahedron_graph ()
 Devuelve el grafo icosa@'edrico truncado.
+@end deffn
+
+@deffn {Funci@'on} truncated_tetrahedron_graph ()
+Devuelve el grafo del tetraedro truncado.
 @end deffn
 
 @deffn {Funci@'on} tutte_graph ()
