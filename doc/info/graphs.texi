@@ -643,6 +643,15 @@ Returns the truncated icosahedron graph.
 @closecatbox
 @end deffn
 
+
+@deffn {Function} truncated_tetrahedron_graph ()
+Returns the truncated tetrahedron graph.
+
+@opencatbox
+@category{Package graphs} @category{Package graphs - constructions}
+@closecatbox
+@end deffn
+
 @deffn {Function} tutte_graph ()
 Returns the Tutte graph.
 
