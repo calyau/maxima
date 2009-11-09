@@ -594,6 +594,7 @@ diffequations/pmain.mac\
 draw/draw.lisp\
 draw/implicit3d.lisp\
 draw/picture.lisp\
+draw/rtest_draw.mac\
 draw/worldmap.mac\
 draw/wbd.lisp\
 dynamics/complex_dynamics.lisp\
