@@ -1655,7 +1655,7 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @deffnx {Funci@'on} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
 @deffnx {Funci@'on} histogram (@var{one_row_matrix})
 @deffnx {Funci@'on} histogram (@var{one_row_matrix}, @var{option_1}, @var{option_2}, ...)
-Esta funci@'on dibuja el histograma de una muestra constante.
+Esta funci@'on dibuja el histograma de una muestra de variable continua.
 Los datos muestrales se deben almacenar en una lista de n@'umeros o en
 una matriz unidimensional.
 
