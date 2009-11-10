@@ -37,6 +37,30 @@
 (defprop %airy_ai simp-%airy_ai operators)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
 
+;; Integral of Ai(z)
+;; http://functions.wolfram.com/03.05.21.0002.01
+;; (z/(3^(2/3)*gamma(2/3)))*hypergeometric([1/3],[2/3,4/3],z^3/9)
+;; - (3^(1/6)/(4*%pi))*z^2*gamma(2/3)*hypergeometric([2/3],[4/3,5/3],z^3/9);
+(defprop %airy_ai
+  ((z)
+   ((mplus)
+    ((mtimes) 
+     ((mexpt) 3 ((rat) -2 3))
+     ((mexpt) ((%gamma) ((rat) 2 3)) -1)
+     (($hypergeometric) 
+      ((mlist) ((rat) 1 3))
+      ((mlist) ((rat) 2 3) ((rat) 4 3)) 
+      ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
+     z)
+   ((mtimes) 
+    ((rat) -1 4) ((mexpt) 3 ((rat) 1 6)) ((mexpt) $%pi -1) ((%gamma) ((rat) 2 3))
+    (($hypergeometric) 
+     ((mlist) ((rat) 2 3)) 
+     ((mlist) ((rat)  4 3) ((rat) 5 3))
+     ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
+    ((mexpt) z 2))))
+  integral)
+
 (defun airy-ai (z)
   (cond ((floatp z) (airy-ai-real z))
 	((complexp z) (airy-ai-complex z))))
@@ -65,6 +89,7 @@
 (defprop %airy_dai $airy_dai noun)
 (defprop %airy_dai simp-%airy_dai operators)
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
+(defprop %airy_dai ((z) ((%airy_ai) z)) integral)
 
 (defun airy-dai (z)
   (cond ((floatp z) (airy-dai-real z))
@@ -94,6 +119,30 @@
 (defprop %airy_bi simp-%airy_bi operators)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
 
+;; Integral of Bi(z)
+;; http://functions.wolfram.com/03.06.21.0002.01
+;; (z/(3^(1/6)*gamma(2/3)))*hypergeometric([1/3],[2/3,4/3],z^3/9)
+;; + (3^(2/3)/(4*%pi))*z^2*gamma(2/3)*hypergeometric([2/3],[4/3,5/3],z^3/9);
+(defprop %airy_bi
+  ((z)
+   ((mplus)
+    ((mtimes) 
+     ((mexpt) 3 ((rat) -1 6))
+     ((mexpt) ((%gamma) ((rat) 2 3)) -1)
+     (($hypergeometric) 
+      ((mlist) ((rat) 1 3))
+      ((mlist) ((rat) 2 3) ((rat) 4 3)) 
+      ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
+     z)
+   ((mtimes) 
+    ((rat) 1 4) ((mexpt) 3 ((rat) 2 3)) ((mexpt) $%pi -1) ((%gamma) ((rat) 2 3))
+    (($hypergeometric) 
+     ((mlist) ((rat) 2 3)) 
+     ((mlist) ((rat)  4 3) ((rat) 5 3))
+     ((mtimes) ((rat) 1 9) ((mexpt) z 3)))
+    ((mexpt) z 2))))
+  integral)
+
 (defun airy-bi (z)
   (cond ((floatp z) (airy-bi-real z))
 	((complexp z) (airy-bi-complex z))))
@@ -121,6 +170,7 @@
 (defprop %airy_dbi $airy_dbi noun)
 (defprop %airy_dbi simp-%airy_dbi operators)
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
+(defprop %airy_dbi ((z) ((%airy_bi) z)) integral)
 
 (defun airy-dbi (z)
   (cond ((floatp z) (airy-dbi-real z))
