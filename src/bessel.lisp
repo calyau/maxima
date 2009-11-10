@@ -680,11 +680,10 @@ Perhaps you meant to enter `~a'.~%"
 
 ;; Integral of the Bessel function wrt z
 (putprop '%bessel_j
-  `((n z)
+  `((v z)
    nil
-  ,(lambda (n unused)
-   (declare (ignore unused))
-    (case n
+  ,(lambda (v z)
+    (case v
 	  (0 
 	   ;; integrate(bessel_j(0,z)
 	   ;; = (1/2)*z*(%pi*bessel_j(1,z)*struve_h(0,z)
@@ -701,9 +700,26 @@ Perhaps you meant to enter `~a'.~%"
 	  (1
 	   ;; integrate(bessel_j(1,z) = -bessel_j(0,z)
 	   '((mtimes) -1 ((%bessel_j) 0 z)))
-	  (otherwise nil))))
+	  (otherwise
+           ;; http://functions.wolfram.com/03.01.21.0002.01
+	   ;; integrate(bessel_j(v,z)
+	   ;;  = 2^(-v-1)*z^(v+1)*gamma(v/2+1/2)
+           ;;   * hypergeometric_regularized([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
+           ;;  = 2^(-v-1)*z^(v+1)*hypergeometric([v/2+1/2],[v+1,v/2+3/2],-z^2/4)
+           ;;   / ((v/2+1/2)*gamma(v+1))
+           '((mtimes)
+              (($hypergeometric)
+                ((mlist)
+                  ((mplus) ((rat) 1 2) ((mtimes) ((rat) 1 2) v)))
+                ((mlist)
+                  ((mplus) ((rat) 3 2) ((mtimes) ((rat) 1 2) v))
+                  ((mplus) 1 v))
+                ((mtimes) ((rat) -1 4) ((mexpt) z 2)))
+              ((mexpt) ((mplus) ((rat) 1 2) ((mtimes) ((rat) 1 2) v)) -1)
+              ((mexpt) 2 ((mplus) -1 ((mtimes) -1 v)))
+              ((mexpt) ((%gamma) ((mplus) 1 v)) -1) 
+              ((mexpt) z ((mplus ) 1 v)))))))
   'integral)
-
 
 ;; If E is a maxima ratio with a denominator of DEN, return the ratio
 ;; as a Lisp rational.  Otherwise NIL.
