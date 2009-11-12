@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.12 2008-04-05 17:26:51 villate Exp $
+#       $Id: Plot3d.tcl,v 1.13 2009-11-12 20:35:11 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -568,7 +568,7 @@ proc drawMeshes {win canv} {
 	#puts "drawOneMesh $win $canv $k"
 	#puts "drawOneMesh $win $canv $k"
 	set mesh [lindex $lmesh $k]
-	set col gray70
+	set col black
 	catch { set col $ar($cmap,[lindex $mesh 0]) }
 	drawOneMesh $win $canv $k $mesh $col
     }
@@ -604,11 +604,11 @@ proc drawOneMesh { win  canv k mesh color } {
 	#desetq "a b" $mesh
 	#puts "<[lrange $points $a [expr {$a +2}]]> <[lrange $points $b [expr {$b +2}]]"
 	if { $n == 2 } {
-	    #	    set color gray70
+	    #	    set color black
 	    #	    catch { set color [oget $win $cmap,$mesh]}
 
 	    eval $canv create line $coords -tags [list [list axis mesh.$k]] \
-		-fill $color -width 5
+		-fill $color -width 2
 	} else {
 	    # puts "doing special $mesh, $coords"
 	    catch { set tem [oget $win special([lindex $mesh 0])]
