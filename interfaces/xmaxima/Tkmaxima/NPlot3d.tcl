@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NPlot3d.tcl,v 1.6 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: NPlot3d.tcl,v 1.7 2009-11-12 22:17:43 villate Exp $
 #
 ###### NPlot3d.tcl ######
 ############################################################
@@ -143,6 +143,7 @@ proc addOnePlot3d { win data } {
 	    set data [list variable_grid [linspace $xmin $xmax $ncols] \
 			  [linspace $ymin $ymax $nrows] \
 			  $pts ]
+	    set type "variable_grid"
 	}
 	if { "$type" == "variable_grid" } {
 	    desetq "xrow yrow zmat" [lrange $data 1 end]
