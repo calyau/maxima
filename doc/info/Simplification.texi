@@ -744,7 +744,51 @@ the original answer.
 Default value: @code{true}
 
 @code{simp} enables simplification. This is the standard. @code{simp} is also 
-an evflag, which is recognized by the function @code{ev}. See @code{ev}.
+an @code{evflag}, which is recognized by the function @code{ev}. See @code{ev}.
+
+When @code{simp} is used as an @code{evflag} with a value @code{false}, the 
+simplification is suppressed only during the evaluation phase of an expression. 
+The flag can not suppress the simplification which follows the evaluation 
+phase.
+
+Examples:
+
+The simplification is switched off globally. The expression @code{sin(1.0)} is 
+not simplified to its numerical value. The @code{simp}-flag switches the 
+simplification on.
+
+@c ===beg===
+@c simp:false;
+@c sin(1.0);
+@c sin(1.0),simp;
+@c ===end===
+@example
+(%i1) simp:false;
+(%o1)                                false
+(%i2) sin(1.0);
+(%o2)                              sin(1.0)
+(%i3) sin(1.0),simp;
+(%o3)                          .8414709848078965
+@end example
+
+The simplification is switched on again. The @code{simp}-flag cannot suppress 
+the simplification completely. The output shows a simplified expression, but 
+the variable @code{x} has an unsimplified expression as a value, because the 
+assignment has occurred during the evaluation phase of the expression.
+
+@c ===beg===
+@c simp:true;
+@c x:sin(1.0),simp:false;
+@c :lisp $x
+@c ===end===
+@example
+(%i4) simp:true;
+(%o4)                                true
+(%i5) x:sin(1.0),simp:false;
+(%o5)                          .8414709848078965
+(%i6) :lisp $X
+((%SIN) 1.0)
+@end example
 
 @opencatbox
 @category{Evaluation flags}
