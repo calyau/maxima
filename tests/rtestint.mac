@@ -1233,5 +1233,9 @@ integrate(t^2*log(t)^2*(1-t)^2*log(1-t)^2,t,0,1);
 integrate(t*cos(1.0*t),t);
 t*sin(t)+cos(t);
 
+/* definite integral - bad answer - ID: 2880886 */
+integrate(cos(x)^2 * (1 + sin(x)^2)^-3,x,0,%pi/2);
+7*%pi/2^(11/2);
+
 (forget(x>0),gamma_expand:false,done);
 done;

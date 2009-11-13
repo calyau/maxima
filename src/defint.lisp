@@ -944,7 +944,8 @@
 		   (do ((l pole (cdr l)) (llist ()))
 		       ((null l)  llist)
 		     (cond
-		       ((eq (caar l) ll)  t) ;Skip this one by definition.
+		       ((zerop1 (m- (caar l) ll)) t)  ; don't worry about discontinuity
+ 		       ((zerop1 (m- (caar l) ul)) t)  ;  at boundary of integration
 		       (t (let ((low-lim ($limit (cadr exp) var (caar l) '$minus))
 				(up-lim ($limit (cadr exp) var (caar l) '$plus)))
 			    (cond ((and (not (eq low-lim up-lim))
