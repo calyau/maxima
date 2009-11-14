@@ -1958,9 +1958,14 @@ sin(y)*(10.0+6*cos(x)),
 		  (format $pstream " {nolegend 1}"))
 		(when (and box (not (first box)))
 		  (format $pstream " {nobox 1}"))
-		(when xlabel (format $pstream " {xaxislabel \"~a\"}" xlabel))
-		(when ylabel (format $pstream " {yaxislabel \"~a\"}" ylabel))
-		(when zlabel (format $pstream " {zaxislabel \"~a\"}" zlabel))
+		(when xlabel (format $pstream " {xaxislabel \"~a\"}~%" xlabel))
+		(when ylabel (format $pstream " {yaxislabel \"~a\"}~%" ylabel))
+		(when zlabel (format $pstream " {zaxislabel \"~a\"}~%" zlabel))
+		(when zrange
+		  (format $pstream " {zcenter ~g }"
+			  (/ (+ ($third zrange) ($second zrange)) 2))
+		  (format $pstream " {zradius ~g }~%"
+			  (/ (- ($third zrange) ($second zrange)) 2)))
 		(format $pstream " {matrix_mesh ~%")
 
                 ;; we do the x y z  separately:
