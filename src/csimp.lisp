@@ -20,12 +20,12 @@
 (load-macsyma-macros rzmac)
 
 (declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst
-		      $abconvtest complex-limit plogabs $intanalysis))
+		      $abconvtest complex-limit plogabs))
 
 
 (setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4
       $tlimswitch t $limsubst nil $abconvtest nil
-      complex-limit nil plogabs nil $intanalysis t)
+      complex-limit nil plogabs nil)
 
 (defmvar %p%i '((mtimes) $%i $%pi))
 (defmvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi))

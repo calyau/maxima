@@ -164,6 +164,10 @@
        (setq real-infinities '($inf $minf))
        (setq infinitesimals '($zeroa $zerob))))
 
+(defmvar $intanalysis t
+  "When @code{true}, definite integration tries to find poles in the integrand 
+in the interval of integration.")
+
 (defmvar defintdebug () "If true Defint prints out debugging information")
 
 (defmvar integerl nil
