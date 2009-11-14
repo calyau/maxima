@@ -896,10 +896,11 @@ is(b>3*%pi);
 false;
 
 /* An example involving a numerical constant, the value of a function
- * and the abs function 
+ * and the abs function.
+ * This example no longer works because of revision 1.62 of compar.lisp
  */
 assume(abs(x) < sin(1)+%e/2);
-[sin(1)+%e/2>abs(x)];
+[-abs(x)+sin(1)+%e/2>0];
 is(x<2*%e);
 true;
 is(x>-2*%e);
@@ -912,3 +913,15 @@ sign(a+b+sin(1));
 pos;
 (forget(a>0,b>0),done);
 done;
+
+/* Bug ID: 2184396 - Wrong factorization of sqrt()
+ * This is the example from the bug report which has triggered the bug in sign
+ *      sqrt(1-(2-sqrt(2))/x * ((2+sqrt(2))/x-1));
+ * The expression has factored wrongly. This example is now correct.
+ */
+sign(1-(1+sqrt(2))*x);
+'pnz;
+sign(1-(1+sqrt(2))/x);
+'pnz;
+
+ 
