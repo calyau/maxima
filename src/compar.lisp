@@ -2028,7 +2028,9 @@ relational knowledge is contained in the default context GLOBAL.")
 (defun compsplt (x)
   (cond ((atom x) (setq lhs x rhs 0))
 	((atom (car x)) (setq lhs x rhs 0))
-	((not (null (cdr (symbols x)))) (compsplt2 x))
+        ;; Take the complete list of symbols.
+;	((not (null (cdr (symbols x)))) (compsplt2 x))
+        ((not (null (symbols x))) (compsplt2 x))
 	(t (compsplt1 x))))
 
 (defun compsplt1 (x)
