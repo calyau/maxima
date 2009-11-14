@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.13 2009-11-12 20:35:11 villate Exp $
+#       $Id: Plot3d.tcl,v 1.14 2009-11-14 13:54:31 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -27,7 +27,7 @@ set plot3dOptions {
     {thetay 20.0 "ignored is obsolete: use az and el"}
     {thetaz 30.0 "ignored is obsolete: use az and el"}
 
-    {flatten 0 "Flatten surface when zradius exceeded" }
+    {flatten 1 "Flatten surface when zradius exceeded" }
     {zfun "" "a function of z to plot eg: x^2-y^2"}
     {parameters "" "List of parameters and values eg k=3,l=7"}
     {sliders "" "List of parameters ranges k=3:5,u"}
@@ -386,7 +386,7 @@ proc plot3d { args } {
 }
 
 proc replot3d { win } {
-    global   printOption plot2dOptions
+    global   printOption plot3dOptions
     makeLocal $win nsteps zfun data c
     linkLocal $win parameters sliders psfile nobox
 
@@ -396,7 +396,7 @@ proc replot3d { win } {
 	    [set nsteps  [list [lindex $nsteps 0] [lindex $nsteps 0]]]
     }
     foreach v $data {
-	if { "[assq [lindex $v 0] $plot2dOptions notthere]" != "notthere" } {
+	if { "[assq [lindex $v 0] $plot3dOptions notthere]" != "notthere" } {
 	    oset $win [lindex $v 0] [lindex $v 1]
 	}
     }
@@ -615,10 +615,9 @@ proc drawOneMesh { win  canv k mesh color } {
 		eval [concat $tem $coords]
 	    }
 	}
-    } else {
-	eval $canv create polygon $coords -tags [list [list poly mesh.$k]] \
-	    -fill $color \
-	    -outline black
+    } elseif { [string length $color] < 8} {
+	    eval $canv create polygon $coords -tags [list [list poly mesh.$k]] \
+		-fill $color -outline black
     }
 }
 
@@ -659,8 +658,8 @@ proc     makeFrame3d { win } {
     catch { set top [winfo parent $w]}
     catch {
 
-	wm title $top [mc "Schelter's 3d Plot Window"]
-	wm iconname $top "DF plot"
+	wm title $top [mc "Xmaxima: Plot3d"]
+	wm iconname $top "plot3d"
 	#   wm geometry $top 750x700-0+20
     }
 

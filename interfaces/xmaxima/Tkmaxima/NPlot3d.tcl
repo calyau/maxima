@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: NPlot3d.tcl,v 1.7 2009-11-12 22:17:43 villate Exp $
+#       $Id: NPlot3d.tcl,v 1.8 2009-11-14 13:55:41 villate Exp $
 #
 ###### NPlot3d.tcl ######
 ############################################################
@@ -123,8 +123,17 @@ proc addOnePlot3d { win data } {
     catch { unset  meshes }
     set points ""
 
-
+    # check whether zradius is a number or "auto"
     set dotruncate [expr ![catch {expr {$zradius + 1} }]]
+    if { $dotruncate } {
+	if { $flatten } { set dotruncate 0 }
+		set zzmax [expr {$zcenter + $zradius}]
+		set zzmin [expr {$zcenter - $zradius}]
+		#puts "zzmax=$zzmax,$zzmin"
+	    } else {
+		set flatten 0
+	    }
+
     set k [llength $points]
     set type [lindex $data 0]
     # in general the data should be a list of plots..
@@ -158,19 +167,12 @@ proc addOnePlot3d { win data } {
 	    desetq "xmin xmax" [minMax $xrow ""]
 	    desetq "ymin ymax" [minMax $yrow ""]
 	    desetq "zmin zmax" [matrixMinMax [list $zmat]]
+	    if { $flatten } {
+		set zmax  $zzmax
+		set zmin  $zzmin
+	    }
 	    #	puts "and now"
 	    #	dshow nx xmin xmax ymin ymax zmin zmax
-	    if { $dotruncate } {
-		if { $flatten } { set dotruncate 0 }
-
-		set zzmax [expr {$zcenter + $zradius}]
-		set zzmin [expr {$zcenter - $zradius}]
-		#puts "zzmax=$zzmax,$zzmin"
-	    } else {
-		set flatten 0
-	    }
-
-
 
 	    for {set j 0} { $j <= $ny } { incr j} {
 		set y [lindex $yrow $j]
@@ -193,12 +195,12 @@ proc addOnePlot3d { win data } {
 	
 	    desetq "xmat ymat zmat" [lrange $data 1 end]
 	    foreach v {x y z} {
-		
-		
 		desetq "${v}min ${v}max" [matrixMinMax [list [set ${v}mat]]]
-		
 	    }
-	    #puts "zrange=$zmin,$zmax"
+	    if { $flatten } {
+		set zmax  $zzmax
+		set zmin  $zzmin
+	    }
 	    set nj [expr {[llength [lindex $xmat 0]] -1 }]
 	    set ni [expr {[llength $xmat ] -1 }]
 	    set i -1
@@ -262,9 +264,7 @@ proc addOnePlot3d { win data } {
 	set ${v}radius [expr {($b - $a)/2.0}]
 	set ${v}center [expr {($b + $a)/2.0}]
     }
-    if { "$rotationcenter" == "" } {
-	set rotationcenter "[expr {.5*($xmax + $xmin)}] [expr {.5*($ymax + $ymin)}]   [expr {.5*($zmax + $zmin)}] "
-    }
+    set rotationcenter "[expr {.5*($xmax + $xmin)}] [expr {.5*($ymax + $ymin)}]   [expr {.5*($zmax + $zmin)}] "
 
     #puts "meshes data=[array get meshes]"
     #global plot3dMeshes.plot3d
