@@ -246,6 +246,58 @@ pos;
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} intanalysis
+Default value: @code{true}
+
+When @code{true}, definite integration tries to find poles in the integrand in 
+the interval of integration. If there are, then the integral is evaluated
+appropriately as a principal value integral. If intanalysis is @code{false}, 
+this check is not performed and integration is done assuming there are no poles.
+
+See also @code{ldefint}.
+
+Examples:
+
+Maxima can solve the following integrals, when @code{intanalysis} is set to
+@code{false}:
+
+@c ===beg===
+@c integrate(1/(sqrt(x+1)+1),x,0,1);
+@c integrate(1/(sqrt(x)+1),x,0,1),intanalysis:false;
+@c integrate(cos(a)/sqrt((tan(a))^2+1),a,-%pi/2,%pi/2);
+@c intanalysis:false$
+@c integrate(cos(a)/sqrt((tan(a))^2 +1),a,-%pi/2,%pi/2);
+@c ===end===
+@example
+(%i1) integrate(1/(sqrt(x)+1),x,0,1);
+                                1
+                               /
+                               [       1
+(%o1)                          I  ----------- dx
+                               ]  sqrt(x) + 1
+                               /
+                                0
+
+(%i2) integrate(1/(sqrt(x)+1),x,0,1),intanalysis:false;
+(%o2)                            2 - 2 log(2)
+
+(%i3) integrate(cos(a)/sqrt((tan(a))^2 +1),a,-%pi/2,%pi/2);
+The number 1 isn't in the domain of atanh
+ -- an error. To debug this try: debugmode(true);
+
+(%i4) intanalysis:false$
+(%i5) integrate(cos(a)/sqrt((tan(a))^2+1),a,-%pi/2,%pi/2);
+                                      %pi
+(%o5)                                 ---
+                                       2
+@end example
+
+@opencatbox
+@category{Integral calculus}
+@closecatbox
+@end defvr
+
 @deffn {Function} integrate (@var{expr}, @var{x})
 @deffnx {Function} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
 Attempts to symbolically compute the integral of @var{expr} with respect to @var{x}.
