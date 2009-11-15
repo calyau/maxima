@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.47 2008-10-31 14:53:03 villate Exp $
+#       $Id: Makefile.am,v 1.48 2009-11-15 22:59:54 villate Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -14,6 +14,7 @@ genericdirDATA=demos.html examples.html intro.html plotmaxima.html maxima-new.pn
 bin_SCRIPTS = xmaxima
 
 TKSOURCES = \
+	Tkmaxima/COPYING.tcl \
 	Tkmaxima/Cygwin.tcl \
 	Utils/FileDlg.tcl \
 	Utils/Messages.tcl \
@@ -29,6 +30,7 @@ TKSOURCES = \
 	Tkmaxima/Send-some.tcl \
 	Tkmaxima/Plotting.tcl \
 	Tkmaxima/Fonts.tcl \
+	Tkmaxima/colors.tcl \
 	Tkmaxima/Private.tcl \
 	Tkmaxima/Getopt.tcl \
 	Tkmaxima/Parse.tcl \
