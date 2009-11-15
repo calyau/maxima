@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.14 2009-11-14 13:54:31 villate Exp $
+#       $Id: Plot3d.tcl,v 1.15 2009-11-15 23:05:59 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -40,6 +40,14 @@ set plot3dOptions {
     {windowname ".plot3d" "window name"}
     {psfile "" "A filename where the graph will be saved in PostScript."}
     {nobox 0 "if not zero, do not draw the box around the plot."}
+    {hue 240 "Default hue value."}
+    {saturation 0.7 "Default saturation value."}
+    {brightness 0.8 "Default brightness value."}
+    {mincolor 0.25 "Percentage used for the minimum color."}
+    {colorrange 0.5 "Range of colors used."}
+    {ncolors 180 "Number of colors used."}
+    {colorscheme "hue" "Coloring Scheme used."}
+    {mesh_lines "black" "Color for the meshes outline, or 0 for no outline."}
 }
 
 
@@ -233,24 +241,42 @@ proc drawOval { c radius args } {
     eval $com
 }
 
-
 proc plot3dcolorFun {win z } {
-    makeLocal $win zmin zmax
-    set ncolors 180
-    set tem [expr {(180/$ncolors)*round(($z - $zmin)*$ncolors/($zmax - $zmin+.001))}]
-    #puts "tem=$tem,z=[format %3g $z],[format "#%.2x%.2x%.2x" 50 50 $tem]"
-    return [format "#%.2x%.2x%.2x" [expr {180 -$tem}] [expr {240 - $tem}] $tem]
+    makeLocal $win zmin zmax ncolors hue saturation brightness mincolor \
+	colorrange colorscheme
+    if { $colorscheme == "hue" } {
+	set a [expr { 360*$mincolor }]
+	set b [expr { 360*$colorrange }]
+    } else {
+	set a $mincolor
+	set b $colorrange
+    }
+    set tem [expr {(double($b)/$ncolors)*round(($z - $zmin)*$ncolors/($zmax - $zmin+.001)) + $a}]
+    if { $tem < $a || $tem > [expr { $a + $b } ] } {
+	return "\#ffffff"
+    }
+    switch -exact $colorscheme {
+	"hue" { return [hsv2rgb $tem $saturation $brightness] }
+	"saturation" { return [hsv2rgb $hue $tem $brightness] }
+	"brightness" { return [hsv2rgb $hue $saturation $tem] }
+    }
 }
 
 proc setupPlot3dColors { win } {
     upvar #0 [oarray $win] wvar
     # the default prefix for cmap
     set wvar(cmap) c1
-    set k 0
-    makeLocal $win colorfun points
-    foreach { x y z } $points {
-	catch { set wvar(c1,$k) [$colorfun $win $z] }
-	incr k 3
+    makeLocal $win colorfun points lmesh
+    foreach tem $lmesh {
+        set k [llength $tem]
+	if { $k == 4 } {
+	    set z [expr { ([lindex $points [expr { [lindex $tem 0] + 2 } ]] +
+			   [lindex $points [expr { [lindex $tem 1] + 2 } ]] +
+			   [lindex $points [expr { [lindex $tem 2] + 2 } ]] +
+			   [lindex $points [expr { [lindex $tem 3] + 2 } ]])/
+			  4.0 } ]
+	    catch { set wvar(c1,[lindex $tem 0]) [$colorfun $win $z] }
+	}
     }
 }
 
@@ -593,6 +619,7 @@ proc drawMeshes {win canv} {
 proc drawOneMesh { win  canv k mesh color } {
     #k=i*(ny+1)+j
     # k,k+1,k+1+nyp,k+nyp
+    makeLocal $win mesh_lines
     upvar 1 rotatedxy ptsxy
     set n [llength $mesh]
 
@@ -615,9 +642,14 @@ proc drawOneMesh { win  canv k mesh color } {
 		eval [concat $tem $coords]
 	    }
 	}
-    } elseif { [string length $color] < 8} {
-	    eval $canv create polygon $coords -tags [list [list poly mesh.$k]] \
-		-fill $color -outline black
+    } elseif { [string length $color] < 8 && $color != "\#ffffff"} {
+	if { $mesh_lines != 0 } {
+	    set outline "-outline $mesh_lines"
+	} else {
+	    set outline ""
+	}
+	eval $canv create polygon $coords -tags [list [list poly mesh.$k]] \
+	    -fill $color $outline
     }
 }
 
