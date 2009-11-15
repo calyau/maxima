@@ -1,24 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+#  $Id: rk4.tcl,v 1.5 2009-11-15 23:00:37 villate Exp $
 #
 # Copyright (C) 2008 Jaime E. Villate <villate@fe.up.pt>
 #
-# Fourth order Tunge-Kutta method, with fixed-lenght steps in phase space.
+# Fourth order Runge-Kutta method, with fixed-lenght steps in phase space.
 # Based on Rk.tcl by William F. Schelter
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifht Floor, Boston,
-# MA 02110-1301, USA
+# (the license information can be found in COPYING.tcl)
 
 proc fieldlines { f g t0 x0 y0 sx sy nsteps dir} {
     set n $nsteps
