@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.15 2009-11-15 23:05:59 villate Exp $
+#       $Id: Plot3d.tcl,v 1.16 2009-11-16 22:41:47 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -262,12 +262,12 @@ proc plot3dcolorFun {win z } {
     }
 }
 
-proc setupPlot3dColors { win } {
+proc setupPlot3dColors { win first_mesh} {
     upvar #0 [oarray $win] wvar
     # the default prefix for cmap
     set wvar(cmap) c1
     makeLocal $win colorfun points lmesh
-    foreach tem $lmesh {
+    foreach tem [lrange $lmesh $first_mesh end] {
         set k [llength $tem]
 	if { $k == 4 } {
 	    set z [expr { ([lindex $points [expr { [lindex $tem 0] + 2 } ]] +
@@ -412,7 +412,7 @@ proc plot3d { args } {
 }
 
 proc replot3d { win } {
-    global   printOption plot3dOptions
+    global printOption
     makeLocal $win nsteps zfun data c
     linkLocal $win parameters sliders psfile nobox
 
@@ -420,11 +420,6 @@ proc replot3d { win } {
     if { [llength $nsteps] == 1 }    {
 	oset $win nsteps \
 	    [set nsteps  [list [lindex $nsteps 0] [lindex $nsteps 0]]]
-    }
-    foreach v $data {
-	if { "[assq [lindex $v 0] $plot3dOptions notthere]" != "notthere" } {
-	    oset $win [lindex $v 0] [lindex $v 1]
-	}
     }
 
     set sliders [string trim $sliders]
@@ -458,13 +453,8 @@ proc replot3d { win } {
 	addOnePlot3d $win $data
     }
 
-
     setUpTransforms3d $win
 
-    oset $win colorfun plot3dcolorFun
-    #   addAxes $win
-    oset $win cmap c1
-    setupPlot3dColors $win
     if { $nobox == 0 } {
 	addBbox $win
     }
