@@ -9,7 +9,7 @@
 ;; Created: 14 Nov 2001
 ;; Version: 1.0b
 ;; Keywords: maxima
-;; $Id: imaxima.lisp,v 1.6 2009-02-22 09:18:27 yasu-honda Exp $
+;; $Id: imaxima.lisp,v 1.7 2009-11-16 22:09:19 crategus Exp $
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -142,7 +142,7 @@ nor Gnuplot is not recognized by maxima"))))
     (declare (special *mread-prompt* ))
     (and (consp at) (set-env at))
     (cond ((null at)
-	   ($frame 0 nil)))
+	   (break-frame 0 nil)))
     (catch 'step-continue
       (catch *quit-tag*
 	(unwind-protect
