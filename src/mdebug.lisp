@@ -433,7 +433,7 @@
     (declare (special *mread-prompt* ))
     (and (consp at) (set-env at))
     (cond ((null at)
-	   ($frame 0 nil)))
+	   (break-frame 0 nil)))
     (catch 'step-continue
       (catch *quit-tag*
 	(unwind-protect
@@ -605,7 +605,7 @@ Command      Description~%~
 	 (setq n m))
 	((fb < n 0)
 	 (setq n 0)))
-  ($frame  n nil))
+  (break-frame  n nil))
   
     
 (defun insert-break-point (bpt &aux at)
@@ -706,7 +706,7 @@ Command      Description~%~
 (def-break :delete  #'(lambda (&rest l) (iterate-over-bkpts l :delete)(values))
   "Delete all breakpoints, or if arguments are supplied delete the
              specified breakpoints" )
-(def-break :frame  '$frame
+(def-break :frame  'break-frame
   "With an argument print the selected stack frame.
              Otherwise the current frame." )
 (def-break :resume  #'(lambda () :resume) "Continue the computation." )
@@ -774,7 +774,7 @@ Command      Description~%~
 	       (t (let ((munbindp t)) (mset var (car mspeclist)))))
 	 (setq mspeclist (cdr mspeclist) bindlist (cdr bindlist))))
 
-(defun $frame (&optional (n 0) (print-frame-number t))
+(defun break-frame (&optional (n 0) (print-frame-number t))
   (restore-bindings)
   (multiple-value-bind (fname vals params backtr lineinfo bdlist)
       (print-one-frame n print-frame-number)
