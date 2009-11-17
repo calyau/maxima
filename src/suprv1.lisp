@@ -222,19 +222,23 @@
 ; Following GENERIC-AUTOLOAD is copied from orthopoly/orthopoly-init.lisp.
 ; Previous version didn't take Clisp, CMUCL, or SBCL into account.
 
+(defvar *autoloaded-files* ())
+
 (defun generic-autoload (file &aux type)
-  (setq file (pathname (cdr file)))
-  (setq type (pathname-type file))
-  (let ((bin-ext #+gcl "o"
-	 #+cmu (c::backend-fasl-file-type c::*target-backend*)
-	 #+clisp "fas"
-	 #+allegro "fasl"
-	 #+openmcl (pathname-type ccl::*.fasl-pathname*)
-	 #+lispworks (pathname-type (compile-file-pathname "foo.lisp"))
-	 #-(or gcl cmu clisp allegro openmcl lispworks) ""))
-    (if (member type (list bin-ext "lisp" "lsp")  :test 'equalp)
-      #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file))
-      ($load file))))
+  (unless (member file *autoloaded-files* :test #'equal)
+    (push file *autoloaded-files*)
+    (setq file (pathname (cdr file)))
+    (setq type (pathname-type file))
+    (let ((bin-ext #+gcl "o"
+		   #+cmu (c::backend-fasl-file-type c::*target-backend*)
+		   #+clisp "fas"
+		   #+allegro "fasl"
+		   #+openmcl (pathname-type ccl::*.fasl-pathname*)
+		   #+lispworks (pathname-type (compile-file-pathname "foo.lisp"))
+		   #-(or gcl cmu clisp allegro openmcl lispworks) ""))
+      (if (member type (list bin-ext "lisp" "lsp")  :test 'equalp)
+	  #-sbcl (load file) #+sbcl (with-compilation-unit nil (load file))
+	  ($load file)))))
 
 (defvar autoload 'generic-autoload)
 
