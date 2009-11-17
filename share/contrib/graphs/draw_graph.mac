@@ -117,7 +117,8 @@ draw_graph(G, [options]) := block(
    edge_widths : [],
    dimension : 2,
    transform : false,
-   scene
+   scene,
+   loops : []
   ],
 
   if not(is_graph(G)) and not(is_digraph(G)) then
@@ -160,19 +161,22 @@ draw_graph(G, [options]) := block(
       set_positions(v_pos, G)),
     dimension : length(second(first(v_pos))),
 
-    /* Normalize positions into [-1,1]x[-1,1]
-    if length(v_pos)>1 then block(
-      [xyz_min, xyz_max, xyz],
-      xyz : args(transpose(apply(matrix, map(second, v_pos)))),
-      xyz_max : map(lmax, xyz),
-      xyz_min : map(lmin, xyz),
-      v_pos : map(
-        lambda([u],
-          [u[1],
-           map(lambda([xx, xx_max, xx_min],
-               2*(xx - (xx_min, xx_max)/2) / (xx_max - xx_min)),
-             u[2], xyz_max, xyz_min)]),
-         v_pos)),*/
+    /* Normalize positions into [-1,1]x[-1,1] */
+    if length(v_pos)>1 and dimensions=2 then block(
+      [x_list : map(first, map(second, v_pos)),
+       y_list : map(second, map(second, v_pos)),
+       x_min, x_max, y_min, y_max],
+      x_min : lmin(x_list),
+      x_max : lmax(x_list),
+      y_min : lmin(y_list),
+      y_max : lmax(y_list),
+
+      if (x_min#x_max) and (y_min#y_max) then
+        v_pos : map(
+          lambda([u],
+            [(u[1] - (x_min + x_max)/2) / (x_max - x_min),
+             (u[2] - (y_min + y_max)/2) / (y_min - y_max)]),
+           v_pos)),
      
     /* Setup edges */
     if show_edges#[] then (
@@ -259,6 +263,11 @@ draw_graph(G, [options]) := block(
     if length(vertex_labels) > 0 then
       vertex_labels : [apply(label, vertex_labels)],
 
+    /* Setup loops */
+    if dimension=2 then
+      loops : map(lambda([x], block([pos: assoc(x, v_pos)], ellipse(pos[1], pos[2]+0.05,0.05,0.05,0,360))),
+        loops),
+      
     /* Setup edge wieghts */
     if show_weight=true then (
       for e in edges(G) do block(
@@ -291,8 +300,10 @@ draw_graph(G, [options]) := block(
         'axis_3d = false,
         'xtics = false,
         'ytics = false,
-        'ztics = false
+        'ztics = false,
+        'transparent=true
        ],
+        loops,
         edges,
        [
         'points_joined = false,
