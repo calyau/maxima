@@ -549,7 +549,7 @@
               (mul -1
                 (simplify (list '(%expintegral_ei) (mul -1 z))))
               (mul
-                (div 1 2)
+                '((rat simp) 1 2)
                 (sub
                   (simplify (list '(%log) (mul -1 z)))
                   (simplify (list '(%log) (div -1 z)))))
@@ -573,7 +573,7 @@
                 (add
                   (simplify (list '(%expintegral_ei) (mul -1 z)))
                   (mul
-                    (div -1 2)
+                    '((rat simp) -1 2)
                     (sub
                       (simplify (list '(%log) (mul -1 z)))
                       (simplify (list '(%log) (div -1 z)))))
@@ -595,24 +595,24 @@
        (cond
          ((equal ratorder 0)
           (mul 
-            (power '$%pi '((rat) 1 2))
-            (simplify (list '(%erfc) (power z '((rat) 1 2))))))
+            (power '$%pi '((rat simp) 1 2))
+            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))))
          ((> ratorder 0)
           (sub
             (mul
               (simplify (list '(%gamma) a))
-              (simplify (list '(%erfc) (power z '((rat) 1 2)))))
+              (simplify (list '(%erfc) (power z '((rat simp) 1 2)))))
             (mul
               (power -1 (sub ratorder 1))
               (power '$%e (mul -1 z))
-              (power z '((rat) 1 2))
+              (power z '((rat simp) 1 2))
               (let ((index (gensumindex)))
                 (dosum
                   (mul -1                      ; we get more simple results
                     (simplify                  ; when multiplying with -1  
                       (list 
                        '($pochhammer)
-                        (sub (div 1 2) ratorder)
+                        (sub '((rat simp) 1 2) ratorder)
                         (sub ratorder (add index 1))))
                     (power (mul -1 z) index))
                   index 0 (sub ratorder 1) t)))))
@@ -622,11 +622,11 @@
             (div
               (mul
                 (power -1 ratorder)
-                (power '$%pi '((rat) 1 2))
-                (simplify (list '(%erfc) (power z '((rat) 1 2)))))
-              (simplify (list '($pochhammer) (div 1 2) ratorder)))
+                (power '$%pi '((rat simp) 1 2))
+                (simplify (list '(%erfc) (power z '((rat simp) 1 2)))))
+              (simplify (list '($pochhammer) '((rat simp) 1 2) ratorder)))
             (mul 
-              (power z (sub (div 1 2) ratorder))
+              (power z (sub '((rat simp) 1 2) ratorder))
               (power '$%e (mul -1 z))
               (let ((index (gensumindex)))
                 (dosum
@@ -635,7 +635,7 @@
                     (simplify 
                       (list 
                        '($pochhammer) 
-                        (sub (div 1 2) ratorder)  
+                        (sub '((rat simp) 1 2) ratorder)  
                         (add index 1))))
                   index 0 (sub ratorder 1) t)))))))
 
@@ -1330,37 +1330,37 @@
          (format t "~&   : ratorder = ~A~%" ratorder))
        (cond
          ((equal ratorder 0)
-          (simplify (list '(%erfc) (power z '((rat) 1 2)))))
+          (simplify (list '(%erfc) (power z '((rat simp) 1 2)))))
 
          ((> ratorder 0)
           (add                               
-            (simplify (list '(%erfc) (power z '((rat) 1 2))))
+            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))
             (mul
               (power -1 (sub ratorder 1))
               (power '$%e (mul -1 z))
-              (power z (div 1 2))
+              (power z '((rat simp) 1 2))
               (div 1 (simplify (list '(%gamma) a)))             
               (let ((index (gensumindex)))
                 (dosum
                   (mul
                     (power (mul -1 z) index)
-                    (list '($pochhammer) (sub (div 1 2) ratorder)   
+                    (list '($pochhammer) (sub '((rat simp) 1 2) ratorder)   
                                          (sub ratorder (add index 1))))
                   index 0 (sub ratorder 1) t)))))
 
          ((< ratorder 0)
           (setq ratorder (- ratorder))
           (add
-            (simplify (list '(%erfc) (power z '((rat) 1 2))))
+            (simplify (list '(%erfc) (power z '((rat simp) 1 2))))
             (mul -1
               (power '$%e (mul -1 z))
-              (power z (sub (div 1 2) ratorder))
-              (div 1 (simplify (list '(%gamma) (sub (div 1 2) ratorder))))
+              (power z (sub '((rat simp) 1 2) ratorder))
+              (inv (simplify (list '(%gamma) (sub '((rat simp) 1 2) ratorder))))
               (let ((index (gensumindex)))
                 (dosum
                   (div
                     (power z index)
-                    (list '($pochhammer) (sub (div 1 2) ratorder) 
+                    (list '($pochhammer) (sub '((rat simp) 1 2) ratorder) 
                                          (add index 1)))
                   index 0 (sub ratorder 1) t)))))))
 
@@ -1734,10 +1734,10 @@
     
     ($hypergeometric_representation
       (mul 2 z 
-           (power '$%pi (div 1 2))
-           (list '(%hypergeometric)
-                 (list '(mlist) (div 1 2))
-                 (list '(mlist) (div 3 2))
+           (power '$%pi '((rat simp) 1 2))
+           (list '(%hypergeometric simp)
+                 (list '(mlist simp) '((rat simp) 1 2))
+                 (list '(mlist simp) '((rat simp) 3 2))
                  (mul -1 (power z 2)))))
 
     (t
@@ -1773,7 +1773,7 @@
         result))))
 
 (defun bfloat-erf (z)
-  (let ((1//2 ($bfloat (div 1 2))))
+  (let ((1//2 ($bfloat '((rat simp) 1 2))))
   ;; The argument is real, the result is real too
     ($realpart
       (mul
@@ -1785,7 +1785,7 @@
 
 (defun complex-bfloat-erf (z)
   (let* (($ratprint nil)
-         (1//2 ($bfloat (div 1 2)))
+         (1//2 ($bfloat '((rat simp) 1 2)))
          (result
            (cmul
              (cdiv (cpower (cpower z 2) 1//2) z)
@@ -1997,10 +1997,10 @@
     ($hypergeometric_representation
       (sub 1
         (mul 2 z 
-             (power '$%pi (div 1 2))
-             (list '(%hypergeometric)
-                   (list '(mlist) (div 1 2))
-                   (list '(mlist) (div 3 2 ))
+             (power '$%pi '((rat simp) 1 2))
+             (list '(%hypergeometric simp)
+                   (list '(mlist simp) '((rat simp) 1 2))
+                   (list '(mlist simp) '((rat simp) 3 2))
                    (mul -1 (power z 2))))))
 
     (t
@@ -2108,10 +2108,10 @@
     
     ($hypergeometric_representation
       (mul 2 z
-        (power '$%pi (div 1 2))
-               (list '(%hypergeometric)
-                     (list '(mlist) (div 1 2))
-                     (list '(mlist) (div 3 2))
+        (power '$%pi '((rat simp) 1 2))
+               (list '(%hypergeometric simp)
+                     (list '(mlist simp) '((rat simp) 1 2))
+                     (list '(mlist simp) '((rat simp) 3 2))
                      (power z 2))))
 
     (t
@@ -2198,7 +2198,8 @@
        (cond ((and (> z -1) (< z 1))
               (float-newton (sub ($erf x) z) 
                             x 
-                            ($float (div (mul z (power '$%pi (div 1 2))) 2))
+                            ($float (div (mul z (power '$%pi '((rat simp) 1 2)))
+                                         2))
                             ;; Adjusted so that newton will converge within
                             ;; the valid intervall.
                             1.2e-16))
@@ -2210,7 +2211,8 @@
        (cond ((eq ($sign (sub 1 (simplify (list '(mabs) z)))) '$pos)
               (bfloat-newton (sub ($erf x) z)
                              x
-                             ($bfloat (div (mul z (power '$%pi (div 1 2))) 2))
+                             ($bfloat 
+                               (div (mul z (power '$%pi '((rat simp) 1 2))) 2))
                              (power ($bfloat 10) (- $fpprec))))
              (t
               (eqtest (list '(%inverse_erf) z) expr)))))
@@ -2304,7 +2306,7 @@
               (float-newton (sub ($erfc x) z)
                             x
                             ($float (div (mul (sub 1 z) 
-                                              (power '$%pi (div 1 2))) 
+                                              (power '$%pi '((rat simp) 1 2))) 
                             2))
                             ;; Adjusted so that newton will converge within
                             ;; the valid intervall.
@@ -2318,7 +2320,7 @@
               (bfloat-newton (sub ($erfc x) z)
                              x
                              ($bfloat (div (mul (sub 1 z) 
-                                                (power '$%pi (div 1 2))) 
+                                                (power '$%pi '((rat simp) 1 2))) 
                                            2))
                              (power ($bfloat 10) (- $fpprec))))
              (t
@@ -2435,8 +2437,8 @@
     ;; Check for specific values
 
     ((zerop1 z) z)
-    ((eq z '$inf)  '((rat) 1 2))
-    ((eq z '$minf) '((rat) -1 2))
+    ((eq z '$inf)  '((rat simp) 1 2))
+    ((eq z '$minf) '((rat simp) -1 2))
     
     ;; Check for numerical evaluation
     
@@ -2487,19 +2489,20 @@
           (simplify 
             (list 
               '(%erf) 
-              (mul (div (add 1 '$%i) 2) (power '$%pi (div 1 2)) z)))
+              (mul (div (add 1 '$%i) 2) (power '$%pi '((rat simp) 1 2)) z)))
           (mul -1 '$%i
             (simplify 
               (list 
                 '(%erf) 
-                (mul (div (sub 1 '$%i) 2) (power '$%pi (div 1 2)) z)))))))
+                (mul (div (sub 1 '$%i) 2) 
+                     (power '$%pi '((rat simp) 1 2)) z)))))))
 
     ($hypergeometric_representation
       (mul 
         (div (mul '$%pi (power z 3)) 6)
-        (list '(%hypergeometric) 
-          (list '(mlist) (div 3 4))
-          (list '(mlist) (div 3 2) (div 7 4))
+        (list '(%hypergeometric simp)
+          (list '(mlist simp) '((rat simp) 3 4))
+          (list '(mlist simp) '((rat simp) 3 2) '((rat simp) 7 4))
           (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
@@ -2569,8 +2572,8 @@
     ;; Check for specific values
 
     ((zerop1 z) z)
-    ((eq z '$inf)  '((rat) 1 2))
-    ((eq z '$minf) '((rat) -1 2))
+    ((eq z '$inf)  '((rat simp) 1 2))
+    ((eq z '$minf) '((rat simp) -1 2))
     
     ;; Check for numerical evaluation
     
@@ -2621,18 +2624,19 @@
           (simplify 
             (list 
               '(%erf) 
-              (mul (div (add 1 '$%i) 2) (power '$%pi (div 1 2)) z)))
+              (mul (div (add 1 '$%i) 2) (power '$%pi '((rat simp) 1 2)) z)))
           (mul '$%i
             (simplify 
               (list 
                 '(%erf) 
-                (mul (div (sub 1 '$%i) 2) (power '$%pi (div 1 2)) z)))))))
+                (mul (div (sub 1 '$%i) 2) 
+                     (power '$%pi '((rat simp) 1 2)) z)))))))
 
     ($hypergeometric_representation
       (mul z
-        (list '(%hypergeometric) 
-          (list '(mlist) (div 1 4))
-          (list '(mlist) (div 1 2) (div 5 4))
+        (list '(%hypergeometric simp)
+          (list '(mlist simp) '((rat simp) 1 4))
+          (list '(mlist simp) '((rat simp) 1 2) '((rat simp) 5 4))
           (mul -1 (div (mul (power '$%pi 2) (power z 4)) 16)))))
 
     (t
@@ -2668,7 +2672,8 @@
                 (test 0.0)
                 (n 3 (+ n 2))
                 (k 1 (+ k 1)))
-               ((> k maxit) (merror (intl:gettext "fresnel: series expansion failed for (FRESNEL ~:M).") x))
+               ((> k maxit) 
+                (merror (intl:gettext "fresnel: series expansion failed for (FRESNEL ~:M).") x))
              (setq term (* term (/ fact k)))
              (setq sum (+ sum (/ (* sign term) n)))
              (setq test (* (abs sum) eps))
@@ -2775,7 +2780,7 @@
          (bigfloatzero ($bfloat bigfloatzero))
          (s bigfloatzero)
          (c ax))
-    (when (eq ($sign (sub ax (power fpmin (div 1 2)))) '$pos)
+    (when (eq ($sign (sub ax (power fpmin '((rat simp) 1 2)))) '$pos)
       (cond
         ((eq ($sign (sub ax xmin)) '$neg)
          (when *debug-gamma*
@@ -2853,7 +2858,7 @@
          (s bigfloatzero)
          (c z))
     (when (eq ($sign (sub (simplify (list '(mabs) z))
-                          (power fpmin (div 1 2)))) '$pos)
+                          (power fpmin '((rat simp) 1 2)))) '$pos)
       (cond
         ((eq ($sign (sub (simplify (list '(mabs) z)) xmin)) '$neg)
          (when *debug-gamma*
@@ -2885,9 +2890,11 @@
            (setq c sumc)))
         (t
          (let* ((z+ (cmul (add 0.5 (mul '$%i 0.5)) 
-                          (cmul (power ($bfloat '$%pi) ($bfloat (div 1 2))) z)))
+                          (cmul (power ($bfloat '$%pi) 
+                                       ($bfloat '((rat simp) 1 2))) z)))
                 (z- (cmul (add 0.5 (mul -1 '$%i 0.5)) 
-                          (cmul (power ($bfloat '$%pi) ($bfloat (div 1 2))) z)))
+                          (cmul (power ($bfloat '$%pi) 
+                                       ($bfloat '((rat simp) 1 2))) z)))
                 (erf+ (complex-bfloat-erf z+))
                 (erf- (complex-bfloat-erf z-)))
            (setq s (cmul (add 0.25 (mul '$%i 0.25)) 
