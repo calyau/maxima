@@ -683,4 +683,26 @@
     (setq p `(,@l "F\\left( \\begin{bmatrix}" ,@p "\\\\" ,@q "\\end{bmatrix} ,"))
     (tex (fourth x) p `("\\right)" ,@r) 'mparen 'mparen)))
 
+;; Integral of hypergeometric(a,b,z)
+;;
+;; FIXME: Return nil => unevaluated if q=0 => an element of a is 1
+;; According to Maple:
+;;   integrate(hypergeometric([1],[2],z),z) 
+;;      = z*hypergeometric([1, 1],[2, 2],z)
+;;   integrate(hypergeom([1,1,a],[b,c],z),z)
+;;      = z*hypergeom([1,1,1,a],[2,b,c],z)
+;;   integrate(hypergeomric([1,1,1,a],[b,c,d],z),z)
+;;      = z*hypergeom([1,1,1,1,a],[2,b,c,d],z)
+;; I can't find the general formula in any references to hand.
 
+(defun hyp-integral-3 (a b z)
+  "Integral of hypergeometric(a,b,z) wrt z"
+  (let* ((a-1 (add a -1))
+         (b-1 (add b -1))
+         (p (reduce #'mul (margs b-1)))
+         (q (reduce #'mul (margs a-1))))
+    (if (eq q 0)
+      nil
+      (mul p (inv q) (take '($hypergeometric) a-1 b-1 z)))))
+
+(putprop '$hypergeometric `((a b z) nil nil ,#'hyp-integral-3) 'integral)
