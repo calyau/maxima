@@ -966,9 +966,9 @@
              (mul 
                '((rat simp) 1 2)
                (sub
-                 (simplify (list '(%log) (mul -1 arg)))
-                 (simplify (list '(%log) (mul -1 (inv arg))))))
-             (mul -1 (simplify (list '(%log) arg)))))
+                 (list '(%log simp) (mul -1 arg))
+                 (list '(%log simp) (mul -1 (inv arg)))))
+             (mul -1 (list '(%log simp) arg))))
          (t 
           (eqtest (list '(%expintegral_e1) arg) expr))))
 
@@ -1080,10 +1080,10 @@
              (mul 
                '((rat simp) 1 2)
                (sub 
-                 (simplify (list '(%log) arg))
-                 (simplify (list '(%log) (inv arg)))))
+                 (list '(%log simp) arg)
+                 (list '(%log simp) (inv arg))))
              (mul -1  
-               (simplify (list '(%log) (mul -1 arg))))))
+               (list '(%log simp) (mul -1 arg)))))
          (%expintegral_e1
            (add
              (mul -1 
@@ -1091,10 +1091,10 @@
              (mul
               '((rat simp) 1 2)
               (sub 
-                (simplify (list '(%log) arg)) 
-                (simplify (list '(%log) (inv arg)))))
+                (list '(%log simp) arg)
+                (list '(%log simp) (inv arg))))
              (mul -1 
-               (simplify (list '(%log) (mul -1 arg))))))
+               (list '(%log simp) (mul -1 arg)))))
          (%expintegral_li
            ($expintegral_li (power '$%e arg)))
          ($expintegral_trig
@@ -1104,9 +1104,9 @@
              (mul 
                '((rat simp) -1 2)
                (sub
-                 (simplify (list '(%log) (inv arg)))
-                 (simplify (list '(%log) arg))))
-             (mul -1 (simplify (list '(%log) (mul '$%i arg))))))
+                 (list '(%log simp) (inv arg))
+                 (list '(%log simp) arg)))
+             (mul -1 (list '(%log simp) (mul '$%i arg)))))
          ($expintegral_hyp
            (add
              ($expintegral_chi arg)
@@ -1114,8 +1114,8 @@
              (mul 
                '((rat simp) -1 2)
                (add
-                 (simplify (list '(%log) (inv arg)))
-                 (simplify (list '(%log) arg))))))))
+                 (list '(%log simp) (inv arg))
+                 (list '(%log simp) arg)))))))
 
       (t 
        (eqtest (list '(%expintegral_ei) arg) expr)))))
@@ -1268,26 +1268,26 @@
       ((and $expintrep
             (member $expintrep *expintflag*)
             (not (eq $expintrep '%expintegral_li)))
-       (let ((logarg (list '(%log) arg)))
+       (let ((logarg (simplify (list '(%log) arg))))
          (case $expintrep
            (%gamma_incomplete
              (add
                (mul -1 ($gamma_incomplete 0 (mul -1 logarg)))
                (mul
                 (inv 2)
-                (sub (list '(%log) logarg) 
-                     (list '(%log) (inv logarg))))
+                (sub (list '(%log simp) logarg)
+                     (list '(%log simp) (inv logarg))))
                (mul -1
-                 (list '(%log) (mul -1 logarg)))))
+                 (list '(%log simp) (mul -1 logarg)))))
            (%expintegral_e1
              (add
                (mul -1 ($expintegral_e1 (mul -1 logarg)))
                (mul
                 (inv 2)
-                (sub (list '(%log) logarg) 
-                     (list '(%log) (inv logarg))))
+                (sub (list '(%log simp) logarg) 
+                     (list '(%log simp) (inv logarg))))
                (mul -1
-                 (list '(%log) (mul -1 logarg)))))
+                 (list '(%log simp) (mul -1 logarg)))))
            (%expintegral_ei
              ($expintegral_ei logarg))
            ($expintegral_trig
@@ -1297,9 +1297,9 @@
                (mul 
                  (inv -2)
                  (sub
-                   (list '(%log) (inv logarg))
-                   (list '(%log) logarg)))
-               (mul -1 (list '(%log) (mul '$%i logarg)))))
+                   (list '(%log simp) (inv logarg))
+                   (list '(%log simp) logarg)))
+               (mul -1 (list '(%log simp) (mul '$%i logarg)))))
            ($expintegral_hyp
              (add
                ($expintegral_chi logarg)
@@ -1307,8 +1307,8 @@
                (mul 
                  (inv -2)
                  (add
-                   (list '(%log) (inv logarg))
-                   (list '(%log) logarg))))))))
+                   (list '(%log simp) (inv logarg))
+                   (list '(%log simp) logarg))))))))
 
       (t 
        (eqtest (list '(%expintegral_li) arg) expr)))))
@@ -1414,15 +1414,15 @@
              (add
                ($gamma_incomplete 0 (mul -1 '$%i arg))
                (mul -1 ($gamma_incomplete 0 (mul '$%i arg)))
-               (list '(%log) (mul -1 '$%i arg))
-               (mul -1 (list '(%log) (mul '$%i arg))))))
+               (list '(%log simp) (mul -1 '$%i arg))
+               (mul -1 (list '(%log simp) (mul '$%i arg))))))
          (%expintegral_e1
            (mul '$%i (inv 2)
              (add
                ($expintegral_e1 (mul -1 '$%i arg))
                (mul -1 ($expintegral_e1 (mul '$%i arg)))
-               (list '(%log) (mul -1 '$%i arg))
-               (mul -1 (list '(%log) (mul '$%i arg))))))
+               (list '(%log simp) (mul -1 '$%i arg))
+               (mul -1 (list '(%log simp) (mul '$%i arg))))))
          (%expintegral_ei
            (mul '$%i (inv 4)
              (add 
@@ -1430,10 +1430,10 @@
                  (sub
                    ($expintegral_ei (mul -1 '$%i arg))
                    ($expintegral_ei (mul '$%i arg))))
-               (list '(%log) (div '$%i arg))
-               (mul -1 (list '(%log) (mul -1 (div '$%i arg))))
-               (mul -1 (list '(%log) (mul -1 '$%i arg)))
-               (list '(%log) (mul '$%i arg)))))
+               (list '(%log simp) (div '$%i arg))
+               (mul -1 (list '(%log simp) (mul -1 (div '$%i arg))))
+               (mul -1 (list '(%log simp) (mul -1 '$%i arg)))
+               (list '(%log simp) (mul '$%i arg)))))
          (%expintegral_li
            (mul
              (inv (mul 2 '$%i))
@@ -1566,16 +1566,16 @@
              (add
                ($gamma_incomplete 0 arg)
                (mul -1 ($gamma_incomplete 0 (mul -1 arg)))
-               (mul -1 (list '(%log) (mul -1 arg)))
-               (list '(%log) arg))))
+               (mul -1 (list '(%log simp) (mul -1 arg)))
+               (list '(%log simp) arg))))
          (%expintegral_e1
            (mul 
              (inv 2)
              (add
                ($expintegral_e1 arg)
                (mul -1 ($expintegral_e1 (mul -1 arg)))
-               (mul -1 (list '(%log) (mul -1 arg)))
-               (list '(%log) arg))))
+               (mul -1 (list '(%log simp) (mul -1 arg)))
+               (list '(%log simp) arg))))
          (%expintegral_ei
            (mul 
              (inv 4)
@@ -1584,10 +1584,10 @@
                  (sub
                    ($expintegral_ei arg)
                    ($expintegral_ei (mul -1 arg))))
-               (list '(%log) (inv arg))
-               (mul -1 (list '(%log) (mul -1 (inv arg))))
-               (list '(%log) (mul -1 arg))
-               (mul -1 (list '(%log) arg)))))
+               (list '(%log simp) (inv arg))
+               (mul -1 (list '(%log simp) (mul -1 (inv arg))))
+               (list '(%log simp) (mul -1 arg))
+               (mul -1 (list '(%log simp) arg)))))
          (%expintegral_li
            (add
              (mul
@@ -1742,14 +1742,14 @@
        (case $expintrep
          (%gamma_incomplete
            (sub
-             (list '(%log) arg)
+             (list '(%log simp) arg)
              (mul
                (inv 2)
                (add
                  ($gamma_incomplete 0 (mul -1 '$%i arg))
                  ($gamma_incomplete 0 (mul '$%i arg))
-                 (list '(%log) (mul -1 '$%i arg))
-                 (list '(%log) (mul '$%i arg))))))
+                 (list '(%log simp) (mul -1 '$%i arg))
+                 (list '(%log simp) (mul '$%i arg))))))
          (%expintegral_e1
            (add
              (mul 
@@ -1757,9 +1757,9 @@
                (add
                  ($expintegral_e1 (mul -1 '$%i arg))
                  ($expintegral_e1 (mul '$%i arg)))
-               (list '(%log) (mul -1 '$%i arg))
-               (list '(%log) (mul '$%i arg)))
-             (list '(%log) arg)))
+               (list '(%log simp) (mul -1 '$%i arg))
+               (list '(%log simp) (mul '$%i arg)))
+             (list '(%log simp) arg)))
          (%expintegral_ei
            (add
              (mul 
@@ -1769,11 +1769,11 @@
                    (add
                      ($expintegral_ei (mul -1 '$%i arg))
                      ($expintegral_ei (mul '$%i arg))))
-                 (list '(%log) (div '$%i arg))
-                 (list '(%log) (mul -1 '$%i (inv arg)))
-                 (mul -1 (list '(%log) (mul -1 '$%i arg)))
-                 (mul -1 (list '(%log) (mul '$%i arg)))))
-             (list '(%log) arg)))
+                 (list '(%log simp) (div '$%i arg))
+                 (list '(%log simp) (mul -1 '$%i (inv arg)))
+                 (mul -1 (list '(%log simp) (mul -1 '$%i arg)))
+                 (mul -1 (list '(%log simp) (mul '$%i arg)))))
+             (list '(%log simp) arg)))
          (%expintegral_li
            (add
              (mul
@@ -1789,8 +1789,8 @@
          ($expintegral_hyp
            (add
              ($expintegral_chi (mul '$%i arg))
-             (mul -1 (list '(%log) (mul '$%i arg)))
-             (list '(%log) arg)))))
+             (mul -1 (list '(%log simp) (mul '$%i arg)))
+             (list '(%log simp) arg)))))
 
       (t 
        (eqtest (list '(%expintegral_ci) arg) expr)))))
@@ -1941,16 +1941,16 @@
              (add
                ($gamma_incomplete 0 (mul -1 arg))
                ($gamma_incomplete 0 arg)
-               (list '(%log) (mul -1 arg))
-               (mul -1 (list '(%log) arg)))))
+               (list '(%log simp) (mul -1 arg))
+               (mul -1 (list '(%log simp) arg)))))
          (%expintegral_e1
            (mul 
              (inv -2)
              (add
                ($expintegral_e1 (mul -1 arg))
                ($expintegral_e1 arg)
-               (list '(%log) (mul -1 arg))
-               (mul -1 (list '(%log) arg)))))
+               (list '(%log simp) (mul -1 arg))
+               (mul -1 (list '(%log simp) arg)))))
          (%expintegral_ei
            (mul 
              (inv 4)
@@ -1959,10 +1959,10 @@
                  (add
                    ($expintegral_ei (mul -1 arg))
                    ($expintegral_ei arg)))
-               (list '(%log) (inv arg))
-               (list '(%log) (mul -1 (inv arg)))
-               (mul -1 (list '(%log) (mul -1 arg)))
-               (mul 3 (list '(%log) arg)))))
+               (list '(%log simp) (inv arg))
+               (list '(%log simp) (mul -1 (inv arg)))
+               (mul -1 (list '(%log simp) (mul -1 arg)))
+               (mul 3 (list '(%log simp) arg)))))
          (%expintegral_li
            (add
              (mul
@@ -1976,13 +1976,13 @@
              (mul 
                (inv 2)
                (add
-                 (list '(%log) (inv arg))
-                 (list '(%log) arg)))))
+                 (list '(%log simp) (inv arg))
+                 (list '(%log simp) arg)))))
          ($expintegral_trig
            (add
              ($expintegral_ci (mul '$%i arg))
-             (list '(%log) arg)
-             (mul -1 (list '(%log) (mul '$%i arg)))))))
+             (list '(%log simp) arg)
+             (mul -1 (list '(%log simp) (mul '$%i arg)))))))
 
       (t 
        (eqtest (list '(%expintegral_chi) arg) expr)))))
