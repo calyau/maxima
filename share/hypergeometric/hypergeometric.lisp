@@ -684,25 +684,30 @@
     (tex (fourth x) p `("\\right)" ,@r) 'mparen 'mparen)))
 
 ;; Integral of hypergeometric(a,b,z)
+;; 
+;; Integrals and Series: Volume 3, More Special Functions
+;; Prudnikov, A. P., Brychkov, Yu A., Gould, G. G., Marichev, O.I.
+;; 
+;;  /
+;; [
+;; I pFq((a_p);(b_q);c z) dz
+;; ]
+;; /
 ;;
-;; FIXME: Return nil => unevaluated if q=0 => an element of a is 1
-;; According to Maple:
-;;   integrate(hypergeometric([1],[2],z),z) 
-;;      = z*hypergeometric([1, 1],[2, 2],z)
-;;   integrate(hypergeom([1,1,a],[b,c],z),z)
-;;      = z*hypergeom([1,1,1,a],[2,b,c],z)
-;;   integrate(hypergeomric([1,1,1,a],[b,c,d],z),z)
-;;      = z*hypergeom([1,1,1,1,a],[2,b,c,d],z)
-;; I can't find the general formula in any references to hand.
+;;     = z (p+1)F(q+1)((a_p),1;(b_q),2;c z)                 1.16.1.2
+;;
+;;        product((b_q - 1))
+;;     =  ------------------ pFq((a_p)-1; (b_q)-1; c z)     1.16.1.3
+;;        product((a_p - 1))
 
 (defun hyp-integral-3 (a b z)
   "Integral of hypergeometric(a,b,z) wrt z"
   (let* ((a-1 (add a -1))
          (b-1 (add b -1))
-         (p (reduce #'mul (margs b-1)))
-         (q (reduce #'mul (margs a-1))))
-    (if (eq q 0)
-      nil
-      (mul p (inv q) (take '($hypergeometric) a-1 b-1 z)))))
+         (prod_b-1 (reduce #'mul (margs b-1)))
+         (prod_a-1 (reduce #'mul (margs a-1))))
+    (if (eq prod_a-1 0)
+      (mul z (take '($hypergeometric) (append a '(1)) (append b '(2)) z))
+      (mul prod_b-1 (inv prod_a-1) (take '($hypergeometric) a-1 b-1 z)))))
 
 (putprop '$hypergeometric `((a b z) nil nil ,#'hyp-integral-3) 'integral)

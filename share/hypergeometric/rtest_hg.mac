@@ -585,7 +585,7 @@ hypergeometric([a],[],1);
 
 /* Integrals of hypergeometric functions */
 integrate(hypergeometric([1],[2],z),z); 
-'integrate(hypergeometric([1],[2],z),z)$
+hypergeometric([1,1],[2,2],z)*z$
 
 integrate(hypergeometric([a,b],[c],z),z);
 hypergeometric([a-1,b-1],[c-1],z)*(c-1)/((a-1)*(b-1))$
