@@ -733,10 +733,17 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;
 ;; %e = sum( 1/i! ,i,0,inf )
 ;;
-;; but sums up 1001 terms to one.
+;; but adds up k summands to one, for e.g. k=4 that means
+;;
+;;    1          1          1       1      1 + n*(1 + (n - 1)*(1 + (n - 2)))
+;; -------- + -------- + -------- + --  =  ---------------------------------
+;; (n - 3)!   (n - 2)!   (n - 1)!   n!                    n!
+;;
+;; The number of added summands should depend on the current precision. 
+;; k = isqrt(prec) seems to fit here.
 ;;
 (defun compe (prec)
-  (let (s h (n 1) d (k 1001))
+  (let (s h (n 1) d (k (isqrt prec))) 
      (setq h (ash 1 prec))
      (setq s h)
      (do ((i k (+ i k)))
