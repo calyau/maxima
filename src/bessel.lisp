@@ -1549,8 +1549,8 @@ Perhaps you meant to enter `~a'.~%"
                (inv (simplify (list '(%gamma) (add order 1.5))))
                (simplify (list '($hypergeometric)
                                (list '(mlist) 1)
-                               (list '(mlist) '((rat) 3 2)
-                                     (add order '((rat) 3 2)))
+                               (list '(mlist) '((rat simp) 3 2)
+                                     (add order '((rat simp) 3 2)))
                                (div (mul arg arg) -4.0))))))))
       
       ((complex-bigfloat-numerical-eval-p order arg)
@@ -1562,13 +1562,13 @@ Perhaps you meant to enter `~a'.~%"
              (mul
                ($rectform (power arg (add order 1)))
                ($rectform (inv (power 2 order)))
-               (inv (power ($bfloat '$%pi) ($bfloat '((rat) 1 2))))
+               (inv (power ($bfloat '$%pi) ($bfloat '((rat simp) 1 2))))
                (inv (simplify (list '(%gamma) 
-                                    (add order ($bfloat '((rat) 3 2))))))
+                                    (add order ($bfloat '((rat simp) 3 2))))))
                (simplify (list '($hypergeometric)
                                (list '(mlist) 1)
-                               (list '(mlist) '((rat) 3 2)
-                                     (add order '((rat) 3 2)))
+                               (list '(mlist) '((rat simp) 3 2)
+                                     (add order '((rat simp) 3 2)))
                                (div (mul arg arg) ($bfloat -4)))))))))
       
       ;; Transformations and argument simplifications
@@ -1582,29 +1582,30 @@ Perhaps you meant to enter `~a'.~%"
           (sratsimp
             (add
               (mul
-                (inv (simplify (list '(mfactorial) (sub order '((rat) 1 2)))))
-                (inv (power '$%pi '((rat) 1 2 )))
+                (inv (simplify (list '(mfactorial) (sub order 
+                                                        '((rat simp) 1 2)))))
+                (inv (power '$%pi '((rat simp) 1 2 )))
                 (power (div arg 2) (add order -1))
                 (let ((index (gensumindex)))
                   (dosum
                     (mul
-                      (simplify (list '($pochhammer) '((rat) 1 2) index))
+                      (simplify (list '($pochhammer) '((rat simp) 1 2) index))
                       (simplify (list '($pochhammer)
-                                      (sub '((rat) 1 2) order)
+                                      (sub '((rat simp) 1 2) order)
                                       index))
                       (power (mul -1 arg arg (inv 4)) (mul -1 index)))
-                    index 0 (sub order '((rat) 1 2)) t)))
+                    index 0 (sub order '((rat simp) 1 2)) t)))
               (mul
-                (power (div 2 '$%pi) '((rat) 1 2))
-                (power -1 (add order '((rat) 1 2)))
-                (inv (power arg '((rat) 1 2)))
+                (power (div 2 '$%pi) '((rat simp) 1 2))
+                (power -1 (add order '((rat simp) 1 2)))
+                (inv (power arg '((rat simp) 1 2)))
                 (add
                   (mul
                     (simplify 
                       (list '(%sin)
-                            (add (mul '((rat) 1 2)
+                            (add (mul '((rat simp) 1 2)
                                       '$%pi
-                                      (add order '((rat) 1 2)))
+                                      (add order '((rat simp) 1 2)))
                                  arg)))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1613,12 +1614,12 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial) 
                                           (add (mul 2 index) 
                                                order 
-                                               '((rat) -1 2))))
+                                               '((rat simp) -1 2))))
                           (inv (simplify (list '(mfactorial) (mul 2 index))))
                           (inv (simplify (list '(mfactorial)
                                                (add (mul -2 index)
                                                     order
-                                                    '((rat) -1 2)))))
+                                                    '((rat simp) -1 2)))))
                           (inv (power (mul 2 arg) (mul 2 index))))
                         index 0 
                         (simplify (list '($floor) 
@@ -1626,9 +1627,9 @@ Perhaps you meant to enter `~a'.~%"
                         t)))
                   (mul
                     (simplify (list '(%cos)
-                                    (add (mul '((rat) 1 2)
+                                    (add (mul '((rat simp) 1 2)
                                               '$%pi
-                                              (add order '((rat) 1 2)))
+                                              (add order '((rat simp) 1 2)))
                                          arg)))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1637,14 +1638,14 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial) 
                                           (add (mul 2 index) 
                                                order 
-                                               '((rat) 1 2))))
+                                               '((rat simp) 1 2))))
                           (power (mul 2 arg) (mul -1 (add (mul 2 index) 1)))
                           (inv (simplify (list '(mfactorial) 
                                                (add (mul 2 index) 1))))
                           (inv (simplify (list '(mfactorial)
                                                (add (mul -2 index)
                                                     order
-                                                    '((rat) -3 2))))))
+                                                    '((rat simp) -3 2))))))
                         index 0 
                         (simplify (list '($floor) 
                                         (div (sub (mul 2 order) 3) 4)))
@@ -1655,17 +1656,17 @@ Perhaps you meant to enter `~a'.~%"
           (sratsimp
             (add
               (mul
-                (power (div 2 '$%pi) '((rat) 1 2))
-                (power -1 (add order '((rat) 1 2)))
-                (inv (power arg '((rat) 1 2)))
+                (power (div 2 '$%pi) '((rat simp) 1 2))
+                (power -1 (add order '((rat simp) 1 2)))
+                (inv (power arg '((rat simp) 1 2)))
                 (add
                   (mul
                     (simplify (list '(%sin)
                                     (add
                                       (mul
-                                        '((rat) 1 2)
+                                        '((rat simp) 1 2)
                                         '$%pi
-                                        (add order '((rat) 1 2)))
+                                        (add order '((rat simp) 1 2)))
                                       arg)))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1674,12 +1675,12 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial)
                                           (add (mul 2 index) 
                                                (neg order) 
-                                               '((rat) -1 2))))
+                                               '((rat simp) -1 2))))
                           (inv (simplify (list '(mfactorial) (mul 2 index))))
                           (inv (simplify (list '(mfactorial)
                                                (add (mul -2 index)
                                                     (neg order)
-                                                    '((rat) -1 2)))))
+                                                    '((rat simp) -1 2)))))
                           (inv (power (mul 2 arg) (mul 2 index))))
                         index 0
                         (simplify (list '($floor) 
@@ -1689,9 +1690,9 @@ Perhaps you meant to enter `~a'.~%"
                     (simplify (list '(%cos)
                                     (add
                                       (mul
-                                        '((rat) 1 2)
+                                        '((rat simp) 1 2)
                                         '$%pi
-                                        (add order '((rat) 1 2)))
+                                        (add order '((rat simp) 1 2)))
                                       arg)))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1700,14 +1701,14 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial) 
                                           (add (mul 2 index)
                                                (neg order) 
-                                               '((rat) 1 2))))
+                                               '((rat simp) 1 2))))
                           (power (mul 2 arg) (mul -1 (add (mul 2 index) 1)))
                           (inv (simplify (list '(mfactorial) 
                                                (add (mul 2 index) 1))))
                           (inv (simplify (list '(mfactorial)
                                                (add (mul -2 index)
                                                     (neg order)
-                                                    '((rat) -3 2))))))
+                                                    '((rat simp) -3 2))))))
                         index 0 
                         (simplify (list '($floor) 
                                         (div (add (mul 2 order) 3) -4)))
@@ -1790,8 +1791,8 @@ Perhaps you meant to enter `~a'.~%"
                (inv (simplify (list '(%gamma) (add order 1.5))))
                (simplify (list '($hypergeometric)
                                (list '(mlist) 1)
-                               (list '(mlist) '((rat) 3 2) 
-                                     (add order '((rat) 3 2)))
+                               (list '(mlist) '((rat simp) 3 2) 
+                                     (add order '((rat simp) 3 2)))
                                (div (mul arg arg) 4.0))))))))
       
       ((complex-bigfloat-numerical-eval-p order arg)
@@ -1801,12 +1802,12 @@ Perhaps you meant to enter `~a'.~%"
              (mul
                ($rectform (power arg (add order 1)))
                ($rectform (inv (power 2 order)))
-               (inv (power ($bfloat '$%pi) ($bfloat '((rat) 1 2))))
-               (inv (simplify (list '(%gamma) (add order '((rat) 3 2)))))
+               (inv (power ($bfloat '$%pi) ($bfloat '((rat simp) 1 2))))
+               (inv (simplify (list '(%gamma) (add order '((rat simp) 3 2)))))
                (simplify (list '($hypergeometric)
                                (list '(mlist) 1)
-                               (list '(mlist) '((rat) 3 2) 
-                                     (add order '((rat) 3 2)))
+                               (list '(mlist) '((rat simp) 3 2) 
+                                     (add order '((rat simp) 3 2)))
                                (div (mul arg arg) 4))))))))
       
       ;; Transformations and argument simplifications
@@ -1822,29 +1823,30 @@ Perhaps you meant to enter `~a'.~%"
               (mul -1
                 (power 2 (sub 1 order))
                 (power arg (sub order 1))
-                (inv (power '$%pi '((rat) 1 2)))
-                (inv (simplify (list '(mfactorial) (sub order '((rat) 1 2)))))
+                (inv (power '$%pi '((rat simp) 1 2)))
+                (inv (simplify (list '(mfactorial) (sub order 
+                                                        '((rat simp) 1 2)))))
                 (let ((index (gensumindex)))
                   (dosum
                     (mul
-                      (simplify (list '($pochhammer) '((rat) 1 2) index))
+                      (simplify (list '($pochhammer) '((rat simp) 1 2) index))
                       (simplify (list '($pochhammer) 
-                                      (sub '((rat) 1 2) order) 
+                                      (sub '((rat simp) 1 2) order) 
                                       index))
                       (power (mul arg arg (inv 4)) (mul -1 index)))
-                    index 0 (sub order '((rat) 1 2)) t)))
+                    index 0 (sub order '((rat simp) 1 2)) t)))
               (mul -1
-                (power (div 2 '$%pi) '((rat) 1 2))
-                (inv (power arg '((rat) 1 2)))
-                ($exp (div (mul '$%pi '$%i (add order '((rat) 1 2))) 2))
+                (power (div 2 '$%pi) '((rat simp) 1 2))
+                (inv (power arg '((rat simp) 1 2)))
+                ($exp (div (mul '$%pi '$%i (add order '((rat simp) 1 2))) 2))
                 (add
                   (mul
                     (let (($trigexpand t)) 
                       (simplify (list '(%sinh) 
-                                      (sub (mul '((rat) 1 2) 
+                                      (sub (mul '((rat simp) 1 2) 
                                                 '$%pi 
                                                 '$%i 
-                                                (add order '((rat) 1 2))) 
+                                                (add order '((rat simp) 1 2))) 
                                            arg))))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1852,13 +1854,13 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial)
                                           (add (mul 2 index)
                                                (simplify (list '(mabs) order))
-                                               '((rat) -1 2))))
+                                               '((rat simp) -1 2))))
                           (inv (simplify (list '(mfactorial) (mul 2 index))))
                           (inv (simplify (list '(mfactorial) 
                                                (add (simplify (list '(mabs) 
                                                                     order))
                                                     (mul -2 index)
-                                                    '((rat) -1 2)))))
+                                                    '((rat simp) -1 2)))))
                           (inv (power (mul 2 arg) (mul 2 index))))
                         index 0
                         (simplify (list '($floor)
@@ -1871,10 +1873,10 @@ Perhaps you meant to enter `~a'.~%"
                   (mul
                     (let (($trigexpand t)) 
                       (simplify (list '(%cosh) 
-                                      (sub (mul '((rat) 1 2) 
+                                      (sub (mul '((rat simp) 1 2) 
                                                 '$%pi 
                                                 '$%i 
-                                                (add order '((rat) 1 2))) 
+                                                (add order '((rat simp) 1 2))) 
                                            arg))))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1882,7 +1884,7 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial) 
                                           (add (mul 2 index)
                                                (simplify (list '(mabs) order))
-                                               '((rat) 1 2))))
+                                               '((rat simp) 1 2))))
                           (power (mul 2 arg) (neg (add (mul 2 index) 1)))
                           (inv (simplify (list '(mfactorial)
                                                (add (mul 2 index) 1))))
@@ -1890,7 +1892,7 @@ Perhaps you meant to enter `~a'.~%"
                                                (add (simplify (list '(mabs) 
                                                                     order))
                                                     (mul -2 index)
-                                                    '((rat) -3 2))))))                    
+                                                    '((rat simp) -3 2))))))                    
                         index 0
                         (simplify (list '($floor) 
                                         (div (sub (mul 2 
@@ -1904,17 +1906,17 @@ Perhaps you meant to enter `~a'.~%"
           (sratsimp
             (add
               (mul -1
-                (power (div 2 '$%pi) '((rat) 1 2))
-                (inv (power arg '((rat) 1 2)))
-                ($exp (div (mul '$%pi '$%i (add order '((rat) 1 2))) 2))
+                (power (div 2 '$%pi) '((rat simp) 1 2))
+                (inv (power arg '((rat simp) 1 2)))
+                ($exp (div (mul '$%pi '$%i (add order '((rat simp) 1 2))) 2))
                 (add
                   (mul
                     (let (($trigexpand t)) 
                       (simplify (list '(%sinh) 
-                                      (sub (mul '((rat) 1 2) 
+                                      (sub (mul '((rat simp) 1 2) 
                                                 '$%pi 
                                                 '$%i 
-                                                (add order '((rat) 1 2))) 
+                                                (add order '((rat simp) 1 2))) 
                                            arg))))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1922,12 +1924,12 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial)
                                           (add (mul 2 index)
                                                (neg order)
-                                               '((rat) -1 2))))
+                                               '((rat simp) -1 2))))
                           (inv (simplify (list '(mfactorial) (mul 2 index))))
                           (inv (simplify (list '(mfactorial) 
                                                (add (neg order)
                                                     (mul -2 index)
-                                                    '((rat) -1 2)))))
+                                                    '((rat simp) -1 2)))))
                           (inv (power (mul 2 arg) (mul 2 index))))
                         index 0
                         (simplify (list '($floor)
@@ -1936,10 +1938,10 @@ Perhaps you meant to enter `~a'.~%"
                   (mul
                     (let (($trigexpand t)) 
                       (simplify (list '(%cosh) 
-                                      (sub (mul '((rat) 1 2) 
+                                      (sub (mul '((rat simp) 1 2) 
                                                 '$%pi 
                                                 '$%i 
-                                                (add order '((rat) 1 2))) 
+                                                (add order '((rat simp) 1 2))) 
                                            arg))))
                     (let ((index (gensumindex)))
                       (dosum
@@ -1947,14 +1949,14 @@ Perhaps you meant to enter `~a'.~%"
                           (simplify (list '(mfactorial)
                                           (add (mul 2 index)
                                                (neg order)
-                                               '((rat) 1 2))))
+                                               '((rat simp) 1 2))))
                           (power (mul 2 arg) (neg (add (mul 2 index) 1)))
                           (inv (simplify (list '(mfactorial)
                                                (add (mul 2 index) 1))))
                           (inv (simplify (list '(mfactorial)
                                                (add (neg order)
                                                     (mul -2 index)
-                                                    '((rat) -3 2))))))                    
+                                                    '((rat simp) -3 2))))))                    
                         index 0
                         (simplify (list '($floor) 
                                         (div (add (mul 2 order) 3) -4)))
