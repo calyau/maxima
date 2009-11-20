@@ -292,7 +292,7 @@ binary-ecl/maxima : todd-coxeter.lisp
 binary-ecl/maxima : mactex.lisp
 binary-ecl/maxima : plot.lisp
 binary-ecl/maxima : gnuplot.lisp
-binary-ecl/maxima : openmath.lisp
+binary-ecl/maxima : xmaxima.lisp
 binary-ecl/maxima : autol.lisp
 binary-ecl/maxima : max_ext.lisp
 binary-ecl/maxima : init-cl.lisp

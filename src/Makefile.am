@@ -407,7 +407,7 @@ nset.lisp \
 nummod.lisp \
 numeric.lisp \
 numth.lisp \
-openmath.lisp \
+xmaxima.lisp \
 opers.lisp \
 optim.lisp \
 optimize.lisp \

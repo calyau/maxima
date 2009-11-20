@@ -291,7 +291,7 @@ binary-acl/maxima.dxl : todd-coxeter.lisp
 binary-acl/maxima.dxl : mactex.lisp
 binary-acl/maxima.dxl : plot.lisp
 binary-acl/maxima.dxl : gnuplot.lisp
-binary-acl/maxima.dxl : openmath.lisp
+binary-acl/maxima.dxl : xmaxima.lisp
 binary-acl/maxima.dxl : autol.lisp
 binary-acl/maxima.dxl : max_ext.lisp
 binary-acl/maxima.dxl : init-cl.lisp

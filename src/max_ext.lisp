@@ -275,7 +275,7 @@
 			 ((mlist) $grid 30 30)
 			 ((mlist) $transform_xy nil)
 			 ((mlist) $run_viewer t)
-			 ((mlist) $plot_format $openmath)
+			 ((mlist) $plot_format $xmaxima)
 			 ((mlist) $nticks 100)
 			 ))
 

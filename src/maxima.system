@@ -618,7 +618,7 @@
 			 (:file "plot")))
 	       (:module graphics-drivers :source-pathname ""
 			:components ((:file "gnuplot")
-				     (:file "openmath")))
+				     (:file "xmaxima")))
 	       (:module final :source-pathname ""
 			;; These are not compiled, for whatever reason
 			#-ecl :load-only #-ecl t

@@ -257,22 +257,15 @@ sin(y)*(10.0+6*cos(x)),
 	  ($axes
 	   (or (member (third value) '($x $y t nil))
 	       (merror "option axes should be: true, false, x or y")) value)
-          ($plot_format (or (member (third value)
-                                    (if (string= *autoconf-win32* "true")
-                                        '($zic $geomview
-                                              $gnuplot
-                                              $mgnuplot
-                                              $openmath
-                                              )
-                                        '($zic $geomview
-                                              $gnuplot
-                                              $gnuplot_pipes
-                                              $mgnuplot
-                                              $openmath
-                                              )
-                                        ))
-                            (merror "plot_format: only gnuplot, mgnuplot, openmath, and geomview are recognized"))
-                        value)
+          ($plot_format
+	   (case (third value) ($openmath (setf (third value) '$xmaxima)))
+	   (or (member (third value)
+		       (if (string= *autoconf-win32* "true")
+			   '($zic $geomview $gnuplot $mgnuplot $xmaxima)
+			   '($zic $geomview $gnuplot $gnuplot_pipes
+			     $mgnuplot $xmaxima)))
+	       (merror "plot_format: only gnuplot, mgnuplot, xmaxima, and geomview are recognized"))
+	   value)
           ($gnuplot_term (or (symbolp (third value)) (stringp (third value))
                              (merror "gnuplot_term: must be symbol or string"))
                         value)
@@ -1133,7 +1126,7 @@ sin(y)*(10.0+6*cos(x)),
 (defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview")
 
-(defvar $openmath_plot_command "xmaxima")
+(defvar $xmaxima_plot_command "xmaxima")
 
 (defun plot-temp-file (file)
   (if *maxima-tempdir* 
@@ -1340,7 +1333,7 @@ sin(y)*(10.0+6*cos(x)),
       (setq file (plot-temp-file (format nil "maxout.~(~a~)" (ensure-string plot-format)))))
     ;; old function $plot2dopen incorporated here
     (case plot-format
-      ($openmath
+      ($xmaxima
        (show-open-plot
         (with-output-to-string
           (st)
@@ -1394,7 +1387,7 @@ sin(y)*(10.0+6*cos(x)),
                          (t (format nil "fun~a" i)))))))
             (when plot-name 
 	      (format st " {label \"~a\"}" plot-name))
-            (format st " ~a~%" (openmath-curve-style style i))
+            (format st " ~a~%" (xmaxima-curve-style style i))
             (format st " {xversusy~%")
             (let ((lis points-list))
               (loop while lis
@@ -1701,12 +1694,12 @@ sin(y)*(10.0+6*cos(x)),
 
 (defun show-open-plot (ans)
   (cond ($show_openplot
-         (with-open-file (st1 (plot-temp-file "maxout.openmath") :direction :output :if-exists :supersede)
+         (with-open-file (st1 (plot-temp-file "maxout.xmaxima") :direction :output :if-exists :supersede)
            (princ  ans st1))
          ($system (concatenate 'string *maxima-prefix* 
                                        (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/") 
-                                       $openmath_plot_command)
-                  (format nil " \"~a\"" (plot-temp-file "maxout.openmath"))))
+                                       $xmaxima_plot_command)
+                  (format nil " \"~a\"" (plot-temp-file "maxout.xmaxima"))))
         (t (princ ans) "")))
 
 
@@ -1730,7 +1723,7 @@ sin(y)*(10.0+6*cos(x)),
 ;   contour_plot (F, [u, -4, 4], [v, -4, 4], [gnuplot_preamble, "set size ratio -1"]);
 ;   set_plot_option ([gnuplot_preamble, "set cntrparam levels 12"]);
 ;   contour_plot (F, [u, -4, 4], [v, -4, 4]);
-;   set_plot_option ([plot_format, openmath]);
+;   set_plot_option ([plot_format, xmaxima]);
 ;   contour_plot (F, [u, -4, 4], [v, -4, 4]); => error: must be gnuplot format
 ;   contour_plot (F, [u, -4, 4], [v, -4, 4], [plot_format, gnuplot]);
 
@@ -1832,7 +1825,7 @@ sin(y)*(10.0+6*cos(x)),
            gnuplot-out-file)
       (setf file gnuplot-out-file)
       (setf file (plot-temp-file (format nil "maxout.~(~a~)" (ensure-string plot-format)))))
-  (and $in_netmath (setq $in_netmath (eq plot-format '$openmath)))
+  (and $in_netmath (setq $in_netmath (eq plot-format '$xmaxima)))
   (setq xrange (check-range xrange))
   (setq yrange (check-range yrange))
   (let ((foo ($get_plot_option '$z))) (if foo (setq zrange (check-range foo))))
@@ -1945,7 +1938,7 @@ sin(y)*(10.0+6*cos(x)),
               (output-points pl (third grid)))
              ($mgnuplot
               (output-points pl (third grid)))
-             ($openmath
+             ($xmaxima
               (progn
                 (cond 
                  ($show_openplot
@@ -2030,10 +2023,10 @@ sin(y)*(10.0+6*cos(x)),
           (cond (($get_plot_option '$run_viewer 2)
                  (case plot-format
                    ($zic ($view_zic))
-                   ($openmath
+                   ($xmaxima
                      ($system (concatenate 'string *maxima-prefix* 
                                                    (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
-                                                   $openmath_plot_command) 
+                                                   $xmaxima_plot_command) 
                               (format nil " \"~a\"" file)))
                    ($geomview 
                      ($system $geomview_command

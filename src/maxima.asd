@@ -559,7 +559,7 @@
 			 (:file "plot")))
 	       (:module graphics-drivers :pathname ""
 			:components ((:file "gnuplot")
-				     (:file "openmath")))
+				     (:file "xmaxima")))
 
 	       (:module final :pathname ""
 			;; These are not compiled, for whatever reason

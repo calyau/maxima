@@ -1,5 +1,5 @@
-;; openmath.lisp: routines for Maxima's interface to openmath
-;; Copyright (C) 2007 J. Villate
+;; xmaxima.lisp: routines for Maxima's interface to xmaxima
+;; Copyright (C) 2007,2009 J. Villate
 ;; 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 
 (in-package :maxima)
 
-(defun $openmath_color (c)
+(defun xmaxima_color (c)
   (unless (integerp c) (setf c (round c)))
   (nth (mod c 7) '("skyblue" "blue" "red" "magenta" "orange" "saddlebrown" "green")))
 
@@ -46,39 +46,39 @@
 ;;      6 Green
 ;;      7 SkyBlue
 
-(defun openmath-curve-style (style i)
+(defun xmaxima-curve-style (style i)
   (with-output-to-string
     (st)
     (case (first style)
       ($dots
-       (format st "{nolines 1} {plotpoints 1} {pointsize 0.7}")
+       (format st "\{ nolines 1 \} \{ plotpoints 1 \} \{ pointsize 0.7 \}")
        (if (integerp (second style))
-	 (format st " {color ~a}" ($openmath_color (second style)))
-         (format st " {color ~a}" ($openmath_color i))))
+	 (format st " \{ color ~a \}" (xmaxima_color (second style)))
+         (format st " \{ color ~a \}" (xmaxima_color i))))
       ($lines
-       (format st "{nolines 0} {plotpoints 0}")
+       (format st "\{ nolines 0 \} \{ plotpoints 0 \}")
        (if (numberp (second style))
-	 (format st " {linewidth ~f}" (second style)))
+	 (format st " \{ linewidth ~,2f \}" (second style)))
        (if (integerp (third style))
-	 (format st " {color ~a}" ($openmath_color (third style)))
-	 (format st " {color ~a}" ($openmath_color i))))
+	 (format st " \{ color ~a \}" (xmaxima_color (third style)))
+	 (format st " \{ color ~a \}" (xmaxima_color i))))
       ($points
-       (format st "{nolines 1} {plotpoints 1}")
+       (format st "\{ nolines 1 \} \{ plotpoints 1 \}")
        (if (numberp (second style))
-	 (format st " {pointsize ~f}" (second style))
-	 (format st " {pointsize 3}"))
+	 (format st " \{ pointsize ~,2f \}" (second style))
+	 (format st " \{ pointsize 3 \}"))
        (if (integerp (third style))
-	 (format st " {color ~a}" ($openmath_color (third style)))
-	 (format st " {color ~a}" ($openmath_color i))))
+	 (format st " \{ color ~a \}" (xmaxima_color (third style)))
+	 (format st " \{ color ~a \}" (xmaxima_color i))))
       ($linespoints
-       (format st "{nolines 0} {plotpoints 1}")
+       (format st "\{ nolines 0 \} \{ plotpoints 1 \}")
        (if (numberp (second style))
-	 (format st " {linewidth ~f}" (second style)))
+	 (format st " \{ linewidth ~,2f \}" (second style)))
        (if (numberp (third style))
-	 (format st " {pointsize ~f}" (third style))
-	 (format st " {pointsize 3}"))
+	 (format st " \{ pointsize ~,2f \}" (third style))
+	 (format st " \{ pointsize 3 \}"))
        (if (integerp (fourth style))
-	 (format st " {color ~a}" ($openmath_color (fourth style)))
-	 (format st " {color ~a}" ($openmath_color i))))
+	 (format st " \{ color ~a \}" (xmaxima_color (fourth style)))
+	 (format st " \{ color ~a \}" (xmaxima_color i))))
       (t
-       (format st "{nolines 0} {plotpoints 0} {color ~a}" ($openmath_color i))))))
+       (format st "\{ nolines 0 \} \{ plotpoints 0 \} \{ color ~a \}" (xmaxima_color i))))))
