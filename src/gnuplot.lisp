@@ -79,14 +79,14 @@
       ($lines
        (format st "with lines")
        (if (numberp (second style))
-	 (format st " lw ~f" (second style)))
+	 (format st " lw ~,2f" (second style)))
        (if (integerp (third style))
 	 (format st " lt ~d" ($gnuplot_color (third style)))
 	 (format st " lt ~d" ($gnuplot_color i))))
       ($points
        (format st "with points")
        (if (numberp (second style))
-	 (format st " ps ~f" (/ (second style) 2))
+	 (format st " ps ~,2f" (/ (second style) 2))
 	 (format st " ps 1.5"))
        (if (integerp (third style))
 	 (format st " lt ~d" ($gnuplot_color (third style)))
@@ -97,9 +97,9 @@
       ($linespoints
        (format st "with linespoints")
        (if (numberp (second style))
-	 (format st " lw ~f" (second style)))
+	 (format st " lw ~,2f" (second style)))
        (if (numberp (third style))
-	 (format st " ps ~f" (/ (third style) 2))
+	 (format st " ps ~,2f" (/ (third style) 2))
 	 (format st " ps 1.5"))
        (if (integerp (fourth style))
 	 (format st " lt ~d" ($gnuplot_color (fourth style)))
