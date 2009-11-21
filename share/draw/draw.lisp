@@ -1437,7 +1437,7 @@
     (flet ((fun (x) (funcall fcn x)))
       (dotimes (k (1+ (* 2 nticks)))
         (let* ((x (+ xstart (* k x-step)))
-               (y ($float (fun x))))
+               (y (fun x)))
           (when (numberp y)    ; check for non numeric y, as in 1/0
              (push x x-samples)
              (push y y-samples)  ) ))
@@ -3050,7 +3050,8 @@
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
             (format nil "set pm3d at s depthorder explicit~%")
-            (if (get-option '$surface_hide)
+            (if (and (null (get-option '$enhanced3d))
+                     (get-option '$surface_hide))
                (format nil "set hidden3d nooffset~%"))
             (if (get-option '$xyplane)
                (format nil "set xyplane at ~a~%" (get-option '$xyplane)))
