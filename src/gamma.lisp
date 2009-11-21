@@ -562,7 +562,10 @@
                 (dosum
                   (div 
                     (power z index)
-                    (list '(%gamma) (add index 1)))
+                    (let (($gamma_expand nil))
+                      ;; Simplify gamma, but do not expand to avoid division 
+                      ;; by zero.
+                      (simplify (list '(%gamma) (add index 1)))))
                   index 0 (sub a 1) t))))
            ((member sgn '($neg $nz))
             (sub
@@ -1309,13 +1312,14 @@
        (let ((sgn ($sign a)))
          (cond
            ((member sgn '($pos $pz))
-            (mul              
+            (mul
               (power '$%e (mul -1 z))
               (let ((index (gensumindex)))
                 (dosum
                   (div 
                     (power z index)
-                    (list '(%gamma) (add index 1)))
+                    (let (($gamma_expand nil))
+                      (simplify (list '(%gamma) (add index 1)))))
                   index 0 (sub a 1) t))))
            ((member sgn '($neg $nz)) 0)
            (t (eqtest (list '(%gamma_incomplete) a z) expr)))))
@@ -1344,8 +1348,9 @@
                 (dosum
                   (mul
                     (power (mul -1 z) index)
-                    (list '($pochhammer) (sub '((rat simp) 1 2) ratorder)   
-                                         (sub ratorder (add index 1))))
+                    (simplify (list '($pochhammer) 
+                                    (sub '((rat simp) 1 2) ratorder)
+                                    (sub ratorder (add index 1)))))
                   index 0 (sub ratorder 1) t)))))
 
          ((< ratorder 0)
@@ -1360,8 +1365,9 @@
                 (dosum
                   (div
                     (power z index)
-                    (list '($pochhammer) (sub '((rat simp) 1 2) ratorder) 
-                                         (add index 1)))
+                    (simplify (list '($pochhammer) 
+                                    (sub '((rat simp) 1 2) ratorder) 
+                                    (add index 1))))
                   index 0 (sub ratorder 1) t)))))))
 
       ((and $gamma_expand (mplusp a) (integerp (cadr a)))
@@ -1384,8 +1390,7 @@
                     (dosum
                       (div
                         (power z index)
-                        (simplify
-                          (list '($pochhammer) a index)))
+                        (simplify (list '($pochhammer) a index)))
                       index 1 n t))))))
            ((< n 0)
             (setq n (- n))
@@ -1401,7 +1406,7 @@
                     (dosum
                       (div
                         (power z index)
-                        (list '($pochhammer) (add a (- n)) index))
+                        (simplify (list '($pochhammer) (add a (- n)) index)))
                       index 1 n t)))))))))
       
       (t (eqtest (list '(%gamma_incomplete_regularized) a z) expr)))))
@@ -3088,7 +3093,7 @@
            (dosum
              (div
                (mul
-                 (list '($pochhammer) a index)
+                 (simplify (list '($pochhammer) a index))
                  (power (sub 1 z) index))
               (simplify (list '(mfactorial) index)))
              index 0 (sub b 1) t))))
@@ -3104,7 +3109,7 @@
                (dosum 
                  (div
                    (mul
-                     (list '($pochhammer) b index)
+                     (simplify (list '($pochhammer) b index))
                      (power z index))
                  (simplify (list '(mfactorial) index)))
                index 0 (sub a 1) t))))))
@@ -3116,7 +3121,7 @@
          (let ((index (gensumindex)))
            (dosum
              (div
-               (mul (list '($pochhammer) (sub 1 b) index)
+               (mul (simplify (list '($pochhammer) (sub 1 b) index))
                     (power z index))
                (mul (add index a)
                     (simplify (list '(mfactorial) index))))
@@ -3182,7 +3187,8 @@
     (let ((index (gensumindex)))
       (dosum
         (div
-          (mul (list '($pochhammer) (sub 1 b) index) (power z index))
+          (mul (simplify (list '($pochhammer) (sub 1 b) index)) 
+               (power z index))
           (mul (add index a) (simplify (list '(mfactorial) index))))
         index 0 (sub b 1) t))))
 
