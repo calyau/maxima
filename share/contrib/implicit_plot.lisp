@@ -126,7 +126,7 @@
 	 (ssample (make-array `(,(1+ ($first $ip_grid_in))
 				,(1+ ($second $ip_grid_in)))))
 	 file-name gnuplot-out-file gnuplot-term
-	 (openmath-titles ()))
+	 (xmaxima-titles ()))
     
     (dolist (v options) ($set_plot_option v))
     (setq xrange (check-range xrange))
@@ -142,7 +142,7 @@
 	(setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
     
     (if (eq ($get_plot_option '$plot_format 2)
-	    '$openmath)
+	    '$xmaxima)
 	(setq ip-gnuplot nil)
 	(setq ip-gnuplot t))
 
@@ -151,7 +151,7 @@
 		  gnuplot-out-file)
 	     (setf file-name gnuplot-out-file)
 	     (setf file-name (plot-temp-file "maxout.gnuplot")))
-	 (setf file-name (plot-temp-file "maxout.openmath")))
+	 (setf file-name (plot-temp-file "maxout.xmaxima")))
     
     ;; output data
     (with-open-file
@@ -185,14 +185,14 @@
 		(format file " '-' ~a ~a" title 
 			(get-plot-option-string '$gnuplot_curve_styles i))))
 	    (progn
-	      (setq openmath-titles
+	      (setq xmaxima-titles
 		    (cons (format nil " {label \"~a\"}~%" plot-name)
-			  openmath-titles)))))
+			  xmaxima-titles)))))
       (format file "~%")
       (dolist (e (cdr expr))
 	(unless ip-gnuplot
 	  (progn
-	    (format file (pop openmath-titles))
+	    (format file (pop xmaxima-titles))
 	    (format file " {xversusy~%")))
 	(setq e (coerce-float-fun (if (atom e) e ($float (imp-pl-prepare-expr e)))
 				  `((mlist simp)
@@ -222,6 +222,6 @@
     (if ip-gnuplot
 	(gnuplot-process file-name)
 	($system (concatenate 'string *maxima-prefix*
-			      "/bin/" $openmath_plot_command)
-		 (format nil " \"~a\"" (plot-temp-file "maxout.openmath")))))
+			      "/bin/" $xmaxima_plot_command)
+		 (format nil " \"~a\"" (plot-temp-file "maxout.xmaxima")))))
     '$done)
