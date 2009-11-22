@@ -1047,6 +1047,14 @@ limit((sin(3*(x+h)) - sin(3*(x)))/h, h, 0, plus);
 limit(-x/sqrt(1-x^2), x, 1, minus);
 minf;
 
+/* limit(%i*log(a),a,0) nounform (%i*und problem) - ID: 816797 */
+limit(%i*log(x),x,0);
+infinity;
+
+/* limit(sqrt(x),x,minf) not fully evaluated - ID: 2901855 */
+limit(sqrt(x), x, minf);
+infinity;
+
 /* Bug ID: 2872738 - sign(-(1/n)*(-1)^n)
  * We got the error because of the simplification
  *  (-1)^n*(-1) -> (-1)^(n+1) and not -(-1)^n
