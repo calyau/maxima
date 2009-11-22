@@ -1091,7 +1091,7 @@
 	((eq tx '$matchfix)
 	 (putprop e 'tex-matchfix 'tex)
 	 (cond ((< (length s) 2)
-		(merror "Improper 2nd argument to `texput' for matchfix operator."))
+		(merror (intl:gettext "texput: expected a list of two items for matchfix operator.")))
 	       ((= (length s) 2)
 		(putprop e (list (list (first s)) (second s)) 'texsym))
 	       (t

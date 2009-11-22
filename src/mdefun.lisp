@@ -77,12 +77,12 @@
 	       (t
 		(let ((nl (1- (length argl))))
 		  `((cond ((< |mlexpr NARGS| ,nl)
-			   ($error 'maxima-error ',name '| takes no less than |
+			   ($error 'maxima-error ',name ,(intl:gettext " takes no less than ")
 			    ,nl
 			    ',(cond ((= nl 1)
-				     '| argument.|)
+				     (intl:gettext " argument."))
 				    (t
-				     '| arguments.|))))
+				     (intl:gettext " arguments.")))))
 			  (t
 			   ((lambda ,argl ,@body)
 			    ;; this conses up the

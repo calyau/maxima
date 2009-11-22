@@ -472,8 +472,8 @@ is EQ to FNNAME if the latter is non-NIL."
 (defun badfunchk (name val flag)
   (if (or flag (numberp val) (member val '(t nil $%e $%pi $%i) :test #'eq))
       (if (and (atom name) (not (equal val name)))
-	  (merror "~:M evaluates to ~M~%Improper name or value in functional position." name val)
-	  (merror "Improper name or value in functional position:~%~M" val))))
+        (merror (intl:gettext "apply: found ~M evaluates to ~M where a function was expected.") name val)
+        (merror (intl:gettext "apply: found ~M where a function was expected.") val))))
 
 
 (defun mbind-doit (lamvars fnargs fnname)
@@ -490,13 +490,13 @@ wrapper for this."
 	     ((and (null vars) (null args)))
 	     (t (assert fnname (fnname)
 			"Expected a maxima function designator but got NIL.")
-		(merror "Too ~M arguments supplied to ~M:~%~M"
-			(if vars "few" "many")
+		(merror (intl:gettext "~M arguments supplied to ~M; found: ~M")
+			(if vars (intl:gettext "Too few") (intl:gettext "Too many"))
 			(cons (ncons fnname) lamvars)
 			(cons '(mlist) fnargs)))))
     (let ((var (car vars)))
       (if (not (symbolp var))
-	  (merror "Only symbolic atoms can be bound:~%~M" var))
+	  (merror (intl:gettext "Only symbols can be bound; found: ~M") var))
       (let ((value (if (boundp var) (symbol-value var) munbound)))
 	(mset var (car args))
 	(psetq bindlist (cons var bindlist)
@@ -555,12 +555,13 @@ wrapper for this."
 (defmspec $local (l)
   (setq l (cdr l))
   (unless mlocp
-    (merror "Improper call to `local'"))
+    (merror (intl:gettext "local: must be called within a block or lambda.")))
   (dolist (var l)
     (cond ((not (symbolp var))
 	   (improper-arg-err var '$local))
 	  ((and (mget var 'array)
 		(arrayp (symbol-array var)))
+       ;; MEANING OF FOLLOWING IS UNCLEAR. WHEN IS (SYMBOL-ARRAY VAR) NONNULL ??
 	   (merror "Attempt to bind a complete array ~M" var)))
     (setq mproplist (cons (get var 'mprops) mproplist)
 	  factlist (cons (get var 'data) factlist))
@@ -635,8 +636,8 @@ wrapper for this."
                       (get x 'sysconst))
 	      (if munbindp (return nil))
 	      (if (mget x '$numer)
-		  (merror "~:M improper value assignment to a numerical quantity" x)
-		  (merror "~:M improper value assignment" x)))
+		  (merror (intl:gettext "assignment: cannot assign to ~M; it is a declared numeric quantity.") x)
+		  (merror (intl:gettext "assignment: cannot assign to ~M") x)))
 	    (let ((f (get x 'assign)))
 	      (if (and f (or (not (eq x y))
 			     (member f '(neverset read-only-assign) :test #'eq)))
@@ -646,7 +647,7 @@ wrapper for this."
 		   (add2lnc x $values))
 		  ((and (not (eq x y))
 			(optionp x))
-		   (if $optionset (mtell "~:M option is being set.~%" x))
+		   (if $optionset (mtell (intl:gettext "assignment: assigning to option ~M") x))
 		   (if (not (eq x '$linenum)) (add2lnc x $myoptions))))
 	    (return (setf (symbol-value x) y)))
 
@@ -678,7 +679,7 @@ wrapper for this."
 
 	   ((member 'array (cdar x) :test #'eq)
 	    (return (arrstore x y)))
-	   (t (merror "Improper value assignment:~%~M" x)))))
+	   (t (merror (intl:gettext "assignment: cannot assign to ~M") x)))))
 
 ;; ---------- begin code copied & modified from defstruct.lisp
 
@@ -728,15 +729,15 @@ wrapper for this."
 	 (object (meval instance))
      template)
     (if (not (and (consp object) (consp (car object)) (setq template (get (caar object) 'defstruct-template))))
-      (merror "Left-hand side doesn't appear to be a defstruct object:~%~M" instance)
+      (merror "MRECORD-ASSIGN: left-hand side doesn't appear to be a defstruct object:~%~M" instance)
       (let
         ((index
            (if (integerp field)
              field ;;; allow foo@3, also
              (position field template)))) ;field->integer
-        (if (null index) (merror "Unknown field in record:~%~M" field))
+        (if (null index) (merror (intl:gettext "assignment: no such field: ~M @ ~M") instance field))
         (if (< 0 index (length object)) (setf (elt object index) value)
-          (merror "Illegal instance:~%~M @ ~M" instance field))
+          (merror (intl:gettext "assignment: no such field: ~M @ ~M") instance field))
         value))))
 
 ;; MRECORD-KILL is very similar to MRECORD-ASSIGN. Might consider merging the two somehow.
@@ -748,15 +749,15 @@ wrapper for this."
      (object (meval instance))
      template)
     (if (not (and (consp object) (consp (car object)) (setq template (get (caar object) 'defstruct-template))))
-      (merror "Left-hand side doesn't appear to be a defstruct object:~%~M" instance)
+      (merror "MRECORD-KILL: left-hand side doesn't appear to be a defstruct object:~%~M" instance)
       (let
         ((index
            (if (integerp field)
              field
              (position field template))))
-        (if (null index) (merror "Unknown field in record:~%~M" field))
+        (if (null index) (merror (intl:gettext "kill: no such field: ~M @ ~M") instance field))
         (if (< 0 index (length object)) (setf (elt object index) (elt template index))
-          (merror "Illegal instance:~%~M @ ~M" instance field))))))
+          (merror (intl:gettext "kill: no such field: ~M @ ~M") instance field))))))
 
 (defmspec $@ (L)
   (let*
@@ -770,9 +771,9 @@ wrapper for this."
     (let* ((index  
 	    (if (integerp fn) fn ;;; allow foo@3, also
 	      (position fn (get (caar in) 'defstruct-template))))) ;field->integer
-    (if (null index) (merror "Unknown field in record:~%~M" fn))
+    (if (null index) (merror (intl:gettext "@: no such field: ~M @ ~M") in fn))
     (if  (< 0 index (length in))
-	(elt in index) (merror "Illegal instance:~%~M @ ~M" in fn))
+	(elt in index) (merror (intl:gettext "@: no such field: ~M @ ~M") in fn))
    )))
 
 (defun dimension-defstruct (form result)
@@ -807,25 +808,25 @@ wrapper for this."
   (cons (car r)(mapcar #'(lambda(z)
 			   (cond((symbolp z) z)
 				((eq (caar z) 'mequal)(second z))
-				(t (merror "~% Expected record initializer, not ~M." z))))
+				(t (merror (intl:gettext "defstruct: expected a record initializer; found: ~M") z))))
 		       (cdr r))))
 
 (defun initializersmostly(r);; f(a=3,b,c=5) -> f(3,b,5)
   (cons (car r)(mapcar #'(lambda(z)
 			   (cond((symbolp z) z)
 				((eq (caar z) 'mequal) (meval (third z)))
-				(t (merror "~% Expected record initializer, not ~M." z))))
+				(t (merror (intl:gettext "defstruct: expected a record initializer; found: ~M") z))))
 		       (cdr r))))
 
 (defmspec $new (h)
   (unless (= (length (cdr h)) 1)
-    (merror "~% new: expected exactly one argument, not ~M." (length (cdr h))))
+    (merror (intl:gettext "~new: expected exactly one argument; found: ~M") (length (cdr h))))
 
   (let ((recordname (cadr h)))
     (cond
       ((symbolp recordname)  ;; the case of, e.g.  new(f);
        (if (null (get recordname 'defstruct-default))
-         (merror "~% new: don't know anything about `~M'." recordname))
+         (merror (intl:gettext "new: no such structure ~M") recordname))
 
        (copy-tree (get recordname 'defstruct-default)))
 
@@ -833,10 +834,10 @@ wrapper for this."
       (t
         (let ((recordop (caar recordname)) (recordargs (cdr recordname)))
           (if (null (get recordop 'defstruct-default))
-            (merror "~% new: don't know anything about `~M'." recordop))
+            (merror (intl:gettext "new: no such structure ~M") recordop))
 
           (if (not (= (length recordargs) (length (cdr (get recordop 'defstruct-default)))))
-            (merror "~% new: wrong number of arguments in initializer; expected ~M, not ~M."
+            (merror (intl:gettext "new: wrong number of arguments in initializer; expected ~M, not ~M.")
                     (length (cdr (get recordop 'defstruct-default))) (length recordargs)))
 
           `(,(car recordname) ,@(mapcar #'meval (cdr recordname))))))))
@@ -889,7 +890,7 @@ wrapper for this."
   (if (and (listp vlist)
 	   (eq (caar vlist) 'mlist)
 	   (not (= (length tlist)(length vlist))))
-      (merror "Illegal list assignment: different lengths of ~M and ~M." tlist vlist))
+      (merror (intl:gettext "assignment: lists must be the same length; found: ~M, ~M") tlist vlist))
   (setq tlist
         `((mlist)
           ,@(mapcar
@@ -1100,7 +1101,7 @@ wrapper for this."
 (defmfun mseterr (x y)
   (if munbindp
       'munbindp
-      (merror "Attempt to set ~:M to ~M~%Improper value assignment" x y)))
+      (merror (intl:gettext "assignment: cannot assign ~M to ~:M") y x)))
 
 ;; assign properties
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
@@ -1132,7 +1133,7 @@ wrapper for this."
 	 (cond ((null y))
 	       ((integerp y)
 		(if (or (not (primep y)) (member y '(1 0 -1)))
-		    (mtell "warning: assigning ~:M, a non-prime, to 'modulus'.~%" y)))
+		    (mtell (intl:gettext "warning: assigning ~:M, a non-prime, to 'modulus'") y)))
 	       (t (mseterr x y))))
 	((eq x '$setcheck)
 	 (if (not (or (member y '($all t nil) :test #'eq) ($listp y))) (mseterr x y)))
@@ -1141,7 +1142,7 @@ wrapper for this."
 	 (if ($listp y) (apply #'$ratvars (cdr y)) (mseterr x y)))
 	((eq x '$ratfac)
 	 (if (and y $ratwtlvl)
-	     (merror "`ratfac' and `ratwtlvl' may not both be used at the same time.")))
+	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))
 	((eq x '$ratweights)
 	 (cond ((not ($listp y)) (mseterr x y))
 	       ((null (cdr y)) (kill1 '$ratweights))
@@ -1149,7 +1150,7 @@ wrapper for this."
 	((eq x '$ratwtlvl)
 	 (if (and y (not (fixnump y))) (mseterr x y))
 	 (if (and y $ratfac)
-	     (merror "`ratfac' and `ratwtlvl' may not both be used at the same time.")))))
+	     (merror (intl:gettext "assignment: 'ratfac' and 'ratwtlvl' may not both be used at the same time."))))))
 
 (defmfun numerset (assign-var y)
   (declare (ignore assign-var))
@@ -1157,11 +1158,11 @@ wrapper for this."
 
 (defmfun neverset (x assign-val)
   (declare (ignore assign-val))
-  (if munbindp 'munbindp (merror "Improper value assignment to ~:M" x)))
+  (if munbindp 'munbindp (merror (intl:gettext "assignment: cannot assign to ~:M") x)))
 
 (defmfun mmapev (l)
   (if (null (cddr l))
-      (merror "~:M called with fewer than two arguments." (caar l)))
+      (merror (intl:gettext "~:M: expected two or more arguments; found: ~M") (caar l) (cdr l)))
   (let ((op (getopr (meval (cadr l)))))
     (autoldchk op)
     (badfunchk (cadr l) op nil)
@@ -1182,11 +1183,12 @@ wrapper for this."
        (cdrl nil (or flag (cons (margs argi) cdrl))))
       ((= i 1) (if flag
 		   (cond ((not $maperror)
-			  (when $mapprint (mtell "map: calling 'apply'.~%"))
+			  (when $mapprint (mtell (intl:gettext "map: calling 'apply'")))
 			  (funcer (arg 1) argl))
 			 ((and (= n 2) (mapatom (arg 2)))
 			  (improper-arg-err (arg 2) '$map))
-			 (t (merror "Arguments to `mapl' not uniform - cannot map.")))
+             ;; WHEN IS THE FOLLOWING MESSAGE TRIGGERED ??
+			 (t (merror (intl:gettext "Arguments to `mapl' not uniform - cannot map."))))
 		   (mcons-op-args op (apply #'mmapcar (cons (arg 1) cdrl)))))))
 
 (defmspec $maplist (l)
@@ -1207,8 +1209,8 @@ wrapper for this."
 			 ((= j n) nil)
 		       (when (arg j) (return t))))
 	     (when $maperror
-	       (merror "Arguments to `mapl' are not of the same length."))
-	     (when $mapprint (mtell "map: truncating one or more arguments.~%")))
+	       (merror (intl:gettext "map: arguments must be the same length.")))
+	     (when $mapprint (mtell (intl:gettext "map: truncating one or more arguments."))))
 	   (return t))
 	 (push (car (arg i)) argl)
 	 (setarg i (cdr (arg i))))
