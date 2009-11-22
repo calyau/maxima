@@ -37,6 +37,9 @@
 (defprop %airy_ai simp-%airy_ai operators)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
 
+;; Airy Ai function has mirror symmetry
+(defprop %airy_ai t commutes-with-conjugate)
+
 ;; Integral of Ai(z)
 ;; http://functions.wolfram.com/03.05.21.0002.01
 ;; (z/(3^(2/3)*gamma(2/3)))*hypergeometric([1/3],[2/3,4/3],z^3/9)
@@ -91,6 +94,9 @@
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
 (defprop %airy_dai ((z) ((%airy_ai) z)) integral)
 
+;; Airy Ai' function has mirror symmetry
+(defprop %airy_dai t commutes-with-conjugate)
+
 (defun airy-dai (z)
   (cond ((floatp z) (airy-dai-real z))
 	((complexp z) (airy-dai-complex z))))
@@ -118,6 +124,9 @@
 (defprop %airy_bi $airy_bi noun)
 (defprop %airy_bi simp-%airy_bi operators)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
+
+;; Airy Bi function has mirror symmetry
+(defprop %airy_bi t commutes-with-conjugate)
 
 ;; Integral of Bi(z)
 ;; http://functions.wolfram.com/03.06.21.0002.01
@@ -171,6 +180,9 @@
 (defprop %airy_dbi simp-%airy_dbi operators)
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
 (defprop %airy_dbi ((z) ((%airy_bi) z)) integral)
+
+;; Airy Bi' function has mirror symmetry
+(defprop %airy_dbi t commutes-with-conjugate)
 
 (defun airy-dbi (z)
   (cond ((floatp z) (airy-dbi-real z))
