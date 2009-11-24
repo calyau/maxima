@@ -200,11 +200,20 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 		    (setq cf (div (mul cf (add i a) x) (mul (add i b) (+ 1 i))))
 		    (setq sum (add cf sum)))))))
 	(t
-	 `((%sum )
-	   ((mtimes) ((mexpt) ((mfactorial) ,$genindex) -1)
-	    (($pochhammer) ,a ,$genindex)
-	    ((mexpt) (($pochhammer ) ,b ,$genindex) -1) 
-	    ((mexpt) ,x ,$genindex)) ,$genindex 0 ,n))))
+; The following is replaced with simplifying code.
+;	 `((%sum )
+;	   ((mtimes) ((mexpt) ((mfactorial) ,$genindex) -1)
+;	    (($pochhammer) ,a ,$genindex)
+;	    ((mexpt) (($pochhammer ) ,b ,$genindex) -1) 
+;	    ((mexpt) ,x ,$genindex)) ,$genindex 0 ,n))))
+         (let ((index (gensumindex)))
+           (simplify
+             (list '(%sum)
+                   (mul (inv (take '(mfactorial) index))
+                        (take '($pochhammer) a index)
+                        (inv (take '($pochhammer) b index))
+                        (power x index))
+                   index 0 n))))))
 
 ;; return the F[2,1] hypergeometic sum from 0 to n. Use genindex as the 
 ;; sum index; genindex is defined in asum.lisp
@@ -228,13 +237,22 @@ Maxima code for evaluating orthogonal polynomials listed in Chapter 22 of Abramo
 		    (setq sum (add cf sum)))))))
 	
 	(t
-	 `((%sum)
-	   ((mtimes) (($pochhammer) ,a ,$genindex) (($pochhammer) ,b ,$genindex)
-	    ((mexpt) (($pochhammer) ,c ,$genindex) -1)
-	    ((mexpt) ((mfactorial) ,$genindex) -1)
-	    ((mexpt) ,x ,$genindex)) 
-	   ,$genindex 0 ,n))))
-   
+; The following is replaced with simplifying code.
+;	 `((%sum)
+;	   ((mtimes) (($pochhammer) ,a ,$genindex) (($pochhammer) ,b ,$genindex)
+;	    ((mexpt) (($pochhammer) ,c ,$genindex) -1)
+;	    ((mexpt) ((mfactorial) ,$genindex) -1)
+;	    ((mexpt) ,x ,$genindex)) 
+;	   ,$genindex 0 ,n))))
+	 (let ((index (gensumindex)))
+           (simplify
+             (list '(%sum)
+                   (mul (take '($pochhammer) a index)
+                        (take '($pochhammer) b index)
+                        (inv (take '($pochhammer) c index))
+                        (inv (take '(mfactorial) index))
+                        (power x index))
+                   index 0 n))))))
 
 (eval-when
     #+gcl (load eval)
