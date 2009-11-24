@@ -171,7 +171,7 @@ integrate(bessel_j(1,x),x);
 -bessel_j(0,x);
 
 integrate(bessel_j(2,x),x);
-'integrate(bessel_j(2,x),x);
+x^3/24*hypergeometric([3/2],[5/2,3],-x^2/4);
 
 integrate(bessel_j(n,x),n);
 'integrate(bessel_j(n,x),n);
