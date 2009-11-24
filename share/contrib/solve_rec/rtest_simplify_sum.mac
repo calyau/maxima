@@ -210,11 +210,11 @@ test_sum(
 0;
 
 test_sum(
-  sum(binomial(n, k)/binomial(2*n, k)/k!*(2*x)^k, k, 0, inf),
+  niceindices(sum(binomial(n, k)/binomial(2*n, k)/k!*(2*x)^k, k, 0, inf)),
   [n>0],
   true,
-  [lambda([u], ev(u, gen_laguerre))],
-  (-1)^n*gen_laguerre(n,-2*n-1,2*x)/binomial(2*n,n)
+  [lambda([u], niceindices(ev(u, gen_laguerre)))],
+  niceindices((-1)^n*gen_laguerre(n,-2*n-1,2*x)/binomial(2*n,n))
   );
 0;
 

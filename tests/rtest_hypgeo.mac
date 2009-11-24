@@ -321,7 +321,7 @@ factor(specint(%e^(-s*t)*'laguerre(n,t),t));
    This summand is equivalent to the general solution above.
 */
 
-(assume(i>0), specint(%e^(-s*t)*laguerre(n,t),t));
+(assume(i1>0), niceindices(specint(%e^(-s*t)*laguerre(n,t),t)));
 'sum(gamma(i+1)*pochhammer(-n,i)*s^(-i-1)/i!^2,i,0,n);
 
 /*****************************************************************************
