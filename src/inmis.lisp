@@ -52,8 +52,12 @@
     listofvars))
 
 (defun atomvars (e) 
-  (cond ((and (symbolp e) (or $listconstvars (not ($constantp e))))
-	 (add2lnc e listofvars))
+  (cond ((and (symbolp e)
+              (or $listconstvars
+                  ;; Do not add constants or boolean values to list of vars.
+                  (and (not ($constantp e))
+                       (not (member e '(t $true nil $false))))))
+         (add2lnc e listofvars))
 	((atom e))
 	((specrepp e) (atomvars (specdisrep e)))
 	((member 'array (car e) :test #'eq) (myadd2lnc e listofvars))
