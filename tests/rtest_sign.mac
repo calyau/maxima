@@ -900,11 +900,13 @@ false;
  * This example no longer works because of revision 1.62 of compar.lisp
  */
 assume(abs(x) < sin(1)+%e/2);
-[-abs(x)+sin(1)+%e/2>0];
+[sin(1)+%e/2>abs(x)];
 is(x<2*%e);
 true;
 is(x>-2*%e);
 true;
+(forget(abs(x)<sin(1)+%e/2),done);
+done;
 
 /* Bug ID: 2876382 - sign(a+b+sin(1)) unknown */
 (assume(a>0,b>0),done);
