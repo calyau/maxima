@@ -1664,7 +1664,11 @@ relational knowledge is contained in the default context GLOBAL.")
 (defun maxima-integerp (x)
   (cond ((integerp x))
 	((mnump x) nil)
-	((and (symbolp x) (or (kindp x '$integer) (kindp x '$even) (kindp x '$odd))))
+        ((and (symbolp x)
+              (or (kindp x '$integer)
+                  (kindp x '$even)
+                  (kindp x '$odd)
+                  (check-integer-facts x))))
 	(t (let ((x-op (and (consp x) (consp (car x)) (caar x))) ($prederror nil))
 	     (cond ((null x-op) nil)
 		   ((not (symbolp x-op)) nil) ; fix for mqapply at some point?
@@ -1691,11 +1695,29 @@ relational knowledge is contained in the default context GLOBAL.")
 		   ((or ($featurep ($verbify x-op) '$integervalued)
 			(get x-op 'integer-valued))))))))
 
+;; Look into the database for symbols which are declared to be equal 
+;; to an integer or an expression which is an integer.
+(defun check-integer-facts (x)
+  (do ((factsl (cdr (facts1 x)) (cdr factsl)))
+      ((null factsl) nil)
+    (cond ((and (not (atom (car factsl)))
+                (eq (caar (car factsl)) '$equal))
+           (cond ((and (symbolp (cadr (car factsl)))
+                       (eq (cadr (car factsl)) x))
+                  ;; Case equal(x,expr): Test expr to be an integer.
+                  (return (maxima-integerp (caddr (car factsl)))))
+                 ((and (symbolp (caddr (car factsl)))
+                       (eq (caddr (car factsl)) x))
+                  ;; Case equal(expr,x): Test expr to be an integer.
+                  (return (maxima-integerp (cadr (car factsl))))))))))
+
 (defmfun nonintegerp (e)
   (let (num)
     (cond ((integerp e) nil)
 	  ((mnump e) t)
-	  ((atom e) (kindp e '$noninteger))
+          ((atom e)
+           (or (kindp e '$noninteger)
+               (check-noninteger-facts e)))
 	  ((specrepp e) (nonintegerp (specdisrep e)))
 	  ((and (eq (caar e) 'mplus) (ratnump (cadr e)) (intp (cdr e))) t)
 	  ((and (integerp (setq num ($num e)))
@@ -1706,6 +1728,22 @@ relational knowledge is contained in the default context GLOBAL.")
           ;; Assumes a simplified sqrt of a number is not an integer.
           ((and (mexptp e) (mnump (second e)) (alike1 (third e) 1//2)) t)
 	  (t nil))))
+
+;; Look into the database for symbols which are declared to be equal 
+;; to a noninteger or an expression which is a noninteger.
+(defun check-noninteger-facts (x)
+  (do ((factsl (cdr (facts1 x)) (cdr factsl)))
+      ((null factsl) nil)
+    (cond ((and (not (atom (car factsl)))
+                (eq (caar (car factsl)) '$equal))
+           (cond ((and (symbolp (cadr (car factsl)))
+                       (eq (cadr (car factsl)) x))
+                  ;; Case equal(x,expr): Test expr to be a noninteger.
+                  (return (nonintegerp (caddr (car factsl)))))
+                 ((and (symbolp (caddr (car factsl)))
+                       (eq (caddr (car factsl)) x))
+                  ;; Case equal(expr,x): Test expr to be a noninteger.
+                  (return (nonintegerp (cadr (car factsl))))))))))
 
 (defun intp (l)
   (every #'maxima-integerp (cdr l)))
