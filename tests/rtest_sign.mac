@@ -926,4 +926,18 @@ sign(1-(1+sqrt(2))*x);
 sign(1-(1+sqrt(2))/x);
 'pnz;
 
- 
+/* Bug ID: 1038624 - askinteger ignores asksign database
+ * With revison 1.64 of compar.lisp code has been added, which looks for
+ * integer and noninteger facts into the database.
+ */
+(assume(equal(a,0), equal(b,2), equal(c,1/3), equal(d,1.5), equal(e,3.0b0)),
+ done);
+done;
+
+map(askinteger, [a, b, 2*b, 2+b, c, d, e]);
+[yes, yes, yes, yes, no, no, no];
+
+
+(forget(equal(a,0), equal(b,2), equal(c,1/3), equal(d,1.5), equal(e,3.0b0)), 
+ done);
+done;
