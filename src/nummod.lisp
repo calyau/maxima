@@ -74,10 +74,17 @@
 (defprop $floor tex-matchfix tex)
 (defprop $floor (("\\left \\lfloor " ) " \\right \\rfloor") texsym)
 
+;; $floor distributes over lists, matrices, and equations
+(setf (get '$floor 'distribute_over) '(mlist $matrix mequal))
+
 ; These defprops for $entier are copied from orthopoly/orthopoly-init.lisp.
 
 (defprop $entier tex-matchfix tex)
 (defprop $entier (("\\lfloor ") " \\rfloor") texsym)
+
+;; $entier and $fix distributes over lists, matrices, and equations
+(setf (get '$entier 'distribute_over) '(mlist $matrix mequal))
+(setf (get '$fix 'distribute_over) '(mlist $matrix mequal))
 
 ;; For an example, see pretty-good-floor-or-ceiling. Code courtesy of Stavros Macrakis.
 
@@ -213,6 +220,9 @@
 (defprop $ceiling tex-matchfix tex)
 (defprop $ceiling (("\\left \\lceil " ) " \\right \\rceil") texsym)
 
+;; $ceiling distributes over lists, matrices, and equations.
+(setf (get '$ceiling 'distribute_over) '(mlist $matrix mequal))
+
 (defun simp-ceiling (e e1 z)
   (oneargcheck e)
   (setq e (simplifya (specrepcheck (nth 1 e)) z))
@@ -256,6 +266,9 @@
 (defprop $mod 180. tex-rbp)
 (defprop $mod 180. tex-rbp)
 
+;; $mod distributes over lists, matrices, and equations
+(setf (get '$mod 'distribute_over) '(mlist $matrix mequal))
+
 ;; See "Concrete Mathematics," Section 3.21.
 	     
 (defun simp-nummod (e e1 z)
@@ -279,6 +292,9 @@
 (setf (get '$round 'alias) '%round)
 (setf (get '$round 'verb) '%round)
 (setf (get '%round 'noun) '$round)
+
+;; $round distributes over lists, matrices, and equations.
+(setf (get '$round 'distribute_over) '(mlist $matrix mequal))
 
 (defun simp-round (e yy z)
   (oneargcheck e)
