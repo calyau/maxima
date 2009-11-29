@@ -141,6 +141,10 @@
 
 (defprop %expintegral_e simp-expintegral-e operators)
 
+;;; Exponential Integral E distributes over bags
+
+(defprop %expintegral_e (mlist $matrix mequal) distribute_over)
+
 ;;; Exponential Integral E has mirror symmetry, 
 ;;; but not on the real negative axis.
 
@@ -868,6 +872,10 @@
 
 (defprop %expintegral_e1 simp-expintegral_e1 operators)
 
+;;; Exponential Integral E1 distributes over bags
+
+(defprop %expintegral_e1 (mlist $matrix mequal) distribute_over)
+
 ;;; Exponential Integral E1 has mirror symmetry, 
 ;;; but not on the real negative axis.
 
@@ -995,6 +1003,10 @@
 ;;; Exponential Integral Ei is a simplifying function
 
 (defprop %expintegral_ei simp-expintegral-ei operators)
+
+;;; Exponential Integral Ei distributes over bags
+
+(defprop %expintegral_ei (mlist $matrix mequal) distribute_over)
 
 ;;; Exponential Integral Ei has mirror symmetry
 
@@ -1187,6 +1199,10 @@
 
 (defprop %expintegral_li simp-expintegral-li operators)
 
+;;; Exponential Integral Li distributes over bags
+
+(defprop %expintegral_li (mlist $matrix mequal) distribute_over)
+
 ;;; Exponential Integral Li has mirror symmetry, 
 ;;; but not on the real negative axis.
 
@@ -1348,6 +1364,10 @@
 
 (defprop %expintegral_si simp-expintegral-si operators)
 
+;;; Exponential Integral Si distributes over bags
+
+(defprop %expintegral_si (mlist $matrix mequal) distribute_over)
+
 ;;; Exponential Integral Si has mirror symmetry
 
 (defprop %expintegral_si t commutes-with-conjugate)
@@ -1501,6 +1521,10 @@
 
 (defprop %expintegral_shi simp-expintegral-shi operators)
 
+;;; Exponential Integral Shi distributes over bags
+
+(defprop %expintegral_shi (mlist $matrix mequal) distribute_over)
+
 ;;; Exponential Integral Shi has mirror symmetry
 
 (defprop %expintegral_si t commutes-with-conjugate)
@@ -1652,6 +1676,10 @@
 ;;; Exponential Integral Ci is a simplifying function
 
 (defprop %expintegral_ci simp-expintegral-ci operators)
+
+;;; Exponential Integral Ci distributes over bags
+
+(defprop %expintegral_ci (mlist $matrix mequal) distribute_over)
 
 ;;; Exponential Integral Ci has mirror symmetry, 
 ;;; but not on the real negative axis.
@@ -1847,6 +1875,10 @@
 
 (defprop %expintegral_chi simp-expintegral-chi operators)
 
+;;; Exponential Integral Chi distributes over bags
+
+(defprop %expintegral_chi (mlist $matrix mequal) distribute_over)
+
 ;;; Exponential Integral Chi has mirror symmetry, 
 ;;; but not on the real negative axis.
 
@@ -2025,4 +2057,3 @@
 	 (values (slatec:de1 (float x))))
 	(t
 	 (list '($expint simp) x))))
-
