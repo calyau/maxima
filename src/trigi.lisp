@@ -87,6 +87,14 @@
 (defprop %acsch simp-%acsch operators)
 (defprop %asech simp-%asech operators)
 
+;;; The trigonometric functions distribute of lists, matrices and equations.
+
+(dolist (x '(%sin   %cos   %tan   %cot   %csc   %sec
+             %sinh  %cosh  %tanh  %coth  %csch  %sech
+             %asin  %acos  %atan  %acot  %acsc  %asec
+             %asinh %acosh %atanh %acoth %acsch %asech))
+  (setf (get x 'distribute_over) '(mlist $matrix mequal)))
+
 (defun domain-error (x f)
   (merror "The number ~:M isn't in the domain of ~A" (complexify x) f))
 
