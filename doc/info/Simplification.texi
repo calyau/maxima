@@ -700,34 +700,55 @@ Example:
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} radcan (@var{expr})
-Simplifies @var{expr}, which can contain logs, exponentials, and
-radicals, by converting it into a form which is canonical over a large
-class of expressions and a given ordering of variables; that is, all
-functionally equivalent forms are mapped into a unique form.  For a
-somewhat larger class of expressions, @code{radcan} produces a regular form.
-Two equivalent expressions in this class do not necessarily have the
-same appearance, but their difference can be simplified by @code{radcan} to
-zero.
+Simplifies @var{expr}, which can contain logs, exponentials, and radicals, by 
+converting it into a form which is canonical over a large class of expressions 
+and a given ordering of variables; that is, all functionally equivalent forms 
+are mapped into a unique form.  For a somewhat larger class of expressions, 
+@code{radcan} produces a regular form. Two equivalent expressions in this class 
+do not necessarily have the same appearance, but their difference can be 
+simplified by @code{radcan} to zero.
 
-For some expressions @code{radcan} is quite time consuming.  This
-is the cost of exploring certain relationships among the components of
-the expression for simplifications based on factoring and
-partial-fraction expansions of exponents.  
+For some expressions @code{radcan} is quite time consuming.  This is the cost 
+of exploring certain relationships among the components of the expression for 
+simplifications based on factoring and partial-fraction expansions of exponents.  
 
 @c %e_to_numlog NEEDS ITS OWN @defvar !!!
-@c DOESN'T APPEAR TO AFFECT radcan !!!
-When @code{%e_to_numlog} is @code{true}, 
-@code{%e^(r*log(expr))} simplifies to @code{expr^r} if @code{r} is a rational number.
 
-When @code{radexpand} is @code{false}, certain transformations are inhibited.
-@code{radcan (sqrt (1-x))} remains @code{sqrt (1-x)}
-and is not simplified to @code{%i sqrt (x-1)}. 
-@code{radcan (sqrt (x^2 - 2*x + 1))} remains @code{sqrt (x^2 - 2*x + 1)}
-and is not simplified to @code{x - 1}.
+@c %e_to_numlog HAS NO EFFECT ON RADCAN. RADCAN ALWAYS SIMPLIFIES 
+@c exp(a*log(x)) --> x^a. Commenting the following out. 11/2009
+@c When @code{%e_to_numlog} is @code{true}, @code{%e^(r*log(expr))} simplifies 
+@c to @code{expr^r} if @code{r} is a rational number.
 
-@c MERGE EXAMPLES INTO THIS FILE
-@code{example (radcan)} displays some examples.
+@c RADEXPAND CONTROLS THE SIMPLIFICATION OF THE POWER FUNCTION, E.G.
+@c (x*y)^a --> x^a*y^a AND (x^a)^b --> x^(a*b), IF RADEXPAND HAS THE VALUE 'ALL.
+@c THE VALUE OF RADEXPAND HAS NO EFFECT ON RADCAN. RADCAN ALWAYS SIMPLIFIES
+@c THE ABOVE EXPRESSIONS. COMMENTING THE FOLLOWING OUT. 11/2009
+@c When @code{radexpand} is @code{false}, certain transformations are inhibited.
+@c @code{radcan (sqrt (1-x))} remains @code{sqrt (1-x)} and is not simplified 
+@c to @code{%i sqrt (x-1)}. @code{radcan (sqrt (x^2 - 2*x + 1))} remains 
+@c @code{sqrt (x^2 - 2*x + 1)} and is not simplified to @code{x - 1}.
+
+Examples:
+
+@c ===beg===
+@c radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+@c radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+@c radcan((%e^x-1)/(1+%e^(x/2)));
+@c ===end===
+@example
+(%i1) radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+                                           a/2
+(%o1)                            log(x + 1)
+
+(%i2) radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+(%o2)                                  2
+
+(%i3) radcan((%e^x-1)/(1+%e^(x/2)));
+                                     x/2
+(%o3)                              %e    - 1
+@end example
 
 @opencatbox
 @category{Simplification functions}
