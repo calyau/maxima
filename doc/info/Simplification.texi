@@ -82,6 +82,75 @@ both be true at the same time.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} distribute_over
+Default value: @code{true}
+
+@code{distribute_over} controls the mapping of functions over bags like lists, 
+matrices, and equations. At this time this feature is implemented for the
+trigonometric functions, the exponential integrals, and the integer 
+functions like @code{mod}, @code{floor}, @code{ceiling}, @code{round}.
+
+The mapping of functions is switched off, when setting @code{distribute_over} 
+to the value @code{false}.
+
+Examples:
+
+The @code{sin} function maps over a list:
+
+@c ===beg===
+@c sin([x,1,1.0]);
+@c ===end===
+@example
+(%i1) sin([x,1,1.0]);
+(%o1)                 [sin(x), sin(1), .8414709848078965]
+@end example
+
+@code{mod} is a function with two arguments which maps over lists. Mapping over 
+nested lists is possible too:
+
+@c ===beg===
+@c mod([x,11,2*a],10);
+@c mod([[x,y,z],11,2*a],10);
+@c ===end===
+@example
+(%i2) mod([x,11,2*a],10);
+(%o2)                    [mod(x, 10), 1, 2 mod(a, 5)]
+(%i3) mod([[x,y,z],11,2*a],10);
+(%o3)       [[mod(x, 10), mod(y, 10), mod(z, 10)], 1, 2 mod(a, 5)]
+@end example
+
+Mapping of the @code{floor} function over a matrix and an equation:
+
+@c ===beg===
+@c floor(matrix([a,b],[c,d]));
+@c floor(a=b);
+@c ===end===
+@example
+(%i4) floor(matrix([a,b],[c,d]));
+                            [ floor(a)  floor(b) ]
+(%o4)                       [                    ]
+                            [ floor(c)  floor(d) ]
+(%i5) floor(a=b);
+(%o5)                         floor(a) = floor(b)
+@end example
+
+Functions with more than one argument map over any of the arguments or all
+arguments:
+
+@c ===beg===
+@c expintegral_e([1,2],[x,y]);
+@c ===end===
+@example
+(%i6) expintegral_e([1,2],[x,y]);
+(%o6) [[expintegral_e(1, x), expintegral_e(1, y)], 
+       [expintegral_e(2, x), expintegral_e(2, y)]]
+@end example
+
+@opencatbox
+@category{Simplification flags and variables}
+@closecatbox
+@end defvr
 
 @defvr {Option variable} domain
 Default value: @code{real}
