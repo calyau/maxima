@@ -130,6 +130,7 @@
 (defmvar $radexpand t)
 (defmvar $subnumsimp nil)
 (defmvar $logsimp t)
+(defmvar $distribute_over t) ; If T, functions are distributed over bags.
 
 (defvar rischp nil)
 (defvar rp-polylogp nil)
@@ -512,6 +513,11 @@
 		    (and (not (atom (caaar x))) (eq (caaaar x) 'lambda)))
 		(mapply1 (caar x) (cdr x) (caar x) x))
 	       (t (merror "Illegal form - `simplifya':~%~S" x))))
+        ((and $distribute_over
+              (get (caar x) 'distribute_over)
+              ;; A function with the property 'distribute_over.
+              ;; Look, if we have a bag as argument to the function.
+              (distribute-over x)))
 	((get (caar x) 'opers)
 	 (let ((opers-list *opers-list)) (oper-apply x y)))
 	((and (eq (caar x) 'mqapply)
@@ -532,7 +538,6 @@
 	     (cond ((and w (or (not (member 'array (cdar x) :test #'eq)) (rulechk (caar x))))
 		    (funcall w x 1 y))
 		   (t (simpargs x y)))))))
-
 
 (defmfun eqtest (x check)
   (let ((y nil))
@@ -562,6 +567,46 @@
 	   (rplaca x (cons (caar x) '(simp array))))
 	  (t
 	   (rplaca x (cons (caar x) '(simp)))))))
+
+;; A function, which distributes of bags like a list, matrix, or equation.
+;; Check, if we have to distribute of one of the bags or any other operator.
+(defun distribute-over (expr)
+  (cond ((= 1 (length (cdr expr)))
+         ;; Distribute over for a function with one argument.
+         (cond ((and (not (atom (cadr expr)))
+                     (member (caaadr expr) (get (caar expr) 'distribute_over))
+                     ;; Distribute over lists only if $listarith is T
+                     (or $listarith (not (eq (caaadr expr) 'mlist))))
+                (simplify
+                  (cons (caadr expr)
+                        (mapcar #'(lambda (u) (simplify (list (car expr) u)))
+                                (cdadr expr)))))
+                (t nil)))
+        (t
+         ;; A function with more than one argument.
+         (do ((args (cdr expr) (cdr args))
+              (new-expr nil)
+              (first-args nil))
+             ((null args) nil)
+           (when (and (not (atom (car args)))
+                      (member (caar (car args))
+                              (get (caar expr) 'distribute_over))
+                      ;; Disribute over lists only if $listarith is T
+                      (or $listarith (not (eq (caar (car args)) 'mlist))))
+             ;; Distribute the function over the arguments and simplify again.
+             (return 
+               (simplify 
+                 (cons (ncons (caar (car args)))
+                       (mapcar #'(lambda (u) 
+                                   (simplify 
+                                     (append 
+                                       (append 
+                                         (cons (ncons (caar expr))
+                                               (reverse first-args))
+                                         (ncons u))
+                                       (rest args))))
+                               (cdr (car args)))))))
+           (setq first-args (cons (car args) first-args))))))
 
 (defun rulechk (x) (or (mget x 'oldrules) (get x 'rules)))
 
