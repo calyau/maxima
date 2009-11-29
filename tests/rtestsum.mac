@@ -738,8 +738,11 @@ nusum ((2*m)!/(m!*(m + 1)!), m, 0, n);
 sumcontract(sum(k,k,1,n) + sum(k^2, k, 1, n));
 sum(k^2+k,k,1,n);
 
+/* Bug ID: 2770575 - rtestsum test 226
+ * This test simplifies correctly after revision 1.12 of sumcon.lisp.
+ */
 sumcontract(sum(k, k, 1, n) + sum(k, k, 1, n+1));
-n+sum(2*k,k,1,n)+1;
+n+2*sum(k,k,1,n)+1;
 
 /* Tests for bug report [ 1497706 ] sum(1/k^2,k,2,inf), simpsum; */
 
