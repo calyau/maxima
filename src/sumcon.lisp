@@ -76,7 +76,7 @@
   (do ((sum pattern) (non-sums nil)
        (un-matched-sums nil) (try-this-one)
        (llist llist (cdr llist)))
-      ((null llist) (cons (cons (simpsum (cons '(%sum) sum) 1 t)
+      ((null llist) (cons (cons (simplify (cons '(%sum) sum))
 				non-sums)
 			  un-matched-sums))
     (setq try-this-one (car llist))
