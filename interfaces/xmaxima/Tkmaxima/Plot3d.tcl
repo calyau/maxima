@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot3d.tcl,v 1.16 2009-11-16 22:41:47 villate Exp $
+#       $Id: Plot3d.tcl,v 1.17 2009-11-30 04:37:06 villate Exp $
 #
 ###### Plot3d.tcl ######
 ############################################################
@@ -20,8 +20,8 @@ set plot3dOptions {
     {zcenter 0.0 "see xcenter"}
     {bbox "" "xmin ymin xmax ymax zmin zmax overrides the -xcenter etc"}
     {zradius auto " Height in z direction of the z values"}
-    {az 60 "azimuth angle" }
-    {el 30 "elevantion angle" }
+    {az 30 "azimuth angle" }
+    {el 60 "elevantion angle" }
 
     {thetax 10.0 "ignored is obsolete: use az and el"}
     {thetay 20.0 "ignored is obsolete: use az and el"}
@@ -40,13 +40,12 @@ set plot3dOptions {
     {windowname ".plot3d" "window name"}
     {psfile "" "A filename where the graph will be saved in PostScript."}
     {nobox 0 "if not zero, do not draw the box around the plot."}
-    {hue 240 "Default hue value."}
+    {hue 0.25 "Default hue value."}
     {saturation 0.7 "Default saturation value."}
-    {brightness 0.8 "Default brightness value."}
-    {mincolor 0.25 "Percentage used for the minimum color."}
+    {value 0.8 "Default brightness value."}
     {colorrange 0.5 "Range of colors used."}
     {ncolors 180 "Number of colors used."}
-    {colorscheme "hue" "Coloring Scheme used."}
+    {colorscheme "hue" "Coloring Scheme (hue, saturation, value, gray or 0)."}
     {mesh_lines "black" "Color for the meshes outline, or 0 for no outline."}
 }
 
@@ -242,23 +241,22 @@ proc drawOval { c radius args } {
 }
 
 proc plot3dcolorFun {win z } {
-    makeLocal $win zmin zmax ncolors hue saturation brightness mincolor \
-	colorrange colorscheme
-    if { $colorscheme == "hue" } {
-	set a [expr { 360*$mincolor }]
-	set b [expr { 360*$colorrange }]
-    } else {
-	set a $mincolor
-	set b $colorrange
+    makeLocal $win zmin zmax ncolors hue saturation value colorrange colorscheme
+    if { $z < $zmin || $z > $zmax } {
+	return "none"
     }
-    set tem [expr {(double($b)/$ncolors)*round(($z - $zmin)*$ncolors/($zmax - $zmin+.001)) + $a}]
-    if { $tem < $a || $tem > [expr { $a + $b } ] } {
-	return "\#ffffff"
+    set h [expr { 360*$hue }]
+    if { ($value > 1) || ($value < 0) } {
+	set value [expr { $value - floor($value) }]
     }
+    set tem [expr {(double($colorrange)/$ncolors)*round(($z - $zmin)*$ncolors/($zmax - $zmin+.001))}]
     switch -exact $colorscheme {
-	"hue" { return [hsv2rgb $tem $saturation $brightness] }
-	"saturation" { return [hsv2rgb $hue $tem $brightness] }
-	"brightness" { return [hsv2rgb $hue $saturation $tem] }
+	"hue" { return [hsv2rgb [expr { 360*$tem+$h }] $saturation $value] }
+	"saturation" { return [hsv2rgb $h [expr { $tem+$saturation }] $value] }
+	"value" { return [hsv2rgb $h $saturation [expr {$tem+$value}]] }
+	"gray"  { set g [expr { round( ($tem+$value)*255 ) } ]
+	    return  [format "\#%02x%02x%02x" $g $g $g] }
+	"0" { return "#ffffff" }
     }
 }
 
@@ -632,7 +630,7 @@ proc drawOneMesh { win  canv k mesh color } {
 		eval [concat $tem $coords]
 	    }
 	}
-    } elseif { [string length $color] < 8 && $color != "\#ffffff"} {
+    } elseif { [string length $color] < 8 && $color != "none"} {
 	if { $mesh_lines != 0 } {
 	    set outline "-outline $mesh_lines"
 	} else {
