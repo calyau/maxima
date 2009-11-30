@@ -244,8 +244,8 @@ binary-openmcl/maxima.image : hyp.lisp
 binary-openmcl/maxima.image : todd-coxeter.lisp
 binary-openmcl/maxima.image : mactex.lisp
 binary-openmcl/maxima.image : plot.lisp
-binary-openmcl/maxima.image : gnuplot.lisp
-binary-openmcl/maxima.image : xmaxima.lisp
+binary-openmcl/maxima.image : gnuplot_def.lisp
+binary-openmcl/maxima.image : xmaxima_def.lisp
 binary-openmcl/maxima.image : autol.lisp
 binary-openmcl/maxima.image : max_ext.lisp
 binary-openmcl/maxima.image : autoconf-variables.lisp

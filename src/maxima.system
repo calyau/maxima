@@ -617,8 +617,8 @@
 			 (:file "mactex")
 			 (:file "plot")))
 	       (:module graphics-drivers :source-pathname ""
-			:components ((:file "gnuplot")
-				     (:file "xmaxima")))
+			:components ((:file "gnuplot_def")
+				     (:file "xmaxima_def")))
 	       (:module final :source-pathname ""
 			;; These are not compiled, for whatever reason
 			#-ecl :load-only #-ecl t

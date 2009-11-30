@@ -345,7 +345,7 @@ gamma.lisp \
 generate-sys-proclaim.lisp \
 generr.lisp \
 getopt.lisp \
-gnuplot.lisp \
+gnuplot_def.lisp \
 grind.lisp \
 hayat.lisp \
 homog.lisp \
@@ -407,7 +407,6 @@ nset.lisp \
 nummod.lisp \
 numeric.lisp \
 numth.lisp \
-xmaxima.lisp \
 opers.lisp \
 optim.lisp \
 optimize.lisp \
@@ -477,6 +476,7 @@ trprop.lisp \
 trutil.lisp \
 ufact.lisp \
 utils.lisp \
+xmaxima_def.lisp \
 zero.lisp \
 autoconf-variables.lisp \
 numerical/f2cl-lib.lisp \

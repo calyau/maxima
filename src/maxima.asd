@@ -558,8 +558,8 @@
 			 (:file "mactex")
 			 (:file "plot")))
 	       (:module graphics-drivers :pathname ""
-			:components ((:file "gnuplot")
-				     (:file "xmaxima")))
+			:components ((:file "gnuplot_def")
+				     (:file "xmaxima_def")))
 
 	       (:module final :pathname ""
 			;; These are not compiled, for whatever reason

@@ -290,8 +290,8 @@ binary-cmucl/maxima.core : hyp.lisp
 binary-cmucl/maxima.core : todd-coxeter.lisp
 binary-cmucl/maxima.core : mactex.lisp
 binary-cmucl/maxima.core : plot.lisp
-binary-cmucl/maxima.core : gnuplot.lisp
-binary-cmucl/maxima.core : xmaxima.lisp
+binary-cmucl/maxima.core : gnuplot_def.lisp
+binary-cmucl/maxima.core : xmaxima_def.lisp
 binary-cmucl/maxima.core : autol.lisp
 binary-cmucl/maxima.core : max_ext.lisp
 binary-cmucl/maxima.core : init-cl.lisp
