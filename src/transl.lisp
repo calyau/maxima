@@ -1437,8 +1437,8 @@ APPLY means like APPLY.")
        (tunbind 'mdo) (tunbind (cadr form))
        (return
 	 `(,mode do ((,var) (mdo (cdr ,init) (cdr mdo)))
-		 ((null mdo) '$done)
-		 (setq ,var (car mdo)) . ((declare (special ,var)) .
+		 ((null mdo) '$done) .
+		  ((declare (special ,var)) (setq ,var (car mdo)) .
 		 ,(cond ((atom (cdr action)) nil)
 			((eq 'progn (cadr action)) (cddr action))
 			(t (list (cdr action))))))))))
