@@ -1229,7 +1229,7 @@ integrate(t^2*log(t)^2*(1-t)^2*log(1-t),t,0,1);
 integrate(t^2*log(t)^2*(1-t)^2*log(1-t)^2,t,0,1);
 (3384000*zeta(3)+6000*%pi^4+747800*%pi^2-12135541)/-16200000;
 
-/* 5integrate -> too many contexts - ID: 2838268 */
+/* integrate -> too many contexts - ID: 2838268 */
 integrate(t*cos(1.0*t),t);
 t*sin(t)+cos(t);
 
@@ -1239,3 +1239,12 @@ integrate(cos(x)^2 * (1 + sin(x)^2)^-3,x,0,%pi/2);
 
 (forget(x>0),gamma_expand:false,done);
 done;
+
+/* BUG ID: 2906049 - integration failure with option integrate_use_rootsof
+ * This example is more simple than the example in the bug report.
+ */
+%rnum:0;
+0;
+integrate((a*x^2+b*x+c)/(d*x^3+a*x^2+b),x),integrate_use_rootsof:true;
+'lsum((c+%r1*b+%r1^2*a)*d*log(x-%r1)/(3*%r1^2*d+2*%r1*a),%r1,
+            rootsof(d*x^3+a*x^2+b));
