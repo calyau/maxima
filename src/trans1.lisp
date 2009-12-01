@@ -218,22 +218,24 @@
 			    `($any . ((lambda (,|00| ,nn)
 					; bogus -gjc
 					;(DECLARE (FIXNUM ,|00| ,NN))
-					(cond ((not (< ,nn ,|00|))
-					       (do ((,x ,|00| (1+ ,x))
+					(cond ((and (integerp (sub ,nn ,|00|))
+						    (>= (sub ,nn ,|00|) 0))
+					       (do ((,x ,|00| (add 1 ,x))
 						    (,sum
 						     nil
 						     (cons
 						      ,(cdr (tr-local-exp exp
 									  x
-									  '$fixnum))
+									  (value-mode x)))
 
 						      ,sum)))
-						   ((> ,x ,nn)
+						   ((> (sub ,x ,nn) 0)
 						    `((mlist) ,@(nreverse ,sum)))
-						 (declare (fixnum ,x))))
+						 (declare (special ,x))))
 					      (t
-					       (interval-error
-						'$makelist ,|00| ,nn))))
+					       (merror
+						"If 4 arguments are given to MAKELIST, the difference of the 3rd ~
+and 4th arguments should evaluate to a non-negative integer:~%~M" (sub ,nn ,|00|)))))
 				      ,|0| ,n))))
 	(t
 	 (mformat *translation-msgs-files*
