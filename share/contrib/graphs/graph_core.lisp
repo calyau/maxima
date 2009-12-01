@@ -70,7 +70,7 @@
   (unless (or (graph-p gr) (digraph-p gr))
     ($error (format nil "Argument ~a to `~a' is not a graph:" ar m) gr)))
 
-(defun $print_graph (gr)
+(defmfun $print_graph (gr)
   (require-graph-or-digraph 'print_graph 1 gr)
   (cond
     ((graph-p gr)
@@ -94,28 +94,28 @@
   (format t "~%")
   '$done)
 
-(defun $is_graph (x)
+(defmfun $is_graph (x)
   (graph-p x))
 
-(defun $is_digraph (x)
+(defmfun $is_digraph (x)
   (digraph-p x))
 
-(defun $is_graph_or_digraph (x)
+(defmfun $is_graph_or_digraph (x)
   (or (graph-p x) (digraph-p x)))
 
-(defun $graph_order (gr)
+(defmfun $graph_order (gr)
   (require-graph-or-digraph 'graph_order 1 gr)
   (if (graph-p gr)
       (graph-order gr)
       (digraph-order gr)))
 
-(defun $graph_size (gr)
+(defmfun $graph_size (gr)
   (require-graph-or-digraph 'graph_size 1 gr)
   (if (graph-p gr)
       (graph-size gr)
       (digraph-size gr)))
 
-(defun $copy_graph (gr)
+(defmfun $copy_graph (gr)
   (require-graph-or-digraph 'copy_graph 1 gr)
   (if (graph-p gr)
       (let ((g (make-graph)))
@@ -139,19 +139,19 @@
 	    (if w (set-edge-weight e w g))))
 	g) ))
 
-(defun $get_positions (gr)
+(defmfun $get_positions (gr)
   (require-graph-or-digraph 'get_positions 1 gr)
   (if (graph-p gr)
       (graph-vertex-positions gr)
       (digraph-vertex-positions gr)))
 
-(defun $set_positions (pos gr)
+(defmfun $set_positions (pos gr)
   (require-graph-or-digraph 'set_positions 2 gr)
   (if (graph-p gr)
       (setf (graph-vertex-positions gr) pos)
       (setf (digraph-vertex-positions gr) pos)))
 
-(defun $new_graph ()
+(defmfun $new_graph ()
   (make-graph))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -160,7 +160,7 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $vertices (gr)
+(defmfun $vertices (gr)
   (require-graph-or-digraph 'vertices 1 gr)
   (let ((vrt (vertices gr)))
     `((mlist simp) ,@(copy-list vrt))))
@@ -184,12 +184,12 @@
   (unless (is-vertex-in-graph i gr)
     ($error m ": vertex not in graph.")))
 
-(defun $is_vertex_in_graph (i gr)
+(defmfun $is_vertex_in_graph (i gr)
   (require-vertex 'vertex_in_graph 1 i)
   (require-graph-or-digraph 'vertex_in_graph 2 gr)
   (is-vertex-in-graph i gr))
 
-(defun $add_vertex (i gr)
+(defmfun $add_vertex (i gr)
   (require-vertex 'add_vertex 1 i)
   (require-graph-or-digraph 'add_vertex 2 gr)
   (when (is-vertex-in-graph i gr)
@@ -197,7 +197,7 @@
   (add-vertex i gr)
   '$done)
 
-(defun $add_vertices (vl gr)
+(defmfun $add_vertices (vl gr)
   (require-graph-or-digraph 'add_vertices 2 gr)
   (when (not ($listp vl))
     ($error "Argument 1 to add_vertices is not a list."))
@@ -230,25 +230,25 @@
 (defun out-neighbors (i gr)
   (gethash i (digraph-out-neighbors gr)))
 
-(defun $neighbors (i gr)
+(defmfun $neighbors (i gr)
   (require-vertex 'neighbors 1 i)
   (require-graph 'neighbors 2 gr)
   (require-vertex-in-graph 'neighbors i gr)
   `((mlist simp) ,@(copy-list (neighbors i gr))))
 
-(defun $out_neighbors (i gr)
+(defmfun $out_neighbors (i gr)
   (require-vertex 'out_neighbors 1 i)
   (require-digraph 'out_neighbors 2 gr)
   (require-vertex-in-graph 'out_neighbors i gr)
   `((mlist simp) ,@(copy-list (out-neighbors i gr))))
 
-(defun $in_neighbors (i gr)
+(defmfun $in_neighbors (i gr)
   (require-vertex 'in_neighbors 1 i)
   (require-digraph 'in_neighbors 2 gr)
   (require-vertex-in-graph 'in_neighbors i gr)
   `((mlist simp) ,@(copy-list (in-neighbors i gr))))
 
-(defun $degree_sequence (gr)
+(defmfun $degree_sequence (gr)
   (require-graph 'degree_sequence 1 gr)
   (let ((s ()))
     (dolist (v (graph-vertices gr))
@@ -256,14 +256,14 @@
     (setq s (sort s #'<))
     `((mlist simp) ,@s)))
 
-(defun $remove_vertex (v gr)
+(defmfun $remove_vertex (v gr)
   (require-vertex 'remove_vertex 1 v)
   (require-graph-or-digraph 'remove_vertex 2 gr)
   (require-vertex-in-graph 'remove_vertex v gr)
   (clear-vertex-label v gr)
   (remove-vertex v gr))
 
-(defun $remove_vertices (vl gr)
+(defmfun $remove_vertices (vl gr)
   (require-graph-or-digraph 'remove_vertices 2 gr)
   (when (not ($listp vl))
     ($error "Argument 1 to remove_vertices is not a list."))
@@ -295,14 +295,14 @@
 	(decf (digraph-order gr))))
   '$done)
 
-(defun $first_vertex (gr)
+(defmfun $first_vertex (gr)
   (require-graph-or-digraph 'first_vertex 1 gr)
   (cond
     ((= 0 (if (graph-p gr) (graph-order gr) (digraph-order gr)))
      ($error "first_vertex: no first vertex in an empty graph."))
     (t (first (vertices gr)))))
 
-(defun $max_degree (gr)
+(defmfun $max_degree (gr)
   (require-graph 'max_degree 1 gr)
   (cond
     ((= 0 (graph-order gr))
@@ -315,7 +315,7 @@
 	   (setq v u)))
        `((mlist simp) ,d ,v)))))
 
-(defun $min_degree (gr)
+(defmfun $min_degree (gr)
   (require-graph 'min_degree 1 gr)
   (cond
     ((= 0 (graph-order gr))
@@ -328,29 +328,29 @@
 	   (setq v u)))
        `((mlist simp) ,d ,v)))))
 
-(defun $average_degree (gr)
+(defmfun $average_degree (gr)
   (require-graph 'average_degee 1 gr)
   (m* 2 (m// (graph-size gr) (graph-order gr))))
 
-(defun $vertex_degree (v gr)
+(defmfun $vertex_degree (v gr)
   (require-vertex 'vertex_degree 1 v)
   (require-graph 'vertex_degree 2 gr)
   (require-vertex-in-graph 'vertex_degree v gr)
   (length (neighbors v gr)))
 
-(defun $vertex_in_degree (v gr)
+(defmfun $vertex_in_degree (v gr)
   (require-vertex 'vertex_in_degree 1 v)
   (require-digraph 'vertex_in_degree 2 gr)
   (require-vertex-in-graph 'vertex_in_degree v gr)
   (length (in-neighbors v gr)))
 
-(defun $vertex_out_degree (v gr)
+(defmfun $vertex_out_degree (v gr)
   (require-vertex 'vertex_out_degree 1 v)
   (require-digraph 'vertex_out_degree 2 gr)
   (require-vertex-in-graph 'vertex_out_degree v gr)
   (length (out-neighbors v gr)))
 
-(defun $get_vertex_label (v gr)
+(defmfun $get_vertex_label (v gr)
   (require-vertex 'get_vertex_label 1 v)
   (require-graph-or-digraph 'get_vertex_label 2 gr)
   (require-vertex-in-graph 'vertex_label v gr)
@@ -361,7 +361,7 @@
 		  (graph-vertex-labels gr)
 		  (digraph-vertex-labels gr))))
 
-(defun $clear_vertex_label (v gr)
+(defmfun $clear_vertex_label (v gr)
   (require-vertex 'clear_vertex_label 1 v)
   (require-graph-or-digraph 'clear_vertex_label 2 gr)
   (require-vertex-in-graph 'clear_label v gr)
@@ -373,7 +373,7 @@
 		 (digraph-vertex-labels gr)))
   '$done)
 
-(defun $set_vertex_label (v l gr)
+(defmfun $set_vertex_label (v l gr)
   (require-vertex 'set_vertex_label 1 v)
   (require-graph-or-digraph 'set_vertex_label 3 gr)
   (require-vertex-in-graph 'set_label v gr)
@@ -417,7 +417,7 @@
 (defun l-edge-to-m-edge (e)
   `((mlist simp) ,@e))
 
-(defun $is_edge_in_graph (e gr)
+(defmfun $is_edge_in_graph (e gr)
   (require-medge 'is_edge_in_graph 1 e)
   (require-graph-or-digraph 'is_edge_in_graph 2 gr)
   (if (graph-p gr)
@@ -429,7 +429,7 @@
       (not (null (member (second e) (neighbors (first e) gr))))
       (not (null (member (second e) (out-neighbors (first e) gr)))) ))
 
-(defun $add_edge (e gr)
+(defmfun $add_edge (e gr)
   (require-medge 'add_edge 1 e)
   (require-graph-or-digraph 'add_edge 2 gr)
   (let* ((e1 (if (graph-p gr)
@@ -445,7 +445,7 @@
        ($error "add_edge: edge already in graph!")))
     (add-edge e1 gr)))
 
-(defun $add_edges (el gr)
+(defmfun $add_edges (el gr)
   (require-graph-or-digraph 'add_edges 2 gr)
   (if (not ($listp el))
       ($error "Argument 1 to add_edges is not a list!")
@@ -473,7 +473,7 @@
   (dolist (e elist)
     (add-edge e gr)))
 
-(defun $edges (gr)
+(defmfun $edges (gr)
   (require-graph-or-digraph 'edges 1 gr)
   (let ((e (mapcar #'(lambda (u) `((mlist simp) ,@(copy-list u)))
 		   (edges gr))))
@@ -484,7 +484,7 @@
       (graph-edges gr)
       (digraph-edges gr)))
 
-(defun $remove_edge (e gr)
+(defmfun $remove_edge (e gr)
   (require-medge 'remove_edge 1 e)
   (require-graph-or-digraph 'remove_edge 2 gr)
   (unless ($is_edge_in_graph e gr)
@@ -494,7 +494,7 @@
 		   (m-edge-to-l-dedge e))
 	       gr))
 
-(defun $remove_edges (el gr)
+(defmfun $remove_edges (el gr)
   (require-graph-or-digraph 'remove_edges 2 gr)
   (unless ($listp el)
     ($error "Argument 1 to remove_edges is not a list."))
@@ -525,7 +525,7 @@
 		(remove `(,u ,v) (digraph-edges gr) :test #'equal :count 1))))
     '$done))
 
-(defun $contract_edge (e gr)
+(defmfun $contract_edge (e gr)
   (require-medge 'contract_edge 1 e)
   (require-graph 'contract_edge 2 gr)
   (let* ((e1 (m-edge-to-l-edge e)) (u (first e1)) (v (second e1)))
@@ -537,7 +537,7 @@
     (remove-vertex v gr))
   '$done)
 
-(defun $contract_edges (el gr)
+(defmfun $contract_edges (el gr)
   (require-graph-or-digraph 'contract_edges 2 gr)
   (unless ($listp el)
     ($error "Argument 1 to contract_edges is not a list."))
@@ -545,7 +545,7 @@
     ($contract_edge e gr))
   '$done)
 
-(defun $get_edge_weight (e gr &optional default)
+(defmfun $get_edge_weight (e gr &optional default)
   (require-medge 'get_edge_weight 1 e)
   (require-graph-or-digraph 'get_edge_weight 2 gr)
   (unless ($is_edge_in_graph e gr)
@@ -564,7 +564,7 @@
 	      (digraph-edge-weights gr))))
     (gethash e edge-weights)))
 
-(defun $clear_edge_weight (e gr)
+(defmfun $clear_edge_weight (e gr)
   (require-medge 'clear_edge_weight 1 e)
   (require-graph-or-digraph 'clear_edge_weight 2 gr)
   (unless ($is_edge_in_graph e gr)
@@ -582,7 +582,7 @@
     (remhash e edge-weights)
     '$done))
 
-(defun $set_edge_weight (e w gr)
+(defmfun $set_edge_weight (e w gr)
   (require-medge 'set_edge_weight 1 e)
   (require-graph-or-digraph 'set_edge_weight 3 gr)
   (unless ($is_edge_in_graph e gr)
@@ -600,7 +600,7 @@
     (setf (gethash e edge-weights) w)
     '$done))
 
-(defun $connect_vertices (sources sinks gr)
+(defmfun $connect_vertices (sources sinks gr)
   (require-graph 'connect_vertices 3 gr)
   (if ($listp sources)
       (setq sources (cdr sources))
@@ -613,7 +613,7 @@
       ($add_edge `((mlist simp) ,u ,v) gr)))
   '$done)
 
-(defun $subdivide_edge (e gr)
+(defmfun $subdivide_edge (e gr)
   (require-graph 'subdivide_edge 2 gr)
   (require-edge-in-graph 'subdivide_edge (m-edge-to-l-edge e) gr)
   (let ((new-vertex (1+ (apply #'max (vertices gr))))
@@ -667,19 +667,19 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $empty_graph (n)
+(defmfun $empty_graph (n)
   (let ((gr (make-graph)))
     (dotimes (i n)
       (add-vertex i gr))
     gr))
 
-(defun $empty_digraph (n)
+(defmfun $empty_digraph (n)
   (let ((gr (make-digraph)))
     (dotimes (i n)
       (add-vertex i gr))
     gr))
 
-(defun $create_graph (v_list e_list &optional dir)
+(defmfun $create_graph (v_list e_list &optional dir)
   (let ((directed nil))
     ;; check if the graph is a directed graph
     (cond ((atom dir)
@@ -710,33 +710,33 @@
 	    ($add_edge e gr)))
       gr)))
 
-(defun $cycle_graph (n)
+(defmfun $cycle_graph (n)
   (let ((g ($empty_graph n)))
     (dotimes (i (1- n))
       (add-edge (list i (1+ i)) g))
     (add-edge (list 0 (1- n)) g)
     g))
 
-(defun $cycle_digraph (n)
+(defmfun $cycle_digraph (n)
   (let ((g ($empty_digraph n)))
     (dotimes (i (1- n))
       (add-edge (list i (1+ i)) g))
     (add-edge (list (1- n) 0) g)
     g))
 
-(defun $path_graph (n)
+(defmfun $path_graph (n)
   (let ((g ($empty_graph n)))
     (dotimes (i (1- n))
       (add-edge (list i (1+ i)) g))
     g))
 
-(defun $path_digraph (n)
+(defmfun $path_digraph (n)
   (let ((g ($empty_digraph n)))
     (dotimes (i (1- n))
       (add-edge (list i (1+ i)) g))
     g))
 
-(defun $petersen_graph (&optional n d)
+(defmfun $petersen_graph (&optional n d)
   (if (null d)
       (setq n 5 d 2)
       (unless (and (integerp n) (integerp d))
@@ -764,7 +764,7 @@
     ($set_positions (cons '(mlist simp) positions) g)
     g))
 
-(defun $complement_graph (gr)
+(defmfun $complement_graph (gr)
   (require-graph 'complement_graph 1 gr)
   (let*
       ((co (make-graph))
@@ -778,7 +778,7 @@
     (setf (graph-vertex-positions co) (graph-vertex-positions gr))
     co))
 
-(defun $complete_graph (n)
+(defmfun $complete_graph (n)
   (if (not (and (integerp n ) (>= n 0)))
       ($error "Argument 1 to complete_graph is not a positive integer"))
   (let ((g ($empty_graph n)))
@@ -789,7 +789,7 @@
 	(add-edge `(,i ,j) g)))
     g))
 
-(defun $from_adjacency_matrix (m)
+(defmfun $from_adjacency_matrix (m)
   (if (not ($matrixp m))
       ($error "Argument 1 to from_adjacency_matrix is not a matrix"))
   (if (not (= ($length m) ($length ($first m))))
@@ -802,7 +802,7 @@
 	    (add-edge `(,i ,j) g))))
     g))
 
-(defun $graph_union (&rest gr-list)
+(defmfun $graph_union (&rest gr-list)
   (cond
     ((= 0 (length gr-list))
      ($empty_graph 0))
@@ -827,7 +827,7 @@
       (add-edge (list (+ n (first e)) (+ n (second e))) g))
     g))
 
-(defun $graph_join (g1 g2)
+(defmfun $graph_join (g1 g2)
   (require-graph 'graph_join 1 g1)
   (require-graph 'graph_join 2 g2)
   (let ((g (make-graph)) (n (1+ (apply #'max (graph-vertices g1)))))
@@ -851,7 +851,7 @@
       (setq i (1+ i)))
     names))
 
-(defun $graph_product (&rest gr-list)
+(defmfun $graph_product (&rest gr-list)
   (cond
     ((= 0 (length gr-list))
      ($empty_graph 0))
@@ -892,7 +892,7 @@
 	  (add-edge f g))))
     g))
 
-(defun $line_graph (gr)
+(defmfun $line_graph (gr)
   (require-graph 'line_graph 1 gr)
   (let* ((edge-list
 	  (get-canonical-names (graph-edges gr))) (n (graph-size gr))
@@ -906,7 +906,7 @@
 	   (add-edge `(,i ,j) g)))))
     g))
 
-(defun $random_graph (n p)
+(defmfun $random_graph (n p)
   (if (not (integerp n))
       ($error "Argument 1 to random_graph is not an integer"))
   (if (not (floatp ($float p)))
@@ -920,7 +920,7 @@
 	    (add-edge `(,i ,j) g))))
     g))
 
-(defun $random_graph1 (n m)
+(defmfun $random_graph1 (n m)
   (unless (integerp n)
     ($error "Argument 1 to random_graph is not an integer"))
   (unless (integerp m)
@@ -940,7 +940,7 @@
 	      (add-edge e g))))))
     g))
 
-(defun $random_bipartite_graph (a b p)
+(defmfun $random_bipartite_graph (a b p)
   (unless (integerp a)
     ($error "Argument 1 to random graph is not an integer"))
   (unless (integerp b)
@@ -952,7 +952,7 @@
 	  (add-edge (list x (+ a y)) g))))
     g))
 
-(defun $random_digraph (n p)
+(defmfun $random_digraph (n p)
   (unless (integerp n)
     ($error "Argument 1 to random_digraph is not an integer"))
   (unless (floatp ($float p))
@@ -965,7 +965,7 @@
 	  (add-edge `(,i ,j) g))))
     g))
 
-(defun $random_tournament (n)
+(defmfun $random_tournament (n)
   (unless (and (integerp n) (>= n 0))
     ($error "Argument 1 to random_tournament is not a positive integer"))
   (let ((g ($empty_digraph n)))
@@ -977,7 +977,7 @@
 	    (add-edge `(,j ,i) g))))
     g))
 
-(defun $random_tree (n)
+(defmfun $random_tree (n)
   (unless (and  (integerp n) (>= n 0))
     ($error "Argument 1 to random_tree is not a positive integer"))
   (let*
@@ -993,7 +993,7 @@
 	(add-edge (list (min u v) (max u v)) tr)))
     tr))
 
-(defun $underlying_graph (gr)
+(defmfun $underlying_graph (gr)
   (require-digraph 'underlying_graph 1 gr)
   (let ((g (make-graph)))
     (dolist (v (vertices gr))
@@ -1005,7 +1005,7 @@
 	    (add-edge `(,u ,v) g)))))
     g))
 
-(defun $induced_subgraph (vl gr)
+(defmfun $induced_subgraph (vl gr)
   (require-graph 2 'induced_subgraph gr)
   (unless ($listp vl)
     ($error "First argument to induced_subgraph is not a list."))
@@ -1026,7 +1026,7 @@
 	  (add-edge e g))))
     g))
 
-(defun $wheel_graph (n)
+(defmfun $wheel_graph (n)
   (unless (and (integerp n) (>= n 3))
     ($error "wheel_graph: first argument is no an integer greater than 3"))
   (let ((g ($cycle_graph n))
@@ -1043,7 +1043,7 @@
     ($set_positions (cons '(mlist simp) positions) g)
     g))
 
-(defun $circulant_graph (n l)
+(defmfun $circulant_graph (n l)
   (unless (and (integerp n) (> n 0))
     ($error "Argument 1 to circulant_graph is not a positive integer."))
   (unless ($listp l)
@@ -1066,7 +1066,7 @@
     ($set_positions (cons '(mlist simp) positions) g)
     g))
 
-(defun $flower_snark (&optional (o 5))
+(defmfun $flower_snark (&optional (o 5))
   (let ((g ($empty_graph (* 4 o))))
     (labels
 	((make-edge (u v)
@@ -1100,7 +1100,7 @@
 ;;; Connected components
 ;;;
 
-(defun $connected_components (gr)
+(defmfun $connected_components (gr)
   (require-graph 'connected_components 1 gr)
   (when (= 0 (graph-order gr))
     (return-from $connected_components '((mlist simp))))
@@ -1119,11 +1119,11 @@
 	     (push `((mlist simp) ,@c) components))))
     `((mlist simp) ,@components)))
 
-(defun $is_connected (gr)
+(defmfun $is_connected (gr)
   (require-graph 'is_connected 1 gr)
   (<= ($length ($connected_components gr)) 1))
 
-(defun $is_tree (gr)
+(defmfun $is_tree (gr)
   (require-graph 'is_tree 1 gr)
   (and ($is_connected gr) (= (graph-order gr) (1+ (graph-size gr)))))
 
@@ -1133,7 +1133,7 @@
 ;;;
 
 
-(defun $reachable_vertices (v gr)
+(defmfun $reachable_vertices (v gr)
   (require-graph-or-digraph 'reachable_vertices 2 gr)
   (require-vertex 'reachable_vertices 1 v)
   (require-vertex-in-graph 'reachable_vertices v gr)
@@ -1157,7 +1157,7 @@
 ;;; Adjacency matrix and Laplacian matrix
 ;;;
 
-(defun $adjacency_matrix (gr)
+(defmfun $adjacency_matrix (gr)
   (require-graph-or-digraph 'adjacency_matrix 1 gr)
   (let* ((n (if (graph-p gr) (graph-order gr) (digraph-order gr)))
 	 (m ($zeromatrix n n))
@@ -1170,7 +1170,7 @@
 		   (nth (1+ (cdr (assoc (first e) names))) m)) 1)))
     m))
 
-(defun $laplacian_matrix (gr)
+(defmfun $laplacian_matrix (gr)
   (require-graph 'laplacian_matrix 1 gr)
   (let ((m ($zeromatrix (graph-order gr) (graph-order gr)))
 	(names (get-canonical-names (vertices gr))))
@@ -1185,12 +1185,12 @@
 		 (nth (1+ (cdr (assoc (first e) names))) m)) -1))
     m))
 
-(defun $graph_charpoly (gr x)
+(defmfun $graph_charpoly (gr x)
   (require-graph 'graph_charpoly 1 gr)
   (let (($ratmx t))
     ($charpoly ($adjacency_matrix gr) x)))
 
-(defun $graph_eigenvalues (gr)
+(defmfun $graph_eigenvalues (gr)
   (require-graph 'graph_eigenvalues 1 gr)
   (let (($ratmx t))
     (mfuncall '$eigenvalues ($adjacency_matrix gr))))
@@ -1200,11 +1200,11 @@
 ;;; girth, odd_girth
 ;;;
 
-(defun $girth (gr)
+(defmfun $girth (gr)
   (require-graph 'girth 1 gr)
   (girth gr nil))
 
-(defun $odd_girth (gr)
+(defmfun $odd_girth (gr)
   (require-graph 'odd_girth 1 gr)
   (girth gr t))
 
@@ -1243,7 +1243,7 @@
 ;;; diameter, radius
 ;;;
 
-(defun $vertex_eccentricity (v gr)
+(defmfun $vertex_eccentricity (v gr)
   (require-graph 'vertex_eccentricity 1 gr)
   (require-vertex-in-graph 'vertex_eccentricity v gr)
   (let ((ecc (eccentricity (list v) gr)))
@@ -1272,7 +1272,7 @@
 	(setf (gethash v ecc) depth)))
       ecc))
 
-(defun $diameter (gr)
+(defmfun $diameter (gr)
   (require-graph 'diameter 1 gr)
   (let ((ecc (eccentricity (vertices gr) gr))
 	(diameter 0))
@@ -1283,7 +1283,7 @@
 	     ecc)
     diameter))
 
-(defun $radius (gr)
+(defmfun $radius (gr)
   (require-graph 'radius 1 gr)
   (let ((ecc (eccentricity (vertices gr) gr))
 	(radius ($graph_order gr)))
@@ -1294,7 +1294,7 @@
 	     ecc)
     radius))
 
-(defun $graph_center (gr)
+(defmfun $graph_center (gr)
   (require-graph 'graph_center 1 gr)
   (let ((ecc (eccentricity (vertices gr) gr))
 	(per ())
@@ -1310,7 +1310,7 @@
 	     ecc)
     `((mlist simp) ,@per)))
 
-(defun $graph_periphery (gr)
+(defmfun $graph_periphery (gr)
   (require-graph 'graph_periphery 1 gr)
   (let ((ecc (eccentricity (vertices gr) gr))
 	(center ())
@@ -1331,7 +1331,7 @@
 ;;; bipartition
 ;;;
 
-(defun $bipartition (gr)
+(defmfun $bipartition (gr)
   (require-graph 'bipartition 1 gr)
   (when (= (graph-order gr) 0)
     (return-from $bipartition `((mlist simp) ((mlist simp)) ((mlist simp)))))
@@ -1371,7 +1371,7 @@
 		(setf (gethash u colors) (- 1 wc)))))))
     `(,A ,B)))
 
-(defun $is_bipartite (gr)
+(defmfun $is_bipartite (gr)
   (require-graph 'is_bipartite 1 gr)
   (> ($length ($bipartition gr)) 1))
 
@@ -1380,11 +1380,11 @@
 ;;; 2-connectivity
 ;;;
 
-(defun $is_biconnected (gr)
+(defmfun $is_biconnected (gr)
   (require-graph 'is_biconnected 1 gr)
   (eq ($length ($biconnected_components gr)) 1))
 
-(defun $biconnected_components (gr)
+(defmfun $biconnected_components (gr)
   (require-graph 'biconnected_components 1 gr)
   (if (= 0 (graph-order gr))
       `((mlist simp))
@@ -1461,11 +1461,11 @@
 (defvar *scon-vrt* nil)
 (defvar *scon-depth* 0)
 
-(defun $is_sconnected (gr)
+(defmfun $is_sconnected (gr)
   (require-digraph 'strong_components 1 gr)
   (eq ($length ($strong_components gr)) 1))
 
-(defun $strong_components (gr)
+(defmfun $strong_components (gr)
   (require-digraph 'strong_components 1 gr)
   (if (= 0 (digraph-order gr))
       `((mlist simp))
@@ -1515,7 +1515,7 @@
 ;;; topological sorting
 ;;;
 
-(defun $topological_sort (dag)
+(defmfun $topological_sort (dag)
   (require-digraph 'topological_sort 1 dag)
   (let ((in-degrees (make-hash-table))
 	(q ())
@@ -1545,7 +1545,7 @@
 ;;; max_flow (augmenting paths)
 ;;;
 
-(defun $max_flow (net source sink)
+(defmfun $max_flow (net source sink)
   (require-digraph 'max_flow 1 net)
   (require-vertex 'max_flow 2 source)
   (require-vertex 'max_flow 3 sink)
@@ -1614,25 +1614,30 @@
 ;;; shortest path
 ;;;
 
-(defun $shortest_path (u v g)
+(defmfun $shortest_path (u v g)
   (require-graph-or-digraph 'shortest_path 3 g)
   (require-vertex 'shortest_path 1 u)
   (require-vertex 'shortest_path 2 v)
   (require-vertex-in-graph 'shortest_path v g)
   (require-vertex-in-graph 'shortest_path u g)
-  (let ((active `(,u)) (visited ()) (previous (make-hash-table)))
+  (let ((active (make-hash-table)) (visited (make-hash-table)) (previous (make-hash-table)))
+    (setf (gethash u active) t)
     (do ()
-	((or (null active) (member v visited)))
-      (let ((next ()))
-	(dolist (w active)
-	  (push w visited)
-	  (dolist (x (neighbors w g))
-	    (if (not (or (member x active) (member x visited) (member x next)))
-		(progn
-		  (setf (gethash x previous) w)
-		  (push x next)))))
+	((or (= 0 (hash-table-count active)) (gethash v visited)))
+      (let ((next (make-hash-table)))
+	(with-hash-table-iterator (next-vertex active)
+	  (loop
+	     (multiple-value-bind (more w value)
+		 (next-vertex)
+	       (declare (ignore value))
+	       (unless more (return nil))
+	       (setf (gethash w visited) t)
+	       (dolist (x (neighbors w g))
+		 (unless (or (gethash x active) (gethash x visited) (gethash x next))
+		   (setf (gethash x previous) w)
+		   (setf (gethash x next) t))))))
 	(setq active next)))
-    (if (member v visited)
+    (if (gethash v visited)
 	(let ((path `(,v)))
 	  (do ((x v))
 	      ((= x u))
@@ -1641,7 +1646,7 @@
 	  `((mlist simp) ,@path))
 	`((mlist simp)))))
 
-(defun $vertex_distance (u v g)
+(defmfun $vertex_distance (u v g)
   (require-graph-or-digraph 'shortest_path 3 g)
   (require-vertex 'shortest_path 1 u)
   (require-vertex 'shortest_path 2 v)
@@ -1695,7 +1700,7 @@
       (setq vp (gethash vp p)))
     (setf (gethash up p) (gethash vp p))))
 
-(defun $minimum_spanning_tree (gr)
+(defmfun $minimum_spanning_tree (gr)
   (require-graph 'minimum_spanning_tree 1 gr)
   (let ((edges (edges-by-weights gr)) (tr (make-graph))
 	(part (make-hash-table)))
@@ -1717,7 +1722,7 @@
 
 (defvar *hamilton-cycle* ())
 
-(defun $hamilton_cycle (gr)
+(defmfun $hamilton_cycle (gr)
   (require-graph-or-digraph 'hamilton_cycle 1 gr)
   (if (and (graph-p gr) (not ($is_biconnected gr)))
       (return-from $hamilton_cycle `((mlist simp))))
@@ -1737,7 +1742,7 @@
 	  (if (null (member v part))
 	      (hamilton-cycle (cons v part) gr))))))
 
-(defun $hamilton_path (gr)
+(defmfun $hamilton_path (gr)
   (require-graph-or-digraph 'hamilton_path 1 gr)
   (let ((h ($copy_graph gr))
 	(x (1+ (mfuncall #'$lmax `((mlist simp) ,@(vertices gr))))))
@@ -1757,7 +1762,7 @@
 
 (defvar *maximum-clique* ())
 
-(defun $vertices_by_degree (gr)
+(defmfun $vertices_by_degree (gr)
   (require-graph 'vertices_by_degrees 1 gr)
   (cons '(mlist simp) (vertices-by-degrees gr)))
 
@@ -1784,7 +1789,7 @@
 		(remove c (gethash u available-colors) :count 1)))))
     coloring))
 
-(defun $max_clique (gr)
+(defmfun $max_clique (gr)
   (require-graph 'max_clique 1 gr)
   (setq *maximum-clique* ())
   (let ((v) (coloring) (h ($copy_graph gr)))
@@ -1795,7 +1800,7 @@
       (remove-vertex v h)))
   `((mlist simp) ,@(sort *maximum-clique* #'<)))
 
-(defun $max_independent_set (gr)
+(defmfun $max_independent_set (gr)
   (require-graph 'max_independent_set 1 gr)
   (if ($is_bipartite gr)
       (let ((mis)
@@ -1806,7 +1811,7 @@
 	`((mlist simp) ,@mis))
       ($max_clique ($complement_graph gr))))
 
-(defun $min_vertex_cover (gr)
+(defmfun $min_vertex_cover (gr)
   (require-graph 'min_vertex_cover 1 gr)
   (let ((bipart ($bipartition gr)))
     (if (null (cdr bipart)) 
@@ -1846,7 +1851,7 @@
 ;;; colorings
 ;;;
 
-(defun $vertex_coloring (g)
+(defmfun $vertex_coloring (g)
   (require-graph 'vertex_coloring 1 g)
   (let ((col (dsatur g)) (res ()) (chnumber 0))
     (dolist (v (vertices g))
@@ -1854,11 +1859,11 @@
       (setq chnumber (max chnumber (gethash v col))))
     `((mlist simp) ,chnumber ((mlist simp) ,@res))))
 
-(defun $chromatic_number (g)
+(defmfun $chromatic_number (g)
   (require-graph 'chromatic_number 1 g)
   ($first ($vertex_coloring g)))
 
-(defun $edge_coloring (gr)
+(defmfun $edge_coloring (gr)
   (require-graph 'edge_coloring 1 gr)
   (let* ((edge-list (get-canonical-names (graph-edges gr)))
 	 (n (graph-size gr))
@@ -1880,7 +1885,7 @@
 	(setq ch-index (max ch-index (gethash i coloring))))
       `((mlist simp) ,ch-index ((mlist simp) ,@res)))))
 
-(defun $chromatic_index (g)
+(defmfun $chromatic_index (g)
   (require-graph 'chromatic_index 1 g)
   ($first ($vertex_coloring ($line_graph g))))
 
@@ -2057,21 +2062,21 @@
 ;;
 ;;;;;;
 
-(defun $hash_table ()
+(defmfun $hash_table ()
   (make-hash-table :test #'equal))
 
-(defun $get_hash (elt ht &optional default)
+(defmfun $get_hash (elt ht &optional default)
   (unless (hash-table-p ht)
     ($error "Second argument to `get_hash' is not a hash table!"))
   (gethash elt ht default))
 
-(defun $set_hash (elt ht value)
+(defmfun $set_hash (elt ht value)
   (unless (hash-table-p ht)
     ($error "Second argument to `set_hash' is not a hash table!"))
   (setf (gethash elt ht) value)
   value)
 
-(defun $hash_table_data (ht)
+(defmfun $hash_table_data (ht)
   (unless (hash-table-p ht)
     ($error "First argument to `hash_table_info' is not a hash table!"))
   (let (res)
@@ -2087,12 +2092,12 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun $temp_filename (file)
+(defmfun $temp_filename (file)
   (unless (stringp file)
     ($error "Argument to `temp_filename' is not a string"))
   (plot-temp-file file))
 
-(defun $read_string (str)
+(defmfun $read_string (str)
   (unless (stringp str)
     ($error "Argument to `read_string' is not a string"))
   (let ((num (read-from-string str)))

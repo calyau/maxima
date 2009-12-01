@@ -35,7 +35,7 @@
 
 (in-package :maxima)
 
-(defun $floyd_warshall (g)
+(defmfun $floyd_warshall (g)
   (require-graph-or-digraph 1 'floyd_warshall g)
   (let* ((vertices (vertices g))
 	 (n (length vertices))
@@ -108,7 +108,7 @@
 
     (values d prev)))
 
-(defun $johnson (g)
+(defmfun $johnson (g)
   (let* ((h ($copy_graph g))
 	 (vertices (vertices g))
 	 (n (length vertices))
@@ -227,7 +227,7 @@
 
 (defvar $wiener_index_algorithm '$juvan_mohar)
 
-(defun $wiener_index (g)
+(defmfun $wiener_index (g)
   (require-graph 1 'wiener_index g)
   (unless ($is_connected g)
     ($error "`wiener_index': input graph is not connected"))

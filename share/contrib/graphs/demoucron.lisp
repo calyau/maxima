@@ -75,7 +75,7 @@
 	   (when (not (= u (gethash v *dfs-prev*)))
 	     (push (list u v) *back-edges*)))))
 
-(defun $find_cycle (gr)
+(defmfun $find_cycle (gr)
   (require-graph 'find_cycle 1 gr)
   (let ((cycle (find-cycle gr)))
     `((mlist simp) ,@cycle)))
@@ -381,13 +381,13 @@
 	 (return-from is-planar-unconnected nil)))
   t)
 
-(defun $planar_embedding (gr)
+(defmfun $planar_embedding (gr)
   (require-graph 'planar_embedding 1 gr)
   (unless ($is_biconnected gr)
     ($error "planar_embedding: the graph is not biconnected."))
   (demoucron gr t))
 
-(defun $is_planar (gr)
+(defmfun $is_planar (gr)
   (require-graph 'is_planar 1 gr)
   (when (< ($graph_order gr) 5)
     (return-from $is_planar t))

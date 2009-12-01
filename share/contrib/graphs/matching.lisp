@@ -27,7 +27,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defun $max_matching (gr)
+(defmfun $max_matching (gr)
   (require-graph 'maximum_matching 1 gr)
   (let ((partition (cdr ($bipartition gr))))
     (if (null partition)

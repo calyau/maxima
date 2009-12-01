@@ -172,7 +172,7 @@
 			 (graphs-pqueue-set-weight w alt pq)))))))))
     (values distance previous)))
 
-(defun $shortest_weighted_path (v u g)
+(defmfun $shortest_weighted_path (v u g)
   (require-graph-or-digraph 'shortest_weighted_path 3 g)
   (require-vertex 'shortest_weighted_path 1 v)
   (require-vertex-in-graph 'shortest_weighted_path v g)

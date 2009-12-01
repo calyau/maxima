@@ -177,7 +177,7 @@ draw_graph(G, [options]) := block(
             [(u[1] - (x_min + x_max)/2) / (x_max - x_min),
              (u[2] - (y_min + y_max)/2) / (y_min - y_max)]),
            v_pos)),
-     
+
     /* Setup edges */
     if show_edges#[] then (
       for e in edges(G) do

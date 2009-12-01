@@ -19,12 +19,12 @@
 ;;;
 
 
-(defun $is_isomorphic (gr1 gr2)
+(defmfun $is_isomorphic (gr1 gr2)
   (or (= 0 ($graph_order gr1) ($graph_order gr2))
       (and (graph-p gr1) (graph-p gr2) (isomorphism-graphs gr1 gr2) t)
       (and (digraph-p gr1) (digraph-p gr2) (isomorphism-digraphs gr1 gr2) t)))
 
-(defun $isomorphism (gr1 gr2)
+(defmfun $isomorphism (gr1 gr2)
   (cond ((graph-p gr1)
 	 (if (graph-p gr2)
 	     (let (res
