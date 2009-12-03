@@ -50,8 +50,6 @@ sin(y)*(10.0+6*cos(x)),
 
 (defvar $plot_options 
   `((mlist)
-    ((mlist) $x -10 10)
-    ((mlist) $y -10 10)
     ((mlist) $t -3 3)
     ((mlist) $grid 30 30)
     ((mlist) $transform_xy nil)
@@ -501,6 +499,25 @@ sin(y)*(10.0+6*cos(x)),
          (setq th (aref pts (+ i 1)))
          (setf (aref pts i) (* r (cos th)))
          (setf (aref pts (+ i 1)) (* r (sin th)))))
+
+;; Transformation from spherical coordinates to rectangular coordinates,
+;; to be used in plot3d. Example of its use:
+;; plot3d (expr, [th, 0, %pi], [ph, 0, 2*%pi], [transform_xy, spherical_to_xyz])
+;; where expr gives the value of r in terms of the inclination (th)
+;; and azimuth (ph).
+;;
+(defun $spherical_to_xyz (pts &aux (r 0.0) (th 0.0) (ph 0.0)) 
+  (declare (type flonum r th ph))
+  (declare (type (cl:array t) pts))
+  (assert (typep pts '(vector t)))
+  (loop for i below (length pts) by 3
+     do (setq th (aref pts i))
+       (setq ph (aref pts (+ i 1)))
+       (setq r (aref pts (+ i 2)))
+       (setf (aref pts i) (* r (sin th) (cos ph)))
+       (setf (aref pts (+ i 1)) (* r (sin th) (sin ph)))
+       (setf (aref pts (+ i 2)) (* r (cos th)))))
+      
 
 ;; return a function suitable for the transform function in plot3d.
 ;; FX, FY, and FZ are functions of three arguments.
@@ -1176,26 +1193,24 @@ sin(y)*(10.0+6*cos(x)),
           ($xlabel (setf (getf features :xlabel) (ensure-string (third v))))
           ($ylabel (setf (getf features :ylabel) (ensure-string (third v))))
           ($zlabel (setf (getf features :zlabel) (ensure-string (third v))))
-	  ($x
-	   (setq v (check-range v))
-	   (setf (getf features :xmin) (third v))
-	   (setf (getf features :xmax) (fourth v))
-	   ($set_plot_option `((mlist) $x ,(third v) ,(fourth v)))
-	   (unless (getf features :xlabel)
-	     (setf (getf features :xlabel) "x")))
-	  ($y
-	   (setq v (check-range v))
-	   (setf (getf features :ymin) (third v))
-	   (setf (getf features :ymax) (fourth v))
-	   ($set_plot_option `((mlist) $y ,(third v) ,(fourth v)))
-	   (unless (getf features :ylabel)
-	     (setf (getf features :ylabel) "y")))
+          ($x
+           (setq v (check-range v))
+           (setf (getf features :xmin) (third v))
+           (setf (getf features :xmax) (fourth v))
+           ($set_plot_option `((mlist) $x ,(third v) ,(fourth v)))
+           (unless (getf features :xlabel)
+             (setf (getf features :xlabel) "x")))
+          ($y
+           (setq v (check-range v))
+           (setf (getf features :ymin) (third v))
+           (setf (getf features :ymax) (fourth v))
+           ($set_plot_option `((mlist) $y ,(third v) ,(fourth v)))
+           (unless (getf features :ylabel)
+             (setf (getf features :ylabel) "y")))
           ($z
            (setq v (check-range v))
            (setf (getf features :zmin) (third v))
-           (setf (getf features :zmax) (fourth v))
-           (unless (getf features :zlabel)
-             (setf (getf features :zlabel) "y")))
+           (setf (getf features :zmax) (fourth v)))
           ($style (setf (getf features :styles) (cddr v)))
           ($legend (setf (getf features :legend) (cddr v)))
           ($psfile
@@ -1236,7 +1251,7 @@ sin(y)*(10.0+6*cos(x)),
   (let (($display2d nil)
         (*plot-realpart* *plot-realpart*)
         ($plot_options $plot_options) (i 0)
-        (output-file "") (features '(:type plot2d))
+        (output-file "") (features '(:type "plot2d"))
         gnuplot-term gnuplot-out-file file points-lists)
 
     ;; 1- Put fun in its most general form: a maxima list with several objects
@@ -1362,8 +1377,6 @@ sin(y)*(10.0+6*cos(x)),
        (show-open-plot
         (with-output-to-string
           (st)
-          (cond ($show_openplot (format st "plot2d -data {~%"))
-                (t (format st "{plot2d ")))
           (xmaxima-print-header st features)
           (let ((legend (getf features :legend))
                 (styles (getf features :styles)) style plot-name)
@@ -1822,17 +1835,159 @@ sin(y)*(10.0+6*cos(x)),
 ;; plot3d ( V, [x, -2, 2], [y, -2, 2], [z, -4, 4])$
 
 
-(defun $plot3d ( fun &optional (xrange ($get_plot_option '$x))
-                (yrange ($get_plot_option '$y) y-supplied)
-                &rest options 
-                &aux lvars trans *original-points*
-                ($plot_options $plot_options)
-                ($in_netmath $in_netmath) (features '(:type plot3d))
-                gnuplot-term gnuplot-out-file file
-                orig-fun (output-file "") )
+(defun $plot3d
+    ( fun &rest options &aux
+     lvars trans rangex rangey *original-points*
+     functions exprn domain tem ($plot_options $plot_options)
+     ($in_netmath $in_netmath) (features '(:type "plot3d"))
+     gnuplot-term gnuplot-out-file file titles (output-file "")
+     (usage (intl:gettext
+"plot3d: Usage.
+To plot a single function f of 2 variables v1 and v2:
+  plot3d ( f, [v1, min, max], [v2, min, max], options )
+a parametric representation of a surface with parameters v1 and v2:
+  plot3d ( [f1, f2, f3], [v1, min, max], [v2, min, max], options
+several functions depending on the two variables v1 and v2:
+  plot3d ( [f1, f2, ..., fn], [v1, min, max], [v2, min, max], options")))
+  
   (declare (special *original-points*))
-  (setf orig-fun fun)
+  
+  ;; Ensure that fun is a list of expressions and maxima lists, followed
+  ;; by a domain definition
+  (if ($listp fun)
+      (if (= 1 (length (check-list-plot3d fun)))
+          ;; fun consisted of a single parametric expression
+          (setq fun `(,fun ,(pop options) ,(pop options)))
+          ;; fun was a maxima list with several independent surfaces
+          (pop fun))
+      ;; fun consisted of a single expression
+      (setq fun `(,fun ,(pop options) ,(pop options))))
+  
+  ;; go through all the independent surfaces creating the functions stack
+  (loop
+     (setq exprn (pop fun))
+     (if ($listp exprn)
+         (progn
+           (setq domain (check-list-plot3d exprn))
+           (case (length domain)
+             (1
+              ;; exprn is a parametric representation of a surface
+              (let (vars1 vars2 vars3)
+                ;; list fun should have two valid ranges after exprn
+                (setq xrange (check-range (pop fun)))
+                (setq yrange (check-range (pop fun)))
+                ;; list of the two variables for the parametric equations
+                (setq lvars `((mlist),(second xrange) ,(second yrange)))
+                ;; make sure that the 3 parametric equations depend only
+                ;; on the two variables in lvars
+                (setq vars1
+                      ($listofvars (mfuncall
+                                    (coerce-float-fun (second exprn) lvars)
+                                    (second lvars) (third lvars))))
+                (setq vars2
+                      ($listofvars (mfuncall
+                                    (coerce-float-fun (third exprn) lvars)
+                                    (second lvars) (third lvars))))
+                (setq vars3
+                      ($listofvars (mfuncall
+                                    (coerce-float-fun (fourth exprn) lvars)
+                                    (second lvars) (third lvars))))
+                (setq lvars ($listofvars `((mlist) ,vars1 ,vars2 ,vars3)))
+                (if (= 2 ($length lvars))
+                    ;; we do have a valid parametric set. Push it into
+                    ;; the functions stack, along with their domain
+                    (progn
+                      (push `(,exprn ,xrange ,yrange) functions)
+                      ;; add a title to the titles stack
+                      (push "Parametric function" titles)
+                      ;; unknown variables in the parametric equations
+                      ;; ----- GNUPLOT 4.0 WORK-AROUND -----
+                      (when (and ($constantp (fourth exprn))
+                                 ($get_plot_option '$gnuplot_4_0 2))
+                        (setf (getf features :const-expr)
+                              ($float (meval (fourth exprn))))))
+                    (merror
+                     (intl:gettext "plot3d: wrong number of variables: ~M. There should be two")
+                     lvars))))
+             
+             (3
+              ;; expr is a simple function with its own domain. Push the
+              ;; function and its domain into the functions stack
+              (setq xrange (second domain))
+              (setq yrange (third domain))
+              (push `(,exprn ,xrange ,yrange) functions)
+              ;; push a title for this plot into the titles stack
+              (if (< (length (ensure-string exprn)) 20)
+                  (push (ensure-string exprn) titles)
+                  (push "Function" titles)))
+             
+             (t
+              ;; syntax error. exprn does not have the expected form
+              (merror
+               (intl:gettext "plot3d: invalid argument ~M~%Expecting [expr1, expr2, expr3]")
+               exprn))))
+         (progn
+           ;; exprn is a simple function, defined in the global domain.
+           (if (and (getf features :xvar) (getf features :yvar))
+               ;; the global domain has already been defined; use it.
+               (progn
+                 (setq xrange `((mlist) ,(getf features :xvar)
+                                ,(getf features :xmin) ,(getf features :xmax)))
+                 (setq yrange `((mlist) ,(getf features :yvar)
+                                ,(getf features :ymin) ,(getf features :ymax))))
+               ;; the global domain should be defined by the last two lists
+               ;; in fun. Extract it and check whether it is valid.
+               (progn
+                 (setq
+                  domain
+                  (check-list-plot3d (append `((mlist) ,exprn) (last fun 2))))
+                 (setq fun (butlast fun 2))
+                 (if (= 3 (length domain))
+                     ;; it is a valid domain that should become the global domain.
+                     (progn
+                       (setq xrange (second domain))
+                       (setq yrange (third domain))
+                       (setf (getf features :xvar) (second xrange))
+                       (setf (getf features :xmin) (third xrange))
+                       (setf (getf features :xmax) (fourth xrange))
+                       (setf (getf features :yvar) (second yrange))
+                       (setf (getf features :ymin) (third yrange))
+                       (setf (getf features :ymax) (fourth yrange)))
+                     (merror usage))))
+           ;; ----- GNUPLOT 4.0 WORK-AROUND -----
+           (when (and ($constantp exprn)
+                      ($get_plot_option '$gnuplot_4_0 2))
+             (setf (getf features :const-expr) ($float (meval exprn))))
+           ;; push the function and its domain into the functions stack
+           (push `(,exprn ,xrange ,yrange) functions)
+           ;; push a title for this plot into the titles stack
+           (if (< (length (ensure-string exprn)) 20)
+               (push (ensure-string exprn) titles)
+               (push "Function" titles))))
+     (when (= 0 (length fun)) (return)))
+  
+  ;; recover the original ordering for the functions and titles stacks
+  (setq functions (reverse functions))
+  (setq titles (reverse titles))
+  
+  ;; parse the options given to plot3d
   (setq features (plot-options-parser options features))
+  (setq tem ($get_plot_option '$transform_xy 2))
+  
+  ;; set up the labels for the axes
+  (if (and (getf features :xvar) (getf features :yvar) (null tem))
+      (progn
+        (setf (getf features :xlabel) (ensure-string (getf features :xvar)))
+        (setf (getf features :ylabel) (ensure-string (getf features :yvar))))
+      (progn
+        (setf (getf features :xlabel) "x")
+        (setf (getf features :ylabel) "y")))
+  (unless (getf features :zlabel) (setf (getf features :zlabel) "z"))
+  
+  ;; x and y should not be bound, when an xy transformation function is used
+  (when tem (remf features :xmin) (remf features :xmax)
+        (remf features :ymin) (remf features :ymax))
+  
   (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
   (if ($get_plot_option '$gnuplot_out_file 2)
       (setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
@@ -1846,174 +2001,159 @@ sin(y)*(10.0+6*cos(x)),
                      (ensure-string (getf features :plot-format))))))
   (and $in_netmath 
        (setq $in_netmath (eq (getf features :plot-format) '$xmaxima)))
-  (setq xrange (check-range xrange))
-  (setq yrange (check-range yrange))
-
-  (cond ((not y-supplied)
-         (let ((vars ($sort ($listofvars fun))))
-           (or (eql ($length vars) 2)
-               (merror "Please supply the range for variables eg [x,-3,3],[y,-3,4]"))
-           (setq xrange ($cons (second vars) ($rest xrange)))
-           (setq yrange ($cons (third vars) ($rest yrange))))))
-  (setq lvars `((mlist),(second xrange) ,(second yrange)))
-
-  (unless (or ($get_plot_option '$transform_xy 2) ($listp fun))
-    (unless (getf features :xlabel)
-      (setf (getf features :xlabel) (ensure-string (second xrange))))
-    (unless (getf features :xmin) (setf (getf features :xmin) (third xrange)))
-    (unless (getf features :xmax) (setf (getf features :xmax) (fourth xrange)))
-    (unless (getf features :ylabel)
-      (setf (getf features :ylabel) (ensure-string (second yrange))))
-    (unless (getf features :ymin) (setf (getf features :ymin) (third yrange)))
-    (unless (getf features :ymax) (setf (getf features :ymax) (fourth yrange))))
-
-  (cond (($listp fun)
-         (or (eql 3 ($length fun)) (merror "List ~M is not of length 3" fun))
-         (setq trans ($make_transform
-                      ($append lvars '((mlist) $z))
-                      (second fun)
-                      (third fun)
-                      (fourth fun)))
-         ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
-         (when ($constantp (fourth fun))
-           (setf (getf features :const-expr) ($float (meval (fourth fun)))))
-         ;; -----  END GNUPLOT 4.0 WORK-AROUND  -----
-         (setq fun '$zero_fun))
-        (t
-         ;; ----- BEGIN GNUPLOT 4.0 WORK-AROUND -----
-         (when ($constantp fun)
-           (setf (getf features :const-expr) ($float (meval fun))))
-         ;; -----  END GNUPLOT 4.0 WORK-AROUND  -----
-         (setq fun (coerce-float-fun fun lvars))))
-  (let* ((pl (draw3d fun
-                     (third xrange)
-                     (fourth xrange)
-                     (third yrange)
-                     (fourth yrange)
-                     (third (getf features :grid))
-                     (fourth (getf features :grid))))
-         (ar (polygon-pts pl)) tem)
-    (declare (type (cl:array t) ar))
-
-    (if trans  (mfuncall trans ar))
-    (if (setq tem  ($get_plot_option '$transform_xy 2)) (mfuncall tem ar))
-    (let (($pstream
-           (cond ($in_netmath *standard-output*)
-                 (t (open file :direction :output :if-exists :supersede))))
-          (title
-           (let ((string (coerce (mstring orig-fun) 'string)))
-             (cond ((< (length string) 20) string)
-                   (t (format nil "Function"))))))
-      (when ($get_plot_option '$gnuplot_curve_titles)
-	(setq title (get-plot-option-string '$gnuplot_curve_titles 1)))
-      (unwind-protect
-           (case (getf features :plot-format)
-             ($zic
-              (let ((x-range ($get_range ar 0))
-                    (y-range ($get_range ar 1))
-                    (z-range ($get_range ar 2)))
-                (plot-zic-colors)
-                (format $pstream "domaine ~a ~a ~a ~a ~a ~a ~%"
-                        (first x-range)
-                        (second x-range)
-                        (first y-range)
-                        (second y-range)
-                        (first z-range)
-                        (second z-range))
-                (format $pstream "surface ~a ~a ~%"
-                        (+ 1 (fourth (getf features :grid)))
-                        (+ 1 (third (getf features :grid))))
-                (output-points pl nil)))
-             ($gnuplot
-              (gnuplot-print-header $pstream features)
-	      (format $pstream "~a" (gnuplot-plot3d-command "-" title))
-	      (output-points pl (third (getf features :grid))))
-             ($gnuplot_pipes
-              (setq output-file (check-gnuplot-process))
-              ($gnuplot_reset)
-              (gnuplot-print-header *gnuplot-stream* features)
-	      (setq *gnuplot-command* (gnuplot-plot3d-command file title))
-	      (output-points pl (third (getf features :grid))))
-             ($mgnuplot
-              (output-points pl (third (getf features :grid))))
-             ($xmaxima
-              (progn
-                (cond 
-                  ($show_openplot
-                   (format $pstream "plot3d -data {~%"))
-                  (t (format $pstream "{plot3d ")))
-                (xmaxima-print-header $pstream features)
-                (format $pstream " {matrix_mesh ~%")
-                
-                ;; we do the x y z  separately:
-                (loop for off from 0 to 2
-                   with ar = (polygon-pts pl)
-                   with  i of-type fixnum = 0
-                   do (setq i off)
-                     (format $pstream "~%{")
-                     (loop 
-                        while (< i (length ar))
-                        do (format $pstream "~% {")
-                          (loop for j to (third (getf features :grid))
-                             do (print-pt (aref ar i))
-                               (setq i (+ i 3)))
-                          (format $pstream "} "))
-                     (format $pstream "} "))
-                (format $pstream "}}"))
-              #+old
-              (progn                    ; orig
-                (print (list 'grid (getf features :grid)))
-                (cond
-                  ($show_openplot
-                   (format $pstream "plot3d -data {{variable_grid ~%"))
-                  (t (format $pstream "{plot3d {{variable_grid ~%")))
-                (let* ((ar (polygon-pts pl))
-                       (x-coords
-                        (loop for i to (third (getf features :grid))
-                           collect (aref ar (* i 3))))
-                       (y-coords
-                        (loop for i to (fourth (getf features :grid))
-                           with m = (* 3 (+ 1 (third (getf features :grid))))
-                           collect (aref ar (+ 1 (* i m)))))
-                       (z  (loop for i to (fourth (getf features :grid))
-                              with k of-type fixnum = 2
-                              collect
-                                (loop for j to (third (getf features :grid))
-                                   collect (aref ar k)
-                                   do(setq k (+ k 3))))))
-                  (tcl-output-list $pstream x-coords)
-                  (tcl-output-list $pstream y-coords)
-                  (format $pstream "~%{")
-                  (tcl-output-list $pstream z)
-                  (format $pstream "}}}"))))
-             ($geomview
-              (format $pstream " MESH ~a ~a ~%"
-                      (+ 1 (third (getf features :grid)))
+  
+  ;; Set up the output file stream
+  (let (($pstream
+         (cond ($in_netmath *standard-output*)
+               (t (open file :direction :output :if-exists :supersede))))
+        (legend (getf features :legend)) (n (length functions)))
+    ;; titles will be a maxima list. The titles given in the legend option
+    ;; will hav priority over the titles generated by plot3d.
+    (when legend (setq titles (cddr legend)))
+    
+    (unwind-protect
+         (case (getf features :plot-format)
+           ($zic
+            (let ((x-range ($get_range ar 0))
+                  (y-range ($get_range ar 1))
+                  (z-range ($get_range ar 2)))
+              (plot-zic-colors)
+              (format $pstream "domaine ~a ~a ~a ~a ~a ~a ~%"
+                      (first x-range) (second x-range) (first y-range)
+                      (second y-range) (first z-range) (second z-range))
+              (format $pstream "surface ~a ~a ~%"
                       (+ 1 (fourth (getf features :grid)))
-                      )
-              (output-points pl nil)))
-        ;; close the stream and plot..
-        (cond ($in_netmath (return-from $plot3d ""))
-              (t (close $pstream)
-                 (setq $pstream nil))))
-      (if (eq (getf features :plot-format) '$gnuplot)
-          (gnuplot-process file)
-          (cond (($get_plot_option '$run_viewer 2)
-                 (case (getf features :plot-format)
-                   ($zic ($view_zic))
-                   ($xmaxima
-                    ($system (concatenate 'string *maxima-prefix* 
-                                          (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
-                                          $xmaxima_plot_command) 
-                             (format nil " \"~a\"" file)))
-                   ($geomview 
-                    ($system $geomview_command
-                             (format nil " \"~a\"" file)))
-                   ($gnuplot_pipes
-                    (send-gnuplot-command *gnuplot-command*))
-                   ($mgnuplot 
-                    ($system (concatenate
-                              'string
-                              *maxima-plotdir* "/" $mgnuplot_command)
-                             (format nil " -parametric3d \"~a\"" file)))))))))
+                      (+ 1 (third (getf features :grid))))))
+           ($gnuplot
+            (gnuplot-print-header $pstream features)
+            (format $pstream "~a" (gnuplot-plot3d-command "-" titles n)))
+           ($gnuplot_pipes
+            (setq output-file (check-gnuplot-process))
+            ($gnuplot_reset)
+            (gnuplot-print-header *gnuplot-stream* features)
+            (setq *gnuplot-command* (gnuplot-plot3d-command file titles n)))
+           ($xmaxima
+            (xmaxima-print-header $pstream features))
+           ($geomview
+            (format $pstream " MESH ~a ~a ~%"
+                    (+ 1 (third (getf features :grid)))
+                    (+ 1 (fourth (getf features :grid))))))
+      
+      ;; generate the mesh points for each surface in the functions stack
+      (let ((i 0))
+        (dolist (f functions)
+          (setq i (+ 1 i))
+          (setq fun (first f))
+          (setq xrange (second f))
+          (setq yrange (third f))
+          (if ($listp fun)
+              (progn
+                (setq trans
+                      ($make_transform `((mlist) ,(second xrange)
+                                         ,(second yrange) $z)
+                                       (second fun) (third fun) (fourth fun)))
+                (setq fun '$zero_fun))
+              (progn
+                (setq lvars `((mlist) ,(second xrange) ,(second yrange)))
+                (setq fun (coerce-float-fun fun lvars))
+                (when (delete
+                       (second lvars)
+                       (delete
+                        (third lvars)
+                        (rest ($listofvars (mfuncall fun (second lvars)
+                                                     (third lvars))))))
+                  (merror
+                   (intl:gettext "plot3d: Wrong usage.~%Expecting <expr. with var1 and var2>, [var1, min, max], [var2, min, max]")))))
+          (let* ((pl
+                  (draw3d
+                   fun (third xrange) (fourth xrange) (third yrange)
+                   (fourth yrange) (third (getf features :grid))
+                   (fourth (getf features :grid))))
+                 (ar (polygon-pts pl)))
+            (declare (type (cl:array t) ar))
+            
+            (if trans (mfuncall trans ar))
+            (if tem (mfuncall tem ar))
+            
+            (case (getf features :plot-format)
+              ($zic
+               (output-points pl nil))
+              ($gnuplot
+               (when (> i 1) (format $pstream "e~%"))
+               (output-points pl (third (getf features :grid))))
+              ($gnuplot_pipes
+               (when (> i 1) (format $pstream "~%~%"))
+               (output-points pl (third (getf features :grid))))
+              ($mgnuplot
+               (when (> i 1) (format st "~%~%# \"Fun~a\"~%" i))
+               (output-points pl (third (getf features :grid))))
+              ($xmaxima
+               (output-points-tcl $pstream pl (third (getf features :grid)) i))
+              ($geomview
+               (output-points pl nil))))))
+      
+      ;; close the stream and plot..
+      (cond ($in_netmath (return-from $plot3d ""))
+            ((eql (getf features :plot-format) '$xmaxima)
+             (format $pstream "}~%")
+             (close $pstream))
+            (t (close $pstream)
+               (setq $pstream nil))))
+    (if (eql (getf features :plot-format) '$gnuplot)
+        (gnuplot-process file)
+        (cond (($get_plot_option '$run_viewer 2)
+               (case (getf features :plot-format)
+                 ($zic ($view_zic))
+                 ($xmaxima
+                  ($system
+                   (concatenate
+                    'string *maxima-prefix* 
+                    (if (string= *autoconf-win32* "true") "\\bin\\" "/bin/")
+                    $xmaxima_plot_command) 
+                   (format nil " \"~a\"" file)))
+                 ($geomview 
+                  ($system $geomview_command
+                           (format nil " \"~a\"" file)))
+                 ($gnuplot_pipes
+                  (send-gnuplot-command *gnuplot-command*))
+                 ($mgnuplot 
+                  ($system
+                   (concatenate
+                    'string *maxima-plotdir* "/" $mgnuplot_command)
+                   (format nil " -parametric3d \"~a\"" file))))))))
   output-file)
+
+;; Given a Maxima list with 3 elements, checks whether it represents a function
+;; defined in a 2-dimensional domain or a parametric representation of a
+;; 3-dimensional surface, depending on two parameters.
+;; The return value will be a Maxima list if the test is succesfull or nil
+;; otherwise.
+;; In the case of a function and a domain it returns the domain.
+;; When it is a parametric representation it returns three symbols: the
+;; two parameters followed by z.
+;;
+(defun check-list-plot3d (lis)
+  (let (rangex rangey)
+    ;; wrong syntax: lis must be [something, something, something]
+    (unless ($listp lis) (return-from check-list-plot3d nil))
+    (unless (= 3 ($length lis)) (return-from check-list-plot3d nil))
+    (if ($listp (second lis))
+        ;; wrong syntax: [list, something, something]
+        (return-from check-list-plot3d nil)
+        ;; we might have a function with domain or a parametric representation
+        (if ($listp (third lis))
+            ;; lis is probably a function with a valid domain
+            (if ($listp (fourth lis))
+                ;; we do have a function and a domain. Return the domain
+                (progn
+                  (setq rangex (check-range (third lis)))
+                  (setq rangey (check-range (fourth lis)))
+                  (return-from check-list-plot3d `((mlist) ,rangex ,rangey)))
+                ;; wrong syntax: [expr1, list, expr2]
+                (return-from check-list-plot3d nil))
+            ;; lis is probably a parametric representation
+            (if ($listp (fourth lis))
+                ;; wrong syntax: [expr1, expr2, list]
+                (return-from check-list-plot3d nil)
+                ;; we do have a parametric representation. Return an empty list
+                (return-from check-list-plot3d '((mlist))))))))

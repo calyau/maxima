@@ -105,7 +105,7 @@
 	 (setq gray (second palette))
 	 (setq range (third palette))
 	 (when (or (< gray 0) (> gray 1)) (setq gray (- gray (floor gray))))
-	 (format st "{value ~,3f} {colorrange ~,3f}" gray range))
+	 (format st "\{ value ~,3f \} \{ colorrange ~,3f \}" gray range))
 	(4
 	 (setq hue (second palette))
 	 (setq sat (third palette))
@@ -115,35 +115,59 @@
 	 (when (or (< sat 0) (> sat 1)) (setq sat (- sat (floor sat))))
 	 (when (or (< val 0) (> val 1)) (setq val (- val (floor val))))       
 	 (format st
-		 "{hue ~,3f} {saturation ~,3f} {value ~,3f} {colorrange ~,3f}"
+		 " \{ hue ~,3f \} \{ saturation ~,3f \} \{ value ~,3f \} \{ colorrange ~,3f \}"
 		 hue sat val range)))
       (case (first palette)
-        ($hue (format st " {colorscheme hue}"))
-        ($saturation (format st " {colorscheme saturation}"))
-        ($value (format st " {colorscheme value}"))
-        ($gray (format st " {colorscheme gray}"))
+        ($hue (format st " \{ colorscheme hue \}"))
+        ($saturation (format st " \{ colorscheme saturation \}"))
+        ($value (format st " \{ colorscheme value \}"))
+        ($gray (format st " \{ colorscheme gray \}"))
         (t
          (merror
           (intl:gettext
            "palette: wrong keyword ~M. Must be hue, saturation, value or gray")
           (first palette)))))))
 
+(defun xmaxima-palletes (n &aux (palettes (cddr ($get_plot_option '$palette))))
+  (unless (integerp n) (setq n (round n)))
+    (xmaxima-palette (rest (nth (mod (- n 1) (length palettes)) palettes))))
+			 
+(defun output-points-tcl (dest pl m i
+			  &aux (palette ($get_plot_option '$palette 2)))
+  (if palette
+      (format dest " ~a~%" (xmaxima-palletes i))
+      (format dest " {mesh_lines ~a}" (xmaxima-colors i)))
+  (format dest " {matrix_mesh ~%")
+  ;; we do the x y z  separately:
+  (loop for off from 0 to 2
+     with ar = (polygon-pts pl)
+     with  i of-type fixnum = 0
+     do (setq i off)
+       (format dest "~%{")
+       (loop 
+	  while (< i (length ar))
+	  do (format dest "~% {")
+	    (loop for j to m
+	       do (print-pt (aref ar i))
+		 (setq i (+ i 3)))
+	    (format dest "}~%"))
+       (format dest "}~%"))
+  (format dest "}~%"))
+
 (defun xmaxima-print-header (dest features)
-  (when (eql (getf features :type) 'plot3d)
+  (cond ($show_openplot (format dest "~a -data {~%" (getf features :type)))
+	(t (format st "{~a " (getf features :type))))
+  (when (string= (getf features :type) "plot3d")
     (let ((meshcolor '$black) (elev ($get_plot_option '$elevation))
 	  (azim ($get_plot_option '$azimuth)) palette meshcolor_opt)
       (if (setq palette ($get_plot_option '$palette 2))
 	  (progn
-	      (format dest " ~a~%" (xmaxima-palette (rest palette)))
-	     (when (setq meshcolor_opt ($get_plot_option '$mesh_lines_color))
-	       (setq meshcolor (third meshcolor_opt)))
-	     (if meshcolor
-		 (format dest " {mesh_lines ~a}" (xmaxima-color meshcolor))
-		 (format dest " {mesh_lines 0}")))
-	  (progn
-	    (format dest " {mesh_lines ~a}"
-		    (xmaxima-color ($get_plot_option '$color 2)))
-	    (format dest " {colorscheme 0}~%")))
+	    (when (setq meshcolor_opt ($get_plot_option '$mesh_lines_color))
+	      (setq meshcolor (third meshcolor_opt)))
+	    (if meshcolor
+		(format dest " {mesh_lines ~a}" (xmaxima-color meshcolor))
+		(format dest " {mesh_lines 0}")))
+	  (format dest " {colorscheme 0}~%"))
       (when elev (format dest " {el ~d}" (third elev)))
       (when azim (format dest " {az ~d}" (third azim)))
       (format dest "~%")))

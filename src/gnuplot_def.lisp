@@ -167,7 +167,7 @@
     (if (and ($get_plot_option '$gnuplot_preamble) (> (length preamble) 0))
       (format dest "~a~%" preamble)
       (progn
-        (when (eql (getf features :type) 'plot3d)
+        (when (string= (getf features :type) "plot3d")
           (format dest "set ticslevel 0~%")
           (if (setq palette ($get_plot_option '$palette 2))
               (progn
@@ -269,15 +269,18 @@
               (format dest "set datafile missing \"~a\"~%"
 		      *missing-data-indicator*)))
 
-(defun gnuplot-plot3d-command (file title)
-  (if ($get_plot_option '$palette 2)
-      (format nil "splot '~a' title '~a' with pm3d~%" file title)
-      (progn
-        (if ($get_plot_option '$gnuplot_curve_styles)
-            (format nil
-                    "splot '~a' title '~a' ~a~%" file title 
-                    (get-plot-option-string '$gnuplot_curve_styles 1))
-            (format nil
-                    "splot '~a' title '~a' with lines lt ~a~%" file title
-                    (gnuplot-color ($get_plot_option '$color 2)))))))
+(defun gnuplot-plot3d-command (file titles n) 
+(let (title (style "with pm3d")
+	    (palette ($get_plot_option '$palette 2))
+	    (gstyles (cddr ($get_plot_option '$gnuplot_curve_styles))))
+  (with-output-to-string (out)
+    (format out "splot ")
+  (do ((i 1 (+ i 1))) ((> i n) (format out "~%"))
+    (unless palette
+      (if gstyles
+	  (setq style (ensure-string (nth (mod i (length gstyles)) gstyles)))
+	  (setq style (format nil "with lines lt ~a" (gnuplot-colors i)))))
+    (when (> i 1) (format out ", "))
+    (setq title (nth (mod i (length titles)) titles))
+    (format out "'~a' title '~a' ~a" file title style)))))
 
