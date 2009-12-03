@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.48 2009-11-15 22:59:54 villate Exp $
+#       $Id: Makefile.am,v 1.49 2009-12-03 22:03:32 villate Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -70,7 +70,7 @@ TKSOURCES = \
 	Tkmaxima/Tkmaxima.tcl 
 
 
-XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-trailer.tcl
+XMAXIMA_FILES = $(TKSOURCES) xmaxima-trailer.tcl
 XMAXIMASOURCES = Tkmaxima/Header.tcl $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl Tkmaxima/Header.tcl
 
 
@@ -89,7 +89,7 @@ WIN32_FILES = win32/ChangeLog win32/Makefile.in win32/tclwinkill.c win32/winkill
               win32/InfoBefore_it.txt win32/readme_it.txt \
               win32/InfoBefore_es.txt win32/readme_es.txt
       
-EXTRA_DIST = $(genericdirDATA) $(XMAXIMA_REAL_SOURCES) $(WIN32_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
+EXTRA_DIST = $(genericdirDATA) $(XMAXIMA_FILES) $(WIN32_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
 
 
 # Developer convenience target
