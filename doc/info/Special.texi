@@ -517,9 +517,10 @@ The natural logarithm of the gamma function.
 @closecatbox
 @end deffn
 
-@deffn {Function} gamma_incomplete (@var{a},@var{z})
+@c -----------------------------------------------------------------------------
+@deffn {Function} gamma_incomplete (@var{a}, @var{z})
 The incomplete upper gamma function A&S 6.5.2:
- @math{gamma_incomplete(a, x) = integrate(exp(-t)*t^(a-1), t, 0, x)}
+@math{gamma_incomplete(a, z) = integrate(exp(-t)*t^(a-1), t, z, inf)}
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
 @closecatbox
@@ -528,7 +529,7 @@ The incomplete upper gamma function A&S 6.5.2:
 @deffn {Function} gamma_incomplete_regularized (@var{a},@var{z})
 The regularized incomplete upper gamma function A&S 6.5.1.  
 
-@code{gamma_incomplete_regularized(a,z)=gamma_incomplete(a,z)/gamma(a)}
+@code{gamma_incomplete_regularized(a,z) = gamma_incomplete(a,z)/gamma(a)}
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
@@ -538,8 +539,7 @@ The regularized incomplete upper gamma function A&S 6.5.1.
 @deffn {Function} gamma_incomplete_generalized (@var{a},@var{z1},@var{z1} )
 The generalized incomplete gamma function.  
 
-@code{ gamma_incomplete_generalized(a,z) =
- integrate(t^(a-1)*exp(-t), z, z1,z2) }
+@code{gamma_incomplete_generalized(a,z) = integrate(t^(a-1)*exp(-t), z, z1,z2) }
 
 @opencatbox
 @category{Gamma and factorial functions} @category{Special functions}
