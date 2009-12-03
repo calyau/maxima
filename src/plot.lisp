@@ -1915,7 +1915,7 @@ several functions depending on the two variables v1 and v2:
               ;; function and its domain into the functions stack
               (setq xrange (second domain))
               (setq yrange (third domain))
-              (push `(,exprn ,xrange ,yrange) functions)
+              (push `(,(second exprn) ,xrange ,yrange) functions)
               ;; push a title for this plot into the titles stack
               (if (< (length (ensure-string exprn)) 20)
                   (push (ensure-string exprn) titles)
@@ -2129,8 +2129,7 @@ several functions depending on the two variables v1 and v2:
 ;; The return value will be a Maxima list if the test is succesfull or nil
 ;; otherwise.
 ;; In the case of a function and a domain it returns the domain.
-;; When it is a parametric representation it returns three symbols: the
-;; two parameters followed by z.
+;; When it is a parametric representation it returns an empty Maxima list.
 ;;
 (defun check-list-plot3d (lis)
   (let (rangex rangey)
