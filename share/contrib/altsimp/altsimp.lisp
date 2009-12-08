@@ -50,6 +50,12 @@ Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact 
  Errors found in rtest16.mac, problems: (74 121)  <-- wrong and do asksign
  Error found in rtestsum.mac, problem: (226)  <-- not wrong but differs from expected
  Errors found in rtest_expintegral.mac, problems: (133 134) <-- small differences in big float
+
+Unfixed:
+
+ (1) sqrt(3) + sqrt(3) + sqrt(3) --> 3^(3/2), but altsimp does 3 * sqrt(3). I'm not so sure
+     we want sqrt(3) + sqrt(3) + sqrt(3) --> 3^(3/2).
+
 |#
 
 (in-package :maxima)
@@ -83,7 +89,7 @@ Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact 
 
 ;; The expression e must be simplified (ok)
 ;;   (a) 1 * x --> x,
-;;   (b) 0 * x --> 0, 0.0 * x --> 0, 0.0b0 * x --> 0 (the last two are wrong, I think),
+;;   (b) 0 * x --> 0, 0.0 * x --> 0.0, 0.0b0 * x --> 0.0b0
 ;;   (c) cf * e --> timesk(ck,e) when e is a maxima number,
 ;;   (d) -1 * (a + b) --> -a - b,
 ;;   (e) cf * (* a b c) --> (* (* cf a) b c ...) when a is a number; otherwise (* cf a b ...)
@@ -91,7 +97,7 @@ Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact 
 
 (defun number-times-expr (cf e)
   (cond ((eq cf 1) e)
-	((mzerop cf) 0) ;; wrong for 0.0 * e and 0.0b0 * e.
+	((mzerop cf) cf)
 	((mnump e) (timesk cf e)) ; didn't think this should happen
 	((and (onep1 (neg cf)) (mplusp e))
 	 (opapply 'mplus (mapcar 'neg (cdr e))))
@@ -113,7 +119,7 @@ Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact 
   (ratf (cons '(mplus) (cons (ratf x) l))))
 
 (defun add-expr-taylor (x l)
-  (taylor1 (cons '(mplus) (cons x l)) nil))
+  ($taylor (cons '(mplus) (cons x l))))
 
 (defun add-expr-mlist (x l)
   (setq l (if (cdr l) (reduce 'addmx l) (car l)))
@@ -176,6 +182,7 @@ Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact 
 ;(defvar *its-an-atom* 0)
 ;(defvar *not-an-atom* 0)
 
+
 (defun simplus (l w z)
   (declare (ignore w))
   ;;(incf *calls-to-simplus*)
@@ -187,15 +194,15 @@ Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact 
     (setq l (margs l))
 
     ;; simplfy and flatten
-    (dolist (li l)
-      (setq li (simplifya li z))
-      (if (mplusp li) (setq acc (append acc (cdr li))) (push li acc)))
+    (let (($%enumer $numer)) ;; convert %e --> 2.718...Why not %pi too? See simpcheck in simp.lisp.
+      (dolist (li l)
+	(setq li (simplifya li z))
+	(if (mplusp li) (setq acc (append acc (cdr li))) (push li acc))))
     (setq l acc)
     (setq acc nil)
     (dolist (li l)
       ;;(if (atom li) (incf *its-an-atom*) (incf *not-an-atom*))
       (cond ((mnump li) (mincf num-sum li))
-	    
 	    ;; factor out infrequent cases.
 	    ((and (consp li) (consp (car li)) (memq (caar li) '(mequal mrat $matrix mlist $interval)))
 	     (setq op (caar li))
@@ -220,9 +227,7 @@ Maxima 5.17.0 bugs: I think the rtest16 bugs 74 and 121 are related to the fact 
 		 (setq cf (gethash li atom-hash))
 		 (setf (gethash li atom-hash) (if cf (1+ cf) 1)))))
 
-	    ;; The extra ($expand li 0 0) shouldn't be needed, but try
-	    ;; sqrt(2)/6 - 2 * sqrt(2)/6 without it.
-	    (t (push (convert-to-coeff-form ($expand li 0 0)) acc))))
+	    (t (push (convert-to-coeff-form li) acc))))
 
      ;; push atoms in the hashtable into the accumulator acc; sort acc.
     (maphash #'(lambda (cf a) (push (cons cf a) acc)) atom-hash)
