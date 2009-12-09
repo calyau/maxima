@@ -456,9 +456,9 @@ It appears in LIMIT and DEFINT.......")
 	 ((< infc 2)  (simpinf nexp))
 	 ((mplusp nexp)
 	  (cond ((member '$infinity (cdr nexp) :test #'eq) '$infinity)
-		((eq 1 (length
-			(setq inftype (intersection '($infinity $minf $inf)
-						    nexp))))
+		((equal 1 (length
+			   (setq inftype (intersection '($infinity $minf $inf)
+						       nexp))))
 		 (car inftype))	; only one type of infinity found
 		(t nexp)))
 	 (t nexp))))))
