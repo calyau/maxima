@@ -1,4 +1,4 @@
-# Work in progress - xmaxima support files for windows  
+# Work in progress - xmaxima support files for windows
 #
 # Following files are to be installed in $(prefix)/bin
 #
@@ -6,7 +6,7 @@
 # - winkill.exe
 # - tclwinkill.dll
 prefix=@prefix@
-TCLKITSH = tclkitsh.exe
+TCLKITSH = tclkitsh-win32.upx.exe
 TCLKITDIR = ../../../../programs/star
 SDXDIR = $(TCLKITDIR)
 GNUPLOTDIR = ../../../../programs/gnuplot
@@ -27,13 +27,16 @@ xmaxima.tcl: ../xmaxima
 
 xmaxima.exe: xmaxima.tcl
 	rm -rf xmaxima.vfs
+	rm -rf img.vfs
 	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit qwrap xmaxima.tcl && \
 	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit unwrap xmaxima.kit && \
+	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit unwrap $(SDXDIR)/img.kit && \
+	cp -r img.vfs/lib/Img xmaxima.vfs/lib && \
 	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit wrap xmaxima.exe \
-		-runtime $(TCLKITDIR)/tclkit.exe xmaxima.kit
+	-runtime $(TCLKITDIR)/tclkit-win32.upx.exe xmaxima.kit
 
 winkill.exe: winkill.c
-	gcc -Wall -o winkill.exe winkill.c 
+	gcc -Wall -o winkill.exe winkill.c
 
 tclwinkill.dll: tclwinkill.c
 	gcc -Wall -shared tclwinkill.c -ltclstub84 -o tclwinkill.dll
@@ -81,7 +84,7 @@ gnuplot:
 
 # Install wxMaxima
 wxmaxima:
-	cp -r $(WXMAXIMADIR) $(prefix)/wxMaxima
+	cp -rf $(WXMAXIMADIR) $(prefix)/wxMaxima
 
 # Create CHM files
 chm:
