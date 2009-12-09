@@ -14,8 +14,8 @@ that this process is not as polished as the Unix-like install process.
 In order to create the Maxima Windows installer from the maxima tarball 
 distribution, I do the following in a MSYS window:
 ----------------------------------------------------
-./configure  --with-wish=wish84 --prefix=c:/maxima \
-    --enable-lang-es --enable-lang-pt
+./configure --prefix=c:/maxima \
+    --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make install
 make iss
@@ -31,7 +31,7 @@ External Requirements
 2) msysDTK
 3) GCL
 4) Tcl/Tk
-5) Starkit and TclKit
+5) Starkit, TclKit and img.kit
 6) InnoSetup
 7) gnuplot
 8) wxMaxima
@@ -127,12 +127,15 @@ Temporary directory for compiler files set to C:/DOCUME~1/user/LOCALS~1/Temp/
 3) Get and install TclKit and Starkit sdx from <http://www.equi4.com>. 
 
 Download sdx.bat and sdx.kit from <http://www.equi4.com/pub/sk/>. 
-Download tclkit-win32.exe.gz and tclkitsh-win32.exe.gz from 
-<http://www.equi4.com/pub/tk/>.
+Download tclkit-win32.upx.exe and tclkitsh-win32.upx.exe from 
+<http://www.equi4.com/pub/tk/8.5.2/>.
 
 Install the following four files 
-	sdx.bat  sdx.kit  tclkit.exe  tclkitsh.exe
-in your MSYS user home directory in ~/programs/star 
+	sdx.bat  sdx.kit  tclkit-win32.upx.exe  tclkitsh-win32.upx.exe
+in your MSYS user home directory in ~/programs/star
+
+Download img.kit from <http://www.tcl.tk/starkits/> and put it in
+~/programs/star
 
 6) Get and install Inno Setup from
 <http://www.jrsoftware.org/isinfo.php>. 
@@ -202,8 +205,8 @@ If this is not the case, edit your PATH variable or add wrapper scripts.
 Configure maxima so that it will install in some sort of temporary
 directory. The directory does not need to exist ahead of time.
 
-./configure  --with-wish=wish84 --prefix="c:/maxima" \
-  --enable-lang-es --enable-lang-pt
+./configure --prefix="c:/maxima" \
+  --enable-lang-es --enable-lang-pt --enable-lang-pt_BR
 make
 make check
 make install
