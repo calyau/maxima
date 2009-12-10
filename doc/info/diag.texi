@@ -75,7 +75,7 @@ To use this function write first @code{load("diag")}.
 @deffn {Function} jordan (@var{mat})
 Returns the Jordan form of matrix @var{mat}, but codified in a Maxima list.
 To get the corresponding matrix, call function @code{dispJordan} using as argument
-the output of @code{jornan}.
+the output of @code{jordan}.
 
 Example:
 @example
