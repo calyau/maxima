@@ -266,6 +266,51 @@
 (defun readlist (lis)
   (read-from-string (coerce lis 'string)))
 
+;; These variables control how we convert bfloat inputs to the
+;; internal bfloat representation.  These variables should probably go
+;; away after some testing.
+(defmvar $fast_bfloat_conversion t
+  "Use fast, but possibly inaccurate conversion")
+(defmvar $fast_bfloat_threshold 100000.
+  "Exponents larger than this (in absolute value) will use the fast
+  conversion instead of the accurate conversion")
+(defvar *fast-bfloat-extra-bits* 0)
+
+;; Here is a test routine to test the fast bfloat conversion
+#||
+(defun test-make-number (&optional (n 1000))
+  (let ((failures 0))
+    (dotimes (k n)
+      (flet ((digit-list (n)
+	       (coerce (format nil "~D" (random n)) 'list)))
+	(let ((numlist nil))
+	  ;; Generate a random number with 30 fraction digits and an
+	  ;; large exponent.
+	  (push (digit-list 10) numlist)
+	  (push '(#\.) numlist)
+	  (push (digit-list (expt 10 30)) numlist)
+	  (push '(#\B) numlist)
+	  (push (if (zerop (random 2)) '(#\+) '(#\-)) numlist)
+	  (push (digit-list (+ $fast_bfloat_threshold
+			       (random $fast_bfloat_threshold)))
+		numlist)
+	  ;; Convert using accurate and fast methods and compare the
+	  ;; results.
+	  (let ((true (let (($fast_bfloat_conversion nil))
+			(make-number (copy-list numlist))))
+		(fast (let (($fast_bfloat_conversion t))
+			(make-number (copy-list numlist)))))
+	    (unless (equalp true fast)
+	      (incf failures)
+	      (format t "NUM:  ~A~%  TRUE: ~S~%  FAST: ~S~%"
+		      (reverse numlist) true fast))))))
+    (format t "~D failures in ~D tests (~F%)~%"
+	    failures n (* 100 failures (/ (float n))))))
+||#
+
+
+;; WARNING: MAKE-NUMBER destructively modifies it argument!  Should we
+;; change that?
 (defun make-number (data)
   (setq data (nreverse data))
   ;; Maxima really wants to read in any number as a flonum
@@ -277,15 +322,48 @@
         (setf (nth 3 data) (list flonum-exponent-marker)))))
   (if (not (equal (nth 3 data) '(#\B)))
       (readlist (apply #'append data))
-      ;; For bigfloats, turn them into rational numbers then convert to bigfloat.
-      ;; Fix for the 0.25b0 # 2.5b-1 bug.  Richard J. Fateman posted this fix to the
-      ;; Maxima list on 10 October 2005.  Without this fix, some tests in rtestrationalize
-      ;; will fail.  Used with permission.
-      ($bfloat (simplifya `((mtimes) ((mplus) ,(readlist (or (first data) '(#\0)))
-				    ((mtimes) ,(readlist (or (third data) '(#\0)))
-				     ((mexpt) 10. ,(- (length (third data))))))
-			  ((mexpt) 10. ,(funcall (if (char= (first (fifth data)) #\-) #'- #'+)
-						 (readlist (sixth data))))) nil))))
+      (let ((int-part (readlist (or (first data) '(#\0))))
+	    (frac-part (readlist (or (third data) '(#\0))))
+	    (frac-len (length (third data)))
+	    (exp-sign (first (fifth data)))
+	    (exp (readlist (sixth data))))
+	(if (and $fast_bfloat_conversion
+		 (> (abs exp) $fast_bfloat_threshold))
+	    ;; Exponent is large enough that we don't want to do exact
+	    ;; rational arithmetic.  Instead we do bfloat arithmetic.
+	    ;; For example, 1.234b1000 is converted by computing
+	    ;; bfloat(1234)*10b0^(1000-3).  Extra precision is used
+	    ;; during the bfloat computations.
+	    (let* ((extra-prec (+ *fast-bfloat-extra-bits* (ceiling (log exp 2d0))))
+		   (fpprec (+ fpprec extra-prec))
+		   (mant (+ (* int-part (expt 10 frac-len)) frac-part))
+		   (bf-mant (bcons (intofp mant)))
+		   (p (power (bcons (intofp 10))
+			     (- (if (char= exp-sign #\-)
+				    (- exp)
+				    exp)
+				frac-len)))
+		   ;; Compute the product using extra precision.  This
+		   ;; helps to get the last bit correct (but not
+		   ;; always).  If we didn't do this, then bf-mant and
+		   ;; p would be rounded to the target precision and
+		   ;; then the product is rounded again.  Doing it
+		   ;; this way, we still have 3 roundings, but bf-mant
+		   ;; and p aren't rounded too soon.
+		   (result (mul bf-mant p)))
+	      (let ((fpprec (- fpprec extra-prec)))
+		;; Now round the product back to the desired precision.
+		(bigfloatp result)))
+	    ;; For bigfloats, turn them into rational numbers then
+	    ;; convert to bigfloat.  Fix for the 0.25b0 # 2.5b-1 bug.
+	    ;; Richard J. Fateman posted this fix to the Maxima list
+	    ;; on 10 October 2005.  Without this fix, some tests in
+	    ;; rtestrationalize will fail.  Used with permission.
+	    (let ((ratio (* (+ int-part (* frac-part (expt 10 (- frac-len))))
+			    (expt 10 (if (char= exp-sign #\-)
+					 (- exp)
+					 exp)))))
+	    ($bfloat (cl-rat-to-maxima ratio)))))))
 
 ;; Richard J. Fateman wrote the big float to rational code and the function
 ;; cl-rat-to-maxmia.
