@@ -77,6 +77,7 @@ sin(y)*(10.0+6*cos(x)),
     ;; Controls the number of splittings
     ;; adaptive-plotting will do.
     ((mlist) $adapt_depth 5)
+    ((mlist) $gnuplot_preamble "")
     ((mlist) $gnuplot_default_term_command
      ,(if (string= *autoconf-win32* "true")
           "set term windows \"Verdana\" 15"
