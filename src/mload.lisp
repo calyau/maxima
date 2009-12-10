@@ -109,19 +109,23 @@
 	    ;; know its small now, so print on same line.
 	    (merror "Bad file spec: ~:M" user-object)))))
 
+(defmvar $load_pathname nil
+  "The full pathname of the file being loaded")
+
 (defun $batchload (filename &aux expr (*mread-prompt* ""))
   (declare (special *mread-prompt* *prompt-on-read-hang*))
   (setq filename ($file_search1 filename '((mlist) $file_search_maxima)))
-  (with-open-file (in-stream filename)
-    (when $loadprint
-      (format t "~&batching ~A~&" (cl:namestring (truename in-stream))))
-    (cleanup)
-    (newline in-stream)
-    (loop while (and
-		  (setq  expr (let (*prompt-on-read-hang*) (mread in-stream nil)))
-		  (consp expr))
-	   do (meval* (third expr)))
-		  (cl:namestring (truename in-stream))))
+  (let (($load_pathname filename))
+    (with-open-file (in-stream filename)
+      (when $loadprint
+	(format t "~&batching ~A~&" (cl:namestring (truename in-stream))))
+      (cleanup)
+      (newline in-stream)
+      (loop while (and
+		   (setq  expr (let (*prompt-on-read-hang*) (mread in-stream nil)))
+		   (consp expr))
+	 do (meval* (third expr)))
+      (cl:namestring (truename in-stream)))))
 
 ;;returns appropriate error or existing pathname.
 ;; the second argument is a maxima list of variables
@@ -176,7 +180,19 @@
 			   (#\o . $object)
 			   (#\f . $object))))))
    '$object))
-       			
+
+(defun $pathname_directory (path)
+  (let ((pathname (pathname path)))
+    (namestring (make-pathname :directory (pathname-directory pathname)))))
+
+(defun $pathname_name (path)
+  (let ((pathname (pathname path)))
+    (pathname-name pathname)))
+
+(defun $pathname_type (path)
+  (let ((pathname (pathname path)))
+    (pathname-type pathname)))
+  
 
 (defvar *macsyma-startup-queue* nil)
 
