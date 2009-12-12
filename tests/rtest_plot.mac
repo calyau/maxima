@@ -320,5 +320,14 @@ compile (foo29);
 
 plot2d (foo29, [u, -1, 0]);
 
+/* bug report "Wrong result given by coerce-float-fun" ID: 2880115 */
+
+(kill(f),
+ f(k) := integrate (exp(%i*k*x)*sin(x)/x, x, minf, inf),
+ plot2d (f, [x, -3, 3], [adapt_depth, 0], [nticks, 5]));
+
+(translate(f),
+ plot2d (f, [x, -3, 3], [adapt_depth, 0], [nticks, 5]));
+
 "FINIS" $
 
