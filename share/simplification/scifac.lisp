@@ -17,7 +17,7 @@
          (setq minpow (cond (nstate (and (integerp expon) (min minpow expon)))
                             (number (and ($numberp expon)
                                          (integerp (sub minpow expon))
-                                         ($min minpow expon)))
+                                         (mfuncall '$min minpow expon)))
                             (t
                              (let ((powdif (sub minpow expon)))
                                (cond ((integerp powdif)
