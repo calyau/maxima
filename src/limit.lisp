@@ -1863,6 +1863,14 @@ It appears in LIMIT and DEFINT.......")
 		     (cond (infl (cond ((null minfl) (return '$inf))
 				       (t (go oon))))
 			   (minfl (return '$minf))
+                           (indl
+                            ;; At this point we have a sum of '$ind. We factor 
+                            ;; the sum and try again. This way we get the limit 
+                            ;; of expressions like (a-b)*ind, where (a-b)--> 0.
+                            (cond ((not (alike1 (setq y ($factorsum exp)) exp))
+                                   (return (limit y var val 'think)))
+                                  (t
+                                   (return '$ind))))		       
 			   (t (return '$ind))))
 		    (t (setq infl (append infl infinityl))))))
 
