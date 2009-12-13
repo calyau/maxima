@@ -1135,5 +1135,17 @@ sqrt(1/(1+sqrt(-3)));
 (radexpand:oldvalue, done);
 done;
 
-end;
-end$
+/* BUG ID: 767556 - Distributing operations over =
+ * The operators "." and "^^" distribute over equations.
+ */
+
+x . (a=b);
+x . a = x . b;
+
+(a=b)^^x;
+a^^x = b^^x;
+
+/* A more complicated example */
+x . ((2*a+b . c) = x . (y + z))^^w;
+x . (b . c+2*a)^^w = x . (x . (z+y))^^w;
+
