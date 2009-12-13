@@ -89,6 +89,11 @@ is no need to rely on the setting of this switch.")
 		      sign		; Something to do with BBSORT1
 		      errorsw))
 
+;; The operators "." and "^^" distribute over equations.
+
+(defprop mnctimes (mequal) distribute_over)
+(defprop mncexpt (mequal) distribute_over)
+
 (defun simpnct (exp vestigial simp-flag) 
   (declare (ignore vestigial))
   (let ((check exp)
