@@ -1149,3 +1149,10 @@ a^^x = b^^x;
 x . ((2*a+b . c) = x . (y + z))^^w;
 x . (b . c+2*a)^^w = x . (x . (z+y))^^w;
 
+/* Bug ID: 593351 - limit/sin(inf)etc. should give 0, not IND
+ */
+
+limit(cos(1/x)*sin(x)-sin(x),x,inf);
+0;
+limit(cos(1/x)*sin(x)-sin(x)+a,x,inf);
+a;
