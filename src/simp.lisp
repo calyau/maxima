@@ -2447,6 +2447,7 @@
 	((eq e a))
 	(t (great e a))))
 
+;; compare lists a and b elementwise from back to front
 (defun ordlist (a b cx cy)
   (prog (l1 l2 c d)
      (setq l1 (length a) l2 (length b))
@@ -2460,19 +2461,28 @@
      (setq l1 (1- l1) l2 (1- l2))
      (go loop)))
 
+(defun term-list (x)
+  (if (mplusp x)
+      (cdr x)
+    (list x)))
+
+(defun factor-list (x)
+  (if (mtimesp x)
+      (cdr x)
+    (list x)))
+
+;; one of the exprs x or y should be one of:
+;; %del, mexpt, mplus, mtimes
 (defun ordfn (x y)
   (let ((cx (caar x)) (cy (caar y)) u)
     (cond ((eq cx '%del) (if (eq cy '%del) (great (cadr x) (cadr y)) t))
 	  ((eq cy '%del) nil)
-	  ((member cx '(mplus mtimes) :test #'eq)
-	   (cond ((member cy '(mplus mtimes) :test #'eq) (ordlist (cdr x) (cdr y) cx cy))
-		 ((alike1 (setq u (car (last x))) y) (not (ordhack x)))
-		 ((and (eq cx 'mplus) (eq cy 'mexpt) (mplusp (cadr y)))
-		  (not (ordmexpt y x)))
-		 (t (great u y))))
-	  ((member cy '(mplus mtimes) :test #'eq) (not (ordfn y x)))
+	  ((or (eq cx 'mtimes) (eq cy 'mtimes))
+	   (ordlist (factor-list x) (factor-list y) 'mtimes 'mtimes))
+	  ((or (eq cx 'mplus) (eq cy 'mplus))
+	   (ordlist (term-list x) (term-list y) 'mplus 'mplus))
 	  ((eq cx 'mexpt) (ordmexpt x y))
-	  (t (not (ordmexpt y x))))))	; (EQ CY 'MEXPT)
+	  ((eq cy 'mexpt) (not (ordmexpt y x))))))
 
 (defun ordhack (x)
   (if (and (cddr x) (null (cdddr x)))
@@ -2495,8 +2505,6 @@
 	       (t (let ((x1 (simpln1 x)) (y1 (simpln1 y)))
 		    (if (alike1 x1 y1) (great (cadr x) (cadr y))
 			(great x1 y1))))))
-	((maxima-constantp (cadr x))
-	 (if (alike1 (caddr x) y) t (great (caddr x) y)))
 	((alike1 (cadr x) y) (great (caddr x) 1))
 	((mnump (caddr x)) (great (cadr x) y))
 	(t (great (simpln1 x) (simpln (list '(%log) y) 1 t)))))

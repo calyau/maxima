@@ -124,8 +124,8 @@ x*(lambert_w(x)^2-lambert_w(x)+1)/lambert_w(x);
 
 /* SF bug report 2468610 the integrator loops endlessly 
    errcatch() doesn't catch the error for clisp-2.46 on cygwin */
-/* errcatch(integrate(lambert_w(1/x),x));
-[integrate(lambert_w(1/x),x)]; */
+integrate(lambert_w(1/x),x);
+'integrate(lambert_w(1/x),x);
 
 taylor(lambert_w(x),x,0,6);
 x-x^2+3*x^3/2-(8*x^4/3)+125*x^5/24-(54*x^6/5);
