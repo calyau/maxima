@@ -3,11 +3,11 @@
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
+;;;  "f2cl5.l,v 1.201 2009/12/14 22:36:46 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
 ;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp Snapshot 2009-12 (20A Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -27,7 +27,7 @@
              (type (f2cl-lib:integer4) info lda n m ku kl)
              (type (simple-array character (*)) type))
     (f2cl-lib:with-multi-array-data
-        ((type double-float type-%data% type-%offset%)
+        ((type character type-%data% type-%offset%)
          (a double-float a-%data% a-%offset%))
       (prog ((bignum 0.0) (cfrom1 0.0) (cfromc 0.0) (cto1 0.0) (ctoc 0.0)
              (mul 0.0) (smlnum 0.0) (i 0) (itype 0) (j 0) (k1 0) (k2 0) (k3 0)
