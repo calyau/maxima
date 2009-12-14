@@ -251,7 +251,8 @@
        (l))
       ((null args) (i-$dependencies (nreverse l)))
     (if ($listp (first args))
-	(mapc #'(lambda (e) (push (depends1 e (second args)) l)) (cdr (first args)))
+	(mapc #'(lambda (e) (push (depends1 e (second args)) l))
+	      (cdr (first args)))
 	(push (depends1 (first args) (second args)) l))))
 
 (defun depends1 (x y)
@@ -261,19 +262,35 @@
 (defmspec $dependencies (form)
   (i-$dependencies (cdr form)))
 
-(defmfun i-$dependencies (l)
+(defun i-$dependencies (l &aux res)
   (dolist (z l)
-    (cond ((atom z) (merror (intl:gettext "depends: argument must be a non-atomic expression; found ~M") z))
-	  ((or (eq (caar z) 'mqapply) (member 'array (cdar z) :test #'eq))
-	   (merror (intl:gettext "depends: argument cannot be a subscripted expression; found ~M") z))
-	  (t (let ((y (mget (caar z) 'depends)))
-	       (mputprop (caar z)
-			 (setq y (union* (reverse (cdr z)) y))
-			 'depends)
-	       (unless (cdr $dependencies)
-		 (setq $dependencies (copy-list '((mlist simp)))))
-	       (add2lnc (cons (cons (caar z) nil) y) $dependencies)))))
-  (cons '(mlist simp) l))
+    (cond
+      ((atom z)
+       (merror
+         (intl:gettext
+           "depends: argument must be a non-atomic expression; found ~M") z))
+      ((or (eq (caar z) 'mqapply)
+           (member 'array (cdar z) :test #'eq))
+       (merror
+         (intl:gettext
+           "depends: argument cannot be a subscripted expression; found ~M") z))
+      (t
+       (do ((zz z (cdr zz))
+            (y nil))
+           ((null zz)
+            (mputprop (caar z) (setq y (reverse y)) 'depends)
+            (setq res (push (cons (ncons (caar z)) y) res))
+            (unless (cdr $dependencies)
+              (setq $dependencies '((mlist simp))))
+            (add2lnc (cons (cons (caar z) nil) y) $dependencies))
+         (cond ((not (symbolp (cadr zz)))
+                (merror
+                  (intl:gettext "depends: argument must be a symbol; found ~M")
+                  (cadr zz)))
+               ((and (cadr zz)
+                     (not (member (cadr zz) y)))
+                (setq y (push (cadr zz) y))))))))
+  (cons '(mlist simp) (reverse res)))
 
 (defmspec $gradef (l)
   (setq l (cdr l))
