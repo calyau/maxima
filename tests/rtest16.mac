@@ -1156,3 +1156,16 @@ limit(cos(1/x)*sin(x)-sin(x),x,inf);
 0;
 limit(cos(1/x)*sin(x)-sin(x)+a,x,inf);
 a;
+
+/* Bug ID: 2914176  	 Conversion of rational to bfloat is inaccurate
+ *
+ * The difference should be 1/262144, but we don't check for that.
+ */
+(oldfpprec:fpprec, fpprec:5, done);
+done;
+is(bfloat((2^20+1)/(2^20-1)) - 1b0 > 0);
+true;
+
+(fpprec:oldfpprec, done);
+done;
+

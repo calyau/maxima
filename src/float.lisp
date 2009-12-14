@@ -390,6 +390,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 	       (exptbigfloat ($bfloat (cadr x)) (caddr x))))
 	  ((eq (caar x) 'mncexpt)
 	   (list '(mncexpt) ($bfloat (cadr x)) (caddr x)))
+	  ((eq (caar x) 'rat)
+	   (ratbigfloat (cdr x)))
 	  ((setq y (safe-get (caar x) 'floatprog))
 	   (funcall y (mapcar #'$bfloat (cdr x))))
 	  ((or (trigp (caar x)) (arcp (caar x)) (eq (caar x) '$entier))
@@ -429,8 +431,71 @@ One extra decimal digit in actual representation for rounding purposes.")
 		   ((equal fans tst) nfans)
 		   (t (simplify (list '(mplus) fans nfans)))))))
 
-(defmfun ratbigfloat (l)
-  (bcons (fpquotient (cdar l) (cdadr l))))
+(defmfun ratbigfloat (r)
+  (bcons (float-ratio r)))
+
+;; This is borrowed from CMUCL (float-ratio-float), and modified for
+;; converting ratios to Maxima's bfloat numbers.
+(defun float-ratio (x)
+  (let* ((signed-num (first x))
+	 (plusp (plusp signed-num))
+	 (num (if plusp signed-num (- signed-num)))
+	 (den (second x))
+	 (digits fpprec)
+	 (scale 0))
+    (declare (fixnum digits scale))
+    ;;
+    ;; Strip any trailing zeros from the denominator and move it into the scale
+    ;; factor (to minimize the size of the operands.)
+    (let ((den-twos (1- (integer-length (logxor den (1- den))))))
+      (declare (fixnum den-twos))
+      (decf scale den-twos)
+      (setq den (ash den (- den-twos))))
+    ;;
+    ;; Guess how much we need to scale by from the magnitudes of the numerator
+    ;; and denominator.  We want one extra bit for a guard bit.
+    (let* ((num-len (integer-length num))
+	   (den-len (integer-length den))
+	   (delta (- den-len num-len))
+	   (shift (1+ (the fixnum (+ delta digits))))
+	   (shifted-num (ash num shift)))
+      (declare (fixnum delta shift))
+      (decf scale delta)
+      (labels ((float-and-scale (bits)
+		 (let* ((bits (ash bits -1))
+			(len (integer-length bits)))
+		   (cond ((> len digits)
+			  (assert (= len (the fixnum (1+ digits))))
+			  (multiple-value-bind (f0)
+			      (floatit (ash bits -1))
+			    (list (first f0) (+ (second f0)
+						(1+ scale)))))
+			 (t
+			  (multiple-value-bind (f0)
+			      (floatit bits)
+			    (list (first f0) (+ (second f0) scale)))))))
+	       (floatit (bits)
+		 (let ((sign (if plusp 1 -1)))
+		   (list (* sign bits) 0))))
+	(loop
+	  (multiple-value-bind (fraction-and-guard rem)
+	      (truncate shifted-num den)
+	    (let ((extra (- (integer-length fraction-and-guard) digits)))
+	      (declare (fixnum extra))
+	      (cond ((/= extra 1)
+		     (assert (> extra 1)))
+		    ((oddp fraction-and-guard)
+		     (return
+		       (if (zerop rem)
+			   (float-and-scale
+			    (if (zerop (logand fraction-and-guard 2))
+				fraction-and-guard
+				(1+ fraction-and-guard)))
+			   (float-and-scale (1+ fraction-and-guard)))))
+		    (t
+		     (return (float-and-scale fraction-and-guard)))))
+	    (setq shifted-num (ash shifted-num -1))
+	    (incf scale)))))))
 
 (defun decimalsin (x)
   (do ((i (quotient (* 59. x) 196.) (1+ i))) ;log[10](2)=.301029
