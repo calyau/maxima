@@ -81,6 +81,9 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defmvar bigfloat%gamma '((bigfloat simp 56.) 41592772053807304. 0)
   "Bigfloat representation of %gamma")
 
+(defmvar bigfloat_log2 '((bigfloat simp 56.) 49946518145322874. 0)
+  "Bigfloat representation of log(2)")
+
 ;; Internal specials
 
 ;; Number of bits of precision in the mantissa of newly created bigfloats.
@@ -104,6 +107,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defvar max-bfloat-%pi bigfloat%pi)
 (defvar max-bfloat-%e  bigfloat%e)
 (defvar max-bfloat-%gamma bigfloat%gamma)
+(defvar max-bfloat-log2 bigfloat_log2)
+
 
 (declare-top (special *cancelled $float $bfloat $ratprint $ratepsilon $domain $m1pbranch adjust))
 
@@ -714,6 +719,16 @@ One extra decimal digit in actual representation for rounding purposes.")
 	(t
 	 (cdr (setq max-bfloat-%gamma (setq bigfloat%gamma (fpgamma1)))))))
 
+(defun fplog2 ()
+  (cond ((= fpprec (caddar bigfloat_log2))
+	 (cdr bigfloat_log2))
+	((< fpprec (caddar bigfloat_log2))
+	 (cdr (setq bigfloat_log2 (bigfloatp bigfloat_log2))))
+	((< fpprec (caddar max-bfloat-log2))
+	 (cdr (setq bigfloat_log2 (bigfloatp max-bfloat-log2))))
+	(t
+	 (cdr (setq max-bfloat-log2 (setq bigfloat_log2 (bcons (fplog (intofp 2)))))))))
+  
 (defun fpone ()
   (cond (*decfp (intofp 1))
 	((= fpprec (caddar bigfloatone)) (cdr bigfloatone))
@@ -1755,13 +1770,30 @@ One extra decimal digit in actual representation for rounding purposes.")
   (if y
       (multiple-value-bind (u v) (complex-log x y)
 	(add (bcons u) (mul '$%i (bcons v))))
-      (let ((fp-x (cdr (bigfloatp x))))
-	(if (fplessp fp-x (intofp 0))
-	    ;; ??? Do we want to return an exact %i*%pi or a float
-	    ;; approximation?
-	    (add (bcons (fplog (fpminus fp-x)))
-		 (mul '$%i (bcons (fppi))))
-	    (bcons (fplog fp-x))))))
+      (flet ((%log (x)
+	       ;; x is (mantissa exp), where mantissa = frac*2^fpprec,
+	       ;; with 1/2 < frac <= 1 and x is frac*2^exp.  To
+	       ;; compute log(x), use log(x) = log(frac)+ exp*log(2).
+	       (cdr
+		(let* ((extra 8)
+		       (fpprec (+ fpprec extra))
+		       (log-frac
+			(fplog #+nil
+			       (cdr ($bfloat
+				     (cl-rat-to-maxima (/ (car x)
+							  (ash 1 (- fpprec 8))))))
+			       (list (ash (car x) extra) 0)))
+		       (log-exp (fptimes* (intofp (second x)) (fplog2)))
+		       (result (bcons (fpplus log-frac log-exp))))
+		  (let ((fpprec (- fpprec extra)))
+		    (bigfloatp result))))))
+	(let ((fp-x (cdr (bigfloatp x))))
+	  (if (fplessp fp-x (intofp 0))
+	      ;; ??? Do we want to return an exact %i*%pi or a float
+	      ;; approximation?
+	      (add (bcons (%log (fpminus fp-x)))
+		   (mul '$%i (bcons (fppi))))
+	      (bcons (%log fp-x)))))))
 
 (defun big-float-sqrt (x &optional y)
   (if y

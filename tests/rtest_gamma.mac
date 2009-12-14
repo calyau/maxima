@@ -3165,8 +3165,9 @@ fpprec:16;
 
 beta_incomplete(1.0,1,z);
 1.0*z;
-beta_incomplete(1.0b0,1,z);
-1.0b0*z;
+/* Unfortunate, but we don't get exactly 1.0b0 */
+(closeto(beta_incomplete(1.0b0,1,z)/z,1b0,1b-15));
+true;
 beta_incomplete(1.0,1,1/2);
 0.5;
 beta_incomplete(1.0b0,1,1/2);
