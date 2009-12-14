@@ -277,18 +277,18 @@
 (defvar *fast-bfloat-extra-bits* 0)
 
 ;; Here is a test routine to test the fast bfloat conversion
-#||
+#+nil
 (defun test-make-number (&optional (n 1000))
   (let ((failures 0))
     (dotimes (k n)
       (flet ((digit-list (n)
-	       (coerce (format nil "~D" (random n)) 'list)))
+	       (coerce (format nil "~D" n) 'list)))
 	(let ((numlist nil))
 	  ;; Generate a random number with 30 fraction digits and an
 	  ;; large exponent.
-	  (push (digit-list 10) numlist)
+	  (push (digit-list (random 10)) numlist)
 	  (push '(#\.) numlist)
-	  (push (digit-list (expt 10 30)) numlist)
+	  (push (digit-list (random (expt 10 30))) numlist)
 	  (push '(#\B) numlist)
 	  (push (if (zerop (random 2)) '(#\+) '(#\-)) numlist)
 	  (push (digit-list (+ $fast_bfloat_threshold
@@ -300,13 +300,17 @@
 			(make-number (copy-list numlist))))
 		(fast (let (($fast_bfloat_conversion t))
 			(make-number (copy-list numlist)))))
+	    (format t "Test ~3A: " k)
+	    (map nil #'(lambda (x)
+			 (map nil #'princ x))
+		 (reverse numlist))
+	    (terpri)
 	    (unless (equalp true fast)
 	      (incf failures)
 	      (format t "NUM:  ~A~%  TRUE: ~S~%  FAST: ~S~%"
 		      (reverse numlist) true fast))))))
     (format t "~D failures in ~D tests (~F%)~%"
 	    failures n (* 100 failures (/ (float n))))))
-||#
 
 
 ;; WARNING: MAKE-NUMBER destructively modifies it argument!  Should we
