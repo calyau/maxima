@@ -1248,3 +1248,14 @@ done;
 integrate((a*x^2+b*x+c)/(d*x^3+a*x^2+b),x),integrate_use_rootsof:true;
 'lsum((c+%r1*b+%r1^2*a)*d*log(x-%r1)/(3*%r1^2*d+2*%r1*a),%r1,
             rootsof(d*x^3+a*x^2+b));
+
+/* fourier integral incorrect - ID: 2875784 */
+integrate(cos(x)*sin(x)/x, x, minf, inf);
+%pi/2;
+
+integrate(exp(%i*x)*sin(x)/x, x, minf, inf);
+%pi/2;
+
+integrate(exp(-%i*x)*sin(x)/x, x, minf, inf);
+%pi/2;
+
