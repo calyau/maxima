@@ -126,23 +126,21 @@
 	 (ssample (make-array `(,(1+ ($first $ip_grid_in))
 				,(1+ ($second $ip_grid_in)))))
 	 file-name gnuplot-out-file gnuplot-term
+	 (features '(:type "plot2d"))
 	 (xmaxima-titles ()))
     
-    (dolist (v options) ($set_plot_option v))
+    ;; Parse the given options into the list features
+    (setq features (plot-options-parser options features))
     (setq xrange (check-range xrange))
     (setq yrange (check-range yrange))
-    ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
+;    ($set_plot_option '((mlist simp) $gnuplot_pm3d nil))
     
     (if (not ($listp expr))
 	(setq expr `((mlist simp) ,expr)))
 
     (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
     
-    (if ($get_plot_option '$gnuplot_out_file 2)
-	(setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
-    
-    (if (eq ($get_plot_option '$plot_format 2)
-	    '$xmaxima)
+    (if (eq (getf features :plot-format) '$xmaxima)
 	(setq ip-gnuplot nil)
 	(setq ip-gnuplot t))
 
@@ -158,36 +156,60 @@
 	(file file-name :direction :output :if-exists :supersede)
       (if ip-gnuplot
 	  (progn
-	    (gnuplot-print-header file)
+	    (gnuplot-print-header file features)
 	    (format file "set xrange [~d:~d]~%" (caddr xrange) (cadddr xrange))
 	    (format file "set yrange [~d:~d]~%" (caddr yrange) (cadddr yrange))
 	    (format file "set style data lines~%")
 	    (format file "plot"))
-	  (progn
-	    (format file "plot2d -data {~%")))
-      (dolist (v (cdr expr))
-	(incf i)
-	(setq plot-name
-	      (let ((string ""))
-		(if (atom v) 
-		    (setf string (coerce (mstring v) 'string))
-		    (setf string (coerce (mstring v) 'string)))
-		(if (< (length string) 80)
-		    string
-		    (format nil "fun~a" i))))
-	(if ip-gnuplot
-	    (progn
-	      (if (> i 1)
-		  (format file ","))
-	      (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
-		(if (equal title "default")
-		    (setf title (format nil "title '~a'" plot-name)))
-		(format file " '-' ~a ~a" title 
-			(get-plot-option-string '$gnuplot_curve_styles i))))
-	    (progn
-	      (setq xmaxima-titles
-		    (cons (format nil " {label \"~a\"}~%" plot-name)
-			  xmaxima-titles)))))
+	    (xmaxima-print-header file features))
+      (let ((legend (getf features :legend))
+	    (styles (getf features :styles)))
+	(dolist (v (cdr expr))
+	  (incf i)
+	  (if legend        ; legend in the command line has priority
+	      (setq plot-name
+		    (if (first legend)
+			(ensure-string
+			 (nth (mod (- i 1) (length legend)) legend))
+			nil)) ; no legend if option [legend,false]
+	      (setq plot-name
+		    (let ((string ""))
+		      (if (atom v) 
+			  (setf string (coerce (mstring v) 'string))
+			  (setf string (coerce (mstring v) 'string)))
+		      (if (< (length string) 80)
+			  string
+			  (format nil "fun~a" i)))))
+	  (if ip-gnuplot
+	      (progn
+		(if (> i 1)
+		    (format file ","))
+		(let ((title (get-plot-option-string '$gnuplot_curve_titles i))
+		      (style (get-plot-option-string '$gnuplot_curve_styles i)))
+		  (when (or (equal title "false") (equal title "default"))
+		    (if plot-name
+			(setq title (format nil " title \"~a\"" plot-name))
+			(setq title " notitle")))
+		  (when (equal style "false")
+		    (if styles
+			(progn
+			  (setq style (nth (mod i (length styles)) styles))
+			  (setq style (if ($listp style) (cdr style) `(,style))))
+			(setq style nil))
+		    (setq style (gnuplot-curve-style style i)))
+		  (format file " '-' ~a ~a" title style)))
+	      (progn
+		(let (title style)
+		  (when plot-name
+		    (setq title (format nil " {label \"~a\"}" plot-name)))
+		  (if styles
+		      (progn
+			(setq style (nth (mod i (length styles)) styles))
+			(setq style (if ($listp style) (cdr style) `(,style))))
+		      (setq style nil))
+		  (setq style (xmaxima-curve-style style i))
+		  (setq xmaxima-titles (cons (format nil "~a ~a~%" title style)
+					     xmaxima-titles)))))))
       (format file "~%")
       (dolist (e (cdr expr))
 	(unless ip-gnuplot
