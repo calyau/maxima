@@ -45,7 +45,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $bessel_j (v z)
-  (simplify (list '(%bessel_j) (resimplify v) (resimplify z))))
+  (simplify (list '(%bessel_j) v z)))
 
 (defprop $bessel_j %bessel_j alias)
 (defprop $bessel_j %bessel_j verb)
@@ -149,21 +149,35 @@
               ;; in all other cases
               (domain-error arg 'bessel_j))))
       
-      ((and (complex-float-numerical-eval-p order arg)
-            (mnump order)) ; evaluate numerically only for a real order
+      ((complex-float-numerical-eval-p order arg)
        ;; We have numeric order and arg and $numer is true, or we have either 
        ;; the order or arg being floating-point, so let's evaluate it 
        ;; numerically.
-       ;; The numerical routine bessel-j returns a CL number, so we have 
+       ;; The numerical routine bessel-j returns a CL number, so we have
        ;; to add the conversion to a Maxima-complex-number.
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (bessel-j order arg)))
-         (simplify
-           (list '(mplus)
-                 (simplify (list '(mtimes) '$%i (imagpart result)))
-                 (realpart result)))))
+       (cond ((= 0 ($imagpart order))
+              ;; order is real, arg is real or complex
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                   ($float ($imagpart arg))))
+                     (result (bessel-j order arg)))
+                (add (mul '$%i (imagpart result))
+                     (realpart result))))
+             (t
+              ;; order is complex, arg is real or complex
+              ;; Use 1/gamma(v+1)*(z/2)^v*0F1(;v+1;-z^2/4)
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (mul (inv (take '(%gamma) (add order 1.0)))
+                         (power (div arg 2.0) order)
+                         (take '($hypergeometric)
+                               (list '(mlist))
+                               (list '(mlist) (add order 1.0))
+                               (neg (div (mul arg arg) 4.0))))))))))
       
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer.
@@ -280,7 +294,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $bessel_y (v z)
-  (simplify (list '(%bessel_y) (resimplify v) (resimplify z))))
+  (simplify (list '(%bessel_y) v z)))
 
 (defprop $bessel_y %bessel_y alias)
 (defprop $bessel_y %bessel_y verb)
@@ -374,19 +388,46 @@
       ((and (numberp arg) (= arg 0) (complex-number-p order)) 
          (domain-error arg 'bessel_y))
       
-      ((and (complex-float-numerical-eval-p order arg)
-              (mnump order)) ; evaluate numerically only for a real order
+      ((complex-float-numerical-eval-p order arg)
        ;; We have numeric order and arg and $numer is true, or
        ;; we have either the order or arg being floating-point,
        ;; so let's evaluate it numerically.
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (bessel-y order arg)))
-         (simplify
-           (list '(mplus)
-                 (simplify (list '(mtimes) '$%i (imagpart result)))
-                 (realpart result)))))
+       (cond ((= 0 ($imagpart order))
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                   ($float ($imagpart arg))))
+                     (result (bessel-y order arg)))
+                (add (mul '$%i (imagpart result))
+                     (realpart result))))
+             (t
+              ;; order is complex, arg is real or complex
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg))
+                    (dpi (coerce pi 'double-float)))
+                ($float
+                  ($rectform
+                    (add
+                      (mul -1.0
+                           (power 2.0 order)
+                           (inv (power arg order))
+                           (take '(%gamma) order)
+                           (inv dpi)
+                           (take '($hypergeometric)
+                                 (list '(mlist))
+                                 (list '(mlist) (sub 1.0 order))
+                                 (neg (div (mul arg arg) 4.0))))
+                     (mul -1.0
+                          (inv (power 2.0 order))
+                          (power arg order)
+                          (take '(%cos) (mul order dpi))
+                          (take '(%gamma) (neg order))
+                          (inv dpi)
+                          (take '($hypergeometric)
+                                (list '(mlist))
+                                (list '(mlist) (add order 1.0))
+                                (neg (div (mul arg arg) 4.0)))))))))))
       
       ((and (integerp order) (minusp order))
        ;; Special case when the order is an integer.
@@ -533,7 +574,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $bessel_i (v z)
-  (simplify (list '(%bessel_i) (resimplify v) (resimplify z))))
+  (simplify (list '(%bessel_i) v z)))
 
 (defprop $bessel_i %bessel_i alias)
 (defprop $bessel_i %bessel_i verb)
@@ -612,15 +653,29 @@
               ;; in all other cases domain-error
               (domain-error arg 'bessel_i))))
       
-      ((and (complex-float-numerical-eval-p order arg)
-            (mnump order)) ; evaluate numerically only for a real order
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (bessel-i order arg)))
-       (simplify (list '(mplus)
-                       (simplify (list '(mtimes) '$%i (imagpart result)))
-                       (realpart result)))))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                   ($float ($imagpart arg))))
+                     (result (bessel-i order arg)))
+                (add (mul '$%i (imagpart result))
+                     (realpart result))))
+             (t
+              ;; order is complex, arg is real or complex
+              ;; Use 1/gamma(v+1)*(z/2)^v*0F1(;v+1;z^2/4)
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (mul (inv (take '(%gamma) (add order 1.0)))
+                         (power (div arg 2.0) order)
+                         (take '($hypergeometric)
+                               (list '(mlist))
+                               (list '(mlist) (add order 1.0))
+                               (div (mul arg arg) 4.0)))))))))
       
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer
@@ -728,7 +783,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmfun $bessel_k (v z)
-  (simplify (list '(%bessel_k) (resimplify v) (resimplify z))))
+  (simplify (list '(%bessel_k) v z)))
 
 (defprop $bessel_k %bessel_k alias)
 (defprop $bessel_k %bessel_k verb)
@@ -832,16 +887,38 @@
        ;; domain-error for all cases of zero arg
        (domain-error arg 'bessel_k))
           
-      ((and (complex-float-numerical-eval-p order arg)
-            (mnump order)) ; evaluate numerically only for a real order
-       ;; A&S 9.6.6: K[-v](x) = K[v](x)
-       (let* ((order ($float order))
-              (arg (complex ($float ($realpart arg))
-                            ($float ($imagpart arg))))
-              (result (bessel-k order arg)))
-         (simplify (list '(mplus)
-                         (simplify (list '(mtimes) '$%i (imagpart result)))
-                         (realpart result)))))
+      ((complex-float-numerical-eval-p order arg)
+       (cond ((= 0 ($imagpart order))
+              ;; A&S 9.6.6: K[-v](x) = K[v](x)
+              (let* ((order ($float order))
+                     (arg (complex ($float ($realpart arg))
+                                  ($float ($imagpart arg))))
+                     (result (bessel-k order arg)))
+                (add (mul '$%i (imagpart result))
+                     (realpart result))))
+             (t
+              ;; order is complex, arg is real or complex
+              (let (($numer t)
+                    ($float t)
+                    (order ($float order))
+                    (arg ($float arg)))
+                ($float
+                  ($rectform
+                    (add
+                      (mul (power 2.0 (sub order 1.0))
+                           (take '(%gamma) order)
+                           (inv (power arg order))
+                           (take '($hypergeometric)
+                                 (list '(mlist))
+                                 (list '(mlist) (sub 1.0 order))
+                                 (div (mul arg arg) 4.0)))
+                     (mul (inv (power 2.0 (add order 1.0)))
+                          (power arg order)
+                          (take '(%gamma) (neg order))
+                          (take '($hypergeometric)
+                                (list '(mlist))
+                                (list '(mlist) (add order 1.0))
+                                (div (mul arg arg) 4.0))))))))))
       
       ((mminusp order)
        ;; A&S 9.6.6: K[-v](x) = K[v](x)
@@ -972,8 +1049,7 @@
 
 ;; Compute sqrt(2*z/%pi)
 (defun root-2z/pi (z)
-  (let ((half (div 1 2)))
-    (simplify (power (mul 2 z (inv '$%pi)) half))))
+  (power (mul 2 z (inv '$%pi)) '((rat simp) 1 2)))
 
 (defun bessel-j-half-order (order arg)
   "Compute J[n+1/2](z)"
@@ -1047,9 +1123,9 @@
   (let ((order (floor order)))
     (mul (root-2z/pi arg)
          (add (mul ($expand (g-fun order arg))
-                   `((%sinh) ,arg))
+                   (take '(%sinh) arg))
               (mul ($expand (g-fun (- (+ order 1)) arg))
-                   `((%cosh) ,arg))))))
+                   (take '(%cosh) arg))))))
 
 ;; See A&S 10.2.15
 ;;
@@ -1080,8 +1156,8 @@
 
 (defun bessel-k-half-order (order arg)
   (let ((order (truncate (abs order))))
-    (mul (mul `((mexpt) ,(div '$%pi (mul 2 arg)) ,(div 1 2))
-              `((mexpt) $%e ,(neg arg)))
+    (mul (mul (power (div '$%pi (mul 2 arg)) '((rat simp) 1 2))
+              (power '$%e (neg arg)))
          (k-fun (abs order) arg))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
