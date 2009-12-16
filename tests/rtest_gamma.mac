@@ -3268,11 +3268,15 @@ closeto(
   0.0,
   1e-15);
 true;
+/* I (rtoy) think the limiting accuracy of the following test is the conversion of 
+ * the exact answer to floating point.  If the exact answer is converted to a 
+ * bfloat 32 digits, the difference is less than 1.6e-15 or so.
+*/
 closeto(
-  float(rectform(beta_incomplete(2,5/2,-3/2+%i)))
+  float(rectform(float(beta_incomplete(2,5/2,-3/2+%i))))
                 -beta_incomplete(2.0,2.5,-1.5+%i),
   0.0,
-  4.2e-15); /* we have lost accuracy. More tests necessary? */
+  3.8e-15); /* we have lost accuracy. More tests necessary? */
 true;
 
 /* Incomplete Beta is definied for negative integers a and b >= (-a) 

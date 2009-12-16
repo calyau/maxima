@@ -754,46 +754,65 @@ One extra decimal digit in actual representation for rounding purposes.")
     (mapc #'(lambda (u) (if (fpgreaterp u max) (setq max u))) args)
     max))
 
-;; (FPE) RETURN BIG FLOATING POINT %E.  IT RETURNS (CDR BIGFLOAT%E) IF RIGHT
-;; PRECISION.  IT RETURNS TRUNCATED BIGFLOAT%E IF POSSIBLE, ELSE RECOMPUTES.
-;; IN ANY CASE, BIGFLOAT%E IS SET TO LAST USED VALUE.
+;; The following functions compute bigfloat values for %e, %pi,
+;; %gamma, and log(2).  For each precision, the computed value is
+;; cached in a hash table so it doesn't need to be computed again.
+;; There are functions to return the hash table or clear the hash
+;; table, for debugging.
+;;
+;; Note that each of these return a bigfloat number, but without the
+;; bigfloat tag.
+;;
+;; See
+;; https://sourceforge.net/tracker/?func=detail&atid=104933&aid=2910437&group_id=4933
+;; for an explanation.
+(let ((table (make-hash-table)))
+  (defun fpe ()
+    (let ((value (gethash fpprec table)))
+      (if value
+	  value
+	  (setf (gethash fpprec table) (cdr (fpe1))))))
+  (defun fpe-table ()
+    table)
+  (defun clear_fpe_table ()
+    (clrhash table)))
 
-(defun fpe ()
-  (cond ((= fpprec (caddar bigfloat%e)) (cdr bigfloat%e))
-	((< fpprec (caddar bigfloat%e))
-	 (cdr (setq bigfloat%e (bigfloatp bigfloat%e))))
-	((< fpprec (caddar max-bfloat-%e))
-	 (cdr (setq bigfloat%e (bigfloatp max-bfloat-%e))))
-   (t (cdr (setq max-bfloat-%e (setq bigfloat%e (fpe1)))))))
+(let ((table (make-hash-table)))
+  (defun fppi ()
+    (let ((value (gethash fpprec table)))
+      (if value
+	  value
+	  (setf (gethash fpprec table) (cdr (fppi1))))))
+  (defun fppi-table ()
+    table)
+  (defun clear_fppi_table ()
+    (clrhash table)))
 
-(defun fppi ()
-  (cond ((= fpprec (caddar bigfloat%pi)) (cdr bigfloat%pi))
-	((< fpprec (caddar bigfloat%pi))
-	 (cdr (setq bigfloat%pi (bigfloatp bigfloat%pi))))
-	((< fpprec (caddar max-bfloat-%pi))
-	 (cdr (setq bigfloat%pi (bigfloatp max-bfloat-%pi))))
-	(t (cdr (setq max-bfloat-%pi (setq bigfloat%pi (fppi1)))))))
+(let ((table (make-hash-table)))
+  (defun fpgamma ()
+    (let ((value (gethash fpprec table)))
+      (if value
+	  value
+	  (setf (gethash fpprec table) (cdr (fpgamma1))))))
+  (defun fpgamma-table ()
+    table)
+  (defun clear_fpgamma_table ()
+    (clrhash table)))
 
-(defun fpgamma ()
-  (cond ((= fpprec (caddar bigfloat%gamma))
-	 (cdr bigfloat%gamma))
-	((< fpprec (caddar bigfloat%gamma))
-	 (cdr (setq bigfloat%gamma (bigfloatp bigfloat%gamma))))
-	((< fpprec (caddar max-bfloat-%gamma))
-	 (cdr (setq bigfloat%gamma (bigfloatp max-bfloat-%gamma))))
-	(t
-	 (cdr (setq max-bfloat-%gamma (setq bigfloat%gamma (fpgamma1)))))))
+(let ((table (make-hash-table)))
+  (defun fplog2 ()
+    (let ((value (gethash fpprec table)))
+      (if value
+	  value
+	  (setf (gethash fpprec table) (fplog (intofp 2))))))
+  (defun fplog2-table ()
+    table)
+  (defun clear_fplog2_table ()
+    (clrhash table)))
 
-(defun fplog2 ()
-  (cond ((= fpprec (caddar bigfloat_log2))
-	 (cdr bigfloat_log2))
-	((< fpprec (caddar bigfloat_log2))
-	 (cdr (setq bigfloat_log2 (bigfloatp bigfloat_log2))))
-	((< fpprec (caddar max-bfloat-log2))
-	 (cdr (setq bigfloat_log2 (bigfloatp max-bfloat-log2))))
-	(t
-	 (cdr (setq max-bfloat-log2 (setq bigfloat_log2 (bcons (fplog (intofp 2)))))))))
-  
+;; This doesn't need a hash table because there's never a problem with
+;; using a high precision value and rounding to a lower precision
+;; value because 1 is always an exact bfloat.
 (defun fpone ()
   (cond (*decfp (intofp 1))
 	((= fpprec (caddar bigfloatone)) (cdr bigfloatone))
