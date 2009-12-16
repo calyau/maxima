@@ -208,6 +208,8 @@
  "A function of one argument which TAYLOR uses to simplify coefficients
   of power series.")
 
+(defvar taylor_simplifier nil)
+
 ;;;		 Subtitle General Macsyma Free Predicates
 
 (defun zfree (e x)
