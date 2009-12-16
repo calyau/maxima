@@ -492,3 +492,8 @@ pade(ts,2,2);
 /* [ 1729430 ] numberp of taylor poly */
 numberp(taylor(x^2, x, 0, 1));
 false;
+
+/* Bug ID: 2907952 - diff of a taylor series
+ */
+diff(taylor(1/(1-x^2),x,0,10),x);
+2*x+4*x^3+6*x^5+8*x^7+10*x^9;
