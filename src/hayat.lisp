@@ -1971,7 +1971,8 @@
   (setq tlist (tlist-merge (nconc (find-tlists e) tlist)))
   (prog ($zerobern $simp $algebraic genpairs varlist tvars sing-tvars
 	 log-1 log%i ivars key-vars ans full-log last-exp
-	 mainvar-datum zerolist taylor_simplifier least_term? tvar-limits)
+	 mainvar-datum zerolist taylor_simplifier least_term? tvar-limits 
+         genvar)
 	(setq tlist (mapcan #'(lambda (d)
 				(if (tvar? (datum-var d))
 				    (ncons d)
