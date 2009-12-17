@@ -497,3 +497,16 @@ false;
  */
 diff(taylor(1/(1-x^2),x,0,10),x);
 2*x+4*x^3+6*x^5+8*x^7+10*x^9;
+
+/* Bug ID: 660876 - taylor and keepfloat ERR
+ */
+(old:keepfloat, keepfloat:true);
+true;
+(qq: taylor((x+1.0)^2,x,1,3),done);
+done;
+keepfloat:false;
+false;
+qq^2;
+16+32*(x-1)+24*(x-1)^2+8*(x-1)^3;
+(keepfloat:old,done);
+done;
