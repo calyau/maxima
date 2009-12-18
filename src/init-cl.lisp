@@ -301,7 +301,7 @@ When one changes, the other does too."
 	;; Sort in alphabetical order
 	(sort dir-list #'string-lessp))))
 
-#+ecl
+#+(or ecl sbcl)
 (defun share-subdirs-list ()
   ;; This doesn't work yet on windows.  Give up in that case and use
   ;; the default list.
@@ -405,7 +405,7 @@ When one changes, the other does too."
     "utils"
     "vector"))
 
-#-(or cmu clisp ecl)
+#-(or cmu clisp ecl sbcl)
 (defun share-subdirs-list ()
   (default-share-subdirs-list))
 
