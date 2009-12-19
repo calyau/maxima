@@ -160,7 +160,8 @@
   (cond ((get (caar form) 'array-mode)
 	 (pushnew (caar form) arrays :test #'eq)
 	 `(,(array-mode (caar form))
-	   . (,(caar form) ,@(tr-args (cdr form)))))
+	    marrayref
+	    . (,(caar form) ,@(tr-args (cdr form)))))
 	($translate_fast_arrays (setq all-inds (mapcar 'dtranslate (cdr form)))
 				;;not apply changed 'tr-maref
 				(funcall 'tr-maref (cdr (translate (caar form)))   all-inds))
