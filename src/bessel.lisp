@@ -56,6 +56,10 @@
 
 (defprop %bessel_j simp-bessel-j operators)
 
+;; Bessel J distributes over lists, matrices, and equations
+
+(defprop %bessel_j (mlist $matrix mequal) distribute_over)
+
 ;; Derivatives of the Bessel function.
 (defprop %bessel_j
     ((n x)
@@ -130,24 +134,75 @@
               ((mexpt) z ((mplus ) 1 v)))))))
   'integral)
 
-(defun simp-bessel-j (exp ignored z)
+;; Support a simplim%bessel_j function to handle specific limits
+
+(defprop %bessel_j simplim%bessel_j simplim%function)
+
+(defun simplim%bessel_j (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((v (limit (cadr expr) var val 'think))
+        (z (limit (caddr expr) var val 'think)))
+  (cond
+    ;; Handle an argument 0 at this place.
+    ((or (zerop1 z)
+         (eq z '$zeroa)
+         (eq z '$zerob))
+     (let ((sgn ($sign ($realpart v))))
+       (cond ((and (eq sgn '$neg)
+                   (not (maxima-integerp v)))
+              ;; bessel_j(v,0), Re(v)<0 and v not an integer
+              '$infinity)
+             ((and (eq sgn '$zero)
+                   (not (zerop1 v)))
+              ;; bessel_j(v,0), Re(v)=0 and v #0
+              '$und)
+             ;; Call the simplifier of the function.
+             (t (simplify (list '(%bessel_j) v z))))))
+    ((or (eq z '$inf)
+         (eq z '$minf))
+     ;; bessel_j(a,inf) or bessel_j(a,minf)
+     0)
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%bessel_j) v z))))))
+
+(defun simp-bessel-j (expr ignored z)
   (declare (ignore ignored))
-  (twoargcheck exp)
-  (let ((order (simpcheck (cadr exp) z))
-        (arg   (simpcheck (caddr exp) z))
+  (twoargcheck expr)
+  (let ((order (simpcheck (cadr expr) z))
+        (arg   (simpcheck (caddr expr) z))
         (rat-order nil))
-    (cond 
-      ((and (numberp arg) (= arg 0) (complex-number-p order))
+    (cond
+      ((zerop1 arg)
        ;; We handle the different case for zero arg carefully.
-       (cond ((and (numberp order) (zerop order))
-              1)
-             ((and (numberp order) (integerp order))
-              0)
-             ((> ($realpart order) 0)
-              0)
-             (t
-              ;; in all other cases
-              (domain-error arg 'bessel_j))))
+       (let ((sgn ($sign ($realpart order))))
+         (cond ((and (eq sgn '$zero)
+                     (zerop1 ($imagpart order)))
+                ;; bessel_j(0,0) = 1
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 1))
+                      ((or (floatp order) (floatp arg)) 1.0)
+                      (t 1)))
+               ((or (eq sgn '$pos)
+                    (maxima-integerp order))
+                ;; bessel_j(v,0) and Re(v)>0 or v an integer
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 0))
+                      ((or (floatp order) (floatp arg)) 0.0)
+                      (t 0)))
+               ((and (eq sgn '$neg)
+                     (not (maxima-integerp order)))
+                ;; bessel_j(v,0) and Re(v)<0 and v not an integer
+                (simp-domain-error
+                  (intl:gettext "bessel_j: bessel_j(~:M,~:M) is undefined.")
+                  order arg))
+               ((and (eq sgn '$zero)
+                     (not (zerop1 ($imagpart order))))
+                ;; bessel_j(v,0) and Re(v)=0 and v # 0
+                (simp-domain-error
+                  (intl:gettext "bessel_j: bessel_j(~:M,~:M) is undefined.")
+                  order arg))
+               (t
+                ;; No information about the sign of the order
+                (eqtest (list '(%bessel_j) order arg) expr)))))
       
       ((complex-float-numerical-eval-p order arg)
        ;; We have numeric order and arg and $numer is true, or we have either 
@@ -196,7 +251,7 @@
               ;; can express the result in terms of elementary functions.
               (bessel-j-half-order rat-order arg))))
       (t
-       (eqtest (list '(%bessel_j) order arg) exp)))))
+       (eqtest (list '(%bessel_j) order arg) expr)))))
 
 ;; Compute value of Bessel function of the first kind of order ORDER.
 (defun bessel-j (order arg)
@@ -303,6 +358,10 @@
 
 (defprop %bessel_y simp-bessel-y operators)
 
+;; Bessel Y distributes over lists, matrices, and equations
+
+(defprop %bessel_y (mlist $matrix mequal) distribute_over)
+
 (defprop %bessel_y
     ((n x)
      ;; A&S 9.1.65
@@ -378,15 +437,56 @@
      (t nil))))
   'integral)
 
-(defun simp-bessel-y (exp ignored z)
+;; Support a simplim%bessel_j function to handle specific limits
+
+(defprop %bessel_y simplim%bessel_y simplim%function)
+
+(defun simplim%bessel_y (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((v (limit (cadr expr) var val 'think))
+        (z (limit (caddr expr) var val 'think)))
+  (cond
+    ;; Handle an argument 0 at this place.
+    ((or (zerop1 z)
+         (eq z '$zeroa)
+         (eq z '$zerob))
+     (cond ((zerop1 v)
+            ;; bessel_y(0,0)
+            '$minf)
+           ((integerp v)
+            ;; bessel_y(n,0), n an integer
+            (cond ((evenp v) '$minf)
+                  (t (cond ((eq z '$zeroa) '$minf)
+                           ((eq z '$zerob) '$inf)
+                           (t '$infinity)))))
+           ((not (zerop1 ($realpart v)))
+            ;; bessel_y(v,0), Re(v)#0
+            '$infinity)
+           ((and (zerop1 ($realpart v))
+                 (not (zerop1 v)))
+            ;; bessel_y(v,0), Re(v)=0 and v#0
+            '$und)
+           ;; Call the simplifier of the function.
+           (t (simplify (list '(%bessel_y) v z)))))
+    ((or (eq z '$inf)
+         (eq z '$minf))
+     ;; bessel_y(a,inf) or bessel_y(a,minf)
+     0)
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%bessel_y) v z))))))
+
+(defun simp-bessel-y (expr ignored z)
   (declare (ignore ignored))
-  (twoargcheck exp)
-  (let ((order (simpcheck (cadr exp) z))
-        (arg (simpcheck (caddr exp) z))
+  (twoargcheck expr)
+  (let ((order (simpcheck (cadr expr) z))
+        (arg (simpcheck (caddr expr) z))
         (rat-order nil))
-    (cond 
-      ((and (numberp arg) (= arg 0) (complex-number-p order)) 
-         (domain-error arg 'bessel_y))
+    (cond
+      ((zerop1 arg)
+       ;; Domain error for a zero argument.
+       (simp-domain-error
+         (intl:gettext "bessel_y: bessel_y(~:M,~:M) is undefined.") order arg))
       
       ((complex-float-numerical-eval-p order arg)
        ;; We have numeric order and arg and $numer is true, or
@@ -433,7 +533,7 @@
        ;; Special case when the order is an integer.
        ;; A&S 9.1.5: Y[-n](x) = (-1)^n*Y[n](x)
        (if (evenp order)
-           (list '(%bessel_y) (- order) arg)
+           (list '(%bessel_y simp) (- order) arg)
            `((mtimes simp) -1 ((%bessel_y simp) ,(- order) ,arg))))
       
       ((and $besselexpand 
@@ -450,7 +550,7 @@
               (bessel-y-half-order rat-order arg))))
        
       (t
-       (eqtest (list '(%bessel_y) order arg) exp)))))
+       (eqtest (list '(%bessel_y) order arg) expr)))))
 
 ;; Bessel function of the second kind, Y[n](z), for real or complex z
 (defun bessel-y (order arg)
