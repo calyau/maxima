@@ -69,17 +69,17 @@
      ;; J[n](x)*log(x/2) 
      ;;       - (x/2)^n*sum((-1)^k*psi(n+k+1)/gamma(n+k+1)*(z^2/4)^k/k!,k,0,inf)
      ((mplus)
-      ((mtimes simp)
-       ((%bessel_j simp) n x)
-       ((%log) ((mtimes) ((rat simp) 1 2) x)))
-      ((mtimes simp) -1
-       ((mexpt simp) ((mtimes simp) x ((rat simp) 1 2)) n)
-       ((%sum simp)
-        ((mtimes simp) ((mexpt simp) -1 $%k)
-         ((mexpt simp) ((mfactorial simp) $%k) -1)
-         ((mqapply simp) (($psi simp array) 0) ((mplus simp) 1 $%k n))
-         ((mexpt simp) ((%gamma simp) ((mplus simp) 1 $%k n)) -1)
-         ((mexpt simp) ((mtimes simp) x x ((rat simp) 1 4)) $%k))
+      ((mtimes)
+       ((%bessel_j) n x)
+       ((%log) ((mtimes) ((rat) 1 2) x)))
+      ((mtimes) -1
+       ((mexpt) ((mtimes) x ((rat) 1 2)) n)
+       ((%sum)
+        ((mtimes) ((mexpt) -1 $%k)
+         ((mexpt) ((mfactorial) $%k) -1)
+         ((mqapply) (($psi array) 0) ((mplus) 1 $%k n))
+         ((mexpt) ((%gamma) ((mplus) 1 $%k n)) -1)
+         ((mexpt) ((mtimes) x x ((rat) 1 4)) $%k))
         $%k 0 $inf)))
       
      ;; Derivative wrt to arg x.  
@@ -160,7 +160,7 @@
              (t (simplify (list '(%bessel_j) v z))))))
     ((or (eq z '$inf)
          (eq z '$minf))
-     ;; bessel_j(a,inf) or bessel_j(a,minf)
+     ;; bessel_j(v,inf) or bessel_j(v,minf)
      0)
     (t
      ;; All other cases are handled by the simplifier of the function.
@@ -238,18 +238,15 @@
        ;; Some special cases when the order is an integer.
        ;; A&S 9.1.5: J[-n](x) = (-1)^n*J[n](x)
        (if (evenp order)
-           (list '(%bessel_j simp) (- order) arg)
-           `((mtimes simp) -1 ((%bessel_j simp) ,(- order) ,arg))))
+           (take '(%bessel_j) (- order) arg)
+           (mul -1 (take '(%bessel_j) (- order) arg))))
       
       ((and $besselexpand 
             (setq rat-order (max-numeric-ratio-p order 2)))
-       (cond ((and (numberp arg) (= arg 0)) 
-              ;; We don't expand for a zero argument.
-              (if (> rat-order 0) 0 (domain-error arg 'bessel_j)))
-             (t
-              ;; When order is a fraction with a denominator of 2, we
-              ;; can express the result in terms of elementary functions.
-              (bessel-j-half-order rat-order arg))))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary functions.
+       (bessel-j-half-order rat-order arg))
+      
       (t
        (eqtest (list '(%bessel_j) order arg) expr)))))
 
@@ -368,17 +365,17 @@
      ;;
      ;; cot(n*%pi)*[diff(bessel_j(n,x),n)-%pi*bessel_y(n,x)]
      ;;  - csc(n*%pi)*diff(bessel_j(-n,x),n)-%pi*bessel_j(n,x)
-     ((mplus simp)
-      ((mtimes simp) $%pi ((%bessel_j simp) n x))
-      ((mtimes simp)
+     ((mplus)
+      ((mtimes) $%pi ((%bessel_j) n x))
+      ((mtimes)
        -1
-       ((%csc simp) ((mtimes simp) $%pi n))
-       ((%derivative simp) ((%bessel_j simp) ((mtimes simp) -1 n) x) x 1))
-      ((mtimes simp)
-       ((%cot simp) ((mtimes simp) $%pi n))
-       ((mplus simp)
-        ((mtimes simp) -1 $%pi ((%bessel_y simp) n x))
-        ((%derivative simp) ((%bessel_j simp) n x) n 1))))
+       ((%csc) ((mtimes) $%pi n))
+       ((%derivative) ((%bessel_j) ((mtimes) -1 n) x) x 1))
+      ((mtimes)
+       ((%cot) ((mtimes) $%pi n))
+       ((mplus)
+        ((mtimes) -1 $%pi ((%bessel_y) n x))
+        ((%derivative) ((%bessel_j) n x) n 1))))
 
      ;; Derivative wrt to arg x.  A&S 9.1.27; changed from A&S 9.1.30
      ;; to be consistent with bessel_j.
@@ -437,7 +434,7 @@
      (t nil))))
   'integral)
 
-;; Support a simplim%bessel_j function to handle specific limits
+;; Support a simplim%bessel_y function to handle specific limits
 
 (defprop %bessel_y simplim%bessel_y simplim%function)
 
@@ -470,7 +467,7 @@
            (t (simplify (list '(%bessel_y) v z)))))
     ((or (eq z '$inf)
          (eq z '$minf))
-     ;; bessel_y(a,inf) or bessel_y(a,minf)
+     ;; bessel_y(v,inf) or bessel_y(v,minf)
      0)
     (t
      ;; All other cases are handled by the simplifier of the function.
@@ -533,21 +530,17 @@
        ;; Special case when the order is an integer.
        ;; A&S 9.1.5: Y[-n](x) = (-1)^n*Y[n](x)
        (if (evenp order)
-           (list '(%bessel_y simp) (- order) arg)
-           `((mtimes simp) -1 ((%bessel_y simp) ,(- order) ,arg))))
+           (take '(%bessel_y) (- order) arg)
+           (mul -1 (take '(%bessel_y) (- order) arg))))
       
       ((and $besselexpand 
             (setq rat-order (max-numeric-ratio-p order 2)))
-       (cond ((and (numberp arg) (= arg 0))
-              ;; We don't expand for a zero argument.
-              (domain-error arg 'bessel_y))
-             (t
-              ;; When order is a fraction with a denominator of 2, we
-              ;; can express the result in terms of elementary functions.
-              ;;
-              ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
-              ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
-              (bessel-y-half-order rat-order arg))))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary functions.
+       ;;
+       ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
+       ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
+       (bessel-y-half-order rat-order arg))
        
       (t
        (eqtest (list '(%bessel_y) order arg) expr)))))
@@ -683,6 +676,10 @@
 
 (defprop %bessel_i simp-bessel-i operators)
 
+;; Bessel I distributes over lists, matrices, and equations
+
+(defprop %bessel_i (mlist $matrix mequal) distribute_over)
+
 (defprop %bessel_i
     ((n x)
      ;; A&S 9.6.42
@@ -690,17 +687,17 @@
      ;; I[n](x)*log(x/2) 
      ;;   - (x/2)^n*sum(psi(n+k+1)/gamma(n+k+1)*(z^2/4)^k/k!,k,0,inf)
      ((mplus)
-      ((mtimes simp)
-       ((%bessel_i simp) n x)
-       ((%log) ((mtimes) ((rat simp) 1 2) x)))
-      ((mtimes simp) -1
-       ((mexpt simp) ((mtimes simp) x ((rat simp) 1 2)) n)
-       ((%sum simp)
-        ((mtimes simp)
-         ((mexpt simp) ((mfactorial simp) $%k) -1)
-         ((mqapply simp) (($psi simp array) 0) ((mplus simp) 1 $%k n))
-         ((mexpt simp) ((%gamma simp) ((mplus simp) 1 $%k n)) -1)
-         ((mexpt simp) ((mtimes simp) x x ((rat simp) 1 4)) $%k))
+      ((mtimes)
+       ((%bessel_i) n x)
+       ((%log) ((mtimes) ((rat) 1 2) x)))
+      ((mtimes) -1
+       ((mexpt) ((mtimes) x ((rat) 1 2)) n)
+       ((%sum)
+        ((mtimes)
+         ((mexpt) ((mfactorial) $%k) -1)
+         ((mqapply) (($psi array) 0) ((mplus) 1 $%k n))
+         ((mexpt) ((%gamma) ((mplus) 1 $%k n)) -1)
+         ((mexpt) ((mtimes) x x ((rat) 1 4)) $%k))
         $%k 0 $inf)))
      ;; Derivative wrt to x.  A&S 9.6.29.
      ((mtimes)
@@ -736,22 +733,77 @@
           (otherwise nil))))
   'integral)
 
-(defun simp-bessel-i (exp ignored z)
+;; Support a simplim%bessel_i function to handle specific limits
+
+(defprop %bessel_i simplim%bessel_i simplim%function)
+
+(defun simplim%bessel_i (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((v (limit (cadr expr) var val 'think))
+        (z (limit (caddr expr) var val 'think)))
+  (cond
+    ;; Handle an argument 0 at this place.
+    ((or (zerop1 z)
+         (eq z '$zeroa)
+         (eq z '$zerob))
+     (let ((sgn ($sign ($realpart v))))
+       (cond ((and (eq sgn '$neg)
+                   (not (maxima-integerp v)))
+              ;; bessel_i(v,0), Re(v)<0 and v not an integer
+              '$infinity)
+             ((and (eq sgn '$zero)
+                   (not (zerop1 v)))
+              ;; bessel_i(v,0), Re(v)=0 and v #0
+              '$und)
+             ;; Call the simplifier of the function.
+             (t (simplify (list '(%bessel_i) v z))))))
+    ((eq z '$inf)
+     ;; bessel_i(v,inf)
+     '$inf)
+    ((eq z '$minf)
+     ;; bessel_i(v,minf)
+     '$infinity)
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%bessel_i) v z))))))
+
+(defun simp-bessel-i (expr ignored z)
   (declare (ignore ignored))
-  (twoargcheck exp)
-  (let ((order (simpcheck (cadr exp) z))
-        (arg (simpcheck (caddr exp) z))
+  (twoargcheck expr)
+  (let ((order (simpcheck (cadr expr) z))
+        (arg (simpcheck (caddr expr) z))
         (rat-order nil))
-    (cond 
-      ((and (numberp arg) (= arg 0) (complex-number-p order))
+    (cond
+      ((zerop1 arg)
        ;; We handle the different case for zero arg carefully.
-       (cond ((= order 0)
-              1)
-             ((or (and (numberp order) (> order 0)) (integerp order))
-              0)     
-             (t
-              ;; in all other cases domain-error
-              (domain-error arg 'bessel_i))))
+       (let ((sgn ($sign ($realpart order))))
+         (cond ((and (eq sgn '$zero)
+                     (zerop1 ($imagpart order)))
+                ;; bessel_i(0,0) = 1
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 1))
+                      ((or (floatp order) (floatp arg)) 1.0)
+                      (t 1)))
+               ((or (eq sgn '$pos)
+                    (maxima-integerp order))
+                ;; bessel_i(v,0) and Re(v)>0 or v an integer
+                (cond ((or ($bfloatp order) ($bfloatp arg)) ($bfloat 0))
+                      ((or (floatp order) (floatp arg)) 0.0)
+                      (t 0)))
+               ((and (eq sgn '$neg)
+                     (not (maxima-integerp order)))
+                ;; bessel_i(v,0) and Re(v)<0 and v not an integer
+                (simp-domain-error
+                  (intl:gettext "bessel_i: bessel_i(~:M,~:M) is undefined.")
+                  order arg))
+               ((and (eq sgn '$zero)
+                     (not (zerop1 ($imagpart order))))
+                ;; bessel_i(v,0) and Re(v)=0 and v # 0
+                (simp-domain-error
+                  (intl:gettext "bessel_i: bessel_i(~:M,~:M) is undefined.")
+                  order arg))
+               (t
+                ;; No information about the sign of the order
+                (eqtest (list '(%bessel_i) order arg) expr)))))
       
       ((complex-float-numerical-eval-p order arg)
        (cond ((= 0 ($imagpart order))
@@ -780,21 +832,18 @@
       ((and (integerp order) (minusp order))
        ;; Some special cases when the order is an integer
        ;; A&S 9.6.6: I[-n](x) = I[n](x)
-       (list '(%bessel_i) (- order) arg))
+       (take '(%bessel_i) (- order) arg))
       
       ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
-       (cond ((and (numberp arg) (= arg 0))
-              ;; We don't expand for a zero argument.
-              (if (> rat-order 0) 0 (domain-error arg 'bessel_i)))
-             (t
-              ;; When order is a fraction with a denominator of 2, we
-              ;; can express the result in terms of elementary functions.
-              ;;
-              ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
-              ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
-              (bessel-i-half-order rat-order arg))))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary functions.
+       ;;
+       ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
+       ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
+       (bessel-i-half-order rat-order arg))
+      
       (t
-       (eqtest (list '(%bessel_i) order arg) exp)))))
+       (eqtest (list '(%bessel_i) order arg) expr)))))
 
 ;; Compute value of Modified Bessel function of the first kind of order n
 (defun bessel-i (order arg)
@@ -892,24 +941,28 @@
 
 (defprop %bessel_k simp-bessel-k operators)
 
+;; Bessel K distributes over lists, matrices, and equations
+
+(defprop %bessel_k (mlist $matrix mequal) distribute_over)
+
 (defprop %bessel_k
     ((n x)
      ;; A&S 9.6.43
      ;;
      ;; %pi/2*csc(n*%pi)*['diff(bessel_i(-n,x),n)-'diff(bessel_i(n,x),n)]
      ;;    - %pi*cot(n*%pi)*bessel_k(n,x)
-     ((mplus simp)
-      ((mtimes simp) -1 $%pi
-       ((%bessel_k simp) n x)
-       ((%cot simp) ((mtimes simp) $%pi n)))
-      ((mtimes simp)
-       ((rat simp) 1 2)
+     ((mplus)
+      ((mtimes) -1 $%pi
+       ((%bessel_k) n x)
+       ((%cot) ((mtimes) $%pi n)))
+      ((mtimes)
+       ((rat) 1 2)
        $%pi
-       ((%csc simp) ((mtimes simp) $%pi n))
-       ((mplus simp)
-        ((%derivative simp) ((%bessel_i simp) ((mtimes simp) -1 n) x) n 1)
-        ((mtimes simp) -1
-         ((%derivative simp) ((%bessel_i simp) n x) n 1)))))
+       ((%csc) ((mtimes) $%pi n))
+       ((mplus)
+        ((%derivative) ((%bessel_i) ((mtimes) -1 n) x) n 1)
+        ((mtimes) -1
+         ((%derivative) ((%bessel_i) n x) n 1)))))
      ;; Derivative wrt to x.  A&S 9.6.29.
      ((mtimes)
       -1
@@ -977,16 +1030,58 @@
       (t nil))))
   'integral)
 
-(defun simp-bessel-k (exp ignored z)
+;; Support a simplim%bessel_k function to handle specific limits
+
+(defprop %bessel_k simplim%bessel_k simplim%function)
+
+(defun simplim%bessel_k (expr var val)
+  ;; Look for the limit of the arguments.
+  (let ((v (limit (cadr expr) var val 'think))
+        (z (limit (caddr expr) var val 'think)))
+  (cond
+    ;; Handle an argument 0 at this place.
+    ((or (zerop1 z)
+         (eq z '$zeroa)
+         (eq z '$zerob))
+     (cond ((zerop1 v)
+            ;; bessel_k(0,0)
+            '$inf)
+           ((integerp v)
+            ;; bessel_k(n,0), n an integer
+            (cond ((evenp v) '$inf)
+                  (t (cond ((eq z '$zeroa) '$inf)
+                           ((eq z '$zerob) '$minf)
+                           (t '$infinity)))))
+           ((not (zerop1 ($realpart v)))
+            ;; bessel_k(v,0), Re(v)#0
+            '$infinity)
+           ((and (zerop1 ($realpart v))
+                 (not (zerop1 v)))
+            ;; bessel_k(v,0), Re(v)=0 and v#0
+            '$und)
+           ;; Call the simplifier of the function.
+           (t (simplify (list '(%bessel_k) v z)))))
+    ((eq z '$inf)
+     ;; bessel_k(v,inf)
+     0)
+    ((eq z '$minf)
+     ;; bessel_k(v,minf)
+     '$infinity)
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%bessel_k) v z))))))
+
+(defun simp-bessel-k (expr ignored z)
   (declare (ignore ignored))
-  (let ((order (simpcheck (cadr exp) z))
-        (arg (simpcheck (caddr exp) z))
+  (let ((order (simpcheck (cadr expr) z))
+        (arg (simpcheck (caddr expr) z))
         (rat-order nil))
-    (cond 
-      ((and (numberp arg) (= arg 0) (complex-number-p order))
-       ;; domain-error for all cases of zero arg
-       (domain-error arg 'bessel_k))
-          
+    (cond
+      ((zerop1 arg)
+       ;; Domain error for a zero argument.
+       (simp-domain-error
+         (intl:gettext "bessel_k: bessel_k(~:M,~:M) is undefined.") order arg))
+      
       ((complex-float-numerical-eval-p order arg)
        (cond ((= 0 ($imagpart order))
               ;; A&S 9.6.6: K[-v](x) = K[v](x)
@@ -1022,21 +1117,19 @@
       
       ((mminusp order)
        ;; A&S 9.6.6: K[-v](x) = K[v](x)
-       (resimplify (list '(%bessel_k) `((mtimes) -1 ,order) arg)))
+       (take '(%bessel_k) (mul -1 order) arg))
       
-      ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
-       (cond ((and (numberp arg) (= arg 0)) 
-              ;; We don't expand for a zero argument.
-              (domain-error arg 'bessel_k))
-             (t
-              ;; When order is a fraction with a denominator of 2, we
-              ;; can express the result in terms of elementary
-              ;; functions.
-              ;;
-              ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
-              (bessel-k-half-order rat-order arg))))
+      ((and $besselexpand 
+            (setq rat-order (max-numeric-ratio-p order 2)))
+       ;; When order is a fraction with a denominator of 2, we
+       ;; can express the result in terms of elementary
+       ;; functions.
+       ;;
+       ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
+       (bessel-k-half-order rat-order arg))
+      
       (t
-       (eqtest (list '(%bessel_k) order arg) exp)))))
+       (eqtest (list '(%bessel_k) order arg) expr)))))
 
 ;; Compute value of Modified Bessel function of the second kind of order n
 (defun bessel-k (order arg)
