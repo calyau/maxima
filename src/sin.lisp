@@ -30,6 +30,10 @@
 (defvar *debug-integrate* nil
   "Enable debugging for the integrator routines.")
 
+;; When T do not call the risch integrator. This flag can be set by the risch 
+;; integrator to avoid endless loops when calling the integrator from risch.
+(defvar *in-risch-p* nil)
+
 (defmacro op (frob)
   `(get ,frob 'operators))
 
@@ -236,6 +240,7 @@
 	 (arclist (cdr ex))
 	 (setq coef (cond ((null (cdr coef)) (car coef))
 			  (t (setq coef (cons (car ex) coef))))))))
+
 (defun arclist (list)
   (cond ((null list) nil)
 	((and (arcfuncp (car list)) (null arcpart))
@@ -252,8 +257,8 @@
 		(> (integerp2 (caddr ex)) 0)
 		(arcfuncp (cadr ex))))))
 
-+;; This is the main integration routine.  It is called from sinint.
-+;; exp is guaranteed to be a product
+;; This is the main integration routine.  It is called from sinint.
+;; exp is guaranteed to be a product
 (defun integrator (exp var)
   (prog (y arg *powerl* const *b* w *c* *d* e *ratrootform*
 	 *chebyform* arcpart coef integrand result)
@@ -442,7 +447,8 @@
 			    ((and (not *powerl*)
 				  (setq y (powerlist exp var)))
 			     y)
-			    ((and (setq y (rischint exp var))
+			    ((and (not *in-risch-p*)  ; Not called from rischint
+			          (setq y (rischint exp var))
 				  ;; rischint has not found an integral but
 				  ;; returns a noun form. Do not return that
 				  ;; noun form as result at this point, but
@@ -460,7 +466,6 @@
 			     (if result
 				 result
 				 (list '(%integrate) exp var))))))))))
-
 
 ;; This predicate is used with m2 pattern matcher.
 ;; A rational expression in var.
@@ -484,9 +489,11 @@
 (defun integrate1 (exp)
   (do ((terms exp (cdr terms)) (ans))
       ((null terms) (addn ans nil))
-    (let ($liflag)					;don't gen li's for
-      (push (integrator (car terms) var) ans))		;parts of integrand
-    (when (and (not (free (car ans) '%integrate)) (cdr terms))
+    (let ($liflag)					; don't gen li's for
+      (push (integrator (car terms) var) ans))		; parts of integrand
+    (when (and (not *in-risch-p*)                     ; Not called from rischint
+               (not (free (car ans) '%integrate))
+               (cdr terms))
 	  (return (addn (cons (rischint (cons '(mplus) terms) var) (cdr ans))
 			nil)))))
 
@@ -1080,14 +1087,18 @@
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
 						var exp))
 		    (new-int
-		     (if (every-trigarg-alike new-exp new-var)
+		     (if (and (not *in-risch-p*)      ; Not called from rischint
+		              (every-trigarg-alike new-exp new-var))
 			 ;; avoid endless recursion when more than one
 			 ;; trigarg exists or c is a float
-			 (div ($integrate new-exp new-var) c)
-		       (rischint exp var))))
-		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int))))
+		         (div ($integrate new-exp new-var) c)
+		         (rischint exp var))))
+		 (return-from monstertrig
+		   (maxima-substitute *trigarg* new-var new-int))))
 	    (t
-	     (return-from monstertrig (rischint exp var))))))
+	     (if *in-risch-p*                         ; Called from rischint
+	         (return-from monstertrig nil)
+	         (return-from monstertrig (rischint exp var)))))))
   (prog (*notsame* w *a* *b* y *d*)
      (declare (special *notsame*))
 	(cond
