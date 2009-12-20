@@ -749,17 +749,17 @@ integrate(%e^asec(x),x);
 integrate(%e^(a*asec(x)),x);
 'integrate(%e^(a*asec(x)),x);
 
-/* Problem 161: NOUN */
+/* Problem 161: NEW 12/2009 */
 integrate(%e^asinh(x),x);
-'integrate(sqrt(x^2+1),x)+x^2/2;
+log(sqrt(x^2+1)+x)/2+x*sqrt(x^2+1)/2+x^2/2;
 
 /* Problem 162: NOUN */
 integrate(%e^(a*asinh(x)),x);
 'integrate(%e^(a*asinh(x)),x);
 
-/* Problem 163: NOUN */
+/* Problem 163: NEW 12/2009 */
 integrate(%e^acosh(x),x);
-'integrate(%e^acosh(x),x);
+-log(2*sqrt(x^2-1)+2*x)/2+x*sqrt(x^2-1)/2+(x^2/2+x)/2+(x^2/2-x)/2;
 
 /* Problem 164: NOUN */
 integrate(%e^(a*acosh(x)),x);
@@ -789,9 +789,10 @@ integrate(%e^acsch(x),x);
 integrate(%e^(a*acsch(x)),x);
 'integrate(%e^(a*acsch(x)),x);
 
-/* Problem 171: NOUN */
+/* Problem 171: NEW 12/2009 */
 integrate(%e^asech(x),x);
-'integrate(%e^asech(x),x);
+-log(2*sqrt(1-x^2)/abs(x)+2/abs(x))+(log(x)+x)/2+(log(x)-x)/2
+                                         +sqrt(1-x^2);
 
 /* Problem 172: NOUN */
 integrate(%e^(a*asech(x)),x);
