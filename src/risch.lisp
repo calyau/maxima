@@ -14,16 +14,16 @@
 
 (load-macsyma-macros rzmac ratmac)
 
-(declare-top (special prob rootfac parnumer pardenom logptdx wholepart $ratalgdenom
-		     expexpflag $logsimp switch1 degree cary $ratfac $logexpand
-		     ratform genvar *var var rootfactor expint $keepfloat
-		     trigint operator $exponentialize $gcd $logarc changevp
-		     klth r s beta gamma b mainvar expflag expstuff liflag
-		     intvar switch varlist nogood genvar $erfflag $liflag
-		     rischp $factorflag alphar m simp genpairs hypertrigint
-		     *mosesflag yyy *exp y $algebraic implicit-real
-		     errrjfflag $%e_to_numlog generate-atan2 context
-		     bigfloatzero rp-polylogp))
+(declare-top (special prob rootfac parnumer pardenom logptdx wholepart
+                      $ratalgdenom expexpflag $logsimp switch1 degree cary
+                      $ratfac $logexpand ratform genvar *var var rootfactor
+                      expint $keepfloat trigint operator $exponentialize $gcd
+                      $logarc changevp klth r s beta gamma b mainvar expflag
+                      expstuff liflag intvar switch varlist nogood genvar
+                      $erfflag $liflag rischp $factorflag alphar m simp
+                      genpairs hypertrigint *mosesflag yyy *exp y $algebraic
+                      implicit-real errrjfflag $%e_to_numlog generate-atan2
+                      context bigfloatzero rp-polylogp *in-risch-p*))
 
 (defmvar $liflag t "Controls whether `risch' generates polylogs")
 
@@ -106,7 +106,6 @@
   (and (mqapplyp exp) (eq (subfunname exp) '$li)
        (or (null sub) (equal sub (car (subfunsubs exp))))))
 
-
 (defun rischint (exp intvar &aux ($logarc nil) ($exponentialize nil)
 		 ($gcd '$algebraic) ($algebraic t) (implicit-real t))
   (prog ($%e_to_numlog $logsimp trigint operator y z var ratform liflag
@@ -167,18 +166,34 @@
 	(t (setq operator (caar l)))))
 
 (defun hypertrigint1 (exp var hyperfunc)
-  (if hyperfunc (integrator (resimplify exp) var)
-      (rischint (resimplify exp) var)))
+  (let ((result (if hyperfunc
+                    (integrator (resimplify exp) var)
+                    (rischint (resimplify exp) var))))
+    ;; The result can contain solveable integrals. Look for this case.
+    (if (isinop result '%integrate)
+        ;; Found an integral. Evaluate the result again.
+        ;; Set the flag *in-risch-p* to make sure that we do not call
+        ;; rischint again from the integrator. This avoids endless loops.
+        (let ((*in-risch-p* t)) 
+          (meval (list '($ev) result '$nouns)))
+        result)))
 
 (defun trigin1 (*exp var)
   (let ((yyy (hypertrigint1 *exp var nil)))
     (setq yyy (div ($expand ($num yyy))
 		   ($expand ($denom yyy))))
-    (let ((rischp var) (rp-polylogp t) $logarc $exponentialize)
-      (sratsimp (if (and (freeof '$%i *exp) (freeof '$li yyy))
-		    ($realpart yyy)
-		    ($rectform yyy))))))
-
+    (let ((rischp var) (rp-polylogp t) $logarc $exponentialize result)
+      (setq result (sratsimp (if (and (freeof '$%i *exp) (freeof '$li yyy))
+                                 ($realpart yyy)
+                                 ($rectform yyy))))
+      ;; The result can contain solveable integrals. Look for this case.
+      (if (isinop result '%integrate)
+          ;; Found an integral. Evaluate the result again.
+          ;; Set the flag *in-risch-p* to make sure that we do not call
+          ;; rischint again from the integrator. This avoids endless loops.
+          (let ((*in-risch-p* t)) 
+            (meval (list '($ev) result '$nouns)))
+          result))))
 
 (defun tryrisch (exp mainvar)
   (prog (wholepart rootfactor parnumer pardenom
