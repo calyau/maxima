@@ -1259,3 +1259,10 @@ integrate(exp(%i*x)*sin(x)/x, x, minf, inf);
 integrate(exp(-%i*x)*sin(x)/x, x, minf, inf);
 %pi/2;
 
+/* Bug ID: 655270 - Incomplete integration
+ */
+integrate(sin(3*asin(x)),x);
+(4*x^4-6*x^2+1)/-4;
+integrate(sin(4*asin(x)),x);
+(15*((1-x^2)^(3/2)/5-x^2*(1-x^2)^(3/2)/5)
+       +sqrt(1-x)*sqrt(x+1)*(93*x^4-106*x^2+13))/-60;
