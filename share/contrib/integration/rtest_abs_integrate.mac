@@ -99,7 +99,9 @@ signum_to_abs(integrate(unit_step(x + b),x));
 (abs(x+b)+x+b)/2$
 
 integrate(unit_step(x) + cos(x^2) * x,x);
-(sin(x^2)+x*signum(x)+x)/2$
+/*(sin(x^2)+x*signum(x)+x)/2$*/
+/* Changed result because of revision 1.18 of risch.lisp */
+(sin(x^2)+abs(x)+x)/2;
 
 integrate(unit_step(x^2-1),x);
 ((x/2-1/2)*signum(x-1)-1)*signum(x+1)+x/2$
@@ -203,7 +205,9 @@ integrate(exp(-abs(x)), x);
 integrate(cos(x + abs(x)),x);
 ((signum(x)+1)*sin(2*x)-2*x*signum(x)+2*x)/4$
 
-signum_to_abs(expand(integrate(diff(abs(x) * cos(x),x),x)));
+/* We modify the following example because of revision 1.18 of risch.lisp
+ * signum_to_abs(expand(integrate(diff(abs(x) * cos(x),x),x))); */
+signum_to_abs(integrate(diff(abs(x) * cos(x),x),x)), gamma_expand:true;
 cos(x)*abs(x)$
 
 block([extra_integration_methods : ['signum_int]], integrate(abs(x) * exp(-abs(x-9)),x,minf,inf));
@@ -219,8 +223,9 @@ integrate(1/(1 + abs(x))^2,x,minf,inf);
 2$
 
 integrate((5*sin(3*x)*signum(x+3))/x,x);
-- (5* %i * (gamma_incomplete(0, 3 * %i * x) - gamma_incomplete(0, - 3 * %i * x)
-  + gamma_incomplete(0, 9 * %i) - gamma_incomplete(0, - 9 * %i)) * signum(3 *x + 9))/2$
+-5*(%i*gamma_incomplete(0,3*%i*x)-%i*gamma_incomplete(0,-3*%i*x)
+                                 +%i*gamma_incomplete(0,9*%i)
+                                 -%i*gamma_incomplete(0,-9*%i))*signum(3*x+9)/2;
 
 map('unit_step_mult_simp, [5,5.6, -28.6b0,%i, 1 - sqrt(5), 42]);
 [5,5.6,-2.86b1,%i,1-sqrt(5),42]$
