@@ -639,7 +639,7 @@ When one changes, the other does too."
 			   :action #'(lambda (file)
 				       (setf *maxima-initmac* (concatenate 'string file ".mac"))
 				       (setf *maxima-initlisp* (concatenate 'string file ".lisp")))
-			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp~%(default is ~a)" (substring *maxima-initmac* 0 (- (length *maxima-initmac*) 4)))
+			   :help-string (format nil "Set the name of the Maxima & Lisp initialization files to <file>.mac & <file>.lisp (default is ~a)" (subseq *maxima-initmac* 0 (- (length *maxima-initmac*) 4))))
  	   (make-cl-option :names '("--init-mac")
 			   :argument "<file>"
 			   :action #'(lambda (file)
