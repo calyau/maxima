@@ -274,7 +274,7 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 
 @code{Zeilberger} returns @code{[]} if it fails to find a solution.
 
-@code{Zeilberger} invokes @code{Gosper} only if @code{gosper_in_zeilberger} is @code{true}.
+@code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is @code{true}.
 
 @opencatbox
 @category{Package zeilberger}
@@ -300,7 +300,7 @@ Each solution has the form
 
 @code{Zeilberger} returns @code{[]} if it fails to find a solution.
 
-@code{Zeilberger} invokes @code{Gosper} only if @code{gosper_in_zeilberger} is @code{true}.
+@code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is @code{true}.
 
 @opencatbox
 @category{Package zeilberger}
@@ -362,10 +362,10 @@ warning messages during execution.
 
 @end defvr
 
-@defvr {Global variable} gosper_in_zeilberger
+@defvr {Global variable} Gosper_in_Zeilberger
 Default value: @code{true}
 
-When @code{gosper_in_zeilberger} is @code{true},
+When @code{Gosper_in_Zeilberger} is @code{true},
 the @code{Zeilberger} function calls @code{Gosper} before calling @code{parGosper}.
 Otherwise, @code{Zeilberger} goes immediately to @code{parGosper}.
 
