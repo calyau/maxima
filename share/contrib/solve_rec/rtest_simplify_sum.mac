@@ -222,6 +222,14 @@ test_sum(
 0;
 
 test_sum(
+  sum(binomial(n,i)*p^i*(1-p)^(n-i),i,0,n),
+  [],
+  true,
+  [],
+  1);
+0;
+
+test_sum(
   sum((n^2+n+1)/(n^4-2*n^2+1),n,2,inf),
   [],
   true,
