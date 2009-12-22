@@ -30,7 +30,7 @@
 (defvar *maxima-initmac* "maxima-init.mac")
 (defvar *maxima-initlisp* "maxima-init.lisp")
 (defvar *maxima-tempdir*)
-(defvar *maxima-lang-subdir*)
+(defvar *maxima-lang-subdir* nil)
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
