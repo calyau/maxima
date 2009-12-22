@@ -56,7 +56,7 @@ define_variable(use_integral, true, boolean)$
 define_variable(use_gosper, true, boolean)$
 define_variable(use_ratfun, true, boolean)$
 define_variable(use_zeilberger, true, boolean)$
-define_variable(use_hgfred, true, boolean)$
+define_variable(use_hypergeometric, true, boolean)$
 
 define_variable(simplify_sum_depth, 0, fixnum)$
 define_variable(simplify_sum_max_depth, 3, fixnum)$
@@ -104,17 +104,23 @@ simplify_sum(expr) :=
      hi : part(expr, 4),
      sm1 : expr,
      linsolvewarn:false,
-     simplify_sum_depth:simplify_sum_depth+1],
+     simplify_sum_depth:simplify_sum_depth+1,
+     ss_new_context: concat('ss_context, simplify_sum_depth)],
 
     /*** Prevent possible infinite recursion. ***************************/
     if simplify_sum_depth>simplify_sum_max_depth then return(expr),
 
     /*** Simplify the summand *******************************************/
-    apply(supcontext, [concat('ss_context, simplify_sum_depth)]),
+
+    /* make sure we dont have contexts from previous runs */
+    if member(ss_new_context, contexts) then
+      killcontext(ss_new_context),
+ 
+    apply(supcontext, [ss_new_context]),
     if lo#minf and lo#-inf then assume(var>=lo),
     if hi#inf then assume(var<=hi),
     summand : simplify_sum(summand),
-    killcontext(concat('ss_context, simplify_sum_depth)),
+    killcontext(ss_new_context),
     expr : intosum(apply(sum, [summand, var, lo, hi])),
     
     /*** Default maxima simplification. *********************************/
@@ -159,8 +165,9 @@ simplify_sum(expr) :=
           if hi=inf then
             sm1 : limit(sm1, hi1, hi)
           else
-            sm1 : subst(hi1=hi, sm1))
-          else sm1 : expr)) = [] then sm1 : expr,
+            sm1 : subst(hi1=hi, sm1),
+          if not freeof_limit(sm1) then sm1: expr)
+        else sm1 : expr)) = [] then sm1 : expr,
 
 
     /*** Try the extended Gosper algorithm ******************************/
@@ -178,8 +185,9 @@ simplify_sum(expr) :=
           if hi=inf then
             sm1 : limit(sm1, hi1, hi)
           else
-            sm1 : subst(hi1=hi, sm1))
-          else sm1 : expr)) = [] then sm1 : expr,
+            sm1 : subst(hi1=hi, sm1),
+          if not freeof_limit(sm1) then sm1 : expr)
+        else sm1 : expr)) = [] then sm1 : expr,
 
     /*** Try converting the sum to finite sum of psi functions **********/
     if use_ratfun and not(atom(sm1)) and not( freeof_sum(sm1) ) and ?ratp(summand, var)
@@ -213,7 +221,7 @@ simplify_sum(expr) :=
               ratfun_to_psi(subst(new_var=2*new_var-1, ratfun), new_var, 1, inf))
       else sm1 : und),
   
-    apply(supcontext, [concat('ss_context, simplify_sum_depth)]),
+    apply(supcontext, [ss_new_context]),
 
     /*** Zeilberger algorithm ************************************************/
     if errcatch(
@@ -224,16 +232,24 @@ simplify_sum(expr) :=
       )
     ) = [] then sm1 : expr,
 
+    killcontext(ss_new_context),
+
     if sm1=false then
       sm1 : expr,
 
-    killcontext(concat('ss_context, simplify_sum_depth)),
-
+    /*** Check if upper bound can be inf.  **********************************
+    block(
+      [expr1: factor(minfactorial(factcomb(makefact(summand)))),
+       support],
+      support: ss_support(expr1, var),
+      if support[2]<=hi then hi_hyper: inf),
+    **************************************************************************/
+      
     /*** Convert to hypergeometrical functions. ******************************/
     if not(atom(sm1)) and not( freeof_sum(sm1) ) and
-       use_hgfred=true and hi=inf and lo#-inf and lo#minf then (
+       use_hypergeometric=true and hi=inf and lo#-inf and lo#minf then (
          ss_print_message(1, "Converting to hypergeometrical sum ..."),
-         sm1 : to_hgfred(summand, var, lo, hi),
+         sm1 : to_hypergeometric(summand, var, lo, hi),
          ss_print_message(1, "hgfred method returns:", sm1)),
 
     if sm1=false then
@@ -256,6 +272,12 @@ freeof_sum(expr) :=
 freeof_integrate(expr) :=
   if atom(expr) then true
   else if part(expr, 0)=nounify(integrate) then false
+  else if expr=[] then true
+  else xreduce("and", map(freeof_sum, args(expr)))$
+
+freeof_limit(expr) :=
+  if atom(expr) then true
+  else if part(expr, 0)=nounify(limit) then false
   else if expr=[] then true
   else xreduce("and", map(freeof_sum, args(expr)))$
 
@@ -306,9 +328,9 @@ extended_nusum(expr, var, lo, hi) := block(
 
 ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   [vars : delete(%k%, listofvars(expr)), %n%, eq, sm, zb, deg,
-   cond, eq_rhs, cert, %i%, expr1, ihom,
+   cond, eq_rhs, cert, %i%, expr1, ihom, support,
    upper_bound_implicit : false, lower_bound_implicit : false,
-   solve_rec_warn : false, warnings:false],
+   solve_rec_warn : false, warnings:false, Gosper_in_Zeilberger:false],
 
   if lo=-inf then lo:minf,
   
@@ -354,22 +376,25 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   /* Find the recurrence for the sum. */
   zb : Zeilberger(expr1, %k%, %n%),
   ss_print_message(3, "Zeilberger returns:", zb),
+  if length(zb)=0 then error(),
   if not(listp(zb[1])) then error(),
   deg : length(part(zb, 1, 2)),
   cert : part(zb, 1, 1),
   eq : part(zb, 1, 2) . makelist(sm[%n%+%i%], %i%, 0, deg-1),
 
   /* Find the initial conditions for recurrence. */
-  block([simpsum:true],
-    cond : makelist(
-      sm[%i%] =
-      subst(%n%=%i%,
-        apply(sum, [
-          minfactorial(expr),
-          %k%, lo, hi
-        ]
-      )),
-      %i%, sum_min, sum_min + deg - 2)),
+  cond : makelist(
+    sm[%i%] =
+    subst(%n%=%i%,
+      apply('sum, [
+        minfactorial(expr),
+        %k%, lo, hi
+      ]
+      )
+    ),
+    %i%, sum_min, sum_min + deg - 2),
+  cond : ev(cond, simpsum),
+  
   /* Simplify initial conditions (also sums in initial conditions). */
   cond : factor(minfactorial(simplify_sum(cond))),
 
@@ -619,10 +644,10 @@ factor_with_solve(expr, n) := block(
  *
  *******************/
 
-to_hgfred(expr, var, lo, hi) := block(
+to_hypergeometric(expr, var, lo, hi) := block(
   [quo, upper, lower, a:[], b:[], x, c, warnings:false],
 
-  while subst(var=lo, expr)=0 do lo : lo+1,
+  for i:1 thru 100 while subst(var=lo, expr)=0 do lo : lo+1,
   expr:subst(var=var+lo, expr),
   
   quo : ratsimp(shiftQuo(factor(makefact(expr)*var!), var)),
@@ -654,7 +679,6 @@ to_hgfred(expr, var, lo, hi) := block(
 
   ratsimp(c*hgfred(a,b,x)))$
 
-
 /*******************
  *
  * harmonic_number and gen_harmonic_number
@@ -665,8 +689,8 @@ define_variable(harmonic_number_expand, false, boolean)$
 
 simp_harmonic_number(x__):=
   if x__=0 then 0
-  else if integerp(x__) then sum(1/k, k, 1, x__)
-  else if numberp(x__) then psi[0](x__+1) + %gamma
+  else if integerp(x__) then num_harmonic_number(1, x__)
+  else if numberp(x__) or imagpart(x__)#0 then psi[0](x__+1) + %gamma
   else block(
     [a, b, var, k%],
     if harmonic_number_expand then (
@@ -676,6 +700,15 @@ simp_harmonic_number(x__):=
       else simpfuncall('harmonic_number, x__))
     else simpfuncall('harmonic_number, x__))$
 
+num_harmonic_number(l, h) :=
+    if h<l then 0
+    else if h=l then 1/l
+    else if h-l<50 then sum(1/i, i, l, h)
+    else block(
+        [mid: floor((l+h)/2)],
+        num_harmonic_number(l, mid) +
+        num_harmonic_number(mid+1, h))$
+
 simplifying('harmonic_number,'simp_harmonic_number)$
 
 
@@ -683,8 +716,9 @@ simp_gen_harmonic_number(exp__, x__):=
   if x__=0 then 0
   else if exp__=1 then harmonic_number(x__)
   else if x__>=inf then zeta(exp__)
-  else if integerp(x__) and integerp(exp__) then sum(1/k^exp__, k, 1, x__)
-  else if numberp(x__) and numberp(exp__) then
+  else if integerp(x__) and integerp(exp__) then num_gen_harmonic_number(exp__, 1, x__)
+  else if integerp(x__) then sum(1/i^exp__, i, 1, x__)
+  else if (numberp(x__) and numberp(exp__)) or imagpart(x__)#0 then
     (-1)^(exp__+1)/(exp__-1)!*(psi[exp__-1](x__+1)-psi[exp__-1](1))
   else block(
     [a, b, var, k%],
@@ -694,6 +728,15 @@ simp_gen_harmonic_number(exp__, x__):=
         simpfuncall('gen_harmonic_number,exp__,a) + apply('sum, [1/k%^exp__, k%, a+1, a+b])
       else simpfuncall('gen_harmonic_number, exp__, x__))
     else simpfuncall('gen_harmonic_number, exp__, x__))$
+
+num_gen_harmonic_number(a, l, h) :=
+    if h<l then 0
+    else if h=l then 1/l
+    else if h-l<50 then sum(1/i^a, i, l, h)
+    else block(
+        [mid: floor((l+h)/2)],
+        num_gen_harmonic_number(a, l, mid) +
+        num_gen_harmonic_number(a, mid+1, h))$
 
 simplifying('gen_harmonic_number,'simp_gen_harmonic_number)$
 
@@ -713,6 +756,13 @@ split_integer_part(expr) :=
       else a:a+arg),
     [a,b])
   else [expr, 0]$
+
+harmonic_to_psi(expr) :=
+  opsubst([
+    harmonic_number=lambda([x__], psi[0](x__+1)+%gamma),
+    gen_harmonic_number=lambda([exp__, x__],
+      (-1)^(exp__+1)/(exp__-1)!*(psi[exp__-1](x__+1)-psi[exp__-1](1)))],
+    expr)$
 
 /*******************
  *
