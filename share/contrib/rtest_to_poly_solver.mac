@@ -1155,8 +1155,13 @@ to_poly_solve(log(x-sqrt(x-1)) = 0,x);
 to_poly_solve(log(x-sqrt(x-1)) = log(2009),x);
 %union([x = (sqrt(29)*sqrt(277)+4019)/2])$
 
+/* From Sage developer Karl-Dieter Crisman (changed floats to rationals) */
+nicedummies(to_poly_solve(23040 *(4*%e^-(1200*t)-%e^-(300*t))^2-720000*(16*%e^-(1200*t)-%e^-(300*t))*
+((4/125)*%e^-(300*t)-(4/125)*%e^-(1200*t)),t));
+%union([t = (2*%i*%pi*%z0+log(25/4-3*sqrt(41)/4))/900],[t = (2*%i*%pi*%z1+log(3*sqrt(41)/4+25/4))/900])$
+
 /* clean up */
-(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 135));
+(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 145));
 true$
 
 (reset(algexact), forget(z,complex), remvalue(sol,%time,eq,eqn1,eqn2,eqn3),0);
