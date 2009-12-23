@@ -338,7 +338,8 @@ lambertify(e,vars) := block([ee, eee, expargs : set(), cexpargs, nexpargs,
   ee : expand(lhs(e)-rhs(e),0,0),
   expargs : setify(gatherargs(ee, "^")),
   cexpargs : subset(expargs, lambda([s], lfreeof(vars,first(s)))),
-  nexpargs : subset(expargs, lambda([s], is(equal(first(s),second(s))))),
+  /* nexpargs : subset(expargs, lambda([s], is(equal(first(s),second(s))))), */
+  nexpargs : subset(expargs, lambda([s], is(first(s) = second(s)))),
   logargs : setify(gatherargs(ee,'log)),
   
   /* look for matches x * c^x = %g, log(c) * x = lambert_w(%g), where c is constant. */
