@@ -1257,8 +1257,9 @@ It appears in LIMIT and DEFINT.......")
 	     (do ((ct 0 (1+ ct))
 		  (exp (sratsimp (sdiff exp var)) (sratsimp (sdiff exp var)))
 		  (n () (not n))
-		  (ans ()))
-		 ((> ct 4) 0)		;This do wins by a return.
+		  (ans ()))	; This do wins by a return.
+		 ((> ct 1) 0)	; This loop used to run up to 5 times,
+		 ;; but the size of some expressions would blow up.
 	       (setq ans (no-err-sub val exp)) ;Why not do an EVENFN and ODDFN
 					;test here.
 	       (cond ((eq ans t)
