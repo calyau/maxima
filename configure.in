@@ -323,7 +323,7 @@ AC_ARG_WITH(ecl,
 	[ecl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
-		ECL_NAME="${ecl}"
+		ECL_NAME="${ecl_default_name}"
 	else
 		ECL_NAME="$withval"
 	fi],
