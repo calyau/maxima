@@ -41,9 +41,9 @@ besselexpand:true;
 true$
 
 bessel_j(1/2,x);
-sqrt(2/(%pi*x))*sin(x);
+sqrt(2/%pi)*sin(x)/sqrt(x);
 bessel_j(-1/2,x);
-sqrt(2/(%pi*x))*cos(x);
+sqrt(2/%pi)*cos(x)/sqrt(x);
 
 bessel_j(3/2,x);
 (sqrt(2)*sqrt(x)*(sin(x)/x^2-cos(x)/x))/sqrt(%pi);
@@ -57,10 +57,10 @@ ratsimp(bessel_j(-3/2,x) - (2*(-1/2)/x*bessel_j(-1/2,x)-bessel_j(1/2,x)));
 ratsimp(bessel_j(-5/2,x) - (2*(-3/2)/x*bessel_j(-3/2,x)-bessel_j(-1/2,x)));
 0$
 
-ratsimp(bessel_y(1/2,x) + sqrt(2/(%pi*x))*cos(x));
+ratsimp(bessel_y(1/2,x) + sqrt(2/%pi)*cos(x)/sqrt(x));
 0$
 
-ratsimp(bessel_y(-1/2,x) - sqrt(2/(%pi*x))*sin(x));
+ratsimp(bessel_y(-1/2,x) - sqrt(2/%pi)*sin(x)/sqrt(x));
 0$
 
 ratsimp(bessel_y(3/2,x) - (2*(1/2)/x*bessel_y(1/2,x)-bessel_y(-1/2,x)));
@@ -93,10 +93,10 @@ ratsimp(bessel_i(-3/2,x) -(2*(-1/2)/x*bessel_i(-1/2,x)+bessel_i(1/2,x)));
 ratsimp(bessel_i(-5/2,x) - (2*(-3/2)/x*bessel_i(-3/2,x)+bessel_i(-1/2,x)));
 0$
 
-ratsimp(bessel_k(1/2,x) - sqrt(%pi/(2*x))*%e^(-x));
+ratsimp(bessel_k(1/2,x) - sqrt(%pi/2)*%e^(-x)/sqrt(x));
 0$
 
-ratsimp(bessel_k(-1/2,x)- sqrt(%pi/(2*x))*%e^(-x));
+ratsimp(bessel_k(-1/2,x)- sqrt(%pi/2)*%e^(-x)/sqrt(x));
 0$
 
 ratsimp(bessel_k(3/2,x) - (2*(1/2)/x*bessel_k(1/2,x)+bessel_k(-1/2,x)));
