@@ -1325,14 +1325,13 @@
 ;; sqrt(%pi/2/z)*K[n+1/2](z) = (%pi/2/z)*exp(-z)*sum (n+1/2,k)/(2*z)^k
 ;;
 ;; or
-;;                                n
-;; K[n+1/2](z) = sqrt(%pi/(2*z)) sum (n+1/2,k)/(2*z)^k
-;;                               k=0
+;;                                            n
+;; K[n+1/2](z) = sqrt(%pi/2)/sqrt(z)*exp(-z) sum (n+1/2,k)/(2*z)^k
+;;                                           k=0
 ;;
 ;; where (A&S 10.1.9)
 ;;
 ;; (n+1/2,k) = (n+k)!/k!/(n-k)!
-;;
 
 (defun k-fun (n z)
   (declare (type unsigned-byte n))
@@ -1349,7 +1348,8 @@
 
 (defun bessel-k-half-order (order arg)
   (let ((order (truncate (abs order))))
-    (mul (mul (power (div '$%pi (mul 2 arg)) '((rat simp) 1 2))
+    (mul (mul (power (div '$%pi 2) '((rat simp) 1 2))
+              (power arg '((rat simp) -1 2))
               (power '$%e (neg arg)))
          (k-fun (abs order) arg))))
 
