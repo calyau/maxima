@@ -1073,7 +1073,9 @@
 
 (defun monstertrig (exp var *trigarg*)
   (declare (special *trigarg*))
-  (when (not (atom *trigarg*))
+  (when (and (not (atom *trigarg*))
+             ;; Do not exute the following code when called from rischint.
+             (not *in-risch-p*))
     (let ((arg (simple-trig-arg *trigarg*)))
       (cond (arg
 	     ;; We have trig(c*x+b).  Use the substitution y=c*x+b to
@@ -1087,18 +1089,14 @@
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
 						var exp))
 		    (new-int
-		     (if (and (not *in-risch-p*)      ; Not called from rischint
-		              (every-trigarg-alike new-exp new-var))
+		     (if (every-trigarg-alike new-exp new-var)
 			 ;; avoid endless recursion when more than one
 			 ;; trigarg exists or c is a float
-		         (div ($integrate new-exp new-var) c)
-		         (rischint exp var))))
-		 (return-from monstertrig
-		   (maxima-substitute *trigarg* new-var new-int))))
+			 (div ($integrate new-exp new-var) c)
+		       (rischint exp var))))
+		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int))))
 	    (t
-	     (if *in-risch-p*                         ; Called from rischint
-	         (return-from monstertrig nil)
-	         (return-from monstertrig (rischint exp var)))))))
+	     (return-from monstertrig (rischint exp var))))))
   (prog (*notsame* w *a* *b* y *d*)
      (declare (special *notsame*))
 	(cond
