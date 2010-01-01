@@ -1,5 +1,142 @@
+/*******************************************************************************
+ *
+ *   Tests of hypergeometric functions
+ *
+ ******************************************************************************/
+
 kill(all);
 done;
+
+/*******************************************************************************
+ *
+ *  Test of hypergeometric function 0F0
+ *
+ ******************************************************************************/
+
+hgfred([],[],z);
+%e^z;
+
+/* ---------- Specific values ----------------------------------------------- */
+
+hgfred([],[],0);
+1;
+hgfred([],[],0.0);
+1.0;
+hgfred([],[],0.0b0);
+1.0b0;
+
+hgfred([],[],1);
+%e;
+hgfred([],[],2);
+%e^2;
+
+/*******************************************************************************
+ *
+ *   Hypergeometric 1F0
+ *
+ ******************************************************************************/
+
+hgfred([a],[],z);
+(1-z)^-a;
+
+/* ---------- Specific values ----------------------------------------------- */
+
+hgfred([a],[],0);
+1;
+hgfred([a],[],0.0);
+1.0;
+hgfred([a],[],0.0b0);
+1.0b0;
+
+/* --- For x = 1 the result depends on the sign of a --- */
+
+/* a is negative -> 0 */
+hgfred([-1],[],1);
+0;
+hgfred([-1],[],1.0);
+0.0;
+hgfred([-1],[],1.0b0);
+0.0b0;
+
+/* a is positive -> inf or infinity */
+limit(hgfred([1],[],x),x,1);
+infinity;
+
+limit(hgfred([2],[],x),x,1);
+inf;
+
+/* Maxima does not check the sign of a symbolic expression for a.
+ * The result is always 0.
+ */
+
+assume(xp>0,xn<0);
+[xp>0, xn<0];
+
+/* The following two cases should give a Maxima error. But they do not. 
+ * The reason is, that Maxima always simplifies 0^expr -> 0.
+ * That is a problem of simpexpt and not of $hgfred.
+ */
+errcatch(hgfred([xp],[],1));
+[];
+errcatch(hgfred([-xn],[],1));
+[];
+
+forget(xp>0, xn<0);
+[xp>0, xn<0];
+
+/*******************************************************************************
+ *
+ *   Hypergeometric 0F1
+ *
+ ******************************************************************************/
+
+/* --- General simplification in terms of bessel_i and bessel_j --- */
+
+hgfred([],[b],x);
+bessel_i(b-1,2*sqrt(x))*gamma(b)*x^(1/2-b/2);
+
+hgfred([],[b],-x);
+bessel_j(b-1,2*sqrt(x))*gamma(b)*x^(1/2-b/2);
+
+/* ---------- Specific values ----------------------------------------------- */
+
+hgfred([],[b],0);
+1;
+hgfred([],[b], 0.0);
+1.0;
+hgfred([],[b], 0.0b0);
+1.0b0;
+
+/* --- b = n/2 and z = x^2/4 --- */
+
+/* The results are in terms of bessel_i and bessel_j and a half integeral order.
+ * We expand the Bessel functions and get results in terms of trigonometric
+ * functions.
+ */
+
+hgfred([],[1/2],x^2/4),besselexpand:true;
+cosh(x);
+hgfred([],[1/2],-x^2/4),besselexpand:true;
+cos(x);
+
+hgfred([],[-1/2], x^2/4), besselexpand:true;
+cosh(x)-x*sinh(x);
+hgfred([],[-1/2], -x^2/4), besselexpand:true;
+cos(x)+x*sin(x);
+
+hgfred([],[3/2],x^2/4), besselexpand:true;
+sinh(x)/x;
+hgfred([],[3/2],-x^2/4), besselexpand:true;
+sin(x)/x;
+
+hgfred([],[-3/2],x^2/4), besselexpand:true;
+(3*x*sinh(x)+(-x^2-3)*cosh(x))/-3;
+hgfred([],[-3/2],-x^2/4), besselexpand:true;
+(3*x*sin(x)+(3-x^2)*cos(x))/3;
+
+
+/* ---------- More tests ---------------------------------------------------- */
+
 /* Tests of confluent hypergeometric function */
 
 /* See A&S 13.6 */
@@ -18,15 +155,15 @@ hgfred([v+1/2],[2*v+1],2*z);
 
 /* A&S 13.6.4 */
 expand(hgfred([n+1],[2*n+2],2*%i*z));
-4^(n/2+1/4)*bessel_j(n+1/2,z)*gamma(n+3/2)*z^(-n-1/2)*%e^(%i*z)$
+sqrt(2)*4^(n/2)*bessel_j(n+1/2,z)*gamma(n+3/2)*z^(-n-1/2)*%e^(%i*z);
 
 /* A&S 13.6.5 */
 expand(hgfred([-n],[-2*n],2*%i*z));
-bessel_j(-n-1/2,z)*gamma(1/2-n)*4^(-n/2-1/4)*z^(n+1/2)*%e^(%i*z)$
+bessel_j(-n-1/2,z)*gamma(1/2-n)*z^(n+1/2)*%e^(%i*z)/(sqrt(2)*4^(n/2));
 
 /* A&S 13.6.6 */
-hgfred([n+1],[2*n+2],2*z);
-bessel_i(n+1/2,z)*gamma(n+3/2)*z^(-n-1/2)*%e^z/4^((-n-1/2)/2)$
+expand(hgfred([n+1],[2*n+2],2*z));
+sqrt(2)*4^(n/2)*bessel_i(n+1/2,z)*gamma(n+3/2)*z^(-n-1/2)*%e^z;
 
 /* A&S 13.6.10 */
 hgfred([a],[a+1],-z);
