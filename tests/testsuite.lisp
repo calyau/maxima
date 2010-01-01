@@ -21,7 +21,7 @@
 	"rtest3" "rtest8"
 	((mlist) "rtest12" 76 78)
 	"rexamples"
-	"rtesthyp"
+	((mlist) "rtesthyp" 18 19)
         ((mlist) "rtest_hypgeo" 143 226)
 	"rtestmt19937"
 	((mlist) "rtest_allnummod" 135 136 417 418)
