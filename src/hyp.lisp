@@ -561,46 +561,46 @@
 	   ;; function.
 	   (fpqform arg-l1 arg-l2 var)))))
 
-
 ;; Handle the cases where the number of indices is less than 2.
 (defun simp2>f<2 (arg-l1 arg-l2 len1 len2)
   (cond ((and (zerop len1) (zerop len2))
 	 ;; hgfred([],[],z) = e^z
-	 (power '$%e var))
-	((and (zerop len1) (equal len2 1))
-	 ;; hgfred([],[b],z)
-	 ;;
-	 ;; The hypergeometric series is then
-	 ;;
-	 ;; 1+sum(z^k/k!/[b*(b+1)*...(b+k-1)], k, 1, inf)
-	 ;;
-	 ;; = 1+sum(z^k/k!*gamma(b)/gamma(b+k), k, 1, inf)
-	 ;; = sum(z^k/k!*gamma(b)/gamma(b+k), k, 0, inf)
-	 ;; = gamma(b)*sum(z^k/k!/gamma(b+k), k, 0, inf)
-	 ;;
-	 ;; Note that bessel_i(b,z) has the series
-	 ;;
-	 ;; (z/2)^(b)*sum((z^2/4)^k/k!/gamma(b+k+1), k, 0, inf)
-	 ;;
-	 ;; bessel_i(b-1,2*sqrt(z))
-	 ;;    = (sqrt(z))^(b-1)*sum(z^k/k!/gamma(b+k),k,0,inf)
-	 ;;    = z^((b-1)/2)*hgfred([],[b],z)/gamma(b)
-	 ;;
-	 ;; So this hypergeometric series is a Bessel I function:
-	 ;;
-	 ;; hgfred([],[b],z) = bessel_i(b-1,2*sqrt(z))*z^((1-b)/2)*gamma(b)  
-	 (bestrig (car arg-l2) var))
+         (power '$%e var))
+        ((and (zerop len1) (equal len2 1))
+         (cond 
+           ((zerop1 var)
+            ;; hgfred([],[b],0) = 1
+            (add var 1))
+           (t
+            ;; hgfred([],[b],z)
+            ;;
+            ;; The hypergeometric series is then
+            ;;
+            ;; 1+sum(z^k/k!/[b*(b+1)*...(b+k-1)], k, 1, inf)
+            ;;
+            ;; = 1+sum(z^k/k!*gamma(b)/gamma(b+k), k, 1, inf)
+            ;; = sum(z^k/k!*gamma(b)/gamma(b+k), k, 0, inf)
+            ;; = gamma(b)*sum(z^k/k!/gamma(b+k), k, 0, inf)
+            ;;
+            ;; Note that bessel_i(b,z) has the series
+            ;;
+            ;; (z/2)^(b)*sum((z^2/4)^k/k!/gamma(b+k+1), k, 0, inf)
+            ;;
+            ;; bessel_i(b-1,2*sqrt(z))
+            ;;    = (sqrt(z))^(b-1)*sum(z^k/k!/gamma(b+k),k,0,inf)
+            ;;    = z^((b-1)/2)*hgfred([],[b],z)/gamma(b)
+            ;;
+            ;; So this hypergeometric series is a Bessel I function:
+            ;;
+            ;; hgfred([],[b],z) = bessel_i(b-1,2*sqrt(z))*z^((1-b)/2)*gamma(b)
+            (bestrig (car arg-l2) var))))
 	((zerop len2)
-	 ;; hgfred([a],[],z) = 1 + sum(binomial(a+k,k)*z^k)
-	 ;;  = 1/(1-z)^a
-	 (binom (car arg-l1)))
+	 ;; hgfred([a],[],z) = 1 + sum(binomial(a+k,k)*z^k) = 1/(1-z)^a
+	 (power (sub 1 var) (mul -1 (car arg-l1))))
 	(t
 	 ;; The general case of 1F1, the confluent hypergeomtric function.
 	 (confl arg-l1 arg-l2 var))))
 
-
-
-	    
 ;; Computes 
 ;;
 ;; bessel_i(a-1,2*sqrt(x))*gamma(a)*x^((1-a)/2)
@@ -646,24 +646,28 @@
 			 (bes (sub a 1) (setq x (mul -1 x)) 'j)))))
      (return (mul res (bes (sub a 1) x 'i)))))
 
-(defun bestrig (a x)
-  ;; I think it's ok to have $radexpand $all here so that sqrt(z^2) is converted to z.
-  (let* (($radexpand '$all)
-	 (res (mul (gm a) (power x (div (sub 1 a) 2)))))
-    ;; res = gamma(a)*x^((1-a)/2)
-    (if (equal (checksigntm x) '$negative)
-	;; Not sure this is right, but the call to bes has an
-	;; extra factor (-1)^(-(a-1)/2), so we cancel that out by
-	;; multiplying by (-1)^((a-1)/2).
-	(mul res
-	     (power -1 (div (sub a 1) 2))
-	     (bes (sub a 1) (setq x (mul -1 x)) 'j))
-	(mul res (bes (sub a 1) x 'i)))))
+(defun bestrig (b x)
+  ;; I think it's ok to have $radexpand $all here so that sqrt(z^2) is
+  ;; converted to z.
+  (let (($radexpand '$all))
+    (if (mminusp x)
+        ;; gamma(b)*(-x)^((1-b)/2)*bessel_j(b-1,2*sqrt(-x))
+        (sratsimp (mul (power (neg x) (div (sub 1 b) 2))
+                  (take '(%gamma) b)
+                  (take '(%bessel_j)
+                        (sub b 1) 
+                        (mul 2 (power (neg x) '((rat simp) 1 2))))))
+        ;; gamma(b)*(x)^((1-b)/2)*bessel_i(b-1,2*sqrt(x))        
+        (sratsimp (mul (power x (div (sub 1 b) 2))
+                  (take '(%gamma) b)
+                  (take '(%bessel_i)
+                        (sub b 1)
+                        (mul 2 (power x '((rat simp) 1 2)))))))))
 
+#+nil ; Used only by bestrig and inserted directely. (DK 01/2010)
 (defun bes (a x flg)
   (let ((fun (if (eq flg 'j) '%bessel_j '%bessel_i)))
     `((,fun) ,a ,(mul 2 (power x (inv 2))))))
-
 
 ;; Compute bessel_j(n+1/2,z) in terms of trig functions.
 ;;
@@ -671,23 +675,27 @@
 ;;
 ;; Note that bessel.lisp has a different implementation of this.
 ;; Should we use that instead?
+#+nil ; Not in use (DK 01/2010)
 (defun besredtrig (n z)
   (cond ((minusp n)
 	 (trigredminus (mul -1 (1+ n)) z))
 	(t (trigredplus n z))))
 
+#+nil ; Not in use (DK 01/2010)
 (defun trigredplus (n z)
   (let ((npinv2 (mul n '$%pi (inv 2))))
     (mul (ctr z)
 	 (add (mul (sin% (sub z npinv2)) (firstsum n z))
 	      (mul (cos% (sub z npinv2)) (secondsum n z))))))
 
+#+nil ; Not in use (DK 01/2010)
 (defun trigredminus (n z)
   (let ((npinv2 (mul n '$%pi (inv 2))))
     (mul (ctr z)
 	 (sub (mul (cos% (add z npinv2)) (firstsum n z))
 	      (mul (sin% (add z npinv2)) (secondsum n z))))))
 
+#+nil ; Not in use (DK 01/2010)
 (defun firstsum (n z)
   (prog (count result 2r n1)
      (setq n1 ($entier (div n 2)) count 0 result 1)
@@ -707,6 +715,7 @@
      (go loop)))
 
 ;; Compute Q(n+1/2,z) in A&S 10.1.9.
+#+nil ; Not in use (DK 01/2010)
 (defun secondsum (n z)
   (prog (count result 2r+1 n1)
      (setq n1
@@ -732,9 +741,11 @@
      (go loop)))
 
 ;; sqrt(2/(pi*z))
+#+nil ; Not in use (DK 01/2010)
 (defun ctr (z)
   (power (div 2 (mul '$%pi z)) (inv 2)))
 
+#+nil ; Not in use (DK 01/2010)
 (defun negcoef (x)
   (prog(d)
      (cond ((null (setq d (cdr (zl-remprop 'd (d*u x)))))
@@ -743,11 +754,6 @@
 	    (return nil)))
      (return t)))
 
-;; (1-z)^(-a)
-(defun binom (a)
-  (power (sub 1 var) (mul -1 a)))
-
-
 ;; Kummer's transformation.  A&S 13.1.27
 ;;
 ;; M(a,b,z) = e^z*M(b-a,b,-z)
@@ -755,7 +761,6 @@
   (mul (list '(mexpt) '$%e var)
        (confl (list (sub (car arg-l2) (car arg-l1)))
 	      arg-l2 (mul -1 var))))
-
 
 ;; Return non-NIL if any element of the list L is zero.
 
