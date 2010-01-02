@@ -13,6 +13,9 @@
 
 (defmvar $besselexpand nil)
 
+;; When T Bessel functions with an integer order are reduced to order 0 and 1
+(defmvar $bessel_reduce nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Helper functions for this file
@@ -246,6 +249,18 @@
        ;; When order is a fraction with a denominator of 2, we
        ;; can express the result in terms of elementary functions.
        (bessel-j-half-order rat-order arg))
+      
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0:
+       ;; bessel_j(v,z) -> 2*(v-1)/z*bessel_j(v-1,z)-bessel_i(v-2,z)
+       (sub (mul 2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_j) (- order 1) arg))
+            (take '(%bessel_j) (- order 2) arg)))
       
       (t
        (eqtest (list '(%bessel_j) order arg) expr)))))
@@ -541,7 +556,19 @@
        ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
        ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
        (bessel-y-half-order rat-order arg))
-       
+      
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0:
+       ;; bessel_y(v,z) -> 2*(v-1)/z*bessel_y(v-1,z)-bessel_y(v-2,z)
+       (sub (mul 2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_y) (- order 1) arg))
+            (take '(%bessel_y) (- order 2) arg)))
+      
       (t
        (eqtest (list '(%bessel_y) order arg) expr)))))
 
@@ -842,6 +869,18 @@
        ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
        (bessel-i-half-order rat-order arg))
       
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0:
+       ;; bessel_i(v,z) -> -2*(v-1)/z*bessel_i(v-1,z)+bessel_i(v-2,z)
+       (add (mul -2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_i) (- order 1) arg))
+            (take '(%bessel_i) (- order 2) arg)))
+      
       (t
        (eqtest (list '(%bessel_i) order arg) expr)))))
 
@@ -1127,6 +1166,18 @@
        ;;
        ;; K[1/2](z) = sqrt(2/%pi/z)*exp(-z) = K[1/2](z)
        (bessel-k-half-order rat-order arg))
+      
+      ((and $bessel_reduce
+            (and (integerp order)
+                 (plusp order)
+                 (> order 1)))
+       ;; Reduce a bessel function of order > 2 to order 1 and 0:
+       ;; bessel_k(v,z) -> 2*(v-1)/z*bessel_k(v-1,z)+bessel_k(v-2,z)
+       (add (mul 2
+                 (- order 1)
+                 (inv arg) 
+                 (take '(%bessel_k) (- order 1) arg))
+            (take '(%bessel_k) (- order 2) arg)))
       
       (t
        (eqtest (list '(%bessel_k) order arg) expr)))))
