@@ -1158,7 +1158,17 @@ wrapper for this."
 
 (defmfun neverset (x assign-val)
   (declare (ignore assign-val))
-  (if munbindp 'munbindp (merror (intl:gettext "assignment: cannot assign to ~:M") x)))
+  (if munbindp 
+      'munbindp 
+      (merror (intl:gettext "assignment: cannot assign to ~:M") x)))
+
+;; Check assignment to be a positive integer including zero
+(defun posintegerset (x y)
+  (if (or (not (integerp y))
+          (not (>= y 0)))
+      (merror
+        (intl:gettext "assignment: '~:M must be a positive integer. Found: ~:M")
+        x y)))
 
 (defmfun mmapev (l)
   (if (null (cddr l))
