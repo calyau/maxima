@@ -3375,7 +3375,7 @@
 ;; length of the string equals 10. This function is
 ;; useful to name a sequence of frames.
 (defun $add_zeroes (num)
-   (format nil "~10,'0d" num) )
+   (format nil "~10,'0d" ($sconcat num)) )
 
 
 ;; copies current plot in window into a file
