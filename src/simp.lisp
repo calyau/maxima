@@ -90,11 +90,17 @@
   fixnum
   see-also ($maxnegex $expop $expand))
 
+;; Check assignment to be a positive integer
+(putprop '$maxposex 'posintegerset 'assign)
+
 (defmvar $maxnegex 1000.
   "The largest negative exponent which will be expanded by
 	 the EXPAND command."
   fixnum
   see-also ($maxposex $expon $expand))
+
+;; Check assignment to be a positive integer
+(putprop '$maxnegex 'posintegerset 'assign)
 
 ;; Lisp level variables
 
