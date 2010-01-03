@@ -18,7 +18,10 @@
 
 (declare-top (special $true $false))
 
-(declare-top (special var *par* checkcoefsignlist $exponentialize $bestriglim $radexpand))
+(declare-top (special var *par* checkcoefsignlist $exponentialize $bestriglim 
+                      $radexpand))
+
+(defvar *debug-hyp* nil)
 
 ;; I (rtoy) don't know what the default should be. but $hgfred sets it
 ;; to 3.  But we also need to define it because some of the specint
@@ -27,6 +30,9 @@
 (defmvar $bestriglim 3)
 
 (defmvar $prefer_whittaker nil)
+
+;; When T give result in terms of gamma_incomplete and not %gammagreek
+(defmvar $prefer_gamma_incomplete nil)
 
 (eval-when
     #+gcl (eval compile)
@@ -212,8 +218,6 @@
 	   ;; We failed so more complicated stuff needs to be done.
 	   (append (list 'fail) (list arg-l1) (list arg-l2))))))
 
-			
-
 (defun intdiffl1l2 (arg-l1 arg-l2)
   (cond ((null arg-l1)
 	 nil)
@@ -239,7 +243,6 @@
 	(when (< (second x) (second min))
 	  (setf min x)))
       min)))
-    
 
 ;; Create the appropriate polynomial for the hypergeometric function.
 (defun create-poly (arg-l1 arg-l2 n)
@@ -262,7 +265,6 @@
 	   (2f0polys arg-l1 n))
 	  (t (create-any-poly arg-l1 arg-l2 (mul -1 n))))))
 
-
 (defun 1f1polys (arg-l2 n)
   (let* ((c (car arg-l2))
 	 (n (mul -1 n))
@@ -274,9 +276,9 @@
 	 ;; expanded out they evaluate to exactly the same thing.  So
 	 ;; $radexpand $all is ok here.
 	 (fact2 (let (($radexpand '$all))
-		  (mul (power 2 (inv 2))
-		       (power var (inv 2))))))
-    (cond ((alike1 c (div 1 2))
+		  (mul (power 2 '((rat simp) 1 2))
+		       (power var '((rat simp) 1 2))))))
+    (cond ((alike1 c '((rat simp) 1 2))
 	   ;; A&S 22.5.56
 	   ;; hermite(2*n,x) = (-1)^n*(2*n)!/n!*M(-n,1/2,x^2)
 	   ;;
@@ -289,7 +291,7 @@
 	   (mul fact1
 		(inv (factorial (add n n)))
 		(hermpol (add n n) fact2)))
-	  ((alike1 c (div 3 2))
+	  ((alike1 c '((rat simp) 3 2))
 	   ;; A&S 22.5.57
 	   ;; hermite(2*n+1,x) = (-1)^n*(2*n+1)!/n!*M(-n,3/2,x^2)*2*x
 	   ;;
@@ -300,12 +302,12 @@
 	   ;;
 	   ;; M(-n,3/2,x) = (-1)^n*n!*2^(n-1/2)/(2*n+1)!/sqrt(x)*He(2*n+1,sqrt(2)*sqrt(x))
 	   (mul fact1
-		(inv (power 2 (inv 2)))
+		(inv (power 2 '((rat simp) 1 2)))
 		(inv (factorial (add n n 1)))
 		(hermpol (add n n 1) fact2)
 		;; Similarly, $radexpand here is ok to convert sqrt(z^2) to z.
 		(let (($radexpand '$all))
-		  (inv (power var (inv 2))))))
+		  (inv (power var '((rat simp) 1 2))))))
 	  (t
 	   ;; A&S 22.5.54:
 	   ;;
@@ -327,13 +329,18 @@
 	   ;; user really wants the answer expanded out, makefact and
 	   ;; minfactorial will do that.
 	   (if (numberp c)
-	       (mul (factorial n)
-		    (inv (factf c n))
-		    (lagpol n (sub c 1) var))
-	       (mul (factorial n)
-		    (gm c)
-		    (inv (gm (add c n)))
-		    (lagpol n (sub c 1) var)))))))
+	       (if (or (zerop c)
+	               (and (minusp c) (> c (- n))))
+	           (merror (intl:gettext "hgfred: 1F1(~M; ~M; ~M) not defined.")
+	                   (- n) c var)
+	           (mul (factorial n)
+	                (inv (take '($pochhammer) c n))
+	                (lagpol n (sub c 1) var)))
+	       (let (($gamma_expand t)) ; Expand Gamma function
+	         (mul (factorial n)
+	              (take '(%gamma) c)
+	              (inv (take '(%gamma) (add c n)))
+	              (lagpol n (sub c 1) var))))))))
 
 ;; Hermite polynomial.  Note: The Hermite polynomial used here is the
 ;; He polynomial, defined as (A&S 22.5.18, 22.5.19)
@@ -345,19 +352,16 @@
 ;; H(n,x) = 2^(n/2)*He(x*sqrt(2))
 ;;
 ;; We want to use H, as used in specfun, so we need to convert it.
-
 (defun hermpol (n arg)
   (let ((fact (inv (power 2 (div n 2))))
-	(x (mul arg (inv (power 2 (div 1 2))))))
-    (mul fact `(($hermite) ,n ,x))))
-
+        (x (mul arg (inv (power 2 '((rat simp) 1 2))))))
+    (mul fact (mfuncall '$hermite n x))))
 
 ;; Generalized Laguerre polynomial
 (defun lagpol (n a arg)
   (if (and (numberp a) (zerop a))
-      `(($laguerre) ,n ,arg)
-      `(($gen_laguerre) ,n ,a, arg)))
-
+      (mfuncall '$laguerre n arg)
+      (mfuncall '$gen_laguerre n a arg)))
 
 (defun 2f0polys (arg-l1 n)
   (let ((a (car arg-l1))
@@ -490,7 +494,6 @@
 (defun jacobpol (n a b x)
   `(($jacobi_p) ,n ,a ,b ,x))
 
-
 ;; Gegenbauer (Ultraspherical) polynomial.  We use ultraspherical to
 ;; match specfun.
 (defun gegenpol (n v x)
@@ -537,7 +540,6 @@
 ;; Compute the product of the elements of the list L.
 (defun mull (l)
  (reduce #'mul l :initial-value 1))
-
 
 ;; Add 1 to each element of the list L
 (defun incr1 (l)
@@ -2468,9 +2470,20 @@
 ;; F(a;c;z)
 (defun confl (arg-l1 arg-l2 var)
   (let* ((a (car arg-l1))
-	 (c (car arg-l2))
-	 (a-c (sub a c)))
-    (cond ((alike1 c (add a a))
+         (c (car arg-l2))
+         (a-c (sub a c))
+         n)
+    (cond ((zerop1 var)
+           ;; F(a;c;0) = 1
+           (add 1 var))
+          
+          ((and (equal 1 c)
+                (not (integerp a))          ; Do not handle an integer or
+                (not (integerp (add a a)))) ; an half integral value
+           ;; F(a;1;z) = laguerre(-a,z)
+           (mfuncall '$laguerre (neg a) var))
+          
+          ((alike1 c (add a a))
 	   ;; F(a;2a;z)
 	   ;; A&S 13.6.6
 	   ;;
@@ -2485,12 +2498,161 @@
 	   ;; If n is a negative integer, we use laguerre polynomial.
 	   (if (and (maxima-integerp a)
 		    (eq (asksign a) '$negative))
-	       (let ((n (m- a)))
-		 (mul (m^ -1  n) (inv (mbinom (m+ n n) n)) (lagpol n (m- c 1) var)))
+	       (let ((n (neg a)))
+	         (mul (power -1  n)
+	              (inv (take '(%binomial) (add n n) n))
+	              (lagpol n (sub c 1) var)))
 	       (let ((z (div var 2)))
 		 (mul (power '$%e z)
-		      (bestrig (add a (inv 2))
-			       (div (mul z z) 4))))))
+		      (bestrig (add a '((rat simp) 1 2))
+		               (div (mul z z) 4))))))
+          
+          ((and (integerp (setq n (sub (add a a) c)))
+                (plusp n)
+                (not (integerp a))
+                (not (integerp (add a a))))
+           ;; F(a,2*a-n,z) and a not an integer or a half integral value
+           (when *debug-hyp*
+             (format t "~&Case 1F1(a,2*a-n,x):")
+             (format t "~&   ; a = ~A~%" a)
+             (format t "~&   ; c = ~A~%" c)
+             (format t "~&   : n = ~A~%" n))
+           (sratsimp
+             (mul (take '(%gamma) (sub a (add n '((rat simp) 1 2))))
+                  (power (div var 4)
+                         (sub (add '((rat simp) 1 2) n) a))
+                  (power '$%e (div var 2))
+                  (let ((index (gensym)))
+                    (dosum
+                      (mul (power -1 index)
+                           (take '($pochhammer) (- n) index)
+                           (take '($pochhammer) (add a a (* -2 n) -1) index)
+                           (add a index (- n) '((rat simp) -1 2))
+                           (inv (take '($pochhammer) (sub (add a a) n) index))
+                           (inv (take '(mfactorial) index))
+                           (take '(%bessel_i)
+                                 (add a index (- n) '((rat simp) -1 2))
+                                 (div var 2)))
+                     index 0 n t)))))
+                
+          ((and (integerp (setq n (sub c (add a a))))
+                (plusp n)
+                (not (integerp a))
+                (not (integerp (add a a))))
+           ;; F(a,2*a+n,z) and a not an integer or a half integral value
+           (when *debug-hyp*
+             (format t "~&Case 1F1(a,2*a+n,x):")
+             (format t "~&   ; a = ~A~%" a)
+             (format t "~&   ; c = ~A~%" c)
+             (format t "~&   : n = ~A~%" n))
+           (sratsimp
+             (mul (take '(%gamma) (sub a '((rat simp) 1 2)))
+                  (power (div var 4)
+                         (sub '((rat simp) 1 2) a))
+                  (power '$%e (div var 2))
+                  (let ((index (gensym)))
+                    (dosum
+                      (mul (take '($pochhammer) (- n) index)
+                           (take '($pochhammer) (add a a -1) index)
+                           (add a index '((rat simp) -1 2))
+                           (inv (take '($pochhammer) (add a a n) index))
+                           (inv (take '(mfactorial) index))
+                           (take '(%bessel_i)
+                                 (add a index '((rat simp) -1 2))
+                                 (div var 2)))
+                     index 0 n t)))))
+          
+          ((and (integerp (setq n (sub a '((rat simp) 1 2))))
+                (>= n 0)
+                (integerp c)
+                (plusp c))
+           (let ((m c)
+                 ($simpsum t)
+                 ($bessel_reduce t))
+             (when *debug-hyp*
+               (format t "~&Case 1F1(n+1/2,m,x):")
+               (format t "~&   ; a = ~A~%" a)
+               (format t "~&   ; c = ~A~%" c)
+               (format t "~&   : n = ~A~%" n)
+               (format t "~&   : m = ~A~%" m))
+             (sratsimp
+               (mul (power 2 (- 1 m))
+                    (power '$%e (div var 2))
+                    (factorial (- m 1))
+                    (factorial n)
+                    (inv (take '($pochhammer) '((rat simp) 1 2) (- m 1)))
+                    (inv (take '($pochhammer) '((rat simp) 1 2) n))
+                    (let ((index1 (gensumindex)))
+                      (dosum
+                        (mul (power 2 (neg index1))
+                             (power (neg var) index1)
+                             (inv (take '(mfactorial) index1))
+                             (mfuncall '$gen_laguerre
+                                       (sub n index1)
+                                       (sub index1 '((rat simp) 1 2))
+                                       (neg var))
+                             (let ((index2 (gensumindex)))
+                               (dosum
+                                 (mul (power -1 index2)
+                                      (power 2 (neg index2))
+                                      (take '(%binomial)
+                                            (add index1 m -1)
+                                            index2)
+                                      (let ((index3 (gensumindex)))
+                                        (dosum
+                                          (mul (take '(%binomial) index2 index3)
+                                               (take '(%bessel_i)
+                                                     (sub index2 (mul 2 index3))
+                                                     (div var 2)))
+                                         index3 0 index2 t)))
+                                index2 0 (add index1 m -1) t)))
+                       index1 0 n t))))))
+      
+          ((and (integerp (setq n (sub a '((rat simp) 1 2))))
+                (< n 0)
+                (integerp c)
+                (plusp c))
+           (let ((n (- n))
+                 (m c)
+                 ($simpsum t)
+                 ($bessel_reduce t))
+             (when *debug-hyp*
+               (format t "~&Case 1F1(1/2-n,m,x):")
+               (format t "~&   ; a = ~A~%" a)
+               (format t "~&   ; c = ~A~%" c)
+               (format t "~&   : n = ~A~%" n)
+               (format t "~&   : m = ~A~%" m))
+             (sratsimp
+               (mul (power -1 n)
+                    (power 2 (- 1 m))
+                    (power '$%e (div var 2))
+                    (factorial (- m 1))
+                    (inv (take '($pochhammer) '((rat simp) 1 2) (- m 1)))
+                    (inv (take '($pochhammer) (sub m '((rat simp) 1 2)) n))
+                    (let ((index1 (gensumindex)))
+                      (dosum
+                        (mul (power 2 (neg index1))
+                             (power var index1)
+                             (take '(%binomial) n index1)
+                             (take '($pochhammer) 
+                                   (sub '((rat simp) 3 2) (+ m n))
+                                   (sub n index1))
+                             (let ((index2 (gensumindex)))
+                               (dosum
+                                 (mul (power '((rat simp) -1 2) index2)
+                                      (take '(%binomial)
+                                            (add index1 m -1)
+                                            index2)
+                                      (let ((index3 (gensumindex)))
+                                        (dosum
+                                          (mul (take '(%binomial) index2 index3)
+                                               (take '(%bessel_i)
+                                                     (sub index2 (mul 2 index3))
+                                                     (div var 2)))
+                                          index3 0 index2 t)))
+                                 index2 0 (add index1 m -1) t)))
+                        index1 0 n t))))))
+          
 	  ((not (hyp-integerp a-c))
 	   (cond ((hyp-integerp a)
 		  (kummer arg-l1 arg-l2))
@@ -2515,15 +2677,14 @@
 		  ;; For Laplace transforms it might be more beneficial to
 		  ;; return this second form instead.
 		  (let* ((m (div (sub c 1) 2))
-			 (k (add (inv 2) m (mul -1 a))))
-		    (mul (power var (mul -1 (add (inv 2) m)))
+			 (k (add '((rat simp) 1 2) m (mul -1 a))))
+		    (mul (power var (mul -1 (add '((rat simp) 1 2) m)))
 			 (power '$%e (div var 2))
 			 (whitfun k m var))))
-			 
 		 (t
 		  (fpqform arg-l1 arg-l2 var))))
 	  ((minusp a-c)
-	   (erfgammared a c var))
+	   (sratsimp (erfgammared a c var)))
 	  (t
 	   (kummer arg-l1 arg-l2)))))
 
@@ -2533,11 +2694,11 @@
 ;; So M(1/2,3/2,z) = sqrt(%pi)*erf(sqrt(-z))/2/sqrt(-z)
 ;;                 = sqrt(%pi)*erf(%i*sqrt(z))/2/(%i*sqrt(z))
 (defun hyprederf (x)
-  (let ((x (mul '$%i (power x (inv 2)))))
-    (mul (power '$%pi (inv 2))
-	 (inv 2)
-	 (inv x)
-	 (list '(%erf) x))))
+  (let ((x (mul '$%i (power x '((rat simp) 1 2 )))))
+    (mul (power '$%pi '((rat simp) 1 2))
+         '((rat simp) 1 2)
+         (inv x)
+         (take '(%erf) x))))
 
 ;; M(a,c,z), where a-c is a negative integer.
 (defun erfgammared (a c z)
@@ -2704,37 +2865,45 @@
 
 (defun hypredincgm (a z)
   (let ((-z (mul -1 z)))
-    (mul a (power -z (mul -1 a))
-	 (gammagreek a -z))))
+    (if (not $prefer_gamma_incomplete)
+        (mul a
+             (power -z (mul -1 a))
+             (gammagreek a -z))
+        (mul a
+             (power -z (mul -1 a))
+             (sub (take '(%gamma) a)
+                  (take '(%gamma_incomplete) a -z))))))
 
 ;; M(a,c,z), when a and c are numbers, and a-c is a negative integer
 (defun erfgamnumred (a c z)
-  (cond ((hyp-integerp (sub c (inv 2)))
-	 (erfred a c z))
+  (cond ((hyp-integerp (sub c '((rat simp) 1 2)))
+         (erfred a c z))
 	(t (gammareds a c z))))
 
 ;; M(a,c,z) when a and c are numbers and c-1/2 is an integer and a-c
 ;; is a negative integer.  Thus, we have M(p+1/2, q+1/2,z)
 (defun erfred (a c z)
   (prog (n m)
-     (setq n (sub a (inv 2))
-	   m (sub c (div 3 2)))
+     (setq n (sub a '((rat simp) 1 2))
+           m (sub c '((rat simp) 3 2)))
      ;; a = n + 1/2
      ;; c = m + 3/2
      ;; a - c < 0 so n - m - 1 < 0
      (cond ((not (or (> n m) (minusp n)))
 	    ;; 0 <= n <= m
-	    (return (thno33 n m z))))
-     (cond ((and (minusp n) (minusp m))
-	    ;; n < 0 and m < 0
-	    (return (thno35 (mul -1 n) (mul -1 m) z))))
-     (cond ((and (minusp n) (plusp m))
-	    ;; n < 0 and m > 0
-	    (return (thno34 (mul -1 n) m z))))
-     ;; n = 0 or m = 0
-     (return (gammareds (add n (inv 2))
-			(add m (div 3 2))
-			z))))
+	    (return (thno33 n m z)))
+           ((and (minusp n) (minusp m))
+            ;; n < 0 and m < 0
+            (return (thno35 (mul -1 n) (mul -1 m) z)))
+           ((and (minusp n) (plusp m))
+            ;; n < 0 and m > 0
+            (return (thno34 (mul -1 n) m z)))
+           (t
+            ;; n = 0 or m = 0
+            (return (gammareds (add n '((rat simp) 1 2))
+                               (add m '((rat simp) 3 2))
+                               z))))))
+
 ;; Compute M(n+1/2, m+3/2, z) with 0 <= n <= m.
 ;;
 ;; I (rtoy) think this is what this routine is doing.  (I'm guessing
@@ -2810,28 +2979,28 @@
   ;; M(m-n+1,m-n+3/2,z) = diff(M(1,3/2,z),z,m-n)*poch(3/2,m-n)/poch(1,m-n)
   ;; diff(M(1,3/2,z),z,m-n) = (-1)^(m-n)*diff(M(1,3/2,-z),z,m-n)
   ;; M(1,3/2,-z) = exp(-z)*M(1/2,3/2,z)
-  (let* ((m-n (sub m n))
+  (let* ((yannis (gensym))
+         (m-n (sub m n))
 	 ;; poch(m-n+3/2,n)/poch(1/2,n)
-	 (factor1 (div (fctrl (add m-n (div 3 2)) n)
-		       (fctrl (inv 2) n)))
+	 (factor1 (div (take '($pochhammer) (add m-n '((rat simp) 3 2)) n)
+		       (take '($pochhammer) '((rat simp) 1 2) n)))
 	 ;; poch(3/2,m-n)/poch(1,m-n)
-	 (factor2 (div (fctrl (div 3 2) m-n)
-		       (fctrl 1 m-n)))
+	 (factor2 (div (take '($pochhammer) '((rat simp) 3 2) m-n)
+		       (take '($pochhammer) 1 m-n)))
 	 ;; M(1,3/2,-z) = exp(-z)*M(1/2,3/2,z)
-	 (hgferf (mul (power '$%e (mul -1 'yannis))
-		      (hyprederf 'yannis)))
+	 (hgferf (mul (power '$%e (mul -1 yannis))
+		      (hyprederf yannis)))
 	 ;; diff(M(1,3/2,z),z,m-n)
-	 (diff1 (meval `(($diff) ,hgferf 'yannis ,m-n)))
+	 (diff1 (meval (list '($diff) hgferf yannis m-n)))
 	 ;; exp(z)*M(m-n+1,m-n+3/2,-z)
-	 (kummer (mul (power '$%e 'yannis)
-		      diff1))
+	 (kummer (mul (power '$%e yannis) diff1))
 	 ;; diff(M(1/2,m-n+3/2,z),z,n)
-	 (diff2 (meval `(($diff) ,kummer 'yannis ,n))))
+	 (diff2 (meval (list '($diff) kummer yannis n))))
     ;; Multiply all the terms together.
-    (mul (power -1 m-n)
-	 factor1
-	 factor2
-	 (subst x 'yannis diff2))))
+    (sratsimp (mul (power -1 m-n)
+                   factor1
+                   factor2
+                   (maxima-substitute x yannis diff2)))))
 
 ;; M(n+1/2,m+3/2,z), with n < 0 and m > 0
 ;;
@@ -2854,29 +3023,29 @@
 ;;
 ;; The second formula above can be derived easily by multiplying the
 ;; series for M(m+1,m+3/2,z) by z^(n+m) and differentiating n times.
-;;
+
 (defun thno34 (n m x)
-  (subst x
-	 'yannis
-	 (mul (power -1 m)
-	      (div (mul (fctrl (div 3 2) m)
-			(power '$%e 'yannis))
-		   (mul (fctrl 1 m)
-			(fctrl (1+ m) n)
-			(power 'yannis m)))
-	      (meval (list '($diff)
-			   (mul (power 'yannis
-				       (+ m n))
-				(meval (list '($diff)
-					     (mul (power '$%e
-							 (mul
-							  -1
-							  'yannis))
-						  (hyprederf 'yannis))
-					     'yannis
-					     m)))
-			   'yannis
-			   n)))))
+  (let ((yannis (gensym)))
+    (sratsimp
+      (maxima-substitute 
+        x
+        yannis
+        (mul (power -1 m)
+             (div (mul (take '($pochhammer) '((rat simp) 3 2) m)
+                       (power '$%e yannis))
+                  (mul (take '($pochhammer) 1 m)
+                       (take '($pochhammer) (1+ m) n)
+                       (power yannis m)))
+             (meval (list '($diff)
+                          (mul (power yannis (+ m n))
+                               (meval (list '($diff)
+                                            (mul (power '$%e
+                                                        (mul -1 yannis))
+                                                 (hyprederf yannis))
+                                            yannis
+                                            m)))
+                          yannis
+                          n)))))))
 
 ;; M(n+1/2,m+3/2,z), with n < 0 and m < 0
 ;;
@@ -2907,28 +3076,29 @@
 ;;
 ;; Both of these are easily derived by using the series for M and
 ;; differentiating.
+
 (defun thno35 (n m x)
-  (subst x
-	 'yannis
-	 (mul (div (power 'yannis (sub m (inv 2)))
-		   (mul (power -1 (* -1 m))
-			(fctrl 1 n)
-			(fctrl (inv -2) m)))
-	      (meval (list '($diff)
-			   (mul (power 'yannis (inv 2))
-				(power '$%e 'yannis)
-				(meval (list '($diff)
-					     (mul (power '$%e
-							 (mul
-							  -1
-							  'yannis))
-						  (power 'yannis
-							 n)
-						  (hyprederf 'yannis))
-					     'yannis
-					     n)))
-			   'yannis
-			   m)))))
+  (let ((yannis (gensym)))
+    (sratsimp
+      (maxima-substitute 
+        x
+        yannis
+        (mul (div (power yannis (sub m '((rat simp) 1 2)))
+                  (mul (power -1 (* -1 m))
+                       (take '($pochhammer) 1 n)
+                       (take '($pochhammer) '((rat simp) -1 2) m)))
+             (meval (list '($diff)
+                          (mul (power yannis '((rat simp) 1 2))
+                               (power '$%e yannis)
+                               (meval (list '($diff)
+                                            (mul (power '$%e
+                                                        (mul -1 yannis))
+                                                 (power yannis n)
+                                                 (hyprederf yannis))
+                                            yannis
+                                            n)))
+                          yannis
+                          m)))))))
 
 ;; Pochhammer symbol. fctrl(a,n) = a*(a+1)*(a+2)*...*(a+n-1).
 ;;
@@ -2943,8 +3113,6 @@
 	(t
 	 (mul (add a (1- n))
 	      (fctrl a (1- n))))))
-
-
 
 (setq *par* '$p)                           
 
