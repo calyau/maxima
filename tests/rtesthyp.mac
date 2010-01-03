@@ -134,16 +134,97 @@ hgfred([],[-3/2],x^2/4), besselexpand:true;
 hgfred([],[-3/2],-x^2/4), besselexpand:true;
 (3*x*sin(x)+(3-x^2)*cos(x))/3;
 
+/*******************************************************************************
+ *
+ *   Hypergeometric 1F1 - Confluent hypergeometric function
+ *
+ ******************************************************************************/
 
-/* ---------- More tests ---------------------------------------------------- */
+/* ---------- Specific values ----------------------------------------------- */
 
-/* Tests of confluent hypergeometric function */
+hgfred([a],[b],0);
+1;
+hgfred([a],[b],0.0);
+1.0;
+hgfred([a],[b],0.0b0);
+1.0b0;
 
-/* See A&S 13.6 */
-/* Bessel functions */
+/* --- 1F1(a; a; z) --- */
 
-assume(not(equal(z,0)));
-[not equal(z,0)]$
+/* A&S 13.6.12 */
+hgfred([a],[a],z);
+exp(z);
+
+/* --- 1F1(a; a+n; z) for n= 1, 2 --- */
+
+/* A&S 13.6.10 */
+hgfred([a],[a+1],-z);
+a*z^(-a)*%gammagreek(a,z);
+
+hgfred([a],[a+1],-z),prefer_gamma_incomplete:true;
+(a*gamma_incomplete(a,z)-a*gamma(a))/-z^a;
+
+hgfred([a],[a+2],-z);
+z^(-a-1)*((a^2+a)*%gammagreek(a,z)*z+(-a^2-a)*%gammagreek(a+1,z));
+
+hgfred([a],[a+2],-z),prefer_gamma_incomplete:true;
+-z^(-a-1)*(((a^2+a)*gamma_incomplete(a,z)+(-a^2-a)*gamma(a))*z
+                +(-a^2-a)*gamma_incomplete(a+1,z)+(a^2+a)*gamma(a+1));
+
+/* --- 1F1(a; a-n; z) for n = -1, -2 --- */
+
+hgfred([a],[a-1],z);
+z*%e^z/(a-1)+%e^z;
+
+hgfred([a],[a-2],z);
+z^2*%e^z/((a-2)*(a-1))+2*z*%e^z/(a-2)+%e^z;
+
+/* --- Test 1F1 polynomials --- */
+
+hgfred([-2],[1],z);
+/*laguerre(2,z)$*/
+z^2/2-2*z+1;
+
+hgfred([-7],[1],z);
+/*laguerre(7,z)$*/
+-z^7/5040+7*z^6/720-7*z^5/40+35*z^4/24-35*z^3/6+21*z^2/2-7*z+1;
+
+hgfred([-7],[c],z);
+/*5040*gen_laguerre(7,c-1,z)*gamma(c)/gamma(c+7)$*/
+-z^7/(c*(c+1)*(c+2)*(c+3)*(c+4)*(c+5)*(c+6))
+ +7*z^6/(c*(c+1)*(c+2)*(c+3)*(c+4)*(c+5))-21*z^5/(c*(c+1)*(c+2)*(c+3)*(c+4))
+ +35*z^4/(c*(c+1)*(c+2)*(c+3))-35*z^3/(c*(c+1)*(c+2))+21*z^2/(c*(c+1))-7*z/c+1;
+
+/* A&S 13.6.17 
+ * Note that this formula is in terms of He but we want just H.  
+ * A&S 22.5.18 gives the relationship between He and H:
+ *
+ * He(n,x) = 2^(-n/2)*H(n,x/sqrt(2))
+ */
+hgfred([-4],[1/2],z^2/2);
+/*hermite(8,z/sqrt(2))/1680;*/
+z^8/105-4*z^6/15+2*z^4-4*z^2+1;
+
+hgfred([-2],[1/2],z);
+/*hermite(4,sqrt(z))/12$*/
+4*z^2/3-4*z+1;
+
+hgfred([-2],[3/2],z);
+/*hermite(5,sqrt(z))/(120*sqrt(z));*/
+4*z^2/15-4*z/3+1;
+
+/* A&S 13.6.18 */
+hgfred([-4],[3/2],z^2/2);
+/*hermite(9,z/sqrt(2))/(15120*sqrt(2)*z)$*/
+z^8/945-4*z^6/105+2*z^4/5-4*z^2/3+1;
+
+/* --- 1F1(a; 2*a; x) --- */
+
+hgfred([a],[2*a],x);
+16^(a/2)*bessel_i((2*a-1)/2,x/2)*gamma((2*a+1)/2)*x^(1/2-a)*%e^(x/2)/2;
+
+hgfred([a],[2*a],-x);
+16^(a/2)*bessel_i((2*a-1)/2,x/2)*gamma((2*a+1)/2)*x^(1/2-a)*%e^-(x/2)/2;
 
 /* A&S 13.6.1 */
 hgfred([v+1/2],[2*v+1],2*%i*z);
@@ -165,13 +246,67 @@ bessel_j(-n-1/2,z)*gamma(1/2-n)*z^(n+1/2)*%e^(%i*z)/(sqrt(2)*4^(n/2));
 expand(hgfred([n+1],[2*n+2],2*z));
 sqrt(2)*4^(n/2)*bessel_i(n+1/2,z)*gamma(n+3/2)*z^(-n-1/2)*%e^z;
 
-/* A&S 13.6.10 */
-hgfred([a],[a+1],-z);
-a*z^(-a)*%gammagreek(a,z)$
+/* --- 1F1(n+1/2; m; z) for m, n integer --- */
 
-/* A&S 13.6.12 */
-hgfred([a],[a],z);
-exp(z)$
+hgfred([3/2],[1],x);
+((bessel_i(1,x/2)+bessel_i(0,x/2))*x+bessel_i(0,x/2))*%e^(x/2);
+
+hgfred([3/2],[2],x);
+(bessel_i(1,x/2)+bessel_i(0,x/2))*%e^(x/2);
+
+hgfred([3/2],[4],x);
+((4*bessel_i(1,x/2)-4*bessel_i(0,x/2))*x+16*bessel_i(1,x/2))*%e^(x/2)/x^2;
+
+/* --- 1F1(1/2-n,m,x) for m, n integer ---*/
+
+hgfred([-1/2],[1],x);
+((bessel_i(1,x/2)-bessel_i(0,x/2))*x+bessel_i(0,x/2))*%e^(x/2);
+
+hgfred([-1/2],[2],x);
+((2*bessel_i(1,x/2)-2*bessel_i(0,x/2))*x
+        -bessel_i(1,x/2)+3*bessel_i(0,x/2))
+        *%e^(x/2)/3;
+
+hgfred([-1/2],[4],x);
+((16*bessel_i(1,x/2)-16*bessel_i(0,x/2))*x^3
+        +(40*bessel_i(0,x/2)-24*bessel_i(1,x/2))*x^2
+        +(4*bessel_i(0,x/2)-20*bessel_i(1,x/2))*x-16*bessel_i(1,x/2))
+        *%e^(x/2)
+        /(35*x^2);
+
+/* --- 1F1(a; 2*a+n) for n an integer --- */
+
+hgfred([1/3],[2*1/3+1],x);
+(2^(2/3)*gamma(5/6)*bessel_i(5/6,x/2)
+        -2^(2/3)*bessel_i(-1/6,x/2)*gamma(5/6))
+        *x^(1/6)*%e^(x/2)/-2;
+
+hgfred([1/3],[2*1/3+2],x);
+(2^(2/3)*gamma(5/6)*bessel_i(11/6,x/2)
+        -5*2^(2/3)*gamma(5/6)*bessel_i(5/6,x/2)
+        +2^(8/3)*bessel_i(-1/6,x/2)*gamma(5/6))
+        *x^(1/6)*%e^(x/2)/8;
+
+/* --- 1F1(a; 2*a-n) for n an integer --- */
+
+hgfred([1/3],[2*1/3-1],x);
+(3*bessel_i(-1/6,x/2)+3*bessel_i(-7/6,x/2))
+        *gamma(5/6)*x^(7/6)*%e^(x/2)/-2^(4/3);
+
+hgfred([1/3],[2*1/3-2],x);
+(45*bessel_i(-1/6,x/2)+63*bessel_i(-7/6,x/2)+18*bessel_i(-13/6,x/2))
+        *gamma(5/6)*x^(13/6)*%e^(x/2)/(7*2^(10/3));
+
+
+/* ---------- More tests ---------------------------------------------------- */
+
+/* Tests of confluent hypergeometric function */
+
+/* See A&S 13.6 */
+/* Bessel functions */
+
+assume(not(equal(z,0)));
+[not equal(z,0)]$
 
 /* A&S 13.6.13 */
 besselexpand:true;
@@ -184,25 +319,12 @@ exp(-%i*z)*sin(z)/z$
 expand(hgfred([1],[2],2*z));
 exp(z)*sinh(z)/z$
 
-/* A&S 13.6.17 
- * Note that this formula is in terms of He but we want just H.  
- * A&S 22.5.18 gives the relationship between He and H:
- *
- * He(n,x) = 2^(-n/2)*H(n,x/sqrt(2))
- */
-hgfred([-4],[1/2],z^2/2);
-hermite(8,z/sqrt(2))/1680;
-
-/* A&S 13.6.18 */
-ratsimp(hgfred([-4],[3/2],z^2/2));
-hermite(9,z/sqrt(2))/(15120*sqrt(2)*z)$
-
 /* A&S 13.6.19 */
-ratsimp(hgfred([1/2],[3/2],-z^2));
+hgfred([1/2],[3/2],-z^2);
 sqrt(%pi)/2/abs(z)*erf(abs(z))$
 
 /* A&S 7.1.21 */
-ratsimp(hgfred([1],[3/2],z^2));
+hgfred([1],[3/2],z^2);
 sqrt(%pi)*exp(z^2)*erf(abs(z))/2/abs(z)$
 
 /* Hypergeometric function 2F1 tests 
@@ -432,41 +554,23 @@ hgfred([a,b],[c,4,-3],z);
 
 /* F([...,neg integer,...],[...],z) is a polynomial */
 
-/* Test 1F1 polynomials */
-hgfred([-7],[c],z);
-5040*gen_laguerre(7,c-1,z)*gamma(c)/gamma(c+7)$
-
-hgfred([-2],[1],z);
-laguerre(2,z)$
-
-hgfred([-7],[1],z);
-laguerre(7,z)$
-
-hgfred([-2],[1/2],z);
-hermite(4,sqrt(z))/12$
-
-ratsimp(hgfred([-2],[3/2],z));
-hermite(5,sqrt(z))/(120*sqrt(z));
-
-hgfred([a],[a+1],-z);
-a*%gammagreek(a,z)/z^a$
-
-hgfred([a],[a+2],-z);
-a*(a+1)*%gammagreek(a,z)/z^a-a*(a+1)*%gammagreek(a+1,z)*z^(-a-1)$
-
 /* Test 2F0 polynomials */
-ratsimp(hgfred([-3,-3+1/2],[],z)),radexpand:all;
--hermite(6,%i/sqrt(z))*z^3/64$
+ratsimp(hgfred([-3,-3+1/2],[],z));
+/*-hermite(6,%i/sqrt(z))*z^3/64$*/
+(15*z^3+90*z^2+60*z+8)/8;
 
-ratsimp(hgfred([-3-1/2,-3],[],z)),radexpand:all;
-%i*hermite(7,%i/sqrt(z))*z^(7/2)/128$
+ratsimp(hgfred([-3-1/2,-3],[],z));
+/*%i*hermite(7,%i/sqrt(z))*z^(7/2)/128$*/
+(105*z^3+210*z^2+84*z+8)/8;
 
 hgfred([-2,-4],[],z);
-2*gen_laguerre(2,2,-1/z)*z^2$
+/*2*gen_laguerre(2,2,-1/z)*z^2$*/
+12*(2/(3*z)+1/(12*z^2)+1)*z^2;
 
 /* Test that 2F0([a,b],...) = 2F0([b,a],...) */
 hgfred([-4,-2],[],z);
-2*gen_laguerre(2,2,-1/z)*z^2$
+/*2*gen_laguerre(2,2,-1/z)*z^2$*/
+12*(2/(3*z)+1/(12*z^2)+1)*z^2;
 
 /* Test 2F1 polynomials */
 
