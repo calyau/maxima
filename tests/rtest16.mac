@@ -523,7 +523,9 @@ und;
  * Bug [ 1858939 ] hgfred([-1],[-2],x) --> error
  */
 hgfred([-1],[-2],x);
--gen_laguerre(1,-3,x)/2;
+/* Because of revision 1.110 of hyp.lisp gen_laguerre simplifies
+   -gen_laguerre(1,-3,x)/2; */
+1+x/2;
 
 /*
  * Tests for the :: operator
