@@ -109,7 +109,7 @@ hgfred([],[b], 0.0b0);
 
 /* --- b = n/2 and z = x^2/4 --- */
 
-/* The results are in terms of bessel_i and bessel_j and a half integeral order.
+/* The results are in terms of bessel_i and bessel_j and a half integral order.
  * We expand the Bessel functions and get results in terms of trigonometric
  * functions.
  */
@@ -296,6 +296,121 @@ hgfred([1/3],[2*1/3-1],x);
 hgfred([1/3],[2*1/3-2],x);
 (45*bessel_i(-1/6,x/2)+63*bessel_i(-7/6,x/2)+18*bessel_i(-13/6,x/2))
         *gamma(5/6)*x^(13/6)*%e^(x/2)/(7*2^(10/3));
+
+/*******************************************************************************
+ *
+ *   Hypergeometric 2F1
+ *
+ ******************************************************************************/
+
+/* ------- 2F1(a,b; c; 0) --------------------------------------------------- */
+
+hgfred([a,b],[c],0);
+1;
+hgfred([a,b],[c],0.0);
+1.0;
+hgfred([a,b],[c],0.0b0);
+1.0b0;
+
+/* More examples from bug reports */
+
+/* Bug ID: 1531688 - hgfred([ ], [ ], 0) */
+hgfred([3,4],[7],0);
+1;
+hgfred([1,1],[2],0);
+1;
+
+/* Bug ID: 1857562 - hgfred([a,b],[c], 0) -/--> 1 */
+hgfred([3,9],[7],0);
+1;
+hgfred([3,9],[77],0);
+1;
+
+/* ---------- 2F1(a,b; a; z) and 2F1(a,b; b; z) ----------------------------- */
+
+hgfred([a,b],[a],z);
+(1-z)^-b;
+
+hgfred([a,b],[b],z);
+(1-z)^-a;
+
+/* ---------- 2F1(a,b; b-n; z) works for n a positive integer --------------- */
+
+hgfred([a,b],[b-1],z);
+a*(1-z)^(-a-1)*z/(b-1)+1/(1-z)^a;
+
+hgfred([a,b],[b-2],z);
+a*(a+1)*(1-z)^(-a-2)*z^2/((b-2)*(b-1))+2*a*(1-z)^(-a-1)*z/(b-2)+1/(1-z)^a;
+
+/* ---------- 2F1(a,b; b+1; z) ---------------------------------------------- */
+
+hgfred([a,b],[b+1],z); /* No result: a noun form */
+%f[2,1]([a,b],[b+1],z);
+
+
+/* ---------- 2F1(n,m; k; z), n,m,k integers -------------------------------- */
+
+declare(n,integer);
+done;
+
+/* For three integers result in terms of log(1-x) */
+
+hgfred([1,2],[3],x);
+-2*(log(1-x)/x+1/x+log(1-x)*(1-x)/x^2);
+
+hgfred([1,2],[4],x);
+-3*(-1/((1-x)*x)-2*log(1-x)/x^2-2/x^2-2*log(1-x)*(1-x)/x^3)*(1-x);
+
+/* a or b can be a symbol declared to be an integer */
+
+hgfred([1,n],[3],x);
+2*((1/x-1)/(n-1)+1)/((2-n)*x)+2*(1-x)^(2-n)/((n-2)*(n-1)*x^2);
+
+hgfred([n,2],[3],x);
+2*((1/x-1)/(2-n)+1)*(1-x)^(1-n)/((n-1)*x)+2/((1-n)*(2-n)*x^2);
+
+/* a,b,c integer and z=-1 */
+
+hgfred([1,1],[2],-1);
+log(2);
+
+hgfred([1,1],[3],-1);
+4*(log(2)-1/2);
+
+hgfred([1,1],[4], -1);
+6*(2*log(2)-5/4);
+
+hgfred([1,1],[5],-1);
+16*(6*log(2)-4)/3;
+
+hgfred([1,2],[3], -1);
+-2*(log(2)-1);
+
+/* a,b,c integer and z=1/2 */
+
+hgfred([1,3],[2],1/2);
+3;
+
+hgfred([1,4],[2],1/2);
+14/3;
+
+hgfred([1,4],[3],1/2);
+8/3;
+
+hgfred([1,5],[2],1/2);
+15/2;
+
+/* a,b,c integer and z=1 */
+
+hgfred([1,2],[4],1);
+3;
+
+hgfred([1,2],[5],1);
+2;
+
+/* Bug ID: 1869296 - hgfred([1,2],[6],1) bogus*/
+hgfred([1,2],[6],1);
+5/3;
 
 
 /* ---------- More tests ---------------------------------------------------- */
