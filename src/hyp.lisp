@@ -139,7 +139,6 @@
 	(checkcoefsignlist nil))
     (hgfsimp-exec (cdr arg-l1) (cdr arg-l2) arg)))
 
-
 (defun hgfsimp-exec (arg-l1 arg-l2 arg)
   (let* ((l1 (copy-tree arg-l1))
 	 (l2 (copy-tree arg-l2))
@@ -157,26 +156,22 @@
 (defun hgfsimp (arg-l1 arg-l2 var)
   (prog (resimp listcmdiff)
      (setq arg-l1 (macsimp arg-l1)
-	   arg-l2 (macsimp arg-l2)
-	   resimp (simpg arg-l1 arg-l2))
-	    
-     (cond ((not (eq (and (consp resimp) (car resimp))
-		     'fail))
-	    (return resimp)))
-     (cond ((setq listcmdiff
-		  (intdiffl1l2 (cadr resimp)
-			       (caddr resimp)))
-	    (return (splitpfq listcmdiff
-			      (cadr resimp)
-			      (caddr resimp)))))
-     (return (dispatch-spec-simp (cadr resimp)
-				 (caddr resimp)))))
+           arg-l2 (macsimp arg-l2)
+           resimp (simpg arg-l1 arg-l2))
+     (cond ((not (eq (and (consp resimp) (car resimp)) 'fail))
+            (return resimp))
+           ((and (not (zerop1 var)) ; Do not call splitfpq for a zero argument
+                 (setq listcmdiff
+                       (intdiffl1l2 (cadr resimp) (caddr resimp))))
+            (return (splitpfq listcmdiff
+                              (cadr resimp)
+                              (caddr resimp))))
+           (t
+            (return (dispatch-spec-simp (cadr resimp) 
+                                        (caddr resimp)))))))
 
-
-(defun macsimp (exp)
-  (mapcar #'(lambda (index)
-	      (simplifya ($expand index) nil))
-	  exp))
+(defun macsimp (expr)
+  (mapcar #'(lambda (index) ($expand index)) expr))
 
 ;; Simplify the parameters.  If L1 and L2 have common elements, remove
 ;; them from both L1 and L2.
@@ -536,7 +531,6 @@
 	   arg-l2 (incr1 arg-l2))
      (go loop)))
 
-
 ;; Compute the product of the elements of the list L.
 (defun mull (l)
  (reduce #'mul l :initial-value 1))
@@ -807,59 +801,74 @@
 (defun simp2f1 (arg-l1 arg-l2)
   (prog (a b c lgf)
      (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
+        
+     (cond ((zerop1 var)
+            ;; F(a,b; c; 0) = 1
+            (return (add var 1))))
+            
      (when $trace2f1
        (format t "Tracing SIMP2F1~%")
        (format t " Test F(1,1,2)...~%"))
+       
      (cond ((and (alike1 a 1)
 		 (alike1 b 1)
 		 (alike1 c 2))
-	    ;; F(1,1;2;z), A&S 15.1.3
+	    ;; F(1,1;2;z) = -log(1-z)/z, A&S 15.1.3
 	    (when $trace2f1
 	      (format t " Yes~%"))
 	    (return (mul (inv (mul -1 var))
-			 (mlog (add 1 (mul -1 var)))))))
+	                 (take '(%log) (add 1 (mul -1 var)))))))
+     
      (when $trace2f1
        (format t " Test c = 1/2 or c = 3/2...~%"))
-     (cond ((or (alike1 c  (div 3 2))
-		(alike1 c  (div 1 2)))
+        
+     (cond ((or (alike1 c '((rat simp) 3 2))
+		(alike1 c '((rat simp) 1 2)))
 	    ;; F(a,b; 3/2; z) or F(a,b;1/2;z)
 	    (cond ((setq lgf (trig-log (list a b) (list c)))
 		   (when $trace2f1
 		     (format t " Yes: trig-log~%"))
-		   (return lgf)))))
+	           (return lgf)))))
+     
      (when $trace2f1
        (format t " Test |a-b|=1/2...~%"))
-     (cond ((or
-	     (alike1 (sub a b) (div 1 2))
-	     (alike1 (sub b a) (div 1 2)))
+     
+     (cond ((or (alike1 (sub a b) '((rat simp) 1 2))
+                (alike1 (sub b a) '((rat simp) 1 2)))
 	    ;; F(a,b;c;z) where |a-b|=1/2 
 	    (cond ((setq lgf (hyp-cos a b c))
 		   (when $trace2f1
 		     (format t " Yes: hyp-cos~%"))
-		   (return lgf)))))
+	           (return lgf)))))
+     
      (when $trace2f1
        (format t " Test a,b are integers, c is a numerical integer...~%"))
+     
      (cond ((and (maxima-integerp a)
 		 (maxima-integerp b)
 		 (hyp-integerp c))
 	    ;; F(a,b;c;z) when a, and b are integers (or are declared
 	    ;; to be integers) and c is a integral number.
 	    (setf lgf (simpr2f1 (list a b) (list c)))
-	    (unless (atom lgf)
+	    (unless (symbolp lgf) ; Should be more specific! (DK 01/2010)
 	      (when $trace2f1
 		(format t " Yes: simpr2f1~%"))
 	      (return lgf))))
+     
      (when $trace2f1
        (format t " Test a+b and c+1/2 are numerical integers...~%"))
+     
      (cond ((and (hyp-integerp (add c (inv 2)))
 		 (hyp-integerp (add a b)))
 	    ;; F(a,b;c;z) where a+b is an integer and c+1/2 is an
 	    ;; integer.
 	    (when $trace2f1
 	      (format t " Yes: step4~%"))
-	    (return (step4 a b c))))
+            (return (step4 a b c))))
+     
      (when $trace2f1
        (format t " Test a-b+1/2 is a numerical integer...~%"))
+     
      (cond ((hyp-integerp (add (sub a b) (inv 2)))
 	    ;; F(a,b;c,z) where a-b+1/2 is an integer
 	    (cond ((setq lgf (step7 a b c))
@@ -867,6 +876,7 @@
 		     (when $trace2f1
 		       (format t " Yes: step7~%"))
 		     (return lgf))))))
+     
      #+nil
      (when (and (hyp-integerp (add c 1//2))
 		(or (and (hyp-integerp (add a 1//2))
@@ -876,7 +886,7 @@
        (when $trace2f1
 	 (format t " Test for atanh:  a+1/2, b, and c+1/2 are integers~%"))
        (return (hyp-atanh a b c)))
-
+     
      (when (hyp-integerp (add c 1//2))
        (when $trace2f1
 	 (format t " Test for atanh:  c+1/2 is an integer~%"))
@@ -893,6 +903,7 @@
      
      (when $trace2f1
        (format t " Test for Legendre function...~%"))
+     
      (cond ((setq lgf (legfun a b c))
 	    (unless (atom lgf)
 	      ;; LEGFUN returned something interesting, so we're done.
@@ -906,6 +917,7 @@
 	      (when $trace2f1
 		(format t " Yes: case 2~%"))
 	      (return lgf))))
+     
      (when $trace2f1
        (format t "'simp2f1-will-continue-in~%"))
      (return  (fpqform arg-l1 arg-l2 var))))
@@ -1219,30 +1231,35 @@
 ;;
 ;; So if a = 1+ell, b = 1+ell+m, and c = 2+ell+m+n, we have ell = a-1,
 ;; m = b - a, and n = c - ell - m - 2 = c - b - 1.
-;;
+
 (defun derivint (a b c)
   (if (> a b)
       (derivint b a c)
       (let ((l (- a 1))
 	    (m (- b a))
-	    (n (- c b 1)))
-	(subst var 'psey
-	       (mul (power -1 m)
-		    (factorial (+ n m l 1))
-		    (inv (factorial n))
-		    (inv (factorial l))
-		    (inv (factorial (+ n m)))
-		    (inv (factorial (+ m l)))
-		    (power (sub 1 'psey) (sub n l))
-		    ($diff (mul (power (sub 1 'psey) (+ m l))
-				($diff (mul (power  'psey  -1)
-					    -1
-					    (mlog (sub 1 'psey)))
-				       'psey
-				       l))
-			   'psey
-			   (+ n m)))))))
-
+            (n (- c b 1))
+            (psey (gensym))
+            result)
+         
+        (setq result 
+              (mul (power -1 m)
+                   (factorial (+ n m l 1))
+                   (inv (factorial n))
+                   (inv (factorial l))
+                   (inv (factorial (+ n m)))
+                   (inv (factorial (+ m l)))
+                   (power (sub 1 psey) (sub n l))
+                   ($diff (mul (power (sub 1 psey) (+ m l))
+                               ($diff (mul (power  psey  -1)
+                                           -1
+                                           (take '(%log) (sub 1 psey)))
+                                      psey
+                                      l))
+                          psey
+                          (+ n m))))
+        (if (onep1 var)
+            ($limit result psey var)
+            (maxima-substitute var psey result)))))
 
 #+nil
 (defun hyp-cos (a b c)
@@ -2051,29 +2068,26 @@
 ;;
 ;; where A = gamma(c)*gamma(c-a-b)/gamma(c-a)/gamma(c-b)
 ;;       B = gamma(c)*gamma(a+b-c)/gamma(a)/gamma(b)
-;;
+
 (defun geredf (a b c)
-  (add (div (mul (gm c)
-		 (gm (add c (mul -1 a)(mul -1 b)))
-		 (power var (mul -1 a))
-		 ($hgfred `((mlist) ,a ,(add a 1 (mul -1 c)))
-			  `((mlist) ,(add a b (mul -1 c) 1))
-			  (sub 1 (div 1 var))))
-	    (mul (gm (sub c a))(gm (sub c b))))
-       (div (mul (gm c)
-		 (gm (add a b (mul -1 c)))
-		 (power (sub 1 var)
-			(add c (mul -1 a)(mul -1 b)))
-		 (power var (sub a c))
-		 ($hgfred `((mlist) ,(sub c a) ,(sub 1 a))
-			  `((mlist) ,(add c
-					  (mul -1 a)
-					  (mul -1 b)
-					  1))
-			  (sub 1 (div 1 var))))
-	    (mul (gm a)(gm b)))))
-
-
+  (let (($gamma_expand t))
+    (add (div (mul (take '(%gamma) c)
+                   (take '(%gamma) (add c (mul -1 a) (mul -1 b)))
+                   (power var (mul -1 a))
+                   ($hgfred `((mlist) ,a ,(add a 1 (mul -1 c)))
+                            `((mlist) ,(add a b (mul -1 c) 1))
+                            (sub 1 (div 1 var))))
+              (mul (take '(%gamma) (sub c a)) 
+                   (take '(%gamma) (sub c b))))
+         (div (mul (take '(%gamma) c)
+                   (take '(%gamma) (add a b (mul -1 c)))
+                   (power (sub 1 var)
+                          (add c (mul -1 a) (mul -1 b)))
+                   (power var (sub a c))
+                   ($hgfred `((mlist) ,(sub c a) ,(sub 1 a))
+                            `((mlist) ,(add c (mul -1 a) (mul -1 b) 1))
+                            (sub 1 (div 1 var))))
+              (mul (take '(%gamma) a) (take '(%gamma) b))))))
 
 (defun trig-log (arg-l1 arg-l2)
   (cond ((equal (simplifya (car arg-l2) nil) '((rat simp) 3 2))
@@ -2087,7 +2101,6 @@
 	   (format t "  trig-log:  Test c=1/2~%"))
 	 (trig-log-1 arg-l1 arg-l2))
 	(t nil)))
-
 
 (defun trig-log-3 (arg-l1 arg-l2)
   (cond ((and (or (equal (car arg-l1) 1) (equal (cadr arg-l1) 1))
@@ -3132,8 +3145,6 @@
 	(append (list '(mlist)) arg-l1)
 	(append (list '(mlist)) arg-l2)
 	arg))
-
-
 
 ;; Consider pFq([a_k]; [c_j]; z).  If a_k = c_j + m for some k and j
 ;; and m >= 0, we can express pFq in terms of (p-1)F(q-1).
