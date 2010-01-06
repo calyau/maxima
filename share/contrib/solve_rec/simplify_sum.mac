@@ -273,13 +273,13 @@ freeof_integrate(expr) :=
   if atom(expr) then true
   else if part(expr, 0)=nounify(integrate) then false
   else if expr=[] then true
-  else xreduce("and", map(freeof_sum, args(expr)))$
+  else xreduce("and", map(freeof_integrate, args(expr)))$
 
 freeof_limit(expr) :=
   if atom(expr) then true
   else if part(expr, 0)=nounify(limit) then false
   else if expr=[] then true
-  else xreduce("and", map(freeof_sum, args(expr)))$
+  else xreduce("and", map(freeof_limit, args(expr)))$
 
 /*******************
  *
@@ -313,12 +313,12 @@ find_mfold(expr, var) := block(
   xreduce(lambda([a,b], a*b/gcd(a,b)), coeffs))$
 
 extended_nusum(expr, var, lo, hi) := block(
-  [m: find_mfold(expr, var), exprm, tk, sk],
-  exprm: subst(var=m*var, expr),
+  [%m%: find_mfold(expr, var), exprm, tk, sk],
+  exprm: subst(var=%m%*var, expr),
   tk: nusum(exprm, var, 1, var),
   if not freeof_sum(tk) then error(),
-  sk: subst(var=var/m, tk),
-  apply('sum, [sk, var, hi-m+1, hi]) - apply('sum, [sk, var, lo-m, lo-1]))$
+  sk: subst(var=var/%m%, tk),
+  apply('sum, [sk, var, hi-%m%+1, hi]) - apply('sum, [sk, var, lo-%m%, lo-1]))$
 
 /*******************
  *
