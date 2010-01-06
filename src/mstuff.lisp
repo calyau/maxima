@@ -27,10 +27,12 @@
 ;; closure version.  Gcl likes either...  For the moment we will
 ;; leave a conditional here.
 (defun mfunction1 (fun)
-  #+(or cmu scl)
-  (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y))))
-  #-(or cmu scl)
-  #'(lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y)))))
+  (if (functionp fun)
+      fun
+      #+(or cmu scl)
+      (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y))))
+      #-(or cmu scl)
+      #'(lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y))))))
 
 (defun lessthan (a b)
   (great b a))
