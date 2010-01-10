@@ -586,7 +586,9 @@
 ;; techniques, however, are not perfect.
 
 (defun absarg (l &optional (absflag nil))
-  (setq l ($expand l))
+;; Commenting out the the expansion of the expression l. It seems to be not
+;; necessary, but can cause expression swelling (DK 01/2010).
+;  (setq l ($expand l))
   (cond ((atom l)
 	 (cond ((eq l '$%i)
 		(cons 1 (simplify '((mtimes) ((rat simp) 1 2) $%pi))))
@@ -621,7 +623,7 @@
 	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
 	   (setq abars (absarg (car n) absflag))))
 	((eq (caar l) 'mexpt)
-	 (let ((aa (absarg (cadr l) nil))  ;; we always need arg of base of exponent
+	 (let ((aa (absarg (cadr l) nil)) ; we always need arg of base of exponent
 	       (sp (risplit (caddr l)))
 	       ($radexpand nil))
 	   (cons (mul (powers (car aa) (car sp))
