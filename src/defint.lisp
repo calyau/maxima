@@ -2015,7 +2015,7 @@ in the interval of integration.")
 	  #+nil
 	  ((not (equal ($asksign denom) '$zero))
 	   0)
-	  ((equal ($asksign denom) '$zero)
+	  ((equal ($csign denom) '$zero)
 	   '$undefined)
 	  (t (intsubs exp ll ul)))))
 
