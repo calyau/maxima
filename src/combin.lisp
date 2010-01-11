@@ -1102,7 +1102,7 @@
        ;; sum(binomial(a+k,c),k,l,h)
        ((and (equal 0 (cdr d)) (equal 1 (cdr n)))
 	(adsum (m* y (m- (list '(%binomial) (m+ h (car n) 1) (m+ (car d) 1))
-			 (list '(%binomial) (m+ l (car n) 1) (m+ (car d) 1))))))
+			 (list '(%binomial) (m+ l (car n)) (m+ (car d) 1))))))
 
        ;; sum(binomial(n,k),k,0,n)=2^n
        ((and (equal 1 (cdr d)) (equal 0 (cdr n)))

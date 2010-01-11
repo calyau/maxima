@@ -991,11 +991,14 @@ sum(binomial(n+1,k), k, 1, n), simpsum;
 sum(binomial(n,k), k, -1, n+1), simpsum;
 2^n;
 
-sum(binomial(k+3,a), k, l, h), simpsum;
-binomial(h+4,a+1) - binomial(l+4,a+1);
+sum(binomial(t+i,t),i,0,k), simpsum;
+binomial(t+k+1,t+1);
 
-sum(binomial(k+a,k+b),k,l,h), simpsum;
-binomial(h+a+1,-b+a+1)-binomial(l+a+1,-b+a+1);
+sum(binomial(t+i,t),i,1,k), simpsum;
+binomial(t+k+1,t+1)-1;
+
+sum(binomial(t+i,i),i,0,k), simpsum;
+binomial(t+k+1,t+1);
 
 (forget(n>1), 0);
 0;
