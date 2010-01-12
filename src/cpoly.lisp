@@ -1394,7 +1394,7 @@
      (setq res nil)
      (cond ((not (zerop *nn*))
 	    (mtell (intl:gettext "bfallroots: only ~S out of ~S roots found.~%") (- degree *nn*) degree)
-	    (setq expr (intofp 0))
+	    (setq expr (bcons (intofp 0)))
 	    (do ((i 0 (1+ i)))
 		((> i *nn*))
 	      (setq expr
