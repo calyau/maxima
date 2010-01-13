@@ -6,10 +6,10 @@
 
 (in-package :maxima)
 
-#+sbcl
+#+(or ecl sbcl)
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (require 'asdf)		    ;not needed here for a recent SBCL
-  (require 'sb-posix)
+  #+sbcl (require 'asdf)		    ;not needed here for a recent SBCL
+  #+sbcl (require 'sb-posix)
   (require 'sb-bsd-sockets))
 
 (defvar $in_netmath nil)
@@ -61,7 +61,7 @@
 			      :input t :output t :element-type
 			      (if bin '(unsigned-byte 8) 'character)
 			      #+unicode :external-format #+unicode :utf-8)
-    #+sbcl (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
+    #+(or ecl sbcl) (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
 					:type :stream :protocol :tcp)))
 	     (sb-bsd-sockets:socket-connect
 	      socket (sb-bsd-sockets:host-ent-address
@@ -72,7 +72,6 @@
     #+gcl (si::socket port :host host)
     #+lispworks (comm:open-tcp-stream host port :direction :io :element-type
                                       (if bin 'unsigned-byte 'base-char))
-    #+ecl (si::open-client-stream host port)
     #+ccl (ccl::make-socket :remote-host host :remote-port port)
     #-(or allegro clisp cmu scl sbcl gcl lispworks ecl ccl)
     (error 'not-implemented :proc (list 'open-socket host port bin))))
