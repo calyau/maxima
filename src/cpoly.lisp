@@ -1703,7 +1703,7 @@
 	  ee (fptimes* (intofp 2)
 		       (fpabs (aref *qpr-sl* 0)))
 	  t1 (fpminus (fptimes* *szr* *b*)))
-    (do ((i 1 (1+ *n*)))
+    (do ((i 1 (1+ i)))
 	((> i *n*))
       (setq ee (fpplus (fptimes* ee zm)
 		       (fpabs (aref *qpr-sl* i)))))
