@@ -463,7 +463,7 @@
 	ai (abs ai))
   (cond ((> ai ar) (setq ar (/ ar ai)) (* ai (sqrt (1+ (* ar ar)))))
 	((> ar ai) (setq ai (/ ai ar)) (* ar (sqrt (1+ (* ai ai)))))
-	((* sqrt(2.0)
+	((* (sqrt 2.0)
 	  ar))))
 
 ;;; This is the algorithm for doing real polynomials.  It is algorithm
