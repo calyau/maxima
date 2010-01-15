@@ -110,3 +110,8 @@ EXTREME_TEST : [[f5,k,n,3], [h6,k,n,2],[h12,k,n,5]];
 
 FULL_TEST : append(GOSPER_TEST,EASY_TEST,
                    HARD_TEST,EXTREME_TEST);
+
+kill (g1, g2, g3, g4, g5, g6, g7,
+    f1, f2, f3, f4, f5, f6, f7, f8, f9, f10,
+    h1, h2, h3, h4, h5, h6, h6b, h7, h8, h9, h10, h11, h12, h13,
+    d1, d2);
