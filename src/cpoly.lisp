@@ -650,7 +650,7 @@
 	  zm (sqrt (abs *v*))
 	  ee (* 2.0 (abs (aref *qpr-sl* 0)))
 	  t1 (- (* *szr* *b*)))
-    (do ((i 1 (1+ *n*)))
+    (do ((i 1 (1+ i)))
 	((> i *n*)) (setq ee (+ (* ee zm) (abs (aref *qpr-sl* i)))))
     (setq ee (+ (* ee zm) (abs (+ *a* t1)))
 	  ee (- (* (+ (* 5.0 *mre*) (* 4.0 *are*)) ee)
