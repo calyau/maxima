@@ -52,4 +52,6 @@
 	"rtest_integrate"
 	"rtest_integrate_special"
         "rtest_ask"
+        ((mlist) "rtest_sqrt" 64 66 76 78 80 83 86 90 99 111 112 113 115
+                              121 122 123 125 129 140)
 	))
