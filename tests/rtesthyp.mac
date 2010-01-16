@@ -1736,19 +1736,19 @@ hgfred([1/2,b],[3/2,b+1],x);
 b*(sqrt(%pi/x)*erfi(sqrt(x))-(-x)^(-b)*(gamma(b)-gamma_incomplete(b,-z)))/(2*b-1)$
 */
 
-/* Note: I am unsure about Maxima notation for the incomplte gamma
+/* Note: I am unsure about Maxima notation for the incomplete gamma
 function */ 
 
 /* Tests with erfi
    erfi is implemented as a simplifying function. The following definition no 
-   longer works. When erf_representation is T the simplifier transform erfi to
+   longer works. When erf_representation is ERF the simplifier transform erfi to
    a representation in terms of erf.
 (erfi(x) := -%i*erf(%i*x),0);
 0;
 */
 
-erf_representation : true;
-true;
+erf_representation : erf;
+erf;
 
 ratsimp(factor(hgfred([-1/2,3/2],[1/2,1/2],x))-
 	(exp(x)-2*sqrt(%pi)*sqrt(x)*erfi(sqrt(x))));
