@@ -2166,7 +2166,7 @@
 	   (n (cdras 'n w)))
 
        (when *debug-integrate*
-	 (format t "~&Exponential type z^n*d^(a*z^2+b*z+c) : w = ~A~%" w))
+	 (format t "~&Type 5: z^n*d^(a*z^2+b*z+c) : w = ~A~%" w))
 
        (mul
 	 (div -1 (mul 2 (power (mul a ($log d)) (div 1 2))))
@@ -2201,7 +2201,7 @@
 	   (n (cdras 'n w)))
 
        (when *debug-integrate*
-	 (format t "~&Exponential type z^n*d^(a*sqrt(z)+b*z+c) : w = ~A~%" w))
+	 (format t "~&Type 6: z^n*d^(a*sqrt(z)+b*z+c) : w = ~A~%" w))
 
        (mul
 	 (power 2 (mul -1 (add n 1)))
