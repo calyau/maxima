@@ -1744,6 +1744,18 @@
                  (list '(mlist simp) '((rat simp) 1 2))
                  (list '(mlist simp) '((rat simp) 3 2))
                  (mul -1 (power z 2)))))
+    
+    ;; Transformation to Erfc or Erfi
+    
+    ((and $erf_representation
+          (not (eq $erf_representation '$erf)))
+     (case $erf_representation
+       (%erfc
+        (sub 1 (take '(%erfc) z)))
+       (%erfi
+        (mul -1 '$%i (take '(%erfi) (mul '$%i z))))
+       (t
+        (eqtest (list '(%erf) z) expr))))
 
     (t
      (eqtest (list '(%erf) z) expr))))
@@ -1993,11 +2005,8 @@
     ((taylorize (mop expr) (second expr)))
     ((and $trigsign (great (mul -1 z) z))
      (sub 2 (simplify (list  '(%erfc) (mul -1 z)))))
-
-    ;; Transformation to Erf
-
-    ($erf_representation
-     (sub 1 (simplify (list '(%erf) z))))
+    
+    ;; Representation through equivalent functions
     
     ($hypergeometric_representation
       (sub 1
@@ -2007,7 +2016,19 @@
                    (list '(mlist simp) '((rat simp) 1 2))
                    (list '(mlist simp) '((rat simp) 3 2))
                    (mul -1 (power z 2))))))
+    
+    ;; Transformation to Erf or Erfi
 
+    ((and $erf_representation
+          (not (eq $erf_representation '$erfc)))
+     (case $erf_representation
+       (%erf
+        (sub 1 (take '(%erf) z)))
+       (%erfi
+        (add 1 (mul '$%i (take '(%erfi) (mul '$%i z)))))
+       (t
+        (eqtest (list '(%erfc) z) expr))))
+    
     (t
      (eqtest (list '(%erfc) z) expr))))
 
@@ -2107,9 +2128,6 @@
     ((apply-reflection-simp (mop expr) z $trigsign))
 
     ;; Representation through equivalent functions
-
-    ($erf_representation
-     (mul -1 '$%i (simplify (list '(%erf) (mul '$%i z)))))
     
     ($hypergeometric_representation
       (mul 2 z
@@ -2118,7 +2136,19 @@
                      (list '(mlist simp) '((rat simp) 1 2))
                      (list '(mlist simp) '((rat simp) 3 2))
                      (power z 2))))
-
+    
+    ;; Transformation to Erf or Erfc
+    
+    ((and $erf_representation
+          (not (eq $erf_representation '$erfi)))
+     (case $erf_representation
+       (%erf
+        (mul -1 '$%i (take '(%erf) (mul '$%i z))))
+       (%erfc
+        (sub (mul '$%i (take '(%erfc) (mul '$%i z))) '$%i))
+       (t
+        (eqtest (list '(%erfi) z) expr))))
+    
     (t
      (eqtest (list '(%erfi) z) expr))))
 
