@@ -263,24 +263,25 @@
 	    (t 
 	     (merror "The function ~:M doesn't evaluate to a boolean for ~:M" f x))))))
 	       
-;; Let a = (a1,a2,...,an), where each ai is either a list or a set.
-;; Return {x | x is a member of exactly one ai}.  When n = 2, this
-;; is the standard symmdifference of sets; thus symmdifference(a,b)
-;; evaluates to the union of a - b and b - a. Further symmdifference() -> set()
-;; and symmdifference(a) -> a.  Signal an error when one or more of the
-;; ai are not lists or sets.
+;; The symmetric difference of sets, that is (A-B) union (B - A), is associative.
+;; Thus the symmetric difference extends unambiguously to n-arguments.
 
-;; After completing dotimes, the list acc is non-redundant -- so 
-;; we only need to sort acc.
+(defun $symmdifference (&rest l)
+  (let ((acc nil))
+    (dolist (lk l (cons '($set simp) acc))
+      (setq acc (set-symmetric-difference acc (require-set lk "$symmdifference"))))))
+            
+;; Return {x | x in exactly one set l1, l2, ...}
 
-(defun $symmdifference (&rest a)
-  (let ((acc) (n (length a)))
-    (declare (fixnum n))
-    (setq a (mapcar #'(lambda (x) (require-set x "$symmdifference")) a))
-    (dotimes (i n)
-      (setq acc (append acc (reduce #'sset-difference a)))
-      (setq a (cons (car (last a)) (butlast a))))
-    `(($set simp) ,@(sort acc '$orderlessp))))
+(defun $in_exactly_one (&rest l)
+  ;; u = union of l1, l2,...
+  ;; r = members that are in two or more l1, l2, ...
+  (let ((u nil) (r nil))
+    (dolist (lk l)
+      (setq lk (require-set lk "$in_exactly_one"))
+      (setq r (set-union r (set-intersect u lk)))
+      (setq u (set-union u lk)))
+    (cons '($set simp) (sset-difference u r))))
 
 ;; When k is a positive integer, return the set of all subsets of a 
 ;; that have exactly k elements; when k is nil, return the power set
