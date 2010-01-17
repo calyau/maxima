@@ -2510,9 +2510,7 @@ Examples:
 @anchor{symmdifference}
 @deffn {Function} symmdifference (@var{a_1}, ..., @var{a_n})
 
-Returns the symmetric difference, that is,
-the set of members that occur in exactly one set @var{a_k}.
-
+Returns the symmetric difference of sets @code{ @var{a_1}, ..., @var{a_n}}.
 Given two arguments, @code{symmdifference ( @var{a}, @var{b})} is
 the same as @code{union ( setdifference ( @var{a}, @var{b}), setdifference(@var{b}, @var{a}))}.
 
@@ -2544,9 +2542,9 @@ Examples:
 (%i6) symmdifference (S_1, S_2);
 (%o6)                        @{1, a@}
 (%i7) symmdifference (S_1, S_2, S_3);
-(%o7)                        @{1, z@}
+(%o7)                        @{1, b, z@}
 (%i8) symmdifference (@{@}, S_1, S_2, S_3);
-(%o8)                        @{1, z@}
+(%o8)                        @{1,b, z@}
 @end example
 
 @opencatbox
