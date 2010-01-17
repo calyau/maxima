@@ -27,17 +27,21 @@ block([simp : false], tellsimpafter('integrate(q,x), extra_integrate(q,x)),
 
 extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'abs_integrate_use_if, 'floor_int, 'if_int];
 
-extra_integrate(q,x) := block([i, ii : funmake(nounify('integrate),[q,x])],
-  for f in extra_integration_methods do (
-    i : apply(f, [q,x]),
+extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
+  l : extra_integration_methods,
+  while l # [ ] do (
+    i : first(l)(q,x),
+    l : rest(l),
     if (i # false) then if freeof('integrate, i) then return(ii : i) else ii : i),
   ii);
 
 extra_definite_integration_methods : ['abs_defint];
 
-extra_definite_integrate(q,x,lo,hi) := block([i, ii : funmake(nounify('integrate),[q,x, lo, hi])],
-  for f in extra_definite_integration_methods do (
-    i : apply(f, [q,x, lo, hi]),
+extra_definite_integrate(q,x,lo,hi) := block([l,i, ii : funmake(nounify('integrate),[q,x, lo, hi])],
+  l : extra_definite_integration_methods,
+  while l # [] do (
+    i : first(l)(q,x, lo, hi),
+    l : rest(l),
     if (i # false) and freeof('integrate, i) then return(ii : i)),
   ii);
 
