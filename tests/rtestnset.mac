@@ -327,10 +327,10 @@ symmdifference(set(a),set(b),set(c));
 set(a,b,c)$
 
 symmdifference(set(a),set(a,b),set(a,b,c));
-set(c)$
+set(a,c)$
 
 symmdifference(set(a,b,c),set(a,b),set(a));
-set(c)$
+set(a,c)$
 
 symmdifference(set(a,b,c),set(),set(1,2,3));
 set(a,b,c,1,2,3)$
@@ -1635,5 +1635,19 @@ set(set(),set(a,b,set(c)))$
 (remvalue(l),0);
 0$
 
+in_exactly_one(set());
+set()$
+
+in_exactly_one(set(l), set(s), set(s));
+set(l)$
+
+in_exactly_one(set(r), set(e), set(n), set(e), set(e));
+set(r,n)$
+
+in_exactly_one(set(m), set(a), set(x), set(i,m,a));
+set(i,x)$
+
+in_exactly_one(set(x),set(x), set(a,b));
+set(a,b)$
 
 
