@@ -151,7 +151,7 @@ integrate(sqrt(R)/x,x);
 			+2*a/(sqrt(4*a*c-b^2)*abs(x)))
 	 +b*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(2*sqrt(c))+sqrt(c*x^2+b*x+a);
 
-integrate(sqrt(R^3)/x,x);
+integrate(sqrt(R^3)/x,x),radexpand:all;
 -a^(3/2)*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))
 			+2*a/(sqrt(4*a*c-b^2)*abs(x)))
 	 +3*a*b*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(4*sqrt(c))
@@ -164,7 +164,7 @@ integrate(sqrt(R)/x^2,x);
 	 /(2*sqrt(a))
 	 +sqrt(c)*asinh((2*c*x+b)/sqrt(4*a*c-b^2))-sqrt(c*x^2+b*x+a)/x;
 
-integrate(sqrt(R^3)/x^2,x);
+integrate(sqrt(R^3)/x^2,x),radexpand:all;
 -3*sqrt(a)*b
 	  *asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
 	 /2
@@ -177,18 +177,18 @@ integrate(sqrt(R^3)/x^2,x);
 integrate(sqrt(R-a)/x,x);
 b*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/(2*sqrt(c))+sqrt(c*x^2+b*x);
 
-integrate(sqrt((R-a)^3)/x,x);
+integrate(sqrt((R-a)^3)/x,x),radexpand:all;
 -b^3*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/(16*c^(3/2))
 	 +(c*x^2+b*x)^(3/2)/3+b*x*sqrt(c*x^2+b*x)/4+b^2*sqrt(c*x^2+b*x)/(8*c);
 
 integrate(sqrt(R-a)/x^2,x);
 sqrt(c)*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)-2*sqrt(c*x^2+b*x)/x;
 
-integrate(sqrt((R-a)^3)/x^2,x);
+integrate(sqrt((R-a)^3)/x^2,x),radexpand:all;
 3*b^2*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/(8*sqrt(c))
 	 +(c*x^2+b*x)^(3/2)/(2*x)+3*b*sqrt(c*x^2+b*x)/4;
 
-integrate(sqrt((R-a)^3)/x^3,x);
+integrate(sqrt((R-a)^3)/x^3,x),radexpand:all;
 3*b*sqrt(c)*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/2
 	 +(c*x^2+b*x)^(3/2)/x^2-3*b*sqrt(c*x^2+b*x)/x;
 
