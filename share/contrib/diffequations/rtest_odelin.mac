@@ -150,8 +150,8 @@ odelin(17*y-x*'diff(y,x)+x^2*'diff(y,x,2),y,x);
 set(x^(1-4*%i),x^(4*%i+1))$
 
 odelin(-3*y+2*'diff(y,x)+x^2*'diff(y,x,2),y,x);
-set(kummer_m((sqrt(13)+3)/2,sqrt(13)+1,-2/x) *(-x)^(-sqrt(13)/2-1/2)*%e^(2/x)*abs(x), kummer_u((sqrt(13)+3)/2,
-    sqrt(13)+1,-2/x) *(-x)^(-sqrt(13)/2-1/2)*%e^(2/x)*abs(x))$
+set(kummer_m((sqrt(13)+3)/2,sqrt(13)+1,-2/x) *(x)^(-sqrt(13)/2-1/2)*%e^(2/x)*abs(x), kummer_u((sqrt(13)+3)/2,
+    sqrt(13)+1,-2/x) *(x)^(-sqrt(13)/2-1/2)*%e^(2/x)*abs(x))$
 
 odelin(-(3+x)*y+2*x^2*'diff(y,x)+4*x^2*'diff(y,x,2),y,x);
 set((x-2)/sqrt(x),%e^-(x/2)/sqrt(x))$
