@@ -37,10 +37,10 @@ collect_poly_factors(e,x) := block([l],
   e : factor(ratdenom(e)),
   l : if safe_op(e) = "*" then args(e) else [e],
   l : sublist(l, lambda([s], not freeof(x,s))),
-  if every(lambda([s], polynomialp(s,[x], lambda([u], freeof(x,u)), 'integerp), 'true), l) then
+  if every(lambda([s], polynomialp(s,[x], lambda([u], freeof(x,u)), 'integerp)), l) then
   setify(map(lambda([s], s / ratcoef(s,x,hipow(s,x))), l)) else false);
 
-generate_hyper_mu(p, r, a, b) := block([l : [], f, n, i, pt, rt],
+generate_hyper_mu(p, r, a, b) := block([l : [], f, n, i, pt, rt,k],
   n : 3^length(p) - 1,
   while n > 0 do (
     f : 0,
@@ -66,12 +66,12 @@ generate_hyper_mu(p, r, a, b) := block([l : [], f, n, i, pt, rt],
 
 /* Express sigma as a linear combination of the members of kern. */
 
-xresidue(sigma, kern) := block([zip, %g, i, k],
+xresidue(sigma, kern, x) := block([zip, %g, i, n, k],
   %g : make_dummy([sigma, kern], '%g),
-  i : 0,
-  zip : partfrac(sigma - dkern . map(lambda([s], concat(%g,i : i + 1)), dkern),x),
+  n : length(kern),
+  zip : partfrac(sigma - kern . makelist(concat(%g,i),i,1,n),x),
   zip : if safe_op(zip) = "+" then args(zip) else [zip],
-  map('rhs, linsolve(map(ratnumer,zip), makelist(concat(%g,k),k,1,i))));
+  map('rhs, linsolve(map('ratnumer,zip), makelist(concat(%g,k),k,1,n))));
 
 /* Return true if the function x |--> e is piecewise constant. We'll assume that
 if g is peicewise constant, so is the composition f(g). This isn't true for all
@@ -86,8 +86,8 @@ piecewise_constant_p(e,x,[z]) := (
     member(safe_op(e), ['floor, 'signum]) or
     every(lambda([s], piecewise_constant_p(s,x, false)), args(e))));
 
-hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa,
-                             sol, f, cnst, ie : false, %fo, %so, algexact : true],
+hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa, l,
+                         sol, f, cnst, ie : false, %fo, %so, algexact : true],
   kern : collect_poly_factors(e,x),
   if kern # false then (
     kern : listify(kern),
@@ -96,7 +96,7 @@ hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa,
     b : make_dummy([e,x],'b),
  
     dkern : map(lambda([s], diff(s,x) / s), kern),
-    r : xresidue(sigma, dkern),    
+    r : xresidue(sigma, dkern, x),    
     l : generate_hyper_mu(dkern, r, a, b),
     for mu in l while ie = false do (
 
@@ -130,7 +130,7 @@ hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa,
                 ie : subst(sk, (1/%so) * f^(a+1) * hypergeometric([a+1,-b],[2+a], f)/(a+1)))))))),
     ie);
 
-generate_elliptic_candidates(p, r, %k) := block([l : [], f, n, i, pt, rt],
+generate_elliptic_candidates(p, r, %k) := block([l : [], f, n, i, pt, rt, k],
   n : 5^length(p) - 1,
   while n > 0 do (
     f : 0,
@@ -158,7 +158,7 @@ generate_elliptic_candidates(p, r, %k) := block([l : [], f, n, i, pt, rt],
   l : sort(l, lambda([a,b], first(a) < first(b))),
   l : map('second,l));
 
-inverse_jacobi_int(e,x) := block([kern, sigma, %k, r, dkern, mu, eq, sol, f, cnst, ie : false,
+inverse_jacobi_int(e,x) := block([kern, sigma, %k, r, dkern, mu, eq, sol, f, cnst, ie : false,l,
                               %fo, %so, algexact : true],
   kern : collect_poly_factors(e,x),
   if kern # false then (
@@ -166,7 +166,7 @@ inverse_jacobi_int(e,x) := block([kern, sigma, %k, r, dkern, mu, eq, sol, f, cns
     sigma : partfrac(ratsimp(diff(e,x) / e),x),
     %k : make_dummy([e,x],'%k),
     dkern : map(lambda([s], diff(s,x) / s), kern),
-    r : xresidue(sigma, dkern),    
+    r : xresidue(sigma, dkern, x),    
     l : generate_elliptic_candidates(dkern, r, %k),
     for mu in l while ie = false do (
  
