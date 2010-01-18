@@ -84,19 +84,47 @@ simplify_sum(expr) :=
   /* Check if we have a sum - if not then simplify all arguments.       */
   if mapatom(expr) then expr
   else if part(expr, 0)#nounify(sum) then map(simplify_sum, expr)
-  
+
+
+  /* Check for sum(expr, var, min, inf) */
+  else if (part(expr, 3)=-inf or part(expr, 3)=minf) and part(expr, 4)=inf then block(
+    [summand, var_, lo, hi],
+    [summand, var_, lo, hi]: args(expr),
+    simplify_sum(apply('sum, [summand, var_, 0, inf])) +
+    simplify_sum(apply('sum, [subst(var_=-var_, summand), var_, 1, inf])))
+
+  /* Check for sum(expr, var, minf, hi) */
+  else if part(expr, 3)=-inf or part(expr, 3)=minf then (
+    [summand, var_, lo, hi],
+    simplify_sum(apply('sum, [subst(var_=-var_, summand), var_, -hi, inf])))
+
+  /* Trigonometric sums */
   else if catch(
     scanmap(
       lambda([u], if not atom(u) and member(part(u,0), [sin, cos, sinh, cosh]) then throw(true)),
       expr,
       bottomup))=true then block(
     [sm1 : simplify_sum(split_sum(expand(exponentialize(expr))))],
-    if freeof_sum(sm1) then sm1
+    if freeof_sum(sm1) then trigsimp(rectform(sm1))
     else expr)
 
+  /* Sums with Fibonacci numbers */
+  else if catch(
+    scanmap(
+      lambda([u], if not atom(u) and part(u,0)=fib then throw(true)),
+      expr,
+      bottomup))=true then block(
+    [sm1: simplify_sum(split_sum(expand(fibtophi(expr))))],
+    if freeof_sum(sm1) then block(
+      [algebraic:true],
+      ratsimp(sm1))
+    else expr)
+
+  /* Check if summand is a logarighm */
   else if not(atom(part(expr, 1))) and part(expr, 1, 0)=log and part(expr, 2)#minf and part(expr, 3)#inf then
     log(simplify_product(apply(product, append([exp(part(expr, 1))], rest(args(expr))))))
 
+  /* Main summation code starts here */
   else block(
     [summand : ratsimp(part(expr, 1)),
      var : part(expr, 2),
@@ -357,6 +385,8 @@ ss_zeilb(expr, %k%, lo, hi, [in_zr]) := block(
   support : ss_support(expr1, %k%),
   support : [if numberp(support[1]) then ceiling(support[1]) else support[1],
              if numberp(support[2]) then floor(support[2])   else support[2]],
+
+  if support[2]<lo or support[1]>hi then return(0),
 
   /* Check if bounds are implicit. */
   if ss_max(lo, support[1])=support[1] then lower_bound_implicit : true,
@@ -814,7 +844,7 @@ sum_by_integral(expr, var, lo, hi) :=
     
     if freeof_integrate(expr1) then expr1
     else apply('sum, [expr, var, lo, hi]))
-  
+
   else apply('sum, [expr, var, lo, hi])$
 
 eval_when(batch,

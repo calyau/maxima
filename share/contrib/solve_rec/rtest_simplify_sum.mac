@@ -492,3 +492,12 @@ test_sum(
   2*(n/2+1)!+2*((n-1)/2+1)!-sqrt(%pi)-2
 );
 0;
+
+test_sum(
+  sum(i*fib(i-1)/2^i,i,1,inf),
+  [],
+  false,
+  [],
+  6
+);
+0;
