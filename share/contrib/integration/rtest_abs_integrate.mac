@@ -222,10 +222,13 @@ block([extra_integration_methods : ['signum_int]], integrate(exp(-abs((x-1)*(x+1
 integrate(1/(1 + abs(x))^2,x,minf,inf);
 2$
 
-integrate((5*sin(3*x)*signum(x+3))/x,x);
--5*(%i*gamma_incomplete(0,3*%i*x)-%i*gamma_incomplete(0,-3*%i*x)
-                                 +%i*gamma_incomplete(0,9*%i)
-                                 -%i*gamma_incomplete(0,-9*%i))*signum(3*x+9)/2;
+e : integrate((5*sin(3*x)*signum(x+3))/x,x);
+
+-(5 * (%i*gamma_incomplete(0, 3*%i*x) - %i*gamma_incomplete(0, -3*%i*x)
+ + %i*gamma_incomplete(0, 9*%i) - %i*gamma_incomplete(0, -9*%i))*signum(3*x + 9))/2$
+
+ratsimp(rectform(diff(e,x)));
+(5*sin(3*x)*signum(3*x+9))/x$
 
 map('unit_step_mult_simp, [5,5.6, -28.6b0,%i, 1 - sqrt(5), 42]);
 [5,5.6,-2.86b1,%i,1-sqrt(5),42]$
@@ -312,6 +315,31 @@ integrate(max(x^5-x^3,x*(x^4-q-y)*(1-x^2)),x);
 
 (remfunction(convolution, unit_box), remvalue(i,di,f1),0);
 0$
+
+(load("hyperint"), load(hypergeometric), extra_integration_methods : cons('hyper_int, extra_integration_methods),0);
+0$
+
+e : integrate(x^(a) * (1-x)^(b),x);
+-(hypergeometric([-a,b+1],[b+2],1-x)*(1-x)*%e^(a*log(x)+b*log(1-x)))/((b+1)*x^a)$
+
+rat(hypergeometric_simp(subst([a=1,b=3], x^a * (1-x)^b - diff(e,x))),x);
+''(rat(0))$
+
+rat(hypergeometric_simp(subst([a=2,b=3], x^a * (1-x)^b - diff(e,x))),x);
+''(rat(0))$
+
+rat(hypergeometric_simp(subst([a=2,b=4], x^a * (1-x)^b - diff(e,x))),x);
+''(rat(0))$
+
+rat(hypergeometric_simp(subst([a=-4,b=3], x^a * (1-x)^b - diff(e,x))),x);
+''(rat(0))$
+
+
+(remvalue(e),0);
+0$
+
+
+
 
 
 
