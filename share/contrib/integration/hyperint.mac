@@ -47,7 +47,7 @@ generate_hyper_mu(p, r, a, b) := block([l : [], f, n, i, pt, rt,k],
     pt : p, /* pt = tail of p */
     rt : r,
     k : n,
-    i : 0, /* i counts the number of nonzeo terms in f */
+    i : 0, /* i counts the number of nonzero terms in f */
     while k > 0 do (
       k : divide(k,3),
       if second(k) = 1 then (
@@ -74,7 +74,7 @@ xresidue(sigma, kern, x) := block([zip, %g, i, n, k],
   map('rhs, linsolve(map('ratnumer,zip), makelist(concat(%g,k),k,1,n))));
 
 /* Return true if the function x |--> e is piecewise constant. We'll assume that
-if g is peicewise constant, so is the composition f(g). This isn't true for all
+if g is piecewise constant, so is the composition f(g). This isn't true for all
 functions f, (say f is 1 on the rational numbers and 0 otherwise). */
 
 piecewise_constant_p(e,x,[z]) := (
@@ -97,7 +97,7 @@ hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa, l,
  
     dkern : map(lambda([s], diff(s,x) / s), kern),
     r : xresidue(sigma, dkern, x),    
-    l : generate_hyper_mu(dkern, r, a, b),
+    l : if r = [ ] then [ ] else generate_hyper_mu(dkern, r, a, b),
     for mu in l while ie = false do (
 
       eq : mu^2*(b*diff(sigma,x,1)+sigma^2+b*diff(mu,x,1)+2*a*diff(mu,x,1)+2
@@ -166,8 +166,8 @@ inverse_jacobi_int(e,x) := block([kern, sigma, %k, r, dkern, mu, eq, sol, f, cns
     sigma : partfrac(ratsimp(diff(e,x) / e),x),
     %k : make_dummy([e,x],'%k),
     dkern : map(lambda([s], diff(s,x) / s), kern),
-    r : xresidue(sigma, dkern, x),    
-    l : generate_elliptic_candidates(dkern, r, %k),
+    r : xresidue(sigma, dkern, x),
+    l : if r = [ ] then []  else generate_elliptic_candidates(dkern, r, %k),
     for mu in l while ie = false do (
  
       eq : -2*%k^2*(mu^2*(diff(sigma,x,1))^2-4*mu^2*sigma^2*(diff(sigma,x,1))+
