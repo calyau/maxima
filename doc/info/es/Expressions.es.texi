@@ -677,13 +677,11 @@ V@'ease tambi@'en @code{features}.
 La funci@'on @code{declare} reconoce las siguientes propiedades:
 
 @table @asis
-@item
-@code{evfun}
+@item @code{evfun}
 Hace que @var{a_i} sea reconocida por @code{ev}, de manera que la funci@'on
 nombrada por @var{a_i} se aplique cuando @var{a_i} aparezca como argumento
 de control de @code{ev}.
 V@'ease @code{evfun}.
-
 
 @item @code{evflag}
 Hace que @var{a_i} sea reconocida por @code{ev}, de manera que a @var{a_i} se le

@@ -272,8 +272,6 @@ La lista @code{features} s@'olo contiene propiedades matem@'aticas. Hay otra lis
 @deffn {Funci@'on} forget (@var{pred_1}, ..., @var{pred_n})
 @deffnx {Funci@'on} forget (@var{L})
 Borra los predicados establecidos por @code{assume}. Los predicados pueden ser expresiones equivalentes, pero no necesariamente id@'enticas, a las establecidas por @code{assume}.
-The predicates may be expressions equivalent to (but not necessarily identical to)
-those previously assumed.
 
 La llamada @code{forget (@var{L})}, siendo @var{L} una lista de predicados, borra todos los predicados contenidos en ella.
 
