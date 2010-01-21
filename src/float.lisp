@@ -432,7 +432,12 @@ One extra decimal digit in actual representation for rounding purposes.")
 		   (t (simplify (list '(mplus) fans nfans)))))))
 
 (defmfun ratbigfloat (r)
-  (bcons (float-ratio r)))
+  ;; R is a Maxima ratio, represented as a list of the numerator and
+  ;; denominator.  FLOAT-RATIO doesn't like it if the numerator is 0,
+  ;; so handle that here.
+  (if (zerop (car r))
+      (bcons (list 0 0))
+      (bcons (float-ratio r))))
 
 ;; This is borrowed from CMUCL (float-ratio-float), and modified for
 ;; converting ratios to Maxima's bfloat numbers.
