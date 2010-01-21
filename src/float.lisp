@@ -804,7 +804,7 @@ One extra decimal digit in actual representation for rounding purposes.")
     (let ((value (gethash fpprec table)))
       (if value
 	  value
-	  (setf (gethash fpprec table) (fplog (intofp 2))))))
+	  (setf (gethash fpprec table) (comp-log2)))))
   (defun fplog2-table ()
     table)
   (defun clear_fplog2_table ()
@@ -1030,6 +1030,41 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defun fpgamma1 ()
   ;; Use a few extra bits of precision
   (bcons (list (fpround (first (comp-bf%gamma (+ fpprec 8)))) 0)))
+
+(defun comp-log2 ()
+  ;; This is the algorithm given in http://numbers.computation.free.fr/Constants/constants.html
+  ;; log(2) = 18*L(26) - 2*L(4801) + 8*L(8749)
+  ;; L(k) = atanh(1/k) = 1/2*log((k+1)/(k-1))
+  ;;      = sum(x^(2*m+1)/(2*m+1), m, 0, inf)
+  ;;
+  ;; So
+  ;;
+  ;; log(2) = 18*atanh(1/26)-2*atanh(1/4801)+8*atanh(8749)
+  (flet ((fast-atanh (k)
+	   ;; Compute atanh(x) using Taylor series:
+	   ;;
+	   ;; atanh(x) = sum(x^(2*n+1)/(2*n+1), n, 0, inf)
+	   (let* ((term (fpquotient (intofp 1) (intofp k)))
+		  (fact (fptimes* term term))
+		  (oldsum (intofp 0))
+		  (sum term))
+	     (loop for m from 3 by 2
+		until (equal oldsum sum)
+		do
+		  (setf oldsum sum)
+		  (setf term (fptimes* term fact))
+		  (setf sum (fpplus sum (fpquotient term (intofp m)))))
+	     sum)))
+    ;; Compute log(2) using the formula above.  We also use 8 extra
+    ;; bits of precision.
+    (let ((result
+	   (let* ((fpprec (+ fpprec 8)))
+	     (fpplus (fpdifference (fptimes* (intofp 18) (fast-atanh 26))
+				   (fptimes* (intofp 2) (fast-atanh 4801)))
+		     (fptimes* (intofp 8) (fast-atanh 8749))))))
+      (list (fpround (car result))
+	    (+ -8 *m)))))
+
 
 (defun fpdifference (a b)
   (fpplus a (fpminus b)))
@@ -1316,24 +1351,11 @@ One extra decimal digit in actual representation for rounding purposes.")
 		 (* (car f) (expt 2 (- m)))))))
 
 (defun logbigfloat (a)
-  (let ((minus nil))
-    (setq a (let ((fpprec (+ 2 fpprec)))
-	      (cond (($bfloatp (car a))
-		     (setq a ($bfloat (car a)))
-		     (cond ((zerop (cadr a)) (merror (intl:gettext "log: log(0.0b0) is undefined.")))
-			   ((minusp (cadr a))
-			    (setq minus t) (fplog (list (- (cadr a)) (caddr a))))
-			   (t (fplog (cdr a)))))
-		    (t
-		     (list '(%log) (car a))))))
-    (when (numberp (car a))
-      (setq a (if (zerop (car a))
-		  (list 0 0)
-		  (list (fpround (car a)) (+ -2 *m (cadr a)))))
-      (setq a (bcons a)))
-    (if minus
-	(add a (mul '$%i ($bfloat '$%pi)))
-	a)))
+  (cond (($bfloatp (car a))
+	 (big-float-log ($bfloat (car a))))
+	(t
+	 (list '(%log) (car a)))))
+
 
 ;;; Computes the log of a bigfloat number.
 ;;;
