@@ -1,5 +1,5 @@
 /*
-  Copyright 2008, 2009 by Barton Willis
+  Copyright 2008, 2009, 2010 by Barton Willis
   Maxima code for integration of signum, abs, max, min, and unit_step.
 
   This is free software; you can redistribute it and/or
@@ -32,7 +32,9 @@ extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
   while l # [ ] do (
     i : first(l)(q,x),
     l : rest(l),
-    if (i # false) then if freeof('integrate, i) then return(ii : i) else ii : i),
+    if (i # false) then (
+      ii : i, /* accept i as a simplification of ii. */
+      if freeof('integrate, i) then l : [])),
   ii);
 
 extra_definite_integration_methods : ['abs_defint];
@@ -54,7 +56,7 @@ gradef(abs(x), abs(x) / x);
 
 safe_op(e) := block([inflag : true], if mapatom(e) then false else op(e));
 
-/* If e factors into a product of linear factors, return the list of factors; otherwise return false */
+/* If e factors into a product of linear factors, return the list of factors; otherwise return false. */
 real_linear_factors(e,x) := (
   e : factor(e),
   e : if (safe_op(e) = "*") then args(e) else [e],
@@ -129,14 +131,10 @@ partition_as_signum(e,x) := block([w : 1, acc : [], OK : true, inflag : true, sg
 linear_in_p(e,x) :=
   polynomialp(e,[x], lambda([s], freeof(x,s)), lambda([k], is(k=0) or is(k = 1))) and numberp(diff(e,x));
 
-signum_int(q,x) := block([w : 1, acc : [], sgn, v, inflag : true, f, listconstvars : true],
+signum_int(q,x) := block([w : 1, acc : [], sgn, v, f, listconstvars : true],
   q : convert_to_signum(q),
-  
-  /* maybe expand */
   v : listofvars(q),
-  if safe_op(q) = "*" and not every(lambda([s], polynomialp(s,v) or safe_op(s) = 'signum), args(q)) then (
-    q : ratexpand(q)),
-
+  q : block([expandwrt_denom : true], expandwrt(q,'signum)),
   if (f : abs_int_extra(q,x)) # false then f
   else if (f : partition_as_signum(q,x)) # false then (
     w : first(f),
@@ -212,7 +210,7 @@ so subst([x = 0], %if(x < 1, 5, log(x))) --> error. */
 
 abs_int_extra(q,x) := block([q1,q2,k,xo,kk],
   q : convert_to_signum(q),
-  k : gatherargs(q,'signum),
+  k : sublist(gatherargs(q,'signum),lambda([s], not freeof(x,s))),
   if k # [] and emptyp(rest(k)) then (
     k : first(first(k)),
     if polynomialp(k, [x], lambda([s], freeof(x,s)),lambda([k],is(k=0 or k=1))) then (

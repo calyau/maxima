@@ -111,7 +111,7 @@ hyper_int(e,x) := block([kern, sigma, a, b, r, dkern, mu, eq, aa, l,
         sol : algsys(eq, [a,b]),
         for sk in sol while ie = false do (
           f : radcan(exp(logcontract(integrate(mu,x)))),
-          f : errcatch(subst(sk, f)),
+          f : block([?errorsw : true], errcatch(subst(sk, f))),
           if f #  [] then (
             f : first(f),
             %fo : make_dummy([f,e,x], '%fo),
@@ -190,7 +190,7 @@ inverse_jacobi_int(e,x) := block([kern, sigma, %k, r, dkern, mu, eq, sol, f, cns
       sol : algsys(eq, [%k]),
       for sk in sol while ie = false do (
         f : radcan(exp(logcontract(integrate(mu,x)))),
-        f : errcatch(subst(sk, f)),
+        f : block([?errorsw : true], errcatch(subst(sk, f))),
         if f #  [] then (
           f : first(f),
           %fo : make_dummy([f,e,x], '%fo),
