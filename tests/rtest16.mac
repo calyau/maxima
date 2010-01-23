@@ -1175,3 +1175,24 @@ true;
 (fpprec:oldfpprec, done);
 done;
 
+/* Bug ID:2933882 - Power function: 0^a not fully implemented
+ * Show some simplifications of 0^a
+ */
+
+assume(a>0);
+[a>0];
+0^a;
+0;
+errcatch(0^-a);
+[];
+0^(a+%i);
+0;
+0^(1/2+%i);
+0;
+errcatch(0^(-1/2+%));
+[];
+errcatch(0^%i);
+[]; 
+
+forget(a>0);
+[a>0];
