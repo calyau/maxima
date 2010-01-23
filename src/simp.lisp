@@ -1654,18 +1654,50 @@
             (go matrix))
            ((onep1 pot) (go atgr))
            ((or (zerop1 pot) (onep1 gr)) (go retno))
+           
+; This code does not handle 0^a completely. An expression gives always zero.
+; The sign of realpart(pot) is not taken into account.
+;           ((zerop1 gr)
+;            (cond ((or (mnegp pot) (and *zexptsimp? (eq ($asksign pot) '$neg)))
+;                   (cond ((not errorsw) (merror "Division by 0"))
+;                         (t (throw 'errorsw t))))
+;                  ((not (free pot '$%i))
+;                   (cond ((not errorsw)
+;                          (merror "0 to a complex quantity has been generated."))
+;                         (t (throw 'errorsw t))))
+;                  ((and *zexptsimp? (eq ($asksign pot) '$zero))
+;                   (cond ((not errorsw) (merror "0^0 has been generated"))
+;                         (t (throw 'errorsw t))))
+;                  (t (return (zerores gr pot)))))
+           
+           ;; Replacement of the code from above to handle 0^a more complete.
+           ;; If the sign of realpart(a) is not known return an unsimplified
+           ;; expression. The handling of the flag *zexptsimp? is not changed.
            ((zerop1 gr)
-            (cond ((or (mnegp pot) (and *zexptsimp? (eq ($asksign pot) '$neg)))
+            (cond ((or (member (setq z ($csign pot)) '($neg $nz))
+                       (and *zexptsimp? (eq ($asksign pot) '$neg)))
+                   ;; A negative exponent. Maxima error.
                    (cond ((not errorsw) (merror "Division by 0"))
                          (t (throw 'errorsw t))))
-                  ((not (free pot '$%i))
+                  ((and (member z '($complex $imaginary))
+                        ;; A complex exponent. Look at the sign of the realpart.
+                        (member (setq z ($sign ($realpart pot))) 
+                                '($neg $nz $zero)))
                    (cond ((not errorsw)
                           (merror "0 to a complex quantity has been generated."))
                          (t (throw 'errorsw t))))
                   ((and *zexptsimp? (eq ($asksign pot) '$zero))
-                   (cond ((not errorsw) (merror "0^0 has been generated"))
+                   (cond ((not errorsw)
+                          (merror "0^0 has been generated"))
+                         (t (throw 'errorsw t))))
+                  ((not (member z '($pos $pz)))
+                   ;; The sign of realpart(pot) is not known.
+                   (cond ((not errorsw)
+                          ;; Return an unsimplified expression.
+                          (return (list '(mexpt simp) 0 pot)))
                          (t (throw 'errorsw t))))
                   (t (return (zerores gr pot)))))
+           
            ((and (mnump gr)
                  (mnump pot)
                  (or (not (ratnump gr)) (not (ratnump pot))))
