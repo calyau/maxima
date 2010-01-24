@@ -13,7 +13,7 @@
    
    more examples see below
 
-   Copyright(C) 2008 - 2009  Volker van Nek
+   Copyright(C) 2008 - 2010  Volker van Nek
 
       This is free software; you can redistribute it and/or
       modify it under the terms of the GNU General Public License,
@@ -35,21 +35,24 @@ solve_rat_ineq(ineq):= block (
    if atom(ineq) or not member(op:op(ineq), ["<","<=",">",">="]) then 
       error("solve_rat_ineq: ",ineq," is not an inequality."),
 
-/* ineq is real:*/   
-   if not freeof(%i,'infinity,ineq) then 
+/* simplify:*/ 
+   ineq: fullratsimp(ineq),
+   
+/* check if ineq is real:*/   
+   if not freeof(%i, 'infinity, fullratsimp(map('rectform,ineq))) then 
       error("solve_rat_ineq: Inequality is not real: ",ineq),
 
 /* variable:*/   
    vars: listofvars(ineq),
    if length(vars)=0 then (
-      if is(map('fullratsimp,ineq)) then return('all)
+      if is(ineq) then return('all)
       else return([]) ),
    if length(vars)>1 then 
       error("solve_rat_ineq: Inequality is not univariate: ",ineq),
    var: vars[1],
 
 /* numerators and denominators:*/   
-   [left,right]: map('fullratsimp,args(ineq)),
+   [left,right]: args(ineq),
    [lden,rden]: map('denom,[left,right]),
    [lnum,rnum]: map('num,[left,right]),
    if not every('lambda([p],polynomialp(p,[var])),[lnum,rnum,lden,rden]) then
@@ -58,6 +61,9 @@ solve_rat_ineq(ineq):= block (
 /* solutions:*/   
    sol: map('rhs, 
             flatten(apply('algsys,[[expand(lnum*rden=rnum*lden)],[var]]))),
+   /* clean out erroneous complex solutions:
+      (due to bug 2786017 in algsys using realonly:true) */
+   sol: sublist(sol, 'lambda([x], is(equal(imagpart(x),0)))),
 
 /* singularities:*/   
    [lsing,rsing]: map(
