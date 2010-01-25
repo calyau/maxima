@@ -48,7 +48,7 @@ Perhaps you meant to enter `~a'.~%"
 	  (merror (intl:gettext "find_root: function has same sign at endpoints: ~M, ~M")
 		  `((mequal) ((f) ,a) ,fa)
 		  `((mequal) ((f) ,b) ,fb))
-	  (return-from find-root-subr $find_root_error)))
+	  (return-from find-root-subr '$find_root_error)))
     (when (plusp fa)
       (psetq fa fb
 	     fb fa
@@ -94,17 +94,21 @@ Perhaps you meant to enter `~a'.~%"
 	 (find-root-subr (coerce-float-fun fun-or-expr)
 			 (first args)
 			 (second args))
-       (if (numberp result)
-	   result
-	   `(($find_root) ,fun-or-expr ,left ,right))))
+     (if (numberp result)
+       result
+       (if (eq result '$find_root_error)
+         $find_root_error
+         `(($find_root) ,fun-or-expr ,left ,right)))))
     (3					;expr case: expr, var, lo, hi
      (multiple-value-bind (result left right)
 	 (find-root-subr (coerce-float-fun (sub ($lhs fun-or-expr) ($rhs fun-or-expr))
 					   `((mlist) ,(first args)))
 			 (second args)
 			 (third args))
-       (if (numberp result)
-	   result
-	   `(($find_root) ,fun-or-expr ,(first args) ,left ,right))))
+     (if (numberp result)
+       result
+       (if (eq result '$find_root_error)
+         $find_root_error
+         `(($find_root) ,fun-or-expr ,(first args) ,left ,right)))))
     (t					;wrong number of args
      (wna-err '$find_root))))

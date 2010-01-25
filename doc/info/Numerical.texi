@@ -473,7 +473,8 @@ The default values of @code{find_root_abs} and @code{find_root_rel} are both zer
 
 @code{find_root} expects the function in question to have a different sign at the endpoints
 of the search interval.
-If this condition is not met,
+When the function evaluates to a number at both endpoints
+and these numbers have the same sign,
 the behavior of @code{find_root} is governed by @code{find_root_error}.
 When @code{find_root_error} is @code{true},
 @code{find_root} prints an error message.

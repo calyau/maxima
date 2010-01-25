@@ -493,6 +493,17 @@ find_root (foo17 (u) = -0.2, u, -1, 0);
 find_root (bar17, u, -1, 0);
 - 0.246809031968399;
 
-reset (float_approx_equal_tolerance);
-[float_approx_equal_tolerance];
+/* SF bug # 2937837 "find_root_error documentation incorrect"
+ */
+ 
+(find_root_error : true,
+ errcatch (find_root (1 + x^2, x, 0, 1)));
+[];
+
+(find_root_error : "FOO",
+ errcatch (find_root (1 + x^2, x, 0, 1)));
+["FOO"];
+
+reset (float_approx_equal_tolerance, find_root_error);
+[float_approx_equal_tolerance, find_root_error];
 
