@@ -93,3 +93,24 @@ fun(A,b,2,f,[1,1],.01);
 
 (translate (fun), fun(A,b,2,f,[1,1],.01));
 0.01*f(0.01*f([1,1])+[1,1])+0.01*f([1,1])+[1,1]$
+
+/* incorrect code emitted for call from translated function to untranslated
+ * SF bug # 2934064 "problem loading ezunits"
+ */
+
+(f0001 (x) := [f0002 (x), f0003 (x)],
+ f0002 (x) := x,
+ f0003 (x) := x,
+ translate (f0002, f0001),
+ f0001 (1));
+[1, 1];
+
+(translate (f0003), f0001 (1));
+[1, 1];
+
+(compile (f0003), f0001 (1));
+[1, 1];
+
+(compile (f0003, f0002, f0001), f0001 (1));
+[1, 1];
+

@@ -74,7 +74,7 @@
       ;;loses if the argl could not be evaluated but macsyma &quote functions
       ;;but the translator should be fixed so that if (mget f 'mfexprp) is t
       ;;then it doesn't translate as an mfunction-call.
-      `(lispm-mfunction-call-aux ,f ',argl (list ,@ argl) nil)))
+      `(lispm-mfunction-call-aux ',f ',argl (list ,@ argl) nil)))
 
 (defun lispm-mfunction-call-aux (f argl list-argl autoloaded-already? &aux f-prop)
   (cond ((functionp f)

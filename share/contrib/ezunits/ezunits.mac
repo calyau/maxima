@@ -185,7 +185,7 @@ simplify_units (e%) := block
     e%);
 
 /* Compile matchdeclare predicate functions in hopes of greater speed */
-compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nondimensional, unitp, nonconstantp);
+compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nondimensional, unitop_p, unitp, nonconstantp);
 
 /* A small database of elementary unit conversions */
 
