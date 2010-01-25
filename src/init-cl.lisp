@@ -829,15 +829,3 @@ When one changes, the other does too."
   "Return the directory part of *load-pathname*."
   (make-pathname :directory (pathname-directory #-gcl *load-pathname*
 						#+gcl sys:*load-pathname*)))
-
-;; Work around: ABCL handles special variables incorrectly
-;; unless they have DEFVAR or DEFPARAMETER.
-
-#+abcl (defvar msg)
-#+abcl (defvar flag)
-#+abcl (defvar print?)
-#+abcl (defvar errcatch)
-#+abcl (defvar mcatch)
-#+abcl (defvar *trigreduce)
-#+abcl (defvar *noexpand)
-#+abcl (defvar $verbose)
