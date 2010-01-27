@@ -554,7 +554,7 @@ E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
 @end tex
 
 @item
-E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
+E. S. Cheb-Terrab, T. Kolokolnikov,  First Order ODEs,
     Symmetries and Linear Transformations, European Journal of
     Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
 @ifnottex
