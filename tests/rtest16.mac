@@ -1196,3 +1196,28 @@ errcatch(0^%i);
 
 forget(a>0);
 [a>0];
+
+/* Bug ID: 2938078 - Crash on attached input
+ */
+ 
+declare(n,integer, j,noninteger);
+done;
+assume(equal(x,n), equal(y,j), equal(z,i));
+[equal(x, n), equal(y, j), equal(z,i)];
+
+featurep(x,integer);
+true;
+featurep(x,noninteger);
+false;
+featurep(y,integer);
+false;
+featurep(y,noninteger);
+true;
+
+diff(z+1,z);
+1;
+
+remove(n,integer, j,noninteger);
+done;
+forget(equal(x,n), equal(y,j), equal(z,i));
+[equal(x, n), equal(y, j), equal(z, i)];
