@@ -255,7 +255,7 @@ GAnsatzDegree: AnsatzDegreeVerboseOpt(p,q,r,k,mode-1),
 
   Gpoly : 0,
 
-  if GAnsatzDegree >= 0 then
+  if integerp(GAnsatzDegree) and GAnsatzDegree >= 0 then
     Gpoly: GosperPoly(p,q,r,k,'_g,GAnsatzDegree),
 
 
