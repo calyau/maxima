@@ -1705,11 +1705,23 @@ relational knowledge is contained in the default context GLOBAL.")
            (cond ((and (symbolp (cadr (car factsl)))
                        (eq (cadr (car factsl)) x))
                   ;; Case equal(x,expr): Test expr to be an integer.
-                  (return (maxima-integerp (caddr (car factsl)))))
+                  (cond ((symbolp (caddr (car factsl)))
+                         (if (or (kindp (caddr (car factsl)) '$integer)
+                                 (kindp (caddr (car factsl)) '$odd)
+                                 (kindp (caddr (car factsl)) '$even))
+                             (return t)))
+                        (t
+                         (return (maxima-integerp (caddr (car factsl)))))))
                  ((and (symbolp (caddr (car factsl)))
                        (eq (caddr (car factsl)) x))
                   ;; Case equal(expr,x): Test expr to be an integer.
-                  (return (maxima-integerp (cadr (car factsl))))))))))
+                  (cond ((symbolp (cadr (car factsl)))
+                         (if (or (kindp (cadr (car factsl)) '$integer)
+                                 (kindp (cadr (car factsl)) '$odd)
+                                 (kindp (cadr (car factsl)) '$even))
+                             (return t)))
+                        (t
+                         (return (maxima-integerp (cadr (car factsl))))))))))))
 
 (defmfun nonintegerp (e)
   (let (num)
@@ -1739,11 +1751,19 @@ relational knowledge is contained in the default context GLOBAL.")
            (cond ((and (symbolp (cadr (car factsl)))
                        (eq (cadr (car factsl)) x))
                   ;; Case equal(x,expr): Test expr to be a noninteger.
-                  (return (nonintegerp (caddr (car factsl)))))
+                  (cond ((symbolp  (caddr (car factsl)))
+                         (if (kindp (caddr (car factsl)) '$noninteger)
+                             (return t)))
+                        (t
+                         (return (nonintegerp (caddr (car factsl)))))))
                  ((and (symbolp (caddr (car factsl)))
                        (eq (caddr (car factsl)) x))
                   ;; Case equal(expr,x): Test expr to be a noninteger.
-                  (return (nonintegerp (cadr (car factsl))))))))))
+                  (cond ((symbolp  (cadr (car factsl)))
+                         (if (kindp (cadr (car factsl)) '$noninteger)
+                             (return t)))
+                        (t
+                         (return (nonintegerp (cadr (car factsl))))))))))))
 
 (defun intp (l)
   (every #'maxima-integerp (cdr l)))
