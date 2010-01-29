@@ -32,6 +32,16 @@ following special symbols: @code{inf} (positive infinity) and @code{minf} (negat
 infinity).  On output it may also use @code{und} (undefined), @code{ind} (indefinite
 but bounded) and @code{infinity} (complex infinity).
 
+@code{infinity} (complex infinity) is returned when the limit of
+the absolute value of the expression is positive infinity, but
+the limit of the expression itself is not positive infinity or
+negative infinity.  This includes cases where the limit of the
+complex argument is a constant, as in @code{limit(log(x), x, minf)}, 
+cases where the complex argument oscillates, as in
+@code{limit((-2)^x, x, inf)}, and cases where the complex
+argument is different for either side of a two-sided limit, as in
+@code{limit(1/x, x, 0)} and @code{limit(log(x), x, 0)}.
+
 @code{lhospitallim} is the maximum number of times L'Hospital's rule
 is used in @code{limit}.  This prevents infinite looping in cases like
 @code{limit (cot(x)/csc(x), x, 0)}.
