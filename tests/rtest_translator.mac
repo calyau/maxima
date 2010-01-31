@@ -114,3 +114,25 @@ fun(A,b,2,f,[1,1],.01);
 (compile (f0003, f0002, f0001), f0001 (1));
 [1, 1];
 
+/* SF bug # 2938716 "too much evaluation in translated code"
+ */
+
+(g0001 (x) := [g0002 (x), g0003 (x)],
+ g0002 (x) := x,
+ g0003 (x) := x,
+ translate (g0002, g0001),
+ kill (aa, bb, cc),
+ aa : 'bb,
+ bb : 'cc,
+ g0001 (aa));
+[bb, bb];
+
+(translate (g0003), g0001 (aa));
+[bb, bb];
+
+(compile (g0003), g0001 (aa));
+[bb, bb];
+
+(compile (g0003, g0002, g0001), g0001 (aa));
+[bb, bb];
+

@@ -89,7 +89,7 @@
 		(mfunction-call-warn f 'mfexpr)
 		(meval (cons (list f) argl)))
 	       (t
-		(mlambda f-prop list-argl f nil nil))))
+		(mlambda f-prop list-argl f t nil))))
 	((setq f-prop (get f 'autoload))
 	 (cond (autoloaded-already?
 		(merror (intl:gettext "apply: function ~:@M undefined after loading file ~A") f (namestring (get f 'autoload))))
