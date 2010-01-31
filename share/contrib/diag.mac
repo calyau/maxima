@@ -36,8 +36,8 @@
   makelist(a,k,1,n))$
  
 
-  diag(x):= block([ mmatrix,z1,ztemp,zero,n,ntemp,sumn,i,j,k,s,front,back],
-    mode_declare([z1,ztemp,zero],list,[mmatrix],any,[n,ntemp,sumn,i,j,k,s,front,back],fixnum),
+  diag(x):= block([ mmatrix,z1,ztemp,zero,n,ntemp,sumn,i,j,k,s,sold,front,back],
+    mode_declare([z1,ztemp,zero],list,[mmatrix],any,[n,ntemp,sumn,i,j,k,s,sold,front,back],fixnum),
     n:length(x),sumn:0,front:0,sold:0,
     /*gard*/
     for i:1 thru n do (
