@@ -116,8 +116,7 @@ removeBinomial(expr) :=
         return(-removeBinomial(first(expr)))
       else
       
-        return(apply(zb_op(expr),makelist(removeBinomial(part(expr,i)),i,1,length(expr))))
-      
+        map(removeBinomial, expr)
   );
 
 shiftFactPoly(expr,k,j) :=
