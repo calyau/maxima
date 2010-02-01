@@ -106,7 +106,7 @@ removeBinomial(expr) :=
 removeBinomial(expr) :=
   block([],
     
-  if atom(expr) then
+  if mapatom(expr) then
     return(expr)
   else
     if zb_op(expr) = binomial then
