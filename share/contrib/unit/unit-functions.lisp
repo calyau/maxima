@@ -28,7 +28,12 @@
 	((member x '($linel $fortindent $gensumnum $fpprintprec $floatwidth
 		   $parsewindow $ttyintnum) :test #'eq)
 	 (if (not (fixnump y)) (mseterr x y))
-	 (if (eq x '$linel) (setq linel y))
+         (if (eq x '$linel)
+             (cond ((not (and (> y 0)       ; at least one char per line
+                              (< y 10001))) ; arbitrary chosen big value
+                    (mseterr x y))
+                   (t
+                    (setq linel y))))
 	 (cond ((and (member x '($fortindent $gensumnum $floatwidth $ttyintnum) :test #'eq) (< y 0))
 		(mseterr x y))
 	       ((and (eq x '$parsewindow) (< y -1)) (mseterr x y))
