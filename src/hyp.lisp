@@ -34,6 +34,9 @@
 ;; When T give result in terms of gamma_incomplete and not %gammagreek
 (defmvar $prefer_gamma_incomplete nil)
 
+;; When NIL do not automatically expand polynomials as a result
+(defmvar $expand_polynomials t)
+
 (eval-when
     #+gcl (eval compile)
     #-gcl (:execute :compile-toplevel)
@@ -426,19 +429,17 @@
     (mul (power arg (mul -1 order))
 	 (hermpol order arg))))
 
-;; F(a,b;c;z), where either a or b is a negative integer.
+;; F(n,b;c;z), where n is a negative integer (number or symbolic).
+;; The order of the arguments must be checked by the calling routine. 
 (defun 2f1polys (arg-l1 arg-l2 n)
   (prog (l v lgf)
      ;; Since F(a,b;c;z) = F(b,a;c;z), make sure L1 has the negative
      ;; integer first, so we have F(-n,d;c;z)
-     (cond ((not (eql (car arg-l1) n))
-	    (setq arg-l1 (reverse arg-l1))))
-     #||
-     (format t "l1 = ~A~%" arg-l1)
-     (format t "vfvp arg = ~A~%" (div (add (cadr arg-l1) n) 2))
-     (format t "var = ~A~%" var)
-     (format t "*par* = ~A~%" *par*)
-     ||#
+     ;; Remark: 2f1polys is only called from create-poly. create-poly calls
+     ;; 2f1polys with the correct order of arg-l1. This test is not necessary.
+;     (cond ((not (alike1 (car arg-l1) n))
+;	    (setq arg-l1 (reverse arg-l1))))
+
      (cond ((mnump *par*)
             ;; The argument of the hypergeometric function is a number.
             ;; Avoid the following check which does not work for this case.
@@ -449,45 +450,51 @@
             ;; of vfvp. When nil we have no solution and the result is wrong.
             (setq l (vfvp (div (add (cadr arg-l1) n) 2)))
             (setq v (cdr (assoc 'v l :test #'equal)))))
-
-     ;; Assuming we have F(-n,b;c;z), then v is (b+n)/2.
-	    
-     ;;(format t "v = ~A~%" v)
-
-     ;; See if it can be a Legendre function.
-     (cond ((setq lgf (legpol (car arg-l1) (cadr arg-l1) (car arg-l2)))
-	    (return lgf)))
-
-     (cond ((alike1 (sub (car arg-l2) v) '((rat simp) 1 2))
+     
+     (cond ((and (or (not (integerp n))
+                     (not $expand_polynomials))
+                 ;; Assuming we have F(-n,b;c;z), then v is (b+n)/2.
+                 ;; See if it can be a Legendre function.
+                 ;; We call legpol-core because we know that arg-l1 has the
+                 ;; correct order. This avoids questions about the parameter b
+                 ;; from legpol-core, because legpol calls legpol-core with
+                 ;; both order of arguments.
+                 (setq lgf (legpol-core (car arg-l1) 
+                                        (cadr arg-l1) 
+                                        (car arg-l2))))
+            (return lgf))
+           ((and (or (not (integerp n))
+                     (not $expand_polynomials))
+                 (alike1 (sub (car arg-l2) v) '((rat simp) 1 2)))
 	    ;; A&S 15.4.5:
-	    ;; F(-n, n + 2*a; a + 1/2; x) = n!*gegen(n, a, 1-2*x)/pochhammer(2*a,n)
+	    ;; F(-n, n+2*a; a+1/2; x) = n!*gegen(n, a, 1-2*x)/pochhammer(2*a,n)
 	    ;;
 	    ;; So v = a, and (car arg-l2) = a + 1/2.
 	    (return (mul 
-		     (cond ((zerp v) 1)
-			   (t (mul (factorial (* -1 n))
-				   (inv (factf (mul 2 v) (* -1 n))))))
+		     (cond ((zerop1 v) 1)
+			   (t (mul (take '(mfactorial) (mul -1 n))
+			           (inv (take '($pochhammer)
+			                      (mul 2 v)
+			                      (mul -1 n))))))
 		     (gegenpol (mul -1 n)
 			       v
-			       (sub 1 (mul 2 *par*)))))))
-     ;; A&S 15.4.6 says
-     ;; F(-n, n + a + 1 + b; a + 1; x) 
-     ;;   = n!*jacobi_p(n,a,b,1-2*x)/pochhammer(a+1,n);
-     (return (mul (factorial (* -1 n))
-		  ;; I (rlt) don't think this is right, based on
-		  ;; 15.4.6, because v doesn't have the right value.
-		  #+nil(inv (factf (add 1 v) (* -1 n)))
-		  ;; Based on 15.4.6, we really want the arg-l2 arg
-		  (inv (factf (car arg-l2) (* -1 n)))
-                  (mfuncall '$jacobi_p
-                            (mul -1 n)
-			    (add (car arg-l2) -1)
-			    (sub (mul 2 v) (car arg-l2))
-			    (sub 1 (mul 2 *par*)))))))
+			       (sub 1 (mul 2 *par*))))))
+           (t
+            ;; A&S 15.4.6 says
+            ;; F(-n, n + a + 1 + b; a + 1; x)
+            ;;   = n!*jacobi_p(n,a,b,1-2*x)/pochhammer(a+1,n)
+            (return (mul (take '(mfactorial) (mul -1 n))
+                         (inv (take '($pochhammer) (car arg-l2) (mul -1 n)))
+                         (jacobpol (mul -1 n)
+			           (add (car arg-l2) -1)
+			           (sub (mul 2 v) (car arg-l2))
+                                   (sub 1 (mul 2 *par*)))))))))
 
 ;; Jacobi polynomial
 (defun jacobpol (n a b x)
-  `(($jacobi_p) ,n ,a ,b ,x))
+  (if $expand_polynomials
+      (mfuncall '$jacobi_p n a b x)
+      (list '($jacobi_p simp) n a b x)))
 
 ;; Gegenbauer (Ultraspherical) polynomial.  We use ultraspherical to
 ;; match specfun.
@@ -801,15 +808,25 @@
 (defun simp2f1 (arg-l1 arg-l2)
   (prog (a b c lgf)
      (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
-        
+     
      (cond ((zerop1 var)
             ;; F(a,b; c; 0) = 1
             (return (add var 1))))
-            
+     
      (when $trace2f1
        (format t "Tracing SIMP2F1~%")
+       (format t " Test a or b negative integer ...~%"))
+     
+     ;; Look if a or b is a symbolic negative integer. The routine 
+     ;; 2f1polys handles this case.
+     (cond ((and (maxima-integerp a) (member ($sign a) '($neg $nz)))
+            (return (2f1polys arg-l1 arg-l2 a))))
+     (cond ((and (maxima-integerp b) (member ($sign b) '($neg $nz)))
+            (return (2f1polys (list b a) arg-l2 b))))
+     
+     (when $trace2f1
        (format t " Test F(1,1,2)...~%"))
-       
+     
      (cond ((and (alike1 a 1)
 		 (alike1 b 1)
 		 (alike1 c 2))
@@ -821,7 +838,7 @@
      
      (when $trace2f1
        (format t " Test c = 1/2 or c = 3/2...~%"))
-        
+     
      (cond ((or (alike1 c '((rat simp) 3 2))
 		(alike1 c '((rat simp) 1 2)))
 	    ;; F(a,b; 3/2; z) or F(a,b;1/2;z)
@@ -1107,7 +1124,7 @@
 	  (maxima-display fun))
 	;; Compute the result, and substitute the actual argument into
 	;; result.
-	(subst var 'ell
+	(maxima-substitute var 'ell
 	       (cond ((>= p 0)
 		      (cond ((>= r 0)
 			     (step-7-pp a-prime b c-prime p r 'ell fun))
@@ -1521,7 +1538,8 @@
 	   ;; a-b = 1/2
 	   (when $trace2f1
 	     (format t "Legendre a-b = 1/2~%"))
-	   (gered1 (list a b) (list c) #'legf24))
+           (gered1 (list a b) (list c) #'legf24))
+          
 	  ((alike1 a-b (mul -1 inv2))
 	   ;; a-b = -1/2
 	   ;;
@@ -1529,33 +1547,64 @@
 	   (when $trace2f1
 	     (format t "Legendre a-b = -1/2~%"))
 	   (legf24 (list a b) (list c) var))
-	  ((alike1 c-a-b inv2)
+          
+	  ((alike1 c-a-b '((rat simp) 1 2))
 	   ;; c-a-b = 1/2
-	   ;;
 	   ;; For example F(a,b;a+b+1/2;z)
 	   (when $trace2f1
 	     (format t "Legendre c-a-b = 1/2~%"))
 	   (legf20 (list a b) (list c) var))
-	  ((alike1 c-a-b (mul -1 inv2))
-	   ;; c-a-b = -1/2
+          
+          ((alike1 c-a-b '((rat simp) 3 2))
+           ;; c-a-b = 3/2 e.g. F(a,b;a+b+3/2;z)
+           ;; Reduce to F(a,b;a+b+1/2) and use A&S 15.2.6.
+           ;; Problem: The derivative of assoc_legendre_p introduces a
+           ;; unit_step function and the result looks very complicate.
+           (when $trace2f1
+             (format t "Legendre c-a-b = 3/2~%")
+             (format t "   : a = ~A~%" a)
+             (format t "   : b = ~A~%" b)
+             (format t "   : c = ~A~%" c))
+           (let ((psey (gensym)))
+             (maxima-substitute
+               *par* psey
+               (mul (power (sub 1 psey) '((rat simp) 3 2))
+                    (add a b '((rat simp) 1 2))
+                    (inv (add b '((rat simp) 1 2)))
+                    (inv (add a '((rat simp) 1 2)))
+                    ($diff (mul (power (sub 1 psey) '((rat simp) -1 2))
+                                (hgfsimp (list a b)
+                                         (list (add a b '((rat simp) 1 2)))
+                                         psey))
+                           psey
+                           1)))))
+          
+	  ((alike1 c-a-b '((rat simp) -1 2))
+	   ;; c-a-b = -1/2, e.g. F(a,b; a+b-1/2; z)
+	   ;; This case is reduce to F(a,b; a+b+1/2; z) with
+	   ;;    F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a,c-b;c;z)
 	   (when $trace2f1
 	     (format t "Legendre c-a-b = -1/2~%"))
 	   (gered1 (list a b) (list c) #'legf20))
+          
 	  ((alike1 1-c a-b)
-	   ;; 1-c = a-b
+	   ;; 1-c = a-b, F(a,b; b-a+1; z)
 	   (when $trace2f1
 	     (format t "Legendre 1-c = a-b~%"))
 	   (gered1 (list a b) (list c) #'legf16))
+          
 	  ((alike1 1-c (mul -1 a-b))
-	   ;; 1-c = b-a
+	   ;; 1-c = b-a, e.g. F(a,b; a-b+1; z)
 	   (when $trace2f1
 	     (format t "Legendre 1-c = b-a~%"))
 	   (legf16 (list a b) (list c) var))
+          
 	  ((alike1 1-c c-a-b)
-	   ;; 1-c = c-a-b
+	   ;; 1-c = c-a-b, e.g. F(a,b; (a+b+1)/2; z)
 	   (when $trace2f1
 	     (format t "Legendre 1-c = c-a-b~%"))
 	   (gered1 (list a b) (list c) #'legf14))
+          
 	  ((alike1 1-c (mul -1 c-a-b))
 	   ;; 1-c = a+b-c
 	   ;;
@@ -1563,21 +1612,27 @@
 	   (when $trace2f1
 	     (format t "Legendre 1-c = a+b-c~%"))
 	   (legf14 (list a b) (list c) var))
+          
 	  ((alike1 a-b (mul -1 c-a-b))
-	   ;; a-b = a+b-c
-	   ;;
-	   ;; For example F(a,b;2*b;z)
+	   ;; a-b = a+b-c, e.g. F(a,b;2*b;z)
 	   (when $trace2f1
 	     (format t "Legendre a-b = a+b-c~%"))
 	   (legf36 (list a b) (list c) var))
+          
 	  ((or (alike1 1-c inv2)
 	       (alike1 1-c (mul -1 inv2)))
 	   ;; 1-c = 1/2 or 1-c = -1/2
-	   ;;
 	   ;; For example F(a,b;1/2;z) or F(a,b;3/2;z)
 	   (when $trace2f1
 	     (format t "Legendre |1-c| = 1/2~%"))
-	   (legpol a b c))
+	   ;; At this point it does not make sense to call legpol. legpol can
+	   ;; handle only cases with a negative integer in the first argument
+	   ;; list. This has been tested already. Therefore we can not get
+	   ;; a result from legpol. For this case a special algorithm is needed.
+	   ;; At this time we return nil.
+	   ;(legpol a b c)
+	   nil)
+          
 	  ((alike1 a-b c-a-b)
 	   ;; a-b = c-a-b
 	   (when $trace2f1
@@ -1585,7 +1640,6 @@
 	   'legendre-funct-to-be-discovered)
 	  (t
 	   nil))))
-
 
 ;;; The following legf<n> functions correspond to formulas in Higher
 ;;; Transcendental Functions.  See the chapter on Legendre functions,
@@ -1625,41 +1679,42 @@
 		(power (sub 1 var) (inv 2))
 		'$p))))
 
+;; F(a,b;a+b+1/2;x)
 (defun legf20 (arg-l1 arg-l2 var)
   (let* (($radexpand nil)
 	 (b (cadr arg-l1))
 	 (c (car arg-l2))
-	 (a (sub (sub c b) (inv 2)))
+	 (a (sub (sub c b) '((rat simp) 1 2)))
 	 (m (sub 1 c))
 	 (n (mul -1 (add b b m))))
     ;; m = 1 - c
     ;; n = -(2*b+1-c) = c - 1 - 2*b
-    (cond ((and (eq (asksign var) '$positive)
-		(eq (asksign (sub 1 var)) '$positive))
+;    (cond ((and (eq (asksign var) '$positive)
+;		(eq (asksign (sub 1 var)) '$positive))
 	   ;; A&S 15.4.13
 	   ;;
 	   ;; F(a,b;a+b+1/2;x) = 2^(a+b-1/2)*gamma(a+b+1/2)*x^((1/2-a-b)/2)
 	   ;;                     *assoc_legendre_p(a-b-1/2,1/2-a-b,sqrt(1-x))
-	   ;;
-	   (mul (power 2 (add a b (inv -2)))
-		(gm (add a b (inv 2)))
+	   ;; This formula is correct for all arguments x.
+	   (mul (power 2 (add a b '((rat simp) -1 2)))
+		(take '(%gamma) (add a b '((rat simp) 1 2)))
 		(power var
-		       (div (sub (inv 2) (add a b))
+		       (div (sub '((rat simp) 1 2) (add a b))
 			    2))
 		(legen n
 		       m
-		       (power (sub 1 var) (inv 2))
-		       '$p)))
-	  (t
-	   (mul (power 2 (add a b (inv -2)))
-		(gm (add a b (inv 2)))
-		(power (mul -1 var)
-		       (div (sub (inv 2) (add a b))
-			    2))
-		(legen n
-		       m
-		       (power (sub 1 var) (inv 2))
-		       '$p))))))
+		       (power (sub 1 var) '((rat simp) 1 2))
+		       '$p))))
+;	  (t
+;	   (mul (power 2 (add a b (inv -2)))
+;		(gm (add a b (inv 2)))
+;		(power (mul -1 var)
+;		       (div (sub (inv 2) (add a b))
+;			    2))
+;		(legen n
+;		       m
+;		       (power (sub 1 var) (inv 2))
+;		       '$p))))))
 
 ;; Handle the case a-b = -1/2.
 ;;
@@ -1731,8 +1786,6 @@
 		       z
 		       '$p))))))
 
-
-
 ;; Handle 1-c = a-b
 ;;
 ;; Formula 16:
@@ -1791,22 +1844,15 @@
 	   ;;                   * assoc_legendre_p(-b,b-a,(1+x)/(1-x))
 	   ;;
 	   ;; for x < 0
-	   (mul (gm c)
+	   (mul (take '(%gamma) c)
 		(power (sub 1 var) (mul -1 b))
 		(power (mul -1 var) (div m 2))
-		(legen n
-		       m
-		       z
-		       '$p)))
+		(legen n m z '$p)))
 	  (t
-	   (mul (gm c)
+	   (mul (take '(%gamma) c)
 		(power (sub 1 var) (mul -1 b))
 		(power var (div m 2))
-		(legen n
-		       m
-		       z
-		       '$p))))))
-
+		(legen n m z '$p))))))
 
 ;; Handle the case 1-c = a+b-c.
 ;;
@@ -1919,24 +1965,18 @@
 
 (defun legen (n m x pq)
   ;; A&S 8.2.1: P(-n-1,m,z) = P(n,m,z)
-  ;;
-  ;; Currently only applied if n is a number.  (Should this be
-  ;; extended to any expression?  We'll have to ask the user for the
-  ;; sign if we can' figure it out ourselves.  Should we?)
-  (let ((n (if (and (mnump n)
-		    (eq (checksigntm n) '$negative))
-	       (mul -1 (add 1 n))
-	       n)))
+  (let ((n (if (or (member ($sign n) '($neg $nz)) ; negative sign or
+                   (mminusp n))                   ; negative form like -n-1
+               (mul -1 (add 1 n))
+               n)))
     (cond ((equal m 0)
 	   `((,(if (eq pq '$q) '$legendre_q '$legendre_p)) ,n ,x))
 	  (t
 	   `((,(if (eq pq '$q) '$assoc_legendre_q '$assoc_legendre_p))
 	     ,n ,m ,x)))))
 
-
 (defun legpol-core (a b c)
-  ;; I think for this to be correct, we need a to be a negative
-  ;; integer.
+  ;; I think for this to be correct, we need a to be a negative integer.
   (unless (and (eq '$yes (ask-integerp a))
 	       (eq (asksign a) '$negative))
     (return-from legpol-core nil))
@@ -2034,7 +2074,6 @@
   (or (legpol-core a b c)
       (legpol-core b a c)))
 
-
 ;; See A&S 15.3.3:
 ;;
 ;; F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a,c-b;c;z)
@@ -2051,7 +2090,8 @@
 		    (list (sub c a)
 			  (sub c b))
 		    arg-l2
-		    var)))))
+	            var)))))
+
 ;; See A&S 15.3.4
 ;;
 ;; F(a,b;c;z) = (1-z)^(-a)*F(a,c-b;c;z/(z-1))
@@ -3223,7 +3263,9 @@
 				  (div prodnum proden)
 				  (inv prod-b)
 				  (power var count)))
-	     (format t "F(~A, ~A)~%" arg-l1 arg-l2))
+	     (mtell "F(~:M, ~:M)~%" 
+	            (cons '(mlist) arg-l1) 
+	            (cons '(mlist) arg-l2)))
 	 (setq result (add result
 			   (mul (combin k count)
 				(div prodnum proden)
