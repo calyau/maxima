@@ -16,8 +16,8 @@ done;
 assume(notequal(v,0),a > 1,b > 0, d>1, notequal(1+p,0),4*a*c-b^2 > 0);
 [notequal(v,0),a > 1,b > 0,d>1,notequal(p,-1),4*a*c > b^2];
 
-assume(notequal((a-1)*(log(a)*d+c*log(h)),0));
-[notequal((a-1)*(c*log(h)+log(a)*d),0)];
+assume(notequal((a-1)*(log(a)*d+c*log(h)),0), h>0);
+[notequal((a-1)*(c*log(h)+log(a)*d),0), h>0];
 
 assume(notequal((a-1)*(log(a)*d+log(b)*e+f*log(c)),0));
 [notequal((a-1)*(log(c)*f+log(b)*e+log(a)*d),0)];

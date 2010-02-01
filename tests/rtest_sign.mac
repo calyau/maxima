@@ -568,15 +568,22 @@ csign(atan(x));
 pnz$
 
 csign(log(x));
+complex$
+
+(assume(x > 0),0);
+0$
+
+csign(log(x));
 pnz$
+
+(forget(x > 0),0);
+0$
 
 (assume(x >= 1),0);
 0$
 
-/* This is expected to be wrong.
 csign(log(x));
-pn$
-*/
+pz$
 
 (forget(x >= 1),0);
 0$

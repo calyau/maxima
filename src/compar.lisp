@@ -1484,11 +1484,16 @@ relational knowledge is contained in the default context GLOBAL.")
 	 (setf sign '$imaginary))
 	;; log(x) is positive for x > 1
 	((eq t (mgrp x 1)) (setf sign '$pos))
+	((eq t (mgqp x 1)) (setf sign '$pz))
 	;; log(x) is negative for 0 < x < 1.
 	((and (eq t (mgrp x 0)) (eq t (mgrp 1 x))) (setf sign '$neg))
-	;; Nothing is known, so return return $pnz. For the complex case, returning $complex
-	;; instead of $pnz causes some problems with the testsuite.
-	(*complexsign* (setf sign '$pnz)) 
+
+	;; log(x) is real for x > 0
+	((eq t (mgrp x 0)) (setf sign '$pnz))
+
+	;; Nothing is known.  Return $complex if allowed, 
+	;;  otherwise pnz
+	(*complexsign* (setf sign '$complex)) 
 	(t (setf sign '$pnz)))
   sign)
 	  
