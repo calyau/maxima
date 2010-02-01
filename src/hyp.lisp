@@ -267,7 +267,7 @@
   (let* ((c (car arg-l2))
 	 (n (mul -1 n))
 	 (fact1 (mul (power 2 n)
-		     (factorial n)
+		     (take '(mfactorial) n)
 		     (inv (power -1 n))))
 	 ;; For all of the polynomials here, I think it's ok to
 	 ;; replace sqrt(z^2) with z because when everything is
@@ -287,7 +287,7 @@
 	   ;;
 	   ;; M(-n,1/2,x) = (-1)^n*n!*2^n/(2*n)!*He(2*n,sqrt(2)*sqrt(x))
 	   (mul fact1
-		(inv (factorial (add n n)))
+		(inv (take '(mfactorial) (add n n)))
 		(hermpol (add n n) fact2)))
 	  ((alike1 c '((rat simp) 3 2))
 	   ;; A&S 22.5.57
@@ -301,11 +301,16 @@
 	   ;; M(-n,3/2,x) = (-1)^n*n!*2^(n-1/2)/(2*n+1)!/sqrt(x)*He(2*n+1,sqrt(2)*sqrt(x))
 	   (mul fact1
 		(inv (power 2 '((rat simp) 1 2)))
-		(inv (factorial (add n n 1)))
+		(inv (take '(mfactorial) (add n n 1)))
 		(hermpol (add n n 1) fact2)
 		;; Similarly, $radexpand here is ok to convert sqrt(z^2) to z.
 		(let (($radexpand '$all))
 		  (inv (power var '((rat simp) 1 2))))))
+          ((alike1 c (neg (add n n)))
+           ;; 1F1(-n; -2*n; z)
+           (mul (power -1 n)
+                (inv (take '(%binomial) (add n n) n))
+                (lagpol n (sub c 1) var)))
 	  (t
 	   ;; A&S 22.5.54:
 	   ;;
@@ -326,16 +331,17 @@
 	   ;; simpler result, especially if n is rather large.  If the
 	   ;; user really wants the answer expanded out, makefact and
 	   ;; minfactorial will do that.
-	   (if (numberp c)
+	   (if (and (integerp n)
+	            (numberp c))
 	       (if (or (zerop c)
 	               (and (minusp c) (> c (- n))))
 	           (merror (intl:gettext "hgfred: 1F1(~M; ~M; ~M) not defined.")
 	                   (- n) c var)
-	           (mul (factorial n)
+	           (mul (take '(mfactorial) n)
 	                (inv (take '($pochhammer) c n))
 	                (lagpol n (sub c 1) var)))
 	       (let (($gamma_expand t)) ; Expand Gamma function
-	         (mul (factorial n)
+	         (mul (take '(mfactorial) n)
 	              (take '(%gamma) c)
 	              (inv (take '(%gamma) (add c n)))
 	              (lagpol n (sub c 1) var))))))))
@@ -353,27 +359,34 @@
 (defun hermpol (n arg)
   (let ((fact (inv (power 2 (div n 2))))
         (x (mul arg (inv (power 2 '((rat simp) 1 2))))))
-    (mul fact (mfuncall '$hermite n x))))
+    (mul fact 
+         (if (and $expand_polynomials (integerp n))
+             (mfuncall '$hermite n x)
+             (list '($hermite simp) n x)))))
 
 ;; Generalized Laguerre polynomial
 (defun lagpol (n a arg)
   (if (and (numberp a) (zerop a))
-      (mfuncall '$laguerre n arg)
-      (mfuncall '$gen_laguerre n a arg)))
+      (if (and $expand_polynomials (integerp n))
+          (mfuncall '$laguerre n arg)
+          (list '($laguerre simp) n arg))
+      (if (and $expand_polynomials (integerp n))
+          (mfuncall '$gen_laguerre n a arg)
+          (list '($gen_laguerre simp) n a arg))))
 
 (defun 2f0polys (arg-l1 n)
   (let ((a (car arg-l1))
 	(b (cadr arg-l1)))
-    (when (alike1 (sub b a) (div -1 2))
+    (when (alike1 (sub b a) '((rat simp) -1 2))
       (rotatef a b))
-    (cond ((alike1 (sub b a) (div 1 2))
+    (cond ((alike1 (sub b a) '((rat simp) 1 2))
 	   ;; 2F0(-n,-n+1/2,z) or 2F0(-n-1/2,-n,z)
 	   (interhermpol n a b var))
 	  (t
 	   ;; 2F0(a,b;z)
 	   (let ((x (mul -1 (inv var)))
 		 (order (mul -1 n)))
-	     (mul (factorial order)
+	     (mul (take '(mfactorial) order)
 		  (inv (power x order))
 		  (inv (power -1 order))
 		  (lagpol order (mul -1 (add b order)) x)))))))
@@ -417,7 +430,7 @@
 ;;
 ;; with y as above.
 (defun interhermpol (n a b x)
-  (let ((arg (power (div 2 (mul -1 x)) (inv 2)))
+  (let ((arg (power (div 2 (mul -1 x)) '((rat simp) 1 2)))
 	(order (cond ((alike1 a n)
 		      (mul -2 n))
 		     ((alike1 b n)
@@ -492,7 +505,7 @@
 
 ;; Jacobi polynomial
 (defun jacobpol (n a b x)
-  (if $expand_polynomials
+  (if (and $expand_polynomials (integerp n))
       (mfuncall '$jacobi_p n a b x)
       (list '($jacobi_p simp) n a b x)))
 
@@ -500,15 +513,22 @@
 ;; match specfun.
 (defun gegenpol (n v x)
   (cond ((equal v 0) (tchebypol n x))
-	(t `(($ultraspherical) ,n ,v ,x))))
+        (t
+         (if (and $expand_polynomials (integerp n))
+             (mfuncall '$ultraspherical n v x)
+             `(($ultraspherical simp) ,n ,v ,x)))))
 
 ;; Legendre polynomial
 (defun legenpol (n x)
-  `(($legendre_p) ,n ,x))
+  (if (and $expand_polynomials (integerp n))
+      (mfuncall '$legendre_p n x)
+      `(($legendre_p simp) ,n ,x)))
 
 ;; Chebyshev polynomial
 (defun tchebypol (n x)
-  `(($chebyshev_t) ,n ,x))
+  (if (and $expand_polynomials (integerp n))
+      (mfuncall '$chebyshev_t n x)
+      `(($chebyshev_t simp) ,n ,x)))
 
 ;; Expand the hypergeometric function as a polynomial.  No real checks
 ;; are made to ensure the hypergeometric function reduces to a
@@ -559,6 +579,19 @@
 		(equal len2 1))
 	   ;; 2F1
 	   (simp2f1 arg-l1 arg-l2))
+          ((and (equal len1 2)
+                (equal len2 0))
+           ;; 2F0(a,b; ; z)                
+           (cond ((and (maxima-integerp (car arg-l1))
+                       (member ($sign (car arg-l1)) '($neg $nz)))
+                  ;; 2F0(-n,b; ; z), n a positive integer
+                  (2f0polys arg-l1 (car arg-l1)))
+                 ((and (maxima-integerp (cadr arg-l1))
+                       (member ($sign (cadr arg-l1)) '($neg $nz)))
+                  ;; 2F0(a,-n; ; z), n a positive integer
+                  (2f0polys (reverse arg-l1) (cadr arg-l1)))
+                 (t
+                  (fpqform arg-l1 arg-l2 var))))
 	  (t
 	   ;; We don't have simplifiers for any other hypergeometric
 	   ;; function.
@@ -2534,7 +2567,12 @@
                 (not (integerp a))          ; Do not handle an integer or
                 (not (integerp (add a a)))) ; an half integral value
            ;; F(a;1;z) = laguerre(-a,z)
-           (mfuncall '$laguerre (neg a) var))
+           (lagpol (neg a) 0 var))
+          
+          ((and (maxima-integerp a)
+                (member ($sign a) '($neg nz)))
+           ;; F(-n; c; z) and n a positive integer
+           (1f1polys (list c) a))
           
           ((alike1 c (add a a))
 	   ;; F(a;2a;z)
@@ -2550,7 +2588,9 @@
 	   ;;
 	   ;; If n is a negative integer, we use laguerre polynomial.
 	   (if (and (maxima-integerp a)
-		    (eq (asksign a) '$negative))
+	            (eq (asksign a) '$negative))
+	       ;; We have already checked a negative integer. This algorithm
+	       ;; is now present in 1f1polys and at this place never called.
 	       (let ((n (neg a)))
 	         (mul (power -1  n)
 	              (inv (take '(%binomial) (add n n) n))
