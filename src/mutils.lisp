@@ -28,11 +28,16 @@
 ;;; Author Dan Stanger 12/1/02
 
 (defmfun $assoc (key ielist &optional default)
-  (let ((elist (margs ielist)))
-    (if (every #'(lambda (x) (= 3 (length x))) elist)
+  (let ((elist (if (listp ielist)
+                   (margs ielist)
+                   (merror 
+                     (intl:gettext "assoc: Second argument must be a list: ~:M") 
+                     ielist))))
+    (if (and (listp elist)
+             (every #'(lambda (x) (and (listp x) (= 3 (length x)))) elist))
 	(let ((found (find key elist :test #'alike1 :key #'second)))
 	  (if found (third found) default))
-	(merror "Improper form for list:~%~M" ielist))))
+	(merror (intl:gettext "assoc: Improper form for list: ~:M") ielist))))
 
 ;;; (ASSOL item A-list)
 ;;;
