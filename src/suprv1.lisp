@@ -817,6 +817,7 @@
     (merror "verbify: argument must be a symbol or a string."))
   (setq x (amperchk x))
   (cond ((get x 'noun))
+        ((eq x '||) x)
 	((and (char= (char (symbol-name x) 0) #\%)
 	      (prog2
 		  ($nounify (implode (cons #\$ (cdr (exploden x)))))
