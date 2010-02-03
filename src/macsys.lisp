@@ -376,8 +376,8 @@
 	  (if (not *maxima-quiet*) (maxima-banner))
 	  (setq *maxima-started* t)))
     
-    (if ($file_search "maxima-init.lisp") ($load ($file_search "maxima-init.lisp")))
-    (if ($file_search "maxima-init.mac") ($batchload ($file_search "maxima-init.mac")))
+    (if ($file_search *maxima-initlisp*) ($load ($file_search *maxima-initlisp*)))
+    (if ($file_search *maxima-initmac*) ($batchload ($file_search *maxima-initmac*)))
 
     (catch 'quit-to-lisp
       (in-package :maxima)
