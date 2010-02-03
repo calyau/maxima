@@ -1673,6 +1673,8 @@
            ;; Replacement of the code from above to handle 0^a more complete.
            ;; If the sign of realpart(a) is not known return an unsimplified
            ;; expression. The handling of the flag *zexptsimp? is not changed.
+           ;; Reverting the return of an unsimplified 0^a, because timesin
+           ;; can not handle such expressions. (DK 02/2010)
            ((zerop1 gr)
             (cond ((or (member (setq z ($csign pot)) '($neg $nz))
                        (and *zexptsimp? (eq ($asksign pot) '$neg)))
@@ -1691,11 +1693,18 @@
                           (merror "0^0 has been generated"))
                          (t (throw 'errorsw t))))
                   ((not (member z '($pos $pz)))
-                   ;; The sign of realpart(pot) is not known.
-                   (cond ((not errorsw)
-                          ;; Return an unsimplified expression.
-                          (return (list '(mexpt simp) 0 pot)))
-                         (t (throw 'errorsw t))))
+                   ;; The sign of realpart(pot) is not known. We can not return
+                   ;; an unsimplified 0^a expression, because timesin can not
+                   ;; handle it. We return ZERO. That is the old behavior.
+                   ;; Look for the imaginary symbol to be consistent with 
+                   ;; old code.
+                   (cond ((not (free pot '$%i))
+                          (cond ((not errorsw)
+                                 (merror "0 to a complex quantity has been generated."))
+                                (t (throw 'errorsw t))))
+                         (t
+                          ;; Return ZERO and not an unsimplified expression.
+                          (return (zerores gr pot)))))
                   (t (return (zerores gr pot)))))
            
            ((and (mnump gr)
