@@ -96,5 +96,44 @@ signum(n * x) + signum(x);
 signum(%i * sqrt(1 - sqrt(2)));
 -1$
 
-(forget(p > 0, n < 0, pz >= 0, nz <= 0), remove(z,complex), 0);
+limit(signum(x),x,minf);
+-1$
+
+limit(signum(x),x,0,'minus);
+-1$
+
+limit(signum(x),x,0);
+und$
+
+limit(signum(x),x,0,'plus);
+1$
+
+limit(signum(x),x,inf);
+1$
+
+limit(x * signum(x),x,0);
+0$
+
+limit(signum(x+a),x,minf);
+-1$
+
+limit(signum(x+a),x,inf);
+1$
+
+(assume(notequal(a,0)),0);
+0$
+
+limit(signum(x),x,a);
+signum(a)$
+
+limit(signum(a*x),x,minf);
+-signum(a)$
+
+limit(signum(a*x),x,inf);
+signum(a)$
+
+limit(signum(x),x,1/a);
+signum(1/a)$
+
+(forget(p > 0, n < 0, pz >= 0, nz <= 0,notequal(a,0)), remove(z,complex), 0);
 0$
