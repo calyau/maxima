@@ -2838,6 +2838,14 @@ It appears in LIMIT and DEFINT.......")
       0
       `((%inverse_jacobi_ds) ,arg ,m)))
 
+(setf (get '%signum 'simplim%function) 'simplim%signum)
+
+(defun simplim%signum (e x pt)
+  (let* ((e (limit (cadr e) x pt 'think)) (sgn (mnqp e 0)))
+    (cond ((eq t sgn) (take '(%signum) e)) ;; limit of argument of signum is not zero
+	  ((eq nil sgn) '$und)             ;; limit of argument of signum is zero (noncontinuous)
+	  (t (throw 'limit nil)))))        ;; don't know
+
 ;; more functions for limit to handle
 
 (defun lfibtophi (e)
