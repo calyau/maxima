@@ -685,20 +685,27 @@ See @code{bern}.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} zeta (@var{n})
-Returns the Riemann zeta function if @var{x} is a negative integer, 0, 1,
-or a positive even number,
-and returns a noun form @code{zeta (@var{n})} for all other arguments,
-including rational noninteger, floating point, and complex arguments.
+Returns the Riemann zeta function. If @var{x} is a negative integer, 0, or a 
+positive even integer, the Riemann zeta function simplifies to an exact value. 
+For a floating point or bigfloat number the Riemann zeta function is evaluated 
+numerically. Maxima returns a noun form @code{zeta (@var{n})} for all other 
+arguments, including rational noninteger, and complex arguments.
+
+The Riemann zeta functions distributes over lists, matrices, and equations.
 
 See also @code{bfzeta} and @code{zeta%pi}.
 
+@c ===beg===
+@c zeta([-2,-1,0,0.5,2,3,1+%i]);
+@c ===end===
 @example
-(%i1) map (zeta, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5]);
-                                     2              4
-           1        1     1       %pi            %pi
-(%o1) [0, ---, 0, - --, - -, inf, ----, zeta(3), ----, zeta(5)]
-          120       12    2        6              90
+(%i1) zeta([-2,-1,0,0.5,2,3,1+%i]);
+                                              2
+             1     1                       %pi
+(%o1)  [0, - --, - -, - 1.460354508809587, ----, zeta(3), zeta(%i + 1)]
+             12    2                        6 
 @end example
 
 @opencatbox
@@ -706,14 +713,20 @@ See also @code{bfzeta} and @code{zeta%pi}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} zeta%pi
 Default value: @code{true}
 
-When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression
-proportional to @code{%pi^n} for even integer @code{n}.
-Otherwise, @code{zeta} returns a noun form @code{zeta (n)}
-for even integer @code{n}.
+When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression 
+proportional to @code{%pi^n} for even integer @code{n}. Otherwise, @code{zeta} 
+returns a noun form @code{zeta (n)} for even integer @code{n}.
 
+@c ===beg===
+@c zeta%pi: true$
+@c zeta (4);
+@c zeta%pi: false$
+@c zeta (4);
+@c ===end===
 @example
 (%i1) zeta%pi: true$
 (%i2) zeta (4);
@@ -729,5 +742,5 @@ for even integer @code{n}.
 @opencatbox
 @category{Number theory}
 @closecatbox
-
 @end defvr
+
