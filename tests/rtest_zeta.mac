@@ -25,14 +25,24 @@ zeta(0.0);
 zeta(0.0b0);
 -0.5b0$
 
-zeta(1);
-'infinity$  /* change to complex infinity */
+errcatch(zeta(1)); /* zeta(1) is undefined */
+[];
 
-zeta(1.0);
-'infinity$
+errcatch(zeta(1.0));
+[];
 
-zeta(1.0b0);
-'infinity$
+errcatch(zeta(1.0b0));
+[];
+
+/* Check the limit */
+limit(zeta(x),x,1,plus);
+inf;
+
+limit(zeta(x),x,1,minus);
+minf;
+
+limit(zeta(x),x,1);
+infinity;
 
 zeta(2);
 %pi^2 /6$
