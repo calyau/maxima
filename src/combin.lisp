@@ -469,9 +469,34 @@
 
 (defprop %zeta simp-zeta operators)
 
-;;; The Riemann Zeta functon has mirror symmetry
+;;; The Riemann Zeta function has mirror symmetry
 
 (defprop %zeta t commutes-with-conjugate)
+
+;;; The Riemann Zeta function distributes over lists, matrices, and equations
+
+(defprop %zeta (mlist $matrix mequal) distribute_over)
+
+;;; We support a simplim%function. The function is looked up in simplimit and 
+;;; handles specific values of the function.
+
+(defprop %zeta simplim%zeta simplim%function)
+
+(defun simplim%zeta (expr var val)
+  ;; Look for the limit of the argument
+  (let* ((arg (limit (cadr expr) var val 'think))
+         (dir (limit (add (cadr expr) (neg arg)) var val 'think)))
+  (cond
+    ;; Handle an argument 1 at this place
+    ((onep1 arg)
+     (cond ((eq dir '$zeroa)
+            '$inf)
+           ((eq dir '$zerob)
+            '$minf)
+           (t '$infinity)))
+    (t
+     ;; All other cases are handled by the simplifier of the function.
+     (simplify (list '(%zeta) arg))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -482,11 +507,13 @@
 
     ;; Check for special values
     ((eq z '$inf) 1)
+    ((alike1 z '((mtimes) -1 $minf)) 1)
     ((zerop1 z) 
      (cond (($bfloatp z) ($bfloat '((rat) -1 2)))
            ((floatp z) -0.5)
-           (t '((rat) -1 2))))
-    ((onep1 z) '$infinity)
+           (t '((rat simp) -1 2))))
+    ((onep1 z)
+     (simp-domain-error (intl:gettext "zeta: zeta(~:M) is undefined.") z))
 
     ;; Check for numerical evaluation
     (($bfloatp z) (mfuncall '$bfzeta z $fpprec))
@@ -506,9 +533,9 @@
        ((not $zeta%pi) (eqtest (list '(%zeta) z) expr))
        (t (let ($numer $float)
             (mul (power '$%pi z)
-                 (mul (div (expt 2 (1- z)) 
-                           (simplify (list '(mfactorial) z)))
-                      (simplify (list '(mabs) ($bern z)))))))))
+                 (mul (div (power 2 (1- z)) 
+                           (take '(mfactorial) z))
+                      (take '(mabs) ($bern z))))))))
     (t
      (eqtest (list '(%zeta) z) expr))))
 
