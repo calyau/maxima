@@ -2005,7 +2005,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun integrate-exp-special (expr var)
+(defun integrate-exp-special (expr var &aux w)
 
   (when *debug-integrate*
     (format t "~&INTEGRATE-EXP-SPECIAL with ~A~%" expr)
@@ -2172,8 +2172,9 @@
 	 (div -1 (mul 2 (power (mul a ($log d)) (div 1 2))))
 	 (mul
 	   (power d (sub c (div (mul b b) (mul 4 a))))
-	   (let ((index (gensumindex)))
-	     (dosum
+	   (let ((index (gensumindex))
+	         ($simpsum t))
+	     (mfuncall '$sum
 	       (mul
 		 (power 2 (sub index n))
 		 ($binomial n index)
@@ -2189,7 +2190,7 @@
 		 (power
 		   (mul (div -1 a) (power (add b (mul 2 a var)) 2) ($log d))
 		   (mul (div -1 2) (add index 1))))
-	       index 0 n t))))))
+	       index 0 n))))))
 
     ((and (setq w (m2-exp-type-6 (facsum-exponent expr)))
 	  (maxima-integerp (cdras 'n w))
@@ -2208,9 +2209,10 @@
 	 (power d (sub c (div (mul a a) (mul 4 b))))
 	 (power (mul b ($log d)) (mul -2 (add n 1)))
 	 (let ((index1 (gensumindex))
-	       (index2 (gensumindex)))
-	   (dosum
-	     (dosum
+	       (index2 (gensumindex))
+	       ($simpsum t))
+	   (mfuncall '$sum
+	     (mfuncall '$sum
 	       (mul
 		 (power -1 (sub index1 index2))
 		 (power 4 index1)
@@ -2250,8 +2252,8 @@
 			 (div -1 (mul 4 b))
 			 (power (add a (mul 2 b (power var (div 1 2)))) 2)
 			 ($log d))))))
-	       index2 0 index1 t)
-	     index1 0 n t)))))
+	       index2 0 index1)
+	     index1 0 n)))))
 
     ((and (setq w (m2-exp-type-7 (facsum-exponent expr)))
 	  (eq ($sign (sub (cdras 'r w) (cdras 'r1 w))) '$zero))
@@ -2354,8 +2356,9 @@
 	     (power (add (mul d ($log a)) (mul f ($log h))) 2)
 	     (mul -4 (add (mul b ($log a)) (mul c ($log h))))))
 	 (power (add (mul b ($log a)) (mul c ($log h))) (mul -1 (add n 1)))
-	 (let ((index (gensumindex)))
-	   (dosum
+         (let ((index (gensumindex))
+               ($simpsum t))
+	   (mfuncall '$sum
 	     (mul
 	       (power 2 (sub index n))
 	       ($binomial n index)
@@ -2387,7 +2390,7 @@
 			 (mul (add f (mul 2 c var)) ($log h)))
 		       2)
 		     (mul 4 (add (mul b ($log a)) (mul c ($log h))))))))
-	     index 0 n t)))))
+	     index 0 n)))))
 
     ((and (setq w (m2-exp-type-10 (facsum-exponent expr)))
 	  (maxima-integerp (cdras 'n w))
@@ -2418,9 +2421,10 @@
 	     (mul -4 (add (mul d ($log a)) (mul f ($log h))))))
 	 (power (add (mul d ($log a)) (mul f ($log h))) (mul -2 (add n 1)))
 	 (let ((index1 (gensumindex))
-	       (index2 (gensumindex)))
-	   (dosum
-	     (dosum
+	       (index2 (gensumindex))
+	       ($simpsum t))
+	   (mfuncall '$sum
+	     (mfuncall '$sum
 	       (mul
 		 (power -1 (sub index1 index2))
 		 (power 4 index1)
@@ -2502,8 +2506,8 @@
 			     2)
 			   (add (mul d ($log a)) (mul f ($log h)))))
 		       (div 1 2)))))
-	       index2 0 index1 t)
-	     index1 0 n t)))))
+	       index2 0 index1)
+	     index1 0 n)))))
     (t nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
