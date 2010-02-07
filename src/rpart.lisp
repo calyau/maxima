@@ -472,8 +472,8 @@
            ;; return a real answer for subscripted variable
            (cons l 0))
           (t
-           (cons (list '(%realpart) l)
-                 (list '(%imagpart) l))))))
+           (cons (list '(%realpart simp) l)
+                 (list '(%imagpart simp) l))))))
 
 (defun coversinemyfoot (l)
   (prog (recip)
