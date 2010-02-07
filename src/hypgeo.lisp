@@ -1076,7 +1076,7 @@
 
     (when (atom form)
       (cond ((and (numberp form) (zerop form)) (return-from defintegrate 0))
-	    (t (return-from defintegrate (list '(%specint) form var)))))
+	    (t (return-from defintegrate (list '(%specint simp) form var)))))
 
     ;; We try to find a constant denominator. This is necessary to get results
     ;; for integrands like u(t)/(a+b+c+...).
@@ -1382,12 +1382,12 @@
 	     ;; called routines set the global flag. If the global flag
 	     ;; is not set, the noun form has been already constructed.
 	     (if (and *hyp-return-noun-form-p* *hyp-return-noun-flag*)
-	       (list '(%specint) exp var)
+	       (list '(%specint simp) exp var)
 	       result)))
 	  (t
 	   ;; If necessary we construct the noun form.
 	   (if *hyp-return-noun-form-p*
-	     (list '(%specint) exp var)
+	     (list '(%specint simp) exp var)
   	     'other-defint-to-follow-defexec)))))
 
 ;; L is the integrand of the transform, after pattern matching.  S is
