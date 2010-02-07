@@ -132,7 +132,7 @@
 	 (take '(%log) (take '($conjugate) x)))
 	((on-negative-real-axisp x)
 	 (add (take '(%log) (neg x)) (mul -1 '$%i '$%pi)))
-	(t `(($conjugate simp) ((%log) ,x)))))
+	(t `(($conjugate simp) ((%log simp) ,x)))))
 
 ;; Return conjugate(x^p), where e = (x, p). Suppose x isn't on the negative real axis.
 ;; Then conjugate(x^p) == conjugate(exp(p * log(x))) == exp(conjugate(p) * conjugate(log(x)))
