@@ -2925,8 +2925,8 @@
 	 ;;
 	 ;; gammagreek(1/2,z) = sqrt(%pi)*erf(sqrt(x))
 	 ;;
-	 (mul (msqrt '$%pi)
-	      `((%erf) ,(msqrt z))))
+	 (mul (power '$%pi '((rat simp) 1 2))
+	      (take '(%erf) (power z '((rat simp) 1 2)))))
 	((and (integerp (add a 1//2)))
 	 ;; gammagreek(n+1/2,z) can be simplified using A&S 6.5.22 to
 	 ;; reduce the problem to gammagreek(1/2,x), which we know,
@@ -2943,7 +2943,7 @@
 		    a))))
 	(t
 	 ;; Give up
-	 `(($%gammagreek) ,a ,z))))
+         `(($%gammagreek simp) ,a ,z))))
 
 ;; A&S 6.5.12: 
 ;; %gammagreek(a,x) = x^a/a*M(a,1+a,-x)
@@ -3226,9 +3226,9 @@
 
 (defun fpqform (arg-l1 arg-l2 arg)
   (list '(mqapply)
-	(list '($%f array) (length arg-l1)(length arg-l2))
-	(append (list '(mlist)) arg-l1)
-	(append (list '(mlist)) arg-l2)
+	(list '($%f array simp) (length arg-l1)(length arg-l2))
+	(append (list '(mlist simp)) arg-l1)
+	(append (list '(mlist simp)) arg-l2)
 	arg))
 
 ;; Consider pFq([a_k]; [c_j]; z).  If a_k = c_j + m for some k and j
@@ -3922,8 +3922,8 @@
 	 (n (add a 1//2))
 	 (m (sub b 1))
 	 (ell (sub c 1//2))
-	 (res (sub 1 (mul (power s 1//2)
-			  `((%atanh) ,(power s 1//2)))))
+         (res (sub 1 (mul (power s '((rat simp) 1 2))
+                          (take '(%atanh) (power s '((rat simp) 1 2))))))
 	 (new-a -1//2)
 	 (new-b 1)
 	 (new-c 1//2))
