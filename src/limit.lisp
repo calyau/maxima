@@ -533,12 +533,12 @@ It appears in LIMIT and DEFINT.......")
   (let ((arg (involve exp '(%sin %cos))))
     (cond
       ((null arg) exp)
-      (t (let ((new-exp ($substitute (m+t 1 (m- (m^t `((%sin) ,arg) 2)))
-				     (m^t `((%cos) ,arg) 2)
-				     ($substitute
-				      (m+t 1 (m- (m^t `((%cos) ,arg) 2)))
-				      (m^t `((%sin) ,arg) 2)
-				      exp))))
+      (t (let ((new-exp ($substitute (m+t 1 (m- (m^t `((%sin simp) ,arg) 2)))
+                                     (m^t `((%cos simp) ,arg) 2)
+                                     ($substitute
+                                      (m+t 1 (m- (m^t `((%cos simp) ,arg) 2)))
+                                      (m^t `((%sin simp) ,arg) 2)
+                                      exp))))
 	   (cond ((not (involve new-exp '(%sin %cos)))  new-exp)
 		 (t exp)))))))
 
@@ -3067,7 +3067,7 @@ It appears in LIMIT and DEFINT.......")
 	  l))
 
 (defun mrv-movedown (l var)
-  (mapcar (lambda (exp) (syntactic-substitute `((%log) ,var) var exp))
+  (mapcar (lambda (exp) (syntactic-substitute `((%log simp) ,var) var exp))
 	  l))
 
 ;; test whether sub is a subexpression of exp
