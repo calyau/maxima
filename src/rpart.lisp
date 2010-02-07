@@ -597,8 +597,8 @@
 	       ((member l '($%e $%pi) :test #'eq) (cons l 0))
 	       ((eq l '$infinity) (cons '$inf '$ind))
                ((decl-complexp l)
-                (cons (list '(mabs) l) ; noun form with mabs
-                      (list '($carg) l)))
+                (cons (list '(mabs simp) l) ; noun form with mabs
+                      (list '(%carg simp) l)))
 	       (absflag (cons (take '(mabs) l) 0))
 	       (t
                 ;; At this point l is representing a real value. Try to 
