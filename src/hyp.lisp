@@ -2003,10 +2003,15 @@
                (mul -1 (add 1 n))
                n)))
     (cond ((equal m 0)
-	   `((,(if (eq pq '$q) '$legendre_q '$legendre_p)) ,n ,x))
-	  (t
-	   `((,(if (eq pq '$q) '$assoc_legendre_q '$assoc_legendre_p))
-	     ,n ,m ,x)))))
+           (list (if (eq pq '$q)
+                     '($legendre_q simp)
+                     '($legendre_p simp))
+                 n x))
+          (t
+           (list (if (eq pq '$q) 
+                     '($assoc_legendre_q simp)
+                     '($assoc_legendre_p simp))
+                 n m x)))))
 
 (defun legpol-core (a b c)
   ;; I think for this to be correct, we need a to be a negative integer.
