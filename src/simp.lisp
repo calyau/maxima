@@ -1592,10 +1592,18 @@
 	((floatp r2) (list '(mexpt simp) r1 r2))
 	((integerp r2)
 	 (cond ((minusp r2)
-		(exptrl (cond ((equal (abs (cadr r1)) 1) (* (cadr r1) (caddr r1)))
+	        (exptrl (cond ((equal (abs (cadr r1)) 1)
+	                       (* (cadr r1) (caddr r1)))
+	                       ;; We set the simp flag at this place. This
+	                       ;; changes nothing for an exponent r2 # -1.
+	                       ;; exptrl is called again and does not look at
+	                       ;; the simp flag. For the case r2 = -1 exptrl
+	                       ;; is called with an exponent 1. For this case
+	                       ;; the base is immediately returned. Now the
+	                       ;; base has the correct simp flag. (DK 02/2010)
 			      ((minusp (cadr r1))
-			       (list '(rat) (- (caddr r1)) (- (cadr r1))))
-			      (t (list '(rat) (caddr r1) (cadr r1))))
+			       (list '(rat simp) (- (caddr r1)) (- (cadr r1))))
+			      (t (list '(rat simp) (caddr r1) (cadr r1))))
 			(- r2)))
 	       (t (list '(rat simp) (exptb (cadr r1) r2) (exptb (caddr r1) r2)))))
 	((and (floatp r1) (alike1 r2 '((rat) 1 2)))
