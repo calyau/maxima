@@ -122,23 +122,133 @@ Example:
 @end deffn
 
 @deffn {Function} coeff (@var{expr}, @var{x}, @var{n})
-Returns the coefficient of @code{@var{x}^@var{n}} in @var{expr}.  @var{n} may be
-omitted if it is 1.  @var{x} may be an atom, or complete subexpression of
-@var{expr} e.g., @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (In the last case the
-expression @code{(x + y)} should occur in @var{expr}).  Sometimes it may be necessary
-to expand or factor @var{expr} in order to make @code{@var{x}^@var{n}} explicit.  This is not
-done automatically by @code{coeff}.
+@deffnx {Function} coeff (@var{expr}, @var{x})
+Returns the coefficient of @code{@var{x}^@var{n}} in @var{expr},
+where @var{expr} is a polynomial or a monomial term in @var{x}.
+
+@code{coeff(@var{expr}, @var{x}^@var{n})} is equivalent
+to @code{coeff(@var{expr}, @var{x}, @var{n})}.
+@code{coeff(@var{expr}, @var{x}, 0)} returns the remainder of @var{expr}
+which is free of @var{x}.
+If omitted, @var{n} is assumed to be 1.
+
+@var{x} may be a simple variable or a subscripted variable,
+or a subexpression of @var{expr} which
+comprises an operator and all of its arguments.
+
+It may be possible to compute coefficients of expressions which
+are equivalent to @var{expr} by applying @code{expand} or @code{factor}.
+@code{coeff} itself does not apply @code{expand} or @code{factor} or any other function.
+
+@code{coeff} distributes over lists, matrices, and equations.
 
 Examples:
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
-@c coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
-@c coeff (y + x*%e^x + 1, x, 0);
 
+@code{coeff} returns the coefficient @code{@var{x}^@var{n}} in @var{expr}.
+
+@c ===beg===
+@c coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
+@c ===end===
 @example
-(%i1) coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
-(%o1)                      2 a + 1 = 5
-(%i2) coeff (y + x*%e^x + 1, x, 0);
-(%o2)                         y + 1
+(%i1) coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
+                                3
+(%o1)                          b
+@end example
+
+@code{coeff(@var{expr}, @var{x}^@var{n})} is equivalent
+to @code{coeff(@var{expr}, @var{x}, @var{n})}.
+
+@c ===beg===
+@c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
+@c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
+@c ===end===
+@example
+(%i1) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
+(%o1)                         - c
+                                 3
+(%i2) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
+(%o2)                         - c
+                                 3
+@end example
+
+@code{coeff(@var{expr}, @var{x}, 0)} returns the remainder of @var{expr}
+which is free of @var{x}.
+
+@c ===beg===
+@c coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
+@c ===end===
+@example
+(%i1) coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
+                            3  3
+(%o1)                      c  u  + a u
+@end example
+
+@var{x} may be a simple variable or a subscripted variable,
+or a subexpression of @var{expr} which
+comprises an operator and all of its arguments.
+
+@c ===beg===
+@c coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
+@c coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
+@c coeff (sin(1 + x)*sin(x) + sin(1 + x)^3*sin(x)^3, sin(1 + x)^3);
+@c coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
+@c ===end===
+@example
+(%i1) coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
+(%o1)                        - 2 %pi
+(%i2) coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
+(%o2)                        - 2 %pi
+(%i3) coeff (sin(1 + x)*sin(x) + sin(1 + x)^3*sin(x)^3, sin(1 + x)^3);
+                                3
+(%o3)                        sin (x)
+(%i4) coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
+(%o4)                         c - d
+@end example
+
+@code{coeff} itself does not apply @code{expand} or @code{factor} or any other function.
+
+@c ===beg===
+@c coeff (c*(a + b)^3, a);
+@c expand (c*(a + b)^3);
+@c coeff (%, a);
+@c coeff (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c, (a + b)^3);
+@c factor (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c);
+@c coeff (%, (a + b)^3);
+@c ===end===
+@example
+(%i1) coeff (c*(a + b)^3, a);
+(%o1)                           0
+(%i2) expand (c*(a + b)^3);
+                 3          2        2        3
+(%o2)           b  c + 3 a b  c + 3 a  b c + a  c
+(%i3) coeff (%, a);
+                                2
+(%o3)                        3 b  c
+(%i4) coeff (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c, (a + b)^3);
+(%o4)                           0
+(%i5) factor (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c);
+                                  3
+(%o5)                      (b + a)  c
+(%i6) coeff (%, (a + b)^3);
+(%o6)                           c
+@end example
+
+@code{coeff} distributes over lists, matrices, and equations.
+
+@c ===beg===
+@c coeff ([4*a, -3*a, 2*a], a);
+@c coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+@c coeff (a*u - b*v = 7*u + 3*v, u);
+@c ===end===
+@example
+(%i1) coeff ([4*a, -3*a, 2*a], a);
+(%o1)                      [4, - 3, 2]
+(%i2) coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+                          [  a    b  ]
+(%o2)                     [          ]
+                          [ - c  - d ]
+(%i3) coeff (a*u - b*v = 7*u + 3*v, u);
+(%o3)                         a = 7
 @end example
 
 @opencatbox
