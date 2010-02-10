@@ -1596,16 +1596,23 @@ in the interval of integration.")
 
 ;; integrate(a*sc(r*x)^k/x^n,x,0,inf).
 (defun ssp (exp)
-  (prog (u n c)
-     (when (notinvolve exp '(%sin %cos))
+  (prog (u n c arg)
+     ;; Get the argument of the involved trig function.
+     (when (null (setq arg (involve exp '(%sin %cos))))
        (return nil))
      ;; I don't think this needs to be special.
      #+nil
      (declare (special n))
-     ;; Replace (1-cos(x)^2) with sin(x)^2.
-     (setq exp ($substitute (m^t `((%sin) ,var) 2.)
-			    (m+t 1. (m- (m^t `((%cos) ,var) 2.)))
-			    exp))
+     ;; Replace (1-cos(arg)^2) with sin(arg)^2.
+     (setq exp ($substitute ;(m^t `((%sin) ,var) 2.)
+                            ;(m+t 1. (m- (m^t `((%cos) ,var) 2.)))
+                            ;; The code from above generates expressions with
+                            ;; a missing simp flag. Furthermore, the 
+                            ;; substitution has to be done for the complete
+                            ;; argument of the trig function. (DK 02/2010)
+                            `((mexpt simp) ((%sin simp) ,arg) 2)
+                            `((mplus) 1 ((mtimes) -1 ((mexpt) ((%cos) ,arg) 2)))
+                            exp))
      (numden exp)
      (setq u nn*)
      (cond ((and (setq n (findp dn*))
@@ -1659,10 +1666,15 @@ in the interval of integration.")
 	      (m^ r (m+ n -1))
 	      `((%signum) ,r)
 	      recursion)
-	  ;; Recursion failed.  Return the integrand
-	  (let ((integrand (div (pow `((%sin) ,(m* r var))
-				     k)
-				(pow var n))))
+          ;; Recursion failed.  Return the integrand
+          ;; The following code generates expressions with a missing simp flag 
+          ;; for the sin function. Use better simplifying code. (DK 02/2010)
+;	  (let ((integrand (div (pow `((%sin) ,(m* r var))
+;				     k)
+;				(pow var n))))
+          (let ((integrand (div (power (take '(%sin) (mul r var))
+                                       k)
+                                (power var n))))
 	    (m* mult
 		`((%integrate) ,integrand ,var ,ll ,ul)))))))
 
