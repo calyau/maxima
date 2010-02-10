@@ -702,7 +702,15 @@ It appears in LIMIT and DEFINT.......")
      (cond ((or (eq d1 '$und)
 		(and (eq n1 '$und) (not (real-infinityp d1))))
 	    (return '$und))
-	   ((eq d1 '$ind) (return '$und))
+           ((eq d1 '$ind)
+            ;; At this point we have n1/$ind. Look if n1 is one of the
+            ;; infinities or zero.
+            (cond ((eq n1 '$inf) (return '$inf))
+                  ((eq n1 '$infinity) (return '$infinity))
+                  ((and (not (eq n1 '$ind))
+                        (eq ($csign n1) '$zero))
+                   (return 0))
+                  (t (return '$und))))
 	   ((eq n1 '$ind) (return (cond ((infinityp d1) 0)
 					((equal d1 0) '$und)
 					(t '$ind)))) ;SET LB
