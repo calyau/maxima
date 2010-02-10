@@ -1237,4 +1237,15 @@ integrate((1-cos(a*x)^2)^2/x^4,x,0,inf);
 
 forget(a>0);
 [a>0];
+
+/* Bug ID: 1376392 - limit(x/(2+sin(1/x)), x, 0); wrong result
+ */
  
+limit(x/(2+sin(1/x)),x,0);
+0;
+ 
+ /* Bug ID: 1106912 - limit(x/sin(x)^2,x,inf)
+  */
+  
+limit(x/sin(x)^2,x,inf);
+inf;
