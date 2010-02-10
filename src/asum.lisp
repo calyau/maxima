@@ -582,11 +582,11 @@ summation when necessary."
 
     (setq acc
 	  (cond ((and (eq n '$inf) ($freeof i ex))
-		 (setq sgn ($asksign ex))
+		 (setq sgn (csign ex))
 		 (cond ((eq sgn '$pos) '$inf)
 		       ((eq sgn '$neg) '$minf)
 		       ((eq sgn '$zero) 0)
-		       (t `((%sum simp) ,ex ,lo ,hi))))
+		       (t `((%sum simp) ,ex ,i ,lo ,hi))))
 
 		((and (mbagp e) $listarith)
 		 (simplifya
