@@ -1813,12 +1813,16 @@ Example:
 @end defvr
 
 @c NEEDS WORK
+@c -----------------------------------------------------------------------------
 @deffn {Function} listofvars (@var{expr})
 Returns a list of the variables in @var{expr}.
 
-@code{listconstvars} if @code{true} causes @code{listofvars} to include @code{%e}, @code{%pi},
-@code{%i}, and any variables declared constant in the list it returns if they
-appear in @var{expr}.  The default is to omit these.
+@code{listconstvars} if @code{true} causes @code{listofvars} to include 
+@code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in the 
+list it returns if they appear in @var{expr}.  The default is to omit these.
+
+See also the option variable @code{listdummyvars} to exclude or include 
+"dummy variables" in the list of variables.
 
 @example
 (%i1) listofvars (f (x[1]+y) / g^(2+a));
