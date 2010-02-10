@@ -1221,3 +1221,20 @@ remove(n,integer, j,noninteger);
 done;
 forget(equal(x,n), equal(y,j), equal(z,i));
 [equal(x, n), equal(y, j), equal(z, i)];
+
+/* Bug ID:  2948800 - integrate((1-cos(2*x)^2)^2/x^4,x,0,inf) wrong
+ */
+ 
+integrate((1-cos(2*x)^2)^2/x^4,x,0,inf);
+8*%pi/3;
+
+assume(a>0);
+[a>0];
+
+/* The more general type with an argument a*x and a positive */
+integrate((1-cos(a*x)^2)^2/x^4,x,0,inf);
+%pi*a^3/3;
+
+forget(a>0);
+[a>0];
+ 
