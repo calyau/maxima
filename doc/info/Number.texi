@@ -672,33 +672,43 @@ are relatively prime to @var{n}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} zerobern
 Default value: @code{true}
 
-When @code{zerobern} is @code{false},
-@code{bern} excludes the Bernoulli numbers which are equal to zero. 
-See @code{bern}.
+When @code{zerobern} is @code{false}, @code{bern} excludes the Bernoulli numbers
+and @code{euler} excludes the Euler numbers which are equal to zero. 
+See @code{bern} and @code{euler}.
 
 @opencatbox
 @category{Number theory}
 @closecatbox
-
 @end defvr
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} zeta (@var{n})
 Returns the Riemann zeta function. If @var{x} is a negative integer, 0, or a 
-positive even integer, the Riemann zeta function simplifies to an exact value. 
-For a floating point or bigfloat number the Riemann zeta function is evaluated 
-numerically. Maxima returns a noun form @code{zeta (@var{n})} for all other 
-arguments, including rational noninteger, and complex arguments.
+positive even integer, the Riemann zeta function simplifies to an exact value.
+For a positive even integer the option variable @code{zeta%pi} has to be
+@code{true} in addition (See @code{zeta%pi}). For a floating point or bigfloat 
+number the Riemann zeta function is evaluated numerically. Maxima returns a noun
+form @code{zeta (@var{n})} for all other arguments, including rational 
+noninteger, and complex arguments, or for even integers, if @code{zeta%pi} has 
+the value @code{false}.
 
-The Riemann zeta functions distributes over lists, matrices, and equations.
+@code{zeta(1)} is undefined, but Maxima knows the limit 
+@code{limit(zeta(x), x, 1)} from above and below.
+
+The Riemann zeta function distributes over lists, matrices, and equations.
 
 See also @code{bfzeta} and @code{zeta%pi}.
 
+Examples:
+
 @c ===beg===
 @c zeta([-2,-1,0,0.5,2,3,1+%i]);
+@c limit(zeta(x),x,1,plus);
+@c limit(zeta(x),x,1,minus);
 @c ===end===
 @example
 (%i1) zeta([-2,-1,0,0.5,2,3,1+%i]);
@@ -706,6 +716,11 @@ See also @code{bfzeta} and @code{zeta%pi}.
              1     1                       %pi
 (%o1)  [0, - --, - -, - 1.460354508809587, ----, zeta(3), zeta(%i + 1)]
              12    2                        6 
+
+(%i2) limit(zeta(x),x,1,plus);
+(%o2)                                 inf
+(%i3) limit(zeta(x),x,1,minus);
+(%o3)                                minf
 @end example
 
 @opencatbox
@@ -720,6 +735,8 @@ Default value: @code{true}
 When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression 
 proportional to @code{%pi^n} for even integer @code{n}. Otherwise, @code{zeta} 
 returns a noun form @code{zeta (n)} for even integer @code{n}.
+
+Examples:
 
 @c ===beg===
 @c zeta%pi: true$
