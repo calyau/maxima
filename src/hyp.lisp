@@ -3226,7 +3226,7 @@
 
 (defun fpqform (arg-l1 arg-l2 arg)
   (list '(mqapply)
-	(list '($%f array simp) (length arg-l1)(length arg-l2))
+	(list '($%f simp array) (length arg-l1)(length arg-l2))
 	(append (list '(mlist simp)) arg-l1)
 	(append (list '(mlist simp)) arg-l2)
 	arg))
