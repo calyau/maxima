@@ -873,6 +873,6 @@
 	(push n primes)
 	(setq start n)))
     ;; search for the rest of primes
-    (do ((n ($next_prime start) (next_prime (1+ n))))
+    (do ((n ($next_prime start) ($next_prime (1+ n))))
 	((> n end) (cons '(mlist) (reverse primes)))
       (push n primes))))
