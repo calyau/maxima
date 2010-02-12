@@ -313,12 +313,12 @@
   (let* ((region) (f) (ff)
 	 (x (bigfloat::to mx))
 	 (d (list (list "none" (abs x)) ;; region I, inside unit disk
-		  (list "15.3.4" (ignore-errors (abs (/ x (- x 1)))))
+		  (list "15.3.4" (if (= x 1) nil (abs (/ x (- x 1)))))
 		  (list "15.3.6" (abs (- 1 x)))
-		  (list "15.3.7" (ignore-errors (abs (/ 1 x))))
-		  (list "15.3.8" (ignore-errors (abs (/ 1 (- 1 x)))))
-		  (list "15.3.9" (ignore-errors (abs (- 1 (/ 1 x))))))))
-   
+		  (list "15.3.7" (if (zerop x) nil (abs (/ 1 x))))
+		  (list "15.3.8" (if (= x 1) nil (abs (/ 1 (- 1 x)))))
+		  (list "15.3.9" (if (zerop x) nil (abs (- 1 (/ 1 x))))))))
+     
     (setq d (delete-if #'(lambda(s) (null (second s))) d))
     ;; Sort d from least to greatest magnitude.
     (setq d (sort d #'(lambda (a b) (< (second a) (second b)))))
@@ -326,14 +326,9 @@
     ;;(print `(region = ,region))
  
     (cond 
-     ;; x = 0 or x = 1 cause problems--quickly dispatch these cases (Chu-Vandermonde identity)
-     ((= x 0) 1)
-        
-     ((= x 1) 
-      (/ 
-       (* (gamma (to mc)) (gamma x)) 
-       (* (gamma (- (to mc) (to ma))) (gamma (- (to mc) (to mb))))))
-      
+     ;; When x = 0, return 1. 
+     ((zerop x) 1)
+
      ;; ma or mb negative integers--that causes trouble for most of the A&S 15.3.4--15.3.9 
      ;; transformations--let's quickly dispatch hypergeometric-float-eval; also dispatch
      ;; hypergeometric-float-eval when the tranformation is "none" (with adjust-parameters
@@ -341,7 +336,6 @@
 
      ((or (equal region "none") (and (integerp ma) (<= ma 0)) (and (integerp mb) (<= mb 0))
 	  (< (abs x) 0.5))
-	  
       (hypergeometric-float-eval (list ma mb) (list mc) mx digits nil))
  
      ;; The case of a,b, and c integers causes trouble; let's dispatch hgfred on it.

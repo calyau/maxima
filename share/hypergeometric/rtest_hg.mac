@@ -370,11 +370,11 @@ true$
      (c-b) * hypergeometric([a,b-1],[c],x),0);
 0$
 
-hypergeometric([1,1],[2],0.998b0);
-''(bfloat(6.227062222867927597832407b0))$
+close_p(hypergeometric([1,1],[2],0.998b0), -log(1 - 0.998b0)/0.998b0, fpprec-1);
+true$
 
-hypergeometric([1,1],[2],0.998);
-''(float(6.227062222867927597832407b0))$
+close_p(hypergeometric([1,1],[2],0.998), (-log(1 - 0.998)/0.998), 15);
+true$
 
 /* Maple uses base ten floats, so comparing Maple to Maxima is tricky. To
 compare a Maple result to Maxima, do:
@@ -390,13 +390,14 @@ Don't get me wrong: Maple does allow IEEE double floats, but Maple big floats (t
 non-doubles) are base ten, I think.
 */
 
-hypergeometric([1,1],[2], 0.999b0);
-''(bfloat(6.91466994893106812017415190448391951222458229b0))$
-hypergeometric([1,1],[2],1.3);
-''(float(.926132926404566184547939507316903b0-2.41660973353061020407107773866845b0*%i))$
+close_p(hypergeometric([1,1],[2], 0.999b0), -log(1-0.999b0)/0.999b0, fpprec-1);
+true$
 
-block([fpprec : 18], hypergeometric([1,1],[2],1.3b0));
-''(block([fpprec : 18], bfloat(.926132926404566184547939507316903b0-2.41660973353061020407107773866845b0*%i)))$
+close_p(hypergeometric([1,1],[2],1.3), -log(1-1.3)/1.3, 15);
+true$
+
+close_p(hypergeometric([1,1],[2],1.3b0), -log(1-1.3b0)/1.3b0, fpprec-1);
+true$
 
 hypergeometric([100],[2],0.9b0);
 ''(nfloat(hgfred([100],[2],x),[x = 0.9b0], fpprec))$
@@ -592,6 +593,16 @@ hypergeometric([a-1,b-1],[c-1],z)*(c-1)/((a-1)*(b-1))$
 
 integrate(hypergeometric([a,b],[c],2*z),z);
 hypergeometric([a-1,b-1],[c-1],2*z)*(c-1)/(2*(a-1)*(b-1))$
+
+/* next three tests regressions for Bug ID: 2949677 */
+hypergeometric([-4, 38/5],[13/5],1);
+3125/6279$
+
+close_p(hypergeometric([-4, 38/5],[13/5],1.0), 3125/6279, 14);
+true$
+
+close_p(hypergeometric([-4, 38/5],[13/5],1.0b0), 3125/6279, fpprec-2);
+true$
 
 (time : (absolute_real_time ()- start), print(time), is(time < 40));
 true$
