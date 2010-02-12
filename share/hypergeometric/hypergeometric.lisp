@@ -696,7 +696,8 @@
 
 (defun hyp-integral-3 (a b z)
   "Integral of hypergeometric(a,b,z) wrt z"
-  (let* ((a-1 (add a -1))
+  (let* (($listarith t)
+	 (a-1 (add a -1))
          (b-1 (add b -1))
          (prod_b-1 (reduce #'mul (margs b-1)))
          (prod_a-1 (reduce #'mul (margs a-1))))
