@@ -536,6 +536,10 @@
 
 ;;;; BOX
 
+;; The name of mbox and mlabox is box
+(defprop mbox box op)
+(defprop mlabox box op)
+
 (defmfun $dpart (&rest args)
   (mpart args nil t nil '$dpart))
 
