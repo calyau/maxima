@@ -1750,6 +1750,18 @@
                  (or (and (eq $domain '$real) (not (decl-complexp (cadr gr))))
                      (and (eq $domain '$complex) (decl-realp (cadr gr)))))
             (return (power (cadr gr) pot)))
+           ((and (eq (caar gr) 'mabs)
+                 (integerp pot)
+                 (oddp pot)
+                 (not (equal pot -1))
+                 (or (and (eq $domain '$real) (not (decl-complexp (cadr gr))))
+                     (and (eq $domain '$complex) (decl-realp (cadr gr)))))
+            ;; abs(x)^(2*n+1) -> abs(x)*x^(2*n), n an integer number
+            (if (plusp pot)
+                (return (mul (power (cadr gr) (add pot -1))
+                             gr))
+                (return (mul (power (cadr gr) (add pot 1))
+                             (inv gr)))))
            ((eq (caar gr) 'mequal)
             (return (eqtest (list (ncons (caar gr))
                                   (power (cadr gr) pot)
@@ -2151,6 +2163,69 @@
                      ;; Next term in list of products.
                      (setq fm (cdr fm))
                      (go start)))
+                  
+                  ((and (not (atom (car x)))
+                        (eq (caar (car x)) 'mabs)
+                        (not (member ($csign (cadr (car x)))
+                                     '($complex imaginary)))
+                        (equal (cadr x) 1)
+                        (alike1 (cadr (car x)) (cadr (cadr fm)))
+                        (integerp (caddr (cadr fm)))
+                        (< (caddr (cadr fm)) -1))
+                   ;; 1/x^n*abs(x) -> 1/(x^(n-2)*abs(x)), where n an integer
+                   ;; Replace 1/x^n -> 1/x^(n-2)
+                   (setq temp (power (cadr (cadr fm))
+                                     (add (caddr (cadr fm)) 2)))
+                   (rplacd fm (cddr fm))
+                   (if (not (equal temp 1))
+                       (rplacd fm (cons temp (cdr fm))))
+                   ;; Multiply factor 1/abs(x) into list of products.
+                   (setq x (list (car x) -1))
+                   (setq temp (power (car x) (cadr x)))
+                   (setq w (cadr x))
+                   (go start))
+                  
+                  ((and (not (atom (car x)))
+                        (eq (caar (car x)) 'mabs)
+                        (not (member ($csign (cadr (car x)))
+                                     '($complex imaginary)))
+                        (equal (cadr x) -1)
+                        (alike1 (cadr (car x)) (cadr (cadr fm)))
+                        (integerp (caddr (cadr fm)))
+                        (> (caddr (cadr fm)) 1))
+                   ;; x^n/abs(x) -> x^(n-2)*abs(x), where n an integer.
+                   ;; Replace x^n -> x^(n-2)
+                   (setq temp (power (cadr (cadr fm)) 
+                                     (add (caddr (cadr fm)) -2)))
+                   (rplacd fm (cddr fm))
+                   (if (not (equal temp 1))
+                       (rplacd fm (cons temp (cdr fm))))
+                   ;; Multiply factor abs(x) into list of products.
+                   (setq x (list (car x) 1))
+                   (setq temp (power (car x) (cadr x)))
+                   (setq w (cadr x))
+                   (go start))
+                  
+                  ((and (not (atom (cadr fm)))
+                        (not (atom (cadr (cadr fm))))
+                        (eq (caaadr (cadr fm)) 'mabs)
+                        (not (member ($csign (cadadr (cadr fm)))
+                                     '($complex imaginary)))
+                        (equal (caddr (cadr fm)) -1)
+                        (alike1 (cadadr (cadr fm)) (car x))
+                        (integerp (cadr x))
+                        (> (cadr x) 1))
+                   ;; 1/abs(x)*x^n -> x^(n-2)*abs(x), where n an integer.
+                   ;; Replace 1/abs(x) -> abs(x)
+                   (setq temp (cadr (cadr fm)))
+                   (rplacd fm (cddr fm))
+                   (rplacd fm (cons temp (cdr fm)))
+                   ;; Multiply factor x^(n-2) into list of products.
+                   (setq x (list (car x) (add (cadr x) -2)))
+                   (setq temp (power (car x) (cadr x)))
+                   (setq w (cadr x))
+                   (go start))
+                  
                   ((or (maxima-constantp (car x))
                        (maxima-constantp (cadadr fm)))
                    (if (great temp (cadr fm))
@@ -2164,6 +2239,25 @@
            ;; When a number goto start and look in the next term.
            (setq fm (cdr fm))
            (go start))
+           
+           ((and (not (atom (cadr fm)))
+                 (eq (caar (cadr fm)) 'mabs)
+                        (not (member ($csign (cadr (cadr fm)))
+                                     '($complex imaginary)))
+                 (alike1 (cadr (cadr fm)) (car x))
+                 (integerp (cadr x))
+                 (< (cadr x) -1))
+            ;; abs(x)/x^n -> 1/(x^(n-2)*abs(x)), where n an integer.
+            ;; Replace abs(x) -> 1/abs(x).
+            (setq temp (power (cadr fm) -1))
+            (rplacd fm (cddr fm))
+            (rplacd fm (cons temp (cdr fm)))
+            ;; Multiply factor x^(-n+2) into list of products.
+            (setq x (list (car x) (add (cadr x) 2)))
+            (setq temp (power (car x) (cadr x)))
+            (setq w (cadr x))
+            (go start))
+           
            ((maxima-constantp (car x))
             (when (great temp (cadr fm))
               (go gr)))
@@ -2196,8 +2290,7 @@
                                  (second (car y))))
                    (denom (if (integerp (car y)) 
                               1
-                              (third (car y))))
-                   (sgn (signum numerator)))
+                              (third (car y)))))
               (setf expo (exponent-of (abs numerator) (car x)))
               (when expo
                 ;; We have a^m*a^k.
