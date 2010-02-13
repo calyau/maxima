@@ -536,9 +536,9 @@
 
 ;;;; BOX
 
-;; The name of mbox and mlabox is box
-(defprop mbox box op)
-(defprop mlabox box op)
+;; Set the the property reversealias
+(defprop mbox $box reversealias)
+(defprop mlabox $box reversealias)
 
 (defmfun $dpart (&rest args)
   (mpart args nil t nil '$dpart))
