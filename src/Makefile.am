@@ -48,6 +48,11 @@ endif
 
 if CMUCL
 EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
+# Newer versions of CMUCL have an INTL package that is compatible with
+# maxima's.  We just bind intl::*default-domain* here so that when we
+# compile the files, we will get appropriate translations.  (Otherwise
+# we have to put (intl:textdomain "maxima") in each Lisp file.
+INITINTL = (when (find-package "INTL") (set (find-symbol "*DEFAULT-DOMAIN*" "INTL") "maxima"))
 all-local: binary-cmucl/maxima.core
 install-exec-local: install-cmucl
 uninstall-hook: uninstall-cmucl
@@ -60,7 +65,7 @@ binary-cmucl/maxima.core:
 	test -d binary-cmucl || mkdir binary-cmucl
 	test -d binary-cmucl/numerical || mkdir binary-cmucl/numerical
 	test -d binary-cmucl/numerical/slatec || mkdir binary-cmucl/numerical/slatec
-	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)) && \
+	(echo '(progn $(INITINTL) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)) && \
 	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima.core"))' | $(EXECUTECMUCL))
 
 install-cmucl:
