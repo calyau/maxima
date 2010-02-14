@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.11 $
+;;; $Revision: 1.12 $
 ;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
@@ -23,7 +23,7 @@
 ;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 ;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ;;; DAMAGE.
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.11 2009-04-21 16:27:31 are_muc Exp $")
+#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.12 2010-02-14 18:52:33 andrejv Exp $")
 
 (in-package :intl)
 
@@ -36,9 +36,9 @@
 (defvar *locale-encoding* (make-hash-table :test #'equal))
 
 (defstruct domain-entry
-  (domain "" :type simple-base-string)
-  (locale "" :type simple-base-string)
-  (file #p"" :type pathname)
+  (domain "")
+  (locale "")
+  (file #p"")
   (plurals nil :type (or null function))
   (hash (make-hash-table :test #'equal) :type hash-table)
   (encoding nil))
