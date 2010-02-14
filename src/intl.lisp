@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.13 $
-;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
+;;; $Revision: 1.14 $
+;;; Copyright 1999-2010 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
 ;;; a copy of this Software to deal in the Software without restriction,
@@ -23,34 +23,56 @@
 ;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 ;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ;;; DAMAGE.
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.13 2010-02-14 21:02:34 andrejv Exp $")
-
 (in-package :intl)
 
+(eval-when #-gcl (:compile-toplevel :execute)
+	   #+gcl (compile eval)
+  (defparameter intl::*default-domain* "libintl")
+  (unless (and (fboundp 'intl:read-translatable-string)
+	       (eq (get-macro-character #\_)
+		   (fdefinition 'intl:read-translatable-string)))
+    (set-macro-character #\_ (lambda (stream char)
+			       (declare (ignore char))
+			       (case (peek-char nil stream nil nil t)
+				 (#\" (values))
+				 (#\N (read-char stream t nil t) (values))
+				 (otherwise '_)))
+			 t)))
 (defvar *locale-directories* '(#p"/usr/share/locale/"))
 (defvar *locale* "C")
 
-(defvar *default-domain* "maxima")
-(defvar *loaded-domains* (make-hash-table :test #'equal))
-(defvar *locale-aliases* (make-hash-table :test #'equal))
-(defvar *locale-encoding* (make-hash-table :test #'equal))
+(defvar *default-domain* "maxima"
+  _N"The message-lookup domain used by INTL:GETTEXT and INTL:NGETTEXT.
+  Use (INTL:TEXTDOMAIN \"whatever\") in each source file to set this.")
+(defvar *loaded-domains* (make-hash-table :test 'equal))
+(defvar *locale-aliases* (make-hash-table :test 'equal))
 
 (defstruct domain-entry
-  (domain "")
-  (locale "")
-  (file #p"")
+  (domain "" :type simple-string)
+  (locale "" :type simple-string)
+  (file #p"" :type pathname)
   (plurals nil :type (or null function))
-  (hash (make-hash-table :test #'equal) :type hash-table)
-  (encoding nil))
+  (hash (make-hash-table :test 'equal) :type hash-table)
+  (encoding nil)
+  (readfn #'identity :type function))
 
-(declaim (inline read-lelong)
-	 (ftype (function (stream) (unsigned-byte 32)) read-lelong))
+(declaim (ftype (function (stream) (unsigned-byte 32)) read-lelong))
 (defun read-lelong (stream)
-  (declare (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
+  (declare (optimize (speed 3) (space 2)
+		     #+CMU (ext:inhibit-warnings 3))) ;quiet about boxing retn
   (+ (the (unsigned-byte 8) (read-byte stream))
      (ash (the (unsigned-byte 8) (read-byte stream)) 8)
      (ash (the (unsigned-byte 8) (read-byte stream)) 16)
      (ash (the (unsigned-byte 8) (read-byte stream)) 24)))
+
+(declaim (ftype (function (stream) (unsigned-byte 32)) read-belong))
+(defun read-belong (stream)
+  (declare (optimize (speed 3) (space 2)
+		     #+CMU (ext:inhibit-warnings 3))) ;quiet about boxing retn
+  (+ (ash (the (unsigned-byte 8) (read-byte stream)) 24)
+     (ash (the (unsigned-byte 8) (read-byte stream)) 16)
+     (ash (the (unsigned-byte 8) (read-byte stream)) 8)
+     (the (unsigned-byte 8) (read-byte stream))))
 
 (defun locate-domain-file (domain locale locale-dir)
   (flet ((path (locale base)
@@ -83,7 +105,8 @@
 	(loop for i upfrom charset below eoln as c = (char header i)
             while (or (alphanumericp c) (eql c #\-))
           finally (setf (domain-entry-encoding domain)
-		      (intern (subseq header charset i) "KEYWORD"))))))
+		      (intern (nstring-upcase (subseq header charset i))
+			      "KEYWORD"))))))
   domain)
 
 (defun parse-plurals (domain)
@@ -129,7 +152,7 @@
 			'LOGAND))
 	       (#\= (if (char= (char string pos) #\=)
 			(progn (incf pos) 'CMP=)
-			(error "Encountered illegal token: =")))
+			(error _"Encountered illegal token: =")))
 	       (#\! (if (char= (char string pos) #\=)
 			(progn (incf pos) 'CMP/=)
 			'NOT))
@@ -147,14 +170,14 @@
 				      while nx
 				   do (setq n (+ (* n 10) nx)) (incf pos)
 				   finally (return n))
-				(error "Encountered illegal token: ~C"
+				(error _"Encountered illegal token: ~C"
 				       (char string (1- pos))))))))
 	   (conditional (tok &aux tree)
 	     (multiple-value-setq (tree tok) (logical-or tok))
 	     (when (eql tok 'IF)
 	       (multiple-value-bind (right next) (logical-or (next))
 		 (unless (eql next 'THEN)
-		   (error "Expected : in ?: construct"))
+		   (error _"Expected : in ?: construct"))
 		 (multiple-value-bind (else next) (conditional (next))
 		   (setq tree (list tok (list 'zerop tree) else right)
 			 tok next))))
@@ -233,7 +256,7 @@
 	     (cond ((eq tok 'LPAR)
 		    (multiple-value-setq (tree tok) (conditional (next)))
 		    (unless (eq tok 'RPAR)
-		      (error "Expected close-paren."))
+		      (error _"Expected close-paren."))
 		    (values tree (next)))
 		   ((numberp tok)
 		    (values tok (next)))
@@ -251,10 +274,10 @@
 		    (multiple-value-setq (tree tok) (unary (next)))
 		    (values (list 'CNOT tree) tok))
 		   (t
-		    (error "Unexpected token: ~S." tok)))))
+		    (error _"Unexpected token: ~S." tok)))))
     (multiple-value-bind (tree end) (conditional (next))
       (unless (eq end 'END)
-	(error "Expecting end of expression.  ~S." end))
+	(error _"Expecting end of expression.  ~S." end))
       (let ((*compile-print* nil))
 	(compile nil
 		 `(lambda (n)
@@ -282,26 +305,31 @@
 		      ,tree)))))))
 
 (defun load-domain (domain locale &optional (locale-dir *locale-directories*))
-  (let ((file (locate-domain-file domain locale locale-dir)))
+  (let ((file (locate-domain-file domain locale locale-dir))
+	(read #'read-lelong))
     (unless file (return-from load-domain nil))
     (with-open-file (stream file :direction :input :if-does-not-exist nil
 			    :element-type '(unsigned-byte 8))
       (unless stream (return-from load-domain nil))
-      (unless (= (read-lelong stream) #x950412de)
-	(error "Bad magic number in \"~A.mo\"." domain))
-      (let ((version (read-lelong stream))
-	    (messages (read-lelong stream))
-	    (master (read-lelong stream))
-	    (translation (read-lelong stream))
+      (let ((magic (read-lelong stream)))
+	(cond ((= magic #x950412de) (setq read #'read-lelong))
+	      ((= magic #xde120495) (setq read #'read-belong))
+	      (t
+	       (error _"Bad magic number in \"~A.mo\"." domain))))
+      (let ((version (funcall read stream))
+	    (messages (funcall read stream))
+	    (master (funcall read stream))
+	    (translation (funcall read stream))
 	    (entry (make-domain-entry)))
 	(declare (ignore version))
+	(setf (domain-entry-readfn entry) read)
 	(setf (domain-entry-domain entry) domain)
 	(setf (domain-entry-locale entry) locale)
 	(setf (domain-entry-file entry) file)
 	(dotimes (msg messages)
 	  (file-position stream (+ master (* 8 msg)))
-	  (let ((length (read-lelong stream))
-		(start (read-lelong stream)))
+	  (let ((length (funcall read stream))
+		(start (funcall read stream)))
 	    (setf (gethash length (domain-entry-hash entry))
 		  (acons start (+ translation (* 8 msg))
 			 (gethash length (domain-entry-hash entry))))))
@@ -314,28 +342,43 @@
 	found
 	(load-domain domain locale locale-dir))))
 
+(declaim (inline string-to-octets))
 (defun string-to-octets (string encoding)
   (declare (ignorable encoding))
   #+(and CMU Unicode)
   (ext:string-to-octets string :external-format encoding)
+  #+Allegro
+  (excl:string-to-octets string :external-format encoding :null-terminate nil)
+  #+SBCL
+  (sb-ext:string-to-octets string :external-format encoding
+			   :null-terminate nil)
+  #+CLISP
+  (ext:convert-string-to-bytes string (ext:make-encoding :charset (symbol-name encoding)))
   ;;@@ add other implementations
-  #-(or (and CMU Unicode) #|others|#)
+  #-(or (and CMU Unicode) Allegro SBCL CLISP #|others|#)
   (map-into (make-array (length string) :element-type '(unsigned-byte 8))
 	    #'char-code string))
 
+(declaim (inline octets-to-string))
 (defun octets-to-string (octets encoding)
   (declare (ignorable encoding))
   #+(and CMU Unicode)
   (ext:octets-to-string octets :external-format encoding)
+  #+Allegro
+  (excl:octets-to-string octets :external-format encoding :end (length octets))
+  #+SBCL
+  (sb-ext:octets-to-string octets :external-format encoding)
+  #+CLISP ;;@@ Not sure if encoding keyword is OK here
+  (ext:convert-string-from-bytes octets (ext:make-encoding :charset (symbol-name encoding)))
   ;;@@ add other implementations
-  #-(or (and CMU Unicode) #|others|#)
+  #-(or (and CMU Unicode) Allegro SBCL CLISP #|others|#)
   (map-into (make-string (length octets)) #'code-char octets))
 
 (defun octets= (a b &key (start1 0) (end1 (length a))
 			 (start2 0) (end2 (length b)))
   (declare (type (simple-array (unsigned-byte 8) (*)) a b)
 	   (type (integer 0 #.array-dimension-limit) start1 end1 start2 end2)
-	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
+	   (optimize (speed 3) (space 2) #-gcl (debug 0)))
   (when (and (< start1 end1)
 	     (< start2 end2))
     (loop
@@ -346,7 +389,8 @@
   (declare (type (simple-array (unsigned-byte 8) (*)) octets)
 	   (type domain-entry domain)
 	   (type list pos)
-	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
+	   (optimize (speed 3) (space 2) #-gcl (debug 0)
+		     #+CMU (ext:inhibit-warnings 3))) ; quiet about boxing
   (when pos
     (let ((temp (make-array 120 :element-type '(unsigned-byte 8)))
 	  (length (length octets)))
@@ -370,8 +414,8 @@
 					   :end (min 120 (- length off))))))
 	    (when (= off length)
 	      (file-position stream (cdr entry))
-	      (let* ((len (read-lelong stream))
-		     (off (read-lelong stream))
+	      (let* ((len (funcall (domain-entry-readfn domain) stream))
+		     (off (funcall (domain-entry-readfn domain) stream))
 		     (tmp (make-array len :element-type '(unsigned-byte 8))))
 		(file-position stream off)
 		(read-sequence tmp stream)
@@ -379,14 +423,14 @@
 
 (defun domain-lookup (string domain)
   (declare (type string string) (type domain-entry domain)
-	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
+	   (optimize (speed 3) (space 2)))
   (or (if (null (domain-entry-encoding domain)) string)
       (gethash string (domain-entry-hash domain))
       (let* ((octets (string-to-octets string
 				       (domain-entry-encoding domain)))
 	     (length (length octets))
 	     (pos (gethash length (domain-entry-hash domain))))
-	(declare (type vector octets))
+	(declare (type (simple-array (unsigned-byte 8) (*)) octets))
 	(multiple-value-bind (tmp entry) (search-domain octets domain pos)
 	  (declare (type (or null (simple-array (unsigned-byte 8) (*))) tmp))
 	  (when tmp
@@ -399,7 +443,7 @@
 
 (defun domain-lookup-plural (singular plural domain)
   (declare (type string singular plural) (type domain-entry domain)
-	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
+	   (optimize (speed 3) (space 2)))
   (or (if (null (domain-entry-encoding domain)) nil)
       (gethash (cons singular plural) (domain-entry-hash domain))
       (let* ((octets (let* ((a (string-to-octets singular
@@ -416,7 +460,8 @@
 		       c))
 	     (length (length octets))
 	     (pos (gethash length (domain-entry-hash domain))))
-	(declare (type vector octets) (type list pos))
+	(declare (type (simple-array (unsigned-byte 8) (*)) octets)
+		 (type list pos))
 	(multiple-value-bind (tmp entry) (search-domain octets domain pos)
 	  (declare (type (or null (simple-array (unsigned-byte 8) (*))) tmp))
 	  (when tmp
@@ -458,27 +503,30 @@
 		     *locale*)))
 
 (defmacro textdomain (domain)
-  `(eval-when (:compile-toplevel :execute)
+  `(eval-when #-gcl (:compile-toplevel :execute)
+	      #+gcl (compile eval)
      (setf *default-domain* ,domain)))
 
 (defmacro gettext (string)
+  _N"Look up STRING in the current message domain and return its translation."
   `(dgettext ,*default-domain* ,string))
 
 (defmacro ngettext (singular plural n)
+  _N"Look up the singular or plural form of a message in the current domain."
   `(dngettext ,*default-domain* ,singular ,plural ,n))
 
 (declaim (inline dgettext))
 (defun dgettext (domain string)
-  "Look up STRING in the specified message domain and return its translation."
-  (declare (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
-  (let ((domain (find-domain domain *locale*)))
+  _N"Look up STRING in the specified message domain and return its translation."
+  (declare (optimize (speed 3) (space 2)))
+  (let ((domain (and domain (find-domain domain *locale*))))
     (or (and domain (domain-lookup string domain)) string)))
 
 (defun dngettext (domain singular plural n)
-  "Look up the singular or plural form of a message in the specified domain."
+  _N"Look up the singular or plural form of a message in the specified domain."
   (declare (type integer n)
-	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
-  (let* ((domain (find-domain domain *locale*))
+	   (optimize (speed 3) (space 2)))
+  (let* ((domain (and domain (find-domain domain *locale*)))
 	 (list (and domain (domain-lookup-plural singular plural domain))))
     (if list
 	(nth (the integer
@@ -486,22 +534,236 @@
 	     list)
 	(if (= n 1) singular plural))))
 
-(defun po-output-string (stream string)
-  (format stream "~&msgid ~S~%msgstr \"\"~2%" string))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar *translatable-dump-stream* nil)
+#-runtime
+(defvar *translator-comment* nil)
 
-(defun read-translatable-string (stream subchar arg)
-  (let ((string (funcall (get-macro-character #\") stream subchar)))
-    (when *translatable-dump-stream*
-      (po-output-string *translatable-dump-stream* string))
-    (if (eql arg 0)
-	string
-	`(dgettext ,*default-domain* ,string))))
+#-runtime
+(defvar *translations* (make-hash-table :test 'equal))
+
+#-runtime
+(defun note-translatable (domain string &optional plural)
+  (when domain
+    (let* ((hash (or (gethash domain *translations*)
+		     (setf (gethash domain *translations*)
+			   (make-hash-table :test 'equal))))
+	   (key (if plural (cons string plural) string))
+	   (val (or (gethash key hash) (cons nil nil))))
+      (pushnew *translator-comment* (car val) :test #'equal)
+      (pushnew *compile-file-pathname* (cdr val) :test #'equal)
+      (setf (gethash key hash) val)))
+  (setq *translator-comment* nil))
+
+(define-compiler-macro dgettext (&whole form domain string)
+  #-runtime
+  (when (and (stringp domain) (stringp string))
+    (note-translatable domain string))
+  form)
+
+(define-compiler-macro dngettext (&whole form domain singular plural n)
+  (declare (ignore n))
+  #-runtime
+  (when (and (stringp domain) (stringp singular) (stringp plural))
+    (note-translatable domain singular plural))
+  form)
+
+(defun read-translatable-string (stream char)
+  (declare (ignore char))
+    (case (peek-char nil stream nil nil t)
+      (#\" (let ((*read-suppress* nil)
+		 (string (read stream t nil t)))
+	     `(gettext ,string)))
+      (#\N (read-char stream t nil t)
+	   (let ((*read-suppress* nil)
+		 (string (read stream t nil t)))
+	     #-runtime
+	     (note-translatable *default-domain* string)
+	     string))
+      (#\@ (error _"_@ is a reserved reader macro prefix."))
+      (otherwise
+       (let ((fn (get-macro-character #\_ nil)))
+	 (if fn (funcall fn stream #\_) '_)))))
+
+#-runtime
+(defun read-comment (stream char)
+  (declare (optimize (speed 0) (space 3) #-gcl (debug 0))
+	   (ignore char))
+  (do ((state 0)
+       (index 0)
+       (text nil)
+       (char (read-char stream nil nil t) (read-char stream nil nil t)))
+      ((or (not char) (char= char #\Newline))
+       (when text (setq *translator-comment* (copy-seq text))))
+    (cond ((and (= state 0) (char= char #\Space)) (setq state 1))
+	  ((and (= state 0) (char= char #\T)) (setq state 1 index 1))
+	  ((and (= state 0) (char/= char #\;)) (setq state 2))
+	  ((and (= state 1) (= index 0) (char= char #\Space)) #|ignore|#)
+	  ((= state 1)
+	   (if (char= char (char "TRANSLATORS: " index))
+	       (when (= (incf index) 13)
+		 (setq state 3))
+	       (setq state 2)))
+	  ((= state 3)
+	   (when (null text)
+	     (setq text (make-array 50 :element-type 'character
+				    :adjustable t :fill-pointer 0)))
+	   (vector-push-extend char text))))
+  (values))
+
+#-runtime
+(defun read-nested-comment (stream subchar arg)
+  (declare (ignore subchar arg)
+	   (optimize (speed 0) (space 3) #-gcl (debug 0)))
+  (do ((level 1)
+       (state 0)
+       (index 0)
+       (text nil)
+       (prev (read-char stream t nil t) char)
+       (char (read-char stream t nil t) (read-char stream t nil t)))
+      (())
+    (cond ((and (char= prev #\|) (char= char #\#))
+	   (when (zerop (decf level))
+	     (when text
+	       (setq *translator-comment*
+		     (string-right-trim '(#\Space #\Newline) text)))
+	     (return)))
+	  ((and (char= prev #\#) (char= char #\|))
+	   (setq state 2)
+	   (incf level))
+	  ((and (= state 0) (char= prev #\Space)) (setq state 1))
+	  ((and (= state 0) (char= prev #\T))
+	   (setq state 1 index 1))
+	  ((= state 0) (setq state 2))
+	  ((and (= state 1) (= index 0) (char= prev #\Space)) #| ignore |#)
+	  ((= state 1)
+	   (if (char= prev (char "TRANSLATORS: " index))
+	       (when (= (incf index) 13)
+		 (setq state 3))
+	       (setq state 2)))
+	  ((= state 3)
+	   (when (null text)
+	     (setq text (make-array 50 :element-type 'character
+				    :adjustable t :fill-pointer 0)))
+	   (vector-push-extend prev text))))
+  (values))
 
 (defun install ()
-  (unless #+CMU (eq (get-macro-character #\_) #'lisp::read-dispatch-char)
-	  #-CMU (get-macro-character #\_)
-    (make-dispatch-macro-character #\_ t))
-  (set-dispatch-macro-character #\_ #\" #'read-translatable-string)
+  (set-macro-character #\_ #'read-translatable-string t)
+  #-runtime
+  (set-macro-character #\; #'read-comment)
+  #-runtime
+  (set-dispatch-macro-character #\# #\| #'read-nested-comment)
   t)
+
+
+#-runtime
+(defun dump-pot-files (&key copyright)
+  (declare (optimize (speed 0) (space 3) #-gcl (debug 1)))
+  (labels ((b (key data)
+	     (format t "~@[~{~&#. ~A~}~%~]" (delete nil (car data)))
+	     (format t "~@[~&~<#: ~@;~@{~A~^ ~}~:@>~%~]"
+		     (delete nil (cdr data)))
+	     (cond ((consp key)
+		    (format t "~&msgid ") (str (car key) 6 0)
+		    (format t "~&msgid_plural ") (str (cdr key) 13 0)
+		    (format t "~&msgstr[0] \"\"~2%"))
+		   (t
+		    (format t "~&msgid ") (str key 6 0)
+		    (format t "~&msgstr \"\"~2%"))))
+	   (str (string col start)
+	     (when (and (plusp col) (> (length string) (- 76 col)))
+	       (format t "\"\"~%"))
+	     (let ((nl (position #\Newline string :start start)))
+	       (cond ((and nl (< (- nl start) 76))
+		      (write-char #\")
+		      (wstr string start nl)
+		      (format t "\\n\"~%")
+		      (str string 0 (1+ nl)))
+		     ((< (- (length string) start) 76)
+		      (write-char #\")
+		      (wstr string start (length string))
+		      (write-char #\"))
+		     (t
+		      (let* ((a (+ start 1))
+			     (b (+ start 76))
+			     (b1 (position #\Space string :start a :end b
+					   :from-end t))
+			     (b2 (position-if (lambda (x)
+						(position x ";:,?!)]}"))
+					      string :start a :end b
+					      :from-end t))
+			     (b3 (position-if (lambda (x)
+						(position x "\"'-"))
+					      string :start a :end b
+					      :from-end t))
+			     (b4 (position-if #'digit-char-p
+					      string :start a :end b
+					      :from-end t))
+			     (b5 (position-if #'alpha-char-p
+					      string :start a :end b
+					      :from-end t))
+			     (g1 (if b1 (* (- b b1) (- b b1) .03) 10000))
+			     (g2 (if b2 (* (- b b2) (- b b2) .20) 10000))
+			     (g3 (if b3 (* (- b b3) (- b b3) .97) 10000))
+			     (g4 (if b4 (* (- b b4) (- b b4) 1.3) 10000))
+			     (g5 (if b5 (* (- b b5) (- b b5) 2.0) 10000))
+			     (g (min g1 g2 g3 g4 g5))
+			     (end (1+ (cond ((> g 750) b)
+					    ((= g g1) b1)
+					    ((= g g2) b2)
+					    ((= g g3) b3)
+					    ((= g g4) b4)
+					    ((= g g5) b5)))))
+			#+(or)
+			(progn
+			  (format t "~&Splitting ~S:~%"
+				  (subseq string start b))
+			  (format t "~{~&  b~D=~D; goodness=~F~}~%"
+				  (list 1 b1 g1 2 b2 g2 3 b3 g3 4 b4 g4 5 b5 g5
+					6 b 10000))
+			  (format t "~&  best=~F == ~D~%" g end)
+			  (format t "~&  Part1=~S~%  Part2=~S~%"
+				  (subseq string start end)
+				  (subseq string end b)))
+			(write-char #\")
+			(wstr string start end)
+			(write-char #\") (terpri)
+			(str string 0 end))))))
+	   (wstr (string start end)
+	     (loop while (< start end) do
+	       (let ((i (position-if (lambda (x)
+				       (or (char= x #\") (char= x #\\)))
+				     string :start start :end end)))
+		 (write-string string nil :start start :end (or i end))
+		 (when i (write-char #\\ nil) (write-char (char string i) nil))
+		 (setq start (if i (1+ i) end)))))
+	   (a (domain hash)
+	     (format t "~&#@ ~A~2%" domain)
+	     (format t "~&# SOME DESCRIPTIVE TITLE~%")
+	     (format t "~@[~&# Copyright (C) YEAR ~A~%~]" copyright)
+	     (format t "~&# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR~%")
+	     (format t "~&#~%#, fuzzy~%msgid \"\"~%msgstr \"\"~%")
+	     (format t "~&\"Project-Id-Version: PACKAGE VERSION\\n\"~%")
+	     (format t "~&\"Report-Msgid-Bugs-To: \\n\"~%")
+	     (format t "~&\"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\\n\"~%")
+	     (format t "~&\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"~%")
+	     (format t "~&\"Language-Team: LANGUAGE <LL@li.org>\\n\"~%")
+	     (format t "~&\"MIME-Version: 1.0\\n\"~%")
+	     (format t "~&\"Content-Type: text/plain; charset=UTF-8\\n\"~%")
+	     (format t "~&\"Content-Transfer-Encoding: 8bit\\n\"~2%")
+	     (maphash #'b hash)))
+    (maphash #'a *translations*)
+    #+(or)
+    (clrhash *translations*))
+  nil)
+
+
+
+(eval-when #-gcl (:compile-toplevel :execute)
+	   #+gcl (compile eval)
+  (setq *default-domain* nil)
+  (unless (and (fboundp 'intl:read-translatable-string)
+	       (eq (get-macro-character #\_)
+		   (fdefinition 'intl:read-translatable-string)))
+    (set-syntax-from-char #\_ #\_)))
