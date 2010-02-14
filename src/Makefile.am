@@ -3,7 +3,7 @@ include $(top_srcdir)/common.mk
 if WIN32
 bin_SCRIPTS = maxima maxima-command.ico maxima.bat set_lang.vbs
 else
-bin_SCRIPTS = maxima rmaxima lisp
+bin_SCRIPTS = maxima rmaxima
 endif
 
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
@@ -610,4 +610,4 @@ numerical/slatec/zwrsk.lisp
 
 genericdirDATA = $(real_lisp_sources) autoconf-variables.lisp
 
-EXTRA_DIST = $(real_lisp_sources) maxima.asd maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl-depends.mk openmcl-depends.mk ecl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico set_lang.vbs
+EXTRA_DIST = $(real_lisp_sources) maxima.asd maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl-depends.mk openmcl-depends.mk ecl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp maxima-command.ico set_lang.vbs lisp
