@@ -23,10 +23,6 @@ SUFFIXES=	.mo .po
 .po.mo:
 	$(MSGFMT) -o $@ $<
 
-es.po: maxima.pot	# TODO: patterns
-	touch $@
-	$(MSGMERGE) $@ maxima.pot > $@.new && mv $@.new $@;
-
 maxima.pot:
 	touch $@
 	find ../src -name "*.lisp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o maxima.pot
@@ -36,6 +32,8 @@ allpo: force-update maxima.pot
 
 allmo:
 	@for t in $(TRANSLATIONS); do $(MAKE) $$t.mo; done
+	@for t in $(TRANSLATIONS); do $(mkinstalldirs) $$t/LC_MESSAGES; done
+	@for t in $(TRANSLATIONS); do $(INSTALL_DATA) $$t.mo $$t/LC_MESSAGES/maxima.mo; done
 
 force-update:
 	$(RM) maxima.pot

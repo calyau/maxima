@@ -729,7 +729,10 @@ When one changes, the other does too."
       (adjust-character-encoding)
       (set-pathnames)
       (when (boundp '*maxima-prefix*)
-	(push (pathname (concatenate 'string *maxima-prefix* "/share/locale/"))
+	(push (pathname (concatenate 'string *maxima-prefix*
+				     (if *maxima-layout-autotools*
+					 "/share/locale/"
+					 "/locale/")))
 	      intl::*locale-directories*))
       (setf (values input-stream batch-flag)
 	    (process-maxima-args input-stream batch-flag))
