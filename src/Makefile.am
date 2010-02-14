@@ -3,7 +3,7 @@ include $(top_srcdir)/common.mk
 if WIN32
 bin_SCRIPTS = maxima maxima-command.ico maxima.bat set_lang.vbs
 else
-bin_SCRIPTS = maxima rmaxima
+bin_SCRIPTS = maxima rmaxima lisp
 endif
 
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
@@ -66,7 +66,7 @@ binary-cmucl/maxima.core:
 install-cmucl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-cmucl"
 	$(INSTALL_DATA) binary-cmucl/maxima.core "$(DESTDIR)$(verpkglibdir)/binary-cmucl/maxima.core"
-	$(INSTALL_PROGRAM) @CMUCL_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-cmucl/@CMUCL_RUNTIME@"
+	$(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-cmucl/@CMUCL_RUNTIME@"
 
 uninstall-cmucl:
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-cmucl/maxima.core"
