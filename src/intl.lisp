@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.12 $
+;;; $Revision: 1.13 $
 ;;; Copyright 1999 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
@@ -23,7 +23,7 @@
 ;;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 ;;; USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 ;;; DAMAGE.
-#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.12 2010-02-14 18:52:33 andrejv Exp $")
+#+CMU (ext:file-comment "$Header: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/src/intl.lisp,v 1.13 2010-02-14 21:02:34 andrejv Exp $")
 
 (in-package :intl)
 
@@ -336,9 +336,11 @@
   (declare (type (simple-array (unsigned-byte 8) (*)) a b)
 	   (type (integer 0 #.array-dimension-limit) start1 end1 start2 end2)
 	   (optimize (speed 3) (space 2) (safety 0) #-gcl (debug 0)))
-  (loop
-    (unless (= (aref a start1) (aref b start2)) (return nil))
-    (when (or (= (incf start1) end1) (= (incf start2) end2)) (return t))))
+  (when (and (< start1 end1)
+	     (< start2 end2))
+    (loop
+       (unless (= (aref a start1) (aref b start2)) (return nil))
+       (when (or (= (incf start1) end1) (= (incf start2) end2)) (return t)))))
 
 (defun search-domain (octets domain pos)
   (declare (type (simple-array (unsigned-byte 8) (*)) octets)
