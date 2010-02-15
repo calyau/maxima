@@ -1102,12 +1102,20 @@
 			(cond ((null (cdddr x)) (caddr x)) (t (rplacd x (cddr x)))))
 		       (t x)))
 
+;; Simplification of the "-" operator
 (defun simpmin (x vestigial z)
   (declare (ignore vestigial))
-  (oneargcheck x)
-  (cond ((numberp (cadr x)) (- (cadr x)))
-	((atom (cadr x)) (list '(mtimes simp) -1 (cadr x)))
-	(t (simplifya (list '(mtimes) -1 (simplifya (cadr x) z)) t))))
+;  (oneargcheck x)
+  (cond ((null (cdr x)) 0)
+;        ((numberp (cadr x)) (- (cadr x)))
+;	 ((atom (cadr x)) (list '(mtimes simp) -1 (cadr x)))
+        ((null (cddr x))
+         ;; ((mminus) a) -> ((mtimes) -1 a)
+         (mul -1 (simplifya (cadr x) z)))
+        (t
+;         (simplifya (list '(mtimes) -1 (simplifya (cadr x) z)) t))))
+         ;; ((mminus) a b ...) -> ((mplus) a ((mtimes) -1 b) ...)
+         (sub (simplifya (cadr x) z) (addn (cddr x) z)))))
 
 (defmfun simptimes (x w z)		; W must be 1
   (prog (res check eqnflag matrixflag sumflag)
