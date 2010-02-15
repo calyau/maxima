@@ -1244,8 +1244,34 @@ forget(a>0);
 limit(x/(2+sin(1/x)),x,0);
 0;
  
- /* Bug ID: 1106912 - limit(x/sin(x)^2,x,inf)
-  */
+/* Bug ID: 1106912 - limit(x/sin(x)^2,x,inf)
+ */
   
 limit(x/sin(x)^2,x,inf);
 inf;
+
+/* Bug ID: 777564 - subtraction \"-\"(a,b) should work/FIX */
+
+"-"();
+0;
+
+"-"(a);
+-a;
+
+"-"(2*a);
+-2*a;
+
+"-"(a+b);
+-b-a;
+
+"-"(a+b+c);
+-c-b-a;
+
+"-"(100,20,10);
+70;
+
+map("-",[a,x,100],[b,y,20]);
+[a-b,x-y,80];
+
+map("-",[a,x,100],[b,y,20],[c,z,10]);
+[-c-b+a,-z-y+x,70];
