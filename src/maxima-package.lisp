@@ -239,6 +239,8 @@
 	   #:ngettext #:dngettext
            #:*translatable-dump-stream* #:*locale*
 	   #:*locale-directories*
-	   #:read-translatable-string))
+	   #:read-translatable-string)
+  #+gcl
+  (:shadowing-import-from #:system #:define-compiler-macro))
 
 (provide :maxima)

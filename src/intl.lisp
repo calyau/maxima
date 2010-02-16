@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.15 $
+;;; $Revision: 1.16 $
 ;;; Copyright 1999-2010 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
@@ -278,7 +278,8 @@
     (multiple-value-bind (tree end) (conditional (next))
       (unless (eq end 'END)
 	(error _"Expecting end of expression.  ~S." end))
-      (let ((*compile-print* nil))
+      (let (#-gcl
+	    (*compile-print* nil))
 	(compile nil
 		 `(lambda (n)
 		    (declare (type (unsigned-byte 32) n)
@@ -551,16 +552,23 @@
 	   (key (if plural (cons string plural) string))
 	   (val (or (gethash key hash) (cons nil nil))))
       (pushnew *translator-comment* (car val) :test #'equal)
+      #-gcl
       (pushnew *compile-file-pathname* (cdr val) :test #'equal)
       (setf (gethash key hash) val)))
   (setq *translator-comment* nil))
 
+;; GCL has define-compiler-macro, but it doesn't handle the case where
+;; the form is returned.  Hence, disable these.  These were only
+;; needed to note the translatable strings anyway, and maxima does
+;; that in a different way.
+#-gcl
 (define-compiler-macro dgettext (&whole form domain string)
   #-runtime
   (when (and (stringp domain) (stringp string))
     (note-translatable domain string))
   form)
 
+#-gcl
 (define-compiler-macro dngettext (&whole form domain singular plural n)
   (declare (ignore n))
   #-runtime
@@ -657,7 +665,7 @@
   t)
 
 
-#-runtime
+#-(or gcl runtime)
 (defun dump-pot-files (&key copyright)
   (declare (optimize (speed 0) (space 3) #-gcl (debug 1)))
   (labels ((b (key data)
