@@ -1,6 +1,6 @@
 ;;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Package: INTL -*-
 
-;;; $Revision: 1.14 $
+;;; $Revision: 1.15 $
 ;;; Copyright 1999-2010 Paul Foley (mycroft@actrix.gen.nz)
 ;;;
 ;;; Permission is hereby granted, free of charge, to any person obtaining
@@ -27,7 +27,7 @@
 
 (eval-when #-gcl (:compile-toplevel :execute)
 	   #+gcl (compile eval)
-  (defparameter intl::*default-domain* "libintl")
+  (defparameter intl::*default-domain* "maxima")
   (unless (and (fboundp 'intl:read-translatable-string)
 	       (eq (get-macro-character #\_)
 		   (fdefinition 'intl:read-translatable-string)))
@@ -762,7 +762,7 @@
 
 (eval-when #-gcl (:compile-toplevel :execute)
 	   #+gcl (compile eval)
-  (setq *default-domain* nil)
+  (setq *default-domain* "maxima")
   (unless (and (fboundp 'intl:read-translatable-string)
 	       (eq (get-macro-character #\_)
 		   (fdefinition 'intl:read-translatable-string)))
