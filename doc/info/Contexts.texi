@@ -61,6 +61,10 @@ Maxima's deduction mechanism is not very strong;
 there are many obvious consequences which cannot be determined by @code{is}.
 This is a known weakness.
 
+@code{assume} does not handle predicates with complex numbers. If a predicate
+contains a complex number @code{assume} returns @code{inconsistent} or 
+@code{redunant}.
+
 @code{assume} evaluates its arguments.
 
 See also @code{is}, @code{facts}, @code{forget}, @code{context}, and @code{declare}.
