@@ -951,18 +951,51 @@ the time spent factoring large integers.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} keepfloat
 Default value: @code{false}
 
 When @code{keepfloat} is @code{true}, prevents floating
 point numbers from being rationalized when expressions which contain
 them are converted to canonical rational expression (CRE) form.
-@c NEED EXAMPLES HERE
+
+Note that the function @code{solve} and those functions calling it 
+(@code{eigenvalues}, for example) currently ignore this flag, converting 
+floating point numbers anyway.
+
+Examples:
+
+@c ===beg===
+@c rat(x/2.0);
+@c rat(x/2.0), keepfloat;
+@c ===end===
+@example
+(%i1) rat(x/2.0);
+
+`rat' replaced 0.5 by 1/2 = 0.5
+                                       x
+(%o1)/R/                               -
+                                       2
+(%i2) rat(x/2.0), keepfloat;
+
+(%o2)/R/                             0.5 x
+@end example
+
+@code{solve} ignores @code{keepfloat}:
+
+@c ===beg===
+@c solve(1.0-x,x), keepfloat;
+@c ===end===
+@example
+(%i3) solve(1.0-x,x), keepfloat;
+
+`rat' replaced 1.0 by 1/1 = 1.0
+(%o3)                               [x = 1]
+@end example
 
 @opencatbox
 @category{Numerical evaluation}
 @closecatbox
-
 @end defvr
 
 @c DESCRIBE lratsubst INDEPENDENTLY OF subst
