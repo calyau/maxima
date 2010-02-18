@@ -1502,6 +1502,9 @@
 		       (let ((re (maxima::$realpart maxima-num))
 			     (im (maxima::$imagpart maxima-num)))
 			 (to re im)))))
+	       ((or (typep maxima-num 'bigfloat)
+		    (typep maxima-num 'complex-bigfloat))
+		maxima-num)
 	       (t
 		(maxima::merror "BIGFLOAT:  Unable to convert ~M to a CL or BIGFLOAT number" maxima-num))))))
 
