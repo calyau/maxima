@@ -167,6 +167,7 @@
   (:export #:bigfloat
 	   #:to
 	   #:epsilon
+	   #:%pi
 	   ;; CL equivalents
 	   #:+
 	   #:-

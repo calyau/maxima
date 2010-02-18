@@ -1898,3 +1898,25 @@
 		  (coerce-error))))
 	  (t
 	   (cl:coerce obj type)))))
+
+;;; %PI - External
+;;;
+;;;   Return a value of pi with the same precision as the argument.
+;;;   For rationals, we return a single-float approximation.
+(defmethod %pi ((x cl:rational))
+  (cl:coerce cl:pi 'single-float))
+
+(defmethod %pi ((x single-float))
+  (cl:coerce cl:pi 'single-float))
+
+(defmethod %pi ((x double-float))
+  (cl:coerce cl:pi 'double-float))
+
+(defmethod %pi ((x bigfloat))
+  (to (maxima::bcons (maxima::fppi))))
+
+(defmethod %pi ((x cl:complex))
+  (pi (realpart x)))
+
+(defmethod %pi ((x complex-bigfloat))
+  (to (maxima::bcons (maxima::fppi))))
