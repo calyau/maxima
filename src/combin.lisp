@@ -516,11 +516,11 @@
      (simp-domain-error (intl:gettext "zeta: zeta(~:M) is undefined.") z))
 
     ;; Check for numerical evaluation
-    (($bfloatp z) (mfuncall '$bfzeta z $fpprec))
-    ((or (floatp z) (and (or $numer $float) (integerp z)))
-         (let (($float2bf t))
-           ($float (mfuncall '$bfzeta z 18))))
-
+    ((or (bigfloat-numerical-eval-p z)
+	 (complex-bigfloat-numerical-eval-p z)
+	 (float-numerical-eval-p z)
+	 (complex-float-numerical-eval-p z))
+     (to (float-zeta z)))
     ;; Check for transformations and argument simplifications
     ((integerp z)
      (cond
@@ -560,6 +560,80 @@
 			   (timesk (*red (expt 2 (1- s)) (factorial s))
 				   (simpabs (list 'mabs ($bern s)) 1 nil)))))
 	   (resimplify s))))
+
+;; See http://numbers.computation.free.fr/Constants/constants.html
+;; and, in particular,
+;; http://numbers.computation.free.fr/Constants/Miscellaneous/zetaevaluations.pdf.
+;; We use the algorithm from Proposition 2:
+;;
+;; zeta(s) = 1/(1-2^(1-s)) *
+;;            (sum((-1)^(k-1)/k^s,k,1,n) +
+;; 1/2^n*sum((-1)^(k-1)*e(k-n)/k^s,k,n+1,2*n))
+;;           + g(n,s)
+;;
+;; where e(k) = sum(binomial(n,j), j, k, n) and
+;; |g(n,s)| <= 1/8^n * 4^abs(sigma)/abs(1-2^(1-s))/abs(gamma(s))
+;;
+;; with s = sigma + %i*t
+;;
+;; This technique converge for sigma > -(n-1)
+;;
+;; Figure out how many terms we need from |g(n,s)|.  The answer is
+;;
+;; n = log(f/eps)/log(8), where f =
+;; 4^abs(sigma)/abs(1-2^(1-s))/abs(gamma(s))
+
+(defun float-zeta (s)
+  (let ((s (bigfloat:to s)))
+    (cond ((bigfloat:minusp (bigfloat:realpart s))
+	   ;; Reflection formula
+	   (bigfloat:* (bigfloat:expt 2 s)
+		       (bigfloat:expt (bigfloat:%pi s)
+				      (bigfloat:- s 1))
+		       (bigfloat:sin (bigfloat:* (bigfloat:/ (bigfloat:%pi s)
+							     2)
+						 s))
+		       (bigfloat:to ($gamma (to (bigfloat:- 1 s))))
+		       (float-zeta (bigfloat:- 1 s))))
+	  (t
+	   (let ((n (bigfloat:ceiling
+		     (bigfloat:/
+		      (bigfloat:log
+		       (bigfloat:/ (bigfloat:expt 4 (bigfloat:abs (bigfloat:realpart s)))
+				   (bigfloat:abs (bigfloat:- 1
+							     (bigfloat:expt 2 (bigfloat:- 1 s))))
+				   (bigfloat:abs (bigfloat:to ($gamma (to s))))
+				   (bigfloat:epsilon s)))
+		      (bigfloat:log 8))))
+		 (sum1 0)
+		 (sum2 0))
+	     (flet ((binsum (k n)
+		      ;; sum(binomial(n,j), j, k, n) = sum(binomial(n,j), j, n, k)
+		      (let ((sum 0)
+			    (term 1))
+			(loop for j from n downto k
+			   do
+			   (progn
+			     (incf sum term)
+			     (setf term (/ (* term j) (+ n 1 (- j))))))
+			sum)))
+	       ;;(format t "n = ~D terms~%" n)
+	       ;; sum1 = sum((-1)^(k-1)/k^s,k,1,n)
+	       ;; sum2 = sum((-1)^(k-1)/e(n,k-n)/k^s, k, n+1, 2*n)
+	       ;;      = (-1)^n*sum((-1)^(m-1)*e(n,m)/(n+k)^s, k, 1, n)
+	       (loop for k from 1 to n
+		  for d = (bigfloat:expt k s)
+		  do (progn
+		       (bigfloat:incf sum1 (bigfloat:/ (cl:expt -1 (- k 1)) d))
+		       (bigfloat:incf sum2 (bigfloat:/ (* (cl:expt -1 (- k 1))
+							  (binsum k n))
+						       (bigfloat:expt (+ k n) s))))
+		  finally (return (values sum1 sum2)))
+	       (when (oddp n)
+		 (setq sum2 (bigfloat:- sum2)))
+	       (bigfloat:/ (bigfloat:+ sum1 
+				       (bigfloat:/ sum2 (bigfloat:expt 2 n)))
+			   (bigfloat:- 1 (bigfloat:expt 2 (bigfloat:- 1 s))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
