@@ -266,7 +266,7 @@ clean-openmcl:
 	rm -rf binary-openmcl
 openmcl-depends.mk: maxima.system
 	test -d binary-openmcl || mkdir binary-openmcl
-	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-openmcl/maxima.image" "openmcl-depends.mk"))'
+	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-openmcl/maxima.image" "openmcl-depends.mk") (ccl:quit))'
 include openmcl-depends.mk
 endif
 

@@ -871,6 +871,7 @@
       :cormanlisp
       :scl
       :abcl
+      :ccl
       (and allegro-version>= (version>= 4 1)))
 (eval-when #-(or :lucid)
            (:compile-toplevel :load-toplevel :execute)
@@ -993,10 +994,10 @@
 
 #+abcl (defpackage make (:use "COMMON-LISP") (:nicknames "MK"))
 
-#+(or clisp cormanlisp ecl (and gcl defpackage) sbcl)
+#+(or clisp cormanlisp ecl (and gcl defpackage) sbcl ccl)
 (defpackage "MAKE" (:use "COMMON-LISP") (:nicknames "MK"))
 
-#-(or :sbcl :cltl2 :lispworks :ecl :scl :abcl)
+#-(or :sbcl :cltl2 :lispworks :ecl :scl :abcl :ccl)
 (in-package :make :nicknames '("MK"))
 
 ;;; For CLtL2 compatible lisps...
@@ -1052,7 +1053,7 @@
 (eval-when (compile load eval)
   (in-package :make))
 
-#+(or ecl abcl)
+#+(or ecl abcl ccl)
 (in-package :make)
 
 ;;; *** Marco Antoniotti <marcoxa@icsi.berkeley.edu> 19970105
@@ -4127,7 +4128,7 @@ the system definition, if provided."
 (unless *old-require*
   (setf *old-require*
 	(symbol-function
-	 #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl) 'lisp:require
+	 #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl  :openmcl) 'lisp:require
 	 #+(and :excl :allegro-v4.0) 'cltl1:require
 	 #+(or :sbcl :scl) 'cl:require
 	 #+(or :lispworks3.1 :abcl) 'common-lisp::require
@@ -4141,7 +4142,7 @@ the system definition, if provided."
 	  (ccl:*warn-if-redefine-kernel* nil))
       #-(or (and allegro-version>= (version>= 4 1)) :lispworks)
       (setf (symbol-function
-	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl) 'lisp:require
+	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl :openmcl) 'lisp:require
 	     #+(and :excl :allegro-v4.0) 'cltl1:require
 	     #+(or :lispworks3.1 :abcl) 'common-lisp::require
 	     #+(or :sbcl :scl) 'cl:require
