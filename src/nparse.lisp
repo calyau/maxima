@@ -1271,7 +1271,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 (def-nud-equiv	|$+| parse-prefix)
 (def-lbp	|$+| 100.)
-(def-rbp	|$+| 100.)
+(def-rbp	|$+| 134.) ; Value increased from 100 to 134 (DK 02/2010).
 (def-pos	|$+| $expr)
 (def-rpos	|$+| $expr)
 ;LPOS not needed
