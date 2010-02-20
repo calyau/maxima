@@ -539,8 +539,10 @@ summation when necessary."
       (let (($simp nil))
         (setq summand ($substitute gensym-ind ind summand)))
       (setq foo (mbinding ((list gensym-ind) (list gensym-ind))
-			  (resimplify (meval summand))))
-      (let (($simp nil))
+                          (resimplify (meval summand))))
+      ;; At this point we do not switch off simplification to preserve
+      ;; the achieved simplification of the summand (DK 02/2010).
+      (let (($simp t))
 	(setq foo ($substitute ind gensym-ind foo)))
       (if (not (eq hi '$inf))
 	  (forget (list '(mgeqp) hi gensym-ind)))
@@ -672,7 +674,7 @@ summation when necessary."
             
             (t
 	     (setq ex (subst '%product '$product ex))
-	     `((%product) ,(subst k i ex) ,k ,lo ,hi))))
+	     `((%product simp) ,(subst k i ex) ,k ,lo ,hi))))
 
     ;; Hmm, this is curious... don't call existing product simplifications
     ;; if index range is infinite -- what's up with that??
