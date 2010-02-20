@@ -170,12 +170,16 @@ taylor(sqrt(1+x),x,0,5);
  * Therefore the following taylor expansion gives a result
  * in terms of rational numbers. We change the expected
  * result accordingly.
+ * After revision 1.36 of asum.lisp it works as expected (DK 02/2010).
  */
+keepfloat:true;
+true;
 product((x^i+1)^2.5,i,1,inf)/(x^2+1);
 ('product((x^i+1)^2.5,i,1,inf))/(x^2+1)$
-ev(taylor(%,x,0,3),keepfloat);
-/*1+2.5*x+3.375*x^2+6.5625*x^3$*/
-1+5/2*x+27/8*x^2+105/16*x^3;
+ratdisrep(taylor(%,x,0,3));
+1+2.5*x+3.375*x^2+6.5625*x^3;
+keepfloat:false;
+false;
 
 taylor(1/log(1+x),x,0,3);
 1/x+1/2-x/12+x^2/24-19*x^3/720$
