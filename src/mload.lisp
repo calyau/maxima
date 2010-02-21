@@ -549,13 +549,19 @@
 	       x)))
     (mapcar #'remove-dollarsign
 	    (cond (tests
-		   (intersection (cdr $testsuite_files)
-				 (mapcar #'remove-dollarsign (cdr tests))
-				 :key #'(lambda (x)
-					  (maxima-string (if (listp x)
-							     (second x)
-							     x)))
-				 :test #'string=))
+		   (let ((results nil))
+		     ;; Using INTERSECTION would be convenient, but
+		     ;; INTERSECTION can return the result in any
+		     ;; order, and we'd prefer that the order of the
+		     ;; tests be preserved.  CMUCL and CCL returns the
+		     ;; intersection in reverse order.  Clisp produces
+		     ;; the original order.  Fortunately, this doesn't
+		     ;; have to be very fast, so we do it very naively.
+		     (dolist (test (mapcar #'remove-dollarsign (cdr tests)))
+		       (when (find test (cdr $testsuite_files)
+				   :test #'string=)
+			 (push test results)))
+		     (nreverse results)))
 		  (t
 		   (cdr $testsuite_files))))))
 
