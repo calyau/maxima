@@ -168,7 +168,7 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 
 @end defvr
 
-@c NEEDS WORK
+@c -----------------------------------------------------------------------------
 @deffn {Function} expand (@var{expr})
 @deffnx {Function} expand (@var{expr}, @var{p}, @var{n})
 Expand expression @var{expr}.
@@ -198,6 +198,10 @@ only if @code{expop} is greater than or equal to 3.  If it is desired to have
 @code{(x+1)^n} expanded where @code{n} is greater than @code{expop} then executing
 @code{expand ((x+1)^n)} will work only if @code{maxposex} is not less than @code{n}.
 
+@code{expand(expr, 0, 0)} causes a resimplification of @code{expr}. @code{expr}
+is not reevaluated. In distinction from @code{ev(expr, noeval)} a special 
+representation (e. g. a CRE form) is removed. See also @code{ev}.
+
 The @code{expand} flag used with @code{ev} causes expansion.
 
 The file @file{simplification/facexp.mac}
@@ -212,6 +216,70 @@ expressions by controlled expansion.
 @c MERGE share/simplification/facexp.usg INTO THIS FILE OR CREATE NEW FILE facexp.texi
 Brief function descriptions are available in @file{simplification/facexp.usg}.
 A demo is available by doing @code{demo("facexp")}.
+
+Examples:
+@c ===beg===
+@c expr:(x+1)^2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2);
+@c expr:(x+1)^-2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2,2);
+@c ===end===
+@example
+(%i1) expr:(x+1)^2*(y+1)^3;
+                                      2        3
+(%o1)                          (x + 1)  (y + 1)
+(%i2) expand(expr);
+       2  3        3    3      2  2        2      2      2
+(%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
+                                                 2
+                                + 6 x y + 3 y + x  + 2 x + 1
+
+(%i3) expand(expr,2);
+                      2        3              3          3
+(%o3)                x  (y + 1)  + 2 x (y + 1)  + (y + 1)
+
+(%i4) expr:(x+1)^-2*(y+1)^3;
+                                          3
+                                   (y + 1)
+(%o4)                              --------
+                                          2
+                                   (x + 1)
+(%i5) expand(expr);
+                 3               2
+                y             3 y            3 y             1
+(%o5)      ------------ + ------------ + ------------ + ------------
+            2              2              2              2
+           x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
+
+(%i6) expand(expr,2,2);
+                                          3
+                                   (y + 1)
+(%o6)                            ------------
+                                  2
+                                 x  + 2 x + 1
+@end example
+
+Resimplify an expression without expansion:
+
+@c ===beg===
+@c expr:(1+x)^2*sin(x);
+@c exponentialize:true;
+@c expand(expr,0,0);
+@c ===end===
+@example
+(%i7) expr:(1+x)^2*sin(x);
+                                       2
+(%o7)                           (x + 1)  sin(x)
+(%i8) exponentialize:true;
+(%o8)                                true
+(%i9) expand(expr,0,0);
+                                   2    %i x     - %i x
+                         %i (x + 1)  (%e     - %e      )
+(%o9)                  - -------------------------------
+                                        2
+@end example
 
 @opencatbox
 @category{Expressions}
