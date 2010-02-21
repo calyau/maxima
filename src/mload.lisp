@@ -325,10 +325,14 @@
 
 (defun test-batch (filename expected-errors
 			    &key (out *standard-output*) (show-expected nil)
-			    (show-all nil))
+			    (show-all nil) (showtime nil))
 
   (let ((result) (next-result) (next) (error-log) (all-differences nil) ($ratprint nil) (strm)
-	(*mread-prompt* "") (expr) (num-problems 0) (tmp-output) (save-output) (i 0))
+	(*mread-prompt* "") (expr) (num-problems 0) (tmp-output) (save-output) (i 0)
+	(start-run-time 0) (end-run-time 0)
+	(start-real-time 0) (end-real-time 0)
+	(test-start-run-time 0) (test-end-run-time 0)
+	(test-start-real-time 0) (test-end-real-time 0))
     
     (cond (*collect-errors*
 	   (setq error-log
@@ -345,6 +349,8 @@
     (unwind-protect 
 	(progn
 	  (setq strm (open filename :direction :input))
+	  (setq start-real-time (get-internal-real-time))
+	  (setq start-run-time (get-internal-run-time))
 	  (while (not (eq 'eof (setq expr (mread strm 'eof))))
 	    (incf num-problems)
 	    (incf i)
@@ -354,8 +360,12 @@
 	  
 	    (unwind-protect
 		(progn
+		  (setq test-start-run-time (get-internal-run-time))
+		  (setq test-start-real-time (get-internal-real-time))
 		  (setq result (meval* `(($errcatch) ,(third expr))))
 		  (setq result (if ($emptyp result) 'error-catch (second result)))
+		  (setq test-end-run-time (get-internal-run-time))
+		  (setq test-end-real-time (get-internal-real-time))
 		  (setq $% result))
 	      (setf *standard-output* save-output))
 
@@ -373,7 +383,13 @@
 		(displa (third expr))
 		(format out "~%~%Result:~%")
 		(format out "~a" (get-output-stream-string tmp-output))
-		(displa $%))
+		(displa $%)
+		(when (eq showtime '$all)
+		  (format out "~%Time:  ~,3F sec (~,3F elapsed)"
+			  (float (/ (- test-end-run-time test-start-run-time)
+				    internal-time-units-per-second))
+			  (float (/ (- test-end-run-time test-start-run-time)
+				    internal-time-units-per-second)))))
 	      (cond ((and correct expected-error)
 		     (format t "~%... Which was correct, but was expected to be wrong due to a known bug in~% Maxima.~%"))
 		    (correct
@@ -388,33 +404,45 @@
 		       (displa next-result)
 		       (cond ((and *collect-errors* error-log)
 			      (format error-log "/* Problem ~A */~%" i)
-                  (mgrind (third expr) error-log)
+			      (mgrind (third expr) error-log)
 			      (list-variable-bindings (third expr) error-log)
 			      (format error-log ";~%")
 			      (format error-log "/* Erroneous Result?:~%")
 			      (mgrind result error-log) (format error-log " */ ")
 			      (terpri error-log)
-                  (format error-log "/* Expected result: */~%")
+			      (format error-log "/* Expected result: */~%")
 			      (mgrind next-result error-log)
 			      (format error-log ";~%~%"))))))))
       (close strm))
+    (setq end-run-time (get-internal-run-time))
+    (setq end-real-time (get-internal-real-time))
     (cond (error-log
 	   (or (streamp *collect-errors*)
 	       (close error-log))))
     (let
       ((expected-errors-trailer
-         (if (or (null expected-errors) (= (length expected-errors) 0))
-           ""
-           (format nil " (not counting ~a expected errors)" (length expected-errors)))))
+	(if (or (null expected-errors) (= (length expected-errors) 0))
+	    ""
+	    (format nil " (not counting ~a expected errors)" (length expected-errors))))
+       (time (if showtime
+		 (format nil "   using ~,3F secs (~,3F elapsed).~%"
+			 (float (/ (- end-run-time start-run-time) internal-time-units-per-second))
+			 (float (/ (- end-real-time start-real-time) internal-time-units-per-second)))
+		 "")))
       (cond ((null all-differences)
-           (format t "~a/~a tests passed~a.~%" num-problems num-problems expected-errors-trailer) '((mlist)))
-        (t (progn
-             (format t "~%~a/~a tests passed~a.~%" 
-                 (- num-problems (length all-differences)) num-problems expected-errors-trailer)
-             (let ((s (if (> (length all-differences) 1) "s" "")))
-           (format t "~%The following ~A problem~A failed: ~A~%" 
-               (length all-differences) s (reverse all-differences)))
-             `((mlist),filename ,@(reverse all-differences))))))))
+	     (format t "~a/~a tests passed~a~%~A"
+		     num-problems num-problems
+		     expected-errors-trailer
+		     time)
+	     (values '((mlist)) num-problems))
+	    (t
+	     (format t "~%~a/~a tests passed~a~%~A"
+		     (- num-problems (length all-differences)) num-problems expected-errors-trailer
+		     time)
+	     (let ((s (if (> (length all-differences) 1) "s" "")))
+	       (format t "~%The following ~A problem~A failed: ~A~%" 
+		       (length all-differences) s (reverse all-differences)))
+	     (values `((mlist) ,filename ,@(reverse all-differences)) num-problems))))))
        
 ;;to keep track of global values during the error:
 (defun list-variable-bindings (expr &optional str &aux tem)
@@ -531,7 +559,7 @@
 		  (t
 		   (cdr $testsuite_files))))))
 
-(defun run-testsuite (&key display_known_bugs display_all tests)
+(defun run-testsuite (&key display_known_bugs display_all tests time)
   (declare (special $file_search_tests))
   (let ((test-file)
 	(expected-failures))
@@ -540,13 +568,18 @@
       (merror "display_known_bugs should be either true or false, not ~M" display_known_bugs))
     (unless (member display_all  '(t nil))
       (merror "display_all should be either true or false, not ~M" display_all))
+    (unless (member time '(t nil $all))
+      (merror "time should be one of true, false, or all, not ~M" time))
     
     (setq *collect-errors* nil)
     (unless $testsuite_files
       (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp")))
     (let ((error-break-file)
 	  (testresult)
-	  (tests-to-run (intersect-tests tests)))
+	  (tests-to-run (intersect-tests tests))
+	  (test-count 0)
+	  (total-count 0)
+	  (error-count 0))
       (time 
        (loop with errs = '() for testentry in tests-to-run
 	     do
@@ -563,14 +596,17 @@
 						   test-file))
 	     (or (errset
 		  (progn
-		    (setq testresult 
-			  (rest (test-batch
-				 ($file_search test-file $file_search_tests)
-				 expected-failures
-				 :show-expected display_known_bugs
-				 :show-all display_all)))
-		    (if testresult
-			(setq errs (append errs (list testresult))))))
+		    (multiple-value-setq (testresult test-count)
+		      (test-batch ($file_search test-file $file_search_tests)
+				  expected-failures
+				  :show-expected display_known_bugs
+				  :show-all display_all
+				  :showtime time))
+		    (setf testresult (rest testresult))
+		    (incf total-count test-count)
+		    (when testresult
+		      (incf error-count (length (cdr testresult)))
+		      (setq errs (append errs (list testresult))))))
 		 (progn
 		   (setq error-break-file (format nil "~a" test-file))
 		   (setq errs 
@@ -578,14 +614,16 @@
 				 (list (list error-break-file "error break"))))
 		   (format t "~%Caused an error break: ~a~%" test-file)))
 	     finally (cond ((null errs) 
-			    (format t "~%~%No unexpected errors found.~%"))
+			    (format t "~%~%No unexpected errors found out of ~:D tests.~%" total-count))
 			   (t (format t "~%Error summary:~%")
 			      (mapcar
 			       #'(lambda (x)
 				   (let ((s (if (> (length (rest x)) 1) "s" "")))
 				     (format t "Error~a found in ~a, problem~a:~%~a~%"
 					     s (first x) s (sort (rest x) #'<))))
-			       errs)))))))
+			       errs)
+			      (format t "~&~:D test~P failed out of ~:D total tests.~%"
+				      error-count error-count total-count)))))))
   '$done)
 
 ;; Convert a list of Maxima "keyword" arguments into the corresponding
@@ -627,4 +665,4 @@
 
 (defun $run_testsuite (&rest options)
   (apply #'run-testsuite
-	 (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests))))
+	 (lispify-maxima-keyword-options options '($display_all $display_known_bugs $tests $time))))

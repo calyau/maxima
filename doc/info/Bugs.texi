@@ -22,6 +22,11 @@ Displays tests that are marked as known bugs.  (Default is @code{false}).
 This is a list of tests that should be run.  Each test can be
 specified by either a string or a symbol.  By default, all tests are
 run.  The complete set of tests is specified by @code{testsuite_files}.
+@item time
+Display time information.  If @code{true}, the time taken for each
+test file is displayed.  If @code{all}, the time for each individual
+test is shown if @code{display_all} is @code{true}.  The default is
+@code{false}, so no timing information is shown.
 @end table
 
 For example @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
