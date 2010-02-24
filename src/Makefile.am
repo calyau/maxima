@@ -202,7 +202,7 @@ sys-proclaim:
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
-	$(EXECUTEGCL) '(progn $(LOADMAKEPROCLAIM) (load "generate-sys-proclaim.lisp")'
+	$(EXECUTEGCL) '(progn $(LOADMAKEPROCLAIM) (load "generate-sys-proclaim.lisp"))'
 
 gcl:binary-gcl/maxima
 
