@@ -185,13 +185,13 @@
   (let ((n (first z)) (x (second z)))
     (if (and (off-negative-real-axisp x) ($featurep n '$integer))
 	(take '(%bessel_j) n (take '($conjugate) x))
-      `(($conjugate simp) ((%bessel_j) ,@z)))))
+      `(($conjugate simp) ((%bessel_j simp) ,@z)))))
 
 (defun conjugate-bessel-y (z)
   (let ((n (first z)) (x (second z)))
     (if (and (off-negative-real-axisp x) ($featurep n '$integer))
 	(take '(%bessel_y) n (take '($conjugate) x))
-      `(($conjugate simp) ((%bessel_y) ,@z)))))
+      `(($conjugate simp) ((%bessel_y simp) ,@z)))))
 
 ;; When a function maps "everything" into the reals, put real-valued on the
 ;; property list of the function name. This duplicates some knowledge that
