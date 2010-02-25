@@ -96,6 +96,8 @@
 ;;(setf (get '$acsc 'conjugate-function) 'conjugate-acsc)
 (setf (get '%bessel_j 'conjugate-function) 'conjugate-bessel-j)
 (setf (get '%bessel_y 'conjugate-function) 'conjugate-bessel-y)
+(setf (get '%bessel_i 'conjugate-function) 'conjugate-bessel-i)
+(setf (get '%bessel_k 'conjugate-function) 'conjugate-bessel-k)
 
 ;; Other things:
 
@@ -183,15 +185,27 @@
 
 (defun conjugate-bessel-j (z)
   (let ((n (first z)) (x (second z)))
-    (if (and (off-negative-real-axisp x) ($featurep n '$integer))
-	(take '(%bessel_j) n (take '($conjugate) x))
-      `(($conjugate simp) ((%bessel_j simp) ,@z)))))
+    (if (off-negative-real-axisp x)
+        (take '(%bessel_j) (take '($conjugate) n) (take '($conjugate) x))
+       `(($conjugate simp) ((%bessel_j simp) ,@z)))))
 
 (defun conjugate-bessel-y (z)
   (let ((n (first z)) (x (second z)))
-    (if (and (off-negative-real-axisp x) ($featurep n '$integer))
-	(take '(%bessel_y) n (take '($conjugate) x))
-      `(($conjugate simp) ((%bessel_y simp) ,@z)))))
+    (if (off-negative-real-axisp x)
+        (take '(%bessel_y) (take '($conjugate) n) (take '($conjugate) x))
+       `(($conjugate simp) ((%bessel_y simp) ,@z)))))
+
+(defun conjugate-bessel-i (z)
+  (let ((n (first z)) (x (second z)))
+    (if (off-negative-real-axisp x)
+        (take '(%bessel_i) (take '($conjugate) n) (take '($conjugate) x))
+       `(($conjugate simp) ((%bessel_i simp) ,@z)))))
+
+(defun conjugate-bessel-k (z)
+  (let ((n (first z)) (x (second z)))
+    (if (off-negative-real-axisp x)
+        (take '(%bessel_k) (take '($conjugate) n) (take '($conjugate) x))
+       `(($conjugate simp) ((%bessel_k simp) ,@z)))))
 
 ;; When a function maps "everything" into the reals, put real-valued on the
 ;; property list of the function name. This duplicates some knowledge that
