@@ -281,7 +281,7 @@
             (mputprop (caar z) (setq y (reverse y)) 'depends)
             (setq res (push (cons (ncons (caar z)) y) res))
             (unless (cdr $dependencies)
-              (setq $dependencies '((mlist simp))))
+              (setq $dependencies (copy-list '((mlist simp)))))
             (add2lnc (cons (cons (caar z) nil) y) $dependencies))
          (cond ((not (symbolp (cadr zz)))
                 (merror
@@ -323,6 +323,7 @@
 	     (add2lnc (cons (cons (caar z) nil) (cdr z)) $gradefs) z))))
 
 (defmfun $diff (&rest args)
+  #-gcl
   (declare (dynamic-extent args))
   (let (derivlist)
     (deriv args)))
@@ -666,6 +667,7 @@
   (disp1 (cdr form) t t))
 
 (defmfun $ldisp (&rest args)
+  #-gcl
   (declare (dynamic-extent args))
   (disp1 args t nil))
 
@@ -673,6 +675,7 @@
   (disp1 (cdr form) nil t))
 
 (defmfun $disp (&rest args)
+  #-gcl
   (declare (dynamic-extent args))
   (disp1 args nil nil))
 
@@ -753,10 +756,12 @@
       (equal ($op expr) oplist)))
 
 (defmfun $part (&rest args)
+  #-gcl
   (declare (dynamic-extent args))
   (mpart args nil nil $inflag '$part))
 
 (defmfun $inpart (&rest args)
+  #-gcl
   (declare (dynamic-extent args))
   (mpart args nil nil t '$inpart))
 
