@@ -366,6 +366,11 @@
 (defvar *maxima-prolog* "")
 (defvar *maxima-epilog* "")
 
+;; These 2 are actually defined in init-cl.lisp.  This is to get rid
+;; of some compiler warnings (clisp).
+(defvar *maxima-initlisp*)
+(defvar *maxima-initmac*)
+
 (defvar *maxima-quiet* nil)
 
 (defun macsyma-top-level (&optional (input-stream *standard-input*) batch-flag)
