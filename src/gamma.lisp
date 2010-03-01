@@ -192,6 +192,10 @@
 
 (defprop %double_factorial simp-double-factorial operators)
 
+;;; Double factorial distributes over bags
+
+(defprop %double_factorial (mlist $matrix mequal) distribute_over)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Double factorial has mirror symmetry
@@ -339,6 +343,10 @@
 ;;; Incomplete Gamma function is a simplifying function
 
 (defprop %gamma_incomplete simp-gamma-incomplete operators)
+
+;;; Incomplete Gamma distributes over bags
+
+(defprop %gamma_incomplete (mlist $matrix mequal) distribute_over)
 
 ;;; Incomplete Gamma function has not mirror symmetry for z on the negative
 ;;; real axis. We support a conjugate-function which test this case.
@@ -1014,6 +1022,10 @@
 (defprop %gamma_incomplete_generalized 
          simp-gamma-incomplete-generalized operators)
 
+;;; Generalized Incomplete Gamma distributes over bags
+
+(defprop %gamma_incomplete_generalized (mlist $matrix mequal) distribute_over)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Differentiation of Generalized Incomplete Gamma function
@@ -1223,6 +1235,10 @@
 (defprop %gamma_incomplete_regularized 
          simp-gamma-incomplete-regularized operators)
 
+;;; Regularized Incomplete Gamma distributes over bags
+
+(defprop %gamma_incomplete_regularized (mlist $matrix mequal) distribute_over)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Differentiation of Regularized Incomplete Gamma function
@@ -1431,6 +1447,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defprop %log_gamma simp-log-gamma operators)
+
+;;; Logarithm of the Gamma function distributes over bags
+
+(defprop %log_gamma (mlist $matrix mequal) distribute_over)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1680,6 +1700,10 @@
 
 (defprop %erf simp-erf operators)
 
+;;; erf distributes over bags
+
+(defprop %erf (mlist $matrix mequal) distribute_over)
+
 ;;; Derivative of the Error function erf
 
 (defprop %erf 
@@ -1846,6 +1870,10 @@
 
 (defprop %erf_generalized t commutes-with-conjugate)
 
+;;; Generalized Erf distributes over bags
+
+(defprop %erf_generalized (mlist $matrix mequal) distribute_over)
+
 ;;; Generalized Erf is antisymmetric Erf(z1,z2) = - Erf(z2,z1)
 
 (eval-when
@@ -1950,6 +1978,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defprop %erfc simp-erfc operators)
+
+;;; Complementary Error function distributes over bags
+
+(defprop %erfc (mlist $matrix mequal) distribute_over)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2060,6 +2092,10 @@
 ;;; erfi is an simplifying function
 
 (defprop %erfi simp-erfi operators)
+
+;;; erfi distributes over bags
+
+(defprop %erfi (mlist $matrix mequal) distribute_over)
 
 ;;; Derivative of the Error function erfi
 
@@ -2177,6 +2213,10 @@
 
 (defprop %inverse_erf simp-inverse-erf operators)
 
+;;; The Inverse Error function distributes over bags
+
+(defprop %inverse_erf (mlist $matrix mequal) distribute_over)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Differentiation of the Inverse Error function
@@ -2276,9 +2316,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; The Inverse Complementary Error function is a simplifying function
+;;; Inverse Complementary Error function is a simplifying function
 
 (defprop %inverse_erfc simp-inverse-erfc operators)
+
+;;; Inverse Complementary Error function distributes over bags
+
+(defprop %inverse_erfc (mlist $matrix mequal) distribute_over)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2423,6 +2467,10 @@
 
 (defprop %fresnel_s simp-fresnel-s operators)
 
+;;; fresnel_s distributes over bags
+
+(defprop %fresnel_s (mlist $matrix mequal) distribute_over)
+
 ;;; fresnel_s has mirror symmetry
 
 (defprop %fresnel_s t commutes-with-conjugate)
@@ -2565,6 +2613,10 @@
 ;;; fresnel_c is a simplifying function
 
 (defprop %fresnel_c simp-fresnel-c operators)
+
+;;; fresnel_c distributes over bags
+
+(defprop %fresnel_c (mlist $matrix mequal) distribute_over)
 
 ;;; fresnel_c has mirror symmetry
 
@@ -2982,6 +3034,10 @@
 
 (defprop %beta_incomplete simp-beta-incomplete operators)
 
+;;; beta_incomplete distributes over bags
+
+(defprop %beta_incomplete (mlist $matrix mequal) distribute_over)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defprop %beta_incomplete
@@ -3320,6 +3376,10 @@
 (defprop %beta_incomplete_generalized 
          simp-beta-incomplete-generalized operators)
 
+;;; beta_incomplete_generalized distributes over bags
+
+(defprop %beta_incomplete_generalized (mlist $matrix mequal) distribute_over)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Generalized Incomplete Gamma function has not mirror symmetry for z1 or z2 
@@ -3635,6 +3695,10 @@
 
 (defprop %beta_incomplete_regularized
          simp-beta-incomplete-regularized operators)
+
+;;; beta_incomplete_regularized distributes over bags
+
+(defprop %beta_incomplete_regularized (mlist $matrix mequal) distribute_over)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
