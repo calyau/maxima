@@ -13,7 +13,7 @@
 (if (not (mget '$abramowitz_id 'mexpr)) ($load "abramowitz_id.mac"))
 (if (not (functionp 'simp-nfloat)) ($load "nfloat"))
 
-;; mea culpa---for numerical evaluatation of the hypergeometric functions, the
+;; mea culpa---for numerical evaluation of the hypergeometric functions, the
 ;; method uses a running error. When the error is too large, the value of fpprec
 ;; is increased and the evaluation is redone with the larger value of fpprec. 
 ;; The option variable max_fpprec is the largest value for fpprec Maxima will try.
@@ -97,7 +97,7 @@
   (if (or ($taylorp e) ($ratp e)) (simplifya e z) (simpcheck e z)))
 
 ;; We don't want realpart and imagpart to think that hypergeometric functions are 
-;; realvalued. So declare hypergeometric to be complex.
+;; real valued. So declare hypergeometric to be complex.
 
 (eval-when
     #+gcl (load eval)
@@ -209,7 +209,7 @@
 	    ((and (= a-len 1) (= 0 b-len) (hypergeometric-1f0 (second a) x)))
 		 		 		 
 	    ;; Try reflection identity for 1F1.
-	    ((and (= a-len 1) (= b-len 1) (hypergeometric-1f1 (second a) (second b) x)))
+	    ((and (= a-len 1) (= b-len 1) (hypergeometric-1f1 (second a) (second b) x hg-type)))
 		 
 	    ;; For 2F1, value at 1--nothing else.
 	    ((and (= a-len 2) (= b-len 1) (hypergeometric-2f1 (second a) (third a) (second b) x)))
@@ -222,7 +222,7 @@
 		  (hypergeometric-float-eval (margs a) (margs b) x dig return-type)))
 	    
 	    ;; Try rational number numerical evaluation; return nil on failure. This should handle
-	    ;; rational and complex rational numerical evalution.
+	    ;; rational and complex rational numerical evaluation.
 	    ((use-rational-hypergeometric-numerical-eval (margs a) (margs b) x)
 	     (rational-hypergeometric-numerical-eval (margs a) (margs b) x))
 
@@ -244,20 +244,21 @@
 	 (if (eq t (mgrp 0 a)) 0 nil))
 	(t  (div 1 (take '(mexpt) (sub 1 x) a)))))
   
-;; Apply the Kummer reflection identity when either (great (neg x) x) is true and x isn't a number
-;; or when b - a is a negative integer; otherwise, return nil. This function doesn't do floating 
-;; point evaluation.
-(defun hypergeometric-1f1 (a b x)
+;; Apply the Kummer reflection identity when b-a is a negative integer and we know that
+;; the hypergeometric function is not already known to be a polynomial (that is a is not a
+;; negative integer) or when (great (neg x) x); otherwise, return nil. This function 
+;; doesn't do floating point evaluation.
+
+(defun hypergeometric-1f1 (a b x hg-type)
   (cond ((use-float-hypergeometric-numerical-eval (list a) (list b) x) nil)
-	 
-	((and (not ($numberp x)) (great (ratdisrep (neg x)) (ratdisrep x)))
+	((or (and (not (eq hg-type 'polynomial)) (great (neg x) x))
+	     (and (integerp (sub b a)) (< (sub b a) 0)))
 	 (mul (take '(mexpt) '$%e x) 
 	      (take '($hypergeometric) (take '(mlist) (sub b a)) (take '(mlist) b) (neg x))))
-
 	(t nil)))
 
 ;; Coerce x to the number type of z. The Maxima function safe_float returns a bigfloat when
-;; converison to a float fails (overflow, for example).
+;; conversion to a float fails (overflow, for example).
 (defun number-coerce (x z)
   (cond ((complex-number-p z '$bfloatp)
 	 ($bfloat x))
@@ -445,7 +446,7 @@
 	  ;; should be quick.
 
 	  ;; The adjust-params argument should prevent an infinite loop (transform --> untransform ...)
-	  ;; In this case, an infinite loop shouln't happen even without the adjust-param scheme.
+	  ;; In this case, an infinite loop shouldn't happen even without the adjust-param scheme.
 
  
 	  ((and adjust-params 
@@ -579,7 +580,7 @@
 	   (complex-number-p x 'float-or-rational-p))
 	  'float 'bigfloat) nil))
    
-;; Evaluate pFq(a,b,x) using floating point arithmetic. Corece the returned value 
+;; Evaluate pFq(a,b,x) using floating point arithmetic. Coerce the returned value 
 ;; to the type described by return-type.
 
 ;; When there is a double float overflow, ignore-errors should return nil. After that, we'll
@@ -642,7 +643,7 @@
 	  (setq q (reduce #'mul (mapcar #'(lambda (s) (add s k)) b)))
 
 	  ;; sigh..Maxima should (I think) return a rectangular form for
-	  ;; complex number multiplication and divsion. But it doesn't. If 
+	  ;; complex number multiplication and division. But it doesn't. If 
 	  ;; that changes, delete the next two lines.
 
 	  (setq cf (mul cf (div p (mul q (+ k 1)))))
@@ -665,7 +666,7 @@
 
 
 														;; TeX hypergeometric([a],[b,c],x) as $$F\left( \begin{bmatrix}a\\b\;\,c\end{bmatrix} ,x\right)$$
-;; For no good reason, I'm not so fond of pFq notation. Some newer refereces seem don't use
+;; For no good reason, I'm not so fond of pFq notation. Some newer references don't use
 ;; the pFq notation.
 
 (defprop $hypergeometric tex-hypergeometric tex)
