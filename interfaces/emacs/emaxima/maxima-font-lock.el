@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.16 $
-;; $Date: 2009-01-08 04:47:51 $
+;; $Revision: 1.17 $
+;; $Date: 2010-03-06 09:57:24 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -1086,7 +1086,12 @@
 (defvar maxima-const-1
   (list
    "%e"
-   "%pi"))
+   "%i"
+   "%gamma"
+   "%phi"
+   "%pi"
+   "zeroa"
+   "zerob"))
 
 
 (defvar maxima-match-constants-1
@@ -1098,6 +1103,7 @@
 (defvar maxima-const-2
   (list
    "false"
+   "ind"
    "inf"
    "infinity"
    "minf"
@@ -1178,6 +1184,7 @@
   (list
    "do"
    "else"
+   "elseif"
    "for"
    "if"
    "in"
@@ -1381,13 +1388,13 @@
 (defvar maxima-font-lock-keywords-3
   (append maxima-font-lock-keywords-2
     (list 
-     (list "^\\(.*\\)(\\(.*\\)) *:="
+     (list "^\\(.*\\)[[(]\\([^])]*\\)[])][ \t\n\f\r]*:*:="
            '(1 font-lock-function-name-face))
-     (list "^.*(\\(.*\\)):="
+     (list "^.*[[(]\\([^])]*\\)[])][ \t\n\f\r]*:*:="
            '(1 font-lock-variable-name-face))))
   "Gaudy level highlighting for Maxima mode.")
 
-(defvar maxima-font-lock-keywords maxima-font-lock-keywords-1
+(defvar maxima-font-lock-keywords maxima-font-lock-keywords-3
   "Default expressions to highlight in Maxima mode.")
 
 (defun maxima-font-setup ()
@@ -1409,7 +1416,7 @@
         (setq maxima-preamble-fontlock nil)
         (let ((beg (point-min)) 
               (end))
-          (if (search-forward "(C1)" limit)
+          (if (search-forward "(%i1)" limit)
               (progn
                 (forward-line -1)
                 (setq end (maxima-line-end-position))
@@ -1429,7 +1436,7 @@
   (append maxima-font-lock-keywords-3
     '((maxima-match-preamble (0 font-lock-string-face t t)))))
 
-(defvar inferior-maxima-font-lock-keywords inferior-maxima-font-lock-keywords-1
+(defvar inferior-maxima-font-lock-keywords inferior-maxima-font-lock-keywords-3
   "Default expressions to highlight in Maxima mode.")
 
 (defun inferior-maxima-font-setup ()
