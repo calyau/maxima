@@ -123,10 +123,9 @@
     (let ((options (fixup cl-option-list)))
       (multiple-value-bind (non-opts opts errors)
 	  (getopt:getopt args options :allow-exact-match t)
+	(declare (ignore non-opts))	;non-opts ignored for now
 	;; Look over all of opts and run the action
-
-	#+nil
-	(format t "opts = ~S~%" opts)
+	#+nil (format t "opts = ~S~%" opts)
 	(dolist (o opts)
 	  ;; Try to find the corresponding cl-option.
 	  (let ((cl-opt (find (car o)
@@ -140,8 +139,7 @@
 						:test #'equal
 						:key #'(lambda (e)
 							 (string-left-trim "-" e)))))))
-	    #+nil
-	    (format t "Processing ~S -> ~S~%" o cl-opt)
+	    #+nil (format t "Processing ~S -> ~S~%" o cl-opt)
 	    (if cl-opt
 		(cond ((and (cl-option-action cl-opt) (cl-option-argument cl-opt))
 		       (funcall (cl-option-action cl-opt) (cdr o)))
@@ -149,8 +147,7 @@
 		       (funcall (cl-option-action cl-opt))))
 		(warn "Could not find option ~S in cl-options: ~S.~%Please report this bug."
 		      o cl-option-list))))
-	(dolist (o errors)
-	  (format t "Warning: argument ~A not recognized~%" o))
+	(format t "~{Warning: argument ~A not recognized.~%~}" errors)
 	;; What do we do about non-option arguments?  We just ignore them for now.
 	))))
 
