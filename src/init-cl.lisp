@@ -34,17 +34,17 @@
 (defvar *maxima-demodir*)
 (defvar *maxima-objdir*)		;; Where to store object (fasl) files.
 
-(eval-when (load compile eval)
-(defmacro def-lisp-shadow (root-name)
-  "Create a maxima variable $root_name that is an alias for the lisp name *root-name*.
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (defmacro def-lisp-shadow (root-name)
+    "Create a maxima variable $root_name that is an alias for the lisp name *root-name*.
 When one changes, the other does too."
-  (let ((maxima-name (intern (concatenate 'string "$"
-					  (substitute #\_ #\- (string root-name)))))
-	(lisp-name (intern (concatenate 'string "*" (string root-name) "*"))))
-  `(progn
-    (defmvar ,maxima-name)
-    (putprop ',maxima-name 'shadow-string-assignment 'assign)
-    (putprop ',maxima-name ',lisp-name 'lisp-shadow)))))
+    (let ((maxima-name (intern (concatenate 'string "$"
+					    (substitute #\_ #\- (string root-name)))))
+	  (lisp-name (intern (concatenate 'string "*" (string root-name) "*"))))
+      `(progn
+	 (defmvar ,maxima-name)
+	 (putprop ',maxima-name 'shadow-string-assignment 'assign)
+	 (putprop ',maxima-name ',lisp-name 'lisp-shadow)))))
 
 (def-lisp-shadow maxima-tempdir)
 (def-lisp-shadow maxima-userdir)
@@ -781,15 +781,14 @@ When one changes, the other does too."
   (declare (ignore dummy))
   $help)
 
-(eval-when
-	#+gcl (load eval)
-	#-gcl (:load-toplevel :execute)
+(eval-when (:load-toplevel :execute)
     (let ((context '$global))
       (declare (special context))
-      (mapc #'(lambda (x) (kind x '$constant) (setf (get x 'sysconst) t))
-            '($%pi $%i $%e $%phi %i $%gamma ;numeric constants
+      (dolist (x '($%pi $%i $%e $%phi %i $%gamma  ;numeric constants
                    $inf $minf $und $ind $infinity ;pseudo-constants
-                   t nil)))) ;logical constants (Maxima names: true, false)
+                   t nil))                        ;logical constants (Maxima names: true, false)
+	(kind x '$constant)
+	(setf (get x 'sysconst) t))))
 
 ;;; Now that all of maxima has been loaded, define the various lists
 ;;; and hashtables of builtin symbols and values.
