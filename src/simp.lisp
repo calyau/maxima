@@ -20,7 +20,8 @@
 		      $demoivre
 		      bigfloatzero bigfloatone $assumescalar
 		      opers-list *opers-list $dontfactor *n
-		      *out *in varlist genvar $factorflag radcanp))
+		      *out *in varlist genvar $factorflag radcanp
+                      *builtin-numeric-constants*))
 
 ;; General purpose simplification and conversion switches.
 
@@ -178,11 +179,9 @@
 	(mminus simpmin) (%gamma simpgamma) (mfactorial simpfact)
 	(mnctimes simpnct) (mquotient simpquot) (mexpt simpexpt)
 	(%log simpln) 
-;        (%sqrt simpsqrt) 
         (%derivative simpderiv)
 	(mabs simpabs) (%signum simpsignum)
 	(%integrate simpinteg) (%limit simp-limit) 
-;        ($exp simpexp)
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
 	(mqapply simpmqapply) (%gamma simpgamma) (%erf simperf)
 	($beta simpbeta) (%sum simpsum) (%binomial simpbinocoef)
@@ -490,13 +489,17 @@
 	     (cond ((not (freeargs (car l) var)) (return nil)))))))
 
 (defmfun simplifya (x y)
-  (cond ((and $%enumer $numer (atom x) (eq x '$%e))
-         ;; Replace $%e with its numerical value, when %enumer and $numer TRUE
-         (setq x %e-val))
-        ((or (atom x) (not $simp)) x)
+  (cond ((not $simp) x)
+        ((atom x)
+         (cond ((and $%enumer $numer (eq x '$%e))
+                ;; Replace $%e with its numerical value, 
+                ;; when %enumer and $numer TRUE
+                (setq x %e-val))
+               (t x)))
 	((atom (car x))
 	 (cond ((and (cdr x) (atom (cdr x)))
-		(merror "~%~S is a cons with an atomic cdr - `simplifya'" x))
+		(merror
+		  (intl:gettext "simplifya:Found a cons with an atomic cdr.")))
 	       ((get (car x) 'lisp-no-simp)
 		;; this feature is to be used with care. it is meant to be
 		;; used to implement data objects with minimum of consing.
@@ -518,7 +521,7 @@
 	 (cond ((or (eq (caaar x) 'lambda)
 		    (and (not (atom (caaar x))) (eq (caaaar x) 'lambda)))
 		(mapply1 (caar x) (cdr x) (caar x) x))
-	       (t (merror "Illegal form - `simplifya':~%~S" x))))
+	       (t (merror (intl:gettext "simplifya: Illegal form:~%~S") x))))
         ((and $distribute_over
               (get (caar x) 'distribute_over)
               ;; A function with the property 'distribute_over.
@@ -534,7 +537,9 @@
 	 (cond ((or (symbolp (cadr x)) (not (atom (cadr x))))
 		(simplifya (cons (cons (cadr x) (cdar x)) (cddr x)) y))
 	       ((or (not (member 'array (cdar x) :test #'eq)) (not $subnumsimp))
-		(merror "Improper value in functional position:~%~M" x))
+		(merror 
+		  (intl:gettext "simplifya:Improper value in functional position:~%~M") 
+		  x))
 	       (t (cadr x))))
 	;;sometimes want function or closure!
 	;;        ((and (not (symbolp (caar x)))
@@ -591,7 +596,6 @@
         (t
          ;; A function with more than one argument.
          (do ((args (cdr expr) (cdr args))
-              (new-expr nil)
               (first-args nil))
              ((null args) nil)
            (when (and (not (atom (car args)))
@@ -835,7 +839,7 @@
            (t (setq x (ncons x))))
      (setq x1 (if (null (cdr x)) (car x) (cons '(mtimes) x))
            xnew (list* '(mtimes) w x))
-  start 
+  start
      (cond ((null (cdr fm)))
            ((mtimesp (cadr fm))
             (cond ((alike1 x1 (cadr fm))
@@ -877,7 +881,7 @@
      ;; (cadadr fm) is zero. If the first term of fm is a number, 
      ;;  add it to preserve the type.
      (when (mnump (car fm))
-       (rplaca fm (add (car fm) (cadadr fm))))
+       (rplaca fm (addk (car fm) (cadadr fm))))
      (return (rplacd fm (cddr fm)))
   equt
      ;; Call muln to get a simplified product.
@@ -2281,7 +2285,7 @@
            ((and (eq (car x) '$%e)
                  $numer
                  (integerp w))
-            (return (rplaca y (timesk (car y) (exp w)))))
+            (return (rplaca y (timesk (car y) (exp (float w))))))
            ((and (onep1 w)
                  (not (constant (car x))))
             (go less1))                  
@@ -2670,7 +2674,7 @@
 ;; one of the exprs x or y should be one of:
 ;; %del, mexpt, mplus, mtimes
 (defun ordfn (x y)
-  (let ((cx (caar x)) (cy (caar y)) u)
+  (let ((cx (caar x)) (cy (caar y)))
     (cond ((eq cx '%del) (if (eq cy '%del) (great (cadr x) (cadr y)) t))
 	  ((eq cy '%del) nil)
 	  ((or (eq cx 'mtimes) (eq cy 'mtimes))
