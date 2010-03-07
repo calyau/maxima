@@ -252,7 +252,7 @@
 (defun hypergeometric-1f1 (a b x hg-type)
   (cond ((use-float-hypergeometric-numerical-eval (list a) (list b) x) nil)
 	((or (and (not (eq hg-type 'polynomial)) (great (neg x) x))
-	     (and (integerp (sub b a)) (< (sub b a) 0)))
+	     (and (not (eq hg-type 'polynomial)) (integerp (sub b a)) (< (sub b a) 0)))
 	 (mul (take '(mexpt) '$%e x) 
 	      (take '($hypergeometric) (take '(mlist) (sub b a)) (take '(mlist) b) (neg x))))
 	(t nil)))
