@@ -1285,3 +1285,8 @@ x*1/3;
 1/(3*x);
 a^+b*c;
 c*a^b;
+
+/* Bug ID: 2961822 - sinh(0.0b0) causes Maxima to abort
+ */
+sinh(0.0b0);
+0.0b0;
