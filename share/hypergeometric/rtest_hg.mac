@@ -612,6 +612,9 @@ x^2/12-(2*x)/3+1$
 hypergeometric([-2],[3],-x),expand_hypergeometric : true;
 x^2/12+2*x/3+1$
 
+hypergeometric([-1],[-2],x), expand_hypergeometric : true;
+x/2+1$
+
 (time : (absolute_real_time ()- start), print(time), is(time < 40));
 true$
 
