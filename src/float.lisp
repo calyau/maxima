@@ -1497,11 +1497,18 @@ One extra decimal digit in actual representation for rounding purposes.")
   ;;
   ;; But for negative x, use sinh(x) = -sinh(-x) because D(x)
   ;; approaches -1 for large negative x.
-  (if (fpposp (cdr x))
-      (let ((d (fpexpm1 (cdr (bigfloatp x)))))
-	(bcons (fpquotient (fpplus d (fpquotient d (fpplus d (fpone))))
-			   (intofp 2))))
-      (bcons (fpminus (cdr (fpsinh (bcons (fpminus (cdr (bigfloatp x))))))))))
+  (cond ((equal 0 (cadr x))
+         ;; Special case: x=0. Return immediately.
+         (bigfloatp x))
+        ((fpposp (cdr x))
+         ;; x is positive.
+         (let ((d (fpexpm1 (cdr (bigfloatp x)))))
+           (bcons (fpquotient (fpplus d (fpquotient d (fpplus d (fpone))))
+                              (intofp 2)))))
+        (t
+         ;; x is negative.
+         (bcons 
+           (fpminus (cdr (fpsinh (bcons (fpminus (cdr (bigfloatp x)))))))))))
 
 (defun big-float-sinh (x &optional y)
   ;; The rectform for sinh for complex args should be numerically
