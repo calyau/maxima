@@ -559,6 +559,10 @@
 		     ;; have to be very fast, so we do it very naively.
 		     (dolist (test (mapcar #'remove-dollarsign (cdr tests)))
 		       (when (find test (cdr $testsuite_files)
+				   :key #'(lambda (x)
+					    (maxima-string (if (listp x)
+							       (second x)
+							       x)))
 				   :test #'string=)
 			 (push test results)))
 		     (nreverse results)))
