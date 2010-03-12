@@ -728,7 +728,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *gamma-incomplete-maxit* 10000)
-(defvar *gamma-incomplete-eps* 1.0e-16)
+(defvar *gamma-incomplete-eps* (* 2 double-float-epsilon))
 (defvar *gamma-incomplete-min* 1.0e-32)
 
 (defvar $gamma_radius 1.0
@@ -2732,7 +2732,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar *fresnel-maxit* 1000)
-(defvar *fresnel-eps*   1e-16)
+(defvar *fresnel-eps*   (* 2 double-float-epsilon))
 (defvar *fresnel-min*   1e-32)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
