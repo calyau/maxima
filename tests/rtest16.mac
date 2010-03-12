@@ -1245,10 +1245,11 @@ limit(x/(2+sin(1/x)),x,0);
 0;
  
 /* Bug ID: 1106912 - limit(x/sin(x)^2,x,inf)
+   I think the limit is not defined because the func is not defined
+   for all x > any constant.
  */
-  
 limit(x/sin(x)^2,x,inf);
-inf;
+und;
 
 /* Bug ID: 777564 - subtraction \"-\"(a,b) should work/FIX */
 

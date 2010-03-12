@@ -1317,6 +1317,16 @@ relational knowledge is contained in the default context GLOBAL.")
 		   (eq (sign* (sub (cadr xlhs) 1)) '$pos)
 		   (eq (sign* (sub (caddr xlhs) (caddr xrhs))) '$pos)))
       (setq sgn '$pos))
+
+    ;; sign(sin(x)+c)
+    (when (and (not (atom xlhs))
+	       (member (caar xlhs) '(%sin %cos))
+	       (zerop1 ($imagpart (cadr xlhs))))
+      (cond ((eq (sign* (add xrhs 1)) '$neg)	;; c > 1
+	     (setq sgn '$pos))
+	    ((eq (sign* (add xrhs -1)) '$pos)	;; c < -1
+	     (setq sgn '$neg))))
+	   
     (when (and $useminmax (or (minmaxp xlhs) (minmaxp xrhs)))
       (setq sgn (signdiff-minmax xlhs xrhs)))
     (when sgn (setq sign sgn minus nil odds nil evens nil)
@@ -1496,7 +1506,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	(*complexsign* (setf sign '$complex)) 
 	(t (setf sign '$pnz)))
   sign)
-	  
+
 (defun sign-mabs (x)
   (sign (cadr x))
   (cond ((member sign '($pos $zero) :test #'eq))
