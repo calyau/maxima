@@ -1307,3 +1307,8 @@ properties(f);
 [transfun,function,noun];
 kill(f);
 done;
+
+/* Bug ID: 2968344 - gamma_incomplete(1.0, 4.368265444147715e+19) fails
+ */
+gamma_incomplete(1.0, 4.368265444147715e+19);
+0.0;
