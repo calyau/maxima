@@ -1291,3 +1291,19 @@ c*a^b;
  */
 sinh(0.0b0);
 0.0b0;
+
+/* Bug ID: 1219846 - properties of translated functions
+ * The property noun is already present
+ */
+kill(f);
+done;
+f(x):=x;
+f(x):=x;
+properties(f);
+[function,noun];
+translate(f);
+[f];
+properties(f);
+[transfun,function,noun];
+kill(f);
+done;
