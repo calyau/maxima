@@ -14,6 +14,11 @@ z*gamma_incomplete(a,z)-gamma_incomplete(a+1,z);
 integrate(z^(v-1)*gamma_incomplete(a,z),z);
 'integrate(z^(v-1)*gamma_incomplete(a,z),z);
 
+/* Correct noun form if first argument is an expression. 
+ * See bug report Bug ID: 2968174 - Integration of hypergeometric bug */
+integrate(gamma_incomplete(2*a,z^2)*z^2,z);
+'integrate(gamma_incomplete(2*a,z^2)*z^2,z);
+
 /* Integrals for Exponential Integral E(v,z) */
 
 integrate(expintegral_e(v,a*z),z);
