@@ -658,12 +658,13 @@
 	     (if (not (rat10 (car u))) (return nil))))
 	(t
 	 (let ((examine (margs ex)))
-	   (if (atom (first examine))
+; Commenting out the if-clause, go in all cases through the list of arguments.
+;	   (if (atom (first examine))
 	       (do* ((element examine (rest element))
 		     (result (rat10 (first examine))
 			     (and result (rat10 (first element)))))
-		   ((or (null result) (null element)) result))
-	     (rat10 (first examine)))))))
+		   ((or (null result) (null element)) result))))))
+;	     (rat10 (first examine)))))))
 
 (defun listgcd (powerlist)
   (prog (p)
