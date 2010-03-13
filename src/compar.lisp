@@ -893,16 +893,23 @@ relational knowledge is contained in the default context GLOBAL.")
 	     (setq ans (ask "Is  " $askexp dom)))
 	   (if minus (flip sign) sign))))
 
+;; During one evaluation phase asksign writes answers from the user into the
+;; global context '$initial. These facts are removed by clearsign after
+;; finishing the evaluation phase. clearsign is called from the top-level
+;; evaluation function meval*. The facts which have to be removed are stored
+;; in the global variable locals.
+
 (defun clearsign ()
-  (do ()
-      ((null locals))
-    (cond ((eq '$pos (cdar locals)) (daddgr nil (caar locals)))
-	  ((eq '$neg (cdar locals)) (daddgr nil (neg (caar locals))))
-	  ((eq '$zero (cdar locals)) (daddeq nil (caar locals)))
-	  ((eq '$pn (cdar locals)) (daddnq nil (caar locals)))
-	  ((eq '$pz (cdar locals)) (daddgq nil (caar locals)))
-	  ((eq '$nz (cdar locals)) (daddgq nil (neg (caar locals)))))
-    (setq locals (cdr locals))))
+  (let ((context '$initial))
+    (do ()
+        ((null locals))
+      (cond ((eq '$pos (cdar locals)) (daddgr nil (caar locals)))
+            ((eq '$neg (cdar locals)) (daddgr nil (neg (caar locals))))
+            ((eq '$zero (cdar locals)) (daddeq nil (caar locals)))
+            ((eq '$pn (cdar locals)) (daddnq nil (caar locals)))
+            ((eq '$pz (cdar locals)) (daddgq nil (caar locals)))
+            ((eq '$nz (cdar locals)) (daddgq nil (neg (caar locals)))))
+      (setq locals (cdr locals)))))
 
 (defmfun like (x y)
   (alike1 (specrepcheck x) (specrepcheck y)))
@@ -1990,25 +1997,38 @@ relational knowledge is contained in the default context GLOBAL.")
 	  (t (mdata flag 'mnqp (dintern lhs) (dintern rhs))))
     (list '(mnot) (list '($equal) lhs rhs))))
 
+;; The following functions are used by asksign to write answers into the 
+;; database. We make sure that these answers are written into the global 
+;; context '$initial and not in a local context which might be generated during
+;; the evaluation phase and which will be destroyed before the evaluation has 
+;; finshed.
+;; The additional facts are removed from the global context '$initial after 
+;; finishing the evaluation phase of meval with a call to clearsign.
+
 (defun tdpos (x)
-  (daddgr t x)
-  (push (cons x '$pos) locals))
+  (let ((context '$initial))
+    (daddgr t x)
+    (push (cons x '$pos) locals)))
 
 (defun tdneg (x)
-  (daddgr t (neg x))
-  (push (cons x '$neg) locals))
+  (let ((context '$initial))
+    (daddgr t (neg x))
+    (push (cons x '$neg) locals)))
 
 (defun tdzero (x)
-  (daddeq t x)
-  (push (cons x '$zero) locals))
+  (let ((context '$initial))
+    (daddeq t x)
+    (push (cons x '$zero) locals)))
 
 (defun tdpn (x)
-  (daddnq t x)
-  (push (cons x '$pn) locals))
+  (let ((context '$initial))
+    (daddnq t x)
+    (push (cons x '$pn) locals)))
 
 (defun tdpz (x)
-  (daddgq t x)
-  (push (cons x '$pz) locals))
+  (let ((context '$initial))
+    (daddgq t x)
+    (push (cons x '$pz) locals)))
 
 (defun compsplt-eq (x)
   (compsplt x)
