@@ -110,7 +110,7 @@
     (setq solnlist (addmlist solnlist))
     (if numerflg
 	(let (($numer t) ($float t))
-	  (ssimplifya solnlist))
+	  (resimplify solnlist))
 	solnlist)))
 
 (defun condensesolnl (tempsolnl)

@@ -622,6 +622,8 @@
 
 (defmfun resimplify (x) (let ((dosimp t)) (simplifya x nil)))
 
+;; This is a duplicate of the function resimplify. The function has been
+;; replaced by resimplify and is no longer in use. (DK 03/2010)
 (defmfun ssimplifya (x) (let ((dosimp t)) (simplifya x nil))) ; temporary
 
 (defun simpargs (x y)
@@ -2895,7 +2897,7 @@
     (merror "Maxposex must be a non-negative-integer: ~%~M" $expop))
   (unless (and (integerp $expon) (> $expon -1))
     (merror "Maxnegex must be a non-negative-integer: ~%~M" $expon))
-  (ssimplifya (specrepcheck exp)))
+  (resimplify (specrepcheck exp)))
 
 (defmfun $expand (exp &optional (expop $maxposex) (expon $maxnegex))
   (expand1 exp expop expon))

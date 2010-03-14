@@ -412,7 +412,7 @@
 	   (cons l 0))
 	  ((or (arcp (caar l)) (eq (caar l) '$atan2))
 	   (let ((ans (risplit (let (($logarc t))
-				 (ssimplifya l)))))
+				 (resimplify l)))))
 	     (when (eq (caar l) '$atan2)
 	       (setq ans (cons (sratsimp (car ans)) (sratsimp (cdr ans)))))
 	     (if (and (free l '$%i) (=0 (cdr ans)))

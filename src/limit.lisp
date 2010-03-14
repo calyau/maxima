@@ -619,7 +619,7 @@ It appears in LIMIT and DEFINT.......")
 	(t (cons (car ex) (mapcar #'hyperex0 (cdr ex))))))
 
 (defun hyperex1 (ex)
-  (ssimplifya ex))
+  (resimplify ex))
 
 ;;Used by tlimit also.
 (defmfun limit1 (exp var val)
