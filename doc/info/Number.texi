@@ -687,7 +687,7 @@ See @code{bern} and @code{euler}.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} zeta (@var{n})
-Returns the Riemann zeta function. If @var{x} is a negative integer, 0, or a 
+Returns the Riemann zeta function. If @var{n} is a negative integer, 0, or a 
 positive even integer, the Riemann zeta function simplifies to an exact value.
 For a positive even integer the option variable @code{zeta%pi} has to be
 @code{true} in addition (See @code{zeta%pi}). For a floating point or bigfloat 
