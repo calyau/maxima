@@ -1,4 +1,4 @@
-@c English version: 1.9
+@c English version: 1.11
 @menu
 * Introducci@'on a contrib_ode::
 * Funciones y variables para contrib_ode::
@@ -502,7 +502,7 @@ E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
 @end tex
 
 @item
-E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
+E. S. Cheb-Terrab, T. Kolokolnikov,  First Order ODEs,
     Symmetries and Linear Transformations, European Journal of
     Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
     (@url{http://arxiv.org/abs/math-ph/0007023})

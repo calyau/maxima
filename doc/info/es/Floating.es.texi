@@ -1,4 +1,4 @@
-@c version 1.23
+@c version 1.24
 @menu
 * Funciones y variables para la aritm@'etica de punto flotante::
 @end menu
@@ -126,3 +126,41 @@ a imprimir igual a @code{fpprec}.
 La variable @code{fpprintprec} no admite el valor 1.
 @end defvr
 
+@defvr {Variable opcional} numer_pbranch
+Valor por defecto: @code{false}
+
+La variable opcional @code{numer_pbranch} controla la evaluaci@'on
+num@'erica de las potencias de n@'umeros enteros, racionales y
+decimales negativos. Si @code{numer_pbranch} vale @code{true} y el
+exponente es decimal o la variable opcional @code{numer} vale 
+@code{true}, Maxima eval@'ua el resultado num@'erico utilizando la rama
+principal. En caso contrario, se devuleve un resultado simplificado pero
+no evaluado.
+
+Ejemplos:
+
+@c ===beg===
+@c (-2)^0.75;
+@c (-2)^0.75,numer_pbranch:true;
+@c (-2)^(3/4);
+@c (-2)^(3/4),numer;
+@c (-2)^(3/4),numer,numer_pbranch:true;
+@c ===end===
+@example
+(%i1) (-2)^0.75;
+(%o1) (-2)^0.75
+
+(%i2) (-2)^0.75,numer_pbranch:true;
+(%o2) 1.189207115002721*%i-1.189207115002721
+
+(%i3) (-2)^(3/4);
+(%o3) (-1)^(3/4)*2^(3/4)
+
+(%i4) (-2)^(3/4),numer;
+(%o4) 1.681792830507429*(-1)^0.75
+
+(%i5) (-2)^(3/4),numer,numer_pbranch:true;
+(%o5) 1.189207115002721*%i-1.189207115002721
+@end example
+
+@end defvr

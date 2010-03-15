@@ -1,4 +1,4 @@
-@c version 1.29
+@c version 1.30
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::
 * Series de Fourier::
@@ -435,7 +435,9 @@ Los valores por defecto de @code{find_root_abs} y
 @code{find_root_rel} son ambos cero.
 
 @code{find_root} espera que la funci@'on en cuesti@'on tenga signos
-diferentes en los extremos del intervalo. Si esto no se verifica,
+diferentes en los extremos del intervalo.
+Si la funci@'on toma valores num@'ericos en ambos extremos y estos
+n@'umeros son del mismo signo, entonces
 el comportamiento de @code{find_root} se controla con @code{find_root_error}.
 Cuando @code{find_root_error} vale @code{true}, @code{find_root}
 devuelve un mensaje de error; en caso contrario, @code{find_root}

@@ -1,4 +1,4 @@
-@c english version 1.13
+@c english version 1.15
 @menu
 * Funciones y variables para Contextos::    
 @end menu
@@ -48,6 +48,10 @@ y @code{not (@var{pred_1} or @var{pred_2})} no son reconocidas.
 El mecanismo deductivo de Maxima no es muy potente; existen muchas 
 consecuencias que, siendo obvias, no pueden ser obtenidas por @code{is}.
 Se trata de una debilidad reconocida.
+
+@code{assume} no gestiona predicados con n@'umeros complejos. Si un
+predicado contiene un n@'umero complejo, @code{assume} devuelve
+@code{inconsistent} o @code{redunant}.
 
 La funci@'on @code{assume} eval@'ua sus argumentos.
 

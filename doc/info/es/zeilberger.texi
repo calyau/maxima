@@ -1,4 +1,4 @@
-@c english version 1.10
+@c english version 1.11
 @menu
 * Introducci@'on a zeilberger::
 * Funciones y variables para zeilberger::
@@ -198,7 +198,7 @@ La funci@'on @code{Zeilberger} devuelve @code{[]} si no encuentra
 ninguna soluci@'on.
 
 La funci@'on @code{Zeilberger} llama a @code{Gosper} s@'olo si 
-@code{gosper_in_zeilberger} tiene el valor @code{true}.
+@code{Gosper_in_Zeilberger} tiene el valor @code{true}.
 @end deffn
 
 @defvr {Variable opcional} max_ord
@@ -231,10 +231,10 @@ las funciones del paquete @code{zeilberger} emiten
 mensajes de aviso durante su ejecuci@'on.
 @end defvr
 
-@defvr {Variable opcional} gosper_in_zeilberger
+@defvr {Variable opcional} Gosper_in_Zeilberger
 Valor por defecto: @code{true}
 
-Si @code{gosper_in_zeilberger} vale @code{true},
+Si @code{Gosper_in_Zeilberger} vale @code{true},
 la funci@'on @code{Zeilberger} llama a la funci@'on @code{Gosper}
 antes de llamar a @code{parGosper}.
 En caso contrario, @code{Zeilberger} invoca inmediatamente a @code{parGosper}.

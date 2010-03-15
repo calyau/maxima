@@ -1,4 +1,4 @@
-@c version 1.44
+@c version 1.45
 @menu
 * Introducci@'on a la integraci@'on::
 * Funciones y variables para integraci@'on::
@@ -152,6 +152,57 @@ pos;
 @end example
 
 @end deffn
+
+
+@defvr {Variable opcional} intanalysis
+Valor por defecto: @code{true}
+
+Cuando vale @code{true}, la integraci@'on definida trata de encontrar polos
+en el integrando dentro del intervalo de integraci@'on. Si encuentra 
+alguno, entonces la integral se calcula como valor principal. Si @code{intanalysis}
+vale @code{false}, entonces no se realiza esta comprobación y la integraci@'on se
+realiza sin tener en cuenta los polos.
+
+V@'ease tambi@'en @code{ldefint}.
+
+Ejemplos:
+
+Maxima puede calcular las siguientes integrales cuando a @code{intanalysis}
+se le asigna el valor @code{false}:
+
+@c ===beg===
+@c integrate(1/(sqrt(x+1)+1),x,0,1);
+@c integrate(1/(sqrt(x)+1),x,0,1),intanalysis:false;
+@c integrate(cos(a)/sqrt((tan(a))^2+1),a,-%pi/2,%pi/2);
+@c intanalysis:false$
+@c integrate(cos(a)/sqrt((tan(a))^2 +1),a,-%pi/2,%pi/2);
+@c ===end===
+@example
+(%i1) integrate(1/(sqrt(x)+1),x,0,1);
+                                1
+                               /
+                               [       1
+(%o1)                          I  ----------- dx
+                               ]  sqrt(x) + 1
+                               /
+                                0
+
+(%i2) integrate(1/(sqrt(x)+1),x,0,1),intanalysis:false;
+(%o2)                            2 - 2 log(2)
+
+(%i3) integrate(cos(a)/sqrt((tan(a))^2 +1),a,-%pi/2,%pi/2);
+The number 1 isn't in the domain of atanh
+ -- an error. To debug this try: debugmode(true);
+
+(%i4) intanalysis:false$
+(%i5) integrate(cos(a)/sqrt((tan(a))^2+1),a,-%pi/2,%pi/2);
+                                      %pi
+(%o5)                                 ---
+                                       2
+@end example
+
+@end defvr
+
 
 @deffn {Funci@'on} integrate (@var{expr}, @var{x})
 @deffnx {Funci@'on} integrate (@var{expr}, @var{x}, @var{a}, @var{b})

@@ -1,4 +1,4 @@
-@c version 1.29
+@c version 1.30
 @menu
 * Introducci@'on a los polinomios::  
 * Funciones y variables para polinomios::  
@@ -81,20 +81,138 @@ Ejemplo:
 @end deffn
 
 @deffn {Funci@'on} coeff (@var{expr}, @var{x}, @var{n})
-Devuelve el coeficiente de @code{@var{x}^@var{n}} en @var{expr}. El argumento @var{n} puede omitirse si es igual a la unidad. El argumento @var{x} puede ser un @'atomo  o una subexpresi@'on completa de @var{expr}, por ejemplo @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (En este @'ultimo caso, la expresi@'on @code{(x + y)} debe aparecer en @var{expr}).  En ocasiones puede ser necesario expandir o factorizar @var{expr} para hacer @code{@var{x}^@var{n}} expl@'{@dotless{i}}cito, lo cual no hace @code{coeff} autom@'aticamente.
+@deffnx {Funci@'on} coeff (@var{expr}, @var{x})
+Devuelve el coeficiente de @code{@var{x}^@var{n}} en @var{expr},
+donde @var{expr} es un polinomio o monomio en @var{x}.
+
+@code{coeff(@var{expr}, @var{x}^@var{n})} es equivalente a
+@code{coeff(@var{expr}, @var{x}, @var{n})}.
+@code{coeff(@var{expr}, @var{x}, 0)} devuelve el resto de @var{expr},
+el cual no contiene a @var{x}. En caso de omisi@'on, se entiende
+que @var{n} es igual a 1.
+
+@var{x} puede ser tanto el nombre de una variable simple como el
+de una variable con sub@'{@dotless{i}}ndice, o tambi@'en una
+subexpresi@'on de @var{expr} que contenga un operador junto con
+todos sus argumentos.
+
+En ocasiones, es posible calcular los coeficientes de expresiones
+equivalentes a @var{expr} aplicando @code{expand} o @code{factor}.
+@code{coeff} no aplica ni @code{expand}, ni @code{factor}, ni ninguna otra
+funci@'on.
+
+@code{coeff} se distribuye sobre listas, matrices y ecuaciones.
 
 Ejemplos:
-@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
-@c coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
-@c coeff (y + x*%e^x + 1, x, 0);
 
+@code{coeff} devuelve el coeficiente de @code{@var{x}^@var{n}} en @var{expr}.
+
+@c ===beg===
+@c coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
+@c ===end===
 @example
-(%i1) coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
-(%o1)                      2 a + 1 = 5
-(%i2) coeff (y + x*%e^x + 1, x, 0);
-(%o2)                         y + 1
+(%i1) coeff (b^3*a^3 + b^2*a^2 + b*a + 1, a^3);
+                                3
+(%o1)                          b
 @end example
 
+@code{coeff(@var{expr}, @var{x}^@var{n})} es equivalente
+a @code{coeff(@var{expr}, @var{x}, @var{n})}.
+
+@c ===beg===
+@c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
+@c coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
+@c ===end===
+@example
+(%i1) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z, 3);
+(%o1)                         - c
+                                 3
+(%i2) coeff (c[4]*z^4 - c[3]*z^3 - c[2]*z^2 + c[1]*z, z^3);
+(%o2)                         - c
+                                 3
+@end example
+
+@code{coeff(@var{expr}, @var{x}, 0)} devuelve el resto de @var{expr},
+el cual no contiene a @var{x}.
+
+@c ===beg===
+@c coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
+@c ===end===
+@example
+(%i1) coeff (a*u + b^2*u^2 + c^3*u^3, b, 0);
+                            3  3
+(%o1)                      c  u  + a u
+@end example
+
+@var{x} puede ser tanto el nombre de una variable simple como el
+de una variable con sub@'{@dotless{i}}ndice, o tambi@'en una
+subexpresi@'on de @var{expr} que contenga un operador junto con
+todos sus argumentos.
+
+@c ===beg===
+@c coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
+@c coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
+@c coeff (sin(1 + x)*sin(x) + sin(1 + x)^3*sin(x)^3, sin(1 + x)^3);
+@c coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
+@c ===end===
+@example
+(%i1) coeff (h^4 - 2*%pi*h^2 + 1, h, 2);
+(%o1)                        - 2 %pi
+(%i2) coeff (v[1]^4 - 2*%pi*v[1]^2 + 1, v[1], 2);
+(%o2)                        - 2 %pi
+(%i3) coeff (sin(1 + x)*sin(x) + sin(1 + x)^3*sin(x)^3, sin(1 + x)^3);
+                                3
+(%o3)                        sin (x)
+(%i4) coeff ((d - a)^2*(b + c)^3 + (a + b)^4*(c - d), a + b, 4);
+(%o4)                         c - d
+@end example
+
+@code{coeff} no aplica ni @code{expand}, ni @code{factor}, ni ninguna otra
+funci@'on.
+
+@c ===beg===
+@c coeff (c*(a + b)^3, a);
+@c expand (c*(a + b)^3);
+@c coeff (%, a);
+@c coeff (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c, (a + b)^3);
+@c factor (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c);
+@c coeff (%, (a + b)^3);
+@c ===end===
+@example
+(%i1) coeff (c*(a + b)^3, a);
+(%o1)                           0
+(%i2) expand (c*(a + b)^3);
+                 3          2        2        3
+(%o2)           b  c + 3 a b  c + 3 a  b c + a  c
+(%i3) coeff (%, a);
+                                2
+(%o3)                        3 b  c
+(%i4) coeff (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c, (a + b)^3);
+(%o4)                           0
+(%i5) factor (b^3*c + 3*a*b^2*c + 3*a^2*b*c + a^3*c);
+                                  3
+(%o5)                      (b + a)  c
+(%i6) coeff (%, (a + b)^3);
+(%o6)                           c
+@end example
+
+@code{coeff} se distribuye sobre listas, matrices y ecuaciones.
+
+@c ===beg===
+@c coeff ([4*a, -3*a, 2*a], a);
+@c coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+@c coeff (a*u - b*v = 7*u + 3*v, u);
+@c ===end===
+@example
+(%i1) coeff ([4*a, -3*a, 2*a], a);
+(%o1)                      [4, - 3, 2]
+(%i2) coeff (matrix ([a*x, b*x], [-c*x, -d*x]), x);
+                          [  a    b  ]
+(%o2)                     [          ]
+                          [ - c  - d ]
+(%i3) coeff (a*u - b*v = 7*u + 3*v, u);
+(%o3)                         a = 7
+@end example
 @end deffn
 
 @deffn {Funci@'on} combine (@var{expr})
@@ -644,8 +762,40 @@ factorizar enteros grandes.
 Valor por defecto: @code{false}
 
 Si @code{keepfloat} vale @code{true}, los n@'umeros decimales en coma flotante no se racionalizan cuando las expresiones que los contienen se convierten al formato can@'onico racional (CRE).
-@c NEED EXAMPLES HERE
 
+N@'otese que la funci@'on @code{solve} y todas aquellas otras que la
+invocan (por ejemplo, @code{eigenvalues}) ignoran esta variable, por
+lo que hacen la conversi@'on de los n@'umeros decimales.
+
+Ejemplos:
+
+@c ===beg===
+@c rat(x/2.0);
+@c rat(x/2.0), keepfloat;
+@c ===end===
+@example
+(%i1) rat(x/2.0);
+
+`rat' replaced 0.5 by 1/2 = 0.5
+                                       x
+(%o1)/R/                               -
+                                       2
+(%i2) rat(x/2.0), keepfloat;
+
+(%o2)/R/                             0.5 x
+@end example
+
+@code{solve} ignora @code{keepfloat}:
+
+@c ===beg===
+@c solve(1.0-x,x), keepfloat;
+@c ===end===
+@example
+(%i3) solve(1.0-x,x), keepfloat;
+
+`rat' replaced 1.0 by 1/1 = 1.0
+(%o3)                               [x = 1]
+@end example
 @end defvr
 
 @deffn {Funci@'on} lratsubst (@var{L}, @var{expr})

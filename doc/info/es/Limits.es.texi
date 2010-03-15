@@ -1,4 +1,4 @@
-@c version 1.13
+@c version 1.15
 @menu
 * Funciones y variables para l@'{@dotless{i}}mites::      
 @end menu
@@ -21,6 +21,16 @@ Calcula el l@'{@dotless{i}}mite de @var{expr} cuando la variable real @var{x} se
 
 La funci@'on @code{limit} utiliza los s@'{@dotless{i}}mbolos especiales siguientes: @code{inf} (m@'as infinito) y @code{minf} (menos
 infinito). En el resultado tambi@'en puede hacer uso de @code{und} (indefinido), @code{ind} (indefinido pero acotado) y @code{infinity} (infinito complejo).
+
+@code{infinity} (infinito complejo) es el resultado que se obtiene cuando
+el l@'{@dotless{i}}mite del m@'odulo de la expresi@'on es infinito
+positivo, pero el propio l@'{@dotless{i}}mite de la expresi@'on no es infinito
+positivo ni negativo. Esto sucede, por ejemplo, cuando el l@'{@dotless{i}}mite del
+argumento complejo es una constante, como en @code{limit(log(x), x, minf)},
+o cuando el argumento complejo oscila, como en @code{limit((-2)^x, x, inf)}, o
+en aquellos casos en los que el argumento complejo es diferente por cualquiera
+de los lados de un l@'{@dotless{i}}mite, como en @code{limit(1/x, x, 0)}
+o @code{limit(log(x), x, 0)}.
 
 La variable @code{lhospitallim} guarda el n@'umero m@'aximo de veces que la regla de L'Hopital es aplicada en la funci@'on @code{limit}, evitando bucles infinitos al iterar la regla en casos como @code{limit (cot(x)/csc(x), x, 0)}.
 

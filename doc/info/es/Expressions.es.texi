@@ -1,4 +1,4 @@
-@c english version 1.66
+@c english version 1.67
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -1598,8 +1598,15 @@ Ejemplo:
 @deffn {Funci@'on} listofvars (@var{expr})
 Devuelve una lista con las variables presentes en @var{expr}.
 
-Si la variable @code{listconstvars} vale @code{true} entonces  @code{listofvars} incluir@'a @code{%e}, @code{%pi},
-@code{%i}y cualquier otra variable declarada constante de las que aparezcan en @var{expr}.  Estas constantes se omiten por defecto.
+Si la variable @code{listconstvars} vale @code{true} entonces
+@code{listofvars} incluir@'a @code{%e}, @code{%pi}, @code{%i}
+y cualquier otra variable declarada constante de las que aparezcan
+en @var{expr}.  Estas constantes se omiten por defecto.
+
+V@'ease tambi@'en la variable opcional @code{listdummyvars} para
+excluir o incluir variables ficticias en la lista de variables.
+
+Ejemplo:
 
 @example
 (%i1) listofvars (f (x[1]+y) / g^(2+a));

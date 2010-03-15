@@ -1,4 +1,4 @@
-@c version 1.14
+@c version 1.15
 @menu
 * Funciones y variables para la detecci@'on e informe de fallos::
 @end menu
@@ -27,6 +27,12 @@ Esta es la lista de las pruebas que se deben ejecutar. Cada prueba
 se puede especificar, tanto mediante una cadena de texto como
 por un s@'{@dotless{i}}mbolo. Por defecto, todas las pruebas se ejecutan. El
 conjunto completo de pruebas est@'a especificado en @code{testsuite_files}.
+@item time
+Muestra informaci@'on sobre tiempos de ejecuci@'on. Si vale @code{true},
+se muestran los tiempos de los ficheros de prueba. Si vale @code{all},
+se muestran los tiempos de cada prueba individual si @code{display_all}
+vale @code{true}. El valor por defecto es @code{false}, por lo que no
+se muestra informaci@'on temporal alguna.
 @end table
 
 Por ejemplo, @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}

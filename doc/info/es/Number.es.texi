@@ -1,4 +1,4 @@
-@c english version 1.30
+@c english version 1.32
 @menu
 * Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
@@ -513,28 +513,56 @@ Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero;
 
 @deffn {Funci@'on} totient (@var{n})
 Devuelve el n@'umero de enteros menores o iguales a @var{n} que son primos relativos con @var{n}.
-
 @end deffn
 
 @defvr {Variable opcional} zerobern
 Valor por defecto: @code{true}
 
-Si @code{zerobern} vale @code{false}, @code{bern} excluye los n@'umeros de Bernoulli iguales a cero. 
-See @code{bern}.
-
+Si @code{zerobern} vale @code{false}, @code{bern} excluye los n@'umeros de Bernoulli
+y @code{euler} excluye los n@'umeros de Euler que sean iguales a cero.
+V@'ease @code{bern} y @code{euler}.
 @end defvr
 
+
 @deffn {Funci@'on} zeta (@var{n})
-Devuelve la funci@'on zeta de Riemann para @var{x} entero negativo, 0, 1 o n@'umero par positivo. No se eval@'ua @code{zeta (@var{n})} para cualesquiera otros argumentos, incluyendo racionales no enteros, n@'umeros en coma flotante o argumentos complejos.
+Devuelve la funci@'on zeta de Riemann. Si @var{n} es entero negativo,
+0 o n@'umero par positivo, la funci@'on zeta de Riemann devuelve un
+valor exacto; en el caso de n@'umero par positivo, la variable opcional
+@code{zeta%pi}, adem@'as, tiene que tener el valor @code{true} 
+(v@'ease @code{zeta%pi}). 
+Cuando el argumento es un n@'umero decimal o bigfloat,
+entonces la funci@'on zeta de Riemann se calcula num@'ericamente.
+Maxima devuelve una forma nominal @code{zeta (@var{n})} para
+cualesquiera otros argumentos, incluidos los racionales no enteros,
+los n@'umeros complejos y los enteros pares si @code{zeta%pi} vale
+@code{false}.
+
+@code{zeta(1)} no est@'a definida, pero Maxima conce el l@'{@dotless{i}}mite 
+de @code{limit(zeta(x), x, 1)} por ambos lados.
+
+La funci@'on zeta de Riemann se distribuye sobre las listas, matrices
+y ecuaciones.
 
 V@'eanse tambi@'en @code{bfzeta} y @code{zeta%pi}.
 
+Ejemplos:
+
+@c ===beg===
+@c zeta([-2,-1,0,0.5,2,3,1+%i]);
+@c limit(zeta(x),x,1,plus);
+@c limit(zeta(x),x,1,minus);
+@c ===end===
 @example
-(%i1) map (zeta, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5]);
-                                     2              4
-           1        1     1       %pi            %pi
-(%o1) [0, ---, 0, - --, - -, inf, ----, zeta(3), ----, zeta(5)]
-          120       12    2        6              90
+(%i1) zeta([-2,-1,0,0.5,2,3,1+%i]);
+                                              2
+             1     1                       %pi
+(%o1)  [0, - --, - -, - 1.460354508809587, ----, zeta(3), zeta(%i + 1)]
+             12    2                        6 
+
+(%i2) limit(zeta(x),x,1,plus);
+(%o2)                                 inf
+(%i3) limit(zeta(x),x,1,minus);
+(%o3)                                minf
 @end example
 
 @end deffn
@@ -544,6 +572,14 @@ Valor por defecto: @code{true}
 
 Si @code{zeta%pi} vale @code{true}, @code{zeta} devuelve una expresi@'on proporcional a @code{%pi^n} si @code{n} es un n@'umero par positivo. En caso contrario, @code{zeta} no se eval@'ua y devuelve la forma nominal @code{zeta (n)}.
 
+Ejemplos:
+
+@c ===beg===
+@c zeta%pi: true$
+@c zeta (4);
+@c zeta%pi: false$
+@c zeta (4);
+@c ===end===
 @example
 (%i1) zeta%pi: true$
 (%i2) zeta (4);
@@ -555,5 +591,6 @@ Si @code{zeta%pi} vale @code{true}, @code{zeta} devuelve una expresi@'on proporc
 (%i4) zeta (4);
 (%o4)                        zeta(4)
 @end example
+
 
 @end defvr

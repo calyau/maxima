@@ -1,4 +1,4 @@
-@c english version 1.27
+@c english version 1.28
 @menu
 * Introducci@'on a los conjuntos::       
 * Funciones y variables para los conjuntos::       
@@ -2321,8 +2321,7 @@ Ejemplos:
 
 @deffn {Funci@'on} symmdifference (@var{a_1}, ..., @var{a_n})
 
-Devuelve el conjunto de elementos que pertenecen a un
-@'unico conjunto de los  @var{a_k}.
+Devuelve la diferencia sim@'etrica de los conjuntos @code{ @var{a_1}, ..., @var{a_n}}.
 
 Dados dos argumentos, @code{symmdifference (@var{a}, @var{b})} equivale a
 @code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b}, @var{a}))}.
@@ -2356,9 +2355,9 @@ Ejemplos:
 (%i6) symmdifference (S_1, S_2);
 (%o6)                        @{1, a@}
 (%i7) symmdifference (S_1, S_2, S_3);
-(%o7)                        @{1, z@}
+(%o7)                       @{1, b, z@}
 (%i8) symmdifference (@{@}, S_1, S_2, S_3);
-(%o8)                        @{1, z@}
+(%o8)                       @{1,b, z@}
 @end example
 @end deffn
 

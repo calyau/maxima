@@ -1,4 +1,4 @@
-@c version 1.21
+@c version 1.25
 @menu
 * Funciones y variables para simplificaci@'on::  
 @end menu
@@ -46,6 +46,74 @@ La funci@'on @code{exponentialize} convierte funciones trigonom@'etricas e hiper
 
 @end deffn
 
+@defvr {Variable opcional} distribute_over
+Valor por defecto: @code{true}
+
+@code{distribute_over} controla la distribuci@'on de funciones sobre
+estructuras como listas, matrices y ecuaciones. Actualmente, este control
+s@'olo es aplicable a las funciones trigonom@'etricas, integrales
+exponenciales y a las funciones para enteros, como @code{mod}, @code{floor},
+@code{ceiling} y @code{round}.
+
+La propiedad distributiva se desactiva asign@'andole a @code{distribute_over}
+el valor @code{false}.
+
+Ejemplos:
+
+La funci@'on @code{sin} se distribuye sobre una lista:
+
+@c ===beg===
+@c sin([x,1,1.0]);
+@c ===end===
+@example
+(%i1) sin([x,1,1.0]);
+(%o1)                 [sin(x), sin(1), .8414709848078965]
+@end example
+
+@code{mod} es una funci@'on de dos argumentos que se distribuye sobre listas.
+La distribuci@'on sobre listas anidadas tambi@'en es posible.
+
+@c ===beg===
+@c mod([x,11,2*a],10);
+@c mod([[x,y,z],11,2*a],10);
+@c ===end===
+@example
+(%i2) mod([x,11,2*a],10);
+(%o2)                    [mod(x, 10), 1, 2 mod(a, 5)]
+(%i3) mod([[x,y,z],11,2*a],10);
+(%o3)       [[mod(x, 10), mod(y, 10), mod(z, 10)], 1, 2 mod(a, 5)]
+@end example
+
+Distribuci@'on de la funci@'on @code{floor} sobre una matriz y una
+ecuaci@'on.
+
+@c ===beg===
+@c floor(matrix([a,b],[c,d]));
+@c floor(a=b);
+@c ===end===
+@example
+(%i4) floor(matrix([a,b],[c,d]));
+                            [ floor(a)  floor(b) ]
+(%o4)                       [                    ]
+                            [ floor(c)  floor(d) ]
+(%i5) floor(a=b);
+(%o5)                         floor(a) = floor(b)
+@end example
+
+Funciones con m@'as de un argumento se distribuyen sobre cualquiera
+de sus argumentos, o sobre todos ellos.
+
+@c ===beg===
+@c expintegral_e([1,2],[x,y]);
+@c ===end===
+@example
+(%i6) expintegral_e([1,2],[x,y]);
+(%o6) [[expintegral_e(1, x), expintegral_e(1, y)], 
+       [expintegral_e(2, x), expintegral_e(2, y)]]
+@end example
+@end defvr
+
+
 @defvr {Variable opcional} domain
 Valor por defecto: @code{real}
 
@@ -72,6 +140,11 @@ La variable @code{expon} guarda el mayor exponente negativo que ser@'a expandido
 
 La variable @code{expop} guarda el mayor exponente positivo que ser@'a expandido autom@'aticamente.  As@'{@dotless{i}}, @code{(x+1)^3} se expandir@'a autom@'aticamente s@'olo si @code{expop} es mayor o igual que 3. Si se quiere expandir @code{(x+1)^n}, siendo @code{n} mayor que @code{expop}, entonces @code{expand ((x+1)^n)} se desarrollar@'a s@'olo si @code{maxposex} no es menor que @code{n}.
 
+@code{expand(expr, 0, 0)} provoca que se vuelva a simplificar @code{expr}.
+@code{expr} no se vuelve a evaluar. A diferencia de @code{ev(expr, noeval)},
+se elimina la representaci@'on can@'onica de la expresi@'on. 
+V@'ease tambi@'en @code{ev}.
+
 La variable @code{expand} utilizada con @code{ev} provocar@'a una expansi@'on.
 
 El fichero @file{simplification/facexp.mac}
@@ -85,6 +158,72 @@ y @code{facsum_combine}) que permiten al usuario estructurar las expresiones con
 @c MERGE share/simplification/facexp.usg INTO THIS FILE OR CREATE NEW FILE facexp.texi
 En  @file{simplification/facexp.usg} se pueden encontrar breves descripciones de estas funciones.
 Se acceder@'a a una demostraci@'on con la instrucci@'on @code{demo("facexp")}.
+
+Ejemplo:
+
+@c ===beg===
+@c expr:(x+1)^2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2);
+@c expr:(x+1)^-2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2,2);
+@c ===end===
+@example
+(%i1) expr:(x+1)^2*(y+1)^3;
+                                      2        3
+(%o1)                          (x + 1)  (y + 1)
+(%i2) expand(expr);
+       2  3        3    3      2  2        2      2      2
+(%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
+                                                 2
+                                + 6 x y + 3 y + x  + 2 x + 1
+
+(%i3) expand(expr,2);
+                      2        3              3          3
+(%o3)                x  (y + 1)  + 2 x (y + 1)  + (y + 1)
+
+(%i4) expr:(x+1)^-2*(y+1)^3;
+                                          3
+                                   (y + 1)
+(%o4)                              --------
+                                          2
+                                   (x + 1)
+(%i5) expand(expr);
+                 3               2
+                y             3 y            3 y             1
+(%o5)      ------------ + ------------ + ------------ + ------------
+            2              2              2              2
+           x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
+
+(%i6) expand(expr,2,2);
+                                          3
+                                   (y + 1)
+(%o6)                            ------------
+                                  2
+                                 x  + 2 x + 1
+@end example
+
+Vuelve a simplificar una expresi@'on pero sin expansi@'on:
+
+@c ===beg===
+@c expr:(1+x)^2*sin(x);
+@c exponentialize:true;
+@c expand(expr,0,0);
+@c ===end===
+@example
+(%i7) expr:(1+x)^2*sin(x);
+                                       2
+(%o7)                           (x + 1)  sin(x)
+(%i8) exponentialize:true;
+(%o8)                                true
+(%i9) expand(expr,0,0);
+                                   2    %i x     - %i x
+                         %i (x + 1)  (%e     - %e      )
+(%o9)                  - -------------------------------
+                                        2
+@end example
+
 
 @end deffn
 
@@ -356,19 +495,25 @@ se reducen a una forma @'unica.  Ciertas expresiones, sin embargo, son reducidas
 
 Con algunas expresiones @code{radcan} puede consunir mucho tiempo. Este es el coste por explorar ciertas relaciones entre las componentes de la expresi@'on para simplificaciones basadas en factorizaciones y expansiones parciales de fracciones de exponentes.  
 
-@c %e_to_numlog NEEDS ITS OWN @defvar !!!
-@c DOESN'T APPEAR TO AFFECT radcan !!!
-Si @code{%e_to_numlog} vale @code{true}, 
-@code{%e^(r*log(expr))} se reduce a @code{expr^r} si @code{r}  es un n@'umero racional.
+Ejemplos:
 
-Si @code{radexpand} vale @code{false}, ciertas transformaciones se inhiben;
-@code{radcan (sqrt (1-x))} se mantiene como @code{sqrt (1-x)}
-y no se reduce a @code{%i sqrt (x-1)}, o 
-@code{radcan (sqrt (x^2 - 2*x + 1))} se mantiene como  @code{sqrt (x^2 - 2*x + 1)}
-sin reducirse a@code{x - 1}.
+@c ===beg===
+@c radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+@c radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+@c radcan((%e^x-1)/(1+%e^(x/2)));
+@c ===end===
+@example
+(%i1) radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+                                           a/2
+(%o1)                            log(x + 1)
 
-@c MERGE EXAMPLES INTO THIS FILE
-La instrucci@'on @code{example (radcan)} muestra algunos ejemplos.
+(%i2) radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+(%o2)                                  2
+
+(%i3) radcan((%e^x-1)/(1+%e^(x/2)));
+                                     x/2
+(%o3)                              %e    - 1
+@end example
 
 @end deffn
 
@@ -429,9 +574,52 @@ Valor por defecto: @code{true}
 La variable @code{simp} activa y desactiva la simplificaci@'on.
 La simplificaci@'on est@'a activada por defecto. La variable @code{simp}
 tambi@'en es reconocida por la funci@'on @code{ev} como variable de entorno.
-
 V@'ease tambi@'en @code{ev}.
 
+Cuando @code{simp} se utiliza en un entorno @code{ev} con el valor @code{false},
+la simplificaci@'on se evita s@'olo durante la fase de evaluaci@'on de una
+expresi@'on. La variable no evita la simplificaci@'on que sigue a la fase de
+evaluaci@'on.
+
+Ejemplos:
+
+La simplificaci@'on se suspende globalmente. La expresi@'on @code{sin(1.0)}
+no se simplifica a su valor num@'erico. La variable de entorno @code{simp}
+conmuta el estado de la simplificaci@'on.
+
+@c ===beg===
+@c simp:false;
+@c sin(1.0);
+@c sin(1.0),simp;
+@c ===end===
+@example
+(%i1) simp:false;
+(%o1)                                false
+(%i2) sin(1.0);
+(%o2)                              sin(1.0)
+(%i3) sin(1.0),simp;
+(%o3)                          .8414709848078965
+@end example
+
+La simplificaci@'on se vuelve a activar. La variable de entorno @code{simp}
+no puede suprimir totalmente la simplificaci@'on. El resultado muestra una
+expresi@'on simplificada, pero la variable @code{x} guarda como valor una
+expresi@'on sin simplificar, porque la asignaci@'on se realiz@'o durante 
+la fase de evaluaci@'on de la expresi@'on.
+
+@c ===beg===
+@c simp:true;
+@c x:sin(1.0),simp:false;
+@c :lisp $x
+@c ===end===
+@example
+(%i4) simp:true;
+(%o4)                                true
+(%i5) x:sin(1.0),simp:false;
+(%o5)                          .8414709848078965
+(%i6) :lisp $X
+((%SIN) 1.0)
+@end example
 @end defvr
 
 
