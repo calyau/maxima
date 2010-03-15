@@ -582,10 +582,18 @@
 ;;
 ;; n = log(f/eps)/log(8), where f =
 ;; 4^abs(sigma)/abs(1-2^(1-s))/abs(gamma(s))
-
+;;
+;; But for s near 0, the above is not very accurate.  In this case,
+;; use the expansion zeta(s) = -1/2-1/2*log(2*pi)*s.
 (defun float-zeta (s)
   (let ((s (bigfloat:to s)))
-    (cond ((bigfloat:minusp (bigfloat:realpart s))
+    (cond ((bigfloat:< (bigfloat:* s s) (bigfloat:epsilon s))
+           ;; s^2 < epsilon, use the expansion zeta(s) = -1/2-1/2*log(2*%pi)*s
+           (bigfloat:+ -1/2
+                       (bigfloat:* -1/2
+                                   (bigfloat:log (bigfloat:* 2 (bigfloat:%pi s)))
+                                   s)))
+	  ((bigfloat:minusp (bigfloat:realpart s))
 	   ;; Reflection formula
 	   (bigfloat:* (bigfloat:expt 2 s)
 		       (bigfloat:expt (bigfloat:%pi s)
