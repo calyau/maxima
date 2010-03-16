@@ -131,22 +131,25 @@
 		    (let ((*a* (cdr (sassq 'a z 'nill)))
 			  (*b* (cdr (sassq 'b z 'nill)))
 			  (*c* (cdr (sassq 'c y 'nill)))
-			  (*d* (cdr (sassq 'd y 'nill))))
-		      (substint
+			  (*d* (cdr (sassq 'd y 'nill)))
+			  (newvar (gensym "intform")))
+		      (putprop newvar t 'internal)
+		      ;; keep var from appearing in questions to user
+		      (substint		;; change of variables
 		       expres
-		       var
+		       newvar
 		       (integrator
 			(muln
 			 (list (maxima-substitute
-				`((mquotient) ((mplus) ((mexpt) $%e ,var)
+				`((mquotient) ((mplus) ((mexpt) $%e ,newvar)
 					       ((mtimes) -1 ,*a*))
 				  ,*b*)
 				var
 				*c*)
-			       `((mquotient) ((mexpt) $%e ,var) ,*b*)
-			       (maxima-substitute var expres *d*))
+			       `((mquotient) ((mexpt) $%e ,newvar) ,*b*)
+			       (maxima-substitute newvar expres *d*))
 			 nil)
-			var)))))
+			newvar)))))
 		 (t (return nil)))))))
 
       ;; We have a special function with an integral on the property list.

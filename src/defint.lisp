@@ -2834,11 +2834,12 @@ in the interval of integration.")
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
+	     ((setq ans (logx1 exp ll ul))
+	      (return ans))
 	     ((setq ans (antideriv exp))
 	      ;; It's easy if we have the antiderivative.
-	      (return (intsubs ans ll ul)))
-	     ((setq ans (logx1 exp ll ul))
-	      (return ans)))
+	      ;; but intsubs sometimes gives results containing %limit
+	      (return (intsubs ans ll ul))))
        ;; Ok, the easy cases didn't work.  We now try integration by
        ;; parts.  Set ANS to f(x).
        (setq ans (m// exp `((%log) ,arg)))
