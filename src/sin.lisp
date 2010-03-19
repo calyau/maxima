@@ -87,14 +87,6 @@
 	(t (cons (ncons (caar ex))
 		 (mapcar #'(lambda (c) (subst10 c)) (cdr ex))))))
 
-;; Returns a list equal to x2 with first occurrence of x1 removed.
-;; Stack overflow if x1 does not occur in x2.
-(defun choicesin (x1 x2)
-  (if (eq x1 (car x2))
-      (cdr x2)
-      (cons (car x2)
-	    (choicesin x1 (cdr x2)))))
-
 (defun rationalizer (x)
   (let ((ex (simplify ($factor x))))
     (if (not (alike1 ex x)) ex)))
@@ -1615,6 +1607,7 @@
 ;;; while a value of 4 causes testsuite regressions with 
 ;;;  o  integrate(z*expintegral_shi(z),z)
 (defun partial-integration (form var)
+  (declare (special *integrator-level*))
   (let ((g  (cdr (assoc 'a form)))   ; part g(x)
 	(df (cdr (assoc 'c form)))   ; part f'(x)
 	(f  nil))
@@ -1750,7 +1743,7 @@
      (setq r (list '(mplus)
 		   (cons '(coeffpt)
 			 (cons '(c free1)
-			       (choicesin y (cdr exp))))))
+			       (remove y (cdr exp) :count 1)))))
      (cond
       ;; Case u(var) is the identity function. y is a term in exp.
       ;; Match if diff(y,var) == c*(exp/y).
@@ -1775,7 +1768,7 @@
      (cond
        ((setq w (cond ((and (setq x (sdiff w var))
 			    (mplusp x)
-			    (setq *d* (choicesin y (cdr exp)))
+			    (setq *d* (remove y (cdr exp) :count 1))
 			    (setq v (car *d*))
 			    (mplusp v)
 			    (not (cdr *d*)))
