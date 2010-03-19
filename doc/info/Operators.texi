@@ -2417,35 +2417,37 @@ For example, @code{signum(-x)} gives @code{-signum(x)}.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} sort (@var{L}, @var{P})
 @deffnx {Function} sort (@var{L})
-Sorts a list @var{L} according to a predicate @code{P} of two arguments,
-such that @code{@var{P} (@var{L}[k], @var{L}[k + 1])} is @code{true}
-for any two successive elements.
-The predicate may be specified as the name of a function or binary infix operator,
-or as a @code{lambda} expression.
-If specified as the name of an operator,
-the name is enclosed in "double quotes".
+Sorts a list @var{L} according to a predicate @code{P} of two arguments, such 
+that @code{@var{P} (@var{L}[k], @var{L}[k + 1])} is @code{true} for any two 
+successive elements. The predicate may be specified as the name of a function 
+or binary infix operator, or as a @code{lambda} expression. If specified as the
+name of an operator, the name is enclosed in "double quotes".
 
-The sorted list is returned as a new object;
-the argument @var{L} is not modified.
-To construct the return value,
-@code{sort} makes a shallow copy of the elements of @var{L}.
+The sorted list is returned as a new object; the argument @var{L} is not
+modified. To construct the return value, @code{sort} makes a shallow copy of
+the elements of @var{L}.
 @c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
 
 @c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
-If the predicate @var{P} is not a total order on the elements of @var{L},
-then @code{sort} might run to completion without error,
-but the result is undefined.
-@code{sort} complains if the predicate evaluates to something other
-than @code{true} or @code{false}.
+If the predicate @var{P} is not a total order on the elements of @var{L}, then 
+@code{sort} might run to completion without error, but the result is undefined.
+@code{sort} complains if the predicate evaluates to something other than 
+@code{true} or @code{false}.
 
 @code{sort (@var{L})} is equivalent to @code{sort (@var{L}, orderlessp)}.
-That is, the default sorting order is ascending,
-as determined by @code{orderlessp}.
-All Maxima atoms and expressions are comparable under @code{orderlessp},
-although there are isolated examples of expressions for which @code{orderlessp} is not transitive;
-this is a bug.
+That is, the default sorting order is ascending, as determined by 
+@code{orderlessp}. All Maxima atoms and expressions are comparable under 
+@code{orderlessp}.
+
+The predicate @code{ordergreatp} sorts a list in descending order. The predicate
+@code{ordermagnitudep} sorts Maxima numbers, constant symbols with a numerical 
+value, or expressions which can be evaluated to a constant by magnitude. All 
+other elements of the list @var{L} are sorted by @code{orderlessp}. The 
+predicate @code{"<"} allows the ordering by magnitude too, but does not order
+completely if elements in the list @var{L} are not comparable under @code{"<"}.
 
 Examples:
 
@@ -2483,6 +2485,18 @@ Examples:
 (%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a),
       reverse (b))));
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
+@end example
+
+Order Maxima numbers, constants, and constants expressions by magnitude, and
+all other elements in ascending sorting order:
+
+@c ===beg===
+@c sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],ordermagnitudep);
+@c ===end===
+@example
+(%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+      ordermagnitudep);
+(%o8)  [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, %i + 1, 2 x]
 @end example
 
 @opencatbox
