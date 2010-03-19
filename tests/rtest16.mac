@@ -1312,3 +1312,8 @@ done;
  */
 gamma_incomplete(1.0, 4.368265444147715e+19);
 0.0;
+
+/* Bug ID: 643254 - orderlessp([rat(x)], [rat(x)])
+ */
+orderlessp([rat(x)],[rat(x)]);
+false;
