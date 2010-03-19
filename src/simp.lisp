@@ -2480,14 +2480,31 @@
 	(t 0)))
 
 (defmfun $orderlessp (a b)
-  (setq a (specrepcheck a) b (specrepcheck b))
+  (setq a ($totaldisrep (specrepcheck a))
+        b ($totaldisrep (specrepcheck b)))
   (and (not (alike1 a b)) (great b a) t))
 
-
 (defmfun $ordergreatp (a b)
-  (setq a (specrepcheck a) b (specrepcheck b))
+  (setq a ($totaldisrep (specrepcheck a))
+        b ($totaldisrep (specrepcheck b)))
   (and (not (alike1 a b)) (great a b) t))
 
+;; Test function to order a and b by magnitude. If it is not possible to
+;; order a and b by magnitude they are ordered by great. This function
+;; can be used by sort, e.g. sort([3,1,7,x,sin(1),minf],ordermagnitudep)
+(defun $ordermagnitudep (a b)
+  (let (sgn)
+    (setq a ($totaldisrep (specrepcheck a))
+          b ($totaldisrep (specrepcheck b)))
+    (cond ((and (or (constp a) (member a '($inf $minf)))
+                (or (constp b) (member b '($inf $minf)))
+                (member (setq sgn ($csign (sub b a))) '($pos $neg $zero)))
+           (cond ((eq sgn '$pos) t)
+                 ((eq sgn '$zero) (and (not (alike1 a b)) (great b a)))
+                 (t nil)))
+          ((or (constp a) (member a '($inf $minf))) t)
+          ((or (constp b) (member b '($inf $minf))) nil)
+          (t (and (not (alike1 a b)) (great b a))))))
 
 (defun evnump (n) (or (even n) (and (ratnump n) (even (cadr n)))))
 (defun odnump (n) (or (and (integerp n) (oddp n))
