@@ -994,8 +994,16 @@ sum(binomial(n,k), k, -1, n+1), simpsum;
 sum(binomial(t+i,t),i,0,k), simpsum;
 binomial(t+k+1,t+1);
 
+/* Because of revision 1.42 of csimp2.lisp binomial(x,x) no longer simplifies
+ * automatically to 1. The sign must be known not be negative. 
+ * Therefore, we add a fact about the sign of t.
+ */ 
+(assume(t>0),done);
+done;
 sum(binomial(t+i,t),i,1,k), simpsum;
 binomial(t+k+1,t+1)-1;
+(forget(t>0),done);
+done;
 
 sum(binomial(t+i,i),i,0,k), simpsum;
 binomial(t+k+1,t+1);
