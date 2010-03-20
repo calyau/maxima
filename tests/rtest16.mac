@@ -1317,3 +1317,22 @@ gamma_incomplete(1.0, 4.368265444147715e+19);
  */
 orderlessp([rat(x)],[rat(x)]);
 false;
+
+/* Bug ID: 781657 - binomial(x,x) => 1, but binomial(-1,-1) => 0
+ * binomial(x,x) simplifies to 1 only if the sign of x is known not to be zero.
+ */
+is(equal(binomial(x,x),1));
+'unknown;
+is(equal(binomial(x^2,x^2),1));
+true;
+
+/* Bug ID: 811522 - redundant question in limit
+ * b is assumed to be zero. Maxima now can deduce from the database 
+ * that b-2 is an even number.
+ */
+assume(equal(b,0));
+[equal(b,0)];
+limit(r^(b-2)*(x-r)^2,r,0);
+'limit(r^(b-2)*(x-r)^2,r,0);
+forget(equal(b,0));
+[equal(b,0)];
