@@ -122,7 +122,9 @@ relational knowledge is contained in the default context GLOBAL.")
 ;;; No argument implies the current context.
 
 (defmfun $facts (&optional (ctxt $context))
-  (facts1 ctxt))
+  (if (member ctxt (cdr $contexts))
+      (facts1 ctxt)
+      (facts2 ctxt)))
 
 (defun facts1 (con)
   (contextmark)
@@ -134,6 +136,24 @@ relational knowledge is contained in the default context GLOBAL.")
       (setq u (intext (caaar l) (cdaar l)))
       (unless (memalike u nl)
 	(push u nl)))))
+
+;; Look up facts from the database which contain expr. expr can be a symbol or 
+;; a more general expression.
+(defun facts2 (expr)
+  (labels ((among (x l)
+             (cond ((null l) nil)
+                   ((atom l) (eq x l))
+                   ((alike1 x l) t)
+                   (t
+                    (do ((ll (cdr l) (cdr ll)))
+                        ((null ll) nil)
+                      (if (among x (car ll)) (return t)))))))
+  (do ((facts (cdr ($facts $context)) (cdr facts))
+       (ans))
+      ((null facts) (return (cons '(mlist) (reverse ans))))
+    (when (or (among expr (cadar facts))
+              (among expr (caddar facts)))
+      (push (car facts) ans)))))
 
 (defun intext (rel body)
   (setq body (mapcar #'doutern body))
