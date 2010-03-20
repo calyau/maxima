@@ -1336,3 +1336,19 @@ limit(r^(b-2)*(x-r)^2,r,0);
 'limit(r^(b-2)*(x-r)^2,r,0);
 forget(equal(b,0));
 [equal(b,0)];
+
+/* Bug ID:856209 - inconsistency between facts() and facts(v)
+ * Show that facts(expr) now works more general.
+ */
+assume(z+a>0,b>z);
+[a+z>0,b>z];
+facts(a);
+[a+z>0];
+facts(b);
+[b>z];
+facts(z);
+[a+z>0,b>z];
+facts(a+z);
+[a+z>0];
+forget(z+a>0,b>z);
+[a+z>0,b>z];
