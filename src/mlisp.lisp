@@ -365,7 +365,7 @@ is EQ to FNNAME if the latter is non-NIL."
 		       (harrfind (cons (car form) (mevalargs (cdr form)))))
 		      ((member (car u) '(fexpr fsubr) :test #'eq)
 		       (if fexprerrp
-			   ;; NOT SURE WHAT THIS IS ABOUT. LET IT STAND.
+			   ;; UNREACHABLE MESSAGE: FEXPRERRP IS ALWAYS NIL
 			   (merror "Attempt to call ~A ~A from Maxima level.~
 				 ~%Send a bug note."
 				   (car u) (caar form)))
@@ -517,6 +517,8 @@ wrapper for this."
 	    (when fnname
 	      (pop-mlambda-call-stack fnname)))))
     (maxima-$error (c)
+      ;; HMM, HERE'S A CALL TO MERROR. I CAN'T TELL WHERE ARE THE ERROR MESSAGES.
+      ;; IF I DID, I'D WRAP THEM IN A CALL TO GETTEXT
       (apply #'merror (cdr (the-$error c)))
       ;; Make absolutely sure that this handler (and mbind) doesn't
       ;; return in this situation since other code depends on this
@@ -561,8 +563,9 @@ wrapper for this."
 	   (improper-arg-err var '$local))
 	  ((and (mget var 'array)
 		(arrayp (symbol-array var)))
-       ;; MEANING OF FOLLOWING IS UNCLEAR. WHEN IS (SYMBOL-ARRAY VAR) NONNULL ??
-	   (merror "Attempt to bind a complete array ~M" var)))
+       ;; HMM. I DON'T UNDERSTAND WHY DECLARED ARRAYS ARE OFF-LIMITS:
+       ;; THE ARRAY IS JUST A PROPERTY LIKE ANY OTHER, IS IT NOT ??
+       (merror (intl:gettext "local: argument cannot be a declared array; found: ~M") var)))
     (setq mproplist (cons (get var 'mprops) mproplist)
 	  factlist (cons (get var 'data) factlist))
     (dolist (fact (car factlist))
@@ -1202,8 +1205,7 @@ wrapper for this."
 			  (funcer (arg 1) argl))
 			 ((and (= n 2) (mapatom (arg 2)))
 			  (improper-arg-err (arg 2) '$map))
-             ;; WHEN IS THE FOLLOWING MESSAGE TRIGGERED ??
-			 (t (merror (intl:gettext "Arguments to `mapl' not uniform - cannot map."))))
+			 (t (merror (intl:gettext "map: arguments must have same main operator; found: ~M, ~M") op (mop (first argl)))))
 		   (mcons-op-args op (apply #'mmapcar (cons (arg 1) cdrl)))))))
 
 (defmspec $maplist (l)
@@ -1255,9 +1257,9 @@ wrapper for this."
 	    (done (when (member nil cdrl :test #'eq)
 		    (when (dolist (e cdrl) (if e (return t)))
 		      (when $maperror
-			(merror "`fullmap' found arguments with incompatible structure."))
+			(merror (intl:gettext "fullmap: arguments must have same formal structure.")))
 		      (when $mapprint
-			(mtell "fullmap: truncating one or more arguments.~%")))
+			(mtell (intl:gettext "fullmap: truncating one or more arguments.~%"))))
 		    t)))
 	   (done (mcons-op-args op (nreverse ans)))
 	 (do ((op (or (setq bottom (or (zerop fmaplvl) (mapatom (caar cdrl))))
@@ -1266,8 +1268,8 @@ wrapper for this."
 	     ((null eleml)
 	      (when (and done (dolist (e cdrargl) (if e (return t))))
 		(if $maperror
-		    (merror "`fullmap' found arguments with incompatible structure."))
-		(if $mapprint (mtell "fullmap: truncating one or more arguments.~%"))))
+		    (merror (intl:gettext "fullmap: arguments must have same formal structure.")))
+		(if $mapprint (mtell (intl:gettext "fullmap: truncating one or more arguments.~%")))))
 	   (setq caareleml (caar eleml))
 	   (or bottom
 	       (setq bottom
@@ -1281,8 +1283,8 @@ wrapper for this."
     (if (or (mapatom argi)
 	    (not (alike1 op (mop argi)))
 	    (and fmapcaarl (not (eq (caar argi) fmapcaarl))))
-	(cond ($maperror (merror "Incorrect call to `fullmap'."))
-	      (t (if $mapprint (mtell "fullmap: calling 'apply'.~%"))
+	(cond ($maperror (merror (intl:gettext "fullmap: arguments must have same operators.")))
+	      (t (if $mapprint (mtell (intl:gettext "fullmap: calling 'apply'.~%")))
 		 (return (funcer fn argl)))))))
 
 (defmspec $matrixmap (l)
@@ -1297,7 +1299,7 @@ wrapper for this."
 	 (argl (fmap1 fun
 		      (mapcar #'(lambda (z)
 				  (cond ((not (mxorlistp z))
-					 (merror "Argument to `fullmapl' is not a list or matrix."))
+					 (merror (intl:gettext "fullmapl: argument must be a list or matrix; found: ~M") (or (and (consp z) (mop z)) z)))
 					((eq (caar z) '$matrix)
 					 (setq header '($matrix))
 					 (cons '(mlist simp) (cdr z)))
@@ -1360,9 +1362,9 @@ wrapper for this."
 
 (defun prop1 (fun atom val ind)
   (unless (or (symbolp atom) (stringp atom))
-    (merror "~:M: atom must be a symbol or a string:~%~M" fun atom))
+    (merror (intl:gettext "~:M: argument must be a symbol or a string; found: ~M") fun atom))
   (unless (or (symbolp ind) (stringp ind))
-    (merror "~:M: indicator must be a symbol or a string:~%~M" fun ind))
+    (merror (intl:gettext "~:M: indicator must be a symbol or a string; found: ~M") fun ind))
   (unless (symbolp atom)
     (setq atom (intern atom)))
   (unless (symbolp ind)
@@ -1376,7 +1378,7 @@ wrapper for this."
 (defmspec $declare (l)
   (setq l (cdr l))
   (when (oddp (length l))
-    (merror "`declare' takes an even number of arguments."))
+    (merror (intl:gettext "declare: number of arguments must be a multiple of 2.")))
   (do ((l l (cddr l)) (vars) (flag nil nil))
       ((null l)
        '$done)
@@ -1399,13 +1401,13 @@ wrapper for this."
 	  ((member (cadr l) (cdr $features) :test #'eq) (declare1 vars t (cadr l) 'kind))
 	  ((eq (cadr l) '$feature)
 	   (dolist (var vars) (nonsymchk var '$declare) (add2lnc var $features)))
-	  (t (merror "Unknown property to `declare': ~:M" (cadr l))))))
+	  (t (merror (intl:gettext "declare: unknown property ~:M") (cadr l))))))
 
 (defun declare1 (vars val prop mpropp)
   (dolist (var vars)
     (setq var (getopr var))
     (unless (or (symbolp var) (stringp var))
-      (merror "declare: argument must be a symbol or a string."))
+      (merror (intl:gettext "declare: argument must be a symbol or a string; found: ~M") var))
     (cond ((eq mpropp 'kind) (declarekind var prop))
 	  ((eq mpropp 'opers)
 	   (putprop (setq var (linchk var)) t prop) (putprop var t 'opers)
@@ -1423,7 +1425,7 @@ wrapper for this."
 	  (mpropp
 	   (if (and (member prop '($scalar $nonscalar) :test #'eq)
 		    (mget var (if (eq prop '$scalar) '$nonscalar '$scalar)))
-	       (merror "Inconsistent Declaration: ~:M" `(($declare) ,var ,prop)))
+	       (merror (intl:gettext "declare: inconsistent declaration ~:M") `(($declare) ,var ,prop)))
 	   (mputprop var val prop))
 	  (t (putprop var val prop)))
     (if (and (safe-get var 'op) (operatorp1 var)
@@ -1441,13 +1443,13 @@ wrapper for this."
 
 (defmfun i-$remove (l)
   (when (oddp (length l))
-    (merror "`remove' takes an even number of arguments."))
+    (merror (intl:gettext "remove: number of arguments must be a multiple of 2.")))
   (do ((l l (cddr l)) (vars) (flag nil nil)) ((null l) '$done)
     (cond (($listp (cadr l))
 	   (do ((l1 (cdadr l) (cdr l1))) ((if (null l1) (setq flag t)))
 	     (i-$remove (list (car l) (car l1)))))
       ((unless (or (symbolp (cadr l)) (stringp (cadr l)))
-        (merror "remove: argument must be a symbol or a string.")))
+        (merror (intl:gettext "remove: argument must be a symbol or a string; found: ~M") (cadr l))))
 	  (t (setq vars (declsetup (car l) '$remove))))
     (cond (flag)
 	  ((eq (cadr l) '$value) (i-$remvalue vars))
@@ -1478,7 +1480,7 @@ wrapper for this."
 	   (remove1 vars 'depends t $dependencies t))
 	  ((member (cadr l) '($op $operator) :test #'eq) (remove1 vars '$op nil 'foo nil))
 	  ((member (cadr l) '($deftaylor $taylordef) :test #'eq) (remove1 vars 'sp2 nil t nil))
-	  (t (merror "Unknown property to `remove': ~:M" (cadr l))))))
+	  (t (merror (intl:gettext "remove: unknown property ~:M") (cadr l))))))
 
 (defun declsetup (x fn)
   (cond ((atom x) (ncons x))
@@ -1495,7 +1497,7 @@ wrapper for this."
   (do ((vars vars (cdr vars)) (allflg))
       ((null vars))
     (unless (or (symbolp (car vars)) (stringp (car vars)))
-      (merror "remove: argument must be a symbol or a string."))
+      (merror (intl:gettext "remove: argument must be a symbol or a string; found: ~M") (car vars)))
     (cond ((and (eq (car vars) '$all) (null allflg))
 	   (setq vars (append vars (cond ((atom info) (cdr $props))
 					 (funp (mapcar #'caar (cdr info)))
@@ -1639,20 +1641,20 @@ wrapper for this."
     '(($matrix))
     (let ((rows (mapcar #'meval (cdr L))))
       (dolist (row rows)
-	(if (not ($listp row)) (merror "matrix: invalid row:~%~M" row)))
+	(if (not ($listp row)) (merror (intl:gettext "matrix: row must be a list; found: ~M") row)))
       (matcheck rows)
       (cons '($matrix) rows))))
 
 (defmfun matcheck (l)
   (do ((l1 (cdr l) (cdr l1)) (n (length (car l)))) ((null l1))
     (if (not (= n (length (car l1))))
-	(merror "All matrix rows are not of the same length."))))
+	(merror (intl:gettext "matrix: all rows must be the same length.")))))
 
 (defun harrfind (form)
   (prog (ary y lispsub iteml sub ncells nitems)
      (setq ary (symbol-array (mget (caar form) 'hashar)))
      (cond ((not (= (aref ary 2) (length (cdr form))))
-	    (merror "Array ~:M already has dimension ~:M~%~M"
+	    (merror (intl:gettext "evaluation: array ~:M must have ~:M indices; found: ~M")
 		    (caar form) (aref ary 2) form)))
      (setq sub (cdr form))
      (setq iteml (aref ary (setq lispsub (+ 3 (rem (hasher sub) (aref ary 0))))))
@@ -1721,10 +1723,10 @@ wrapper for this."
 	     (cond ((null diml)
 		    (wna-err '$array))
 		   ((> (length diml) 5)
-		    (merror "`array' takes at most 5 indices"))
+		    (merror (intl:gettext "array: number of dimensions must be 5 or less; found: ~M") (length diml)))
 		   ((member nil (mapcar #'(lambda (u) (eq (ml-typep u) 'fixnum)) diml)
 			    :test #'eq)
-		    (merror "Non-integer dimension - `array'")))
+		    (merror (intl:gettext "array: all dimensions must be integers."))))
 	     (setq diml (mapcar #'1+ diml))
 	     (setq new (if compp fun (gensym)))
 	     (setf (symbol-array new) (make-array diml :initial-element (case compp
@@ -1736,7 +1738,7 @@ wrapper for this."
 	     (cond ((null (setq old (mget fun 'hashar)))
 		    (mputprop fun new 'array))
 		   (t (unless (= (aref (symbol-array old) 2) (length diml))
-			(merror "Array ~:M already has ~:M dimension(s)" fun (aref (symbol-array old) 2)))
+			(merror (intl:gettext "array: array ~:M must have ~:M dimensions; found: ~M") fun (aref (symbol-array old) 2) (length diml)))
 		      (setq ncells (+ 2 (aref (symbol-array old) 0)))
 		      (do ((n 3 (1+ n)))
 			  ((> n ncells))
@@ -1746,13 +1748,13 @@ wrapper for this."
 			      ((null x)
 			       (if (and (member compp '(fixnum flonum) :test #'eq)
 					(not (eq (ml-typep (cdar items)) compp)))
-				   (merror "Element and array type do not match:~%~M" (cdar items)))
+				   (merror (intl:gettext "array: existing elements must be ~M; found: ~M") compp (cdar items)))
 			       (setf (apply #'aref (symbol-array new) (caar items))
 				     (cdar items)))
 			    (if (or (not (eq (ml-typep (car x)) 'fixnum))
 				    (< (car x) 0)
 				    (not (< (car x) (car y))))
-				(merror "Improper index for declared array:~%~M" (car x))))))
+				(merror (intl:gettext "array: index must be nonnegative integer less than ~M; found: ~M") (car y) (car x))))))
 		      (mremprop fun 'hashar)
 		      (mputprop fun new 'array)))
 	     (add2lnc fun $arrays)
@@ -1766,7 +1768,7 @@ wrapper for this."
 	   (meval `(($array) ,u ,@(cdr x))))
 	 (car x))
 	(t
-	 (merror "Improper first argument to `array':~%~M" (car x)))))
+	 (merror (intl:gettext "array: first argument must be a symbol or a list; found: ~M") (car x)))))
 
 
 (defmfun $show_hash_array (x)
@@ -1784,11 +1786,14 @@ wrapper for this."
 		  (cond ((eq the-type 'array)
 			 (setf (apply #'aref tem index)  r))
 			((eq the-type 'hash-table)
+             ;; SINCE A "FAST ARRAY" IS JUST A HASH TABLE, SEEMS LIKE THESE !!
+             ;; TESTS ON THE NUMBER OF INDICES OBSTRUCTS LEGITIMATE HASH TABLE !!
+             ;; USE; I RECOMMEND CUTTING THEM OUT !!
 			 (cond ((gethash 'dim1 tem)
 				(if (cdr index)
-				    (error "Array has dimension 1")))
+				    (merror (intl:gettext "assignment: array has one dimension, but two or more indices supplied."))))
 			       (t (or (cdr index)
-				      (error "Array has dimension > 1"))))
+				      (merror (intl:gettext "assignment: array has two or more dimensions, but one index supplied.")))))
 			 (setf (gethash	(if (cdr index)
 					    index
 					    (car index))
@@ -1802,8 +1807,8 @@ wrapper for this."
 				(setf (nth (second index) (nth (first index) tem)) r)
 				r)
 			       (t
-				(error "The value of ~A is not a hash-table ,an ~
-					   array, Maxima list, or a matrix" (caar l)))))
+				(merror (intl:gettext "assignment: ~A is not a hash table, an array, Maxima list, or a matrix.")
+                        (caar l)))))
 			(t
 			 (cond ((eq tem (caar l))
 				(meval* `((mset) ,(caar l)
@@ -1811,8 +1816,8 @@ wrapper for this."
 					    (cdr (mevalargs (cdr l))))))
 				(arrstore l r))
 			       (t
-				(error "The value of ~A is not a hash-table, ~
-                                         an array, a Maxima list, or a matrix" (caar l))))))))
+				(merror (intl:gettext "assignment: ~A is not a hash table, an array, a Maxima list, or a matrix.")
+                        (caar l))))))))
 	       (t
 		(cond ((mget (caar l) 'hashar)
 		       (let ($use_fast_arrays)
@@ -1830,13 +1835,13 @@ wrapper for this."
 		  (dimcheck fun (setq sub (mapcar #'meval (cdr l))) t)
 		  (if (and (member (setq fun (car (arraydims ary))) '(fixnum flonum) :test #'eq)
 			   (not (eq (ml-typep r) fun)))
-		      (merror "Improper assignment to complete array:~%~M" r))
+		      (merror (intl:gettext "assignment: attempt to assign ~M to an array of type ~M.") r fun))
 		  (setf (apply #'aref (symbol-array ary) sub)  r))
 		 ((setq ary (mget fun 'hashar))
 		  (when (mfilep ary)
 		    (i-$unstore (ncons fun)) (setq ary (mget fun 'hashar)))
 		  (if (not (= (aref (symbol-array ary) 2) (length (cdr l))))
-		      (merror "Array ~:M has dimension ~:M; it was called by ~:M"
+		      (merror (intl:gettext "assignment: array ~:M has dimension ~:M, but it was called by ~:M")
 			      fun (aref (symbol-array ary) 2) l))
 		  (setq sub (mapcar #'meval (cdr l)))
 		  (setq hashl (aref (symbol-array ary)
@@ -1867,7 +1872,7 @@ wrapper for this."
 		 ((and (not mqapplyp)
 		       (or (not (boundp fun)) (not (or (mxorlistp (setq ary (symbol-value fun)))
 						       (eq (ml-typep ary) 'array)))))
-		  (if (member fun '(mqapply $%) :test #'eq) (merror "Illegal use of :"))
+		  (if (member fun '(mqapply $%) :test #'eq) (merror (intl:gettext "assignment: cannot assign to ~M") l))
 		  (add2lnc fun $arrays)
 		  (setq ary (gensym))
 		  (mputprop fun ary 'hashar)
@@ -1882,18 +1887,18 @@ wrapper for this."
 		 ((or (eq (caar ary) 'mlist) (= (length l) 2))
 		  (cond ((eq (caar ary) '$matrix)
 			 (cond ((or (not ($listp r)) (not (= (length (cadr ary)) (length r))))
-				(merror "Attempt to assign bad matrix row:~%~M" r))))
+				(merror (intl:gettext "assignment: matrix row must be a list, and same length as first row;~%found:~%~M") r))))
 			((not (= (length l) 2))
-			 (merror "Wrong number of indices:~%~M" (cons '(mlist) (cdr l)))))
+			 (merror (intl:gettext "assignment: matrix row must have one index; found: ~M") (cons '(mlist) (cdr l)))))
 		  (let ((index (meval (cadr l))))
 		    (cond ((not (eq (ml-typep index) 'fixnum))
-			   (merror "Index not an integer:~%~M" index))
+			   (merror (intl:gettext "assignment: matrix row index must be an integer; found: ~M") index))
 			  ((and (> index 0) (< index (length ary)))
 			   (rplaca (nthcdr (1- index) (cdr ary)) r))
-			  (t (merror "~A - index out of range" index))))
+			  (t (merror (intl:gettext "assignment: matrix row index ~A out of range.") index))))
 		  r)
 		 (t (if (not (= (length l) 3))
-			(merror "Wrong number of indices:~%~M" (cons '(mlist) (cdr l))))
+			(merror (intl:gettext "assignment: matrix must have two indices; found: ~M") (cons '(mlist) (cdr l))))
 		    ($setelmx r (meval (cadr l)) (meval (caddr l)) ary)
 		    r))))))
 
@@ -1912,7 +1917,7 @@ wrapper for this."
       0					; break SAVE files.
       (logand #o77777
 	      (let ((x (car l)))
-		(cond (($ratp x) (merror "Subscripts may not be in CRE form."))
+		(cond (($ratp x) (merror (intl:gettext "hash function: cannot hash a special expression (CRE or Taylor).")))
 		      ((or (fixnump x) (floatp x))
 		       (+ (if (fixnump x) x (floor (+ x 5e-4)))
 			   (* 7 (hasher (cdr l)))))
@@ -1946,7 +1951,7 @@ wrapper for this."
        (ret t)
        (y (cdr (arraydims (mget ary 'array))) (cdr y)))
       ((null y)
-       (if x (merror "Array ~:M has dimensions ~:M, but was called with ~:M"
+       (if x (merror (intl:gettext "Array ~:M has dimensions ~:M, but was called with ~:M")
 		     ary
 		     `((mlist) ,@(mapcar #'1- (cdr (arraydims (mget ary 'array)))))
 		     `((mlist) ,@sub))
@@ -1989,19 +1994,19 @@ wrapper for this."
       (cond ((or (atom fun)
 		 (and (setq mqdef (eq (caar fun) 'mqapply))
 		      (member 'array (cdar fun) :test #'eq)))
-	     (merror "Improper function definition:~%~M" fun))
+	     (merror (intl:gettext "define: argument cannot be an atom or a subscripted memoizing function; found: ~M") fun))
 	    (mqdef (if (or (atom (cadr fun))
 			   (not (setq ary (member 'array (cdaadr fun) :test #'eq))))
-		       (merror "Improper function definition:~%~M" (cadr fun)))
+		       (merror (intl:gettext "define: expected a subscripted expression; found: ~M") (cadr fun)))
 		   (setq subs (cdadr fun) args (cddr fun) fun (cadr fun)
 			 fnname ($verbify (caar fun)))
 		   (if (and (not (mgetl fnname '(hashar array)))
 			    (get fnname 'specsimp))
-		       (mtell "warning: redefining the Maxima subscripted function ~:M.~%"
+		       (mtell (intl:gettext "define: warning: redefining built-in subscripted function ~:M~%")
 			      fnname)))
 	    ((prog2 (setq fnname ($verbify (caar fun)))
 		 (or (mopp fnname) (member fnname '($all $allbut $%) :test #'eq)))
-	     (merror "Improper function name: ~:@M" fnname))
+	     (merror (intl:gettext "define: function name cannot be a built-in operator or special symbol; found: ~:@M") fnname))
 	    ((setq ary (member 'array (cdar fun) :test #'eq)) (setq subs (cdr fun)))
 	    (t (setq args (cdr fun) redef (mredef-check fnname))))
       (if (not ary) (remove1 (ncons fnname) 'mmacro t $macros t))
@@ -2024,7 +2029,7 @@ wrapper for this."
 			     (aref (symbol-array (cadr ary)) 2)
 			     (length (cdr (arraydims (cadr ary)))))
 			 (length subs)))
-		 (merror "Array ~:M already defined with different dimensions"
+		 (merror (intl:gettext "define: ~:M already defined with different number of subscripts.")
 			 fnname))
 	     (mdefarray fnname subs args body mqdef))
 	    (t
@@ -2046,13 +2051,14 @@ wrapper for this."
 			  (get fnname 'mfexpr*s))
 		      (not (get fnname 'translated)))
 		 (mopp fnname)))
-    (format t "Warning - you are redefining the Maxima ~:[function~;command~] ~a~%"
+    (format t (intl:gettext "define: warning: redefining the built-in ~:[function~;operator~] ~a~%")
 	    (getl fnname '(verb operators))
 	    (print-invert-case (stripdollar fnname)))
     t))
 
 (defun mdefarray (fun subs args body mqdef)
   (when (hash-table-p fun)
+    ;; PRETTY SURE THIS NEXT MESSAGE IS UNREACHABLE (FUN IS ALWAYS A SYMBOL FROM WHAT I CAN TELL) !!
     (error "~a is already a hash table.  Make it a function first" fun))
   (cond ((and (null args) (not mqdef)) (mputprop fun (mdefine1 subs body) 'aexpr))
 	((null (dolist (u subs)
@@ -2090,7 +2096,7 @@ wrapper for this."
 					(mdefparam (cadr (cadar l)))
 					(setq mfex t)))
 			       (setq mlex t))))))
-	(merror "Improper parameter in function definition for ~:M:~%~M" fun (car l)))))
+	(merror (intl:gettext "define: in definition of ~:M, found bad argument ~M") fun (car l)))))
 
 (defun mdefparam (x)
   (and (atom x) (not (maxima-constantp x)) (not (stringp x))))
@@ -2113,8 +2119,7 @@ wrapper for this."
 
 (defun $apply (fun arg)
   (unless ($listp arg)
-    (merror "Attempt to apply ~:M to ~M~
-            ~%Second argument to `apply' must be a list." fun arg))
+    (merror (intl:gettext "apply: second argument must be a list; found: ~M") arg))
   (let ((fun-opr (getopr fun)))
     (autoldchk fun-opr)
     (mapply1 fun-opr (cdr arg) fun `(($apply) ,fun ,arg))))
@@ -2154,7 +2159,7 @@ wrapper for this."
 	   (arryp (setq fun (meval1 (setq name (cons (list ($verbify (caar x)) 'array) (cdr x)))))
 		  (if (or (atom fun) (not (eq (caar fun) 'lambda))) (setq fun nil))))
      (cond ((not fun) (cond (stringp (return x)) ((member 'edit state-pdl :test #'eq) (terpri)))
-	    (merror "~:M is not the name of a user function." x))
+	    (merror (intl:gettext "fundef: no such function: ~:M") x))
 	   ((and (not arryp) (mfilep (cadr fun)))
 	    (setq fun (list (car fun) (dskget (cadadr fun) (car (cddadr fun)) (car fun) nil)))))
      (return
@@ -2176,8 +2181,8 @@ wrapper for this."
 (defmfun $funmake (fun args)
   (if (not (or (stringp fun) (symbolp fun) ($subvarp fun)
 	       (and (not (atom fun)) (eq (caar fun) 'lambda))))
-      (merror "Bad first argument to `funmake': ~M" fun))
-  (if (not ($listp args)) (merror "Bad second argument to `funmake': ~M" args))
+      (merror (intl:gettext "funmake: first argument must be a symbol, subscripted symbol, string, or lambda expression; found: ~M") fun))
+  (if (not ($listp args)) (merror (intl:gettext "funmake: second argument must be a list; found: ~M") args))
   (mcons-op-args (getopr fun) (cdr args)))
 
 (defmfun mcons-op-args (op args)
@@ -2225,16 +2230,16 @@ wrapper for this."
                 ((is test) '$done)
                 (cond ((null (setq val (catch 'mprog (prog2 (meval do-body) nil))))
                        (mset my-var (meval next)))
-                      ((atom val) (merror "`go' not in `block':~%~M" val))
+                      ((atom val) (merror (intl:gettext "do loop: 'go' not within 'block': ~M") val))
                       ((not (eq bindl bindlist))
-                       (merror "Illegal `return':~%~M" (car val)))
+                       (merror (intl:gettext "do loop: illegal 'return': ~M") (car val)))
                       (t (return (car val))))))))
 
 (defmspec mdoin (form)
   (setq form (cdr form))
   (funcall #'(lambda  (mdop my-var set test action)
 	       (setq set (if ($atom (setq set (format1 (meval (cadr form)))))
-			     (merror "Atomic 'in' argument to `do' statement:~%~M" set)
+			     (merror (intl:gettext "do loop: 'in' argument must be a nonatomic expression; found: ~M") set)
 			     (margs set))
 		     test (list '(mor)
 				(if (car (cddddr form))
@@ -2248,9 +2253,9 @@ wrapper for this."
 				       '$done)
 				    (cond ((null (setq val (catch 'mprog (prog2 (meval action) nil))))
 					   (if (setq set (cdr set)) (mset my-var (car set))))
-					  ((atom val) (merror "`go' not in `block':~%~M" val))
+					  ((atom val) (merror (intl:gettext "do loop: 'go' not within 'block': ~M") val))
 					  ((not (eq bindl bindlist))
-					   (merror "Illegal `return':~%~M" (car val)))
+					   (merror (intl:gettext "do loop: illegal 'return': ~M") (car val)))
 					  (t (return (car val)))))))))
 	   t (or (car form) 'mdo) nil nil nil))
 
@@ -2266,7 +2271,7 @@ wrapper for this."
 			       (cond ((atom v) v)
 				     ((eq (caar v) 'msetq) (meval (caddr v)))
 				     (t (merror
-					 "Improper form in `block' variable list: ~M"
+					 (intl:gettext "block: variable list must comprise only atoms and assignment expressions; found: ~M")
 					 v))))
 			   vars)
 	      vars (mapcar #'(lambda (v) (if (atom v) v (cadr v))) vars)))
@@ -2282,26 +2287,28 @@ wrapper for this."
 					   nil)))))
 		      ((not (eq bindl bindlist))
 		       (if (not (atom x))
-			   (merror "Illegal `return':~%~M" (car x))
-			   (merror "Illegal `go':~%~M" x)))
+                 ;; DUNNO WHAT'S "ILLEGAL" HERE
+			   (merror (intl:gettext "block: illegal 'return': ~M") (car x))
+                 ;; DUNNO WHAT'S "ILLEGAL" HERE
+			   (merror (intl:gettext "block: illegal 'go': ~M") x)))
 		      ((not (atom x)) (setq retp t val (car x)))
 		      ((not (setq prog (member x mprogp :test #'equal)))
-		       (merror "No such tag as ~:M" x)))
+		       (merror (intl:gettext "block: no such tag: ~:M") x)))
 		(if retp (setq prog '(nil)))))))
 
 (defmfun mreturn (&optional (x nil) &rest args)
   (cond 
     ((not (null args))
-       (merror "Too many arguments supplied to `return':~%~M" `((mlist) ,x ,@args) ))
+       (merror (intl:gettext "return: too many arguments; found: ~M") `((mlist) ,x ,@args) ))
     ((and (not mprogp) (not mdop))
-       (merror "`return' not in `block':~%~M" x))
+       (merror (intl:gettext "return: not within 'block'")))
     (t (throw 'mprog (ncons x)) ) ))
 
 (defmspec mgo (tag)
   (setq tag (fexprcheck tag))
-  (cond ((not mprogp) (merror "`go' not in `block':~%~M" tag))
+  (cond ((not mprogp) (merror (intl:gettext "go: not within 'block'")))
 	((atom tag) (throw 'mprog tag))
-	(t (merror "Argument to `go' not atomic:~%~M" tag))))
+	(t (merror (intl:gettext "go: argument must be an atom; found: ~M") tag))))
 
 (defmspec $subvar (l)
   (setq l (cdr l))
