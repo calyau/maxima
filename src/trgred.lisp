@@ -58,7 +58,7 @@
 				       (cdr e))))
 	((eq (caar e) '%integrate)
 	 (list* '(%integrate) (sp1 (cadr e)) (cddr e)))
-	(t e)))
+        (t (recur-apply #'sp1 e))))
 
 (setq trans-list-plus
       '( (((mplus) ((coeffpt) (c true) ((mexpt) ((%tan) (x true)) 2))
@@ -98,7 +98,7 @@
 		 ((equal (setq gcd ($gcd nn nd)) 1) e)
 		 ((div* (cadr ($divide nn gcd))
 			(cadr ($divide nd gcd)))))))
-	(t e)))
+        (t (recur-apply #'gcdred e))))
 
 (defun sp1times (e)
   (let* ((fr
