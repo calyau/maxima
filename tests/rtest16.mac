@@ -1355,7 +1355,7 @@ forget(z+a>0,b>z);
 
 /* Bug ID: 840848 - trigreduce doesn't enter unknown functions
  */
-trigexpand(f(sin(2*x));
+trigexpand(f(sin(2*x)));
 f(2*cos(x)*sin(x));
 trigreduce(%);
 f(sin(2*x));
