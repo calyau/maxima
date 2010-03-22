@@ -1359,3 +1359,12 @@ trigexpand(f(sin(2*x)));
 f(2*cos(x)*sin(x));
 trigreduce(%);
 f(sin(2*x));
+
+/* Bug ID: 2954472 - rectform with large floats gives bad answer
+*/
+is(abs(rectform(1e160/(1e160+%i))-1) < 1e-160);
+true;
+
+is(abs(rectform(1e160/(1e160+3/2*%i))-1) < 1.5e-160);
+true;
+

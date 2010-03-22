@@ -235,9 +235,20 @@
     (cond ((fixnump pow)	   ; Sqrt(-x) -> %i*sqrt(x)
 	   (let ((sp (risplit (cadr l))))
 	     (cond ((= pow -1)
-		    (let ((a2+b2 (spabs sp)))
-		      (cons (div (car sp) a2+b2)
-			    (mul -1 (div (cdr sp) a2+b2)))))
+		    ;; Handle the case of 1/(x+%i*y) carefully.  This
+		    ;; is needed if x and y are (Lisp) numbers to
+		    ;; prevent spurious underflows/overflows.  See Bug
+		    ;; 2954472.
+		    ;; https://sourceforge.net/tracker/?func=detail&atid=104933&aid=2954472&group_id=4933.
+		    ;;
+		    (if (and (or (numberp (car sp))
+				 (ratnump (car sp)))
+			     (or (numberp (cdr sp))
+				 (ratnump (cdr sp))))
+			(sprecip sp)
+			(let ((a2+b2 (spabs sp)))
+			  (cons (div (car sp) a2+b2)
+				(mul -1 (div (cdr sp) a2+b2))))))
 		   ((> (abs pow) $maxposex)
 		    (cond ((=0 (cdr sp))
 			   (cons (powers (car sp) pow) 0))
@@ -488,7 +499,28 @@
 	((=1 c) 1)
 	(t (power c d))))
 
-(defun spabs (sp) (add (powers (car sp) 2) (powers (cdr sp) 2)))
+(defun spabs (sp)
+  ;; SP is a cons of the real part and imaginary part of a complex
+  ;; number.  SPABS computes the sum of squares of the real and
+  ;; imaginary parts.
+  (add (powers (car sp) 2)
+       (powers (cdr sp) 2)))
+
+;; Compute 1/(x+%i*y) when both x and y are Lisp numbers or Maxima
+;; rationals.  Return a cons of the real and imaginary part of the
+;; result.  We count on the underlying Lisp to be able to compute (/
+;; (complex x y)) accurately and without unnecessary overflow or
+;; underflow..  If not, complain to your Lisp vendor.
+(defun sprecip (sp)
+  (destructuring-bind (x . y)
+      sp
+    (let* ((x (bigfloat:to x))
+	   (y (bigfloat:to y))
+	   (q (bigfloat:/ (bigfloat:complex x y))))
+      (cons (to (bigfloat:realpart q))
+	    (to (bigfloat:imagpart q))))))
+      
+  
 
 
 (defvar negp* (let ((l (list nil nil t t))) (nconc l l)))
