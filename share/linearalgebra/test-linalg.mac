@@ -684,6 +684,13 @@ true$
 blockmatrixp(matrix([matrix([false])]));
 true$
 
+mat_cond(matrix([1,2,3],[4,5,6],[7,8,10]),1);
+133$
+
+mat_cond(matrix([1,2,3],[4,5,6],[7,8,10]),inf);
+475/3$
+
+
 
 
 
