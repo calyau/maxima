@@ -267,8 +267,7 @@
 
 (defun $mat_cond (m p)
   ($require_square_matrix m "$first" "$mat_cond")
-  (mul (simplify (mfunction-call $mat_norm m p))
-       (simplify (mfunction-call $mat_norm ($invert_by_lu m) p))))
+  (mul (mfuncall '$mat_norm m p) (mfuncall '$mat_norm ($invert_by_lu m) p)))
 
 (defun $linsolve_by_lu (m b &optional (fld '$generalring))
   ($require_square_matrix m "$first" "$linsolve_by_lu")
