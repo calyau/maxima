@@ -765,7 +765,7 @@
 				      expr))
 		       (augmult (mul (inv (1+ p))
 				     ex
-				     '((rat) 1 8)
+				     '((rat simp) 1 8)
 				     (add (mul (power b 2)
 					       (+ p p 3))
 					  (mul -4 a c))
@@ -822,7 +822,7 @@
   (let ((exp1 *ec-1*)			      ;; exp1 = 1/c
 	(exp2 (add b (mul 2 c x)))	      ;; exp2 = b+2*c*x
 	(exp4 (add (mul 4 a c) (mul -1 b b))) ;; exp4 = 4*a*c-b^2
-	(exp5 `((rat) 1 ,(1+ p))))	      ;; exp5 = 1/(p+1)
+        (exp5 (div 1 (1+ p))))                ;; exp5 = 1/(p+1)
     (if (zerop p)
 	;; integrate(sqrt(R),x)
 	;;
@@ -832,10 +832,10 @@
 	;;   (2*c*x+b)*sqrt(R)/4/c + del/8/c*integrate(1/sqrt(R),x)
 	;;
 	;; del = 4*a*c-b^2
-	(add (augmult (mul '((rat) 1 4)
+	(add (augmult (mul '((rat simp) 1 4)
 			   exp1 exp2
 			   (power (polfoo c b a x) 1//2)))
-	     (augmult (mul '((rat) 1 8)
+	     (augmult (mul '((rat simp) 1 8)
 			   exp1 exp4
 			   (den1 c b a x))))
 
@@ -846,10 +846,10 @@
 	;; integrate(sqrt(R^(2*p+1)),x) =
 	;;   (2*c*x+b)/4/(p+1)/c*R^(p+1/2)
 	;;     + (2*p+1)*del/8/(p+1)/c*integrate(sqrt(R^(2*p-1)),x)
-	(add (augmult (mul '((rat) 1 4)
+	(add (augmult (mul '((rat simp) 1 4)
 			   exp1 exp5 exp2
 			   (power (polfoo c b a x) (add p 1//2))))
-	     (augmult (mul '((rat) 1 8)
+	     (augmult (mul '((rat simp) 1 8)
 			   exp1 exp5 (+ p p 1)
 			   exp4
 			   (numn (1- p) c b a x)))))))
@@ -916,7 +916,7 @@
        ;;     -(2*p+2*m-3)*b/2/(m-1)/a*integrate(1/x^(m-1)/sqrt(R^(2*p+1)),x)
        ;;     -(2*n+m-2)*c/(m-1)/a*integrate(1/x^(m-2)/sqrt(R^(2*p+1)),x)
        (setq partres
-	     (let ((exp2 (simplifya `((rat) -1 ,(1- m)) nil)))
+	     (let ((exp2 (div -1 (1- m))))
 	       ;; exp2 = -1/(m-1)
 	       (add (augmult (mul exp2 ea-1
 				  (power x (1+ (- m)))
@@ -971,9 +971,9 @@
 	   ;; That is, 1/sqrt((c*(x+b/2/c)^(2)^(2*p+1))), or
 	   ;; 1/c^(p+1/2)/(x+b/2/c)^(2*p+1).  So the result is
 	   ;; -1/2/p*c^(-p-1/2)/(x+b/2/c)^(2*p)
-	   (augmult (mul* `((rat) -1 ,(+ p p))
-			  (power c (mul -1//2 (+ p p 1)))
-			  (power (add x (mul b 1//2  *ec-1*)) (* -2 p)))))
+	   (augmult (mul (div -1 (+ p p))
+			 (power c (mul -1//2 (+ p p 1)))
+			 (power (add x (mul b 1//2  *ec-1*)) (* -2 p)))))
 	  ((zerop p)
 	   ;; 1/sqrt(R)
 	   (den1 c b a x))
@@ -1285,13 +1285,13 @@
 	 ;;  = (2*c*x-3*b)/4/c^2*sqrt(R)
 	 ;;      + (3*b^2-4*a*c)/8/c^2*integrate(1/sqrt(R),x)
 	 (setq res2
-	       (add (augmult (mul '((rat) 1 4)
+	       (add (augmult (mul '((rat simp) 1 4)
 				  exp5
 				  (add (mul 2 c x)
 				       (mul -3 b))
 				  (power (polfoo c b a x)
 					 1//2)))
-		    (augmult (mul '((rat) 1 8)
+		    (augmult (mul '((rat simp) 1 8)
 				  exp5
 				  (add (mul 3 b b)
 				       (mul -4 a c))
@@ -1384,7 +1384,7 @@
 				  (inv (power c (add p (div 3 2))))
 				  (inv exp7)
 				  (power exp4 exp7)))
-		    (augmult (mul b b '((rat) -1 8)
+		    (augmult (mul b b '((rat simp) -1 8)
 				  (inv (power c (add p (div 5 2))))
 				  (inv p)
 				  (power exp4
@@ -1416,7 +1416,7 @@
 	       ;; The two integrals here were computed above in res2
 	       ;; and res1, respectively.
 	       (add (augmult (mul* (power x (1- m))
-				   *ec-1* `((rat) -1 ,denom)
+				   *ec-1* (div -1 denom)
 				   (power (polfoo c b a x)
 					  (add 1//2 (- p)))))
 		    (augmult (mul b (+ p p 1 (* -2 m))
@@ -1500,7 +1500,7 @@
 	       (add (augmult (mul -1 exp1
 				  (power (polfoo c b a x)
 					 (add pow -1//2))))
-		    (augmult (mul b `((rat) ,exp2 2)
+		    (augmult (mul b (div exp2 2)
 				  (den1numn (1- pow) c b a x)))
 		    (augmult (mul c exp2 (numn (- pow 2) c b a x))))))
        (when (= p 1)
@@ -1538,11 +1538,11 @@
        ;; integrating R^(pow-1/2).
 
        (setq partres
-	     (add (augmult (mul* `((rat) -1 ,(1- m))
-				 ea-1
-				 (power x (1+ (- m)))
-				 (power (polfoo c b a x)
-					(add `((rat) ,p 2) 1))))
+	     (add (augmult (mul (div -1 (1- m))
+				ea-1
+				(power x (1+ (- m)))
+				(power (polfoo c b a x)
+				       (add (div p 2) 1))))
 		  (augmult (mul (inv (+ m m -2))
 				ea-1 b
 				(+ p 4 (* -2 m))
@@ -1587,8 +1587,8 @@
 
 ;; Integrate (c*x^2+b*x)^(p-1/2)/x^m
 (defun casegen (m p c b x)
-  (let ((exp1 (power (polfoo c b 0 x) `((rat) ,p 2)))    ;; exp1 = R^(p/2)
-	(exp3 (power x (1+ (- m)))))                     ;; exp3 = 1/x^(m-1)
+  (let ((exp1 (power (polfoo c b 0 x) (div p 2)))    ;; exp1 = R^(p/2)
+	(exp3 (power x (1+ (- m)))))                 ;; exp3 = 1/x^(m-1)
     (cond ((= p 1)
 	   ;; sqrt(c*x^2+b*x)/x^m
 	   (case1 (list (list m 1)) c b x))
@@ -1666,8 +1666,8 @@
        (setq res (add (augmult (mul -2 (power (polfoo c b 0 x) 1//2)
 				    eb-1 (inv (+ m m -1))
 				    (power x (- m))))
-		      (augmult (mul* `((rat) -2 ,(+ m m -1))
-				     c (1- m) eb-1 res))))
+		      (augmult (mul (div -2 (+ m m -1))
+				    c (1- m) eb-1 res))))
        (when (= m m1)
 	 (setq res2 res)
 	 (go jump4))
@@ -1706,13 +1706,13 @@
        (go jump4))))
 
 (defun r1m (m)
-  `((rat) 1 ,m))
+  (div 1 m))
 
 ;; Integrate (c*x^2+b*x)^(p-1/2)
 (defun case0 (power c b x)
-  (let ((exp1 '((rat) 1 4))
+  (let ((exp1 '((rat simp) 1 4))
 	(exp2 (add b (mul 2 c x)))
-	(exp3 (power c '((rat) -3 2)))
+	(exp3 (power c '((rat simp) -3 2)))
 	(exp4 (add (mul 2 c x) (mul -1 b))))
     ;; exp1 = 1/4
     ;; exp2 = b+2*c*x
@@ -1753,8 +1753,8 @@
 
        (setq result (add (augmult (mul 1//2 *ec-1* (inv (1+ p)) exp2
 				       (power (polfoo c b 0 x)
-					      `((rat) ,p 2))))
-			 (augmult (mul p b b '((rat) -1 4)
+					      (div p 2))))
+			 (augmult (mul p b b '((rat simp) -1 4)
 				       *ec-1* (inv (1+ p)) result))))
        (go loop))))
 
