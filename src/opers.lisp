@@ -156,7 +156,7 @@
 (defmfun root (x n)
   (cond ((=0 x) 0)
 	((=1 x) 1)
-	(t (simplifya `((mexpt) ,x ((rat) 1 ,n)) t))))
+	(t (simplifya `((mexpt) ,x ((rat simp) 1 ,n)) t))))
 
 ;; (Porm flag expr) is +expr if flag is true, and -expr
 ;; otherwise.  Morp is the opposite.  Names stand for "plus or minus"
