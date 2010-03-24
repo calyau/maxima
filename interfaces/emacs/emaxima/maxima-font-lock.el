@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.18 $
-;; $Date: 2010-03-24 18:47:33 $
+;; $Revision: 1.19 $
+;; $Date: 2010-03-24 19:53:40 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -950,6 +950,7 @@
    "resolvante_unitaire"
    "resolvante_vierer"
    "rest"
+   "restart"
    "restore"
    "resultant"
    "return"
@@ -1388,11 +1389,12 @@
 (defvar maxima-font-lock-keywords-3
   (append maxima-font-lock-keywords-2
     (list 
-     (list "^[[:space:]]*\\([%_[:alnum:]]+\\)(\\([[:space:],%_[:alnum:]]+\\)\\[[%_[:alnum:]]+\\][:space:]*)[[:space:]]*:*:="
+     (list "^[[:space:]]*\\([%_[:alnum:]]+\\)(\\([[:space:],%_[:alnum:]]+\\(?:\\[[%_[:alnum:]]+\\]\\)*\\)[:space:]*)[[:space:]]*:*:="
            '(1 font-lock-function-name-face))
-     (list "^.*[[(]\\([^])]*\\)[])][ \t\n\f\r]*:*:="
+     (list "^[[:space:]]*\\(?:[%_[:alnum:]]+\\)(\\([[:space:],%_[:alnum:]]+\\(?:\\[[%_[:alnum:]]+\\]\\)*\\)[:space:]*)[[:space:]]*:*:="
            '(1 font-lock-variable-name-face))))
   "Gaudy level highlighting for Maxima mode.")
+;;"^.*[[(]\\([^])]*\\)[])][ \t\n\f\r]*:*:="
 
 (defvar maxima-font-lock-keywords maxima-font-lock-keywords-3
   "Default expressions to highlight in Maxima mode.")
