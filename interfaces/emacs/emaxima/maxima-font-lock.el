@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.17 $
-;; $Date: 2010-03-06 09:57:24 $
+;; $Revision: 1.18 $
+;; $Date: 2010-03-24 18:47:33 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -1388,7 +1388,7 @@
 (defvar maxima-font-lock-keywords-3
   (append maxima-font-lock-keywords-2
     (list 
-     (list "^\\(.*\\)[[(]\\([^])]*\\)[])][ \t\n\f\r]*:*:="
+     (list "^[[:space:]]*\\([%_[:alnum:]]+\\)(\\([[:space:],%_[:alnum:]]+\\)\\[[%_[:alnum:]]+\\][:space:]*)[[:space:]]*:*:="
            '(1 font-lock-function-name-face))
      (list "^.*[[(]\\([^])]*\\)[])][ \t\n\f\r]*:*:="
            '(1 font-lock-variable-name-face))))
