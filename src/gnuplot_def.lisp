@@ -261,13 +261,12 @@
     (when (and (getf features :zmin) (getf features :zmax))
       (format dest "set zrange [~g : ~g]~%"
               (getf features :zmin) (getf features :zmax)))
-    (when (and (eql (getf features :type) 'plot2d) (getf features :axes))
+    (when (and (string= (getf features :type) "plot2d") (getf features :axes))
       (case (getf features :axes)
         ($x (format dest "set xzeroaxis~%"))
         ($y (format dest "set yzeroaxis~%"))
         (t (format dest "set zeroaxis~%"))))
-              (format dest "set datafile missing \"~a\"~%"
-		      *missing-data-indicator*)))
+    (format dest "set datafile missing \"~a\"~%" *missing-data-indicator*)))
 
 (defun gnuplot-plot3d-command (file titles n) 
 (let (title (style "with pm3d")
