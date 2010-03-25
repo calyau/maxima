@@ -1,4 +1,4 @@
-@c english version 1.55
+@c english version 1.56
 @menu
 * n-arios::
 * no-fijos::
@@ -2199,8 +2199,15 @@ devuelva algo diferente de @code{true} o @code{false}.
 La llamada @code{sort (@var{L})} equivale a @code{sort (@var{L}, orderlessp)};
 esto es, el orden por defecto es el ascendente, tal como queda definido por 
 @code{orderlessp}. Todos los @'atomos y expresiones de Maxima son comparables
-para @code{orderlessp}, aunque existen ejemplos aislados de expresiones para las
-cuales @code{orderlessp} deja de ser transitivo; se trata de un fallo de Maxima.
+para @code{orderlessp}.
+
+El predicado @code{ordergreatp} ordena una lista en sentido descendente. El
+predicado @code{ordermagnitudep} ordena seg@'un sus respectivas normas, n@'umeros,
+s@'{@dotless{i}}mbolos constantes con valores num@'ericos y expresiones
+con valores constantes. Cualesquiera otros elementos de la lista @var{L} se ordenan
+con @code{orderlessp}. El predicado @code{"<"} permite tambi@'en la ordenaci@'on 
+por norma, pero no ordena completamente los elementos de la lista @var{L} que 
+no sean comparables respecto de @code{"<"}.
 
 Ejemplos:
 
@@ -2236,6 +2243,18 @@ Ejemplos:
 (%i7) sort (my_list, lambda ([a, b], 
                              orderlessp (reverse (a), reverse (b))));
 (%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
+@end example
+
+Ordena seg@'un sus normas n@'umeros, constantes y expresiones, as@'{@dotless{i}}
+como cualesquiera otros elementos en orden ascendente:
+
+@c ===beg===
+@c sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],ordermagnitudep);
+@c ===end===
+@example
+(%i8) sort([%i,1+%i,2*x,minf,inf,%e,sin(1),0,1,2,3,1.0,1.0b0],
+      ordermagnitudep);
+(%o8)  [minf, 0, sin(1), 1, 1.0, 1.0b0, 2, %e, 3, inf, %i, %i + 1, 2 x]
 @end example
 
 @end deffn
