@@ -2304,14 +2304,26 @@ in the interval of integration.")
     (cond (result (sratsimp (m* (m- '$%i) result)))
 	  (t nil))))
 
+;; Evaluates the contour integral of GRAND around the unit circle
+;; using residues.
 (defun unitcir (grand var)
   (numden grand)
-  (let ((result (princip (res nn* dn* #'(lambda (pt)
-					  (ratgreaterp 1 (cabs pt)))
-			      #'(lambda (pt)
-				  (alike1 1 (cabs pt)))))))
-    (cond (result (m* '$%pi result))
-	  (t nil))))
+  (let* ((s nil)
+	 (result (princip (res nn* dn* 
+			       #'(lambda (pt)
+				   ;; Is pt stricly inside the unit circle?
+				   (setq s (let ((limitp nil))
+					     ($asksign (m+ -1 (cabs pt)))))
+				   (eq s '$neg))
+			       #'(lambda (pt)
+				   ;; Is pt on the unit circle?  (Use
+				   ;; the cached value computed
+				   ;; above.)
+				   (prog1
+				       (eq s '$zero)
+				     (setq s nil)))))))
+    (when result
+      (m* '$%pi result))))
 
 
 (defun logx1 (exp ll ul)

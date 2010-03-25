@@ -78,6 +78,7 @@
 				   (m^ (m+ var (m* -1 pole))
 				       d)
 				   cf)))))))
+     ;; Don't change the order of clauses here.  We want to call REGION and then REGION1.
      (cond ((funcall region pole)
 	    ;; The pole is in REGION
 	    (cond ((equal d 1)
@@ -97,7 +98,7 @@
 		   (return nil))))
 	   (*semirat*
 	    ;; (What does *SEMIRAT* mean?)  Anyway if we're here, the
-	    ;; pole is not in REGION or REGIOn1, so push the pole onto
+	    ;; pole is not in REGION or REGION1, so push the pole onto
 	    ;; SS or RR depending if the pole is repeated or not.
 	    (cond ((equal d 1)
 		   (push pole ss))

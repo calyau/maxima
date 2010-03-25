@@ -1368,3 +1368,15 @@ true;
 is(abs(rectform(1e160/(1e160+3/2*%i))-1) < 1.5e-160);
 true;
 
+/* Bug ID: 2953369 - Definite Integration of 1/(a-b*cos(x)) wrong
+ *
+ * For simplicity we test the equivalent integrate(1/(1-r*cos(x)),x,0,%pi).
+ */
+/* These assumes are to answer the questions integrate (from routine unitcir) will ask */
+(assume(r>0,r<1,abs(sqrt(1-r^2)-1)/r-1 < 0, sqrt(1-r^2)-r+1>0), 0);
+0;
+integrate(1/(1-r*cos(x)),x,0,%pi);
+%pi/sqrt(1-r^2);
+
+
+
