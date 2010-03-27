@@ -78,10 +78,7 @@ sin(y)*(10.0+6*cos(x)),
     ;; adaptive-plotting will do.
     ((mlist) $adapt_depth 5)
     ((mlist) $gnuplot_preamble "")
-    ((mlist) $gnuplot_default_term_command
-     ,(if (string= *autoconf-win32* "true")
-          "set term windows \"Verdana\" 15"
-          ""))
+    ((mlist) $gnuplot_default_term_command "set term pop")
     ((mlist) $gnuplot_dumb_term_command
      "set term dumb 79 22")
     ((mlist) $gnuplot_ps_term_command
@@ -1152,7 +1149,7 @@ sin(y)*(10.0+6*cos(x)),
         (gnuplot-out-file-string (get-plot-option-string '$gnuplot_out_file))
         (run-viewer ($get_plot_option '$run_viewer 2))
         (gnuplot-preamble (string-downcase (get-plot-option-string '$gnuplot_preamble)))
-        (view-file))
+        (vqiew-file))
     ;; default output file name for for all formats except default
     (when (and (not (eq ($get_plot_option '$gnuplot_term 2) '$default)) 
                (null gnuplot-out-file))
@@ -1372,6 +1369,7 @@ sin(y)*(10.0+6*cos(x)),
             (plot-temp-file
              (format nil "maxout.~(~a~)"
                      (ensure-string (getf features :plot-format))))))
+
     ;; old function $plot2dopen incorporated here
     (case (getf features :plot-format)
       ($xmaxima
@@ -1587,9 +1585,8 @@ sin(y)*(10.0+6*cos(x)),
        (send-gnuplot-command *gnuplot-command*))
       ($mgnuplot 
        ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) 
-                (format nil " -plot2d \"~a\" -title '~a'" file "Fun1")))
-      )
-    output-file))
+                (format nil " -plot2d \"~a\" -title '~a'" file "Fun1"))))
+output-file))
 
 
 (defun msymbolp (x)
