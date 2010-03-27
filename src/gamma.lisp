@@ -731,9 +731,9 @@
 (defvar *gamma-incomplete-eps* (* 2 double-float-epsilon))
 (defvar *gamma-incomplete-min* 1.0e-32)
 
-(defvar $gamma_radius 1.0
+(defvar *gamma-radius* 1.0
   "Controls the radius within a series expansion is done.")
-(defvar $gamma_imag 1.0)
+(defvar *gamma-imag* 1.0)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -749,13 +749,13 @@
         (format t "~&GAMMA-INCOMPLETE with ~A and ~A~%" a x))
     (cond
       ;; The series expansion is done for x within a circle with a radius
-      ;; $gamma_radius+abs(realpart(a)), for all x which are on the negative 
+      ;; *gamma-radius*+abs(realpart(a)), for all x which are on the negative 
       ;; real axis and for all x which have an angle between [3*%pi/4,5*%pi/4] 
-      ((and (> (abs x) (+ $gamma_radius 
+      ((and (> (abs x) (+ *gamma-radius*
                           (if (> (realpart a) 0.0) (realpart a) 0.0)))
             (not (and (< (realpart x) 0)
                       (< (abs (imagpart x))
-                         (* $gamma_imag (abs (realpart x)))))))
+                         (* *gamma-imag* (abs (realpart x)))))))
        ;; Expansion in continued fractions
        (when *debug-gamma* 
          (format t "~&GAMMA-INCOMPLETE in continued fractions~%"))
@@ -833,7 +833,7 @@
     (cond
       ((and (eq ($sign x) '$pos)
             (eq ($sign (sub (simplify (list '(mabs) x))
-                            (add $gamma_radius
+                            (add *gamma-radius*
                                  (if (eq ($sign a) '$pos) a 0.0))))
                 '$pos))
        ;; Expansion in continued fractions of the Incomplete Gamma function
@@ -905,10 +905,10 @@
       (format t "   : x = ~A~%" x))
     (cond
       ;; The series expansion is done for x within a circle with a radius
-      ;; $gamma_radius+abs(realpart(a)), for all x which are on the negative 
+      ;; *gamma-radius*+abs(realpart(a)), for all x which are on the negative 
       ;; real axis and for all x which have an angle between [3*%pi/4,5*%pi/4]
       ((and (eq ($sign (sub (simplify (list '(mabs) x))
-                            (add $gamma_radius
+                            (add *gamma-radius*
                                  (if (eq ($sign ($realpart a)) '$pos)
                                      ($realpart a)
                                      0.0))))
