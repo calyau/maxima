@@ -131,6 +131,7 @@
     
     ;; Parse the given options into the list features
     (setq features (plot-options-parser options features))
+    (setf (getf features ::type) "plot2d")
     (setq xrange (check-range xrange))
     (setq yrange (check-range yrange))
     (setf (getf features :xmin) (third xrange))
