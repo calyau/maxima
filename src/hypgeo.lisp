@@ -695,13 +695,13 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize gammagreek(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
+;; Recognize gamma_greek(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
 (defun onegammagreek (exp)
   (m2 exp
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 (($gammagreek)(w1 freevarpar)(w2 true)))
+	 (($gamma_greek)(w1 freevarpar)(w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -1825,7 +1825,7 @@
   (let ((-a (mul -1 a)))
     (mul c
          (power -a (mul -1 *par*))
-         `(($gammagreek) ,*par* ,-a))))
+         `(($gamma_greek simp) ,*par* ,-a))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -3128,7 +3128,7 @@
 ;;;
 ;;; In all other cases we transform to a Gammagreek function:
 ;;;
-;;;   gamma_incomplete(a,x) = gamma(a)- gammagreek(a,x)
+;;;   gamma_incomplete(a,x) = gamma(a)- gamma_greek(a,x)
 ;;;
 ;;; The Gammagreek function will be further transformed to a Hypergeometric 1F1
 ;;; representation. With this change we get more simple and correct results for
@@ -3144,7 +3144,7 @@
          (wwhit x (div (sub a 1) 2) (div a 2)))
     ;; In all other cases the representation as a Gammagreek function
     (sub (simplify (list '(%gamma) a))
-         (list '($gammagreek) a x))))
+         (list '($gamma_greek simp) a x))))
 
 ;; Bessel Y in terms of Bessel J
 ;;
@@ -3808,9 +3808,9 @@
 ;;
 ;; A&S 13.6.10:
 ;;
-;; M(a,a+1,-x) = a*x^(-a)*gammagreek(a,x)
+;; M(a,a+1,-x) = a*x^(-a)*gamma_greek(a,x)
 ;;
-;; gammagreek(a,x) = x^a/a*M(a,a+1,-x)
+;; gamma_greek(a,x) = x^a/a*M(a,a+1,-x)
 
 (defun gammagreektf (a x)
   (list (mul (inv a) (power x a))

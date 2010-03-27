@@ -31,7 +31,7 @@
 
 (defmvar $prefer_whittaker nil)
 
-;; When T give result in terms of gamma_incomplete and not %gammagreek
+;; When T give result in terms of gamma_incomplete and not gamma_greek
 (defmvar $prefer_gamma_incomplete nil)
 
 ;; When NIL do not automatically expand polynomials as a result
@@ -2843,7 +2843,7 @@
 ;;
 ;; For hgfred([n],[2+n],-z), the above returns
 ;;
-;; 2*n*(n+1)*z^(-n-1)*(%gammagreek(n,z)*z-%gammagreek(n+1,z))
+;; 2*n*(n+1)*z^(-n-1)*(gamma_greek(n,z)*z-gamma_greek(n+1,z))
 ;;
 ;; But from A&S 13.4.3
 ;;
@@ -2851,12 +2851,12 @@
 ;;
 ;; so M(n,2+n,z) = (n+1)*M(n,n+1,z)-n*M(n+1,n+2,z)
 ;;
-;; And M(n,n+1,-z) = n*z^(-n)*%gammagreek(n,z)
+;; And M(n,n+1,-z) = n*z^(-n)*gamma_greek(n,z)
 ;;
 ;; This gives
 ;;
-;; M(n,2+n,z) = (n+1)*n*z^(-n)*%gammagreek(n,z) - n*(n+1)*z^(-n-1)*%gammagreek(n+1,z)
-;;            = n*(n+1)*z^(-n-1)*(%gammagreek(n,z)*n-%gammagreek(n+1,z))
+;; M(n,2+n,z) = (n+1)*n*z^(-n)*gamma_greek(n,z) - n*(n+1)*z^(-n-1)*gamma_greek(n+1,z)
+;;            = n*(n+1)*z^(-n-1)*(gamma_greek(n,z)*n-gamma_greek(n+1,z))
 ;;
 ;; So the version above is off by a factor of 2.  But I think it's more than that.
 ;; Using A&S 13.4.3 again,
@@ -2898,22 +2898,22 @@
 
 ;; Incomplete gamma function
 ;;
-;; gammagreek(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
+;; gamma_greek(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
 (defun gammagreek (a z)
   (cond ((and (integerp a) (eql a 1))
-	 ;; gammagreek(0, x) = 1-exp(x)
+	 ;; gamma_greek(0, x) = 1-exp(x)
 	 (sub 1 (mexpt (neg z))))
 	((and (integerp a) (plusp a))
-	 ;; gammagreek(a,z) can be simplified if a is a positive
+	 ;; gamma_greek(a,z) can be simplified if a is a positive
 	 ;; integer.
 	 ;;
 	 ;; A&S 6.5.22:
 	 ;;
-	 ;; gammagreek(a+1,x) = a*gammagreek(a,x) - x^a*exp(-x)
+	 ;; gamma_greek(a+1,x) = a*gamma_greek(a,x) - x^a*exp(-x)
 	 ;;
 	 ;; or
 	 ;;
-	 ;; gammagreek(a,x) = (a-1)*gammagreek(a-1,x)-x^(a-1)*exp(-x)
+	 ;; gamma_greek(a,x) = (a-1)*gamma_greek(a-1,x)-x^(a-1)*exp(-x)
 	 (let ((a-1 (sub a 1)))
 	   (sub (mul a-1 (gammagreek a-1 z))
 		(mul (m^t z a-1)
@@ -2921,15 +2921,15 @@
 	((=1//2 a)
 	 ;; A&S 6.5.12:
 	 ;;
-	 ;; gammagreak(1/2,x^2) = sqrt(%pi)*erf(x)
+	 ;; gamma_greak(1/2,x^2) = sqrt(%pi)*erf(x)
 	 ;;
-	 ;; gammagreek(1/2,z) = sqrt(%pi)*erf(sqrt(x))
+	 ;; gamma_greek(1/2,z) = sqrt(%pi)*erf(sqrt(x))
 	 ;;
 	 (mul (power '$%pi '((rat simp) 1 2))
 	      (take '(%erf) (power z '((rat simp) 1 2)))))
 	((and (integerp (add a 1//2)))
-	 ;; gammagreek(n+1/2,z) can be simplified using A&S 6.5.22 to
-	 ;; reduce the problem to gammagreek(1/2,x), which we know,
+	 ;; gamma_greek(n+1/2,z) can be simplified using A&S 6.5.22 to
+	 ;; reduce the problem to gamma_greek(1/2,x), which we know,
 	 ;; above.
 	 (if (ratgreaterp a 0)
 	     (let ((a-1 (sub a 1)))
@@ -2943,15 +2943,15 @@
 		    a))))
 	(t
 	 ;; Give up
-         `(($%gammagreek simp) ,a ,z))))
+         `(($gamma_greek simp) ,a ,z))))
 
 ;; A&S 6.5.12: 
-;; %gammagreek(a,x) = x^a/a*M(a,1+a,-x)
+;; gamma_greek(a,x) = x^a/a*M(a,1+a,-x)
 ;;                  = x^a/a*exp(-x)*M(1,1+a,x)
 ;;
-;; where %gammagreek(a,x) is the incomplete gamma function.
+;; where gamma_greek(a,x) is the lower incomplete gamma function.
 ;;
-;; M(a,1+a,x) = a*(-x)^(-a)*%gammagreek(a,-x)
+;; M(a,1+a,x) = a*(-x)^(-a)*gamma_greek(a,-x)
 #+nil
 (defun hypredincgm
     (a z)
@@ -2959,7 +2959,7 @@
      (setq z (mul -1 z))
      (return (mul a
 		  (power z (mul -1 a))
-		  (list '($%gammagreek) a z)))))
+		  (list '($gamma_greek simp) a z)))))
 
 (defun hypredincgm (a z)
   (let ((-z (mul -1 z)))
