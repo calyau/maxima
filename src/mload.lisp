@@ -168,18 +168,16 @@
     searched-for))
 
 
-(defun $file_type (fil &aux typ)
-  (setq fil (pathname fil))
-  (setq typ (format nil "~(~A~)" (pathname-type fil)))
-  (or 
-   (and (> (length typ) 0)
-	(let ((ch (aref typ 0)))
-	  (cdr (assoc ch '((#\m . $maxima)
-			   (#\d . $maxima)
-			   (#\l . $lisp)
-			   (#\o . $object)
-			   (#\f . $object))))))
-   '$object))
+(defun $file_type (fil)
+  (let ((typ ($pathname_type fil)))
+    (cond
+      ((member typ '("l" "lsp" "lisp") :test #'string=)
+       '$lisp)
+      ((member typ '("mac" "mc" "demo" "dem" "dm1" "dm2" "dm3" "dmt")
+	       :test #'string=)
+       '$maxima)
+      (t
+       '$object))))
 
 (defun $pathname_directory (path)
   (let ((pathname (pathname path)))
