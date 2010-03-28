@@ -442,7 +442,7 @@ test_sum(
   sum(harmonic_number(n)/n/2^n, n, 1, inf),
   [],
   false,
-  [],
+  [rectform],
   %pi^2/12
 ), sum_by_integral_transforms=[logcontract];
 0;

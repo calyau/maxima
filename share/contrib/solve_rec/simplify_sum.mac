@@ -842,7 +842,7 @@ sum_by_integral(expr, var, lo, hi) :=
     if expr1 # false then expr1: integrate(expr1, x_, 0, 1)
     else expr1 : apply('sum, [expr, var, lo, hi]),
     
-    if freeof_integrate(expr1) then expr1
+    if freeof_integrate(expr1) and freeof_limit(expr1) then expr1
     else apply('sum, [expr, var, lo, hi]))
 
   else apply('sum, [expr, var, lo, hi])$
