@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007-2009 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2010 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -215,6 +215,7 @@
       (gethash '$palette  *gr-options*)       '$color ; '$color is a short cut for [7,5,15]
                                                       ; and '$gray is a short cut for [3,3,3].
                                                       ; See command 'show palette rgbformulae' in gnuplot.
+      (gethash '$tube_extremes *gr-options*) '((mlist simp) '$open '$open) ; or '$closed
   ) )
 
 
@@ -294,11 +295,23 @@
             (if (member val '(t nil $impulses))
               (setf (gethash opt *gr-options*) val)
               (merror "draw: illegal points_joined option: ~M " val)) )
+      ($colorbox ; defined as true, false or string
+            (if (or (member val '(t nil))
+                    (stringp val) )
+              (setf (gethash opt *gr-options*) val)
+              (merror "draw: illegal colorbox option: ~M " val)) )
       (($line_type $xaxis_type $yaxis_type $zaxis_type) ; defined as $solid or $dots
             (case val
                ($solid (setf (gethash opt *gr-options*) 1))
                ($dots  (setf (gethash opt *gr-options*) 0))
                (otherwise  (merror "draw: illegal line type: ~M" val))) )
+      (($tube_extremes) ; defined as a list of two elements, $open and/or $closed
+            (if (and ($listp val)
+                     (= ($length val) 2)
+                     (member ($first val) '($open $closed))
+                     (member ($second val) '($open $closed)))
+               (setf (gethash opt *gr-options*) val)
+               (merror "draw: illegal tube extreme types: ~M" val)))
       ($point_type ; numbers >= -1 or shape names
             (cond
               ((and (integerp val) (>= val -1 ))
@@ -336,10 +349,12 @@
                        (setf (gethash opt *gr-options*) (string-trim '(#\,) str) ) ))
                   (t
                     (merror "draw: unknown contour level description: ~M " val))))
-      (($transparent $border $logx $logy $logz $logcb $head_both $grid $xaxis_secondary $yaxis_secondary
-        $axis_bottom $axis_left $axis_top $axis_right $axis_3d $surface_hide $colorbox
-        $xaxis $yaxis $zaxis $unit_vectors $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate
-        $ztics_rotate $xtics_axis $ytics_axis $xtics_secondary_axis $ytics_secondary_axis $ztics_axis) ; true or false
+      (($transparent $border $logx $logy $logz $logcb $head_both $grid
+        $xaxis_secondary $yaxis_secondary $axis_bottom $axis_left $axis_top
+        $axis_right $axis_3d $surface_hide $xaxis $yaxis $zaxis $unit_vectors
+        $xtics_rotate $ytics_rotate $xtics_secondary_rotate $ytics_secondary_rotate
+        $ztics_rotate $xtics_axis $ytics_axis $xtics_secondary_axis
+        $ytics_secondary_axis $ztics_axis) ; true or false
             (if (or (equal val t)
                     (equal val nil))
                 (setf (gethash opt *gr-options*) val)
@@ -2291,6 +2306,173 @@
 
 
 
+;; Object: 'tube'
+;; Usage:
+;;     tube(xfun,yfun,zfun,rad,par,parmin,parmax)
+;; Options:
+;;     xu_grid
+;;     yv_grid
+;;     line_type
+;;     line_width
+;;     color
+;;     key
+;;     enhanced3d
+;;     surface_hide
+
+(defmacro check-tube-extreme (ex cx cy cz circ)
+  `(when (equal (nth ,ex (get-option '$tube_extremes)) '$closed)
+     (if enhanced4d
+       (setf ,circ (list ,cx ,cy ,cz (funcall fcn4d tt)))
+       (setf ,circ (list ,cx ,cy ,cz)))
+     (dotimes (k vgrid)
+       (setf result (append result ,circ)))))
+
+(defun tube (xfun yfun zfun rad par parmin parmax)
+  (let* ((ugrid (get-option '$xu_grid))
+         (vgrid (get-option '$yv_grid))
+         ($numer t)
+         (tmin ($float parmin))
+         (tmax ($float parmax))
+         (vmax 6.283185307179586) ; = float(2*%pi)
+         (xmin most-positive-double-float)
+         (xmax most-negative-double-float)
+         (ymin most-positive-double-float)
+         (ymax most-negative-double-float)
+         (zmin most-positive-double-float)
+         (zmax most-negative-double-float)
+         (teps (/ (- tmax tmin) (- ugrid 1)))
+         (veps (/ vmax (- vgrid 1)))
+         (tt tmin)
+         (enhanced4d (not (member (get-option '$enhanced3d) '(nil t))))
+         (ncols (if enhanced4d 4 3))
+         circ
+         result
+         f1 f2 f3 fcn4d radius
+         cx cy cz nx ny nz
+         ux uy uz vx vy vz
+         x y z module r vv rcos rsin
+         cxold cyold czold
+         uxold uyold uzold ttnext )
+    (when (< tmax tmin)
+       (merror "draw3d (tube): illegal range"))
+    (setq f1 (coerce-float-fun ($float xfun) `((mlist) ,par)))
+    (setq f2 (coerce-float-fun ($float yfun) `((mlist) ,par)))
+    (setq f3 (coerce-float-fun ($float zfun) `((mlist) ,par)))
+    (if enhanced4d
+       (setq fcn4d
+             (coerce-float-fun ($float (get-option '$enhanced3d))
+                               `((mlist) ,par))))
+    (setf radius
+          (coerce-float-fun ($float rad) `((mlist) ,par)))
+    (loop do
+      ; calculate center and radius of circle
+      (cond
+        ((= tt tmin)  ; 1st iteration
+           (setf cx (funcall f1 tt)
+                 cy (funcall f2 tt)
+                 cz (funcall f3 tt)
+                 ttnext (+ tt teps))
+           (check-tube-extreme 1 cx cy cz circ)
+           (setf nx (- (funcall f1 ttnext) cx)
+                 ny (- (funcall f2 ttnext) cy)
+                 nz (- (funcall f3 ttnext) cz)))
+        (t  ; all next iterations along the parametric curve
+           (setf cxold cx
+                 cyold cy
+                 czold cz)
+           (setf cx (funcall f1 tt)
+                 cy (funcall f2 tt)
+                 cz (funcall f3 tt))
+           (setf nx (- cx cxold)
+                 ny (- cy cyold)
+                 nz (- cz czold))))
+      (setf r (funcall radius tt))
+      ; calculate the unitary normal vector      
+      (setf module (sqrt (+ (* nx nx) (* ny ny) (* nz nz))))
+      (setf nx (/ nx module)
+            ny (/ ny module)
+            nz (/ nz module))
+      ; calculate unitary vector perpendicular to n=(nx,ny,nz)
+      ; ux.nx+uy.ny+uz.nz=0 => ux=-t(ny+nz)/nx, uy=uz=t
+      ; let's take t=1
+      (cond
+        ((= nx 0.0)
+           (setf ux 1.0 uy 0.0 uz 0.0))
+        ((= ny 0.0)
+           (setf ux 0.0 uy 1.0 uz 0.0))
+        ((= nz 0.0)
+           (setf ux 0.0 uy 0.0 uz 1.0))
+        (t  ; all other cases
+           (setf ux (- (/ (+ ny nz) nx))
+                 uy 1.0
+                 uz 1.0)))
+      (setf module (sqrt (+ (* ux ux) (* uy uy) (* uz uz))))
+      (setf ux (/ ux module)
+            uy (/ uy module)
+            uz (/ uz module))
+      (when (and (> tt tmin)
+                 (< (+ (* uxold ux)
+                       (* uyold uy)
+                       (* uzold uz))
+                    0))
+        (setf ux (- ux)
+              uy (- uy)
+              uz (- uz)))
+      (setf uxold ux
+            uyold uy
+            uzold uz)
+      ; vector v = nxu
+      (setf vx (- (* ny uz) (* nz uy))
+            vy (- (* nz ux) (* nx uz))
+            vz (- (* nx uy) (* ny ux)))
+      ; parametric equation of the circumference of radius
+      ; r and centered at c=(cx,cy,cz):
+      ; x(t) = c + r(cos(t)u + sin(t)v),
+      ; for t in (0, 2*%pi)
+      (setf vv 0.0)
+      (setf circ '())
+      (loop for i below vgrid do
+        (setf rcos (* r (cos vv))
+              rsin (* r (sin vv)))
+        (setf x (+ cx (* rcos ux) (* rsin vx))
+              y (+ cy (* rcos uy) (* rsin vy))
+              z (+ cz (* rcos uz) (* rsin vz)))
+        (when (> x xmax) (setf xmax x))
+        (when (< x xmin) (setf xmin x))
+        (when (> y ymax) (setf ymax y))
+        (when (< y ymin) (setf ymin y))
+        (when (> z zmax) (setf zmax z))
+        (when (< z zmin) (setf zmin z))
+        (if enhanced4d
+          (setf circ (cons (list x y z (funcall fcn4d tt)) circ))
+          (setf circ (cons (list x y z) circ)) )
+        (setf vv (+ vv veps))
+        (when (> vv vmax) (setf vv vmax))  ) ; loop for
+      (setf result (append result (apply #'append circ)))
+      when (>= tt tmax) do (loop-finish)
+      do (setf tt (+ tt teps))
+         (when (> tt tmax) (setf tt tmax))  ) ; loop do
+      (check-tube-extreme 2 cx cy cz circ)
+    ; update x-y-z ranges
+    (update-ranges-3d xmin xmax ymin ymax zmin zmax)
+    (make-gr-object
+       :name 'tube
+       :command (format nil " ~a w ~a lw ~a lt ~a lc ~a"
+                            (make-obj-title (get-option '$key))
+                            (if (get-option '$enhanced3d) "pm3d" "l")
+                            (get-option '$line_width)
+                            (get-option '$line_type)
+                            (get-option '$color))
+       :groups `((,ncols ,vgrid))
+       :points `(,(make-array (length result) :element-type 'flonum
+                                              :initial-contents result)))))
+
+
+
+
+
+
+
 ;; Object: 'image'
 ;; Usages:
 ;;     image(matrix_of_numbers,x0,y0,width,height)
@@ -2892,6 +3074,10 @@
             (if (get-option '$colorbox)
                (format nil "set colorbox~%")
                (format nil "unset colorbox~%"))
+            (format nil "set cblabel '~a'~%" 
+                        (if (stringp (get-option '$colorbox))
+                          (get-option '$colorbox)
+                          ""))
             (let ((pal (get-option '$palette)))
               (case pal
                  ($gray     (format nil "set palette gray~%"))
@@ -2935,6 +3121,7 @@
                                      ($vector             (apply #'vect3d (rest x)))
                                      ($parametric         (apply #'parametric3d (rest x)))
                                      ($parametric_surface (apply #'parametric_surface (rest x)))
+                                     ($tube               (apply #'tube (rest x)))
                                      ($spherical          (apply #'spherical (rest x)))
                                      ($cylindrical        (apply #'cylindrical (rest x)))
                                      ($geomap             (apply #'geomap3d (rest x)))
@@ -3058,6 +3245,10 @@
             (if (get-option '$colorbox)
                (format nil "set colorbox~%")
                (format nil "unset colorbox~%"))
+            (format nil "set cblabel '~a'~%" 
+                        (if (stringp (get-option '$colorbox))
+                          (get-option '$colorbox)
+                          ""))
             (let ((pal (get-option '$palette)))
               (case pal
                  ($gray     (format nil "set palette gray~%"))

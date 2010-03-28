@@ -2094,20 +2094,33 @@ See also @code{colorbox}.
 @defvr {Graphic option} colorbox
 Default value: @code{true}
 
-If @code{colorbox} is @code{true}, a color scale is drawn together with
-@code{image} objects.
+If @code{colorbox} is @code{true}, a color scale without label is drawn together with 
+@code{image} 2D objects, or coloured 3d objects. If @code{colorbox} is @code{false}, no 
+color scale is shown. If @code{colorbox} is a string, a color scale with label is drawn.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
 Example:
 
+Color scale and images.
+
 @example
 (%i1) load(draw)$
 (%i2) im: apply('matrix,
                  makelist(makelist(random(200),i,1,30),i,1,30))$
 (%i3) draw2d(image(im,0,0,30,30))$
-(%i4) draw2d(colorbox=false, image(im,0,0,30,30))$
+(%i4) draw2d(colorbox = false, image(im,0,0,30,30))$
+@end example
+
+Color scale and 3D coloured object.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        colorbox   = "Magnitude",
+        enhanced3d = true,
+        explicit(x^2+y^2,x,-1,1,y,-1,1))$
 @end example
 
 See also @code{palette}.
@@ -3194,7 +3207,28 @@ by the 3d @code{implicit} object.
 @end defvr
 
 
+@defvr {Graphic option} tube_extremes
+Default value: @code{[open, open]}
 
+A list with two possible elements, @code{open} and @code{closed},
+indicating whether the extremes of a graphic object @code{tube} remain open
+or must be closed. By default, both extremes are left open.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        tube_extremes = [open, closed],
+        tube(0, 0, a, 1,
+             a, 0, 8) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
 
 
 
@@ -4018,6 +4052,11 @@ Example:
 @end deffn
 
 
+
+
+
+
+
 @deffn  {Graphic object} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
 Renders images in 2D.
 
@@ -4326,6 +4365,42 @@ Example:
 @end deffn
 
 
+
+
+
+
+
+
+@deffn  {Graphic object} tube (@var{xfun},@var{yfun},@var{zfun},@var{rfun},@var{p},@var{pmin},@var{pmax})
+Draws a tube in 3D with varying diameter.
+
+@b{3D}
+
+@code{[@var{xfun},@var{yfun},@var{zfun}]}
+is the parametric curve with parameter @var{p} taking values from @var{pmin}
+to @var{pmax}. Circles of radius @var{rfun} are placed with their centers on
+the parametric curve and perpendicular to it.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{color}, and @code{tube_extremes}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d = true,
+        xu_grid = 50,
+        tube(cos(a), a, 0, cos(a/10)^2,
+             a, 0, 4*%pi) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
 
 
 

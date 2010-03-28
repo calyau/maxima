@@ -1,4 +1,4 @@
-@c version 1.44
+@c version 1.45
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1783,20 +1783,35 @@ V@'ease tambi@'en @code{colorbox}.
 @defvr {Opci@'on gr@'afica} colorbox
 Valor por defecto: @code{true}
 
-Cuando @code{colorbox} vale @code{true}, se dibuja una escala de color al
-lado de los objetos @code{image}.
+Cuando @code{colorbox} vale @code{true}, se dibuja una escala de colores sin
+t@'{@dotless{i}}tulo al lado de los objetos @code{image} en 2D o de objetos
+coloreados en 3D. Cuando @code{colorbox} vale @code{false}, no se presenta
+la escala de colores. Cuando @code{colorbox} es una cadena de caracteres,
+se mostrar@'a la escala de colores con un t@'{@dotless{i}}tulo.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
 
 Ejemplo:
 
+Escala de colores e im@'agenes.
+
 @example
 (%i1) load(draw)$
 (%i2) im: apply('matrix,
                  makelist(makelist(random(200),i,1,30),i,1,30))$
 (%i3) draw2d(image(im,0,0,30,30))$
-(%i4) draw2d(colorbox=false, image(im,0,0,30,30))$
+(%i4) draw2d(colorbox = false, image(im,0,0,30,30))$
+@end example
+
+Escala de colores y objeto 3D coloreado.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        colorbox   = "Magnitude",
+        enhanced3d = true,
+        explicit(x^2+y^2,x,-1,1,y,-1,1))$
 @end example
 
 V@'ease tambi@'en @code{palette}.
@@ -2736,6 +2751,27 @@ Valor por defecto: 10
 por el algoritmo @i{marching cubes} implementado por el objeto 
 @code{implicit} tridimensional.
 @end defvr
+
+@defvr {Opci@'on gr@'afica} tube_extremes
+Valor por defecto: @code{[open, open]}
+
+Una lista de dos elementos, @code{open} y @code{closed},
+indicando si los extremos de un objeto gr@'afico @code{tube}
+permanece abiertos o si deben ser cerrados. Por defecto, ambos
+extremos se dejan abiertos.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        tube_extremes = [open, closed],
+        tube(0, 0, a, 1,
+             a, 0, 8) )$
+@end example
+
+@end defvr
+
 
 
 
@@ -3784,6 +3820,43 @@ Ejemplo:
                            u, 0, 13*%pi, v, -%pi, %pi) )$
 @end example
 @end deffn
+
+
+
+
+
+
+
+
+@deffn  {Objeto gr@'afico} tube (@var{xfun},@var{yfun},@var{zfun},@var{rfun},@var{p},@var{pmin},@var{pmax})
+Dibuja un tubo en 3D de di@'ametro variable.
+
+@b{3D}
+
+@code{[@var{xfun},@var{yfun},@var{zfun}]}
+es la curva param@'etrica de par@'ametro @var{p}, el cual toma valores entre
+@var{pmin} y @var{pmax}. Se colocan c@'{@dotless{i}}rculos de radio @var{rfun}
+con sus centros sobre la curva param@'etrica y perpendiculares a ella.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{color} y @code{tube_extremes}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d = true,
+        xu_grid = 50,
+        tube(cos(a), a, 0, cos(a/10)^2,
+             a, 0, 4*%pi) )$
+@end example
+
+@end deffn
+
+
+
 
 
 
