@@ -136,16 +136,37 @@
 
 (defvar $integrate_use_rootsof nil "Use the rootsof form for integrals when denominator does not factor")
 
-(defun integrate-use-rootsof (f q variable &aux qprime ff qq (dummy (make-param)) lead)
-  ;; p2e is squarefree in polynomial in cre form p1e is lower degree
-  (setq lead (disrep (p-lc q)))
-  (setq qprime (disrep (pderivative q (p-var q))))
-  (setq ff (disrep f) qq (disrep q))
-  `((%lsum) ((mtimes)
-	     ,(div* (mul* lead (subst dummy variable ff))
-		    (subst dummy variable qprime))
-	     ((%log) ,(sub* variable  dummy)))  ,dummy
-    (($rootsof) ,qq)))
+(defun integrate-use-rootsof (f q variable)
+  (let ((dummy (make-param))
+	(qprime (disrep (pderivative q (p-var q))))
+	(ff (disrep f))
+	(qq (disrep q)))
+    ;; This basically does a partial fraction expansion and integrates
+    ;; the result.  Let r be one (simple) root of the denominator
+    ;; polynomial q.  Then the partial fraction expansion is
+    ;;
+    ;;   f(x)/q(x) = A/(x-r) + similar terms.
+    ;;
+    ;; Then
+    ;;
+    ;;   f(x) = A*q(x)/(x-r) + others
+    ;;
+    ;; Take the limit as x -> r.
+    ;;
+    ;;   f(r) = A*limit(q(x)/(x-r),x,r) + others
+    ;;        = A*at(diff(q(x),r), [x=r])
+    ;;
+    ;; Hence, A = f(r)/at(diff(q(x),x),[x=r])
+    ;;
+    ;; Then it follows that the integral is
+    ;;
+    ;;    A*log(x-r)
+    `((%lsum) ((mtimes)
+	       ,(div* (subst dummy variable ff)
+		      (subst dummy variable qprime))
+	       ((%log) ,(sub* variable  dummy)))
+      ,dummy
+      (($rootsof) ,qq))))
 
 (defun eprog (p)
   (prog (p1e p2e a1e a2e a3e discrim repart sign ncc dcc allcc xx deg)
