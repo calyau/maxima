@@ -1386,3 +1386,9 @@ integrate(1/(1-r*cos(x)),x,0,%pi);
 integrate((d*x^2+2*c*x+3*b)/(g*r*x^3+d*x^2+c*x+b), x), integrate_use_rootsof:true;
 lsum((%r1^2*d+2*%r1*c+3*b)*log(x-%r1)/(3*%r1^2*g*r+2*%r1*d+c),%r1,
              rootsof(g*r*x^3+d*x^2+c*x+b));
+
+/* Bug ID: 2880797 - bad answer in integrate(sqrt(sin(t)^2+cos(t)^2),t,0,2*%pi)
+ *
+ */
+integrate(sqrt(sin(t)^2+cos(t)^2),t,0,2*%pi);
+2*%pi;

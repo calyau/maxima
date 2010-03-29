@@ -1488,7 +1488,10 @@
      getout
      (setq y (list '(mtimes) *yy* *yz*))
      get2 (setq y (simplify y))
-     (return (substint repl 'x (integrator y 'x)))))
+     ;; See Bug 2880797.  We want atan(tan(x)) to simplify to x, so
+     ;; set $triginverses to '$all.
+     (return (let (($triginverses '$all))
+	       (substint repl 'x (integrator y 'x))))))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
