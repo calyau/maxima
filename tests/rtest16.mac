@@ -1378,5 +1378,9 @@ true;
 integrate(1/(1-r*cos(x)),x,0,%pi);
 %pi/sqrt(1-r^2);
 
-
-
+/* Bug ID: 2907727 - Incorrect Integral with option integrate_use_rootsof
+ * :true
+ */
+(%rnum:0, integrate((d*x^2+2*c*x+3*b)/(g*r*x^3+d*x^2+c*x+b), x));
+lsum((%r1^2*d+2*%r1*c+3*b)*log(x-%r1)/(3*%r1^2*g*r+2*%r1*d+c),%r1,
+             rootsof(g*r*x^3+d*x^2+c*x+b));
