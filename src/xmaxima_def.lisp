@@ -156,7 +156,7 @@
 
 (defun xmaxima-print-header (dest features)
   (cond ($show_openplot (format dest "~a -data {~%" (getf features :type)))
-	(t (format st "{~a " (getf features :type))))
+	(t (format dest "{~a " (getf features :type))))
   (when (string= (getf features :type) "plot3d")
     (let ((meshcolor '$black) (elev ($get_plot_option '$elevation))
 	  (azim ($get_plot_option '$azimuth)) palette meshcolor_opt)
