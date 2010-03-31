@@ -510,15 +510,38 @@
 ;; rationals.  Return a cons of the real and imaginary part of the
 ;; result.  We count on the underlying Lisp to be able to compute (/
 ;; (complex x y)) accurately and without unnecessary overflow or
-;; underflow..  If not, complain to your Lisp vendor.
+;; underflow..  If not, complain to your Lisp vendor.  Well, it seems
+;; that Clisp, CMUCL, and SBCL do a nice job.  But others apparently
+;; do not.  (I tested ecl 9.12.3 and ccl 1.4, which both fail.)
+;; Workaround those deficiencies.
 (defun sprecip (sp)
+  
   (destructuring-bind (x . y)
       sp
+    #+(or clisp cmu sbcl)
     (let* ((x (bigfloat:to x))
 	   (y (bigfloat:to y))
 	   (q (bigfloat:/ (bigfloat:complex x y))))
       (cons (to (bigfloat:realpart q))
-	    (to (bigfloat:imagpart q))))))
+	    (to (bigfloat:imagpart q))))
+    #-(or clisp cmu sbcl)
+    (let ((x (bigfloat:to x))
+	  (y (bigfloat:to y)))
+      ;; 1/(x+%i*y).
+      ;;
+      ;; Assume abs(x) > abs(y).  Then 1/(x+%i*y) = 1/x/(1+%i*r) where
+      ;; r = y/x.  Thus 1/(x+%i*y) = (1-%i*r)/(x*(1+r*r))
+      ;;
+      ;; The case for abs(x) <= abs(y) is similar.
+      (if (> (bigfloat:abs x) (bigfloat:abs y))
+	  (let* ((r (bigfloat:/ y x))
+		 (dn (bigfloat:* x (bigfloat:+ 1 (bigfloat:* r r)))))
+	    (cons (to (bigfloat:/ dn))
+		  (to (bigfloat:/ (bigfloat:- r) dn))))
+	  (let* ((r (bigfloat:/ x y))
+		 (dn (bigfloat:* y (bigfloat:+ 1 (bigfloat:* r r)))))
+	    (cons (to (bigfloat:/ x dn))
+		  (to (bigfloat:/ (bigfloat:- x) dn))))))))
       
   
 
