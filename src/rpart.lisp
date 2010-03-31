@@ -529,10 +529,13 @@
 	  (y (bigfloat:to y)))
       ;; 1/(x+%i*y).
       ;;
-      ;; Assume abs(x) > abs(y).  Then 1/(x+%i*y) = 1/x/(1+%i*r) where
-      ;; r = y/x.  Thus 1/(x+%i*y) = (1-%i*r)/(x*(1+r*r))
+      ;; Assume abs(x) > abs(y).  Let r = y/x.  Then
+      ;; 1/(x+%i*y) = 1/x/(1+%i*r)
+      ;;            = (1-%i*r)/(x*(1+r*r))
       ;;
-      ;; The case for abs(x) <= abs(y) is similar.
+      ;; The case for abs(x) <= abs(y) is similar with r = x/y:
+      ;; 1/(x+%i*y) = 1/y/(r+%i)
+      ;;            = (r-%i)/(y*(1+r^2))
       (if (> (bigfloat:abs x) (bigfloat:abs y))
 	  (let* ((r (bigfloat:/ y x))
 		 (dn (bigfloat:* x (bigfloat:+ 1 (bigfloat:* r r)))))
@@ -540,8 +543,8 @@
 		  (to (bigfloat:/ (bigfloat:- r) dn))))
 	  (let* ((r (bigfloat:/ x y))
 		 (dn (bigfloat:* y (bigfloat:+ 1 (bigfloat:* r r)))))
-	    (cons (to (bigfloat:/ x dn))
-		  (to (bigfloat:/ (bigfloat:- x) dn))))))))
+	    (cons (to (bigfloat:/ r dn))
+		  (to (bigfloat:/ (bigfloat:- dn)))))))))
       
   
 
