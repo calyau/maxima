@@ -39,9 +39,9 @@
 (defmfun add2 (x y)
   (cond ((numberp x)
 	 (cond ((numberp y) (+ x y))
-	       ((zerop x) y)
+               ((=0 x) y)
 	       (t (simplifya `((mplus) ,x ,y) t))))
-	((eql y 0) x)
+        ((=0 y) x)
 	(t (simplifya `((mplus) ,x ,y) t))))
 
 (defmfun add2* (x y)
