@@ -1759,7 +1759,7 @@ output-file))
        (let (($plot_options `((mlist) ,@optional-args))) ($get_plot_option '$gnuplot_preamble 2)))
 
      (contour-preamble "set contour; unset surface; set view map")
-     (gnuplot-formats '($gnuplot $mgnuplot $gnuplot_pipes)))
+     (gnuplot-formats '($gnuplot $gnuplot_pipes)))
 
     ; Ensure that plot_format is some gnuplot format.
     ; Argument takes precedence over global option.
@@ -1791,23 +1791,25 @@ output-file))
              ($sublist `((mlist) ,@optional-args)
                        '((lambda) ((mlist) e) (not (and ($listp e) (eq ($first e) '$gnuplot_preamble)))))))
           (setq preamble-in-arguments
-                ($sconcat contour-preamble " ; " preamble-in-arguments))
+                ($sconcat contour-preamble (format nil "~%") preamble-in-arguments))
           (apply #'$plot3d
                  (append (list expr)
                          (cdr args-sans-preamble)
+			 (list '((mlist simp) $palette nil))
                          (list `((mlist) $gnuplot_preamble ,preamble-in-arguments)))))
 
         (let (($plot_options $plot_options))
         
-          ($set_plot_option '((mlist simp) $palette nil))
-
           (if preamble-in-plot-options
             ($set_plot_option
               `((mlist) $gnuplot_preamble
-                        ,($sconcat preamble-in-plot-options " ; " contour-preamble)))
+                        ,($sconcat preamble-in-plot-options (format nil "~%")
+				   contour-preamble)))
             ($set_plot_option `((mlist) $gnuplot_preamble ,contour-preamble)))
-
-          (apply #'$plot3d (cons expr optional-args)))))))
+          (apply #'$plot3d 
+		 (cons expr
+		       (append optional-args
+			       (list '((mlist simp) $palette nil))))))))))
  
 ;; plot3d
 ;;
