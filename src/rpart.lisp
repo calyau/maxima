@@ -515,16 +515,15 @@
 ;; do not.  (I tested ecl 9.12.3 and ccl 1.4, which both fail.)
 ;; Workaround those deficiencies.
 (defun sprecip (sp)
-  
   (destructuring-bind (x . y)
       sp
-    #+(or clisp cmu sbcl)
+    #+(or cmu sbcl)
     (let* ((x (bigfloat:to x))
 	   (y (bigfloat:to y))
 	   (q (bigfloat:/ (bigfloat:complex x y))))
       (cons (to (bigfloat:realpart q))
 	    (to (bigfloat:imagpart q))))
-    #-(or clisp cmu sbcl)
+    #-(or cmu sbcl)
     (let ((x (bigfloat:to x))
 	  (y (bigfloat:to y)))
       ;; 1/(x+%i*y).
