@@ -173,7 +173,7 @@
       (format dest "~%")))
 
   (when (getf features :psfile)
-    (format dest " {psfile \"~a\"}" (getf features :psfile)))
+    (format dest " {psfile ~s}" (getf features :psfile)))
   (when
       (and (getf features :legend)(not (first (getf features :legend))))
     (format dest " {nolegend 1}"))
@@ -192,9 +192,9 @@
     (format dest " {yrange ~g ~g}"
 	    (getf features :ymin) (getf features :ymax)))
   (when (getf features :xlabel)
-    (format dest " {xaxislabel \"~a\"}" (getf features :xlabel)))
+    (format dest " {xaxislabel ~s}" (getf features :xlabel)))
   (when (getf features :ylabel)
-    (format dest " {yaxislabel \"~a\"}" (getf features :ylabel)))
+    (format dest " {yaxislabel ~s}" (getf features :ylabel)))
   (when (and (getf features :zmin) (getf features :zmax))
     (format $pstream " {zcenter ~g }"
 	    (/ (+ (getf features :zmax) (getf features :zmin)) 2))

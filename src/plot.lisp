@@ -1128,10 +1128,10 @@ sin(y)*(10.0+6*cos(x)),
     (list '(mlist) ymin ymax)))
 
 (defvar $gnuplot_view_args (if (string= *autoconf-win32* "true")
-                               "\"~a\" -"
-                               "-persist \"~a\""))
+                               "~s -"
+                               "-persist ~s"))
 
-(defvar $gnuplot_file_args "\"~a\"")
+(defvar $gnuplot_file_args "~s")
 
 (defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview")
@@ -1149,7 +1149,7 @@ sin(y)*(10.0+6*cos(x)),
         (gnuplot-out-file-string (get-plot-option-string '$gnuplot_out_file))
         (run-viewer ($get_plot_option '$run_viewer 2))
         (gnuplot-preamble (string-downcase (get-plot-option-string '$gnuplot_preamble)))
-        (vqiew-file))
+        (view-file))
     ;; default output file name for for all formats except default
     (when (and (not (eq ($get_plot_option '$gnuplot_term 2) '$default)) 
                (null gnuplot-out-file))
@@ -1158,7 +1158,7 @@ sin(y)*(10.0+6*cos(x)),
       (setq gnuplot-out-file-string gnuplot-out-file)) 
     ;; run gnuplot in batch mode if necessary before viewing
     (if (and gnuplot-out-file (not (eq gnuplot-term '$default)))
-        ($system (format nil "~a \"~a\"" $gnuplot_command file)))
+        ($system (format nil "~a ~s" $gnuplot_command file)))
     (when run-viewer
       (if (eq gnuplot-term '$default)
           (setf view-file file)
@@ -1421,7 +1421,7 @@ sin(y)*(10.0+6*cos(x)),
                                    (cond ((< (length string) 80) string)
                                          (t (format nil "fun~a" i)))))))
                    (when plot-name 
-                     (format st " {label \"~a\"}" plot-name))
+                     (format st " {label ~s}" plot-name))
                    (format st " ~a~%" (xmaxima-curve-style style i))
                    (format st " {xversusy~%")
                    (let ((lis points-list))
@@ -1484,7 +1484,7 @@ sin(y)*(10.0+6*cos(x)),
                                ($sconcat *gnuplot-command* ", ")))
                      (setq *gnuplot-command*
                            ($sconcat *gnuplot-command* 
-                                     (format nil "'~a' index ~a " file i)))))
+                                     (format nil "~s index ~a " file i)))))
                   (if styles
                       (progn
                         (setq style (nth (mod i (length styles)) styles))
@@ -1525,7 +1525,7 @@ sin(y)*(10.0+6*cos(x)),
                      (when (> i 1) (format st ","))
                      (format st " '-'")
                      (if plot-name
-                         (format st " title \"~a\"" plot-name)
+                         (format st " title ~s" plot-name)
                          (format st " notitle"))
                      (format st " ~a" (gnuplot-curve-style style i)))
                     ($gnuplot_pipes
@@ -1533,7 +1533,7 @@ sin(y)*(10.0+6*cos(x)),
                            ($sconcat
                             *gnuplot-command*
                             (if plot-name 
-                                (format nil " title \"~a\" ~a" plot-name 
+                                (format nil " title ~s ~a" plot-name 
                                         (gnuplot-curve-style style i))
                                 (format nil " notitle ~a"
                                         (gnuplot-curve-style style i))))))))))
@@ -1587,7 +1587,7 @@ sin(y)*(10.0+6*cos(x)),
        (send-gnuplot-command *gnuplot-command*))
       ($mgnuplot 
        ($system (concatenate 'string *maxima-plotdir* "/" $mgnuplot_command) 
-                (format nil " -plot2d \"~a\" -title '~a'" file "Fun1"))))
+                (format nil " -plot2d ~s -title ~s" file "Fun1"))))
 output-file))
 
 

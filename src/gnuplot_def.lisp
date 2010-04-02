@@ -227,25 +227,25 @@
        (format dest "~a~%" 
                (get-plot-option-string '$gnuplot_ps_term_command))
        (if gnuplot-out-file
-           (format dest "set out '~a'~%" gnuplot-out-file)))
+           (format dest "set out ~s~%" gnuplot-out-file)))
       ($dumb
        (format dest "~a~%" 
                (get-plot-option-string '$gnuplot_dumb_term_command))
        (if gnuplot-out-file
-           (format dest "set out '~a'~%" gnuplot-out-file)))
+           (format dest "set out ~s~%" gnuplot-out-file)))
       (t
        (format dest "set term ~a~%" 
                (get-plot-option-string '$gnuplot_term))
        (if gnuplot-out-file
-           (format dest "set out '~a'~%" gnuplot-out-file))) )
+           (format dest "set out ~s~%" gnuplot-out-file))) )
     (when (getf features :log-x) (format dest "set log x~%"))
     (when (getf features :log-y) (format dest "set log y~%"))
     (when (getf features :xlabel)
-      (format dest "set xlabel \"~a\"~%" (getf features :xlabel)))
+      (format dest "set xlabel ~s~%" (getf features :xlabel)))
     (when (getf features :ylabel)
-      (format dest "set ylabel \"~a\"~%" (getf features :ylabel)))
+      (format dest "set ylabel ~s~%" (getf features :ylabel)))
     (when (getf features :zlabel)
-      (format dest "set zlabel \"~a\"~%" (getf features :zlabel)))
+      (format dest "set zlabel ~s~%" (getf features :zlabel)))
     (when
         (and (getf features :legend)
              (not (first (getf features :legend))))
@@ -266,7 +266,7 @@
         ($x (format dest "set xzeroaxis~%"))
         ($y (format dest "set yzeroaxis~%"))
         (t (format dest "set zeroaxis~%"))))
-    (format dest "set datafile missing \"~a\"~%" *missing-data-indicator*)))
+    (format dest "set datafile missing ~s~%" *missing-data-indicator*)))
 
 (defun gnuplot-plot3d-command (file titles n) 
 (let (title (style "with pm3d")
@@ -281,5 +281,5 @@
 	  (setq style (format nil "with lines lt ~a" (gnuplot-colors i)))))
     (when (> i 1) (format out ", "))
     (setq title (nth (mod i (length titles)) titles))
-    (format out "'~a' title '~a' ~a" file title style)))))
+    (format out "~s title ~s ~a" file title style)))))
 
