@@ -248,34 +248,35 @@
 ;; The result is an exponential function with a simplified argument.
 (defun %especial (e)
   (prog (varlist y k kk j ans $%emode $ratprint genvar)
-     (unless (setq y (pip ($ratcoef e '$%i))) (return nil))
-     ;; Subtract the term y*%i*%pi from the expression e.
-     (setq k ($expand (add e (mul -1 '$%pi '$%i y)) 1))
-     ;; This is a workaround to get the type (integer, float, or bigfloat)
-     ;; of the expression. kk must evaluate to 1, 1.0, or 1.0b0.
-     ;; Furthermore, if e is nonlinear, kk does not simplify to a number ONE.
-     ;; Because of this we do not simplify something like exp((2+x)^2*%i*%pi)
-     (setq kk (div (sub ($expand e) k) (mul '$%i '$%pi y)))
-     ;; Return if kk is not an integer or kk is ONE, but y not an integer
-     ;; or a half integral value.
-     (if (not (or (integerp kk)
-                  (and (onep1 kk)
-                       (integerp (add y y)))))
-         (return nil))
-     (setq j (trigred y))
-     (setq ans (spang1 j t))
-   (cond ((among '%sin ans)
-          (cond ((equal y j) (return nil))
-                ((zerop1 k)
-                 ;; To preverse the type we add k into the result.
-                 (return (power '$%e (mul '$%pi '$%i (add k j)))))
-                (t 
-                  ;; To preserve the type we multiply kk into the result.
-                  (return 
-                    (power '$%e (add (mul kk k) (mul kk '$%pi '$%i j))))))))
-   (setq y (spang1 j nil))
-   ;; To preserve the type we multiply kk into the result.
-   (return (mul (power '$%e (mul kk k)) (add y (mul '$%i ans))))))
+     (let (($keepfloat nil) ($float nil))
+       (unless (setq y (pip ($ratcoef e '$%i))) (return nil))
+       ;; Subtract the term y*%i*%pi from the expression e.
+       (setq k ($expand (add e (mul -1 '$%pi '$%i y)) 1))
+       ;; This is a workaround to get the type (integer, float, or bigfloat)
+       ;; of the expression. kk must evaluate to 1, 1.0, or 1.0b0.
+       ;; Furthermore, if e is nonlinear, kk does not simplify to a number ONE.
+       ;; Because of this we do not simplify something like exp((2+x)^2*%i*%pi)
+       (setq kk (div (sub ($expand e) k) (mul '$%i '$%pi y)))
+       ;; Return if kk is not an integer or kk is ONE, but y not an integer
+       ;; or a half integral value.
+       (if (not (or (integerp kk)
+                    (and (onep1 kk)
+                         (integerp (add y y)))))
+           (return nil))
+       (setq j (trigred y))
+       (setq ans (spang1 j t)))
+     (cond ((among '%sin ans)
+            (cond ((equal y j) (return nil))
+                  ((zerop1 k)
+                   ;; To preverse the type we add k into the result.
+                   (return (power '$%e (mul '$%pi '$%i (add k j)))))
+                  (t 
+                    ;; To preserve the type we multiply kk into the result.
+                    (return 
+                      (power '$%e (add (mul kk k) (mul kk '$%pi '$%i j))))))))
+     (setq y (spang1 j nil))
+     ;; To preserve the type we multiply kk into the result.
+     (return (mul (power '$%e (mul kk k)) (add y (mul '$%i ans))))))
 
 (defun trigred (r)
   (prog (m n eo flag)
