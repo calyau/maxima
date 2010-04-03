@@ -1392,3 +1392,59 @@ lsum((%r1^2*d+2*%r1*c+3*b)*log(x-%r1)/(3*%r1^2*g*r+2*%r1*d+c),%r1,
  */
 integrate(sqrt(sin(t)^2+cos(t)^2),t,0,2*%pi);
 2*%pi;
+
+/* Bug ID: 2980551 - Inconsistent simplification of exp(x*%i*%pi)
+ *
+ * These examples show consistent simplification for x an expression which
+ * can contain float or bigfloat values
+ */
+
+exp(2*%i*%pi);
+1;
+
+exp((2+x)*%i*%pi);
+exp(x*%i*%pi);
+
+exp(2*%i*%pi+x*%i*%pi);
+exp(x*%i*%pi);
+
+log(exp((2+x)^2*%i*%pi));
+(2+x)^2*%i*%pi;
+
+exp(2.0*%i*%pi);
+1.0;
+
+exp((2.0+x)*%i*%pi);
+exp(1.0*x*%i*%pi);
+
+exp(2.0*%i*%pi+x*%i*%pi);
+exp(1.0*x*%i*%pi);
+
+log(exp((2.0+x)^2*%i*%pi));
+(2.0+x)^2*%i*%pi;
+
+exp(2.0b0*%i*%pi);
+1.0b0;
+
+exp((2.0b0+x)*%i*%pi);
+exp(1.0b0*x*%i*%pi);
+
+exp(2.0b0*%i*%pi+x*%i*%pi);
+exp(1.0b0*x*%i*%pi);
+
+log(exp((2.0b0+x)^2*%i*%pi));
+(2.0b0+x)^2*%i*%pi;
+
+exp(3/2*%pi*%i);
+-%i;
+exp(1.5*%pi*%i);
+-1.0*%i;
+exp(1.5b0*%pi*%i);
+-1.0b0*%i;
+
+exp((3/2+x)*%pi*%i);
+-%i*exp(%i*%pi*x);
+exp((1.5+x)*%pi*%i);
+-%i*exp(1.0*%i*%pi*x);
+exp((1.5b0+x)*%pi*%i);
+-%i*exp(1.0b0*%i*%pi*x);
