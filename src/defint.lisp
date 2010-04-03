@@ -2308,20 +2308,20 @@ in the interval of integration.")
 ;; using residues.
 (defun unitcir (grand var)
   (numden grand)
-  (let* ((s nil)
+  (let* ((sgn nil)
 	 (result (princip (res nn* dn* 
 			       #'(lambda (pt)
 				   ;; Is pt stricly inside the unit circle?
-				   (setq s (let ((limitp nil))
-					     ($asksign (m+ -1 (cabs pt)))))
-				   (eq s '$neg))
+				   (setq sgn (let ((limitp nil))
+					       ($asksign (m+ -1 (cabs pt)))))
+				   (eq sgn '$neg))
 			       #'(lambda (pt)
 				   ;; Is pt on the unit circle?  (Use
 				   ;; the cached value computed
 				   ;; above.)
 				   (prog1
-				       (eq s '$zero)
-				     (setq s nil)))))))
+				       (eq sgn '$zero)
+				       (setq sgn nil)))))))
     (when result
       (m* '$%pi result))))
 
