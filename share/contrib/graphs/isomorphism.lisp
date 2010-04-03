@@ -67,6 +67,12 @@
     (when (or gr1-degrees gr2-degrees)
       (return-from isomorphism-graphs nil)))
 
+  (let ((n (graph-order gr1))
+	(m (graph-size gr1)))
+    (when (< (* n (1- n)) (* 4 m))
+      (setq gr1 ($complement_graph gr1))
+      (setq gr2 ($complement_graph gr2))))
+
   (let ((mapping (make-hash-table))
 	(m1) (m2) (out1) (out2))
     (extend-isomorphism-graphs mapping m1 m2 out1 out2 gr1 gr2)))
