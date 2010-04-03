@@ -113,14 +113,10 @@
   `(member ,x infinitesimals :test #'eq))
 
 (defmacro free-epsilonp (x)
-  `(do ((one-eps infinitesimals (cdr one-eps)))
-       ((null one-eps) t)
-     (unless (free (car one-eps) ,x) (return ()))))
+  `(not (amongl infinitesimals ,x)))
 
 (defmacro free-infp (x)
-  `(do ((one-inf infinities (cdr one-inf)))
-       ((null one-inf) t)
-     (unless (free (car one-inf) ,x) (return ()))))
+  `(not (amongl infinities ,x)))
 
 (defmacro inf-typep (x)
   `(car (amongl infinities ,x)))
