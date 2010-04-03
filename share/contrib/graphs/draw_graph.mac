@@ -118,7 +118,8 @@ draw_graph(G, [options]) := block(
    dimension : 2,
    transform : false,
    scene,
-   loops : []
+   loops : [],
+   normalize_positions : true
   ],
 
   if not(is_graph(G)) and not(is_digraph(G)) then
@@ -162,7 +163,7 @@ draw_graph(G, [options]) := block(
     dimension : length(second(first(v_pos))),
 
     /* Normalize positions into [-1,1]x[-1,1] */
-    if length(v_pos)>1 and dimensions=2 then block(
+    if normalize_positions=true and length(v_pos)>1 and dimensions=2 then block(
       [x_list : map(first, map(second, v_pos)),
        y_list : map(second, map(second, v_pos)),
        x_min, x_max, y_min, y_max],
@@ -179,6 +180,7 @@ draw_graph(G, [options]) := block(
            v_pos)),
 
     /* Setup edges */
+    if edge_coloring=true then edge_coloring: edge_coloring(G),
     if show_edges#[] then (
       for e in edges(G) do
         if not(member(e, show_edges)) then
@@ -214,6 +216,7 @@ draw_graph(G, [options]) := block(
        edge_partition)),
 
     /* Setup vertices */
+    if vertex_coloring=true then vertex_coloring: vertex_coloring(G),
     if show_vertices#[] then block(
       [show_vertices1 : flatten(show_vertices)],
       for v in vertices(G) do

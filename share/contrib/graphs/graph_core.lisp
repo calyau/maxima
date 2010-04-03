@@ -1635,7 +1635,10 @@
 	       (dolist (x (neighbors w g))
 		 (unless (or (gethash x active) (gethash x visited) (gethash x next))
 		   (setf (gethash x previous) w)
-		   (setf (gethash x next) t))))))
+		   (setf (gethash x next) t))
+		 (when (= v x)
+		   (setq more nil)))
+	       (unless more (return nil)))))
 	(setq active next)))
     (if (gethash v visited)
 	(let ((path `(,v)))
@@ -1913,7 +1916,7 @@
 	 (uncolored (make-hash-table)))
     
     ;; Prepare data
-    ;; (format t "~%Preparing data")
+    ;(format t "~%Preparing data")
     (dolist (v clique)
       (setf (aref A i) v)
       (setf (gethash v F) (1+ i))
@@ -1932,10 +1935,10 @@
 	(setf (gethash `(,u ,(gethash v F)) number-of-used-colors) 1)
 	(incf (gethash u dsat))))
     
-    ;;(format t "~%Clique size: ~d" (length clique))
-    ;;(format t "~%Clique:      ~d" clique)
+    ;(format t "~%Clique size: ~d" (length clique))
+    ;(format t "~%Clique:      ~d" clique)
     (do () (nil)
-      ;;(format t "~%Starting with: ~d (~d)" start (gethash start A))
+      ;(format t "~%Starting with: ~d (~d)" start (aref A start))
       (do ((i start (1+ i))) ((or (= i vsize) stop))
 	
 	;; Choose new vertex x
@@ -1953,7 +1956,7 @@
 		      (setq xindex j)
 		      (setq mdsat (gethash x dsat))
 		      (setq munc (gethash x uncolored)))))))
-	;;(format t "~%New vertex: ~d" x)
+	;(format t "~%New vertex: ~d" x)
 	
 	;; Choose free color
 	(setq free-color 0)
@@ -1965,7 +1968,7 @@
 	(do ((j k (1+ j))) ((or (>= j opt-chnumber) (> free-color 0)))
 	  (if (= 0 (gethash `(,x ,j) number-of-used-colors 0))
 	      (setq free-color j)))
-	;;(format t "~%New color: ~d" free-color)
+	;(format t "~%New color: ~d" free-color)
 
 	(if (> free-color 0)
 	    ;; Color vertex x
@@ -2006,7 +2009,7 @@
 	    (dolist (v (vertices g))
 	      (setf (gethash v f-opt) (gethash v F))
 	      (setq opt-chnumber (max opt-chnumber (gethash v F))))
-	    ;;(format t "~%Found new coloring: ~d" opt-chnumber)
+	    ;(format t "~%Found new coloring: ~d" opt-chnumber)
 	    ;; Find new start
 	    (setq start -1)
 	    (do ((i 0 (1+ i))) ((> start -1))
@@ -2017,7 +2020,6 @@
 	    (if (or (< start clique-size)
 		    (= opt-chnumber clique-size))
 		(return-from dsatur f-opt))
-	    ;;(format t "~%Barktracking from: ~d (~d)" start (aref A start))
 	    ;; Delete colors from start
 	    (do ((i start (1+ i))) ((= i vsize))
 	      (dolist (v (neighbors  (aref A i) g))
