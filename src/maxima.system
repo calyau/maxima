@@ -55,9 +55,7 @@
 	(c::build-static-library "binary-ecl/maxima-lib" :lisp-files (print files))
 	(let ((c::*ld-format* (concatenate 'string c::*ld-format* " /LIBPATH:binary-ecl")))
 	  (c::build-fasl "binary-ecl/maxima" :lisp-files '(maxima-lib))))
-      #+cygwin
-      (c::build-fasl "binary-ecl/maxima" :lisp-files files)
-      #-(or cygwin msvc)
+      #-msvc
       (let ((obj (mapcar #'(lambda (p)
 			     ;; Convert dir/foo.fas to dir/foo.o
 			     (make-pathname :type "o" :defaults p))
