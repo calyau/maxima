@@ -1590,7 +1590,7 @@ relational knowledge is contained in the default context GLOBAL.")
 	 ((or (eq s1 '$neg) (eq s2 '$neg)) '$neg)
 	 ((or (eq s1 '$nz) (eq s2 '$nz)) '$nz)
 	 ((eq s1 '$zero) (if (eq s2 '$pz) '$zero '$nz))
-	 ((eq s2 '$zero) (if (eq s2 '$pz) '$zero '$nz))
+	 ((eq s2 '$zero) (if (eq s1 '$pz) '$zero '$nz))
 	 (t '$pnz))))
 
 (defun minmaxp (ex)
