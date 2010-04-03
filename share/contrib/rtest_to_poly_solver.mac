@@ -1161,7 +1161,7 @@ nicedummies(to_poly_solve(23040 *(4*%e^-(1200*t)-%e^-(300*t))^2-720000*(16*%e^-(
 %union([t = (2*%i*%pi*%z0+log(25/4-3*sqrt(41)/4))/900],[t = (2*%i*%pi*%z1+log(3*sqrt(41)/4+25/4))/900])$
 
 /* clean up */
-(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 145));
+(print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 200));
 true$
 
 (reset(algexact), forget(z,complex), remvalue(sol,%time,eq,eqn1,eqn2,eqn3),0);
