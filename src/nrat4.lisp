@@ -328,7 +328,9 @@
 	    (return (list '(mlist)
 			  (rdis* (ratreduce (car var) (cdr r)))
 			  (rdis* (ratreduce (cdr var) (cdr r))))))
-	   (t (merror "Bad arguments to `bothcoeff'")))))
+	   (t
+             ;; CAN'T TELL WHAT BROUGHT US TO THIS POINT, SORRY
+             (merror (intl:gettext "bothcoef: invalid arguments."))))))
 
 ;;COEFF OF A IN B
 
@@ -343,7 +345,8 @@
 
 ;;; This is a version of freeof for a list first argument
 (defmfun $lfreeof (l e) "`freeof' for a list first argument"
-	 (unless ($listp l) (merror "First argument must be a list"))
+	 (unless ($listp l)
+           (merror (intl:gettext "lfreeof: first argument must be a list; found: ~M") l))
 	 (let ((exp ($totaldisrep e)))
 	   (dolist (var (margs l) t)
 	     (unless (freeof ($totaldisrep var) exp) (return nil)))))

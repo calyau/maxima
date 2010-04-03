@@ -117,7 +117,7 @@
      (setq *ptr* (make-array (1+ m)))
      (setq  *ptc* (make-array (1+ m)))
      (setq bl (tmlattice ax '*ptr* '*ptc* m))
-     (cond ((null bl) (merror "Singular")))
+     (cond ((null bl) (merror (intl:gettext "newinv: matrix is singular."))))
      (setq bl (mapcar #'length bl))
      (setq bm (apply #'max bl))		;Chancey.  Consider mapping.
      (setq *iar* (make-array (list (1+ bm) (1+ (* 2 bm)))))

@@ -236,7 +236,7 @@
 			   (not (eql (char source (+ x 2)) #\])))
 		      (if (>= (char-code (char source x))
 			      (char-code (char source (+ 2 x))))
-			  (error "Invalid range \"~A-~A\".  Ranges must be in acending order"
+			  (error (intl:gettext "regex: ranges must be in acending order; found: \"~A-~A\"")
 				 (char source x) (char source (+ 2 x))))
 		      (do ((j (char-code (char source x)) (1+ j)))
 			  ((> j (char-code (char source (+ 2 x))))

@@ -50,7 +50,7 @@
 (defprop $set (("\\left \\{" ) " \\right \\}") texsym)
 
 (defun require-set (x context-string)
-  (if ($setp x) (cdr x) (merror "Function ~:M expects a set, instead found ~:M" context-string x)))
+  (if ($setp x) (cdr x) (merror (intl:gettext "~:M: argument must be a set; found: ~:M") context-string x)))
 
 ;; If x is a Maxima list, return a Lisp list of its members; otherwise,
 ;; signal an error. Unlike require-set, the function require-list does not
@@ -58,7 +58,7 @@
 
 (defun require-list (x context-string)
   (if ($listp x) (cdr x)
-    (merror "Function ~:M expects a list, instead found ~:M" context-string x)))
+    (merror (intl:gettext "~:M: argument must be a list; found: ~:M") context-string x)))
 
 ;; If x is a Maxima list or set, return a Lisp list of its members; otherwise,
 ;; signal an error.  Unlike require-set, the function require-list-or-set 
@@ -66,7 +66,7 @@
 
 (defun require-list-or-set (x context-string)
   (if (or ($listp x) ($setp x)) (cdr x)
-    (merror "Function ~:M expects a list or a set, instead found ~:M" context-string x)))
+    (merror (intl:gettext "~:M: argument must be a list or a set; found: ~:M") context-string x)))
 
 ;; When a is a list, return a list of the unique elements of a.
 ;; Otherwise just return a.
@@ -244,7 +244,7 @@
       (setq b (mfuncall f x))
       (cond ((eq t b) (push x acc))
 	    ((not (or (eq b nil) (eq b '$unknown)))
-	     (merror "The function ~:M doesn't evaluate to a boolean for ~:M" f x))))))
+	     (merror (intl:gettext "subset: ~:M(~:M) evaluates to a non-boolean.") f x))))))
 	     
 ;; Return a list of three sets. The first set is the subset of a for which
 ;; the predicate f evaluates to true, the second is the subset of a
@@ -261,7 +261,7 @@
       (cond ((eq t b) (push x t-acc))
 	    ((or (eq b nil) (eq b '$unknown)) (push x f-acc))
 	    (t 
-	     (merror "The function ~:M doesn't evaluate to a boolean for ~:M" f x))))))
+	     (merror (intl:gettext "partition_set: ~:M(~:M) evaluates to a non-boolean.") f x))))))
 	       
 ;; The symmetric difference of sets, that is (A-B) union (B - A), is associative.
 ;; Thus the symmetric difference extends unambiguously to n-arguments.
@@ -595,7 +595,7 @@
 	       ((eq s '$max)
 		(setq s 1))
 	       (t
-		(merror "The third argument of extremal_subset must be max or min; instead found ~:M" s)))
+		(merror (intl:gettext "extremal_subset: third argument must be 'max or 'min; found: ~:M") s)))
 	 (let* ((max-subset (nth 0 a))
 		(mx (mul s (mfuncall f max-subset)))
 		(x))
@@ -618,7 +618,7 @@
   (let (($prederror nil) (b))
     (setq b (mevalp (mfuncall f x y)))
     (if (or (eq b t) (eq b nil)) b
-      (merror  "~:M(~:M,~:M) doesn't evaluate to a boolean" f x y))))
+      (merror (intl:gettext "equiv_classes: ~:M(~:M, ~:M) evaluates to a non-boolean.") f x y))))
   
     
 ;; Return the set of equivalence classes of f on the set l.  The
@@ -690,8 +690,7 @@
 	     (incf k))
 	   `(($set) ,@acc)))
 	(t
-	 (merror "The optional second argument to set_partitions must be
-a positive integer; instead found ~:M" n-sub))))
+	 (merror (intl:gettext "set_partitions: second argument must be a positive integer; found: ~:M") n-sub))))
 
 (defun set-partitions (a n)
   (cond ((= n 0)
@@ -1071,7 +1070,7 @@ a positive integer; instead found ~:M" n-sub))))
 	 (reduce #'(lambda (x y) (mfuncall f x y)) s :from-end left 
 		 :initial-value init))
 	((null s)
-	 (merror "Undefined - either give initial value or a nonempty set"))
+	 (merror (intl:gettext "~a: either a nonempty set or initial value must be given.") fn))
 	(t
 	 (reduce #'(lambda (x y) (mfuncall f x y)) s :from-end left))))
 
@@ -1135,7 +1134,7 @@ a positive integer; instead found ~:M" n-sub))))
   (setq a (require-list-or-set a "$tree_reduce"))
   (if (not (equal init 'no-init)) (push init a))
   (if (null a)
-      (merror "When the argument is empty, the optional argument must be defined"))
+      (merror (intl:gettext "tree_reduce: either a nonempty set or initial value must be given.")))
   
   (let ((acc) (x) (doit nil))
     (while (consp a)
@@ -1226,6 +1225,8 @@ a positive integer; instead found ~:M" n-sub))))
   (cond ((or (eq x t) (eq x nil) (not $prederror)) x)
 	((eq x '$unknown) nil)
 	(t
+         ;; FOLLOWING MESSAGE IS UNREACHABLE FROM WHAT I CAN TELL
+         ;; SINCE MAYBE RETURNS T, NIL, OR '$UNKNOWN
 	 (merror "Predicate isn't true/false valued; maybe you want to set 'prederror' to false"))))
     
 (defun checked-or (x)
@@ -1233,6 +1234,8 @@ a positive integer; instead found ~:M" n-sub))))
   (cond ((or (eq x t) (eq x nil) (not $prederror)) x)
 	((eq x '$unknown) nil)
 	(t
+         ;; FOLLOWING MESSAGE IS UNREACHABLE FROM WHAT I CAN TELL
+         ;; SINCE MAYBE RETURNS T, NIL, OR '$UNKNOWN
 	 (merror "Predicate isn't true/false valued; maybe you want to set 'prederror' to false"))))
 
 ;; Apply the Maxima function f to x. If an error is signaled, return nil; otherwise
@@ -1255,7 +1258,9 @@ a positive integer; instead found ~:M" n-sub))))
     (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
     (checked-and (mapcar #'(lambda (s) ($every '$identity s)) x))))
  
- (t (merror "Improper arguments to function 'every'"))))
+ (t
+   ;; NOT CLEAR FROM PRECEDING CODE WHAT IS "INVALID" HERE
+   (merror (intl:gettext "every: invalid arguments.")))))
 
 (defun $some (f &rest x)
   (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) nil)
@@ -1269,12 +1274,14 @@ a positive integer; instead found ~:M" n-sub))))
     (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
     (checked-or (mapcar #'(lambda (s) ($some '$identity s)) x))))
 
- (t (merror "Improper arguments to function 'some'"))))
+ (t
+   ;; NOT CLEAR FROM PRECEDING CODE WHAT IS "INVALID" HERE
+   (merror (intl:gettext "some: invalid arguments.")))))
 
 (defun $makeset (f v s)
   (if (or (not ($listp v)) 
 	  (not (every #'(lambda (x) (or ($atom x) ($subvarp x))) (cdr v))))
-      (merror "The second argument to makeset must be a list of atoms or subscripted variables; found ~:M" v))
+      (merror (intl:gettext "makeset: second argument must be a list of atoms or subscripted variables; found: ~:M") v))
   (setq s (require-list-or-set s "$makeset"))
 
   (setq f `((lambda) ,v ,f))

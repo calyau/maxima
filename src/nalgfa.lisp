@@ -147,9 +147,11 @@
 		 (cond ((= (length varlist) 1)
 			($pfactoralg a1 nil (car varlist)))
 		       ((> (length varlist) 1)
-			(merror "too many algebraics"))
+                        ;; MEANING OF NEXT MESSAGE IS UNCLEAR
+			(merror (intl:gettext "algfac: too many algebraics.")))
 		       (t
-			(merror "no algebraics"))))))))
+                        ;; MEANING OF NEXT MESSAGE IS UNCLEAR
+			(merror (intl:gettext "algfac: no algebraics.")))))))))
 
 (defmfun $pfactoralg (f p alg)
   (let ((varlist (list alg))
@@ -160,7 +162,7 @@
     (cond ((and (null p) (radfunp alg t)) (newvar (cadr alg)))
 	  (t (newvar p)))
     (newvar1 f)
-    (cond ((null vlist) (merror "attempt to factor a constant")))
+    (cond ((null vlist) (merror (intl:gettext "pfactoralg: attempt to factor a constant."))))
     (setq varlist (nconc varlist (sortgreat vlist)))
     (cond (p (setq p (cadr (ratrep* p)))
 	     (push (cons alg (mapcar #'pdis (cdr p)))

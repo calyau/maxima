@@ -1506,7 +1506,7 @@
 		    (typep maxima-num 'complex-bigfloat))
 		maxima-num)
 	       (t
-		(maxima::merror "BIGFLOAT:  Unable to convert ~M to a CL or BIGFLOAT number" maxima-num))))))
+		(maxima::merror (intl:gettext "BIGFLOAT: unable to convert ~M to a CL or BIGFLOAT number.") maxima-num))))))
 
 ;;; EPSILON - External
 ;;;
@@ -1662,7 +1662,7 @@
     ;; exponent is 128 or higher, we have an overflow.
     (let ((e (+ exponent (- precision) maxima::*m fpprec)))
       (if (>= (abs e) 129)
-	  (maxima::merror "Floating point overflow in converting ~:M to flonum" l)
+	  (maxima::merror (intl:gettext "FP2SINGLE: floating point overflow converting ~:M to float.") l)
 	  (cl:scale-float mantissa e)))))
 
 

@@ -161,7 +161,7 @@
 (defmacro sel (&rest x)
   (push 'sel x )
   (let ((s (fsel (mode (second x)) (cddr x))))
-    (cond ((null s) (merror "sel: ~a ~a" (second x) (cddr x)))
+    (cond ((null s) (merror "SEL: ~a ~a" (second x) (cddr x)))
 	  (t (setq x (second x))
 	     (do ()
 		 ((null (cdr s)) x)
@@ -209,7 +209,7 @@
 	     (setq x (cons (second (zl-get (first l) 'mode)) (rplaca l x)))
 	     (rplacd (cddr x) nil))
 	   (push (list (third (zl-get (first s) 'mode)) x (second s) (second l)) nl))
-	  (t (merror "sto: ~a" (car l))))))
+	  (t (merror "STO: ~a" (car l))))))
 
 (defmacro cons-exp (op &rest args)
   `(simplify (list (list ,op) ,@args)))

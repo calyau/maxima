@@ -42,7 +42,7 @@
        (setq file  (namestring *parse-stream*)))
       (when tem
 	(format t "~%~a:~a:" file tem))
-      (format t "Incorrect syntax: ")
+      (format t (intl:gettext "incorrect syntax: "))
       (apply 'format t format-string (mapcar #'(lambda (x)
 						 (if (symbolp x)
 						     (print-invert-case x)
@@ -390,7 +390,7 @@
 	      ;; We're trying to parse the exponent part of a number,
 	      ;; and we didn't get a value after the exponent marker.
 	      ;; That's an error.
-	      (merror "Incomplete number.  Missing exponent?"))
+	      (merror (intl:gettext "parser: incomplete number; missing exponent?")))
 	     (t
 	      (make-number (cons (nreverse l) data)))))
     (parse-tyi)))
@@ -499,7 +499,7 @@
 	   (cond  ((eql test -1.)
 		   (parse-tyi)
 		   (if eof-ok? eof-obj
-		       (maxima-error "End of file while scanning expression")))
+		       (maxima-error (intl:gettext "parser: end of file while scanning expression."))))
 		  ((eql test #\/)
 		   (parse-tyi)
 		   (cond ((char= (parse-tyipeek) #\*)
@@ -535,7 +535,7 @@
 	(setq c (parse-tyipeek))
 	(parse-tyi)
 	(cond ((= depth 0) (return t)))
-	(cond ((and (numberp c) (< c 0))(error "end of file in comment"))
+	(cond ((and (numberp c) (< c 0))(error (intl:gettext "parser: end of file in comment.")))
 	      ((char= c #\*)
 	       (cond ((char= (parse-tyipeek) #\/)
 		      (decf depth)
@@ -1606,7 +1606,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   (let ((x))
     (if (or (and rbp (not (integerp (setq x rbp))))
 	    (and lbp (not (integerp (setq x lbp)))))
-	(merror "Binding powers must be integers.~%~M is not an integer." x))
+	(merror (intl:gettext "syntax extension: binding powers must be integers; found: ~M") x))
     (if (stringp op) (setq op (define-symbol op)))
     (op-setup op)
     (let ((noun   ($nounify op))

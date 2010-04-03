@@ -85,7 +85,7 @@
 (defmfun $pickapart (x lev)
   (setq x (format1 x))
   (cond ((not (fixnump lev))
-	 (merror "Improper 2nd argument to `pickapart':~%~M" lev))
+	 (merror (intl:gettext "pickapart: second argument must be an integer; found: ~M") lev))
 	((or (atom x) (and (eq (caar x) 'mminus) (atom (cadr x)))) x)
 	((= lev 0) (mgen2 x))
 	((and (atom (cdr x)) (cdr x)) x)
@@ -94,7 +94,7 @@
 (defmfun $reveal (e lev)
   (setq e (format1 e))
   (cond ((and (eq (ml-typep lev) 'fixnum) (> lev 0)) (reveal e 1 lev))
-	(t (merror "Second argument to reveal must be positive integer."))))
+	(t (merror (intl:gettext "reveal: second argument must be a positive integer; found: ~M") lev))))
 
 (defun simple (x)
   (or (atom x) (member (caar x) '(rat bigfloat) :test #'eq)))
@@ -233,7 +233,7 @@
 	 (nconc propvars (ncons (car iteml))))))
 
 (defmspec $printprops (r) (setq r (cdr r))
-	  (if (null (cdr r)) (merror "`printprops' takes two arguments."))
+	  (if (null (cdr r)) (merror (intl:gettext "printprops: requires two arguments.")))
 	  (let ((s (cadr r)))
 	    (setq r (car r))
 	    (setq r (cond ((atom r)
@@ -246,7 +246,7 @@
 		  ((eq s '$atomgrad) (dispatomgrads r))
 		  ((eq s '$gradef) (dispgradefs r))
 		  ((eq s '$matchdeclare) (dispmatchdeclares r))
-		  (t (merror "Unknown `property' - `printprops':  ~:M" s)))))
+		  (t (merror (intl:gettext "printprops: unknown property ~:M") s)))))
 
 (defun dispatvalues (l)
   (do ((l l (cdr l)))
@@ -325,9 +325,9 @@
 (defmfun $changevar (expr trans nvar ovar)
   (let (invfun nfun $ratfac)
     (cond ((or (atom expr) (eq (caar expr) 'rat) (eq (caar expr) 'mrat))  expr)
-	  ((atom trans) (merror "2nd arg must not be atomic"))
-	  ((null (atom nvar)) (merror "3rd arg must be atomic"))
-	  ((null (atom ovar)) (merror "4th arg must be atomic")))
+	  ((atom trans) (merror (intl:gettext "changevar: second argument must not be an atom; found: ~M") trans))
+	  ((null (atom nvar)) (merror (intl:gettext "changevar: third argument must be an atom; found: ~M") nvar))
+	  ((null (atom ovar)) (merror (intl:gettext "changevar: fourth argument must be an atom; found: ~M") ovar)))
     (setq tfun (solvable (setq trans (meqhk trans)) ovar))
     (changevar expr)))
 
@@ -335,7 +335,7 @@
   (let (*roots *failures)
     (solve l var 1)
     (cond (*roots ($rhs (car *roots)))
-	  (errswitch (merror "Unable to solve for ~M" var))
+	  (errswitch (merror (intl:gettext "changevar: failed to solve for ~M in ~M") var l))
 	  (t nil))))
 
 (defun changevar (expr)
@@ -348,7 +348,7 @@
 				      (sdiff trans ovar))))))
 	     (cond ((and (member (caar expr) '(%sum %product) :test #'eq)
 			 (not (equal deriv 1)))
-		    (merror "Illegal change in summation or product"))
+		    (merror (intl:gettext "changevar: illegal change in summation or product")))
 		   ((setq nfun ($radcan	;NIL IF KERNSUBST FAILS
 				(if tfun
 				    (mul (maxima-substitute tfun ovar (cadr expr))

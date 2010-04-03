@@ -49,7 +49,7 @@
 	((specrepp x) (opformat (specdisrep x)))
 	((and $optimwarn
 	      (mspecfunp (caar x))
-	      (prog2 (mtell "optimize: encountered a special form; answer may be wrong.")
+	      (prog2 (mtell (intl:gettext "optimize: encountered a special form; result may be wrong."))
 		  (setq $optimwarn nil))))
 	((eq (caar x) 'mexpt) (opmexpt x))
 	(t (let ((newargs (mapcar #'opformat (cdr x))))

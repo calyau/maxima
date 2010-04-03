@@ -43,7 +43,7 @@ call."
 
 (defmspec mdefmacro (form) (setq form (cdr form))
 	  (cond ((or (null (cdr form)) (cdddr form))
-		 (merror "Wrong number of args to ::= ~%~M"
+		 (merror (intl:gettext "macro definition: must have exactly two arguments; found: ~M")
 			 `((mdefmacro) ,@form))
 		 )
 		(t (mdefmacro1 (car form) (cadr form)))))
@@ -56,7 +56,7 @@ call."
 	       (member 'array (cdar fun) :test #'eq)              
 	       (mopp (setq name ($verbify (caar fun))))
 	       (member name '($all $% $%% mqapply) :test #'eq))
-	   (merror "Illegal macro definition: ~M" ;ferret out all the
+	   (merror (intl:gettext "macro definition: illegal definition: ~M") ;ferret out all the
 		   fun))		;  illegal forms
 	  ((not (eq name (caar fun)))	;efficiency hack I guess
 	   (rplaca (car fun) name)))	;  done in jpg;mlisp
@@ -72,7 +72,7 @@ call."
 		  (mdefparam (cadr (car a))))
 	     (setq mlexprp t))
 	    (t 
-	     (merror "Illegal parameter in macro definition: ~M"
+	     (merror (intl:gettext "macro definition: bad argument: ~M")
 		     (car a)))))
     (remove-transl-fun-props name)
     (add2lnc `((,name) ,@args) $macros)
@@ -122,7 +122,7 @@ call."
      expansion)
     (($displace)
      (mmacro-displace form expansion))
-    (t (mtell "warning: unrecognized value of 'macroexpansion'."))))
+    (t (mtell (intl:gettext "warning: unrecognized value of 'macroexpansion'.")))))
 
 
 (defun mmacro-displace (form expansion)
@@ -142,13 +142,13 @@ call."
 
 (defmspec $macroexpand (form) (setq form (cdr form))
 	  (cond ((or (null form) (cdr form))
-		 (merror "`macroexpand' only takes one argument:~%~M"
+		 (merror (intl:gettext "macroexpand: must have exactly one argument; found: ~M")
 			 `(($macroexpand) ,@form)))
 		(t (mmacroexpand (car form)))))
 
 (defmspec $macroexpand1 (form) (setq form (cdr form))
 	  (cond ((or (null form) (cdr form))
-		 (merror "`macroexpand' only takes one argument: ~%~M"
+		 (merror (intl:gettext "macroexpand1: must have exactly one argument; found: ~M")
 			 `(($macroexpand1) ,@form)))
 		(t (mmacroexpand1 (car form)))))
 

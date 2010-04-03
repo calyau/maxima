@@ -36,7 +36,7 @@
 (defun newdet (a n perm)
   (prog (rr k j old new vlist m loc addr sign)
      (when (> n 50)
-       (merror "Array too big - `newdet': ~M" n))
+       (merror (intl:gettext "newdet: matrix must be 50 by 50 or smaller; found size: ~M") n))
      (setq  *binom* (make-array (list (1+ n) (1+ n)) :element-type 'integer))
      (setq  *minor1* (make-array (list 2 (1+ (setq rr (pascal n))))))
      (setq  *i* (make-array (+ 2 n)))

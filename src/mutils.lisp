@@ -31,13 +31,13 @@
   (let ((elist (if (listp ielist)
                    (margs ielist)
                    (merror 
-                     (intl:gettext "assoc: Second argument must be a list: ~:M") 
+                     (intl:gettext "assoc: second argument must be a list; found: ~:M") 
                      ielist))))
     (if (and (listp elist)
              (every #'(lambda (x) (and (listp x) (= 3 (length x)))) elist))
 	(let ((found (find key elist :test #'alike1 :key #'second)))
 	  (if found (third found) default))
-	(merror (intl:gettext "assoc: Improper form for list: ~:M") ielist))))
+	(merror (intl:gettext "assoc: every list element must be an expression with two arguments; found: ~:M") ielist))))
 
 ;;; (ASSOL item A-list)
 ;;;

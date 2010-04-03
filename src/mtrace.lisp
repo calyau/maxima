@@ -216,28 +216,28 @@
 
 (defun macsyma-trace-sub (fun handler ilist &aux temp)
   (cond ((not (symbolp (setq fun (getopr fun))))
-	 (mtell "trace: argument is apparently not a function or operator: ~M~%" fun)
+	 (mtell (intl:gettext "trace: argument is apparently not a function or operator: ~M~%") fun)
 	 nil)
 	((trace-p fun)
 	 ;; Things which redefine should be expected to reset this
 	 ;; to NIL.
-	 (if (not trace-allp) (mtell "trace: function ~@:M is already traced.~%" fun))
+	 (if (not trace-allp) (mtell (intl:gettext "trace: function ~@:M is already traced.~%") fun))
 	 nil)
 	((member fun hard-to-trace :test #'eq)
-	 (mtell "trace: ~@:M cannot be traced.~%" fun)
+	 (mtell (intl:gettext "trace: ~@:M cannot be traced.~%") fun)
 	 nil)
 	((not (setq temp (car (macsyma-fsymeval fun))))
-	 (mtell "trace: ~@:M has no functional properties.~%" fun)
+	 (mtell (intl:gettext "trace: ~@:M has no functional properties.~%") fun)
 	 nil)
 	((member temp '(mmacro translated-mmacro) :test #'eq)
-	 (mtell "trace: ~@:M is a macro, so it won't trace well; try 'macroexpand' to debug it.~%" fun)
+	 (mtell (intl:gettext "trace: ~@:M is a macro, so it won't trace well; try 'macroexpand' to debug it.~%") fun)
 	 nil)
 	((get temp 'shadow)
 	 (put-trace-info fun temp ilist)
 	 (trace-fshadow fun temp (make-trace-hook fun temp handler))
 	 (list fun))
 	(t
-	 (mtell "trace: ~@:M is an unknown type of function.~%" fun)
+	 (mtell (intl:gettext "trace: ~@:M is an unknown type of function.~%") fun)
 	 nil)))
 
 (defvar trace-handling-stack ())
@@ -248,10 +248,10 @@
 (defun macsyma-untrace-sub (fun handler ilist)
   (prog1
       (cond ((not (symbolp (setq fun (getopr fun))))
-	     (mtell "untrace: argument is apparently not a function or operator: ~M~%" fun)
+	     (mtell (intl:gettext "untrace: argument is apparently not a function or operator: ~M~%") fun)
 	     nil)
 	    ((not (trace-p fun))
-	     (mtell "untrace: ~@:M is not traced.~%" fun)
+	     (mtell (intl:gettext "untrace: ~@:M is not traced.~%") fun)
 	     nil)
 	    (t
 	     (trace-unfshadow fun (trace-type fun))
@@ -308,7 +308,7 @@
 
 (defun get! (x y)
   (or (get x y)
-      (maxima-error "Undefined ~a property ~a" y x)))
+      (maxima-error (intl:gettext "GET!: property ~a of symbol ~a undefined.") y x)))
 
 (defun trace-fshadow (fun type value)
   (let ((shadow (get! type 'shadow)))
@@ -345,7 +345,7 @@
 		  (cadr (getl (cdr (getl fun `(,type-of))) `(,type-of)))
 		  (get fun type-of)))))
    (trace-fsymeval
-    (merror "Maxima bug: Trace property for ~:@M went away without hook." fun))))
+    (merror "internal error: trace property for ~:@M went away without hook." fun))))
 
 ;;; The handling of a traced call.
 
@@ -418,7 +418,7 @@
 		       (setq largs ret-val)
 		       (mtell "TRACE-HANDLER: reapplying the function ~:@M~%" fun))
 		      ((maxima-error)
-		       (merror "~%Signaling `maxima-error' for function ~:@M~%" fun))))))))
+		       (merror "~%TRACE-HANDLER: signaling 'maxima-error' for function ~:@M~%" fun))))))))
 
 
 ;; The (Trace-options function) access is not optimized to take place
@@ -455,7 +455,7 @@
 	(cond ((trace-option-p fun '$lisp_print)
 	       (trace-print `(,lev enter ,fun ,largs ,@info)))
 	      (t
-	       (trace-mprint lev " Enter " (mopstringnam fun) " " mlargs
+	       (trace-mprint lev (intl:gettext " Enter ") (mopstringnam fun) " " mlargs
 			     (if info " -> " "")
 			     (if info info "")))))))
 
@@ -468,7 +468,7 @@
 	(cond ((trace-option-p fun '$lisp_print)
 	       (trace-print `(,lev exit ,fun ,ret-val ,@info)))
 	      (t
-	       (trace-mprint lev " Exit  " (mopstringnam fun) " " ret-val
+	       (trace-mprint lev (intl:gettext " Exit  ") (mopstringnam fun) " " ret-val
 			     (if info " -> " "")
 			     (if info info "")))))))
 
@@ -518,6 +518,9 @@
 
 (declare-top (unspecial upper))
 
+;; I GUESS ALL OF THE STRINGS IN THIS FUNCTION NEED TO BE GETTEXT'D TOO
+;; JUST CAN'T BRING MYSELF TO DO IT
+
 (defun trace-error-break (fun level largs)
   (case (ask-choicep '("Signal an `maxima-error', i.e. punt?"
 		       "Retry with same arguments?"
@@ -550,7 +553,7 @@
 	   (load-and-tell (get fun 'autoload))
 	   (setq try (macsyma-fsymeval-sub fun))
 	   (or try
-	       (mtell "trace: ~@:M has no functional properties after autoloading.~%"
+	       (mtell (intl:gettext "trace: ~@:M has no functional properties after autoloading.~%")
 		      fun))
 	   try)
 	  (t try))))
