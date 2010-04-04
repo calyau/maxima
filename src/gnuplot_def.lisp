@@ -162,6 +162,7 @@
 
 (defun gnuplot-print-header (dest features)
   (let ((gnuplot-out-file nil) (meshcolor '$black) (colorbox nil)
+	(colors (cddr ($get_plot_option '$color)))
         preamble palette meshcolor_opt colorbox_opt)
     (setq preamble (get-plot-option-string '$gnuplot_preamble))
     (if (and ($get_plot_option '$gnuplot_preamble) (> (length preamble) 0))
@@ -187,7 +188,9 @@
 		(unless colorbox (format dest "unset colorbox~%"))
                 (format dest "set palette ~a~%"
                         (gnuplot-palette (rest palette))))
-              (format dest "set hidden3d~%"))
+              (format dest "set hidden3d offset ~d~%"
+		      (- (gnuplot-color (nth (mod 1 (length colors)) colors))
+			 (gnuplot-color (first colors)))))
           (let ((elev ($get_plot_option '$elevation))
                 (azim ($get_plot_option '$azimuth)))
               (when (or elev azim)
