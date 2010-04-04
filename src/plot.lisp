@@ -1301,7 +1301,7 @@ sin(y)*(10.0+6*cos(x)),
           (setq options (cons range options)))))
 
     ;; When only one function is being plotted:
-    ;; If a simple function use its name for the vertical axis.
+    ;; If a simple function use, its name for the vertical axis.
     ;; If parametric, give the axes the names of the two parameters.
     ;; If discrete points, name the axes x and y.
     (when (= (length fun) 2)
@@ -1327,6 +1327,13 @@ sin(y)*(10.0+6*cos(x)),
 
     ;; Parse the given options into the list features
     (setq features (plot-options-parser options features))
+
+    ;; Remove axes labels when no box is used in gnuplot
+    (unless (or (null (getf features :box)) (first (getf features :box))
+		(eq (getf features :plot-format) '$xmaxima))
+      (remf features :xlabel)
+      (remf features :ylabel))
+
 
     (let ((xmin (getf features :xmin)) (xmax (getf features :xmax)))
       (when
@@ -1977,14 +1984,15 @@ several functions depending on the two variables v1 and v2:
   (setq tem ($get_plot_option '$transform_xy 2))
   
   ;; set up the labels for the axes
-  (if (and (getf features :xvar) (getf features :yvar) (null tem))
-      (progn
-        (setf (getf features :xlabel) (ensure-string (getf features :xvar)))
-        (setf (getf features :ylabel) (ensure-string (getf features :yvar))))
-      (progn
-        (setf (getf features :xlabel) "x")
-        (setf (getf features :ylabel) "y")))
-  (unless (getf features :zlabel) (setf (getf features :zlabel) "z"))
+  (when (or (null (getf features :box)) (first (getf features :box)))
+    (if (and (getf features :xvar) (getf features :yvar) (null tem))
+	(progn
+	  (setf (getf features :xlabel) (ensure-string (getf features :xvar)))
+	  (setf (getf features :ylabel) (ensure-string (getf features :yvar))))
+	(progn
+	  (setf (getf features :xlabel) "x")
+	  (setf (getf features :ylabel) "y")))
+    (unless (getf features :zlabel) (setf (getf features :zlabel) "z")))
   
   ;; x and y should not be bound, when an xy transformation function is used
   (when tem (remf features :xmin) (remf features :xmax)
