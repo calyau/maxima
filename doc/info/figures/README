@@ -16,8 +16,8 @@ the following Maxima commands:
 
   set_plot_option([gnuplot_ps_term_command,
      "set size 1.3, 1.3; set term postscript eps color solid lw 2.5 30"])$
-  plot2d (sin(x), [x, -5, 5], [gnuplot_term,ps],
-     [gnuplot_out_file,"plotting2.ps"])$
+
+  plot2d (sin(x), [x, -5, 5], [psfile,"plotting2.ps"])$
 
 The size scaling of 1.3 was used to obtain a figure with a reasonable
 size in the HTML manual. The size of the figure in the PDF manual can
@@ -26,12 +26,13 @@ be adjusted in the info file, as explained in the next section. "lw
 size of the font which will be used (Helvetica by default).
 
 The two figures plotting2.gif and plotting2.pdf where created using
-two commands from the packages Imagemagick and Tetex:
+the programs convert, from Imagemagick, and epstopdf, from the CTAN
+Tex/LaTeX archive:
 
-  convert plotting2.ps plotting2.gif
+  convert -bordercolor white -border 0x0 plotting2.ps plotting2.gif
   epstopdf plotting2.ps
 
-The file plotting.ps has been included (in compressed form) in this
+The file plotting2.ps has been included (in compressed form) in this
 directory just for reference.
 
 ADDING FIGURES TO THE MANUAL

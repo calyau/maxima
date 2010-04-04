@@ -46,6 +46,9 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   asympa.texi Deleted.texi
 
 figurefiles = \
+figures/contour1.gif\
+figures/contour2.gif\
+figures/contour3.gif\
 figures/dynamics1.gif\
 figures/dynamics2.gif\
 figures/dynamics3.gif\

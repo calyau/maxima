@@ -228,7 +228,11 @@ Simplification
 Plotting
 
 * Introduction to Plotting::
+* Plotting Formats::
 * Functions and Variables for Plotting::    
+* Plotting Options::
+* Gnuplot Options::
+* Gnuplot_pipes Format Functions::
 
 Input and Output
 
