@@ -2153,11 +2153,11 @@
 (defun idiffexpt1 (e x)
 ;; RETURN: n*v^n*rename(v'/v) where e=v^n
   (list '(mtimes) (caddr e) e
-    ($rename
+;;    ($rename
       (list '(mtimes) (list '(mexpt) (cadr e) -1)
              (idiff (cadr e) x)
       )
-    )
+;;    )
   )
 )
 
@@ -3047,6 +3047,33 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   ($decsym '$levi_civita n 0 '((mlist) (($anti) $all)) '((mlist)))
   ($decsym '$levi_civita 0 n '((mlist)) '((mlist) (($anti) $all)))
 )
+
+(defun i-$dependencies (l &aux res)
+  (dolist (z l)
+    (cond
+      ((atom z)
+       (merror
+         (intl:gettext
+           "depends: argument must be a non-atomic expression; found ~M") z))
+      ((or (eq (caar z) 'mqapply)
+           (member 'array (cdar z) :test #'eq))
+       (merror
+         (intl:gettext
+           "depends: argument cannot be a subscripted expression; found ~M") z))
+      (t
+       (do ((zz z (cdr zz))
+            (y nil))
+           ((null zz)
+            (mputprop (caar z) (setq y (reverse y)) 'depends)
+            (setq res (push (cons (ncons (caar z)) y) res))
+            (unless (cdr $dependencies)
+              (setq $dependencies '((mlist simp))))
+            (add2lnc (cons (cons (caar z) nil) y) $dependencies))
+         (cond 
+               ((and (cadr zz)
+                     (not (member (cadr zz) y)))
+                (setq y (push (cadr zz) y))))))))
+  (cons '(mlist simp) (reverse res)))
 
 ($load '$ex_calc)
 ($load '$lckdt)
