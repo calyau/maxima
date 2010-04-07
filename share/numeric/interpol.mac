@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2008 Mario Rodriguez Riotorto
+Copyright (C) 2005-2010 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -321,7 +321,8 @@ ratinterpol(tab,r,[select]) :=
     coef: apply(matrix,
                 makelist(block([x,y],
                            [x,y]: p,
-                           append(makelist(x^k,k,0,r),
+                           append([1],
+                                  makelist(x^k,k,1,r),
                                   makelist(-y*x^k,k,1,m))),
                          p, tab)),
     indep: map(second, tab) * defaults[2],
