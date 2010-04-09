@@ -41,42 +41,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; This function is no longer used. DK 09/2009.
-;(defun bess (v z flg)
-;  `((,(if (eq flg 'j)
-;	  '%bessel_j
-;	  '%bessel_i))
-;    ,v ,z))
-
-; Not used in Maxima core and share.
-;(defun notnump (x)
-;  (not (nump x)))
-
-#+nil
-(defun negnump (x)
-  (cond ((not (maxima-integerp x))
-	 (minusp (cadr (simplifya x nil))))
-	(t (minusp x))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;; Helper functions for this file
-
-;; Test if EXP is 1 or %e.
-(defun expor1p (exp)
-  (or (equal exp 1)
-      (eq exp '$%e)))
-
-;; If FLG is non-NIL, return exp(%pi*%i/2), that is the polarfom of %i.
-;; Otherwise, return exp(-%pi*%i*v/2), the polarform of %i^(-v).
-;; This function is no longer used.
-;(defun 1fact (flg v)
-;  (power '$%e
-;         (mul* '$%pi
-;               '$%i
-;               (1//2)
-;               (cond (flg 1)
-;                     (t (mul -1 v))))))
 
 (defun substl (p1 p2 p3)
   (cond ((eq p1 p2) p3)
@@ -96,28 +61,10 @@
   (cond ((equal m 0) nil)
         (t (freevar m))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; This pattern has been replaced by m2-asin
-;(defun u*asinx (exp)
-;  (m2 exp
-;      '((mplus)
-;	((coeffpt) (u nonzerp)((%asin)(x hasvar)))
-;	((coeffpp)(a zerp)))
-;      nil))
-
-; This pattern has been replaced by m2-atan
-;(defun u*atanx (exp)
-;  (m2 exp
-;      '((mplus)
-;	((coeffpt)(u nonzerp)((%atan)(x hasvar)))
-;	((coeffpp)(a zerp)))
-;      nil))
-
-;; I (rtoy) think this is the tail of the incomplete gamma function.
-;; No longer used in Maxima core and share.
-;(defun gminc (a b)
-;  (list '(%gamma_incomplete) a b))
+;; Test if EXP is 1 or %e.
+(defun expor1p (exp)
+  (or (equal exp 1)
+      (eq exp '$%e)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1044,24 +991,6 @@
      (setq $radexpand '$all)
      (return (defintegrate exp var))))
 
-; This routine is no longer called.
-;(defun grasp-some-trigs (exp var)
-;  (let ((*asinx* nil)
-;	(*atanx* nil))
-;    (declare (special *asinx* *atanx*))
-;    (prog (u x l)
-;       (cond ((setq l (u*asinx exp))
-;	      (setq u (cdras 'u l)
-;		    x (cdras 'x l)
-;		    *asinx* 't)
-;	      (return (defintegrate u var))))
-;       (cond ((setq l (u*atanx exp))
-;	      (setq u (cdras 'u l)
-;		    x (cdras 'x l)
-;		    *atanx* 't)
-;	      (return (defintegrate u var))))
-;       (return (defintegrate exp var)))))
-
 (defun defintegrate (exp var)
   ;; This used to have $exponentialize enabled for everything, but I
   ;; don't think we should do that.  If various routines want
@@ -1083,9 +1012,6 @@
 
     (let ((den ($denom form)))
       (when (and (not (equal 1 den)) ($freeof var den))
-	(when *debug-hypgeo*
-	  (format t "~&DEFINTEGRATE: We have found a denominator.~%")
-	  (format t "~&   : denom = ~A~%" den))
 	(return-from defintegrate
 	  (div (defintegrate (mul den form) var) den))))
 
@@ -1097,9 +1023,6 @@
 	   (s (mul -1 (cdras 'a l)))
 	   (u ($expand (cdras 'u l)))
 	   (l1))
-      (when *debug-hypgeo*
-	(format t "~&DEFINTEGRATE:~%")
-	(format t "~&   : l    = ~A~%" l))
       (cond
 	((setq l1 (m2-sum-with-exp-case1 u))
 	 ;;  c * t^-1 * (%e^(-a*t) - %e^(-b*t)) + d
@@ -1107,7 +1030,6 @@
 	       (a (mul -1 (cdras 'a l1)))
 	       (b (mul -1 (cdras 'b l1)))
 	       (d (cdras 'd l1)))
-	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	   (add
 	     (mul c (simplify (list '(%log) (div (add s b) (add s a)))))
 	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
@@ -1118,7 +1040,6 @@
 	       (a (mul -1 (cdras 'a l1)))
 	       (b (mul -1 (cdras 'b l1)))
 	       (d (cdras 'd l1)))
-	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	   (add
 	     (mul
 	       2 c
@@ -1133,7 +1054,6 @@
 	 (let ((c (cdras 'c l1))
 	       (a (div (cdras 'a l1) -2))
 	       (d (cdras 'd l1)))
-	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	   (add
 	     (mul
 	       c
@@ -1148,7 +1068,6 @@
          (let ((c (cdras 'c l1))
                (a (div (cdras 'a l1) (mul 4 '$%i)))
                (d (cdras 'd l1)))
-           (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
            (add
              (mul
                -1 c
@@ -1165,7 +1084,6 @@
 	 (let ((c (cdras 'c l1))
 	       (a (cdras 'a l1))
 	       (d (cdras 'd l1)))
-	   (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	   (add
 	     (mul c (simplify (list '(%log) (div (sub s a) s))))
 	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
@@ -1368,11 +1286,7 @@
 
     (when (and (numberp s) (equal s 0))
        (setq l (defltep ($factor form)))
-       (setq s (cdras 'a l))
-
-       (when *debug-hypgeo*
-	 (format t "~&DEFEXC: We try to factor.~%")
-	 (format t "~&   : l = ~A~%" l)))
+       (setq s (cdras 'a l)))
 
     (cond (l
 	   ;; EXP is an expression of the form u*%e^(s*t+e*f+c).  So s
@@ -1442,13 +1356,9 @@
 ;;; Compute the transform of u*%e^(-p*t+e*f)
 
 (defun lt-exec (u e f)
-;  (declare (special *asinx* *atanx*)) ; No longer used.
   (let (l a)
     (cond ((setq l (m2-sum u))
 	   ;; We have found a summation.
-	   (when *debug-hypgeo*
-	     (format t "~&LT-EXEC: SUM gefunden~%")
-	     (format t "~&   : l = ~A~%" l))
 	   (mul
 	     (cdras 'c l)
 	     (simplify 
@@ -1461,22 +1371,12 @@
 	   ;; We have found the Unit Step function.
 	   (setq u (cdras 'u l)
 		 a (cdras 'a l))
-	   (when *debug-hypgeo*
-	     (format t "~&We have found unit_step:~%")
-	     (format t "~&   : l = ~A~%" l))
 	   (mul
 	     (power '$%e (mul a *par*))
 	     (sendexec
 	       (cond (($freeof var u) u)
 		     (t (maxima-substitute (sub var a) var u)))
 	       1)))
-
-; No special handling of asin and atan. 
-; The functions are handled by the routine lt-sf-log.
-;	  ((or *asinx* *atanx*)
-;	   ;; We've already determined that we have an asin or atan;
-;	   ;; expression, so use lt-asinatan to find the transform.
-;	   (lt-asinatan u e))
           
 	  ((zerp e)
 	   ;; The simple case of u*%e^(-p*t)
@@ -1522,18 +1422,6 @@
 	((coefftt)(c freevar))
 	((mexpt)(t varp)(v freevar)))
       nil))
-
-;; Laplace transform of u*%e^(-p*t + e*f).  But we can't handle the
-;; case where e isn't zero.
-;; This routine is no longer called. In the routine lt-sf-log
-;; lt-ltp is directly called.
-;(defun lt-asinatan (u e)
-;  (declare (special *asinx* *atanx*))
-;  (cond ((zerp e)
-;	 (cond (*asinx* (lt-ltp 'asin u var nil))
-;	       (*atanx* (lt-ltp 'atan u var nil))
-;	       (t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-1))))
-;	(t (setq *hyp-return-noun-flag* 'lt-asinatan-failed-2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; 
@@ -2655,17 +2543,10 @@
 	 (c (cdras 'c l))
 	 (v (add (cdras 'v l) 1))) ; because v -> v-1
 
-    (when *debug-hypgeo*
-      (format t "~&LT-LOG (rest arg):~%")
-      (format t "~&   : rest = ~A~%" rest)
-      (format t "~&   : arg  = ~A~%" arg)
-      (format t "~&   : l    = ~A~%" l))
-
     (cond
       ((and l (eq (asksign v) '$positive))
        (let* ((l1 (m2-a*t arg))
 	      (a  (cdras 'a l1)))
-	 (when *debug-hypgeo* (format t "~&   : l1 = ~A~%" l1))
 	 (cond
 	   (l1
 	     (mul
@@ -2738,13 +2619,7 @@
           ;; Ok, we satisfy the conditions.  Now extract the arg.
           ;; The transformation is only valid for an argument a*t. We have
           ;; to special the pattern to make sure that we satisfy the condition.
-          (let ((l (m2-a*t a) ; more special pattern
-;                   (m2 a
-;                       '((mplus)
-;                         ((coeffpt) (f hasvar) (a freevar))
-;                         ((coeffpp) (c zerp)))
-;                       nil)
-                   ))
+          (let ((l (m2-a*t a)))
             (when l
               (let ((a (cdras 'a l)))
                 ;; We're ready now to compute the transform.
@@ -2930,17 +2805,6 @@
 ;; Here the correct documentation has to be added.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#+nil
-(defun ltw (x n a)
-  (let ((diva2 (div a 2)))
-    (mul* (power -1 n)
-          (inv (factorial n))
-          (power x (sub (inv -2) diva2))
-          (power '$%e (div x 2))
-          (wwhit x (add (1//2) diva2 n) diva2))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun ltw (x n a)
   (let ((diva2 (div a 2)))
     (mul
@@ -3034,11 +2898,6 @@
          ;; more simple.
 	 (lty rest arg1 index1))
 	(t (fractest2 rest arg1 index1 nil 'ytj))))
-
-; Not used in Maxima core or share
-;(defun eqrat (a)
-;  (cond ((numberp a) nil)
-;        (t (equal (caar a) 'rat))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -3193,20 +3052,6 @@
        (inv (simplify (list '(%sin) (mul i '$%pi))))
        (sub (simplify (list '(%bessel_i) (mul -1 i) a))
             (simplify (list '(%bessel_i) i a)))))
-
-;; Bessel Y
-;; No longer used in Maxima core and share.
-;(defun bessy (v z)
-;  `((%bessel_y) ,v ,z))
-
-;; Bessel K
-;; No longer used in Maxima core and share.
-;(defun kmodbes(z v)
-;  `((%bessel_k) ,v ,z))
-
-;; No longer used in Maxima core and share.
-;(defun tan% (arg)
-;  (list '(%tan) arg))
 
 ;; Express Hankel function in terms of Bessel J or Y function.
 ;;
@@ -3392,11 +3237,6 @@
 (defun lt1j (rest arg index)
   (lt-ltp 'onej rest arg index))
 
-; This function is no longer needed. We call lty immediately and not via lt-ltp.
-;;; Laplace transform of one Bessel Y
-;(defun lt1y (rest arg index)
-;  (lt-ltp 'oney rest arg index))
-
 ;; Laplace transform of two Bessel J functions.  
 ;; The argument of each must be the same, but the orders may be different.
 (defun lt2j (rest arg1 arg2 index1 index2)
@@ -3482,14 +3322,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun lt-ltp (flg rest arg index)
-
-  (when *debug-hypgeo*
-    (format t "~&LT-LTP (flg rest arg index):~%")
-    (format t "~&   : flg   = ~A~%" flg)
-    (format t "~&   : rest  = ~A~%" rest)
-    (format t "~&   : arg   = ~A~%" arg)
-    (format t "~&   : index = ~A~%" index))
-
   (prog (index1 index2 argl const l l1)
      (when (or (zerp index)
 	       (eq flg 'onerf)
@@ -3609,12 +3441,6 @@
 	      (setq *hyp-return-noun-flag* 'prop4-to-be-applied))))
      labl1
      ;; No const term, if we're here.
-
-; We no longer call lty via lt-ltp. This code is no longer needed.
-;     (cond ((eq flg 'oney)
-;	    ;; Handle bessel_y here.  We're done.
-;	    (return (lty rest arg index))))
-     
      ;; Try to express the function in terms of hypergeometric
      ;; functions that we can handle.
      (cond ((setq l
@@ -3868,9 +3694,7 @@
 ;; So log(z) = (z-1)*F(1,1;2;1-z)
 
 (defun logtf (arg)
-  ;; This seems wrong.   Why is the multipler 1 instead of (z-1)?
-  (list #+nil 1
-	(sub arg 1)
+  (list (sub arg 1)
 	(ref-fpq (list 1 1)
 		 (list 2)
 		 (sub 1 arg))))
@@ -3959,24 +3783,6 @@
 ;; It's quite easy to derive
 ;;
 ;; L[v](z) = 2/sqrt(%pi)*(z/2)^(v+1)/gamma(v+3/2) * 1F2(1;3/2,v+3/2;(z^2/4))
-
-#+nil
-(defun lstf (v z)
-  (prog (hst)
-     (return (list (mul* (power '$%e
-                                (mul* (div (add v 1)
-                                           -2)
-                                      '$%pi
-                                      '$%i))
-                         (car (setq hst
-                                    (hstf v
-                                          (mul* z
-                                                (power '$%e
-                                                       (mul*
-                                                        (1//2)
-                                                        '$%i
-                                                        '$%pi)))))))
-                   (cadr hst)))))
 
 (defun lstf (v z)
   (let ((d32 (div 3 2)))
@@ -4288,62 +4094,5 @@
                  (mwhit (div a *par*) u v))
             (mul (simplify (list '(%sec) (mul '$%pi (sub u v))))
                  (wwhit (div a *par*) u v)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; This doesn't seem to be used anywhere.
-;;
-;; A&S 8.1.2:
-;;
-;; assoc_legendre_p(v,m,z)
-;;    = 1/gamma(1-m)*((z+1)/(z-1))^(m/2)*F(-v,v+1;1-m;(1-z)/2)
-;;
-;; for |1-z|<2
-;;
-;; Note: The args here are reversed from our definition of
-;; assoc_legendre_p!
-
-#+nil
-(defun leg1fsimp (m v z)
-  (mul (inv (simplify (list '(%gamma) (sub 1. m))))
-       (power (div (add z 1.) (sub z 1.)) (div m 2.))
-       (hgfsimp-exec (list (mul -1. v) (add v 1.))
-                     (list (sub 1. m))
-                     (sub (inv 2.) (div z 2.)))))
-
-;; A&S 8.1.3:
-;;
-;; assoc_legendre_q(v,m,z)
-;;    = exp(%i*%pi*m)*2^(-v-1)*sqrt(%pi)*gamma(v+m+1)/gamma(v+3/2)*z^(-v-u-1)
-;;        *(z^2-1)^(m/2)*F(1+v/2+u/2,1/2+v/2+u/2;v+3/2;1/z^2)
-;;
-;; for |z| > 1.
-;;
-;; But note that we are called with z = p/sqrt(p^2+a^2) so |z| < 1 for
-;; all real p and a.  So I (rtoy) don't think this is the right thing
-;; to use.
-;;
-;; So, for now, just return the Legendre Q function and hope that
-;; someone else can simplify it.
-
-;; This code is no longer called. We call the Maxima function
-;; $assoc_legendre_q in the routine f2p105v2cond-simp.
-
-#+nil
-(defun leg2fsimp (m v z)
-  (cond (t
-         (legen m v z '$q))
-        (nil
-         (mul (power '$%e (mul m '$%pi '$%i))
-              (power '$%pi (inv 2.))
-              (simplify (list '(%gamma) (add m v 1.)))
-              (inv (power 2. (add v 1.)))
-              (inv (simplify (list '(%gamma) (add v (div 3. 2.)))))
-              (power z (sub -1. (add m v)))
-              (power (sub (mul z z) 1.) (mul (inv 2.) m))
-              (hgfsimp-exec (list (div (add m v 1.) 2.)
-                                  (div (add m v 2.) 2.))
-                            (list (add v (mul 3. (inv 2.))))
-                            (inv (mul z z)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
