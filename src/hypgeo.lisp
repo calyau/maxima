@@ -62,9 +62,9 @@
         (t (freevar m))))
 
 ;; Test if EXP is 1 or %e.
-(defun expor1p (exp)
-  (or (equal exp 1)
-      (eq exp '$%e)))
+(defun expor1p (expr)
+  (or (equal expr 1)
+      (eq expr '$%e)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -91,18 +91,18 @@
 ;;; Two general pattern for the routine lt-sf-log.
 
 ;; Recognize c*u^v + a and a=0.
-(defun arbpow1 (exp)
-  (m2 exp
+(defun m2-arbpow1 (expr)
+  (m2 expr
       '((mplus)
         ((coeffpt)
          (c freevar) ; more special to ensure that c is constant
-         ((mexpt)(u hasvar)(v freevar)))
-        ((coeffpp)(a zerp)))
+         ((mexpt) (u hasvar) (v freevar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize c*t^v*(a+b*t)^w+d and d=0. This is a generalization of arbpow1. 
-(defun m2-arbpow2 (exp)
-  (m2 exp
+(defun m2-arbpow2 (expr)
+  (m2 expr
       '((mplus)
         ((mtimes)
          ((coefftt) (c freevar))
@@ -110,7 +110,7 @@
          ((mexpt)
           ((mplus) (a freevar) ((coefft) (b freevar) (t equal var)))
           (w freevar0)))
-        ((coeffpp)(d zerp)))
+        ((coeffpp) (d zerp)))
       nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -136,114 +136,114 @@
       nil))
 
 ;; Recognize bessel_j(v,w)
-(defun onej (exp)
-  (m2 exp
+(defun m2-onej (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_j) (v true) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_j) (v freevar) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_j(v1,w1)*bessel_j(v2,w2)
-(defun twoj (exp)
-  (m2 exp
+(defun m2-twoj (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_j) (v1 true) (w1 true))
-	 ((%bessel_j) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_j) (v1 freevar) (w1 hasvar))
+         ((%bessel_j) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_y(v1,w1)*bessel_y(v2,w2)
-(defun twoy (exp)
-  (m2 exp
+(defun m2-twoy (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_y) (v1 true) (w1 true))
-	 ((%bessel_y) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_y) (v1 freevar) (w1 hasvar))
+         ((%bessel_y) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_k(v1,w1)*bessel_k(v2,w2)
-(defun twok (exp)
-  (m2 exp
+(defun m2-twok (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_k) (v1 true) (w1 true))
-	 ((%bessel_k) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_k) (v1 freevar) (w1 hasvar))
+         ((%bessel_k) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_k(v1,w1)*bessel_y(v2,w2)
-(defun onekoney (exp)
-  (m2 exp
+(defun m2-onekoney (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_k) (v1 true) (w1 true))
-	 ((%bessel_y) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_k) (v1 freevar) (w1 hasvar))
+         ((%bessel_y) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_j(v,w)^2
-(defun onej^2 (exp)
-  (m2 exp
+(defun m2-onej^2 (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mexpt)
-	  ((%bessel_j) (v true) (w true))
-	  2.))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mexpt)
+          ((%bessel_j) (v freevar) (w hasvar))
+          2))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_y(v,w)^2
-(defun oney^2 (exp)
-  (m2 exp
+(defun m2-oney^2 (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mexpt)
-	  ((%bessel_y) (v true) (w true))
-	  2.))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mexpt)
+          ((%bessel_y) (v freevar) (w hasvar))
+          2))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_k(v,w)^2
-(defun onek^2 (exp)
-  (m2 exp
+(defun m2-onek^2 (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mexpt)
-	  ((%bessel_k) (v true) (w true))
-	  2.))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mexpt)
+          ((%bessel_k) (v freevar) (w hasvar))
+          2))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v,w)
-(defun onei (exp)
-  (m2 exp
+(defun m2-onei (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_i) (v true) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_i) (v freevar) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v1,w1)*bessel_i(v2,w2)
-(defun twoi (exp)
-  (m2 exp
+(defun m2-twoi (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_i) (v1 true) (w1 true))
-	 ((%bessel_i) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_i) (v1 freevar) (w1 hasvar))
+         ((%bessel_i) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_1(v1,w1)*hankel_1(v2,w2), product of 2 Hankel 1 functions.
@@ -252,9 +252,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v1 true) (w1 true))
-         ((%hankel_1) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%hankel_1) (v1 freevar) (w1 hasvar))
+         ((%hankel_1) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_2(v1,w1)*hankel_2(v2,w2), product of 2 Hankel 2 functions.
@@ -263,9 +263,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_2) (v1 true) (w1 true))
-         ((%hankel_2) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%hankel_2) (v1 freevar) (w1 hasvar))
+         ((%hankel_2) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_1(v1,w1)*hankel_2(v2,w2), product of 2 Hankel functions.
@@ -274,31 +274,31 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v1 true) (w1 true))
-         ((%hankel_2) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%hankel_1) (v1 freevar) (w1 hasvar))
+         ((%hankel_2) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_y(v1,w1)*bessel_j(v2,w2)
-(defun oneyonej (exp)
-  (m2 exp
+(defun m2-oneyonej (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_y) (v1 true) (w1 true))
-	 ((%bessel_j) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_y) (v1 freevar) (w1 hasvar))
+         ((%bessel_j) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_k(v1,w1)*bessel_j(v2,w2)
-(defun onekonej (exp)
-  (m2 exp
+(defun m2-onekonej (expr)
+  (m2 expr
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((%bessel_k) (v1 true) (w1 true))
-	 ((%bessel_j) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+	 ((%bessel_k) (v1 freevar) (w1 hasvar))
+	 ((%bessel_j) (v2 freevar) (w2 hasvar)))
+	((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_y(v1,w1)*hankel_1(v2,w2)
@@ -307,9 +307,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_y) (v1 true) (w1 true))
-         ((%hankel_1) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%bessel_y) (v1 freevar) (w1 hasvar))
+         ((%hankel_1) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_y(v1,w1)*hankel_2(v2,w2)
@@ -318,9 +318,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_y) (v1 true) (w1 true))
-         ((%hankel_2) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%bessel_y) (v1 freevar) (w1 hasvar))
+         ((%hankel_2) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_k(v1,w1)*hankel_1(v2,w2)
@@ -329,9 +329,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v1 true) (w1 true))
-         ((%hankel_1) (v1 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%bessel_k) (v1 freevar) (w1 hasvar))
+         ((%hankel_1) (v1 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_k(v1,w1)*hankel_2(v2,w2)
@@ -340,20 +340,20 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_k) (v1 true) (w1 true))
-         ((%hankel_2) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%bessel_k) (v1 freevar) (w1 hasvar))
+         ((%hankel_2) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v1,w1)*bessel_j(v2,w2)
-(defun oneionej (exp)
-  (m2 exp
+(defun m2-oneionej (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_i) (v1 true) (w1 true))
-	 ((%bessel_j) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_i) (v1 freevar) (w1 hasvar))
+         ((%bessel_j) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v1,w1)*hankel_1(v2,w2)
@@ -362,9 +362,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 true) (w1 true))
-         ((%hankel_1) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%bessel_i) (v1 freevar) (w1 hasvar))
+         ((%hankel_1) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v1,w1)*hankel_2(v2,w2)
@@ -373,9 +373,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%bessel_i) (v1 true) (w1 true))
-         ((%hankel_2) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%bessel_i) (v1 freevar) (w1 hasvar))
+         ((%hankel_2) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_1(v1,w1)*bessel_j(v2,w2)
@@ -384,9 +384,9 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v1 true) (w2 true))
-         ((%bessel_j) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%hankel_1) (v1 freevar) (w2 hasvar))
+         ((%bessel_j) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_2(v1,w1)*bessel_j(v2,w2)
@@ -395,43 +395,43 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_2) (v1 true) (w2 true))
-         ((%bessel_j) (v2 true) (w2 true)))
-        ((coeffpp)(a zerp)))
+         ((%hankel_2) (v1 freevar) (w2 hasvar))
+         ((%bessel_j) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v1,w1)*bessel_y(v2,w2)
-(defun oneioney (exp)
-  (m2 exp
+(defun m2-oneioney (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_i) (v1 true) (w1 true))
-	 ((%bessel_y) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_i) (v1 freevar) (w1 hasvar))
+         ((%bessel_y) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v1,w1)*bessel_k(v2,w2)
-(defun oneionek (exp)
-  (m2 exp
+(defun m2-oneionek (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_i) (v1 true) (w1 true))
-	 ((%bessel_k) (v2 true) (w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_i) (v1 freevar) (w1 hasvar))
+         ((%bessel_k) (v2 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_i(v,w)^2
-(defun onei^2 (exp)
-  (m2 exp
+(defun m2-onei^2 (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mexpt)
-	  ((%bessel_i) (v true) (w true))
-	  2.))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mexpt)
+          ((%bessel_i) (v freevar) (w hasvar))
+          2))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_1(v,w)^2
@@ -441,9 +441,9 @@
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%hankel_1) (v true) (w true))
+          ((%hankel_1) (v freevar) (w hasvar))
           2))
-        ((coeffpp)(a zerp)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_2(v,w)^2
@@ -453,29 +453,29 @@
         ((coeffpt)
          (u nonzerp)
          ((mexpt)
-          ((%hankel_2) (v true) (w true))
+          ((%hankel_2) (v freevar) (w hasvar))
           2))
-        ((coeffpp)(a zerp)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_y(v,w)
-(defun oney (exp)
-  (m2 exp
+(defun m2-oney (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_y) (v true) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_y) (v freevar) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize bessel_k(v,w)
-(defun onek (exp)
-  (m2 exp
+(defun m2-onek (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%bessel_k) (v true) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%bessel_k) (v freevar) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hankel_1(v,w)
@@ -484,7 +484,7 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_1) (v true) (w true)))
+         ((%hankel_1) (v freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
@@ -494,114 +494,138 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%hankel_2) (v true) (w true)))
+         ((%hankel_2) (v freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize log(w)
-(defun onelog (exp)
-  (m2 exp
+(defun m2-onelog (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%log)(w hasvar)))
-	((coeffpp)(a zerp)))
+        ((coeffpt) 
+         (u nonzerp) 
+         ((%log) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize erf(w)
-(defun onerf (exp)
-  (m2 exp
+(defun m2-onerf (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%erf)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%erf) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize erfc(w)
-(defun onerfc (exp)
-  (m2 exp
+(defun m2-onerfc (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%erfc)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%erfc) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize fresnel_s(w)
-(defun onefresnel_s (exp)
-  (m2 exp
+(defun m2-onefresnel_s (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%fresnel_s)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%fresnel_s) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize fresnel_c(w)
-(defun onefresnel_c (exp)
-  (m2 exp
+(defun m2-onefresnel_c (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%fresnel_c)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%fresnel_c) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize expintegral_e(v,w)
-(defun oneexpintegral_e (exp)
-  (m2 exp
+(defun m2-oneexpintegral_e (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%expintegral_e) (v true) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%expintegral_e) (v freevar) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize expintegral_ei(w)
-(defun oneexpintegral_ei (exp)
-  (m2 exp
+(defun m2-oneexpintegral_ei (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%expintegral_ei)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%expintegral_ei) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize expintegral_e1(w)
-(defun oneexpintegral_e1 (exp)
-  (m2 exp
+(defun m2-oneexpintegral_e1 (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%expintegral_e1)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%expintegral_e1) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize expintegral_si(w)
-(defun oneexpintegral_si (exp)
-  (m2 exp
+(defun m2-oneexpintegral_si (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%expintegral_si)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%expintegral_si) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize expintegral_shi(w)
-(defun oneexpintegral_shi (exp)
-  (m2 exp
+(defun m2-oneexpintegral_shi (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%expintegral_shi)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%expintegral_shi) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize expintegral_ci(w)
-(defun oneexpintegral_ci (exp)
-  (m2 exp
+(defun m2-oneexpintegral_ci (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%expintegral_ci)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%expintegral_ci) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize expintegral_chi(w)
-(defun oneexpintegral_chi (exp)
-  (m2 exp
+(defun m2-oneexpintegral_chi (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)((%expintegral_chi)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%expintegral_chi) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize kelliptic(w), (new would be elliptic_kc)
-(defun onekelliptic (exp)
-  (m2 exp
+(defun m2-onekelliptic (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)(($kelliptic)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         (($kelliptic) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize elliptic_kc
@@ -610,16 +634,18 @@
       '((mplus)
         ((coeffpt) 
          (u nonzerp)
-         ((%elliptic_kc) (w true)))
-        ((coeffpp)(a zerp)))
+         ((%elliptic_kc) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %e(w), (new would be elliptic_ec)
-(defun onee (exp)
-  (m2 exp
+(defun m2-onee (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)(u nonzerp)(($%e)(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         (($%e) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize elliptic_ec
@@ -628,28 +654,28 @@
       '((mplus)
         ((coeffpt) 
          (u nonzerp)
-         ((%elliptic_ec) (w true)))
-        ((coeffpp)(a zerp)))
+         ((%elliptic_ec) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize gamma_incomplete(w1, w2), Incomplete Gamma function
-(defun onegammaincomplete (exp)
-  (m2 exp
+(defun m2-onegammaincomplete (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%gamma_incomplete)(w1 freevarpar)(w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%gamma_incomplete) (w1 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize gamma_greek(w1,w2), gamma(a)-gamma_incomplete(w1,w2)
-(defun onegammagreek (exp)
-  (m2 exp
+(defun m2-onegammagreek (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 (($gamma_greek)(w1 freevarpar)(w2 true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         (($gamma_greek) (w1 freevar) (w2 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize Struve H function.
@@ -658,7 +684,7 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%struve_h) (v true) (w true)))
+         ((%struve_h) (v freevar) (w hasvar)))
         ((coeffpp)(a zerp)))
       nil))
 
@@ -668,30 +694,30 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%struve_l) (v true) (w true)))
-        ((coeffpp)(a zerp)))
+         ((%struve_l) (v freevar) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize Lommel s[v1,v2](w) function.
-(defun ones (exp)
-  (m2 exp
+(defun m2-ones (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%s array)(v1 true)(v2 true))(w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%s array) (v1 freevar) (v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize S[v1,v2](w), Lommel function
-(defun oneslommel (exp)
-  (m2 exp
+(defun m2-oneslommel (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($slommel array)(v1 true)(v2 true))
-	  (w true)))
-	((coeffpp)(a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($slommel array) (v1 freevar) (v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize parabolic_cylinder_d function
@@ -700,94 +726,92 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($parabolic_cylinder_d) (v true) (w true)))
+         (($parabolic_cylinder_d) (v freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize kbatmann(v,w), Batemann function
-(defun onekbateman (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($kbateman array) (v true)) (w true)))
-	((coeffpp) (a zerp)))
-      nil))
-
-;; Recognize %l[v1,v2](w), Generalized Laguerre function
-(defun onel (exp)
-  (m2 exp
-      '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%l array) (v1 true)(v2 true))
-	  (w true)))
-	((coeffpp) (a zerp)))
-      nil))
-
-;; Recognize gen_laguerre(v1,v2,w), Generalized Laguerre function
-(defun one-gen-laguerre (expr)
+(defun m2-onekbateman (expr)
   (m2 expr
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%gen_laguerre) (v1 true) (v2 true) (w true)))
+         ((mqapply)
+         (($kbateman array) (v freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize %l[v1,v2](w), Generalized Laguerre function
+(defun m2-onel (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%l array) (v1 freevar)(v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
+      nil))
+
+;; Recognize gen_laguerre(v1,v2,w), Generalized Laguerre function
+(defun m2-one-gen-laguerre (expr)
+  (m2 expr
+      '((mplus)
+        ((coeffpt)
+         (u nonzerp)
+         ((%gen_laguerre) (v1 freevar) (v2 freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize laguerre(v1,w), Laguerre function
-(defun one-laguerre (exr)
+(defun m2-one-laguerre (exr)
   (m2 exr
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         ((%laguerre) (v1 true) (w true)))
+         ((%laguerre) (v1 freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %c[v1,v2](w), Gegenbauer function
-(defun onec (exp)
-  (m2 exp
+(defun m2-onec (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%c array) (v1 true)(v2 true))
-	  (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%c array) (v1 freevar) (v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %t[v1](w), Chebyshev function of the first kind
-(defun onet (exp)
-  (m2 exp
+(defun m2-onet (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%t array) (v1 true)) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply) (($%t array) (v1 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %u[v1](w), Chebyshev function of the second kind
-(defun oneu (exp)
-  (m2 exp
+(defun m2-oneu (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%u array) (v1 true)) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply) (($%u array) (v1 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %p[v1,v2,v3](w), Jacobi function
-(defun onepjac (exp)
-  (m2 exp
+(defun m2-onepjac (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%p array) (v1 true)(v2 true)(v3 true))
-	  (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%p array) (v1 freevar) (v2 freevar) (v3 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize jacobi_p function
@@ -796,20 +820,19 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($jacobi_p) (v1 true) (v2true) (v3 true) (w true)))
+         (($jacobi_p) (v1 freevar) (v2 freevar) (v3 freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %p[v1,v2](w), Associated Legendre P function
-(defun hyp-onep (exp)
-  (m2 exp
+(defun m2-hyp-onep (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%p array) (v1 true)(v2 true))
-	  (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%p array) (v1 freevar) (v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize assoc_legendre_p function
@@ -818,18 +841,18 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($assoc_legendre_p) (v1 true) (v2 true) (w true)))
+         (($assoc_legendre_p) (v1 freevar) (v2 freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %p[v1](w), Legendre P function
-(defun onep0 (exp)
-  (m2 exp
+(defun m2-onep0 (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)(($%p array) (v1 true)) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)(($%p array) (v1 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %p[v1](w), Legendre P function
@@ -838,30 +861,29 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($legendre_p) (v true)) (w true))
+         (($legendre_p) (v freevar)) (w hasvar))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hermite(v1,w), Hermite function
-(defun one-hermite (expr)
+(defun m2-one-hermite (expr)
   (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((%hermite) (v1 true) (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((%hermite) (v1 freevar) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %q[v1,v2](w), Associated Legendre function of the second kind
-(defun oneq (exp)
-  (m2 exp
+(defun m2-oneq (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%q array) (v1 true)(v2 true))
-	  (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%q array) (v1 freevar) (v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize assoc_legendre_q function
@@ -870,20 +892,19 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($assoc_legendre_q) (v1 true) (v2 true) (w true)))
+         (($assoc_legendre_q) (v1 freevar) (v2 freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %w[v1,v2](w), Whittaker W function.
-(defun onew (exp)
-  (m2 exp
+(defun m2-onew (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%w array) (v1 true)(v2 true))
-	  (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%w array) (v1 freevar) (v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize whittaker_w function.
@@ -892,20 +913,19 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($whittaker_w) (v1 true) (v2 true) (w true)))
+         (($whittaker_w) (v1 freevar) (v2 freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %m[v1,v2](w), Whittaker M function
-(defun onem (exp)
-  (m2 exp
+(defun m2-onem (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%m array) (v1 true)(v2 true))
-	  (w true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%m array) (v1 freevar) (v2 freevar)) (w hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize whittaker_m function.
@@ -914,22 +934,22 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-         (($whittaker_m) (v1 true) (v2 true) (w true)))
+         (($whittaker_m) (v1 freevar) (v2 freevar) (w hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize %f[v1,v2](w1,w2,w3), Hypergeometric function
-(defun onef (exp)
-  (m2 exp
+(defun m2-onef (expr)
+  (m2 expr
       '((mplus)
-	((coeffpt)
-	 (u nonzerp)
-	 ((mqapply)
-	  (($%f array) (v1 true) (v2 true))
-          (w1 freevarpar)
-          (w2 freevarpar)
-	  (w3 true)))
-	((coeffpp) (a zerp)))
+        ((coeffpt)
+         (u nonzerp)
+         ((mqapply)
+          (($%f array) (v1 freevar) (v2 freevar))
+          (w1 freevar)
+          (w2 freevar)
+          (w3 hasvar)))
+        ((coeffpp) (a zerp)))
       nil))
 
 ;; Recognize hypergeometric function
@@ -938,7 +958,7 @@
       '((mplus)
         ((coeffpt)
          (u nonzerp)
-          (($hypergeometric) (w1 freevarpar) (w2 freevarpar) (w3 true)))
+          (($hypergeometric) (w1 freevar) (w2 freevar) (w3 hasvar)))
         ((coeffpp) (a zerp)))
       nil))
 
@@ -957,7 +977,7 @@
 	  ((mplus)
 	   ((coeffpt) (a freevarpar) (x varp))
 	   ((coeffpt) (e freevarpar) (f hasvar))
-	   ((mtimes) -1. (p parp) (x varp))
+	   ((mtimes) -1 (p parp) (x varp))
 	   ((coeffpp) (c freevarpar)))))
 	((coeffpp) (d zerp)))
       nil))
@@ -1316,7 +1336,7 @@
 		  e (cdras 'e l)
 		  f (cdras 'f l)
 		  c (cdras 'c l))
-	    (cond ((zerp e) (setq f 1)))
+            (when (equal e 0) (setq f 1))
 	    ;; To compute the transform, we replace A with PSEY for
 	    ;; simplicity.  After the transform is computed, replace
 	    ;; PSEY with A.
@@ -1775,7 +1795,7 @@
             (return (lt-ltp 'atan rest arg1 nil))))
      
      ;; Laplace transform of two Bessel J functions
-     (cond ((setq l (twoj u))
+     (cond ((setq l (m2-twoj u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w1 l)
@@ -1814,7 +1834,7 @@
             (return (fractest rest arg1 arg2 index1 1 index2 2 '2htjory))))
      
      ;; Laplace transform of two Bessel Y functions
-     (cond ((setq l (twoy u))
+     (cond ((setq l (m2-twoy u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w1 l)
@@ -1823,7 +1843,7 @@
 	    (return (fractest rest arg1 arg2 index1 nil index2 nil '2ytj))))
      
      ;; Laplace transform of two Bessel K functions
-     (cond ((setq l (twok u))
+     (cond ((setq l (m2-twok u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w1 l)
@@ -1832,7 +1852,7 @@
 	    (return (fractest rest arg1 arg2 index1 nil index2 nil '2kti))))
      
      ;; Laplace transform of Bessel K and Bessel Y functions
-     (cond ((setq l (onekoney u))
+     (cond ((setq l (m2-onekoney u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w1 l)
@@ -1841,7 +1861,7 @@
 	    (return (fractest rest arg1 arg2 index1 nil index2 nil 'ktiytj))))
      
      ;; Laplace transform of Bessel I and Bessel J functions
-     (cond ((setq l (oneionej u))
+     (cond ((setq l (m2-oneionej u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  index21 (cdras 'v21 l)
@@ -1869,7 +1889,7 @@
             (return (fractest1 rest arg1 arg2 index1 index2 2 'besshtjory))))
      
      ;; Laplace transform of Bessel Y and Bessel J functions
-     (cond ((setq l (oneyonej u))
+     (cond ((setq l (m2-oneyonej u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w1 l)
@@ -1878,7 +1898,7 @@
 	    (return (fractest1 rest arg2 arg1 index2 index1 nil 'bessytj))))
      
      ;; Laplace transform of Bessel K and Bessel J functions
-     (cond ((setq l (onekonej u))
+     (cond ((setq l (m2-onekonej u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w1 l)
@@ -1941,7 +1961,7 @@
             (return (fractest1 rest arg2 arg1 index2 index1 2 'htjorykti))))
      
      ;; Laplace transform of Bessel I and Bessel Y functions
-     (cond ((setq l (oneioney u))
+     (cond ((setq l (m2-oneioney u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (mul '$%i (cdras 'w1 l))
@@ -1950,7 +1970,7 @@
 	    (return (fractest1 rest arg1 arg2 index1 index2 nil 'bessytj))))
      
      ;; Laplace transform of Bessel I and Bessel K functions
-     (cond ((setq l (oneionek u))
+     (cond ((setq l (m2-oneionek u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (mul '$%i (cdras 'w1 l))
@@ -1973,7 +1993,7 @@
             (return (lt1lstruve rest arg1 index1))))
      
      ;; Laplace transform of little Lommel s function
-     (cond ((setq l (ones u))
+     (cond ((setq l (m2-ones u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -1981,7 +2001,7 @@
 	    (return (lt1s rest arg1 index1 index2))))
      
      ;; Laplace transform of Lommel S function
-     (cond ((setq l (oneslommel u))
+     (cond ((setq l (m2-oneslommel u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -1989,14 +2009,14 @@
 	    (return (fractest2 rest arg1 index1 index2 'slommel))))
      
      ;; Laplace transform of Bessel Y function
-     (cond ((setq l (oney u))
+     (cond ((setq l (m2-oney u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1yref rest arg1 index1))))
      
      ;; Laplace transform of Bessel K function
-     (cond ((setq l (onek u))
+     (cond ((setq l (m2-onek u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
@@ -2014,28 +2034,28 @@
             (return (fractest2 rest arg1 index1 nil 'd))))
      
      ;; Laplace transform of Incomplete Gamma function
-     (cond ((setq l (onegammaincomplete u))
+     (cond ((setq l (m2-onegammaincomplete u))
 	    (setq arg1 (cdras 'w1 l)
 		  arg2 (cdras 'w2 l)
 		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 arg2 nil 'gamma_incomplete))))
      
      ;; Laplace transform of Batemann function
-     (cond ((setq l (onekbateman u))
+     (cond ((setq l (m2-onekbateman u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 index1 nil 'kbateman))))
      
      ;; Laplace transform of Bessel J function
-     (cond ((setq l (onej u))
+     (cond ((setq l (m2-onej u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1j rest arg1 index1))))
      
      ;; Laplace transform of Gamma greek function
-     (cond ((setq l (onegammagreek u))
+     (cond ((setq l (m2-onegammagreek u))
 	    (setq arg1 (cdras 'w1 l)
 		  arg2 (cdras 'w2 l)
 		  rest (cdras 'u l))
@@ -2056,7 +2076,7 @@
             (return (fractest2 rest arg1 index1 2 'htjory))))
      
      ;; Laplace transform of Whittaker M function
-     (cond ((setq l (onem u))
+     (cond ((setq l (m2-onem u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -2072,7 +2092,7 @@
             (return (lt1m rest arg1 index1 index2))))
 
      ;; Laplace transform of the Generalized Laguerre function, %l[v1,v2](w)
-     (cond ((setq l (onel u))
+     (cond ((setq l (m2-onel u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -2081,7 +2101,7 @@
 
      ;; Laplace transform for the Generalized Laguerre function
      ;; We call the routine for %l[v1,v2](w).
-     (cond ((setq l (one-gen-laguerre u))
+     (cond ((setq l (m2-one-gen-laguerre u))
             (setq index1  (cdras 'v1 l)
                   index2  (cdras 'v2 l)
                   arg1    (cdras 'w l)
@@ -2090,14 +2110,14 @@
         
      ;; Laplace transform for the Laguerre function
      ;; We call the routine for %l[v1,0](w).
-     (cond ((setq l (one-laguerre u))
+     (cond ((setq l (m2-one-laguerre u))
             (setq index1  (cdras 'v1 l)
                   arg1    (cdras 'w l)
                   rest    (cdras 'u l))
             (return (integertest rest arg1 index1 0 'l))))
      
      ;; Laplace transform of Gegenbauer function
-     (cond ((setq l (onec u))
+     (cond ((setq l (m2-onec u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -2105,21 +2125,21 @@
 	    (return (integertest rest arg1 index1 index11 'c))))
      
      ;; Laplace transform of Chebyshev function of the first kind
-     (cond ((setq l (onet u))
+     (cond ((setq l (m2-onet u))
 	    (setq index1 (cdras 'v1 l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (integertest rest arg1 index1 nil 't))))
      
      ;; Laplace transform of Chebyshev function of the second kind
-     (cond ((setq l (oneu u))
+     (cond ((setq l (m2-oneu u))
 	    (setq index1 (cdras 'v1 l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (integertest rest arg1 index1 nil 'u))))
      
      ;; Laplace transform for the Hermite function, hermite(index1,arg1)
-     (cond ((setq l (one-hermite u))
+     (cond ((setq l (m2-one-hermite u))
             (setq index1 (cdras 'v1 l)
                   arg1 (cdras 'w l)
                   rest (cdras 'u l))
@@ -2136,7 +2156,7 @@
                      (integertest rest arg1 index1 nil 'he))))))
      
      ;; Laplace transform of %p[v1,v2](w), Associated Legendre P function
-     (cond ((setq l (hyp-onep u))
+     (cond ((setq l (m2-hyp-onep u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -2152,7 +2172,7 @@
             (return (lt1p rest arg1 index1 index2))))
      
      ;; Laplace transform of %p[v1,v2,v3](w), Jacobi function
-     (cond ((setq l (onepjac u))
+     (cond ((setq l (m2-onepjac u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  index21 (cdras 'v3 l)
@@ -2170,7 +2190,7 @@
             (return (pjactest rest arg1 index1 index2 index21))))
      
      ;; Laplace transform of Associated Legendre function of the second kind
-     (cond ((setq l (oneq u))
+     (cond ((setq l (m2-oneq u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -2186,7 +2206,7 @@
             (return (lt1q rest arg1 index1 index2))))
      
      ;; Laplace transform of %p[v1](w), Legendre P function
-     (cond ((setq l (onep0 u))
+     (cond ((setq l (m2-onep0 u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 0
 		  arg1 (cdras 'w l)
@@ -2201,7 +2221,7 @@
             (return (lt1p rest arg1 index1 0))))
      
      ;; Laplace transform of Whittaker W function
-     (cond ((setq l (onew u))
+     (cond ((setq l (m2-onew u))
 	    (setq index1 (cdras 'v1 l)
 		  index11 (cdras 'v2 l)
 		  arg1 (cdras 'w l)
@@ -2217,7 +2237,7 @@
             (return (whittest rest arg1 index1 index2))))
      
      ;; Laplace transform of square of Bessel J function
-     (cond ((setq l (onej^2 u))
+     (cond ((setq l (m2-onej^2 u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
@@ -2238,21 +2258,21 @@
             (return (fractest rest arg1 arg1 index1 2 index1 2 '2htjory))))
      
      ;; Laplace transform of square of Bessel Y function
-     (cond ((setq l (oney^2 u))
+     (cond ((setq l (m2-oney^2 u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest rest arg1 arg1 index1 nil index1 nil '2ytj))))
      
      ;; Laplace transform of square of Bessel K function
-     (cond ((setq l (onek^2 u))
+     (cond ((setq l (m2-onek^2 u))
 	    (setq index1 (cdras 'v l)
 		  arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest rest arg1 arg1 index1 nil index1 nil '2kti))))
      
      ;; Laplace transform of two Bessel I functions
-     (cond ((setq l (twoi u))
+     (cond ((setq l (m2-twoi u))
 	    (setq index1 (cdras 'v1 l)
 		  index2 (cdras 'v2 l)
 		  arg1 (mul '$%i (cdras 'w1 l))
@@ -2263,14 +2283,14 @@
 	    (return (lt2j rest arg1 arg2 index1 index2))))
 
      ;; Laplace transform of Bessel I. We use I[v](w)=%i^n*J[n](%i*w).
-     (cond ((setq l (onei u))
+     (cond ((setq l (m2-onei u))
 	    (setq index1 (cdras 'v l)
 		  arg1   (mul '$%i (cdras 'w l))
 		  rest   (mul (power '$%i (neg index1)) (cdras 'u l)))
 	    (return (lt1j rest arg1 index1))))
      
      ;; Laplace transform of square of Bessel I function
-     (cond ((setq l (onei^2 u))
+     (cond ((setq l (m2-onei^2 u))
             (setq index1 (cdras 'v l)
                   arg1 (mul '$%i (cdras 'w l))
                   rest (mul (power '$%i (neg index1))
@@ -2279,7 +2299,7 @@
             (return (lt1j^2 rest arg1 index1))))
      
      ;; Laplace transform of Erf function
-     (cond ((setq l (onerf u))
+     (cond ((setq l (m2-onerf u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1erf rest arg1))))
@@ -2287,13 +2307,13 @@
      ;; Laplace transform of the logarithmic function.
      ;; We add an algorithm for the Laplace transform and call the routine
      ;; lt-log. The old code is still present, but isn't called.
-     (cond ((setq l (onelog u))
+     (cond ((setq l (m2-onelog u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt-log rest arg1))))
      
      ;; Laplace transform of Erfc function
-     (cond ((setq l (onerfc u))
+     (cond ((setq l (m2-onerfc u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (fractest2 rest arg1 nil nil 'erfc))))
@@ -2303,7 +2323,7 @@
      ;; function and simplifies the log functions of the transformation. We do 
      ;; not use the dispatch mechanism of fractest2, but call sendexec directly 
      ;; with the transformed function.
-     (cond ((setq l (oneexpintegral_ei u))
+     (cond ((setq l (m2-oneexpintegral_ei u))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
             (let (($expintrep '%gamma_incomplete)
@@ -2311,7 +2331,7 @@
               (return (sratsimp (sendexec rest ($expintegral_ei arg1)))))))
      
      ;; Laplace transform of expintegral_e1
-     (cond ((setq l (oneexpintegral_e1 u))
+     (cond ((setq l (m2-oneexpintegral_e1 u))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
             (let (($expintrep '%gamma_incomplete)
@@ -2319,7 +2339,7 @@
               (return (sratsimp (sendexec rest ($expintegral_e1 arg1)))))))
      
      ;; Laplace transform of expintegral_e
-     (cond ((setq l (oneexpintegral_e u))
+     (cond ((setq l (m2-oneexpintegral_e u))
             (setq arg1 (cdras 'v l)
                   arg2 (cdras 'w l)
                   rest (cdras 'u l))
@@ -2328,7 +2348,7 @@
               (return (sratsimp (sendexec rest ($expintegral_e arg1 arg2)))))))
      
      ;; Laplace transform of expintegral_si
-     (cond ((setq l (oneexpintegral_si u))
+     (cond ((setq l (m2-oneexpintegral_si u))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
             ;; We transform to the hypergeometric representation.
@@ -2336,7 +2356,7 @@
               (sendexec rest (expintegral_si-to-hypergeometric arg1)))))
      
      ;; Laplace transform of expintegral_shi
-     (cond ((setq l (oneexpintegral_shi u))
+     (cond ((setq l (m2-oneexpintegral_shi u))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
             ;; We transform to the hypergeometric representation.
@@ -2344,7 +2364,7 @@
               (sendexec rest (expintegral_shi-to-hypergeometric arg1)))))
      
      ;; Laplace transform of expintegral_ci
-     (cond ((setq l (oneexpintegral_ci u))
+     (cond ((setq l (m2-oneexpintegral_ci u))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
             ;; We transform to the hypergeometric representation.
@@ -2356,7 +2376,7 @@
                 (sendexec rest (expintegral_ci-to-hypergeometric arg1)))))))
      
      ;; Laplace transform of expintegral_chi
-     (cond ((setq l (oneexpintegral_chi u))
+     (cond ((setq l (m2-oneexpintegral_chi u))
             (setq arg1 (cdras 'w l)
                   rest (cdras 'u l))
             ;; We transform to the hypergeometric representation.
@@ -2368,7 +2388,7 @@
                 (sendexec rest (expintegral_chi-to-hypergeometric arg1)))))))
      
      ;; Laplace transform of Complete elliptic integral of the first kind
-     (cond ((setq l (onekelliptic u))
+     (cond ((setq l (m2-onekelliptic u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1kelliptic rest arg1))))
@@ -2380,7 +2400,7 @@
             (return (lt1kelliptic rest arg1))))
      
      ;; Laplace transform of Complete elliptic integral of the second kind
-     (cond ((setq l (onee u))
+     (cond ((setq l (m2-onee u))
 	    (setq arg1 (cdras 'w l)
 		  rest (cdras 'u l))
 	    (return (lt1e rest arg1))))
@@ -2395,7 +2415,7 @@
      ;; We support the Laplace transform of the build in symbol %f. We do
      ;; not use the mechanism of defining an "Expert on Laplace transform",
      ;; the expert function does a call to lt-ltp. We do this call directly.
-     (cond ((setq l (onef u))
+     (cond ((setq l (m2-onef u))
             (setq rest   (cdras 'u l)
                   arg1   (cdras 'w3 l)
                   index1 (list (cdras 'w1 l) (cdras 'w2 l)))
@@ -2419,7 +2439,7 @@
             (return (lt-arbpow2 rest arg1 arg2 index1 index2))))
      
      ;; Laplace transform of c * t^v
-     (cond ((setq l (arbpow1 u))
+     (cond ((setq l (m2-arbpow1 u))
 	    (setq arg1 (cdras 'u l)
 		  arg2 (cdras 'c l)
 		  index1 (cdras 'v l))
