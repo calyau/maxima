@@ -21,6 +21,7 @@ This is a Texinfo Maxima Manual
 Copyright 1994,2001 William F. Schelter
 
 @format
+INFO-DIR-SECTION Math
 START-INFO-DIR-ENTRY
 * Maxima: (maxima).     A computer algebra system.
 END-INFO-DIR-ENTRY
