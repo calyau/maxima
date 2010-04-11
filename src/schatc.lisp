@@ -588,7 +588,10 @@
 	(mapcar #'(lambda (q)
 		    (cond ((atom q)
 			   (or (cdr (assoc q ans :test #'eq))
-			       (eval q)))
+			       ;; Evaluate a symbol which has a value.
+			       (and (symbolp q) (boundp q) (eval q))
+			       ;; Otherwise return the symbol.
+			       q))
 			  (q)))
 		args)))
 
