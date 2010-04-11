@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.31 2007-12-02 22:23:06 villate Exp $
+#       $Id: RunMaxima.tcl,v 1.32 2010-04-11 18:50:31 villate Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -143,7 +143,10 @@ proc closeMaxima { win } {
     global pdata
     linkLocal $win maximaSocket pid
 
-    # close the socket first
+    # first close the open Maxima session
+    catch { sendMaxima $win "quit();" } 
+ 
+    # and then close the socket
     if {[info exists maximaSocket]} {
 	if {$maximaSocket != ""} {
 	    set err ""
