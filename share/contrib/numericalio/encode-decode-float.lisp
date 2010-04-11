@@ -29,7 +29,7 @@
     (smash-decoded-float-64-into-integer significand exponent sign)))
 
 (defun smash-decoded-float-64-into-integer (significand exponent sign)
-  (if (and (= significand 0) (= exponent 0))
+  (if (= significand 0)
     0
     (dpb
       (if (> sign 0) 0 1)
