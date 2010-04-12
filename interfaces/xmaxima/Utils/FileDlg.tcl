@@ -14,6 +14,8 @@ proc lIDEFileTypes {pat} {
 	set types [list {"Binary Files" {.bin .sav}} {"All Files" *}]
     } *.mac {
 	set types [list {"Maxima Files" {.mc .mac .dem}} {"All Files" *}]
+    } *.lisp {
+	set types [list {"Lisp Files" {.lisp}} {"All Files" *}]
     } *.tcl {
 	set types [list {"Tcl Files" .tcl} {"All Files" *}]
     } *.clp {
@@ -25,10 +27,9 @@ proc lIDEFileTypes {pat} {
     }
     return $types
 }
-global tide_priv
-set tide_priv(OpenFile) ""
+
 proc tide_openfile {title {self "."} {pat "*"} {file ""}} {
-    global tide_priv
+    global maxima_default
 
     if {$self == ""} {set self .}
     set z [winfo toplevel $self]
@@ -38,7 +39,7 @@ proc tide_openfile {title {self "."} {pat "*"} {file ""}} {
     # required for a MSFC/Tk bug workaround
     update
 
-    if {$file == ""} {set file $tide_priv(OpenFile)}
+    if {$file == ""} {set file $maxima_default(OpenFile)}
     if {$file != ""} {set dir [file dir $file]} {set dir ""}
 
     set proc tk_getOpenFile
@@ -62,14 +63,13 @@ proc tide_openfile {title {self "."} {pat "*"} {file ""}} {
     }
     set tk_strictMotif $old
 
-    if {$retval != ""} {set tide_priv(OpenFile) $retval}
+    if {$retval != ""} { set maxima_default(OpenFile) $retval }
 
     return $retval
 }
 
-set tide_priv(SaveFile) ""
 proc tide_savefile {title {self "."} {pat "*"} {file ""}} {
-    global tide_priv
+    global maxima_default
 
     if {$self == ""} {set self .}
     set z [winfo toplevel $self]
@@ -79,7 +79,7 @@ proc tide_savefile {title {self "."} {pat "*"} {file ""}} {
     # required for a MSFC/Tk bug workaround
     update
 
-    if {$file == ""} {set file $tide_priv(SaveFile)}
+    if {$file == ""} {set file $maxima_default(SaveFile)}
     if {$file != ""} {set dir [file dir $file]} {set dir ""}
 
     set proc tk_getSaveFile
@@ -103,18 +103,17 @@ proc tide_savefile {title {self "."} {pat "*"} {file ""}} {
     }
     set tk_strictMotif $old
 
-    if {$retval != ""} {set tide_priv(SaveFile) $retval}
+    if {$retval != ""} { set maxima_default(SaveFile) $retval }
 
     return $retval
 }
 
-set tide_priv(OpenDir) ""
 proc tide_opendir {title {self "."} {dir ""}} {
-    global tide_priv
+    global maxima_default
 
     set list [list tk_chooseDirectory \
 	    -parent $self -title $title -mustexist 1]
-    if {$dir == ""} {set dir $tide_priv(OpenDir)}
+    if {$dir == ""} {set dir $maxima_default(OpenDir)}
     if {$dir != ""} {
 	lappend list -initialdir [file native $dir]
     }
@@ -125,17 +124,17 @@ proc tide_opendir {title {self "."} {dir ""}} {
 	return ""
     }
 
-    if {$retval != ""} {set tide_priv(OpenDir) $retval}
+    if {$retval != ""} {set maxima_default(OpenDir) $retval}
 
     return $retval
 }
 
 proc tide_savedir {title {self "."} {dir ""}} {
-    global tide_priv
+    global maxima_default
 
     set list [list tk_chooseDirectory \
 	    -parent $self -title $title -mustexist 0]
-    if {$dir == ""} {set dir $tide_priv(OpenDir)}
+    if {$dir == ""} {set dir $maxima_default(OpenDir)}
     if {$dir != ""} {
 	lappend list -initialdir [file native $dir]
     }
@@ -146,7 +145,7 @@ proc tide_savedir {title {self "."} {dir ""}} {
 	return ""
     }
 
-    if {$retval != ""} {set tide_priv(OpenDir) $retval}
+    if {$retval != ""} {set maxima_default(OpenDir) $retval}
 
     return $retval
 }

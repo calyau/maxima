@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.23 2006-10-01 22:42:48 villate Exp $
+#       $Id: Constants.tcl,v 1.24 2010-04-12 17:45:34 l_butler Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -26,6 +26,11 @@ proc cMAXINITBeforeIni {} {
     set maxima_default(iLocalPort) 4008
 
     set maxima_default(bDebugParse) 0
+
+    # from FileDlg.tcl
+    set maxima_default(OpenDir) "~/"
+    set maxima_default(OpenFile) "~/.xmaximrc"
+    set maxima_default(SaveFile) "~/.xmaximrc"
 
     # From Browser.tcl
     set maxima_default(defaultservers) {
