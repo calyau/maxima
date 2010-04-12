@@ -1448,3 +1448,10 @@ exp((1.5+x)*%pi*%i);
 -%i*exp(1.0*%i*%pi*x);
 exp((1.5b0+x)*%pi*%i);
 -%i*exp(1.0b0*%i*%pi*x);
+
+/* Bug ID: 2781127 - bfpsi0 of complex
+ *
+ * (The result was not in rectangular form but it should be.)
+ */
+bfpsi0(4.5 + %i,15);
+2.43845477527606b-1*%i + 1.41875534014717b0;
