@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.32 2007-05-07 00:35:30 robert_dodier Exp $
+#       $Id: Menu.tcl,v 1.33 2010-04-12 17:49:34 l_butler Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -38,6 +38,7 @@ proc vMAXAddSystemMenu {fr text} {
 	    set file [tide_openfile [M [mc "Open a file to Batch"]] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batch(\"$file\")\$\n"
+		gui status [concat [mc "Batched File "] "$file"]
 	    }
 	}]]
     bind $text <Alt-Key-b> $command
@@ -49,21 +50,47 @@ proc vMAXAddSystemMenu {fr text} {
 	    set file [tide_openfile [M [mc "Open a file to Batch Silently"]] "" *.mac]
 	    if {$file != ""} {
 		sendMaxima $maxima_priv(cConsoleText) "batchload(\"$file\")\$\n"
+		gui status [concat [mc "Batched File "] "$file"]
 	    }
 	}]]
     bind $text <Alt-Key-o> $command
 
+    $m add command -underline 11 \
+	-accel {Alt+i} \
+	-label [set label [M [mc "Restore Maxima State"]]] \
+	-command [set command [cIDECreateEvent $text $label {
+	    set file [tide_openfile [M [mc "Open a file to Restore State"]] "" *.lisp]
+	    if {$file != ""} {
+		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$load \"$file\") nil)\n"
+		gui status [concat [mc "Maxima State Restored from "] "$file"]
+	    }
+	}]]
+    bind $text <Alt-Key-i> $command
+
     $m add separator
     $m add command -underline 0 \
-	-label [set label [mc "Save Expressions to File"]] \
+	-label [set label [mc "Save Maxima State to File"]] \
 	-accel {Ctrl+s} \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_savefile [M [mc "Save to a file"]] "" *.bin]
+	    set file [tide_savefile [M [mc "Save to a file"]] "" *.lisp]
 	    if {$file != ""} {
-		sendMaxima $maxima_priv(cConsoleText) "save(\"$file\",all)\$\n"
+		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$save \"$file\" '\$all) nil)\n"
+		gui status [concat [mc "Maxima State Saved to "] "$file"]
 	    }
 	}]]
     bind $text <Control-Key-s> $command
+
+    $m add command -underline 1 \
+	-label [set label [mc "Save Maxima Input to File"]] \
+	-accel {Ctrl+a} \
+	-command [set command [cIDECreateEvent $text $label {
+	    set file [tide_savefile [M [mc "Save to a file"]] "" *.mac]
+	    if {$file != ""} {
+		sendMaxima $maxima_priv(cConsoleText) ":lisp-quiet (prog2 (mfuncall '\$stringout \"$file\" '\$input) nil)\n"
+		gui status [concat [mc "Maxima Input Saved to "] "$file"]
+	    }
+	}]]
+    bind $text <Control-Key-a> $command
 
 
     $m add sep
