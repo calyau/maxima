@@ -1847,7 +1847,7 @@ output-file))
 
 (defun $plot3d
     ( fun &rest options &aux
-     lvars trans rangex rangey *original-points*
+     lvars trans xrange yrange *original-points*
      functions exprn domain tem ($plot_options $plot_options)
      ($in_netmath $in_netmath) features
      gnuplot-term gnuplot-out-file file titles (output-file "")
@@ -2026,17 +2026,6 @@ several functions depending on the two variables v1 and v2:
 
     (unwind-protect
          (case (getf features :plot-format)
-           ($zic
-            (let ((x-range ($get_range ar 0))
-                  (y-range ($get_range ar 1))
-                  (z-range ($get_range ar 2)))
-              (plot-zic-colors)
-              (format $pstream "domaine ~a ~a ~a ~a ~a ~a ~%"
-                      (first x-range) (second x-range) (first y-range)
-                      (second y-range) (first z-range) (second z-range))
-              (format $pstream "surface ~a ~a ~%"
-                      (+ 1 (fourth (getf features :grid)))
-                      (+ 1 (third (getf features :grid))))))
            ($gnuplot
             (gnuplot-print-header $pstream features)
             (format $pstream "~a" (gnuplot-plot3d-command "-" titles n)))
@@ -2090,7 +2079,18 @@ several functions depending on the two variables v1 and v2:
             
             (case (getf features :plot-format)
               ($zic
-               (output-points pl nil))
+               (when (= i 1)
+                 (let ((x-range ($get_range ar 0))
+                       (y-range ($get_range ar 1))
+                       (z-range ($get_range ar 2)))
+                   (plot-zic-colors)
+                   (format $pstream "domaine ~a ~a ~a ~a ~a ~a ~%"
+                           (first x-range) (second x-range) (first y-range)
+                           (second y-range) (first z-range) (second z-range))
+                   (format $pstream "surface ~a ~a ~%"
+                           (+ 1 (fourth (getf features :grid)))
+                           (+ 1 (third (getf features :grid))))
+                   (output-points pl nil))))
               ($gnuplot
                (when (> i 1) (format $pstream "e~%"))
                (output-points pl (third (getf features :grid))))
@@ -2145,7 +2145,7 @@ several functions depending on the two variables v1 and v2:
 ;; When it is a parametric representation it returns an empty Maxima list.
 ;;
 (defun check-list-plot3d (lis)
-  (let (rangex rangey)
+  (let (xrange yrange)
     ;; wrong syntax: lis must be [something, something, something]
     (unless ($listp lis) (return-from check-list-plot3d nil))
     (unless (= 3 ($length lis)) (return-from check-list-plot3d nil))
@@ -2158,9 +2158,9 @@ several functions depending on the two variables v1 and v2:
             (if ($listp (fourth lis))
                 ;; we do have a function and a domain. Return the domain
                 (progn
-                  (setq rangex (check-range (third lis)))
-                  (setq rangey (check-range (fourth lis)))
-                  (return-from check-list-plot3d `((mlist) ,rangex ,rangey)))
+                  (setq xrange (check-range (third lis)))
+                  (setq yrange (check-range (fourth lis)))
+                  (return-from check-list-plot3d `((mlist) ,xrange ,yrange)))
                 ;; wrong syntax: [expr1, list, expr2]
                 (return-from check-list-plot3d nil))
             ;; lis is probably a parametric representation
