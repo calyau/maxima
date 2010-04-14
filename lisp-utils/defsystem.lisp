@@ -872,6 +872,7 @@
       :scl
       :abcl
       :ccl
+      :ecl
       (and allegro-version>= (version>= 4 1)))
 (eval-when #-(or :lucid)
            (:compile-toplevel :load-toplevel :execute)
@@ -4128,9 +4129,9 @@ the system definition, if provided."
 (unless *old-require*
   (setf *old-require*
 	(symbol-function
-	 #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl  :openmcl) 'lisp:require
+	 #-(or (and :excl :allegro-v4.0) :ecl :mcl :sbcl :scl :lispworks :abcl  :openmcl) 'lisp:require
 	 #+(and :excl :allegro-v4.0) 'cltl1:require
-	 #+(or :sbcl :scl) 'cl:require
+	 #+(or :ecl :sbcl :scl) 'cl:require
 	 #+(or :lispworks3.1 :abcl) 'common-lisp::require
 	 #+(and :lispworks (not :lispworks3.1)) 'system::require
 	 #+:openmcl 'cl:require
@@ -4140,7 +4141,7 @@ the system definition, if provided."
   (unless *dont-redefine-require*
     (let (#+(or :mcl (and :CCL (not :lispworks)))
 	  (ccl:*warn-if-redefine-kernel* nil))
-      #-(or (and allegro-version>= (version>= 4 1)) :lispworks)
+      #-(or :ecl (and allegro-version>= (version>= 4 1)) :lispworks)
       (setf (symbol-function
 	     #-(or (and :excl :allegro-v4.0) :mcl :sbcl :scl :lispworks :abcl :openmcl) 'lisp:require
 	     #+(and :excl :allegro-v4.0) 'cltl1:require
@@ -4151,6 +4152,12 @@ the system definition, if provided."
 	     #+(and :mcl (not :openmcl)) 'ccl:require
 	     )
 	    (symbol-function 'new-require))
+      #+:ecl
+      (progn
+        (ext:package-lock "CL" nil)
+        (setf (symbol-function 'lisp:require)
+              (symbol-function 'new-require))
+        (ext:package-lock "CL" t))
       #+:lispworks
       (let ((warn-packs system::*packages-for-warn-on-redefinition*))
 	(declare (special system::*packages-for-warn-on-redefinition*))
