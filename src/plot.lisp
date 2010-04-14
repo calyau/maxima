@@ -6,10 +6,10 @@
 Examples
 
 /* plot of z^(1/3)...*/
-plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
+plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,geomview]) ;
 
 /* plot of z^(1/2)...*/
-plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,zic]) ;
+plot3d(r^.5*cos(th/2),[r,0,1],[th,0,6*%pi],['grid,12,80],['transform_xy,polar_to_xy],['plot_format,xmaxima]) ;
 
 /* moebius */
 plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],[x,-%pi,%pi],[y,-1,1],['grid,50,15]) ;
@@ -240,8 +240,8 @@ sin(y)*(10.0+6*cos(x)),
            (case (third value) ($openmath (setf (third value) '$xmaxima)))
            (unless (member (third value)
                        (if (string= *autoconf-win32* "true")
-                           '($zic $geomview $gnuplot $mgnuplot $xmaxima)
-                           '($zic $geomview $gnuplot $gnuplot_pipes
+                           '($geomview $gnuplot $mgnuplot $xmaxima)
+                           '($geomview $gnuplot $gnuplot_pipes
                              $mgnuplot $xmaxima)))
              (merror
               (intl:gettext
@@ -1638,20 +1638,6 @@ output-file))
         (t (tcl-output-list st (car lis))
            (tcl-output-list st (cdr lis)))))
 
-
-(defun $view_zic ()
-  (let ((izdir (maxima-getenv "IZICDIR")))
-    (or (probe-file
-         (format nil "~a/tcl-files/maxima.tcl" izdir))
-        (error
-         "could not find file ~a :  Set environment variable IZICDIR" izdir))
-    ($system "izic -interface ${IZICDIR}/tcl-files/maxima.tcl  1> /dev/null &")))
-
-(defun $isend (x)
-  ($system (format nil " izic -app izic -cmd '{~a}'" (string-trim '(#\&) (string x)))))
-
-
-
 (defvar *some-colours*
   ;; from rgb.txt
   '(135 206 250         lightskyblue
@@ -1661,29 +1647,6 @@ output-file))
     176  48  96         maroon
     221 160 221         plum
     238 130 238         violet))
-
-
-;; one of $zic or $geomview
-
-(defun plot-zic-colors (&aux (ncolors  (/ (length *some-colours*) 4))) 
-  (format $pstream "couleurs ~% ~a ~% " ncolors  )
-  (loop for v in *some-colours*
-         with do-ind = t with ind = -1 
-         do
-         (cond (do-ind
-                   (format $pstream "~a " (incf ind))
-                 (setq do-ind nil)
-                 ))
-         (cond ((numberp v)
-                (print-pt (/ v 256.0)))
-               (t 
-                (setq do-ind t)
-                (format $pstream "~%# ~(~a~)~%" v))))
-  (format $pstream " 1
-0
-~a 0.801 0.359 0.359 
-128 .8 1 0
-" ncolors))
 
 (defun check-range (range &aux tem a b)
   (or (and ($listp range)
@@ -2037,9 +2000,7 @@ several functions depending on the two variables v1 and v2:
            ($xmaxima
             (xmaxima-print-header $pstream features))
            ($geomview
-            (format $pstream " MESH ~a ~a ~%"
-                    (+ 1 (third (getf features :grid)))
-                    (+ 1 (fourth (getf features :grid))))))
+            (format $pstream "LIST~%")))
       
       ;; generate the mesh points for each surface in the functions stack
       (let ((i 0))
@@ -2078,19 +2039,6 @@ several functions depending on the two variables v1 and v2:
             (if tem (mfuncall tem ar))
             
             (case (getf features :plot-format)
-              ($zic
-               (when (= i 1)
-                 (let ((x-range ($get_range ar 0))
-                       (y-range ($get_range ar 1))
-                       (z-range ($get_range ar 2)))
-                   (plot-zic-colors)
-                   (format $pstream "domaine ~a ~a ~a ~a ~a ~a ~%"
-                           (first x-range) (second x-range) (first y-range)
-                           (second y-range) (first z-range) (second z-range))
-                   (format $pstream "surface ~a ~a ~%"
-                           (+ 1 (fourth (getf features :grid)))
-                           (+ 1 (third (getf features :grid))))
-                   (output-points pl nil))))
               ($gnuplot
                (when (> i 1) (format $pstream "e~%"))
                (output-points pl (third (getf features :grid))))
@@ -2103,7 +2051,11 @@ several functions depending on the two variables v1 and v2:
               ($xmaxima
                (output-points-tcl $pstream pl (third (getf features :grid)) i))
               ($geomview
-               (output-points pl nil))))))
+               (format $pstream "{ appearance { +smooth }~%MESH ~a ~a ~%"
+                       (+ 1 (third (getf features :grid)))
+                       (+ 1 (fourth (getf features :grid))))
+               (output-points pl nil)
+               (format $pstream "}~%"))))))
       
       ;; close the stream and plot..
       (cond ($in_netmath (format $pstream "}~%") (return-from $plot3d ""))
@@ -2116,7 +2068,6 @@ several functions depending on the two variables v1 and v2:
         (gnuplot-process file)
         (cond (($get_plot_option '$run_viewer 2)
                (case (getf features :plot-format)
-                 ($zic ($view_zic))
                  ($xmaxima
                   ($system
                    (concatenate
