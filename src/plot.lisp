@@ -1251,7 +1251,7 @@ sin(y)*(10.0+6*cos(x)),
   (let (($display2d nil)
         (*plot-realpart* *plot-realpart*)
         ($plot_options $plot_options) (i 0)
-        (output-file "") (features '(:type "plot2d"))
+        (output-file "") features
         gnuplot-term gnuplot-out-file file points-lists)
 
     ;; 1- Put fun in its most general form: a maxima list with several objects
@@ -1260,6 +1260,7 @@ sin(y)*(10.0+6*cos(x)),
 
     ;; If there is a single parametric function use its range as the range for
     ;; the plot and put it inside another maxima list
+    (setf (getf features :type) "plot2d")
     (when (and (consp fun) (eq (second fun) '$parametric))
       (unless range
         (setq range (check-range (nth 4 fun))))
@@ -1848,7 +1849,7 @@ output-file))
     ( fun &rest options &aux
      lvars trans rangex rangey *original-points*
      functions exprn domain tem ($plot_options $plot_options)
-     ($in_netmath $in_netmath) (features '(:type "plot3d"))
+     ($in_netmath $in_netmath) features
      gnuplot-term gnuplot-out-file file titles (output-file "")
      (usage (intl:gettext
 "plot3d: Usage.
@@ -1860,6 +1861,7 @@ several functions depending on the two variables v1 and v2:
   plot3d ( [f1, f2, ..., fn], [v1, min, max], [v2, min, max], options")))
   
   (declare (special *original-points*))
+  (setf (getf features :type) "plot3d")
   
   ;; Ensure that fun is a list of expressions and maxima lists, followed
   ;; by a domain definition
