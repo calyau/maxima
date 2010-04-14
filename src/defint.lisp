@@ -2316,6 +2316,7 @@ in the interval of integration.")
 					       ($asksign (m+ -1 (cabs pt)))))
 				   (eq sgn '$neg))
 			       #'(lambda (pt)
+				   (declare (ignore pt))
 				   ;; Is pt on the unit circle?  (Use
 				   ;; the cached value computed
 				   ;; above.)
