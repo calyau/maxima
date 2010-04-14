@@ -125,11 +125,11 @@
                                ,(1+ ($second $ip_grid)))))
          (ssample (make-array `(,(1+ ($first $ip_grid_in))
                                 ,(1+ ($second $ip_grid_in)))))
-         file-name gnuplot-out-file gnuplot-term
-         (features '(:type "plot2d"))
+         file-name gnuplot-out-file gnuplot-term features
          (xmaxima-titles ()))
     
     ;; Parse the given options into the list features
+    (setf (getf features :type) "plot2d")
     (setq features (plot-options-parser options features))
     (setq xrange (check-range xrange))
     (setq yrange (check-range yrange))
