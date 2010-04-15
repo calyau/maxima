@@ -2814,7 +2814,8 @@
          (power x (sub '((rat simp) -1 2) diva2))
          (power '$%e (div x 2))
          (list '(mqapply simp) 
-               (list '($%m simp array) (add (inv 2) diva2 n) diva2) x))))
+               (list '($%m simp array) 
+                     (add '((rat simp) 1 2) diva2 n) diva2) x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hermite He function as a parabolic cylinder function
@@ -3970,11 +3971,11 @@
      (setq a (cdras 'a arg)
            m (cdras 'm arg)
            c (cdras 'c arg))
-     (cond ((and (zerp c) (equal m 1.))
+     (cond ((and (zerp c) (equal m 1))
             (let ((ans (f2p105v2cond a l index)))
               (unless (symbolp ans)
                 (return ans)))))
-     (cond ((and (zerp c) (equal m (inv 2.)))
+     (cond ((and (zerp c) (equal m '((rat simp) 1 2)))
             (let ((ans (f50cond a l index)))
               (unless (symbolp ans)
                 (return ans)))))
@@ -4029,7 +4030,7 @@
        (power '$%pi -1)
        (take '(%gamma) (add m v))
        (power (add (mul a a) (mul *par* *par*))
-              (mul -1 (inv 2) m))
+              (mul -1 '((rat simp) 1 2) m))
        ;; Call Associated Legendre Q function, which simplifies accordingly.
        ;; We have to do a Maxima function call, because $assoc_legendre_q is
        ;; not in Maxima core and has to be autoloaded.
@@ -4038,7 +4039,7 @@
                  (mul -1 v)
                  (mul *par*
                       (power (add (mul a a) (mul *par* *par*))
-                             (inv -2))))))
+                             '((rat simp) -1 2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -4058,27 +4059,27 @@
   (prog (d m)
      (setq d (cdras 'd l)
            m (cdras 'm l)
-           m (add m (inv 2.))
-           v (div v 2.))
+           m (add m '((rat simp) 1 2))
+           v (div v 2))
      (cond
-       ((and (eq (checksigntm ($realpart (add m v (inv 2.))))
+       ((and (eq (checksigntm ($realpart (add m v '((rat simp) 1 2))))
                  '$positive)
-             (eq (checksigntm ($realpart (sub (add m (inv 2.))
+             (eq (checksigntm ($realpart (sub (add m '((rat simp) 1 2))
                                               v)))
                  '$positive)
              (not (maxima-integerp (mul (sub (add m m) (add v v 1.))
-                                        (inv 2.)))))
-        (setq a (mul a a (inv 4.)))
+                                        '((rat simp) 1 2)))))
+        (setq a (mul a a '((rat simp) 1 4)))
         (return (f50p188-simp d m v a))))
      (return (setq *hyp-return-noun-flag* 'fail-in-f50cond))))
 
 (defun f50p188-simp (d u v a)
   (mul d
-       (power a (inv -2))
+       (power a '((rat simp) -1 2))
        (power *par* (mul -1 u))
        (power '$%e (div a (mul -2 *par*)))
        (sub (mul (take '(%tan) (mul '$%pi (sub u v)))
-                 (take '(%gamma) (add u v (inv 2)))
+                 (take '(%gamma) (add u v '((rat simp) 1 2)))
                  (inv (take '(%gamma) (add v v 1)))
                  (mwhit (div a *par*) u v))
             (mul (take '(%sec) (mul '$%pi (sub u v)))
