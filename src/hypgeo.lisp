@@ -1076,64 +1076,53 @@
 	       (a (mul -1 (cdras 'a l1)))
 	       (b (mul -1 (cdras 'b l1)))
 	       (d (cdras 'd l1)))
-	   (add
-	     (mul c (simplify (list '(%log) (div (add s b) (add s a)))))
-	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
-
+           (add (mul c (take '(%log) (div (add s b) (add s a))))
+                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+        
 	((setq l1 (m2-sum-with-exp-case2 u var))
 	 ;;  c * t^(-3/2) * (%e^(-a*t) - %e^(-b*t)) + d
 	 (let ((c (cdras 'c l1))
 	       (a (mul -1 (cdras 'a l1)))
 	       (b (mul -1 (cdras 'b l1)))
 	       (d (cdras 'd l1)))
-	   (add
-	     (mul
-	       2 c
-	       (power '$%pi (div 1 2))
-	       (sub
-		 (power (add s b) (inv 2))
-		 (power (add s a) (inv 2))))
-	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
-
+           (add (mul 2 c
+                     (power '$%pi '((rat simp) 1 2))
+                     (sub (power (add s b) '((rat simp) 1 2))
+                          (power (add s a) '((rat simp) 1 2))))
+                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+        
 	((setq l1 (m2-sum-with-exp-case3 u var))
 	 ;; c * t^-2 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
 	 (let ((c (cdras 'c l1))
 	       (a (div (cdras 'a l1) -2))
 	       (d (cdras 'd l1)))
-	   (add
-	     (mul
-	       c
-	       (add
-		 (mul (add s a a) (simplify (list '(%log) (add s a a))))
-		 (mul s (simplify (list '(%log) s)))
-		 (mul -2 (add s a) (simplify (list '(%log) (add s a))))))
-	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
-
+           (add (mul c 
+                     (add (mul (add s a a) (take '(%log) (add s a a)))
+                          (mul s (take '(%log) s))
+                          (mul -2 (add s a) (take '(%log) (add s a)))))
+                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+        
         ((setq l1 (m2-sum-with-exp-case4 u var))
          ;; c * t^-1 * (1 - 2 * %e^(-a*t) + %e^(2*a*t)) + d
          (let ((c (cdras 'c l1))
                (a (div (cdras 'a l1) (mul 4 '$%i)))
                (d (cdras 'd l1)))
-           (add
-             (mul
-               -1 c
-               (simplify 
-                 (list '(%log)
-                   (add 1
-                     (div
-                       (mul 4 a a)
-                       (mul (sub s (mul 2 '$%i a)) (sub s (mul 2 '$%i a))))))))
-             (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
-
+           (add (mul -1 c 
+                     (take '(%log) 
+                           (add 1 
+                                (div (mul 4 a a) 
+                                     (mul (sub s (mul 2 '$%i a)) 
+                                          (sub s (mul 2 '$%i a)))))))
+                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+       
        ((setq l1 (m2-sum-with-exp-case5 u var))
 	 ;; c * t^-1 * (1 - %e^(2*a*t)) + d
 	 (let ((c (cdras 'c l1))
 	       (a (cdras 'a l1))
 	       (d (cdras 'd l1)))
-	   (add
-	     (mul c (simplify (list '(%log) (div (sub s a) s))))
-	     (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
-
+           (add (mul c (take '(%log) (div (sub s a) s)))
+                (defintegrate (mul d (power '$%e (mul -1 s var))) var))))
+        
 	(t
 	  ;; At this point we expand the integrand.
 	 (distrdefexecinit ($expand form) var))))))
@@ -1291,7 +1280,7 @@
 ;; Compute r*exp(-p*t), where t is the variable of integration and 
 ;; p is the parameter of the Laplace transform.
 (defun init (r)
-  (mul* r (power '$%e (mul* -1 *var* *par*))))
+  (mul r (power '$%e (mul -1 *var* *par*))))
 
 (defun distrexecinit (expr)
   (cond ((and (consp expr)
@@ -1308,7 +1297,6 @@
 ;; It dispatches according to the kind of transform it matches.
 (defun hypgeo-exec (expr)
   (prog (l u a c e f)
-     (setq expr (simplifya expr nil))
      (cond ((setq l (m2-ltep expr *var* *par*))
             (setq u (cdras 'u l)
                   a (cdras 'a l)
@@ -1326,7 +1314,7 @@
   (let* ((*par* 'psey)                ; Set parameter of Laplace transform
          (*var* var)                  ; Set variable of integration
          (*hyp-return-noun-flag* nil) ; Reset the flag
-	 (form (simplifya expr nil))
+         (form expr)
 	 (l (m2-defltep expr var))
 	 (s (cdras 'a l))) ; Get the parameter of the Laplace transform.
 
@@ -1396,8 +1384,8 @@
 ;;
 ;;  U * %E^(-VAR * (*PAR* - PAR0) + E*F + C)
 (defun ltscale (u c par0 e f)
-  (mul* (power '$%e c)
-	(substl (sub *par* par0) *par* (lt-exec u e f))))
+  (mul (power '$%e c)
+       (substl (sub *par* par0) *par* (lt-exec u e f))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1407,24 +1395,21 @@
   (let (l a)
     (cond ((setq l (m2-sum u *var*))
 	   ;; We have found a summation.
-	   (mul
-	     (cdras 'c l)
-	     (simplify 
-               (list
-	        '(%sum)
-	         (sendexec (cdras 'u l) 1)
-	         (cdras 'i l) (cdras 'l l) (cdras 'h l)))))
+           (mul (cdras 'c l)
+                (take '(%sum)
+                      (sendexec 1 (cdras 'u l))
+                      (cdras 'i l)
+                      (cdras 'l l)
+                      (cdras 'h l))))
           
 	  ((setq l (m2-unit_step u *var*))
 	   ;; We have found the Unit Step function.
 	   (setq u (cdras 'u l)
 		 a (cdras 'a l))
-	   (mul
-	     (power '$%e (mul a *par*))
-	     (sendexec
-	       (cond (($freeof *var* u) u)
-		     (t (maxima-substitute (sub *var* a) *var* u)))
-	       1)))
+           (mul (power '$%e (mul a *par*))
+                (sendexec (cond (($freeof *var* u) u) 
+                                (t (maxima-substitute (sub *var* a) *var* u)))
+                          1)))
           
 	  ((equal e 0)
 	   ;; The simple case of u*%e^(-p*t)
@@ -1552,11 +1537,11 @@
 
 (defun f24p146 (c v a)
   (mul c
-       (simplify (list '(%gamma) v))
+       (take '(%gamma) v)
        (power 2 v)
        (power a (div v 2))
        (power '$%e (mul a *par* *par*))
-       (dtford (mul 2 *par* (power a (1//2)))
+       (dtford (mul 2 *par* (power a '((rat simp) 1 2)))
                (mul -1 v))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1587,15 +1572,15 @@
   ;; We have not done the calculation v->v+1 and a-> a^2/4
   ;; and subsitute here accordingly.
   (let ((v (add v 1)))
-    (mul
-      c
-      (simplify (list '(%gamma) (add v v)))
-      (power 2 (sub 1 v))               ; Is this supposed to be here?
-      (power *par* (mul -1 v))
-      (power '$%e (mul a a (inv 8) (inv *par*)))
-      ;; We need an additional factor -1 to get the expected results.
-      ;; What is the mathematically reason?
-      (dtford (mul -1 a (inv (power (mul 2 *par*) (inv 2)))) (mul -2 v)))))
+    (mul c
+         (take '(%gamma) (add v v))
+         (power 2 (sub 1 v))               ; Is this supposed to be here?
+         (power *par* (mul -1 v))
+         (power '$%e (mul a a '((rat simp) 1 8) (inv *par*)))
+         ;; We need an additional factor -1 to get the expected results.
+         ;; What is the mathematically reason?
+         (dtford (mul -1 a (inv (power (mul 2 *par*) '((rat simp) 1 2)))) 
+                 (mul -2 v)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1616,7 +1601,7 @@
            ;; as a simplifying function. We call nevertheless the simplifer
            ;; to simplify the arguments. When we implement the function
            ;; The symbol has to be changed to the noun form.
-           (simplify (list '($parabolic_cylinder_d) v z)))
+           (take '($parabolic_cylinder_d) v z))
           (t (simpdtf z v)))))
 
 (defun whittindtest (i1 i2)
@@ -1653,27 +1638,23 @@
 ;;                        *M(-v/2,1/2,x^2/2)
 
 (defun simpdtf (z v)
-  (let ((inv2 (1//2))
-        (pow (power '$%e (mul* z z (inv -4)))))
-    (add (mul* (power 2 (div (sub v 1) 2)) ; sub or add ?
-               z
-               (simplify (list '(%gamma) (inv -2)))
-               (inv (simplify (list '(%gamma) (mul v -1 inv2))))
-               pow
-               (hgfsimp-exec (list (sub inv2
-                                        (div v
-                                             2)))
-                             (list (div 3 2))
-                             (mul* z z inv2)))
-         (mul* (power 2 (div v 2))
-               (simplify (list '(%gamma) inv2))
-               pow
-               (inv (simplify (list '(%gamma) (sub inv2 (mul v inv2)))))
-               (hgfsimp-exec (list (mul* v
-                                         -1
-                                         inv2))
-                             (list inv2)
-                             (mul* z z inv2))))))
+  (let ((inv2 '((rat simp) 1 2))
+        (pow (power '$%e (mul z z '((rat simp) -1 4)))))
+    (add (mul (power 2 (div (sub v 1) 2))
+              z
+              -2 (power '$%pi inv2) ; gamma(-1/2) 
+              (inv (take '(%gamma) (mul v -1 inv2)))
+              pow
+              (hgfsimp-exec (list (sub inv2 (div v 2)))
+                            (list '((rat simp) 3 2))
+                            (mul z z inv2)))
+         (mul (power 2 (div v 2))
+              (power '$%pi inv2) ; gamma(1/2)
+              pow
+              (inv (take '(%gamma) (sub inv2 (mul v inv2))))
+              (hgfsimp-exec (list (mul v -1 inv2))
+                            (list inv2)
+                            (mul z z inv2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1697,10 +1678,10 @@
          (setq *hyp-return-noun-flag* 'fail-on-f29p146test))))
 
 (defun f29p146 (c v a)
-  (mul* 2 c
-        (power (mul* a (inv 4) (inv *par*))
-               (div v 2))
-        (ktfork a v)))
+  (mul 2 c
+       (power (mul a '((rat simp) 1 4) (inv *par*))
+              (div v 2))
+       (ktfork a v)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1710,9 +1691,9 @@
 ;; Choose bessel_k if the order v is an integer.  (Why?)
 
 (defun ktfork (a v)
-  (let ((z (power (mul* a *par*) (1//2))))
+  (let ((z (power (mul a *par*) '((rat simp) 1 2))))
     (cond ((maxima-integerp v)
-           (simplify (list '(%bessel_k) v z)))
+           (take '(%bessel_k) v z))
           (t
            (simpktf z v)))))
 
@@ -1726,25 +1707,19 @@
 
 (defun simpktf (z v)
   (let ((dz2 (div z 2)))
-    (mul* '$%pi
-          (1//2)
-          (inv (simplify (list '(%sin) (mul v '$%pi))))
-          (sub (mul* (power  dz2 (mul -1 v))
-                     (inv (simplify (list '(%gamma) (sub 1 v))))
-                     (hgfsimp-exec nil
-                                   (list (sub 1
-                                              v))
-                                   (mul* z
-                                         z
-                                         (inv 4))))
-               (mul* (power dz2 v)
-                     (inv (simplify (list '(%gamma) (add v 1))))
-                     (hgfsimp-exec nil
-                                   (list (add v
-                                              1))
-                                   (mul* z
-                                         z
-                                         (inv 4))))))))
+    (mul '$%pi
+         '((rat simp) 1 2)
+         (inv (take '(%sin) (mul v '$%pi)))
+         (sub (mul (power dz2 (mul -1 v))
+                   (inv (take '(%gamma) (sub 1 v)))
+                   (hgfsimp-exec nil
+                                 (list (sub 1 v))
+                                 (mul z z '((rat simp) 1 4))))
+              (mul (power dz2 v)
+                   (inv (take '(%gamma) (add v 1)))
+                   (hgfsimp-exec nil
+                                 (list (add v 1))
+                                 (mul z z '((rat simp) 1 4))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1780,7 +1755,7 @@
   (let ((-a (mul -1 a)))
     (mul c
          (power -a *par*)
-         ($gamma_incomplete (mul -1 *par*) -a))))
+         (take '(%gamma_incomplete) (mul -1 *par*) -a))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -2504,7 +2479,7 @@
          (setq *hyp-return-noun-flag* 'fail-in-arbpow))))
 
 (defun f1p137 (pow)
-  (mul (simplify (list '(%gamma) (add pow 1)))
+  (mul (take '(%gamma) (add pow 1))
        (power *par* (sub (mul -1 pow) 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2518,51 +2493,43 @@
     (cond
       ((equal pow1 0)
        ;; The Laplace transform is an Incomplete Gamma function.
-       (mul
-	 c
-	 (power a (add pow2 1))
-	 (inv b)
-	 (power (mul *par* a (inv b)) (mul -1 (add pow2 1)))
-	 (power '$%e (mul *par* a (inv b)))
-	 ($gamma_incomplete (add pow2 1) (mul *par* a (inv b)))))
+       (mul c
+            (power a (add pow2 1))
+            (inv b)
+            (power (mul *par* a (inv b)) (mul -1 (add pow2 1)))
+            (power '$%e (mul *par* a (inv b)))
+            (take '(%gamma_incomplete) (add pow2 1) (mul *par* a (inv b)))))
       ((not (maxima-integerp (add pow1 pow2 2)))
        ;; The general result is a Hypergeometric U function U(a,b,z) which can
        ;; be represented by two Hypergeometic 1F1 functions for the special
        ;; case that the index b is not an integer value.
-       (add
-	 (mul
-	   c
-	   (power a (add pow1 pow2 1))
-	   (inv (power b (add pow1 1)))
-	   (simplify (list '(%gamma) (add pow1 pow2 1)))
-	   (power (mul *par* a (inv b)) (mul -1 (add pow1 pow2 1)))
-	   (hgfsimp-exec
-	     (list (mul -1 pow2))
-	     (list (mul -1 (add pow1 pow2)))
-	     (mul *par* a (inv b))))
-	 (mul
-	   c
-	   (power a (add pow1 pow2 1))
-	   (inv (power b (add pow1 1)))
-	   (simplify (list '(%gamma) (add pow1 1)))
-	   (simplify (list '(%gamma) (mul -1 (add pow1 pow2 1))))
-	   (inv (simplify (list '(%gamma) (mul -1 pow2))))
-	   (hgfsimp-exec
-	     (list (add pow1 1))
-	     (list (add pow1 pow2 2))
-	     (mul *par* a (inv b))))))
+       (add (mul c
+                 (power a (add pow1 pow2 1))
+                 (inv (power b (add pow1 1)))
+                 (take '(%gamma) (add pow1 pow2 1))
+                 (power (mul *par* a (inv b)) (mul -1 (add pow1 pow2 1)))
+                 (hgfsimp-exec (list (mul -1 pow2))
+                               (list (mul -1 (add pow1 pow2)))
+                               (mul *par* a (inv b))))
+            (mul c
+                 (power a (add pow1 pow2 1))
+                 (inv (power b (add pow1 1)))
+                 (take '(%gamma) (add pow1 1))
+                 (take '(%gamma) (mul -1 (add pow1 pow2 1)))
+                 (inv (take '(%gamma) (mul -1 pow2)))
+                 (hgfsimp-exec (list (add pow1 1))
+                               (list (add pow1 pow2 2))
+                               (mul *par* a (inv b))))))
       (t
-	;; The most general case is a result with the Hypergeometric U function.
-	(mul
-	  c
-	  (power a (add pow1 pow2 1))
-	  (inv (power b (add pow1 1)))
-	  (simplify (list '(%gamma) (add pow1 1)))
-	  (list
-	   '(%hypergeometric_u)
-	    (add pow1 1)
-	    (add pow1 pow2 2)
-	    (mul *par* a (inv b))))))
+       ;; The most general case is a result with the Hypergeometric U function.
+       (mul c 
+            (power a (add pow1 pow2 1))
+            (inv (power b (add pow1 1)))
+            (take '(%gamma) (add pow1 1))
+            (list '(%hypergeometric_u simp)
+                  (add pow1 1)
+                  (add pow1 pow2 2)
+                  (mul *par* a (inv b))))))
     (setq *hyp-return-noun-flag* 'lt-arbpow2-failed)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2587,18 +2554,15 @@
     (cond
       ((and l (eq (asksign v) '$positive))
        (let* ((l1 (m2-a*t arg *var*))
-	      (a  (cdras 'a l1)))
-	 (cond
-	   (l1
-	     (mul
-	       c
-	       (simplify (list '(%gamma) v))
-	       (inv (power *par* v))
-	       (sub
-		 (simplify (list '(mqapply) (list '($psi array) 0) v))
-		 (simplify (list '(%log) (div *par* a))))))
-	   (t
-	    (setq *hyp-return-noun-flag* 'lt-log-failed)))))
+              (a  (cdras 'a l1)))
+         (cond (l1
+                (mul c
+                     (take '(%gamma) v)
+                     (inv (power *par* v))
+                     (sub (take '(mqapply) (list '($psi array) 0) v)
+                          (take '(%log) (div *par* a)))))
+               (t
+                (setq *hyp-return-noun-flag* 'lt-log-failed)))))
       (t
        (setq *hyp-return-noun-flag* 'lt-log-failed)))))
 
@@ -2663,18 +2627,18 @@
             (when l
               (let ((a (cdras 'a l)))
                 ;; We're ready now to compute the transform.
-                (mul* c
-                      (power a (add i2 1//2))
-                      (simplify (list '(%gamma) (add (add v i2) 1//2)))
-                      (simplify (list '(%gamma) (add (sub v i2) 1//2)))
-                      (inv (mul* (simplify (list '(%gamma) (add (sub v i1) 1)))
-                                 (power (add *par* (div a 2))
-                                        (add (add i2 v) 1//2))))
-                      (hgfsimp-exec (list (add (add i2 v 1//2))
-                                          (add (sub i2 i1) 1//2))
-                                    (list (add (sub v i1) 1))
-                                    (div (sub *par* (div a 2))
-                                         (add *par* (div a 2)))))))))))))
+                (mul c
+                     (power a (add i2 '((rat simp) 1 2)))
+                     (take '(%gamma) (add (add v i2) '((rat simp) 1 2)))
+                     (take '(%gamma) (add (sub v i2) '((rat simp) 1 2)))
+                     (inv (mul (take '(%gamma) (add (sub v i1) 1))
+                               (power (add *par* (div a 2))
+                                      (add (add i2 v) '((rat simp) 1 2)))))
+                     (hgfsimp-exec (list (add (add i2 v '((rat simp) 1 2)))
+                                         (add (sub i2 i1) '((rat simp) 1 2)))
+                                   (list (add (sub v i1) 1))
+                                   (div (sub *par* (div a 2))
+                                        (add *par* (div a 2)))))))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Algorithm 2.5: Laplace transfom of bessel_k(0,a*t)
@@ -2694,11 +2658,11 @@
          (a (cdras 'a l)))
     (cond ((and l (zerop1 v))
            (mul c
-                (simplify (list '(%acosh) (div *par* a)))
+                (take '(%acosh) (div *par* a))
                 (inv (power (sub (mul *par* *par*) (mul a a))
                             '((rat simp) 1 2)))))
           (t
-            (setq *hyp-return-noun-flag* 'lt-bessel_k-failed)))))
+           (setq *hyp-return-noun-flag* 'lt-bessel_k-failed)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -2753,16 +2717,16 @@
          ;; and the second function is Bessel J or Bessel I
 	 (sendexec r
 		   (cond ((eq flg 'bessytj)
-			  (mul (simplify (list '(%bessel_j) i1 a1))
+		          (mul (take '(%bessel_j) i1 a1)
 			       (ytj i2 a2)))
 			 ((eq flg 'besshtjory)
-			  (mul (simplify (list '(%bessel_j) i1 a1))
+			  (mul (take '(%bessel_j) i1 a1)
 			       (htjory i2 i a2)))
 			 ((eq flg 'htjoryytj)
 			  (mul (htjory i1 i a1)
 			       (ytj i2 a2)))
 			 ((eq flg 'besskti)
-			  (mul (simplify (list '(%bessel_j) i1 a1))
+			  (mul (take '(%bessel_j) i1 a1)
 			       (kti i2 a2)))
 			 ((eq flg 'htjorykti)
 			  (mul (htjory i1 i a1)
@@ -2838,24 +2802,19 @@
 ;;
 ;; Finally,
 ;;
-;; laguerre(n,a,x) = (-1)^n/n!*exp(z/2)*z^(-a/2-1/2)*W[1/2+a/2+n,a/2](z)
+;; laguerre(n,a,x) = (-1)^n/n!*exp(z/2)*z^(-a/2-1/2)*M[1/2+a/2+n,a/2](z)
 ;;
-;; This formula is not correct.
-;;
-;; Here the correct documentation has to be added.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun ltw (x n a)
   (let ((diva2 (div a 2)))
-    (mul
-      ;; Use the Gamma function and not the Factorial function.
-      (simplify (list '(%gamma) (add n a 1)))
-      (inv (simplify (list '(%gamma) (add a 1))))
-      (inv (simplify (list '(%gamma) (add n 1))))
-      (power x (sub (inv -2) diva2))
-      (power '$%e (div x 2))
-      ;; Correct is Whittaker M not W
-      (list '(mqapply) (list '($%m array) (add (inv 2) diva2 n) diva2) x))))
+    (mul (take '(%gamma) (add n a 1))
+         (inv (take '(%gamma) (add a 1)))
+         (inv (take '(%gamma) (add n 1)))
+         (power x (sub '((rat simp) -1 2) diva2))
+         (power '$%e (div x 2))
+         (list '(mqapply simp) 
+               (list '($%m simp array) (add (inv 2) diva2 n) diva2) x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hermite He function as a parabolic cylinder function
@@ -2872,40 +2831,38 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun hetd (x n)
-  (mul* (power '$%e (mul* x x (inv 4)))
-        ;; At this time the Parabolic Cylinder D function is not implemented
-        ;; as a simplifying function. We call nevertheless the simplifer
-        ;; to simplify the arguments. When we implement the function
-        ;; The symbol has to be changed to the noun form.
-        (simplify (list '($parabolic_cylinder_d) n x))))
+  (mul (power '$%e (mul x x '((rat simp) 1 4)))
+       ;; At this time the Parabolic Cylinder D function is not implemented
+       ;; as a simplifying function. We call nevertheless the simplifer.
+       (take '($parabolic_cylinder_d) n x)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Transform Gegenbauer function to Jacobi P function
 (defun ctpjac (x n v)
   (let ((inv2 (1//2)))
-    (mul* (simplify (list '(%gamma) (add v v n)))
-          (inv (simplify (list '(%gamma) (add v v))))
-          (simplify (list '(%gamma) (add inv2 v)))
-          (inv (simplify (list '(%gamma) (add v inv2 n))))
-          (pjac x n (sub v inv2) (sub v inv2)))))
+    (mul (take '(%gamma) (add v v n))
+         (inv (take '(%gamma) (add v v)))
+         (take '(%gamma) (add inv2 v))
+         (inv (take '(%gamma) (add v inv2 n)))
+         (pjac x n (sub v inv2) (sub v inv2)))))
 
 ;; Transform Chebyshev T function to Jacobi P function
 (defun ttpjac (x n)
   (let ((inv2 (1//2)))
-    (mul* (factorial n)
-          (simplify (list '(%gamma) inv2))
-          (inv (simplify (list '(%gamma) (add inv2 n))))
-          (pjac x n (mul -1 inv2) (mul -1 inv2)))))
+    (mul (take '(%gamma) n)
+         (power '$%pi '((rat simp) 1 2)) ; gamma(1/2)
+         (inv (take '(%gamma) (add inv2 n)))
+         (pjac x n (mul -1 inv2) (mul -1 inv2)))))
 
 ;; Transform Chebyshev U function to Jacobi P function
 (defun utpjac (x n)
   (let ((inv2 (1//2)))
-    (mul* (factorial (add n 1))
-          inv2
-          (simplify (list '(%gamma) inv2))
-          (inv (simplify (list '(%gamma) (add inv2 n 1))))
-          (pjac x n inv2 inv2))))
+    (mul (take '(%gamma) (add n 1))
+         inv2
+         (power '$%pi '((rat simp) 1 2)) ; gamma(1/2)
+         (inv (take '(%gamma) (add inv2 n 1)))
+         (pjac x n inv2 inv2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -2961,15 +2918,14 @@
 
 (defun erfctd (x)
   (let ((inv2 (1//2)))
-    (mul* (power 2 inv2)		; Should this be 2^(1/4)?
-	  (power '$%pi (mul* -1 inv2))
-	  (power '$%e (mul* -1 inv2 x x))
-          ;; At this time the Parabolic Cylinder D function is not implemented
-          ;; as a simplifying function. We call nevertheless the simplifer
-          ;; to simplify the arguments. When we implement the function
-          ;; The symbol has to be changed to the noun form.
-          (simplify 
-            (list '($parabolic_cylinder_d) -1 (mul (power 2 inv2) x))))))
+    (mul (power 2 inv2) ; Should this be 2^(1/4)?
+         (inv (power '$%pi inv2))
+         (power '$%e (mul -1 inv2 x x))
+         ;; At this time the Parabolic Cylinder D function is not implemented
+         ;; as a simplifying function. We call nevertheless the simplifer
+         ;; to simplify the arguments. When we implement the function
+         ;; The symbol has to be changed to the noun form.
+         (take '($parabolic_cylinder_d) -1 (mul (power 2 inv2) x)))))
 
 ;; Lommel S function in terms of Bessel J and Bessel Y.
 ;; Luke gives
@@ -2982,16 +2938,12 @@
   (let ((arg (mul (1//2) '$%pi (sub m n))))
     (add (littleslommel m n z)
          (mul (power 2 (sub m 1))
-         (simplify (list '(%gamma) (div (sub (add m 1) n) 2)))
-         (simplify (list '(%gamma) (div (add m n 1) 2)))
-         (sub (mul (simplify (list '(%sin) arg))
-              (simplify (list '(%bessel_j) n z)))
-         (mul (simplify (list '(%cos) arg))
-              ;; (bess n z 'Y) is replaced with bessel_y.
-              ;; The old code causes the use of bessel_i. 
-              ;; The Laplace transform for the S Lommel function
-              ;; needs verification. DK 09/2009.
-              (simplify (list '(%bessel_y) n z))))))))
+              (take '(%gamma) (div (sub (add m 1) n) 2))
+              (take '(%gamma) (div (add m n 1) 2))
+              (sub (mul (take '(%sin) arg)
+                        (take '(%bessel_j) n z))
+                   (mul (take '(%cos) arg)
+                        (take '(%bessel_y) n z)))))))
 
 ;; Whittaker W function in terms of Whittaker M function
 ;;
@@ -3001,12 +2953,12 @@
 ;;              + gamma(2*u)/gamma(1/2+u-k)*M[k,-u](z)
 
 (defun wtm (a i1 i2)
-  (add (mul* (simplify (list '(%gamma) (mul -2 i2)))
-	     (mwhit a i1 i2)
-	     (inv (simplify (list '(%gamma) (sub (sub (1//2) i2) i1)))))
-       (mul* (simplify (list '(%gamma) (add i2 i2)))
-	     (mwhit a i1 (mul -1 i2))
-	     (inv (simplify (list '(%gamma) (sub (add (1//2) i2) i1)))))))
+  (add (mul (take '(%gamma) (mul -2 i2))
+            (mwhit a i1 i2)
+            (inv (take '(%gamma) (sub (sub '((rat simp) 1 2) i2) i1))))
+       (mul (take '(%gamma) (add i2 i2))
+            (mwhit a i1 (mul -1 i2))
+            (inv (take '(%gamma) (sub (add '((rat simp) 1 2) i2) i1))))))
 
 ;; Incomplete gamma function in terms of Whittaker W function
 ;;
@@ -3015,9 +2967,9 @@
 ;; gamma_incomplete(a,x) = x^((a-1)/2)*exp(-x/2)*W[(a-1)/2,a/2](x)
 
 (defun gammaincompletetw (a x)
-  (mul* (power x (div (sub a 1) 2))
-	(power '$%e (div x -2))
-	(wwhit x (div (sub a 1) 2)(div a 2))))
+  (mul (power x (div (sub a 1) 2))
+       (power '$%e (div x -2))
+       (wwhit x (div (sub a 1) 2)(div a 2))))
 
 ;;; Incomplete Gamma function in terms of Gammagreek function
 ;;;
@@ -3042,7 +2994,7 @@
          (power '$%e (div x -2))
          (wwhit x (div (sub a 1) 2) (div a 2)))
     ;; In all other cases the representation as a Gammagreek function
-    (sub (simplify (list '(%gamma) a))
+    (sub (take '(%gamma) a)
          (list '($gamma_greek simp) a x))))
 
 ;; Bessel Y in terms of Bessel J
@@ -3052,10 +3004,10 @@
 ;; bessel_y(v,z) = bessel_j(v,z)*cot(v*%pi)-bessel_j(-v,z)/sin(v*%pi)
 
 (defun ytj (i a)
-  (sub (mul (simplify (list '(%bessel_j) i a)) 
-            (simplify (list '(%cot) (mul i '$%pi))))
-       (mul (simplify (list '(%bessel_j) (mul -1 i) a))
-            (inv (simplify (list '(%sin) (mul i '$%pi)))))))
+  (sub (mul (take '(%bessel_j) i a)
+            (take '(%cot) (mul i '$%pi)))
+       (mul (take '(%bessel_j) (mul -1 i) a)
+            (inv (take '(%sin) (mul i '$%pi))))))
 
 ;; Parabolic cylinder function in terms of Whittaker W function.
 ;;
@@ -3064,11 +3016,11 @@
 ;; D[v](z) = 2^(v/2+1/4)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
 
 (defun dtw (i a)
-  (mul* (power 2 (add (div i 2) (inv 4)))
-	(power a (inv -2))
-	(wwhit (mul* a a (1//2))
-	       (add (div i 2) (inv 4))
-	       (inv 4))))
+  (mul (power 2 (add (div i 2) '((rat simp) 1 4)))
+       (power a '((rat simp) -1 2))
+       (wwhit (mul a a '((rat simp) 1 2))
+              (add (div i 2) '((rat simp) 1 4))
+              '((rat simp) 1 4))))
 
 ;; Bateman's function in terms of Whittaker W function
 ;;
@@ -3077,8 +3029,8 @@
 ;; k[2*v](z) = 1/gamma(v+1)*W[v,1/2](2*z)
 
 (defun kbatemantw (v a)
-  (div (wwhit (add a a) (div v 2) (1//2))
-       (simplify (list '(%gamma) (add (div v 2) 1)))))
+  (div (wwhit (add a a) (div v 2) '((rat simp) 1 2))
+       (take '(%gamma) (add (div v 2) 1))))
 
 ;; Bessel K in terms of Bessel I
 ;;
@@ -3088,10 +3040,10 @@
 
 (defun kti (i a)
   (mul '$%pi
-       (1//2)
-       (inv (simplify (list '(%sin) (mul i '$%pi))))
-       (sub (simplify (list '(%bessel_i) (mul -1 i) a))
-            (simplify (list '(%bessel_i) i a)))))
+       '((rat simp) 1 2)
+       (inv (take '(%sin) (mul i '$%pi)))
+       (sub (take '(%bessel_i) (mul -1 i) a)
+            (take '(%bessel_i) i a))))
 
 ;; Express Hankel function in terms of Bessel J or Y function.
 ;;
@@ -3122,15 +3074,15 @@
 	 ;;
 	 ;; (bessel_j(-v,z) - bessel_j(v,z)*exp(-v*%pi*%i))/(%i*sin(v*%pi*%i))
 	 (div (numjory v sort z 'j)
-	      (mul '$%i (simplify (list '(%sin) (mul v '$%pi))))))
+	      (mul '$%i (take '(%sin) (mul v '$%pi)))))
         ((equal sort 1)
          ;; Transform hankel_1(v,z) to bessel_j(v,z)+%i*bessel_y(v,z)
-         (add (simplify (list '(%bessel_j) v z))
-              (mul '$%i (simplify (list '(%bessel_y) v z)))))
+         (add (take '(%bessel_j) v z)
+              (mul '$%i (take '(%bessel_y) v z))))
         ((equal sort 2)
          ;; Transform hankel_2(v,z) to bessel_j(v,z)-%i*bessel_y(v,z)
-         (sub (simplify (list '(%bessel_j) v z))
-              (mul '$%i (simplify (list '(%bessel_y) v z)))))
+         (sub (take '(%bessel_j) v z)
+              (mul '$%i (take '(%bessel_y) v z))))
         (t
          ;; We should never reach this point of code.
          ;; Problem: The user input for the symbol %h[v,sort](t) is not checked.
@@ -3145,9 +3097,9 @@
 ;; Bessel J or Y, depending on if FLG is 'J or not.
 (defun desjy (v z flg)
   (cond ((eq flg 'j)
-         (simplify (list '(%bessel_j) v z)))
+         (take '(%bessel_j) v z))
         (t
-         (simplify (list '(%bessel_y) v z)))))
+         (take '(%bessel_y) v z))))
 
 (defun numjory (v sort z flg)
   (cond ((equal sort 1)
@@ -3158,22 +3110,22 @@
          ;;
          ;; bessel_y(-v, z) - exp(-v*%pi*%i)*bessel_y(v, z)
          (sub (desjy (mul -1 v) z flg)
-              (mul* (power '$%e (mul* -1 v '$%pi '$%i))
-                    (desjy v z flg))))
+              (mul (power '$%e (mul -1 v '$%pi '$%i))
+                   (desjy v z flg))))
         (t
          ;; exp(-v*%pi*%i)*bessel(v,z) - bessel(-v,z), where bessel is
          ;; bessel_j or bessel_y, depending on if FLG is 'j or not.
-         (sub (mul* (power '$%e (mul* v '$%pi '$%i))
-                    (desmjy v z flg))
+         (sub (mul (power '$%e (mul v '$%pi '$%i))
+                   (desmjy v z flg))
               (desmjy (mul -1 v) z flg)))))
 
 (defun desmjy (v z flg)
   (cond ((eq flg 'j)
          ;; bessel_j(v,z)
-         (simplify (list '(%bessel_j) v z)))
+         (take '(%bessel_j) v z))
         (t
          ;; -bessel_y(v,z)
-         (mul -1 (simplify (list '(%bessel_y) v z))))))
+         (mul -1 (take '(%bessel_y) v z)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -3192,75 +3144,79 @@
     ((and (maxima-integerp order)
           (mevenp order))
      ;; Transform to 1F1 for order an even integer
-     (mul
-        (power 2 order)
-        (power '$%pi (div 1 2))
-        (inv (simplify (list '(%gamma) (div (sub 1 order) 2))))
-        (list '(mqapply) (list '($%f array) 1 1)
-                         (list '(mlist) (div order -2)) 
-                         (list '(mlist) (div 1 2))
-                         (mul arg arg))))
+     (mul (power 2 order)
+          (power '$%pi (div 1 2))
+          (inv (take '(%gamma) (div (sub 1 order) 2)))
+          (list '(mqapply simp) 
+                (list '($%f array simp) 1 1)
+                (list '(mlist) (div order -2)) 
+                (list '(mlist) '((rat simp) 1 2))
+                (mul arg arg))))
 
      ((and (maxima-integerp order) 
            (moddp order))
       ;; Transform to 1F1 for order an odd integer
       (mul -2 arg
-        (power 2 order)
-        (power '$%pi (div 1 2))
-        (inv (simplify (list '(%gamma) (div order -2))))
-        (list '(mqapply) (list '($%f array) 1 1)
-                         (list '(mlist) (div (sub 1 order) 2))
-                         (list '(mlist) (div 3 2))
-                         (mul arg arg))))
+           (power 2 order)
+           (power '$%pi '((rat simp) 1 2))
+           (inv (take '(%gamma) (div order -2)))
+           (list '(mqapply simp) 
+                 (list '($%f simp array) 1 1)
+                 (list '(mlist simp) (div (sub 1 order) 2))
+                 (list '(mlist simp) '((rat simp) 3 2))
+                 (mul arg arg))))
      (t
       ;; The general case, transform to 2F0
       ;; For this case we have no Laplace transform.
-      (mul
-        (power (mul 2 arg) order)
-        (list '(mqapply) (list '($%f array) 2 0)
-                         (list '(mlist) (div order 2) 
-                                        (div (sub 1 order) 2))
-                         (list '(mlist))
-                         (div -1 (mul arg arg)))))))
+      (mul (power (mul 2 arg) order)
+           (list '(mqapply simp) 
+                 (list '($%f array simp) 2 0)
+                 (list '(mlist simp) (div order 2) (div (sub 1 order) 2))
+                 (list '(mlist simp))
+                 (div -1 (mul arg arg)))))))
 
 ;;; Hypergeometric representation of the Exponential Integral Si
 ;;; Si(z) = z*1F2([1/2],[3/2,3/2],-z^2/4)
 (defun expintegral_si-to-hypergeometric (arg)
   (mul arg
-       (list '(mqapply) (list '($%f array) 1 2)
-             (list '(mlist) (div 1 2))
-             (list '(mlist) (div 3 2) (div 3 2))
+       (list '(mqapply simp) 
+             (list '($%f array simp) 1 2)
+             (list '(mlist simp) '((rat simp) 1 2))
+             (list '(mlist simp) '((rat simp) 3 2) '((rat simp) 3 2))
              (div (mul -1 arg arg) 4))))
 
 ;;; Hypergeometric representation of the Exponential Integral Shi
 ;;; Shi(z) = z*1F2([1/2],[3/2,3/2],z^2/4)
 (defun expintegral_shi-to-hypergeometric (arg)
   (mul arg
-       (list '(mqapply) (list '($%f array) 1 2)
-             (list '(mlist) (div 1 2))
-             (list '(mlist) (div 3 2) (div 3 2))
+       (list '(mqapply simp) 
+             (list '($%f simp array) 1 2)
+             (list '(mlist simp) '((rat simp) 1 2))
+             (list '(mlist simp) '((rat simp) 3 2) '((rat simp) 3 2))
              (div (mul arg arg) 4))))
 
 ;;; Hypergeometric representation of the Exponential Integral Ci
 ;;; Ci(z) = -z^2/4*2F3([1,1],[2,2,3/2],-z^2/4)+log(z)+%gamma
 (defun expintegral_ci-to-hypergeometric (arg)
   (add (mul (div (mul -1 arg arg) 4)
-            (list '(mqapply) (list '($%f array) 2 3)
-                  (list '(mlist) 1 1)
-                  (list '(mlist) 2 2 (div 3 2))
+            (list '(mqapply simp) 
+                  (list '($%f simp array) 2 3)
+                  (list '(mlist simp) 1 1)
+                  (list '(mlist simp) 2 2 '((rat simp) 3 2))
                   (div (mul -1 arg arg) 4)))
-            (simplify (list '(%log) arg))
+            (take '(%log) arg)
             '$%gamma))
 
 ;;; Hypergeometric representation of the Exponential Integral Chi
 ;;; Chi(z) = z^2/4*2F3([1,1],[2,2,3/2],z^2/4)+log(z)+%gamma
 (defun expintegral_chi-to-hypergeometric (arg)
   (add (mul (div (mul arg arg) 4)
-            (list '(mqapply) (list '($%f array) 2 3)
-                  (list '(mlist) 1 1)
-                  (list '(mlist) 2 2 (div 3 2))
+            (list '(mqapply simp) 
+                  (list '($%f array simp) 2 3)
+                  (list '(mlist simp) 1 1)
+                  (list '(mlist simp) 2 2 '((rat simp) 3 2))
                   (div (mul arg arg) 4)))
-            (simplify (list '(%log) arg))
+            (take '(%log) arg)
             '$%gamma))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3298,9 +3254,10 @@
                         rest)
                    (add '((rat simp) 1 2)
                         (mul '((rat simp) 1 2)
-                             (list '(mqapply) (list '($%f array) 1 0)
-                                   (list '(mlist) )
-                                   (list '(mlist) '((rat simp) 1 2))
+                             (list '(mqapply simp) 
+                                   (list '($%f simp array) 1 0)
+                                   (list '(mlist simp) )
+                                   (list '(mlist simp) '((rat simp) 1 2))
                                    (mul -1 (mul arg arg)))))))
         (t
          (lt-ltp 'twoj rest arg (list 'list index index)))))
@@ -3412,7 +3369,7 @@
 	    (setq index1
 		  (mul -1 index1)
 		  rest
-		  (mul* (power -1 index1) rest))))
+		  (mul (power -1 index1) rest))))
      la
      ;; If the second index is zero, skip over this.
      (cond ((zerp (setq index2 (caddr index)))
@@ -3429,7 +3386,7 @@
 	    (setq index2
 		  (mul -1 index2)
 		  rest
-		  (mul* (power -1 index2) rest))))
+		  (mul (power -1 index2) rest))))
      la2
      ;; Put the 2 indices in a list and go on.
      (setq index (list index1 index2))
@@ -3445,8 +3402,7 @@
      ;; We can either leave it here or take it out.  It seems
      ;; bessel_j(-n,x) is converted by the Bessel simplifiers before
      ;; we get here.
-     (cond ((and (eq (checksigntm (simplifya (inv index)
-					     nil))
+     (cond ((and (eq (checksigntm (inv index))
 		     '$negative)
 		 (maxima-integerp index))
 	    ;; FIXME: Same as the 2 index thing above, but we need an
@@ -3463,9 +3419,7 @@
      ;; See if the arg is f + c, and replace arg with f.
      (cond ((null const)(go labl1)))
      ;; This handles the case of when the const term is actually there.
-     (cond ((not (eq (checksigntm (simplifya (power const
-						    2)
-					     nil))
+     (cond ((not (eq (checksigntm (power const 2))
 		     '$zero))
 	    ;; I guess prop4 handles the case when square of the
 	    ;; constant term is not zero.  Too bad I (rtoy) don't know
@@ -3484,7 +3438,7 @@
      ;; Try to express the function in terms of hypergeometric
      ;; functions that we can handle.
      (cond ((setq l
-		  (m2-d*x^m*%e^a*x ($factor (mul* rest
+		  (m2-d*x^m*%e^a*x ($factor (mul rest
 					       (car (setq
 						     l1
 						     (ref
@@ -3562,10 +3516,10 @@
 ;; M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)
 
 (defun mtf (i1 i2 arg)
-  (list (mul (power arg (add i2 (1//2)))
+  (list (mul (power arg (add i2 '((rat simp) 1 2)))
 	     (power '$%e (div arg -2)))
-	(ref-fpq (list (add* (1//2) i2 (mul -1 i1)))
-		 (list (add* i2 i2 1))
+	(ref-fpq (list (add '((rat simp) 1 2) i2 (mul -1 i1)))
+		 (list (add i2 i2 1))
 		 arg)))
 
 ;; Jacobi P in terms of hypergeometric function
@@ -3589,12 +3543,12 @@
 ;; work too: Legendre P, Chebyshev T, Chebyshev U, and Gegenbauer.
 
 (defun pjactf (n a b x)
-  (list (mul* (simplify (list '(%gamma) (add n a 1)))
-	      (inv (simplify (list '(%gamma) (add a 1))))
-	      (inv (factorial n)))
-	(ref-fpq (list (mul -1 n) (add* n a b 1))
-		 (list (add a 1))
-		 (sub (1//2) (div x 2)))))
+  (list (mul (take '(%gamma) (add n a 1))
+             (inv (take '(%gamma) (add a 1)))
+             (inv (take '(%gamma) n)))
+        (ref-fpq (list (mul -1 n) (add n a b 1))
+                 (list (add a 1))
+                 (sub '((rat simp) 1 2) (div x 2)))))
 
 ;; ArcSin in terms of hypergeometric function
 ;;
@@ -3605,11 +3559,11 @@
 ;; asin(z) = z*F(1/2,1/2; 3/2; z^2)
 
 (defun asintf (arg)
-  (let ((inv2 (1//2)))
+  (let ((inv2 '((rat simp) 1 2)))
     (list arg
-	  (ref-fpq (list inv2 inv2)
-		   (list (div 3 2))
-		   (mul arg arg)))))
+          (ref-fpq (list inv2 inv2)
+                   (list '((rat simp) 3 2))
+                   (mul arg arg)))))
 
 ;; ArcTan in terms of hypergeometric function
 ;;
@@ -3621,9 +3575,9 @@
 
 (defun atantf (arg)
   (list arg
-	(ref-fpq (list (inv 2) 1)
-		 (list (div 3 2))
-		 (mul* -1 arg arg))))
+        (ref-fpq (list '((rat simp) 1 2) 1)
+                 (list '((rat simp) 3 2))
+                 (mul -1 arg arg))))
 
 ;; Associated Legendre function P in terms of hypergeometric function
 ;;
@@ -3635,13 +3589,13 @@
 ;; line with -1 < z < 1.
 
 (defun ptf (n m z)
-  (list (mul (inv (simplify (list '(%gamma) (sub 1 m))))
-	     (power (div (add z 1)
-			 (sub z 1))
-		    (div m 2)))
-	(ref-fpq (list (mul -1 n) (add n 1))
-		 (list (sub 1 m))
-		 (sub (1//2) (div z 2)))))
+  (list (mul (inv (take '(%gamma) (sub 1 m)))
+             (power (div (add z 1)
+                         (sub z 1))
+                    (div m 2)))
+        (ref-fpq (list (mul -1 n) (add n 1))
+                 (list (sub 1 m))
+                 (sub '((rat simp) 1 2) (div z 2)))))
 
 ;; Associated Legendre function Q in terms of hypergeometric function
 ;;
@@ -3655,18 +3609,16 @@
 ;; FIXME:  What about the branch cut?
 
 (defun qtf (n m z)
-  (list (mul* (power '$%e (mul* m '$%pi '$%i))
-	      (power '$%pi (1//2))
-	      (simplify (list '(%gamma) (add* m n 1)))
-	      (power 2 (sub -1 n))
-	      (inv (simplify (list '(%gamma) (add n (div 3 2)))))
-	      (power z (mul -1 (add* m n 1)))
-	      (power (sub (mul z z) 1)
-		     (div m 2)))
-	(ref-fpq (list (div (add* m n 1) 2)
-		       (div (add* m n 2) 2))
-		 (list (add n (div 3 2)))
-		 (power z -2))))
+  (list (mul (power '$%e (mul m '$%pi '$%i))
+             (power '$%pi '((rat simp) 1 2))
+             (take '(%gamma) (add m n 1))
+             (power 2 (sub -1 n))
+             (inv (take '(%gamma) (add n '((rat simp) 3 2))))
+             (power z (mul -1 (add m n 1)))
+             (power (sub (mul z z) 1) (div m 2)))
+        (ref-fpq (list (div (add m n 1) 2) (div (add m n 2) 2))
+                 (list (add n '((rat simp) 3 2)))
+                 (power z -2))))
 
 ;; Gammagreek in terms of hypergeometric function
 ;;
@@ -3702,13 +3654,11 @@
 ;; E(k) = %pi/2*2F1(-1/2,1/2;1;k^2)
 
 (defun etf (k)
-  (let ((inv2 (1//2)))
+  (let ((inv2 '((rat simp) 1 2)))
     (list (mul inv2 '$%pi)
-	  (list 'fpq
-		(list  2 1)
-		(list (mul -1 inv2) inv2)
-		(list 1)
-		(mul k k)))))
+          (ref-fpq (list (mul -1 inv2) inv2)
+                   (list 1)
+                   (mul k k)))))
 
 ;; erf in terms of hypgeometric function.
 ;;
@@ -3718,10 +3668,10 @@
 ;;        = 2*z/sqrt(%pi)*exp(-z^2)*M(1,3/2,z^2)
 
 (defun erftf (arg)
-  (list (mul* 2 arg (power '$%pi (inv -2)))
-	(ref-fpq (list (1//2))
-		 (list (div 3 2))
-		 (mul* -1 arg arg))))
+  (list (mul 2 arg (power '$%pi '((rat simp) -1 2)))
+        (ref-fpq (list '((rat simp) 1 2))
+                 (list '((rat simp) 3 2))
+                 (mul -1 arg arg))))
 
 ;; log in terms of hypergeometric function
 ;;
@@ -3749,12 +3699,12 @@
 ;;               = (z/2)^v/gamma(v+1) * 0F1(; v+1; -z^2/4)
 
 (defun j1tf (v z)
-  (list (mul* (inv (power 2 v))
-              (power z v)
-              (inv (simplify (list '(%gamma) (add v 1)))))
+  (list (mul (inv (power 2 v))
+             (power z v)
+             (inv (take '(%gamma) (add v 1))))
         (ref-fpq nil
                  (list (add v 1))
-                 (mul (inv -4)(power z 2)))))
+                 (mul '((rat simp) -1 4) (power z 2)))))
 
 ;; Product of 2 Bessel J functions in terms of hypergeometric function
 ;;
@@ -3765,13 +3715,13 @@
 ;;        2F3((u+v+1)/2, (u+v+2)/2; u+1, v+1, u+v+1; -z^2)
 
 (defun j2tf (n m arg)
-  (list (mul* (inv (simplify (list '(%gamma) (add n 1))))
-	      (inv (simplify (list '(%gamma) (add m 1))))
-	      (inv (power 2 (add n m)))
-	      (power arg (add n m)))
-	(ref-fpq (list (add* (1//2) (div n 2) (div m 2))
-		       (add* 1 (div n 2) (div m 2)))
-		 (list (add 1 n) (add 1 m) (add* 1 n m))
+  (list (mul (inv (take '(%gamma) (add n 1)))
+	     (inv (take '(%gamma) (add m 1)))
+	     (inv (power 2 (add n m)))
+	     (power arg (add n m)))
+	(ref-fpq (list (add '((rat simp) 1 2) (div n 2) (div m 2))
+		       (add 1 (div n 2) (div m 2)))
+		 (list (add 1 n) (add 1 m) (add 1 n m))
 		 (mul -1 (power arg 2)))))
 
 ;; Struve H function in terms of hypergeometric function.
@@ -3796,12 +3746,12 @@
 
 (defun hstf (v z)
   (let ((d32 (div 3 2)))
-    (list (mul* (power (div z 2)(add v 1))
-                (inv (simplify (list '(%gamma) d32)))
-                (inv (simplify (list '(%gamma) (add v d32)))))
+    (list (mul (power (div z 2)(add v 1))
+               (inv (take '(%gamma) d32))
+               (inv (take '(%gamma) (add v d32))))
           (ref-fpq (list 1)
                    (list d32 (add v d32))
-                   (mul* (inv -4) z z)))))
+                   (mul '((rat simp) -1 4) z z)))))
 
 ;; Struve L function in terms of hypergeometric function
 ;;
@@ -3824,12 +3774,12 @@
 
 (defun lstf (v z)
   (let ((d32 (div 3 2)))
-    (list (mul* (power (div z 2) (add v 1))
-                (inv (simplify (list '(%gamma) d32)))
-                (inv (simplify (list '(%gamma) (add v d32)))))
+    (list (mul (power (div z 2) (add v 1))
+               (inv (take '(%gamma) d32))
+               (inv (take '(%gamma) (add v d32))))
           (ref-fpq (list 1)
                    (list d32 (add v d32))
-                   (mul* (inv 4) z z)))))
+                   (mul '((rat simp) 1 4) z z)))))
 
 ;; Lommel s function in terms of hypergeometric function
 ;;
@@ -3838,13 +3788,13 @@
 ;; s(u,v,z) = z^(u+1)/(u-v+1)/(u+v+1)*1F2(1; (u-v+3)/2, (u+v+3)/2; -z^2/4)
 
 (defun stf (m n z)
-  (list (mul* (power z (add m 1))
-              (inv (sub (add m 1) n))
-              (inv (add m n 1)))
+  (list (mul (power z (add m 1))
+             (inv (sub (add m 1) n))
+             (inv (add m n 1)))
         (ref-fpq (list 1)
                  (list (div (sub (add m 3) n) 2)
-                       (div (add* m n 3) 2))
-                 (mul* (inv -4) z z))))
+                       (div (add m n 3) 2))
+                 (mul '((rat simp) -1 4) z z))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -3912,10 +3862,7 @@
            l2 (cadddr l2))
      ;; At this point, we have the function d*x^s*%f[p,q](l1, l2, (a*t)^m).
      ;; Check to see if Formula 19, p 220 applies.
-     (cond ((and (not (eq (checksigntm (sub (add* p
-                                                  m
-                                                  -1)
-                                            q))
+     (cond ((and (not (eq (checksigntm (sub (add p m -1) q))
                           '$positive))
                  (eq (checksigntm (add s 1))
                      '$positive))
@@ -3943,13 +3890,13 @@
 ;; The args below are s, [a's], [p's], c^k, k.
 
 (defun f19p220-simp (s l1 l2 cf k)
-  (mul* (simplify (list '(%gamma) s))
-        (inv (power *par* s))
-        (hgfsimp-exec (append l1 (addarglist s k))
-                      l2
-                      (mul* cf
-                            (power k k)
-                            (power (inv *par*) k)))))
+  (mul (take '(%gamma) s)
+       (inv (power *par* s))
+       (hgfsimp-exec (append l1 (addarglist s k))
+                     l2
+                     (mul cf
+                           (power k k)
+                           (power (inv *par*) k)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -4080,7 +4027,7 @@
 (defun f2p105v2cond-simp (m v a)
   (mul -2
        (power '$%pi -1)
-       (simplify (list '(%gamma) (add m v)))
+       (take '(%gamma) (add m v))
        (power (add (mul a a) (mul *par* *par*))
               (mul -1 (inv 2) m))
        ;; Call Associated Legendre Q function, which simplifies accordingly.
@@ -4130,11 +4077,11 @@
        (power a (inv -2))
        (power *par* (mul -1 u))
        (power '$%e (div a (mul -2 *par*)))
-       (sub (mul (simplify (list '(%tan) (mul '$%pi (sub u v))))
-                 (simplify (list '(%gamma) (add u v (inv 2))))
-                 (inv (simplify (list '(%gamma) (add v v 1))))
+       (sub (mul (take '(%tan) (mul '$%pi (sub u v)))
+                 (take '(%gamma) (add u v (inv 2)))
+                 (inv (take '(%gamma) (add v v 1)))
                  (mwhit (div a *par*) u v))
-            (mul (simplify (list '(%sec) (mul '$%pi (sub u v))))
+            (mul (take '(%sec) (mul '$%pi (sub u v)))
                  (wwhit (div a *par*) u v)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
