@@ -25,9 +25,11 @@
 
 (macsyma-module hypgeo)
 
-(declare-top (special checkcoefsignlist $exponentialize $radexpand))
+(declare-top (special checkcoefsignlist $exponentialize $radexpand $logexpand 
+                      $expintrep))
 
-(load-macsyma-macros rzmac)
+(defmvar $prefer_d nil
+  "When NIL express a parabolic cylinder function as hypergeometric function.")
 
 (defvar *hyp-return-noun-form-p* t
   "Return noun form instead of internal Lisp symbols for integrals
@@ -96,19 +98,19 @@
 
 ;; Lommel's little s[u,v](z) function.
 (defun littleslommel (m n z)
-  (list '(mqapply)(list '($%s array) m n) z))
+  (list '(mqapply simp) (list '($%s simp array) m n) z))
 
 ;; Whittaker's M function
 (defun mwhit (a i1 i2)
-  (list '(mqapply) (list '($%m array) i1 i2) a))
+  (list '(mqapply simp) (list '($%m simp array) i1 i2) a))
 
 ;; Whittaker's W function
 (defun wwhit (a i1 i2)
-  (list '(mqapply) (list '($%w array) i1 i2) a))
+  (list '(mqapply simp) (list '($%w simp array) i1 i2) a))
 
 ;; Jacobi P
 (defun pjac (x n a b)
-  (list '(mqapply) (list '($%p array) n a b) x))
+  (list '(mqapply simp) (list '($%p simp array) n a b) x))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -1344,7 +1346,7 @@
 ;; the parameter (p) of the transform.
 (defun negtest (l s)
   (prog (u e f c)
-     (cond ((eq (checksigntm ($realpart s)) '$negative)
+     (cond ((eq ($asksign ($realpart s)) '$neg)
 	    ;; The parameter of transform must have a negative
 	    ;; realpart.  Break out the integrand into its various
 	    ;; components.
@@ -1528,8 +1530,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun f24p146test (c v a)
-  (cond ((and (eq (asksign a) '$positive)
-	      (eq (asksign v) '$positive))
+  (cond ((and (eq ($asksign a) '$pos)
+              (eq ($asksign v) '$pos))
 	 ;; Both a and v must be positive
 	 (f24p146 c v a))
 	(t
@@ -1560,7 +1562,7 @@
 
 ;; Check if conditions for f35p147 hold
 (defun f35p147test (c v a)
-  (cond ((eq (asksign (add v 1)) '$positive)
+  (cond ((eq ($asksign (add v 1)) '$pos)
 	 ;; v must be positive
 	 (f35p147 c v a))
 	(t
@@ -1591,8 +1593,6 @@
 ;;
 ;; D[v](z) = 2^(v/2+1/4)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
 
-(defmvar $prefer_d nil)
-
 (defun dtford (z v)
   (let ((inv4 (inv 4)))
     (cond ((or $prefer_d 
@@ -1606,8 +1606,8 @@
 
 (defun whittindtest (i1 i2)
   (or (maxima-integerp (add i2 i2))
-      (neginp (sub (sub (1//2) i2) i1))
-      (neginp (sub (add (1//2) i2) i1))))
+      (neginp (sub (sub '((rat simp) 1 2) i2) i1))
+      (neginp (sub (add '((rat simp) 1 2) i2) i1))))
 
 ;; Return T if a is a non-positive integer.
 ;; (Do we really want maxima-integerp or hyp-integerp here?)
@@ -1672,7 +1672,7 @@
 
 ;; Check if conditions for f29p146test hold
 (defun f29p146test (c v a)
-  (cond ((eq (asksign a) '$positive)
+  (cond ((eq ($asksign a) '$pos)
 	 (f29p146 c v a))
 	(t
          (setq *hyp-return-noun-flag* 'fail-on-f29p146test))))
@@ -2473,7 +2473,7 @@
 
 ;; Check if conditions for f1p137 hold
 (defun f1p137test (pow)
-  (cond ((eq (asksign (add pow 1)) '$positive)
+  (cond ((eq ($asksign (add pow 1)) '$pos)
          (f1p137 pow))
         (t
          (setq *hyp-return-noun-flag* 'fail-in-arbpow))))
@@ -2489,7 +2489,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun lt-arbpow2 (c a b pow1 pow2)
-  (if (eq (asksign (add pow1 1)) '$positive)
+  (if (eq ($asksign (add pow1 1)) '$pos)
     (cond
       ((equal pow1 0)
        ;; The Laplace transform is an Incomplete Gamma function.
@@ -2552,7 +2552,7 @@
 	 (v (add (cdras 'v l) 1))) ; because v -> v-1
 
     (cond
-      ((and l (eq (asksign v) '$positive))
+      ((and l (eq ($asksign v) '$pos))
        (let* ((l1 (m2-a*t arg *var*))
               (a  (cdras 'a l1)))
          (cond (l1
@@ -2618,8 +2618,8 @@
       (let* ((v (add (cdras 'v l) 1))
              (c (cdras 'c l)))
         ;; Check that v + i2 + 1/2 > 0 and v - i2 + 1/2 > 0.
-        (when (and (eq (asksign (add (add v i2) 1//2)) '$positive)
-                   (eq (asksign (add (sub v i2) 1//2)) '$positive))
+        (when (and (eq ($asksign (add (add v i2) '((rat simp) 1 2))) '$pos)
+                   (eq ($asksign (add (sub v i2) '((rat simp) 1 2))) '$pos))
           ;; Ok, we satisfy the conditions.  Now extract the arg.
           ;; The transformation is only valid for an argument a*t. We have
           ;; to special the pattern to make sure that we satisfy the condition.
@@ -2841,7 +2841,7 @@
 
 ;; Transform Gegenbauer function to Jacobi P function
 (defun ctpjac (x n v)
-  (let ((inv2 (1//2)))
+  (let ((inv2 '((rat simp) 1 2)))
     (mul (take '(%gamma) (add v v n))
          (inv (take '(%gamma) (add v v)))
          (take '(%gamma) (add inv2 v))
@@ -2850,7 +2850,7 @@
 
 ;; Transform Chebyshev T function to Jacobi P function
 (defun ttpjac (x n)
-  (let ((inv2 (1//2)))
+  (let ((inv2 '((rat simp) 1 2)))
     (mul (take '(%gamma) n)
          (power '$%pi '((rat simp) 1 2)) ; gamma(1/2)
          (inv (take '(%gamma) (add inv2 n)))
@@ -2858,10 +2858,10 @@
 
 ;; Transform Chebyshev U function to Jacobi P function
 (defun utpjac (x n)
-  (let ((inv2 (1//2)))
+  (let ((inv2 '((rat simp) 1 2)))
     (mul (take '(%gamma) (add n 1))
          inv2
-         (power '$%pi '((rat simp) 1 2)) ; gamma(1/2)
+         (power '$%pi inv2) ; gamma(1/2)
          (inv (take '(%gamma) (add inv2 n 1)))
          (pjac x n inv2 inv2))))
 
@@ -2918,7 +2918,7 @@
 ;; erfc(x) = %pi^(-1/2)*2^(1/4)*exp(-x^2/2)*D[-1](x*sqrt(2))
 
 (defun erfctd (x)
-  (let ((inv2 (1//2)))
+  (let ((inv2 '((rat simp) 1 2)))
     (mul (power 2 inv2) ; Should this be 2^(1/4)?
          (inv (power '$%pi inv2))
          (power '$%e (mul -1 inv2 x x))
@@ -2936,7 +2936,7 @@
 ;;                     - cos[(u-v)*%pi/2]*bessel_y(v,z)
 
 (defun slommeltjandy (m n z)
-  (let ((arg (mul (1//2) '$%pi (sub m n))))
+  (let ((arg (mul '((rat simp) 1 2) '$%pi (sub m n))))
     (add (littleslommel m n z)
          (mul (power 2 (sub m 1))
               (take '(%gamma) (div (sub (add m 1) n) 2))
@@ -3403,9 +3403,8 @@
      ;; We can either leave it here or take it out.  It seems
      ;; bessel_j(-n,x) is converted by the Bessel simplifiers before
      ;; we get here.
-     (cond ((and (eq (checksigntm (inv index))
-		     '$negative)
-		 (maxima-integerp index))
+     (cond ((and (eq ($asksign (inv index)) '$neg)
+                 (maxima-integerp index))
 	    ;; FIXME: Same as the 2 index thing above, but we need an
 	    ;; (numeric) integer too.  Why?
 	    (setq index (mul -1 index))
@@ -3420,8 +3419,7 @@
      ;; See if the arg is f + c, and replace arg with f.
      (cond ((null const)(go labl1)))
      ;; This handles the case of when the const term is actually there.
-     (cond ((not (eq (checksigntm (power const 2))
-		     '$zero))
+     (cond ((not (eq ($asksign (power const 2)) '$zero))
 	    ;; I guess prop4 handles the case when square of the
 	    ;; constant term is not zero.  Too bad I (rtoy) don't know
 	    ;; what prop4 is.
@@ -3642,7 +3640,7 @@
 ;; K(k) = %pi/2*2F1(1/2,1/2; 1; k^2)
 
 (defun kelliptictf (k)
-  (let ((inv2 (1//2)))
+  (let ((inv2 '((rat simp) 1 2)))
     (list (mul inv2 '$%pi)
 	  (ref-fpq (list inv2 inv2)
 		   (list 1)
@@ -3863,10 +3861,8 @@
            l2 (cadddr l2))
      ;; At this point, we have the function d*x^s*%f[p,q](l1, l2, (a*t)^m).
      ;; Check to see if Formula 19, p 220 applies.
-     (cond ((and (not (eq (checksigntm (sub (add p m -1) q))
-                          '$positive))
-                 (eq (checksigntm (add s 1))
-                     '$positive))
+     (cond ((and (not (eq ($asksign (sub (add p m -1) q)) '$pos))
+                 (eq ($asksign (add s 1)) '$pos))
             (return (mul d
                          (f19p220-simp (add s 1)
                                        l1
@@ -4020,8 +4016,7 @@
      (setq d (cdras 'd l) ; contains constant part of integrand
            m (cdras 'm l))
      (setq m (add m 1.))
-     (cond ((eq (checksigntm ($realpart (sub m index)))
-                '$positive)
+     (cond ((eq ($asksign ($realpart (sub m index))) '$pos)
             (return (mul d (f2p105v2cond-simp m index a)))))
      (return (setq *hyp-return-noun-flag* 'fail-in-f2p105v2cond))))
 
@@ -4058,16 +4053,12 @@
 (defun f50cond (a l v)
   (prog (d m)
      (setq d (cdras 'd l)
-           m (cdras 'm l)
-           m (add m '((rat simp) 1 2))
+           m (add (cdras 'm l) '((rat simp) 1 2))
            v (div v 2))
      (cond
-       ((and (eq (checksigntm ($realpart (add m v '((rat simp) 1 2))))
-                 '$positive)
-             (eq (checksigntm ($realpart (sub (add m '((rat simp) 1 2))
-                                              v)))
-                 '$positive)
-             (not (maxima-integerp (mul (sub (add m m) (add v v 1.))
+       ((and (eq ($asksign ($realpart (add m v '((rat simp) 1 2)))) '$pos)
+             (eq ($asksign ($realpart (sub (add m '((rat simp) 1 2)) v))) '$pos)
+             (not (maxima-integerp (mul (sub (add m m) (add v v 1))
                                         '((rat simp) 1 2)))))
         (setq a (mul a a '((rat simp) 1 4)))
         (return (f50p188-simp d m v a))))
