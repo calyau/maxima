@@ -1758,16 +1758,21 @@ sqrt(a)/(s*sqrt(s+a));
 radcan(specint(%e^(-s*t)*%e^(a*t)*erf(sqrt(a*t)),t));
 sqrt(a)/(sqrt(s)*(s-a));
 
-/* Problem 226: No. 04 Error
+/* Problem 226: No. 04 NEW Noun form
    Maxima gives:
       (sqrt(a)*sqrt(s)*sqrt(4-a*s)+4*asin(sqrt(a)*sqrt(s)/2))/(4*s)
    But there is no asin function in the expected answer.
    I can't verify the answer of Maxima. 
    We declare this to an Error until verification of the problem.
+   
+   This is a bug. The argument of the hypergeometric function for this example
+   is 1/t. For an argument with a negavtive power the alogrithm for the
+   Laplace transform is not correct.
 */
 
-radcan(specint(%e^(-s*t)*erf(sqrt(a/t)/2),t));
-1/s*(1-%e^(-sqrt(a*s)));
+specint(%e^(-s*t)*erf(sqrt(a)/sqrt(t)/2),t);
+/*1/s*(1-%e^(-sqrt(a*s)));*/
+'specint(%e^(-s*t)*erf(sqrt(a)/sqrt(t)/2),t);
 
 /* Problem 227: No. 05 OK */
 
@@ -1939,14 +1944,21 @@ specint(%e^(-s*t)*asin(t),t);
 specint(%e^(-s*t)*atan(t),t);
 'specint(%e^(-s*t)*atan(t),t);
 
-/* The results for an argument 1/sqrt(t) have to be checked. */
+/* The results for an argument 1/sqrt(t) have to be checked.
+ *
+ * The following results are wrong. The algorithm to integrate the 
+ * hypergeometric function only works for an argument t^n where n is positive
+ * integer. We have asin(z) = z * F(1/2,1/2; 3/2; z^2), therefore the argument
+ * of the hypergeometric function is 1/t.
+ */
 
 specint(%e^(-s*t)*asin(1/sqrt(t)),t);
-sqrt(%pi)*%f[3,1]([1/2,1/2,-1/2],[3/2],-s)/sqrt(s);
+/*sqrt(%pi)*%f[3,1]([1/2,1/2,-1/2],[3/2],-s)/sqrt(s);*/
+'specint(%e^(-s*t)*asin(1/sqrt(t)),t);
 
 specint(%e^(-s*t)*atan(1/sqrt(t)),t);
-sqrt(%pi)*%f[3,1]([1/2,1,-1/2],[3/2],s)/sqrt(s);
-
+/*sqrt(%pi)*%f[3,1]([1/2,1,-1/2],[3/2],s)/sqrt(s);*/
+'specint(%e^(-s*t)*atan(1/sqrt(t)),t);
 /*******************************************************************************
  *
  * Bug ID: 2864588 - specint(exp(-s*t)*bessel_i(1/2,t)^2,t) not correct
