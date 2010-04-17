@@ -3548,7 +3548,7 @@
 (defun pjactf (n a b x)
   (list (mul (take '(%gamma) (add n a 1))
              (inv (take '(%gamma) (add a 1)))
-             (inv (take '(%gamma) n 1)))
+             (inv (take '(%gamma) (add n 1))))
         (ref-fpq (list (mul -1 n) (add n a b 1))
                  (list (add a 1))
                  (sub '((rat simp) 1 2) (div x 2)))))
