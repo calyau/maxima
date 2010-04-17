@@ -3845,15 +3845,17 @@
 
 (defun dionarghyp (l1 l2 arg)
   (prog(a m c)
-     (setq a
-           (cdras 'a arg)
-           m
-           (cdras 'm arg)
-           c
-           (cdras 'c arg))
-     (cond ((and (maxima-integerp m)(zerp c))
-            (return (f19cond a m l1 l2))))
-     (return (setq *hyp-return-noun-flag* 'prop4-and-other-cases-to-follow))))
+     (setq a (cdras 'a arg)
+           m (cdras 'm arg)
+           c (cdras 'c arg))
+     (cond 
+       ((and (integerp m) ; The power of the argument has to be
+             (plusp m)    ; a positive integer.
+             (equal 0 c)) ; No const term to the argument.
+        (return (f19cond a m l1 l2)))
+       (t
+        (return 
+          (setq *hyp-return-noun-flag* 'prop4-and-other-cases-to-follow))))))
 
 (defun f19cond (a m l1 l2)
   (prog(p q s d)
