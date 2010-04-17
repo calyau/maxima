@@ -31,6 +31,10 @@
 (defmvar $prefer_d nil
   "When NIL express a parabolic cylinder function as hypergeometric function.")
 
+;; The properties NOUN and VERB give correct linear display
+(defprop $specint %specint verb)
+(defprop %specint $specint noun)
+
 (defvar *hyp-return-noun-form-p* t
   "Return noun form instead of internal Lisp symbols for integrals
   that we don't support.")
@@ -2546,11 +2550,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun lt-log (rest arg)
-
   (let* ((l (m2-c*t^v rest *var*))
 	 (c (cdras 'c l))
 	 (v (add (cdras 'v l) 1))) ; because v -> v-1
-
     (cond
       ((and l (eq ($asksign v) '$pos))
        (let* ((l1 (m2-a*t arg *var*))
@@ -3323,6 +3325,7 @@
 ;;; So we're transforming REST*FLG(INDEX, ARG).
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+nil
 (defun lt-ltp (flg rest arg index)
   (prog (index1 index2 argl const l l1)
      (when (or (zerp index)
@@ -3460,6 +3463,26 @@
      ;; We add the return of a noun form.
      (return
        (setq *hyp-return-noun-flag* 'other-ca-later))))
+
+(defun lt-ltp (flg rest arg index)
+  (let (l l1)
+    (when (and (listp index)
+               (eq (car index) 'list))
+      (setq index (list (cadr index) (caddr index))))
+    (cond ((setq l
+                 (m2-d*x^m*%e^a*x
+                   ($factor (mul rest 
+                                 (car (setq l1 (ref flg index arg)))))
+                   *var* *par*))
+           ;; Convert the special function to a hypgergeometric
+           ;; function.  L1 is the special function converted to the
+           ;; hypergeometric function.  d*x^m*%e^a*x looks for that
+           ;; factor in the expanded form.
+           (%$etest l l1))
+          (t
+           ;; We currently don't know how to handle this yet.
+           ;; We add the return of a noun form.
+           (setq *hyp-return-noun-flag* 'other-ca-later)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Dispatch function to convert the given function to a hypergeometric
