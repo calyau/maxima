@@ -301,6 +301,27 @@ you are looking for.
 @cindex Batch file
 @cindex File
 
+The @samp{Restore Maxima State} (@kbd{Alt-i}) section allows you to
+reload the state of a Maxima session that you saved using the @samp{Save
+Maxima State to File} section. The latter saves the state as a Lisp file
+using Maxima's @command{save} command.
+@cindex Save Maxima State
+@cindex Restore Maxima State
+@cindex Alt-i
+
+The @samp{Save Maxima Input to File} (@kbd{Ctrl-a}) section saves each
+input line as Maxima code using the Maxima @command{stringout}
+command. This code can be manually edited in a text editor and loaded
+into Xmaxima using @samp{Batch file}.
+@cindex Save Maxima Input
+@cindex Ctrl-a
+
+In the menu @command{Edit} there is also an option @samp{Save console to
+file} which will save the complete contents of the text window into a
+file. The input and output will be saved as they look on the screen, and
+not as they were originally written.
+@cindex Edit
+
 The option @samp{Input prompt} (@kbd{Alt-s}) will repeat the last input
 label sent back by Maxima. That will be useful if you are working on a text
 that is not near the last input label and you want to move quickly to
@@ -314,16 +335,6 @@ prompt will start again as @code{(%i1)}.
 @kindex Alt-g
 @cindex Interrupt
 @cindex Restart
-
-The option @samp{Save expressions to file} will save all the input lines
-to a file, but as Lisp code. If you want to save some input lines as
-Maxima code, use function @dfn{stringout} from Maxima.
-
-In the menu @command{Edit} there is also an option @samp{Save console to
-file} which will save the complete contents of the text window into a
-file. The input and output will be saved as they look on the screen, and
-not as they were originally written.
-@cindex Edit
 
 @node Openmath plots, The browser, Session control, Top
 @chapter Openmath plots
