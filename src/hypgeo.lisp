@@ -2840,6 +2840,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Transform Gegenbauer function to Jacobi P function
+;; ultraspherical(n,v,x) = gamma(2*v+n)*gamma(v+1/2)/gamma(2*v)/gamma(v+n+1/2)
+;;                          *jacobi_p(n,v-1/2,v-1/2,x)
 (defun ctpjac (x n v)
   (let ((inv2 '((rat simp) 1 2)))
     (mul (take '(%gamma) (add v v n))
@@ -2849,17 +2851,19 @@
          (pjac x n (sub v inv2) (sub v inv2)))))
 
 ;; Transform Chebyshev T function to Jacobi P function
+;; chebyshev_t(n,x) = gamma(n+1)*sqrt(%pi)/gamma(n+1/2)*jacobi_p(n,-1/2,-1/2,x)
 (defun ttpjac (x n)
   (let ((inv2 '((rat simp) 1 2)))
-    (mul (take '(%gamma) n)
-         (power '$%pi '((rat simp) 1 2)) ; gamma(1/2)
+    (mul (take '(%gamma) n 1)
+         (power '$%pi inv2) ; gamma(1/2)
          (inv (take '(%gamma) (add inv2 n)))
          (pjac x n (mul -1 inv2) (mul -1 inv2)))))
 
 ;; Transform Chebyshev U function to Jacobi P function
+;; chebyshev_u(n,x) = gamma(n+2)*sqrt(%pi)/2/gamma(3/2+n)*jacobi_p(n,1/2,1/2,x)
 (defun utpjac (x n)
   (let ((inv2 '((rat simp) 1 2)))
-    (mul (take '(%gamma) (add n 1))
+    (mul (take '(%gamma) (add n 2))
          inv2
          (power '$%pi inv2) ; gamma(1/2)
          (inv (take '(%gamma) (add inv2 n 1)))
@@ -3544,7 +3548,7 @@
 (defun pjactf (n a b x)
   (list (mul (take '(%gamma) (add n a 1))
              (inv (take '(%gamma) (add a 1)))
-             (inv (take '(%gamma) n)))
+             (inv (take '(%gamma) n 1)))
         (ref-fpq (list (mul -1 n) (add n a b 1))
                  (list (add a 1))
                  (sub '((rat simp) 1 2) (div x 2)))))
