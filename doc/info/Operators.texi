@@ -2168,6 +2168,40 @@ is @code{true} if @var{expr} is an odd integer.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} psubst (@var{list}, @var{expr})
+@deffnx {Function} psubst (@var{a}, @var{b}, @var{expr})
+
+@code{psubst(@var{a}, @var{b}, @var{expr})} is simliar to @code{subst}. See 
+@code{subst}.
+
+In distinction from @code{subst} the function @code{psubst} makes parallel 
+substitutions, if the first argument @var{list} is a list of equations.
+
+See also @code{sublis} for making parallel substitutions.
+
+Example:
+
+The first example shows parallel substitution with @code{psubst}. The second
+example shows the result for the function @code{subst}, which does a serial
+substitution.
+
+@c ===beg===
+@c psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c subst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c ===end===
+@example
+(%i4) psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o4)                           sin(b) + sin(a)
+(%i5) subst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o5)                              2 sin(a)
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
 @deffn {Function} make_random_state (@var{n})
 @deffnx {Function} make_random_state (@var{s})
 @deffnx {Function} make_random_state (true)
@@ -2531,12 +2565,15 @@ causes @code{sqrt} to display with exponent 1/2.
 @end defvr
 
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
-@c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
+
 @deffn {Function} sublis (@var{list}, @var{expr})
-Makes multiple parallel substitutions into an expression.
+Makes multiple parallel substitutions into an expression. @var{list} is a list
+of equations. The left hand side of the equations must be an atom.
 
 The variable @code{sublis_apply_lambda} controls simplification after
 @code{sublis}.
+
+See also @code{psubst} for making parallel substitutions.
 
 Example:
 
@@ -2606,11 +2643,13 @@ derivative forms then the @code{at} function (see below) should be used.
 @c UMM, REVERSE THIS AND MOVE IT TO substitute ??
 @code{subst} is an alias for @code{substitute}.
 
-@code{subst (@var{eq_1}, @var{expr})} or @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
-are other permissible
+@code{subst (@var{eq_1}, @var{expr})} or 
+@code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})} are other permissible
 forms.  The @var{eq_i} are equations indicating substitutions to be made.
-For each equation, the right side will be substituted for the left in
-the expression @var{expr}.
+For each equation, the right side will be substituted for the left in the 
+expression @var{expr}. The equations are substituted in serial from left to
+right in @var{expr}. See the functions @code{sublis} and @code{psubst} for 
+making parallel substitutions.
 
 @code{exptsubst} if @code{true} permits substitutions
 like @code{y} for @code{%e^x} in @code{%e^(a*x)} to take place.
@@ -2632,6 +2671,20 @@ Examples:
 (%o1)                      y + x + a
 (%i2) subst (-%i, %i, a + b*%i);
 (%o2)                       a - %i b
+@end example
+
+The substitution is done in serial for a list of equations. Compare this with
+a parallel substitution:
+
+@c ===beg===
+@c subst([a=b, b=c], a+b);
+@c sublis([a=b, b=c], a+b);
+@c ===end===
+@example
+(%i3) subst([a=b, b=c], a+b);
+(%o3)                                 2 c
+(%i4) sublis([a=b, b=c], a+b);
+(%o4)                                c + b
 @end example
 
 @noindent
