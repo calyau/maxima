@@ -86,6 +86,53 @@
 			((null l) z)
 		      (setq z ($substitute (car l) z)))))))))
 
+;; Define an alias $psubst and a reversealias for $psubstitute
+(defprop $psubst $psubstitute alias)
+(defprop $psubstitute $psubst reversealias)
+
+;; $psubstitute is similar to $substitute. In distinction from $substitute
+;; the function $psubstitute does parallel substitution, if the first argument
+;; is a list of equations.
+(defun $psubstitute (old new &optional (expr nil three-arg?))
+  (cond (three-arg? (maxima-substitute old new expr))
+        (t
+         (let ((l old) (z new))
+           (cond ((and ($listp l)
+                       ($listp (cadr l))
+                       (null (cddr l)))
+                  ;; A nested list.
+                  ($psubstitute (cadr l) z))
+                 ((and ($listp l)
+                       (eq (caar (cadr l)) 'mequal)
+                       (null (cddr l)))
+                  ;; A list with one equation.
+                  ($psubstitute (cadr l) z))
+                 ((notloreq l) (improper-arg-err l '$psubstitute))
+                 ((eq (caar l) 'mequal)
+                  ;; Do a substitution for one equation.
+                  (maxima-substitute (caddr l) (cadr l) z))
+                 (t
+                  ;; We have a list of equations. We do parallel subsitution.
+                  (let (gensymbol genlist eqn ($simp nil))
+                    ;; At first substitute a gensym for the expressions of
+                    ;; the left hand side of the equations.
+                    (do ((l (cdr l) (cdr l)))
+                        ((null l) z)
+                      (setq eqn (car l))
+                      (when (not (eq 'mequal (caar eqn)))
+                        (improper-arg-err old '$substitute))
+                      (setq gensymbol (gensym))
+                      ;; Store the gensym and the new expression into a list.
+                      (push (cons gensymbol (caddr eqn)) genlist)
+                      ;; Substitute a gensym for the old expression.
+                      (setq z (maxima-substitute gensymbol (cadr eqn) z)))
+                      ;; Substitute the new expressions for the gensyms.
+                      (do ((l genlist (cdr l)))
+                          ((null l)
+                           ;; Resimplify the result.
+                           (let (($simp t)) (resimplify z)))
+                        (setq z (maxima-substitute (cdar l) (caar l) z))))))))))
+
 (declare-top (special x y oprx opry negxpty timesp))
 
 (defmfun maxima-substitute (x y z) ; The args to SUBSTITUTE are assumed to be simplified.
