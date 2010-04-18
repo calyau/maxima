@@ -605,14 +605,14 @@ Primality test. If @code{primep (@var{n})} returns @code{false}, @var{n} is a
 composite number and if it returns @code{true}, @var{n} is a prime number
 with very high probability.
 
-For @var{n} less than 10^16 a deterministic version of Miller-Rabin's
-test is used. If @code{primep (@var{n})} returns @code{true}, then @var{n} is a
-prime number.
+For @var{n} less than 341550071728321 a deterministic version of
+Miller-Rabin's test is used. If @code{primep (@var{n})} returns
+@code{true}, then @var{n} is a prime number.
 
-For @var{n} bigger than 10^16 @code{primep} uses
-@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests
-and one Lucas pseudo-primality test. The probability that @var{n} will
-pass one Miller-Rabin test is less than 1/4. Using the default value 25 for
+For @var{n} bigger than 341550071728321 @code{primep} uses
+@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and
+one Lucas pseudo-primality test. The probability that @var{n} will pass
+one Miller-Rabin test is less than 1/4. Using the default value 25 for
 @code{primep_number_of_tests}, the probability of @var{n} beeing
 composite is much smaller that 10^-15.
 

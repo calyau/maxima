@@ -639,8 +639,8 @@
 	((< n 9080191) (primep-small n '(31 73)))
 	((< n 4759123141) (primep-small n '(2 7 61)))
 	((< n 2152302898747) (primep-small n '(2 3 5 7 11)))
-	((= n 46856248255981) nil)
-	((< n 10000000000000000) (primep-small n '(2 3 7 61 24251)))
+	((< n 3474749660383) (primep-small n '(2 3 5 7 11 13)))
+	((< n 341550071728321) (primep-small n '(2 3 5 7 11 13 17)))
 	((member n *large-primes*) t)
 	(t (primep-prob n))))
 
