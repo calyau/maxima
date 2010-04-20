@@ -16,7 +16,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston,
     MA  02111-1307  USA
 
-$Id: dynamics.mac,v 1.5 2009-03-31 16:13:45 villate Exp $
+$Id: dynamics.mac,v 1.6 2010-04-20 12:55:46 villate Exp $
 ***********************************************************************/
 
 load("complex_dynamics.lisp")$
@@ -383,13 +383,13 @@ block (
   if (not(listp(state))) then state: [state],
   if (not(listp(initial))) then initial: [initial],
   local(f_rk_4),
-  define(funmake(f_rk_4,cons(domain[1],state)),odes),
+  define(funmake(f_rk_4,cons(domain[1],state)),float(odes)),
   translate(f_rk_4),
   n: fix((domain[3] - domain[2])/domain[4]),
   t0: domain[2],
   xxx: initial,
   if (not(numberp(last(apply(f_rk_4,cons(t0,xxx)))))) then
-    error("Inconsistent set of equations and variables"),
+    error("Expecting a number when the initial state is replaced in the equations, but instead found:",last(apply(f_rk_4,cons(t0,xxx)))),
   ddd: [cons(t0, initial)],
   for i:1 thru n do (
     r: errcatch (
