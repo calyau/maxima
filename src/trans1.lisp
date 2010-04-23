@@ -194,54 +194,104 @@
 
 (def%tr $makelist (form)
   (setq form (cdr form))
-  (cond ((= (length form) 3)
-	 (destructuring-let (((exp x llist) form)
-			     (sum (tr-gensym))
-			     (lil (tr-gensym)))
-			    `($any . (do ((,lil (cdr ,(dtranslate llist)) (cdr ,lil))
-					  (,sum nil)
-					  (,x))
-					 ((null ,lil)
-					  `((mlist) ,@(nreverse ,sum)))
-				       (setq ,x (car ,lil)
-					     ,sum (cons ,(cdr (tr-local-exp exp
-									    x
-									    (value-mode x)))
-							,sum))))))
-	((= (length form) 4)
-	 (destructuring-let (((exp x |0| n) form)
-			     (|00| (tr-gensym))
-			     (nn (tr-gensym))
-			     (sum (tr-gensym)))
-			    (setq |0| (dtranslate |0|) ; I had forgotten this before!
-				  n (dtranslate n)) ; never noticed.
-			    `($any . ((lambda (,|00| ,nn)
-					; bogus -gjc
-					;(DECLARE (FIXNUM ,|00| ,NN))
-					(cond ((and (integerp (sub ,nn ,|00|))
-						    (>= (sub ,nn ,|00|) 0))
-					       (do ((,x ,|00| (add 1 ,x))
-						    (,sum
-						     nil
-						     (cons
-						      ,(cdr (tr-local-exp exp
-									  x
-									  (value-mode x)))
-
-						      ,sum)))
-						   ((> (sub ,x ,nn) 0)
-						    `((mlist) ,@(nreverse ,sum)))
-						 (declare (special ,x))))
-					      (t
-					       (merror
-						"If 4 arguments are given to MAKELIST, the difference of the 3rd ~
-and 4th arguments should evaluate to a non-negative integer:~%~M" (sub ,nn ,|00|)))))
-				      ,|0| ,n))))
-	(t
-	 (mformat *translation-msgs-files*
-		  "Wrong number of args to `makelist'")
-	 (setq tr-abort t)
-	 '($any . '$**error**))))
+  (cond 
+    ((= (length form) 0) '($any . '((mlist))))
+    ((= (length form) 1)
+     (destructuring-let
+      (((exp) form))
+      `($any . (list '(mlist) ,(cdr (tr-local-exp exp))))))
+    ((= (length form) 2)
+     (destructuring-let
+      (((exp n) form) (sum (tr-gensym)) (nn (tr-gensym)) (|0| (tr-gensym)))
+      (setq n (dtranslate n))
+      `($any .
+             ((lambda (,nn)
+                (progn
+                  (setq ,nn ($float ,nn))
+                  (if (numberp ,nn)
+                      (do ((,|0| 1 (add 1 ,|0|)) (,sum nil))
+                          ((> ,|0| ,nn) (cons '(mlist) ,sum))
+                        (setq ,sum 
+                              (cons ,(cdr (tr-local-exp exp)) ,sum)))
+                      (merror
+                       (intl:gettext "makelist: second argument must evaluate to a number; found: ~M") ,nn))))
+              ,n))))
+    ((= (length form) 3)
+     (destructuring-let
+      (((exp x n) form) (sum (tr-gensym)) (nn (tr-gensym)) (lil (tr-gensym)))
+      (setq n (dtranslate n))
+      `($any .
+             ((lambda (,nn)
+                (if ($listp ,nn)
+                   (do ((,lil (cdr ,nn) (cdr ,lil))
+                        (,sum nil) (,x))
+                       ((null ,lil) `((mlist) ,@(nreverse ,sum)))
+                     (setq
+                      ,x (car ,lil)
+                      ,sum 
+                      (cons ,(cdr (tr-local-exp exp x (value-mode x))) ,sum)))
+                   (progn
+                     (setq ,nn ($float ,nn))
+                     (if (numberp ,nn)
+                         (do ((,x 1 (add 1 ,x))
+                              (,sum nil
+                                    (cons
+                                     ,(cdr (tr-local-exp exp x (value-mode x)))
+                                     ,sum)))
+                             ((> ,x ,nn)
+                              `((mlist) ,@(nreverse ,sum)))
+                           (declare (special ,x)))
+                         (merror
+                          (intl:gettext "makelist: third argument must be a number or a list; found: ~M") ,nn)))))
+              ,n))))
+    ((= (length form) 4)
+     (destructuring-let
+      (((exp x |0| n) form) (|00| (tr-gensym)) (nn (tr-gensym))
+       (sum (tr-gensym)) (ii (tr-gensym)))
+      (setq |0| (dtranslate |0|) n (dtranslate n))
+      `($any .
+             ((lambda (,|00| ,nn)
+                (progn
+                  (setq ,nn ($float (sub ,nn ,|00|)))
+                (if (numberp ,nn)
+                    (do ((,x ,|00| (add 1 ,x)) (,ii 0 (add 1 ,ii))
+                         (,sum nil
+                               (cons
+                                ,(cdr (tr-local-exp exp x (value-mode x)))
+                                ,sum)))
+                        ((> ,ii ,nn) `((mlist) ,@(nreverse ,sum)))
+                      (declare (special ,x)))
+                    (merror
+                     (intl:gettext "makelist: the fourth argument minus the third one must evaluate to a number; found: ~M")
+                     ,nn))))
+              ,|0| ,n))))
+    ((= (length form) 5)
+     (destructuring-let
+      (((exp x |0| n s) form) (|00| (tr-gensym)) (nn (tr-gensym))
+       (ss (tr-gensym)) (sum (tr-gensym)) (ii (tr-gensym)))
+      (setq |0| (dtranslate |0|) n (dtranslate n) s (dtranslate s))
+      `($any .
+             ((lambda (,|00| ,nn ,ss)
+                (progn
+                  (setq ,nn ($float (div (sub ,nn ,|00|) ,ss)))
+                (if (numberp ,nn)
+                    (do ((,x ,|00| (add ,ss ,x)) (,ii 0 (add 1 ,ii))
+                         (,sum nil
+                               (cons
+                                ,(cdr (tr-local-exp exp x (value-mode x)))
+                                ,sum)))
+                        ((> ,ii ,nn) `((mlist) ,@(nreverse ,sum)))
+                      (declare (special ,x)))
+                    (merror
+                     (intl:gettext "makelist: the fourth argument minus the third one, divided by the fifth one must evaluate to a number; found: ~M")
+                     ,nn))))
+              ,|0| ,n ,s))))
+    (t
+     (mformat *translation-msgs-files*
+              (intl:gettext "makelist: maximum 5 arguments allowed; found: ~M.~%To create a list with sublists, use nested makelist commands.~%")
+              (length form))
+     (setq tr-abort t)
+     '($any . '$**error**))))
 
 (def%tr $kill (form)
   (cond ($tr_windy
