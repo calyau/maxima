@@ -21,7 +21,7 @@
 	  (mfunction1 (setq bfun (getopr f))))
     (when (member bfun '(lessthan great) :test #'eq)
       (setq llist (mapcar #'ratdisrep llist)))
-    (cons '(mlist simp) (sort llist comparfun))))
+    (cons '(mlist) (sort llist comparfun))))
 
 ;; cmulisp does not like the closure version.  Clisp insists on the
 ;; closure version.  Gcl likes either...  For the moment we will
@@ -42,11 +42,11 @@
   (prog (n form arg a b c d lv)
      (setq n (length x))
      (cond
-       ((= n 0) (return '((mlist simp))))
+       ((= n 0) (return '((mlist))))
        ((= n 1)
         (setq form (first x))
         (return
-          `((mlist simp) ,(meval `(($ev) ,@(list (list '(mquote) form)))))))
+          `((mlist) ,(meval `(($ev) ,@(list (list '(mquote) form)))))))
        ((= n 2)
         (setq form (first x))
         (setq b ($float (meval (second x))))
@@ -54,7 +54,7 @@
             (return
               (do
                ((m 1 (1+ m)) (ans))
-               ((> m b) (cons '(mlist simp) (nreverse ans)))
+               ((> m b) (cons '(mlist) (nreverse ans)))
                 (push (meval `(($ev) ,@(list (list '(mquote) form))))
                       ans)))
             (merror (intl:gettext "makelist: second argument must evaluate to a number; found: ~M") b)))
@@ -70,11 +70,11 @@
                   (return
                     (do
                      ((m 1 (1+ m)) (ans))
-                     ((> m b) (cons '(mlist simp) (nreverse ans)))
+                     ((> m b) (cons '(mlist) (nreverse ans)))
                       (push
                        (meval
                         `(($ev) ,@(list (list '(mquote) form)
-                                        (list '(mequal simp) arg m)))) ans)))
+                                        (list '(mequal) arg m)))) ans)))
                 (merror (intl:gettext "makelist: third argument must be a number or a list; found: ~M") b)))))
        ((= n 4)
         (setq form (first x))
@@ -101,10 +101,10 @@
      (return 
        (do ((lv lv (cdr lv))
 	    (ans))
-	   ((null lv) (cons '(mlist simp) (nreverse ans)))
+	   ((null lv) (cons '(mlist) (nreverse ans)))
 	 (push (meval `(($ev)
 			,@(list (list '(mquote) form)
-				(list '(mequal simp) arg (car lv)))))
+				(list '(mequal) arg (car lv)))))
 	       ans)))))
 
 (defun interval (i s d)
@@ -119,6 +119,6 @@
     (merror (intl:gettext "sublist: first argument must be a list; found: ~M") a) )
   (do ((a (cdr a) (cdr a))
        (x))
-      ((null a) (cons '(mlist simp) (nreverse x)))
+      ((null a) (cons '(mlist) (nreverse x)))
     (if (definitely-so (mfuncall f (car a)))
 	(push (car a) x))))
