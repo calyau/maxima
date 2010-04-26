@@ -83,7 +83,6 @@
 (defmvar $disptime nil)
 (defmvar $strdisp t)
 (defmvar $grind nil)
-(defmvar $prompt '_)
 (defmvar $backtrace '$backtrace)
 (defmvar $debugmode nil)
 (defmvar $pagepause nil)
@@ -195,7 +194,7 @@
      (unwind-protect
 	  (progn
 	    (fresh-line)
-	    (princ (stripdollar $prompt))
+	    (princ (break-prompt))
 	    (finish-output)
 	    (return (char= (tyi*) #\newline)))
        (clear-input)))))
