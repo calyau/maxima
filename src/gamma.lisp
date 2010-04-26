@@ -2217,6 +2217,11 @@
 
 (defprop %inverse_erf (mlist $matrix mequal) distribute_over)
 
+;;; inverse_erf is the inverse of the erf function
+
+(defprop %inverse_erf %erf $inverse)
+(defprop %erf %inverse_erf $inverse)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Differentiation of the Inverse Error function
@@ -2325,6 +2330,12 @@
 (defprop %inverse_erfc (mlist $matrix mequal) distribute_over)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; inverse_erfc is the inverse of the erfc function
+
+(defprop %inverse_erfc %erfc $inverse)
+(defprop %erfc %inverse_erfc $inverse)
+
 
 ;;; Differentiation of the Inverse Complementary Error function
 
