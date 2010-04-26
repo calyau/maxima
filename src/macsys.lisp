@@ -14,6 +14,9 @@
 
 (macsyma-module system)
 
+(defmvar $showtime nil
+  "When T, the computation time is printed with each output expression.")
+
 ;;; Standard Kinds of Input Prompts
 
 (defmvar $prompt '_
