@@ -16,6 +16,9 @@
 
 ;;; Standard Kinds of Input Prompts
 
+(defmvar $prompt '_
+  "Prompt symbol of the demo function, playback, and the Maxima break loop.")
+
 (defvar *prompt-prefix* "")
 (defvar *prompt-suffix* "")
 (defvar *general-display-prefix* "")
@@ -29,13 +32,17 @@
   (declare (special *display-labels-p*))
   (if *display-labels-p*
     (format nil "~A(~A~D) ~A"
-	    *prompt-prefix* (print-invert-case (stripdollar $inchar))
-	    $linenum *prompt-suffix*)
+            *prompt-prefix*
+            (print-invert-case (stripdollar $inchar))
+            $linenum
+            *prompt-suffix*)
     ""))
 
 (defun break-prompt ()
-  (declare (special $prompt))
-  (stripdollar $prompt))
+  (format nil "~A~A~A"
+          *prompt-prefix*
+          (print-invert-case (stripdollar $prompt))
+          *prompt-suffix*))
 
 ;; there is absoletely no need to catch errors here, because
 ;; they are caught by the macsyma-listener window process on
@@ -110,7 +117,10 @@
 		 batch-or-demo-flag)
   (declare (special *socket-connection*))
   (if (eql batch-or-demo-flag :demo)
-      (format t (intl:gettext "~% At the _ prompt, type ';' and <enter> to get next demonstration.~&")))
+      (format t
+        (intl:gettext
+          "~%At the '~A' prompt, type ';' and <enter> to get next demonstration.~&")
+        (print-invert-case (stripdollar $prompt))))
   (catch 'abort-demo
     (do ((r)
 	 (time-before)
@@ -216,15 +226,20 @@
 	(if (eq (caar r) 'displayinput)
 	    (displa `((mlable) ,d-tag ,$%))) ;; consistently misspelling label.
 	(when (eq batch-or-demo-flag ':demo)
-	  (mtell "~A_~A" *prompt-prefix* *prompt-suffix*)
+          (princ (break-prompt))
+          (force-output)
 	  (let (quitting)
 	    (do ((char)) (nil)
 	      ;;those are common lisp characters you're reading here
 	      (case (setq char (read-char *terminal-io*))
-		((#\page)
-		 (terpri *standard-output*)
-		 (princ "_" *standard-output*))
-		((#\?) (mtell (intl:gettext "  Pausing. Type a ';' and <enter> to continue demo.~%")))
+                ((#\page)
+                 (fresh-line)
+                 (princ (break-prompt))
+                 (force-output))
+                ((#\?)
+                 (format t
+                   (intl:gettext
+                     "  Pausing. Type a ';' and <enter> to continue demo.~%")))
 		((#\space #\; #\n #\e #\x #\t))
 		((#\newline )
 		 (if quitting (throw 'abort-demo nil) (return nil)))
@@ -285,7 +300,8 @@
 	 (princ *prompt-suffix*)
 	 (mterpri)))
   (let ((res (mread-noprompt *query-io* nil)))
-       (princ *general-display-prefix*) res))
+    (princ *general-display-prefix*)
+    res))
 
 (defmfun $read (&rest l)
   (meval (apply #'$readonly l)))
