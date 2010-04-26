@@ -142,10 +142,15 @@
       (mapcar #'ratplus a b))) 
 
 (defmfun $determinant (mat)
-  (cond ((not (or (mbagp mat) ($matrixp mat))) (if ($scalarp mat) mat (list '(%determinant) mat)))
+  (cond ((not (or (mbagp mat) ($matrixp mat))) 
+         (if ($scalarp mat) mat (list '(%determinant) mat)))
 	(t (setq mat (check mat))
 	   (unless  (= (length mat) (length (cadr mat)))
-	     (merror (intl:gettext "determinant: matrix must be square; found ~M rows, ~M columns.") (length mat) (length (cadr mat))))
+             (merror 
+               (intl:gettext
+                 "determinant: matrix must be square; found ~M rows, ~M columns.")
+               (length (cdr mat))
+               (length (cdadr mat))))
            (cond ((not $ratmx) (det1 (mcx (cdr mat))))
 	         (t (newvarmat1 mat) (determinant1 (mcx (cdr mat))))))))
 
