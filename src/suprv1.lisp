@@ -129,16 +129,12 @@
 (defvar moreflush nil)
 (defmvar $morewait nil "needs to be documented" no-reset)
 
-(defmvar $showtime nil)
-
 (defmvar aliaslist nil
   "is used by the `makeatomic' scheme which has never been completed"
   no-reset)
 
 (defun sys-gctime ()
   (status gctime))
-
-(defmvar $showtime nil)
 
 ;(defmfun meval* (test)
 ;  (let (refchkl baktrcl checkfactors)
@@ -661,6 +657,7 @@
 	(cadr (reverse l)))))
 
 (defmspec $playback (x)
+  (declare (special $showtime))
   (setq x (cdr x))
   (let ((state-pdl (cons 'playback state-pdl)))
     (prog (l l1 l2 numbp slowp nostringp inputp timep grindp inchar largp)
