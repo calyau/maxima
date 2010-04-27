@@ -178,10 +178,7 @@ sqrt(2)/2;
 [declare_constvalue (%C2, 14390.0), declare_constvalue (%C1, 3.742E+8)];
 [14390.0, 3.742E+8];
 
-declare ("µ", alphabetic);
-done;
-
-(C1: %C1`W*µm^4/m^2, C2: %C2`µm*K, l: %l`µm, T: %T`K, 0);
+(C1: %C1`W*micron^4/m^2, C2: %C2`micron*K, l: %l`micron, T: %T`K, 0);
 0;
 
 /* "infeval=true" is a work-around for simplification strangeness:
@@ -190,10 +187,10 @@ done;
  * but it can be coaxed by re-evaluation via ''expr or infeval=true.
  */
 expr: C1/(l^5*(exp(C2/(l*T)) - 1)), infeval=true;
-%C1/(%l^5*(%e^(%C2/(%l*%T))-1)) ` W/(m^2*µm);
+%C1/(%l^5*(%e^(%C2/(%l*%T))-1)) ` W/(m^2*micron);
 
 ev (expr, constvalue);
-3.742E+8/(%l^5*(%e^(14390.0/(%l*%T))-1)) ` W/(m^2*µm);
+3.742E+8/(%l^5*(%e^(14390.0/(%l*%T))-1)) ` W/(m^2*micron);
 
 qty(%), %T=6000;
 3.742E+8 / (%l^5 * (%e^(2.398333333333333/%l) - 1));
