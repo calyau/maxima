@@ -83,7 +83,7 @@
         (setq b (meval (fourth x)))
         (setq d ($float (meval `((mplus) ,b ((mtimes) ,a -1)))))
         (if (numberp d)
-            (setq lv (interval a 1 d))
+            (setq lv (interval2 a 1 d))
             (merror (intl:gettext "makelist: the fourth argument minus the third one must evaluate to a number; found: ~M") d)))
        ((= n 5)
         (setq form (first x))
@@ -95,7 +95,7 @@
                  (meval 
                   `((mtimes) ((mplus) ,b ((mtimes) ,a -1)) ((mexpt) ,c -1)))))
         (if (numberp d)
-            (setq lv (interval a c d))
+            (setq lv (interval2 a c d))
             (merror (intl:gettext "makelist: the fourth argument minus the third one, divided by the fifth one must evaluate to a number; found: ~M") d)))
        (t (merror (intl:gettext "makelist: maximum 5 arguments allowed; found: ~M.~%To create a list with sublists, use nested makelist commands.") n)))
      (return 
@@ -107,11 +107,19 @@
 				(list '(mequal) arg (car lv)))))
 	       ans)))))
 
-(defun interval (i s d)
+(defun interval2 (i s d)
   (do ((nn i (meval `((mplus) ,s ,nn)))
        (m 0 (1+ m))
        (ans))
       ((> m d) (nreverse ans))
+    (push nn ans)))
+
+(defun interval (i j)
+  (do ((nn i (add2 1 nn))
+       (m 0 (1+ m))
+       (k (sub* j i))
+       (ans))
+      ((> m k) (nreverse ans))
     (push nn ans)))
 
 (defmfun $sublist (a f)
