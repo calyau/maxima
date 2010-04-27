@@ -596,9 +596,10 @@ factor(integrate(1/(sin(x)^2+1),x,0,3*%pi));
  * The call to factor is to get rid of some numerical factors.
  */
 ratsimp(ev(logcontract((integrate(1/(x^8-1),x,0,1/2))),algebraic) + 
-(sqrt(2)*log((20*sqrt(2)+33)/17)+2*sqrt(2)*atan((sqrt(2)+2)/2)
-                                 +2*sqrt(2)*atan((sqrt(2)-2)/2)+log(9)
-                                 +4*atan(1/2))
+(sqrt(2)*log((2^(3/2)+5)/(2^(3/2)-5)/-1)
+      +2*sqrt(2)*atan((sqrt(2)+2)/2)
+      +2*sqrt(2)*atan((sqrt(2)-2)/2)+log(9)
+      +4*atan(1/2))
  /16);
 0;
 
@@ -617,8 +618,9 @@ integrate(t^2*log(t)/((t^2-1)*(t^4+1)), t, 0, 1);
  * Here's one of the tests listed in that bug report.
  */
 logcontract(ratsimp(factor(integrate (1/((x-3)^4+1), x,0,1)))),algebraic;
-(sqrt(2)*log(-((190*sqrt(2)-747)/697))+2*sqrt(2)*atan((7*sqrt(2)+5)/73)
-				    +2*sqrt(2)*atan((7*sqrt(2)-5)/73))
+(sqrt(2)*log((5*sqrt(2)-38)/(5*sqrt(2)+38)/-1)
+ +2^(3/2)*atan((7*sqrt(2)+5)/73)+2^(3/2)*atan((7*sqrt(2)-5)/73))
+
  /8$
 /*
  * Work around in residu.lisp, rev 1.9
