@@ -201,21 +201,25 @@
 (defmvar superlogcon t)
 (defmvar $superlogcon t)
 
-(defmfun $logcontract (e) (lgccheck (logcon e))) ; E is assumed to be simplified.
+(defmfun $logcontract (e)
+  (lgccheck (logcon e))) ; E is assumed to be simplified.
 
 (defun logcon (e)
   (cond ((atom e) e)
 	((member (caar e) '(mplus mtimes) :test #'eq)
 	 (if (and $superlogcon (not (lgcsimplep e))) (setq e (lgcsort e)))
-	 (cond ((mplusp e) (lgcplus e)) ((mtimesp e) (lgctimes e)) (t (logcon e))))
+         (cond ((mplusp e) (lgcplus e))
+               ((mtimesp e) (lgctimes e))
+               (t (logcon e))))
 	(t (recur-apply #'logcon e))))
 
 (defun lgcplus (e)
   (do ((x (cdr e) (cdr x)) (log) (notlogs) (y))
       ((null x)
        (cond ((null log) (subst0 (cons '(mplus) (nreverse notlogs)) e))
-	     (t (setq log (sratsimp (muln log t)))
-		(addn (cons (lgcsimp log) notlogs) t))))
+             (t
+              (setq log (let (($ratfac t)) (sratsimp (muln log t))))
+              (addn (cons (lgcsimp log) notlogs) t))))
     (cond ((atom (car x)) (setq notlogs (cons (car x) notlogs)))
 	  ((eq (caaar x) '%log) (setq log (cons (logcon (cadar x)) log)))
 	  ((eq (caaar x) 'mtimes)
@@ -239,10 +243,6 @@
 		    (setq log (cadar x)))
 		   ((logconcoeffp (car x)) (setq decints (cons (car x) decints)))
 		   (t (setq notlogs (cons (car x) notlogs))))))))
-
-;(defun lgcsimp (e)		;; this is to simplify
-;  (let (($logexpand nil))	;; log(%e) -> 1 and log(%e^2) -> 2
-;    (simpln `((%log) ,e) 1 t)))
 
 (defun lgcsimp (e)
   (cond ((atom e)
