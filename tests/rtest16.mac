@@ -1464,3 +1464,11 @@ bfpsi0(4.5 + %i,15);
 atan2(1b20,-1b0);
 1.570796326794897b0;
 
+/*
+ * Bug ID: 2991924 - Incorrect integration of rational functions
+ */
+integrate(1/(x^4-2),x,0,1) - integrate(1/(x^2-sqrt(2))/(x^2+sqrt(2)),x,0,1);
+0;
+
+integrate(1/(x^6-4),x,0,1) - integrate(1/(x^3-2)/(x^3+2),x,0,1);
+0;
