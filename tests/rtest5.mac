@@ -19,6 +19,16 @@ a*log(x^2*y^4)$
 ratsimp(logcontract(log(sqrt(x+1)+sqrt(x))+log(sqrt(x+1)-sqrt(x))));
 0$
 
+/* Two examples from Bug report ID: 947808 - logcontract and ratfac */
+logexpand:false; /* To prevent simplification of the expected result */
+false;
+logcontract(2*log(x+1)+1);
+log((x+1)^2)+1;
+logexpand:true;
+true;
+logcontract(1000*log(x+1)+log(x));
+log(x*(x+1)^1000)$
+
 rootsconmode:false;
 false$
 
