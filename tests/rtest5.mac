@@ -16,7 +16,7 @@ partition(a+b,x);
 2*(2*a*log(y)+a*log(x))$
 logcontract(%);
 a*log(x^2*y^4)$
-logcontract(log(sqrt(x+1)+sqrt(x))+log(sqrt(x+1)-sqrt(x)));
+ratsimp(logcontract(log(sqrt(x+1)+sqrt(x))+log(sqrt(x+1)-sqrt(x))));
 0$
 
 rootsconmode:false;
