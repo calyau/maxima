@@ -114,10 +114,13 @@
    :mring-to-maxima #'(lambda (s) (add (realpart s) (mult '$%i (imagpart s)))) ;; was complexify
    :maxima-to-mring #'(lambda (s) 
 			(progn 
-			  (setq s ($rectform (meval s)))
-			  (if (complex-number-p s 'float-or-rational-p)
-			      (complex ($float ($realpart s)) ($float ($imagpart s)))
-			    (merror "Unable to convert ~:M to a complex long float" s))))))
+			  (setq s (coerce-expr-to-clcomplex ($rectform (meval s))))
+			  (if (complexp s)
+			      s
+			      (merror "Unable to convert ~:M to a complex long float" s))))))
+
+(defun coerce-expr-to-clcomplex (s)
+  (complex (funcall (coerce-float-fun ($realpart s))) (funcall (coerce-float-fun ($imagpart s)))))
 
 (setf (get '$complexfield 'ring) *complexfield*)
 
