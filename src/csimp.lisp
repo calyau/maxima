@@ -15,7 +15,7 @@
 (declare-top (special rsn* $factlim $exponentialize
 		      var varlist genvar $%emode $ratprint
 		      nn* dn* $errexp sqrt3//2 sqrt2//2 -sqrt2//2 -sqrt3//2
-		      $demoivre errorsw islinp $keepfloat $ratfac))
+		      $demoivre errorsw $keepfloat $ratfac))
 
 (load-macsyma-macros rzmac)
 
@@ -33,7 +33,6 @@
 (defmvar %pi2 '((mtimes) 2 $%pi))
 (defmvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
-;(defmvar $gammalim 1000000.) Moved to csimp2.lisp
 
 (loop for (a b) on
        '(%sin %asin %cos %acos %tan %atan
@@ -60,13 +59,14 @@
 		    (m+ (list '(%cos) (car l))
 			(m* '$%i (list '(%sin) (car l)))))))))
 
-;;;If exp is of the form a*var1+b where a is freeof var1
-;;; then (a . b) is returned else nil
-(defun islinear (exp var1)
-  (let ((a (let ((islinp t))
-	     (sdiff exp var1))))
+;; If expr is of the form a*var1+b where a is freeof var1
+;; then (a . b) is returned else nil.
+(defun islinear (expr var1)
+  (declare (special *islinp*))
+  (let ((a (let ((*islinp* t))
+             (sdiff expr var1))))
     (if (freeof var1 a)
-	(cons a (maxima-substitute 0 var1 exp)))))
+        (cons a (maxima-substitute 0 var1 expr)))))
 
 (defmfun $partition (e var1)
   (prog (k)
