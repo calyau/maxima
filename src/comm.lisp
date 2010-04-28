@@ -14,7 +14,7 @@
 
 (declare-top (special $exptsubst $linechar $nolabels $inflag $piece $dispflag
 		      $gradefs $props $dependencies derivflag derivlist
-		      $linenum $partswitch linelable nn* dn* islinp
+		      $linenum $partswitch linelable nn* dn*
 		      $powerdisp atvars atp $errexp $derivsubst $dotdistrib
 		      $opsubst $subnumsimp $transrun in-p substp $sqrtdispflag
 		      $pfeformat dummy-variable-operators))
@@ -61,13 +61,14 @@
       $dependencies '((mlist simp))
       atvars '($@1 $@2 $@3 $@4)
       atp nil
-      islinp nil
       lnorecurse nil
       $derivsubst nil
       timesp nil
       $opsubst t
       in-p nil
       substp nil)
+
+(defvar *islinp* nil) ; When T, sdiff is called from the function islinear.
 
 (defmvar $vect_cross nil
   "If TRUE allows DIFF(X~Y,T) to work where ~ is defined in
@@ -403,11 +404,13 @@
 
 (defun chainrule (e x)
   (let (w)
-    (cond (islinp (if (and (not (atom e))
-			   (eq (caar e) '%derivative)
-			   (not (freel (cdr e) x)))
-		      (diff%deriv (list e x 1))
-		      0))
+    (cond (*islinp*
+           ;; sdiff is called from the function islinear.
+           (if (and (not (atom e))
+                    (eq (caar e) '%derivative)
+                    (not (freel (cdr e) x)))
+               (diff%deriv (list e x 1))
+               0))
 	  ((atomgrad e x))
 	  ((not (setq w (mget (cond ((atom e) e)
 				    ((member 'array (cdar e) :test #'eq) (caar e))
