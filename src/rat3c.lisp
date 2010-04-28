@@ -266,7 +266,7 @@
 
 (defun psquorem1 (u v quop)
   (prog (k (m 0) lcu lcv quo lc)
-     (declare (special k lcu lcv))
+     (declare (special lcu lcv))
      (setq lcv (pt-lc v))
      (setq k (- (pt-le u) (pt-le v)))
      (cond ((minusp k) (return (list 1 '(0 0) u))))
@@ -274,7 +274,7 @@
      a     (setq lcu (pminus (pt-lc u)))
      (if quop (setq quo (cons (ptimes (pt-lc u) (pexpt (pt-lc v) k))
 			      (cons k quo))))
-     (cond ((null (setq u (pgcd2 (pt-red u) (pt-red v))))
+     (cond ((null (setq u (pgcd2 (pt-red u) (pt-red v) k)))
 	    (return (list lc (nreverse quo) '(0 0))))
 	   ((minusp (setq m (- (pt-le u) (pt-le v))))
 	    (setq u (cond ((zerop k) u)
@@ -292,17 +292,17 @@
 
 (defmfun pgcd1 (u v) (caddr (psquorem1 u v nil)))
 
-(defun pgcd2 (u v &aux (i 0))
-  (declare (special k lcu lcv) (fixnum k i))
+(defun pgcd2 (u v k &aux (i 0))
+  (declare (special lcu lcv) (fixnum k i))
   (cond ((null u) (pcetimes1 v k lcu))
 	((null v) (pctimes1 lcv u))
 	((zerop (setq i (+ (pt-le u) (- k) (- (car v)))))
 	 (pcoefadd (pt-le u) (pplus (ptimes lcv (pt-lc u))
 				    (ptimes lcu (pt-lc v)))
-		   (pgcd2 (pt-red u) (pt-red v))))
+                   (pgcd2 (pt-red u) (pt-red v) k)))
 	((minusp i)
-	 (list* (+ (pt-le v) k) (ptimes lcu (pt-lc v)) (pgcd2 u (pt-red v))))
-	(t (list* (pt-le u) (ptimes lcv (pt-lc u)) (pgcd2 (pt-red u) v)))))
+         (list* (+ (pt-le v) k) (ptimes lcu (pt-lc v)) (pgcd2 u (pt-red v) k)))
+        (t (list* (pt-le u) (ptimes lcv (pt-lc u)) (pgcd2 (pt-red u) v k)))))
 
 ;;;*** OLDCONTENT REMOVES ALL BUT MAIN VARIABLE AND PUTS THAT IN CONTENT
 ;;;***  OLDCONTENT OF 3*A*X IS 3*A (WITH MAINVAR=X)
