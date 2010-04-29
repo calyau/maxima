@@ -1650,4 +1650,36 @@ set(i,x)$
 in_exactly_one(set(x),set(x), set(a,b));
 set(a,b)$
 
+/* bug reported to mailing list, is(f("x") > 0) => Lisp error
+ * following example from Matthew Gwynne 2010-04-29, thanks Matthew!
+ */
 
+(
+ /* F as specified in original example
+ F : {{gv("CSup"),-gv("DiagF"),-gv("DisT"),-gv("ProgF"),-gv("SymA"),-gv("Via")},
+    {-gv("CSup"),-gv("DiagF"),-gv("DisT"),-gv("ProgF"),-gv("SymA"),-gv("Via")},
+    {gv("CSup"),-gv("DiagF"),-gv("DisT"),-gv("ProgF"),-gv("SymA"),-gv("Via")},
+    {-gv("CSup"),-gv("DiagF"),gv("DisT"),-gv("ProgF"),gv("SymA"),-gv("Via")},
+    {-gv("CSup"),gv("DiagF"),-gv("DisT"),-gv("ProgF"),gv("SymA"),gv("Via")},
+    {gv("CSup"),gv("DiagF"),-gv("DisT"),-gv("ProgF"),gv("SymA"),gv("Via")},
+    {gv("CSup"),gv("DiagF"),gv("DisT"),-gv("ProgF"),gv("SymA"),gv("Via")},
+    {gv("CSup"),gv("DiagF"),gv("DisT"),-gv("ProgF"),gv("SymA"),gv("Via")},
+    {-gv("CSup"),gv("DiagF"),-gv("DisT"),gv("ProgF"),gv("SymA"),gv("Via")},
+    {gv("CSup"),gv("DiagF"),gv("DisT"),gv("ProgF"),gv("SymA"),gv("Via")},
+    {gv("CSup"),gv("DiagF"),gv("DisT"),gv("ProgF"),gv("SymA"),gv("Via")}}, */
+ /* here is a smaller (fewer variables) example */
+ F : {{gv("CSup"),-gv("DiagF"),-gv("DisT")},
+      {gv("CSup"),gv("DiagF"),gv("DisT")},
+      {gv("CSup"),gv("DiagF"),gv("DisT")}},
+ var_cs(F) := map(abs,apply(union,listify(F))),
+ all_tass(V) :=
+  map(setify,
+   apply(cartesian_product,
+     map(lambda([v],{-v,v}),listify(V)))),
+ fullcnf2fulldnf(F) := setdifference(all_tass(var_cs(F)),F),
+ fullcnf2fulldnf(F));
+
+{{-abs(gv("CSup")),-abs(gv("DiagF")),-abs(gv("DisT"))},{-abs(gv("CSup")),-abs(gv("DiagF")),abs(gv("DisT"))},
+ {-abs(gv("CSup")),abs(gv("DiagF")),-abs(gv("DisT"))},{-abs(gv("CSup")),abs(gv("DiagF")),abs(gv("DisT"))},
+ {abs(gv("CSup")),-abs(gv("DiagF")),-abs(gv("DisT"))},{abs(gv("CSup")),-abs(gv("DiagF")),abs(gv("DisT"))},
+ {abs(gv("CSup")),abs(gv("DiagF")),-abs(gv("DisT"))},{abs(gv("CSup")),abs(gv("DiagF")),abs(gv("DisT"))}}$
