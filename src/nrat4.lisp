@@ -363,10 +363,9 @@
   (cond ((alike1 var e) nil)
 	((atom e) t)
 	((and (not argsfreeofp)
-	  (or
-	    (alike1 var ($verbify (caar e)))
-	    (alike1 var ($nounify (caar e)))))
-     nil)
+              (or (alike1 var ($verbify (caar e)))
+                  (alike1 var ($nounify (caar e)))))
+         nil)
 	((and (or (member (caar e) '(%product %sum %laplace) :test #'eq)
 		  (and (eq (caar e) '%integrate) (cdddr e))
 		  (and (eq (caar e) '%limit) (cddr e)))
@@ -377,6 +376,10 @@
 	       ((not (freeofl var (hand-side (caddr e) 'l))) t)
 	       (t (freeof var (cadr e)))))
 	((and (eq (caar e) 'lambda) (member var (cdadr e) :test #'eq)) t)
+        ;; Check for a local variable in a block.
+        ((and (eq (caar e) 'mprog) (member var (cdadr e) :test #'eq)) t)
+        ;; Check for a loop variable.
+        ((and (eq (caar e) 'mdo) (alike1 var (cadr e))) t)
 	(argsfreeofp (freeofl var (margs e)))
 	(t (freeofl var (cdr e)))))
 
