@@ -97,10 +97,10 @@ eigenvalues(mat):=
 		return(listall)))$
 
 eigenvectors(mat):=
-		block([equations,unknowns,solution,listall,eigvals,dimnsn,
+		block([eigvecs,equations,unknowns,solution,eigvals,dimnsn,
 		count,vectr,index3,index4,index2,index1,matrx,mmatrx,notknwn,
 		unit,multiplicities,%rnum,realonly,algebraic,interm,intern],
-                mode_declare([equations,unknowns,solution,listall,eigvals,
+                mode_declare([equations,unknowns,solution,eigvals,
                               unit,interm],list,
                              [dimnsn,count,index3,index4,index2,index1],fixnum,
                              [vectr,matrx,mmatrx,intern,notknwn],any),
