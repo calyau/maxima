@@ -347,7 +347,7 @@
 
 (defun realonly (rootsl)
   (cond ((null rootsl) nil)
-	((equal 0 (sratsimp ($imagpart (car rootsl))))
+	((equal 0 (sratsimp ($imagpart (caddr (car rootsl)))))
 	 (nconc (list (car rootsl)) (realonly (cdr rootsl))))
 	(t (realonly (cdr rootsl)))))
 
