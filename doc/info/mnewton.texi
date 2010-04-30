@@ -21,7 +21,7 @@ in one or more variables.
 Default value: @code{10.0^(-fpprec/2)}
 
 Precision to determine when the @code{mnewton} function has converged towards the solution.
-
+If @code{newtonepsilon} is a bigfloat, then @code{mnewton} computations are done with bigfloats.
 See also @code{mnewton}.
 
 @opencatbox
@@ -67,6 +67,17 @@ This function is controlled by global variables @code{newtonepsilon} and @code{n
 (%o3)             [[a = 1.70927556786144]]
 (%i4) mnewton([2*3^u-v/u-5, u+2^v-4], [u, v], [2, 2]);
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
+@end example
+
+The variable @code{newtonepsilon} controls the precision of the
+approximations. It also controls if computations are performed with
+floats or bigfloats.
+
+@example
+(%i1) (load("mnewton"), fpprec : 25, newtonepsilon : bfloat(10^(-fpprec+5)))$
+
+(%i2) mnewton([2*3^u-v/u-5, u+2^v-4], [u, v], [2, 2]);
+(%o2) [[u = 1.066618389595406772591173b0, v = 1.552564766841786450100418b0]]
 @end example
 
 To use this function write first @code{load("mnewton")}. See also @code{newtonepsilon} and @code{newtonmaxiter}.
