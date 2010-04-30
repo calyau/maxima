@@ -16,7 +16,7 @@
 		      filelist opers $packagefile
 		      fasdumpfl fasdeqlist fasdnoneqlist savenohack
 		      dsksavep aaaaa errset lessorder greatorder indlist
-		      $labels $aliases varlist mopl $props defaultf
+		      $labels $aliases varlist *mopl* $props defaultf
 		      $infolists $features featurel savefile $gradefs
 		      $values $functions $arrays prinlength prinlevel
 		      $contexts context $activecontexts))
@@ -305,8 +305,8 @@
   (let ((val1 (implode (cons #\$ (cdr (exploden val))))))
     (when (or (get val1 'nud) (get val1 'led) (get val1 'lbp))
       (fasprin `(define-symbol (quote ,val)))
-      (if (member val mopl :test #'eq)
-	  (fasprin `(setq mopl (cons (quote ,val) mopl))))
+      (if (member val *mopl* :test #'eq)
+	  (fasprin `(setq *mopl* (cons (quote ,val) *mopl*))))
       (when (setq val (get val1 'dimension))
 	(dskdefprop val1 val 'dimension)
 	(dskdefprop val1 (get val1 'dissym) 'dissym)

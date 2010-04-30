@@ -23,10 +23,9 @@
 
 ;; Store build-in operators, which get additional properties.
 ;; These operators aren't killed by the function kill-operator.
-(defvar mopl nil)
+(defvar *mopl* nil)
 
-(declare-top  (special
-		       bindlist loclist errset *rset ^q lf tab ff cr
+(declare-top  (special bindlist loclist errset *rset ^q lf tab ff cr
 		       $values $functions $arrays $gradefs $dependencies
 		       $rules $props $ratvars $ratvarswitch
 		       varlist genvar $filename
@@ -360,7 +359,9 @@
 	(killframe x)
 	(i-$remove (list x $features)))
       (let ((y (get x 'op)))
-	(when (and y (not (member y mopl :test #'equal)) (member y (cdr $props) :test #'equal))
+        (when (and y 
+                   (not (member y *mopl* :test #'equal))
+                   (member y (cdr $props) :test #'equal))
 	  (kill-operator x)))
       (remalias x nil)
       (setf $arrays (delete x $arrays :count 1 :test #'eq))

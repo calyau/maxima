@@ -1637,13 +1637,13 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
       (getopr op))))
 
 (defun op-setup (op)
-  (declare (special mopl))
+  (declare (special *mopl*))
   (let ((dummy (or (get op 'op)
                    (coerce (string* op) 'string))))
     (putprop op    dummy 'op )
     (putopr dummy op)
     (if (and (operatorp1 op) (not (member dummy (cdr $props) :test #'eq)))
-	(push dummy mopl))
+	(push dummy *mopl*))
     (add2lnc dummy $props)))
 
 (defun kill-operator (op)

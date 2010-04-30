@@ -23,13 +23,12 @@
   "If TRUE, messages about map/fullmap truncating on the shortest list
 or if apply is being used are printed.")
   
-(declare-top (special 
-		      derivflag derivlist $labels
-		      $values $functions $arrays $rules $gradefs $dependencies $aliases
+(declare-top (special derivflag derivlist $labels $values $functions $arrays 
+                      $rules $gradefs $dependencies $aliases
 		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
 		      $numer state-pdl *mdebug* refchkl baktrcl
 		      $norepeat $detout $doallmxops $doscmxops opers
-		      mopl $powerdisp $dispflag *alphabet* $%% %e-val
+		      *mopl* $powerdisp $dispflag *alphabet* $%% %e-val
 		      outfiles $macros linel $ratfac $ratwtlvl
 		      $operators $partswitch *gcdl*
 		      *builtin-$props* $infolists))
@@ -1430,7 +1429,7 @@ wrapper for this."
 	  (t (putprop var val prop)))
     (if (and (safe-get var 'op) (operatorp1 var)
 	     (not (member (setq var (get var 'op)) (cdr $props) :test #'eq)))
-	(setq mopl (cons var mopl)))
+	(setq *mopl* (cons var *mopl*)))
     (add2lnc (getop var) $props)))
 
 (defun linchk (var)
