@@ -21,7 +21,9 @@
   (setq old-ibase *read-base* old-base *print-base*)
   (setq *read-base* 10. *print-base* 10.))
 
-(defmvar mopl nil)
+;; Store build-in operators, which get additional properties.
+;; These operators aren't killed by the function kill-operator.
+(defvar mopl nil)
 
 (declare-top  (special
 		       bindlist loclist errset *rset ^q lf tab ff cr
