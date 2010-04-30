@@ -84,6 +84,7 @@ block
         rtest_pochhammer,
         [rtest_to_poly_solver, 64, 74, 80],
         rtest_hg,
-        rtest_nfloat]],
+        rtest_nfloat,
+        rtest_mnewton]],
     
     run_testsuite ());
