@@ -20,8 +20,6 @@
 
 (defmvar $listdummyvars t)
 
-(defmvar $polyfactor nil)
-
 (defmfun $unknown (f) (catch 'unknown (unknown (specrepcheck f))))
 
 (defun unknown (f)

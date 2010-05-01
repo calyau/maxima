@@ -22,7 +22,7 @@
 ;;; mre 0.01 times the published values.
 
 (declare-top (special $partswitch $keepfloat $demoivre $listconstvars
-		      $algebraic $polyfactor $ratfac $programmode))
+		      $algebraic $ratfac $programmode))
 
 (declare-top (special *logbas* *infin* *are* *mre* *cr* *ci* *sr* *si*
 		      *tr* *ti* *zr* *zi* *n* *nn* *bool*
@@ -33,6 +33,9 @@
 
 (declare-top (special *u* *v* *a* *b* *c* *d* *a1* *a3* *a7* *e* *f* *g* *h*
 		      *szr* *szi* *lzr* *lzi* *nz* *ui* *vi* *s*))
+
+(defmvar $polyfactor nil
+  "When T factor the polynomial over the real or complex numbers.")
 
 #+clisp
 (eval-when (:compile-toplevel :load-toplevel :execute)
