@@ -215,7 +215,6 @@ Examples:
 Computes numerical approximations of the real and complex roots of the
 polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
 
-@c polyfactor IS NOT OTHERWISE DOCUMENTED
 The flag @code{polyfactor} when @code{true} causes
 @code{allroots} to factor the polynomial over the real numbers if the
 polynomial is real, or over the complex numbers, if the polynomial is
@@ -833,6 +832,22 @@ nth power. This routine is much faster than @code{factor} or even @code{sqfr}.
 @category{Polynomials}
 @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} polyfactor
+Default value: @code{false}
+
+The option variable @code{polyfactor} when @code{true} causes @code{allroots} 
+and @code{bfallroots} to factor the polynomial over the real numbers if the
+polynomial is real, or over the complex numbers, if the polynomial is
+complex.
+
+See @code{allroots} for an example.
+
+@opencatbox
+@category{Polynomials} @category{Numerical methods}
+@closecatbox
+@end defvr
 
 @defvr {Option variable} programmode
 Default value: @code{true}
