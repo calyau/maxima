@@ -47,9 +47,36 @@ nonzeroandfreeof&&  nonzeroandfreeof(x,e):=is(e#0 and freeof(x,e))$
 lcm&& lcm([list]):=block([listconstvars:false],if listofvars(list)=[] then
 lcm1(list) else factor(lcm1(list)))$
 
+/* Replaced by the following routine
 lcm1(list):=if list=[] then 1 else block([rlist:rest(list),flist:first(list),
 frlist,partswitch:true,inflag:true,piece], if rlist=[] then flist else
 lcm1(cons(flist*(frlist:first(rlist))/gcd(flist,frlist),rest(rlist))))$
+*/
+
+/* New implementation of the function lcm
+ * Do not use a recursive, but an iterative algorithm.
+ * Check more carefully the case division by zero.
+ */
+
+lcm1(list):=
+   block 
+   (
+    [flist, rlist, result, keepfloat:true, ratprint:false],
+    
+    result : flatten(list),
+    if result = [] then result : [1],
+    unless rest(result)=[] do
+    (
+     flist : first(result),
+     rlist : first(rest(result)),
+     if rlist=0 then
+        result : [0]
+     else
+        result : cons( (flist*rlist / gcd(flist, rlist)),
+                       (rest(rest(result))))
+    ),
+    first(result)
+)$
 
 gcdivide&&  gcdivide(poly1,poly2):=block([gcdlist],
 		gcdlist:if takegcd then ezgcd(poly1,poly2)
