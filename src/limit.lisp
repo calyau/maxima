@@ -216,7 +216,7 @@ It appears in LIMIT and DEFINT.......")
 			   (real-infinityp val)))
 		  (setq ans (catch 'taylor-catch
 			      (let ((silent-taylor-flag t))
-				($gruntz exp var val)))))
+				(gruntz1 exp var val)))))
 
 	      ;; try taylor series expansion if simple limit didn't work
 	      (if (and (null ans)		;; if no limit found and
@@ -3138,9 +3138,32 @@ It appears in LIMIT and DEFINT.......")
 				  ((equal sig 0)
 				   (return (limitinf c0 var)))))))
 
-;; user-level function equivalent to $limit
+;; user-level function equivalent to $limit.
 ;; direction must be specified if limit point is not infinite
-(defmfun $gruntz (exp var val &rest rest)
+;; The arguments are checked and a failure of taylor is catched.
+
+(defmfun $gruntz (expr var val &rest rest)
+  (let (ans dir)
+    (when (> (length rest) 1)
+      (merror
+        (intl:gettext "gruntz: too many arguments; expected just 3 or 4")))
+    (setq dir (car rest))
+    (when (and (not (member val '($inf $minf $zeroa $zerob)))
+               (not (member dir '($plus $minus))))
+      (merror
+        (intl:gettext "gruntz: direction must be 'plus' or 'minus'")))
+    (setq ans
+          (catch 'taylor-catch
+            (let ((silent-taylor-flag t))
+              (gruntz1 expr var val dir))))
+     (if (or (null ans) (eq ans t))
+         (if dir
+             `(($gruntz simp) ,expr ,var, val ,dir)
+             `(($gruntz simp) ,expr ,var ,val))
+         ans)))
+
+;; This function is for internal use in $limit.
+(defun gruntz1 (exp var val &rest rest)
   (cond ((> (length rest) 1)
 	 (merror (intl:gettext "gruntz: too many arguments; expected just 3 or 4"))))
   (let ((newvar (gensym "w"))
@@ -3159,8 +3182,6 @@ It appears in LIMIT and DEFINT.......")
 	   (setq exp (maxima-substitute (m+ val (m// -1 newvar)) var exp)))
 	  (t (merror (intl:gettext "gruntz: direction must be 'plus' or 'minus'; found: ~M") dir)))
     (limitinf exp newvar)))
-
-
 
 ;; substitute y for x in exp
 ;; similar to maxima-substitute but does not simplify result
