@@ -1,4 +1,4 @@
-@c version 1.45
+@c version 1.46
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -37,19 +37,18 @@ Se necesita tener instalado Gnuplot 4.2 para ejecutar este paquete.
 @defvr {Opci@'on gr@'afica} proportional_axes
 Valor por defecto: @code{none}
 
-Cuando @code{proportional_axes} es igual a @code{xy}, una escena
-2D se dibujar@'a con los ejes proporcionales a sus longitudes relativas.
+Cuando @code{proportional_axes} es igual a @code{xy} o @code{xy}, una escena
+2D o 3D se dibujar@'a con los ejes proporcionales a sus longitudes relativas.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia.
 
-Esta opci@'on s@'olo funciona para gr@'aficos 2D. Una vez se haya
-liberado la versi@'on 4.3 de Gnuplot, se extender@'a
-@code{proportional_axes} a los gr@'aficos 3D.
+Esta opci@'on s@'olo funciona con Gnuplot versi@'on 4.2.6
+o superior.
 
 Ejemplos:
 
-Gr@'afico sencillo.
+Gr@'afico en 2D.
 
 @example
 (%i1) load(draw)$
@@ -1819,38 +1818,140 @@ V@'ease tambi@'en @code{palette}.
 
 
 
-@defvr {Opci@'on gr@'afica} enhanced3d
-Valor por defecto: @code{false}
 
-Si @code{enhanced3d} vale @code{false}, no se colorear@'an las superficies
-de los gr@'aficos tridimensionales. Si @code{enhanced3d} vale @code{true},
-las superficies se colorear@'an activando el modo pm3d de Gnuplot.
-Si se da una expresi@'on a @code{enhanced3d}, @'esta se utilizar@'a
-para asignar colores de acuerdo con el valor de la opci@'on @code{palette};
-las variables de esta expresi@'on deben ser las mismas que luego se
-utilicen para la descripci@'on de la superficie.
+
+
+@defvr {Opci@'on gr@'afica} enhanced3d
+Valor por defecto: @code{none}
+
+Cuando @code{enhanced3d} vale @code{none}, las superficies no se colorean en escenas 3D.
+Para obtener una superficie coloreada se debe asignar una lista a la opci@'on
+@code{enhanced3d}, en la que el primer elemento es una expresi@'on y el resto
+son los nombres de las variables o par@'ametros utilizados en la expresi@'on.
+Una lista tal como @code{[f(x,y,z), x, y, z]} significa que al punto 
+@code{[x,y,z]} de la superficie se le asigna el n@'umero @code{f(x,y,z)}, el
+cual ser@'a coloreado de acuerdo con el valor actual de @code{palette}.
+Para aquellos objetos gr@'aficos 3D definidos en t@'erminos de par@'ametros,
+es posible definir el n@'umero de color en t@'erminos de dichos par@'ametros,
+como en @code{[f(u), u]}, para los objetos @code{parametric} y @code{tube},
+o @code{[f(u,v), u, v]}, para el objeto @code{parametric_surface}.
+Mientras que todos los objetos 3D admiten el modelo basado en coordenadas
+absolutas, @code{[f(x,y,z), x, y, z]}, solamente dos de ellos, esto es
+@code{explicit} y @code{mesh}, aceptan tambi@'en el modelo basado en las
+coordenadas @code{[x,y]}, @code{[f(x,y), x, y]}. Los objetos 3D @code{implicit}
+y @code{points} aceptan solamente el modelo @code{[f(x,y,z), x, y, z]}.
+
+Los nombres de las variables definidas en las listas pueden ser diferentes
+de aquellas utilizadas en las definiciones de los objetos gr@'aficos.
+
+A fin de mantener compatibilidad con versiones anteriores, @code{enhanced3d = false} 
+es equivalente a @code{enhanced3d = none} y @code{enhanced3d = true} es
+equivalente a @code{enhanced3d = [z, x, y, z]}. Si a @code{enhanced3d} se le
+asigna una expresi@'on, sus variables deben ser las mismas utilizadas en la
+definici@'on de la superficie. Esto no es necesario cuando se utilizan listas.
+
+Sobre la definici@'on de paletas, v@'ease @code{palette}.
 
 Ejemplos:
+
+Objeto @code{explicit} con coloreado definido por el modelo @code{[f(x,y,z), x, y, z]}.
 
 @example
 (%i1) load(draw)$
 (%i2) draw3d(
-         surface_hide = true,
-         enhanced3d   = true,
-         palette      = gray,
+         enhanced3d = [x-z/10,x,y,z],
+         palette    = gray,
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
-(%i3) draw3d(
-         surface_hide = true,
-         /* mismas variables x e y que */
-         /* en explicit mas abajo:     */
-         enhanced3d   = sin(x*y),
+@end example
+
+Objeto @code{explicit} con coloreado definido por el modelo @code{[f(x,y), x, y]}.
+Los nombres de las variables definidas en las listas pueden ser diferentes
+de aquellas utilizadas en las definiciones de los objetos gr@'aficos 3D; en este
+caso, @code{r} corresponde a @code{x} y @code{s} a @code{y}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         enhanced3d = [sin(r*s),r,s],
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
-(%i4) draw3d(
-         color = blue,
+@end example
+
+Objeto @code{parametric} con coloreado definido por el modelo @code{[f(x,y,z), x, y, z]}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         nticks = 100,
+         line_width = 2,
+         enhanced3d = [if y>= 0 then 1 else 0, x, y, z],
+         parametric(sin(u)^2,cos(u),u,u,0,4*%pi)) $
+@end example
+
+Objeto @code{parametric} con coloreado definido por el modelo @code{[f(u), u]}.
+En este caso, @code{(u-1)^2} es una simplificaci@'on de @code{[(u-1)^2,u]}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
          nticks = 60,
          line_width = 3,
          enhanced3d = (u-1)^2,
          parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2))$
+@end example
+
+Objeto @code{mesh} con coloreado definido por el modelo @code{[f(x,y), x, y]}.
+
+@example
+(%i1) load(draw)$
+(%i2) m: apply(
+           matrix,
+           makelist(makelist(cos(i^2/80-k/30),k,1,30),i,1,20)) $
+(%i3) draw3d(
+         enhanced3d = [cos(x*y*10),x,y],
+         mesh(m,-1,-1,2,2),
+         xlabel = "x",
+         ylabel = "y");
+@end example
+
+Objeto @code{tube} con coloreado definido por el modelo @code{[f(x,y,z), x, y, z]}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         enhanced3d = [cos(x-y),x,y,z],
+         palette = gray,
+         xu_grid = 50,
+         tube(cos(a), a, 0, 1, a, 0, 4*%pi) )$
+@end example
+
+Objeto @code{tube} con coloreado definido por el modelo @code{[f(u), u]}.
+En este caso, @code{enhanced3d = -a} puede ser una simplificaci@'on de 
+@code{enhanced3d = [-foo,foo]}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         tube_extremes = [open, closed],
+         palette = [26,15,-2],
+         enhanced3d = [-foo, foo],
+         tube(a, a, a^2, 1, a, -2, 2) )$
+@end example
+
+Objetos @code{implicit} y @code{points} con coloreado definido por el
+modelo @code{[f(x,y,z), x, y, z]}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         enhanced3d = [x-y,x,y,z],
+         implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
+                  x,-1,1,y,-1.2,2.3,z,-1,1)) $
+(%i3) m: makelist([random(1.0),random(1.0),random(1.0)],k,1,2000)$
+(%i4) draw3d(
+         point_type = filled_circle,
+         point_size = 2,
+         enhanced3d = [u+v-w,u,v,w],
+         points(m) ) $
 @end example
 @end defvr
 
@@ -3335,7 +3436,6 @@ y las ordenadas desde @var{y0} hasta @math{@var{y0} + @var{height}}.
 Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_type},
 @code{line_width}, @code{key}, @code{enhanced3d} y @code{color}.
 
-Este objeto gr@'afico ignora valores de @code{enhanced3d} distintos de @code{true} o @code{false}.
 
 Ejemplo:
 

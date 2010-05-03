@@ -36,19 +36,18 @@ You need Gnuplot 4.2 to run this program.
 @defvr {Graphic option} proportional_axes
 Default value: @code{none}
 
-When @code{proportional_axes} is equal to @code{xy}, a
-2D scene will be drawn with axes proportional to their relative lengths.
+When @code{proportional_axes} is equal to @code{xy} or @code{xyz},
+a 2D or 3D scene will be drawn with axes proportional to their relative
+lengths.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-This option works only for 2D plots. Once Gnuplot 4.3 is
-officially released, @code{proportional_axes} will be
-extended for 3D plots.
+This option works with Gnuplot version 4.2.6 or greater.
 
 Examples:
 
-Single plot.
+Single 2D plot.
 
 @example
 (%i1) load(draw)$
@@ -2134,37 +2133,133 @@ See also @code{palette}.
 
 
 @defvr {Graphic option} enhanced3d
-Default value: @code{false}
+Default value: @code{none}
 
-If @code{enhanced3d} is @code{false}, surfaces are not colored in 3d plots.
-If @code{enhanced3d} is @code{true}, surfaces are colored setting Gnuplot's
-pm3d mode. If an expression is given to @code{enhanced3d}, it will be used
-to assign colors according to the @code{palette}; variables in this expression
-must be the same used in the surface description.
+If @code{enhanced3d} is @code{none}, surfaces are not colored in 3D plots.
+In order to get a colored surface, a list must be assigned to option
+@code{enhanced3d}, where the first element is an expression and the rest
+are the names of the variables or parameters used in that expression. A list such 
+@code{[f(x,y,z), x, y, z]} means that point @code{[x,y,z]} of the surface 
+is assigned number @code{f(x,y,z)}, which will be colored according to 
+the actual @code{palette}. For those 3D graphic objects defined in terms of
+parameters, it is possible to define the color number in terms of
+the parameters, as in @code{[f(u), u]}, for objects @code{parametric} and 
+@code{tube}, or @code{[f(u,v), u, v]}, for object @code{parametric_surface}.
+While all 3D objects admit the model based on absolute coordinates,
+@code{[f(x,y,z), x, y, z]}, only two of them, namely @code{explicit}
+and @code{mesh}, accept also models defined on the @code{[x,y]} coordinates,
+@code{[f(x,y), x, y]}. 3D graphic objects @code{implicit} and @code{points}
+accept only the @code{[f(x,y,z), x, y, z]} model.
+
+The names of the variables defined in the lists may be different to those
+used in the definitions of the graphic objects.
+
+In order to maintain back compatibility, @code{enhanced3d = false} is equivalent
+to @code{enhanced3d = none}, and @code{enhanced3d = true} is equivalent to 
+@code{enhanced3d = [z, x, y, z]}.  If an expression is given to @code{enhanced3d},
+its variables must be the same used in the surface definition. This is not
+necessary when using lists.
 
 See option @code{palette} to learn how palettes are specified.
 
 Examples:
 
+@code{explicit} object with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
+
 @example
 (%i1) load(draw)$
 (%i2) draw3d(
-         surface_hide = true,
-         enhanced3d   = true,
-         palette      = gray,
+         enhanced3d = [x-z/10,x,y,z],
+         palette    = gray,
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
-(%i3) draw3d(
-         surface_hide = true,
-         /* same variables x and y as */
-         /* in explicit below:        */
-         enhanced3d   = sin(x*y),
+@end example
+
+@code{explicit} object with coloring defined by the @code{[f(x,y), x, y]} model.
+The names of the variables defined in the lists may be different to those
+used in the definitions of the graphic objects; in this case, @code{r} corresponds
+to @code{x}, and @code{s} to @code{y}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         enhanced3d = [sin(r*s),r,s],
          explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3))$
-(%i4) draw3d(
-         color = blue,
+@end example
+
+@code{parametric} object with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         nticks = 100,
+         line_width = 2,
+         enhanced3d = [if y>= 0 then 1 else 0, x, y, z],
+         parametric(sin(u)^2,cos(u),u,u,0,4*%pi)) $
+@end example
+
+@code{parametric} object with coloring defined by the @code{[f(u), u]} model.
+In this case, @code{(u-1)^2} is a shortcut for @code{[(u-1)^2,u]}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
          nticks = 60,
          line_width = 3,
          enhanced3d = (u-1)^2,
          parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2))$
+@end example
+
+@code{mesh} object with coloring defined by the @code{[f(x,y), x, y]} model.
+
+@example
+(%i1) load(draw)$
+(%i2) m: apply(
+           matrix,
+           makelist(makelist(cos(i^2/80-k/30),k,1,30),i,1,20)) $
+(%i3) draw3d(
+         enhanced3d = [cos(x*y*10),x,y],
+         mesh(m,-1,-1,2,2),
+         xlabel = "x",
+         ylabel = "y");
+@end example
+
+@code{tube} object with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         enhanced3d = [cos(x-y),x,y,z],
+         palette = gray,
+         xu_grid = 50,
+         tube(cos(a), a, 0, 1, a, 0, 4*%pi) )$
+@end example
+
+@code{tube} object with coloring defined by the @code{[f(u), u]} model.
+Here, @code{enhanced3d = -a} would be the shortcut for @code{enhanced3d = [-foo,foo]}.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         tube_extremes = [open, closed],
+         palette = [26,15,-2],
+         enhanced3d = [-foo, foo],
+         tube(a, a, a^2, 1, a, -2, 2) )$
+@end example
+
+@code{implicit} and @code{points} objects with coloring defined by the @code{[f(x,y,z), x, y, z]} model.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+         enhanced3d = [x-y,x,y,z],
+         implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
+                  x,-1,1,y,-1.2,2.3,z,-1,1)) $
+(%i3) m: makelist([random(1.0),random(1.0),random(1.0)],k,1,2000)$
+(%i4) draw3d(
+         point_type = filled_circle,
+         point_size = 2,
+         enhanced3d = [u+v-w,u,v,w],
+         points(m) ) $
 @end example
 
 @opencatbox
@@ -3832,8 +3927,6 @@ and ordinates from @var{y0} to @math{@var{y0} + @var{height}}.
 
 This object is affected by the following @i{graphic options}: @code{line_type},
 @code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
-
-This graphic object ignores @code{enhanced3d} values other than @code{true} and @code{false}.
 
 Example:
 
