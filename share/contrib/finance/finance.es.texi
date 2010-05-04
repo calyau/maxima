@@ -9,39 +9,39 @@
 @end macro
 @end ifinfo
 
-@node Top, Introduction to finance, (dir), (dir)
+@node Top, Introducci@'on a finance, (dir), (dir)
 @top
 @menu
-* Introduction to finance::
-* Functions and Variables for finance::
-* Function and variable index::
+* Introducci@'on a finance::
+* Funciones y Variables para finance::
+* @'Indice de Funciones y Variables::
 @end menu
 
-@node Introduction to finance, Functions and Variables for finance, Top, Top
-@section Introduction to finance
+@node Introducci@'on a finance, Funciones y Variables para finance, Top, Top
+@section Introducci@'on a finance
 
-This is the Finance Package (Ver 0.1).
+Este es el Paquete "Finance" (Ver 0.1).
 
-In all the functions, @var{rate} is the compound interest
-rate, @var{num} is the number of periods and must be
-postivive and @var{flow} refers to cash flow so if you
-have an Output the flow is negative and positive
-for Inputs.
+En todas las fuunciones,@var{rate} es la tasa de inter@'es
+compuesta, @var{num} es el n@'umero de periodos y debe ser
+positivo, y @var{flow} se refiere al flujo de caja entonces
+si se tiene un egreso el flujo es negativo y para un
+ingreso un valor positivo.
 
-Note that before using the functions defined in this 
-package, you have to load it writing @code{load(finance)$}.
+Note que antes de usar las funciones definidas en este
+paquete, debe cargarla escribiendo @code{load(finance)$}.
 
-Author: Nicolas Guarin Zapata.
+Autor: Nicol@'as Guarin Zapata.
 
-@node Functions and Variables for finance, Function and variable index, Introduction to finance, Top
-@section Functions and Variables for finance
+@node Funciones y Variables para finance, @'Indice de Funciones y Variables, Introducci@'on a finance, Top
+@section Funciones y Variables para finance
 
 
-@deffn {Function} days360 (@var{year1},@var{month1},@var{day1},@var{year2},@var{month2},@var{day2})
+@deffn {Function} days360 (@var{a@~no1},@var{mes1},@var{dia1},@var{a@~no2},@var{mes2},@var{dia2})
 
-Calculates the distance between 2 dates, assuming 360 days years, 30 days months.
+Calcula la distancia entre 2 fechas, asumiendo a@~nos de 360 dias y meses de 30 d@'{@dotless{i}}as.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -53,11 +53,11 @@ Example:
 
 @deffn {Function} fv (@var{rate},@var{PV},@var{num})
 
-We can calculate the future value of a Present one given a certain interest rate.
-@var{rate} is the interest rate, @var{PV} is the present value and @var{num} is
-the number of periods.
+Calcular el Valor Futuro a partir de uno en el Presente para una tasa de inter@'es dada.
+@var{rate} es la tasa de inter@'es, @var{PV} es el valor prestente y @var{num} es el numero
+de periodos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -85,12 +85,13 @@ Example:
 
 @deffn {Function} graph_flow (@var{val})
 
-Plots the money flow in a time line, the positive values are in blue
-and upside; the negative ones are in red and downside.
-The direction of the flow is given by the sign of the value.
-@var{val} is a list of flow values.
+Grafica el flujo de caja en una l@'{@dotless{i}}nea de tiempo, los valores positivos
+est@'an en azul y hacia arriba; los negativos est@'an en rojo y hacia
+abajo.
+La direcci@'on del flujo est@'a dada por el signo de los valores.
+@var{val} es una lista de los valores del flujo de caja.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -101,11 +102,12 @@ Example:
 
 @deffn {Function} annuity_pv (@var{rate},@var{PV},@var{num})
 
-We can calculate the annuity knowing the present value (like an ammount),
-it is a constant and periodic payment. @var{rate} is the interest rate,
-@var{PV} is the present value and @var{num} is the number of periods.
+Calcula una anualidad conociendo el valor presente (tipo deduda),
+para unos pagos peri@'odicos y constantes. @var{rate} es la tasa
+de inter@'es, @var{PV} es el valor presente y @var{num} es el
+n@'umero de periodos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -117,11 +119,12 @@ Example:
 
 @deffn {Function} annuity_fv (@var{rate},@var{FV},@var{num})
 
-We can calculate the annuity knowing the desired value (future value),
-it is a constant and periodic payment. @var{rate} is the interest rate,
-@var{FV} is the future value and @var{num} is the number of periods.
+Calcula una anualidad conociendo el valor deseado (valor futuro),
+para una serie de pagos peri@'odicos y constantes. @var{rate} es la tasa
+de inter@'es, @var{FV} es el valor futuroe y @var{num} es el
+n@'umero de periodos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -133,11 +136,11 @@ Example:
 
 @deffn {Function} geo_annuity_pv (@var{rate},@var{growing_rate},@var{PV},@var{num})
 
-We can calculate the annuity knowing the present value (like an ammount),
-in a growing periodic payment. @var{rate} is the interest rate, @var{growing_rate}
-is the growing rate, @var{PV} is the present value and @var{num} is the number of periods.
+Calcula una anualidad conociendo el valor presente (tipo deuda)
+en una serie de pagos periodicos crecientes.  @var{rate} es la tasa de inter@'es, @var{growing_rate}
+es el crecimiento de los pagos, @var{PV} es el valor presente, y @var{num} es el n@'umero de periodos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -149,11 +152,12 @@ Example:
 
 @deffn {Function} geo_annuity_fv (@var{rate},@var{growing_rate},@var{FV},@var{num})
 
-We can calculate the annuity knowing the desired value (future value),
-in a growing periodic payment. @var{rate} is the interest rate, @var{growing_rate}
-is the growing rate, @var{FV} is the future value and @var{num} is the number of periods.
 
-Example:
+Calcular una anualidad conociendo el valor deseado (valor futuro)
+en una serie de pagos periodicos crecientes.  @var{rate} es la tasa de inter@'es, @var{growing_rate}
+es el crecimiento de los pagos, @var{FV} es el valor futuro, y @var{num} es el n@'umero de periodos.
+
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -164,11 +168,15 @@ Example:
 
 @deffn {Function} amortization (@var{rate},@var{ammount},@var{num})
 
-Amortization table determinated by a specific rate.
-@var{rate} is the interest rate, @var{ammount} is the ammount value,
-and @var{num} is the number of periods.
+La tabla de amortizaci@'on determinada por una tasa.
+Siendo
+    "rate"      la tasa de inter@'es.
+    "Ammount"   el valor de la deuda.
+    "num"       el n@'umero de periodos.
+@var{rate} es la tasa de inter@'es, @var{ammount} es el valor de la deuda,
+and @var{num} es el n@'umero de periodos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -193,15 +201,15 @@ Example:
 
 @deffn {Function} arit_amortization (@var{rate},@var{increment},@var{ammount},@var{num})
 
-The amortization table determinated by a specific rate and with growing payment
-can be claculated by @code{arit_amortization}.
-Notice that the payment is not constant, it presents
-an arithmetic growing, increment is then the difference between two
-consecutive rows in the "Payment" column.
-@var{rate} is the interest rate, @var{increment} is the increment, @var{ammount}
-is the ammount value, and @var{num} is the number of periods.
+La tabla de amortizaci@'on determinada por una tasa espec@'{@dotless{i}}fica y unos pagos crecientes
+se puede hallar con @code{arit_amortization}.
+N@'otese que los pagos no son constantes, estos presentan
+un crecimiento aritm@'etico, el incremento es la diferencia entre dos
+filas consecutivas en la columna "Payment".
+@var{rate} es la tasa de inter@'es, @var{increment} es el incremento, @var{ammount}
+es el valor de la deuda, and @var{num} es el n@'umero de periodos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -226,15 +234,15 @@ Example:
 
 @deffn {Function} geo_amortization (@var{rate},@var{growing_rate},@var{ammount},@var{num})
 
-The amortization table determinated by rate, ammount,
-and number of periods can be found by @code{geo_amortization}.
-Notice that the payment is not constant, it presents
-a geometric growing, @var{growing_rate} is then the quotient between two
-consecutive rows in the "Payment" column.
-@var{rate} is the interest rate, @var{ammount}
-is the ammount value, and @var{num} is the number of periods.
+La tabla de amortizaci@'on determinada por la tasa, el valor de la deuda,
+y el n@'umero de periodos se puede hallar con @code{geo_amortization}.
+N@'otese que los pagos no son constantes, estos presentan un
+crecimiento geom@'etrico, growin_rate es entonces el cociente entre
+dos filas consecutivas de la columna "Payment".
+@var{rate} es la tasa de inter@'es, @var{growing_rate} es el crecimeinto de los pagos, @var{ammount}
+es el valor de la deuda, y @var{num} es el numero de periodos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -259,12 +267,12 @@ Example:
 
 @deffn {Function} saving (@var{rate},@var{ammount},@var{num})
 
-The table that represents the values in a constant and periodic
-saving can be found by @code{saving}.
-@var{ammount} represents the desired quantity and num the number
-of periods to save.
+La tabla que presenta los valores para un ahorro constante y
+peri@'odico se pueden hallar con @code{saving}.
+@var{ammount} representa la cantidad deseada y @var{num} el n@'umero de
+periodos durante los que se ahorrar@'a.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -292,11 +300,11 @@ Example:
 
 @deffn {Function} npv (@var{rate},@var{val})
 
-Calculates de present value of a value series to evaluate the viability in a
-project.
+Calcular el valor presente neto de una serie de valores para evaluar la
+viabilidad de un proyecto.
 @var{flowValues} es una lista con los valores para cada periodo.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -308,12 +316,12 @@ Example:
 
 @deffn {Function} irr (@var{val},@var{IO})
 
-IRR (Internal Rate of Return) is the value of rate which makes Net Present Value
-zero.
+Tasa interna de retorno (en ingl@'es Internal Rate of Return - IRR), es el
+valor de tasa que hace que el Valor Presente Neto (NPV) sea cero.
 @var{flowValues} los valores para cada periodo (para periodos mayores a 0) y
 @var{I0} el valor para el periodo cero.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -326,14 +334,15 @@ Example:
 
 @deffn {Function} benefit_cost (@var{rate},@var{input},@var{output})
 
-Calculates the ratio Benefit/Cost. Benefit is the Net Present Value (NPV)
-of the inputs, and Cost is the Net Present Value (NPV) of the outputs.
-Notice that if there is not an input or output value in a specific period,
-the input/output would be a zero for that period.
-@var{rate} is the interest rate, @var{input} is a list of input values,
-and @var{output} is a list of output values.
+Calcular la relaci@'on Beneficio/Costo, Beneficio es el Valor Presente Neto (NPV)
+de los flujos de caja positivos (inputs), y Costo es el Valor Presente Neto
+de los flujos de caja negativos (outputs).
+N@'otese que si se desea tener un valor de cero para un periodo especifico,
+esta entrada/salida debe indicarse como cero para ese periodo.
+@var{rate} es la tasa de inter@'es, @var{input} es una lista con los ingresos,
+y @var{output} es una lista con los egresos.
 
-Example:
+Ejemplo:
 
 @example
 (%i1) load(finance)$
@@ -343,8 +352,8 @@ Example:
 @end deffn
 
 
-@node Function and variable index,  , Functions and Variables for finance, Top
-@appendix Function and variable index
+@node @'Indice de Funciones y Variables,  , Funciones y Variables para finance, Top
+@appendix @'Indice de Funciones y Variables
 @printindex fn
 @printindex vr
 

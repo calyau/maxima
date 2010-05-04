@@ -232,6 +232,7 @@ contrib/topoly-user-doc.html\
 contrib/f90.lisp\
 contrib/finance/finance.mac\
 contrib/finance/finance.texi\
+contrib/finance/finance.es.texi\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
 contrib/format/autoload-mp.macsyma\
