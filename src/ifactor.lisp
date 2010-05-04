@@ -187,11 +187,14 @@
 ;;; we need to keep a list of differences between consecutive primes
 ;;; for trial division, for stage 2 of ecm and the big prime variation of Pollard p-1
 
-(defvar *prime-diffs* (make-array 150000 :element-type 'fixnum :adjustable t :initial-element 2)
+(defvar *prime-diffs* (make-array 100000 :element-type 'fixnum :adjustable t :initial-element 0)
   "array of differences between consecutive primes")
 
 (defvar *prime-diffs-limit* 1
   "biggest prime in *prime-diffs")
+
+(defvar *prime-diffs-maxindex* 1
+  "index of biggest valid prime difference")
 
 (defvar *prime-diffs-maxdiff* 2
   "maximum difference between consecutive primes in *prime-diffs*")
@@ -200,42 +203,41 @@
 ;;; the array gets filled by a call to init-prime-diffs in get-factor-list
 
 (defun get-small-factors (n)
+  (when (= n 1)
+    (return-from get-small-factors '(1 ())))
+  (when (< n 4)			;n = 2 or 3
+    (return-from get-small-factors `(1 (,n 1))))
   (let (factors)
     ;; first divide off the even part
-    (when (= n 1)
-      (return-from get-small-factors '(1 ())))
-    (when (> 4 n)
-      (push `(,n 1) factors)
-      (when $ifactor_verbose (format t "small cofactor: ~A~%" n))
-      (return-from get-small-factors `(1 ,factors)))
     (loop with deg = 0
        while (and (> n 1) (evenp n)) do
-       (setq n (ash n -1))
-       (incf deg)
+	 (setq n (ash n -1))		; divide n by 2
+	 (incf deg)			; and increment the exponent
        finally
-       (progn
 	 (when (plusp deg)
-	   (when $ifactor_verbose (format t "Factoring out 2: 2 (degree:~A)~%" deg))
-	   (push `(2 ,deg) factors))
-	 (when (= n 1) (return-from get-small-factors `(1 ,factors)))))
+	   (push `(2 ,deg) factors)
+	   (when $ifactor_verbose (format t "Factoring out 2: 2 (degree:~A)~%" deg))))
+    (when (= n 1)
+      (return-from get-small-factors `(1 ,factors))) ; n was a power of 2
     ;; now use the *prime-diffs* array for trial-factoring
-    (loop for i from 0 to (1- (length *prime-diffs*))
-       and d = 3 then (+ d (aref *prime-diffs* i)) do
-       (when (> (* d d) n)
-         (push `(,n 1) factors)
-         (when $ifactor_verbose  (format t "small prime cofactor: ~A~%" n))
-         (return-from get-small-factors `(1 ,factors)))
-       (loop with deg = 0
-	  while (and (> n 1) (zerop (mod n d))) do
-	  (setq n (truncate n d))
-	  (incf deg)
-	  finally
-	  (progn
-	    (when (plusp deg)
-	      (when $ifactor_verbose (format t "Factoring out small prime: ~A (degree:~A)~%" d deg))
-	      (push `(,d ,deg) factors))
-	    (when (= n 1) (return-from get-small-factors `(1 ,factors)))))
-       finally (return `(,n ,factors)))))
+    (loop for i from 0 to *prime-diffs-maxindex*
+       and d = 3 then (+ d (aref *prime-diffs* i))
+       do
+	 (when (> (* d d) n)
+	   (push `(,n 1) factors)
+	   (when $ifactor_verbose  (format t "small prime cofactor: ~A~%" n))
+	   (return-from get-small-factors `(1 ,factors)))
+	 (loop with deg = 0
+	    while (and (> n 1) (zerop (mod n d))) do
+	      (setq n (truncate n d))
+	      (incf deg)
+	    finally
+	      (when (plusp deg)
+		(push `(,d ,deg) factors)
+		(when $ifactor_verbose (format t "Factoring out small prime: ~A (degree:~A)~%" d deg))))
+	 (when (= n 1)
+	   (return-from get-small-factors `(1 ,factors))))
+    (return-from get-small-factors `(,n ,factors))))
 
 ;;; get-large-factors returns the list of factors of integer n (n has
 ;;; no small factor at this tage)
@@ -413,9 +415,7 @@
 ;;; The paper is in file rpb161tr.dvi.gz from
 ;;; ftp://ftp.comlab.ox.ac.uk/pub/Documents/techpapers/Richard.Brent/
 ;;;
-;;; Based on the implementation from GAP4 FacInt package.
-
-(defmacro get-prime-diff (i) `(aref *prime-diffs* ,i))
+;;; Based in part on the implementation from GAP4 FacInt package.
 
 (defun init-prime-diffs (n)
   (when (> n *prime-diffs-limit*)
@@ -430,11 +430,14 @@
       (do ((q1 3)
 	   (i 0)
 	   (q2 5 (+ q2 2)))
-	  ((> q2 n))
+	  ((> q2 n) (setq *prime-diffs-maxindex* (1- i)))
 	(when (= 1 (sbit sieve q2))
 	  (when (>= i (length *prime-diffs*))
-	    (setq *prime-diffs* (adjust-array *prime-diffs* (* 2 (length *prime-diffs*)))))
+	    (setq *prime-diffs* (adjust-array *prime-diffs* (* 2 (length *prime-diffs*)) :element-type 'fixnum :initial-element 0))
+	    (when $ifactor_verbose
+	      (format t "init-prime-diffs: adjusting *prime-diffs* to size ~d~%" (* 2 (length *prime-diffs*)))))
 	  (setq *prime-diffs-limit* q2)
+
 	  (let ((diff (- q2 q1)))
 	    (setf (aref *prime-diffs* i) diff)
 	    (when (> diff *prime-diffs-maxdiff*) (setq *prime-diffs-maxdiff* diff)))
@@ -567,8 +570,8 @@
 		   (pp2 (cadr (aref power-table power-table-pos)))
 		   (coord-diffs (mod (- (* sp1 pp2) (* sp2 pp1)) n)))
 	      (setq buff-prod (mod (* coord-diffs buff-prod) n)))
-	    (incf q1 (get-prime-diff prime-diffs-pos))
-	    (incf power-table-pos (/ (get-prime-diff prime-diffs-pos) 2))
+	    (incf q1 (aref *prime-diffs* prime-diffs-pos))
+	    (incf power-table-pos (/ (aref *prime-diffs* prime-diffs-pos) 2))
 	    (incf prime-diffs-pos))
 
 	  (let ((g (gcd n buff-prod)))
@@ -586,8 +589,8 @@
 (defun get-one-factor-ecm (n)
   (when (primep n) (return-from get-one-factor-ecm n))
   (let ((sigma (+ 6 (random (ash 1 20))))
-	(x) (z) (u) (v) (a) (a1) (a2)
-	(fact) (lim1 $ecm_limit) (a2_inv))
+	(x 0) (z 0) (u 0) (v 0) (a 0) (a1 0) (a2 0)
+	(fact) (lim1 $ecm_limit) (a2_inv 0))
     (dotimes (i $ecm_number_of_curves)
       (setq u (mod (- (* sigma sigma) 5) n))
       (setq v (mod (* 4 sigma) n))
@@ -773,10 +776,10 @@
     uh))
 
 ;;; first values of next_prime
-(defvar next_prime_ar '(0 2 3 5 5 7 7))
+(defvar *next_prime_ar* #(0 2 3 5 5 7 7))
 
 ;;; first values of prev_prime
-(defvar prev_prime_ar '(0 0 0 2 3 3 5 5 7 7 7 7))
+(defvar *prev_prime_ar* #(0 0 0 2 3 3 5 5 7 7 7 7))
 
 ;;; gaps between numbers that are not multiples of 2,3,5,7
 (defvar deltaprimes_next
@@ -808,14 +811,14 @@
   (unless (and (integerp n))
     (merror (intl:gettext "next_prime: argument must be an integer; found: ~M") n))
   (cond ((< n 2) 2)
-	((<= n 6) (nth n next_prime_ar))
+	((<= n 6) (aref *next_prime_ar* n))
 	((< n 100000) (return-from $next_prime (next-prime-det n deltaprimes_next)))
 	(t (next-prime-prob n deltaprimes_next))))
 
 (defun $prev_prime (n)
   (unless (and (integerp n) (> n 2))
     (merror (intl:gettext "prev_prime: argument must be an integer greater than 2; found: ~M") n))
-  (if (<= n 11) (return-from $prev_prime (nth n prev_prime_ar)))
+  (if (<= n 11) (return-from $prev_prime (aref *prev_prime_ar* n)))
   (if (< n 100000) (return-from $prev_prime (next-prime-det n deltaprimes_prev)))
   (next-prime-prob n deltaprimes_prev))
 
@@ -847,7 +850,7 @@
       ;; gcd agaist product of primes in [59..2897]
       (= (gcd n bigprimemultiple) 1)
       (miller-rabin n)
-      (primep n) 
+      (primep n)
       (return-from next-prime-prob n))
      ;; skip all multiples of 2,3,5,7"
      (incf n (nth (mmod n 210) deltaprimes))))
@@ -856,9 +859,8 @@
 (defun next-prime (n c)
   (when (evenp n) (incf n c))
   (loop
-     (and (miller-rabin n)
-          (primep n) 
-          (return-from next-prime n))
+     (when (primep n)
+       (return-from next-prime n))
      (incf n (* 2 c))))
 
 ;;; return a list of all primes between start and end
