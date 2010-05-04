@@ -107,7 +107,8 @@
     (setq b (mapcar #'(lambda (s) (car (running-error-eval s subs bits))) (maxima::margs b)))
     (setq x (car (running-error-eval x subs bits)))
     (cond ((< (abs x) 0.99)
-	   (multiple-value-list (hypergeometric-by-series a b x)))
+	   (multiple-value-setq (f d) (hypergeometric-by-series a b x))
+	   (list f (* (abs f) (expt 10 (- d)))))
 	  (t
 	   (setq dig (ceiling (* bits #.(/ (log 2.0) (log 10.0)))))
 	   (setq a (mapcar 'maxima::to a))

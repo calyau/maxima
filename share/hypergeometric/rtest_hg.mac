@@ -618,6 +618,17 @@ x/2+1$
 (time : (absolute_real_time ()- start), print(time), is(time < 40));
 true$
 
+/* regression: Unevaluated numerical hypergeometric() call - ID: 2996065 */
+
+close_p(hypergeometric([-1/4,1/4],[1],16.0/25),0.95126303911614,15);
+true$
+
+close_p(hypergeometric([1,1],[2], 0.998),6.227062222867928,15);
+true$
+
+close_p(hypergeometric([1/2,-1/2],[1], 0.64), 0.812549610282201,15);
+true$
+
 (remvalue(id,z,start,f), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
  remfunction(fake_hg, close_p, check_id),0);
 0$
