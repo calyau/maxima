@@ -1472,3 +1472,8 @@ integrate(1/(x^4-2),x,0,1) - integrate(1/(x^2-sqrt(2))/(x^2+sqrt(2)),x,0,1);
 
 integrate(1/(x^6-4),x,0,1) - integrate(1/(x^3-2)/(x^3+2),x,0,1);
 0;
+
+/* BUG ID:  2113751 - Incomprehensible behavior of coeff()
+ */
+coeff(2*%e^x, x, 0);
+2*%e^x;
