@@ -1167,7 +1167,7 @@
       (coeff e x 0)
       (coeff e (power x n) 1)))
 
-(defmfun coeff (e var pow)
+(defun coeff (e var pow)
   (simplify
    (cond ((alike1 e var) (if (equal pow 1) 1 0))
 	 ((atom e) (if (equal pow 0) e 0))
@@ -1180,11 +1180,21 @@
 	  (cons (if (eq (caar e) 'mplus) '(mplus) (car e))
 		(mapcar #'(lambda (e) (coeff e var pow)) (cdr e))))
 	 ((eq (caar e) 'mrat) (ratcoeff e var pow))
-	 ((equal pow 0) (if (free e var) e 0))
+         ((equal pow 0) (if (coeff-contains-powers e var) 0 e))
 	 ((eq (caar e) 'mtimes)
 	  (let ((term (if (equal pow 1) var (power var pow))))
 	    (if (memalike term (cdr e)) ($delete term e 1) 0)))
 	 (t 0))))
+
+(defun coeff-contains-powers (e var)
+  (cond ((alike1 e var) t)
+        ((atom e) nil)
+        ((eq (caar e) 'mexpt)
+         (alike1 (cadr e) var))
+        ((eq (caar e) 'mtimes)
+         (member t (mapcar #'(lambda (e)
+                               (coeff-contains-powers e var)) (cdr e))))
+        (t nil)))
 
 (declare-top (special powers var hiflg num flag))
 
