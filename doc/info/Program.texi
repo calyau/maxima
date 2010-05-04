@@ -339,6 +339,63 @@ and @code{errormsg} formats and prints it.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} errormsg
+Default value: @code{true}
+
+When @code{false} the output of error messages is suppressed.
+
+The option variable @code{errormsg} can not be set in a block to a local 
+value. The global value of @code{errormsg} is always present.
+
+@c ===beg===
+@c errormsg;
+@c sin(a,b);
+@c errormsg:false;
+@c sin(a,b);
+@c ===end===
+@example
+(%i1) errormsg;
+(%o1)                                true
+(%i2) sin(a,b);
+Wrong number of arguments to sin
+ -- an error. To debug this try: debugmode(true);
+(%i3) errormsg:false;
+(%o3)                                false
+(%i4) sin(a,b);
+
+ -- an error. To debug this try: debugmode(true);
+@end example
+
+The option variable @code{errormsg} can not be set in a block to a local value.
+
+@c ===beg===
+@c f(bool):=block([errormsg:bool], print ("value of errormsg is",errormsg))$
+@c errormsg:true;
+@c f(false);
+@c errormsg:false;
+@c f(true);
+@c ===end===
+@example
+(%i1) f(bool):=block([errormsg:bool], 
+                     print ("value of errormsg is",errormsg))$
+(%i2) errormsg:true;
+(%o2)                                true
+(%i3) f(false);
+value of errormsg is true 
+(%o3)                                true
+(%i4) errormsg:false;
+(%o4)                                false
+(%i5) f(true);
+value of errormsg is false 
+(%o5)                                false
+@end example
+
+@opencatbox
+@category{Programming}
+@closecatbox
+@end defvr
+
 @c REPHRASE
 @c AT LEAST SHOULD LIST VARIANTS HERE
 @deffn {Special operator} for
