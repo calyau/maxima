@@ -714,7 +714,13 @@ When one changes, the other does too."
   (setf *load-verbose* nil)
   (setf *debugger-hook* #'maxima-lisp-debugger)
   (setf *print-circle* t) ;; "assume" db contains circular objects
-  #+ccl (setf ccl::*invoke-debugger-hook-on-interrupt* t)
+  #+ccl
+  (progn
+    (setf ccl::*invoke-debugger-hook-on-interrupt* t)
+    ;; CCL 1.5 makes *read-default-float-format* a thread-local
+    ;; variable.  Hence we need to set it here to get our desired
+    ;; behavior.
+    (setf *read-default-float-format* 'double-float))
   (let ((input-stream *standard-input*)
 	(batch-flag nil))
     #+allegro
