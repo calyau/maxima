@@ -867,11 +867,17 @@
         ((equal texture '$none)
           (setf texture-type 0))
         ((and ($listp texture)
+              (= ($length texture) 2))
+           (setf texture-type 1
+                 texture-fun (coerce-float-fun
+                               ($first texture)
+                               `((mlist) ,($second texture)))))
+        ((and ($listp texture)
               (= ($length texture) 4))
-          (setf texture-type 2
-                texture-fun (coerce-float-fun
-                            ($first texture)
-                            `((mlist) ,($second texture) ,($third texture) ,($fourth texture)))))
+           (setf texture-type 2
+                 texture-fun (coerce-float-fun
+                               ($first texture)
+                               `((mlist) ,($second texture) ,($third texture) ,($fourth texture)))))
         (t
           (merror "draw3d (points): enhanced3d has wrong parameters")))
 
@@ -938,12 +944,19 @@
                 (setf pts (make-array (* ncols (length x))
                                       :element-type 'flonum
                                       :initial-contents (mapcan #'list x y z))))
-            (t
+            ((= texture-type 1)
+                (setf col (loop for k from 1 to (length x)
+                                collect (funcall texture-fun k)))
+                (setf ncols 4)
+                (setf pts (make-array (* ncols (length x))
+                                      :element-type 'flonum
+                                      :initial-contents (mapcan #'list x y z col))))
+            (t  ; texture-type = 2
                 (setf col (mapcar #'(lambda (xx yy zz) (funcall texture-fun xx yy zz)) x y z))
                 (setf ncols 4)
                 (setf pts (make-array (* ncols (length x))
                                       :element-type 'flonum
-                                      :initial-contents (mapcan #'list x y z col))) ) )
+                                      :initial-contents (mapcan #'list x y z col)))) )
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
             ymin ($tree_reduce 'min (cons '(mlist simp) y))
