@@ -432,7 +432,7 @@ index conventions are used:
 This notation is consistent with the notation used by the @code{itensor}
 package and its @code{icurvature} function.
 If the optional argument @var{dis} is @code{true},
-the non-zero components @code{riem[i,j,k,l]} will be displayed.
+the unique non-zero components @code{riem[i,j,k,l]} will be displayed.
 As with the Einstein tensor, various switches set by the user
 control the simplification of the components of the Riemann tensor.
 If @code{ratriemann} is @code{true}, then
@@ -454,7 +454,7 @@ frame field coefficients.
 Covariant Riemann-tensor (@code{lriem[]}).
 
 Computes the covariant Riemann-tensor as the array @code{lriem}. If the
-argument @var{dis} is @code{true}, unique nonzero values are displayed.
+argument @var{dis} is @code{true}, unique non-zero values are displayed.
 
 If the variable @code{cframe_flag} is @code{true}, the covariant Riemann
 tensor is computed directly from the frame field coefficients. Otherwise,
