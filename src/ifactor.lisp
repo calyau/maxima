@@ -206,7 +206,7 @@
   (when (= n 1)
     (return-from get-small-factors '(1 ())))
   (when (< n 4)			;n = 2 or 3
-    (return-from get-small-factors `(1 (,n 1))))
+    (return-from get-small-factors `(1 ((,n 1)))))
   (let (factors)
     ;; first divide off the even part
     (loop with deg = 0
