@@ -1488,5 +1488,16 @@ true;
 block([numer:true], is(abs(zeta(3+%i)-(1.10721440843141 - .1482908671781754*%i)) < 1e-15));
 true;
 
+/* Bug ID: 2997401 - float(log(200!)) produces an error
+ *
+ */
+is(abs(float(log(200!))-863.2319871924054) < 1e-15);
+true;
+
+is(abs(float(log((1+200!)/7))-861.2860770433501) < 1e-15);
+true;
+
+
+
 
 
