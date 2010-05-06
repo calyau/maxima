@@ -1,6 +1,6 @@
 ;;;                 COPYRIGHT NOTICE
 ;;;  
-;;;  Copyright (C) 2007 Mario Rodriguez Riotorto
+;;;  Copyright (C) 2007-2010 Mario Rodriguez Riotorto
 ;;;  
 ;;;  This program is free software; you can redistribute
 ;;;  it and/or modify it under the terms of the
@@ -15,8 +15,8 @@
 ;;;  GNU General Public License for more details at
 ;;;  http://www.gnu.org/copyleft/gpl.html
 
-;;; This package contains variables and functions for drawing maps
-;;; in Maxima. You need to execute 'load(draw)' first.
+;;; This package contains boundaries coordinates and the definition
+;;; of graphic object geomap for two and three dimensions.
 
 ;;; Loading this package, Maxima-level global variable $boundaries_array
 ;;; will contain coordinates (longitude, latitude) of boundary segments:
@@ -27,7 +27,6 @@
 ;;; For questions, suggestions, bugs and the like, feel free
 ;;; to contact me at
 ;;; mario @@@ edu DOT xunta DOT es
-;;; www.biomates.net
 
 (setf $boundaries_array
 '#(#(-121.3553 64.812187 -121.1681 64.813873 -121.0692 64.904137 
@@ -29333,3 +29332,378 @@
   -178.97995 -78.396347 -180.0 -78.301628) 
 #(-180.0 -78.301628 -180.0 -90.0) 
 #(-180.0 -90.0 180.0 -90.0 179.99998 -78.301682) ))
+
+
+
+
+
+
+; update lists of graphic objects
+(setf (gethash '$geomap *2d-graphic-objects*) 'geomap
+      (gethash '$geomap *3d-graphic-objects*) 'geomap3d)
+
+
+
+;; Object: 'geomap'
+;; Usage:
+;;     geomap([integer1, integer2,....]), where integers correspond to the
+;;           polygonal segments stored in array 'boundaries_array'.
+;; Options:
+;;     line_width
+;;     color
+;;     line_type
+
+;; x and y are the longitude and latitude coordinates
+(defun longitude_latitude_projection_2d (lis)
+  (let (res resi
+        (xmin most-positive-double-float)
+        (xmax most-negative-double-float)
+        (ymin most-positive-double-float)
+        (ymax most-negative-double-float) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf x (aref polyseg (* 2 k))
+                   y (aref polyseg (+ (* 2 k) 1))  )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges-2d xmin xmax ymin ymax)
+     res ))
+
+;; Mercator cylindrical projection
+;; This is experimental and not documented
+(defun mercator_projection_2d (lis)
+  (let (res resi
+        (xmin most-positive-double-float)
+        (xmax most-negative-double-float)
+        (ymin most-positive-double-float)
+        (ymax most-negative-double-float) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                lon lat x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (aref polyseg (* 2 k))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf x lon
+                   y (log (+ (cl:tan lat) (/ 1 (cos lat)))) )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges-2d xmin xmax ymin ymax)
+     res ))
+
+;; Miller cylindrical projection
+;; This is experimental and not documented
+(defun miller_projection_2d (lis)
+  (let (res resi
+         (xmin most-positive-double-float)
+         (xmax most-negative-double-float)
+         (ymin most-positive-double-float)
+         (ymax most-negative-double-float) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                (c1 .7853981633974483) ; = %pi / 4
+                x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf x (aref polyseg (* 2 k))
+                   y (* 1.25 (log (cl:tan (+ c1 (* 0.4 c (aref polyseg (+ (* 2 k) 1))))))))
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges-2d xmin xmax ymin ymax)
+     res ))
+
+;; Kavrayskiy VII pseudocylindrical projection
+;; This is experimental and not documented
+(defun kavrayskiy_projection_2d (lis)
+  (let (res resi
+        (xmin most-positive-double-float)
+        (xmax most-negative-double-float)
+        (ymin most-positive-double-float)
+        (ymax most-negative-double-float) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433)  ; = %pi / 180
+                (c1 0.4774648292756861) ; = 3 / (2 * %pi)
+                (c2 3.289868133696452)  ; = %pi^2 / 3
+                lon lat x y count)
+           (setf resi (make-array (* 2 (/ (length polyseg) 2)) :element-type 'flonum))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (aref polyseg (* 2 k))
+                   lat (aref polyseg (+ (* 2 k) 1)))
+             (setf x (* c1 lon (sqrt (- c2 (* c c lat lat))))
+                   y lat )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y)))
+         collect resi))
+     (update-ranges-2d xmin xmax ymin ymax)
+     res ))
+
+(defun geomap (lis &optional (proj nil))
+   (when (null $boundaries_array)
+     (merror "draw2d (geomap): variable boundaries_array not yet defined"))
+   (when (not ($listp lis))
+     (merror "draw2d (geomap): first argument must be a list of integers"))
+   (when (and (not (null proj))
+              (not ($listp proj)))
+     (merror "draw2d (geomap): second optional argument must be a list"))
+   (setf lis (rest ($setify ($flatten lis))))
+   (let ((nsegments (- (array-dimension $boundaries_array 0) 1)))
+     (when (some #'(lambda (z) (or (not (integerp z))
+                                   (< z 0)
+                                   (> z nsegments) ))
+                  lis)
+         (merror "draw2d (geomap): non integer argument or out of range (0-~M)" nsegments)))
+   (make-gr-object
+      :name 'geomap
+      :command (make-list (length lis) 
+                  :initial-element
+                     (format nil " t '' w l lw ~a lt ~a lc ~a"
+                             (get-option '$line_width)
+                             (get-option '$line_type)
+                             (get-option '$color)))
+      :groups (make-list (length lis) :initial-element '(2 0)) ; numbers are sent to gnuplot in groups of 2
+      :points (cond ((or (null proj)
+                         (and (equal (cadr proj) '$longitude_latitude_projection)
+                              (= ($length proj) 1)) )
+                       (longitude_latitude_projection_2d lis))
+                    ((and (equal (cadr proj) '$mercator_projection)
+                          (= ($length proj) 1))
+                       (mercator_projection_2d lis))
+                    ((and (equal (cadr proj) '$miller_projection)
+                          (= ($length proj) 1))
+                       (miller_projection_2d lis))
+                    ((and (equal (cadr proj) '$kavrayskiy_projection)
+                          (= ($length proj) 1))
+                       (kavrayskiy_projection_2d lis))
+                    (t
+                       (merror "draw2d (geomap): unknown projection or not well defined"))) ) )
+
+
+
+
+
+
+
+
+;; Object: 'geomap3d'
+;; Usage:
+;;     geomap([integer1, integer2,....])
+;;     geomap([integer1, integer2,....], [3d_proyection_type,par1am1,param2,...]), where integers correspond to the
+;;           polygonal segments stored in array 'boundaries_array'. Spherical 3d projection is default.
+;; Options:
+;;     line_width
+;;     color
+;;     line_type
+
+;; sphere of radius r and center (cx,cy,cz)
+(defun spherical_projection_3d (lis cx cy cz r)
+  (let (res resi
+        (xmin most-positive-double-float)
+        (xmax most-negative-double-float)
+        (ymin most-positive-double-float)
+        (ymax most-negative-double-float)
+        (zmin most-positive-double-float)
+        (zmax most-negative-double-float) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                lon lat x y z count)
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'flonum))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (* c (aref polyseg (* 2 k)))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf x (+ cx (* r (cos lat) (cos lon)))
+                   y (+ cy (* r (cos lat) (sin lon)))
+                   z (+ cz (* r (sin lat))) )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (cond
+               ((< z zmin) (setf zmin z))
+               ((> z zmax) (setf zmax z)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y
+                   (aref resi (incf count)) z)))
+         collect resi))
+     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
+     res ))
+
+;; cylinder of radius rc with its axis passing through the poles of the sphere
+;; of radius r and center (cx,cy,cz). In future versions, the axis should be
+;; selected by the user, giving the coordinates (long,lati) of one of the points
+;; of intersection with the sphere.
+(defun cylindrical_projection_3d (lis cx cy cz r rc)
+  (let (res resi
+        (xmin most-positive-double-float)
+        (xmax most-negative-double-float)
+        (ymin most-positive-double-float)
+        (ymax most-negative-double-float)
+        (zmin most-positive-double-float)
+        (zmax most-negative-double-float) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433) ; = %pi / 180
+                lon lat x y z count)
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'flonum))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (* c (aref polyseg (* 2 k)))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf x (+ cx (* rc (cos lon)))
+                   y (+ cy (* rc (sin lon)))
+                   z (+ cz (* r (sin lat))) )
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (cond
+               ((< z zmin) (setf zmin z))
+               ((> z zmax) (setf zmax z)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y
+                   (aref resi (incf count)) z)))
+         collect resi))
+     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
+     res ))
+
+;; cone with angle a and axis passing through the poles of the sphere
+;; of radius r and center (cx,cy,cz). The cone is tangent to the globe.
+(defun conic_projection_3d (lis cx cy cz r a)
+  (let (res resi
+        (xmin most-positive-double-float)
+        (xmax most-negative-double-float)
+        (ymin most-positive-double-float)
+        (ymax most-negative-double-float)
+        (zmin most-positive-double-float)
+        (zmax most-negative-double-float) )
+    (setf res
+       (loop for i on lis by #'cdr do
+         (let* ((polyseg (aref $boundaries_array (car i)))
+                (ni (- (/ (length polyseg) 2) 1))
+                (c 0.0174532925199433)  ; = %pi / 180
+                (cte (- 1.570796326794897 (* c a 0.5))) ; = %pi / 2 - c*a /2
+                north lon lat x y z p count)
+           (setf resi (make-array (* 3 (/ (length polyseg) 2)) :element-type 'flonum))
+           (setf count -1)
+           (loop for k from 0 to ni do
+             (setf lon (* c (aref polyseg (* 2 k)))
+                   lat (* c (aref polyseg (+ (* 2 k) 1))))
+             (setf north (>= lat 0))
+             (setf lat (abs lat))
+             (setf p (/ r
+                        (sin (+ cte lat))))
+             (setf x (+ cx (* p (cos lat) (cos lon)))
+                   y (+ cy (* p (cos lat) (sin lon)))  )
+             (if north
+                (setf z (+ cz (* p (sin lat))))
+                (setf z (+ cz (* -1.0 p (sin lat)))))
+             (cond
+               ((< x xmin) (setf xmin x))
+               ((> x xmax) (setf xmax x)))
+             (cond
+               ((< y ymin) (setf ymin y))
+               ((> y ymax) (setf ymax y)))
+             (cond
+               ((< z zmin) (setf zmin z))
+               ((> z zmax) (setf zmax z)))
+             (setf (aref resi (incf count)) x
+                   (aref resi (incf count)) y
+                   (aref resi (incf count)) z)))
+         collect resi))
+     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
+     res ))
+
+(defun geomap3d (lis &optional (proj nil))
+   (when (null $boundaries_array)
+     (merror "draw3d (geomap): variable boundaries_array not yet defined"))
+   (when (not ($listp lis))
+     (merror "draw3d (geomap): first argument must be a list of integers"))
+   (when (and (not (null proj))
+              (not ($listp proj)))
+     (merror "draw3d (geomap): second optional argument must be a list"))
+   (setf lis (rest ($setify ($flatten lis))))
+   (let ((nsegments (- (array-dimension $boundaries_array 0) 1)))
+     (when (some #'(lambda (z) (or (not (integerp z))
+                                   (< z 0)
+                                   (> z nsegments) ))
+                  lis)
+         (merror "draw3d (geomap): non integer argument or out of range (0-~M)" nsegments)))
+   (make-gr-object
+      :name 'geomap
+      :command (make-list (length lis) 
+                  :initial-element
+                     (format nil " t '' w l lw ~a lt ~a lc ~a"
+                             (get-option '$line_width)
+                             (get-option '$line_type)
+                             (get-option '$color)))
+      :groups (make-list (length lis) :initial-element '(3 0)) ; numbers are sent to gnuplot in groups of 3
+                                                               ; without blank lines
+      :points (cond ((null proj)   ; default: spherical projection with r=1 and center (0,0,0)
+                       (spherical_projection_3d lis 0 0 0 1))
+                    ((and (equal (cadr proj) '$spherical_projection)
+                          (= ($length proj) 5))
+                       (spherical_projection_3d lis (nth 2 proj) (nth 3 proj) (nth 4 proj) (nth 5 proj)))
+                    ((and (equal (cadr proj) '$cylindrical_projection)
+                          (= ($length proj) 6))
+                       (cylindrical_projection_3d lis (nth 2 proj) (nth 3 proj) (nth 4 proj) (nth 5 proj) (nth 6 proj)))
+                    ((and (equal (cadr proj) '$conic_projection)
+                          (= ($length proj) 6)
+                          (> (nth 6 proj) 0)
+                          (< (nth 6 proj) 180))
+                       (conic_projection_3d lis (nth 2 proj) (nth 3 proj) (nth 4 proj) (nth 5 proj) (nth 6 proj)))
+                    (t
+                       (merror "draw3d (geomap): unknown projection or not well defined"))) ) )
