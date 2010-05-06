@@ -1,4 +1,4 @@
-@c version 1.46
+@c version 1.47
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -1837,9 +1837,15 @@ como en @code{[f(u), u]}, para los objetos @code{parametric} y @code{tube},
 o @code{[f(u,v), u, v]}, para el objeto @code{parametric_surface}.
 Mientras que todos los objetos 3D admiten el modelo basado en coordenadas
 absolutas, @code{[f(x,y,z), x, y, z]}, solamente dos de ellos, esto es
-@code{explicit} y @code{mesh}, aceptan tambi@'en el modelo basado en las
-coordenadas @code{[x,y]}, @code{[f(x,y), x, y]}. Los objetos 3D @code{implicit}
-y @code{points} aceptan solamente el modelo @code{[f(x,y,z), x, y, z]}.
+@code{explicit} y @code{elevation_grid}, aceptan tambi@'en el modelo basado en las
+coordenadas @code{[x,y]}, @code{[f(x,y), x, y]}. El objeto 3D @code{implicit}
+acepta solamente el modelo @code{[f(x,y,z), x, y, z]}. El objeto @code{points} 
+tambi@'en acepta el modelo @code{[f(x,y,z), x, y, z]}, pero cuando los puntos
+tienen naturaleza cronol@'ogica tambi@'en admite el modelo @code{[f(k), k]},
+siendo @code{k} un par@'ametro de orden.
+
+Cuando a @code{enhanced3d} se le asigna algo diferente de @code{none}, se ignoran
+las opciones @code{color} y @code{surface_hide}.
 
 Los nombres de las variables definidas en las listas pueden ser diferentes
 de aquellas utilizadas en las definiciones de los objetos gr@'aficos.
@@ -1899,7 +1905,7 @@ En este caso, @code{(u-1)^2} es una simplificaci@'on de @code{[(u-1)^2,u]}.
          parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2))$
 @end example
 
-Objeto @code{mesh} con coloreado definido por el modelo @code{[f(x,y), x, y]}.
+Objeto @code{elevation_grid} con coloreado definido por el modelo @code{[f(x,y), x, y]}.
 
 @example
 (%i1) load(draw)$
@@ -1908,7 +1914,7 @@ Objeto @code{mesh} con coloreado definido por el modelo @code{[f(x,y), x, y]}.
            makelist(makelist(cos(i^2/80-k/30),k,1,30),i,1,20)) $
 (%i3) draw3d(
          enhanced3d = [cos(x*y*10),x,y],
-         mesh(m,-1,-1,2,2),
+         elevation_grid(m,-1,-1,2,2),
          xlabel = "x",
          ylabel = "y");
 @end example
@@ -1953,6 +1959,21 @@ modelo @code{[f(x,y,z), x, y, z]}.
          enhanced3d = [u+v-w,u,v,w],
          points(m) ) $
 @end example
+
+cuando los puntos tienen naturaleza cronol@'ogica tambi@'en se admite
+el modelo @code{[f(k), k]}, siendo @code{k} un par@'ametro de orden.
+
+@example
+(%i1) load(draw)$
+(%i2) m:makelist([random(1.0), random(1.0), random(1.0)],k,1,5)$
+(%i3) draw3d(
+         enhanced3d = [sin(j), j],
+         point_size = 3,
+         point_type = filled_circle,
+         points_joined = true,
+         points(m)) $
+@end example
+
 @end defvr
 
 
@@ -2919,7 +2940,7 @@ afectan al aspecto global de la escena.
 La lista de @i{objetos gr@'aficos} disponibles para escenas en dos
 dimensiones: @code{points}, @code{polygon}, @code{rectangle}, @code{ellipse}, @code{label},
 @code{vector}, @code{explicit}, @code{implicit}, @code{polar}, @code{parametric},
-@code{image} y @code{geomap}.
+@code{image} y @code{geomap} (este @'ultimo definido en el paquete @code{worldmap}).
 
 Para utilizar esta funci@'on, ejec@'utese primero @code{load(draw)}.
 
@@ -2947,7 +2968,8 @@ afectan al aspecto global de la escena.
 
 La lista de @i{objetos gr@'aficos} disponibles para escenas en tres
 dimensiones: @code{points}, @code{label}, @code{vector}, @code{explicit}, 
-@code{implicit}, @code{parametric}, @code{parametric_surface} y @code{geomap}.
+@code{implicit}, @code{parametric}, @code{parametric_surface} y @code{geomap}
+(este @'ultimo definido en el paquete @code{worldmap}).
 
 
 V@'eanse tambi@'en las siguientes @i{opciones gr@'aficas}: @code{xrange}, @code{yrange}, 
@@ -3428,7 +3450,7 @@ V@'ease tambi@'en @code{filled_func} para el relleno de curvas.
 
 
 
-@deffn  {Objeto gr@'afico} mesh (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
+@deffn  {Objeto gr@'afico} elevation_grid (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
 Dibuja la matriz @var{mat} en 3D. Los valores @var{z} se toman de @var{mat},
 las abscisas van desde @var{x0} hasta @math{@var{x0} + @var{width}}
 y las ordenadas desde @var{y0} hasta @math{@var{y0} + @var{height}}.
@@ -3446,7 +3468,7 @@ Ejemplo:
             makelist(makelist(random(10.0),k,1,30),i,1,20)) $
 (%i3) draw3d(
          color = blue,
-         mesh(m,0,0,3,2),
+         elevation_grid(m,0,0,3,2),
          xlabel = "x",
          ylabel = "y",
          surface_hide = true);
@@ -3730,162 +3752,6 @@ En @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
 se encuentran ejemplos m@'as elaborados.
 @end deffn
 
-
-@defvr {Global variable} boundaries_array
-Valor por defecto: @code{false}
-
-@code{boundaries_array} es donde el objeto gr@'afico @code{geomap} lee
-las coordenadas de las l@'{@dotless{i}}neas fronterizas.
-
-Cada componente de @code{boundaries_array} es un array de n@'umeros decimales
-en coma flotante representando las coordenadas que definen un segmento
-poligonal o l@'{@dotless{i}}nea fronteriza.
-
-V@'ease tambi@'en @code{geomap}.
-@end defvr
-
-
-@deffn  {Objeto gr@'afico} geomap (@var{numlist})
-@deffnx {Objeto gr@'afico} geomap (@var{numlist},@var{3Dprojection})
-Dibuja mapas cartogr@'aficos en 2D y 3D.
-
-@b{2D}
-
-Esta funci@'on trabaja junto con la variable global @code{boundaries_array}.
-
-El argumento @var{numlist} es una lista de n@'umeros o de listas de 
-n@'umeros. Todos estos n@'umeros deben ser enteros mayores o iguales que cero,
-representando las componentes del array global @code{boundaries_array}.
-
-Cada componente de @code{boundaries_array} es un array de decimales en
-coma flotante, las coordenadas de un segmento poligonal o l@'{@dotless{i}}nea
-fronteriza.
-
-@code{geomap (@var{numlist})} toma los enteros de sus argumentos y 
-dibuja los segmentos poligonales asociados de @code{boundaries_array}.
-
-Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_width}, 
-@code{line_type} y @code{color}.
-
-Ejemplos:
-
-Un sencillo mapa hecho a mano:
-@example
-(%i1) load(draw)$
-(%i2) /* Vertices of boundary #0: @{(1,1),(2,5),(4,3)@} */
-   ( bnd0: make_array(flonum,6),
-     bnd0[0]:1.0, bnd0[1]:1.0, bnd0[2]:2.0,
-     bnd0[3]:5.0, bnd0[4]:4.0, bnd0[5]:3.0 )$
-(%i3) /* Vertices of boundary #1: @{(4,3),(5,4),(6,4),(5,1)@} */
-   ( bnd1: make_array(flonum,8),
-     bnd1[0]:4.0, bnd1[1]:3.0, bnd1[2]:5.0, bnd1[3]:4.0,
-     bnd1[4]:6.0, bnd1[5]:4.0, bnd1[6]:5.0, bnd1[7]:1.0)$
-(%i4) /* Vertices of boundary #2: @{(5,1), (3,0), (1,1)@} */
-   ( bnd2: make_array(flonum,6),
-     bnd2[0]:5.0, bnd2[1]:1.0, bnd2[2]:3.0,
-     bnd2[3]:0.0, bnd2[4]:1.0, bnd2[5]:1.0 )$
-(%i5) /* Vertices of boundary #3: @{(1,1), (4,3)@} */
-   ( bnd3: make_array(flonum,4),
-     bnd3[0]:1.0, bnd3[1]:1.0, bnd3[2]:4.0, bnd3[3]:3.0)$
-(%i6) /* Vertices of boundary #4: @{(4,3), (5,1)@} */
-   ( bnd4: make_array(flonum,4),
-     bnd4[0]:4.0, bnd4[1]:3.0, bnd4[2]:5.0, bnd4[3]:1.0)$
-(%i7) /* Pack all together in boundaries_array */
-   ( boundaries_array: make_array(any,5),
-     boundaries_array[0]: bnd0, boundaries_array[1]: bnd1,
-     boundaries_array[2]: bnd2, boundaries_array[3]: bnd3,
-     boundaries_array[4]: bnd4 )$
-(%i8) draw2d(geomap([0,1,2,3,4]))$
-@end example
-
-El paquete auxiliar @code{worldmap} asigna al array global
-@code{boundaries_array} l@'{@dotless{i}}neas fronterizas
-reales en coordenadas (longitud, latitud). Estos datos son
-de dominio p@'ublico y proceden de
-@url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
-El paquete @code{worldmap} tambi@'en define fronteras 
-de pa@'{@dotless{i}}ses, continentes y l@'{@dotless{i}}neas
-costeras a partir de las
-componentes de @code{boundaries_array} (v@'ease el
-fichero @code{share/draw/worldmap.mac} para m@'as
-informaci@'on). El paquete @code{worldmap} carga
-autom@'aticamente el paquete @code{draw}.
-@example
-(%i1) load(worldmap)$
-(%i2) c1: gr2d(geomap(Canada,United_States,
-                      Mexico,Cuba))$
-(%i3) c2: gr2d(geomap(Africa))$
-(%i4) c3: gr2d(geomap(Oceania,China,Japan))$
-(%i5) c4: gr2d(geomap(France,Portugal,Spain,
-                      Morocco,Western_Sahara))$
-(%i6) draw(columns  = 2,
-           c1,c2,c3,c4)$
-@end example
-
-@code{worldmap} se puede utilizar para dibujar pa@'{@dotless{i}}ses
-como pol@'{@dotless{i}}gonos. En este caso, ya no ser@'a necesario
-hacer uso del objeto gr@'afico @code{geomap}, pero s@'{@dotless{i}} de
-@code{polygon}. Puesto que en este caso se utilizan listas en lugar de
-arrays, los mapas se reproducir@'an de forma m@'as lenta. V@'eanse
-tambi@'en @code{make_poly_country} y @code{make_poly_continent} para
-comprender el siguiente c@'odigo.
-@example
-(%i1) load(worldmap)$
-(%i2) mymap: append(
-   [color      = white],  /* borders are white */
-   [fill_color = red],             make_poly_country(Bolivia),
-   [fill_color = cyan],            make_poly_country(Paraguay),
-   [fill_color = green],           make_poly_country(Colombia),
-   [fill_color = blue],            make_poly_country(Chile),
-   [fill_color = "#23ab0f"],       make_poly_country(Brazil),
-   [fill_color = goldenrod],       make_poly_country(Argentina),
-   [fill_color = "midnight-blue"], make_poly_country(Uruguay))$
-(%i3) apply(draw2d, mymap)$
-@end example
-
-@b{3D}
-
-@code{geomap (@var{numlist})} proyecta los mapas sobre la esfera de radio 1
-y centro (0,0,0). Es posible cambiar la esfera o el tipo de proyecci@'on haciendo
-uso de @code{geomap (@var{numlist},@var{3Dprojection})}.
-
-Proyecciones 3D disponibles:
-
-@itemize @bullet
-@item
-@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: proyecta los mapas sobre la esfera de radio
-@var{r} y centro (@var{x},@var{y},@var{z}).
-@example
-(%i1) load(worldmap)$
-(%i2) draw3d(geomap(Australia), /* default projection */
-             geomap(Australia,
-                    [spherical_projection,2,2,2,3]))$
-@end example
-
-@item
-@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: re-proyecta mapas esf@'ericos
-sobre el cilindro de radio @var{rc} cuyo eje pasa a trav@'es de los polos del globo
-de radio @var{r} y centro (@var{x},@var{y},@var{z}).
-@example
-(%i1) load(worldmap)$
-(%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
-                    [cylindrical_projection,2,2,2,3,4]))$
-@end example
-
-@item
-@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: re-proyecta mapas esf@'ericos sobre los
-conos de @'angulo @var{alpha}, cuyos ejes pasan a trav@'es de los polos del globo de radio @var{r} 
-y centro (@var{x},@var{y},@var{z}). Ambos conos, norte y sur, son tangentes a la esfera.
-@example
-(%i1) load(worldmap)$
-(%i2) draw3d(geomap(World_coastlines,
-                    [conic_projection,0,0,0,1,90]))$
-@end example
-@end itemize
-
-En @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
-hay ejemplos m@'as elaborados.
-@end deffn
 
 
 
@@ -4254,6 +4120,165 @@ Lee el fichero gr@'afico en formato xpm y devuelve un objeto @code{picture}.
 
 @node Funciones y variables para worldmap,  , Funciones y variables para picture, draw
 @section Funciones y variables para worldmap
+
+Este paquete carga autom@'aticamente el paquete @code{draw}.
+
+@defvr {Global variable} boundaries_array
+Valor por defecto: @code{false}
+
+@code{boundaries_array} es donde el objeto gr@'afico @code{geomap} lee
+las coordenadas de las l@'{@dotless{i}}neas fronterizas.
+
+Cada componente de @code{boundaries_array} es un array de n@'umeros decimales
+en coma flotante representando las coordenadas que definen un segmento
+poligonal o l@'{@dotless{i}}nea fronteriza.
+
+V@'ease tambi@'en @code{geomap}.
+@end defvr
+
+
+@deffn  {Objeto gr@'afico} geomap (@var{numlist})
+@deffnx {Objeto gr@'afico} geomap (@var{numlist},@var{3Dprojection})
+Dibuja mapas cartogr@'aficos en 2D y 3D.
+
+@b{2D}
+
+Esta funci@'on trabaja junto con la variable global @code{boundaries_array}.
+
+El argumento @var{numlist} es una lista de n@'umeros o de listas de 
+n@'umeros. Todos estos n@'umeros deben ser enteros mayores o iguales que cero,
+representando las componentes del array global @code{boundaries_array}.
+
+Cada componente de @code{boundaries_array} es un array de decimales en
+coma flotante, las coordenadas de un segmento poligonal o l@'{@dotless{i}}nea
+fronteriza.
+
+@code{geomap (@var{numlist})} toma los enteros de sus argumentos y 
+dibuja los segmentos poligonales asociados de @code{boundaries_array}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{line_width}, 
+@code{line_type} y @code{color}.
+
+Ejemplos:
+
+Un sencillo mapa hecho a mano:
+@example
+(%i1) load(worldmap)$
+(%i2) /* Vertices of boundary #0: @{(1,1),(2,5),(4,3)@} */
+   ( bnd0: make_array(flonum,6),
+     bnd0[0]:1.0, bnd0[1]:1.0, bnd0[2]:2.0,
+     bnd0[3]:5.0, bnd0[4]:4.0, bnd0[5]:3.0 )$
+(%i3) /* Vertices of boundary #1: @{(4,3),(5,4),(6,4),(5,1)@} */
+   ( bnd1: make_array(flonum,8),
+     bnd1[0]:4.0, bnd1[1]:3.0, bnd1[2]:5.0, bnd1[3]:4.0,
+     bnd1[4]:6.0, bnd1[5]:4.0, bnd1[6]:5.0, bnd1[7]:1.0)$
+(%i4) /* Vertices of boundary #2: @{(5,1), (3,0), (1,1)@} */
+   ( bnd2: make_array(flonum,6),
+     bnd2[0]:5.0, bnd2[1]:1.0, bnd2[2]:3.0,
+     bnd2[3]:0.0, bnd2[4]:1.0, bnd2[5]:1.0 )$
+(%i5) /* Vertices of boundary #3: @{(1,1), (4,3)@} */
+   ( bnd3: make_array(flonum,4),
+     bnd3[0]:1.0, bnd3[1]:1.0, bnd3[2]:4.0, bnd3[3]:3.0)$
+(%i6) /* Vertices of boundary #4: @{(4,3), (5,1)@} */
+   ( bnd4: make_array(flonum,4),
+     bnd4[0]:4.0, bnd4[1]:3.0, bnd4[2]:5.0, bnd4[3]:1.0)$
+(%i7) /* Pack all together in boundaries_array */
+   ( boundaries_array: make_array(any,5),
+     boundaries_array[0]: bnd0, boundaries_array[1]: bnd1,
+     boundaries_array[2]: bnd2, boundaries_array[3]: bnd3,
+     boundaries_array[4]: bnd4 )$
+(%i8) draw2d(geomap([0,1,2,3,4]))$
+@end example
+
+El paquete auxiliar @code{worldmap} asigna al array global
+@code{boundaries_array} l@'{@dotless{i}}neas fronterizas
+reales en coordenadas (longitud, latitud). Estos datos son
+de dominio p@'ublico y proceden de
+@url{http://www-cger.nies.go.jp/grid-e/gridtxt/grid19.html}.
+El paquete @code{worldmap} tambi@'en define fronteras 
+de pa@'{@dotless{i}}ses, continentes y l@'{@dotless{i}}neas
+costeras a partir de las
+componentes de @code{boundaries_array} (v@'ease el
+fichero @code{share/draw/worldmap.mac} para m@'as
+informaci@'on). El paquete @code{worldmap} carga
+autom@'aticamente el paquete @code{draw}.
+@example
+(%i1) load(worldmap)$
+(%i2) c1: gr2d(geomap(Canada,United_States,
+                      Mexico,Cuba))$
+(%i3) c2: gr2d(geomap(Africa))$
+(%i4) c3: gr2d(geomap(Oceania,China,Japan))$
+(%i5) c4: gr2d(geomap(France,Portugal,Spain,
+                      Morocco,Western_Sahara))$
+(%i6) draw(columns  = 2,
+           c1,c2,c3,c4)$
+@end example
+
+@code{worldmap} se puede utilizar para dibujar pa@'{@dotless{i}}ses
+como pol@'{@dotless{i}}gonos. En este caso, ya no ser@'a necesario
+hacer uso del objeto gr@'afico @code{geomap}, pero s@'{@dotless{i}} de
+@code{polygon}. Puesto que en este caso se utilizan listas en lugar de
+arrays, los mapas se reproducir@'an de forma m@'as lenta. V@'eanse
+tambi@'en @code{make_poly_country} y @code{make_poly_continent} para
+comprender el siguiente c@'odigo.
+@example
+(%i1) load(worldmap)$
+(%i2) mymap: append(
+   [color      = white],  /* borders are white */
+   [fill_color = red],             make_poly_country(Bolivia),
+   [fill_color = cyan],            make_poly_country(Paraguay),
+   [fill_color = green],           make_poly_country(Colombia),
+   [fill_color = blue],            make_poly_country(Chile),
+   [fill_color = "#23ab0f"],       make_poly_country(Brazil),
+   [fill_color = goldenrod],       make_poly_country(Argentina),
+   [fill_color = "midnight-blue"], make_poly_country(Uruguay))$
+(%i3) apply(draw2d, mymap)$
+@end example
+
+@b{3D}
+
+@code{geomap (@var{numlist})} proyecta los mapas sobre la esfera de radio 1
+y centro (0,0,0). Es posible cambiar la esfera o el tipo de proyecci@'on haciendo
+uso de @code{geomap (@var{numlist},@var{3Dprojection})}.
+
+Proyecciones 3D disponibles:
+
+@itemize @bullet
+@item
+@code{[spherical_projection,@var{x},@var{y},@var{z},@var{r}]}: proyecta los mapas sobre la esfera de radio
+@var{r} y centro (@var{x},@var{y},@var{z}).
+@example
+(%i1) load(worldmap)$
+(%i2) draw3d(geomap(Australia), /* default projection */
+             geomap(Australia,
+                    [spherical_projection,2,2,2,3]))$
+@end example
+
+@item
+@code{[cylindrical_projection,@var{x},@var{y},@var{z},@var{r},@var{rc}]}: re-proyecta mapas esf@'ericos
+sobre el cilindro de radio @var{rc} cuyo eje pasa a trav@'es de los polos del globo
+de radio @var{r} y centro (@var{x},@var{y},@var{z}).
+@example
+(%i1) load(worldmap)$
+(%i2) draw3d(geomap([America_coastlines,Eurasia_coastlines],
+                    [cylindrical_projection,2,2,2,3,4]))$
+@end example
+
+@item
+@code{[conic_projection,@var{x},@var{y},@var{z},@var{r},@var{alpha}]}: re-proyecta mapas esf@'ericos sobre los
+conos de @'angulo @var{alpha}, cuyos ejes pasan a trav@'es de los polos del globo de radio @var{r} 
+y centro (@var{x},@var{y},@var{z}). Ambos conos, norte y sur, son tangentes a la esfera.
+@example
+(%i1) load(worldmap)$
+(%i2) draw3d(geomap(World_coastlines,
+                    [conic_projection,0,0,0,1,90]))$
+@end example
+@end itemize
+
+En @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/geomap}
+hay ejemplos m@'as elaborados.
+@end deffn
+
 
 
 @deffn  {Funci@'on} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
