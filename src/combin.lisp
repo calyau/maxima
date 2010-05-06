@@ -587,8 +587,16 @@
 ;; use the expansion zeta(s) = -1/2-1/2*log(2*pi)*s.
 (defun float-zeta (s)
   (let ((s (bigfloat:to s)))
-    (cond ((bigfloat:< (bigfloat:* s s) (bigfloat:epsilon s))
-           ;; s^2 < epsilon, use the expansion zeta(s) = -1/2-1/2*log(2*%pi)*s
+    ;; If s is a rational (real or complex), convert to a float.  This
+    ;; is needed so we can compute a sensible epsilon value.  (What is
+    ;; the epsilon value for an exact rational?)
+    (typecase s
+      (rational
+       (setf s (float s)))
+      ((complex rational)
+       (setf s (coerce s '(complex double-float)))))
+    (cond ((bigfloat:< (bigfloat:abs (bigfloat:* s s)) (bigfloat:epsilon s))
+           ;; abs(s)^2 < epsilon, use the expansion zeta(s) = -1/2-1/2*log(2*%pi)*s
            (bigfloat:+ -1/2
                        (bigfloat:* -1/2
                                    (bigfloat:log (bigfloat:* 2 (bigfloat:%pi s)))

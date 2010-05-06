@@ -1477,3 +1477,16 @@ integrate(1/(x^6-4),x,0,1) - integrate(1/(x^3-2)/(x^3+2),x,0,1);
  */
 coeff(2*%e^x, x, 0);
 2*%e^x;
+
+/* Bug ID: 2997276 - zeta(3),numer; gives Lisp error 
+ * 
+ * Also add a test for complex rational argument, which wasn't handled
+ * correctly either.
+ */
+block([numer:true], is(abs(zeta(3)-1.202056903159594) < 1e-15));
+true;
+block([numer:true], is(abs(zeta(3+%i)-(1.10721440843141 - .1482908671781754*%i)) < 1e-15));
+true;
+
+
+
