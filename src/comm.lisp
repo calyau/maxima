@@ -1165,23 +1165,23 @@
 	 ;; float(log(int)).  First try to compute (log (float n)).
 	 ;; If that works, we're done.  Otherwise we need to do more.
 	 (let ((n (second e)))
-	   (or (ignore-errors (log (float n)))
-	       (let* ((m (integer-length n)))
-		 ;; Write n as (n/2^m)*2^m where m is the number of
-		 ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
-		 ;; n/2^m is approximately 1, so converting that to a
-		 ;; float is no problem.  log(2^m) = m * log(2).
-		 (+ (* m (log 2d0))
-		    (log (float (/ n (ash 1 m)))))))))
+	   (to (or (ignore-errors (log (float n)))
+		   (let* ((m (integer-length n)))
+		     ;; Write n as (n/2^m)*2^m where m is the number of
+		     ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
+		     ;; n/2^m is approximately 1, so converting that to a
+		     ;; float is no problem.  log(2^m) = m * log(2).
+		     (+ (* m (log 2d0))
+			(log (float (/ n (ash 1 m))))))))))
 	((and (eq (caar e) '%log)
 	      (listp (second e))
 	      (eq (caar (second e)) 'rat))
 	 ;; float(log(n/m)) where n and m are integers.  Try computing
 	 ;; it first.  If it fails, compute as log(n) - log(m).
 	 (let ((r (second e)))
-	   (or (ignore-errors (log (fpcofrat r)))
-	       (-  ($float `((%log) ,(second r)))
-		   ($float `((%log) ,(third r)))))))
+	   (to (or (ignore-errors (log (fpcofrat r)))
+		   (-  ($float `((%log) ,(second r)))
+		       ($float `((%log) ,(third r))))))))
 	(t (recur-apply #'$float e))))
 
 (defmfun $coeff (e x &optional (n 1))

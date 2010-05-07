@@ -1497,6 +1497,10 @@ true;
 is(abs(float(log((1+200!)/7))-861.2860770433501) < 1e-15);
 true;
 
+/* Make sure we don't screw up the case of a log of a negative number */
+is(abs(float(log(-1))-float(%pi)*%i) < 1e-15);
+true;
+
 
 
 
