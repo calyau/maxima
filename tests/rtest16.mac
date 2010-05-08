@@ -1501,7 +1501,19 @@ true;
 is(abs(float(log(-1))-float(%pi)*%i) < 1e-15);
 true;
 
-
-
-
-
+/* Bug ID: 221642 limit needs %piargs to be true
+ * The implementation of simp-%atan and simpatan2 has been revised.
+ * We get more limits independent of the value of %piargs.
+ */
+%piargs:false;
+false;
+limit(atan2(0,y),y,0,plus);
+atan(0);
+limit(atan2(0,y),y,0,minus);
+%pi;
+limit(atan2(x,0),x,0,plus);
+%pi/2;
+limit(atan2(x,0),x,0,minus);
+-%pi/2;
+reset(%piargs);
+[%piargs];
