@@ -14,7 +14,7 @@
 
 (declare-top (special rsn* $factlim $exponentialize
 		      var varlist genvar $%emode $ratprint
-		      nn* dn* $errexp sqrt3//2 sqrt2//2 -sqrt2//2 -sqrt3//2
+		      nn* dn* $errexp sqrt3//2 -sqrt3//2
 		      $demoivre errorsw $keepfloat $ratfac))
 
 (load-macsyma-macros rzmac)
@@ -22,16 +22,17 @@
 (declare-top (special $nointegrate $lhospitallim $tlimswitch $limsubst
 		      $abconvtest complex-limit plogabs))
 
-
 (setq $demoivre nil rsn* nil $nointegrate nil $lhospitallim 4
       $tlimswitch t $limsubst nil $abconvtest nil
       complex-limit nil plogabs nil)
 
-(defmvar %p%i '((mtimes) $%i $%pi))
-(defmvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi))
-(defmvar half%pi '((mtimes) ((rat simp) 1 2) $%pi))
-(defmvar %pi2 '((mtimes) 2 $%pi))
-(defmvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
+;; Simplified shortcuts of constant expressions involving %pi.
+(defvar %p%i '((mtimes) $%i $%pi))
+(defvar fourth%pi '((mtimes) ((rat simp) 1 4) $%pi))
+(defvar half%pi '((mtimes) ((rat simp) 1 2) $%pi))
+(defvar %pi2 '((mtimes) 2 $%pi))
+(defvar half%pi3 '((mtimes) ((rat simp) 3 2) $%pi))
+
 (defmvar $sumsplitfact t) ;= nil minfactorial is applied after a factocomb.
 
 (loop for (a b) on

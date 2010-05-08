@@ -27,18 +27,17 @@
 (defmvar $logarc nil)
 (defmvar $halfangles nil)
 
-(defmvar 1//2 '((rat simp) 1 2))
-(defmvar -1//2 '((rat simp) -1 2))
-(defmvar %pi//4 '((mtimes simp) ((rat simp) 1 4.) $%pi))
-(defmvar %pi//2 '((mtimes simp) ((rat simp) 1 2) $%pi))
-(defmvar sqrt2//2 '((mtimes simp) ((rat simp) 1 2)
-		    ((mexpt simp) 2 ((rat simp) 1 2))))
-(defmvar -sqrt2//2 '((mtimes simp) ((rat simp) -1 2)
-		     ((mexpt simp) 2 ((rat simp) 1 2))))
-(defmvar sqrt3//2 '((mtimes simp) ((rat simp) 1 2)
-		    ((mexpt simp) 3 ((rat simp) 1 2))))
-(defmvar -sqrt3//2 '((mtimes simp) ((rat simp) -1 2)
-		     ((mexpt simp) 3 ((rat simp) 1 2))))
+;; Simplified shortcuts for constant expressions.
+(defvar 1//2 '((rat simp) 1 2))
+(defvar -1//2 '((rat simp) -1 2))
+(defvar %pi//4 '((mtimes simp) ((rat simp) 1 4.) $%pi))
+(defvar %pi//2 '((mtimes simp) ((rat simp) 1 2) $%pi))
+(defvar sqrt3//2 '((mtimes simp)
+                   ((rat simp) 1 2) 
+                   ((mexpt simp) 3 ((rat simp) 1 2))))
+(defvar -sqrt3//2 '((mtimes simp)
+                    ((rat simp) -1 2)
+                    ((mexpt simp) 3 ((rat simp) 1 2))))
 
 ;;; Arithmetic utilities.
 

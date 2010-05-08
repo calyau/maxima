@@ -106,7 +106,7 @@
 	  *n *opers-list *out *ratweights *tr-warn-break* *transl-backtrace*
 	  *transl-debug* *transl-file-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
-	  -sqrt2//2 -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
+	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
 	  aliaslist alpha *alphabet* arrays aryp assigns atp atvars baktrcl
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist bvars *mdebug*
@@ -126,7 +126,7 @@
 	  plusflag preserve-direction prods putl radcanp radpe rd*
 	  real-infinities realonlyratnum refchkl return-mode returns rulefcnl
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
-	  *small-primes* specials sqrt2//2 sqrt3//2 state-pdl $stringdisp substp
+	  *small-primes* specials sqrt3//2 state-pdl $stringdisp substp
 	  sums tellratlist timesinp timesp tr-abort tr-progret tr-unique
 	  transl-file translate-time-evalables transp
 	  tstack typel user-mesfile user-timesofar varlist wflag
