@@ -166,9 +166,11 @@
 
 (defun conjugate-atan (x)
   (let ((xx))
-    (setq xx (mul '$%i (car x)))
-    (if (in-domain-of-asin xx) (take '(%atan) (take '($conjugate) (car x)))
-      `(($conjugate simp) ((%atan) ,x)))))
+    (setq x (car x))
+    (setq xx (mul '$%i x))
+    (if (in-domain-of-asin xx)
+        (take '(%atan) (take '($conjugate) x))
+        `(($conjugate simp) ((%atan) ,x)))))
 
 ;; atanh and asin are entire on the same set; see A&S Fig. 4.4 and 4.7.
 
