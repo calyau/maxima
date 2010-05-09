@@ -14,13 +14,13 @@ herald_package('vect)$
 put('vect,true,'version);
 
 eval_when([translate,batch,demo,load,loadfile],
-/* trgsmp is in the standard Maxima image but check anyway */
-if get('sin,'complement_function)=false then load("trgsmp"),
-matchdeclare([etrue,ttrue,vtrue], true,
-lessp, before, scalarm, vscalarp),
-	tr_bound_function_applyp:false
-	/* we do not want FOO(F):=F(1) to mean APPLY(F,[1]) */
-	)$
+  /* trgsmp is in the standard Maxima image but check anyway */
+  if get('sin,'complement_function)=false then load("trgsmp"),
+  if not ?boundp('coords) then load("vect_transform"),
+  matchdeclare([etrue,ttrue,vtrue], true, lessp, before, scalarm, vscalarp),
+  tr_bound_function_applyp:false
+  /* we do not want FOO(F):=F(1) to mean APPLY(F,[1]) */
+  )$
 
 infix("~", 134, 133, expr, expr, expr) $
 prefix("grad", 142, expr, expr) $
@@ -28,7 +28,7 @@ prefix("div", 142, expr, expr) $
 prefix("curl", 142, expr, expr) $
 prefix("laplacian", 142, expr, expr) $ 
 
-declare([".",order],commutative,
+declare(order,commutative,
         ordern,nary,
         ["grad","div","curl","laplacian"],outative,
         "curl",nonscalar)$
@@ -36,18 +36,15 @@ declare([".",order],commutative,
 tellsimpafter(0~etrue, 0) $
 tellsimpafter(etrue~0, 0) $
 tellsimpafter(etrue~etrue, 0)$
-tellsimpafter(etrue~ttrue.vtrue, etrue.ttrue~vtrue)$
-tellsimp(etrue~lessp, -lessp~etrue) $
+tellsimpafter(etrue~ttrue.vtrue, etrue.(ttrue~vtrue))$
+tellsimp(etrue~lessp, -(lessp~etrue)) $
 tellsimpafter(div (curl( etrue)), 0) $
 tellsimpafter(curl (grad( etrue)), 0) $
-tellsimpafter(vectorpotential(etrue,ttrue),
-   (scalefactors(ttrue), vpot(etrue))) $
+tellsimpafter(vectorpotential(etrue,ttrue),(scalefactors(ttrue), vpot(etrue)))$
 tellsimpafter(vectorpotential(etrue), vpot(etrue)) $
 tellsimpafter(express(etrue), express1(etrue)) $
-tellsimpafter(express(etrue,ttrue),
-   (scalefactors(ttrue), express(etrue))) $
-tellsimpafter(potential(etrue, ttrue),
-   (scalefactors(ttrue),  potential1(etrue))) $
+tellsimpafter(express(etrue,ttrue), (scalefactors(ttrue), express(etrue)))$
+tellsimpafter(potential(etrue, ttrue),(scalefactors(ttrue),potential1(etrue)))$
 tellsimpafter(potential(etrue), potential1(etrue)) $
 
 
@@ -66,7 +63,6 @@ define_variable(expanddot,false,boolean)$
 define_variable(expanddotplus,false,boolean)$
 define_variable(expandgrad,false,boolean)$
 define_variable(expandplus,false,boolean)$
-define_variable(expandall,false,boolean)$
 define_variable(expandgradplus,false,boolean)$
 define_variable(expanddiv,false,boolean)$
 define_variable(expanddivplus,false,boolean)$
@@ -88,7 +84,7 @@ define_variable(firstcrossscalar,false,boolean)$
 vect_cross: true$
 
 
-ev_diff(x):=apply('ev,[x,'diff])$
+ev_diff(_expr_):=apply('ev,[_expr_,'diff])$
 
 
 declare(jacobian,special)$
@@ -107,7 +103,8 @@ scalefactors(transformation) := block(
    for row:1 thru dimension do (
       for col:1 thru row-1 do (
          sf[row]: gcov(row,col),
-         if sf[row]#0 then print("warning: coordinate system is nonorthogonal unless following simplifies to zero:", sf[row])),
+         if sf[row]#0 then 
+            print("warning: coordinate system is nonorthogonal unless following simplifies to zero:", sf[row])),
       sf[row]: radcan(sqrt(gcov(row,row))),
       sfprod: sfprod*sf[row])) $
 
@@ -299,6 +296,7 @@ partitionsc(ex) :=
       [sc,nonsc])
    else [1,ex] $
 
+/*
 trycrossplus(expn,pv,rv,sv) :=(
    pv:inpart(expn,1), rv:inpart(expn,2),
    if not mapatom(pv) and inpart(pv,0)="+" then
@@ -309,6 +307,19 @@ trycrossplus(expn,pv,rv,sv) :=(
    else if not mapatom(rv) and inpart(rv,0)="+" then
       map(lambda([u],pvcross(pv,u,sv)), rv)
    else expn) $
+*/
+
+trycrossplus(expn,pv,rv,sv) :=
+  (
+    pv:inpart(expn,1), 
+    rv:inpart(expn,2),
+    if not mapatom(pv) and inpart(pv,0)="+" then
+       map(lambda([u],crossrv(u,rv,sv)), pv)
+    else 
+       if not mapatom(rv) and inpart(rv,0)="+" then
+          map(lambda([u],pvcross(pv,u,sv)), rv)
+       else 
+          expn)$
 
 trycrosscross(expn,pv,rv,sv) := (
       pv:inpart(expn,1),  rv:inpart(expn,2),
