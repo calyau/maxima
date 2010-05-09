@@ -1517,3 +1517,33 @@ limit(atan2(x,0),x,0,minus);
 -%pi/2;
 reset(%piargs);
 [%piargs];
+
+/* Bug ID: 2306402 - scalarp bug
+ * Bug ID: 1985748 - array and scalar declarations yield inconsistent results
+ * Examples from the bug report to show consistent behavior of scalarp
+ */
+ 
+declare(x,scalar);
+done;
+scalarp(foo(x));
+true;
+scalarp(foo(1));
+true;
+scalarp(foo(x,1));
+true;
+
+scalarp(x);
+true;
+scalarp(x[1]);
+true;
+array(x,5);
+x;
+scalarp(x);
+true;
+scalarp(x[1]);
+true;
+nonscalarp(x);
+false;
+
+kill(x);
+done;
