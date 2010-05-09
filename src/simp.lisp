@@ -385,30 +385,47 @@
 (defmfun $nonscalarp (x) (eq (scalarclass x) '$nonscalar))
 
 (defun scalarclass (exp) ;  Returns $SCALAR, $NONSCALAR, or NIL (unknown).
-  (cond ((atom exp)
-	 (cond ((or (mget exp '$nonscalar) (arrayp exp) ($member exp $arrays)) '$nonscalar)
-	       ((mget exp '$scalar) '$scalar)))
+  (cond ((mnump exp)
+         ;; Maxima numbers are scalar.
+         '$scalar)
+        ((atom exp)
+	 (cond ((or (mget exp '$nonscalar)
+	            (and (not (mget exp '$scalar))
+	                 ;; Arrays are nonscalar, but not if declared scalar.
+	                 (or (arrayp exp)
+	                     ($member exp $arrays))))
+	        '$nonscalar)
+	       ((or (mget exp '$scalar)
+	            ;; Include constant atoms which are not declared nonscalar.
+	            ($constantp exp))
+	        '$scalar)))
+        ((and (member 'array (car exp))
+              (not (mget (caar exp) '$scalar)))
+         '$nonscalar)
 	((specrepp exp) (scalarclass (specdisrep exp)))
-	;;  If the function is declared scalar or nonscalar, then return.  If it isn't
-	;;  explicitly declared, then try to be intelligent by looking at the arguments
-	;;  to the function.
+	;; If the function is declared scalar or nonscalar, then return. If it
+        ;; isn't explicitly declared, then try to be intelligent by looking at 
+        ;; the arguments to the function.
 	((scalarclass (caar exp)))
-	;;  <number> + <scalar> is SCALARP because that seems to be useful.  This should
-	;;  probably only be true if <number> is a member of the field of scalars.
-	;;  <number> * <scalar> is SCALARP since <scalar> + <scalar> is SCALARP.
-	;;  Also, this has to be done to make <scalar> - <scalar> SCALARP.
+	;; <number> + <scalar> is SCALARP because that seems to be useful. 
+        ;; This should probably only be true if <number> is a member of the 
+        ;; field of scalars. <number> * <scalar> is SCALARP since 
+        ;; <scalar> + <scalar> is SCALARP. Also, this has to be done to make 
+        ;; <scalar> - <scalar> SCALARP.
 	((member (caar exp) '(mplus mtimes) :test #'eq)
 	 (do ((l (cdr exp) (cdr l))) ((null l) '$scalar)
 	   (if (not (consttermp (car l)))
 	       (return (scalarclass-list l)))))
 	((and (eq (caar exp) 'mqapply) (scalarclass (cadr exp))))
 	((mxorlistp exp) '$nonscalar)
-	;;  If we can't find out anything about the operator, then look at the arguments
-	;;  to the operator.  I think NIL should be returned at this point.  -cwh
-	(t (do ((exp (cdr exp) (cdr exp)) (l))
-	       ((null exp) (scalarclass-list l))
-	     (if (not (consttermp (car exp)))
-		 (setq l (cons (car exp) l)))))))
+	;; If we can't find out anything about the operator, then look at the
+        ;; arguments to the operator.  I think NIL should be returned at this 
+        ;; point.  -cwh
+	(t
+	 (do ((exp (cdr exp) (cdr exp)) (l '(1)))
+	      ((null exp) (scalarclass-list l))
+	    (if (not (consttermp (car exp)))
+	        (setq l (cons (car exp) l)))))))
 
 ;;  Could also do <scalar> +|-|*|/ |^ <declared constant>, but this is not
 ;;  always correct and could screw somebody.
