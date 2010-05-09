@@ -85,6 +85,7 @@ block
         [rtest_to_poly_solver, 64, 74, 80],
         rtest_hg,
         rtest_nfloat,
-        rtest_mnewton]],
+        rtest_mnewton,
+        [rtest_vect, 4, 9, 10, 13, 16, 19, 20, 21, 24, 25]]],
     
     run_testsuite ());

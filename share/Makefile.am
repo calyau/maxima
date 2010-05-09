@@ -1069,6 +1069,7 @@ trigonometry/spangl.usg\
 trigonometry/trgsmp.mac\
 trigonometry/trigrat.lisp\
 utils/mactex-utilities.lisp\
+vector/rtest_vect.mac\
 vector/vect.dem\
 vector/vect.mac\
 vector/vect.usg\
