@@ -1497,8 +1497,17 @@ true;
 is(abs(float(log((1+200!)/7))-861.2860770433501) < 1e-15);
 true;
 
-/* Make sure we don't screw up the case of a log of a negative number */
+/* Additional tests */
 is(abs(float(log(-1))-float(%pi)*%i) < 1e-15);
+true;
+
+is(abs(float(log((1+200!)/(-7))) - (3.141592653589793*%i + 861.2860770433501)) < 1e-14);
+true;
+
+is(abs(float(log((1+200!)+(1+199!)*%i))- (.004999958333958322*%i + 863.2319996922491)) < 1e-15);
+true;
+
+is(abs(float(log((1+200!)/7+(1+199!)/11*%i)) - (.003181807444342708*%i + 869.9736929490153)) < 1e-15);
 true;
 
 /* Bug ID: 221642 limit needs %piargs to be true

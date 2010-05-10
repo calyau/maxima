@@ -1161,27 +1161,50 @@
 	       res
 	       (list (ncons (caar e)) ($float (cadr e)) (caddr e)))))
 	((and (eq (caar e) '%log)
-	      (integerp (second e)))
-	 ;; float(log(int)).  First try to compute (log (float n)).
-	 ;; If that works, we're done.  Otherwise we need to do more.
+	      (complex-number-p (second e) '$ratnump))
 	 (let ((n (second e)))
-	   (to (or (ignore-errors (log (float n)))
-		   (let* ((m (integer-length n)))
-		     ;; Write n as (n/2^m)*2^m where m is the number of
-		     ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
-		     ;; n/2^m is approximately 1, so converting that to a
-		     ;; float is no problem.  log(2^m) = m * log(2).
-		     (+ (* m (log 2d0))
-			(log (float (/ n (ash 1 m))))))))))
-	((and (eq (caar e) '%log)
-	      (listp (second e))
-	      (eq (caar (second e)) 'rat))
-	 ;; float(log(n/m)) where n and m are integers.  Try computing
-	 ;; it first.  If it fails, compute as log(n) - log(m).
-	 (let ((r (second e)))
-	   (to (or (ignore-errors (log (fpcofrat r)))
-		   (-  ($float `((%log) ,(second r)))
-		       ($float `((%log) ,(third r))))))))
+	   (cond ((integerp n)
+		  ;; float(log(int)).  First try to compute (log (float n)).
+		  ;; If that works, we're done.  Otherwise we need to do more.
+		  (to (or (ignore-errors (log (float n)))
+			  (let ((m (integer-length n)))
+			    ;; Write n as (n/2^m)*2^m where m is the number of
+			    ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
+			    ;; n/2^m is approximately 1, so converting that to a
+			    ;; float is no problem.  log(2^m) = m * log(2).
+			    (+ (* m (log 2d0))
+			       (log (float (/ n (ash 1 m)))))))))
+		 (($ratnump n)
+		  ;; float(log(n/m)) where n and m are integers.  Try computing
+		  ;; it first.  If it fails, compute as log(n) - log(m).
+		  (let ((try (ignore-errors (log (fpcofrat n)))))
+		    (if try
+			(to try)
+			(sub  ($float `((%log) ,(second n)))
+			      ($float `((%log) ,(third n)))))))
+		 ((complex-number-p n 'integerp)
+		  ;; float(log(n+m*%i)).
+		  (let ((re ($realpart n))
+			(im ($imagpart n)))
+		    (to (or (ignore-errors (log (complex (float re)
+							 (float im))))
+			    (let* ((size (max (integer-length re)
+					      (integer-length im)))
+				   (scale (ash 1 size)))
+			      (+ (* size (log 2d0))
+				 (log (complex (float (/ re scale))
+					       (float (/ im scale))))))))))
+		 (t
+		  ;; log(n1/d1 + n2/d2*%i) =
+		  ;;   log(s*(n+m*%i)) = log(s) + log(n+m*%i)
+		  ;;
+		  ;; where s = lcm(d1, d2), n and m are integers
+		  ;;
+		  (let* ((s (lcm ($denom ($realpart n))
+				 ($denom ($imagpart n))))
+			 (p ($expand (mul s n))))
+		    (add ($float `((%log) ,s))
+			 ($float `((%log) ,p))))))))
 	(t (recur-apply #'$float e))))
 
 (defmfun $coeff (e x &optional (n 1))
