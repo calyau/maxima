@@ -34,7 +34,7 @@ sin(y)*(10.0+6*cos(x)),
 (defmfun $join (x y)
   (if (and ($listp x) ($listp y))
       (cons '(mlist) (loop for w in (cdr x) for u in (cdr y) collect w collect u))
-      (merror "Both arguments to 'join' must be lists")))
+      (merror (intl:gettext "join: both arguments must be lists."))))
 
 (defun coerce-float (x) ($float (meval* x)))
 
@@ -129,7 +129,7 @@ sin(y)*(10.0+6*cos(x)),
                                 :wait nil :output nil
                                 :input :stream)))
   #-(or clisp cmu sbcl gcl scl lispworks ecl ccl)
-  (merror "Gnuplot not supported with your lisp!")
+  (merror (intl:gettext "plotting: I don't know how to tell this Lisp to run Gnuplot."))
   
   ;; set mouse must be the first command send to gnuplot
   (send-gnuplot-command "set mouse"))
@@ -180,14 +180,14 @@ sin(y)*(10.0+6*cos(x)),
 
 (defun $gnuplot_replot (&optional s)
   (if (null *gnuplot-stream*)
-      (merror "Gnuplot is not running."))
+      (merror (intl:gettext "gnuplot_replot: Gnuplot is not running.")))
   (cond ((null s)
          (send-gnuplot-command "replot"))
         ((stringp s)
          (send-gnuplot-command s)
          (send-gnuplot-command "replot"))
         (t
-         (merror "Input to 'gnuplot_replot' is not a string!")))
+         (merror (intl:gettext "gnuplot_replot: argument, if present, must be a string; found: ~M") s)))
   "")
 
 ;; allow this to be set in a system init file (sys-init.lsp)
@@ -206,13 +206,13 @@ sin(y)*(10.0+6*cos(x)),
 
 (defun check-list-items (name lis type length)
   (or (eql (length lis) length)
-      (merror "~M items were expected in the ~M list" length name))
+      (merror (intl:gettext "set_plot_option: expected ~M items in the ~M list; found ~M items.") length name (length lis)))
   `((mlist) , name ,@
     (loop for v in lis
      do (setq v (meval* v))
      when (not (typep v type))
      do
-     (merror "~M is not of the right type in ~M list" v name)
+     (merror (intl:gettext "set_plot_option: expected only ~M items in the ~M list; found a ~M.") type name (type-of v))
      collect v)))
 
 (defun $set_plot_option ( value)
@@ -220,7 +220,7 @@ sin(y)*(10.0+6*cos(x)),
   (unless (and ($listp value) (symbolp (setq name (second value))))
     (merror
      (intl:gettext
-      "set_plot_option: ~M is not a plot option. Must be [symbol,..data]")
+      "set_plot_option: plot option must be a list whose first element is a symbol; found: ~M")
      value))
   (setq value
         (case name
@@ -234,7 +234,7 @@ sin(y)*(10.0+6*cos(x)),
           ($axes
            (unless (member (third value) '($x $y t nil))
              (merror
-              (intl:gettext "axes: must be either true, false, x or y")))
+              (intl:gettext "set_plot_option: axes must be either true, false, x or y; found: ~M") (third value)))
            value)
           ($plot_format
            (case (third value) ($openmath (setf (third value) '$xmaxima)))
@@ -245,20 +245,20 @@ sin(y)*(10.0+6*cos(x)),
                              $mgnuplot $xmaxima)))
              (merror
               (intl:gettext
-               "plot_format: only gnuplot, mgnuplot, xmaxima, and geomview are recognized")))
+               "set_plot_option: plot_format must be either gnuplot, mgnuplot, xmaxima, or geomview; found: ~M") (third value)))
            value)
           (($color $point_type $palette) value)
           (($azimuth $elevation)
            (unless (integerp (third value))
-             (merror (intl:gettext "azimuth: must be an integer")))
+             (merror (intl:gettext "set_plot_option: azimuth must be an integer; found: ~M") (third value)))
            value)
           ($mesh_lines_color
            (unless (or (symbolp (third value)) (stringp (third value)))
-             (merror (intl:gettext "mesh_lines_color: must be symbol or string")))
+             (merror (intl:gettext "set_plot_option: mesh_lines_color must be a symbol or string; found: ~M") (third value)))
            value)
           ($gnuplot_term
            (unless (or (symbolp (third value)) (stringp (third value)))
-               (merror (intl:gettext "gnuplot_term: must be symbol or string")))
+               (merror (intl:gettext "set_plot_option: gnuplot_term must be a symbol or string; found: ~M") (third value)))
            value)
           ($gnuplot_out_file value)
           ($gnuplot_curve_titles (if ($listp value)
@@ -275,7 +275,7 @@ sin(y)*(10.0+6*cos(x)),
           ($plot_realpart value)
           (t
            (merror
-            (intl:gettext "set_plot_option: Unknown plot option specified: ~M")
+            (intl:gettext "set_plot_option: unknown plot option: ~M")
             name))))
 
   (let ((v (rassoc name (cdr $plot_options) :test #'(lambda (a b) (eq a (car b))))))
@@ -410,7 +410,7 @@ sin(y)*(10.0+6*cos(x)),
 ;; pts is a vector of bts [x0,y0,z0,x1,y1,z1,...] and each tuple xi,yi,zi is rotated
 ;; also the *z-range* is computed.
 #-abcl (defun $rotate_pts(pts rotation-matrix)
-  (or ($matrixp rotation-matrix) (error "second arg not matrix"))
+  (or ($matrixp rotation-matrix) (merror (intl:gettext "rotate_pts: second argument must be a matrix.")))
   (let* ((rot *rot*)
          (l (length pts))
          (x 0.0) (y 0.0) (z 0.0)
@@ -591,7 +591,7 @@ sin(y)*(10.0+6*cos(x)),
             (let ((a (if lvars lvars `((mlist) ,(gensym)))))
               (coerce-float-fun `(($apply) ,expr ,a) a)))
            (t
-            (merror "Undefined function ~M" expr))))
+            (merror (intl:gettext "COERCE-FLOAT-FUN: no such Lisp or Maxima function: ~M") expr))))
 
     ((and (consp expr) (eq (caar expr) 'lambda))
      (let ((args (cdr (second expr))))
@@ -805,7 +805,7 @@ sin(y)*(10.0+6*cos(x)),
           ((typep lis 'cons)
            ($copy_pts (cdr lis) vec  ($copy_pts (car lis) vec start)))
           ((symbolp lis) start)
-          (t (error "bad lis")))))
+          (t (merror (intl:gettext "copy_pts: unrecognized first argument: ~M") lis)))))
 
 ;; parametric ; [parametric,xfun,yfun,[t,tlow,thigh],[nticks ..]]
 ;; the rest of the parametric list after the list will be pushed plot_options
@@ -868,18 +868,18 @@ sin(y)*(10.0+6*cos(x)),
          (cond
            ((= (length f) 4)                 ; [discrete,x,y]
             (if (not ($listp x))
-              (merror "draw2d (discrete): ~M must be a list." x))
+              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") x))
             (if (not ($listp y))
-              (merror "draw2d (discrete): ~M must be a list." y))
+              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") y))
             (cons '(mlist) (mapcan #'list (rest x) (rest y))))
            ((= (length f) 3)                 ; [discrete,xy]
             (if (not ($listp x))
-              (merror "draw2d (discrete): ~M must be a list." x))
+              (merror (intl:gettext "draw2d (discrete): argument must be a list; found: ~M") x))
             (let ((tmp (mapcar #'rest (rest x))))
               (cons '(mlist) (mapcan #'append tmp))))
            (t                                ; error
              (merror
-               "draw2d (discrete): expression is not of the form [discrete,x,y] or ~%[discrete,xy].")))))
+               (intl:gettext "draw2d (discrete): argument must be [discrete, x, y] or [discrete, xy]; found: ~M") f)))))
 
       ;; Encourage non-floats to become floats here.
 
@@ -1102,16 +1102,16 @@ sin(y)*(10.0+6*cos(x)),
           (if (null result-sans-nil)
             (cond
               ((= n-non-numeric 0)
-               (mtell "plot2d: all values were clipped.~%"))
+               (mtell (intl:gettext "plot2d: all values were clipped.~%")))
               ((= n-clipped 0)
-               (mtell "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%"))
+               (mtell (intl:gettext "plot2d: expression evaluates to non-numeric value everywhere in plotting range.~%")))
               (t
-                (mtell "plot2d: all values are non-numeric, or clipped.~%")))
+                (mtell (intl:gettext "plot2d: all values are non-numeric, or clipped.~%"))))
             (progn
               (if (> n-non-numeric 0)
-                (mtell "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%"))
+                (mtell (intl:gettext "plot2d: expression evaluates to non-numeric value somewhere in plotting range.~%")))
               (if (> n-clipped 0)
-                (mtell "plot2d: some values were clipped.~%"))))
+                (mtell (intl:gettext "plot2d: some values were clipped.~%")))))
           (cons '(mlist) result-sans-nil))))))
 
 (defun get-range (lis)
@@ -1173,7 +1173,7 @@ sin(y)*(10.0+6*cos(x)),
         ($dumb
          (if gnuplot-out-file
              ($printfile view-file)
-             (merror "Plot option `gnuplot_out_file' not defined."))))) 
+             (merror (intl:gettext "plotting: option 'gnuplot_out_file' not defined."))))))
     (if gnuplot-out-file
         gnuplot-out-file-string
         "")))
@@ -1218,7 +1218,7 @@ sin(y)*(10.0+6*cos(x)),
            ($set_plot_option `((mlist simp) $gnuplot_out_file ,(third v)))
            (setf (getf features :psfile) (ensure-string (third v))))
           (t ($set_plot_option v)))
-        (merror "Option ~M should be a list" v)))
+        (merror (intl:gettext "plotting: argument must be a list; found: ~M") v)))
   (when ($get_plot_option '$axes 2)
     (setf (getf features :axes) ($get_plot_option '$axes 2)))
   (setf (getf features :grid) ($get_plot_option '$grid))
@@ -1342,21 +1342,21 @@ sin(y)*(10.0+6*cos(x)),
         (if (> xmax 0)
             (when (<= xmin 0)
               (let ((revised-xmin (/ xmax 1000)))
-                (mtell "plot2d: lower bound must be positive when 'logx' in effect.~%plot2d: assuming lower bound = ~M instead of ~M" revised-xmin xmin)
+                (mtell (intl:gettext "plot2d: lower bound must be positive when 'logx' in effect.~%plot2d: assuming lower bound = ~M instead of ~M") revised-xmin xmin)
                 (setf (getf features :xmin) revised-xmin)
                 (setq range `((mlist) ,(second range) ,revised-xmin ,xmax))
                 ($set_plot_option `((mlist) $x ,revised-xmin ,xmax))))
-            (merror "plot2d: upper bound must be positive when 'logx' in effect; found: ~M" xmax))))
+            (merror (intl:gettext "plot2d: upper bound must be positive when 'logx' in effect; found: ~M") xmax))))
 
     (let ((ymin (getf features :ymin)) (ymax (getf features :ymax)))
       (when (and (getf features :log-y) ymin ymax)
         (if (> ymax 0)
             (when (<= ymin 0)
               (let ((revised-ymin (/ ymax 1000)))
-                (mtell "plot2d: lower bound must be positive when 'logy' in effect.~%plot2d: assuming lower bound = ~M instead of ~M" revised-ymin ymin)
+                (mtell (intl:gettext "plot2d: lower bound must be positive when 'logy' in effect.~%plot2d: assuming lower bound = ~M instead of ~M") revised-ymin ymin)
                 (setf (getf features :ymin) revised-ymin)
                 ($set_plot_option `((mlist) $y ,revised-ymin ,ymax))))
-            (merror "plot2d: upper bound must be positive when 'logy' in effect; found: ~M" ymax))))
+            (merror (intl:gettext "plot2d: upper bound must be positive when 'logy' in effect; found: ~M") ymax))))
 
     (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
 
@@ -1365,7 +1365,7 @@ sin(y)*(10.0+6*cos(x)),
 
     (setq points-lists (mapcar #'(lambda (f) (cdr (draw2d f range features))) (cdr fun)))
     (when (= (count-if #'(lambda (x) x) points-lists) 0)
-      (mtell "plot2d: nothing to plot.~%")
+      (mtell (intl:gettext "plot2d: nothing to plot.~%"))
       (return-from $plot2d))
 
     (setq gnuplot-term ($get_plot_option '$gnuplot_term 2))
@@ -1657,10 +1657,10 @@ output-file))
            (< a b))
       (if range
           (merror 
-           "Bad range: ~M.~%Range must be of the form [variable,min,max]"
+           (intl:gettext "plotting: range must be of the form [variable, min, max]; found: ~M")
            range)
           (merror 
-           "No range given. Must supply range of the form [variable,min,max]")))
+           (intl:gettext "plotting: no range given; must supply range of the form [variable, min, max]"))))
   `((mlist) ,(car tem) ,(float a) ,(float b)))
 
 (defun $zero_fun (x y) x y 0.0)
@@ -1743,7 +1743,7 @@ output-file))
              (not (member plot-format-in-plot-options gnuplot-formats :test #'eq))))
 
       (progn
-        (mtell "contour_plot: plot_format = ~a not understood; must be a gnuplot format.~%"
+        (mtell (intl:gettext "contour_plot: plot_format = ~a not recognized; must be a gnuplot format.~%")
                (ensure-string (or plot-format-in-arguments plot-format-in-plot-options)))
         (return-from $contour_plot))
 
@@ -1817,11 +1817,11 @@ output-file))
      (usage (intl:gettext
 "plot3d: Usage.
 To plot a single function f of 2 variables v1 and v2:
-  plot3d ( f, [v1, min, max], [v2, min, max], options )
-a parametric representation of a surface with parameters v1 and v2:
-  plot3d ( [f1, f2, f3], [v1, min, max], [v2, min, max], options
-several functions depending on the two variables v1 and v2:
-  plot3d ( [f1, f2, ..., fn], [v1, min, max], [v2, min, max], options")))
+  plot3d (f, [v1, min, max], [v2, min, max], options)
+A parametric representation of a surface with parameters v1 and v2:
+  plot3d ([f1, f2, f3], [v1, min, max], [v2, min, max], options)
+Several functions depending on the two variables v1 and v2:
+  plot3d ([f1, f2, ..., fn], [v1, min, max], [v2, min, max], options)")))
   
   (declare (special *original-points*))
   (setf (getf features :type) "plot3d")
@@ -1881,7 +1881,7 @@ several functions depending on the two variables v1 and v2:
                         (setf (getf features :const-expr)
                               ($float (meval (fourth exprn))))))
                     (merror
-                     (intl:gettext "plot3d: wrong number of variables: ~M. There should be two")
+                     (intl:gettext "plot3d: there must be two variables; found: ~M")
                      lvars))))
              
              (3
@@ -1898,7 +1898,7 @@ several functions depending on the two variables v1 and v2:
              (t
               ;; syntax error. exprn does not have the expected form
               (merror
-               (intl:gettext "plot3d: invalid argument ~M~%Expecting [expr1, expr2, expr3]")
+               (intl:gettext "plot3d: argument must be a list of three expressions; found: ~M")
                exprn))))
          (progn
            ;; exprn is a simple function, defined in the global domain.
@@ -2026,7 +2026,7 @@ several functions depending on the two variables v1 and v2:
                         (rest ($listofvars (mfuncall fun (second lvars)
                                                      (third lvars))))))
                   (merror
-                   (intl:gettext "plot3d: Wrong usage.~%Expecting <expr. with var1 and var2>, [var1, min, max], [var2, min, max]")))))
+                   (intl:gettext "plot3d: expected <expr. of v1 and v2>, [v1, min, max], [v2, min, max]")))))
           (let* ((pl
                   (draw3d
                    fun (third xrange) (fourth xrange) (third yrange)

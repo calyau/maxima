@@ -188,7 +188,7 @@
 	  ((random-state-p state) (copy-random-state state))
 	  ((eq state t)
 	   (make-random-object :state (init-random-state (generate-seed))))
-	  (t (error "Argument is not a RANDOM-STATE, T or NIL: ~S" state)))))
+	  (t (error (intl:gettext "make_random_state: argument must be a random state object, or true, or false; found: ~S") state)))))
 
 ;;;; Random entries:
 
@@ -356,7 +356,7 @@
     (t
      (error 'simple-type-error
 	    :expected-type '(or (integer 1) (float (0))) :datum arg
-	    :format-control "Argument is not a positive integer or a positive float: ~S"
+	    :format-control (intl:gettext "random: argument must be a positive integer or a positive float; found: ~S")
 	    :format-arguments (list arg)))))
 
 ;;; begin Maxima-specific stuff
@@ -384,7 +384,7 @@
   (if (and (or (integerp x) (floatp x))
 	   (> x 0))
       (mt19937::random x)
-    (merror "Random requires a positive integer or float argument, not ~m" x)))
+    (merror (intl:gettext "random: argument must be a positive integer or positive float; found: ~M") x)))
 
 ;;; end Maxima-specific stuff
 

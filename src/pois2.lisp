@@ -19,7 +19,7 @@
 (defun poislim1 (uu n)
   (declare (ignore uu))
   (unless  (fixnump n)
-    (merror "Improper argument to `poislim':~%~M" n))
+    (merror (intl:gettext "poislim: argument must be an integer; found: ~M") n))
   (setq poisvals nil)
   (setq poists (ash 1 n))
   (dotimes (j 6)
