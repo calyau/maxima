@@ -1159,7 +1159,7 @@ limit(cos(1/x)*sin(x)-sin(x),x,inf);
 limit(cos(1/x)*sin(x)-sin(x)+a,x,inf);
 a;
 
-/* Bug ID: 2914176  	 Conversion of rational to bfloat is inaccurate
+/* Bug ID: 2914176 - Conversion of rational to bfloat is inaccurate
  *
  * The difference should be 1/262144, but we don't check for that.
  */
@@ -1319,7 +1319,8 @@ orderlessp([rat(x)],[rat(x)]);
 false;
 
 /* Bug ID: 781657 - binomial(x,x) => 1, but binomial(-1,-1) => 0
- * binomial(x,x) simplifies to 1 only if the sign of x is known not to be zero.
+ * binomial(x,x) simplifies to 1 only if the sign of x is known not to be 
+ * negative.
  */
 is(equal(binomial(x,x),1));
 'unknown;
@@ -1556,3 +1557,18 @@ false;
 
 kill(x);
 done;
+
+/* Bug ID:1723548 - gradef for variables: not used in diff
+ * Show that the total differential of f works in expressions too.
+ */
+depends(f,[x,y]);
+[f(x,y)];
+diff(f);
+'diff(f,y,1)*del(y)+'diff(f,x,1)*del(x)$
+diff(3*f);
+3*'diff(f,y,1)*del(y)+3*'diff(f,x,1)*del(x)$
+diff(a*f);
+a*'diff(f,y,1)*del(y)+a*'diff(f,x,1)*del(x)+f*del(a)$
+remove(f,dependency);
+done;
+
