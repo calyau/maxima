@@ -151,6 +151,14 @@ trigrat ([1, 2, 3]);
     trigrat(a) >= trigrat(b),
     trigrat(a) > trigrat(b)]);
 
+/* Bug ID: 742909 - trigrat(sin(x/2)) makes a mess
+ * Bug ID: 2999635 - trigrat(sin(1)) makes mess
+ */
+trigrat(sin(x/2));
+sin(x/2);
+trigrat(sin(1));
+sin(1);
+
 /* compile() will fail with gcl if gcc not installed */
 f(x):=x+2;
 f(x):=x+2;
