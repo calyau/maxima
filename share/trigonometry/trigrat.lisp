@@ -12,11 +12,17 @@
 	    		(setq $lexp (cons '(mlist) $lexp))
 			(setq $d2 (cons $d2  (cdr e))) )
 	    (setq var (car lvar))
-	    (cond ((and
-		    (mexptp var)
-		    (equal (cadr var) '$%e)
-		    (mtimesp (caddr var))
-		    (eq (cadr (caddr var)) '$%i)) 
+            (cond ((and (mexptp var)
+                        (equal (cadr var) '$%e)
+;                       (mtimesp (caddr var))
+;                       (eq (cadr (caddr var)) '$%i)
+                        ;; Check that we have a factor of %i. This test includes
+                        ;; cases like %i, and %i*x/2, which we get for e.g.
+                        ;; sin(1) and sin(x/2).
+                        (eq '$%i (cdr (partition (if (atom (caddr var))
+                                                     (list '(mtimes)(caddr var))
+                                                     (caddr var))
+                                                 '$%i 1))))
 		   (setq $lexp (cons var $lexp))
 		   (setq var  (concat "$_" (car lg)))
 		   (setq $lg (cons var $lg))
