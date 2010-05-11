@@ -112,13 +112,20 @@
 				 (extractvars (margs e))))
 		 t))))
 
-(defun extractvars (e)
+(defun extractvars (e &aux vars)
   (cond ((null e) nil)
 	((atom (car e))
-	 (if (not (maxima-constantp (car e)))
-	     (union* (ncons (car e)) (extractvars (cdr e)))
-	     (extractvars (cdr e))))
-	((member 'array (cdaar e) :test #'eq) (union* (ncons (car e)) (extractvars (cdr e))))
+	 (cond ((not (maxima-constantp (car e)))
+	        (cond ((setq vars (mget (car e) 'depends))
+	               ;; The symbol has dependencies. Put the dependencies on
+	               ;; the list of extracted vars.
+	               (union* vars (extractvars (cdr e))))
+	              (t
+	               ;; Put the symbol on the list of extracted vars.
+	               (union* (ncons (car e)) (extractvars (cdr e))))))
+	     (t (extractvars (cdr e)))))
+	((member 'array (cdaar e) :test #'eq)
+	 (union* (ncons (car e)) (extractvars (cdr e))))
 	(t (union* (extractvars (cdar e)) (extractvars (cdr e))))))
 
 ;;;; AT
