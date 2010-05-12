@@ -220,22 +220,14 @@
 
 
 
-
-
-;; Initialize defaults
-(ini-gr-options)
-(ini-global-options)
-
-
 ;; Gives value of option
 (defun get-option (opt) (gethash opt *gr-options*))
 
 
 
-
 ;; update enhanced3d option
-(defvar *texture-type*)
-(defvar *texture-fun*)
+(defvar *texture-type* 0)
+(defvar *texture-fun* nil)
 
 (defun check-enhanced3d-model (grobj lis)
   (when (null (position *texture-type* lis))
@@ -311,9 +303,10 @@
       (gethash '$file_name *gr-options*)         "maxima_out"
       (gethash '$gnuplot_file_name *gr-options*) "maxout.gnuplot"
       (gethash '$data_file_name *gr-options*)    "data.gnuplot"
-      (gethash '$file_bgcolor *gr-options*) "xffffff"
+      (gethash '$file_bgcolor *gr-options*)      "xffffff"
       (gethash '$delay *gr-options*)        5      ; delay for animated gif's, default 5*(1/100) sec
-   ) )
+   )
+ )
 
 
 ;; Sets new values to global options
