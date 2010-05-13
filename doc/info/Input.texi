@@ -858,9 +858,13 @@ as the search directories.
 
 @end deffn
 
-@defvr {Option variable} file_search_maxima
+@c -----------------------------------------------------------------------------
+@defvr  {Option variable} file_search_maxima
 @defvrx {Option variable} file_search_lisp
 @defvrx {Option variable} file_search_demo
+@defvrx {Option variable} file_search_usage
+@defvrx {Option variable} file_search_tests
+
 These variables specify lists of directories to be searched
 by @code{load}, @code{demo}, and some other Maxima functions.
 The default values of these variables
