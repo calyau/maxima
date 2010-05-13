@@ -1572,3 +1572,15 @@ a*'diff(f,y,1)*del(y)+a*'diff(f,x,1)*del(x)+f*del(a)$
 remove(f,dependency);
 done;
 
+/* Bug ID: 1089719 addrow creates strange matrix
+ */
+m:matrix([0,0]);
+matrix([0,0]);
+m:addrow(m,m);
+matrix([0,0],[0,0])$
+m[1,1]:11;
+11;
+m;
+matrix([11,0],[0,0])$
+kill(m);
+done;
