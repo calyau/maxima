@@ -20,7 +20,7 @@
 	 (fv (coerce-float-fun fcns vars))
 	 (fj (cond ((eq jacobian t)
 		    ;; T means compute it ourselves
-		    (mfuncall '$jacobian fcns vars))
+		    (meval `(($jacobian) ,fcns ,vars)))
 		   (jacobian
 		    ;; Use the specified Jacobian
 		    )
