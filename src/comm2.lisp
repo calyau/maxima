@@ -688,10 +688,15 @@
 
 (defmfun $addrow (m &rest rows)
   (declare (dynamic-extent rows))
-  (cond ((not ($matrixp m)) (merror (intl:gettext "addrow: first argument must be a matrix; found ~M") m))
-	((null rows) m)
-	(t (dolist (r rows m)
-	     (setq m (addrow m r))))))
+  (cond ((not ($matrixp m))
+         (merror
+           (intl:gettext "addrow: first argument must be a matrix; found ~M")
+          m))
+        ((null rows) m)
+        (t
+         (let ((m (copy-tree m)))
+           (dolist (r rows m)
+             (setq m (addrow m r)))))))
 
 (defmfun $addcol (m &rest cols)
   (declare (dynamic-extent cols))
