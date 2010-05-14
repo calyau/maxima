@@ -613,20 +613,14 @@ the drawing character is not stored with the box expression.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} carg (@var{z})
 Returns the complex argument of @var{z}.
-The complex argument is an angle @code{theta} in @code{(-%pi, %pi]}
-such that @code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @var{z}.
-@c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
+The complex argument is an angle @code{theta} in @code{(-%pi, %pi]} such that 
+@code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @var{z}.
 
-@code{carg} is a computational function,
-not a simplifying function.
+@code{carg} is a computational function, not a simplifying function.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
-@c SEE ALSO SF BUG REPORT # 902290
-
-@code{carg} ignores the declaration @code{declare (@var{x}, complex)},
-and treats @var{x} as a real variable.
-This is a bug. @c SEE SF BUG REPORT # 620246
 
 See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
 @code{realpart}, and @code{imagpart}.
@@ -641,7 +635,6 @@ Examples:
 @c carg (exp (3/2 * %pi * %i));
 @c carg (17 * exp (2 * %i));
 @c ===end===
-
 @example
 (%i1) carg (1);
 (%o1)                           0
