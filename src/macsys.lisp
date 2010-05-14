@@ -205,7 +205,7 @@
 	(when $showtime	;; we don't distinguish showtime:all?? /RJF
 	  (format t (intl:gettext "Evaluation took ~,4F seconds (~,4F elapsed)")
 		  time-used etime-used )
-	  #+(or gcl ecl)
+	  #+(or gcl ecl openmcl)
 	  (format t "~%")
 	  #+(or cmu scl sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
