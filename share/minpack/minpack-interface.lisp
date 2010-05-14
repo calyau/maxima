@@ -171,7 +171,7 @@
 				 (incf col-index)))
 			     (incf row-index))))))
 		    (values n nil nil nil ldfjac iflag)))
-	   (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 ldfjac var-6 info)
+	   (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 ldfjac var-6 info)
 	       (minpack:hybrj1 #'fcn-and-jacobian
 			       n
 			       x
@@ -182,8 +182,7 @@
 			       info
 			       wa
 			       lwa)
-	     (declare (ignore ldfjac var-0 var-1 var-2 var-3 var-4 var-5 var-6))
-
+	     (declare (ignore ldfjac var-0 var-1 var-2 var-3 var-4 var-6))
 	     ;; Return a list of the solution and the info flag
 	     (list '(mlist)
 		   (list* '(mlist) (coerce x 'list))
@@ -192,7 +191,7 @@
       (t
        ;; No Jacobian given so we need to use differences to compute
        ;; a numerical Jacobian.  Use lmdif1.
-       (let* ((lwa (/ (* n (+ n 13)) 2))
+       (let* ((lwa (/ (* n (+ (* 3 n) 13)) 2))
 	      (wa (make-array lwa :element-type 'double-float)))
 	 (labels ((fval (n x fvec iflag)
 		    (declare (type f2cl-lib:integer4 n ldfjac iflag)
