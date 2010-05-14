@@ -161,6 +161,7 @@ Additional packages
 * linearalgebra::               Functions for linear algebra.
 * lsquares::                    Least squares.
 * makeOrders::                  Polynomial utility.
+* minpack::                     MINPACK functions for minimization and roots
 * mnewton::                     Newton's method.
 * numericalio::                 Reading and writing files.
 * opsubst::                     Substitutions utility.
@@ -520,6 +521,11 @@ makeOrders
 
 * Functions and Variables for makeOrders::
 
+minpack
+
+* Introduction to minpack::
+* Functions and Variables for minpack::
+
 mnewton
 
 * Introduction to mnewton::
@@ -852,11 +858,15 @@ zeilberger
 @chapter linearalgebra
 @include linearalgebra.texi
 
-@node lsquares, makeOrders, linearalgebra, Top
+@node lsquares, minpack, linearalgebra, Top
 @chapter lsquares
 @include lsquares.texi
 
-@node makeOrders, mnewton, lsquares, Top
+@node minpack, makeOrders, lsquares, Top
+@chapter minpack
+@include minpack.texi
+
+@node makeOrders, mnewton, minpack, Top
 @chapter makeOrders
 @include makeOrders.texi
 
