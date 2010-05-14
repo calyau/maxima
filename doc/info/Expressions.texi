@@ -1376,46 +1376,43 @@ for @code{%e^x} in @code{%e^(a x)}.
 @opencatbox
 @category{Exponential and logarithm functions} @category{Expressions}
 @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
-@code{freeof (@var{x_1}, @var{expr})}
-Returns @code{true}
-if no subexpression of @var{expr} is equal to @var{x_1}
-or if @var{x_1} occurs only as a dummy variable in @var{expr},
-or if @var{x_1} is neither the noun nor verb form of any operator in @var{expr},
-and returns @code{false} otherwise.
 
-@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}
-is equivalent to @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
+@code{freeof (@var{x_1}, @var{expr})} returns @code{true} if no subexpression of
+@var{expr} is equal to @var{x_1} or if @var{x_1} occurs only as a dummy variable
+in @var{expr}, or if @var{x_1} is neither the noun nor verb form of any operator
+in @var{expr}, and returns @code{false} otherwise.
 
-The arguments @var{x_1}, ..., @var{x_n} 
-may be names of functions and variables, subscripted names,
-operators (enclosed in double quotes), or general expressions.
+@code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})} is equivalent to 
+@code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
+
+The arguments @var{x_1}, ..., @var{x_n} may be names of functions and variables,
+subscripted names, operators (enclosed in double quotes), or general expressions.
 @code{freeof} evaluates its arguments.
 
-@code{freeof} operates only on @var{expr} as it stands (after simplification and evaluation) and
-does not attempt to determine if some equivalent expression would give a different result.
-In particular, simplification may yield an equivalent but different expression which comprises
-some different elements than the original form of @var{expr}.
+@code{freeof} operates only on @var{expr} as it stands (after simplification and
+evaluation) and does not attempt to determine if some equivalent expression 
+would give a different result. In particular, simplification may yield an 
+equivalent but different expression which comprises some different elements than
+the original form of @var{expr}.
 
-A variable is a dummy variable in an expression if it has no binding outside of the expression.
-Dummy variables recognized by @code{freeof} are
-the index of a sum or product, the limit variable in @code{limit},
-the integration variable in the definite integral form of @code{integrate},
-the original variable in @code{laplace},
-formal variables in @code{at} expressions,
-and arguments in @code{lambda} expressions.
-Local variables in @code{block} are not recognized by @code{freeof} as dummy variables;
-this is a bug.
+A variable is a dummy variable in an expression if it has no binding outside of 
+the expression. Dummy variables recognized by @code{freeof} are the index of a 
+sum or product, the limit variable in @code{limit}, the integration variable in 
+the definite integral form of @code{integrate}, the original variable in 
+@code{laplace}, formal variables in @code{at} expressions, and arguments in 
+@code{lambda} expressions.
 
-The indefinite form of @code{integrate} is @i{not} free of its variable of integration.
+The indefinite form of @code{integrate} is @i{not} free of its variable of 
+integration.
 
-@itemize @bullet
-@item
-Arguments are names of functions, variables, subscripted names, operators, and expressions.
-@code{freeof (a, b, expr)} is equivalent to
+Examples:
+
+Arguments are names of functions, variables, subscripted names, operators, and 
+expressions. @code{freeof (a, b, expr)} is equivalent to 
 @code{freeof (a, expr) and freeof (b, expr)}.
 
 @example
@@ -1439,7 +1436,6 @@ Arguments are names of functions, variables, subscripted names, operators, and e
 (%o8)                         true
 @end example
 
-@item
 @code{freeof} evaluates its arguments.
 
 @example
@@ -1449,7 +1445,6 @@ Arguments are names of functions, variables, subscripted names, operators, and e
 (%o3)                         false
 @end example
 
-@item
 @code{freeof} does not consider equivalent expressions.
 Simplification may yield an equivalent but different expression.
 
@@ -1469,7 +1464,7 @@ Simplification may yield an equivalent but different expression.
 (%o6)                         true
 @end example
 
-@item A summation or definite integral is free of its dummy variable.
+A summation or definite integral is free of its dummy variable.
 An indefinite integral is not free of its variable of integration.
 
 @example
@@ -1480,7 +1475,6 @@ An indefinite integral is not free of its variable of integration.
 (%i3) freeof (x, 'integrate (x^2, x));
 (%o3)                         false
 @end example
-@end itemize
 
 @opencatbox
 @category{Expressions}
