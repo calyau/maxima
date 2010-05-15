@@ -1584,3 +1584,12 @@ m;
 matrix([11,0],[0,0])$
 kill(m);
 done;
+
+/* Bug ID: 1663385 - declare multiplicative - wrong simplification
+ */
+declare(f,additive,f,multiplicative);
+done;
+f(a*b+c);
+f(a)*f(b)+f(c);
+kill(f);
+done;
