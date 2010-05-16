@@ -2106,10 +2106,19 @@
         (zmax most-negative-double-float)
         m n ncols-file col-num row-num
         (count -1))
-    (check-enhanced3d-model "mesh" '(0 2 3))
-    (when (or (< (length row) 2)
-              (not (every #'$listp row)))
-      (merror "draw3d (mesh): Arguments must be two or more lists"))
+    (cond
+      ; let's see if the user wants to use mesh in the old way,
+      ; what we now call elevation_grid
+      ((and (= (length row) 5)
+            ($matrixp (first row)))
+        (print "WARNING: Seems like you want to draw an elevation_grid object...")
+        (print "         Please, see documentation for object elevation_grid.")
+        (apply #'elevation_grid row))
+      (t
+        (check-enhanced3d-model "mesh" '(0 2 3))
+        (when (or (< (length row) 2)
+                  (not (every #'$listp row)))
+          (merror "draw3d (mesh): Arguments must be two or more lists"))
         (setf ncols-file (if (= *texture-type* 0) 3 4))
         (setf m (length row)
               n ($length (first row)))
@@ -2134,19 +2143,19 @@
                   (aref result (incf count)) z)
             ; check texture model
             (case *texture-type*
-              (1 (setf (aref result (incf count)) (funcall *texture-fun* row-num col-num)))
-              (2 (setf (aref result (incf count)) (funcall *texture-fun* x y z))))  )   )
+              (2 (setf (aref result (incf count)) (funcall *texture-fun* row-num col-num)))
+              (3 (setf (aref result (incf count)) (funcall *texture-fun* x y z))))  )   )
         (update-ranges-3d xmin xmax ymin ymax zmin zmax)
         (make-gr-object
           :name   'mesh
           :command (format nil " ~a w ~a lw ~a lt ~a lc ~a"
-                            (make-obj-title (get-option '$key))
-                            (if (> *texture-type* 0) "pm3d" "l")
-                            (get-option '$line_width)
-                            (get-option '$line_type)
-                            (get-option '$color))
+                           (make-obj-title (get-option '$key))
+                           (if (> *texture-type* 0) "pm3d" "l")
+                           (get-option '$line_width)
+                           (get-option '$line_type)
+                           (get-option '$color))
           :groups `((,ncols-file ,n))
-          :points  (list result))))
+          :points  (list result))))))
 
 
 
@@ -2716,8 +2725,16 @@
 
 
 
-
-
+;; transforms arguments to make-scene-2d, make-scene-3d
+;; and draw to a unique list. With this piece of code,
+;; gr2d, gr3d and draw admit as arguments lists of options
+;; and graphic objects.
+(defmacro make-list-of-arguments ()
+   '(setf largs (rest (apply 
+                         #'$append
+                        (map 
+                          'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
+                          args)))))
 
 (defvar *2d-graphic-objects* (make-hash-table))
 
@@ -2738,11 +2755,12 @@
 
 (defun make-scene-2d (args)
    (let ((objects nil)
-         plotcmd)
+         plotcmd largs)
       (ini-gr-options)
       (user-defaults)
+      (make-list-of-arguments)
       ; update option values and detect objects to be plotted
-      (dolist (x args)
+      (dolist (x largs)
          (cond ((equal ($op x) "=")
                    (update-gr-option ($lhs x) ($rhs x)))
                (t  (setf objects
@@ -2902,11 +2920,12 @@
 ;; graphic objects constructors.
 (defun make-scene-3d (args)
    (let ((objects nil)
-         plotcmd)
+         plotcmd largs)
       (ini-gr-options)
       (user-defaults)
+      (make-list-of-arguments)
       ; update option values and detect objects to be plotted
-      (dolist (x args)
+      (dolist (x largs)
          (cond ((equal ($op x) "=")
                   (update-gr-option ($lhs x) ($rhs x)))
                (t  (setf objects
@@ -3023,8 +3042,7 @@
             (if (not (get-option '$axis_3d))
                 (format nil "set border 0~%"))
             (format nil "set pm3d at s depthorder explicit~%")
-            (if (and (equal (get-option '$enhanced3d) '$none)
-                     (get-option '$surface_hide))
+            (if (get-option '$surface_hide)
                (format nil "set hidden3d nooffset~%"))
             (if (get-option '$xyplane)
                (format nil "set xyplane at ~a~%" (get-option '$xyplane)))
@@ -3091,8 +3109,10 @@
         datastorage ; file data.gnuplot
         datapath    ; path to data.gnuplot
         ncols nrows width height ; multiplot parameters
-        isanimatedgif is1stobj biglist grouplist )
-    (dolist (x args)
+        isanimatedgif is1stobj biglist grouplist largs)
+
+    (make-list-of-arguments)
+    (dolist (x largs)
       (cond ((equal ($op x) "=")
               (case ($lhs x)
                 ($terminal          (update-gr-option '$terminal ($rhs x)))
@@ -3110,15 +3130,9 @@
                 ($delay             (update-gr-option '$delay ($rhs x)))
                 (otherwise (merror "draw: unknown global option ~M " ($lhs x)))))
             ((equal (caar x) '$gr3d)
-              (setf scenes
-                    (append scenes
-                            (list (funcall #'make-scene-3d
-                                           (draw-transform (rest x) '$draw3d_transform))))))
+              (setf scenes (append scenes (list (funcall #'make-scene-3d (rest x))))))
             ((equal (caar x) '$gr2d)
-              (setf scenes
-                    (append scenes
-                            (list (funcall #'make-scene-2d
-                                           (draw-transform (rest x) '$draw2d_transform))))))
+              (setf scenes (append scenes (list (funcall #'make-scene-2d (rest x))))))
             (t
               (merror "draw: item ~M is not recognized" x)))   )
 
@@ -3335,17 +3349,6 @@
 ;; Equivalent to draw3d(opt & obj)
 (defun $draw3d (&rest args)
    ($draw (cons '($gr3d) args)) )
-
-(defun draw-transform-one (expr transform)
-  (if (atom expr)
-      (list expr)
-      (if ($get (caar expr) transform)
-          (cdr (mfuncall ($get (caar expr) transform) expr))
-          (list expr))))
-
-(defun draw-transform (expr transform)
-  (if (null expr) ()
-      (append (draw-transform-one (car expr) transform) (draw-transform (cdr expr) transform))))
 
 ;; This function transforms an integer number into
 ;; a string, adding zeros at the left side until the
