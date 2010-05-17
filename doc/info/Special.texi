@@ -1294,7 +1294,7 @@ The Exponential Integral Ei(z) (A&S 5.1.2)
 @closecatbox
 @end deffn
 
-@deffn {Function} expintegral_li (@var{n},@var{z})
+@deffn {Function} expintegral_li (@var{z})
 The Exponential Integral Li(z)  (A&S 5.1.3)
 @opencatbox
 @category{Exponential Integrals} @category{Special functions}
