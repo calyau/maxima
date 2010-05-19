@@ -657,9 +657,7 @@
 				  (= (length o) 3)
 				  (eq (caar o) 'mequal))))
 		     (unless ok
-                       ;; WELL, IF EVER THIS FUNCTION IS CALLED FROM ANYWHERE ELSE,
-                       ;; I GUESS WE'LL HAVE TO FIX UP "RUN_TESTSUITE:" IN THE MESSAGE
-		       (merror (intl:gettext "run_testsuite: badly formed keyword option: ~M") o))
+		       (merror (intl:gettext "Badly formed keyword option: ~M") o))
 		     ok))
 		 options)
     (mapcan #'(lambda (o)
@@ -671,8 +669,7 @@
 		    (flet ((keywordify (x)
 			     (intern (subseq (symbol-name x) 1) :keyword)))
 		      (list (keywordify opt) val))
-                    ;; SAME HERE ABOUT "RUN_TESTSUITE:"
-		    (merror (intl:gettext "run_testsuite: unrecognized keyword: ~M") opt))))
+		    (merror (intl:gettext "Unrecognized keyword: ~M") opt))))
 	    options)))
 
 (defun $run_testsuite (&rest options)
