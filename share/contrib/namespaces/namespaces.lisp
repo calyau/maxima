@@ -492,3 +492,112 @@
 	    (setq y (cons #\" (nconc y (list #\")))))
 	   (t (setq y (cons #\? (slash y)))))
      (return (msz y l r))))
+
+;; 2-D PRETTY PRINTER FUNCTIONS FOR OPERATORS
+;; I SUPPOSE CORRESPONDING FUNCTIONS ARE NEEDED FOR GRIND
+
+(defun get-dissym (a)                                          ; NEW
+  (let ((b (get a 'dissym)) (p (symbol-package a)))            ; NEW
+    (if (or (eq p *package*) (eq a '$\|))                      ; NEW
+      b                                                        ; NEW
+      (let ((c (exploden (stripdollar (package-name p)))))     ; NEW
+        (if (consp (car b))                                    ; NEW
+          (append (list (get-dissym-1 (car b) c)) (get-dissym-1 (rest b) c)) ; NEW
+          (get-dissym-1 b c))))))                              ; NEW
+
+(defun get-dissym-1 (b c)                                      ; NEW
+  (if (eq (car b) #\space)                                     ; NEW
+    (cons #\space (append c (cons #\| (rest b))))              ; NEW
+    (append c (cons #\| b))))                                  ; NEW
+
+(defmfun dimension-prefix (form result)
+  (prog (dissym (symlength 0))
+     (setq dissym (get-dissym (caar form))                     ; NEW
+	   symlength (length dissym))
+     (setq result (dimension (cadr form) (revappend dissym result) (caar form) rop symlength right)
+	   width (+ symlength width))
+     (return result)))
+
+(defmfun dimension-infix (form result)
+  (unless (= (length (cdr form)) 2)
+    (return-from dimension-infix (dimension-function form result)))
+  (prog (dissym (symlength 0) (w 0) (h 0) (d 0))
+     (setq dissym (get-dissym (caar form))                     ; NEW
+	   symlength (length dissym)
+	   result (dimension (cadr form) result lop (caar form) 0 symlength)
+	   w width
+	   h height
+	   d depth)
+     (setq result (revappend dissym result))
+     (checkbreak result (+ symlength w))
+     (setq result (dimension (caddr form) result (caar form) rop (+ symlength w) right)
+	   width (+ w symlength width)
+	   height (max h height)
+	   depth (max d depth))
+     (return result)))
+
+(defmfun dimension-nary (form result)
+  ;; If only 0 or 1 arguments, then print "*"() or "*"(A)
+  (cond ((null (cddr form))
+	 (dimension-function form result))
+	(t
+	 (prog (dissym (symlength 0) (w 0) (h 0) (d 0) helper)
+	    (setq dissym (get-dissym (caar form))              ; NEW
+		  symlength (length dissym)
+
+          ;; Look for a helper function. Fall back on default if none found.
+          helper (or (safe-get (caar form) 'dimension-nary-helper) 'dimnary)
+
+		  result (funcall helper (cadr form) result lop (caar form) (caar form) 0)
+		  w width
+		  h height
+		  d depth
+          )
+	    (do ((l (cddr form) (cdr l)))
+		(nil)
+	      (checkbreak result w)
+	      (setq result (revappend dissym result) w (+ symlength w))
+	      (cond ((null (cdr l))
+		     (setq result (funcall helper (car l) result (caar form) (caar form) rop w)
+			   width (+ w width)
+			   height (max h height)
+			   depth (max d depth))
+		     (return t))
+		    (t
+		     (setq result (funcall helper (car l) result (caar form) (caar form) (caar form) w)
+			   w (+ w width)
+			   h (max h height)
+			   d (max d depth)))))
+	    (return result)))))
+
+(defmfun dimension-postfix (form result)
+  (prog (dissym (symlength 0))
+     (setq dissym (get-dissym (caar form))                     ; NEW
+	   symlength (length dissym))
+     (setq result (dimension (cadr form) result lop (caar form) 0 (+ symlength right))
+	   width (+ symlength width))
+     (return (revappend dissym result))))
+
+(defmfun dimension-nofix (form result)
+  (setq form (get-dissym (caar form))                          ; NEW
+	width (length form))
+  (revappend form result))
+
+(defun dimension-match (form result)
+  (prog (dissym (symlength 0))
+     (setq dissym (get-dissym (caar form))                     ; NEW
+	   symlength (length (car dissym)))
+     (cond ((null (cdr form))
+	    (setq width (+ symlength (length (cdr dissym)))
+		  height 1
+		  depth 0)
+	    (return (revappend (cdr dissym) (revappend (car dissym) result))))
+	   (t (setq result (let ((lop 'mparen)
+				 (rop 'mparen)
+				 (break (if break (+ symlength break)))
+				 (right (+ symlength right)))
+			     (dimension-list form (revappend (car dissym) result))))
+	      (setq width (+ (length (cdr dissym)) symlength width))
+	      (return (revappend (cdr dissym) result))))))
+
+
