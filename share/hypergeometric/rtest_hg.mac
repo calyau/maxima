@@ -629,6 +629,18 @@ true$
 close_p(hypergeometric([1/2,-1/2],[1], 0.64), 0.812549610282201,15);
 true$
 
+/* tests for new code for x near exp(%i * %pi / 3) */
+
+close_p(hypergeometric([1/2,2/3],[6], 0.5b0+%i * sqrt(3.0b0)/2),
+  5.56090808176771804282797055039701904767032b-2*%i
+  +1.01996502902735430283851818152075979159011b0, fpprec-2);
+true$
+
+close_p(hypergeometric([1/2,2/3],[6], 0.5b0 - %i * sqrt(3.0b0)/2),
+	-5.56090808176771804282797055039701904767032b-2*%i
+        	+1.01996502902735430283851818152075979159011b0, fpprec-2);
+true$
+
 (remvalue(id,z,start,f), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
  remfunction(fake_hg, close_p, check_id),0);
 0$

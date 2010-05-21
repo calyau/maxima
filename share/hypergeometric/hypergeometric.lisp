@@ -308,10 +308,46 @@
 (defun gamma (x)
   (bigfloat (maxima::$bfloat (maxima::take '(maxima::%gamma) (maxima::to x)))))
 
+;; This is DLMF: http://dlmf.nist.gov/15.15#E1 with zo = 1/2. Alsom here is Maxima code that
+;; sums the first n+1 terms of the sum. The CL function 2f1-numeric-alt uses a running
+;; error and it sums until three consectutive partial sums have a modified relative difference
+;; that is bounded by the machine epsilon.
+
+#|
+ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/x), z],
+  b : c - 2 * b,
+  z : 1 - 2 / x,
+  while k <= n do (    
+    s : s + cf * f1,
+    cf : cf * (a + k) / ((k + 1) * z),    
+    f : (k * f0 + b * f1)/(k+c),
+    f0 : f1,
+    f1 : f,
+    k : k + 1),
+  s / (1-x/2)^a)$
+|#
+
+(defun 2f1-numeric-alt (a b c x)
+  (let ((f) (f0 1) (f1 (- 1 (/ (* 2 b) c))) (s 1) (ds 1) (k 1) (cf (/ a (- 1 (/ 2 x)))) (z) (se 0) 
+	(eps (epsilon x)) (done 0))
+    (setq b (- c (* 2 b)))
+    (setq z (- 1 (/ 2 x)))
+    (while (< done 3)
+      (setq ds (* cf f1))
+      (setq s (+ s ds))
+      (setq done (if (< (abs ds) (* eps (max 1 (abs s)))) (+ done 1) 0))
+      (setq se (+ se (abs s) (abs ds)))
+      (setq cf (/ (* cf (+ a k)) (* (+ 1 k) z)))
+      (setq f (/ (+ (* k f0) (* b f1)) (+ k c)))
+      (setq f0 f1)
+      (setq f1 f)
+      (setq k (+ k 1)))
+    (values (/ s (expt (- 1 (/ x 2)) a)) (* se (epsilon x)))))
+
 ;; hypergeometric([ma,mb],[mc],mx); prefix m means Maxima expression.
 
 (defun 2f1-numeric (ma mb mc mx digits)
-  (let* ((region) (f) (ff)
+  (let* ((region) (f) (ff) (er) (local-fpprec digits) (eps) (mma) (mmb) (mmc) (mmx)
 	 (x (bigfloat::to mx))
 	 (d (list (list "none" (abs x)) ;; region I, inside unit disk
 		  (list "15.3.4" (if (= x 1) nil (abs (/ x (- x 1)))))
@@ -325,11 +361,31 @@
     (setq d (sort d #'(lambda (a b) (< (second a) (second b)))))
     (setq region (first (first d)))
     ;;(print `(region = ,region))
- 
+    ;;(print `(d = ,(second (first d))))
+    
     (cond 
      ;; When x = 0, return 1. 
      ((zerop x) 1)
+     
+     ;; Use the alternative numerical method when |x| > 0.9; this happens when x is near exp(+/- %i %pi / 3).
 
+     ((> (second (first d)) 0.9)
+      (setq eps (epsilon (bigfloat::to mx)))
+      (setq er 1)
+      (setq f 1)
+
+      (while (> (abs er) (* eps (max (abs f) 1)))
+	(maxima::bind-fpprec local-fpprec
+			     (setq mma (maxima::nfloat ma `((maxima::mlist)) local-fpprec maxima::$max_fpprec))
+			     (setq mmb (maxima::nfloat mb `((maxima::mlist)) local-fpprec maxima::$max_fpprec))
+			     (setq mmc (maxima::nfloat mc `((maxima::mlist)) local-fpprec maxima::$max_fpprec))
+			     (setq mmx (maxima::nfloat mx `((maxima::mlist)) local-fpprec maxima::$max_fpprec))
+			     (multiple-value-setq (f er) 
+			       (2f1-numeric-alt 
+				(bigfloat::to mma) (bigfloat::to mmb) (bigfloat:to mmc) (bigfloat::to mmx)))
+			     (setq local-fpprec (* 2 local-fpprec))))
+      
+      (values f er))
      ;; ma or mb negative integers--that causes trouble for most of the A&S 15.3.4--15.3.9 
      ;; transformations--let's quickly dispatch hypergeometric-float-eval; also dispatch
      ;; hypergeometric-float-eval when the tranformation is "none" (with adjust-parameters
@@ -348,9 +404,8 @@
 	(multiple-value-setq (f d) 
 	  (maxima::nfloat f `((maxima::mlist) ((maxima::mequal) maxima::z ,mx)) digits maxima::$max_fpprec))
 	(values (bigfloat f) (bigfloat d))))
-          
+
      (t
-            
       (let ((maxima::$multiple_value_return t))
 	(setq ff  `((maxima::$hypergeometric maxima::simp)
 		    ((maxima::mlist maxima::simp) ,ma ,mb) 
