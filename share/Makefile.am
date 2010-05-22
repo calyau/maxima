@@ -483,6 +483,7 @@ contrib/rtest_opproperties.mac\
 contrib/rtestdefstruct.mac\
 contrib/rtest_lsquares.mac\
 contrib/rtest_mnewton.mac\
+contrib/rtest_solve_rat_ineq.mac\
 contrib/rtest_z_transform.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/arag_test.mac\
