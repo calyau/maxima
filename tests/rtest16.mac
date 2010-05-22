@@ -1593,3 +1593,10 @@ f(a*b+c);
 f(a)*f(b)+f(c);
 kill(f);
 done;
+
+/* Bug ID:  816808 subst(in)part of rat -- internal errs
+ */
+substpart(x,2/3,2);
+2/x;
+substinpart(4,2/3,2);
+1/2;
