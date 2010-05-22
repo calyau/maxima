@@ -851,6 +851,9 @@
        (merror (intl:gettext "~:M: argument must be a non-atomic expression; found ~:M") fn exp))
      (when (and inflag specp)
        (setq exp (copy-tree exp)))
+     (when substflag
+       ;; Replace all ocurrences of 'rat with 'mquotient when in subst.
+       (setq exp (let (($simp nil)) (maxima-substitute 'mquotient 'rat exp))))
      (setq exp* exp)
      start (cond ((or (atom exp) (eq (caar exp) 'bigfloat)) (go err))
 		 ((equal (setq arg (if substflag (meval (car arglist)) (car arglist)))
