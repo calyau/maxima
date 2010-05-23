@@ -155,7 +155,7 @@ true$
 (time : (absolute_real_time ()- start), print(time), is(time < 2));
 true$
 
-(remvalue(start,time), forget(x,complex), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
+(remvalue(start,time), remove(x,complex), reset(domain, fpprec, expand_hypergeometric, max_fpprec), 
  remfunction(close_p),0);
 0$
 
