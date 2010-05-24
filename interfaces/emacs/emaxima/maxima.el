@@ -334,14 +334,15 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
   "For compatibility.")
 
 (defcustom maxima-command "maxima"
-  "*The command used to start Maxima."
+  "*The command used to start Maxima. See also `maxima-args'."
   :group 'maxima
   :type 'string)
 
 (defcustom maxima-args nil
-  "*Extra arguments to pass to the maxima-command."
+  "*A list of extra arguments to pass to the `maxima-command'. Each
+element in the list should be a distinct command-line option."
   :group 'maxima
-  :type 'string)
+  :type 'list)
 
 (defcustom maxima-use-tabs nil
   "*If non-nil, indentation will use tabs."
@@ -2791,12 +2792,7 @@ The variable `tab-width' controls the spacing of tab stops."
     (setq inferior-maxima-waiting-for-output t)
     (let ((mbuf)
           (cmd))
-      (if maxima-args
-          (setq cmd 
-                (append (list 'make-comint "maxima" maxima-command
-                              nil) (split-string maxima-args))) 
-        (setq cmd (list 'make-comint "maxima" maxima-command)))
-      (setq mbuf (eval cmd))
+      (setq mbuf (apply #'make-comint "maxima" maxima-command nil maxima-args))
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
