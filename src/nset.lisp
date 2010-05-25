@@ -99,9 +99,10 @@
 ;; full_listify(a) converts all sets in a into lists.
 
 (defun $full_listify (a)
-  (cond ((atom a) a)
-	(($setp a) `((mlist simp) ,@(mapcar #'$full_listify (cdr a))))
-	(t `(,(car a) ,@(mapcar #'$full_listify (cdr a))))))
+  (setq a ($ratdisrep a))
+  (cond (($mapatom a) a)
+	(($setp a) (simplify (cons (list 'mlist) (mapcar #'$full_listify (cdr a)))))
+	(t (simplify (cons (car a) (mapcar #'$full_listify (cdr a)))))))
 
 (defprop $set simp-set operators)
 
