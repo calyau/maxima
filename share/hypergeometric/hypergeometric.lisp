@@ -303,7 +303,7 @@
   (exp x))
 
 (defun 1f0-numeric (a x)
-  (/ (expt (- 1 x) a)))
+  (/ 1 (expt (- 1 x) a)))
    	  
 (defun gamma (x)
   (bigfloat (maxima::$bfloat (maxima::take '(maxima::%gamma) (maxima::to x)))))
@@ -661,8 +661,9 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 	  ((eq return-type 'bigfloat)
 	   ($bfloat (maxima::to x)))
 
-	  ((eq return-type 'rational)
-	   ($rationalize (maxima::to x)))
+	  ;; Unused hypergeometric-float-eval doesn't return rational
+	  ;; ((eq return-type 'rational)
+	  ;;  ($rationalize (maxima::to x)))
 	  
 	  ;; This should not happen.
 	  (t (maxima::to x)))))
@@ -727,10 +728,10 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 (defprop $hypergeometric tex-hypergeometric tex)
 
 (defun tex-hypergeometric (x l r)
-  (let ((p) (q) (wide-space "\\;\\,"))
+  (let ((p) (q) (wide-space "\\;,"))
     (setq p (tex-list (margs (cadr x)) nil nil wide-space))
     (setq q (tex-list (margs (caddr x)) nil nil wide-space))
-    (setq p `(,@l "F\\left( \\begin{bmatrix}" ,@p "\\\\" ,@q "\\end{bmatrix} ,"))
+    (setq p `(,@l "F\\left( \\left. \\begin{array}{c}" ,@p "\\\\" ,@q "\\end{array} \\right |,"))
     (tex (fourth x) p `("\\right)" ,@r) 'mparen 'mparen)))
 
 ;; Integral of hypergeometric(a,b,z)
@@ -762,3 +763,4 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
       (mul prod_b-1 (inv prod_a-1) (take '($hypergeometric) a-1 b-1 z)))))
 
 (putprop '$hypergeometric `((a b z) nil nil ,#'hyp-integral-3) 'integral)
+
