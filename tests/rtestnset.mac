@@ -1683,3 +1683,7 @@ set(a,b)$
  {-abs(gv("CSup")),abs(gv("DiagF")),-abs(gv("DisT"))},{-abs(gv("CSup")),abs(gv("DiagF")),abs(gv("DisT"))},
  {abs(gv("CSup")),-abs(gv("DiagF")),-abs(gv("DisT"))},{abs(gv("CSup")),-abs(gv("DiagF")),abs(gv("DisT"))},
  {abs(gv("CSup")),abs(gv("DiagF")),-abs(gv("DisT"))},{abs(gv("CSup")),abs(gv("DiagF")),abs(gv("DisT"))}}$
+
+/* full_listify - ID: 3005820 */
+full_listify(rat(3/4));
+3/4$
