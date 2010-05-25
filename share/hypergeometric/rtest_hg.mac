@@ -663,6 +663,11 @@ tex(hypergeometric([2],[9],x),false);
 "$$F\\left( \\left. \\begin{array}{c}2\\\\9\\end{array} \\right |,x\\right)$$
 "$
 
+tex(hypergeometric([a,b],[c],x),false);
+"$$F\\left( \\left. \\begin{array}{c}a,\\;b\\\\c\\end{array} \\right |,x
+ \\right)$$
+"$
+
 (time : (absolute_real_time ()- start), print(time), is(time < 40));
 true$
 

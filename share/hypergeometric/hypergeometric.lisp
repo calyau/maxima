@@ -728,7 +728,7 @@ ff(a,b,c,x,n) := block([f, f0 : 1, f1 : 1- 2 * b / c,s : 1,k : 1, cf : a / (1-2/
 (defprop $hypergeometric tex-hypergeometric tex)
 
 (defun tex-hypergeometric (x l r)
-  (let ((p) (q) (wide-space "\\;,"))
+  (let ((p) (q) (wide-space ",\\;"))
     (setq p (tex-list (margs (cadr x)) nil nil wide-space))
     (setq q (tex-list (margs (caddr x)) nil nil wide-space))
     (setq p `(,@l "F\\left( \\left. \\begin{array}{c}" ,@p "\\\\" ,@q "\\end{array} \\right |,"))
