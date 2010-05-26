@@ -1553,11 +1553,10 @@ since it avoids polynomial arithmetic altogether.
 @closecatbox
 @end deffn
 
-@deffn {Function} newdet (@var{M}, @var{n})
-Computes the determinant of the matrix or array @var{M} by the
-Johnson-Gentleman tree minor algorithm.
-@c UGH -- ARRAYS ARE SUCH A MESS
-The argument @var{n} is the order; it is optional if @var{M} is a matrix.
+@c -----------------------------------------------------------------------------
+@deffn {Function} newdet (@var{M})
+Computes the determinant of the matrix @var{M} by the Johnson-Gentleman tree 
+minor algorithm. @code{newdet} returns the result in CRE form.
 
 @opencatbox
 @category{Matrices}
@@ -1583,9 +1582,13 @@ atoms declared as non-scalars, lists, or matrices.
 @closecatbox
 @end deffn
 
-@deffn {Function} permanent (@var{M}, @var{n})
-Computes the permanent of the matrix @var{M}.  A permanent
-is like a determinant but with no sign changes.
+@c -----------------------------------------------------------------------------
+@deffn {Function} permanent (@var{M})
+Computes the permanent of the matrix @var{M} by the Johnson-Gentleman tree
+minor algorithm. A permanent is like a determinant but with no sign changes.
+@code{permanent} returns the result in CRE form.
+
+See also @code{newdet}.
 
 @opencatbox
 @category{Matrices}
