@@ -2840,45 +2840,6 @@ See also @ref{Identifiers}.
 @closecatbox
 @end deffn
 
-@deffn {Function} unorder ()
-Disables the aliasing created by the last use of the ordering
-commands @code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} may not
-be used more than one time each without calling @code{unorder}. 
-See also @code{ordergreat} and @code{orderless}.
-
-Examples:
-
-@c HMM, IN THIS EXAMPLE, WHY ISN'T %o5 EQUAL TO ZERO ???
-@c ===beg===
-@c unorder();
-@c b*x + a^2;
-@c ordergreat (a);
-@c b*x + a^2;
-@c  %th(1) - %th(3);
-@c unorder();
-@c ===end===
-@example
-(%i1) unorder();
-(%o1)                          []
-(%i2) b*x + a^2;
-                                   2
-(%o2)                       b x + a
-(%i3) ordergreat (a);
-(%o3)                         done
-(%i4) b*x + a^2;
- %th(1) - %th(3);
-                             2
-(%o4)                       a  + b x
-(%i5) unorder();
-                              2    2
-(%o5)                        a  - a
-@end example
-
-@opencatbox
-@category{Expressions}
-@closecatbox
-@end deffn
-
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
 @deffn {Function} vectorpotential (@var{givencurl})

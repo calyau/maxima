@@ -2754,6 +2754,60 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} unorder ()
+Disables the aliasing created by the last use of the ordering commands 
+@code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} 
+may not be used more than one time each without calling @code{unorder}.
+
+@code{unorder} does not substitute back in expressions the original symbols for
+the aliases introduced by @code{ordergreat} and @code{orderless}. Therefore,
+after execution of @code{unorder} the aliases appear in previous expressions.
+ 
+See also @code{ordergreat} and @code{orderless}.
+
+Examples:
+
+@code{ordergreat(a)} introduces an alias for the symbol @code{a}. Therefore, the
+difference of @code{%o2} and @code{%o4} does not vanish. @code{unorder} does not
+substitute back the symbol @code{a} and the alias appears in the output 
+@code{%o7}.
+
+@c ===beg===
+@c unorder();
+@c b*x + a^2;
+@c ordergreat (a);
+@c b*x + a^2;
+@c  %th(1) - %th(3);
+@c unorder();
+@c %th(2);
+@c ===end===
+@example
+(%i1) unorder();
+(%o1)                          []
+(%i2) b*x+a^2;
+                                   2
+(%o2)                       b x + a
+(%i3) ordergreat(a);
+(%o3)                         done
+(%i4) b*x+a^2;
+                             2
+(%o4)                       a  + b x
+(%i5) %th(1)-%th(3);
+                              2    2
+(%o5)                        a  - a
+(%i6) unorder();
+(%o6)                          [a]
+(%i7) %th(2);
+                                2    2
+(%o7)                      _101a  - a
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
 @deffn {Function} verbify (@var{f})
 Returns the verb form of the function name @var{f}.
 
@@ -2782,3 +2836,4 @@ $FOO
 @category{Nouns and verbs}
 @closecatbox
 @end deffn
+
