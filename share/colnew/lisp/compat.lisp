@@ -1,13 +1,13 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.215 2009/04/07 22:05:21 rtoy Exp $"
+;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
-;;;  "f2cl5.l,v 1.200 2009/01/19 02:38:17 rtoy Exp $"
+;;;  "f2cl5.l,v 1.204 2010/02/23 05:21:30 rtoy Exp $"
 ;;;  "f2cl6.l,v 1.48 2008/08/24 00:56:27 rtoy Exp $"
-;;;  "macros.l,v 1.112 2009/01/08 12:57:19 rtoy Exp $")
+;;;  "macros.l,v 1.114 2010/05/17 01:42:14 rtoy Exp $")
 
-;;; Using Lisp CMU Common Lisp 19f (19F)
+;;; Using Lisp CMU Common Lisp CVS Head 2010-05-25 18:21:07 (20A Unicode)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -19,10 +19,8 @@
 
 (defstruct (colord
              (:predicate is-colord-p))
-  (part-0 (make-array 5 :element-type '(integer))
-          :type (simple-array (integer) (5)))
-  (part-1 (make-array 20 :element-type 'f2cl-lib:integer4)
-          :type (simple-array f2cl-lib:integer4 (20))))
+  (part-0 (make-array 25 :element-type '(f2cl-lib:integer4))
+          :type (simple-array (f2cl-lib:integer4) (25))))
 
 
 (defparameter *colord-common-block*
@@ -47,10 +45,8 @@
              (:predicate is-colest-p))
   (part-0 (make-array 200 :element-type 'double-float)
           :type (simple-array double-float (200)))
-  (part-1 (make-array 80 :element-type 'f2cl-lib:integer4)
-          :type (simple-array f2cl-lib:integer4 (80)))
-  (part-2 (make-array 1 :element-type '(integer))
-          :type (simple-array (integer) (1))))
+  (part-1 (make-array 81 :element-type 'f2cl-lib:integer4)
+          :type (simple-array f2cl-lib:integer4 (81))))
 
 
 (defparameter *colest-common-block*
@@ -63,8 +59,8 @@
              (:predicate is-colout-p))
   (part-0 (make-array 1 :element-type 'double-float)
           :type (simple-array double-float (1)))
-  (part-1 (make-array 2 :element-type '(integer))
-          :type (simple-array (integer) (2))))
+  (part-1 (make-array 2 :element-type '(f2cl-lib:integer4))
+          :type (simple-array (f2cl-lib:integer4) (2))))
 
 
 (defparameter *colout-common-block*
@@ -87,8 +83,8 @@
 
 (defstruct (colapr
              (:predicate is-colapr-p))
-  (part-0 (make-array 5 :element-type '(integer))
-          :type (simple-array (integer) (5))))
+  (part-0 (make-array 5 :element-type '(f2cl-lib:integer4))
+          :type (simple-array (f2cl-lib:integer4) (5))))
 
 
 (defparameter *colapr-common-block*
@@ -99,8 +95,8 @@
 
 (defstruct (colmsh
              (:predicate is-colmsh-p))
-  (part-0 (make-array 4 :element-type '(integer))
-          :type (simple-array (integer) (4))))
+  (part-0 (make-array 4 :element-type '(f2cl-lib:integer4))
+          :type (simple-array (f2cl-lib:integer4) (4))))
 
 
 (defparameter *colmsh-common-block*
@@ -113,8 +109,8 @@
              (:predicate is-colsid-p))
   (part-0 (make-array 42 :element-type 'double-float)
           :type (simple-array double-float (42)))
-  (part-1 (make-array 2 :element-type '(integer))
-          :type (simple-array (integer) (2))))
+  (part-1 (make-array 2 :element-type '(f2cl-lib:integer4))
+          :type (simple-array (f2cl-lib:integer4) (2))))
 
 
 (defparameter *colsid-common-block*
@@ -125,8 +121,8 @@
 
 (defstruct (colnln
              (:predicate is-colnln-p))
-  (part-0 (make-array 5 :element-type '(integer))
-          :type (simple-array (integer) (5))))
+  (part-0 (make-array 5 :element-type '(f2cl-lib:integer4))
+          :type (simple-array (f2cl-lib:integer4) (5))))
 
 
 (defparameter *colnln-common-block*
