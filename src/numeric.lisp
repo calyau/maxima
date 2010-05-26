@@ -584,14 +584,14 @@
 			 :real (maxima::bcons (maxima::fpquotient a-re dn))
 			 :imag (maxima::bcons
 				(maxima::fpquotient (maxima::fpminus r)
-						    dn)))
-	  (let* ((r (maxima::fpquotient b-re b-im))
-		 (dn (maxima::fpplus b-im (maxima::fptimes* r b-re))))
-	    (make-instance 'complex-bigfloat
-			   :real (maxima::bcons (maxima::fpquotient r dn))
-			   :imag (maxima::bcons
-				  (maxima::fpquotient (maxima::fpminus a-re)
-						      dn))))))))
+						    dn))))
+	(let* ((r (maxima::fpquotient b-re b-im))
+	       (dn (maxima::fpplus b-im (maxima::fptimes* r b-re))))
+	  (make-instance 'complex-bigfloat
+			 :real (maxima::bcons (maxima::fpquotient r dn))
+			 :imag (maxima::bcons
+				(maxima::fpquotient (maxima::fpminus a-re)
+						    dn)))))))
 ;;; Divide two numbers
 (defmethod two-arg-/ ((a number) (b number))
   (cl:/ a b))
@@ -1918,7 +1918,7 @@
   (to (maxima::bcons (maxima::fppi))))
 
 (defmethod %pi ((x cl:complex))
-  (pi (realpart x)))
+  (cl:float cl:pi (realpart x)))
 
 (defmethod %pi ((x complex-bigfloat))
   (declare (ignore x))
