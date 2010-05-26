@@ -86,3 +86,40 @@
 		    :depends-on ("subfor" "subbak"))
 	     (:file "subfor")
 	     (:file "subbak")))))
+
+(mk:defsystem colnew-ex-lisp
+  :source-pathname *colnew-root*
+  :language :f2cl-lisp
+  :compiler-options (:package :colnew)
+  :compile-only t
+  :components
+  ((:module ex1
+	    :components
+	    ((:file "prob1"
+		    :compiler-options (:common-as-array t :package :colnew)
+		    :depends-on ("fsub" "dfsub" "gsub" "dgsub" "exact"))
+	     (:file "fsub")
+	     (:file "gsub")
+	     (:file "dfsub")
+	     (:file "dgsub")
+	     (:file "exact")))
+   (:module ex2
+	    :components
+	    ((:file "prob2"
+		    :compiler-options (:declare-common t :pacckage :colnew)
+		    :depends-on ("fsub" "dfsub" "gsub" "dgsub" "solutn"))
+	     (:file "fsub")
+	     (:file "gsub")
+	     (:file "dfsub")
+	     (:file "dgsub")
+	     (:file "solutn")))
+   (:module ex3
+	    :components
+	    ((:file "prob3"
+		    :compiler-options (:declare-common t :package :colnew)
+		    :depends-on ("fsub" "dfsub" "gsub" "dgsub" "solutn"))
+	     (:file "fsub")
+	     (:file "gsub")
+	     (:file "dfsub")
+	     (:file "dgsub")
+	     (:file "solutn")))))
