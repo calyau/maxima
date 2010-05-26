@@ -106,7 +106,7 @@
    (:module ex2
 	    :components
 	    ((:file "prob2"
-		    :compiler-options (:declare-common t :pacckage :colnew)
+		    :compiler-options (:declare-common t :package :colnew)
 		    :depends-on ("fsub" "dfsub" "gsub" "dgsub" "solutn"))
 	     (:file "fsub")
 	     (:file "gsub")
