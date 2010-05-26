@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -49,7 +49,7 @@
     (setf (f2cl-lib:fref zeta (4) ((1 4))) (coerce 2.0f0 'double-float))
     (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                   ((> i 11) nil)
-                  (tagbody (setf (f2cl-lib:fref ipar (i) ((1 11))) 0) label10))
+      (tagbody (setf (f2cl-lib:fref ipar (i) ((1 11))) 0) label10))
     (setf (f2cl-lib:fref ipar (3) ((1 11))) 1)
     (setf (f2cl-lib:fref ipar (4) ((1 11))) 2)
     (setf (f2cl-lib:fref ipar (5) ((1 11))) 2000)
@@ -71,32 +71,28 @@
     (setf x (coerce 1.0f0 'double-float))
     (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                   ((> i 4) nil)
-                  (tagbody
-                    (setf (f2cl-lib:fref err (i) ((1 4)))
-                            (coerce 0.0f0 'double-float))
-                   label20))
+      (tagbody
+        (setf (f2cl-lib:fref err (i) ((1 4))) (coerce 0.0f0 'double-float))
+       label20))
     (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
                   ((> j 101) nil)
-                  (tagbody
-                    (multiple-value-bind (var-0 var-1 var-2 var-3)
-                        (appsln x z fspace ispace)
-                      (declare (ignore var-1 var-2 var-3))
-                      (setf x var-0))
-                    (exact x u)
-                    (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                                  ((> i 4) nil)
-                                  (tagbody
-                                    (setf (f2cl-lib:fref err (i) ((1 4)))
-                                            (f2cl-lib:amax1
-                                             (f2cl-lib:fref err (i) ((1 4)))
-                                             (abs
-                                              (- (f2cl-lib:fref u (i) ((1 4)))
-                                                 (f2cl-lib:fref z
-                                                                (i)
-                                                                ((1 4)))))))
-                                   label30))
-                    (setf x (+ x 0.01f0))
-                   label40))
+      (tagbody
+        (multiple-value-bind (var-0 var-1 var-2 var-3)
+            (appsln x z fspace ispace)
+          (declare (ignore var-1 var-2 var-3))
+          (setf x var-0))
+        (exact x u)
+        (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                      ((> i 4) nil)
+          (tagbody
+            (setf (f2cl-lib:fref err (i) ((1 4)))
+                    (f2cl-lib:amax1 (f2cl-lib:fref err (i) ((1 4)))
+                                    (abs
+                                     (- (f2cl-lib:fref u (i) ((1 4)))
+                                        (f2cl-lib:fref z (i) ((1 4)))))))
+           label30))
+        (setf x (+ x 0.01f0))
+       label40))
     (f2cl-lib:fformat 6
                       ("~%" " ERROR TOLERANCES SATISFIED" "~%" "~%"
                        " THE EXACT ERRORS ARE," "~%" "~7@T" 4

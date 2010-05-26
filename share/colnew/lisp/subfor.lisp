@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -22,60 +22,45 @@
            (type (array f2cl-lib:integer4 (*)) ipivot)
            (type (array double-float (*)) x w))
   (f2cl-lib:with-multi-array-data
-   ((w double-float w-%data% w-%offset%) (x double-float x-%data% x-%offset%)
-    (ipivot f2cl-lib:integer4 ipivot-%data% ipivot-%offset%))
-   (prog ((t$ 0.0) (ip 0) (k 0) (kp1 0) (lstep 0) (i 0))
-     (declare (type (f2cl-lib:integer4) i lstep kp1 k ip)
-              (type (double-float) t$))
-     (if (= nrow 1) (go end_label))
-     (setf lstep (f2cl-lib:min0 (f2cl-lib:int-sub nrow 1) last$))
-     (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                   ((> k lstep) nil)
-                   (tagbody
-                     (setf kp1 (f2cl-lib:int-add k 1))
-                     (setf ip
-                             (f2cl-lib:fref ipivot-%data%
-                                            (k)
-                                            ((1 last$))
-                                            ipivot-%offset%))
-                     (setf t$
-                             (f2cl-lib:fref x-%data%
-                                            (ip)
-                                            ((1 nrow))
-                                            x-%offset%))
-                     (setf (f2cl-lib:fref x-%data% (ip) ((1 nrow)) x-%offset%)
-                             (f2cl-lib:fref x-%data%
-                                            (k)
-                                            ((1 nrow))
-                                            x-%offset%))
-                     (setf (f2cl-lib:fref x-%data% (k) ((1 nrow)) x-%offset%)
-                             t$)
-                     (if (= t$ 0.0) (go label20))
-                     (f2cl-lib:fdo (i kp1 (f2cl-lib:int-add i 1))
-                                   ((> i nrow) nil)
-                                   (tagbody
-                                    label10
-                                     (setf (f2cl-lib:fref x-%data%
-                                                          (i)
-                                                          ((1 nrow))
-                                                          x-%offset%)
-                                             (+
-                                              (f2cl-lib:fref x-%data%
-                                                             (i)
-                                                             ((1 nrow))
-                                                             x-%offset%)
-                                              (*
-                                               (f2cl-lib:fref w-%data%
-                                                              (i k)
-                                                              ((1 nrow)
-                                                               (1 last$))
-                                                              w-%offset%)
-                                               t$)))))
-                    label20))
-    label30
-     (go end_label)
-    end_label
-     (return (values nil nil nil nil nil)))))
+      ((w double-float w-%data% w-%offset%)
+       (x double-float x-%data% x-%offset%)
+       (ipivot f2cl-lib:integer4 ipivot-%data% ipivot-%offset%))
+    (prog ((t$ 0.0) (ip 0) (k 0) (kp1 0) (lstep 0) (i 0))
+      (declare (type (f2cl-lib:integer4) i lstep kp1 k ip)
+               (type (double-float) t$))
+      (if (= nrow 1) (go end_label))
+      (setf lstep (f2cl-lib:min0 (f2cl-lib:int-sub nrow 1) last$))
+      (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                    ((> k lstep) nil)
+        (tagbody
+          (setf kp1 (f2cl-lib:int-add k 1))
+          (setf ip
+                  (f2cl-lib:fref ipivot-%data%
+                                 (k)
+                                 ((1 last$))
+                                 ipivot-%offset%))
+          (setf t$ (f2cl-lib:fref x-%data% (ip) ((1 nrow)) x-%offset%))
+          (setf (f2cl-lib:fref x-%data% (ip) ((1 nrow)) x-%offset%)
+                  (f2cl-lib:fref x-%data% (k) ((1 nrow)) x-%offset%))
+          (setf (f2cl-lib:fref x-%data% (k) ((1 nrow)) x-%offset%) t$)
+          (if (= t$ 0.0) (go label20))
+          (f2cl-lib:fdo (i kp1 (f2cl-lib:int-add i 1))
+                        ((> i nrow) nil)
+            (tagbody
+             label10
+              (setf (f2cl-lib:fref x-%data% (i) ((1 nrow)) x-%offset%)
+                      (+ (f2cl-lib:fref x-%data% (i) ((1 nrow)) x-%offset%)
+                         (*
+                          (f2cl-lib:fref w-%data%
+                                         (i k)
+                                         ((1 nrow) (1 last$))
+                                         w-%offset%)
+                          t$)))))
+         label20))
+     label30
+      (go end_label)
+     end_label
+      (return (values nil nil nil nil nil)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

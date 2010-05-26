@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -26,43 +26,44 @@
                       (eps4mu (%blank%-eps4mu *%blank%-common-block*))
                       (dmu (%blank%-dmu *%blank%-common-block*)))
       (f2cl-lib:with-multi-array-data
-       ((z double-float z-%data% z-%offset%)
-        (f double-float f-%data% f-%offset%))
-       (prog ()
-         (declare)
-         (setf (f2cl-lib:fref f-%data% (1) ((1 2)) f-%offset%)
-                 (+ (/ (/ (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%) x) x)
-                    (/ (- (f2cl-lib:fref z-%data% (2) ((1 4)) z-%offset%)) x)
-                    (/
-                     (+
-                      (- (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%)
-                         (* (f2cl-lib:fref z-%data% (3) ((1 4)) z-%offset%)
-                            (+ 1.0f0
-                               (/
-                                (-
-                                 (f2cl-lib:fref z-%data%
-                                                (1)
-                                                ((1 4))
-                                                z-%offset%))
-                                x))))
-                      (* (- gamma) x (+ 1.0f0 (/ (* (- x) x) 2.0f0))))
-                     eps4mu)))
-         (setf (f2cl-lib:fref f-%data% (2) ((1 2)) f-%offset%)
-                 (+ (/ (/ (f2cl-lib:fref z-%data% (3) ((1 4)) z-%offset%) x) x)
-                    (/ (- (f2cl-lib:fref z-%data% (4) ((1 4)) z-%offset%)) x)
-                    (/
-                     (* (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%)
-                        (+ 1.0f0
+          ((z double-float z-%data% z-%offset%)
+           (f double-float f-%data% f-%offset%))
+        (prog ()
+          (declare)
+          (setf (f2cl-lib:fref f-%data% (1) ((1 2)) f-%offset%)
+                  (+
+                   (/ (/ (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%) x) x)
+                   (/ (- (f2cl-lib:fref z-%data% (2) ((1 4)) z-%offset%)) x)
+                   (/
+                    (+
+                     (- (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%)
+                        (* (f2cl-lib:fref z-%data% (3) ((1 4)) z-%offset%)
+                           (+ 1.0f0
+                              (/
+                               (-
+                                (f2cl-lib:fref z-%data%
+                                               (1)
+                                               ((1 4))
+                                               z-%offset%))
+                               x))))
+                     (* (- gamma) x (+ 1.0f0 (/ (* (- x) x) 2.0f0))))
+                    eps4mu)))
+          (setf (f2cl-lib:fref f-%data% (2) ((1 2)) f-%offset%)
+                  (+
+                   (/ (/ (f2cl-lib:fref z-%data% (3) ((1 4)) z-%offset%) x) x)
+                   (/ (- (f2cl-lib:fref z-%data% (4) ((1 4)) z-%offset%)) x)
+                   (/
+                    (* (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%)
+                       (+ 1.0f0
+                          (/
                            (/
-                            (/
-                             (-
-                              (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%))
-                             2.0f0)
-                            x)))
-                     dmu)))
-         (go end_label)
-        end_label
-         (return (values nil nil nil)))))))
+                            (- (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%))
+                            2.0f0)
+                           x)))
+                    dmu)))
+          (go end_label)
+         end_label
+          (return (values nil nil nil)))))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

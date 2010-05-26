@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -96,157 +96,106 @@
           (setf (f2cl-lib:fref tol (2) ((1 2))) (coerce 1.0f-5 'double-float))
           (f2cl-lib:fdo (ijk 1 (f2cl-lib:int-add ijk 1))
                         ((> ijk 3) nil)
-                        (tagbody
-                          (setf s (f2cl-lib:fref sval (ijk) ((1 3))))
-                          (setf el (f2cl-lib:fref elval (ijk) ((1 3))))
-                          (if (= ijk 1) (go label10))
-                          (setf (f2cl-lib:fref ipar (9) ((1 11))) 3)
-                          (setf (f2cl-lib:fref ipar (3) ((1 11)))
-                                  (f2cl-lib:fref ispace (1) ((1 2500))))
-                         label10
-                          (f2cl-lib:fformat 6
-                                            ("1"
-                                             " ROTATING FLOW OVER A STATIONARY DISK."
-                                             "~%" "  PARAME" "TERS -  N =" 1
-                                             (("~5,2,0,'*,F")) "   S =" 1
-                                             (("~5,2,0,'*,F")) "   L =" 1
-                                             (("~6,1,0,'*,F")) "~%" "~%")
-                                            en
-                                            s
-                                            el)
-                          (multiple-value-bind
-                                (var-0 var-1 var-2 var-3 var-4 var-5 var-6
-                                 var-7 var-8 var-9 var-10 var-11 var-12 var-13
-                                 var-14 var-15 var-16)
-                              (colsys ncomp m aleft aright zeta ipar ltol tol
-                               (make-array 1
-                                           :element-type (type-of fixpnt)
-                                           :initial-element fixpnt)
-                               ispace fspace iflag #'fsub #'dfsub #'gsub
-                               #'dgsub #'solutn)
-                            (declare (ignore var-0 var-1 var-2 var-3 var-4
-                                             var-5 var-6 var-7 var-8 var-9
-                                             var-10 var-12 var-13 var-14 var-15
-                                             var-16))
-                            (setf iflag var-11))
-                          (if (/= iflag 1) (f2cl-lib::stop))
-                          (setf is6 (f2cl-lib:fref ispace (6) ((1 2500))))
-                          (setf is5
-                                  (f2cl-lib:int-add
-                                   (f2cl-lib:fref ispace (1) ((1 2500)))
-                                   2))
-                          (setf is4
-                                  (f2cl-lib:int-add is5
-                                                    (f2cl-lib:int-mul
-                                                     (f2cl-lib:fref ispace
-                                                                    (4)
-                                                                    ((1 2500)))
-                                                     (f2cl-lib:int-add
-                                                      (f2cl-lib:fref ispace
-                                                                     (1)
-                                                                     ((1
-                                                                       2500)))
-                                                      1))))
-                          (setf x (coerce 0.0f0 'double-float))
-                          (f2cl-lib:fformat 6
-                                            ("1"
-                                             "       X              G              DG     "
-                                             "       H             DH            D2H"
-                                             "~%" "~%"))
-                          (setf np1 (f2cl-lib:int (+ el 1.5f0)))
-                          (f2cl-lib:fdo (iii 1 (f2cl-lib:int-add iii 1))
-                                        ((> iii np1) nil)
-                                        (tagbody
-                                          (multiple-value-bind
-                                                (var-0 var-1 var-2 var-3 var-4
-                                                 var-5 var-6 var-7 var-8 var-9
-                                                 var-10 var-11 var-12 var-13
-                                                 var-14 var-15 var-16)
-                                              (approx iii x z a
-                                               (f2cl-lib:array-slice fspace
-                                                                     double-float
-                                                                     (is6)
-                                                                     ((1
-                                                                       40000)))
-                                               (f2cl-lib:array-slice fspace
-                                                                     double-float
-                                                                     (1)
-                                                                     ((1
-                                                                       40000)))
-                                               (f2cl-lib:fref ispace
-                                                              (1)
-                                                              ((1 2500)))
-                                               (f2cl-lib:array-slice fspace
-                                                                     double-float
-                                                                     (is5)
-                                                                     ((1
-                                                                       40000)))
-                                               (f2cl-lib:array-slice fspace
-                                                                     double-float
-                                                                     (is4)
-                                                                     ((1
-                                                                       40000)))
-                                               (f2cl-lib:fref ispace
-                                                              (2)
-                                                              ((1 2500)))
-                                               (f2cl-lib:fref ispace
-                                                              (3)
-                                                              ((1 2500)))
-                                               (f2cl-lib:fref ispace
-                                                              (5)
-                                                              ((1 2500)))
-                                               (f2cl-lib:array-slice ispace
-                                                                     f2cl-lib:integer4
-                                                                     (8)
-                                                                     ((1
-                                                                       2500)))
-                                               (f2cl-lib:fref ispace
-                                                              (4)
-                                                              ((1 2500)))
-                                               1
-                                               (make-array 1
-                                                           :element-type (type-of
-                                                                          dm)
-                                                           :initial-element dm)
-                                               0)
-                                            (declare (ignore var-2 var-3 var-4
-                                                             var-5 var-6 var-7
-                                                             var-8 var-9 var-10
-                                                             var-11 var-12
-                                                             var-13 var-14
-                                                             var-15 var-16))
-                                            (setf iii var-0)
-                                            (setf x var-1))
-                                          (setf xl (* x el))
-                                          (setf (f2cl-lib:fref z (2) ((1 5)))
-                                                  (/
-                                                   (f2cl-lib:fref z
-                                                                  (2)
-                                                                  ((1 5)))
-                                                   el))
-                                          (setf (f2cl-lib:fref z (4) ((1 5)))
-                                                  (/
-                                                   (f2cl-lib:fref z
-                                                                  (4)
-                                                                  ((1 5)))
-                                                   el))
-                                          (setf (f2cl-lib:fref z (5) ((1 5)))
-                                                  (/
-                                                   (/
-                                                    (f2cl-lib:fref z
-                                                                   (5)
-                                                                   ((1 5)))
-                                                    el)
-                                                   el))
-                                          (f2cl-lib:fformat 6
-                                                            (6
-                                                             (("~15,5,2,0,'*,,'EE"))
-                                                             "~%")
-                                                            xl
-                                                            z)
-                                          (setf x (+ x (/ 1.0f0 el)))
-                                         label20))
-                         label30))
+            (tagbody
+              (setf s (f2cl-lib:fref sval (ijk) ((1 3))))
+              (setf el (f2cl-lib:fref elval (ijk) ((1 3))))
+              (if (= ijk 1) (go label10))
+              (setf (f2cl-lib:fref ipar (9) ((1 11))) 3)
+              (setf (f2cl-lib:fref ipar (3) ((1 11)))
+                      (f2cl-lib:fref ispace (1) ((1 2500))))
+             label10
+              (f2cl-lib:fformat 6
+                                ("1" " ROTATING FLOW OVER A STATIONARY DISK."
+                                 "~%" "  PARAME" "TERS -  N =" 1
+                                 (("~5,2,0,'*,F")) "   S =" 1 (("~5,2,0,'*,F"))
+                                 "   L =" 1 (("~6,1,0,'*,F")) "~%" "~%")
+                                en
+                                s
+                                el)
+              (multiple-value-bind
+                    (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
+                     var-9 var-10 var-11 var-12 var-13 var-14 var-15 var-16)
+                  (colsys ncomp m aleft aright zeta ipar ltol tol
+                   (make-array 1
+                               :element-type (type-of fixpnt)
+                               :initial-element fixpnt)
+                   ispace fspace iflag #'fsub #'dfsub #'gsub #'dgsub #'solutn)
+                (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6
+                                 var-7 var-8 var-9 var-10 var-12 var-13 var-14
+                                 var-15 var-16))
+                (setf iflag var-11))
+              (if (/= iflag 1) (f2cl-lib::stop))
+              (setf is6 (f2cl-lib:fref ispace (6) ((1 2500))))
+              (setf is5
+                      (f2cl-lib:int-add (f2cl-lib:fref ispace (1) ((1 2500)))
+                                        2))
+              (setf is4
+                      (f2cl-lib:int-add is5
+                                        (f2cl-lib:int-mul
+                                         (f2cl-lib:fref ispace (4) ((1 2500)))
+                                         (f2cl-lib:int-add
+                                          (f2cl-lib:fref ispace (1) ((1 2500)))
+                                          1))))
+              (setf x (coerce 0.0f0 'double-float))
+              (f2cl-lib:fformat 6
+                                ("1"
+                                 "       X              G              DG     "
+                                 "       H             DH            D2H" "~%"
+                                 "~%"))
+              (setf np1 (f2cl-lib:int (+ el 1.5f0)))
+              (f2cl-lib:fdo (iii 1 (f2cl-lib:int-add iii 1))
+                            ((> iii np1) nil)
+                (tagbody
+                  (multiple-value-bind
+                        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8
+                         var-9 var-10 var-11 var-12 var-13 var-14 var-15
+                         var-16)
+                      (approx iii x z a
+                       (f2cl-lib:array-slice fspace
+                                             double-float
+                                             (is6)
+                                             ((1 40000)))
+                       (f2cl-lib:array-slice fspace
+                                             double-float
+                                             (1)
+                                             ((1 40000)))
+                       (f2cl-lib:fref ispace (1) ((1 2500)))
+                       (f2cl-lib:array-slice fspace
+                                             double-float
+                                             (is5)
+                                             ((1 40000)))
+                       (f2cl-lib:array-slice fspace
+                                             double-float
+                                             (is4)
+                                             ((1 40000)))
+                       (f2cl-lib:fref ispace (2) ((1 2500)))
+                       (f2cl-lib:fref ispace (3) ((1 2500)))
+                       (f2cl-lib:fref ispace (5) ((1 2500)))
+                       (f2cl-lib:array-slice ispace
+                                             f2cl-lib:integer4
+                                             (8)
+                                             ((1 2500)))
+                       (f2cl-lib:fref ispace (4) ((1 2500))) 1
+                       (make-array 1
+                                   :element-type (type-of dm)
+                                   :initial-element dm)
+                       0)
+                    (declare (ignore var-2 var-3 var-4 var-5 var-6 var-7 var-8
+                                     var-9 var-10 var-11 var-12 var-13 var-14
+                                     var-15 var-16))
+                    (setf iii var-0)
+                    (setf x var-1))
+                  (setf xl (* x el))
+                  (setf (f2cl-lib:fref z (2) ((1 5)))
+                          (/ (f2cl-lib:fref z (2) ((1 5))) el))
+                  (setf (f2cl-lib:fref z (4) ((1 5)))
+                          (/ (f2cl-lib:fref z (4) ((1 5))) el))
+                  (setf (f2cl-lib:fref z (5) ((1 5)))
+                          (/ (/ (f2cl-lib:fref z (5) ((1 5))) el) el))
+                  (f2cl-lib:fformat 6 (6 (("~15,5,2,0,'*,,'EE")) "~%") xl z)
+                  (setf x (+ x (/ 1.0f0 el)))
+                 label20))
+             label30))
           (f2cl-lib::stop)
          end_label
           (return nil))))))

@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -21,32 +21,19 @@
   (declare (type (double-float) g)
            (type (array double-float (*)) z)
            (type (f2cl-lib:integer4) i))
-  (f2cl-lib:with-multi-array-data ((z double-float z-%data% z-%offset%))
-                                  (prog ()
-                                    (declare)
-                                    (f2cl-lib:computed-goto
-                                     (label10 label20 label10 label20)
-                                     i)
-                                   label10
-                                    (setf g
-                                            (-
-                                             (f2cl-lib:fref z-%data%
-                                                            (1)
-                                                            ((1 4))
-                                                            z-%offset%)
-                                             0.0f0))
-                                    (go end_label)
-                                   label20
-                                    (setf g
-                                            (-
-                                             (f2cl-lib:fref z-%data%
-                                                            (3)
-                                                            ((1 4))
-                                                            z-%offset%)
-                                             0.0f0))
-                                    (go end_label)
-                                   end_label
-                                    (return (values nil nil g)))))
+  (f2cl-lib:with-multi-array-data
+      ((z double-float z-%data% z-%offset%))
+    (prog ()
+      (declare)
+      (f2cl-lib:computed-goto (label10 label20 label10 label20) i)
+     label10
+      (setf g (- (f2cl-lib:fref z-%data% (1) ((1 4)) z-%offset%) 0.0f0))
+      (go end_label)
+     label20
+      (setf g (- (f2cl-lib:fref z-%data% (3) ((1 4)) z-%offset%) 0.0f0))
+      (go end_label)
+     end_label
+      (return (values nil nil g)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

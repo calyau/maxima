@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -14,7 +14,7 @@
 ;;;           (:array-slicing t) (:declare-common t)
 ;;;           (:float-format double-float))
 
-(in-package :common-lisp-user)
+(in-package :colnew)
 
 
 (defstruct (%blank%
@@ -96,10 +96,10 @@
         (setf (f2cl-lib:fref ipar (4) ((1 11))) 4)
         (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
                       ((> i 4) nil)
-                      (tagbody
-                        (setf (f2cl-lib:fref ltol (i) ((1 4))) i)
-                        (setf (f2cl-lib:fref tol (i) ((1 4))) 1.0e-5)
-                       label10))
+          (tagbody
+            (setf (f2cl-lib:fref ltol (i) ((1 4))) i)
+            (setf (f2cl-lib:fref tol (i) ((1 4))) 1.0e-5)
+           label10))
         (multiple-value-bind
               (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                var-10 var-11 var-12 var-13 var-14 var-15 var-16)
@@ -119,18 +119,18 @@
         (setf np1 21)
         (f2cl-lib:fdo (iii 1 (f2cl-lib:int-add iii 1))
                       ((> iii np1) nil)
-                      (tagbody
-                        (multiple-value-bind (var-0 var-1 var-2 var-3)
-                            (appsln x z fspace ispace)
-                          (declare (ignore var-1 var-2 var-3))
-                          (setf x var-0))
-                        (f2cl-lib:fformat 6
-                                          ("~6@T" 1 (("~5,2,0,'*,F")) "~4@T" 6
-                                           (("~15,5,2,0,'*,,'EE")) "~%")
-                                          x
-                                          z)
-                        (setf x (+ x 0.05))
-                       label20))
+          (tagbody
+            (multiple-value-bind (var-0 var-1 var-2 var-3)
+                (appsln x z fspace ispace)
+              (declare (ignore var-1 var-2 var-3))
+              (setf x var-0))
+            (f2cl-lib:fformat 6
+                              ("~6@T" 1 (("~5,2,0,'*,F")) "~4@T" 6
+                               (("~15,5,2,0,'*,,'EE")) "~%")
+                              x
+                              z)
+            (setf x (+ x 0.05))
+           label20))
         (f2cl-lib::stop)
        end_label
         (return nil)))))

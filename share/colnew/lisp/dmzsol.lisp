@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -22,51 +22,43 @@
            (type (array double-float (*)) dmz v)
            (type (f2cl-lib:integer4) n mstar kd))
   (f2cl-lib:with-multi-array-data
-   ((v double-float v-%data% v-%offset%)
-    (dmz double-float dmz-%data% dmz-%offset%)
-    (z double-float z-%data% z-%offset%))
-   (prog ((l 0) (fact 0.0) (j 0) (i 0) (jz 0))
-     (declare (type double-float fact) (type (f2cl-lib:integer4) jz i j l))
-     (setf jz 1)
-     (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
-                   ((> i n) nil)
-                   (tagbody
-                     (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
-                                   ((> j mstar) nil)
-                                   (tagbody
-                                     (setf fact
-                                             (f2cl-lib:fref z-%data%
-                                                            (jz)
-                                                            ((1 1))
-                                                            z-%offset%))
-                                     (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
-                                                   ((> l kd) nil)
-                                                   (tagbody
-                                                     (setf (f2cl-lib:fref
-                                                            dmz-%data%
-                                                            (l i)
-                                                            ((1 kd) (1 1))
-                                                            dmz-%offset%)
-                                                             (+
-                                                              (f2cl-lib:fref
-                                                               dmz-%data%
-                                                               (l i)
-                                                               ((1 kd) (1 1))
-                                                               dmz-%offset%)
-                                                              (* fact
-                                                                 (f2cl-lib:fref
-                                                                  v-%data%
-                                                                  (l jz)
-                                                                  ((1 kd)
-                                                                   (1 1))
-                                                                  v-%offset%))))
-                                                    label10))
-                                     (setf jz (f2cl-lib:int-add jz 1))
-                                    label20))
-                    label30))
-     (go end_label)
-    end_label
-     (return (values nil nil nil nil nil nil)))))
+      ((v double-float v-%data% v-%offset%)
+       (dmz double-float dmz-%data% dmz-%offset%)
+       (z double-float z-%data% z-%offset%))
+    (prog ((l 0) (fact 0.0) (j 0) (i 0) (jz 0))
+      (declare (type double-float fact) (type (f2cl-lib:integer4) jz i j l))
+      (setf jz 1)
+      (f2cl-lib:fdo (i 1 (f2cl-lib:int-add i 1))
+                    ((> i n) nil)
+        (tagbody
+          (f2cl-lib:fdo (j 1 (f2cl-lib:int-add j 1))
+                        ((> j mstar) nil)
+            (tagbody
+              (setf fact (f2cl-lib:fref z-%data% (jz) ((1 1)) z-%offset%))
+              (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
+                            ((> l kd) nil)
+                (tagbody
+                  (setf (f2cl-lib:fref dmz-%data%
+                                       (l i)
+                                       ((1 kd) (1 1))
+                                       dmz-%offset%)
+                          (+
+                           (f2cl-lib:fref dmz-%data%
+                                          (l i)
+                                          ((1 kd) (1 1))
+                                          dmz-%offset%)
+                           (* fact
+                              (f2cl-lib:fref v-%data%
+                                             (l jz)
+                                             ((1 kd) (1 1))
+                                             v-%offset%))))
+                 label10))
+              (setf jz (f2cl-lib:int-add jz 1))
+             label20))
+         label30))
+      (go end_label)
+     end_label
+      (return (values nil nil nil nil nil nil)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

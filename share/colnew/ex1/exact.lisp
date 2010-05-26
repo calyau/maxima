@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -19,61 +19,34 @@
 
 (defun exact (x u)
   (declare (type (array double-float (*)) u) (type (double-float) x))
-  (f2cl-lib:with-multi-array-data ((u double-float u-%data% u-%offset%))
-                                  (prog ()
-                                    (declare)
-                                    (setf (f2cl-lib:fref u-%data%
-                                                         (1)
-                                                         ((1 4))
-                                                         u-%offset%)
-                                            (+
-                                             (* 0.25f0
-                                                (-
-                                                 (* 10.0f0
-                                                    (f2cl-lib:flog 2.0f0))
-                                                 3.0f0)
-                                                (- 1.0f0 x))
-                                             (* 0.5f0
-                                                (-
-                                                 (+ (/ 1.0f0 x)
-                                                    (* (+ 3.0f0 x)
-                                                       (f2cl-lib:flog x)))
-                                                 x))))
-                                    (setf (f2cl-lib:fref u-%data%
-                                                         (2)
-                                                         ((1 4))
-                                                         u-%offset%)
-                                            (+
-                                             (* -0.25f0
-                                                (-
-                                                 (* 10.0f0
-                                                    (f2cl-lib:flog 2.0f0))
-                                                 3.0f0))
-                                             (* 0.5f0
-                                                (-
-                                                 (+ (/ (/ -1.0f0 x) x)
-                                                    (f2cl-lib:flog x)
-                                                    (/ (+ 3.0f0 x) x))
-                                                 1.0f0))))
-                                    (setf (f2cl-lib:fref u-%data%
-                                                         (3)
-                                                         ((1 4))
-                                                         u-%offset%)
-                                            (* 0.5f0
-                                               (+ (/ 2.0f0 (expt x 3))
-                                                  (/ 1.0f0 x)
-                                                  (/ (/ -3.0f0 x) x))))
-                                    (setf (f2cl-lib:fref u-%data%
-                                                         (4)
-                                                         ((1 4))
-                                                         u-%offset%)
-                                            (* 0.5f0
-                                               (+ (/ -6.0f0 (expt x 4))
-                                                  (/ (/ -1.0f0 x) x)
-                                                  (/ 6.0f0 (expt x 3)))))
-                                    (go end_label)
-                                   end_label
-                                    (return (values nil nil)))))
+  (f2cl-lib:with-multi-array-data
+      ((u double-float u-%data% u-%offset%))
+    (prog ()
+      (declare)
+      (setf (f2cl-lib:fref u-%data% (1) ((1 4)) u-%offset%)
+              (+
+               (* 0.25f0
+                  (- (* 10.0f0 (f2cl-lib:flog 2.0f0)) 3.0f0)
+                  (- 1.0f0 x))
+               (* 0.5f0
+                  (- (+ (/ 1.0f0 x) (* (+ 3.0f0 x) (f2cl-lib:flog x))) x))))
+      (setf (f2cl-lib:fref u-%data% (2) ((1 4)) u-%offset%)
+              (+ (* -0.25f0 (- (* 10.0f0 (f2cl-lib:flog 2.0f0)) 3.0f0))
+                 (* 0.5f0
+                    (-
+                     (+ (/ (/ -1.0f0 x) x) (f2cl-lib:flog x) (/ (+ 3.0f0 x) x))
+                     1.0f0))))
+      (setf (f2cl-lib:fref u-%data% (3) ((1 4)) u-%offset%)
+              (* 0.5f0
+                 (+ (/ 2.0f0 (expt x 3)) (/ 1.0f0 x) (/ (/ -3.0f0 x) x))))
+      (setf (f2cl-lib:fref u-%data% (4) ((1 4)) u-%offset%)
+              (* 0.5f0
+                 (+ (/ -6.0f0 (expt x 4))
+                    (/ (/ -1.0f0 x) x)
+                    (/ 6.0f0 (expt x 3)))))
+      (go end_label)
+     end_label
+      (return (values nil nil)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

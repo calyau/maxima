@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -22,20 +22,21 @@
            (type (array double-float (*)) z)
            (type (double-float) x))
   (f2cl-lib:with-multi-array-data
-   ((z double-float z-%data% z-%offset%) (f double-float f-%data% f-%offset%))
-   (prog ()
-     (declare)
-     (setf (f2cl-lib:fref f-%data% (1) ((1 1)) f-%offset%)
-             (/
-              (+ 1.0f0
-                 (* -6.0f0
-                    (expt x 2)
-                    (f2cl-lib:fref z-%data% (4) ((1 4)) z-%offset%))
-                 (* -6.0f0 x (f2cl-lib:fref z-%data% (3) ((1 4)) z-%offset%)))
-              (expt x 3)))
-     (go end_label)
-    end_label
-     (return (values nil nil nil)))))
+      ((z double-float z-%data% z-%offset%)
+       (f double-float f-%data% f-%offset%))
+    (prog ()
+      (declare)
+      (setf (f2cl-lib:fref f-%data% (1) ((1 1)) f-%offset%)
+              (/
+               (+ 1.0f0
+                  (* -6.0f0
+                     (expt x 2)
+                     (f2cl-lib:fref z-%data% (4) ((1 4)) z-%offset%))
+                  (* -6.0f0 x (f2cl-lib:fref z-%data% (3) ((1 4)) z-%offset%)))
+               (expt x 3)))
+      (go end_label)
+     end_label
+      (return (values nil nil nil)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

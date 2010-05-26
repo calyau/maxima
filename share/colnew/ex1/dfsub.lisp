@@ -1,5 +1,5 @@
 ;;; Compiled by f2cl version:
-;;; ("f2cl1.l,v 1.220 2010/05/26 03:22:59 rtoy Exp $"
+;;; ("f2cl1.l,v 1.221 2010/05/26 19:25:52 rtoy Exp $"
 ;;;  "f2cl2.l,v 1.37 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl3.l,v 1.6 2008/02/22 22:19:33 rtoy Exp $"
 ;;;  "f2cl4.l,v 1.7 2008/02/22 22:19:34 rtoy Exp $"
@@ -20,21 +20,21 @@
 (defun dfsub (x z df)
   (declare (type (array double-float (*)) df z) (type (double-float) x))
   (f2cl-lib:with-multi-array-data
-   ((z double-float z-%data% z-%offset%)
-    (df double-float df-%data% df-%offset%))
-   (prog ()
-     (declare)
-     (setf (f2cl-lib:fref df-%data% (1 1) ((1 1) (1 4)) df-%offset%)
-             (coerce 0.0f0 'double-float))
-     (setf (f2cl-lib:fref df-%data% (1 2) ((1 1) (1 4)) df-%offset%)
-             (coerce 0.0f0 'double-float))
-     (setf (f2cl-lib:fref df-%data% (1 3) ((1 1) (1 4)) df-%offset%)
-             (/ -6.0f0 (expt x 2)))
-     (setf (f2cl-lib:fref df-%data% (1 4) ((1 1) (1 4)) df-%offset%)
-             (/ -6.0f0 x))
-     (go end_label)
-    end_label
-     (return (values nil nil nil)))))
+      ((z double-float z-%data% z-%offset%)
+       (df double-float df-%data% df-%offset%))
+    (prog ()
+      (declare)
+      (setf (f2cl-lib:fref df-%data% (1 1) ((1 1) (1 4)) df-%offset%)
+              (coerce 0.0f0 'double-float))
+      (setf (f2cl-lib:fref df-%data% (1 2) ((1 1) (1 4)) df-%offset%)
+              (coerce 0.0f0 'double-float))
+      (setf (f2cl-lib:fref df-%data% (1 3) ((1 1) (1 4)) df-%offset%)
+              (/ -6.0f0 (expt x 2)))
+      (setf (f2cl-lib:fref df-%data% (1 4) ((1 1) (1 4)) df-%offset%)
+              (/ -6.0f0 x))
+      (go end_label)
+     end_label
+      (return (values nil nil nil)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
