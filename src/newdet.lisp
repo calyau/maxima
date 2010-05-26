@@ -26,12 +26,31 @@
 (defvar *binom*)
 (defvar *input*)
 
+(defmfun $newdet (mat)
+  (cond ((not (or (mbagp mat) ($matrixp mat)))
+         (if ($scalarp mat) mat (list '(%newdet simp) mat)))
+        (t
+         (setq mat (check mat))
+         (unless (= (length mat) (length (cadr mat)))
+           (merror
+             (intl:gettext 
+               "newdet: Matrix must be square; found ~M rows, ~M columns.")
+            (length (cdr mat))
+            (length (cdadr mat))))
+         (newdet mat (length (cdr mat)) nil))))
 
-(defmfun $newdet (a &optional (n (length (cdr a))))
-  (newdet a n nil))
-
-(defmfun $permanent (a &optional (n (length (cdr a))))
-  (newdet a n t))
+(defmfun $permanent (mat)
+  (cond ((not (or (mbagp mat) ($matrixp mat)))
+         (if ($scalarp mat) mat (list '(%permanent simp) mat)))
+        (t
+         (setq mat (check mat))
+         (unless (= (length mat) (length (cadr mat)))
+           (merror
+             (intl:gettext 
+               "permanent: Matrix must be square; found ~M rows, ~M columns.")
+            (length (cdr mat))
+            (length (cdadr mat))))
+         (newdet mat (length (cdr mat)) t))))
 
 (defun newdet (a n perm)
   (prog (rr k j old new vlist m loc addr sign)
