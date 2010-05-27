@@ -73,23 +73,23 @@
 	       (values nil z dmval)))
 	(multiple-value-bind (z-ncomp z-m z-aleft z-aright z-zeta z-ipar z-ltol z-tol
 				      z-fixpnt z-ispace z-fspace o-iflag)
-	    (colnew::colnew ncomp
-			    a-m
-			    ($float aleft)
-			    ($float aright)
-			    a-zeta
-			    a-ipar
-			    a-ltol
-			    a-tol
-			    a-fixpnt
-			    a-ispace
-			    a-fspace
-			    iflag
-			    #'fsub
-			    #'dfsub
-			    #'gsub
-			    #'dgsub
-			    #'guess)
+	    (colnew:colnew ncomp
+			   a-m
+			   ($float aleft)
+			   ($float aright)
+			   a-zeta
+			   a-ipar
+			   a-ltol
+			   a-tol
+			   a-fixpnt
+			   a-ispace
+			   a-fspace
+			   iflag
+			   #'fsub
+			   #'dfsub
+			   #'gsub
+			   #'dgsub
+			   #'guess)
 	  (declare (ignore z-ncomp z-m z-aleft z-aright z-zeta z-ipar z-ltol z-tol
 			   z-fixpnt z-ispace z-fspace))
 	  (list '(mlist)
@@ -111,6 +111,6 @@
 	  (z (make-array zlen :element-type 'double-float))
 	  (result nil))
       (dolist (pnt (cdr x))
-	(colnew::appsln ($float pnt) z a-fspace a-ispace)
+	(colnew:appsln ($float pnt) z a-fspace a-ispace)
 	(push (convert-to-mlist z) result))
       (list* '(mlist) (nreverse result)))))
