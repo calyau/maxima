@@ -293,8 +293,11 @@
 
 (defun nisnumberpicker (x) 
   (cond ((null x) nil)
-	((not (symbolp (caar x))) (nisnumberpicker (cdr x)))
-	(t (nisswcdr x (nisnumberpicker (cdr x)))))) 
+        ((or (not (symbolp (caar x)))
+             (kindp (caar x) '$constant))
+         ;; Skip over numbers and constants
+         (nisnumberpicker (cdr x)))
+        (t (nisswcdr x (nisnumberpicker (cdr x))))))
 
 (defun nismatch (a b c) 
   (prog (x y newexpt) 
