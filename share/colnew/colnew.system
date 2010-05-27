@@ -74,6 +74,15 @@
 	     (:file "subfor")
 	     (:file "subbak")))))
 
+(mk:defsystem colnew-if
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "colnew"
+					  (concatenate 'string "binary-" maxima::*maxima-lispname*))
+  :source-extension "lisp"
+  :depends-on ("colnew")
+  :components
+  ((:file "colnew-if")))
+
 ;;; Here are some sample tests of colnew.  They all work and produce
 ;;; results that match the Fortran code.
 ;;;
