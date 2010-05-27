@@ -4051,7 +4051,8 @@ first kind:
        ((mplus) ((mtimes simp ratsimp) -1 m) ((mexpt) x 2))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_ns) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_ns) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_ns simp-%inverse_jacobi_ns operators)
@@ -4119,7 +4120,8 @@ first kind:
 	((mtimes) -1 ((mplus) -1 m) ((mexpt) x 2)))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_nc) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_nc) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_nc simp-%inverse_jacobi_nc operators)
@@ -4174,7 +4176,8 @@ first kind:
 	((mtimes) ((mplus) -1 m) ((mexpt simp ratsimp) x 2)))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_nd) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_nd) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_nd simp-%inverse_jacobi_nd operators)
@@ -4236,7 +4239,8 @@ first kind:
 	((mtimes) -1 ((mplus) -1 m) ((mexpt) x 2)))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_sc) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_sc) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_sc simp-%inverse_jacobi_sc operators)
@@ -4294,7 +4298,8 @@ first kind:
       ((mexpt) ((mplus) 1 ((mtimes) m ((mexpt) x 2)))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_sd) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_sd) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_sd simp-%inverse_jacobi_sd operators)
@@ -4353,7 +4358,8 @@ first kind:
 		((mexpt simp ratsimp) x 2))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_cs) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_cs) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_cs simp-%inverse_jacobi_cs operators)
@@ -4405,7 +4411,8 @@ first kind:
        ((mplus) 1 ((mtimes) -1 m ((mexpt) x 2)))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_cd) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_cd) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_cd simp-%inverse_jacobi_cd operators)
@@ -4458,7 +4465,8 @@ first kind:
        ((mplus) m ((mexpt simp ratsimp) x 2))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_ds) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_ds) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_ds simp-%inverse_jacobi_ds operators)
@@ -4523,7 +4531,8 @@ first kind:
 	((mexpt simp ratsimp) x 2))
        ((rat) -1 2)))
      ;; wrt m
-     ((%derivative) ((%inverse_jacobi_dc) x m) m 1))
+;     ((%derivative) ((%inverse_jacobi_dc) x m) m 1)
+     nil)
   grad)
 
 (defprop %inverse_jacobi_dc simp-%inverse_jacobi_dc operators)
