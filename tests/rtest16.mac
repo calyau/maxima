@@ -1594,9 +1594,20 @@ f(a)*f(b)+f(c);
 kill(f);
 done;
 
-/* Bug ID:  816808 subst(in)part of rat -- internal errs
+/* Bug ID: 816808 subst(in)part of rat -- internal errs
  */
 substpart(x,2/3,2);
 2/x;
 substinpart(4,2/3,2);
 1/2;
+
+/* Bug ID: 1117533 - letsimp complains about assignment to %pi
+ */
+matchdeclare(a,true);
+done;
+(let(%pi*a,foo(a)),done);
+done;
+letsimp(%pi*x);
+foo(x);
+remlet(%pi*a);
+done;
