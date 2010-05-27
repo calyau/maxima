@@ -574,11 +574,29 @@ integer factors of rational expressions.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
-Rearranges the sum @var{expr} into a sum of
-terms of the form @code{f (@var{x_1}, @var{x_2}, ...)*g} where @code{g} is a product of
+Rearranges the sum @var{expr} into a sum of terms of the form 
+@code{f (@var{x_1}, @var{x_2}, ...)*g} where @code{g} is a product of 
 expressions not containing any @var{x_i} and @code{f} is factored.
-@c NEED EXAMPLE HERE
+
+Note that the option variable @code{keepfloat} is ignored by @code{factorout}.
+
+Example:
+
+@c ===beg===
+@c expand (a*(x+1)*(x-1)*(u+1)^2);
+@c factorout(%,x);
+@c ===end===
+@example
+(%i1) expand (a*(x+1)*(x-1)*(u+1)^2);
+             2  2          2      2      2
+(%o1)     a u  x  + 2 a u x  + a x  - a u  - 2 a u - a
+(%i2) factorout(%,x);
+         2
+(%o2) a u  (x - 1) (x + 1) + 2 a u (x - 1) (x + 1)
+                                              + a (x - 1) (x + 1)
+@end example
 
 @opencatbox
 @category{Expressions}
