@@ -84,6 +84,11 @@ calculus/taylor1.mac\
 combinatorics/README\
 colnew/colnew-package.lisp\
 colnew/colnew-lisp.system\
+colnew/colnew.system\
+colnew/colnew-if.lisp\
+colnew/colnew.mac\
+colnew/prob1.mac\
+colnew/prob2.mac\
 colnew/lisp/approx.lisp\
 colnew/lisp/appsln.lisp\
 colnew/lisp/colnew.lisp\
