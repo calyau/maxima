@@ -54,7 +54,14 @@
 
 (defun add-inversep (x y)
   (eq t (meqp x (neg y))))
-	    
+
+;; Define a simplim%function to handle a limit of $max.
+
+(defprop $max simplim$max simplim%function)
+
+(defun simplim$max (expr var val)
+  (cons '($max) (mapcar #'(lambda (e) (limit e var val 'think)) (cdr expr))))
+
 ;; When get(trylevel,maxmin) is two or greater, max and min try additional 
 ;; O(n^2) and O(n^3) methods.
  
@@ -132,6 +139,13 @@
 	((eq x '$inf) '$minf)
 	((member x '($und $ind $infinity) :test #'eq) x)
 	(t (neg x))))
+
+;; Define a simplim%function to handle a limit of $min.
+
+(defprop $min simplim$min simplim%function)
+
+(defun simplim$min (expr var val)
+  (cons '($min) (mapcar #'(lambda (e) (limit e var val 'think)) (cdr expr))))
 
 (defprop $min simp-min operators)
 
