@@ -153,42 +153,42 @@
 
 
 (defun get-application-args ()
-  #+clisp
-  (rest ext:*args*)
+  ;; -- is used to distinguish between options for a lisp implementation
+  ;; and for Maxima.
+  (flet ((remove-implementation-args (arglist)
+           (let ((dashes (member "--" arglist :test #'equal)))
+             (if dashes
+                 (cdr dashes)
+                 arglist))))
+    (remove-implementation-args
+     #+clisp
+     (rest ext:*args*)
     
-  #+ecl
-  (let ((result (ext:command-args)))
-    (do ((removed-arg nil (pop result)))
-	((or (equal removed-arg "--") (equal nil result)) result)))
+     #+ecl
+     (rest (ext:command-args))
 
-  #+cmu
-  (let ((result lisp::lisp-command-line-list))
-    (do ((removed-arg nil (pop result)))
-	((or (equal removed-arg "--") (equal nil result)) result)))
+     #+cmu
+     (if (boundp 'ext:*command-line-application-arguments*)
+	 ext:*command-line-application-arguments*
+	 (rest ext:*command-line-strings*))
+     
+     #+scl
+     (rest ext:*command-line-strings*)
 
-  #+scl
-  (let ((result ext:*command-line-strings*))
-    (do ((removed-arg nil (pop result)))
-	((or (equal removed-arg "--") (equal nil result)) result)))
+     #+sbcl
+     (rest sb-ext:*posix-argv*)
 
-  #+sbcl
-  (rest sb-ext:*posix-argv*)
+     #+gcl
+     (rest si:*command-args*)
 
-  #+gcl
-  (let ((result  si::*command-args*))
-    (do ((removed-arg nil (pop result)))
-	((or (equal removed-arg "--") (equal nil result)) result)))
-
-  #+allegro
-  (let ((args (system:command-line-arguments :application t)))
-    ;; Skip the first arg, which is the full path to alisp.
-    (rest args))
+     #+allegro
+     (rest (system:command-line-arguments :application t))
       
-  #+lispworks
-  (rest system:*line-arguments-list*)
+     #+lispworks
+     (rest system:*line-arguments-list*)
 
-  #+openmcl
-  (let ((result  (rest (ccl::command-line-arguments))))
-    (do ((removed-arg nil (pop result)))
-	((or (equal removed-arg "--") (equal nil result)) result)))
-  )
+     #+openmcl
+     (rest ccl:*command-line-argument-list*)
+
+     #+abcl
+     ext:*command-line-argument-list*)))
