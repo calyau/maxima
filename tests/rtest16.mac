@@ -1594,7 +1594,7 @@ f(a)*f(b)+f(c);
 kill(f);
 done;
 
-/* Bug ID: 816808 subst(in)part of rat -- internal errs
+/* Bug ID: 816808 - subst(in)part of rat -- internal errs
  */
 substpart(x,2/3,2);
 2/x;
@@ -1611,3 +1611,10 @@ letsimp(%pi*x);
 foo(x);
 remlet(%pi*a);
 done;
+
+/* Bug ID: 3002971 - limit fails where rat+subst works
+ */
+limit(min(x,x+2,sin(x)/x),x,0);
+0;
+limit(max(x,x+2,sin(x)/x),x,0);
+2;
