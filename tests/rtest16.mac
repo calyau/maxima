@@ -1618,3 +1618,12 @@ limit(min(x,x+2,sin(x)/x),x,0);
 0;
 limit(max(x,x+2,sin(x)/x),x,0);
 2;
+
+/* Bug ID: 2805600 depends() partially prevents diff() to work
+ */
+depends(t,x);
+[t(x)];
+diff(f(t),z);
+0;
+remove(t,dependency);
+done;

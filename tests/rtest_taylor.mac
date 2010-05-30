@@ -510,3 +510,10 @@ qq^2;
 16+32*(x-1)+24*(x-1)^2+8*(x-1)^3;
 (keepfloat:old,done);
 done;
+
+/* Bug ID: 2985866 - derivatives of functions of taylor polys
+ */
+diff('(f(taylor(x,x,0,6))),x);
+'diff(f(taylor(x,x,0,6)),x,1);
+ev(%,nouns);
+'diff(f(+x),x,1);
