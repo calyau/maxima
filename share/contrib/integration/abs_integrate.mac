@@ -29,6 +29,7 @@ extra_integration_methods : ['intfudu, 'intfugudu, 'signum_int, 'abs_integrate_u
 
 extra_integrate(q,x) := block([l, i, ii : funmake(nounify('integrate),[q,x])],
   l : extra_integration_methods,
+  q : subst('mod = lambda([x,y], x - y * floor(x / y)),q),
   while l # [ ] do (
     i : first(l)(q,x),
     l : rest(l),
@@ -94,7 +95,7 @@ unit_step_mult_simp(e) := block([p : [], q : 1, inflag : true],
    for ek in e do (
      if safe_op(ek) = 'unit_step then p : cons(first(ek),p) else q : q * ek),
    p : xreduce('min, p),
-   if freeof('max, 'min, p) then q * unit_step(p) else e)
+   if freeof('max, 'min, 'inf, p) then q * unit_step(p) else e)
  else map('unit_step_mult_simp, e));
          
 /* Do signum(a) * signum(b) --> signum(a * b) and e * signum(e) --> abs(e) */
