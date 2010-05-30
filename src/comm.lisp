@@ -436,10 +436,13 @@
     (and (atom e) (setq y (mget e '$atomgrad)) (assolike x y))))
 
 (defun depends (e x)
+  (setq e (specrepcheck e))
   (cond ((alike1 e x) t)
-	((mnump e) nil)
-	((atom e) (mget e 'depends))
-	(t (or (depends (caar e) x) (dependsl (cdr e) x)))))
+        ((mnump e) nil)
+        ((and (symbolp e) (member x (mget e 'depends))) t)
+        ((atom e) nil)
+        (t (or (depends (caar e) x)
+               (dependsl (cdr e) x)))))
 
 (defun dependsl (l x)
   (dolist (u l)
