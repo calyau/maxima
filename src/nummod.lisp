@@ -214,6 +214,16 @@
 	((and (equal ($compare -1 e) "<") (equal ($compare e 0) "<")) -1)
 	(t `(($floor simp) ,e))))
 
+(defun floor-integral (x)
+  (let ((f (take '($floor) x)))
+    (mul f (div 1 2) (add (mul 2 x) -1 (neg f)))))
+
+(defun ceiling-integral (x)
+  (let ((f (take '($ceiling) x)))
+    (mul f (div 1 2) (add 1 (mul 2 x) (neg f)))))
+
+(putprop '$floor `((x) ,#'floor-integral) 'integral)
+(putprop '$ceiling `((x) ,#'ceiling-integral) 'integral)
 
 (defprop $ceiling simp-ceiling operators)
 
