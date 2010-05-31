@@ -101,10 +101,8 @@ subst(a = 1,i);
 signum_to_abs(integrate(unit_step(x + b),x));
 (abs(x+b)+x+b)/2$
 
-integrate(unit_step(x) + cos(x^2) * x,x);
-/*(sin(x^2)+x*signum(x)+x)/2$*/
-/* Changed result because of revision 1.18 of risch.lisp */
-(sin(x^2)+abs(x)+x)/2;
+ratsimp(integrate(unit_step(x) + cos(x^2) * x,x));
+(sin(x^2)+abs(x)+x)/2$
 
 integrate(unit_step(x^2-1),x);
 ((x/2-1/2)*signum(x-1)-1)*signum(x+1)+x/2$
@@ -271,26 +269,32 @@ subst(x = 1, f1);
 (declare(x,noninteger),0);
 0$
 
-integrate(floor(x),x);
--(floor(x)*(floor(x)-2*x+1))/2$
+ratexpand(integrate(floor(x),x));
+ -floor(x)^2/2+x*floor(x)-floor(x)/2$
 
 diff(%,x);
 floor(x)$
 
 integrate(x * floor(x^2),x);
--(floor(x^2)*(floor(x^2)-2*x^2+1))/4$
+(-floor(x^2)+2*x^2-1)*floor(x^2)/4$
 
-integrate(ceiling(x),x);
-(floor(x)^2-2*ceiling(x)*floor(x)+floor(x)+2*x*ceiling(x))/2$
+ratexpand(integrate(ceiling(x),x));
+-ceiling(x)^2/2+x*ceiling(x)+ceiling(x)/2$
 
 diff(%,x);
 ceiling(x)$
 
-integrate(x*floor(x),x);
--floor(x)^3/2+(floor(x)+2*(floor(x)-1)^3+3*(floor(x)-1)^2-1)/6+(floor(x)+(floor(x)-1)^2-1)/4+(x^2*floor(x))/2$
+(assume(x > 0),0);
+0$
+
+ratexpand(integrate(xx*floor(xx),xx,0,x));
+-(floor(x)^3/6)-(floor(x)^2/4)+x^2*floor(x)/2-(floor(x)/12)$
 
 diff(%,x);
 x * floor(x)$
+
+(forget(x > 0),0);
+0$
 
 factor(integrate(x*floor(x)^2,x));
 -((floor(x)*(3*floor(x)^3+4*floor(x)^2-6*x^2*floor(x)-1))/12)$
@@ -404,10 +408,14 @@ integrate(x/ (1 + max(x^2,1)^2),x,minf,inf);
 integrate(x/ (1 + max(x^2,1)^2),x,0,inf);
 %pi/8$
 
+/* the call to expand is a workaround for an integrate bug */
+expand(integrate(mod(x,1),x),0,0);
+x^2/2-(-floor(x)+2*x-1)*floor(x)/2$
+
 (print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 250));
 true$
 
-(remvalue(e,i,di,f1,start),remfunction(convolution, unit_box),0);
+(remvalue(e,i,di,f1,start), remove(x,noninteger), remfunction(convolution, unit_box),0);
 0$ 
 
 
