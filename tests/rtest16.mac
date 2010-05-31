@@ -1627,3 +1627,13 @@ diff(f(t),z);
 0;
 remove(t,dependency);
 done;
+
+/* Bug ID: 1184718 - AT needs soime basic simplifications
+ */
+'at(2,x=0);
+2;
+
+/* Bug ID: 2998227 - spurious at(0,A=0)
+ */
+taylor(integrate(gamma(x+1),x,0,A),A,0,3),nouns;
+A-%gamma*A^2/2+(6*%gamma^2+%pi^2)*A^3/36;
