@@ -1591,3 +1591,18 @@ map('rationalize, [cos(s)]);
 
 map(lambda([s], rationalize(s)), [cos(s)]);
 [cos(s)]$
+
+integrate(floor(x),x);
+(-floor(x)+2*x-1)*floor(x)/2$
+
+integrate(floor(x),x,0,3);
+3$
+
+integrate(ceiling(x),x);
+(-ceiling(x)+2*x+1)*ceiling(x)/2$
+
+integrate(ceiling(x),x,0,4);
+10$
+
+(remvalue(d, l, aa, bb, cc, dd),0);
+0$
