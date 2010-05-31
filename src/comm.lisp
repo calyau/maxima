@@ -1171,14 +1171,14 @@
 	 ;; Basically we try to compute float(log(x)) as directly as
 	 ;; possible, expecting Lisp to return some error if it can't.
 	 ;; Then we do a more complicated approach to compute the
-	 ;; result.  However, gcl doesn't signal errors in these
-	 ;; cases, so we always use the complicated approach for gcl.
+	 ;; result.  However, gcl and ecl don't signal errors in these
+	 ;; cases, so we always use the complicated approach for these lisps.
 	 (let ((n (second e)))
 	   (cond ((integerp n)
 		  ;; float(log(int)).  First try to compute (log
 		  ;; (float n)).  If that works, we're done.
 		  ;; Otherwise we need to do more.  
-		  (to (or #-gcl (ignore-errors (log (float n)))
+		  (to (or #-(or gcl ecl) (ignore-errors (log (float n)))
 			  (let ((m (integer-length n)))
 			    ;; Write n as (n/2^m)*2^m where m is the number of
 			    ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
@@ -1189,7 +1189,8 @@
 		 (($ratnump n)
 		  ;; float(log(n/m)) where n and m are integers.  Try computing
 		  ;; it first.  If it fails, compute as log(n) - log(m).
-		  (let ((try #-gcl (ignore-errors (log (fpcofrat n)))))
+		  (let ((try #-(or gcl ecl)
+			     (ignore-errors (log (fpcofrat n)))))
 		    (if try
 			(to try)
 			(sub  ($float `((%log) ,(second n)))
@@ -1198,7 +1199,7 @@
 		  ;; float(log(n+m*%i)).
 		  (let ((re ($realpart n))
 			(im ($imagpart n)))
-		    (to (or #-gcl
+		    (to (or #-(or gcl ecl)
 			    (ignore-errors (log (complex (float re)
 							 (float im))))
 			    (let* ((size (max (integer-length re)
