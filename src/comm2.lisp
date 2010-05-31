@@ -165,44 +165,60 @@
     (add2lnc fun $props)
     val))
 
-(defmfun $at (exp ateqs)
+(defprop %at simp-%at operators)
+
+(defun simp-%at (expr ignored simp-flag)
+  (declare (ignore ignored))
+  (twoargcheck expr)
+  (let ((arg (simpcheck (cadr expr) simp-flag))
+        (eqn (caddr expr)))
+    (cond (($constantp arg) arg)
+          (t (eqtest (list '(%at) arg eqn) expr)))))
+
+(defmfun $at (expr ateqs)
   (if (notloreq ateqs) (improper-arg-err ateqs '$at))
-  (atscan (let ((atp t)) ($substitute ateqs exp))))
+  (atscan (let ((atp t)) ($substitute ateqs expr))))
 
-(defun atscan (exp)
-  (cond ((or (atom exp) (member (caar exp) '(%at mrat) :test #'eq) (like ateqs '((mlist)))) exp)
-	((eq (caar exp) '%derivative)
-	 (or (and (not (atom (cadr exp)))
-		  (let ((vl (cdadr exp)) dl)
-		    (dolist (v vl)
-		      (setq dl (nconc dl (ncons (or (getf (cddr exp) v)
-						    0)))))
-		    (atfind (caaadr exp)
-			    (cdr ($substitute ateqs (cons '(mlist) vl)))
-			    dl)))
-	     (list '(%at) exp ateqs)))
-	((member (caar exp) dummy-variable-operators :test #'eq) (list '(%at) exp ateqs))
-	((at1 exp))
-	(t (recur-apply #'atscan exp))))
+(defun atscan (expr)
+  (cond ((or (atom expr)
+             (member (caar expr) '(%at mrat) :test #'eq)
+             (like ateqs '((mlist))))
+         expr)
+        ((eq (caar expr) '%derivative)
+         (or (and (not (atom (cadr expr)))
+                  (let ((vl (cdadr expr)) dl)
+                    (dolist (v vl)
+                      (setq dl (nconc dl (ncons (or (getf (cddr expr) v) 0)))))
+                    (atfind (caaadr expr)
+                            (cdr ($substitute ateqs (cons '(mlist) vl)))
+                            dl)))
+             (list '(%at) expr ateqs)))
+        ((member (caar expr) dummy-variable-operators :test #'eq)
+         (list '(%at) expr ateqs))
+        ((at1 expr))
+        (t (recur-apply #'atscan expr))))
 
-(defun at1 (exp) (atfind (caar exp) (cdr exp) (listof0s (cdr exp))))
+(defun at1 (expr)
+  (atfind (caar expr) (cdr expr) (listof0s (cdr expr))))
 
 (defun atfind (fun vl dl)
-  (do ((atvalues (mget fun 'atvalues) (cdr atvalues))) ((null atvalues))
+  (do ((atvalues (mget fun 'atvalues) (cdr atvalues)))
+      ((null atvalues))
     (and (equal (caar atvalues) dl)
 	 (do ((l (cadar atvalues) (cdr l)) (vl vl (cdr vl)))
 	     ((null l) t)
 	   (if (and (not (equal (car l) (car vl)))
 		    (not (eq (car l) munbound)))
 	       (return nil)))
-	 (return (prog2 (atvarschk vl)
-		     (substitutel vl atvars (caddar atvalues)))))))
+         (return (prog2
+                    (atvarschk vl)
+                    (substitutel vl atvars (caddar atvalues)))))))
 
 (defun listof0s (llist)
-  (do ((llist llist (cdr llist)) (l nil (cons 0 l))) ((null llist) l)))
+  (do ((llist llist (cdr llist)) (l nil (cons 0 l)))
+      ((null llist) l)))
 
 (declare-top (special $ratfac genvar varlist $keepfloat *e*))
-
 
 (defmvar $logconcoeffp nil)
 (defmvar superlogcon t)
@@ -298,7 +314,6 @@
 	   (list '(mtimes simp) -1
 		 (list '(%log simp) (if (= (car num) 1) denom (neg denom)))))
 	  (t (recur-apply #'lgccheck e)))))
-
 
 (defun logconcoeffp (e)
   (if $logconcoeffp (let ((*e* e)) (is '(($logconcoeffp) *e*))) (maxima-integerp e)))
@@ -521,7 +536,6 @@
 	    (mputprop (car l) (cadr l) '$numer)
 	    (add2lnc (car l) $props)
 	    (nconc x (ncons (car l)))))
-
 
 (declare-top (special powers var depvar))
 
