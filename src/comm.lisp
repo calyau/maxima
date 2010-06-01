@@ -15,9 +15,13 @@
 (declare-top (special $exptsubst $linechar $nolabels $inflag $piece $dispflag
 		      $gradefs $props $dependencies derivflag derivlist
 		      $linenum $partswitch linelable nn* dn*
-		      $powerdisp atvars atp $errexp $derivsubst $dotdistrib
+		      $powerdisp atvars $errexp $derivsubst $dotdistrib
 		      $opsubst $subnumsimp $transrun in-p substp $sqrtdispflag
 		      $pfeformat dummy-variable-operators))
+
+(defvar *islinp* nil) ; When T, sdiff is called from the function islinear.
+(defvar *atp* nil)    ; When T, prevents substitution from applying to vars 
+                      ; bound by %sum, %product, %integrate, %limit
 
 ;; op and opr properties
 
@@ -53,14 +57,12 @@
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'op))
       '((mqapply $subvar) (bigfloat $bfloat)))
 
-
 (setq $exptsubst nil
       $partswitch nil
       $inflag nil
       $gradefs '((mlist simp))
       $dependencies '((mlist simp))
       atvars '($@1 $@2 $@3 $@4)
-      atp nil
       lnorecurse nil
       $derivsubst nil
       timesp nil
@@ -68,12 +70,9 @@
       in-p nil
       substp nil)
 
-(defvar *islinp* nil) ; When T, sdiff is called from the function islinear.
-
 (defmvar $vect_cross nil
   "If TRUE allows DIFF(X~Y,T) to work where ~ is defined in
 	  SHARE;VECT where VECT_CROSS is set to TRUE.")
-
 
 (defmfun $substitute (old new &optional (expr nil three-arg?))
   (cond (three-arg? (maxima-substitute old new expr))
@@ -201,7 +200,7 @@
   (let (newexpt)
     (cond ((atom z) z)
 	  ((specrepp z) (subst2 (specdisrep z)))
-	  ((and atp (member (caar z) '(%derivative %laplace) :test #'eq)) z)
+	  ((and *atp* (member (caar z) '(%derivative %laplace) :test #'eq)) z)
 	  ((at-substp z) z)
 	  ((alike1 y z) x)
 	  ((and timesp (eq (caar z) 'mtimes) (alike1 y (setq z (nformat z)))) x)
@@ -281,8 +280,10 @@
 
 ;;This probably should be a subst or macro.
 (defun at-substp (z)
-  (and atp (or (member (caar z) '(%derivative %del) :test #'eq)
-	       (member (caar z) dummy-variable-operators :test #'eq))))
+  (and *atp*
+       (or (member (caar z) '(%derivative %del) :test #'eq)
+           (member (caar z) dummy-variable-operators :test #'eq))))
+
 (defmfun recur-apply (fun e)
   (cond ((eq (caar e) 'bigfloat) e)
 	((specrepp e) (funcall fun (specdisrep e)))

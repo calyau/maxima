@@ -184,9 +184,9 @@ It appears in LIMIT and DEFINT.......")
 	      (unless (infinityp val)
 		(unless (zerop2 val)
 		  (setq exp 
-			(let ((atp t))
-			  ;; atp prevents substitution from applying to vars bound
-			  ;; by %sum, %product, %integrate, %limit
+			(let ((*atp* t))
+			  ;; *atp* prevents substitution from applying to vars 
+			  ;; bound by %sum, %product, %integrate, %limit
 			  (subin (m+ var val) exp))))
 		(setq val (cond ((eq dr '$plus) '$zeroa)
 				((eq dr '$minus) '$zerob)

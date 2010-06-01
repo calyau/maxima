@@ -131,7 +131,7 @@
 ;;;; AT
 
 ;;dummy-variable-operators is defined in COMM, which uses it inside of SUBST1.
-(declare-top (special atvars ateqs atp munbound dummy-variable-operators))
+(declare-top (special atvars ateqs *atp* munbound dummy-variable-operators))
 
 (defmfun $atvalue (exp eqs val)
   (let (dl vl fun)
@@ -177,7 +177,7 @@
 
 (defmfun $at (expr ateqs)
   (if (notloreq ateqs) (improper-arg-err ateqs '$at))
-  (atscan (let ((atp t)) ($substitute ateqs expr))))
+  (atscan (let ((*atp* t)) ($substitute ateqs expr))))
 
 (defun atscan (expr)
   (cond ((or (atom expr)
