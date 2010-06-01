@@ -70,21 +70,21 @@ vertex_connectivity(g) := block(
   if not is_connected(g) then return(0),
   dg : vertex_connectivity_graph(g),
   vertices : vertices(g),
-  for i:1 thru length(vertices)-1 do (
-    for j:i+1 thru length(vertices) do (
+  for i:1 thru length(vertices)-1 while i<=mvc do (
+    for j:i+1 thru length(vertices) while i<=mvc do (
       if not is_edge_in_graph([vertices[i], vertices[j]], g) then (
         flw : max_flow(dg, 2*vertices[i], 2*vertices[j]+1),
         if flw[1]<mvc then mvc : flw[1]))),
   mvc)$
 
 min_vertex_cut(g) := block(
-  [vertices, dg, v, mf : [inf, false], mf1, g1, edges:[], s, t, tr],
+  [vertices, dg, v, mf : [inf, false], mf1: [inf, []], g1, edges:[], s, t, tr],
   if not is_graph(g) then error("Argument to `min_vertex_cut' is not a graph."),
   if not is_connected(g) then return([]),
   vertices : vertices(g),
   dg : vertex_connectivity_graph(g),
-  for i:1 thru length(vertices)-1 do (
-    for j:i+1 thru length(vertices) do (
+  for i:1 thru length(vertices)-1 while i<=mf1[1] do (
+    for j:i+1 thru length(vertices) while i<=mf1[1] do (
       if not is_edge_in_graph([vertices[i], vertices[j]], g) then (
         mf1 : max_flow(dg, 2*vertices[i], 2*vertices[j]+1),
         if mf1[1]<mf[1] then (
