@@ -310,3 +310,21 @@ true;
 string (10);
 "10";
 
+/* SF bug report # 2992398 "sort doesn't give error for invalid comparison"
+ */
+
+errcatch (sort([c, a, b], "<"));
+[];
+
+errcatch (sort([1, 2, 3], lambda([a, b], 'sdf)));
+[];
+
+sort ([c, a, b]);
+[a, b, c];
+
+sort ([1, 2, 3], "<");
+[1, 2, 3];
+
+sort ([1, 2, 3], lambda ([a, b], sin(a) < sin(b)));
+[3, 1, 2];
+

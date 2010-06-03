@@ -13,7 +13,7 @@
 (macsyma-module mstuff)
 
 (defmfun $sort (l &optional (f 'lessthan))
-  (let ((llist l) comparfun bfun)
+  (let ((llist l) comparfun bfun ($prederror t))
     (unless ($listp llist)
       (merror (intl:gettext "sort: first argument must be a list; found: ~M") llist))
     (setq llist (copy-list (cdr llist))
