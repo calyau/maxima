@@ -48,13 +48,6 @@ extra_definite_integrate(q,x,lo,hi) := block([l,i, ii : funmake(nounify('integra
     if (i # false) and freeof('integrate, i) then return(ii : i)),
   ii);
 
-/* The conditional gradefs work OK, but they complicate testing and they can generate messy expressions. */
-/* gradef(signum(x),%if(x # 0, 0, 'und)); */
-gradef(signum(x),0); 
-
-/* gradef(abs(x), %if(x # 0, abs(x) / x, 'und)); */
-gradef(abs(x), abs(x) / x);
-
 safe_op(e) := block([inflag : true], if mapatom(e) then false else op(e));
 
 /* If e factors into a product of linear factors, return the list of factors; otherwise return false. */
@@ -260,8 +253,9 @@ interval_integrate(q,x,l) :=  block([xo,q1,q2,i1],
     else i1 : [ ],
     if i1 = [ ] then false else %if(x < xo, q1 + first(i1), q2)));
 
-gradef(floor(x),%if(%integerp(x), 'und, 0));
-gradef(ceiling(x),%if(%integerp(x), 'und, 0));
+''(buildq([z : ?gensym()], gradef(floor(z), %if(%integerp(z), 'und, 0))));    
+''(buildq([z : ?gensym()], gradef(ceiling(z),%if(%integerp(z), 'und, 0)))); 
+''(buildq([z : ?gensym()], gradef(signum(z), 0)));
 
 /* integrate(G(x,floor(x), ceiling(x)),x)
 

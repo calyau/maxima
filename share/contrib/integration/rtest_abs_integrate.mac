@@ -31,15 +31,14 @@ integrate(x*abs(x),x);
 integrate(abs((x-a)*(x-b)),x);
 signum(x-a)*(((2*x^3+(-3*b-3*a)*x^2+6*a*b*x)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(x-b)+((6*a^2*b+a^2*(-3*b-3*a)+2*a^3)/6-(2*b^3+(-3*b-3*a)*b^2+6*a*b^2)/6)*signum(b-a))$
 
-
-signum_to_abs(factor(diff(%,x)));
+signum_to_abs(simp_assuming(diff(%,x), notequal(x,a), notequal(x,b)));
 abs((x-a)*(x-b))$
 
 factor(signum_to_abs(integrate(abs((x-a)*(x-b)),x,a,b)));
 (b-a)^3/6$
 
 i : integrate(abs(x) + abs(1-x),x);
-(x^2*signum(x))/2+((x^2-2*x+1)*signum(x-1))/2$
+x*abs(x)/2+(x-1)*abs(x-1)/2$
 
 factor(signum_to_abs(diff(%,x)));
 abs(x)+abs(x-1)$
@@ -71,13 +70,13 @@ integrate(x + max(x,0),x);
 i : integrate(max(x,x^2),x);
 (((2*x^3-3*x^2)/12+1/12)*signum(x-1)+1/12)*signum(x)+(x^3/3+x^2/2)/2$
 
-di : diff(i,x);
+di : simp_assuming(diff(i,x), notequal(x,0),notequal(x,1));
 (6*x^2-6*x)*signum(x-1)*signum(x)/12+(x^2+x)/2$
 
 makelist(ratsimp(subst(x = k, max(x,x^2) - di)),k, [-1066, -1, 0, 1, %pi, sqrt(2), 3/2, 42, 1932]);
 [0,0,0,0,0,0,0,0,0]$
 
-gruntz(i,x,1, 'minus) - gruntz(i,x,1, 'plus);
+limit(i,x,1, 'minus) - limit(i,x,1, 'plus);
 0$
 
 (remvalue(i,di),0);
@@ -107,7 +106,8 @@ ratsimp(integrate(unit_step(x) + cos(x^2) * x,x));
 integrate(unit_step(x^2-1),x);
 ((x/2-1/2)*signum(x-1)-1)*signum(x+1)+x/2$
 
-expand(apply_signum_mult_id(convert_to_signum(diff(%,x) - unit_step(x^2-1))));
+expand(apply_signum_mult_id(convert_to_signum(simp_assuming(diff(%,x) - unit_step(x^2-1),
+        notequal(x,-1), notequal(x,1)))));
 0$
 
 integrate(abs(x),x,1,2);
@@ -137,7 +137,7 @@ signum_to_abs(integrate(unit_step(x),x,a,b));
 (i : integrate(f(x) * abs(x-a),x), ev(i, f(x) := x, 'integrate));
 ((2*x^3-3*a*x^2)/6+a^3/6)*signum(x-a)$
 
-signum_to_abs(diff(%,x));
+signum_to_abs(simp_assuming(diff(%,x),notequal(x,a)));
 x*abs(x-a)$
 
 (i : integrate(f(x) * max(x,-x),x,0,1), ev(i, f(x) := x,integrate));
@@ -161,7 +161,7 @@ true$
 (i : integrate(abs(x^2-1)*exp(-x),x));
 (((-x^2-2*x-2)*%e^-x+%e^-x+4*%e^-1)*signum(x-1)+4*%e^-1)*signum(x+1)$
 
-signum_to_abs(diff(i,x));
+signum_to_abs(simp_assuming(diff(i,x),notequal(x,1),notequal(x,-1)));
 %e^(-x)*abs(x-1)*abs(x+1)$
 
 (remvalue(i), 0);
@@ -194,11 +194,11 @@ signum(x-a)*integrate(f(x%),x%,a,x)$
 is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
 
-integrate(abs(x-1)/ ( 1 + x^2),x);
-signum(x-1)*(log(x^2+1)-2*atan(x)-log(2)+%pi/2)/2$
+i : integrate(abs(x-1)/ ( 1 + x^2),x);
+(2*signum(x-1)*log(x^2+1)-4*x*signum(x-1)*atan(x)+(%pi-2*log(2))*signum(x-1))/4+abs(x-1)*atan(x)$
 
-signum_to_abs(factor(diff(%,x)));
-abs(x-1)/ (1 + x^2)$
+[ratsimp(simp_assuming(diff(i,x), x < 1)),ratsimp(simp_assuming(diff(i,x), x > 1))];
+[-((x-1)/(x^2+1)),(x-1)/(x^2+1)]$
 
 integrate(exp(-abs(x)), x);
 ((-%e^x-%e^(-x)+2)*signum(x))/2+(%e^x-%e^(-x))/2$
@@ -228,7 +228,7 @@ e : integrate((5*sin(3*x)*signum(x+3))/x,x);
 -(5 * (%i*gamma_incomplete(0, 3*%i*x) - %i*gamma_incomplete(0, -3*%i*x)
  + %i*gamma_incomplete(0, 9*%i) - %i*gamma_incomplete(0, -9*%i))*signum(3*x + 9))/2$
 
-ratsimp(rectform(diff(e,x)));
+rectform(convert_to_signum(simp_assuming(diff(e,x), notequal(x,-3))));
 (5*sin(3*x)*signum(3*x+9))/x$
 
 map('unit_step_mult_simp, [5,5.6, -28.6b0,%i, 1 - sqrt(5), 42]);
