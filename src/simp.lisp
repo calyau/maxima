@@ -1051,6 +1051,10 @@
 			   (simplifya (list '(mabs) u) nil)) (cdr y))))
 	(t (eqtest (list '(mabs) y) x))))
 
+(defun abs-integral (x)
+  (mul (div 1 2) x (take '(mabs) x)))
+
+(putprop 'mabs `((x) ,#'abs-integral) 'integral)
 
 (defun pls (x out)
   (prog (fm plusflag)
