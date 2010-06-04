@@ -270,7 +270,7 @@
 		   (let ((y (ignore-errors (maxima-branch-atanh (/ 1 x))))) 
 		     (if y y (domain-error x 'acoth)))))
 
-  (frob %mabs #'cl:abs)
+  (frob mabs #'cl:abs)
   (frob %exp #'cl:exp)
   (frob mexpt #'cl:expt)
   (frob %sqrt #'cl:sqrt)
