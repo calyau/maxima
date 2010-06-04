@@ -807,7 +807,8 @@
      (go start)
      end  (setq res (testp res))
      (if matrixflag
-	 (setq res (cond ((zerop1 res) matrixflag)
+         (setq res (cond ; Don't simplify a zero away. We might lose the type.
+                         ; ((zerop1 res) matrixflag)
 			 ((and (or ($listp matrixflag)
 				   $doallmxops $doscmxplus $doscmxops)
 			       (or (not ($listp matrixflag)) $listarith))
