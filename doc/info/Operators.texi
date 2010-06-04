@@ -1317,12 +1317,15 @@ and the result is a Boolean expression.
 @opencatbox
 @category{Operators}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} abs (@var{expr})
-Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the complex
-modulus of @var{expr}.
+Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the 
+complex modulus of @var{expr}.
+
+@code{abs} distributes over a list, a matrix, or an equation. 
+See @code{distribute_over}.
 
 @opencatbox
 @category{Mathematical functions}

@@ -87,9 +87,9 @@ both be true at the same time.
 Default value: @code{true}
 
 @code{distribute_over} controls the mapping of functions over bags like lists, 
-matrices, and equations. At this time this feature is implemented for the
-trigonometric functions, the exponential integrals, and the integer 
-functions like @code{mod}, @code{floor}, @code{ceiling}, @code{round}.
+matrices, and equations. At this time not all Maxima functions have this 
+property. It is possible to look up this property with the command 
+@code{properties}.
 
 The mapping of functions is switched off, when setting @code{distribute_over} 
 to the value @code{false}.
@@ -145,6 +145,16 @@ arguments:
 (%i6) expintegral_e([1,2],[x,y]);
 (%o6) [[expintegral_e(1, x), expintegral_e(1, y)], 
        [expintegral_e(2, x), expintegral_e(2, y)]]
+@end example
+
+Check if a function has the property distribute_over:
+
+@c ===beg===
+@c properties(abs);
+@c ===end===
+@example
+(%i7) properties(abs);
+(%o7) [integral, distributes over bags, noun, rule, gradef]
 @end example
 
 @opencatbox
