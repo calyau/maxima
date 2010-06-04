@@ -845,19 +845,18 @@
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias)
 		(putprop (cadr x) (car x) 'reversealias))
       '(($block mprog block) ($lambda lambda lambda)
-	($abs mabs abs) ($subst $substitute subst)
+	($subst $substitute subst)
 	($go mgo go) ($signum %signum signum)
 	($return mreturn return) ($factorial mfactorial factorial)
 	($nouuo nouuo nouuo) ($rset *rset rset)
-	($ibase *read-base* *read-base*) ($obase *print-base* obase) ($nopoint *nopoint nopoint)
+        ($ibase *read-base* *read-base*) ($obase *print-base* obase)
+        ($nopoint *nopoint nopoint)
 	($modulus modulus modulus) ($zunderflow zunderflow zunderflow)
 	($ttyoff #.ttyoff ttyoff) ($writefile_on #.writefilep writefile_on)
 	($mode_declare $modedeclare mode_declare)))
 
 (mapc #'(lambda (x) (putprop (car x) (cadr x) 'alias))
       '(($ratcoeff $ratcoef) ($ratnum $ratnumer) ($true t)
-; Cut out the alias binom for binomial
-;	($binom %binomial)
         ($derivative $diff) ($prod $product)
 	($bothcoeff $bothcoef)))
 
