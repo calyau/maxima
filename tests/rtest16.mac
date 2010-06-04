@@ -1637,3 +1637,8 @@ done;
  */
 taylor(integrate(gamma(x+1),x,0,A),A,0,3),nouns;
 A-%gamma*A^2/2+(6*%gamma^2+%pi^2)*A^3/36;
+
+/* Bug ID: 3010829 - numerical evaluation of elliptic_ec fails for argument > 1
+ */
+elliptic_ec(2.0);
+.5990701173677959*%i+0.599070117367796$

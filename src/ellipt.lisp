@@ -1271,6 +1271,7 @@
 ;;                  SIAM Journal of Mathematical Analysis 8, (1977),
 ;;                 pp. 231-242.
 
+#+nil
 (let ((errtol (expt (* 4 flonum-epsilon) 1/6))
       (uplim (/ most-positive-flonum 5))
       (lolim (* #-gcl least-positive-normalized-flonum
@@ -1427,11 +1428,11 @@ first kind:
 		  (let ((sin-phi (sin phi))
 			(cos-phi (cos phi))
 			(k (sqrt m)))
-		    (* sin-phi
-		       (drf (* cos-phi cos-phi)
-			    (* (- 1 (* k sin-phi))
-			       (+ 1 (* k sin-phi)))
-			    1.0))))
+		    (to (* sin-phi
+			   (bigfloat::bf-rf (* cos-phi cos-phi)
+					    (* (- 1 (* k sin-phi))
+					       (+ 1 (* k sin-phi)))
+					    1.0)))))
 		 ((< phi pi)
 		  (+ (* 2 (elliptic-k m))
 		     (elliptic-f (- phi (float pi)) m))))))
@@ -1469,9 +1470,9 @@ first kind:
 	 (float (/ pi 2)))
 	(t
 	 (let ((k (sqrt m)))
-	   (drf 0.0 (* (- 1 k)
-		       (+ 1 k))
-		1.0)))))
+	   (to (bigfloat::bf-rf 0.0 (* (- 1 k)
+				       (+ 1 k))
+				1.0))))))
 ;;
 ;; Carlsons' elliptic integral of the second kind.
 ;;
@@ -1597,6 +1598,7 @@ first kind:
 ;;
 ;;
 
+#+nil
 (let ((errtol (expt (/ flonum-epsilon 3) 1/6))
       (c1 (float 3/14))
       (c2 (float 1/6))
@@ -1670,11 +1672,11 @@ first kind:
 		(k (sqrt m))
 		(y (* (- 1 (* k sin-phi))
 		      (+ 1 (* k sin-phi)))))
-	   (- (* sin-phi
-		 (drf (* cos-phi cos-phi) y 1.0))
-	      (* (/ m 3)
-		 (expt sin-phi 3)
-		 (drd (* cos-phi cos-phi) y 1.0)))))))
+	   (to (- (* sin-phi
+		     (bigfloat::bf-rf (* cos-phi cos-phi) y 1.0))
+		  (* (/ m 3)
+		     (expt sin-phi 3)
+		     (bigfloat::bf-rd (* cos-phi cos-phi) y 1.0))))))))
 
 ;; Complete version
 (defun elliptic-ec (m)
@@ -1689,9 +1691,9 @@ first kind:
 	 (let* ((k (sqrt m))
 		(y (* (- 1 k)
 		      (+ 1 k))))
-	   (- (drf 0.0 y 1.0)
-	      (* (/ m 3)
-		 (drd 0.0 y 1.0)))))))
+	   (to (- (bigfloat::bf-rf 0.0 y 1.0)
+		  (* (/ m 3)
+		     (bigfloat::bf-rd 0.0 y 1.0))))))))
 
 
 ;; Define the elliptic integrals for maxima
@@ -2105,10 +2107,10 @@ first kind:
 	 (k (sqrt m))
 	 (k2sin (* (- 1 (* k sin-phi))
 		   (+ 1 (* k sin-phi)))))
-    (- (* sin-phi (drf (expt cos-phi 2) k2sin 1.0))
-       (* (/ nn 3) (expt sin-phi 3)
-	  (drj (expt cos-phi 2) k2sin 1.0
-	       (- 1 (* n (expt sin-phi 2))))))))
+    (to (- (* sin-phi (bigfloat::bf-rf (expt cos-phi 2) k2sin 1.0))
+	   (* (/ nn 3) (expt sin-phi 3)
+	      (bigfloat::bf-rj (expt cos-phi 2) k2sin 1.0
+			       (- 1 (* n (expt sin-phi 2)))))))))
     
 ;;***PURPOSE  Calculate a double precision approximation to
 ;;             DRC(X,Y) = Integral from zero to infinity of
@@ -2212,6 +2214,7 @@ first kind:
 ;;                 pp. 231-242.
 
 
+#+nil
 (let ((errtol (expt (/ flonum-epsilon 3) 1/6))
       (c1 (float 1/7))
       (c2 (float 9/22)))
@@ -2358,6 +2361,7 @@ first kind:
 ;;               B. C. Carlson, Elliptic integrals of the first kind,
 ;;                 SIAM Journal of Mathematical Analysis 8, (1977),
 ;;                 pp. 231-242.
+#+nil
 (let ((errtol (expt (/ flonum-epsilon 3) 1/6))
       (c1 3/14)
       (c2 1/3)
@@ -2416,14 +2420,15 @@ first kind:
 	   (setf zn (* 0.25 (+ zn lam)))
 	   (setf pn (* 0.25 (+ pn lam)))))))))
 
+#+nil
 (defun check-drj (x y z p)
   (let* ((w (/ (* x y) z))
 	 (a (* p p (+ x y z w)))
 	 (b (* p (+ p x) (+ p y)))
-	 (drj-1 (drj x (+ x z) (+ x w) (+ x p)))
-	 (drj-2 (drj y (+ y z) (+ y w) (+ y p)))
-	 (drj-3 (drj a b b a))
-	 (drj-4 (drj 0.0 z w p)))
+	 (drj-1 (bigfloat::bf-rj x (+ x z) (+ x w) (+ x p)))
+	 (drj-2 (bigfloat::bf-rj y (+ y z) (+ y w) (+ y p)))
+	 (drj-3 (bigfloat::bf-rj a b b a))
+	 (drj-4 (bigfloat::bf-rj 0.0 z w p)))
     ;; Both values should be equal.
     (values (+ drj-1 drj-2 (* (- a b) drj-3) (/ 3 (sqrt a)))
 	    drj-4)))
@@ -2439,12 +2444,19 @@ first kind:
 ;; Square Root of two quadritic factors"
 ;;
 
+;; NOTE: Despite the names indicating these are for bigfloat numbers,
+;; the algorithms and routines are generic and will work with floats
+;; and bigfloats.
 
-(defun bferrtol ()
+(defun bferrtol (&rest args)
   ;; Compute error tolerance as sqrt(2^(-fpprec)).  Not sure this is
   ;; quite right, but it makes the routines more accurate as fpprec
   ;; increases.
-  (bigfloat (sqrt (scale-float (bigfloat 1) (- maxima::fpprec)))))
+  (sqrt (reduce #'min (mapcar #'(lambda (x)
+				  (if (rationalp x)
+				      maxima::flonum-epsilon
+				      (epsilon x)))
+			      args))))
 
 ;; rc(x,y) = integrate(1/2*(t+x)^(-1/2)/(t+y), t, 0, inf)
 ;;
@@ -2468,11 +2480,11 @@ first kind:
 	  (t
 	   (setf xn x)
 	   (setf z yn)
-	   (setf w (bigfloat 1))))
+	   (setf w 1)))
     (setf a (/ (+ xn yn yn) 3))
-    (setf epslon (/ (abs (- a xn)) (bferrtol)))
+    (setf epslon (/ (abs (- a xn)) (bferrtol x y)))
     (setf an a)
-    (setf pwr4 (bigfloat 1))
+    (setf pwr4 1)
     (setf n 0)
     (loop while (> (* epslon pwr4) (abs an))
        do
@@ -2484,12 +2496,12 @@ first kind:
 	 (incf n))
     ;; c2=3/10,c3=1/7,c4=3/8,c5=9/22,c6=159/208,c7=9/8
     (setf sn (/ (* pwr4 (- z a)) an))
-    (setf s (* sn sn (+ (bigfloat 3/10)
-			(* sn (+ (bigfloat 1/7)
-				 (* sn (+ (bigfloat 3/8)
-					  (* sn (+ (bigfloat 9/22)
-						   (* sn (+ (bigfloat 159/208)
-							    (* sn (bigfloat 9/8)))))))))))))
+    (setf s (* sn sn (+ 3/10
+			(* sn (+ 1/7
+				 (* sn (+ 3/8
+					  (* sn (+ 9/22
+						   (* sn (+ 159/208
+							    (* sn 9/8))))))))))))
     (/ (* w (+ 1 s))
        (sqrt an))))
 
@@ -2511,7 +2523,7 @@ first kind:
 	 (epslon (/ (max (abs (- a xn))
 			 (abs (- a yn))
 			 (abs (- a zn)))
-		    (bferrtol)))
+		    (bferrtol x y z)))
 	 (an a)
 	 (sigma 0)
 	 (power4 1)
@@ -2567,7 +2579,7 @@ first kind:
 	 (epslon (/ (max (abs (- a xn))
 			 (abs (- a yn))
 			 (abs (- a zn)))
-		    (bferrtol)))
+		    (bferrtol x y z)))
 	 (an a)
 	 (power4 1)
 	 (n 0)
@@ -2607,15 +2619,15 @@ first kind:
 	 (en (* (- pn xn)
 		(- pn yn)
 		(- pn zn)))
-	 (sigma (bigfloat 0))
-	 (power4 (bigfloat 1))
+	 (sigma 0)
+	 (power4 1)
 	 (k 0)
 	 (a (/ (+ xn yn zn pn pn) 5))
 	 (epslon (/ (max (abs (- a xn))
 			 (abs (- a yn))
 			 (abs (- a zn))
 			 (abs (- a pn)))
-		    (bferrtol)))
+		    (bferrtol x y z p)))
 	 (an a)
 	 xnroot ynroot znroot pnroot lam dn)
     (loop while (> (* power4 epslon) (abs an))
