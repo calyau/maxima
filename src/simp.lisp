@@ -180,7 +180,7 @@
 	(mnctimes simpnct) (mquotient simpquot) (mexpt simpexpt)
 	(%log simpln) 
         (%derivative simpderiv)
-	(mabs simpabs) (%signum simpsignum)
+        (%signum simpsignum)
 	(%integrate simpinteg) (%limit simp-limit) 
 	(bigfloat simpbigfloat) (lambda simplambda) (mdefine simpmdef)
 	(mqapply simpmqapply) (%gamma simpgamma) (%erf simperf)
@@ -1005,7 +1005,25 @@
 
 ;;(DEFUN QSNT (X Y) (SIMPLIFY (LIST '(MTIMES) X (LIST '(MEXPT) Y -1))))
 
-(setf (get '%mabs 'operators) 'simpabs)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the abs function.
+
+;; Put the properties alias, reversealiases, noun and verb on the property list.
+(defprop $abs mabs alias)
+(defprop $abs mabs verb)
+(defprop mabs $abs reversealias)
+(defprop mabs $abs noun)
+
+;; The abs function distributes over bags.
+(defprop mabs (mlist $matrix mequal) distribute_over)
+
+;; Define a verb function $abs
+(defun $abs (x)
+  (simplify (list '(mabs) x)))
+
+;; The abs function is a simplifying function.
+(defprop mabs simpabs operators)
 
 (defmfun simpabs (x y z)
   (oneargcheck x)
@@ -1045,10 +1063,11 @@
 	 (muln 
            (mapcar #'(lambda (u) (simplifya (list '(mabs) u) nil)) (cdr y)) t))
 	((mminusp y) (list '(mabs simp) (neg y)))
-	((mbagp y)
-	 (cons (car y)
-	       (mapcar #'(lambda (u)
-			   (simplifya (list '(mabs) u) nil)) (cdr y))))
+; We have put the property distribute_over on the property list of mabs.
+;	((mbagp y)
+;	 (cons (car y)
+;	       (mapcar #'(lambda (u)
+;			   (simplifya (list '(mabs) u) nil)) (cdr y))))
 	(t (eqtest (list '(mabs) y) x))))
 
 (defun abs-integral (x)
