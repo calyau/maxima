@@ -220,14 +220,17 @@
 ;; where second arg of integrate binds a new variable x,
 ;; and we do not wish to subst 3 for x inside integrand.
 (defun subst-except-second-arg (x y z)
-  (append 
-   (list (car z)
-	 (if (eq y (third z))	; if (third z) is new var that shadows y
-	     (second z)		; leave (second z) unchanged
-	   (subst1 (second z)))	; otherwise replace y with x in (second z)
-	 (third z))		; never change integration var
-   (mapcar (lambda (z) (subst1 z))	; do subst in limits of integral
-	   (cdddr z))))
+  (cond 
+    ((member (caar z) '(%integrate %sum %product %limit))
+     (append 
+       (list (car z)
+             (if (eq y (third z))     ; if (third z) is new var that shadows y
+                 (second z)           ; leave (second z) unchanged
+                 (subst1 (second z))) ; otherwise replace y with x in (second z)
+             (third z))               ; never change integration var
+       (mapcar (lambda (z) (subst1 z)); do subst in limits of integral
+               (cdddr z))))
+    (t z)))
 
 (declare-top (unspecial x y oprx opry negxpty timesp))
 
