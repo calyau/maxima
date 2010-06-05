@@ -421,14 +421,16 @@ It appears in LIMIT and DEFINT.......")
 			     (t (throw 'mabs 'retn))))
 		      (t (throw 'mabs 'retn))))))))))
 
-(defun infcount (exp)
-  (cond ((atom exp)
-	 (if (infinityp exp) 1 0))
-	((member (caar exp) dummy-variable-operators)
-	 ;; don't count inf as limit of %integrate, %sum, %product, %limit
-	 (infcount (cadr exp)))
-	(t (apply #'+ (mapcar #'infcount (cdr exp))))))
-
+(defun infcount (expr)
+  (cond ((atom expr)
+         (if (infinityp expr) 1 0))
+        ((member (caar expr) dummy-variable-operators)
+         ;; don't count inf as limit of %integrate, %sum, %product, %limit
+         (infcount (cadr expr)))
+        ((member 'array (car expr))
+         ;; don't count inf as index
+         0)
+        (t (apply #'+ (mapcar #'infcount (cdr expr))))))
 
 (defun simpinf (exp)
   (declare (special exp val))
