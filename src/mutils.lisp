@@ -50,7 +50,6 @@
   (dolist (pair alist)
     (if (alike1 item (car pair)) (return pair))))
 
-
 (defmfun assolike (item alist) 
   (cdr (assol item alist)))
 
@@ -58,3 +57,16 @@
   (do ((l l (cdr l)))
       ((null l))
     (when (alike1 x (car l)) (return l))))
+
+;; Return a Maxima gensym.
+(defun $gensym (&optional x)
+  (when (and x
+             (not (or (integerp x)
+                      (stringp x))))
+    (merror
+     (intl:gettext
+      "gensym: Argument must be an integer or a string. Found: ~M") x))
+  (when (stringp x) (setq x (maybe-invert-string-case x)))
+  (if x
+      (cadr (dollarify (list (gensym x))))
+      (cadr (dollarify (list (gensym))))))
