@@ -1658,3 +1658,8 @@ matrix([0.0b0,5.0b-1,1.0b0,x]);
  */
 at(diff(f(x,y),x,1,y,1),[x=a,y=b]);
 'at('diff(f(x,y),x,1,y,1),[x = a,y = b]);
+
+/* Bug ID: 1969790 - limits and subscripts
+ */
+limit(mu[inf],x,inf);
+mu[inf];
