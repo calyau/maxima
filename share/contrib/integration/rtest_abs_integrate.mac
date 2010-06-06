@@ -412,6 +412,17 @@ integrate(x/ (1 + max(x^2,1)^2),x,0,inf);
 expand(integrate(mod(x,1),x),0,0);
 x^2/2-(-floor(x)+2*x-1)*floor(x)/2$
 
+/*  Regression tests for abs_integrate bug - ID: 2988544 */
+
+integrate(signum(abs(x)),x,-2,2);
+4$
+
+integrate(signum(abs(x)),x,-2,0);
+2$
+
+integrate(signum(abs(x)),x,0,2);
+2$
+
 (print("time = ", elapsed_real_time () - start), is(elapsed_real_time () - start < 250));
 true$
 

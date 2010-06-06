@@ -187,6 +187,7 @@ abs_defint(e,x,lo,hi) := block([f,l],
     e : convert_to_signum(e),
     l : xreduce('append, (gatherargs(e, 'signum))),
     l : flatten(map(lambda([s], real_linear_factors(s,x)), l)), /* flatten([[1], false]) --> [1,false] */
+    l : delete(false,l),
     l : partitions_interval_p(l,lo,hi),
     if l # false then (
       f : dint(e,x,l),
