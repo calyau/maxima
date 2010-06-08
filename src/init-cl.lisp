@@ -714,6 +714,8 @@ When one changes, the other does too."
   (setf *load-verbose* nil)
   (setf *debugger-hook* #'maxima-lisp-debugger)
   (setf *print-circle* t) ;; "assume" db contains circular objects
+  ;; GCL: print special floats, which are generated whether or not this flag is enabled
+  #+gcl (setf si:*print-nans* t)
   #+ccl
   (progn
     (setf ccl::*invoke-debugger-hook-on-interrupt* t)
