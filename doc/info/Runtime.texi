@@ -232,22 +232,45 @@ and elapsed time with each output line.
 @end deffn
 
 @deffn {Function} timedate ()
-Returns a string representing the current time and date.
-The string has the format @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)},
+@deffnx {Function} timedate (@var{T})
+
+@code{timedate()} with no argument
+returns a string representing the current time and date.
+The string has the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ},
 where the fields are
-hours, minutes, seconds, day of week, month, day of month, year, and hours different from GMT.
+year, month, day, hours, minutes, seconds, and time zone offset in hours and minutes.
+
+@code{timedate(@var{T})} returns the time @var{T}
+as a string with the format @code{YYYY-MM-DD HH:MM:SS[+|-]ZZ:ZZ}.
+@var{T} is interpreted as the number of seconds since midnight, January 1, 1900,
+as returned by @code{absolute_real_time}.
 
 Example:
 
+@code{timedate} with no argument returns a string representing the current time and date.
+
 @c ===beg===
-@c d: timedate ();
-@c print ("timedate reports current time", d)$
+@c d : timedate ();
+@c print ("timedate reports current time", d) $
 @c ===end===
 @example
-(%i1) d: timedate ();
-(%o1) 08:05:09 Wed, 11/02/2005 (GMT-7)
-(%i2) print ("timedate reports current time", d)$
-timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
+(%i1) d : timedate ();
+(%o1)                      2010-06-08 04:08:09+01:00
+(%i2) print ("timedate reports current time", d) $
+timedate reports current time 2010-06-08 04:08:09+01:00
+@end example
+
+@code{timedate} with an argument returns a string representing the argument.
+
+@c ===beg===
+@c timedate (0);
+@c timedate (absolute_real_time () - 7*24*3600);
+@c ===end===
+@example
+(%i1) timedate (0);
+(%o1)                      1900-01-01 01:00:00+01:00
+(%i2) timedate (absolute_real_time () - 7*24*3600);
+(%o2)                      2010-06-01 04:19:51+01:00
 @end example
 
 @opencatbox

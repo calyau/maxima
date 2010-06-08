@@ -618,10 +618,10 @@ values")
 (defvar ^w nil)
 (defvar ^r nil)
 
-(defun $timedate ()
+(defun $timedate (&optional (time (get-universal-time)))
   (multiple-value-bind
     (second minute hour date month year day-of-week dst-p tz)
-    (get-decoded-time)
+    (decode-universal-time time)
     (declare (ignore day-of-week))
     (let
       ((tz-offset (if dst-p (- 1 tz) (- tz))))

@@ -295,6 +295,12 @@ done;
 [integerp (absolute_real_time ()), floatnump (elapsed_real_time ()), floatnump (elapsed_run_time ())];
 [true, true, true];
 
+stringp (timedate ());
+true;
+
+stringp (timedate (100*365*24*3600));
+true;
+
 /* Do the right thing when listarray and arrayinfo are called within
  * a function and the name of the formal argument coincides with the
  * name of the actual argument. (Was a bug in ARRAYINFO-AUX.)
