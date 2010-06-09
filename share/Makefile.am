@@ -1091,6 +1091,7 @@ genericdirDATA = \
 maxima-init.lisp\
 share.usg\
 template.texi\
+template-standalone.texi\
 builtins-list.txt\
 share_testsuite.mac\
 $(sharefiles)

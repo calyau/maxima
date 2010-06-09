@@ -33,6 +33,26 @@ $section_cnt = 0;
 open (FH, "<" . $infofile_encoding, $main_info);
 read (FH, $stuff, -s FH);
 
+$filename = $main_info;
+push @info_filenames, $filename;
+
+while ($stuff =~ m/\G.*?(?=\n$unit_separator)/cgsm) {
+    $offset = pos $stuff;
+
+    if ($stuff =~ m/^File:.*?Node: (.*?),/csgm) {
+        $node_name = $1;
+        $last_node_name = $node_name;
+    }
+
+    # print ";; IN SEC 1.1a, SEARCH MAIN INFO; NODE NAME=$node_name, FILENAME=$filename, OFFSET=$offset\n";
+    $node_offset{$node_name} = [($filename, int($offset))];
+}
+
+close $FH;
+
+open (FH, "<" . $infofile_encoding, $main_info);
+read (FH, $stuff, -s FH);
+
 while ($stuff =~ m/^($main_info-\d+): (\d+)/cgsm) {
     $filename = $1;
     push @info_filenames, $filename;
@@ -48,6 +68,7 @@ while ($stuff =~ m/^($main_info-\d+): (\d+)/cgsm) {
             $last_node_name = $node_name;
         }
 
+        # print ";; IN SEC 1.1a, SEARCH SUBSIDIARY INFO; NODE NAME=$node_name, FILENAME=$filename, OFFSET=$offset\n";
         $node_offset{$node_name} = [($filename, int($offset))];
     }
 
@@ -64,15 +85,17 @@ close FH;
 $index_node_name = $last_node_name;
 
 ($index_filename, $index_node_offset) = @{$node_offset{$index_node_name}};
+# print ";; IN SEC 1.1b, INDEX NODE NAME=$index_node_name, INDEX FILENAME=$index_filename, INDEX NODE OFFSET=$index_node_offset\n";
 
 open (FH, "<" . $infofile_encoding, $index_filename);
 read (FH, $stuff, -s FH);
 
-if ($stuff =~ m/^File:.*?Node: $index_node_name.*^\* Menu:/icgsm) {
-    while ($stuff =~ m/\G.*?^\* (\S+|[^:]+):\s+(.*?)\.\s+\(line\s+(\d+)\)/cgsm) {
+while ($stuff =~ m/^File:.*?Node: $index_node_name/icgsm) {
+    while ($stuff =~ m/\G.*?^\* (?!Menu)(\S+|[^:]+):\s+(.*?)\.\s+\(line\s+(\d+)\)/cgsm) {
         $topic_name = $1;
         $node_name = $2;
         $lines_offset = $3;
+        # print ";; IN SEC 1.1b, TOPIC NAME=$topic_name, NODE NAME=$node_name, LINES OFFSET=$lines_offset\n";
         $topic_locator{$topic_name} = [($node_name, $lines_offset)];
     }
 }
@@ -101,6 +124,7 @@ foreach $key (sort keys %topic_locator) {
     }
     close FH;
 
+    # print ";; IN SEC 1.2, KEY=$key, NODE NAME=$node_name, FILENAME=$filename, BYTE OFFSET=$byte_offset, TEXT LENGTH=$text_length\n";
     $topic_locator{$key} = [($node_name, $filename, $byte_offset, $text_length)];
 }
 
@@ -111,7 +135,7 @@ print "(defun cause-maxima-index-to-load () nil)\n";
 
 #        Pairs of the form (<index topic> . (<filename> <byte offset> <length> <node name>))
 
-print "(defvar *info-deffn-defvr-pairs* '(\n";
+print "(defparameter *info-deffn-defvr-pairs* '(\n";
 print "; CONTENT: (<INDEX TOPIC> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS> <NODE NAME>))\n";
 
 foreach $key (sort keys %topic_locator) {
@@ -192,7 +216,7 @@ foreach $node_title (sort keys %node_locator) {
 #
 #        Pairs of the form (<node name> . (<filename> <byte offset> <length>))
 
-print "(defvar *info-section-pairs* '(\n";
+print "(defparameter *info-section-pairs* '(\n";
 print "; CONTENT: (<NODE NAME> . (<FILENAME> <BYTE OFFSET> <LENGTH IN CHARACTERS>))\n";
 
 foreach $node_title (sort keys %node_locator) {
@@ -214,7 +238,7 @@ print "(load-info-hashtables)\n";
 #        Warn if no index items or secions found. 
 
 ($item_cnt+$section_cnt)>0 || 
-    print STDERR "WARNING: Epmpty index. Probably makeinfo is too old. Version 4.7 or 4.8 required.\n";
+    print STDERR "WARNING: Empty index. Probably makeinfo is too old. Version 4.7 or 4.8 required.\n";
 
 # ------------------------------------------------------------------
 # Helper functions

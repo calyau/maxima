@@ -28,6 +28,7 @@
 * Definitions for MYTOPIC::
 * Function and variable index::
 @end menu
+@chapter MYTOPIC
 
 @node Introduction to MYTOPIC, Definitions for MYTOPIC, Top, Top
 @section Introduction to MYTOPIC
