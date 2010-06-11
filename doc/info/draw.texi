@@ -32,413 +32,47 @@ You need Gnuplot 4.2 to run this program.
 @node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw
 @section Functions and Variables for draw
 
-
-@defvr {Graphic option} proportional_axes
-Default value: @code{none}
-
-When @code{proportional_axes} is equal to @code{xy} or @code{xyz},
-a 2D or 3D scene will be drawn with axes proportional to their relative
-lengths.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-This option works with Gnuplot version 4.2.6 or greater.
-
-Examples:
-
-Single 2D plot.
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-        ellipse(0,0,1,1,0,360),
-        transparent=true,
-        color = blue,
-        line_width = 4,
-        ellipse(0,0,2,1/2,0,360),
-        proportional_axes = xy) $
-@end example
-
-Multiplot.
-
-@example
-(%i1) load(draw)$
-(%i2) draw(
-        terminal = wxt,
-        gr2d(proportional_axes = xy,
-             explicit(x^2,x,0,1)),
-        gr2d(explicit(x^2,x,0,1),
-             xrange = [0,1],
-             yrange = [0,2],
-             proportional_axes=xy),
-        gr2d(explicit(x^2,x,0,1))
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
+@subsection Functions
 
 
 
-@defvr {Graphic option} xrange
-Default value: @code{auto}
+@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
 
-If @code{xrange} is @code{auto}, the range for the @var{x} coordinate is
-computed automatically.
+Plots a series of scenes; its arguments are @code{gr2d} and/or @code{gr3d} 
+objects, together with some options. By default, the scenes are put together
+in one column.
 
-If the user wants a specific interval for @var{x}, it must be given as a 
-Maxima list, as in @code{xrange=[-2, 3]}.
+Function @code{draw} accepts the following global options: @code{terminal},
+@code{columns}, @code{pic_width}, @code{pic_height}, @code{eps_width},
+@code{eps_height}, @code{file_name} and @code{delay}.
 
-Since this is a global graphics option, its position in the scene description
-does not matter.
+Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
+when only one scene is required, in two or three dimensions, respectively.
+
+To make use of this function, write first @code{load(draw)}.
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(xrange = [-3,5],
-             explicit(x^2,x,-1,1))$
+(%i2) scene1: gr2d(title="Ellipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",
+                   polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
 @end example
 
-See also @code{yrange} and @code{zrange}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xrange_secondary
-Default value: @code{auto}
-
-If @code{xrange_secondary} is @code{auto}, the range for the second @var{x} axis is
-computed automatically.
-
-If the user wants a specific interval for the second @var{x} axis, it must be given as a 
-Maxima list, as in @code{xrange_secondary=[-2, 3]}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-See also @code{xrange}, @code{yrange}, @code{zrange} and @code{yrange_secondary}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-@end defvr
-
-
-
-@defvr {Graphic option} yrange
-Default value: @code{auto}
-
-If @code{yrange} is @code{auto}, the range for the @var{y} coordinate is
-computed automatically.
-
-If the user wants a specific interval for @var{y}, it must be given as a 
-Maxima list, as in @code{yrange=[-2, 3]}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
+The two draw sentences are equivalent:
 @example
 (%i1) load(draw)$
-(%i2) draw2d(yrange = [-2,3],
-             explicit(x^2,x,-1,1),
-             xrange = [-3,3])$
+(%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
+(%o2)                          [gr3d(explicit)]
+(%i3) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1));
+(%o3)                          [gr3d(explicit)]
 @end example
 
-See also @code{xrange}, @code{yrange_secondary} and @code{zrange}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} yrange_secondary
-Default value: @code{auto}
-
-If @code{yrange_secondary} is @code{auto}, the range for the second @var{y} axis is
-computed automatically.
-
-If the user wants a specific interval for the second @var{y} axis, it must be given as a 
-Maxima list, as in @code{yrange_secondary=[-2, 3]}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-         explicit(sin(x),x,0,10),
-         yaxis_secondary = true,
-         ytics_secondary = true,
-         yrange = [-3, 3],
-         yrange_secondary = [-20, 20],
-         color = blue,
-         explicit(100*sin(x+0.1)+2,x,0,10)) $
-@end example
-
-See also @code{xrange}, @code{yrange} and @code{zrange}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-@end defvr
-
-
-
-@defvr {Graphic option} zrange
-Default value: @code{auto}
-
-If @code{zrange} is @code{auto}, the range for the @var{z} coordinate is
-computed automatically.
-
-If the user wants a specific interval for @var{z}, it must be given as a 
-Maxima list, as in @code{zrange=[-2, 3]}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(yrange = [-3,3],
-             zrange = [-2,5],
-             explicit(x^2+y^2,x,-1,1,y,-1,1),
-             xrange = [-3,3])$
-@end example
-
-See also @code{xrange} and @code{yrange}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-@end defvr
-
-
-@defvr {Graphic option} cbrange
-Default value: @code{auto}
-
-If @code{cbrange} is @code{auto}, the range for the values which are
-colored when @code{enhanced3d} is not @code{false} is computed
-automatically. Values outside of the color range use color of the
-nearest extreme.
-
-When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{cbrange} has
-no effect.
-
-If the user wants a specific interval for the colored values, it must
-be given as a Maxima list, as in @code{cbrange=[-2, 3]}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d (
-        enhanced3d     = true,
-        color          = green,
-        cbrange = [-3,10],
-        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
-@end example
-
-See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-@end defvr
-
-
-@defvr {Graphic option} logx
-Default value: @code{false}
-
-If @code{logx} is @code{true}, the @var{x} axis will be drawn in the
-logarithmic scale.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(log(x),x,0.01,5),
-             logx = true)$
-@end example
-
-See also @code{logy} and @code{logz}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} logy
-Default value: @code{false}
-
-If @code{logy} is @code{true}, the @var{y} axis will be drawn in the
-logarithmic scale.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(logy = true,
-             explicit(exp(x),x,0,5))$
-@end example
-
-See also @code{logx} and @code{logz}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} logz
-Default value: @code{false}
-
-If @code{logz} is @code{true}, the @var{z} axis will be drawn in the
-logarithmic scale.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(logz = true,
-             explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
-@end example
-
-See also @code{logx} and @code{logy}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} logcb
-Default value: @code{false}
-
-If @code{logcb} is @code{true}, the tics in the colorbox will be drawn in the
-logarithmic scale.
-
-When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{logcb} has
-no effect.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d (
-        enhanced3d = true,
-        color      = green,
-        logcb = true,
-        logz  = true,
-        palette = [-15,24,-9],
-        explicit(exp(x^2-y^2), x,-2,2,y,-2,2)) $
-@end example
-
-See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} terminal
-Default value: @code{screen}
-
-Selects the terminal to be used by Gnuplot; possible values are:
-@code{screen} (default), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
-@code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt} and @code{aquaterm}.
-
-Terminals @code{screen}, @code{wxt} and @code{aquaterm} can be also defined as a list
-with two elements: the name of the terminal itself and a non negative integer number.
-In this form, multiple windows can be opened at the same time, each with its
-corresponding number. This feature does not work in Windows platforms.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-N.B. pdfcairo requires Gnuplot 4.3. At this time (Nov 2008) Gnuplot 4.3 is a development version.
-pdf requires Gnuplot 4.2/4.3 to be compiled with the option @code{--enable-pdf} and libpdf must
-be installed. The pdf library is available from: @url{http://www.pdflib.com/en/download/pdflib-family/pdflib-lite/}
-
-Examples:
-
-@example
-(%i1) load(draw)$
-(%i2) /* screen terminal (default) */
-      draw2d(explicit(x^2,x,-1,1))$
-(%i3) /* png file */
-      draw2d(terminal  = 'png,
-             pic_width = 300,
-             explicit(x^2,x,-1,1))$
-(%i4) /* jpg file */
-      draw2d(terminal   = 'jpg,
-             pic_width  = 300,
-             pic_height = 300,
-             explicit(x^2,x,-1,1))$
-(%i5) /* eps file */
-      draw2d(file_name = "myfile",
-             explicit(x^2,x,-1,1),
-             terminal  = 'eps)$
-(%i6) /* pdf file */
-      draw2d(file_name = "mypdf",
-             pdf_width = 12.0,
-             pdf_height = 8.0,
-             explicit(x^2,x,-1,1),
-             terminal  = 'pdf)$
-(%i7) /* wxwidgets window */
-      draw2d(explicit(x^2,x,-1,1),
-             terminal  = 'wxt)$
-@end example
-
-Multiple windows.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^5,x,-2,2), terminal=[screen, 3])$
-(%i3) draw2d(explicit(x^2,x,-2,2), terminal=[screen, 0])$
-@end example
-
-An animated gif file.
+An animated gif file:
 @example
 (%i1) load(draw)$
 (%i2) draw(
@@ -452,164 +86,163 @@ End of animation sequence
 (%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
 @end example
 
-Option @code{delay} is only active in animated gif's; it is ignored in
-any other case.
-
-See also @code{file_name}, @code{pic_width}, @code{pic_height} and @code{delay}.
+See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
 
 @opencatbox
-@category{Package draw}
+@category{Package draw} @category{File output}
 @closecatbox
-
-@end defvr
-
+@end deffn
 
 
-@defvr {Graphic option} font
-Default value: @code{""} (empty string)
 
-This option can be used to set the font face to be used by the terminal.
-Only one font face and size can be used throughout the plot.
 
-Since this is a global graphics option, its position in the scene description
-does not matter.
 
-See also @code{font_size}.
+@deffn {Function} draw2d (@var{option}, @var{graphic_object}, ...)
 
-Gnuplot doesn't handle fonts by itself, it leaves this task to the
-support libraries of the different terminals, each one with its own
-philosophy about it. A brief summary follows:
+This function is a short cut for
+@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
 
-@itemize @bullet
-@item
-@i{x11}:
-Uses the normal x11 font server mechanism.
+It can be used to plot a unique scene in 2d.
 
-Example:
-@example
-(%i1) load(draw)$
-(%i2) draw2d(font      = "Arial", 
-             font_size = 20,
-             label(["Arial font, size 20",1,1]))$
-@end example
+To make use of this function, write first @code{load(draw)}.
 
-@item
-@i{windows}:
-The windows terminal doesn't support changing of fonts from inside the plot.
-Once the plot has been generated, the font can be changed right-clicking on
-the menu of the graph window.
-
-@item
-@i{png, jpeg, gif}:
-The @i{libgd} library uses the font path stored in the environment
-variable @code{GDFONTPATH}; in this case, it is only necessary to
-set option @code{font} to the font's name. It is also possible to
-give the complete path to the font file.
-
-Examples:
-
-Option @code{font} can be given the complete path to the font file:
-@example
-(%i1) load(draw)$
-(%i2) path: "/usr/share/fonts/truetype/freefont/" $
-(%i3) file: "FreeSerifBoldItalic.ttf" $
-(%i4) draw2d(
-        font      = concat(path, file), 
-        font_size = 20,
-        color     = red,
-        label(["FreeSerifBoldItalic font, size 20",1,1]),
-        terminal  = png)$
-@end example
-
-If environment variable @code{GDFONTPATH} is set to the
-path where font files are allocated, it is possible to
-set graphic option @code{font} to the name of the font.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-        font      = "FreeSerifBoldItalic", 
-        font_size = 20,
-        color     = red,
-        label(["FreeSerifBoldItalic font, size 20",1,1]),
-        terminal  = png)$
-@end example
-
-@item
-@i{Postscript}:
-Standard Postscript fonts are: @code{"Times-Roman"}, @code{"Times-Italic"}, @code{"Times-Bold"}, @code{"Times-BoldItalic"}, @code{"Helvetica"}, @code{"Helvetica-Oblique"}, @code{"Helvetica-Bold"}, @code{"Helvetic-BoldOblique"}, @code{"Courier"}, @code{"Courier-Oblique"}, @code{"Courier-Bold"}, and @code{"Courier-BoldOblique"}.
-  
-Example:
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-        font      = "Courier-Oblique", 
-        font_size = 15,
-        label(["Courier-Oblique font, size 15",1,1]),
-        terminal = eps)$
-@end example
-
-@item
-@i{pdf}:
-Uses same fonts as @i{Postscript}.
-
-@item
-@i{pdfcairo}:
-Uses same fonts as @i{wxt}.
-
-@item
-@i{wxt}:
-The @i{pango} library finds fonts via the @code{fontconfig} utility.
-
-@item
-@i{aqua}:
-Default is @code{"Times-Roman"}.
-@end itemize
-
-The gnuplot documentation is an important source of information about terminals and fonts.
+See also @code{draw} and @code{gr2d}.
 
 @opencatbox
-@category{Package draw}
+@category{Package draw} @category{File output}
 @closecatbox
-
-@end defvr
-
+@end deffn
 
 
-@defvr {Graphic option} font_size
-Default value: 12
 
-This option can be used to set the font size to be used by the terminal.
-Only one font face and size can be used throughout the plot. @code{font_size} is
-active only when option @code{font} is not equal to the empty string.
 
-Since this is a global graphics option, its position in the scene description
-does not matter.
 
-See also @code{font}.
+
+@deffn {Function} draw3d (@var{option}, @var{graphic_object}, ...)
+
+This function is a short cut for
+@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
+
+It can be used to plot a unique scene in 3d.
+
+To make use of this function, write first @code{load(draw)}.
+
+See also @code{draw} and @code{gr3d}.
 
 @opencatbox
-@category{Package draw}
+@category{Package draw} @category{File output}
 @closecatbox
-
-@end defvr
-
+@end deffn
 
 
-@defvr {Graphic option} grid
-Default value: @code{false}
 
-If @code{grid} is @code{true}, a grid will be drawn on the @var{xy} plane.
+@deffn {Function} draw_file (@var{graphic option}, ..., @var{graphic object}, ...)
 
-Since this is a global graphics option, its position in the scene description
-does not matter.
+Saves the current plot into a file. Accepted graphics options are:
+@code{terminal}, @code{pic_width}, @code{pic_height}, @code{eps_width}, 
+@code{eps_height}, @code{file_name} and @code{file_bgcolor}. 
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(grid = true,
-             explicit(exp(u),u,-2,2))$
+(%i2) /* screen plot */
+      draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)))$
+(%i3) /* same plot in eps format */
+      draw_file(terminal  = eps,
+                eps_width = 5,
+                eps_height = 5) $
 @end example
+
+@opencatbox
+@category{Package draw} @category{File output}
+@closecatbox
+@end deffn
+
+
+
+@deffn {Function} multiplot_mode (@var{term})
+
+This function enables Maxima to work in one-window multiplot mode with terminal
+@var{term}; accepted arguments for this function are @code{screen}, 
+@code{wxt}, @code{aquaterm} and @code{none}.
+
+When multiplot mode is enabled, each call to @code{draw} sends a new plot to the
+same window, without erasing the previous ones. To disable the multiplot mode,
+write @code{multiplot_mode(none)}.
+
+When multiplot mode is enabled, global option @code{terminal} is blocked and you
+have to disable this working mode before changing to another terminal.
+
+This feature does not work in Windows platforms.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) set_draw_defaults(
+         xrange = [-1,1],
+         yrange = [-1,1],
+         grid   = true,
+         title  = "Step by step plot" )$
+(%i3) multiplot_mode(screen)$
+(%i4) draw2d(color=blue,  explicit(x^2,x,-1,1))$
+(%i5) draw2d(color=red,   explicit(x^3,x,-1,1))$
+(%i6) draw2d(color=brown, explicit(x^4,x,-1,1))$
+(%i7) multiplot_mode(none)$
+@end example
+
+@opencatbox
+@category{Package draw} @category{File output}
+@closecatbox
+@end deffn
+
+
+
+
+
+@deffn {Function} set_draw_defaults (@var{graphic option}, ..., @var{graphic object}, ...)
+
+Sets user graphics options. This function is useful for plotting a sequence
+of graphics with common graphics options. Calling this function without
+arguments removes user defaults.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) set_draw_defaults(
+         xrange = [-10,10],
+         yrange = [-2, 2],
+         color  = blue,
+         grid   = true)$
+(%i3) /* plot with user defaults */
+      draw2d(explicit(((1+x)**2/(1+x*x))-1,x,-10,10))$
+(%i4) set_draw_defaults()$
+(%i5) /* plot with standard defaults */
+      draw2d(explicit(((1+x)**2/(1+x*x))-1,x,-10,10))$
+@end example
+
+To make use of this function, write first @code{load(draw)}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@subsection Graphics options
+
+
+@defvr {Graphic option} adapt_depth
+Default value: 10
+
+@code{adapt_depth} is the maximum number of splittings used by the adaptive plotting routine.
+
+This option is relevant only for 2d @code{explicit} functions.
 
 @opencatbox
 @category{Package draw}
@@ -619,11 +252,10 @@ Example:
 
 
 
-@defvr {Graphic option} title
-Default value: @code{""} (empty string)
+@defvr {Graphic option} axis_3d
+Default value: @code{true}
 
-Option @code{title}, a string, is the main title for the scene.
-By default, no title is written.
+If @code{axis_3d} is @code{true}, the @var{x}, @var{y} and @var{z} axis are shown in 3d scenes.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
@@ -632,1265 +264,11 @@ Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(explicit(exp(u),u,-2,2),
-             title = "Exponential function")$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xlabel
-Default value: @code{""} (empty string)
-
-Option @code{xlabel}, a string, is the label for the @var{x} axis.
-By default, no label is written.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xlabel = "Time",
-             explicit(exp(u),u,-2,2),
-             ylabel = "Population")$
-@end example
-
-See also @code{ylabel}, and @code{zlabel}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ylabel
-Default value: @code{""} (empty string)
-
-Option @code{ylabel}, a string, is the label for the @var{y} axis.
-By default, no label is written.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xlabel = "Time",
-             ylabel = "Population",
-             explicit(exp(u),u,-2,2) )$
-@end example
-
-See also @code{xlabel}, and @code{zlabel}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} zlabel
-Default value: @code{""} (empty string)
-
-Option @code{zlabel}, a string, is the label for the @var{z} axis.
-By default, no label is written.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(zlabel = "Z variable",
-             ylabel = "Y variable",
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
-             xlabel = "X variable" )$
-@end example
-
-See also @code{xlabel}, and @code{ylabel}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} xtics
-Default value: @code{auto}
-
-This graphic option controls the way tic marks are drawn on the @var{x} axis.
-
-@itemize @bullet
-@item
-When option @code{xtics} is bounded to symbol @var{auto}, tic marks are
-drawn automatically.
-
-@item
-When option @code{xtics} is bounded to symbol @var{none}, tic marks are
-not drawn.
-
-@item
-When option @code{xtics} is bounded to a positive number, this is the distance
-between two consecutive tic marks.
-
-@item
-When option @code{xtics} is bounded to a list of length three of the
-form @code{[start,incr,end]}, tic marks are plotted from @code{start} 
-to @code{end} at intervals of length @code{incr}.
-
-@item
-When option @code{xtics} is bounded to a set of numbers of the
-form @code{@{n1, n2, ...@}}, tic marks are plotted at values @code{n1},
-@code{n2}, ...
-
-@item
-When option @code{xtics} is bounded to a set of pairs of the
-form @code{@{["label1", n1], ["label2", n2], ...@}}, tic marks corresponding to values @code{n1},
-@code{n2}, ... are labeled with @code{"label1"}, @code{"label2"}, ..., respectively.
-@end itemize
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Examples:
-
-Disable tics.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xtics = 'none,
-             explicit(x^3,x,-1,1)  )$
-@end example
-
-Tics every 1/4 units.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xtics = 1/4,
-             explicit(x^3,x,-1,1)  )$
-@end example
-
-Tics from -3/4 to 3/4 in steps of 1/8.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xtics = [-3/4,1/8,3/4],
-             explicit(x^3,x,-1,1)  )$
-@end example
-
-Tics at points -1/2, -1/4 and 3/4.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xtics = @{-1/2,-1/4,3/4@},
-             explicit(x^3,x,-1,1)  )$
-@end example
-
-Labeled tics.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xtics = @{["High",0.75],["Medium",0],["Low",-0.75]@},
-             explicit(x^3,x,-1,1)  )$
-@end example
-
-See also @code{ytics}, and @code{ztics}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xtics_secondary
-Default value: @code{auto}
-
-This graphic option controls the way tic marks are drawn on the second @var{x} axis.
-
-See @code{xtics} for a complete description.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ytics
-Default value: @code{auto}
-
-This graphic option controls the way tic marks are drawn on the @var{y} axis.
-
-See @code{xtics} for a complete description.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ytics_secondary
-Default value: @code{auto}
-
-This graphic option controls the way tic marks are drawn on the second @var{y} axis.
-
-See @code{xtics} for a complete description.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ztics
-Default value: @code{auto}
-
-This graphic option controls the way tic marks are drawn on the @var{z} axis.
-
-See @code{xtics} for a complete description.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} cbtics
-Default value: @code{auto}
-
-This graphic option controls the way tic marks are drawn on the colorbox
-when option @code{enhanced3d} is not @code{false}.
-
-When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{cbtics} has
-no effect.
-
-See @code{xtics} for a complete description.
-
-Example :
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d (
-        enhanced3d = true,
-        color      = green,
-        cbtics  = @{["High",10],["Medium",05],["Low",0]@},
-        cbrange = [0, 10],
-        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
-@end example
-
-See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xtics_rotate
-Default value: @code{false}
-
-If @code{xtics_rotate} is @code{true}, tic marks on the @var{x} axis are rotated 
-90 degrees.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} xtics_rotate_secondary
-Default value: @code{false}
-
-If @code{xtics_rotate_secondary} is @code{true}, tic marks on the secondary @var{x} axis are rotated 
-90 degrees.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} ytics_rotate
-Default value: @code{false}
-
-If @code{ytics_rotate} is @code{true}, tic marks on the @var{y} axis are rotated 
-90 degrees.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ytics_rotate_secondary
-Default value: @code{false}
-
-If @code{ytics_rotate_secondary} is @code{true}, tic marks on the secondary @var{y} axis are rotated 
-90 degrees.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ztics_rotate
-Default value: @code{false}
-
-If @code{ztics_rotate} is @code{true}, tic marks on the @var{z} axis are rotated 
-90 degrees.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} xtics_axis
-Default value: @code{false}
-
-If @code{xtics_axis} is @code{true}, tic marks and their labels are plotted just
-along the @var{x} axis, if it is @code{false} tics are plotted on the border.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} xtics_secondary_axis
-Default value: @code{false}
-
-If @code{xtics_secondary_axis} is @code{true}, tic marks and their labels are plotted just
-along the secondary @var{x} axis, if it is @code{false} tics are plotted on the border.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} ytics_axis
-Default value: @code{false}
-
-If @code{ytics_axis} is @code{true}, tic marks and their labels are plotted just
-along the @var{y} axis, if it is @code{false} tics are plotted on the border.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} ytics_secondary_axis
-Default value: @code{false}
-
-If @code{ytics_secondary_axis} is @code{true}, tic marks and their labels are plotted just
-along the secondary @var{y} axis, if it is @code{false} tics are plotted on the border.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} ztics_axis
-Default value: @code{false}
-
-If @code{ztics_axis} is @code{true}, tic marks and their labels are plotted just
-along the @var{z} axis, if it is @code{false} tics are plotted on the border.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} xaxis
-Default value: @code{false}
-
-If @code{xaxis} is @code{true}, the @var{x} axis is drawn.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             xaxis       = true,
-             xaxis_color = blue)$
-@end example
-
-See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xaxis_secondary
-Default value: @code{false}
-
-If @code{xaxis_secondary} is @code{true}, function values can be plotted with 
-respect to the second @var{x} axis, which will be drawn on top of the scene.
-
-Note that this is a local graphics option which only affects to 2d plots.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-         key   = "Bottom x-axis",
-         explicit(x+1,x,1,2),
-         color = red,
-         key   = "Above x-axis",
-         xtics_secondary = true,
-         xaxis_secondary = true,
-         explicit(x^2,x,-1,1)) $
-@end example
-
-See also @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_rotate_secondary},
-@code{xtics_axis_secondary} and @code{xaxis_secondary}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xaxis_width
-Default value: 1
-
-@code{xaxis_width} is the width of the @var{x} axis.
-Its value must be a positive number.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             xaxis       = true,
-             xaxis_width = 3)$
-@end example
-
-See also @code{xaxis}, @code{xaxis_type} and @code{xaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xaxis_type
-Default value: @code{dots}
-
-@code{xaxis_type} indicates how the @var{x} axis is displayed; 
-possible values are @code{solid} and @code{dots}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             xaxis       = true,
-             xaxis_type  = solid)$
-@end example
-
-See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xaxis_color
-Default value: @code{"black"}
-
-@code{xaxis_color} specifies the color for the @var{x} axis. See
-@code{color} to know how colors are defined.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             xaxis       = true,
-             xaxis_color = red)$
-@end example
-
-See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_type}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} yaxis
-Default value: @code{false}
-
-If @code{yaxis} is @code{true}, the @var{y} axis is drawn.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             yaxis       = true,
-             yaxis_color = blue)$
-@end example
-
-See also @code{yaxis_width}, @code{yaxis_type} and @code{yaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} yaxis_secondary
-Default value: @code{false}
-
-If @code{yaxis_secondary} is @code{true}, function values can be plotted with 
-respect to the second @var{y} axis, which will be drawn on the right side of the
-scene.
-
-Note that this is a local graphics option which only affects to 2d plots.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-         explicit(sin(x),x,0,10),
-         yaxis_secondary = true,
-         ytics_secondary = true,
-         color = blue,
-         explicit(100*sin(x+0.1)+2,x,0,10));
-@end example
-
-See also @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary}
-and @code{ytics_axis_secondary}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} yaxis_width
-Default value: 1
-
-@code{yaxis_width} is the width of the @var{y} axis.
-Its value must be a positive number.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             yaxis       = true,
-             yaxis_width = 3)$
-@end example
-
-See also @code{yaxis}, @code{yaxis_type} and @code{yaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} yaxis_type
-Default value: @code{dots}
-
-@code{yaxis_type} indicates how the @var{y} axis is displayed; 
-possible values are @code{solid} and @code{dots}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             yaxis       = true,
-             yaxis_type  = solid)$
-@end example
-
-See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} yaxis_color
-Default value: @code{"black"}
-
-@code{yaxis_color} specifies the color for the @var{y} axis. See
-@code{color} to know how colors are defined.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^3,x,-1,1),
-             yaxis       = true,
-             yaxis_color = red)$
-@end example
-
-See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_type}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} zaxis
-Default value: @code{false}
-
-If @code{zaxis} is @code{true}, the @var{z} axis is drawn in 3D plots.
-This option has no effect in 2D scenes.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
-             zaxis       = true,
-             zaxis_type  = solid,
-             zaxis_color = blue)$
-@end example
-
-See also @code{zaxis_width}, @code{zaxis_type} and @code{zaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} zaxis_width
-Default value: 1
-
-@code{zaxis_width} is the width of the @var{z} axis.
-Its value must be a positive number. This option has no effect in 2D scenes.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
-             zaxis       = true,
-             zaxis_type  = solid,
-             zaxis_width = 3)$
-@end example
-
-See also @code{zaxis}, @code{zaxis_type} and @code{zaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} zaxis_type
-Default value: @code{dots}
-
-@code{zaxis_type} indicates how the @var{z} axis is displayed; 
-possible values are @code{solid} and @code{dots}.
-This option has no effect in 2D scenes.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
-             zaxis       = true,
-             zaxis_type  = solid)$
-@end example
-
-See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} zaxis_color
-Default value: @code{"black"}
-
-@code{zaxis_color} specifies the color for the @var{z} axis. See
-@code{color} to know how colors are defined. 
-This option has no effect in 2D scenes.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
-             zaxis       = true,
-             zaxis_type  = solid,
-             zaxis_color = red)$
-@end example
-
-See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_type}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} xyplane
-Default value: @code{false}
-
-Allocates the xy-plane in 3D scenes. When @code{xyplane} is
-@code{false}, the xy-plane is placed automatically; when it is
-a real number, the xy-plane intersects the z-axis at this level.
-This option has no effect in 2D scenes.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(xyplane = %e-2,
-             explicit(x^2+y^2,x,-1,1,y,-1,1))$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} rot_vertical
-Default value: 60
-
-@code{rot_vertical} is the angle (in degrees) of vertical rotation (around 
-the @var{x} axis) to set the view point in 3d scenes.
-
-The angle is bounded to the @math{[0, 180]} interval.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(rot_vertical = 170,
+(%i2) draw3d(axis_3d = false,
              explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
 
-See also @code{rot_horizontal}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} rot_horizontal
-Default value: 30
-
-@code{rot_horizontal} is the angle (in degrees) of horizontal rotation (around 
-the @var{z} axis) to set the view point in 3d scenes.
-
-The angle is bounded to the @math{[0, 360]} interval.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(rot_vertical = 170,
-             rot_horizontal = 360,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
-@end example
-
-See also @code{rot_vertical}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} xy_file
-Default value: @code{""} (empty string)
-
-@code{xy_file} is the name of the file where the coordinates will be saved
-after clicking with the mouse button and hitting the 'x' key. By default,
-no coordinates are saved.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} user_preamble
-Default value: @code{""} (empty string)
-
-Expert Gnuplot users can make use of this option to fine tune Gnuplot's
-behaviour by writing settings to be sent before the @code{plot} or @code{splot}
-command.
-
-The value of this option must be a string or a list of strings (one per line).
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-The @i{dumb} terminal is not supported by package @code{draw},
-but it is possible to set it by making use of option @code{user_preamble},
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
-             parametric(cos(u),sin(u),u,0,2*%pi),
-             user_preamble="set terminal dumb")$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} file_name
-Default value: @code{"maxima_out"}
-
-This is the name of the file where terminals @code{png}, @code{jpg}, @code{eps},
- @code{eps_color}, @code{pdf} and @code{pdfcairo} will save the graphic.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(file_name = "myfile",
-             explicit(x^2,x,-1,1),
-             terminal  = 'png)$
-@end example
-
-See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} gnuplot_file_name
-Default value: @code{"maxout.gnuplot"}
-
-This is the name of the file with the necessary commands to
-be processed by Gnuplot.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-       file_name = "my_file",
-       gnuplot_file_name = "my_commands_for_gnuplot",
-       data_file_name    = "my_data_for_gnuplot",
-       terminal          = png,
-       explicit(x^2,x,-1,1)) $
-@end example
-
-See also @code{data_file_name}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} data_file_name
-Default value: @code{"data.gnuplot"}
-
-This is the name of the file with the numeric data needed
-by Gnuplot to build the requested plot.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-See example in @code{gnuplot_file_name}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} file_bgcolor
-Default value: @code{"xffffff"}
-
-Sets the background color for terminals png, jpg and gif. 
-Colors must be given in hexadecimal @i{rgb} code. Color names
-are not allowed. Default background color is white.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-@defvr {Graphic option} delay
-Default value: 5
-
-This is the delay in 1/100 seconds of frames in animated gif files.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw(
-        delay     = 100,
-        file_name = "zzz",
-        terminal  = 'animated_gif,
-        gr2d(explicit(x^2,x,-1,1)),
-        gr2d(explicit(x^3,x,-1,1)),
-        gr2d(explicit(x^4,x,-1,1)));
-End of animation sequence
-(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
-@end example
-
-Option @code{delay} is only active in animated gif's; it is ignored in
-any other case.
-
-See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-@defvr {Graphic option} pic_width
-Default value: 640
-
-This is the width of the bitmap file generated by terminals @code{png} and @code{jpg}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'png,
-             pic_width  = 300,
-             pic_height = 300,
-             explicit(x^2,x,-1,1))$
-@end example
-
-See also @code{terminal}, @code{file_name}, and @code{pic_height}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} pic_height
-Default value: 640
-
-This is the height of the bitmap file generated by terminals @code{png} and @code{jpg}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'png,
-             pic_width  = 300,
-             pic_height = 300,
-             explicit(x^2,x,-1,1))$
-@end example
-
-See also @code{terminal}, @code{file_name}, and @code{pic_width}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} eps_width
-Default value: 12
-
-This is the width (measured in cm) of the Postscript file
-generated by terminals @code{eps} and @code{eps_color}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'eps,
-             eps_width  = 3,
-             eps_height = 3,
-             explicit(x^2,x,-1,1))$
-@end example
-
-See also @code{terminal}, @code{file_name}, and @code{eps_height}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} eps_height
-Default value: 8
-
-This is the height (measured in cm) of the Postscript file
-generated by terminals @code{eps} and @code{eps_color}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'eps,
-             eps_width  = 3,
-             eps_height = 3,
-             explicit(x^2,x,-1,1))$
-@end example
-
-See also @code{terminal}, @code{file_name}, and @code{eps_width}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} pdf_width
-Default value: 21.0 (A4 portrait width)
-
-This is the width (measured in cm) of the PDF document
-generated by terminals @code{pdf} and @code{pdfcairo}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'pdf,
-             pdf_width  = 3.0,
-             pdf_height = 3.0,
-             explicit(x^2,x,-1,1))$
-@end example
-
-See also @code{terminal}, @code{file_name}, and @code{pdf_height}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} pdf_height
-Default value: 29.7 (A4 portrait height)
-
-This is the height (measured in cm) of the PDF document
-generated by terminals @code{pdf} and @code{pdfcairo}.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal   = 'pdf,
-             pdf_width  = 3.0,
-             pdf_height = 3.0,
-             explicit(x^2,x,-1,1))$
-@end example
-
-See also @code{terminal}, @code{file_name}, and @code{pdf_width}.
+See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
 
 @opencatbox
 @category{Package draw}
@@ -1952,32 +330,6 @@ See also @code{axis_bottom},  @code{axis_top}, @code{axis_right}, and @code{axis
 
 
 
-@defvr {Graphic option} axis_top
-Default value: @code{true}
-
-If @code{axis_top} is @code{true}, the top axis is shown in 2d scenes.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(axis_top = false,
-             explicit(x^3,x,-1,1))$
-@end example
-
-See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axis_3d}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
 @defvr {Graphic option} axis_right
 Default value: @code{true}
 
@@ -2004,10 +356,10 @@ See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_
 
 
 
-@defvr {Graphic option} axis_3d
+@defvr {Graphic option} axis_top
 Default value: @code{true}
 
-If @code{axis_3d} is @code{true}, the @var{x}, @var{y} and @var{z} axis are shown in 3d scenes.
+If @code{axis_top} is @code{true}, the top axis is shown in 2d scenes.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
@@ -2016,11 +368,11 @@ Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(axis_3d = false,
-             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
+(%i2) draw2d(axis_top = false,
+             explicit(x^3,x,-1,1))$
 @end example
 
-See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_right} for axis in 2d.
+See also @code{axis_bottom},  @code{axis_left}, @code{axis_right}, and @code{axis_3d}.
 
 @opencatbox
 @category{Package draw}
@@ -2030,56 +382,99 @@ See also @code{axis_bottom},  @code{axis_left}, @code{axis_top}, and @code{axis_
 
 
 
+@defvr {Graphic option} border
+Default value: @code{true}
 
+If @code{border} is @code{true}, borders of polygons are painted
+according to @code{line_type} and @code{line_width}.
 
-@defvr {Graphic option} palette
-Default value: @code{color}
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{polygon}, @code{rectangle}, and @code{ellipse}.
+@end itemize
 
-@code{palette} indicates how to map the real values of a matrix
-passed to object @code{image} onto color components.
+Example:
 
-@code{palette} is a vector of length three with components 
-ranging from -36 to +36; each value is an index for a formula mapping the levels
-onto red, green and blue colors, respectively:
 @example
- 0: 0               1: 0.5           2: 1
- 3: x               4: x^2           5: x^3
- 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
- 9: sin(90x)       10: cos(90x)     11: |x-0.5|
-12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
-15: sin(360x)      16: cos(360x)    17: |sin(360x)|
-18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
-21: 3x             22: 3x-1         23: 3x-2
-24: |3x-1|         25: |3x-2|       26: (3x-1)/2
-27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
-30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
-33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
-36: 2*x - 1
+(%i1) load(draw)$
+(%i2) draw2d(color       = brown,
+             line_width  = 8,
+             polygon([[3,2],[7,2],[5,5]]),
+             border      = false,
+             fill_color  = blue,
+             polygon([[5,2],[9,2],[7,5]]) )$
 @end example
-negative numbers mean negative colour component.
 
-@code{palette = gray} and @code{palette = color} are short cuts for
-@code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} cbrange
+Default value: @code{auto}
+
+If @code{cbrange} is @code{auto}, the range for the values which are
+colored when @code{enhanced3d} is not @code{false} is computed
+automatically. Values outside of the color range use color of the
+nearest extreme.
+
+When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{cbrange} has
+no effect.
+
+If the user wants a specific interval for the colored values, it must
+be given as a Maxima list, as in @code{cbrange=[-2, 3]}.
 
 Since this is a global graphics option, its position in the scene description
 does not matter.
 
-Examples:
+Example:
 
 @example
 (%i1) load(draw)$
-(%i2) im: apply(
-           'matrix,
-            makelist(makelist(random(200),i,1,30),i,1,30))$
-(%i3) /* palette = color, default */
-      draw2d(image(im,0,0,30,30))$
-(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
-(%i5) draw2d(palette = [15,20,-4],
-             colorbox=false,
-             image(im,0,0,30,30))$
+(%i2) draw3d (
+        enhanced3d     = true,
+        color          = green,
+        cbrange = [-3,10],
+        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
 @end example
 
-See also @code{colorbox}. 
+See also @code{enhanced3d}, @code{colorbox} and @code{cbtics}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
+
+
+@defvr {Graphic option} cbtics
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the colorbox
+when option @code{enhanced3d} is not @code{false}.
+
+When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{cbtics} has
+no effect.
+
+See @code{xtics} for a complete description.
+
+Example :
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d = true,
+        color      = green,
+        cbtics  = @{["High",10],["Medium",05],["Low",0]@},
+        cbrange = [0, 10],
+        explicit(x^2+y^2, x,-2,2,y,-2,2)) $
+@end example
+
+See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
 
 @opencatbox
 @category{Package draw}
@@ -2087,6 +482,59 @@ See also @code{colorbox}.
 
 @end defvr
 
+@defvr {Graphic option} color
+Default value: @code{"black"}
+
+@code{color} specifies the color for plotting lines, points, borders of
+polygons and labels.
+
+Colors can be given as names or in hexadecimal @i{rgb} code.
+
+Available color names are: 
+@code{"white"}, @code{"black"}, @code{"gray0"}, @code{"grey0"}, @code{"gray10"},
+@code{"grey10"}, @code{"gray20"}, @code{"grey20"}, @code{"gray30"}, @code{"grey30"},
+@code{"gray40"}, @code{"grey40"}, @code{"gray50"}, @code{"grey50"}, @code{"gray60"},
+@code{"grey60"}, @code{"gray70"}, @code{"grey70"}, @code{"gray80"}, @code{"grey80"},
+@code{"gray90"}, @code{"grey90"}, @code{"gray100"}, @code{"grey100"}, @code{"gray"},
+@code{"grey"}, @code{"light-gray"}, @code{"light-grey"}, @code{"dark-gray"},
+@code{"dark-grey"}, @code{"red"}, @code{"light-red"}, @code{"dark-red"}, @code{"yellow"},
+@code{"light-yellow"}, @code{"dark-yellow"}, @code{"green"}, @code{"light-green"},
+@code{"dark-green"}, @code{"spring-green"}, @code{"forest-green"}, @code{"sea-green"},
+@code{"blue"}, @code{"light-blue"}, @code{"dark-blue"}, @code{"midnight-blue"}, 
+@code{"navy"}, @code{"medium-blue"}, @code{"royalblue"}, @code{"skyblue"}, 
+@code{"cyan"}, @code{"light-cyan"}, @code{"dark-cyan"}, @code{"magenta"}, 
+@code{"light-magenta"}, @code{"dark-magenta"}, @code{"turquoise"}, 
+@code{"light-turquoise"}, @code{"dark-turquoise"}, @code{"pink"}, @code{"light-pink"},
+@code{"dark-pink"}, @code{"coral"}, @code{"light-coral"}, @code{"orange-red"},
+@code{"salmon"}, @code{"light-salmon"}, @code{"dark-salmon"}, @code{"aquamarine"},
+@code{"khaki"}, @code{"dark-khaki"}, @code{"goldenrod"}, @code{"light-goldenrod"},
+@code{"dark-goldenrod"}, @code{"gold"}, @code{"beige"}, @code{"brown"}, @code{"orange"},
+@code{"dark-orange"}, @code{"violet"}, @code{"dark-violet"}, @code{"plum"} and @code{"purple"}.
+
+Cromatic componentes in hexadecimal code are introduced in the form @code{"#rrggbb"}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
+             color = "red",
+             explicit(0.5 + x^2,x,-1,1),
+             color = blue,
+             explicit(1 + x^2,x,-1,1),
+             color = "light-blue", /* double quotes if - is used */
+             explicit(1.5 + x^2,x,-1,1),
+             color = "#23ab0f",
+             label(["This is a label",0,1.2])  )$
+@end example
+
+See also @code{fill_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
 
 
 
@@ -2123,6 +571,213 @@ Color scale and 3D coloured object.
 @end example
 
 See also @code{palette}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} columns
+Default value: 1
+
+@code{columns} is the number of columns in multiple plots.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) scene1: gr2d(title="Ellipse",
+                   nticks=30,
+                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
+(%i3) scene2: gr2d(title="Triangle",
+                   polygon([4,5,7],[6,4,2]))$
+(%i4) draw(scene1, scene2, columns = 2)$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} contour
+Default value: @code{none}
+
+Option @code{contour} enables the user to select where to plot contour lines.
+Possible values are:
+
+@itemize @bullet
+
+@item
+@code{none}:
+no contour lines are plotted.
+
+@item
+@code{base}:
+contour lines are projected on the xy plane.
+
+@item
+@code{surface}:
+contour lines are plotted on the surface.
+
+@item
+@code{both}:
+two contour lines are plotted: on the xy plane and on the surface.
+
+@item
+@code{map}:
+contour lines are projected on the xy plane, and the view point is
+set just in the vertical.
+
+@end itemize
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 15,
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} contour_levels
+Default value: 5
+
+This graphic option controls the way contours are drawn. 
+@code{contour_levels} can be set to a positive integer number, a list of three
+numbers or an arbitrary set of numbers:
+
+@itemize @bullet
+@item
+When option @code{contour_levels} is bounded to positive integer @var{n},
+@var{n} contour lines will be drawn at equal intervals. By default, five
+equally spaced contours are plotted.
+
+@item
+When option @code{contour_levels} is bounded to a list of length three of the
+form @code{[lowest,s,highest]}, contour lines are plotted from @code{lowest} 
+to @code{highest} in steps of @code{s}.
+
+@item
+When option @code{contour_levels} is bounded to a set of numbers of the
+form @code{@{n1, n2, ...@}}, contour lines are plotted at values @code{n1},
+@code{n2}, ...
+@end itemize
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Examples:
+
+Ten equally spaced contour lines. The actual number of
+levels can be adjusted to give simple labels.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = 10,
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+
+From -8 to 8 in steps of 4.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = [-8,4,8],
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+Isolines at levels -7, -6, 0.8 and 5.
+@example
+(%i1) load(draw)$
+(%i2) draw3d(color = green,
+             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
+             contour_levels = @{-7, -6, 0.8, 5@},
+             contour        = both,
+             surface_hide   = true) $
+@end example
+
+See also @code{contour}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} data_file_name
+Default value: @code{"data.gnuplot"}
+
+This is the name of the file with the numeric data needed
+by Gnuplot to build the requested plot.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+See example in @code{gnuplot_file_name}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} delay
+Default value: 5
+
+This is the delay in 1/100 seconds of frames in animated gif files.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+Option @code{delay} is only active in animated gif's; it is ignored in
+any other case.
+
+See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
 
 @opencatbox
 @category{Package draw}
@@ -2289,6 +944,1040 @@ being @code{k} an ordering parameter.
 
 
 
+@defvr {Graphic option} eps_height
+Default value: 8
+
+This is the height (measured in cm) of the Postscript file
+generated by terminals @code{eps} and @code{eps_color}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{eps_width}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} eps_width
+Default value: 12
+
+This is the width (measured in cm) of the Postscript file
+generated by terminals @code{eps} and @code{eps_color}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'eps,
+             eps_width  = 3,
+             eps_height = 3,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{eps_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} file_bgcolor
+Default value: @code{"xffffff"}
+
+Sets the background color for terminals png, jpg and gif. 
+Colors must be given in hexadecimal @i{rgb} code. Color names
+are not allowed. Default background color is white.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} file_name
+Default value: @code{"maxima_out"}
+
+This is the name of the file where terminals @code{png}, @code{jpg}, @code{eps},
+ @code{eps_color}, @code{pdf} and @code{pdfcairo} will save the graphic.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'png)$
+@end example
+
+See also @code{terminal}, @code{pic_width}, and @code{pic_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} fill_color
+Default value: @code{"red"}
+
+@code{fill_color} specifies the color for filling polygons and
+2d @code{explicit} functions.
+
+See @code{color} to learn how colors are specified.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} fill_density
+Default value: 0
+
+@code{fill_density} is a number between 0 and 1 that specifies
+the intensity of the @code{fill_color} in @code{bars} objects.
+
+See @code{bars} for examples.
+@end defvr
+
+
+
+
+@defvr {Graphic option} filled_func
+Default value: @code{false}
+
+Option @code{filled_func} controls how regions limited by functions
+should be filled. When @code{filled_func} is @code{true}, the region
+bounded by the function defined with object @code{explicit} and the
+bottom of the graphic window is filled with @code{fill_color}. When 
+@code{filled_func} contains a function expression, then the region bounded
+by this function and the function defined with object @code{explicit} 
+will be filled. By default, explicit functions are not filled. 
+
+This option affects only the 2d graphic object @code{explicit}.
+
+Example:
+
+Region bounded by an @code{explicit} object and the bottom of the
+graphic window.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_color  = red,
+             filled_func = true,
+             explicit(sin(x),x,0,10) )$
+@end example
+
+Region bounded by an @code{explicit} object and the function
+defined by option @code{filled_func}. Note that the variable in
+@code{filled_func} must be the same as that used in @code{explicit}.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(fill_color  = grey,
+             filled_func = sin(x),
+             explicit(-sin(x),x,0,%pi));
+@end example
+
+See also @code{fill_color} and @code{explicit}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} font
+Default value: @code{""} (empty string)
+
+This option can be used to set the font face to be used by the terminal.
+Only one font face and size can be used throughout the plot.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+See also @code{font_size}.
+
+Gnuplot doesn't handle fonts by itself, it leaves this task to the
+support libraries of the different terminals, each one with its own
+philosophy about it. A brief summary follows:
+
+@itemize @bullet
+@item
+@i{x11}:
+Uses the normal x11 font server mechanism.
+
+Example:
+@example
+(%i1) load(draw)$
+(%i2) draw2d(font      = "Arial", 
+             font_size = 20,
+             label(["Arial font, size 20",1,1]))$
+@end example
+
+@item
+@i{windows}:
+The windows terminal doesn't support changing of fonts from inside the plot.
+Once the plot has been generated, the font can be changed right-clicking on
+the menu of the graph window.
+
+@item
+@i{png, jpeg, gif}:
+The @i{libgd} library uses the font path stored in the environment
+variable @code{GDFONTPATH}; in this case, it is only necessary to
+set option @code{font} to the font's name. It is also possible to
+give the complete path to the font file.
+
+Examples:
+
+Option @code{font} can be given the complete path to the font file:
+@example
+(%i1) load(draw)$
+(%i2) path: "/usr/share/fonts/truetype/freefont/" $
+(%i3) file: "FreeSerifBoldItalic.ttf" $
+(%i4) draw2d(
+        font      = concat(path, file), 
+        font_size = 20,
+        color     = red,
+        label(["FreeSerifBoldItalic font, size 20",1,1]),
+        terminal  = png)$
+@end example
+
+If environment variable @code{GDFONTPATH} is set to the
+path where font files are allocated, it is possible to
+set graphic option @code{font} to the name of the font.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        font      = "FreeSerifBoldItalic", 
+        font_size = 20,
+        color     = red,
+        label(["FreeSerifBoldItalic font, size 20",1,1]),
+        terminal  = png)$
+@end example
+
+@item
+@i{Postscript}:
+Standard Postscript fonts are: @code{"Times-Roman"}, @code{"Times-Italic"}, @code{"Times-Bold"}, @code{"Times-BoldItalic"}, @code{"Helvetica"}, @code{"Helvetica-Oblique"}, @code{"Helvetica-Bold"}, @code{"Helvetic-BoldOblique"}, @code{"Courier"}, @code{"Courier-Oblique"}, @code{"Courier-Bold"}, and @code{"Courier-BoldOblique"}.
+  
+Example:
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        font      = "Courier-Oblique", 
+        font_size = 15,
+        label(["Courier-Oblique font, size 15",1,1]),
+        terminal = eps)$
+@end example
+
+@item
+@i{pdf}:
+Uses same fonts as @i{Postscript}.
+
+@item
+@i{pdfcairo}:
+Uses same fonts as @i{wxt}.
+
+@item
+@i{wxt}:
+The @i{pango} library finds fonts via the @code{fontconfig} utility.
+
+@item
+@i{aqua}:
+Default is @code{"Times-Roman"}.
+@end itemize
+
+The gnuplot documentation is an important source of information about terminals and fonts.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} font_size
+Default value: 12
+
+This option can be used to set the font size to be used by the terminal.
+Only one font face and size can be used throughout the plot. @code{font_size} is
+active only when option @code{font} is not equal to the empty string.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+See also @code{font}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} gnuplot_file_name
+Default value: @code{"maxout.gnuplot"}
+
+This is the name of the file with the necessary commands to
+be processed by Gnuplot.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+       file_name = "my_file",
+       gnuplot_file_name = "my_commands_for_gnuplot",
+       data_file_name    = "my_data_for_gnuplot",
+       terminal          = png,
+       explicit(x^2,x,-1,1)) $
+@end example
+
+See also @code{data_file_name}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} grid
+Default value: @code{false}
+
+If @code{grid} is @code{true}, a grid will be drawn on the @var{xy} plane.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(grid = true,
+             explicit(exp(u),u,-2,2))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} head_angle
+Default value: 45
+
+@code{head_angle} indicates the angle, in degrees, between the arrow heads and
+the segment.
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,10],
+             yrange      = [0,9],
+             head_length = 0.7,
+             head_angle  = 10,
+             vector([1,1],[0,6]),
+             head_angle  = 20,
+             vector([2,1],[0,6]),
+             head_angle  = 30,
+             vector([3,1],[0,6]),
+             head_angle  = 40,
+             vector([4,1],[0,6]),
+             head_angle  = 60,
+             vector([5,1],[0,6]),
+             head_angle  = 90,
+             vector([6,1],[0,6]),
+             head_angle  = 120,
+             vector([7,1],[0,6]),
+             head_angle  = 160,
+             vector([8,1],[0,6]),
+             head_angle  = 180,
+             vector([9,1],[0,6]) )$
+@end example
+
+See also @code{head_both}, @code{head_length}, and @code{head_type}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} head_both
+Default value: @code{false}
+
+If @code{head_both} is @code{true}, vectors are plotted with two arrow heads.
+If @code{false}, only one arrow is plotted.
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,8],
+             yrange      = [0,8],
+             head_length = 0.7,
+             vector([1,1],[6,0]),
+             head_both   = true,
+             vector([1,7],[6,0]) )$
+@end example
+
+See also @code{head_length}, @code{head_angle}, and @code{head_type}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} head_length
+Default value: 2
+
+@code{head_length} indicates, in @var{x}-axis units, the length of arrow heads.
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,8],
+             vector([0,1],[5,5]),
+             head_length = 1,
+             vector([2,1],[5,5]),
+             head_length = 0.5,
+             vector([4,1],[5,5]),
+             head_length = 0.25,
+             vector([6,1],[5,5]))$
+@end example
+
+See also @code{head_both}, @code{head_angle}, and @code{head_type}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+
+@defvr {Graphic option} head_type
+Default value: @code{filled}
+
+@code{head_type} is used to specify how arrow heads are plotted. Possible
+values are: @code{filled} (closed and filled arrow heads), @code{empty}
+(closed but not filled arrow heads), and @code{nofilled} (open arrow heads).
+
+This option is relevant only for @code{vector} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange      = [0,12],
+             yrange      = [0,10],
+             head_length = 1,
+             vector([0,1],[5,5]), /* default type */
+             head_type = 'empty,
+             vector([3,1],[5,5]),
+             head_type = 'nofilled,
+             vector([6,1],[5,5]))$
+@end example
+
+See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} ip_grid
+Default value: @code{[50, 50]}
+
+@code{ip_grid} sets the grid for the first sampling in implicit plots.
+
+This option is relevant only for @code{implicit} objects.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} ip_grid_in
+Default value: @code{[5, 5]}
+
+@code{ip_grid_in} sets the grid for the second sampling in implicit plots.
+
+This option is relevant only for @code{implicit} objects.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} key
+Default value: @code{""} (empty string)
+
+@code{key} is the name of a function in the legend. If @code{key} is an
+empty string, no key is assigned to the function.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle},
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit},
+@code{parametric}, and @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric},
+and @code{parametric_surface}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(key   = "Sinus",
+             explicit(sin(x),x,0,10),
+             key   = "Cosinus",
+             color = red,
+             explicit(cos(x),x,0,10) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} label_alignment
+Default value: @code{center}
+
+@code{label_alignment} is used to specify where to write labels with
+respect to the given coordinates. Possible values are: @code{center},
+@code{left}, and @code{right}.
+
+This option is relevant only for @code{label} objects.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange          = [0,10],
+             yrange          = [0,10],
+             points_joined   = true,
+             points([[5,0],[5,10]]),
+             color           = blue,
+             label(["Centered alignment (default)",5,2]),
+             label_alignment = 'left,
+             label(["Left alignment",5,5]),
+             label_alignment = 'right,
+             label(["Right alignment",5,8]))$
+@end example
+
+See also @code{label_orientation}, and @code{color}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} label_orientation
+Default value: @code{horizontal}
+
+@code{label_orientation} is used to specify orientation of labels.
+Possible values are: @code{horizontal}, and @code{vertical}.
+
+This option is relevant only for @code{label} objects.
+
+Example:
+
+In this example, a dummy point is added to get an image.
+Package @code{draw} needs always data to draw an scene.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange     = [0,10],
+             yrange     = [0,10],
+             point_size = 0,
+             points([[5,5]]),
+             color      = navy,
+             label(["Horizontal orientation (default)",5,2]),
+             label_orientation = 'vertical,
+             color             = "#654321",
+             label(["Vertical orientation",1,5]))$
+@end example
+
+See also @code{label_alignment} and @code{color}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} line_type
+Default value: @code{solid}
+
+@code{line_type} indicates how lines are displayed; possible values are
+@code{solid} and @code{dots}.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} and @code{polar}.
+
+@item
+@code{gr3d}: @code{points}, @code{explicit}, @code{parametric} and @code{parametric_surface}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_type = dots,
+             explicit(1 + x^2,x,-1,1),
+             line_type = solid, /* default */
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+See also @code{line_width}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} line_width
+Default value: 1
+
+@code{line_width} is the width of plotted lines.
+Its value must be a positive number.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
+@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
+@code{parametric} and @code{polar}.
+
+@item
+@code{gr3d}: @code{points} and @code{parametric}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
+             line_width = 5.5,
+             explicit(1 + x^2,x,-1,1),
+             line_width = 10,
+             explicit(2 + x^2,x,-1,1))$
+@end example
+
+See also @code{line_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} logcb
+Default value: @code{false}
+
+If @code{logcb} is @code{true}, the tics in the colorbox will be drawn in the
+logarithmic scale.
+
+When @code{enhanced3d} or @code{colorbox} is @code{false}, option @code{logcb} has
+no effect.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d (
+        enhanced3d = true,
+        color      = green,
+        logcb = true,
+        logz  = true,
+        palette = [-15,24,-9],
+        explicit(exp(x^2-y^2), x,-2,2,y,-2,2)) $
+@end example
+
+See also @code{enhanced3d}, @code{colorbox} and @code{cbrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} logx
+Default value: @code{false}
+
+If @code{logx} is @code{true}, the @var{x} axis will be drawn in the
+logarithmic scale.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(log(x),x,0.01,5),
+             logx = true)$
+@end example
+
+See also @code{logy} and @code{logz}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} logy
+Default value: @code{false}
+
+If @code{logy} is @code{true}, the @var{y} axis will be drawn in the
+logarithmic scale.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(logy = true,
+             explicit(exp(x),x,0,5))$
+@end example
+
+See also @code{logx} and @code{logz}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} logz
+Default value: @code{false}
+
+If @code{logz} is @code{true}, the @var{z} axis will be drawn in the
+logarithmic scale.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(logz = true,
+             explicit(exp(u^2+v^2),u,-2,2,v,-2,2))$
+@end example
+
+See also @code{logx} and @code{logy}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} nticks
+Default value: 29
+
+In 2d, @code{nticks} gives the initial number of points used by the
+adaptive plotting routine for explicit objects. It is also the
+number of points that will be shown in parametric and polar curves.
+
+This option affects the following graphic objects:
+@itemize @bullet
+@item
+@code{gr2d}: @code{ellipse}, @code{explicit}, @code{parametric} and @code{polar}.
+
+@item
+@code{gr3d}: @code{parametric}.
+@end itemize
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = true,
+             ellipse(0,0,4,2,0,180),
+             nticks = 5,
+             ellipse(0,0,4,2,180,180) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} palette
+Default value: @code{color}
+
+@code{palette} indicates how to map the real values of a matrix
+passed to object @code{image} onto color components.
+
+@code{palette} is a vector of length three with components 
+ranging from -36 to +36; each value is an index for a formula mapping the levels
+onto red, green and blue colors, respectively:
+@example
+ 0: 0               1: 0.5           2: 1
+ 3: x               4: x^2           5: x^3
+ 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
+ 9: sin(90x)       10: cos(90x)     11: |x-0.5|
+12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
+15: sin(360x)      16: cos(360x)    17: |sin(360x)|
+18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
+21: 3x             22: 3x-1         23: 3x-2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
+30: x/0.32-0.78125 31: 2*x-0.84     32: 4x;1;-2x+1.84;x/0.08-11.5
+33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
+36: 2*x - 1
+@end example
+negative numbers mean negative colour component.
+
+@code{palette = gray} and @code{palette = color} are short cuts for
+@code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Examples:
+
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+           'matrix,
+            makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) /* palette = color, default */
+      draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
+(%i5) draw2d(palette = [15,20,-4],
+             colorbox=false,
+             image(im,0,0,30,30))$
+@end example
+
+See also @code{colorbox}. 
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} pdf_height
+Default value: 29.7 (A4 portrait height)
+
+This is the height (measured in cm) of the PDF document
+generated by terminals @code{pdf} and @code{pdfcairo}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'pdf,
+             pdf_width  = 3.0,
+             pdf_height = 3.0,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{pdf_width}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} pdf_width
+Default value: 21.0 (A4 portrait width)
+
+This is the width (measured in cm) of the PDF document
+generated by terminals @code{pdf} and @code{pdfcairo}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'pdf,
+             pdf_width  = 3.0,
+             pdf_height = 3.0,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{pdf_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} pic_height
+Default value: 640
+
+This is the height of the bitmap file generated by terminals @code{png} and @code{jpg}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{pic_width}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} pic_width
+Default value: 640
+
+This is the width of the bitmap file generated by terminals @code{png} and @code{jpg}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal   = 'png,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{terminal}, @code{file_name}, and @code{pic_height}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
 @defvr {Graphic option} point_size
 Default value: 1
 
@@ -2424,41 +2113,240 @@ Example:
 
 
 
-@defvr {Graphic option} filled_func
-Default value: @code{false}
+@defvr {Graphic option} proportional_axes
+Default value: @code{none}
 
-Option @code{filled_func} controls how regions limited by functions
-should be filled. When @code{filled_func} is @code{true}, the region
-bounded by the function defined with object @code{explicit} and the
-bottom of the graphic window is filled with @code{fill_color}. When 
-@code{filled_func} contains a function expression, then the region bounded
-by this function and the function defined with object @code{explicit} 
-will be filled. By default, explicit functions are not filled. 
+When @code{proportional_axes} is equal to @code{xy} or @code{xyz},
+a 2D or 3D scene will be drawn with axes proportional to their relative
+lengths.
 
-This option affects only the 2d graphic object @code{explicit}.
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+This option works with Gnuplot version 4.2.6 or greater.
+
+Examples:
+
+Single 2D plot.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        ellipse(0,0,1,1,0,360),
+        transparent=true,
+        color = blue,
+        line_width = 4,
+        ellipse(0,0,2,1/2,0,360),
+        proportional_axes = xy) $
+@end example
+
+Multiplot.
+
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        terminal = wxt,
+        gr2d(proportional_axes = xy,
+             explicit(x^2,x,0,1)),
+        gr2d(explicit(x^2,x,0,1),
+             xrange = [0,1],
+             yrange = [0,2],
+             proportional_axes=xy),
+        gr2d(explicit(x^2,x,0,1))
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} rot_horizontal
+Default value: 30
+
+@code{rot_horizontal} is the angle (in degrees) of horizontal rotation (around 
+the @var{z} axis) to set the view point in 3d scenes.
+
+The angle is bounded to the @math{[0, 360]} interval.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
 
 Example:
 
-Region bounded by an @code{explicit} object and the bottom of the
-graphic window.
 @example
 (%i1) load(draw)$
-(%i2) draw2d(fill_color  = red,
-             filled_func = true,
-             explicit(sin(x),x,0,10) )$
+(%i2) draw3d(rot_vertical = 170,
+             rot_horizontal = 360,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
 
-Region bounded by an @code{explicit} object and the function
-defined by option @code{filled_func}. Note that the variable in
-@code{filled_func} must be the same as that used in @code{explicit}.
+See also @code{rot_vertical}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} rot_vertical
+Default value: 60
+
+@code{rot_vertical} is the angle (in degrees) of vertical rotation (around 
+the @var{x} axis) to set the view point in 3d scenes.
+
+The angle is bounded to the @math{[0, 180]} interval.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
 @example
 (%i1) load(draw)$
-(%i2) draw2d(fill_color  = grey,
-             filled_func = sin(x),
-             explicit(-sin(x),x,0,%pi));
+(%i2) draw3d(rot_vertical = 170,
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2) )$
 @end example
 
-See also @code{fill_color} and @code{explicit}.
+See also @code{rot_horizontal}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} surface_hide
+Default value: @code{false}
+
+If @code{surface_hide} is @code{true}, hidden parts are not plotted in 3d surfaces.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw(columns=2,
+           gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
+           gr3d(surface_hide = true,
+                explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} terminal
+Default value: @code{screen}
+
+Selects the terminal to be used by Gnuplot; possible values are:
+@code{screen} (default), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
+@code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt} and @code{aquaterm}.
+
+Terminals @code{screen}, @code{wxt} and @code{aquaterm} can be also defined as a list
+with two elements: the name of the terminal itself and a non negative integer number.
+In this form, multiple windows can be opened at the same time, each with its
+corresponding number. This feature does not work in Windows platforms.
+
+Since this is a global graphics option, its position in the scene description
+does not matter. It can be also used as an argument of function @code{draw}.
+
+N.B. pdfcairo requires Gnuplot 4.3. At this time (Nov 2008) Gnuplot 4.3 is a development version.
+pdf requires Gnuplot 4.2/4.3 to be compiled with the option @code{--enable-pdf} and libpdf must
+be installed. The pdf library is available from: @url{http://www.pdflib.com/en/download/pdflib-family/pdflib-lite/}
+
+Examples:
+
+@example
+(%i1) load(draw)$
+(%i2) /* screen terminal (default) */
+      draw2d(explicit(x^2,x,-1,1))$
+(%i3) /* png file */
+      draw2d(terminal  = 'png,
+             pic_width = 300,
+             explicit(x^2,x,-1,1))$
+(%i4) /* jpg file */
+      draw2d(terminal   = 'jpg,
+             pic_width  = 300,
+             pic_height = 300,
+             explicit(x^2,x,-1,1))$
+(%i5) /* eps file */
+      draw2d(file_name = "myfile",
+             explicit(x^2,x,-1,1),
+             terminal  = 'eps)$
+(%i6) /* pdf file */
+      draw2d(file_name = "mypdf",
+             pdf_width = 12.0,
+             pdf_height = 8.0,
+             explicit(x^2,x,-1,1),
+             terminal  = 'pdf)$
+(%i7) /* wxwidgets window */
+      draw2d(explicit(x^2,x,-1,1),
+             terminal  = 'wxt)$
+@end example
+
+Multiple windows.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^5,x,-2,2), terminal=[screen, 3])$
+(%i3) draw2d(explicit(x^2,x,-2,2), terminal=[screen, 0])$
+@end example
+
+An animated gif file.
+@example
+(%i1) load(draw)$
+(%i2) draw(
+        delay     = 100,
+        file_name = "zzz",
+        terminal  = 'animated_gif,
+        gr2d(explicit(x^2,x,-1,1)),
+        gr2d(explicit(x^3,x,-1,1)),
+        gr2d(explicit(x^4,x,-1,1)));
+End of animation sequence
+(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
+@end example
+
+Option @code{delay} is only active in animated gif's; it is ignored in
+any other case.
+
+See also @code{file_name}, @code{pic_width}, @code{pic_height} and @code{delay}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} title
+Default value: @code{""} (empty string)
+
+Option @code{title}, a string, is the main title for the scene.
+By default, no title is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(u),u,-2,2),
+             title = "Exponential function")$
+@end example
 
 @opencatbox
 @category{Package draw}
@@ -2498,28 +2386,21 @@ Example:
 
 
 
-@defvr {Graphic option} border
-Default value: @code{true}
+@defvr {Graphic option} tube_extremes
+Default value: @code{[open, open]}
 
-If @code{border} is @code{true}, borders of polygons are painted
-according to @code{line_type} and @code{line_width}.
-
-This option affects the following graphic objects:
-@itemize @bullet
-@item
-@code{gr2d}: @code{polygon}, @code{rectangle}, and @code{ellipse}.
-@end itemize
+A list with two possible elements, @code{open} and @code{closed},
+indicating whether the extremes of a graphic object @code{tube} remain open
+or must be closed. By default, both extremes are left open.
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(color       = brown,
-             line_width  = 8,
-             polygon([[3,2],[7,2],[5,5]]),
-             border      = false,
-             fill_color  = blue,
-             polygon([[5,2],[9,2],[7,5]]) )$
+(%i2) draw3d(
+        tube_extremes = [open, closed],
+        tube(0, 0, a, 1,
+             a, 0, 8) )$
 @end example
 
 @opencatbox
@@ -2528,145 +2409,6 @@ Example:
 
 @end defvr
 
-
-
-@defvr {Graphic option} head_both
-Default value: @code{false}
-
-If @code{head_both} is @code{true}, vectors are plotted with two arrow heads.
-If @code{false}, only one arrow is plotted.
-
-This option is relevant only for @code{vector} objects.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xrange      = [0,8],
-             yrange      = [0,8],
-             head_length = 0.7,
-             vector([1,1],[6,0]),
-             head_both   = true,
-             vector([1,7],[6,0]) )$
-@end example
-
-See also @code{head_length}, @code{head_angle}, and @code{head_type}. 
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} head_length
-Default value: 2
-
-@code{head_length} indicates, in @var{x}-axis units, the length of arrow heads.
-
-This option is relevant only for @code{vector} objects.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xrange      = [0,12],
-             yrange      = [0,8],
-             vector([0,1],[5,5]),
-             head_length = 1,
-             vector([2,1],[5,5]),
-             head_length = 0.5,
-             vector([4,1],[5,5]),
-             head_length = 0.25,
-             vector([6,1],[5,5]))$
-@end example
-
-See also @code{head_both}, @code{head_angle}, and @code{head_type}. 
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} head_angle
-Default value: 45
-
-@code{head_angle} indicates the angle, in degrees, between the arrow heads and
-the segment.
-
-This option is relevant only for @code{vector} objects.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xrange      = [0,10],
-             yrange      = [0,9],
-             head_length = 0.7,
-             head_angle  = 10,
-             vector([1,1],[0,6]),
-             head_angle  = 20,
-             vector([2,1],[0,6]),
-             head_angle  = 30,
-             vector([3,1],[0,6]),
-             head_angle  = 40,
-             vector([4,1],[0,6]),
-             head_angle  = 60,
-             vector([5,1],[0,6]),
-             head_angle  = 90,
-             vector([6,1],[0,6]),
-             head_angle  = 120,
-             vector([7,1],[0,6]),
-             head_angle  = 160,
-             vector([8,1],[0,6]),
-             head_angle  = 180,
-             vector([9,1],[0,6]) )$
-@end example
-
-See also @code{head_both}, @code{head_length}, and @code{head_type}. 
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} head_type
-Default value: @code{filled}
-
-@code{head_type} is used to specify how arrow heads are plotted. Possible
-values are: @code{filled} (closed and filled arrow heads), @code{empty}
-(closed but not filled arrow heads), and @code{nofilled} (open arrow heads).
-
-This option is relevant only for @code{vector} objects.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xrange      = [0,12],
-             yrange      = [0,10],
-             head_length = 1,
-             vector([0,1],[5,5]), /* default type */
-             head_type = 'empty,
-             vector([3,1],[5,5]),
-             head_type = 'nofilled,
-             vector([6,1],[5,5]))$
-@end example
-
-See also @code{head_both}, @code{head_angle}, and @code{head_length}. 
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
 
 
 @defvr {Graphic option} unit_vectors
@@ -2698,311 +2440,436 @@ Example:
 @end defvr
 
 
-@defvr {Graphic option} label_alignment
-Default value: @code{center}
 
-@code{label_alignment} is used to specify where to write labels with
-respect to the given coordinates. Possible values are: @code{center},
-@code{left}, and @code{right}.
-
-This option is relevant only for @code{label} objects.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xrange          = [0,10],
-             yrange          = [0,10],
-             points_joined   = true,
-             points([[5,0],[5,10]]),
-             color           = blue,
-             label(["Centered alignment (default)",5,2]),
-             label_alignment = 'left,
-             label(["Left alignment",5,5]),
-             label_alignment = 'right,
-             label(["Right alignment",5,8]))$
-@end example
-
-See also @code{label_orientation}, and @code{color}. 
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} label_orientation
-Default value: @code{horizontal}
-
-@code{label_orientation} is used to specify orientation of labels.
-Possible values are: @code{horizontal}, and @code{vertical}.
-
-This option is relevant only for @code{label} objects.
-
-Example:
-
-In this example, a dummy point is added to get an image.
-Package @code{draw} needs always data to draw an scene.
-@example
-(%i1) load(draw)$
-(%i2) draw2d(xrange     = [0,10],
-             yrange     = [0,10],
-             point_size = 0,
-             points([[5,5]]),
-             color      = navy,
-             label(["Horizontal orientation (default)",5,2]),
-             label_orientation = 'vertical,
-             color             = "#654321",
-             label(["Vertical orientation",1,5]))$
-@end example
-
-See also @code{label_alignment} and @code{color}. 
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} color
-Default value: @code{"black"}
-
-@code{color} specifies the color for plotting lines, points, borders of
-polygons and labels.
-
-Colors can be given as names or in hexadecimal @i{rgb} code.
-
-Available color names are: 
-@code{"white"}, @code{"black"}, @code{"gray0"}, @code{"grey0"}, @code{"gray10"},
-@code{"grey10"}, @code{"gray20"}, @code{"grey20"}, @code{"gray30"}, @code{"grey30"},
-@code{"gray40"}, @code{"grey40"}, @code{"gray50"}, @code{"grey50"}, @code{"gray60"},
-@code{"grey60"}, @code{"gray70"}, @code{"grey70"}, @code{"gray80"}, @code{"grey80"},
-@code{"gray90"}, @code{"grey90"}, @code{"gray100"}, @code{"grey100"}, @code{"gray"},
-@code{"grey"}, @code{"light-gray"}, @code{"light-grey"}, @code{"dark-gray"},
-@code{"dark-grey"}, @code{"red"}, @code{"light-red"}, @code{"dark-red"}, @code{"yellow"},
-@code{"light-yellow"}, @code{"dark-yellow"}, @code{"green"}, @code{"light-green"},
-@code{"dark-green"}, @code{"spring-green"}, @code{"forest-green"}, @code{"sea-green"},
-@code{"blue"}, @code{"light-blue"}, @code{"dark-blue"}, @code{"midnight-blue"}, 
-@code{"navy"}, @code{"medium-blue"}, @code{"royalblue"}, @code{"skyblue"}, 
-@code{"cyan"}, @code{"light-cyan"}, @code{"dark-cyan"}, @code{"magenta"}, 
-@code{"light-magenta"}, @code{"dark-magenta"}, @code{"turquoise"}, 
-@code{"light-turquoise"}, @code{"dark-turquoise"}, @code{"pink"}, @code{"light-pink"},
-@code{"dark-pink"}, @code{"coral"}, @code{"light-coral"}, @code{"orange-red"},
-@code{"salmon"}, @code{"light-salmon"}, @code{"dark-salmon"}, @code{"aquamarine"},
-@code{"khaki"}, @code{"dark-khaki"}, @code{"goldenrod"}, @code{"light-goldenrod"},
-@code{"dark-goldenrod"}, @code{"gold"}, @code{"beige"}, @code{"brown"}, @code{"orange"},
-@code{"dark-orange"}, @code{"violet"}, @code{"dark-violet"}, @code{"plum"} and @code{"purple"}.
-
-Cromatic componentes in hexadecimal code are introduced in the form @code{"#rrggbb"}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^2,x,-1,1), /* default is black */
-             color = "red",
-             explicit(0.5 + x^2,x,-1,1),
-             color = blue,
-             explicit(1 + x^2,x,-1,1),
-             color = "light-blue", /* double quotes if - is used */
-             explicit(1.5 + x^2,x,-1,1),
-             color = "#23ab0f",
-             label(["This is a label",0,1.2])  )$
-@end example
-
-See also @code{fill_color}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} fill_color
-Default value: @code{"red"}
-
-@code{fill_color} specifies the color for filling polygons and
-2d @code{explicit} functions.
-
-See @code{color} to learn how colors are specified.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} fill_density
-Default value: 0
-
-@code{fill_density} is a number between 0 and 1 that specifies
-the intensity of the @code{fill_color} in @code{bars} objects.
-
-See @code{bars} for examples.
-@end defvr
-
-
-
-@defvr {Graphic option} line_width
-Default value: 1
-
-@code{line_width} is the width of plotted lines.
-Its value must be a positive number.
-
-This option affects the following graphic objects:
-@itemize @bullet
-@item
-@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
-@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
-@code{parametric} and @code{polar}.
-
-@item
-@code{gr3d}: @code{points} and @code{parametric}.
-@end itemize
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(x^2,x,-1,1), /* default width */
-             line_width = 5.5,
-             explicit(1 + x^2,x,-1,1),
-             line_width = 10,
-             explicit(2 + x^2,x,-1,1))$
-@end example
-
-See also @code{line_type}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} line_type
-Default value: @code{solid}
-
-@code{line_type} indicates how lines are displayed; possible values are
-@code{solid} and @code{dots}.
-
-This option affects the following graphic objects:
-@itemize @bullet
-@item
-@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle}, 
-@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit}, 
-@code{parametric} and @code{polar}.
-
-@item
-@code{gr3d}: @code{points}, @code{explicit}, @code{parametric} and @code{parametric_surface}.
-@end itemize
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(line_type = dots,
-             explicit(1 + x^2,x,-1,1),
-             line_type = solid, /* default */
-             explicit(2 + x^2,x,-1,1))$
-@end example
-
-See also @code{line_width}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} nticks
-Default value: 29
-
-In 2d, @code{nticks} gives the initial number of points used by the
-adaptive plotting routine for explicit objects. It is also the
-number of points that will be shown in parametric and polar curves.
-
-This option affects the following graphic objects:
-@itemize @bullet
-@item
-@code{gr2d}: @code{ellipse}, @code{explicit}, @code{parametric} and @code{polar}.
-
-@item
-@code{gr3d}: @code{parametric}.
-@end itemize
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(transparent = true,
-             ellipse(0,0,4,2,0,180),
-             nticks = 5,
-             ellipse(0,0,4,2,180,180) )$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} adapt_depth
-Default value: 10
-
-@code{adapt_depth} is the maximum number of splittings used by the adaptive plotting routine.
-
-This option is relevant only for 2d @code{explicit} functions.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} key
+@defvr {Graphic option} user_preamble
 Default value: @code{""} (empty string)
 
-@code{key} is the name of a function in the legend. If @code{key} is an
-empty string, no key is assigned to the function.
+Expert Gnuplot users can make use of this option to fine tune Gnuplot's
+behaviour by writing settings to be sent before the @code{plot} or @code{splot}
+command.
 
-This option affects the following graphic objects:
-@itemize @bullet
-@item
-@code{gr2d}: @code{points}, @code{polygon}, @code{rectangle},
-@code{ellipse}, @code{vector}, @code{explicit}, @code{implicit},
-@code{parametric}, and @code{polar}.
+The value of this option must be a string or a list of strings (one per line).
 
-@item
-@code{gr3d}: @code{points}, @code{explicit}, @code{parametric},
-and @code{parametric_surface}.
-@end itemize
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+The @i{dumb} terminal is not supported by package @code{draw},
+but it is possible to set it by making use of option @code{user_preamble},
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x)-1,x,-1,1),
+             parametric(cos(u),sin(u),u,0,2*%pi),
+             user_preamble="set terminal dumb")$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} x_voxel
+Default value: 10
+
+@code{x_voxel} is the number of voxels in the x direction to
+be used by the @i{marching cubes algorithm} implemented
+by the 3d @code{implicit} object.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xaxis
+Default value: @code{false}
+
+If @code{xaxis} is @code{true}, the @var{x} axis is drawn.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw2d(key   = "Sinus",
-             explicit(sin(x),x,0,10),
-             key   = "Cosinus",
-             color = red,
-             explicit(cos(x),x,0,10) )$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = blue)$
 @end example
+
+See also @code{xaxis_width}, @code{xaxis_type} and @code{xaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} xaxis_color
+Default value: @code{"black"}
+
+@code{xaxis_color} specifies the color for the @var{x} axis. See
+@code{color} to know how colors are defined.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_color = red)$
+@end example
+
+See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xaxis_secondary
+Default value: @code{false}
+
+If @code{xaxis_secondary} is @code{true}, function values can be plotted with 
+respect to the second @var{x} axis, which will be drawn on top of the scene.
+
+Note that this is a local graphics option which only affects to 2d plots.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         key   = "Bottom x-axis",
+         explicit(x+1,x,1,2),
+         color = red,
+         key   = "Above x-axis",
+         xtics_secondary = true,
+         xaxis_secondary = true,
+         explicit(x^2,x,-1,1)) $
+@end example
+
+See also @code{xrange_secondary}, @code{xtics_secondary}, @code{xtics_rotate_secondary},
+@code{xtics_axis_secondary} and @code{xaxis_secondary}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} xaxis_type
+Default value: @code{dots}
+
+@code{xaxis_type} indicates how the @var{x} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_type  = solid)$
+@end example
+
+See also @code{xaxis}, @code{xaxis_width} and @code{xaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xaxis_width
+Default value: 1
+
+@code{xaxis_width} is the width of the @var{x} axis.
+Its value must be a positive number.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             xaxis       = true,
+             xaxis_width = 3)$
+@end example
+
+See also @code{xaxis}, @code{xaxis_type} and @code{xaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xlabel
+Default value: @code{""} (empty string)
+
+Option @code{xlabel}, a string, is the label for the @var{x} axis.
+By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             explicit(exp(u),u,-2,2),
+             ylabel = "Population")$
+@end example
+
+See also @code{ylabel}, and @code{zlabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xrange
+Default value: @code{auto}
+
+If @code{xrange} is @code{auto}, the range for the @var{x} coordinate is
+computed automatically.
+
+If the user wants a specific interval for @var{x}, it must be given as a 
+Maxima list, as in @code{xrange=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xrange = [-3,5],
+             explicit(x^2,x,-1,1))$
+@end example
+
+See also @code{yrange} and @code{zrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xrange_secondary
+Default value: @code{auto}
+
+If @code{xrange_secondary} is @code{auto}, the range for the second @var{x} axis is
+computed automatically.
+
+If the user wants a specific interval for the second @var{x} axis, it must be given as a 
+Maxima list, as in @code{xrange_secondary=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+See also @code{xrange}, @code{yrange}, @code{zrange} and @code{yrange_secondary}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
+
+
+
+@defvr {Graphic option} xtics
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the @var{x} axis.
+
+@itemize @bullet
+@item
+When option @code{xtics} is bounded to symbol @var{auto}, tic marks are
+drawn automatically.
+
+@item
+When option @code{xtics} is bounded to symbol @var{none}, tic marks are
+not drawn.
+
+@item
+When option @code{xtics} is bounded to a positive number, this is the distance
+between two consecutive tic marks.
+
+@item
+When option @code{xtics} is bounded to a list of length three of the
+form @code{[start,incr,end]}, tic marks are plotted from @code{start} 
+to @code{end} at intervals of length @code{incr}.
+
+@item
+When option @code{xtics} is bounded to a set of numbers of the
+form @code{@{n1, n2, ...@}}, tic marks are plotted at values @code{n1},
+@code{n2}, ...
+
+@item
+When option @code{xtics} is bounded to a set of pairs of the
+form @code{@{["label1", n1], ["label2", n2], ...@}}, tic marks corresponding to values @code{n1},
+@code{n2}, ... are labeled with @code{"label1"}, @code{"label2"}, ..., respectively.
+@end itemize
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Examples:
+
+Disable tics.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = 'none,
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Tics every 1/4 units.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = 1/4,
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Tics from -3/4 to 3/4 in steps of 1/8.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = [-3/4,1/8,3/4],
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Tics at points -1/2, -1/4 and 3/4.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{-1/2,-1/4,3/4@},
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+Labeled tics.
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xtics = @{["High",0.75],["Medium",0],["Low",-0.75]@},
+             explicit(x^3,x,-1,1)  )$
+@end example
+
+See also @code{ytics}, and @code{ztics}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xtics_axis
+Default value: @code{false}
+
+If @code{xtics_axis} is @code{true}, tic marks and their labels are plotted just
+along the @var{x} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xtics_rotate
+Default value: @code{false}
+
+If @code{xtics_rotate} is @code{true}, tic marks on the @var{x} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+@defvr {Graphic option} xtics_rotate_secondary
+Default value: @code{false}
+
+If @code{xtics_rotate_secondary} is @code{true}, tic marks on the secondary @var{x} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xtics_secondary
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the second @var{x} axis.
+
+See @code{xtics} for a complete description.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} xtics_secondary_axis
+Default value: @code{false}
+
+If @code{xtics_secondary_axis} is @code{true}, tic marks and their labels are plotted just
+along the secondary @var{x} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
 
 @opencatbox
 @category{Package draw}
@@ -3044,6 +2911,406 @@ See also @code{yv_grid}.
 
 
 
+
+@defvr {Graphic option} xy_file
+Default value: @code{""} (empty string)
+
+@code{xy_file} is the name of the file where the coordinates will be saved
+after clicking with the mouse button and hitting the 'x' key. By default,
+no coordinates are saved.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} xyplane
+Default value: @code{false}
+
+Allocates the xy-plane in 3D scenes. When @code{xyplane} is
+@code{false}, the xy-plane is placed automatically; when it is
+a real number, the xy-plane intersects the z-axis at this level.
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(xyplane = %e-2,
+             explicit(x^2+y^2,x,-1,1,y,-1,1))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} y_voxel
+Default value: 10
+
+@code{y_voxel} is the number of voxels in the y direction to
+be used by the @i{marching cubes algorithm} implemented
+by the 3d @code{implicit} object.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis
+Default value: @code{false}
+
+If @code{yaxis} is @code{true}, the @var{y} axis is drawn.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = blue)$
+@end example
+
+See also @code{yaxis_width}, @code{yaxis_type} and @code{yaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis_color
+Default value: @code{"black"}
+
+@code{yaxis_color} specifies the color for the @var{y} axis. See
+@code{color} to know how colors are defined.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_color = red)$
+@end example
+
+See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis_secondary
+Default value: @code{false}
+
+If @code{yaxis_secondary} is @code{true}, function values can be plotted with 
+respect to the second @var{y} axis, which will be drawn on the right side of the
+scene.
+
+Note that this is a local graphics option which only affects to 2d plots.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         explicit(sin(x),x,0,10),
+         yaxis_secondary = true,
+         ytics_secondary = true,
+         color = blue,
+         explicit(100*sin(x+0.1)+2,x,0,10));
+@end example
+
+See also @code{yrange_secondary}, @code{ytics_secondary}, @code{ytics_rotate_secondary}
+and @code{ytics_axis_secondary}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis_type
+Default value: @code{dots}
+
+@code{yaxis_type} indicates how the @var{y} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_type  = solid)$
+@end example
+
+See also @code{yaxis}, @code{yaxis_width} and @code{yaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} yaxis_width
+Default value: 1
+
+@code{yaxis_width} is the width of the @var{y} axis.
+Its value must be a positive number.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(x^3,x,-1,1),
+             yaxis       = true,
+             yaxis_width = 3)$
+@end example
+
+See also @code{yaxis}, @code{yaxis_type} and @code{yaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} ylabel
+Default value: @code{""} (empty string)
+
+Option @code{ylabel}, a string, is the label for the @var{y} axis.
+By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(xlabel = "Time",
+             ylabel = "Population",
+             explicit(exp(u),u,-2,2) )$
+@end example
+
+See also @code{xlabel}, and @code{zlabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} yrange
+Default value: @code{auto}
+
+If @code{yrange} is @code{auto}, the range for the @var{y} coordinate is
+computed automatically.
+
+If the user wants a specific interval for @var{y}, it must be given as a 
+Maxima list, as in @code{yrange=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(yrange = [-2,3],
+             explicit(x^2,x,-1,1),
+             xrange = [-3,3])$
+@end example
+
+See also @code{xrange}, @code{yrange_secondary} and @code{zrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} yrange_secondary
+Default value: @code{auto}
+
+If @code{yrange_secondary} is @code{auto}, the range for the second @var{y} axis is
+computed automatically.
+
+If the user wants a specific interval for the second @var{y} axis, it must be given as a 
+Maxima list, as in @code{yrange_secondary=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+         explicit(sin(x),x,0,10),
+         yaxis_secondary = true,
+         ytics_secondary = true,
+         yrange = [-3, 3],
+         yrange_secondary = [-20, 20],
+         color = blue,
+         explicit(100*sin(x+0.1)+2,x,0,10)) $
+@end example
+
+See also @code{xrange}, @code{yrange} and @code{zrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
+
+
+@defvr {Graphic option} ytics
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the @var{y} axis.
+
+See @code{xtics} for a complete description.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} ytics_axis
+Default value: @code{false}
+
+If @code{ytics_axis} is @code{true}, tic marks and their labels are plotted just
+along the @var{y} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} ytics_rotate
+Default value: @code{false}
+
+If @code{ytics_rotate} is @code{true}, tic marks on the @var{y} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} ytics_rotate_secondary
+Default value: @code{false}
+
+If @code{ytics_rotate_secondary} is @code{true}, tic marks on the secondary @var{y} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} ytics_secondary
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the second @var{y} axis.
+
+See @code{xtics} for a complete description.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} ytics_secondary_axis
+Default value: @code{false}
+
+If @code{ytics_secondary_axis} is @code{true}, tic marks and their labels are plotted just
+along the secondary @var{y} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
 @defvr {Graphic option} yv_grid
 Default value: 30
 
@@ -3075,238 +3342,6 @@ See also @code{xu_grid}.
 @end defvr
 
 
-
-@defvr {Graphic option} surface_hide
-Default value: @code{false}
-
-If @code{surface_hide} is @code{true}, hidden parts are not plotted in 3d surfaces.
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw(columns=2,
-           gr3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)),
-           gr3d(surface_hide = true,
-                explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3)) )$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} contour
-Default value: @code{none}
-
-Option @code{contour} enables the user to select where to plot contour lines.
-Possible values are:
-
-@itemize @bullet
-
-@item
-@code{none}:
-no contour lines are plotted.
-
-@item
-@code{base}:
-contour lines are projected on the xy plane.
-
-@item
-@code{surface}:
-contour lines are plotted on the surface.
-
-@item
-@code{both}:
-two contour lines are plotted: on the xy plane and on the surface.
-
-@item
-@code{map}:
-contour lines are projected on the xy plane, and the view point is
-set just in the vertical.
-
-@end itemize
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
-             contour_levels = 15,
-             contour        = both,
-             surface_hide   = true) $
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} contour_levels
-Default value: 5
-
-This graphic option controls the way contours are drawn. 
-@code{contour_levels} can be set to a positive integer number, a list of three
-numbers or an arbitrary set of numbers:
-
-@itemize @bullet
-@item
-When option @code{contour_levels} is bounded to positive integer @var{n},
-@var{n} contour lines will be drawn at equal intervals. By default, five
-equally spaced contours are plotted.
-
-@item
-When option @code{contour_levels} is bounded to a list of length three of the
-form @code{[lowest,s,highest]}, contour lines are plotted from @code{lowest} 
-to @code{highest} in steps of @code{s}.
-
-@item
-When option @code{contour_levels} is bounded to a set of numbers of the
-form @code{@{n1, n2, ...@}}, contour lines are plotted at values @code{n1},
-@code{n2}, ...
-@end itemize
-
-Since this is a global graphics option, its position in the scene description
-does not matter.
-
-Examples:
-
-Ten equally spaced contour lines. The actual number of
-levels can be adjusted to give simple labels.
-@example
-(%i1) load(draw)$
-(%i2) draw3d(color = green,
-             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
-             contour_levels = 10,
-             contour        = both,
-             surface_hide   = true) $
-@end example
-
-
-From -8 to 8 in steps of 4.
-@example
-(%i1) load(draw)$
-(%i2) draw3d(color = green,
-             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
-             contour_levels = [-8,4,8],
-             contour        = both,
-             surface_hide   = true) $
-@end example
-
-Isolines at levels -7, -6, 0.8 and 5.
-@example
-(%i1) load(draw)$
-(%i2) draw3d(color = green,
-             explicit(20*exp(-x^2-y^2)-10,x,0,2,y,-3,3),
-             contour_levels = @{-7, -6, 0.8, 5@},
-             contour        = both,
-             surface_hide   = true) $
-@end example
-
-See also @code{contour}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} columns
-Default value: 1
-
-@code{columns} is the number of columns in multiple plots.
-
-Since this is a global graphics option, its position in the scene description
-does not matter. It can be also used as an argument of function @code{draw}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) scene1: gr2d(title="Ellipse",
-                   nticks=30,
-                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
-(%i3) scene2: gr2d(title="Triangle",
-                   polygon([4,5,7],[6,4,2]))$
-(%i4) draw(scene1, scene2, columns = 2)$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ip_grid
-Default value: @code{[50, 50]}
-
-@code{ip_grid} sets the grid for the first sampling in implicit plots.
-
-This option is relevant only for @code{implicit} objects.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-
-
-@defvr {Graphic option} ip_grid_in
-Default value: @code{[5, 5]}
-
-@code{ip_grid_in} sets the grid for the second sampling in implicit plots.
-
-This option is relevant only for @code{implicit} objects.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-@defvr {Graphic option} x_voxel
-Default value: 10
-
-@code{x_voxel} is the number of voxels in the x direction to
-be used by the @i{marching cubes algorithm} implemented
-by the 3d @code{implicit} object.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
-@defvr {Graphic option} y_voxel
-Default value: 10
-
-@code{y_voxel} is the number of voxels in the y direction to
-be used by the @i{marching cubes algorithm} implemented
-by the 3d @code{implicit} object.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end defvr
-
 @defvr {Graphic option} z_voxel
 Default value: 10
 
@@ -3321,22 +3356,85 @@ by the 3d @code{implicit} object.
 @end defvr
 
 
-@defvr {Graphic option} tube_extremes
-Default value: @code{[open, open]}
+@defvr {Graphic option} zaxis
+Default value: @code{false}
 
-A list with two possible elements, @code{open} and @code{closed},
-indicating whether the extremes of a graphic object @code{tube} remain open
-or must be closed. By default, both extremes are left open.
+If @code{zaxis} is @code{true}, the @var{z} axis is drawn in 3D plots.
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(
-        tube_extremes = [open, closed],
-        tube(0, 0, a, 1,
-             a, 0, 8) )$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = blue)$
 @end example
+
+See also @code{zaxis_width}, @code{zaxis_type} and @code{zaxis_color}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} zaxis_color
+Default value: @code{"black"}
+
+@code{zaxis_color} specifies the color for the @var{z} axis. See
+@code{color} to know how colors are defined. 
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_color = red)$
+@end example
+
+See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_type}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+@defvr {Graphic option} zaxis_type
+Default value: @code{dots}
+
+@code{zaxis_type} indicates how the @var{z} axis is displayed; 
+possible values are @code{solid} and @code{dots}.
+This option has no effect in 2D scenes.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid)$
+@end example
+
+See also @code{zaxis}, @code{zaxis_width} and @code{zaxis_color}.
 
 @opencatbox
 @category{Package draw}
@@ -3347,37 +3445,146 @@ Example:
 
 
 
+@defvr {Graphic option} zaxis_width
+Default value: 1
 
+@code{zaxis_width} is the width of the @var{z} axis.
+Its value must be a positive number. This option has no effect in 2D scenes.
 
-@deffn {Function} set_draw_defaults (@var{graphic option}, ..., @var{graphic object}, ...)
-
-Sets user graphics options. This function is useful for plotting a sequence
-of graphics with common graphics options. Calling this function without
-arguments removes user defaults.
+Since this is a global graphics option, its position in the scene description
+does not matter.
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) set_draw_defaults(
-         xrange = [-10,10],
-         yrange = [-2, 2],
-         color  = blue,
-         grid   = true)$
-(%i3) /* plot with user defaults */
-      draw2d(explicit(((1+x)**2/(1+x*x))-1,x,-10,10))$
-(%i4) set_draw_defaults()$
-(%i5) /* plot with standard defaults */
-      draw2d(explicit(((1+x)**2/(1+x*x))-1,x,-10,10))$
+(%i2) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1),
+             zaxis       = true,
+             zaxis_type  = solid,
+             zaxis_width = 3)$
 @end example
 
-To make use of this function, write first @code{load(draw)}.
+See also @code{zaxis}, @code{zaxis_type} and @code{zaxis_color}.
 
 @opencatbox
 @category{Package draw}
 @closecatbox
 
-@end deffn
+@end defvr
+
+
+
+@defvr {Graphic option} zlabel
+Default value: @code{""} (empty string)
+
+Option @code{zlabel}, a string, is the label for the @var{z} axis.
+By default, no label is written.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(zlabel = "Z variable",
+             ylabel = "Y variable",
+             explicit(sin(x^2+y^2),x,-2,2,y,-2,2),
+             xlabel = "X variable" )$
+@end example
+
+See also @code{xlabel}, and @code{ylabel}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} zrange
+Default value: @code{auto}
+
+If @code{zrange} is @code{auto}, the range for the @var{z} coordinate is
+computed automatically.
+
+If the user wants a specific interval for @var{z}, it must be given as a 
+Maxima list, as in @code{zrange=[-2, 3]}.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(yrange = [-3,3],
+             zrange = [-2,5],
+             explicit(x^2+y^2,x,-1,1,y,-1,1),
+             xrange = [-3,3])$
+@end example
+
+See also @code{xrange} and @code{yrange}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
+
+@defvr {Graphic option} ztics
+Default value: @code{auto}
+
+This graphic option controls the way tic marks are drawn on the @var{z} axis.
+
+See @code{xtics} for a complete description.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@defvr {Graphic option} ztics_axis
+Default value: @code{false}
+
+If @code{ztics_axis} is @code{true}, tic marks and their labels are plotted just
+along the @var{z} axis, if it is @code{false} tics are plotted on the border.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+@defvr {Graphic option} ztics_rotate
+Default value: @code{false}
+
+If @code{ztics_rotate} is @code{true}, tic marks on the @var{z} axis are rotated 
+90 degrees.
+
+Since this is a global graphics option, its position in the scene description
+does not matter.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end defvr
+
+
+
+
+@subsection Scenes
 
 
 
@@ -3453,6 +3660,523 @@ To make use of this function, write first @code{load(draw)}.
 
 
 
+
+@subsection Graphics objects
+
+
+
+
+@deffn  {Graphic object} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
+Draws vertical bars in 2D.
+
+@b{2D}
+
+@code{bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])} 
+draws bars centered at values @var{x1}, @var{x2}, ... with heights @var{h1}, @var{h2}, ...
+and widths @var{w1}, @var{w2}, ...
+
+This object is affected by the following @i{graphic options}: @code{key}, 
+@code{fill_color}, @code{fill_density} and @code{line_width}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+       key          = "Group A",
+       fill_color   = blue,
+       fill_density = 0.2,
+       bars([0.8,5,0.4],[1.8,7,0.4],[2.8,-4,0.4]),
+       key          = "Group B",
+       fill_color   = red,
+       fill_density = 0.6,
+       line_width   = 4,
+       bars([1.2,4,0.4],[2.2,-2,0.4],[3.2,5,0.4]),
+       xaxis = true);
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn  {Graphic object} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
+Draws 3D functions defined in cylindrical coordinates.
+
+@b{3D}
+
+@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
+plots function @code{@var{radius}(@var{z},@var{azi})} defined in cylindrical coordinates, with variable
+@var{z} taking values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values from
+@var{minazi} to @var{maxazi}.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn  {Graphic object} elevation_grid (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
+Draws matrix @var{mat} in 3D space. @var{z} values are taken from @var{mat},
+the abscissas range from @var{x0} to @math{@var{x0} + @var{width}}
+and ordinates from @var{y0} to @math{@var{y0} + @var{height}}.
+
+This object is affected by the following @i{graphic options}: @code{line_type},
+@code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) m: apply(
+            matrix,
+            makelist(makelist(random(10.0),k,1,30),i,1,20)) $
+(%i3) draw3d(
+         color = blue,
+         elevation_grid(m,0,0,3,2),
+         xlabel = "x",
+         ylabel = "y",
+         surface_hide = true);
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn  {Graphic object} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
+Draws ellipses and circles in 2D.
+
+
+@b{2D}
+
+@code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
+plots an ellipse centered at @code{[@var{xc}, @var{yc}]} with horizontal and vertical
+semi axis @var{a} and @var{b}, respectively, starting at angle @var{ang1} with an amplitude
+equal to angle @var{ang2}.
+
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
+@code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(transparent = false,
+             fill_color  = red,
+             color       = gray30,
+             transparent = false,
+             line_width  = 5,
+             ellipse(0,6,3,2,270,-270),
+             /* center (x,y), a, b, start & end in degrees */
+             transparent = true,
+             color       = blue,
+             line_width  = 3,
+             ellipse(2.5,6,2,3,30,-90),
+             xrange      = [-3,6],
+             yrange      = [2,9] )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn  {Graphic object} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
+@deffnx {Graphic object} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+Draws explicit functions in 2D and 3D.
+
+@b{2D}
+
+@code{explicit(@var{fcn},@var{var},@var{minval},@var{maxval})} plots explicit function @var{fcn},
+with variable @var{var} taking values from @var{minval} to @var{maxval}.
+
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
+@code{filled_func}, @code{fill_color} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(line_width = 3,
+             color      = blue,
+             explicit(x^2,x,-3,3) )$
+(%i3) draw2d(fill_color  = brown,
+             filled_func = true,
+             explicit(x^2,x,-3,3) )$
+@end example
+
+@b{3D}
+
+@code{explicit(@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})}
+plots explicit function @var{fcn}, with variable @var{var1} taking values
+from @var{minval1} to @var{maxval1} and variable @var{var2} taking values
+from @var{minval2} to @var{maxval2}.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+ and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(key   = "Gauss",
+             color = "#a02c00",
+             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+             yv_grid     = 10,
+             color = blue,
+             key   = "Plane",
+             explicit(x+y,x,-5,5,y,-5,5),
+             surface_hide = true)$
+@end example
+
+See also @code{filled_func} for filled functions.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn  {Graphic object} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
+Renders images in 2D.
+
+@b{2D}
+
+@code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})} plots image @var{im} in the rectangular
+region from vertex @code{(@var{x0},@var{y0})} to @code{(x0+@var{width},y0+@var{height})} on the real
+plane. Argument @var{im} must be a matrix of real numbers, a matrix of
+vectors of length three or a @var{picture} object.
+
+If @var{im} is a matrix of real numbers or a @var{levels picture} object,
+pixel values are interpreted according to graphic option @code{palette}, 
+which is a vector of length three with components 
+ranging from -36 to +36; each value is an index for a formula mapping the levels
+onto red, green and blue colors, respectively:
+@example
+ 0: 0               1: 0.5           2: 1
+ 3: x               4: x^2           5: x^3
+ 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
+ 9: sin(90x)       10: cos(90x)     11: |x-0.5|
+12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
+15: sin(360x)      16: cos(360x)    17: |sin(360x)|
+18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
+21: 3x             22: 3x-1         23: 3x-2
+24: |3x-1|         25: |3x-2|       26: (3x-1)/2
+27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
+30: x/0.32-0.78125                  31: 2*x-0.84
+32: 4x;1;-2x+1.84;x/0.08-11.5
+33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
+36: 2*x - 1
+@end example
+negative numbers mean negative colour component.
+
+@code{palette = gray} and @code{palette = color} are short cuts for
+@code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
+
+If @var{im} is a matrix of vectors of length three or an @var{rgb picture} object,
+they are interpreted as red, green and blue color components.
+
+Examples:
+
+If @var{im} is a matrix of real numbers, pixel values are interpreted according
+to graphic option @code{palette}.
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+           'matrix,
+            makelist(makelist(random(200),i,1,30),i,1,30))$
+(%i3) /* palette = color, default */
+      draw2d(image(im,0,0,30,30))$
+(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
+(%i5) draw2d(palette = [15,20,-4],
+             colorbox=false,
+             image(im,0,0,30,30))$
+@end example
+
+See also @code{colorbox}.
+
+If @var{im} is a matrix of vectors of length three, they are interpreted
+as red, green and blue color components.
+@example
+(%i1) load(draw)$
+(%i2) im: apply(
+            'matrix,
+             makelist(
+               makelist([random(300),
+                         random(300),
+                         random(300)],i,1,30),i,1,30))$
+(%i3) draw2d(image(im,0,0,30,30))$
+@end example
+
+Package @code{draw} automatically loads package @code{picture}. In this
+example, a level picture object is built by hand and then rendered.
+@example
+(%i1) load(draw)$
+(%i2) im: make_level_picture([45,87,2,134,204,16],3,2);
+(%o2)       picture(level, 3, 2, @{Array:  #(45 87 2 134 204 16)@})
+(%i3) /* default color palette */
+      draw2d(image(im,0,0,30,30))$
+(%i4) /* gray palette */
+      draw2d(palette = gray,
+             image(im,0,0,30,30))$
+@end example
+
+An xpm file is read and then rendered.
+@example
+(%i1) load(draw)$
+(%i2) im: read_xpm("myfile.xpm")$
+(%i3) draw2d(image(im,0,0,10,7))$
+@end example
+
+See also @code{make_level_picture}, @code{make_rgb_picture} and @code{read_xpm}.
+
+URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
+contains more elaborated examples.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn  {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
+@deffnx {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
+Draws implicit functions in 2D and 3D.
+
+@b{2D}
+
+@code{implicit(@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}
+plots the implicit function defined by @var{fcn}, with variable @var{x} taking values
+from @var{xmin} to @var{xmax}, and variable @var{y} taking values
+from @var{ymin} to @var{ymax}.
+
+This object is affected by the following @i{graphic options}: @code{ip_grid}, 
+@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(terminal  = eps,
+             grid      = true,
+             line_type = solid,
+             key       = "y^2=x^3-2*x+1",
+             implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
+             line_type = dots,
+             key       = "x^3+y^3 = 3*x*y^2-x-1",
+             implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
+             title     = "Two implicit functions" )$
+@end example
+
+@b{3D}
+
+@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}
+plots the implicit surface defined by @var{fcn}, with variable @var{x} taking values
+from @var{xmin} to @var{xmax}, variable @var{y} taking values
+from @var{ymin} to @var{ymax} and variable @var{z} taking values
+from @var{zmin} to @var{zmax}. This object implements the @i{marching cubes algorithm}.
+
+This object is affected by the following @i{graphic options}: @code{x_voxel}, 
+@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        color=blue,
+        implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
+                 x,-1,1,y,-1.2,2.3,z,-1,1),
+        surface_hide=true);
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end deffn
+
+
+
+
+@deffn  {Graphic object} label ([@var{string},@var{x},@var{y}],...)
+@deffnx {Graphic object} label ([@var{string},@var{x},@var{y},@var{z}],...)
+Writes labels in 2D and 3D.
+
+Colored labels work only with Gnuplot 4.3. This is a known bug in package @code{draw}.
+
+This object is affected by the following @i{graphic options}: @code{label_alignment}, 
+@code{label_orientation} and @code{color}.
+
+@b{2D}
+
+@code{label([@var{string},@var{x},@var{y}])} writes the @var{string} at point
+@code{[@var{x},@var{y}]}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(yrange = [0.1,1.4],
+             color = "red",
+             label(["Label in red",0,0.3]),
+             color = "#0000ff",
+             label(["Label in blue",0,0.6]),
+             color = "light-blue",
+             label(["Label in light-blue",0,0.9],
+                   ["Another light-blue",0,1.2])  )$
+@end example
+
+@b{3D}
+
+@code{label([@var{string},@var{x},@var{y},@var{z}])} writes the @var{string} at point
+@code{[@var{x},@var{y},@var{z}]}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             color = red,
+             label(["UP 1",-2,0,3], ["UP 2",1.5,0,4]),
+             color = blue,
+             label(["DOWN 1",2,0,-3]) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn  {Graphic object} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
+@deffnx {Graphic object} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
+Draws parametric functions in 2D and 3D.
+
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key}, @code{color} and @code{enhanced3d}.
+
+@b{2D}
+
+@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} plots parametric function 
+@code{[@var{xfun},@var{yfun}]}, with parameter @var{par} taking values from 
+@var{parmin} to @var{parmax}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(explicit(exp(x),x,-1,3),
+             color = red,
+             key   = "This is the parametric one!!",
+             parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
+@end example
+
+@b{3D}
+
+@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} plots parametric curve 
+@code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par} taking values from 
+@var{parmin} to @var{parmax}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
+             color = royalblue,
+             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
+             color      = turquoise,
+             line_width = 2,
+             parametric(t^2,sin(t),2+t,t,0,2),
+             surface_hide = true,
+             title = "Surface & curves" )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn  {Graphic object} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
+Draws parametric surfaces in 3D.
+
+@b{3D}
+
+@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
+plots parametric surface @code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par1}
+taking values from @var{par1min} to @var{par1max} and parameter @var{par2}
+taking values from @var{par2min} to @var{par2max}.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+ and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(title          = "Sea shell",
+             xu_grid        = 100,
+             yv_grid        = 25,
+             rot_vertical   = 100,
+             rot_horizontal = 20,
+             surface_hide   = true,
+             parametric_surface(0.5*u*cos(u)*(cos(v)+1),
+                           0.5*u*sin(u)*(cos(v)+1),
+                           u*sin(v) - ((u+3)/8*%pi)^2 - 20,
+                           u, 0, 13*%pi, v, -%pi, %pi) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
 
 
 
@@ -3632,6 +4356,45 @@ Bidimensional colored array,
 @end deffn
 
 
+
+
+@deffn  {Graphic object} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
+Draws 2D functions defined in polar coordinates.
+
+@b{2D}
+
+@code{polar (@var{radius},@var{ang},@var{minang},@var{maxang})} plots function 
+@code{@var{radius}(@var{ang})} defined in polar coordinates, with variable 
+@var{ang} taking values from 
+@var{minang} to @var{maxang}.
+
+This object is affected by the following @i{graphic options}: @code{nticks}, 
+@code{line_width}, @code{line_type}, @code{key} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(user_preamble = "set grid polar",
+             nticks        = 200,
+             xrange        = [-5,5],
+             yrange        = [-5,5],
+             color         = blue,
+             line_width    = 3,
+             title         = "Hyperbolic Spiral",
+             polar(10/theta,theta,1,10*%pi) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
 @deffn  {Graphic object} polygon ([[@var{x1},@var{y1}], [@var{x2},@var{y2}],...])
 @deffnx {Graphic object} polygon ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
 Draws polygons in 2D.
@@ -3703,121 +4466,24 @@ Example:
 
 
 
-@deffn  {Graphic object} bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])
-Draws vertical bars in 2D.
-
-@b{2D}
-
-@code{bars ([@var{x1},@var{h1},@var{w1}], [@var{x2},@var{h2},@var{w2}, ...])} 
-draws bars centered at values @var{x1}, @var{x2}, ... with heights @var{h1}, @var{h2}, ...
-and widths @var{w1}, @var{w2}, ...
-
-This object is affected by the following @i{graphic options}: @code{key}, 
-@code{fill_color}, @code{fill_density} and @code{line_width}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(
-       key          = "Group A",
-       fill_color   = blue,
-       fill_density = 0.2,
-       bars([0.8,5,0.4],[1.8,7,0.4],[2.8,-4,0.4]),
-       key          = "Group B",
-       fill_color   = red,
-       fill_density = 0.6,
-       line_width   = 4,
-       bars([1.2,4,0.4],[2.2,-2,0.4],[3.2,5,0.4]),
-       xaxis = true);
-@end example
-@end deffn
-
-
-
-@deffn  {Graphic object} ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})
-Draws ellipses and circles in 2D.
-
-
-@b{2D}
-
-@code{ellipse (@var{xc}, @var{yc}, @var{a}, @var{b}, @var{ang1}, @var{ang2})}
-plots an ellipse centered at @code{[@var{xc}, @var{yc}]} with horizontal and vertical
-semi axis @var{a} and @var{b}, respectively, starting at angle @var{ang1} with an amplitude
-equal to angle @var{ang2}.
-
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{transparent}, @code{fill_color}, @code{border}, @code{line_width}, 
-@code{line_type}, @code{key} and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(transparent = false,
-             fill_color  = red,
-             color       = gray30,
-             transparent = false,
-             line_width  = 5,
-             ellipse(0,6,3,2,270,-270),
-             /* center (x,y), a, b, start & end in degrees */
-             transparent = true,
-             color       = blue,
-             line_width  = 3,
-             ellipse(2.5,6,2,3,30,-90),
-             xrange      = [-3,6],
-             yrange      = [2,9] )$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Graphic object} label ([@var{string},@var{x},@var{y}],...)
-@deffnx {Graphic object} label ([@var{string},@var{x},@var{y},@var{z}],...)
-Writes labels in 2D and 3D.
-
-Colored labels work only with Gnuplot 4.3. This is a known bug in package @code{draw}.
-
-This object is affected by the following @i{graphic options}: @code{label_alignment}, 
-@code{label_orientation} and @code{color}.
-
-@b{2D}
-
-@code{label([@var{string},@var{x},@var{y}])} writes the @var{string} at point
-@code{[@var{x},@var{y}]}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(yrange = [0.1,1.4],
-             color = "red",
-             label(["Label in red",0,0.3]),
-             color = "#0000ff",
-             label(["Label in blue",0,0.6]),
-             color = "light-blue",
-             label(["Label in light-blue",0,0.9],
-                   ["Another light-blue",0,1.2])  )$
-@end example
+@deffn  {Graphic object} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
+Draws 3D functions defined in spherical coordinates.
 
 @b{3D}
 
-@code{label([@var{string},@var{x},@var{y},@var{z}])} writes the @var{string} at point
-@code{[@var{x},@var{y},@var{z}]}.
+@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
+plots function @code{@var{radius}(@var{azi},@var{zen})} defined in spherical coordinates, with @i{azimuth}
+@var{azi} taking values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values from
+@var{minzen} to @var{maxzen}.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
 
 Example:
 
 @example
 (%i1) load(draw)$
-(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             color = red,
-             label(["UP 1",-2,0,3], ["UP 2",1.5,0,4]),
-             color = blue,
-             label(["DOWN 1",2,0,-3]) )$
+(%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
 
 @opencatbox
@@ -3825,6 +4491,40 @@ Example:
 @closecatbox
 
 @end deffn
+
+
+
+@deffn  {Graphic object} tube (@var{xfun},@var{yfun},@var{zfun},@var{rfun},@var{p},@var{pmin},@var{pmax})
+Draws a tube in 3D with varying diameter.
+
+@b{3D}
+
+@code{[@var{xfun},@var{yfun},@var{zfun}]}
+is the parametric curve with parameter @var{p} taking values from @var{pmin}
+to @var{pmax}. Circles of radius @var{rfun} are placed with their centers on
+the parametric curve and perpendicular to it.
+
+This object is affected by the following @i{graphic options}: @code{xu_grid}, 
+@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
+@code{color}, and @code{tube_extremes}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        enhanced3d = true,
+        xu_grid = 50,
+        tube(cos(a), a, 0, cos(a/10)^2,
+             a, 0, 4*%pi) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
 
 
 
@@ -3880,645 +4580,25 @@ Example:
 @end deffn
 
 
-@deffn  {Graphic object} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
-@deffnx {Graphic object} explicit (@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
-Draws explicit functions in 2D and 3D.
-
-@b{2D}
-
-@code{explicit(@var{fcn},@var{var},@var{minval},@var{maxval})} plots explicit function @var{fcn},
-with variable @var{var} taking values from @var{minval} to @var{maxval}.
-
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{adapt_depth}, @code{line_width}, @code{line_type}, @code{key}, 
-@code{filled_func}, @code{fill_color} and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(line_width = 3,
-             color      = blue,
-             explicit(x^2,x,-3,3) )$
-(%i3) draw2d(fill_color  = brown,
-             filled_func = true,
-             explicit(x^2,x,-3,3) )$
-@end example
-
-@b{3D}
-
-@code{explicit(@var{fcn},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})}
-plots explicit function @var{fcn}, with variable @var{var1} taking values
-from @var{minval1} to @var{maxval1} and variable @var{var2} taking values
-from @var{minval2} to @var{maxval2}.
-
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
- and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(key   = "Gauss",
-             color = "#a02c00",
-             explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
-             yv_grid     = 10,
-             color = blue,
-             key   = "Plane",
-             explicit(x+y,x,-5,5,y,-5,5),
-             surface_hide = true)$
-@end example
-
-See also @code{filled_func} for filled functions.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-@deffn  {Graphic object} elevation_grid (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
-Draws matrix @var{mat} in 3D space. @var{z} values are taken from @var{mat},
-the abscissas range from @var{x0} to @math{@var{x0} + @var{width}}
-and ordinates from @var{y0} to @math{@var{y0} + @var{height}}.
-
-This object is affected by the following @i{graphic options}: @code{line_type},
-@code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) m: apply(
-            matrix,
-            makelist(makelist(random(10.0),k,1,30),i,1,20)) $
-(%i3) draw3d(
-         color = blue,
-         elevation_grid(m,0,0,3,2),
-         xlabel = "x",
-         ylabel = "y",
-         surface_hide = true);
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})
-@deffnx {Graphic object} implicit (@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax},@var{z},@var{zmin},@var{zmax})
-Draws implicit functions in 2D and 3D.
-
-@b{2D}
-
-@code{implicit(@var{fcn},@var{x},@var{xmin},@var{xmax},@var{y},@var{ymin},@var{ymax})}
-plots the implicit function defined by @var{fcn}, with variable @var{x} taking values
-from @var{xmin} to @var{xmax}, and variable @var{y} taking values
-from @var{ymin} to @var{ymax}.
-
-This object is affected by the following @i{graphic options}: @code{ip_grid}, 
-@code{ip_grid_in}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(terminal  = eps,
-             grid      = true,
-             line_type = solid,
-             key       = "y^2=x^3-2*x+1",
-             implicit(y^2=x^3-2*x+1, x, -4,4, y, -4,4),
-             line_type = dots,
-             key       = "x^3+y^3 = 3*x*y^2-x-1",
-             implicit(x^3+y^3 = 3*x*y^2-x-1, x,-4,4, y,-4,4),
-             title     = "Two implicit functions" )$
-@end example
-
-@b{3D}
-
-@code{implicit (@var{fcn},@var{x},@var{xmin},@var{xmax}, @var{y},@var{ymin},@var{ymax}, @var{z},@var{zmin},@var{zmax})}
-plots the implicit surface defined by @var{fcn}, with variable @var{x} taking values
-from @var{xmin} to @var{xmax}, variable @var{y} taking values
-from @var{ymin} to @var{ymax} and variable @var{z} taking values
-from @var{zmin} to @var{zmax}. This object implements the @i{marching cubes algorithm}.
-
-This object is affected by the following @i{graphic options}: @code{x_voxel}, 
-@code{y_voxel}, @code{z_voxel}, @code{line_width}, @code{line_type}, @code{key} and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(
-        color=blue,
-        implicit((x^2+y^2+z^2-1)*(x^2+(y-1.5)^2+z^2-0.5)=0.015,
-                 x,-1,1,y,-1.2,2.3,z,-1,1),
-        surface_hide=true);
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-@end deffn
-
-
-@deffn  {Graphic object} polar (@var{radius},@var{ang},@var{minang},@var{maxang})
-Draws 2D functions defined in polar coordinates.
-
-@b{2D}
-
-@code{polar (@var{radius},@var{ang},@var{minang},@var{maxang})} plots function 
-@code{@var{radius}(@var{ang})} defined in polar coordinates, with variable 
-@var{ang} taking values from 
-@var{minang} to @var{maxang}.
-
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key} and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(user_preamble = "set grid polar",
-             nticks        = 200,
-             xrange        = [-5,5],
-             yrange        = [-5,5],
-             color         = blue,
-             line_width    = 3,
-             title         = "Hyperbolic Spiral",
-             polar(10/theta,theta,1,10*%pi) )$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Graphic object} spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})
-Draws 3D functions defined in spherical coordinates.
-
-@b{3D}
-
-@code{spherical (@var{radius},@var{azi},@var{minazi},@var{maxazi},@var{zen},@var{minzen},@var{maxzen})}
-plots function @code{@var{radius}(@var{azi},@var{zen})} defined in spherical coordinates, with @i{azimuth}
-@var{azi} taking values from @var{minazi} to @var{maxazi} and @i{zenith} @var{zen} taking values from
-@var{minzen} to @var{maxzen}.
-
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Graphic object} cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})
-Draws 3D functions defined in cylindrical coordinates.
-
-@b{3D}
-
-@code{cylindrical (@var{radius},@var{z},@var{minz},@var{maxz},@var{azi},@var{minazi},@var{maxazi})}
-plots function @code{@var{radius}(@var{z},@var{azi})} defined in cylindrical coordinates, with variable
-@var{z} taking values from @var{minz} to @var{maxz} and @i{azimuth} @var{azi} taking values from
-@var{minazi} to @var{maxazi}.
-
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{key} and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(cylindrical(1,z,-2,2,az,0,2*%pi))$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Graphic object} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
-@deffnx {Graphic object} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
-Draws parametric functions in 2D and 3D.
-
-This object is affected by the following @i{graphic options}: @code{nticks}, 
-@code{line_width}, @code{line_type}, @code{key}, @code{color} and @code{enhanced3d}.
-
-@b{2D}
-
-@code{parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})} plots parametric function 
-@code{[@var{xfun},@var{yfun}]}, with parameter @var{par} taking values from 
-@var{parmin} to @var{parmax}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw2d(explicit(exp(x),x,-1,3),
-             color = red,
-             key   = "This is the parametric one!!",
-             parametric(2*cos(rrr),rrr^2,rrr,0,2*%pi))$
-@end example
-
-@b{3D}
-
-@code{parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})} plots parametric curve 
-@code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par} taking values from 
-@var{parmin} to @var{parmax}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(explicit(exp(sin(x)+cos(x^2)),x,-3,3,y,-3,3),
-             color = royalblue,
-             parametric(cos(5*u)^2,sin(7*u),u-2,u,0,2),
-             color      = turquoise,
-             line_width = 2,
-             parametric(t^2,sin(t),2+t,t,0,2),
-             surface_hide = true,
-             title = "Surface & curves" )$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-
-
-
-
-@deffn  {Graphic object} image (@var{im},@var{x0},@var{y0},@var{width},@var{height})
-Renders images in 2D.
-
-@b{2D}
-
-@code{image (@var{im},@var{x0},@var{y0},@var{width},@var{height})} plots image @var{im} in the rectangular
-region from vertex @code{(@var{x0},@var{y0})} to @code{(x0+@var{width},y0+@var{height})} on the real
-plane. Argument @var{im} must be a matrix of real numbers, a matrix of
-vectors of length three or a @var{picture} object.
-
-If @var{im} is a matrix of real numbers or a @var{levels picture} object,
-pixel values are interpreted according to graphic option @code{palette}, 
-which is a vector of length three with components 
-ranging from -36 to +36; each value is an index for a formula mapping the levels
-onto red, green and blue colors, respectively:
-@example
- 0: 0               1: 0.5           2: 1
- 3: x               4: x^2           5: x^3
- 6: x^4             7: sqrt(x)       8: sqrt(sqrt(x))
- 9: sin(90x)       10: cos(90x)     11: |x-0.5|
-12: (2x-1)^2       13: sin(180x)    14: |cos(180x)|
-15: sin(360x)      16: cos(360x)    17: |sin(360x)|
-18: |cos(360x)|    19: |sin(720x)|  20: |cos(720x)|
-21: 3x             22: 3x-1         23: 3x-2
-24: |3x-1|         25: |3x-2|       26: (3x-1)/2
-27: (3x-2)/2       28: |(3x-1)/2|   29: |(3x-2)/2|
-30: x/0.32-0.78125                  31: 2*x-0.84
-32: 4x;1;-2x+1.84;x/0.08-11.5
-33: |2*x - 0.5|    34: 2*x          35: 2*x - 0.5
-36: 2*x - 1
-@end example
-negative numbers mean negative colour component.
-
-@code{palette = gray} and @code{palette = color} are short cuts for
-@code{palette = [3,3,3]} and @code{palette = [7,5,15]}, respectively.
-
-If @var{im} is a matrix of vectors of length three or an @var{rgb picture} object,
-they are interpreted as red, green and blue color components.
-
-Examples:
-
-If @var{im} is a matrix of real numbers, pixel values are interpreted according
-to graphic option @code{palette}.
-@example
-(%i1) load(draw)$
-(%i2) im: apply(
-           'matrix,
-            makelist(makelist(random(200),i,1,30),i,1,30))$
-(%i3) /* palette = color, default */
-      draw2d(image(im,0,0,30,30))$
-(%i4) draw2d(palette = gray, image(im,0,0,30,30))$
-(%i5) draw2d(palette = [15,20,-4],
-             colorbox=false,
-             image(im,0,0,30,30))$
-@end example
-
-See also @code{colorbox}.
-
-If @var{im} is a matrix of vectors of length three, they are interpreted
-as red, green and blue color components.
-@example
-(%i1) load(draw)$
-(%i2) im: apply(
-            'matrix,
-             makelist(
-               makelist([random(300),
-                         random(300),
-                         random(300)],i,1,30),i,1,30))$
-(%i3) draw2d(image(im,0,0,30,30))$
-@end example
-
-Package @code{draw} automatically loads package @code{picture}. In this
-example, a level picture object is built by hand and then rendered.
-@example
-(%i1) load(draw)$
-(%i2) im: make_level_picture([45,87,2,134,204,16],3,2);
-(%o2)       picture(level, 3, 2, @{Array:  #(45 87 2 134 204 16)@})
-(%i3) /* default color palette */
-      draw2d(image(im,0,0,30,30))$
-(%i4) /* gray palette */
-      draw2d(palette = gray,
-             image(im,0,0,30,30))$
-@end example
-
-An xpm file is read and then rendered.
-@example
-(%i1) load(draw)$
-(%i2) im: read_xpm("myfile.xpm")$
-(%i3) draw2d(image(im,0,0,10,7))$
-@end example
-
-See also @code{make_level_picture}, @code{make_rgb_picture} and @code{read_xpm}.
-
-URL @url{http://www.telefonica.net/web2/biomates/maxima/gpdraw/image}
-contains more elaborated examples.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-
-
-@deffn  {Graphic object} parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})
-Draws parametric surfaces in 3D.
-
-@b{3D}
-
-@code{parametric_surface (@var{xfun},@var{yfun},@var{zfun},@var{par1},@var{par1min},@var{par1max},@var{par2},@var{par2min},@var{par2max})}
-plots parametric surface @code{[@var{xfun},@var{yfun},@var{zfun}]}, with parameter @var{par1}
-taking values from @var{par1min} to @var{par1max} and parameter @var{par2}
-taking values from @var{par2min} to @var{par2max}.
-
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
- and @code{color}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(title          = "Sea shell",
-             xu_grid        = 100,
-             yv_grid        = 25,
-             rot_vertical   = 100,
-             rot_horizontal = 20,
-             surface_hide   = true,
-             parametric_surface(0.5*u*cos(u)*(cos(v)+1),
-                           0.5*u*sin(u)*(cos(v)+1),
-                           u*sin(v) - ((u+3)/8*%pi)^2 - 20,
-                           u, 0, 13*%pi, v, -%pi, %pi) )$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-
-
-
-
-
-@deffn  {Graphic object} tube (@var{xfun},@var{yfun},@var{zfun},@var{rfun},@var{p},@var{pmin},@var{pmax})
-Draws a tube in 3D with varying diameter.
-
-@b{3D}
-
-@code{[@var{xfun},@var{yfun},@var{zfun}]}
-is the parametric curve with parameter @var{p} taking values from @var{pmin}
-to @var{pmax}. Circles of radius @var{rfun} are placed with their centers on
-the parametric curve and perpendicular to it.
-
-This object is affected by the following @i{graphic options}: @code{xu_grid}, 
-@code{yv_grid}, @code{line_type}, @code{line_width}, @code{key}, @code{enhanced3d},
-@code{color}, and @code{tube_extremes}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) draw3d(
-        enhanced3d = true,
-        xu_grid = 50,
-        tube(cos(a), a, 0, cos(a/10)^2,
-             a, 0, 4*%pi) )$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-
-
-
-
-
-@deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
-
-Plots a series of scenes; its arguments are @code{gr2d} and/or @code{gr3d} 
-objects, together with some options. By default, the scenes are put together
-in one column.
-
-Function @code{draw} accepts the following global options: @code{terminal},
-@code{columns}, @code{pic_width}, @code{pic_height}, @code{eps_width},
-@code{eps_height}, @code{file_name} and @code{delay}.
-
-Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
-when only one scene is required, in two or three dimensions, respectively.
-
-To make use of this function, write first @code{load(draw)}.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) scene1: gr2d(title="Ellipse",
-                   nticks=30,
-                   parametric(2*cos(t),5*sin(t),t,0,2*%pi))$
-(%i3) scene2: gr2d(title="Triangle",
-                   polygon([4,5,7],[6,4,2]))$
-(%i4) draw(scene1, scene2, columns = 2)$
-@end example
-
-The two draw sentences are equivalent:
-@example
-(%i1) load(draw)$
-(%i2) draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)));
-(%o2)                          [gr3d(explicit)]
-(%i3) draw3d(explicit(x^2+y^2,x,-1,1,y,-1,1));
-(%o3)                          [gr3d(explicit)]
-@end example
-
-An animated gif file:
-@example
-(%i1) load(draw)$
-(%i2) draw(
-        delay     = 100,
-        file_name = "zzz",
-        terminal  = 'animated_gif,
-        gr2d(explicit(x^2,x,-1,1)),
-        gr2d(explicit(x^3,x,-1,1)),
-        gr2d(explicit(x^4,x,-1,1)));
-End of animation sequence
-(%o2)          [gr2d(explicit), gr2d(explicit), gr2d(explicit)]
-@end example
-
-See also @code{gr2d}, @code{gr3d}, @code{draw2d} and @code{draw3d}..
-
-@opencatbox
-@category{Package draw} @category{File output}
-@closecatbox
-@end deffn
-
-@deffn {Function} draw2d (@var{option}, @var{graphic_object}, ...)
-
-This function is a short cut for
-@code{draw(gr2d(@var{options}, ..., @var{graphic_object}, ...))}.
-
-It can be used to plot a unique scene in 2d.
-
-To make use of this function, write first @code{load(draw)}.
-
-See also @code{draw} and @code{gr2d}.
-
-@opencatbox
-@category{Package draw} @category{File output}
-@closecatbox
-@end deffn
-
-
-@deffn {Function} draw3d (@var{option}, @var{graphic_object}, ...)
-
-This function is a short cut for
-@code{draw(gr3d(@var{options}, ..., @var{graphic_object}, ...))}.
-
-It can be used to plot a unique scene in 3d.
-
-To make use of this function, write first @code{load(draw)}.
-
-See also @code{draw} and @code{gr3d}.
-
-@opencatbox
-@category{Package draw} @category{File output}
-@closecatbox
-@end deffn
-
-
-
-@deffn {Function} draw_file (@var{graphic option}, ..., @var{graphic object}, ...)
-
-Saves the current plot into a file. Accepted graphics options are:
-@code{terminal}, @code{pic_width}, @code{pic_height}, @code{eps_width}, 
-@code{eps_height}, @code{file_name} and @code{file_bgcolor}. 
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) /* screen plot */
-      draw(gr3d(explicit(x^2+y^2,x,-1,1,y,-1,1)))$
-(%i3) /* same plot in eps format */
-      draw_file(terminal  = eps,
-                eps_width = 5,
-                eps_height = 5) $
-@end example
-
-@opencatbox
-@category{Package draw} @category{File output}
-@closecatbox
-@end deffn
-
-
-
-@deffn {Function} multiplot_mode (@var{term})
-
-This function enables Maxima to work in one-window multiplot mode with terminal
-@var{term}; accepted arguments for this function are @code{screen}, 
-@code{wxt}, @code{aquaterm} and @code{none}.
-
-When multiplot mode is enabled, each call to @code{draw} sends a new plot to the
-same window, without erasing the previous ones. To disable the multiplot mode,
-write @code{multiplot_mode(none)}.
-
-When multiplot mode is enabled, global option @code{terminal} is blocked and you
-have to disable this working mode before changing to another terminal.
-
-This feature does not work in Windows platforms.
-
-Example:
-
-@example
-(%i1) load(draw)$
-(%i2) set_draw_defaults(
-         xrange = [-1,1],
-         yrange = [-1,1],
-         grid   = true,
-         title  = "Step by step plot" )$
-(%i3) multiplot_mode(screen)$
-(%i4) draw2d(color=blue,  explicit(x^2,x,-1,1))$
-(%i5) draw2d(color=red,   explicit(x^3,x,-1,1))$
-(%i6) draw2d(color=brown, explicit(x^4,x,-1,1))$
-(%i7) multiplot_mode(none)$
-@end example
-
-@opencatbox
-@category{Package draw} @category{File output}
-@closecatbox
-@end deffn
-
-
-
-
 
 
 
 
 @node Functions and Variables for pictures, Functions and Variables for worldmap, Functions and Variables for draw, draw
 @section Functions and Variables for pictures
+
+
+
+@deffn  {Function} get_pixel (@var{pic},@var{x},@var{y})
+Returns pixel from picture. Coordinates @var{x} and @var{y} range from 0 to
+@code{width-1} and @code{height-1}, respectively.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
 
 
 
@@ -4566,25 +4646,6 @@ Level picture from numeric list.
 @end deffn
 
 
-@deffn  {Function} picturep (@var{x})
-Returns @code{true} if the argument is a well formed image,
-and @code{false} otherwise.
-
-@opencatbox
-@category{Package draw} @category{Predicate functions}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Function} picture_equalp (@var{x},@var{y})
-Returns @code{true} in case of equal pictures, and @code{false} otherwise.
-
-@opencatbox
-@category{Package draw} @category{Predicate functions}
-@closecatbox
-
-@end deffn
 
 
 @deffn  {Function} make_rgb_picture (@var{redlevel},@var{greenlevel},@var{bluelevel})
@@ -4625,6 +4686,70 @@ Example:
 @end deffn
 
 
+
+
+
+@deffn  {Function} negative_picture (@var{pic})
+Returns the negative of a (@var{level} or @var{rgb}) picture.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end deffn
+
+
+
+
+
+@deffn  {Function} picture_equalp (@var{x},@var{y})
+Returns @code{true} in case of equal pictures, and @code{false} otherwise.
+
+@opencatbox
+@category{Package draw} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn  {Function} picturep (@var{x})
+Returns @code{true} if the argument is a well formed image,
+and @code{false} otherwise.
+
+@opencatbox
+@category{Package draw} @category{Predicate functions}
+@closecatbox
+
+@end deffn
+
+
+
+@deffn  {Function} read_xpm (@var{xpm_file})
+Reads a file in xpm and returns a picture object.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn  {Function} rgb2level (@var{pic})
+Transforms an @var{rgb} picture into a @var{level} one by
+averaging the red, green and blue channels.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
 @deffn  {Function} take_channel (@var{im},@var{color})
 If argument @var{color} is @code{red}, @code{green} or @code{blue},
 function @code{take_channel} returns the corresponding color channel of
@@ -4653,57 +4778,19 @@ Example:
 @end deffn
 
 
-@deffn  {Function} negative_picture (@var{pic})
-Returns the negative of a (@var{level} or @var{rgb}) picture.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-@end deffn
-
-
-@deffn  {Function} rgb2level (@var{pic})
-Transforms an @var{rgb} picture into a @var{level} one by
-averaging the red, green and blue channels.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Function} get_pixel (@var{pic},@var{x},@var{y})
-Returns pixel from picture. Coordinates @var{x} and @var{y} range from 0 to
-@code{width-1} and @code{height-1}, respectively.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Function} read_xpm (@var{xpm_file})
-Reads a file in xpm and returns a picture object.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-
-
 
 
 
 @node Functions and Variables for worldmap,  , Functions and Variables for pictures, draw
 @section Functions and Variables for worldmap
 
+
 This package automatically loads package @code{draw}.
+
+
+@subsection Variables and Functions
+
+
 
 @defvr {Global variable} boundaries_array
 Default value: @code{false}
@@ -4721,6 +4808,202 @@ See also @code{geomap}.
 @closecatbox
 
 @end defvr
+
+
+
+
+
+@deffn  {Function} numbered_boundaries (@var{nlist})
+Draws a list of polygonal segments (boundaries), labeled by
+its numbers (@code{boundaries_array} coordinates). This is of great
+help when building new geographical entities.
+
+Example:
+
+Map of Europe labeling borders with their component number in
+@code{boundaries_array}.
+@example
+(%i1) load(worldmap)$
+(%i2) european_borders: 
+           region_boundaries(-31.81,74.92,49.84,32.06)$
+(%i3) numbered_boundaries(european_borders)$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@deffn  {Function} make_poly_continent (@var{continent_name})
+@deffnx  {Function} make_poly_continent (@var{country_list})
+Makes the necessary polygons to draw a colored continent
+or a list of countries.
+
+Example:
+
+@example
+(%i1) load(worldmap)$
+(%i2) /* A continent */
+      make_poly_continent(Africa)$
+(%i3) apply(draw2d, %)$
+(%i4) /* A list of countries */
+      make_poly_continent([Germany,Denmark,Poland])$
+(%i5) apply(draw2d, %)$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn  {Function} make_poly_country (@var{country_name})
+Makes the necessary polygons to draw a colored country.
+If islands exist, one country can be defined with more than
+just one polygon.
+
+Example:
+
+@example
+(%i1) load(worldmap)$
+(%i2) make_poly_country(India)$
+(%i3) apply(draw2d, %)$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn  {Function} make_polygon (@var{nlist})
+Returns a @code{polygon} object from boundary indices. Argument
+@var{nlist} is a list of components of @code{boundaries_array}.
+
+Example:
+
+Bhutan is defined by boundary numbers 171, 173
+and 1143, so that @code{make_polygon([171,173,1143])}
+appends arrays of coordinates @code{boundaries_array[171]},
+@code{boundaries_array[173]} and @code{boundaries_array[1143]} and 
+returns a @code{polygon} object suited to be plotted by 
+@code{draw}. To avoid an error message, arrays must be
+compatible in the sense that any two consecutive
+arrays have two coordinates in the extremes in common. In this
+example, the two first components of @code{boundaries_array[171]} are
+equal to the last two coordinates of @code{boundaries_array[173]}, and 
+the two first of @code{boundaries_array[173]} are equal to the two first
+of @code{boundaries_array[1143]}; in conclussion, boundary numbers
+171, 173 and 1143 (in this order) are compatible and the colored 
+polygon can be drawn.
+@example
+(%i1) load(worldmap)$
+(%i2) Bhutan;
+(%o2)                        [[171, 173, 1143]]
+(%i3) boundaries_array[171];
+(%o3) @{Array:  
+       #(88.750549 27.14727 88.806351 27.25305 88.901367 27.282221
+         88.917877 27.321039)@}
+(%i4) boundaries_array[173];
+(%o4) @{Array:
+       #(91.659554 27.76511 91.6008 27.66666 91.598022 27.62499
+         91.631348 27.536381 91.765533 27.45694 91.775253 27.4161 
+         92.007751 27.471939 92.11441 27.28583 92.015259 27.168051
+         92.015533 27.08083 92.083313 27.02277 92.112183 26.920271
+         92.069977 26.86194 91.997192 26.85194 91.915253 26.893881
+         91.916924 26.85416 91.8358 26.863331 91.712479 26.799999 
+         91.542191 26.80444 91.492188 26.87472 91.418854 26.873329
+         91.371353 26.800831 91.307457 26.778049 90.682457 26.77417
+         90.392197 26.903601 90.344131 26.894159 90.143044 26.75333
+         89.98996 26.73583 89.841919 26.70138 89.618301 26.72694 
+         89.636093 26.771111 89.360786 26.859989 89.22081 26.81472
+         89.110237 26.829161 88.921631 26.98777 88.873016 26.95499
+         88.867737 27.080549 88.843307 27.108601 88.750549 
+         27.14727)@}
+(%i5) boundaries_array[1143];
+(%o5) @{Array:  
+       #(91.659554 27.76511 91.666924 27.88888 91.65831 27.94805 
+         91.338028 28.05249 91.314972 28.096661 91.108856 27.971109
+         91.015808 27.97777 90.896927 28.05055 90.382462 28.07972
+         90.396088 28.23555 90.366074 28.257771 89.996353 28.32333
+         89.83165 28.24888 89.58609 28.139999 89.35997 27.87166 
+         89.225517 27.795 89.125793 27.56749 88.971077 27.47361
+         88.917877 27.321039)@}
+(%i6) Bhutan_polygon: make_polygon([171,173,1143])$
+(%i7) draw2d(Bhutan_polygon)$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+
+@deffn  {Function} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
+Detects polygonal segments of global variable @code{boundaries_array}
+fully contained in the rectangle with vertices (@var{x1},@var{y1}) -upper left- 
+and (@var{x2},@var{y2}) -bottom right-.
+
+Example:
+
+Returns segment numbers for plotting southern Italy.
+@example
+(%i1) load(worldmap)$
+(%i2) region_boundaries(10.4,41.5,20.7,35.4);
+(%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
+(%i3) draw2d(geomap(%))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+@deffn  {Function} region_boundaries_plus (@var{x1},@var{y1},@var{x2},@var{y2})
+Detects polygonal segments of global variable @code{boundaries_array}
+containing at least one vertex in the rectangle defined by vertices (@var{x1},@var{y1})
+-upper left- and (@var{x2},@var{y2}) -bottom right-.
+
+Example:
+
+@example
+(%i1) load(worldmap)$
+(%i2) region_boundaries_plus(10.4,41.5,20.7,35.4);
+(%o2) [1060, 1062, 1076, 1835, 1839, 1844, 1846, 1858,
+       1861, 1863, 1864, 1871, 1881, 1888, 1894, 1897]
+(%i3) draw2d(geomap(%))$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
+@subsection Graphic objects
+
 
 
 @deffn  {Graphic object} geomap (@var{numlist})
@@ -4865,186 +5148,4 @@ for more elaborated examples.
 @closecatbox
 
 @end deffn
-
-
-@deffn  {Function} region_boundaries (@var{x1},@var{y1},@var{x2},@var{y2})
-Detects polygonal segments of global variable @code{boundaries_array}
-fully contained in the rectangle with vertices (@var{x1},@var{y1}) -upper left- 
-and (@var{x2},@var{y2}) -bottom right-.
-
-Example:
-
-Returns segment numbers for plotting southern Italy.
-@example
-(%i1) load(worldmap)$
-(%i2) region_boundaries(10.4,41.5,20.7,35.4);
-(%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
-(%i3) draw2d(geomap(%))$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-@deffn  {Function} region_boundaries_plus (@var{x1},@var{y1},@var{x2},@var{y2})
-Detects polygonal segments of global variable @code{boundaries_array}
-containing at least one vertex in the rectangle defined by vertices (@var{x1},@var{y1})
--upper left- and (@var{x2},@var{y2}) -bottom right-.
-
-Example:
-
-@example
-(%i1) load(worldmap)$
-(%i2) region_boundaries_plus(10.4,41.5,20.7,35.4);
-(%o2) [1060, 1062, 1076, 1835, 1839, 1844, 1846, 1858,
-       1861, 1863, 1864, 1871, 1881, 1888, 1894, 1897]
-(%i3) draw2d(geomap(%))$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-@deffn  {Function} numbered_boundaries (@var{nlist})
-Draws a list of polygonal segments (boundaries), labeled by
-its numbers (@code{boundaries_array} coordinates). This is of great
-help when building new geographical entities.
-
-Example:
-
-Map of Europe labeling borders with their component number in
-@code{boundaries_array}.
-@example
-(%i1) load(worldmap)$
-(%i2) european_borders: 
-           region_boundaries(-31.81,74.92,49.84,32.06)$
-(%i3) numbered_boundaries(european_borders)$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Function} make_polygon (@var{nlist})
-Returns a @code{polygon} object from boundary indices. Argument
-@var{nlist} is a list of components of @code{boundaries_array}.
-
-Example:
-
-Bhutan is defined by boundary numbers 171, 173
-and 1143, so that @code{make_polygon([171,173,1143])}
-appends arrays of coordinates @code{boundaries_array[171]},
-@code{boundaries_array[173]} and @code{boundaries_array[1143]} and 
-returns a @code{polygon} object suited to be plotted by 
-@code{draw}. To avoid an error message, arrays must be
-compatible in the sense that any two consecutive
-arrays have two coordinates in the extremes in common. In this
-example, the two first components of @code{boundaries_array[171]} are
-equal to the last two coordinates of @code{boundaries_array[173]}, and 
-the two first of @code{boundaries_array[173]} are equal to the two first
-of @code{boundaries_array[1143]}; in conclussion, boundary numbers
-171, 173 and 1143 (in this order) are compatible and the colored 
-polygon can be drawn.
-@example
-(%i1) load(worldmap)$
-(%i2) Bhutan;
-(%o2)                        [[171, 173, 1143]]
-(%i3) boundaries_array[171];
-(%o3) @{Array:  
-       #(88.750549 27.14727 88.806351 27.25305 88.901367 27.282221
-         88.917877 27.321039)@}
-(%i4) boundaries_array[173];
-(%o4) @{Array:
-       #(91.659554 27.76511 91.6008 27.66666 91.598022 27.62499
-         91.631348 27.536381 91.765533 27.45694 91.775253 27.4161 
-         92.007751 27.471939 92.11441 27.28583 92.015259 27.168051
-         92.015533 27.08083 92.083313 27.02277 92.112183 26.920271
-         92.069977 26.86194 91.997192 26.85194 91.915253 26.893881
-         91.916924 26.85416 91.8358 26.863331 91.712479 26.799999 
-         91.542191 26.80444 91.492188 26.87472 91.418854 26.873329
-         91.371353 26.800831 91.307457 26.778049 90.682457 26.77417
-         90.392197 26.903601 90.344131 26.894159 90.143044 26.75333
-         89.98996 26.73583 89.841919 26.70138 89.618301 26.72694 
-         89.636093 26.771111 89.360786 26.859989 89.22081 26.81472
-         89.110237 26.829161 88.921631 26.98777 88.873016 26.95499
-         88.867737 27.080549 88.843307 27.108601 88.750549 
-         27.14727)@}
-(%i5) boundaries_array[1143];
-(%o5) @{Array:  
-       #(91.659554 27.76511 91.666924 27.88888 91.65831 27.94805 
-         91.338028 28.05249 91.314972 28.096661 91.108856 27.971109
-         91.015808 27.97777 90.896927 28.05055 90.382462 28.07972
-         90.396088 28.23555 90.366074 28.257771 89.996353 28.32333
-         89.83165 28.24888 89.58609 28.139999 89.35997 27.87166 
-         89.225517 27.795 89.125793 27.56749 88.971077 27.47361
-         88.917877 27.321039)@}
-(%i6) Bhutan_polygon: make_polygon([171,173,1143])$
-(%i7) draw2d(Bhutan_polygon)$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Function} make_poly_country (@var{country_name})
-Makes the necessary polygons to draw a colored country.
-If islands exist, one country can be defined with more than
-just one polygon.
-
-Example:
-
-@example
-(%i1) load(worldmap)$
-(%i2) make_poly_country(India)$
-(%i3) apply(draw2d, %)$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn  {Function} make_poly_continent (@var{continent_name})
-@deffnx  {Function} make_poly_continent (@var{country_list})
-Makes the necessary polygons to draw a colored continent
-or a list of countries.
-
-Example:
-
-@example
-(%i1) load(worldmap)$
-(%i2) /* A continent */
-      make_poly_continent(Africa)$
-(%i3) apply(draw2d, %)$
-(%i4) /* A list of countries */
-      make_poly_continent([Germany,Denmark,Poland])$
-(%i5) apply(draw2d, %)$
-@end example
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-
-
 
