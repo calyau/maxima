@@ -168,8 +168,8 @@
      (rest (ext:command-args))
 
      #+cmu
-     (if (boundp 'ext:*command-line-application-arguments*)
-	 ext:*command-line-application-arguments*
+     (if (boundp 'ext::*command-line-application-arguments*)
+	 ext::*command-line-application-arguments*
 	 (rest ext:*command-line-strings*))
      
      #+scl
