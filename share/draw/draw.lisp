@@ -1572,7 +1572,7 @@
     (update-ranges-2d xmin xmax ymin ymax)
     (make-gr-object
        :name 'bars
-       :command (format nil " ~a w boxes fs solid ~a border lw ~a lc ~a axis ~a"
+       :command (format nil " ~a w boxes fs solid ~a lw ~a lc ~a axis ~a"
                             (make-obj-title (get-option '$key))
                             (get-option '$fill_density)
                             (get-option '$line_width)
