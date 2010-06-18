@@ -726,7 +726,7 @@ Example:
 @closecatbox
 @end deffn
 
-@deffn {Function} biconected_components (@var{gr})
+@deffn {Function} biconnected_components (@var{gr})
 Returns the (vertex sets of) 2-connected components of the graph
 @var{gr}.
 
