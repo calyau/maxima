@@ -372,13 +372,22 @@ nicedummies(to_poly_solve(sin(x)*cos(x) = 1/2, x,simpfuncs = ['expand]));
 %union([x=%pi*%z0+%pi/4])$
 
 nicedummies(to_poly_solve(cos(3*x)-2*cos(2*x)+cos(x)=1/2,x, simpfuncs=['expand]));
+/* Because of rev. 1.8 of psolve.lisp the ordering of the results has changed.
+ * The solutions 3 and 4 are better simplified.
 %union([x = 2*%pi*%z0-%i*log(sqrt(13)/4-sqrt(sqrt(13)-1)/2^(3/2)+1/4)],
-             [x = 2*%pi*%z1-%i*log(sqrt(13)/4+sqrt(sqrt(13)-1)/2^(3/2)+1/4)],
-             [x = 2*%pi*%z2-%pi/3],[x = 2*%pi*%z3+%pi/3],
-             [x = 2*%pi*%z4-atan(sqrt(sqrt(13)+1)
-                                  /(1/sqrt(2)-sqrt(13)/sqrt(2)))-%pi],
-             [x = 2*%pi*%z5+atan(sqrt(sqrt(13)+1)
-                                  /(1/sqrt(2)-sqrt(13)/sqrt(2)))+%pi])$
+       [x = 2*%pi*%z1-%i*log(sqrt(13)/4+sqrt(sqrt(13)-1)/2^(3/2)+1/4)],
+       [x = 2*%pi*%z2-%pi/3],
+       [x = 2*%pi*%z3+%pi/3],
+       [x = 2*%pi*%z4-atan(sqrt(sqrt(13)+1)/(1/sqrt(2)-sqrt(13)/sqrt(2)))-%pi],
+       [x = 2*%pi*%z5+atan(sqrt(sqrt(13)+1)/(1/sqrt(2)-sqrt(13)/sqrt(2)))+%pi])$
+*/
+
+%union([x = 2*%pi*%z0-atan(sqrt(sqrt(13)/2+1/2)/(1/2-sqrt(13)/2))-%pi],
+       [x = 2*%pi*%z1+atan(sqrt(sqrt(13)/2+1/2)/(1/2-sqrt(13)/2))+%pi],
+       [x = 2*%pi*%z2-%i*log(sqrt(13)/4-sqrt(sqrt(13)/2-1/2)/2+1/4)],
+       [x = 2*%pi*%z3-%i*log(sqrt(13)/4+sqrt(sqrt(13)/2-1/2)/2+1/4)],
+       [x = 2*%pi*%z4-%pi/3],
+       [x = 2*%pi*%z5+%pi/3]);
 
 nicedummies(to_poly_solve(sin(2*x) + cos(2*x) = 1,x,simpfuncs = ['expand]));
 %union([x=%pi*%z0],[x=%pi*%z1+%pi/4])$
