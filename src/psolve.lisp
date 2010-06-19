@@ -191,15 +191,10 @@
 	   (simplify (rdis (ratdif (rattimes sqb3 '(3 . 4) t)
 				   (rattimes b2 '(2 . 1) t)))))
      (and (complicated tr1) (setq tr1 (adispline tr1)))
-     lb1  (setq d (simpnrt (simplify (list '(mplus) tr1 tr2)) 2))
-     (setq e
-	   (simpnrt (simplify (list '(mplus)
-				    tr1
-				    (list '(mtimes) -1 tr2)))
-		    2))
-     (setq d (div* d 2))
+  lb1
+     (setq d (div (power (add tr1 tr2) '((rat simp) 1 2)) 2))
+     (setq e (div (power (sub tr1 tr2) '((rat simp) 1 2)) 2))
      (and (complicated d) (setq d (adispline d)))
-     (setq e (div* e 2))
      (and (complicated e) (setq e (adispline e)))
      (setq a2 (rdis (rattimes b3 '(-1 . 4) t)))
      (setq a1 (div* r 2))
