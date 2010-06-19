@@ -555,7 +555,7 @@
   (let ((w (if (graph-p gr)
 	       (get-edge-weight (m-edge-to-l-edge e) gr)
 	       (get-edge-weight (m-edge-to-l-dedge e) gr))))
-    (or w 1)))
+    (or w default 1)))
 
 (defun get-edge-weight (e gr)
   (let* ((edge-weights
