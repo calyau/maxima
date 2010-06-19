@@ -1663,3 +1663,27 @@ at(diff(f(x,y),x,1,y,1),[x=a,y=b]);
  */
 limit(mu[inf],x,inf);
 mu[inf];
+
+/* Bug report ID: 2556133 - "at" should do parallel substitutions
+ */
+errcatch(at(atan2(y^2+1,x),[y=%i,x=0]));
+[];
+errcatch(at(atan2(y^2+1,x),[x=0,y=%i]));
+[];
+
+/* Bug report ID: 2014941 - compositions of 'at'
+ */
+at(at(diff(f(x),x),[x=b]),[b=y]);
+'at('at('diff(f(x),x,1),[x = b]),[b = y]);
+
+at(diff(f(x,y),x,1,y,1),[x=a,y=b]) - at(diff(f(x,y),x,1,y,1),[y=b,x=a]);
+0;
+
+/* Bug report ID: 1677217 - composistions of 'at'
+ */
+depends(y,[x,z]);
+[y(x,z)];
+at(at(diff(y,x),x=a),z=b);
+'at('at('diff(y,x,1),x = a),z = b);
+remove(y,dependency);
+done;
