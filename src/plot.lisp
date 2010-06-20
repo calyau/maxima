@@ -1821,7 +1821,7 @@ To plot a single function f of 2 variables v1 and v2:
 A parametric representation of a surface with parameters v1 and v2:
   plot3d ([f1, f2, f3], [v1, min, max], [v2, min, max], options)
 Several functions depending on the two variables v1 and v2:
-  plot3d ([f1, f2, ..., fn], [v1, min, max], [v2, min, max], options)")))
+  plot3d ([f1, f2, ..., fn, [v1, min, max], [v2, min, max]], options)")))
   
   (declare (special *original-points*))
   (setf (getf features :type) "plot3d")
