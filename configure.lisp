@@ -61,6 +61,7 @@
 	  ((eql line 'eof))
 	(if (search "AM_INIT_AUTOMAKE" line)
 	    (progn 
+              #+openmcl (setq line (string-trim '(#\Return) line))
 	      (setf version 
 		    (replace-substring line "AM_INIT_AUTOMAKE(maxima," ""))
 	      (setf version
