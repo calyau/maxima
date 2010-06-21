@@ -19,6 +19,24 @@
 
 */
 
+as_directed_graph(g) := block(
+  [edges, dedges],
+  if is_digraph(g) then return(g),
+  if not is_graph(g) then error("as_directed_graph: the argument is no a graph!", g),
+  edges: edges(g),
+  dedges: append(edges, map(reverse, edges)),
+  create_graph(vertices(g), dedges, 'directed=true))$
+
+relabel_graph_vertices(gr, [options]) := block(
+  [min_id: assoc('min_id, options, 0),
+  new_ids: hash_table(), vrt:[], edg:[]],
+  for v in vertices(gr) do (
+    set_hash(v, new_ids, min_id),
+    vrt: cons(min_id, vrt),
+    min_id: min_id+1),
+  for e in edges(gr) do
+  edg: cons([get_hash(e[1], new_ids), get_hash(e[2], new_ids)], edg),
+  create_graph(vrt, edg, directed=is_digraph(gr)))$
 
 random_network(n, p, w) := block(
   [net, source, sink, u, v],
@@ -113,7 +131,9 @@ grid_graph(n, m) :=
         pos:cons([n*j+i, [i/n, j/m]], pos),
     set_positions(pos, g),
     g)$
-  
+
+tetrahedron_graph() := complete_graph(4)$
+
 cube_graph(n) := 
   if n=1 then path_graph(2)
   else block(
@@ -122,6 +142,11 @@ cube_graph(n) :=
     g:graph_product(cube_graph(k), cube_graph(k)),
     if r=1 then g:graph_product(g, path_graph(2)),
     g)$
+
+octahedron_graph() := create_graph(
+  6,
+  [[3,5],[2,5],[1,5],[0,5],[3,4],[2,4],[1,4],[0,4],
+   [0,3],[2,3],[1,2],[0,1]])$
 
 icosahedron_graph() := create_graph(
   12,
@@ -269,6 +294,8 @@ small_rhombicuboctahedron_graph() := sparse6_decode(":Wa?`_`CabE_`aGbHcGdHKeIfJM
 snub_dodecahedron_graph() := sparse6_decode(":{a??SCFG??_cCEDbPwSMGEa`xCe@@jDIk?OOHOPHCf?HOQ[GGEEBgWSMLFsBDCr^nScDLBQLGCTKu`Pra`i]TLtAphGeidrYTNAEOpkWSMIHgwk]TRtAqmiVTP`S[UodbEBESLWKXWpSnXQ`il[rgDtQ}aUTjjqDCbngCQLpOJfcJYaUNgE~")$
 
 snub_cube_graph() := sparse6_decode(":Wa?@_@eCDcDab_`eIfJcGdH_AGIK`BHJL`AGJM_BHINcEGKMdFHLNdEIKNcFJLM")$
+
+chvatal_graph() := graph6_decode("KhdLA_hc?L_y")$
 
 add_path(lst, g) :=
   add_edges(vertices_to_path(lst), g)$

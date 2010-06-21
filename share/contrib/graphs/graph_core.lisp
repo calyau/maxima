@@ -32,8 +32,7 @@
 (defstruct (graph
 	     (:print-function
 	      (lambda (stru strm depth)
-		(declare (ignore stru))
-		(format strm "GRAPH"))))
+		(format strm "GRAPH(~a vertices, ~a edges)" (graph-order stru) (graph-size stru)))))
   (size 0)
   (order 0)
   (vertices ())
@@ -46,8 +45,7 @@
 (defstruct (digraph
 	     (:print-function
 	      (lambda (stru strm depth)
-		(declare (ignore stru))
-		(format strm "DIGRAPH"))))
+		(format strm "DIGRAPH(~a vertices, ~a arcs)" (digraph-order stru) (digraph-size stru)))))
   (size 0)
   (order 0)
   (vertices ())
