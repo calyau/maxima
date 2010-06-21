@@ -32,6 +32,65 @@ You need Gnuplot 4.2 to run this program.
 @node Functions and Variables for draw, Functions and Variables for pictures, Introduction to draw, draw
 @section Functions and Variables for draw
 
+
+
+
+@subsection Scenes
+
+
+
+@deffn {Scene constructor} gr2d (@var{graphic option}, ..., @var{graphic object}, ...)
+
+Function @code{gr2d} builds an object describing a 2D scene. Arguments are
+@i{graphic options}, @i{graphic objects}, or lists containing both graphic options and objects.
+This scene is interpreted sequentially: @i{graphic options} affect those @i{graphic objects}
+placed on its right. Some @i{graphic options} affect the global appearence of the scene.
+
+This is the list of @i{graphic objects} available for scenes in two dimensions:
+@code{bars}, @code{ellipse}, @code{explicit}, @code{image}, @code{implicit}, @code{label},
+@code{parametric}, @code{points}, @code{polar}, @code{polygon}, @code{quadrilateral},
+@code{rectangle}, @code{triangle}, @code{vector}, and @code{geomap}
+(this one defined in package @code{worldmap}).
+
+See also @code{draw} and @code{draw2d}.
+
+To make use of this object, write first @code{load(draw)}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+@deffn {Scene constructor} gr3d (@var{graphic option}, ..., @var{graphic object}, ...)
+
+Function @code{gr3d} builds an object describing a 3d scene. Arguments are
+@i{graphic options}, @i{graphic objects}, or lists containing both graphic options
+and objects. This scene is interpreted sequentially: @i{graphic options} affect those 
+@i{graphic objects} placed on its right. Some @i{graphic options} affect the global
+appearence of the scene.
+
+This is the list of @i{graphic objects} available for scenes in three dimensions:
+@code{cylindrical}, @code{elevation_grid}, @code{explicit}, @code{implicit},
+@code{label}, @code{mesh}, @code{parametric}, @code{parametric_surface},
+@code{points}, @code{quadrilateral}, @code{spherical}, @code{triangle},
+@code{tube}, @code{vector}, and @code{geomap} (this one defined in
+package @code{worldmap}).
+
+See also @code{draw} and @code{draw3d}.
+
+To make use of this object, write first @code{load(draw)}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+
 @subsection Functions
 
 
@@ -39,7 +98,8 @@ You need Gnuplot 4.2 to run this program.
 @deffn {Function} draw (@var{gr2d}, ..., @var{gr3d}, ..., @var{options}, ...)
 
 Plots a series of scenes; its arguments are @code{gr2d} and/or @code{gr3d} 
-objects, together with some options. By default, the scenes are put together
+objects, together with some options, or lists of scenes and options.
+By default, the scenes are put together
 in one column.
 
 Function @code{draw} accepts the following global options: @code{terminal},
@@ -48,6 +108,8 @@ Function @code{draw} accepts the following global options: @code{terminal},
 
 Functions @code{draw2d} and @code{draw3d} are short cuts to be used 
 when only one scene is required, in two or three dimensions, respectively.
+
+See also @code{gr2d} and @code{gr3d}.
 
 To make use of this function, write first @code{load(draw)}.
 
@@ -2356,6 +2418,57 @@ Example:
 
 
 
+@defvr {Graphic option} transform
+Default value: @code{none}
+
+If @code{transform} is @code{none}, the space is not transformed and
+graphic objects are drawn as defined. When a space transformation is
+desired, a list must be assigned to option @code{transform}. In case of
+a 2D scene, the list takes the form @code{[f1(x,y), f2(x,y), x, y]}.
+In case of a 3D scene, the list is of the form
+@code{[f1(x,y,z), f2(x,y,z), f3(x,y,z), x, y, z]}.
+
+The names of the variables defined in the lists may be different to those
+used in the definitions of the graphic objects.
+
+Examples:
+
+Rotation in 2D.
+
+@example
+(%i1) load(draw)$
+(%i2) th : %pi / 4$
+(%i3) draw2d(
+        color = "#e245f0",
+        proportional_axes = 'xy,
+        line_width = 8,
+        triangle([3,2],[7,2],[5,5]),
+        border     = false,
+        fill_color = yellow,
+        transform  = [cos(th)*x - sin(th)*y,
+                      sin(th)*x + cos(th)*y, x, y],
+        triangle([3,2],[7,2],[5,5]) )$
+@end example
+
+Translation in 3D.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        color     = "#a02c00",
+        explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3),
+        transform = [x+10,y+10,z+10,x,y,z],
+        color     = blue,
+        explicit(20*exp(-x^2-y^2)-10,x,-3,3,y,-3,3) )$
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end defvr
+
+
+
 @defvr {Graphic option} transparent
 Default value: @code{false}
 
@@ -3584,83 +3697,6 @@ does not matter.
 
 
 
-@subsection Scenes
-
-
-
-@deffn {Scene constructor} gr2d (@var{graphic option}, ..., @var{graphic object}, ...)
-
-Function @code{gr2d} builds an object describing a 2D scene. Arguments are
-@i{graphic options} and @i{graphic objects}. This scene is interpreted
-sequentially: @i{graphic options} affect those @i{graphic objects} placed
-on its right. Some @i{graphic options} affect the global appearence of the scene.
-
-This is the list of @i{graphic objects} available for scenes in two dimensions:
-@code{points}, @code{polygon}, @code{rectangle}, @code{bars}, @code{ellipse}, @code{label},
-@code{vector}, @code{explicit}, @code{implicit}, @code{polar}, @code{parametric},
-@code{image} and @code{geomap} (this one defined in package @code{worldmap}).
-
-See also the following global @i{graphic options}: @code{xrange}, @code{yrange}, 
-@code{logx}, @code{logy}, @code{terminal}, @code{grid}, @code{title}, 
-@code{xlabel}, @code{ylabel}, @code{xtics}, @code{ytics}, @code{xtics_rotate}, 
-@code{ytics_rotate}, @code{xtics_axis}, @code{ytics_axis}, @code{xaxis}, @code{yaxis}, 
-@code{xaxis_width}, @code{yaxis_width}, 
-@code{xaxis_type}, @code{yaxis_type}, 
-@code{xaxis_color}, @code{yaxis_color}, @code{xy_file}, 
-@code{file_name}, @code{pic_width}, @code{pic_height}, 
-@code{eps_width}, @code{eps_height},
-@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, @code{axis_top} 
-and @code{axis_right}.
-
-To make use of this function, write first @code{load(draw)}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-@deffn {Scene constructor} gr3d (@var{graphic option}, ..., @var{graphic object}, ...)
-
-Function @code{gr3d} builds an object describing a 3d scene. Arguments are
-@i{graphic options} and @i{graphic objects}. This scene is interpreted
-sequentially: @i{graphic options} affect those @i{graphic objects} placed
-on its right. Some @i{graphic options} affect the global appearence of the scene.
-
-This is the list of @i{graphic objects} available for scenes in three dimensions:
-@code{points}, @code{label}, @code{vector}, @code{explicit}, @code{implicit},
-@code{parametric}, @code{parametric_surface} and @code{geomap} 
-(this one defined in package @code{worldmap}).
-
-See also the following global @i{graphic options}: @code{xrange}, @code{yrange}, 
-@code{zrange}, @code{logx}, @code{logy}, @code{logz}, @code{terminal}, 
-@code{grid}, @code{title}, @code{xlabel}, @code{ylabel}, @code{zlabel}, 
-@code{xtics}, @code{ytics}, @code{ztics}, @code{xtics_rotate}, 
-@code{ytics_rotate}, @code{ztics_rotate}, @code{xtics_axis}, @code{ytics_axis}, 
-@code{ztics_axis}, @code{xaxis}, @code{yaxis}, @code{zaxis}, 
-@code{xaxis_width}, @code{yaxis_width}, @code{zaxis_width}, 
-@code{xaxis_type}, @code{yaxis_type}, @code{zaxis_type},
-@code{xaxis_color}, @code{yaxis_color}, @code{zaxis_color}, @code{xy_file}, 
-@code{user_preamble}, @code{axis_bottom}, @code{axis_left}, 
-@code{axis_top}, @code{file_name}, @code{pic_width}, @code{pic_height}, 
-@code{eps_width}, @code{eps_height},
-@code{axis_right}, @code{rot_vertical}, @code{rot_horizontal}, 
-@code{axis_3d}, @code{xu_grid}, @code{yv_grid}, @code{surface_hide}, 
-@code{contour}, @code{contour_levels}, @code{palette}, @code{colorbox}
-and @code{enhanced3d}.
-
-To make use of this function, write first @code{load(draw)}.
-
-@opencatbox
-@category{Package draw}
-@closecatbox
-
-@end deffn
-
-
-
-
 @subsection Graphics objects
 
 
@@ -3737,10 +3773,15 @@ Example:
 @deffn  {Graphic object} elevation_grid (@var{mat},@var{x0},@var{y0},@var{width},@var{height})
 Draws matrix @var{mat} in 3D space. @var{z} values are taken from @var{mat},
 the abscissas range from @var{x0} to @math{@var{x0} + @var{width}}
-and ordinates from @var{y0} to @math{@var{y0} + @var{height}}.
+and ordinates from @var{y0} to @math{@var{y0} + @var{height}}. Element @math{a(1,1)}
+is projected on point @math{(x0,y0+height)}, @math{a(1,n)} on @math{(x0+width,y0+height)},
+@math{a(m,1)} on @math{(x0,y0)}, and @math{a(m,n)} on @math{(x0+width,y0)}.
 
 This object is affected by the following @i{graphic options}: @code{line_type},
 @code{line_width}, @code{key}, @code{enhanced3d}, and @code{color}.
+
+In older versions of Maxima, @code{elevation_grid} was called @code{mesh}.
+See also @code{mesh}.
 
 Example:
 
@@ -4089,6 +4130,63 @@ Example:
 
 
 
+@deffn  {Graphic object} mesh (@var{row_1},@var{row_2},...)
+Draws a quadrangular mesh in 3D.
+
+@b{3D}
+
+Argument @var{row_i} is a list of @var{n} 3D points of the form
+@code{[[x_i1,y_i1,z_i1], ...,[x_in,y_in,z_in]]}, and all rows are
+of equal length. All these points define an arbitrary surface in 3D and
+in some sense it's a generalization of the @code{elevation_grid} object.
+
+This object is affected by the following @i{graphic options}: @code{line_type}, 
+@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and @code{transform}.
+
+Examples:
+
+A simple example.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d( 
+         mesh([[1,1,3],   [7,3,1],[12,-2,4],[15,0,5]],
+              [[2,7,8],   [4,3,1],[10,5,8], [12,7,1]],
+              [[-2,11,10],[6,9,5],[6,15,1], [20,15,2]])) $
+@end example
+
+Plotting a triangle in 3D.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        line_width = 2,
+        mesh([[1,0,0],[0,1,0]],
+             [[0,0,1],[0,0,1]])) $
+@end example
+
+Two quadrilaterals.
+
+@example
+(%i1) load(draw)$
+(%i2) draw3d(
+        surface_hide = true,
+        line_width   = 3,
+        color = red,
+        mesh([[0,0,0], [0,1,0]],
+             [[2,0,2], [2,2,2]]),
+        color = blue,
+        mesh([[0,0,2], [0,1,2]],
+             [[2,0,4], [2,2,4]])) $
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
 
 @deffn  {Graphic object} parametric (@var{xfun},@var{yfun},@var{par},@var{parmin},@var{parmax})
 @deffnx {Graphic object} parametric (@var{xfun},@var{yfun},@var{zfun},@var{par},@var{parmin},@var{parmax})
@@ -4428,6 +4526,42 @@ Example:
 @end deffn
 
 
+
+@deffn  {Graphic object} quadrilateral (@var{point_1}, @var{point_2}, @var{point_3}, @var{point_4})
+Draws a quadrilateral.
+
+@b{2D}
+
+@code{quadrilateral ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}], [@var{x4},@var{y4}])} draws a quadrilateral with vertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]},
+@code{[@var{x3},@var{y3}]}, and @code{[@var{x4},@var{y4}]}.
+
+This object is affected by the following @i{graphic options}: @code{transparent}, 
+@code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
+@code{yaxis_secondary}, @code{line_type}, @code{transform} and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        quadrilateral([1,1],[2,2],[3,-1],[2,-2]))$
+@end example
+
+@b{3D}
+
+@code{quadrilateral ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}], [@var{x4},@var{y4},@var{z4}])} draws a quadrilateral with vertices
+@code{[@var{x1},@var{y1},@var{z1}]}, @code{[@var{x2},@var{y2},@var{z2}]},
+@code{[@var{x3},@var{y3},@var{z3}]}, and @code{[@var{x4},@var{y4},@var{z4}]}.
+
+This object is affected by the following @i{graphic options}: @code{line_type}, 
+@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and @code{transform}.
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+@end deffn
+
+
 @deffn  {Graphic object} rectangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}])
 Draws rectangles in 2D.
 
@@ -4485,6 +4619,42 @@ Example:
 (%i1) load(draw)$
 (%i2) draw3d(spherical(1,a,0,2*%pi,z,0,%pi))$
 @end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
+
+
+@deffn  {Graphic object} triangle (@var{point_1}, @var{point_2}, @var{point_3})
+Draws a triangle.
+
+@b{2D}
+
+@code{triangle ([@var{x1},@var{y1}], [@var{x2},@var{y2}], [@var{x3},@var{y3}])} draws a triangle with vertices @code{[@var{x1},@var{y1}]}, @code{[@var{x2},@var{y2}]},
+and @code{[@var{x3},@var{y3}]}.
+
+This object is affected by the following @i{graphic options}: @code{transparent}, 
+@code{fill_color}, @code{border}, @code{line_width}, @code{key}, @code{xaxis_secondary}, 
+@code{yaxis_secondary}, @code{line_type}, @code{transform}, and @code{color}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        triangle([1,1],[2,2],[3,-1]))$
+@end example
+
+@b{3D}
+
+@code{triangle ([@var{x1},@var{y1},@var{z1}], [@var{x2},@var{y2},@var{z2}], [@var{x3},@var{y3},@var{z3}])} draws a triangle with vertices @code{[@var{x1},@var{y1},@var{z1}]},
+@code{[@var{x2},@var{y2},@var{z2}]}, and @code{[@var{x3},@var{y3},@var{z3}]}.
+
+This object is affected by the following @i{graphic options}: @code{line_type}, 
+@code{line_width}, @code{color}, @code{key}, @code{enhanced3d}, and @code{transform}.
 
 @opencatbox
 @category{Package draw}
@@ -4578,7 +4748,6 @@ Example:
 @closecatbox
 
 @end deffn
-
 
 
 
