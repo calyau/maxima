@@ -1070,6 +1070,7 @@
     (putprop x l 'reversealias)))
 
 ($nounify '$sum)
+($nounify '$lsum)
 ($nounify '$product)
 ($nounify '$integrate)
 ($nounify '$limit)
