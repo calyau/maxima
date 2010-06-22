@@ -363,7 +363,8 @@ conversions_customary_customary :
     /* slug = ???, */
     ounce = pound_mass/16,
     /* grain = ???, */
-    pound_force = pound_mass*32*ft/s^2,
+    /* assume gravitational acceleration = 980.665 cm/s^2 */
+    pound_force = pound_mass*41408/1287*ft/s^2,
     acre = 55*88*yard^2,
     psi = pound_force/inch^2,
     cfm = feet^3/minute,
