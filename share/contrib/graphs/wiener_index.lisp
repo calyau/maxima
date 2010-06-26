@@ -40,15 +40,20 @@
   (let* ((vertices (vertices g))
 	 (n (length vertices))
 	 (m (make-array (list n n)))
+	 (my-inf 1)
 	 (mat ($zeromatrix n n)))
+
+    (dolist (e (cdr ($edges g)))
+      (setq my-inf (m+ my-inf ($abs ($get_edge_weight e g 1)))))
 
     ;; setup the array
     (dotimes (i n)
       (dotimes (j n)
 	(if (/= i j)
 	    (setf (aref m i j)
-		  ($get_edge_weight `((mlist simp) ,(nth i vertices) ,(nth j vertices)) g '$inf))
-	    (setf (aref m i j) 0))))
+		  ($get_edge_weight `((mlist simp) ,(nth i vertices) ,(nth j vertices)) g
+				    1 my-inf))
+    (setf (aref m i j) 0))))
 
     ;; compute the distances
     (dotimes (k n)
@@ -78,13 +83,17 @@
 (defun bellman-ford (s g)
   (let ((d (make-hash-table))
 	(edges (if (graph-p g) (append (edges g) (mapcar #'reverse (edges g))) (edges g)))
+	(my-inf 1)
 	(prev (make-hash-table)))
+
+    (dolist (e (cdr ($edges g)))
+      (setf my-inf (m+ my-inf ($abs ($get_edge_weight e g 1)))))
 
     ;; initialize distances
     (dolist (v (vertices g))
       (if (= s v)
 	  (setf (gethash v d) 0)
-	  (setf (gethash v d) '$inf)))
+	  (setf (gethash v d) my-inf)))
 
     ;; relax edges
     (dotimes (i (1- (length (vertices g))))
@@ -92,7 +101,7 @@
 	(let* ((u (first e))
 	       (v (second e))
 	       (nd (m+ (gethash u d) ($get_edge_weight `((mlist simp) ,@e) g))))
-	  (when (and (not (eq (gethash u d) '$inf))
+	  (when (and (not (equal (gethash u d) my-inf))
 		     (eq (mgrp (gethash v d) nd) t))
 	    (setf (gethash v d) nd)
 	    (setf (gethash v prev) u)))))

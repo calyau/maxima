@@ -144,7 +144,12 @@
   (let ((previous (make-hash-table))
 	(distance (make-hash-table))
 	(cont t)
+	(my-inf 1)
 	(pq (make-graphs-pqueue)))
+
+    (dolist (e (cdr ($edges g)))
+      (setq my-inf (m+ my-inf ($abs ($get_edge_weight e g 1)))))
+
     ;; initialize the pqueue
     (dolist (u (vertices g))
       (if (= u v)
@@ -152,8 +157,8 @@
 	    (graphs-pqueue-insert u 0 pq)
 	    (setf (gethash u distance) 0))
 	  (progn
-	    (graphs-pqueue-insert u '$inf pq)
-	    (setf (gethash u distance) '$inf))))
+	    (graphs-pqueue-insert u my-inf pq)
+	    (setf (gethash u distance) my-inf))))
     ;; find the shortest path
     (loop while (and cont (not (graphs-pqueue-emptyp pq))) do
 	 ;; find the closest remaining vertex
@@ -170,6 +175,11 @@
 			 (setf (gethash w previous) u)
 			 (setf (gethash w distance) alt)
 			 (graphs-pqueue-set-weight w alt pq)))))))))
+
+    (dolist (v (vertices g))
+      (when (equal (gethash v distance) my-inf)
+	(setf (gethash v distance) '$inf)))
+
     (values distance previous)))
 
 (defmfun $shortest_weighted_path (v u g)
@@ -182,7 +192,7 @@
       (dijkstra v u g)
     (setq l (gethash u l))
     (if (eq l '$inf)
-	`((mlist simp) ,l ((mlist simp)))
+	'((mlist simp) $inf ((mlist simp)))
 	(let ((tu u) (p (list u)))
 	  (loop while (not (= tu v)) do
 	       (setq tu (gethash tu prev))
