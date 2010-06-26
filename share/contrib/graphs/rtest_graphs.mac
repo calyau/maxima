@@ -226,7 +226,7 @@ min_vertex_cut(g);
 edge_connectivity(g);
 2;
 
-(g: connect_vertices([5,6],[2,3,4], graph_union(complete_graph(5), complete_graph(5))), 0);
+(g: graph_union(complete_graph(5), complete_graph(5)), connect_vertices([5,6],[2,3,4], g), 0);
 0;
 
 vertex_connectivity(g);
