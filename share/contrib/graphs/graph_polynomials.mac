@@ -89,3 +89,71 @@ cycle_poly(n, x) := path_poly[n](x) - path_poly[n-2](x)$
 path_poly[1](x) := x$
 path_poly[2](x) := x^2-1$
 path_poly[n](x) := x*path_poly[n-1](x) - path_poly[n-2](x)$
+
+/*******************
+ *
+ *  Tutte polynomial
+ *
+ *******************/
+
+tutte_polynomial(g, x, y) := block(
+  [non_bridge:false, tpzero:1, components: biconnected_components(g)],
+  /* Reduce to biconnected components */
+  if length(components)>1 then block(
+    [n_loops:0],
+    for v in vertices(g) do n_loops: n_loops+get_vertex_label(v, g, 0),
+    components: map(lambda([comp], induced_subgraph(comp, g)), components),
+    map(
+      lambda([gr],
+        for e in edges(gr) do
+        set_edge_weight(e, get_edge_weight(e, g), gr)),
+      components),
+    xreduce("*", map(lambda([gr], tutte_polynomial(gr, x, y)), components))*y^n_loops)
+  /* check for ``small'' graphs: */
+  /*   - point with loops */
+  else if graph_order(g)=1 then
+    y^get_vertex_label(first(vertices(g)), g, 0)
+  /*   - a multiedge with loops */
+  else if graph_order(g)=2 then block(
+    [e: first(edges(g))],
+    (x+xreduce("+", makelist(y^i, i, 1, get_edge_weight(e, g) - 1)))*
+      y^(get_vertex_label(e[1], g, 0) + get_vertex_label(e[2], g, 0)))
+  /* a cycle on n vertices */
+  else if first(max_degree(g))=2 and lmax(makelist(get_edge_weight(e, g), e, edges(g)))=1 then (
+    (y + xreduce("+", makelist(x^i, i, 1, graph_order(g)-1)))*
+      y^lsum(get_vertex_label(v, g, 0), v, vertices(g)))
+  /* The graph is biconnected - no edge is a bridge */
+  else (
+    /* choose the edge with one endpoint of minimum degree in the graph */
+    non_bridge: [second(min_degree(g))],
+    non_bridge: cons(first(neighbors(non_bridge[1], g)), non_bridge),
+    if non_bridge[1]>non_bridge[2] then non_bridge: reverse(non_bridge),
+    if non_bridge=false then block(
+      [tp:1],
+      tp: tp*x^graph_size(g),
+      for v in vertices(g) do
+        tp: tp*y^get_vertex_label(v, g, 0),
+      tp)
+    else block(
+      [g1: copy_graph(g), g2: copy_graph(g), mfactor:1],
+      contract_edge(non_bridge, g2),
+      if get_edge_weight(non_bridge, g)=1 then (
+        remove_edge(non_bridge, g1))
+      else (
+        set_edge_weight(non_bridge, 1, g1),
+        mfactor: xreduce("+", makelist(y^i, i, 1, get_edge_weight(non_bridge, g)-1))),
+      for u in neighbors(non_bridge[2], g) do
+        if u#non_bridge[1] then
+          set_edge_weight([non_bridge[1], u], 
+            get_edge_weight([non_bridge[1], u], g, 1, 0) +
+            get_edge_weight([non_bridge[2], u], g, 1, 0),
+            g2),
+      set_vertex_label(non_bridge[1],
+        get_vertex_label(non_bridge[1], g, 0) +
+        get_vertex_label(non_bridge[2], g, 0),
+        g2),
+      tutte_polynomial(g1, x, y) + mfactor*tutte_polynomial(g2, x, y))))$
+
+flow_polynomial(g, x) := block(
+  [n: graph_order(g), m: graph_size(g)],
+  (-1)^(m-n+1)*ratexpand(psubst(['y=0, 'x=x], tutte_polynomial(g,'y,1-'x))))$
