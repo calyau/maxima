@@ -35,25 +35,41 @@
 
 (in-package :maxima)
 
-(defmfun $floyd_warshall (g)
+(defun find-option (opt options &optional default)
+  (dolist (o options)
+    (cond ((eq o opt) (return-from find-option t))
+	  ((and (listp o) (eq (cadr o) opt))
+	   (return-from find-option (caddr o)))))
+  default)
+
+(defmfun $floyd_warshall (g &rest options)
   (require-graph-or-digraph 1 'floyd_warshall g)
-  (let* ((vertices (vertices g))
-	 (n (length vertices))
+  (let* ((n (graph-order g))
 	 (m (make-array (list n n)))
 	 (my-inf 1)
+	 (options (cons '((mlist simp)) options))
+	 (weighted (find-option '$weighted options t))
+	 (vertices (cdr (find-option '$vertices options)))
 	 (mat ($zeromatrix n n)))
 
-    (dolist (e (cdr ($edges g)))
-      (setq my-inf (m+ my-inf ($abs ($get_edge_weight e g 1)))))
+    (unless vertices
+      (setq vertices (vertices g)))
+
+    (if weighted
+	(dolist (e (cdr ($edges g)))
+	  (setq my-inf (m+ my-inf ($abs ($get_edge_weight e g 1)))))
+	(setq my-inf (1+ (graph-order g))))
 
     ;; setup the array
     (dotimes (i n)
       (dotimes (j n)
 	(if (/= i j)
 	    (setf (aref m i j)
-		  ($get_edge_weight `((mlist simp) ,(nth i vertices) ,(nth j vertices)) g
-				    1 my-inf))
-    (setf (aref m i j) 0))))
+		  (if weighted
+		      ($get_edge_weight `((mlist simp) ,(nth i vertices) ,(nth j vertices)) g
+					1 my-inf)
+		      (if (member (nth i vertices) (neighbors (nth j vertices) g)) 1 my-inf)))
+	    (setf (aref m i j) 0))))
 
     ;; compute the distances
     (dotimes (k n)
@@ -70,7 +86,8 @@
     ;; fill the matrix
     (dotimes (i n)
       (dotimes (j n)
-	(setf (nth (1+ j) (nth (1+ i) mat)) (aref m i j))))
+	(setf (nth (1+ j) (nth (1+ i) mat))
+	      (if (equal (aref m i j) my-inf) '$inf (aref m i j)))))
 
     mat))
 
@@ -117,15 +134,22 @@
 
     (values d prev)))
 
-(defmfun $johnson (g)
+(defmfun $johnson (g &rest options)
   (let* ((h ($copy_graph g))
-	 (vertices (vertices g))
-	 (n (length vertices))
+	 (n (graph-order g))
+	 (options (cons '((mlist simp)) options))
+	 (weighted (find-option '$weighted options t))
+	 (vertices (cdr (find-option '$vertices options)))
 	 (m ($zeromatrix n n))
-	 (nv (1+ (apply #'max vertices))))
+	 nv)
 
-    (dolist (e (cdr ($edges g)))
-      ($set_edge_weight e ($get_edge_weight e g) h))
+    (unless vertices
+      (setq vertices (vertices g)))
+    (setq nv (1+ (apply #'max vertices)))
+
+    (when weighted
+      (dolist (e (cdr ($edges g)))
+	($set_edge_weight e ($get_edge_weight e g) h)))
 
     ;; add a new vertex
     ($add_vertex nv h)
@@ -140,7 +164,7 @@
 
       ;; re-weight the edges
       (dolist (e (cdr ($edges g)))
-	(let ((nw (m+ ($get_edge_weight e g)
+	(let ((nw (m+ (if weighted ($get_edge_weight e g) 1)
 		      (gethash ($first e) d)
 		      (m- (gethash ($second e) d)))))
 	($set_edge_weight e nw h)))
@@ -233,15 +257,16 @@
 
     wi))
 
-
-(defvar $wiener_index_algorithm '$juvan_mohar)
-
-(defmfun $wiener_index (g)
+(defmfun $wiener_index (g &rest options)
   (require-graph 1 'wiener_index g)
   (unless ($is_connected g)
     ($error "`wiener_index': input graph is not connected"))
-  (case $wiener_index_algorithm
-    ($juvan_mohar (wiener-index g))
-    ($johnson (m// ($xreduce "+" ($flatten ($args ($johnson g)))) 2))
-    ($floyd_warshall (m// ($xreduce "+" ($flatten ($args ($floyd_warshall g)))) 2))
-    (t ($error "Unknown algorithm for WIENER_INDEX"))))
+  (let* ((weighted (find-option '$weighted options nil))
+	 (algorithm (find-option '$algorithm options (if weighted '$floyd_warshall '$juvan_mohar))))
+    (case algorithm
+      ($juvan_mohar (wiener-index g))
+      ($johnson
+       (m// ($xreduce "+" ($flatten ($args ($johnson g `((mlist simp) $weighted ,weighted))))) 2))
+      ($floyd_warshall
+       (m// ($xreduce "+" ($flatten ($args ($floyd_warshall g `((mlist simp) $weighted ,weighted))))) 2))
+      (t ($error "Unknown algorithm for WIENER_INDEX")))))
