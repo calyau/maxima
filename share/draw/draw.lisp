@@ -2728,7 +2728,7 @@
       ; check texture model
       (case *draw-enhanced3d-type*
         ((1 99) (setf (aref result (incf count)) (funcall *draw-enhanced3d-fun* tt)))
-        (2      (setf (aref result (incf count)) (funcall *draw-enhanced3d-fun* xx yy zz))))
+        (3      (setf (aref result (incf count)) (funcall *draw-enhanced3d-fun* xx yy zz))))
       (setf tt (+ tt eps)) )
     ; update x-y ranges if necessary
     (update-ranges-3d xmin xmax ymin ymax zmin zmax)
