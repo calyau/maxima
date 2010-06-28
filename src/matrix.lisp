@@ -38,13 +38,14 @@
 (defun mcx (x)
   (mapcar #'cdr x))			; MACSYMA to Matrix conversion
 
-(defun transpose (m)
-  (prog (b nn len)
-     (setq len (length (car m)) nn 1)
-     loop (when (> nn len) (return b)) 
-     (setq b (nconc b (ncons (nthcol m nn))))
-     (incf nn)
-     (go loop)))
+;; Transpose a list of lists ll. Example: ((1 2) (3 4)) --> ((1 3) (2 4)).
+
+(defun transpose (ll)
+  (let ((acc nil))
+    (while (car ll)
+      (push (mapcar #'car ll) acc)
+      (setq ll (mapcar #'cdr ll)))
+    (nreverse acc)))
 
 (defun nthcol (x nn)
   (if (or (null x) (> nn (length (car x))))
