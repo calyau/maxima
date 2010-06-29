@@ -273,17 +273,35 @@ See also @code{%}.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} %edispflag
 Default value: @code{false}
 
-When @code{%edispflag} is @code{true},
-Maxima displays @code{%e} to a negative exponent as a quotient.
-For example, @code{%e^-x} is displayed as @code{1/%e^x}.
+When @code{%edispflag} is @code{true}, Maxima displays @code{%e} to a negative
+exponent as a quotient. For example, @code{%e^-x} is displayed as @code{1/%e^x}.
+
+Example:
+
+@c ===beg===
+@c %e^-10;
+@c %edispflag:true$
+@c %e^-10;
+@c ===end===
+@example
+(%i1) %e^-10;
+                               - 10
+(%o1)                        %e
+(%i2) %edispflag:true$
+(%i3) %e^-10;
+                               1
+(%o3)                         ----
+                                10
+                              %e
+@end example
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @deffn {Function} %th (@var{i})
@@ -579,12 +597,32 @@ Unlike @code{concat}, the arguments do @i{not} need to be atoms.
 @c 
 @c @end defvar
 
-@c REPHRASE, NEEDS EXAMPLES
+@c -----------------------------------------------------------------------------
 @deffn {Function} disp (@var{expr_1}, @var{expr_2}, ...)
-is like @code{display} but only the value of the
-arguments are displayed rather than equations.  This is useful for
-complicated arguments which don't have names or where only the value
-of the argument is of interest and not the name.
+is like @code{display} but only the value of the arguments are displayed rather
+than equations.  This is useful for complicated arguments which don't have names 
+or where only the value of the argument is of interest and not the name.
+
+Examples:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c isp(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) disp(x, b[1,2], sin(1.0));
+                               123
+
+                                  2
+                             x - x
+
+                        .8414709848078965
+
+(%o3)                         done
+@end example
 
 @opencatbox
 @category{Display functions}
@@ -606,40 +644,69 @@ contraction properties which were defined.
 
 @end deffn
 
-@c REPHRASE, MORE EXAMPLES
+@c -----------------------------------------------------------------------------
 @deffn {Function} display (@var{expr_1}, @var{expr_2}, ...)
-Displays equations whose left side is
-@var{expr_i} unevaluated, and whose right side is the value of the expression
-centered on the line.  This function is useful in blocks and @code{for}
-statements in order to have intermediate results displayed.  The
-arguments to @code{display} are usually atoms, subscripted variables, or
-function calls.  See also @code{disp}.
+Displays equations whose left side is @var{expr_i} unevaluated, and whose right
+side is the value of the expression centered on the line.  This function is 
+useful in blocks and @code{for} statements in order to have intermediate results 
+displayed.  The arguments to @code{display} are usually atoms, subscripted 
+variables, or function calls.  See also @code{disp}.
 
+Examples:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c display(x, b[1,2], sin(1.0));
+@c ===end===
 @example
-(%i1) display(B[1,2]);
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) display(x, b[1,2], sin(1.0));
+                             x = 123
+
                                       2
-                         B     = X - X
+                         b     = x - x
                           1, 2
-(%o1)                            done
+
+                  sin(1.0) = .8414709848078965
+
+(%o3)                         done
 @end example
 
 @opencatbox
 @category{Display functions}
 @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} display2d
 Default value: @code{true}
 
-When @code{display2d} is @code{false},
-the console display is a string (1-dimensional) form rather than a display
-(2-dimensional) form.
+When @code{display2d} is @code{false}, the console display is a string 
+(1-dimensional) form rather than a display (2-dimensional) form.
+
+Example:
+
+@c ===beg===
+@c x/(x^2+1);
+@c display2d:false$
+@c x/(x^2+1);
+@c ===end===
+@example
+(%i1) x/(x^2+1);
+                               x
+(%o1)                        ------
+                              2
+                             x  + 1
+(%i2) display2d:false$
+(%i3) x/(x^2+1);
+(%o3) x/(x^2+1)
+@end example
 
 @opencatbox
 @category{Display flags and variables}
 @closecatbox
-
 @end defvr
 
 @defvr {Option variable} display_format_internal
