@@ -4616,8 +4616,9 @@ Ejemplo:
 
 @example
 (%i1) load(worldmap)$
-(%i2) region_boundaries(10.4,41.5,20.7,35.4);
-(%o2)                [1846, 1863, 1864, 1881, 1888, 1894]
+(%i2) region_boundaries_plus(10.4,41.5,20.7,35.4);
+(%o2) [1060, 1062, 1076, 1835, 1839, 1844, 1846, 1858,
+       1861, 1863, 1864, 1871, 1881, 1888, 1894, 1897]
 (%i3) draw2d(geomap(%))$
 @end example
 @end deffn
