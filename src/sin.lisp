@@ -1843,7 +1843,7 @@
 (defun m2-exp-type-2 (expr)
   (m2 expr
     '((mtimes)
-	((mexpt) (z varp) (v nonzerp))
+        ((mexpt) (z varp) (v freevar0))
 	((mexpt)
 	   (a freevar0)
 	   ((mplus)
