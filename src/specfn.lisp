@@ -229,12 +229,14 @@
 	'($maxpsiposint $maxpsinegint $maxpsifracnum $maxpsifracdenom)
 	'(20. -10. 6 6))
 
-(defun psisimp (exp a z)
-  (let ((s (simpcheck (car (subfunsubs exp)) z)))
-    (subargcheck exp 1 1 '$psi)
-    (setq a (simpcheck (car (subfunargs exp)) z))
-    (and (integerp a) (< a 1) (pole-err exp))
-    (eqtest (psisimp1 s a) exp)))
+(defun psisimp (expr a z)
+  (let ((s (simpcheck (car (subfunsubs expr)) z)))
+    (subargcheck expr 1 1 '$psi)
+    (setq a (simpcheck (car (subfunargs expr)) z))
+    (and (setq z (integer-representation-p a))
+         (< z 1)
+         (pole-err expr))
+    (eqtest (psisimp1 s a) expr)))
 
 ;; This gets pretty hairy now.
 
