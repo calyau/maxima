@@ -1687,3 +1687,8 @@ at(at(diff(y,x),x=a),z=b);
 'at('at('diff(y,x,1),x = a),z = b);
 remove(y,dependency);
 done;
+
+/* Bug report ID: 3023978 - integrate(x^x+x,x) is wrong
+ */
+integrate(x^x+x,x);
+'integrate(exp(x*log(x)),x)+x^2/2;
