@@ -1075,6 +1075,12 @@ y*log(y^2+x^2)/2+x*atan(y/x);
 integrate(atan2(y,x),y);
 y*atan(y/x)-(x*log(y^2/x^2+1)/2);
 
+/* Bug ID: 3023997 - integrate(x*atan2(x,y),x) -> noun form
+ * We have generalized the special case for the atan2 function.
+ */
+integrate(y*atan2(y,x),y);
+y^2*atan(y/x)/2-(x^2*y-x^3*atan(y/x))/(2*x);
+
 /* [ 2501765 ] integrate((-14*x^2-32)/(x^4+3*x^2+1)^2,x,0,inf); */
 integrate(1/(x^4+3*x^2+1)^2,x,0,inf);
 (sqrt(3-sqrt(5))*(3*sqrt(2)*sqrt(5)+15*sqrt(2))*%pi
