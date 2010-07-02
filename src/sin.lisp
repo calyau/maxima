@@ -276,14 +276,16 @@
 
      (cond ((mplusp exp)
 	    (return (mul2* const (integrate1 (cdr exp)))))
-
-	   ;; Convert atan2(a,b) to atan(a/b) and try again.
-	   ((and (not (atom exp))
-		 (eq (caar exp) '$atan2))
-	    (return (mul2* const (integrator
-				  (simplifya (list '(%atan) (div (cadr exp) (caddr exp))) t)
-				  var))))
-
+           
+           ;; Convert atan2(a,b) to atan(a/b) and try again.
+           ((setq w (isinop exp '$atan2))
+            (setq exp
+                  (maxima-substitute (take '(%atan) (div (cadr w) (caddr w)))
+                                     w
+                                     exp))
+            (return (mul* const
+                          (integrator exp var))))
+           
 	   ;; Integrate sums.
 	   ((and (not (atom exp))
 		 (eq (caar exp) '%sum))
