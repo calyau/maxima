@@ -754,14 +754,18 @@
 	 (*red (exptb (cadr x) (num1 y))
 	       (exptb (caddr x) (num1 y))))))
 
-;; I (rtoy) think EXPTB is meant to compute a^b, where b is an
-;; integer.
+;; I (rtoy) think EXPTB is meant to compute a^b, where b is an integer.
 (defun exptb (a b)
   (cond ((equal a %e-val)
 	 ;; Make B a float so we'll get double-precision result.
-	 (exp (float b)))
-	((or (floatp a) (not (minusp b)))
-	 (expt a b))
+         (exp (float b)))
+        ((or (floatp a) (not (minusp b)))
+         #+gcl
+         (if (float-inf-p (setq b (expt a b)))
+             (merror (intl:gettext "expt: floating point overflow."))
+             b)
+         #-gcl
+         (expt a b))
 	(t
 	 (setq b (expt a (- b)))
 	 (*red 1 b))))
