@@ -126,7 +126,8 @@ simplify_sum(expr) :=
 
   /* Main summation code starts here */
   else block(
-    [summand : ratsimp(part(expr, 1)),
+    [simpsum:false,
+     summand : ratsimp(part(expr, 1)),
      var : part(expr, 2),
      lo : part(expr, 3),
      hi : part(expr, 4),
@@ -194,7 +195,7 @@ simplify_sum(expr) :=
             sm1 : limit(sm1, hi1, hi)
           else
             sm1 : subst(hi1=hi, sm1),
-          if not freeof_limit(sm1) then sm1: expr)
+          if not freeof_limit(sm1) or not freeof('und, sm1) then sm1: expr)
         else sm1 : expr)) = [] then sm1 : expr,
 
 
@@ -228,7 +229,7 @@ simplify_sum(expr) :=
       polypart : first(divide(num(ratfun), denom(ratfun), var)),
       expr1 : intosum(substpart(ratsimp(ratfun - polypart), expr1, 1)),
       ss_print_message(3, "Polynomial part", polypart),
-      ss_print_message(3, "Without polynomial part", expr0),
+      ss_print_message(3, "Without polynomial part", expr1),
       /* polynomial part */
       sm1 : simplify_sum(apply(sum, [polypart, var, lo, hi])),
       ss_print_message(4, "Polynomial part contributes", sm1),
