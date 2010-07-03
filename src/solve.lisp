@@ -561,9 +561,9 @@
   (let ((*myvar *myvar)
 	(*g nil)) 
     (cond ((atom exp) nil)
-	  ((not (memalike (setq *myvar (pdis (list (car exp) 1 1)))
-			  *has*var))
-	   nil)
+          ((not (memalike (setq *myvar (simplify (pdis (list (car exp) 1 1))))
+                          *has*var))
+           nil)
 	  ((equal (cadr exp) 1) (solvelin exp))
 	  ((of-form-A*F<X>^N+B exp) (solve-A*F<X>^N+B exp t))
 	  ((equal (cadr exp) 2) (solvequad exp))
@@ -701,10 +701,10 @@
 ;; Sees if expression is of the form A*F<X>^N+B.
 
 (defun of-form-A*F<X>^N+B (e)
-  (and (memalike (pdis (list (car e) 1 1)) *has*var)
+  (and (memalike (simplify (pdis (list (car e) 1 1))) *has*var)
        (or (atom (caddr e))
-	   (not (memalike (pdis (list (caaddr e) 1 1))
-			  *has*var)))
+           (not (memalike (simplify (pdis (list (caaddr e) 1 1)))
+                          *has*var)))
        (or (null (cdddr e)) (equal (cadddr e) 0))))
 
 ;; Solves the special case A*F<X>^N+B.
@@ -819,7 +819,7 @@
 		     (setq *v (delete z *v :count 1 :test #'equal)))))
 	  v)
     (setq $dontfactor *u)
-    (setq *has*var *v)
+    (setq *has*var (mapcar #'resimplify *v))
     (append *u *v)))
 
 ;; Solves for variable when it occurs within a function by taking the inverse.
