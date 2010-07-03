@@ -1733,6 +1733,7 @@ When @code{ratsimpexpons} is @code{true},
 @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} ratsubst (@var{a}, @var{b}, @var{c})
 Substitutes @var{a} for @var{b} in @var{c} and returns the resulting expression.
 @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
@@ -1748,9 +1749,15 @@ When @code{radsubstflag} is @code{true},
 @code{ratsubst} makes substitutions for radicals in expressions
 which don't explicitly contain them.
 
+@code{ratsubst} ignores the value @code{true} of the option variable 
+@code{keepfloat}.
+
 Examples:
+
 @c EXAMPLES BELOW ADAPTED FROM examples (ratsubst)
 @c WITH SOME ADDITIONAL STUFF
+
+@c ===beg===
 @c ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
 @c cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
 @c ratsubst (1 - sin(x)^2, cos(x)^2, %);
@@ -1759,7 +1766,7 @@ Examples:
 @c ratsubst (u, sqrt(x), x);
 @c radsubstflag: true$
 @c ratsubst (u, sqrt(x), x);
-
+@c ===end===
 @example
 (%i1) ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
                               3      4
