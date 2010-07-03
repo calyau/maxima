@@ -1703,3 +1703,10 @@ integrate(5*f(x) + 7,x);
 5*g(x)+7*x;
 kill(rules);
 done;
+
+/* Bug report ID: 2789110 - solve, tan and atan depend on order of variables
+ */
+solve(tan(x - atan(a/b)) = 0, x);
+[x = atan(a/b)];
+solve(tan(x - atan(b/a)) = 0, x);
+[x = atan(b/a)];
