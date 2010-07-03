@@ -20,7 +20,9 @@ integrate(abs(%pi * x + 1),x);
 ((%pi*x+1)*abs(%pi*x+1))/(2*%pi)$
 
 integrate(x*abs(x),x);
-(x^3*signum(x))/3$
+/*(x^3*signum(x))/3$
+  A equivalent result because of rev. 1.63 of sin.lisp */
+x^2*abs(x)/2-x^3*signum(x)/6;
 
 (assume(n > 2), integrate(abs(x) * x^n,x));
 (x^(n+2)*signum(x))/(n+2)$
@@ -195,7 +197,11 @@ is(equal(op(integrate(signum(x + sqrt(1-x)),x)), nounify('integrate)));
 true$
 
 i : integrate(abs(x-1)/ ( 1 + x^2),x);
-(2*signum(x-1)*log(x^2+1)-4*x*signum(x-1)*atan(x)+(%pi-2*log(2))*signum(x-1))/4+abs(x-1)*atan(x)$
+/* (2*signum(x-1)*log(x^2+1)-4*x*signum(x-1)*atan(x)
+     +(%pi-2*log(2))*signum(x-1))/4+abs(x-1)*atan(x)$
+   A equivalent result because of rev. 1.63 of sin.lisp */
+signum(x-1)*(2*log(x^2+1)-4*atan(x)-2*log(2)+%pi)/4
+ +abs(x-1)*atan(x)+(2*x-2)*signum(x-1)*atan(x)/-2;
 
 [ratsimp(simp_assuming(diff(i,x), x < 1)),ratsimp(simp_assuming(diff(i,x), x > 1))];
 [-((x-1)/(x^2+1)),(x-1)/(x^2+1)]$
