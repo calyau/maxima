@@ -1692,3 +1692,14 @@ done;
  */
 integrate(x^x+x,x);
 'integrate(exp(x*log(x)),x)+x^2/2;
+
+/* Bug report ID: 2465066 - unsimplified result from integrate
+ */
+matchdeclare(x, symbolp);
+done;
+(tellsimpafter('integrate(f(x),x), g(x)),done);
+done;
+integrate(5*f(x) + 7,x);
+5*g(x)+7*x;
+kill(rules);
+done;
