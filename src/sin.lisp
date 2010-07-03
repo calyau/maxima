@@ -414,7 +414,7 @@
 	   (t
 	    ;;(format t "t part~%")
 	    (return
-		(mul2 const
+		(mul* const
 		      (cond ((setq y (scep exp var))
 			     (cond ((cddr y)
 				    #+nil
