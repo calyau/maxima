@@ -109,11 +109,11 @@
 	((zerop (car p)) (cadr p))
 	(t (constcoef (cddr p)))))
 
-(setq *radsubst nil ratsubvl t)		;SUBST ON VARLIST
+(setq *radsubst nil ratsubvl t)         ; SUBST ON VARLIST
 
-(defmfun $ratsubst (a b c)		;NEEDS CODE FOR FAC. FORM
-  (prog (varlist newvarlist dontdisrepit $ratfac genvar)
-     ;;hard to maintain user ordering info.
+(defmfun $ratsubst (a b c)              ; NEEDS CODE FOR FAC. FORM
+  (prog (varlist newvarlist dontdisrepit $ratfac genvar $keepfloat)
+     ;; hard to maintain user ordering info.
      (if ($ratp c) (setq dontdisrepit t))
      (when (and $radsubstflag
 		(prog2 (newvar b) (some #'mexptp varlist)))
@@ -125,7 +125,7 @@
 	 (fnewvar c)
 	 (setq *exp (cdr (ratrep* b)))
 	 (setq *exp2 (cdr (ratrep* c)))
-	 ;;	since *radsubst is t, both *exp and *exp2 will be radcan simplified
+	 ;; since *radsubst is t, both *exp and *exp2 will be radcan simplified
 	 (setq *radsubst t)
 	 (spc0)
 	 (setq b (rdis *exp) c (rdis *exp2))
