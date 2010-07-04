@@ -531,6 +531,82 @@ See @code{first} for more details.
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} pop (@var{list})
+
+@code{pop} removes the first element from the list @var{list} and returns this 
+element. @var{list} must be a symbol, which is bound to a list and not the list 
+itself.
+
+If the argument @var{list} is not bound to a list or the list is empty, Maxima
+generates an error message.
+
+See also @code{push} for examples.
+
+@code{load(basic)} loads this function.
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} push (@var{item}, @var{list})
+
+@code{push} prepends the item @var{item} to the list @var{list} and returns a
+copy of the new list. @var{list} must be a symbol, which is bound to a list and
+not the list itself. @var{item} can be any Maxima symbol or expression.
+
+If the argument @var{list} is not bound to a list, Maxima generates an error
+message.
+
+See also @code{pop} to remove the first item from a list.
+
+@code{load(basic)} loads this function.
+
+Examples:
+
+@c ===beg===
+@c ll:[];
+@c push(x,ll);
+@c push(x^2+y,ll);
+@c a:push("string",ll);
+@c pop(ll);
+@c pop(ll);
+@c pop(ll);
+@c ll;
+@c a;
+@c ===end===
+@example
+(%i1) ll:[];
+(%o1)                          []
+(%i2) push(x,ll);
+(%o2)                          [x]
+(%i3) push(x^2+y,ll);
+                                 2
+(%o3)                      [y + x , x]
+(%i4) a:push("string",ll);
+                                     2
+(%o4)                  [string, y + x , x]
+(%i5) pop(ll);
+(%o5)                        string
+(%i6) pop(ll);
+                                  2
+(%o6)                        y + x
+(%i7) pop(ll);
+(%o7)                           x
+(%i8) ll;
+(%o8)                          []
+(%i9) a;
+                                     2
+(%o9)                  [string, y + x , x]
+@end example
+
+@opencatbox
+@category{Lists} @category{Expressions}
+@closecatbox
+@end deffn
+
 @deffn {Function} unique (@var{L})
 
 Returns the unique elements of the list @var{L}.
