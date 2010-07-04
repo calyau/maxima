@@ -133,7 +133,7 @@
 (defmvar $%emode t)
 (defmvar $lognegint nil)
 (defmvar $ratsimpexpons nil)
-(defmvar $logexpand t)
+(defmvar $logexpand nil) ; Possible values are T, $ALL and $SUPER
 (defmvar $radexpand t)
 (defmvar $subnumsimp nil)
 (defmvar $logsimp t)
@@ -927,22 +927,53 @@
      (if (mplusp (cadr fm)) (setq plusflag t))
      (return (cdr fm))))
 
-(defmfun simpln (x y z)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Simplification of the Log function
+
+;; The log function distributes over lists, matrices, and equations
+(defprop %log (mlist $matrix mequal) distribute_over)
+
+(defun simpln (x y z)
   (oneargcheck x)
   (cond ((onep1 (setq y (simpcheck (cadr x) z))) (addk -1 y))
 	((zerop1 y)
 	 (cond (radcanp (list '(%log simp) 0))
-	       ((not errorsw) (merror "log(0) has been generated."))
+               ((not errorsw)
+                (merror (intl:gettext "log: log(0) has been generated.")))
 	       (t (throw 'errorsw t))))
-	((eq y '$%e) 1)
-	((and (mexptp y) (eq (cadr y) '$%e))	;; log(%e^x) -> x
-	 (simplifya (caddr y) t))
-	((ratnump y)
+        ;; Check evaluation in floating point precision.
+        ((flonum-eval (mop x) y))
+        ;; Check evaluation in bigfloag precision.
+        ((and (not (member 'simp (car x) :test #'eq))
+              (big-float-eval (mop x) y)))
+        ((eq y '$%e) 1)
+        ((and (mexptp y)
+              (eq (cadr y) '$%e)
+              (or (not (member ($csign (caddr y)) '($complex $imaginary)))
+                  (not (member ($csign (mul '$%i (caddr y))) 
+                               '($complex $imaginary)))))
+         ;; Simplify log(exp(x)) and log(exp(%i*x)), where x is a real
+         (caddr y))
+        ((and (mexptp y)
+              (ratnump (caddr y))
+              (or (equal 1 (cadr (caddr y)))
+                  (equal -1 (cadr (caddr y)))))
+         ;; Simplify log(z^(1/n)) -> log(z)/n, where n is an integer
+         (mul (caddr y)
+              (take '(%log) (cadr y))))
+        ((ratnump y)
+         ;; Simplify log(n/d)
 	 (cond ((equal (cadr y) 1) (simpln1 (list nil (caddr y) -1)))
 	       ((eq $logexpand '$super)
 		(simplifya (list '(mplus) (simplifya (list '(%log) (cadr y)) t)
 				 (simpln1 (list nil (caddr y) -1))) t))
 	       (t (eqtest (list '(%log) y) x))))
+        ((and (mexptp y)
+              (eq ($sign (cadr y)) '$pos)
+              (not (member ($csign (caddr y)) '($complex $imaginary))))
+         ;; Simplify log(x^a) -> a*log(x), where x > 0 and a is real
+         (mul (caddr y) (take '(%log) (cadr y))))
 	((and $logexpand (mexptp y)) (simpln1 y))
 	((and (member $logexpand '($all $super) :test #'eq) (mtimesp y))
 	 (prog (b)
@@ -953,17 +984,11 @@
 	    (cond ((null (setq y (cdr y)))
 		   (return (simplifya (cons '(mplus) b) t))))
 	    (go loop)))
-    ((and (member $logexpand '($all $super)) (consp y) (member (caar y) '(%product $product)))
-     (let ((new-op (if (eq (getcharn (caar y) 1) #\%) '%sum '$sum)))
-       (simplifya `((,new-op) ((%log) ,(cadr y)) ,@(cddr y)) t)))
-	((flonum-eval (mop x) y))
-	((and (not (member 'simp (car x) :test #'eq))
-	      (big-float-eval (mop x) y)))
-	;; (($bfloatp y) ($bfloat (list '(%log) y)))
-	;; ((or (floatp y) (and $numer (integerp y)))
-	;;  (cond ((plusp y) (log y))
-	;;        ($lognumer (cond ((equal y -1) 0) (t (log (- y)))))
-	;;        (t (add2 (log (- y)) (mul2 '$%i %pi-val)))))
+        ((and (member $logexpand '($all $super))
+              (consp y)
+              (member (caar y) '(%product $product)))
+         (let ((new-op (if (eq (getcharn (caar y) 1) #\%) '%sum '$sum)))
+           (simplifya `((,new-op) ((%log) ,(cadr y)) ,@(cddr y)) t)))
 	((and $lognegint (maxima-integerp y) (eq ($sign y) '$neg))
 	 (add (mul '$%i '$%pi) (take '(%log) (neg y))))
         ((taylorize (mop x) (second x)))
@@ -995,6 +1020,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Simplification of the "/" operator.
+
 (defmfun simpquot (x y z)
   (twoargcheck x)
   (cond ((and (integerp (cadr x)) (integerp (caddr x)) (not (zerop (caddr x))))
@@ -1004,11 +1031,6 @@
 	(t (setq y (simplifya (cadr x) z))
 	   (setq x (simplifya (list '(mexpt) (caddr x) -1) z))
 	   (if (equal y 1) x (simplifya (list '(mtimes) y x) t)))))
-
-;; Obsolete.  Use DIV*.  All references to this should now be flushed.
-;; This definition will go away soon.
-
-;;(DEFUN QSNT (X Y) (SIMPLIFY (LIST '(MTIMES) X (LIST '(MEXPT) Y -1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
