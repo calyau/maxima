@@ -194,7 +194,7 @@ lambda$
  de : ev(de, diff),
  de : radcan(subst(x^(1/n),x, de)),
  de : subst(1/2,n, de),
- convert_to_diff(de));
+ convert_to_diff(de)),logexpand;
 x^2 * 'diff(g(x),x,2)+x*'diff(g(x),x,1)+(x^2-1)*g(x)=0$
 
 (remvalue(de),0);
