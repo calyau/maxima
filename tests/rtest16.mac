@@ -1727,3 +1727,8 @@ done;
 x;
 'x;
 
+/* Bug report ID: 3025038 - gruntz needs logexpand:true
+ */
+gruntz( (x + 2^x) / 3^x, x, inf),logexpand:false;
+0;
+
