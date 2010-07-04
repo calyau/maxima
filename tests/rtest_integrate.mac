@@ -60,7 +60,7 @@ integrate(a^(b*(z^r)^p),z);
  /(b^(1/(p*r))*p*r*(-log(a)*(z^r)^p)^(1/(p*r)));
 
 /* Problem 14: (OK) */
-integrate(a^(b*(z^r)^(1/r)),z);
+integrate(a^(b*(z^r)^(1/r)),z),logexpand;
 %e^(log(a)*b*z)/(log(a)*b);
 
 /* Problem 15: (OK) */
@@ -84,7 +84,7 @@ integrate(%e^(a*(z^r)^p),z);
 -gamma_incomplete(1/(p*r),-a*(z^r)^p)*z/(a^(1/(p*r))*p*r*(-(z^r)^p)^(1/(p*r)));
 
 /* Problem 20: (OK) */
-integrate(%e^(a*(z^r)^(1/r)),z);
+integrate(%e^(a*(z^r)^(1/r)),z),logexpand;
 %e^(a*z)/a;
 
 /* Problem 21: (OK) */
@@ -1071,7 +1071,7 @@ integrate((a^(c*(z^r)^p))^v,z);
  /(p*r*(-log(a)*c*v*(z^r)^p)^(1/(p*r)));
 
 /* Problem 216: OK */
-integrate((a^(c*(z^r)^(1/r)))^v,z);
+integrate((a^(c*(z^r)^(1/r)))^v,z),logexpand;
 %e^(log(a)*c*v*z)/(log(a)*c*v);
 
 /* Problem 217: OK */
@@ -1083,7 +1083,7 @@ integrate((%e^(c*(z^r)^p))^v,z);
 -gamma_incomplete(1/(p*r),-c*v*(z^r)^p)*z/(p*r*(-c*v*(z^r)^p)^(1/(p*r)));
 
 /* Problem 219: OK */
-integrate((%e^(c*(z^r)^(1/r)))^v,z);
+integrate((%e^(c*(z^r)^(1/r)))^v,z),logexpand;
 %e^(c*v*z)/(c*v);
 
 /* Problem 220: OK */
@@ -1096,7 +1096,7 @@ integrate((a^(d+c*(z^r)^p))^v,z);
  /(p*r*(-log(a)*c*v*(z^r)^p)^(1/(p*r)));
 
 /* Problem 222: OK */
-integrate((a^(d+c*(z^r)^(1/r)))^v,z);
+integrate((a^(d+c*(z^r)^(1/r)))^v,z),logexpand;
 a^(d*v)*%e^(log(a)*c*v*z)/(log(a)*c*v);
 
 /* Problem 223: OK */
@@ -1109,7 +1109,7 @@ integrate((%e^(d+c*(z^r)^p))^v,z);
  /(p*r*(-c*v*(z^r)^p)^(1/(p*r)));
 
 /* Problem 225: OK */
-integrate((%e^(d+c*(z^r)^(1/r)))^v,z);
+integrate((%e^(d+c*(z^r)^(1/r)))^v,z),logexpand;
 %e^(c*v*z+d*v)/(c*v);
 
 /* Problem 226: OK */
@@ -2460,37 +2460,37 @@ expand(integrate((%e^(e+d*x+b*sqrt(x)))^u*(%e^(g+f*x+c*sqrt(x)))^v,x)-
 0;
 
 /* Problem 386: OK */
-integrate(1/(b*%e^(c*z)+a),z);
+integrate(1/(b*%e^(c*z)+a),z),logexpand;
 z/a-log(b*%e^(c*z)+a)/(a*c);
 
 /* Problem 387: OK */
-integrate(1/(%e^(c*z)+1),z);
+integrate(1/(%e^(c*z)+1),z),logexpand;
 z-log(%e^(c*z)+1)/c;
 
 /* Problem 388: OK */
-integrate(1/(1-%e^(c*z)),z);
+integrate(1/(1-%e^(c*z)),z),logexpand;
 z-log(%e^(c*z)-1)/c;
 
 /* Problem 389: OK */
-integrate(1/(b*%e^(c*z)+a)^2,z);
+integrate(1/(b*%e^(c*z)+a)^2,z),logexpand;
 -log(b*%e^(c*z)+a)/(a^2*c)+1/(a*b*c*%e^(c*z)+a^2*c)+z/a^2;
 
 /* Problem 390: OK */
-integrate(1/(%e^(c*z)+1)^2,z);
+integrate(1/(%e^(c*z)+1)^2,z),logexpand;
 -log(%e^(c*z)+1)/c+1/(c*%e^(c*z)+c)+z;
 
 /* Problem 391: OK */
-integrate(1/(1-%e^(c*z))^2,z);
+integrate(1/(1-%e^(c*z))^2,z),logexpand;
 -log(%e^(c*z)-1)/c-1/(c*%e^(c*z)-c)+z;
 
 /* Problem 392: OK */
-integrate(1/(b*%e^(c*z)+a)^3,z);
+integrate(1/(b*%e^(c*z)+a)^3,z),logexpand;
 -log(b*%e^(c*z)+a)/(a^3*c)+(2*b*%e^(c*z)+3*a)
                                    /(2*a^2*b^2*c*%e^(2*c*z)
                                     +4*a^3*b*c*%e^(c*z)+2*a^4*c)+z/a^3;
 
 /* Problem 393: OK */
-integrate(1/(b*%e^(c*z)+a)^4,z);
+integrate(1/(b*%e^(c*z)+a)^4,z),logexpand;
 -log(b*%e^(c*z)+a)/(a^4*c)+(6*b^2*%e^(2*c*z)+15*a*b*%e^(c*z)+11*a^2)
                                    /(6*a^3*b^3*c*%e^(3*c*z)
                                     +18*a^4*b^2*c*%e^(2*c*z)
@@ -2512,11 +2512,11 @@ integrate(%e^(c*z)/(b*%e^(c*z)+a),z);
 log(b*%e^(c*z)+a)/(b*c);
 
 /* Problem 397: OK */
-integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a),z);
+integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a),z),logexpand;
 log((b*%e^(c*z)+a)/b)*B/(b*c)+(z/a-log((b*%e^(c*z)+a)/b)/(a*c))*A;
 
 /* Problem 398: OK */
-integrate(%e^(2*c*z)/(b*%e^(c*z)+a),z);
+integrate(%e^(2*c*z)/(b*%e^(c*z)+a),z),logexpand;
 %e^(c*z)/(b*c)-a*log((b*%e^(c*z)+a)/b)/(b^2*c);
 
 /* Problem 399: OK */
@@ -2548,12 +2548,12 @@ integrate(%e^(d*z)/(b*%e^(c*z)+a)^2,z);
  -%e^(d*z)/(b^2*(2*c-d)*%e^(2*c*z)+a*b*(4*c-2*d)*%e^(c*z)+a^2*(2*c-d));
 
 /* Problem 403: OK */
-integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^2,z);
+integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^2,z),logexpand;
 (-log((b*%e^(c*z)+a)/b)/(a^2*c)+1/(a*b*c*%e^(c*z)+a^2*c)+z/a^2)*A
          -B/(b^2*c*%e^(c*z)+a*b*c);
 
 /* Problem 404: OK */
-integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z);
+integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z),logexpand;
 (-log((b*%e^(c*z)+a)/b)/(a^3*c)+(2*b*%e^(c*z)+3*a)
                                         /(2*a^2*b^2*c*%e^(2*c*z)
                                          +4*a^3*b*c*%e^(c*z)+2*a^4*c)+z/a^3)
@@ -2561,7 +2561,7 @@ integrate((B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z);
          -B/(2*b^3*c*%e^(2*c*z)+4*a*b^2*c*%e^(c*z)+2*a^2*b*c);
 
 /* Problem 405: OK */
-expand(integrate((C*%e^(2*c*z)+B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z));
+expand(integrate((C*%e^(2*c*z)+B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z)),logexpand;
 -2*b*%e^(c*z)*C/(2*b^4*c*%e^(2*c*z)+4*a*b^3*c*%e^(c*z)+2*a^2*b^2*c)
  -a*C/(2*b^4*c*%e^(2*c*z)+4*a*b^3*c*%e^(c*z)+2*a^2*b^2*c)
  -B/(2*b^3*c*%e^(2*c*z)+4*a*b^2*c*%e^(c*z)+2*a^2*b*c)
@@ -2570,7 +2570,7 @@ expand(integrate((C*%e^(2*c*z)+B*%e^(c*z)+A)/(b*%e^(c*z)+a)^3,z));
  +3*a*A/(2*a^2*b^2*c*%e^(2*c*z)+4*a^3*b*c*%e^(c*z)+2*a^4*c)+z*A/a^3;
 
 /* Problem 406: OK */
-integrate(1/(c+b*%e^(d*z)+a*%e^(2*d*z)),z);
+integrate(1/(c+b*%e^(d*z)+a*%e^(2*d*z)),z),logexpand;
 -log(a*%e^(2*d*z)+b*%e^(d*z)+c)/(2*c*d)
          -b*atan((2*a*%e^(d*z)+b)/sqrt(4*a*c-b^2))/(c*sqrt(4*a*c-b^2)*d)+z/c;
 
@@ -2583,7 +2583,7 @@ integrate(%e^(e*z)/(c+b*%e^(d*z)+a*%e^(2*d*z)),z);
  -%e^(e*z)/(a*(2*d-e)*%e^(2*d*z)+b*(2*d-e)*%e^(d*z)+c*(2*d-e));
 
 /* Problem 408: OK */
-integrate(%e^(2*d*z)/(c+b*%e^(d*z)+a*%e^(2*d*z)),z);
+integrate(%e^(2*d*z)/(c+b*%e^(d*z)+a*%e^(2*d*z)),z),logexpand;
 log(a*%e^(2*d*z)+b*%e^(d*z)+c)/(2*a*d)
          -b*atan((2*a*%e^(d*z)+b)/sqrt(4*a*c-b^2))/(a*sqrt(4*a*c-b^2)*d);
 
@@ -2596,7 +2596,7 @@ integrate((%e^(5*z)+%e^z)/(%e^(3*z)-%e^(2*z)+%e^z-1),z);
 -log(%e^(2*z)+1)/2-atan(%e^z)+log(%e^z-1)+(%e^(2*z)+2*%e^z)/2;
 
 /* Problem 411: OK */
-integrate(1/(%e^(z/2)+%e^(z/3)+%e^(z/6)+1),z);
+integrate(1/(%e^(z/2)+%e^(z/3)+%e^(z/6)+1),z),logexpand;
 6*(-log(%e^(z/3)+1)/4-log(%e^(z/6)+1)/2-atan(%e^(z/6))/2+z/6);
 
 /* Problem 412: NOUN */
@@ -2788,11 +2788,11 @@ integrate(((b*%e^(c*z)+a)^v)^p*%e^(d*z),z);
 'integrate(((b*%e^(c*z)+a)^v)^p*%e^(d*z),z);
 
 /* Problem 448: OK */
-integrate(((b*%e^(c*z)+a)^5)^(1/2)*%e^(c*z),z);
+integrate(((b*%e^(c*z)+a)^5)^(1/2)*%e^(c*z),z),logexpand;
 (b*%e^(c*z)+a)^(5/2)*(2*b*%e^(c*z)+2*a)/(7*b*c);
 
 /* Problem 449: OK */
-integrate(((b*%e^(c*z)+a)^3)^(1/2)*%e^(c*z),z);
+integrate(((b*%e^(c*z)+a)^3)^(1/2)*%e^(c*z),z),logexpand;
 (b*%e^(c*z)+a)^(3/2)*(2*b*%e^(c*z)+2*a)/(5*b*c);
 
 /* Problem 450: OK */
@@ -5601,7 +5601,7 @@ expand(niceindices(integrate(z^n*(%e^(e+d*z))^q*(%e^(g+f*z+c*z^2))^u,z))-
                  *2^(i-n)*binomial(n,i)*(-f*u-d*q)^(n-i)
                  *(2*c*u*z+f*u+d*q)^(i+1)
                  /(-(2*c*u*z+f*u+d*q)^2/(c*u))^((i+1)/2),i,0,n))
- /2));
+ /2)),logexpand;
 0;
 
 /* Problem 701: NEW 6 */
@@ -5795,25 +5795,25 @@ expand(
 0;
 
 /* Problem 710: OK */
-integrate(z/(b*%e^(c*z)+a),z);
+integrate(z/(b*%e^(c*z)+a),z),logexpand;
 z^2/(2*a)-(c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(a*c^2);
 
 /* Problem 711: OK */
-integrate(z^2/(b*%e^(c*z)+a),z);
+integrate(z^2/(b*%e^(c*z)+a),z),logexpand;
 2*(-c^2*z^2*log(b*%e^(c*z)/a+1)/2+li[3](-b*%e^(c*z)/a)
                                          -c*z*li[2](-b*%e^(c*z)/a))
          /(a*c^3)
          +z^3/(3*a);
 
 /* Problem 712: OK */
-integrate(z^3/(b*%e^(c*z)+a),z);
+integrate(z^3/(b*%e^(c*z)+a),z),logexpand;
 z^4/(4*a)-6*(c^3*z^3*log(b*%e^(c*z)/a+1)/6
                     +li[4](-b*%e^(c*z)/a)-c*z*li[3](-b*%e^(c*z)/a)
                     +c^2*z^2*li[2](-b*%e^(c*z)/a)/2)
                   /(a*c^4);
 
 /* Problem 713: OK */
-integrate(z^4/(b*%e^(c*z)+a),z);
+integrate(z^4/(b*%e^(c*z)+a),z),logexpand;
 24*(-c^4*z^4*log(b*%e^(c*z)/a+1)/24+li[5](-b*%e^(c*z)/a)
                                            -c*z*li[4](-b*%e^(c*z)/a)
                                            +c^2*z^2*li[3](-b*%e^(c*z)/a)/2
@@ -5826,14 +5826,14 @@ integrate(z^n/(1-%e^(c*z)),z);
 'integrate(z^n/(1-%e^(c*z)),z);
 
 /* Problem 715: OK */
-expand(integrate(z/(b*c^(d*z)+a)^2,z));
+expand(integrate(z/(b*c^(d*z)+a)^2,z)),logexpand;
 -z*log(b*%e^(log(c)*d*z)/a+1)/(a^2*log(c)*d)
  +log(b*%e^(log(c)*d*z)+a)/(a^2*log(c)^2*d^2)
  -li[2](-b*%e^(log(c)*d*z)/a)/(a^2*log(c)^2*d^2)
  +z/(a*b*log(c)*d*%e^(log(c)*d*z)+a^2*log(c)*d)+z^2/(2*a^2)-z/(a^2*log(c)*d);
 
 /* Problem 716: OK */
-integrate(z^2/(b*c^(d*z)+a)^2,z);
+integrate(z^2/(b*c^(d*z)+a)^2,z),logexpand;
 2*(-log(c)^2*d^2*z^2*log(b*%e^(log(c)*d*z)/a+1)/2
           +li[3](-b*%e^(log(c)*d*z)/a)-log(c)*d*z*li[2](-b*%e^(log(c)*d*z)/a))
          /(a^2*log(c)^3*d^3)
@@ -5843,7 +5843,7 @@ integrate(z^2/(b*c^(d*z)+a)^2,z);
          +(log(c)^3*d^3*z^3-3*log(c)^2*d^2*z^2)/(3*a^2*log(c)^3*d^3);
 
 /* Problem 717: OK */
-integrate(z^3/(b*c^(d*z)+a)^2,z);
+integrate(z^3/(b*c^(d*z)+a)^2,z),logexpand;
 -6*(log(c)^3*d^3*z^3*log(b*%e^(log(c)*d*z)/a+1)/6
            +li[4](-b*%e^(log(c)*d*z)/a)-log(c)*d*z*li[3](-b*%e^(log(c)*d*z)/a)
            +log(c)^2*d^2*z^2*li[2](-b*%e^(log(c)*d*z)/a)/2)
@@ -5855,7 +5855,7 @@ integrate(z^3/(b*c^(d*z)+a)^2,z);
          +(log(c)^4*d^4*z^4-4*log(c)^3*d^3*z^3)/(4*a^2*log(c)^4*d^4);
 
 /* Problem 718: OK */
-integrate(z^4/(b*c^(d*z)+a)^2,z);
+integrate(z^4/(b*c^(d*z)+a)^2,z),logexpand;
 24*(-log(c)^4*d^4*z^4*log(b*%e^(log(c)*d*z)/a+1)/24
            +li[5](-b*%e^(log(c)*d*z)/a)-log(c)*d*z*li[4](-b*%e^(log(c)*d*z)/a)
            +log(c)^2*d^2*z^2*li[3](-b*%e^(log(c)*d*z)/a)/2
@@ -5886,18 +5886,18 @@ integrate(z*%e^(d*z)/(b*%e^(c*z)+a),z);
  -((c-d)*z+1)*%e^(d*z)/(b*(d^2-2*c*d+c^2)*%e^(c*z)+a*(d^2-2*c*d+c^2));
 
 /* Problem 721: OK */
-integrate(z*%e^(2*c*z)/(b*%e^(c*z)+a),z);
+integrate(z*%e^(2*c*z)/(b*%e^(c*z)+a),z),logexpand;
 -a*(c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(b^2*c^2)
          +((2*b*c*z-2*b)*%e^(c*z)-a*c^2*z^2)/(2*b^2*c^2)+a*z^2/(2*b^2);
 
 /* Problem 722: OK */
-integrate(z*%e^-(2*c*z)/(b*%e^(c*z)+a),z);
+integrate(z*%e^-(2*c*z)/(b*%e^(c*z)+a),z),logexpand;
 -b^2*(c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(a^3*c^2)
          +((4*b*c*z+4*b)*%e^-(c*z)+(-2*a*c*z-a)*%e^-(2*c*z))/(4*a^2*c^2)
          +b^2*z^2/(2*a^3);
 
 /* Problem 723: OK */
-integrate(z*%e^(c*z)/(b*%e^(c*z)+a),z);
+integrate(z*%e^(c*z)/(b*%e^(c*z)+a),z),logexpand;
 (c*z*log(b*%e^(c*z)/a+1)+li[2](-b*%e^(c*z)/a))/(b*c^2);
 
 /* Problem 724: NOUN */
@@ -5915,7 +5915,7 @@ integrate(z^2*%e^(f*z)/(b*c^(d*z)+a),z);
    +a*(-f^3+3*log(c)*d*f^2-3*log(c)^2*d^2*f+log(c)^3*d^3));
 
 /* Problem 725: OK */
-integrate(z^2*%e^(c*z)/(b*%e^(c*z)+a),z);
+integrate(z^2*%e^(c*z)/(b*%e^(c*z)+a),z),logexpand;
 -2*(-c^2*z^2*log(b*%e^(c*z)/a+1)/2+li[3](-b*%e^(c*z)/a)
                                           -c*z*li[2](-b*%e^(c*z)/a))
          /(b*c^3);
@@ -5942,14 +5942,14 @@ integrate(z^3*%e^(f*z)/(b*c^(d*z)+a),z);
    +a*(f^4-4*log(c)*d*f^3+6*log(c)^2*d^2*f^2-4*log(c)^3*d^3*f+log(c)^4*d^4));
 
 /* Problem 727: OK */
-integrate(z^3*%e^(c*z)/(b*%e^(c*z)+a),z);
+integrate(z^3*%e^(c*z)/(b*%e^(c*z)+a),z),logexpand;
 6*(c^3*z^3*log(b*%e^(c*z)/a+1)/6+li[4](-b*%e^(c*z)/a)
                                         -c*z*li[3](-b*%e^(c*z)/a)
                                         +c^2*z^2*li[2](-b*%e^(c*z)/a)/2)
          /(b*c^4);
 
 /* Problem 728: OK */
-integrate(z^4*%e^(c*z)/(b*%e^(c*z)+a),z);
+integrate(z^4*%e^(c*z)/(b*%e^(c*z)+a),z),logexpand;
 -24*(-c^4*z^4*log(b*%e^(c*z)/a+1)/24+li[5](-b*%e^(c*z)/a)
                                             -c*z*li[4](-b*%e^(c*z)/a)
                                             +c^2*z^2*li[3](-b*%e^(c*z)/a)/2

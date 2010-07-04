@@ -120,7 +120,7 @@ z*expintegral_li(z)-expintegral_ei(2*log(z));
 integrate(z*expintegral_li(z),z);
 z^2*expintegral_li(z)/2+gamma_incomplete(0,-3*log(z))/2;
 
-integrate(sqrt(z)*expintegral_li(z),z);
+integrate(sqrt(z)*expintegral_li(z),z),logexpand;
 2*(z^(3/2)*expintegral_li(z)/3+gamma_incomplete(0,-5/2*log(z))/3);
 
 /* Integrals for Exponential Integral Si(z) */
