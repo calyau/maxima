@@ -1468,10 +1468,13 @@ APPLY means like APPLY.")
 		     (let ((tn (tr-gensym)))
 		       (lambda-wrap1 tn val `(progn (,assign ',var ,tn)
 					      (setq ,(teval var) ,tn))))
-		     `(,(if *macexpr-top-level-form-p*
-			    'defparameter
-			    'setq)
-			    ,(teval var) ,val))))
+                     `(progn
+                        (if (not (boundp ',(teval var)))
+                            (add2lnc ',(teval var) $values))
+                        (,(if *macexpr-top-level-form-p*
+                              'defparameter
+                              'setq)
+                         ,(teval var) ,val)))))
 	  ((member 'array (car var) :test #'eq)
 	   (tr-arraysetq var val))
 	  (t
