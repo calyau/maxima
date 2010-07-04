@@ -1,5 +1,5 @@
-kill (all);
-done;
+(kill (all), values);
+[];
 
 /* make sure things work after a reset().  ID: 1986726 and ID: 2787047 */
 (reset(),0);
@@ -1710,3 +1710,20 @@ solve(tan(x - atan(a/b)) = 0, x);
 [x = atan(a/b)];
 solve(tan(x - atan(b/a)) = 0, x);
 [x = atan(b/a)];
+
+/* Bug report ID: 1961494 - translated functions & values list
+ * We do a kill(all) at the beginning, but we still have the symbol r
+ * in the info list values. This seems to be a bug.
+ */
+(kill(all), f():= x:2, translate(f));
+[f];
+f();
+2;
+values;
+[x];
+kill(f,x);
+done;
+/* The value of x has been removed. */
+x;
+'x;
+
