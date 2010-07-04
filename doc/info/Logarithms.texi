@@ -104,36 +104,45 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} log (@var{x})
 Represents the natural (base @math{e}) logarithm of @var{x}.
 
-Maxima does not have a built-in function for the base 10 logarithm or other bases.
-@code{log10(x) := log(x) / log(10)} is a useful definition.
+Maxima does not have a built-in function for the base 10 logarithm or other 
+bases. @code{log10(x) := log(x) / log(10)} is a useful definition.
 
 Simplification and evaluation of logarithms is governed by several global flags:
 
-@code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}.
-If it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.
-If it is set to @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)} for rational
-numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for @code{b} integer, always simplifies.)  If
-it is set to @code{false}, all of these simplifications will be turned off.
+@table @code
+@item @code{logexpand}
+causes @code{log(a^b)} to become @code{b*log(a)}. If it is 
+set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.
+If it is set to @code{super}, then @code{log(a/b)} will also simplify to 
+@code{log(a)-log(b)} for rational numbers @code{a/b}, @code{a#1}. 
+(@code{log(1/b)}, for @code{b} integer, always simplifies.) If it is set to 
+@code{false}, all of these simplifications will be turned off.
 
-@code{logsimp} - if @code{false} then no simplification of @code{%e} to a power
-containing @code{log}'s is done.
+@item @code{logsimp}
+if @code{false} then no simplification of @code{%e} to a power containing 
+@code{log}'s is done.
 
-@code{lognumer} - if @code{true} then negative floating point arguments to
-@code{log} will always be converted to their absolute value before the @code{log} is
-taken.  If @code{numer} is also @code{true}, then negative integer arguments to @code{log}
+@item @code{lognumer}
+if @code{true} then negative floating point arguments to @code{log} will always 
+be converted to their absolute value before the @code{log} is taken. If 
+@code{numer} is also @code{true}, then negative integer arguments to @code{log}
 will also be converted to their absolute value.
 
-@code{lognegint} - if @code{true} implements the rule @code{log(-n)} ->
-@code{log(n)+%i*%pi} for @code{n} a positive integer.
+@item @code{lognegint}
+if @code{true} implements the rule @code{log(-n)} -> @code{log(n)+%i*%pi} for 
+@code{n} a positive integer.
 
-@code{%e_to_numlog} - when @code{true}, @code{r} some rational number, and
-@code{x} some expression, @code{%e^(r*log(x))} will be simplified into
-@code{x^r} .  It should be noted that the @code{radcan} command also
-does this transformation, and more complicated transformations of this ilk as well.
-The @code{logcontract} command "contracts" expressions containing @code{log}.
+@item @code{%e_to_numlog}
+when @code{true}, @code{r} some rational number, and @code{x} some expression, 
+@code{%e^(r*log(x))} will be simplified into @code{x^r} . It should be noted 
+that the @code{radcan} command also does this transformation, and more 
+complicated transformations of this as well. The @code{logcontract} command 
+"contracts" expressions containing @code{log}.
+@end table
 
 @opencatbox
 @category{Exponential and logarithm functions}
@@ -223,20 +232,21 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} logexpand
-Default value: @code{true}
+Default value: @code{false}
 
-Causes @code{log(a^b)} to become @code{b*log(a)}.  If
-it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If it
-is set to @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)} for
-rational numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for integer @code{b}, always
-simplifies.)  If it is set to @code{false}, all of these simplifications will
-be turned off.
+If @code{true} causes @code{log(a^b)} to become @code{b*log(a)}.  If it is set 
+to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If 
+it is set to @code{super}, then @code{log(a/b)} will also simplify to 
+@code{log(a)-log(b)} for rational numbers @code{a/b}, @code{a#1}. 
+(@code{log(1/b)}, for integer @code{b}, always simplifies.) If it is set to 
+@code{false}, that is the default value, all of these simplifications will be 
+turned off.
 
 @opencatbox
 @category{Exponential and logarithm functions} @category{Simplification flags and variables}
 @closecatbox
-
 @end defvr
 
 @defvr {Option variable} lognegint
