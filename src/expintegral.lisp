@@ -940,7 +940,7 @@
        0)
       ((zerop1 arg)
        (simp-domain-error
-	(intl:gettext "expintegral_e1: expintegral_e1(~:M) is undefined.") arg))
+        (intl:gettext "expintegral_e1: expintegral_e1(~:M) is undefined.") arg))
 
       ;; Check for numerical evaluation
       ((complex-float-numerical-eval-p arg)
@@ -963,20 +963,29 @@
       ((and $expintrep
             (member $expintrep *expintflag* :test #'eq)
             (not (eq $expintrep '%expintegral_e1)))
-       ;; We have only implemented the Incomplete Gamma and Ei function. 
-       ;; Further work is needed.
        (case $expintrep
-         (%gamma_incomplete 
-           ($gamma_incomplete 0 arg))
+         (%gamma_incomplete
+          (take '(%gamma_incomplete) 0 arg))
          (%expintegral_ei
-           (add
-             (mul -1 ($expintegral_ei (mul -1 arg)))
-             (mul 
-               '((rat simp) 1 2)
-               (sub
-                 (list '(%log simp) (mul -1 arg))
-                 (list '(%log simp) (mul -1 (inv arg)))))
-             (mul -1 (list '(%log simp) arg))))
+          (add (mul -1 (take '(%expintegral_ei) (mul -1 arg)))
+               (mul (div 1 2)
+                    (sub (take '(%log) (mul -1 arg))
+                         (take '(%log) (mul -1 (inv arg)))))
+              (mul -1 (take '(%log) arg))))
+         (%expintegral_li
+          (add (mul -1 (take '(%expintegral_li) (power '$%e (mul -1 arg))))
+               (mul -1 (take '(%log) arg))
+               (mul (div 1 2)
+                    (sub (take '(%log) (mul -1 arg))
+                         (take '(%log) (mul -1 (inv arg)))))))
+         ($expintegral_trig
+          (add (mul -1 '$%i (take '(%expintegral_si) (mul '$%i arg)))
+               (mul -1 (take '(%expintegral_ci) (mul '$%i arg)))
+               (take '(%log) (mul '$%i arg))
+               (mul -1 (take '(%log) arg))))
+         ($expintegral_hyp
+          (sub (take '(%expintegral_shi) arg)
+               (take '(%expintegral_chi) arg)))
          (t 
           (eqtest (list '(%expintegral_e1) arg) expr))))
 
