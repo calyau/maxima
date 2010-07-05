@@ -894,7 +894,7 @@
 
 (defprop %expintegral_e1
   ((x)
-   ((mtimes) 
+   ((mtimes) -1
     ((mexpt) x -1)
     ((mexpt) $%e ((mtimes) -1 x))))
   grad)
