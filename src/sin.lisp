@@ -49,7 +49,7 @@
 	 (substint
 	  (list '(mexpt) base* var)
 	  var
-	  (integrator (div y (mul2 var (simplog (list base*)))) var)))))
+          (integrator (div y (mul var (take '(%log) base*))) var)))))
 
 (defun elemxpt (exp)
   (cond ((freevar exp) exp)
@@ -1676,9 +1676,6 @@
 
 (defun timesloop (a b)
   (cons '(mplus) (mapcar #'(lambda (c) (mul2* a c)) b)))
-
-(defun simplog (a)
-  (simplifya (cons '(%log) a) nil))
 
 (defun expands (aa b)
   (addn (mapcar #'(lambda (c) (timesloop c aa)) b) nil))
