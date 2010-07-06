@@ -1,4 +1,4 @@
-@c english version 1.56
+@c english version 1.59
 @menu
 * n-arios::
 * no-fijos::
@@ -1264,6 +1264,8 @@ al ser evaluados, el resultado es una expresi@'on booleana.
 Devuelve el valor absoluto de @var{expr}. Si la expresi@'on es compleja, retorna
 el m@'odulo de @var{expr}.
 
+@code{abs} se distribuye sobre listas, matrices y ecuaciones.
+V@'ease tambi@'en @code{distribute_over}.
 @end deffn
 
 @defvr {Clave} additive
@@ -1963,8 +1965,39 @@ Para argumentos no num@'ericos @var{x} o @var{y}, @code{mod} aplica algunas regl
 
 @deffn {Funci@'on} oddp (@var{expr})
 Devuelve @code{true} si @var{expr} es un entero impar y @code{false} en caso contrario.
-
 @end deffn
+
+
+
+@deffn {Funci@'on} psubst (@var{list}, @var{expr})
+@deffnx {Funci@'on} psubst (@var{a}, @var{b}, @var{expr})
+
+@code{psubst(@var{a}, @var{b}, @var{expr})} es parecido a @code{subst}.
+V@'ease @code{subst}.
+
+A diferencia de @code{subst}, la funci@'on @code{psubst} hace sustituciones
+en paralelo si el primer argumento, @var{list}, es una lista de ecuaciones.
+
+V@'ease tambi@'en @code{sublis} para sustituciones en paralelo.
+
+Ejemplo:
+
+El primer ejemplo muestra la sustituci@'on en paralelo con @code{psubst}.
+El segundo ejemplo muestra el resultado devuelto por la funci@'on @code{subst},
+la cual hace las sustituciones secuencialmente.
+
+@c ===beg===
+@c psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c subst ([a^2=b, b=a], sin(a^2) + sin(b));
+@c ===end===
+@example
+(%i4) psubst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o4)                           sin(b) + sin(a)
+(%i5) subst ([a^2=b, b=a], sin(a^2) + sin(b));
+(%o5)                              2 sin(a)
+@end example
+@end deffn
+
 
 
 @deffn {Funci@'on} make_random_state (@var{n})
@@ -2271,13 +2304,18 @@ Valor por defecto: @code{true}
 
 Si @code{sqrtdispflag} vale @code{false}, har@'a que @code{sqrt} se muestre con el exponente 1/2.
 @c AND OTHERWISE ... ??
-
 @end defvr
 
+
+
 @deffn {Funci@'on} sublis (@var{list}, @var{expr})
-Realiza sustituciones  m@'ultiples en paralelo en una expresi@'on.
+Realiza sustituciones m@'ultiples en paralelo en una expresi@'on.
+@var{list} es una lista de ecuaciones. Los miembros de la izquierda
+de las ecuaciones deben ser @'atomos.
 
 La variable @code{sublis_apply_lambda} controla la simplificaci@'on despu@'es de @code{sublis}.
+
+V@'ease tambi@'en @code{psubst} para sustituciones en paralelo.
 
 Ejemplo:
 
@@ -2288,8 +2326,9 @@ Ejemplo:
 (%i1) sublis ([a=b, b=a], sin(a) + cos(b));
 (%o1)                    sin(b) + cos(a)
 @end example
-
 @end deffn
+
+
 
 @deffn {Funci@'on} sublist (@var{list}, @var{p})
 Devuelve la lista de elementos de @var{list} para los cuales el predicado @code{p} retorna @code{true}.
@@ -2322,11 +2361,17 @@ Sustituye @var{a} por @var{b} en @var{c}. El argumento  @var{b} debe ser un @'at
 
 La funci@'on @code{subst} es sin@'onimo de @code{substitute}.
 
-La llamada @code{subst (@var{eq_1}, @var{expr})} o @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
-est@'an permitidas.  Las @var{eq_i} son ecuaciones que indican las sustituciones a realizar.
-Para cada ecuaci@'on, el miembro derecho ser@'a sustituida por la expresi@'on del miembro izquierdo en @var{expr}.
+La llamada @code{subst (@var{eq_1}, @var{expr})} o 
+@code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
+est@'an permitidas. Las @var{eq_i} son ecuaciones que indican las sustituciones a realizar.
+Para cada ecuaci@'on, el miembro izquierdo ser@'a sustituido por la expresi@'on del 
+miembro derecho en @var{expr}. Las ecuaciones se sustituyen secuencialmente de
+izquierda a derecha en @var{expr}. V@'eanse las funciones @code{sublis} y @code{psubst} 
+para sustituciones en paralelo.
 
-Si la variable @code{exptsubst} vale @code{true} se permiten ciertas sustituciones de exponentes; por ejemplo, sustituir @code{y} por @code{%e^x} en @code{%e^(a*x)}.
+Si la variable @code{exptsubst} vale @code{true} se permiten ciertas
+sustituciones de exponentes; por ejemplo, sustituir @code{y} por @code{%e^x}
+en @code{%e^(a*x)}.
 
 Si @code{opsubst} vale @code{false},
 @code{subst} no intentar@'a sustituir un operador de una expresi@'on. Por ejemplo, 
@@ -2344,6 +2389,20 @@ Ejemplos:
 (%o1)                      y + x + a
 (%i2) subst (-%i, %i, a + b*%i);
 (%o2)                       a - %i b
+@end example
+
+La sustituci@'on se hace secuencialmente seg@'un una lista de
+ecuaciones. Comp@'arese con la sustituci@'on en paralelo.
+
+@c ===beg===
+@c subst([a=b, b=c], a+b);
+@c sublis([a=b, b=c], a+b);
+@c ===end===
+@example
+(%i3) subst([a=b, b=c], a+b);
+(%o3)                                 2 c
+(%i4) sublis([a=b, b=c], a+b);
+(%o4)                                c + b
 @end example
 
 @noindent
@@ -2464,37 +2523,6 @@ V@'ease tambi@'en @code{Identifiers}.
 
 @end deffn
 
-@deffn {Funci@'on} unorder ()
-Desactiva las asociaciones creadas por la @'ultima utilizaci@'on de los comandos de ordenaci@'on @code{ordergreat} y @code{orderless}, los cuales no pueden ser utilizados m@'as de una vez sin invocar a @code{unorder}. 
-V@'ease tambi@'en @code{ordergreat} y @code{orderless}.
-
-@c HMM, IN THIS EXAMPLE, WHY ISN'T %o5 EQUAL TO ZERO ???
-@c ===beg===
-@c unorder();
-@c b*x + a^2;
-@c ordergreat (a);
-@c b*x + a^2;
-@c  %th(1) - %th(3);
-@c unorder();
-@c ===end===
-@example
-(%i1) unorder();
-(%o1)                          []
-(%i2) b*x + a^2;
-                                   2
-(%o2)                       b x + a
-(%i3) ordergreat (a);
-(%o3)                         done
-(%i4) b*x + a^2;
- %th(1) - %th(3);
-                             2
-(%o4)                       a  + b x
-(%i5) unorder();
-                              2    2
-(%o5)                        a  - a
-@end example
-
-@end deffn
 
 @deffn {Funci@'on} vectorpotential (@var{givencurl})
 Devuelve el vector potencial de un vector rotacional en el sistema

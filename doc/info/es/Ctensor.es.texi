@@ -1,4 +1,4 @@
-@c version 1.34
+@c version 1.36
 @menu
 * Introducci@'on a ctensor::     
 * Funciones y variables para ctensor::     
@@ -313,8 +313,7 @@ Es una funci@'on del paquete @code{ctensor}. La funci@'on @code{riemann} calcula
                 ijk     ij,k     ik,j     mk   ij    mj   ik
 @end example
 
-Esta notaci@'on es consistente con la notaci@'on utilizada por el paquete @code{itensor} y su funci@'on @code{icurvature}. Si el argumento opcional @var{dis} vale @code{true}, se muestran las componentes no nulas de @code{riem[i,j,k,l]}. Como en el caso del tensor de Einstein, ciertas variables permiten controlar al usuario la simplificaci@'on de las componentes del tensor de Riemann. Si  @code{ratriemann} vale @code{true}, entonces se har@'a la simplificaci@'on racional. Si @code{ratfac}
-vale @code{true}, entonces se factorizar@'an todas las componentes.
+Esta notaci@'on es consistente con la notaci@'on utilizada por el paquete @code{itensor} y su funci@'on @code{icurvature}. Si el argumento opcional @var{dis} vale @code{true}, se muestran las componentes no nulas @'unicas de @code{riem[i,j,k,l]}. Como en el caso del tensor de Einstein, ciertas variables permiten controlar al usuario la simplificaci@'on de las componentes del tensor de Riemann. Si  @code{ratriemann} vale @code{true}, entonces se har@'a la simplificaci@'on racional. Si @code{ratfac} vale @code{true}, entonces se factorizar@'an todas las componentes.
 
 Si la variable @code{cframe_flag} vale @code{false}, el tensor de Riemann se calcula directamente a partir de los s@'{@dotless{i}}mbolos de Christoffel. Si @code{cframe_flag} vale @code{true}, el tensor covariante de Riemann se calcula a partir de los coeficientes del campo.
 

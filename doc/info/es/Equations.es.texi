@@ -1,4 +1,4 @@
-@c english version 1.32
+@c english version 1.33
 @menu
 * Funciones y variable para las ecuaciones::
 @end menu
@@ -635,6 +635,21 @@ La funci@'on @code{nroots} utiliza el m@'etodo de las secuencias de Sturm.
 Siendo @code{p} un polinomio de coeficientes enteros y @code{n} un entero positivo, @code{nthroot} devuelve un polinomio @code{q}, tambi@'en de coeficientes enteros, tal que @code{q^n=p}, o un mensaje de error indicando que @code{p} no es una @code{n}-potencia exacta. Esta funci@'on es bastante m@'as r@'apida que @code{factor} y que @code{sqfr}.
 
 @end deffn
+
+
+
+@defvr {Variable opcional} polyfactor
+Valor por defecto: @code{false}
+
+Cuando @code{polyfactor} vale @code{true}, las funciones
+@code{allroots} y @code{bfallroots} factorizan el polinomio
+sobre los n@'umeros reales si el polinomio es real, o
+factoriza sobre los complejos si el polinomio es complejo.
+
+V@'ease un ejemplo en @code{allroots}.
+@end defvr
+
+
 
 @defvr {Variable opcional} programmode
 Valor por defecto: @code{true}

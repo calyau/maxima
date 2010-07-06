@@ -1,4 +1,4 @@
-@c english version 1.67
+@c english version 1.70
 @menu
 * Introducci@'on a las expresiones::  
 * Expresiones complejas::
@@ -567,15 +567,9 @@ Todas las cajas en una expresi@'on se dibujan con el valor actual de @code{boxch
 Devuelve el argumento complejo de @var{z}.
 El argumento complejo es un @'angulo @code{theta} en @code{(-%pi, %pi]}
 tal que @code{r exp (theta %i) = @var{z}} donde @code{r} es la magnitud de @var{z}.
-@c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
 
 La funci@'on @code{carg} es computacional, no simplificativa.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
-@c SEE ALSO SF BUG REPORT # 902290
-
-La funci@'on @code{carg} ignora la declaraci@'on @code{declare (@var{x}, complex)},
-y trata a @var{x} como una variable real.
-Se trata de un fallo conocido en Maximo. @c SEE SF BUG REPORT # 620246
 
 V@'eanse tambi@'en @code{abs} (m@'odulo complejo), @code{polarform}, @code{rectform},
 @code{realpart} y @code{imagpart}.
@@ -1254,7 +1248,7 @@ Si @code{exptsubst} vale @code{true} permite la sustituci@'on @code{y} por @code
 @deffn {Funci@'on} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 
 @code{freeof (@var{x_1}, @var{expr})}
-Devuelve @code{true} si ninguna subexpresi@'on de @var{expr} coincide con @var{x_1},
+devuelve @code{true} si ninguna subexpresi@'on de @var{expr} coincide con @var{x_1},
 o si @var{x_1} aparece como variable muda en @var{expr}, o si @var{x_1} no es ni
 una forma nominal ni verbal de cualesquiera operadores presentes en @var{expr},
 devolviendo @code{false} en otro caso.
@@ -1265,6 +1259,7 @@ equivale a @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @
 Los argumentos @var{x_1}, ..., @var{x_n} 
 pueden seer nombres de funciones y variables, nombres subindicados,
 operadores (encerrados entre comillas dobles) o expresiones generales.
+
 La funci@'on @code{freeof} eval@'ua sus argumentos.
 
 Una variable es una variable muda en una expresi@'on si no tiene valor asignado fuera de la expresi@'on.
@@ -1273,16 +1268,14 @@ la variable de integraci@'on en la versi@'on de integral definida de @code{integ
 la variable original en @code{laplace},
 variables formales en expresiones @code{at} y
 los argumentos de las expresiones  @code{lambda}.
-Las variables locales en  @code{block} no son reconocidas por @code{freeof} como variables mudas;
-esto es un fallo de Maxima.
+
 
 La versi@'on indefinida de  @code{integrate} no est@'a libre de su variable de integraci@'on.
 
-@itemize @bullet
-@item
-Los argumentos son nombres de funciones, variables, nombres subindicados, operaores y expresiones. La llamada 
-@code{freeof (a, b, expr)} equivale a
-@code{freeof (a, expr) and freeof (b, expr)}.
+Ejemplos:
+
+
+Los argumentos son nombres de funciones, variables, nombres subindicados, operaores y expresiones. La llamada @code{freeof (a, b, expr)} equivale a @code{freeof (a, expr) and freeof (b, expr)}.
 
 @example
 (%i1) expr: z^3 * cos (a[1]) * b^(c+d);
@@ -1305,7 +1298,6 @@ Los argumentos son nombres de funciones, variables, nombres subindicados, operao
 (%o8)                         true
 @end example
 
-@item
 @code{freeof} eval@'ua sus argumentos.
 
 @example
@@ -1315,7 +1307,6 @@ Los argumentos son nombres de funciones, variables, nombres subindicados, operao
 (%o3)                         false
 @end example
 
-@item
 @code{freeof} no considera funciones equivalentes.
 La simplificaci@'on puede dar una expresi@'on equivalente pero diferente.
 
@@ -1335,9 +1326,8 @@ La simplificaci@'on puede dar una expresi@'on equivalente pero diferente.
 (%o6)                         true
 @end example
 
-@item
 Un sumatorio o integral definida est@'a libre de su variable muda.
-Una integral indefinida de  @code{integrate} no est@'a libre de su variable de integraci@'on
+Una integral indefinida de  @code{integrate} no est@'a libre de su variable de integraci@'on.
 
 @example
 (%i1) freeof (i, 'sum (f(i), i, 0, n));
@@ -1347,8 +1337,6 @@ Una integral indefinida de  @code{integrate} no est@'a libre de su variable de i
 (%i3) freeof (x, 'integrate (x^2, x));
 (%o3)                         false
 @end example
-@end itemize
-
 @end deffn
 
 @c IS THIS DEFINITION CORRECT ??
@@ -2419,8 +2407,59 @@ Ejemplos:
                                    3
                      i in rootsof(x  - 1)
 @end example
-
 @end deffn
+
+
+
+@deffn {Funci@'on} unorder ()
+Desactiva las asociaciones creadas por la @'ultima utilizaci@'on de los comandos de ordenaci@'on @code{ordergreat} y @code{orderless}, los cuales no pueden ser utilizados m@'as de una vez sin invocar a @code{unorder}. 
+
+@code{unorder} no sustituye en expresiones los s@'{@dotless{i}}mbolos originales
+por los alias introducidos por @code{ordergreat} y @code{orderless}. Es por ello
+que tras la ejecución de @code{unorder} los alias aparecen en expresiones
+anteriores.
+
+V@'ease tambi@'en @code{ordergreat} y @code{orderless}.
+
+Ejemplos:
+
+@code{ordergreat(a)} introduce un alias para el s@'{@dotless{i}}mbolo @code{a},
+raz@'on por la cual la diferencia de @code{%o2} y @code{%o4} no se anula.
+@code{unorder} no restablece el s@'{@dotless{i}}mbolo @code{a} y el alias
+aparece en el resultado @code{%o7}.
+
+@c ===beg===
+@c unorder();
+@c b*x + a^2;
+@c ordergreat (a);
+@c b*x + a^2;
+@c  %th(1) - %th(3);
+@c unorder();
+@c %th(2);
+@c ===end===
+@example
+(%i1) 
+(%o1)                          []
+(%i2) b*x+a^2;
+                                   2
+(%o2)                       b x + a
+(%i3) ordergreat(a);
+(%o3)                         done
+(%i4) b*x+a^2;
+                             2
+(%o4)                       a  + b x
+(%i5) %th(1)-%th(3);
+                              2    2
+(%o5)                        a  - a
+(%i6) unorder();
+(%o6)                          [a]
+(%i7) %th(2);
+                                2    2
+(%o7)                      _101a  - a
+@end example
+@end deffn
+
+
 
 @deffn {Funci@'on} verbify (@var{f})
 Devuelve la forma verbal del nombre de funci@'on @var{f}.

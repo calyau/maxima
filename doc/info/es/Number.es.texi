@@ -1,4 +1,4 @@
-@c english version 1.32
+@c english version 1.34
 @menu
 * Funciones y variables para teor@'{@dotless{i}}a de n@'umeros::  
 @end menu
@@ -470,11 +470,11 @@ o @code{false} seg@'un el caso.
 Cuando el resultado de @code{primep (@var{n})} es @code{false}, @var{n} es un
 n@'umero compuesto, y si es @code{true}, @var{n} es primo con alta probabilidad.
 
-Si @var{n} es menor que 10^16, se utiliza una versi@'on 
+Si @var{n} es menor que 341550071728321, se utiliza una versi@'on 
 determin@'{@dotless{i}}stica de la prueba de Miller-Rabin. En tal caso,
 si @code{primep (@var{n})} devuelve @code{true}, entonces @var{n} es un n@'umero primo.
 
-Para @var{n} mayor que 10^16 @code{primep} realiza un n@'umero de pruebas
+Para @var{n} mayor que 341550071728321 @code{primep} realiza un n@'umero de pruebas
 de seudo-primalidad de Miller-Rabin igual a @code{primep_number_of_tests} y una 
 prueba de seudo-primalidad de Lucas. La probabilidad de que @var{n} pase una
 prueba de Miller-Rabin es menor que 1/4. Con el valor por defecto de 

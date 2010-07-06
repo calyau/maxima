@@ -1,4 +1,4 @@
-@c English version 1.3
+@c English version 1.5
 @menu
 * Funciones y variables para mnewton::
 @end menu
@@ -11,7 +11,8 @@
 @defvr {Variable opcional} newtonepsilon
 Valor por defecto:  @code{10.0^(-fpprec/2)}
 
-Precisi@'on que determina cuando la funci@'on @code{mnewton} ha conseguido una convergencia aceptable.
+Precisi@'on que determina cuando la funci@'on @code{mnewton} ha conseguido una convergencia aceptable. Si @code{newtonepsilon} es un n@'umero decimal grande (bigfloat), entonces
+@code{mnewton} realiza los c@'alculos en ese formato.
 
 V@'ease tambi@'en @code{mnewton}.
 @end defvr

@@ -1,4 +1,4 @@
-@c english version 1.36
+@c english version 1.37
 @menu
 * Introducci@'on a las matrices y el @'algebra lineal::
 * Funciones y variables para las matrices y el @'algebra lineal::
@@ -1258,11 +1258,8 @@ Para disponer de esta funci@'on es necesario cargar el paquete haciendo @code{lo
 
 @end deffn
 
-@deffn {Funci@'on} newdet (@var{M}, @var{n})
-Calcula el determinante de la matriz o arreglo @var{M} por el algoritmo del @'arbol menor de Johnson-Gentleman.
-@c UGH -- ARRAYS ARE SUCH A MESS
-El argumento @var{n} es el orden; es opcional si @var{M} es una matriz.
-
+@deffn {Funci@'on} newdet (@var{M})
+Calcula el determinante de la matriz @var{M} por el algoritmo del @'arbol menor de Johnson-Gentleman. El resultado devuelto por @code{newdet} tiene formato CRE.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -1272,12 +1269,16 @@ Hace que los @'atomos se comporten como hace una lista o matriz con respecto del
 @end defvr
 
 @deffn {Funci@'on} nonscalarp (@var{expr})
-Devuelve @code{true} si @var{expr} no es escalar, es decir, si contiene @'atomos declarados como no escalares, listas o matrices.
+Devuelve @code{true} si @var{expr} no es escalar, es decir, si contiene @'atomos declarados como no escalares, listas o matrices. 
 
 @end deffn
 
-@deffn {Funci@'on} permanent (@var{M}, @var{n})
-Calcula la permanente de la matriz @var{M}. La permanente es como un determinante pero sin cambios de signo.
+@deffn {Funci@'on} permanent (@var{M})
+Calcula la permanente de la matriz @var{M} por el algoritmo del @'arbol menor de
+Johnson-Gentleman. La permanente es como un determinante pero sin cambios de signo.
+El resultado devuelto por @code{permanent} tiene formato CRE.
+
+V@'ease tambi@'en @code{newdet}.
 
 @end deffn
 

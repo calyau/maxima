@@ -1,4 +1,4 @@
-@c version 1.25
+@c version 1.26
 @menu
 * Funciones y variables para simplificaci@'on::  
 @end menu
@@ -50,10 +50,9 @@ La funci@'on @code{exponentialize} convierte funciones trigonom@'etricas e hiper
 Valor por defecto: @code{true}
 
 @code{distribute_over} controla la distribuci@'on de funciones sobre
-estructuras como listas, matrices y ecuaciones. Actualmente, este control
-s@'olo es aplicable a las funciones trigonom@'etricas, integrales
-exponenciales y a las funciones para enteros, como @code{mod}, @code{floor},
-@code{ceiling} y @code{round}.
+estructuras como listas, matrices y ecuaciones. Actualmente, no todas
+las funciones de Maxima tienen esta propiedad. Es posible consultar si
+una funci@'on tiene esta propiedad con la instrucci@'on @code{properties}.
 
 La propiedad distributiva se desactiva asign@'andole a @code{distribute_over}
 el valor @code{false}.
@@ -110,6 +109,16 @@ de sus argumentos, o sobre todos ellos.
 (%i6) expintegral_e([1,2],[x,y]);
 (%o6) [[expintegral_e(1, x), expintegral_e(1, y)], 
        [expintegral_e(2, x), expintegral_e(2, y)]]
+@end example
+
+Comprueba si una funci@'on tiene la propiedad @code{distribute_over}:
+
+@c ===beg===
+@c properties(abs);
+@c ===end===
+@example
+(%i7) properties(abs);
+(%o7) [integral, distributes over bags, noun, rule, gradef]
 @end example
 @end defvr
 

@@ -1,4 +1,4 @@
-@c version 1.33
+@c version 1.34
 @menu
 * Introducci@'on a la programaci@'on::  
 * Funciones y variables para la programaci@'on::  
@@ -223,6 +223,66 @@ La llamada a @code{errormsg()} formatea e imprime @code{error}. Se reimprime as@
 Reimprime el mensaje de error m@'as reciente. La variable @code{error} guarda el mensaje y @code{errormsg} lo formatea e imprime.
 
 @end deffn
+
+
+
+@defvr {Variable opcional} errormsg
+Valor por defecto: @code{true}
+
+Cuando @code{errormsg} vale @code{false} se suprimen los contenidos
+de los mensajes de error.
+
+La variable @code{errormsg} no se puede asignar a un valor local dentro
+de un bloque. El valor global de @code{errormsg} est@'a siempre presente.
+
+Ejemplos:
+
+@c ===beg===
+@c errormsg;
+@c sin(a,b);
+@c errormsg:false;
+@c sin(a,b);
+@c ===end===
+@example
+(%i1) errormsg;
+(%o1)                                true
+(%i2) sin(a,b);
+Wrong number of arguments to sin
+ -- an error. To debug this try: debugmode(true);
+(%i3) errormsg:false;
+(%o3)                                false
+(%i4) sin(a,b);
+
+ -- an error. To debug this try: debugmode(true);
+@end example
+
+La variable @code{errormsg} no se puede asignar a un valor local dentro
+de un bloque.
+
+@c ===beg===
+@c f(bool):=block([errormsg:bool], print ("value of errormsg is",errormsg))$
+@c errormsg:true;
+@c f(false);
+@c errormsg:false;
+@c f(true);
+@c ===end===
+@example
+(%i1) f(bool):=block([errormsg:bool], 
+                     print ("value of errormsg is",errormsg))$
+(%i2) errormsg:true;
+(%o2)                                true
+(%i3) f(false);
+value of errormsg is true 
+(%o3)                                true
+(%i4) errormsg:false;
+(%o4)                                false
+(%i5) f(true);
+value of errormsg is false 
+(%o5)                                false
+@end example
+@end defvr
+
+
 
 @deffn {Operador especial} for
 Utilizado en las iteraciones. V@'ease @code{do} para una descripci@'on de las t@'ecnicas de iteraci@'on en Maxima.
