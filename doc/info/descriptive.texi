@@ -2,7 +2,6 @@
 * Introduction to descriptive::
 * Functions and Variables for data manipulation::
 * Functions and Variables for descriptive statistics::
-* Functions and Variables for specific multivariate descriptive statistics::
 * Functions and Variables for statistical graphs::
 @end menu
 
@@ -425,7 +424,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @end deffn
 
 
-@node Functions and Variables for descriptive statistics, Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for data manipulation, descriptive
+@node Functions and Variables for descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for data manipulation, descriptive
 @section Functions and Variables for descriptive statistics
 
 
@@ -1451,11 +1450,6 @@ See also function @code{quantile}.
 
 
 
-@node Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for descriptive statistics, descriptive
-@section Functions and Variables for specific multivariate descriptive statistics
-
-
-
 @deffn {Function} cov (@var{matrix})
 The covariance matrix of the multivariate sample, defined as
 @ifnottex
@@ -1814,7 +1808,7 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@node Functions and Variables for statistical graphs,  , Functions and Variables for specific multivariate descriptive statistics, descriptive
+@node Functions and Variables for statistical graphs,  , Functions and Variables for descriptive statistics, descriptive
 @section Functions and Variables for statistical graphs
 
 
