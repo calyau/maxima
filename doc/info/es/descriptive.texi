@@ -1,9 +1,8 @@
-@c english version: 1.24
+@c english version: 1.25
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
-* Funciones y variables de valores descriptivos::
-* Funciones y variables de valores descriptivos multivariantes::
+* Funciones y variables de par@'ametros descriptivos::
 * Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos::
 @end menu
 
@@ -193,7 +192,7 @@ Debe tenerse cuidado cuando se trabaje con datos categ@'oricos. En el siguiente 
 @end example
 
 
-@node Funciones y variables para el tratamiento de datos, Funciones y variables de valores descriptivos, Introducci@'on a descriptive, descriptive
+@node Funciones y variables para el tratamiento de datos, Funciones y variables de par@'ametros descriptivos, Introducci@'on a descriptive, descriptive
 @section Funciones y variables para el tratamiento de datos
 
 
@@ -406,8 +405,8 @@ Aqu@'{@dotless{i}} la primera componente carece de significado, ya que tanto @co
 @end deffn
 
 
-@node Funciones y variables de valores descriptivos, Funciones y variables de valores descriptivos multivariantes, Funciones y variables para el tratamiento de datos, descriptive
-@section Funciones y variables de valores descriptivos
+@node Funciones y variables de par@'ametros descriptivos, Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos, Funciones y variables para el tratamiento de datos, descriptive
+@section Funciones y variables de par@'ametros descriptivos
 
 
 @deffn {Funci@'on} mean (@var{list})
@@ -1333,8 +1332,6 @@ V@'ease tambi@'en @code{quantile}.
 @end deffn
 
 
-@node Funciones y variables de valores descriptivos multivariantes, Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos, Funciones y variables de valores descriptivos, descriptive
-@section Funciones y variables de valores descriptivos multivariantes
 
 
 @deffn {Funci@'on} cov (@var{matrix})
@@ -1652,7 +1649,7 @@ V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @end deffn
 
 
-@node Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos,  , Funciones y variables de valores descriptivos multivariantes, descriptive
+@node Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos,  , Funciones y variables de par@'ametros descriptivos, descriptive
 @section Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos
 
 

@@ -426,8 +426,7 @@ descriptive
 
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
-* Funciones y variables de valores descriptivos::
-* Funciones y variables de valores descriptivos multivariantes::
+* Funciones y variables de par@'ametros descriptivos::
 * Funciones y variables para gr@'aficos estad@'{@dotless{i}}sticos::
 
 diag
