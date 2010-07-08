@@ -1,4 +1,4 @@
-@c english version: 1.23
+@c english version: 1.24
 @menu
 * Introducci@'on a descriptive::
 * Funciones y variables para el tratamiento de datos::
@@ -743,62 +743,70 @@ V@'eanse tambi@'en @code{std} y @code{mean}.
 
 
 
-@deffn {Funci@'on} mini (@var{list})
-@deffnx {Funci@'on} mini (@var{matrix})
-Es el valor m@'{@dotless{i}}nimo de la muestra @var{list},
+@deffn {Funci@'on} smin (@var{list})
+@deffnx {Funci@'on} smin (@var{matrix})
+Es el valor m@'{@dotless{i}}nimo de la muestra @var{list}.
+Cuando el argumento es una matriz, @code{smin} devuelve
+una lista con los valores m@'{@dotless{i}}nimos de las
+columnas, las cuales est@'an asociadas a variables
+estad@'{@dotless{i}}sticas.
 
 @c ===beg===
 @c load (descriptive)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c mini (s1);
+@c smin (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c mini (s2);
+@c smin (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
-(%i3) mini (s1);
+(%i3) smin (s1);
 (%o3)                           0
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i5) mini (s2);
+(%i5) smin (s2);
 (%o5)             [0.58, 0.5, 2.67, 5.25, 5.17]
 @end group
 @end example
 
-V@'ease tambi@'en @code{maxi}.
+V@'ease tambi@'en @code{smax}.
 @end deffn
 
 
 
-@deffn {Funci@'on} maxi (@var{list})
-@deffnx {Funci@'on} maxi (@var{matrix})
-Es el valor m@'aximo de la muestra @var{list},
+@deffn {Funci@'on} smax (@var{list})
+@deffnx {Funci@'on} smax (@var{matrix})
+Es el valor m@'aximo de la muestra @var{list}.
+Cuando el argumento es una matriz, @code{smax} devuelve
+una lista con los valores m@'aximos de las
+columnas, las cuales est@'an asociadas a variables
+estad@'{@dotless{i}}sticas.
 
 @c ===beg===
 @c load (descriptive)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c maxi (s1);
+@c smax (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c maxi (s2);
+@c smax (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
-(%i3) maxi (s1);
+(%i3) smax (s1);
 (%o3)                           9
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i5) maxi (s2);
+(%i5) smax (s2);
 (%o5)          [20.25, 21.46, 20.04, 29.63, 27.63]
 @end group
 @end example
 
-V@'ease tambi@'en @code{mini}.
+V@'ease tambi@'en @code{smin}.
 @end deffn
 
 

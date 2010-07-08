@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005-2009 Mario Rodriguez Riotorto
+Copyright (C) 2005-2010 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -62,9 +62,9 @@ Data manipulation
    subsample: subsample extraction
 
 Univariate descriptive statistics:
-   mean: the mean
-   mini: minimum value
-   maxi: maximum value
+   mean: sample mean
+   smin: sample minimum value
+   smax: sample maximum value
    range: the range
    noncentral_moment: non central moment
    central_moment: central moment
@@ -204,9 +204,9 @@ continuous_freq(lis,[opt]):=block([numer:true,nc,mini,lim,amp,fr,ult,n,k],
    if length(opt)=1
       then nc:opt[1]
       else nc:10,   /* default number of classes */
-   mini:tree_reduce('min,lis),
+   mini: lmin(lis),
    lim:[mini],
-   amp:(tree_reduce('max,lis)-mini)/nc,
+   amp:(lmax(lis)-mini)/nc,
    if amp=0
      then [[lis[1]-1,lis[1]+1],[length(lis)]]
      else ( for i:1 thru nc do lim:endcons(mini+amp*i,lim),
@@ -249,24 +249,29 @@ mean(x) := block([listarith:true],
 
 
 /* Minimum value */
-mini(x):=block([t],
+smin(x):=block([t],
    if matrixp(x)
       then (t:transpose(x),
-            makelist(mini(t[i]),i,1,length(t)))
+            makelist(lmin(t[i]),i,1,length(t)))
       else if listofexpr(x)
-           then tree_reduce('min,x)
-           else error("Input to 'mini' must be a list of expressions or a matrix"))$
+           then lmin(x)
+           else error("Input to 'smin' must be a list of expressions or a matrix"))$
 
 
 /* Maximum value */
-maxi(x):=block([t],
+smax(x):=block([t],
    if matrixp(x)
       then (t:transpose(x),
-            makelist(maxi(t[i]),i,1,length(t)))
+            makelist(lmax(t[i]),i,1,length(t)))
       else if listofexpr(x)
-           then tree_reduce('max,x)
-           else error("Input to 'maxi' must be a list of expressions or a matrix"))$
+           then lmax(x)
+           else error("Input to 'smax' must be a list of expressions or a matrix"))$
 
+
+/* mini and maxi are maintained for backward compatibility,
+   but removed from documentation. */
+mini(x):= smin(x) $
+maxi(x):= smax(x) $
 
 /* Range */
 range(x):=block([t],
@@ -274,7 +279,7 @@ range(x):=block([t],
       then (t:transpose(x),
             makelist(range(t[i]),i,1,length(t)))
       else if listofexpr(x)
-           then tree_reduce('max,x) - tree_reduce('min,x)
+           then lmax(x) - lmin(x)
            else error("Input to 'range' must be a list of expressions or a matrix"))$
 
 
@@ -618,7 +623,7 @@ histogram(m,[select]):=
                            [apply('bars,
                                   makelist([(fr[1][k]+fr[1][k+1])/2, fr[2][k], amp],k,1,nclass)),
                             'xrange = [fr[1][1]-amp/2, fr[1][nclass+1]+amp/2],
-                            'yrange = tree_reduce('max,fr[2])*[-0.05, 1.05]  ] ),
+                            'yrange = lmax(fr[2])*[-0.05, 1.05]  ] ),
               if draw_compound
                 then apply('draw2d,scen)
                 else scen )
@@ -819,8 +824,8 @@ boxplot(m,[select]):=
                         'point_type = 'dot],
                        flatten(
                          makelist(map('points,
-                                      block([mi: float(mini(m[x])),
-                                             ma: float(maxi(m[x])),
+                                      block([mi: float(smin(m[x])),
+                                             ma: float(smax(m[x])),
                                              q1: float(quantile(m[x],0.25)),
                                              q2: float(quantile(m[x],0.5)),
                                              q3: float(quantile(m[x],0.75)),

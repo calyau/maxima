@@ -800,32 +800,35 @@ See also functions @code{std} and @code{mean}.
 
 
 
-@deffn {Function} mini (@var{list})
-@deffnx {Function} mini (@var{matrix})
-This is the minimum value of the sample @var{list},
+@deffn {Function} smin (@var{list})
+@deffnx {Function} smin (@var{matrix})
+This is the minimum value of the sample @var{list}.
+When the argument is a matrix, @code{smin} returns
+a list containing the minimum values of the columns,
+which are associated to statistical variables.
 
 @c ===beg===
 @c load (descriptive)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c mini (s1);
+@c smin (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c mini (s2);
+@c smin (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
-(%i3) mini (s1);
+(%i3) smin (s1);
 (%o3)                           0
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i5) mini (s2);
+(%i5) smin (s2);
 (%o5)             [0.58, 0.5, 2.67, 5.25, 5.17]
 @end group
 @end example
 
-See also function @code{maxi}.
+See also function @code{smax}.
 
 @opencatbox
 @category{Package descriptive}
@@ -834,32 +837,35 @@ See also function @code{maxi}.
 
 
 
-@deffn {Function} maxi (@var{list})
-@deffnx {Function} maxi (@var{matrix})
-This is the maximum value of the sample @var{list},
+@deffn {Function} smax (@var{list})
+@deffnx {Function} smax (@var{matrix})
+This is the maximum value of the sample @var{list}.
+When the argument is a matrix, @code{smax} returns
+a list containing the maximum values of the columns,
+which are associated to statistical variables.
 
 @c ===beg===
 @c load (descriptive)$
 @c s1 : read_list (file_search ("pidigits.data"))$
-@c maxi (s1);
+@c smax (s1);
 @c s2 : read_matrix (file_search ("wind.data"))$
-@c maxi (s2);
+@c smax (s2);
 @c ===end===
 @example
 (%i1) load (descriptive)$
 (%i2) s1 : read_list (file_search ("pidigits.data"))$
 @group
-(%i3) maxi (s1);
+(%i3) smax (s1);
 (%o3)                           9
 @end group
 (%i4) s2 : read_matrix (file_search ("wind.data"))$
 @group
-(%i5) maxi (s2);
+(%i5) smax (s2);
 (%o5)          [20.25, 21.46, 20.04, 29.63, 27.63]
 @end group
 @end example
 
-See also function @code{mini}.
+See also function @code{smin}.
 
 @opencatbox
 @category{Package descriptive}
