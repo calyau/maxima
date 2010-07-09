@@ -2628,14 +2628,16 @@
     (cond
       ((mexptp (car l))
        ;; Found an power function. Factor the exponent with facsum.
-       (setq result
-	     (cons
-	       (cons
-		 (list 'mexpt)
-		 (cons
-		   (cadr (car l))
-		   (list (mfuncall '$facsum (caddr (car l)) var))))
-	       result)))
+       (let* ((fac (mfuncall '$facsum (caddr (car l)) var))
+              (num ($num fac))
+              (den ($denom fac)))
+         (setq result
+               (cons (cons (list 'mexpt) 
+                           (cons (cadr (car l))
+                                 (if (equal 1 den)
+                                     (list num)
+                                     (list ($multthru (inv den) num)))))
+                     result))))
       (t
        ;; Nothing to do.
        (setq result (cons (car l) result))))))
