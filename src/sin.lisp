@@ -22,7 +22,7 @@
 
 (declare-top (special ratform exptsum $radexpand $%e_to_numlog
 		      exptind quotind splist l ans splist arcpart coef
-		      aa dict exptflag base* powerlist *a* *b* k stack
+		      aa dict powerlist *a* *b* k stack
 		      ratroot rootlist square e w y expres arg var
 		      *powerl* *c* *d* exp varlist genvar repswitch $liflag
 		      noparts top maxparts numparts blank $opsubst))
@@ -95,41 +95,58 @@
 
 ;;; Stage II
 ;;; Implementation of Method 1: Elementary function of exponentials
+;;;
+;;; The following examples are integrated with this method:
+;;;
+;;;   integrate(exp(x)/(2+3*exp(2*x)),x)
+;;;   integrate(exp(x+1)/(1+exp(x)),x)
+;;;   integrate(10^x*exp(x),x)
 
-(defun superexpt (exp var base*)
-  (prog (exptflag y w)
-	(setq y (elemxpt exp))
-	(when exptflag (return nil))
-	(return
-	 (substint
-	  (list '(mexpt) base* var)
-	  var
-          (integrator (div y (mul var (take '(%log) base*))) var)))))
+(defvar *base* nil)      ; the common base
+(defvar *exptflag* nil)  ; When T, the substitution is not possible
 
-(defun elemxpt (exp)
-  (cond ((freevar exp) exp)
-	((atom exp) (setq exptflag t))
-	((not (eq (caar exp) 'mexpt))
-	 (cons (car exp)
-	       (mapcar #'(lambda (c) (elemxpt c)) (cdr exp))))
-	((not (freevar (cadr exp)))
-	 (list '(mexpt)
-	       (elemxpt (cadr exp))
-	       (elemxpt (caddr exp))))
-	((not (eq (cadr exp) base*))
-	 (elemxpt (list '(mexpt)
-			base*
-			(simplify (list '(mtimes)
-					(list '(mexpt) (list '(%log) base*) -1)
-					(list '(%log) (cadr exp))
-					(caddr exp))))))
-	((not (setq w (m2-b*x+a (caddr exp))))
-	 (list (car exp) base* (elemxpt (caddr exp))))
-	(t (maxima-substitute base*
-			      'base*
-			      (subliss w '((mtimes)
-					   ((mexpt) base* a)
-			                   ((mexpt) x b)))))))
+(defun superexpt (expr var *base*)
+  (declare (special *exptflag*))
+  (prog (y *exptflag*)
+    ;; Transform the integrand.
+    (setq y (elemxpt expr))
+    (when *exptflag* (return nil))
+    ;; Integrate the transformed integrand and substitute back.
+    (return (substint
+              (list '(mexpt) *base* var)
+              var
+              (integrator (div y (mul var (take '(%log) *base*))) var)))))
+
+;; Transform expressions like g^(b*x+a) to the common base *base* and
+;; do the substitution y = *base*^(b*x+a) in the expr.
+(defun elemxpt (expr)
+  (declare (special *exptflag* *base*))
+  (cond ((freevar expr) expr)
+        ;; var is the base of a subexpression. The transformation fails.
+        ((atom expr) (setq *exptflag* t))
+        ((not (eq (caar expr) 'mexpt))
+         (cons (car expr)
+               (mapcar #'(lambda (c) (elemxpt c)) (cdr expr))))
+        ((not (freevar (cadr expr)))
+         (list '(mexpt)
+               (elemxpt (cadr expr))
+               (elemxpt (caddr expr))))
+        ;; Transform the expression to the common base *base*.
+        ((not (eq (cadr expr) *base*))
+         (elemxpt (list '(mexpt)
+                        *base*
+                        (mul (power (take '(%log) *base*) -1)
+                             (take '(%log) (cadr expr))
+                             (caddr expr)))))
+        ;; The exponent must be linear in the variable of integration.
+        ((not (setq w (m2-b*x+a (caddr expr))))
+         (list (car exp) *base* (elemxpt (caddr expr))))
+        ;; Do the substitution y = g^(b*x+a) = g^a*g^(b*x).
+        (t (maxima-substitute *base*
+                              '*base*
+                              (subliss w '((mtimes)
+                                           ((mexpt) *base* a)
+                                           ((mexpt) x b)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
