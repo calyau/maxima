@@ -552,7 +552,8 @@ sqrt(%pi)*%e^-(b*c/a)*erf(sqrt(-c)*sqrt(a*z+b)/sqrt(a))
 
 /* Problem 119: NEW 3 */
 integrate(%e^(c*z)/(a*z+b)^(3/2),z);
--expintegral_e(3/2,-c*(a*z+b)/a)*%e^-(b*c/a)/(a*sqrt(a*z+b));
+-gamma_incomplete(-1/2,-c*(a*z+b)/a)*%e^-(b*c/a)*sqrt(-c*(a*z+b))
+ /(a^(3/2)*sqrt(a*z+b));
 
 /* Problem 120: OK */
 integrate(d^(c+b*z+a*z^2),z),erf_representation:erfi,ratsimp;
