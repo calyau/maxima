@@ -1712,8 +1712,6 @@ solve(tan(x - atan(b/a)) = 0, x);
 [x = atan(b/a)];
 
 /* Bug report ID: 1961494 - translated functions & values list
- * We do a kill(all) at the beginning, but we still have the symbol r
- * in the info list values. This seems to be a bug.
  */
 (kill(all), f():= x:2, translate(f));
 [f];
@@ -1731,4 +1729,10 @@ x;
  */
 gruntz( (x + 2^x) / 3^x, x, inf),logexpand:false;
 0;
+
+/* But report ID: 2977217 - maxima can not integrate x*exp(-1/2*(x-m)^2)
+ */
+integrate(x*exp(-1/2*(x-m)^2),x);
+%i*(sqrt(2)*%i*gamma_incomplete(1,(m-x)^2/2)*(m-x)^2/(x-m)^2
+   -%i*gamma_incomplete(1/2,(m-x)^2/2)*m*(m-x)/abs(x-m))/sqrt(2);
 
