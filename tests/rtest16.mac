@@ -1730,9 +1730,17 @@ x;
 gruntz( (x + 2^x) / 3^x, x, inf),logexpand:false;
 0;
 
-/* But report ID: 2977217 - maxima can not integrate x*exp(-1/2*(x-m)^2)
+/* Bug report ID: 2977217 - maxima can not integrate x*exp(-1/2*(x-m)^2)
  */
 integrate(x*exp(-1/2*(x-m)^2),x);
 %i*(sqrt(2)*%i*gamma_incomplete(1,(m-x)^2/2)*(m-x)^2/(x-m)^2
    -%i*gamma_incomplete(1/2,(m-x)^2/2)*m*(m-x)/abs(x-m))/sqrt(2);
 
+/* Bug report ID: 2996542 - log(x) integration is incorrect
+ */
+assume(a>0);
+[a>0];
+integrate(log(x),x,0,a);
+a*log(a)-a;
+forget(a>0);
+[a>0];
