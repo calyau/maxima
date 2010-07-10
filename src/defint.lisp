@@ -2854,7 +2854,7 @@ in the interval of integration.")
 	      ;; Make the substitution y=1/x.  If the integrand has
 	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
-	     ((and (setq ans (logx1 exp ll ul))
+             ((and (setq ans (let (($gamma_expand t)) (logx1 exp ll ul)))
 		   (free ans '%limit))
 	      (return ans))
 	     ((setq ans (antideriv exp))
