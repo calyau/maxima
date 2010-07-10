@@ -48,7 +48,7 @@
 						     (print-invert-case x)
 						     x))
 					     l))
-      (cond ((output-stream-p *standard-input*)
+      (cond ((eql *parse-stream* *standard-input*)
 	     (let ((n (get '*parse-window* 'length))
 		   some ch)
 	       (loop for i from (1- n) downto (- n 20)
