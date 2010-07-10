@@ -806,7 +806,7 @@ integrate(log(x)^k1,x,0,1);
 (-1)^k1*gamma(k1+1);
 */
 integrate((-log(x))^k1,x,0,1);
-gamma(k1+1);
+k1*gamma(k1);
 
 /* p. 120 */
 integrate(sqrt(log(x))/x^2,x,1,inf);
