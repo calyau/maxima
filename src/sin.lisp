@@ -432,7 +432,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; This is the main integration routine.  It is called from sinint.
-;;; exp is guaranteed to be a product
 
 (defun integrator (exp var)
   (prog (y arg *powerl* const *b* w arcpart coef integrand result)
@@ -1168,7 +1167,7 @@
 ;;; Stage II
 ;;; Implementation of Method 6: Elementary function of trigonometric functions
 
-(defun monstertrig (exp var *trigarg*)
+(defun monstertrig (expr var *trigarg*)
   (declare (special *trigarg*))
   (when (and (not (atom *trigarg*))
              ;; Do not exute the following code when called from rischint.
@@ -1184,135 +1183,126 @@
 		    (b (cdras 'b arg))
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
-						var exp))
-		    (new-int
-		     (if (every-trigarg-alike new-exp new-var)
-			 ;; avoid endless recursion when more than one
-			 ;; trigarg exists or c is a float
-			 (div ($integrate new-exp new-var) c)
-		       (rischint exp var))))
-		 (return-from monstertrig (maxima-substitute *trigarg* new-var new-int))))
+						var expr))
+		    (new-int (if (every-trigarg-alike new-exp new-var)
+                                 ;; avoid endless recursion when more than one
+                                 ;; trigarg exists or c is a float
+		                 (div (integrator new-exp new-var) c)
+		                 (rischint expr var))))
+	       (return-from monstertrig 
+	         (maxima-substitute *trigarg* new-var new-int))))
 	    (t
-	     (return-from monstertrig (rischint exp var))))))
-  (prog (*notsame* w *a* *b* y *d*)
+	     (return-from monstertrig (rischint expr var))))))
+  (prog (*notsame* w a b y d)
      (declare (special *notsame*))
-	(cond
-	 ((supertrig exp) (go a))
-	 ((null *notsame*) (return nil))
-	 ((not (setq y (m2 exp
-			   '((mtimes)
-			     ((coefftt) (a freevar))
-			     (((b trig1))
-			      ((mtimes)
-			       (x varp)
-			       ((coefftt) (m freevar))))
-			     (((d trig1))
-			      ((mtimes)
-			       (x varp)
-			       ((coefftt) (n freevar)))))
-			   nil)))
-	  (go b))
-	 ((not (and (member (car (setq *b* (cdr (sassq 'b y 'nill))))
-			  '(%sin %cos) :test #'eq)
-		    (member (car (setq *d* (cdr (sassq 'd y 'nill))))
-			  '(%sin %cos) :test #'eq)))
-	  (return nil))
-	 ((and (eq (car *b*) '%sin) (eq (car *d*) '%sin))
-	  (return (subvar (subliss y
-				   '((mtimes)
-				     a
-				     ((mplus)
-				      ((mquotient)
-				       ((%sin)
-					((mtimes)
-					 ((mplus) m ((mtimes) -1 n))
-					 x))
-				       ((mtimes)
-					2
-					((mplus) m ((mtimes) -1 n))))
-				      ((mtimes)
-				       -1
-				       ((mquotient)
-					((%sin)
-					 ((mtimes) ((mplus) m n) x))
-					((mtimes)
-					 2
-					 ((mplus) m n))))))))))
-	 ((and (eq (car *b*) '%cos) (eq (car *d*) '%cos))
-	  (return (subvar (subliss y
-				   '((mtimes)
-				     a
-				     ((mplus)
-				      ((mquotient)
-				       ((%sin)
-					((mtimes)
-					 ((mplus) m ((mtimes) -1 n))
-					 x))
-				       ((mtimes)
-					2
-					((mplus) m ((mtimes) -1 n))))
-				      ((mquotient)
-				       ((%sin)
-					((mtimes) ((mplus) m n) x))
-				       ((mtimes)
-					2
-					((mplus) m n)))))))))
-	 ((or (and (eq (car *b*) '%cos)
-		   (setq w (cdr (sassq 'm y 'nill)))
-		   (rplacd (sassq 'm y 'nill)
-			   (cdr (sassq 'n y 'nill)))
-		   (rplacd (sassq 'n y 'nill) w))
-	      t)
-	  (return (subvar (subliss y
-				   '((mtimes)
-				     -1
-				     a
-				     ((mplus)
-				      ((mquotient)
-				       ((%cos)
-					((mtimes)
-					 ((mplus) m ((mtimes) -1 n))
-					 x))
-				       ((mtimes)
-					2
-					((mplus) m ((mtimes) -1 n))))
-				      ((mquotient)
-				       ((%cos)
-					((mtimes) ((mplus) m n) x))
-				       ((mtimes)
-					2
-					((mplus) m n))))))))))
-   b    (cond ((not (setq y (prog2 (setq *trigarg* var)
-				   (m2 exp
-				       '((mtimes)
-					 ((coefftt) (a freevar))
-					 (((b trig1))
-					  ((mtimes)
-					   (x varp)
-					   ((coefftt) (n integerp2))))
-					 ((coefftt) (c supertrig)))
-				       nil))))
-	       (return nil)))
-	(return
-	 (integrator
-	  ($expand
-	   (list '(mtimes)
-		 (sch-replace y 'a)
-		 (sch-replace y 'c)
-		 (cond ((eq (car (setq *b* (sch-replace y 'b))) '%cos)
-			(maxima-substitute var 'x (supercosnx (sch-replace y 'n))))
-		       (t (maxima-substitute var 'x (supersinx (sch-replace y 'n)))))))
-	  var))
-   a    (setq w (subst2s exp *trigarg*))
-	(setq *b* (cdr (sassq 'b
-			    (m2-b*x+a *trigarg*)
-			    'nill)))
-	(setq *a* (substint *trigarg*
-			    var
-			    (trigint (div* w *b*) var)))
-   (cond ((m2 *a* '((mtimes) ((coefftt) (d freevar)) ((%integrate) (b true) (c true))) nil)
-	 (return (list '(%integrate) exp var))))
-   (return *a*)))
+     (cond
+       ((supertrig expr) (go a))
+       ((null *notsame*) (return nil))
+       ;; Check for an expression like a*trig1(m*x)*trig2(n*x),
+       ;; where trig1 and trig2 are sin or cos.
+       ((not (setq y (m2 expr
+                         '((mtimes)
+                           ((coefftt) (a freevar))
+                           (((b trig1))
+                            ((mtimes)
+                             (x varp)
+                             ((coefftt) (m freevar))))
+                           (((d trig1))
+                            ((mtimes)
+                             (x varp)
+                             ((coefftt) (n freevar)))))
+                         nil)))
+        (go b))
+; This check has been done with the pattern match.
+;       ((not (and (member (car (setq b (cdr (sassq 'b y 'nill))))
+;                          '(%sin %cos) :test #'eq)
+;                  (member (car (setq d (cdr (sassq 'd y 'nill))))
+;                          '(%sin %cos) :test #'eq)))
+;        (return nil))
+       ((and (eq (car (setq b (cdras 'b y))) '%sin)
+             (eq (car (setq d (cdras 'd y))) '%sin))
+        ;; We have a*sin(m*x)*sin(n*x).
+        ;; The integral is: a*(sin((m-n)*x)/(2*(m-n))-sin((m+n)*x)/(2*(m+n))
+        (return (subliss y
+                         '((mtimes) a
+                           ((mplus)
+                            ((mquotient)
+                             ((%sin) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
+                             ((mtimes) 2 ((mplus) m ((mtimes) -1 n))))
+                            ((mtimes) -1
+                             ((mquotient)
+                              ((%sin) ((mtimes) ((mplus) m n) x))
+                              ((mtimes) 2 ((mplus) m n)))))))))
+       ((and (eq (car b) '%cos) (eq (car d) '%cos))
+        ;; We have a*cos(m*x)*cos(n*x).
+        ;; The integral is: a*(sin((m-n)*x)/(2*(m-n))+sin((m+n)*x)/(2*(m+n))
+        (return (subliss y
+                         '((mtimes) a
+                           ((mplus)
+                            ((mquotient)
+                             ((%sin) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
+                             ((mtimes) 2
+                              ((mplus) m ((mtimes) -1 n))))
+                            ((mquotient)
+                             ((%sin) ((mtimes) ((mplus) m n) x))
+                             ((mtimes) 2 ((mplus) m n))))))))
+       ((or (and (eq (car b) '%cos)
+                 (setq w (cdras 'm y ))
+                 (rplacd (assoc 'm y) (cdras 'n y))
+                 (rplacd (assoc 'n y) w))
+            t)
+        ;; We have a*cos(n*x)*sin(m*x).
+        ;; The integral is: -a*(cos((m-n)*x)/(2*(m-n))+cos((m+n)*x)/(2*(m+n))
+        (return (subliss y
+                         '((mtimes) -1 a
+                           ((mplus)
+                            ((mquotient)
+                             ((%cos) ((mtimes) ((mplus) m ((mtimes) -1 n)) x))
+                             ((mtimes) 2 ((mplus) m ((mtimes) -1 n))))
+                            ((mquotient)
+                             ((%cos) ((mtimes) ((mplus) m n) x))
+                             ((mtimes) 2 ((mplus) m n)))))))))
+  b  ;; At this point we have trig functions with different arguments,
+     ;; but not a product of sin and cos.
+     (cond ((not (setq y (prog2 
+                           (setq *trigarg* var)
+                           (m2 expr
+                               '((mtimes)
+                                 ((coefftt) (a freevar))
+                                 (((b trig1))
+                                  ((mtimes) 
+                                   (x varp)
+                                   ((coefftt) (n integerp2))))
+                                 ((coefftt) (c supertrig)))
+                               nil))))
+            (return nil)))
+     ;; We have a product of trig functions: trig1(n*x)*trig2(y).
+     ;; trig1 is sin or cos, where n is a numerical integer. trig2 is not a sin
+     ;; or cos. The cos or sin function is expanded.
+     (return
+       (integrator
+         ($expand
+           (list '(mtimes)
+                 (cdras 'a y)                             ; constant factor
+                 (cdras 'c y)                             ; trig functions
+                 (cond ((eq (car (cdras 'b y)) '%cos)     ; expand cos(n*x)
+                        (maxima-substitute var
+                                           'x
+                                           (supercosnx (cdras 'n y))))
+                       (t                                 ; expand sin(x*x)
+                        (maxima-substitute var
+                                           'x
+                                           (supersinx (cdras 'n y)))))))
+         var))
+  a  ;; A product of trig functions and all trig functions have the same
+     ;; argument *trigarg*. Maxima substitutes *trigarg* with the variable var
+     ;; of integration and calls trigint to integrate the new problem.
+     (setq w (subst2s expr *trigarg*))
+     (setq b (cdras 'b (m2-b*x+a *trigarg*)))
+     (setq a (substint *trigarg* var (trigint (div* w b) var)))
+     (return (if (isinop a '%integrate)
+                 (list '(%integrate) expr var)
+                 a))))
 
 (defun trig2 (x)
   (member (car x) '(%sin %cos %tan %cot %sec %csc) :test #'eq))
@@ -1405,6 +1395,11 @@
 ;; This appears to be the implementation of Method 6, pp.82 in Moses' thesis.
 
 (defun trigint (exp var)
+  ;; Set x to var. This is a workaround and does not solve the problem.
+  ;; x is a special variable. The algorithm of trigint substitutes the
+  ;; symbol 'x for var. This causes problems if we have to evalute intermediate
+  ;; expressions which contain the symbol 'x.
+  (setq x var)
   (prog (y repl y1 y2 *yy* z m n *c* *yz* *a* *b* )
      (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
