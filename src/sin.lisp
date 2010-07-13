@@ -105,11 +105,11 @@
 (defvar *base* nil)      ; the common base
 (defvar *exptflag* nil)  ; When T, the substitution is not possible
 
-(defun superexpt (expr var *base*)
+(defun superexpt (exp var *base*)
   (declare (special *exptflag*))
   (prog (y *exptflag*)
     ;; Transform the integrand.
-    (setq y (elemxpt expr))
+    (setq y (elemxpt exp))
     (when *exptflag* (return nil))
     ;; Integrate the transformed integrand and substitute back.
     (return (substint
@@ -289,7 +289,7 @@
 	((not (rat8 (cadr expres)))
 	 (intform (cadr expres)))
         
-        ;; Method 2: Substitution for a rational root
+        ;; Method 3: Substitution for a rational root
 	((and (setq w (m2-ratrootform (cadr expres))) ; e*(a*x+b) / (c*x+d)
 	      (denomfind (caddr expres))) ; expon is ratnum
 	 (cond ((setq w (prog2
@@ -830,7 +830,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; Stage II
-;;; Implementation of Method 2: 
+;;; Implementation of Method 3:
 ;;; Substitution for a rational root of a linear fraction of x
 
 ;; EXP = f(t,u) where f is some function with, say, VAR = t,
@@ -1167,7 +1167,7 @@
 ;;; Stage II
 ;;; Implementation of Method 6: Elementary function of trigonometric functions
 
-(defun monstertrig (expr var *trigarg*)
+(defun monstertrig (exp var *trigarg*)
   (declare (special *trigarg*))
   (when (and (not (atom *trigarg*))
              ;; Do not exute the following code when called from rischint.
@@ -1183,24 +1183,24 @@
 		    (b (cdras 'b arg))
 		    (new-var (gensym "NEW-VAR-"))
 		    (new-exp (maxima-substitute (div (sub new-var b) c)
-						var expr))
+						var exp))
 		    (new-int (if (every-trigarg-alike new-exp new-var)
                                  ;; avoid endless recursion when more than one
                                  ;; trigarg exists or c is a float
 		                 (div (integrator new-exp new-var) c)
-		                 (rischint expr var))))
+		                 (rischint exp var))))
 	       (return-from monstertrig 
 	         (maxima-substitute *trigarg* new-var new-int))))
 	    (t
-	     (return-from monstertrig (rischint expr var))))))
+	     (return-from monstertrig (rischint exp var))))))
   (prog (*notsame* w a b y d)
      (declare (special *notsame*))
      (cond
-       ((supertrig expr) (go a))
+       ((supertrig exp) (go a))
        ((null *notsame*) (return nil))
        ;; Check for an expression like a*trig1(m*x)*trig2(n*x),
        ;; where trig1 and trig2 are sin or cos.
-       ((not (setq y (m2 expr
+       ((not (setq y (m2 exp
                          '((mtimes)
                            ((coefftt) (a freevar))
                            (((b trig1))
@@ -1266,7 +1266,7 @@
      ;; but not a product of sin and cos.
      (cond ((not (setq y (prog2 
                            (setq *trigarg* var)
-                           (m2 expr
+                           (m2 exp
                                '((mtimes)
                                  ((coefftt) (a freevar))
                                  (((b trig1))
@@ -1297,11 +1297,11 @@
   a  ;; A product of trig functions and all trig functions have the same
      ;; argument *trigarg*. Maxima substitutes *trigarg* with the variable var
      ;; of integration and calls trigint to integrate the new problem.
-     (setq w (subst2s expr *trigarg*))
+     (setq w (subst2s exp *trigarg*))
      (setq b (cdras 'b (m2-b*x+a *trigarg*)))
      (setq a (substint *trigarg* var (trigint (div* w b) var)))
      (return (if (isinop a '%integrate)
-                 (list '(%integrate) expr var)
+                 (list '(%integrate) exp var)
                  a))))
 
 (defun trig2 (x)
