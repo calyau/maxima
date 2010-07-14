@@ -276,14 +276,19 @@
         ((integerp (caddr expres)) (intform (cadr expres)))
         
         ;; Method 1: Elementary function of exponentials
-	((freevar (cadr expres))
-	 (cond ((m2-b*x+a (caddr expres))
-		(superexpt exp var (cadr expres)))
-	       ((intform (caddr expres)))
-	       (t (let* (($%e_to_numlog t)
-			 (nexp (resimplify exp)))
-		    (cond ((alike1 exp nexp) nil)
-		      (t (intform (setq exp nexp))))))))
+        ((freevar (cadr expres))
+         (cond ((m2-b*x+a (caddr expres))
+                (superexpt exp var (cadr expres)))
+               ((intform (caddr expres)))
+               ((and (eq '$%e (cadr expres))
+                     (isinop (caddr expres) '%log))
+                ;; Found something like exp(r*log(x))
+                (let* (($%e_to_numlog t)
+                       ($radexpand nil) ; do not simplify sqrt(x^2) -> abs(x)
+                       (nexp (resimplify exp)))
+                  (cond ((alike1 exp nexp) nil)
+                        (t (integrator (setq exp nexp) var)))))
+               (t nil)))
         
         ;; The base is not a rational function. Try to get a clue for the base.
 	((not (rat8 (cadr expres)))
