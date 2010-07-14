@@ -608,7 +608,7 @@ Examples:
 @c ===beg===
 @c b[1,2]:x-x^2$
 @c x:123$
-@c isp(x, b[1,2], sin(1.0));
+@c disp(x, b[1,2], sin(1.0));
 @c ===end===
 @example
 (%i1) b[1,2]:x-x^2$
