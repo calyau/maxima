@@ -1290,3 +1290,11 @@ integrate(sin(3*asin(x)),x);
 integrate(sin(4*asin(x)),x);
 (15*((1-x^2)^(3/2)/5-x^2*(1-x^2)^(3/2)/5)
        +sqrt(1-x)*sqrt(x+1)*(93*x^4-106*x^2+13))/-60;
+       
+/* Bug ID: 3029610 - integrate and %e_to_numlog
+*/
+integrate((exp(3/2*log(x))+1)/sqrt(x),x);
+2*(x^2/4+sqrt(x));
+
+integrate(3*sqrt(x)*exp(3/2*log(x)),x);
+x^3;
