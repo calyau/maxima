@@ -1,4 +1,4 @@
-@c english version 1.71
+@c english version 1.74
 @menu
 * Comentarios::
 * Archivos::
@@ -247,16 +247,40 @@ Cuando un fichero es procesado por @code{batch}, la variable @code{%%}
 tiene el mismo significado que en el modo interactivo.
 
 V@'ease tambi@'en @code{%}.
-
 @end defvr
+
+
+
 
 @defvr {Variable opcional} %edispflag
 Valor por defecto: @code{false}
 
-Si @code{%edispflag} vale @code{true}, Maxima muestra @code{%e} elevado a un exponente negativo como un cociente.
-Por ejemplo, @code{%e^-x} se muestra como @code{1/%e^x}.
+Si @code{%edispflag} vale @code{true}, Maxima muestra @code{%e} elevado
+a un exponente negativo como un cociente. Por ejemplo, @code{%e^-x} se
+muestra como @code{1/%e^x}.
 
+Ejemplo:
+
+@c ===beg===
+@c %e^-10;
+@c %edispflag:true$
+@c %e^-10;
+@c ===end===
+@example
+(%i1) %e^-10;
+                               - 10
+(%o1)                        %e
+(%i2) %edispflag:true$
+(%i3) %e^-10;
+                               1
+(%o3)                         ----
+                                10
+                              %e
+@end example
 @end defvr
+
+
+
 
 @deffn {Funci@'on} %th (@var{i})
 @ifinfo
@@ -448,40 +472,112 @@ El resultado es una cadena.
 (%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
 (%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
 @end example
-
 @end deffn
+
+
+
 
 @deffn {Funci@'on} disp (@var{expr_1}, @var{expr_2}, ...)
-Es como @code{display} pero s@'olo se muestran los valores de los argumentos, no las ecuaciones. Es @'util para argumentos complicados que no tienen nombre o en situaciones en las que solamente es de inter@'es el valor del argumento pero no su nombre.
 
+Es como @code{display} pero s@'olo se muestran los valores de
+los argumentos, no las ecuaciones. Es @'util para argumentos 
+complicados que no tienen nombre o en situaciones en las que 
+solamente es de inter@'es el valor del argumento pero no su nombre.
+
+Ejemplos:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c disp(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) disp(x, b[1,2], sin(1.0));
+                               123
+
+                                  2
+                             x - x
+
+                        .8414709848078965
+
+(%o3)                         done
+@end example
 @end deffn
+
+
+
 
 @deffn {Funci@'on} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
 @deffnx {Funci@'on} dispcon (all)
-Muestra las propiedades contractivas de sus argumentos tal como fueron asignadas por @code{defcon}. La llamada @code{dispcon (all)} muestra todas propiedades contractivas que fueron definidas.
 
+Muestra las propiedades contractivas de sus argumentos tal como 
+fueron asignadas por @code{defcon}. La llamada @code{dispcon (all)}
+muestra todas propiedades contractivas que fueron definidas.
 @end deffn
 
+
+
+
 @deffn {Funci@'on} display (@var{expr_1}, @var{expr_2}, ...)
+
 Muestra las ecuaciones cuyos miembros izquierdos son 
 @var{expr_i} sin evaluar y cuyos miembros derechos son los valores de las expresiones. Esta funci@'on es @'util en los bloques y en las sentencias @code{for} para mostrar resultados intermedios.  Los argumentos de @code{display} suelen ser @'atomos, variables subindicadas o llamadas a funciones. V@'ease tambi@'en @code{disp}.
 
-@example
-(%i1) display(B[1,2]);
-                                      2
-                         B     = X - X
-                          1, 2
-(%o1)                            done
-@end example
+Ejemplos:
 
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c display(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) display(x, b[1,2], sin(1.0));
+                             x = 123
+
+                                      2
+                         b     = x - x
+                          1, 2
+
+                  sin(1.0) = .8414709848078965
+
+(%o3)                         done
+@end example
 @end deffn
+
+
+
 
 @defvr {Variable opcional} display2d
 Valor por defecto: @code{true}
 
-Si @code{display2d} vale @code{false}, la salida por consola es una cadena unidimensional, en lugar de una expresi@'on bidimensional.
+Si @code{display2d} vale @code{false}, la salida por consola es
+una cadena unidimensional, en lugar de una expresi@'on bidimensional.
 
+Ejemplo:
+
+@c ===beg===
+@c x/(x^2+1);
+@c display2d:false$
+@c x/(x^2+1);
+@c ===end===
+@example
+(%i1) x/(x^2+1);
+                               x
+(%o1)                        ------
+                              2
+                             x  + 1
+(%i2) display2d:false$
+(%i3) x/(x^2+1);
+(%o3) x/(x^2+1)
+@end example
 @end defvr
+
+
+
 
 @defvr {Variable opcional} display_format_internal
 Valor por defecto: @code{false}
@@ -630,12 +726,18 @@ Incluso si hay un @'unico directorio en @var{pathlist}, debe ser suministrado co
 El usuario puede modificar los directorios de b@'usqueda por defecto; v@'ease para ello See @code{file_search_maxima}.
 
 La funci@'on @code{file_search} es llamada por @code{load} con los directorios de b@'usqueda @code{file_search_maxima} y @code{file_search_lisp}.
-
 @end deffn
+
+
+
+
 
 @defvr {Variable opcional} file_search_maxima
 @defvrx {Variable opcional} file_search_lisp
 @defvrx {Variable opcional} file_search_demo
+@defvrx {Variable opcional} file_search_usage
+@defvrx {Variable opcional} file_search_tests
+
 Estas variables especifican listas de directorios en los que deben buscar la funciones  @code{load}, @code{demo} y algunas otras. Los valores por defecto de estas variables nombran directorios de la instalaci@'on de Maxima.
 
 El usuario puede modificar estas variables, bien reemplazando los valores por defecto, bien a@~nadiendo nuevos directorios.
@@ -664,8 +766,10 @@ Por ejemplo, suponiendo que se busca el nombre @code{neumann},
 @end example
 
 se interpreta como @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac} y @code{/home/gcj/neumann.mac}.
-
 @end defvr
+
+
+
 
 @deffn {Funci@'on} file_type (@var{filename})
 Devuelve una descripci@'on del contenido de @var{filename} basada en la extensi@'on, sin intentar abrir el archivo para inspeccionar su contenido.

@@ -1,4 +1,4 @@
-@c version 1.30
+@c version 1.33
 @menu
 * Introducci@'on a los polinomios::  
 * Funciones y variables para polinomios::  
@@ -473,14 +473,37 @@ Valor por defecto: @code{false}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
 Si @code{factorflag} vale @code{false} se evita la factorizaci@'on de factores enteros de expresiones racionales.
-
 @end defvr
 
-@deffn {Funci@'on} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
-Reorganiza la suma @var{expr} como una suma de t@'erminos de la forma @code{f (@var{x_1}, @var{x_2}, ...)*g} donde @code{g} es un producto de expresiones que no contienen ning@'un @var{x_i} y @code{f} se factoriza.
-@c NEED EXAMPLE HERE
 
+
+
+@deffn {Funci@'on} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
+Reorganiza la suma @var{expr} como una suma de t@'erminos de la forma 
+@code{f (@var{x_1}, @var{x_2}, ...)*g}, donde @code{g} es un producto 
+de expresiones que no contienen ning@'un @var{x_i} y @code{f} se factoriza.
+
+N@'otese que @code{factorout} ignora la variable opcional @code{keepfloat}.
+
+Ejemplo:
+
+@c ===beg===
+@c expand (a*(x+1)*(x-1)*(u+1)^2);
+@c factorout(%,x);
+@c ===end===
+@example
+(%i1) expand (a*(x+1)*(x-1)*(u+1)^2);
+             2  2          2      2      2
+(%o1)     a u  x  + 2 a u x  + a x  - a u  - 2 a u - a
+(%i2) factorout(%,x);
+         2
+(%o2) a u  (x - 1) (x + 1) + 2 a u (x - 1) (x + 1)
+                                              + a (x - 1) (x + 1)
+@end example
 @end deffn
+
+
+
 
 @deffn {Funci@'on} factorsum (@var{expr})
 Intenta agrupar t@'erminos en los factores de @var{expr} que son sumas en grupos de t@'erminos tales que su suma sea factorizable. La funci@'on @code{factorsum} puede restablecer el recuperar de @code{expand ((x + y)^2 + (z + w)^2)} pero no puede recuperar @code{expand ((x + 1)^2 + (x + y)^2)} porque los t@'erminos tienen variables comunes.
@@ -758,6 +781,8 @@ factorizar enteros grandes.
 @end defvr
 
 
+
+
 @defvr {Variable opcional} keepfloat
 Valor por defecto: @code{false}
 
@@ -797,6 +822,9 @@ Ejemplos:
 (%o3)                               [x = 1]
 @end example
 @end defvr
+
+
+
 
 @deffn {Funci@'on} lratsubst (@var{L}, @var{expr})
 Esta funci@'on es similar a @code{subst (@var{L}, @var{expr})}, excepto por el hecho de que utiliza @code{ratsubst} en lugar de @code{subst}.
@@ -1298,16 +1326,17 @@ Ejemplos:
 @end deffn
 
 
+
 @defvr {Variable opcional} ratsimpexpons
 Valor por defecto: @code{false}
 
 Si @code{ratsimpexpons} vale @code{true}, @code{ratsimp} se aplica a los exponentes de las expresiones durante la simplificaci@'on.
-
-@c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
 @end defvr
 
 
+
 @deffn {Funci@'on} ratsubst (@var{a}, @var{b}, @var{c})
+
 Sustituye @var{b} por @var{a} en @var{c} y devuelve la expresi@'on resultante.
 @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
 El argumento @var{b} puede ser una suma, un producto, una potencia, etc.
@@ -1319,9 +1348,12 @@ cuando @code{ratsubst} devuelve @code{z + a}.
 Si @code{radsubstflag} vale @code{true},
 @code{ratsubst} sustituye radicales en expresiones que no los contienen expl@'{@dotless{i}}citamente.
 
+@code{ratsubst} ignora el valor @code{true} de la variable 
+opcional @code{keepfloat}.
+
 Ejemplos:
-@c EXAMPLES BELOW ADAPTED FROM examples (ratsubst)
-@c WITH SOME ADDITIONAL STUFF
+
+@c ===beg===
 @c ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
 @c cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
 @c ratsubst (1 - sin(x)^2, cos(x)^2, %);
@@ -1330,7 +1362,7 @@ Ejemplos:
 @c ratsubst (u, sqrt(x), x);
 @c radsubstflag: true$
 @c ratsubst (u, sqrt(x), x);
-
+@c ===end===
 @example
 (%i1) ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
                               3      4
@@ -1352,8 +1384,9 @@ Ejemplos:
                                 2
 (%o8)                          u
 @end example
-
 @end deffn
+
+
 
 @deffn {Funci@'on} ratvars (@var{x_1}, ..., @var{x_n})
 @deffnx {Funci@'on} ratvars ()

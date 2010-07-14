@@ -82,20 +82,53 @@ La variable @code{genindex} es el prefijo alfab@'etico utilizado para generar la
 Valor por defecto: 0
 
 La variable @code{gensumnum} es el sufijo num@'erico utilizado para generar la siguiente variable de sumaci@'on. Si vale  @code{false} entonces el @'{@dotless{i}}ndice consistir@'a solamente de  @code{genindex}, sin sufijo num@'erico.
-
 @end defvr
 
-@defvr {Constante} inf
 
-S@'{@dotless{i}}mbolo que identifica al infinito positivo dentro de un contexto de n@'umeros reales.
 
-@end defvr
+@deffn  {Funci@'on} gensym ()
+@deffnx {Funci@'on} gensym (@var{x})
 
-@defvr {Constante} infinity
+@code{gensym()} crea y devuelve una nueva s@'{@dotless{i}}mbolo o
+variable sin valor asignado.
 
-S@'{@dotless{i}}mbolo que identifica al infinito complejo, una magnitud infinita con @'angulo de fase arbitrario.  V@'eanse tambi@'en @code{inf} y @code{minf}.
+El nombre del nuevo s@'{@dotless{i}}mbolo est@'a formado por la
+concatenaci@'on de un prefijo, cuyo valor por defecto es "g", y de
+un sufijo, el cual es la representaci@'on decimal de un n@'umero que
+coincide, por defecto, con el valor de un contador interno de Lisp.
 
-@end defvr
+En caso de suministrar el argumento @var{x}, siendo este una cadena,
+se utilizar@'a como prefijo en lugar de "g", lo cual tendr@'a efecto
+s@'olo para esta llamada a @code{gensym}·
+
+En caso de suministrar el argumento @var{x}, siendo este un n@'umero
+entero, se utilizar@'a como sufijo en lugar del contador interno de
+Lisp, lo cual tendr@'a efecto s@'olo para esta llamada a @code{gensym}·
+
+Si no se suministra el sufijo en forma expl@'{@dotless{i}}cita, y s@'olo
+en este caso, el contador interno sufrir@'a un incremento despu@'es de
+haber sido utilizado.
+
+Ejemplos:
+
+@c ===beg===
+@c gensym();
+@c gensym("new");
+@c gensym(123);
+@c ===end===
+@example
+(%i1) gensym();
+(%o1)                         g887
+(%i2) gensym("new");
+(%o2)                        new888
+(%i3) gensym(123);
+(%o3)                         g123
+@end example
+@end deffn
+
+
+
+
 
 @defvr {Variable del sistema} infolists
 Valor por defecto: @code{[]}

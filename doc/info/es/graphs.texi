@@ -1,4 +1,4 @@
-@c english version 1.16
+@c english version 1.17
 @menu
 * Introducci@'on a graphs::
 * Funciones y variables para graphs::
@@ -524,7 +524,7 @@ Ejemplo:
 @end example
 @end deffn
 
-@deffn {Funci@'on} biconected_components (@var{gr})
+@deffn {Funci@'on} biconnected_components (@var{gr})
 Devuelve los subconjuntos de v@'ertices biconectados del grafo @var{gr}.
 
 Ejemplo:
