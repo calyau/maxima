@@ -39,12 +39,6 @@
 
 (defvar *windows-OS* (string= *autoconf-win32* "true"))
 
-;; this variable is used when working with
-;; multiple windows. Empty string means
-;; we are working with only one window
-(defvar *terminal-number* "")
-
-
 (defmacro write-font-type ()
    '(if (string= (get-option '$font) "")
       ""
@@ -231,6 +225,34 @@
 
 
 
+;; update option terminal
+;; ----------------------
+;; *draw-terminal-number* is used when working with
+;; multiple windows. Empty string means
+;; we are working with only one window
+(defvar *draw-terminal-number* "")
+
+(defun update-terminal (val)
+  (let ((terms '($screen $png $jpg $gif $eps $eps_color $svg
+                 $pdf $pdfcairo $wxt $animated_gif $aquaterm)))
+     (cond
+       ((member val terms)
+          (setf (gethash '$terminal *gr-options*) val
+                *draw-terminal-number* ""))
+       ((and ($listp val)
+             (= ($length val) 2)
+             (member (cadr val) '($screen $wxt $aquaterm))
+             (integerp (caddr val))
+             (>= (caddr val) 0))
+          (setf (gethash opt *gr-options*) (cadr val)
+                *draw-terminal-number* (caddr val)))
+       (t
+          (merror "draw: illegal terminal specification: ~M" val)))))
+
+
+
+
+
 
 
 ;; update option transform
@@ -396,7 +418,11 @@
 (defun ini-global-options ()
   (setf ; global options
       (gethash '$columns *gr-options*)      1
-      (gethash '$terminal *gr-options*)     '$screen
+      (gethash '$terminal *gr-options*)     '$screen  ; defined as screen, png, jpg, gif, svg,
+                                                      ; eps, eps_color, pdf, pdfcairo, wxt or
+                                                      ; aquaterm. A list of type [term, number]
+                                                      ; is also admited if term is screen, wxt
+                                                      ; or aquaterm
       (gethash '$pic_width *gr-options*)    640    ; points for bitmap pictures
       (gethash '$pic_height *gr-options*)   480    ; points for bitmap pictures
       (gethash '$eps_width *gr-options*)    12     ; cm for eps pictures
@@ -576,22 +602,8 @@
                                          ")")))))
                   (t
                      (merror "draw: illegal tics allocation: ~M" val)) ))
-      ($terminal ; defined as screen, png, jpg, gif, eps, eps_color, pdf, pdfcairo, wxt or aquaterm.
-                 ; A list of type [term, number] is also admited if term is screen, wxt or aquaterm
-            (let ((terms '($screen $png $jpg $gif $eps $eps_color $pdf $pdfcairo $wxt $animated_gif $aquaterm)))
-              (cond
-                ((member val terms)
-                   (setf (gethash opt *gr-options*) val
-                         *terminal-number* ""))
-                ((and ($listp val)
-                      (= ($length val) 2)
-                      (member (cadr val) '($screen $wxt $aquaterm))
-                      (integerp (caddr val))
-                      (>= (caddr val) 0))
-                   (setf (gethash opt *gr-options*) (cadr val)
-                         *terminal-number* (caddr val)))
-                (t
-                   (merror "draw: illegal terminal specification: ~M" val)))))
+      ($terminal
+        (update-terminal val))
       ($head_type ; defined as $filled, $empty and $nofilled
             (if (member val '($filled $empty $nofilled))
                 (setf (gethash opt *gr-options*) val)
@@ -3540,14 +3552,14 @@
     ; when one multiplot window is active, change of terminal is not allowed
     (if (not *multiplot-is-active*)
     (case (gethash '$terminal *gr-options*)
-        ($png (format cmdstorage "set terminal png ~a size ~a, ~a ~a~%set out '~a.png'"
+        ($png (format cmdstorage "set terminal png truecolor ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_bgcolor)
                            (get-option '$file_name) ) )
         ($eps (format cmdstorage "set terminal postscript eps enhanced ~a size ~acm, ~acm~%set out '~a.eps'"
-                           (write-font-type) ; other alternatives are Arial, Courier
+                           (write-font-type)
                            (get-option '$eps_width)
                            (get-option '$eps_height)
                            (get-option '$file_name)))
@@ -3578,6 +3590,11 @@
                            (get-option '$pic_height)
                            (get-option '$file_bgcolor)
                            (get-option '$file_name)))
+        ($svg (format cmdstorage "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
+                           (write-font-type)
+                           (get-option '$pic_width)
+                           (get-option '$pic_height)
+                           (get-option '$file_name)))
         ($animated_gif (format cmdstorage "set terminal gif animate ~a size ~a, ~a delay ~a ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
@@ -3586,10 +3603,10 @@
                            (get-option '$file_bgcolor)
                            (get-option '$file_name)))
         ($aquaterm (format cmdstorage "set terminal aqua ~a ~a~%"
-                           *terminal-number*
+                           *draw-terminal-number*
                            (write-font-type)))
         ($wxt (format cmdstorage "set terminal wxt ~a ~a~%"
-                           *terminal-number*
+                           *draw-terminal-number*
                            (write-font-type)))
         (otherwise ; default screen output
           (cond
@@ -3598,7 +3615,7 @@
                           (write-font-type)))
             (t  ; other platforms
               (format cmdstorage "set terminal x11 ~a ~a~%"
-                           *terminal-number*
+                           *draw-terminal-number*
                            (write-font-type))))) ))
 
     ; compute some parameters for multiplot
@@ -3693,15 +3710,19 @@
           (t ; non animated gif
              ; command file maxout.gnuplot is now ready
              (format cmdstorage "~%")
-
              (cond ((> (length scenes) 1)
                       (format cmdstorage "unset multiplot~%"))
                    ; if we want to save the coordinates in a file,
                    ; print them when hitting the x key after clicking the mouse button
                    ((not (string= (gethash '$xy_file *gr-options*) ""))
-                      (format cmdstorage "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
-                                   (gethash '$xy_file *gr-options*))) )
+                      (format cmdstorage
+                              "set print \"~a\" append~%bind x \"print MOUSE_X,MOUSE_Y\"~%"
+                              (gethash '$xy_file *gr-options*))) )
 
+             ; in svg format, unset output to force
+             ; Gnuplot to write </svg> at the end of the file
+             (when (equal (get-option '$terminal) '$svg)
+                (format cmdstorage "unset output~%"))
              (close cmdstorage)
 
              ; get the plot
@@ -3789,6 +3810,11 @@
                            (get-option '$pic_height)
                            (get-option '$file_bgcolor)
                            (get-option '$file_name))))
+      ($svg (format cmdstorage "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
+                           (write-font-type)
+                           (get-option '$pic_width)
+                           (get-option '$pic_height)
+                           (get-option '$file_name)))
       (otherwise (merror "draw: unknown file format" )))
    (send-gnuplot-command (format nil "~a~%replot" str)) ))
 

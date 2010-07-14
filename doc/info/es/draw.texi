@@ -1,4 +1,4 @@
-@c version 1.49
+@c version 1.50
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -984,8 +984,8 @@ V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_height}.
 @defvr {Opci@'on gr@'afica} file_bgcolor
 Valor por defecto: @code{"xffffff"}
 
-Establece el color de fondo en los terminales png, jpg y gif. 
-Los colores deben definirse en c@'odigo hexadecimal @i{rgb}.
+Establece el color de fondo en los terminales @code{gif}, @code{png}, @code{jpg}
+y @code{gif}. Los colores deben definirse en c@'odigo hexadecimal @i{rgb}.
 Nombres de colores no est@'an permitidos. El color de fondo
 por defecto es blanco.
 @end defvr
@@ -996,9 +996,9 @@ por defecto es blanco.
 @defvr {Opci@'on gr@'afica} file_name
 Valor por defecto: @code{"maxima_out"}
 
-@code{file_name} es el nombre del fichero en el que los terminales @code{png}, 
-@code{jpg}, @code{eps}, @code{pdf} and @code{pdfcairo} y @code{eps_color}
-guardar@'an el gr@'afico.
+@code{file_name} es el nombre del fichero en el que los terminales @code{png},
+@code{jpg}, @code{gif}, @code{eps}, @code{eps_color}, @code{pdf}, @code{pdfcairo}
+y @code{svg} guardar@'an el gr@'afico.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
@@ -1809,7 +1809,7 @@ V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pdf_height}.
 Valor por defecto: 640
 
 @code{pic_height} es la altura del fichero de imagen de bits generado por
-los terminales @code{png} y @code{jpg}.
+los terminales @code{gif}, @code{png}, @code{jpg} y @code{svg}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
@@ -1835,7 +1835,7 @@ V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{pic_width}.
 Valor por defecto: 640
 
 @code{pic_width} es la anchura del fichero de imagen de bits generado por
-los terminales @code{png} y @code{jpg}.
+los terminales @code{gif}, @code{png}, @code{jpg} y @code{svg}.
 
 Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
@@ -2106,7 +2106,8 @@ Valor por defecto: @code{screen}
 
 Selecciona el terminal a utilizar por Gnuplot; valores posibles son:
 @code{screen} (por defecto), @code{png}, @code{jpg}, @code{eps}, @code{eps_color},
-@code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt} y @code{aquaterm}.
+@code{pdf}, @code{pdfcairo}, @code{gif}, @code{animated_gif}, @code{wxt}, @code{svg}
+y @code{aquaterm}.
 
 Los terminales @code{screen}, @code{wxt} y @code{aquaterm} tambi@'en se pueden 
 definir como una lista de dos elementos: el propio nombre del terminal y un 
@@ -2118,8 +2119,8 @@ Puesto que @'esta es una opci@'on global, su posici@'on dentro de la
 descripci@'on de la escena no reviste importancia. Tambi@'en puede
 usarse como argumento de la funci@'on @code{draw}.
 
-pdfcairo necesita Gnuplot 4.3. Actualmente (Nov 2008) Gnuplot 4.3 es una versi@'on en desarrollo.
-pdf necesita que Gnuplot 4.2/4.3 haya sido compilado con la opci@'on @code{--enable-pdf} y libpdf debe
+pdfcairo necesita Gnuplot 4.3. 
+@code{pdf} necesita que Gnuplot haya sido compilado con la opci@'on @code{--enable-pdf} y libpdf debe
 estar instalado (@url{http://www.pdflib.com/en/download/pdflib-family/pdflib-lite/}).
 
 Ejemplos:
