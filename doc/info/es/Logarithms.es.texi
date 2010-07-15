@@ -1,4 +1,4 @@
-@c english version 1.17
+@c english version 1.20
 @menu
 * Funciones y variables para logaritmos::  
 @end menu
@@ -10,13 +10,20 @@
 Valor por defecto: @code{false}
 
 Si @code{%e_to_numlog} vale @code{true}, @code{r} es un n@'umero racional y @code{x} una expresi@'on, @code{%e^(r*log(x))} se reduce a @code{x^r} .  T@'engase en cuenta que la instrucci@'on @code{radcan} tambi@'en hace este tipo de transformaciones, as@'{@dotless{i}} como otras m@'as complicadas. La instrucci@'on @code{logcontract} "contrae" expresiones que contienen alg@'un @code{log}.
-
 @end defvr
 
+
+
+
 @deffn {Funci@'on} li [@var{s}] (@var{z})
+
 Representa la funci@'on polilogar@'{@dotless{i}}tmica de orden @var{s} y argumento @var{z},
 definida por la serie infinita
 
+@tex
+$${\rm Li}_s \left(z\right) = \sum_{k=1}^\infty {z^k \over k^s}$$
+@end tex
+@ifnottex
 @example
                                  inf
                                  ====   k
@@ -26,6 +33,7 @@ definida por la serie infinita
                                  ====  k
                                  k = 1
 @end example
+@end ifnottex
 
 @code{li [1]} es @code{- log (1 - z)}.
 @code{li [2]} y @code{li [3]} son las funciones di- y trilogaritmo, respectivamente.
@@ -94,21 +102,51 @@ Maxima no tiene definida una funci@'on para el logaritmo de base 10 u
 otras bases. El usuario puede hacer uso de la definici@'on 
 @code{log10(x) := log(x) / log(10)}.
 
-La simplificaci@'on y evaluaci@'on de logaritmos se controla cciertas variables globales:
+La simplificaci@'on y evaluaci@'on de logaritmos se controla con
+ciertas variables globales:
 
-@code{logexpand} - hace que @code{log(a^b)} se convierta en @code{b*log(a)}.
+@table @code
+@item @code{logexpand}
+hace que @code{log(a^b)} se convierta en @code{b*log(a)}.
 Si toma el valor @code{all}, @code{log(a*b)} tambi@'en se reducir@'a a  @code{log(a)+log(b)}.
-Si toma el valor @code{super}, entonces @code{log(a/b)} tambi@'en se reducir@'a a @code{log(a)-log(b)}, siendo @code{a/b} racional y @code{a#1},  (la expresi@'on @code{log(1/b)}, para @code{b} entero, se simplifica siempre).  Si toma el valor  @code{false}, se desactivar@'an todas estas simplificaciones.
+Si toma el valor @code{super}, entonces @code{log(a/b)} tambi@'en se reducir@'a a
+@code{log(a)-log(b)}, siendo @code{a/b} racional con @code{a#1}, 
+(la expresi@'on @code{log(1/b)}, para @code{b} entero, se simplifica siempre). 
+Si toma el valor  @code{false}, se desactivar@'an todas estas simplificaciones.
 
-@code{logsimp} - si vale @code{false}, entonces no se transforma @code{%e} a potencias que contengan logaritmos.
+@item @code{logsimp}
+si vale @code{false}, entonces no se transforma @code{%e} a potencias que contengan logaritmos.
 
-@code{lognumer} - si vale @code{true}, entonces los argumentos de @code{log} que sean n@'umeros decimales negativos en coma flotante se convertir@'an siempre a su valor absoluto antes de aplicar @code{log}.  Si @code{numer} vale tambi@'en @code{true}, entonces los argumentos enteros negativos de @code{log} tambi@'en se convertir@'an en su valor absoluto.
+@item @code{lognumer}
+si vale @code{true}, entonces los argumentos de @code{log} que sean n@'umeros
+decimales negativos en coma flotante se convertir@'an siempre a su valor 
+absoluto antes de aplicar @code{log}.  Si @code{numer} vale tambi@'en @code{true}, 
+entonces los argumentos enteros negativos de @code{log} tambi@'en se convertir@'an 
+en su valor absoluto.
 
-@code{lognegint} - si vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi} siendo @code{n} un entero positivo.
+@item @code{lognegint}
+si vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi},
+siendo @code{n} un entero positivo.
 
-@code{%e_to_numlog} - si vale @code{true}, @code{r} es un n@'umero racional y @code{x} una expresi@'on, @code{%e^(r*log(x))} se reduce a @code{x^r} .  T@'engase en cuenta que la instrucci@'on @code{radcan} tambi@'en hace este tipo de transformaciones, as@'{@dotless{i}} como otras m@'as complicadas. La instrucci@'on @code{logcontract} "contrae" expresiones que contienen alg@'un @code{log}.
+@item @code{%e_to_numlog}
+si vale @code{true}, @code{r} es un n@'umero racional y @code{x} una expresi@'on,
+@code{%e^(r*log(x))} se reduce a @code{x^r}. T@'engase en cuenta que la 
+instrucci@'on @code{radcan} tambi@'en hace este tipo de transformaciones, 
+as@'{@dotless{i}} como otras m@'as complicadas. La instrucci@'on @code{logcontract}
+"contrae" expresiones que contengan alg@'un @code{log}.
+@end table
+
+
+
 
 @end deffn
+
+
+
+
+
+
+
 
 @defvr {Variable opcional} logabs
 Valor por defecto: @code{false}
@@ -162,14 +200,21 @@ Si se hace @code{declare(n,integer);} entonces @code{logcontract(2*a*n*log(x));}
 
 @end deffn
 
+
+
 @defvr {Variable opcional} logexpand
-Valor por defecto: @code{true}
+Valor por defecto: @code{false}
 
-Si @code{logexpand} vale @code{true} hace que @code{log(a^b)} se convierta en @code{b*log(a)}.
-Si toma el valor @code{all}, @code{log(a*b)} tambi@'en se reducir@'a a  @code{log(a)+log(b)}.
-Si toma el valor @code{super}, entonces @code{log(a/b)} tambi@'en se reducir@'a a @code{log(a)-log(b)}, siendo @code{a/b} racional y @code{a#1},  (la expresi@'on @code{log(1/b)}, para @code{b} entero, se simplifica siempre).  Si toma el valor  @code{false}, se desactivar@'an todas estas simplificaciones.
-
+Si @code{logexpand} vale @code{true} hace que @code{log(a^b)} se convierta
+en @code{b*log(a)}. Si toma el valor @code{all}, @code{log(a*b)} tambi@'en se
+reducir@'a a  @code{log(a)+log(b)}. Si toma el valor @code{super}, entonces 
+@code{log(a/b)} tambi@'en se reducir@'a a @code{log(a)-log(b)}, siendo 
+@code{a/b} racional con @code{a#1},  (la expresi@'on @code{log(1/b)}, para
+@code{b} entero, se simplifica siempre). Si toma el valor  @code{false},
+que es el valor por defecto, se desactivar@'an todas estas simplificaciones.
 @end defvr
+
+
 
 @defvr {Variable opcional} lognegint
 Valor por defecto: @code{false}

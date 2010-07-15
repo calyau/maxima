@@ -1,4 +1,4 @@
-@c version 1.36
+@c version 1.37
 @menu
 * Introducci@'on a las listas::       
 * Funciones y variables para listas::       
@@ -401,14 +401,87 @@ Ejemplos:
 (%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
 (%o8)                         true
 @end example
-
 @end deffn
+
+
 
 @deffn {Funci@'on} ninth (@var{expr})
 
 Devuelve el noveno elemento de la lista o expresi@'on @var{expr}. V@'ease @code{first} para m@'as detalles.
-
 @end deffn
+
+
+
+@deffn {Funci@'on} pop (@var{list})
+
+Borra el primer elemento de la lista @var{list} y devuelve este
+mismo elemento.
+
+Si el argumento @var{list} es una lista vac@'{@dotless{i}}a, o
+simplemente no es una lista, Maxima devuelve un mensaje de error.
+
+V@'ease @code{push} para los ejemplos.
+
+Ejec@'utese @code{load(basic)} antes de utilizar esta funci@'on.
+@end deffn
+
+
+
+
+@deffn {Funci@'on} push (@var{item}, @var{list})
+
+A@~nade al comienzo de la lista @var{list} el elemento @var{item},
+devolviendo este mismo elemento. El argumento @var{list} debe ser necesariamente
+una lista, mientras que @var{item} puede ser cualquier s@'{@dotless{i}}mbolo
+o expresi@'on.
+
+Si el argumento @var{list} no es una lista, Maxima devuelve un
+mensaje de error.
+
+V@'ease @code{pop} para eliminar el primer elemento de una lista.
+
+Ejec@'utese @code{load(basic)} antes de utilizar esta funci@'on.
+
+Ejemplos:
+
+@c ===beg===
+@c ll:[];
+@c push(x,ll);
+@c push(x^2+y,ll);
+@c a:push("string",ll);
+@c pop(ll);
+@c pop(ll);
+@c pop(ll);
+@c ll;
+@c a;
+@c ===end===
+@example
+(%i1) ll:[];
+(%o1)                          []
+(%i2) push(x,ll);
+(%o2)                          [x]
+(%i3) push(x^2+y,ll);
+                                 2
+(%o3)                      [y + x , x]
+(%i4) a:push("string",ll);
+                                     2
+(%o4)                  [string, y + x , x]
+(%i5) pop(ll);
+(%o5)                        string
+(%i6) pop(ll);
+                                  2
+(%o6)                        y + x
+(%i7) pop(ll);
+(%o7)                           x
+(%i8) ll;
+(%o8)                          []
+(%i9) a;
+                                     2
+(%o9)                  [string, y + x , x]
+@end example
+@end deffn
+
+
 
 @deffn {Funci@'on} unique (@var{L})
 
