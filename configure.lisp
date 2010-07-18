@@ -139,7 +139,7 @@
 			      (cons "@VERSION@" (get-version))
 			      (cons "@win32@" win32-string)
 			      (cons "@default_layout_autotools@" "false")
-			      (cons "@POSIX_SHELL@" "/bin/sh")
+			      (cons "@POSIX_SHELL@" shell)
 			      (cons "@expanded_top_srcdir@" 
 				    (replace-substring prefix "\\" "\\\\"))
 			      (cons "@DEFAULTLISP@" *maxima-lispname*)
