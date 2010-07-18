@@ -164,6 +164,7 @@ Paquetes adicionales
 * linearalgebra::               Funciones de @'algebra lineal.
 * lsquares::                    M@'{@dotless{i}}nimos cuadrados.
 * makeOrders::                  Utilidad sobre polinomios.
+* minpack::                     Funciones MINPACK para optimizaci@'on y c@'alculo de ra@'{@dotless{i}}ces
 * mnewton::                     M@'etodo de Newton.
 * numericalio::                 Lectura y escritura de ficheros.
 * opsubst::                     Utilidad para sustituciones.
@@ -511,6 +512,11 @@ makeOrders
 
 * Funciones y variables para makeOrders::
 
+minpack
+
+* Introducci@'on a minpack::
+* Funciones y variables para minpack::
+
 mnewton
 
 * Funciones y variables para mnewton::
@@ -833,11 +839,15 @@ zeilberger
 @chapter lsquares
 @include lsquares.texi
 
-@node makeOrders, mnewton, lsquares, Top
+@node makeOrders, minpack, lsquares, Top
 @chapter makeOrders
 @include makeOrders.texi
 
-@node mnewton, numericalio, makeOrders, Top
+@node minpack, mnewton, makeOrders, Top
+@chapter minpack
+@include minpack.texi
+
+@node mnewton, numericalio, minpack, Top
 @chapter mnewton
 @include mnewton.texi
 
