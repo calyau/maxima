@@ -61,17 +61,23 @@ is possible.
 
 @example
 /* Problem 6: Powell singular function */
-(%i1) powell(x1,x2,x3,x4) := [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, sqrt(10)*(x1-x4)^2]$
-(%i2) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1]);
+(%i1) powell(x1,x2,x3,x4) := 
+         [x1+10*x2, sqrt(5)*(x3-x4), (x2-2*x3)^2, 
+              sqrt(10)*(x1-x4)^2]$
+(%i2) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], 
+                       [3,-1,0,1]);
 (%o2) [[1.652117596168394e-17, - 1.652117596168393e-18, 
-       2.643388153869468e-18, 2.643388153869468e-18], 6.109327859207777e-34, 4] 
+        2.643388153869468e-18, 2.643388153869468e-18], 
+       6.109327859207777e-34, 4] 
 @end example
 
 @example
 /* Same problem but use numerical approximation to Jacobian */
-(%i3) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], [3,-1,0,1], jacobian = false);
+(%i3) minpack_lsquares(powell(x1,x2,x3,x4), [x1,x2,x3,x4], 
+                       [3,-1,0,1], jacobian = false);
 (%o3) [[5.060282149485331e-11, - 5.060282149491206e-12, 
-       2.179447843547218e-11, 2.179447843547218e-11], 3.534491794847031e-21, 5]
+        2.179447843547218e-11, 2.179447843547218e-11], 
+       3.534491794847031e-21, 5]
 @end example
 
 @end deffn
