@@ -339,4 +339,5 @@
   :depends-on ("lapack")
   :components
   (
-   (:file "eigensys")))
+   (:file "eigensys")
+   (:file "dgesv")))
