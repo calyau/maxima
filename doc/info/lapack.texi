@@ -194,11 +194,11 @@ The elements of @var{A} and @var{b} must evaluate to real floating point numbers
 (%o4)                        2.220446049250313E-16
 @end example
 
-@end deffn
-
 @opencatbox
 @category{Package lapack} @category{Linear equations}
 @closecatbox
+
+@end deffn
 
 @deffn {Function} dgesvd (@var{A})
 @deffnx {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
