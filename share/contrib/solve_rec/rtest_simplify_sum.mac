@@ -501,3 +501,12 @@ test_sum(
   6
 );
 0;
+
+test_sum(
+  sum(1/(sqrt(k*(k + 1)) * (sqrt(k) + sqrt(k + 1))), k, 1, inf),
+  [],
+  false,
+  [],
+  1
+);
+0;

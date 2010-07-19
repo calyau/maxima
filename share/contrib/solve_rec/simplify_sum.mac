@@ -57,6 +57,7 @@ define_variable(use_gosper, true, boolean)$
 define_variable(use_ratfun, true, boolean)$
 define_variable(use_zeilberger, true, boolean)$
 define_variable(use_hypergeometric, true, boolean)$
+define_variable(use_telescoping, true, boolean)$
 
 define_variable(simplify_sum_depth, 0, fixnum)$
 define_variable(simplify_sum_max_depth, 3, fixnum)$
@@ -71,8 +72,7 @@ define_variable(verbose_level, 0, fixnum)$
 
 ss_print_message(level, [mess]) :=
   if verbose_level>=level then (
-    apply(print, mess)
-  )$
+    apply(print, mess))$
 
 /*******************
  *
@@ -280,6 +280,15 @@ simplify_sum(expr) :=
          ss_print_message(1, "Converting to hypergeometrical sum ..."),
          sm1 : to_hypergeometric(summand, var, lo, hi),
          ss_print_message(1, "hgfred method returns:", sm1)),
+
+
+    if sm1=false then
+      sm1 : expr,
+
+    if not(atom(sm1)) and not( freeof_sum(sm1) ) and use_telescoping=true then (
+      ss_primt_message(1, "Using telescoping ..."),
+      sm1: telescoping_sum(summand, var, lo, hi),
+      ss_primt_semmace(1, "telescoping method returns:", sm1)),
 
     if sm1=false then
       sm1 : expr,
@@ -847,6 +856,42 @@ sum_by_integral(expr, var, lo, hi) :=
     else apply('sum, [expr, var, lo, hi]))
 
   else apply('sum, [expr, var, lo, hi])$
+
+/*****
+ * recognize sums of the form sum(f(n) - f(n+1), n, a, b) where f(n)=f1(n)/f2(n) for
+ * simple functions f1 and f2.
+ ****/
+
+find_f2(expr) :=
+  if mapatom(expr) then (if subvarp(expr) then [expr] else [])
+  else if member(part(expr, 0), ["+", "-", "/", "*"]) then
+    apply(append, map(find_f2, args(expr)))
+  else [expr]$
+
+find_f1(expr, f2, var) := block(
+  [f21: ratsimp(subst(var=var+1, f2)), f1, f11, algebraic:true],
+  expr: ratsimp(expr*f2*f21),
+  f1: coeff(ratsimp(expr), f21),
+  f11: subst(var=var+1, f1),
+  expr: radcan(expr - f21*f1 + f2*f11),
+  if expr=0 then f1
+  else false)$
+
+find_quotient(expr, var) := block(
+  [f2_list, f1, quotient: false],
+  f2_list: find_f2(expr),
+  for f2 in f2_list while quotient=false do (
+    f1: find_f1(expr, f2, var),
+    if f1#false then
+      quotient: f1/f2),
+  quotient)$
+
+telescoping_sum(expr, var, lo, hi) := block(
+  [quotient: find_quotient(expr, var)],
+  if quotient#false then
+    (if lo=minf then limit(quotient, var, lo) else subst(var=lo, quotient)) -
+    (if hi=inf then limit(quotient, var, hi) else subst(var=hi+1, quotient))
+  else false)$
 
 eval_when(batch,
           ttyoff : false,
