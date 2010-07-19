@@ -1,4 +1,4 @@
-@c english version 1.5
+@c english version 1.6
 @menu
 * Introducci@'on a lapack::
 * Funciones y variables para lapack::
@@ -94,10 +94,113 @@ Ejemplo:
 (%o8)                [                    ]
                      [ 0.0       0.0      ]
 @end example
+@end deffn
 
 
+
+@deffn {Funci@'on} dgesv (@var{A}, @var{b})
+
+Calcula la soluci@'on @var{x} de la ecuaci@'on @math{@var{A} @var{x} = @var{b}},
+siendo @var{A} una matriz cuadrada y @var{b} otra matriz con el mismo
+n@'umero de filas que @var{A} y un n@'umero arbitrario de columnas. Las 
+dimensiones de la soluci@'on @var{x} son las mismas de @var{b}.
+
+Los elementos de @var{A} y @var{b} deben ser reducibles a n@'umeros decimales
+si se les aplica la funci@'on @code{float}, por lo que tales elementos
+pueden en principio ser de cualquier tipo num@'erico, constantes num@'ericas
+simb@'olicas o cualesquiera expresiones reducibles a un n@'umero decimal.
+Los elementos de @var{x} son siempre n@'umeros decimales. Todas las
+operaciones aritm@'eticas se realizan en coma flotante.
+
+@code{dgesv} calcula la soluci@'on mediante la descomposici@'on LU de @var{A}.
+
+Ejemplos:
+
+@code{dgesv} calcula la soluci@'on @var{x} de la ecuaci@'on 
+@math{@var{A} @var{x} = @var{b}}.
+
+@c ===beg===
+@c A : matrix ([1, -2.5], [0.375, 5]);
+@c b : matrix ([1.75], [-0.625]);
+@c x : dgesv (A, b);
+@c dlange (inf_norm, b - A . x);
+@c ===end===
+@example
+(%i1) A : matrix ([1, -2.5], [0.375, 5]);
+                               [   1    - 2.5 ]
+(%o1)                          [              ]
+                               [ 0.375    5   ]
+(%i2) b : matrix ([1.75], [-0.625]);
+                                  [  1.75   ]
+(%o2)                             [         ]
+                                  [ - 0.625 ]
+(%i3) x : dgesv (A, b);
+                            [  1.210526315789474  ]
+(%o3)                       [                     ]
+                            [ - 0.215789473684211 ]
+(%i4) dlange (inf_norm, b - A.x);
+(%o4)                                 0.0
+@end example
+
+@var{b} una matriz con el mismo n@'umero de filas que @var{A}
+y un n@'umero arbitrario de columnas. Las dimensiones de 
+@var{x} son las mismas de @var{b}.
+
+@c ===beg===
+@c A : matrix ([1, -0.15], [1.82, 2]);
+@c b : matrix ([3.7, 1, 8], [-2.3, 5, -3.9]);
+@c x : dgesv (A, b);
+@c dlange (inf_norm, b - A . x);
+@c ===end===
+@example
+(%o0)                                done
+(%i1) A : matrix ([1, -0.15], [1.82, 2]);
+                               [  1    - 0.15 ]
+(%o1)                          [              ]
+                               [ 1.82    2    ]
+(%i2) b : matrix ([3.7, 1, 8], [-2.3, 5, -3.9]);
+                              [  3.7   1    8   ]
+(%o2)                         [                 ]
+                              [ - 2.3  5  - 3.9 ]
+(%i3) x : dgesv (A, b);
+        [  3.103827540695117   1.20985481742191    6.781786185657722  ]
+(%o3)   [                                                             ]
+        [ - 3.974483062032557  1.399032116146062  - 8.121425428948527 ]
+(%i4) dlange (inf_norm, b - A . x);
+(%o4)                       1.1102230246251565E-15
+@end example
+
+Los elementos de @var{A} y @var{b} deben ser reducibles a n@'umeros decimales.
+
+@c ===beg===
+@c A : matrix ([5, -%pi], [1b0, 11/17]);
+@c b : matrix ([%e], [sin(1)]);
+@c x : dgesv (A, b);
+@c dlange (inf_norm, b - A . x);
+@c ===end===
+@example
+(%i1) A : matrix ([5, -%pi], [1b0, 11/17]);
+                               [   5    - %pi ]
+                               [              ]
+(%o1)                          [         11   ]
+                               [ 1.0b0   --   ]
+                               [         17   ]
+(%i2) b : matrix ([%e], [sin(1)]);
+                                  [   %e   ]
+(%o2)                             [        ]
+                                  [ sin(1) ]
+(%i3) x : dgesv (A, b);
+                             [ 0.690375643155986 ]
+(%o3)                        [                   ]
+                             [ 0.233510982552952 ]
+(%i4) dlange (inf_norm, b - A . x);
+(%o4)                        2.220446049250313E-16
+@end example
 
 @end deffn
+
+
+
 
 @deffn {Funci@'on} dgesvd (@var{A})
 @deffnx {Funci@'on} dgesvd (@var{A}, @var{left_p}, @var{right_p})
