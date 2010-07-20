@@ -344,16 +344,16 @@ map (dimensions, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
  length^2*mass/time];
 
 fundamental_dimensions;
-[length, mass, time, current, temperature, quantity];
+[length, mass, time, current, temperature, quantity, luminous_intensity];
 
 map (dimensions_as_list, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
-[[1, 0, - 1, 0, 0, 0],
- [1, 1, - 2, - 2, 0, 0],
- [- 3, - 1, 4, 2, 0, 0],
- [2, 1, - 3, - 2, 0, 0],
- [3, - 1, - 2, 0, 0, 0],
- [2, 1, - 1, 0, 0, 0],
- [2, 1, - 1, 0, 0, 0]];
+[[1, 0, - 1, 0, 0, 0, 0],
+ [1, 1, - 2, - 2, 0, 0, 0],
+ [- 3, - 1, 4, 2, 0, 0, 0],
+ [2, 1, - 3, - 2, 0, 0, 0],
+ [3, - 1, - 2, 0, 0, 0, 0],
+ [2, 1, - 1, 0, 0, 0, 0],
+ [2, 1, - 1, 0, 0, 0, 0]];
 
 map (fundamental_units, [%c, %mu_0, %e_0, %Z_0, %G, %h, %h_bar]);
 [m/s,
@@ -489,3 +489,83 @@ ev (xx, xyz = (1729 + 42/99) ` kg, nouns);
 
 block ([R, w, L, x, y, z], kill (x), R : x ` Ohm, w : z ` Hz, L : y ` H, (R + w*L) `` Ohm);
 (x + y*z) ` Ohm;
+
+/* test new definitions of pound_mass, gallon, slug */
+
+((1 ` pound_force)/(1 ` pound_mass), [dimensions (%%), %% `` cm/s^2]);
+[length/time^2, ''(980665/1000) ` cm/s^2];
+
+(kill (xx), xx ` gallon `` inch^3);
+231*xx ` inch^3;
+
+xx ` gallon/acre `` feet;
+''(231*xx/(55*88*3^2)/(12^2)/12) ` feet;
+
+[dimensions (slug), dimensions (slug/pound_mass)];
+[mass, 1];
+
+1 ` slug/pound_mass `` 1;
+196133/6096; /* approx 32.something */
+
+/* some examples suggested by Jeff Hankin; thanks, Jeff. */
+
+dimensions (W / (K * m));
+length*mass/(temperature*time^3);
+
+dimensions (lux);
+luminous_intensity / length^2;
+
+dimensions (parsec);
+length;
+
+bfloat (1 ` pc `` m);
+3.085677581491367b16 ` m;
+
+dimensions (kat);
+quantity / time;
+
+bfloat (300 ` mile `` AU);
+3.227340053309997b-6 ` AU;
+
+10^6 ` pc `` AU;
+648000000000/%pi ` AU;
+
+70 ` mile/hour `` parsec / julian_year;
+4762373*%pi/467493345937500 ` parsec/julian_year;
+
+/* still more examples */
+
+/* assignment to a unit symbol causes trouble;
+ * maybe rhs of "`" should never be evaluated.
+ * For now, just remvalue all unit symbols.
+ */
+(apply (remvalue, known_units ()), 0);
+0;
+
+(kill (xx), xx : 1 ` ml*lux*katal/(gray*Bq), dimensions (xx));
+luminous_intensity * quantity * time^2 / length;
+
+fundamental_units (xx);
+cd * mol * s^2 / m;
+
+(kill (uu), uu ` horsepower*julian_year/tbsp `` GJ/liter);
+50133999444908841*uu/31501953125000 ` GJ/liter;
+
+'f(uu) ` MW `` short_ton*(lbf/lbm)*mile/hour `` Btu/hour;
+720000000*'f(uu)/211 ` Btu/hour;
+
+1 ` W `` Btu/julian_year `` newton*foot/hour `` lbf*m/s `` W;
+1 ` W;
+
+/* units ad hoc; no fundamental units or dimensions, just conversions */
+
+declare_unit_conversion (1`elephant=10`cow, 1`cow=10`goat, 1`goat = 2`dog, 1`dog=3`cat);
+done;
+
+1 ` elephant/m `` cat/inch;
+381/25 ` cat/inch;
+
+dimensions (1 ` goat/hour);
+'dimensions(cat) / time;
+
+

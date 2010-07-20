@@ -198,18 +198,31 @@ compile (constantp_not0, constantp_not1, mult_expr_nontrivialconstfactorsp, nond
 conversions_derived_si :
    {
     Hz = 1/s,           /* hertz:   Frequency            */
+    hertz = Hz,
     N = kg*m/s^2,       /* newton:  Force                */
+    newton = N,
     Pa = N/m^2,         /* pascal:  Pressure             */
+    pascal = Pa,
     J = N*m,            /* joule:   Work, energy         */
+    joule = J,
     W = J/s,            /* watt:    Power                */
+    watt = W,
     C = s*A,            /* coulomb: Electric charge      */
+    coulomb = C,
     V = J/C,            /* volt:    Electromotive force  */
+    volt = V,
     F = C^2/J,          /* farad:   Electric capacitance */
+    farad = F,
     Ohm = J*s/C^2,      /* ohm:     Electric resistance  */
+    ohm = Ohm,
     S = 1/Ohm,          /* siemens: Electric conductance */
+    siemens = S,
     Wb = J/A,           /* weber:   Magnetic flux        */
+    weber = Wb,
     T = J/m^2/A,        /* tesla:   Magnetic flux density*/
+    tesla = T,
     H = J/A^2,          /* henry:   Inductance           */
+    henry = H,
 
     mm = m/1000,
     km = 1000*m,
@@ -309,9 +322,23 @@ conversions_derived_si :
     micrometer = m/1000000,
     micron = micrometer,
     cm = m/100,
+    meter = m,
+    kilometer = km,
+
+    /* International Astronomical Union best estimate (2009) according to Wikipedia */
+    astronomical_unit = 149597870700 * m,
+    AU = astronomical_unit,
+
+    julian_year = (365 + 1/4) * 86400 * s,
+    light_year = julian_year * 299792458 * m / s,
+
+    parsec = 360 * 60 * 60 / (2 * %pi) * astronomical_unit,
+    pc = parsec,
 
     microgram = kg/1000000000,
     metric_ton = Mg,
+    kilogram = kg,
+    gram = g,
 
     ns = s/1000000000,
     microsecond = s/1000000,
@@ -320,7 +347,23 @@ conversions_derived_si :
     ha = hectare,
 
     liter = m^3/1000,
-    l = liter
+    l = liter,
+    ml = l / 1000,
+
+    candela = cd,
+    lumen = cd,
+    lux = lumen/m^2,
+
+    becquerel = 1/s,
+    Bq = becquerel,
+
+    gray = J/kg,
+    Gy = gray,
+    sievert = gray,
+    Sv = sievert,
+
+    katal = mol/s,
+    kat = katal
 
    };
 
@@ -341,7 +384,8 @@ conversions_customary_si :
    {
 
     feet = 3048/10000 * m,
-    pound_mass = kg/(2205/1000),
+    /* International pound avoirdupois */
+    pound_mass = 45359237/10^8 * kg,
     minute = 60*s,
     hour = 3600*s,
     day = 86400*s,
@@ -349,8 +393,7 @@ conversions_customary_si :
     month = (30 + 7/16)*86400*s,
     year = (365 + 1/4)*86400*s,
     Btu = 1055*J,
-    R = 5/9*K,
-    gallon = (3785/1000)*l
+    R = 5/9*K
 
    };
    
@@ -360,11 +403,12 @@ conversions_customary_customary :
     inch = feet/12,
     yard = 3*feet,
     mile = 5280*feet,
-    /* slug = ???, */
+    gallon = 231*inch^3,
+    slug = pound_force*s^2/foot,
     ounce = pound_mass/16,
     /* grain = ???, */
     /* assume gravitational acceleration = 980.665 cm/s^2 */
-    pound_force = pound_mass*41408/1287*ft/s^2,
+    pound_force = pound_mass*196133/6096*ft/s^2,
     acre = 55*88*yard^2,
     psi = pound_force/inch^2,
     cfm = feet^3/minute,
@@ -373,7 +417,23 @@ conversions_customary_customary :
     foot = feet,
     lbm = pound_mass,
     oz = ounce,
-    lbf = pound_force
+    lbf = pound_force,
+    horsepower = 550 * pound_force * foot / s,
+    hp = horsepower,
+
+    short_ton = 2000*lbm,
+    rod = 33/2*feet,
+
+    quart = gallon / 4,
+    pint = quart / 2,
+    cup = pint / 2,
+    gill = cup / 2,
+    fluid_ounce = cup / 8,
+    fl_oz = fluid_ounce,
+    tablespoon = fluid_ounce / 2,
+    teaspoon = tablespoon / 3,
+    tbsp = tablespoon,
+    tsp = teaspoon
 
    };
 
@@ -407,10 +467,33 @@ compute_conversion_factor (u1%, u2%) :=
 
 compute_conversions_to_base_units () :=
  (print ("ezunits: computing conversions to base units; may take a moment."),
-  listify (known_unit_conversions),
-  ev (map (lambda ([e], map (log, e)), %%), logexpand = all),
-  linsolve (map (lambda ([e], lhs (e) - rhs (e)), %%), map (lhs, %%)),
-  conversions_to_base_units : map (lambda ([e], map (exp, e)), %%));
+  conversions_to_base_units : listify (compute_conversions_to_base_units0 (known_unit_conversions)));
+
+compute_conversions_to_base_units0 (conversion_eqns) :=
+block ([derived_units, primitive_units, defined_so_far, undefined_so_far, definitions, definablep, now_definable],
+
+  derived_units : map (lhs, conversion_eqns),
+  primitive_units : setdifference (setify (listofvars (map (rhs, conversion_eqns))), derived_units),
+  defined_so_far : primitive_units,
+  undefined_so_far : conversion_eqns,
+  definitions : {},
+
+  definablep : lambda ([e], every (lambda ([x], elementp (x, defined_so_far)), setify (listofvars (rhs (e))))),
+  now_definable : subset (undefined_so_far, definablep),
+
+  while length (now_definable) > 0
+    do block ([make_definition, new_definitions],
+      make_definition : lambda ([e], block ([L : listofvars (rhs (e))],
+                       for x in definitions do if member (lhs (x), L) then e : subst (x, e)), e),
+        
+      new_definitions : map (make_definition, now_definable),
+      definitions : union (definitions, new_definitions),
+      defined_so_far : union (defined_so_far, map (lhs, new_definitions)),
+      undefined_so_far : setdifference (undefined_so_far, now_definable),
+      now_definable : subset (undefined_so_far, definablep)),
+  
+  if undefined_so_far # {} then print ("ezunits: hmm, these are still undefined:", map (lhs, undefined_so_far)),
+  definitions);
 
 apply_units_conversion (uu%, nd%) :=
   if listp (nd%)
@@ -495,7 +578,7 @@ remove_fundamental_units ([L]) :=
     map (lambda ([x], put (x, false, 'dimension)), L));
 
 fundamental_dimensions : [];
-L : [[m, length], [kg, mass], [s, time], [A, current], [K, temperature], [mol, quantity]];
+L : [[m, length], [kg, mass], [s, time], [A, current], [K, temperature], [mol, quantity], [cd, luminous_intensity]];
 apply (declare_fundamental_dimensions, map (second, L));
 apply (declare_fundamental_units, flatten (L));
 
@@ -608,8 +691,11 @@ block
 /* A couple of convenience functions.
  */
 
+derived_units () :=
+    listify (map (lhs, conversions_to_base_units));
+
 known_units () :=
-    sort (append (fundamental_units (), map (lhs, listify (known_unit_conversions))));
+    sort (append (fundamental_units (), derived_units ()));
 
 display_known_unit_conversions () := 
     for x in known_unit_conversions do display (x);
