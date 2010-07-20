@@ -225,6 +225,47 @@
 
 
 
+;; update options color, fill_color, xaxis_color, yaxis_color, $zaxis_color
+;; ------------------------------------------------------------------------
+;; defined as a color name or hexadecimal #rrggbb
+(defun update-color (opt val)
+  (let ((str (substitute
+                #\- #\_ 
+                (string-downcase
+                  (string-trim 
+                     "\""
+                     (coerce (mstring val) 'string))))))
+      (cond
+        ((some #'(lambda (z) (string= z str))
+               '("white" "black" "gray0" "grey0" "gray10" "grey10" "gray20" "grey20"
+                 "gray30" "grey30"   "gray40" "grey40" "gray50" "grey50" "gray60" 
+                 "grey60" "gray70" "grey70" "gray80" "grey80" "gray90" "grey90" 
+                 "gray100" "grey100" "gray" "grey" "light-gray" "light-grey" 
+                 "dark-gray" "dark-grey" "red" "light-red" "dark-red" "yellow" 
+                 "light-yellow" "dark-yellow" "green" "light-green" "dark-green" 
+                 "spring-green" "forest-green" "sea-green" "blue" "light-blue" 
+                 "dark-blue" "midnight-blue" "navy" "medium-blue" "royalblue" 
+                 "skyblue" "cyan" "light-cyan" "dark-cyan" "magenta" "light-magenta"
+                 "dark-magenta" "turquoise" "light-turquoise" "dark-turquoise"
+                 "pink" "light-pink" "dark-pink" "coral" "light-coral" "orange-red"
+                 "salmon" "light-salmon" "dark-salmon" "aquamarine" "khaki" 
+                 "dark-khaki" "goldenrod" "light-goldenrod" "dark-goldenrod" "gold"
+                 "beige" "brown" "orange" "dark-orange" "violet" "dark-violet"
+                 "plum" "purple"))
+           (setf (gethash opt *gr-options*) (format nil "rgb '~a'" str)))
+        ((and (= (length str) 7)
+              (char= (schar str 0) #\#)
+              (every #'(lambda (z) (position z "0123456789abcdef"))
+                     (subseq str 1)))
+           (setf (gethash opt *gr-options*) (format nil "rgb '~a'" str)))
+        (t
+           (merror "draw: illegal color specification: ~M" str)))))
+
+
+
+
+
+
 ;; update option terminal
 ;; ----------------------
 ;; *draw-terminal-number* is used when working with
@@ -678,33 +719,8 @@
                   (t
                     (merror "draw: illegal palette description: ~M" val)))  )
       (($color $fill_color $xaxis_color $yaxis_color
-        $zaxis_color)  ; defined as a color name or hexadecimal #rrggbb
-        (let ((str (string-downcase (string-trim "\"" (coerce (mstring val) 'string)))))
-            (cond
-              ((some #'(lambda (z) (string= z str))
-                     '("white" "black" "gray0" "grey0" "gray10" "grey10" "gray20" "grey20"
-                       "gray30" "grey30"   "gray40" "grey40" "gray50" "grey50" "gray60" 
-                       "grey60" "gray70" "grey70" "gray80" "grey80" "gray90" "grey90" 
-                       "gray100" "grey100" "gray" "grey" "light-gray" "light-grey" 
-                       "dark-gray" "dark-grey" "red" "light-red" "dark-red" "yellow" 
-                       "light-yellow" "dark-yellow" "green" "light-green" "dark-green" 
-                       "spring-green" "forest-green" "sea-green" "blue" "light-blue" 
-                       "dark-blue" "midnight-blue" "navy" "medium-blue" "royalblue" 
-                       "skyblue" "cyan" "light-cyan" "dark-cyan" "magenta" "light-magenta"
-                       "dark-magenta" "turquoise" "light-turquoise" "dark-turquoise"
-                       "pink" "light-pink" "dark-pink" "coral" "light-coral" "orange-red"
-                       "salmon" "light-salmon" "dark-salmon" "aquamarine" "khaki" 
-                       "dark-khaki" "goldenrod" "light-goldenrod" "dark-goldenrod" "gold"
-                       "beige" "brown" "orange" "dark-orange" "violet" "dark-violet"
-                       "plum" "purple"))
-                 (setf (gethash opt *gr-options*) (format nil "rgb '~a'" str)))
-              ((and (= (length str) 7)
-                    (char= (schar str 0) #\#)
-                    (every #'(lambda (z) (position z "0123456789abcdef"))
-                           (subseq str 1)))
-                 (setf (gethash opt *gr-options*) (format nil "rgb '~a'" str)))
-              (t
-                 (merror "draw: illegal color specification: ~M" str)))))
+        $zaxis_color)
+        (update-color opt val))
       ($file_bgcolor ; defined as hexadecimal #rrggbb
         (let ((str (string-downcase (string-trim "\"" (coerce (mstring val) 'string)))))
             (if (and (= (length str) 7)
