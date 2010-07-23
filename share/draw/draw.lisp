@@ -285,7 +285,7 @@
              (member (cadr val) '($screen $wxt $aquaterm))
              (integerp (caddr val))
              (>= (caddr val) 0))
-          (setf (gethash opt *gr-options*) (cadr val)
+          (setf (gethash '$terminal *gr-options*) (cadr val)
                 *draw-terminal-number* (caddr val)))
        (t
           (merror "draw: illegal terminal specification: ~M" val)))))
