@@ -223,8 +223,8 @@ induced_subgraph1(e_list, gr) := block(
   [v_list : setify(xreduce(append, e_list))],
   create_graph(listify(v_list), e_list))$
 
-make_graph(vertices, edges_lambda, [directed]) := block(
-  [%n%, v_map, edges:[], j_min, int_vertices, vrt, e_list],
+make_graph(vertices, edges_lambda, [dir]) := block(
+  [%n%, v_map, edges:[], j_min, int_vertices, vrt, e_list, directed: assoc('directed, dir, false)],
 
   /* Build a list of vertices */
   if integerp(vertices) then (
@@ -242,7 +242,7 @@ make_graph(vertices, edges_lambda, [directed]) := block(
     edges : map(lambda([e], [assoc(e[1], inv_map), assoc(e[2], inv_map)]), edges_lambda))
   else (
     for i:1 thru %n% do (
-      if length(directed)>0 then
+      if directed=true then
         for j:1 thru i-1 do
           if apply(edges_lambda, [assoc(i, v_map), assoc(j, v_map)])=true then
             edges : cons([i,j], edges),
@@ -259,7 +259,7 @@ make_graph(vertices, edges_lambda, [directed]) := block(
       vrt : makelist([i, part(vertices, i)], i, 1, %n%))),
 
   /* Create the graph */
-  if length(directed)>0 then
+  if directed=true then
     create_graph(vrt, edges, 'directed=true)
   else
     create_graph(vrt, edges))$
@@ -296,6 +296,88 @@ snub_dodecahedron_graph() := sparse6_decode(":{a??SCFG??_cCEDbPwSMGEa`xCe@@jDIk?
 snub_cube_graph() := sparse6_decode(":Wa?@_@eCDcDab_`eIfJcGdH_AGIK`BHJL`AGJM_BHINcEGKMdFHLNdEIKNcFJLM")$
 
 chvatal_graph() := graph6_decode("KhdLA_hc?L_y")$
+
+knight_tour_graph(a,b) := block(
+  [g, pos:[]],
+  g: make_graph(
+    listify(cartesian_product(setify(makelist(i,i,1,a)), setify(makelist(i,i,1,b)))),
+    lambda([u,v],
+      is ( abs(u[1]-v[1])=1 and abs(u[2]-v[2])=2 ) or
+      is ( abs(u[1]-v[1])=2 and abs(u[2]-v[2])=1 ))),
+  for v in vertices(g) do
+  pos: cons([v, divide(v-1, b)], pos),
+  set_positions(pos, g),
+  g)$
+
+bull_graph() := create_graph(
+  [1,2,3,4,5],
+  [[1,2],[2,3],[3,1],[1,4],[2,5]])$
+
+kite_graph() := create_graph(
+  [1,2,3,4,5],
+  [[1,2],[2,3],[3,4],[4,1],[2,4],[3,5]])$
+
+star_graph(n) := if n=1 then empty_graph(1) else complete_bipartite_graph(1, n-1)$
+
+book_graph(n) := graph_product(star_graph(n+1), path_graph(2))$
+
+antiprism_graph(n) := circulant_graph(2*n, [1, 2])$
+
+gear_graph(n) := block(
+  [g:cycle_graph(2*n)],
+  add_vertex(2*n, g),
+  connect_vertices([2*n], makelist(2*i,i,0,n-1),g),
+  block([numer:true],
+    set_positions(
+      append(
+        [[2*n, [0,0]]],
+        makelist([i, [sin(i*%pi/n), cos(i*%pi/n)]], i, 0, 2*n, 2),
+        makelist([i+1, 1.5*[sin((i+1)*%pi/n), cos((i+1)*%pi/n)]], i, 0, 2*n, 2)),
+      g)),
+  g)$
+
+mobius_graph(n) := circulant_graph(2*n, [1,n])$
+
+sunlet_graph(n) := block(
+  [g: empty_graph(2*n)],
+  add_edges(makelist([i, i+n], i, 0, n-1), g),
+  add_cycle(makelist(i,i,0,n-1), g),
+  block([numer:true],
+    set_positions(
+      append(
+        makelist([i, [sin(2*i*%pi/n), cos(2*i*%pi/n)]], i, 0, n-1),
+        makelist([i+n, 1.5*[sin(2*i*%pi/n), cos(2*i*%pi/n)]], i, 0, n-1)),
+      g)),
+  g)$
+
+cone_graph(n, m) := graph_join(cycle_graph(n), empty_graph(m))$
+
+fork_graph() := graph6_decode("DbC")$
+
+centipede_graph(n) := block([edg1, edg2],
+  edg1: makelist([i, i+n], i, 0, n-1),
+  edg2: makelist([i,i+1], i, 0, n-2),
+  create_graph(2*n, append(edg1, edg2)))$
+
+hanoi_graph(n) :=
+if not integerp(n) or n<1 then funmake(hanoi_graph, [n])
+elseif n=1 then block(
+  [hg: cycle_graph(3), pos, numer:true],
+  pos: makelist([i, [cos(%pi/2+2*%pi/3*i), sin(%pi/2+2*%pi/3*i)]], i, 0, 2),
+  set_positions(pos, hg),
+  hg)
+else block(
+  [hg1: hanoi_graph(n-1), hg, pos1, pos2, pos3, numer:true, a:2.2],
+  hg: graph_union(hg1, hg1, hg1),
+  add_edges([[(3^(n-1)-1)/2, 3^(n-1)],
+    [3^(n-1)-1, 2*3^(n-1)],
+    [2*3^(n-1)-1, (3^(n-1)-1)/2+2*3^(n-1)]], hg),
+  pos1: get_positions(hg1),
+  pos2: map(lambda([p], [3^(n-1)+p[1], a^(n-1)*[cos(%pi/2+2*%pi/3), sin(%pi/2+2*%pi/3)]+p[2]]), pos1),
+  pos3: map(lambda([p], [2*3^(n-1)+p[1], a^(n-1)*[cos(%pi/2+4*%pi/3), sin(%pi/2+4*%pi/3)]+p[2]]), pos1),
+  pos1: map(lambda([p], [p[1], a^(n-1)*[cos(%pi/2), sin(%pi/2)]+p[2]]), pos1),
+  set_positions(append(pos1, pos2, pos3), hg),
+  hg)$
 
 add_path(lst, g) :=
   add_edges(vertices_to_path(lst), g)$
