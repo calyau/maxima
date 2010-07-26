@@ -372,6 +372,8 @@ in the interval of integration.")
 	     (t (setq *ll1* (limcp nv var ll '$plus))))
        (setq *ul1* (limcp nv var ul '$minus))))
 
+;; wrapper around limit, returns nil if 
+;; limit not found (nounform returned), or undefined ($und or $ind)
 (defun limcp (a b c d)
   (let ((ans ($limit a b c d)))
     (cond ((not (or (null ans)
@@ -910,7 +912,7 @@ in the interval of integration.")
 		   (t (m- a2 a1)))))))
 
 ;;;This function works only on things with ATAN's in them now.
-(defun same-sheet-subs (exp ll ul &aux ans)
+(defun same-sheet-subs (exp ll ul &aux ll-ans ul-ans)
   ;; POLES-IN-INTERVAL doesn't know about the poles of tan(x).  Call
   ;; trigsimp to convert tan into sin/cos, which POLES-IN-INTERVAL
   ;; knows how to handle.
@@ -926,9 +928,12 @@ in the interval of integration.")
 	 (poles (atan-poles exp ll ul)))
     ;;POLES -> ((mlist) ((mequal) ((%atan) foo) replacement) ......)
     ;;We can then use $SUBSTITUTE
-    (setq ans ($limit exp var ll '$plus))
+    (setq ll-ans (limitcp exp var ll '$plus))
     (setq exp (sratsimp ($substitute poles exp)))
-    (m- ($limit exp var ul '$minus) ans)))
+    (setq ul-ans (limitcp exp var ul '$minus))
+    (if (and ll-ans ul-ans)
+	(m- ul-ans ll-ans)
+      nil)))
 
 (defun atan-poles (exp ll ul)
   `((mlist) ,@(atan-pole1 exp ll ul)))
