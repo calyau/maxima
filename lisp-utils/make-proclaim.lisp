@@ -8,6 +8,7 @@
 (defun make-proclaims ( &optional (st *standard-output*)
 				  *print-length* *print-level*)
   (let ((procs '()))
+    (princ ";; This file is generated via 'make sys-proclaim'." st)
     (print `(in-package ,(package-name *package*)) st)
     ;; Leave GCL-specific SLOOP as it stands due to non-standard IN-TABLE keyword.
     (sloop::sloop with ret with at
