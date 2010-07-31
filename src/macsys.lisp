@@ -34,18 +34,20 @@
   ;; a FUNARG as the prompt. -gjc
   (declare (special *display-labels-p*))
   (if *display-labels-p*
-    (format nil "~A(~A~D) ~A"
-            *prompt-prefix*
-            (print-invert-case (stripdollar $inchar))
-            $linenum
-            *prompt-suffix*)
+      (let ((*print-circle* nil))
+	(format nil "~A(~A~D) ~A"
+		*prompt-prefix*
+		(print-invert-case (stripdollar $inchar))
+		$linenum
+		*prompt-suffix*))
     ""))
 
 (defun break-prompt ()
-  (format nil "~A~A~A"
-          *prompt-prefix*
-          (print-invert-case (stripdollar $prompt))
-          *prompt-suffix*))
+  (let ((*print-circle* nil))
+    (format nil "~A~A~A"
+	    *prompt-prefix*
+	    (print-invert-case (stripdollar $prompt))
+	    *prompt-suffix*)))
 
 ;; there is absoletely no need to catch errors here, because
 ;; they are caught by the macsyma-listener window process on
