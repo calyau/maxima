@@ -293,6 +293,26 @@ AC_ARG_WITH(openmcl,
 		OPENMCL_NAME="$withval"
 	fi],
 	[OPENMCL_NAME=${openmcl_default_name}])
+dnl Define ccl as an alias (essentially) for openmcl
+AC_ARG_ENABLE(ccl,[  --enable-ccl                 Use CCL (Clozure Common Lisp)],
+     	[case "${enableval}" in
+       		yes) openmcl=true 
+		     explicit_lisp=true;;
+       		no)  openmcl=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-ccl) ;;
+     	esac],
+	[openmcl=false])
+AC_ARG_WITH(ccl,
+	[  --with-ccl=<prog>              Use OpenMCL executable <prog> (default ccl)],
+	[openmcl=true
+	explicit_lisp=true
+	if test "$withval" = "yes"; then
+		OPENMCL_NAME="${openmcl_default_name}"
+	else
+		OPENMCL_NAME="$withval"
+	fi],
+	[OPENMCL_NAME=${openmcl_default_name}])
+
 if test x"${openmcl}" = xtrue ; then
 	if test `echo "$OPENMCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
 		if test -x "$OPENMCL_NAME" ; then

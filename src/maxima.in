@@ -108,6 +108,12 @@ while [ -n "$1" ]; do
     shift
 done
 
+# Allow ccl as an alias of openmcl.
+if [ "$MAXIMA_LISP" = "ccl" ]; then
+    MAXIMA_LISP=openmcl
+fi
+
+
 setup_vars
 
 if [ ! -d "$MAXIMA_IMAGESDIR" ]; then
