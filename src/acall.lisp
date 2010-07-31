@@ -66,8 +66,8 @@
 	   (t
 	    (simplify (cond ((setq ap (get aarray 'array))
 			     (let ((val (if (null inds)
-					    (funcall ap ind1)
-					    (apply ap ind1 inds))))
+					    (aref ap ind1)
+					    (apply #'aref (append (list ap ind1) inds)))))
 			       ;; Check for KLUDGING array function implementation.
 			       (if (case (array-element-type ap)
 				     ((flonum) (= val flounbound))
@@ -335,7 +335,7 @@
        ((flonum) (aref aarray index))
        (t (merror (intl:gettext "MARRAYREF1$: array must be an array of floats; found ~M") aarray))))
     (t
-     (float (marrayref aarray index)))))
+     (marrayref aarray index))))
 
 (defun marrayset1$ (value aarray index)
   (case (ml-typep aarray)
@@ -344,7 +344,7 @@
        ((flonum) (setf (aref aarray index) value))
        (t (merror (intl:gettext "MARRAYSET1$: array must be an array of floats; found ~M") aarray))))
     (t
-     (float (marrayset value aarray index)))))
+     (marrayset value aarray index))))
 
 
 (defmfun application-operator (form &rest ign)

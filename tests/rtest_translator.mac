@@ -136,3 +136,103 @@ fun(A,b,2,f,[1,1],.01);
 (compile (g0003, g0002, g0001), g0001 (aa));
 [bb, bb];
 
+/* SF bug # 3035313 "some array references translated incorrectly"
+ */
+
+(kill (aa1, aa3, bb1, bb3, cc1, cc3),
+ array (aa1, 15),
+ array (aa3, 12, 4, 6),
+ array (bb1, flonum, 15),
+ array (bb3, flonum, 5, 6, 7),
+ array (cc1, fixnum, 8),
+ array (cc3, fixnum, 6, 10, 4),
+ 0);
+0;
+
+(kill (faa, gaa, fbb, gbb, fcc, gcc),
+ faa (n) := aa1[n] + aa3[n, n - 1, n - 2],
+ gaa (n) := (aa1[n] : 123, aa3[n, n - 1, n - 2] : 321),
+ fbb (n) := bb1[n] + bb3[n, n - 1, n - 2],
+ gbb (n) := (bb1[n] : 123, bb3[n, n - 1, n - 2] : 321),
+ fcc (n) := cc1[n] + cc3[n, n - 1, n - 2],
+ gcc (n) := (cc1[n] : 123, cc3[n, n - 1, n - 2] : 321),
+ 0);
+0;
+
+[gaa (4), gbb (4), gcc (4)];
+[321, 321, 321];
+
+[faa (4), fbb (4), fcc (4)];
+[444, 444, 444];
+
+translate (faa, gaa, fbb, gbb, fcc, gcc);
+[faa, gaa, fbb, gbb, fcc, gcc];
+
+[gaa (4), gbb (4), gcc (4)];
+[321, 321, 321];
+
+[faa (4), fbb (4), fcc (4)];
+[444, 444, 444];
+
+compile (faa, gaa, fbb, gbb, fcc, gcc);
+[faa, gaa, fbb, gbb, fcc, gcc];
+
+[gaa (4), gbb (4), gcc (4)];
+[321, 321, 321];
+
+[faa (4), fbb (4), fcc (4)];
+[444, 444, 444];
+
+/* try same stuff again w/ undeclared arrays ...
+ * no type spec => only one kind of array
+ */
+
+(kill (aa1, aa3, bb1, bb3, cc1, cc3),
+ ?fmakunbound (faa),
+ ?fmakunbound (fbb),
+ [gaa (4), faa (4)]);
+[321, 444];
+
+(translate (faa, gaa), [gaa (4), faa (4)]);
+[321, 444];
+
+(compile (faa, gaa), [gaa (4), faa (4)]);
+[321, 444];
+
+/* try same stuff again w/ Lisp arrays */
+
+(kill (aa1, aa3, bb1, bb3, cc1, cc3),
+ map (?fmakunbound, [faa, fbb, fcc, gaa, gbb, gcc]),
+ aa1 : make_array (any, 15),
+ aa3 : make_array (any, 12, 4, 6),
+ bb1 : make_array (flonum, 15),
+ bb3 : make_array (flonum, 5, 6, 7),
+ cc1 : make_array (fixnum, 8),
+ cc3 : make_array (fixnum, 6, 10, 4),
+ 0);
+0;
+
+[gaa (4), gbb (4), gcc (4)];
+[321, 321, 321];
+
+[faa (4), fbb (4), fcc (4)];
+[444, 444, 444];
+
+translate (faa, gaa, fbb, gbb, fcc, gcc);
+[faa, gaa, fbb, gbb, fcc, gcc];
+
+[gaa (4), gbb (4), gcc (4)];
+[321, 321, 321];
+
+[faa (4), fbb (4), fcc (4)];
+[444, 444, 444];
+
+compile (faa, gaa, fbb, gbb, fcc, gcc);
+[faa, gaa, fbb, gbb, fcc, gcc];
+
+[gaa (4), gbb (4), gcc (4)];
+[321, 321, 321];
+
+[faa (4), fbb (4), fcc (4)];
+[444, 444, 444];
+

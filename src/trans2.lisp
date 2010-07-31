@@ -155,13 +155,8 @@
      (merror "Wrong number of indices:~%~M" (cons '(mlist) inds)))))
 
 
-
 (defun tr-arraycall (form &aux all-inds)
-  (cond ((get (caar form) 'array-mode)
-	 (pushnew (caar form) arrays :test #'eq)
-	 `(,(array-mode (caar form))
-	    marrayref
-	    . (,(caar form) ,@(tr-args (cdr form)))))
+  (cond
 	($translate_fast_arrays (setq all-inds (mapcar 'dtranslate (cdr form)))
 				;;not apply changed 'tr-maref
 				(funcall 'tr-maref (cdr (translate (caar form)))   all-inds))
@@ -176,14 +171,7 @@
 (defun tr-arraysetq (array-ref value)
   ;; actually an array SETF, but it comes from A[X]:FOO
   ;; which is ((MSETQ) ... ...)
-  (cond ((getl (caar array-ref) '(array-mode))
-	 (let ((t-ref (translate array-ref))
-	       (t-value (translate value))
-	       (mode))
-	   (warn-mode array-ref (car t-ref) (car t-value))
-	   (setq mode (car t-ref))	; ooh, could be bad.
-	   `(,mode
-	     . (store ,(cdr t-ref) ,(cdr t-value)))))
+  (cond
 	($translate_fast_arrays 
 	 (funcall 'tr-maset (caar array-ref) (dtranslate value)
 		  (mapcar 'dtranslate (copy-list (cdr array-ref)))))
@@ -199,7 +187,7 @@
 (def%tr marrayref (form)
   (setq form (cdr form))
   (let ((mode (cond ((atom (car form))
-		     (mget (car form) 'array-mode)))))
+		     (get (car form) 'array-mode)))))
     (cond ((null mode) (setq mode '$any)))
     (setq form (tr-args form))
     (let ((op (car form)))
@@ -213,7 +201,7 @@
 (def%tr marrayset (form)
   (setq form (cdr form))
   (let ((mode (cond ((atom (cadr form))
-		     (mget (cadr form) 'array-mode)))))
+		     (get (cadr form) 'array-mode)))))
     (when (null mode) (setq mode '$any))
     (setq form (tr-args form))
     (destructuring-let (((val aarray . inds) form))

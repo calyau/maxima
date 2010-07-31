@@ -481,8 +481,14 @@
 		    t)
 		 (transp (setf (symbol-value x) x) t)
 		 ((eq x '$default_let_rule_package) t)
+		 ;; Next case: X is bound to itself but X is not on values list.
+		 ;; Translation code does that; I don't know why.
+		 ;; Silently let it stand and hope it doesn't cause trouble.
+		 ((eq (symbol-value x) x) t)
 		 (t
-		  (mtell "remvalue: warning: cannot remove value of:~%~M" x) nil))))))
+		  (mtell "remvalue: ~M doesn't appear to be a known variable; just unbind it anyway.~%" x)
+		  (makunbound x)
+		  t))))))
 
 (defmfun ruleof (rule)
   (or (mget rule 'ruleof)

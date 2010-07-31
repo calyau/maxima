@@ -1555,7 +1555,8 @@ wrapper for this."
     (zl-remprop fun 'translated-mmacro)
     (mremprop fun 't-mfexpr)
     (zl-remprop fun 'function-mode)
-    (if (not (getl fun '(a-expr a-subr)))
+    (when (not (getl fun '(a-expr a-subr)))
+	(zl-remprop fun 'once-translated)
 	(zl-remprop fun 'translated))))
 
 (defun remove-transl-array-fun-props (fun)
