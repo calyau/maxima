@@ -181,6 +181,9 @@
                         :components ((:file "mlisp") 
                                      (:file "mmacro") 
                                      (:file "buildq")))
+	       ;; The free version of Allegro has a heap limit.  Let's
+	       ;; not compile these routines so that we can at least
+	       ;; get the rest of maxima built.
 	       (:module numerical
 			:components
 			(
@@ -192,6 +195,8 @@
 				  :components ((:file "f2cl-lib")))
 			 (:module slatec :source-pathname "slatec"
 				  :depends-on (f2cl-lib packages)
+				  #+allegro-cl-trial :load-only
+				  #+allegro-cl-trial t
 				  :components
 				  (
 				   (:file "fdump")
@@ -367,6 +372,8 @@
 				   (:file "d9upak")))
 			 (:module quadpack
 				  :source-pathname "slatec"
+				  #+allegro-cl-trial :load-only
+				  #+allegro-cl-trial t
 				  :components
 				  (
 				   ;; Support
