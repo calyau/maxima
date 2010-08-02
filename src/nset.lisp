@@ -655,7 +655,7 @@
 
 (defun $cartesian_product (&rest b)
   (cond ((null b)
-	 `(($set)))
+         `(($set) ((mlist simp))))
 	(t
 	 (let ((a) 
 	       (acc (mapcar #'list (require-set (car b) "$cartesian_product"))))
@@ -727,8 +727,10 @@
     (cond ((and (integerp n) (>= n 0))
 	   (setq acc (cond ((= n 0) nil)
 			   ((integerp len) (fixed-length-partitions n n len))
-			   (t (integer-partitions n))))
-	   (setq acc (mapcar #'(lambda (x) (simplify (cons '(mlist) x))) acc))
+	               (t (integer-partitions n))))
+           (if (not acc)
+               (setq acc `(((mlist simp))))
+               (setq acc (mapcar #'(lambda (x) (simplify (cons '(mlist) x))) acc)))
 	   `(($set simp) ,@acc))
 	  (t
 	   (if len `(($integer_partitions simp) ,n ,len) `(($integer_partitions simp) ,n))))))
@@ -771,7 +773,7 @@
 ;; integer, return a noun form.
 
 (defun $num_partitions (n &optional lst)
-  (cond ((equal n 0) 0)
+  (cond ((equal n 0) 1)
 	((and (integerp n) (> n -1))
 	 (let ((p (make-array (+ n 1)))
 	       (s (make-array (+ n 1)))
@@ -806,7 +808,7 @@
 	     `(($num_partitions simp) ,n)))))
 
 (defun $num_distinct_partitions (n &optional lst)
-  (cond ((eq n 0) 0)
+  (cond ((eq n 0) 1)
 	((and (integerp n) (> n -1))
 	 (let ((p (make-array (+ n 1)))
 	       (s (make-array (+ n 1)))
