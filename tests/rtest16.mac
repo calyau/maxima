@@ -1479,36 +1479,44 @@ integrate(1/(x^6-4),x,0,1) - integrate(1/(x^3-2)/(x^3+2),x,0,1);
 coeff(2*%e^x, x, 0);
 2*%e^x;
 
+/* For numerical tests */
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+
 /* Bug ID: 2997276 - zeta(3),numer; gives Lisp error 
  * 
  * Also add a test for complex rational argument, which wasn't handled
  * correctly either.
+ *
+ * Some Lisp implementations fail these tests because things like
+ * (cl:expt 2d0 3) only gives single-float accuracy (but with
+ * double-float precision).
  */
-block([numer:true], is(abs(zeta(3)-1.202056903159594) < 1e-15));
+closeto(zeta(3)-1.202056903159594,1e-15), numer:true;
 true;
-block([numer:true], is(abs(zeta(3+%i)-(1.10721440843141 - .1482908671781754*%i)) < 1e-15));
+closeto(zeta(3+%i)-(1.10721440843141 - .1482908671781754*%i), 1e-15);
 true;
 
 /* Bug ID: 2997401 - float(log(200!)) produces an error
  *
  */
-is(abs(float(log(200!))-863.2319871924054) < 1e-15);
+closeto(float(log(200!))-863.2319871924054, 1e-15);
 true;
 
-is(abs(float(log((1+200!)/7))-861.2860770433501) < 1e-15);
+closeto(float(log((1+200!)/7))-861.2860770433501, 1e-15);
 true;
 
 /* Additional tests */
-is(abs(float(log(-1))-float(%pi)*%i) < 1e-15);
+closeto(float(log(-1))-float(%pi)*%i, 1e-15);
 true;
 
-is(abs(float(log((1+200!)/(-7))) - (3.141592653589793*%i + 861.2860770433501)) < 1e-14);
+closeto(float(log((1+200!)/(-7))) - (3.141592653589793*%i + 861.2860770433501), 1e-14);
 true;
 
-is(abs(float(log((1+200!)+(1+199!)*%i))- (.004999958333958322*%i + 863.2319996922491)) < 1e-15);
+closeto(float(log((1+200!)+(1+199!)*%i))- (.004999958333958322*%i + 863.2319996922491), 1e-15);
 true;
 
-is(abs(float(log((1+200!)/7+(1+199!)/11*%i)) - (.003181807444342708*%i + 869.9736929490153)) < 1e-15);
+closeto(float(log((1+200!)/7+(1+199!)/11*%i)) - (.003181807444342708*%i + 869.9736929490153), 1e-15);
 true;
 
 /* Bug ID: 221642 limit needs %piargs to be true
@@ -1640,8 +1648,8 @@ A-%gamma*A^2/2+(6*%gamma^2+%pi^2)*A^3/36;
 
 /* Bug ID: 3010829 - numerical evaluation of elliptic_ec fails for argument > 1
  */
-elliptic_ec(2.0);
-.5990701173677959*%i+0.599070117367796$
+closeto(elliptic_ec(2.0)-(.5990701173677959*%i+0.599070117367796), 1.5e-15);
+true;
 
 /* Bug ID: 1929287 - 0.0 + [0] ---> [0]
  */
