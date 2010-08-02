@@ -924,7 +924,7 @@ extremal_subset(set(a,a+b,1.4b0,sqrt(28)),lambda([x],if atom(x) then 0 else 1), 
 set(a+b,sqrt(28))$
 
 cartesian_product();
-set()$
+set([])$
 
 cartesian_product(set());
 set()$
@@ -1109,7 +1109,7 @@ belln([5,6]);
 [belln(5),belln(6)]$
 
 integer_partitions(0);
-set()$
+set([])$
 
 integer_partitions(1);
 set([1])$
@@ -1435,7 +1435,7 @@ makeset(i/j,[i,j],[[2,6],[6,28]]);
 set(2/6,6/28)$
 
 num_partitions(0);
-0$
+1$
 
 every(is, makelist(num_partitions(i)=cardinality(integer_partitions(i)),i,1,15));
 true$
