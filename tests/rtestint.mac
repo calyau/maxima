@@ -1298,3 +1298,13 @@ integrate((exp(3/2*log(x))+1)/sqrt(x),x);
 
 integrate(3*sqrt(x)*exp(3/2*log(x)),x);
 x^3;
+
+/* Bug ID: 3039452 - integrate(sqrt(t^c)/(t*(b*t^c+a)),t) hangs
+ */
+/* These assumptions are already present. Consider to delete it more early.
+assume(a>0,b>0);
+[a>0,b>0]; */
+integrate(sqrt(t^c)/(t*(b*t^c+a)),t);
+2*atan(sqrt(b)*%e^(c*log(t)/2)/sqrt(a))/(sqrt(a)*sqrt(b)*c);
+forget(a>0,b>0);
+[a>0,b>0];
