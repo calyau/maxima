@@ -107,7 +107,11 @@
        (or (null sub) (equal sub (car (subfunsubs exp))))))
 
 (defun rischint (exp intvar &aux ($logarc nil) ($exponentialize nil)
-		 ($gcd '$algebraic) ($algebraic t) (implicit-real t))
+                     ($gcd '$algebraic) ($algebraic t) (implicit-real t)
+                     ;; The risch integrator expects $logexpand T. Otherwise,
+                     ;; the integrator hangs for special types of integrals
+                     ;; (See bug report ID:3039452)
+                     ($logexpand t))
   (prog ($%e_to_numlog $logsimp trigint operator y z var ratform liflag
 	 mainvar varlist genvar hypertrigint $ratfac $ratalgdenom )
      (if (specrepp exp) (setq exp (specdisrep exp)))
