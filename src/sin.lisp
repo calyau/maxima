@@ -119,7 +119,7 @@
 
 ;; Transform expressions like g^(b*x+a) to the common base *base* and
 ;; do the substitution y = *base*^(b*x+a) in the expr.
-(defun elemxpt (expr)
+(defun elemxpt (expr &aux w)
   (declare (special *exptflag* *base*))
   (cond ((freevar expr) expr)
         ;; var is the base of a subexpression. The transformation fails.
@@ -140,7 +140,7 @@
                              (caddr expr)))))
         ;; The exponent must be linear in the variable of integration.
         ((not (setq w (m2-b*x+a (caddr expr))))
-         (list (car exp) *base* (elemxpt (caddr expr))))
+         (list (car expr) *base* (elemxpt (caddr expr))))
         ;; Do the substitution y = g^(b*x+a) = g^a*g^(b*x).
         (t (maxima-substitute *base*
                               '*base*
