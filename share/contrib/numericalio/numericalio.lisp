@@ -335,7 +335,8 @@
       (($listp X)
         (write-list X out sep-ch-flag mode))
       (t (merror "write_data: don't know what to do with a ~M" (type-of X))))
-    (if (not (streamp stream-or-filename))
+    (if (streamp stream-or-filename)
+      (finish-output out)
       (close out))
     '$done))
 
@@ -399,8 +400,7 @@
                    (write-float-64 ($float e) out)
                    (merror "write_data: encountered non-numeric data in binary output")))
                 (t
-                  (merror "write_data: unrecognized mode")))))))))
-  (finish-output out))
+                  (merror "write_data: unrecognized mode"))))))))))
 
 (defun get-input-sep-ch (sep-ch-flag my-stream)
   (cond
