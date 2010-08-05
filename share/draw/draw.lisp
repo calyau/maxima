@@ -3826,11 +3826,11 @@
                            (get-option '$pic_height)
                            (get-option '$file_bgcolor)
                            (get-option '$file_name))))
-      ($svg (format cmdstorage "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
-                           (write-font-type)
+      ($svg (setf str (format nil "set terminal svg enhanced ~a size ~a, ~a~%set out '~a.svg'"
+			   (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
-                           (get-option '$file_name)))
+                           (get-option '$file_name))))
       (otherwise (merror "draw: unknown file format" )))
    (send-gnuplot-command (format nil "~a~%replot" str)) ))
 
