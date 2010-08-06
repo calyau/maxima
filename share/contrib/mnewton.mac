@@ -58,7 +58,7 @@ solve_by_lu(eqs, vars, field) := block(
 mnewton(FuncList, VarList, GuessList):=
   block([nfunc, Solutions, Increments, solved:false, h, DF, numer:numer,
          i, j, k, keepfloat:true, ratprint:false, field : 'complexfield, float2bf : true],
-    local(h),
+    local(h), declare(h, scalar),
 
     if (not(listp(FuncList))) then FuncList: [FuncList],    
     if (not(listp(VarList))) then VarList: [VarList],    
