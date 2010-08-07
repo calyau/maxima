@@ -984,7 +984,7 @@
 	   1)
 	  ((onep1 m)
 	   ;; A&S 16.6.3
-	   `(($sech) ,u))
+	   (take '(%sech) u))
 	  ((and $trigsign (mminusp* u))
 	   (cons-exp '%jacobi_dn (neg u) m))
 	  ((and $triginverses
@@ -2857,10 +2857,10 @@ first kind:
 	     (to (bigfloat:/ (bigfloat::sn uu mm)))))
 	  ((zerop1 m)
 	   ;; A&S 16.6.10
-	   `(($csc) ,u))
+	   (take '(%csc) u))
 	  ((onep1 m)
 	   ;; A&S 16.6.10
-	   `(($coth) ,u))
+	   (take '(%coth) u))
 	  ((zerop1 u)
 	   (dbz-err1 'jacobi_ns))
 	  ((and $trigsign (mminusp* u))
@@ -2978,7 +2978,7 @@ first kind:
 	   1)
 	  ((zerop1 m)
 	   ;; A&S 16.6.8
-	   `(($sec) ,u))
+	   (take '(%sec) u))
 	  ((onep1 m)
 	   ;; A&S 16.6.8
 	   `((%cosh) ,u))
@@ -3518,10 +3518,10 @@ first kind:
 			     (bigfloat::sn uu mm)))))
 	  ((zerop1 m)
 	   ;; A&S 16.6.12
-	   `(($cot) ,u))
+	   (take '(%cot) u))
 	  ((onep1 m)
 	   ;; A&S 16.6.12
-	   `(($csch) ,u))
+	   (take '(%csch) u))
 	  ((zerop1 u)
 	   (dbz-err1 'jacobi_cs))
 	  ((and $trigsign (mminusp* u))
@@ -3797,10 +3797,10 @@ first kind:
 			     (bigfloat::sn uu mm)))))
 	  ((zerop1 m)
 	   ;; A&S 16.6.11
-	   `(($csc) ,u))
+	   (take '(%csc) u))
 	  ((onep1 m)
 	   ;; A&S 16.6.11
-	   `(($csch) ,u))
+	   (take '(%csch) u))
 	  ((zerop1 u)
 	   (dbz-err1 'jacobi_ds))
 	  ((and $trigsign (mminusp* u))
@@ -3957,7 +3957,7 @@ first kind:
 	   1)
 	  ((zerop1 m)
 	   ;; A&S 16.6.7
-	   `(($sec) ,u))
+	   (take '(%sec) u))
 	  ((onep1 m)
 	   ;; A&S 16.6.7
 	   1)
