@@ -624,6 +624,7 @@ integration/bypart.mac\
 integration/delta.dem\
 integration/delta.mac\
 integration/delta.usg\
+lapack/dgesv.lisp\
 lapack/eigensys.lisp\
 lapack/lapack.mac\
 lapack/lapack.system\
