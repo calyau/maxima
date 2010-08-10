@@ -854,15 +854,10 @@ in the interval of integration.")
 			    (trisplit e))
 			   (t (cons e 0))))
 	     (cond ((not (equal (sratsimp ipart) 0))
-		    (let ((rans (cond ((limit-subs rpart a b))
-				      (t (m-
-					  `((%limit) ,rpart ,var ,b $minus)
-					  `((%limit) ,rpart ,var ,a $plus)))))
-			  (ians (cond ((limit-subs ipart a b))
-				      (t (m-
-					  `((%limit) ,ipart ,var ,b $minus)
-					  `((%limit) ,ipart ,var ,a $plus))))))
-		      (m+ rans (m* '$%i ians))))
+		    (let ((rans (limit-subs rpart a b))
+			  (ians (limit-subs ipart a b)))
+		      (if (and rans ians)
+			  (m+ rans (m* '$%i ians)))))
 		   (t (setq rpart (sratsimp rpart))
 		      (cond ((limit-subs rpart a b))
 			    (t (same-sheet-subs rpart a b)))))))))
@@ -874,12 +869,18 @@ in the interval of integration.")
 	 nil)
 	(t
 	 (cond ((or (polyinx e var ())
-		    (and (not (involve e '(%log %asin %acos %atan %asinh %acosh %atanh %atan2)))
+		    (and (not (involve e '(%log %asin %acos %atan %asinh %acosh %atanh %atan2
+						%gamma_incomplete %expintegral_ei)))
 			 (free ($denom e) var)))
 		;; It's easy if we have a polynomial.  I (rtoy) think
 		;; it's also easy if the denominator is free of the
 		;; integration variable and also if the expression
 		;; doesn't involve inverse functions.
+		;;
+		;; gamma_incomplete and expintegral_ie
+		;; included because of discontinuity in
+		;; gamma_incomplete(0, exp(%i*x)) and 
+		;; expintegral_ei(exp(%i*x))
 		;;
 		;; XXX:  Are there other cases we've forgotten about?
 		;;
@@ -897,7 +898,8 @@ in the interval of integration.")
 	       (t nil)))))
 
 (defun limit-subs (e ll ul)
-  (cond ((not (free e '%atan))  ())
+  (cond ((involve e '(%atan %gamma_incomplete %expintegral_ei))
+	 ())	; functions with discontinuities
 	(t (setq e ($multthru e))
 	   (let ((a1 ($limit e var ll '$plus))
 		 (a2 ($limit e var ul '$minus)))

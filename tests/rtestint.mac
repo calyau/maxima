@@ -1299,6 +1299,12 @@ integrate((exp(3/2*log(x))+1)/sqrt(x),x);
 integrate(3*sqrt(x)*exp(3/2*log(x)),x);
 x^3;
 
+/* someday this should return 2*%pi */
+/* that would require handling the discontinuity in
+   gamma_incomplete(0, exp(%i*x))				*/
+integrate(exp(cos(x))*cos(sin(x)),x,0,2*%pi);
+'integrate(exp(cos(x))*cos(sin(x)),x,0,2*%pi);
+
 /* Bug ID: 3039452 - integrate(sqrt(t^c)/(t*(b*t^c+a)),t) hangs
  */
 /* These assumptions are already present. Consider to delete it more early.
@@ -1308,3 +1314,4 @@ integrate(sqrt(t^c)/(t*(b*t^c+a)),t);
 2*atan(sqrt(b)*%e^(c*log(t)/2)/sqrt(a))/(sqrt(a)*sqrt(b)*c);
 forget(a>0,b>0);
 [a>0,b>0];
+

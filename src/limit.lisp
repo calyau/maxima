@@ -999,7 +999,8 @@ It appears in LIMIT and DEFINT.......")
     (cond ((involve e '(mfactorial)) nil)
 
 	  ;; functions that are defined at their discontinuities
-	  ((amongl '($atan2 $floor $round $ceiling %signum %integrate)
+	  ((amongl '($atan2 $floor $round $ceiling %signum %integrate
+			    %gamma_incomplete)
 		   e) nil)
 
 	  ;; substitute value into expression
@@ -2024,13 +2025,13 @@ It appears in LIMIT and DEFINT.......")
   (declare (special var))
   (cond ((atom e) nil)
 	((mnump e) nil)
-	((and (member (caar e) nn* :test #'eq) (among var (cadr e))) (cadr e))
+	((and (member (caar e) nn* :test #'eq) (among var (cdr e))) (cadr e))
 	(t (some #'(lambda (j) (involve j nn*)) (cdr e)))))
 
 (defun notinvolve (exp nn*)
   (cond ((atom exp) t)
 	((mnump exp) t)
-	((member (caar exp) nn* :test #'eq) (not (among var (cadr exp))))
+	((member (caar exp) nn* :test #'eq) (not (among var (cdr exp))))
 	((every #'(lambda (j) (notinvolve j nn*))
 		(cdr exp)))))
 
