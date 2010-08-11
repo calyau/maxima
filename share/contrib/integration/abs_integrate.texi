@@ -6,7 +6,11 @@ unit step functions. For integrands of the form @math{p(x) |q(x)|},
 where @math{p} is a polynomial and @math{q} is a polynomial that
 @code{factor} is able to factor into a product of linear or constant
 terms, the @code{abs_integrate} package determines an antiderivative
-that is continuous on the entire real line.
+that is continuous on the entire real line. Additionally, for an
+integrand that involves one or more parameters, the function
+@code{conditional_integrate} tries to determine an antiderivative that
+is valid for all parameter values.
+
 
 @b{Examples} To use the @code{abs_integrate} package, you'll first need to load it:
 @example
@@ -273,6 +277,28 @@ this allows
 (%o5) neg
 @end example
 @b{To use} @file{load(abs_integrate)}
+
+@end deffn
+
+@deffn {Function} conditional_integrate (@var{e}, @var{x})
+
+For an integrand with one or more parameters, this function tries to determine an
+antiderivative that is valid for all parameter values. When successful, this
+function returns a conditional expression for the antiderivative.
+
+@example
+(%i1) conditional_integrate(cos(m*x),x);
+(%o1) %if(m#0,sin(m*x)/m,x)
+
+(%i2) conditional_integrate(cos(m*x)*cos(x),x);
+(%o2) %if((m-1#0) %and (m+1#0),-((m-1)*cos((m+1)*x)+(m+1)*cos((m-1)*x))/(2*m^2-2),(sin(2*x)+2*x)/4)
+
+(%i3) sublis([m=6],%);
+(%o3) -(5*cos(7*x)+7*cos(5*x))/70
+
+(%i4) conditional_integrate(exp(a*x^2+b*x),x);
+(%o4) %if(a#0,-(sqrt(%pi)*%e^(-b^2/(4*a))*erf((2*a*x+b)/(2*sqrt(-a))))/(2*sqrt(-a)),%if(b#0,%e^(b*x)/b,x))
+@end example
 
 @end deffn
 

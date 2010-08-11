@@ -20,6 +20,7 @@ load("opsubst");
 load("unwind_protect");
 load("to_poly_solve_extra");
 load("partition");
+load("basic");
 
 matchdeclare(x, symbolp, [q,a,b], lambda([s], true));
 block([simp : false], tellsimpafter('integrate(q,x), extra_integrate(q,x)),
@@ -222,11 +223,14 @@ abs_int_extra(q,x) := block([q1,q2,k,xo,kk],
         q2 : first(q2),
         xo : linsolve(k,x),
         /* make both q1 and q2 vanish at xo */
-        q1 : q1 - sublis(xo, q1),
-        q2 : q2 - sublis(xo, q2),
+        q1 : errcatch(q1 - sublis(xo, q1)),
+        q2 : errcatch(q2 - sublis(xo, q2)),
         xo : first(xo),
         xo : rhs(xo) - lhs(xo),
-        (q1 + q2)/2 - (q2 - q1) * signum(xo)/2)
+        if q1 = [] or q2 = [] then false else (
+          q1 : first(q1),
+          q2 : first(q2),
+          (q1 + q2)/2 - (q2 - q1) * signum(xo)/2))
       else false))
   else false);
  
@@ -304,3 +308,120 @@ if_int(q,x) := block([p,f,g,fi,gi,c],
         if freeof(x,c) then %if(p,fi, gi + c) else false)
       else false)
     else false));
+
+/* If p is a product, remove factors of p that are constant; otherwise, return p. */
+
+remove_const_factors(p) := block([inflag : true],
+  p : factor(p),
+  if mapatom(p) or not op(p) = "*" then p else map(lambda([s], if constantp(s) then 1 else s),p));
+
+/* On exiting from sign or csign, temporary assumptions are not immediately forgotten. This function
+   removes these temporary assumptions before returning. */
+
+forgetful_csign(e) := block([fcts : facts()],
+  unwind_protect(csign(e),
+    map('forget, setdifference(setify(facts()), setify(fcts)))));
+
+/* Do basic simplifications on the equation e = 0. This function is conservative--
+   since, for example, 1/x  = 1/x isn't the same as 0 = 0, this function doesn't do
+   e <-- rhs(e)-lhs(e). For a similar reason, this function doesn't return the numerator
+   of a quotient either.*/
+   
+eq_reduce(e) := block([ ],
+  e : factor(e),
+  if mapatom(e) then e
+  else if op(e) = 'abs then eq_reduce(first(e))
+  else if op(e) = 'log then eq_reduce(first(e)-1)
+  else if op(e) = "*" then remove_const_factors(e)
+  else if op(e) = "^" and numberp(second(e)) and is(second(e) > 0) then eq_reduce(first(e))
+  else if op(e) = 'gamma then set()  /* 0 isn't in the range of the gamma function */
+  else e);
+
+/* Try to find a set of expressions {q1,q2,...,qn} such that if any q vanishes, the expression
+   e is undefined. This function misses things such as gamma(x) -- we would need {0,-1,-2,-3,...} */
+   
+possible_singular_pts(e) := block([inflag : true],
+  e : factor(e),
+  if mapatom(e) then set()
+  else if op(e) = "^" and forgetful_csign(second(e)) # 'pos and not constantp(first(e)) then
+     set(eq_reduce(first(e)))
+  else if op(e) = 'log then set(eq_reduce(first(e)))
+  else xreduce('union, map('possible_singular_pts, args(e))));
+
+/* This function tries to return integrate(e,x) without calling asksign. If asksign does
+   get called, this function removes any new assumptions in the fact database.
+
+   To avoid some calls to asksign, forgetful_integrate first tries to integrate
+   using intfudu. This doesn't prevent all calls to asksign; for example,
+   integrate(1/(a+x^2),x). Maybe we could avoid additional calls to asksign by
+   setting assume_pos to true. But then integrate(abs(x),x) --> x^2/2. */
+ 
+forgetful_integrate(e,x) := block([ee, fcts : facts(), extra_integration_methods : []],
+  ee : intfudu(e,x),
+  if ee # false then ee else (
+    unwind_protect(integrate(e,x),
+      map('forget, setdifference(setify(facts()), setify(fcts))))));
+
+/* Let l be a list of first degree polynomials. Solve l and substitute into e.
+   When the substitutions are inconsistent, signal an error, but don't print
+   a message. Linear_subst isn't intended to be a user-level function--this
+   function doesn't check that each expression in the list l is linear. It would
+   be good to hide this function from the user, but Maxima doesn't have a way
+   to do that.*/
+  
+linear_subst(l,e) := block([linsolve_params : false, globalsolve : false, backsubst : false,
+  programmode : true],
+  if emptyp(l) then e else (
+    l : linsolve(l, listofvars(l)),
+    if emptyp(l) then error() else subst(l,e)));
+
+/* Return the first n bits of a binary representation for the positive integer k. */
+
+bits(k,n) := block([b : []],
+  while n > 0 do (
+    n : n -1,
+    push(mod(k,2),b),
+    k : floor(k/2)),
+  reverse(b));
+
+/* Return true if the expression e is linear in the variables in the list var; otherwise, return false. */
+
+linear_p(e,var) := polynomialp(e, var, lambda([s], lfreeof(var,s)), lambda([k],is(k=0 or k=1)));
+
+/* Try to return an antiderivative that is valid for all parameters.
+
+   (1) Integrate normally--well almost normally. The function forgetful_integrate tries
+       to integrate without calling asksign and it cleans the fact database on exit.
+       The call to trigsimp cleans up antiderivatives such as integrate(cos(m*x) * sin(x - m),x).
+   
+   (2) Locate the singularities of the antiderivative that are not singularities of the
+       integrand--collect these singularities into a set npoles (new poles).
+
+   (3) When all the singularities are linear, loop through the possibilities and collect
+       the results. When conditional_integrate is unable to find an antiderivative, return
+       false. */
+
+conditional_integrate(e,x) := block([ee, eee, npoles, vars, n, m, k, cnd, eq, q, ok : true],
+  ee : trigsimp(forgetful_integrate(e,x)),
+  if freeof('integrate, ee) or freeof(nounify('integrate),ee) then (
+    npoles : setdifference(possible_singular_pts(ee), possible_singular_pts(e)),
+    npoles : subset(npoles, lambda([s], freeof(x,s))),
+    vars : listofvars(npoles),
+    if emptyp(npoles) then ee
+    else if every(lambda([s], linear_p(s,vars)), npoles) then (
+      m : cardinality(npoles),
+      n : 2^m-1,
+      q : [[xreduce("%and", map(lambda([s], s # 0), listify(npoles))), ee]],
+      for k : 1 thru n while ok do (
+        cnd : map(lambda([s,w], if s = 0 then w # 0 else w = 0), reverse(bits(k,m)), listify(npoles)),
+        eq : sublist(cnd, lambda([s], is(op(s) = "="))),
+        ee : errcatch(linear_subst(eq,e)),
+        if ee # [] then ( /* skip when eq is inconsistent.*/
+          ee : first(ee),
+          ee : conditional_integrate(ee,x),
+          if ee # false then push([xreduce("%and", cnd), ee], q) else ok : false)),
+      if ok then (
+        rreduce(lambda([a,b], %if(first(a), second(a), b)), reverse(rest(q)), second(first(q))))
+      else false)
+    else false)
+  else false);
