@@ -8,7 +8,7 @@ set -x
 
 TARGET_TEXI=$TARGET.texi
 
-WORKING_DIRECTORY=`mktemp -d /tmp/maxima-texinfo-categories-XXXXXX`
+WORKING_DIRECTORY=`mktemp -d ${TMPDIR:-/tmp}/maxima-texinfo-categories-XXXXXX`
 cp -R *.texi figures $WORKING_DIRECTORY
 d=`pwd`
 cd $WORKING_DIRECTORY
@@ -30,7 +30,7 @@ cat *.texi\
   | awk -F '$' -f $d/extract_categories1.awk \
   > tmp-make-categories.py
 
-python tmp-make-categories.py
+${PYTHONBIN:-python} tmp-make-categories.py
 
 sed 's/^@bye//' $TARGET_TEXI > tmp-target.texi
 echo '@node Documentation Categories' >> tmp-target.texi
