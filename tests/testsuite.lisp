@@ -15,7 +15,7 @@
 	((mlist) "rtest10" 24 25)
 	"rtest11" "rtest13" "rtest13s"
 	"rtest14"
-	((mlist simp) "rtest15")
+        "rtest15"
 	"rtest16"
 	"rtestode" "rtestode_zp"
 	"rtest3" "rtest8"
@@ -40,16 +40,16 @@
 	((mlist) "rtest_dot")
 	"rtest_mset"
 	"rtest_boolean"
-	((mlist) "rtest_round")
+        "rtest_round"
 	((mlist) "rtest_map" 2 3 4)
 	((mlist) "rtest_sign" 21 25 30 40 65 72 77 79 84)
-	((mlist) "rtest_algebraic")
+        "rtest_algebraic"
         "rtest_gamma"
         "rtest_expintegral"
 	"rtest_signum"
         "rtest_lambert_w"
 	"rtest_elliptic"
-	"rtest_integrate"
+        ((mlist) "rtest_integrate" 13 14 21 22 32 214 226)
 	"rtest_integrate_special"
         "rtest_ask"
         ((mlist) "rtest_sqrt" 76 78 79 80 86)
