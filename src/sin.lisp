@@ -1919,6 +1919,24 @@
 	   ((coeffpp) (d freevar))))
     nil))
 
+;;; Recognize (a^(c*(z^r)^p+d)^v
+
+(defun m2-exp-type-1a (expr)
+  (m2 expr
+      '((mexpt)
+        ((mexpt)
+         (a freevar0)
+         ((mplus)
+          ((coeffpp) (d freevar))
+          ((coefft)
+           (c freevar0)
+           ((mexpt)
+            ((mexpt) (z varp) (r freevar0))
+            (p freevar)))
+          ))
+        (v freevar))
+      nil))
+
 ;;; Recognize z^v*a^(b*z^r+d)
 
 (defun m2-exp-type-2 (expr)
@@ -2086,15 +2104,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun integrate-exp-special (expr var &aux w)
+(defun integrate-exp-special (expr var &aux w const)
 
-  (when *debug-integrate*
-    (format t "~&INTEGRATE-EXP-SPECIAL with ~A~%" expr)
-    (format t "~&Factored is ~A~%" (facsum-exponent expr)))
-
-  ;; First we factor the expression.
+  ;; First factor the expression.
   (setq expr ($factor expr))
-
+  
+  ;; Remove constant factors.
+  (setq w (partition expr var 1))
+  (setq const (car w))
+  (setq expr (cdr w))
+  
   (cond
     ((setq w (m2-exp-type-1 (facsum-exponent expr)))
      (let ((a (cdras 'a w))
@@ -2107,6 +2126,7 @@
 	 (format t "~&Type 1: a^(b*(z^r)^p+d) : w = ~A~%" w))
 
        (mul
+         const
 	 (power a d)
 	 (div -1 (mul p r))
 	 var
@@ -2116,7 +2136,29 @@
 	 (power
 	   (mul -1 b (power (power var r) p) ($log a))
 	   (div -1 (mul r p))))))
-
+    
+    ((setq w (m2-exp-type-1a (facsum-exponent expr)))
+     (let ((a (cdras 'a w))
+           (c (cdras 'c w))
+           (d (cdras 'd w))
+           (r (cdras 'r w))
+           (p (cdras 'p w))
+           (v (cdras 'v w)))
+       
+       (when *debug-integrate*
+         (format t "~&Type 1a: (a^(c*(z^r)^p+d)^v : w = ~A~%" w))
+       
+       (mul -1
+            const
+            (inv (mul p r (power a (mul c v (power (power var r) p)))))
+            var
+            (power (power a (add d (mul c (power (power var r) p)))) v)
+            (take '(%gamma_incomplete)
+                  (inv (mul p r))
+                  (mul -1 c v (power (power var r) p) (take '(%log) a)))
+            (power (mul -1 c v (power (power var r) p) (take '(%log) a))
+                   (div -1 (mul p r))))))
+    
     ((setq w (m2-exp-type-2 (facsum-exponent expr)))
      (let ((a (cdras 'a w))
 	   (b (cdras 'b w))
@@ -2128,6 +2170,7 @@
 	 (format t "~&Type 2: z^v*a^(b*z^r+d) : w = ~A~%" w))
 
        (mul
+         const
 	 (div -1 r)
 	 (power a d)
 	 (power var (add v 1))
@@ -2149,6 +2192,7 @@
 	 (format t "~&Type 3: (a*z+b)^p*%e^(c*z+d) : w = ~A~%" w))
 
        (mul
+         const
 	 (div -1 a)
 	 (power '$%e (sub d (div (mul b c) a)))
 	 (power (add b (mul a var)) (add p 1))
@@ -2165,6 +2209,7 @@
 	 (format t "~&Type 4: d^(a*z^2+b/z^2+c) : w = ~A~%" w))
 
        (mul
+         const
 	 (div 1 (mul 4 (power (mul -1 a ($log d)) (div 1 2))))
 	 (mul
 	   (power d c)
@@ -2203,7 +2248,8 @@
 
        (setq n (div n 2))
 
-       (mul (div 1 4)
+       (mul const
+            (div 1 4)
 	    (power d c)
 	    (power '$%pi (div 1 2))
 	    (simplify (list '(%derivative)
@@ -2250,6 +2296,7 @@
 	 (format t "~&Type 5: z^n*d^(a*z^2+b*z+c) : w = ~A~%" w))
 
        (mul
+         const
 	 (div -1 (mul 2 (power (mul a ($log d)) (div 1 2))))
 	 (mul
 	   (power d (sub c (div (mul b b) (mul 4 a))))
@@ -2286,6 +2333,7 @@
 	 (format t "~&Type 6: z^n*d^(a*sqrt(z)+b*z+c) : w = ~A~%" w))
 
        (mul
+         const
 	 (power 2 (mul -1 (add n 1)))
 	 (power d (sub c (div (mul a a) (mul 4 b))))
 	 (power (mul b ($log d)) (mul -2 (add n 1)))
@@ -2353,6 +2401,7 @@
        (setq n (add n 1))
 
        (mul
+         const
 	 (power var n)
 	 (div -1 r)
 	 (power a e)
@@ -2381,6 +2430,7 @@
 	 (format t "~&   : w = ~A~%" w))
 
        (mul
+         const
 	 (div 1 2)
 	 (power a e)
 	 (power h g)
@@ -2429,6 +2479,7 @@
 	 (format t "~&   : w = ~A~%" w))
 
        (mul
+         const
 	 (div -1 2)
 	 (power a e)
 	 (power h g)
@@ -2493,6 +2544,7 @@
 	 (format t "~&   : w = ~A~%" w))
 
        (mul
+         const
 	 (power 2 (add (mul -2 n) -1))
 	 (power a e)
 	 (power h g)
