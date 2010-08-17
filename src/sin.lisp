@@ -102,25 +102,34 @@
 ;;;   integrate(exp(x+1)/(1+exp(x)),x)
 ;;;   integrate(10^x*exp(x),x)
 
-(defvar *base* nil)      ; the common base
-(defvar *exptflag* nil)  ; When T, the substitution is not possible
+;; These global variables are only used for the routines superexpt and elemxpt.
 
-(defun superexpt (exp var *base*)
-  (declare (special *exptflag*))
+(defvar *base* nil)     ; the common base
+(defvar *power* nil)    ; the common power of the form b*x+a stored as (b . a)
+(defvar *exptflag* nil) ; When T, the substitution is not possible
+
+(defun superexpt (exp var *base* *power*)
+  (declare (special *exptflag* exp))
   (prog (y *exptflag*)
     ;; Transform the integrand.
-    (setq y (elemxpt exp))
+    (setq y (resimplify (elemxpt exp)))
     (when *exptflag* (return nil))
     ;; Integrate the transformed integrand and substitute back.
-    (return (substint
-              (list '(mexpt) *base* var)
-              var
-              (integrator (div y (mul var (take '(%log) *base*))) var)))))
+    (return 
+      ($multthru
+        (substint (list '(mexpt) *base*
+                        (list '(mplus) (cdras 'a *power*)
+                              (list '(mtimes) (cdras 'b *power*) var)))
+                  var
+                  (integrator (div y
+                                   (mul var
+                                        (cdras 'b *power*)
+                                        (take '(%log) *base*))) var))))))
 
 ;; Transform expressions like g^(b*x+a) to the common base *base* and
 ;; do the substitution y = *base*^(b*x+a) in the expr.
 (defun elemxpt (expr &aux w)
-  (declare (special *exptflag* *base*))
+  (declare (special *exptflag* *base* *power*))
   (cond ((freevar expr) expr)
         ;; var is the base of a subexpression. The transformation fails.
         ((atom expr) (setq *exptflag* t))
@@ -142,11 +151,19 @@
         ((not (setq w (m2-b*x+a (caddr expr))))
          (list (car expr) *base* (elemxpt (caddr expr))))
         ;; Do the substitution y = g^(b*x+a) = g^a*g^(b*x).
-        (t (maxima-substitute *base*
-                              '*base*
-                              (subliss w '((mtimes)
-                                           ((mexpt) *base* a)
-                                           ((mexpt) x b)))))))
+        (t
+         (setq w (cons (cons 'bb (cdras 'b *power*)) w))
+         (setq w (cons (cons 'aa (cdras 'a *power*)) w))
+         (setq w (cons (cons '*base* *base*) w))
+         (subliss w '((mtimes)
+                      ((mexpt) *base* a)
+                      ((mexpt)
+                       *base*
+                       ((mquotient)
+                        ((mtimes) -1 aa b) bb))
+                      ((mexpt)
+                       x
+                       ((mquotient) b bb)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -168,7 +185,7 @@
 ;;; Check if the problem can be transformed or solved by special methods.
 ;;; 11 Methods are implemented by Moses, some more have been added.
 
-(defun intform (expres)
+(defun intform (expres &aux w)
   (cond ((freevar expres) nil)
         ((atom expres) nil)
         
@@ -277,8 +294,8 @@
         
         ;; Method 1: Elementary function of exponentials
         ((freevar (cadr expres))
-         (cond ((m2-b*x+a (caddr expres))
-                (superexpt exp var (cadr expres)))
+         (cond ((setq w (m2-b*x+a (caddr expres)))
+                (superexpt exp var (cadr expres) w))
                ((intform (caddr expres)))
                ((and (eq '$%e (cadr expres))
                      (isinop (caddr expres) '%log))
