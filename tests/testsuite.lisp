@@ -32,7 +32,7 @@
 	"rtest_diff_invtrig"
 	"rtest_scalarp"
 	"rtest_everysome"
-	"rtestint"
+        ((mlist) "rtestint" 83)
 	"rtestifactor"
 	((mlist) "rtest_equal" 157 160)
 	"rtest_abs"
@@ -49,7 +49,7 @@
 	"rtest_signum"
         "rtest_lambert_w"
 	"rtest_elliptic"
-        ((mlist) "rtest_integrate" 13 14 21 22 32 214 226)
+        ((mlist) "rtest_integrate" 13 14 21 22 32)
 	"rtest_integrate_special"
         "rtest_ask"
         ((mlist) "rtest_sqrt" 76 78 79 80 86)
