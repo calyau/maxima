@@ -93,80 +93,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; Stage II
-;;; Implementation of Method 1: Elementary function of exponentials
-;;;
-;;; The following examples are integrated with this method:
-;;;
-;;;   integrate(exp(x)/(2+3*exp(2*x)),x)
-;;;   integrate(exp(x+1)/(1+exp(x)),x)
-;;;   integrate(10^x*exp(x),x)
-
-;; These global variables are only used for the routines superexpt and elemxpt.
-
-(defvar *base* nil)     ; the common base
-(defvar *power* nil)    ; the common power of the form b*x+a stored as (b . a)
-(defvar *exptflag* nil) ; When T, the substitution is not possible
-
-(defun superexpt (exp var *base* *power*)
-  (declare (special *exptflag* exp))
-  (prog (y *exptflag*)
-    ;; Transform the integrand.
-    (setq y (resimplify (elemxpt exp)))
-    (when *exptflag* (return nil))
-    ;; Integrate the transformed integrand and substitute back.
-    (return 
-      ($multthru
-        (substint (list '(mexpt) *base*
-                        (list '(mplus) (cdras 'a *power*)
-                              (list '(mtimes) (cdras 'b *power*) var)))
-                  var
-                  (integrator (div y
-                                   (mul var
-                                        (cdras 'b *power*)
-                                        (take '(%log) *base*))) var))))))
-
-;; Transform expressions like g^(b*x+a) to the common base *base* and
-;; do the substitution y = *base*^(b*x+a) in the expr.
-(defun elemxpt (expr &aux w)
-  (declare (special *exptflag* *base* *power*))
-  (cond ((freevar expr) expr)
-        ;; var is the base of a subexpression. The transformation fails.
-        ((atom expr) (setq *exptflag* t))
-        ((not (eq (caar expr) 'mexpt))
-         (cons (car expr)
-               (mapcar #'(lambda (c) (elemxpt c)) (cdr expr))))
-        ((not (freevar (cadr expr)))
-         (list '(mexpt)
-               (elemxpt (cadr expr))
-               (elemxpt (caddr expr))))
-        ;; Transform the expression to the common base *base*.
-        ((not (eq (cadr expr) *base*))
-         (elemxpt (list '(mexpt)
-                        *base*
-                        (mul (power (take '(%log) *base*) -1)
-                             (take '(%log) (cadr expr))
-                             (caddr expr)))))
-        ;; The exponent must be linear in the variable of integration.
-        ((not (setq w (m2-b*x+a (caddr expr))))
-         (list (car expr) *base* (elemxpt (caddr expr))))
-        ;; Do the substitution y = g^(b*x+a) = g^a*g^(b*x).
-        (t
-         (setq w (cons (cons 'bb (cdras 'b *power*)) w))
-         (setq w (cons (cons 'aa (cdras 'a *power*)) w))
-         (setq w (cons (cons '*base* *base*) w))
-         (subliss w '((mtimes)
-                      ((mexpt) *base* a)
-                      ((mexpt)
-                       *base*
-                       ((mquotient)
-                        ((mtimes) -1 aa b) bb))
-                      ((mexpt)
-                       x
-                       ((mquotient) b bb)))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun subst10 (ex)
   (cond ((atom ex) ex)
 	((and (eq (caar ex) 'mexpt) (eq (cadr ex) var))
@@ -810,39 +736,6 @@
       (ratint ex var)
       (integrator ex var)))
 
-(defun rat3 (ex ind)
-  (cond ((freevar ex) t)
-	((atom ex) ind)
-	((member (caar ex) '(mtimes mplus) :test #'eq)
-	 (do ((u (cdr ex) (cdr u)))
-	     ((null u) t)
-	   (if (not (rat3 (car u) ind))
-	       (return nil))))
-	((not (eq (caar ex) 'mexpt))
-	 (rat3 (car (margs ex)) t))
-	((freevar (cadr ex))
-	 (rat3 (caddr ex) t))
-	((integerp (caddr ex))
-	 (rat3 (cadr ex) ind))
-	((and (m2 (cadr ex) ratroot nil)
-	      (denomfind (caddr ex)))
-	 (setq rootlist (cons (denomfind (caddr ex)) rootlist)))
-	(t (rat3 (cadr ex) nil))))
-
-(defun subst4 (ex)
-  (cond ((freevar ex) ex)
-	((atom ex) *a*)
-	((not (eq (caar ex) 'mexpt))
-	 (mapcar #'(lambda (u) (subst4 u)) ex))
-	((m2 (cadr ex) ratroot nil)
-	 (list (car ex) *b* (integerp2 (timesk k (caddr ex)))))
-	(t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
-
-(defun findingk (list)
-  (do ((kk 1) (l list (cdr l)))
-      ((null l) kk)
-    (setq kk (lcm kk (car l)))))
-
 (defun denomfind (x)
   (cond ((ratnump x) (caddr x))
 	((not (numberp x)) nil)
@@ -850,16 +743,111 @@
 	(t (cdr (maxima-rationalize x)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Stage II
+;;; Implementation of Method 1: Elementary function of exponentials
+;;;
+;;; The following examples are integrated with this method:
+;;;
+;;;   integrate(exp(x)/(2+3*exp(2*x)),x)
+;;;   integrate(exp(x+1)/(1+exp(x)),x)
+;;;   integrate(10^x*exp(x),x)
 
+;; These global variables are only used for the routines superexpt and elemxpt.
+
+(defvar *base* nil)     ; the common base
+(defvar *power* nil)    ; the common power of the form b*x+a, the values are
+                        ; stored in a list which is returned from m2
+(defvar *exptflag* nil) ; When T, the substitution is not possible
+
+(defun superexpt (exp var *base* *power*)
+  (declare (special *exptflag* exp))
+  (prog (y *exptflag*)
+    ;; Transform the integrand.
+    (setq y (resimplify (elemxpt exp)))
+    (when *exptflag* (return nil))
+    ;; Integrate the transformed integrand and substitute back.
+    (return 
+      ($multthru
+        (substint (list '(mexpt) *base*
+                        (list '(mplus) (cdras 'a *power*)
+                              (list '(mtimes) (cdras 'b *power*) var)))
+                  var
+                  (integrator (div y
+                                   (mul var
+                                        (cdras 'b *power*)
+                                        (take '(%log) *base*))) var))))))
+
+;; Transform expressions like g^(b*x+a) to the common base *base* and
+;; do the substitution y = *base*^(b*x+a) in the expr.
+(defun elemxpt (expr &aux w)
+  (declare (special *exptflag* *base* *power*))
+  (cond ((freevar expr) expr)
+        ;; var is the base of a subexpression. The transformation fails.
+        ((atom expr) (setq *exptflag* t))
+        ((not (eq (caar expr) 'mexpt))
+         (cons (car expr)
+               (mapcar #'(lambda (c) (elemxpt c)) (cdr expr))))
+        ((not (freevar (cadr expr)))
+         (list '(mexpt)
+               (elemxpt (cadr expr))
+               (elemxpt (caddr expr))))
+        ;; Transform the expression to the common base *base*.
+        ((not (eq (cadr expr) *base*))
+         (elemxpt (list '(mexpt)
+                        *base*
+                        (mul (power (take '(%log) *base*) -1)
+                             (take '(%log) (cadr expr))
+                             (caddr expr)))))
+        ;; The exponent must be linear in the variable of integration.
+        ((not (setq w (m2-b*x+a (caddr expr))))
+         (list (car expr) *base* (elemxpt (caddr expr))))
+        ;; Do the substitution y = g^(b*x+a) = g^a*g^(b*x).
+        (t
+         (setq w (cons (cons 'bb (cdras 'b *power*)) w))
+         (setq w (cons (cons 'aa (cdras 'a *power*)) w))
+         (setq w (cons (cons '*base* *base*) w))
+         (subliss w '((mtimes)
+                      ((mexpt) *base* a)
+                      ((mexpt)
+                       *base*
+                       ((mquotient)
+                        ((mtimes) -1 aa b) bb))
+                      ((mexpt)
+                       x
+                       ((mquotient) b bb)))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Stage II
 ;;; Implementation of Method 3:
 ;;; Substitution for a rational root of a linear fraction of x
+;;;
+;;; This method is applicable when the integrand is of the form:
+;;;
+;;;   /
+;;;   [       a x + b n1/m1   a x + b n1/m2
+;;;   I R(x, (-------)   ,   (-------)     , ...) dx
+;;;   ]       c x + d         c x + d
+;;;   /
+;;;
+;;; Substitute 
+;;;
+;;;    (1) t = ((a*x+b)/(c*x+d))^(1/k), or
+;;;
+;;;    (2) x = (b-d*t^k)/(c*t^k-a)
+;;;
+;;; where k is the least common multiplier of m1, m2, ... and
+;;;
+;;;    (3) dx = k*(a*d-b*c)*t^(k-1)/(a-c*t^k)^2 * dt
+;;;
+;;; First, the algorithm calls the routine RAT3 to collect the roots of the
+;;; form ((a*x+b)/(c*x+d))^(n/m) in the list *ROOTLIST*. The routine FINDGK
+;;; searches for the least common multiplier of m1, m2, ... Then the
+;;; substitutions (2) and (3) are done and the new problem is integrated.
+;;; As always, W is an alist which associates to the coefficients
+;;; a, b... (and to VAR) their values.
 
-;; EXP = f(t,u) where f is some function with, say, VAR = t,
-;; u^k = RATROOT = e*(a*t+b)/(c*t+d), where the smallest possible k
-;; is calculated below.
-;; As always, W is an alist which associates to the coefficients
-;; a, b... (and to VAR) their values.
 (defun ratroot (exp var ratroot w)
   (prog (rootlist k y w1)
      (cond ((setq y (chebyf exp var)) (return y)))
@@ -901,6 +889,39 @@
 				       (list '(mexpt) k -1)))
 		       var
 		       y))))
+
+(defun rat3 (ex ind)
+  (cond ((freevar ex) t)
+	((atom ex) ind)
+	((member (caar ex) '(mtimes mplus) :test #'eq)
+	 (do ((u (cdr ex) (cdr u)))
+	     ((null u) t)
+	   (if (not (rat3 (car u) ind))
+	       (return nil))))
+	((not (eq (caar ex) 'mexpt))
+	 (rat3 (car (margs ex)) t))
+	((freevar (cadr ex))
+	 (rat3 (caddr ex) t))
+	((integerp (caddr ex))
+	 (rat3 (cadr ex) ind))
+	((and (m2 (cadr ex) ratroot nil)
+	      (denomfind (caddr ex)))
+	 (setq rootlist (cons (denomfind (caddr ex)) rootlist)))
+	(t (rat3 (cadr ex) nil))))
+
+(defun findingk (list)
+  (do ((kk 1) (l list (cdr l)))
+      ((null l) kk)
+    (setq kk (lcm kk (car l)))))
+
+(defun subst4 (ex)
+  (cond ((freevar ex) ex)
+	((atom ex) *a*)
+	((not (eq (caar ex) 'mexpt))
+	 (mapcar #'(lambda (u) (subst4 u)) ex))
+	((m2 (cadr ex) ratroot nil)
+	 (list (car ex) *b* (integerp2 (timesk k (caddr ex)))))
+	(t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
 
 (defun subst41 (exp *a* *b*)
   (subst4 exp))
