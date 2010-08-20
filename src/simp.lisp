@@ -399,9 +399,10 @@
 	            ;; Include constant atoms which are not declared nonscalar.
 	            ($constantp exp))
 	        '$scalar)))
-        ((and (member 'array (car exp))
-              (not (mget (caar exp) '$scalar)))
-         '$nonscalar)
+        ((member 'array (car exp))
+         (cond ((mget (caar exp) '$scalar) '$scalar)
+               ((mget (caar exp) '$nonscalar) '$nonscalar)
+               (t nil)))
 	((specrepp exp) (scalarclass (specdisrep exp)))
 	;; If the function is declared scalar or nonscalar, then return. If it
         ;; isn't explicitly declared, then try to be intelligent by looking at 
