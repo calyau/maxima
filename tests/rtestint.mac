@@ -1315,3 +1315,8 @@ integrate(sqrt(t^c)/(t*(b*t^c+a)),t);
 forget(a>0,b>0);
 [a>0,b>0];
 
+/* Bug ID: 3045559 integrate(exp(-u^2), u, minf, x) => incorrect gamma_incomple
+ */
+integrate(exp(-u^2),u,minf,x);
+sqrt(%pi)*erf(x)/2+sqrt(%pi)/2;
+
