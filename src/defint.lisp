@@ -3653,7 +3653,7 @@ in the interval of integration.")
                                (list '(mequal)
                                      var1
                                      (div (add w 1) s))))))
-             ((and (not (eq ($sign ll) '$neg))
+             ((and (member ($sign ll) '($pos $pz))
                    (integerp m)
                    (or (= m 0) (= m 1))	; Exclude m>1, because Maxima can not
                                         ; derivate the involved hypergeometric
