@@ -1110,6 +1110,25 @@ See @code{^^} (noncommutative exponent) for another method of inverting a matrix
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} list_matrix_entries (@var{M})
+Returns a list containing the elements of the matrix @var{M}.
+
+Example:
+
+@c ===beg===
+@c list_matrix_entries(matrix([a,b],[c,d]));
+@c ===end===
+@example
+(%i1) list_matrix_entries(matrix([a,b],[c,d]));
+(%o1)                     [a, b, c, d]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
 @defvr {Option variable} lmxchar
 Default value: @code{[}
 
