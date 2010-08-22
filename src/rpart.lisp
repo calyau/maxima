@@ -679,14 +679,27 @@
 	   (unless n
 	     (return (cons (muln absl t) (2pistrip (addn argl t)))))
 	   (setq abars (absarg (car n) absflag))))
-	((eq (caar l) 'mexpt)
-	 (let ((aa (absarg (cadr l) nil)) ; we always need arg of base of exponent
-	       (sp (risplit (caddr l)))
-	       ($radexpand nil))
-	   (cons (mul (powers (car aa) (car sp))
-		      (powers '$%e (neg (mul (cdr aa) (cdr sp)))))
-		 (add (mul (cdr aa) (car sp))
-		      (mul (cdr sp) (take '(%log) (car aa)))))))
+        ((eq (caar l) 'mexpt)
+         ;; An expression z^a
+         (let ((aa (absarg (cadr l) nil)) ; (abs(z) . arg(z))
+               (sp (risplit (caddr l)))   ; (realpart(a) . imagpart(a))
+               ($radexpand nil))
+           (cond ((and (zerop1 (cdr sp))
+                       (eq ($sign (sub 1 (take '(mabs) (car sp)))) '$pos))
+                  ;; Special case: a is real and abs(a) < 1.
+                  ;; This simplifies e.g. carg(sqrt(z)) -> carg(z)/2
+                  (cons (mul (power (car aa) (car sp))
+                             (power '$%e (neg (mul (cdr aa) (cdr sp)))))
+                        (mul (caddr l) (cdr aa))))
+                 (t
+                  ;; General case for z and a
+                  (let ((arg (add (mul (cdr sp) (take '(%log) (car aa)))
+                                  (mul (cdr aa) (car sp)))))
+                    (cons (mul (power (car aa) (car sp))
+                               (power '$%e (neg (mul (cdr aa) (cdr sp)))))
+                          (take '($atan2)
+                                (take '(%sin) arg)
+                                (take '(%cos) arg))))))))
 	((and (member (caar l) '(%tan %tanh) :test #'eq)
 	      (not (=0 (cdr (risplit (cadr l))))))
 	 (let* ((sp (risplit (cadr l)))
