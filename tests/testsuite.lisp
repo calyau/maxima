@@ -53,4 +53,5 @@
 	"rtest_integrate_special"
         "rtest_ask"
         ((mlist) "rtest_sqrt" 76 78 79 80 86)
+        ((mlist) "rtest_carg" 40 41)
 	))
