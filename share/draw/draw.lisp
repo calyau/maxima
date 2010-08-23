@@ -1447,7 +1447,7 @@
            (setf pltcmd (format nil " ~a w l lw ~a lt ~a lc ~a axis ~a"
                                     (make-obj-title (get-option '$key))
                                     (get-option '$line_width)
-                                    (get-option '$line_tyype)
+                                    (get-option '$line_type)
                                     (get-option '$color)
                                     (axes-to-plot)))
            (setf grps '((2 0)))
