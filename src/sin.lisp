@@ -23,7 +23,7 @@
 (declare-top (special ratform exptsum $radexpand $%e_to_numlog
 		      exptind quotind splist l ans splist arcpart coef
 		      aa dict powerlist *a* *b* k stack
-		      ratroot rootlist square e w y expres arg var
+		      square e w y expres arg var
 		      *powerl* *c* *d* exp varlist genvar repswitch $liflag
 		      noparts top maxparts numparts blank $opsubst))
 
@@ -849,47 +849,49 @@
 ;;; As always, W is an alist which associates to the coefficients
 ;;; a, b... (and to VAR) their values.
 
-(defun ratroot (exp var ratroot w)
-  (prog (rootlist k y w1)
-     (cond ((setq y (chebyf exp var)) (return y)))
-     (cond ((not (rat3 exp t)) (return nil)))
-     (setq k (findingk rootlist))
+(defvar *ratroot* nil)  ; Expression of the form (a*x+b)/(c*x+d)
+(defvar *rootlist* nil) ; List of powers of the expression *ratroot*.
+
+(defun ratroot (exp var *ratroot* w)
+  (prog (*rootlist* k y w1)
+     ;; Check if the integrand has a chebyform, if so return the result.
+     (when (setq y (chebyf exp var)) (return y))
+     ;; Check if the integrand has a suitably form and collect the roots
+     ;; in the global special variable *ROOTLIST*.
+     (when (not (rat3 exp t)) (return nil))
+     ;; Get the least common multiplier of m1, m2, ...
+     (setq k (findingk *rootlist*))
      (setq w1 (cons (cons 'k k) w))
+     ;; Substitute for the roots.
      (setq y
-	   (subst41 exp
-		    (simplify
-		     (subliss w1
-			      '((mquotient)
-				((mplus) ((mtimes) b e)
-				 ((mtimes) -1 d ((mexpt) var k)))
-				((mplus) ((mtimes) c ((mexpt) var k))
-				 ((mtimes) -1 e a)))))
-		    var))
+           (subst41 exp
+                    (subliss w1
+                             '((mquotient)
+                               ((mplus) ((mtimes) b e)
+                                ((mtimes) -1 d ((mexpt) var k)))
+                               ((mplus) ((mtimes) c ((mexpt) var k))
+                                ((mtimes) -1 e a))))
+                    var))
+     ;; Integrate the new problem.
      (setq y
-	   (integrator
-	    (simplify
-	     (list '(mtimes)
-		   y
-		   (subliss
-		    w1 '((mquotient)
-			 ((mtimes)
-			  e ((mplus)
-			     ((mtimes) a d k
-			      ((mexpt) var ((mplus) -1 k)))
-			     ((mtimes)
-			      -1
-			      ((mtimes) b c k
-			       ((mexpt) var ((mplus) -1 k))))))
-			 ((mexpt) ((mplus)
-				   ((mtimes) c ((mexpt) var k))
-				   ((mtimes) -1 a e))
-			  2)))))
-	    var))
-     (return (substint (simplify (list '(mexpt)
-				       ratroot
-				       (list '(mexpt) k -1)))
-		       var
-		       y))))
+           (integrator
+             (mul y
+                  (subliss w1
+                           '((mquotient)
+                             ((mtimes) e
+                              ((mplus)
+                               ((mtimes) a d k
+                                ((mexpt) var ((mplus) -1 k)))
+                               ((mtimes) -1
+                                ((mtimes) b c k
+                                 ((mexpt) var ((mplus) -1 k))))))
+                             ((mexpt) ((mplus)
+                                       ((mtimes) c ((mexpt) var k))
+                                       ((mtimes) -1 a e))
+                              2))))
+             var))
+     ;; Substitute back and return the result.
+     (return (substint (power *ratroot* (power k -1)) var y))))
 
 (defun rat3 (ex ind)
   (cond ((freevar ex) t)
@@ -905,27 +907,36 @@
 	 (rat3 (caddr ex) t))
 	((integerp (caddr ex))
 	 (rat3 (cadr ex) ind))
-	((and (m2 (cadr ex) ratroot nil)
+        ((and (m2 (cadr ex) *ratroot* nil)
 	      (denomfind (caddr ex)))
-	 (setq rootlist (cons (denomfind (caddr ex)) rootlist)))
-	(t (rat3 (cadr ex) nil))))
+         (setq *rootlist* (cons (denomfind (caddr ex)) *rootlist*)))
+        (t (rat3 (cadr ex) nil))))
 
-(defun findingk (list)
-  (do ((kk 1) (l list (cdr l)))
+;; Helper function for the function ratroot to get the smallest power of ll.
+(defun findingk (ll)
+  (do ((kk 1) (l ll (cdr l)))
       ((null l) kk)
     (setq kk (lcm kk (car l)))))
 
-(defun subst4 (ex)
-  (cond ((freevar ex) ex)
-	((atom ex) *a*)
-	((not (eq (caar ex) 'mexpt))
-	 (mapcar #'(lambda (u) (subst4 u)) ex))
-	((m2 (cadr ex) ratroot nil)
-	 (list (car ex) *b* (integerp2 (timesk k (caddr ex)))))
-	(t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
-
-(defun subst41 (exp *a* *b*)
-  (subst4 exp))
+(let ((rootform nil) ; Expression of the form x = (b*e-d*t^k)/(c*t^k-e*a).
+      (rootvar nil)) ; The variable we substitute for the root.
+  
+  (defun subst4 (ex)
+    (cond ((freevar ex) ex)
+          ((atom ex) rootform)
+          ((not (eq (caar ex) 'mexpt))
+           (mapcar #'(lambda (u) (subst4 u)) ex))
+          ((m2 (cadr ex) *ratroot* nil)
+           (list (car ex) rootvar (integerp2 (timesk k (caddr ex)))))
+          (t (list (car ex) (subst4 (cadr ex)) (subst4 (caddr ex))))))
+  
+  (defun subst41 (exp a b)
+    (setq rootform a
+          rootvar b)
+    ;; At this point resimplify, because it is not guaranteed, that a correct 
+    ;; simplified expression is returned.
+    (resimplify (subst4 exp)))
+) ; End of let
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
