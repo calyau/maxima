@@ -147,6 +147,12 @@ plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
 plot2d (log(x), [x, -5, 5], [plot_realpart, false]);
 plot2d (log(x), [x, -5, 5], [plot_realpart, true]);
 
+/* further *plot-realpart* examples from mailing list 2010-08-13 "plot3d: function not defined everywhere in the plotting range" */
+
+plot2d (log(x), [x, -3, 3]);
+plot3d (log(x), [x, -3, 3], [y, -3, 3]);
+contour_plot (log(x), [x, -3, 3], [y, -3, 3]);
+
 /* (other options listed under plot_options do not have plot2d or plot3d examples) */
 
 /* Examples copied from contour_plot documentation */

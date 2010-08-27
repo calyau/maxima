@@ -1813,6 +1813,7 @@ output-file))
      lvars trans xrange yrange *original-points*
      functions exprn domain tem ($plot_options $plot_options)
      ($in_netmath $in_netmath) features
+     (*plot-realpart* *plot-realpart*)
      gnuplot-term gnuplot-out-file file titles (output-file "")
      (usage (intl:gettext
 "plot3d: Usage.
@@ -1947,6 +1948,7 @@ Several functions depending on the two variables v1 and v2:
   ;; parse the options given to plot3d
   (setq features (plot-options-parser options features))
   (setq tem ($get_plot_option '$transform_xy 2))
+  (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
   
   ;; set up the labels for the axes
   (when (or (null (getf features :box)) (first (getf features :box)))
