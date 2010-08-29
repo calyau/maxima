@@ -1603,25 +1603,26 @@ output-file))
   (and (symbolp x) (char= (char (symbol-value x) 0) #\$)))
 
 
-(defun $tcl_output  (lis i &optional (skip 2))
-  (or (typep i 'fixnum) (error "~a should be an integer" i ))
-  ($listp_check 'list lis )
+(defun $tcl_output (lis i &optional (skip 2))
+  (when (not (typep i 'fixnum))
+    (merror
+      (intl:gettext "tcl_ouput: second argument must be an integer; found ~M")
+                    i))
+  (when (not ($listp lis))
+    (merror
+      (intl:gettext "tcl_output: first argument must be a list; found ~M") lis))
   (format *standard-output* "~% {")
   (cond (($listp (second lis))
          (loop for v in lis
                 do
-                (format *standard-output* "~,10g " (nth i v)))
-         )
+                (format *standard-output* "~,10g " (nth i v))))
         (t
          (setq lis (nthcdr i lis))
          (loop  with v = lis  while v
                  do
                  (format *standard-output* "~,10g " (car v))
-                 (setq v (nthcdr skip v))
-                 )
-         ))
-  (format *standard-output* "~% }")
-  )
+                 (setq v (nthcdr skip v)))))
+  (format *standard-output* "~% }"))
 
 
 (defun tcl-output-list ( st lis )
