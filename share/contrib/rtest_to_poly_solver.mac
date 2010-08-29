@@ -468,7 +468,7 @@ to_poly_solve(z + (5-%i)* conjugate(z) = 42,z, simpfuncs = ['rectform]);
 %union([z=168/25-(42*%i)/25])$
 
 to_poly_solve(z + (5-%i)* z + conjugate(z) = 42,z);
-%union([z=(7*%i+35)/6])$
+%union([z = -((7*%i+217)/(6*%i-36))])$
 
 to_poly_solve(z + z * conjugate(z)= 23,z, 'simpfuncs = ['expand]);
 %union([z=-sqrt(93)/2-1/2],[z=sqrt(93)/2-1/2])$
@@ -477,10 +477,10 @@ to_poly_solve(z + z * realpart(z)= 23,z);
 %union([z=(sqrt(93)-1)/2],[z=-((sqrt(93)+1)/2)])$
 
 nicedummies(to_poly_solve(realpart(z)+imagpart(z)=23,z));
-%union([z=%r0+%i*(23-%r0)])$
+%union(%if(%i*conjugate(%c0)-conjugate(%c0)-%i*%c0-%c0+46 = 0, [z = ((%i+1)*%c0-46)/(%i-1)],%union()))$
 
 nicedummies(to_poly_solve(imagpart(z) / realpart(z)= 12,z));
-%union(%if(isreal_p(%c0) %and (%c0 # 0), [z = 12 * %i * %c0 + %c0], %union()))$
+%union(%if(%c0#0,%if(%i*conjugate(%c0)+12*conjugate(%c0)-%i*%c0+12*%c0=0,[z=((%i-12)*%c0)/(%i+12)],%union()),%union()))$
 
 (eqn1 :   x +   y +   z =  6,
 eqn2 : 2*x +   y + 2*z = 10,
@@ -1169,9 +1169,20 @@ nicedummies(to_poly_solve(23040 *(4*%e^-(1200*t)-%e^-(300*t))^2-720000*(16*%e^-(
 ((4/125)*%e^-(300*t)-(4/125)*%e^-(1200*t)),t));
 %union([t = (2*%i*%pi*%z0+log(25/4-3*sqrt(41)/4))/900],[t = (2*%i*%pi*%z1+log(3*sqrt(41)/4+25/4))/900])$
 
+/* From 19 Aug 2010 Sage-support mailing list (reported by R. Hankin, 19 August, 2010) */
+(declare(a,complex, b,complex), 
+   sol : ratsimp(nicedummies(%solve([a*b=15*%i-5,a*conjugate(b)=-13*%i+9],[a,b]))),0);
+0$
+
+sol : subst(%c0 = sqrt((13*%i-9)/(15*%i+5)), sol);
+%union([a=sqrt((13*%i-9)/(15*%i+5)),b=(15*%i-5)/sqrt((13*%i-9)/(15*%i+5))])$
+
+rectform(subst(first(sol), [a*b=15*%i-5,a*conjugate(b)=-13*%i+9]));
+[15*%i-5=15*%i-5,9-13*%i=9-13*%i]$
+
 /* clean up */
 (print("time = ", absolute_real_time() - %start), is(absolute_real_time() - %start < 200));
 true$
 
-(reset(algexact), forget(z,complex), remvalue(sol,%time,eq,eqn1,eqn2,eqn3),0);
+(reset(algexact), forget(z,complex,a,complex,b,complex), remvalue(sol,%time,eq,eqn1,eqn2,eqn3),0);
 0$
