@@ -216,13 +216,17 @@
 ;; Similar to sublis, but allow for substitutions of nonatoms.
 
 (defun $subst_parallel (l e)
-  (let ((alist nil) (is-a-rat ($ratp e)))
+  (let ((alist nil) (is-a-rat ($ratp e)) (old) (new))
     (setq l (if ($listp l) (margs l) (list l)))
 
     ;; Build an association list for the Common Lisp sublis function.
     (dolist (lk l) 
       (if (mequalp lk) 
-	  (push (cons (cadr lk) (caddr lk)) alist)
+	  (progn
+	    (setq old (cadr lk))
+	    (setq new (caddr lk))
+	    (setq old (if (stringp old) (amperchk old) old))
+	    (push (cons old new) alist))
 	(merror "Each substitution must be an equation; found" lk)))
     (setq e (resimplify (sublis alist ($ratdisrep e) :test #'alike))) ;;or like?
     (if is-a-rat ($rat e) e)))
