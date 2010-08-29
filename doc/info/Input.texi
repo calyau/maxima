@@ -1433,6 +1433,42 @@ See @code{file_search} for more detail about the file search mechanism.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@defvr {System variable} load_pathname
+Default value: @code{false}
+
+When a file is loaded with the functions @code{load}, @code{loadfile} or 
+@code{batchload} the system variable @code{load_pathname} is bound to the 
+pathname of the file which is processed.
+
+The variable @code{load_pathname} can be accessed from the file during the
+loading.
+
+Example:
+
+Suppose we have a batchfile @code{test.mac} in the directory 
+@code{"/home/dieter/workspace/mymaxima/temp/"} with the following commands
+
+@example
+print("The value of load_pathname is: ", load_pathname)$
+print("End of batchfile")$
+@end example
+
+then we get the following output
+
+@example
+(%i1) load("/home/dieter/workspace/mymaxima/temp/test.mac")$
+The value of load_pathname is:  
+                   /home/dieter/workspace/mymaxima/temp/test.mac 
+End of batchfile
+@end example
+
+@opencatbox
+@category{File input}
+@closecatbox
+@end defvr
+
+
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
 @deffn {Function} loadfile (@var{filename})
 Evaluates Lisp expressions in @var{filename}.
