@@ -59,7 +59,7 @@
 	  $erfflag $errexp $error $error_size $error_syms $expon
 	  $exponentialize $expop $exptdispflag $exptisolate $exptsubst
 	  $facexpand $factorflag $features $file_search
-	  $file_types $float $float2bf $floatformat $floatfrac $floatint
+	  $float $float2bf $floatformat $floatfrac $floatint
 	  $floatoptions $floatprec $floatwidth $fortfloat $fortindent
 	  $fortspaces $fpprec $fpprintprec $fptrunc $functions $gammalim $gcd
 	  $genindex $gensumnum $globalsolve $gradefs $halfangles $homog_hack
