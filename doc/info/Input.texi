@@ -977,22 +977,36 @@ expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} file_type (@var{filename})
-Returns a guess about the content of @var{filename},
-based on the filename extension.
-@var{filename} need not refer to an actual file;
-no attempt is made to open the file and inspect the content.
 
-The return value is a symbol, either @code{object}, @code{lisp}, or @code{maxima}.
-If the extension starts with @code{m} or @code{d}, @code{file_type} returns @code{maxima}.
-If the extension starts with @code{l}, @code{file_type} returns @code{lisp}.
-If none of the above, @code{file_type} returns @code{object}.
+Returns a guess about the content of @var{filename}, based on the filename 
+extension. @var{filename} need not refer to an actual file; no attempt is made 
+to open the file and inspect the content.
+
+The return value is a symbol, either @code{object}, @code{lisp}, or 
+@code{maxima}. If the extension is "mac", "mc", "demo", "dem", "dm1", "dm2", 
+"dm3", or "dmt", @code{file_type} returns @code{maxima}. If the extension is 
+"l", "lsp", or "lisp", @code{file_type} returns @code{lisp}. If none of the 
+above, @code{file_type} returns @code{object}.
+
+See also @code{pathname_type}.
+
+Examples:
+
+@c === beg ===
+@c map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
+@c === end ===
+@example
+(%i2) map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
+(%o2)            [lisp, maxima, maxima, object]
+@end example
 
 @opencatbox
 @category{File input}
 @closecatbox
-
 @end deffn
+
 
 @deffn {Function} grind (@var{expr})
 @deffnx {Option variable} grind
