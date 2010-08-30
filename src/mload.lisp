@@ -53,20 +53,8 @@
 
 (declare-top (special $file_search_lisp $file_search_maxima $file_search_demo $loadprint))
 
-(defmfun $listp_check (var val)
-  "Gives an MAXIMA-ERROR message including its first argument if its second
-  argument is not a LIST"
-  (or ($listp val)
-      (merror (intl:gettext "assignment: value of ~:M must be a list; found: ~M")
-	      var val)))
-
-(defprop $file_search $listp_check assign)
-
-(defprop $file_types $listp_check assign)
-
 (defun $load_search_dir ()
   (to-macsyma-namestring *default-pathname-defaults*))
-
 
 (defmfun load-and-tell (filename)
   (loadfile filename t ;; means this is a lisp-level call, not user-level.
