@@ -1619,6 +1619,35 @@ init files.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@deffn  {Function} pathname_directory (@var{pathname})
+@deffnx {Function} pathname_name (@var{pathname})
+@deffnx {Function} pathname_type (@var{pathname})
+
+These functions return the components of @var{pathname}.
+
+Examples:
+
+@c === beg ===
+@c pathname_directory("/home/dieter/maxima/changelog.txt");
+@c pathname_name("/home/dieter/maxima/changelog.txt");
+@c pathname_type("/home/dieter/maxima/changelog.txt");
+@c === end ===
+@example 
+(%i1) pathname_directory("/home/dieter/maxima/changelog.txt");
+(%o1)                 /home/dieter/maxima/
+(%i2) pathname_name("/home/dieter/maxima/changelog.txt");
+(%o2)                       changelog
+(%i3) pathname_type("/home/dieter/maxima/changelog.txt");
+(%o3)                          txt
+@end example
+
+@opencatbox
+@category{File input}
+@closecatbox
+@end deffn
+
+
 @defvr {Option variable} pfeformat
 Default value: @code{false}
 
