@@ -1021,9 +1021,6 @@
 
 ;; File-processing stuff.
 
-(defun mfile nil
-  (fullstrip (list $filename (setq $filenum (1+ $filenum)) $device $direc)))
-
 ;; This prevents single blank lines from appearing at the top of video
 ;; terminals.  If at the upper left corner and we want to print a blank
 ;; line, leave the cursor there and send the blank line to transcript
