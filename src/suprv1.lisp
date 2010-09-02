@@ -69,7 +69,6 @@
 (defvar pos nil)
 (defvar dcount 0)
 (defvar dskfnp nil)
-(defvar dsksavep nil)
 (defvar saveno 0)
 (defvar quitmsg  " ")
 (defvar more-^w nil)
