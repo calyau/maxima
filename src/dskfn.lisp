@@ -15,7 +15,7 @@
 (declare-top (special $filename $device $direc $storenum $filenum $dskall
 		      filelist opers $packagefile
 		      fasdumpfl fasdeqlist fasdnoneqlist savenohack
-		      dsksavep aaaaa errset lessorder greatorder indlist
+		      aaaaa errset lessorder greatorder indlist
 		      $labels $aliases varlist *mopl* $props defaultf
 		      $infolists $features featurel savefile $gradefs
 		      $values $functions $arrays prinlength prinlevel
@@ -75,7 +75,8 @@
   (file-length file))
 
 (defmspec $save (form)
-  (dsksetup (cdr form) nil nil '$save))
+  (let ((*print-circle* nil)) ; $save stores Lisp expressions.
+    (dsksetup (cdr form) nil nil '$save)))
 
 (defmfun i-$store (x)
   (dsksetup x t nil '$store))
@@ -103,7 +104,6 @@
 	    ((listargp u))
 	    ((or (not (eq (caar u) 'mequal)) (not (symbolp (cadr u))))
 	     (improper-arg-err u fn))))
-    (when dsksavep (push file filelist))
     (setq list (ncons (car x))
 	  x (cdr x)
 	  *macsyma-extend-types-saved* nil)
@@ -156,17 +156,19 @@
 			(and (member item '(tellratlist *alphabet* *ratweights) :test #'eq) (null val))
 			(and (eq item '$features) (alike (cdr val) featurel))
 			(and (eq item '$default_let_rule_package)
-			     (eq item val))))
-		(and (mfilep val)
-		     (or dsksavep (not (unstorep item)) (null (setq stfl t)))))
-	    (or (null (setq val (safe-get item 'mprops))) (equal val '(nil))
-		(if (not dsksavep) (not (unstorep item))))
+                             (eq item val)))))
+            (or ;; This clause has been reformulated to cut out a test with
+                ;; dsksavep and unstorep, but to respect the side effects.
+                (null (setq val (safe-get item 'mprops)))
+                (equal val '(nil))
+                nil)
 	    (not (getl item '(operators reversealias grad noun verb expr op data)))
 	    (not (member item (cdr $props) :test #'eq))
 	    (or (not (member item (cdr $contexts) :test #'eq))
 		(not (eq item '$initial))
 		(let ((context '$initial)) (null (cdr ($facts '$initial)))))))
-      (t (when (and (boundp item) (not (mfilep (setq val (symbol-value item)))))
+      (t (when (boundp item)
+           (setq val (symbol-value item))
 	   (if (eq item '$context) (setq x (list* nil val (cdr x))))
 	   (dskatom item rename val)
 	   (if (not (optionp rename)) (infostore item file 'value stfl rename)))
@@ -266,8 +268,11 @@
   (do ((props (cdr (or (get item 'mprops) '(nil))) (cddr props)) (val))
       ((null props))
     (cond ((or (member (car props) '(trace trace-type trace-level trace-oldfun) :test #'eq)
-	       (mfilep (setq val (cadr props)))
-	       (and (eq (car props) 't-mfexpr) (not (get item 'translated)))))
+               ;; This clause has been reformulated to cut out a mfile-test,
+               ;; but to respect the side effect of assigning a value to val.
+               (and (setq val (cadr props)) nil)
+               (and (eq (car props) 't-mfexpr)
+                    (not (get item 'translated)))))
 	  ((not (member (car props) '(hashar array) :test #'eq))
 	   (fasprin (list 'mdefprop rename val (car props)))
 	   (if (not (member (car props) '(mlexprp mfexprp t-mfexpr) :test #'eq))
@@ -396,7 +401,3 @@
     (close file)
     (caddr item)))
 
-(defun dsksave nil
-  (let ((dsksavep t))
-    (if $dskall (i-$store '($labels $values $functions $macros $arrays))
-	(i-$store '($labels)))))
