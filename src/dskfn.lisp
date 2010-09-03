@@ -21,37 +21,9 @@
 		      $values $functions $arrays prinlength prinlevel
 		      $contexts context $activecontexts))
 
-
 (setq filelist nil $packagefile nil
       indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
 		 special autoload assign mode))
-
-(defmfun i-$unstore (x)
-  (do ((x x (cdr x))
-       (list (ncons '(mlist simp)))
-       (prop)
-       (fl nil nil))
-      ((null x) list)
-    (setq x (infolstchk x))
-    (when (and (boundp (car x)) (mfilep (setq prop (symbol-value (car x)))))
-      (setq fl t)
-      (set (car x) (eval (dskget (cadr prop) (caddr prop) 'value nil))))
-    (do ((props (cdr (or (safe-get (car x) 'mprops) '(nil))) (cddr props))) ((null props))
-      (cond ((mfilep (cadr props))
-	     (setq fl t)
-	     (cond ((member (car props) '(hashar array) :test #'eq)
-		    (let ((aaaaa (gensym)))
-		      (setq prop (dskget (cadadr props)
-					 (caddr (cadr props))
-					 (car props)
-					 t))
-		      (mputprop (car x)
-				(if (eq prop 'aaaaa) aaaaa (car x))
-				(car props))))
-		   (t (setq prop (dskget (cadadr props) (caddr (cadr props))
-					 (car props) nil))
-		      (mputprop (car x) prop (car props)))))))
-    (and fl (nconc list (ncons (car x))))))
 
 (defun infolstchk (x)
   (let ((iteml (cond ((not (and x (or (member (car x) '($all $contexts) :test #'eq)
@@ -70,16 +42,9 @@
 	x
 	(append (or iteml '(nil)) (cdr x)))))
 
-
-(defun filelength (file)
-  (file-length file))
-
 (defmspec $save (form)
   (let ((*print-circle* nil)) ; $save stores Lisp expressions.
     (dsksetup (cdr form) nil nil '$save)))
-
-(defmfun i-$store (x)
-  (dsksetup x t nil '$store))
 
 (defvar *macsyma-extend-types-saved* nil)
 
@@ -339,9 +304,6 @@
 	(eqfl (setq fasdeqlist (cons form fasdeqlist)))
 	(t (setq fasdnoneqlist (cons form fasdnoneqlist)))))
 
-(defun unstorep (item)
-  (i-$unstore (ncons item)))
-
 (defun infostore (item file flag storefl rename)
   (let ((prop (cond ((eq flag 'value)
 		     (if (member rename (cdr $labels) :test #'eq) '$labels '$values))
@@ -379,25 +341,4 @@
          `(setf (gethash ,name *opr-table*) ',val)))
       (t
         (list 'defprop name val ind)))))
-
-(defun dskget (file name flag unstorep)
-  (let ((defaultf defaultf) (eof (list nil)) item)
-    (setq file (open file))
-    (setq item (do ((item (read file eof) (read file eof)))
-		   ((eq item eof) (merror (intl:gettext "unstore: ~:M not found.") name))
-		 (if (or (and (not (atom item)) (eq (car item) 'dsksetq)
-			      (eq flag 'value) (eq (cadr item) name))
-			 (and (not (atom item)) (= (length item) 4)
-			      (or (eq (cadddr item) flag)
-				  (and (eq (car (cadddr item)) 'quote)
-				       (eq (cadr (cadddr item)) flag)))
-			      (or (eq (cadr item) name)
-				  (and (eq (caadr item) 'quote)
-				       (eq (cadadr item) name)))))
-		     (return item))))
-    (when unstorep
-      (eval (read file))
-      (eval (read file)))
-    (close file)
-    (caddr item)))
 
