@@ -128,7 +128,7 @@
 
 	     ;; these special declarations are for before DEFMVAR
 	     (special $errexp $loadprint $numer $savedef $nolabels $functions $props
-		      $filename $filenum $direc $device munbound $values $transrun
+		      munbound $values $transrun
 		      st oldst  $version
 		      rephrase $packagefile
 		      dskfnp))

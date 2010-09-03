@@ -51,7 +51,7 @@
 	  $breakup $cauchysum $change_filedefaults $compgrind $context
 	  $contexts $current_let_rule_package $cursordisp $debugmode
 	  $default_let_rule_package $demoivre $dependencies $derivabbrev
-	  $derivsubst $detout $direc $dispflag $display2d $displayset
+	  $derivsubst $detout $dispflag $display2d $displayset
 	  $display_format_internal $doallmxops $domain $domxexpt $domxmxops
 	  $domxnctimes $domxplus $domxtimes $dontfactor $doscmxops
 	  $doscmxplus $dot0nscsimp $dot0simp $dot1simp $dotassoc
@@ -84,7 +84,7 @@
 	  $setcheckbreak $setval $showtime $signbfloat $simp $simpsum
 	  $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
 	  $solveradcan $solvetrigwarn $sparse
-	  $special $sqrtdispflag $stardisp $storenum $sublis_apply_lambda
+	  $special $sqrtdispflag $stardisp $sublis_apply_lambda
 	  $subnumsimp $subscrmap $sumexpand $sumsplitfact
 	  $superlogcon $suspend $taylor_logexpand
 	  $taylor_truncate_polynomials $timer $timer_devalue

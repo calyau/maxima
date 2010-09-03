@@ -28,7 +28,7 @@
 (declare-top  (special bindlist loclist errset *rset ^q lf tab ff cr
 		       $values $functions $arrays $gradefs $dependencies
 		       $rules $props $ratvars $ratvarswitch
-		       varlist genvar $filename
+		       varlist genvar
 		       $gensumnum checkfactors $features featurel
 		       $weightlevels tellratlist $dontfactor
 		       dispflag savefile $%% $error smart-tty
@@ -76,9 +76,6 @@
 
 (defvar state-pdl (ncons 'lisp-toplevel))
 
-(defmvar $filenum 0)
-(defmvar $storenum 1000.)
-(defmvar $dskall t)
 (defmvar $errorfun nil)
 (defmvar $disptime nil)
 (defmvar $strdisp t)
@@ -97,7 +94,6 @@
                  $dependencies $let_rule_packages $structures))
 
 (defmvar $labels (list '(mlist simp)))
-(defmvar $device '$dsk)
 (defmvar $dispflag t)
 
 (defmvar $% '$% "The last out-line computed, corresponds to lisp *"
@@ -114,10 +110,6 @@
 
 (defmvar $linenum 1 "the line number of the last expression."
 	 fixnum no-reset)
-
-(defmvar $direc 'jrmu
-  "The default file directory for `save', `store', `fassave', and `stringout'."
-  no-reset)
 
 (defmvar $file_output_append nil
   "Flag to tell file-writing functions whether to append or clobber the output file.")

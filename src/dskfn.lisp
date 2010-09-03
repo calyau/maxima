@@ -12,8 +12,7 @@
 
 (macsyma-module dskfn)
 
-(declare-top (special $filename $device $direc $storenum $filenum $dskall
-		      filelist opers $packagefile
+(declare-top (special opers $packagefile
 		      fasdumpfl fasdeqlist fasdnoneqlist savenohack
 		      aaaaa errset lessorder greatorder indlist
 		      $labels $aliases varlist *mopl* $props defaultf
@@ -21,7 +20,7 @@
 		      $values $functions $arrays prinlength prinlevel
 		      $contexts context $activecontexts))
 
-(setq filelist nil $packagefile nil
+(setq $packagefile nil
       indlist '(evfun evflag bindtest nonarray sp2 sp2subs opers
 		 special autoload assign mode))
 
