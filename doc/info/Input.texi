@@ -419,13 +419,26 @@ except that the transcript file, if it exists, is always appended.
 
 @end deffn
 
-@c batch CAN TAKE 'test AS AN OPTIONAL ARGUMENT IN WHICH CASE IT CALLS test-batch
-@c (SAME AS run_testsuite) -- SHOULD DOCUMENT batch (file, 'test)
-@c FIX BUG WHICH CAUSES batch (<file>, 'test) TO FAIL, THEN DOCUMENT IT HERE
-@deffn {Function} batch (@var{filename})
-Reads Maxima expressions from @var{filename} and evaluates them.
-@code{batch} searches for @var{filename} in the list @code{file_search_maxima}.
-See @code{file_search}.
+@c -----------------------------------------------------------------------------
+@deffn  {Function} batch (@var{filename})
+@deffnx {Function} batch (@var{filename}, @code{option})
+
+@code{batch(@var{filename})} reads Maxima expressions from @var{filename} and 
+evaluates them. @code{batch} searches for @var{filename} in the list 
+@code{file_search_maxima}. See @code{file_search}.
+
+@code{batch(@var{filename}, @code{demo})} is like @code{demo(@var{filename})}.
+In this case @code{batch} searches for @var{filename} in the list
+@code{file_search_demo}. See @code{demo}.
+
+@code{batch(@var{filename}, @code{test})} is like @code{run_testsuite} with the
+option @code{display_all=true}. For this case @code{batch} searches 
+@var{filename} in the list @code{file_search_maxima} and not in the list
+@code{file_search_tests} like @code{run_testsuite}. Furthermore, 
+@code{run_testsuite} runs tests which are in the list @code{testsuite_files}. 
+With @code{batch} it is possible to run any file in a test mode, which can be 
+found in the list @code{file_search_maxima}. This is useful, when writing a test
+file.
 
 @var{filename} comprises a sequence of Maxima expressions,
 each terminated with @code{;} or @code{$}.
@@ -433,7 +446,8 @@ The special variable @code{%} and the function @code{%th}
 refer to previous results within the file.
 The file may include @code{:lisp} constructs.
 Spaces, tabs, and newlines in the file are ignored.
-A suitable input file may be created by a text editor or by the @code{stringout} function.
+A suitable input file may be created by a text editor or by the @code{stringout}
+function.
 
 @code{batch} reads each input expression from @var{filename},
 displays the input to the console, 
@@ -446,8 +460,8 @@ unless there is an error.
 If user input is requested (by @code{asksign} or @code{askinteger}, for example)
 @code{batch} pauses to collect the requisite input and then continue.
 
-@c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") KEEPS GOING !!!
-@c DON'T KNOW ABOUT GCL !!!
+@c CTRL-C BREAKS batch IN CMUCL, BUT CLISP (ALTHO IT SHOWS "User break") 
+@c KEEPS GOING !!! DON'T KNOW ABOUT GCL !!!
 It may be possible to halt @code{batch} by typing @code{control-C} at the console.
 The effect of @code{control-C} depends on the underlying Lisp implementation.
 
@@ -456,16 +470,17 @@ such as to provide a reservoir for working command lines,
 to give error-free demonstrations,
 or to help organize one's thinking in solving complex problems.
 
-@code{batch} evaluates its argument.
-@c LACK OF A RETURN VALUE IS A BUG; THE INTENT IS TO RETURN THE FILE PATH, TO JUDGE BY THE SOURCE CODE
-@code{batch} has no return value.
+@code{batch} evaluates its argument. @code{batch} returns the path of 
+@var{filename} as a string, when called with no second argument or with the 
+option @code{demo}. When called with the option @code{test}, the return value
+is a an empty list @code{[]} or a list with @var{filename} and the numbers of
+the tests which have failed.
 
 See also @code{load}, @code{batchload}, and @code{demo}.
 
 @opencatbox
 @category{Session management} @category{File input}
 @closecatbox
-
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF batchload
