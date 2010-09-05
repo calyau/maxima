@@ -1,8 +1,7 @@
 /*-*-MACSYMA-*-*/
 
 eval_when([translate,batch,demo],
-          if get('sharem,'version) = false
-             then load(autolo))$
+          if not(member('macro,properties(load_package))) then load(packg))$
 
 herald_package(basic)$
 
