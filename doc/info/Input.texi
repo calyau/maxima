@@ -47,24 +47,29 @@ Examples:
 @category{Syntax}
 @closecatbox
 
-
+@c -----------------------------------------------------------------------------
 @node Files, Functions and Variables for Input and Output, Comments, Input and Output
 @section Files
-A file is simply an area on a particular storage device which contains data or text.
-Files on the disks are figuratively grouped into "directories".
-A directory is just a list of files.
-Commands which deal with files are:
+
+A file is simply an area on a particular storage device which contains data 
+or text. Files on the disks are figuratively grouped into "directories".
+A directory is just a list of files. Commands which deal with files are:
+
 @code{save},
 @code{load},
-
 @code{loadfile},
 @code{stringout},
 @code{batch},
 @code{demo},
 @code{writefile},
-@code{closefile},
-and
+@code{closefile}, and
 @code{appendfile}.
+
+When a file name is passed to functions like @code{plot2d}, @code{save}, or 
+@code{writefile} and the file name does not include a path, Maxima stores 
+the file in the current working directory. The current working directory 
+depends on the system like Windows or Linux and on the installation.
+
 
 @node Functions and Variables for Input and Output,  , Files, Input and Output
 @section Functions and Variables for Input and Output
