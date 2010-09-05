@@ -2629,6 +2629,32 @@ application.
 
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} subnumsimp
+Default value: @code{false}
+
+If @code{true} then the functions @code{subst} and @code{psubst} can substitute
+a subscripted variable @code{f[x]} with a number, when only the symbol @code{f}
+is given.
+
+See also @code{subst}.
+
+@example
+(%i1) subst(100,g,g[x]+2);
+
+subst: cannot substitute 100 for operator g in expression g
+                                                           x
+ -- an error. To debug this try: debugmode(true);
+
+(%i2) subst(100,g,g[x]+2),subnumsimp:true;
+(%o2)                          102
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end defvr
+
 @c NEEDS CLARIFICATION, MORE EXAMPLES
 @deffn {Function} subst (@var{a}, @var{b}, @var{c})
 Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
