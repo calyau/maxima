@@ -54,35 +54,26 @@
 (declare-top (special $file_search_lisp $file_search_maxima $file_search_demo $loadprint))
 
 (defun $load_search_dir ()
-  (to-macsyma-namestring *default-pathname-defaults*))
+  (pathname *default-pathname-defaults*))
 
 (defmfun load-and-tell (filename)
   (loadfile filename t ;; means this is a lisp-level call, not user-level.
 	    $loadprint))
-
-(defun to-macsyma-namestring (x)
-  (pathname x))
-       
-(defun macsyma-namestringp (x)
-  (typep x 'pathname))
        
 (defun errset-namestring (x)
   (let ((errset nil))
     (errset (pathname x) nil)))
 
 (defmfun $filename_merge (&rest file-specs)
-  (setq file-specs
-	(if file-specs 
-	    (mapcar #'macsyma-namestring-sub file-specs)
-	    '("**")))
-  (progn
-    (to-macsyma-namestring (if (null (cdr file-specs))
-			       (car file-specs)
-			       (apply #'mergef file-specs)))))
-
+  (when (or (null file-specs) (cddr file-specs))
+    (wna-err '$filename_merge))
+  (setq file-specs (mapcar #'macsyma-namestring-sub file-specs))
+  (pathname (if (null (cdr file-specs))
+                (car file-specs)
+                (merge-pathnames (cadr file-specs) (car file-specs)))))
 
 (defun macsyma-namestring-sub (user-object)
-  (if (macsyma-namestringp user-object) user-object
+  (if (pathnamep user-object) user-object
       (let* ((system-object
 	      (cond ((and (atom user-object) (not (symbolp user-object)))
 		     user-object)
