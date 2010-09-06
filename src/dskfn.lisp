@@ -82,7 +82,7 @@
 	      (setq maxima-error t))
 	  (setq *macsyma-extend-types-saved* nil)))
     (close savefile)
-    (namestring savefile)))
+    (namestring (truename savefile))))
 
 (defun dskstore (x storefl file list)
   (do ((x x (cdr x))
