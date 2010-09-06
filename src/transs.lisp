@@ -124,7 +124,7 @@
 			      (when $compgrind
 				(mformat transl-file "~2%;; Function ~:@M~%" item))
 			      (print* t-item))))))
-          (to-macsyma-namestring out-file-name))
+          (pathname out-file-name))
 	 ;; unwind-protected
 	 (if transl-file (close transl-file))
 	 (if t-error (delete-file transl-file))))))
@@ -137,11 +137,6 @@
 
 (defvar tr-defaultf nil
   "A default only for the case of no arguments to $translate_file")
-
-;;; Temporary hack during debugging of this  code.
-
-(defun mergef (x y)
-  (merge-pathnames y x))
 
 (defun $compile_file (input-file &optional bin-file translation-output-file &aux result)
   (setq input-file (maxima-string input-file))
