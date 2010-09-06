@@ -343,11 +343,6 @@
   (continue (make-echo-stream fileobj *standard-output*)
 	    (if demo-p ':demo ':batch)))
 
-(defun filename-from-arg-list (arg-list)
-  (if (= (length arg-list) 1)
-      ($filename_merge (car arg-list))
-      ($filename_merge `((mlist),@arg-list))))
-
 (defmspec $grindef (form)
   (eval `(grindef ,@(cdr form)))
   '$done)
