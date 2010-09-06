@@ -234,13 +234,9 @@
   (let ((file (get func 'autoload)))
     (if file (funcall autoload (cons func file)))))
 
-(defmfun load-file (file)
-  ($load (to-macsyma-namestring file)))
-
 (defmspec $loadfile (form)
   (loadfile (namestring (maxima-string (meval (cadr form)))) nil
 	    (not (member $loadprint '(nil $autoload) :test #'equal))))
-
 
 (defun $setup_autoload (filename &rest functions)
   (let ((file ($file_search filename)))
@@ -271,7 +267,6 @@
 	(t (merror "Not a proper filename ~M" file)))
   (filestrip file))
 
-
 (defmfun loadfile (file findp printp &aux (saveno 0))
   (and findp (member $loadprint '(nil $loadfile) :test #'equal) (setq printp nil))
   ;; Should really get the truename of FILE.
@@ -285,23 +280,10 @@
 (defun $directory (path)
   (cons '(mlist) (mapcar 'namestring (directory ($filename_merge path)))))
 
-(defmfun truefname (file)
-  (probe-file file))
-
-(defmfun carfile (file)		       ; FILE is in OldIO list format.
-  (if (= (length file) 3) (cdr file) file))
-
-;; SPECP is T if the file is being batched for TRANSL, or $LOAD,
-;;	or some other special purpose.
-
-(defmacro filepos-check ()
-  `(if specp (setq filepos (filepos file-obj))))
-
 (defmspec $kill (form)
   (clear)	;; get assume db into consistent state
   (mapc #'kill1 (cdr form))
   '$done)
-
 
 ;;; The following *builtin- variables are used to keep/restore builtin
 ;;; symbols and values during kill operations. Their values are set at
