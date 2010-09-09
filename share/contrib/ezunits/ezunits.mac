@@ -443,20 +443,24 @@ known_unit_conversions :
         conversions_customary_si,
         conversions_customary_customary);
 
+get_unit_conversion (u) := assoc (u, known_unit_conversions);
+
 declare_unit_conversion ([L]) :=
    (if not every (equationp, L)
         then error ("declare_unit_conversion: all arguments must be equations."),
     setify (ratsimp (L)),
     map (flatten_conversion_equation, %%),
     known_unit_conversions : union (known_unit_conversions, %%),
-    kill (conversions_to_base_units),
+    kill (conversions_to_base_units), /* simple, heavy-handed */
+    reset_convert_units (), /* simple, heavy-handed */
     done);
 
 flatten_conversion_equation (e%) := block
   ([l% : lhs (e%), r% : rhs (e%)],
     if unitop_p (l%) and unitop_p (r%)
         then qty (l%) * units (l%) = qty (r%) * units (r%)
-        else e%);
+        elseif not unitop_p (l%) and not unitop_p (r%) then e%
+        else error ("declare_unit_conversion: both sides must be unit expressions or both not unit expressions; found: ", e%));
 
 equationp (e) := not atom (e) and op (e) = "=";
 
@@ -514,18 +518,31 @@ apply_units_conversion (uu%, nd%) :=
 
     else convert_units [units(uu%), nd%] (qty(uu%)) ` nd%;
     
-convert_units [u1%, u2%] := block ([a%],
-  a% : compute_conversion_factor (u1%, u2%),
-  if constantp (a%)
-    then buildq ([a%], lambda ([x], a% * x))
-    else buildq ([u1%], lambda ([x], x ` u1%)));
+/* kill the convert_units memoizing function (including all memoized values),
+ * then redefine it, and prep it with conversions for temperature units,
+ * which can't be computed by a simple multiplication.
+ */
 
-convert_units [degF, degC] : lambda ([x], 5/9*(x - 32));
-convert_units [degC, degF] : lambda ([x], 32 + 9/5*x);
-convert_units [degC, K] : lambda ([x], 27315/100 + x);
-convert_units [degF, R] : lambda ([x], 45967/100 + x);
-convert_units [K, degC] : lambda ([x], x - 27315/100);
-convert_units [R, degF] : lambda ([x], x - 45967/100);
+reset_convert_units () :=
+   (kill (convert_units),
+
+    convert_units [u1%, u2%] := block ([a%],
+        a% : compute_conversion_factor (u1%, u2%),
+        buildq ([a%], lambda ([x], a% * x))),
+
+    convert_units [degF, degC] : lambda ([x], 5/9*(x - 32)),
+    convert_units [degF, K] : lambda ([x], 27315/100 + 5/9*(x - 32)),
+    convert_units [degF, R] : lambda ([x], 45967/100 + x),
+
+    convert_units [degC, degF] : lambda ([x], 32 + 9/5*x),
+    convert_units [degC, R] : lambda ([x], 45967/100 + 32 + 9/5*x),
+    convert_units [degC, K] : lambda ([x], 27315/100 + x),
+
+    convert_units [K, degC] : lambda ([x], x - 27315/100),
+    convert_units [K, degF] : lambda ([x], 32 + 9/5*(x - 27315/100)),
+
+    convert_units [R, degC] : lambda ([x], 5/9*(x - 45967/100 - 32)),
+    convert_units [R, degF] : lambda ([x], x - 45967/100));
 
 /* Dimensional analysis
  */
@@ -578,9 +595,10 @@ remove_fundamental_units ([L]) :=
     map (lambda ([x], put (x, false, 'dimension)), L));
 
 fundamental_dimensions : [];
-L : [[m, length], [kg, mass], [s, time], [A, current], [K, temperature], [mol, quantity], [cd, luminous_intensity]];
-apply (declare_fundamental_dimensions, map (second, L));
-apply (declare_fundamental_units, flatten (L));
+block ([L],
+    L : [[m, length], [kg, mass], [s, time], [A, current], [K, temperature], [mol, quantity], [cd, luminous_intensity]],
+    apply (declare_fundamental_dimensions, map (second, L)),
+    apply (declare_fundamental_units, flatten (L)));
 
 /* I GUESS RULES FOR DIMENSIONS COULD RECOGNIZE EQUATIONS, DERIVATIVES, AND INTEGRALS
  */
@@ -718,3 +736,12 @@ tellsimp
         else 'integrate (qty (uu%), qty (vv%), qty (aa% `` units (vv%)), qty (bb% `` units (vv%))) ` (units (uu%) * units (vv%)));
 
 simp : true;
+
+/* Degrees to pure number conversion for trigonometric functions.
+ * Not sure if this should be enabled by default; maybe it should be optional.
+ * Well, go ahead for now, in the absence of evidence to the contrary.
+ */
+
+declare_unit_conversion (degree = %pi/180);
+matchdeclare (uu, lambda ([e], unitp(e) and units(e) = 'degree));
+map (lambda ([f], apply (tellsimp, [apply (f, [uu]), apply (f, [uu``1])])), '[sin, cos, tan, csc, sec, cot]);
