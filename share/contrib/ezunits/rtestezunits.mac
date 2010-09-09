@@ -156,6 +156,8 @@ sin(1`kg/s);
 -40`F;
 -40`C;
 
+/* deg and rad are units ad hoc; neither one is defined */
+
 deg: rad*%pi/180;
 rad*%pi/180;
 
@@ -287,6 +289,12 @@ cc: bar[11] * (57 ` s/kg) * (10 ` acre);
 570 * qty(bar[11]) ` s;
 
 /* Unit conversions */
+
+0 ` kg/m^2 `` lbm/acre;
+0 ` lbm/acre;
+
+0 ` degC `` degF;
+32 ` degF;
 
 100 ` degC `` degF;
 212 ` degF;
@@ -568,4 +576,182 @@ done;
 dimensions (1 ` goat/hour);
 'dimensions(cat) / time;
 
+/* convert argument of trig function */
 
+sin (45 ` degree);
+1/sqrt(2);
+
+cos (180 ` degree);
+-1;
+
+tan (135 ` degree);
+-1;
+
+sec (-45 ` degree);
+sqrt(2);
+
+csc (30 ` degree);
+2;
+
+cot (60 ` degree);
+1/sqrt(3);
+
+sin (30 ` kg);
+sin (30 ` kg);
+
+cos (100 ` m);
+cos (100 ` m);
+
+is (abs (ev (sin (40 ` degree), numer) - 0.642787609686539) < 1e-12);
+true;
+
+is (abs (ev (cot (80 ` degree), numer) - 0.176326980708465) < 1e-12);
+true;
+/* Hydrostatics examples from:
+ * http://www.ce.siue.edu/mrossow/Worked_examples_Internet_text-only/Data_files-html/Hydrostatics_list_of_examples.html
+ * via: http://designerunits.com/examples/sites/ce.siue/hydrostatics
+ */
+
+(gee :(980 + 2/3) ` cm/s^2, p_AB : (10^3`kg/m^3) * gee * (5`m) `` kPa);
+1471/30 ` kPa;
+
+w : p_AB * 4 ` m `` kN/m;
+2942/15 ` kN/m;
+
+(kill (F_A), e : (F_A`kN) * (3`m) - w*(3`m)*(3`m)/2, solve (first (e), F_A));
+[F_A = 1471/5];
+
+p : ((200 ` N)/(%pi*r^2) + (900 ` kg/m^3) * (200 ` mm) * %pi * r^2 * gee / (%pi * r^2)) `` kPa, r = (25 ` mm)/2;
+(1280/%pi + 4413/2500) ` kPa;
+
+ratsimp (W : (p * %pi * r^2) `` kN), r = (300 ` mm)/2;
+(39717*%pi + 28800000)/1000000 ` kN;
+
+ratsimp (W * 1/(200 ` N) `` 1);
+(39717*%pi + 28800000)/200000;
+
+p_B : (10^3 ` kg/m^3) * gee * (2 ` m + 3 ` m) `` kPa;
+1471/30 ` kPa;
+
+w_B : p_B * 4 ` m `` kN/m;
+2942/15 ` kN/m;
+
+1/2 * w_B * (2`m + 3`m);
+1471/3 ` kN;
+
+1/3*(2 ` m + 3 ` m);
+5/3 ` m;
+
+
+/* Miscellaneous examples from: "Metric Units and Conversion Charts"
+ * by Theodore Wildi (www.wildi-theo.com) ISBN 0-7803-1050-0
+ * via: http://designerunits.com/examples/sites/wildi-theo/chartschapter04
+ */
+
+(400 ` lbm) * (3 ` cm/s^2);
+1200 ` lbm*cm/s^2;
+
+(400 ` lbm) * (3 ` cm/s^2) `` N;
+136077711/25000000 ` N;
+
+(declare_unit_conversion (ozf = lbf/16), (6 ` ozf)/(3 ` kg) `` m/s^2);
+8896443230521/16000000000000 ` m/s^2;
+
+(4 ` mile) * (3 ` feet) * (2 ` mm) * (20 ` kg/foot^3) `` kg;
+1056000/127 ` kg;
+
+(150 ` lbm) * (2*%pi/(1`day))^2 * (4000 ` mile) `` N;
+63366854089*%pi^2/270000000000 ` N;
+
+(if get ('physical_constants, 'version) = false then load (physical_constants),
+ declare_unit_conversion (1 ` eV = (1 ` V) * constvalue (%%e) `` J),
+ vv : solve (Ek = 1/2 * m * v^2, v),
+ v1 : ev (second (vv), Ek = 1`eV, m = 1`lbm));
+v = sqrt(2) ` sqrt(eV)/sqrt(lbm);
+
+map (dimensions, v1);
+'dimensions(v) = length/time;
+
+map (lambda ([x], x `` cm/year), v1);
+v `` cm/year = 39447*sqrt(1602176487)/(15625*2^(5/2)*sqrt(45359237)) ` cm/year;
+
+(declare_unit_conversion (gauss = tesla/10^4, G = gauss, kG = 1000*G, mph = mile/hour), (10 ` kG) * (6 ` inch) * (60 ` mph) `` V);
+1596771/390625 ` V;
+
+(declare_unit_conversion (1 ` cmil = %pi * ((1/1000 ` inch) / 2)^2, microohm = Ohm/10^6),
+ (172/100 ` microohm*cm) * (8/10 ` mile) / (10400 ` cmil) `` Ohm);
+544896/(41275*%pi) ` Ohm;
+
+(declare_unit_conversion (cal_tc = 4184/1000 * J, Btu_tc = 105435026444/10^8 * J, ton = 2000 * lbm),
+ (3 ` ton) * (1000 ` degF `` R - 70 ` degF `` R) * (9/100 ` cal_tc/g/K),
+ En : %% `` cal_tc);
+12655227123/100 ` cal_tc;
+
+En `` MJ;
+6618683785329/12500000000 ` MJ;
+
+En `` Btu_tc;
+1203397051878000/2396250601 ` Btu_tc;
+
+((3/10 ` Btu*inch/hour/foot^2/R) * (150 ` m^2) * ((20 ` degC `` K) - (-15 ` degC `` K)) / (8 ` cm),
+ loss : %% `` Btu/hour);
+4921875/508 ` Btu/hour;
+
+loss `` kW;
+184625/65024 ` kW;
+
+(kill (p, V, n, R, T, foo),
+ solve ([p*V = n*R*T, n = m/M], [p, n]),
+ ev (first (first (%%)), R=constvalue (%R), m=5`oz, M=40`g/mol, V=678`inch^3, T=72`degF``K),
+ foo : rhs (%%) `` Pa);
+2506412710065636911/3199803664896 ` Pa;
+
+(declare_unit_conversion (atm = 101325/1000*kPa), 
+ foo `` atm);
+358058958580805273/46317158049369600 ` atm;
+
+(ev (nu * rho * d / eta, nu = 5 ` mph, rho = 1 ` kg/liter, d = 7/8 ` inch, eta = 8*10^-6 ` lbf*s/foot^2),
+ Re : %% `` 1);
+14984331321600000/115538223773;
+
+620 ` degC `` K;
+17863/20 ` K;
+
+23 ` degF `` K;
+5363/20 ` K;
+
+23 ` degF `` degC;
+-5 ` degC;
+
+(87 ` degF `` R - 60 ` degF `` R) `` K;
+15 ` K;
+
+/* from: http://www.kc9aop.net/Doc/link_pages/motors_and_mechanical.htm
+ * via: http://designerunits.com/examples/sites/kc9aop/motors_and_mechanical
+ */
+
+(declare_unit_conversion ('Hz[S] = 2*%pi*Hz, rpm = 2*%pi/(60*s)),
+ omega_mech : ev (2/npoles * 60 ` 'Hz[S] `` rpm, npoles = 2));
+3600 ` rpm;
+
+(40 ` hp)/(1725 ` rpm) `` lbf*foot;
+8800/(23*%pi) ` foot*lbf;
+
+compute_conversion_factor (hp/rpm, lbf*foot);
+16500/%pi;
+
+(declare_unit_conversion (radian=1),
+ (70 ` lbf)*(3 ` feet)/(1 ` radian) `` lbf*foot);
+210 ` lbf*foot;
+
+(30 ` hp)/(1725 ` rpm) `` lbf*foot;
+6600/(23*%pi) ` foot*lbf;
+
+(230 ` V)*(4 ` A)*82/100 `` hp;
+37720000000000000/37284993579113511 ` hp;
+
+(1725 ` rpm)*(31/10 ` lbf*foot) `` hp;
+713*%pi/2200 ` hp;
+
+omega_mech : ev (2/npoles * 50 ` 'Hz[S] `` rpm, npoles = 4);
+1500 ` rpm;
