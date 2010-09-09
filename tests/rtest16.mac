@@ -1752,3 +1752,16 @@ integrate(log(x),x,0,a);
 a*log(a)-a;
 forget(a>0);
 [a>0];
+
+/* Bug report ID: 3062883 - diff does not recognize indirect dependencies 
+ *                          in expressions
+ */
+
+depends([a,b],x,x,t);
+[a(x),b(x),x(t)];
+diff(-a,t);
+-'diff(a,x,1)*'diff(x,t,1);
+diff(a*b,t);
+a*'diff(b,x,1)*'diff(x,t,1)+'diff(a,x,1)*b*'diff(x,t,1);
+remove([a,b,x],dependency);
+done;
