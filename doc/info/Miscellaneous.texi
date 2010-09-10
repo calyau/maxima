@@ -355,6 +355,8 @@ returns a list of atoms which have atvalues.
 Assigns @var{value} to the property (specified by @var{indicator}) of @var{atom}.
 @var{indicator} may be the name of any property, not just a system-defined property.
 
+@code{rem} reverses the effect of @code{put}.
+
 @code{put} evaluates its arguments. 
 @code{put} returns @var{value}.
 
@@ -418,6 +420,10 @@ Example:
 @c HOW IS THIS DIFFERENT FROM remove ??
 @deffn {Function} rem (@var{atom}, @var{indicator})
 Removes the property indicated by @var{indicator} from @var{atom}.
+@code{rem} reverses the effect of @code{put}.
+
+@code{rem} returns @code{done} if @var{atom} had an @var{indicator} property when @code{rem} was called,
+or @code{false} if it had no such property.
 
 @opencatbox
 @category{Declarations and inferences}
@@ -449,7 +455,8 @@ There may be more than one pair of lists.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 The removed properties may be system-defined properties such as
-@code{function}, @code{macro}, or @code{mode_declare}, or user-defined properties.
+@code{function}, @code{macro}, or @code{mode_declare}.
+@code{remove} does not remove properties defined by @code{put}.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
 @c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
