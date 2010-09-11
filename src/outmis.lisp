@@ -107,6 +107,8 @@
 	       ((eq (caar e) 'mexpt) '|$Expt|)
 	       ((eq (caar e) 'mquotient) '|$Quotient|)
 	       ((eq (caar e) 'mminus) '|$Negterm|)
+	       ((eq (caar e) 'mlist)
+	        (cons '(|$List| simp) (ncons (length (cdr e)))))
 	       (t (getop (mop e)))))
 	(t (let ((u (cond ((member 'simp (cdar e) :test #'eq) (car e))
 			  (t (cons (caar e) (cons 'simp (cdar e))))))
