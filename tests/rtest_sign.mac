@@ -263,16 +263,36 @@ pnz$
 sign(sqrt(2)/2 - 1/sqrt(2));
 zero$
 
-/* SF bug 1045920 */
+/* SF bug 1045920 
+ * This case is fixed in compar.lisp revision 1.76.
+ * Adding some more examples.
+ */
 
 (assume(a > 1, b > 1),0);
 0$
 
-sign(a + b -2);
-pos$
+sign(a+b-2);
+pos;
+sign(2*a+b-3);
+pos;
+sign(2*a+b-4);
+pnz;
 
 (forget(a > 1, b > 1),0);
 0$
+
+(assume(a < -1, b < -1),0);
+0$
+
+sign(a+b+2);
+neg;
+sign(2*a+b+3);
+neg;
+sign(2*a+b+4);
+pnz;
+
+(forget(x < -1, y < -1),0);
+0;
 
 /* SF bug 1724592  */
 
