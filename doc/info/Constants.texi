@@ -211,10 +211,10 @@ See also @code{limit}.
 Example:
 
 @c ===beg===
-@c limit (1/x, x, 0);
+@c limit (x*sin(x), x, inf);
 @c ===end===
 @example
-(%i1) limit (1/x, x, 0);
+(%i1) limit (x*sin(x), x, inf);
 (%o1)                          und
 @end example
 
