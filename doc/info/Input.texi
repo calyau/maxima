@@ -1883,6 +1883,7 @@ See also @code{read}.
 
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} reveal (@var{expr}, @var{depth})
 Replaces parts of @var{expr} at the specified integer @var{depth}
 with descriptive summaries.
@@ -1900,6 +1901,9 @@ Exponentials are replaced by @code{Expt}.
 Quotients are replaced by @code{Quotient}.
 @item
 Unary negation is replaced by @code{Negterm}.
+@item
+Lists are replaced by @code{List(@var{n})} where @var{n} ist the number of
+elements of the list.
 @end itemize
 
 When @var{depth} is greater than or equal to the maximum depth of @var{expr},
@@ -1910,6 +1914,15 @@ When @var{depth} is greater than or equal to the maximum depth of @var{expr},
 
 Example:
 
+@c === beg ===
+@c e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+@c reveal (e, 1);
+@c reveal (e, 2);
+@c reveal (e, 3);
+@c reveal (e, 4);
+@c reveal (e, 5);
+@c reveal (e, 6);
+@c === end ===
 @example
 (%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
                           2            2
