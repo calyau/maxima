@@ -871,7 +871,7 @@ integrate(%e^(a*asinh(z)),z);
 
 /* Problem 182: NEW 12/2009 */
 integrate(%e^acosh(z),z);
--log(2*sqrt(z^2-1)+2*z)/2+z*sqrt(z^2-1)/2+(z^2/2+z)/2+(z^2/2-z)/2;
+-log(2*sqrt(z^2-1)+2*z)/2+z*sqrt(z^2-1)/2+z^2/2;
 
 /* Problem 183: NOUN */
 integrate(%e^(a*acosh(z)),z);
