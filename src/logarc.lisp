@@ -21,8 +21,7 @@
 	(t (recur-apply #'$logarc exp))))
 
 (defmfun logarc (f x)
-  ;;Gives the logarithmic form of arc trig and hyperbolic functions
-
+  ;; Gives the logarithmic form of arc trig and hyperbolic functions
   (cond ((eq f '%acos)
 	 ;; -%i * log(x + %i*sqrt(1-x^2))
 	 (mul -1 '$%i (take '(%log) (add x (mul '$%i (root (sub 1 (power x 2)) 2))))))
@@ -38,17 +37,16 @@
 	 (destructuring-bind (y x)
 	     x
 	   (mul -1 '$%i
-		(take '(%log) (div (add x (mul '$%i y))
-				   (power (add (mul x x) (mul y y))
-					  1//2))))))
+	        (take '(%log) (div (add x (mul '$%i y))
+	                           (root (add (mul x x) (mul y y)) 2))))))
     	((eq f '%asinh)
 	 ;; log(sqrt(x^2+1)+x)
 	 (take '(%log) (add x (root (add 1 (power x 2)) 2))))
 	((eq f '%acosh)
-	 ;; 2 * log(sqrt((x+1)/2)+sqrt((x-1)/2))
-	 (mul 2 (take '(%log) (add (root (div (add x 1) 2) 2) (root (div (add x -1) 2) 2)))))
+         ;; log(x+sqrt(x-1)*sqrt(x+1))
+         (take '(%log) (add x (mul (root (add x -1) 2) (root (add x 1) 2)))))
     	((eq f '%atanh)
-	 ;;  (log(x+1)-log(1-x))/2
+	 ;; (log(x+1)-log(1-x))/2
 	 (div (sub (take '(%log) (add 1 x)) (take '(%log) (sub 1 x))) 2))
     	((member f '(%asec %acsc %acot %asech %acsch %acoth) :test #'eq)
 	 ;; asec(x) = acos(1/x), and etc.
