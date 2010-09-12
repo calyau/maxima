@@ -78,7 +78,8 @@
 	  $pagepause $parsewindow $partswitch $pfeformat $piece $pointbound
 	  $poislim $powerdisp $prederror $programmode $props
 	  $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
-	  $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratweights
+          $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratvarswitch
+          $ratweights
 	  $ratwtlvl $realonly $refcheck $resultant $rmxchar $rootsconmode
 	  $rules $savedef $savefactors $scalarmatrixp $setcheck
 	  $setcheckbreak $setval $showtime $signbfloat $simp $simpsum

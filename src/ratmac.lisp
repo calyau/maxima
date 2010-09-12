@@ -123,5 +123,3 @@
   (cond ((null l) `(ratminus (ratfix ,r)))
 	(t `(ratdif (ratfix ,r) (r+ ,@l)))))
 
-
-(defvar $ratvarswitch t)

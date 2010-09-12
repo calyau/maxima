@@ -27,7 +27,7 @@
 
 (declare-top  (special bindlist loclist errset *rset ^q lf tab ff cr
 		       $values $functions $arrays $gradefs $dependencies
-		       $rules $props $ratvars $ratvarswitch
+		       $rules $props $ratvars
 		       varlist genvar
 		       $gensumnum checkfactors $features featurel
 		       $weightlevels tellratlist $dontfactor
@@ -128,16 +128,12 @@
 (defun sys-gctime ()
   (status gctime))
 
-;(defmfun meval* (test)
-;  (let (refchkl baktrcl checkfactors)
-;    (prog2 (if $ratvarswitch (setq varlist (cdr $ratvars)))
-;	(meval test)
-;      (clearsign))))
-
-;; This version of meval* makes sure that the facts from the global variable
+;; This version of meval* makes sure, that the facts from the global variable
 ;; locals are cleared with a call to clearsign. The facts are added by asksign
-;; and friends. meval* function is only used for top level evaluations.
+;; and friends. The function meval* is only used for top level evaluations.
 ;; For other cases the function meval can be used.
+
+(defmvar $ratvarswitch t) ; If T, start an evaluation with a fresh list VARLIST.
 
 (defun meval* (expr)
   ;; Make sure that clearsign is called after the evaluation.
