@@ -640,7 +640,7 @@ sin(y)*(10.0+6*cos(x)),
                  `((progn (setq ,save-list-gensym nil)
                           ,@(append subscripted-vars-save subscripted-vars-mset))))
 
-           (let (($ratprint nil) ($numer t) (nounsflag t)
+           (let (($ratprint nil) ($numer t) (*nounsflag* t)
                  (errorsw t)
                  (errcatch t))
              (declare (special errcatch))
@@ -684,7 +684,7 @@ sin(y)*(10.0+6*cos(x)),
       `(lambda ,gensym-args (declare (special ,@gensym-args))
          (let* (($ratprint nil)
                 ($numer t)
-                (nounsflag t)
+                (*nounsflag* t)
                 (result (maybe-realpart (mapply ',expr (list ,@gensym-args) t))))
            ;; Just always try to convert the result to a float, which
            ;; handles things like $%pi.  See also BUG #2880115
@@ -700,7 +700,7 @@ sin(y)*(10.0+6*cos(x)),
       `(lambda ,gensym-args (declare (special ,@gensym-args))
          (let* (($ratprint nil)
                 ($numer t)
-                (nounsflag t)
+                (*nounsflag* t)
                 (result (maybe-realpart (apply ',expr (list ,@gensym-args)))))
            ;; Always use $float.  See comment for
            ;; coerce-maxima-function-ormaxima-lambda above.

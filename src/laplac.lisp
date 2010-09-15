@@ -13,7 +13,7 @@
 (macsyma-module laplac)
 
 (declare-top (special dvar var-list var-parm-list var parm $savefactors
-		      checkfactors $ratfac $keepfloat nounl nounsflag
+		      checkfactors $ratfac $keepfloat *nounl* *nounsflag*
                       errcatch $errormsg))
 
 ;;; The properties NOUN and VERB give correct linear display
@@ -53,7 +53,8 @@
 
 (defmfun $laplace (fun var parm)
   (setq fun (mratcheck fun))
-  (cond ((or nounsflag (member '%laplace nounl :test #'eq)) (setq fun (remlaplace fun))))
+  (cond ((or *nounsflag* (member '%laplace *nounl* :test #'eq))
+         (setq fun (remlaplace fun))))
   (cond ((and (null (atom fun)) (eq (caar fun) 'mequal))
 	 (list '(mequal simp)
 	       (laplace (cadr fun))
@@ -906,5 +907,5 @@
 	1
 	nil))))
 
-(declare-top (unspecial dvar ils ilt nounl parm q ratform var
+(declare-top (unspecial dvar ils ilt *nounl* parm q ratform var
 			varlist var-list var-parm-list z))

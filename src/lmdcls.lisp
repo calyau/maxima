@@ -108,7 +108,7 @@
 	  *transl-debug* *transl-file-debug* *warned-fexprs*
 	  *warned-mode-vars* *warned-un-declared-vars* *zexptsimp? |-1//2|
 	  -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
-	  aliaslist alpha *alphabet* arrays aryp assigns *atp* atvars baktrcl
+	  aliaslist alpha *alphabet* arrays aryp assigns *atp* atvars *baktrcl*
 	  bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
 	  bindlist bvars *mdebug*
 	  declares defined_variables defintdebug derivflag derivlist
@@ -123,9 +123,9 @@
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist mspeclist mspeclist2 msump munbindp
 	  need-prog? negprods negsums nn* noevalargs noitems nonintegerl
-	  nounl nounsflag opers opers-list opexprp outargs1 outargs2 outfiles
+	  *nounl* *nounsflag* opers opers-list opexprp outargs1 outargs2 outfiles
 	  plusflag preserve-direction prods putl radcanp radpe rd*
-	  real-infinities realonlyratnum refchkl return-mode returns rulefcnl
+	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
 	  *small-primes* specials sqrt3//2 state-pdl $stringdisp substp
 	  sums tellratlist timesinp timesp tr-abort tr-progret tr-unique

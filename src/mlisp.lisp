@@ -26,7 +26,7 @@ or if apply is being used are printed.")
 (declare-top (special derivflag derivlist $labels $values $functions $arrays 
                       $rules $gradefs $dependencies $aliases
 		      $myoptions $props genvar $maxposex $maxnegex $expop $expon
-		      $numer state-pdl *mdebug* refchkl baktrcl
+		      $numer state-pdl *mdebug* *refchkl* *baktrcl*
 		      $norepeat $detout $doallmxops $doscmxops opers
 		      *mopl* $powerdisp $dispflag *alphabet* $%% %e-val
 		      outfiles $macros linel $ratfac $ratwtlvl
@@ -39,7 +39,7 @@ or if apply is being used are printed.")
 (defvar bindlist nil)
 (defvar loclist nil)
 (defvar mproplist nil)
-(defvar nounl nil)
+(defvar *nounl* nil)
 (defvar scanmapp nil)
 (defvar maplp nil)
 (defvar mprogp nil)
@@ -55,7 +55,7 @@ or if apply is being used are printed.")
 (defvar factlist nil)
 (defvar fundefsimp nil)
 (defvar mfexprp t)
-(defvar nounsflag nil)
+(defvar *nounsflag* nil)
 (defvar opexprp nil)
 (defvar transp nil)
 (defvar noevalargs nil)
@@ -212,7 +212,7 @@ is EQ to FNNAME if the latter is non-NIL."
 	     (unless (> (array-total-size ar) (+ (fill-pointer ar) 10))
 	       (setq ar (adjust-array ar (+ (array-total-size ar) 50)	:fill-pointer (fill-pointer ar))))
 	     (vector-push bindlist ar)
-	     ;; rather than pushing all on baktrcl it might be good
+	     ;; rather than pushing all on *baktrcl* it might be good
 	     ;; to make a *last-form* global that is set in meval1
 	     ;; and is pushed here.
 	     (vector-push form ar)
@@ -274,7 +274,7 @@ is EQ to FNNAME if the latter is non-NIL."
 (defvar *last-meval1-form* nil)
 
 (defmfun meval1 (form)
-  (declare (special nounl *break-points* *break-step*))
+  (declare (special *nounl* *break-points* *break-step*))
   (cond
     ((atom form)
      (prog (val)
@@ -291,14 +291,14 @@ is EQ to FNNAME if the latter is non-NIL."
        (setq val (symbol-value form))
        (when (and $refcheck
                   (member form (cdr $values) :test #'eq)
-                  (not (member form refchkl :test #'eq)))
-         (setq refchkl (cons form refchkl))
+                  (not (member form *refchkl* :test #'eq)))
+         (setq *refchkl* (cons form *refchkl*))
          (mtell (intl:gettext "evaluation: ~:M has a value.~%") form))
        (return val)))
     ((or (and (atom (car form))
               (setq form (cons (ncons (car form)) (cdr form))))
          (atom (caar form)))
-     (let ((baktrcl baktrcl) transp)
+     (let ((*baktrcl* *baktrcl*) transp)
        (prog (u aryp)
          (declare (special aryp))
          (setq *last-meval1-form* form)
@@ -308,7 +308,7 @@ is EQ to FNNAME if the latter is non-NIL."
                      (member (caar form) 
                              '(mplus mtimes mexpt mnctimes) :test #'eq))
                 (go c))
-               ;; dont bother pushing mplus and friends on baktrcl
+               ;; dont bother pushing mplus and friends on *baktrcl*
                ;; should maybe even go below aryp.
                ((and *mdebug*
                      (progn
@@ -334,7 +334,7 @@ is EQ to FNNAME if the latter is non-NIL."
        a 
          (setq u
                (or (safe-getl (caar form) '(noun))
-                   (and nounsflag
+                   (and *nounsflag*
                         (eq (getcharn (caar form) 1) #\%)
                         (not (or (getl-lm-fcn-prop (caar form) '(subr fsubr lsubr))
                                  (safe-getl (caar form) '(mfexpr* mfexpr*s))))
@@ -376,7 +376,7 @@ is EQ to FNNAME if the latter is non-NIL."
                       (eq (car u) 'lsubr))
                   (apply (caar form) (mevalargs (cdr form))))
                  ((eq (car u) 'noun)
-                  (cond ((or (member (caar form) nounl :test #'eq) nounsflag)
+                  (cond ((or (member (caar form) *nounl* :test #'eq) *nounsflag*)
                          (setq form (cons (cons (cadr u) (cdar form))
                                           (cdr form)))
                          (go a))
@@ -933,10 +933,10 @@ wrapper for this."
 
 (defmspec $ev (l)
   (setq l (cdr l))
-  (let ((evp t) (nounl nounl) ($float $float) ($numer $numer)
+  (let ((evp t) (*nounl* *nounl*) ($float $float) ($numer $numer)
 	($expop $expop) ($expon $expon) ($doallmxops $doallmxops)
 	($doscmxops $doscmxops) (derivflag derivflag) ($detout $detout)
-	(nounsflag nounsflag) (rulefcnl rulefcnl))
+	(*nounsflag* *nounsflag*) (rulefcnl rulefcnl))
     (if (and (cdr l) (null (cddr l)) (eq (car l) '$%e) (eq (cadr l) '$numer))
 	(setq l (append l '($%enumer))))
     (do ((l (cdr l) (cdr l)) (bndvars) (bndvals) (locvars) (exp (car l))
@@ -993,7 +993,7 @@ wrapper for this."
 			    ((eq (car l) '$detout)
 			     (setq $doallmxops nil $doscmxops nil $detout t))
 			    ((eq (car l) '$numer) (setq $numer t $float t))
-			    ((eq (car l) '$nouns) (setq nounsflag t))
+			    ((eq (car l) '$nouns) (setq *nounsflag* t))
 			    ((eq (car l) '$pred) (setq predflg t))
 			    ((eq (car l) '$expand)
 			     (setq $expop $maxposex $expon $maxnegex))
@@ -1011,7 +1011,7 @@ wrapper for this."
 				 (setq l (list* nil '$del (cdr l))))
 				((eq fl '$risch)
 				 (setq l (list* nil '$integrate (cdr l)))))
-			  (setq nounl (cons ($nounify fl) nounl)))
+			  (setq *nounl* (cons ($nounify fl) *nounl*)))
 			 ((numberp fl) (improper-arg-err (car l) '$ev))
 			 ((stringp fl) (improper-arg-err (car l) '$ev))
 			 ((eq (caar fl) 'mlist)

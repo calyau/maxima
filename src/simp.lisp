@@ -15,7 +15,7 @@
 (declare-top (special rulesw *inv* substp
 		      limitp plusflag
 		      prods negprods sums negsums
-		      $scalarmatrixp nounl
+		      $scalarmatrixp *nounl*
 		      $keepfloat $ratprint
 		      $demoivre
 		      bigfloatzero bigfloatone $assumescalar
@@ -3066,7 +3066,7 @@
   (let ($ratfac)
     (if (not hi)
 	(with-new-context (context)
-	  (if (member '%risch nounl :test #'eq)
+	  (if (member '%risch *nounl* :test #'eq)
 	      (rischint expr x)
 	      (sinint expr x)))
 	($defint expr x lo hi))))

@@ -14,7 +14,7 @@
 
 ;; This function is not documented and not used in Maxima core or share.
 (defun $bt()
-  (loop for v in baktrcl
+  (loop for v in *baktrcl*
 	 do 
 	 (and (consp v)
 	      (consp (cadar v))

@@ -48,9 +48,9 @@
       '((tab #\tab) (lf #\linefeed) (ff #\page) (cr #\return) (sp #\space)))
 
 (defvar thistime 0)
-(defvar refchkl nil)
+(defvar *refchkl* nil)
 (defvar *mdebug* nil)
-(defvar baktrcl nil)
+(defvar *baktrcl* nil)
 (defvar errbrksw nil)
 (defvar mbreak nil)
 (defvar errcatch nil)
@@ -138,7 +138,7 @@
 (defun meval* (expr)
   ;; Make sure that clearsign is called after the evaluation.
   (unwind-protect
-    (let (refchkl baktrcl checkfactors)
+    (let (*refchkl* *baktrcl* checkfactors)
       (if $ratvarswitch (setq varlist (cdr $ratvars)))
       (meval expr))
     ;; Clear the facts from asksign and friends.
@@ -500,8 +500,8 @@
 	      (setq  errset 'errbreak1)
 	      (setq tim (get-internal-run-time)
 		    $%% '$%%
-		    ;; just in case baktrcl is cons'd on the stack
-		    $backtrace (cons '(mlist simp) (copy-list baktrcl)))
+		    ;; just in case *baktrcl* is cons'd on the stack
+		    $backtrace (cons '(mlist simp) (copy-list *baktrcl*)))
 	      (setq o^r #.writefilep #.writefilep (and #.writefilep (not dskfnp)))
 	      (cond ((eq y 'noprint))
 		    (t
