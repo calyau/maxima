@@ -56,10 +56,8 @@ or if apply is being used are printed.")
 (defvar fundefsimp nil)
 (defvar mfexprp t)
 (defvar *nounsflag* nil)
-(defvar opexprp nil)
 (defvar transp nil)
 (defvar noevalargs nil)
-(defvar fexprerrp nil)
 (defvar rulefcnl nil)
 (defvar featurel
   '($integer $noninteger $even $odd $rational $irrational $real $imaginary $complex
@@ -120,9 +118,9 @@ or if apply is being used are printed.")
 	 (apply fn args))
 
 	;; extension for pdiff; additional extension are welcomed.
-    ;; (AND (CONSP FN) (CONSP (CAR FN)) ...) is an attempt to identify
-    ;; conventional Maxima expressions ((FOO) X Y Z); probably should
-    ;; encapsulate somewhere, maybe it is already ??
+        ;; (AND (CONSP FN) (CONSP (CAR FN)) ...) is an attempt to identify
+        ;; conventional Maxima expressions ((FOO) X Y Z); probably should
+        ;; encapsulate somewhere, maybe it is already ??
 	((and (consp fn) (consp (car fn)) (symbolp (mop fn)) (get (mop fn) 'mapply1-extension)
 	      (apply (get (mop fn) 'mapply1-extension) (list fn args fnname form))))
 	((eq (car fn) 'lambda)
@@ -302,9 +300,8 @@ is EQ to FNNAME if the latter is non-NIL."
          (declare (special aryp))
          (setq *last-meval1-form* form)
          (setq aryp (member 'array (cdar form) :test #'eq))
-         (cond ((and (not opexprp)
-                     (not aryp)
-                     (member (caar form) 
+         (cond ((and (not aryp)
+                     (member (caar form)
                              '(mplus mtimes mexpt mnctimes) :test #'eq))
                 (go c))
                ;; dont bother pushing mplus and friends on *baktrcl*
@@ -377,7 +374,8 @@ is EQ to FNNAME if the latter is non-NIL."
                   (setq noevalargs nil)
                   (meval (mmacro-apply (cadr u) form)))
                  ((eq (car u) 'mfexpr*)
-                  (setq noevalargs nil)  (apply (cadr u) (ncons form)))
+                  (setq noevalargs nil)
+                  (apply (cadr u) (ncons form)))
                  ((eq (car u) 'macro)
                   (setq noevalargs nil)
                   (setq form (cons(caar form) (cdr form)))
@@ -1338,7 +1336,7 @@ wrapper for this."
     (apply #'outermap1 (append outargs1 (list (first args)) outargs2))))
 
 (defmfun funcer (fn args)
-  (cond ((and (not opexprp) (member fn '(mplus mtimes mexpt mnctimes) :test #'eq))
+  (cond ((member fn '(mplus mtimes mexpt mnctimes) :test #'eq)
 	 (simplify (cons (ncons fn) args)))
 	((or (member fn '(outermap2 constfun) :test #'eq)
 	     (and $transrun (symbolp fn) (get fn 'translated)
@@ -2310,13 +2308,6 @@ wrapper for this."
 (defmfun rat (x y)
   `((rat simp) ,x ,y))
 
-; The definiton of $exp and $sqrt have changed and moved to simp.lisp
-;(defmfun $exp (x)
-;  `((mexpt) $%e ,x))
-
-;(defmfun $sqrt (x)
-;  `((%sqrt) ,x))
-
 (defmfun add2lnc (item llist)
   (unless (memalike item (if ($listp llist) (cdr llist) llist))
     (unless (atom item)
@@ -2330,9 +2321,6 @@ wrapper for this."
 
 (defmfun $allbut (&rest args)
   (cons '($allbut) args))
-
-(defmfun mfilep (x)
-  (and (not (atom x)) (not (atom (car x))) (eq (caar x) 'mfile)))
 
 (defquote dsksetq (&rest l)
   (let ((dsksetp t))
