@@ -114,7 +114,7 @@
 	  declares defined_variables defintdebug derivflag derivlist
 	  derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
 	  dumping envlist errorsw errrjfflag evarrp evp expandflag expandp
-	  exprs exptrlsw factlist featurel fexprerrp fexprs fmaplvl
+	  exprs exptrlsw factlist featurel fexprs fmaplvl
 	  forms-to-compile-queue fourth%pi fr-factor fundefsimp gauss
 	  generate-atan2 genpairs genvar half%pi half%pi3 hmodulus
 	  implicit-real in-p infinitesimals infinities inratsimp inside-mprog
@@ -123,7 +123,7 @@
 	  meta-prop-l meta-prop-p mfexprp minpoly* mlocp mm* modulus *mopl*
 	  mplc* mprogp mproplist mspeclist mspeclist2 msump munbindp
 	  need-prog? negprods negsums nn* noevalargs noitems nonintegerl
-	  *nounl* *nounsflag* opers opers-list opexprp outargs1 outargs2 outfiles
+	  *nounl* *nounsflag* opers opers-list outargs1 outargs2 outfiles
 	  plusflag preserve-direction prods putl radcanp radpe rd*
 	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
