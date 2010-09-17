@@ -1782,8 +1782,8 @@ ifc1    = --------------------------------
 
 @defvr {Variable} ifc2
 
-Frame coefficient of the first kind. This tensor represents the contribution
-of the frame metric to the connection coefficient of the first kind. Defined
+Frame coefficient of the second kind. This tensor represents the contribution
+of the frame metric to the connection coefficient of the second kind. Defined
 as a permutation of the frame bracket (@code{ifb}) with the appropriate
 indices raised and lowered as necessary:
 
