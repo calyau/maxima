@@ -699,7 +699,7 @@ For a demonstration of this capability, see the file
 Computes a Newman-Penrose null tetrad (@code{np}) and its raised-index
 counterpart (@code{npi}). See @code{petrov} for an example.
 
-The null tetrad is constructed on the assumption that a four-diemensional
+The null tetrad is constructed on the assumption that a four-dimensional
 orthonormal frame metric with metric signature (-,+,+,+) is being used.
 The components of the null tetrad are related to the inverse frame matrix
 as follows:
@@ -727,7 +727,7 @@ np  = (fri  - %i fri ) / sqrt(2)
 
 @deffn {Function} psi (@var{dis})
 Computes the five Newman-Penrose coefficients @code{psi[0]}...@code{psi[4]}.
-If @code{psi} is set to @code{true}, the coefficients are displayed.
+If @code{dis} is set to @code{true}, the coefficients are displayed.
 See @code{petrov} for an example.
 
 These coefficients are computed from the Weyl-tensor in a coordinate base.
@@ -881,9 +881,9 @@ nmc  = ------------------------------
 where D stands for the Kronecker-delta.
 
 When @code{ctorsion_flag} is set to @code{true}, the values of @code{kt}
-are substracted from the mixed-indexed connection coefficients computed by
+are subtracted from the mixed-indexed connection coefficients computed by
 @code{christof} and stored in @code{mcs}. Similarly, if @code{cnonmet_flag}
-is set to @code{true}, the values of @code{nmc} are substracted from the
+is set to @code{true}, the values of @code{nmc} are subtracted from the
 mixed-indexed connection coefficients.
 
 If necessary, @code{christof} calls the functions @code{contortion} and
