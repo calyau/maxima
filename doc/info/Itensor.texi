@@ -733,7 +733,7 @@ imply that @code{kdelta([i,j],[])} is a valid tensorial object.
 
 @deffn {Function} kdels (@var{L1}, @var{L2})
 
-Symmetricized Kronecker delta, used in some calculations. For instance:
+Symmetrized Kronecker delta, used in some calculations. For instance:
 
 @example
 
