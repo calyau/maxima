@@ -396,13 +396,19 @@ test_sum(
   harmonic_number_expand=true;
 0;
 
+declare(N,integer);
+done;
+
 test_sum(
   sum(sin(n*x), n, 1, N),
   [],
   false,
-  [rectform, trigrat],
-  -(cos(((2*N+1)*x)/2)-cos(x/2))/(2*sin(x/2)));
+  [],
+  -((cos(x)-1)*sin(x*N+x)-sin(x)*cos(x*N+x)+sin(x))/(2*cos(x)-2));
 0;
+
+remove(N,integer);
+done;
 
 test_sum(
   sum(((-4)^k*binomial(k,m)*binomial(n+k,2*k))*n/(n+k),k,m,n),
