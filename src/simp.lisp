@@ -2041,13 +2041,18 @@
            ((and $domxmxops (member pot '(-1 -1.0) :test #'equal))
             (return (simplifya (outermap1 'mexpt gr pot) t)))
            (t (go up)))
-
   e1 
-     ;; At this point we have an expression: (z^a)^b
-     
+     ;; At this point we have an expression: (z^a)^b with gr = z^a and pot = b
      (cond ((or (eq $radexpand '$all)
+                ;; b is an integer or an odd rational
                 (simplexpon pot)
-                (member (setq z ($csign (cadr gr))) '($pos $pz $zero))
+                (and (not (member ($csign (caddr gr)) '($complex $imaginary)))
+                         ;; z >= 0 and a not a complex
+                     (or (member (setq z ($csign (cadr gr))) '($pos $pz $zero))
+                         ;; -1 < a <= 1
+                         (and (mnump (caddr gr))
+                              (eq ($sign (sub 1 (take '(mabs) (caddr gr))))
+                                  '$pos))))
                 ;; (1/z)^a -> 1/z^a when z a constant complex
                 (and (equal (caddr gr) -1)
                      (eq z '$complex)
@@ -2064,20 +2069,20 @@
                      ;; Again not correct in general.
                      ;; At first exclude the sqrt function.
                      (not (alike1 pot '((rat simp) 1 2)))))
-            ;; Simplify: (z^a)^b -> z^(a*b)
+            ;; Simplify (z^a)^b -> z^(a*b)
             (setq pot (mult pot (caddr gr)) gr (cadr gr)))
            ((and (eq $domain '$real)
                  (free gr '$%i)
                  $radexpand
                  (not (decl-complexp (cadr gr)))
                  (evnump (caddr gr)))
-            ;; Simplify: (x^a)^b -> abs(x)^(a*b)
+            ;; Simplify (x^a)^b -> abs(x)^(a*b)
             (setq pot (mult pot (caddr gr)) gr (radmabs (cadr gr))))
            ((and (mminusp (caddr gr))
                  ;; Again not correct in general.
                  ;; At first exclude the sqrt function.
                  (not (alike1 pot '((rat simp) 1 2))))
-            ;; Simplify: (1/z^a)^b -> 1/(z^a)^b
+            ;; Simplify (1/z^a)^b -> 1/(z^a)^b
             (setq pot (neg pot)
                   gr (list (car gr) (cadr gr) (neg (caddr gr)))))
            (t (go up)))
