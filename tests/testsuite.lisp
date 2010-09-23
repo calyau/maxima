@@ -10,48 +10,48 @@
 	"rtestnset" "rtest1" "rtest1a" "rtest2" "rtest4"
         "rtest5"
 	"rtest6" "rtest6a" "rtest6b" "rtest7"
-        ((mlist) "rtest9" 82)
+        ((mlist simp) "rtest9" 82)
 	"rtest9a"
-	((mlist) "rtest10" 24 25)
+	((mlist simp) "rtest10" 24 25)
 	"rtest11" "rtest13" "rtest13s"
 	"rtest14"
         "rtest15"
 	"rtest16"
 	"rtestode" "rtestode_zp"
 	"rtest3" "rtest8"
-	((mlist) "rtest12" 76 78)
+        ((mlist simp) "rtest12" 76 78)
 	"rexamples"
-	((mlist) "rtesthyp" 103 104 105 112 113 123 124 128)
-        ((mlist) "rtest_hypgeo" 143)
+        ((mlist simp) "rtesthyp" 103 104 105 112 113 123 124 128)
+        ((mlist simp) "rtest_hypgeo" 143)
 	"rtestmt19937"
-	((mlist) "rtest_allnummod" 135 136 417 418)
+        ((mlist simp) "rtest_allnummod" 135 136 417 418)
 	"rtestconjugate"
-	((mlist) "rtestsum" 3 4 18 75)
+        ((mlist simp) "rtestsum" 3 4 18 75)
 	"rtest_trig"
 	"rtest_zeta"
 	"rtest_diff_invtrig"
 	"rtest_scalarp"
 	"rtest_everysome"
-        ((mlist) "rtestint" 83)
+        ((mlist simp) "rtestint" 83)
 	"rtestifactor"
-	((mlist) "rtest_equal" 157 160)
+        ((mlist simp) "rtest_equal" 157 160)
 	"rtest_abs"
-	((mlist) "rtest_taylor" 88 91 94 96 99 118 119 120 121 123 124)
-	((mlist) "rtest_dot")
+	((mlist simp) "rtest_taylor" 88 91 94 96 99 118 119 120 121 123 124)
+	((mlist simp) "rtest_dot")
 	"rtest_mset"
 	"rtest_boolean"
         "rtest_round"
-	((mlist) "rtest_map" 2 3 4)
-        ((mlist) "rtest_sign" 21 25 30 40 65 72 77 79)
+        ((mlist simp) "rtest_map" 2 3 4)
+        ((mlist simp) "rtest_sign" 21 25 30 40 65 72 77 79)
         "rtest_algebraic"
         "rtest_gamma"
         "rtest_expintegral"
 	"rtest_signum"
         "rtest_lambert_w"
 	"rtest_elliptic"
-        ((mlist) "rtest_integrate" 13 14 21 22 32)
+        ((mlist simp) "rtest_integrate" 13 14 21 22 32)
 	"rtest_integrate_special"
         "rtest_ask"
-        ((mlist) "rtest_sqrt" 76 78 79 80 86)
-        ((mlist) "rtest_carg" 40 41)
+        ((mlist simp) "rtest_sqrt" 76 78 79 80)
+        ((mlist simp) "rtest_carg" 40 41)
 	))
