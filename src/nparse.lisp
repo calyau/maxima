@@ -189,10 +189,10 @@
 	 (ch (parse-tyipeek))
 	 (lis (if (eql ch -1)
 		  nil
-		  (parser-assoc ch obj))))
+	          (parser-assoc ch obj))))
     (cond ((null lis)
 	   nil)
-	  (t
+          (t
 	   (parse-tyi)
 	   (cond ((atom (cadr lis))
 		  ;; INFIX("ABC"); puts into macsyma-operators
@@ -200,16 +200,26 @@
 		  ;; ordinary things are like:
 		  ;; (#\< (ANS $<) (#\= (ANS $<=)))
 		  ;; where if you fail at the #\< #\X
-		  ;; stage, then the previous step was permitted.
-		  (setq result (read-command-token-aux (list (cdr lis) ))))
-		 ((null (cddr lis))
+	          ;; stage, then the previous step was permitted.
+		  (setq result (read-command-token-aux (list (cdr lis)))))
+	         ((null (cddr lis))
 		  ;; lis something like (#\= (ANS $<=))
 		  ;; and this says there are no longer operators
 		  ;; starting with this.
 		  (setq result
-			(and (eql (car (cadr lis)) 'ans)
-			     (cadr (cadr lis)))))
-		 (t
+		        (and (eql (car (cadr lis)) 'ans)
+		             ;; When we have an operator, which starts with a
+		             ;; literal, we check, if the operator is
+		             ;; followed with a whitespace. With this code
+		             ;; Maxima parses an expression grad x or grad(x)
+		             ;; as (($grad) x) and gradef(x) as (($gradef) x),
+		             ;; when grad is defined as a prefix operator.
+		             ;; See bug report ID: 2970792.
+		             (or (not (alphabetp (cadr (exploden (cadr (cadr lis))))))
+		                 (member (parse-tyipeek)
+		                         '(#\tab #\space #\linefeed #\return #\page #\newline)))
+		             (cadr (cadr lis)))))
+	         (t
 		  (let ((res   (and (eql (car (cadr lis)) 'ans)
 				    (cadr (cadr lis))))
 			(com-token (read-command-token-aux (cddr lis) )))
@@ -217,7 +227,6 @@
 				     (read-command-token-aux (list (cadr lis))))))))
 	     (or result (unparse-tyi ch))
 	     result))))
-
 
 (defun scan-macsyma-token ()
   ;; note that only $-ed tokens are GETALIASed.
