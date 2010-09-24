@@ -23,6 +23,10 @@
 (defvar $gamma_expand nil
   "Expand gamma(z+n) for n an integer when T.") 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the plog function
+
 (defmfun simpplog (x vestigial z)
   (declare (ignore vestigial))
   (prog (varlist dd check y)
@@ -108,6 +112,14 @@
 		     ((alike1 r '((mexpt) 3 ((rat) -1 2)))
 		      (archk a b (list '(mtimes) '((rat) 1 6) '$%pi))))))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the Binomial coefficient
+
+;; Verb function for the Binomial coefficient
+(defun $binomial (x y)
+  (simplify (list '(%binomial) x y)))
+
 ;; Binomial has Mirror symmetry
 (defprop %binomial t commutes-with-conjugate)
 
@@ -165,11 +177,15 @@
      (setq u (addk -1 u) v (1- v))
      (go loop)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the Beta function
+
 (declare-top (special $numer $gammalim))
 
 (defmvar $beta_args_sum_to_integer nil)
 
-;;; The Beta funtion has mirror symmetry
+;;; The Beta function has mirror symmetry
 (defprop $beta t commutes-with-conjugate)
 
 (defmfun simpbeta (x vestigial z &aux check)
@@ -335,6 +351,10 @@
       (mul (simplify (list '($pochhammer) (add u v n) (- n)))
            (power (simplify (list '($pochhammer) (add u n) (- n))) -1)
            (simplify (list '($beta) u v)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Implementation of the Gamma function
 
 (defmfun simpgamma (x vestigial z)
   (declare (ignore vestigial))
