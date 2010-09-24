@@ -31,8 +31,10 @@
 (meval '((%setup_autoload simp) "bffac" $bfzeta))
 
 ;jfa
-($auto_mexpr '$eigenvectors '|eigen|)
-($auto_mexpr '$eigenvalues '|eigen|)
+($auto_mexpr '$eigenvectors "eigen.mac")
+($auto_mexpr '$eivects "eigen.mac")
+($auto_mexpr '$eigenvalues "eigen.mac")
+($auto_mexpr '$eivals "eigen.mac")
 
 ($auto_mexpr '$trigsimp "trgsmp.mac")
 ($auto_mexpr '$ode2 "ode2.mac")
