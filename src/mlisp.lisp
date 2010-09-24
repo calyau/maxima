@@ -2358,10 +2358,6 @@ wrapper for this."
   (|''MAKE| $round %round) (|''MAKE| $truncate %truncate) (|''MAKE| $plog %plog)
   (|''MAKE| $signum %signum) (|''MAKE| $gamma %gamma))
 
-(defmfun $binomial (x y)
-  (let (($numer t) ($float t))
-    (simplify (list '(%binomial) x y))))
-
 ;; evfun properties
 (mapc #'(lambda (x) (putprop x t 'evfun))
       '($radcan $factor $ratsimp $trigexpand $trigreduce $logcontract
