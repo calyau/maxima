@@ -51,7 +51,7 @@ true;
 closeto(lambert_w(128.0),3.57739529855165334288,1.0e-16);
 true;
 
-closeto(lambert_w(2048.0),5.85698416299949388816,1.0e-16);
+closeto(lambert_w(2048.0),5.85698416299949388816,1.0e-15);
 true;
 
 closeto(float(lambert_w(-%pi/2)),%i*%pi/2,1.0e-16);
