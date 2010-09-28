@@ -964,7 +964,7 @@ relational knowledge is contained in the default context GLOBAL.")
     (cond ((eq '$zero sgn) t)
 	  ((memq sgn '($pos $neg $pn)) nil)
 
-	  ((and (memq sgn '($complex $imaginary)) (linearp z '$%i))
+	  ((memq sgn '($complex $imaginary)) ;; previously checked also for (linearp z '$%i))
 	   (setq rsgn ($csign ($realpart z)))
 	   (setq isgn ($csign ($imagpart z)))
 	   (cond ((and (eq '$zero rsgn) (eq '$zero isgn)) t)

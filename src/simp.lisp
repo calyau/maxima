@@ -1407,50 +1407,73 @@
 ;; The abs function is a simplifying function.
 (defprop mabs simpabs operators)
 
-(defmfun simpabs (x y z)
-  (oneargcheck x)
-  (setq y (simpcheck (cadr x) z))
-  (cond ((numberp y) (abs y))
-	((or (arrayp y) ($member y $arrays)) `((mabs simp) ,y))
-	((or (ratnump y) ($bfloatp y)) (list (car y) (abs (cadr y)) (caddr y)))
-	((taylorize 'mabs (second x)))
-	((member y '($inf $infinity $minf) :test #'eq) '$inf)
-	((member y '($ind $und) :test #'eq) y)
+(defmfun simpabs (e y z)
+  (declare (ignore y))
+  (oneargcheck e)
+  (let ((sgn)
+	(x (simplifya (second e) z)))
+    
+    (cond ((complex-number-p x #'(lambda (s) (or (floatp s) ($bfloatp s)))) 
+	   (maxima::to (bigfloat::abs (bigfloat:to x))))
+     		  		   
+	  ((complex-number-p x #'mnump)
+	   ($cabs x))
+		 
+	  ;; nounform for arrays...
+	  ((or (arrayp x) ($member x $arrays)) `((mabs simp) ,x))
+		   
+	  ;; taylor polynomials
+	  ((taylorize 'mabs x))
+		   
+	  ;; values for extended real arguments:
+	  ((member x '($inf $infinity $minf) :test #'eq) '$inf)
+	  ((member x '($ind $und) :test #'eq) x)
 
-        ;; Simplify $conjugate before handling complex expressions.
-	((op-equalp y '$conjugate) 
-         (simplifya `((mabs) ,(first (margs y))) nil))
+	  ;; abs(abs(expr)) --> abs(expr). Since x is simplified, it's OK to return x.
+	  ((and (consp x) (consp (car x)) (eq (caar x) 'mabs))
+	   x)
+		    
+	  ;; abs(conjugate(expr)) = abs(expr).
+	  ((and (consp x) (consp (car x)) (eq (caar x) '$conjugate))
+	   (take '(mabs) (cadr x)))
 
-        ;; Check for a complex expression with $csign, but not when in limit.
-        ((and (not limitp) 
-              (member (setq z ($csign y)) '($complex $imaginary)))
-         (cond ((symbolp y)
-                ;; Do not call cabs for complex symbols.
-                (cond ((eq y '$%i) 1)
-                      (t (eqtest (list '(mabs) y) x))))
-               (t (cabs y))))
+	  (t
+	   (setq sgn ($csign x))
+	   (cond ((member sgn '($neg $nz) :test #'eq) (mul -1 x))
+		 ((eq '$zero sgn) (mul 0 x))
+		 ((member sgn '($pos $pz) :test #'eq) x)
+		 		  
+		 ;; for complex constant expressions, use $cabs
+		 ((and (eq sgn '$complex) ($constantp x))
+		  ($cabs x))
+		 		   
+		 ;; abs(pos^complex) --> pos^(realpart(complex)).
+		 ((and (eq sgn '$complex) (mexptp x) (eq '$pos ($csign (second x))))
+		  (power (second x) ($realpart (third x))))
 
-        ;; Check for a complex expression with csign, when in limit.
-	((eq (setq z (csign y)) t) (cabs y))
-        ;; Check for the sign of the expression.
-	((member z '($pos $pz) :test #'eq) y)
-	((member z '($neg $nz) :test #'eq) (neg y))
-	((eq z '$zero) 0)
-	;; If csign(y) = pn, we have abs(signum(y)) = 1.
-	((and (eq z '$pn) (op-equalp y '%signum)) 1)
+		 ;; for abs(neg^z), use cabs.
+		 ((and (mexptp x) (eq '$neg ($csign (second x))))
+		  ($cabs x))
 
-	((and (mexptp y) ($featurep (caddr y) '$integer))
-	 (list (car y) (simplifya (list '(mabs) (cadr y)) nil) (caddr y)))
-	((mtimesp y)
-	 (muln 
-           (mapcar #'(lambda (u) (simplifya (list '(mabs) u) nil)) (cdr y)) t))
-	((mminusp y) (list '(mabs simp) (neg y)))
-; We have put the property distribute_over on the property list of mabs.
-;	((mbagp y)
-;	 (cons (car y)
-;	       (mapcar #'(lambda (u)
-;			   (simplifya (list '(mabs) u) nil)) (cdr y))))
-	(t (eqtest (list '(mabs) y) x))))
+		 ;; When x # 0, we have abs(signum(x)) = 1.
+		 ((and (eq '$pn sgn) (consp x) (consp (car x)) (eq (caar x) '%signum)) 1)
+		 		  		 		 
+		 ;; multiplicative property: abs(x*y) = abs(x) * abs(y). We would like
+		 ;; assume(a*b > 0), abs(a*b) --> a*b. Thus the multiplicative property
+		 ;; is applied after the sign test.
+		 ((mtimesp x)
+		  (muln (mapcar #'(lambda (u) (take '(mabs) u)) (margs x)) t))
+		   
+		 ;; abs(x^n) = abs(x)^n for integer n. Is the featurep check worthwhile?
+		 ;; Again the sign check is done first because we'd like abs(x^2) --> x^2.
+		 ((and (mexptp x) ($featurep (caddr x) '$integer))
+		  (power (take '(mabs) (cadr x)) (caddr x)))
+		 		  
+		 ;; Reflection rule: abs(-x) --> abs(x); here the expression x can be in CRE form.
+		 ((mminusp x) (take '(mabs) (mul -1 x)))
+
+		 ;; nounform return
+		 (t (eqtest (list '(mabs) x) e)))))))
 
 (defun abs-integral (x)
   (mul (div 1 2) x (take '(mabs) x)))
