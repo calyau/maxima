@@ -649,11 +649,11 @@
 	  x))
 
 ;;;-----------------------------------------------------------------------------
-;;; ADDK xx yy                                                     27.09.2010/DK
+;;; ADDK (XX YY)                                                   27.09.2010/DK
 ;;;
 ;;; Arguments and values:
-;;;   xx     - a Maxima number
-;;;   yy     - a Maxima number
+;;;   XX     - a Maxima number
+;;;   YY     - a Maxima number
 ;;;   result - a simplified Maxima number
 ;;;
 ;;; Description:
@@ -711,13 +711,13 @@
 	                    (t g)))))))
 
 ;;;-----------------------------------------------------------------------------
-;;; *RED1 x                                                        27.09.2010/DK
-;;; *RED n d
+;;; *RED1 (X)                                                      27.09.2010/DK
+;;; *RED (N D)
 ;;;
 ;;; Arguments and values:
-;;;   x      - a Maxima rational number (for *RED1)
-;;;   n      - an integer number representing the numerator of a rational
-;;;   d      - an integer number representing the denominator of a rational
+;;;   X      - a Maxima rational number (for *RED1)
+;;;   N      - an integer number representing the numerator of a rational
+;;;   D      - an integer number representing the denominator of a rational
 ;;;   result - a simplified Maxima rational number
 ;;;
 ;;; Description:
@@ -726,7 +726,7 @@
 ;;;   the option variable $FLOAT is T, the rational number is converted to a
 ;;;   float number. If the number is not simplified, *RED is called.
 ;;;
-;;;   *RED reduces the numerator n and the demoniator d and returns a 
+;;;   *RED reduces the numerator N and the demoniator D and returns a 
 ;;;   simplified Maxima rational number. The result is converted to a float
 ;;;   number, if the option variable $FLOAT is T.
 ;;;
@@ -751,11 +751,11 @@
 		   (t (list '(rat simp) n d)))))))
 
 ;;;-----------------------------------------------------------------------------
-;;; TIMESK x y                                                     27.09.2010/DK
+;;; TIMESK (X Y)                                                   27.09.2010/DK
 ;;;
 ;;; Arguments and values:
-;;;   x      - a Maxima number
-;;;   y      - a Maxima number
+;;;   X      - a Maxima number
+;;;   Y      - a Maxima number
 ;;;   result - a simplified Maxima number
 ;;;
 ;;; Description:
@@ -830,20 +830,20 @@
 		   (t g)))))
 
 ;;;-----------------------------------------------------------------------------
-;;; FPCOFRAT ratno                                                 27.09.2010/DK
-;;; FPCOFRT1 n d
+;;; FPCOFRAT (RATNO)                                               27.09.2010/DK
+;;; FPCOFRT1 (NU D)
 ;;;
 ;;; Arguments and values:
-;;;   ratno  - a Maxima rational number (for FPCOFRAT)
-;;;   nu     - an integer number which represents the numerator of a rational
-;;;   d      - an integer number which represents the denominator of a rational
+;;;   RATNO  - a Maxima rational number (for FPCOFRAT)
+;;;   NU     - an integer number which represents the numerator of a rational
+;;;   D      - an integer number which represents the denominator of a rational
 ;;;   result - floating point approximation of a rational number
 ;;;
 ;;; Description:
 ;;;   Floating Point Conversion OF RATional number routine.
 ;;;   Finds floating point approximation to rational number.
 ;;;
-;;;   FPCOFRAT1 computes the quotient of nu/d.
+;;;   FPCOFRAT1 computes the quotient of NU/D.
 ;;;
 ;;; Exeptional situations:
 ;;;   A Lisp error is generated, if the rational number does not fit into a
@@ -863,16 +863,16 @@
   (float (/ nu d)))
 
 ;;;-----------------------------------------------------------------------------
-;;; EXPTA x y                                                      27.09.2010/DK
+;;; EXPTA (X Y)                                                    27.09.2010/DK
 ;;; 
 ;;; Arguments and values:
-;;;   x      - a Maxima number
-;;;   y      - an integer number
+;;;   X      - a Maxima number
+;;;   Y      - an integer number
 ;;;   result - a simplified Maxima number
 ;;;
 ;;; Description:
-;;;   Computes x^y, where x is Maxima number and y an integer. The result is 
-;;;   a simplified Maxima number. y can be a rational Maxima number. For this
+;;;   Computes X^Y, where X is Maxima number and Y an integer. The result is 
+;;;   a simplified Maxima number. Y can be a rational Maxima number. For this
 ;;;   case the numerator is taken as the power.
 ;;;
 ;;; Affected by:
@@ -899,15 +899,15 @@
 	       (exptb (caddr x) (num1 y))))))
 
 ;;;-----------------------------------------------------------------------------
-;;; EXPTB a b                                                      27.09.2010/DK
+;;; EXPTB (A B)                                                    27.09.2010/DK
 ;;;
 ;;; Arguments and values:
-;;;   a      - a float or integer number
-;;;   b      - an integer number
+;;;   A      - a float or integer number
+;;;   B      - an integer number
 ;;;   result - a simplified Maxima number
 ;;;
 ;;; Description:
-;;;   Computes a^b, where a is a float or an integer number and b is an 
+;;;   Computes A^B, where A is a float or an integer number and B is an 
 ;;;   integer number. The result is an integer, float, or Maxima
 ;;;   rational number.
 ;;;
@@ -940,12 +940,12 @@
 	 (*red 1 b))))
 
 ;;;-----------------------------------------------------------------------------
-;;; SIMPLUS x w z                                                  27.09.2010/DK
+;;; SIMPLUS (X W Z)                                                27.09.2010/DK
 ;;;
 ;;; Arguments and values:
-;;;   x      - a Maxima expression of the form ((mplus) term1 term2 ...)
-;;;   w      - an arbitrary value, the value is ignored
-;;;   z      - T or NIL, if T the arguments are assumed to be simplified
+;;;   X      - a Maxima expression of the form ((mplus) term1 term2 ...)
+;;;   W      - an arbitrary value, the value is ignored
+;;;   Z      - T or NIL, if T the arguments are assumed to be simplified
 ;;;   result - a simplified mplus-expression or an atom
 ;;;
 ;;; Description:
@@ -1026,17 +1026,17 @@
                  res))))
 
 ;;;-----------------------------------------------------------------------------
-;;; PLS x out                                                      27.09.2010/DK
+;;; PLS (X OUT)                                                    27.09.2010/DK
 ;;;
 ;;; Arguments and values:
-;;;   x      - a Maxima expression or an atom
-;;;   out    - a form ((mplus) <number> term1 term2 ...) or NIL
+;;;   X      - a Maxima expression or an atom
+;;;   OUT    - a form ((mplus) <number> term1 term2 ...) or NIL
 ;;;   result - a form ((mplus) <number> term1 ...), where x is added in.
 ;;;
 ;;; Description:
-;;;   Adds the argument x into the form out. If out is NIL a form
-;;;   ((mplus) 0 x) is initialized, if x is an expression or a symbol,
-;;;   or ((mplus) x), if x is a number. Numbers are added to the first
+;;;   Adds the argument X into the form OUT. If OUT is NIL a form
+;;;   ((mplus) 0 X) is initialized, if X is an expression or a symbol,
+;;;   or ((mplus) X), if X is a number. Numbers are added to the first
 ;;;   term <number> of the form. Any other symbol or expression is added
 ;;;   into the canonical ordered list of arguments. The result is in a
 ;;;   canonical order, but it is not a valid Maxima expression. To get a
@@ -1059,7 +1059,7 @@
 ;;;   (let (($negdistrib nil)) (pls '((mtimes) -1 ((mplus) $A $B)) nil))
 ;;;           -> ((MPLUS) 0 ((MTIMES) -1 ((MPLUS) $A $B)))
 ;;;
-;;; Affected by;
+;;; Affected by:
 ;;;   The option variables $NUMER and $NEGDISTRIB and the global flag
 ;;;   *PLUSFLAG*, which is set in the routine PLUSIN.
 ;;;
@@ -1067,10 +1067,10 @@
 ;;;   PLUSIN and ADDK which are called from PLS and SIMPLUS.
 ;;;
 ;;; Notes:
-;;;   To add an expression into the list (cdr out), the list is passed
+;;;   To add an expression into the list (CDR OUT), the list is passed
 ;;;   to the routine PLUSIN as an argument. PLUSIN adds the argument to
-;;;   the list of terms by modifying the list (cdr out) destructively.
-;;;   The new value of out is returned as a result by PLS.
+;;;   the list of terms by modifying the list (CDR OUT) destructively.
+;;;   The new value of OUT is returned as a result by PLS.
 ;;;-----------------------------------------------------------------------------
 
 ;; Set in PLUSIN to T to indicate a nested mplus expression.
@@ -1143,17 +1143,17 @@
      (go loop)))
 
 ;;;-----------------------------------------------------------------------------
-;;; PLUSIN x fm                                                    27.09.2010/DK
+;;; PLUSIN (X FM)                                                  27.09.2010/DK
 ;;;
 ;;; Arguments and values:
-;;;   x      - a Maxima expression or atom
-;;;   fm     - a list with the terms of an addition
+;;;   X      - a Maxima expression or atom
+;;;   FM     - a list with the terms of an addition
 ;;;   result - part of the list fm, which starts at the inserted expression
 ;;;
 ;;; Description:
-;;;   Adds x into running list of additive terms fm. The routine modifies
-;;;   the argument fm destructively, but does not return the modified list as
-;;;   a result. The return value is a part of the list fm, which starts at the
+;;;   Adds X into running list of additive terms FM. The routine modifies
+;;;   the argument FM destructively, but does not return the modified list as
+;;;   a result. The return value is a part of the list FM, which starts at the
 ;;;   inserted term. PLUSIN can not handle Maxima numbers. PLUSIN is called 
 ;;;   only from the routine PLS.
 ;;;
@@ -1167,8 +1167,8 @@
 ;;;   fm -> (0 ((MTIMES SIMP) 2 $A) $B)
 ;;;
 ;;; Side effects:
-;;;   Modifies destructively the argument fm, which contains the result of the
-;;;   addition of the argument x into the list fm.
+;;;   Modifies destructively the argument FM, which contains the result of the
+;;;   addition of the argument X into the list FM.
 ;;;
 ;;; Affected by;
 ;;;   The option variables $doallmxops and $listarith.
