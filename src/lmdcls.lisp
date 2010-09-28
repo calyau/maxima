@@ -124,7 +124,7 @@
 	  mplc* mprogp mproplist mspeclist mspeclist2 msump munbindp
 	  need-prog? negprods negsums nn* noevalargs noitems nonintegerl
 	  *nounl* *nounsflag* opers opers-list outargs1 outargs2 outfiles
-	  plusflag preserve-direction prods putl radcanp radpe rd*
+	  preserve-direction prods putl radcanp radpe rd*
 	  real-infinities realonlyratnum *refchkl* return-mode returns rulefcnl
 	  rulesw scanmapp sfindex sign-imag-errp simplimplus-problems
 	  *small-primes* specials sqrt3//2 state-pdl $stringdisp substp
