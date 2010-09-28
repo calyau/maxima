@@ -12,8 +12,7 @@
 
 (macsyma-module simp)
 
-(declare-top (special rulesw *inv* substp
-		      limitp plusflag
+(declare-top (special rulesw *inv* substp limitp
 		      prods negprods sums negsums
 		      $scalarmatrixp *nounl*
 		      $keepfloat $ratprint
@@ -1044,7 +1043,7 @@
 ;;;   valid Maxima expression the result has to be checked with the
 ;;;   function TESTP. This is done by the calling routine SIMPLUS.
 ;;;
-;;;   PLS checks the global flag PLUSFLAG, which is set in PLUSIN to T,
+;;;   PLS checks the global flag *PLUSFLAG*, which is set in PLUSIN to T,
 ;;;   if a mplus-expression is part of the result.
 ;;;
 ;;; Examples:
@@ -1062,7 +1061,7 @@
 ;;;
 ;;; Affected by;
 ;;;   The option variables $NUMER and $NEGDISTRIB and the global flag
-;;;   PLUSFLAG, which is set in the routine PLUSIN.
+;;;   *PLUSFLAG*, which is set in the routine PLUSIN.
 ;;;
 ;;; See also:
 ;;;   PLUSIN and ADDK which are called from PLS and SIMPLUS.
@@ -1074,6 +1073,9 @@
 ;;;   The new value of out is returned as a result by PLS.
 ;;;-----------------------------------------------------------------------------
 
+;; Set in PLUSIN to T to indicate a nested mplus expression.
+(defvar *plusflag* nil)
+
 ;; TESTP checks the result of PLS to get a valid Maxima mplus-expression.
 
 (defun testp (x)
@@ -1084,7 +1086,7 @@
         (t x)))
 
 (defun pls (x out)
-  (prog (fm plusflag)
+  (prog (fm *plusflag*)
      (if (mtimesp x) (setq x (testtneg x)))
      (when (and $numer (atom x) (eq x '$%e))
        ;; Replace $%e with its numerical value, when $numer ist TRUE
@@ -1123,10 +1125,10 @@
      (setq fm (plusin (car x) fm))
      (go start)
   end
-     (if (not plusflag) (return out))
-     (setq plusflag nil)   ; PLUSFLAG T handles e.g. a+b+3*(a+b)-2*(a+b)
+     (if (not *plusflag*) (return out))
+     (setq *plusflag* nil)   ; *PLUSFLAG* T handles e.g. a+b+3*(a+b)-2*(a+b)
   a  
-     ;; PLUSFLAG is set by PLUSIN to indicate that a mplus expression is
+     ;; *PLUSFLAG* is set by PLUSIN to indicate that a mplus expression is
      ;; part of the result. For this case go again through the terms of the
      ;; result and add any term of the mplus expression into the list out.
      (setq fm (cdr out))
@@ -1174,7 +1176,7 @@
 ;;; Notes:
 ;;;   The return value is used in PLS to go in parallel through the list of
 ;;;   terms, when adding a complete mplus-expression into the list of terms.
-;;;   This is triggered by the flag PLUSFLAG, which is set in PLUSIN, if
+;;;   This is triggered by the flag *PLUSFLAG*, which is set in PLUSIN, if
 ;;;   a mplus-expression is added to the result list.
 ;;;-----------------------------------------------------------------------------
 
@@ -1206,13 +1208,13 @@
      (setq fm (cdr fm))
      (go start)
   equ
-     ;; Call muln to get a simplified product.
-     (setq x1 (muln (cons (addk 1 w) x) t))
-     (if (or (zerop1 x1)
-             (onep1 x1))
-         (setq x1 (list* '(mtimes simp) x1 x))
-         (setq x1 (if (not (atom x1)) (testtneg x1) x1)))
-     (rplaca (cdr fm) x1)
+     (rplaca (cdr fm)
+             (if (equal w -1)
+                 (list* '(mtimes simp) 0 x)
+                 ;; Call muln to get a simplified product.
+                 (if (mtimesp (setq x1 (muln (cons (addk 1 w) x) t)))
+                     (testtneg x1)
+                     x1)))
   del
      (cond ((not (mtimesp (cadr fm)))
             (go check))
@@ -1234,22 +1236,18 @@
      (return (rplacd fm (cddr fm)))
   equt
      ;; Call muln to get a simplified product.
-     (setq x1 (muln (cons (addk (cond (flag (cadadr fm))
-                                      (t 1))
-                           w)
-                   x) t))
-     (if (or (zerop1 x1)
-             (onep1 x1))
-         (setq x1 (list* '(mtimes) x1 x))
-         (setq x1 (if (not (atom x1)) (testtneg x1) x1)))
-     (rplaca (cdr fm) x1)
-     (if (not (mtimesp x1)) (go check))
+     (setq x1 (muln (cons (addk w (if flag (cadadr fm) 1)) x) t))
+     (rplaca (cdr fm)
+             (if (zerop1 x1)
+                 (list* '(mtimes) x1 x)
+                 (if (mtimesp x1) (testtneg x1) x1)))
+     (if (not (mtimesp (cadr fm))) (go check))
      (when (and (onep (cadadr fm)) flag (null (cdddr (cadr fm))))
        ;; Do this simplification for an integer 1, not for 1.0 and 1.0b0
        (rplaca (cdr fm) (caddr (cadr fm))) (go check))
      (go del)
   check
-     (if (mplusp (cadr fm)) (setq plusflag t)) ; Found a nested mplus expression
+     (if (mplusp (cadr fm)) (setq *plusflag* t)) ; A nested mplus expression
      (return (cdr fm))))
 
 ;;;-----------------------------------------------------------------------------
