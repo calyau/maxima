@@ -715,7 +715,7 @@ factor(ratsimp(specint(%e^(-s*t)*(unit_step(t)
 ******************************************************************************/
 
 specint(%e^(-s*t)*abs(sin(k*t)),t);
-'specint(%i*sqrt(%e^(4*%i*k*t)-2*%e^(2*%i*k*t)+1)*%e^(-s*t-%i*k*t),t)/2;
+'specint(%e^-(s*t)*abs(%e^(2*%i*k*t)-1),t)/2$
 
 /*****************************************************************************
    Problem 92: A&S: 29.3.74 OK New
@@ -1409,7 +1409,7 @@ a/(s^2+a^2);
 */
 
 specint(%e^(-s*t)*(abs(sin(a*t))),t);
-'specint(%i*sqrt(%e^(4*%i*a*t)-2*%e^(2*%i*a*t)+1)*%e^(-s*t-%i*a*t),t)/2;
+'specint(%e^-(s*t)*abs(%e^(2*%i*a*t)-1),t)/2$
 
 /* Problem 179: No. 3 (OK noun form New)
    The result of EqWorld includes a product:

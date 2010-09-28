@@ -989,7 +989,7 @@ imagpart(sqrt(x+%i*y));
 /* --- Absolute value --- */
 
 abs(sqrt(x+%i*y));
-(x^2+y^2)^(1/4);
+abs(sqrt(%i*y+x))$
 
 /* --- Argument --- */
 

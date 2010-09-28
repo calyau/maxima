@@ -2385,7 +2385,7 @@ z-log(%e^(c*z)+1)/c;
 integrate(1/(1-%e^(c*z)),z),logexpand;
 z-log(%e^(c*z)-1)/c;
 
-/* ----- Involving (a+b*%e^(c*z))^⁻n ---------------------------------------- */
+/* ----- Involving (a+b*%e^(c*z))^(-n)---------------------------------------- */
 
 /* Problem 428: OK */
 integrate(1/(b*%e^(c*z)+a)^2,z),logexpand;

@@ -210,10 +210,10 @@ ratsubst(0,a,abs(%pi + a));
 /*-- CRE tests ---*/
 
 abs(rat(x) + 1);
-abs(x+1)$
+''(abs(rat(x)+1))$
 
 abs(rat(1));
-1$
+''(rat(1))$
 
 /*-- misc -----*/
 
