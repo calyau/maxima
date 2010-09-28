@@ -551,21 +551,25 @@ sin(y)*(10.0+6*cos(x)),
 ;;   name of a simplifying function
 ;; EXPR is a Maxima lambda expression
 ;; EXPR is a general Maxima expression
-
-(defun coerce-float-fun (expr &optional lvars)
+;;
+;; %COERCE-FLOAT-FUN is the main internal routine for this.
+;; COERCE-FLOAT-FUN is the user interface for creating a function that
+;; returns floats.  COERCE-BFLOAT-FUN is the same, except bfloats are
+;; returned.
+(defun %coerce-float-fun (float-fun expr &optional lvars)
   (cond ((and (consp expr) (functionp expr))
          (let ((args (if lvars (cdr lvars) (list (gensym)))))
-           (coerce-lisp-function-or-lisp-lambda args expr)))
+           (coerce-lisp-function-or-lisp-lambda args expr :float-fun float-fun)))
         ;; expr is a string which names an operator
         ;; (e.g. "!" "+" or a user-defined operator)
         ((and (stringp expr) (getopr0 expr))
          (let ((a (if lvars lvars `((mlist) ,(gensym)))))
-           (coerce-float-fun `(($apply) ,(getopr0 expr) ,a) a)))
+           (%coerce-float-fun float-fun `(($apply) ,(getopr0 expr) ,a) a)))
         ((and (symbolp expr) (not (member expr lvars)) (not ($constantp expr)))
          (cond
            ((fboundp expr)
             (let ((args (if lvars (cdr lvars) (list (gensym)))))
-              (coerce-lisp-function-or-lisp-lambda args expr)))
+              (coerce-lisp-function-or-lisp-lambda args expr :float-fun float-fun)))
 
            ;; expr is name of a Maxima function defined by := or
            ;; define
@@ -573,7 +577,7 @@ sin(y)*(10.0+6*cos(x)),
             (let*
                 ((mexpr (mget expr 'mexpr))
                  (args (cdr (second mexpr))))
-              (coerce-maxima-function-or-maxima-lambda args expr)))
+              (coerce-maxima-function-or-maxima-lambda args expr :float-fun float-fun)))
 
            ((or
              ;; expr is the name of a function defined by defmspec
@@ -589,96 +593,102 @@ sin(y)*(10.0+6*cos(x)),
              ;; form
              (get ($verbify expr) 'operators))
             (let ((a (if lvars lvars `((mlist) ,(gensym)))))
-              (coerce-float-fun `(($apply) ,expr ,a) a)))
+              (%coerce-float-fun float-fun `(($apply) ,expr ,a) a)))
            (t
             (merror (intl:gettext "COERCE-FLOAT-FUN: no such Lisp or Maxima function: ~M") expr))))
 
-    ((and (consp expr) (eq (caar expr) 'lambda))
-     (let ((args (cdr (second expr))))
-       (coerce-maxima-function-or-maxima-lambda args expr)))
+	((and (consp expr) (eq (caar expr) 'lambda))
+	 (let ((args (cdr (second expr))))
+	   (coerce-maxima-function-or-maxima-lambda args expr :float-fun float-fun)))
 
         (t
          (let* ((vars (or lvars ($sort ($listofvars expr))))
-            (subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
-            gensym-vars save-list-gensym subscripted-vars-save
-            subscripted-vars-mset subscripted-vars-restore)
+		(subscripted-vars ($sublist vars '((lambda) ((mlist) $x) ((mnot) (($atom) $x)))))
+		gensym-vars save-list-gensym subscripted-vars-save
+		subscripted-vars-mset subscripted-vars-restore)
 
-       ;; VARS and SUBSCRIPTED-VARS are Maxima lists.  Other lists are
-       ;; Lisp lists.
-       (when (cdr subscripted-vars)
-         (setq gensym-vars (mapcar #'(lambda (ign) (declare (ignore ign)) (gensym))
-                                   (cdr subscripted-vars)))
-         (mapcar #'(lambda (a b) (setq vars (subst b a vars :test 'equal)))
-                 (cdr subscripted-vars) gensym-vars)
+	   ;; VARS and SUBSCRIPTED-VARS are Maxima lists.  Other lists are
+	   ;; Lisp lists.
+	   (when (cdr subscripted-vars)
+	     (setq gensym-vars (mapcar #'(lambda (ign) (declare (ignore ign)) (gensym))
+				       (cdr subscripted-vars)))
+	     (mapcar #'(lambda (a b) (setq vars (subst b a vars :test 'equal)))
+		     (cdr subscripted-vars) gensym-vars)
 
-         ;; This stuff about saving and restoring array variables
-         ;; should go into MBINDING, and the lambda expression
-         ;; constructed below should call MBINDING.  (At present
-         ;; MBINDING barfs on array variables.)
-         (setq save-list-gensym (gensym))
-         (setq subscripted-vars-save
-               (mapcar #'(lambda (a) `(push (meval ',a) ,save-list-gensym))
-                       (cdr subscripted-vars)))
-         (setq subscripted-vars-mset
-               (mapcar #'(lambda (a b) `(mset ',a ,b))
-                       (cdr subscripted-vars) gensym-vars))
-         (setq subscripted-vars-restore
-               (mapcar #'(lambda (a) `(mset ',a (pop ,save-list-gensym)))
-                       (reverse (cdr subscripted-vars)))))
+	     ;; This stuff about saving and restoring array variables
+	     ;; should go into MBINDING, and the lambda expression
+	     ;; constructed below should call MBINDING.  (At present
+	     ;; MBINDING barfs on array variables.)
+	     (setq save-list-gensym (gensym))
+	     (setq subscripted-vars-save
+		   (mapcar #'(lambda (a) `(push (meval ',a) ,save-list-gensym))
+			   (cdr subscripted-vars)))
+	     (setq subscripted-vars-mset
+		   (mapcar #'(lambda (a b) `(mset ',a ,b))
+			   (cdr subscripted-vars) gensym-vars))
+	     (setq subscripted-vars-restore
+		   (mapcar #'(lambda (a) `(mset ',a (pop ,save-list-gensym)))
+			   (reverse (cdr subscripted-vars)))))
 
-       (coerce
-        `(lambda ,(cdr vars)
-           (declare (special ,@(cdr vars) errorsw))
+	   (coerce
+	    `(lambda ,(cdr vars)
+	       (declare (special ,@(cdr vars) errorsw))
 
-           ;; Nothing interpolated here when there are no subscripted
-           ;; variables.
-           ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
+	       ;; Nothing interpolated here when there are no subscripted
+	       ;; variables.
+	       ,@(if save-list-gensym `((declare (special ,save-list-gensym))))
 
-           ;; Nothing interpolated here when there are no subscripted
-           ;; variables.
-           ,@(if (cdr subscripted-vars)
-                 `((progn (setq ,save-list-gensym nil)
-                          ,@(append subscripted-vars-save subscripted-vars-mset))))
+	       ;; Nothing interpolated here when there are no subscripted
+	       ;; variables.
+	       ,@(if (cdr subscripted-vars)
+		     `((progn (setq ,save-list-gensym nil)
+			      ,@(append subscripted-vars-save subscripted-vars-mset))))
 
-           (let (($ratprint nil) ($numer t) (*nounsflag* t)
-                 (errorsw t)
-                 (errcatch t))
-             (declare (special errcatch))
-             ;; Catch any errors from evaluating the
-             ;; function.  We're assuming that if an error
-             ;; is caught, the result is not a number.  We
-             ;; also assume that for such errors, it's
-             ;; because the function is not defined there,
-             ;; not because of some other maxima error.
-             ;;
-             ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
-             (let ((result
-                    #-gcl
-                     (handler-case 
-                         (catch 'errorsw
-                           ($float (maybe-realpart (meval* ',expr))))
-                       ;; Should we just catch all errors here?  It is
-                       ;; rather nice to only catch errors we care
-                       ;; about and let other errors fall through so
-                       ;; that we don't pretend to do something when
-                       ;; it is better to let the error through.
-                       (arithmetic-error () t)
-                       (maxima-$error () t))
-                     #+gcl
-                     (handler-case 
-                         (catch 'errorsw
-                           ($float (maybe-realpart (meval* ',expr))))
-                       (cl::error () t))
-                     ))
+	       (let (($ratprint nil) ($numer t) (*nounsflag* t)
+		     (errorsw t)
+		     (errcatch t))
+		 (declare (special errcatch))
+		 ;; Catch any errors from evaluating the
+		 ;; function.  We're assuming that if an error
+		 ;; is caught, the result is not a number.  We
+		 ;; also assume that for such errors, it's
+		 ;; because the function is not defined there,
+		 ;; not because of some other maxima error.
+		 ;;
+		 ;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
+		 (let ((result
+			#-gcl
+			 (handler-case 
+			     (catch 'errorsw
+			       ($float (maybe-realpart (meval* ',expr))))
+			   ;; Should we just catch all errors here?  It is
+			   ;; rather nice to only catch errors we care
+			   ;; about and let other errors fall through so
+			   ;; that we don't pretend to do something when
+			   ;; it is better to let the error through.
+			   (arithmetic-error () t)
+			   (maxima-$error () t))
+			 #+gcl
+			 (handler-case 
+			     (catch 'errorsw
+			       (,float-fun (maybe-realpart (meval* ',expr))))
+			   (cl::error () t))
+			 ))
 
-               ;; Nothing interpolated here when there are no
-               ;; subscripted variables.
-               ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
+		   ;; Nothing interpolated here when there are no
+		   ;; subscripted variables.
+		   ,@(if (cdr subscripted-vars) `((progn ,@subscripted-vars-restore)))
 
-               result)))
-        'function)))))
+		   result)))
+	    'function)))))
 
-(defun coerce-maxima-function-or-maxima-lambda (args expr)
+(defun coerce-float-fun (expr &optional lvars)
+  (%coerce-float-fun '$float expr lvars))
+
+(defun coerce-bfloat-fun (expr &optional lvars)
+  (%coerce-float-fun '$bfloat expr lvars))
+
+(defun coerce-maxima-function-or-maxima-lambda (args expr &key (float-fun '$float))
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
@@ -689,12 +699,12 @@ sin(y)*(10.0+6*cos(x)),
            ;; Just always try to convert the result to a float, which
            ;; handles things like $%pi.  See also BUG #2880115
            ;; http://sourceforge.net/tracker/?func=detail&atid=104933&aid=2880115&group_id=4933
-           ($float result)))
+           (,float-fun result)))
       'function)))
 
 ;; Same as above, but call APPLY instead of MAPPLY.
 
-(defun coerce-lisp-function-or-lisp-lambda (args expr)
+(defun coerce-lisp-function-or-lisp-lambda (args expr &key (float-fun '$float))
   (let ((gensym-args (loop for x in args collect (gensym))))
     (coerce
       `(lambda ,gensym-args (declare (special ,@gensym-args))
@@ -704,7 +714,7 @@ sin(y)*(10.0+6*cos(x)),
                 (result (maybe-realpart (apply ',expr (list ,@gensym-args)))))
            ;; Always use $float.  See comment for
            ;; coerce-maxima-function-ormaxima-lambda above.
-           ($float result)))
+           (,float-fun result)))
       'function)))
 
 (defmacro zval (points verts i) `(aref ,points (+ 2 (* 3 (aref ,verts ,i)))))

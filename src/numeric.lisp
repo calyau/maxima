@@ -146,7 +146,10 @@
   (maxima::add (real-value z)
 	       (maxima::mul 'maxima::$%i
 			    (imag-value z))))
-  
+
+(defmethod maxima::to ((z t))
+  z)
+
 ;;; REALP
 
 ;; GCL doesn't have the REAL class!  But since a real is a rational or
