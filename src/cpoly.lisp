@@ -37,11 +37,6 @@
 (defmvar $polyfactor nil
   "When T factor the polynomial over the real or complex numbers.")
 
-#+clisp
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (ext:without-package-lock ()
-    (setq sys::*inhibit-floating-point-underflow* t)))
-
 (defmfun $allroots (expr)
   (prog (degree *nn* var res $partswitch $keepfloat $demoivre $listconstvars
 	 $algebraic complex $ratfac den expr1)

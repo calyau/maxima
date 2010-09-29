@@ -326,6 +326,10 @@
   ;; long-floats.
   #+nil
   (setf (ext:long-float-digits) 128)
+
+  ;; We want underflows not to signal errors.
+  (ext:without-package-lock ()
+    (setq sys::*inhibit-floating-point-underflow* t))
   )
 
 ;; Make the maximum exponent larger for CMUCL.  Without this, cmucl
