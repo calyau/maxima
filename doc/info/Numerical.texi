@@ -444,8 +444,10 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 @end deffn
 
-@deffn {Function} find_root (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
+@deffn {Function} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Function} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}]
+@deffnx {Function} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Function} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}]
 @deffnx {Option variable} find_root_error
 @deffnx {Option variable} find_root_abs
 @deffnx {Option variable} find_root_rel
@@ -464,12 +466,30 @@ or one of the roots if there is more than one.
 If the function in question appears to be smooth enough,
 @code{find_root} applies linear interpolation instead.
 
-The accuracy of @code{find_root} is governed by @code{find_root_abs} and @code{find_root_rel}.
-@code{find_root} stops when the function in question
-evaluates to something less than or equal to @code{find_root_abs},
-or if successive approximants @var{x_0}, @var{x_1} differ by no more than
-@code{find_root_rel * max(abs(x_0), abs(x_1))}.
-The default values of @code{find_root_abs} and @code{find_root_rel} are both zero.
+@code{bf_find_root} is a bigfloat version of @code{find_root}.  The
+function is computed using bigfloat arithmetic and a bigfloat result
+is returned.  Otherwise, @code{bf_find_root} is identical to
+@code{find_root}, and the following description is equally applicable
+to @code{bf_find_root}. 
+
+The accuracy of @code{find_root} is governed by @code{abserr} and
+@code{relerr}, which are optional keyword arguments to
+@code{find_root}.  These keyword arguments take the form
+@code{key=val}.  The keyword arguments are
+
+@table @var
+@item abserr
+Desired absolute error of function value at root.  Default is
+@code{find_root_abs}. 
+@item relerr
+Desired relative error of root.  Default is @code{find_root_rel}.
+@end table
+
+@code{find_root} stops when the function in question evaluates to
+something less than or equal to @code{abserr}, or if successive
+approximants @var{x_0}, @var{x_1} differ by no more than @code{relerr
+* max(abs(x_0), abs(x_1))}.  The default values of
+@code{find_root_abs} and @code{find_root_rel} are both zero.
 
 @code{find_root} expects the function in question to have a different sign at the endpoints
 of the search interval.
@@ -505,6 +525,10 @@ Examples:
 @c find_root (exp(x) = y, x, 0, 100);
 @c find_root (exp(x) = y, x, 0, 100), y = 10;
 @c log (10.0);
+@c fpprec:32;
+@c 32;
+@c bf_find_root (exp(x) = y, x, 0, 100), y = 10;
+@c log(10b0);
 @c ===end===
 @example
 (%i1) f(x) := sin(x) - x/2;
@@ -526,6 +550,12 @@ Examples:
 (%o7)                   2.302585092994046
 (%i8) log (10.0);
 (%o8)                   2.302585092994046
+(%i9) fpprec:32;
+(%o9)                           32
+(%i10) bf_find_root (exp(x) = y, x, 0, 100), y = 10;
+(%o10)                  2.3025850929940456840179914546844b0
+(%i11) log(10b0);
+(%o11)                  2.3025850929940456840179914546844b0
 @end example
 
 @opencatbox

@@ -21,10 +21,6 @@
   "Desired absolute error in the root found by find_root")
 (defmvar $find_root_rel 0.0
   "Desired relative error in the root found by find_root")
-(defmvar $bf_find_root_abs (bcons (intofp 0))
-  "Desired absolute error in the root found by bf_find_root")
-(defmvar $bf_find_root_rel (bcons (intofp 0))
-  "Desired relative error in the root found by bf_find_root")
 (defmvar $find_root_error t
   "If true, find_root and bf_find_root prints an error message.
   Otherwise the value of find_root_error is returned.")
@@ -43,7 +39,9 @@ Perhaps you meant to enter `~a'.~%"
 ;; so we don't have to write BIGFLOAT::foo for all of the arithmetic
 ;; operations.
 
-(defun find-root-subr (f left right abserr relerr)
+(defun find-root-subr (f left right
+		       &key (abserr maxima::$find_root_abs)
+		            (relerr maxima::$find_root_rel))
   (flet ((convert (s)
 	   ;; Try to convert to a BIGFLOAT type.  If that fails, just
 	   ;; return the argument.  Set the flags errcatch and erromsg
@@ -121,46 +119,60 @@ Perhaps you meant to enter `~a'.~%"
 
 (in-package "MAXIMA")
 (defun %find-root (name fun-or-expr args)
-  (multiple-value-bind (abserr relerr coerce-float fl)
-      ;; The name tells us what error values to use, how to coerce the
-      ;; function, and what function to use to convert to the desired
-      ;; float type.
-      (ecase name
-	($find_root
-	 (values $find_root_abs $find_root_rel 'coerce-float-fun '$float))
-	($bf_find_root
-	 (values $bf_find_root_abs $bf_find_root_rel 'coerce-bfloat-fun '$bfloat)))
-    (case (length args)
-      (2
-       ;; function case: f, lo, hi
-       (multiple-value-bind (result left right)
-	   (bigfloat::find-root-subr (funcall coerce-float fun-or-expr)
-				     (funcall fl (first args))
-				     (funcall fl (second args))
-				     abserr
-				     relerr)
-	 (if (bigfloat:numberp result)
-	     (to result)
-	     (if (eq result '$find_root_error)
-		 $find_root_error
-		 `((,name) ,fun-or-expr ,(to left) ,(to right))))))
-      (3
-       ;; expr case: expr, var, lo, hi
-       (multiple-value-bind (result left right)
-	   (bigfloat::find-root-subr (funcall coerce-float (sub ($lhs fun-or-expr) ($rhs fun-or-expr))
-					      `((mlist) ,(first args)))
-				     (funcall fl (second args))
-				     (funcall fl (third args))
-				     abserr
-				     relerr)
-	 (if (bigfloat:numberp result)
-	     (to result)
-	     (if (eq result '$find_root_error)
-		 $find_root_error
-		 `((,name) ,fun-or-expr ,(first args) ,(to left) ,(to right))))))
-      (t
-       ;; wrong number of args
-       (wna-err name)))))
+  ;; Extract the keyword arguments from args, if any.
+  (let (non-keyword keywords)
+    (loop for arg in args
+       do (if (and (listp arg)
+		   (eq (caar arg) 'mequal))
+	      (push arg keywords)
+	      (push arg non-keyword)))
+    (setf non-keyword (nreverse non-keyword))
+    (setf keywords (nreverse keywords))
+    (when keywords
+      (setf keywords (lispify-maxima-keyword-options keywords '($abserr $relerr))))
+    #+(or)
+    (progn
+      (format t "keyword args = ~S~%" keywords)
+      (format t "non-keyword args = ~S~%" non-keyword))
+    (multiple-value-bind (coerce-float fl)
+	;; The name tells us what error values to use, how to coerce the
+	;; function, and what function to use to convert to the desired
+	;; float type.
+	(ecase name
+	  ($find_root
+	   (values 'coerce-float-fun '$float))
+	  ($bf_find_root
+	   (values 'coerce-bfloat-fun '$bfloat)))
+      (case (length non-keyword)
+	(2
+	 ;; function case: f, lo, hi
+	 (multiple-value-bind (result left right)
+	     (apply 'bigfloat::find-root-subr (funcall coerce-float fun-or-expr)
+		    (funcall fl (first non-keyword))
+		    (funcall fl (second non-keyword))
+		    keywords)
+	   (if (bigfloat:numberp result)
+	       (to result)
+	       (if (eq result '$find_root_error)
+		   $find_root_error
+		   `((,name) ,fun-or-expr ,(to left) ,(to right))))))
+	(3
+	 ;; expr case: expr, var, lo, hi
+	 (multiple-value-bind (result left right)
+	     (apply 'bigfloat::find-root-subr
+		    (funcall coerce-float (sub ($lhs fun-or-expr) ($rhs fun-or-expr))
+			     `((mlist) ,(first non-keyword)))
+		    (funcall fl (second non-keyword))
+		    (funcall fl (third non-keyword))
+		    keywords)
+	   (if (bigfloat:numberp result)
+	       (to result)
+	       (if (eq result '$find_root_error)
+		   $find_root_error
+		   `((,name) ,fun-or-expr ,(first non-keyword) ,(to left) ,(to right))))))
+	(t
+	 ;; wrong number of args
+	 (wna-err name))))))
 
 (defun $find_root (fun-or-expr &rest args)
   (%find-root '$find_root fun-or-expr args))
