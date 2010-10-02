@@ -247,7 +247,7 @@ ModeMatrix(a,F):= block([i,j,k,msize,lsize,firstflg,multiplist,mindeg,ev,xv,tmpv
       return(solut2)))$
 
 
-ghelp(f,labmda,k):=subst(labmda,z,diff(f(z),z,k)/k!)$
+ghelp(f,labmda,k):=subst(labmda,'z,diff(f('z),'z,k)/k!)$
 
 /* f must be analytic function, a is matrix   */
 
