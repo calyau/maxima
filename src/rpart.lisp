@@ -419,8 +419,11 @@
 	  ((and (member (caar l) '(%atan %csc %sec %cot %csch %sech %coth) :test #'eq)
 		(=0 (cdr (risplit (cadr l)))))
 	   (cons l 0))
-	  ((and (eq (caar l) '$atan2) (=0 (cdr (risplit (div (cadr l) (caddr l))))))
-	   (cons l 0))
+          ((and (eq (caar l) '$atan2)
+                (not (zerop1 (caddr l)))
+                (=0 (cdr (risplit (div (cadr l) (caddr l))))))
+           ;; Case atan2(y,x) and y/x a real expression.
+           (cons l 0))
 	  ((or (arcp (caar l)) (eq (caar l) '$atan2))
 	   (let ((ans (risplit (let (($logarc t))
 				 (resimplify l)))))
