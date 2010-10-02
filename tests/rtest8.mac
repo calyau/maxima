@@ -244,9 +244,24 @@ find_root (x^a - 5, x, 0.0, 10.0);
 find_root (x^3 - 5, x, a, b);
 find_root (x^3 - 5, x, a, b);
 
+quad_closeto(qest,qtru,qtol) :=
+  map(lambda([est, tru, tol],
+             block([numer:true, abse],
+                   abse:abs(est-tru),
+                   if (abse <= tol) then true else abse)),
+      qest, qtru, qtol);
+quad_closeto(qest,qtru,qtol) :=
+  map(lambda([est, tru, tol],
+             block([numer:true, abse],
+                   abse:abs(est-tru),
+                   if (abse <= tol) then true else abse)),
+      qest, qtru, qtol);
+
 /* verify that find_root nested inside another function call is OK */
-quad_qags (find_root (x^a - 5, x, 0, 10), a, 1, 3);
-''(quad_qags (5^(1/a), a, 1, 3));
+quad_closeto(quad_qags (find_root (x^a - 5, x, 0, 10), a, 1, 3),
+             quad_qags (5^(1/a), a, 1, 3),
+             [1d-15, 5d-15, 0, 0]);
+[true,true,true,true];
 
 find_root (find_root (a^2 = x, a, 0, x) = 7, x, 0, 100); /* inner find_root returns sqrt(x) */
 49.0;
@@ -280,8 +295,10 @@ find_root (x^(2 * z) - 5, x, 0.0, 200.0);
 ''(at (expr, z=0.25));
 25.0;
 
-quad_qags (g (z), z, 1, 3);
-''(quad_qags (5^(1/z), z, 1, 3));
+quad_closeto(quad_qags (g (z), z, 1, 3),
+             quad_qags (5^(1/z), z, 1, 3),
+             [1d-15, 5d-15, 0, 0]);
+[true,true,true,true];
 
 /* adapted from the reference manual */
 
@@ -547,8 +564,10 @@ bf_find_root (x^3 - 5, x, a, b);
 bf_find_root (x^3 - 5, x, a, b);
 
 /* verify that bf_find_root nested inside another function call is OK */
-quad_qags (bf_find_root (x^a - 5, x, 0, 10), a, 1, 3);
-''(quad_qags (5^(1/a), a, 1, 3));
+quad_closeto(quad_qags (bf_find_root (x^a - 5, x, 0, 10), a, 1, 3),
+             quad_qags (5^(1/a), a, 1, 3),
+             [1d-15, 5d-15, 0, 0]);
+[true,true,true,true];
 
 bf_find_root (bf_find_root (a^2 = x, a, 0, x) = 7, x, 0, 100); /* inner bf_find_root returns sqrt(x) */
 49b0;
@@ -582,8 +601,11 @@ bf_find_root (x^(2 * z) - 5, x, 0b0, 200b0);
 ''(at (expr, z=0.25));
 25b0;
 
-quad_qags (g (z), z, 1, 3);
-''(quad_qags (5^(1/z), z, 1, 3));
+quad_closeto(quad_qags (g (z), z, 1, 3),
+             quad_qags (5^(1/z), z, 1, 3),
+             [1d-15, 5d-15, 0, 0]);
+[true,true,true,true];
+             
 
 /* adapted from the reference manual */
 
