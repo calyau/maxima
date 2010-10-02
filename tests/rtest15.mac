@@ -396,7 +396,7 @@ fpred(xyzzy);
 unknown$
 
 /* Bug 1281737 */
-limit(atan(x)/(1/exp(1)-exp(-(1+x)^2)),x,inf,'plus);
+limit(atan(x)/(1/exp(1)-exp(-(1+x)^2)),x,inf);
 %e*%pi/2;
 
 /* Bug 1363411 */
