@@ -1224,8 +1224,8 @@
             (return (cdr fm)))
            ((not (zerop1 (cadadr fm)))
             (return (cdr fm)))
+           ;; Handle the multiplication with a zero.
            ((and (or (not $listarith) (not $doallmxops))
-                 (zerop1 (cadadr fm))
                  (mxorlistp (caddr (cadr fm))))
             (return (rplacd fm 
                             (cons (constmx 0 (caddr (cadr fm))) (cddr fm))))))
