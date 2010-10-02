@@ -738,9 +738,11 @@
 
 (defun genatan (num den)
   (let ((arg (take '($atan2) num den)))
-    (if (or generate-atan2 (free arg '$atan2))
-	arg
-	(take '(%atan) (m// num den)))))
+    (if (or generate-atan2
+            (zerop1 den)
+            (free arg '$atan2))
+        arg
+        (take '(%atan) (div num den)))))
 
 (defun absarg-mabs (l)
   (cond ((eq (csign l) t)
