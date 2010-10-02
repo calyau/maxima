@@ -355,11 +355,11 @@ It appears in LIMIT and DEFINT.......")
 	(t e)))
 
 ;; returns 1, 0, -1
-;; or nil if sign unknown
+;; or nil if sign unknown or complex
 (defun getsignl (z)
   (let ((z (ridofab z)))
     (if (not (free z var)) (setq z ($limit z var val)))
-    (let ((sign ($sign z)))
+    (let ((sign ($csign z)))
       (cond ((eq sign '$pos) 1)
 	    ((eq sign '$neg) -1)
 	    ((eq sign '$zero) 0)))))
