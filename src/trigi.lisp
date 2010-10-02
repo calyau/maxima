@@ -604,16 +604,18 @@
      ;; return their quotient.
      ((and (zerop1 zl-rem)
 	   (setq sin-of-coeff-pi
-		 (%piargs coeff nil))
-	   (setq cos-of-coeff-pi
-		 (%piargs (cons (car coeff)
-				(rplus 1//2 (cdr coeff))) nil)))
-      (unless (zerop1 cos-of-coeff-pi)
-	(div sin-of-coeff-pi cos-of-coeff-pi)))
+		 (%piargs coeff nil)))
+      (setq cos-of-coeff-pi
+	    (%piargs (cons (car coeff)
+			   (rplus 1//2 (cdr coeff))) nil))
+      (cond ((zerop1 sin-of-coeff-pi) 
+	     0)		;; tan(integer*%pi)
+	    ((zerop1 cos-of-coeff-pi)
+	     (merror "~M isn't in the domain of tan" x))
+	    (cos-of-coeff-pi
+	     (div sin-of-coeff-pi cos-of-coeff-pi))))
        
-     ;; I _think_ (car coeff)=1 => the coefficient of %pi is an
-     ;; integer, but evod can't work out whether it's even or odd. In
-     ;; which case we can't do anything :( Return nil.
+     ;; Need period of 2*%pi to continue
      ((not (mevenp (car coeff))) nil)
  
      ;; This expression sets x to the coeff of %pi (mod 2) as a side
@@ -767,6 +769,9 @@
 	((or (alike1 '((rat) 5 4) x) (alike1 '((rat) 7 4) x)) (mul -1//2 (power 2 1//2)))
 	((alike1 '((rat) 3 2) x) -1)))
 
+;; identifies integer part of form
+;; returns (X . Y) if form can be written as X*some_integer + Y
+;; returns nil otherwise
 (defun linearize (form)
   (cond ((integerp form) (cons 0 form))
 	((numberp form) nil)

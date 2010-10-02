@@ -332,6 +332,10 @@ tan(%pi*x+%pi/2),trigexpand;
 tan(n*2*%pi);
 0;
 
+/* tan(%pi*integer) simplification - ID: 3058290 */
+tan(n*%pi);
+0;
+
 (kill(n,declare),0);
 0$
 
