@@ -332,6 +332,13 @@
     (setq sys::*inhibit-floating-point-underflow* t))
   )
 
+#+abcl
+(progn
+  ;; We want underflows not to signal errors
+  (when (fboundp (find-symbol "FLOAT-UNDERFLOW-MODE" "SYS"))
+    (funcall (find-symbol "FLOAT-UNDERFLOW-MODE" "SYS") nil))
+  )
+  
 ;; Make the maximum exponent larger for CMUCL.  Without this, cmucl
 ;; will generate a continuable error when raising an integer to a
 ;; power greater than this.
