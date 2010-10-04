@@ -2851,8 +2851,8 @@
 	     (tlist-mapc d (pop-pw d))
 	     (if zerocheck?
 		 (tay-depth-err)
-		 (progn
-		   (zero-warn exp)
+	         (progn
+		   (unless silent-taylor-flag (zero-warn exp))
 		   (rczero))))
 	  (declare (fixnum i))
 	  (cond ((and (rczerop (setq psexp (if zerocheck?
