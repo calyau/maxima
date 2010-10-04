@@ -215,7 +215,8 @@ It appears in LIMIT and DEFINT.......")
 		       (or (real-epsilonp val)		;; if direction of limit specified
 			   (real-infinityp val)))
 		  (setq ans (catch 'taylor-catch
-			      (let ((silent-taylor-flag t))
+		              (let ((silent-taylor-flag t))
+		                (declare (special silent-taylor-flag))       
 				(gruntz1 exp var val)))))
 
 	      ;; try taylor series expansion if simple limit didn't work
@@ -3158,6 +3159,7 @@ It appears in LIMIT and DEFINT.......")
     (setq ans
           (catch 'taylor-catch
             (let ((silent-taylor-flag t))
+              (declare (special silent-taylor-flag))
               (gruntz1 expr var val dir))))
      (if (or (null ans) (eq ans t))
          (if dir
