@@ -280,8 +280,11 @@
   ;; necessary or desired, but it fixes bug 1504505.  It would be
   ;; better to fix $taylor, but that seems much harder.
   (let ((pole ($ratsimp ($rectform pole))))
-    (setq e (ratdisrep ($taylor e var pole
-				0 ;; things like residue(s/(s^2-a^2),s,a) fails if use -1
-				;;-1
-				)))
-    (coeff e (m^ (m+ (m* -1 pole) var) -1) 1)))
+    ;; Call taylor with silent-taylor-flag t and catch an error.
+    (if (setq e (catch 'taylor-catch
+                  (let ((silent-taylor-flag t))
+                    (declare (special silent-taylor-flag))
+                    ;; Things like residue(s/(s^2-a^2),s,a) fails if use -1.
+                    ($taylor e var pole 0))))
+        (coeff (ratdisrep e) (m^ (m+ (m* -1 pole) var) -1) 1)
+        (merror (intl:gettext "residue: taylor failed.")))))
