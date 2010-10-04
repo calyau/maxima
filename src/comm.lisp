@@ -1185,7 +1185,7 @@
 		  ;; float(log(int)).  First try to compute (log
 		  ;; (float n)).  If that works, we're done.
 		  ;; Otherwise we need to do more.  
-		  (to (or #-(or gcl ecl abcl) (ignore-errors (log (float n)))
+		  (to (or #-(or gcl ecl) (ignore-errors (log (float n)))
 			  (let ((m (integer-length n)))
 			    ;; Write n as (n/2^m)*2^m where m is the number of
 			    ;; bits in n.  Then log(n) = log(2^m) + log(n/2^m).
@@ -1196,7 +1196,7 @@
 		 (($ratnump n)
 		  ;; float(log(n/m)) where n and m are integers.  Try computing
 		  ;; it first.  If it fails, compute as log(n) - log(m).
-		  (let ((try #-(or gcl ecl abcl)
+		  (let ((try #-(or gcl ecl)
 			     (ignore-errors (log (fpcofrat n)))))
 		    (if try
 			(to try)
@@ -1206,7 +1206,7 @@
 		  ;; float(log(n+m*%i)).
 		  (let ((re ($realpart n))
 			(im ($imagpart n)))
-		    (to (or #-(or gcl ecl abcl)
+		    (to (or #-(or gcl ecl)
 			    (ignore-errors (log (complex (float re)
 							 (float im))))
 			    (let* ((size (max (integer-length re)
