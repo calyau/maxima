@@ -144,6 +144,49 @@ the constant terms in each equation (i.e., those terms not dependent upon
 @closecatbox
 @end deffn
 
+@c --- 04.10.2010 --------------------------------------------------------------
+@deffn  {Function} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_m}], [@var{y_1},@var{y_2}, ..., @var{y_n}])
+@deffnx {Function} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_n}])
+
+Returns a @code{n} by @var{m} Cauchy matrix with the elements @var{a[i,j]} 
+= 1/(@var{x_i}+@var{y_i}). The second argument of @code{cauchy_matrix} is 
+optional. For this case the elements of the Cauchy matrix are  
+@var{a[i,j]} = 1/(@var{x_i}+@var{x_j}).
+
+Remark: In the literature the Cauchy matrix can be found defined in two forms. 
+A second definition is @var{a[i,j]} = 1/(@var{x_i}-@var{y_i}).
+
+Examples:
+
+@c === beg ===
+@c cauchy_matrix([x1,x2],[y1,y2]);
+@c cauchy_matrix([x1,x2]);
+@c === end ===
+@example
+(%i1) cauchy_matrix([x1,x2],[y1,y2]);
+                      [    1        1    ]
+                      [ -------  ------- ]
+                      [ y1 + x1  y2 + x1 ]
+(%o1)                 [                  ]
+                      [    1        1    ]
+                      [ -------  ------- ]
+                      [ y1 + x2  y2 + x2 ]
+
+(%i2) cauchy_matrix([x1,x2]);
+                      [   1         1    ]
+                      [  ----    ------- ]
+                      [  2 x1    x2 + x1 ]
+(%o2)                 [                  ]
+                      [    1       1     ]
+                      [ -------   ----   ]
+                      [ x2 + x1   2 x2   ]
+@end example
+
+@opencatbox
+@category{Matrices}
+@closecatbox
+@end deffn
+
 @deffn {Function} charpoly (@var{M}, @var{x})
 Returns the characteristic polynomial for the matrix @var{M}
 with respect to variable @var{x}.  That is,
