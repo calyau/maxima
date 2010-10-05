@@ -129,7 +129,7 @@
 
 (defmethod maxima::to ((z cl:rational))
   (if (typep z 'ratio)
-      (maxima::div (numerator z) (denominator z))
+      (list '(maxima::rat maxima::simp) (numerator z) (denominator z))
       z))
 
 (defmethod maxima::to ((z cl:complex))
