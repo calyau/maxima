@@ -660,7 +660,7 @@ sin(y)*(10.0+6*cos(x)),
 			#-gcl
 			 (handler-case 
 			     (catch 'errorsw
-			       ($float (maybe-realpart (meval* ',expr))))
+			       (,float-fun (maybe-realpart (meval* ',expr))))
 			   ;; Should we just catch all errors here?  It is
 			   ;; rather nice to only catch errors we care
 			   ;; about and let other errors fall through so
