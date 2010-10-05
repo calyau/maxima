@@ -1765,3 +1765,8 @@ diff(a*b,t);
 a*'diff(b,x,1)*'diff(x,t,1)+'diff(a,x,1)*b*'diff(x,t,1);
 remove([a,b,x],dependency);
 done;
+
+/* Bug report ID: 3080397 - laplace(unit_step(-t),t,s) generates an error.
+ */
+laplace(unit_step(-t),t,s);
+0;

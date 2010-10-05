@@ -545,7 +545,10 @@
                ;; errset catches an error and returns nil.
                (let ((errcatch t) ($errormsg nil))
                  (errset ($defint mult var 0 '$inf))))))
-     (and tryint (not (eq (caaar tryint) '%integrate))  (return (car tryint)))
+     (and tryint (not (eq (and (listp (car tryint))
+			       (caaar tryint))
+			  '%integrate))
+	  (return (car tryint)))
      skip (return (list '(%laplace simp) fun var parm))))
 
 
