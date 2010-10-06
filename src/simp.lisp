@@ -1409,7 +1409,7 @@
   (declare (ignore y))
   (oneargcheck e)
   (let ((sgn)
-	(x (simplifya (second e) z)))
+	(x (simpcheck (second e) z)))
     
     (cond ((complex-number-p x #'(lambda (s) (or (floatp s) ($bfloatp s)))) 
 	   (maxima::to (bigfloat::abs (bigfloat:to x))))
@@ -1467,9 +1467,9 @@
 		 ((and (mexptp x) ($featurep (caddr x) '$integer))
 		  (power (take '(mabs) (cadr x)) (caddr x)))
 		 		  
-		 ;; Reflection rule: abs(-x) --> abs(x); here the expression x can be in CRE form.
-		 ((mminusp x) (take '(mabs) (mul -1 x)))
-
+		 ;; Reflection rule: abs(-x) --> abs(x)
+		 ((great (neg x) x) (take '(mabs) (neg x)))
+	
 		 ;; nounform return
 		 (t (eqtest (list '(mabs) x) e)))))))
 
@@ -1909,26 +1909,36 @@
 	((mtimesp x) (if (mplusp (cadr x)) 1 (signum1 (cadr x))))
 	(t 1)))
 
-(defmfun simpsignum (x y z) 
-  (oneargcheck x)
-  (setq y (simpcheck (cadr x) z))
-  (setq z ($csign y))
-  ;; When $csign thinks y is complex, let it be.
-  (cond ((memq z '($complex $imaginary)) (eqtest (list '(%signum) y) x))
-	(t 
-	 ;; positive * x --> x and negative * x --> -1 * x.
-	 (if (mtimesp y)
-	     (setq y (muln (mapcar #'(lambda (s) (let ((sgn (csign s)))
-						   (cond ((eq sgn '$neg) -1)
-							 ((eq sgn '$pos) 1)
-							 (t s)))) (margs y)) t)))
+(defprop %signum (mlist $matrix mequal) distribute_over)
 
-	 (cond ((and (not ($mapatom y)) (eq (mop y) '%signum)) y) ;; signum(signum(x)) --> signum(x)
-	       ((eq z '$pos) 1) 
-	       ((eq z '$neg) -1) 
-	       ((eq z '$zero) 0) 
-	       ((great (neg y) y) (neg (take '(%signum) (neg y)))) ;; signum(x) --> -signum(-x).
-	       (t (eqtest (list '(%signum) y) x))))))
+(defmfun simpsignum (e y z)
+  (declare (ignore y))
+  (oneargcheck e)
+  (let ((x (simpcheck (second e) z)) (sgn))
+    
+    (cond ((complex-number-p x #'mnump)
+		    (if (complex-number-p x #'$ratnump) ;; nonfloat complex
+		        (if (zerop1 x) 0 ($rectform (div x ($cabs x))))
+		      (maxima::to (bigfloat::signum (bigfloat::to x)))))
+		   
+	  ;; idempotent: signum(signum(z)) = signum(z).
+	  ((and (consp x) (consp (car x)) (eq '%signum (mop x))) x)
+		   
+	  (t
+	   (setq sgn ($csign x))
+	   (cond ((eq sgn '$neg) -1)
+		 ((eq sgn '$zero) 0)
+		 ((eq sgn '$pos) 1)
+
+		 ;; multiplicative: signum(ab) = signum(a) * signum(b).
+		 ((mtimesp x)
+		  (muln (mapcar #'(lambda (s) (take '(%signum) s)) (margs x)) t))
+
+		 ;; Reflection rule: signum(-x) --> -signum(x).
+		 ((great (neg x) x) (neg (take '(%signum) (neg x))))
+	
+		 ;; nounform return
+		 (t (eqtest (list '(%signum) x) e)))))))
 
 (defmfun exptrl (r1 r2)
   (cond ((equal r2 1) r1)

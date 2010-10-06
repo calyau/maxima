@@ -108,8 +108,7 @@ ratsimp(integrate(unit_step(x) + cos(x^2) * x,x));
 integrate(unit_step(x^2-1),x);
 ((x/2-1/2)*signum(x-1)-1)*signum(x+1)+x/2$
 
-expand(apply_signum_mult_id(convert_to_signum(simp_assuming(diff(%,x) - unit_step(x^2-1),
-        notequal(x,-1), notequal(x,1)))));
+expand(signum_expand(convert_to_signum(diff(%,x) - unit_step(x^2-1))));
 0$
 
 integrate(abs(x),x,1,2);

@@ -2442,12 +2442,20 @@ or @code{pnz} (positive, negative, or zero, i.e. nothing known).
 @end deffn
 
 @deffn {Function} signum (@var{x})
-For numeric @var{x}, returns 0 if @var{x} is 0, otherwise returns -1 or +1
-as @var{x} is less than or greater than 0, respectively.
+For either real or complex numbers @var{x}, the signum function returns
+0 if @var{x} is zero; for a nonzero numeric input @var{x}, the signum function
+returns @code{abs(x)/x}.
 
-If @var{x} is not numeric then a simplified but equivalent form is returned.
-For example, @code{signum(-x)} gives @code{-signum(x)}.
-@c UMM, THIS ISN'T THE WHOLE STORY, AS IT APPEARS signum CONSULTS THE assume DATABASE FOR SYMBOLIC ARGUMENT
+For non-numeric inputs, Maxima attempts to determine the sign of the
+input. When the sign is negative, zero, or positive, @code{signum}
+returns -1,0, 1, respectively. For all other values for the sign,
+@code{signum} a simplified but equivalent form. The simplifications
+include reflection (@code{signum(-x)} gives @code{-signum(x)})and
+multiplicative identity (@code{signum(x*y)} gives @code{signum(x) *
+signum(y)}).
+
+The @code{signum} function distributes over a list, a matrix, or an
+equation.  See @code{distribute_over}.
 
 @opencatbox
 @category{Mathematical functions}
