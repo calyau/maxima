@@ -116,8 +116,8 @@ estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
     (setf diagco f2cl-lib:%false%)
 
     (let (($numer t)) (setq x-initial ($float (meval x-initial))))
-    ; DOUBTLESS THERE IS A MORE ELEGANT WAY TO REFILL AN ARRAY FROM A LIST
-    (dotimes (i n) (setf (aref x i) (nth (1+ i) x-initial)))
+    ;; Fill X from the initial value, skipping over the Maxima mlist marker.
+    (replace x x-initial :start2 1)
 
     (common-lisp-user::/blockdata-lb2/)
 
@@ -127,8 +127,12 @@ estimates : lbfgs ('[F(a, b, c), [F1(a, b, c), F2(a, b, c), F3(a, b, c)]],
       (setf f (apply 'funcall `(,FOM-function ,@(coerce x 'list))))
       (let ((g-list (apply 'funcall `(,FOM-grad-function ,@(coerce x 'list)))))
 ; (format t "hey g-list ~S~%" g-list)
-        ; DOUBTLESS THERE IS A MORE ELEGANT WAY TO REFILL AN ARRAY FROM A LIST
-        (dotimes (i n) (setf (aref g i) (nth (1+ i) g-list))))
+	(when (eq t g-list)
+	  (merror "Evaluation of gradient at ~M failed.  Bad initial point?~%"
+		  (list* '(mlist) (coerce x 'list))))
+	;; Copy the answer from the grad function to the g array,
+	;; skipping over the mlist marker.
+	(replace g g-list :start2 1))
 ; (format t "hey f ~S g ~S~%" f g)
 
       (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7

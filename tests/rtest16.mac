@@ -1770,3 +1770,16 @@ done;
  */
 laplace(unit_step(-t),t,s);
 0;
+
+/* Bug report ID: 3081820 - lbfgs causes error
+ *
+ * Still generates an error, but a different error that maxima
+ * signals.
+ */
+block([V:0.75, a:24, b:68, e],
+  C(r) := 2*%pi*b*r^2 + 4*a*%pi*r + 2*b*V/r + a*V/(%pi*r^2),
+  load(lbfgs),
+  /* This should signal an error that we catch */
+  e : errcatch(lbfgs(C(r), [r], [1], 1e-4, [1,0])),
+  [e, error]);
+[[], ["Evaluation of gradient at ~M failed.  Bad initial point?~%", [0.0]]];
