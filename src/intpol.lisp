@@ -51,7 +51,13 @@ Perhaps you meant to enter `~a'.~%"
 		 (maxima::$errormsg nil))
 	     (or (car (maxima::errset (to s)))
 		 s))))
-    (let ((maxima::$numer t)
+    (let (;; Don't want to bind $numer to T here.  This causes things
+	  ;; like log(400)^400 to be computed using double-floats
+	  ;; (which overflows), which is not what we want if we're
+	  ;; doing bfloat arithmetic.  Could bind it for
+	  ;; double-floats, but all find_root tests pass without this.
+	  #+(or)
+	  (maxima::$numer t)
 	  (maxima::$%enumer t))
       (setq left (convert left)
 	    right (convert right)))

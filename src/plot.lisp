@@ -644,7 +644,20 @@ sin(y)*(10.0+6*cos(x)),
 		     `((progn (setq ,save-list-gensym nil)
 			      ,@(append subscripted-vars-save subscripted-vars-mset))))
 
-	       (let (($ratprint nil) ($numer t) (*nounsflag* t)
+	       (let (($ratprint nil)
+		     ;; We don't want to set $numer to T when coercing
+		     ;; to a bigfloat.  By doing so, things like
+		     ;; log(400)^400 get converted to double-floats,
+		     ;; which causes a double-float overflow.  But the
+		     ;; whole point of coercing to bfloat is to use
+		     ;; bfloats, not doubles.
+		     ;;
+		     ;; Perhaps we don't even need to do this for
+		     ;; double-floats?  It would be nice to remove
+		     ;; this.  For backward compatibility, we bind
+		     ;; numer to T if we're not trying to bfloat.
+		     ($numer ,(not (eq float-fun '$bfloat)))
+		     (*nounsflag* t)
 		     (errorsw t)
 		     (errcatch t))
 		 (declare (special errcatch))
