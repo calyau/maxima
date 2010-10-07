@@ -140,10 +140,21 @@ if [ "$MAXIMA_LISP" = "clisp" ]; then
 	exec "@CLISP_NAME@" $MAXIMA_LISP_OPTIONS -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
     fi
 elif [ "$MAXIMA_LISP" = "cmucl" ]; then
+    # CMUCL can use either an executable image or a regular lisp core
+    # file.  Check for the executable image and run that if possible.
+    # Otherwise, fallback and use the lisp core file.
     if [ "$layout_autotools" = "true" ]; then
-	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CMUCL_RUNTIME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	if [ -x "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" ]; then
+	    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/maxima" $MAXIMA_LISP_OPTIONS -quiet -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	else
+	    exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@CMUCL_RUNTIME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	fi
     else
-	exec "@CMUCL_NAME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	if [ -x "$maxima_image_base" ]; then
+	    exec "$maxima_image_base" $MAXIMA_LISP_OPTIONS -quiet -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	else
+	    exec "@CMUCL_NAME@" $MAXIMA_LISP_OPTIONS -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+	fi
     fi
 elif [ "$MAXIMA_LISP" = "scl" ]; then
     if [ "$layout_autotools" = "true" ]; then

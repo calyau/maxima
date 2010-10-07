@@ -45,6 +45,18 @@ clisp-depends.mk: maxima.system
 include clisp-depends.mk
 endif
 
+if CMUCL_EXEC
+CMU_MAXIMA = binary-cmucl/maxima
+CMU_BUILD = (echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima" :executable t :init-function '\''cl-user::run))' | $(EXECUTECMUCL))
+CMU_INST_BIN = true
+CMU_INST_MAXIMA = $(INSTALL_PROGRAM) $(CMU_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CMU_MAXIMA)"
+else
+CMU_MAXIMA = binary-cmucl/maxima.core
+CMU_BUILD = (echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima.core"))' | $(EXECUTECMUCL))
+CMU_INST_BIN = $(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-cmucl/lisp"
+CMU_INST_MAXIMA = $(INSTALL_DATA) $(CMU_MAXIMA) "$(DESTDIR)$(verpkglibdir)/$(CMU_MAXIMA)"
+endif
+
 if CMUCL
 EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 # Newer versions of CMUCL have an INTL package that is compatible with
@@ -52,35 +64,35 @@ EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 # compile the files, we will get appropriate translations.  (Otherwise
 # we have to put (intl:textdomain "maxima") in each Lisp file.
 INITINTL = (when (find-package "INTL") (set (find-symbol "*DEFAULT-DOMAIN*" "INTL") "maxima"))
-all-local: binary-cmucl/maxima.core
+all-local: $(CMU_MAXIMA)
 install-exec-local: install-cmucl
 uninstall-hook: uninstall-cmucl
 clean: clean-cmucl
 distclean: clean-cmucl
 
-cmucl: binary-cmucl/maxima.core
+cmucl: $(CMU_MAXIMA)
 
-binary-cmucl/maxima.core:
+$(CMU_MAXIMA):
 	test -d binary-cmucl || mkdir binary-cmucl
 	test -d binary-cmucl/numerical || mkdir binary-cmucl/numerical
 	test -d binary-cmucl/numerical/slatec || mkdir binary-cmucl/numerical/slatec
 	(echo '(progn $(INITINTL) $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTECMUCL)) && \
-	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima.core"))' | $(EXECUTECMUCL))
+	$(CMU_BUILD)
 
 install-cmucl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-cmucl"
-	$(INSTALL_DATA) binary-cmucl/maxima.core "$(DESTDIR)$(verpkglibdir)/binary-cmucl/maxima.core"
-	$(INSTALL_PROGRAM) lisp "$(DESTDIR)$(verpkglibdir)/binary-cmucl/@CMUCL_RUNTIME@"
+	$(CMU_INST_MAXIMA)
+	$(CMU_INST_BIN)
 
 uninstall-cmucl:
-	rm -f "$(DESTDIR)$(verpkglibdir)/binary-cmucl/maxima.core"
+	rm -f "$(DESTDIR)$(verpkglibdir)/$(CMU_MAXIMA)"
 	rm -f "$(DESTDIR)$(verpkglibdir)/binary-cmucl/@CMUCL_RUNTIME@"
 
 clean-cmucl:
 	rm -rf binary-cmucl
 cmucl-depends.mk: maxima.system
 	test -d binary-cmucl || mkdir binary-cmucl
-	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk"))' | $(EXECUTECMUCL)
+	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "$(CMU_MAXIMA)" "cmucl-depends.mk"))' | $(EXECUTECMUCL)
 
 include cmucl-depends.mk
 endif

@@ -118,6 +118,18 @@ if test x"${cmucl}" = xtrue ; then
 		AC_MSG_WARN(cmucl executable ${CMUCL_NAME} not found in PATH)
 	fi
 fi
+AC_ARG_ENABLE(cmucl-exec,
+	[  --enable-cmucl-exec              Create a maxima executable image.
+                                    No check is made if the version of 
+                                    CMUCL supports executable images],
+	[case "${enableval}" in
+	    yes) cmucl_exec=true ;;
+	    no) cmucl_exec=false ;;
+	    *) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl-exec) ;;
+         esac
+	 CMUCL_EXEC=${cmucl_exec}],
+	[cmucl_exec=false
+	 CMUCL_EXEC=false])
 
 dnl n.b. scl_default_name is hardcoded in "with" message
 scl_default_name=scl
@@ -529,6 +541,7 @@ fi
 AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
 AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
+AM_CONDITIONAL(CMUCL_EXEC, test x${cmucl_exec} = xtrue)
 AM_CONDITIONAL(SCL, test x$scl = xtrue)
 AM_CONDITIONAL(SBCL, test x$sbcl = xtrue)
 AM_CONDITIONAL(ACL, test x$acl = xtrue)
@@ -728,6 +741,7 @@ AC_SUBST(CLISP_RUNTIME_PATH)
 AC_SUBST(CMUCL_NAME)
 AC_SUBST(CMUCL_RUNTIME)
 AC_SUBST(CMUCL_RUNTIME_PATH)
+AC_SUBST(CMUCL_EXEC)
 AC_SUBST(SCL_NAME)
 AC_SUBST(SCL_RUNTIME)
 AC_SUBST(SCL_RUNTIME_PATH)
@@ -841,6 +855,9 @@ fi
 if test x"${cmucl}" = xtrue ; then
 	echo "CMUCL enabled. Executable name: \"${CMUCL_NAME}\""
 	echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
+fi
+if test x"${cmucl_exec}" = xtrue; then
+	echo "CMUCL executable image enabled for maxima."
 fi
 if test x"${scl}" = xtrue ; then
 	echo "SCL enabled. Executable name: \"${SCL_NAME}\""
