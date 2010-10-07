@@ -27,7 +27,8 @@ explicit_lisp=false
 
 dnl n.b. clisp_default_name is hardcoded in "with" message
 clisp_default_name=clisp
-AC_ARG_ENABLE(clisp,[  --enable-clisp                   Use clisp],
+AC_ARG_ENABLE(clisp,
+	[  --enable-clisp               Use clisp],
      	[case "${enableval}" in
        		yes) clisp=true 
                      explicit_lisp=true ;;
@@ -37,7 +38,7 @@ AC_ARG_ENABLE(clisp,[  --enable-clisp                   Use clisp],
 	explicit_lisp=true],
 	[clisp=false])
 AC_ARG_WITH(clisp,
-	[  --with-clisp=<prog>              Use clisp executable <prog> (default clisp)],
+	[  --with-clisp=<prog>         Use clisp executable <prog> (default clisp)],
 	[clisp=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -52,9 +53,9 @@ else
 	CLISP_RUNTIME="lisp.run"
 fi
 AC_ARG_WITH(clisp-runtime,
-	[  --with-clisp-runtime=<path>	   Use clisp runtime <path> (default
-	                             *lib-directory*/base/lisp.run on unix,
-	   		             *lib-directory*\\lisp.exe on windows) ],
+	[  --with-clisp-runtime=<path>  Use clisp runtime <path> (default
+	                          *lib-directory*/base/lisp.run on unix,
+	   		          *lib-directory*\\lisp.exe on windows) ],
 	[clisp=true
 	CLISP_RUNTIME_PATH="$withval"
 	CLISP_RUNTIME=`basename ${CLISP_RUNTIME_PATH}`],
@@ -77,7 +78,8 @@ fi
 dnl n.b. cmucl_default_name is hardcoded in "with" message
 cmucl_default_name=lisp
 CMUCL_RUNTIME=lisp
-AC_ARG_ENABLE(cmucl,[  --enable-cmucl                   Use CMUCL],
+AC_ARG_ENABLE(cmucl,
+	[  --enable-cmucl               Use CMUCL],
      	[case "${enableval}" in
        		yes) cmucl=true 
                      explicit_lisp=true ;;
@@ -87,7 +89,7 @@ AC_ARG_ENABLE(cmucl,[  --enable-cmucl                   Use CMUCL],
 	explicit_lisp=true],
 	[cmucl=false])
 AC_ARG_WITH(cmucl,
-	[  --with-cmucl=<prog>              Use CMUCL executable <prog> (default lisp)],
+	[  --with-cmucl=<prog>          Use CMUCL executable <prog> (default lisp)],
 	[cmucl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -97,8 +99,8 @@ AC_ARG_WITH(cmucl,
 	fi],
 	[CMUCL_NAME=${cmucl_default_name}])
 AC_ARG_WITH(cmucl-runtime,
-	[  --with-cmucl-runtime=<path>	   Use CMUCL runtime <path> (default
-	                             *cmucl-lib*/../bin/lisp)],
+	[  --with-cmucl-runtime=<path>  Use CMUCL runtime <path> (default
+	                          *cmucl-lib*/../bin/lisp)],
 	[cmucl=true
 	CMUCL_RUNTIME_PATH="$withval"
 	CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`],
@@ -119,9 +121,9 @@ if test x"${cmucl}" = xtrue ; then
 	fi
 fi
 AC_ARG_ENABLE(cmucl-exec,
-	[  --enable-cmucl-exec              Create a maxima executable image.
-                                    No check is made if the version of 
-                                    CMUCL supports executable images],
+	[  --enable-cmucl-exec          Create a maxima executable image.
+                                No check is made if the version of 
+                                CMUCL supports executable images],
 	[case "${enableval}" in
 	    yes) cmucl_exec=true ;;
 	    no) cmucl_exec=false ;;
@@ -134,7 +136,8 @@ AC_ARG_ENABLE(cmucl-exec,
 dnl n.b. scl_default_name is hardcoded in "with" message
 scl_default_name=scl
 SCL_RUNTIME=lisp
-AC_ARG_ENABLE(scl,[  --enable-scl                     Use SCL],
+AC_ARG_ENABLE(scl,
+	[  --enable-scl                 Use SCL],
      	[case "${enableval}" in
        		yes) scl=true 
                      explicit_lisp=true ;;
@@ -144,7 +147,7 @@ AC_ARG_ENABLE(scl,[  --enable-scl                     Use SCL],
 	explicit_lisp=true],
 	[scl=false])
 AC_ARG_WITH(scl,
-	[  --with-scl=<prog>              Use SCL executable <prog> (default scl)],
+	[  --with-scl=<prog>            Use SCL executable <prog> (default scl)],
 	[scl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -154,8 +157,8 @@ AC_ARG_WITH(scl,
 	fi],
 	[SCL_NAME=${scl_default_name}])
 AC_ARG_WITH(scl-runtime,
-	[  --with-scl-runtime=<path>	   Use SCL runtime <path> (default
-	                             file://library/../bin/lisp)],
+	[  --with-scl-runtime=<path>    Use SCL runtime <path> (default
+	                          file://library/../bin/lisp)],
 	[scl=true
 	SCL_RUNTIME_PATH="$withval"
 	SCL_RUNTIME=`basename ${SCL_RUNTIME_PATH}`],
@@ -178,7 +181,8 @@ fi
 
 dnl n.b. sbcl_default_name is hardcoded in "with" message
 sbcl_default_name=sbcl
-AC_ARG_ENABLE(sbcl,[  --enable-sbcl                    Use SBCL],
+AC_ARG_ENABLE(sbcl,
+	[  --enable-sbcl                Use SBCL],
      	[case "${enableval}" in
        		yes) sbcl=true 
                      explicit_lisp=true ;;
@@ -188,7 +192,7 @@ AC_ARG_ENABLE(sbcl,[  --enable-sbcl                    Use SBCL],
 	explicit_lisp=true],
 	[sbcl=false])
 AC_ARG_WITH(sbcl,
-	[  --with-sbcl=<prog>               Use SBCL executable <prog> (default sbcl)],
+	[  --with-sbcl=<prog>           Use SBCL executable <prog> (default sbcl)],
 	[sbcl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -215,7 +219,8 @@ fi
 	
 dnl n.b. acl_default_name is hardcoded in "with" message
 acl_default_name=lisp
-AC_ARG_ENABLE(acl,[  --enable-acl                     Use ACL],
+AC_ARG_ENABLE(acl,
+	[  --enable-acl                 Use ACL],
      	[case "${enableval}" in
        		yes) acl=true 
                      explicit_lisp=true ;;
@@ -225,7 +230,7 @@ AC_ARG_ENABLE(acl,[  --enable-acl                     Use ACL],
 	explicit_lisp=true],
 	[acl=false])
 AC_ARG_WITH(acl,
-	[  --with-acl=<prog>                Use ACL executable <prog> (default lisp)],
+	[  --with-acl=<prog>            Use ACL executable <prog> (default lisp)],
 	[acl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -252,7 +257,8 @@ fi
 
 dnl n.b. gcl_default_name is hardcoded in "with" message
 gcl_default_name=gcl
-AC_ARG_ENABLE(gcl,[  --enable-gcl                     Use GCL],
+AC_ARG_ENABLE(gcl,
+	[  --enable-gcl                 Use GCL],
      	[case "${enableval}" in
        		yes) gcl=true 
 		     explicit_lisp=true;;
@@ -261,7 +267,7 @@ AC_ARG_ENABLE(gcl,[  --enable-gcl                     Use GCL],
      	esac],
 	[gcl=false])
 AC_ARG_WITH(gcl,
-	[  --with-gcl=<prog>                Use GCL executable <prog> (default gcl)],
+	[  --with-gcl=<prog>            Use GCL executable <prog> (default gcl)],
 	[gcl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -287,7 +293,8 @@ fi
 
 dnl n.b. openmcl_default_name is hardcoded in "with" message
 openmcl_default_name=openmcl
-AC_ARG_ENABLE(openmcl,[  --enable-openmcl                 Use OpenMCL],
+AC_ARG_ENABLE(openmcl,
+	[  --enable-openmcl             Use OpenMCL],
      	[case "${enableval}" in
        		yes) openmcl=true 
 		     explicit_lisp=true;;
@@ -296,7 +303,7 @@ AC_ARG_ENABLE(openmcl,[  --enable-openmcl                 Use OpenMCL],
      	esac],
 	[openmcl=false])
 AC_ARG_WITH(openmcl,
-	[  --with-openmcl=<prog>            Use OpenMCL executable <prog> (default openmcl)],
+	[  --with-openmcl=<prog>        Use OpenMCL executable <prog> (default openmcl)],
 	[openmcl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -306,7 +313,8 @@ AC_ARG_WITH(openmcl,
 	fi],
 	[OPENMCL_NAME=${openmcl_default_name}])
 dnl Define ccl as an alias (essentially) for openmcl
-AC_ARG_ENABLE(ccl,[  --enable-ccl                 Use CCL (Clozure Common Lisp)],
+AC_ARG_ENABLE(ccl,
+	[  --enable-ccl                 Use CCL (Clozure Common Lisp)],
      	[case "${enableval}" in
        		yes) openmcl=true 
 		     explicit_lisp=true;;
@@ -315,7 +323,7 @@ AC_ARG_ENABLE(ccl,[  --enable-ccl                 Use CCL (Clozure Common Lisp)]
      	esac],
 	[openmcl=false])
 AC_ARG_WITH(ccl,
-	[  --with-ccl=<prog>              Use OpenMCL executable <prog> (default ccl)],
+	[  --with-ccl=<prog>            Use OpenMCL executable <prog> (default ccl)],
 	[openmcl=true
 	explicit_lisp=true
 	if test "$withval" = "yes"; then
@@ -342,7 +350,8 @@ fi
 
 dnl n.b. ecl_default_name is hardcoded in "with" message
 ecl_default_name=ecl
-AC_ARG_ENABLE(ecl,[  --enable-ecl                 Use ECL],
+AC_ARG_ENABLE(ecl,
+	[  --enable-ecl                 Use ECL],
      	[case "${enableval}" in
        		yes) ecl=true 
 		     explicit_lisp=true;;
@@ -376,7 +385,8 @@ if test x"${ecl}" = xtrue ; then
 fi
 
 dnl xgettext
-AC_ARG_ENABLE(gettext,[  --enable-gettext                 Locale support],
+AC_ARG_ENABLE(gettext,
+	[  --enable-gettext             Locale support],
 	[case "${enableval}" in
 	       yes) enable_gettext=true  ;;
  	       no)  enable_gettext=false ;;
@@ -387,7 +397,8 @@ AC_ARG_ENABLE(gettext,[  --enable-gettext                 Locale support],
 AM_CONDITIONAL(ENABLE_GETTEXT, test x$enable_gettext = xtrue)
 
 dnl languages
-AC_ARG_ENABLE(lang-es,[  --enable-lang-es                 Spanish language support],
+AC_ARG_ENABLE(lang-es,
+	[  --enable-lang-es             Spanish language support],
      	[case "${enableval}" in
        		yes) lang_es=true  ;;
        		no)  lang_es=false ;;
@@ -397,7 +408,8 @@ AC_ARG_ENABLE(lang-es,[  --enable-lang-es                 Spanish language suppo
 
 AM_CONDITIONAL(LANG_ES, test x$lang_es = xtrue)
 
-AC_ARG_ENABLE(lang-es-utf8,[  --enable-lang-es-utf8            Spanish language support (UTF-8)],
+AC_ARG_ENABLE(lang-es-utf8,
+	[  --enable-lang-es-utf8        Spanish language support (UTF-8)],
      	[case "${enableval}" in
        		yes) lang_es_utf8=true  ;;
        		no)  lang_es_utf8=false ;;
@@ -407,7 +419,8 @@ AC_ARG_ENABLE(lang-es-utf8,[  --enable-lang-es-utf8            Spanish language 
 
 AM_CONDITIONAL(LANG_ES_UTF8, test x$lang_es_utf8 = xtrue)
 
-AC_ARG_ENABLE(lang-pt,[  --enable-lang-pt                 Portuguese language support],
+AC_ARG_ENABLE(lang-pt,
+	[  --enable-lang-pt             Portuguese language support],
      	[case "${enableval}" in
        		yes) lang_pt=true  ;;
        		no)  lang_pt=false ;;
@@ -417,7 +430,8 @@ AC_ARG_ENABLE(lang-pt,[  --enable-lang-pt                 Portuguese language su
 
 AM_CONDITIONAL(LANG_PT, test x$lang_pt = xtrue)
 
-AC_ARG_ENABLE(lang-pt-utf8,[  --enable-lang-pt-utf8            Portuguese language support (UTF-8)],
+AC_ARG_ENABLE(lang-pt-utf8,
+	[  --enable-lang-pt-utf8        Portuguese language support (UTF-8)],
      	[case "${enableval}" in
        		yes) lang_pt_utf8=true  ;;
        		no)  lang_pt_utf8=false ;;
@@ -427,7 +441,8 @@ AC_ARG_ENABLE(lang-pt-utf8,[  --enable-lang-pt-utf8            Portuguese langua
 
 AM_CONDITIONAL(LANG_PT_UTF8, test x$lang_pt_utf8 = xtrue)
 
-AC_ARG_ENABLE(lang-pt_BR,[  --enable-lang-pt_BR              Brazilian Portuguese language support],
+AC_ARG_ENABLE(lang-pt_BR,
+	[  --enable-lang-pt_BR          Brazilian Portuguese language support],
      	[case "${enableval}" in
        		yes) lang_pt_br=true  ;;
        		no)  lang_pt_br=false ;;
@@ -437,7 +452,8 @@ AC_ARG_ENABLE(lang-pt_BR,[  --enable-lang-pt_BR              Brazilian Portugues
 
 AM_CONDITIONAL(LANG_PT_BR, test x$lang_pt_br = xtrue)
 
-AC_ARG_ENABLE(lang-pt_BR-utf8,[  --enable-lang-pt_BR-utf8         Brazilian Portuguese language support (UTF-8)],
+AC_ARG_ENABLE(lang-pt_BR-utf8,
+	[  --enable-lang-pt_BR-utf8     Brazilian Portuguese language support (UTF-8)],
      	[case "${enableval}" in
        		yes) lang_pt_br_utf8=true  ;;
        		no)  lang_pt_br_utf8=false ;;
@@ -448,7 +464,8 @@ AC_ARG_ENABLE(lang-pt_BR-utf8,[  --enable-lang-pt_BR-utf8         Brazilian Port
 AM_CONDITIONAL(LANG_PT_BR_UTF8, test x$lang_pt_br_utf8 = xtrue)
 
 
-AC_ARG_ENABLE(recode,[  --enable-recode                  Use recode for charset conversion],
+AC_ARG_ENABLE(recode,
+	[  --enable-recode              Use recode for charset conversion],
      	[case "${enableval}" in
        		yes) use_recode=true  ;;
        		no)  use_recode=false ;;
@@ -642,7 +659,7 @@ The gcl ANSI-CL check returned
 fi
 
 AC_ARG_ENABLE(gcl-alt-link,
-	[  --enable-gcl-alt-link            Use GCL's alternate linking mechanism],
+	[  --enable-gcl-alt-link        Use GCL's alternate linking mechanism],
      	[case "${enableval}" in
        		yes) gcl_alt_link=true ;;
        		no)  gcl_alt_link=false ;;
@@ -653,7 +670,7 @@ AC_ARG_ENABLE(gcl-alt-link,
 AM_CONDITIONAL(GCL_ALT_LINK, test x$gcl_alt_link = xtrue)
 	
 AC_ARG_WITH(default-lisp,
-	[  --with-default-lisp=<lisp>       Set default lisp implementation to <lisp>],
+	[  --with-default-lisp=<lisp>   Set default lisp implementation to <lisp>],
      	[case "${withval}" in
        		clisp)
 			if test x"${clisp}" = xtrue ; then
@@ -753,12 +770,12 @@ AC_SUBST(ECL_NAME)
 AC_SUBST(DEFAULTLISP)
 
 AC_ARG_WITH(posix-shell,
-	[  --with-posix-shell=</path/to/shell>    Use <shell> for maxima script (default /bin/sh)],
+	[  --with-posix-shell=<path>    Use <shell> for maxima script (default /bin/sh)],
 	[posix_shell_list="${withval}"],
 	[posix_shell_list="/bin/sh /bin/bash /usr/bin/bash /usr/local/bin/bash"])
 
 AC_ARG_WITH(wish,
-	[  --with-wish=<prog>               Use <prog> for Tk wish shell (default wish)],
+	[  --with-wish=<prog>           Use <prog> for Tk wish shell (default wish)],
 	[WISH="${withval}"],
 	[WISH="wish"])
 AC_SUBST(WISH)
