@@ -1783,3 +1783,11 @@ block([V:0.75, a:24, b:68, e],
   e : errcatch(lbfgs(C(r), [r], [1], 1e-4, [1,0])),
   [e, error]);
 [[], ["Evaluation of gradient at ~M failed.  Bad initial point?~%", [0.0]]];
+
+/* Bug report ID: 875089 - defint(f(x)=g(x),x,0,1) -> false = false
+ *
+ * We distribute defint more early in the code of bags to get a correct result.
+ */
+ defint(f(x)=g(x),x,0,1);
+ 'integrate(f(x),x,0,1)='integrate(g(x),x,0,1);
+ 
