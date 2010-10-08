@@ -316,7 +316,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   (if (float-inf-p x)
     (merror (intl:gettext "bfloat: attempted conversion of floating-point infinity.~%")))
   (unless $float2bf
-    (mtell (intl:gettext "bfloat: converting float ~S to bigfloat.") x))
+    (mtell (intl:gettext "bfloat: converting float ~S to bigfloat.~%") x))
 
   ;; Need to check for zero because different lisps return different
   ;; values for integer-decode-float of a 0.  In particular CMUCL
