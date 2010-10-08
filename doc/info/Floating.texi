@@ -133,17 +133,17 @@ floating point.
 @closecatbox
 @end deffn
 
+@c --- 08.10.2010 DK -----------------------------------------------------------
 @defvr {Option variable} float2bf
-Default value: @code{false}
+Default value: @code{true}
  
 When @code{float2bf} is @code{false}, a warning message is printed when
 a floating point number is converted into a bigfloat number (since
-this may lead to loss of precision).
+this may lead to loss of precision). The default value is @code{true}.
 
 @opencatbox
 @category{Numerical evaluation}
 @closecatbox
-
 @end defvr
 
 @deffn {Function} floatnump (@var{expr})
