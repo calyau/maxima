@@ -212,7 +212,14 @@ in the interval of integration.")
 		    (merror (intl:gettext "defint: lower limit of integration must be real; found ~M") ll))
 		   ((not (equal (sratsimp ($imagpart ul)) 0))
 		    (merror (intl:gettext "defint: upper limit of integration must be real; found ~M") ul)))
-
+	     ;; Distribute $defint over equations, lists, and matrices.
+	     (cond ((mbagp exp)
+	            (return-from $defint
+	              (simplify
+	                (cons (car exp)
+	                      (mapcar #'(lambda (e)
+	                                  (simplify ($defint e var ll ul)))
+	                              (cdr exp)))))))
 	     (cond ((setq ans (defint exp var ll ul))
 		    (setq ans (subst orig-var var ans))
 		    (cond ((atom ans)  ans)
