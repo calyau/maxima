@@ -41,8 +41,8 @@
 			:element-type 'double-float))
 	 ;; Integer work array for cobyla.
 	 (iact (make-array (+ m 1) :element-type 'f2cl-lib::integer4))
-	 (fv (%coerce-float-fun type f vars))
-	 (cv (%coerce-float-fun type conlist vars))
+	 (fv (coerce-float-fun f vars))
+	 (cv (coerce-float-fun conlist vars))
 	 (*calcfc* #'(lambda (nn mm xval cval)
 		       (declare (fixnum nn mm)
 				(type (cl:array double-float (*)) xval cval))
@@ -69,7 +69,7 @@
 		neval)))))
 
 ;; Interface.  See fmin_cobyla.mac for documentation.
-(defun $fmin_cobyla (f conlist vars init-x &rest options)
+(defun $fmin_cobyla (f vars conlist init-x &rest options)
   (let* ((args (lispify-maxima-keyword-options options '($rhobeg $rhoend $iprint $maxfun))))
     (multiple-value-bind (fmin xopt copt neval)
 	(apply #'%cobyla vars init-x f conlist args)
