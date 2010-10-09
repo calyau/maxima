@@ -52,10 +52,19 @@
 			 ;; Do we really need these checks?
 			 (unless (floatp f)
 			   (merror "The objective function did not evaluate to a number at ~M"
-				   (list '(mlist) x-list)))
+				   (list* '(mlist) x-list)))
 			 (unless (every #'floatp (cdr c))
-			   (merror "The constraints did not evaluate to a number at ~M"
-				   (list '(mlist) x-list)))
+			   (let ((bad-cons (loop for cval in (cdr c)
+					     for k from 1
+					     unless (floatp cval)
+					      collect k)))
+			     (if (> (length bad-cons) 1)
+				 (merror "Constraints ~M did not evaluate to a number at ~M~%"
+				   (list* '(mlist) bad-cons)
+				   (list* '(mlist) x-list))
+				 (merror "Constraint ~M did not evaluate to a number at ~M~%"
+				   (car bad-cons)
+				   (list* '(mlist) x-list)))))
 			 (replace cval c :start2 1)
 			 (values nn mm nil
 				 f nil)))))
@@ -71,6 +80,12 @@
 ;; Interface.  See fmin_cobyla.mac for documentation.
 (defun $fmin_cobyla (f vars conlist init-x &rest options)
   (let* ((args (lispify-maxima-keyword-options options '($rhobeg $rhoend $iprint $maxfun))))
+    ;; Some rudimentary checks.
+    (unless (= (length (cdr vars))
+	       (length (cdr init-x)))
+      (merror "Number of initial values (~M) does not match the number of variables ~M~%"
+	      (length (cdr init-x))
+	      (length (cdr vars))))
     (multiple-value-bind (fmin xopt copt neval)
 	(apply #'%cobyla vars init-x f conlist args)
       (list '(mlist)
