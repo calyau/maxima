@@ -398,8 +398,9 @@ notcomparable$
 compare(%i,%i + 1);
 notcomparable$
 
+/* With revision 1.15 of maxmin.lisp this result has changed to notcomparable */
 is(compare(infinity,infinity) = "=");
-true$
+false$
 
 is(compare(inf,inf) = "=");
 true$
@@ -1606,3 +1607,61 @@ integrate(ceiling(x),x,0,4);
 
 (remvalue(d, l, aa, bb, cc, dd),0);
 0$
+
+/* Bug report ID: 2123651 - min and max of imaginary and real numbers
+ * These are the examples from the bug report.
+ */
+
+min(%i*inf,inf);
+'min(%i*inf,inf);
+
+min(%i*minf,minf);
+'min(minf,%i*minf);
+
+min(%i*inf,inf);
+'min(%i*inf,inf);
+
+min(%i*minf,minf);
+'min(minf,%i*minf);
+
+min(%i*-inf,-inf);
+'min(minf,%i*-inf);
+
+min(%i*-inf,minf);
+'min(minf,%i*-inf);
+
+min(%i*minf,-inf);
+'min(minf,%i*minf);
+
+max(%i*minf,inf);
+'max(inf,%i*minf);
+
+max(%i*minf,minf);
+'max(minf,%i*minf);
+
+max(%i*inf,inf);
+'max(inf,%i*inf);
+
+max(%i*-inf,-inf);
+'max(-inf,%i*-inf);
+
+max(%i*minf,minf);
+'max(minf,%i*minf);
+
+max(7*%i*inf+4*inf,4*%i*inf+3);
+'max(4*%i*inf+3,7*%i*inf+4*inf);
+
+min(7*%i*inf+4*inf,4*%i*inf+3);
+'min(7*%i*inf+4*inf,4*%i*inf+3);
+
+min(7*%i*minf+4*inf,4*%i*minf+3);
+'min(7*%i*minf+4*inf,4*%i*minf+3);
+
+min(7*%i*minf+4*inf,4*%i*-inf+3);
+'min(4*%i*-inf+3,7*%i*minf+4*inf);
+
+min(-inf,minf);
+minf;
+
+max(-inf,minf);
+minf;
