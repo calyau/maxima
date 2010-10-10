@@ -24,7 +24,7 @@
         ((mlist simp) "rtesthyp" 103 104 105 112 113 123 124 128)
         ((mlist simp) "rtest_hypgeo" 143)
 	"rtestmt19937"
-        ((mlist simp) "rtest_allnummod" 135 136 417 418)
+        "rtest_allnummod"
 	"rtestconjugate"
         ((mlist simp) "rtestsum" 3 4 18 75)
 	"rtest_trig"
