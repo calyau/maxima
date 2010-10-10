@@ -1791,3 +1791,15 @@ block([V:0.75, a:24, b:68, e],
  defint(f(x)=g(x),x,0,1);
  'integrate(f(x),x,0,1)='integrate(g(x),x,0,1);
  
+/* Bug report ID: 2796194 - error doing a Fourier transform
+ * The following integral is divergent, but gives a noun form.
+ * The Lisp error is no longer present.
+ */
+(assume(equal(x,0)),done);
+done;
+
+integrate(%pi*exp(-2*%pi*t)*exp(2*%pi*x*t*%i),t,minf,inf);
+%pi*'integrate(%e^(2*%i*%pi*t*x-2*%pi*t),t,minf,inf);
+
+(forget(equal(x,0)),done);
+done;
