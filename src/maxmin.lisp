@@ -75,15 +75,15 @@
     (dolist (li l)
       (if (op-equalp li '$max) (setq acc (append acc (mapcar #'(lambda (s) (simplifya s z)) (margs li))))
 	(push (simplifya li z) acc)))
-	  
+    
     ;; First, delete duplicate members of l.
     
     (setq l (sorted-remove-duplicates (sort acc '$orderlessp)))
     (setq acc nil)
-        	   		 
+    
     ;; Second, find the largest real number in l. Since (mnump '$%i) --> false, we don't 
     ;; have to worry that num-max is complex. 
-	  	    
+    
     (dolist (li l)
       (if (mnump li) (setq num-max (if (or (null num-max) (mgrp li num-max)) li num-max)) (push li acc)))
     (setq l acc)
@@ -105,15 +105,25 @@
 		((eq sgn '$notcomparable) (setq issue-warning t))
 		((member sgn '("<" "=" "<=") :test #'equal)
 		 (throw 'done t))))
-	(push x acc)))
+             (push x acc)))
+    
     ;; Fourth, when when trylevel is 2 or higher e and -e are members of acc, replace e by |e|.
     
     (cond ((eq t (mgrp ($get '$trylevel '$maxmin) 1))
-	   (setq sgn nil)
-	   (dolist (ai acc)
-	     (setq tmp (if (lenient-realp ai) (member-if #'(lambda (s) (add-inversep ai s)) sgn) nil))
-	     (if tmp (setf (car tmp) (take '(mabs) ai)) (push ai sgn)))
-	   (setq acc sgn)))
+           (let ((flag nil))
+             (setq sgn nil)
+             (dolist (ai acc)
+               (setq tmp (if (lenient-realp ai)
+                             (member-if #'(lambda (s) (add-inversep ai s)) sgn)
+                             nil))
+               (cond (tmp
+                      (setf (car tmp) (take '(mabs) ai))
+                      (setq flag t))
+                     (t (push ai sgn))))
+             (if flag
+                 ;; We have replaced -e and e with |e|. Call simp-max again.
+                 (return-from simp-max (simplify (cons '($max) sgn)))
+                 (setq acc sgn)))))
  
     ;; Fifth, when trylevel is 3 or higher and issue-warning is false, try the
     ;; betweenp simplification.
@@ -127,12 +137,12 @@
 	   (setq acc l)))
 
     ;; Finally, do a few clean ups:
-
-    (setq acc (delete '$minf acc))
+    
+    (setq acc (if (not issue-warning) (delete '$minf acc) acc))
     (cond ((null acc) '$minf)
-	  ((member '$inf acc :test #'eq) '$inf)
-	  ((null (cdr acc)) (car acc))
-	  (t  `(($max simp) ,@(sort acc '$orderlessp))))))
+          ((and (not issue-warning) (member '$inf acc :test #'eq)) '$inf)
+          ((null (cdr acc)) (car acc))
+          (t  `(($max simp) ,@(sort acc '$orderlessp))))))
 
 (defun limitneg (x)
   (cond ((eq x '$minf) '$inf)
@@ -188,8 +198,19 @@
 ;; being quizzed about the sign of x. Thus the call to lenient-extended-realp.
 
 (defun $compare (a b)
-  (cond ((eq t (meqp a b)) "=")
-	((or (not (lenient-extended-realp a)) (not (lenient-extended-realp b))) '$notcomparable)
+  ;; Simplify expressions with infinities, indeterminates, or infinitesimals
+  (when (amongl '($ind $und $inf $minf $infinity $zeroa $zerob) a)
+    (setq a ($limit a)))
+  (when (amongl '($ind $und $inf $minf $infinity $zeroa $zerob) b)
+    (setq b ($limit b)))
+  (cond ((or (amongl '($infinity $ind $und) a)
+             (amongl '($infinity $ind $und) b))
+         ;; Expressions with $infinity, $ind, or $und are not comparable
+         '$notcomparable)
+        ((eq t (meqp a b)) "=")
+        ((or (not (lenient-extended-realp a))
+             (not (lenient-extended-realp b)))
+         '$notcomparable)
 	(t
 	 (let ((sgn (csign (specrepcheck (sub a b)))))
 	   (cond ((eq sgn '$neg) "<")
