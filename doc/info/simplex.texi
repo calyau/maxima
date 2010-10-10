@@ -23,7 +23,7 @@ Example:
 @end example
 
 @opencatbox
-@category{Numerical methods} @category{Share packages} @category{Package simplex}
+@category{Numerical methods}  @category{Optimization} @category{Share packages} @category{Package simplex}
 @closecatbox
 
 @node Functions and Variables for simplex,  , Introduction to simplex, simplex
