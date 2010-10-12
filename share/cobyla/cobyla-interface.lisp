@@ -1,6 +1,7 @@
 ;;; -*- Mode: lisp -*-
 
-;;; Simple Maxima interface to minpack routines
+;;; Simple Maxima interface to COBYLA, Constrained Optimization BY
+;;; Linear Approximations.
 
 (in-package #-gcl #:maxima #+gcl "MAXIMA")
 
@@ -20,6 +21,9 @@
 
 (in-package #-gcl #:maxima #+gcl "MAXIMA")
 
+;; The actual interface to COBYLA.  Take the inputs from maxima,
+;; massage them into a suitable Lisp form, and call COBYLA to find the
+;; answer.
 (defun %cobyla (vars init-x f conlist
 		 &key (rhobeg .5d0) (rhoend 1d-6) (iprint 0) (maxfun 1000))
   (let* ((n (length (cdr vars)))
@@ -44,6 +48,10 @@
 	 (fv (coerce-float-fun f vars))
 	 (cv (coerce-float-fun conlist vars))
 	 (*calcfc* #'(lambda (nn mm xval cval)
+		       ;; Compute the function and the constraints at
+		       ;; the given xval.  The function value is
+		       ;; returned is returned, and the constraint
+		       ;; values are stored in cval.
 		       (declare (fixnum nn mm)
 				(type (cl:array double-float (*)) xval cval))
 		       (let* ((x-list (coerce xval 'list))
@@ -58,6 +66,10 @@
 					     for k from 1
 					     unless (floatp cval)
 					      collect k)))
+			     ;; List the constraints that did not
+			     ;; evaluate to a number to make it easier
+			     ;; for the user to figure out which
+			     ;; constraints were bad.
 			     (if (> (length bad-cons) 1)
 				 (merror "Constraints ~M did not evaluate to a number at ~M~%"
 				   (list* '(mlist) bad-cons)
@@ -66,12 +78,23 @@
 				   (car bad-cons)
 				   (list* '(mlist) x-list)))))
 			 (replace cval c :start2 1)
+			 ;; This is the f2cl calling convention for
+			 ;; CALCFC.  For some reason, f2cl thinks n
+			 ;; and m are modified, so they must be
+			 ;; returned.
 			 (values nn mm nil
 				 f nil)))))
     (multiple-value-bind (null-0 null-1 null-2 null-3 null-4 null-5 neval null-6 null-7)
 	(cobyla:cobyla n m x rhobeg rhoend iprint maxfun w iact)
       (declare (ignore null-0 null-1 null-2 null-3 null-4 null-5 null-6 null-7))
+      ;; Should we put a check here if the number of function
+      ;; evaluations equals maxfun?  When iprint is not 0, the output
+      ;; from COBYLA makes it clear that something bad happened.
       (let ((x-list (coerce x 'list)))
+	;; Return the optimum function value, the point that gives the
+	;; optimum, the value of the constraints, and the number of
+	;; function evaluations.  For convenience.  Only the point and
+	;; the number of evaluations is really needed.
 	(values (apply fv x-list)
 		x
 		(apply cv x-list)
