@@ -20,7 +20,7 @@ soln:ode2('diff(y,x,2) + y = 4*x, y, x);
 y = %k1*sin(x) + %k2*cos(x) + 4*x;
 method;
 variationofparameters;
-ic2(soln, x=0, y=1, diff(y,x)=3);
+ic2(soln, x=0, y=1, 'diff(y,x)=3);
 y = -sin(x)+cos(x)+4*x;
 bc2(soln, x=0, y=3, x=2, y=1);
 y = -((3*cos(2)+7)*sin(x)/sin(2)) + 3*cos(x) + 4*x;
@@ -203,3 +203,59 @@ desolve(eqn3,f(x));
 (integrate (my_integrand : exp(t/2) * sin(t) * sin(sqrt(3) * t/2), t),
  ratsimp (exponentialize (diff (%%, t) - my_integrand)));
 0;
+
+/* Examples to show that ic2 works as expected after revision 1.5 of ode.mac
+ */
+
+'diff(y,x,2)+y*('diff(y,x,1))^3 = 0;
+'diff(y,x,2)+y*('diff(y,x,1))^3 = 0;
+
+soln:ode2(%,y,x);
+(y^3+6*%k1*y)/6 = x+%k2;
+
+ratsimp(ic2(soln, x=0, y=0, 'diff(y,x,1)=2));
+(y^3+3*y)/6=x;
+
+ratsimp(ic2(soln, x=0, y=0, 'diff(y,x,1)=1));
+(y^3+6*y)/6 = x$
+
+/* This is the example of the bug report 
+ * ID:2881021 - ic2 and bc2 may return incorrect results (solution suggeste)
+ */
+
+ratsimp(ic2(soln, x=0, y=1, 'diff(y,x,1)=2));
+y^3/6 = (6*x+1)/6;
+
+/* These examples show that ic2 works for a list of equation and nested
+ * lists of equation.
+ */
+
+ratsimp(ic2([soln, soln, soln], x=0, y=0, 'diff(y,x,1)=2));
+[(y^3+3*y)/6=x, (y^3+3*y)/6=x, (y^3+3*y)/6=x];
+
+ratsimp(ic2([soln, [soln, soln]], x=0, y=0, 'diff(y,x,1)=2));
+[(y^3+3*y)/6=x, [(y^3+3*y)/6=x, (y^3+3*y)/6=x]];
+
+/* Bug report ID: 1839088 - ic2 fails with division by 0
+ * Maxima no longer gives an error, but does not find the solution.
+ */
+
+ode2(y*'diff(y,x,2)=a, y, x);
+[sqrt(%pi)*%i*%e^-%k1*erf(%i*sqrt(a*log(y)+%k1*a)/sqrt(a))/(sqrt(2)*sqrt(a))
+   = x+%k2,
+ -sqrt(%pi)*%i*%e^-%k1*erf(%i*sqrt(a*log(y)+%k1*a)/sqrt(a))/(sqrt(2)*sqrt(a))
+   = x+%k2];
+
+ic2(%,x=0,y=b,diff(y,x)=0);
+[];
+
+/* Bug report ID: 2997443 - ic2 fails
+ * Maxima no longer gives an error, but does not find the solution.
+ * The solution of ic2 could be: y=1/20*(sqrt(160*x+1)-1)
+ */
+
+ode2('diff(x,t,2)+5*'diff(x,t)^3, x, t);
+[x = %k2-2*sqrt(t+%k1)/sqrt(10),x = 2*sqrt(t+%k1)/sqrt(10)+%k2];
+
+ic2(%,t=0,x=0,'diff(x,t)=4);
+[];
