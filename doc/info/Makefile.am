@@ -43,7 +43,7 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   bode.texi augmented_lagrangian.texi opsubst.texi stats.texi stirling.texi\
   implicit_plot.texi interpol.texi lbfgs.texi romberg.texi grobner.texi\
   contrib_ode.texi graphs.texi category-macros.texi lapack.texi \
-  asympa.texi Deleted.texi minpack.texi
+  asympa.texi Deleted.texi minpack.texi cobyla.texi
 
 figurefiles = \
 figures/contour1.gif\
