@@ -45,10 +45,10 @@
  * MAXCV is the MAX term above, which stands for MAXimum Constraint 
  * Violation.                
  *
- * On return, a vector of three elements is given:
+ * On return, a vector of four elements is given:
  *
- *  1:  The minimized function value
- *  2:  The value of the variables giving the minimum
+ *  1:  The value of the variables giving the minimum
+ *  2:  The minimized function value
  *  3:  The value of the constraints 
  *  4:  The number of function evaluations.
  *
