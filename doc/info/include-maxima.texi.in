@@ -141,6 +141,7 @@ Additional packages
 
 * augmented_lagrangian::        augmented_lagrangian package.
 * bode::                        Bode gain and phase plots.
+* cobyla::                      Nonlinear optimization with inequality constraints.
 * contrib_ode::                 Additional routines for ODEs
 * descriptive::                 Descriptive statistics.
 * diag::                        Jordan matrices.
