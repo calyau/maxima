@@ -259,3 +259,18 @@ ode2('diff(x,t,2)+5*'diff(x,t)^3, x, t);
 
 ic2(%,t=0,x=0,'diff(x,t)=4);
 [];
+
+/* Bug report ID: 1789213 - ic1 for solution containing indefinite integral
+ * More general implementation of ic1, which handles a noun form of an 
+ * integral correctly. The result simplifies correctly, if we define
+ * a function and reevaluate the result.
+ */
+sol: ode2(kappa(p) = -'diff(V, p) / V, V, p);
+V = %c*%e^-'integrate(kappa(p),p);
+
+ic1(sol, p = p0, V = V0);
+V = V0*%e^('at('integrate(kappa(p),p),[p = p0,V = V0])
+          -'integrate(kappa(p),p));
+
+(kappa(x):=x, ev(%,nouns));
+V = %e^(p0^2/2-p^2/2)*V0;
