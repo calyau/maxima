@@ -15,7 +15,7 @@ inequality constraints on X, where X is a vector of variables that has
 N components. 
 
 Equality constraints can often be implemented by a pair of inequality 
-constraints g(X)>=0 and -g(x)<= 0.
+constraints g(X)>=0 and -g(X)>= 0.
 
 The algorithm employs linear approximations to the
 objective and constraint functions, the approximations being formed by
