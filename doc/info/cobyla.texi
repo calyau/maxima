@@ -90,9 +90,11 @@ The maximum number of function evaluations.  (Defaults to 1000).
 On return, a vector of four elements is given:
 @enumerate
 @item
-The minimized function value
+The value of the variables giving the minimum.  This is a list of
+elements of the form @code{@var{var} = @var{value}} for each of the
+variables listed in @var{X}.
 @item
-The value of the variables giving the minimum
+The minimized function value
 @item
 The value of the constraints 
 @item
