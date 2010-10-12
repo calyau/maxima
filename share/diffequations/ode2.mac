@@ -307,15 +307,21 @@ bc2(soln,xa,ya,xb,yb):=
       if length(temp)=1 then return(first(temp)) else return(temp))$
 
 ic2(soln,xa,ya,dya):=
-   block([programmode:true,backsubst:true,singsolve:true,temp,%k2,%k1],
+   block([programmode:true,backsubst:true,singsolve:true,temp,%k2,%k1,yas],
       noteqn(xa), noteqn(ya), noteqn(dya),
       boundtest('%k1,%k1), boundtest('%k2,%k2),
-      temp: lhs(soln) - rhs(soln),
+      yas:lhs(ya),
+      /* We need a dependency for the algorithm. Add it, if it is not present */
+      if diff(yas,lhs(xa)) = 0 then depends(yas,lhs(xa)),
+      if listp(soln) then
+         /* A list of solutions. Map over the solutions. */
+         temp: map('lhs,soln)-map('rhs, soln)
+      else
+         temp: lhs(soln) - rhs(soln),
       temp: maplist(lambda([zz], subst(zz,soln)),
-		    solve([subst([xa,ya],soln), subst([dya,xa],
-			     lhs(dya)=-subst(0,lhs(dya),diff(temp,lhs(xa)))
-				       /diff(temp,lhs(ya)))],
-			  [%k1,%k2])),
+                    solve(flatten([subst([xa,ya], soln),
+                                   subst([dya,xa,ya], diff(soln,lhs(xa)))]),
+                          [%k1,%k2])),
       if length(temp)=1 then return(first(temp)) else return(temp))$
 
 noteqn(x):=if atom(x) or not inpart(x,0)="="
