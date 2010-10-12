@@ -8,6 +8,7 @@
 (mk:defsystem cobyla
   :source-pathname (maxima::maxima-load-pathname-directory)
   :binary-pathname (maxima::maxima-objdir "share" "cobyla")
+  :source-extension "lisp"
   :depends-on ("cobyla-package")
   :components
   ((:module lisp
