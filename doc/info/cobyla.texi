@@ -14,7 +14,7 @@ The routine minimizes an objective function F(X) subject to M
 inequality constraints on X, where X is a vector of variables that has
 N components. 
 
-Equality constraints can often be implemented by a pair of inequality 
+Equality constraints g(X)=0 can often be implemented by a pair of inequality 
 constraints g(X)>=0 and -g(X)>= 0.
 
 The algorithm employs linear approximations to the
@@ -40,7 +40,7 @@ References:
 
 [2] M. J. D. Powell, "A direct search optimization method that models the objective and constraint functions by linear interpolation," in Advances in Optimization and Numerical Analysis, eds. S. Gomez and J.-P. Hennart (Kluwer Academic: Dordrecht, 1994), p. 51-67. 
 
-[3] M. J. D. Powell, "Direct search algorithms for optimization calculations," Acta Numerica 7, 287-336 (1998)
+[3] M. J. D. Powell, "Direct search algorithms for optimization calculations," Acta Numerica 7, 287-336 (1998).  Also available as University of Cambridge, Department of Applied Mathematics and Theoretical Physics,  Numerical Analysis Group, Report NA1998/04 from @url{http://www.damtp.cam.ac.uk/user/na/reports.html}
 
 @opencatbox
 @category{Numerical methods}  @category{Optimization} @category{Share packages} @category{Package cobyla}
@@ -108,7 +108,8 @@ The number of function evaluations.
 @node Examples for cobyla, , Functions and Variables for cobyla, cobyla
 @section Examples for cobyla
 
-Minimizing x1*x2 with 1-x1^2-x2^2 >= 0:
+Minimize x1*x2 with 1-x1^2-x2^2 >= 0.  
+The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
 @c ===beg===
 @c load(fmin_cobyla);
@@ -127,6 +128,6 @@ Minimizing x1*x2 with 1-x1^2-x2^2 >= 0:
                                                 [- 1.9998447342572945E-12], 66]
 @end example
 
-The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
+There are additional examples in the share/cobyla/ex directory.
 
 
