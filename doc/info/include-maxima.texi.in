@@ -139,6 +139,7 @@ Advanced facilities and programming
 
 Additional packages
 
+* asympa::                      Asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
 * bode::                        Bode gain and phase plots.
 * cobyla::                      Nonlinear optimization with inequality constraints.
@@ -409,6 +410,11 @@ Program Flow
 Debugging
 
 * Functions and Variables for Debugging::   
+
+asympa
+
+* Introduction to asympa::
+* Functions and variables for asympa::
 
 augmented_lagrangian
 
@@ -779,11 +785,15 @@ zeilberger
 @chapter Program Flow
 @include Program.texi
 
-@node Debugging, augmented_lagrangian, Program Flow, Top
+@node Debugging, asympa, Program Flow, Top
 @chapter Debugging
 @include Debugging.texi
 
-@node augmented_lagrangian, bode, Debugging, Top
+@node asympa, augmented_lagrangian, Debugging, Top
+@chapter asympa
+@include asympa.texi
+
+@node augmented_lagrangian, bode, asympa, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
