@@ -1479,6 +1479,25 @@
 ;;; bigfloats are convert to BIGFLOATS.  Maxima complex numbers are
 ;;; converted to CL complex numbers or to COMPLEX-BIGFLOAT's.
 (defun to (maxima-num &optional imag)
+  (let ((result (ignore-errors (%to maxima-num imag))))
+    (or result
+	(maxima::merror (intl:gettext "BIGFLOAT: unable to convert ~M to a CL or BIGFLOAT number.")
+			(if imag
+			    (maxima::add maxima-num (maxima::mul imag 'maxima::$%i))
+			    maxima-num)))))
+
+;;; MAYBE-TO - External
+;;;
+;;;   Like TO, but if the maxima number can't be converted to a CL
+;;; number or BIGFLOAT, just return the maxima number.
+(defun maybe-to (maxima-num &optional imag)
+  (let ((result (ignore-errors (%to maxima-num imag))))
+    (or result
+	(if imag
+	    (maxima::add maxima-num imag)
+	    maxima-num))))
+	
+(defun %to (maxima-num &optional imag)
   (cond (imag
 	 (complex (to maxima-num) (to imag)))
 	(t
@@ -1509,7 +1528,7 @@
 		    (typep maxima-num 'complex-bigfloat))
 		maxima-num)
 	       (t
-		(maxima::merror (intl:gettext "BIGFLOAT: unable to convert ~M to a CL or BIGFLOAT number.") maxima-num))))))
+		(error "BIGFLOAT: unable to convert to a CL or BIGFLOAT number."))))))
 
 ;;; EPSILON - External
 ;;;

@@ -159,6 +159,8 @@
 	   #:rationalize
 	   #:coerce
 	   )
+  ;; If any of these exported symbols are updated, update the
+  ;; shadowing-import-from list for BIGFLOAT-USER too!
   
   ;; Export types
   (:export #:bigfloat
@@ -166,6 +168,7 @@
   ;; Export functions
   (:export #:bigfloat
 	   #:to
+	   #:maybe-to
 	   #:epsilon
 	   #:%pi
 	   ;; CL equivalents
@@ -233,6 +236,87 @@
 	   #:rationalize
 	   #:coerce
 	   ))
+
+;; BIGFLOAT-USER is the package intended to be used for applications
+;; using the routines from the BIGFLOAT.  BIGFLOAT is the
+;; implementation package.
+(defpackage bigfloat-user
+  (:use :cl)
+  ;; Get all the exported symbols from BIGFLOAT and import them.
+  (:shadowing-import-from :bigfloat
+			  ;; Types
+			  #:bigfloat
+			  #:complex-bigfloat
+			  ;; Functions
+			  #:to
+			  #:epsilon
+			  #:%pi
+			  ;; CL equivalents
+			  #:+
+			  #:-
+			  #:*
+			  #:/
+			  #:1+
+			  #:1-
+			  #:zerop
+			  #:plusp
+			  #:minusp
+			  #:abs
+			  #:sqrt
+			  #:log
+			  #:exp
+			  #:sin
+			  #:cos
+			  #:tan
+			  #:asin
+			  #:acos
+			  #:atan
+			  #:sinh
+			  #:cosh
+			  #:tanh
+			  #:asinh
+			  #:acosh
+			  #:atanh
+			  #:expt
+			  #:=
+			  #:/=
+			  #:<
+			  #:>
+			  #:<=
+			  #:>=
+			  #:scale-float
+			  #:realpart
+			  #:imagpart
+			  #:complex
+			  #:conjugate
+			  #:max
+			  #:min
+			  #:cis
+			  #:phase
+			  #:floor
+			  #:ffloor
+			  #:incf
+			  #:decf
+			  #:realp
+			  #:complexp
+			  #:numberp
+			  #:integer-decode-float
+			  #:decode-float
+			  #:float
+			  #:ceiling
+			  #:fceiling
+			  #:truncate
+			  #:ftruncate
+			  #:round
+			  #:fround
+			  #:random
+			  #:signum
+			  #:float-sign
+			  #:float-digits
+			  #:rational
+			  #:rationalize
+			  #:coerce
+			  ))
 
 (defpackage :intl
   (:use :common-lisp)
