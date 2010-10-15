@@ -9,20 +9,20 @@
  * Michael J. D. Powell, 2010/10/08.  The code was obtained from
  * http://plato.asu.edu/sub/nlores.html#general.
  *
- * fmin_cobyla(f, vars, constraints, init_x, [args])
+ * fmin_cobyla(f, vars, init_x, [args])
  *
  *   f       Real function to be minimized
  *   vars    List of variables over which to minimize
- *   constraints
- *           List of expressions for the constraints on the variables.
- *           Each expression is assumed to be greater than or equal to 
- *           zero.  This can be an empty list if there are no 
- *           constraints.
  *   init_x  Initial guess.  Do NOT set to all zeroes.
  *
  * The optional arguments are all keyword arguments of the form key =
  * value:
  *
+ *   ineq    List of expressions for the constraints on the variables.
+ *           Each expression is assumed to be greater than or equal to 
+ *           zero.  
+ *   eq      List of expressions for the equality constraints on the 
+ *           variables.
  *   rhobeg  Initial value of the internal RHO variable which controls 
  *           the size of simplex.  (Defaults to 1.)
  *   rhoend  The desired final value rho parameter.  It is approximately
@@ -49,7 +49,9 @@
  *
  *  1:  The value of the variables giving the minimum
  *  2:  The minimized function value
- *  3:  The value of the constraints 
+ *  3:  The value of the constraints as a list.  The first element
+ *      is for the inequality constraints and the second element is
+ *      for the equality constraints.
  *  4:  The number of function evaluations.
  *
  * You can find some examples in share/cobyla/ex.
@@ -57,11 +59,17 @@
  * An example of minimizing x1*x2 with 1-x1^2-x2^2 >= 0:
 
    load(fmin_cobyla);
-   fmin_cobyla(x1*x2, [x1, x2], [1-x1^2-x2^2], [1,1], iprint=1);
+   fmin_cobyla(x1*x2, [x1, x2], [1,1], ineq = [1-x1^2-x2^2], iprint=1);
  *
  * => [[x1 = .7071058493484819, x2 = - .7071077130247994], 
- *                           - .4999999999992633, [- 1.999955756559757e-12], 66]
+ *     - .4999999999992633, [[- 1.999955756559757e-12], []], 66]
  *
  * The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
  */
 load("load-cobyla.lisp");
+
+/* Define the maxima function so that maxima can catch errors in 
+ * the wrong number of arguments
+ */
+fmin_cobyla(f, vars, initx, [options]) :=
+  %fmin_cobyla(f, vars, initx, options);
