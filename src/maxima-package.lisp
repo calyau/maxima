@@ -249,6 +249,7 @@
 			  #:complex-bigfloat
 			  ;; Functions
 			  #:to
+			  #:maybe-to
 			  #:epsilon
 			  #:%pi
 			  ;; CL equivalents
