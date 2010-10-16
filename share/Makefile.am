@@ -81,6 +81,8 @@ calculus/qual.usg\
 calculus/qualsp.lisp\
 calculus/revert.mac\
 calculus/taylor1.mac\
+cobyla/bf-cobyla-interface.lisp\
+cobyla/bf_fmin_cobyla.mac\
 cobyla/cobyla-interface.lisp\
 cobyla/cobyla-package.lisp\
 cobyla/ex/die.mac\
@@ -95,11 +97,15 @@ cobyla/ex/ex7.mac\
 cobyla/ex/ex8.mac\
 cobyla/ex/ex9.mac\
 cobyla/fmin_cobyla.mac\
+cobyla/lisp/bf-cobyla.lisp\
+cobyla/lisp/bf-cobylb.lisp\
+cobyla/lisp/bf-trstlp.lisp\
 cobyla/lisp/calcfc.lisp\
 cobyla/lisp/cobyla.lisp\
 cobyla/lisp/cobylb.lisp\
 cobyla/lisp/trstlp.lisp\
 cobyla/load-cobyla.lisp\
+cobyla/load-bf-cobyla.lisp\
 combinatorics/README\
 colnew/colnew-package.lisp\
 colnew/colnew-lisp.system\
