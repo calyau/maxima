@@ -3138,10 +3138,11 @@
 ;; and graphic objects.
 (defmacro make-list-of-arguments ()
    '(setf largs (rest ($tree_reduce 
-                         #'$append
-                        (map 
-                          'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
-                          args)))))
+                        '$append
+                        (cons '(mlist)
+                              (map 
+                                'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
+                                args))))))
 
 (defvar *2d-graphic-objects* (make-hash-table))
 
