@@ -19,6 +19,20 @@
 		    :depends-on ("trstlp"))
 	     (:file "trstlp")))))
 
+(mk:defsystem bf-cobyla
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "cobyla")
+  :source-extension "lisp"
+  :depends-on ("cobyla-package")
+  :components
+  ((:module lisp
+	    :components
+	    ((:file "bf-cobyla"
+		    :depends-on ("bf-cobylb"))
+	     (:file "bf-cobylb"
+		    :depends-on ("bf-trstlp"))
+	     (:file "bf-trstlp")))))
+
 (mk:defsystem cobyla-package
   :source-pathname (maxima::maxima-load-pathname-directory)
   :binary-pathname (maxima::maxima-objdir "share" "cobyla")
@@ -33,3 +47,11 @@
   :depends-on ("cobyla")
   :components
   ((:file "cobyla-interface")))
+
+(mk:defsystem bf-cobyla-interface
+  :source-pathname (maxima::maxima-load-pathname-directory)
+  :binary-pathname (maxima::maxima-objdir "share" "cobyla")
+  :source-extension "lisp"
+  :depends-on ("bf-cobyla")
+  :components
+  ((:file "bf-cobyla-interface")))
