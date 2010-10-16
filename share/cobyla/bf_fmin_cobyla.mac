@@ -1,0 +1,17 @@
+/*
+ * bf_fmin_cobyla
+ *
+ * This is a maxima interface to the routine COBYLA.
+ * Interface Copyright Raymond Toy 2010
+ * Interface released under the terms of the GNU General Public License.
+ *
+ * This is identical to fmin_cobyla, but supports bigfloats.
+ */
+load("load-bf-cobyla.lisp");
+
+/* Define the maxima function so that maxima can catch errors in 
+ * the wrong number of arguments
+ */
+
+bf_fmin_cobyla(f, vars, initx, [options]) :=
+  %bf_fmin_cobyla(f, vars, initx, options);
