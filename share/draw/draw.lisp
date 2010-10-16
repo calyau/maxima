@@ -3137,7 +3137,7 @@
 ;; gr2d, gr3d and draw admit as arguments lists of options
 ;; and graphic objects.
 (defmacro make-list-of-arguments ()
-   '(setf largs (rest (apply 
+   '(setf largs (rest ($tree_reduce 
                          #'$append
                         (map 
                           'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
