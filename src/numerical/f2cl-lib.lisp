@@ -1226,7 +1226,9 @@ causing all pending operations to be flushed"
 	   (arg-list
 	    (apply #'append
 		   (map 'list #'(lambda (x)
-				  (cond ((numberp x)
+				  (cond ((or (numberp x)
+					     (typep x 'bigfloat:bigfloat)
+					     (typep x 'bigfloat:complex-bigfloat))
 					 (list x))
 					((stringp x)
 					 (list x))
@@ -1465,9 +1467,14 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.20 2009-01-08 18:25:34 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.21 2010-10-16 15:24:09 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.20  2009-01-08 18:25:34  rtoy
+;;; Revision 1.21  2010-10-16 15:24:09  rtoy
+;;; Allow f2cl-lib to recognize BIGFLOAT and COMPLEX-BIGFLOAT numbers so
+;;; that they can at least be printed, if not quite in the format
+;;; specified by the format string.
+;;;
+;;; Revision 1.20  2009/01/08 18:25:34  rtoy
 ;;; Update f2cl to latest version of f2cl, and regenerate all of the lisp
 ;;; code.
 ;;;
