@@ -1,0 +1,393 @@
+@c -----------------------------------------------------------------------------
+@c File     : Help.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 15.10.2010
+@c 
+@c This file contains documentation for the following Maxima symbols:
+@c 
+@c   apropos
+@c   demo
+@c   describe
+@c   example
+@c   manual_demo
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Dokumentation::               
+* Funktionen und Variablen der Hilfe::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@c @node Garbage Collection, Documentation, Lisp and Maxima, Help
+@c @section Garbage Collection
+@c Symbolic computation tends to create a good deal
+@c of garbage, and effective handling of this can be crucial to successful
+@c completion of some programs.
+
+@c @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
+@c @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
+@c @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
+@c Under GCL, on UNIX systems where the mprotect system call is available
+@c (including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
+@c is available.   This limits the collection to pages which have been recently
+@c written to.    See the GCL documentation under ALLOCATE and GBC.   At the
+@c Lisp level doing (setq si::*notify-gbc* t) will help you determine which
+@c areas might need more space.
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Dokumentation, Funktionen und Variablen der Hilfe, , Hilfe
+@section Dokumentation
+
+   @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
+
+@c The Maxima on-line user's manual can be viewed in different forms.
+@c From the Maxima interactive prompt, the user's manual
+@c is viewed as plain text by the @code{?} command (i.e., the @code{describe} 
+@c function). The user's manual is viewed as @code{info} hypertext by the 
+@c @code{info} viewer program and as a web page by any ordinary web browser.
+
+Die Maxima online-Dokumentation kann auf verschiedene Art gelesen werden. Von 
+der Maxima-Kommandozeile kann die Dokumentation mit den Kommandos @code{?}, 
+@code{??} oder @code{describe} aufgerufen werden. Weiterhin kann die 
+Dokumentation als GNU Infotext mit dem GNU Programm @code{info} oder in einem 
+Browser gelesen werden.
+
+@c @code{example} displays examples for many Maxima functions.
+@c For example,
+
+@code{example} zeigt Beispiele für viele Maxima-Funktionen. Das Kommando
+
+@example
+(%i1) example (integrate);
+@end example
+
+@c yields
+
+gibt die folgende hier verkürzt wiedergegebene Ausgabe:
+
+@example
+(%i2) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
+(%o2) test(f) := block([u], u : integrate(f, x), 
+
+                                         ratsimp(f - diff(u, x)))
+(%i3) test(sin(x))
+(%o3)                           0
+(%i4) test(1/(x+1))
+(%o4)                           0
+(%i5) test(1/(x^2+1))
+(%o5)                           0
+[...]
+@end example
+
+@c and additional output.
+
+@c @opencatbox
+@c @category{Hilfe} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Funktionen und Variablen der Hilfe,  , Dokumentation, Hilfe
+@section Funktionen und Variablen der Hilfe
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} apropos (@var{string})
+
+@c Searches for Maxima names which have @var{string} appearing anywhere within
+@c them.  Thus, @code{apropos (exp)} returns a list of all the flags and functions
+@c which have @code{exp} as part of their names, such as @code{expand}, @code{exp},
+@c and @code{exponentialize}.  Thus if you can only remember part of the name of
+@c something you can use this command to find the rest of the name. Similarly, you
+@c could say @code{apropos (tr_)} to find a list of many of the switches relating
+@c to the translator, most of which begin with @code{tr_}.
+
+Liefert eine Liste der Maxima-Symbole, die @var{string} im Namen enthalten. 
+@var{string} ist eine Zeichenkette.
+
+@c @code{apropos("")} returns a list with all Maxima names.
+
+@code{apropos("")} gibt eine Liste mit allen Maxima-Symbolen zurück.
+
+@c @code{apropos} returns the empty list @code{[]}, if no name is found.
+
+@code{apropos} gibt eine leere Liste @code{[]} zurück, wenn kein Maxima-Symbol 
+gefunden wurde, das @var{string} im Namen enthält.
+
+Beispiel:
+
+@c Show all Maxima symbols wich have @code{"gamma"} in the name:
+
+Zeige alle Maxima-Symbole, die @code{"gamma"} im Namen enthalten:
+
+@c ===beg===
+@c apropos("gamma");
+@c ===end===
+@example
+(%i1) apropos("gamma");
+(%o1) [%gamma, gamma, gammalim, gamma_expand, gamma_greek, 
+gamma_incomplete, gamma_incomplete_generalized, 
+gamma_incomplete_regularized, Gamma, log_gamma, makegamma, 
+prefer_gamma_incomplete, 
+gamma_incomplete_generalized_regularized]
+@end example
+
+@c @opencatbox
+@c @category{Hilfe}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} demo (@var{filename})
+
+@c Evaluates Maxima expressions in @var{filename} and displays the results.
+@c @code{demo} pauses after evaluating each expression
+@c and continues after the user enters a carriage return.
+@c (If running in Xmaxima, @code{demo} may need to see a semicolon @code{;}
+@c followed by a carriage return.)
+
+Führt die Beispiele der Demo-Datei @var{filename} aus. @var{filename} kann ein 
+Symbol oder eine Zeichenkette sein. @code{demo} macht nach jeder Ausgabe eine 
+Pause und wartet auf eine Eingabe.
+
+@c @code{demo} searches the list of directories @code{file_search_demo} to find 
+@c @code{filename}. If the file has the suffix @code{dem}, the suffix may be 
+@c omitted. See also @code{file_search}.
+
+@code{demo} sucht in den Ordnern, die in der Optionsvariablen 
+@code{file_search_demo} enthalten sind, nach der Datei @var{filename}. Die
+Dateiendung @var{.dem} muss nicht angegeben werden. Siehe auch die Funktion
+@code{file_search}.
+
+@c @code{demo} evaluates its argument.
+@c @code{demo} returns the name of the demonstration file.
+
+@code{demo} wertet sein Argument aus. @code{demo} gibt den Namen der Demo-Datei 
+zurück, die ausgeführt wird.
+
+Beispiel:
+
+@example
+(%i1) demo ("disol");
+
+batching /home/wfs/maxima/share/simplification/disol.dem
+ At the _ prompt, type ';' followed by enter to get next demo
+(%i2)                      load(disol)
+_
+(%i3)           exp1 : a (e (g + f) + b (d + c))
+(%o3)               a (e (g + f) + b (d + c))
+_
+(%i4)                disolate(exp1, a, b, e)
+(%t4)                         d + c
+
+(%t5)                         g + f
+
+(%o5)                   a (%t5 e + %t4 b)
+_
+@end example
+
+@c @opencatbox
+@c @category{Hilfe} @category{Konsole Ein- und Ausgabe} @category{Dateieingabe}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} describe (@var{topic})
+@deffnx {Funktion} describe (@var{topic}, exact)
+@deffnx {Funktion} describe (@var{topic}, inexact)
+@ifinfo
+@fnindex Hilfe
+@end ifinfo
+
+@c @code{describe(@var{string})} is equivalent to 
+@c @code{describe(@var{string}, exact)}.
+
+@code{describe(@var{topic})} entspricht dem Befehl 
+@code{describe(@var{topic}, exact)}. @var{topic} ist eine Zeichenkette oder ein
+Symbol. Wenn @var{topic} ein Operator wie z. B. @code{+}, @code{*}, @code{do} 
+oder @code{if} ist, muss der Name des Operators als eine Zeichenkette angegeben 
+werden.
+
+@c @code{describe(@var{string}, exact)} finds an item with title equal
+@c (case-insensitive) to @var{string}, if there is any such item.
+
+@code{describe(@var{topic}, exact)} findet Einträge, die mit 
+@var{topic} übereinstimmen. Zu beachten ist, dass bei der Suche Klein- und 
+Großschreibung unterschieden werden.
+
+@c @code{describe(@var{string}, inexact)} finds all documented items which 
+@c contain @var{string} in their titles.
+@c If there is more than one such item, Maxima asks the user to select
+@c an item or items to display.
+
+@code{describe(@var{topic}, inexact)} findet Einträge, die @var{topic}
+enthalten. Sind mehrere Einträge vorhanden, fragt Maxima, welcher der Einträge
+angezeigt werden soll.
+
+@c At the interactive prompt,
+@c @code{? foo} (with a space between @code{?} and @code{foo})
+@c is equivalent to @code{describe("foo", exact)},
+@c and @code{?? foo} is equivalent to @code{describe("foo", inexact)}.
+
+@code{? foo} (mit einem Leerzeichen zwischen @code{?} und @code{foo}) entspricht
+@code{describe("foo",exact)} und @code{?? foo} entspricht 
+@code{describe("foo", inexact)}. In der Kurzschreibweise muss das Argument ein
+Symbol sein.
+
+@c @code{describe("", inexact)} yields a list of all topics documented in the 
+@c on-line manual.
+
+@code{describe("", inexact)} gibt alle Themen aus, die in der Dokumentation
+enthalten sind.
+
+@c @code{describe} quotes its argument.
+@c @code{describe} returns @code{true} if some documentation is found, otherwise
+@c @code{false}.
+
+@code{describe} wertet das Argument nicht aus. @code{describe} gibt @code{true} 
+zurück, wenn Einträge gefunden wurden, ansonsten @code{false}.
+
+@c See also @ref{Documentation}.
+
+Beispiel:
+
+@c In this example, items 7 and 8 were selected (output is shortened as 
+@c indicated by @code{[...]}. All or none of the items could have been selected
+@c by entering @code{all} or @code{none}, which can be abbreviated @code{a} or 
+@c @code{n}, respectively.
+
+In diesem Beispiel werden die Einträge 2 und 3 ausgewählt (Die Ausgabe ist
+verkürzt wiedergeben). Alle oder keiner der Einträge werden mit @code{all} und 
+@code{none} ausgewählt. Die Eingabe kann mit @code{a} und @code{n}
+abgekürzt werden.
+
+@example
+(%i1) ?? integrat
+ 0: Functions and Variables for Integration
+ 1: Introduction to Integration
+ 2: integrate  (Functions and Variables for Integration)
+ 3: integrate_use_rootsof  (Functions and Variables for Integration)
+ 4: integration_constant  (Functions and Variables for Integration)
+ 5: integration_constant_counter  (Functions and Variables for Integration)
+Enter space-separated numbers, `all' or `none': 2 3
+
+ -- Function: integrate (<expr>, <x>)
+ -- Function: integrate (<expr>, <x>, <a>, <b>)
+     Attempts to symbolically compute the integral of <expr> with
+     respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
+     integral, with limits of integration <a> and <b>.  The limits
+     should not contain <x>, although `integrate' does not enforce this
+     restriction.  <a> need not be less than <b>.  If <b> is equal to
+     <a>, `integrate' returns zero. 
+
+     [...]
+
+ -- Option variable: integrate_use_rootsof
+     Default value: `false'
+
+     When `integrate_use_rootsof' is `true' and the denominator of a
+     rational function cannot be factored, `integrate' returns the
+     integral in a form which is a sum over the roots (not yet known)
+     of the denominator. 
+
+     [...]
+@end example
+
+@c @opencatbox
+@c @category{Hilfe} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} example (@var{topic})
+@deffnx {Funktion} example ()
+
+@c @code{example (@var{topic})} displays some examples of @var{topic}, which is
+@c a symbol or a string. To get examples for operators like @code{if}, #
+@c @code{do}, or @code{lambda} the argument must be a string, e.g. 
+@c @code{example ("do")}. @code{example} is not case sensitive. Most topics are 
+@c function names.
+
+@code{example(@var{topic})} zeigt Beispiele für das Argument @var{topic}. 
+@var{topic} ist ein Symbol oder eine Zeichenkette. Ist das Argument ein 
+Operator, wie zum Beispiel @code{+}, @code{*} oder @code{do}, muss das Argument
+@var{topic} eine Zeichenkette sein. Groß- und Kleinschreibung werden nicht 
+beachtet.
+
+@c @code{example ()} returns the list of all recognized topics.
+
+@code{example()} zeigt eine Liste aller Themen, für die Beispiele 
+vorhanden sind.
+
+@c The name of the file containing the examples is given by the global option 
+@c variable @code{manual_demo}, which defaults to @code{"manual.demo"}.
+
+Die Optionsvariable @code{manual_demo} enthält den Namen der Datei, die die 
+Beispiele enthält. Der Standardwert ist @code{"manual.demo"}
+
+@c @code{example} quotes its argument. @code{example} returns @code{done} unless
+@c no examples are found or there is no argument, in which case @code{example}
+@c returns the list of all recognized topics.
+
+@code{example} wertet sein Argument nicht aus. @code{example} gibt @code{done}
+zurück, außer wenn kein Argument angeben ist oder wenn kein Beispiel gefunden
+wurde. In diesen Fällen wird eine Liste mit allen Themen ausgegeben, zu denen
+Beispiele vorhanden sind.
+
+Beispiele:
+
+@c ===beg===
+@c example(append);
+@c example("lambda");
+@c example("allROOTS");
+@c ===end===
+@example
+(%i1) example(append);
+(%i2) append([x+y,0,-3.2],[2.5E+20,x])
+(%o2)                    [y + x, 0, - 3.2, 2.5E+20, x]
+(%o2)                                done
+(%i3) example("lambda");
+(%i4) lambda([x,y,z],z^2+y^2+x^2)
+                                           2    2    2
+(%o4)                   lambda([x, y, z], z  + y  + x )
+(%i5) %(1,2,a)
+                                     2
+(%o5)                               a  + 5
+(%i6) a+2+1
+(%o6)                                a + 3
+(%o6)                                done
+(%i7) example("allROOTS");
+(%i8) (1+2*x)^3 = 13.5*(1+x^5)
+                                   3          5
+(%o8)                     (2 x + 1)  = 13.5 (x  + 1)
+(%i9) allroots(%)
+(%o9) [x = .8296749902129361, x = - 1.015755543828121, 
+x = .9659625152196369 %i - .4069597231924075, 
+x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
+(%o9)                                done
+@end example
+
+@c @opencatbox
+@c @category{Hilfe} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} manual_demo
+Standardwert: @code{"manual.demo"}
+
+@c @code{manual_demo} specifies the name of the file containing the examples for 
+@c the function @code{example}. See @code{example}.
+
+Die Optionsvariable @code{manual_demo} enthält den Namen der Datei, die die 
+Beispiele für die Funktion @code{example} enthält. Siehe @code{example}.
+
+@c @opencatbox
+@c @category{Hilfe} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- End of file Help.de.texi ------------------------------------------------
+

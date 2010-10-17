@@ -1,0 +1,2472 @@
+@c -----------------------------------------------------------------------------
+@c File     : Command.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 15.10.2010
+@c 
+@c This file contains documentation for the following symbols:
+@c 
+@c  __                  _                   %                   %%     
+@c  %th                 ?                   ?? 
+@c 
+@c  inchar              infolists           kill                labels         
+@c  linechar            linenum             myoptions           nolabels      
+@c  optionset           outchar             playback            prompt
+@c  quit                reset               reset_verbosely     showtime
+@c  system              to_lisp             values
+@c                  
+@c  %dispflag           absboxchar          disp                dispform       
+@c  display             display2d           display_format_internal        
+@c  dispterms           expt                ncexpt              exptdispflag
+@c  grind               ibase               ldisp               ldisplay
+@c  linel               lispdisp            negsumdispflag      obase 
+@c  pfeformat           print               read                readonly       
+@c  sqrtdispflag        stardisp            ttyoff
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Einführung in die Kommandozeile::
+* Funktionen und Variablen der Eingabe::
+* Funktionen und Variablen der Ausgabe::
+@end menu
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Einführung in die Kommandozeile, Funktionen und Variablen der Eingabe, Kommandozeile, Top
+@section Einführung in die Kommandozeile
+
+@subheading Konsole
+
+Für Maxima sind verschiedene Benutzeroberflächen erhältlich. Bekannte 
+Oberflächen, die je nach Betriebssystem bereits nach der Installation von Maxima
+zur Verfügung stehen, sind wxMaxima, XMaxima, IMaxima und die Konsole. 
+
+Die Konsole (oder das Terminal) arbeitet in einem Textmodus. Für die Ausgabe in
+einem grafischen Modus mit einer menügesteuerten Eingabe müssen andere
+Benutzeroberflächen genutzt werden.
+
+In dieser Dokumentation wird ausschließlich die Konsole eingesetzt, die unter 
+allen Betriebsystemen zur Verfügung steht. Der Nutzer kann alle Maxima
+Befehle und Funktionen in einer Konsole nutzen. Im Textmodus der Konsole
+erfolgen die Ausgaben in der Regel in einem 2D-Modus. Für die Ausgabe von
+Funktionsgraphen werden von Maxima Hilfsprogramme wie GNUPlot aufgerufen.
+
+@subheading Phasen der Eingabe, Auswertung, Vereinfachung und Anzeige
+
+Jede Eingabe des Nutzers in einer Konsole bis zur Ausgabe auf der Konsole kann
+in vier Phasen eingeteilt werden:
+
+@enumerate
+@item 
+
+Von der Tastatur oder aus einer Datei wird ein Ausdruck eingelesen und vom
+Parser in eine interne Darstellung umgewandelt. In dieser 1. Phase werden 
+inbesondere Operatoren wie "+", "/" oder "do" behandelt.
+
+@item 
+
+Der vom Parser eingelesene Ausdruck wird von Maxima in der 2. Phase 
+ausgewertet. Dabei werden Variable durch ihren Wert ersetzt und Funktionen 
+ausgeführt. Das Ergebnis dieser Phase ist ein ausgewerteter Ausdruck.
+
+@item 
+
+Der ausgewertete Ausdruck wird in der 3. Phase von Maxima vereinfacht.
+Dabei werden Ausdrücke wie @code{a+a} zu @code{2*a} oder @code{sin(%pi/2)} zu 
+@code{1} vereinfacht.
+
+@item 
+
+Das Ergebnis ist ein ausgewerteter und vereinfachter Ausdruck. Zuletzt wird 
+dieses Ergebnis in der 4. Phase für die Anzeige vorbereitet und auf der Konsole
+ausgegeben.
+@end enumerate
+
+Der Nutzer kann auf jede einzelne Phase Einfluß nehmen. Verschiedene Kapitel
+der Dokumentation befassen sich mit diesen Möglichkeiten. In diesem Kapitel 
+werden die Kommandos und Möglichkeiten zusammengestellt, die sich mit der 
+Eingabe und Ausgabe auf der Konsole befassen.
+
+@subheading Marken
+
+Maxima speichert alle Eingaben in den Marken @code{%i} und die Ausgaben in den 
+Marken @code{%o} ab. Die Marken erhalten eine laufende Nummer. Weiterhin 
+erzeugen einige Befehle Zwischenmarken @code{%t}. Andere Systemvariable 
+speichern das letzte Ergebnis oder die letzte Eingabe ab. 
+
+Folgende Symbole bezeichnen Variable und Funktionen für die Verwaltung der
+Marken:
+
+@verbatim
+   __          _        
+   %           %%           %th
+   inchar      linechar     outchar
+   linenum     nolabels
+@end verbatim
+
+@subheading Informationslisten
+
+Maxima verwaltet Informationslisten. Die verfügbaren Informationslisten sind in
+der Systemvariablen @code{infolists} enthalten. In diesem Kapitel werden die
+Informationslisten @code{labels}, @code{values} und @code{myoptions} erläutert.
+Wird eine Optionsvariable vom Nutzer gesetzt, kontrolliert die Optionsvariable
+@code{optionset} die Ausgabe weiterer Informationen.
+
+Folgenden Symbole bezeichnen Variable und Funktionen für Informationslisten und
+Optionsvariablen:
+
+@verbatim
+   infolists     labels        values 
+   myoptions     optionset
+@end verbatim
+
+Weitere Informationslisten, die in anderen Kapiteln erläuert werden, sind:
+
+@verbatim
+   functions      arrays         macros
+   rules          aliases        dependencies 
+   gradefs        props          let_rule_packages
+   structures     namespaces  
+@end verbatim
+
+@subheading Löschen und Rücksetzen 
+
+Um einen definierten Anfangszustand herzustellen oder um einzelne Zuweisungen,
+Eigenschaften oder Definitionen zu entfernen, kennt Maxima die folgenden 
+Variable und Kommandos:
+
+@verbatim
+   kill     reset     reset_verbosely
+@end verbatim
+
+@subheading Weitere Kommandos der Kommandozeile
+
+Mit weiteren Kommandos kann eine Maxima-Sitzung beendet oder zu einer Lisp-
+Sitzung gewechselt werden. Das Zeichen für die Eingabeaufforderung einer
+Unterbrechung kann geändert werden. Die Zeit für jede einzelne Berechnung kann
+angezeigt werden und die Ergebnisse einer Sitzung können wiederholt ausgegeben 
+werden. Maxima kennt hierfür die folgenden Symbole:
+
+@verbatim
+   playback     prompt     showtime
+   quit         system     to_lisp
+@end verbatim
+
+@subheading Symbole und Funktionen für die Anzeige
+
+@verbatim
+   %edispflag         absboxchar       disp
+   dispform           display          display2d
+   display_format_internal             dispterms
+   exptdispflag       grind            ibase          
+   ldisp              ldisplay         linel          
+   lispdisp           negsumdispflag   obase          
+   pfeformat          print            read             
+   readonly           sqrtdispflag     stardisp         
+   ttyoff
+@end verbatim
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Funktionen und Variablen der Eingabe, Funktionen und Variablen der Ausgabe, Einführung in die Kommandozeile, Kommandozeile
+@section Funktionen und Variablen der Eingabe
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} __
+@ifinfo
+@vrindex Aktuelle Eingabe
+@end ifinfo
+
+@c @code{__} is the input expression currently being evaluated. That is, while 
+@c an input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
+
+Während einer laufenden Auswertung enthält die Systemvariable @code{__} den
+zuletzt vom Parser eingelesenen Ausdruck @var{expr}.
+
+@c @code{__} is assigned the input expression before the input is simplified or
+@c evaluated. However, the value of @code{__} is simplified (but not evaluated) 
+@c when it is displayed.
+
+Der Ausdruck @var{expr} wird der Systemvariablen @code{__} noch vor der 
+Auswertung und Vereinfachung zugewiesen. Für die Ausgabe wird @code{__} 
+vereinfacht, aber nicht ausgewertet.
+
+@c @code{__} is recognized by @code{batch} and @code{load}. In a file processed
+@c by @code{batch}, @code{__} has the same meaning as at the interactive prompt.
+@c In a file processed by @code{load}, @code{__} is bound to the input 
+@c expression most recently entered at the interactive prompt or in a batch 
+@c file; @code{__} is not bound to the input expressions in the file being 
+@c processed. In particular, when @code{load (@var{filename})} is called from 
+@c the interactive prompt, @code{__} is bound to @code{load (@var{filename})}
+@c while the file is being processed.
+
+Die Systemvariable @code{__} wird von den Kommandos @code{batch} und @code{load}
+erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgeführt, hat @code{__}
+dieselbe Bedeutung wie bei der Eingabe von einer Kommandozeile. Wird eine Datei
+mit dem Namen @code{filename} mit dem Kommando @code{load} geladen, enthält 
+@code{__} den Ausdruck @code{load(@var{filename})}. Das ist der letzte Befehl 
+der Kommandozeile.
+
+@c See also @code{_} and @code{%}.
+
+Siehe auch die Systemvariablen @code{_} und @code{%}.
+
+Beispiele:
+
+@c ===beg===
+@c print ("I was called as", __);
+@c foo (__);
+@c g (x) := (print ("Current input expression =", __), 0);
+@c [aa : 1, bb : 2, cc : 3];
+@c (aa + bb + cc)/(dd + ee + g(x));
+@c ===end===
+@example
+(%i1) print ("I was called as", __);
+I was called as print(I was called as, __) 
+(%o1)              print(I was called as, __)
+(%i2) foo (__);
+(%o2)                     foo(foo(__))
+(%i3) g (x) := (print ("Current input expression =", __), 0);
+(%o3) g(x) := (print("Current input expression =", __), 0)
+(%i4) [aa : 1, bb : 2, cc : 3];
+(%o4)                       [1, 2, 3]
+(%i5) (aa + bb + cc)/(dd + ee + g(x));
+                            cc + bb + aa
+Current input expression = -------------- 
+                           g(x) + ee + dd
+                                6
+(%o5)                        -------
+                             ee + dd
+@end example
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe} @category{Systemvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} _
+@ifinfo
+@vrindex Letzte Eingabe
+@end ifinfo
+
+@c @code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2}, 
+@c @code{%i3}, ...).
+
+Die Systemvariable @code{_} enthält den zuletzt eingebenen Ausdruck @var{expr}.
+
+@c @code{_} is assigned the input expression before the input is simplified or
+@c evaluated. However, the value of @code{_} is simplified (but not evaluated) 
+@c when it is displayed.
+
+Der Ausdruck @var{expr} wird der Systemvariablen @code{_} noch vor der 
+Auswertung und Vereinfachung zugewiesen. Für die Ausgabe wird @code{_} 
+vereinfacht, aber nicht ausgewertet.
+
+@c @code{_} is recognized by @code{batch} and @code{load}. In a file processed 
+@c by @code{batch}, @code{_} has the same meaning as at the interactive prompt.
+@c In a file processed by @code{load}, @code{_} is bound to the input expression
+@c most recently evaluated at the interactive prompt or in a batch file;
+@c @code{_} is not bound to the input expressions in the file being processed.
+
+Die Systemvariable @code{_} wird von den Kommandos @code{batch} und @code{load} 
+erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgeführt, hat @code{_} 
+dieselbe Bedeutung wie bei der Eingabe von einer Kommandozeile. Wird eine Datei
+mit dem Kommando @code{load} geladen, enthält @code{_} den zuletzt in der 
+Kommandozeile eingegebenen Befehl.
+
+@c See also @code{__} and @code{%}.
+
+Siehe auch die Systemvariablen @code{__} und @code{%}.
+
+Beispiele:
+
+@c ===beg===
+@c 13 + 29;
+@c :lisp $_
+@c _;
+@c sin (%pi/2);
+@c :lisp $_
+@c _;
+@c a: 13$
+@c b: 29$
+@c a + b;
+@c :lisp $_
+@c _;
+@c a + b;
+@c ev (_);
+@c ===end===
+@example
+(%i1) 13 + 29;
+(%o1)                          42
+(%i2) :lisp $_
+((MPLUS) 13 29)
+(%i2) _;
+(%o2)                          42
+(%i3) sin (%pi/2);
+(%o3)                           1
+(%i4) :lisp $_
+((%SIN) ((MQUOTIENT) $%PI 2))
+(%i4) _;
+(%o4)                           1
+(%i5) a: 13$
+(%i6) b: 29$
+(%i7) a + b;
+(%o7)                          42
+(%i8) :lisp $_
+((MPLUS) $A $B)
+(%i8) _;
+(%o8)                         b + a
+(%i9) a + b;
+(%o9)                          42
+(%i10) ev (_);
+(%o10)                         42
+@end example
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe} @category{Systemvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} %
+@ifinfo
+@vrindex Letzte Ausgabe
+@end ifinfo
+
+@c @code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3}, 
+@c ...) most recently computed by Maxima, whether or not it was displayed.
+
+Die Systemvariable @code{%} enthält das Ergebnis des zuletzt von Maxima
+ausgewerteten und vereinfachten Ausdrucks. @code{%} enhält das letzte Ergebnis
+auch dann, wenn die Ausgabe des Ergebnisses unterdrückt wurde.
+
+@c @code{%} is recognized by @code{batch} and @code{load}. In a file processed 
+@c by @code{batch}, @code{%} has the same meaning as at the interactive prompt.
+@c In a file processed by @code{load}, @code{%} is bound to the output 
+@c expression most recently computed at the interactive prompt or in a batch 
+@c file; @code{%} is not bound to output expressions in the file being 
+@c processed.
+
+Die Systemvariable @code{%} wird von den Kommandos @code{batch} und @code{load} 
+erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgeführt, hat @code{%} 
+dieselbe Bedeutung wie bei der Eingabe von einer Kommandozeile. Wird eine Datei 
+mit dem Kommando @code{load} geladen, enthält @code{%} das letzte Ergebnis des
+Ausdrucks, der auf der Konsole eingegeben wurde.
+
+@c See also @code{_}, @code{%%}, and @code{%th}.
+
+Siehe auch die Systemvariablen @code{_}, @code{%%} und @code{%th}.
+ 
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe} @category{Systemvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} %%
+@ifinfo
+@vrindex Letztes Ergebnis in zusammengesetzten Anweisungen
+@end ifinfo
+
+@c In compound statements, namely @code{block}, @code{lambda}, or 
+@c @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} is the value of the previous 
+@c statement. For example,
+
+In zusammengesetzten Ausdrücken, wie in Ausdrücken mit @code{block} oder 
+@code{lambda} oder in Ausdrücken der Gestalt @code{(@var{s_1}, ..., @var{s_n})},
+enthält die Systemvariable @code{%%} das Ergebnis des vorhergehenden Ausdrucks. 
+Zum Beispiel haben die folgenden Ausdrücke jeweils dasselbe Ergebnis:
+
+@c ===beg===
+@c block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+@c block ([prev], prev: integrate (x^5, x), ev (prev, x=2) - ev (prev, x=1));
+@c ===end===
+@example
+(%i1) block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+                               21
+(%o1)                          --
+                               2
+(%i2) block ([prev], prev: integrate (x^5, x),
+               ev (prev, x=2) - ev (prev, x=1));
+                               21
+(%o2)                          --
+                               2
+@end example
+
+@c yield the same result, namely @code{21/2}.
+
+@c A compound statement may comprise other compound statements. Whether a 
+@c statement be simple or compound,  @code{%%} is the value of the previous 
+@c statement. For example,
+
+Ein zusammengesetzter Ausdruck kann weitere zusammengesetzte Ausdrücke 
+enthalten. @code{%%} enthält dabei jeweils das Ergebnis des letzten Ausdrucks.
+So hat das folgende Beispiel das Ergebnis @code{7*a^n}:
+
+@c ===beg===
+@c block (block (a^n, %%*42), %%/6)
+@c ===end===
+@example
+(%i3) block (block (a^n, %%*42), %%/6);
+                                 n
+(%o3)                         7 a
+@end example
+
+@c yields @code{7*a^n}.
+
+@c Within a compound statement, the value of @code{%%} may be inspected at a 
+@c break prompt, which is opened by executing the @code{break} function.
+@c For example, at the break prompt opened by
+
+Innerhalb eines zusammengesetzten Ausdrucks kann der Wert der Systemvariablen
+@code{%%} nach einer Unterbrechung mit dem Kommando @code{break} inspeziert 
+werden. Dies wird im folgenden Beispiel genutzt, um den Wert 42 auszugeben:
+
+@c ===beg===
+@c block (a: 42, break ())$
+@c %%;
+@c ===end===
+@example
+(%i4) block (a: 42, break ())$
+Entering a Maxima break point. Type 'exit;' to resume.
+_%%;
+42
+_
+@end example
+
+@c entering @code{%%;} yields @code{42}.
+
+@c At the first statement in a compound statement, or outside of a compound 
+@c statement, @code{%%} is undefined.
+
+Für den ersten Ausdruck oder außerhalb eines zusammengesetzten Ausdrucks ist
+@code{%%} nicht definiert.
+
+@c @code{%%} is recognized by @code{batch} and @code{load}, and it has the same
+@c meaning as at the interactive prompt.
+
+Die Systemvariable @code{%%} wird von @code{batch} und @code{load} erkannt und 
+hat dieselbe Bedeutung wie bei der Eingabe in der Konsole.
+
+@c See also @code{%}.
+
+Siehe auch die Systemvariable @code{%} und die Funktion @code{%th}.
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe} @category{Systemvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn {Funktion} %th (@var{n})
+@ifinfo
+@fnindex n-te vorhergehende Ausgabe
+@end ifinfo
+
+@c The value of the @var{i}'th previous output expression. That is, if the next
+@c expression to be computed is the @var{n}'th output, @code{%th (@var{m})} is 
+@c the (@var{n} - @var{m})'th output.
+
+Die Funktion @code{%th} liefert das n-te vorhergehende Ergebnis.
+
+@c @code{%th} is useful in @code{batch} files or for referring to a group of 
+@c output expressions. For example,
+
+@code{%th} ist zum Beispiel in @code{batch}-Dateien nützlich. Das folgende 
+Beispiel zeigt, wie die letzten 10 eingegebenen Werte mit der Funktion 
+@code{%th} aufsummiert werden können:
+
+@c ===beg===
+@c 1;2;3;4;5;6;7;8;9;10;
+@c block (s: 0, for i:1 thru 10 do s: s + %th(i), s);
+@c ===end===
+@example
+(%i1) 1;2;3;4;5;6;7;8;9;10;
+(%o1)                           1
+(%o2)                           2
+(%o3)                           3
+(%o4)                           4
+(%o5)                           5
+(%o6)                           6
+(%o7)                           7
+(%o8)                           8
+(%o9)                           9
+(%o10)                         10
+(%i11) block (s: 0, for i:1 thru 10 do s: s + %th(i), s);
+(%o11)                         55
+@end example
+
+@c sets @code{s} to the sum of the last ten output expressions.
+
+@c @code{%th} is recognized by @code{batch} and @code{load}. In a file processed
+@c by @code{batch}, @code{%th} has the same meaning as at the interactive 
+@c prompt. In a file processed by @code{load}, @code{%th} refers to output 
+@c expressions most recently computed at the interactive prompt or in a batch 
+@c file; @code{%th} does not refer to output expressions in the file being 
+@c processed.
+
+Die Funktion @code{%th} wird von den Kommandos @code{batch} und @code{load} 
+erkannt. Wird eine Datei mit @code{batch} ausgeführt, hat @code{%th} dieselbe 
+Bedeutung wie bei der Eingabe in der Konsole. Wird eine Datei mit dem Kommando 
+@code{load} geladen, enthält @code{%th} das letzte Ergebnis der Eingabe in der 
+Konsole.
+
+@c See also @code{%}.
+
+Siehe auch @code{%} und @code{%%}.
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn {Spezielles Symbol} ?
+@ifinfo
+@fnindex Erhalte Dokumentation
+@end ifinfo
+
+@c As prefix to a function or variable name, @code{?} signifies that the name 
+@c is a Lisp name, not a Maxima name. For example, @code{?round} signifies the 
+@c Lisp function @code{ROUND}. See @ref{Lisp and Maxima} for more on this point.
+
+Wird dem Namen einer Funktion oder Variablen ein @code{?} als Präfix
+vorangestellt, wird der Name als ein Lisp-Symbol interpretiert. Zum Beispiel 
+bedeutet @code{?round} die Lisp-Funktion @code{ROUND}. Siehe auch 
+@ref{Lisp und Maxima} für weitere Ausführungen zu diesem Thema.
+
+@c The notation @code{? word} (a question mark followed a word, separated by 
+@c whitespace) is equivalent to @code{describe("word")}. The question mark must 
+@c occur at the beginning of an input line; otherwise it is not recognized as a 
+@c request for documentation.
+
+Die Eingabe @code{? word} ist eine Kurzschreibweise für das Kommando 
+@code{describe("word")}. Das Fragezeichen muss am Anfang einer Eingabezeile 
+stehen, damit Maxima die Eingabe als eine Anfrage nach der Dokumentation
+interpretiert.
+
+@c @opencatbox
+@c @category{Hilfe} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn {Spezielles Symbol} ??
+@ifinfo
+@fnindex Erhalte Dokumentation (ungenaue Suche)
+@end ifinfo
+
+@c The notation @code{?? word} (@code{??} followed a word, separated by 
+@c whitespace) is equivalent to @code{describe("word", inexact)}. The question 
+@c mark must occur at the beginning of an input line; otherwise it is not 
+@c recognized as a request for documentation.
+
+Die Eingabe @code{?? word} ist eine Kurzschreibweise für das Kommando 
+@code{describe("word", inexact)}. Die Fragezeichen müssen am Anfang einer 
+Eingabezeile stehen, damit Maxima die Eingabe als eine Anfrage nach der 
+Dokumentation interpretiert.
+
+@c @opencatbox
+@c @category{Hilfe} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} inchar
+Standardwert: @code{%i}
+
+@c @code{inchar} is the prefix of the labels of expressions entered by the user.
+@c Maxima automatically constructs a label for each input expression by 
+@c concatenating @code{inchar} and @code{linenum}. 
+
+Die Optionsvariable @code{inchar} ist der Präfix der Eingabemarken. Maxima 
+erzeugt die Eingabemarken automatisch aus dem Präfix @code{inchar} und der 
+Zeilennummer @code{linenum}.
+
+@c @code{inchar} may be assigned any string or symbol, not necessarily a single 
+@c character. Because Maxima internally takes into account only the first char 
+@c of the prefix, the prefixes @code{inchar}, @code{outchar}, and 
+@c @code{linechar} should have a different first char. Otherwise some commands 
+@c like @code{kill(inlables)} do not work as expected.
+
+@code{inchar} kann eine Zeichenkette oder ein Symbol zugewiesen werden, die auch
+mehr als ein Zeichen haben können. Da Maxima jedoch intern nur das erste Zeichen
+berücksichtigt, sollten sich die Präfixe @code{inchar}, @code{outchar} und 
+@code{linechar} im ersten Zeichen voneinander unterscheiden. Ansonsten 
+funktionieren einige Kommandos wie zum Beispiel @code{kill(inlabels)} nicht wie 
+erwartet.
+
+Beispiele:
+
+@c ===beg===
+@c inchar: "input";
+@c expand((a+b)^3);
+@c ===end===
+@example
+(%i1) inchar: "input";
+(%o1)                                input
+(input1) expand ((a+b)^3);
+                            3        2      2      3
+(%o1)                      b  + 3 a b  + 3 a  b + a
+(input2)
+@end example
+
+@c See also @code{labels}.
+
+Siehe auch die Funktion und Optionsvariable @code{labels} sowie die 
+Systemvariablen @code{outchar} und @code{linechar}.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c INFOLISTS ENTHÄLT NOCH DIE LISTEN STRUCTURES UND NAMESPACES
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} infolists
+Standardwert: @code{[]}
+
+@c @code{infolists} is a list of the names of all of the information lists in 
+@c Maxima. These are:
+
+@code{infolists} ist eine Liste der Informationslisten, die Maxima zur Verfügung
+stellt. Diese sind:
+
+@table @code
+@item labels
+
+@c All bound @code{%i}, @code{%o}, and @code{%t} labels.
+
+Enthält die Marken @code{%i}, @code{%o} und @code{%t}, denen bisher ein Ausdruck
+zugewiesen wurde.
+
+@item values
+
+@c All bound atoms which are user variables, not Maxima options or switches, 
+@c created by @code{:} or @code{::} or functional binding.
+
+Enthält die vom Benutzer mit den Operatoren @code{:} oder @code{::} definierten
+Variablen.
+
+@item functions
+
+@c All user-defined functions, created by @code{:=} or @code{define}.
+
+Enthält die vom Benutzer mit dem Operator @code{:=} oder der Funktion
+@code{define} definierten Funktionen.
+
+@item arrays
+
+@c All declared and undeclared arrays, created by @code{:}, @code{::}, or 
+@c @code{:=}.
+
+Enthält die mit den Operatoren @code{:}, @code{::} oder @code{:=} definierten
+Arrays oder Array-Funktionen.
+
+@item macros
+
+@c All user-defined macro functions.
+
+Enthält die vom Benutzer mit dem Operator @code{::=} definierten Makros.
+
+@item myoptions
+
+@c All options ever reset by the user (whether or not they are later reset to 
+@c their default values).
+
+Enthält die Liste der Optionsvariablen, die vom Benutzer bisher einen neuen
+Wert erhalten haben.
+
+@item rules
+
+@c All user-defined pattern matching and simplification rules, created by 
+@c @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, or @code{defrule}.
+
+Enthält die vom Benutzer mit den Kommandos @code{tellsimp}, 
+@code{tellsimpafter}, @code{defmatch} oder @code{defrule} definierten Regeln.
+
+@item aliases
+
+@c All atoms which have a user-defined alias, created by the @code{alias},
+@c @code{ordergreat}, @code{orderless} functions or by declaring the atom as a 
+@c @code{noun} with @code{declare}.
+
+Enthält die Liste der Symbole, die einen vom Benutzer definierten
+Alias-Namen mit dem Kommando @code{alias} erhalten haben. Weiterhin erzeugen
+die Funktionen @code{ordergreat} und @code{orderless} sowie eine Deklaration
+als @code{noun} mit dem Kommando @code{declare} Alias-Namen, die in die Liste
+eingetragen werden.
+
+@item dependencies
+
+@c All atoms which have functional dependencies, created by the @code{depends} 
+@c or @code{gradef} functions.
+
+Enthält alle Symbole, für die mit den Kommandos @code{depends} oder 
+@code{gradef} eine Abhängigkeit definiert ist.
+
+@item gradefs
+
+@c All functions which have user-defined derivatives, created by the 
+@c @code{gradef} function.
+
+Enthält die Funktionen, für die der Benutzer mit dem Kommando @code{gradef} 
+eine Ableitung definiert hat.
+
+@item props
+
+@c All atoms which have any property other than those mentioned above, such as 
+@c properties established by @code{atvalue} or @code{matchdeclare}, etc., as 
+@c well as properties established in the @code{declare} function.
+
+Enthält die Symbole, die eine Eigenschaft mit dem Kommando @code{declare} 
+erhalten haben.
+
+@item let_rule_packages
+
+@c All user-defined @code{let} rule packages plus the special package 
+@c @code{default_let_rule_package}. (@code{default_let_rule_package} is the 
+@c name of the rule package used when one is not explicitly set by the user.)
+
+Enthält die vom Benutzer definieren @code{let}-Regeln.
+
+@c BESCHREIBUNG DER LISTE STRUCTURES FEHLT
+
+@end table
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Systemvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} kill (@var{a_1}, ..., @var{a_n})
+@deffnx {Funktion} kill (labels)
+@deffnx {Funktion} kill (inlabels, outlabels, linelabels)
+@deffnx {Funktion} kill (@var{n})
+@deffnx {Funktion} kill ([@var{m}, @var{n}])
+@deffnx {Funktion} kill (values, functions, arrays, ...)
+@deffnx {Funktion} kill (all)
+@deffnx {Funktion} kill (allbut (@var{a_1}, ..., @var{a_n}))
+
+@c Removes all bindings (value, function, array, or rule) from the arguments
+@c @var{a_1}, ..., @var{a_n}.
+@c An argument @var{a_k} may be a symbol or a single array element.
+@c When @var{a_k} is a single array element, @code{kill} unbinds that element
+@c without affecting any other elements of the array.
+
+@c KILL ENTFERNT AUCH EIGENSCHAFTEN. DAS FEHLT HIER.
+
+Die Funktion @code{kill} entfernt alle Zuweisungen (Werte, Funktionen, Arrays 
+oder Regeln) und Eigenschaften von den Argumenten @var{a_1}, ..., @var{a_n}. 
+Ein Argument @var{a_k} kann ein Symbol oder ein einzelnes Arrayelement sein. 
+Ist @var{a_k} ein einzelnes Arrayelement, entfernt @code{kill} die Zuweisungen 
+an dieses Element, ohne die anderen Elemente des Arrays zu beeinflussen.
+
+@c Several special arguments are recognized.
+@c Different kinds of arguments
+@c may be combined, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}.
+
+@code{kill} kennt verschiedene spezielle Argumente, die auch kombiniert werden 
+können wie zum Beispiel @code{kill(inlabels, functions, allbut(foo, bar))}.
+
+@c @code{kill (labels)} unbinds
+@c all input, output, and intermediate expression labels created so far.
+@c @code{kill (inlabels)} unbinds only input labels
+@c which begin with the current value of @code{inchar}.
+@c Likewise,
+@c @code{kill (outlabels)} unbinds only output labels
+@c which begin with the current value of @code{outchar},
+@c and @code{kill (linelabels)} unbinds only intermediate expression labels
+@c which begin with the current value of @code{linechar}.
+
+@code{kill(labels)} entfernt alle Zuweisungen an Eingabe-, Ausgabe- und 
+Zwischenmarken. @code{kill(inlabels)} entfernt nur die Zuweisungen an 
+Eingabemarken, die mit dem aktuellen Wert von @code{inchar} beginnen. 
+Entsprechend entfernt @code{kill(outlabels)} die Zuweisungen an die 
+Ausgabemarken, die mit dem aktuellen Wert von @code{outchar} beginnen 
+und  @code{kill(linelabels)} die Zuweisungen an die Zwischenmarken, die mit dem
+aktuellen Wert von @code{linechar} beginnen.
+
+@c @code{kill (@var{n})}, where @var{n} is an integer,
+@c unbinds the @var{n} most recent input and output labels.
+
+@code{kill(@var{n})}, wobei @var{n} eine ganze Zahl ist, entfernt die 
+Zuweisungen an die @var{n} letzten Eingabe- und Ausgabemarken.
+
+@c @code{kill ([@var{m}, @var{n}])} unbinds input and output labels @var{m} 
+@c through @var{n}.
+
+@code{kill([@var{m}, @var{n}])} entfernt die Zuweisungen an die Eingabe- und 
+Ausgabemarken mit den Nummern von @var{m} bis @var{n}.
+
+@c @code{kill (@var{infolist})}, where @var{infolist} is any item in 
+@c @code{infolists} (such as @code{values}, @code{functions}, or @code{arrays})
+@c unbinds all items in @var{infolist}. See also @code{infolists}.
+
+@code{kill(@var{infolist})}, wobei @var{infolist} eine Informationsliste wie zum
+Beispiel @code{values}, @code{functions} oder @code{arrays} ist, entfernt die 
+Zuweisungen an allen Einträge der Liste @var{infolist}. Siehe auch 
+@code{infolists}.
+
+@c @code{kill (all)} unbinds all items on all infolists.
+@c @code{kill (all)} does not reset global variables to their default values;
+@c see @code{reset} on this point.
+
+@code{kill(all)} entfernt die Zuweisungen an die Einträge in sämtlichen 
+Infolisten. @code{kill(all)} setzt keine Optionsvariablen auf ihre 
+Standardwerte zurück. Siehe die Funktion @code{reset}, um Optionsvariablen auf 
+ihre Standwerte zurückzusetzen.
+
+@c @code{kill (allbut (@var{a_1}, ..., @var{a_n}))} unbinds all items on all 
+@c infolists except for @var{a_1}, ..., @var{a_n}. @code{kill (allbut 
+@c (@var{infolist}))} unbinds all items except for the ones on @var{infolist},
+@c where @var{infolist} is @code{values}, @code{functions}, @code{arrays}, etc.
+
+@code{kill(allbut(@var{a_1}, ..., @var{a_n}))} entfernt alle Zuweisungen bis 
+auf Zuweisungen an die Variablen @var{a_1}, ..., @var{a_n}. 
+@code{kill(allbut(@var{infolist}))} entfernt alle Zuweisungen bis auf denen in 
+der Informationsliste @var{infolist}.
+
+@c The memory taken up by a bound property is not released until all symbols
+@c are unbound from it. In particular, to release the memory taken up by the 
+@c value of a symbol,one unbinds the output label which shows the bound value, 
+@c as well as unbinding the symbol itself.
+
+@c NICHT ÜBERSETZT.
+
+@c @code{kill (@var{symbol})} unbinds all properties of @var{symbol}. In 
+@c contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and 
+@c @code{remrule} unbind a specific property.
+
+@code{kill(@var{symbol})} entfernt sämtliche Zuweisungen und Eigenschaften des 
+Symbols @var{symbol}. Im Gegensatz dazu entfernen @code{remvalue}, 
+@code{remfunction}, @code{remarray} und @code{remrule} jeweils eine spezielle 
+Eigenschaft eines Symbols.
+
+@c @code{kill} quotes its arguments. The quote-quote operator @code{'@w{}'} 
+@c defeats quotation.
+
+@code{kill} wertet seine Argumente nicht aus. Der Quote-Quote-Operator kann die 
+Auswertung erzwingen.
+
+@c @code{kill} always returns @code{done}, even if an argument has no binding.
+
+@code{kill} gibt immer @code{done} zurück.
+
+@c @opencatbox
+@c @category{Auswertung} @category{Konsole Ein- und Ausgabe} @category{Sitzungsverwaltung}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} labels (@var{symbol})
+@deffnx {Systemvariable} labels
+
+@c Returns the list of input, output, or intermediate expression labels which 
+@c begin with @var{symbol}. Typically @var{symbol} is the value of 
+@c @code{inchar}, @code{outchar}, or @code{linechar}. The label character may 
+@c be given with or without a percent sign, so, for example, @code{i} and 
+@c @code{%i} yield the same result.
+
+Die Funktion @code{labels} gibt eine Liste der Eingabe-, Ausgabe- und 
+Zwischenmarken zurück, die mit @var{symbol} beginnen. Typischerweise ist 
+@var{symbol} der Wert von @code{inchar}, @code{outchar} oder @code{linechar}. 
+Dabei kann das Prozentzeichen fortgelassen werden. So ergeben zum Beispiel 
+@code{labels(i)} und @code{labels(%i)} dasselbe Ergebnis.
+
+@c If no labels begin with @var{symbol}, @code{labels} returns an empty list.
+
+Wenn keine Marke mit @var{symbol} beginnt, gibt @code{labels} eine leere Liste 
+zurück.
+
+@c The function @code{labels} quotes its argument. The quote-quote operator 
+@c @code{'@w{}'} defeats quotation. For example, @code{labels (''inchar)} 
+@c returns the input labels which begin with the current input label character.
+
+Die Funktion @code{labels} wertet ihre Argument nicht aus. Mit dem
+Quote-Quote-Operator @code{'@w{}'} kann die Auswertung erzwungen werden. Zum
+Beispiel gibt @code{labels (''inchar)} die Eingabemarken zurück, die mit dem
+aktuellen Buchstaben für die Eingabemarken beginnen.
+
+@c The variable @code{labels} is the list of input, output, and intermediate 
+@c expression labels, including all previous labels if @code{inchar}, 
+@c @code{outchar}, or @code{linechar} were redefined.
+
+Die Variable @code{labels} enthält eine Liste aller Eingabe-, Ausgabe- und 
+Zwischenmarken, einschließlich der Marken, die vor einer Änderung von 
+@code{inchar}, @code{outchar} oder @code{linechar} erzeugt wurden. 
+
+@c By default, Maxima displays the result of each user input expression,
+@c giving the result an output label. The output display is suppressed by 
+@c terminating the input with @code{$} (dollar sign) instead of @code{;} 
+@c (semicolon). An output label is constructed and bound to the result, but not 
+@c displayed, and the label may be referenced in the same way as displayed 
+@c output labels. See also @code{%}, @code{%%}, and @code{%th}.
+
+Standardmäßig zeigt Maxima das Ergebnis jeder Benutzereingabe an, wobei dem 
+Ergebnis eine Ausgabemarke hinzugefügt wird. Die Anzeige der Ausgabe wird durch 
+die Eingabe eines abschließenden @code{$} (Dollarzeichen) statt eines @code{;} 
+(Semikolon) unterdrückt. Dabei wird eine Ausgabemarke erzeugt und das 
+Ergebnis zugewiesen, jedoch nicht angezeigt. Die Marke kann aber in der gleichen 
+Art und Weise wie bei angezeigten Ausgabemarken referenziert werden. Siehe auch 
+@code{%}, @code{%%} und @code{%th}.
+
+@c Intermediate expression labels can be generated by some functions. The flag 
+@c @code{programmode} controls whether @code{solve} and some other functions
+@c generate intermediate expression labels instead of returning a list of 
+@c expressions. Some other functions, such as @code{ldisplay}, always generate
+@c intermediate expression labels.
+
+Einige Funktionen erzeugen Zwischenmarken. Die Optionsvariable 
+@code{programmode} bestimmt, ob zum Beispiel @code{solve} und einige andere 
+Funktionen Zwischenmarken erzeugen, anstatt eine Liste von Ausdrücken 
+zurückzugeben. Andere Funktionen, wie zum Beispiel @code{ldisplay}, erzeugen 
+stets Zwischenmarken.
+
+@c See also @code{inchar}, @code{outchar}, @code{linechar}, and 
+@c @code{infolists}.
+
+Siehe auch @code{inchar}, @code{outchar}, @code{linechar} und @code{infolists}.
+
+@c @opencatbox
+@c @category{Anzeigefunktionen} @category{Anzeigeflags und -variablen} @category{Konsole Ein- und Ausgabe} @category{Systemvariable}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} linechar
+Standardwert: @code{%t}
+
+@c @code{linechar} is the prefix of the labels of intermediate expressions 
+@c generated by Maxima. Maxima constructs a label for each intermediate 
+@c expression (if displayed) by concatenating @code{linechar} and 
+@c @code{linenum}.
+
+@code{linechar} ist der Präfix der Zwischenmarken. Maxima generiert die 
+Zwischenmarken automatisch aus @code{linechar} und @code{linenum}.
+
+@c @code{linechar} may be assigned any string or symbol, not necessarily a 
+@c single character. Because Maxima internally takes into account only the first 
+@c char of the prefix, the prefixes @code{inchar}, @code{outchar}, and 
+@c @code{linechar} should have a different first char. Otherwise some commands 
+@c like @code{kill(inlables)} do not work as expected.
+
+@code{linechar} kann eine Zeichenkette oder ein Symbol zugewiesen werden, die 
+auch mehr als ein Zeichen haben können. Da Maxima jedoch intern nur das erste 
+Zeichen berücksichtigt, sollten sich die Präfixe @code{inchar}, @code{outchar} 
+und @code{linechar} im ersten Zeichen voneinander unterscheiden. Ansonsten 
+funktionieren einige Kommandos wie @code{kill(inlabels)} nicht wie erwartet.
+
+@c Intermediate expressions might or might not be displayed. See 
+@c @code{programmode} and @code{labels}.
+
+Die Ausgabe von Zwischenmarken kann mit verschiedenen Optionsvariablen 
+kontrolliert werden. Siehe @code{programmode} und @code{labels}.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} linenum
+
+@c The line number of the current pair of input and output expressions.
+
+Die Zeilennummer der aktuellen Ein- und Ausgabemarken.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen} @category{Konsole Ein- und Ausgabe} @category{Systemvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} myoptions
+Standardwert: @code{[]}
+
+@c @code{myoptions} is the list of all options ever reset by the user,
+@c whether or not they get reset to their default value.
+
+@code{myoptions} ist die Liste aller Optionsvariablen, die vom Benutzer
+während einer Sitzung geändert wurden. Die Variable verbleibt in der Liste, auch
+wenn sie wieder auf den Standwert zurückgesetzt wird.
+
+@c @opencatbox
+@c @category{Systemvariable} @category{Sitzungsverwaltung} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} nolabels
+Standardwert: @code{false}
+
+@c When @code{nolabels} is @code{true}, input and output result labels 
+@c (@code{%i} and @code{%o}, respectively) are displayed, but the labels are not
+@c bound to results, and the labels are not appended to the @code{labels} list.
+@c Since labels are not bound to results, garbage collection can recover the 
+@c memory taken up by the results.
+
+Hat @code{nolabels} den Wert @code{true}, werden die Eingabe- und Ausgabemarken 
+zwar angezeigt, ihnen werden aber keine Eingaben und Ergebnisse zugewiesen und
+sie werden nicht der Liste @code{labels} hinzugefügt.
+
+@c Otherwise input and output result labels are bound to results,
+@c and the labels are appended to the @code{labels} list.
+
+Andernfalls werden den Marken die Eingabe und die Ergebnisse zugewiesen und
+sie in die Informationsliste @code{labels} eingetragen.
+
+@c Intermediate expression labels (@code{%t}) are not affected by 
+@c @code{nolabels}; whether @code{nolabels} is @code{true} or @code{false},
+@c intermediate expression labels are bound and appended to the @code{labels} 
+@c list.
+
+Zwischenmarken @code{%t} werden durch @code{nolabels} nicht beeinflusst. Den
+Marken werden unabhängig vom Wert, den @code{nolables} hat, Zwischenergebnisse
+zugewiesen und sie werden in Informationsliste @code{labels} eingetragen.
+
+@c See also @code{batch}, @code{load}, and @code{labels}.
+
+Siehe auch @code{batch}, @code{load} und @code{labels}.
+
+@c @opencatbox
+@c @category{Globale Flags} @category{Sitzungsverwaltung}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} optionset
+Standardwert: @code{false}
+
+@c When @code{optionset} is @code{true}, Maxima prints out a message whenever a 
+@c Maxima option is reset.  This is useful if the user is doubtful of the 
+@c spelling of some option and wants to make sure that the variable he assigned 
+@c a value to was truly an option variable.
+
+Hat @code{optionset} den Wert @code{true}, gibt Maxima eine Meldung aus, wenn 
+eine Optionsvariable einen neuen Wert erhält.
+
+@c @opencatbox
+@c @category{Globale Flags} @category{Sitzungsverwaltung} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} outchar
+Standardwert: @code{%o}
+
+@c @code{outchar} is the prefix of the labels of expressions computed by Maxima.
+@c Maxima automatically constructs a label for each computed expression by 
+@c concatenating @code{outchar} and @code{linenum}. 
+
+@code{outchar} ist der Präfix der Ausgabemarken. Maxima generiert die 
+Ausgabemarken automatisch aus @code{outchar} und @code{linenum}.
+
+@c @code{outchar} may be assigned any string or symbol, not necessarily a single 
+@c character. Because Maxima internally takes into account only the first char 
+@c of the prefix, the prefixes @code{inchar}, @code{outchar}, and 
+@c @code{linechar} should have a different first char. Otherwise some commands 
+@c like @code{kill(inlables)} do not work as expected.
+
+@code{outchar} kann eine Zeichenkette oder ein Symbol zugewiesen werden, die auch
+mehr als ein Zeichen haben können. Da Maxima jedoch intern nur das erste Zeichen
+berücksichtigt, sollten sich die Präfixe @code{inchar}, @code{outchar} und 
+@code{linechar} im ersten Zeichen voneinander unterscheiden. Ansonsten 
+funktionieren einige Kommandos wie @code{kill(inlabels)} nicht wie erwartet.
+
+Beispiele:
+
+@c ===beg===
+@c outchar: "output";
+@c expand((a+b)^3);
+@c ===end===
+@example
+(%i1) outchar: "output";
+(output1)                           output
+(%i2) expand ((a+b)^3);
+                            3        2      2      3
+(output2)                  b  + 3 a b  + 3 a  b + a
+(%i3)
+@end example
+
+@c See also @code{labels}.
+
+Siehe auch @code{inchar}, @code{linechar} und @code{labels}.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} playback ()
+@deffnx {Funktion} playback (@var{n})
+@deffnx {Funktion} playback ([@var{m}, @var{n}])
+@deffnx {Funktion} playback ([@var{m}])
+@deffnx {Funktion} playback (input)
+@deffnx {Funktion} playback (slow)
+@deffnx {Funktion} playback (time)
+@deffnx {Funktion} playback (grind)
+
+@c Displays input, output, and intermediate expressions, without recomputing 
+@c them. @code{playback} only displays the expressions bound to labels; any 
+@c other output (such as text printed by @code{print} or @code{describe}, or 
+@c error messages) is not displayed. See also @code{labels}.
+
+Zeigt Eingaben, Ergebnisse und Zwischenergebnisse an, ohne diese neu zu 
+berechnen. @code{playback} zeigt nur die Eingaben und Ergebnisse an, die Marken zugewiesen wurden. Andere Ausgaben, wie zum Beispiel durch @code{print}, 
+@code{describe} oder Fehlermeldungen, werden nicht angezeigt. Siehe auch 
+@code{labels}.
+
+@c @code{playback} quotes its arguments. The quote-quote operator @code{'@w{}'} 
+@c defeats quotation. @code{playback} always returns @code{done}.
+
+@code{playback} wertet seine Argumente nicht aus. @code{playback} gibt stets 
+@code{done} zurück.
+
+@c @code{playback ()} (with no arguments) displays all input, output, and 
+@c intermediate expressions generated so far. An output expression is displayed 
+@c even if it was suppressed by the @code{$} terminator when it was originally 
+@c computed.
+
+@code{playback()} zeigt sämtliche Eingaben und Ergebnisse an, die bis dahin
+erzeugt wurden. Ein bereits Ergebnis wird auch dann angezeigt, wenn die Ausgabe
+mit @code{$} unterdrückt war.
+
+@c @code{playback (@var{n})} displays the most recent @var{n} expressions.
+@c Each input, output, and intermediate expression counts as one.
+
+@code{playback(@var{n})} zeigt die letzten @var{n} Ausdrücke an. Jeder 
+Eingabe-, Ausgabe- und Zwischenausdruck zählt dabei als ein Ausdruck.
+
+@c @code{playback ([@var{m}, @var{n}])} displays input, output, and intermediate
+@c expressions with numbers from @var{m} through @var{n}, inclusive.
+
+@code{playback([@var{m}, @var{n}])} zeigt die Eingabe-, Ausgabe- und 
+Zwischenausdrücke mit den Zahlen von @var{m} bis einschließlich @var{n} an. 
+
+@c @code{playback ([@var{m}])} is equivalent to 
+@c @code{playback ([@var{m}, @var{m}])}; this usually prints one pair of input 
+@c and output expressions.
+
+@code{playback([@var{m}])} ist äquivalent zu @code{playback([@var{m}, 
+@var{m}])}. Dies Ausgabe ist ein Paar von Ein- und Ausgabeausdrücken.
+
+@c @code{playback (input)} displays all input expressions generated so far.
+
+@code{playback(input)} zeigt sämtliche Eingabeausdrücke an, die bis dahin 
+erzeugt wurden.
+
+@c @code{playback (slow)} pauses between expressions
+@c and waits for the user to press @code{enter}.
+@c This behavior is similar to @code{demo}.
+
+@code{playback(slow)} wartet zwischen der Ausgabe auf die Eingabe von 
+@code{enter}. Dieses Verhalten ist vergleichbar mit @code{demo}.
+
+@c Das folgende nicht übersetzt.
+
+@c @c WHAT DOES THE FOLLOWING MEAN ???
+@c @code{playback (slow)} is useful in conjunction with @code{save} or 
+@c @code{stringout} when creating a secondary-storage file in order to pick out
+@c useful expressions.
+
+@c @code{playback (time)} displays the computation time for each expression.
+
+@code{playback(time)} zeigt für jeden Ausdruck die für die Berechnung benötigte 
+Zeit an.
+
+@c @c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
+@c @c The arguments @code{gctime} and @code{totaltime} have the same effect as 
+@c @code{time}.
+
+
+@c @code{playback (grind)} displays input expressions in the same format as the 
+@c @code{grind} function. Output expressions are not affected by the 
+@c @code{grind} option. See @code{grind}.
+
+@code{playback(grind)} zeigt die Eingabeausdrücke in dem gleichen Format an 
+wie die Funktion @code{grind}. Ausgabeausdrücke werden von der Option 
+@code{grind} nicht beeinflusst. Siehe @code{grind}.
+
+@c Arguments may be combined, e.g., @code{playback ([5, 10], grind, time, slow)}.
+@c @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
+
+Die Argumente können kombiniert werden, wie zum Beispiel im folgendenen Kommando 
+@code{playback([5, 10], grind, time, slow)}.
+
+@c @opencatbox
+@c @category{Anzeigefunktionen} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} prompt
+Standardwert: @code{_}
+
+@c @code{prompt} is the prompt symbol of the @code{demo} function,
+@c @code{playback (slow)} mode, and the Maxima break loop (as invoked by 
+@c @code{break}).
+
+@code{prompt} ist das Zeichen für die Auforderung zur Eingabe der Funktionen
+@code{demo} und @code{playback(slow)} sowie nach einer Unterbrechung, wie zum
+Beispiel durch das Kommando @code{break}.
+
+@c @opencatbox
+@c @category{Optionsvariablen} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn {Funktion} quit ()
+
+@c Terminates the Maxima session. Note that the function must be invoked as 
+@c @code{quit();} or @code{quit()$}, not @code{quit} by itself.
+
+Das Kommando @code{quit()} beendet eine Maxima-Sitzung.
+
+@c To stop a lengthy computation, type @code{control-C}. The default action is 
+@c to return to the Maxima prompt. If @code{*debugger-hook*} is @code{nil},
+@c @code{control-C} opens the Lisp debugger. See also @code{debugging}.
+
+Mit @code{control-C} kann in der Konsole eine Berechnung abgebrochen werden. 
+Standardmäßig wird die Maxima-Sitzung fortgesetzt. Hat die globale Lisp-Variable 
+@code{*debugger-hook*} den Wert @code{nil}, wird der Lisp-Debugger gestartet. 
+Siehe auch @code{debugging}.
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn {Funktion} reset ()
+
+@c Resets many global variables and options, and some other variables, to their 
+@c default values.
+
+@c @code{reset} processes the variables on the Lisp list 
+@c @code{*variable-initial-values*}. The Lisp macro @code{defmvar} puts 
+@c variables on this list (among other actions). Many, but not all, global 
+@c variables and options are defined by @code{defmvar}, and some variables 
+@c defined by @code{defmvar} are not global variables or options.
+
+@code{reset()} setzt globale Maxima- und Lisp-Variablen und Optionen auf ihre 
+Standardwerte zurück. Maxima legt eine interne Liste mit den Standardwerten von 
+globalen Variablen an. Alle Variablen, die in dieser Liste enthalten sind, 
+werden auf ihre Standardwerte zurückgesetzt. Es ist bekannt, dass nicht alle
+globalen Variablen mit ihren Standwerten in dieser Liste eingetragen sind. Daher
+kann @code{reset} die Anfangswerte stets nur unvollständig wiederherstellen.
+
+@code{reset(@var{arg_1, ..., arg_n})} setzt die Variablen @var{arg_1}, ..., 
+@var{arg_n} auf ihren Standardwert zurück, sofern diese Variablen in der Liste 
+der globalen Variablen enthalten ist.
+
+@code{reset} hat als Rückgabewert eine Liste mit den Variablen, die 
+zurückgesetzt wurden. Ist die Liste leer, wurden keine Variablen zurückgesetzt.
+
+Siehe auch @code{reset_verbosely}.
+
+@c @opencatbox
+@c @category{Sitzungsverwaltung}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} reset_verbosely ()
+@deffnx {Funktion} reset_verbosely (@var{arg_1}, ..., @var{arg_n})
+
+Entspricht der Funktion @code{reset}. Im Unterschied zu @code{reset} werden zu
+jeder Variable, die zurückgesetzt wird, zusätzlich der Standwert angezeigt.
+
+Siehe @code{reset}.
+
+@c @opencatbox
+@c @category{Sitzungsverwaltung}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} showtime
+Standardwert: @code{false}
+
+@c When @code{showtime} is @code{true}, the computation time and elapsed time is
+@c printed with each output expression.
+
+Hat @code{showtime} den Wert @code{true}, werden die interne Rechenzeit und die 
+gesamte verstrichene Zeit zu jeder Ausgabe angezeigt.
+
+@c The computation time is always recorded, so @code{time} and @code{playback} 
+@c can display the computation time even when @code{showtime} is @code{false}.
+
+Die Rechenzeit wird unabhängig vom Wert der Optionsvariable @code{showtime}
+nach jeder Auswertung eines Ausdruckes unter den Ausgabemarken abgespeichert. 
+Daher können die Funktionen @code{time} und @code{playback} die Rechenzeit auch 
+dann anzeigen, wenn @code{showtime} den Wert @code{false} hat.
+
+@c See also @code{timer}.
+
+Siehe auch @code{timer}.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen} @category{Fehlersuche}
+@c @closecatbox
+@end defvr
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn {Funktion} system (@var{command})
+ 
+@c Executes @var{command} as a separate process. The command is passed to the
+@c default shell for execution. @code{system} is not supported by all operating
+@c systems, but generally exists in Unix and Unix-like environments.
+
+@code{system(command)} führt das Kommando @code{command} in einem eigenen 
+Prozess aus. Das Kommando wird an die Standard-Shell übergeben. 
+@code{system} wird nicht von allen Betriebssystemen unterstützt, steht aber
+im Allgemeinen unter Unix oder Unix ähnlichen Betriebssystemen zur Verfügung.
+
+@c DAS FOLGENDE BEISPIEL FUNKTIONIERT NICHT. XGRAPH IST NICHT MEHR VORHANDEN.
+
+@c Supposing @code{_hist.out} is a list of frequencies which you wish to plot as
+@c a bar graph using @code{xgraph}. 
+
+@c @example
+@c (%i1) (with_stdout("_hist.out",
+@c            for i:1 thru length(hist) do (
+@c              print(i,hist[i]))),
+@c        system("xgraph -bar -brw .7 -nl < _hist.out"));
+@c @end example
+
+@c In order to make the plot be done in the background (returning control to 
+@c Maxima) and remove the temporary file after it is done do:
+
+@c @example
+@c system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
+@c @end example
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@deffn {Funktion} to_lisp ()
+
+@c Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
+
+Wechselt zu einer Lisp-Sitzung. @code{(to-maxima)} wechselt von der Lisp-Sitzung
+zurück in die Maxima-Sitzung.
+
+Beispiel:
+
+@c Define a function and enter the Lisp system under Maxima. The defintion is 
+@c inspected on the property list, then the function definition is extracted, 
+@c factored and stored in the variable $result. The variable can be used in 
+@c Maxima after returning to Maxima.
+
+Definiere eine Funktion und wechsle zu Lisp. Die Definition wird von der 
+Eigenschaftsliste gelesen. Dann wird die Defintion der Funktion geholt, 
+faktorisiert und in der Variablen @code{$result} gespeichert. Die Variable kann 
+nach der Rückkehr in Maxima genutzt werden.
+
+@example
+(%i1) f(x):=x^2+x;
+                                         2
+(%o1)                           f(x) := x  + x
+(%i2) to_lisp();
+Type (to-maxima) to restart, ($quit) to quit Maxima.
+
+MAXIMA> (symbol-plist '$f)
+(MPROPS (NIL MEXPR ((LAMBDA) ((MLIST) $X) ((MPLUS) ((MEXPT) $X 2) $X))))
+MAXIMA> (setq $result ($factor (caddr (mget '$f 'mexpr))))
+((MTIMES SIMP FACTORED) $X ((MPLUS SIMP IRREDUCIBLE) 1 $X))
+MAXIMA> (to-maxima)
+Returning to Maxima
+(%o2)                                true
+(%i3) result;
+(%o3)                              x (x + 1)
+@end example
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 08.09.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} values
+Anfangswert: @code{[]}
+
+@c @code{values} is a list of all bound user variables (not Maxima options or
+@c switches). The list comprises symbols bound by @code{:}, or @code{::}.
+
+@code{values} ist eine Liste aller Variablen, die vom Benutzer mit den 
+Operatoren @code{:} oder @code{::} einen Wert erhalten haben.
+
+@c If the value of a variable is removed with the commands @code{kill}, 
+@c @code{remove}, or @code{remvalue} the variable is deleted from @code{values}.
+
+Wird der Wert einer Variablen mit den Kommandos @code{kill}, @code{remove} oder
+@code{remvalue} entfernt, wird die Variable von der Liste @code{values} 
+entfernt. 
+
+@c See @code{functions} for a list of user defined functions.
+
+Siehe auch @code{functions} für eine Liste der vom Benutzer definierten 
+Funktionen.
+
+Beispiele:
+
+@c First, @code{values} shows the symbols @code{a}, @code{b}, and @code{c}, but 
+@c not @code{d}, it is not bound to a value, and not the user function @code{f}.
+@c The values are removed from the variables. @code{values} is the empty list.
+
+@c ===beg===
+@c [a:99, b:: a-90, c:a-b, d, f(x):=x^2];
+@c values;
+@c [kill(a), remove(b,value), remvalue(c)];
+@c values;
+@c ===end===
+@example
+(%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
+                                                  2
+(%o1)                     [99, 9, 90, d, f(x) := x ]
+(%i2) values;
+(%o2)                              [a, b, c]
+(%i3) [kill(a), remove(b,value), remvalue(c)];
+(%o3)                          [done, done, [c]]
+(%i4) values;
+(%o4)                                 []
+@end example
+
+@c @opencatbox
+@c @category{Auswertung} @category{Systemvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Funktionen und Variablen der Ausgabe, , Funktionen und Variablen der Eingabe, Kommandozeile
+@section Funktionen und Variablen der Ausgabe
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} %edispflag
+Standardwert: @code{false}
+
+@c When @code{%edispflag} is @code{true}, Maxima displays @code{%e} to a 
+@c negative exponent as a quotient. For example, @code{%e^-x} is displayed as 
+@c @code{1/%e^x}.
+
+Hat @code{%edispflag} den Wert @code{true}, zeigt Maxima die Exponentiation von
+@code{%e} mit einen negativen Exponenten als Quotienten an.
+
+Beispiel:
+
+@c ===beg===
+@c %e^-10;
+@c %edispflag:true$
+@c %e^-10;
+@c ===end===
+@example
+(%i1) %e^-10;
+                               - 10
+(%o1)                        %e
+(%i2) %edispflag:true$
+(%i3) %e^-10;
+                               1
+(%o3)                         ----
+                                10
+                              %e
+@end example
+
+@c @opencatbox
+@c @category{Exponential- und Logarithmusfunktion} @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 28.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} absboxchar
+Standardwert: @code{!}
+
+@c @code{absboxchar} is the character used to draw absolute value signs around 
+@c expressions which are more than one line tall.
+
+@code{absboxchar} ist das Zeichen, das benutzt wird, um den Betrag eines 
+Ausdruckes anzuzeigen, der mehr als eine Zeile benötigt.
+
+Beispiel:
+
+@c === beg ===
+@c abs((x^3+1));
+@c === end ===
+@example
+(%i1) abs((x^3+1));
+                            ! 3    !
+(%o1)                       !x  + 1!
+@end example
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c AFTER REVIEWING src/displa.lisp, IT LOOKS LIKE THIS VARIABLE HAS NO EFFECT
+@c CUT IT ON THE NEXT PASS
+@c @defvar cursordisp
+@c Default value: @code{true}
+@c 
+@c When @code{cursordisp} is @code{true}, expressions are drawn by
+@c the displayer in logical sequence.  This only works with a console
+@c which can do cursor movement.  If @code{false}, expressions are
+@c printed line by line.
+@c 
+@c @code{cursordisp} is always @code{false} when a @code{writefile} is in
+@c effect.
+@c 
+@c @end defvar
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} disp (@var{expr_1}, @var{expr_2}, ...)
+
+@c is like @code{display} but only the value of the arguments are displayed 
+@c rather than equations.  This is useful for complicated arguments which don't
+@c have names or where only the value of the argument is of interest and not the
+@c name.
+
+ist ähnlich wie die Funktion @code{display}. @code{disp} zeigt jedoch keine
+Gleichungen sondern nur die Werte der Ausdrücke @var{expr_1}, @var{expr_2}, ...
+an.
+
+Beispiele:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c isp(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) disp(x, b[1,2], sin(1.0));
+                               123
+
+                                  2
+                             x - x
+
+                        .8414709848078965
+
+(%o3)                         done
+@end example
+
+@c @opencatbox
+@c @category{Anzeigefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} dispform (@var{expr})
+@deffnx {Funktion} dispform (@var{expr}, all)
+
+@c Returns the external representation of @var{expr}.
+
+@code{dispform} formatiert den Ausdruck @var{expr} von der internen Darstellung
+in eine externe Darstellung, wie sie für die Anzeige des Ausdrucks benötigt 
+wird. Bei der Formatierung sind die Optionsvariablen wie @code{displag} oder
+@code{powerdisp} wirksam.
+
+Beispiele für die interne und externe Darstellung von Ausdrücken sind:
+
+@example
+                    Interne Darstellung              Externe Darstellung
+-----------------------------------------------------------------------
+dispform(-x)      : ((MTIMES) -1 $x)              -> ((MMINUS) $x)
+dispform(sqrt(x)) : ((MEXPT) $x ((RAT) 1 2))      -> ((%SQRT) $X)
+dispform(a/b)     : ((MTIMES) $A ((MEXPT) $B -1)) -> ((MQUOTIENT) $A $B)
+@end example
+
+@c @code{dispform(@var{expr})} returns the external representation with respect 
+@c to the main (top-level) operator. @code{dispform(@var{expr}, all)} returns 
+@c the external representation with respect to all operators in @var{expr}.
+
+@code{dispform(@var{expr})} gibt die externe Darstellung nur für den ersten 
+Operator im Ausdruck zurück. @code{dispform(@var{expr}, all)} gibt die
+externe Darstellung in Bezug auf alle Operatoren im Ausdruck @var{expr} zurück.
+
+@c See also @code{part}, @code{inpart}, and @code{inflag}.
+
+Siehe auch @code{part}, @code{inpart}, und @code{inflag}
+
+@c @opencatbox
+@c @category{Ausdrücke}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} display (@var{expr_1}, @var{expr_2}, ...)
+
+@c Displays equations whose left side is @var{expr_i} unevaluated, and whose 
+@c right side is the value of the expression centered on the line. This function @c is useful in blocks and @code{for} statements in order to have intermediate 
+@c results displayed.  The arguments to @code{display} are usually atoms, 
+@c subscripted variables, or function calls.  See also @code{disp}.
+
+Die Variablen oder Ausdrücke @var{expr_i} werden als eine Gleichung ausgegeben.
+Die linke Seite der Gleichung ist die Variable oder der Ausdruck @var{expr_i} 
+und die rechte Seite der Wert der Variablen oder des Ausdrucks. Die Argumente
+können Variable, indizierte Variable oder Funktionen sein.
+
+Beispiele:
+
+@c ===beg===
+@c b[1,2]:x-x^2$
+@c x:123$
+@c display(x, b[1,2], sin(1.0));
+@c ===end===
+@example
+(%i1) b[1,2]:x-x^2$
+(%i2) x:123$
+(%i3) display(x, b[1,2], sin(1.0));
+                             x = 123
+
+                                      2
+                         b     = x - x
+                          1, 2
+
+                  sin(1.0) = .8414709848078965
+
+(%o3)                         done
+@end example
+
+@c @opencatbox
+@c @category{Anzeigefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} display2d
+Standardwert: @code{true}
+
+@c When @code{display2d} is @code{false}, the console display is a string 
+@c (1-dimensional) form rather than a display (2-dimensional) form.
+
+Hat @code{display2d} den Wert @code{false}, werden Ausdrücke auf der Konsole
+linear und nicht zweidimensional angezeigt.
+
+Beispiel:
+
+@c ===beg===
+@c x/(x^2+1);
+@c display2d:false$
+@c x/(x^2+1);
+@c ===end===
+@example
+(%i1) x/(x^2+1);
+                               x
+(%o1)                        ------
+                              2
+                             x  + 1
+(%i2) display2d:false$
+(%i3) x/(x^2+1);
+(%o3) x/(x^2+1)
+@end example
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} display_format_internal
+Standardwert: @code{false}
+
+@c When @code{display_format_internal} is @code{true}, expressions are displayed
+@c without being transformed in ways that hide the internal mathematical 
+@c representation.  The display then corresponds to what @code{inpart} returns
+@c rather than @code{part}.
+
+Hat @code{display_format_internal} den Wert @code{true}, werden Ausdrücke für
+die Anzeige nicht in die externe Darstellung transformiert. Die Ausgabe erfolgt
+wie in der internen Darstellung. Das entspricht der Rückgabe der Funktion
+@code{inpart}.
+
+Beispiele:
+
+@example
+Nutzer     part       inpart
+a-b;      a - b     a + (- 1) b
+
+           a            - 1
+a/b;       -         a b
+           b
+                       1/2
+sqrt(x);   sqrt(x)    x
+
+          4 X        4
+X*4/3;    ---        - X
+           3         3
+@end example
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c IS THIS FUNCTION STILL USEFUL ???
+@c REPHRASE, NEEDS EXAMPLES
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@deffn {Funktion} dispterms (@var{expr})
+
+@c Displays @var{expr} in parts one below the other. That is, first the operator
+@c of @var{expr} is displayed, then each term in a sum, or factor in a product, 
+@c or part of a more general expression is displayed separately. This is useful 
+@c if @var{expr} is too large to be otherwise displayed.  For example if 
+@c @code{P1}, @code{P2}, ...  are very large expressions then the display 
+@c program may run out of storage space in trying to display 
+@c @code{P1 + P2 + ...}  all at once.  However, @code{dispterms (P1 + P2 + ...)}
+@c displays @code{P1}, then below it @code{P2}, etc.  When not using 
+@c @code{dispterms}, if an exponential expression is too wide to be displayed as
+@c @code{A^B} it appears as @code{expt (A, B)} (or as @code{ncexpt (A, B)} in
+@c the case of @code{A^^B}).
+
+Der Ausdruck @var{expr} wird zeilenweise ausgegeben. Auf der ersten Zeile wird
+der Operator des Ausdrucks @var{expr} ausgegeben. Dann werden die Argumente des
+Operators zeilenweise ausgegeben.
+
+Dies kann nützlich sein, wenn ein Ausdruck sehr lang ist.
+
+Beispiel:
+
+@c ===beg===
+@c dispterms(2*a*sin(x)+%e^x);
+@c ===end===
+@example
+(%i1) dispterms(2*a*sin(x)+%e^x);
+
++
+
+2 a sin(x)
+
+
+  x
+%e
+
+
+(%o1)                         done
+@end example
+
+@c @opencatbox
+@c @category{Anzeigefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr  {Spezielles Symbol} expt (@var{a}, @var{b})
+@defvrx {Spezielles Symbol} ncexpt (@var{a}, @var{b})
+
+@c If an exponential expression is too wide to be displayed as 
+@c @code{@var{a}^@var{b}} it appears as @code{expt (@var{a}, @var{b})} (or as 
+@c @code{ncexpt (@var{a}, @var{b})} in the case of @code{@var{a}^^@var{b}}).
+
+Ist ein Exponentialausdruck zu lang, um ihn als @code{@var{a}^@var{b}} 
+anzuzeigen, wird stattdessen @code{expt(@var{a}, @var{b})} angezeigt.
+Entsprechend wird statt @code{@var{a}^^@var{b}}, @code{ncexpt(@var{a}, @var{b})}
+angezeigt.
+
+@c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
+@c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, 
+@c RESPECTIVELY.
+
+@c @code{expt} and @code{ncexpt} are not recognized in input.
+
+@code{expt} und @code{ncexpt} sind keine Funktionen und erscheinen nur in der
+Ausgabe.
+
+@end defvr
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} exptdispflag
+Standardwert: @code{true}
+
+@c When @code{exptdispflag} is @code{true}, Maxima displays expressions with
+@c negative exponents using quotients, e.g., @code{X^(-1)} as @code{1/X}.
+
+Hat die Optionsvariable @code{exptdispflag} den Wert @code{true}, werden
+Ausdrücke mit einem negativen Exponenten als Quotient angezeigt.
+
+@c @opencatbox
+@c @category{Ausdrücke} @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@deffn {Funktion} grind (@var{expr})
+@deffnx {Optionsvariable} grind
+
+@c The function @code{grind} prints @var{expr} to the console in a form suitable
+@c for input to Maxima. @code{grind} always returns @code{done}.
+
+Die Funktion @code{grind} gibt den Ausdruck @var{expr} auf der Konsole in einer
+Form aus, die für die Eingabe in Maxima geeignet ist. @code{grind} gibt 
+@code{done} zurück.
+
+@c When @var{expr} is the name of a function or macro, @code{grind} prints the 
+@c function or macro definition instead of just the name.
+
+Ist @var{expr} der Name einer Funktion oder eines Makros, gibt @code{grind}
+die Defintion der Funktion oder des Makros aus.
+
+@c See also @code{string}, which returns a string instead of printing its 
+@c output. @code{grind} attempts to print the expression in a manner which makes
+@c it slightly easier to read than the output of @code{string}.
+
+Siehe auch die Funktion @code{string}, die eine Zeichenkette zurückgibt, anstatt
+das Ergebnis auszugeben.
+
+@c When the variable @code{grind} is @code{true}, the output of @code{string} 
+@c and @code{stringout} has the same format as that of @code{grind}; otherwise 
+@c no attempt is made to specially format the output of those functions. The 
+@c default value of the variable @code{grind} is @code{false}.
+
+Hat die Optionsvariable @code{grind} den Wert @code{true}, haben die Ergebnisse
+der Funktionen @code{stringout} und @code{string} dasselbe Format wie die 
+Funktion @code{grind}. Ansonsten werden keine spezielle Formatierungen
+von dieser Funktionen vorgenommen. Der Standardwert der Optionsvariablen
+@code{grind} ist @code{false.}
+
+@c @code{grind} can also be specified as an argument of @code{playback}. When 
+@c @code{grind} is present, @code{playback} prints input expressions in the same 
+@c format as the @code{grind} function. Otherwise, no attempt is made to 
+@c specially format input expressions.
+
+@code{grind} kann auch Argument der Funktion @code{playback} sein. In diesem
+Fall gibt @code{playback} die Eingabe im gleichen Format wie die Funktion 
+@code{grind} aus.
+
+@c @code{grind} evaluates its argument.
+
+@code{grind} wertet seine Argumente aus.
+
+Beispiele:
+
+@c ===beg===
+@c aa + 1729;
+@c grind (%);
+@c [aa, 1729, aa + 1729];
+@c grind (%);
+@c matrix ([aa, 17], [29, bb]);
+@c grind (%);
+@c set (aa, 17, 29, bb);
+@c grind (%);
+@c exp (aa / (bb + 17)^29);
+@c grind (%);
+@c expr: expand ((aa + bb)^10);
+@c grind (expr);
+@c string (expr);
+@c ===end===
+@example
+(%i1) aa + 1729;
+(%o1)                       aa + 1729
+(%i2) grind (%);
+aa+1729$
+(%o2)                         done
+(%i3) [aa, 1729, aa + 1729];
+(%o3)                 [aa, 1729, aa + 1729]
+(%i4) grind (%);
+[aa,1729,aa+1729]$
+(%o4)                         done
+(%i5) matrix ([aa, 17], [29, bb]);
+                           [ aa  17 ]
+(%o5)                      [        ]
+                           [ 29  bb ]
+(%i6) grind (%);
+matrix([aa,17],[29,bb])$
+(%o6)                         done
+(%i7) set (aa, 17, 29, bb);
+(%o7)                   @{17, 29, aa, bb@}
+(%i8) grind (%);
+@{17,29,aa,bb@}$
+(%o8)                         done
+(%i9) exp (aa / (bb + 17)^29);
+                                aa
+                            -----------
+                                     29
+                            (bb + 17)
+(%o9)                     %e
+(%i10) grind (%);
+%e^(aa/(bb+17)^29)$
+(%o10)                        done
+(%i11) expr: expand ((aa + bb)^10);
+         10           9        2   8         3   7         4   6
+(%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
+         5   5         6   4         7   3        8   2
+ + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
+        9        10
+ + 10 aa  bb + aa
+(%i12) grind (expr);
+bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
+     +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
+     +10*aa^9*bb+aa^10$
+(%o12)                        done
+(%i13) string (expr);
+(%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
++252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
+bb+aa^10
+@end example
+
+@c @opencatbox
+@c @category{Anzeigefunktionen} @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end deffn
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} ibase
+Standardwert: 10
+
+@c @code{ibase} is the base for integers read by Maxima.
+
+@code{ibase} ist die Basis der ganzen Zahlen, welche von Maxima eingelesen 
+werden.
+
+@c @code{ibase} may be assigned any integer between 2 and 36 (decimal), 
+@c inclusive. When @code{ibase} is greater than 10, the numerals comprise the 
+@c decimal numerals 0 through 9 plus letters of the alphabet A, B, C, ..., as 
+@c needed to make @code{ibase} digits in all. Letters are interpreted as digits 
+@c only if the first digit is 0 through 9. Uppercase and lowercase letters are 
+@c not distinguished. The numerals for base 36, the largest acceptable base,
+@c comprise 0 through 9 and A through Z.
+
+@code{ibase} kann eine ganze Zahl zwischen 2 und einschließlich 36 zugewiesen
+werden. Ist @code{ibase} größer als 10, werden die Zahlen 0 bis 9 und die
+Buchstaben A, B, C, ... für die Darstellung der Zahl in der Basis @code{ibase}
+herangezogen. Große und kleine Buchstaben werden nicht unterschieden. Die
+erste Stelle muss immer eine Ziffer sein, damit Maxima den eingelesenen Ausdruck
+als eine Zahl interpretiert.
+
+@c Whatever the value of @code{ibase}, when an integer is terminated by a 
+@c decimal point, it is interpreted in base 10.
+
+Gleitkommazahlen werden immer zur Basis 10 interpretiert.
+
+@c See also @code{obase}.
+
+Siehe auch @code{obase}.
+
+Beispiele:
+
+@c @code{ibase} less than 10.
+
+@code{ibase} ist kleiner als 10.
+
+@c ===beg===
+@c ibase : 2 $
+@c obase;
+@c 1111111111111111;
+@c ===end===
+@example
+(%i1) ibase : 2 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1111111111111111;
+(%o3)                         65535
+@end example
+
+@c @code{ibase} greater than 10. Letters are interpreted as digits only if the 
+@c first digit is 0 through 9.
+
+@code{ibase} ist größer als 10. Die erste Stelle muss eine Ziffer sein.
+
+@c ===beg===
+@c ibase : 16 $
+@c obase;
+@c 1000;
+@c abcd;
+@c symbolp (abcd);
+@c 0abcd;
+@c symbolp (0abcd);
+@c ===end===
+@example
+(%i1) ibase : 16 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1000;
+(%o3)                         4096
+(%i4) abcd;
+(%o4)                         abcd
+(%i5) symbolp (abcd);
+(%o5)                         true
+(%i6) 0abcd;
+(%o6)                         43981
+(%i7) symbolp (0abcd);
+(%o7)                         false
+@end example
+
+@c When an integer is terminated by a decimal point, it is interpreted in base 
+@c 10.
+
+Wird eine ganze Zahl mit einer Dezimalpunkt beendet, wird die Zahl als 
+Gleitkommazahl interpretiert.
+
+@c ===beg===
+@c ibase : 36 $
+@c obase;
+@c 1234;
+@c 1234.;
+@c ===end===
+@example
+(%i1) ibase : 36 $
+(%i2) obase;
+(%o2)                          10
+(%i3) 1234;
+(%o3)                         49360
+(%i4) 1234.;
+(%o4)                         1234
+@end example
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@deffn {Funktion} ldisp (@var{expr_1}, ..., @var{expr_n})
+
+@c Displays expressions @var{expr_1}, ..., @var{expr_n} to the console as 
+@c printed output. @code{ldisp} assigns an intermediate expression label to each
+@c argument and returns the list of labels.
+
+Die Ausdrücke @var{expr_1}, ..., @var{expr_n} werden auf der Anzeige ausgegeben.
+Dabei wird jeder Ausdruck einer Zwischenmarke zugewiesen, die als Liste 
+zurückgeben werden.
+
+Siehe auch @code{disp} und @code{display}.
+
+@c ===beg===
+@c e: (a+b)^3;
+@c f: expand (e);
+@c ldisp (e, f);
+@c %t3;
+@c %t4;
+@c ===end===
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisp (e, f);
+                                   3
+(%t3)                       (b + a)
+
+                     3        2      2      3
+(%t4)               b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                   3
+(%o4)                       (b + a)
+(%i5) %t4;
+                     3        2      2      3
+(%o5)               b  + 3 a b  + 3 a  b + a
+@end example
+
+@c @opencatbox
+@c @category{Anzeigefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@deffn {Funktion} ldisplay (@var{expr_1}, ..., @var{expr_n})
+
+@c Displays expressions @var{expr_1}, ..., @var{expr_n} to the console as 
+@c printed output. Each expression is printed as an equation of the form 
+@c @code{lhs = rhs} in which @code{lhs} is one of the arguments of 
+@c @code{ldisplay} and @code{rhs} is its value. Typically each argument is a
+@c variable. @code{ldisp} assigns an intermediate expression label to each 
+@c equation and returns the list of labels.
+
+Die Ausdrücke @var{expr_1}, ..., @var{expr_n} werden als eine Gleichung 
+der Form @code{lhs = rhs} ausgegeben. @code{lhs} ist eines der Argumente der 
+Funktion @code{ldisplay} und @code{rhs} ist der Wert des Argumentes. Im 
+Unterschied zur Funktion @code{display} wird jeder Gleichung eine Zwischenmarke
+zugewiesen, die als List zurückgegeben werden.
+
+Siehe auch @code{display}, @code{disp} und @code{ldisp}.
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisplay (e, f);
+                                     3
+(%t3)                     e = (b + a)
+
+                       3        2      2      3
+(%t4)             f = b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                     3
+(%o4)                     e = (b + a)
+(%i5) %t4;
+                       3        2      2      3
+(%o5)             f = b  + 3 a b  + 3 a  b + a
+@end example
+
+@c @opencatbox
+@c @category{Anzeigenfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} linel
+Standardwert: 79
+
+@c @code{linel} is the assumed width (in characters) of the console display for 
+@c the purpose of displaying expressions. @code{linel} may be assigned any value
+@c by the user, although very small or very large values may be impractical.
+@c Text printed by built-in Maxima functions, such as error messages and the 
+@c output of @code{describe}, is not affected by @code{linel}.
+
+@code{linel} ist die Anzahl der Zeichen einer Zeile der Ausgabe. @code{linel}
+können beliebige postive ganze Zahlen zugewiesen werden, wobei sehr kleine
+oder große Werte unpraktisch sein können. Text der von internen Funktionen
+ausgegeben wird, wie Fehlermeldungen oder Ausgabe der Hilfe, werden von 
+@code{linel} nicht beeinflusst.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Option variable} lispdisp
+Standardwert: @code{false}
+
+@c When @code{lispdisp} is @code{true}, Lisp symbols are displayed with a 
+@c leading question mark @code{?}. Otherwise, Lisp symbols are displayed with no
+@c leading mark.
+
+Hat die Optionsvariable @code{lispdisp} den Wert @code{true}, werden 
+Lisp-Symbole mit einem vorangestelltem Fragezeichen @code{?} angezeigt.
+
+Beispiele:
+
+@c ===beg===
+@c lispdisp: false$
+@c ?foo + ?bar;
+@c lispdisp: true$
+@c ?foo + ?bar;
+@c ===end===
+@example
+(%i1) lispdisp: false$
+(%i2) ?foo + ?bar;
+(%o2)                       foo + bar
+(%i3) lispdisp: true$
+(%i4) ?foo + ?bar;
+(%o4)                      ?foo + ?bar
+@end example
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} negsumdispflag
+Standardwert: @code{true}
+
+@c When @code{negsumdispflag} is @code{true}, @code{x - y} displays as 
+@c @code{x - y} instead of as @code{- y + x}.  Setting it to @code{false} causes
+@c the special check in display for the difference of two expressions to not be 
+@c done.  One application is that thus @code{a + %i*b} and @code{a - %i*b} may 
+@c both be displayed the same way.
+
+Hat @code{negsumdispflag} den Wert @code{true}, wird ein Ausdruck @code{x - y}
+als @code{x - y} und nicht als @code{-y + x} angezeigt. Ist das Flag 
+@code{false} wird ein Test auf solche Ausdrücke für die Ausgabe nicht 
+durchgeführt. Dies kann z. B. angewendet werden, damit die komplexen Zahlen
+@code{a + %i*b} und @code{a - %i*b} dieselbe Ausgabeform haben.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} obase
+Standardwert: 10
+
+@c @code{obase} is the base for integers displayed by Maxima.
+
+@code{obase} ist die Basis für ganze Zahlen für die Ausgabe von Maxima.
+
+@c @code{obase} may be assigned any integer between 2 and 36 (decimal), 
+@c inclusive. When @code{obase} is greater than 10, the numerals comprise the 
+@c decimal numerals 0 through 9 plus capital letters of the alphabet A, B, C, 
+@c ..., as needed. A leading 0 digit is displayed if the leading digit is 
+@c otherwise a letter. The numerals for base 36, the largest acceptable base,
+@c comprise 0 through 9, and A through Z.
+
+@code{obase} kann eine ganze Zahl zwischen 2 und einschließlich 36 zugewiesen
+werden. Ist @code{obase} größer als 10, werden die Zahlen 0 bis 9 und die
+Buchstaben A, B, C, ... für die Darstellung der Zahl in der Basis @code{obase}
+herangezogen. Große und kleine Buchstaben werden nicht unterschieden. Die
+erste Stelle muss immer eine Ziffer sein, damit Maxima den eingelesenen Ausdruck
+als eine Zahl interpretiert.
+
+Siehe auch @code{ibase}.
+
+Beispiele:
+
+@c ===beg===
+@c obase : 2;
+@c 2^8 - 1;
+@c obase : 8;
+@c 8^8 - 1;
+@c obase : 16;
+@c 16^8 - 1;
+@c obase : 36;
+@c 36^8 - 1;
+@c ===end===
+@example
+(%i1) obase : 2;
+(%o1)                          10
+(%i2) 2^8 - 1;
+(%o10)                      11111111
+(%i3) obase : 8;
+(%o3)                          10
+(%i4) 8^8 - 1;
+(%o4)                       77777777
+(%i5) obase : 16;
+(%o5)                          10
+(%i6) 16^8 - 1;
+(%o6)                       0FFFFFFFF
+(%i7) obase : 36;
+(%o7)                          10
+(%i8) 36^8 - 1;
+(%o8)                       0ZZZZZZZZ
+@end example
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen} @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} pfeformat
+Standardwert: @code{false}
+
+@c When @code{pfeformat} is @code{true}, a ratio of integers is displayed with 
+@c the solidus (forward slash) character, and an integer denominator @code{n}
+@c is displayed as a leading multiplicative term @code{1/n}.
+
+Hat die Optionsvariable @code{pfeformat} den Wert @code{true}, werden Brüche
+mit ganzen Zahlen auf einer Zeile mit dem Zeichen @code{/} dargestellt. Ist
+der Nenner eine ganze Zahl, wird dieser als @code{1/n} vor den Ausdruck 
+gestellt.
+
+Beispiele:
+
+@c ===beg===
+@c pfeformat: false$
+@c 2^16/7^3;
+@c (a+b)/8;
+@c pfeformat: true$
+@c 2^16/7^3;
+@c (a+b)/8; 
+@c ===end===
+@example
+(%i1) pfeformat: false$
+(%i2) 2^16/7^3;
+                              65536
+(%o2)                         -----
+                               343
+(%i3) (a+b)/8;
+                              b + a
+(%o3)                         -----
+                                8
+(%i4) pfeformat: true$ 
+(%i5) 2^16/7^3;
+(%o5)                       65536/343
+(%i6) (a+b)/8;
+(%o6)                      1/8 (b + a)
+@end example
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@deffn {Funktion} print (@var{expr_1}, ..., @var{expr_n})
+
+@c Evaluates and displays @var{expr_1}, ..., @var{expr_n} one after another, 
+@c from left to right, starting at the left edge of the console display.
+
+Wertet die Argumente @var{expr_1}, ..., @var{expr_n} nacheinander von links nach
+rechts aus und zeigt die Ergebnisse an.
+
+@c The value returned by @code{print} is the value of its last argument.
+@c @code{print} does not generate intermediate expression labels.
+
+@code{print} gibt das Ergebnis des letzten Arguments als Ergebnis zurück.
+@code{print} erzeugt keine Zwischenmarken.
+
+@c See also @code{display}, @code{disp}, @code{ldisplay}, and @code{ldisp}.
+@c Those functions display one expression per line, while @code{print} attempts
+@c to display two or more expressions per line.
+
+Siehe auch @code{display}, @code{disp}, @code{ldisplay} und @code{ldisp}.
+
+@c To display the contents of a file, see @code{printfile}.
+
+Um den Inhalt einer Datei anzuzeigen, siehe @code{printfile}.
+
+Beispiele:
+
+@example
+(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+            3        2      2      3
+(a+b)^3 is b  + 3 a b  + 3 a  b + a  log (a^10/b) is 
+
+                                              10 log(a) - log(b) 
+(%i2) r;
+(%o2)                  10 log(a) - log(b)
+(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is",
+      radcan (log (a^10/b)))$
+                           (a+b)^3 is
+
+                     3        2      2      3
+                    b  + 3 a b  + 3 a  b + a
+
+                         log (a^10/b) is
+
+                       10 log(a) - log(b)
+@end example
+
+@c @opencatbox
+@c @category{Anzeigefunktonen}
+@c @closecatbox
+@end deffn
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@deffn {Funktion} read (@var{expr_1}, ..., @var{expr_n})
+
+@c Prints @var{expr_1}, ..., @var{expr_n}, then reads one expression from the 
+@c console and returns the evaluated expression. The expression is terminated 
+@c with a semicolon @code{;} or dollar sign @code{$}.
+
+Gibt die Ausdrücke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
+sodann einen Ausdruck von der Konsole ein und wertet dieses aus. Die Eingabe
+des Ausdrucks wird mit den Zeichen @code{;} oder @code{$} beendet.
+
+Siehe auch @code{readonly}.
+
+@example
+(%i1) foo: 42$ 
+(%i2) foo: read ("foo is", foo, " -- enter new value.")$
+foo is 42  -- enter new value. 
+(a+b)^3;
+(%i3) foo;
+                                     3
+(%o3)                         (b + a)
+@end example
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@deffn {Function} readonly (@var{expr_1}, ..., @var{expr_n})
+ 
+@c Prints @var{expr_1}, ..., @var{expr_n}, then reads one expression from the 
+@c console and returns the expression (without evaluation). The expression is 
+@c terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
+
+Gibt die Ausdrücke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
+sodann einen Ausdruck von der Konsole ein und gibt den eingelesenen Ausdruck
+zurück ohne diesen auszuwerten. Die Eingabe des Ausdrucks wird mit den Zeichen 
+@code{;} oder @code{$} beendet.
+
+Siehe auch @code{read}.
+
+@c === beg ===
+@c aa: 7$
+@c foo: readonly ("Enter an expression:");
+@c foo: read ("Enter an expression:");
+@c === end ===
+@example
+(%i1) aa: 7$
+(%i2) foo: readonly ("Enter an expression:");
+Enter an expression: 
+2^aa;
+                                  aa
+(%o2)                            2
+(%i3) foo: read ("Enter an expression:");
+Enter an expression: 
+2^aa;
+(%o3)                            128
+@end example
+
+@c @opencatbox
+@c @category{Konsole Ein- und Ausgabe}
+@c @closecatbox
+@end deffn
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} sqrtdispflag
+Standardwert: @code{true}
+
+@c When @code{sqrtdispflag} is @code{false}, causes @code{sqrt} to display with 
+@c exponent 1/2.
+
+Hat die Optionsvariable den Wert @code{false}, wird die Wurzelfunktion als
+Exponentation mit dem Exponenten 1/2 angezeigt.
+
+@c @opencatbox
+@c @category{Mathematische Funktionen} @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} stardisp
+Standardwert: @code{false}
+
+@c When @code{stardisp} is @code{true}, multiplication is displayed with an
+@c asterisk @code{*} between operands.
+
+Hat die Optionsvariable @code{stardisp} den Wert @code{true}, wird die 
+Multiplikation mit einem Stern @code{*} angezeigt.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} ttyoff
+Standardwert: @code{false}
+
+@c When @code{ttyoff} is @code{true}, output expressions are not displayed.
+@c Output expressions are still computed and assigned labels. See @code{labels}.
+
+Hat die Optionsvariable @code{ttyoff} den Wert @code{true}, werden Ergebnisse
+nicht angezeigt. Die Ergebnisse werden weiter berechnet und sie werden 
+Marken zugewiesen. Siehe @code{labels}.
+
+@c Text printed by built-in Maxima functions, such as error messages and the 
+@c output of @code{describe}, is not affected by @code{ttyoff}.
+
+Textausgaben von internen Funktionen, wie Fehlermeldungen und Ausgaben der 
+Hilfe mit @code{describe} werden nicht beeinflusst.
+
+@c @opencatbox
+@c @category{Anzeigeflags und -variablen}
+@c @closecatbox
+@end defvr
+
+@c --- Ende Command.de.texi ----------------------------------------------------
+

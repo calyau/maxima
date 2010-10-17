@@ -1,0 +1,230 @@
+@c -----------------------------------------------------------------------------
+@c File     : Introduction.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 15.10.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@c Start Maxima with the command "maxima".  Maxima will display version
+@c information and a prompt.  End each Maxima command with a semicolon.
+@c End the session with the command "quit();".  Here's a sample session:
+
+Von einer Kommandozeile wird Maxima mit dem Kommando @code{maxima} gestartet. 
+Maxima zeigt die aktuelle Version an und gibt einen Prompt für die Eingabe aus. 
+Ein Maxima-Kommando wird mit einem Semikolon abgeschlossen. Eine Maxima-Sitzung 
+wird mit dem Kommando @code{quit();} beendet. Es folgt ein Beispiel für eine 
+Sitzung:
+
+@example
+[wfs@@chromium]$ maxima
+Maxima 5.9.1 http://maxima.sourceforge.net
+Using Lisp CMU Common Lisp 19a
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+This is a development version of Maxima. The function bug_report()
+provides bug reporting information.
+(%i1) factor(10!);
+                            8  4  2
+(%o1)                      2  3  5  7
+(%i2) expand ((x + y)^6);
+       6        5       2  4       3  3       4  2      5      6
+(%o2) y  + 6 x y  + 15 x  y  + 20 x  y  + 15 x  y  + 6 x  y + x
+(%i3) factor (x^6 - 1);
+                              2            2
+(%o3)       (x - 1) (x + 1) (x  - x + 1) (x  + x + 1)
+(%i4) quit();
+[wfs@@chromium]$
+@end example
+
+@c Maxima can search the info pages.  Use the @kbd{describe} command to show
+@c information about the command or all the commands and variables containing 
+@c a string. 
+@c The question mark @code{?} (exact search) and double question mark @code{??} 
+@c (inexact search) are abbreviations for @code{describe}:
+
+Maxima kann GNU Infotext anzeigen. Das Kommando @code{describe(text)} 
+zeigt alle Inhalte an, die die Zeichenkette @code{text} enthalten. Das 
+Fragezeichen @code{?} (exakte Suche) und zwei Fragezeichen @code{??} (ungenaue 
+Suche) sind abkürzende Schreibweisen für @code{describe}:
+
+@example
+@c Maxima 5.20post
+(%i1) ?? integrat
+
+ 0: Functions and Variables for Integration
+ 1: Introduction to Integration
+ 2: integrate  (Functions and Variables for Integration)
+ 3: integrate_use_rootsof  (Functions and Variables for Integration)
+ 4: integration_constant  (Functions and Variables for Integration)
+ 5: integration_constant_counter  (Functions and Variables for Integration)
+Enter space-separated numbers, `all' or `none': 4
+
+ -- System variable: integration_constant
+     Default value: `%c'
+
+     When a constant of integration is introduced by indefinite
+     integration of an equation, the name of the constant is
+     constructed by concatenating `integration_constant' and
+     `integration_constant_counter'.
+
+     `integration_constant' may be assigned any symbol.
+
+     Examples:
+
+          (%i1) integrate (x^2 = 1, x);
+                                     3
+                                    x
+          (%o1)                     -- = x + %c1
+                                    3
+          (%i2) integration_constant : 'k;
+          (%o2)                           k
+          (%i3) integrate (x^2 = 1, x);
+                                      3
+                                     x
+          (%o3)                      -- = x + k2
+                                     3
+
+
+(%o1)                                true
+@end example
+
+@c To use a result in later calculations, you can assign it to a variable or
+@c refer to it by its automatically supplied label.  In addition, @kbd{%}
+@c refers to the most recent calculated result:
+
+Das Ergebnis einer Rechnung wird mit dem Operator @code{:} einer Variablen 
+zugewiesen. Weiterhin speichert Maxima die Eingaben unter den Marken 
+@code{(%i)} und die Ausgaben unter den Marken @code{(%o)} ab. Die Marken 
+erhalten eine fortlaufende Nummerierung. Mit diesen Marken kann auf 
+frühere Eingaben und Ausgaben zurückgegriffen werden. Auf das letzte Ergebnis 
+kann mit @code{%} zurückgegriffen werden.
+
+@c ===beg===
+@c u: expand ((x + y)^6);
+@c diff(u,x);
+@c factor(%o2);
+@c %/6;
+@c ===end===
+@example
+(%i1) u: expand ((x + y)^6);
+           6        5       2  4       3  3       4  2      5      6
+(%o1)     y  + 6 x y  + 15 x  y  + 20 x  y  + 15 x  y  + 6 x  y + x
+(%i2) diff(u,x);
+                5         4       2  3       3  2       4        5
+(%o2)        6 y  + 30 x y  + 60 x  y  + 60 x  y  + 30 x  y + 6 x
+(%i3) factor(%o2);
+                                           5
+(%o3)                             6 (y + x)
+(%i4) %/6;
+                                          5
+(%o4)                              (y + x)
+@end example
+
+@c Maxima knows about complex numbers and numerical constants:
+
+Maxima kennt nummerische Konstanten und kann mit komplexen Zahlen rechnen:
+
+@c ===beg===
+@c cos(%pi);
+@c exp(%i*%pi);
+@c ===end===
+@example
+(%i1) cos(%pi);
+(%o1)                          - 1
+(%i2) exp(%i*%pi);
+(%o2)                          - 1
+@end example
+
+@c Maxima can do differential and integral calculus:
+
+Maxima kann differenzieren und integrieren:
+
+@c ===beg===
+@c u: expand ((x + y)^6);
+@c diff (%, x);
+@c integrate (1/(1 + x^3), x);
+@c ===end===
+@example
+(%i1) u: expand ((x + y)^6);
+       6        5       2  4       3  3       4  2      5      6
+(%o1) y  + 6 x y  + 15 x  y  + 20 x  y  + 15 x  y  + 6 x  y + x
+(%i2) diff (%, x);
+         5         4       2  3       3  2       4        5
+(%o2) 6 y  + 30 x y  + 60 x  y  + 60 x  y  + 30 x  y + 6 x
+(%i3) integrate (1/(1 + x^3), x);
+                                  2 x - 1
+                2            atan(-------)
+           log(x  - x + 1)        sqrt(3)    log(x + 1)
+(%o3)    - --------------- + ------------- + ----------
+                  6             sqrt(3)          3
+@end example
+
+@c Maxima can solve linear systems and cubic equations:
+
+Maxima kann lineare Gleichungssysteme und kubische Gleichungen lösen:
+
+@c ===beg===
+@c linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
+@c solve (x^3 - 3*x^2 + 5*x = 15, x);
+@c ===end===
+@example
+(%i1) linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
+                        7 a - 52        25
+(%o1)              [x = --------, y = -------]
+                        3 a - 8       3 a - 8
+(%i2) solve (x^3 - 3*x^2 + 5*x = 15, x);
+(%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
+@end example
+
+@c Maxima can solve nonlinear sets of equations.  Note that if you don't
+@c want a result printed, you can finish your command with @kbd{$} instead
+@c of @kbd{;}.
+
+Maxima kann nichtlineare Gleichungssysteme lösen. Wird eine Eingabe mit 
+@kbd{$} anstatt @kbd{;} abgeschlossen, wird keine Ausgabe erzeugt.
+
+@c ===beg===
+@c eq_1: x^2 + 3*x*y + y^2 = 0$
+@c eq_2: 3*x + y = 1$
+@c  solve ([eq_1, eq_2]);
+@c ===end===
+@example
+(%i1) eq_1: x^2 + 3*x*y + y^2 = 0$
+(%i2) eq_2: 3*x + y = 1$
+(%i3) solve ([eq_1, eq_2]);
+              3 sqrt(5) + 7      sqrt(5) + 3
+(%o3) [[y = - -------------, x = -----------], 
+                    2                 2
+
+                               3 sqrt(5) - 7        sqrt(5) - 3
+                          [y = -------------, x = - -----------]]
+                                     2                   2
+@end example
+
+@c Maxima can generate plots of one or more functions:
+
+Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:
+
+@c ===beg===
+@c plot2d (sin(x)/x, [x, -20, 20]);
+@c plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5]);
+@c plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12], [y, -12, 12]);
+@c ===end===
+@example
+(%i1) plot2d (sin(x)/x, [x, -20, 20]);
+(%o1) 
+(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5]);
+(%o2) 
+(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12],
+      [y, -12, 12]);
+(%o3) 
+@end example
+
+@c @opencatbox
+@c @category{Hilfe}
+@c @closecatbox
+
+@c --- End of file Introduction.de.texi ----------------------------------------
+

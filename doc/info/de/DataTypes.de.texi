@@ -1,0 +1,1370 @@
+@c -----------------------------------------------------------------------------
+@c File     : DataTypes.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 15.10.2010
+@c 
+@c This file contains documentation for the following symbols:
+@c 
+@c  bfloat              bfloatp             bftorat             bftrunc
+@c  evenp               float               float2bf            floatnump
+@c  fpprec              fpprintprec         integerp            m1pbranch
+@c  nonnegintegerp      numberp             number_pbranch      oddp
+@c  ratepsilon          rationalize         ratnump             
+@c  concat              sconcat             string              stringdisp
+@c  %e                  %i                  false               %gamma
+@c  ind                 inf                 infinity            minf
+@c  %phi                %pi                 true                und
+@c  zeroa               zerob 
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Einführung in Maxima Zahlen::
+* Zeichenketten::
+* Funktionen und Variablen für Zahlen::
+* Funktionen und Variablen für Zeichenketten::
+* Funktionen und Variablen für Konstante::
+@end menu
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Einführung in Maxima Zahlen, Zeichenketten, Datentypen, Top
+@section Einführung in Maxima Zahlen
+
+@subheading Ganze und rationale Zahlen
+
+Arithmetische Rechnungen mit ganzen oder rationalen Zahlen sind exakt.
+Prinzipell können die ganzen und rationalen Zahlen eine beliebige Anzahl an 
+Stellen haben. Eine Obergrenze ist allein der zur Verfügung stehende
+Speicherplatz.
+
+@example
+(%i1) 1/3+5/4+3;
+                               55
+(%o1)                          --
+                               12
+(%i2) 100!;
+(%o2) 9332621544394415268169923885626670049071596826438162146859\
+2963895217599993229915608941463976156518286253697920827223758251\
+185210916864000000000000000000000000
+(%i3) 100!/101!;
+                                1
+(%o3)                          ---
+                               101
+@end example
+
+Funktionen für ganze und rationale Zahlen:
+
+@verbatim
+   integerp       numberp       nonnegintegerp     
+   oddp           evenp
+   ratnump        rationalize
+@end verbatim
+
+@subheading Gleitkommazahlen
+
+Maxima rechnet mit Gleitkommazahlen in doppelter Genauigkeit. Weiterhin kann
+Maxima mit großen Gleitkommazahlen rechnen, die prinzipell eine beliebige
+Genauigkeit haben.
+
+Gleitkommazahlen werden mit einem Dezimalpunkt eingegeben. Der Exponent kann mit
+"f", "e" oder "d" angegeben werden. Intern rechnet Maxima ausschließlich mit 
+Gleitkommazahlen in doppelter Genauigkeit, die immer mit "e" als einen 
+Exponenten angezeigt werden. Große Gleitkommazahlen werden mit dem Exponenten 
+"b" bezeichnet. Groß- und Kleinschreibung werden bei der Schreibweise des
+Exponenten nicht unterschieden.
+
+@example
+(%i1) [2.0,1f10,1,e10,1d10,1d300];
+(%o1)        [2.0, 1.e+10, 1, e10, 1.e+10, 1.e+300]
+(%i2) [2.0b0,1b10,1b300];
+(%o2)               [2.0b0, 1.0b10, 1.0b300]
+@end example
+
+Ist mindestens eine Zahl in einer Rechnung eine Gleitkommazahl, werden die 
+Argumente in Gleitkommazahlen umgewandelt und eine Gleitkommazahl als Ergebnis
+zurückgegeben. Dies wird auch für große Gleitkommazahlen ausgeführt.
+
+@example
+(%i1) 2.0+1/2+3;
+(%o1)                                 5.5
+(%i2) 2.0b0+1/2+3;
+(%o2)                                5.5b0
+@end example
+
+Mit den Funktionen @code{float} und @code{bfloat} werden Zahlen in 
+Gleitkommazahlen und große Gleitkommazahlen umgewandelt:
+
+@example
+(%i1) float([2,1/2,1/3,2.0b0]);
+(%o1)          [2.0, 0.5, .3333333333333333, 2.0]
+(%i2) bfloat([2,1/2,1/3,2.0b0]);
+(%o2)     [2.0b0, 5.0b-1, 3.333333333333333b-1, 2.0b0]
+@end example
+
+Funktionen und Variable für Gleitkommazahlen:
+
+@verbatim
+   float        floatnump     
+   bfloat       bfloatp       fpprec
+   float2bf     bftorat       ratepsilon
+
+   number_pbranch 
+   m1pbranch
+@end verbatim
+
+@subheading Komplexe Zahlen
+
+@c A complex expression is specified in Maxima by adding the real part of the
+@c expression to @code{%i} times the imaginary part.  Thus the roots of the 
+@c equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%i} and @code{2 - 3*%i}.  
+@c Note that simplification of products of complex expressions can be effected 
+@c by expanding the product.  Simplification of quotients, roots, and other
+@c functions of complex expressions can usually be accomplished by using the 
+@c @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, 
+@c @code{abs}, @code{carg} functions.
+
+Maxima kennt keinen eigenen Typ für komplexe Zahlen. Komplexe Zahlen werden von
+Maxima intern als die Addition von Realteil und dem mit der Imaginären Einheit
+@code{%i} multiplizierten Imaginärteil dargestellt. Zum Beispiel sind die
+komplexen Zahlen @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der Gleichung
+@code{x^2 - 4*x + 13 = 0}.
+
+Maxima vereinfacht Produkte, Quotienten, Wurzel und andere Ausdrücke mit 
+komplexen Zahlen nicht automatisch zu einer komplexen Zahl. Um Produkte mit
+komplexen Zahlen zu vereinfachen, kann der Ausdruck mit der Funktion 
+@code{expand} expandiert werden.
+
+Funktionen für komplexe Zahlen:
+
+@verbatim
+   realpart     imagpart      rectform     polarform
+   abs          carg          conjugate    csign
+@end verbatim
+
+@c @opencatbox
+@c @category{Komplexe Zahlen}
+@c @closecatbox
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Zeichenketten, Funktionen und Variablen für Zahlen, Einführung in Maxima Zahlen, Datentypen
+@section Zeichenketten
+
+@c Strings (quoted character sequences) are enclosed in double quote marks 
+@c @code{"} for input, and displayed with or without the quote marks, depending
+@c on the global variable @code{stringdisp}.
+
+Zeichenketten werden bei der Eingabe in Anführungszeichen gesetzt. Sie werden 
+standardmäßig ohne Anführungszeichen ausgegeben. Hat die Optionsvariable
+@code{stringdisp} den Wert @code{true}, werden Zeichenketten mit 
+Anführungszeichen dargestellt.
+
+@c Strings may contain any characters, including embedded tab, newline, and 
+@c carriage return characters. The sequence @code{\"} is recognized as a literal
+@c double quote, and @code{\\} as a literal backslash. When backslash appears at
+@c the end of a line, the backslash and the line termination (either newline or
+@c carriage return and newline) are ignored, so that the string continues with 
+@c the next line. No other special combinations of backslash with another 
+@c character are recognized; when backslash appears before any character other 
+@c than @code{"}, @code{\}, or a line termination, the backslash is ignored.
+@c There is no way to represent a special character (such as tab, newline, or
+@c carriage return) except by embedding the literal character in the string.
+
+Zeichenketten können jedes Zeichen einschließlich Tabulator-, Zeilenvorschub- 
+oder Wagenrücklauf-Zeichen enthalten. Das Anführungszeichen wird innerhalb einer
+Zeichenkette durch @code{\"} und der Backslash durch @code{\\} dargestellt. Ein
+Backslash am Ende einer Eingabezeile erlaubt die Fortsetzung einer Zeichenkette
+in der nächsten Zeile. Maxima kennt keine weiteren Kombinationen mit einem
+Backslash. Daher wird der Backslash an anderer Stelle ignoriert. Maxima kennt 
+keine andere Möglichkeit, als spezielle Zeichen wie ein Tabulator-, 
+Zeilenvorschub- oder Wagenrücklaufzeichen in einer Zeichenkette darzustellen.
+
+@c There is no character type in Maxima; a single character is represented as a 
+@c one-character string.
+
+Maxima hat keinen Typ für ein einzelnes Zeichen. Einzelne Zeichen werden daher
+als eine Zeichenkette mit einem Zeichen dargestellt.
+
+@c The @code{stringproc} add-on package contains many functions for working with
+@c strings.
+
+Folgende Funktionen und Variable arbeiten mit Zeichenketten:
+
+@verbatim
+   concat   sconcat   string   stringdisp
+@end verbatim
+
+Das Zusatzpaket @code{stringproc} enthält eine umfangreiche Bibliothek an 
+Funktionen für Zeichenketten.
+
+Beispiele:
+
+@c ===beg===
+@c s_1 : "This is a string.";
+@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+@c s_3 : "Embedded line termination
+@c in this string.";
+@c s_4 : "Ignore the \
+@c line termination \
+@c characters in \
+@c this string.";
+@c stringdisp : false;
+@c s_1;
+@c stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "This is a string.";
+(%o1)               This is a string.
+(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+(%o2) Embedded "double quotes" and backslash \ characters.
+(%i3) s_3 : "Embedded line termination
+in this string.";
+(%o3) Embedded line termination
+in this string.
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
+(%o4) Ignore the line termination characters in this string.
+(%i5) stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)                   This is a string.
+(%i7) stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)                  "This is a string."
+@end example
+
+@c @opencatbox
+@c @category{Syntax}
+@c @closecatbox
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Funktionen und Variablen für Zahlen, Funktionen und Variablen für Zeichenketten, Zeichenketten, Datentypen
+@section Funktionen und Variablen für Zahlen
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} bfloat (@var{expr})
+
+@c Converts all numbers and functions of numbers in @var{expr} to bigfloat 
+@c numbers. The number of significant digits in the resulting bigfloats is 
+@c specified by the global variable @code{fpprec}.
+
+Konvertiert alle Zahlen im Ausdruck @var{expr} in große Gleitkommazahlen. Die 
+Anzahl der Stellen wird durch die Optionsvariable @code{ffprec} spezifiziert.
+
+@c When @code{float2bf} is @code{false} a warning message is printed when a 
+@c floating point number is converted into a bigfloat number (since this may 
+@c lead to loss of precision).
+
+Hat die Optionsvariable @code{float2bf} den Wert @code{false}, gibt Maxima eine
+Warnung aus, wenn eine Gleitkommazahl mit doppelter Genauigkeit in eine große
+Gleitkommazahl umgewandelt wird.
+
+@c @opencatbox
+@c @category{Numerische Auswertung}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} bfloatp (@var{expr})
+
+@c Returns @code{true} if @var{expr} is a bigfloat number, otherwise 
+@c @code{false}.
+
+Gibt den Wert @code{true} zurück, wenn @var{expr} eine große Gleitkommazahl ist,
+ansonsten den Wert @code{false}.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} bftorat
+Standartwert: @code{false}
+
+@c @code{bftorat} controls the conversion of bfloats to rational numbers. When 
+@c @code{bftorat} is @code{false}, @code{ratepsilon} will be used to control the
+@c conversion (this results in relatively small rational numbers). When 
+@c @code{bftorat} is @code{true}, the rational number generated will accurately
+@c represent the bfloat.
+
+Die Optionsvariable @code{bftorat} kontrolliert die Umwandlung von großen
+Gleitkommazahlen in rationale Zahlen. Hat @code{bftorat} den Wert @code{true},
+wird die Genauigkeit der Umwandlung von der Optionsvariablen @code{ratepsilon}
+kontrolliert. In diesem Fall ist das Ergebnis der Umwandlung eine relativ kleine
+rationale Zahl. Hat dagegen @code{bftorat} den Wert @code{false}, wird die große
+Gleitkommazahl exakt durch die rationale Zahl repräsentiert.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} bftrunc
+Standardwert: @code{true}
+
+@c @code{bftrunc} causes trailing zeroes in non-zero bigfloat numbers not to be 
+@c displayed.  Thus, if @code{bftrunc} is @code{false}, @code{bfloat (1)} 
+@c displays as @code{1.000000000000000B0}. Otherwise, this is displayed as
+@c @code{1.0B0}.
+
+Hat die Optionsvariable @code{bftrunc} den Wert @code{true}, werden bei der
+Ausgabe einer großen Gleitkommazahl nachfolgende Nullen nicht angezeigt. So wird
+@code{bfloat(1)} als @code{1.000000000000000b0} angezeigt, wenn @code{bftrunc} 
+den Wert @code{false} hat, ansonsten wird @code{1.0b0} angezeigt.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} evenp (@var{expr})
+
+@c Returns @code{true} if @var{expr} is an even integer.
+@c @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+@c @code{false} is returned in all other cases.
+
+Ist @var{expr} eine gerade ganze Zahl, wird @code{true} zurückgegeben. In allen
+anderen Fällen wird @code{false} zurückgegeben.
+
+@code{evenp} gibt für Symbole oder Ausdrücke immer den Wert @code{false} zurück,
+auch wenn das Symbol als gerade ganze Zahl deklariert ist oder der Ausdruck eine
+ganze Zahl repräsentiert.
+
+Siehe die Funktion @code{featurep}, um zu testen, ob ein Symbol oder Ausdruck 
+eine gerade ganze Zahl repräsentiert.
+
+@c @opencatbox
+@c @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} float (@var{expr})
+
+@c Converts integers, rational numbers and bigfloats in @var{expr} to floating 
+@c point numbers.  It is also an @code{evflag}, @code{float} causes non-integral
+@c rational numbers and bigfloat numbers to be converted to floating point.
+
+Konvertiert ganze, rationale und große Gleitkommazahlen im Ausdruck @var{expr}
+in Gleitkommazahlen mit doppelter Genauigkeit.
+
+@code{float} ist auch ein Auswertungsflag für die Funktion @code{ev}. In diesem 
+Fall werden rationale Zahlen und große Gleitkommazahlen, aber keine ganzen 
+Zahlen in Gleitkommazahlen umgewandelt.
+
+Beispiele:
+
+In den ersten zwei Beispielen werden die Zahlen @code{1/2} und @code{1} in eine
+Gleitkommazahl umgewandelt. Die Sinusfunktion vereinfacht sodann zu einem
+numerischen Wert. Das Auswertungsflag @code{float} wandelt ganze Zahlen nicht
+in eine Gleitkommazahl um. Daher wird @code{sin(1)} nicht zu einem numerischen
+Wert vereinfacht.
+
+@c === beg ===
+@c float(sin(1/2));
+@c float(sin(1));
+@c sin(1/2),float;
+@c sin(1),float;
+@c === end ===
+@example
+(%i1) float(sin(1/2));
+(%o1)                   0.479425538604203
+(%i2) float(sin(1));
+(%o2)                   .8414709848078965
+(%i3) sin(1/2),float;
+(%o3)                   0.479425538604203
+(%i4) sin(1),float;
+(%o4)                        sin(1)
+@end example
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Auswertungsschalter}
+@c @closecatbox
+@end deffn
+
+@c --- 08.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} float2bf
+Standardwert: @code{true}
+ 
+@c When @code{float2bf} is @code{false}, a warning message is printed when a 
+@c floating point number is converted into a bigfloat number (since this may 
+@c lead to loss of precision).
+
+Hat die Optionsvariable @code{float2bf} den Wert @code{false}, wird eine
+Warnung ausgegeben, wenn eine Gleitkommazahl in eine große Gleitkommazahl 
+umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit führen kann.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} floatnump (@var{number})
+
+@c Returns @code{true} if @var{expr} is a floating point number, otherwise 
+@c @code{false}.
+
+Gibt den Wert @code{true} zurück, wenn das Argument @var{number} eine 
+Gleitkommazahl ist. Ansonsten wird @code{false} zurückgegeben. Auch wenn 
+@var{number} eine große Gleitkommazahl ist, ist das Ergebnis @code{false}.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} fpprec
+Standardwert: 16
+
+@c @code{fpprec} is the number of significant digits for arithmetic on bigfloat
+@c numbers. @code{fpprec} does not affect computations on ordinary floating 
+@c point numbers.
+
+@code{ffprec} ist die Zahl der Stellen für die Rechnung mit großen 
+Gleitkommazahlen. @code{ffprec} hat keinen Einfluß auf die Rechnungen mit
+Gleitkommazahlen in doppelter Genauigkeit.
+
+@c See also @code{bfloat} and @code{fpprintprec}.
+
+Siehe auch @code{bfloat} und @code{fpprintprec}.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} fpprintprec
+Standardwert: 0
+
+@c @code{fpprintprec} is the number of digits to print when printing an ordinary
+@c float or bigfloat number.
+
+@code{fpprintprec} ist die Anzahl der Stellen, die angezeigt wird, wenn eine
+Gleitkommazahl ausgegeben wird.
+
+@c For ordinary floating point numbers, when @code{fpprintprec} has a value 
+@c between 2 and 16 (inclusive), the number of digits printed is equal to 
+@c @code{fpprintprec}. Otherwise, @code{fpprintprec} is 0, or greater than 16,
+@c and the number of digits printed is 16.
+
+Hat @code{fpprintprec} einen Wert zwischen 2 und 16 (einschließlich), ist die
+Anzahl der angezeigten Stellen für einfache Gleitkommazahlen gleich dem Wert 
+von @code{fpprintprec}. Hat @code{fpprintprec} den Wert 0 oder ist größer als
+16 werden 16 Stellen angezeigt.
+
+@c For bigfloat numbers, when @code{fpprintprec} has a value between 2 and 
+@c @code{fpprec} (inclusive), the number of digits printed is equal to 
+@c @code{fpprintprec}. Otherwise, @code{fpprintprec} is 0, or greater than 
+@c @code{fpprec}, and the number of digits printed is equal to @code{fpprec}.
+
+Für große Gleitkommazahlen ist die Anzahl der angezeigten Stellen gleich
+@code{fpprintprec}, wenn @code{fpprintprec} einen Wert zwischen 2 und
+@code{fpprec} (einschließlich) hat. Ist der Wert von @code{fpprintprec} gleich
+0 oder größer als @code{fpprec} werden @code{fpprec} Stellen angezeigt.
+
+@c @code{fpprintprec} cannot be 1.
+
+@code{fpprintprec} kann nicht den Wert 1 erhalten.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Anzeigeschalter und -variable} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} integerp (@var{number})
+
+@c Returns @code{true} if @var{expr} is a literal numeric integer, otherwise 
+@c @code{false}.
+
+Hat den Rückgabewert @code{true}, wenn das Argument @var{number} eine ganze Zahl
+ist. In allen anderen Fällen gibt @code{integerp} den Wert @code{false} zurück.
+
+@c @code{integerp} returns @code{false} if its argument is a symbol, even if the
+@c argument is declared integer.
+
+@code{integerp} gibt für Symbole oder Ausdrücke immer den Wert @code{false} 
+zurück, auch wenn das Symbol als ganze Zahl deklariert ist oder der Ausdruck 
+eine ganze Zahl repräsentiert.
+
+Siehe die Funktion @code{featurep}, um zu testen, ob ein Symbol oder Ausdruck 
+eine ganze Zahl repräsentiert.
+
+Beispiele:
+
+@c === beg ===
+@c ingegerp(1);
+@c integerp(1.0);
+@c integerp(%pi);
+@c declare(n, integer)$
+@c integerp(n);
+@c === end ===
+@example
+(%i1) integerp (1);
+(%o1)                         true
+(%i2) integerp (1.0);
+(%o2)                         false
+(%i3) integerp (%pi);
+(%o3)                         false
+(%i4) declare (n, integer)$
+(%i5) integerp (n);
+(%o5)                         false
+@end example
+
+@c @opencatbox
+@c @category{Zahlen} @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 08.10.2010 --------------------------------------------------------------
+@defvr {Optionsvariable} m1pbranch
+Standardwert: @code{false}
+
+@c @code{m1pbranch} is the principal branch for @code{-1} to a power. Quantities
+@c such as @code{(-1)^(1/3)} (that is, an "odd" rational exponent) and 
+@c @code{(-1)^(1/4)} (that is, an "even" rational exponent) are handled as 
+@c follows:
+
+Die Optionsvariable @code{m1branch} kontrolliert die Vereinfachung der 
+Exponentiation von @code{-1} für den Fall, das die Optionsvariable 
+@code{domain} den Wert @code{complex} hat. Hat @code{m1pbranch} für diesen Fall
+den Wert @code{true}, wird die Exponentiation von @code{-1} zu einem Ausdruck
+vereinfacht, der dem Hauptwert entspricht. Die Auswirkung der Optionsvariable
+@code{m1pbranch} ist in der folgenden Tabelle gezeigt.
+
+@example
+              domain:real
+                            
+(-1)^(1/3):      -1         
+(-1)^(1/4):   (-1)^(1/4)   
+
+             domain:complex              
+m1pbranch:false          m1pbranch:true
+(-1)^(1/3)               1/2+%i*sqrt(3)/2
+(-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
+@end example
+
+@c @opencatbox
+@c @category{Zahlen} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 08.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} nonnegintegerp (@var{number})
+
+@c Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an 
+@c integer.
+
+Gibt den Wert @code{true} zurück, wenn @code{var} eine ganze positive Zahl oder
+Null ist.
+
+@c @opencatbox
+@c @category{Zahlen} @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 21.08.2010 --------------------------------------------------------------
+@deffn {Funktion} numberp (@var{expr})
+
+@c Returns @code{true} if @var{expr} is a literal integer, rational number, 
+@c floating point number, or bigfloat, otherwise @code{false}.
+
+Hat das Ergebnis @code{true}, wenn @var{expr} eine ganze, rationale, eine
+Gleitkommazahl oder eine große Gleitkommazahl ist. Ansonsten ist das Ergebnis
+@code{false}.
+
+@c @code{numberp} returns @code{false} if its argument is a symbol, even if the
+@c argument is a symbolic number such as @code{%pi} or @code{%i}, or declared 
+@c to be @code{even}, @code{odd}, @code{integer}, @code{rational}, 
+@c @code{irrational}, @code{real}, @code{imaginary}, or @code{complex}.
+
+@code{numberp} gibt für ein Symbol immer das Ergebnis @code{false} zurück. Dies
+ist auch dann der Fall, wenn das Symbol eine numerische Konstante wie @code{%pi}
+ist oder wenn das Symbol eine Deklaration wie @code{integer}, @code{real} oder 
+@code{complex} erhalten hat.
+
+Beispiele:
+
+@c ===beg===
+@c numberp (42);
+@c numberp (-13/19);
+@c numberp (3.14159);
+@c numberp (-1729b-4);
+@c map (numberp, [%e, %pi, %i, %phi, inf, minf]);
+@c declare(a,even,b,odd,c,integer,d,rational,e,irrational,f,real);
+@c map (numberp, [a, b, c, d, e, f]);
+@c ===end===
+@example
+(%i1) numberp (42);
+(%o1)                         true
+(%i2) numberp (-13/19);
+(%o2)                         true
+(%i3) numberp (3.14159);
+(%o3)                         true
+(%i4) numberp (-1729b-4);
+(%o4)                         true
+(%i5) map (numberp, [%e, %pi, %i, %phi, inf, minf]);
+(%o5)      [false, false, false, false, false, false]
+(%i6) declare(a,even,b,odd,c,integer,d,rational,e,irrational,f,real);
+(%o6)                         done
+(%i7) map (numberp, [a, b, c, d, e, f]);
+(%o7) [false, false, false, false, false, false]
+@end example
+
+@c @opencatbox
+@c @category{Aussagefunktion}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} numer_pbranch
+Standardwert: @code{false}
+
+@c The option variable @code{numer_pbranch} controls the numerical evaluation of 
+@c the power of a negative integer, rational, or floating point number. When
+@c @code{numer_pbranch} is @code{true} and the exponent is a floating point 
+@c number or the option variable @code{numer} is @code{true} too, Maxima 
+@c evaluates the numerical result using the principal branch. Otherwise a
+@c simplified, but not an evaluated result is returned.
+
+Die Optionsvariable @code{numer_pbranch} kontrolliert die numerische Berechnung
+der Exponentiation mit einer negativen ganzen, rationalen oder Gleitkommazahl.
+Hat @code{numer_pbranch} den Wert @code{true} und ist der Exponent eine 
+Gleitkommazahl oder hat die Optionsvariable @code{numer} den Wert @code{true}, 
+dann berechnet Maxima den Hauptwert der Exponentiation. Ansonsten wird ein 
+vereinfachter Ausdruck, aber nicht numerischer Wert zurückgegeben.
+
+Beispiele:
+
+@c ===beg===
+@c (-2)^0.75;
+@c (-2)^0.75,numer_pbranch:true;
+@c (-2)^(3/4);
+@c (-2)^(3/4),numer;
+@c (-2)^(3/4),numer,numer_pbranch:true;
+@c ===end===
+@example
+(%i1) (-2)^0.75;
+(%o1) (-2)^0.75
+
+(%i2) (-2)^0.75,numer_pbranch:true;
+(%o2) 1.189207115002721*%i-1.189207115002721
+
+(%i3) (-2)^(3/4);
+(%o3) (-1)^(3/4)*2^(3/4)
+
+(%i4) (-2)^(3/4),numer;
+(%o4) 1.681792830507429*(-1)^0.75
+
+(%i5) (-2)^(3/4),numer,numer_pbranch:true;
+(%o5) 1.189207115002721*%i-1.189207115002721
+@end example
+
+@c @opencatbox
+@c @category{Numerische Berechnung} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 08.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} oddp (@var{expr})
+
+@c is @code{true} if @var{expr} is an odd integer.
+@c @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+@c @code{false} is returned in all other cases.
+
+Gibt @code{true} zurück, wenn @var{expr} eine ungerade ganze Zahl ist. In allen
+anderen Fällen wird @code{false} zurückgegeben.
+
+@code{oddp} gibt für Symbole oder Ausdrücke immer den Wert @code{false} zurück,
+auch wenn das Symbol als gerade ganze Zahl deklariert ist oder der Ausdruck eine
+ganze Zahl repräsentiert.
+
+Siehe die Funktion @code{featurep}, um zu testen, ob ein Symbol oder Ausdruck 
+eine ungerade ganze Zahl repräsentiert.
+
+@c @opencatbox
+@c @category{Zahlen} @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} ratepsilon
+Standardwert: 2.0e-8
+
+@c @code{ratepsilon} is the tolerance used in the conversion of floating point
+@c numbers to rational numbers.
+
+@code{ratepsilon} kontrolliert die Genauigkeit, mit der Gleitkommazahlen in
+rationale Zahlen umgewandelt werden.
+
+@c @opencatbox
+@c @category{Numerische Auswertung} @category{Rationale Ausdrücke} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} rationalize (@var{expr})
+
+@c Convert all double floats and big floats in the Maxima expression @var{expr} 
+@c to their exact rational equivalents. 
+
+Konvertiert alle Gleitkommazahlen mit einfacher und großer Genauigkeit, die in
+dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
+
+@c If you are not familiar with the binary representation of floating point 
+@c numbers, you might be surprised that @code{rationalize (0.1)} does not equal 
+@c 1/10.  This behavior isn't special to Maxima -- the number 1/10 has a 
+@c repeating, not a terminating, binary representation.
+
+Es mag überraschend sein, dass @code{rationalize(0.1)} nicht 1/10 ergibt. Dies
+ist nicht speziell für Maxima. Ursache ist, dass die gebrochene Zahl 1/10 in der
+internen Darstellung als binäre Zahl keine endliche Darstellung hat.
+
+Siehe auch die Funktion @code{float} und das Flag @code{numer}, um eine 
+rationale Zahl in eine Gleitkommazahl umzuwandeln.
+
+@c ===beg===
+@c rationalize (0.5);
+@c rationalize (0.1);
+@c fpprec : 5$
+@c rationalize (0.1b0);
+@c fpprec : 20$
+@c rationalize (0.1b0);
+@c rationalize (sin (0.1*x + 5.6));
+@c float(%);
+@c ===end===
+@example
+(%i1) rationalize (0.5);
+                                1
+(%o1)                           -
+                                2
+(%i2) rationalize (0.1);
+                        3602879701896397
+(%o2)                   -----------------
+                        36028797018963968
+(%i3) fpprec : 5$
+(%i4) rationalize (0.1b0);
+                             209715
+(%o4)                        -------
+                             2097152
+(%i5) fpprec : 20$
+(%i6) rationalize (0.1b0);
+                     236118324143482260685
+(%o6)                ----------------------
+                     2361183241434822606848
+
+(%i7) rationalize (sin (0.1*x + 5.6));
+               3602879701896397 x   3152519739159347
+(%o7)      sin(------------------ + ----------------)
+               36028797018963968    562949953421312
+
+(%i8) float(%);
+(%o8)                          sin(0.1 x + 5.6)
+@end example
+
+@c @opencatbox
+@c @category{Zahlen} @category{Numerische Auswertung}
+@c @closecatbox
+@end deffn
+
+@c --- 08.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} ratnump (@var{number})
+
+@c Returns @code{true} if @var{expr} is a literal integer or ratio of literal
+@c integers, otherwise @code{false}.
+
+Gibt @code{true} zurück, wenn @var{number} eine ganze oder rationale Zahl ist.
+In allen anderen Fällen ist das Ergebnis @code{false}.
+
+Beispiele:
+
+@c === beg ===
+@c ratnump(1/2);
+@c ratnump(3);
+@c ratnump(3.0);
+@c === end ===
+@example
+(%i1) ratnump(1/2);
+(%o1)                         true
+(%i2) ratnump(3);
+(%o2)                         true
+(%i3) ratnump(3.0);
+(%o3)                         false
+@end example
+
+@c @opencatbox
+@c @category{Zahlen} @category{Ausagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Funktionen und Variablen für Zeichenketten, Funktionen und Variablen für Konstante, Funktionen und Variablen für Zahlen, Datentypen
+@section Funktionen und Variablen für Zeichenketten
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} concat (@var{arg_1}, @var{arg_2}, ...)
+
+@c Concatenates its arguments. The arguments must evaluate to atoms. The return 
+@c value is a symbol if the first argument is a symbol and a string otherwise.
+
+Verkettet die Argumente @var{arg_1}, @var{arg_2}, ... zu einer Zeichenkette oder
+einem Symbol. Die Argumente müssen sich zu einem Atom auswerten lassen. Der 
+Rückgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist. Ansonsten 
+wird eine Zeichenkette zurückgegeben.
+
+@c @code{concat} evaluates its arguments.The single quote @code{'} prevents 
+@c evaluation.
+
+@code{concat} wertet seine Argumente aus. Der Quote-Operator verhindert die
+Auswertung.
+
+Beispiele:
+
+@c === beg ===
+@c y: 7$
+@c z: 88$
+@c stringdisp:true$
+@c concat(y, z/2);
+@c concat('y, z/2);
+@c === end ===
+@example
+(%i1) y: 7$
+(%i2) z: 88$
+(%i3) stringdisp:true$
+(%i4) concat(y, z/2);
+(%o4)                         "744"
+(%i5) concat('y, z/2);
+(%o5)                          y44
+@end example
+
+@c A symbol constructed by @code{concat} may be assigned a value and appear in 
+@c expressions. The @code{::} (double colon) assignment operator evaluates its 
+@c left-hand side.
+
+Einem Symbol, das mit @code{concat} konstruiert wird, kann ein Wert zugewiesen
+werden und es kann in Ausdrücken auftreten.
+
+@c === beg ===
+@c a: concat ('y, z/2);
+@c a:: 123;
+@c y44;
+@c b^a;
+@c %, numer;
+@c === end ===
+@example
+(%i6) a: concat ('y, z/2);
+(%o6)                          y44
+(%i7) a:: 123;
+(%o7)                          123
+(%i8) y44;
+(%o8)                          123
+(%i9) b^a;
+                               y44
+(%o9)                         b
+(%i10) %, numer;
+                                123
+(%o11)                         b
+@end example
+
+@c Note that although @code{concat (1, 2)} looks like a number, it is a string.
+
+Es ist zu beachten, dass auch @code{concat(1, 2)} eine Zeichenkette als Ergebnis
+hat.
+
+@c === beg ===
+@c stringdisp:true$
+@c concat(1, 2) + 3;
+@c === end ===
+@example
+(%i12) concat (1, 2) + 3;
+(%o12)                       "12" + 3
+@end example
+
+@c @opencatbox
+@c @category{Ausdrücke} @category{Zeichenketten}
+@c @closecatbox
+@end deffn
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} sconcat (@var{arg_1}, @var{arg_2}, ...)
+
+@c Concatenates its arguments into a string. Unlike @code{concat}, the arguments
+@c do @i{not} need to be atoms.
+
+Verkettet die Argumente zu einer Zeichenkette. Im Unterschied zu der Funktion
+@code{concat} müssen die Argumente @i{nicht} Atome sein. Der Rückgabewert ist
+eine Zeichenkette.
+
+Beispiel:
+
+@c === beg ===
+@c sconcat ("xx[", 3, "]:", expand ((x+y)^3));
+@c === end ===
+@example
+(%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
+(%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+@end example
+
+@c @opencatbox
+@c @category{Ausdrücke} @category{Zeichenketten}
+@c @closecatbox
+@end deffn
+
+@c --- 08.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} string (@var{expr})
+
+@c Converts @code{expr} to Maxima's linear notation just as if it had been typed
+@c in.
+
+Konvertiert @code{expr} in eine linearer Darstellung, wie sie auch vom Parser
+von der Eingabe eingelesen wird.
+
+@c The return value of @code{string} is a string, and thus it cannot be used in
+@c a computation.
+
+Die Rückgabe von @code{string} ist eine eine Zeichenkette. Diese kann nicht für
+eine Berechnung genutzt werden.
+
+@c @opencatbox
+@c @category{Zeichenketten}
+@c @closecatbox
+@end deffn
+
+@c DIESE FUNKTION IN DAS KAPITEL KOMMANDOZEILE VERSCHIEBEN ???
+
+@c --- 28.08.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} stringdisp
+Standardwert: @code{false}
+
+@c When @code{stringdisp} is @code{true}, strings are displayed enclosed in 
+@c double quote marks. Otherwise, quote marks are not displayed.
+
+Hat @code{stringdisp} den Wert @code{true}, werden Zeichenketten mit
+Anführungszeichen ausgegeben. Ansonsten werden keine Anführungszeichen
+ausgegeben.
+
+@c @code{stringdisp} is always @code{true} when displaying a function 
+@c definition.
+
+@code{stringdisp} hat immer den Wert @code{true}, wenn die Definition einer
+Funktion ausgegeben wird.
+
+Beispiele:
+
+@c ===beg===
+@c stringdisp: false$
+@c "This is an example string.";
+@c foo () := 
+@c       print ("This is a string in a function definition.");
+@c stringdisp: true$
+@c "This is an example string.";
+@c ===end===
+@example
+(%i1) stringdisp: false$
+(%i2) "This is an example string.";
+(%o2)              This is an example string.
+(%i3) foo () :=
+      print ("This is a string in a function definition.");
+(%o3) foo() := 
+              print("This is a string in a function definition.")
+(%i4) stringdisp: true$
+(%i5) "This is an example string.";
+(%o5)             "This is an example string."
+@end example
+
+@c @opencatbox
+@c @category{Anzeigeschalter und -variable} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@node Funktionen und Variablen für Konstante,  , Funktionen und Variablen für Zeichenketten, Datentypen
+@section Funktionen und Variablen für Konstante
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Konstante} %e
+@ifinfo
+@vrindex e
+@vrindex Eulersche Zahl
+@vrindex Basis des natürlichen Logarithmus
+@end ifinfo
+
+@c @code{%e} represents the base of the natural logarithm, also known as 
+@c Euler's number. The numeric value of @code{%e} is the double-precision 
+@c floating-point value 2.718281828459045d0.
+
+@code{%e} ist die Basis des natürlichen Logarithmus, auch Eulersche Zahl 
+genannt. Der numerische Wert der Konstanten als Gleitkommazahl mit doppelter
+Genauigkeit ist 2.718281828459045d0.
+
+Die Funktion @code{bfloat} kann @code{%e} mit einer beliebigen Genauigkeit
+berechnen.
+
+Beispiel:
+
+@c === beg ===
+@c fpprec:48$
+@c bfloat(%e);
+@c === end ===
+@example
+(%i1) fpprec:48$
+(%i2) bfloat(%e);
+(%o2)  2.7182818284590452353602874713526624977572470937b0
+@end example
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Konstante} %i
+@ifinfo
+@vrindex i
+@vrindex Imaginäre Einheit
+@end ifinfo
+
+@c @code{%i} represents the imaginary unit, @math{sqrt(- 1)}.
+
+@code{%i} ist die imaginäre Einheit, die als @math{sqrt(-1)} definiert ist.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Konstante} false
+
+@c @code{false} represents the Boolean constant of the same name. Maxima 
+@c implements @code{false} by the value @code{NIL} in Lisp.
+
+Repräsentiert den Logischen Wert @code{false}. @code{false} wird intern von 
+Maxima durch die Lisp-Konstante @code{NIL} dargestellt.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Constant} %gamma
+@ifinfo
+@vrindex Euler-Mascheroni-Konstante
+@end ifinfo
+
+@c The Euler-Mascheroni constant, 0.5772156649015329 ....
+@c @c DOUBTLESS THERE IS MORE TO SAY HERE.
+
+Die Euler-Mascheroni-Konstante mit dem Wert @code{0.5772156649015329} als
+Gleitkommazahl in doppelter Genauigkeit.
+
+Die Funktion @code{bfloat} kann @code{%gamma} mit einer beliebigen Genauigkeit
+berechnen.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Konstante} ind
+@ifinfo
+@vrindex Unbestimmt
+@end ifinfo
+
+@c @code{ind} represents a bounded, indefinite result.
+
+@code{ind} repräsentiert ein unbestimmtes Ergebnis.
+
+Siehe auch @code{limit}.
+
+Beispiel:
+
+@c ===beg===
+@c limit (sin(1/x), x, 0);
+@c ===end===
+@example
+(%i1) limit (sin(1/x), x, 0);
+(%o1)                          ind
+@end example
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Konstante} inf
+@ifinfo
+@vrindex positiv unendlich
+@end ifinfo
+
+@c @code{inf} represents real positive infinity.
+
+@code{inf} repräsentiert einen positiven unendlich großen Wert.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Konstante} infinity
+@ifinfo
+@vrindex komplex unendlich
+@end ifinfo
+
+@c @code{infinity} represents complex infinity.
+
+@code{infinity} repräsentiert einen komplexen unendlichen Wert.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Konstante} minf
+@ifinfo
+@vrindex negativ unendlich
+@vrindex minus unendlich
+@end ifinfo
+
+@c @code{minf} represents real minus (i.e., negative) infinity.
+
+@code{minf} repräsentiert einen negativen unendlichen Wert.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Constant} %phi
+@ifinfo
+@vrindex phi
+@vrindex Goldene Zahl
+@end ifinfo
+
+@c @code{%phi} represents the so-called @i{golden mean}, @math{(1 + sqrt(5))/2}.
+@c The numeric value of @code{%phi} is the double-precision floating-point value
+@c 1.618033988749895d0.
+
+@code{%phi} repräsentiert die @i{Golde Zahl} @math{(1 + sqrt(5))/2}. Der 
+Gleitkommawert in doppelter Genauigkeit ist 1.618033988749895d0.
+
+@c @code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of 
+@c @code{%phi}.
+
+Die Funktion @code{fibtophi} drückt Fibonacci-Zahlen @code{fib(n)} durch
+@code{%phi} aus.
+
+@c By default, Maxima does not know the algebraic properties of @code{%phi}.
+@c After evaluating @code{tellrat(%phi^2-%phi-1)} and @code{algebraic: true},
+@c @code{ratsimp} can simplify some expressions containing @code{%phi}.
+
+Standardmäßig kennt Maxima keine algebraischen Eigenschaften der Konstanten
+@code{%phi}. Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und 
+@code{algebraic: true} kann die Funktion @code{ratsimp} einige Vereinfachungen
+ausführen.  
+
+Beispiele:
+
+@c @code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of 
+@c @code{%phi}.
+
+@code{fibtophi} drückt Fibonacci-Zahlen @code{fib(n)} durch @code{%phi} aus.
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+@c By default, Maxima does not know the algebraic properties of @code{%phi}.
+@c After evaluating @code{tellrat (%phi^2 - %phi - 1)} and 
+@c @code{algebraic: true}, @code{ratsimp} can simplify some expressions 
+@c containing @code{%phi}.
+
+Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und @code{algebraic: true} kann 
+die Funktion @code{ratsimp} einige Vereinfachungen für Ausdrücke ausführen, die 
+@code{%phi} enthalten.
+
+@c ===beg===
+@c e : expand ((%phi^2 - %phi - 1) * (A + 1));
+@c ratsimp (e);
+@c tellrat (%phi^2 - %phi - 1);
+@c algebraic : true;
+@c ratsimp (e);
+@c ===end===
+@example
+(%i1) e : expand ((%phi^2 - %phi - 1) * (A + 1));
+                 2                      2
+(%o1)        %phi  A - %phi A - A + %phi  - %phi - 1
+(%i2) ratsimp (e);
+                  2                     2
+(%o2)        (%phi  - %phi - 1) A + %phi  - %phi - 1
+(%i3) tellrat (%phi^2 - %phi - 1);
+                            2
+(%o3)                  [%phi  - %phi - 1]
+(%i4) algebraic : true;
+(%o4)                         true
+(%i5) ratsimp (e);
+(%o5)                           0
+@end example
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Konstante} %pi
+@ifinfo
+@vrindex Pi
+@end ifinfo
+
+@c @code{%pi} represents the ratio of the perimeter of a circle to its diameter.
+@c The numeric value of @code{%pi} is the double-precision floating-point value 
+@c 3.141592653589793d0.
+
+@code{%pi} repräsentiert die Kreiszahl. Der numerische Wert in doppelter
+Gleitkommagenauigkeit ist @code{3.141592653589793d0}.
+
+Die Funktion @code{bfloat} kann @code{%pi} mit einer beliebigen Genauigkeit
+berechnen.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Konstante} true
+
+@c @code{true} represents the Boolean constant of the same name. Maxima 
+@c implements @code{true} by the value @code{T} in Lisp.
+
+@code{true} repräsentiert den logischen Wert @code{true}. Intern ist @code{true}
+als die Lisp-Konstante @code{T} implementiert.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Konstante} und
+@ifinfo
+@vrindex nicht definiert
+@end ifinfo
+
+@c @code{und} represents an undefined result.
+
+@code{und} repräsentiert ein nicht definiertes Ergebnis.
+
+Siehe auch @code{limit}.
+
+Example:
+
+@c ===beg===
+@c limit (x*sin(x), x, inf);
+@c ===end===
+@example
+(%i1) limit (x*sin(x), x, inf);
+(%o1)                          und
+@end example
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 21.08.2010 DK -----------------------------------------------------------
+@defvr {Constant} zeroa
+
+@c @code{zeroa} represents an infinitesimal above zero. @code{zeroa} can be used
+@c in expressions. @code{limit} simplifies expressions which contain 
+@c infinitesimals.
+
+@code{zeroa} repräsentiert eine positive unendlich kleine Zahl. @code{zeroa}
+kann in Ausdrücken benutzt werden. Die Funktion @code{limit} vereinfacht
+Ausdrücke, die infinitesimale Größen enthalten.
+
+Siehe auch @code{zerob} und @code{limit}.
+
+Beispiele:
+
+@c @code{limit} simplifies expressions which contain infinitesimals:
+
+@code{limit} vereinfacht Ausdrücke, die infinitesimale Größen enthalten:
+
+@c ===beg===
+@c limit(zeroa);
+@c limit(zeroa+x);
+@c ===end===
+@example
+(%i1) limit(zeroa);
+(%o1)                           0
+(%i2) limit(x+zeroa);
+(%o2)                           x
+@end example
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- 15.10.2010 DK -----------------------------------------------------------
+@defvr {Konstante} zerob
+
+@c @code{zerob} represents an infinitesimal below zero. @code{zerob} can be used
+@c in expressions. @code{limit} simplifies expressions which contain 
+@c infinitesimals.
+
+@code{zerob} repräsentiert eine negative unendlich kleine Zahl. @code{zerob}
+kann in Ausdrücken benutzt werden. Die Funktion @code{limit} vereinfacht
+Ausdrücke, die infinitesimale Größen enthalten.
+
+Siehe auch @code{zeroa} und @code{limit}.
+
+@c @opencatbox
+@c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c --- End of file DataTypes.de.texi -------------------------------------------
+
