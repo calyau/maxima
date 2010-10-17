@@ -9,6 +9,10 @@
 ;;; faster, but this allows users to write just one routine that can
 ;;; handle all of the data types in a more "natural" Lisp style.
 
+#+cmu
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setf lisp::*enable-package-locked-errors* nil))
+
 (in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 
 (defun intofp (re)

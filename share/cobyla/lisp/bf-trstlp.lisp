@@ -14,7 +14,7 @@
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package :bigfloat-user)
+(in-package :bigfloat)
 
 
 (defun trstlp (n m a b rho dx ifull iact z zdota vmultc sdirn dxnew vmultd)

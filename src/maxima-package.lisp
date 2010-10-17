@@ -90,7 +90,12 @@
        #:random-chunk
        #:init-random-state))
 
-(defpackage bigfloat
+;; This package is for the implmentation of the BIGFLOAT routines that
+;; make working with Maxima's bfloat objects somewhat easier by
+;; extending the standard CL numeric functions to work with BIGFLOAT
+;; and COMPLEX-BIGFLOAT objects.  See src/numeric.lisp for the
+;; implementation.
+(defpackage bigfloat-impl
   (:use :cl)
   #+gcl
   (:shadowing-import-from #:system #:define-compiler-macro)
@@ -204,9 +209,10 @@
 	   #:>
 	   #:<=
 	   #:>=
-	   #:complex
+	   #:scale-float
 	   #:realpart
 	   #:imagpart
+	   #:complex
 	   #:conjugate
 	   #:max
 	   #:min
@@ -237,22 +243,13 @@
 	   #:coerce
 	   ))
 
-;; BIGFLOAT-USER is the package intended to be used for applications
-;; using the routines from the BIGFLOAT.  BIGFLOAT is the
-;; implementation package.
-(defpackage bigfloat-user
-  (:use :cl)
-  ;; Get all the exported symbols from BIGFLOAT and import them.
-  (:shadowing-import-from :bigfloat
-			  ;; Types
-			  #:bigfloat
-			  #:complex-bigfloat
-			  ;; Functions
-			  #:to
-			  #:maybe-to
-			  #:epsilon
-			  #:%pi
-			  ;; CL equivalents
+;; BIGFLOAT is the package intended to be used for applications
+;; using the routines from the BIGFLOAT-IMPL.
+(defpackage bigfloat
+  (:use :cl :bigfloat-impl)
+  ;; This list should match the SHADOWING-IMPORT-FROM list in
+  ;; BIGFLOAT-IMPL.
+  (:shadowing-import-from #:bigfloat-impl
 			  #:+
 			  #:-
 			  #:*
@@ -318,6 +315,29 @@
 			  #:rationalize
 			  #:coerce
 			  ))
+
+;; Export all the external symbols in BIGFLOAT-IMPL from BIGFLOAT too.
+(do-external-symbols (s '#:bigfloat-impl)
+  (export s '#:bigfloat-impl))
+
+;; For CMUCL, we lock the bigfloat-impl package so we don't
+;; accidentally modify the implementation.
+#+cmu
+(defun lock-maxima-packages ()
+  (let ((package-names '(#:bigfloat-impl)))
+    (dolist (p package-names)
+      (let ((p (find-package p)))
+	(when p
+          (setf (package-definition-lock p) t)
+          (setf (package-lock p) t)))))
+  (values))
+
+
+#+cmu
+(progn
+  (lock-maxima-packages)
+  (pushnew 'lock-maxima-packages ext:*after-save-initializations*))
+
 
 (defpackage :intl
   (:use :common-lisp)

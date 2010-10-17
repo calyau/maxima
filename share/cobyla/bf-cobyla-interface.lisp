@@ -9,7 +9,7 @@
 ;; value and the constraints.
 (defvar *calcfc*)
 
-(in-package #-gcl #:bigfloat-user #+gcl "BIGFLOAT-USER")
+(in-package #-gcl #:bigfloat #+gcl "BIGFLOAT")
 
 ;; COBYLA always calls CALCFC to compute the function value and the
 ;; constraint equations.  But we want to be able to specify different
@@ -105,7 +105,7 @@
 			 (values nn mm nil
 				 f nil)))))
     (multiple-value-bind (null-0 null-1 null-2 null-3 null-4 null-5 neval null-6 null-7)
-	(bigfloat-user::cobyla n m x (bigfloat:to rhobeg) (bigfloat:to rhoend) iprint maxfun w iact)
+	(bigfloat::cobyla n m x (bigfloat:to rhobeg) (bigfloat:to rhoend) iprint maxfun w iact)
       (declare (ignore null-0 null-1 null-2 null-3 null-4 null-5 null-6 null-7))
       ;; Should we put a check here if the number of function
       ;; evaluations equals maxfun?  When iprint is not 0, the output
