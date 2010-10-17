@@ -1,0 +1,117 @@
+@c -----------------------------------------------------------------------------
+@c File     : Glossary.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 17.10.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+Das Glossar stellt den deutschen Übersetzungen die englischen Begriffe 
+gegenüber und erläutert die Begriffe.
+
+@table @emph
+
+@item  Ausdruck - expression
+       Jede beliebige Zeichenfolge, die Maxima als Eingabe versteht und die von 
+       Maxima verarbeitet werden kann.
+
+@item  Aussage - predicate
+       Ausdr@"ucke, die zu den boolschen Werten @code{true} oder @code{false} 
+       auswerten.
+
+@item  Auswertung - evaluation
+       Ausdr@"ucke werden zun@"achst ausgewertet. Funktionen werden aufgerufen, 
+       die Werte von Variablen werden eingesetzt. Die Auswertung wird von
+       der Vereinfachung (Simplification) unterschieden und wird vor der 
+       Vereinfachung ausgef@"uhrt.
+
+@item  Begrenzungszeichen - delimiter
+       Das Zeichen das auf der linken und rechten Seite zum Beispiel eine 
+       Liste @code{[ ... ]} begrenzt.
+
+@item  Bezeichner - identifier
+       Der Name einer Variablen oder Funktion.
+
+@item  Eigenschaft - property
+       @sp 1
+
+@item  Expansion - expansion
+       Mathematische Ausdr@"ucke werden ausmultipliziert.
+
+@item  Dateiausgabe - file output
+       @sp 1
+
+@item  Dateieingabe - file input
+       @sp 1
+
+@item  Fehlersuche - debugging
+       @sp 1
+
+@item  Flag - flag
+       Boolsche Variablen mit den Werten @code{true} oder @code{false}, die zur
+       Steuerung des Programms vom Nutzer gesetzt werden k@"onnen.
+
+@item  Konsole Ein- und Ausgabe - console interaction
+       @sp 1
+
+@item  Marke - label
+       Die Eingaben und Ausgaben werden von Maxima in globale Variablen, die als
+       Marken bezeichnet werden, mit den Namen @code{%i} und @code{%o} sowie 
+       @code{%t} f@"ur Zwischenergebnisse abgelegt. Die Marken werden 
+       fortlaufend numeriert.
+
+@item  Optionsvariable - option variable
+       @sp 1
+
+@item  Schl@"usselwort - keyword
+       @sp 1
+
+@item  Sitzungsverwaltung - session management
+       @sp 1
+
+@item  Standardwert - default value
+       @sp 1
+
+@item  Substantivform - noun form
+       Die Substantivform ist eine nicht ausgewerteter aber dennoch
+       vereinfachter Ausdruck.
+
+@item  Systemvariable - system variable
+       @sp 1
+
+@item  Token - token
+       Ein Token ist ein St@"uck Text, das die lexikalische Grundeinheit ist, 
+       die von einem Parser behandelt wird.
+
+@item  Umgebung - enviroment
+       @sp 1
+
+@item  Verbform - verb form
+       Die Verbform wird zun@"achst ausgewertet und erst dann vereinfacht.
+
+@item  Vereinfachung - simplification
+       Mathematischen Funktionen, algebraische Ausdr@"ucke oder Gleichungen 
+       werden nach der Auswertung vereinfacht. Ein Gro@ss{}teil dieser 
+       Vereinfachungen geschieht automatisch. F@"ur weitere Vereinfachungen gibt
+       es spezielle Funktionen und eine Vielzahl von Schaltern, mit denen 
+       gezielt bestimmte Ergebnisse erzielt werden k@"onnen.
+
+@item  Zeichenkette - string
+       @sp 1
+
+@item  Zwischenraumzeichen - whitespace
+       Zwischenraumzeichen ist eine Bezeichnung f@"ur Zeichen in einem Text, die
+       im Texteditor oder Textverarbeitungsprogramm nicht dargestellt 
+       werden und dennoch (Speicher-)Platz in Anspruch nehmen. Sie dienen 
+       vorrangig dazu, W@"orter oder Zeilen voneinander abzugrenzen.
+
+@item  Wortart - part of speech
+       Beim Einlesen eines Ausdrucks pr@"uft der Parser, ob die Argumente eines
+       Operators die korrekte Wortart haben. Maxima kennt die Wortarten
+       @code{expr}, @code{clause} und @code{any}.
+
+@end table
+
+@c --- End of file Glossary.de.texi --------------------------------------------
+
