@@ -2,7 +2,23 @@
 @c File     : Expressions.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
-@c Date     : 15.10.2010
+@c Date     : 17.10.2010
+@c 
+@c This file contains documentation about the following symbols:
+@c 
+@c  alias               aliases             allbut              args
+@c  box                 boxchar             collapse            disolate
+@c  dpart               exptisolate         exptsubst           freeof
+@c  fullmap             fullmapl            inflag              inpart
+@c  isolate             isolate_wrt_times   listconstvars       listdummyvars
+@c  listofvars          lfreeof             lpart               nounify
+@c  nterms              op                  operatorp           opsubst
+@c  optimize            optimprefix         ordergreat          orderless
+@c  ordergreatp         orderlessp          part                partition
+@c  partswitch          pickapart           piece               psubst
+@c  rembox              reveal              sublis              
+@c  sublis_apply_lambda subst               substinpart         substpart
+@c  unorder             verbify
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
