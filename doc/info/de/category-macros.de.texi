@@ -1,0 +1,25 @@
+@macro opencatbox {}
+@ifhtml
+@html
+<div class=categorybox>
+@end html
+@end ifhtml
+@end macro
+
+@macro category {name}
+@ifhtml
+@html
+&middot;
+@end html
+@ref{Kategorie: \name\}
+@end ifhtml
+@end macro
+
+@macro closecatbox {}
+@ifhtml
+@html
+</div>
+@end html
+@end ifhtml
+@end macro
+
