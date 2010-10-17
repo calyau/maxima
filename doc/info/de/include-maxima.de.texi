@@ -119,19 +119,19 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 
 Maxima Grundlagen
 
-* Einf@"uhrung in Maxima::        Erste Beispiele mit Maxima.
+* Einf@"uhrung in Maxima::      Erste Beispiele mit Maxima.
 * Programmfehler::              Programmfehler finden und berichten.
 * Hilfe::                       Hilfe in einer Maxima-Sitzung erhalten.
 * Kommandozeile::               Syntax der Kommandozeile.
 * Datentypen::                  Ganze, rationale und Gleitkommazahlen, Konstante,
                                 Zeichenketten, ...
-* Ausdr@"ucke::                   Ausdr@"ucke in Maxima.
+* Ausdr@"ucke::                 Ausdr@"ucke in Maxima.
 * Operatoren::                  Operatoren in Maxima.
 * Auswertung::                  Auswertung von Ausdr@"ucken.
 * Vereinfachung::               Vereinfachung von Ausdr@"ucken.
 * Mathematische Funktionen::    Mathematische Funktionen in Maxima.
 * Deklarationen und Fakten::    Deklarationen, Kontexte, Fakten.
-* Grafische Darstellung::       2D and 3D graphical output.
+* Grafische Darstellung::       2D and 3D grafische Ausgabe.
 * Eingabe und Ausgabe::         Dateieingabe und Dateiausgaben
 
 Support for specific areas of mathematics
@@ -288,8 +288,8 @@ Mathematische Funktionen
 Deklarationen und Fakten
 
 * Deklarationen::
-* Funktionen und Variable f@"ur Kontexte::
-* Funktionen und Variable f@"ur Deklarationen::
+* Funktionen und Variablen f@"ur Kontexte::
+* Funktionen und Variablen f@"ur Deklarationen::
 
 Grafische Darstellung
 
@@ -680,9 +680,9 @@ Glossar
 @chapter Operatoren
 @include Operators.de.texi
 
-@c @node Auswertung, Vereinfachung, Operatoren, Top
-@c @chapter Auswertung
-@c @include Evaluation.de.texi
+@node Auswertung, Vereinfachung, Operatoren, Top
+@chapter Auswertung
+@include Evaluation.de.texi
 
 @c @node Vereinfachung, Mathematische Funktionen, Auswertung, Top
 @c @chapter Vereinfachung
