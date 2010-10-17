@@ -58,26 +58,22 @@ Jede Eingabe des Nutzers in einer Konsole bis zur Ausgabe auf der Konsole kann
 in vier Phasen eingeteilt werden:
 
 @enumerate
-@item 
-
+@item
 Von der Tastatur oder aus einer Datei wird ein Ausdruck eingelesen und vom
 Parser in eine interne Darstellung umgewandelt. In dieser 1. Phase werden 
 inbesondere Operatoren wie "+", "/" oder "do" behandelt.
 
-@item 
-
+@item
 Der vom Parser eingelesene Ausdruck wird von Maxima in der 2. Phase 
 ausgewertet. Dabei werden Variable durch ihren Wert ersetzt und Funktionen 
 ausgef@"uhrt. Das Ergebnis dieser Phase ist ein ausgewerteter Ausdruck.
 
-@item 
-
+@item
 Der ausgewertete Ausdruck wird in der 3. Phase von Maxima vereinfacht.
 Dabei werden Ausdr@"ucke wie @code{a+a} zu @code{2*a} oder @code{sin(%pi/2)} zu 
 @code{1} vereinfacht.
 
-@item 
-
+@item
 Das Ergebnis ist ein ausgewerteter und vereinfachter Ausdruck. Zuletzt wird 
 dieses Ergebnis in der 4. Phase f@"ur die Anzeige vorbereitet und auf der Konsole
 ausgegeben.

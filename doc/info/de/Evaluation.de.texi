@@ -442,132 +442,132 @@ Optionsvariablen (Boolsche Variablen), Zuweisungen, Gleichungen und Funktionen.
 Die Auswertung wird in den folgenden Schritten durchgef@"uhrt:
 
 @enumerate
-@item
+
 @c First the environment is set up by scanning the arguments which may
 @c be any or all of the following.
 
+@item
 Zuerst wird die Umgebung gesetzt. Dazu werden die Argumente @var{arg_1}, ..., 
 @var{arg_n} ausgewertet. Folgende Argumente sind m@"oglich:
 
-@itemize @bullet
-@item
 @c @code{simp} causes @var{expr} to be simplified regardless of the setting of 
 @c the switch @code{simp} which inhibits simplification if @code{false}.
 
+@itemize @bullet
+@item
 @code{simp} bewirkt, dass der Ausdruck @var{expr} vereinfacht wird. Der Wert 
 der globalen Optionsvariablen @var{simp} wird dabei ignoriert. Der Ausdruck wird
 also auch vereinfacht, wenn das globale Flag @var{simp} den Wert @code{false} 
 hat.
 
-@item
 @c @code{noeval} supresses the evaluation phase of @code{ev} (see step (4) 
 @c below). This is useful in conjunction with the other switches and in causing
 @c @var{expr} to be resimplified without being reevaluated.
 
+@item
 @code{noeval} unterdr@"uckt die Auswertungphase der Funktion @code{ev} (siehe 
 Schritt (4) unten). Dies ist n@"utzlich im Zusammenhang mit anderen Flags und um 
 einen Ausdruck @var{expr} erneuert zu vereinfachen, ohne dass dieser ausgewertet 
 wird.
 
-@item
 @c @code{nouns} causes the evaluation of noun forms
 @c (typically unevaluated functions such as @code{'integrate} or @code{'diff})
 @c in @var{expr}.
 
+@item
 @code{nouns} bewirkt die Auswertung von Substantivformen. Solche 
 Substantivformen sind typischerweise nicht ausgewertete Funktionen wie 
 @code{'integrate} oder @code{'diff}, die im Ausdruck @var{expr} enthalten sind.
 
-@item
 @c @code{expand} causes expansion.
 
+@item
 @code{expand} bewirkt die Expansion des Ausdruckes.
 
-@item
 @c @code{expand (@var{m}, @var{n})} causes expansion, setting the values of 
 @c @code{maxposex} and @code{maxnegex} to @var{m} and @var{n} respectively.
 
+@item
 @code{expand} (@var{m}, @var{n}) bewirkt die Expansion, wobei den 
 Optionsvariablen @code{maxposex} und @code{maxnegex} die Werte der Argumente 
 @var{m} und @var{n} zugewiesen werden.
 
-@item
 @c @code{detout} causes any matrix inverses computed in @var{expr} to have 
 @c their determinant kept outside of the inverse rather than dividing through
 @c each element.
 
+@item
 @code{detout} bewirkt, dass bei der Berechnung von Inversen von Matrizen, die im
 Ausdruck @var{expr} enthalten sind, Determinaten den Matrizen vorangestellt 
 und nicht elementweise in die Matrize herein multipliziert werden.
 
-@item
 @c @code{diff} causes all differentiations indicated in @var{expr} to be 
 @c performed.
 
+@item
 @code{diff} bewirkt, dass alle Ableitungen ausgef@"uhrt werden, die im Ausdruck 
 @var{expr} enhalten sind.
 
-@item
 @c @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causes only 
 @c differentiations with respect to the indicated variables.
 
+@item
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} bewirkt, dass nur die
 Ableitungen bez@"uglich der angegebenen Variablen @var{x}, @var{y}, @var{z}, ... 
 ausgef@"uhrt werden.
 
-@item
 @c @code{risch} causes integrals in @var{expr} to be evaluated using the Risch
 @c algorithm. See @code{risch}. The standard integration routine is invoked when
 @c using the special symbol @code{nouns}.
 
+@item
 @code{risch} bewirkt das Integral in @var{expr} mit dem Risch-Algorithmus
 berechnet werden. Siehe @code{risch}. Wird @code{nouns} benutzt, wird der
 Standardalgorithmus f@"ur Integrale verwendet.
 
-@item
 @c @code{float} causes non-integral rational numbers to be converted to floating
 @c point.
 
+@item
 @code{float} bewirkt, dass rationale Zahlen in Gleitkommazahlen konvertiert 
 werden.
 
-@item
 @c @code{numer} causes some mathematical functions (including exponentiation)
 @c with numerical arguments to be evaluated in floating point.  It causes
 @c variables in @var{expr} which have been given numervals to be replaced by
 @c their values.  It also sets the @code{float} switch on.
 
+@item
 @code{numer} bewirkt, dass mathematische Funktionen mit numerischen Argumenten 
 ein Ergebnis in Gleitkommazahlen liefern. Variable in @code{expr}, denen 
 nummerische Werte zugewiesen wurden, werden durch diese ersetzt. Die Option 
 @code{float} wird zus@"atzlich wirksam.
 
-@item
 @c @code{pred} causes predicates (expressions which evaluate to @code{true} or 
 @c @code{false}) to be evaluated.
 
+@item
 @code{pred} bewirkt, dass Aussagen zu @code{true} oder @code{false} ausgewertet 
 werden.
 
-@item
 @c @code{eval} causes an extra post-evaluation of @var{expr} to occur. (See 
 @c step (5) below.) @code{eval} may occur multiple times. For each instance of 
 @c @code{eval}, the expression is evaluated again.
 
+@item
 @code{eval} bewirkt eine zus@"atzliche Auswertung des Ausdrucks @var{expr}. 
 (Siehe Schritt (5) unten). @code{eval} kann mehrfach angewendet werden. Jedes 
 Auftreten von @code{eval} f@"uhrt zu einer weiteren Auswertung.
 
-@item
 @c @code{A} where @code{A} is an atom declared to be an evaluation flag (see 
 @c @code{evflag}) causes @code{A} to be bound to @code{true} during the 
 @c evaluation of @var{expr}.
 
+@item
 @code{A}, wobei @code{A} ein Atom ist, das als ein Auswertungsflag (siehe
 @code{evflag}) definiert wurde. W@"ahrend der Auswertung des Ausdrucks 
 @var{expr} erh@"alt @code{A} den Wert @code{true}.
 
-@item
 @c @code{V: expression} (or alternately @code{V=expression}) causes @code{V} to
 @c be bound to the value of @code{expression} during the evaluation of 
 @c @var{expr}.  Note that if @code{V} is a Maxima option, then @code{expression}
@@ -576,6 +576,7 @@ Auftreten von @code{eval} f@"uhrt zu einer weiteren Auswertung.
 @c If @code{V} is a non-atomic expression then a substitution rather than a 
 @c binding is performed.
 
+@item
 @code{V: expression} (oder alternativ @code{V=expression}) bewirkt, dass 
 @code{V} w@"ahrend der Auswertung des Ausdrucks @var{expr} den Wert
 @code{expression} erh@"alt. @code{V} kann auch eine Optionsvariable sein, die
@@ -584,31 +585,30 @@ Argument der Funktion @code{ev} @"ubergeben wird, wird die Zuweisung der Werte
 parallel ausgef@"uhrt. Wenn @code{V} kein Atom ist, wird anstatt einer Zuweisung 
 eine Substitution ausgef@"uhrt.
 
-@item
 @c @code{F} where @code{F}, a function name, has been declared to be an 
 @c evaluation function (see @code{evfun}) causes @code{F} to be applied to 
 @c @var{expr}.
 
+@item
 @code{F}, wobei @code{F} der Name einer Funktion ist, die als eine 
 Auswertungsfunktion (siehe @code{evfun}) definiert wurde. @code{F} bewirkt, 
 dass die Auswertungsfunktion auf den Ausdruck @var{expr} angewendet wird.
 
-@item
 @c Any other function names (e.g., @code{sum}) cause evaluation of occurrences
 @c of those names in @var{expr} as though they were verbs.
 
+@item
 Jeder andere Funktionsname (z. B. @code{sum}) bewirkt, dass jedes Auftreten
 dieser Funktion im Ausdruck @var{expr} ausgewertet wird.
 
-@item
 @c In addition a function occurring in @var{expr} (say @code{F(x)}) may be 
 @c defined locally for the purpose of this evaluation of @var{expr} by giving
 @c @code{F(x) := expression} as an argument to @code{ev}.
 
+@item
 Zus@"atzlich kann f@"ur die Auswertung von @var{expr} eine lokale Funktion
 @code{F(x) := expression} definiert werden.
 
-@item
 @c If an atom not mentioned above or a subscripted variable or subscripted 
 @c expression was given as an argument, it is evaluated and if the result is an 
 @c equation or assignment then the indicated binding or substitution is 
@@ -618,6 +618,7 @@ Zus@"atzlich kann f@"ur die Auswertung von @var{expr} eine lokale Funktion
 @c equations (e.g., @code{[%t1, %t2]} where @code{%t1} and @code{%t2} are 
 @c equations) such as that returned by @code{solve}.
 
+@item
 Wird ein Atom, eine indizierte Variable oder ein indizierter Ausdruck, der oben 
 nicht genannt wurde, als Argument @"ubergeben, wird das Argument ausgewertet. 
 Wenn das Ergebnis eine Gleichung oder eine Zuweisung ist, werden die 
@@ -657,7 +658,6 @@ expression), ist auch das Ergebnis der Funktion @code{ev} ein CRE-Ausdruck,
 falls nicht die beiden Flags @code{float} und @code{numer} den Wert 
 @code{true} haben.
 
-@item
 @c During step (1), a list is made of the non-subscripted variables appearing on
 @c the left side of equations in the arguments or in the value of some arguments
 @c if the value is an equation.  The variables (subscripted variables which do 
@@ -667,6 +667,7 @@ falls nicht die beiden Flags @code{float} und @code{numer} den Wert
 @c (as in @code{%i2} in the example below), so this step simply retrieves the 
 @c expression named by the label, so that @code{ev} may work on it.
 
+@item
 W@"ahrend des Schritts (1) wird eine Liste der nicht indizierten Variablen
 erstellt, die auf der linken Seite von Gleichungen auftreten. Die Gleichungen
 k@"onnen dabei entweder als Argument oder als Wert eines Argumentes vorliegen. 
@@ -676,28 +677,28 @@ repr@"asentieren. Ist z. B. @var{expr} eine Marke wie @code{%i2} im Beispiel
 unten oder die letzte Ausgabe @code{%}, so wird in diesem Schritt der globale
 Wert dieser Marke eingesetzt und die Bearbeitung durch @code{ev} fortgesetzt.
 
-@item
 @c If any substitutions are indicated by the arguments, they are carried out 
 @c now.
 
+@item
 Wenn in den Argumenten Substitutionen aufgef@"uhrt sind, werden diese nun 
 ausgef@"uhrt.
 
-@item
 @c The resulting expression is then re-evaluated (unless one of the arguments 
 @c was @code{noeval}) and simplified according to the arguments.  Note that any 
 @c function calls in @var{expr} will be carried out after the variables in it 
 @c are evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 
+@item
 Der resultierende Ausdruck wird erneut ausgewertet, au@ss{}er wenn @code{noeval} 
 unter den Argumente ist, und vereinfacht. Die Funktionsaufrufe in @var{expr} 
 werden erst ausgef@"uhrt, wenn die enthaltenden Variablen ausgewertet sind. 
 Dadurch verh@"alt sich @code{ev(F(x))} wie @code{F(ev(x))}.
 
-@item
 @c For each instance of @code{eval} in the arguments, steps (3) and (4) are 
 @c repeated.
 
+@item
 Bei jedem Vorkommen von @code{eval} in den Argumenten werden die Schritte (3) 
 und (4) wiederholt.
 @end enumerate
@@ -933,7 +934,7 @@ Beispiele:
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
-@defvr {Property} evfun
+@defvr {Eigenschaft} evfun
 
 @c When a function @var{F} has the @code{evfun} property,
 @c the expressions @code{ev(@var{expr}, @var{F})} and @code{@var{expr}, @var{F}}
