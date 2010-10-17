@@ -1,0 +1,2168 @@
+@c -----------------------------------------------------------------------------
+@c File     : Operators.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 17.10.2010
+@c 
+@c This file contains documentation for the following Maxima symbols:
+@c 
+@c  +         -         *         ^         **        ^^        . 
+@c  <         <=        >=        >
+@c  and       or        not
+@c  #         =
+@c  :         ::        ::=       :=
+@c  infix     matchfix  nary      nofix     postfix   prefix
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu                     
+* Arithmetische Operatoren::
+* Relationale Operatoren::
+* Logische Operatoren::
+* Operatoren für Gleichungen::
+* Zuweisungsoperatoren::
+* Benutzerdefinierte Operatoren::
+@end menu
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@node Arithmetische Operatoren, Relationale Operatoren, Operatoren, Operatoren
+@section Arithmetische Operatoren
+@c -----------------------------------------------------------------------------
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} +
+@ifinfo
+@fnindex Addition
+@end ifinfo
+@deffnx {Operator} -
+@ifinfo
+@fnindex Subtraktion
+@end ifinfo
+@deffnx {Operator} *
+@ifinfo
+@fnindex Multiplikation
+@end ifinfo
+@deffnx {Operator} /
+@ifinfo
+@fnindex Division
+@end ifinfo
+@deffnx {Operator} ^
+@ifinfo
+@fnindex Exponentiation
+@end ifinfo
+
+@c The symbols @code{+} @code{*} @code{/} and @code{^} represent addition, 
+@c multiplication, division, and exponentiation, respectively. The names of 
+@c these operators are @code{"+"} @code{"*"} @code{"/"} and @code{"^"}, which 
+@c may appear where the name of a function or operator is required.
+
+sind die Operatoren der Addition, Multiplikation, Division und Exponentiation. 
+Wird der Name eines Operators in einem Ausdruck benötigt, können die 
+Bezeichnungen @code{"+"}, @code{"*"}, @code{"/"} und @code{"^"} verwendet 
+werden.
+
+@c The symbols @code{+} and @code{-} represent unary addition and negation, 
+@c respectively, and the names of these operators are @code{"+"} and @code{"-"},
+@c respectively.
+
+Die Symbole @code{+} und @code{-} repräsentieren die unäre Addition and 
+Negation. Die Namen der Operatoren sind @code{"+"} und @code{"-"}.
+
+@c Subtraction @code{a - b} is represented within Maxima as addition, 
+@c @code{a + (- b)}. Expressions such as @code{a + (- b)} are displayed as 
+@c subtraction. Maxima recognizes @code{"-"} only as the name of the unary 
+@c negation operator, and not as the name of the binary subtraction operator.
+
+Die Subtraktion @code{a - b} wird von Maxima intern als Addition 
+@code{a + (- b)} dargestellt. In der Ausgabe werden die Ausdrücke 
+@code{a + (- b)} als Subtraktion @code{a - b} angezeigt. Maxima erkennt 
+@code{"-"} nur als den Namen der unären Negation, nicht jedoch als den binären 
+Operator der Subtraktion.
+
+@c Division @code{a / b} is represented within Maxima as multiplication, 
+@c @code{a * b^(- 1)}. Expressions such as @code{a * b^(- 1)} are displayed as 
+@c division. Maxima recognizes @code{"/"} as the name of the division operator.
+
+Die Division @code{a / b} wird intern in Maxima als Multiplikation
+@code{a * b^(- 1)} dargestellt. In der Ausgabe werden die Ausdrücke 
+@code{a * b^(- 1)} als Division @code{a / b} angezeigt. Der Name des Operators
+für die Division ist @code{"/"}.
+
+@c Addition and multiplication are n-ary, commutative operators. Division and
+@c exponentiation are binary, noncommutative operators.
+
+Die Addition und Multiplikation sind kommutative Nary-Operatoren. Die Division 
+und Exponentiation sind nicht-kommutative binäre Operatoren.
+
+@c Maxima sorts the operands of commutative operators to construct a canonical
+@c representation. For internal storage, the ordering is determined by 
+@c @code{orderlessp}. For display, the ordering for addition is determined by 
+@c @code{ordergreatp}, and for multiplication, it is the same as the internal 
+@c ordering.
+
+Maxima sortiert die Operanten eines kommutativen Operators und konstruiert eine
+kanonische Darstellung. Für die interne Darstellung wird die Ordnung durch
+@code{orderlessp} bestimmt. Für die Anzeige wird die Ordnung mit 
+@code{ordergreatp} festgelegt. Ausnahme ist die Multiplikaton. Für diese sind 
+die interne Darstellung und die Anzeige identisch.
+
+Siehe auch @code{orderlessp} und @code{ordergreatp}.
+
+@c Arithmetic computations are carried out on literal numbers (integers, 
+@c rationals, ordinary floats, and bigfloats). Except for exponentiation, all 
+@c arithmetic operations on numbers are simplified to numbers. Exponentiation is
+@c simplified to a number if either operand is an ordinary float or bigfloat or
+@c if the result is an exact integer or rational; @c otherwise an exponentiation
+@c may be simplified to @code{sqrt} or another exponentiation or left unchanged.
+
+Arithmetische Berechnungen werden mit Zahlen (Integer, rationale Zahlen, 
+Gleitkommazahlen und große Gleitkommazahlen) durchgeführt. Mit Ausnahme der 
+Exponentiation, werden alle arithmetischen Operationen mit Zahlen zu Zahlen 
+vereinfacht. Die Exponentiation vereinfacht zu einer Zahl, wenn einer der 
+Operanten eine Gleikommazahl ist, oder wenn das Ergebnis eine ganze 
+oder rationale Zahl ist. In anderen Fällen kann die Exponentiation z. B. zu
+einer Wurzelfunktion @code{sqrt} oder wiederum zu einer Exponentiation 
+vereinfachen.
+
+@c Floating-point contagion applies to arithmetic computations: if any operand 
+@c is a bigfloat, the result is a bigfloat; otherwise, if any operand is an 
+@c ordinary float, the result is an ordinary float; otherwise, the operands are 
+@c rationals or integers and the result is a rational or integer.
+
+Bei einer arithmetische Berechnung kann es zur Umwandlung in Gleitkommazahlen
+kommen. Ist eines der Argumente eine große Gleitkommazahl, so ist auch das
+Ergebnis eine große Gleitkommazahl. Entsprechend ist das Ergebnis eine 
+gewöhnlich Gleitkommazahl, sofern mindestens eines der Argumente eine 
+gewöhnliche Gleitkommazahl ist. Treten nur ganze oder rationale Zahlen auf, ist
+das Ergebnis wieder eine ganze oder rationale Zahl.
+
+@c Arithmetic computations are a simplification, not an evaluation. Thus 
+@c arithmetic is carried out in quoted (but simplified) expressions.
+
+Arithmetische Rechnungen sind Vereinfachungen und keine Auswertungen. Daher 
+werden arithmetische Rechnungen auch dann ausgeführt, wenn die Auswertung des 
+Ausdrucks durch den Quote-Operator verhindert wird.
+
+@c Arithmetic operations are applied element-by-element to lists when the global
+@c flag @code{listarith} is @code{true}, and always applied element-by-element 
+@c to matrices. When one operand is a list or matrix and another is an operand 
+@c of some other type, the other operand is combined with each of the elements 
+@c of the list or matrix.
+
+Arithmetischen Operationen werden elementweise auf Listen angewendet, wenn die
+Optionsvariable @code{listarith} den Wert @code{true} hat. Auf Matrizen werden 
+die arithmetischen Operatoren immer elementweise angewendet. Ist einer der 
+Operanden eine Liste oder Matrix und der andere Operand hat irgeneinen anderen 
+Typ, dann wird dieser Operand mit jedem Element der Liste oder Matrix 
+kombiniert.
+
+Beispiele:
+
+@c Addition and multiplication are n-ary, commutative operators. Maxima sorts 
+@c the operands to construct a canonical representation. The names of these 
+@c operators are @code{"+"} and @code{"*"}.
+
+Addition und Multiplikation sind kommutative Nary-Operatoren. Maxima sortiert
+die Operanden und konstruiert eine kanonische Darstellung. Die Namen der 
+Operatoren sind @code{"+"} und @code{"*"}.
+
+@c ===beg===
+@c c + g + d + a + b + e + f;
+@c [op (%), args (%)];
+@c c * g * d * a * b * e * f;
+@c [op (%), args (%)];
+@c apply ("+", [a, 8, x, 2, 9, x, x, a]);
+@c apply ("*", [a, 8, x, 2, 9, x, x, a]);
+@c ===end===
+
+@example
+(%i1) c + g + d + a + b + e + f;
+(%o1)               g + f + e + d + c + b + a
+(%i2) [op (%), args (%)];
+(%o2)              [+, [g, f, e, d, c, b, a]]
+(%i3) c * g * d * a * b * e * f;
+(%o3)                     a b c d e f g
+(%i4) [op (%), args (%)];
+(%o4)              [*, [a, b, c, d, e, f, g]]
+(%i5) apply ("+", [a, 8, x, 2, 9, x, x, a]);
+(%o5)                    3 x + 2 a + 19
+(%i6) apply ("*", [a, 8, x, 2, 9, x, x, a]);
+                                 2  3
+(%o6)                       144 a  x
+@end example
+
+@c Division and exponentiation are binary, noncommutative operators. The names 
+@c of these operators are @code{"/"} and @code{"^"}.
+
+Die Division und Exponentiation sind nicht-kommutative binäre Operatoren. Die 
+Namen der Operatoren sind @code{"/"} und @code{"^"}.
+
+@c ===beg===
+@c [a / b, a ^ b];
+@c [map (op, %), map (args, %)];
+@c [apply ("/", [a, b]), apply ("^", [a, b])];
+@c ===end===
+@example
+(%i1) [a / b, a ^ b];
+                              a   b
+(%o1)                        [-, a ]
+                              b
+(%i2) [map (op, %), map (args, %)];
+(%o2)              [[/, ^], [[a, b], [a, b]]]
+(%i3) [apply ("/", [a, b]), apply ("^", [a, b])];
+                              a   b
+(%o3)                        [-, a ]
+                              b
+@end example
+
+@c Subtraction and division are represented internally in terms of addition and
+@c multiplication, respectively.
+
+Subtraktion and Divison werden intern als Addition und Multiplikation 
+dargestellt.
+
+@c ===beg===
+@c [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+@c [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+@c ===end===
+@example
+(%i1) [inpart (a - b, 0), inpart (a - b, 1), inpart (a - b, 2)];
+(%o1)                      [+, a, - b]
+(%i2) [inpart (a / b, 0), inpart (a / b, 1), inpart (a / b, 2)];
+                                   1
+(%o2)                       [*, a, -]
+                                   b
+@end example
+
+@c Computations are carried out on literal numbers. Floating-point contagion 
+@c applies.
+
+Rechnungen werden für Zahlen ausgeführt. Die Umwandlung in Gleitkommazahlen wird
+angewendet.
+
+@c ===beg===
+@c 17 + b - (1/2)*29 + 11^(2/4);
+@c [17 + 29, 17 + 29.0, 17 + 29b0];
+@c ===end===
+@example
+(%i1) 17 + b - (1/2)*29 + 11^(2/4);
+                                       5
+(%o1)                   b + sqrt(11) + -
+                                       2
+(%i2) [17 + 29, 17 + 29.0, 17 + 29b0];
+(%o2)                   [46, 46.0, 4.6b1]
+@end example
+
+@c Arithmetic computations are a simplification, not an evaluation.
+
+Arithmetische Rechnungen sind Vereinfachungen und keine Auswertung.
+
+@c ===beg===
+@c simp : false;
+@c '(17 + 29*11/7 - 5^3);
+@c simp : true;
+@c '(17 + 29*11/7 - 5^3);
+@c ===end===
+@example
+(%i1) simp : false;
+(%o1)                         false
+(%i2) '(17 + 29*11/7 - 5^3);
+                              29 11    3
+(%o2)                    17 + ----- - 5
+                                7
+(%i3) simp : true;
+(%o3)                         true
+(%i4) '(17 + 29*11/7 - 5^3);
+                                437
+(%o4)                         - ---
+                                 7
+@end example
+
+@c Arithmetic is carried out element-by-element for lists (depending on 
+@c @code{listarith}) and matrices.
+
+Arithmetische Rechnungen werden elementweise für Listen und Matrizen ausgeführt.
+Bei Listen hängt dies von der Optionsvariablen @code{listarith} ab.
+
+@c ===beg===
+@c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+@c 5 * matrix ([a, x], [h, u]);
+@c listarith : false;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c listarith : true;
+@c [a, c, m, t] / [1, 7, 2, 9];
+@c [a, c, m, t] ^ x;
+@c ===end===
+@example
+(%i1) matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
+                        [ a - 1  x - 2 ]
+(%o1)                   [              ]
+                        [ h - 3  u - 4 ]
+(%i2) 5 * matrix ([a, x], [h, u]);
+                          [ 5 a  5 x ]
+(%o2)                     [          ]
+                          [ 5 h  5 u ]
+(%i3) listarith : false;
+(%o3)                         false
+(%i4) [a, c, m, t] / [1, 7, 2, 9];
+                          [a, c, m, t]
+(%o4)                     ------------
+                          [1, 7, 2, 9]
+(%i5) [a, c, m, t] ^ x;
+                                      x
+(%o5)                     [a, c, m, t]
+(%i6) listarith : true;
+(%o6)                         true
+(%i7) [a, c, m, t] / [1, 7, 2, 9];
+                              c  m  t
+(%o7)                     [a, -, -, -]
+                              7  2  9
+(%i8) [a, c, m, t] ^ x;
+                          x   x   x   x
+(%o8)                   [a , c , m , t ]
+@end example
+
+@c @opencatbox
+@c @category{Operators}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} **
+
+@c Exponentiation operator. Maxima recognizes @code{**} as the same operator as 
+@c @code{^} in input, and it is displayed as @code{^} in 1-dimensional output,
+@c or by placing the exponent as a superscript in 2-dimensional output.
+
+ist eine alternative Schreibweise für den Operator @code{^} der Exponentiation.
+In der Ausgabe wird entweder @code{^} angezeigt oder der Exponent hochgestellt. 
+Siehe @code{^}.
+
+@c The @code{fortran} function displays the exponentiation operator as 
+@c @code{**}, whether it was input as @code{**} or @code{^}.
+
+Die Funktion @code{fortran} zeigt den Operator der Exponentiation immer als 
+@code{**} an, unabhängig davon ob @code{**} oder @code{^} eingegeben wird.
+
+Beispiele:
+
+@c ===beg===
+@c is (a**b = a^b);
+@c x**y + x^z;
+@c string (x**y + x^z);
+@c fortran (x**y + x^z);
+@c ===end===
+@example
+(%i1) is (a**b = a^b);
+(%o1)                         true
+(%i2) x**y + x^z;
+                              z    y
+(%o2)                        x  + x
+(%i3) string (x**y + x^z);
+(%o3)                        x^z+x^y
+(%i4) fortran (x**y + x^z);
+      x**z+x**y
+(%o4)                         done
+@end example
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} ^^
+@ifinfo
+@fnindex Nicht-kommutative Exponentiation
+@end ifinfo
+
+@c Noncommutative exponentiation operator. @code{^^} is the exponentiation 
+@c operator corresponding to noncommutative multiplication @code{.}, just as the
+@c ordinary exponentiation operator @code{^} corresponds to commutative 
+@c multiplication @code{*}.
+
+ist der Operator der nicht-kommutativen Exponentiation von Matrizen.
+
+@c Noncommutative exponentiation is displayed by @code{^^} in 1-dimensional 
+@c output, and by placing the exponent as a superscript within angle brackets 
+@c @code{< >} in 2-dimensional output.
+
+In der linearen Ausgabe wird der nicht-kommutative Operator als @code{^^} 
+angezeigt. In der zwei-dimensionalen Ausgabe wird der hochgestellte Exponent von
+spitzen Klammern @code{< >} eingeschlossen.
+
+Beispiele:
+
+@c ===beg===
+@c a . a . b . b . b + a * a * a * b * b;
+@c string (a . a . b . b . b + a * a * a * b * b);
+@c ===end===
+@example
+(%i1) a . a . b . b . b + a * a * a * b * b;
+                        3  2    <2>    <3>
+(%o1)                  a  b  + a    . b
+(%i2) string (a . a . b . b . b + a * a * a * b * b);
+(%o2)                  a^3*b^2+a^^2 . b^^3
+@end example
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} .
+@ifinfo
+@fnindex Nicht-kommutative Multiplikation
+@end ifinfo
+
+@c The dot operator, for matrix (non-commutative) multiplication.
+@c When @code{"."} is used in this way, spaces should be left on both sides of
+@c it, e.g. @code{A . B}.  This distinguishes it plainly from a decimal point in
+@c a floating point number.
+
+Der Punkt-Operator @code{.} ist der Operator für die nicht-kommutative 
+Multiplikation von Matrizen.
+
+Siehe auch
+@code{dot},
+@code{dot0nscsimp},
+@code{dot0simp},
+@code{dot1simp},
+@code{dotassoc},
+@code{dotconstrules},
+@code{dotdistrib},
+@code{dotexptsimp},
+@code{dotident},
+und
+@code{dotscrules}.
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@node Relationale Operatoren, Logische Operatoren, Arithmetische Operatoren, Operatoren
+@section Relationale Operatoren
+@c -----------------------------------------------------------------------------
+
+@deffn {Operator} <
+@ifinfo
+@fnindex kleiner als
+@end ifinfo
+@deffnx {Operator} <=
+@ifinfo
+@fnindex kleiner als oder gleich
+@end ifinfo
+@deffnx {Operator} >=
+@ifinfo
+@fnindex größer als oder gleich
+@end ifinfo
+@deffnx {Operator} >
+@ifinfo
+@fnindex größer als
+@end ifinfo
+
+@c The symbols @code{<} @code{<=} @code{>=} and @code{>} represent less than, 
+@c less than or equal, greater than or equal, and greater than, respectively.
+@c The names of these operators are @code{"<"} @code{"<="} @code{">="} and 
+@c @code{">"}, which may appear where the name of a function or operator is 
+@c required.
+
+Die Symbole @code{<}, @code{<=}, @code{>=} und @code{>} repräsentieren die 
+Operatoren "kleiner als", "kleiner als oder gleich", "größer als oder gleich" 
+und "größer als". Die Namen dieser Operatoren sind jeweils: @code{"<"}, 
+@code{"<="}, @code{">="} und @code{">"}. Diese können dort eingesetzt werden, 
+wo der Name des Operators benötigt wird.
+
+@c These relational operators are all binary operators; constructs such as 
+@c @code{a < b < c} are not recognized by Maxima.
+
+Die relationalen Operatoren sind binäre Operatoren. Ausdrücke wie 
+@code{a < b < c} werden von Maxima nicht erkannt.
+
+@c Relational expressions are evaluated to Boolean values by the functions 
+@c @code{is} and @code{maybe}, and the programming constructs @code{if}, 
+@c @code{while}, and @code{unless}. Relational expressions are not otherwise 
+@c evaluated or simplified to Boolean values, although the arguments of 
+@c relational expressions are evaluated (when evaluation is not otherwise 
+@c prevented by quotation).
+
+Relationale Ausdrücke werden von den Funktionen @code{is} und @code{maybe} sowie
+den Programmbefehlen @code{if}, @code{while} und @code{unless} zu boolschen 
+Werten ausgewertet. Relationale Ausdrücke werden ansonsten nicht zu boolschen
+Werten ausgewertet oder vereinfacht. Jedoch werden die Argumente eines boolschen
+Ausdruckes ausgewertet, wenn die Auswertung nicht auf andere Weise unterdrückt 
+ist.
+
+@c When a relational expression cannot be evaluated to @code{true} or 
+@c @code{false}, the behavior of @code{is} and @code{if} are governed by the 
+@c global flag @code{prederror}. When @code{prederror} is @code{true}, @code{is}
+@c and @code{if} trigger an error. When @code{prederror} is @code{false},
+@c @code{is} returns @code{unknown}, and @code{if} returns a partially-evaluated
+@c conditional expression.
+
+Wenn ein relationaler Ausdruck nicht zu @code{true} oder @code{false} 
+ausgewertet werden kann, wird das Verhalten von @code{is} and @code{if} durch 
+die Optionsvariable @code{prederror} bestimmt. Ist @code{prederror} @code{true}, 
+wird von @code{is} and @code{if} ein Fehler erzeugt. Ist @code{prederror} 
+@code{false}, hat @code{is} den Rückgabewert @code{unknown} und @code{if} gibt
+einen konditionalen Ausdruck zurück, der teilweise ausgewertet ist.
+
+@c @code{maybe} always behaves as if @code{prederror} were @code{false}, and 
+@c @code{while} and @code{unless} always behave as if @code{prederror} were 
+@c @code{true}.
+
+Die Funktion @code{maybe} verhält sich immer so, als ob @code{prederror} den 
+Wert @code{false} hat, und @code{while} sowie @code{unless} verhalten sich 
+immer so, als ob @code{prederror} den Wert @code{true} hat.
+
+@c Relational operators do not distribute over lists or other aggregates.
+
+Relationale Operatoren werden nicht auf die Elemente von Listen oder Matrizen
+sowie auf die beiden Seiten einer Gleichung angewendet.
+
+@c See also @code{=} @code{#} @code{equal} and @code{notequal}.
+
+Siehe auch @code{=}, @code{#}, @code{equal} und @code{notequal}.
+
+Beispiele:
+
+@c Relational expressions are evaluated to Boolean values by some functions and 
+@c programming constructs.
+
+Relationale Ausdrücke werden von einigen Funktionen zu boolschen Werten 
+ausgewertet.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c is (x < y);
+@c maybe (y > z);
+@c if x >= z then 1 else 0;
+@c block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+@c ===end===
+@example
+(%i1) [x, y, z] : [123, 456, 789];
+(%o1)                    [123, 456, 789]
+(%i2) is (x < y);
+(%o2)                         true
+(%i3) maybe (y > z);
+(%o3)                         false
+(%i4) if x >= z then 1 else 0;
+(%o4)                           0
+(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+(%o5)                         5050
+@end example
+
+@c Relational expressions are not otherwise evaluated or simplified to Boolean 
+@c values, although the arguments of relational expressions are evaluated.
+
+Relationale Ausdrücke werden ansonsten nicht zu boolschen Werten ausgewertet 
+oder vereinfacht, auch wenn die Argumente eines relationalen Ausdruckes 
+ausgewertet werden.
+
+@c ===beg===
+@c [x, y, z] : [123, 456, 789];
+@c [x < y, y <= z, z >= y, y > z];
+@c map (is, %);
+@c ===end===
+@example
+(%o1)                    [123, 456, 789]
+(%i2) [x < y, y <= z, z >= y, y > z];
+(%o2)    [123 < 456, 456 <= 789, 789 >= 456, 456 > 789]
+(%i3) map (is, %);
+(%o3)               [true, true, true, false]
+@end example
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@node Logische Operatoren, Operatoren für Gleichungen, Relationale Operatoren, Operatoren
+@section Logische Operatoren
+@c -----------------------------------------------------------------------------
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} and
+@ifinfo
+@fnindex Logische Konjunktion
+@end ifinfo
+
+@c The logical conjunction operator. @code{and} is an n-ary infix operator;
+@c its operands are Boolean expressions, and its result is a Boolean value.
+
+ist der logische Operator der Konjunktion. @code{and} is an Nary Infix Operator.
+Seine Argumente sind boolsche Ausdrücke und sein Ergebnis ist ein boolscher 
+Wert.
+
+@c @code{and} forces evaluation (like @code{is}) of one or more operands, and 
+@c may force evaluation of all operands.
+
+Wie @code{is} erzwingt @code{and} die Auswertung aller oder einen Teil seiner 
+Argumente.
+
+@c Operands are evaluated in the order in which they appear. @code{and} 
+@c evaluates only as many of its operands as necessary to determine the result.
+@c If any operand is @code{false}, the result is @code{false} and no further 
+@c operands are evaluated.
+
+Die Operanden werden in der Reihenfolge ausgewertet, in der sie auftreten. 
+@code{and} wertet nur soviele Argumente aus, wie nötig ist, um das Ergebnis des
+Ausdrucks zu bestimmen. Ist irgendein Operand @code{false}, ist das Ergebnis
+@code{false} und die weiteren Operanden werden nicht ausgewertet.
+
+@c The global flag @code{prederror} governs the behavior of @code{and} when an 
+@c evaluated operand cannot be determined to be @code{true} or @code{false}.
+@c @code{and} prints an error message when @code{prederror} is @code{true}.
+@c Otherwise, operands which do not evaluate to @code{true} or @code{false} are
+@c accepted, and the result is a Boolean expression.
+
+Das globale Flag @code{prederror} beeinflußt das Verhalten von @code{and}, wenn
+ein Operand nicht zu @code{true} oder @code{false} ausgewertet werden kann.
+@code{and} gibt eine Fehlermeldung, wenn @code{prederror} den Wert @code{true}
+hat. Andernfalls, werden Operanden, die nicht zu @code{true} oder @code{false}
+ausgewertet werden können, akzeptiert und das Ergebnis ist ein boolscher 
+Ausdruck.
+
+@c @code{and} is not commutative: @code{a and b} might not be equal to 
+@c @code{b and a} due to the treatment of indeterminate operands.
+
+@code{and} ist nicht kommutativ: @code{a and b} kann ungleich zu @code{b and a}
+sein, aufgrund der Behandlung von unbstimmten Operanden.
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} or
+@ifinfo
+@fnindex Logische Disjunktion
+@end ifinfo
+
+@c The logical disjunction operator. @code{or} is an n-ary infix operator; its 
+@c operands are Boolean expressions, and its result is a Boolean value.
+
+ist der logische Operator der Disjunktion. @code{or} ist ein N-ary Infix Operator. 
+Seine Operanden sind boolsche Ausdrücke und sein Ergebnis ist ein boolscher 
+Wert.
+
+@c @code{or} forces evaluation (like @code{is}) of one or more operands, and may
+@c force evaluation of all operands.
+
+Wie @code{is} erzwingt @code{or} die Auswertung aller oder einen Teil seiner 
+Argumente.
+
+@c Operands are evaluated in the order in which they appear. @code{or} evaluates
+@c only as many of its operands as necessary to determine the result. If any 
+@c operand is @code{true}, the result is @code{true} and no further operands are
+@c evaluated.
+
+Die Operanden werden in der Reihenfolge ausgewertet, in der sie auftreten. 
+@code{or} wertet nur soviele Argumente aus, wie nötig ist, um das Ergebnis des
+Ausdrucks zu bestimmen. Ist irgendein Operand @code{true}, ist das Ergebnis
+@code{true} und die weiteren Operanden werden nicht ausgewertet.
+
+@c The global flag @code{prederror} governs the behavior of @code{or} when an 
+@c evaluated operand cannot be determined to be @code{true} or @code{false}.
+@c @code{or} prints an error message when @code{prederror} is @code{true}.
+@c Otherwise, operands which do not evaluate to @code{true} or @code{false} are 
+@c accepted, and the result is a Boolean expression.
+
+Das globale Flag @code{prederror} beeinflußt das Verhalten von @code{or}, wenn
+ein Operand nicht zu @code{true} oder @code{false} ausgewertet werden kann.
+@code{and} gibt eine Fehlermeldung, wenn @code{prederror} den Wert @code{true}
+hat. Andernfalls, werden Operanden, die nicht zu @code{true} oder @code{false}
+ausgewertet werden können, akzeptiert und das Ergebnis ist ein boolscher 
+Ausdruck.
+
+@c @code{or} is not commutative: @code{a or b} might not be equal to 
+@c @code{b or a} due to the treatment of indeterminate operands.
+
+@code{or} ist nicht kommutativ: @code{a or b} kann ungleich zu @code{b or a}
+sein, aufgrund der Behandlung von unbstimmten Operanden
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} not
+@ifinfo
+@fnindex Logische Negation
+@end ifinfo
+
+@c The logical negation operator. @code{not} is a prefix operator; its operand 
+@c is a Boolean expression, and its result is a Boolean value.
+
+ist die logische Negation. @code{not} ist ein Prefix-Operator. Sein Operand ist
+ein boolscher Ausdruck und sein Ergebnis ein boolscher Wert.
+
+@c @code{not} forces evaluation (like @code{is}) of its operand.
+
+Wie @code{is} erzwingt @code{not} die Auswertung seines Operanden.
+
+@c The global flag @code{prederror} governs the behavior of @code{not} when its 
+@c operand cannot be determined to be @code{true} or @code{false}. @code{not} 
+@c prints an error message when @code{prederror} is @code{true}. Otherwise, 
+@c operands which do not evaluate to @code{true} or @code{false} are accepted,
+@c and the result is a Boolean expression.
+
+Das globale Flag @code{prederror} beeinflußt das Verhalten von @code{not}, wenn
+sein Operand nicht zu @code{true} oder @code{false} ausgewertet werden kann.
+@code{not} gibt eine Fehlermeldung, wenn @code{prederror} den Wert @code{true}
+hat. Andernfalls, werden Operanden, die nicht zu @code{true} oder @code{false}
+ausgewertet werden können, akzeptiert und das Ergebnis ist ein boolscher 
+Ausdruck.
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@node Operatoren für Gleichungen, Zuweisungsoperatoren, Logische Operatoren, Operatoren
+@section Operatoren für Gleichungen
+@c -----------------------------------------------------------------------------
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} #
+@ifinfo
+@fnindex  Nicht gleich (Ungleichheit)
+@end ifinfo
+
+@c Represents the negation of syntactic equality @code{=}.
+
+Repräsentiert die Negation der Gleichheit @code{=}.
+
+@c Note that because of the rules for evaluation of predicate expressions (in 
+@c particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@c @code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})},
+@c instead of @code{@var{a} # @var{b}}.
+
+Beachte, dass wegen der Regeln für die Auswertung von Aussagen und weil
+@code{not @var{expr}} die Auswertung des Argumentes @var{expr} bewirkt, der 
+Ausdruck @code{not @var{a} = @var{b}} äquivalent zu @code{is(@var{a} # @var{b})}
+ist und nicht zu @code{@var{a} # @var{b}}.
+
+Beispiele:
+
+@c ===beg===
+@c a = b;
+@c is (a = b);
+@c a # b;
+@c not a = b;
+@c is (a # b);
+@c is (not a = b);
+@c ===end===
+@example
+(%i1) a = b;
+(%o1)                         a = b
+(%i2) is (a = b);
+(%o2)                         false
+(%i3) a # b;
+(%o3)                         a # b
+(%i4) not a = b;
+(%o4)                         true
+(%i5) is (a # b);
+(%o5)                         true
+(%i6) is (not a = b);
+(%o6)                         true
+@end example
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} =
+@ifinfo
+@fnindex Operator for Gleichungen
+@fnindex gleich (Gleichheit)
+@end ifinfo
+
+@c The equation operator.
+
+Der Operator für Gleichungen.
+
+@c An expression @code{@var{a} = @var{b}}, by itself, represents an unevaluated 
+@c equation, which might or might not hold. Unevaluated equations may appear as 
+@c arguments to @code{solve} and @code{algsys} or some other functions.
+
+Ein Ausdruck @code{@var{a} = @var{b}} repräsentiert eine nicht ausgewertete 
+Gleichung, welche zutreffen kann oder auch nicht. Nicht ausgewertete Gleichungen
+können als Argument der Funktionen @code{solve} und @code{algsys} und einigen
+anderen Funktionen auftreten.
+
+@c The function @code{is} evaluates @code{=} to a Boolean value. 
+@c @code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to 
+@c @code{true} when @var{a} and @var{b} are identical. That is, @var{a} and 
+@c @var{b} are atoms which are identical, or they are not atoms and their 
+@c operators are identical and their arguments are identical. Otherwise, 
+@c @code{is(@var{a} = @var{b})} evaluates to @code{false}; it never evaluates 
+@c to @code{unknown}. When @code{is(@var{a} = @var{b})} is @code{true}, @var{a} 
+@c and @var{b} are said to be syntactically equal, in contrast to equivalent 
+@c expressions, for which @code{is(equal(@var{a}, @var{b}))} is @code{true}.
+@c Expressions can be equivalent and not syntactically equal.
+
+Die Funktion @code{is} wertet @code{=} zu einem boolschen Wert aus. 
+@code{is(@var{a} = @var{b})} wertet die Gleichung @code{@var{a} = @var{b}} zum 
+Wert @code{true} aus, wenn @var{a} and @var{b} identisch sind. Das trifft zu, 
+wenn @var{a} und @var{b} identische Atome sind, oder wenn ihre Operatoren sowie
+die Argumente identisch sind. In jedem anderen Fall ist das Ergebnis 
+@code{false}. Das Ergebnis der Auswertung ist nie @code{unkown}. Hat 
+@code{is(@var{a} = @var{b})} das Ergebnis @code{true}, werden @code{a} und 
+@code{b} als syntaktisch gleich bezeichnet. Im Unterschied dazu gilt für
+äquivalente Ausdrücke, das @code{is(equal(@var{a}, @var{b}))} den Wert 
+@code{true} hat. Ausdrücke können äquivalent, aber syntaktisch verschieden sein.
+
+@c The negation of @code{=} is represented by @code{#}. As with @code{=}, an 
+@c expression @code{@var{a} # @var{b}}, by itself, is not evaluated. 
+@c @code{is(@var{a} # @var{b})} evaluates @code{@var{a} # @var{b}} to 
+@c @code{true} or @code{false}.
+
+Die Negation von @code{=} wird durch @code{#} repräsentiert. Wie bei @code{=} 
+wird ein Ausdruck @code{@var{a} # @var{b}} nicht ausgewertet. Eine Auswertung
+erfolgt mit @code{is(@var{a} # @var{b})}, welche die Werte @code{true} oder
+@code{false} liefert.
+
+@c In addition to @code{is}, some other operators evaluate @code{=} and @code{#}
+@c to @code{true} or @code{false}, namely @code{if}, @code{and}, @code{or}, and 
+@c @code{not}.
+
+Neben @code{is} werten auch die Funktionen und Operatoren @code{if}, @code{and}, 
+@code{or} und @code{not} die Operatoren @code{=} und @code{#} zu den Werten
+@code{true} oder @code{false} aus.
+
+@c Note that because of the rules for evaluation of predicate expressions (in 
+@c particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@c @code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})},
+@c instead of @code{@var{a} # @var{b}}.
+
+Wegen der Regeln für die Auswertung von Aussagen und weil im Ausdruck
+@code{not @var{expr}} das Argument @var{expr} ausgewertet wird, ist
+@code{not @var{a} = @var{b}} äquivalent zu @code{is(@var{a} # @var{b})} und 
+nicht zu @code{@var{a} # @var{b}}.
+
+@c @code{rhs} and @code{lhs} return the right-hand and left-hand sides,
+@c respectively, of an equation or inequation.
+
+@code{rhs} und @code{lhs} geben die rechte und die linke einer Gleichung oder
+Ungleichung zurück.
+
+@c See also @code{equal} and @code{notequal}.
+
+Siehe auch @code{equal} und @code{notequal}.
+
+Beispiele:
+
+@c An expression @code{@var{a} = @var{b}}, by itself, represents an unevaluated 
+@c equation, which might or might not hold.
+
+Ein Ausdruck @code{@var{a} = @var{b}} repräsentiert eine nicht ausgewertete
+Gleichung. Diese kann zutreffen oder nicht.
+
+@c ===beg===
+@c eq_1 : a * x - 5 * y = 17;
+@c eq_2 : b * x + 3 * y = 29;
+@c solve ([eq_1, eq_2], [x, y]);
+@c subst (%, [eq_1, eq_2]);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) eq_1 : a * x - 5 * y = 17;
+(%o1)                    a x - 5 y = 17
+(%i2) eq_2 : b * x + 3 * y = 29;
+(%o2)                    3 y + b x = 29
+(%i3) solve ([eq_1, eq_2], [x, y]);
+                        196         29 a - 17 b
+(%o3)          [[x = ---------, y = -----------]]
+                     5 b + 3 a       5 b + 3 a
+(%i4) subst (%, [eq_1, eq_2]);
+         196 a     5 (29 a - 17 b)
+(%o4) [--------- - --------------- = 17, 
+       5 b + 3 a      5 b + 3 a
+                                  196 b     3 (29 a - 17 b)
+                                --------- + --------------- = 29]
+                                5 b + 3 a      5 b + 3 a
+(%i5) ratsimp (%);
+(%o5)                  [17 = 17, 29 = 29]
+@end example
+
+@c @code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to 
+@c @code{true} when @var{a} and @var{b} are syntactically equal (that is, 
+@c identical). Expressions can be equivalent and not syntactically equal.
+
+@code{is(@var{a} = @var{b})} wertet @code{@var{a} = @var{b}} zu @code{true} aus,
+wenn @var{a} und @var{b} syntaktisch gleich sind. Ausdrücke können äquivalent
+sein, ohne syntaktisch gleich zu sein.
+
+@c ===beg===
+@c a : (x + 1) * (x - 1);
+@c b : x^2 - 1;
+@c [is (a = b), is (a # b)];
+@c [is (equal (a, b)), is (notequal (a, b))];
+@c ===end===
+@example
+(%i1) a : (x + 1) * (x - 1);
+(%o1)                    (x - 1) (x + 1)
+(%i2) b : x^2 - 1;
+                              2
+(%o2)                        x  - 1
+(%i3) [is (a = b), is (a # b)];
+(%o3)                     [false, true]
+(%i4) [is (equal (a, b)), is (notequal (a, b))];
+(%o4)                     [true, false]
+@end example
+
+@c Some operators evaluate @code{=} and @code{#} to @code{true} or @code{false}.
+
+Einige Operatoren werten @code{=} und @code{#} zu @code{true} oder @code{false}
+aus.
+
+@c ===beg===
+@c if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else 
+@c       BAR;
+@c eq_3 : 2 * x = 3 * x;
+@c eq_4 : exp (2) = %e^2;
+@c [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
+@c ===end===
+@example
+(%i1) if expand ((x + y)^2) = x^2 + 2 * x * y + y^2 then FOO else
+      BAR;
+(%o1)                          FOO
+(%i2) eq_3 : 2 * x = 3 * x;
+(%o2)                       2 x = 3 x
+(%i3) eq_4 : exp (2) = %e^2;
+                              2     2
+(%o3)                       %e  = %e
+(%i4) [eq_3 and eq_4, eq_3 or eq_4, not eq_3];
+(%o4)                  [false, true, true]
+@end example
+
+@c Because @code{not @var{expr}} causes evaluation of @var{expr},
+@c @code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})}.
+
+Da @code{not @var{expr}} die Auswertung des Ausdrucks @var{expr} bewirkt, ist
+@code{not @var{a} = @var{b}} äquivalent zu @code{is(@var{a} # @var{b})}.
+
+@c ===beg===
+@c [2 * x # 3 * x, not (2 * x = 3 * x)];
+@c is (2 * x # 3 * x);
+@c ===end===
+@example
+(%i1) [2 * x # 3 * x, not (2 * x = 3 * x)];
+(%o1)                   [2 x # 3 x, true]
+(%i2) is (2 * x # 3 * x);
+(%o2)                         true
+@end example
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@node Zuweisungsoperatoren, Benutzerdefinierte Operatoren, Operatoren für Gleichungen, Operatoren
+@section Zuweisungsoperatoren
+@c -----------------------------------------------------------------------------
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} :
+@ifinfo
+@fnindex Zuweisungsoperator
+@end ifinfo
+
+@c Assignment operator.
+
+Zuweisungsoperator.
+
+@c When the left-hand side is a simple variable (not subscripted), @code{:} 
+@c evaluates its right-hand side and associates that value with the left-hand 
+@c side.
+
+Ist die linke Seite eine einfache Variable (ohne Index), wertet @code{:} die
+rechte Seite aus und weist den erhalten Wert der Variablen auf der linken Seite 
+zu.
+
+@c When the left-hand side is a subscripted element of a list, matrix, declared 
+@c Maxima array, or Lisp array, the right-hand side is assigned to that element.
+@c The subscript must name an existing element; such objects cannot be extended 
+@c by naming nonexistent elements.
+
+Ist die linke Seite ein indiziertes Element, eine Liste, Matrix oder ein Maxima-
+oder ein Lisp-Array, wird die rechte Seite diesem Element zugewiesen. Der Index
+muss ein existierendes Element bezeichnen. Solche Objekte können nicht durch die
+Bezeichnung von nicht existierenden Elementen erweitert werden.
+
+@c When the left-hand side is a subscripted element of an undeclared Maxima 
+@c array, the right-hand side is assigned to that element, if it already exists,
+@c or a new element is allocated, if it does not already exist.
+
+Ist die linke Seite ein indiziertes Element eines nicht deklarierten 
+Maxima-Array, dann wird die rechte Seite diesem Element zugewiesen, falls dieses
+bereits existiert. Existiert dieses noch nicht, wird ein neues Element 
+zugewiesen.
+
+@c When the left-hand side is a list of simple and/or subscripted variables,
+@c the right-hand side must evaluate to a list, and the elements of the 
+@c right-hand side are assigned to the elements of the left-hand side, in 
+@c parallel.
+
+Ist die linke Seite eine Liste mit einfachen Variablen (ohne Index), muss die 
+rechte Seite zu einer Liste auswerten, und die Elemente der Liste auf der 
+rechten Seite werden den Elementen auf der linken Seite parallel zugewiesen.
+
+@c See also @code{kill} and @code{remvalue}, which undo the association between 
+@c the left-hand side and its value.
+
+Siehe auch @code{kill} und @code{remvalue} für die Aufhebung der Zuweisung eines
+Wertes an die linke Seite.
+
+Beispiele:
+
+@c Assignment to a simple variable.
+
+Zuweisung an eine einfache Variable.
+
+@c ===beg===
+@c a;
+@c a : 123;
+@c a;
+@c ===end===
+@example
+(%i1) a;
+(%o1)                           a
+(%i2) a : 123;
+(%o2)                          123
+(%i3) a;
+(%o3)                          123
+@end example
+
+@c Assignment to an element of a list.
+
+Zuweisung an ein Element einer Liste.
+
+@c ===beg===
+@c b : [1, 2, 3];
+@c b[3] : 456;
+@c b;
+@c ===end===
+@example
+(%i1) b : [1, 2, 3];
+(%o1)                       [1, 2, 3]
+(%i2) b[3] : 456;
+(%o2)                          456
+(%i3) b;
+(%o3)                      [1, 2, 456]
+@end example
+
+@c Assignment creates an undeclared array.
+
+Die Zuweisung erzeugt ein nicht deklariertes Array.
+
+@c ===beg===
+@c c[99] : 789;
+@c c[99];
+@c c;
+@c arrayinfo (c);
+@c listarray (c);
+@c ===end===
+@example
+(%i1) c[99] : 789;
+(%o1)                          789
+(%i2) c[99];
+(%o2)                          789
+(%i3) c;
+(%o3)                           c
+(%i4) arrayinfo (c);
+(%o4)                   [hashed, 1, [99]]
+(%i5) listarray (c);
+(%o5)                         [789]
+@end example
+
+@c Multiple assignment.
+
+Mehrfache Zuweisung.
+
+@c ===beg===
+@c [a, b, c] : [45, 67, 89];
+@c a;
+@c b;
+@c c;
+@c ===end===
+@example
+(%i1) [a, b, c] : [45, 67, 89];
+(%o1)                     [45, 67, 89]
+(%i2) a;
+(%o2)                          45
+(%i3) b;
+(%o3)                          67
+(%i4) c;
+(%o4)                          89
+@end example
+
+@c Multiple assignment is carried out in parallel. The values of @code{a} and 
+@c @code{b} are exchanged in this example.
+
+Die mehrfache Zuweisung wird parallel ausgeführt. Die Werte von @code{a} und
+@code{b} werden in diesem Beispiel ausgetauscht.
+
+@c ===beg===
+@c [a, b] : [33, 55];
+@c [a, b] : [b, a];
+@c a;
+@c b;
+@c ===end===
+@example
+(%i1) [a, b] : [33, 55];
+(%o1)                       [33, 55]
+(%i2) [a, b] : [b, a];
+(%o2)                       [55, 33]
+(%i3) a;
+(%o3)                          55
+(%i4) b;
+(%o4)                          33
+@end example
+
+@c @opencatbox
+@c @category{Auswertung} @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} ::
+@ifinfo
+@fnindex Zuweisungsoperaotor (wertet die linke Seite aus)
+@end ifinfo
+
+@c Assignment operator.
+
+Zuweisungsoperator.
+
+@c @code{::} is the same as @code{:} (which see) except that @code{::} evaluates
+@c its left-hand side as well as its right-hand side.
+
+@code{::} ist wie @code{:} mit der Ausnahme, dass @code{::} sowohl die rechte
+als auch die linke Seite auswertet.
+
+Beispiele:
+
+@c ===beg===
+@c x : 'foo;
+@c x :: 123;
+@c foo;
+@c x : '[a, b, c];
+@c x :: [11, 22, 33];
+@c a;
+@c b;
+@c c;
+@c ===end===
+@example
+(%i1) x : 'foo;
+(%o1)                          foo
+(%i2) x :: 123;
+(%o2)                          123
+(%i3) foo;
+(%o3)                          123
+(%i4) x : '[a, b, c];
+(%o4)                       [a, b, c]
+(%i5) x :: [11, 22, 33];
+(%o5)                     [11, 22, 33]
+(%i6) a;
+(%o6)                          11
+(%i7) b;
+(%o7)                          22
+(%i8) c;
+(%o8)                          33
+@end example
+
+@c @opencatbox
+@c @category{Auswertung} @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} ::=
+@ifinfo
+@fnindex Operator for Makrodefinitionen
+@end ifinfo
+
+@c Macro function definition operator. @code{::=} defines a function (called a 
+@c "macro" for historical reasons) which quotes its arguments, and the 
+@c expression which it returns (called the "macro expansion") is evaluated in 
+@c the context from which the macro was called. A macro function is otherwise 
+@c the same as an ordinary function.
+
+Operator für die Definition von Makro-Funktionen. @code{::=} definiert eine 
+Funktion (aus historischen Gründen Makro genannt), welche ihre Argumenente nicht
+auswertet. Der Ausdruck, welcher zurückgegeben wird, wird in dem Kontext
+ausgewert, in dem das Makro aufgerufen wurde. Ansonsten verhält sich eine 
+Makro-Funktion wie eine gewöhnliche Funktion.
+
+@c @code{macroexpand} returns a macro expansion (without evaluating it).
+@c @code{macroexpand (foo (x))} followed by @code{''%} is equivalent to 
+@c @code{foo (x)} when @code{foo} is a macro function.
+
+@code{macroexpand} expandiert ein Makro ohne es auszuwerten. 
+@code{macroexpand(foo(x)} dem @code{''%} folgt, ist äquivalent zu 
+@code{foo (x)}, wenn @code{foo} eine Makro-Funktion ist.
+
+@c @code{::=} puts the name of the new macro function onto the global list 
+@c @code{macros}. @code{kill}, @code{remove}, and @code{remfunction} unbind 
+@c macro function definitions and remove names from @code{macros}.
+
+@code{::=} schreibt den Namen der neuen Makro-Funktion in die globale Liste
+@code{macros}. @code{kill}, @code{remove} und @code{remfunction} heben die 
+Zuweisung der Makro-Funktion an ein Symbol auf und entfernen die Makro-Funktion
+von der Liste @code{macros}.
+
+@c @code{fundef} or @code{dispfun} return a macro function definition or assign
+@c it to a label, respectively.
+
+@code{fundef} oder @code{dispfun} geben die Definition einer Makro-Funktion 
+zurück oder weisen die Makro-Funktion einer Marke zu.
+
+@c Macro functions commonly contain @code{buildq} and @code{splice} expressions
+@c to construct an expression, which is then evaluated.
+
+Makro-Funktionen enthalten häufig @code{buildq} und @code{splice} Ausdrücke, mit
+denen Ausdrücke konstruiert werden, die dann ausgewertet werden.
+
+Beispiele:
+
+@c A macro function quotes its arguments, so message (1) shows @code{y - z}, not
+@c the value of @code{y - z}. The macro expansion (the quoted expression 
+@c @code{'(print ("(2) x is equal to", x))} is evaluated in the context from 
+@c which the macro was called, printing message (2).
+
+Eine Makro-Funktion wertet ihre Argumente nicht aus. Daher zeigt Beispiel (1)
+@code{y -z} und nicht den Wert von @code{y - z}. Die Makro-Expansion wird in 
+dem Kontext ausgewertet, von dem das Makro aufgerufen wird. Dies zeigt (2).
+
+@c ===beg===
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c printq1 (x) ::= block (print ("(1) x is equal to", x), 
+@c                                 '(print ("(2) x is equal to", x)))$
+@c printq1 (y - z);
+@c ===end===
+@example
+(%i1) x: %pi$
+
+(%i2) y: 1234$
+
+(%i3) z: 1729 * w$
+
+(%i4) printq1 (x) ::= block (print ("(1) x is equal to", x),
+      '(print ("(2) x is equal to", x)))$
+
+(%i5) printq1 (y - z);
+(1) x is equal to y - z
+(2) x is equal to %pi
+(%o5)                                 %pi
+@end example
+
+@c An ordinary function evaluates its arguments, so message (1) shows the value 
+@c of @code{y - z}. The return value is not evaluated, so message (2) is not 
+@c printed until the explicit evaluation @code{''%}.
+
+Eine gewöhnliche Funktion wertet ihre Argumente aus. Daher zeigt (1) den Wert 
+von @code{y - z}. Der Rückgabewert wird nicht ausgewertet und gibt (2). Mit
+@code{''%} wird dann die Auswertung erzwungen.
+
+@c ===beg===
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c printe1 (x) := block (print ("(1) x is equal to", x), 
+@c       '(print ("(2) x is equal to", x)))$
+@c printe1 (y - z);
+@c ''%;
+@c ===end===
+@example
+(%i1) x: %pi$
+
+(%i2) y: 1234$
+
+(%i3) z: 1729 * w$
+
+(%i4) printe1 (x) := block (print ("(1) x is equal to", x),
+      '(print ("(2) x is equal to", x)))$
+
+(%i5) printe1 (y - z);
+(1) x is equal to 1234 - 1729 w
+(%o5)                     print((2) x is equal to, x)
+(%i6) ''%;
+(2) x is equal to %pi
+(%o6)                                 %pi
+@end example
+
+@c @code{macroexpand} returns a macro expansion. @code{macroexpand (foo (x))} 
+@c followed by @code{''%} is equivalent to @code{foo (x)} when @code{foo} is a 
+@c macro function.
+
+@code{macroexpand} gibt die Expansion des Makros zurück. 
+@code{macroexpand(foo(x)} dem @code{''%} folgt, ist äquivalent zu 
+@code{foo (x)}, wenn @code{foo} eine Makro-Funktion ist.
+
+@c ===beg===
+@c x: %pi$
+@c y: 1234$
+@c z: 1729 * w$
+@c g (x) ::= buildq ([x], print ("x is equal to", x))$
+@c macroexpand (g (y - z));
+@c ''%;
+@c g (y - z);
+@c ===end===
+@example
+(%i1) x: %pi$
+
+(%i2) y: 1234$
+
+(%i3) z: 1729 * w$
+
+(%i4) g (x) ::= buildq ([x], print ("x is equal to", x))$
+
+(%i5) macroexpand (g (y - z));
+(%o5)                     print(x is equal to, y - z)
+(%i6) ''%;
+x is equal to 1234 - 1729 w
+(%o6)                            1234 - 1729 w
+(%i7) g (y - z);
+x is equal to 1234 - 1729 w
+(%o7)                            1234 - 1729 w
+@end example
+
+@c @opencatbox
+@c @category{Funktionsdefinitionen} @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} :=
+@ifinfo
+@fnindex Operator für Funktionsdefinitionen
+@end ifinfo
+
+@c The function definition operator. 
+@c @code{@var{f}(@var{x_1}, ..., @var{x_n}) := @var{expr}} defines a function 
+@c named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body 
+@c @var{expr}. @code{:=} never evaluates the function body (unless explicitly 
+@c evaluated by quote-quote @code{'@w{}'}). The function so defined may be an 
+@c ordinary Maxima function (with arguments enclosed in parentheses) or an array
+@c function (with arguments enclosed in square brackets).
+
+Operator für Funktions-Definitionen. 
+@code{@var{f}(@var{x_1}, ..., @var{x_n})} := @var{expr} definiert eine Funktion
+mit dem Namen @var{f}, den Argumenten @var{x_1}, ..., @var{x_n} und der 
+Funktionsdefinition @var{expr}. @code{:=} wertet die Funktionsdefinition nie
+aus (außer, bei Anwendung des Quote-Quote-Operators @code{'@w{}'}). Die 
+definierte Funktion kann eine gewöhnliche Maxima-Funktion sein, deren Argumente
+in runden Klammern eingeschlossen sind, oder eine Array-Funktion, mit Argumenten
+die in eckigen Klammern eingeschlossen sind.
+
+@c When the last or only function argument @var{x_n} is a list of one element,
+@c the function defined by @code{:=} accepts a variable number of arguments.
+@c Actual arguments are assigned one-to-one to formal arguments @var{x_1}, 
+@c ..., @var{x_(n - 1)}, and any further actual arguments, if present, are 
+@c assigned to @var{x_n} as a list.
+
+Ist das letzte oder das einzige Argument der Funktion @var{x_n} eine Liste mit
+einem Element, dann akzeptiert die mit @code{:=} definierte Funktion eine 
+variable Anzahl an Argumenten. Die Argumente werden zunächst eins-zu-eins den
+Argumenten @var{x_1}, ..., @var{x_(n - 1)} zugewiesen, sind weitere Argumente
+vorhanden, werden diese @var{x_n} als Liste zugewiesen.
+
+@c All function definitions appear in the same namespace; defining a function 
+@c @code{f} within another function @code{g} does not automatically limit the 
+@c scope of @code{f} to @code{g}. However, @code{local(f)} makes the definition 
+@c of function @code{f} effective only within the block or other compound 
+@c expression in which @code{local} appears.
+
+Funktionsdefinitionen erscheinen in demselben Namensraum. Wird eine Funktion
+@code{f} innerhalb einer Funktion @code{g} definiert, wird die Reichweite der
+Funktion nicht automatisch auf @code{g} beschränkt. Dagegen führt 
+@code{local(f)} zu einer Definition, die nur innerhalb eines Blockes oder einem
+anderen zusammengesetzten Ausdrück erscheint.
+
+@c If some formal argument @var{x_k} is a quoted symbol, the function defined 
+@c by @code{:=} does not evaluate the corresponding actual argument. Otherwise 
+@c all actual arguments are evaluated.
+
+Ist eines der Argumente ein Symbol auf das der Quote-Operator angewendet wurde, 
+wird dieses Argument nicht ausgewertet. Ansonsten werden alle Argumente 
+ausgewertet.
+
+@c See also @code{define} and @code{::=}.
+
+Siehe auch @code{define} und @code{::=}.
+
+Beispiele:
+
+@c @code{:=} never evaluates the function body (unless explicitly evaluated by 
+@c quote-quote).
+
+@code{:=} wertet die Funktions-Definition nie aus, außer wenn der 
+Quote-Quote-Operator angewendet wird.
+
+@c ===beg===
+@c expr : cos(y) - sin(x);
+@c F1 (x, y) := expr;
+@c F1 (a, b);
+@c F2 (x, y) := ''expr;
+@c F2 (a, b);
+@c ===end===
+@example
+(%i1) expr : cos(y) - sin(x);
+(%o1)                    cos(y) - sin(x)
+(%i2) F1 (x, y) := expr;
+(%o2)                   F1(x, y) := expr
+(%i3) F1 (a, b);
+(%o3)                    cos(y) - sin(x)
+(%i4) F2 (x, y) := ''expr;
+(%o4)              F2(x, y) := cos(y) - sin(x)
+(%i5) F2 (a, b);
+(%o5)                    cos(b) - sin(a)
+@end example
+
+@c The function defined by @code{:=} may be an ordinary Maxima function or an 
+@c array function.
+
+Die durch den Operaor @code{:=} definierte Funktion kann ein gewöhnliche 
+Maxima-Funktion oder eine Array-Funktion sein.
+
+@c ===beg===
+@c G1 (x, y) := x.y - y.x;
+@c G2 [x, y] := x.y - y.x;
+@c ===end===
+@example
+(%i1) G1 (x, y) := x.y - y.x;
+(%o1)               G1(x, y) := x . y - y . x
+(%i2) G2 [x, y] := x.y - y.x;
+(%o2)                G2     := x . y - y . x
+                       x, y
+@end example
+
+@c When the last or only function argument @var{x_n} is a list of one element,
+@c the function defined by @code{:=} accepts a variable number of arguments.
+
+Ist das letzte oder einzige Argument @var{x_n} eine Liste mit einem Element, 
+akzepiert die Funktion eine variable Anzahl an Argumenten.
+
+@c ===beg===
+@c H ([L]) := apply ("+", L);
+@c H (a, b, c);
+@c ===end===
+@example
+(%i1) H ([L]) := apply ("+", L);
+(%o1)                H([L]) := apply("+", L)
+(%i2) H (a, b, c);
+(%o2)                       c + b + a
+@end example
+
+@c @code{local} makes a local function definition.
+
+@code{local} erzeugt eine lokale Funktionsdefinition.
+
+@c ===beg===
+@c foo (x) := 1 - x;
+@c foo (100);
+@c block (local (foo), foo (x) := 2 * x, foo (100));
+@c foo (100);
+@c ===end===
+@example
+(%i1) foo (x) := 1 - x;
+(%o1)                    foo(x) := 1 - x
+(%i2) foo (100);
+(%o2)                         - 99
+(%i3) block (local (foo), foo (x) := 2 * x, foo (100));
+(%o3)                          200
+(%i4) foo (100);
+(%o4)                         - 99
+@end example
+
+@c @opencatbox
+@c @category{Funktionsdefinitionen} @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@node Benutzerdefinierte Operatoren, , Zuweisungsoperatoren, Operatoren
+@section Einführung in benutzerdefinierte Operatoren
+
+@c It is possible to define new operators with specified precedence, to undefine 
+@c existing operators, or to redefine the precedence of existing operators. An
+@c operator may be unary prefix or unary postfix, binary infix, n-ary infix, 
+@c matchfix, or nofix. "Matchfix" means a pair of symbols which enclose their 
+@c argument or arguments, and "nofix" means an operator which takes no 
+@c arguments. As examples of the different types of operators, there are the 
+@c following.
+
+Es ist möglich neue Operatoren zu definieren, vorhandene Operatoren zu
+entfernen oder deren Eigenschaften zu ändern. Es können Operatoren mit den
+folgenden Eigenschaften definiert werden:
+
+@table @dfn
+@c @item unary prefix
+@c negation @code{- a}
+
+@item unär Prefix
+
+Negation @code{- a}
+
+@c @item unary postfix
+@c factorial @code{a!}
+
+@item unär Postfix
+
+Fakultät @code{a!}
+
+@c @item binary infix
+@c exponentiation @code{a^b}
+
+@item binär Infix
+
+Exponentiation @code{a^b}
+
+@c @item n-ary infix
+@c addition @code{a + b}
+
+@item N-ary Infix
+Addition @code{a + b}
+
+@c @item matchfix
+@c list construction @code{[a, b]}
+
+@item Matchfix
+
+Liste @code{[a,b]}
+@end table
+
+@c (There are no built-in nofix operators; for an example of such an operator, 
+@c see  @code{nofix}.)
+
+Maxima hat keinen implementierten Nofix-Operator, für ein Beispiel siehe 
+@code{nofix}.
+
+@c The mechanism to define a new operator is straightforward. It is only 
+@c necessary to declare a function as an operator; the operator function might 
+@c or might not be defined.
+
+Jede Funktion kann als ein Operator definiert werden, die Funktion kann, muss 
+aber nicht definiert sein.
+
+@c An example of user-defined operators is the following. Note that the explicit
+@c function call @code{"dd" (a)} is equivalent to @code{dd a}, likewise 
+@c @code{"<-" (a, b)} is equivalent to @code{a <- b}. Note also that the 
+@c functions @code{"dd"} and @code{"<-"} are undefined in this example.
+
+Im Folgenden werden die Operatoren @code{dd} und @code{"<-"} definiert. Nach der
+Definition als Operatoren ist @code{dd a} gleichbedeutend mit @code{"dd"(a)} und
+@code{a <- b} entspricht dem Funktionsaufruf @code{"<-"(a,b)}. In diesem 
+Beispiel sind die Funktionen @code{"dd"} und @code{"<-"} nicht definiert.
+
+@c ===beg===
+@c prefix ("dd");
+@c dd a;
+@c "dd" (a);
+@c infix ("<-");
+@c a <- dd b;
+@c "<-" (a, "dd" (b));
+@c ===end===
+@example
+(%i1) prefix ("dd");
+(%o1)                          dd
+(%i2) dd a;
+(%o2)                         dd a
+(%i3) "dd" (a);
+(%o3)                         dd a
+(%i4) infix ("<-");
+(%o4)                          <-
+(%i5) a <- dd b;
+(%o5)                      a <- dd b
+(%i6) "<-" (a, "dd" (b));
+(%o6)                      a <- dd b
+@end example
+
+@c The Maxima functions which define new operators are summarized in this 
+@c table, stating the default left and right binding powers (lbp and rbp,
+@c respectively).
+   @c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY 
+   @c IMPORTANT
+@c (Binding power determines operator precedence. However, since left and right
+@c binding powers can differ, binding power is somewhat more complicated than 
+@c precedence.) Some of the operation definition functions take additional 
+@c arguments; see the function descriptions for details.
+
+Die Maxima-Funktionen, um Operatoren zu definieren, sind in der folgenden
+Tabelle zusammengefasst. Weiterhin sind die Standardvorgaben für die links- und
+rechtsseitige Bindungskraft der Operatoren (lbp und rbp) angegeben. Die 
+Bindungskräfte bestimmen den Vorrang der Operatoren.
+
+@table @code
+@item Prefix
+rbp=180
+@item Postfix
+lbp=180
+@item Infix
+lbp=180, rbp=180
+@item N-ary
+lbp=180, rbp=180
+@item Matchfix
+(Bindungskraft nicht anwendbar)
+@item Nofix
+(Bindungskraft nicht anwendbar)
+@end table
+
+@c For comparison, here are some built-in operators and their left and right 
+@c binding powers.
+
+Die folgende Tabelle enthält die Maxima-Operatoren und deren links- und 
+rechtsseitigen Bindungskräfte.
+
+@example
+Operator   lbp     rbp     lpos     rpos     pos
+                                               
+  :        180     20                         
+  ::       180     20                           
+  :=       180     20                          
+  ::=      180     20                             
+  !        160                                      
+  !!       160                                     
+  ^        140     139                              
+  .        130     129                                
+  *        120             expr              expr     
+  /        120     120     expr     expr     expr 
+  +        100     134              expr     expr
+  -        100     134              expr     expr
+  =        80      80                            
+  #        80      80                                 
+  >        80      80                              
+  >=       80      80                                
+  <        80      80                         
+  <=       80      80                                
+  not              70      clause   clause   clause
+  and      65
+  or       60
+  ,        10
+  $        -1
+  ;        -1
+@end example
+
+@c @code{remove} and @code{kill} remove operator properties from an atom.
+@c @code{remove ("@var{a}", op)} removes only the operator properties of 
+@c @var{a}. @code{kill ("@var{a}")} removes all properties of @var{a}, including 
+@c the operator properties. Note that the name of the operator must be enclosed 
+@c in quotation marks.
+
+Mit den Befehlen @code{remove} und @code{kill} können Operatoreigenschaften
+von einem Symbol entfernt werden. @code{remove("@var{a}", op)} entfernt
+die Operator-Eigenschaften des Symbols @var{a}. @code{kill("@var{a}")} entfernt
+alle Eigenschaften einschließich der Operator-Eigenschaften des Symbols @var{a}.
+In diesem Fall steht der Name des Symbols in Anführungszeichen.
+
+@c ===beg===
+@c infix ("##");
+@c "##" (a, b) := a^b;
+@c 5 ## 3;
+@c remove ("##", op);
+@c 5 ## 3;
+@c "##" (5, 3);
+@c infix ("##");
+@c 5 ## 3;
+@c kill ("##");
+@c 5 ## 3;
+@c "##" (5, 3);
+@c ===end===
+@example
+(%i1) infix ("##");
+(%o1)                          ##
+(%i2) "##" (a, b) := a^b;
+                                     b
+(%o2)                     a ## b := a
+(%i3) 5 ## 3;
+(%o3)                          125
+(%i4) remove ("##", op);
+(%o4)                         done
+(%i5) 5 ## 3;
+Incorrect syntax: # is not a prefix operator
+5 ##
+  ^
+(%i5) "##" (5, 3);
+(%o5)                          125
+(%i6) infix ("##");
+(%o6)                          ##
+(%i7) 5 ## 3;
+(%o7)                          125
+(%i8) kill ("##");
+(%o8)                         done
+(%i9) 5 ## 3;
+Incorrect syntax: # is not a prefix operator
+5 ##
+  ^
+(%i9) "##" (5, 3);
+(%o9)                       ##(5, 3)
+@end example
+
+@c @opencatbox
+@c @category{Operatoren} @category{Syntax}
+@c @closecatbox
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@section Funktionen und Variable für benutzerdefinierte Operatoren
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} infix (@var{op})
+@deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+
+@c Declares @var{op} to be an infix operator. An infix operator is a function of
+@c two arguments, with the name of the function written between the arguments.
+@c For example, the subtraction operator @code{-} is an infix operator.
+
+Deklariert @var{op} als einen Infix-Operator. Ein Infix-Operator hat eine 
+Funktionsdefinition mit zwei Argumenten. Der Infix-Operator steht zwischen den
+Argumenten. Zum Beispiel ist die Subtraktion @code{-} ein Infix-Operator.
+
+@c @code{infix (@var{op})} declares @var{op} to be an infix operator with 
+@c default binding powers (left and right both equal to 180) and parts of speech
+@c (left and right both equal to @code{any}).
+   @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
+
+@code{infix(@var{op})} deklariert @var{op} als einen Infix-Operator mit einer
+links- und rechtsseitigen Bindungskraft von jeweils 180.
+
+@c @code{infix (@var{op}, @var{lbp}, @var{rbp})} declares @var{op} to be an 
+@c infix operator with stated left and right binding powers and default parts 
+@c of speech (left and right both equal to @code{any}).
+
+@code{infix (@var{op}, @var{lbp}, @var{rbp})} deklariert @var{op} als einen
+Infix-Operator mit den angegebenen Werten für die links- und rechtsseitige 
+Bindungskraft.
+
+@c @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, 
+@c @var{pos})} declares @var{op} to be an infix operator with stated left and 
+@c right binding powers and parts of speech @var{lpos}, @var{rpos}, and 
+@c @var{pos} for the left operand, the right operand, and the operator result,
+@c respectively.
+
+@code{infix(@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
+deklariert @var{op} als einen Infix-Operator mit den angegebenen Bindungskräften
+sowie den Wortarten @var{lpos}, @var{rpos} und @var{pos} für den linken und den
+rechten Operanden sowie das Ergebnis des Operators.
+
+@c "Part of speech", in reference to operator declarations, means expression 
+@c type. Three types are recognized: @code{expr}, @code{clause}, and @code{any},
+@c indicating an algebraic expression, a Boolean expression, or any kind of 
+@c expression, respectively. Maxima can detect some syntax errors by comparing 
+@c the declared part of speech to an actual expression.
+
+Wortart bedeutet hier, den Type eines Operanden. Maxima kennt die drei Typen
+@code{expr}, @code{clause} und @code{any}. Diese stehen für einen
+algebraischen Ausdruck, einen logischen Ausdruck und einen beliebigen Ausdruck.
+Mit Hilfe der für einen Operator definierten Wortart kann der Parser beim 
+Einlesen eines Ausdrucks Syntaxfehler feststellen.
+
+@c The precedence of @var{op} with respect to other operators derives from the 
+@c left and right binding powers of the operators in question. If the left and 
+@c right binding powers of @var{op} are both greater the left and right binding 
+@c powers of some other operator, then @var{op} takes precedence over the other 
+@c operator. If the binding powers are not both greater or less, some more 
+@c complicated relation holds.
+
+Der Vorrang eines Operators @var{op} vor anderen Operatoren leitet sich aus den
+links- und rechtsseitigen Bindungskräften ab. Sind die links- und rechtsseitigen 
+Bindungskräfte von @var{op} beide größer als die links- und rechtsseitige
+Bindungskraft eines anderen Operators, dann hat @var{op} Vorrang vor dem anderen
+Operator. Sind die Bindungskräfte nicht beide größer oder kleiner, werden 
+weitere Regeln zur Bestimmung des Vorrangs herangezogen.
+
+@c The associativity of @var{op} depends on its binding powers. Greater left 
+@c binding power (@var{lbp}) implies an instance of @var{op} is evaluated before
+@c other operators to its left in an expression, while greater right binding 
+@c power (@var{rbp}) implies  an instance of @var{op} is evaluated before other
+@c operators to its right in an expression. Thus greater @var{lbp} makes 
+@c @var{op} right-associative, while greater @var{rbp} makes @var{op} 
+@c left-associative. If @var{lbp} is equal to @var{rbp}, @var{op} is 
+@c left-associative.
+
+Die Assoziativität eines Operators @var{op} hängt ab von seiner Bindungskraft. 
+Eine größere linksseitige Bindungskraft hat zur Folge, dass der Operator 
+@var{op} vor einem anderen Operator auf seiner linken Seite ausgewertet wird. 
+Während eine größere rechtsseitige Bindungskraft zur Folge hat, dass der 
+Operator vor anderen Operaroten auf der rechten Seite ausgewertet wird. Daraus 
+folgt, dass eine größere linksseitige Bindungskraft @var{lbp} einen Operator 
+@var{op} rechts-assoziativ und eine größere rechtsseitige Bindungskraft 
+@var{rbp} den Operator links-assoziativ macht. Sind die links- und 
+rechtsseitigen Bindungskräfte gleich groß, ist der Operator @var{op} 
+links-assoziativ.
+
+@c See also @code{Syntax}.
+
+Siehe auch @code{Synax}.
+
+Beispiele:
+
+@c If the left and right binding powers of @var{op} are both greater the left 
+@c and right binding powers of some other operator, then @var{op} takes 
+@c precedence over the other operator.
+
+Sind die rechtsseitigen und linksseitigen Bindungskräfte eines Operators
+@var{op} größer als die entsprechenden Bindungskräfte eines anderen Operatores,
+dann hat der Operator @var{op} Vorrang.
+
+@c ===beg===
+@c :lisp (get '$+ 'lbp)
+@c :lisp (get '$+ 'rbp)
+@c infix ("##", 101, 101);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")");
+@c 1 + a ## b + 2;
+@c infix ("##", 99, 99);
+@c 1 + a ## b + 2;
+@c ===end===
+@example
+(%i1) :lisp (get '$+ 'lbp)
+100
+(%i1) :lisp (get '$+ 'rbp)
+100
+(%i1) infix ("##", 101, 101);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")");
+(%o2)       (a ## b) := sconcat("(", a, ",", b, ")")
+(%i3) 1 + a ## b + 2;
+(%o3)                       (a,b) + 3
+(%i4) infix ("##", 99, 99);
+(%o4)                          ##
+(%i5) 1 + a ## b + 2;
+(%o5)                       (a+1,b+2)
+@end example
+
+@c Greater @var{lbp} makes @var{op} right-associative, while greater @var{rbp}
+@c makes @var{op} left-associative.
+
+Eine größere linksseitige Bindungskraft @var{lbp} bewirkt, dass der Operator
+@var{op} rechts-assoziativ ist. Eine größere rechtsseitige Bindungskraft macht
+dagegen den Operator @var{op} links-assoziativ.
+
+@c ===beg===
+@c infix ("##", 100, 99);
+@c "##"(a, b) := sconcat("(", a, ",", b, ")")$
+@c foo ## bar ## baz;
+@c infix ("##", 100, 101);
+@c foo ## bar ## baz;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99);
+(%o1)                          ##
+(%i2) "##"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i3) foo ## bar ## baz;
+(%o3)                    (foo,(bar,baz))
+(%i4) infix ("##", 100, 101);
+(%o4)                          ##
+(%i5) foo ## bar ## baz;
+(%o5)                    ((foo,bar),baz)
+@end example
+
+@c Maxima can detect some syntax errors by comparing the declared part of speech
+@c to an actual expression.
+
+Maxima kann Syntaxfehler beim Einlesen eines Ausdrucks feststellen, wenn der
+eingelesene Operand nicht die für den Operator definierte Wortart hat.
+
+@c ===beg===
+@c infix ("##", 100, 99, expr, expr, expr);
+@c if x ## y then 1 else 0;
+@c infix ("##", 100, 99, expr, expr, clause);
+@c if x ## y then 1 else 0;
+@c ===end===
+@example
+(%i1) infix ("##", 100, 99, expr, expr, expr);
+(%o1)                          ##
+(%i2) if x ## y then 1 else 0;
+Incorrect syntax: Found algebraic expression where logical expression expected
+if x ## y then 
+             ^
+(%i2) infix ("##", 100, 99, expr, expr, clause);
+(%o2)                          ##
+(%i3) if x ## y then 1 else 0;
+(%o3)                if x ## y then 1 else 0
+@end example
+
+@c @opencatbox
+@c @category{Operatoren} @category{Syntax}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter})
+@deffnx {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
+
+@c Declares a matchfix operator with left and right delimiters @var{ldelimiter} 
+@c and @var{rdelimiter}. The delimiters are specified as strings.
+
+Deklariert einen Matchfix-Operator mit dem linksseitigen Begrenzungszeichen 
+@var{ldelimiter} und dem rechtsseitigen Begrenzungszeichen @var{rdelimiter}.
+
+@c A "matchfix" operator is a function of any number of arguments, such that the
+@c arguments occur between matching left and right delimiters. The delimiters 
+@c may be any strings, so long as the parser can distinguish the delimiters from
+@c the operands and other expressions and operators. In practice this rules out 
+@c unparseable delimiters such as @code{%}, @code{,}, @code{$} and @code{;}, 
+@c and may require isolating the delimiters with white space. The right 
+@c delimiter can be the same or different from the left delimiter.
+
+Ein Matchfix-Operator hat eine beliebige Anzahl an Argumenten, die zwischen
+dem linksseitigen und dem rechtsseitigen Begrenzungszeichen stehen. Das 
+Begrenzungszeichen kann eine beliebige Zeichenkette sein. Einige Zeichen wie
+@code{%}, @code{,}, @code{$} und @code{;} können nicht als Begrenzungszeichen
+definiert werden.
+
+@c A left delimiter can be associated with only one right delimiter; two 
+@c different matchfix operators cannot have the same left delimiter.
+
+Ein linksseitiges Begrenzungszeichen kann nicht verschiedene rechtsseitige
+Begrenzungszeichen haben.
+
+@c An existing operator may be redeclared as a matchfix operator without 
+@c changing its other properties. In particular, built-in operators such as 
+@c addition @code{+} can be declared matchfix, but operator functions cannot be 
+@c defined for built-in operators.
+
+Maxima-Operatoren können als Matchfix-Operatoren definiert werden, ohne 
+dass sich die sonstigen Operatoreigenschaften ändern. So kann zum Beispiel der 
+Operator @code{+} als Matchfix-Operator definiert werden.
+
+@c @code{matchfix(@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})}
+@c declares the argument part-of-speech @var{arg_pos} and result part-of-speech 
+@c @var{pos}, and the delimiters @var{ldelimiter} and @var{rdelimiter}.
+
+@code{matchfix(@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})}
+definiert die Wortarten für die Argumente @var{arg_pos} und das Ergebnis
+@var{pos} sowie das linksseitige @var{ldelimiter} und rechtsseitige
+@var{rdelimiter} Begrenzungszeichen.
+
+@c "Part of speech", in reference to operator declarations, means expression
+@c type. Three types are recognized: @code{expr}, @code{clause}, and @code{any},
+@c indicating an algebraic expression, a Boolean expression, or any kind of 
+@c expression, respectively. Maxima can detect some syntax errors by comparing 
+@c the declared part of speech to an actual expression.
+
+Wortart bedeutet hier, den Type eines Operanden. Maxima kennt die drei Typen
+@code{expr}, @code{clause} und @code{any}. Diese stehen für einen
+algebraischen Ausdruck, einen logischen Ausdruck und einen beliebigen Ausdruck.
+Mit Hilfe der für einen Operator definierten Wortart kann der Parser beim 
+Einlesen eines Ausdrucks Syntaxfehler feststellen.
+
+@c The function to carry out a matchfix operation is an ordinary user-defined 
+@c function. The operator function is defined in the usual way with the function
+@c definition operator @code{:=} or @code{define}. The arguments may be written 
+@c between the delimiters, or with the left delimiter as a quoted string and the
+@c arguments following in parentheses. @code{dispfun (@var{ldelimiter})} 
+@c displays the function definition.
+
+Die zu einem Matchfix-Operator zugehörige Funktion kann jede benutzerdefinierte
+Funktion sein, die mit @code{:=} oder @code{define} definiert wird. Die
+Definition der Funktion kann mit @code{dispfun(@var{ldelimiter})} ausgegeben
+werden.
+
+@c The only built-in matchfix operator is the list constructor @code{[ ]}.
+@c Parentheses @code{( )} and double-quotes @code{" "} act like matchfix 
+@c operators, but are not treated as such by the Maxima parser.
+
+Der einzige eingebaute Matchfix-Operator ist der Operator für das Erzeugen von
+Listen @code{[ ]}. Klammern @code{( )} und Anführungszeichen  @code{" "} 
+arbeiten wie Matchfix-Operatoren, werden aber vom Parser nicht als 
+Matchfix-Operatoren behandelt.
+
+@c @code{matchfix} evaluates its arguments. @code{matchfix} returns its first 
+@c argument, @var{ldelimiter}.
+@c HOW TO TAKE AWAY THE MATCHFIX PROPERTY ??
+
+@code{matchfix} wertet seine Argumente aus. @code{matchfix} gibt das erste
+Argument @var{ldelimiter} als Ergebnis zurück.
+
+Beispiele:
+
+@c Delimiters may be almost any strings.
+
+Begrenzungszeichen können eine beliebige Zeichenkette sein.
+
+@c ===beg===
+@c matchfix ("@@", "~");
+@c @@ a, b, c ~;
+@c matchfix (">>", "<<");
+@c >> a, b, c <<;
+@c matchfix ("foo", "oof");
+@c foo a, b, c oof;
+@c >> w + foo x, y oof + z << / @@ p, q ~;
+@c ===end===
+@example
+(%i1) matchfix ("@@@@", "~");
+(%o1)                          @@@@
+(%i2) @@@@ a, b, c ~;
+(%o2)                      @@@@a, b, c~
+(%i3) matchfix (">>", "<<");
+(%o3)                          >>
+(%i4) >> a, b, c <<;
+(%o4)                      >>a, b, c<<
+(%i5) matchfix ("foo", "oof");
+(%o5)                          foo
+(%i6) foo a, b, c oof;
+(%o6)                     fooa, b, coof
+(%i7) >> w + foo x, y oof + z << / @@@@ p, q ~;
+                     >>z + foox, yoof + w<<
+(%o7)                ----------------------
+                            @@@@p, q~
+@end example
+
+@c Matchfix operators are ordinary user-defined functions.
+
+Matchfix-Operatoren können für benutzerdefinierte Funktionen definiert werden.
+
+@example
+(%i1) matchfix ("!-", "-!");
+(%o1)                         "!-"
+(%i2) !- x, y -! := x/y - y/x;
+                                    x   y
+(%o2)                   !-x, y-! := - - -
+                                    y   x
+(%i3) define (!-x, y-!, x/y - y/x);
+                                    x   y
+(%o3)                   !-x, y-! := - - -
+                                    y   x
+(%i4) define ("!-" (x, y), x/y - y/x);
+                                    x   y
+(%o4)                   !-x, y-! := - - -
+                                    y   x
+(%i5) dispfun ("!-");
+                                    x   y
+(%t5)                   !-x, y-! := - - -
+                                    y   x
+
+(%o5)                         done
+(%i6) !-3, 5-!;
+                                16
+(%o6)                         - --
+                                15
+(%i7) "!-" (3, 5);
+                                16
+(%o7)                         - --
+                                15
+@end example
+
+@c @opencatbox
+@c @category{Operatoren} @category{Syntax}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} nary (@var{x})
+
+@c An @code{nary} operator is used to denote a function of any number of 
+@c arguments, each of which is separated by an occurrence of the operator, e.g. 
+@c A+B or A+B+C.  The @code{nary("x")} function is a syntax extension function 
+@c to declare @code{x} to be an @code{nary} operator. Functions may be declared 
+@c to be @code{nary}.  If @code{declare(j,nary);} is done, this tells the 
+@c simplifier to simplify, e.g. @code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
+
+Ein @code{Nary}-Operator ist ein Operator, der eine beliebige Anzahl an 
+Argumenten haben kann. Die Argumente werden durch den Operator voneinander 
+getrennt, so ist zum Beispiel @code{+} ein @code{Nary}-Operator und 
+@code{A+B+C}. Die Funktion @code{nary("x")} ermöglicht die Erweiterung der 
+Maxima-Syntax um einen Nary-Operator @code{x}. Funktionen können als 
+Nary-Operator deklariert werden. @code{declare(j,nary)} deklariert den Operator 
+@code{j} zu einem Nary-Operator. Ein Ausdruck @code{j(j(a,b),j(c,d)} wird in 
+diesem Fall zu @code{j(a,b,c,d)} vereinfacht.
+
+@c See also @code{Syntax}.
+
+Siehe auch @code{Syntax}.
+
+@c @opencatbox
+@c @category{Operatoren} @category{Syntax}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} nofix (@var{x})
+
+@c @code{nofix} operators are used to denote functions of no arguments. The mere
+@c presence of such an operator in a command will cause the corresponding 
+@c function to be evaluated.  For example, when one types "exit;" to exit from 
+@c a Maxima break, "exit" is behaving similar to a @code{nofix} operator.  The 
+@c function @code{nofix("x")} is a syntax extension function which declares 
+@c @code{x} to be a @code{nofix} operator. 
+
+Nofix-Operatoren sind Operatoren, die kein Argument haben. Tritt ein solcher 
+Operator allein auf, wird die dazugehörige Funktion ausgewertet. Zum Beispiel
+beendet die Funktion @code{quit()} eine Maxima-Sitzung. Wird diese Funktion 
+mit @code{nofix("quit")} zu einen Nofix-Operator deklariert, genügt die Eingabe 
+von @code{quit;}, um eine Maxima-Sitzung zu beenden. Die Funktion 
+@code{nofix("x")} erweitert die Maxima-Syntax um den Nofix-Operator @code{x}.
+
+@c See also @code{Syntax}.
+
+Siehe auch @code{Syntax}.
+
+@c @opencatbox
+@c @category{Operatoren} @category{Syntax}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} postfix (@var{x})
+
+@c @code{postfix} operators like the @code{prefix} variety denote functions of 
+@c a single argument, but in this case the argument immediately precedes an 
+@c occurrence of the operator in the input string, e.g. 3! . The 
+@c @code{postfix("x")} function is a syntax extension function to declare 
+@c @code{x} to be a @code{postfix} operator.
+
+Postfix-Operatoren und Prefix-Operatoren bezeichnen Operatoren mit einem 
+Argument, wobei für Postfix-Operatoren der Operator dem Argument direkt 
+nachfolgt. Ein Beispiel ist der @code{!}-Operator mit @code{3!}. Die Funktion
+@code{postfix("x")} erweitert die Maxima-Syntax um den Postfix-Operator 
+@code{x}. 
+
+@c See also @code{Syntax}.
+
+Siehe auch @code{Syntax}.
+
+@c @opencatbox
+@c @category{Operatoren} @category{Syntax}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} prefix (@var{x})
+
+@c A @code{prefix} operator is one which signifies a function of one argument, 
+@c which argument immediately follows an occurrence of the operator.  
+@c @code{prefix("x")} is a syntax extension function to declare @code{x} to
+@c be a @code{prefix} operator.
+
+Ein Prefix-Operator ist ein Operator mit einem Argument, das dem Operator
+nachfolgt. Mit @code{prefix("x")} wird die Maxima-Syntax um einen
+Prefix-Operator @code{x} erweitert.
+
+@c See also @code{Syntax}.
+
+Siehe auch @code{Syntax}.
+
+@c @opencatbox
+@c @category{Operatoren} @category{Syntax}
+@c @closecatbox
+@end deffn
+
+@c --- End of file Operators.de.texi -------------------------------------------
+

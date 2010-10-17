@@ -672,13 +672,13 @@ Glossar
 @chapter Datentypen
 @include DataTypes.de.texi
 
-@node Ausdrücke, Datentypen, Kommandozeile, Top
+@node Ausdrücke, Operatoren, Datentypen, Top
 @chapter Ausdrücke
 @include Expressions.de.texi
 
-@c @node Operatoren, Auswertung, Datentypen, Top
-@c @chapter Operatoren
-@c @include Operators.de.texi
+@node Operatoren, Auswertung, Ausdrücke, Top
+@chapter Operatoren
+@include Operators.de.texi
 
 @c @node Auswertung, Vereinfachung, Operatoren, Top
 @c @chapter Auswertung
