@@ -21,22 +21,22 @@
 @c -----------------------------------------------------------------------------
 
 @menu
-* Einführung in Maxima Zahlen::
+* Einf@"uhrung in Maxima Zahlen::
 * Zeichenketten::
-* Funktionen und Variablen für Zahlen::
-* Funktionen und Variablen für Zeichenketten::
-* Funktionen und Variablen für Konstante::
+* Funktionen und Variablen f@"ur Zahlen::
+* Funktionen und Variablen f@"ur Zeichenketten::
+* Funktionen und Variablen f@"ur Konstante::
 @end menu
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Einführung in Maxima Zahlen, Zeichenketten, Datentypen, Top
-@section Einführung in Maxima Zahlen
+@node Einf@"uhrung in Maxima Zahlen, Zeichenketten, Datentypen, Top
+@section Einf@"uhrung in Maxima Zahlen
 
 @subheading Ganze und rationale Zahlen
 
 Arithmetische Rechnungen mit ganzen oder rationalen Zahlen sind exakt.
-Prinzipell können die ganzen und rationalen Zahlen eine beliebige Anzahl an 
-Stellen haben. Eine Obergrenze ist allein der zur Verfügung stehende
+Prinzipell k@"onnen die ganzen und rationalen Zahlen eine beliebige Anzahl an 
+Stellen haben. Eine Obergrenze ist allein der zur Verf@"ugung stehende
 Speicherplatz.
 
 @example
@@ -54,7 +54,7 @@ Speicherplatz.
                                101
 @end example
 
-Funktionen für ganze und rationale Zahlen:
+Funktionen f@"ur ganze und rationale Zahlen:
 
 @verbatim
    integerp       numberp       nonnegintegerp     
@@ -65,14 +65,14 @@ Funktionen für ganze und rationale Zahlen:
 @subheading Gleitkommazahlen
 
 Maxima rechnet mit Gleitkommazahlen in doppelter Genauigkeit. Weiterhin kann
-Maxima mit großen Gleitkommazahlen rechnen, die prinzipell eine beliebige
+Maxima mit gro@ss{}en Gleitkommazahlen rechnen, die prinzipell eine beliebige
 Genauigkeit haben.
 
 Gleitkommazahlen werden mit einem Dezimalpunkt eingegeben. Der Exponent kann mit
-"f", "e" oder "d" angegeben werden. Intern rechnet Maxima ausschließlich mit 
+"f", "e" oder "d" angegeben werden. Intern rechnet Maxima ausschlie@ss{}lich mit 
 Gleitkommazahlen in doppelter Genauigkeit, die immer mit "e" als einen 
-Exponenten angezeigt werden. Große Gleitkommazahlen werden mit dem Exponenten 
-"b" bezeichnet. Groß- und Kleinschreibung werden bei der Schreibweise des
+Exponenten angezeigt werden. Gro@ss{}e Gleitkommazahlen werden mit dem Exponenten 
+"b" bezeichnet. Gro@ss{}- und Kleinschreibung werden bei der Schreibweise des
 Exponenten nicht unterschieden.
 
 @example
@@ -84,7 +84,7 @@ Exponenten nicht unterschieden.
 
 Ist mindestens eine Zahl in einer Rechnung eine Gleitkommazahl, werden die 
 Argumente in Gleitkommazahlen umgewandelt und eine Gleitkommazahl als Ergebnis
-zurückgegeben. Dies wird auch für große Gleitkommazahlen ausgeführt.
+zur@"uckgegeben. Dies wird auch f@"ur gro@ss{}e Gleitkommazahlen ausgef@"uhrt.
 
 @example
 (%i1) 2.0+1/2+3;
@@ -94,7 +94,7 @@ zurückgegeben. Dies wird auch für große Gleitkommazahlen ausgeführt.
 @end example
 
 Mit den Funktionen @code{float} und @code{bfloat} werden Zahlen in 
-Gleitkommazahlen und große Gleitkommazahlen umgewandelt:
+Gleitkommazahlen und gro@ss{}e Gleitkommazahlen umgewandelt:
 
 @example
 (%i1) float([2,1/2,1/3,2.0b0]);
@@ -103,7 +103,7 @@ Gleitkommazahlen und große Gleitkommazahlen umgewandelt:
 (%o2)     [2.0b0, 5.0b-1, 3.333333333333333b-1, 2.0b0]
 @end example
 
-Funktionen und Variable für Gleitkommazahlen:
+Funktionen und Variable f@"ur Gleitkommazahlen:
 
 @verbatim
    float        floatnump     
@@ -125,18 +125,18 @@ Funktionen und Variable für Gleitkommazahlen:
 @c @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, 
 @c @code{abs}, @code{carg} functions.
 
-Maxima kennt keinen eigenen Typ für komplexe Zahlen. Komplexe Zahlen werden von
-Maxima intern als die Addition von Realteil und dem mit der Imaginären Einheit
-@code{%i} multiplizierten Imaginärteil dargestellt. Zum Beispiel sind die
+Maxima kennt keinen eigenen Typ f@"ur komplexe Zahlen. Komplexe Zahlen werden von
+Maxima intern als die Addition von Realteil und dem mit der Imagin@"aren Einheit
+@code{%i} multiplizierten Imagin@"arteil dargestellt. Zum Beispiel sind die
 komplexen Zahlen @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der Gleichung
 @code{x^2 - 4*x + 13 = 0}.
 
-Maxima vereinfacht Produkte, Quotienten, Wurzel und andere Ausdrücke mit 
+Maxima vereinfacht Produkte, Quotienten, Wurzel und andere Ausdr@"ucke mit 
 komplexen Zahlen nicht automatisch zu einer komplexen Zahl. Um Produkte mit
 komplexen Zahlen zu vereinfachen, kann der Ausdruck mit der Funktion 
 @code{expand} expandiert werden.
 
-Funktionen für komplexe Zahlen:
+Funktionen f@"ur komplexe Zahlen:
 
 @verbatim
    realpart     imagpart      rectform     polarform
@@ -148,17 +148,17 @@ Funktionen für komplexe Zahlen:
 @c @closecatbox
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Zeichenketten, Funktionen und Variablen für Zahlen, Einführung in Maxima Zahlen, Datentypen
+@node Zeichenketten, Funktionen und Variablen f@"ur Zahlen, Einf@"uhrung in Maxima Zahlen, Datentypen
 @section Zeichenketten
 
 @c Strings (quoted character sequences) are enclosed in double quote marks 
 @c @code{"} for input, and displayed with or without the quote marks, depending
 @c on the global variable @code{stringdisp}.
 
-Zeichenketten werden bei der Eingabe in Anführungszeichen gesetzt. Sie werden 
-standardmäßig ohne Anführungszeichen ausgegeben. Hat die Optionsvariable
+Zeichenketten werden bei der Eingabe in Anf@"uhrungszeichen gesetzt. Sie werden 
+standardm@"a@ss{}ig ohne Anf@"uhrungszeichen ausgegeben. Hat die Optionsvariable
 @code{stringdisp} den Wert @code{true}, werden Zeichenketten mit 
-Anführungszeichen dargestellt.
+Anf@"uhrungszeichen dargestellt.
 
 @c Strings may contain any characters, including embedded tab, newline, and 
 @c carriage return characters. The sequence @code{\"} is recognized as a literal
@@ -171,19 +171,19 @@ Anführungszeichen dargestellt.
 @c There is no way to represent a special character (such as tab, newline, or
 @c carriage return) except by embedding the literal character in the string.
 
-Zeichenketten können jedes Zeichen einschließlich Tabulator-, Zeilenvorschub- 
-oder Wagenrücklauf-Zeichen enthalten. Das Anführungszeichen wird innerhalb einer
+Zeichenketten k@"onnen jedes Zeichen einschlie@ss{}lich Tabulator-, Zeilenvorschub- 
+oder Wagenr@"ucklauf-Zeichen enthalten. Das Anf@"uhrungszeichen wird innerhalb einer
 Zeichenkette durch @code{\"} und der Backslash durch @code{\\} dargestellt. Ein
 Backslash am Ende einer Eingabezeile erlaubt die Fortsetzung einer Zeichenkette
-in der nächsten Zeile. Maxima kennt keine weiteren Kombinationen mit einem
+in der n@"achsten Zeile. Maxima kennt keine weiteren Kombinationen mit einem
 Backslash. Daher wird der Backslash an anderer Stelle ignoriert. Maxima kennt 
-keine andere Möglichkeit, als spezielle Zeichen wie ein Tabulator-, 
-Zeilenvorschub- oder Wagenrücklaufzeichen in einer Zeichenkette darzustellen.
+keine andere M@"oglichkeit, als spezielle Zeichen wie ein Tabulator-, 
+Zeilenvorschub- oder Wagenr@"ucklaufzeichen in einer Zeichenkette darzustellen.
 
 @c There is no character type in Maxima; a single character is represented as a 
 @c one-character string.
 
-Maxima hat keinen Typ für ein einzelnes Zeichen. Einzelne Zeichen werden daher
+Maxima hat keinen Typ f@"ur ein einzelnes Zeichen. Einzelne Zeichen werden daher
 als eine Zeichenkette mit einem Zeichen dargestellt.
 
 @c The @code{stringproc} add-on package contains many functions for working with
@@ -195,8 +195,8 @@ Folgende Funktionen und Variable arbeiten mit Zeichenketten:
    concat   sconcat   string   stringdisp
 @end verbatim
 
-Das Zusatzpaket @code{stringproc} enthält eine umfangreiche Bibliothek an 
-Funktionen für Zeichenketten.
+Das Zusatzpaket @code{stringproc} enth@"alt eine umfangreiche Bibliothek an 
+Funktionen f@"ur Zeichenketten.
 
 Beispiele:
 
@@ -243,8 +243,8 @@ this string.";
 @c @closecatbox
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen für Zahlen, Funktionen und Variablen für Zeichenketten, Zeichenketten, Datentypen
-@section Funktionen und Variablen für Zahlen
+@node Funktionen und Variablen f@"ur Zahlen, Funktionen und Variablen f@"ur Zeichenketten, Zeichenketten, Datentypen
+@section Funktionen und Variablen f@"ur Zahlen
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} bfloat (@var{expr})
@@ -253,7 +253,7 @@ this string.";
 @c numbers. The number of significant digits in the resulting bigfloats is 
 @c specified by the global variable @code{fpprec}.
 
-Konvertiert alle Zahlen im Ausdruck @var{expr} in große Gleitkommazahlen. Die 
+Konvertiert alle Zahlen im Ausdruck @var{expr} in gro@ss{}e Gleitkommazahlen. Die 
 Anzahl der Stellen wird durch die Optionsvariable @code{ffprec} spezifiziert.
 
 @c When @code{float2bf} is @code{false} a warning message is printed when a 
@@ -261,7 +261,7 @@ Anzahl der Stellen wird durch die Optionsvariable @code{ffprec} spezifiziert.
 @c lead to loss of precision).
 
 Hat die Optionsvariable @code{float2bf} den Wert @code{false}, gibt Maxima eine
-Warnung aus, wenn eine Gleitkommazahl mit doppelter Genauigkeit in eine große
+Warnung aus, wenn eine Gleitkommazahl mit doppelter Genauigkeit in eine gro@ss{}e
 Gleitkommazahl umgewandelt wird.
 
 @c @opencatbox
@@ -275,7 +275,7 @@ Gleitkommazahl umgewandelt wird.
 @c Returns @code{true} if @var{expr} is a bigfloat number, otherwise 
 @c @code{false}.
 
-Gibt den Wert @code{true} zurück, wenn @var{expr} eine große Gleitkommazahl ist,
+Gibt den Wert @code{true} zur@"uck, wenn @var{expr} eine gro@ss{}e Gleitkommazahl ist,
 ansonsten den Wert @code{false}.
 
 @c @opencatbox
@@ -293,12 +293,12 @@ Standartwert: @code{false}
 @c @code{bftorat} is @code{true}, the rational number generated will accurately
 @c represent the bfloat.
 
-Die Optionsvariable @code{bftorat} kontrolliert die Umwandlung von großen
+Die Optionsvariable @code{bftorat} kontrolliert die Umwandlung von gro@ss{}en
 Gleitkommazahlen in rationale Zahlen. Hat @code{bftorat} den Wert @code{true},
 wird die Genauigkeit der Umwandlung von der Optionsvariablen @code{ratepsilon}
 kontrolliert. In diesem Fall ist das Ergebnis der Umwandlung eine relativ kleine
-rationale Zahl. Hat dagegen @code{bftorat} den Wert @code{false}, wird die große
-Gleitkommazahl exakt durch die rationale Zahl repräsentiert.
+rationale Zahl. Hat dagegen @code{bftorat} den Wert @code{false}, wird die gro@ss{}e
+Gleitkommazahl exakt durch die rationale Zahl repr@"asentiert.
 
 @c @opencatbox
 @c @category{Numerische Auswertung} @category{Optionsvariablen}
@@ -315,7 +315,7 @@ Standardwert: @code{true}
 @c @code{1.0B0}.
 
 Hat die Optionsvariable @code{bftrunc} den Wert @code{true}, werden bei der
-Ausgabe einer großen Gleitkommazahl nachfolgende Nullen nicht angezeigt. So wird
+Ausgabe einer gro@ss{}en Gleitkommazahl nachfolgende Nullen nicht angezeigt. So wird
 @code{bfloat(1)} als @code{1.000000000000000b0} angezeigt, wenn @code{bftrunc} 
 den Wert @code{false} hat, ansonsten wird @code{1.0b0} angezeigt.
 
@@ -331,15 +331,15 @@ den Wert @code{false} hat, ansonsten wird @code{1.0b0} angezeigt.
 @c @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @c @code{false} is returned in all other cases.
 
-Ist @var{expr} eine gerade ganze Zahl, wird @code{true} zurückgegeben. In allen
-anderen Fällen wird @code{false} zurückgegeben.
+Ist @var{expr} eine gerade ganze Zahl, wird @code{true} zur@"uckgegeben. In allen
+anderen F@"allen wird @code{false} zur@"uckgegeben.
 
-@code{evenp} gibt für Symbole oder Ausdrücke immer den Wert @code{false} zurück,
+@code{evenp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} zur@"uck,
 auch wenn das Symbol als gerade ganze Zahl deklariert ist oder der Ausdruck eine
-ganze Zahl repräsentiert.
+ganze Zahl repr@"asentiert.
 
 Siehe die Funktion @code{featurep}, um zu testen, ob ein Symbol oder Ausdruck 
-eine gerade ganze Zahl repräsentiert.
+eine gerade ganze Zahl repr@"asentiert.
 
 @c @opencatbox
 @c @category{Aussagefunktionen}
@@ -353,11 +353,11 @@ eine gerade ganze Zahl repräsentiert.
 @c point numbers.  It is also an @code{evflag}, @code{float} causes non-integral
 @c rational numbers and bigfloat numbers to be converted to floating point.
 
-Konvertiert ganze, rationale und große Gleitkommazahlen im Ausdruck @var{expr}
+Konvertiert ganze, rationale und gro@ss{}e Gleitkommazahlen im Ausdruck @var{expr}
 in Gleitkommazahlen mit doppelter Genauigkeit.
 
-@code{float} ist auch ein Auswertungsflag für die Funktion @code{ev}. In diesem 
-Fall werden rationale Zahlen und große Gleitkommazahlen, aber keine ganzen 
+@code{float} ist auch ein Auswertungsflag f@"ur die Funktion @code{ev}. In diesem 
+Fall werden rationale Zahlen und gro@ss{}e Gleitkommazahlen, aber keine ganzen 
 Zahlen in Gleitkommazahlen umgewandelt.
 
 Beispiele:
@@ -399,8 +399,8 @@ Standardwert: @code{true}
 @c lead to loss of precision).
 
 Hat die Optionsvariable @code{float2bf} den Wert @code{false}, wird eine
-Warnung ausgegeben, wenn eine Gleitkommazahl in eine große Gleitkommazahl 
-umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit führen kann.
+Warnung ausgegeben, wenn eine Gleitkommazahl in eine gro@ss{}e Gleitkommazahl 
+umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit f@"uhren kann.
 
 @c @opencatbox
 @c @category{Numerische Auswertung} @category{Optionsvariablen}
@@ -413,9 +413,9 @@ umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit führen kann
 @c Returns @code{true} if @var{expr} is a floating point number, otherwise 
 @c @code{false}.
 
-Gibt den Wert @code{true} zurück, wenn das Argument @var{number} eine 
-Gleitkommazahl ist. Ansonsten wird @code{false} zurückgegeben. Auch wenn 
-@var{number} eine große Gleitkommazahl ist, ist das Ergebnis @code{false}.
+Gibt den Wert @code{true} zur@"uck, wenn das Argument @var{number} eine 
+Gleitkommazahl ist. Ansonsten wird @code{false} zur@"uckgegeben. Auch wenn 
+@var{number} eine gro@ss{}e Gleitkommazahl ist, ist das Ergebnis @code{false}.
 
 @c @opencatbox
 @c @category{Numerische Auswertung} @category{Aussagefunktionen}
@@ -430,8 +430,8 @@ Standardwert: 16
 @c numbers. @code{fpprec} does not affect computations on ordinary floating 
 @c point numbers.
 
-@code{ffprec} ist die Zahl der Stellen für die Rechnung mit großen 
-Gleitkommazahlen. @code{ffprec} hat keinen Einfluß auf die Rechnungen mit
+@code{ffprec} ist die Zahl der Stellen f@"ur die Rechnung mit gro@ss{}en 
+Gleitkommazahlen. @code{ffprec} hat keinen Einflu@ss{} auf die Rechnungen mit
 Gleitkommazahlen in doppelter Genauigkeit.
 
 @c See also @code{bfloat} and @code{fpprintprec}.
@@ -458,9 +458,9 @@ Gleitkommazahl ausgegeben wird.
 @c @code{fpprintprec}. Otherwise, @code{fpprintprec} is 0, or greater than 16,
 @c and the number of digits printed is 16.
 
-Hat @code{fpprintprec} einen Wert zwischen 2 und 16 (einschließlich), ist die
-Anzahl der angezeigten Stellen für einfache Gleitkommazahlen gleich dem Wert 
-von @code{fpprintprec}. Hat @code{fpprintprec} den Wert 0 oder ist größer als
+Hat @code{fpprintprec} einen Wert zwischen 2 und 16 (einschlie@ss{}lich), ist die
+Anzahl der angezeigten Stellen f@"ur einfache Gleitkommazahlen gleich dem Wert 
+von @code{fpprintprec}. Hat @code{fpprintprec} den Wert 0 oder ist gr@"o@ss{}er als
 16 werden 16 Stellen angezeigt.
 
 @c For bigfloat numbers, when @code{fpprintprec} has a value between 2 and 
@@ -468,10 +468,10 @@ von @code{fpprintprec}. Hat @code{fpprintprec} den Wert 0 oder ist größer als
 @c @code{fpprintprec}. Otherwise, @code{fpprintprec} is 0, or greater than 
 @c @code{fpprec}, and the number of digits printed is equal to @code{fpprec}.
 
-Für große Gleitkommazahlen ist die Anzahl der angezeigten Stellen gleich
+F@"ur gro@ss{}e Gleitkommazahlen ist die Anzahl der angezeigten Stellen gleich
 @code{fpprintprec}, wenn @code{fpprintprec} einen Wert zwischen 2 und
-@code{fpprec} (einschließlich) hat. Ist der Wert von @code{fpprintprec} gleich
-0 oder größer als @code{fpprec} werden @code{fpprec} Stellen angezeigt.
+@code{fpprec} (einschlie@ss{}lich) hat. Ist der Wert von @code{fpprintprec} gleich
+0 oder gr@"o@ss{}er als @code{fpprec} werden @code{fpprec} Stellen angezeigt.
 
 @c @code{fpprintprec} cannot be 1.
 
@@ -488,18 +488,18 @@ Für große Gleitkommazahlen ist die Anzahl der angezeigten Stellen gleich
 @c Returns @code{true} if @var{expr} is a literal numeric integer, otherwise 
 @c @code{false}.
 
-Hat den Rückgabewert @code{true}, wenn das Argument @var{number} eine ganze Zahl
-ist. In allen anderen Fällen gibt @code{integerp} den Wert @code{false} zurück.
+Hat den R@"uckgabewert @code{true}, wenn das Argument @var{number} eine ganze Zahl
+ist. In allen anderen F@"allen gibt @code{integerp} den Wert @code{false} zur@"uck.
 
 @c @code{integerp} returns @code{false} if its argument is a symbol, even if the
 @c argument is declared integer.
 
-@code{integerp} gibt für Symbole oder Ausdrücke immer den Wert @code{false} 
-zurück, auch wenn das Symbol als ganze Zahl deklariert ist oder der Ausdruck 
-eine ganze Zahl repräsentiert.
+@code{integerp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
+zur@"uck, auch wenn das Symbol als ganze Zahl deklariert ist oder der Ausdruck 
+eine ganze Zahl repr@"asentiert.
 
 Siehe die Funktion @code{featurep}, um zu testen, ob ein Symbol oder Ausdruck 
-eine ganze Zahl repräsentiert.
+eine ganze Zahl repr@"asentiert.
 
 Beispiele:
 
@@ -537,8 +537,8 @@ Standardwert: @code{false}
 @c follows:
 
 Die Optionsvariable @code{m1branch} kontrolliert die Vereinfachung der 
-Exponentiation von @code{-1} für den Fall, das die Optionsvariable 
-@code{domain} den Wert @code{complex} hat. Hat @code{m1pbranch} für diesen Fall
+Exponentiation von @code{-1} f@"ur den Fall, das die Optionsvariable 
+@code{domain} den Wert @code{complex} hat. Hat @code{m1pbranch} f@"ur diesen Fall
 den Wert @code{true}, wird die Exponentiation von @code{-1} zu einem Ausdruck
 vereinfacht, der dem Hauptwert entspricht. Die Auswirkung der Optionsvariable
 @code{m1pbranch} ist in der folgenden Tabelle gezeigt.
@@ -566,7 +566,7 @@ m1pbranch:false          m1pbranch:true
 @c Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an 
 @c integer.
 
-Gibt den Wert @code{true} zurück, wenn @code{var} eine ganze positive Zahl oder
+Gibt den Wert @code{true} zur@"uck, wenn @code{var} eine ganze positive Zahl oder
 Null ist.
 
 @c @opencatbox
@@ -581,7 +581,7 @@ Null ist.
 @c floating point number, or bigfloat, otherwise @code{false}.
 
 Hat das Ergebnis @code{true}, wenn @var{expr} eine ganze, rationale, eine
-Gleitkommazahl oder eine große Gleitkommazahl ist. Ansonsten ist das Ergebnis
+Gleitkommazahl oder eine gro@ss{}e Gleitkommazahl ist. Ansonsten ist das Ergebnis
 @code{false}.
 
 @c @code{numberp} returns @code{false} if its argument is a symbol, even if the
@@ -589,7 +589,7 @@ Gleitkommazahl oder eine große Gleitkommazahl ist. Ansonsten ist das Ergebnis
 @c to be @code{even}, @code{odd}, @code{integer}, @code{rational}, 
 @c @code{irrational}, @code{real}, @code{imaginary}, or @code{complex}.
 
-@code{numberp} gibt für ein Symbol immer das Ergebnis @code{false} zurück. Dies
+@code{numberp} gibt f@"ur ein Symbol immer das Ergebnis @code{false} zur@"uck. Dies
 ist auch dann der Fall, wenn das Symbol eine numerische Konstante wie @code{%pi}
 ist oder wenn das Symbol eine Deklaration wie @code{integer}, @code{real} oder 
 @code{complex} erhalten hat.
@@ -643,7 +643,7 @@ der Exponentiation mit einer negativen ganzen, rationalen oder Gleitkommazahl.
 Hat @code{numer_pbranch} den Wert @code{true} und ist der Exponent eine 
 Gleitkommazahl oder hat die Optionsvariable @code{numer} den Wert @code{true}, 
 dann berechnet Maxima den Hauptwert der Exponentiation. Ansonsten wird ein 
-vereinfachter Ausdruck, aber nicht numerischer Wert zurückgegeben.
+vereinfachter Ausdruck, aber nicht numerischer Wert zur@"uckgegeben.
 
 Beispiele:
 
@@ -683,15 +683,15 @@ Beispiele:
 @c @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @c @code{false} is returned in all other cases.
 
-Gibt @code{true} zurück, wenn @var{expr} eine ungerade ganze Zahl ist. In allen
-anderen Fällen wird @code{false} zurückgegeben.
+Gibt @code{true} zur@"uck, wenn @var{expr} eine ungerade ganze Zahl ist. In allen
+anderen F@"allen wird @code{false} zur@"uckgegeben.
 
-@code{oddp} gibt für Symbole oder Ausdrücke immer den Wert @code{false} zurück,
+@code{oddp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} zur@"uck,
 auch wenn das Symbol als gerade ganze Zahl deklariert ist oder der Ausdruck eine
-ganze Zahl repräsentiert.
+ganze Zahl repr@"asentiert.
 
 Siehe die Funktion @code{featurep}, um zu testen, ob ein Symbol oder Ausdruck 
-eine ungerade ganze Zahl repräsentiert.
+eine ungerade ganze Zahl repr@"asentiert.
 
 @c @opencatbox
 @c @category{Zahlen} @category{Aussagefunktionen}
@@ -709,7 +709,7 @@ Standardwert: 2.0e-8
 rationale Zahlen umgewandelt werden.
 
 @c @opencatbox
-@c @category{Numerische Auswertung} @category{Rationale Ausdrücke} @category{Optionsvariablen}
+@c @category{Numerische Auswertung} @category{Rationale Ausdr@"ucke} @category{Optionsvariablen}
 @c @closecatbox
 @end defvr
 
@@ -719,7 +719,7 @@ rationale Zahlen umgewandelt werden.
 @c Convert all double floats and big floats in the Maxima expression @var{expr} 
 @c to their exact rational equivalents. 
 
-Konvertiert alle Gleitkommazahlen mit einfacher und großer Genauigkeit, die in
+Konvertiert alle Gleitkommazahlen mit einfacher und gro@ss{}er Genauigkeit, die in
 dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
 
 @c If you are not familiar with the binary representation of floating point 
@@ -727,9 +727,9 @@ dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
 @c 1/10.  This behavior isn't special to Maxima -- the number 1/10 has a 
 @c repeating, not a terminating, binary representation.
 
-Es mag überraschend sein, dass @code{rationalize(0.1)} nicht 1/10 ergibt. Dies
-ist nicht speziell für Maxima. Ursache ist, dass die gebrochene Zahl 1/10 in der
-internen Darstellung als binäre Zahl keine endliche Darstellung hat.
+Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht 1/10 ergibt. Dies
+ist nicht speziell f@"ur Maxima. Ursache ist, dass die gebrochene Zahl 1/10 in der
+internen Darstellung als bin@"are Zahl keine endliche Darstellung hat.
 
 Siehe auch die Funktion @code{float} und das Flag @code{numer}, um eine 
 rationale Zahl in eine Gleitkommazahl umzuwandeln.
@@ -784,8 +784,8 @@ rationale Zahl in eine Gleitkommazahl umzuwandeln.
 @c Returns @code{true} if @var{expr} is a literal integer or ratio of literal
 @c integers, otherwise @code{false}.
 
-Gibt @code{true} zurück, wenn @var{number} eine ganze oder rationale Zahl ist.
-In allen anderen Fällen ist das Ergebnis @code{false}.
+Gibt @code{true} zur@"uck, wenn @var{number} eine ganze oder rationale Zahl ist.
+In allen anderen F@"allen ist das Ergebnis @code{false}.
 
 Beispiele:
 
@@ -809,8 +809,8 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen für Zeichenketten, Funktionen und Variablen für Konstante, Funktionen und Variablen für Zahlen, Datentypen
-@section Funktionen und Variablen für Zeichenketten
+@node Funktionen und Variablen f@"ur Zeichenketten, Funktionen und Variablen f@"ur Konstante, Funktionen und Variablen f@"ur Zahlen, Datentypen
+@section Funktionen und Variablen f@"ur Zeichenketten
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} concat (@var{arg_1}, @var{arg_2}, ...)
@@ -819,9 +819,9 @@ Beispiele:
 @c value is a symbol if the first argument is a symbol and a string otherwise.
 
 Verkettet die Argumente @var{arg_1}, @var{arg_2}, ... zu einer Zeichenkette oder
-einem Symbol. Die Argumente müssen sich zu einem Atom auswerten lassen. Der 
-Rückgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist. Ansonsten 
-wird eine Zeichenkette zurückgegeben.
+einem Symbol. Die Argumente m@"ussen sich zu einem Atom auswerten lassen. Der 
+R@"uckgabewert ist ein Symbol, wenn das erste Argument ein Symbol ist. Ansonsten 
+wird eine Zeichenkette zur@"uckgegeben.
 
 @c @code{concat} evaluates its arguments.The single quote @code{'} prevents 
 @c evaluation.
@@ -853,7 +853,7 @@ Beispiele:
 @c left-hand side.
 
 Einem Symbol, das mit @code{concat} konstruiert wird, kann ein Wert zugewiesen
-werden und es kann in Ausdrücken auftreten.
+werden und es kann in Ausdr@"ucken auftreten.
 
 @c === beg ===
 @c a: concat ('y, z/2);
@@ -892,7 +892,7 @@ hat.
 @end example
 
 @c @opencatbox
-@c @category{Ausdrücke} @category{Zeichenketten}
+@c @category{Ausdr@"ucke} @category{Zeichenketten}
 @c @closecatbox
 @end deffn
 
@@ -903,7 +903,7 @@ hat.
 @c do @i{not} need to be atoms.
 
 Verkettet die Argumente zu einer Zeichenkette. Im Unterschied zu der Funktion
-@code{concat} müssen die Argumente @i{nicht} Atome sein. Der Rückgabewert ist
+@code{concat} m@"ussen die Argumente @i{nicht} Atome sein. Der R@"uckgabewert ist
 eine Zeichenkette.
 
 Beispiel:
@@ -917,7 +917,7 @@ Beispiel:
 @end example
 
 @c @opencatbox
-@c @category{Ausdrücke} @category{Zeichenketten}
+@c @category{Ausdr@"ucke} @category{Zeichenketten}
 @c @closecatbox
 @end deffn
 
@@ -933,7 +933,7 @@ von der Eingabe eingelesen wird.
 @c The return value of @code{string} is a string, and thus it cannot be used in
 @c a computation.
 
-Die Rückgabe von @code{string} ist eine eine Zeichenkette. Diese kann nicht für
+Die R@"uckgabe von @code{string} ist eine eine Zeichenkette. Diese kann nicht f@"ur
 eine Berechnung genutzt werden.
 
 @c @opencatbox
@@ -951,7 +951,7 @@ Standardwert: @code{false}
 @c double quote marks. Otherwise, quote marks are not displayed.
 
 Hat @code{stringdisp} den Wert @code{true}, werden Zeichenketten mit
-Anführungszeichen ausgegeben. Ansonsten werden keine Anführungszeichen
+Anf@"uhrungszeichen ausgegeben. Ansonsten werden keine Anf@"uhrungszeichen
 ausgegeben.
 
 @c @code{stringdisp} is always @code{true} when displaying a function 
@@ -989,22 +989,22 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen für Konstante,  , Funktionen und Variablen für Zeichenketten, Datentypen
-@section Funktionen und Variablen für Konstante
+@node Funktionen und Variablen f@"ur Konstante,  , Funktionen und Variablen f@"ur Zeichenketten, Datentypen
+@section Funktionen und Variablen f@"ur Konstante
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @defvr {Konstante} %e
 @ifinfo
 @vrindex e
 @vrindex Eulersche Zahl
-@vrindex Basis des natürlichen Logarithmus
+@vrindex Basis des nat@"urlichen Logarithmus
 @end ifinfo
 
 @c @code{%e} represents the base of the natural logarithm, also known as 
 @c Euler's number. The numeric value of @code{%e} is the double-precision 
 @c floating-point value 2.718281828459045d0.
 
-@code{%e} ist die Basis des natürlichen Logarithmus, auch Eulersche Zahl 
+@code{%e} ist die Basis des nat@"urlichen Logarithmus, auch Eulersche Zahl 
 genannt. Der numerische Wert der Konstanten als Gleitkommazahl mit doppelter
 Genauigkeit ist 2.718281828459045d0.
 
@@ -1032,12 +1032,12 @@ Beispiel:
 @defvr {Konstante} %i
 @ifinfo
 @vrindex i
-@vrindex Imaginäre Einheit
+@vrindex Imagin@"are Einheit
 @end ifinfo
 
 @c @code{%i} represents the imaginary unit, @math{sqrt(- 1)}.
 
-@code{%i} ist die imaginäre Einheit, die als @math{sqrt(-1)} definiert ist.
+@code{%i} ist die imagin@"are Einheit, die als @math{sqrt(-1)} definiert ist.
 
 @c @opencatbox
 @c @category{Konstante}
@@ -1050,7 +1050,7 @@ Beispiel:
 @c @code{false} represents the Boolean constant of the same name. Maxima 
 @c implements @code{false} by the value @code{NIL} in Lisp.
 
-Repräsentiert den Logischen Wert @code{false}. @code{false} wird intern von 
+Repr@"asentiert den Logischen Wert @code{false}. @code{false} wird intern von 
 Maxima durch die Lisp-Konstante @code{NIL} dargestellt.
 
 @c @opencatbox
@@ -1086,7 +1086,7 @@ berechnen.
 
 @c @code{ind} represents a bounded, indefinite result.
 
-@code{ind} repräsentiert ein unbestimmtes Ergebnis.
+@code{ind} repr@"asentiert ein unbestimmtes Ergebnis.
 
 Siehe auch @code{limit}.
 
@@ -1113,7 +1113,7 @@ Beispiel:
 
 @c @code{inf} represents real positive infinity.
 
-@code{inf} repräsentiert einen positiven unendlich großen Wert.
+@code{inf} repr@"asentiert einen positiven unendlich gro@ss{}en Wert.
 
 @c @opencatbox
 @c @category{Konstante}
@@ -1128,7 +1128,7 @@ Beispiel:
 
 @c @code{infinity} represents complex infinity.
 
-@code{infinity} repräsentiert einen komplexen unendlichen Wert.
+@code{infinity} repr@"asentiert einen komplexen unendlichen Wert.
 
 @c @opencatbox
 @c @category{Konstante}
@@ -1144,7 +1144,7 @@ Beispiel:
 
 @c @code{minf} represents real minus (i.e., negative) infinity.
 
-@code{minf} repräsentiert einen negativen unendlichen Wert.
+@code{minf} repr@"asentiert einen negativen unendlichen Wert.
 
 @c @opencatbox
 @c @category{Konstante}
@@ -1162,30 +1162,30 @@ Beispiel:
 @c The numeric value of @code{%phi} is the double-precision floating-point value
 @c 1.618033988749895d0.
 
-@code{%phi} repräsentiert die @i{Golde Zahl} @math{(1 + sqrt(5))/2}. Der 
+@code{%phi} repr@"asentiert die @i{Golde Zahl} @math{(1 + sqrt(5))/2}. Der 
 Gleitkommawert in doppelter Genauigkeit ist 1.618033988749895d0.
 
 @c @code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of 
 @c @code{%phi}.
 
-Die Funktion @code{fibtophi} drückt Fibonacci-Zahlen @code{fib(n)} durch
+Die Funktion @code{fibtophi} dr@"uckt Fibonacci-Zahlen @code{fib(n)} durch
 @code{%phi} aus.
 
 @c By default, Maxima does not know the algebraic properties of @code{%phi}.
 @c After evaluating @code{tellrat(%phi^2-%phi-1)} and @code{algebraic: true},
 @c @code{ratsimp} can simplify some expressions containing @code{%phi}.
 
-Standardmäßig kennt Maxima keine algebraischen Eigenschaften der Konstanten
+Standardm@"a@ss{}ig kennt Maxima keine algebraischen Eigenschaften der Konstanten
 @code{%phi}. Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und 
 @code{algebraic: true} kann die Funktion @code{ratsimp} einige Vereinfachungen
-ausführen.  
+ausf@"uhren.  
 
 Beispiele:
 
 @c @code{fibtophi} expresses Fibonacci numbers @code{fib(n)} in terms of 
 @c @code{%phi}.
 
-@code{fibtophi} drückt Fibonacci-Zahlen @code{fib(n)} durch @code{%phi} aus.
+@code{fibtophi} dr@"uckt Fibonacci-Zahlen @code{fib(n)} durch @code{%phi} aus.
 
 @c ===beg===
 @c fibtophi (fib (n));
@@ -1220,7 +1220,7 @@ Beispiele:
 @c containing @code{%phi}.
 
 Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und @code{algebraic: true} kann 
-die Funktion @code{ratsimp} einige Vereinfachungen für Ausdrücke ausführen, die 
+die Funktion @code{ratsimp} einige Vereinfachungen f@"ur Ausdr@"ucke ausf@"uhren, die 
 @code{%phi} enthalten.
 
 @c ===beg===
@@ -1261,7 +1261,7 @@ die Funktion @code{ratsimp} einige Vereinfachungen für Ausdrücke ausführen, d
 @c The numeric value of @code{%pi} is the double-precision floating-point value 
 @c 3.141592653589793d0.
 
-@code{%pi} repräsentiert die Kreiszahl. Der numerische Wert in doppelter
+@code{%pi} repr@"asentiert die Kreiszahl. Der numerische Wert in doppelter
 Gleitkommagenauigkeit ist @code{3.141592653589793d0}.
 
 Die Funktion @code{bfloat} kann @code{%pi} mit einer beliebigen Genauigkeit
@@ -1278,7 +1278,7 @@ berechnen.
 @c @code{true} represents the Boolean constant of the same name. Maxima 
 @c implements @code{true} by the value @code{T} in Lisp.
 
-@code{true} repräsentiert den logischen Wert @code{true}. Intern ist @code{true}
+@code{true} repr@"asentiert den logischen Wert @code{true}. Intern ist @code{true}
 als die Lisp-Konstante @code{T} implementiert.
 
 @c @opencatbox
@@ -1294,7 +1294,7 @@ als die Lisp-Konstante @code{T} implementiert.
 
 @c @code{und} represents an undefined result.
 
-@code{und} repräsentiert ein nicht definiertes Ergebnis.
+@code{und} repr@"asentiert ein nicht definiertes Ergebnis.
 
 Siehe auch @code{limit}.
 
@@ -1320,9 +1320,9 @@ Example:
 @c in expressions. @code{limit} simplifies expressions which contain 
 @c infinitesimals.
 
-@code{zeroa} repräsentiert eine positive unendlich kleine Zahl. @code{zeroa}
-kann in Ausdrücken benutzt werden. Die Funktion @code{limit} vereinfacht
-Ausdrücke, die infinitesimale Größen enthalten.
+@code{zeroa} repr@"asentiert eine positive unendlich kleine Zahl. @code{zeroa}
+kann in Ausdr@"ucken benutzt werden. Die Funktion @code{limit} vereinfacht
+Ausdr@"ucke, die infinitesimale Gr@"o@ss{}en enthalten.
 
 Siehe auch @code{zerob} und @code{limit}.
 
@@ -1330,7 +1330,7 @@ Beispiele:
 
 @c @code{limit} simplifies expressions which contain infinitesimals:
 
-@code{limit} vereinfacht Ausdrücke, die infinitesimale Größen enthalten:
+@code{limit} vereinfacht Ausdr@"ucke, die infinitesimale Gr@"o@ss{}en enthalten:
 
 @c ===beg===
 @c limit(zeroa);
@@ -1355,9 +1355,9 @@ Beispiele:
 @c in expressions. @code{limit} simplifies expressions which contain 
 @c infinitesimals.
 
-@code{zerob} repräsentiert eine negative unendlich kleine Zahl. @code{zerob}
-kann in Ausdrücken benutzt werden. Die Funktion @code{limit} vereinfacht
-Ausdrücke, die infinitesimale Größen enthalten.
+@code{zerob} repr@"asentiert eine negative unendlich kleine Zahl. @code{zerob}
+kann in Ausdr@"ucken benutzt werden. Die Funktion @code{limit} vereinfacht
+Ausdr@"ucke, die infinitesimale Gr@"o@ss{}en enthalten.
 
 Siehe auch @code{zeroa} und @code{limit}.
 

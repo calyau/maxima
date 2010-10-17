@@ -27,29 +27,29 @@
 @c -----------------------------------------------------------------------------
 
 @menu
-* Einführung in die Kommandozeile::
+* Einf@"uhrung in die Kommandozeile::
 * Funktionen und Variablen der Eingabe::
 * Funktionen und Variablen der Ausgabe::
 @end menu
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Einführung in die Kommandozeile, Funktionen und Variablen der Eingabe, Kommandozeile, Top
-@section Einführung in die Kommandozeile
+@node Einf@"uhrung in die Kommandozeile, Funktionen und Variablen der Eingabe, Kommandozeile, Top
+@section Einf@"uhrung in die Kommandozeile
 
 @subheading Konsole
 
-Für Maxima sind verschiedene Benutzeroberflächen erhältlich. Bekannte 
-Oberflächen, die je nach Betriebssystem bereits nach der Installation von Maxima
-zur Verfügung stehen, sind wxMaxima, XMaxima, IMaxima und die Konsole. 
+F@"ur Maxima sind verschiedene Benutzeroberfl@"achen erh@"altlich. Bekannte 
+Oberfl@"achen, die je nach Betriebssystem bereits nach der Installation von Maxima
+zur Verf@"ugung stehen, sind wxMaxima, XMaxima, IMaxima und die Konsole. 
 
-Die Konsole (oder das Terminal) arbeitet in einem Textmodus. Für die Ausgabe in
-einem grafischen Modus mit einer menügesteuerten Eingabe müssen andere
-Benutzeroberflächen genutzt werden.
+Die Konsole (oder das Terminal) arbeitet in einem Textmodus. F@"ur die Ausgabe in
+einem grafischen Modus mit einer men@"ugesteuerten Eingabe m@"ussen andere
+Benutzeroberfl@"achen genutzt werden.
 
-In dieser Dokumentation wird ausschließlich die Konsole eingesetzt, die unter 
-allen Betriebsystemen zur Verfügung steht. Der Nutzer kann alle Maxima
+In dieser Dokumentation wird ausschlie@ss{}lich die Konsole eingesetzt, die unter 
+allen Betriebsystemen zur Verf@"ugung steht. Der Nutzer kann alle Maxima
 Befehle und Funktionen in einer Konsole nutzen. Im Textmodus der Konsole
-erfolgen die Ausgaben in der Regel in einem 2D-Modus. Für die Ausgabe von
+erfolgen die Ausgaben in der Regel in einem 2D-Modus. F@"ur die Ausgabe von
 Funktionsgraphen werden von Maxima Hilfsprogramme wie GNUPlot aufgerufen.
 
 @subheading Phasen der Eingabe, Auswertung, Vereinfachung und Anzeige
@@ -68,24 +68,24 @@ inbesondere Operatoren wie "+", "/" oder "do" behandelt.
 
 Der vom Parser eingelesene Ausdruck wird von Maxima in der 2. Phase 
 ausgewertet. Dabei werden Variable durch ihren Wert ersetzt und Funktionen 
-ausgeführt. Das Ergebnis dieser Phase ist ein ausgewerteter Ausdruck.
+ausgef@"uhrt. Das Ergebnis dieser Phase ist ein ausgewerteter Ausdruck.
 
 @item 
 
 Der ausgewertete Ausdruck wird in der 3. Phase von Maxima vereinfacht.
-Dabei werden Ausdrücke wie @code{a+a} zu @code{2*a} oder @code{sin(%pi/2)} zu 
+Dabei werden Ausdr@"ucke wie @code{a+a} zu @code{2*a} oder @code{sin(%pi/2)} zu 
 @code{1} vereinfacht.
 
 @item 
 
 Das Ergebnis ist ein ausgewerteter und vereinfachter Ausdruck. Zuletzt wird 
-dieses Ergebnis in der 4. Phase für die Anzeige vorbereitet und auf der Konsole
+dieses Ergebnis in der 4. Phase f@"ur die Anzeige vorbereitet und auf der Konsole
 ausgegeben.
 @end enumerate
 
-Der Nutzer kann auf jede einzelne Phase Einfluß nehmen. Verschiedene Kapitel
-der Dokumentation befassen sich mit diesen Möglichkeiten. In diesem Kapitel 
-werden die Kommandos und Möglichkeiten zusammengestellt, die sich mit der 
+Der Nutzer kann auf jede einzelne Phase Einflu@ss{} nehmen. Verschiedene Kapitel
+der Dokumentation befassen sich mit diesen M@"oglichkeiten. In diesem Kapitel 
+werden die Kommandos und M@"oglichkeiten zusammengestellt, die sich mit der 
 Eingabe und Ausgabe auf der Konsole befassen.
 
 @subheading Marken
@@ -95,7 +95,7 @@ Marken @code{%o} ab. Die Marken erhalten eine laufende Nummer. Weiterhin
 erzeugen einige Befehle Zwischenmarken @code{%t}. Andere Systemvariable 
 speichern das letzte Ergebnis oder die letzte Eingabe ab. 
 
-Folgende Symbole bezeichnen Variable und Funktionen für die Verwaltung der
+Folgende Symbole bezeichnen Variable und Funktionen f@"ur die Verwaltung der
 Marken:
 
 @verbatim
@@ -107,13 +107,13 @@ Marken:
 
 @subheading Informationslisten
 
-Maxima verwaltet Informationslisten. Die verfügbaren Informationslisten sind in
+Maxima verwaltet Informationslisten. Die verf@"ugbaren Informationslisten sind in
 der Systemvariablen @code{infolists} enthalten. In diesem Kapitel werden die
-Informationslisten @code{labels}, @code{values} und @code{myoptions} erläutert.
+Informationslisten @code{labels}, @code{values} und @code{myoptions} erl@"autert.
 Wird eine Optionsvariable vom Nutzer gesetzt, kontrolliert die Optionsvariable
 @code{optionset} die Ausgabe weiterer Informationen.
 
-Folgenden Symbole bezeichnen Variable und Funktionen für Informationslisten und
+Folgenden Symbole bezeichnen Variable und Funktionen f@"ur Informationslisten und
 Optionsvariablen:
 
 @verbatim
@@ -121,7 +121,7 @@ Optionsvariablen:
    myoptions     optionset
 @end verbatim
 
-Weitere Informationslisten, die in anderen Kapiteln erläuert werden, sind:
+Weitere Informationslisten, die in anderen Kapiteln erl@"autert werden, sind:
 
 @verbatim
    functions      arrays         macros
@@ -130,7 +130,7 @@ Weitere Informationslisten, die in anderen Kapiteln erläuert werden, sind:
    structures     namespaces  
 @end verbatim
 
-@subheading Löschen und Rücksetzen 
+@subheading L@"oschen und R@"ucksetzen 
 
 Um einen definierten Anfangszustand herzustellen oder um einzelne Zuweisungen,
 Eigenschaften oder Definitionen zu entfernen, kennt Maxima die folgenden 
@@ -143,17 +143,17 @@ Variable und Kommandos:
 @subheading Weitere Kommandos der Kommandozeile
 
 Mit weiteren Kommandos kann eine Maxima-Sitzung beendet oder zu einer Lisp-
-Sitzung gewechselt werden. Das Zeichen für die Eingabeaufforderung einer
-Unterbrechung kann geändert werden. Die Zeit für jede einzelne Berechnung kann
-angezeigt werden und die Ergebnisse einer Sitzung können wiederholt ausgegeben 
-werden. Maxima kennt hierfür die folgenden Symbole:
+Sitzung gewechselt werden. Das Zeichen f@"ur die Eingabeaufforderung einer
+Unterbrechung kann ge@"andert werden. Die Zeit f@"ur jede einzelne Berechnung kann
+angezeigt werden und die Ergebnisse einer Sitzung k@"onnen wiederholt ausgegeben 
+werden. Maxima kennt hierf@"ur die folgenden Symbole:
 
 @verbatim
    playback     prompt     showtime
    quit         system     to_lisp
 @end verbatim
 
-@subheading Symbole und Funktionen für die Anzeige
+@subheading Symbole und Funktionen f@"ur die Anzeige
 
 @verbatim
    %edispflag         absboxchar       disp
@@ -168,7 +168,7 @@ werden. Maxima kennt hierfür die folgenden Symbole:
 @end verbatim
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen der Eingabe, Funktionen und Variablen der Ausgabe, Einführung in die Kommandozeile, Kommandozeile
+@node Funktionen und Variablen der Eingabe, Funktionen und Variablen der Ausgabe, Einf@"uhrung in die Kommandozeile, Kommandozeile
 @section Funktionen und Variablen der Eingabe
 
 @c --- 08.09.2010 DK -----------------------------------------------------------
@@ -180,7 +180,7 @@ werden. Maxima kennt hierfür die folgenden Symbole:
 @c @code{__} is the input expression currently being evaluated. That is, while 
 @c an input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
 
-Während einer laufenden Auswertung enthält die Systemvariable @code{__} den
+W@"ahrend einer laufenden Auswertung enth@"alt die Systemvariable @code{__} den
 zuletzt vom Parser eingelesenen Ausdruck @var{expr}.
 
 @c @code{__} is assigned the input expression before the input is simplified or
@@ -188,7 +188,7 @@ zuletzt vom Parser eingelesenen Ausdruck @var{expr}.
 @c when it is displayed.
 
 Der Ausdruck @var{expr} wird der Systemvariablen @code{__} noch vor der 
-Auswertung und Vereinfachung zugewiesen. Für die Ausgabe wird @code{__} 
+Auswertung und Vereinfachung zugewiesen. F@"ur die Ausgabe wird @code{__} 
 vereinfacht, aber nicht ausgewertet.
 
 @c @code{__} is recognized by @code{batch} and @code{load}. In a file processed
@@ -201,9 +201,9 @@ vereinfacht, aber nicht ausgewertet.
 @c while the file is being processed.
 
 Die Systemvariable @code{__} wird von den Kommandos @code{batch} und @code{load}
-erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgeführt, hat @code{__}
+erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgef@"uhrt, hat @code{__}
 dieselbe Bedeutung wie bei der Eingabe von einer Kommandozeile. Wird eine Datei
-mit dem Namen @code{filename} mit dem Kommando @code{load} geladen, enthält 
+mit dem Namen @code{filename} mit dem Kommando @code{load} geladen, enth@"alt 
 @code{__} den Ausdruck @code{load(@var{filename})}. Das ist der letzte Befehl 
 der Kommandozeile.
 
@@ -253,14 +253,14 @@ Current input expression = --------------
 @c @code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2}, 
 @c @code{%i3}, ...).
 
-Die Systemvariable @code{_} enthält den zuletzt eingebenen Ausdruck @var{expr}.
+Die Systemvariable @code{_} enth@"alt den zuletzt eingebenen Ausdruck @var{expr}.
 
 @c @code{_} is assigned the input expression before the input is simplified or
 @c evaluated. However, the value of @code{_} is simplified (but not evaluated) 
 @c when it is displayed.
 
 Der Ausdruck @var{expr} wird der Systemvariablen @code{_} noch vor der 
-Auswertung und Vereinfachung zugewiesen. Für die Ausgabe wird @code{_} 
+Auswertung und Vereinfachung zugewiesen. F@"ur die Ausgabe wird @code{_} 
 vereinfacht, aber nicht ausgewertet.
 
 @c @code{_} is recognized by @code{batch} and @code{load}. In a file processed 
@@ -270,9 +270,9 @@ vereinfacht, aber nicht ausgewertet.
 @c @code{_} is not bound to the input expressions in the file being processed.
 
 Die Systemvariable @code{_} wird von den Kommandos @code{batch} und @code{load} 
-erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgeführt, hat @code{_} 
+erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgef@"uhrt, hat @code{_} 
 dieselbe Bedeutung wie bei der Eingabe von einer Kommandozeile. Wird eine Datei
-mit dem Kommando @code{load} geladen, enthält @code{_} den zuletzt in der 
+mit dem Kommando @code{load} geladen, enth@"alt @code{_} den zuletzt in der 
 Kommandozeile eingegebenen Befehl.
 
 @c See also @code{__} and @code{%}.
@@ -337,9 +337,9 @@ Beispiele:
 @c @code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3}, 
 @c ...) most recently computed by Maxima, whether or not it was displayed.
 
-Die Systemvariable @code{%} enthält das Ergebnis des zuletzt von Maxima
-ausgewerteten und vereinfachten Ausdrucks. @code{%} enhält das letzte Ergebnis
-auch dann, wenn die Ausgabe des Ergebnisses unterdrückt wurde.
+Die Systemvariable @code{%} enth@"alt das Ergebnis des zuletzt von Maxima
+ausgewerteten und vereinfachten Ausdrucks. @code{%} enh@"alt das letzte Ergebnis
+auch dann, wenn die Ausgabe des Ergebnisses unterdr@"uckt wurde.
 
 @c @code{%} is recognized by @code{batch} and @code{load}. In a file processed 
 @c by @code{batch}, @code{%} has the same meaning as at the interactive prompt.
@@ -349,9 +349,9 @@ auch dann, wenn die Ausgabe des Ergebnisses unterdrückt wurde.
 @c processed.
 
 Die Systemvariable @code{%} wird von den Kommandos @code{batch} und @code{load} 
-erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgeführt, hat @code{%} 
+erkannt. Wird eine Datei mit dem Kommando @code{batch} ausgef@"uhrt, hat @code{%} 
 dieselbe Bedeutung wie bei der Eingabe von einer Kommandozeile. Wird eine Datei 
-mit dem Kommando @code{load} geladen, enthält @code{%} das letzte Ergebnis des
+mit dem Kommando @code{load} geladen, enth@"alt @code{%} das letzte Ergebnis des
 Ausdrucks, der auf der Konsole eingegeben wurde.
 
 @c See also @code{_}, @code{%%}, and @code{%th}.
@@ -373,10 +373,10 @@ Siehe auch die Systemvariablen @code{_}, @code{%%} und @code{%th}.
 @c @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} is the value of the previous 
 @c statement. For example,
 
-In zusammengesetzten Ausdrücken, wie in Ausdrücken mit @code{block} oder 
-@code{lambda} oder in Ausdrücken der Gestalt @code{(@var{s_1}, ..., @var{s_n})},
-enthält die Systemvariable @code{%%} das Ergebnis des vorhergehenden Ausdrucks. 
-Zum Beispiel haben die folgenden Ausdrücke jeweils dasselbe Ergebnis:
+In zusammengesetzten Ausdr@"ucken, wie in Ausdr@"ucken mit @code{block} oder 
+@code{lambda} oder in Ausdr@"ucken der Gestalt @code{(@var{s_1}, ..., @var{s_n})},
+enth@"alt die Systemvariable @code{%%} das Ergebnis des vorhergehenden Ausdrucks. 
+Zum Beispiel haben die folgenden Ausdr@"ucke jeweils dasselbe Ergebnis:
 
 @c ===beg===
 @c block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
@@ -400,8 +400,8 @@ Zum Beispiel haben die folgenden Ausdrücke jeweils dasselbe Ergebnis:
 @c statement be simple or compound,  @code{%%} is the value of the previous 
 @c statement. For example,
 
-Ein zusammengesetzter Ausdruck kann weitere zusammengesetzte Ausdrücke 
-enthalten. @code{%%} enthält dabei jeweils das Ergebnis des letzten Ausdrucks.
+Ein zusammengesetzter Ausdruck kann weitere zusammengesetzte Ausdr@"ucke 
+enthalten. @code{%%} enth@"alt dabei jeweils das Ergebnis des letzten Ausdrucks.
 So hat das folgende Beispiel das Ergebnis @code{7*a^n}:
 
 @c ===beg===
@@ -440,8 +440,8 @@ _
 @c At the first statement in a compound statement, or outside of a compound 
 @c statement, @code{%%} is undefined.
 
-Für den ersten Ausdruck oder außerhalb eines zusammengesetzten Ausdrucks ist
-@code{%%} nicht definiert.
+F@"ur den ersten Ausdruck oder au@ss{}erhalb eines zusammengesetzten Ausdrucks
+ist @code{%%} nicht definiert.
 
 @c @code{%%} is recognized by @code{batch} and @code{load}, and it has the same
 @c meaning as at the interactive prompt.
@@ -473,9 +473,9 @@ Die Funktion @code{%th} liefert das n-te vorhergehende Ergebnis.
 @c @code{%th} is useful in @code{batch} files or for referring to a group of 
 @c output expressions. For example,
 
-@code{%th} ist zum Beispiel in @code{batch}-Dateien nützlich. Das folgende 
+@code{%th} ist zum Beispiel in @code{batch}-Dateien n@"utzlich. Das folgende 
 Beispiel zeigt, wie die letzten 10 eingegebenen Werte mit der Funktion 
-@code{%th} aufsummiert werden können:
+@code{%th} aufsummiert werden k@"onnen:
 
 @c ===beg===
 @c 1;2;3;4;5;6;7;8;9;10;
@@ -507,9 +507,9 @@ Beispiel zeigt, wie die letzten 10 eingegebenen Werte mit der Funktion
 @c processed.
 
 Die Funktion @code{%th} wird von den Kommandos @code{batch} und @code{load} 
-erkannt. Wird eine Datei mit @code{batch} ausgeführt, hat @code{%th} dieselbe 
+erkannt. Wird eine Datei mit @code{batch} ausgef@"uhrt, hat @code{%th} dieselbe 
 Bedeutung wie bei der Eingabe in der Konsole. Wird eine Datei mit dem Kommando 
-@code{load} geladen, enthält @code{%th} das letzte Ergebnis der Eingabe in der 
+@code{load} geladen, enth@"alt @code{%th} das letzte Ergebnis der Eingabe in der 
 Konsole.
 
 @c See also @code{%}.
@@ -531,17 +531,17 @@ Siehe auch @code{%} und @code{%%}.
 @c is a Lisp name, not a Maxima name. For example, @code{?round} signifies the 
 @c Lisp function @code{ROUND}. See @ref{Lisp and Maxima} for more on this point.
 
-Wird dem Namen einer Funktion oder Variablen ein @code{?} als Präfix
+Wird dem Namen einer Funktion oder Variablen ein @code{?} als Pr@"afix
 vorangestellt, wird der Name als ein Lisp-Symbol interpretiert. Zum Beispiel 
 bedeutet @code{?round} die Lisp-Funktion @code{ROUND}. Siehe auch 
-@ref{Lisp und Maxima} für weitere Ausführungen zu diesem Thema.
+@ref{Lisp und Maxima} f@"ur weitere Ausf@"uhrungen zu diesem Thema.
 
 @c The notation @code{? word} (a question mark followed a word, separated by 
 @c whitespace) is equivalent to @code{describe("word")}. The question mark must 
 @c occur at the beginning of an input line; otherwise it is not recognized as a 
 @c request for documentation.
 
-Die Eingabe @code{? word} ist eine Kurzschreibweise für das Kommando 
+Die Eingabe @code{? word} ist eine Kurzschreibweise f@"ur das Kommando 
 @code{describe("word")}. Das Fragezeichen muss am Anfang einer Eingabezeile 
 stehen, damit Maxima die Eingabe als eine Anfrage nach der Dokumentation
 interpretiert.
@@ -562,8 +562,8 @@ interpretiert.
 @c mark must occur at the beginning of an input line; otherwise it is not 
 @c recognized as a request for documentation.
 
-Die Eingabe @code{?? word} ist eine Kurzschreibweise für das Kommando 
-@code{describe("word", inexact)}. Die Fragezeichen müssen am Anfang einer 
+Die Eingabe @code{?? word} ist eine Kurzschreibweise f@"ur das Kommando 
+@code{describe("word", inexact)}. Die Fragezeichen m@"ussen am Anfang einer 
 Eingabezeile stehen, damit Maxima die Eingabe als eine Anfrage nach der 
 Dokumentation interpretiert.
 
@@ -580,8 +580,8 @@ Standardwert: @code{%i}
 @c Maxima automatically constructs a label for each input expression by 
 @c concatenating @code{inchar} and @code{linenum}. 
 
-Die Optionsvariable @code{inchar} ist der Präfix der Eingabemarken. Maxima 
-erzeugt die Eingabemarken automatisch aus dem Präfix @code{inchar} und der 
+Die Optionsvariable @code{inchar} ist der Pr@"afix der Eingabemarken. Maxima 
+erzeugt die Eingabemarken automatisch aus dem Pr@"afix @code{inchar} und der 
 Zeilennummer @code{linenum}.
 
 @c @code{inchar} may be assigned any string or symbol, not necessarily a single 
@@ -591,8 +591,8 @@ Zeilennummer @code{linenum}.
 @c like @code{kill(inlables)} do not work as expected.
 
 @code{inchar} kann eine Zeichenkette oder ein Symbol zugewiesen werden, die auch
-mehr als ein Zeichen haben können. Da Maxima jedoch intern nur das erste Zeichen
-berücksichtigt, sollten sich die Präfixe @code{inchar}, @code{outchar} und 
+mehr als ein Zeichen haben k@"onnen. Da Maxima jedoch intern nur das erste Zeichen
+ber@"ucksichtigt, sollten sich die Pr@"afixe @code{inchar}, @code{outchar} und 
 @code{linechar} im ersten Zeichen voneinander unterscheiden. Ansonsten 
 funktionieren einige Kommandos wie zum Beispiel @code{kill(inlabels)} nicht wie 
 erwartet.
@@ -631,7 +631,7 @@ Standardwert: @code{[]}
 @c @code{infolists} is a list of the names of all of the information lists in 
 @c Maxima. These are:
 
-@code{infolists} ist eine Liste der Informationslisten, die Maxima zur Verfügung
+@code{infolists} ist eine Liste der Informationslisten, die Maxima zur Verf@"ugung
 stellt. Diese sind:
 
 @table @code
@@ -639,7 +639,7 @@ stellt. Diese sind:
 
 @c All bound @code{%i}, @code{%o}, and @code{%t} labels.
 
-Enthält die Marken @code{%i}, @code{%o} und @code{%t}, denen bisher ein Ausdruck
+Enth@"alt die Marken @code{%i}, @code{%o} und @code{%t}, denen bisher ein Ausdruck
 zugewiesen wurde.
 
 @item values
@@ -647,14 +647,14 @@ zugewiesen wurde.
 @c All bound atoms which are user variables, not Maxima options or switches, 
 @c created by @code{:} or @code{::} or functional binding.
 
-Enthält die vom Benutzer mit den Operatoren @code{:} oder @code{::} definierten
+Enth@"alt die vom Benutzer mit den Operatoren @code{:} oder @code{::} definierten
 Variablen.
 
 @item functions
 
 @c All user-defined functions, created by @code{:=} or @code{define}.
 
-Enthält die vom Benutzer mit dem Operator @code{:=} oder der Funktion
+Enth@"alt die vom Benutzer mit dem Operator @code{:=} oder der Funktion
 @code{define} definierten Funktionen.
 
 @item arrays
@@ -662,21 +662,21 @@ Enthält die vom Benutzer mit dem Operator @code{:=} oder der Funktion
 @c All declared and undeclared arrays, created by @code{:}, @code{::}, or 
 @c @code{:=}.
 
-Enthält die mit den Operatoren @code{:}, @code{::} oder @code{:=} definierten
+Enth@"alt die mit den Operatoren @code{:}, @code{::} oder @code{:=} definierten
 Arrays oder Array-Funktionen.
 
 @item macros
 
 @c All user-defined macro functions.
 
-Enthält die vom Benutzer mit dem Operator @code{::=} definierten Makros.
+Enth@"alt die vom Benutzer mit dem Operator @code{::=} definierten Makros.
 
 @item myoptions
 
 @c All options ever reset by the user (whether or not they are later reset to 
 @c their default values).
 
-Enthält die Liste der Optionsvariablen, die vom Benutzer bisher einen neuen
+Enth@"alt die Liste der Optionsvariablen, die vom Benutzer bisher einen neuen
 Wert erhalten haben.
 
 @item rules
@@ -684,7 +684,7 @@ Wert erhalten haben.
 @c All user-defined pattern matching and simplification rules, created by 
 @c @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, or @code{defrule}.
 
-Enthält die vom Benutzer mit den Kommandos @code{tellsimp}, 
+Enth@"alt die vom Benutzer mit den Kommandos @code{tellsimp}, 
 @code{tellsimpafter}, @code{defmatch} oder @code{defrule} definierten Regeln.
 
 @item aliases
@@ -693,7 +693,7 @@ Enthält die vom Benutzer mit den Kommandos @code{tellsimp},
 @c @code{ordergreat}, @code{orderless} functions or by declaring the atom as a 
 @c @code{noun} with @code{declare}.
 
-Enthält die Liste der Symbole, die einen vom Benutzer definierten
+Enth@"alt die Liste der Symbole, die einen vom Benutzer definierten
 Alias-Namen mit dem Kommando @code{alias} erhalten haben. Weiterhin erzeugen
 die Funktionen @code{ordergreat} und @code{orderless} sowie eine Deklaration
 als @code{noun} mit dem Kommando @code{declare} Alias-Namen, die in die Liste
@@ -704,15 +704,15 @@ eingetragen werden.
 @c All atoms which have functional dependencies, created by the @code{depends} 
 @c or @code{gradef} functions.
 
-Enthält alle Symbole, für die mit den Kommandos @code{depends} oder 
-@code{gradef} eine Abhängigkeit definiert ist.
+Enth@"alt alle Symbole, f@"ur die mit den Kommandos @code{depends} oder 
+@code{gradef} eine Abh@"angigkeit definiert ist.
 
 @item gradefs
 
 @c All functions which have user-defined derivatives, created by the 
 @c @code{gradef} function.
 
-Enthält die Funktionen, für die der Benutzer mit dem Kommando @code{gradef} 
+Enth@"alt die Funktionen, f@"ur die der Benutzer mit dem Kommando @code{gradef} 
 eine Ableitung definiert hat.
 
 @item props
@@ -721,7 +721,7 @@ eine Ableitung definiert hat.
 @c properties established by @code{atvalue} or @code{matchdeclare}, etc., as 
 @c well as properties established in the @code{declare} function.
 
-Enthält die Symbole, die eine Eigenschaft mit dem Kommando @code{declare} 
+Enth@"alt die Symbole, die eine Eigenschaft mit dem Kommando @code{declare} 
 erhalten haben.
 
 @item let_rule_packages
@@ -730,7 +730,7 @@ erhalten haben.
 @c @code{default_let_rule_package}. (@code{default_let_rule_package} is the 
 @c name of the rule package used when one is not explicitly set by the user.)
 
-Enthält die vom Benutzer definieren @code{let}-Regeln.
+Enth@"alt die vom Benutzer definieren @code{let}-Regeln.
 
 @c BESCHREIBUNG DER LISTE STRUCTURES FEHLT
 
@@ -770,7 +770,7 @@ an dieses Element, ohne die anderen Elemente des Arrays zu beeinflussen.
 @c may be combined, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}.
 
 @code{kill} kennt verschiedene spezielle Argumente, die auch kombiniert werden 
-können wie zum Beispiel @code{kill(inlabels, functions, allbut(foo, bar))}.
+k@"onnen wie zum Beispiel @code{kill(inlabels, functions, allbut(foo, bar))}.
 
 @c @code{kill (labels)} unbinds
 @c all input, output, and intermediate expression labels created so far.
@@ -808,17 +808,17 @@ Ausgabemarken mit den Nummern von @var{m} bis @var{n}.
 
 @code{kill(@var{infolist})}, wobei @var{infolist} eine Informationsliste wie zum
 Beispiel @code{values}, @code{functions} oder @code{arrays} ist, entfernt die 
-Zuweisungen an allen Einträge der Liste @var{infolist}. Siehe auch 
+Zuweisungen an allen Eintr@"age der Liste @var{infolist}. Siehe auch 
 @code{infolists}.
 
 @c @code{kill (all)} unbinds all items on all infolists.
 @c @code{kill (all)} does not reset global variables to their default values;
 @c see @code{reset} on this point.
 
-@code{kill(all)} entfernt die Zuweisungen an die Einträge in sämtlichen 
+@code{kill(all)} entfernt die Zuweisungen an die Eintr@"age in s@"amtlichen 
 Infolisten. @code{kill(all)} setzt keine Optionsvariablen auf ihre 
-Standardwerte zurück. Siehe die Funktion @code{reset}, um Optionsvariablen auf 
-ihre Standwerte zurückzusetzen.
+Standardwerte zur@"uck. Siehe die Funktion @code{reset}, um Optionsvariablen auf 
+ihre Standwerte zur@"uckzusetzen.
 
 @c @code{kill (allbut (@var{a_1}, ..., @var{a_n}))} unbinds all items on all 
 @c infolists except for @var{a_1}, ..., @var{a_n}. @code{kill (allbut 
@@ -835,13 +835,13 @@ der Informationsliste @var{infolist}.
 @c value of a symbol,one unbinds the output label which shows the bound value, 
 @c as well as unbinding the symbol itself.
 
-@c NICHT ÜBERSETZT.
+@c TODO: NICHT ÜBERSETZT.
 
 @c @code{kill (@var{symbol})} unbinds all properties of @var{symbol}. In 
 @c contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and 
 @c @code{remrule} unbind a specific property.
 
-@code{kill(@var{symbol})} entfernt sämtliche Zuweisungen und Eigenschaften des 
+@code{kill(@var{symbol})} entfernt s@"amtliche Zuweisungen und Eigenschaften des 
 Symbols @var{symbol}. Im Gegensatz dazu entfernen @code{remvalue}, 
 @code{remfunction}, @code{remarray} und @code{remrule} jeweils eine spezielle 
 Eigenschaft eines Symbols.
@@ -854,7 +854,7 @@ Auswertung erzwingen.
 
 @c @code{kill} always returns @code{done}, even if an argument has no binding.
 
-@code{kill} gibt immer @code{done} zurück.
+@code{kill} gibt immer @code{done} zur@"uck.
 
 @c @opencatbox
 @c @category{Auswertung} @category{Konsole Ein- und Ausgabe} @category{Sitzungsverwaltung}
@@ -872,7 +872,7 @@ Auswertung erzwingen.
 @c @code{%i} yield the same result.
 
 Die Funktion @code{labels} gibt eine Liste der Eingabe-, Ausgabe- und 
-Zwischenmarken zurück, die mit @var{symbol} beginnen. Typischerweise ist 
+Zwischenmarken zur@"uck, die mit @var{symbol} beginnen. Typischerweise ist 
 @var{symbol} der Wert von @code{inchar}, @code{outchar} oder @code{linechar}. 
 Dabei kann das Prozentzeichen fortgelassen werden. So ergeben zum Beispiel 
 @code{labels(i)} und @code{labels(%i)} dasselbe Ergebnis.
@@ -880,7 +880,7 @@ Dabei kann das Prozentzeichen fortgelassen werden. So ergeben zum Beispiel
 @c If no labels begin with @var{symbol}, @code{labels} returns an empty list.
 
 Wenn keine Marke mit @var{symbol} beginnt, gibt @code{labels} eine leere Liste 
-zurück.
+zur@"uck.
 
 @c The function @code{labels} quotes its argument. The quote-quote operator 
 @c @code{'@w{}'} defeats quotation. For example, @code{labels (''inchar)} 
@@ -888,15 +888,15 @@ zurück.
 
 Die Funktion @code{labels} wertet ihre Argument nicht aus. Mit dem
 Quote-Quote-Operator @code{'@w{}'} kann die Auswertung erzwungen werden. Zum
-Beispiel gibt @code{labels (''inchar)} die Eingabemarken zurück, die mit dem
-aktuellen Buchstaben für die Eingabemarken beginnen.
+Beispiel gibt @code{labels (''inchar)} die Eingabemarken zur@"uck, die mit dem
+aktuellen Buchstaben f@"ur die Eingabemarken beginnen.
 
 @c The variable @code{labels} is the list of input, output, and intermediate 
 @c expression labels, including all previous labels if @code{inchar}, 
 @c @code{outchar}, or @code{linechar} were redefined.
 
-Die Variable @code{labels} enthält eine Liste aller Eingabe-, Ausgabe- und 
-Zwischenmarken, einschließlich der Marken, die vor einer Änderung von 
+Die Variable @code{labels} enth@"alt eine Liste aller Eingabe-, Ausgabe- und 
+Zwischenmarken, einschlie@ss{}lich der Marken, die vor einer @"Anderung von 
 @code{inchar}, @code{outchar} oder @code{linechar} erzeugt wurden. 
 
 @c By default, Maxima displays the result of each user input expression,
@@ -906,10 +906,10 @@ Zwischenmarken, einschließlich der Marken, die vor einer Änderung von
 @c displayed, and the label may be referenced in the same way as displayed 
 @c output labels. See also @code{%}, @code{%%}, and @code{%th}.
 
-Standardmäßig zeigt Maxima das Ergebnis jeder Benutzereingabe an, wobei dem 
-Ergebnis eine Ausgabemarke hinzugefügt wird. Die Anzeige der Ausgabe wird durch 
-die Eingabe eines abschließenden @code{$} (Dollarzeichen) statt eines @code{;} 
-(Semikolon) unterdrückt. Dabei wird eine Ausgabemarke erzeugt und das 
+Standardm@"a@ss{}ig zeigt Maxima das Ergebnis jeder Benutzereingabe an, wobei dem 
+Ergebnis eine Ausgabemarke hinzugef@"ugt wird. Die Anzeige der Ausgabe wird durch 
+die Eingabe eines abschlie@ss{}enden @code{$} (Dollarzeichen) statt eines @code{;} 
+(Semikolon) unterdr@"uckt. Dabei wird eine Ausgabemarke erzeugt und das 
 Ergebnis zugewiesen, jedoch nicht angezeigt. Die Marke kann aber in der gleichen 
 Art und Weise wie bei angezeigten Ausgabemarken referenziert werden. Siehe auch 
 @code{%}, @code{%%} und @code{%th}.
@@ -922,8 +922,8 @@ Art und Weise wie bei angezeigten Ausgabemarken referenziert werden. Siehe auch
 
 Einige Funktionen erzeugen Zwischenmarken. Die Optionsvariable 
 @code{programmode} bestimmt, ob zum Beispiel @code{solve} und einige andere 
-Funktionen Zwischenmarken erzeugen, anstatt eine Liste von Ausdrücken 
-zurückzugeben. Andere Funktionen, wie zum Beispiel @code{ldisplay}, erzeugen 
+Funktionen Zwischenmarken erzeugen, anstatt eine Liste von Ausdr@"ucken 
+zur@"uckzugeben. Andere Funktionen, wie zum Beispiel @code{ldisplay}, erzeugen 
 stets Zwischenmarken.
 
 @c See also @code{inchar}, @code{outchar}, @code{linechar}, and 
@@ -945,7 +945,7 @@ Standardwert: @code{%t}
 @c expression (if displayed) by concatenating @code{linechar} and 
 @c @code{linenum}.
 
-@code{linechar} ist der Präfix der Zwischenmarken. Maxima generiert die 
+@code{linechar} ist der Pr@"afix der Zwischenmarken. Maxima generiert die 
 Zwischenmarken automatisch aus @code{linechar} und @code{linenum}.
 
 @c @code{linechar} may be assigned any string or symbol, not necessarily a 
@@ -955,8 +955,8 @@ Zwischenmarken automatisch aus @code{linechar} und @code{linenum}.
 @c like @code{kill(inlables)} do not work as expected.
 
 @code{linechar} kann eine Zeichenkette oder ein Symbol zugewiesen werden, die 
-auch mehr als ein Zeichen haben können. Da Maxima jedoch intern nur das erste 
-Zeichen berücksichtigt, sollten sich die Präfixe @code{inchar}, @code{outchar} 
+auch mehr als ein Zeichen haben k@"onnen. Da Maxima jedoch intern nur das erste 
+Zeichen ber@"ucksichtigt, sollten sich die Pr@"afixe @code{inchar}, @code{outchar} 
 und @code{linechar} im ersten Zeichen voneinander unterscheiden. Ansonsten 
 funktionieren einige Kommandos wie @code{kill(inlabels)} nicht wie erwartet.
 
@@ -991,8 +991,8 @@ Standardwert: @code{[]}
 @c whether or not they get reset to their default value.
 
 @code{myoptions} ist die Liste aller Optionsvariablen, die vom Benutzer
-während einer Sitzung geändert wurden. Die Variable verbleibt in der Liste, auch
-wenn sie wieder auf den Standwert zurückgesetzt wird.
+w@"ahrend einer Sitzung ge@"andert wurden. Die Variable verbleibt in der Liste, auch
+wenn sie wieder auf den Standwert zur@"uckgesetzt wird.
 
 @c @opencatbox
 @c @category{Systemvariable} @category{Sitzungsverwaltung} @category{Konsole Ein- und Ausgabe}
@@ -1011,7 +1011,7 @@ Standardwert: @code{false}
 
 Hat @code{nolabels} den Wert @code{true}, werden die Eingabe- und Ausgabemarken 
 zwar angezeigt, ihnen werden aber keine Eingaben und Ergebnisse zugewiesen und
-sie werden nicht der Liste @code{labels} hinzugefügt.
+sie werden nicht der Liste @code{labels} hinzugef@"ugt.
 
 @c Otherwise input and output result labels are bound to results,
 @c and the labels are appended to the @code{labels} list.
@@ -1025,7 +1025,7 @@ sie in die Informationsliste @code{labels} eingetragen.
 @c list.
 
 Zwischenmarken @code{%t} werden durch @code{nolabels} nicht beeinflusst. Den
-Marken werden unabhängig vom Wert, den @code{nolables} hat, Zwischenergebnisse
+Marken werden unabh@"angig vom Wert, den @code{nolables} hat, Zwischenergebnisse
 zugewiesen und sie werden in Informationsliste @code{labels} eingetragen.
 
 @c See also @code{batch}, @code{load}, and @code{labels}.
@@ -1047,7 +1047,7 @@ Standardwert: @code{false}
 @c a value to was truly an option variable.
 
 Hat @code{optionset} den Wert @code{true}, gibt Maxima eine Meldung aus, wenn 
-eine Optionsvariable einen neuen Wert erhält.
+eine Optionsvariable einen neuen Wert erh@"alt.
 
 @c @opencatbox
 @c @category{Globale Flags} @category{Sitzungsverwaltung} @category{Konsole Ein- und Ausgabe}
@@ -1062,7 +1062,7 @@ Standardwert: @code{%o}
 @c Maxima automatically constructs a label for each computed expression by 
 @c concatenating @code{outchar} and @code{linenum}. 
 
-@code{outchar} ist der Präfix der Ausgabemarken. Maxima generiert die 
+@code{outchar} ist der Pr@"afix der Ausgabemarken. Maxima generiert die 
 Ausgabemarken automatisch aus @code{outchar} und @code{linenum}.
 
 @c @code{outchar} may be assigned any string or symbol, not necessarily a single 
@@ -1072,8 +1072,8 @@ Ausgabemarken automatisch aus @code{outchar} und @code{linenum}.
 @c like @code{kill(inlables)} do not work as expected.
 
 @code{outchar} kann eine Zeichenkette oder ein Symbol zugewiesen werden, die auch
-mehr als ein Zeichen haben können. Da Maxima jedoch intern nur das erste Zeichen
-berücksichtigt, sollten sich die Präfixe @code{inchar}, @code{outchar} und 
+mehr als ein Zeichen haben k@"onnen. Da Maxima jedoch intern nur das erste Zeichen
+ber@"ucksichtigt, sollten sich die Pr@"afixe @code{inchar}, @code{outchar} und 
 @code{linechar} im ersten Zeichen voneinander unterscheiden. Ansonsten 
 funktionieren einige Kommandos wie @code{kill(inlabels)} nicht wie erwartet.
 
@@ -1125,39 +1125,39 @@ berechnen. @code{playback} zeigt nur die Eingaben und Ergebnisse an, die Marken 
 @c defeats quotation. @code{playback} always returns @code{done}.
 
 @code{playback} wertet seine Argumente nicht aus. @code{playback} gibt stets 
-@code{done} zurück.
+@code{done} zur@"uck.
 
 @c @code{playback ()} (with no arguments) displays all input, output, and 
 @c intermediate expressions generated so far. An output expression is displayed 
 @c even if it was suppressed by the @code{$} terminator when it was originally 
 @c computed.
 
-@code{playback()} zeigt sämtliche Eingaben und Ergebnisse an, die bis dahin
+@code{playback()} zeigt s@"amtliche Eingaben und Ergebnisse an, die bis dahin
 erzeugt wurden. Ein bereits Ergebnis wird auch dann angezeigt, wenn die Ausgabe
-mit @code{$} unterdrückt war.
+mit @code{$} unterdr@"uckt war.
 
 @c @code{playback (@var{n})} displays the most recent @var{n} expressions.
 @c Each input, output, and intermediate expression counts as one.
 
-@code{playback(@var{n})} zeigt die letzten @var{n} Ausdrücke an. Jeder 
-Eingabe-, Ausgabe- und Zwischenausdruck zählt dabei als ein Ausdruck.
+@code{playback(@var{n})} zeigt die letzten @var{n} Ausdr@"ucke an. Jeder 
+Eingabe-, Ausgabe- und Zwischenausdruck z@"ahlt dabei als ein Ausdruck.
 
 @c @code{playback ([@var{m}, @var{n}])} displays input, output, and intermediate
 @c expressions with numbers from @var{m} through @var{n}, inclusive.
 
 @code{playback([@var{m}, @var{n}])} zeigt die Eingabe-, Ausgabe- und 
-Zwischenausdrücke mit den Zahlen von @var{m} bis einschließlich @var{n} an. 
+Zwischenausdr@"ucke mit den Zahlen von @var{m} bis einschlie@ss{}lich @var{n} an. 
 
 @c @code{playback ([@var{m}])} is equivalent to 
 @c @code{playback ([@var{m}, @var{m}])}; this usually prints one pair of input 
 @c and output expressions.
 
-@code{playback([@var{m}])} ist äquivalent zu @code{playback([@var{m}, 
-@var{m}])}. Dies Ausgabe ist ein Paar von Ein- und Ausgabeausdrücken.
+@code{playback([@var{m}])} ist @"aquivalent zu @code{playback([@var{m}, 
+@var{m}])}. Dies Ausgabe ist ein Paar von Ein- und Ausgabeausdr@"ucken.
 
 @c @code{playback (input)} displays all input expressions generated so far.
 
-@code{playback(input)} zeigt sämtliche Eingabeausdrücke an, die bis dahin 
+@code{playback(input)} zeigt s@"amtliche Eingabeausdr@"ucke an, die bis dahin 
 erzeugt wurden.
 
 @c @code{playback (slow)} pauses between expressions
@@ -1167,7 +1167,7 @@ erzeugt wurden.
 @code{playback(slow)} wartet zwischen der Ausgabe auf die Eingabe von 
 @code{enter}. Dieses Verhalten ist vergleichbar mit @code{demo}.
 
-@c Das folgende nicht übersetzt.
+@c TODO: Das folgende nicht übersetzt.
 
 @c @c WHAT DOES THE FOLLOWING MEAN ???
 @c @code{playback (slow)} is useful in conjunction with @code{save} or 
@@ -1176,7 +1176,7 @@ erzeugt wurden.
 
 @c @code{playback (time)} displays the computation time for each expression.
 
-@code{playback(time)} zeigt für jeden Ausdruck die für die Berechnung benötigte 
+@code{playback(time)} zeigt f@"ur jeden Ausdruck die f@"ur die Berechnung ben@"otigte 
 Zeit an.
 
 @c @c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
@@ -1188,14 +1188,14 @@ Zeit an.
 @c @code{grind} function. Output expressions are not affected by the 
 @c @code{grind} option. See @code{grind}.
 
-@code{playback(grind)} zeigt die Eingabeausdrücke in dem gleichen Format an 
-wie die Funktion @code{grind}. Ausgabeausdrücke werden von der Option 
+@code{playback(grind)} zeigt die Eingabeausdr@"ucke in dem gleichen Format an 
+wie die Funktion @code{grind}. Ausgabeausdr@"ucke werden von der Option 
 @code{grind} nicht beeinflusst. Siehe @code{grind}.
 
 @c Arguments may be combined, e.g., @code{playback ([5, 10], grind, time, slow)}.
 @c @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
-Die Argumente können kombiniert werden, wie zum Beispiel im folgendenen Kommando 
+Die Argumente k@"onnen kombiniert werden, wie zum Beispiel im folgendenen Kommando 
 @code{playback([5, 10], grind, time, slow)}.
 
 @c @opencatbox
@@ -1211,7 +1211,7 @@ Standardwert: @code{_}
 @c @code{playback (slow)} mode, and the Maxima break loop (as invoked by 
 @c @code{break}).
 
-@code{prompt} ist das Zeichen für die Auforderung zur Eingabe der Funktionen
+@code{prompt} ist das Zeichen f@"ur die Auforderung zur Eingabe der Funktionen
 @code{demo} und @code{playback(slow)} sowie nach einer Unterbrechung, wie zum
 Beispiel durch das Kommando @code{break}.
 
@@ -1233,7 +1233,7 @@ Das Kommando @code{quit()} beendet eine Maxima-Sitzung.
 @c @code{control-C} opens the Lisp debugger. See also @code{debugging}.
 
 Mit @code{control-C} kann in der Konsole eine Berechnung abgebrochen werden. 
-Standardmäßig wird die Maxima-Sitzung fortgesetzt. Hat die globale Lisp-Variable 
+Standardm@"a@ss{}ig wird die Maxima-Sitzung fortgesetzt. Hat die globale Lisp-Variable 
 @code{*debugger-hook*} den Wert @code{nil}, wird der Lisp-Debugger gestartet. 
 Siehe auch @code{debugging}.
 
@@ -1255,18 +1255,18 @@ Siehe auch @code{debugging}.
 @c defined by @code{defmvar} are not global variables or options.
 
 @code{reset()} setzt globale Maxima- und Lisp-Variablen und Optionen auf ihre 
-Standardwerte zurück. Maxima legt eine interne Liste mit den Standardwerten von 
+Standardwerte zur@"uck. Maxima legt eine interne Liste mit den Standardwerten von 
 globalen Variablen an. Alle Variablen, die in dieser Liste enthalten sind, 
-werden auf ihre Standardwerte zurückgesetzt. Es ist bekannt, dass nicht alle
+werden auf ihre Standardwerte zur@"uckgesetzt. Es ist bekannt, dass nicht alle
 globalen Variablen mit ihren Standwerten in dieser Liste eingetragen sind. Daher
-kann @code{reset} die Anfangswerte stets nur unvollständig wiederherstellen.
+kann @code{reset} die Anfangswerte stets nur unvollst@"andig wiederherstellen.
 
 @code{reset(@var{arg_1, ..., arg_n})} setzt die Variablen @var{arg_1}, ..., 
-@var{arg_n} auf ihren Standardwert zurück, sofern diese Variablen in der Liste 
+@var{arg_n} auf ihren Standardwert zur@"uck, sofern diese Variablen in der Liste 
 der globalen Variablen enthalten ist.
 
-@code{reset} hat als Rückgabewert eine Liste mit den Variablen, die 
-zurückgesetzt wurden. Ist die Liste leer, wurden keine Variablen zurückgesetzt.
+@code{reset} hat als R@"uckgabewert eine Liste mit den Variablen, die 
+zur@"uckgesetzt wurden. Ist die Liste leer, wurden keine Variablen zur@"uckgesetzt.
 
 Siehe auch @code{reset_verbosely}.
 
@@ -1280,7 +1280,7 @@ Siehe auch @code{reset_verbosely}.
 @deffnx {Funktion} reset_verbosely (@var{arg_1}, ..., @var{arg_n})
 
 Entspricht der Funktion @code{reset}. Im Unterschied zu @code{reset} werden zu
-jeder Variable, die zurückgesetzt wird, zusätzlich der Standwert angezeigt.
+jeder Variable, die zur@"uckgesetzt wird, zus@"atzlich der Standwert angezeigt.
 
 Siehe @code{reset}.
 
@@ -1302,9 +1302,9 @@ gesamte verstrichene Zeit zu jeder Ausgabe angezeigt.
 @c The computation time is always recorded, so @code{time} and @code{playback} 
 @c can display the computation time even when @code{showtime} is @code{false}.
 
-Die Rechenzeit wird unabhängig vom Wert der Optionsvariable @code{showtime}
+Die Rechenzeit wird unabh@"angig vom Wert der Optionsvariable @code{showtime}
 nach jeder Auswertung eines Ausdruckes unter den Ausgabemarken abgespeichert. 
-Daher können die Funktionen @code{time} und @code{playback} die Rechenzeit auch 
+Daher k@"onnen die Funktionen @code{time} und @code{playback} die Rechenzeit auch 
 dann anzeigen, wenn @code{showtime} den Wert @code{false} hat.
 
 @c See also @code{timer}.
@@ -1323,10 +1323,10 @@ Siehe auch @code{timer}.
 @c default shell for execution. @code{system} is not supported by all operating
 @c systems, but generally exists in Unix and Unix-like environments.
 
-@code{system(command)} führt das Kommando @code{command} in einem eigenen 
-Prozess aus. Das Kommando wird an die Standard-Shell übergeben. 
-@code{system} wird nicht von allen Betriebssystemen unterstützt, steht aber
-im Allgemeinen unter Unix oder Unix ähnlichen Betriebssystemen zur Verfügung.
+@code{system(command)} f@"uhrt das Kommando @code{command} in einem eigenen 
+Prozess aus. Das Kommando wird an die Standard-Shell @"ubergeben. 
+@code{system} wird nicht von allen Betriebssystemen unterst@"utzt, steht aber
+im Allgemeinen unter Unix oder Unix @"ahnlichen Betriebssystemen zur Verf@"ugung.
 
 @c DAS FOLGENDE BEISPIEL FUNKTIONIERT NICHT. XGRAPH IST NICHT MEHR VORHANDEN.
 
@@ -1354,7 +1354,7 @@ im Allgemeinen unter Unix oder Unix ähnlichen Betriebssystemen zur Verfügung.
 @c Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
 
 Wechselt zu einer Lisp-Sitzung. @code{(to-maxima)} wechselt von der Lisp-Sitzung
-zurück in die Maxima-Sitzung.
+zur@"uck in die Maxima-Sitzung.
 
 Beispiel:
 
@@ -1366,7 +1366,7 @@ Beispiel:
 Definiere eine Funktion und wechsle zu Lisp. Die Definition wird von der 
 Eigenschaftsliste gelesen. Dann wird die Defintion der Funktion geholt, 
 faktorisiert und in der Variablen @code{$result} gespeichert. Die Variable kann 
-nach der Rückkehr in Maxima genutzt werden.
+nach der R@"uckkehr in Maxima genutzt werden.
 
 @example
 (%i1) f(x):=x^2+x;
@@ -1410,7 +1410,7 @@ entfernt.
 
 @c See @code{functions} for a list of user defined functions.
 
-Siehe auch @code{functions} für eine Liste der vom Benutzer definierten 
+Siehe auch @code{functions} f@"ur eine Liste der vom Benutzer definierten 
 Funktionen.
 
 Beispiele:
@@ -1489,7 +1489,7 @@ Standardwert: @code{!}
 @c expressions which are more than one line tall.
 
 @code{absboxchar} ist das Zeichen, das benutzt wird, um den Betrag eines 
-Ausdruckes anzuzeigen, der mehr als eine Zeile benötigt.
+Ausdruckes anzuzeigen, der mehr als eine Zeile ben@"otigt.
 
 Beispiel:
 
@@ -1530,8 +1530,8 @@ Beispiel:
 @c have names or where only the value of the argument is of interest and not the
 @c name.
 
-ist ähnlich wie die Funktion @code{display}. @code{disp} zeigt jedoch keine
-Gleichungen sondern nur die Werte der Ausdrücke @var{expr_1}, @var{expr_2}, ...
+ist @"ahnlich wie die Funktion @code{display}. @code{disp} zeigt jedoch keine
+Gleichungen sondern nur die Werte der Ausdr@"ucke @var{expr_1}, @var{expr_2}, ...
 an.
 
 Beispiele:
@@ -1567,11 +1567,11 @@ Beispiele:
 @c Returns the external representation of @var{expr}.
 
 @code{dispform} formatiert den Ausdruck @var{expr} von der internen Darstellung
-in eine externe Darstellung, wie sie für die Anzeige des Ausdrucks benötigt 
+in eine externe Darstellung, wie sie f@"ur die Anzeige des Ausdrucks ben@"otigt 
 wird. Bei der Formatierung sind die Optionsvariablen wie @code{displag} oder
 @code{powerdisp} wirksam.
 
-Beispiele für die interne und externe Darstellung von Ausdrücken sind:
+Beispiele f@"ur die interne und externe Darstellung von Ausdr@"ucken sind:
 
 @example
                     Interne Darstellung              Externe Darstellung
@@ -1585,16 +1585,16 @@ dispform(a/b)     : ((MTIMES) $A ((MEXPT) $B -1)) -> ((MQUOTIENT) $A $B)
 @c to the main (top-level) operator. @code{dispform(@var{expr}, all)} returns 
 @c the external representation with respect to all operators in @var{expr}.
 
-@code{dispform(@var{expr})} gibt die externe Darstellung nur für den ersten 
-Operator im Ausdruck zurück. @code{dispform(@var{expr}, all)} gibt die
-externe Darstellung in Bezug auf alle Operatoren im Ausdruck @var{expr} zurück.
+@code{dispform(@var{expr})} gibt die externe Darstellung nur f@"ur den ersten 
+Operator im Ausdruck zur@"uck. @code{dispform(@var{expr}, all)} gibt die
+externe Darstellung in Bezug auf alle Operatoren im Ausdruck @var{expr} zur@"uck.
 
 @c See also @code{part}, @code{inpart}, and @code{inflag}.
 
 Siehe auch @code{part}, @code{inpart}, und @code{inflag}
 
 @c @opencatbox
-@c @category{Ausdrücke}
+@c @category{Ausdr@"ucke}
 @c @closecatbox
 @end deffn
 
@@ -1606,10 +1606,10 @@ Siehe auch @code{part}, @code{inpart}, und @code{inflag}
 @c results displayed.  The arguments to @code{display} are usually atoms, 
 @c subscripted variables, or function calls.  See also @code{disp}.
 
-Die Variablen oder Ausdrücke @var{expr_i} werden als eine Gleichung ausgegeben.
+Die Variablen oder Ausdr@"ucke @var{expr_i} werden als eine Gleichung ausgegeben.
 Die linke Seite der Gleichung ist die Variable oder der Ausdruck @var{expr_i} 
 und die rechte Seite der Wert der Variablen oder des Ausdrucks. Die Argumente
-können Variable, indizierte Variable oder Funktionen sein.
+k@"onnen Variable, indizierte Variable oder Funktionen sein.
 
 Beispiele:
 
@@ -1645,7 +1645,7 @@ Standardwert: @code{true}
 @c When @code{display2d} is @code{false}, the console display is a string 
 @c (1-dimensional) form rather than a display (2-dimensional) form.
 
-Hat @code{display2d} den Wert @code{false}, werden Ausdrücke auf der Konsole
+Hat @code{display2d} den Wert @code{false}, werden Ausdr@"ucke auf der Konsole
 linear und nicht zweidimensional angezeigt.
 
 Beispiel:
@@ -1680,9 +1680,9 @@ Standardwert: @code{false}
 @c representation.  The display then corresponds to what @code{inpart} returns
 @c rather than @code{part}.
 
-Hat @code{display_format_internal} den Wert @code{true}, werden Ausdrücke für
+Hat @code{display_format_internal} den Wert @code{true}, werden Ausdr@"ucke f@"ur
 die Anzeige nicht in die externe Darstellung transformiert. Die Ausgabe erfolgt
-wie in der internen Darstellung. Das entspricht der Rückgabe der Funktion
+wie in der internen Darstellung. Das entspricht der R@"uckgabe der Funktion
 @code{inpart}.
 
 Beispiele:
@@ -1729,7 +1729,7 @@ Der Ausdruck @var{expr} wird zeilenweise ausgegeben. Auf der ersten Zeile wird
 der Operator des Ausdrucks @var{expr} ausgegeben. Dann werden die Argumente des
 Operators zeilenweise ausgegeben.
 
-Dies kann nützlich sein, wenn ein Ausdruck sehr lang ist.
+Dies kann n@"utzlich sein, wenn ein Ausdruck sehr lang ist.
 
 Beispiel:
 
@@ -1788,10 +1788,10 @@ Standardwert: @code{true}
 @c negative exponents using quotients, e.g., @code{X^(-1)} as @code{1/X}.
 
 Hat die Optionsvariable @code{exptdispflag} den Wert @code{true}, werden
-Ausdrücke mit einem negativen Exponenten als Quotient angezeigt.
+Ausdr@"ucke mit einem negativen Exponenten als Quotient angezeigt.
 
 @c @opencatbox
-@c @category{Ausdrücke} @category{Anzeigeflags und -variablen}
+@c @category{Ausdr@"ucke} @category{Anzeigeflags und -variablen}
 @c @closecatbox
 @end defvr
 
@@ -1803,8 +1803,8 @@ Ausdrücke mit einem negativen Exponenten als Quotient angezeigt.
 @c for input to Maxima. @code{grind} always returns @code{done}.
 
 Die Funktion @code{grind} gibt den Ausdruck @var{expr} auf der Konsole in einer
-Form aus, die für die Eingabe in Maxima geeignet ist. @code{grind} gibt 
-@code{done} zurück.
+Form aus, die f@"ur die Eingabe in Maxima geeignet ist. @code{grind} gibt 
+@code{done} zur@"uck.
 
 @c When @var{expr} is the name of a function or macro, @code{grind} prints the 
 @c function or macro definition instead of just the name.
@@ -1816,7 +1816,7 @@ die Defintion der Funktion oder des Makros aus.
 @c output. @code{grind} attempts to print the expression in a manner which makes
 @c it slightly easier to read than the output of @code{string}.
 
-Siehe auch die Funktion @code{string}, die eine Zeichenkette zurückgibt, anstatt
+Siehe auch die Funktion @code{string}, die eine Zeichenkette zur@"uckgibt, anstatt
 das Ergebnis auszugeben.
 
 @c When the variable @code{grind} is @code{true}, the output of @code{string} 
@@ -1932,10 +1932,10 @@ werden.
 @c not distinguished. The numerals for base 36, the largest acceptable base,
 @c comprise 0 through 9 and A through Z.
 
-@code{ibase} kann eine ganze Zahl zwischen 2 und einschließlich 36 zugewiesen
-werden. Ist @code{ibase} größer als 10, werden die Zahlen 0 bis 9 und die
-Buchstaben A, B, C, ... für die Darstellung der Zahl in der Basis @code{ibase}
-herangezogen. Große und kleine Buchstaben werden nicht unterschieden. Die
+@code{ibase} kann eine ganze Zahl zwischen 2 und einschlie@ss{}lich 36 zugewiesen
+werden. Ist @code{ibase} gr@"o@ss{}er als 10, werden die Zahlen 0 bis 9 und die
+Buchstaben A, B, C, ... f@"ur die Darstellung der Zahl in der Basis @code{ibase}
+herangezogen. Gro@ss{}e und kleine Buchstaben werden nicht unterschieden. Die
 erste Stelle muss immer eine Ziffer sein, damit Maxima den eingelesenen Ausdruck
 als eine Zahl interpretiert.
 
@@ -1970,7 +1970,7 @@ Beispiele:
 @c @code{ibase} greater than 10. Letters are interpreted as digits only if the 
 @c first digit is 0 through 9.
 
-@code{ibase} ist größer als 10. Die erste Stelle muss eine Ziffer sein.
+@code{ibase} ist gr@"o@ss{}er als 10. Die erste Stelle muss eine Ziffer sein.
 
 @c ===beg===
 @c ibase : 16 $
@@ -2031,9 +2031,9 @@ Gleitkommazahl interpretiert.
 @c printed output. @code{ldisp} assigns an intermediate expression label to each
 @c argument and returns the list of labels.
 
-Die Ausdrücke @var{expr_1}, ..., @var{expr_n} werden auf der Anzeige ausgegeben.
+Die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} werden auf der Anzeige ausgegeben.
 Dabei wird jeder Ausdruck einer Zwischenmarke zugewiesen, die als Liste 
-zurückgeben werden.
+zur@"uckgeben werden.
 
 Siehe auch @code{disp} und @code{display}.
 
@@ -2082,11 +2082,11 @@ Siehe auch @code{disp} und @code{display}.
 @c variable. @code{ldisp} assigns an intermediate expression label to each 
 @c equation and returns the list of labels.
 
-Die Ausdrücke @var{expr_1}, ..., @var{expr_n} werden als eine Gleichung 
+Die Ausdr@"ucke @var{expr_1}, ..., @var{expr_n} werden als eine Gleichung 
 der Form @code{lhs = rhs} ausgegeben. @code{lhs} ist eines der Argumente der 
 Funktion @code{ldisplay} und @code{rhs} ist der Wert des Argumentes. Im 
 Unterschied zur Funktion @code{display} wird jeder Gleichung eine Zwischenmarke
-zugewiesen, die als List zurückgegeben werden.
+zugewiesen, die als List zur@"uckgegeben werden.
 
 Siehe auch @code{display}, @code{disp} und @code{ldisp}.
 
@@ -2129,8 +2129,8 @@ Standardwert: 79
 @c output of @code{describe}, is not affected by @code{linel}.
 
 @code{linel} ist die Anzahl der Zeichen einer Zeile der Ausgabe. @code{linel}
-können beliebige postive ganze Zahlen zugewiesen werden, wobei sehr kleine
-oder große Werte unpraktisch sein können. Text der von internen Funktionen
+k@"onnen beliebige postive ganze Zahlen zugewiesen werden, wobei sehr kleine
+oder gro@ss{}e Werte unpraktisch sein k@"onnen. Text der von internen Funktionen
 ausgegeben wird, wie Fehlermeldungen oder Ausgabe der Hilfe, werden von 
 @code{linel} nicht beeinflusst.
 
@@ -2184,8 +2184,8 @@ Standardwert: @code{true}
 
 Hat @code{negsumdispflag} den Wert @code{true}, wird ein Ausdruck @code{x - y}
 als @code{x - y} und nicht als @code{-y + x} angezeigt. Ist das Flag 
-@code{false} wird ein Test auf solche Ausdrücke für die Ausgabe nicht 
-durchgeführt. Dies kann z. B. angewendet werden, damit die komplexen Zahlen
+@code{false} wird ein Test auf solche Ausdr@"ucke f@"ur die Ausgabe nicht 
+durchgef@"uhrt. Dies kann z. B. angewendet werden, damit die komplexen Zahlen
 @code{a + %i*b} und @code{a - %i*b} dieselbe Ausgabeform haben.
 
 @c @opencatbox
@@ -2199,7 +2199,7 @@ Standardwert: 10
 
 @c @code{obase} is the base for integers displayed by Maxima.
 
-@code{obase} ist die Basis für ganze Zahlen für die Ausgabe von Maxima.
+@code{obase} ist die Basis f@"ur ganze Zahlen f@"ur die Ausgabe von Maxima.
 
 @c @code{obase} may be assigned any integer between 2 and 36 (decimal), 
 @c inclusive. When @code{obase} is greater than 10, the numerals comprise the 
@@ -2208,10 +2208,10 @@ Standardwert: 10
 @c otherwise a letter. The numerals for base 36, the largest acceptable base,
 @c comprise 0 through 9, and A through Z.
 
-@code{obase} kann eine ganze Zahl zwischen 2 und einschließlich 36 zugewiesen
-werden. Ist @code{obase} größer als 10, werden die Zahlen 0 bis 9 und die
-Buchstaben A, B, C, ... für die Darstellung der Zahl in der Basis @code{obase}
-herangezogen. Große und kleine Buchstaben werden nicht unterschieden. Die
+@code{obase} kann eine ganze Zahl zwischen 2 und einschlie@ss{}lich 36 zugewiesen
+werden. Ist @code{obase} gr@"o@ss{}er als 10, werden die Zahlen 0 bis 9 und die
+Buchstaben A, B, C, ... f@"ur die Darstellung der Zahl in der Basis @code{obase}
+herangezogen. Gro@ss{}e und kleine Buchstaben werden nicht unterschieden. Die
 erste Stelle muss immer eine Ziffer sein, damit Maxima den eingelesenen Ausdruck
 als eine Zahl interpretiert.
 
@@ -2261,7 +2261,7 @@ Standardwert: @code{false}
 @c the solidus (forward slash) character, and an integer denominator @code{n}
 @c is displayed as a leading multiplicative term @code{1/n}.
 
-Hat die Optionsvariable @code{pfeformat} den Wert @code{true}, werden Brüche
+Hat die Optionsvariable @code{pfeformat} den Wert @code{true}, werden Br@"uche
 mit ganzen Zahlen auf einer Zeile mit dem Zeichen @code{/} dargestellt. Ist
 der Nenner eine ganze Zahl, wird dieser als @code{1/n} vor den Ausdruck 
 gestellt.
@@ -2310,7 +2310,7 @@ rechts aus und zeigt die Ergebnisse an.
 @c The value returned by @code{print} is the value of its last argument.
 @c @code{print} does not generate intermediate expression labels.
 
-@code{print} gibt das Ergebnis des letzten Arguments als Ergebnis zurück.
+@code{print} gibt das Ergebnis des letzten Arguments als Ergebnis zur@"uck.
 @code{print} erzeugt keine Zwischenmarken.
 
 @c See also @code{display}, @code{disp}, @code{ldisplay}, and @code{ldisp}.
@@ -2358,7 +2358,7 @@ Beispiele:
 @c console and returns the evaluated expression. The expression is terminated 
 @c with a semicolon @code{;} or dollar sign @code{$}.
 
-Gibt die Ausdrücke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
+Gibt die Ausdr@"ucke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
 sodann einen Ausdruck von der Konsole ein und wertet dieses aus. Die Eingabe
 des Ausdrucks wird mit den Zeichen @code{;} oder @code{$} beendet.
 
@@ -2386,9 +2386,9 @@ foo is 42  -- enter new value.
 @c console and returns the expression (without evaluation). The expression is 
 @c terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
 
-Gibt die Ausdrücke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
+Gibt die Ausdr@"ucke @var{expr_1}, ... @var{expr_n} auf der Konsole aus, liest
 sodann einen Ausdruck von der Konsole ein und gibt den eingelesenen Ausdruck
-zurück ohne diesen auszuwerten. Die Eingabe des Ausdrucks wird mit den Zeichen 
+zur@"uck ohne diesen auszuwerten. Die Eingabe des Ausdrucks wird mit den Zeichen 
 @code{;} oder @code{$} beendet.
 
 Siehe auch @code{read}.

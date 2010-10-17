@@ -12,9 +12,9 @@
 @c End the session with the command "quit();".  Here's a sample session:
 
 Von einer Kommandozeile wird Maxima mit dem Kommando @code{maxima} gestartet. 
-Maxima zeigt die aktuelle Version an und gibt einen Prompt für die Eingabe aus. 
+Maxima zeigt die aktuelle Version an und gibt einen Prompt f@"ur die Eingabe aus. 
 Ein Maxima-Kommando wird mit einem Semikolon abgeschlossen. Eine Maxima-Sitzung 
-wird mit dem Kommando @code{quit();} beendet. Es folgt ein Beispiel für eine 
+wird mit dem Kommando @code{quit();} beendet. Es folgt ein Beispiel f@"ur eine 
 Sitzung:
 
 @example
@@ -47,7 +47,7 @@ provides bug reporting information.
 Maxima kann GNU Infotext anzeigen. Das Kommando @code{describe(text)} 
 zeigt alle Inhalte an, die die Zeichenkette @code{text} enthalten. Das 
 Fragezeichen @code{?} (exakte Suche) und zwei Fragezeichen @code{??} (ungenaue 
-Suche) sind abkürzende Schreibweisen für @code{describe}:
+Suche) sind abk@"urzende Schreibweisen f@"ur @code{describe}:
 
 @example
 @c Maxima 5.20post
@@ -97,9 +97,9 @@ Enter space-separated numbers, `all' or `none': 4
 Das Ergebnis einer Rechnung wird mit dem Operator @code{:} einer Variablen 
 zugewiesen. Weiterhin speichert Maxima die Eingaben unter den Marken 
 @code{(%i)} und die Ausgaben unter den Marken @code{(%o)} ab. Die Marken 
-erhalten eine fortlaufende Nummerierung. Mit diesen Marken kann auf 
-frühere Eingaben und Ausgaben zurückgegriffen werden. Auf das letzte Ergebnis 
-kann mit @code{%} zurückgegriffen werden.
+erhalten eine fortlaufende Nummerierung. Mit diesen Marken kann auf fr@"uhere 
+Eingaben und Ausgaben zur@"uckgegriffen werden. Auf das letzte Ergebnis 
+kann mit @code{%} zur@"uckgegriffen werden.
 
 @c ===beg===
 @c u: expand ((x + y)^6);
@@ -182,7 +182,7 @@ Maxima kann lineare Gleichungssysteme und kubische Gleichungen lösen:
 @c want a result printed, you can finish your command with @kbd{$} instead
 @c of @kbd{;}.
 
-Maxima kann nichtlineare Gleichungssysteme lösen. Wird eine Eingabe mit 
+Maxima kann nichtlineare Gleichungssysteme l@"osen. Wird eine Eingabe mit 
 @kbd{$} anstatt @kbd{;} abgeschlossen, wird keine Ausgabe erzeugt.
 
 @c ===beg===

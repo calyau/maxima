@@ -76,7 +76,7 @@ Version ist als DOE Macsyma bekannt. Professor William F. Schelter von der
 University of Texas hat von 1982 bis zu seinem Tod im Jahr 2001 eine Kopie 
 von DOE Macsyma gepflegt. Im Jahr 1998 erhielt Schelter vom Department of Energy 
 die Erlaubnis, den Quellcode von DOE Macsyma unter der GNU Public Lizenz zu 
-veröffentlichen. Im Jahr 2000 initiierte Schelter das Maxima Projekt bei 
+ver@"offentlichen. Im Jahr 2000 initiierte Schelter das Maxima Projekt bei 
 SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 @end titlepage
 
@@ -84,7 +84,7 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 @contents
 
 @ifnottex
-@node Top, Einführung in Maxima, (dir), (dir)
+@node Top, Einf@"uhrung in Maxima, (dir), (dir)
 @top
 
 @c Maxima is a computer algebra system, implemented in Lisp.
@@ -109,7 +109,7 @@ Version ist als DOE Macsyma bekannt. Professor William F. Schelter von der
 University of Texas hat von 1982 bis zu seinem Tod im Jahr 2001 eine Kopie 
 von DOE Macsyma gepflegt. Im Jahr 1998 erhielt Schelter vom Department of Energy 
 die Erlaubnis, den Quellcode von DOE Macsyma unter der GNU Public Lizenz zu 
-veröffentlichen. Im Jahr 2000 initiierte Schelter das Maxima Projekt bei 
+ver@"offentlichen. Im Jahr 2000 initiierte Schelter das Maxima Projekt bei 
 SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 @end ifnottex
 
@@ -119,16 +119,16 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 
 Maxima Grundlagen
 
-* Einführung in Maxima::        Erste Beispiele mit Maxima.
+* Einf@"uhrung in Maxima::        Erste Beispiele mit Maxima.
 * Programmfehler::              Programmfehler finden und berichten.
 * Hilfe::                       Hilfe in einer Maxima-Sitzung erhalten.
 * Kommandozeile::               Syntax der Kommandozeile.
 * Datentypen::                  Ganze, rationale und Gleitkommazahlen, Konstante,
                                 Zeichenketten, ...
-* Ausdrücke::                   Ausdrücke in Maxima.
+* Ausdr@"ucke::                   Ausdr@"ucke in Maxima.
 * Operatoren::                  Operatoren in Maxima.
-* Auswertung::                  Auswertung von Ausdrücken.
-* Vereinfachung::               Vereinfachung von Ausdrücken.
+* Auswertung::                  Auswertung von Ausdr@"ucken.
+* Vereinfachung::               Vereinfachung von Ausdr@"ucken.
 * Mathematische Funktionen::    Mathematische Funktionen in Maxima.
 * Deklarationen und Fakten::    Deklarationen, Kontexte, Fakten.
 * Grafische Darstellung::       2D and 3D graphical output.
@@ -211,24 +211,24 @@ Additional packages
 
 Glossar
 
-* Glossar::                     Erläuterung von Begriffen.
+* Glossar::                     Erl@"auterung von Begriffen.
 
 Index
 
-* Function and Variable Index:: Index.
+* Index der Variablen und Funktionen:: Index.
 
 @c -----------------------------------------------------------------------------
  --- Liste der Kapitel ---
 
-Einführung
+Einf@"uhrung
 
-* Einführung in Maxima::
+* Einf@"uhrung in Maxima::
 
 Programmfehler
 
 * Programmfehler::
-* Einführung in Programmfehler::
-* Funktionen und Variablen für Programmfehler::
+* Einf@"uhrung in Programmfehler::
+* Funktionen und Variablen f@"ur Programmfehler::
 
 Hilfe
 
@@ -244,38 +244,38 @@ Kommandozeile
 Datentypen
 
 * Datentypen::
-* Einführung in Maxima Zahlen::
+* Einf@"uhrung in Maxima Zahlen::
 * Zeichenketten::
-* Funktionen und Variablen für Zahlen::
-* Funktionen und Variablen für Zeichenketten::
-* Funktionen und Variablen für Konstante::
+* Funktionen und Variablen f@"ur Zahlen::
+* Funktionen und Variablen f@"ur Zeichenketten::
+* Funktionen und Variablen f@"ur Konstante::
 
-Ausdrücke
+Ausdr@"ucke
 
-* Ausdrücke::
-* Einführung in Ausdrücke::
+* Ausdr@"ucke::
+* Einf@"uhrung in Ausdr@"ucke::
 * Substantive und Verben::
 * Bezeichner:: 
-* Funktionen und Variablen für Ausdrücke::
+* Funktionen und Variablen f@"ur Ausdr@"ucke::
 
 Operatoren
 
 * Arithmetische Operatoren::
 * Relationale Operatoren::
 * Logische Operatoren::
-* Operatoren für Gleichungen::
+* Operatoren f@"ur Gleichungen::
 * Zuweisungsoperatoren::
 * Benutzerdefinierte Operatoren::
 
 Auswertung
 
 * Auswertung::
-* Funktionen und Variablen für die Auswertung::
+* Funktionen und Variablen f@"ur die Auswertung::
 
 Vereinfachung
 
 * Vereinfachung::
-* Funktionen und Variablen für die Vereinfachung::
+* Funktionen und Variablen f@"ur die Vereinfachung::
 
 Mathematische Funktionen
 
@@ -288,20 +288,20 @@ Mathematische Funktionen
 Deklarationen und Fakten
 
 * Deklarationen::
-* Funktionen und Variable für Kontexte::
-* Funktionen und Variable für Deklarationen::
+* Funktionen und Variable f@"ur Kontexte::
+* Funktionen und Variable f@"ur Deklarationen::
 
 Grafische Darstellung
 
-* Einführung in die grafische Darstellung::
-* Funktionen und Variablen für die grafische Darstellung::
+* Einf@"uhrung in die grafische Darstellung::
+* Funktionen und Variablen f@"ur die grafische Darstellung::
 
 Eingabe und Ausgabe
 
 * Kommentare::
 * Dateien::         
-* Funktionen und Variablen für die Eingabe und Ausgabe::
-* Funktionen und Variablen für die Tex-Ausgabe::
+* Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
+* Funktionen und Variablen f@"ur die Tex-Ausgabe::
 
 Polynomials
 
@@ -439,7 +439,7 @@ Function Definition
 * Function::                    
 * Macros::                      
 * Functions and Variables for Function Definition::
-* Funktionen und Variable für die Funktionsanwendung::
+* Funktionen und Variable f@"ur die Funktionsanwendung::
 
 Program Flow
 
@@ -652,11 +652,11 @@ Glossar
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Einführung in Maxima, Programmfehler, Top, Top
-@chapter Einführung in Maxima
+@node Einf@"uhrung in Maxima, Programmfehler, Top, Top
+@chapter Einf@"uhrung in Maxima
 @include Introduction.de.texi
 
-@node Programmfehler, Hilfe, Einführung in Maxima, Top
+@node Programmfehler, Hilfe, Einf@"uhrung in Maxima, Top
 @chapter Programmfehler
 @include Bugs.de.texi
 
@@ -668,15 +668,15 @@ Glossar
 @chapter Kommandozeile
 @include Command.de.texi
 
-@node Datentypen, Ausdrücke, Kommandozeile, Top
+@node Datentypen, Ausdr@"ucke, Kommandozeile, Top
 @chapter Datentypen
 @include DataTypes.de.texi
 
-@node Ausdrücke, Operatoren, Datentypen, Top
-@chapter Ausdrücke
+@node Ausdr@"ucke, Operatoren, Datentypen, Top
+@chapter Ausdr@"ucke
 @include Expressions.de.texi
 
-@node Operatoren, Auswertung, Ausdrücke, Top
+@node Operatoren, Auswertung, Ausdr@"ucke, Top
 @chapter Operatoren
 @include Operators.de.texi
 
@@ -958,12 +958,12 @@ Glossar
 @c @chapter zeilberger
 @c @include zeilberger.texi
 
-@c @node Glossar, Function and Variable Index, zeilberger, Top
-@c @chapter Glossar
-@c @include Glossary.de.texi
+@node Glossar, Index der Variablen und Funktionen, zeilberger, Top
+@chapter Glossar
+@include Glossary.de.texi
 
-@node Function and Variable Index, , Glossar, Top
-@chapter Indizes
+@node Index der Variablen und Funktionen, , Glossar, Top
+@c @chapter Indizes
 @include Indices.de.texi
 
 @c end includes
