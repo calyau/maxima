@@ -8,7 +8,7 @@
 @c -----------------------------------------------------------------------------
 
 Das Glossar stellt den deutschen Übersetzungen die englischen Begriffe 
-gegenüber und erläutert die Begriffe.
+gegen@"uber und erl@"autert die Begriffe.
 
 @table @emph
 
