@@ -11,7 +11,8 @@
 @c  dpart               exptisolate         exptsubst           freeof
 @c  fullmap             fullmapl            inflag              inpart
 @c  isolate             isolate_wrt_times   listconstvars       listdummyvars
-@c  listofvars          lfreeof             lpart               nounify
+@c  listofvars          lfreeof             lpart               mainvar
+@c  noun                noundisp            nounify
 @c  nterms              op                  operatorp           opsubst
 @c  optimize            optimprefix         ordergreat          orderless
 @c  ordergreatp         orderlessp          part                partition
@@ -1425,6 +1426,77 @@ Siehe auch @code{part}, @code{inpart} und @code{dpart}.
 @c @category{Ausdr@"ucke}
 @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Deklaration} mainvar
+
+@c You may declare variables to be @code{mainvar}. The ordering scale for atoms 
+@c is essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) < scalars 
+@c < other variables < mainvars.  E.g., compare @code{expand ((X+Y)^4)} with 
+@c @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Note: Care should be taken
+@c if you elect to use the above feature.  E.g., if you subtract an expression 
+@c in which @code{x} is a @code{mainvar} from one in which @code{x} isn't a 
+@c @code{mainvar}, resimplification e.g. with @code{ev (expr, simp)} may be
+@c necessary if cancellation is to occur.  Also, if you save an expression in 
+@c which @code{x} is a @code{mainvar}, you probably should also save @code{x}.)
+
+Die Deklaration einer Variablen als eine Hauptvariable ändert deren Anordnung
+in einem Ausdruck der kanonisch geordnet ist. Hauptvariable sind bzgl. der
+Funktionen @code{ordergreatp} und @code{orderlessp} stets größer als alle
+anderen Symbole, Konstanten und Zahlen.
+
+Beispiel:
+
+@c === beg ===
+@c sort([9,1,%pi,g,t,a]);
+@c declare(a,mainvar);
+@c sort([9,1,%pi,g,t,a]);
+@c === end ===
+@example
+(%i1) sort([9,1,%pi,g,t,a]);
+(%o1)                 [1, 9, %pi, a, g, t]
+
+(%i2) declare(a,mainvar)$
+(%i3) sort([9,1,%pi,g,t,a]);
+(%o3)                 [1, 9, %pi, g, t, a]
+@end example
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Ausdrücke}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} noun
+
+@c @code{noun} is one of the options of the @code{declare} command.  It makes a
+@c function so declared a "noun", meaning that it won't be evaluated 
+@c automatically.
+
+@code{noun} ist eine der Optionen des Kommandos @code{declare}. Wird eine 
+Funktion als @code{noun} deklariert, wird diese als Substantivform behandelt
+und nicht ausgewertet.
+
+@c @opencatbox
+@c @category{Substantivformen und Verbformen}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} noundisp
+Standardwert: @code{false}
+
+@c When @code{noundisp} is @code{true}, nouns display with a single quote. This 
+@c switch is always @code{true} when displaying function definitions.
+
+Hat @code{noundisp} den Wert @code{true}, werden Substantivformen mit einem
+vorangestelltenm Hochkomma angezeigt. Diese Optionsvariable hat immer den Wert
+@code{true}, wenn die Definition von Funktionen angezeigt wird.
+
+@c @opencatbox
+@c @category{Anzeigeflags und Variablen} @category{Substantivformen und Verbformen}
+@c @closecatbox
+@end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @deffn {Funktion} nounify (@var{f})
