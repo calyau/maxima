@@ -10,12 +10,14 @@
 @code{fmin_cobyla} is a Common Lisp translation (via @code{f2cl}) of the
 Fortran constrained optimization routine COBYLA by Powell[1][2][3].  
 
-The routine minimizes an objective function F(X) subject to M
-inequality constraints on X, where X is a vector of variables that has
-N components. 
+COBYLA minimizes an objective function F(X) subject to M inequality
+constraints of the form g(X) >= 0 on X, where X is a vector of
+variables that has N components.
 
 Equality constraints g(X)=0 can often be implemented by a pair of inequality 
-constraints g(X)>=0 and -g(X)>= 0.
+constraints g(X)>=0 and -g(X)>= 0.  Maxima's interface to COBYLA
+allows equality constraints and internally converts the equality
+constraints to a pair of inequality constraints.
 
 The algorithm employs linear approximations to the
 objective and constraint functions, the approximations being formed by
@@ -52,9 +54,8 @@ References:
 @deffn {Function} fmin_cobyla (@var{F}, @var{X}, @var{Y})
 @deffnx {Function} fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
 
-Returns an approximate minimum of the expression @var{F}
-with respect to the variables @var{X},
-subject to  the constraints @var{C} being greater than or equal to zero.
+Returns an approximate minimum of the expression @var{F} with respect
+to the variables @var{X}, subject to an optional set of constraints.
 @var{Y} is a list of initial guesses for @var{X}.
 
 @var{F} must be an ordinary expressions, not names of functions or lambda expressions.
@@ -64,10 +65,12 @@ specified as @code{@var{symbol} = @var{value}}.
 The optional arguments recognized are:
 
 @table @code
-@item ineq
-List of inequality constraints that must be satisfied by @var{X}.
-@item eq
-List of equality constraints that must be satisfied by @var{X}.
+@item constraints
+List of inequality and equality constraints that must be satisfied by
+@var{X}.  The inequality constraints must be actual inequalities of
+the form @code{g(@var{X}) >= h(@var{X})} or @code{g(@var{X}) <=
+h(@var{X})}.  The equality constraints must be of the form
+@code{g(@var{X}) = h(@var{X})}. 
 @item rhobeg
 Initial value of the internal RHO variable which controls 
 the size of simplex.  (Defaults to 1.0)
@@ -111,6 +114,19 @@ The number of function evaluations.
 
 @end deffn
 
+@deffn {Function} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y})
+@deffnx {Function} bf_fmin_cobyla (@var{F}, @var{X}, @var{Y}, optional_args)
+
+This function is identical to @code{fmin_cobyla}, except that bigfloat
+operations are used, and the default value for @var{rhoend} is
+@code{10^(fpprec/2)}. 
+
+See @code{fmin_cobyla} for more information.
+
+@code{load(fmin_cobyla)} loads this function.
+
+@end deffn
+
 @node Examples for cobyla, , Functions and Variables for cobyla, cobyla
 @section Examples for cobyla
 
@@ -119,12 +135,12 @@ The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 
 @c ===beg===
 @c load(fmin_cobyla);
-@c fmin_cobyla(x1*x2, [x1, x2], [1-x1^2-x2^2], [1,1], iprint=1);
+@c fmin_cobyla(x1*x2, [x1, x2], [1,1], constraints = [x1^2+x2^2<=1], iprint=1);
 @c ===end===
 @example
 (%i1) load(fmin_cobyla)$
 
-(%i2) fmin_cobyla(x1*x2, [x1, x2], [1,1], ineq = [1-x1^2-x2^2], iprint=1);
+(%i2) fmin_cobyla(x1*x2, [x1, x2], [1,1], constraints = [x1^2+x2^2<=1], iprint=1);
 
    Normal return from subroutine COBYLA
 
@@ -135,5 +151,4 @@ The theoretical solution is x1 = 1/sqrt(2), x2 = -1/sqrt(2).
 @end example
 
 There are additional examples in the share/cobyla/ex directory.
-
 
