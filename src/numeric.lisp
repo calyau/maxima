@@ -1455,7 +1455,25 @@
 	  (bigfloat 1))
       (if (and (zerop a) (plusp (realpart b)))
 	  (* a b)
-	  (exp (* (bigfloat b) (log a))))))
+	  ;; Handle a few special cases using multiplication.
+	  (cond ((= b 1)
+		 a)
+		((= b -1)
+		 (/ a))
+		((= b 2)
+		 (* a a))
+		((= b -2)
+		 (/ (* a a)))
+		((= b 3) (* a a a))
+		((= b -3) (/ (* a a a)))
+		((= b 4)
+		 (let ((a2 (* a a)))
+		   (* a2 a2)))
+		((= b -4)
+		 (let ((a2 (* a a)))
+		   (/ (* a2 a2))))
+		(t
+		 (exp (* (bigfloat b) (log a))))))))
 
 ;; Handle a^b a little more carefully because the result is known to
 ;; be real when a is real and b is an integer.
@@ -1465,8 +1483,19 @@
 	((and (zerop a) (plusp b))
 	 ;; 0^b, for positive b
 	 (* a b))
+	;; Handle a few special cases using multiplication.
 	((eql b 1) a)
 	((eql b -1) (/ a))
+	((eql b 2) (* a a))
+	((eql b -2) (/ (* a a)))
+	((eql b 3) (* a a a))
+	((eql b -3) (/ (* a a a)))
+	((eql b 4)
+	 (let ((a2 (* a a)))
+	   (* a2 a2)))
+	((eql b -4)
+	 (let ((a2 (* a a)))
+	   (/ (* a2 a2))))
 	((minusp a)
 	 ;; a^b = exp(b*log(|a|) + %i*%pi*b)
 	 ;;     = exp(b*log(|a|))*exp(%i*%pi*b)
