@@ -247,6 +247,8 @@
 ;; using the routines from the BIGFLOAT-IMPL.
 (defpackage bigfloat
   (:use :cl :bigfloat-impl)
+  #+gcl
+  (:shadowing-import-from #:system #:define-compiler-macro)
   ;; This list should match the SHADOWING-IMPORT-FROM list in
   ;; BIGFLOAT-IMPL.
   (:shadowing-import-from #:bigfloat-impl
@@ -318,7 +320,7 @@
 
 ;; Export all the external symbols in BIGFLOAT-IMPL from BIGFLOAT too.
 (do-external-symbols (s '#:bigfloat-impl)
-  (export s '#:bigfloat-impl))
+  (export s '#:bigfloat))
 
 ;; For CMUCL, we lock the bigfloat-impl package so we don't
 ;; accidentally modify the implementation.
