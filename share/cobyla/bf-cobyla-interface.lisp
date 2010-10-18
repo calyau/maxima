@@ -110,23 +110,13 @@
       ;; Should we put a check here if the number of function
       ;; evaluations equals maxfun?  When iprint is not 0, the output
       ;; from COBYLA makes it clear that something bad happened.
-      (let* ((x-list (map 'list #'to x))
-	     (cval (mapcar #'to (cdr (apply cv x-list))))
-	     (n-eq (length (cdr eq)))
-	     ineq-val eq-val)
-	;; Separate the values of the constraints into two lists: One
-	;; for the inequality constraints and one for the equality
-	;; constraints.
-	(setf ineq-val (subseq cval 0 (- m (* 2 n-eq))))
-	(setf eq-val (subseq cval (- m (* 2 n-eq)) (- m n-eq)))
+      (let ((x-list (map 'list #'to x)))
 	;; Return the optimum function value, the point that gives the
 	;; optimum, the value of the constraints, and the number of
 	;; function evaluations.  For convenience.  Only the point and
 	;; the number of evaluations is really needed.
 	(values (apply fv x-list)
 		x
-		ineq-val
-		eq-val
 		neval)))))
 
 ;; Interface.  See fmin_cobyla.mac for documentation.
@@ -138,7 +128,7 @@
       (merror "Number of initial values (~M) does not match the number of variables ~M~%"
 	      (length (cdr init-x))
 	      (length (cdr vars))))
-    (multiple-value-bind (fmin xopt ineq-val eq-val neval)
+    (multiple-value-bind (fmin xopt neval)
 	(apply #'%bf-cobyla vars init-x f args)
       (list '(mlist)
 	    (list* '(mlist) (mapcar #'(lambda (var val)
@@ -146,7 +136,4 @@
 				    (cdr vars)
 				    (coerce xopt 'list)))
 	    fmin
-	    (list '(mlist)
-		  (list* '(mlist) (mapcar #'to ineq-val))
-		  (list* '(mlist) (mapcar #'to eq-val)))
 	    neval))))

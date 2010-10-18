@@ -103,10 +103,6 @@ variables listed in @var{X}.
 @item
 The minimized function value
 @item
-A list of two elements. The first element is the final value of the
-inequality constraints and the second element is the final value of
-the equality constraints.
-@item
 The number of function evaluations.
 @end enumerate
 
