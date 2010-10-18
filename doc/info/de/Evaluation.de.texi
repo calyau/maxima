@@ -540,7 +540,7 @@ werden.
 @item
 @code{numer} bewirkt, dass mathematische Funktionen mit numerischen Argumenten 
 ein Ergebnis in Gleitkommazahlen liefern. Variable in @code{expr}, denen 
-nummerische Werte zugewiesen wurden, werden durch diese ersetzt. Die Option 
+numerische Werte zugewiesen wurden, werden durch diese ersetzt. Die Option 
 @code{float} wird zus@"atzlich wirksam.
 
 @c @code{pred} causes predicates (expressions which evaluate to @code{true} or 
@@ -1073,6 +1073,133 @@ diesem Modus zu Endlosschleifen.
 @c @opencatbox
 @c @category{Auswertungsflags}
 @c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Spezielles Symbol} noeval
+
+@c @code{noeval} suppresses the evaluation phase of @code{ev}. This is useful in
+@c conjunction with other switches and in causing expressions to be resimplified
+@c without being reevaluated.
+
+@code{noeval} unterdr@"uckt die Auswertungsphase der Funktion @code{ev}. Dies 
+kann im Zusammenhang mit anderen Auswertungsflags genutzt werden, um einen 
+Ausdruck erneut zu vereinfachen, ohne diesen auszuwerten.
+
+@c @opencatbox
+@c @category{Auswertungsflags}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Spezielles Symbol} nouns
+
+@c @code{nouns} is an @code{evflag}. When used as an option to the @code{ev} 
+@c command, @code{nouns} converts all "noun" forms occurring in the expression 
+@c being @code{ev}'d to "verbs", i.e., evaluates them.  See also @code{noun}, 
+@c @code{nounify}, @code{verb}, and @code{verbify}.
+
+@code{nouns} ist ein Auswertungsflag @code{evflag}. Wird dieses Flag als eine 
+Option der Funktion @code{ev} genutzt, werden alle Substantivformen, die in dem
+Ausdruck enthalten sind, in Verbformen umgewandelt und ausgewertet. Siehe auch
+@code{noun}, @code{nounify}, @code{verb} und @code{verbify}.
+
+@opencatbox
+@category{Auswertungsflags} @category{Substantivformen und Verbformen}
+@closecatbox
+@end defvr
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
+@c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
+@c NEED TO MENTION THIS IS AN evflag
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Spezielles Symbol} numer
+
+@c @code{numer} causes some mathematical functions (including exponentiation)
+@c with numerical arguments to be evaluated in floating point. It causes 
+@c variables in @code{expr} which have been given numerals to be replaced by
+@c their values.  It also sets the @code{float} switch on.
+
+@code{numer} bewirkt, dass mathematische Funktionen mit numerischen Argumenten
+als Gleitkommazahlen ausgewertet werden. Variable in einem Ausdruck @code{expr},
+die numerische Werte erhalten haben, werden durch diese ersetzt. Zusätzlich
+wird das Flag @code{float} gesetzt.
+
+Siehe auch @code{%enumer}.
+
+Beispiele:
+
+@c ===beg===
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))];
+@c [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+@c ===end===
+@example
+(%i1) [sqrt(2), sin(1), 1/(1+sqrt(3))];
+                                        1
+(%o1)            [sqrt(2), sin(1), -----------]
+                                   sqrt(3) + 1
+
+(%i2) [sqrt(2), sin(1), 1/(1+sqrt(3))],numer;
+(%o2) [1.414213562373095, .8414709848078965, .3660254037844387]
+@end example
+
+@c @opencatbox
+@c @category{Numerische Auswertung}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+
+@c Declares the variables @code{x_1}, ..., @var{x_n} to have numeric values 
+@c equal to @code{expr_1}, ..., @code{expr_n}. The numeric value is evaluated 
+@c and substituted for the variable in any expressions in which the variable 
+@c occurs if the @code{numer} flag is @code{true}. See also @code{ev}.
+
+Die Variablen @code{x_1}, ..., @code{x_n} erhalten die numerischen Werte
+@code{expr_1}, ..., @code{expr_n}. Die numerischen Werte werden immer dann
+für die Variablen in Ausdr@"ucke eingesetzt, wenn das Flag @code{numer} den Wert
+@code{true} hat. Siehe auch @code{ev}.
+
+@c The expressions @code{expr_1}, ..., @code{expr_n} can be any expressions, not
+@c necessarily numeric.
+
+Die Ausdr@"ucke @code{expr1_1}, ..., @code{expr_n} k@"onnen auch Ausdr@"ucke
+sein und m@"ussen nicht numerische Werte sein.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Numerische Auswertung}
+@c @closecatbox
+@end deffn
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Spezielles Symbol} pred
+
+@c As an argument in a call to @code{ev (@var{expr})}, @code{pred} causes 
+@c predicates (expressions which evaluate to @code{true} or @code{false}) to be 
+@c evaluated. See @code{ev}.
+
+Wird @code{pred} als ein Argument der Funktion @code{ev} eingesetzt, werden
+Aussagen zu @code{true} oder @code{false} ausgewertet. Siehe @code{ev}.
+
+Beispiel:
+
+@c ===beg===
+@c 1<2;
+@c 1<2,pred;
+@c ===end===
+@example
+(%i1) 1<2;
+(%o1)                                1 < 2
+(%i2) 1<2,pred;
+(%o2)                                true
+@end example
+
+@opencatbox
+@category{Evaluation flags}
+@closecatbox
 @end defvr
 
 @c --- End of file Evaluation.de.texi ------------------------------------------
