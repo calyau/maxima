@@ -1,0 +1,942 @@
+@c -----------------------------------------------------------------------------
+@c File     : Simplification.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 17.10.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@c -----------------------------------------------------------------------------
+@menu
+* Einf@"uhrung in die Vereinfachung::
+* Funktionen und Variablen f@"ur die Vereinfachung::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Einf@"uhrung in die Vereinfachung, Funktionen und Variablen f@"ur die Vereinfachung, Vereinfachung
+@section Einf@"uhrung in die Vereinfachung
+
+Einem Operator oder einer Funktion k@"onnen Eigenschaften wie linear, 
+symmetrisch gegeben werden. Maxima ber@"ucksichtigt diese Eigenschaften bei der
+Vereinfachung eines Ausdrucks. Zum Beispiel wird mit dem Kommando 
+@code{declare(f, oddfun)} eine Funktion als ungerade definiert. Maxima 
+vereinfacht dann jedes Auftreten eines Ausdrucks @code{f(-x)} zu @code{-f(x)}. 
+Ensprechend vereinfacht Maxima @code{f(-x)} zu @code{f(x)}, wenn die Funktion 
+als gerade definiert wurde.
+
+Maxima kennt die folgenden Eigenschaften, die Operatoren und Funktionen erhalten
+k@"onnen:
+
+@verbatim
+   linear          additive        multiplicative
+   outative        commutative     symmetric      
+   antisymmetric   nary            lassociativ
+   rassociative    evenfun         oddfun
+@end verbatim
+
+@c TODO: EVENFUN, ODDFUN, NARY SIND IM FOLGENDEN NICHT ERl@"AUTERT
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur die Vereinfachung, , Einf@"uhrung in die Vereinfachung, Vereinfachung
+@section Funktionen und Variablen f@"ur die Vereinfachung
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} additive
+
+@c If @code{declare(f,additive)} has been executed, then:
+
+@code{declare(f, additive)} deklariert eine Funktion @code{f} als additiv.
+
+@c (1) If @code{f} is univariate, whenever the simplifier encounters @code{f} 
+@c applied to a sum, @code{f} will be distributed over that sum.  I.e. 
+@c @code{f(y+x)} will simplify to @code{f(y)+f(x)}.
+
+Hat die Funktion @code{f} ein Argument, dann wird @code{f(x + y)} zu 
+@code{f(x) + f(y)} vereinfacht.
+
+@c (2) If @code{f} is a function of 2 or more arguments, additivity is defined 
+@c as additivity in the first argument to @code{f}, as in the case of @code{sum}
+@c or @code{integrate}, i.e. @code{f(h(x)+g(x),x)} will simplify to 
+@c @code{f(h(x),x)+f(g(x),x)}. This simplification does not occur when @code{f} 
+@c is applied to expressions of the form @code{sum(x[i],i,lower-limit,
+@c upper-limit)}.
+
+Ist @code{f} eine Funktion mit zwei oder mehr Argumenten, ist die
+Additivit@"at f@"ur das erste Argument definiert. Zum Beispiel wird
+@code{f(x + y,a + b)} zu @code{f(y, b + a) + f(x, b + a)} vereinfacht.
+
+@c @opencatbox
+@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} antisymmetric
+
+@c If @code{declare(h,antisymmetric)} is done, this tells the simplifier that 
+@c @code{h} is antisymmetric.  E.g. @code{h(x,z,y)} will simplify to 
+@c @code{- h(x, y, z)}.  That is, it will give (-1)^n times the result given by
+@c @code{symmetric} or @code{commutative}, where n is the number of interchanges
+@c of two arguments necessary to convert it to that form.
+
+@code{declare(f, antisymmetric)} deklariert die Funktion @code{f} als 
+antisymmetrisch. Zum Beispiel wird @code{f(y, x)} zu @code{- f(x, y)}
+vereinfacht.
+
+@c @opencatbox
+@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} commutative
+
+@c If @code{declare(h,commutative)} is done, this tells the simplifier that 
+@c @code{h} is a commutative function.  E.g. @code{h(x,z,y)} will simplify to 
+@c @code{h(x, y, z)}.  This is the same as @code{symmetric}.
+
+@code{declare(f, commutative)} deklariert die Funktion @code{f} als kommutativ.
+Zum Beispiel wird @code{f(x, z, y)} zu @code{f(x, y, z)} vereinfacht.
+Dies hat denselben Effekt wie die Deklaration @code{symmetric}.
+
+@c @opencatbox
+@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} demoivre (@var{expr})
+@deffnx {Optionsvariable} demoivre
+
+@c The function @code{demoivre (expr)} converts one expression without setting 
+@c the global variable @code{demoivre}.
+
+Die Funktion @code{demoivre(expr)} konvertiert den Ausdruck @var{expr}, ohne
+die Optionsvariable @code{demoivre} zu setzen.
+
+@c When the variable @code{demoivre} is @code{true}, complex exponentials are 
+@c converted into equivalent expressions in terms of circular functions:
+@c @code{exp (a + b*%i)} simplifies to @code{%e^a * (cos(b) + %i*sin(b))} if 
+@c @code{b} is free of @code{%i}. @code{a} and @code{b} are not expanded.
+
+Hat die Optionsvariable @code{demoivre} den Wert @code{true}, werden komplexe
+Exponentialfunktionen in @"aquivalente Kreisfunktionen umgewandelt. 
+@code{exp(a + b*%i)} wird zu @code{%e^a*(cos(b)+%i*sin(b))} vereinfacht,
+wenn @code{b} frei von der imagin@"aren Einheit @code{%i} ist. @code{a} und 
+@code{b} werden nicht expandiert.
+
+@c The default value of @code{demoivre} is @code{false}.
+
+Der Standardwert von @code{demoivre} ist @code{false}.
+
+@c @code{exponentialize} converts circular and hyperbolic functions to 
+@c exponential form. @code{demoivre} and @code{exponentialize} cannot both be 
+@c true at the same time.
+
+@code{exponentialize} konvertiert trigonometrische und hyperbolische Funktionen
+in eine Exponentialform. @code{demoivre} und @code{exponentialize} k@"onnen nicht
+gleichzeitig den Wert @code{true} haben.
+
+@c @opencatbox
+@c @category{Komplexe Variable} @category{Trigonometrische Funktionen} @category{Hyperbolische Funktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} distrib (@var{expr})
+
+@c Distributes sums over products.  It differs from @code{expand} in that it 
+@c works at only the top level of an expression, i.e., it doesn't recurse and 
+@c it is faster than @code{expand}.  It differs from @code{multthru} in that it 
+@c expands all sums at that level.
+
+Summen werden ausmultipliziert. Im Unterschied zu @code{expand} wird 
+@code{distrib} nur auf der obersten Ebene eines Ausdruckes angewendet und ist 
+daher schneller als @code{expand}. Im Unterschied zu @code{multthru} werden
+die Summen der obersten Ebenen vollst@"andig ausmultipliziert.
+
+Beispiele:
+
+@example
+(%i1) distrib ((a+b) * (c+d));
+(%o1)                 b d + a d + b c + a c
+(%i2) multthru ((a+b) * (c+d));
+(%o2)                 (b + a) d + (b + a) c
+(%i3) distrib (1/((a+b) * (c+d)));
+                                1
+(%o3)                    ---------------
+                         (b + a) (d + c)
+(%i4) expand (1/((a+b) * (c+d)), 1, 0);
+                                1
+(%o4)                 ---------------------
+                      b d + a d + b c + a c
+@end example
+
+@c @opencatbox
+@c @category{Vereinfachung}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} distribute_over
+Standardwert: @code{true}
+
+@c @code{distribute_over} controls the mapping of functions over bags like
+@c lists, matrices, and equations. At this time this feature is implemented for 
+@c the trigonometric functions, the exponential integrals, and the integer 
+@c functions like @code{mod}, @code{floor}, @code{ceiling}, @code{round}.
+
+Die Optionsvariable @code{distribute_over} kontrolliert die Anwendung von 
+Funktionen auf Listen, Matrizen oder Gleichungen. 
+
+@c The mapping of functions is switched off, when setting @code{distribute_over} 
+@c to the value @code{false}.
+
+Diese Eigenschaft wird nicht angewendet, wenn @code{distribute_over} den Wert
+@code{false} hat.
+
+Beispiele:
+
+@c The @code{sin} function maps over a list:
+
+Die Funktion @code{sin} wird auf eine Liste angewendet:
+
+@c ===beg===
+@c sin([x,1,1.0]);
+@c ===end===
+@example
+(%i1) sin([x,1,1.0]);
+(%o1)                 [sin(x), sin(1), .8414709848078965]
+@end example
+
+@c @code{mod} is a function with two arguments which maps over lists. Mapping
+@c over nested lists is possible too:
+
+Die Funktion @code{mod} hat zwei Argumente, die auf Listen angewendet werden
+kann. Die Funktion kann auch auf verschachtelte Listen angewendet werden:
+
+@c ===beg===
+@c mod([x,11,2*a],10);
+@c mod([[x,y,z],11,2*a],10);
+@c ===end===
+@example
+(%i2) mod([x,11,2*a],10);
+(%o2)                    [mod(x, 10), 1, 2 mod(a, 5)]
+(%i3) mod([[x,y,z],11,2*a],10);
+(%o3)       [[mod(x, 10), mod(y, 10), mod(z, 10)], 1, 2 mod(a, 5)]
+@end example
+
+@c Mapping of the @code{floor} function over a matrix and an equation:
+
+Anwendung der Funktion @code{floor} auf eine Matrix und eine Gleichung:
+
+@c ===beg===
+@c floor(matrix([a,b],[c,d]));
+@c floor(a=b);
+@c ===end===
+@example
+(%i4) floor(matrix([a,b],[c,d]));
+                            [ floor(a)  floor(b) ]
+(%o4)                       [                    ]
+                            [ floor(c)  floor(d) ]
+(%i5) floor(a=b);
+(%o5)                         floor(a) = floor(b)
+@end example
+
+@c Functions with more than one argument map over any of the arguments or all
+@c arguments:
+
+Funktionen mit mehreren Argumenten k@"onnen auf Listen f@"ur eines der Argumente
+oder alle Argumente angewendet werden:
+
+@c ===beg===
+@c expintegral_e([1,2],[x,y]);
+@c ===end===
+@example
+(%i6) expintegral_e([1,2],[x,y]);
+(%o6) [[expintegral_e(1, x), expintegral_e(1, y)], 
+       [expintegral_e(2, x), expintegral_e(2, y)]]
+@end example
+
+@c @opencatbox
+@c @category{Vereinfachungsflags und -variable}
+@c @closecatbox
+@end defvr
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} domain
+Standardwert: @code{real}
+
+@c When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
+@c @code{sqrt (x^2)} instead of returning @code{abs(x)}.
+
+Hat @code{domain} den Wert @code{complex}, wird @code{sqrt(x^2)} nicht zu
+@code{abs(x)} vereinfacht.
+
+@c PRESERVE EDITORIAL COMMENT -- MAY HAVE SOME SIGNIFICANCE NOT YET UNDERSTOOD !
+@c The notion of a "domain" of simplification is still in its infancy,
+@c and controls little more than this at the moment.
+
+@c @opencatbox
+@c @category{Vereinfachungsflags und -variable}
+@c @closecatbox
+@end defvr
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} expand (@var{expr})
+@deffnx {Funktion} expand (@var{expr}, @var{p}, @var{n})
+
+@c Expand expression @var{expr}. Products of sums and exponentiated sums are
+@c multiplied out, numerators of rational expressions which are sums are split 
+@c into their respective terms, and multiplication (commutative and 
+@c non-commutative) are distributed over addition at all levels of @var{expr}.
+
+Expandiert den Ausdruck @var{expr}. Produkte von Summen und Potenzen von Summen
+werden ausmultipliziert. Die Nenner von rationalen Ausdr@"ucken, die Summen 
+sind, werden in ihre Terme aufgespalten. Produkte (kommutative und 
+nicht-kommutative) werden in Summen herein multipliziert.
+
+@c For polynomials one should usually use @code{ratexpand} which uses a more 
+@c efficient algorithm.
+
+F@"ur Polynome ist es besser, die Funktion @code{ratexpand} zu verwenden, welche 
+einen effizienteren Algorithmus hat.
+
+@c @code{maxnegex} and @code{maxposex} control the maximum negative and
+@c positive exponents, respectively, which will expand.
+
+@code{magnegex} und @code{maxposex} kontrollieren den maximalen negativen und
+positiven Exponenten, f@"ur die ein Ausdruck expandiert wird.
+
+@c @code{expand (@var{expr}, @var{p}, @var{n})} expands @var{expr},  using 
+@c @var{p} for @code{maxposex} and @var{n} for @code{maxnegex}. This is useful 
+@c in order to expand part but not all of an expression.
+
+@code{expand(@var{expr}, @var{p}, @var{n})} expandiert @var{expr}, wobei 
+@code{maxposex} den Wert @var{p} und @code{maxnegex} den Wert @var{n} erhalten.
+
+@c @code{expon} - the exponent of the largest negative power which is 
+@c automatically expanded (independent of calls to @code{expand}). For example
+@c if @code{expon} is 4 then @code{(x+1)^(-5)} will not be automatically 
+@c expanded.
+
+@code{expon} ist der gr@"o@ss{}te negative Exponent, f@"ur den ein Ausdruck 
+automatisch expandiert wird. Hat zum Beispiel @code{expon} den Wert 4, wird 
+@code{(x+1)^(-5)} nicht automatisch expandiert.
+
+@c @code{expop} - the highest positive exponent which is automatically expanded.
+@c Thus @code{(x+1)^3}, when typed, will be automatically expanded only if 
+@c @code{expop} is greater than or equal to 3.  If it is desired to have
+@c @code{(x+1)^n} expanded where @code{n} is greater than @code{expop} then 
+@c executing @code{expand ((x+1)^n)} will work only if @code{maxposex} is not 
+@c less than @code{n}.
+
+@code{expop} ist der gr@"o@ss{}te positive Exponent, f@"ur den ein Ausdruck 
+automatisch expandiert wird. So wird @code{(x+1)^3} dann automatisch expandiert,
+wenn @code{expop} gr@"o@ss{}er oder gleich 3 ist. Soll @code{(x+1)^n} mit der 
+Funktion @code{expand} expandiert werden, weil @code{n} gr@"o@ss{}er als 
+@code{expop} ist, dann ist dies nur m@"oglich, wenn @code{n} kleiner als 
+@code{maxposex} ist.
+
+@c @code{expand(expr, 0, 0)} causes a resimplification  of @code{expr}. 
+@c @code{expr} is not reevaluated. In distinction from @code{ev(expr, noeval)} 
+@c a special representation (e. g. a CRE form) is removed. See also @code{ev}.
+
+@code{expand(expr, 0, 0)} bewirkt eine erneuerte vollst@"andige Vereinfachung 
+des Ausdrucks @var{expr}. Der Ausdruck wird nicht erneuert ausgewertet. Im 
+Unterschied zum Kommando @code{ev(expr, noeval)} wird eine spezielle Darstellung
+(zum Beispiel eine CRE-Form) nicht entfernt. Siehe auch @code{ev}.
+
+@c The @code{expand} flag used with @code{ev} causes expansion.
+
+Das @code{expand}-Flag wird mit @code{ev} verwendet, um einen Ausdruck zu 
+expandieren.
+
+@c The file @file{simplification/facexp.mac}
+
+ @c I should really use a macro which expands to something like
+ @c @uref{file://...,,simplification/facexp.mac}.  But texi2html
+ @c currently supports @uref only with one argument.
+ @c Worse, the `file:' scheme is OS and browser dependent.
+
+@c contains several related functions (in particular @code{facsum}, 
+@c @code{factorfacsum} and @code{collectterms}, which are autoloaded) and 
+@c variables (@code{nextlayerfactor} and @code{facsum_combine}) that provide the
+@c user with the ability to structure expressions by controlled expansion.
+
+ @c MERGE share/simplification/facexp.usg INTO THIS FILE OR CREATE NEW FILE 
+ @c facexp.texi
+
+@c Brief function descriptions are available in 
+@c @file{simplification/facexp.usg}. A demo is available by doing 
+@c @code{demo("facexp")}.
+
+Die Datei @file{simplification/facexp.mac} enth@"alt weitere Funktionen wie 
+@code{facsum}, @code{factorfacsum} und @code{collectterms} und Variablen wie 
+@code{nextlayerfactor} und @code{facsum_combine}, um Ausdr@"ucke zu 
+vereinfachen. Diese Funktionen werden automatisch geladen und erlauben spezielle
+Expansionen von Ausdr@"ucken. Eine kurze Beschreibung ist in der Datei
+@file{simplification/facexp.usg} enthalten. Eine Demo kann mit
+@code{demo(facexp)} ausgef@"uhrt werden.
+
+Beispiele:
+
+@c ===beg===
+@c expr:(x+1)^2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2);
+@c expr:(x+1)^-2*(y+1)^3;
+@c expand(expr);
+@c expand(expr,2,2);
+@c ===end===
+@example
+(%i1) expr:(x+1)^2*(y+1)^3;
+                                      2        3
+(%o1)                          (x + 1)  (y + 1)
+(%i2) expand(expr);
+       2  3        3    3      2  2        2      2      2
+(%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
+                                                 2
+                                + 6 x y + 3 y + x  + 2 x + 1
+
+(%i3) expand(expr,2);
+                      2        3              3          3
+(%o3)                x  (y + 1)  + 2 x (y + 1)  + (y + 1)
+
+(%i4) expr:(x+1)^-2*(y+1)^3;
+                                          3
+                                   (y + 1)
+(%o4)                              --------
+                                          2
+                                   (x + 1)
+(%i5) expand(expr);
+               3               2
+              y             3 y            3 y             1
+(%o5)    ------------ + ------------ + ------------ + ------------
+          2              2              2              2
+         x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1   x  + 2 x + 1
+
+(%i6) expand(expr,2,2);
+                                          3
+                                   (y + 1)
+(%o6)                            ------------
+                                  2
+                                 x  + 2 x + 1
+@end example
+
+@c Resimplify an expression without expansion:
+
+Vereinfache einen Ausdruck erneut:
+
+@c ===beg===
+@c expr:(1+x)^2*sin(x);
+@c exponentialize:true;
+@c expand(expr,0,0);
+@c ===end===
+@example
+(%i7) expr:(1+x)^2*sin(x);
+                                       2
+(%o7)                           (x + 1)  sin(x)
+(%i8) exponentialize:true;
+(%o8)                                true
+(%i9) expand(expr,0,0);
+                                   2    %i x     - %i x
+                         %i (x + 1)  (%e     - %e      )
+(%o9)                  - -------------------------------
+                                        2
+@end example
+
+@c @opencatbox
+@c @category{Vereinfachung}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+
+@c Expands expression @code{expr} with respect to the variables @var{x_1}, ..., 
+@c @var{x_n}. All products involving the variables appear explicitly. The form 
+@c returned will be free of products of sums of expressions that are not free of
+@c the variables.  @var{x_1}, ..., @var{x_n} may be variables, operators, or 
+@c expressions.
+
+Expandiert den Ausdruck @code{expr} in Bezug auf die Variablen @var{x_1}, ...,
+@var{x_n}. Alle Produkte, die die Variablen enthalten, werden ausmultipliziert.
+Das Ergebnis ist frei von Produkten von Summen, die nicht frei von den
+Variablen sind. @var{x_1}, ..., @var{x_n} k@"onnen Variable, Operatoren oder
+Ausdr@"ucke sein.
+
+@c By default, denominators are not expanded, but this can be controlled by
+@c means of the switch @code{expandwrt_denom}.
+
+Standardm@"a@ss{}ig wird der Nenner eines rationalen Ausdrucks nicht expandiert.
+Dies kann mit dem Flag @code{expandwrt_denom} kontrolliert werden.
+
+@c This function is autoloaded from @file{simplification/stopex.mac}.
+
+Die Funktion wird automatisch aus der Datei @file{simplification/stopex.mac}
+geladen.
+
+@c @opencatbox
+@c @category{Ausdr@"ucke}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} expandwrt_denom
+Standardwert: @code{false}
+
+@c @code{expandwrt_denom} controls the treatment of rational expressions by 
+@c @code{expandwrt}.  If @code{true}, then both the numerator and denominator of
+@c the expression will be expanded according to the arguments of 
+@c @code{expandwrt}, but if @code{expandwrt_denom} is @code{false}, then only 
+@c the numerator will be expanded in that way.
+
+@code{expandwrt_denom} kontrolliert die Behandlung von rationalen Ausdr@"ucken 
+durch die Funktion @code{expandwrt}. Ist der Wert @code{true}, werden der
+Z@"ahler und der Nenner eines rationalen Ausdrucks expandiert. Ist der Wert
+@code{false}, wird allein der Z@"ahler expandiert.
+
+@c @opencatbox
+@c @category{Ausdr@"ucke}
+@c @closecatbox
+@end defvr
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
+
+@c is similar to @code{expandwrt}, but treats expressions that are products 
+@c somewhat differently. @code{expandwrt_factored} expands only on those factors
+@c of @code{expr} that contain the variables @var{x_1}, ..., @var{x_n}.
+
+Ist vergleichbar mit @code{expandwrt}, behandelt aber Ausdr@"ucke verschieden, 
+die Produkte enthalten. @code{expandwrt_factored} expandiert nur die Faktoren im 
+Ausdruck @code{expr}, die die Variablen @var{x_1}, ..., @var{x_n} enthalten.
+
+ @c NOT SURE WHY WE SHOULD MENTION THIS HERE
+@c This function is autoloaded from @file{simplification/stopex.mac}.
+
+@c @opencatbox
+@c @category{Ausdr@"ucke}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} expon
+Standardwert: 0
+
+@c @code{expon} is the exponent of the largest negative power which is 
+@c automatically expanded (independent of calls to @code{expand}). For example,
+@c if @code{expon} is 4 then @code{(x+1)^(-5)} will not be automatically 
+@c expanded.
+
+@code{expon} ist der gr@"o@ss{}te negative Exponent f@"ur den ein Ausdruck 
+automatisch expandiert wird. Hat zum Beispiel @code{expon} den Wert 4, wird
+@code{(x+1)^(-5)} nicht automatisch expandiert.
+
+@c @opencatbox
+@c @category{Ausdr@"ucke}
+@c @closecatbox
+@end defvr
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} exponentialize (@var{expr})
+@deffnx {Optionsvariable} exponentialize
+
+@c The function @code{exponentialize (expr)} converts  circular and hyperbolic 
+@c functions in @var{expr} to exponentials, without setting the global variable 
+@c @code{exponentialize}.
+
+Die Funktion @code{exponentialize} konvertiert trigonometrische und
+hyperbolische Funktion in @var{expr} in Exponentialfunktionen, ohne dass die
+Optionsvariable @code{exponentialize} gesetzt wird.
+
+@c When the variable @code{exponentialize} is @code{true}, all circular and 
+@c hyperbolic functions are converted to exponential form. The default value is 
+@c @code{false}.
+
+Hat die Optionsvariable @code{exponentialize} den Wert @code{true}, werden
+trigonometrische und hyperbolischen Funktionen in eine Exponentialform 
+konvertiert. Der Standardwert ist @code{false}.
+
+@c @code{demoivre} converts complex exponentials into circular functions.
+@c @code{exponentialize} and @code{demoivre} cannot both be true at the same 
+@c time.
+
+@code{demoivre} konvertiert komplexe Exponentialfunktionen in trigonometrische 
+und hyperbolische Funktionen. @code{exponentialize} und @code{demoivre} k@"onnen
+nicht gleichzeitig den Wert @code{true} haben.
+
+@c @opencatbox
+@c @category{Komplexe Variable} @category{Trigonometrische Funktionen} @category{Hyperbolische Funktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} expop
+Standardwert: 0
+
+@c @code{expop} is the highest positive exponent which is automatically 
+@c expanded.  Thus @code{(x + 1)^3}, when typed, will be automatically expanded 
+@c only if @code{expop} is greater than or equal to 3. If it is desired to have 
+@c @code{(x + 1)^n} expanded where @code{n} is greater than @code{expop} then 
+@c executing @code{expand ((x + 1)^n)} will work only if @code{maxposex} is
+@c not less than n.
+
+@code{expop} ist der gr@"o@ss{}te positive Exponent, f@"ur den ein Ausdruck 
+automatisch expandiert wird. So wird @code{(x+1)^3} dann automatisch expandiert,
+wenn @code{expop} gr@"o@ss{}er oder gleich 3 ist. Soll @code{(x+1)^n} mit der 
+Funktion @code{expand} expandiert werden, weil @code{n} gr@"o@ss{}er als 
+@code{expop} ist, dann ist dies nur m@"oglich, wenn @code{n} kleiner als 
+@code{maxposex} ist.
+
+@c @opencatbox
+@c @category{Vereinfachung}
+@c @closecatbox
+@end defvr
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} lassociative
+
+@c @code{declare (g, lassociative)} tells the Maxima simplifier that @code{g} is
+@c left-associative.  E.g., @code{g (g (a, b), g (c, d))} will simplify to 
+@c @code{g (g (g (a, b), c), d)}.
+
+@code{declare(f, lassociative)} deklariert @code{f} als eine links-assoziative
+Funktion. Zum Beispiel wird @code{f (f (a,b), f (c, d))} zu 
+@code{f (f (f (a, b), c), d)} vereinfacht.
+
+@c @opencatbox
+@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} linear
+
+@c One of Maxima's operator properties.  For univariate @code{f} so declared, 
+@c "expansion" @code{f(x + y)} yields @code{f(x) + f(y)}, @code{f(a*x)} yields 
+@c @code{a*f(x)} takes place where @code{a} is a "constant". For functions of 
+@c two or more arguments, "linearity" is defined to be as in the case of 
+@c @code{sum} or @code{integrate}, i.e., @code{f (a*x + b, x)} yields 
+@c @code{a*f(x,x) + b*f(1,x)} for @code{a} and @code{b} free of @code{x}.
+
+@code{declare(f, linear)} deklariert die Funktion @code{f} als linear.
+
+Hat die Funktion @code{f} ein Argument, dann wird @code{f(x + y)} zu 
+@code{f(x) + f(y)} und @code{f(a*x)} zu @code{a*f(x)} vereinfacht.
+
+Ist @code{f} eine Funktion mit zwei oder mehr Argumenten, ist die
+Linearit@"at f@"ur das erste Argument definiert. Zum Beispiel wird
+@code{f(a*x + b, x)} zu @code{a f(x, x) + f(1, x) b} vereinfacht.
+
+@c @code{linear} is equivalent to @code{additive} and @code{outative}. See also 
+@c @code{opproperties}.
+
+@code{linear} ist @"aquivalent zu @code{additive} und @code{outative}. Siehe 
+auch @code{opproperties}.
+
+@c @opencatbox
+@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} maxnegex
+Standardwert: 1000
+
+@c @code{maxnegex} is the largest negative exponent which will be expanded by 
+@c the @code{expand} command (see also @code{maxposex}).
+
+@code{maxnegex} ist der gr@"o@ss{}te negative Exponent, der von der Funktion 
+@code{expand} exandieren wird. Siehe auch @code{maxposex}.
+
+@c @opencatbox
+@c @category{Ausdr@"ucke}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} maxposex
+Standardwert: 1000
+
+@c @code{maxposex} is the largest exponent which will be expanded with the 
+@c @code{expand} command (see also @code{maxnegex}).
+
+@code{maxposex} ist der gr@"o@ss{}te positive Exponent, der von der Funktion 
+@code{expand} expandiert wird. Siehe auch @code{maxnegex}.
+
+@c @opencatbox
+@c @category{Expressions}
+@c @closecatbox
+@end defvr
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} multiplicative
+
+@c @code{declare (f, multiplicative)} tells the Maxima simplifier that @code{f} 
+@c is multiplicative.
+
+@code{declare(f, multiplicative)} deklariert die Funktion @code{f} als 
+multiplikativ.
+
+@c If @code{f} is univariate, whenever the simplifier encounters @code{f} 
+@c applied to a product, @code{f} distributes over that product.  E.g., 
+@c @code{f(x*y)} simplifies to @code{f(x)*f(y)}.
+
+Hat die Funktion @code{f} ein Argument, dann wird @code{f(x*y)} zu 
+@code{f(x)*f(y)} vereinfacht.
+
+@c If @code{f} is a function of 2 or more arguments, multiplicativity is defined
+@c as multiplicativity in the first argument to @code{f}, e.g.,
+@c @code{f (g(x) * h(x), x)} simplifies to @code{f (g(x) ,x) * f (h(x), x)}.
+
+Ist @code{f} eine Funktion mit zwei oder mehr Argumenten, ist die
+Multiplikativit@"at f@"ur das erste Argument definiert. Zum Beispiel wird
+@code{f(a*x + b, x)} zu @code{f(g(x), x)*f(h(x), x)} vereinfacht.
+
+@c This simplification does not occur when @code{f} is applied to expressions of
+@c the form @code{product (x[i], i, m, n)}.
+
+Diese Vereinfachung werden nicht f@"ur Ausdr@"ucke der Form
+@code{product(x[i], i, m, n)} ausgef@"uhrt.
+
+@c @opencatbox
+@c @category{Vereinfachungen} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn  {Funktion} multthru (@var{expr})
+@deffnx {Funktion} multthru (@var{expr_1}, @var{expr_2})
+
+@c Multiplies a factor (which should be a sum) of @var{expr} by the other 
+@c factors of @var{expr}. That is, @var{expr} is @code{@var{f_1} @var{f_2} ... 
+@c @var{f_n}} where at least one factor, say @var{f_i}, is a sum of terms. Each 
+@c term in that sum is multiplied by the other factors in the product. (Namely 
+@c all the factors except @var{f_i}).  @code{multthru} does not expand 
+@c exponentiated sums. This function is the fastest way to distribute products 
+@c (commutative or noncommutative) over sums. Since quotients are represented as
+@c products @code{multthru} can be used to divide sums by products as well.
+
+Multipliziert einen oder mehrere Faktoren in eine Summe herein. @code{multthru}
+expandiert keine Potenzen von Summen. @code{multthru} ist die effizienteste
+Methode, um Produkte von Summen auszumultiplizieren. Da Maxima intern die
+Division als ein Produkt darstellt, kann @code{multthru} auch angewendet werden,
+um einen Nenner in eine Summe hereinzumultiplizieren.
+
+@c @code{multthru (@var{expr_1}, @var{expr_2})} multiplies each term in 
+@c @var{expr_2} (which should be a sum or an equation) by @var{expr_1}. If 
+@c @var{expr_1} is not itself a sum then this form is equivalent to 
+@c @code{multthru (@var{expr_1}*@var{expr_2})}.
+
+@code{multthru(@var{expr_1}, @var{expr_2})} multipliziert jeden Term des
+Ausdrucks @var{expr_2} mit @var{expr_1}. Der Ausdruck @var{expr_2} kann dabei 
+eine Summe oder eine Gleichung sein.
+
+@c ENGLISH ORIGINAL DOC CONTAINS ERROR (VvN)
+
+@example
+(%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
+                      1        x         f(x)
+(%o1)             - ----- + -------- - --------
+                    x - y          2          3
+                            (x - y)    (x - y)
+(%i2) multthru ((x-y)^3, %);
+                           2
+(%o2)             - (x - y)  + x (x - y) - f(x)
+(%i3) ratexpand (%);
+                           2
+(%o3)                   - y  + x y - f(x)
+(%i4) ((a+b)^10*s^2 + 2*a*b*s + (a*b)^2)/(a*b*s^2);
+                        10  2              2  2
+                 (b + a)   s  + 2 a b s + a  b
+(%o4)            ------------------------------
+                                  2
+                             a b s
+(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+                                        10
+                       2   a b   (b + a)
+(%o5)                  - + --- + ---------
+                       s    2       a b
+                           s
+(%i6) multthru (a.(b+c.(d+e)+f));
+(%o6)            a . f + a . c . (e + d) + a . b
+(%i7) expand (a.(b+c.(d+e)+f));
+(%o7)         a . f + a . c . e + a . c . d + a . b
+@end example
+
+@c @opencatbox
+@c @category{Ausdr@"ucke}
+@c @closecatbox
+@end deffn
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} negdistrib
+Standardwert: @code{true}
+
+@c When @code{negdistrib} is @code{true}, -1 distributes over an expression.  
+@c E.g., @code{-(x + y)} becomes @code{- y - x}.  Setting it to @code{false}
+@c will allow @code{- (x + y)} to be displayed like that.  This is sometimes 
+@c useful but be very careful: like the @code{simp} flag, this is one flag you 
+@c do not want to set to @code{false} as a matter of course or necessarily for 
+@c other than local use in your Maxima.
+
+Hat @code{negdistrib} den Wert @code{true}, wird die Zahl -1 in eine Summe
+hereinmultipliziert. Zum Beispiel wird @code{-(x + y)} zu @code{- y - x} 
+vereinfacht. @code{true} ist der Standardwert von @code{negdistrib}.
+
+Erh@"alt @code{negdistrib} den Wert @code{false} wird @code{-(x + y)}
+nicht vereinfacht. @code{negdistrib} sollte sehr umsichtig und nur in 
+speziellen F@"allen f@"ur lokale Vereinfachungen genutzt werden.
+
+@c @opencatbox
+@c @category{Vereinfachungsflags und Variable}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} opproperties
+
+@c @code{opproperties} is the list of the special operator properties recognized
+@c by the Maxima simplifier: @code{linear}, @code{additive}, 
+@c @code{multiplicative}, @code{outative}, @code{evenfun}, @code{oddfun}, 
+@c @code{commutative}, @code{symmetric}, @code{antisymmetric}, @code{nary}, 
+@c @code{lassociative}, @code{rassociative}.
+
+@code{opproperties} ist eine Liste mit den Eigenschaften, die eine Funktion oder
+ein Operator erhalten kann. 
+
+M@"ogliche Eigenschaften sind:
+
+@verbatim
+   linear          additive        multiplicative
+   outative        commutative     symmetric      
+   antisymmetric   nary            lassociativ
+   rassociative    evenfun         oddfun
+@end verbatim
+
+@c @opencatbox
+@c @category{Globale Variablen} @category{Operatoren}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} outative
+
+@c @code{declare (f, outative)} tells the Maxima simplifier that constant 
+@c factors in the argument of @code{f} can be pulled out.
+
+@code{declare(f, outative)} deklariert eine Funktion @code{f} als outative.
+Hat der Operator oder die Funktion Argumente mit konstanten Faktoren, so werden
+diese konstanten Faktoren herausgezogen.
+
+@c If @code{f} is univariate, whenever the simplifier encounters @code{f} 
+@c applied to a product, that product will be partitioned into factors that are
+@c constant and factors that are not and the constant factors will be pulled 
+@c out. E.g., @code{f(a*x)} will simplify to @code{a*f(x)} where @code{a} is a
+@c constant. Non-atomic constant factors will not be pulled out.
+
+Hat die Funktion @code{f} ein Argument, dann wird @code{f(a*x)} zu 
+@code{a*f(x)} vereinfacht, wenn @code{a} ein konstanter Faktor ist.
+
+@c If @code{f} is a function of 2 or more arguments, outativity is defined as in
+@c the case of @code{sum} or @code{integrate}, i.e., @code{f (a*g(x), x)} will 
+@c simplify to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
+
+Ist @code{f} eine Funktion mit zwei oder mehr Argumenten, ist die
+Outativit@"at f@"ur das erste Argument definiert. Zum Beispiel wird
+@code{f(a*g(x), x)} zu @code{a*f(g(x),x)} vereinfacht, wenn @code{a} ein
+konstanter Faktor ist.
+
+Die Funktionen @code{sum}, @code{integrate} und @code{limit} haben die 
+Eigenschaft @code{outative}.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Operatoren}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} rassociative
+
+@c @code{declare (g, rassociative)} tells the Maxima simplifier that @code{g} 
+@c is right-associative. E.g., @code{g(g(a, b), g(c, d))} simplifies to 
+@c @code{g(a, g(b, g(c, d)))}.
+
+@code{declare(f, rassociative)} deklariert die Funktion @code{f} als
+rechts-assioziativ. Zum Beispiel wird @code{f(f(a, b), f(c, d))} zu 
+@code{f(a, f(b, f(c, d)))} vereinfacht.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Operatoren}
+@c @closecatbox
+@end defvr
+
+@c --- 09.10.2010 DK -----------------------------------------------------------
+@defvr {Deklaration} symmetric
+
+@c @code{declare(h, symmetric)} tells the Maxima simplifier that @code{h} is a
+@c symmetric function. E.g., @code{h(x, z, y)} simplifies to @code{h (x, y, z)}.
+
+@code{declare(f, symmetric)} deklariert die Funktion @code{f} als symmetrisch.
+Zum Beispiel wird @code{f(x, z, y)} zu @code{f(x, y, z)} vereinfacht.
+
+@c @code{commutative} is synonymous with @code{symmetric}.
+
+@code{commutative} entspricht @code{symmetric}.
+
+@c @opencatbox
+@c @category{Vereinfachung} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 18.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} xthru (@var{expr})
+
+@c Combines all terms of @var{expr} (which should be a sum) over a common 
+@c denominator without expanding products and exponentiated sums as 
+@c @code{ratsimp} does.  @code{xthru} cancels common factors in the numerator 
+@c and denominator of rational expressions but only if the factors are explicit.
+
+Die Terme einer Summe des Ausdrucks @var{expr} werden so zusammengefasst, dass
+sie einen gemeinsamen Nenner haben. Produkte und Potenzen von Summen werden
+dabei nicht expandiert. Gemeinsame Faktoren im Z@"ahler und Nenner werden
+gek@"urzt.
+
+   @c REPHRASE IN NEUTRAL TONE (GET RID OF "IT IS BETTER")
+@c Sometimes it is better to use @code{xthru} before @code{ratsimp}ing an 
+@c expression in order to cause explicit factors of the gcd of the numerator 
+@c and denominator to be canceled thus simplifying the expression to be 
+@c @code{ratsimp}ed.
+
+Es kann vorteilhaft sein, vor dem Ausf@"uhren von @code{ratsimp} zun@"achst mit
+@code{xthru} die gemeinsamen Faktoren eines rationalen Ausdrucks zu k@"urzen.
+
+@c ===beg===
+@c ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+@c xthru (%);
+@c ===end===
+@example
+(%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+                                20
+                 1       (x + 2)   - 2 y       x
+(%o1)        --------- + --------------- - ---------
+                    19             20             20
+             (y + x)        (y + x)        (y + x)
+(%i2) xthru (%);
+                                 20
+                          (x + 2)   - y
+(%o2)                     -------------
+                                   20
+                            (y + x)
+@end example
+
+@c @opencatbox
+@c @category{Vereinfachungen}
+@c @closecatbox
+@end deffn
+
+@c --- End of file Simplifications.de.texi -------------------------------------
+

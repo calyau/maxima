@@ -24,11 +24,11 @@
 
 @c %**start of header
 @synindex vr fn
-@settitle Maxima Dokumentation
+@settitle Maxima Manual
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
-Das ist eine Texinfo Maxima Dokumentation 
+Das ist ein Texinfo Maxima Manual
 
 Copyright 1994,2001 William F. Schelter
 
@@ -218,31 +218,26 @@ Index
 * Index der Variablen und Funktionen:: Index.
 
 @c -----------------------------------------------------------------------------
- --- Liste der Kapitel ---
+ --- Ausf@"uhrliches Inhaltsverzeichnis ---
 
 Einf@"uhrung
-
 * Einf@"uhrung in Maxima::
 
 Programmfehler
-
 * Programmfehler::
 * Einf@"uhrung in Programmfehler::
 * Funktionen und Variablen f@"ur Programmfehler::
 
 Hilfe
-
 * Dokumentation::
 * Funktionen und Variablen der Hilfe::
 
 Kommandozeile
-
 * Kommandozeile::
 * Funktionen und Variablen der Eingabe::
 * Funktionen und Variablen der Ausgabe::
 
 Datentypen
-
 * Datentypen::
 * Einf@"uhrung in Maxima Zahlen::
 * Zeichenketten::
@@ -251,7 +246,6 @@ Datentypen
 * Funktionen und Variablen f@"ur Konstante::
 
 Ausdr@"ucke
-
 * Ausdr@"ucke::
 * Einf@"uhrung in Ausdr@"ucke::
 * Substantive und Verben::
@@ -259,7 +253,6 @@ Ausdr@"ucke
 * Funktionen und Variablen f@"ur Ausdr@"ucke::
 
 Operatoren
-
 * Arithmetische Operatoren::
 * Relationale Operatoren::
 * Logische Operatoren::
@@ -268,17 +261,15 @@ Operatoren
 * Benutzerdefinierte Operatoren::
 
 Auswertung
-
 * Auswertung::
 * Funktionen und Variablen f@"ur die Auswertung::
 
 Vereinfachung
-
 * Vereinfachung::
+* Einf@"uhrung in die Vereinfachung::
 * Funktionen und Variablen f@"ur die Vereinfachung::
 
 Mathematische Funktionen
-
 * Mathematische Funktionen::
 * Exponentialfunktionen::
 * Logarithmusfunktionen::
@@ -286,18 +277,15 @@ Mathematische Funktionen
 * Sonstige Funktionen::
 
 Deklarationen und Fakten
-
 * Deklarationen::
 * Funktionen und Variablen f@"ur Kontexte::
 * Funktionen und Variablen f@"ur Deklarationen::
 
 Grafische Darstellung
-
 * Einf@"uhrung in die grafische Darstellung::
 * Funktionen und Variablen f@"ur die grafische Darstellung::
 
 Eingabe und Ausgabe
-
 * Kommentare::
 * Dateien::         
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
@@ -641,7 +629,6 @@ zeilberger
 * Functions and Variables for zeilberger::
 
 Glossar
-
 * Glossar::
 
 @end menu
@@ -684,9 +671,9 @@ Glossar
 @chapter Auswertung
 @include Evaluation.de.texi
 
-@c @node Vereinfachung, Mathematische Funktionen, Auswertung, Top
-@c @chapter Vereinfachung
-@c @include Simplification.de.texi
+@node Vereinfachung, Mathematische Funktionen, Auswertung, Top
+@chapter Vereinfachung
+@include Simplification.de.texi
 
 @c @node Mathematische Funktionen, Deklarationen und Fakten, Vereinfachung, Top
 @c @chapter Mathematische Funktionen

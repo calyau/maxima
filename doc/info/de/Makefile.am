@@ -7,7 +7,8 @@ fcharset = UTF-8
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = include-maxima.de.texi \
 Introduction.de.texi Bugs.de.texi Help.de.texi Command.de.texi \
-DataTypes.de.texi Expressions.de.texi Operators.de.texi Expressions.de.texi \
+DataTypes.de.texi Expressions.de.texi Operators.de.texi Evaluation.de.texi \
+Simplification.de.texi \
 Glossary.de.texi
 
 
