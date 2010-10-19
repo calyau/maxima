@@ -637,6 +637,7 @@ Computing conversions to base units; may take a moment.
 
 @deffn {Function} constvalue (@var{x})
 @deffnx {Function} declare_constvalue (@var{a}, @var{x})
+@deffnx {Function} remove_constvalue (@var{a})
 
 @c REWORK THIS STATEMENT !!
 Returns the declared constant value of a symbol,
@@ -649,6 +650,8 @@ recognized by @code{constantp}.
 
 The @code{physical_units} package declares constant values
 for a number of physical constants.
+
+@code{remove_constvalue} reverts the effect of @code{declare_constvalue}.
 
 @code{load(ezunits)} loads these functions.
 

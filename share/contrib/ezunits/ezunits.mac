@@ -23,6 +23,8 @@ constvalue (e) :=
 
 declare_constvalue (a, x) ::= buildq ([a, x], put (a, x, 'constvalue));
 
+remove_constvalue (a) ::= buildq ([a], rem (a, 'constvalue));
+
 /* Hold off on this display symbol business.
  * :lisp (put '$\` '(#\space #\space) 'dissym)
  */
