@@ -1056,6 +1056,7 @@ Beispiele:
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
 @defvr {Optionsvariable} infeval
+Standardwert: @code{false}
 
 @c Enables "infinite evaluation" mode.  @code{ev} repeatedly evaluates an 
 @c expression until it stops changing.  To prevent a variable, say @code{X}, 

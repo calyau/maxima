@@ -12,10 +12,10 @@
 @c End the session with the command "quit();".  Here's a sample session:
 
 Von einer Kommandozeile wird Maxima mit dem Kommando @code{maxima} gestartet. 
-Maxima zeigt die aktuelle Version an und gibt einen Prompt f@"ur die Eingabe aus. 
-Ein Maxima-Kommando wird mit einem Semikolon abgeschlossen. Eine Maxima-Sitzung 
-wird mit dem Kommando @code{quit();} beendet. Es folgt ein Beispiel f@"ur eine 
-Sitzung:
+Maxima zeigt die aktuelle Version an und gibt einen Prompt f@"ur die Eingabe 
+aus. Ein Maxima-Kommando wird mit einem Semikolon abgeschlossen. Eine 
+Maxima-Sitzung wird mit dem Kommando @code{quit();} beendet. Es folgt ein 
+Beispiel f@"ur eine Sitzung:
 
 @example
 [wfs@@chromium]$ maxima
@@ -44,6 +44,7 @@ provides bug reporting information.
 @c The question mark @code{?} (exact search) and double question mark @code{??} 
 @c (inexact search) are abbreviations for @code{describe}:
 
+@noindent
 Maxima kann GNU Infotext anzeigen. Das Kommando @code{describe(text)} 
 zeigt alle Inhalte an, die die Zeichenkette @code{text} enthalten. Das 
 Fragezeichen @code{?} (exakte Suche) und zwei Fragezeichen @code{??} (ungenaue 
@@ -55,10 +56,10 @@ Suche) sind abk@"urzende Schreibweisen f@"ur @code{describe}:
 
  0: Functions and Variables for Integration
  1: Introduction to Integration
- 2: integrate  (Functions and Variables for Integration)
- 3: integrate_use_rootsof  (Functions and Variables for Integration)
- 4: integration_constant  (Functions and Variables for Integration)
- 5: integration_constant_counter  (Functions and Variables for Integration)
+ 2: integrate (Functions and Variables for Integration)
+ 3: integrate_use_rootsof (Functions and Variables for Integration)
+ 4: integration_constant (Functions and Variables for Integration)
+ 5: integration_constant_counter (Functions and Variables for Integration)
 Enter space-separated numbers, `all' or `none': 4
 
  -- System variable: integration_constant
@@ -94,12 +95,13 @@ Enter space-separated numbers, `all' or `none': 4
 @c refer to it by its automatically supplied label.  In addition, @kbd{%}
 @c refers to the most recent calculated result:
 
+@noindent
 Das Ergebnis einer Rechnung wird mit dem Operator @code{:} einer Variablen 
 zugewiesen. Weiterhin speichert Maxima die Eingaben unter den Marken 
 @code{(%i)} und die Ausgaben unter den Marken @code{(%o)} ab. Die Marken 
 erhalten eine fortlaufende Nummerierung. Mit diesen Marken kann auf fr@"uhere 
-Eingaben und Ausgaben zur@"uckgegriffen werden. Auf das letzte Ergebnis 
-kann mit @code{%} zur@"uckgegriffen werden.
+Eingaben und Ausgaben zur@"uckgegriffen werden. Auf die letzte Ausgabe kann mit
+@code{%} zur@"uckgegriffen werden.
 
 @c ===beg===
 @c u: expand ((x + y)^6);
@@ -124,7 +126,8 @@ kann mit @code{%} zur@"uckgegriffen werden.
 
 @c Maxima knows about complex numbers and numerical constants:
 
-Maxima kennt nummerische Konstanten und kann mit komplexen Zahlen rechnen:
+@noindent
+Maxima kennt numerische Konstanten und kann mit komplexen Zahlen rechnen:
 
 @c ===beg===
 @c cos(%pi);
@@ -139,6 +142,7 @@ Maxima kennt nummerische Konstanten und kann mit komplexen Zahlen rechnen:
 
 @c Maxima can do differential and integral calculus:
 
+@noindent
 Maxima kann differenzieren und integrieren:
 
 @c ===beg===
@@ -163,7 +167,8 @@ Maxima kann differenzieren und integrieren:
 
 @c Maxima can solve linear systems and cubic equations:
 
-Maxima kann lineare Gleichungssysteme und kubische Gleichungen lösen:
+@noindent
+Maxima kann lineare Gleichungssysteme und kubische Gleichungen l@"osen:
 
 @c ===beg===
 @c linsolve ([3*x + 4*y = 7, 2*x + a*y = 13], [x, y]);
@@ -182,8 +187,9 @@ Maxima kann lineare Gleichungssysteme und kubische Gleichungen lösen:
 @c want a result printed, you can finish your command with @kbd{$} instead
 @c of @kbd{;}.
 
+@noindent
 Maxima kann nichtlineare Gleichungssysteme l@"osen. Wird eine Eingabe mit 
-@kbd{$} anstatt @kbd{;} abgeschlossen, wird keine Ausgabe erzeugt.
+@code{$} anstatt @code{;} abgeschlossen, wird keine Ausgabe erzeugt:
 
 @c ===beg===
 @c eq_1: x^2 + 3*x*y + y^2 = 0$
@@ -205,6 +211,7 @@ Maxima kann nichtlineare Gleichungssysteme l@"osen. Wird eine Eingabe mit
 
 @c Maxima can generate plots of one or more functions:
 
+@noindent
 Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:
 
 @c ===beg===

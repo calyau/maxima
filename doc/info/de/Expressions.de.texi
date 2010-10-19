@@ -2305,45 +2305,40 @@ Ersetzt Teile des Ausdrucks @var{expr} in der ganzzahligen Tiefe @var{depth}
 durch eine beschreibende Zusammenfassung.
 
 @itemize @bullet
-@item
 
 @c Sums and differences are replaced by @code{Sum(@var{n})} where @var{n} is the
 @c number of operands of the sum.
 
+@item
 Summen und Differenzen werden durch @code{Sum(@var{n})} ersetzt, wobei @var{n}
 die Anzahl der Terme der Summe ist.
-
-@item
 
 @c Products are replaced by @code{Product(@var{n})} where @var{n} is the number 
 @c of operands of the product.
 
+@item
 Produkte werden durch @code{Product(@var{n})} ersetzt, wobei @var{n} die Anzahl
 der Faktoren des Produktes ist.
 
-@item
-
 @c Exponentials are replaced by @code{Expt}. 
 
-Exponentiationen werden durch @code{Expt} ersetzt.
-
 @item
+Exponentiationen werden durch @code{Expt} ersetzt.
 
 @c Quotients are replaced by @code{Quotient}.
 
-Quotienten werden durch @code{Quotient} ersetzt.
-
 @item
+Quotienten werden durch @code{Quotient} ersetzt.
 
 @c Unary negation is replaced by @code{Negterm}.
 
-Die Negation wird durch @code{Negterm} ersetzt.
-
 @item
+Die Negation wird durch @code{Negterm} ersetzt.
 
 @c Lists are replaced by @code{List(@var{n})} where @var{n} ist the number of
 @c elements of the list.
 
+@item
 Listen werden durch @code{List(@var{n})}, wobei @var{n} die Anzahl der Elemente
 der Liste ist.
 

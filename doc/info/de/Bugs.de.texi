@@ -19,24 +19,21 @@
 * Funktionen und Variablen f@"ur Programmfehler::
 @end menu
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c --- 19.10.2010 DK -----------------------------------------------------------
 @node Einf@"uhrung in Programmfehler, Funktionen und Variablen f@"ur Programmfehler, Programmfehler, Top
 @section Einf@"uhrung in Programmfehler
 
 Maxima wird st@"andig weiterentwickelt. Der Funktionsumfang wird erweitert und 
-Fehler, die bei einem Programm dieser Komplexit@"at kaum zu vermeiden sind, werden
-korrigiert. Vermutet der Nutzer einen Fehler, kann dieser berichtet werden.
-Werden ausreichend Informationen mitgeteilt, k@"onnen die Entwickler Maxima weiter
-verbessern.
+Fehler, die bei einem Programm dieser Komplexit@"at kaum zu vermeiden sind, 
+werden korrigiert. Vermutet der Nutzer einen Fehler, kann dieser berichtet 
+werden. Werden ausreichend Informationen mitgeteilt, k@"onnen die Entwickler 
+Maxima weiter verbessern.
 
 Ein aktueller Link zur Website zum Berichten von Fehlern sowie die notwendigen 
 Informationen @"uber die Maxima-Installation werden mit dem Befehl 
-@code{bug_report()} angezeigt.
-
-Um die Installation auf dem Rechner zu testen, kann die Maxima-Testsuite
-ausgef@"uhrt werden.
-
-Die folgende @"Ubersicht zeigt die Maxima-Kommandos f@"ur das Berichten von Fehlern:
+@code{bug_report()} angezeigt. Um die Installation auf dem Rechner zu testen, 
+kann die Maxima-Testsuite ausgef@"uhrt werden. Die folgende @"Ubersicht zeigt 
+die Maxima-Kommandos f@"ur das Berichten von Fehlern:
 
 @verbatim
      run_testsuite     testsuite_files     bug_report     build_info
@@ -68,9 +65,9 @@ Argumente:
 @c Display all tests.  Normally, the tests are not displayed, unless the test 
 @c fails. (Defaults to @code{false}).
 
-Erh@"alt das Schl@"usselwort @code{display_all} den Wert @code{true}, werden alle
-Tests angezeigt. Der Standardwert ist @code{false}. In diesem Fall werden nur 
-die Tests angezeigt, die fehlschlagen.
+Erh@"alt das Schl@"usselwort @code{display_all} den Wert @code{true}, werden 
+alle Tests angezeigt. Der Standardwert ist @code{false}. In diesem Fall werden 
+nur die Tests angezeigt, die fehlschlagen.
 
 @item display_known_bugs
 
@@ -126,9 +123,9 @@ an.
 @c and then defines functions and variables appropriate to the test.
 
 Es ist zu beachten, dass das Ausf@"uhren einer Testdatei die Maxima-Umgebung 
-@"andern kann. Typischerweise f@"uhrt eine Testdatei zuerst das Kommando @code{kill}
-aus, um eine definierte Umgebung herzustellen, in der keine benutzerdefinierten
-Funktionen und Variablen vorhanden sind.
+@"andern kann. Typischerweise f@"uhrt eine Testdatei zuerst das Kommando 
+@code{kill} aus, um eine definierte Umgebung herzustellen, in der keine 
+benutzerdefinierten Funktionen und Variablen vorhanden sind.
 
 @c @code{run_testsuite} returns @code{done}.
 
@@ -147,16 +144,14 @@ Funktionen und Variablen vorhanden sind.
 @c the tests to run.  If some of the tests in a file are known to fail,
 @c then instead of listing the name of the file, a list containing the
 @c file name and the test numbers that fail is used.
-
-Die Optionsvariable @code{testsuite_files} enth@"alt die Liste der Testdateien, 
-die von @code{run_testsuite} standardm@"a@ss{}ig ausgef@"uhrt werden. Wenn bekannt ist, 
-dass einzelne Tests einer Testdatei fehlschlagen werden, dann wird anstatt dem 
-Namen der Datei eine Liste eingef@"ugt, die den Namen und die Nummern der 
-fehlerhaften Tests enth@"alt.
-
 @c For example, this is a part of the default set of tests:
 
-Das folgende Beispiel zeigt, wie fehlerhafte Tests gekennzeichnet werden:
+Die Optionsvariable @code{testsuite_files} enth@"alt die Liste der Testdateien, 
+die von @code{run_testsuite} standardm@"a@ss{}ig ausgef@"uhrt werden. Wenn 
+bekannt ist, dass einzelne Tests einer Testdatei fehlschlagen werden, dann wird 
+anstatt dem Namen der Datei eine Liste eingef@"ugt, die den Namen und die 
+Nummern der fehlerhaften Tests enth@"alt. Das folgende Beispiel zeigt, wie 
+fehlerhafte Tests gekennzeichnet werden:
 
 @example
  ["rtest13s", ["rtest14", 57, 63]]
@@ -181,16 +176,13 @@ und 63 der Testdatei "rtest14" fehlschlagen werden.
 @c Prints out Maxima and Lisp version numbers, and gives a link
 @c to the Maxima project bug report web page.
 @c The version information is the same as reported by @code{build_info}.
-
-Zeigt die Maxima- und Lisp-Version sowie einen Link zur Maxima-Projekt 
-Webseite. Die Informationen zur Version werden auch von @code{build_info} 
-angezeigt.
-
 @c When a bug is reported, it is helpful to copy the Maxima
 @c and Lisp version information into the bug report.
 
-Wenn ein Programmfehler berichtet wird, ist es hilfreich, die Maxima- und 
-Lisp-Version in den Fehlerbericht aufzunehmen.
+Zeigt die Maxima- und Lisp-Version sowie einen Link zur Maxima-Projekt 
+Webseite. Die Informationen zur Version werden auch von @code{build_info} 
+angezeigt. Wenn ein Programmfehler berichtet wird, ist es hilfreich, die Maxima-
+und Lisp-Version in den Fehlerbericht aufzunehmen.
 
 @c @code{bug_report} returns an empty string @code{""}.
 
@@ -226,11 +218,9 @@ The above information is also reported by the function 'build_info'.
 @deffn {Funktion} build_info ()
 
 @c Prints out a summary of the parameters of the Maxima build.
-
-Zeigt eine @"ubersicht mit Angaben zur installierten Version von Maxima.
-
 @c @code{build_info} returns an empty string @code{""}.
 
+Zeigt eine @"ubersicht mit Angaben zur installierten Version von Maxima.
 @code{build_info} gibt eine leere Zeichenkette @code{""} zur@"uck.
 
 Beispiel:
