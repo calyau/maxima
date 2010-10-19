@@ -271,10 +271,17 @@ Vereinfachung
 
 Mathematische Funktionen
 * Mathematische Funktionen::
-* Exponentialfunktionen::
-* Logarithmusfunktionen::
-* Winkel- und Hyperbelfunktionen::
-* Sonstige Funktionen::
+* Funktionen f@"ur Zahlen::
+* Funktionen f@"ur komplexe Zahlen::
+* Funktionen der Kombinatorik::
+* Algebraische Funktionen::
+* Exponential- und Logarithmusfunktion::
+* Winkelfunktionen::
+* Einf@"uhrung in Winkelfunktionen::
+* Funktionen und Variablen f@"ur Winkelfunktionen::
+* Hyperbelfunktionen::
+* Einf@"uhrung in Hyperbelfunktionen::
+* Funktionen und Variablen f@"ur Hyperbelfunktionen::
 
 Deklarationen und Fakten
 * Deklarationen::
@@ -675,9 +682,9 @@ Glossar
 @chapter Vereinfachung
 @include Simplification.de.texi
 
-@c @node Mathematische Funktionen, Deklarationen und Fakten, Vereinfachung, Top
-@c @chapter Mathematische Funktionen
-@c @include MathFunctions.de.texi
+@node Mathematische Funktionen, Deklarationen und Fakten, Vereinfachung, Top
+@chapter Mathematische Funktionen
+@include MathFunctions.de.texi
 
 @c @node Deklarationen und Fakten, Grafische Darstellung, Mathematische Funktionen, Top
 @c @chapter Deklarationen und Fakten
