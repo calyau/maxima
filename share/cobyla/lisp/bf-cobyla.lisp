@@ -17,11 +17,11 @@
 (in-package :bigfloat)
 
 
-(defun cobyla (n m x rhobeg rhoend iprint maxfun w iact)
+(defun cobyla (n m x rhobeg rhoend iprint maxfun w iact ierr)
   (declare (type (cl:array f2cl-lib:integer4 (cl:*)) iact)
            (type (or real bigfloat) rhoend rhobeg)
            (type (cl:array bigfloat (cl:*)) w x)
-           (type (f2cl-lib:integer4) maxfun iprint m n))
+           (type (f2cl-lib:integer4) ierr maxfun iprint m n))
   (f2cl-lib:with-multi-array-data
       ((x bigfloat x-%data% x-%offset%)
        (w bigfloat w-%data% w-%offset%)
@@ -99,7 +99,7 @@
       (setf iwork (f2cl-lib:int-add idx n))
       (multiple-value-bind
             (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-             var-11 var-12 var-13 var-14 var-15 var-16 var-17 var-18)
+             var-11 var-12 var-13 var-14 var-15 var-16 var-17 var-18 var-19)
           (cobylb n m mpp x rhobeg rhoend iprint maxfun
            (f2cl-lib:array-slice w bigfloat (icon) ((1 *)))
            (f2cl-lib:array-slice w bigfloat (isim) ((1 *)))
@@ -110,14 +110,15 @@
            (f2cl-lib:array-slice w bigfloat (iveta) ((1 *)))
            (f2cl-lib:array-slice w bigfloat (isigb) ((1 *)))
            (f2cl-lib:array-slice w bigfloat (idx) ((1 *)))
-           (f2cl-lib:array-slice w bigfloat (iwork) ((1 *))) iact)
+           (f2cl-lib:array-slice w bigfloat (iwork) ((1 *))) iact ierr)
         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
                          var-10 var-11 var-12 var-13 var-14 var-15 var-16
                          var-17 var-18))
-        (setf maxfun var-7))
+        (setf maxfun var-7)
+	(setf ierr var-19))
       (go end_label)
      end_label
-      (return (values nil nil nil nil nil nil maxfun nil nil)))))
+      (return (values nil nil nil nil nil nil maxfun nil nil ierr)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))

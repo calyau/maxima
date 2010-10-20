@@ -19,12 +19,12 @@
 
 (defun cobylb
        (n m mpp x rhobeg rhoend iprint maxfun con sim simi datmat a vsig veta
-        sigbar dx w iact)
+        sigbar dx w iact ierr)
   (declare (type (cl:array f2cl-lib:integer4 (cl:*)) iact)
            (type (or real bigfloat) rhoend rhobeg)
            (type (cl:array bigfloat (cl:*)) w dx sigbar veta vsig a datmat simi
                                           sim con x)
-           (type (f2cl-lib:integer4) maxfun iprint mpp m n))
+           (type (f2cl-lib:integer4) ierr maxfun iprint mpp m n))
   (f2cl-lib:with-multi-array-data
       ((x bigfloat x-%data% x-%offset%)
        (con bigfloat con-%data% con-%offset%)
@@ -64,6 +64,7 @@
       '"     further, simi holds the inverse of the matrix that is contained in"
       '"     first n columns of sim."
       '""
+      (setf ierr 0)
       (setf iptem (f2cl-lib:min0 n 5))
       (setf iptemp (f2cl-lib:int-add iptem 1))
       (setf np (f2cl-lib:int-add n 1))
@@ -118,6 +119,7 @@
                                ("~%" "~3@T"
                                 "Return from subroutine COBYLA because the "
                                 "MAXFUN limit has been reached." "~%")))
+         (setf ierr 1)
          (go label600)))
       (setf nfvals (f2cl-lib:int-add nfvals 1))
       (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
@@ -420,6 +422,7 @@
                                ("~%" "~3@T"
                                 "Return from subroutine COBYLA because "
                                 "rounding errors are becoming damaging." "~%")))
+         (setf ierr 2)
          (go label600)))
       '""
       '"     calculate the coefficients of the linear approximations to the obj"
@@ -1184,7 +1187,8 @@
                nil
                nil
                nil
-               nil)))))
+               nil
+	       ierr)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
