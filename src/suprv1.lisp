@@ -316,6 +316,7 @@
 			 (remove-transl-fun-props x)
 			 (remove-transl-array-fun-props x)))
       (when (not (get x 'sysconst))
+	(remprop x 'lineinfo)
 	(remprop x 'mprops))
       (dolist (u '(bindtest nonarray evfun evflag opers special mode))
 	(remprop x u))
