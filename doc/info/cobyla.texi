@@ -94,7 +94,7 @@ The desired final value rho parameter.  It is approximately
 The maximum number of function evaluations.  (Defaults to 1000).
 @end table
 
-On return, a vector of four elements is given:
+On return, a vector is given:
 @enumerate
 @item
 The value of the variables giving the minimum.  This is a list of
@@ -104,6 +104,16 @@ variables listed in @var{X}.
 The minimized function value
 @item
 The number of function evaluations.
+@item
+Return code with the following meanings
+ @enumerate
+ @item
+ 0 - No errors.
+ @item
+ 1 - Limit on maximum number of function evaluations reached.
+ @item
+ 2 - Rounding errors inhibiting progress.
+ @end enumerate
 @end enumerate
 
 @code{load(fmin_cobyla)} loads this function.

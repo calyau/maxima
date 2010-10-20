@@ -1,5 +1,5 @@
       SUBROUTINE COBYLB (N,M,MPP,X,RHOBEG,RHOEND,IPRINT,MAXFUN,
-     1  CON,SIM,SIMI,DATMAT,A,VSIG,VETA,SIGBAR,DX,W,IACT)
+     1  CON,SIM,SIMI,DATMAT,A,VSIG,VETA,SIGBAR,DX,W,IACT,ierr)
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       DIMENSION X(*),CON(*),SIM(N,*),SIMI(N,*),DATMAT(MPP,*),
      1  A(N,*),VSIG(*),VETA(*),SIGBAR(*),DX(*),W(*),IACT(*)
@@ -10,6 +10,7 @@ C     hold the displacements from the optimal vertex to the other vertices.
 C     Further, SIMI holds the inverse of the matrix that is contained in the
 C     first N columns of SIM.
 C
+      ierr = 0
       IPTEM=MIN0(N,5)
       IPTEMP=IPTEM+1
       NP=N+1
@@ -42,7 +43,8 @@ C
    40 IF (NFVALS .GE. MAXFUN .AND. NFVALS .GT. 0) THEN
           IF (IPRINT .GE. 1) PRINT 50
    50     FORMAT (/3X,'Return from subroutine COBYLA because the ',
-     1      'MAXFUN limit has been reached.')
+     1         'MAXFUN limit has been reached.')
+          ierr = 1
           GOTO 600
       END IF
       NFVALS=NFVALS+1
@@ -147,7 +149,8 @@ C
       IF (ERROR .GT. 0.1d0) THEN
           IF (IPRINT .GE. 1) PRINT 210
   210     FORMAT (/3X,'Return from subroutine COBYLA because ',
-     1      'rounding errors are becoming damaging.')
+     1         'rounding errors are becoming damaging.')
+          ierr = 2
           GOTO 600
       END IF
 C

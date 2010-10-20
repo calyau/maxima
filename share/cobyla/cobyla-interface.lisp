@@ -95,8 +95,8 @@
 			 ;; returned.
 			 (values nn mm nil
 				 f nil)))))
-    (multiple-value-bind (null-0 null-1 null-2 null-3 null-4 null-5 neval null-6 null-7)
-	(cobyla:cobyla n m x rhobeg rhoend iprint maxfun w iact)
+    (multiple-value-bind (null-0 null-1 null-2 null-3 null-4 null-5 neval null-6 null-7 ierr)
+	(cobyla:cobyla n m x rhobeg rhoend iprint maxfun w iact 0)
       (declare (ignore null-0 null-1 null-2 null-3 null-4 null-5 null-6 null-7))
       ;; Should we put a check here if the number of function
       ;; evaluations equals maxfun?  When iprint is not 0, the output
@@ -108,7 +108,8 @@
 	;; the number of evaluations is really needed.
 	(values (apply fv x-list)
 		x
-		neval)))))
+		neval
+		ierr)))))
 
 ;; Interface.  See fmin_cobyla.mac for documentation.
 (defun $%fmin_cobyla (f vars init-x options)
@@ -119,7 +120,7 @@
       (merror "Number of initial values (~M) does not match the number of variables ~M~%"
 	      (length (cdr init-x))
 	      (length (cdr vars))))
-    (multiple-value-bind (fmin xopt neval)
+    (multiple-value-bind (fmin xopt neval ierr)
 	(apply #'%cobyla vars init-x f args)
       (list '(mlist)
 	    (list* '(mlist) (mapcar #'(lambda (var val)
@@ -127,4 +128,5 @@
 				    (cdr vars)
 				    (coerce xopt 'list)))
 	    fmin
-	    neval))))
+	    neval
+	    ierr))))

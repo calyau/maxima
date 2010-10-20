@@ -17,11 +17,11 @@
 (in-package :cobyla)
 
 
-(defun cobyla (n m x rhobeg rhoend iprint maxfun w iact)
+(defun cobyla (n m x rhobeg rhoend iprint maxfun w iact ierr)
   (declare (type (array f2cl-lib:integer4 (*)) iact)
            (type double-float rhoend rhobeg)
            (type (array double-float (*)) w x)
-           (type (f2cl-lib:integer4) maxfun iprint m n))
+           (type (f2cl-lib:integer4) ierr maxfun iprint m n))
   (f2cl-lib:with-multi-array-data
       ((x double-float x-%data% x-%offset%)
        (w double-float w-%data% w-%offset%)
@@ -99,7 +99,7 @@
       (setf iwork (f2cl-lib:int-add idx n))
       (multiple-value-bind
             (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-             var-11 var-12 var-13 var-14 var-15 var-16 var-17 var-18)
+             var-11 var-12 var-13 var-14 var-15 var-16 var-17 var-18 var-19)
           (cobylb n m mpp x rhobeg rhoend iprint maxfun
            (f2cl-lib:array-slice w double-float (icon) ((1 *)))
            (f2cl-lib:array-slice w double-float (isim) ((1 *)))
@@ -110,14 +110,15 @@
            (f2cl-lib:array-slice w double-float (iveta) ((1 *)))
            (f2cl-lib:array-slice w double-float (isigb) ((1 *)))
            (f2cl-lib:array-slice w double-float (idx) ((1 *)))
-           (f2cl-lib:array-slice w double-float (iwork) ((1 *))) iact)
+           (f2cl-lib:array-slice w double-float (iwork) ((1 *))) iact ierr)
         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
                          var-10 var-11 var-12 var-13 var-14 var-15 var-16
                          var-17 var-18))
-        (setf maxfun var-7))
+        (setf maxfun var-7)
+        (setf ierr var-19))
       (go end_label)
      end_label
-      (return (values nil nil nil nil nil nil maxfun nil nil)))))
+      (return (values nil nil nil nil nil nil maxfun nil nil ierr)))))
 
 (in-package #-gcl #:cl-user #+gcl "CL-USER")
 #+#.(cl:if (cl:find-package '#:f2cl) '(and) '(or))
@@ -129,8 +130,9 @@
                         (array double-float (*)) double-float double-float
                         (fortran-to-lisp::integer4) (fortran-to-lisp::integer4)
                         (array double-float (*))
-                        (array fortran-to-lisp::integer4 (*)))
+                        (array fortran-to-lisp::integer4 (*))
+                        (fortran-to-lisp::integer4))
            :return-values '(nil nil nil nil nil nil fortran-to-lisp::maxfun nil
-                            nil)
+                            nil fortran-to-lisp::ierr)
            :calls '(fortran-to-lisp::cobylb))))
 
