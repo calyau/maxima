@@ -17,8 +17,8 @@ a Maxima symbol without the dollar sign.
 @c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
 A Maxima symbol which begins with a question mark @code{?} corresponds to
 a Lisp symbol without the question mark.
-For example, the Maxima symbol @code{foo} corresponds to the Lisp symbol @code{$foo},
-while the Maxima symbol @code{?foo} corresponds to the Lisp symbol @code{foo},
+For example, the Maxima symbol @code{foo} corresponds to the Lisp symbol @code{$FOO},
+while the Maxima symbol @code{?foo} corresponds to the Lisp symbol @code{FOO},
 Note that @code{?foo} is written without a space between @code{?} and @code{foo};
 otherwise it might be mistaken for @code{describe ("foo")}.
 
@@ -52,7 +52,7 @@ functions and variables with ordinary names (no special punctuation)
 must have Lisp names beginning with the dollar sign @code{$}.
 
 Maxima is case-sensitive, distinguishing between lowercase and uppercase letters
-in identifiers, while Lisp is not.
+in identifiers.
 There are some rules governing the translation of names between Lisp and Maxima.
 
 @enumerate
@@ -60,7 +60,10 @@ There are some rules governing the translation of names between Lisp and Maxima.
 A Lisp identifier not enclosed in vertical bars corresponds to a Maxima identifier
 in lowercase.
 Whether the Lisp identifier is uppercase, lowercase, or mixed case, is ignored.
-E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo} all correspond to Maxima @code{foo}.
+E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo} all correspond to
+Maxima @code{foo}.  But this is because @code{$foo}, @code{$FOO} and
+@code{$Foo} are converted by the Lisp reader by default to the Lisp
+symbol @code{$FOO}.
 @item
 A Lisp identifier which is all uppercase or all lowercase
 and enclosed in vertical bars corresponds to a Maxima identifier with case reversed.
@@ -139,7 +142,8 @@ and @code{gcd}.
 @node Garbage Collection, Documentation, Lisp and Maxima, Help
 @section Garbage Collection
 Symbolic computation tends to create a good deal
-of garbage, and effective handling of this can be crucial to successful
+of garbage (temporary or intermediate results that are eventually
+not used), and effective handling of this can be crucial to successful
 completion of some programs.
 
 @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
@@ -151,6 +155,9 @@ is available.   This limits the collection to pages which have been recently
 written to.    See the GCL documentation under ALLOCATE and GBC.   At the
 Lisp level doing (setq si::*notify-gbc* t) will help you determine which
 areas might need more space.
+
+For other Lisps that run Maxima, we refer the reader to the
+documentation for that Lisp on how to control GC.
 
 @node Documentation, Functions and Variables for Help, Garbage Collection, Help
 @section Documentation
