@@ -608,21 +608,806 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 @section Funktionen der Kombinatorik
 @c -----------------------------------------------------------------------------
 
+@c TODO: DOKUMENTATION FÜR DOUBLE_FACTORIAL FEHLT
 
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Operator} !!
+@ifinfo
+@fnindex Doppelte Fakult@"at
+@end ifinfo
+
+@c The double factorial operator.
+
+Ist der Operator der doppelten Fakult@"at. 
+
+@c For an integer, float, or rational number @code{n}, @code{n!!} evaluates to 
+@c the product @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} where @code{k} is 
+@c equal to @code{entier (n/2)}, that is, the largest integer less than or equal
+@c to @code{n/2}. Note that this definition does not coincide with other 
+@c published definitions for arguments which are not integers.
+@c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
+
+F@"ur eine ganze Zahl, rationale Zahl oder Gleitkommazahl @code{n},  wird 
+@code{n!!} zu dem Produkt @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} 
+vereinfacht, wobei @code{k} gleich @code{floor(n/2)} ist und @code{floor} die 
+gr@"o@ss{}te ganze Zahl liefert, die kleiner oder gleich @code{n/2} ist. Diese 
+Definition entspricht f@"ur nicht ganze Zahlen nicht der @"ublichen Definition.
+
+@c For an even (or odd) integer @code{n}, @code{n!!} evaluates to the product of
+@c all the consecutive even (or odd) integers from 2 (or 1) through @code{n} 
+@c inclusive.
+
+F@"ur eine gerade (oder ungerade) ganze Zahl wird @code{n!!} zum Produkt aller
+aufeinanderfolgenden geraden (oder ungeraden) ganzen Zahlen beginnend mit 2 
+(oder 1) einschlie@ss{}lich @code{n} vereinfacht.
+
+@c For an argument @code{n} which is not an integer, float, or rational,
+@c @code{n!!} yields a noun form @code{genfact (n, n/2, 2)}.
+@c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? 
+@c OR TOO MUCH DETAIL ???
+
+F@"ur ein Argument @code{n}, das keine ganze, rationale oder Gleitkommazahl ist, 
+gibt @code{n!!} die Substantivform @code{genfact(n, n/2,2)} zur@"uck.
+
+Maxima kennt noch die Funktion @code{double_factorial}, die wesentlich 
+allgemeiner definiert ist. Siehe @code{double_factorial}.
+
+@c @opencatbox
+@c @category{Gamma Funktion und Fakult@"at} @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} binomial (@var{x}, @var{y})
+
+@c The binomial coefficient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}. If 
+@c @var{x} and @var{y} are integers, then the numerical value of the binomial
+@c coefficient is computed. If @var{y}, or @var{x - y}, is an integer, the 
+@c binomial coefficient is expressed as a polynomial.
+
+Der Binomialkoeffizient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}. Sind
+die Argumente @var{x} und @var{y} ganze Zahlen, wird der Binomialkoeffizient
+numerisch berechnet. Sind @var{y} oder @var{x-y} ganze Zahlen, dann wird der
+Binomialkoeffizient zu einem Polynom vereinfacht.
+
+Beispiele:
+
+@c ===beg===
+@c binomial (11, 7);
+@c 11! / 7! / (11 - 7)!;
+@c binomial (x, 7);
+@c binomial (x + 7, x);
+@c binomial (11, y);
+@c ===end===
+@example
+(%i1) binomial (11, 7);
+(%o1)                          330
+(%i2) 11! / 7! / (11 - 7)!;
+(%o2)                          330
+(%i3) binomial (x, 7);
+        (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
+(%o3)   -------------------------------------------------
+                              5040
+(%i4) binomial (x + 7, x);
+      (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
+(%o4) -------------------------------------------------------
+                               5040
+(%i5) binomial (11, y);
+(%o5)                    binomial(11, y)
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn  {Function} factorial (@var{x})
+@deffnx {Operator} !
+@ifinfo
+@fnindex Fakult@"at
+@end ifinfo
+
+@c The factorial operator. For any complex number @code{x}, except for negative 
+@c integers, @code{x!} is defined as @code{gamma(x+1)}.
+
+@code{factorial} ist die Funktion f@"ur die Berechnung der Fakult@"at. Der 
+Operator f@"ur die Fakult@"at @code{!}, ist identisch mit der Funktion. F@"ur 
+jede komplexe Zahl @code{x}, einschlie@ss{}lich ganze und rationale Zahlen, 
+sowie Gleitkommazahlen und mit Ausnahme der negative ganzen Zahlen, ist die 
+Fakult@"at definiert als @code{gamma(x+1}.
+
+@c For an integer @code{x}, @code{x!} simplifies to the product of the integers 
+@c from 1 to @code{x} inclusive. @code{0!} simplifies to 1. For a real or 
+@c complex number in float or bigfloat precision @code{x}, @code{x!} simplifies
+@c to the value of @code{gamma (x+1)}. For @code{x} equal to @code{n/2} where 
+@c @code{n} is an odd integer, @code{x!} simplifies to a rational factor times 
+@c @code{sqrt (%pi)} (since @code{gamma (1/2)} is equal to @code{sqrt (%pi)}).
+
+F@"ur eine ganze Zahl @code{x}, vereinfacht @code{x!} zum Produkt der ganzen 
+Zahlen von 1 bis einschlie@ss{}lich @code{x}. @code{0!} vereinfacht zu 1. F@"ur
+eine Gleitkommazahl vereinfacht @code{x!} zu @code{gamma(x+1)}. F@"ur eine 
+halbzahlige rationale Zahl @code{n/2}, wobei @code{n} eine ungerade ganze Zahl 
+ist, vereinfacht @code{(n/2)!} zu einem rationalen Faktor multipliziert mit
+@code{sqrt(%pi)}. F@"ur jedes andere Argument wird @code{x!} nicht vereinfacht.
+
+@c The option variables @code{factlim} and @code{gammalim} control the numerical 
+@c evaluation of factorials for integer and rational arguments. The functions 
+@c @code{minfactorial} and @code{factcomb} simplifies expressions containing 
+@c factorials. See @code{factlim}, @code{gammalim}, @code{minfactorial} and 
+@c @code{factcomb}.
+
+Die Optionsvariablen @code{factlim} und @code{gammalim} steuern die numerische
+Berechnung von Ausdr@"ucken, die Fakult@"aten enthalten. Siehe @code{factlim} 
+und @code{gammalim}.
+
+Die Funktionen @code{minfactorial} und @code{factcomb} vereinfachen 
+Ausdr@"ucken, die die Fakult@"at enthalten. Siehe @code{minfactorial} und 
+@code{factcomb}.
+
+@c The functions @code{gamma}, @code{bffac}, and @code{cbffac} are varieties of 
+@c the gamma function. @code{bffac} and @code{cbffac} are called internally by 
+@c @code{gamma} to evaluate the gamma function for real and complex numbers in 
+@c bigfloat precision.
+
+Die Funktionen @code{gamma}, @code{bbfac} und @code{cbffac} sind Varianten der
+Gamma Funktion. @code{bffac} und @code{cbffac} werden intern von Maxima 
+aufgerufen, um die Gammafunktion f@"ur reelle und komplexe gro@ss{}e 
+Gleitkommazahlen zu berechnen.
+
+@c @code{makegamma} substitutes @code{gamma} for factorials and related 
+@c functions.
+
+Die Funktion @code{makegamma} ersetzt die Gamma Funktion @code{gamma} f@"ur die
+Fakult@"at und verwandte Funktionen in einem Ausdruck.
+
+@c Maxima knows the derivative of the factorial function and the limits for 
+@c specific values like negative integers.
+
+Maxima kennt die Ableitung der Fakult@"at und den Grenzwert f@"ur spezielle Wert
+wie negative ganze Zahlen.
+
+@c The option variable @code{factorial_expand} controls the simplification of 
+@c expressions like @code{(n+x)!}, where @code{n} is an integer.
+
+Die Optionsvariable @code{factorial_expand} kontrolliert die Vereinfachung von 
+Ausdr@"ucken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist.
+
+@c See also @code{binomial}.
+
+Siehe auch @code{binomial}.
+
+Beispiele:
+
+@c The factorial of an integer is simplified to an exact number unless the 
+@c operand is greater than @code{factlim}. The factorial for real and complex 
+@c numbers is evaluated in float or bigfloat precision.
+
+Die Fakult@"at einer ganzen Zahl wird zu einer exakten Zahl vereinfacht, wenn
+das Argument nicht gr@"o@ss{}er als @code{factlim} ist. Die Fakult@"at f@"ur 
+reelle und komplexe Zahlen wird in als Gleitkommazahl berechnet.
+
+@c ===beg===
+@c factlim : 10;
+@c [0!, (7/2)!, 8!, 20!];
+@c [4,77!, (1.0+%i)!];
+@c [2.86b0!, 1.0b0+%i)!];
+@c ===end===
+@example
+(%i1) factlim:10;
+(%o1)                                 10
+(%i2) [0!, (7/2)!, 8!, 20!];
+                            105 sqrt(%pi)
+(%o2)                   [1, -------------, 40320, 20!]
+                                 16
+(%i3) [4.77!, (1.0+%i)!];
+(%o3)    [81.44668037931197, 
+          .3430658398165454 %i + .6529654964201665]
+(%i4) [2.86b0!, (1.0b0+%i)!];
+(%o4) [5.046635586910012b0, 
+       3.430658398165454b-1 %i + 6.529654964201667b-1]
+@end example
+
+@c The factorial of a known constant, or general expression is not simplified. 
+@c Even so it may be possible to simplify the factorial after evaluating the 
+@c operand.
+
+Die Fakult@"at einer komplexen Zahl, bekannten Konstanten oder eines allgemeinen
+Ausdrucks wird nicht vereinfacht. Der Vereinfachung kann m@"oglich sein, wenn 
+der Operand zu einer Zahl ausgewertet werden kann.
+
+@c ===beg===
+@c [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
+@c ev (%, numer, %enumer);
+@c ===end===
+@example
+(%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
+(%o1)      [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
+(%i2) ev (%, numer, %enumer);
+(%o2) [.3430658398165454 %i + .6529654964201665, 
+       7.188082728976031, 
+       4.260820476357003, 1.227580202486819]
+@end example
+
+@c REMOVING THIS EXAMPLE. IT IS NOT SPECIFIC FOR THE FACTORIAL FUNCTION:
+@c The factorial of an unbound symbol is not simplified.
+
+@c @c ===beg===
+@c @c kill (foo);
+@c @c foo!;
+@c @c ===end===
+@c @example
+@c (%i1) kill (foo);
+@c (%o1)                         done
+@c (%i2) foo!;
+@c (%o2)                         foo!
+@c @end example
+
+@c Factorials are simplified, not evaluated. Thus @code{x!} may be replaced 
+@c even in a quoted expression.
+
+Fakult@"aten werden vereinfacht und nicht ausgewertet. Daher kann @code{x!} auch
+in Ausdr@"ucken ersetzt werden, deren Auswertung mit dem Quote-Operator 
+verhindert wurde.
+
+@c ===beg===
+@c '([0!, (7/2)!, 4.77!, 8!, 20!]);
+@c ===end===
+@example
+(%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
+          105 sqrt(%pi)
+(%o1) [1, -------------, 81.44668037931199, 40320, 
+               16
+                                             2432902008176640000]
+@end example
+
+@c Maxima knows the derivative of the factorial function.
+
+Maxima kennt die Ableitung der Fakult@"at.
+
+@c ===beg===
+@c diff(x!,x);
+@c ===end===
+@example
+(%i1) diff(x!,x);
+(%o1)                           x! psi (x + 1)
+                                      0
+@end example
+
+@c The option variable @code{factorial_expand} controls expansion and 
+@c simplification of expressions with the factorial function.
+
+Die Optionsvariable @code{factorial_expand} steuert die Expansion und
+Vereinfachung von Ausdr@"ucken, die die Fakult@"at enthalten.
+
+@c ===beg===
+@c (n+1)!/n!,factorial_expand:true;
+@c ===end===
+@example
+(%i1) (n+1)!/n!,factorial_expand:true;
+(%o1)                                n + 1
+@end example
+
+@c @opencatbox
+@c @category{Gamma Funktionen und Fakult@"at} @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 17.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} factlim
+Standardwert: 100000
+
+@c @code{factlim} specifies the highest factorial which is automatically 
+@c expanded. If it is -1 then all integers are expanded.
+
+Die Optionsvariable @code{factlim} spezifiziert die gr@"o@ss{}te ganze Zahl, 
+f@"ur die die Fakult@"at einer ganzen Zahl berechnet wird. Wenn @code{factlim} 
+den Wert -1 hat, wird die Fakult@"at f@"ur jede ganze Zahl berechnet.
+
+@c TODO: IN ABHÄNIGKEIT VON DER LISP IMPLEMENTATION GIBT ES GRENZEN FÜR DIE
+@c       GRÖẞTE ZAHL. 
+
+@c @opencatbox
+@c @category{Gamma Funktion und Fakult@"at}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} factorial_expand
+Standardwert: @code{false}
+
+@c The option variable @code{factorial_expand} controls the simplification of 
+@c expressions like @code{(n+1)!}, where @code{n} is an integer. See @code{!} 
+@c for an example.
+
+Die Optionsvariable @code{factorial_expand} kontrolliert die Vereinfachung von
+Ausdr@"ucken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist. Siehe
+@code{factorial} f@"ur ein Beispiel.
+
+@c @opencatbox
+@c @category{Gamma and factorial functions}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} genfact (@var{x}, @var{y}, @var{z})
+
+@c Returns the generalized factorial, defined as
+@c @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, for integral @var{x},
+@c @code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
+
+Gibt die verallgemeinerte Fakult@"at zur@"uck, die als @code{x (x-z) (x - 2 z) 
+... (x - (y - 1) z)} definiert ist. Damit gilt f@"ur ein ganzzahliges Argument 
+@var{x}, @code{genfact (x, x, 1) = x!} und @code{genfact (x, x/2, 2) = x!!}.
+
+@c @opencatbox
+@c @category{Gamma Funktion und Fakult@"at}
+@c @closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Algebraische Funktionen, Exponential- und Logarithmusfunktion, Funktionen der Kombinatorik
 @section Algebraische Funktionen
 @c -----------------------------------------------------------------------------
 
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} isqrt (@var{x})
 
+@c Returns the "integer square root" of the absolute value of @var{x}, which is 
+@c an integer.
+
+Gibt die ganzzahlige Wurzel des Betrages von @var{x} zur@"uck, wenn @var{x} eine
+ganze Zahl ist. Andernfalls wird eine Substantivform zur@"uckgegeben.
+
+@c @opencatbox
+@c @category{Mathematische Funktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} sqrt (@var{x})
+
+@c The square root of @var{x}. It is represented internally by 
+@c @code{@var{x}^(1/2)}.  See also @code{rootscontract}.
+
+Ist die Wurzelfunktion. Intern stellt Maxima die Wurzelfunktion als
+@code{sqrt@var{x}^(1/2)} dar. Siehe auch die Funktion @code{rootscontract}.
+
+@c @code{radexpand} if @code{true} will cause nth roots of factors of a product
+@c which are powers of n to be pulled outside of the radical, e.g.
+@c @code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is 
+@c @code{true}.
+
+Hat die Optionsvariable @code{radexpand} den Wert @code{true}, werden die
+n-ten Wurzeln von Faktoren unter einer Wurzel aus der Wurzel herausgezogen.
+So wird zum Beispiel @code{sqrt(16*x^2)} nur dann zu @code{4*x} vereinfacht,
+wenn @code{radexpand} den Wert @code{true} hat.
+
+@c @opencatbox
+@c @category{Mathematische Funktionen}
+@c @closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Exponential- und Logarithmusfunktion, Winkelfunktionen, Algebraische Funktion
 @section Exponential- und Logarithmusfunktion
 @c -----------------------------------------------------------------------------
 
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} exp (@var{x})
 
+@c Represents the exponential function. Instances of @code{exp (@var{x})} in 
+@c input are simplified to @code{%e^@var{x}}; @code{exp} does not appear in
+@c simplified expressions.
+
+Ist die Exponentialfunktion. Die Exponentialfunkton @var{exp} wird sofort zu
+@code{%e^@var{x}} vereinfacht und tritt in vereinfachten Ausdr@"ucken nicht auf.
+
+@c @code{demoivre} if @code{true} causes @code{%e^(a + b %i)} to simplify to
+@c @code{%e^(a (cos(b) + %i sin(b)))} if @code{b} is free of @code{%i}. See 
+@c @code{demoivre}.
+
+Hat die Optionsvariable @code{demoivre} den Wert @code{true}, werden Ausdr@"ucke
+der Form @code{%e^(a + b %i)} zu @code{%e^(a (cos(b) + %i sin(b)))} vereinfacht,
+wobei @var{a} und @var{b} reelle Ausdr@"ucke sind.
+
+@c @code{%emode}, when @code{true}, causes @code{%e^(%pi %i x)} to be 
+@c simplified. See @code{%emode}.
+
+Hat die Optionsvariable @code{%emode} den Wert @code{true}, dann werden
+Ausdr@"ucke der Form  @code{%e^(%pi %i x)} vereinfacht. Siehe @code{%emode}.
+
+@c @code{%enumer}, when @code{true} causes @code{%e} to be replaced by
+@c 2.718...  whenever @code{numer} is @code{true}. See @code{%enumer}.
+
+Hat die Optionsvariable @code{%enumer} den Wert @code{true}, wird die Konstante
+@code{%e} durch ihren nummerischen Wert 2.718... ersetzt, sobald auch die
+Optionsvariable @code{numer} den Wert @code{true} hat. Siehe @code{%enumer}.
+
+@c @opencatbox
+@c @category{Exponential und Logarithmus Funktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} %emode
+Standardwert: @code{true}
+
+@c When @code{%emode} is @code{true}, @code{%e^(%pi %i x)} is simplified as 
+@c follows.
+
+Hat die Optionsvariable @code{%emode} den Wert @code{true}, wird 
+@code{%e^(%pi %i x)} wie folgt vereinfacht:
+
+@c @code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if 
+@c @code{x} is a floating point number, an integer, or a multiple of 1/2, 1/3, 
+@c 1/4, or 1/6, and then further simplified.
+
+@code{%e^(%pi %i x)} wird zu @code{cos (%pi x) + %i sin (%pi x)} vereinfacht, 
+wenn @code{x} eine Gleitkommazahl, eine ganze Zahl oder ein vielfaches von
+1/2, 1/3, 1/4 oder 1/6 ist. 
+
+@c For other numerical @code{x}, @code{%e^(%pi %i x)} simplifies to 
+@c @code{%e^(%pi %i y)} where @code{y} is @code{x - 2 k} for some integer 
+@c @code{k} such that @code{abs(y) < 1}.  
+
+F@"ur andere nummerische Werte @code{x} wird @code{%e^(%pi %i x)} zu 
+@code{%e^(%pi %i y)} vereinfacht, wobei @code{y} eine ganze Zahl @code{x - 2 k} 
+mit einem @code{k} ist, so dass @code{abs(y) < 1} gilt.
+
+@c When @code{%emode} is @code{false}, no special simplification of 
+@c @code{%e^(%pi %i x)} is carried out.
+
+Hat @code{%emode} den Wert @code{false}, werden keine speziellen Vereinfachungen
+f@"ur den Ausdruck @code{%e^(%pi %i x)} vorgenommen.
+
+@c NEED EXAMPLES HERE
+@c @opencatbox
+@c @category{Exponential und Logarithmus Funktionen} @category{Vereinfachungsflags und Variable}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} %enumer
+Standardwert: @code{false}
+
+@c When @code{%enumer} is @code{true}, @code{%e} is replaced by its numeric 
+@c value 2.718...  whenever @code{numer} is @code{true}. 
+
+Hat @code{%enumer} den Wert @code{true}, wird die Konstante @code{%e} immer dann
+durch ihren nummerischen Wert ersetzt, wenn die Optionsvariable @code{numer} den
+Wert @code{true} hat.
+
+@c When @code{%enumer} is @code{false}, this substitution is carried out only 
+@c if the exponent in @code{%e^x} evaluates to a number.
+
+Hat @code{%enumer} den Wert @code{false}, wird die Konstante @code{%e} nur dann
+durch ihren nummerischen Wert ersetzt, wenn der Exponent von @code{%e^x} zu 
+einer Gleitkommazahl ausgewertet wird.
+
+@c See also @code{ev} and @code{numer}.
+
+Siehe auch @code{ev} und @code{numer}.
+
+   @c NEED EXAMPLES HERE
+@c @opencatbox
+@c @category{Exponential und Logarithmus Funktionen} @category{Auswertungsflags}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} %e_to_numlog
+Standardwert: @code{false}
+
+@c When @code{true}, @code{r} some rational number, and @code{x} some 
+@c expression, @code{%e^(r*log(x))} will be simplified into @code{x^r} . It 
+@c should be noted that the @code{radcan} command also does this transformation,
+@c and more complicated transformations of this ilk as well. The 
+@c @code{logcontract} command "contracts" expressions containing @code{log}.
+
+Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein 
+Ausdruck @code{%e^(r*log(x))} zu @code{x^r} vereinfacht. Dabei sind @code{r}  
+eine rationale Zahl und @code{x} ein beliebiger Ausdruck. Die Funktion 
+@code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Optionsvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} log (@var{x})
+
+@c Represents the natural (base @math{e}) logarithm of @var{x}.
+
+Ist der nat@"urliche Logaritmus zur Basis @math{e}.
+
+@c Maxima does not have a built-in function for the base 10 logarithm or other 
+@c bases. @code{log10(x) := log(x) / log(10)} is a useful definition.
+
+Maxima hat keine vordefinierte Logarithmusfunktion zur Basis 10 oder anderen 
+Basen. Eine einfache Definition ist zum Beispiel 
+@code{log10(x) := log(x)/log(10)}.
+
+@c Simplification and evaluation of logarithms is governed by several global 
+@c flags:
+
+F@"ur die Vereinfachung und Auswertung der Logarithmusfunktion hat Maxima
+verschiedene Optionsvariablen:
+
+@c @code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}. If it 
+@c is set to @code{all}, @code{log(a*b)} will also simplify to 
+@c @code{log(a)+log(b)}. If it is set to @code{super}, then @code{log(a/b)} will
+@c also simplify to @code{log(a)-log(b)} for rational numbers @code{a/b}, 
+@c @code{a#1}.  (@code{log(1/b)}, for @code{b} integer, always simplifies.)  If
+@c it is set to @code{false}, all of these simplifications will be turned off.
+
+@itemize
+@item @code{logexpand}
+
+@code{log(a^b)} wird zu @code{b*log(a)} vereinfacht. Hat @code{logexpand} den 
+Wert @code{all}, wird zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)} 
+vereinfacht. Mit den Wert @code{super} vereinfacht Maxima weiterhin 
+@code{log(a/b)} zu @code{log(a)-log(b)}, wobei @code{a/b} eine rationale Zahl 
+ist. @code{log(1/b} wird f@"ur eine ganze Zahl @code{b} immer vereinfacht. Hat
+die Optionsvariable @code{logexpand} den Wert @code{false} werden alle obigen
+Vereinfachungen ausgeschaltet.
+
+@c @code{logsimp} - if @code{false} then no simplification of @code{%e} to a 
+@c power containing @code{log}'s is done.
+
+@item @code{logsimp}
+
+Hat die Optionsvariable @code{logsimp} den Wert @code{false}, werden 
+Exponentialfunktionen @code{exp}, die Logarithmusfunktionen im Exponenten
+enthalten, nicht vereinfacht.
+
+@c @code{lognumer} - if @code{true} then negative floating point arguments to
+@c @code{log} will always be converted to their absolute value before the 
+@c @code{log} is taken.  If @code{numer} is also @code{true}, then negative 
+@c integer arguments to @code{log} will also be converted to their absolute 
+@c value.
+
+@item @code{lognumer}
+
+Hat die Optionsvariable @code{lognumer} den Wert @code{true}, wird von
+negativen Gleitkommazahlen der Absolutwert genommen, bevor der Logarithmus
+berechnet wird.
+
+@c @code{lognegint} - if @code{true} implements the rule @code{log(-n)} ->
+@c @code{log(n)+%i*%pi} for @code{n} a positive integer.
+
+@item @code{lognegint}
+
+Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
+@code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur postive @code{n} vereinfacht.
+
+@c @code{%e_to_numlog} - when @code{true}, @code{r} some rational number, and
+@c @code{x} some expression, @code{%e^(r*log(x))} will be simplified into
+@c @code{x^r} .  It should be noted that the @code{radcan} command also
+@c does this transformation, and more complicated transformations of this ilk as 
+@c well. The @code{logcontract} command "contracts" expressions containing 
+@c @code{log}.
+
+@item @code{%e_to_numlog}
+
+Hat die Optionsvariable @code{%e_to_numlog} den Wert @code{true}, wird ein 
+Ausdruck @code{%e^(r*log(x))} zu @code{x^r} vereinfacht. Dabei sind @code{r}  
+eine rationale Zahl und @code{x} ein beliebiger Ausdruck. Die Funktion 
+@code{radcan} f@"uhrt diese Vereinfachung ebenfalls aus.
+@end itemize
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} logabs
+Standardwert: @code{false}
+
+@c When doing indefinite integration where logs are generated, e.g. 
+@c @code{integrate(1/x,x)}, the answer is given in terms of @code{log(abs(...))}
+@c if @code{logabs} is @code{true}, but in terms of @code{log(...)} if 
+@c @code{logabs} is @code{false}.  For definite integration, the 
+@c @code{logabs:true} setting is used, because here "evaluation" of the 
+@c indefinite integral at the endpoints is often needed.
+
+Werden unbestimmte Integrale mit Logarithmusfunktionen erzeugt, zum Beispiel
+@code{integrate(1/x,x)}, wird der Betrag der Argumente der 
+Logarithmusfunktionen gebildet @code{log(abs(...))}, wenn die Optionsvariable
+@code{logabs} den Wert @code{true} hat. Ist der Wert @code{false} werden keine
+Betr@"age gebildet @code{log(...)}. 
+
+Bei der Berechnung von bestimmten Integralen setzt Maxima die Optionsvariable
+@code{logabs} zu den Wert @code{false}.  
+
+@c @opencatbox
+@c @category{Logarithmusfunkionen} @category{Integration} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn  {Funktion} logarc (@var{expr})
+@deffnx {Optionsvariable} logarc
+
+@c When the global variable @code{logarc} is @code{true}, inverse circular and 
+@c hyperbolic functions are replaced by equivalent logarithmic functions.
+@c The default value of @code{logarc} is @code{false}.
+
+Hat die Optionsvariable @code{logarc} den Wert @code{true}, werden inverse
+Winkel- und Hyperbelfunktionen durch Logarithmusfunktionen ersetzt. Der 
+Standwert von @code{logarc} ist @code{false}.
+
+@c The function @code{logarc(@var{expr})} carries out that replacement for an 
+@c expression @var{expr} without setting the global variable @code{logarc}.
+
+Die Funktion @code{logarc(@var{expr})} f@"uhrt diese Ersetzung aus, ohne dass 
+die Optionsvariable @code{logarc} gesetzt wird.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Optionsvariablen} @category{Vereinfachungsfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} logconcoeffp
+Standardwert: @code{false}
+
+@c Controls which coefficients are contracted when using @code{logcontract}.  
+@c It may be set to the name of a predicate function of one argument.  E.g. if 
+@c you like to generate SQRTs, you can do @code{logconcoeffp:'logconfun$
+@c logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
+@c @code{logcontract(1/2*log(x));} will give @code{log(sqrt(x))}.
+
+Die Optionsvariable @code{logconcoeffp} kontrolliert, welche Koeffizienten von
+der Funktion @code{logcontract} zusammengezogen werden. Der Optionsvariable kann
+der Name einer Aussagefunktion mit einem Argument zugewiesen werden. Sollen 
+z. B. Wurzeln generiert werden, kann folgende Definition verwendet:
+@code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or 
+ratnump(m)$}. Dann ergibt sich f@"ur @code{logcontract(1/2*log(x));} das 
+folgende Ergebnis @code{log(sqrt(x))}.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Optionsvariablen}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} logcontract (@var{expr})
+
+@c Recursively scans the expression @var{expr}, transforming subexpressions of 
+@c the form @code{a1*log(b1) + a2*log(b2) + c} into 
+@c @code{log(ratsimp(b1^a1 * b2^a2)) + c}
+
+Der Ausdruck @var{expr} wird rekursiv nach Ausdr@"ucken der Form 
+@code{a1*log(b1) + a2*log(b2) + c} abgesucht. Diese werden zu 
+@code{log(ratsimp(b1^a1 * b2^a2)) + c} transformiert.
+
+@c ===beg===
+@c 2*(a*log(x) + 2*a*log(y))$
+@c logcontract(%);
+@c ===end===
+@example
+(%i1) 2*(a*log(x) + 2*a*log(y))$
+(%i2) logcontract(%);
+                                 2  4
+(%o2)                     a log(x  y )
+@end example
+
+@c If you do @code{declare(n,integer);} then @code{logcontract(2*a*n*log(x));} 
+@c gives @code{a*log(x^(2*n))}.  The coefficients that "contract" in this manner 
+@c are those such as the 2 and the @code{n} here which satisfy
+@c @code{featurep(coeff,integer)}.  The user can control which coefficients are
+@c contracted by setting the option @code{logconcoeffp} to the name of a 
+@c predicate function of one argument.  E.g. if you like to generate SQRTs, you 
+@c can do @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or 
+@c ratnump(m)$} . Then @code{logcontract(1/2*log(x));} will give 
+@c @code{log(sqrt(x))}.
+
+Wird die Variable @var{n} als eine ganze Zahl deklariert, 
+@code{declare(n,integer);}, dann wird  @code{logcontract(2*a*n*log(x));} zu
+@code{a*log(x^(2*n))} vereinfacht. Die Koeffizienten, die zusammengezogen 
+werden, sind in diesem Fall die Zahl 2 und die Variable @var{n}, welche
+die folgende Aussage erf@"ullen @code{featurep(coeff,integer)}. Der Nutzer kann
+kontrollieren, welche Koeffizienten zusammengezogen werden. Dazu wird der
+Optionsvariablen @code{logconcoeffp} eine Aussagefunktion mit einem Argument 
+zugewiesen. Sollen z. B. Wurzeln generiert werden, kann folgende Definition 
+verwendet: @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or 
+ratnump(m)$}. Dann ergibt sich f@"ur @code{logcontract(1/2*log(x));} das 
+folgende Ergebnis @code{log(sqrt(x))}.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} logexpand
+Standardwert: @code{true}
+
+@c Causes @code{log(a^b)} to become @code{b*log(a)}. If it is set to @code{all},
+@c @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If it is set to 
+@c @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)}
+@c for rational numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for integer 
+@c @code{b}, always simplifies.)  If it is set to @code{false}, all of these 
+@c simplifications will be turned off.
+
+@code{log(a^b)} wird zu @code{b*log(a)} vereinfacht. Hat @code{logexpand} den 
+Wert @code{all}, wird zus@"atzlich @code{log(a*b)} zu @code{log(a)+log(b)} 
+vereinfacht. Mit den Wert @code{super} vereinfacht Maxima weiterhin 
+@code{log(a/b)} zu @code{log(a)-log(b)}, wobei @code{a/b} eine rationale Zahl 
+ist. @code{log(1/b} wird f@"ur eine ganze Zahl @code{b} immer vereinfacht. Hat
+die Optionsvariable @code{logexpand} den Wert @code{false} werden alle obigen
+Vereinfachungen ausgeschaltet.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Optionsvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} lognegint
+Standardwert: @code{false}
+
+@c If @code{true} implements the rule @code{log(-n)} -> @code{log(n)+%i*%pi} for
+@c @code{n} a positive integer.
+
+Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
+@code{log(-n)} zu @code{log(n)+%i*%pi} f@"ur postive @code{n} vereinfacht.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Optionsvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Option variable} lognumer
+Standardwert: @code{false}
+
+@c If @code{true} then negative floating point arguments to @code{log} will 
+@c always be converted to their absolute value before the @code{log} is taken.  
+@c If @code{numer} is also @code{true}, then negative integer arguments to 
+@c @code{log} will also be converted to their absolute value.
+
+Hat die Optionsvariable @code{lognumer} den Wert @code{true}, wird von
+negativen Gleitkommazahlen der Absolutwert genommen, bevor der Logarithmus
+berechnet wird.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Optionsvariable} @category{Numerische Auswertung}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} logsimp
+Standardwert: @code{true}
+
+@c If @code{false} then no simplification of @code{%e} to a power containing 
+@c @code{log}'s is done.
+
+Hat die Optionsvariable @code{logsimp} den Wert @code{false}, werden 
+Exponentialfunktionen @code{exp}, die Logarithmusfunktionen im Exponenten
+enthalten, nicht vereinfacht.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Optionsvariable}
+@c @closecatbox
+@end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} plog (@var{x})
+
+@c Represents the principal branch of the complex-valued natural logarithm with 
+@c @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
+
+Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
+@code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} zur@"uck.
+
+@c @opencatbox
+@c @category{Logarithmusfunktionen} @category{Komplexe Zahlen}
+@c @closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Winkelfunktionen, Einf@"uhrung in Winkelfunktionen und Inverse, Exponential- und Logarithmusfunktion
@@ -646,7 +1431,127 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 @subsection Funktionen und Variablen f@"ur Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} acos (@var{x})
+-- Arkuskosinus.
 
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} acot (@var{x})
+-- Arkuskotangens.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} acsc (@var{x})
+-- Arkuskosekans.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} asec (@var{x})
+-- Arkussekans.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} asin (@var{x})
+-- Arkussinus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} atan (@var{x})
+-- Arkustangens.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} atan2 (@var{y}, @var{x})
+
+@c -- yields the value of @code{atan(@var{y}/@var{x})} in the interval 
+@c @code{-%pi} to @code{%pi}.
+
+-- Gibt den Wert von @code{atan(@var{y}/@var{x})} im Intervall @code{-%pi}
+bis @code{%pi} zurück.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} cos (@var{x})
+-- Kosinus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} cot (@var{x})
+-- Kotangens.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} csc (@var{x})
+-- Kosekans.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} sec (@var{x})
+-- Sekans.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} sin (@var{x})
+-- Sinus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} tan (@var{x})
+-- Tangens.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Hyperbelfunktionen, Einf@"uhrung in Hyperbelfunktionen, Winkelfunktionen
@@ -670,6 +1575,113 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 @subsection Funktionen und Variablen f@"ur Hyperbelfunktionen
 @c -----------------------------------------------------------------------------
 
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} acosh (@var{x})
+-- Areakosinus Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} acoth (@var{x})
+-- Areakotangens Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} acsch (@var{x})
+-- Areakosekans Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} asech (@var{x})
+-- Areasekans Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} asinh (@var{x})
+-- Areasinus Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} atanh (@var{x})
+-- Areatangens Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} cosh (@var{x})
+-- Kosinus Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} coth (@var{x})
+-- Kotangens Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} csch (@var{x})
+-- Kosekans Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} sech (@var{x})
+-- Sekans Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} sinh (@var{x})
+-- Sinus Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Funktion} tanh (@var{x})
+-- Tangens Hyperbolicus.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
 
 
 @c --- End of file MathFunctions.de.texi ---------------------------------------
