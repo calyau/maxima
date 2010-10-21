@@ -23,3 +23,30 @@
 @end ifhtml
 @end macro
 
+@macro mref {nodename}
+@ifhtml
+@code{@ref{\nodename\}}
+@end ifhtml
+@ifnothtml
+@code{\nodename\}
+@end ifnothtml
+@end macro
+
+@macro mrefdot {nodename}
+@ifhtml
+@code{@ref{\nodename\}}.
+@end ifhtml
+@ifnothtml
+@code{\nodename\}.
+@end ifnothtml
+@end macro
+
+@macro mrefcomma {nodename}
+@ifhtml
+@code{@ref{\nodename\}},
+@end ifhtml
+@ifnothtml
+@code{\nodename\},
+@end ifnothtml
+@end macro
+
