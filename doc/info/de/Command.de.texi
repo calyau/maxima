@@ -2,6 +2,7 @@
 @c File     : Command.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Author   : Dr. Dieter Kaiser
 @c Date     : 15.10.2010
 @c 
 @c This file contains documentation for the following symbols:
@@ -33,7 +34,7 @@
 @end menu
 
 @c --- 21.10.2010 DK -----------------------------------------------------------
-@node Einf@"uhrung in die Kommandozeile, Funktionen und Variablen der Eingabe, Kommandozeile, Top
+@node Einf@"uhrung in die Kommandozeile, Funktionen und Variablen der Eingabe, Kommandozeile
 @section Einf@"uhrung in die Kommandozeile
 
 @subheading Konsole

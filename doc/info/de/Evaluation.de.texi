@@ -2,6 +2,7 @@
 @c File     : Evaluation.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Author   : Dr. Dieter Kaiser
 @c Date     : 17.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -16,6 +17,7 @@
 @section Funktionen und Variablen f@"ur die Auswertung
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{'}
 @deffn {Operator} '
 @ifinfo
 @fnindex Quote-Operator
@@ -68,8 +70,8 @@ Substantivformen werden mit einem Hochkomma angezeigt, wenn die Optionsvariable
 
 @c See also the quote-quote operator @code{''} and @code{nouns}.
 
-Siehe auch den Quote-Quote-Operator @code{''} und das Auswertungsflag 
-@code{nouns}.
+Siehe auch den Quote-Quote-Operator @mref{''} und das Auswertungsflag 
+@mrefdot{nouns}
 
 Beispiele:
 
@@ -195,6 +197,7 @@ Maxima f@"uhrt Gleitkommarechnungen als eine Vereinfachung aus.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{''}
 @deffn {Operator} ''
 @ifinfo
 @fnindex Quote-Quote-Operator
@@ -241,7 +244,7 @@ erkannt.
 
 @c See also the single-quote operator @code{'} and @code{nouns}.
 
-Siehe auch den Quote-Operator @code{'} und das Auswertungsflag @code{nouns}
+Siehe auch den Quote-Operator @mref{'} und das Auswertungsflag @mrefdot{nouns}
 
 Beispiele:
 
@@ -425,7 +428,8 @@ wurde.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
-@deffn {Function} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@anchor{ev}
+@deffn {Funktion} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 
 @c Evaluates the expression @var{expr} in the environment specified by the 
 @c arguments @var{arg_1}, ..., @var{arg_n}. The arguments are switches (Boolean
@@ -776,6 +780,7 @@ Solution
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{eval}
 @defvr {Spezielles Symbol} eval
 
 @c As an argument in a call to @code{ev (@var{expr})}, @code{eval} causes an 
@@ -812,6 +817,7 @@ Beispiele:
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{evflag}
 @defvr {Eigenschaft} evflag
 
 @c When a symbol @var{x} has the @code{evflag} property, the expressions 
@@ -934,6 +940,7 @@ Beispiele:
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{evfun}
 @defvr {Eigenschaft} evfun
 
 @c When a function @var{F} has the @code{evfun} property,
@@ -1055,6 +1062,7 @@ Beispiele:
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{infeval}
 @defvr {Optionsvariable} infeval
 Standardwert: @code{false}
 
@@ -1077,6 +1085,7 @@ diesem Modus zu Endlosschleifen.
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{noeval}
 @defvr {Spezielles Symbol} noeval
 
 @c @code{noeval} suppresses the evaluation phase of @code{ev}. This is useful in
@@ -1093,6 +1102,7 @@ Ausdruck erneut zu vereinfachen, ohne diesen auszuwerten.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{nouns}
 @defvr {Spezielles Symbol} nouns
 
 @c @code{nouns} is an @code{evflag}. When used as an option to the @code{ev} 
@@ -1103,11 +1113,11 @@ Ausdruck erneut zu vereinfachen, ohne diesen auszuwerten.
 @code{nouns} ist ein Auswertungsflag @code{evflag}. Wird dieses Flag als eine 
 Option der Funktion @code{ev} genutzt, werden alle Substantivformen, die in dem
 Ausdruck enthalten sind, in Verbformen umgewandelt und ausgewertet. Siehe auch
-@code{noun}, @code{nounify}, @code{verb} und @code{verbify}.
+@mrefcomma{noun} @mrefcomma{nounify} @mref{verb} und @mrefdot{verbify}
 
-@opencatbox
-@category{Auswertungsflags} @category{Substantivformen und Verbformen}
-@closecatbox
+@c @opencatbox
+@c @category{Auswertungsflags} @category{Substantivformen und Verbformen}
+@c @closecatbox
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
@@ -1116,6 +1126,7 @@ Ausdruck enthalten sind, in Verbformen umgewandelt und ausgewertet. Siehe auch
 @c NEED TO MENTION THIS IS AN evflag
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{numer}
 @defvr {Spezielles Symbol} numer
 
 @c @code{numer} causes some mathematical functions (including exponentiation)
@@ -1125,10 +1136,10 @@ Ausdruck enthalten sind, in Verbformen umgewandelt und ausgewertet. Siehe auch
 
 @code{numer} bewirkt, dass mathematische Funktionen mit numerischen Argumenten
 als Gleitkommazahlen ausgewertet werden. Variable in einem Ausdruck @code{expr},
-die numerische Werte erhalten haben, werden durch diese ersetzt. Zusätzlich
+die numerische Werte erhalten haben, werden durch diese ersetzt. Zus@"atzlich
 wird das Flag @code{float} gesetzt.
 
-Siehe auch @code{%enumer}.
+Siehe auch @mrefdot{%enumer}
 
 Beispiele:
 
@@ -1152,6 +1163,7 @@ Beispiele:
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{numerval}
 @deffn {Funktion} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
 
 @c Declares the variables @code{x_1}, ..., @var{x_n} to have numeric values 
@@ -1176,6 +1188,7 @@ sein und m@"ussen nicht numerische Werte sein.
 @end deffn
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{pred}
 @defvr {Spezielles Symbol} pred
 
 @c As an argument in a call to @code{ev (@var{expr})}, @code{pred} causes 
@@ -1183,7 +1196,7 @@ sein und m@"ussen nicht numerische Werte sein.
 @c evaluated. See @code{ev}.
 
 Wird @code{pred} als ein Argument der Funktion @code{ev} eingesetzt, werden
-Aussagen zu @code{true} oder @code{false} ausgewertet. Siehe @code{ev}.
+Aussagen zu @code{true} oder @code{false} ausgewertet. Siehe @mrefdot{ev}
 
 Beispiel:
 
@@ -1198,9 +1211,9 @@ Beispiel:
 (%o2)                                true
 @end example
 
-@opencatbox
-@category{Evaluation flags}
-@closecatbox
+@c @opencatbox
+@c @category{Evaluation flags}
+@c @closecatbox
 @end defvr
 
 @c --- End of file Evaluation.de.texi ------------------------------------------

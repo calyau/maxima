@@ -2,6 +2,7 @@
 @c File     : Expressions.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Author   : Dr. Dieter Kaiser
 @c Date     : 17.10.2010
 @c 
 @c This file contains documentation about the following symbols:
@@ -229,7 +230,8 @@ identisch dargestellt. Hat die Optionsvariable @code{noundisp} den Wert
 
 @c See also @code{noun}, @code{nouns}, @code{nounify}, and @code{verbify}.
 
-Siehe auch @code{noun}, @code{nouns}, @code{nounify} und @code{verbify}.
+Siehe auch @mrefcomma{noun} @mrefcomma{nouns} @mref{nounify} und 
+@mrefdot{verbify}
 
 Beispiele:
 
@@ -386,6 +388,7 @@ Beispiele:
 @section Funktionen und Variablen f@"ur Ausdr@"ucke
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{alias}
 @deffn {Funktion} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
 
 @c provides an alternate name for a (user or system) function, variable, array, 
@@ -403,7 +406,7 @@ das bereits einen Alias-Namen hat, einen neuen Alias-Namen zu geben, bricht
 @code{alias} mit einer Fehlermeldung ab.
 
 Symbole die einen Alias-Namen erhalten haben, werden in die Systemvariable 
-@code{aliases} eingetragen. Siehe die Systemvariable @code{aliases}.
+@code{aliases} eingetragen. Siehe die Systemvariable @mrefdot{aliases}
 
 Der Alias-Name kann mit der Funktion @code{kill} entfernt werden.
 
@@ -438,6 +441,7 @@ Beispiel:
 @end deffn
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{aliases}
 @defvr {Systemvariable} aliases
 Anfangswert: @code{[]}
 
@@ -452,7 +456,7 @@ sowie bei der Deklaration eines Symbols als ein @code{noun} mit der
 Funktion @code{declare} Alias-Namen generiert, die in die Liste @code{aliases}
 eingetragen werden.
 
-Siehe auch die Funktion @code{alias} f@"ur ein Beispiel.
+Siehe auch die Funktion @mref{alias} f@"ur ein Beispiel.
 
 @c @opencatbox
 @c @category{Deklarationen und Inferenzen} @category{Systemvariablen}
@@ -460,6 +464,7 @@ Siehe auch die Funktion @code{alias} f@"ur ein Beispiel.
 @end defvr
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{allbut}
 @defvr {Schl@"usselwort} allbut
 
 @c works with the @code{part} commands (i.e. @code{part}, @code{inpart}, 
@@ -472,7 +477,7 @@ Das Schl@"usselwort @code{allbut} wird bei @code{part}-Befehlen wie @code{part},
 auszuschlie@ss{}en.
 
 Das Schl@"usselwort @code{allbut} kann auch zusammen mit dem Kommando @code{kill}
-verwendet werden. Siehe die Funktion @code{kill}.
+verwendet werden. Siehe die Funktion @mrefdot{kill}
 
 @c @code{kill(allbut(@var{a_1}, @var{a_2}, ...))} has the effect of 
 @c @code{kill(all)} except that it does not kill the symbols @var{a_1}, 
@@ -527,6 +532,7 @@ verwendet werden.
 @end defvr
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{args}
 @deffn {Funktion} args (@var{expr})
 
 @c Returns the list of arguments of @code{expr}, which may be any kind of
@@ -551,7 +557,7 @@ Siehe die Optionsvariable @code{inflag}.
 @c @code{op}.
 
 @code{args(@var{expr})} ist @"aquivalent zu @code{substpart("[", @var{expr}, 0)}.
-Siehe auch @code{substpart} und @code{op}.
+Siehe auch @mref{substpart} und @mrefdot{op}
 
 Beispiele:
 
@@ -578,6 +584,7 @@ Beispiele:
 @end deffn
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{box}
 @deffn  {Funktion} box (@var{expr})
 @deffnx {Funktion} box (@var{expr}, @var{a})
 
@@ -662,6 +669,7 @@ Beispiele:
 @end deffn
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{boxchar}
 @defvr {Optionsvariable} boxchar
 Standardwert: @code{"}
 
@@ -685,6 +693,7 @@ gespeichert.
 @end defvr
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{collapse}
 @deffn  {Funktion} collapse (@var{expr})
 @deffnx {Funktion} collapse ([@var{expr_1}, @var{expr_2}, ...])
 
@@ -702,7 +711,7 @@ Speicher nutzen. @code{collapse} wird von der Funktion @code{optimize}
 aufgerufen. @code{collapse} kann auch mit einer List aufgerufen werden, die
 mehrere Argumente enth@"alt.
 
-Siehe auch die Funktion @code{optimize}.
+Siehe auch die Funktion @mrefdot{optimize}
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
@@ -710,6 +719,7 @@ Siehe auch die Funktion @code{optimize}.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{disolate}
 @deffn {Funktion} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 
 @c is similar to @code{isolate (@var{expr}, @var{x})} except that it enables the
@@ -737,7 +747,7 @@ Zwischenmarken.
 @file{share/simplification/disol.mac} geladen. Das Kommando 
 @code{demo("disol")$} zeigt Beispiele.
 
-Siehe auch die Funktion @code{isolate}.
+Siehe auch die Funktion @mrefdot{isolate}
 
 Beispiel:
 
@@ -762,6 +772,7 @@ Beispiel:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{dpart}
 @deffn {Funktion} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 
 @c Selects the same subexpression as @code{part}, but instead of just returning 
@@ -773,7 +784,7 @@ W@"ahlt wie die Funktion @code{part} einen Teilausdruck aus, gibt aber den
 vollst@"andigen Ausdruck zur@"uck, wobei der ausgew@"ahlte Teilausdruck eingerahmt 
 ist. Der Rahmen ist Teil des zur@"uckgegebenen Ausdrucks.
 
-Siehe auch @code{part}, @code{inpart} und @code{lpart}.
+Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{lpart}
 
 @c === beg ===
 @c dpart (x+y/z^2, 1, 2, 1);
@@ -794,6 +805,7 @@ Siehe auch @code{part}, @code{inpart} und @code{lpart}.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{exptisolate}
 @defvr {Optionsvariable} exptisolate
 Standardwert: @code{false}
 
@@ -805,7 +817,7 @@ Hat @code{exptisolate} den Wert @code{true}, dann sucht die Funktion
 @code{isolate} auch in den Exponenten von Zahlen oder Symbolen nach 
 Teilausdr@"ucken zu einer Variablen.
 
-Siehe die Funktion @code{isolate} f@"ur Beispiele.
+Siehe die Funktion @mref{isolate} f@"ur Beispiele.
 
 @c @opencatbox
 @c @category{Ausdr@"ucke} @category{Optionsvariable}
@@ -813,6 +825,7 @@ Siehe die Funktion @code{isolate} f@"ur Beispiele.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{exptsubst}
 @defvr {Optionsvariable} exptsubst
 Standardwert: @code{false}
 
@@ -844,6 +857,7 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{freeof}
 @deffn  {Funktion} freeof (@var{x}, @var{expr})
 @deffnx {Funktion} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 
@@ -1028,6 +1042,7 @@ Integrationsvariablen.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{fullmap}
 @deffn {Function} fullmap (@var{f}, @var{expr_1}, ...)
 
 @c Similar to @code{map}, but @code{fullmap} keeps mapping down all 
@@ -1069,6 +1084,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{fullmapl}
 @deffn {Funktion} fullmapl (@var{f}, @var{list_1}, ...)
 
 @c Similar to @code{fullmap}, but @code{fullmapl} only maps onto lists and 
@@ -1093,6 +1109,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{inflag}
 @defvr {Optionsvariable} inflag
 Standardwert: @code{false}
 
@@ -1136,6 +1153,7 @@ Folgende Funktionen werden von der Optionsvariablen @code{inflag} beeinflusst:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{inpart}
 @deffn {Funktion} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 
 @c is similar to @code{part} but works on the internal representation of the 
@@ -1164,7 +1182,7 @@ Ist das letzte Argument einer @code{part}-Funktion eine Liste mit Indizes,
 werden mehrere Teilausdr@"ucke herausgepickt. So hat 
 @code{inpart(x + y + z, [1, 3])} das Ergebnis @code{z+x}.
 
-Siehe auch @code{part}, @code{dpart} und @code{lpart}.
+Siehe auch @mrefcomma{part} @mrefcomma{dpart} und @mrefdot{lpart}
 
 Beispiele:
 
@@ -1189,6 +1207,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{isolate}
 @deffn {Funktion} isolate (@var{expr}, @var{x})
 
 @c Returns @var{expr} with subexpressions which are sums and which do not 
@@ -1220,7 +1239,7 @@ Exponentiaton ausgef@"uhrt. Die Basis muss dabei eine Zahl oder ein Symbol wie
 @code{isolate_wrt_times} f@"urBeispiele. 
 
 Die Ersetzung von Teilausdr@"ucken f@"ur mehrere Variable kann mit der Funktion
-@code{disolate} ausgef@"uhrt werden. Siehe @code{disolate}. 
+@code{disolate} ausgef@"uhrt werden. Siehe @mrefdot{disolate}
 
 Beispiele:
 
@@ -1267,6 +1286,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{isolate_wrt_times}
 @defvr {Optionsvariable} isolate_wrt_times
 Standardwert: @code{false}
 
@@ -1278,7 +1298,7 @@ Hat die Optionsvariable @code{isolate_wrt_times} den Wert @code{true}, f@"uhren
 die Funktionen @code{isolate} und @code{disolate} auch Ersetzungen in Produkten 
 aus.
 
-Siehe auch die Funktionen @code{isolate} und @code{disoloate}.
+Siehe auch die Funktionen @mref{isolate} und @mrefdot{disolate}
 
 Beispiele:
 
@@ -1309,6 +1329,7 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{listconstvars}
 @defvr {Optionsvariable} listconstvars
 Standardwert: @code{false}
 
@@ -1329,6 +1350,7 @@ ignoriert.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{listdummyvars}
 @defvr {Optionsvariable} listdummyvars
 Standardwert: @code{true}
 
@@ -1360,6 +1382,7 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{listofvars}
 @deffn {Funktion} listofvars (@var{expr})
 
 @c Returns a list of the variables in @var{expr}.
@@ -1379,7 +1402,8 @@ Variable in die Liste aufgenommen. Der Standwert von @code{listconstvars} ist
 @c See also the option variable @code{listdummyvars} to exclude or include 
 @c "dummy variables" in the list of variables.
 
-Siehe entsprechend die Optionsvariable @code{listdummyvars} f@"ur Dummy-Variablen.
+Siehe entsprechend die Optionsvariable @mref{listdummyvars} f@"ur 
+Dummy-Variablen.
 
 @example
 (%i1) listofvars (f (x[1]+y) / g^(2+a));
@@ -1393,6 +1417,7 @@ Siehe entsprechend die Optionsvariable @code{listdummyvars} f@"ur Dummy-Variable
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{lfreeof}
 @deffn {Funktion} lfreeof (@var{list}, @var{expr})
 
 @c For each member @var{m} of @var{list}, calls @code{freeof (@var{m}, 
@@ -1404,7 +1429,7 @@ aufgerufen. @code{lfreeof} hat den R@"uckgabewert @code{true}, wenn keines der
 Elemente der Liste @var{list} im Ausdruck @code{expr} enthalten ist. Ansonsten
 ist der R@"uckgabewert @code{false}.
 
-Siehe auch die Funktion @code{freeof}.
+Siehe auch die Funktion @mrefdot{freeof}
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
@@ -1412,6 +1437,7 @@ Siehe auch die Funktion @code{freeof}.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{lpart}
 @deffn {Funktion} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
 
 @c is similar to @code{dpart} but uses a labelled box. A labelled box is similar
@@ -1420,7 +1446,7 @@ Siehe auch die Funktion @code{freeof}.
 Die Funktion @code{lpart} ist @"ahnlich zu @code{dpart}, verwendet aber einen
 Rahmen, der mit einer Marke gekennzeichnet ist.
 
-Siehe auch @code{part}, @code{inpart} und @code{dpart}.
+Siehe auch @mrefcomma{part} @mref{inpart} und @mrefdot{dpart}
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
@@ -1428,6 +1454,7 @@ Siehe auch @code{part}, @code{inpart} und @code{dpart}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{mainvar}
 @defvr {Deklaration} mainvar
 
 @c You may declare variables to be @code{mainvar}. The ordering scale for atoms 
@@ -1467,6 +1494,7 @@ Beispiel:
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{noun}
 @defvr {Deklaration} noun
 
 @c @code{noun} is one of the options of the @code{declare} command.  It makes a
@@ -1483,6 +1511,7 @@ und nicht ausgewertet.
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{noundisp}
 @defvr {Optionsvariable} noundisp
 Standardwert: @code{false}
 
@@ -1499,6 +1528,7 @@ vorangestelltenm Hochkomma angezeigt. Diese Optionsvariable hat immer den Wert
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{nounify}
 @deffn {Funktion} nounify (@var{f})
 
 @c Returns the noun form of the function name @var{f}.  This is needed if one 
@@ -1523,6 +1553,7 @@ eine Substantivform zur@"uckgegeben.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{nterms}
 @deffn {Funktion} nterms (@var{expr})
 
 @c Returns the number of terms that @var{expr} would have if it were fully 
@@ -1544,6 +1575,7 @@ Ausdr@"ucke wie @code{sin(@var{expr})}, @code{sqrt(@var{expr})} oder
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{op}
 @deffn {Funktion} op (@var{expr})
 
 @c Returns the main operator of the expression @var{expr}. 
@@ -1573,7 +1605,7 @@ ein Symbol zur@"uckgegeben.
 
 @c See also @code{args}.
 
-Siehe auch @code{args}.
+Siehe auch @mrefdot{args}
 
 Beispiele:
 
@@ -1627,6 +1659,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{operatorp}
 @deffn  {Funktion} operatorp (@var{expr}, @var{op})
 @deffnx {Funktion} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 
@@ -1641,8 +1674,8 @@ wenn @var{op} der Hauptoperator des Ausdrucks @var{expr} ist.
 @c operator of @var{expr}.
 
 @code{operatorp(@var{expr}, [@var{op_1}, ..., @var{op_n}])} gibt @code{true} 
-zur@"uck, wenn einer der Operatoren @var{op_1}, ..., @var{op_n} der Hauptoperator 
-des Ausdrucks @var{expr} ist.
+zur@"uck, wenn einer der Operatoren @var{op_1}, ..., @var{op_n} der 
+Hauptoperator des Ausdrucks @var{expr} ist.
 
 @c @opencatbox
 @c @category{Ausdr@"ucke} @category{Aussagefunktionen} @category{Operatoren}
@@ -1650,6 +1683,7 @@ des Ausdrucks @var{expr} ist.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{opsubst}
 @defvr {Optionsvariable} opsubst
 
 @c DAS MUSS BESSER FORMULIERT WERDEN.
@@ -1665,6 +1699,7 @@ Zum Beispiel hat @code{(opsubst: false, subst(x^2, r, r+r[0]))} das Ergebnis
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{optimize}
 @deffn {Funktion} optimize (@var{expr})
 
 @c Returns an expression that produces the same value and side effects as 
@@ -1691,6 +1726,7 @@ Siehe auch die Funktion @code{collapse}.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{optimprefix}
 @defvr {Optionsvariable} optimprefix
 Standardwert: @code{%}
 
@@ -1706,6 +1742,8 @@ Die Optionsvariable @code{optimprefix} enth@"alt den Pr@"afix, der von der Funkt
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{ordergreat}
+@anchor{orderless}
 @deffn  {Funktion} ordergreat (@var{v_1}, ..., @var{v_n})
 @deffnx {Funktion} orderless (@var{v_1}, ..., @var{v_n})
 
@@ -1737,7 +1775,7 @@ definierte Ordnung aufgehoben wird.
 
 @c See also @code{ordergreatp}.
 
-Siehe auch @code{ordergreatp}, @code{orderlessp} und @code{mainvar}.
+Siehe auch @mrefcomma{ordergreatp} @mref{orderlessp} und @mrefdot{mainvar}
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
@@ -1745,6 +1783,8 @@ Siehe auch @code{ordergreatp}, @code{orderlessp} und @code{mainvar}.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{ordergreatp}
+@anchor{orderlessp}
 @deffn  {Funktion} ordergreatp (@var{expr_1}, @var{expr_2})
 @deffnx {Funktion} orderlessp (@var{expr_1}, @var{expr_2})
 
@@ -1816,7 +1856,7 @@ Die kanonische Ordnung der Ausdr@"ucke wird modifiziert durch die Funktionen
 
 @c See also @code{sort}.
 
-Siehe auch @code{sort}.
+Siehe auch @mrefdot{sort}
 
 Beispiele:
 
@@ -1905,6 +1945,7 @@ Ordne nicht atomare Ausdr@"ucke.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{part}
 @deffn {Funktion} part (@var{expr}, @var{n_1}, ..., @var{n_k})
 
 @c Returns parts of the displayed form of @code{expr}. It obtains the part of 
@@ -1950,15 +1991,16 @@ Verwendung einer @code{part}-Funktion ausgew@"ahlt wurde.
 @c selected part of an expression doesn't exist, otherwise an error message is 
 @c given.
 
-Hat die Optionsvariable @code{partswitch} den Wert @code{true} wird @code{end} zur@"uckgegeben, wenn versucht wurde, einen Teilausdruck zu bilden, der nicht
+Hat die Optionsvariable @code{partswitch} den Wert @code{true} wird @code{end} 
+zur@"uckgegeben, wenn versucht wurde, einen Teilausdruck zu bilden, der nicht
 existiert, andernfalls wird eine Fehlermeldung ausgegeben.
 
 @c See also @code{inpart}, @code{substpart}, @code{substinpart}, @code{dpart}, 
 @c and @code{lpart}.
 
-Siehe auch @code{inpart}, @code{substpart}, @code{substinpart}, @code{dpart} und
-@code{lpart}.
-
+Siehe auch @mrefcomma{inpart} @mrefcomma{substpart} @mrefcomma{substinpart}@
+@mref{dpart} und @mrefdot{lpart}
+ 
 Beispiele:
 
 @c ===beg===
@@ -1985,6 +2027,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{partition}
 @deffn {Funktion} partition (@var{expr}, @var{x})
 
 @c Returns a list of two expressions.  They are (1) the factors of @var{expr} 
@@ -2013,6 +2056,7 @@ Summe oder einer Liste, die @var{x} enthalten.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{partswitch}
 @defvr {Optionsvariable} partswitch
 Standardwert: @code{false}
 
@@ -2028,6 +2072,7 @@ existiert, andernfalls wird eine Fehlermeldung ausgegeben.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{pickapart}
 @deffn {Funktion} pickapart (@var{expr}, @var{n})
 
 @c Assigns intermediate expression labels to subexpressions of @var{expr} at 
@@ -2042,8 +2087,8 @@ Den Teilausdr@"ucken in einer Tiefe @var{n} werden Zwischenmarken zugewiesen.
 @c See also @code{part}, @code{dpart}, @code{lpart}, @code{inpart}, and 
 @c @code{reveal}.
 
-Siehe auch @code{part}, @code{dpart}, @code{lpart}, @code{inpart} und 
-@code{reveal}.
+Siehe auch @mrefcomma{part} @mrefcomma{dpart} @mrefcomma{lpart} @mref{inpart}@
+und @mrefdot{reveal}
 
 Beispiele:
 
@@ -2131,6 +2176,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{piece}
 @defvr {Systemvariable} piece
 
 @c Holds the last expression selected when using the @code{part} functions.
@@ -2143,7 +2189,7 @@ Verwendung einer @code{part}-Funktion ausgew@"ahlt wurde.
 @c It is set during the execution of the function and thus may be referred to 
 @c in the function itself.
 
-Siehe auch @code{part} und @code{inpart}.
+Siehe auch @mref{part} und @mrefdot{inpart}
 
 @c @opencatbox
 @c @category{Ausdr@"ucke} @category{Optionsvariablen}
@@ -2151,6 +2197,7 @@ Siehe auch @code{part} und @code{inpart}.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{psubst}
 @deffn  {Funktion} psubst (@var{list}, @var{expr})
 @deffnx {Funktion} psubst (@var{a}, @var{b}, @var{expr})
 
@@ -2168,7 +2215,7 @@ parallel aus, wenn das erste Argument @var{list} eine Liste mit Gleichungen ist.
 
 @c See also @code{sublis} for making parallel substitutions.
 
-Siehe auch @code{sublis} um Substitutionen parallel auszuf@"uhren.
+Siehe auch @mref{sublis} um Substitutionen parallel auszuf@"uhren.
 
 Beispiel:
 
@@ -2197,6 +2244,7 @@ Fall werden die Substitutionen nacheinander ausgef@"uhrt.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{rembox}
 @deffn  {Funktion} rembox (@var{expr}, unlabelled)
 @deffnx {Funktion} rembox (@var{expr}, @var{label})
 @deffnx {Funktion} rembox (@var{expr})
@@ -2296,6 +2344,7 @@ Beispiele:
 @end deffn
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
+@anchor{reveal}
 @deffn {Funktion} reveal (@var{expr}, @var{depth})
 
 @c Replaces parts of @var{expr} at the specified integer @var{depth} with 
@@ -2410,6 +2459,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{sublis}
 @deffn {Funktion} sublis (@var{list}, @var{expr})
 
 @c Makes multiple parallel substitutions into an expression.
@@ -2439,6 +2489,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{sublis_apply_lambda}
 @defvr {Optionsvariable} sublis_apply_lambda
 Standardwert: @code{true}
 
@@ -2456,6 +2507,7 @@ ausgewertet, ansonsten verbleiben diese nach der Substitution im Ausdruck.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{subst}
 @deffn {Funktion} subst (@var{a}, @var{b}, @var{c})
 
 @c Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
@@ -2543,6 +2595,7 @@ Weitere Beispiele werden mit @code{example(subst)} angezeigt.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{substinpart}
 @deffn {Funktion} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 
 @c Similar to @code{substpart}, but @code{substinpart} works on the internal 
@@ -2579,6 +2632,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{substpart}
 @deffn {Funktion} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 
 @c Substitutes @var{x} for the subexpression picked out by the rest of the 
@@ -2630,6 +2684,7 @@ Funktion @code{substpart} wie @code{substinpart}.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{unorder}
 @deffn {Funktion} unorder ()
 
 @c Disables the aliasing created by the last use of the ordering commands 
@@ -2640,7 +2695,7 @@ Funktion @code{substpart} wie @code{substinpart}.
 L@"oscht die Ordnung, die mit dem letzten Aufruf der Funktionen @code{ordergreat} 
 oder @code{orderless} erzeugt wurde.
 
-Siehe auch @code{ordergreat} und @code{orderless}.
+Siehe auch @mref{ordergreat} und @mrefdot{orderless}
 
 Beispiele:
 
@@ -2676,6 +2731,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{verbify}
 @deffn {Funktion} verbify (@var{f})
 
 @c Returns the verb form of the function name @var{f}.

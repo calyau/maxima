@@ -2,6 +2,7 @@
 @c File     : MathFunctions.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Author   : Dr. Dieter Kaiser
 @c Date     : 19.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
@@ -989,7 +990,7 @@ wenn @code{radexpand} den Wert @code{true} hat.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Exponential- und Logarithmusfunktion, Winkelfunktionen, Algebraische Funktion
+@node Exponential- und Logarithmusfunktion, Winkelfunktionen, Algebraische Funktionen
 @section Exponential- und Logarithmusfunktion
 @c -----------------------------------------------------------------------------
 
@@ -1410,7 +1411,7 @@ Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Winkelfunktionen, Einf@"uhrung in Winkelfunktionen und Inverse, Exponential- und Logarithmusfunktion
+@node Winkelfunktionen, Einf@"uhrung in Winkelfunktionen, Exponential- und Logarithmusfunktion
 @section Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
@@ -1420,7 +1421,7 @@ Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Winkelfunktionen, Funktionen und Variable f@"ur Winkelfunktionen, Winkelfunktionen
+@node Einf@"uhrung in Winkelfunktionen, Funktionen und Variablen f@"ur Winkelfunktionen, Winkelfunktionen
 @subsection Einf@"uhrung in Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
@@ -1564,7 +1565,7 @@ bis @code{%pi} zurück.
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Hyperbelfunktionen, Funktionen und Variable f@"ur Hyperbelfunktionen, Hyperbelfunktionen
+@node Einf@"uhrung in Hyperbelfunktionen, Funktionen und Variablen f@"ur Hyperbelfunktionen, Hyperbelfunktionen
 @subsection Einf@"uhrung in Hyperbelfunktionen
 @c -----------------------------------------------------------------------------
 

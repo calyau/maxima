@@ -2,6 +2,7 @@
 @c File     : Help.de.texi
 @c License  : GNU General Public License (GPL)
 @c Language : German
+@c Author   : Dr. Dieter Kaiser
 @c Date     : 15.10.2010
 @c 
 @c This file contains documentation for the following Maxima symbols:
