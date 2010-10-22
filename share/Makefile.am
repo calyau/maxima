@@ -105,6 +105,7 @@ cobyla/lisp/cobyla.lisp\
 cobyla/lisp/cobylb.lisp\
 cobyla/lisp/trstlp.lisp\
 cobyla/load-cobyla.lisp\
+cobyla/cobyla.system\
 cobyla/load-bf-cobyla.lisp\
 combinatorics/README\
 colnew/colnew-package.lisp\
