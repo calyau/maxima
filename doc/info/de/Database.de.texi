@@ -1,0 +1,1617 @@
+@c -----------------------------------------------------------------------------
+@c File     : Declarations.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Author   : Dr. Dieter Kaiser
+@c Date     : 22.10.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Einf@"uhrung in Maximas Datenbank::
+* Funktionen und Variablen f@"ur Eigenschaften::
+* Funktionen und Variablen f@"ur Fakten::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Einf@"uhrung in Maximas Datenbank, Funktionen und Variablen f@"ur Eigenschaften, Maximas Datenbank
+@section Einf@"uhrung in Maximas Datenbank
+
+@subheading Eigenschaften
+
+Variablen und Funktionen k@"onnen mit der Funktion @code{declare} Eigenschaften
+zugewiesen werden. Diese Eigenschaften werden in eine Datenbank abgelegt oder 
+in eine von Lisp bereitgestellte Eigenschaftsliste eingetragen.
+
+@noindent
+Variablen k@"onnen die folgenden Eigenschaften erhalten, die in die Datenbank
+eingetragen werden:
+
+@verbatim
+   constant
+   integer        noninteger
+   even           odd
+   rational       irrational
+   real           imaginary      complex
+@end verbatim
+
+@noindent
+Funktionen k@"onnen die folgenden Eigenschaften erhalten, die in die Datenbank
+eingetragen werden:
+
+@verbatim
+   increasing     decreasing
+   posfun         integervalued
+@end verbatim
+
+@noindent
+Die folgenden Eigenschaften k@"onnen f@"ur Funktionen definiert werden und wirken
+sich auf die Vereinfachung dieser Funktionen aus:
+
+@verbatim
+   linear         additive       multiplicative
+   outative       commutative    symmetric      
+   antisymmetric  nary           lassociativ
+   rassociative   evenfun        oddfun
+@end verbatim
+
+@noindent
+Weitere Eigenschaften, die Variablen und Funktionen erhalten k@"onnen, sind:
+
+@verbatim
+   bindtest       feature        alphabetic
+   scalar         nonscalar
+@end verbatim
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur Eigenschaften, Funktionen und Variablen f@"ur Fakten, Maximas Datenbank
+@section Funktionen und Variablen f@"ur Eigenschaften
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{alphabetic}
+@defvr {Eigenschaft} alphabetic
+
+@c @code{alphabetic} is a declaration type recognized by @code{declare}.
+@c The expression @code{declare(@var{s}, alphabetic)} tells Maxima to recognize
+@c as alphabetic all of the characters in @var{s}, which must be a string.
+
+@c See also @ref{Identifiers}.
+
+Das Kommando @code{declare(s, alphabetic)} deklariert alle Zeichen der 
+Zeichenkette @var{s} als alphabetisch. Das Argument @var{s} muss eine 
+Zeichenkette sein. Siehe auch @mrefdot{Bezeichner}
+
+Beispiele:
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
+@example
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
+@end example
+
+@c @opencatbox
+@c @category{Declarations and inferences}
+@c @closecatbox
+@end defvr
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{bindtest}
+@deffn {Eigenschaft} bindtest
+
+@c Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
+
+Hat ein Symbol @var{x} die Eigenschaft @code{bindtest} und wird es ausgewertet,
+ohne das dem Symbol bisher ein Wert zugewiesen wurde, signalisiert Maxima einen 
+Fehler. Siehe @mrefdot{declare}
+
+@end deffn
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{constant}
+@deffn {Eigenschaft} constant
+
+@c @code{declare (@var{a}, constant)} declares @var{a} to be a constant.
+@c See @code{declare}.
+   @c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
+
+@code{declare(@var{a}, constant)} deklariert ein Symbol @var{a} als konstant.
+Siehe @mrefdot{declare}
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Konstante}
+@c @closecatbox
+@end deffn
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{constantp}
+@deffn {Funktion} constantp (@var{expr})
+
+@c Returns @code{true} if @var{expr} is a constant expression, otherwise returns
+@c @code{false}.
+   @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
+
+Gibt f@"ur einen konstanten Ausdruck @var{expr} den Wert @code{true} zur@"uck,
+andernfalls @code{false}.
+
+@c An expression is considered a constant expression if its arguments are 
+@c numbers (including rational numbers, as displayed with @code{/R/}), symbolic
+@c constants such as @code{%pi}, @code{%e}, and @code{%i}, variables bound to a
+@c constant or declared constant by @code{declare}, or functions whose arguments
+@c are constant.
+
+Ein Ausdruck wird von Maxima als ein konstanter Ausdruck erkannt, wenn seine 
+Argumente Zahlen sind (einschlie@ss{}lich von Zahlen in einer CRE-Darstellung), 
+symbolische Konstanten wie @code{%pi}, @code{%e} und @code{%i}, 
+Variablen, die einen konstanten Wert haben oder die mit @code{declare} als 
+konstant deklariert sind, oder Funktionen, dessen Argumente konstant sind.
+
+@c @code{constantp} evaluates its arguments.
+
+Die Funktion @code{constantp} wertet ihre Argument aus.
+
+Beispiele:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+@example
+(%i1) constantp (7 * sin(2));
+(%o1)                                true
+(%i2) constantp (rat (17/29));
+(%o2)                                true
+(%i3) constantp (%pi * sin(%e));
+(%o3)                                true
+(%i4) constantp (exp (x));
+(%o4)                                false
+(%i5) declare (x, constant);
+(%o5)                                done
+(%i6) constantp (exp (x));
+(%o6)                                true
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7)                                false
+(%i8) 
+@end example
+
+@c @opencatbox
+@c @category{Aussagefunktionen} @category{Konstante}
+@c @closecatbox
+@end deffn
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{declare}
+@deffn {Funktion} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+
+@c Assigns the atom or list of atoms @var{a_i} the property or list of 
+@c properties @var{p_i}. When @var{a_i} and/or @var{p_i} are lists, each of the 
+@c atoms gets all of the properties.
+
+Weist dem Atom oder den Atomen einer Liste @var{a_i} die Eigenschaft oder die 
+Eigenschaften in einer Liste @var{p_i} zu. Ist @var{a_i} und/oder @var{p_i} eine
+Liste, erh@"alt jedes Atom die aufgef@"uhrten Eigenschaften.
+
+@c @code{declare} quotes its arguments. @code{declare} always returns 
+@c @code{done}.
+
+Die Funktion @code{declare} wertet ihre Argumente nicht aus. @code{declare} gibt
+stets @code{done} zur@"uck.
+
+@c As noted in the description for each declaration flag, for some flags
+@c @code{featurep(@var{object}, @var{feature})} returns @code{true} if 
+@c @var{object} has been declared to have @var{feature}. However, 
+@c @code{featurep} does not recognize some flags; this is a bug.
+
+Wie in der Beschreibung zu den Deklarationen aufgef@"uhrt, gibt 
+@code{featurep(@var{object}, @var{feature})} f@"ur einige Flags @code{true} 
+zur@"uck, wenn zuvor @var{object} die Eigenschaft @var{feature} haben soll.
+
+@c @code{declare} recognizes the following properties:
+
+Die Funktion @code{declare} kennt die folgenden Eigenschaften:
+
+@table @asis
+@item @code{evfun}
+
+@c Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
+@c is applied when @var{a_i} appears as a flag argument of @code{ev}. 
+@c See @code{evfun}.
+
+Deklariert @var{a_i} als eine Auswertungsfunktion. Tritt die Funktion @var{a_i} 
+als Argument der Funktion @code{ev} auf, so wird die Funktion angewendet. Siehe
+@code{evfun}.
+
+@item @code{evflag}
+
+@c Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to
+@c @code{true} during the execution of @code{ev} when @var{a_i} appears as a 
+@c flag argument of @code{ev}. See @code{evflag}.
+
+Deklariert @code{a_i} als ein Auswertungsflag. W@"ahrend der Auswertung von
+@code{ev} erh@"alt das Auswertungsflag @code{a_i} den Wert @code{true}. Siehe 
+@code{evflag}.
+
+@c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+@c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{bindtest}
+
+@c Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
+
+Wird das Symbol @var{a_i} ausgewertet, ohne das dem Symbol bisher ein Wert
+zugewiesen wurde, signalisiert Maxima einen Fehler.  
+
+@item @code{noun}
+
+@c Tells Maxima to parse @var{a_i} as a noun. 
+@c The effect of this is to replace instances of @var{a_i} with 
+@c @code{'@var{a_i}} or @code{nounify(@var{a_i})}, depending on the context.
+
+@var{a_i} wird als Substantivform interpretiert. Abh@"angig vom Kontext wird 
+@var{a_i} durch @code{'@var{a_i}} oder @code{nounify(@var{a_i})} ersetzt.
+
+@item @code{constant}
+
+@c Tells Maxima to consider @var{a_i} a symbolic constant.
+   @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+   @c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
+   @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+
+@var{a_i} wird als eine symbolische Konstante interpretiert.
+
+@item @code{scalar}
+
+@c Tells Maxima to consider @var{a_i} a scalar variable.
+
+@var{a_i} wird als skalare Variable interpretiert.
+
+@item @code{nonscalar}
+
+@c Tells Maxima to consider @var{a_i} a nonscalar variable. The usual 
+@c application is to declare a variable as a symbolic vector or matrix.
+
+@var{a_i} wird als eine nicht-skalare Variable interpretiert. Überlicherweise
+wird damit ein symbolischer Vektor oder eine Matrix deklariert.
+
+@item @code{mainvar}
+
+@c Tells Maxima to consider @var{a_i} a "main variable". A main variable 
+@c succeeds all other constants and variables in the canonical ordering of 
+@c Maxima expressions, as determined by @code{ordergreatp}.
+
+@var{mainvar} wird als eine "Hauptvariable" interpretiert. Eine Hauptvariable
+wird vor allen Konstanten und Variablen in einer kanonischen Ordnung eines
+Maxima-Ausdr@"uckes angeordnet. Die Anordnung wird durch die Funktion 
+@code{ordergreatp} bestimmt.
+
+@item @code{alphabetic}
+
+@c Tells Maxima to recognize all characters in @var{a_i} (which must be a 
+@c string) as alphabetic characters.
+
+@var{a_i} is ein String, dessen Zeichen von Maxima als alphabetische Zeichen 
+interpretiert werden.
+
+@item @code{feature}
+
+@c Tells Maxima to recognize @var{a_i} as the name of a feature. Other atoms 
+@c may then be declared to have the @var{a_i} property.
+
+@var{a_i} wird als eine Eigenschaft @code{feature} interpretiert. Andere 
+Symbole k@"onnen dann diese Eigenschaft erhalten.
+
+@item @code{rassociative}, @code{lassociative}
+
+@c Tells Maxima to recognize @var{a_i} as a right-associative or 
+@c left-associative function.
+
+@var{a_i} wird als eine rechts- oder links-assoziative Funktion interpretiert.
+
+@item @code{nary}
+
+@c Tells Maxima to recognize @var{a_i} as an n-ary function.
+
+@var{a_i} wird als eine Nary-Funktion interpretiert.
+
+@c The @code{nary} declaration is not the same as calling the @code{nary} 
+@c function. The sole effect of @code{declare(foo, nary)} is to instruct the 
+@c Maxima simplifier to flatten nested expressions, for example, to simplify 
+@c @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
+
+Die Deklaration @code{nary} unterscheidet sich von der Funktion @code{nary}. 
+W@"ahrend der Funktionsaufruf einen neuen Operator definiert, wirkt sich die
+Deklaration nur auf die Vereinfachung aus. Verschachtelte Ausdr@"ucke wie
+@code{foo(x, foo(y,z))} werden zu @code{foo(x, y, z)} vereinfacht.
+
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
+
+@c Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
+@c @code{commutative} is the same as @code{symmetric}.
+
+@var{a_i} wird als eine symmetrische, antisymmetrische oder kommutative Funktion
+interpretiert. @code{commutative} und @code{symmtric} sind @"aquivalent.
+
+@item @code{oddfun}, @code{evenfun}
+
+@c Tells Maxima to recognize @var{a_i} as an odd or even function.
+
+@var{a_i} wird als eine ungerade oder gerade Funktion interpretiert.
+
+@item @code{outative}
+
+@c Tells Maxima to simplify @var{a_i} expressions by pulling constant factors 
+@c out of the first argument.
+
+Ausdr@"ucke mit der Funktion @var{a_i} werden so vereinfacht, dass konstante 
+Faktoren aus dem Argument herausgezogen werden. 
+
+@c When @var{a_i} has one argument, a factor is considered constant if it is a
+@c literal or declared constant.
+
+Hat die Funktion @var{a_i} ein Argument, wird ein Faktor dann als konstant 
+angesehen, wenn er ein Symbol oder eine deklarierte Konstante ist.
+
+@c When @var{a_i} has two or more arguments, a factor is considered constant
+@c if the second argument is a symbol and the factor is free of the second 
+@c argument.
+
+Hat die Funktion @var{a_i} zwei oder mehr Argumente, wird ein Faktor dann als 
+konstant angesehen, wenn das zweite Argument ein Symbol und der Faktor 
+unabh@"angig vom zweiten Argument ist.
+
+@item @code{multiplicative}
+
+@c Tells Maxima to simplify @var{a_i} expressions by the substitution 
+@c @code{@var{a_i}(x * y * z * ...)} @code{-->} @code{@var{a_i}(x) * 
+@c @var{a_i}(y) * @var{a_i}(z) * ...}. The substitution is carried out on the 
+@c first argument only.
+
+Ausdr@"ucke @code{@var{a_i}(x * y * z * ...)} werden durch @code{@var{a_i}(x) * 
+@var{a_i}(y) * @var{a_i}(z) * ...} ersetzt. Die Ersetzung wird nur f@"ur das
+Argument der Funktion @var{a_i} ausgef@"uhrt.
+
+@item @code{additive}
+
+@c Tells Maxima to simplify @var{a_i} expressions by the substitution 
+@c @code{@var{a_i}(x + y + z + ...)} @code{-->} @code{@var{a_i}(x) + 
+@c @var{a_i}(y) + @var{a_i}(z) + ...}. The substitution is carried out on the 
+@c first argument only.
+
+Ausdr@"ucke @code{@var{a_i}(x + y + z + ...)} werden  durch @code{@var{a_i}(x) + 
+@var{a_i}(y) + @var{a_i}(z) + ...} ersetzt. Die Ersetzung wird nur f@"ur das 
+Argument ausgef@"uhrt. 
+
+@item @code{linear}
+
+@c Equivalent to declaring @var{a_i} both @code{outative} and @code{additive}.
+
+Entspricht der Deklaration einer Funktion als @code{outative} und 
+@code{additive}.
+
+@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item @code{integer}, @code{noninteger}
+
+@c Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
+
+@var{a_i} wird als eine ganzzahlige oder nichtganzzahlige Variable 
+interpretiert.
+
+@item @code{even}, @code{odd}
+
+@c Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
+
+@var{a_i} wird als eine gerade oder ungerade ganze Zahl interpretiert.
+
+@item @code{rational}, @code{irrational}
+
+@c Tells Maxima to recognize @var{a_i} as a rational or irrational real 
+@c variable.
+
+@var{a_i} wird als eine rationale oder irrationale Zahl interpretiert.
+
+@item @code{real}, @code{imaginary}, @code{complex}
+
+@c Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex 
+@c variable.
+
+@var{a_i} wird als eine reelle, imagin@"are oder komplexe Zahl interpretiert.
+
+@item @code{increasing}, @code{decreasing}
+
+@c Tells Maxima to recognize @var{a_i} as an increasing or decreasing function.
+   @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+   @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+   @c REPORTED AS SF BUG # 1483194
+
+@var{a_i} wird als eine steigende oder fallende Funktion interpretiert.
+
+@item @code{posfun}
+
+@c Tells Maxima to recognize @var{a_i} as a positive function.
+
+@var{a_i} wird als eine positive Funktion interpretiert.
+
+@item @code{integervalued}
+
+@c Tells Maxima to recognize @var{a_i} as an integer-valued function.
+
+@var{a_i} wird als Funktion mit ganzzahligen Werten interpretiert.
+
+@end table
+
+Beispiele:
+
+@code{evfun} und @code{evflag} Deklarationen.
+
+@c ===beg===
+@c declare (expand, evfun);
+@c (a + b)^3;
+@c (a + b)^3, expand;
+@c declare (demoivre, evflag);
+@c exp (a + b*%i);
+@c exp (a + b*%i), demoivre;
+@c ===end===
+@example
+(%i1) declare (expand, evfun);
+(%o1)                         done
+(%i2) (a + b)^3;
+                                   3
+(%o2)                       (b + a)
+(%i3) (a + b)^3, expand;
+                     3        2      2      3
+(%o3)               b  + 3 a b  + 3 a  b + a
+(%i4) declare (demoivre, evflag);
+(%o4)                         done
+(%i5) exp (a + b*%i);
+                             %i b + a
+(%o5)                      %e
+(%i6) exp (a + b*%i), demoivre;
+                      a
+(%o6)               %e  (%i sin(b) + cos(b))
+@end example
+
+@code{bindtest} Deklaration.
+
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+
+@code{noun} Deklaration.
+
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+@code{alphabetic} Deklaration.
+
+@c ===beg===
+@c xx\~yy\`\@ : 1729;
+@c declare ("~`@", alphabetic);
+@c xx~yy`@ + @yy`xx + `xx@@yy~;
+@c listofvars (%);
+@c ===end===
+@example
+(%i1) xx\~yy\`\@@ : 1729;
+(%o1)                         1729
+(%i2) declare ("~`@@", alphabetic);
+(%o2)                         done
+(%i3) xx~yy`@@ + @@yy`xx + `xx@@@@yy~;
+(%o3)               `xx@@@@yy~ + @@yy`xx + 1729
+(%i4) listofvars (%);
+(%o4)                  [@@yy`xx, `xx@@@@yy~]
+@end example
+
+@code{feature} Deklaration.
+
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+@code{nary} Deklaration.
+
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+
+@code{symmetric} und @code{antisymmetric} Deklarationen.
+
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
+
+@code{oddfun} und @code{evenfun} Deklarationen.
+
+@c ===beg===
+@c o (- u) + o (u);
+@c declare (o, oddfun);
+@c o (- u) + o (u);
+@c e (- u) - e (u);
+@c declare (e, evenfun);
+@c e (- u) - e (u);
+@c ===end===
+@example
+(%i1) o (- u) + o (u);
+(%o1)                     o(u) + o(- u)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- u) + o (u);
+(%o3)                           0
+(%i4) e (- u) - e (u);
+(%o4)                     e(- u) - e(u)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- u) - e (u);
+(%o6)                           0
+@end example
+
+@code{outative} Deklaration.
+
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
+
+@code{multiplicative} Deklaration.
+
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+@code{additive} Deklaration.
+
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
+@code{linear} Deklaration.
+
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end example
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{feature}
+@defvr {Eigenschaft} feature
+
+@c Maxima understands two distinct types of features, system features and 
+@c features which apply to mathematical expressions. See also @code{status} for 
+@c information about system features. See also @code{features} and 
+@c @code{featurep} for information about mathematical features.
+
+Maxima kennt Systemeigenschaften und mathematische Eigenschaften, die Symbole 
+und Ausdr@"ucke haben k@"onnen. F@"ur Systemeigenschaften siehe die Funktion 
+@mrefdot{status}. F@"ur mathematische Eigenschaften siehe die Funktionen
+@mref{declare} und @mrefdot{featurep}
+
+@c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
+@c OTHER STUFF ??
+
+@c @code{feature}  itself is not the name of a function or variable.
+
+@code{feature} ist eine Eigenschaft, die ein Symbol @var{sym} mit der Funktion 
+@code{declare} erhalten kann. In diesem Fall ist das Symbol selbst eine
+Eigenschaft, so dass das Kommando @code{declare(x, sym)} einem Symobl @var{x}
+die neu definierte Eigenschaft @code{sym} gibt.
+
+@end defvr
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{featurep}
+@deffn {Funktion} featurep (@var{a}, @var{f})
+
+@c Attempts to determine whether the object @var{a} has the feature @var{f} on 
+@c the basis of the facts in the current database.  If so, it returns 
+@c @code{true}, else @code{false}.
+
+Stellt fest, ob das Symbol oder der Ausdruck @var{a} die Eigenschaft @var{f} 
+hat. Maxima nutzt daf@"ur die Fakten der Datenbank und die definierten 
+Eigenschaften f@"ur Symbole und Funktionen.
+
+@c Note that @code{featurep} returns @code{false} when neither @var{f} nor the 
+@c negation of @var{f} can be established.
+
+Es muss beachtet werden, dass @code{featurep} sowohl f@"ur den Fall @code{false}
+zur@"uckgibt, dass das Argument @var{a} nicht die Eigenschaft @var{f} hat, als
+auch f@"ur den Fall, dass Maxima dies nicht anhand der bekannten Fakten und
+Eigenschaften entscheiden kann.
+
+@c @code{featurep} evaluates its argument.
+
+@code{featurep} wertet seine Argumente aus.
+
+@c See also @code{declare} and @code{features}.
+
+Siehe auch @mref{declare} und @mrefdot{featurep}.
+
+Beispiele:
+
+@example
+(%i1) declare (j, even)$
+(%i2) featurep (j, integer);
+(%o2)                           true
+@end example
+
+@c @opencatbox
+@c @category{Predicate functions} @category{Declarations and inferences}
+@c @closecatbox
+@end deffn
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{features}
+@defvr {Systemvariable} features
+Standardwert: @code{[]}
+
+@c Maxima recognizes certain mathematical properties of functions and variables.
+@c These are called "features".
+
+Maxima erkennt spezielle mathematische Eigenschaften von Funktionen und 
+Variablen.
+
+@c @code{declare (@var{x}, @var{foo})} gives the property @var{foo} to the 
+@c function or variable @var{x}.
+
+@code{declare(@var{x})}, @var{foo} gibt der Funktion oder Variablen @var{x} die
+Eigenschaft @var{foo}.
+
+@c @code{declare (@var{foo}, feature)} declares a new feature @var{foo}. For 
+@c example, @code{declare ([red, green, blue], feature)} declares three new 
+@c features, @code{red}, @code{green}, and @code{blue}.
+
+@code{declare(@var{foo}, feature)} deklariert die neue Eigenschaft @var{foo}. 
+Zum  Beispiel deklariert @code{declare([red, green, blue], feature)} die drei 
+neuen Eigenschaften @code{red}, @code{green} und @code{blue}.
+ 
+@c The predicate @code{featurep (@var{x}, @var{foo})} returns @code{true} if 
+@c @var{x} has the @var{foo} property, and @code{false} otherwise.
+
+@code{featurep(@var{x}, @var{foo})} hat die R@"uckgabe @code{true}, wenn @var{x} 
+die Eigenschaft @var{foo} hat. Ansonsten wird @code{false} zur@"uckgegeben.
+
+@c The infolist @code{features} is a list of known features. These are
+
+Die Informationsliste @code{features} enth@"alt eine Liste der Eigenschaften, die
+Funktionen und Variablen erhalten k@"onnen und in die Datenbank eingetragen 
+werden:
+
+@code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
+@code{irrational}, @code{real}, @code{imaginary}, @code{complex},
+@code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
+@code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
+@code{rassociative}, @code{symmetric}, und @code{antisymmetric}.
+
+@c plus any user-defined features.
+
+Hinzu kommen die vom Nutzer definierten Eigenschaften.
+
+@c @code{features} is a list of mathematical features. There is also a list of 
+@c non-mathematical, system-dependent features. See @code{status}.
+
+@code{features} ist eine liste der mathematischen Eigenschaften. Es gibt noch 
+weitere Eigenschaften. Siehe @mref{declare} und @mref{status}.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{nonscalar}
+@defvr {Eigenschaft} nonscalar
+
+@c Makes atoms behave as does a list or matrix with respect to the dot operator.
+
+Hat ein Symbol die Eigenschaft @code{nonscalar}, verh@"alt es sich wie eine
+Matrix oder Liste bei nicht-kommutativen Rechenoperationen.
+
+@c @opencatbox
+@c @category{Declarations and inferences} @category{Vectors} @category{Matrices}
+@c @closecatbox
+@end defvr
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{nonscalarp}
+@deffn {Funktion} nonscalarp (@var{expr})
+
+@c Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains atoms 
+@c declared as non-scalars, lists, or matrices.
+
+Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} nicht ein Skalar ist. Der
+Ausdruck enth@"alt dann Matrizen, Listen oder Symbole, die als ein nicht-Skalar
+deklariert wurden.
+
+@c @opencatbox
+@c @category{Predicate functions} @category{Vectors} @category{Matrices}
+@c @closecatbox
+@end deffn
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{posfun}
+@defvr {Eigenschaft} posfun
+
+@c @code{declare (f, posfun)} declares @code{f} to be a positive function.
+@c @code{is (f(x) > 0)} yields @code{true}.
+
+@code{declare(f, posfun)} deklariert die Funktion @code{f} als positive
+Funktion. @code{is (f(x) > 0)} gibt dann @code{true}.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Operatoren}
+@c @closecatbox
+@end defvr
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{scalar}
+@defvr {Eigenschaft} scalar
+
+Hat ein Symbol die Eigenschaft @code{scalar}, verh@"alt es sich wie ein Skalar bei
+nicht-kommutativen Rechenoperationen.
+
+@c @opencatbox
+@c @category{Declarations and inferences} @category{Vectors} @category{Matrices}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur Fakten, , Funktionen und Variablen f@"ur Eigenschaften
+@section Funktionen und Variablen f@"ur Fakten
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{activate}
+@deffn {Funktion} activate (@var{context_1}, ..., @var{context_n})
+
+@c Activates the contexts @var{context_1}, ..., @var{context_n}. The facts in 
+@c these contexts are then available to make deductions and retrieve 
+@c information. The facts in these contexts are not listed by @code{facts ()}.
+
+Die Funktion @code{activate(@var{context}} aktiviert den Kontext @var{context}.
+Der Funktion @code{activate} k@"onnen auch mehrere Kontexte @var{context_1}, ..., 
+@var{context_n} @"ubergeben werden. Nur die Fakten eines aktiven Kontextes stehen 
+f@"ur die Auswertung von Aussagen zur Verf@"ugung.
+
+Maxima gibt @code{done} zur@"uck, wenn der Kontext erfolgreich aktiviert werden
+konnte oder wenn der Kontext bereits aktiv war. Wird versucht, einen nicht 
+existierenden Kontext zu aktivieren, gibt Maxima eine Fehlermeldung aus. 
+
+Es ist zu beachten, dass das Kommando @code{facts()} immer die Fakten des 
+aktuellen Kontextes ausgibt. Die Fakten anderer Kontexte k@"onnen zwar aktiv
+sein, sind aber in der R@"uckgabe von @code{facts} nicht enthalten. Um die Fakten 
+eines anderen Kontextes @var{context} auszugeben, kann das Kommando 
+@code{facts(@var{context})} ausgef@"uhrt werden.
+
+@c The variable @code{activecontexts} is the list of contexts which are active 
+@c by way of the @code{activate} function.
+
+Die Systemvariable @mref{activecontexts} enth@"alt eine Liste der aktiven
+Kontexte.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+ 
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{activecontexts}
+@defvr {Systemvariable} activecontexts
+Standardwert: @code{[]}
+
+@c @code{activecontexts} is a list of the contexts which are active by way of 
+@c the @code{activate} function, as opposed to being active because they are 
+@c subcontexts of the current context.
+
+Die Systemvariable @code{activecontexts} enth@"alt eine Liste der Kontexte, die 
+mit der Funktion @code{activate} aktiviert wurden. Subkontexte eines Kontexts 
+sind aktiv, ohne dass die Funktion @code{activate} aufgerufen werden muss und 
+sind daher nicht in der Liste @code{activecontexts} enthalten. Siehe auch die
+Funktion @mrefdot{activate}
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 22.10.2010 DK -----------------------------------------------------------
+@anchor{askexp}
+@defvr {Systemvariable} askexp
+
+@c TODO: KANN DIESE DOKUMENTATION ENTFERNT WERDEN?
+
+@c When @code{asksign} is called, @code{askexp} is the expression @code{asksign}
+@c is testing.
+
+Wenn @code{asksign} aufgerufen wird, enth@"alt @code{askexp} den Ausdruck, der von
+@code{asksign} getestet wird.
+
+@c At one time, it was possible for a user to inspect @code{askexp} by entering
+@c a Maxima break with control-A.
+
+Es war einmal m@"oglich, die Variable @code{askexp} nach einer Unterbrechnung mit
+Control-A zu inspezieren.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{askinteger}
+@deffn  {Funktion} askinteger (@var{expr}, integer)
+@deffnx {Funktion} askinteger (@var{expr})
+@deffnx {Funktion} askinteger (@var{expr}, even)
+@deffnx {Funktion} askinteger (@var{expr}, odd)
+
+@c @code{askinteger (@var{expr}, integer)} attempts to determine from the 
+@c @code{assume} database whether @var{expr} is an integer. @code{askinteger} 
+@c prompts the user if it cannot tell otherwise,
+@c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume 
+@c DATABASE !!!
+@c and attempt to install the information in the database if possible.
+@c @code{askinteger (@var{expr})} is equivalent to @code{askinteger (@var{expr},
+@c integer)}.
+
+@code{askinteger(@var{expr}, integer)} versucht anhand der Fakten in der 
+@code{assume}-Datenbank zu entscheiden, ob @var{expr} eine ganze Zahl ist. Kann 
+@code{askinteger} die Frage nicht beantworten, fragt Maxima den Nutzer. Die 
+erhaltene Anwort wird in die Datenbank eingetragen. 
+@code{askinteger(@var{expr})} ist @"aquivalent zu 
+@code{askinteger(@var{expr}, integer)}.
+
+@c @code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
+@c likewise attempt to determine if @var{expr} is an even integer or odd 
+@c integer, respectively.
+
+@code{askinteger(@var{expr}, even)} und @code{askinteger(@var{expr}, odd)}
+versuchen zu entscheiden, ob @var{expr} eine gerade oder gerade ganze Zahl ist. 
+Kann Maxima dies nicht entscheiden, wird der Nutzer gefragt. Die Antwort 
+wird jedoch nur dann in die Datenbank eingetragen, wenn bereits eingetragen 
+ist, dass @var{expr} eine ganze Zahl ist.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{asksign}
+@deffn {Funktion} asksign (@var{expr})
+
+@c First attempts to determine whether the specified expression is positive, 
+@c negative, or zero.  If it cannot, it asks the user the necessary questions to
+@c complete its deduction.  The user's answer is recorded in the data base for 
+@c the duration of the current computation. The return value of @code{asksign} 
+@c is one of @code{pos}, @code{neg}, or @code{zero}.
+
+Die Funktion @code{asksign} versucht zu entscheiden, ob der Ausdruck @var{expr}
+positiv, negativ oder null ist. Kann Maxima dies nicht feststellen, wird der 
+Nutzer nach weiteren Informationen gefragt, um die Frage zu entscheiden. Die 
+Antworten des Nutzers werden f@"ur die laufende Auswertung in die Datenbank 
+eingetragen. Der R@"uckgabewert von @code{asksign} ist @code{pos}, @code{neg} oder
+@code{zero}.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 26.08.2010 DK -----------------------------------------------------------
+@anchor{assume}
+@deffn {Function} assume (@var{pred_1}, ..., @var{pred_n})
+
+@c Adds predicates @var{pred_1}, ..., @var{pred_n} to the current context. If a 
+@c predicate is inconsistent or redundant with the predicates in the current 
+@c context, it is not added to the context. The context accumulates predicates 
+@c from each call to @code{assume}.
+
+f@"ugt die Aussagen @var{pred_1}, ..., @var{pred_n} dem gegenw@"artigen Kontext
+hinzu. Eine inkonsistente oder redunante Aussage wird dem Kontext nicht 
+hinzugef@"ugt. Jeder Aufruf von @code{assume} f@"ugt dem Kontext weitere Aussagen 
+hinzu.
+
+@c @code{assume} returns a list whose elements are the predicates added to the 
+@c context or the atoms @code{redundant} or @code{inconsistent} where 
+@c applicable.
+
+@code{assume} gibt eine Liste mit den Aussagen zur@"uck, die dem Kontext 
+hinzugef@"ugt wurden, oder die Symbole @code{redunant} sowie @code{inconsistent}.
+
+@c The predicates @var{pred_1}, ..., @var{pred_n} can only be expressions with 
+@c the relational operators @code{< <= equal notequal >=} and @code{>}. 
+@c Predicates cannot be literal equality @code{=} or literal inequality @code{#}
+@c expressions, nor can they be predicate functions such as @code{integerp}.
+
+Die Aussagen @var{pred_1}, ..., @var{pred_n} k@"onnen nur Ausdr@"ucke mit den 
+Relationalen Operatoren @code{< <= equal notequal >=} und @code{>} sein.
+Aussagen k@"onnen nicht die Operatoren @code{=} f@"ur die Gleichheit oder @code{#}
+f@"ur die Ungleichheit enthalten. Auch k@"onnen keine Aussagefunktionen wie
+@code{integerp} verwendet werden.
+
+@c Compound predicates of the form @code{@var{pred_1} and ... and @var{pred_n}}
+@c are recognized, but not @code{@var{pred_1} or ... or @var{pred_n}}.
+@c @code{not @var{pred_k}} is recognized if @var{pred_k} is a relational 
+@c predicate. Expressions of the form @code{not (@var{pred_1} and @var{pred_2})}
+@c and @code{not (@var{pred_1} or @var{pred_2})} are not recognized.
+
+Zusammengesetzte Aussagen der Form @code{@var{pred_1} and ... and @var{pred_n}}
+werden erkannt, nicht dagegen Aussagen der Form @code{@var{pred_1} or ... or 
+@var{pred_n}}. @code{not(@var{pred_k}} wird erkannt, wenn @var{pred_k} eine 
+relationale Aussage ist. Aussagen der Form @code{not (@var{pred_1} and 
+@var{pred_2})} and @code{not (@var{pred_1} or @var{pred_2})} werden nicht 
+erkannt.
+
+@c Maxima's deduction mechanism is not very strong; there are many obvious 
+@c consequences which cannot be determined by @code{is}. This is a known 
+@c weakness.
+
+Der Folgerungsmechanismus von Maxima ist nicht sehr stark. Viele 
+offensichtlichen Schlu@ss{}folgerungen k@"onnen von Maxima nicht abgeleitet werden.
+Dies ist eine bekannte Schw@"ache von Maxima.
+
+@c @code{assume} does not handle predicates with complex numbers. If a predicate
+@c contains a complex number @code{assume} returns @code{inconsistent} or 
+@c @code{redunant}
+
+@code{assume} behandelt keine Aussagen mit komplexen Zahlen. Enth@"alt eine
+Aussage eine komplexe Zahl, gibt @code{assume} den Wert @code{inconsistent}
+oder @code{redunant} zur@"uck.
+
+@c @code{assume} evaluates its arguments.
+
+@code{assume} wertet seine Argumente aus.
+
+Siehe auch @mrefcomma{is}, @mrefcomma{facts}, @mrefcomma{forget}, 
+@mref{context} und @mrefdot{declare}
+
+Beispiele:
+
+@c ===beg===
+@c assume (xx > 0, yy < -1, zz >= 0);
+@c assume (aa < bb and bb < cc);
+@c facts ();
+@c is (xx > yy);
+@c is (yy < -yy);
+@c is (sinh (bb - aa) > 0);
+@c forget (bb > aa);
+@c prederror : false;
+@c is (sinh (bb - aa) > 0);
+@c is (bb^2 < cc^2);
+@c ===end===
+@example
+(%i1) assume (xx > 0, yy < -1, zz >= 0);
+(%o1)              [xx > 0, yy < - 1, zz >= 0]
+(%i2) assume (aa < bb and bb < cc);
+(%o2)                  [bb > aa, cc > bb]
+(%i3) facts ();
+(%o3)     [xx > 0, - 1 > yy, zz >= 0, bb > aa, cc > bb]
+(%i4) is (xx > yy);
+(%o4)                         true
+(%i5) is (yy < -yy);
+(%o5)                         true
+(%i6) is (sinh (bb - aa) > 0);
+(%o6)                         true
+(%i7) forget (bb > aa);
+(%o7)                       [bb > aa]
+(%i8) prederror : false;
+(%o8)                         false
+(%i9) is (sinh (bb - aa) > 0);
+(%o9)                        unknown
+(%i10) is (bb^2 < cc^2);
+(%o10)                       unknown
+@end example
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 26.08.2010 DK -----------------------------------------------------------
+@anchor{assumescalar}
+@defvr {Optionsvariable} assumescalar
+Standardwert: @code{true}
+
+@c @code{assumescalar} helps govern whether expressions @code{expr} for which 
+@c @code{nonscalarp (expr)} is @code{false} are assumed to behave like scalars
+@c for certain transformations.
+
+Hat die Optionsvariable @code{assumescalar} den Wert @code{true}, werden 
+Ausdr@"ucke die mit @code{nonscalarp(expr)} den Wert @code{false} haben, in 
+bestimmten Transformationen als ein Scalar behandelt.
+
+@c Let @code{expr} represent any expression other than a list or a matrix, and 
+@c let @code{[1, 2, 3]} represent any list or matrix. Then 
+@c @code{expr . [1, 2, 3]} yields @code{[expr, 2 expr, 3 expr]} if 
+@c @code{assumescalar} is @code{true}, or @code{scalarp (expr)} is @code{true}, 
+@c or @code{constantp (expr)} is @code{true}.
+
+Ist @code{expr} irgendein Ausdruck bis auf eine Liste oder eine Matix und
+@code{[1, 2, 3]} repr@"asentiert eine Liste oder eine Matrix. Dann ergibt
+@code{expr . [1, 2, 3]} das Ergebnis @code{[expr, 2 expr, 3 expr]}, wenn
+@code{assumescalar}, @code{scalarp(expr)} oder @code{constantp(expr} den Wert 
+@code{true} hat.
+
+@c If @code{assumescalar} is @code{true}, such expressions will behave like 
+@c scalars only for commutative operators, but not for noncommutative 
+@c multiplication @code{.}.
+
+Hat @code{assumescalar} den Wert @code{true}, solche Ausdr@"ucke verhalten sich
+wie Skalare nur f@"ur kommutative Operatoren, aber nicht f@"ur die nicht-kommutative
+Multiplikation @code{.}.
+
+@c When @code{assumescalar} is @code{false}, such expressions will behave like 
+@c non-scalars.
+
+Hat @code{assumescalar} den Wert @code{false}, verhalten sich solche Ausdr@"ucke 
+wie Nicht-Skalare.
+
+@c When @code{assumescalar} is @code{all}, such expressions will behave like 
+@c scalars for all the operators listed above.
+
+Hat @code{assumescalar} den Wert @code{all}, verhalten sich solche Ausdr@"ucke
+wie Skalare f@"ur alle oben genannten Operatoren.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 26.08.2010 --------------------------------------------------------------
+@anchor{assume_pos}
+@defvr {Optionsvariable} assume_pos
+Standardwert: @code{false}
+
+@c When @code{assume_pos} is @code{true} and the sign of a parameter @var{x} 
+@c cannot be determined from the current context
+@c @c WHAT ARE THOSE OTHER CONSIDERATIONS ??
+@c or other considerations, @code{sign} and @code{asksign (@var{x})} return 
+@c @code{true}. This may forestall some automatically-generated @code{asksign} 
+@c queries, such as may arise from @code{integrate} or other computations.
+
+Hat die Optionsvariable @code{assume_pos} den Wert @code{true} und das
+Vorzeichen eines Parameters @var{x} kann nicht bestimmt werden vom gegenw@"artigen
+Kontext oder aus anderen Zusammenh@"angen, geben @code{sign(@var{x})} und 
+@code{asksign(@var{x})} das Ergebnis @code{true}. Dadurch k@"onnen automatische
+Abfragen wie sie von @code{integrate} ausgef@"uhrt werden, vermieden werden.
+
+@c By default, a parameter is @var{x} such that @code{symbolp (@var{x})} or 
+@c @code{subvarp (@var{x})}. The class of expressions considered parameters can
+@c be modified to some extent via the variable @code{assume_pos_pred}.
+
+Standardm@"a@ss{}ig ist ein Parameter @var{x}, so dass @code{symbolp(@var{x})} oder
+@code{subvarp(@var{x})}. Die Klasse an Ausdr@"ucken, die als Parameter betrachtet
+werden, kann mit der Optionsvariablen @code{assume_pos_pred} erweitert werden.
+
+@c @code{sign} and @code{asksign} attempt to deduce the sign of expressions from
+@c the sign of operands within the expression. For example, if @code{a} and 
+@c @code{b} are both positive, then @code{a + b} is also positive.
+
+@code{sign} und @code{asksing} versuchen das Vorzeichen eines Ausdruckes vom
+Vorzeichen der Operanten eines Ausdruckes zu ermitteln. Sind zum Beispiel
+@code{a} und @code{b} beide postive, dann hat auch @code{a+b} ein positives
+Vorzeichen.
+
+@c However, there is no way to bypass all @code{asksign} queries. In particular,
+@c when the @code{asksign} argument is a difference @code{@var{x} - @var{y}} or 
+@c a logarithm @code{log(@var{x})}, @code{asksign} always requests an input from
+@c the user, even when @code{assume_pos} is @code{true} and 
+@c @code{assume_pos_pred} is a function which returns @code{true} for all 
+@c arguments.
+
+Jedoch gibt es keine M@"oglichkeit, alle Fragen von @code{asksign} zu vermeiden.
+So fragt @code{asksign} auf jeden Fall nach dem Vorzeichen f@"ur eine Differenz
+@code{@var{x} - @var{y}} oder einen Logarithmus @code{log(@var{x})}, auch wenn
+@code{assume_pos} den Wert @code{true} hat und @code{assume_pos_pred} eine
+Funktion ist, die f@"ur alle Argumente den Wert @code{true} zur@"uckgibt.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 26.08.2010 DK -----------------------------------------------------------
+@anchor{assume_pos_pred}
+@defvr {Optionsvariable} assume_pos_pred
+Standardwert: @code{false}
+
+@c When @code{assume_pos_pred} is assigned the name of a function or a lambda 
+@c expression of one argument @var{x}, that function is called to determine
+@c whether @var{x} is considered a parameter for the purpose of 
+@c @code{assume_pos}. @code{assume_pos_pred} is ignored when @code{assume_pos} 
+@c is @code{false}.
+
+Wird der Optionsvariablen @code{assume_pos_pred} der Name einer Funktion oder
+ein Lambda-Ausdruck mit einem Argument @var{x} zugewiesen, wird diese Funktion
+aufgerufen, um festzustellen, ob @var{x} als ein Parameter im Zusammenhang
+mit @code{assume_pos} behandelt wird. @code{assume_pos_pred} wird ignoriert,
+wenn die Optionsvariable @code{assume_pos} den Wert @code{false} hat.
+
+@c The @code{assume_pos_pred} function is called by @code{sign} and 
+@c @code{asksign} with an argument @var{x} which is either an atom, a 
+@c subscripted variable, or a function call expression. If the 
+@c @code{assume_pos_pred} function returns @code{true}, @var{x} is considered a 
+@c parameter for the purpose of @code{assume_pos}.
+
+Die @code{assume_pos_pred}-Funktion wird von den Funktionen @code{sign} und
+@code{asksign} mit einem Argument @var{x} aufgerufen, welches entweder ein 
+Symbol, eine indizierte Variable oder ein Funktionsaufruf ist. Gibt
+@code{assume_pos_pred} den Wert @code{true} zur@"uck, wird @var{x} als ein
+Parameter f@"ur @code{assuem_pos} betrachtet.
+
+@c By default, a parameter is @var{x} such that @code{symbolp (@var{x})} or 
+@c @code{subvarp (@var{x})}.
+
+Standardm@"a@ss{}ig ist ein Parameter @var{x}, so dass @code{symbolp(@var{x})} oder
+@code{subvarp(@var{x})}.
+
+Siehe auch @code{assume} und @code{assume_pos}.
+
+Beispiele:
+
+@c ===beg===
+@c assume_pos: true$
+@c assume_pos_pred: symbolp$
+@c sign (a);
+@c sign (a[1]);
+@c assume_pos_pred: lambda ([x], display (x), true)$
+@c asksign (a);
+@c asksign (a[1]);
+@c asksign (foo (a));
+@c asksign (foo (a) + bar (b));
+@c asksign (log (a));
+@c asksign (a - b);
+@c ===end===
+@example
+(%i1) assume_pos: true$
+(%i2) assume_pos_pred: symbolp$
+(%i3) sign (a);
+(%o3)                          pos
+(%i4) sign (a[1]);
+(%o4)                          pnz
+(%i5) assume_pos_pred: lambda ([x], display (x), true)$
+(%i6) asksign (a);
+                              x = a
+
+(%o6)                          pos
+(%i7) asksign (a[1]);
+                             x = a
+                                  1
+
+(%o7)                          pos
+(%i8) asksign (foo (a));
+                           x = foo(a)
+
+(%o8)                          pos
+(%i9) asksign (foo (a) + bar (b));
+                           x = foo(a)
+
+                           x = bar(b)
+
+(%o9)                          pos
+(%i10) asksign (log (a));
+                              x = a
+
+Is  a - 1  positive, negative, or zero?
+
+p;
+(%o10)                         pos
+(%i11) asksign (a - b);
+                              x = a
+
+                              x = b
+
+                              x = a
+
+                              x = b
+
+Is  b - a  positive, negative, or zero?
+
+p;
+(%o11)                         neg
+@end example
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 27.08.2010 --------------------------------------------------------------
+@anchor{context}
+@defvr {Optionsvariable} context
+Standardwert: @code{initial}
+
+@c @code{context} names the collection of facts maintained by @code{assume} and 
+@c @code{forget}. @code{assume} adds facts to the collection named by 
+@c @code{context}, while @code{forget} removes facts.
+
+Die Optionsvariable @code{context} enth@"alt den Namen des aktuellen Kontexts. Das
+ist der Kontext, der die Fakten der Funktion @code{assume} aufnimmt oder aus dem
+Fakten mit der Funktion @code{forget} gel@"oscht werden.
+
+@c Binding @code{context} to a name @var{foo} changes the current context to 
+@c @var{foo}. If the specified context @var{foo} does not yet exist, it is 
+@c created automatically by a call to @code{newcontext}.
+   @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
+@c The specified context is activated automatically.
+
+Wird der Optionsvariable @code{context} der Name @var{foo} zugewiesen, wird der
+Kontext @var{foo} zum aktuellen Kontext. Existiert dieser Kontext noch nicht,
+wird er automatisch durch Aufruf der Funktion @code{newcontext} erzeugt.
+
+@c See @code{contexts} for a general description of the context mechanism.
+
+Siehe auch @mref{contexts} f@"ur eine allgemeinere Beschreibung von Kontexten.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{contexts}
+@defvr {Optionsvariable} contexts
+Standardwert: @code{[initial, global]}
+
+@c @code{contexts} is a list of the contexts which currently exist, including 
+@c the currently active context.
+
+Die Optionsvariable @code{contexts} enth@"alt eine Liste der Kontexte, die aktuell
+vorhanden sind. Darin sind auch die Kontexte enthalten, die aktuell nicht aktiv 
+sind.
+
+@c The context mechanism makes it possible for a user to bind together and name 
+@c a collection of facts, called a context. Once this is done, the user can have
+@c Maxima assume or forget large numbers of facts merely by activating or
+@c deactivating their context.
+
+Kontexte k@"onnen genutzt werden, um eine Vielzahl von Fakten zusammenzustellen.
+Diese Fakten k@"onnen dann durch Aktivierung oder Deaktivierung des Kontextes f@"ur
+die Auswertung von Aussagen verf@"ugbar gemacht und wieder ausgeschaltet werden.
+
+@c Any symbolic atom can be a context, and the facts contained in that context 
+@c will be retained in storage until destroyed one by one by calling 
+@c @code{forget} or destroyed as a whole by calling @code{kill} to destroy the 
+@c context to which they belong.
+
+Der Name eines Kontextes kann irgendein Symbol sein. Die Fakten in einem Kontext
+bleiben so lange verf@"ugbar, bis sie entweder einzeln mit der Funktion 
+@code{forget} oder der gesamte Kontext mit der Funktion @code{kill} gel@"oscht
+werden.
+
+@c Contexts exist in a hierarchy, with the root always being the context 
+@c @code{global}, which contains information about Maxima that some functions 
+@c need.  When in a given context, all the facts in that context are "active" 
+@c (meaning that they are used in deductions and retrievals) as are all the 
+@c facts in any context which is a subcontext of the active context.
+
+Kontexte haben eine Hierarchie. Die Wurzel ist immer der Kontext @code{global},
+welcher Informationen enth@"alt, die Maxima f@"ur die Auswertung und Vereinfachung
+von Funktionen ben@"otigt. Neben den Fakten des aktuellen Kontextes sind immer 
+auch alle Fakten alle Subkontexte verf@"ugbar.
+
+@c When a fresh Maxima is started up, the user is in a context called 
+@c @code{initial}, which has @code{global} as a subcontext.
+
+Wird Maxima gestarted, ist der aktuelle und aktive Kontext @code{initial}. 
+Dieser enth@"alt den Subkontext @code{global}.
+
+Siehe auch @code{facts}, @code{newcontext}, @code{supcontext}, 
+@code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, 
+und @code{forget}.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end defvr
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{deactivate}
+@deffn {Funktion} deactivate (@var{context_1}, ..., @var{context_n})
+
+@c Deactivates the specified contexts @var{context_1}, ..., @var{context_n}.
+
+Die Kontexte @var{context_1}, ..., @var{context_n} werden deaktiviert. Die
+Fakten dieser Kontexte stehen f@"ur die Auswertung von Aussagen nicht mehr zur
+Verf@"ugung. Die Kontexte werden jedoch nicht gel@"oscht und k@"onnen mit der Funktion
+@code{activate} wieder aktiviert werden.
+
+Die deaktivierten Kontexte werden aus der Liste @code{activecontexts} entfernt.
+
+Siehe auch @mref{activate} und @mrefdot{activecontexts}
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{facts}
+@deffn  {Funktion} facts (@var{item})
+@deffnx {Funktion} facts ()
+
+@c If @var{item} is the name of a context, @code{facts (@var{item})} returns a 
+@c list of the facts in the specified context.
+
+Ist @var{item} der Name eines Kontexts, gibt @code{facts(@var{item})} eine
+Liste aller Fakten des Kontextes zur@"uck.
+
+@c If @var{item} is not the name of a context, @code{facts (@var{item})} returns
+@c a list of the facts known about @var{item} in the current context.  Facts 
+@c that are active, but in a different context, are not listed.
+
+Ist @var{item} nicht der Name eines Kontexts, gibt @code{facts (@var{item})} 
+eine List der Fakten zur@"uck, die zu @var{item} im aktuellen Kontext bekannt 
+sind. Fakten, die aktiv sind, aber zu einem anderen Kontext geh@"oren, sind nicht
+in der Liste enthalten.
+
+@c @code{facts ()} (i.e., without an argument) lists the current context.
+
+@code{facts()} gibt eine Liste der Fakten des aktuellen Kontextes zur@"uck.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{forget}
+@deffn  {Funktion} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Funktion} forget (@var{L})
+
+@c Removes predicates established by @code{assume}. The predicates may be 
+@c expressions equivalent to (but not necessarily identical to) those previously
+@c assumed.
+
+Entfernt Fakten die mit @code{assume} einem Kontext hinzugef@"ugt wurden. Die
+Fakten k@"onnen Ausdr@"ucke sein, die @"aquivalent aber nicht unbedingt identisch zu
+vorherigen Fakten sind.
+
+@c @code{forget (@var{L})}, where @var{L} is a list of predicates, forgets each
+@c item on the list.
+
+@code{forget(@var{L})} entfernt alle Fakten, die in der Liste @var{L} enthalten
+sind.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{killcontext}
+@deffn {Funktion} killcontext (@var{context_1}, ..., @var{context_n})
+
+@c Kills the contexts @var{context_1}, ..., @var{context_n}.
+
+Das Kommando @code{killcontext(@var{context})} l@"oscht den Kontext @var{context}.
+
+@c If one of the contexts is the current context, the new current context will 
+@c become the first available subcontext of the current context which has not 
+@c been killed.  If the first available unkilled context is @code{global} then 
+@c @code{initial} is used instead.  If the @code{initial} context is killed, a 
+@c new, empty @code{initial} context is created.
+
+Ist einer der Kontexte der aktuelle Kontext, wird der erste vorhandene 
+Subkontext zum aktuellen Kontext. Ist der erste verf@"ugbare Kontext der Kontext
+@code{global}, dann wird der Kontext @code{initial} zum aktuellen Kontext. Wird
+der Kontext @code{initial} gel@"oscht, dann wird eine neuer leerer Kontext
+@code{initial} erzeugt.
+
+@c @code{killcontext} refuses to kill a context which is currently active, 
+@c either because it is a subcontext of the current context, or by use of the 
+@c function @code{activate}.
+
+@code{killcontext} l@"oscht einen Kontext nicht, wenn dieser ein Subkontext des
+aktuellen Kontextes ist oder wenn der Kontext mit der Funktion @code{activate}
+aktiviert wurde.
+
+@c @code{killcontext} evaluates its arguments. @code{killcontext} returns 
+@c @code{done}.
+
+@code{killcontext} wertet seine Argumente aus. @code{killcontext} gibt 
+@code{done} zur@"uck.
+
+@c @opencatbox
+@c @category{Deklaratonen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{newcontext}
+@deffn {Funktion} newcontext (@var{name})
+
+@c Creates a new, empty context, called @var{name}, which has @code{global} as 
+@c its only subcontext.  The newly-created context becomes the currently active
+@c context.
+
+@code{newcontext(@var{name})} erzeugt einen neuen, leeren Kontext mit dem 
+Namen @var{name}. Der neue Kontext hat den Kontext @code{global} als Subkontext
+und wird zum aktuellen Kontext.
+
+@c @code{newcontext} evaluates its argument. @code{newcontext} returns 
+@c @var{name}.
+
+@code{newcontext} wertet seine Argumente aus. @code{newcontext} gibt @code{name}
+zur@"uck.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{supcontext}
+@deffn  {Funktion} supcontext (@var{name}, @var{context})
+@deffnx {FunKtion} supcontext (@var{name}) 
+
+@c Creates a new context, called @var{name}, which has @var{context} as a 
+@c subcontext. @var{context} must exist.
+
+erzeugt einen neuen Kontext, mit dem Namen @code{name}, der den Kontext 
+@code{context} als eine Subkontext enth@"alt. Der Kontext @var{context} muss
+existieren.
+
+@c If @var{context} is not specified, the current context is assumed.
+
+Wird @var{context} nicht spezifiziert, wird der aktuelle Kontext zum Subkontext.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- End of Declarations.de.texi ---------------------------------------------
+
