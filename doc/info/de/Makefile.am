@@ -5,7 +5,7 @@ langsdir = /de
 fcharset = UTF-8
 
 info_TEXINFOS = maxima.texi
-maxima_TEXINFOS = include-maxima.de.texi \
+maxima_TEXINFOS = include-maxima.de.texi category-macros.de.texi \
 Introduction.de.texi Bugs.de.texi Help.de.texi Command.de.texi \
 DataTypes.de.texi Expressions.de.texi Operators.de.texi Evaluation.de.texi \
 Simplification.de.texi MathFunctions.de.texi Database.de.texi \
