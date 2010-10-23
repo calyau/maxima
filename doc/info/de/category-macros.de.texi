@@ -50,3 +50,10 @@
 @end ifnothtml
 @end macro
 
+@iftex
+@hyphenation{O-pe-ra-tor 
+             O-pe-ra-to-ren
+             wxMaxima
+             Zwi-schen-aus-druck }
+@end iftex
+
