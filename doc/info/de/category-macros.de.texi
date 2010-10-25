@@ -53,7 +53,10 @@
 @iftex
 @hyphenation{O-pe-ra-tor 
              O-pe-ra-to-ren
+             un-ge-ra-de
+             wei-te-ren
              wxMaxima
+             Zei-chen-ket-ten
              Zwi-schen-aus-druck }
 @end iftex
 
