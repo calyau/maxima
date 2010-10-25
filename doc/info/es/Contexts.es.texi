@@ -248,7 +248,7 @@ con los hechos asociados al contexto especificado.
 Si @var{item} no es el nombre de un contexto,
 @code{facts (@var{item})} devuelve una lista con los hechos conocidos acerca de @var{item} en el contexto actual. Los hechos que est@'en activos en contextos diferentes no aparecen en la lista.
 
-La lamada @code{facts ()}, sin argumentos, muestra el contexto actual.
+La llamada @code{facts ()}, sin argumentos, muestra el contexto actual.
 
 @end deffn
 
