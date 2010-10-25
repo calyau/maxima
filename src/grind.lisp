@@ -149,9 +149,7 @@
         (setq y (coerce x 'list))
 	    (do ((l y (cdr l))) ((null l))
 	      (cond
-            ((or (member (car l) '(#\" #\\) :test #'equal)
-                 (and (char< (car l) #\space)
-                      (not (char= (car l) #\return))))
+            ((member (car l) '(#\" #\\) :test #'equal)
              (rplacd l (cons (car l) (cdr l)))
              (rplaca l #\\)
              (setq l (cdr l)))))
