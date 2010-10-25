@@ -88,8 +88,7 @@ Standardwert ist @code{false}.
 Das Schl@"usselwort @code{tests} erh@"alt eine Liste mit den Testdateien, die 
 ausgef@"uhrt werden sollen. Eine Testdatei kann durch eine Zeichenkette oder ein 
 Symbol angegeben werden. Der Standard ist, dass alle Testdateien ausgef@"uhrt
-werden, die in der Optionsvariablen @mref{testsuite_files} enthalten sind. Siehe
-auch @code{testsuite_files}.
+werden, die in der Optionsvariablen @mref{testsuite_files} enthalten sind.
 
 @item time
 
