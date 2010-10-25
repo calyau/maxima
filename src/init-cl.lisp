@@ -333,6 +333,26 @@ When one changes, the other does too."
 	;; Sort in alphabetical order
 	(sort dir-list #'string-lessp))))
 
+#+ccl
+(defun share-subdirs-list ()
+  (let* ((share-root (pathname (concatenate 'string *maxima-sharedir* "/")))
+	 (dir-list (directory (merge-pathnames (make-pathname :directory '(:relative :wild-inferiors)
+							       :name :wild :type :wild)
+						share-root)
+			       :directories t :files nil)))
+    ;; Remove stuff we don't want want CVS directories.
+    ;; Anything else?
+    (setf dir-list (remove-if #'(lambda (x)
+				    ;; Remove CVS directories
+				    (equal "CVS" (car (last (pathname-directory x)))))
+			       dir-list))
+    ;; Now just want the part after the *maxima-sharedir*, and we want
+    ;; strings.  
+    (mapcar #'(lambda (x)
+		(let ((dir (make-pathname :directory (butlast (pathname-directory x))
+					  :name (car (last (pathname-directory x))))))
+		  (enough-namestring dir share-root)))
+	    dir-list)))
 
 (defun default-share-subdirs-list ()
   ;; Default implementation.  Eventually this should go away.
@@ -409,7 +429,7 @@ When one changes, the other does too."
     "utils"
     "vector"))
 
-#-(or cmu clisp ecl sbcl)
+#-(or cmu clisp ecl sbcl ccl)
 (defun share-subdirs-list ()
   (default-share-subdirs-list))
 
