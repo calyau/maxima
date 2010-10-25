@@ -27,7 +27,7 @@ done
 cat *.texi\
   | awk '!/^@c / && !/^@c$/ && (/^@deffn/ || /^@defvr/ || /^@end deffn/ || /^@end defvr/ || /@category/ || /@node/)'\
   | sed -f $d/extract_categories1.sed \
-  | awk -F '$' -f $d/extract_categories1.awk \
+  | awk -F'$' -f $d/extract_categories1.awk \
   > tmp-make-categories.py
 
 ${PYTHONBIN:-python} tmp-make-categories.py
