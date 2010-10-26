@@ -19,11 +19,11 @@
 (defmfun $poly_discriminant (poly var)
   (let* ((varlist (list var))
 	 ($ratfac nil)
-	 (genvar ()) 
+	 (genvar ())
 	 (rform (rform poly))
 	 (rvar (car (last genvar)))
 	 (n (pdegree (setq poly (car rform)) rvar)))
-	
+
     (cond ((= n 1) 1)
 	  ((or (= n 0) (not (atom  (cdr rform))))
 	   (merror "The first argument to 'poly_discriminant' must be a polynomial in ~:M" var))
@@ -45,7 +45,7 @@
      (do ((l1 a (cdr l1))) ((null l1))
        (do ((l2 b (cdr l2))) ((null l2))
 	 (setq res (result1 (caar l1) (caar l2) mainvar))
-	 (setq ans (ptimes ans (pexpt 
+	 (setq ans (ptimes ans (pexpt
 				(cond ((zerop (caddr res)) (car res))
 				      (t (ptimeschk (car res)
 						    (pexpt (makprod (cadr res) nil)
@@ -78,7 +78,7 @@
 
 (defmfun resultant (p1 p2)		;assumes same main var
   (if (> (p-le p2) (p-le p1))
-      (presign (* (p-le p1) (p-le p2)) (resultant p2 p1)) 
+      (presign (* (p-le p1) (p-le p2)) (resultant p2 p1))
       (case $resultant
 	($subres (subresult p1 p2))
 	#+broken ($mod (modresult p1 p2))
@@ -101,7 +101,7 @@
 		   q (presign (1+ d) (pquotient (prem p q)
 						 (ptimes g (ptimes h h^1-d)))))))
 
-;;	PACKAGE FOR CALCULATING MULTIVARIATE POLYNOMIAL RESULTANTS 
+;;	PACKAGE FOR CALCULATING MULTIVARIATE POLYNOMIAL RESULTANTS
 ;;	USING MODIFIED REDUCED P.R.S.
 
 (defun redresult (u v)
@@ -125,7 +125,7 @@
      (go a)))
 
 
-;;	PACKAGE FOR CALCULATING MULTIVARIATE POLYNOMIAL RESULTANTS 
+;;	PACKAGE FOR CALCULATING MULTIVARIATE POLYNOMIAL RESULTANTS
 ;;	USING MODULAR AND EVALUATION HOMOMORPHISMS.
 ;; modresultant fails on the following example
 ;;RESULTANT(((-4)*Z)^4+(Y+8*Z)^4+(X-5*Z)^4-1,
@@ -250,7 +250,7 @@
 	 (b (vmake (p-terms q) n nil))
 	 (ar (reverse (nthcdr n2 a)))
 	 (br (reverse (nthcdr n2 b)))
-	 (l (nzeros n nil)))
+	 (l (make-list n :initial-element 0)))
     (rplacd (nthcdr (1- (p-le p)) a) nil)
     (rplacd (nthcdr (1- (p-le p)) b) nil)
     (nconc

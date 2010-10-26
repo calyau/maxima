@@ -52,7 +52,7 @@
      (setq varlist varl)
      (mapc #'newvar eql)
      (and (not $algebraic)
-	  (some #'algp varlist) 
+	  (some #'algp varlist)
 	  (setq $algebraic t))
      (setf (symbol-value nam) (make-array (list (1+ (setq xn* (length eql)))
 						(1+ (setq xm* (1+ (length varl)))))))
@@ -84,28 +84,29 @@
 (defun ptorat (ax m n)
   (prog (i j)
      (setq ax (get-array-pointer ax))
-     (setq i (1+ m) n (1+ n)) 
+     (setq i (1+ m))
+     (incf n)
      loop1
-     (cond ((equal i 1) (return nil)))
-     (setq i (1- i) j n)
+     (when (equal i 1) (return nil))
+     (decf i)
+     (setq j n)
      loop2
-     (cond ((equal j 1) (go loop1)))
-     (setq j (1- j))
+     (when (equal j 1) (go loop1))
+     (decf j)
      (setf (aref ax i j) (cons (aref ax i j) 1))
      (go loop2)))
 
 (defun meqhk (z)
-  (cond ((and (not (atom z)) (eq (caar z) 'mequal))
-	 (simplus (list '(mplus) (cadr z) (list '(mtimes) -1 (caddr z))) 1 nil))
-	(t z)))
+  (if (and (not (atom z)) (eq (caar z) 'mequal))
+      (simplus (list '(mplus) (cadr z) (list '(mtimes) -1 (caddr z))) 1 nil)
+      z))
 
 (defun const (e varl)
-  (prog (zl)
-     (setq varl (mapcar (function (lambda(x) (caadr (ratrep* x)))) varl))
-     (setq e (cdr (ratrep* e)))
-     (setq zl (nzeros (length varl) nil))
-     (return (ratreduce (pctimes -1 (pcsubsty zl varl (car e)))
-			(pcsubsty zl varl (cdr e))))))
+  (setq varl (mapcar #'(lambda(x) (caadr (ratrep* x))) varl))
+  (setq e (cdr (ratrep* e)))
+  (let ((zl (make-list (length varl) :initial-element 0)))
+    (ratreduce (pctimes -1 (pcsubsty zl varl (car e)))
+	       (pcsubsty zl varl (cdr e)))))
 
 (defvar *mosesflag nil)
 
@@ -118,7 +119,7 @@
 
 (defmvar $linsolve_params t "`linsolve' generates %Rnums")
 
-(defun ith (x n) 
+(defun ith (x n)
   (if (atom x) nil (nth (1- n) x)))
 
 (defun polyize (ax r m mul)
@@ -151,7 +152,7 @@
       (cond ((equal 1 (setq d (cdr (aref ax r c)))) nil)
 	    (t (setq mul (ptimes mul (pquotient d (pgcd mul d)))))))))
 
-;; The author of the following programs is Tadatoshi Minamikawa (TM). 
+;; The author of the following programs is Tadatoshi Minamikawa (TM).
 ;; This program is one-step fraction-free Gaussian elimination with
 ;; optimal pivotting.  DRB claims the hair in this program is not
 ;; necessary and that straightforward Gaussian elimination is sufficient,
@@ -213,7 +214,7 @@
 					       (aref ax (aref *row* k) (aref *col* j))))
 			  delta))))
     (do ((i (1+ k) (1+ i)))
-        ((> i nrow))
+	((> i nrow))
       (setf (aref ax (aref *row* i) (aref *col* k)) 0))
     (setq delta (aref ax (aref *row* k) (aref *col* k))))
   ;; UNDOES COLUMN HACK IN PIVOT.
@@ -253,7 +254,7 @@
     (setq variableorder (cons i variableorder)))
   (do ((i (1+ rank) (1+ i)))
       ((> i n))
-    (cond ((equal (aref ax (aref *row* i) (aref *col* m)) 0) 
+    (cond ((equal (aref ax (aref *row* i) (aref *col* m)) 0)
 	   (setq dependentrows (cons (aref *row* i) dependentrows)))
 	  (t (setq inconsistentrows (cons (aref *row* i) inconsistentrows)))))
   (do ((i 1 (1+ i)))
@@ -416,7 +417,7 @@
   (prog (dummy)
      (setq dummy (aref *row* i))
      (setf (aref *row* i) (aref *row* j))
-     (setf (aref *row* j) dummy) 
+     (setf (aref *row* j) dummy)
      (cond ((= i j) (return nil))
 	   (t (setq permsign (not permsign))))))
 
@@ -432,7 +433,7 @@
 
 (defun solve2 (llist)
   (setq $multiplicities nil)
-  (map2c #'(lambda (equatn multipl) 
+  (map2c #'(lambda (equatn multipl)
 	     (setq equations
 		   (nconc equations (list (displine equatn))))
 	     (push multipl $multiplicities)
@@ -444,9 +445,9 @@
 ;; Displays an expression and returns its linelabel.
 
 (defmfun displine (exp)
-  (let ($nolabels (tim 0)) 
+  (let ($nolabels (tim 0))
     (elabel exp)
-    (cond ($dispflag (remprop linelable 'nodisp) 
+    (cond ($dispflag (remprop linelable 'nodisp)
 		     (setq tim (get-internal-run-time))
 		     (mterpri)
 		     (displa (list '(mlable) linelable exp))

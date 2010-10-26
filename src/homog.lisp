@@ -22,16 +22,20 @@
 (defun ptermvec (p)
   (ltermvec p (sort (listovars p) #'pointergp) nil))
 
+(defun nzeros (n l)
+  (dotimes (i n l)
+    (push 0 l)))
+
 (defun ltermvec (p vl coef?)
-       (cond ((null vl) (list (if coef? p nil)))
-	     ((pcoefp p) (list (nzeros (length vl) (if coef? p nil))))
-	     ((pointergp (car vl) (car p))
-	      (addvardeg 0 (ltermvec p (cdr vl) coef?) nil))
-	     (t (do ((p (cdr p) (cddr p))
-		     (lt nil (addvardeg (car p) (ltermvec (cadr p) (cdr vl)
-							  coef?)
-					lt)))
-		    ((null p) lt)))))
+  (cond ((null vl) (list (if coef? p nil)))
+	((pcoefp p) (list (nzeros (length vl) (if coef? p nil))))
+	((pointergp (car vl) (car p))
+	 (addvardeg 0 (ltermvec p (cdr vl) coef?) nil))
+	(t (do ((p (cdr p) (cddr p))
+		(lt nil (addvardeg (car p) (ltermvec (cadr p) (cdr vl)
+						     coef?)
+				   lt)))
+	       ((null p) lt)))))
 
 ;car(lv) = list of dependent equations
 ;caddr (lv) = correspondence between new columns and old ones.

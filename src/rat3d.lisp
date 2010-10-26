@@ -100,11 +100,6 @@
 	    (t (cond ((< (car v2) (car v1))
 		      (rplaca v1 (car v2)))))))))
 
-(defun nzeros (n l)
-  (do ((j n (1- j))
-       (l l (cons 0 l)))
-      ((= 0 j) l)))
-
 (defun quick-sqfr-check (p var)
   (let ((gv (delete var (listovars p) :test #'equal))
 	(modulus (or modulus *alpha))
