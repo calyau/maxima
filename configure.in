@@ -583,7 +583,7 @@ fi
 
 if test x"${cmucl}" = xtrue; then
     if test x"${CMUCL_RUNTIME_PATH}" = x"" ; then
-        CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -noinit -nositeinit -quiet -batch -eval '#+cmu19 (progn (setf (search-list "cmuclbin:") (append (lisp::parse-unix-search-path lisp::*cmucl-lib*) (mapcar (function (lambda (p) (concatenate (quote string) p "../bin/"))) (lisp::parse-unix-search-path lisp::*cmucl-lib*))))(enumerate-search-list (s "cmuclbin:lisp") (when (probe-file s) (format t "~A~%" s) (quit)))) #+cmu18 (format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
+        CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -noinit -nositeinit -quiet -batch -eval '#-cmu18 (progn (setf (search-list "cmuclbin:") (append (lisp::parse-unix-search-path lisp::*cmucl-lib*) (mapcar (function (lambda (p) (concatenate (quote string) p "../bin/"))) (lisp::parse-unix-search-path lisp::*cmucl-lib*))))(enumerate-search-list (s "cmuclbin:lisp") (when (probe-file s) (format t "~A~%" s) (quit)))) #+cmu18 (format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
     fi
     if test -x "${CMUCL_RUNTIME_PATH}" ; then
         echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
@@ -832,7 +832,7 @@ dnl itself and all CVS directories (if any) and fortran directories.
 dnl Remove the leading "share" part of the path, and add double-quotes
 dnl around it.
 
-default_sharedirs=`find share -type d | grep -v 'share$\|CVS\|/fortran' | sed 's;share/\(.*\);    "\1" \\\\;' | sed '$s;\\\\;;'`
+default_sharedirs=`find share -type d | sort | egrep -v 'share$|CVS|/fortran' | sed 's;share/\(.*\);    "\1" \\\\;' | sed '$s;\\\\;;'`
 
 AC_SUBST(expanded_top_srcdir)
 AC_SUBST(expanded_exec_prefix)
