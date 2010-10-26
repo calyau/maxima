@@ -1,12 +1,35 @@
 #!/bin/sh
 
-cd `dirname $0` &&
-cd ../share && \
-find . -type f | \
-grep -v CVS | \
-sed 's%\./%%' | \
-sed 's%$%\\%' | \
-grep / | \
-grep -v '~' | \
-sort
+(
+echo "sharefiles = \\"
+
+# Find all the files in the share directory, and then filter the
+# output.  We remove lots of files that we don't want installed like
+# files in the fortran directories, CVS files, and other random files.
+#
+# Then remove the leading dot and append a \ to each line, but not the
+# last line.
+
+find ../share -type f |
+egrep -v 'CVS|Makefile(\.in|\.am)?|^./Makefile|.cvsignore' | 
+egrep -v '/fortran/' |
+egrep -v 'colnew/ex./' |
+egrep -v 'lbfgs/.*\.f' |
+egrep -v '/\.#' |
+egrep -v '~' | 
+sed -e 's;../share/;;' -e 's%\./%%' -e 's%$% \\%' |
+sort |
+sed '$s/\\$//'
+)  > sharefiles.mk.$$
+
+trap 'rm -f sharefiles.mk.$$' 0
+
+# If the original and new versions are different, update the original
+# with the new information.
+
+if cmp sharefiles.mk sharefiles.mk.$$ > /dev/null; then
+    :
+else
+    mv sharefiles.mk.$$ sharefiles.mk
+fi
 

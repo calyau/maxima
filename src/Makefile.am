@@ -14,7 +14,7 @@ DEFSYSTEMTESTLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxi
 
 if CLISP
 EXECUTECLISP = $(CLISP_NAME) -norc -q -x
-all-local: binary-clisp/maxima.mem
+all-local: sharefiles.mk  binary-clisp/maxima.mem
 install-exec-local: install-clisp
 uninstall-hook: uninstall-clisp
 clean: clean-clisp
@@ -64,7 +64,7 @@ EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 # compile the files, we will get appropriate translations.  (Otherwise
 # we have to put (intl:textdomain "maxima") in each Lisp file.
 INITINTL = (when (find-package "INTL") (set (find-symbol "*DEFAULT-DOMAIN*" "INTL") "maxima"))
-all-local: $(CMU_MAXIMA)
+all-local: sharefiles.mk  $(CMU_MAXIMA)
 install-exec-local: install-cmucl
 uninstall-hook: uninstall-cmucl
 clean: clean-cmucl
@@ -100,7 +100,7 @@ endif
 
 if SCL
 EXECUTESCL = $(SCL_NAME) -noinit -batch
-all-local: binary-scl/maxima.core
+all-local: sharefiles.mk  binary-scl/maxima.core
 install-exec-local: install-scl
 uninstall-hook: uninstall-scl
 clean: clean-scl
@@ -136,7 +136,7 @@ endif
 
 if ACL
 EXECUTEACL = $(ACL_NAME) -batch
-all-local: binary-acl/maxima.dxl
+all-local: sharefiles.mk  binary-acl/maxima.dxl
 install-exec-local: install-acl
 uninstall-hook: uninstall-acl
 clean: clean-acl
@@ -169,7 +169,7 @@ endif
 
 if SBCL
 EXECUTESBCL = $(SBCL_NAME) --noinform --noprint --eval
-all-local: binary-sbcl/maxima.core
+all-local: sharefiles.mk  binary-sbcl/maxima.core
 install-exec-local: install-sbcl
 uninstall-hook: uninstall-sbcl
 clean: clean-sbcl
@@ -202,7 +202,7 @@ endif
 
 if GCL
 EXECUTEGCL = $(GCL_NAME) -batch -eval
-all-local: binary-gcl/maxima
+all-local: sharefiles.mk  binary-gcl/maxima
 install-exec-local: install-gcl
 uninstall-hook: uninstall-gcl
 clean: clean-gcl
@@ -254,7 +254,7 @@ endif
 
 if OPENMCL
 EXECUTEOPENMCL = $(OPENMCL_NAME) -e
-all-local: binary-openmcl/maxima.image
+all-local: sharefiles.mk  binary-openmcl/maxima.image
 install-exec-local: install-openmcl
 uninstall-hook: uninstall-openmcl
 clean: clean-openmcl
@@ -283,7 +283,7 @@ endif
 
 if ECL
 EXECUTEECL = $(ECL_NAME) -norc
-all-local: binary-ecl/maxima
+all-local: sharefiles.mk  binary-ecl/maxima
 install-exec-local: install-ecl
 uninstall-hook: uninstall-ecl
 clean: clean-ecl
@@ -314,6 +314,18 @@ endif
 echo_%:
 	@echo "$(subst echo_,,$@)=$($(subst echo_,,$@))"
 	@echo "origin $(subst echo_,,$@) returns $(origin $(subst echo_,,$@))"
+
+# Create the list of files that will be installed.  If there is no
+# difference between what make_share_list computes and the original
+# file, do nothing.  Otherwise, update the original with the new
+# output of make_share_list.  The update will cause share/Makefile to
+# be rebuilt, and thus have the correct list of files to be installed.
+
+sharefiles.mk : FORCE
+	../admin/make_share_list
+
+# Should we use GNU make .PHONY instead?
+FORCE :
 
 genericdir = $(instsrcdir)
 real_lisp_sources = acall.lisp \
