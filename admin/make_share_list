@@ -1,6 +1,7 @@
 #!/bin/sh
 
 (
+echo "# DO NOT EDIT sharefiles.  It is automatically generated."
 echo "sharefiles = \\"
 
 # Find all the files in the share directory, and then filter the
