@@ -300,5 +300,6 @@ binary-gcl/maxima : gnuplot_def.lisp
 binary-gcl/maxima : xmaxima_def.lisp
 binary-gcl/maxima : autol.lisp
 binary-gcl/maxima : max_ext.lisp
+binary-gcl/maxima : share-subdirs.lisp
 binary-gcl/maxima : init-cl.lisp
 
