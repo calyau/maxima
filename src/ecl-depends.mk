@@ -295,5 +295,6 @@ binary-ecl/maxima : gnuplot_def.lisp
 binary-ecl/maxima : xmaxima_def.lisp
 binary-ecl/maxima : autol.lisp
 binary-ecl/maxima : max_ext.lisp
+binary-ecl/maxima : share-subdirs.lisp
 binary-ecl/maxima : init-cl.lisp
 

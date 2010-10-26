@@ -294,5 +294,6 @@ binary-clisp/maxima.mem : gnuplot_def.lisp
 binary-clisp/maxima.mem : xmaxima_def.lisp
 binary-clisp/maxima.mem : autol.lisp
 binary-clisp/maxima.mem : max_ext.lisp
+binary-clisp/maxima.mem : share-subdirs.lisp
 binary-clisp/maxima.mem : init-cl.lisp
 
