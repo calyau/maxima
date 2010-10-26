@@ -1,7 +1,6 @@
 binary-cmucl/maxima.core : maxima-package.lisp
 binary-cmucl/maxima.core : autoconf-variables.lisp
 binary-cmucl/maxima.core : nregex.lisp
-binary-cmucl/maxima.core : intl.lisp
 binary-cmucl/maxima.core : cl-info.lisp
 binary-cmucl/maxima.core : sloop.lisp
 binary-cmucl/maxima.core : lmdcls.lisp
@@ -294,5 +293,6 @@ binary-cmucl/maxima.core : gnuplot_def.lisp
 binary-cmucl/maxima.core : xmaxima_def.lisp
 binary-cmucl/maxima.core : autol.lisp
 binary-cmucl/maxima.core : max_ext.lisp
+binary-cmucl/maxima.core : share-subdirs.lisp
 binary-cmucl/maxima.core : init-cl.lisp
 
