@@ -294,5 +294,6 @@ binary-openmcl/maxima.image : gnuplot_def.lisp
 binary-openmcl/maxima.image : xmaxima_def.lisp
 binary-openmcl/maxima.image : autol.lisp
 binary-openmcl/maxima.image : max_ext.lisp
+binary-openmcl/maxima.image : share-subdirs.lisp
 binary-openmcl/maxima.image : init-cl.lisp
 
