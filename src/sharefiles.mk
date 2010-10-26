@@ -104,7 +104,6 @@ cobyla/lisp/cobylb.lisp \
 cobyla/lisp/trstlp.lisp \
 cobyla/load-bf-cobyla.lisp \
 cobyla/load-cobyla.lisp \
-colnew/colnew-core.lisp \
 colnew/colnew-if.lisp \
 colnew/colnew-lisp.system \
 colnew/colnew-package.lisp \
@@ -142,7 +141,6 @@ colnew/lisp/vwblok.lisp \
 colnew/load-colnew.lisp \
 colnew/prob1.mac \
 colnew/prob2.mac \
-colnew/prob3.mac \
 combinatorics/README \
 contrib/Grobner/README \
 contrib/Grobner/grobner-demo.output \
@@ -733,12 +731,9 @@ lapack/blas/ztrsm.lisp \
 lapack/blas/ztrsv.lisp \
 lapack/dgesv.lisp \
 lapack/eigensys.lisp \
-lapack/full-lapack.system \
 lapack/lapack-lisp.system \
-lapack/lapack-modules.system \
 lapack/lapack-package.lisp \
 lapack/lapack.mac \
-lapack/lapack.sys \
 lapack/lapack.system \
 lapack/lapack/dbdsdc.lisp \
 lapack/lapack/dbdsqr.lisp \
@@ -902,12 +897,6 @@ matrix/rateig.mac \
 matrix/rtest_eigen.mac \
 maxima-init.lisp \
 minpack/disclaimer \
-minpack/ex/bard.mac \
-minpack/ex/chebyquad.mac \
-minpack/ex/ex1.mac \
-minpack/ex/osborne2.mac \
-minpack/ex/powell.mac \
-minpack/ex/rosenbrock.mac \
 minpack/lisp/dogleg.lisp \
 minpack/lisp/dpmpar.lisp \
 minpack/lisp/enorm.lisp \
@@ -1002,11 +991,8 @@ physics/physconst.usg \
 physics/units.mac \
 physics/units.usg \
 readme-share.txt \
-share-subdirs.lisp \
 share.usg \
 share_testsuite.mac \
-sharefiles.mk \
-sharefiles.mk.27963 \
 simplification/absimp.dem \
 simplification/absimp.mac \
 simplification/disol.dem \
