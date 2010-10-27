@@ -16,7 +16,7 @@
 
 (defmacro pcoefp (e) `(atom ,e))
 
-(proclaim '(inline pzerop))
+(declaim (inline pzerop))
 (defun pzerop (x)
   (if (fixnump x)
       (zerop (the fixnum x))
@@ -54,7 +54,7 @@
 ;; 10 gensyms.  Then we sorted them by the addresses of the symbols in
 ;; memory.  Then we associated them with x,y,z,....  This meant that
 ;; pointergp was one or two instructions on a PDP-10, in assembler."
-;; 
+;;
 ;; "That version of pointergp turned out to be more trouble than it was
 ;; worth because we sometimes had to interpolate between two gensym
 ;; "addresses" and to do that we had to kind of renumber too much of
@@ -65,7 +65,7 @@
 ;; called a lot.  So if you get an error from pointergp, it's probably
 ;; because someone forgot to initialize things correctly.
 
-(proclaim '(inline pointergp))
+(declaim (inline pointergp))
 (defun pointergp (a b)
   (> (symbol-value a) (symbol-value b)))
 
@@ -122,4 +122,3 @@
 (defmacro r- (r . l)
   (cond ((null l) `(ratminus (ratfix ,r)))
 	(t `(ratdif (ratfix ,r) (r+ ,@l)))))
-

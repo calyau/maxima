@@ -12,8 +12,7 @@
 ;; This file is for Lisp differences only.  No knowledge of Macsyma should be
 ;; contained in this file.
 
-(proclaim '(inline *quo))
-
+(declaim (inline *quo))
 (defun *quo (x y)
   (cond ((and (integerp x) (integerp y))
 	 (truncate x y))
@@ -62,7 +61,7 @@
 	       (cond ((member (car expand-1) '(aref arraycall) :test #'eq)
 		      expand-1)
 		     (t  (macroexpand array-ref env))))))
-  
+
   (case (first array-ref)
     (funcall (store-macro-helper (cdr array-ref) new-value))
     ;;the arrays ought to all be on in the symbol location by now --wfs
