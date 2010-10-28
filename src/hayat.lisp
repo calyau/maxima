@@ -246,7 +246,7 @@
 	      (ratexpt x (car y)))
 	     ((and $radexpand (numberp (car y)) (numberp (cdr y)))
 	      (if (floatp (car y))
-		  (setq y (maxima-rationalize (*quo (car y) (cdr y)))))
+		  (setq y (maxima-rationalize (quot (car y) (cdr y)))))
 	      (ratexpt (rcquo (rcexpt1 (car x) (cdr y))
 			      (rcexpt1 (cdr x) (cdr y)))
 		       (car y)))
@@ -354,12 +354,12 @@
        (if (signp l d) (setq d (- d) n (- n)))
        (if (zerop n) (rczero)
 	   (let ((gcd (gcd n d)))
-		(cons (*quo n gcd) (*quo d gcd)))))
+		(cons (/ n gcd) (/ d gcd)))))
 
 (defun egcd (x y)
        (let ((xn (abs (car x))) (xd (cdr x))
 	     (yn (abs (car y))) (yd (cdr y)))
-	    (cons (gcd xn yn) (* xd (*quo yd (gcd xd yd))))))
+	    (cons (gcd xn yn) (* xd (/ yd (gcd xd yd))))))
 
 ;;;		 Subtitle polynomial arithmetic
 
@@ -759,7 +759,7 @@
 	      ;; s is the numeric part of the exponent
 	      (if (floatp (car s)) ;; Perhaps we souldn't
 		  ;; rationalize if $keepfloat is true?
-		  (setq s (maxima-rationalize (*quo (car s) (cdr s)))))
+		  (setq s (maxima-rationalize (quot (car s) (cdr s)))))
 	      (setq n-s (psdiff n s)	;; the non-numeric part of exponent
 		    x   (e* s (le l)))	;; the degree of the lowest term
 	      (setq x (if (and (null $maxtayorder) ;; if not getting all terms
@@ -781,7 +781,7 @@
 			 le (le l) lt (lt l) trunc (trunc-lvl p)
 			 inc (psexpon-gcd l) s (psfind-s n))
 		   (when (floatp (car s))
-		      (setq s (maxima-rationalize (*quo (car s) (cdr s)))))
+		      (setq s (maxima-rationalize (quot (car s) (cdr s)))))
 		   (setq ans (psexpt (setq lt (pscheck (gvar-o p) (list trunc)
 						       (list lt))) n)
 			 lcinv (psexpt lc (rcmone))
@@ -2761,7 +2761,7 @@
 		  ;; Constant problem kludge.
 		  (if (rczerop tb) (current-trunc (car tlist)) (rczero))))
      (if (floatp (car s))
-	 (setq s (maxima-rationalize (*quo (car s) (cdr s)))))
+	 (setq s (maxima-rationalize (quot (car s) (cdr s)))))
      ;; We must ensure that the lc is non-zero since it will be inverted in
      ;; psexpt.
      (setq tb (strip-zeroes tb 't))

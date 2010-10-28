@@ -12,12 +12,6 @@
 ;; This file is for Lisp differences only.  No knowledge of Macsyma should be
 ;; contained in this file.
 
-(declaim (inline *quo))
-(defun *quo (x y)
-  (cond ((and (integerp x) (integerp y))
-	 (truncate x y))
-	(t (/ x y))))
-
 ;; Run time stuff
 
 (defun symbolconc (&rest syms)
@@ -32,7 +26,7 @@
 				   (t sym)))
 			 syms))))
 
-;; make a symbol out of the printed represantations of all args
+;; make a symbol out of the printed representations of all args
 (defun concat (&rest args)
   (intern (format nil "~{~A~^~}" args)))
 

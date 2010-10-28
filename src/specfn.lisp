@@ -398,7 +398,7 @@
 	(t (prog1
 	       (cons (* sign *last*) 1)
 	     (setq *last*
-		   (*quo (* *last* (+ subl (1+ k)))
+		   (quot (* *last* (+ subl (1+ k)))
 			 (1+ k)))))))
 
 (defun plygam-ord (subl)

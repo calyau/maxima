@@ -151,7 +151,7 @@
 	 ((and modulus (pcoefp (car y)))
 	  (cons (pctimes (crecip (car y)) (cdr y)) 1))
 	 ((and $keepfloat (floatp (car y)))
-	  (cons (pctimes (*quo 1.0 (car y)) (cdr y)) 1))
+	  (cons (pctimes (/ (car y)) (cdr y)) 1))
 	 ((pminusp (car y)) (cons (pminus (cdr y)) (pminus (car y))))
 	 (t (cons (cdr y) (car y))))))
 
