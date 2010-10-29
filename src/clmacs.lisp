@@ -66,16 +66,11 @@
 
 ;;this is essentially what the quotient is supposed to do.
 
-(defun quot (a &rest b)
-  (cond ((null b)
-	 (quot 1 a))
-	((null (cdr b))
-	 (setq b (car b))
-	 (cond ((and (integerp a) (integerp b))
-		(values (truncate a b)))
-	       (t
-		(/ a b))))
-	(t (apply #'quot (quot a (car b)) (cdr b)))))
+(declaim (inline quot))
+(defun quot (a b)
+  (if (and (integerp a) (integerp b))
+      (truncate a b)
+      (/ a b)))
 
 (defmacro status (option &optional item)
   (cond ((equal (symbol-name option) (symbol-name '#:feature))
@@ -130,7 +125,7 @@
 
 (defun firstn (n lis)
   (subseq lis 0 n))
-  
+
 (defun fixnump (n)
   (typep n 'fixnum))
 
@@ -338,7 +333,7 @@
   (when (fboundp (find-symbol "FLOAT-UNDERFLOW-MODE" "SYS"))
     (funcall (find-symbol "FLOAT-UNDERFLOW-MODE" "SYS") nil))
   )
-  
+
 ;; Make the maximum exponent larger for CMUCL.  Without this, cmucl
 ;; will generate a continuable error when raising an integer to a
 ;; power greater than this.
@@ -463,7 +458,7 @@
 (defmacro float (x &optional (y 1e0))
   `(cl:float ,x ,y))
 
-;; DO-MERGE-ASYM moved here from nset.lisp so that it is defined before 
+;; DO-MERGE-ASYM moved here from nset.lisp so that it is defined before
 ;; it is referenced in compar.lisp.
 
 (defmacro do-merge-symm (list1 list2 eqfun lessfun bothfun onefun)
@@ -536,4 +531,3 @@
 ; one2 k
 ; one1 l
 ; nil
-
