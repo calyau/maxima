@@ -50,9 +50,37 @@
 @end ifnothtml
 @end macro
 
+@macro nref {nodename}
+@ifhtml
+@ref{\nodename\}
+@end ifhtml
+@ifnothtml
+\nodename\
+@end ifnothtml
+@end macro
+
+@macro nrefdot {nodename}
+@ifhtml
+@ref{\nodename\}.
+@end ifhtml
+@ifnothtml
+\nodename\.
+@end ifnothtml
+@end macro
+
+@macro nrefcomma {nodename}
+@ifhtml
+@ref{\nodename\},
+@end ifhtml
+@ifnothtml
+\nodename\,
+@end ifnothtml
+@end macro
+
 @iftex
 @hyphenation{aus-ge-wer-tet
              Dol-lar-zei-chen
+             Glei-chung
              ka-no-ni-scher
              O-pe-ra-tor 
              O-pe-ra-to-ren
