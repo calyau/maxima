@@ -17,7 +17,7 @@ TeXmacs example:
 Hooks for display
 -----------------
 
-*general-display-prefix* : string printed before each displayed output
+*general-display-prefix* : string printed before each displayed output label
                            Exactly what that means my need refinement.
 
 *maxima-prolog* : string printed at the beginning of a Maxima session
