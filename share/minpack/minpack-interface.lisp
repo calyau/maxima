@@ -219,6 +219,7 @@
 		   (minpack:enorm n fvec)
 		   info))))))))
 
+
 (defun $minpack_lsquares (fcns vars init-x &rest options)
   "Minimize the sum of the squares of m functions in n unknowns (n <= m)
 
@@ -232,6 +233,13 @@
               If false, the Jacobian is internally computed using a
               forward-difference approximation.
               Otherwise, it is a function returning the Jacobian"
+  (unless (and (listp fcns) (eq (caar fcns) 'mlist))
+    (merror "~M is not a list of functions" fcns))
+  (unless (and (listp vars) (eq (caar vars) 'mlist))
+    (merror "~M is not a list of variables" vars))
+  (unless (and (listp init-x) (eq (caar init-x) 'mlist))
+    (merror "~M is not a list of initial values" init-x))
+  
   (let ((args (lispify-maxima-keyword-options options '($jacobian $tolerance))))
     (apply #'least-squares vars init-x fcns args)))
 
@@ -248,5 +256,12 @@
               If false, the Jacobian is internally computed using a
               forward-difference approximation.
               Otherwise, it is a function returning the Jacobian"
+  (unless (and (listp fcns) (eq (caar fcns) 'mlist))
+    (merror "~M is not a list of functions" fcns))
+  (unless (and (listp vars) (eq (caar vars) 'mlist))
+    (merror "~M is not a list of variables" vars))
+  (unless (and (listp init-x) (eq (caar init-x) 'mlist))
+    (merror "~M is not a list of initial values" init-x))
+  
   (let ((args (lispify-maxima-keyword-options options '($jacobian $tolerance))))
     (apply #'nonlinear-solve vars init-x fcns args)))
