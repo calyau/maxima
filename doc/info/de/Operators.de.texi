@@ -32,6 +32,11 @@
 @c -----------------------------------------------------------------------------
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{+} 
+@anchor{-}
+@anchor{*}
+@anchor{/}
+@anchor{^}
 @deffn {Operator} +
 @ifinfo
 @fnindex Addition
@@ -58,7 +63,7 @@
 @c these operators are @code{"+"} @code{"*"} @code{"/"} and @code{"^"}, which 
 @c may appear where the name of a function or operator is required.
 
-sind die Operatoren der Addition, Multiplikation, Division und Exponentiation. 
+Sind die Operatoren der Addition, Multiplikation, Division und Exponentiation. 
 Wird der Name eines Operators in einem Ausdruck ben@"otigt, k@"onnen die 
 Bezeichnungen @code{"+"}, @code{"*"}, @code{"/"} und @code{"^"} verwendet 
 werden.
@@ -78,14 +83,14 @@ Negation. Die Namen der Operatoren sind @code{"+"} und @code{"-"}.
 Die Subtraktion @code{a - b} wird von Maxima intern als Addition 
 @code{a + (- b)} dargestellt. In der Ausgabe werden die Ausdr@"ucke 
 @code{a + (- b)} als Subtraktion @code{a - b} angezeigt. Maxima erkennt 
-@code{"-"} nur als den Namen der un@"aren Negation, nicht jedoch als den bin@"aren 
-Operator der Subtraktion.
+@code{"-"} nur als den Namen der un@"aren Negation, nicht jedoch als den 
+bin@"aren Operator der Subtraktion.
 
 @c Division @code{a / b} is represented within Maxima as multiplication, 
 @c @code{a * b^(- 1)}. Expressions such as @code{a * b^(- 1)} are displayed as 
 @c division. Maxima recognizes @code{"/"} as the name of the division operator.
 
-Die Division @code{a / b} wird intern in Maxima als Multiplikation
+Die Division @code{a / b} wird von Maxima intern als Multiplikation
 @code{a * b^(- 1)} dargestellt. In der Ausgabe werden die Ausdr@"ucke 
 @code{a * b^(- 1)} als Division @code{a / b} angezeigt. Der Name des Operators
 f@"ur die Division ist @code{"/"}.
@@ -93,7 +98,7 @@ f@"ur die Division ist @code{"/"}.
 @c Addition and multiplication are n-ary, commutative operators. Division and
 @c exponentiation are binary, noncommutative operators.
 
-Die Addition und Multiplikation sind kommutative Nary-Operatoren. Die Division 
+Die Addition und Multiplikation sind kommutative N-ary-Operatoren. Die Division 
 und Exponentiation sind nicht-kommutative bin@"are Operatoren.
 
 @c Maxima sorts the operands of commutative operators to construct a canonical
@@ -102,13 +107,12 @@ und Exponentiation sind nicht-kommutative bin@"are Operatoren.
 @c @code{ordergreatp}, and for multiplication, it is the same as the internal 
 @c ordering.
 
-Maxima sortiert die Operanten eines kommutativen Operators und konstruiert eine
+Maxima sortiert die Argumente eines kommutativen Operators und konstruiert eine
 kanonische Darstellung. F@"ur die interne Darstellung wird die Ordnung durch
-@code{orderlessp} bestimmt. F@"ur die Anzeige wird die Ordnung mit 
-@code{ordergreatp} festgelegt. Ausnahme ist die Multiplikaton. F@"ur diese sind 
-die interne Darstellung und die Anzeige identisch.
-
-Siehe auch @code{orderlessp} und @code{ordergreatp}.
+@code{orderlessp} bestimmt. F@"ur die externe Darstellung der Anzeige wird die 
+Ordnung mit @code{ordergreatp} festgelegt. Ausnahme ist die Multiplikaton. 
+F@"ur diese sind die interne und die externe Darstellung identisch. Siehe auch 
+@mref{orderlessp} und @mrefdot{ordergreatp}
 
 @c Arithmetic computations are carried out on literal numbers (integers, 
 @c rationals, ordinary floats, and bigfloats). Except for exponentiation, all 
@@ -117,26 +121,26 @@ Siehe auch @code{orderlessp} und @code{ordergreatp}.
 @c if the result is an exact integer or rational; @c otherwise an exponentiation
 @c may be simplified to @code{sqrt} or another exponentiation or left unchanged.
 
-Arithmetische Berechnungen werden mit Zahlen (Integer, rationale Zahlen, 
-Gleitkommazahlen und gro@ss{}e Gleitkommazahlen) durchgef@"uhrt. Mit Ausnahme der 
-Exponentiation, werden alle arithmetischen Operationen mit Zahlen zu Zahlen 
-vereinfacht. Die Exponentiation vereinfacht zu einer Zahl, wenn einer der 
-Operanten eine Gleikommazahl ist, oder wenn das Ergebnis eine ganze 
-oder rationale Zahl ist. In anderen F@"allen kann die Exponentiation z. B. zu
-einer Wurzelfunktion @code{sqrt} oder wiederum zu einer Exponentiation 
-vereinfachen.
+Arithmetische Rechnungen werden mit Zahlen (ganzen Zahlen, rationale Zahlen, 
+Gleitkommazahlen und gro@ss{}en Gleitkommazahlen) durchgef@"uhrt. Mit Ausnahme 
+der Exponentiation werden alle arithmetischen Operationen mit Zahlen zu Zahlen 
+vereinfacht. Die Exponentiation vereinfacht zu einer Zahl, wenn eines der 
+Argumente eine Gleikommazahl ist, oder wenn das Ergebnis eine ganze 
+oder rationale Zahl ist. In anderen F@"allen kann die Exponentiation zum 
+Beispiel zu einer Wurzelfunktion @code{sqrt} oder wiederum zu einer 
+Exponentiation vereinfachen.
 
 @c Floating-point contagion applies to arithmetic computations: if any operand 
 @c is a bigfloat, the result is a bigfloat; otherwise, if any operand is an 
 @c ordinary float, the result is an ordinary float; otherwise, the operands are 
 @c rationals or integers and the result is a rational or integer.
 
-Bei einer arithmetische Berechnung kann es zur Umwandlung in Gleitkommazahlen
+Bei einer arithmetische Rechnung kann es zur Umwandlung in Gleitkommazahlen
 kommen. Ist eines der Argumente eine gro@ss{}e Gleitkommazahl, so ist auch das
 Ergebnis eine gro@ss{}e Gleitkommazahl. Entsprechend ist das Ergebnis eine 
-gew@"ohnlich Gleitkommazahl, sofern mindestens eines der Argumente eine 
-gew@"ohnliche Gleitkommazahl ist. Treten nur ganze oder rationale Zahlen auf, ist
-das Ergebnis wieder eine ganze oder rationale Zahl.
+einfache Gleitkommazahl, sofern mindestens eines der Argumente eine einfache 
+Gleitkommazahl ist. Treten nur ganze oder rationale Zahlen auf, ist das Ergebnis
+wieder eine ganze oder rationale Zahl.
 
 @c Arithmetic computations are a simplification, not an evaluation. Thus 
 @c arithmetic is carried out in quoted (but simplified) expressions.
@@ -151,11 +155,11 @@ Ausdrucks durch den Quote-Operator verhindert wird.
 @c of some other type, the other operand is combined with each of the elements 
 @c of the list or matrix.
 
-Arithmetischen Operationen werden elementweise auf Listen angewendet, wenn die
+Arithmetische Operatoren werden elementweise auf Listen angewendet, wenn die
 Optionsvariable @code{listarith} den Wert @code{true} hat. Auf Matrizen werden 
-die arithmetischen Operatoren immer elementweise angewendet. Ist einer der 
-Operanden eine Liste oder Matrix und der andere Operand hat irgeneinen anderen 
-Typ, dann wird dieser Operand mit jedem Element der Liste oder Matrix 
+die arithmetischen Operatoren immer elementweise angewendet. Ist eines der 
+Argumente eine Liste oder Matrix und das andere Argument hat einen anderen 
+Typ, dann wird dieses Argument mit jedem Element der Liste oder Matrix 
 kombiniert.
 
 Beispiele:
@@ -164,7 +168,7 @@ Beispiele:
 @c the operands to construct a canonical representation. The names of these 
 @c operators are @code{"+"} and @code{"*"}.
 
-Addition und Multiplikation sind kommutative Nary-Operatoren. Maxima sortiert
+Addition und Multiplikation sind kommutative N-ary-Operatoren. Maxima sortiert
 die Operanden und konstruiert eine kanonische Darstellung. Die Namen der 
 Operatoren sind @code{"+"} und @code{"*"}.
 
@@ -176,7 +180,6 @@ Operatoren sind @code{"+"} und @code{"*"}.
 @c apply ("+", [a, 8, x, 2, 9, x, x, a]);
 @c apply ("*", [a, 8, x, 2, 9, x, x, a]);
 @c ===end===
-
 @example
 (%i1) c + g + d + a + b + e + f;
 (%o1)               g + f + e + d + c + b + a
@@ -239,8 +242,8 @@ dargestellt.
 @c Computations are carried out on literal numbers. Floating-point contagion 
 @c applies.
 
-Rechnungen werden f@"ur Zahlen ausgef@"uhrt. Die Umwandlung in Gleitkommazahlen wird
-angewendet.
+Rechnungen werden f@"ur Zahlen ausgef@"uhrt. Die Umwandlung in Gleitkommazahlen
+wird angewendet.
 
 @c ===beg===
 @c 17 + b - (1/2)*29 + 11^(2/4);
@@ -283,8 +286,9 @@ Arithmetische Rechnungen sind Vereinfachungen und keine Auswertung.
 @c Arithmetic is carried out element-by-element for lists (depending on 
 @c @code{listarith}) and matrices.
 
-Arithmetische Rechnungen werden elementweise f@"ur Listen und Matrizen ausgef@"uhrt.
-Bei Listen h@"angt dies von der Optionsvariablen @code{listarith} ab.
+Arithmetische Rechnungen werden elementweise f@"ur Listen und Matrizen 
+ausgef@"uhrt. Bei Listen wird dies mit der Optionsvariablen @code{listarith} 
+kontrolliert.
 
 @c ===beg===
 @c matrix ([a, x], [h, u]) - matrix ([1, 2], [3, 4]);
@@ -331,15 +335,16 @@ Bei Listen h@"angt dies von der Optionsvariablen @code{listarith} ab.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{**}
 @deffn {Operator} **
 
 @c Exponentiation operator. Maxima recognizes @code{**} as the same operator as 
 @c @code{^} in input, and it is displayed as @code{^} in 1-dimensional output,
 @c or by placing the exponent as a superscript in 2-dimensional output.
 
-ist eine alternative Schreibweise f@"ur den Operator @code{^} der Exponentiation.
-In der Ausgabe wird entweder @code{^} angezeigt oder der Exponent hochgestellt. 
-Siehe @code{^}.
+Ist eine alternative Schreibweise f@"ur den Operator @code{^} der 
+Exponentiation. In der Ausgabe wird entweder @code{^} angezeigt oder der 
+Exponent hochgestellt. Siehe @mrefdot{^}
 
 @c The @code{fortran} function displays the exponentiation operator as 
 @c @code{**}, whether it was input as @code{**} or @code{^}.
@@ -374,6 +379,7 @@ Beispiele:
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{^^}
 @deffn {Operator} ^^
 @ifinfo
 @fnindex Nicht-kommutative Exponentiation
@@ -383,16 +389,14 @@ Beispiele:
 @c operator corresponding to noncommutative multiplication @code{.}, just as the
 @c ordinary exponentiation operator @code{^} corresponds to commutative 
 @c multiplication @code{*}.
-
-ist der Operator der nicht-kommutativen Exponentiation von Matrizen.
-
 @c Noncommutative exponentiation is displayed by @code{^^} in 1-dimensional 
 @c output, and by placing the exponent as a superscript within angle brackets 
 @c @code{< >} in 2-dimensional output.
 
-In der linearen Ausgabe wird der nicht-kommutative Operator als @code{^^} 
-angezeigt. In der zwei-dimensionalen Ausgabe wird der hochgestellte Exponent von
-spitzen Klammern @code{< >} eingeschlossen.
+Ist der Operator der nicht-kommutativen Exponentiation von Matrizen. In der 
+linearen Ausgabe wird der nicht-kommutative Operator als @code{^^} angezeigt. 
+In der zweidimensionalen Ausgabe wird der hochgestellte Exponent von spitzen 
+Klammern @code{< >} eingeschlossen.
 
 Beispiele:
 
@@ -414,6 +418,7 @@ Beispiele:
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{.}
 @deffn {Operator} .
 @ifinfo
 @fnindex Nicht-kommutative Multiplikation
@@ -424,21 +429,13 @@ Beispiele:
 @c it, e.g. @code{A . B}.  This distinguishes it plainly from a decimal point in
 @c a floating point number.
 
-Der Punkt-Operator @code{.} ist der Operator f@"ur die nicht-kommutative 
-Multiplikation von Matrizen.
+Ist der Operator f@"ur die nicht-kommutative Multiplikation von Matrizen.
 
 Siehe auch
-@code{dot},
-@code{dot0nscsimp},
-@code{dot0simp},
-@code{dot1simp},
-@code{dotassoc},
-@code{dotconstrules},
-@code{dotdistrib},
-@code{dotexptsimp},
-@code{dotident},
-und
-@code{dotscrules}.
+@mrefcomma{dot} @mrefcomma{dot0nscsimp} @mrefcomma{dot0simp} @ 
+@mrefcomma{dot1simp} @mrefcomma{dotassoc} @mrefcomma{dotconstrules} @ 
+@mrefcomma{dotdistrib} @mrefcomma{dotexptsimp} @mref{dotident} @ 
+und @mrefdot{dotscrules}
 
 @c @opencatbox
 @c @category{Operatoren}
@@ -450,6 +447,12 @@ und
 @section Relationale Operatoren
 @c -----------------------------------------------------------------------------
 
+@c --- 31.10.2010 DK -----------------------------------------------------------
+@anchor{<}
+@anchor{<=}
+@anchor{<=}
+@anchor{>=}
+@anchor{>}
 @deffn {Operator} <
 @ifinfo
 @fnindex kleiner als
@@ -474,10 +477,10 @@ und
 @c required.
 
 Die Symbole @code{<}, @code{<=}, @code{>=} und @code{>} repr@"asentieren die 
-Operatoren "kleiner als", "kleiner als oder gleich", "gr@"o@ss{}er als oder gleich" 
-und "gr@"o@ss{}er als". Die Namen dieser Operatoren sind jeweils: @code{"<"}, 
-@code{"<="}, @code{">="} und @code{">"}. Diese k@"onnen dort eingesetzt werden, 
-wo der Name des Operators ben@"otigt wird.
+Operatoren "kleiner als", "kleiner als oder gleich", "gr@"o@ss{}er als oder 
+gleich" und "gr@"o@ss{}er als". Die Namen dieser Operatoren sind jeweils: 
+@code{"<"}, @code{"<="}, @code{">="} und @code{">"}. Diese k@"onnen dort 
+eingesetzt werden, wo der Name des Operators ben@"otigt wird.
 
 @c These relational operators are all binary operators; constructs such as 
 @c @code{a < b < c} are not recognized by Maxima.
@@ -492,12 +495,12 @@ Die relationalen Operatoren sind bin@"are Operatoren. Ausdr@"ucke wie
 @c relational expressions are evaluated (when evaluation is not otherwise 
 @c prevented by quotation).
 
-Relationale Ausdr@"ucke werden von den Funktionen @code{is} und @code{maybe} sowie
-den Programmbefehlen @code{if}, @code{while} und @code{unless} zu boolschen 
-Werten ausgewertet. Relationale Ausdr@"ucke werden ansonsten nicht zu boolschen
-Werten ausgewertet oder vereinfacht. Jedoch werden die Argumente eines boolschen
-Ausdruckes ausgewertet, wenn die Auswertung nicht auf andere Weise unterdr@"uckt 
-ist.
+Relationale Ausdr@"ucke werden von den Funktionen @code{is} und @code{maybe} 
+sowie den Programmbefehlen @code{if}, @code{while} und @code{unless} zu 
+boolschen Werten ausgewertet. Relationale Ausdr@"ucke werden ansonsten nicht zu 
+boolschen Werten ausgewertet oder vereinfacht. Jedoch werden die Argumente eines
+boolschen Ausdruckes ausgewertet, wenn die Auswertung nicht auf andere Weise
+unterdr@"uckt ist.
 
 @c When a relational expression cannot be evaluated to @code{true} or 
 @c @code{false}, the behavior of @code{is} and @code{if} are governed by the 
@@ -507,11 +510,12 @@ ist.
 @c conditional expression.
 
 Wenn ein relationaler Ausdruck nicht zu @code{true} oder @code{false} 
-ausgewertet werden kann, wird das Verhalten von @code{is} and @code{if} durch 
-die Optionsvariable @code{prederror} bestimmt. Ist @code{prederror} @code{true}, 
-wird von @code{is} and @code{if} ein Fehler erzeugt. Ist @code{prederror} 
-@code{false}, hat @code{is} den R@"uckgabewert @code{unknown} und @code{if} gibt
-einen konditionalen Ausdruck zur@"uck, der teilweise ausgewertet ist.
+ausgewertet werden kann, wird das Verhalten von @code{is} and @code{if} mit der 
+Optionsvariable @code{prederror} kontrolliert. Hat @code{prederror} den Wert 
+@code{true}, wird von @code{is} and @code{if} ein Fehler erzeugt. Hat 
+@code{prederror} den Wert @code{false}, hat @code{is} den R@"uckgabewert 
+@code{unknown} und @code{if} gibt einen konditionalen Ausdruck zur@"uck, der 
+teilweise ausgewertet ist.
 
 @c @code{maybe} always behaves as if @code{prederror} were @code{false}, and 
 @c @code{while} and @code{unless} always behave as if @code{prederror} were 
@@ -528,7 +532,7 @@ sowie auf die beiden Seiten einer Gleichung angewendet.
 
 @c See also @code{=} @code{#} @code{equal} and @code{notequal}.
 
-Siehe auch @code{=}, @code{#}, @code{equal} und @code{notequal}.
+Siehe auch @mrefcomma{=} @mrefcomma{#} @mref{equal} und @mrefdot{notequal}
 
 Beispiele:
 
@@ -554,7 +558,8 @@ ausgewertet.
 (%o3)                         false
 (%i4) if x >= z then 1 else 0;
 (%o4)                           0
-(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, return (S));
+(%i5) block ([S], S : 0, for i:1 while i <= 100 do S : S + i, 
+             return (S));
 (%o5)                         5050
 @end example
 
@@ -589,6 +594,7 @@ ausgewertet werden.
 @c -----------------------------------------------------------------------------
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{and}
 @deffn {Operator} and
 @ifinfo
 @fnindex Logische Konjunktion
@@ -597,9 +603,9 @@ ausgewertet werden.
 @c The logical conjunction operator. @code{and} is an n-ary infix operator;
 @c its operands are Boolean expressions, and its result is a Boolean value.
 
-ist der logische Operator der Konjunktion. @code{and} is an Nary Infix Operator.
-Seine Argumente sind boolsche Ausdr@"ucke und sein Ergebnis ist ein boolscher 
-Wert.
+Ist der logische Operator der Konjunktion. @code{and} ist ein N-ary Infix 
+Operator. Seine Argumente sind boolsche Ausdr@"ucke und sein Ergebnis ist ein 
+boolscher Wert.
 
 @c @code{and} forces evaluation (like @code{is}) of one or more operands, and 
 @c may force evaluation of all operands.
@@ -612,10 +618,10 @@ Argumente.
 @c If any operand is @code{false}, the result is @code{false} and no further 
 @c operands are evaluated.
 
-Die Operanden werden in der Reihenfolge ausgewertet, in der sie auftreten. 
-@code{and} wertet nur soviele Argumente aus, wie n@"otig ist, um das Ergebnis des
-Ausdrucks zu bestimmen. Ist irgendein Operand @code{false}, ist das Ergebnis
-@code{false} und die weiteren Operanden werden nicht ausgewertet.
+Die Argumente werden in der Reihenfolge ausgewertet, in der sie auftreten. 
+@code{and} wertet nur soviele Argumente aus, wie n@"otig sind, um das Ergebnis 
+des Ausdrucks zu bestimmen. Hat irgendein Argument den Wert @code{false}, ist 
+das Ergebnis @code{false} und die weiteren Argumente werden nicht ausgewertet.
 
 @c The global flag @code{prederror} governs the behavior of @code{and} when an 
 @c evaluated operand cannot be determined to be @code{true} or @code{false}.
@@ -623,18 +629,19 @@ Ausdrucks zu bestimmen. Ist irgendein Operand @code{false}, ist das Ergebnis
 @c Otherwise, operands which do not evaluate to @code{true} or @code{false} are
 @c accepted, and the result is a Boolean expression.
 
-Das globale Flag @code{prederror} beeinflu@ss{}t das Verhalten von @code{and}, wenn
-ein Operand nicht zu @code{true} oder @code{false} ausgewertet werden kann.
-@code{and} gibt eine Fehlermeldung, wenn @code{prederror} den Wert @code{true}
-hat. Andernfalls, werden Operanden, die nicht zu @code{true} oder @code{false}
-ausgewertet werden k@"onnen, akzeptiert und das Ergebnis ist ein boolscher 
-Ausdruck.
+Die Optionsvariable @code{prederror} kontrolliert das Verhalten von @code{and}
+f@"ur den Fall, dass ein Argument nicht zu @code{true} oder @code{false} 
+ausgewertet werden kann. @code{and} gibt eine Fehlermeldung, wenn 
+@code{prederror} den Wert @code{true} hat. Andernfalls werden Argumente, die 
+nicht zu @code{true} oder @code{false} ausgewertet werden k@"onnen, akzeptiert 
+und das Ergebnis ist ein boolscher Ausdruck.
 
 @c @code{and} is not commutative: @code{a and b} might not be equal to 
 @c @code{b and a} due to the treatment of indeterminate operands.
 
-@code{and} ist nicht kommutativ: @code{a and b} kann ungleich zu @code{b and a}
-sein, aufgrund der Behandlung von unbstimmten Operanden.
+@code{and} ist nicht kommutativ, da aufgrund von nicht ausgewerteten Argumenten
+die Ausdr@"ucke @code{a and b} und @code{b and a} ein unterschiedliches Ergebnis
+haben k@"onnen.
 
 @c @opencatbox
 @c @category{Operatoren}
@@ -642,6 +649,7 @@ sein, aufgrund der Behandlung von unbstimmten Operanden.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{or}
 @deffn {Operator} or
 @ifinfo
 @fnindex Logische Disjunktion
@@ -650,25 +658,25 @@ sein, aufgrund der Behandlung von unbstimmten Operanden.
 @c The logical disjunction operator. @code{or} is an n-ary infix operator; its 
 @c operands are Boolean expressions, and its result is a Boolean value.
 
-ist der logische Operator der Disjunktion. @code{or} ist ein N-ary Infix Operator. 
-Seine Operanden sind boolsche Ausdr@"ucke und sein Ergebnis ist ein boolscher 
-Wert.
+Ist der logische Operator der Disjunktion. @code{or} ist ein N-ary Infix 
+Operator. Seine Argumente sind boolsche Ausdr@"ucke und sein Ergebnis ist ein 
+boolscher Wert.
 
 @c @code{or} forces evaluation (like @code{is}) of one or more operands, and may
 @c force evaluation of all operands.
 
-Wie @code{is} erzwingt @code{or} die Auswertung aller oder einen Teil seiner 
-Argumente.
+Wie @code{is} erzwingt der Operator @code{or} die Auswertung aller oder einen 
+Teil seiner Argumente.
 
 @c Operands are evaluated in the order in which they appear. @code{or} evaluates
 @c only as many of its operands as necessary to determine the result. If any 
 @c operand is @code{true}, the result is @code{true} and no further operands are
 @c evaluated.
 
-Die Operanden werden in der Reihenfolge ausgewertet, in der sie auftreten. 
-@code{or} wertet nur soviele Argumente aus, wie n@"otig ist, um das Ergebnis des
-Ausdrucks zu bestimmen. Ist irgendein Operand @code{true}, ist das Ergebnis
-@code{true} und die weiteren Operanden werden nicht ausgewertet.
+Die Argumente werden in der Reihenfolge ausgewertet, in der sie auftreten. 
+@code{or} wertet nur soviele Argumente aus, wie n@"otig sind, um das Ergebnis 
+des Ausdrucks zu bestimmen. Hat irgendein Argument den Wert @code{true}, ist das
+Ergebnis @code{true} und die weiteren Argumente werden nicht ausgewertet.
 
 @c The global flag @code{prederror} governs the behavior of @code{or} when an 
 @c evaluated operand cannot be determined to be @code{true} or @code{false}.
@@ -676,18 +684,19 @@ Ausdrucks zu bestimmen. Ist irgendein Operand @code{true}, ist das Ergebnis
 @c Otherwise, operands which do not evaluate to @code{true} or @code{false} are 
 @c accepted, and the result is a Boolean expression.
 
-Das globale Flag @code{prederror} beeinflu@ss{}t das Verhalten von @code{or}, wenn
-ein Operand nicht zu @code{true} oder @code{false} ausgewertet werden kann.
-@code{and} gibt eine Fehlermeldung, wenn @code{prederror} den Wert @code{true}
-hat. Andernfalls, werden Operanden, die nicht zu @code{true} oder @code{false}
-ausgewertet werden k@"onnen, akzeptiert und das Ergebnis ist ein boolscher 
-Ausdruck.
+Die Optionsvariable @code{prederror} kontrolliert das Verhalten von @code{or}, 
+f@"ur den Fall, das ein Argument nicht zu @code{true} oder @code{false} 
+ausgewertet werden kann. @code{and} gibt eine Fehlermeldung, wenn 
+@code{prederror} den Wert @code{true} hat. Andernfalls, werden Argumente, die 
+nicht zu @code{true} oder @code{false} ausgewertet werden k@"onnen, akzeptiert 
+und das Ergebnis ist ein boolscher Ausdruck.
 
 @c @code{or} is not commutative: @code{a or b} might not be equal to 
 @c @code{b or a} due to the treatment of indeterminate operands.
 
-@code{or} ist nicht kommutativ: @code{a or b} kann ungleich zu @code{b or a}
-sein, aufgrund der Behandlung von unbstimmten Operanden
+@code{or} ist nicht kommutativ, da aufgrund von nicht ausgewerteten Argumenten
+die Ausdr@"ucke @code{a or b} und @code{b or a} ein unterschiedliches Ergebnis
+haben k@"onnen.
 
 @c @opencatbox
 @c @category{Operatoren}
@@ -695,6 +704,7 @@ sein, aufgrund der Behandlung von unbstimmten Operanden
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{not}
 @deffn {Operator} not
 @ifinfo
 @fnindex Logische Negation
@@ -703,12 +713,12 @@ sein, aufgrund der Behandlung von unbstimmten Operanden
 @c The logical negation operator. @code{not} is a prefix operator; its operand 
 @c is a Boolean expression, and its result is a Boolean value.
 
-ist die logische Negation. @code{not} ist ein Prefix-Operator. Sein Operand ist
+Ist die logische Negation. @code{not} ist ein Prefix-Operator. Sein Argument ist
 ein boolscher Ausdruck und sein Ergebnis ein boolscher Wert.
 
 @c @code{not} forces evaluation (like @code{is}) of its operand.
 
-Wie @code{is} erzwingt @code{not} die Auswertung seines Operanden.
+Wie @code{is} erzwingt @code{not} die Auswertung seiner Argumente.
 
 @c The global flag @code{prederror} governs the behavior of @code{not} when its 
 @c operand cannot be determined to be @code{true} or @code{false}. @code{not} 
@@ -716,12 +726,12 @@ Wie @code{is} erzwingt @code{not} die Auswertung seines Operanden.
 @c operands which do not evaluate to @code{true} or @code{false} are accepted,
 @c and the result is a Boolean expression.
 
-Das globale Flag @code{prederror} beeinflu@ss{}t das Verhalten von @code{not}, wenn
-sein Operand nicht zu @code{true} oder @code{false} ausgewertet werden kann.
-@code{not} gibt eine Fehlermeldung, wenn @code{prederror} den Wert @code{true}
-hat. Andernfalls, werden Operanden, die nicht zu @code{true} oder @code{false}
-ausgewertet werden k@"onnen, akzeptiert und das Ergebnis ist ein boolscher 
-Ausdruck.
+Die Optionsvariable @code{prederror} kontrolliert das Verhalten von @code{not},
+f@"ur den Fall, dass das Argument nicht zu @code{true} oder @code{false} 
+ausgewertet werden kann. @code{not} gibt eine Fehlermeldung, wenn 
+@code{prederror} den Wert @code{true} hat. Andernfalls wird ein Argument, das 
+nicht zu @code{true} oder @code{false} ausgewertet werden kann, akzeptiert und 
+das Ergebnis ist ein boolscher Ausdruck.
 
 @c @opencatbox
 @c @category{Operatoren}
@@ -734,6 +744,7 @@ Ausdruck.
 @c -----------------------------------------------------------------------------
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{#}
 @deffn {Operator} #
 @ifinfo
 @fnindex  Nicht gleich (Ungleichheit)
@@ -741,17 +752,17 @@ Ausdruck.
 
 @c Represents the negation of syntactic equality @code{=}.
 
-Repr@"asentiert die Negation der Gleichheit @code{=}.
+Ist der Operator f@"ur eine Ungleichung.
 
 @c Note that because of the rules for evaluation of predicate expressions (in 
 @c particular because @code{not @var{expr}} causes evaluation of @var{expr}),
 @c @code{not @var{a} = @var{b}} is equivalent to @code{is(@var{a} # @var{b})},
 @c instead of @code{@var{a} # @var{b}}.
 
-Beachte, dass wegen der Regeln f@"ur die Auswertung von Aussagen und weil
-@code{not @var{expr}} die Auswertung des Argumentes @var{expr} bewirkt, der 
-Ausdruck @code{not @var{a} = @var{b}} @"aquivalent zu @code{is(@var{a} # @var{b})}
-ist und nicht zu @code{@var{a} # @var{b}}.
+Wegen der Regeln f@"ur die Auswertung von Aussagen und weil 
+@code{not @var{expr}} die Auswertung des Argumentes @var{expr} bewirkt, ist der 
+Ausdruck @code{not @var{a} = @var{b}} @"aquivalent zu 
+@code{is(@var{a} # @var{b})} und nicht zu @code{@var{a} # @var{b}}.
 
 Beispiele:
 
@@ -784,6 +795,7 @@ Beispiele:
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{=}
 @deffn {Operator} =
 @ifinfo
 @fnindex Operator for Gleichungen
@@ -800,8 +812,8 @@ Der Operator f@"ur Gleichungen.
 
 Ein Ausdruck @code{@var{a} = @var{b}} repr@"asentiert eine nicht ausgewertete 
 Gleichung, welche zutreffen kann oder auch nicht. Nicht ausgewertete Gleichungen
-k@"onnen als Argument der Funktionen @code{solve} und @code{algsys} und einigen
-anderen Funktionen auftreten.
+k@"onnen zum Beispiel als Argument der Funktionen @code{solve} und @code{algsys}
+auftreten.
 
 @c The function @code{is} evaluates @code{=} to a Boolean value. 
 @c @code{is(@var{a} = @var{b})} evaluates @code{@var{a} = @var{b}} to 
@@ -816,14 +828,15 @@ anderen Funktionen auftreten.
 
 Die Funktion @code{is} wertet @code{=} zu einem boolschen Wert aus. 
 @code{is(@var{a} = @var{b})} wertet die Gleichung @code{@var{a} = @var{b}} zum 
-Wert @code{true} aus, wenn @var{a} and @var{b} identisch sind. Das trifft zu, 
-wenn @var{a} und @var{b} identische Atome sind, oder wenn ihre Operatoren sowie
-die Argumente identisch sind. In jedem anderen Fall ist das Ergebnis 
-@code{false}. Das Ergebnis der Auswertung ist nie @code{unkown}. Hat 
+Wert @code{true} aus, wenn @var{a} and @var{b} identische Ausdrücke sind. Das 
+trifft zu, wenn @var{a} und @var{b} identische Atome sind, oder wenn ihre 
+Operatoren sowie die Argumente identisch sind. In jedem anderen Fall ist das 
+Ergebnis @code{false}. Das Ergebnis der Auswertung ist nie @code{unkown}. Hat 
 @code{is(@var{a} = @var{b})} das Ergebnis @code{true}, werden @code{a} und 
 @code{b} als syntaktisch gleich bezeichnet. Im Unterschied dazu gilt f@"ur
 @"aquivalente Ausdr@"ucke, das @code{is(equal(@var{a}, @var{b}))} den Wert 
-@code{true} hat. Ausdr@"ucke k@"onnen @"aquivalent, aber syntaktisch verschieden sein.
+@code{true} hat. Ausdr@"ucke k@"onnen @"aquivalent, aber syntaktisch verschieden
+sein.
 
 @c The negation of @code{=} is represented by @code{#}. As with @code{=}, an 
 @c expression @code{@var{a} # @var{b}}, by itself, is not evaluated. 
@@ -839,9 +852,9 @@ erfolgt mit @code{is(@var{a} # @var{b})}, welche die Werte @code{true} oder
 @c to @code{true} or @code{false}, namely @code{if}, @code{and}, @code{or}, and 
 @c @code{not}.
 
-Neben @code{is} werten auch die Funktionen und Operatoren @code{if}, @code{and}, 
-@code{or} und @code{not} die Operatoren @code{=} und @code{#} zu den Werten
-@code{true} oder @code{false} aus.
+Neben @code{is} werten auch die Operatoren @code{if}, @code{and}, @code{or} und 
+@code{not} die Operatoren @code{=} und @code{#} zu den Werten @code{true} oder 
+@code{false} aus.
 
 @c Note that because of the rules for evaluation of predicate expressions (in 
 @c particular because @code{not @var{expr}} causes evaluation of @var{expr}),
@@ -856,8 +869,8 @@ nicht zu @code{@var{a} # @var{b}}.
 @c @code{rhs} and @code{lhs} return the right-hand and left-hand sides,
 @c respectively, of an equation or inequation.
 
-@code{rhs} und @code{lhs} geben die rechte und die linke einer Gleichung oder
-Ungleichung zur@"uck.
+Die Funktionen @code{rhs} und @code{lhs} geben die rechte und die linke einer 
+Gleichung oder Ungleichung zur@"uck.
 
 @c See also @code{equal} and @code{notequal}.
 
@@ -903,8 +916,8 @@ Gleichung. Diese kann zutreffen oder nicht.
 @c identical). Expressions can be equivalent and not syntactically equal.
 
 @code{is(@var{a} = @var{b})} wertet @code{@var{a} = @var{b}} zu @code{true} aus,
-wenn @var{a} und @var{b} syntaktisch gleich sind. Ausdr@"ucke k@"onnen @"aquivalent
-sein, ohne syntaktisch gleich zu sein.
+wenn @var{a} und @var{b} syntaktisch gleich sind. Ausdr@"ucke k@"onnen 
+@"aquivalent sein, ohne syntaktisch gleich zu sein.
 
 @c ===beg===
 @c a : (x + 1) * (x - 1);
@@ -977,6 +990,7 @@ Da @code{not @var{expr}} die Auswertung des Ausdrucks @var{expr} bewirkt, ist
 @c -----------------------------------------------------------------------------
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{:}
 @deffn {Operator} :
 @ifinfo
 @fnindex Zuweisungsoperator
@@ -984,49 +998,46 @@ Da @code{not @var{expr}} die Auswertung des Ausdrucks @var{expr} bewirkt, ist
 
 @c Assignment operator.
 
-Zuweisungsoperator.
+Ist der Operator f@"ur die Zuweisung eines Wertes an eine Variable.
 
 @c When the left-hand side is a simple variable (not subscripted), @code{:} 
 @c evaluates its right-hand side and associates that value with the left-hand 
 @c side.
 
-Ist die linke Seite eine einfache Variable (ohne Index), wertet @code{:} die
-rechte Seite aus und weist den erhalten Wert der Variablen auf der linken Seite 
-zu.
+Ist die linke Seite eine Variable (ohne Index), wertet der Operator @code{:} die
+rechte Seite aus und weist den Wert der Variablen auf der linken Seite zu.
 
 @c When the left-hand side is a subscripted element of a list, matrix, declared 
 @c Maxima array, or Lisp array, the right-hand side is assigned to that element.
 @c The subscript must name an existing element; such objects cannot be extended 
 @c by naming nonexistent elements.
 
-Ist die linke Seite ein indiziertes Element, eine Liste, Matrix oder ein Maxima-
-oder ein Lisp-Array, wird die rechte Seite diesem Element zugewiesen. Der Index
-muss ein existierendes Element bezeichnen. Solche Objekte k@"onnen nicht durch die
-Bezeichnung von nicht existierenden Elementen erweitert werden.
+Ist die linke Seite ein Element einer Liste, Matrix oder ein deklariertes 
+Maxima- oder Lisp-Array, wird die rechte Seite diesem Element zugewiesen. Der 
+Index muss ein existierendes Element bezeichnen.
 
 @c When the left-hand side is a subscripted element of an undeclared Maxima 
 @c array, the right-hand side is assigned to that element, if it already exists,
 @c or a new element is allocated, if it does not already exist.
 
-Ist die linke Seite ein indiziertes Element eines nicht deklarierten 
-Maxima-Array, dann wird die rechte Seite diesem Element zugewiesen, falls dieses
-bereits existiert. Existiert dieses noch nicht, wird ein neues Element 
-zugewiesen.
+Ist die linke Seite ein Element eines nicht deklarierten Maxima-Array, dann wird
+die rechte Seite diesem Element zugewiesen, falls dieses existiert. Existiert 
+das Element noch nicht, wird ein neues Element erzeugt.
 
 @c When the left-hand side is a list of simple and/or subscripted variables,
 @c the right-hand side must evaluate to a list, and the elements of the 
 @c right-hand side are assigned to the elements of the left-hand side, in 
 @c parallel.
 
-Ist die linke Seite eine Liste mit einfachen Variablen (ohne Index), muss die 
-rechte Seite zu einer Liste auswerten, und die Elemente der Liste auf der 
-rechten Seite werden den Elementen auf der linken Seite parallel zugewiesen.
+Ist die linke Seite eine Liste mit Variablen (ohne Index), muss die rechte Seite
+zu einer Liste auswerten. Die Elemente der Liste auf der rechten Seite werden 
+den Elementen auf der linken Seite parallel zugewiesen.
 
 @c See also @code{kill} and @code{remvalue}, which undo the association between 
 @c the left-hand side and its value.
 
-Siehe auch @code{kill} und @code{remvalue} f@"ur die Aufhebung der Zuweisung eines
-Wertes an die linke Seite.
+Siehe auch @code{kill} und @code{remvalue} f@"ur die Aufhebung der Zuweisung 
+eines Wertes an die linke Seite.
 
 Beispiele:
 
@@ -1140,6 +1151,7 @@ Die mehrfache Zuweisung wird parallel ausgef@"uhrt. Die Werte von @code{a} und
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{::}
 @deffn {Operator} ::
 @ifinfo
 @fnindex Zuweisungsoperaotor (wertet die linke Seite aus)
@@ -1147,7 +1159,7 @@ Die mehrfache Zuweisung wird parallel ausgef@"uhrt. Die Werte von @code{a} und
 
 @c Assignment operator.
 
-Zuweisungsoperator.
+Ist der Operator f@"ur die Zuweisung eines Wertes an eine Variable.
 
 @c @code{::} is the same as @code{:} (which see) except that @code{::} evaluates
 @c its left-hand side as well as its right-hand side.
@@ -1192,6 +1204,7 @@ Beispiele:
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{::=}
 @deffn {Operator} ::=
 @ifinfo
 @fnindex Operator for Makrodefinitionen
@@ -1203,11 +1216,11 @@ Beispiele:
 @c the context from which the macro was called. A macro function is otherwise 
 @c the same as an ordinary function.
 
-Operator f@"ur die Definition von Makro-Funktionen. @code{::=} definiert eine 
-Funktion (aus historischen Gr@"unden Makro genannt), welche ihre Argumenente nicht
-auswertet. Der Ausdruck, welcher zur@"uckgegeben wird, wird in dem Kontext
-ausgewert, in dem das Makro aufgerufen wurde. Ansonsten verh@"alt sich eine 
-Makro-Funktion wie eine gew@"ohnliche Funktion.
+Ist der Operator f@"ur die Definition von Makro-Funktionen. @code{::=} definiert
+eine Funktion (aus historischen Gr@"unden Makro genannt), welche ihre 
+Argumenente nicht auswertet. Der Ausdruck, welcher zur@"uckgegeben wird, wird 
+in dem Kontext ausgewertet, in dem das Makro aufgerufen wurde. Ansonsten 
+verh@"alt sich eine Makro-Funktion wie eine gew@"ohnliche Funktion.
 
 @c @code{macroexpand} returns a macro expansion (without evaluating it).
 @c @code{macroexpand (foo (x))} followed by @code{''%} is equivalent to 
@@ -1221,10 +1234,10 @@ Makro-Funktion wie eine gew@"ohnliche Funktion.
 @c @code{macros}. @code{kill}, @code{remove}, and @code{remfunction} unbind 
 @c macro function definitions and remove names from @code{macros}.
 
-@code{::=} schreibt den Namen der neuen Makro-Funktion in die globale Liste
-@code{macros}. @code{kill}, @code{remove} und @code{remfunction} heben die 
-Zuweisung der Makro-Funktion an ein Symbol auf und entfernen die Makro-Funktion
-von der Liste @code{macros}.
+@code{::=} f@"ugt den Namen der neuen Makro-Funktion der Informationsliste
+@code{macros} hinzu. Die Funktionen @code{kill}, @code{remove} und 
+@code{remfunction} heben die Zuweisung der Makro-Funktion an ein Symbol auf und
+entfernen die Makro-Funktion von der Informationsliste @code{macros}.
 
 @c @code{fundef} or @code{dispfun} return a macro function definition or assign
 @c it to a label, respectively.
@@ -1235,8 +1248,9 @@ zur@"uck oder weisen die Makro-Funktion einer Marke zu.
 @c Macro functions commonly contain @code{buildq} and @code{splice} expressions
 @c to construct an expression, which is then evaluated.
 
-Makro-Funktionen enthalten h@"aufig @code{buildq} und @code{splice} Ausdr@"ucke, mit
-denen Ausdr@"ucke konstruiert werden, die dann ausgewertet werden.
+Makro-Funktionen enthalten h@"aufig Ausdr@"ucke mit den Funktionen @code{buildq}
+und @code{splice}. Mit diesen werden Ausdr@"ucke konstruiert, die dann 
+ausgewertet werden.
 
 Beispiele:
 
@@ -1246,8 +1260,8 @@ Beispiele:
 @c which the macro was called, printing message (2).
 
 Eine Makro-Funktion wertet ihre Argumente nicht aus. Daher zeigt Beispiel (1)
-@code{y -z} und nicht den Wert von @code{y - z}. Die Makro-Expansion wird in 
-dem Kontext ausgewertet, von dem das Makro aufgerufen wird. Dies zeigt (2).
+@code{y - z} und nicht den Wert von @code{y - z}. Das Makro wird in 
+dem Kontext ausgewertet, in dem das Makro aufgerufen wird. Dies zeigt (2).
 
 @c ===beg===
 @c x: %pi$
@@ -1279,7 +1293,7 @@ dem Kontext ausgewertet, von dem das Makro aufgerufen wird. Dies zeigt (2).
 
 Eine gew@"ohnliche Funktion wertet ihre Argumente aus. Daher zeigt (1) den Wert 
 von @code{y - z}. Der R@"uckgabewert wird nicht ausgewertet und gibt (2). Mit
-@code{''%} wird dann die Auswertung erzwungen.
+@code{''%} wird die Auswertung erzwungen.
 
 @c ===beg===
 @c x: %pi$
@@ -1350,6 +1364,7 @@ x is equal to 1234 - 1729 w
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{:=}
 @deffn {Operator} :=
 @ifinfo
 @fnindex Operator f@"ur Funktionsdefinitionen
@@ -1363,14 +1378,14 @@ x is equal to 1234 - 1729 w
 @c ordinary Maxima function (with arguments enclosed in parentheses) or an array
 @c function (with arguments enclosed in square brackets).
 
-Operator f@"ur Funktions-Definitionen. 
+Operator f@"ur Funktions-Definitionen.
 @code{@var{f}(@var{x_1}, ..., @var{x_n})} := @var{expr} definiert eine Funktion
 mit dem Namen @var{f}, den Argumenten @var{x_1}, ..., @var{x_n} und der 
 Funktionsdefinition @var{expr}. @code{:=} wertet die Funktionsdefinition nie
 aus (au@ss{}er, bei Anwendung des Quote-Quote-Operators @code{'@w{}'}). Die 
-definierte Funktion kann eine gew@"ohnliche Maxima-Funktion sein, deren Argumente
-in runden Klammern eingeschlossen sind, oder eine Array-Funktion, mit Argumenten
-die in eckigen Klammern eingeschlossen sind.
+definierte Funktion kann eine gew@"ohnliche Maxima-Funktion sein, deren 
+Argumente in runden Klammern eingeschlossen sind, oder eine Array-Funktion mit 
+Argumenten, die in eckigen Klammern eingeschlossen sind.
 
 @c When the last or only function argument @var{x_n} is a list of one element,
 @c the function defined by @code{:=} accepts a variable number of arguments.
@@ -1606,8 +1621,8 @@ Beispiel sind die Funktionen @code{"dd"} und @code{"<-"} nicht definiert.
 @c arguments; see the function descriptions for details.
 
 Die Maxima-Funktionen, um Operatoren zu definieren, sind in der folgenden
-Tabelle zusammengefasst. Weiterhin sind die Standardvorgaben f@"ur die links- und
-rechtsseitige Bindungskraft der Operatoren (lbp und rbp) angegeben. Die 
+Tabelle zusammengefasst. Weiterhin sind die Standardvorgaben f@"ur die links- 
+und rechtsseitige Bindungskraft der Operatoren (lbp und rbp) angegeben. Die 
 Bindungskr@"afte bestimmen den Vorrang der Operatoren.
 
 @table @code
@@ -1669,8 +1684,8 @@ Operator   lbp     rbp     lpos     rpos     pos
 Mit den Befehlen @code{remove} und @code{kill} k@"onnen Operatoreigenschaften
 von einem Symbol entfernt werden. @code{remove("@var{a}", op)} entfernt
 die Operator-Eigenschaften des Symbols @var{a}. @code{kill("@var{a}")} entfernt
-alle Eigenschaften einschlie@ss{}ich der Operator-Eigenschaften des Symbols @var{a}.
-In diesem Fall steht der Name des Symbols in Anf@"uhrungszeichen.
+alle Eigenschaften einschlie@ss{}ich der Operator-Eigenschaften des Symbols 
+@var{a}. In diesem Fall steht der Name des Symbols in Anf@"uhrungszeichen.
 
 @c ===beg===
 @c infix ("##");
@@ -1723,6 +1738,7 @@ Incorrect syntax: # is not a prefix operator
 @section Funktionen und Variable f@"ur benutzerdefinierte Operatoren
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{infix}
 @deffn  {Funktion} infix (@var{op})
 @deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp})
 @deffnx {Funktion} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
@@ -1758,9 +1774,9 @@ Bindungskraft.
 @c respectively.
 
 @code{infix(@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
-deklariert @var{op} als einen Infix-Operator mit den angegebenen Bindungskr@"aften
-sowie den Wortarten @var{lpos}, @var{rpos} und @var{pos} f@"ur den linken und den
-rechten Operanden sowie das Ergebnis des Operators.
+deklariert @var{op} als einen Infix-Operator mit den angegebenen 
+Bindungskr@"aften sowie den Wortarten @var{lpos}, @var{rpos} und @var{pos} f@"ur
+den linken und den rechten Operanden sowie das Ergebnis des Operators.
 
 @c "Part of speech", in reference to operator declarations, means expression 
 @c type. Three types are recognized: @code{expr}, @code{clause}, and @code{any},
@@ -1782,11 +1798,12 @@ Einlesen eines Ausdrucks Syntaxfehler feststellen.
 @c complicated relation holds.
 
 Der Vorrang eines Operators @var{op} vor anderen Operatoren leitet sich aus den
-links- und rechtsseitigen Bindungskr@"aften ab. Sind die links- und rechtsseitigen 
-Bindungskr@"afte von @var{op} beide gr@"o@ss{}er als die links- und rechtsseitige
-Bindungskraft eines anderen Operators, dann hat @var{op} Vorrang vor dem anderen
-Operator. Sind die Bindungskr@"afte nicht beide gr@"o@ss{}er oder kleiner, werden 
-weitere Regeln zur Bestimmung des Vorrangs herangezogen.
+links- und rechtsseitigen Bindungskr@"aften ab. Sind die links- und 
+rechtsseitigen Bindungskr@"afte von @var{op} beide gr@"o@ss{}er als die links- 
+und rechtsseitige Bindungskraft eines anderen Operators, dann hat @var{op} 
+Vorrang vor dem anderen Operator. Sind die Bindungskr@"afte nicht beide 
+gr@"o@ss{}er oder kleiner, werden weitere Regeln zur Bestimmung des Vorrangs 
+herangezogen.
 
 @c The associativity of @var{op} depends on its binding powers. Greater left 
 @c binding power (@var{lbp}) implies an instance of @var{op} is evaluated before
@@ -1797,16 +1814,16 @@ weitere Regeln zur Bestimmung des Vorrangs herangezogen.
 @c left-associative. If @var{lbp} is equal to @var{rbp}, @var{op} is 
 @c left-associative.
 
-Die Assoziativit@"at eines Operators @var{op} h@"angt ab von seiner Bindungskraft. 
-Eine gr@"o@ss{}ere linksseitige Bindungskraft hat zur Folge, dass der Operator 
-@var{op} vor einem anderen Operator auf seiner linken Seite ausgewertet wird. 
-W@"ahrend eine gr@"o@ss{}ere rechtsseitige Bindungskraft zur Folge hat, dass der 
-Operator vor anderen Operaroten auf der rechten Seite ausgewertet wird. Daraus 
-folgt, dass eine gr@"o@ss{}ere linksseitige Bindungskraft @var{lbp} einen Operator 
-@var{op} rechts-assoziativ und eine gr@"o@ss{}ere rechtsseitige Bindungskraft 
-@var{rbp} den Operator links-assoziativ macht. Sind die links- und 
-rechtsseitigen Bindungskr@"afte gleich gro@ss{}, ist der Operator @var{op} 
-links-assoziativ.
+Die Assoziativit@"at eines Operators @var{op} h@"angt ab von seiner 
+Bindungskraft. Eine gr@"o@ss{}ere linksseitige Bindungskraft hat zur Folge, dass
+der Operator @var{op} vor einem anderen Operator auf seiner linken Seite 
+ausgewertet wird. W@"ahrend eine gr@"o@ss{}ere rechtsseitige Bindungskraft zur 
+Folge hat, dass der Operator vor anderen Operaroten auf der rechten Seite 
+ausgewertet wird. Daraus folgt, dass eine gr@"o@ss{}ere linksseitige 
+Bindungskraft @var{lbp} einen Operator @var{op} rechts-assoziativ und eine 
+gr@"o@ss{}ere rechtsseitige Bindungskraft @var{rbp} den Operator 
+links-assoziativ macht. Sind die links- und rechtsseitigen Bindungskr@"afte 
+gleich gro@ss{}, ist der Operator @var{op} links-assoziativ.
 
 @c See also @code{Syntax}.
 
@@ -1819,8 +1836,8 @@ Beispiele:
 @c precedence over the other operator.
 
 Sind die rechtsseitigen und linksseitigen Bindungskr@"afte eines Operators
-@var{op} gr@"o@ss{}er als die entsprechenden Bindungskr@"afte eines anderen Operatores,
-dann hat der Operator @var{op} Vorrang.
+@var{op} gr@"o@ss{}er als die entsprechenden Bindungskr@"afte eines anderen 
+Operatores, dann hat der Operator @var{op} Vorrang.
 
 @c ===beg===
 @c :lisp (get '$+ 'lbp)
@@ -1851,9 +1868,9 @@ dann hat der Operator @var{op} Vorrang.
 @c Greater @var{lbp} makes @var{op} right-associative, while greater @var{rbp}
 @c makes @var{op} left-associative.
 
-Eine gr@"o@ss{}ere linksseitige Bindungskraft @var{lbp} bewirkt, dass der Operator
-@var{op} rechts-assoziativ ist. Eine gr@"o@ss{}ere rechtsseitige Bindungskraft macht
-dagegen den Operator @var{op} links-assoziativ.
+Eine gr@"o@ss{}ere linksseitige Bindungskraft @var{lbp} bewirkt, dass der 
+Operator @var{op} rechts-assoziativ ist. Eine gr@"o@ss{}ere rechtsseitige 
+Bindungskraft macht dagegen den Operator @var{op} links-assoziativ.
 
 @c ===beg===
 @c infix ("##", 100, 99);
@@ -1890,7 +1907,8 @@ eingelesene Operand nicht die f@"ur den Operator definierte Wortart hat.
 (%i1) infix ("##", 100, 99, expr, expr, expr);
 (%o1)                          ##
 (%i2) if x ## y then 1 else 0;
-Incorrect syntax: Found algebraic expression where logical expression expected
+Incorrect syntax: Found algebraic expression where 
+logical expression expected
 if x ## y then 
              ^
 (%i2) infix ("##", 100, 99, expr, expr, clause);
@@ -1905,6 +1923,7 @@ if x ## y then
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{matchfix}
 @deffn  {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter})
 @deffnx {Funktion} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 
@@ -1971,10 +1990,10 @@ Einlesen eines Ausdrucks Syntaxfehler feststellen.
 @c arguments following in parentheses. @code{dispfun (@var{ldelimiter})} 
 @c displays the function definition.
 
-Die zu einem Matchfix-Operator zugeh@"orige Funktion kann jede benutzerdefinierte
-Funktion sein, die mit @code{:=} oder @code{define} definiert wird. Die
-Definition der Funktion kann mit @code{dispfun(@var{ldelimiter})} ausgegeben
-werden.
+Die zu einem Matchfix-Operator zugeh@"orige Funktion kann jede 
+benutzerdefinierte Funktion sein, die mit @code{:=} oder @code{define} definiert
+wird. Die Definition der Funktion kann mit @code{dispfun(@var{ldelimiter})} 
+ausgegeben werden.
 
 @c The only built-in matchfix operator is the list constructor @code{[ ]}.
 @c Parentheses @code{( )} and double-quotes @code{" "} act like matchfix 
@@ -2028,7 +2047,8 @@ Begrenzungszeichen k@"onnen eine beliebige Zeichenkette sein.
 
 @c Matchfix operators are ordinary user-defined functions.
 
-Matchfix-Operatoren k@"onnen f@"ur benutzerdefinierte Funktionen definiert werden.
+Matchfix-Operatoren k@"onnen f@"ur benutzerdefinierte Funktionen definiert 
+werden.
 
 @example
 (%i1) matchfix ("!-", "-!");
@@ -2067,6 +2087,7 @@ Matchfix-Operatoren k@"onnen f@"ur benutzerdefinierte Funktionen definiert werde
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{nary}
 @deffn {Funktion} nary (@var{x})
 
 @c An @code{nary} operator is used to denote a function of any number of 
@@ -2076,13 +2097,13 @@ Matchfix-Operatoren k@"onnen f@"ur benutzerdefinierte Funktionen definiert werde
 @c to be @code{nary}.  If @code{declare(j,nary);} is done, this tells the 
 @c simplifier to simplify, e.g. @code{j(j(a,b),j(c,d))} to @code{j(a, b, c, d)}.
 
-Ein @code{Nary}-Operator ist ein Operator, der eine beliebige Anzahl an 
+Ein @code{N-ary}-Operator ist ein Operator, der eine beliebige Anzahl an 
 Argumenten haben kann. Die Argumente werden durch den Operator voneinander 
-getrennt, so ist zum Beispiel @code{+} ein @code{Nary}-Operator und 
+getrennt, so ist zum Beispiel @code{+} ein @code{N-ary}-Operator und 
 @code{A+B+C}. Die Funktion @code{nary("x")} erm@"oglicht die Erweiterung der 
-Maxima-Syntax um einen Nary-Operator @code{x}. Funktionen k@"onnen als 
-Nary-Operator deklariert werden. @code{declare(j,nary)} deklariert den Operator 
-@code{j} zu einem Nary-Operator. Ein Ausdruck @code{j(j(a,b),j(c,d)} wird in 
+Maxima-Syntax um einen N-ary-Operator @code{x}. Funktionen k@"onnen als 
+N-ary-Operator deklariert werden. @code{declare(j,nary)} deklariert den Operator 
+@code{j} zu einem N-ary-Operator. Ein Ausdruck @code{j(j(a,b),j(c,d)} wird in 
 diesem Fall zu @code{j(a,b,c,d)} vereinfacht.
 
 @c See also @code{Syntax}.
@@ -2095,6 +2116,7 @@ Siehe auch @code{Syntax}.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{nofix}
 @deffn {Funktion} nofix (@var{x})
 
 @c @code{nofix} operators are used to denote functions of no arguments. The mere
@@ -2107,8 +2129,8 @@ Siehe auch @code{Syntax}.
 Nofix-Operatoren sind Operatoren, die kein Argument haben. Tritt ein solcher 
 Operator allein auf, wird die dazugeh@"orige Funktion ausgewertet. Zum Beispiel
 beendet die Funktion @code{quit()} eine Maxima-Sitzung. Wird diese Funktion 
-mit @code{nofix("quit")} zu einen Nofix-Operator deklariert, gen@"ugt die Eingabe 
-von @code{quit;}, um eine Maxima-Sitzung zu beenden. Die Funktion 
+mit @code{nofix("quit")} zu einen Nofix-Operator deklariert, gen@"ugt die 
+Eingabe von @code{quit;}, um eine Maxima-Sitzung zu beenden. Die Funktion 
 @code{nofix("x")} erweitert die Maxima-Syntax um den Nofix-Operator @code{x}.
 
 @c See also @code{Syntax}.
@@ -2121,6 +2143,7 @@ Siehe auch @code{Syntax}.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{postfix}
 @deffn {Funktion} postfix (@var{x})
 
 @c @code{postfix} operators like the @code{prefix} variety denote functions of 
@@ -2145,6 +2168,7 @@ Siehe auch @code{Syntax}.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{prefix}
 @deffn {Funktion} prefix (@var{x})
 
 @c A @code{prefix} operator is one which signifies a function of one argument, 
