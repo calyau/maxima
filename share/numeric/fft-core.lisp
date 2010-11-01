@@ -186,6 +186,32 @@ into the original datatype of `input'"
   ;; This doesn't.)
   (1- (integer-length n)))
 
+(defvar *sincos-tables*
+  (make-hash-table) 
+  "Hash table mapping log2 of the FFT size to an
+  array of exp(2*pi*i/N), where N is the FFT size.")
+
+(defun sincos-table (m)
+  (cond ((gethash m *sincos-tables*))
+	(t
+	 ;; Need to create the sincos table.  Only need to have a half
+	 ;; period.
+	 (let* ((n (ash 1 (1- m)))
+		(p (/ #+(and cmu flonum-double-double) kernel:dd-pi
+		      #-flonum-double-double (coerce pi 'double-float)
+		      n))
+		(table (make-array n :element-type
+				   #+(and cmu flonum-double-double) '(complex double-double-float)
+				   #-flonum-double-double '(complex double-float))))
+	   (dotimes (k n)
+	     (setf (aref table k) (cis (* k p))))
+	   ;; Make the half point exactly correct
+	   (setf (aref table (ash n -1))
+		 (coerce #c(0 1) #+(and cmu flonum-double-double) '(complex double-double-float)
+			 #-flonum-double-double '(complex double-float)))
+	   (setf (gethash m *sincos-tables*) table)
+	   table))))
+
 ;; Warning: What this routine thinks is the foward or inverse
 ;; direction is the "engineering" definition used in Oppenheim and
 ;; Schafer.  This is usually the opposite of the definitions used in
@@ -206,46 +232,45 @@ The result is returned in vec."
   (let* ((size (length vec-r))
 	 (le size)
 	 (m (log-base2 le))
+	 (sincos (sincos-table m))
 	 (dir (if direction 1 -1)))
-    (declare (fixnum size le))
+    (declare (fixnum size le)
+	     (type (simple-array #+(and cmu flonum-double-double) (complex double-double-float)
+				 #-flonum-double-double (complex double-float)
+				 (*))
+		   sincos))
     (unless (= size (ash 1 m))
       (merror "fft: size of array must be a power of 2; found: ~:M" size))
-    (dotimes (level m)
-      (declare (fixnum level))
-      (let* ((le1 (truncate le 2))
-	     (ang (/ #+(and cmu flonum-double-double)
-		     kernel:dd-pi
-		     #-flonum-double-double
-		     (coerce pi 'flonum)
-		     le1))
-	     (w-r (cos ang))
-	     (w-i (- (* dir (sin ang))))
-	     (u-r (coerce 1 'flonum))
-	     (u-i (coerce 0 'flonum))
-	     (tmp-r (coerce 0 'flonum))
-	     (tmp-i (coerce 0 'flonum))
-	     (kp 0))
-	(declare (type fixnum le1 kp)
-		 (type flonum ang w-r w-i u-r u-i tmp-r tmp-i))
-	(dotimes (j le1)
-	  (declare (fixnum j))
-	  (do ((k j (+ k le)))
-	      ((>= k size))
-	    (declare (fixnum k))
-	    (setq kp (+ k le1))
-	    (setq tmp-r (+ (aref vec-r k) (aref vec-r kp)))
-	    (setq tmp-i (+ (aref vec-i k) (aref vec-i kp)))
-	    (let* ((diff-r (- (aref vec-r k) (aref vec-r kp)))
-		   (diff-i (- (aref vec-i k) (aref vec-i kp))))
-	      (psetf (aref vec-r kp) (- (* u-r diff-r) (* u-i diff-i))
-		     (aref vec-i kp) (+ (* u-r diff-i) (* u-i diff-r))))
-	    (setf (aref vec-r k) tmp-r)
-	    (setf (aref vec-i k) tmp-i))
-	  (psetq u-r (- (* u-r w-r) (* u-i w-i))
-		 u-i (+ (* u-r w-i) (* u-i w-r))))
-	(setq le le1))))
+    (loop for level of-type fixnum from 0 below m
+	  for repetition of-type fixnum = 1 then (ash repetition 1)
+	  do
+	  (let* ((le1 (truncate le 2)))
+	    (declare (type fixnum le1))
+	    (loop for j of-type fixnum from 0 below le1
+	       for phase of-type fixnum from 0 by repetition
+	       do
+	       (let* ((u (aref sincos phase))
+		      (u-r (realpart u))
+		      (u-i (* dir (imagpart u))))
+		 (declare (type #+(and cmu flonum-double-double) (complex double-double-float)
+				#-flonum-double-double (complex double-float)
+				u)
+			  (type flonum u-r u-i))
+		 (loop for k of-type fixnum from j below size by le
+		    do
+		    (let* ((kp (+ k le1))
+			   (tmp-r (+ (aref vec-r k) (aref vec-r kp)))
+			   (tmp-i (+ (aref vec-i k) (aref vec-i kp)))
+			   (diff-r (- (aref vec-r k) (aref vec-r kp)))
+			   (diff-i (- (aref vec-i k) (aref vec-i kp))))
+		      (declare (fixnum kp)
+			       (type flonum tmp-r tmp-i))
+		      (psetf (aref vec-r kp) (- (* u-r diff-r) (* u-i diff-i))
+			     (aref vec-i kp) (+ (* u-r diff-i) (* u-i diff-r)))
+		      (setf (aref vec-r k) tmp-r)
+		      (setf (aref vec-i k) tmp-i)))))
+	    (setq le le1))))
   (values vec-r vec-i))
-
 
 (defun fft-bit-reverse (vec-r vec-i)
   "fft-bit-reverse (vec)
