@@ -1274,8 +1274,14 @@
 ;                  (member (car (setq d (cdr (sassq 'd y 'nill))))
 ;                          '(%sin %cos) :test #'eq)))
 ;        (return nil))
-       ((and (eq (car (setq b (cdras 'b y))) '%sin)
-             (eq (car (setq d (cdras 'd y))) '%sin))
+       ((progn
+	  ;; The tests after this depend on values of b and d being
+	  ;; set.  Set them here unconditionally, before doing the
+	  ;; tests.
+	  (setq b (cdras 'b y))
+	  (setq d (cdras 'd y))
+	  (and (eq (car b) '%sin)
+	       (eq (car d) '%sin)))
         ;; We have a*sin(m*x)*sin(n*x).
         ;; The integral is: a*(sin((m-n)*x)/(2*(m-n))-sin((m+n)*x)/(2*(m+n))
         (return (subliss y
@@ -1302,6 +1308,10 @@
                              ((%sin) ((mtimes) ((mplus) m n) x))
                              ((mtimes) 2 ((mplus) m n))))))))
        ((or (and (eq (car b) '%cos)
+		 ;; The following (destructively!) swaps the values of
+		 ;; m and n if first trig term is sin.  I (rtoy) don't
+		 ;; understand why this is needed.  The formula
+		 ;; doesn't depend on that.
                  (setq w (cdras 'm y ))
                  (rplacd (assoc 'm y) (cdras 'n y))
                  (rplacd (assoc 'n y) w))

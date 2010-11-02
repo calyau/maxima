@@ -1803,3 +1803,24 @@ integrate(%pi*exp(-2*%pi*t)*exp(2*%pi*x*t*%i),t,minf,inf);
 
 (forget(equal(x,0)),done);
 done;
+/* Bug reported on the mailing list
+ * <http://www.math.utexas.edu/pipermail/maxima/2010/023024.html>
+ * integrate(cos(2*x)*cos(x),x) is wrong.
+ *
+ * Add a few more test that are similar to test the part of
+ * monstertrig that deals with trig1(m*x)*trig2(n*x) where trig1 and
+ * trig2 are either sin or cos.
+ */
+integrate(cos(2*x)*cos(x),x);
+sin(3*x)/6+sin(x)/2;
+
+integrate(sin(2*x)*sin(x),x);
+sin(x)/2-sin(3*x)/6;
+
+integrate(cos(2*x)*sin(x),x);
+cos(x)/2-cos(3*x)/6;
+
+integrate(sin(x)*cos(2*x),x);
+cos(x)/2-cos(3*x)/6;
+
+
