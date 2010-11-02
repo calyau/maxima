@@ -36,11 +36,6 @@
 		       $stringdisp $lispdisp defaultf command
 		       transp $contexts $setcheck $macros autoload))
 
-(mapc #'(lambda (x) (putprop (car x) (cadr x) 'opalias))
-      '((+ $+) (- $-) (* $*) (// $//) (^ $^) (|.| |$.|) (< $<) (= $=)
-	(> $>) (|(| |$(|) (|)| |$)|) (|[| |$[|) (|]| |$]|) (|,| |$,|) (|:| |$:|)
-	(|!| |$!|) (|#| |$#|) (|'| |$'|) (|;| |$;|)))
-
 (mapc #'(lambda (x) (setf (symbol-value (car x))
 			 (cond ((char< (cadr x) #.(code-char 160.))
 				(ascii (cadr x)))
