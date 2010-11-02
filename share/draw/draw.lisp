@@ -171,6 +171,9 @@
       (gethash '$point_type *gr-options*)    1
       (gethash '$points_joined *gr-options*) nil ; other options are: true and $impulses
 
+      ; error bars option
+      (gethash '$error_type *gr-options*)   '$y
+
       ; polygon  options
       (gethash '$transparent *gr-options*) nil
       (gethash '$border *gr-options*)      t
@@ -260,6 +263,22 @@
            (setf (gethash opt *gr-options*) (format nil "rgb '~a'" str)))
         (t
            (merror "draw: illegal color specification: ~M" str)))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -657,6 +676,10 @@
             (if (member val '($none $xy $xyz))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal proportional_axes specification")))
+      ($error_type ; defined as $x, $y and $xy
+            (if (member val '($x $y $xy))
+                (setf (gethash opt *gr-options*) val)
+                (merror "draw: illegal error_type specification")))
       ($label_alignment ; defined as $center, $left and $right
             (if (member val '($center $left $right))
                 (setf (gethash opt *gr-options*) val)
@@ -813,6 +836,82 @@
   (if (> (length str) 80)
       (concatenate 'string "t '" (subseq str 0 75) " ...'"))
       (concatenate 'string "t '" str "'"))
+
+
+
+
+
+;; Object: 'errors'
+;; Usage:
+;;     errors([[x1,y1,...], [x2,y2,...], [x3,y3,...],...])
+;; Options:
+;;     error_type
+;;     points_joined
+;;     line_width
+;;     key
+;;     line_type
+;;     color
+;;     xaxis_secondary
+;;     yaxis_secondary
+(defun errors (arg)
+  (let ((etype  (get-option '$error_type))
+        (joined (get-option '$points_joined))
+        element-size
+        pts pltcmd grouping xmin xmax ymin ymax with)
+    (if (and ($listp arg)
+             (every #'$listp (rest arg)))
+        (setf element-size (length (cdadr arg)))
+        (merror "draw (errors object): incorrect input format"))
+    (unless (every #'(lambda (z) (= element-size ($length z))) (rest arg))
+      (merror "draw (errors object): lists of different sizes"))
+    ; create plot command
+    (cond ((and (eql etype '$x)
+                (or (= element-size 3)
+                    (= element-size 4)))
+             (if (null joined)
+               (setf with "xerrorbars")
+               (setf with "xerrorlines"))  )
+          ((and (eql etype '$y)
+                (or (= element-size 3)
+                    (= element-size 4)))
+             (if (null joined)
+               (setf with "yerrorbars")
+               (setf with "yerrorlines"))  )
+          ((and (eql etype '$xy)
+                (or (= element-size 4)
+                    (= element-size 6)))
+             (if (null joined)
+               (setf with "xyerrorbars")
+               (setf with "xyerrorlines"))  )
+          (t
+             (merror "draw (errors object): incompatibility with option error_type")))
+
+    (setf grouping `((,element-size 0)))
+    (setf pltcmd
+          (format nil
+                  " ~a w ~a lw ~a lt ~a lc ~a axis ~a"
+                  (make-obj-title (get-option '$key))
+                  with
+                  (get-option '$line_width)
+                  (get-option '$line_type)
+                  (get-option '$color)
+                  (axes-to-plot)))
+    (setf pts (map 'list #'rest (rest ($float arg))))
+    (let ((x (map 'list #'first  pts))
+          (y (map 'list #'second pts)))
+      (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
+            xmax ($tree_reduce 'max (cons '(mlist simp) x))
+            ymin ($tree_reduce 'min (cons '(mlist simp) y))
+            ymax ($tree_reduce 'max (cons '(mlist simp) y))))
+    (update-ranges-2d xmin xmax ymin ymax)
+    (make-gr-object
+       :name 'errors
+       :command pltcmd
+       :groups grouping
+       :points (list (make-array (* element-size (length pts))
+                                 :element-type 'flonum
+                                 :initial-contents (flatten pts)))) ))
+
 
 
      
@@ -983,7 +1082,7 @@
                   (null arg2))            ; two-row matrix
                (setf x (map 'list #'$float (cdadr arg1))
                      y (map 'list #'$float (cdaddr arg1))))
-            (t (merror "draw (points2d): bad input format")))
+            (t (merror "draw (points2d): incorrect input format")))
       (transform-lists 2)
       (setf xmin ($tree_reduce 'min (cons '(mlist simp) x))
             xmax ($tree_reduce 'max (cons '(mlist simp) x))
@@ -3148,6 +3247,7 @@
 
 ; table of basic 2d graphic objects
 (setf (gethash '$points        *2d-graphic-objects*) 'points
+      (gethash '$errors        *2d-graphic-objects*) 'errors
       (gethash '$polygon       *2d-graphic-objects*) 'polygon
       (gethash '$ellipse       *2d-graphic-objects*) 'ellipse
       (gethash '$triangle      *2d-graphic-objects*) 'triangle
@@ -3160,8 +3260,7 @@
       (gethash '$label         *2d-graphic-objects*) 'label
       (gethash '$bars          *2d-graphic-objects*) 'bars
       (gethash '$polar         *2d-graphic-objects*) 'polar
-      (gethash '$image         *2d-graphic-objects*) 'image
-      (gethash '$points        *2d-graphic-objects*) 'points )
+      (gethash '$image         *2d-graphic-objects*) 'image )
 
 (defun make-scene-2d (args)
    (let ((objects nil)
