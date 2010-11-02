@@ -291,7 +291,11 @@ Maximas Datenbank
 
 Grafische Darstellung
 * Einf@"uhrung in die grafische Darstellung::
+* Grafikformate::
 * Funktionen und Variablen f@"ur die grafische Darstellung::
+* Grafikoptionen::
+* Gnuplot Optionen::
+* Gnuplot_pipes Formatfunktionen::
 
 Eingabe und Ausgabe
 * Kommentare::
@@ -624,13 +628,13 @@ Glossar
 @chapter Mathematische Funktionen
 @include MathFunctions.de.texi
 
-@node Maximas Datenbank, Glossar, Mathematische Funktionen, Top
+@node Maximas Datenbank, Grafische Darstellung, Mathematische Funktionen, Top
 @chapter Maximas Datenbank
 @include Database.de.texi
 
-@c @node Grafische Darstellung, Eingabe und Ausgabe, Maximas Datenbank, Top
-@c @chapter Grafische Darstellung
-@c @include Plotting.de.texi
+@node Grafische Darstellung, Glossar, Maximas Datenbank, Top
+@chapter Grafische Darstellung
+@include Plotting.de.texi
 
 @c @node Eingabe und Ausgabe, Polynomials, Grafische Darstellung, Top
 @c @chapter Eingabe und Ausgabe
@@ -890,7 +894,7 @@ Glossar
 @c @chapter zeilberger
 @c @include zeilberger.texi
 
-@node Glossar, Index der Variablen und Funktionen, Maximas Datenbank, Top
+@node Glossar, Index der Variablen und Funktionen, Grafische Darstellung, Top
 @chapter Glossar
 @include Glossary.de.texi
 
