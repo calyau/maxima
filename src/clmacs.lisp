@@ -61,8 +61,7 @@
     (def-op f- fixnum -)
     (def-op f1- fixnum 1-)
     (def-op f1+ fixnum 1+)
-    (def-op quotient t quot)
-    (def-op // t quot))
+    (def-op quotient t quot))
 
 ;;this is essentially what the quotient is supposed to do.
 
