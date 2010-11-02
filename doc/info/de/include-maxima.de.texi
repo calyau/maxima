@@ -118,7 +118,7 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 
 @menu
 
-Maxima Grundlagen
+@b{Maxima Grundlagen}
 
 * Einf@"uhrung in Maxima::      Erste Beispiele mit Maxima.
 * Programmfehler::              Programmfehler finden und berichten.
@@ -133,7 +133,8 @@ Maxima Grundlagen
 * Mathematische Funktionen::    Mathematische Funktionen in Maxima.
 * Maximas Datenbank::           Deklarationen, Kontexte, Fakten, Eigenschaften.
 * Grafische Darstellung::       2D and 3D grafische Ausgabe.
-* Eingabe und Ausgabe::         Dateieingabe und Dateiausgaben
+* Eingabe und Ausgabe::         Lesen und schreiben von Dateien mit Maxima.
+@sp 1
 
 Support for specific areas of mathematics
 
@@ -209,10 +210,12 @@ Additional packages
 * stringproc::                  String processing.
 * unit::                        Units and dimensions package.
 * zeilberger::                  Functions for hypergeometric summation.
+@sp 1
 
 Glossar
 
 * Glossar::                     Erl@"auterung von Begriffen.
+@sp 1
 
 Index
 
@@ -299,7 +302,7 @@ Grafische Darstellung
 
 Eingabe und Ausgabe
 * Kommentare::
-* Dateien::         
+* Dateien::
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
 * Funktionen und Variablen f@"ur die Tex-Ausgabe::
 
@@ -632,13 +635,13 @@ Glossar
 @chapter Maximas Datenbank
 @include Database.de.texi
 
-@node Grafische Darstellung, Glossar, Maximas Datenbank, Top
+@node Grafische Darstellung, Eingabe und Ausgabe, Maximas Datenbank, Top
 @chapter Grafische Darstellung
 @include Plotting.de.texi
 
-@c @node Eingabe und Ausgabe, Polynomials, Grafische Darstellung, Top
-@c @chapter Eingabe und Ausgabe
-@c @include Input.de.texi
+@node Eingabe und Ausgabe, Glossar, Grafische Darstellung, Top
+@chapter Eingabe und Ausgabe
+@include Input.de.texi
 
 @c @node Polynomials, Special Functions, Eingabe und Ausgabe, Top
 @c @chapter Polynomials
@@ -894,7 +897,7 @@ Glossar
 @c @chapter zeilberger
 @c @include zeilberger.texi
 
-@node Glossar, Index der Variablen und Funktionen, Grafische Darstellung, Top
+@node Glossar, Index der Variablen und Funktionen, Eingabe und Ausgabe, Top
 @chapter Glossar
 @include Glossary.de.texi
 
