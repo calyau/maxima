@@ -116,10 +116,12 @@ Funktion. Das Ergebnis ist die Substantivform der Funktion.
 (%o1)                           5
 (%i2) x1: 7;
 (%o2)                           7
+@group
 (%i3) integrate (x^2, x, x0, x1);
                                218
 (%o3)                          ---
                                 3
+@end group
 (%i4) 'integrate (x^2, x, x0, x1);
                              7
                             /
@@ -753,10 +755,12 @@ Im folgenden Beispiel werden die Zuweisungen parallel durchgef@"uhrt.
 (%i6) -3*x + 2*y = -4$
 (%i7) solve ([%o5, %o6]);
 Solution
+@group
 
                                           1
 (%t7)                               y = - -
                                           5
+@end group
 
                                          6
 (%t8)                                x = -

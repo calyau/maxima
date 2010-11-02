@@ -764,11 +764,12 @@ rationale Zahl in eine Gleitkommazahl umzuwandeln.
 (%o4)                        -------
                              2097152
 (%i5) fpprec : 20$
+@group
 (%i6) rationalize (0.1b0);
                      236118324143482260685
 (%o6)                ----------------------
                      2361183241434822606848
-
+@end group
 (%i7) rationalize (sin (0.1*x + 5.6));
                3602879701896397 x   3152519739159347
 (%o7)      sin(------------------ + ----------------)

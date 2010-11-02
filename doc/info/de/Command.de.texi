@@ -396,10 +396,12 @@ dasselbe Ergebnis:
 @c block ([prev], prev: integrate (x^5, x), ev (prev, x=2) - ev (prev, x=1));
 @c ===end===
 @example
+@group
 (%i1) block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
                                21
 (%o1)                          --
                                2
+@end group
 (%i2) block ([prev], prev: integrate (x^5, x),
                ev (prev, x=2) - ev (prev, x=1));
                                21
@@ -505,8 +507,10 @@ Beispiel zeigt, wie die letzten 10 eingegebenen Werte mit der Funktion
 (%o8)                           8
 (%o9)                           9
 (%o10)                         10
+@group
 (%i11) block (s: 0, for i:1 thru 10 do s: s + %th(i), s);
 (%o11)                         55
+@end group
 @end example
 
 @c sets @code{s} to the sum of the last ten output expressions.
@@ -1438,9 +1442,11 @@ Beispiele:
 @c values;
 @c ===end===
 @example
+@group
 (%i1) [a:99, b::a-90, c:a-b, d, f(x):= x^2];
                                                   2
 (%o1)                     [99, 9, 90, d, f(x) := x ]
+@end group
 (%i2) values;
 (%o2)                              [a, b, c]
 (%i3) [kill(a), remove(b,value), remvalue(c)];

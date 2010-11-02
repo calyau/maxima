@@ -65,6 +65,11 @@ gegen@"uber und erl@"autert die Begriffe.
 @item  Optionsvariable - option variable
        @sp 1
 
+@item Pipe - pipe
+      Eine Pipe (englisch für Rohr, Röhre) bezeichnet einen gepufferten uni- 
+      oder bidirektionalen Datenstrom zwischen zwei Prozessen nach dem „FIFO“ 
+      (First In - First Out)-Prinzip.
+
 @item  Schl@"usselwort - keyword
        @sp 1
 

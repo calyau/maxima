@@ -250,10 +250,12 @@ wird angewendet.
 @c [17 + 29, 17 + 29.0, 17 + 29b0];
 @c ===end===
 @example
+@group
 (%i1) 17 + b - (1/2)*29 + 11^(2/4);
                                        5
 (%o1)                   b + sqrt(11) + -
                                        2
+@end group
 (%i2) [17 + 29, 17 + 29.0, 17 + 29b0];
 (%o2)                   [46, 46.0, 4.6b1]
 @end example
@@ -324,9 +326,11 @@ kontrolliert.
                               c  m  t
 (%o7)                     [a, -, -, -]
                               7  2  9
+@group
 (%i8) [a, c, m, t] ^ x;
                           x   x   x   x
 (%o8)                   [a , c , m , t ]
+@end group
 @end example
 
 @c @opencatbox

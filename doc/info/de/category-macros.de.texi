@@ -80,6 +80,7 @@
 @iftex
 @hyphenation{aus-ge-wer-tet
              Dol-lar-zei-chen
+             ge-spei-chert
              Glei-chung
              ka-no-ni-scher
              O-pe-ra-tor 
