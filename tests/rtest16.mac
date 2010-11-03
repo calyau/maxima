@@ -1057,6 +1057,10 @@ infinity;
 limit(sqrt(x), x, minf);
 infinity;
 
+/* limit bug - ID: 3101075 */
+limit((2+cos(x))/(x^3*sin(x))-3/x^4,x,0,plus);
+1/60;
+
 /* Bug ID: 2872738 - sign(-(1/n)*(-1)^n)
  * We got the error because of the simplification
  *  (-1)^n*(-1) -> (-1)^(n+1) and not -(-1)^n

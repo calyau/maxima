@@ -466,20 +466,18 @@ It appears in LIMIT and DEFINT.......")
 		(t nexp)))
 	 (t nexp))))))
 
+;; Simplify expression with zeroa or zerob.
 (defun simpab (small)
   (cond ((null small) ())
 	((member small '($zeroa $zerob $inf $minf $infinity) :test #'eq) small)
 	((not (free small '$ind)) '$ind) ;Not exactly right but not
 	((not (free small '$und)) '$und) ;causing trouble now.
 	((mapatom small)  small)
-	((and (not (free-infp small))
-	      (or (not (free small '$zeroa))
-		  (not (free small '$zerob))))
-	 (throw 'limit t))		;Terrible loss, can do better
 	(t (let ((preserve-direction t)
-		 (new-small (subst 'lim-epsilon '$zeroa
-				   (subst (m- 'lim-epsilon) '$zerob small))))
-	     (limit new-small 'lim-epsilon '$zeroa 'think)))))
+		  (new-small (subst (m^ '$inf -1) '$zeroa
+				       (subst (m^ '$minf -1) '$zerob small))))
+	          (simpinf new-small)))))
+    
 
 ;;;*I* INDICATES: T => USE LIMIT1,THINK, NIL => USE SIMPLIMIT.
 (defmfun limit (exp var val *i*)
