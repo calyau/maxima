@@ -82,13 +82,17 @@
              Dol-lar-zei-chen
              ge-spei-chert
              Glei-chung
+             Gnuplot
+             Iso-li-nien
              ka-no-ni-scher
+             Mgnuplot
              O-pe-ra-tor 
              O-pe-ra-to-ren
              Spei-cher
              un-ge-ra-de
              wei-te-ren
              wxMaxima
+             Xmaxima
              Zei-chen-ket-ten
              Zwi-schen-aus-druck }
 @end iftex
