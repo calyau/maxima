@@ -160,30 +160,29 @@ of @kbd{;}.
                                      2                   2
 @end example
 
-Maxima can generate plots of one or more
-functions:
+Maxima can generate plots of one or more functions:
 
 @example
-(%i1) eq_1: x^2 + 3*x*y + y^2 = 0$
-(%i2) eq_2: 3*x + y = 1$
-(%i3) solve ([eq_1, eq_2]);
-              3 sqrt(5) + 7      sqrt(5) + 3
-(%o3) [[y = - -------------, x = -----------], 
-                    2                 2
-
-                               3 sqrt(5) - 7        sqrt(5) - 3
-                          [y = -------------, x = - -----------]]
-                                     2                   2
-(%i4) kill(labels);
-(%o0)                         done
-(%i1) plot2d (sin(x)/x, [x, -20, 20]);
-(%o1) 
-(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5]);
-(%o2) 
-(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), [x, -12, 12],
-      [y, -12, 12]);
-(%o3) 
+(%i1) plot2d (sin(x)/x, [x, -20, 20])$
 @end example
+@ifnotinfo
+@image{figures/introduction1, 10cm}
+@end ifnotinfo
+@example
+(%i2) plot2d ([atan(x), erf(x), tanh(x)], [x, -5, 5])$
+@end example
+@ifnotinfo
+@image{figures/introduction2, 10cm}
+@end ifnotinfo
+@example
+@group
+(%i3) plot3d (sin(sqrt(x^2 + y^2))/sqrt(x^2 + y^2), 
+         [x, -12, 12], [y, -12, 12])$
+@end group
+@end example
+@ifnotinfo
+@image{figures/introduction3, 12cm}
+@end ifnotinfo 
 
 @c FOLLOWING TEXT DESCRIBES THE TCL/TK PLOT WINDOW WHICH IS NO LONGER THE DEFAULT
 @c Moving the cursor to the top left corner of the plot window will pop up
