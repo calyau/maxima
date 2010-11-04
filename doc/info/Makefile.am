@@ -46,6 +46,9 @@ maxima_TEXINFOS = include-maxima.texi Introduction.texi Help.texi Command.texi O
   asympa.texi Deleted.texi minpack.texi cobyla.texi
 
 figurefiles = \
+figures/introduction1.gif\
+figures/introduction2.gif\
+figures/introduction3.gif\
 figures/contour1.gif\
 figures/contour2.gif\
 figures/contour3.gif\
@@ -109,6 +112,9 @@ figures/graphs14.gif\
 figures/graphs15.gif
 
 pdffigures = \
+figures/introduction1.pdf\
+figures/introduction2.pdf\
+figures/introduction3.pdf\
 figures/contour1.pdf\
 figures/contour2.pdf\
 figures/contour3.pdf\
