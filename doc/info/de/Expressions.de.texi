@@ -1682,10 +1682,10 @@ Hauptoperator des Ausdrucks @var{expr} ist.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@anchor{opsubst}
+@anchor{option_opsubst}
 @defvr {Optionsvariable} opsubst
 
-@c DAS MUSS BESSER FORMULIERT WERDEN.
+@c TODO: DAS MUSS BESSER FORMULIERT WERDEN.
 
 Hat die Optionsvariable @code{opsubst} den Wert @code{false}, f@"uhrt die 
 Funktion @code{subst} keine Substitution in einen Operator eines Ausdrucks aus.
