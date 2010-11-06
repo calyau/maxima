@@ -270,21 +270,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ;; update option terminal
 ;; ----------------------
 ;; *draw-terminal-number* is used when working with
@@ -677,7 +662,7 @@
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal proportional_axes specification")))
       ($error_type ; defined as $x, $y and $xy
-            (if (member val '($x $y $xy))
+            (if (member val '($x $y $xy $boxes))
                 (setf (gethash opt *gr-options*) val)
                 (merror "draw: illegal error_type specification")))
       ($label_alignment ; defined as $center, $left and $right
@@ -851,6 +836,7 @@
 ;;     key
 ;;     line_type
 ;;     color
+;;     fill_density
 ;;     xaxis_secondary
 ;;     yaxis_secondary
 (defun errors (arg)
@@ -883,15 +869,23 @@
              (if (null joined)
                (setf with "xyerrorbars")
                (setf with "xyerrorlines"))  )
+          ((and (eql etype '$boxes)
+                (or (= element-size 4)
+                    (= element-size 6)))
+             (setf with "boxxyerrorbars") )
           (t
              (merror "draw (errors object): incompatibility with option error_type")))
 
     (setf grouping `((,element-size 0)))
     (setf pltcmd
           (format nil
-                  " ~a w ~a lw ~a lt ~a lc ~a axis ~a"
+                  " ~a w ~a ~a lw ~a lt ~a lc ~a axis ~a"
                   (make-obj-title (get-option '$key))
                   with
+                  (if (eql etype '$boxes)  ; in case of boxes, should they be filled?
+                      (format nil "fs solid ~a"
+                              (get-option '$fill_density))
+                      "")
                   (get-option '$line_width)
                   (get-option '$line_type)
                   (get-option '$color)
@@ -1978,6 +1972,161 @@
                   :command pltcmd
                   :groups '((3 0))  ; numbers are sent to gnuplot in groups of 3
                   :points  (list result-array ))))  ))
+
+
+
+
+
+
+
+;; Object: 'region'
+;; Usage:
+;;     region(ineq,x-var,x-minval,x-maxval,y-var,y-minval,y-maxval)
+;; Options:
+;;     fill_color
+;;     key
+;;     x_voxel
+;;     y_voxel
+(defmacro build-polygon (coord)
+  (let ((len (1- (length coord))))
+    `(push (make-array ,len :element-type 'flonum :initial-contents ,coord) pts)))
+
+(defun region (ineq x-var x-minval x-maxval y-var y-minval y-maxval)
+  (let* ((nx (gethash '$x_voxel  *gr-options*))
+         (ny (gethash '$y_voxel  *gr-options*))
+         (xmin ($float x-minval))
+         (xmax ($float x-maxval))
+         (ymin ($float y-minval))
+         (ymax ($float y-maxval))
+         (dx (/ (- xmax xmin) nx))
+         (dy (/ (- ymax ymin) ny))
+         (err (* 0.02 (min dx dy)))
+         (xarr (make-array (list (1+ nx) (1+ ny)) :element-type 'flonum))
+         (yarr (make-array (list (1+ nx) (1+ ny)) :element-type 'flonum))
+         (barr (make-array (list (1+ nx) (1+ ny)) :element-type 'boolean))
+         (pts '())
+         pltcmd grouping x y)
+
+    ; build 2d arrays: x, y and boolean
+    (labels ((fun (xx yy)  ; evaluates boolean expression
+                  (is-boole-check 
+                    (simplify
+                      ($substitute
+                        (list '(mlist)
+                              (list '(mequal) x-var xx)
+                              (list '(mequal) y-var yy))
+                        ineq))))
+             (bipart (xx1 yy1 xx2 yy2) ; bipartition, (xx1, yy1) => T, (xx2, yy2) => NIL
+                     (let ((xm (* 0.5 (+ xx1 xx2)))
+                           (ym (* 0.5 (+ yy1 yy2))))
+                       (cond
+                         ((< (+ (* (- xx2 xx1) (- xx2 xx1))
+                                (* (- yy2 yy1) (- yy2 yy1)))
+                             (* err err))
+                            (list xm ym))
+                         ((fun xm ym)
+                            (bipart xm ym xx2 yy2))
+                         (t
+                            (bipart xx1 yy1 xm ym)) ))  ))
+      ; fill arrays
+      (loop for i to nx do
+        (loop for j to ny do
+          (setf x (+ xmin (* i dx)))
+          (setf y (+ ymin (* j dy)))
+          (setf (aref xarr i j) x)
+          (setf (aref yarr i j) y)
+          (setf (aref barr i j) (fun x y))))
+      ; check vertices of rectangles and cuts
+      (loop for i below nx do
+        (loop for j below ny do
+          (let ((x1 (aref xarr i j))            ; SW point
+                (y1 (aref yarr i j))
+                (b1 (aref barr i j))
+                (x2 (aref xarr (1+ i) j))       ; SE point
+                (y2 (aref yarr (1+ i) j))
+                (b2 (aref barr (1+ i) j))
+                (x3 (aref xarr (1+ i) (1+ j)))  ; NE point
+                (y3 (aref yarr (1+ i) (1+ j)))
+                (b3 (aref barr (1+ i) (1+ j)))
+                (x4 (aref xarr i (1+ j)))       ; NW point
+                (y4 (aref yarr i (1+ j)))
+                (b4 (aref barr i (1+ j)))
+                pa pb pc)    ; pa and pb are frontier points
+
+            (cond ((and b1 b2 b3 b4)
+                     (build-polygon (list x1 y1 x2 y2 x3 y3 x4 y4)))
+                  ((and b1 b2 b3)
+                     (setf pa (bipart x3 y3 x4 y4)
+                           pb (bipart x1 y1 x4 y4))
+                     (build-polygon (list x1 y1 x2 y2 x3 y3 (first pa) (second pa) (first pb) (second pb))))
+                  ((and b4 b1 b2)
+                     (setf pa (bipart x2 y2 x3 y3)
+                           pb (bipart x4 y4 x3 y3))
+                     (build-polygon (list x4 y4 x1 y1 x2 y2 (first pa) (second pa) (first pb) (second pb))))
+                  ((and b3 b4 b1)
+                     (setf pa (bipart x1 y1 x2 y2)
+                           pb (bipart x3 y3 x2 y2))
+                     (build-polygon (list x3 y3 x4 y4 x1 y1 (first pa) (second pa) (first pb) (second pb))))
+                  ((and b2 b3 b4)
+                     (setf pa (bipart x4 y4 x1 y1)
+                           pb (bipart x2 y2 x1 y1))
+                     (build-polygon (list x2 y2 x3 y3 x4 y4 (first pa) (second pa) (first pb) (second pb))))
+                  ((and b2 b3)
+                     (setf pa (bipart x3 y3 x4 y4)
+                           pb (bipart x2 y2 x1 y1))
+                     (build-polygon (list x2 y2 x3 y3 (first pa) (second pa) (first pb) (second pb))))
+                  ((and b4 b1)
+                     (setf pa (bipart x1 y1 x2 y2)
+                           pb (bipart x4 y4 x3 y3))
+                     (build-polygon (list x4 y4 x1 y1 (first pa) (second pa) (first pb) (second pb))))
+                  ((and b3 b4)
+                     (setf pa (bipart x4 y4 x1 y1)
+                           pb (bipart x3 y3 x2 y2))
+                     (build-polygon (list x3 y3 x4 y4 (first pa) (second pa) (first pb) (second pb))))
+                  ((and b1 b2)
+                     (setf pa (bipart x2 y2 x3 y3)
+                           pb (bipart x1 y1 x4 y4))
+                     (build-polygon (list x1 y1 x2 y2 (first pa) (second pa) (first pb) (second pb))))
+                  (b1
+                     (setf pa (bipart x1 y1 x2 y2)
+                           pb (bipart x1 y1 x3 y4)
+                           pc (bipart x1 y1 x4 y4))
+                     (build-polygon (list x1 y1 (first pa) (second pa) (first pb) (second pb)(first pc) (second pc))))
+                  (b2
+                     (setf pa (bipart x2 y2 x3 y3)
+                           pb (bipart x2 y2 x4 y4)
+                           pc (bipart x2 y2 x1 y1))
+                     (build-polygon (list x2 y2 (first pa) (second pa) (first pb) (second pb) (first pc) (second pc))))
+                  (b3
+                     (setf pa (bipart x3 y3 x4 y4)
+                           pb (bipart x3 y3 x1 y1)
+                           pc (bipart x3 y3 x2 y2))
+                     (build-polygon (list x3 y3 (first pa) (second pa) (first pb) (second pb) (first pc) (second pc))))
+                  (b4
+                     (setf pa (bipart x4 y4 x1 y1)
+                           pb (bipart x4 y4 x2 y2)
+                           pc (bipart x4 y4 x3 y3))
+                     (build-polygon (list x4 y4 (first pa) (second pa) (first pb) (second pb) (first pc) (second pc)))) )))))
+
+    ; list of commands
+    (setf pltcmd
+          (cons (format nil " ~a w filledcurves lc ~a axis ~a"
+                        (make-obj-title (get-option '$key))
+                        (get-option '$fill_color)
+                        (axes-to-plot))
+                (make-list (- (length pts) 1)
+                           :initial-element (format nil " t '' w filledcurves lc ~a axis ~a"
+                                              (get-option '$fill_color)
+                                              (axes-to-plot) ))))
+    (update-ranges-2d xmin xmax ymin ymax)
+    (setf grouping
+          (make-list (length pts)
+                     :initial-element '(2 0)))
+    (make-gr-object
+       :name    'region
+       :command pltcmd
+       :groups  grouping
+       :points  pts)    ))
 
 
 
@@ -3253,6 +3402,7 @@
       (gethash '$triangle      *2d-graphic-objects*) 'triangle
       (gethash '$rectangle     *2d-graphic-objects*) 'rectangle
       (gethash '$quadrilateral *2d-graphic-objects*) 'quadrilateral
+      (gethash '$region        *2d-graphic-objects*) 'region
       (gethash '$explicit      *2d-graphic-objects*) 'explicit
       (gethash '$implicit      *2d-graphic-objects*) 'implicit
       (gethash '$parametric    *2d-graphic-objects*) 'parametric
