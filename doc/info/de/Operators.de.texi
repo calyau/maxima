@@ -454,7 +454,6 @@ und @mrefdot{dotscrules}
 @c --- 31.10.2010 DK -----------------------------------------------------------
 @anchor{<}
 @anchor{<=}
-@anchor{<=}
 @anchor{>=}
 @anchor{>}
 @deffn {Operator} <
