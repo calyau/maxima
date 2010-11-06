@@ -9,7 +9,7 @@ maxima_TEXINFOS = include-maxima.de.texi category-macros.de.texi \
 Introduction.de.texi Bugs.de.texi Help.de.texi Command.de.texi \
 DataTypes.de.texi Expressions.de.texi Operators.de.texi Evaluation.de.texi \
 Simplification.de.texi MathFunctions.de.texi Database.de.texi Plotting.de.texi \
-Input.de.texi Glossary.de.texi
+Input.de.texi Series.de.texi Glossary.de.texi
 
 
 all-local: maxima-index.lisp maxima.html contents.hhc

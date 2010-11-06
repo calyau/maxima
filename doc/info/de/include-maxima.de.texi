@@ -136,7 +136,11 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 * Eingabe und Ausgabe::         Lesen und schreiben von Dateien mit Maxima.
 @sp 1
 
-Support for specific areas of mathematics
+Spezifische Gebiete der Mathematik
+
+* Summen Produkte und Reihen::  Summen, Produkte, Tayolorreihen, Poisson Reihen.
+
+
 
 * Polynomials::                 Standard forms for polynomials, and
                                 functions operating on them.
@@ -155,7 +159,7 @@ Support for specific areas of mathematics
 * itensor::                     Indicial Tensor Manipulation.
 * ctensor::                     Component Tensor Manipulation.
 * atensor::                     Algebraic Tensor Manipulation.
-* Series::                      Taylor and power series.
+
 * Number Theory::               Number theory.
 * Symmetries::                  
 * Groups::                      Abstract algebra.
@@ -188,7 +192,6 @@ Additional packages
 * graphs::                      Graph theory package.
 * grobner::                     Functions for working with Groebner bases.
 * impdiff::                     Implicit derivatives.
-* implicit_plot::               Implicit plots package.
 * interpol::                    Interpolation package.
 * lapack::                      LAPACK functions for linear algebra.
 * lbfgs::                       L-BFGS unconstrained minimization package.
@@ -306,6 +309,13 @@ Eingabe und Ausgabe
 * Funktionen und Variablen f@"ur die Eingabe und Ausgabe::
 * Funktionen und Variablen f@"ur die Tex-Ausgabe::
 
+Summen, Produkte und Reihen
+* Summen und Produkte::
+* Einf@"uhrung in Reihen::
+* Funktionen und Variablen f@"ur Reihen::
+* Poisson Reihen::
+
+
 Polynomials
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::  
@@ -375,10 +385,7 @@ ctensor
 atensor
 * Introduction to atensor::     
 * Functions and Variables for atensor::     
-
-Series
-* Introduction to Series::      
-* Functions and Variables for Series::      
+  
 
 Number Theory
 * Functions and Variables for Number Theory::  
@@ -486,9 +493,6 @@ grobner
 
 impdiff
 * Functions and Variables for impdiff::
-
-implicit_plot
-* Functions and Variables for implicit_plot::
 
 interpol
 * Introduction to interpol::
@@ -643,6 +647,12 @@ Glossar
 @chapter Eingabe und Ausgabe
 @include Input.de.texi
 
+@node Summen Produkte und Reihen, Glossar, Eingabe und Ausgabe, Top
+@chapter Summen, Produkte und Reihen
+@include Series.de.texi
+
+
+
 @c @node Polynomials, Special Functions, Eingabe und Ausgabe, Top
 @c @chapter Polynomials
 @c @include Polynomials.texi
@@ -704,10 +714,6 @@ Glossar
 @c @node atensor, Series, ctensor, Top
 @c @chapter atensor
 @c @include Atensor.texi
-
-@c @node Series, Number Theory, atensor, Top
-@c @chapter Series
-@c @include Series.texi
 
 @c @node Number Theory, Symmetries, Series, Top
 @c @chapter Number Theory
@@ -809,10 +815,6 @@ Glossar
 @c @chapter impdiff
 @c @include impdiff.texi
 
-@c @node implicit_plot, interpol, impdiff, Top
-@c @chapter implicit_plot
-@c @include implicit_plot.texi
-
 @c @node interpol, lapack, implicit_plot, Top
 @c @chapter interpol
 @c @include interpol.texi
@@ -897,7 +899,7 @@ Glossar
 @c @chapter zeilberger
 @c @include zeilberger.texi
 
-@node Glossar, Index der Variablen und Funktionen, Eingabe und Ausgabe, Top
+@node Glossar, Index der Variablen und Funktionen, Summen Produkte und Reihen, Top
 @chapter Glossar
 @include Glossary.de.texi
 
