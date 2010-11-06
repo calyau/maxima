@@ -252,7 +252,7 @@ entfernt.
 @c @closecatbox
 @end deffn
 
-@c --- 03.11.2010 DK -----------------------------------------------------------
+@c --- 04.11.2010 DK -----------------------------------------------------------
 @anchor{get_plot_option}
 @deffn {Funktion} get_plot_option (@var{keyword}, @var{index})
 
@@ -261,10 +261,11 @@ entfernt.
 @c return the keyword itself; a value of 2 turn returns the first parameter
 @c following the keyword, and so on.
 
-Gibt die Werte der Option mit dem Namen @var{keyword} zur@"uck. Die Optionen 
-sind in der Variablen @code{plot_options} gespeichert. Hat @var{index} den Wert 
-1 wird der Name der Option @var{keyword} zur@"uckgeben. Der Wert 2
-f@"ur @var{index} gibt den ersten Parameter zur@"uck, und so weiter.
+Gibt die Werte der Parameter der Option mit dem Namen @var{keyword} zur@"uck. 
+Die Optionen und ihre Parameter sind in der Variablen @code{plot_options} 
+gespeichert. Hat @var{index} den Wert 1 wird der Name der Option @var{keyword}
+zur@"uckgeben. Der Wert 2 f@"ur @var{index} gibt den Wert des ersten Parameters
+zur@"uck, und so weiter.
 
 @c See also @code{plot_options}, @code{set_plot_option} and the section on
 @c Plotting Options.
@@ -274,7 +275,54 @@ Siehe auch @mrefcomma{plot_options} @mref{set_plot_option} und das Kapitel
 
 @end deffn
 
-@c --- 03.11.2010 DK -----------------------------------------------------------
+@c --- 05.11.2010 DK -----------------------------------------------------------
+@anchor{implicit_plot}
+@deffn  {Funktion} implicit_plot (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Funktion} implicit_plot ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+
+@c Displays a plot of one or more expressions in implicit
+@c form. @var{expr} is the expression to be plotted, @var{x_range} the
+@c range of the horizontal axis and @var{y_range} the range of vertical
+@c axis. @code{implicit_plot} respects global setting for the gnuplot
+@c driver set by the @var{set_plot_option} function. Options can also be passed to
+@c @code{implicit_plot} function as optional arguments.
+
+Zeigt einen Graphen eines oder mehrerer Ausdr@"ucke, die implizit gegeben sind.
+@var{expr} ist der Ausdruck der gezeichnet werden soll, @var{x_range} ist der
+Wertebereich der x-Achse und @var{y_range} der Wertebereich der y-Achse. Die
+Funktion @code{implicit_plot} beachtet die Werte der Parameter der 
+Grafikoptionen in der Systemvariablen @code{plot_options}. Grafikoptionen 
+k@"onnen auch als Argumente @"ubergeben werden.
+
+@c @code{implicit_plot} works by tracking sign changes on the area
+@c given by @var{x_range} and @var{y_range} and can fail for complicated
+@c expressions.
+
+Der Algorithmus von @code{implicit_plot} stellt Vorzeichenwechsel der Funktion
+in den Bereichen @var{x_range} und @var{y_range} fest. F@"ur komplizierte
+Fl@"achen kann der Algorithmus versagen.
+
+@c @code{load(implicit_plot)} loads this function.
+
+Die Funktion wird mit dem Kommando @code{load(implicit_plot)} geladen.
+
+Beispiel:
+
+@example
+(%i1) implicit_plot (x^2 = y^3 - 3*y + 1, [x, -4, 4], [y, -4, 4],
+ [gnuplot_preamble, "set zeroaxis"]);
+@end example
+
+@ifnotinfo
+@image{../figures/implicit_plot,10cm}
+@end ifnotinfo
+
+@c @opencatbox
+@c @category{Plotting} @category{Share packages} @category{Package implicit_plot}
+@c @closecatbox
+@end deffn
+
+@c --- 04.11.2010 DK -----------------------------------------------------------
 @anchor{make_transform}
 @deffn {Funktion} make_transform ([@var{var1}, @var{var2}, @var{var3}], @var{fx}, @var{fy}, @var{fz})
 
@@ -290,13 +338,13 @@ Siehe auch @mrefcomma{plot_options} @mref{set_plot_option} und das Kapitel
 @c for those two transformations.
 
 Gibt eine Funktion zur@"uck, die als Parameter f@"ur die Grafikoption 
-@code{transform_xy} geeignet ist. Die drei Argumente @var{var1}, @var{var2} und 
-@var{var3} repr@"asentieren die zwei unabh@"angigen Variablen der Funktion 
-@code{plot3d}. Das dritte Argument ist die Funktion, die von den zwei Variablen
-abh@"angt. Die drei Funktionen @var{fx}, @var{fy} und @var{fz} m@"ussen von den
-drei Variablen @var{var1}, @var{var2} und @var{var3} abh@"angen und die 
-Argumente der Funktion @code{plot3d} in kartesische Koordinaten f@"ur die 
-Ausgabe des Graphen transformieren. 
+@code{transform_xy} geeignet ist. Die zwei Argumente @var{var1} und @var{var2} 
+repr@"asentieren die zwei unabh@"angigen Variablen der Funktion 
+@code{plot3d}. Das dritte Argument @var{var3} ist die Funktion, die von den zwei
+Variablen abh@"angt. Die drei Funktionen @var{fx}, @var{fy} und @var{fz} 
+m@"ussen von den drei Argumenten @var{var1}, @var{var2} und @var{var3} 
+abh@"angen und die Argumente der Funktion @code{plot3d} in kartesische 
+Koordinaten f@"ur die Ausgabe des Graphen transformieren. 
 
 Die Transformationen @mref{polar_to_xy} f@"ur die Transformation von 
 Polarkoordinaten und @mref{spherical_to_xyz} f@"ur die Transformation von 
@@ -326,7 +374,7 @@ Polarkoordinaten in kartesische Koordinaten transformiert werden.
 @c @closecatbox
 @end deffn
 
-@c --- 23.10.2010 DK -----------------------------------------------------------
+@c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{plot2d}
 @deffn  {Funktion} plot2d (@var{plot}, @var{x_range}, ..., @var{options}, ...)
 @deffnx {Funktion} plot2d ([@var{plot_1}, ..., @var{plot_n}], ..., @var{options}, ...)
@@ -340,16 +388,13 @@ Polarkoordinaten in kartesische Koordinaten transformiert werden.
 @c @var{y_expr}, @var{t_range}]}.
 
 @var{plot}, @var{plot_1}, ..., @var{plot_n} sind Ausdr@"ucke, Namen von 
-Funktionen oder eine Liste der folgenden Form:
+Funktionen oder Listen der folgenden Form:
 @code{[discrete, [@var{x1}, ..., @var{xn}], [@var{y1}, ..., @var{yn}]]}, 
 @code{[discrete, [[@var{x1}, @var{y1}], ..., [@var{xn}, ..., @var{yn}]]} oder
 @code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}]}.
 
 @c Displays a plot of one or more expressions as a function of one
 @c variable or parameter.
-
-Die Funktion @code{plot2d} zeichnet eine oder mehrere Ausdr@"ucke als Funktion
-einer Variablen oder eines Parameters.
 
 @c @code{plot2d} displays one or several plots in two dimensions. When
 @c expressions or function name are used to define the plots,
@@ -358,11 +403,10 @@ einer Variablen oder eines Parameters.
 @c its minimum and maximum values; the syntax for @var{x_range} is:
 @c @code{[@var{variable}, @var{min}, @var{max}]}.
 
-@code{plot2d} zeichnet eine oder mehrere Graphen in zwei Dimensionen. Werden
-Ausdr@"ucke oder Namen von Funktionen benutzt, um eine Grafik zu definieren,
-sollten diese nur von einer Variablen @var{variable} abh@"angen. Die Angabe des
-Bereiches @var{x_range} ist verpflichtend, um den Namen der Variablen sowie
-den Bereich f@"ur die Variable anzugeben. Die Syntax ist for @var{x_range} ist:
+Die Funktion @code{plot2d} zeichnet einen zweidimensionalen Graphen einer oder 
+mehrerer Ausdr@"ucke als Funktion einer Variablen oder eines Parameters. Mit der
+Grafikoption @var{x_range} wird der Name der unabh@"angigen Variablen und deren
+Bereich angegeben. Die Syntax der Grafikoption @var{x_range} ist: 
 @code{[@var{variable}, @var{min}, @var{max}]}.
 
 @c A plot can also be defined in the discrete or parametric forms. The
@@ -375,8 +419,7 @@ den Bereich f@"ur die Variable anzugeben. Die Syntax ist for @var{x_range} ist:
 @c @var{discrete} keyword, each element on the list should also be a list
 @c with two values that correspond to the x and y coordinates of a point.
 
-Eine Grafik kann auch als ein diskreter oder parametrischer Graph angegeben 
-werden. Ein diskreter Graph wird durch eine Liste definiert, die mit dem
+Ein diskreter Graph wird durch eine Liste definiert, die mit dem
 Schl@"usselwort @var{disrecte} beginnt. Es folgen ein oder zwei Listen mit den
 Werten. Werden zwei Listen @"ubergeben, m@"ussen diese dieselbe L@"ange haben. 
 Die Daten der ersten Listen werden als die x-Koordinaten der Punkte und die der 
@@ -397,7 +440,7 @@ Schl@"usselwort @var{parametric} beginnt. Es folgen zwei Ausdr@"ucke oder
 Namen von Funktionen und ein Parameter. Der Bereich f@"ur den Parameter muss 
 eine Liste sein, die den Namen des Parameters, seinen gr@"o@ss{}ten und seinen 
 kleinsten Wert enth@"alt: @code{[@var{parameter}, @var{min}, @var{max}]}. Der 
-Graph zeigt den Weg f@"ur die zwei Ausdr@"ucke oder Namen von Funktionen, wenn 
+Graph ist der Weg f@"ur die zwei Ausdr@"ucke oder Namen von Funktionen, wenn 
 der Parameter @var{parameter} von @var{min} nach @var{max} zunimmt.
 
 @c A range for the vertical axis is an optional argument with the form:
@@ -408,19 +451,18 @@ der Parameter @var{parameter} von @var{min} nach @var{max} zunimmt.
 @c the minimum and maximum values of the second coordinate of the plot
 @c points.
 
-Als optionales Argument kann der Bereich f@"ur die Vertikale Koordinatenachse
-angegeben werden: @code{[y, @var{min}, @var{mac}]}. Die vertikale Achse wird
-immer mit dem Schl@"usselwort @var{y} bezeichnet. Wird diese Option genutzt,
-wird der Graph f@"ur diesen Bereich an Werten gezeichnet, unabh@"angig davon, 
-welche Werte die Funktion annimmt. Wird der Bereich nicht angegeben, wird der 
-Graph f@"ur einen Bereich gezeichnet, der den kleinsten und gr@"o@ss{}ten Wert 
-der y-Achse.
+Als optionales Argument kann ein Wertebereich f@"ur die vertikale 
+Koordinatenachse mit der Grafikoption @code{y} angegeben werden: 
+@code{[y, @var{min}, @var{max}]}. Die vertikale Achse wird immer mit dem 
+Schl@"usselwort @var{y} bezeichnet. Wird kein Wertebereich @var{y} angegeben, 
+wird dieser durch den gr@"o@ss{}ten und kleinsten y-Wert des zu zeichnenden 
+Graphen festgelegt.
 
 @c All other options should also be lists, starting with a keyword and
 @c followed by one or more values. See @code{plot_options}.
 
-Auch alle anderen Optionen werden als Listen angegeben, die mit einem 
-Schl@"usselwort beginnen, auf das die Werte der Option folgen. Siehe 
+Auch alle anderen Grafikoptionen werden als Listen angegeben, die mit einem 
+Schl@"usselwort beginnen, auf das die Parameter der Grafikoption folgen. Siehe 
 @mrefdot{plot_options}
 
 @c If there are several plots to be plotted, a legend will be
@@ -429,17 +471,21 @@ Schl@"usselwort beginnen, auf das die Werte der Option folgen. Siehe
 @c option is not used, Maxima will create labels from the expressions or
 @c function names.
 
-Werden mehrere Graphen gezeichnet, wird eine Legende hinzugef@"ugt, um die 
-einzelnen Graphen zu unterscheiden. Mit der Option @var{legend} k@"onnen die
-Bezeichnungen f@"ur die Legende gesetzt werden. Wird diese Option nicht genutzt,
-generiert Maxima die Bezeichnungen der Legende aus den Ausdr@"ucken oder Namen
-der Funktionen.
+Werden mehrere Graphen gezeichnet, wird eine Legende hinzugef@"ugt, die die 
+einzelnen Graphen unterscheidet. Mit der Grafikoption @var{legend} k@"onnen die
+Bezeichnungen f@"ur die Legende festgelegt werden. Wird diese Option nicht 
+genutzt, generiert Maxima die Bezeichnungen der Legende aus den Ausdr@"ucken 
+oder Namen der Funktionen, die als Argument @"ubergeben wurden.
+
+@c See also the section about Plotting Options.
+
+Siehe auch das Kapitel @mrefdot{Grafikoptionen}
 
 Beispiele:
 
 @c Plot of a common function:
 
-Graph einer einfachen Funktion:
+Graph einer einfachen Funktion.
 
 @c ===beg===
 @c plot2d (sin(x), [x, -%pi, %pi])$
@@ -456,7 +502,7 @@ Graph einer einfachen Funktion:
 @c values in the vertical axis using the y option:
 
 W@"achst die Funktion sehr schnell, kann es notwendig sein, die Werte auf der
-vertikalen mit der y Option zu begrenzen:
+vertikalen Achse mit der Grafikoption @code{y} zu begrenzen.
 
 @c ===beg===
 @c plot2d (sec(x), [x, -2, 2], [y, -20, 20])$
@@ -476,17 +522,19 @@ plot2d: some values were clipped.
 @c program used. For instance, when the plot box is disable, Xmaxima will
 @c plot the axes using arrows:
 
-Die Ansicht des Graphen kann sich f@"ur verschiedene Plot-Programme 
-unterscheiden. In Xmaxima wird mit der Option @code{[box, false]} eine Grafik 
-mit Pfeilen auf der Achse gezeichnet:
+Die Ansicht eines Graphen kann sich f@"ur verschiedene Grafikprogramme
+unterscheiden. In Xmaxima bewirkt die Grafikoption @code{[box, false]}, das die
+Koordinatenachsen mit Pfeilen dargestellt werden.
 
 @c ===beg===
 @c plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], [box, false], [plot_format, xmaxima])$
 @c ===end===
 @example
+@group
 (%i1) plot2d ( x^2-1, [x, -3, 3], [y, -2, 10], 
                       [box, false], 
                       [plot_format, xmaxima])$
+@end group
 @end example
 
 @ifnotinfo
@@ -510,7 +558,7 @@ Ein Graph mit einer logarithmischen Skala:
 
 @c Plotting functions by name:
 
-Zeichne einen Graphen mit den Namen von Funktionen:
+Graphen von Funktionen, deren Namen als Argumente @"ubergeben werden.
 
 @c ===beg===
 @c F(x) := x^2 $
@@ -534,7 +582,7 @@ $g
 
 @c A plot of the butterfly curve, defined parametrically:
 
-Ein Graph der Schmetterlingskurve, der parametrisch definiert ist:
+Graph einer parametrisch definierten Schmetterlingskurve.
 
 @c ===beg===
 @c r: (exp(cos(t))-2*cos(4*t)-sin(t/12)^5)$
@@ -552,7 +600,8 @@ Ein Graph der Schmetterlingskurve, der parametrisch definiert ist:
 
 @c A ``circle'' with two turns, when plotted with only 7 points:
 
-Ein Kreis mit zwei Umdrehungen, der nur f@"ur 7 Punkte gezeichnet ist:
+Ein parametrischer Kreis mit zwei vollst@"andigen Drehungen, der nur f@"ur 7 
+Punkte gezeichnet ist.
 
 @c ===beg===
 @c plot2d ([parametric, cos(t), sin(t), [t, -2*%pi, 2*%pi], [nticks, 8]])$
@@ -574,11 +623,10 @@ Ein Kreis mit zwei Umdrehungen, der nur f@"ur 7 Punkte gezeichnet ist:
 @c These values work well for the Postscript terminal used to produce this
 @c plot; you might have to adjust the values for your screen.
 
-Plot einer allgemeinen Funktion zusammen mit der parametrischen Darstellung 
-eines Kreises. Die Gr@"o@ss{}e des Plots wurde mit den x und y Optionen 
-angepasst, damit der Kreis rund und nicht als eine Ellipse im Graphen erscheint.
-Diese Werte arbeiten gut f@"ur ein Postscript-Terminal. F@"ur andere Ausgaben 
-m@"ussen die Werte m@"oglicherweise angepasst werden.
+Graph der Funktion @code{abs(x)} und eines parametrischen Kreises. Das 
+Seitenverh@"altnis der Grafik wurde mit den Grafikoptionen @code{x} und @code{y}
+so angepasst, dass der Kreis rund erscheint. Das hier gew@"ahlte 
+Seitenverh@"altnis funktioniert gut f@"ur die Ausgabe im Postscript-Format.
 
 @c ===beg===
 @c plot2d([[parametric, cos(t), sin(t) ,[t,0,2*%pi], [nticks, 80]],
@@ -598,8 +646,9 @@ plot2d: some values were clipped.
 
 @c A plot of a discrete set of points, defining x and y coordinates separately:
 
-Ein Plot f@"ur diskrete Punkte. Die Punkte sind in zwei separaten Listen f@"ur 
-die x- und y-Koordinaten angegeben.
+Graph f@"ur diskrete Punkte. Die Punkte sind in zwei separaten Listen jeweils 
+f@"ur die x- und y-Koordinaten angegeben. Standardm@"a@ss{}ig werden die Punkte
+mit einer Linie verbunden.
 
 @c ===beg===
 @c plot2d ([discrete, [10, 20, 30, 40, 50], [.6, .9, 1.1, 1.3, 1.4]])$
@@ -619,7 +668,7 @@ die x- und y-Koordinaten angegeben.
 @c separately and without any lines joining the points:
 
 Dieselben Punkte des letzten Beispiels. Jeder Punkt wird einzeln in eine Liste
-eingetragen und die Punkte werden nicht miteinander verbunden:
+eingetragen und die Punkte werden nicht miteinander verbunden.
 
 @c ===beg===
 @c plot2d([discrete, [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]],
@@ -641,9 +690,9 @@ eingetragen und die Punkte werden nicht miteinander verbunden:
 @c ``data.txt'' which is then read and the second and third column are
 @c plotted on the two axes:
 
-In diesem Beispiel wird eine Tabelle mit drei Spalten in einer Datei 
+In diesem Beispiel wird eine Tabelle mit drei Spalten in eine Datei 
 @code{data.txt} gespeichert. Die Datei wird gelesen und die zweite und dritte
-Spalte werden gezeichnet:
+Spalte werden gezeichnet.
 
 @c ===beg===
 @c with_stdout ("data.txt", for x:0 thru 10 do print (x, x^2, x^3))$
@@ -668,8 +717,8 @@ Spalte werden gezeichnet:
 @c A plot of experimental data points together with the theoretical
 @c function that predicts the data:
 
-Ein Plot mit experimentellen Datenpunkten zusammen mit der theoretischen 
-Funktion, die die Daten beschreibt:
+Graph von experimentellen Datenpunkten zusammen mit einer theoretischen 
+Funktion, die die Daten beschreibt.
 
 @c ===beg===
 @c xy: [[10, .6], [20, .9], [30, 1.1], [40, 1.3], [50, 1.4]]$
@@ -693,16 +742,12 @@ Funktion, die die Daten beschreibt:
 @image{../figures/plotting12,8cm}
 @end ifnotinfo
 
-@c See also the section about Plotting Options.
-
-Siehe auch das Kapitel @mrefdot{Grafikoptionen}
-
 @c @opencatbox
 @c @category{Plotting}
 @c @closecatbox
 @end deffn
 
-@c --- 31.10.2010 DK -----------------------------------------------------------
+@c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{plot3d}
 @deffn {Funktion} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 @deffnx {Funktion} plot3d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
@@ -711,22 +756,26 @@ Siehe auch das Kapitel @mrefdot{Grafikoptionen}
 @c variables or in parametric form.
 
 Zeichnet einen Graph mit einer oder mehreren Fl@"achen, die als eine Funktion
-mit zwei Variablen oder in parametrischer Form definiert sind.
+von zwei Variablen oder in parametrischer Form definiert sind.
 
 @c The functions to be plotted may be specified as expressions or function
 @c names. 
 @c The mouse can be used to rotate the plot looking at the surface
 @c from different sides.
 
-Die zu zeichnenden Funktionen k@"onnen als ein Ausdruck oder durch den Namen 
-einer Funktion definiert werden. Mit der Maus kann der Graph rotiert werden, 
-um die Fl@"ache aus verschiedenen Blickwinkeln zu sehen.
+Die zu zeichnenden Funktionen werden als Ausdr@"ucke oder mit ihrem Namen als 
+Argumente übergeben. Mit der Maus kann der Graph rotiert werden, 
+um die Fl@"ache aus verschiedenen Blickwinkeln zu betrachten.
 
-@strong{Beispiele:}
+@c See also the section about Plotting Options.
+
+Siehe auch das Kapitel @nrefdot{Grafikoptionen}
+
+Beispiele:
 
 @c Plot of a common function:
 
-Ein Graph einer allgemeinen Funktion:
+Graph einer einfachen Funktion.
 
 @c ===beg===
 @c plot3d (2^(-u^2 + v^2), [u, -3, 3], [v, -2, 2])$
@@ -736,15 +785,15 @@ Ein Graph einer allgemeinen Funktion:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting13,8cm}
+@image{../figures/plotting13,10cm}
 @end ifnotinfo
 
 @c Use of the z option to limit a function that goes to infinity (in this
 @c case the function is minus infinity on the x and y axes); this also
 @c shows how to plot with only lines and no shading:
 
-Gebrauch der z Option, um die z-Koordinate f@"ur eine Funktion zu begrenzen, die
-gegen unendlich geht. Dieses Beispiel zeigt auch einen Graph ohne Schattierung.
+Mit der Grafikoption @code{z} wird der Wertebereich der z-Achse begrenzt. 
+Dieses Beispiel zeigt den Graph ohne F@"arbung der Fl@"ache.
 
 @c ===beg===
 @c plot3d ( log ( x^2*y^2 ), [x, -2, 2], [y, -2, 2], [z, -8, 4],
@@ -756,17 +805,16 @@ gegen unendlich geht. Dieses Beispiel zeigt auch einen Graph ohne Schattierung.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting14,8cm}
+@image{../figures/plotting14,10cm}
 @end ifnotinfo
 
 @c The infinite values of z can also be avoided by choosing a grid that
 @c does not fall on any asymptotes; this example also shows how to select
 @c one of the predefined palettes, in this case the fourth one:
 
-Unendlich gro@ss{}e Werte auf der z-Koordinate k@"onnen auch durch Wahl eines 
+Unendlich gro@ss{}e Werte der z-Koordinate k@"onnen auch durch Wahl eines 
 Gitters vermieden werden, das nicht mit einer der Asymptoten zusammenf@"allt. 
-Weiterhin zeigt das Beispiel wie eine der vordefinierten Paletten genutzt werden
-kann:
+Das Beispiel zeigt die Nutzung einer vordefinierten Palette.
 
 @c ===beg===
 @c plot3d (log (x^2*y^2), [x, -2, 2], [y, -2, 2], [grid, 29, 29],
@@ -780,13 +828,14 @@ kann:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting15,8cm}
+@image{../figures/plotting15,10cm}
 @end ifnotinfo
 
 @c Two surfaces in the same plot, sharing the same domain; in gnuplot the
 @c two surfaces will use the same palette:
 
-Ein Graph mit zwei Fl@"achen, demselben Wertebereich und einer Palette:
+Graph mit zwei Fl@"achen, die denselben Wertebereich haben und eine Palette
+nutzen.
 
 @c ===beg===
 @c plot3d ([2^(-x^2 + y^2), 4*sin(3*(x^2+y^2))/(x^2+y^2), [x, -3, 3], [y, -2, 2]])$
@@ -797,7 +846,7 @@ Ein Graph mit zwei Fl@"achen, demselben Wertebereich und einer Palette:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting16,8cm}
+@image{../figures/plotting16,10cm}
 @end ifnotinfo
 
 @c The same two surfaces, but now with different domains; in xmaxima each
@@ -805,7 +854,7 @@ Ein Graph mit zwei Fl@"achen, demselben Wertebereich und einer Palette:
 @c the option palette:
 
 Die gleichen zwei Fl@"achen mit verschiedenen Wertebereichen. In Xmaxima nutzen
-die zwei Fl@"achen verschiedene Paletten:
+die zwei Fl@"achen verschiedene Paletten.
 
 @c ===beg===
 @c plot3d ([[2^(-x^2 + y^2),[x,-2,2],[y,-2,2]], 4*sin(3*(x^2+y^2))/(x^2+y^2),
@@ -820,12 +869,12 @@ die zwei Fl@"achen verschiedene Paletten:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting17,8cm}
+@image{../figures/plotting17,6cm}
 @end ifnotinfo
 
 @c Plot of a Klein bottle, defined parametrically:
 
-Graph der kleinschen Flasche, die parametrisch definiert ist:
+Graph der kleinschen Flasche, die parametrisch definiert ist.
 
 @c ===beg===
 @c expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0$
@@ -847,7 +896,7 @@ Graph der kleinschen Flasche, die parametrisch definiert ist:
 @end example
 
 @ifnotinfo
-@image{../figures/plotting18,8cm}
+@image{../figures/plotting18,10cm}
 @end ifnotinfo
 
 @c Plot of a spherical harmonic, using of the predefined transformations,
@@ -872,7 +921,7 @@ kartesisches Koordinatensystem zu transformieren. Siehe auch
 @end example
 
 @ifnotinfo
-@image{../figures/plotting19,8cm}
+@image{../figures/plotting19,10cm}
 @end ifnotinfo
 
 @c Use of the predefined function @code{polar_to_xy} to transform from
@@ -882,8 +931,8 @@ kartesisches Koordinatensystem zu transformieren. Siehe auch
 
 Gebrauch der vordefinierten Funktion @code{polar_to_xy}, um von
 zylindrischen Koordinaten in ein kartesisches Koordinatensystem zu 
-transformieren. Siehe die Dokumention f@"ur @mrefdot{polar_to_xy} Dieses 
-Beispiel zeigt auch wie der Rahmen und die Legende entfernt werden k@"onnen.
+transformieren. Siehe auch @mrefdot{polar_to_xy} Dieses Beispiel zeigt auch wie
+der Rahmen und die Legende entfernt werden k@"onnen.
 
 @c ===beg===
 @c plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi], [grid, 12, 80],
@@ -898,7 +947,7 @@ Beispiel zeigt auch wie der Rahmen und die Legende entfernt werden k@"onnen.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting20,8cm}
+@image{../figures/plotting20,10cm}
 @end ifnotinfo
 
 @c Plot of a sphere using the transformation from spherical to rectangular
@@ -909,7 +958,7 @@ Beispiel zeigt auch wie der Rahmen und die Legende entfernt werden k@"onnen.
 Graph einer Kugel, wobei die Koordinatentransformation von Kugelkoordinaten in
 ein kartesisches Koordinatensystem genutzt wird. In Xmaxima werden die drei 
 Achsen gleichm@"a@ss{}ig skaliert, um die Proportionen der Kugel zu bewahren. 
-Eine Palette mit verschiedenen Schattierung einer Farbe wird genutzt.
+Eine Palette mit verschiedenen Schattierungen einer Farbe wird genutzt.
 
 @c ===beg===
 @c plot3d ( 5, [theta, 0, %pi], [phi, 0, 2*%pi], [plot_format,xmaxima],
@@ -924,7 +973,7 @@ Eine Palette mit verschiedenen Schattierung einer Farbe wird genutzt.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting21,8cm}
+@image{../figures/plotting21,6cm}
 @end ifnotinfo
 
 @c Definition of a function of two-variables using a matrix. Notice the
@@ -951,7 +1000,7 @@ apply: subscript must be an integer; found: round(x)
 @end example
 
 @ifnotinfo
-@image{../figures/plotting22,8cm}
+@image{../figures/plotting22,10cm}
 @end ifnotinfo
 
 @c By setting the elevation equal to zero, a surface can be seen as a map
@@ -960,7 +1009,7 @@ apply: subscript must be an integer; found: round(x)
 @c levels, and the mesh lines are disabled to make the colors easier to see.
 
 Wird die H@"ohenangabe @code{elevation} auf Null gesetzt, kann die Fl@"ache als
-eine Karte gesehen werden. Jede Farbe repr@"asentiert einen anderen Wert der
+eine Karte betrachtet werden. Jede Farbe repr@"asentiert einen anderen Wert der
 Fl@"ache. Die Option @code{colorbox} wird genutzt, um die Werte der Farben
 zu zeigen. Die Gitterlinien sind ausgeschaltet.
 
@@ -978,19 +1027,15 @@ zu zeigen. Die Gitterlinien sind ausgeschaltet.
 @end example
 
 @ifnotinfo
-@image{../figures/plotting23,8cm}
+@image{../figures/plotting23,10cm}
 @end ifnotinfo
-
-@c See also the section about Plotting Options.
-
-Siehe auch das Kapitel @nrefdot{Grafikoptionen}
 
 @c @opencatbox
 @c @category{Plotting}
 @c @closecatbox
 @end deffn
 
-@c --- 31.10.2010 DK -----------------------------------------------------------
+@c --- 05.11.2010 DK -----------------------------------------------------------
 @anchor{plot_options}
 @defvr {Systemvariable} plot_options
 
@@ -1003,11 +1048,10 @@ Siehe auch das Kapitel @nrefdot{Grafikoptionen}
 @c this list of global options.
 
 Die Elemente dieser Liste definieren die Standardwerte f@"ur die Ausgabe von
-Graphen. Wird eine der Optionen bei einem Aufruf der Funktionen @code{plot2d}
-oder @code{plot3d} genutzt, wird der Standwert @"uberschrieben. Die 
-Standardwerte k@"onnen mit der Funktion @code{set_plot_option} gesetzt werden. 
-Es gibt weitere spezielle Optionen f@"ur Grafikfunktionen, die nicht in der 
-Liste @code{plot_options} enthalten sind.
+Graphen. Ist einer der Werte ein Argument der Funktionen @code{plot2d} oder
+@code{plot3d}, wird der Standwert @"uberschrieben. Die Standardwerte k@"onnen 
+mit der Funktion @code{set_plot_option} gesetzt werden. Einige Grafikoptionen
+sind nicht in der Liste @code{plot_options} enthalten.
 
 @c Each element of @code{plot_options} is a list of two or more items.  The
 @c first item is the name of the option, and the remainder comprises the
@@ -1015,9 +1059,9 @@ Liste @code{plot_options} enthalten sind.
 @c value is a list, which may include several items.
 
 Jedes Element der Liste @code{plot_options} ist eine Liste mit zwei oder
-mehr Eintr@"agen. Der erste Eintrag ist der Name der Option. Die weiteren
-Eintr@"age sind die Werte, welche die Option hat. In einigen F@"allen kann der
-Wert einer Option wiederum eine Liste sein, die mehrere Eintr@"age enth@"alt.
+mehr Eintr@"agen. Der erste Eintrag ist der Name der Grafikoption. Die weiteren
+Eintr@"age sind die Parameter der Option. In einigen F@"allen kann der Parameter
+einer Option wiederum eine Liste sein.
 
 @c See also @code{set_plot_option}, @code{get_option} and the section on
 @c Plotting Options.
@@ -1115,11 +1159,11 @@ werden.
 @c @var{implicit_plot}) or in the function @var{set_plot_option}; the
 @c exceptions will be specified in the following list.
 
-Die Optionen bestehen aus einer Liste, die mit einem der hier folgenden
-Schl@"usselworte beginnt und ein oder mehrere Werte enth@"alt. Die meisten 
-Optionen k@"onnen mit den Grafikbefehlen @code{plot2d}, @code{plot3d}, 
-@code{contour_plot} oder @code{implicit_plot} genutzt werden und mit der 
-Funktion @code{set_plot_option} gesetzt werden. Auf Ausnahmen wird im Folgenden 
+Die Grafikoptionen bestehen aus einer Liste, die mit einem der hier folgenden
+Schl@"usselworte beginnt und ein oder mehrere Parameter enth@"alt. Die meisten 
+Optionen k@"onnen mit den Funktionen @code{plot2d}, @code{plot3d}, 
+@code{contour_plot} oder @code{implicit_plot} genutzt und mit der Funktion 
+@code{set_plot_option} gesetzt werden. Auf Ausnahmen wird im Folgenden 
 hingewiesen.
 
 @c --- 31.10.2010 DK -----------------------------------------------------------
