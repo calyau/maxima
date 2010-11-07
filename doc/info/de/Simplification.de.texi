@@ -43,6 +43,7 @@ k@"onnen:
 @section Funktionen und Variablen f@"ur die Vereinfachung
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{additive}
 @defvr {Deklaration} additive
 
 @c If @code{declare(f,additive)} has been executed, then:
@@ -73,6 +74,7 @@ Additivit@"at f@"ur das erste Argument definiert. Zum Beispiel wird
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{antisymmetric}
 @defvr {Deklaration} antisymmetric
 
 @c If @code{declare(h,antisymmetric)} is done, this tells the simplifier that 
@@ -91,6 +93,7 @@ vereinfacht.
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{commutative}
 @defvr {Deklaration} commutative
 
 @c If @code{declare(h,commutative)} is done, this tells the simplifier that 
@@ -107,6 +110,7 @@ Dies hat denselben Effekt wie die Deklaration @code{symmetric}.
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{demoivre}
 @deffn  {Funktion} demoivre (@var{expr})
 @deffnx {Optionsvariable} demoivre
 
@@ -145,6 +149,7 @@ gleichzeitig den Wert @code{true} haben.
 @end deffn
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{distrib}
 @deffn {Funktion} distrib (@var{expr})
 
 @c Distributes sums over products.  It differs from @code{expand} in that it 
@@ -180,6 +185,7 @@ Beispiele:
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{distribute_over}
 @defvr {Optionsvariable} distribute_over
 Standardwert: @code{true}
 
@@ -266,6 +272,7 @@ oder alle Argumente angewendet werden:
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{domain}
 @defvr {Optionsvariable} domain
 Standardwert: @code{real}
 
@@ -285,6 +292,7 @@ Hat @code{domain} den Wert @code{complex}, wird @code{sqrt(x^2)} nicht zu
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{expand}
 @deffn  {Funktion} expand (@var{expr})
 @deffnx {Funktion} expand (@var{expr}, @var{p}, @var{n})
 
@@ -454,6 +462,7 @@ Vereinfache einen Ausdruck erneut:
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{expandwrt}
 @deffn {Funktion} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
 
 @c Expands expression @code{expr} with respect to the variables @var{x_1}, ..., 
@@ -485,6 +494,7 @@ geladen.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{expandwrt_denom}
 @defvr {Optionsvariable} expandwrt_denom
 Standardwert: @code{false}
 
@@ -505,6 +515,7 @@ Z@"ahler und der Nenner eines rationalen Ausdrucks expandiert. Ist der Wert
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{expandwrt_factored}
 @deffn {Funktion} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
 
 @c is similar to @code{expandwrt}, but treats expressions that are products 
@@ -524,6 +535,7 @@ Ausdruck @code{expr}, die die Variablen @var{x_1}, ..., @var{x_n} enthalten.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{expon}
 @defvr {Optionsvariable} expon
 Standardwert: 0
 
@@ -542,6 +554,7 @@ automatisch expandiert wird. Hat zum Beispiel @code{expon} den Wert 4, wird
 @end defvr
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{exponentialize}
 @deffn  {Funktion} exponentialize (@var{expr})
 @deffnx {Optionsvariable} exponentialize
 
@@ -575,6 +588,7 @@ nicht gleichzeitig den Wert @code{true} haben.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{expop}
 @defvr {Optionsvariable} expop
 Standardwert: 0
 
@@ -598,6 +612,7 @@ Funktion @code{expand} expandiert werden, weil @code{n} gr@"o@ss{}er als
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{lassociative}
 @defvr {Deklaration} lassociative
 
 @c @code{declare (g, lassociative)} tells the Maxima simplifier that @code{g} is
@@ -614,6 +629,7 @@ Funktion. Zum Beispiel wird @code{f (f (a,b), f (c, d))} zu
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{linear}
 @defvr {Deklaration} linear
 
 @c One of Maxima's operator properties.  For univariate @code{f} so declared, 
@@ -644,6 +660,7 @@ auch @code{opproperties}.
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{maxnegex}
 @defvr {Optionsvariable} maxnegex
 Standardwert: 1000
 
@@ -659,6 +676,7 @@ Standardwert: 1000
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{maxposex}
 @defvr {Optionsvariable} maxposex
 Standardwert: 1000
 
@@ -674,6 +692,7 @@ Standardwert: 1000
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{multiplicative}
 @defvr {Deklaration} multiplicative
 
 @c @code{declare (f, multiplicative)} tells the Maxima simplifier that @code{f} 
@@ -709,6 +728,7 @@ Diese Vereinfachung werden nicht f@"ur Ausdr@"ucke der Form
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{multthru}
 @deffn  {Funktion} multthru (@var{expr})
 @deffnx {Funktion} multthru (@var{expr_1}, @var{expr_2})
 
@@ -774,6 +794,7 @@ eine Summe oder eine Gleichung sein.
 @end deffn
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{negdistrib}
 @defvr {Optionsvariable} negdistrib
 Standardwert: @code{true}
 
@@ -798,6 +819,7 @@ speziellen F@"allen f@"ur lokale Vereinfachungen genutzt werden.
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{opproperties}
 @defvr {Systemvariable} opproperties
 
 @c @code{opproperties} is the list of the special operator properties recognized
@@ -824,6 +846,7 @@ M@"ogliche Eigenschaften sind:
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{outative}
 @defvr {Deklaration} outative
 
 @c @code{declare (f, outative)} tells the Maxima simplifier that constant 
@@ -860,6 +883,7 @@ Eigenschaft @code{outative}.
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{rassociative}
 @defvr {Deklaration} rassociative
 
 @c @code{declare (g, rassociative)} tells the Maxima simplifier that @code{g} 
@@ -876,6 +900,7 @@ rechts-assioziativ. Zum Beispiel wird @code{f(f(a, b), f(c, d))} zu
 @end defvr
 
 @c --- 09.10.2010 DK -----------------------------------------------------------
+@anchor{symmetric}
 @defvr {Deklaration} symmetric
 
 @c @code{declare(h, symmetric)} tells the Maxima simplifier that @code{h} is a
@@ -894,6 +919,7 @@ Zum Beispiel wird @code{f(x, z, y)} zu @code{f(x, y, z)} vereinfacht.
 @end defvr
 
 @c --- 18.10.2010 DK -----------------------------------------------------------
+@anchor{xthru}
 @deffn {Funktion} xthru (@var{expr})
 
 @c Combines all terms of @var{expr} (which should be a sum) over a common 
