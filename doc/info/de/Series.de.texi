@@ -19,22 +19,31 @@
 @node Summen und Produkte, Einf@"uhrung in Reihen, Summen Produkte und Reihen
 @section Summen und Produkte
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{cauchysum}
-@defvr {Option variable} cauchysum
-Default value: @code{false}
+@defvr {Optionsvariable} cauchysum
+Standardwert: @code{false}
 
-@c REPHRASE
-When multiplying together sums with @code{inf} as their upper limit,
-if @code{sumexpand} is @code{true} and @code{cauchysum} is @code{true}
-then the Cauchy product will be used rather than the usual
-product.
-In the Cauchy product the index of the inner summation is a
-function of the index of the outer one rather than varying
-independently.
+@c When multiplying together sums with @code{inf} as their upper limit, if 
+@c @code{sumexpand} is @code{true} and @code{cauchysum} is @code{true} then the 
+@c Cauchy product will be used rather than the usual product. In the Cauchy 
+@c product the index of the inner summation is a function of the index of the 
+@c outer one rather than varying independently.
 
-Example:
+Werden zwei unendliche Reihen miteinander multipliziert und die Optionsvariablen
+@mref{sumexpand} sowie @code{cauchysum} haben beide den Wert @code{true}, dann 
+wird die Cauchy-Produktformel angewendet.
 
+Beispiele:
+
+@c ===beg===
+@c sumexpand: false$
+@c cauchysum: false$
+@c s: sum (f(i), i, 0, inf) * sum (g(j), j, 0, inf);
+@c sumexpand: true$
+@c cauchysum: true$
+@c ''s;
+@c ===end===
 @example
 (%i1) sumexpand: false$
 (%i2) cauchysum: false$
@@ -63,7 +72,7 @@ Example:
 @c @closecatbox
 @end defvr
 
-@c --- 17.10.2010 DK -----------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{intosum}
 @deffn {Funktion} intosum (@var{expr})
 
@@ -73,35 +82,65 @@ Example:
 @c reverse idea of the @code{outative} property of summations, but note that it
 @c does not remove this property, it only bypasses it.
 
-Multipliziert Faktoren in eine Summe herein. Tritt der Index der Summe au@ss{}erhalb
-der Summe auf, wird von der Funktion @code{intosum} ein neuer Index gesucht, wie
-es auch f@"ur die Funktion @code{sumcontract} ausgef@"uhrt wird. Dies entspricht im
-wesentlichen den zur Eigenschaft @code{outative} umgekehrten Vorgang. Dabei wird
-diese Eigenschaft nicht entfernt, sondern nur umgangen.
+Multipliziert Faktoren in eine Summe herein. Tritt der Index der Summe 
+au@ss{}erhalb der Summe auf, wird von der Funktion @code{intosum} ein neuer 
+Index gesucht. Summen haben die Eigenschaft @mrefcomma{outative} so dass 
+Faktoren aus der Summe herausgezogen werden. Mit der Funktion @code{intosum} 
+wird diese Vereinfachung r@"uckg@"angig gemacht.
 
-   @c WHAT ARE THESE CASES ??
 @c In some cases, a @code{scanmap (multthru, @var{expr})} may be necessary 
 @c before the @code{intosum}.
 
-In einigen F@"allen kann der Funktionsaufruf @code{scanmap(multthru, @var{expr})}
+@c TODO: WAS SIND DAS FÜR FÄLLE ?
+
+In einigen F@"allen kann die Vereinfachung @code{scanmap(multthru, @var{expr})} 
 vor einem Aufruf von @code{intosum} notwendig sein.
+
+Beispiel:
+
+@c ===beg===
+@c sum(2*x^2*n^k, k , 0, inf);
+@c intosum(%);
+@c ===end===
+@example
+@group
+(%i1) sum(2*x^2*n^k, k , 0, inf);
+                               inf
+                               ====
+                             2 \      k
+(%o1)                     2 x   >    n
+                               /
+                               ====
+                               k = 0
+@end group
+@group
+(%i2) intosum(%);
+                          inf
+                          ====
+                          \        k  2
+(%o2)                      >    2 n  x
+                          /
+                          ====
+                          k = 0
+@end group
+@end example
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{lsum}
-@deffn {Funktion} lsum (@var{expr}, @var{x}, @var{L})
+@deffn {Funktion} lsum (@var{expr}, @var{i}, @var{L})
 
 @c Represents the sum of @var{expr} for each element @var{x} in @var{L}.
 @c A noun form @code{'lsum} is returned if the argument @var{L} does not 
 @c evaluate to a list.
 
-Stellt die Summe von @var{expr} f@"ur jedes Element @var{x} in @var{L} dar.
-Die Substantivform @code{'lsum} wird zur@"uckgegeben, wenn das Argument @var{L} 
-nicht als Liste ausgewertet werden kann.
+Bildet die Summe f@"ur den Ausdruck @var{expr}. @var{i} ist der Index, dessen
+Elemente in der Liste @var{L} aufgez@"ahlt sind. Kann das Argument @var{L} nicht
+zu einer Liste ausgewertet werden, wird eine Substantivform zur@"uckgegeben.
 
 Beispiele:
 
@@ -128,27 +167,41 @@ Beispiele:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{niceindices}
-@deffn {Function} niceindices (@var{expr})
+@deffn {Funktion} niceindices (@var{expr})
 
-Renames the indices of sums and products in @var{expr}.
-@code{niceindices} attempts to rename each index to the value of @code{niceindicespref[1]},
-unless that name appears in the summand or multiplicand,
-in which case @code{niceindices} tries
-the succeeding elements of @code{niceindicespref} in turn, until an unused variable is found.
-If the entire list is exhausted,
-additional indices are constructed by appending integers to the value of
-@code{niceindicespref[1]}, e.g., @code{i0}, @code{i1}, @code{i2}, ....
+@c Renames the indices of sums and products in @var{expr}. @code{niceindices} 
+@c attempts to rename each index to the value of @code{niceindicespref[1]},
+@c unless that name appears in the summand or multiplicand, in which case 
+@c @code{niceindices} tries the succeeding elements of @code{niceindicespref} 
+@c in turn, until an unused variable is found. If the entire list is exhausted,
+@c additional indices are constructed by appending integers to the value of
+@c @code{niceindicespref[1]}, e.g., @code{i0}, @code{i1}, @code{i2}, ....
 
-@code{niceindices} returns an expression.
-@code{niceindices} evaluates its argument.
+Gibt den Indizes von Summen und Produkten im Ausdruck @var{expr} einen neuen
+Namen. @code{niceindices} benennt die Indizes nacheinander mit den Namen, die
+in der Liste der Optionsvariablen @mref{niceindicespref} enthalten sind. Die 
+Standardnamen sind @code{[i, j, k, l, m, n]}. Sind nicht gen@"ugend Namen in 
+der Liste vorhanden, werden weitere Indizes durch anh@"angen einer Nummer 
+gebildet.
 
-Example:
+@c @code{niceindices} returns an expression @code{niceindices} evaluates 
+@c its argument.
 
+@code{niceindices} wertet sein Argument aus.
+
+Beispiele:
+
+@c ===beg===
+@c niceindicespref;
+@c product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
+@c niceindices (%);
+@c ===end===
 @example
 (%i1) niceindicespref;
 (%o1)                  [i, j, k, l, m, n]
+@group
 (%i2) product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
                  inf    inf
                 /===\   ====
@@ -157,6 +210,8 @@ Example:
                  ! !    /
                 bar = 1 ====
                         foo = 1
+@end group
+@group
 (%i3) niceindices (%);
                      inf  inf
                     /===\ ====
@@ -165,6 +220,7 @@ Example:
                      ! !  /
                     l = 1 ====
                           k = 1
+@end group
 @end example
 
 @c @opencatbox
@@ -172,19 +228,26 @@ Example:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{niceindicespref}
-@defvr {Option variable} niceindicespref
-Default value: @code{[i, j, k, l, m, n]}
+@defvr {Optionsvariable} niceindicespref
+Standardwert: @code{[i, j, k, l, m, n]}
 
-@code{niceindicespref} is the list from which @code{niceindices}
-takes the names of indices for sums and products.
+@c @code{niceindicespref} is the list from which @code{niceindices}
+@c takes the names of indices for sums and products.
+@c The elements of @code{niceindicespref} are typically names of variables,
+@c although that is not enforced by @code{niceindices}.
 
-The elements of @code{niceindicespref} are typically names of variables,
-although that is not enforced by @code{niceindices}.
+@code{niceindicespref} ist die Liste der Namen, die die Funktion 
+@mref{niceindices} nutzt, um die Indizes von Summen und Produkte umzubennen.
 
-Example:
+Beispiele:
 
+@c ===beg===
+@c niceindicespref: [p, q, r, s, t, u]$
+@c product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
+@c niceindices (%);
+@c ===end===
 @example
 (%i1) niceindicespref: [p, q, r, s, t, u]$
 (%i2) product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
@@ -210,30 +273,45 @@ Example:
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{nusum}
-@deffn {Function} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+@deffn {Funktion} nusum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 
-Carries out indefinite hypergeometric summation of @var{expr} with
-respect to @var{x} using a decision procedure due to R.W. Gosper.
-@var{expr} and the result must be expressible as products of integer powers,
-factorials, binomials, and rational functions.
+@c Carries out indefinite hypergeometric summation of @var{expr} with
+@c respect to @var{x} using a decision procedure due to R.W. Gosper.
+@c @var{expr} and the result must be expressible as products of integer powers,
+@c factorials, binomials, and rational functions.
 
-@c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE ??
+Wendet den Gosper-Algorithmus der unbestimmten Summation f@"ur den Ausdruck 
+@var{expr} und dem Index @var{i} an. Der Index @var{i} l@"auft von @var{i_0} 
+bis @var{i_1}. Der Ausdruck @var{expr} und das Ergebnis der Summation m@"ussen 
+als Produkte von ganzzahligen Exponentiationen, Fakult@"aten, Binomialen und
+rationalen Funktionen ausdr@"uckbar sein.
+
+@c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE??
 @c (CAN'T WE MAKE THE POINT WITHOUT DRAGGING IN SOME NONSTANDARD TERMINOLOGY ??)
-The terms "definite"
-and "indefinite summation" are used analogously to "definite" and
-"indefinite integration".
-To sum indefinitely means to give a symbolic result
-for the sum over intervals of variable length, not just e.g. 0 to
-inf.  Thus, since there is no formula for the general partial sum of
-the binomial series, @code{nusum} can't do it.
 
-@code{nusum} and @code{unsum} know a little about sums and differences of finite products.
-See also @code{unsum}.
+@c The terms "definite" and "indefinite summation" are used analogously to 
+@c "definite" and "indefinite integration". To sum indefinitely means to give a
+@c symbolic result for the sum over intervals of variable length, not just e.g. 
+@c 0 to inf.  Thus, since there is no formula for the general partial sum of
+@c the binomial series, @code{nusum} can't do it.
 
-Examples:
+@c @code{nusum} and @code{unsum} know a little about sums and differences of 
+@c finite products. See also @code{unsum}.
 
+@code{nusum} und @code{unsum} kennen einige f@"ur Summen und Differenzen von 
+endlichen Produkten. Siehe auch @mrefdot{unsum}
+
+Beispiele:
+
+@c ===beg===
+@c nusum (n*n!, n, 0, n);
+@c nusum (n^4*4^n/binomial(2*n,n), n, 0, n);
+@c unsum (%, n);
+@c unsum (prod (i^2, i, 1, n), n);
+@c nusum (%, n, 1, n);
+@c ===end===
 @example
 (%i1) nusum (n*n!, n, 0, n);
 
@@ -272,7 +350,7 @@ Dependent equations eliminated:  (2 3)
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{product}
 @deffn {Funktion} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 
@@ -280,24 +358,22 @@ Dependent equations eliminated:  (2 3)
 @c from @var{i_0} to @var{i_1}. The noun form @code{'product} is displayed as 
 @c an uppercase letter pi.
 
-Stellt das Produkt der Werte von @var{expr} dar, wobei der 
-Index @var{i} von @var{i_0} bis @var{i_1} l@"auft. 
-Die Substantivform @code{'product} wird mit einem gro@ss{}geschriebenen Buchstaben 
-Pi dargestellt.
+Bildet das Produkt des Ausdrucks @var{expr} zum Index @var{i} in den Grenzen
+@var{i_0} bis @var{i_1}. Die Substantivform @code{'product} wird mit einem 
+gro@ss{}geschriebenen Buchstaben Pi dargestellt.
 
 @c @code{product} evaluates @var{expr} and lower and upper limits @var{i_0} and 
 @c @var{i_1}, @code{product} quotes (does not evaluate) the index @var{i}.
 
-@code{product} wertet @var{expr} aus, ebenso die untere und 
-obere Grenze @var{i_0} bzw. @var{i_1}, dagegen quotiert (keine Auswertung)
-@code{product} den Index @var{i}.
+@code{product} wertet @var{expr} sowie die untere @var{i_0} und obere Grenze
+@var{i_1} aus. Der Index @var{i} wird nicht ausgewertet.
 
 @c If the upper and lower limits differ by an integer, @var{expr} is evaluated 
 @c for each value of the index @var{i}, and the result is an explicit product.
 
-Wenn die untere und obere Grenze sich durch eine ganze Zahl unterscheidet, 
-wird @var{expr} f@"ur jeden Wert des Index @var{i} ausgewertet, 
-und das Ergebnis ist ein explizites Produkt.
+Ist die Differenz der oberen und unteren Grenze eine ganze Zahl, wird @var{expr}
+f@"ur jeden Wert des Index @var{i} ausgewertet. Das Ergebnis ist ein explizites
+Produkt.
 
 @c Otherwise, the range of the index is indefinite. Some rules are applied to 
 @c simplify the product. When the global variable @code{simpproduct} is 
@@ -305,16 +381,14 @@ und das Ergebnis ist ein explizites Produkt.
 @c yields a result which is not a product; otherwise, the result is a noun form 
 @c @code{'product}.
 
-Andernfalls ist der Bereich des Index unbestimmt. Einige Regeln werden 
-angewandt, um das Produkt zu vereinfachen. Wenn die globale Variable 
-@code{simpproduct} @code{true} ist, werden zus@"atzliche Regeln angewandt.
-In einigen F@"allen liefert die Vereinfachung ein Ergebnis, das kein Produkt 
-ist;  andernfalls wird das Ergebnis in der Substantivform @code{'product} 
-angegeben.
+Andernfalls ist der Bereich des Index unbestimmt. Maxima wendet einige einfache
+Regeln an, um das Produkt zu vereinfachen. Hat die Optionsvariable 
+@mref{simpproduct} den Wert @code{true}, wendet Maxima weitere Regeln an, um
+Produkte zu vereinfachen. 
 
 @c See also @code{nouns} and @code{evflag}.
 
-Siehe auch @code{nouns} und @code{evflag}.
+Siehe auch @mref{nouns} und @mrefdot{evflag}
 
 Beispiele:
 
@@ -329,7 +403,6 @@ Beispiele:
 @c product (integrate (x^k, x, 0, 1), k, 1, n);
 @c product (if k <= 5 then a^k else b^k, k, 1, 10);
 @c ===end===
-
 @example
 (%i1) product (x + i*(i+1)/2, i, 1, 4);
 (%o1)           (x + 1) (x + 3) (x + 6) (x + 10)
@@ -373,7 +446,26 @@ Beispiele:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
+@anchor{simpproduct}
+@defvr {Optionsvariable} simpproduct
+Standardwert: @code{false}
+
+Hat @code{simpproduct} den Wert @code{true}, versucht Maxima ein Produkt weiter 
+zu vereinfachen. Die Vereinfachung kann eine geschlossene Form liefern. Hat
+@code{simpproduct} den Wert @code{false} oder wird das Produkt in der
+Substantivform @code{'product} definiert, werden nur einige einfache Regeln von
+Maxima f@"ur die Vereinfachung angewendet.
+
+@c TODO: WELCHE REGELN WENDET MAXIMA IMMER AN. Z. B. OUTATIVE?
+@c TODO: IST IM ENGLISCHEN MANUAL NICHT DOKUMENTIERT.
+
+@c @opencatbox
+@c @category{Summen und Produkte} @category{Vereinfachungsflags und Variablen}
+@c @closecatbox
+@end defvr
+
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{simpsum}
 @defvr {Optionsvariable} simpsum
 Standardwert: @code{false}
@@ -384,43 +476,45 @@ Standardwert: @code{false}
 @c value is a sum noun form which is a representation of the sigma notation used
 @c in mathematics.
 
-Hat @code{simpsum} den Wert @code{true}, wird das Ergebnis einer Summation 
-weiter vereinfacht. Diese Vereinfachung kann eine geschlossene Form liefern. Hat
-@code{simpsum} den Wert @code{false} oder wird die Substantivform @code{'sum}
-genutzt, wird eine Substantivform der Summation zur@"uckgegeben.
+Hat @code{simpsum} den Wert @code{true}, versucht Maxima eine Summe oder Reihe 
+weiter zu vereinfachen. Die Vereinfachung kann eine geschlossene Form liefern. 
+Hat @code{simpsum} den Wert @code{false} oder die Summe oder Reihe in der
+Substantivform @code{'sum} definiert, werden nur einige einfache Regeln von
+Maxima f@"ur die Vereinfachung angewendet.
+
+@c TODO: WELCHE REGELN WENDET MAXIMA IMMER AN. Z. B. OUTATIVE?
 
 @c @opencatbox
 @c @category{Summen und Produkte} @category{Vereinfachungsflags und Variablen}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{sum}
-@deffn {Function} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Funktion} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 
 @c Represents a summation of the values of @var{expr} as the index @var{i} 
 @c varies from @var{i_0} to @var{i_1}. The noun form @code{'sum} is displayed as
 @c an uppercase letter sigma.
 
-Stellt die Summe der Werte von @var{expr} dar, wobei der Index @var{i} von 
-@var{i_0} bis @var{i_1} l@"auft. Die Substantivform @code{'sum} wird als 
-gro@ss{}geschriebener Buchstabe Sigma angezeigt.
+Bildet die Summe des Ausdrucks @var{expr} zum Index @var{i} in den Grenzen
+@var{i_0} bis @var{i_1}. Die Substantivform @code{'sum} wird mit einem 
+gro@ss{}geschriebenen Buchstaben Sigma dargestellt.
 
 @c @code{sum} evaluates its summand @var{expr} and lower and upper limits 
 @c @var{i_0} and @var{i_1}, @code{sum} quotes (does not evaluate) the index 
 @c @var{i}.
 
-@code{sum} wertet den Summanden @var{expr} aus, ebenso die untere und obere 
-Grenze @var{i_0} bzw. @var{i_1}, dagegen quotiert (keine Auswertung) @code{sum} 
-den Index @var{i}.
+@code{sum} wertet @var{expr} sowie die untere @var{i_0} und obere Grenze
+@var{i_1} aus. Der Index @var{i} wird nicht ausgewertet.
 
 @c If the upper and lower limits differ by an integer, the summand @var{expr} 
 @c is evaluated for each value of the summation index @var{i}, and the result 
 @c is an explicit sum.
 
-Wenn die untere und obere Grenze sich durch eine ganze Zahl unterscheidet, 
-wird der Summand @var{expr} f@"ur jeden Wert des Summationsindex @var{i} 
-ausgewertet, und das Ergebnis ist eine explizite Summe.
+Ist die Differenz der oberen und unteren Grenze eine ganze Zahl, wird @var{expr}
+f@"ur jeden Wert des Index @var{i} ausgewertet. Das Ergebnis ist eine explizite
+Summe.
 
 @c Otherwise, the range of the index is indefinite. Some rules are applied to 
 @c simplify the summation. When the global variable @code{simpsum} is 
@@ -428,47 +522,42 @@ ausgewertet, und das Ergebnis ist eine explizite Summe.
 @c yields a result which is not a summation; otherwise, the result is a noun 
 @c form @code{'sum}.
 
-Andernfalls ist der Bereich des Index unbestimmt. Einige Regeln werden 
-angewandt, um die Summe zu vereinfachen. Wenn die globale Variable 
-@code{simpsum} @code{true} ist, werden zus@"atzliche Regeln angewandt. In einigen 
-F@"allen liefert die Vereinfachung ein Ergebnis, das keine Summe ist; andernfalls 
-wird das Ergebnis in der Substantivform @code{'sum} angegeben.
+Andernfalls ist der Bereich des Index unbestimmt. Maxima wendet einige einfache
+Regeln an, um die Summe zu vereinfachen. Hat die Optionsvariable 
+@mref{simpsum} den Wert @code{true}, wendet Maxima weitere Regeln an, um Summen
+zu vereinfachen.
 
 @c When the @code{evflag} (evaluation flag) @code{cauchysum} is @code{true},
 @c a product of summations is expressed as a Cauchy product, in which the index 
 @c of the inner summation is a function of the index of the outer one, rather 
 @c than varying independently.
 
-Wenn der @code{evflag} (Auswertungsschalter) @code{cauchysum} und die 
-Optionsvariable @code{sumexpand} beide @code{true} sind, 
-wird ein Produkt von Summen i.A. als Cauchy-Produkt ausgedr@"uckt. 
-In dem Cauchy-Produkt ist der Index der inneren Summe eher eine Funktion 
-des Index der @"au@ss{}eren Summe, als dass beide unabh@"angig variieren.
+Werden zwei unendliche Reihen miteinander multipliziert und die Optionsvariablen
+@mref{sumexpand} sowie @code{cauchysum} haben beide den Wert @code{true}, dann 
+wird die Cauchy-Produktformel angewendet.
 
 @c The global variable @code{genindex} is the alphabetic prefix used to generate
 @c the next index of summation, when an automatically generated index is needed.
 
-Die globale Variable @code{genindex} ist der alphabetische Pr@"afix, 
-der verwendet wird, um den n@"achsten Index einer Summe zu erzeugen, 
-falls ein automatisch erzeugter Index ben@"otigt wird.
+Die Optionsvariable @mref{genindex} enth@"alt das Zeichen, das der Pr@"afix 
+eines automatisch generierten Index ist.
 
 @c @code{gensumnum} is the numeric suffix used to generate the next index of 
 @c summation, when an automatically generated index is needed. When 
 @c @code{gensumnum} is @code{false}, an automatically-generated index is only
 @c @code{genindex} with no numeric suffix.
 
-@code{gensumnum} ist ein numerischer Suffix, der verwendet wird, 
-um den n@"achsten Index einer Summe zu erzeugen, 
-falls ein automatisch erzeugter Index ben@"otigt wird. 
-Wird @code{gensumnum} @code{false} gesetzt, ist der automatisch erzeugte 
-Index nur @code{genindex} ohne numerischen Suffix. 
+@code{gensumnum} enth@"alt eine ganze Zahl, die an den Pr@"afix @code{genindex}
+angeh@"angt wird, um einen automatischen Index zu generieren. @code{gensumnum}
+wird von Maxima automatisch erh@"oht. Hat @code{gensumnum} den Wert 
+@code{false}, wird keine Zahl an den Pr@"afix angeh@"angt.
 
 @c See also @code{sumcontract}, @code{intosum}, @code{bashindices}, 
 @c @code{niceindices}, @code{nouns}, @code{evflag}, and @code{zeilberger}. 
 
-Siehe auch @code{sumcontract},  @code{sumexpand}, @code{intosum},
-@code{bashindices}, @code{niceindices},
-@code{nouns}, @code{evflag}, @code{cauchysum} und @code{zeilberger}.
+Siehe auch @mrefcomma{sumcontract}  @mrefcomma{sumexpand} @mrefcomma{intosum}@ 
+@mrefcomma{bashindices} @mrefcomma{niceindices} @mrefcomma{nouns}@  
+@mrefcomma{evflag} @mref{cauchysum} und @mrefdot{zeilberger}
 
 Beispiele:
 
@@ -486,7 +575,6 @@ Beispiele:
 @c sum (integrate (x^k, x, 0, 1), k, 1, n);
 @c sum (if k <= 5 then a^k else b^k, k, 1, 10);
 @c ===end===
-
 @example
 (%i1) sum (i^2, i, 1, 7);
 (%o1)                          140
@@ -503,6 +591,7 @@ Beispiele:
                            /
                            ====
                            i = 1
+@group
 (%i5) sum (2^i + i^2, i, 0, n);
                           n
                          ====
@@ -511,6 +600,7 @@ Beispiele:
                          /
                          ====
                          i = 0
+@end group
 (%i6) sum (2^i + i^2, i, 0, n), simpsum;
                               3      2
                    n + 1   2 n  + 3 n  + n
@@ -558,26 +648,26 @@ Beispiele:
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@anchor{sumconract}
+@anchor{sumcontract}
 @deffn {Funktion} sumcontract (@var{expr})
 
-@c Combines all sums of an addition that have upper and lower bounds that differ
-@c by constants. The result is an expression containing one summation for each 
-@c set of such summations added to all appropriate extra terms that had to be 
-@c extracted to form this sum. @code{sumcontract} combines all compatible sums 
-@c and uses one of the indices from one of the sums if it can, and then try to 
-@c form a reasonable index if it cannot use any supplied.
+Combines all sums of an addition that have upper and lower bounds that differ
+by constants. The result is an expression containing one summation for each 
+set of such summations added to all appropriate extra terms that had to be 
+extracted to form this sum. @code{sumcontract} combines all compatible sums 
+and uses one of the indices from one of the sums if it can, and then try to 
+form a reasonable index if it cannot use any supplied.
 
-Alle Summen einer Addition deren obere und untere Grenze sich nur eine Konstante
-unterscheiden werden zusammengezogen. Das Ergebnis ist ein Ausdruck der eine
-Summe .... (wie wird das @"ubersetzt) ...
+@c Alle Summen einer Addition deren obere und untere Grenze sich nur eine 
+@c Konstante unterscheiden werden zusammengezogen. Das Ergebnis ist ein Ausdruck
+@c der eine Summe .... (wie wird das @"ubersetzt) ...
 
 @c WHEN IS intosum NECESSARY BEFORE sumcontract ??
 
-@c It may be necessary to do an @code{intosum (@var{expr})} before the 
-@c @code{sumcontract}.
+It may be necessary to do an @code{intosum (@var{expr})} before the 
+@code{sumcontract}.
 
-Es kann notwendig sein zun@"achst @code{intosum(@var{expr})} auszuf@"uhren.
+@c Es kann notwendig sein zun@"achst @code{intosum(@var{expr})} auszuf@"uhren.
 
 @c @opencatbox
 @c @category{Summen und Produkte}
@@ -585,6 +675,7 @@ Es kann notwendig sein zun@"achst @code{intosum(@var{expr})} auszuf@"uhren.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{sumexpand}
 @defvr {Option variable} sumexpand
 Default value: @code{false}
 
