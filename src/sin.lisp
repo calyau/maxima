@@ -1620,11 +1620,16 @@
        (format t "~& Call the INTEGRATOR with:~%")
        (format t "~&   : y    = ~A~%" y)
        (format t "~&   : repl = ~A~%" repl))
-     
      ;; See Bug 2880797.  We want atan(tan(x)) to simplify to x, so
      ;; set $triginverses to '$all.
-     (return (let (($triginverses '$all))
-	       (substint repl var (integrator y var))))))
+     (return
+       ;; Do not integrate for the global variable VAR, but substitute it.
+       ;; This way possible assumptions on VAR are no longer present. The
+       ;; algorithm of DEFINT depends on this behavior. See Bug 3085498.
+       (let (($triginverses '$all) (newvar (gensym)))
+         (substint repl
+                   newvar
+                   (integrator (maxima-substitute newvar var y) newvar))))))
 
 (defmvar $integration_constant_counter 0)
 (defmvar $integration_constant '$%c)
