@@ -24,7 +24,6 @@ binary-gcl/maxima : maxmac.lisp
 binary-gcl/maxima : mopers.lisp
 binary-gcl/maxima : mforma.lisp
 binary-gcl/maxima : mrgmac.lisp
-binary-gcl/maxima : procs.lisp
 binary-gcl/maxima : rzmac.lisp
 binary-gcl/maxima : strmac.lisp
 binary-gcl/maxima : displm.lisp
@@ -35,7 +34,6 @@ binary-gcl/maxima : opers.lisp
 binary-gcl/maxima : utils.lisp
 binary-gcl/maxima : sumcon.lisp
 binary-gcl/maxima : sublis.lisp
-binary-gcl/maxima : runtim.lisp
 binary-gcl/maxima : merror.lisp
 binary-gcl/maxima : mformt.lisp
 binary-gcl/maxima : mutils.lisp

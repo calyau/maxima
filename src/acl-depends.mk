@@ -18,7 +18,6 @@ binary-acl/maxima.dxl : maxmac.lisp
 binary-acl/maxima.dxl : mopers.lisp
 binary-acl/maxima.dxl : mforma.lisp
 binary-acl/maxima.dxl : mrgmac.lisp
-binary-acl/maxima.dxl : procs.lisp
 binary-acl/maxima.dxl : rzmac.lisp
 binary-acl/maxima.dxl : strmac.lisp
 binary-acl/maxima.dxl : displm.lisp
@@ -28,7 +27,6 @@ binary-acl/maxima.dxl : opers.lisp
 binary-acl/maxima.dxl : utils.lisp
 binary-acl/maxima.dxl : sumcon.lisp
 binary-acl/maxima.dxl : sublis.lisp
-binary-acl/maxima.dxl : runtim.lisp
 binary-acl/maxima.dxl : merror.lisp
 binary-acl/maxima.dxl : mformt.lisp
 binary-acl/maxima.dxl : mutils.lisp

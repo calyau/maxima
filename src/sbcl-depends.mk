@@ -19,7 +19,6 @@ binary-sbcl/maxima.core : maxmac.lisp
 binary-sbcl/maxima.core : mopers.lisp
 binary-sbcl/maxima.core : mforma.lisp
 binary-sbcl/maxima.core : mrgmac.lisp
-binary-sbcl/maxima.core : procs.lisp
 binary-sbcl/maxima.core : rzmac.lisp
 binary-sbcl/maxima.core : strmac.lisp
 binary-sbcl/maxima.core : displm.lisp
@@ -29,7 +28,6 @@ binary-sbcl/maxima.core : opers.lisp
 binary-sbcl/maxima.core : utils.lisp
 binary-sbcl/maxima.core : sumcon.lisp
 binary-sbcl/maxima.core : sublis.lisp
-binary-sbcl/maxima.core : runtim.lisp
 binary-sbcl/maxima.core : merror.lisp
 binary-sbcl/maxima.core : mformt.lisp
 binary-sbcl/maxima.core : mutils.lisp

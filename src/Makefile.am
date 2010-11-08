@@ -441,13 +441,11 @@ optimize.lisp \
 option.lisp \
 outmis.lisp \
 pade.lisp \
-parse-body.lisp \
 plot.lisp \
 plasma.lisp \
 pois2.lisp \
 pois3.lisp \
 polyrz.lisp \
-procs.lisp \
 psolve.lisp \
 rand-mt19937.lisp \
 rat3a.lisp \
@@ -462,7 +460,6 @@ residu.lisp \
 result.lisp \
 risch.lisp \
 rpart.lisp \
-runtim.lisp \
 rzmac.lisp \
 schatc.lisp \
 scs.lisp \

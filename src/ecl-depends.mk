@@ -20,7 +20,6 @@ binary-ecl/maxima : maxmac.lisp
 binary-ecl/maxima : mopers.lisp
 binary-ecl/maxima : mforma.lisp
 binary-ecl/maxima : mrgmac.lisp
-binary-ecl/maxima : procs.lisp
 binary-ecl/maxima : rzmac.lisp
 binary-ecl/maxima : strmac.lisp
 binary-ecl/maxima : displm.lisp
@@ -30,7 +29,6 @@ binary-ecl/maxima : opers.lisp
 binary-ecl/maxima : utils.lisp
 binary-ecl/maxima : sumcon.lisp
 binary-ecl/maxima : sublis.lisp
-binary-ecl/maxima : runtim.lisp
 binary-ecl/maxima : merror.lisp
 binary-ecl/maxima : mformt.lisp
 binary-ecl/maxima : mutils.lisp

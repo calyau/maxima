@@ -82,7 +82,6 @@
                                      (:file "mforma")))
                (:module other-macros :pathname ""
                         :components ((:file "mrgmac") 
-                                     (:file "procs") 
                                      (:file "rzmac")    
                                      (:file "strmac") 
                                      (:file "displm")))
@@ -97,7 +96,6 @@
                                      (:file "utils") 
                                      (:file "sumcon") 
                                      (:file "sublis") 
-                                     (:file "runtim") 
                                      (:file "merror") 
                                      (:file "mformt") 
                                      (:file "mutils") 
@@ -456,7 +454,6 @@
 	       (:module numerical-functions :pathname ""
 			:depends-on (trigonometry)
 			:components ((:file "bessel")
-				     ;;#+gcl(:file "parse-body")
 				     (:file "ellipt")
 				     (:file "airy"
 					    :depends-on ("ellipt"))
