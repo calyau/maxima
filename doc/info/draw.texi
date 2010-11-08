@@ -1064,6 +1064,20 @@ See also @code{terminal}, @code{file_name}, and @code{eps_height}.
 
 
 
+@defvr {Graphic option} error_type
+Default value: @code{y}
+
+Depending on its value, which can be @code{x}, @code{y}, or @code{xy},
+graphic object @code{errors} will draw points with horizontal, vertical,
+or both, error bars. When @code{error_type=boxes}, boxes will be drawn
+instead of crosses.
+
+See also @code{errors}.
+@end defvr
+
+
+
+
 @defvr {Graphic option} file_bgcolor
 Default value: @code{"xffffff"}
 
@@ -2594,7 +2608,8 @@ Default value: 10
 
 @code{x_voxel} is the number of voxels in the x direction to
 be used by the @i{marching cubes algorithm} implemented
-by the 3d @code{implicit} object.
+by the 3d @code{implicit} object. It is also used by graphic
+object @code{region}.
 
 @opencatbox
 @category{Package draw}
@@ -3081,7 +3096,8 @@ Default value: 10
 
 @code{y_voxel} is the number of voxels in the y direction to
 be used by the @i{marching cubes algorithm} implemented
-by the 3d @code{implicit} object.
+by the 3d @code{implicit} object. It is also used by graphic
+object @code{region}.
 
 @opencatbox
 @category{Package draw}
@@ -3854,6 +3870,54 @@ Example:
 
 
 
+@deffn  {Graphic object} errors ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+Draws points with error bars, horizontally, vertically or both, depending on the
+value of option @code{error_type}.
+
+@b{2D}
+
+If @code{error_type=x}, arguments to @code{errors} must be of the form 
+@code{[x,y,xdelta]} or @code{[x,y,xlow,xhigh]}. If @code{error_type=y}, 
+arguments must be of the form @code{[x,y,ydelta]} or @code{[x,y,ylow,yhigh]}.
+If @code{error_type=xy} or @code{error_type=boxes}, arguments to @code{errors}
+must be of the form @code{[x,y,xdelta,ydelta]} or @code{[x,y,xlow,xhigh,ylow,yhigh]}.
+
+See also @code{error_type}.
+
+This object is affected by the following @i{graphic options}: @code{error_type}, 
+@code{points_joined}, @code{line_width}, @code{key}, @code{line_type}, 
+@code{color}, @code{fill_density}, @code{xaxis_secondary}, and  @code{yaxis_secondary}.
+
+Option @code{fill_density} is only relevant when @code{error_type=boxes}.
+
+Examples:
+
+Horizontal error bars.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        error_type = y,
+        errors([[1,2,1], [3,5,3], [10,3,1], [17,6,2]]))$
+@end example
+
+Vertical and horizontal error bars.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        error_type = xy,
+        points_joined = true,
+        color = blue,
+        errors([[1,2,1,2], [3,5,2,1], [10,3,1,1], [17,6,1/2,2]])); 
+@end example
+
+@opencatbox
+@category{Package draw}
+@closecatbox
+
+@end deffn
+
 
 
 @deffn  {Graphic object} explicit (@var{fcn},@var{var},@var{minval},@var{maxval})
@@ -4601,6 +4665,34 @@ Example:
 @closecatbox
 
 @end deffn
+
+
+
+
+
+@deffn  {Graphic object} region (@var{expr},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+Plots a region on the plane defined by inequalities.
+
+@b{2D}
+@var{expr} is an expression formed by inequalities and boolean operators
+@code{and}, @code{or}, and @code{not}. The region is bounded by the rectangle
+defined by @math{[@var{minval1}, @var{maxval1}]} and @math{[@var{minval2}, @var{maxval2}]}.
+
+This object is affected by the following @i{graphic options}: @code{fill_color}, 
+@code{key}, @code{x_voxel}, and @code{y_voxel}.
+
+Example:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        x_voxel = 30,
+        y_voxel = 30,
+        region(x^2+y^2<1 and x^2+y^2 > 1/2,
+               x, -1.5, 1.5, y, -1.5, 1.5));
+@end example
+@end deffn
+
 
 
 

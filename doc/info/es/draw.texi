@@ -1,4 +1,4 @@
-@c version 1.51
+@c version 1.52
 @menu
 * Introducci@'on a draw::
 * Funciones y variables para draw::
@@ -976,6 +976,18 @@ Ejemplo:
 @end example
 
 V@'eanse tambi@'en @code{terminal}, @code{file_name} y @code{eps_height}.
+@end defvr
+
+
+
+@defvr {Opci@'on gr@'afica} error_type
+Valor por defecto: @code{y}
+
+Dependiendo de su valor, el cual puede ser @code{x}, @code{y} o @code{xy},
+el objeto gr@'afico @code{errors} dibujar@'a puntos con barras de error horizontales,
+verticales, o ambas. Si @code{error_type=boxes}, se dibujar@'an cajas en lugar de cruces.
+
+V@'ease tambi@'en @code{errors}.
 @end defvr
 
 
@@ -2360,7 +2372,8 @@ Valor por defecto: 10
 
 @code{x_voxel} es el n@'umero de voxels en la direcci@'on x a utilizar
 por el algoritmo @i{marching cubes} implementado por el objeto 
-@code{implicit} tridimensional.
+@code{implicit} tridimensional. Tambi@'en se utiliza como opci@'on
+del objeto gr@'afico @code{region}.
 @end defvr
 
 
@@ -2768,7 +2781,8 @@ Valor por defecto: 10
 
 @code{y_voxel} es el n@'umero de voxels en la direcci@'on y a utilizar
 por el algoritmo @i{marching cubes} implementado por el objeto 
-@code{implicit} tridimensional.
+@code{implicit} tridimensional. Tambi@'en se utiliza como opci@'on
+del objeto gr@'afico @code{region}.
 @end defvr
 
 
@@ -3426,6 +3440,51 @@ Ejemplo:
 @end example
 @end deffn
 
+
+
+@deffn  {Objeto gr@'afico} errors ([@var{x1},@var{x2},...], [@var{y1},@var{y2},...])
+Dibuja puntos con barras de error asociadas horizontales, verticales o de
+ambos tipos, seg@'un sea el valor de la opci@'on @code{error_type}.
+
+@b{2D}
+
+Si @code{error_type=x}, los argumentos a @code{errors} deben ser de la forma 
+@code{[x,y,xdelta]} o @code{[x,y,xlow,xhigh]}. Si @code{error_type=y}, 
+los argumentos deben ser del tipo @code{[x,y,ydelta]} o @code{[x,y,ylow,yhigh]}.
+Si @code{error_type=xy} o @code{error_type=boxes}, los argumentos deben ser de la
+forma @code{[x,y,xdelta,ydelta]} o @code{[x,y,xlow,xhigh,ylow,yhigh]}.
+
+V@'ease tambi@'en @code{error_type}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{error_type}, 
+@code{points_joined}, @code{line_width}, @code{key}, @code{line_type}, 
+@code{color}, @code{fill_density}, @code{xaxis_secondary} y @code{yaxis_secondary}.
+
+La opci@'on @code{fill_density} solo es relevante cuando @code{error_type=boxes}.
+
+Ejemplos:
+
+Barras de error horizontales.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        error_type = y,
+        errors([[1,2,1], [3,5,3], [10,3,1], [17,6,2]]))$
+@end example
+
+Barras de error horizontales y verticales.
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        error_type = xy,
+        points_joined = true,
+        color = blue,
+        errors([[1,2,1,2], [3,5,2,1], [10,3,1,1], [17,6,1/2,2]])); 
+@end example
+
+@end deffn
 
 
 
@@ -4126,6 +4185,35 @@ Ejemplo:
              rectangle([9,4],[2,-1.5]),
              xrange      = [-3,10],
              yrange      = [-3,4.5] )$
+@end example
+@end deffn
+
+
+
+
+
+
+@deffn  {Objeto gr@'afico} region (@var{expr},@var{var1},@var{minval1},@var{maxval1},@var{var2},@var{minval2},@var{maxval2})
+Dibuja una regi@'on del plano definida por desigualdades.
+
+@b{2D}
+@var{expr} es una expresi@'on formada por desigualdades y los operadores l@'ogicos
+@code{and}, @code{or} y @code{not}. La regi@'on est@'a acotada por el rect@'angulo
+definido por @math{[@var{minval1}, @var{maxval1}]} y
+@math{[@var{minval2}, @var{maxval2}]}.
+
+Este objeto se ve afectado por las siguientes @i{opciones gr@'aficas}: @code{fill_color}, 
+@code{key}, @code{x_voxel} y @code{y_voxel}.
+
+Ejemplo:
+
+@example
+(%i1) load(draw)$
+(%i2) draw2d(
+        x_voxel = 30,
+        y_voxel = 30,
+        region(x^2+y^2<1 and x^2+y^2 > 1/2,
+               x, -1.5, 1.5, y, -1.5, 1.5));
 @end example
 @end deffn
 
