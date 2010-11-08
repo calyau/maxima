@@ -28,6 +28,8 @@
 
 (defmvar generate-atan2 t "Controls whether RPART will generate ATAN's
 			or ATAN2's, default is to make ATAN2's")
+;; generate-atan2 is set to nil when doing integration to avoid
+;; generating discontinuities that defint can't handle.
 
 ;;; Realpart gives the real part of an expr.
 
@@ -700,9 +702,11 @@
                                   (mul (cdr aa) (car sp)))))
                     (cons (mul (power (car aa) (car sp))
                                (power '$%e (neg (mul (cdr aa) (cdr sp)))))
-                          (take '($atan2)
-                                (take '(%sin) arg)
-                                (take '(%cos) arg))))))))
+                          (if generate-atan2
+			      (take '($atan2)
+				    (take '(%sin) arg)
+				    (take '(%cos) arg))
+			    (take '(%atan) (take '(%tan) arg)))))))))
 	((and (member (caar l) '(%tan %tanh) :test #'eq)
 	      (not (=0 (cdr (risplit (cadr l))))))
 	 (let* ((sp (risplit (cadr l)))

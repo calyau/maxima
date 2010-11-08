@@ -1320,3 +1320,6 @@ forget(a>0,b>0);
 integrate(exp(-u^2),u,minf,x);
 sqrt(%pi)*erf(x)/2+sqrt(%pi)/2;
 
+/* integration error - ID: 3085498 */
+integrate(sqrt(1-cos(t)),t,0,2*%pi);
+2^(5/2);
