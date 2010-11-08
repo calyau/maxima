@@ -1512,6 +1512,7 @@ wrapper for this."
 			   (when (member prop '(mexpr mmacro) :test #'eq)
 			     (mremprop var 'mlexprp)
 			     (mremprop var 'mfexprp)
+			     (remprop var 'lineinfo)
 			     (if (mget var 'trace)
 				 (macsyma-untrace var))))
 		   ((and (eq prop '$alphabetic) (stringp var))
