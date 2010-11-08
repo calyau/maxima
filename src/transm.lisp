@@ -14,11 +14,6 @@
 
 (macsyma-module transm macro)
 
-(eval-when (:execute :compile-toplevel :load-toplevel)
-  (load-macsyma-macros procs))
-
-;(load-macsyma-macros-at-runtime 'procs)
-
 (defvar transl-modules nil)
 
 ;;; Simple but effective single-level module definitions
@@ -80,8 +75,6 @@
 (defmacro transl-module (name)
   (unless (member name transl-modules :test #'eq)
     (maxima-error "Not a `transl-module', see TRANSM")))
-
-(def-def-property translate (form))
 
 (defmacro def%tr (name lambda-list &body body &aux definition)
   (setq definition
