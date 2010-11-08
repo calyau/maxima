@@ -27,7 +27,7 @@
   (when ($ratp exp)
     (setq exp ($ratdisrep exp)))
   (when (or (not (mnump eps)) (mnegp eps) (equal eps 0))
-    (merror "Second argument to `realroots' was not a positive number: ~M" eps))
+    (merror (intl:gettext "realroots: second argument must be a positive number; found: ~M") eps))
   (let (($keepfloat nil))
     (sturmseq exp eps)))
 
@@ -40,15 +40,15 @@
 		     finally (return t)))
 	 ;;(EVERY #'ATOM (CDR EXP)))
 	 exp)
-	(t (merror "Argument must be a univariate polynomial"))))
+	(t (merror (intl:gettext "UNIPOLY: argument must be a univariate polynomial; found: ~M") exp))))
 
 (defun makrat (pt)
   (cond ((floatp pt) (maxima-rationalize pt))
 	((numberp pt) (cons pt 1))
 	(($bfloatp pt) (bigfloat2rat pt))
-	((atom pt) (merror "~M Non-numeric argument" pt))
+	((atom pt) (merror (intl:gettext "MAKRAT: argument must be a number; found: ~M") pt))
 	((equal (caar pt) 'rat) (cons (cadr pt) (caddr pt)))
-	(t (merror "~M Non-numeric argument" pt))))
+	(t (merror (intl:gettext "MAKRAT: argument must be a number; found: ~M") pt))))
 
 (declare-top (special equations))
 

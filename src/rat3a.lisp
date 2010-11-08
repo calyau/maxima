@@ -86,7 +86,7 @@
 	    step2 (setq q (truncate a1 a2))
 	    (psetq a1 a2 a2 (- a1 (* a2 q)))
 	    (psetq y1 y2 y2 (- y1 (* y2 q)))
-	    step3 (cond ((zerop a2) (merror "Inverse of zero divisor?"))
+	    step3 (cond ((zerop a2) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
 			((not (equal a2 1)) (go step2)))
 	    (return (cmod y2))))
 	;; Here we can use fixnum arithmetic
@@ -100,7 +100,7 @@
 	      step2 (setq q (truncate a1 a2))
 	      (psetq a1 a2 a2 (rem a1 a2))
 	      (psetq y1 y2 y2 (- y1 (* y2 q)))
-	      step3 (cond ((= a2 0) (merror "Inverse of zero divisor?"))
+	      step3 (cond ((= a2 0) (merror (intl:gettext "CRECIP: attempted inverse of zero (mod ~M)") modulus))
 			  ((not (= a2 1)) (go step2)))
 	      ;; Is there any reason why this can't be (RETURN (CMOD Y2)) ? -cwh
 	      (return  (cmod y2)
@@ -151,7 +151,7 @@
 	 (cond ((> m 0)
 		(setq hmodulus (truncate m 2))
 		(setq modulus m))
-	       (t (merror "Modulus must be a number > 0"))))
+	       (t (merror (intl:gettext "assignment: modulus must be a positive number; found: ~M") m))))
 	(t (setq hmodulus (setq modulus nil)))))
 
 (defmfun pcoefadd (e c x)

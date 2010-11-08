@@ -117,7 +117,7 @@
      (if (specrepp exp) (setq exp (specdisrep exp)))
      (if (specrepp intvar) (setq intvar (specdisrep intvar)))
      (if (mnump intvar)
-	 (merror "Attempt to integrate wrt a number: ~:M" intvar))
+	 (merror (intl:gettext "risch: attempt to integrate wrt a number: ~:M") intvar))
      (if (and (atom intvar) (isinop exp intvar)) (go noun))
      (rischform exp)
      (cond (trigint (return (trigin1 exp intvar)))

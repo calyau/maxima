@@ -435,7 +435,7 @@
 	      (equal (car x) (car y)) (equal (caar x) 'mrat)
 	      (equal (cddr x) 1) (equal (cddr y) 1))
 	 (cons (car x)(cons (fptimes (cadr x)(cadr y))1)))
-	(t (merror "Use `fasttimes' only on CRE polynomials with same varlists"))))
+	(t (merror (intl:gettext "fasttimes: arguments must be CRE polynomials with same variables.")))))
 
 (defun fptimes (x y)
   (cond ((or (pzerop x) (pzerop y)) (pzero))
@@ -482,7 +482,7 @@
 
 (defmfun $ratweight (&rest args)
   (when (oddp (length args))
-    (merror "`ratweight' takes an even number of arguments."))
+    (merror (intl:gettext "ratweight: number of arguments must be a multiple of 2.")))
   (do ((l args (cddr l)))
       ((null l))
     (rplacd (or (assoc (first l) *ratweights :test #'equal)
@@ -704,7 +704,7 @@
     (or (every #'(lambda (exp)
 		     (or (alike1 x exp) (free exp x)))
 		 varlist)
-	(merror "`ratdiff' variable is embedded in kernel"))
+	(merror (intl:gettext "ratdiff: first argument must be a polynomial in ~M; found: ~M") x p))
     (setq p (ratf p))
     (setq x (caadr (ratf x)))
     (setq p (cons (car p) (ratderivative (cdr p) x)))

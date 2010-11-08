@@ -26,7 +26,7 @@
 
     (cond ((= n 1) 1)
 	  ((or (= n 0) (not (atom  (cdr rform))))
-	   (merror "The first argument to 'poly_discriminant' must be a polynomial in ~:M" var))
+	   (merror (intl:gettext "poly_discriminant: first argument must be a polynomial in ~:M; found: ~M") var poly))
 	  (t (pdis (presign
 		    (ash (* n (1- n)) -1)
 		    (pquotient (resultant poly (pderivative poly rvar))
@@ -83,7 +83,7 @@
 	($subres (subresult p1 p2))
 	#+broken ($mod (modresult p1 p2))
 	($red (redresult p1 p2))
-	(t (merror "No such resultant algorithm")))))
+	(t (merror (intl:gettext "resultant: no such algorithm: ~M") $resultant)))))
 
 (defun presign (n p)
   (if (oddp n) (pminus p) p))
@@ -206,7 +206,7 @@
 		   (setq bp (- 1))
 		   step3
 		   (cond ((equal (setq bp (1+ bp)) modulus)
-			  (merror "Resultant primes too small."))
+			  (merror "CPRES: resultant primes too small."))
 			 ((zerop m2) (setq a* a))
 			 (t (setq a* (pcsubst a bp xv))
 			    (cond ((reject a* m1 xr1)(go step3)) )) )

@@ -259,7 +259,7 @@
 
 (defmfun $nthroot(p n)
   (cond ((setq n (pnthrootp (cadr ($rat p)) n)) (pdis n))
-	(t (merror "Not an nth power"))))
+	(t (merror (intl:gettext "nthroot: ~M is not a ~M-th power") p n))))
 
 (defun pnthrootp (p n)
   (let ((errrjfflag t))

@@ -176,11 +176,13 @@
 
 (defun poisencode (h*)
   (unless (checkencode h*)
-    (merror "Illegal arg to `poissimp':~%~M" h*))
+    ;; NOT CLEAR WHAT IS ILLEGAL HERE
+    (merror (intl:gettext "poissimp: illegal argument: ~M") h*))
   (apply #'(lambda ($z $y $x $w $v $u)
 	     (declare (special $u $v $w $x $y $z))
 	     (setq h* (meval h*))
-	     (unless (integerp h*) (merror  "Illegal trig arg to `poisson' form"))
+	     ;; NOT CLEAR WHAT IS ILLEGAL HERE EITHER
+	     (unless (integerp h*) (merror  (intl:gettext "poisson: illegal trigonometric argument.")))
 	     (+ poishift  h*))
 	 poisvals))
 

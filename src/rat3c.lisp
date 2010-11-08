@@ -132,7 +132,7 @@
 	((eq $gcd '$red) (list (oldgcd x y)))
 	((eq $gcd '$mod) (newgcd x y modulus))
 	((not (member $gcd *gcdl* :test #'eq))
-	 (merror "`gcd' set incorrectly:~%~M" $gcd))
+	 (merror (intl:gettext "gcd: 'gcd' variable must be one of ~M; found: ~M") *gcdl* $gcd))
 	(t (list 1 x y))))
 
 (defun monomgcdco (p q cofac?)
@@ -205,7 +205,7 @@
   (setq s (case $gcd
 	    ($red (redgcd u v))
 	    ($subres (subresgcd u v))
-	    (t (merror "Illegal `gcd' algorithm"))))
+	    (t (merror "OLDGCD: found gcd = ~M; how did that happen?" gcd))))
   (let ((errrjfflag t))			;; check for gcd that simplifies to 0
     (if (not (catch 'raterr (rainv s))) ;; sourceforge bugs 831445 and 1313987
 	(setq s 1)))
@@ -389,22 +389,22 @@
 
 (defun pmodrem (x y)
   (cond ((null modulus)
-	 (merror "Illegal use of `pmodrem'"))
+	 (merror "PMODREM: null modulus; how did that happen?"))
 	((pacoefp y) (if (pzerop y) x 0))
 	((pacoefp x) x)
 	((eq (p-var x) (p-var y))
 	 (psimp (car x) (pgcdu1 (p-terms x) (p-terms y) nil)))
-	(t (merror "Illegal use of `pmodrem'"))))
+	(t (merror "PMODREM: I can't handle this; x = ~M, y = ~M" x y))))
 
 (defun pmodquo (u v &aux quo)
   (declare (special quo))
   (cond ((null modulus)
-	 (merror "Illegal use of `pmodquo'"))
+	 (merror "PMODQUO: null modulus; how did that happen?"))
 	((pcoefp v) (cons (ptimes (crecip v) u) 0))
 	((alg v) (cons (ptimes (painvmod v) u) 0))
 	((pacoefp u) (cons 0 u))
 	((not (eq (p-var u) (p-var v)))
-	 (merror "Illegal use of `pmodquo'"))
+	 (merror "PMODQUO: arguments have different variables; how did that happen?"))
 	(t (xcons (psimp (car u) (pgcdu1 (cdr u) (cdr v) t))
 		  (psimp (car u) quo)))))
 
@@ -427,7 +427,7 @@
 (defmfun $jacobi (p q)
   (cond ((null (and (integerp p) (integerp q)))
 	 (list '($jacobi) p q))
-	((zerop q) (merror "Zero denominator?"))
+	((zerop q) (merror (intl:gettext "jacobi: zero denominator.")))
 	((minusp q) ($jacobi p (- q)))
 	((and (evenp (setq q (rtzerl2 q)))
 	      (setq q (ash q -1))

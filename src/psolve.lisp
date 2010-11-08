@@ -94,7 +94,7 @@
 					       '((rat) 1 3)) 1 nil))
 		       (and (complicated u)
 			    (setq u (adispline u)))))))
-     (if (equal u 0) (merror "Arithmetic overflow - `solvecubic'"))
+     (if (equal u 0) (merror (intl:gettext "SOLVECUBIC: arithmetic overflow.")))
      (or y1
 	 (setq y1 (simplus (list '(mplus)
 				 adiv3

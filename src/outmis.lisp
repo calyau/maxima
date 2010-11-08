@@ -495,7 +495,7 @@
 (defmfun $factorout (e &rest vl)
   (prog (el fl cl l f x)
      (when (null vl)
-       (merror "`factorout' called on only one argument"))
+       (merror (intl:gettext "factorout: at least two arguments required.")))
      (unless (mplusp e)
        (return e))
      (or (null vl) (mplusp e) (return e))
