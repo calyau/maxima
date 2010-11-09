@@ -1,4 +1,4 @@
-@c version 1.23
+@c version 1.24
 @menu
 * Funciones y variables para Constantes::   
 @end menu
@@ -184,12 +184,13 @@ V@'ease tambi@'en @code{limit}.
 Ejemplo:
 
 @c ===beg===
-@c limit (1/x, x, 0);
+@c limit (x*sin(x), x, inf);
 @c ===end===
 @example
-(%i1) limit (1/x, x, 0);
+(%i1) limit (x*sin(x), x, inf);
 (%o1)                          und
 @end example
+
 @end defvr
 
 @defvr {Constante} zeroa

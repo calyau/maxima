@@ -1,4 +1,4 @@
-@c version 1.33
+@c version 1.34
 @menu
 * Introducci@'on a los polinomios::  
 * Funciones y variables para polinomios::  
@@ -1399,8 +1399,83 @@ Los argumentos de @code{ratvars} pueden ser tanto variables como funciones no ra
 
 La variable @code{ratvars} es una lista que contiene los argumentos pasados a la funci@'on @code{ratvars} la @'ultima vez que fue invocada. Cada llamada a la funci@'on @code{ratvars} reinicializa la lista. La llamada @code{ratvars ()} vac@'{@dotless{i}}a la lista.
 
-@c NEED EXAMPLES HERE
 @end deffn
+
+
+
+@defvr {Variable opcional} ratvarswitch
+Valor por defecto: @code{true}
+
+Maxima almacena una lista interna en la variable Lisp @code{VARLIST} cuyo
+contenido son las variables principales de las expresiones racionales. Cuando @code{ratvarswitch}
+vale @code{true}, su valor por defecto, cada evaluaci@'on comienza con la lista
+@code{VARLIST} vac@'{@dotless{i}}a. En caso contrario, las variables principales
+de las expresiones anteriores se mantienen en la lista @code{VARLIST}.
+
+Las variables principales declaradas con la funci@'on @code{ratvars} no se
+ven afectadas por la opci@'on @code{ratvarswitch}.
+
+Ejemplos:
+
+Cuando @code{ratvarswitch} vale @code{true}, su valor por defecto, cada 
+evaluaci@'on comienza con la lista @code{VARLIST} vac@'{@dotless{i}}a.
+
+@c === beg ===
+@c ratvarswitch:true$
+@c rat(2*x+y^2);
+@c :lisp varlist
+@c rat(2*a+b^2);
+@c :lisp varlist
+@c === end ===
+@example
+(%i1) ratvarswitch:true$
+
+(%i2) rat(2*x+y^2);
+                             2
+(%o2)/R/                    y  + 2 x
+(%i3) :lisp varlist
+($X $Y)
+
+(%i3) rat(2*a+b^2);
+                             2
+(%o3)/R/                    b  + 2 a
+
+(%i4) :lisp varlist
+($A $B)
+@end example
+
+Cuando @code{ratvarswitch} vale @code{false}, las variables principales
+de las expresiones anteriores se mantienen en lista @code{VARLIST}.
+
+@c === beg ===
+@c ratvarswitch:false$
+@c rat(2*x+y^2);
+@c :lisp varlist
+@c rat(2*a+b^2);
+@c :lisp varlist
+@c === end ===
+@example
+(%i4) ratvarswitch:false$
+
+(%i5) rat(2*x+y^2);
+                             2
+(%o5)/R/                    y  + 2 x
+(%i6) :lisp varlist
+($X $Y)
+
+(%i6) rat(2*a+b^2);
+                             2
+(%o6)/R/                    b  + 2 a
+
+(%i7) :lisp varlist
+($A $B $X $Y)
+@end example
+
+@end defvr
+
+
+
+
 
 @deffn {Funci@'on} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 @deffnx {Funci@'on} ratweight ()

@@ -1,4 +1,4 @@
-@c version 1.3
+@c version 1.4
 @menu
 * Introducci@'on a ezunits::
 * Introducci@'on a physical_constants::
@@ -632,6 +632,7 @@ Computing conversions to base units; may take a moment.
 
 @deffn {Funci@'on} constvalue (@var{x})
 @deffnx {Funci@'on} declare_constvalue (@var{a}, @var{x})
+@deffnx {Funci@'on} remove_constvalue (@var{a})
 
 Devuelve la constante declarada para un s@'{@dotless{i}}mbolo.
 Los valores constantes se declaran con @code{declare_constvalue}.
@@ -642,6 +643,8 @@ y reconocidos por @code{constantp}.
 
 El paquete @code{physical_units} declara los valores constantes
 de las constantes f@'{@dotless{i}}sicas.
+
+@code{remove_constvalue} deshace la acci@'on de @code{declare_constvalue}.
 
 Para utilizar estas funciones ejec@'utese primero @code{load(ezunits)}.
 

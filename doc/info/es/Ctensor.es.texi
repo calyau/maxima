@@ -1,4 +1,4 @@
-@c version 1.36
+@c version 1.37
 @menu
 * Introducci@'on a ctensor::     
 * Funciones y variables para ctensor::     
@@ -540,7 +540,9 @@ np  = (fri  - %i fri ) / sqrt(2)
 @end deffn
 
 @deffn {Funci@'on} psi (@var{dis})
-Calcula los cinco coeficientes de Newman-Penrose @code{psi[0]}...@code{psi[4]}. Si @code{psi} vale @code{true}, se muestran estos coeficientes. V@'ease @code{petrov} para un ejemplo.
+Calcula los cinco coeficientes de Newman-Penrose @code{psi[0]}...@code{psi[4]}.
+Si @code{dis} vale @code{true}, se muestran estos coeficientes. 
+V@'ease @code{petrov} para un ejemplo.
 
 @c AQUI HAY UN PARRAFO COMPLETO POR TRADUCIR (Mario)
 Estos coeficientes se calculan a partir del tensor de Weyl.

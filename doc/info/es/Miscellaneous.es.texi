@@ -1,4 +1,4 @@
-@c version 1.27
+@c version 1.28
 @menu
 * Introducci@'on a la miscel@'anea de opciones::  
 * Share::  
@@ -271,6 +271,8 @@ Devuelve una lista con aquellos @'atomos de la lista @code{props} que tienen la 
 
 Asigna el @var{valor} a la propiedad  (especificada por @var{indicador}) de @var{@'atomo}; @var{indicador} puede ser el nombre de cualquier propiedad y no solamente de aquellas definidas por el sistema.
 
+@code{rem} deshace la asignaci@'on realizada por @code{put}.
+
 La funci@'on @code{put} eval@'ua sus argumentos y devuelve @var{valor}.
 
 Ejemplos:
@@ -321,8 +323,15 @@ Ejemplo:
 @deffn {Funci@'on} rem (@var{@'atomo}, @var{indicador})
 
 Elimina del @var{@'atomo} la propiedad indicada por @var{indicador}.
+@code{rem} deshace la asignaci@'on realizada por @code{put}.
+
+@code{rem} devuelve @code{done} si @var{@'atomo} ten@'{@dotless{i}}a la 
+propiedad @var{indicador} cuando @code{rem} fue invocado, devolviendo
+@code{false} si carec@'{@dotless{i}}a tal propiedad.
 
 @end deffn
+
+
 
 @deffn {Funci@'on} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
 @deffnx {Funci@'on} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
@@ -338,11 +347,11 @@ elimina la propiedad @code{p_k} del @'atomo @code{a_k}.
 La llamada @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
 elimina las propiedades @code{@var{p_1}, ..., @var{p_n}} de los @'atomos @var{a_1}, ..., @var{a_m}. Puede tener m@'as de un par de listas.
 
-@c VERIFY THAT THIS WORKS AS ADVERTISED
 La llamada @code{remove (all, @var{p})} elimina la propiedad @var{p} de todos los @'atomos que la tengan.
 
-@c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
-Las propiedades eliminadas pueden ser de las que define el sistema, como @code{function}, @code{macro} o @code{mode_declare}, o de las que define el usuario.
+Las propiedades eliminadas pueden ser de las que define el sistema, como 
+@code{function}, @code{macro} o @code{mode_declare}; @code{remove} no elimina
+las propiedades definidas por @code{put}.
 
 La llamada @code{remove ("@var{a}", operator)} o su equivalente @code{remove ("@var{a}", op)} elimina de  @var{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
 

@@ -1,4 +1,4 @@
-@c version 1.30
+@c version 1.32
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::
 * Series de Fourier::
@@ -403,8 +403,10 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 
-@deffn {Funci@'on} find_root (@var{expr}, @var{x}, @var{a}, @var{b})
-@deffnx {Funci@'on} find_root (@var{f}, @var{a}, @var{b})
+@deffn {Funci@'on} find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Funci@'on} find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Funci@'on} bf_find_root (@var{expr}, @var{x}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
+@deffnx {Funci@'on} bf_find_root (@var{f}, @var{a}, @var{b}, [@var{abserr}, @var{relerr}])
 @deffnx {Variable opcional} find_root_error
 @deffnx {Variable opcional} find_root_abs
 @deffnx {Variable opcional} find_root_rel
@@ -418,21 +420,38 @@ La expresi@'on @var{expr} puede ser una ecuaci@'on, en cuyo caso
 Dado que Maxima puede evaluar @var{expr} o @var{f} en 
 @math{[@var{a}, @var{b}]}, entonces, si @var{expr} o @var{f} es
 continua, @code{find_root} encuentrar@'a la ra@'{@dotless{i}}z
-buscada; o ra@'{@dotless{i}}ces en caso de existir varias.
+buscada, o ra@'{@dotless{i}}ces, en caso de existir varias.
 
 La funci@'on @code{find_root} aplica al principio la
-b@'usqueda binaria. Si la expresi@'on es lo suficientemente
+b@'usqueda por bipartici@'on. Si la expresi@'on es lo suficientemente
 suave, entonces @code{find_root} aplicar@'a el m@'etodo
 de interpolaci@'on lineal.
 
-La precisi@'on del resultado se controla con @code{find_root_abs} y
-@code{find_root_rel}. La b@'usqueda se detiene cuando la funci@'on
-alcanza valores menores o iguales a @code{find_root_abs},
-o cuando dos soluciones sucesivas @var{x_0} y @var{x_1}
-se diferencian en una cantidad menor o igual a
-@code{find_root_rel * max(abs(x_0), abs(x_1))}.
-Los valores por defecto de @code{find_root_abs} y
-@code{find_root_rel} son ambos cero.
+@code{bf_find_root} es una versi@'on de @code{find_root} para n@'umeros
+reales de precisi@'on arbitraria (bigfloat). La funci@'on se 
+eval@'ua utilizando la aritm@'etica de estos n@'umeros, devolviendo
+un resultado num@'erico de este tipo. En cualquier otro aspecto,
+@code{bf_find_root} es id@'entica a @code{find_root}, siendo la
+explicaci@'on que sigue igualmente v@'alida para @code{bf_find_root}. 
+
+La precisi@'on de @code{find_root} est@'a controlada por @code{abserr} y
+@code{relerr}, que son claves opcionales para @code{find_root}. 
+Estas claves toman la forma @code{key=val}. Las claves disponibles son:
+
+@table @var
+@item abserr
+Error absoluto deseado de la funci@'on en la ra@'{@dotless{i}}z. El
+valor por defecto es @code{find_root_abs}. 
+@item relerr
+Error relativo deseado de la ra@'{@dotless{i}}z. El valor por defecto
+es @code{find_root_rel}.
+@end table
+
+@code{find_root} se detiene cuando la funci@'on alcanza un valor menor o
+igual que @code{abserr}, o si las sucesivas aproximaciones @var{x_0}, @var{x_1}
+difieren en no m@'as que @code{relerr * max(abs(x_0), abs(x_1))}. Los
+valores por defecto de @code{find_root_abs} y @code{find_root_rel} son
+ambos cero.
 
 @code{find_root} espera que la funci@'on en cuesti@'on tenga signos
 diferentes en los extremos del intervalo.
@@ -449,7 +468,6 @@ no num@'erico, @code{find_root} devuelve una expresi@'on parcialmente evaluada.
 
 Se ignora el orden de @var{a} y @var{b}; la regi@'on de b@'usqueda es
 @math{[min(@var{a}, @var{b}), max(@var{a}, @var{b})]}.
-
 
 Ejemplos:
 @c PREVIOUS EXAMPLE STUFF -- MAY WANT TO BRING TRANSLATE BACK INTO THE EXAMPLE
@@ -469,6 +487,10 @@ Ejemplos:
 @c find_root (exp(x) = y, x, 0, 100);
 @c find_root (exp(x) = y, x, 0, 100), y = 10;
 @c log (10.0);
+@c fpprec:32;
+@c 32;
+@c bf_find_root (exp(x) = y, x, 0, 100), y = 10;
+@c log(10b0);
 @c ===end===
 @example
 (%i1) f(x) := sin(x) - x/2;
@@ -490,7 +512,14 @@ Ejemplos:
 (%o7)                   2.302585092994046
 (%i8) log (10.0);
 (%o8)                   2.302585092994046
+(%i9) fpprec:32;
+(%o9)                           32
+(%i10) bf_find_root (exp(x) = y, x, 0, 100), y = 10;
+(%o10)                  2.3025850929940456840179914546844b0
+(%i11) log(10b0);
+(%o11)                  2.3025850929940456840179914546844b0
 @end example
+
 @end deffn
 
 

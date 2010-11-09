@@ -1,4 +1,4 @@
-@c version 1.24
+@c version 1.25
 @menu
 * Funciones y variables para la aritm@'etica de punto flotante::
 @end menu
@@ -83,9 +83,11 @@ Convierte los enteros, n@'umeros racionales y los decimales de punto flotante gr
 @end deffn
 
 @defvr {Variable optativa} float2bf
-Valor por defecto: @code{false}
+Valor por defecto: @code{true}
  
-Si @code{float2bf} vale @code{false} se mostrar@'a un mensaje de aviso cuando un n@'umero en punto flotante se convierte a decimal de tipo "bigfloats", puesto que tal transformaci@'on puede conllevar p@'erdida de precisi@'on.
+Si @code{float2bf} vale @code{false} se mostrar@'a un mensaje de aviso cuando un n@'umero
+en punto flotante se convierte a decimal de tipo "bigfloats", puesto que tal transformaci@'on
+puede conllevar p@'erdida de precisi@'on.
 
 @end defvr
 

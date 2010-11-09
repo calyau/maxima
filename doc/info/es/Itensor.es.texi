@@ -1,4 +1,4 @@
-@c version 1.45
+@c version 1.47
 @menu
 * Introducci@'on a itensor::
 * Funciones y variables para itensor::
@@ -1249,7 +1249,9 @@ ifc1    = --------------------------------
 
 @defvr {Variable} ifc2
 
-Coeficiente del sistema de referencia de primera especie. Este tensor representa la contribuci@'on de la m@'etrica del sistema de referencia al coeficiente de conexi@'on de primera especie, definido como
+Coeficiente del sistema de referencia de segunda especie. Este tensor representa
+la contribuci@'on de la m@'etrica del sistema de referencia al coeficiente 
+de conexi@'on de segunda especie, definido como
 
 @example
 

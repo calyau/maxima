@@ -13,8 +13,8 @@ Maxima fue escrito en Lisp, y es muy f@'acil tener acceso a funciones y variable
 Los s@'{@dotless{i}}mbolos Lisp y los s@'{@dotless{i}}mblos Maxima est@'an claramente diferenciados por medio de una convenci@'on de nombres. 
 Un s@'{@dotless{i}}mblo Lisp el cual comienza con un signo pesos @code{$} corresponde a un s@'{@dotless{i}}mbolo Maxima sin el signo pesos. 
 Un s@'{@dotless{i}}mbolo Maxima el cual comienza con un signo de cierre de interrogaci@'on @code{?} corresponde a un s@'{@dotless{i}}mbolo Lisp sin dicho signo.
-Por ejemplo, el s@'{@dotless{i}}mbolo Maxima @code{foo} corresponde a el s@'{@dotless{i}}mbolo Lisp @code{$foo}, 
-mientras que el s@'{@dotless{i}}mbolo Maxima @code{?foo} corresponde a el s@'{@dotless{i}}mbolo Lisp @code{foo}, 
+Por ejemplo, el s@'{@dotless{i}}mbolo Maxima @code{foo} corresponde a el s@'{@dotless{i}}mbolo Lisp @code{$FOO}, 
+mientras que el s@'{@dotless{i}}mbolo Maxima @code{?foo} corresponde a el s@'{@dotless{i}}mbolo Lisp @code{FOO}, 
 tenga en cuenta que @code{?foo} esta escrito sin espacio entre @code{?} y @code{foo}; 
 de otra manera se estar@'{@dotless{i}}a invocando a @code{describe ("foo")}. 
 
@@ -47,7 +47,7 @@ Escribiendo @code{(to-maxima)} se cierra la sesi@'on con Lisp y se retorna a Max
 Las funciones y variables Lisp las cuales esten para ser visibles en Maxima como funciones y variables con nombres oridinarios (sin una puntuaci@'on especial), deben tener nombres tipo Lisp que comiencen con el signo pesos 
 @code{$}. 
 
-Maxima es case-sensitive, distingue entre letras min@'usculas y may@'usculas en identificadores, mientras que Lisp no. 
+Maxima distingue entre letras min@'usculas y may@'usculas en identificadores. 
 Existen algunas reglas que gobiernan la traducci@'on de nombres entre Lisp y Maxima. 
 
 @enumerate
@@ -57,7 +57,10 @@ corresponde a un identificador Maxima en min@'uscula.
 Que el idenficador Lisp est@'e en may@'uscula, min@'uscula o una combinaci@'on
 de ambas, no afecta en nada. 
 Por ejemplo, los identificadores Lisp @code{$foo}, @code{$FOO}, y @code{$Foo},
-todos corresponden al identificador Maxima @code{foo}. 
+todos corresponden al identificador Maxima @code{foo}. Esto es as@'{@dotless{i}}
+porque @code{$foo}, @code{$FOO} y  @code{$Foo} se convierten por defecto al
+s@'{@dotless{i}}mbolo @code{$FOO} de Lisp.
+
 @item
 Un identificador Lisp el cual se encuentre todo en may@'uscula o todo en min@'uscula y encerrado entre barras verticales corresponde a un identicador Maxima con el caso contrario. 
 Esto es, de may@'usculas cambia a min@'usculas y de min@'usculas cambia a may@'usculas. 
@@ -129,10 +132,20 @@ y @code{gcd}.
 @node Recolector de basura, Documentaci@'on, Lisp y Maxima, Ayuda
 @section Recolector de basura
 
-La computaci@'on simb@'olica tiende a crear una buena cantidad de basura, y un manejo efectivo de esto puede ser crucial para el t@'ermino exitoso de algunos programas. 
+La computaci@'on simb@'olica tiende a crear una buena cantidad de basura
+(resultados temporales que ya no ser@'an utilizados),
+y un manejo efectivo de esto puede ser crucial para el t@'ermino exitoso de
+algunos programas. 
 
-Bajo GCL (GNU Common Lisp), en los sistemas UNIX donde la llamada al  sistema mprotect esta disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD) un recolector de basura estratificado est@'a disponible. Estos l@'{@dotless{i}}mites de colecci@'on para memoria virtual, han sido escritos recientemente. Mire la documentaci@'on de GCL bajo ALLOCATE y GBC.  En el nivel lisp haga (setq si::*notify-gbc* t) eso le ayudar@'a a determinar cuales @'areas necesitan m@'as espacio.
+Bajo GCL (GNU Common Lisp), en aquellos sistemas UNIX donde la llamada al sistema
+mprotect est@'a disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD)
+se dispone de un recolector de basura estratificado. V@'ease la documentaci@'on
+de GCL para ALLOCATE y GBC. A nivel Lisp, ejecutando (setq si::*notify-gbc* t) 
+pemitir@'a determinar qu@'e @'areas necesitan m@'as espacio.
 
+En cuanto al resto de Lisps bajo los que funciona Maxima, se remite
+al lector a la documentaci@'on correspondiente para controlar la
+recolecci@'on de basura.
 
 @node Documentaci@'on, Funciones y variables para la ayuda, Recolector de basura, Ayuda
 @section Documentaci@'on
