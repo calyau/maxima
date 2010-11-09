@@ -66,6 +66,7 @@ Dokumentation als Hilfedatei gelesen werden.
 @section Funktionen und Variablen der Hilfe
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{apropos}
 @deffn {Funktion} apropos (@var{string})
 
 @c Searches for Maxima names which have @var{string} appearing anywhere within
@@ -110,6 +111,7 @@ gamma_incomplete_generalized_regularized]
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{demo}
 @deffn {Funktion} demo (@var{filename})
 
 @c Evaluates Maxima expressions in @var{filename} and displays the results.
@@ -164,6 +166,7 @@ _
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{describe}
 @deffn  {Funktion} describe (@var{topic})
 @deffnx {Funktion} describe (@var{topic}, exact)
 @deffnx {Funktion} describe (@var{topic}, inexact)
@@ -272,6 +275,7 @@ Enter space-separated numbers, `all' or `none': 2 3
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{example}
 @deffn  {Funktion} example (@var{topic})
 @deffnx {Funktion} example ()
 
@@ -348,6 +352,7 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{manual_demo}
 @defvr {Optionsvariable} manual_demo
 Standardwert: @code{"manual.demo"}
 
