@@ -381,7 +381,7 @@ Antes de utilizar esta funci@'on ejec@'utese @code{load(rncomb)}.
 
 @deffn {Funci@'on} scalarp (@var{expr})
 
-Devuelve @code{true} si @var{expr} is un n@'umero, constante  o variable declarada como @code{scalar} con @code{declare}, o compuesta completamente de tales n@'umeros, constantes o variables, pero que no contengan matrices ni listas.
+Devuelve @code{true} si @var{expr} es un n@'umero, constante  o variable declarada como @code{scalar} con @code{declare}, o compuesta completamente de tales n@'umeros, constantes o variables, pero que no contengan matrices ni listas.
 
 @end deffn
 
