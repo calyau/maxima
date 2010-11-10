@@ -1,4 +1,4 @@
-@c english version 1.74
+@c english version 1.80
 @menu
 * Comentarios::
 * Archivos::
@@ -60,6 +60,12 @@ Instrucciones que operan con archivos son:
 @code{writefile},
 @code{closefile} y
 @code{appendfile}.
+
+Cuando el nombre de un fichero se pasa a funciones como @code{plot2d}, @code{save} o 
+@code{writefile} y en @'el no se incluye la ruta de acceso, Maxima almacena
+el fichero en la carpeta de trabajo actual. La ubicaci@'on de la carpeta de 
+trabajo depende del sistema operativo y de la instalaci@'on.
+
 
 @node Funciones y variables para lectura y escritura,  , Archivos, Lectura y escritura
 @section Funciones y variables para lectura y escritura
@@ -368,9 +374,18 @@ La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile}
 @end deffn
 
 @deffn {Funci@'on} batch (@var{filename})
-Lee expresiones de Maxima desde @var{filename} y las eval@'ua. La funci@'on
-@code{batch} busca @var{filename} en la lista @code{file_search_maxima}.
-V@'ease @code{file_search}.
+@deffnx {Function} batch (@var{filename}, @code{option})
+
+@code{batch(@var{filename})} lee expresiones de Maxima desde @var{filename} y 
+las eval@'ua. La funci@'on @code{batch} busca @var{filename} en la lista 
+@code{file_search_maxima}. V@'ease @code{file_search}.
+
+@code{batch(@var{filename}, @code{test})} es como @code{run_testsuite} con la
+opci@'on @code{display_all=true}. En este caso @code{batch} busca @var{filename} 
+en la lista @code{file_search_maxima} y no en @code{file_search_tests} como hace
+@code{run_testsuite}. Adem@'as, @code{run_testsuite} ejecuta tests que est@'an
+en la lista @code{testsuite_files}. Con @code{batch} es posible ejecutar
+cualquier fichero que se encuentre en @code{file_search_maxima} en modo de prueba.
 
 El contenido de @var{filename} debe ser una secuencia de expresiones de Maxima,
 cada una de las cuales termina en @code{;} o @code{$}.
@@ -378,20 +393,31 @@ La variable especial @code{%} y la funci@'on @code{%th}
 se refieren a resultados previos dentro del archivo.
 El archivo puede incluir construcciones del tipo @code{:lisp}.
 Espacios, tabulaciones y saltos de l@'{@dotless{i}}nea en el archivo se ignoran.
-Un archivo de entrada v@'alido puede crearse con un editor de texto o con la funci@'on @code{stringout}.
+Un archivo de entrada v@'alido puede crearse con un editor de texto o con la 
+funci@'on @code{stringout}.
 
-La funci@'on @code{batch} lee las expresiones del archivo @var{filename}, muestra las entradas en la consola, realiza los c@'alculos solicitados y muestra las expresiones de los resultados.
-A las expresiones de entrada se les asignan etiquetas, as@'{@dotless{i}} como a las de salida. La funci@'on
-@code{batch} eval@'ua todas las expresiones de entrada del archivo a menos que se produzca un error.
-Si se le solicita informaci@'on al usuario (con @code{asksign} o @code{askinteger}, por ejemplo)
+La funci@'on @code{batch} lee las expresiones del archivo @var{filename}, 
+muestra las entradas en la consola, realiza los c@'alculos solicitados y 
+muestra las expresiones de los resultados.
+A las expresiones de entrada se les asignan etiquetas, as@'{@dotless{i}} 
+como a las de salida. La funci@'on @code{batch} eval@'ua todas las expresiones 
+de entrada del archivo a menos que se produzca un error. Si se le solicita 
+informaci@'on al usuario (con @code{asksign} o @code{askinteger}, por ejemplo)
 @code{batch} se detiene para leer la nueva informaci@'on para luego continuar.
 
 Es posible detener  @code{batch} tecleando @code{control-C} desde la consola.
 El efecto de @code{control-C} depende del entorno Lisp instalado.
 
-La funci@'on @code{batch} tiene diversas aplicaciones, tales como servir de almac@'en de l@'{@dotless{i}}neas de instrucciones, suministrar demostraciones libres de errores o ayudar a organizar el trabajo del usuario en la resoluci@'on de problemas complejos.
+La funci@'on @code{batch} tiene diversas aplicaciones, tales como servir de 
+almac@'en de c@'odigo escrito por el usuario, suministrar demostraciones
+libres de errores o ayudar a organizar el trabajo del usuario en la resoluci@'on 
+de problemas complejos.
 
-La funci@'on @code{batch} eval@'ua su argumento.
+La funci@'on @code{batch} eval@'ua su argumento y devuelve la ruta hacia
+@var{filename} en formato cadena cuando es invocada sin segundo argumento
+o con la opci@'on @code{demo}. Cuando es llamada con la opci@'on @code{test}, 
+devuelve la lista vac@'{@dotless{i}}a @code{[]} o una lista con @var{filename}
+y los n@'umeros de tests que han fallado.
 
 V@'eanse tambi@'en  @code{load}, @code{batchload} y @code{demo}.
 
@@ -772,13 +798,26 @@ se interpreta como @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp},
 
 
 @deffn {Funci@'on} file_type (@var{filename})
-Devuelve una descripci@'on del contenido de @var{filename} basada en la extensi@'on, sin intentar abrir el archivo para inspeccionar su contenido.
+Devuelve una descripci@'on del contenido de @var{filename} basada en la 
+extensi@'on, sin intentar abrir el archivo para inspeccionar su contenido.
 
-El valor que la funci@'on retorna puede ser cualquiera de los siguientes: @code{object}, @code{lisp} o @code{maxima}.
-Si la extensi@'on comienza por @code{m} o @code{d}, @code{file_type} devuelve @code{maxima}.
-Si la extensi@'on comienza por @code{l}, @code{file_type} devuelve @code{lisp}.
-En cualquier otro caso, @code{file_type} devuelve @code{object}.
+El valor devuelto es un s@'{@dotless{i}}mbolo @code{object}, @code{lisp} o 
+@code{maxima}. Si la extensi@'on es "mac", "mc", "demo", "dem", "dm1", "dm2", 
+"dm3" o "dmt", @code{file_type} devuelve @code{maxima}. Si la extensi@'on es 
+"l", "lsp" o "lisp", @code{file_type} devuelve @code{lisp}. Si la extensi@'on
+no es ninguna de las anteriores, @code{file_type} devuelve @code{object}.
 
+V@'ease tambi@'en @code{pathname_type}.
+
+Ejemplos:
+
+@c === beg ===
+@c map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
+@c === end ===
+@example
+(%i2) map('file_type,["test.lisp", "test.mac", "test.dem", "test.txt"]);
+(%o2)            [lisp, maxima, maxima, object]
+@end example
 @end deffn
 
 
@@ -1171,6 +1210,42 @@ La funci@'on @code{load} eval@'ua sus argumentos.
 
 @end deffn
 
+
+
+@defvr {Variable del sistema} load_pathname
+Valor por defecto: @code{false}
+
+Cuando se carga un fichero con las funciones @code{load}, @code{loadfile}
+o @code{batchload}, a la variable @code{load_pathname} se le asigna la
+ruta al fichero en cuesti@'on.
+
+Se puede acceder a la variable @code{load_pathname} mientras se est@'a
+cargando el fichero.
+
+Ejemplo:
+
+Sup@'ongase que se tiene el fichero @code{test.mac} en la carpeta
+@code{"/home/usuario/workspace/mymaxima/temp/"} con las siguientes
+instrucciones:
+
+@example
+print("The value of load_pathname is: ", load_pathname)$
+print("End of batchfile")$
+@end example
+
+Entonces se obtiene el siguiente resultado:
+
+@example
+(%i1) load("/home/usuario/workspace/mymaxima/temp/test.mac")$
+The value of load_pathname is:  
+                   /home/usuario/workspace/mymaxima/temp/test.mac 
+End of batchfile
+@end example
+
+@end defvr
+
+
+
 @deffn {Funci@'on} loadfile (@var{filename})
 Eval@'ua las expresiones Lisp del archivo @var{filename}. La funci@'on
 @code{loadfile} no llama a @code{file_search}, de manera que @code{filename} debe incluir la extensi@'on del archivo y su ruta completa.
@@ -1289,8 +1364,33 @@ Los desarrolladores de paquetes que utilizan  @code{save}
 o @code{translate} para crear paquetes (ficheros) que van a ser utilizados por terceros pueden hacer @code{packagefile: true} para evitar que se a@~nada informaci@'on a la listas de informaci@'on de Maxima (por ejemplo, @code{values},
 @code{functions}) excepto all@'{@dotless{i}} donde sea necesario cuando el archivo sea cargado en memoria.
 @c FALTA COMPLETAR ESTE PARRAFO
-
 @end defvr
+
+
+@deffn  {Funci@'on} pathname_directory (@var{pathname})
+@deffnx {Funci@'on} pathname_name (@var{pathname})
+@deffnx {Funci@'on} pathname_type (@var{pathname})
+
+Estas funciones devuelven las componentes de @var{pathname}.
+
+Ejemplos:
+
+@c === beg ===
+@c pathname_directory("/home/usuario/maxima/changelog.txt");
+@c pathname_name("/home/usuario/maxima/changelog.txt");
+@c pathname_type("/home/usuario/maxima/changelog.txt");
+@c === end ===
+@example 
+(%i1) pathname_directory("/home/usuario/maxima/changelog.txt");
+(%o1)                 /home/usuario/maxima/
+(%i2) pathname_name("/home/usuario/maxima/changelog.txt");
+(%o2)                       changelog
+(%i3) pathname_type("/home/usuario/maxima/changelog.txt");
+(%o3)                          txt
+@end example
+
+@end deffn
+
 
 @defvr {Variable opcional} pfeformat
 Valor por defecto: @code{false}
@@ -1421,6 +1521,9 @@ Las potencias se reemplazan por @code{Expt}.
 Los cocientes se reemplazan por @code{Quotient}.
 @item
 El s@'{@dotless{i}}mbolo negativo se reemplaza por @code{Negterm}.
+@item
+Las listas se reemplazan por @code{List(@var{n})}, siendo @var{n} el n@'umero de
+elementos de la lista.
 @end itemize
 
 Si el entero  @var{depth} es mayor o igual que la profundidad m@'axima de @var{expr},
@@ -1430,6 +1533,15 @@ La funci@'on @code{reveal} eval@'ua sus argumentos y devuelve la expresi@'on con
 
 Ejemplo:
 
+@c === beg ===
+@c e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+@c reveal (e, 1);
+@c reveal (e, 2);
+@c reveal (e, 3);
+@c reveal (e, 4);
+@c reveal (e, 5);
+@c reveal (e, 6);
+@c === end ===
 @example
 (%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
                           2            2
@@ -1466,7 +1578,6 @@ Ejemplo:
                         b + a     2 b     2 a
                     2 %e      + %e    + %e
 @end example
-
 @end deffn
 
 @defvr {Variable opcional} rmxchar
