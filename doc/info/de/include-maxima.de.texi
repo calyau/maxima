@@ -139,18 +139,14 @@ SourceForge, um DOE Macsyma, heute Maxima genannt, weiter zu entwickeln.
 Spezifische Gebiete der Mathematik
 
 * Summen Produkte und Reihen::  Summen, Produkte, Tayolorreihen, Poisson Reihen.
-
-
-
-* Polynomials::                 Standard forms for polynomials, and
+* Analysis::                    Grenzwerte, Differentiation, Integration,
+                                Differentialgleichungen.
+* Polynome::                    Standard forms for polynomials, and
                                 functions operating on them.
+
 * Special Functions::           Special functions
 * Elliptic Functions::          Elliptic Functions and Integrals
-* Limits::                      Limits of expressions.
-* Differentiation::             Differential calculus.
-* Integration::                 Integral calculus.
 * Equations::                   Defining and solving equations.
-* Differential Equations::      Defining and solving differential equations.
 * Numerical::                   Numerical integration, Fourier
                                 transforms, etc.
 * Arrays::                      Creating and working with arrays.
@@ -163,6 +159,7 @@ Spezifische Gebiete der Mathematik
 * Number Theory::               Number theory.
 * Symmetries::                  
 * Groups::                      Abstract algebra.
+@sp 1
 
 Advanced facilities and programming
 
@@ -175,11 +172,15 @@ Advanced facilities and programming
 * Function Definition::         Defining functions.
 * Program Flow::                Defining Maxima programs.
 * Debugging::                   Debugging Maxima programs.
-
+@sp 1
+ 
 Additional packages
 
+* asympa::                      Asymptotic analysis package
 * augmented_lagrangian::        augmented_lagrangian package.
 * bode::                        Bode gain and phase plots.
+* cobyla::                      Nonlinear optimization with inequality 
+                                constraints.
 * contrib_ode::                 Additional routines for ODEs
 * descriptive::                 Descriptive statistics.
 * diag::                        Jordan matrices.
@@ -199,6 +200,7 @@ Additional packages
 * linearalgebra::               Functions for linear algebra.
 * lsquares::                    Least squares.
 * makeOrders::                  Polynomial utility.
+* minpack::                     MINPACK functions for minimization and roots
 * mnewton::                     Newton's method.
 * numericalio::                 Reading and writing files.
 * opsubst::                     Substitutions utility.
@@ -315,8 +317,13 @@ Summen, Produkte und Reihen
 * Funktionen und Variablen f@"ur Reihen::
 * Poisson Reihen::
 
+Analysis
+* Funktionen und Variablen f@"ur Grenzwerte::
+* Funktionen und Variablen der Differentiation::
+* Integration::
+* Differentialgleichungen::
 
-Polynomials
+Polynome
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::  
 
@@ -337,22 +344,8 @@ Elliptic Functions
 * Functions and Variables for Elliptic Functions::
 * Functions and Variables for Elliptic Integrals::
 
-Limits
-* Functions and Variables for Limits::      
-
-Differentiation
-* Functions and Variables for Differentiation::  
-
-Integration
-* Introduction to Integration::  
-* Functions and Variables for Integration::  
-
 Equations
 * Functions and Variables for Equations::   
-
-Differential Equations
-* Introduction to Differential Equations::  
-* Functions and Variables for Differential Equations::  
 
 Numerical
 * Introduction to fast Fourier transform::                     
@@ -434,11 +427,21 @@ Program Flow
 Debugging
 * Functions and Variables for Debugging::   
 
+
+asympa
+* Introduction to asympa::
+* Functions and variables for asympa::
+
 augmented_lagrangian
 * Functions and Variables for augmented_lagrangian::
 
 bode
 * Functions and Variables for bode::
+
+cobyla
+* Introduction to cobyla::
+* Functions and Variables for cobyla::
+* Examples for cobyla::
 
 contrib_ode
 * Introduction to contrib_ode::
@@ -647,15 +650,17 @@ Glossar
 @chapter Eingabe und Ausgabe
 @include Input.de.texi
 
-@node Summen Produkte und Reihen, Glossar, Eingabe und Ausgabe, Top
+@node Summen Produkte und Reihen, Analysis, Eingabe und Ausgabe, Top
 @chapter Summen, Produkte und Reihen
 @include Series.de.texi
 
+@node Analysis, Polynome, Summen Produkte und Reihen, Top
+@chapter Analysis
+@include Calculus.de.texi
 
-
-@c @node Polynomials, Special Functions, Eingabe und Ausgabe, Top
-@c @chapter Polynomials
-@c @include Polynomials.texi
+@node Polynome, Glossar, Analysis, Top
+@chapter Polynome
+@include Polynomials.de.texi
 
 @c @node Special Functions, Elliptic Functions, Trigonometric, Top
 @c @chapter Special Functions
@@ -664,18 +669,6 @@ Glossar
 @c @node Elliptic Functions, Limits, Special Functions, Top
 @c @chapter Elliptic Functions
 @c @include Elliptic.texi
-
-@c @node Limits, Differentiation, Elliptic Functions, Top
-@c @chapter Limits
-@c @include Limits.texi
-
-@c @node Differentiation, Integration, Limits, Top
-@c @chapter Differentiation
-@c @include Differentiation.texi
-
-@c @node Integration, Equations, Differentiation, Top
-@c @chapter Integration
-@c @include Integration.texi
 
 @c @node Equations, Differential Equations, Integration, Top
 @c @chapter Equations
@@ -759,147 +752,161 @@ Glossar
 @c @chapter Debugging
 @c @include Debugging.texi
 
-@c @node augmented_lagrangian, bode, Debugging, Top
+@c --- LOAD ADDITIONAL PACKAGES ------------------------------------------------
+
+@c @node asympa, augmented_lagrangian, Analysis, Top
+@c @chapter asympa
+@c @include asympa.de.texi
+
+@c @node augmented_lagrangian, bode, asympa, Top
 @c @chapter augmented_lagrangian
-@c @include augmented_lagrangian.texi
+@c @include augmented_lagrangian.de.texi
 
-@c @node bode, contrib_ode, augmented_lagrangian, Top
+@c @node bode, cobyla, augmented_lagrangian, Top
 @c @chapter bode
-@c @include bode.texi
+@c @include bode.de.texi
 
-@c @node contrib_ode, descriptive, bode, Top
+@c @node cobyla, contrib_ode, bode, Top
+@c @chapter cobyla
+@c @include cobyla.de.texi
+
+@c @node contrib_ode, Package descriptive, bode, Top
 @c @chapter contrib_ode
-@c @include contrib_ode.texi
+@c @include contrib_ode.de.texi
 
-@c @node descriptive, diag, contrib_ode, Top
-@c @chapter descriptive
-@c @include descriptive.texi
+@c @node Package descriptive, diag, contrib_ode, Top
+@c @chapter Package descriptive
+@c @include descriptive.de.texi
 
-@c @node diag, distrib, descriptive, Top
+@c @node diag, Package distrib, descriptive, Top
 @c @chapter diag
-@c @include diag.texi
+@c @include diag.de.texi
 
-@c @node distrib, draw, diag, Top
-@c @chapter distrib
-@c @include distrib.texi
+@c @node Package distrib, draw, diag, Top
+@c @chapter Package distrib
+@c @include distrib.de.texi
 
 @c @node draw, dynamics, distrib, Top
 @c @chapter draw
-@c @include draw.texi
+@c @include draw.de.texi
 
 @c @node dynamics, ezunits, draw, Top
 @c @chapter dynamics
-@c @include dynamics.texi
+@c @include dynamics.de.texi
 
 @c @node ezunits, f90, dynamics, Top
 @c @chapter ezunits
-@c @include ezunits.texi
+@c @include ezunits.de.texi
 
 @c @node f90, ggf, ezunits, Top
 @c @chapter f90
-@c @include f90.texi
+@c @include f90.de.texi
 
 @c @node ggf, graphs, f90, Top
 @c @chapter ggf
-@c @include ggf.texi
+@c @include ggf.de.texi
 
 @c @node graphs, grobner, ggf, Top
 @c @chapter graphs
-@c @include graphs.texi
+@c @include graphs.de.texi
 
 @c @node grobner, impdiff, graphs, Top
 @c @chapter grobner
-@c @include grobner.texi
+@c @include grobner.de.texi
 
-@c @node impdiff, implicit_plot, grobner, Top
+@c @node impdiff, interpol, grobner, Top
 @c @chapter impdiff
-@c @include impdiff.texi
+@c @include impdiff.de.texi
 
-@c @node interpol, lapack, implicit_plot, Top
+@c @node interpol, lapack, impdiff, Top
 @c @chapter interpol
-@c @include interpol.texi
+@c @include interpol.de.texi
 
 @c @node lapack, lbfgs, interpol, Top
 @c @chapter lapack
-@c @include lapack.texi
+@c @include lapack.de.texi
 
 @c @node lbfgs, lindstedt, lapack, Top
 @c @chapter lbfgs
-@c @include lbfgs.texi
+@c @include lbfgs.de.texi
 
 @c @node lindstedt, linearalgebra, lbfgs, Top
 @c @chapter lindstedt
-@c @include lindstedt.texi
+@c @include lindstedt.de.texi
 
 @c @node linearalgebra, lsquares, lindstedt, Top
 @c @chapter linearalgebra
-@c @include linearalgebra.texi
+@c @include linearalgebra.de.texi
 
 @c @node lsquares, makeOrders, linearalgebra, Top
 @c @chapter lsquares
-@c @include lsquares.texi
+@c @include lsquares.de.texi
 
-@c @node makeOrders, mnewton, lsquares, Top
+@c @node makeOrders, minpack, lsquares, Top
 @c @chapter makeOrders
-@c @include makeOrders.texi
+@c @include makeOrders.de.texi
 
-@c @node mnewton, numericalio, makeOrders, Top
+@c @node minpack, mnewton, makeOrders, Top
+@c @chapter minpack
+@c @include minpack.de.texi
+
+@c @node mnewton, numericalio, minpack, Top
 @c @chapter mnewton
-@c @include mnewton.texi
+@c @include mnewton.de.texi
 
 @c @node numericalio, opsubst, mnewton, Top
 @c @chapter numericalio
-@c @include numericalio.texi
+@c @include numericalio.de.texi
 
 @c @node opsubst, orthopoly, numericalio, Top
 @c @chapter opsubst
-@c @include opsubst.texi
+@c @include opsubst.de.texi
 
 @c @node orthopoly, plotdf, opsubst, Top
 @c @chapter orthopoly
-@c @include orthopoly.texi
+@c @include orthopoly.de.texi
 
 @c @node plotdf, romberg, orthopoly, Top
 @c @chapter plotdf
-@c @include plotdf.texi
+@c @include plotdf.de.texi
 
 @c @node romberg, simplex, plotdf, Top
 @c @chapter romberg
-@c @include romberg.texi
+@c @include romberg.de.texi
 
 @c @node simplex, simplification, romberg, Top
 @c @chapter simplex
-@c @include simplex.texi
+@c @include simplex.de.texi
 
 @c @node simplification, solve_rec, simplex, Top
 @c @chapter simplification
-@c @include simplifications.texi
+@c @include simplifications.de.texi
 
 @c @node solve_rec, stats, simplification, Top
 @c @chapter solve_rec
-@c @include solve_rec.texi
+@c @include solve_rec.de.texi
 
 @c @node stats, stirling, solve_rec, Top
 @c @chapter stats
-@c @include stats.texi
+@c @include stats.de.texi
 
 @c @node stirling, stringproc, stats, Top
 @c @chapter stirling
-@c @include stirling.texi
+@c @include stirling.de.texi
 
 @c @node stringproc, unit, stirling, Top
 @c @chapter stringproc
-@c @include stringproc.texi
+@c @include stringproc.de.texi
 
 @c @node unit, zeilberger, stringproc, Top
 @c @chapter unit
-@c @include unit.texi
+@c @include unit.de.texi
 
-@c @node zeilberger, Function and Variable Index, unit, Top
+@c @node zeilberger, Glossar, unit, Top
 @c @chapter zeilberger
-@c @include zeilberger.texi
+@c @include zeilberger.de.texi
 
-@node Glossar, Index der Variablen und Funktionen, Summen Produkte und Reihen, Top
+@node Glossar, Index der Variablen und Funktionen, Analysis, Top
 @chapter Glossar
 @include Glossary.de.texi
 
