@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Input.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 02.11.2010
+@c File        : Input.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 02.11.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -758,9 +758,7 @@ Optionsvariablen @code{file_search_usage} enthalten sind.
 @c @closecatbox
 @end deffn
 
-@c TODO: AB HIER IST DAS KAPITEL NOCH ZU ÜBERARBEITEN
-
-@c --- 28.08.2010 DK -----------------------------------------------------------
+@c --- 11.11.2010 DK -----------------------------------------------------------
 @anchor{save}
 @deffn  {Funktion} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
 @deffnx {Funktion} save (@var{filename}, values, functions, labels, ...)
@@ -774,16 +772,16 @@ Optionsvariablen @code{file_search_usage} enthalten sind.
 @c other objects. If a name has no value or function associated with it, it is 
 @c ignored. @code{save} returns @var{filename}.
 
-Speichert die aktuellen Wert von @var{name_1}, @var{name_2}, @var{name_3}, ..., 
+Speichert die aktuellen Werte von @var{name_1}, @var{name_2}, @var{name_3}, ..., 
 in die Datei @var{filename}. Die Argumente sind die Namen von Variablen, 
-Funktionen oder anderen Objekten. Argumente die keinen Wert haben, werden 
+Funktionen oder anderen Objekten. Argumente, die keinen Wert haben, werden 
 ignoriert. @code{save} gibt den Namen der Datei @code{filename} zur@"uck.
 
 @c @code{save} stores data in the form of Lisp expressions. The data stored by 
 @c @code{save} may be recovered by @code{load (@var{filename})}.
 
 @code{save} speichert die Daten in einem Lisp-Format. Die gespeicherten Daten
-k@"onnen mit dem Kommando @code{load (@var{filename})} zur@"uckgelesen werden.
+k@"onnen mit dem Kommando @code{load(@var{filename})} zur@"uckgelesen werden.
 
 @c The global flag @code{file_output_append} governs whether @code{save} appends
 @c or truncates the output file. When @code{file_output_append} is @code{true},
@@ -803,8 +801,8 @@ noch nicht, wird diese angelegt.
 @c @code{values} comprises all user-defined variables.
 
 @code{save(@var{filename}, values, functions, labels, ...)} speichert die
-Werte aller Eintr@"age der Listen @code{values}, @code{functions}, @code{labels}, 
-u.s.w. in die Ausgabedatei. Es kann jede der vorhandenen
+Werte aller Eintr@"age der Listen @code{values}, @code{functions}, 
+@code{labels}, u.s.w. in die Ausgabedatei. Es kann jede der vorhandenen
 Informationslisten, die in der Systemvariablen @code{infolists} enthalten ist, 
 als Argument @"ubergeben werden. @code{values} enth@"alt zum Beispiel alle vom
 Nutzer definierten Variablen.
@@ -819,10 +817,9 @@ Nutzer definierten Variablen.
 @code{save(@var{filename}, [@var{m}, @var{n}])} speichert die Werte der 
 Eingabe- und Ausgabemarken von @var{m} bis @var{n}. @var{m} und @var{n} m@"ussen
 ganze Zahlen sein. Die Eingabe- und Ausgabemarken k@"onnen auch einzeln 
-gespeichert werden, zum Beispiel mit @code{save ("foo.1", %i42, %o42)}.
-@code{save (@var{filename}, labels)} speichert alle Eingabe- und Ausgabemarken.
-Werden gespeicherte Marken zur@"uckgelesen, werden bereits vorhandene Werte
-@"uberschrieben.
+gespeichert werden, zum Beispiel mit @code{save("foo.1", %i42, %o42)}.
+@code{save(@var{filename}, labels)} speichert alle Eingabe- und Ausgabemarken.
+Beim Zur@"uckgelesen der Marken, werden vorhandene Werte @"uberschrieben.
 
 @c The special form @code{save (@var{filename}, @var{name_1}=@var{expr_1}, 
 @c @var{name_2}=@var{expr_2}, ...)} stores the values of @var{expr_1}, 
@@ -839,8 +836,7 @@ Werden gespeicherte Marken zur@"uckgelesen, werden bereits vorhandene Werte
 sein, um zum Beispiel die Werte von Marken mit einem neuen Namen abzuspeichern,
 zum Beispiel mit @code{save("foo.1", aa=%o88)}. Die rechte Seite der Gleichungen
 kann ein beliebiger ausgewerteter Ausdruck sein. Die neuen Namen werden der
-aktuellen Sitzung nicht hinzugef@"ugt und werden nur in der Ausgabedatei 
-gespeichert.
+aktuellen Sitzung nicht hinzugef@"ugt und nur in der Ausgabedatei gespeichert.
 
 @c These special forms and the general form of @code{save} may be mixed at will.
 @c For example, @code{save (@var{filename}, aa, bb, cc=42, functions, [11,17])}.
@@ -856,7 +852,7 @@ miteinander kombiniert werden, zum Beispiel
 @c been assigned new values by the user; see @code{myoptions}.
 
 @code{save(@var{filename}, all)} speichert den aktuellen Zustand von Maxima
-in Ausgabedatei. Eingeschlossen sind alle benutzerdefinierten Variablen, 
+in eine Ausgabedatei. Eingeschlossen sind alle benutzerdefinierten Variablen, 
 Funktionen, Arrays, usw., einschlie@ss{}lich automatischer Definitionen. Die 
 gespeicherten Daten enthalten auch die Werte von ge@"anderten System- oder
 Optionsvariablen, siehe @code{myoptions}.
@@ -871,7 +867,7 @@ werden nicht ausgewertet.
 @c @closecatbox
 @end deffn
 
-@c --- 28.08.2010 DK -----------------------------------------------------------
+@c --- 11.11.2010 DK -----------------------------------------------------------
 @anchor{stringout}
 @deffn  {Funktion} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 @deffnx {Funktion} stringout (@var{filename}, [@var{m}, @var{n}])
@@ -988,16 +984,16 @@ Konsole ausgegeben.
 @c @code{with_stdout} creates the file if it does not yet exist.
 
 Die Optionsvariable @code{file_output_append} bestimmt, ob @code{with_stdout} 
-die Daten an die Ausgabedatei anh@"angt oder die Ausgabedatei zuvor l@"oscht. Hat
-@code{file_output_append} den Wert @code{true}, werden die Daten angeh@"angt.
-Ansonsten wird die Datei gel@"oscht und neu angelegt. Existiert die Ausgabedatei
-noch nicht, wird diese angelegt.
+die Daten an die Ausgabedatei anh@"angt oder die Ausgabedatei zuvor l@"oscht. 
+Hat @code{file_output_append} den Wert @code{true}, werden die Daten 
+angeh@"angt. Ansonsten wird die Datei gel@"oscht und neu angelegt. Existiert die
+Ausgabedatei noch nicht, wird diese angelegt.
 
 @c @code{with_stdout} returns the value of its final argument.
 
 @code{with_stout} gibt das Ergebnis des letzten Argumentes zur@"uck.
 
-Siehe auch @code{writefile}.
+Siehe auch @mrefdot{writefile}
 
 @c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
 @c Note the binding of display2d to be
@@ -1050,10 +1046,11 @@ Ausgaben werden in die Datei @var{filename} geschrieben.
 @c expressions in Lisp form, while @code{stringout} stores expressions in Maxima
 @c form.
 
-Die Ausgabedatei kann von Maxima nicht wieder zur@"uckgelesen werden. Um ein Datei
-zu erzeugen, die von Maxima zur@"uckgelesen werden kann, siehe die Funktionen 
-@code{save} and @code{stringout}. @code{save} speichert Ausdr@"ucke in einem 
-Lisp-Format und @code{stringout} speichert Ausdr@"ucke in einem Maxima-Format.
+Die Ausgabedatei kann von Maxima nicht wieder zur@"uckgelesen werden. Um ein 
+Datei zu erzeugen, die von Maxima zur@"uckgelesen werden kann, siehe die 
+Funktionen @code{save} and @code{stringout}. @code{save} speichert Ausdr@"ucke 
+in einem Lisp-Format und @code{stringout} speichert Ausdr@"ucke in einem 
+Maxima-Format.
 
 @c The effect of executing @code{writefile} when @var{filename} already exists
 @c depends on the underlying Lisp implementation; the transcript file may be 
