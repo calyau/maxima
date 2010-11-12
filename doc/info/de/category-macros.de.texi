@@ -90,6 +90,7 @@
              O-pe-ra-to-ren
              Spei-cher
              un-ge-ra-de
+             ver-ein-fach-en
              wei-te-ren
              wxMaxima
              Xmaxima
