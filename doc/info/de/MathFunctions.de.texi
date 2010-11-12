@@ -24,6 +24,7 @@
 @c -----------------------------------------------------------------------------
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{abs}
 @deffn {Funktion} abs (@var{expr})
 
 @c Returns the absolute value @var{expr}.  If @var{expr} is complex, returns 
@@ -41,6 +42,7 @@ F@"ur komplexe Ausdr@"ucke kann die Funktion @code{cabs} genutzt werden. Siehe
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{ceiling}
 @deffn {Funktion} ceiling (@var{x})
 
 @c When @var{x} is a real number, return the least integer that is greater than 
@@ -130,6 +132,7 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{entier}
 @deffn {Funktion} entier (@var{x})
 
 @c Returns the largest integer less than or equal to @var{x} where @var{x} is 
@@ -145,6 +148,7 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{floor}
 @deffn {Funktion} floor (@var{x})
 
 @c When @var{x} is a real number, return the largest integer that is less than 
@@ -234,6 +238,7 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{fix}
 @deffn {Funktion} fix (@var{x})
 
 @c A synonym for @code{entier (@var{x})}.
@@ -247,6 +252,7 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{lmax}
 @deffn {Funktion} lmax (@var{L})
 
 @c When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}. 
@@ -262,6 +268,7 @@ keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{lmin}
 @deffn {Funktion} lmin (@var{L})
 
 @c When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}. 
@@ -277,6 +284,7 @@ keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{max}
 @deffn {Funktion} max (@var{x_1}, ..., @var{x_n})
 
 @c Return a simplified value for the maximum of the expressions @var{x_1} 
@@ -301,6 +309,7 @@ zum Beispiel @code{max(x,2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht.
 @end deffn 
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{min}
 @deffn {Funktion} min (@var{x_1}, ..., @var{x_n})
 
 @c Return a simplified value for the minimum of the expressions @code{x_1} 
@@ -325,6 +334,7 @@ zum Beispiel @code{min(x,2*x, 3*x)} zu @code{min(x, 3*x)} vereinfacht.
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{mod}
 @deffn {Funktion} mod (@var{x}, @var{y})
 
 @c If @var{x} and @var{y} are real numbers and @var{y} is nonzero, return 
@@ -387,6 +397,7 @@ verschiedene Vereinfachungen:
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{round}
 @deffn {Funktion} round (@var{x})
 
 @c When @var{x} is a real number, returns the closest integer to @var{x}.  
@@ -406,6 +417,7 @@ Siehe auch @code{floor} und @code{ceiling}.
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{signum}
 @deffn {Funktion} signum (@var{x})
 
 @c For numeric @var{x}, returns 0 if @var{x} is 0, otherwise returns -1 or +1
@@ -432,6 +444,7 @@ zum Beispiel @code{signum(-x)} zu @code{-signum(x)} vereinfacht.
 @c -----------------------------------------------------------------------------
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{cabs}
 @deffn {Funktion} cabs (@var{expr})
 
 @c Returns the complex absolute value (the complex modulus) of @var{expr}.
@@ -448,6 +461,7 @@ zu berechnen.
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{carg}
 @deffn {Funktion} carg (@var{z})
 
 @c Returns the complex argument of @var{z}. The complex argument is an angle 
@@ -502,6 +516,7 @@ Beispiele:
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{conjugate}
 @deffn {Funktion} conjugate (@var{x})
 
 @c Returns the complex conjugate of @var{x}.
@@ -541,6 +556,7 @@ Beispiele:
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{imagpart}
 @deffn {Funktion} imagpart (@var{expr})
 
 @c Returns the imaginary part of the expression @var{expr}.
@@ -562,6 +578,7 @@ und @code{realpart}.
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{polarform}
 @deffn {Funktion} polarform (@var{expr})
 
 @c Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr}, such 
@@ -577,6 +594,7 @@ zur@"uck. @code{r} ist der Betrag der komplexen Ausdrucks @var{expr} und
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{realpart}
 @deffn {Funktion} realpart (@var{expr})
 
 @c Returns the real part of @var{expr}. @code{realpart} and @code{imagpart} will
@@ -591,6 +609,7 @@ Gibt den Realteil des Ausrucks @var{expr} zur@"uck.
 @end deffn
 
 @c --- 19.10.2010 DK -----------------------------------------------------------
+@anchor{rectform}
 @deffn {Funktion} rectform (@var{expr})
 
 @c Returns an expression @code{a + b %i} equivalent to @var{expr}, such that 
@@ -612,6 +631,7 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 @c TODO: DOKUMENTATION FÜR DOUBLE_FACTORIAL FEHLT
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{!!}
 @deffn {Operator} !!
 @ifinfo
 @fnindex Doppelte Fakult@"at
@@ -659,6 +679,7 @@ allgemeiner definiert ist. Siehe @code{double_factorial}.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{binomial}
 @deffn {Funktion} binomial (@var{x}, @var{y})
 
 @c The binomial coefficient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}. If 
@@ -702,8 +723,39 @@ Beispiele:
 @c @closecatbox
 @end deffn
 
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{factcomb}
+@deffn {Funktion} factcomb (@var{expr})
+
+@c Tries to combine the coefficients of factorials in @var{expr} with the 
+@c factorials themselves by converting, for example, @code{(n + 1)*n!} into 
+@c @code{(n + 1)!}.
+
+Versucht Faktoren in Ausdr@"ucken mit Fakult@"aten zusammenzufassen. Zum 
+Beispiel wird @code{(n+1)*n!} zu @code{(n+1)!} zusammengefasst.
+
+@c @code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to
+@c be applied after a @code{factcomb}.
+
+Hat die Optionsvariable @code{sumsplitfact} den Wert @code{false}, wird die
+Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
+@code{factcomb} angewendet.
+
+@c Example:
+@c UH, THESE ARE THE EXPRESSIONS WHICH WERE GIVEN IN 
+@c THE PREVIOUS REVISION OF THIS FILE, BUT IN THIS CASE
+@c factcomb HAS NO EFFECT -- I GUESS A DIFFERENT EXAMPLE IS CALLED FOR
+@c (n + 1)^b*n!^b;
+@c factcomb (%);
+@c @opencatbox
+@c @category{Gamma and factorial functions}
+@c @closecatbox
+@end deffn
+
 @c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn  {Function} factorial (@var{x})
+@anchor{factorial}
+@anchor{!}
+@deffn  {Funktion} factorial (@var{x})
 @deffnx {Operator} !
 @ifinfo
 @fnindex Fakult@"at
@@ -895,6 +947,7 @@ Vereinfachung von Ausdr@"ucken, die die Fakult@"at enthalten.
 @end deffn
 
 @c --- 17.10.2010 DK -----------------------------------------------------------
+@anchor{factlim}
 @defvr {Optionsvariable} factlim
 Standardwert: 100000
 
@@ -914,6 +967,7 @@ den Wert -1 hat, wird die Fakult@"at f@"ur jede ganze Zahl berechnet.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{factorial_expand}
 @defvr {Optionsvariable} factorial_expand
 Standardwert: @code{false}
 
@@ -931,6 +985,7 @@ Ausdr@"ucken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist. Siehe
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{genfact}
 @deffn {Funktion} genfact (@var{x}, @var{y}, @var{z})
 
 @c Returns the generalized factorial, defined as
@@ -946,12 +1001,66 @@ Gibt die verallgemeinerte Fakult@"at zur@"uck, die als @code{x (x-z) (x - 2 z)
 @c @closecatbox
 @end deffn
 
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{minfactorial}
+@deffn {Funktion} minfactorial (@var{expr})
+
+@c Examines @var{expr} for occurrences of two factorials which differ by an 
+@c integer. @code{minfactorial} then turns one into a polynomial times the 
+@c other.
+
+Treten mehrere Fakult@"aten in einem Ausdruck @var{expr} auf, die sich nur um
+ganze Zahlen voneinander unterscheiden, werden diese vereinfacht.
+
+@c I CAN'T TELL WHAT THIS IS SUPPOSED TO MEAN. !!!
+@c minfactorial DOESN'T SEEM TO DO ANYTHING binomial DOESN'T DO BY ITSELF !!!
+@c LOOKING AT THE minfactorial CODE DOESN'T HELP !!!
+@c If exp involves binomial coefficients then they will be
+@c converted into ratios of factorials.
+
+@example
+(%i1) n!/(n+2)!;
+                               n!
+(%o1)                       --------
+                            (n + 2)!
+(%i2) minfactorial (%);
+                                1
+(%o2)                    ---------------
+                         (n + 1) (n + 2)
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{sumsplitfact}
+@defvr {Optionsvariable} sumsplitfact
+Standardwert: @code{true}
+
+@c When @code{sumsplitfact} is @code{false},
+@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
+@c @code{minfactorial} is applied after a @code{factcomb}.
+
+Hat die Optionsvariable @code{sumsplitfact} den Wert @code{false}, wird die
+Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
+@code{factcomb} angewendet.
+
+@c TODO: EIN BEISPIEL
+
+@c @opencatbox
+@c @category{Gamma and factorial functions} @category{Simplification flags and variables}
+@c @closecatbox
+@end defvr
+
 @c -----------------------------------------------------------------------------
 @node Algebraische Funktionen, Exponential- und Logarithmusfunktion, Funktionen der Kombinatorik
 @section Algebraische Funktionen
 @c -----------------------------------------------------------------------------
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{isqrt}
 @deffn {Funktion} isqrt (@var{x})
 
 @c Returns the "integer square root" of the absolute value of @var{x}, which is 
@@ -966,6 +1075,7 @@ ganze Zahl ist. Andernfalls wird eine Substantivform zur@"uckgegeben.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{sqrt}
 @deffn {Funktion} sqrt (@var{x})
 
 @c The square root of @var{x}. It is represented internally by 
@@ -995,6 +1105,7 @@ wenn @code{radexpand} den Wert @code{true} hat.
 @c -----------------------------------------------------------------------------
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{exp}
 @deffn {Funktion} exp (@var{x})
 
 @c Represents the exponential function. Instances of @code{exp (@var{x})} in 
@@ -1031,6 +1142,7 @@ Optionsvariable @code{numer} den Wert @code{true} hat. Siehe @code{%enumer}.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{%emode}
 @defvr {Optionsvariable} %emode
 Standardwert: @code{true}
 
@@ -1069,6 +1181,7 @@ f@"ur den Ausdruck @code{%e^(%pi %i x)} vorgenommen.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{%enumer}
 @defvr {Optionsvariable} %enumer
 Standardwert: @code{false}
 
@@ -1097,6 +1210,7 @@ Siehe auch @code{ev} und @code{numer}.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{%e_to_numlog}
 @defvr {Optionsvariable} %e_to_numlog
 Standardwert: @code{false}
 
@@ -1117,6 +1231,7 @@ eine rationale Zahl und @code{x} ein beliebiger Ausdruck. Die Funktion
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{log}
 @deffn {Funktion} log (@var{x})
 
 @c Represents the natural (base @math{e}) logarithm of @var{x}.
@@ -1204,6 +1319,7 @@ eine rationale Zahl und @code{x} ein beliebiger Ausdruck. Die Funktion
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{logabs}
 @defvr {Optionsvariable} logabs
 Standardwert: @code{false}
 
@@ -1229,6 +1345,7 @@ Bei der Berechnung von bestimmten Integralen setzt Maxima die Optionsvariable
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{logarc}
 @deffn  {Funktion} logarc (@var{expr})
 @deffnx {Optionsvariable} logarc
 
@@ -1252,6 +1369,7 @@ die Optionsvariable @code{logarc} gesetzt wird.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{logconcoeffp}
 @defvr {Optionsvariable} logconcoeffp
 Standardwert: @code{false}
 
@@ -1275,6 +1393,7 @@ folgende Ergebnis @code{log(sqrt(x))}.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{logcontract}
 @deffn {Funktion} logcontract (@var{expr})
 
 @c Recursively scans the expression @var{expr}, transforming subexpressions of 
@@ -1324,6 +1443,7 @@ folgende Ergebnis @code{log(sqrt(x))}.
 @end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{logexpand}
 @defvr {Optionsvariable} logexpand
 Standardwert: @code{true}
 
@@ -1348,6 +1468,7 @@ Vereinfachungen ausgeschaltet.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{lognegint}
 @defvr {Optionsvariable} lognegint
 Standardwert: @code{false}
 
@@ -1363,7 +1484,8 @@ Hat die Optionsvariable @code{lognegint} den Wert @code{true}, wird
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
-@defvr {Option variable} lognumer
+@anchor{lognummer}
+@defvr {Optionsvariable} lognumer
 Standardwert: @code{false}
 
 @c If @code{true} then negative floating point arguments to @code{log} will 
@@ -1381,6 +1503,7 @@ berechnet wird.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{logsimp}
 @defvr {Optionsvariable} logsimp
 Standardwert: @code{true}
 
@@ -1397,6 +1520,7 @@ enthalten, nicht vereinfacht.
 @end defvr
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
+@anchor{plog}
 @deffn {Funktion} plog (@var{x})
 
 @c Represents the principal branch of the complex-valued natural logarithm with 
