@@ -12,6 +12,7 @@
 * Einf@"uhrung in Maximas Datenbank::
 * Funktionen und Variablen f@"ur Eigenschaften::
 * Funktionen und Variablen f@"ur Fakten::
+* Funktionen und Variablen f@"ur Aussagen::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -286,7 +287,7 @@ zugewiesen wurde, signalisiert Maxima einen Fehler.
 @c Tells Maxima to consider @var{a_i} a nonscalar variable. The usual 
 @c application is to declare a variable as a symbolic vector or matrix.
 
-@var{a_i} wird als eine nicht-skalare Variable interpretiert. Überlicherweise
+@var{a_i} wird als eine nicht-skalare Variable interpretiert. @"Uberlicherweise
 wird damit ein symbolischer Vektor oder eine Matrix deklariert.
 
 @item @code{mainvar}
@@ -895,6 +896,31 @@ Funktion. @code{is (f(x) > 0)} gibt dann @code{true}.
 @c @closecatbox
 @end defvr
 
+@c -----------------------------------------------------------------------------
+@anchor{printprops}
+@deffn  {Funktion} printprops (@var{a}, @var{i})
+@deffnx {Funktion} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Funktion} printprops (all, @var{i})
+
+@c Displays the property with the indicator @var{i} associated with the 
+@c atom @var{a}. @var{a} may also be a list of atoms or the atom @code{all} in 
+@c which case all of the atoms with the given property will be used.  For 
+@c example, @code{printprops ([f, g], atvalue)}.  @code{printprops} is for
+@c properties that cannot otherwise be displayed, i.e. for @code{atvalue}, 
+@c @code{atomgrad}, @code{gradef}, and @code{matchdeclare}.
+
+Zeigt die zum Kennzeichen @var{i} zugeordnete Eigenschaft des Atoms @var{a} an. 
+@var{a} kann sowohl eine Liste von Atomen, als auch das Atom @code{all} sein. In
+diesem Fall werden alle Atome angezeigt, die eine Eigenschaft zum Kennzeichen 
+@var{i} haben. @code{printprops} zeigt die Eigenschaften von Atomen, die auf 
+andere Weise nicht angezeigt werden k@"onnen, zum Beispiel f@"ur @code{atvalue}, 
+@code{atomgrad}, @code{gradef} und @code{matchdeclare}.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen} @category{Anzeigefunktionen}
+@c @closecatbox
+@end deffn
+
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{scalar}
 @defvr {Eigenschaft} scalar
@@ -908,7 +934,7 @@ nicht-kommutativen Rechenoperationen.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Fakten, , Funktionen und Variablen f@"ur Eigenschaften
+@node Funktionen und Variablen f@"ur Fakten, Aussagefunktionen, Funktionen und Variablen f@"ur Eigenschaften
 @section Funktionen und Variablen f@"ur Fakten
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
@@ -1530,6 +1556,109 @@ sind.
 @c @closecatbox
 @end deffn
 
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{is}
+@deffn {Funktion} is (@var{expr})
+
+@c Attempts to determine whether the predicate @var{expr} is provable from the 
+@c facts in the @code{assume} database.
+
+versucht festzustellen, ob die Aussage @var{expr} mit Hilfe der Fakten in der
+Datenbank entschieden werden kann.
+
+@c If the predicate is provably @code{true} or @code{false}, @code{is} returns 
+@c @code{true} or @code{false}, respectively. Otherwise, the return value is 
+@c governed by the global flag @code{prederror}. When @code{prederror} is 
+@c @code{true}, @code{is} complains with an error message. Otherwise, @code{is} 
+@c returns @code{unknown}.
+
+Kann die Aussage zu @code{true} oder @code{false} entschieden werden, wird
+das entsprechende zur@"uck gegeben. Andernfalls wird der R@"uckgabewert durch das
+globale Flag @code{prederror} bestimmt. Hat @code{prederror} den Wert 
+@code{true}, wird eine Fehlermeldung erzeugt. Andernfalls wird @code{unknown}
+zur@"uck gegeben.
+
+@c @code{ev(@var{expr}, pred)} (which can be written  @code{@var{expr}, pred} 
+@c at the interactive prompt) is equivalent to @code{is(@var{expr})}.
+
+@c See also @code{assume}, @code{facts}, and @code{maybe}.
+
+Siehe auch @code{assume}, @code{facts} und @code{maybe}.
+
+Beispiele:
+
+@c @code{is} causes evaluation of predicates.
+
+@code{is} wertet Aussagen aus:
+
+@c ===beg===
+@c %pi > %e;
+@c is (%pi > %e);
+@c ===end===
+@example
+(%i1) %pi > %e;
+(%o1)                       %pi > %e
+(%i2) is (%pi > %e);
+(%o2)                         true
+@end example
+
+@c @code{is} attempts to derive predicates from the @code{assume} database.
+
+@code{is} versucht Aussagen anhand der Fakten der Datenbank zu entscheiden.
+
+@c ===beg===
+@c assume (a > b);
+@c assume (b > c);
+@c is (a < b);
+@c is (a > c);
+@c is (equal (a, c));
+@c ===end===
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) assume (b > c);
+(%o2)                        [b > c]
+(%i3) is (a < b);
+(%o3)                         false
+(%i4) is (a > c);
+(%o4)                         true
+(%i5) is (equal (a, c));
+(%o5)                         false
+@end example
+
+@c If @code{is} can neither prove nor disprove a predicate from the 
+@c @code{assume} database, the global flag @code{prederror} governs the behavior
+@c of @code{is}.
+
+Wenn @code{is} eine Aussage anhand der Fakten der Datenbank nicht entscheiden
+kann, wird der R@"uckgabewert vom Wert des globalen Flags @code{prederror}
+bestimmt.
+
+@c ===beg===
+@c assume (a > b);
+@c prederror: true$
+@c is (a > 0);
+@c prederror: false$
+@c is (a > 0);
+@c ===end===
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) prederror: true$
+(%i3) is (a > 0);
+Maxima was unable to evaluate the predicate:
+a > 0
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) prederror: false$
+(%i5) is (a > 0);
+(%o5)                        unknown
+@end example
+
+@c @opencatbox
+@c @category{Aussagefunktionen} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{killcontext}
 @deffn {Funktion} killcontext (@var{context_1}, ..., @var{context_n})
@@ -1569,6 +1698,57 @@ aktiviert wurde.
 @c @closecatbox
 @end deffn
 
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{maybe}
+@deffn {Funktion} maybe (@var{expr})
+
+@c Attempts to determine whether the predicate @var{expr} is provable from the 
+@c facts in the @code{assume} database.
+
+Versucht festzustellen, ob die Aussage @var{expr} anhand der @code{assume} 
+Datenbank beweisbar ist.
+
+@c If the predicate is provably @code{true} or @code{false}, @code{maybe} 
+@c returns @code{true} or @code{false}, respectively. Otherwise, @code{maybe} 
+@c returns @code{unknown}.
+
+Kann die Aussage als @code{true} oder @code{false} bewiesen werden, gibt 
+@code{maybe} entsprechend @code{true} oder @code{false} zur@"uck. Andernfalls
+gibt @code{maybe} den Wert @code{unknown} zur@"uck.
+
+@c @code{maybe} is functionally equivalent to @code{is} with @code{prederror: 
+@c false}, but the result is computed without actually assigning a value to 
+@c @code{prederror}.
+
+@code{maybe} entspricht der Funktion @code{is} mit @code{prederror: false}. 
+Dabei wird @code{maybe} ausgef@"uhrt, ohne dass @code{prederror} einen Wert 
+erh@"alt.
+
+@c See also @code{assume}, @code{facts}, and @code{is}.
+
+Siehe auch @code{assume}, @code{facts} und @code{is}.
+
+Beispiele:
+
+@c ===beg===
+@c maybe (x > 0);
+@c assume (x > 1);
+@c maybe (x > 0);
+@c ===end===
+@example
+(%i1) maybe (x > 0);
+(%o1)                        unknown
+(%i2) assume (x > 1);
+(%o2)                        [x > 1]
+(%i3) maybe (x > 0);
+(%o3)                         true
+@end example
+
+@c @opencatbox
+@c @category{Aussagefunktionen} @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{newcontext}
 @deffn {Funktion} newcontext (@var{name})
@@ -1586,6 +1766,28 @@ und wird zum aktuellen Kontext.
 
 @code{newcontext} wertet seine Argumente aus. @code{newcontext} gibt @code{name}
 zur@"uck.
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{sign}
+@deffn {Funktion} sign (@var{expr})
+
+@c Attempts to determine the sign of @var{expr} on the basis of the facts in the
+@c current data base.  It returns one of the following answers: @code{pos} 
+@c (positive), @code{neg} (negative), @code{zero}, @code{pz} (positive or zero),
+@c @code{nz} (negative or zero), @code{pn} (positive or negative), or @code{pnz}
+@c (positive, negative, or zero, i.e. nothing known).
+
+Versucht das Vorzeichen des Ausdrucks @var{expr} auf Grundlage der Fakten der
+aktuellen Datenbank zu finden. @code{sign} gibt eine der folgende Antworten 
+zur@"uck: @code{pos} (positiv), @code{neg} (negative), @code{zero} (null),
+@code{pz} (positive oder null), @code{nz} (negative oder null), @code{pn}
+(positiv oder negative) oder @code{pnz} (positiv, negative oder null, f@"ur den
+Fall das Vorzeichen nicht bekannt ist).
 
 @c @opencatbox
 @c @category{Deklarationen und Inferenzen}
@@ -1613,5 +1815,443 @@ Wird @var{context} nicht spezifiziert, wird der aktuelle Kontext zum Subkontext.
 @c @closecatbox
 @end deffn
 
-@c --- End of Declarations.de.texi ---------------------------------------------
+@c -----------------------------------------------------------------------------
+@node Aussagefunktionen, , Funktionen und Variablen f@"ur Fakten
+@section Aussagefunktionen
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{charfun}
+@deffn {Funktion} charfun (@var{p})
+
+@c Return 0 when the predicate @var{p} evaluates to @code{false}; return 1 when 
+@c the predicate evaluates to @code{true}.  When the predicate evaluates to 
+@c something other than @code{true} or @code{false} (unknown), return a noun 
+@c form.
+
+Gibt den Wert 0 zur@"uck, wenn die Aussage @var{p} zu @code{false} ausgewertet
+werden kann und den Wert 1, wenn die Auswertung @code{true} liefert. Kann
+die Aussage weder zu @code{false} oder @code{true} ausgewertet werden, wird eine
+Substantiv-Form zur@"uck gegeben.
+
+Beispiele:
+
+@c ===beg===
+@c charfun (x < 1);
+@c subst (x = -1, %);
+@c e : charfun ('"and" (-1 < x, x < 1))$
+@c [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+@c ===end===
+@example
+(%i1) charfun (x < 1);
+(%o1)                    charfun(x < 1)
+(%i2) subst (x = -1, %);
+(%o2)                           1
+(%i3) e : charfun ('"and" (-1 < x, x < 1))$
+(%i4) [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+(%o4)                       [0, 1, 0]
+@end example
+
+@c @opencatbox
+@c @category{Mathematische Funktionen}
+@c @closecatbox
+@end deffn
+
+@c --- 27.08.2010 DK -----------------------------------------------------------
+@anchor{compare}
+@deffn {Funktion} compare (@var{x}, @var{y})
+
+@c Return a comparison operator @var{op} (@code{<}, @code{<=}, @code{>}, 
+@c @code{>=}, @code{=}, or @code{#}) such that @code{is (@var{x} @var{op} 
+@c @var{y})} evaluates to @code{true}; when either @var{x} or @var{y} depends 
+@c on @code{%i} and @code{@var{x} # @var{y}}, return @code{notcomparable}; when 
+@c there is no such operator or Maxima isn't able to determine the operator, 
+@c return @code{unknown}.
+
+Liefert den Vergleichsoperator @var{op} (@code{<}, @code{<=}, @code{>}, 
+@code{>=}, @code{=} oder @code{#}), so dass der Ausdruck @code{is(@var{x}
+@var{op} @var{y})} zu @code{true} ausgewertet werden kann. Ist eines der
+Argumente eine komplexe Zahl, dann wird @code{notcomparable} zur@"uckgegeben.
+Kann Maxima keinen Vergleichsoperator bestimmen, wird @code{unknown}
+zur@"uckgegeben.
+
+Beispiele:
+
+@c ===beg===
+@c compare (1, 2);
+@c compare (1, x);
+@c compare (%i, %i);
+@c compare (%i, %i + 1);
+@c compare (1/x, 0);
+@c compare (x, abs(x));
+@c ===end===
+@example
+(%i1) compare (1, 2);
+(%o1)                           <
+(%i2) compare (1, x);
+(%o2)                        unknown
+(%i3) compare (%i, %i);
+(%o3)                           =
+(%i4) compare (%i, %i + 1);
+(%o4)                     notcomparable
+(%i5) compare (1/x, 0);
+(%o5)                           #
+(%i6) compare (x, abs(x));
+(%o6)                          <=
+@end example
+
+@c The function @code{compare} doesn't try to determine whether the real domains
+@c of its arguments are nonempty; thus
+@c @c IT IS NOT QUITE TRUE, WHAT ABOUT x=0 ?
+@c The real domain of @code{acos (x^2 + 1)} is empty.
+
+Die Funktion @code{compare} versucht nicht festzustellen, ob der Wertebereich
+einer Funktion reelle Zahlen enth@"alt. Obwohl der Wertebereich von 
+@code{acos(x^2+1)} bis auf Null keine reellen Zahlen enth@"alt, gibt 
+@code{compare} das folgende Ergebnis zur@"uck:
+
+@c ===beg===
+@c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+@c ===end===
+@example
+(%i1) compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+(%o1)                           <
+@end example
+
+@c @opencatbox
+@c @category{Deklarationen und Inferenzen}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{equal}
+@deffn {Funktion} equal (@var{a}, @var{b})
+
+@c Represents equivalence, that is, equal value.
+
+Repr@"asentiert die @"Aquivalenz, das hei@ss{}t den gleichen Wert.
+
+@c By itself, @code{equal} does not evaluate or simplify. The function @code{is}
+@c attempts to evaluate @code{equal} to a Boolean value. @code{is(equal(@var{a},
+@c @var{b}))} returns @code{true} (or @code{false}) if and only if @var{a} and 
+@c @var{b} are equal (or not equal) for all possible values of their variables, 
+@c as determined by evaluating @code{ratsimp(@var{a} - @var{b})}; if 
+@c @code{ratsimp} returns 0, the two expressions are considered equivalent. Two 
+@c expressions may be equivalent even if they are not syntactically equal (i.e.,
+@c identical).
+
+@code{equal} wird nicht ausgewertet oder vereinfacht. Die Funktion @code{is}
+versucht einen Ausdruck mit @code{equal} zu einem boolschen Wert auszuwerten.
+@code{is(equal(@var{a}, @var{b}))} gibt @code{true} oder @code{false} zur@"uck, 
+wenn und nur wenn @var{a} und @var{b} gleich oder ungleich sind f@"ur alle Werte
+ihrer Variablen, was mit @code{ratsimp(@var{a} - @var{b})} bestimmt wird. Gibt
+@code{ratsimp} das Ergebnis 0 zur@"uck, werden die beiden Ausdr@"ucke als 
+@"aquivalent betracht. Zwei Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie 
+nicht syntaktisch gleich (im allgemeinen identisch) sind.
+
+@c When @code{is} fails to reduce @code{equal} to @code{true} or @code{false},
+@c the result is governed by the global flag @code{prederror}. When 
+@c @code{prederror} is @code{true}, @code{is} complains with an error message.
+@c Otherwise, @code{is} returns @code{unknown}.
+
+Kann @code{is} einen Ausdruck mit @code{equal} nicht zu @code{true} oder 
+@code{false} auswerten, h@"angt das Ergebnis vom Wert des globalen Flags 
+@code{prederror} ab. Hat @code{prederror} den Wert @code{true}, gibt @code{is}
+eine Fehlermeldung zur@"uck. Ansonsten wird @code{unknown} zur@"uckgegeben.
+
+@c In addition to @code{is}, some other operators evaluate @code{equal} and 
+@c @code{notequal} to @code{true} or @code{false}, namely @code{if}, @code{and},
+@c @code{or}, and @code{not}.
+
+Es gibt weitere Operatoren, die einen Ausdruck mit @code{equal} zu @code{true}
+oder @code{false} auswerten k@"onnen. Dazu geh@"oren @code{if}, @code{and}, 
+@code{or} und @code{not}.
+
+  @c FOLLOWING STATEMENT IS MORE OR LESS TRUE BUT I DON'T THINK THE DETAILS ARE
+  @c CORRECT
+  @c Declarations (integer, complex, etc)
+  @c for variables appearing in @var{a} and @var{b} are ignored by @code{equal}.
+  @c All variables are effectively assumed to be real-valued.
+
+@c The negation of @code{equal} is @code{notequal}.
+
+Die Umkehrung von @code{equal} ist @code{notequal}.
+
+Beispiele:
+
+@c By itself, @code{equal} does not evaluate or simplify.
+
+@code{equal} wird von allein weder ausgewertet noch vereinfacht:
+
+@c ===beg===
+@c equal (x^2 - 1, (x + 1) * (x - 1));
+@c equal (x, x + 1);
+@c equal (x, y);
+@c ===end===
+@example
+(%i1) equal (x^2 - 1, (x + 1) * (x - 1));
+                        2
+(%o1)            equal(x  - 1, (x - 1) (x + 1))
+(%i2) equal (x, x + 1);
+(%o2)                    equal(x, x + 1)
+(%i3) equal (x, y);
+(%o3)                      equal(x, y)
+@end example
+
+@c The function @code{is} attempts to evaluate @code{equal} to a Boolean value.
+@c @code{is(equal(@var{a}, @var{b}))} returns @code{true} when 
+@c @code{ratsimp(@var{a} - @var{b})} returns 0. Two expressions may be 
+@c equivalent even if they are not syntactically equal (i.e., identical).
+
+Die Funktion @code{is} versucht, @code{equal} zu einem boolschen Wert 
+auszuwerten. @code{is(equal(@var{a}, @var{b}))} gibt den Wert @code{true} 
+zur@"uck, when @code{ratsimp(@var{a} - @var{b})} den Wert 0 hat. Zwei 
+Ausdr@"ucke k@"onnen @"aquivalent sein, obwohl sie nicht syntaktisch gleich 
+sind.
+
+@c ===beg===
+@c ratsimp (x^2 - 1 - (x + 1) * (x - 1));
+@c is (equal (x^2 - 1, (x + 1) * (x - 1)));
+@c is (x^2 - 1 = (x + 1) * (x - 1));
+@c ratsimp (x - (x + 1));
+@c is (equal (x, x + 1));
+@c is (x = x + 1);
+@c ratsimp (x - y);
+@c is (equal (x, y));
+@c is (x = y);
+@c ===end===
+@example
+(%i1) ratsimp (x^2 - 1 - (x + 1) * (x - 1));
+(%o1)                           0
+(%i2) is (equal (x^2 - 1, (x + 1) * (x - 1)));
+(%o2)                         true
+(%i3) is (x^2 - 1 = (x + 1) * (x - 1));
+(%o3)                         false
+(%i4) ratsimp (x - (x + 1));
+(%o4)                          - 1
+(%i5) is (equal (x, x + 1));
+(%o5)                         false
+(%i6) is (x = x + 1);
+(%o6)                         false
+(%i7) ratsimp (x - y);
+(%o7)                         x - y
+(%i8) is (equal (x, y));
+(%o8)                        unknown
+(%i9) is (x = y);
+(%o9)                         false
+@end example
+
+@c When @code{is} fails to reduce @code{equal} to @code{true} or @code{false},
+@c the result is governed by the global flag @code{prederror}.
+
+Kann @code{is} einen Ausdruck mit @code{equal} nicht zu @code{true} oder
+@code{false} vereinfachen, h@"angt das Ergebnis vom Wert des globalen Flags
+@code{prederror} ab.
+
+@c ===beg===
+@c [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
+@c ratsimp (aa - bb);
+@c prederror : true;
+@c is (equal (aa, bb));
+@c prederror : false;
+@c is (equal (aa, bb));
+@c ===end===
+@example
+(%i1) [aa : x^2 + 2*x + 1, bb : x^2 - 2*x - 1];
+                    2             2
+(%o1)             [x  + 2 x + 1, x  - 2 x - 1]
+(%i2) ratsimp (aa - bb);
+(%o2)                        4 x + 2
+(%i3) prederror : true;
+(%o3)                         true
+(%i4) is (equal (aa, bb));
+Maxima was unable to evaluate the predicate:
+       2             2
+equal(x  + 2 x + 1, x  - 2 x - 1)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) prederror : false;
+(%o5)                         false
+(%i6) is (equal (aa, bb));
+(%o6)                        unknown
+@end example
+
+@c Some operators evaluate @code{equal} and @code{notequal} to @code{true} or 
+@c @code{false}.
+
+Einige weitere Operatoren werten @code{equal} und @code{notequal} zu einem
+boolschen Wert aus.
+
+@c ===beg===
+@c if equal (y, y - 1) then FOO else BAR;
+@c eq_1 : equal (x, x + 1);
+@c eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
+@c [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
+@c ===end===
+@example
+(%i1) if equal (y, y - 1) then FOO else BAR;
+(%o1)                          BAR
+(%i2) eq_1 : equal (x, x + 1);
+(%o2)                    equal(x, x + 1)
+(%i3) eq_2 : equal (y^2 + 2*y + 1, (y + 1)^2);
+                         2                   2
+(%o3)             equal(y  + 2 y + 1, (y + 1) )
+(%i4) [eq_1 and eq_2, eq_1 or eq_2, not eq_1];
+(%o4)                  [false, true, true]
+@end example
+
+@c Because @code{not @var{expr}} causes evaluation of @var{expr}, 
+@c @code{not equal(@var{a}, @var{b})} is equivalent to 
+@c @code{is(notequal(@var{a}, @var{b}))}.
+
+Da @code{not @var{expr}} den Ausdruck @var{expr} auswertet, ist 
+@code{not equal(@var{a}, @var{b})} @"aquivalent zu 
+@code{is(notequal(@var{a}, @var{b}))}
+
+@c ===beg===
+@c [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
+@c is (notequal (2*z, 2*z - 1));
+@c ===end===
+@example
+(%i1) [notequal (2*z, 2*z - 1), not equal (2*z, 2*z - 1)];
+(%o1)            [notequal(2 z, 2 z - 1), true]
+(%i2) is (notequal (2*z, 2*z - 1));
+(%o2)                         true
+@end example
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{notequal}
+@deffn {Funktion} notequal (@var{a}, @var{b})
+
+@c Represents the negation of @code{equal(@var{a}, @var{b})}.
+
+Repr@"asentiert die Verneinung von @code{equal(@var{a}, @var{b})}.
+
+Beispiele:
+
+@c ===beg===
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c not equal (a, b);
+@c maybe (notequal (a, b));
+@c assume (a > b);
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c maybe (notequal (a, b));
+@c ===end===
+@example
+(%i1) equal (a, b);
+(%o1)                      equal(a, b)
+(%i2) maybe (equal (a, b));
+(%o2)                        unknown
+(%i3) notequal (a, b);
+(%o3)                    notequal(a, b)
+(%i4) not equal (a, b);
+(%o4)                    notequal(a, b)
+(%i5) maybe (notequal (a, b));
+(%o5)                        unknown
+(%i6) assume (a > b);
+(%o6)                        [a > b]
+(%i7) equal (a, b);
+(%o7)                      equal(a, b)
+(%i8) maybe (equal (a, b));
+(%o8)                         false
+(%i9) notequal (a, b);
+(%o9)                    notequal(a, b)
+(%i10) maybe (notequal (a, b));
+(%o10)                        true
+@end example
+
+@c @opencatbox
+@c @category{Operatoren}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{unknown}
+@deffn {Funktion} unknown (@var{expr})
+
+@c Returns @code{true} if and only if @var{expr} contains an operator or 
+@c function not recognized by the Maxima simplifier.
+
+@c TODO: FORMULIERUNG?
+
+Gibt den Wert @code{true} zur@"uck, wenn der Ausdruck @var{expr} einen Operator
+oder eine Funktion enth@"alt, die nicht von Maximas Vereinfacher erkannt wird.
+
+@c @opencatbox
+@c @category{Predicate functions} @category{Simplification functions}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{zeroequiv}
+@deffn {Funktion} zeroequiv (@var{expr}, @var{v})
+
+@c Tests whether the expression @var{expr} in the variable @var{v} is equivalent
+@c to zero, returning @code{true}, @code{false}, or @code{dontknow}.
+
+Testet, ob ein Ausdruck @var{expr} mit der Variablen @var{v} @"aquivalent zu 
+Null ist. Die Funktion gibt @code{true}, @code{false} oder @code{dontknow} 
+zur@"uck.
+
+@c @code{zeroequiv} has these restrictions:
+
+@code{zeroequiv} hat Einschr@"ankungen:
+
+@enumerate
+
+@c Do not use functions that Maxima does not know how to differentiate and 
+@c evaluate.
+
+@item
+Funktionen im Ausdruck @var{expr} m@"ussen von Maxima differenzierbar und 
+auswertbar sein.
+
+@c If the expression has poles on the real line, there may be errors in the 
+@c result (but this is unlikely to occur).
+
+@item
+Hat der Ausdruck Pole auf der reellen Achse, k@"onnen Fehler auftreten.
+
+@c If the expression contains functions which are not solutions to first order
+@c differential equations (e.g.  Bessel functions) there may be incorrect 
+@c results.
+
+@item
+Enth@"alt der Ausdruck Funktionen, die nicht L@"osung einer 
+Differentialgleichung erster Ordnung sind (zum Beispiel Bessel Funktionen), 
+k@"onnen die Ergebnisse fehlerhaft sein.
+
+@c The algorithm uses evaluation at randomly chosen points for carefully 
+@c selected subexpressions.  This is always a somewhat hazardous business, 
+@c although the algorithm tries to minimize the potential for error.
+
+@item
+Der Algorithmus wertet die Funktion an zuf@"allig Punkten f@"ur ausgew@"ahlte
+Teilausdr@"ucke aus. Dies ist ein riskantes Verfahren und kann zu Fehlern 
+f@"uhren.
+@end enumerate
+
+@c For example @code{zeroequiv (sin(2*x) - 2*sin(x)*cos(x), x)} returns 
+@c @code{true} and @code{zeroequiv (%e^x + x, x)} returns @code{false}. 
+@c On the other hand @code{zeroequiv (log(a*b) - log(a) - log(b), a)} returns 
+@c @code{dontknow} because of the presence of an extra parameter @code{b}.
+
+@code{zeroequiv(sin(2*x) - 2*sin(x)*cos(x), x)} hat zum Beispiel das Ergebnis 
+@code{true} und  @code{zeroequiv (%e^x + x, x)} hat das Ergebnis @code{false}.
+Andererseits hat @code{zeroequiv (log(a*b) - log(a) - log(b), a)} das Ergebnis
+@code{dontknow}, wegen dem zus@"atzlichem Parameter @code{b}.
+
+@c @opencatbox
+@c @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c --- End of Database.de.texi -------------------------------------------------
 
