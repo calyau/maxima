@@ -149,7 +149,6 @@ Spezifische Gebiete der Mathematik
 * Equations::                   Defining and solving equations.
 * Numerical::                   Numerical integration, Fourier
                                 transforms, etc.
-* Arrays::                      Creating and working with arrays.
 * Matrices and Linear Algebra:: Matrix operations.
 * Affine::                      
 * itensor::                     Indicial Tensor Manipulation.
@@ -253,6 +252,7 @@ Datentypen
 * Funktionen und Variablen f@"ur Zahlen::
 * Funktionen und Variablen f@"ur Zeichenketten::
 * Funktionen und Variablen f@"ur Konstante::
+* Funktionen und Variablen f@"ur Arrays::
 
 Ausdr@"ucke
 * Ausdr@"ucke::
@@ -296,6 +296,7 @@ Maximas Datenbank
 * Einf@"uhrung in Maximas Datenbank::
 * Funktionen und Variablen f@"ur Eigenschaften::
 * Funktionen und Variablen f@"ur Fakten::
+* Aussagefunktionen::
 
 Grafische Darstellung
 * Einf@"uhrung in die grafische Darstellung::
@@ -353,9 +354,6 @@ Numerical
 * Introduction to Fourier series::
 * Functions and Variables for Fourier series::
 
-Arrays
-* Functions and Variables for Arrays::  
-
 Matrices and Linear Algebra
 * Introduction to Matrices and Linear Algebra::  
 * Dot::                         
@@ -378,7 +376,6 @@ ctensor
 atensor
 * Introduction to atensor::     
 * Functions and Variables for atensor::     
-  
 
 Number Theory
 * Functions and Variables for Number Theory::  
