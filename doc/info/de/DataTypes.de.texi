@@ -27,6 +27,7 @@
 * Funktionen und Variablen f@"ur Zahlen::
 * Funktionen und Variablen f@"ur Zeichenketten::
 * Funktionen und Variablen f@"ur Konstante::
+* Funktionen und Variablen f@"ur Arrays::
 @end menu
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -72,9 +73,9 @@ Genauigkeit haben.
 Gleitkommazahlen werden mit einem Dezimalpunkt eingegeben. Der Exponent kann mit
 "f", "e" oder "d" angegeben werden. Intern rechnet Maxima ausschlie@ss{}lich mit 
 Gleitkommazahlen in doppelter Genauigkeit, die immer mit "e" f@"ur den
-Exponenten angezeigt werden. Gro@ss{}e Gleitkommazahlen werden mit dem Exponenten 
-"b" bezeichnet. Gro@ss{}- und Kleinschreibung werden bei der Schreibweise des
-Exponenten nicht unterschieden.
+Exponenten angezeigt werden. Gro@ss{}e Gleitkommazahlen werden mit dem 
+Exponenten "b" bezeichnet. Gro@ss{}- und Kleinschreibung werden bei der 
+Schreibweise des Exponenten nicht unterschieden.
 
 @example
 (%i1) [2.0,1f10,1,e10,1d10,1d300];
@@ -129,11 +130,11 @@ Funktionen und Variablen f@"ur Gleitkommazahlen:
 @c @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, 
 @c @code{abs}, @code{carg} functions.
 
-Maxima kennt keinen eigenen Typ f@"ur komplexe Zahlen. Komplexe Zahlen werden von
-Maxima intern als die Addition von Realteil und dem mit der Imagin@"aren Einheit
-@code{%i} multiplizierten Imagin@"arteil dargestellt. Zum Beispiel sind die
-komplexen Zahlen @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der Gleichung
-@code{x^2 - 4*x + 13 = 0}.
+Maxima kennt keinen eigenen Typ f@"ur komplexe Zahlen. Komplexe Zahlen werden 
+von Maxima intern als die Addition von Realteil und dem mit der Imagin@"aren 
+Einheit @code{%i} multiplizierten Imagin@"arteil dargestellt. Zum Beispiel sind 
+die komplexen Zahlen @code{2 + 3*%i} und @code{2 - 3*%i} die Wurzeln der 
+Gleichung @code{x^2 - 4*x + 13 = 0}.
 
 Maxima vereinfacht Produkte, Quotienten, Wurzel und andere Ausdr@"ucke mit 
 komplexen Zahlen nicht automatisch zu einer komplexen Zahl. Um Produkte mit
@@ -175,14 +176,15 @@ Anf@"uhrungszeichen dargestellt.
 @c There is no way to represent a special character (such as tab, newline, or
 @c carriage return) except by embedding the literal character in the string.
 
-Zeichenketten k@"onnen jedes Zeichen einschlie@ss{}lich Tabulator-, Zeilenvorschub- 
-oder Wagenr@"ucklauf-Zeichen enthalten. Das Anf@"uhrungszeichen wird innerhalb einer
-Zeichenkette durch @code{\"} und der Backslash durch @code{\\} dargestellt. Ein
-Backslash am Ende einer Eingabezeile erlaubt die Fortsetzung einer Zeichenkette
-in der n@"achsten Zeile. Maxima kennt keine weiteren Kombinationen mit einem
-Backslash. Daher wird der Backslash an anderer Stelle ignoriert. Maxima kennt 
-keine andere M@"oglichkeit, als spezielle Zeichen wie ein Tabulator-, 
-Zeilenvorschub- oder Wagenr@"ucklaufzeichen in einer Zeichenkette darzustellen.
+Zeichenketten k@"onnen jedes Zeichen einschlie@ss{}lich Tabulator-, 
+Zeilenvorschub- oder Wagenr@"ucklauf-Zeichen enthalten. Das Anf@"uhrungszeichen 
+wird innerhalb einer Zeichenkette durch @code{\"} und der Backslash durch 
+@code{\\} dargestellt. Ein Backslash am Ende einer Eingabezeile erlaubt die
+Fortsetzung einer Zeichenkette in der n@"achsten Zeile. Maxima kennt keine 
+weiteren Kombinationen mit einem Backslash. Daher wird der Backslash an anderer
+Stelle ignoriert. Maxima kennt keine andere M@"oglichkeit, als spezielle Zeichen
+wie ein Tabulator-, Zeilenvorschub- oder Wagenr@"ucklaufzeichen in einer
+Zeichenkette darzustellen.
 
 @c There is no character type in Maxima; a single character is represented as a 
 @c one-character string.
@@ -250,22 +252,24 @@ this string.";
 @section Funktionen und Variablen f@"ur Zahlen
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{bfloat}
 @deffn {Funktion} bfloat (@var{expr})
 
 @c Converts all numbers and functions of numbers in @var{expr} to bigfloat 
 @c numbers. The number of significant digits in the resulting bigfloats is 
 @c specified by the global variable @code{fpprec}.
 
-Konvertiert alle Zahlen im Ausdruck @var{expr} in gro@ss{}e Gleitkommazahlen. Die 
-Anzahl der Stellen wird durch die Optionsvariable @code{ffprec} spezifiziert.
+Konvertiert alle Zahlen im Ausdruck @var{expr} in gro@ss{}e Gleitkommazahlen. 
+Die Anzahl der Stellen wird durch die Optionsvariable @code{ffprec} 
+spezifiziert.
 
 @c When @code{float2bf} is @code{false} a warning message is printed when a 
 @c floating point number is converted into a bigfloat number (since this may 
 @c lead to loss of precision).
 
 Hat die Optionsvariable @code{float2bf} den Wert @code{false}, gibt Maxima eine
-Warnung aus, wenn eine Gleitkommazahl mit doppelter Genauigkeit in eine gro@ss{}e
-Gleitkommazahl umgewandelt wird.
+Warnung aus, wenn eine Gleitkommazahl mit doppelter Genauigkeit in eine 
+gro@ss{}e Gleitkommazahl umgewandelt wird.
 
 @c @opencatbox
 @c @category{Numerische Auswertung}
@@ -273,13 +277,14 @@ Gleitkommazahl umgewandelt wird.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{bfloatp}
 @deffn {Funktion} bfloatp (@var{expr})
 
 @c Returns @code{true} if @var{expr} is a bigfloat number, otherwise 
 @c @code{false}.
 
-Gibt den Wert @code{true} zur@"uck, wenn @var{expr} eine gro@ss{}e Gleitkommazahl ist,
-ansonsten den Wert @code{false}.
+Gibt den Wert @code{true} zur@"uck, wenn @var{expr} eine gro@ss{}e 
+Gleitkommazahl ist, ansonsten den Wert @code{false}.
 
 @c @opencatbox
 @c @category{Numerische Auswertung} @category{Aussagefunktionen}
@@ -287,6 +292,7 @@ ansonsten den Wert @code{false}.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{bftorat}
 @defvr {Optionsvariable} bftorat
 Standartwert: @code{false}
 
@@ -309,6 +315,7 @@ gro@ss{}e Gleitkommazahl exakt durch die rationale Zahl repr@"asentiert.
 @end defvr
 
 @c --- 15.10.2010 --------------------------------------------------------------
+@anchor{bftrunc}
 @defvr {Optionsvariable} bftrunc
 Standardwert: @code{true}
 
@@ -328,6 +335,7 @@ wird @code{bfloat(1)} als @code{1.000000000000000b0} angezeigt, wenn
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{evenp}
 @deffn {Funktion} evenp (@var{expr})
 
 @c Returns @code{true} if @var{expr} is an even integer.
@@ -350,6 +358,7 @@ eine gerade ganze Zahl repr@"asentiert.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{float}
 @deffn {Funktion} float (@var{expr})
 
 @c Converts integers, rational numbers and bigfloats in @var{expr} to floating 
@@ -394,6 +403,7 @@ Wert vereinfacht.
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{float2bf}
 @defvr {Optionsvariable} float2bf
 Standardwert: @code{true}
  
@@ -403,7 +413,8 @@ Standardwert: @code{true}
 
 Hat die Optionsvariable @code{float2bf} den Wert @code{false}, wird eine
 Warnung ausgegeben, wenn eine Gleitkommazahl in eine gro@ss{}e Gleitkommazahl 
-umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit f@"uhren kann.
+umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit f@"uhren 
+kann.
 
 @c @opencatbox
 @c @category{Numerische Auswertung} @category{Optionsvariablen}
@@ -411,6 +422,7 @@ umgewandelt wird, da die Umwandlung zu einem Verlust an Genauigkeit f@"uhren kan
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{floatnump}
 @deffn {Funktion} floatnump (@var{number})
 
 @c Returns @code{true} if @var{expr} is a floating point number, otherwise 
@@ -426,6 +438,7 @@ Gleitkommazahl ist. Ansonsten wird @code{false} zur@"uckgegeben. Auch wenn
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{fpprec}
 @defvr {Optionsvariable} fpprec
 Standardwert: 16
 
@@ -447,6 +460,7 @@ Siehe auch @code{bfloat} und @code{fpprintprec}.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{fpprintprec}
 @defvr {Optionsvariable} fpprintprec
 Standardwert: 0
 
@@ -487,6 +501,7 @@ angezeigt.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{integerp}
 @deffn {Funktion} integerp (@var{number})
 
 @c Returns @code{true} if @var{expr} is a literal numeric integer, otherwise 
@@ -533,6 +548,7 @@ Beispiele:
 @end deffn
 
 @c --- 08.10.2010 --------------------------------------------------------------
+@anchor{m1pbranch}
 @defvr {Optionsvariable} m1pbranch
 Standardwert: @code{false}
 
@@ -566,6 +582,7 @@ m1pbranch:false          m1pbranch:true
 @end defvr
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{nonnegintegerp}
 @deffn {Funktion} nonnegintegerp (@var{number})
 
 @c Return @code{true} if and only if @code{@var{n} >= 0} and @var{n} is an 
@@ -580,6 +597,7 @@ oder Null ist.
 @end deffn
 
 @c --- 21.08.2010 --------------------------------------------------------------
+@anchor{numberp}
 @deffn {Funktion} numberp (@var{expr})
 
 @c Returns @code{true} if @var{expr} is a literal integer, rational number, 
@@ -633,6 +651,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{number_pbranch}
 @defvr {Optionsvariable} numer_pbranch
 Standardwert: @code{false}
 
@@ -682,18 +701,19 @@ Beispiele:
 @end defvr
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{oddp}
 @deffn {Funktion} oddp (@var{expr})
 
 @c is @code{true} if @var{expr} is an odd integer.
 @c @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @c @code{false} is returned in all other cases.
 
-Gibt @code{true} zur@"uck, wenn @var{expr} eine ungerade ganze Zahl ist. In allen
-anderen F@"allen wird @code{false} zur@"uckgegeben.
+Gibt @code{true} zur@"uck, wenn @var{expr} eine ungerade ganze Zahl ist. In 
+allen anderen F@"allen wird @code{false} zur@"uckgegeben.
 
-@code{oddp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} zur@"uck,
-auch wenn das Symbol als gerade ganze Zahl deklariert ist oder der Ausdruck eine
-ganze Zahl repr@"asentiert.
+@code{oddp} gibt f@"ur Symbole oder Ausdr@"ucke immer den Wert @code{false} 
+zur@"uck, auch wenn das Symbol als gerade ganze Zahl deklariert ist oder der 
+Ausdruck eine ganze Zahl repr@"asentiert.
 
 Siehe die Funktion @code{featurep}, um zu testen, ob ein Symbol oder Ausdruck 
 eine ungerade ganze Zahl repr@"asentiert.
@@ -704,6 +724,7 @@ eine ungerade ganze Zahl repr@"asentiert.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{ratepsilon}
 @defvr {Optionsvariable} ratepsilon
 Standardwert: 2.0e-8
 
@@ -719,13 +740,14 @@ rationale Zahlen umgewandelt werden.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{rationalize}
 @deffn {Funktion} rationalize (@var{expr})
 
 @c Convert all double floats and big floats in the Maxima expression @var{expr} 
 @c to their exact rational equivalents. 
 
-Konvertiert alle Gleitkommazahlen mit einfacher und gro@ss{}er Genauigkeit, die in
-dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
+Konvertiert alle Gleitkommazahlen mit einfacher und gro@ss{}er Genauigkeit, die
+in dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
 
 @c If you are not familiar with the binary representation of floating point 
 @c numbers, you might be surprised that @code{rationalize (0.1)} does not equal 
@@ -733,8 +755,8 @@ dem Ausdruck @var{expr} auftreten, in rationale Zahlen.
 @c repeating, not a terminating, binary representation.
 
 Es mag @"uberraschend sein, dass @code{rationalize(0.1)} nicht 1/10 ergibt. Dies
-ist nicht speziell f@"ur Maxima. Ursache ist, dass die gebrochene Zahl 1/10 in der
-internen Darstellung als bin@"are Zahl keine endliche Darstellung hat.
+ist nicht speziell f@"ur Maxima. Ursache ist, dass die gebrochene Zahl 1/10 in 
+der internen Darstellung als bin@"are Zahl keine endliche Darstellung hat.
 
 Siehe auch die Funktion @code{float} und das Flag @code{numer}, um eine 
 rationale Zahl in eine Gleitkommazahl umzuwandeln.
@@ -785,6 +807,7 @@ rationale Zahl in eine Gleitkommazahl umzuwandeln.
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{ratnump}
 @deffn {Funktion} ratnump (@var{number})
 
 @c Returns @code{true} if @var{expr} is a literal integer or ratio of literal
@@ -819,6 +842,7 @@ Beispiele:
 @section Funktionen und Variablen f@"ur Zeichenketten
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{concat}
 @deffn {Funktion} concat (@var{arg_1}, @var{arg_2}, ...)
 
 @c Concatenates its arguments. The arguments must evaluate to atoms. The return 
@@ -903,14 +927,15 @@ hat.
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{sconcat}
 @deffn {Funktion} sconcat (@var{arg_1}, @var{arg_2}, ...)
 
 @c Concatenates its arguments into a string. Unlike @code{concat}, the arguments
 @c do @i{not} need to be atoms.
 
 Verkettet die Argumente zu einer Zeichenkette. Im Unterschied zu der Funktion
-@code{concat} m@"ussen die Argumente @i{nicht} Atome sein. Der R@"uckgabewert ist
-eine Zeichenkette.
+@code{concat} m@"ussen die Argumente @i{nicht} Atome sein. Der R@"uckgabewert 
+ist eine Zeichenkette.
 
 Beispiel:
 
@@ -928,6 +953,7 @@ Beispiel:
 @end deffn
 
 @c --- 08.10.2010 DK -----------------------------------------------------------
+@anchor{string}
 @deffn {Funktion} string (@var{expr})
 
 @c Converts @code{expr} to Maxima's linear notation just as if it had been typed
@@ -939,8 +965,8 @@ von der Eingabe eingelesen wird.
 @c The return value of @code{string} is a string, and thus it cannot be used in
 @c a computation.
 
-Die R@"uckgabe von @code{string} ist eine eine Zeichenkette. Diese kann nicht f@"ur
-eine Berechnung genutzt werden.
+Die R@"uckgabe von @code{string} ist eine eine Zeichenkette. Diese kann nicht 
+f@"ur eine Berechnung genutzt werden.
 
 @c @opencatbox
 @c @category{Zeichenketten}
@@ -950,6 +976,7 @@ eine Berechnung genutzt werden.
 @c DIESE FUNKTION IN DAS KAPITEL KOMMANDOZEILE VERSCHIEBEN ???
 
 @c --- 28.08.2010 DK -----------------------------------------------------------
+@anchor{stringdisp}
 @defvr {Optionsvariable} stringdisp
 Standardwert: @code{false}
 
@@ -995,10 +1022,11 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen f@"ur Konstante,  , Funktionen und Variablen f@"ur Zeichenketten, Datentypen
+@node Funktionen und Variablen f@"ur Konstante,  Funktionen und Variable f@"ur Arrays, Funktionen und Variablen f@"ur Zeichenketten, Datentypen
 @section Funktionen und Variablen f@"ur Konstante
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{%e}
 @defvr {Konstante} %e
 @ifinfo
 @vrindex e
@@ -1035,6 +1063,7 @@ Beispiel:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{%i}
 @defvr {Konstante} %i
 @ifinfo
 @vrindex i
@@ -1051,6 +1080,7 @@ Beispiel:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{false}
 @defvr {Konstante} false
 
 @c @code{false} represents the Boolean constant of the same name. Maxima 
@@ -1065,7 +1095,8 @@ Maxima durch die Lisp-Konstante @code{NIL} dargestellt.
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@defvr {Constant} %gamma
+@anchor{%gamma}
+@defvr {Konstante} %gamma
 @ifinfo
 @vrindex Euler-Mascheroni-Konstante
 @end ifinfo
@@ -1085,6 +1116,7 @@ berechnen.
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
+@anchor{ind}
 @defvr {Konstante} ind
 @ifinfo
 @vrindex Unbestimmt
@@ -1112,6 +1144,7 @@ Beispiel:
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
+@anchor{inf}
 @defvr {Konstante} inf
 @ifinfo
 @vrindex positiv unendlich
@@ -1127,6 +1160,7 @@ Beispiel:
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
+@anchor{infinity}
 @defvr {Konstante} infinity
 @ifinfo
 @vrindex komplex unendlich
@@ -1142,6 +1176,7 @@ Beispiel:
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
+@anchor{minf}
 @defvr {Konstante} minf
 @ifinfo
 @vrindex negativ unendlich
@@ -1158,7 +1193,8 @@ Beispiel:
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
-@defvr {Constant} %phi
+@anchor{%phi}
+@defvr {Konstante} %phi
 @ifinfo
 @vrindex phi
 @vrindex Goldene Zahl
@@ -1181,8 +1217,8 @@ Die Funktion @code{fibtophi} dr@"uckt Fibonacci-Zahlen @code{fib(n)} durch
 @c After evaluating @code{tellrat(%phi^2-%phi-1)} and @code{algebraic: true},
 @c @code{ratsimp} can simplify some expressions containing @code{%phi}.
 
-Standardm@"a@ss{}ig kennt Maxima keine algebraischen Eigenschaften der Konstanten
-@code{%phi}. Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und 
+Standardm@"a@ss{}ig kennt Maxima keine algebraischen Eigenschaften der 
+Konstanten @code{%phi}. Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und
 @code{algebraic: true} kann die Funktion @code{ratsimp} einige Vereinfachungen
 ausf@"uhren.  
 
@@ -1226,8 +1262,8 @@ Beispiele:
 @c containing @code{%phi}.
 
 Mit den Eingaben @code{tellrat(%phi^2-%phi-1)} und @code{algebraic: true} kann 
-die Funktion @code{ratsimp} einige Vereinfachungen f@"ur Ausdr@"ucke ausf@"uhren, die 
-@code{%phi} enthalten.
+die Funktion @code{ratsimp} einige Vereinfachungen f@"ur Ausdr@"ucke 
+ausf@"uhren, die @code{%phi} enthalten.
 
 @c ===beg===
 @c e : expand ((%phi^2 - %phi - 1) * (A + 1));
@@ -1258,6 +1294,7 @@ die Funktion @code{ratsimp} einige Vereinfachungen f@"ur Ausdr@"ucke ausf@"uhren
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{%pi}
 @defvr {Konstante} %pi
 @ifinfo
 @vrindex Pi
@@ -1279,13 +1316,14 @@ berechnen.
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
+@anchor{true}
 @defvr {Konstante} true
 
 @c @code{true} represents the Boolean constant of the same name. Maxima 
 @c implements @code{true} by the value @code{T} in Lisp.
 
-@code{true} repr@"asentiert den logischen Wert @code{true}. Intern ist @code{true}
-als die Lisp-Konstante @code{T} implementiert.
+@code{true} repr@"asentiert den logischen Wert @code{true}. Intern ist 
+@code{true} als die Lisp-Konstante @code{T} implementiert.
 
 @c @opencatbox
 @c @category{Konstante}
@@ -1293,6 +1331,7 @@ als die Lisp-Konstante @code{T} implementiert.
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
+@anchor{und}
 @defvr {Konstante} und
 @ifinfo
 @vrindex nicht definiert
@@ -1320,7 +1359,8 @@ Example:
 @end defvr
 
 @c --- 21.08.2010 DK -----------------------------------------------------------
-@defvr {Constant} zeroa
+@anchor{zeroa}
+@defvr {Konstante} zeroa
 
 @c @code{zeroa} represents an infinitesimal above zero. @code{zeroa} can be used
 @c in expressions. @code{limit} simplifies expressions which contain 
@@ -1355,6 +1395,7 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
+@anchor{zerob}
 @defvr {Konstante} zerob
 
 @c @code{zerob} represents an infinitesimal below zero. @code{zerob} can be used
@@ -1369,6 +1410,928 @@ Siehe auch @code{zeroa} und @code{limit}.
 
 @c @opencatbox
 @c @category{Konstante}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@node Funktionen und Variablen f@"ur Arrays, , Funktionen und Variablen f@"ur Konstante, Datentypen
+@section Funktionen und Variablen f@"ur Arrays
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{array}
+@deffn  {Funktion} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Funktion} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Funktion} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
+
+Creates an @math{n}-dimensional array.  
+@math{n} may be less than or equal to 5.
+The subscripts for
+the @math{i}'th dimension are the integers running from 0 to @var{dim_i}.  
+
+@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} creates a general array.
+
+@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} creates
+an array, with elements of a specified type.
+@var{type} can be @code{fixnum} for
+integers of limited size or @code{flonum} for floating-point numbers.
+
+@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+creates @math{m} arrays, all of the same dimensions.
+@c SAME TYPE AS WELL ??
+
+@c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
+If the user assigns to a subscripted variable before declaring the
+corresponding array, an undeclared array is created.
+Undeclared arrays, otherwise known as hashed arrays (because hash
+coding is done on the subscripts), are more general than declared
+arrays.  The user does not declare their maximum size, and they grow
+dynamically by hashing as more elements are assigned values.  The
+subscripts of undeclared arrays need not even be numbers.  However,
+unless an array is rather sparse, it is probably more efficient to
+declare it when possible than to leave it undeclared.  The @code{array}
+function can be used to transform an undeclared array into a declared
+array.
+@c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
+
+@c @opencatbox
+@c @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{arrayapply}
+@deffn {Function} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+
+Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
+where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
+
+This is reminiscent of @code{apply}, except the first argument is an array instead of a function.
+
+@c @opencatbox
+@c @category{Expressions} @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{arrayinfo}
+@deffn {Function} arrayinfo (@var{A})
+
+Returns information about the array @var{A}.
+The argument @var{A} may be a declared array, an undeclared (hashed) array,
+an array function, or a subscripted function.
+
+For declared arrays, @code{arrayinfo} returns a list
+comprising the atom @code{declared}, the number of dimensions, and the size of each dimension.
+The elements of the array, both bound and unbound, are returned by @code{listarray}.
+
+For undeclared arrays (hashed arrays),
+@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
+and the subscripts of every element which has a value.
+The values are returned by @code{listarray}.
+
+For array functions,
+@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
+and any subscript values for which there are stored function values.
+The stored function values are returned by @code{listarray}.
+
+For subscripted functions,
+@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
+and any subscript values for which there are lambda expressions.
+The lambda expressions are returned by @code{listarray}.
+
+Examples:
+
+@code{arrayinfo} and @code{listarray} applied to a declared array.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c arrayinfo (aa);
+@c listarray (aa);
+@c ===end===
+@example
+@group
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+@end group
+@group
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+@end group
+@group
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+@end group
+@group
+(%i4) arrayinfo (aa);
+(%o4)                 [declared, 2, [2, 3]]
+@end group
+@group
+(%i5) listarray (aa);
+(%o5) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+@end group
+@end example
+
+@code{arrayinfo} and @code{listarray} applied to an undeclared (hashed) array.
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c arrayinfo (bb);
+@c listarray (bb);
+@c ===end===
+@example
+@group
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+@end group
+@group
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+@end group
+@group
+(%i3) arrayinfo (bb);
+(%o3)               [hashed, 1, [BAR], [FOO]]
+@end group
+@group
+(%i4) listarray (bb);
+                              3         2
+(%o4)                 [(c - d) , (b + a) ]
+@end group
+@end example
+
+@code{arrayinfo} and @code{listarray} applied to an array function.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c arrayinfo (cc);
+@c listarray (cc);
+@c ===end===
+@example
+@group
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+@end group
+@group
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+@end group
+@group
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+@end group
+@group
+(%i4) arrayinfo (cc);
+(%o4)              [hashed, 2, [4, z], [u, v]]
+@end group
+@group
+(%i5) listarray (cc);
+                              z  v
+(%o5)                        [-, -]
+                              4  u
+@end group
+@end example
+
+@code{arrayinfo} and @code{listarray} applied to a subscripted function.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c arrayinfo (dd);
+@c listarray (dd);
+@c ===end===
+@example
+@group
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+@end group
+@group
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+@end group
+@group
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+@end group
+@group
+(%i4) arrayinfo (dd);
+(%o4)             [hashed, 1, [b + a], [v - u]]
+@end group
+@group
+(%i5) listarray (dd);
+                         b + a                v - u
+(%o5)      [lambda([y], y     ), lambda([y], y     )]
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{arraymake}
+@deffn {Function} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
+
+Returns the expression @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
+The result is an unevaluated array reference.
+
+@code{arraymake} is reminiscent of @code{funmake},
+except the return value is an unevaluated array reference
+instead of an unevaluated function call.
+
+Examples:
+@c ===beg===
+@c arraymake (A, [1]);
+@c arraymake (A, [k]);
+@c arraymake (A, [i, j, 3]);
+@c array (A, fixnum, 10);
+@c fillarray (A, makelist (i^2, i, 1, 11));
+@c arraymake (A, [5]);
+@c ''%;
+@c L : [a, b, c, d, e];
+@c arraymake ('L, [n]);
+@c ''%, n = 3;
+@c A2 : make_array (fixnum, 10);
+@c fillarray (A2, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+@c arraymake ('A2, [8]);
+@c ''%;
+@c ===end===
+@example
+@group
+(%i1) arraymake (A, [1]);
+(%o1)                          A
+                                1
+@end group
+@group
+(%i2) arraymake (A, [k]);
+(%o2)                          A
+                                k
+@end group
+@group
+(%i3) arraymake (A, [i, j, 3]);
+(%o3)                       A
+                             i, j, 3
+@end group
+@group
+(%i4) array (A, fixnum, 10);
+(%o4)                           A
+@end group
+@group
+(%i5) fillarray (A, makelist (i^2, i, 1, 11));
+(%o5)                           A
+@end group
+@group
+(%i6) arraymake (A, [5]);
+(%o6)                          A
+                                5
+@end group
+@group
+(%i7) ''%;
+(%o7)                          36
+@end group
+@group
+(%i8) L : [a, b, c, d, e];
+(%o8)                    [a, b, c, d, e]
+@end group
+@group
+(%i9) arraymake ('L, [n]);
+(%o9)                          L
+                                n
+@end group
+@group
+(%i10) ''%, n = 3;
+(%o10)                          c
+@end group
+@group
+(%i11) A2 : make_array (fixnum, 10);
+(%o11)          @{Array:  #(0 0 0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i12) fillarray (A2, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o12)          @{Array:  #(1 2 3 4 5 6 7 8 9 10)@}
+@end group
+@group
+(%i13) arraymake ('A2, [8]);
+(%o13)                         A2
+                                 8
+@end group
+@group
+(%i14) ''%;
+(%o14)                          9
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Expressions} @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{arrays}
+@defvr {System variable} arrays
+Default value: @code{[]}
+
+@code{arrays} is a list of arrays that have been allocated.
+These comprise arrays declared by @code{array},
+hashed arrays constructed by implicit definition (assigning something to an array element),
+and array functions defined by @code{:=} and @code{define}.
+Arrays defined by @code{make_array} are not included.
+
+See also
+@code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
+@code{fillarray}, @code{listarray}, and @code{rearray}.
+@c IS THIS AN EXHAUSTIVE LIST ??
+
+Examples:
+
+@c ===beg===
+@c array (aa, 5, 7);
+@c bb [FOO] : (a + b)^2;
+@c cc [x] := x/100;
+@c dd : make_array ('any, 7);
+@c arrays;
+@c ===end===
+@example
+@group
+(%i1) array (aa, 5, 7);
+(%o1)                          aa
+@end group
+@group
+(%i2) bb [FOO] : (a + b)^2;
+                                   2
+(%o2)                       (b + a)
+@end group
+@group
+(%i3) cc [x] := x/100;
+                                   x
+(%o3)                      cc  := ---
+                             x    100
+@end group
+@group
+(%i4) dd : make_array ('any, 7);
+(%o4)       @{Array:  #(NIL NIL NIL NIL NIL NIL NIL)@}
+@end group
+@group
+(%i5) arrays;
+(%o5)                     [aa, bb, cc]
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Arrays} @category{Global variables}
+@c @closecatbox
+@end defvr
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{bashindices}
+@deffn {Function} bashindices (@var{expr})
+
+Transforms the expression @var{expr} by giving each
+summation and product a unique index. This gives @code{changevar} greater
+precision when it is working with summations or products.  The form of
+the unique index is @code{j@var{number}}. The quantity @var{number} is determined by
+referring to @code{gensumnum}, which can be changed by the user.  For
+example, @code{gensumnum:0$} resets it.
+
+@c @opencatbox
+@c @category{Sums and products}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{fillarray}
+@deffn {Function} fillarray (@var{A}, @var{B})
+
+Fills array @var{A} from @var{B}, which is a list or an array.
+
+If a specific type was declared for @var{A} when it was created,
+it can only be filled with elements of that same type;
+it is an error if an attempt is made to copy an element of a different type.
+
+If the dimensions of the arrays @var{A} and @var{B} are
+different, @var{A} is filled in row-major order.  If there are not enough
+elements in @var{B} the last element is used to fill out the
+rest of @var{A}.  If there are too many, the remaining ones are ignored.
+
+@code{fillarray} returns its first argument.
+
+Examples:
+
+Create an array of 9 elements and fill it from a list.
+@c ===beg===
+@c array (a1, fixnum, 8);
+@c listarray (a1);
+@c fillarray (a1, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+@c listarray (a1);
+@c ===end===
+@example
+@group
+(%i1) array (a1, fixnum, 8);
+(%o1)                          a1
+@end group
+@group
+(%i2) listarray (a1);
+(%o2)              [0, 0, 0, 0, 0, 0, 0, 0, 0]
+@end group
+@group
+(%i3) fillarray (a1, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+(%o3)                          a1
+@end group
+@group
+(%i4) listarray (a1);
+(%o4)              [1, 2, 3, 4, 5, 6, 7, 8, 9]
+@end group
+@end example
+
+When there are too few elements to fill the array,
+the last element is repeated.
+When there are too many elements,
+the extra elements are ignored.
+@c ===beg===
+@c a2 : make_array (fixnum, 8);
+@c fillarray (a2, [1, 2, 3, 4, 5]);
+@c fillarray (a2, [4]);
+@c fillarray (a2, makelist (i, i, 1, 100));
+@c ===end===
+@example
+@group
+(%i1) a2 : make_array (fixnum, 8);
+(%o1)             @{Array:  #(0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i2) fillarray (a2, [1, 2, 3, 4, 5]);
+(%o2)             @{Array:  #(1 2 3 4 5 5 5 5)@}
+@end group
+@group
+(%i3) fillarray (a2, [4]);
+(%o3)             @{Array:  #(4 4 4 4 4 4 4 4)@}
+@end group
+@group
+(%i4) fillarray (a2, makelist (i, i, 1, 100));
+(%o4)             @{Array:  #(1 2 3 4 5 6 7 8)@}
+@end group
+@end example
+
+Multple-dimension arrays are filled in row-major order.
+@c ===beg===
+@c a3 : make_array (fixnum, 2, 5);
+@c fillarray (a3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+@c a4 : make_array (fixnum, 5, 2);
+@c fillarray (a4, a3);
+@c ===end===
+@example
+@group
+(%i1) a3 : make_array (fixnum, 2, 5);
+(%o1)        @{Array:  #2A((0 0 0 0 0) (0 0 0 0 0))@}
+@end group
+@group
+(%i2) fillarray (a3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o2)        @{Array:  #2A((1 2 3 4 5) (6 7 8 9 10))@}
+@end group
+@group
+(%i3) a4 : make_array (fixnum, 5, 2);
+(%o3)     @{Array:  #2A((0 0) (0 0) (0 0) (0 0) (0 0))@}
+@end group
+@group
+(%i4) fillarray (a4, a3);
+(%o4)     @{Array:  #2A((1 2) (3 4) (5 6) (7 8) (9 10))@}
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{listarray}
+@deffn {Function} listarray (@var{A})
+
+Returns a list of the elements of the array @var{A}.
+The argument @var{A} may be a declared array, an undeclared (hashed) array,
+an array function, or a subscripted function.
+
+Elements are listed in row-major order.
+That is, elements are sorted according to the first index, then according to the second index, and so on.
+The sorting order of index values is the same as the order established by @code{orderless}.
+
+For undeclared arrays, array functions, and subscripted functions,
+the elements correspond to the index values returned by @code{arrayinfo}.
+
+Unbound elements of declared general arrays (that is, not @code{fixnum} and not @code{flonum})
+are returned as @code{#####}.
+Unbound elements of declared @code{fixnum} or @code{flonum} arrays
+are returned as 0 or 0.0, respectively.
+Unbound elements of undeclared arrays, array functions,
+and subscripted functions are not returned.
+
+Examples:
+
+@code{listarray} and @code{arrayinfo} applied to a declared array.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c listarray (aa);
+@c arrayinfo (aa);
+@c ===end===
+@example
+@group
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+@end group
+@group
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+@end group
+@group
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+@end group
+@group
+(%i4) listarray (aa);
+(%o4) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+@end group
+@group
+(%i5) arrayinfo (aa);
+(%o5)                 [declared, 2, [2, 3]]
+@end group
+@end example
+
+@code{listarray} and @code{arrayinfo} applied to an undeclared (hashed) array.
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c listarray (bb);
+@c arrayinfo (bb);
+@c ===end===
+@example
+@group
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+@end group
+@group
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+@end group
+@group
+(%i3) listarray (bb);
+                              3         2
+(%o3)                 [(c - d) , (b + a) ]
+@end group
+@group
+(%i4) arrayinfo (bb);
+(%o4)               [hashed, 1, [BAR], [FOO]]
+@end group
+@end example
+
+@code{listarray} and @code{arrayinfo} applied to an array function.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c listarray (cc);
+@c arrayinfo (cc);
+@c ===end===
+@example
+@group
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+@end group
+@group
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+@end group
+@group
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+@end group
+@group
+(%i4) listarray (cc);
+                              z  v
+(%o4)                        [-, -]
+                              4  u
+@end group
+@group
+(%i5) arrayinfo (cc);
+(%o5)              [hashed, 2, [4, z], [u, v]]
+@end group
+@end example
+
+@code{listarray} and @code{arrayinfo} applied to a subscripted function.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c listarray (dd);
+@c arrayinfo (dd);
+@c ===end===
+@example
+@group
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+@end group
+@group
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+@end group
+@group
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+@end group
+@group
+(%i4) listarray (dd);
+                         b + a                v - u
+(%o4)      [lambda([y], y     ), lambda([y], y     )]
+@end group
+@group
+(%i5) arrayinfo (dd);
+(%o5)             [hashed, 1, [b + a], [v - u]]
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{make_array}
+@deffn {Function} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+
+Creates and returns a Lisp array.  @var{type} may
+be @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} or 
+@code{functional}.
+There are @math{n} indices,
+and the @math{i}'th index runs from 0 to @math{@var{dim_i} - 1}.
+
+The advantage of @code{make_array} over @code{array} is that the return value doesn't have a
+name, and once a pointer to it goes away, it will also go away.
+For example, if @code{y: make_array (...)} then @code{y} points to an object 
+which takes up space, but after @code{y: false}, @code{y} no longer
+points to that object, so the object can be garbage collected.  
+
+@c 'FUNCTIONAL ARGUMENT IN MAKE_ARRAY APPEARS TO BE BROKEN
+@c EVEN AFTER READING THE CODE (SRC/AR.LISP) I CAN'T TELL HOW THIS IS SUPPOSED TO WORK
+@c COMMENTING OUT THIS STUFF TO PREVENT CONFUSION AND HEARTBREAK
+@c RESTORE IT WHEN MAKE_ARRAY ('FUNCTIONAL, ...) IS FIXED
+@c @code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
+@c @code{make_array} in this case is the function to call to calculate array
+@c elements, and the rest of the arguments are passed recursively to
+@c @code{make_array} to generate the "memory" for the array function object.
+
+Examples:
+@c ===beg===
+@c A1 : make_array (fixnum, 10);
+@c A1 [8] : 1729;
+@c A1;
+@c A2 : make_array (flonum, 10);
+@c A2 [2] : 2.718281828;
+@c A2;
+@c A3 : make_array (any, 10);
+@c A3 [4] : x - y - z;
+@c A3;
+@c A4 : make_array (fixnum, 2, 3, 5);
+@c fillarray (A4, makelist (i, i, 1, 2*3*5));
+@c A4 [0, 2, 1];
+@c ===end===
+@example
+@group
+(%i1) A1 : make_array (fixnum, 10);
+(%o1)           @{Array:  #(0 0 0 0 0 0 0 0 0 0)@}
+@end group
+@group
+(%i2) A1 [8] : 1729;
+(%o2)                         1729
+@end group
+@group
+(%i3) A1;
+(%o3)          @{Array:  #(0 0 0 0 0 0 0 0 1729 0)@}
+@end group
+@group
+(%i4) A2 : make_array (flonum, 10);
+(%o4) @{Array:  #(0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@}
+@end group
+@group
+(%i5) A2 [2] : 2.718281828;
+(%o5)                      2.718281828
+@end group
+@group
+(%i6) A2;
+(%o6) 
+     @{Array:  #(0.0 0.0 2.718281828 0.0 0.0 0.0 0.0 0.0 0.0 0.0)@}
+@end group
+@group
+(%i7) A3 : make_array (any, 10);
+(%o7) @{Array:  #(NIL NIL NIL NIL NIL NIL NIL NIL NIL NIL)@}
+@end group
+@group
+(%i8) A3 [4] : x - y - z;
+(%o8)                      - z - y + x
+@end group
+@group
+(%i9) A3;
+(%o9) @{Array:  #(NIL NIL NIL NIL ((MPLUS SIMP) $X ((MTIMES SIMP)\
+ -1 $Y) ((MTIMES SIMP) -1 $Z))
+  NIL NIL NIL NIL NIL)@}
+@end group
+@group
+(%i10) A4 : make_array (fixnum, 2, 3, 5);
+(%o10) @{Array:  #3A(((0 0 0 0 0) (0 0 0 0 0) (0 0 0 0 0)) ((0 0 \
+0 0 0) (0 0 0 0 0) (0 0 0 0 0)))@}
+@end group
+@group
+(%i11) fillarray (A4, makelist (i, i, 1, 2*3*5));
+(%o11) @{Array:  #3A(((1 2 3 4 5) (6 7 8 9 10) (11 12 13 14 15))
+    ((16 17 18 19 20) (21 22 23 24 25) (26 27 28 29 30)))@}
+@end group
+@group
+(%i12) A4 [0, 2, 1];
+(%o12)                         12
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{rearray}
+@deffn {Function} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+
+Changes the dimensions of an array.  
+The new array will be filled with the elements of the old one in
+row-major order.  If the old array was too small, 
+the remaining elements are filled with
+@code{false}, @code{0.0} or @code{0},
+depending on the type of the array.  The type of the array cannot be
+changed.
+
+@c @opencatbox
+@c @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{remarray}
+@deffn {Function} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {Function} remarray (all)
+
+Removes arrays and array associated
+functions and frees the storage occupied.
+The arguments may be declared arrays, undeclared (hashed) arrays, array functions, and subscripted functions.
+
+@code{remarray (all)} removes all items in the global list @code{arrays}.
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+It may be necessary to use this function if it is
+desired to redefine the values in a hashed array.
+
+@code{remarray} returns the list of arrays removed.
+
+@c @opencatbox
+@c @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{subvar}
+@deffn {Function} subvar (@var{x}, @var{i})
+
+Evaluates the subscripted expression @code{@var{x}[@var{i}]}.
+
+@code{subvar} evaluates its arguments.
+
+@code{arraymake (@var{x}, [@var{i}]} constructs the expression @code{@var{x}[@var{i}]},
+but does not evaluate it.
+
+Examples:
+
+@c ===beg===
+@c x : foo $
+@c i : 3 $
+@c subvar (x, i);
+@c foo : [aa, bb, cc, dd, ee]$
+@c subvar (x, i);
+@c arraymake (x, [i]);
+@c ''%;
+@c ===end===
+@example
+(%i1) x : foo $
+(%i2) i : 3 $
+@group
+(%i3) subvar (x, i);
+(%o3)                         foo
+                                 3
+@end group
+(%i4) foo : [aa, bb, cc, dd, ee]$
+@group
+(%i5) subvar (x, i);
+(%o5)                          cc
+@end group
+@group
+(%i6) arraymake (x, [i]);
+(%o6)                         foo
+                                 3
+@end group
+@group
+(%i7) ''%;
+(%o7)                          cc
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Expressions} @category{Arrays}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@deffn {Funktion} subvarp (@var{expr})
+
+@c Returns @code{true} if @var{expr} is a subscripted variable, for example
+@c @code{a[i]}.
+
+Gibt @code{true} zur@"uck, wenn @var{expr} eine indizierte Variable wie zum
+Beispiel @code{a[i]} ist. 
+
+@c @opencatbox
+@c @category{Aussagefunktionen}
+@c @closecatbox
+@end deffn
+
+@c THIS IS REALLY CONFUSING
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{use_fast_arrays}
+@defvr {Option variable} use_fast_arrays
+
+- if @code{true} then only two types of arrays are recognized.  
+
+1) The art-q array (t in Common Lisp) which may have several dimensions
+indexed by integers, and may hold any Lisp or Maxima object as an
+entry.  To construct such an array, enter @code{a:make_array(any,3,4);} 
+then @code{a} will have as value, an array with twelve slots, and the 
+indexing is zero based.
+
+2) The Hash_table array which is the default type of array created if one
+does @code{b[x+1]:y^2} (and @code{b} is not already an array, a list, or a
+matrix -- if it were one of these an error would be caused since
+@code{x+1} would not be a valid subscript for an art-q array, a list or
+a matrix). Its indices (also known as keys) may be any object.  
+It only takes one key at a time (@code{b[x+1,u]:y} would ignore the @code{u}). 
+Referencing is done by @code{b[x+1] ==> y^2}.  Of course the key may be
+a list, e.g. @code{b[[x+1,u]]:y} would be valid.  This is incompatible 
+with the old Maxima hash arrays, but saves consing.
+
+An advantage of storing the arrays as values of the symbol is that the
+usual conventions about local variables of a function apply to arrays as
+well.  The Hash_table type also uses less consing and is more efficient
+than the old type of Maxima hashar.  To obtain consistent behaviour in
+translated and compiled code set @code{translate_fast_arrays} to be
+@code{true}.
+
+@c @opencatbox
+@c @category{Arrays} @category{Global flags}
 @c @closecatbox
 @end defvr
 
