@@ -403,12 +403,13 @@ Beispiele:
 (%i1) expr:(x+1)^2*(y+1)^3;
                                       2        3
 (%o1)                          (x + 1)  (y + 1)
+@group
 (%i2) expand(expr);
        2  3        3    3      2  2        2      2      2
 (%o2) x  y  + 2 x y  + y  + 3 x  y  + 6 x y  + 3 y  + 3 x  y
                                                  2
                                 + 6 x y + 3 y + x  + 2 x + 1
-
+@end group
 (%i3) expand(expr,2);
                       2        3              3          3
 (%o3)                x  (y + 1)  + 2 x (y + 1)  + (y + 1)
@@ -882,6 +883,121 @@ Eigenschaft @code{outative}.
 @c @closecatbox
 @end defvr
 
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{radcan}
+@deffn {Funktion} radcan (@var{expr})
+
+@c TODO: ÜBERSETZUNG FEHLT
+
+Simplifies @var{expr}, which can contain logs, exponentials, and radicals, by 
+converting it into a form which is canonical over a large class of expressions 
+and a given ordering of variables; that is, all functionally equivalent forms 
+are mapped into a unique form.  For a somewhat larger class of expressions, 
+@code{radcan} produces a regular form. Two equivalent expressions in this class 
+do not necessarily have the same appearance, but their difference can be 
+simplified by @code{radcan} to zero.
+
+For some expressions @code{radcan} is quite time consuming.  This is the cost 
+of exploring certain relationships among the components of the expression for 
+simplifications based on factoring and partial-fraction expansions of exponents.  
+
+@c %e_to_numlog NEEDS ITS OWN @defvar !!!
+
+@c %e_to_numlog HAS NO EFFECT ON RADCAN. RADCAN ALWAYS SIMPLIFIES 
+@c exp(a*log(x)) --> x^a. Commenting the following out. 11/2009
+@c When @code{%e_to_numlog} is @code{true}, @code{%e^(r*log(expr))} simplifies 
+@c to @code{expr^r} if @code{r} is a rational number.
+
+@c RADEXPAND CONTROLS THE SIMPLIFICATION OF THE POWER FUNCTION, E.G.
+@c (x*y)^a --> x^a*y^a AND (x^a)^b --> x^(a*b), IF RADEXPAND HAS THE VALUE 'ALL.
+@c THE VALUE OF RADEXPAND HAS NO EFFECT ON RADCAN. RADCAN ALWAYS SIMPLIFIES
+@c THE ABOVE EXPRESSIONS. COMMENTING THE FOLLOWING OUT. 11/2009
+@c When @code{radexpand} is @code{false}, certain transformations are inhibited.
+@c @code{radcan (sqrt (1-x))} remains @code{sqrt (1-x)} and is not simplified 
+@c to @code{%i sqrt (x-1)}. @code{radcan (sqrt (x^2 - 2*x + 1))} remains 
+@c @code{sqrt (x^2 - 2*x + 1)} and is not simplified to @code{x - 1}.
+
+Beispiele:
+
+@c ===beg===
+@c radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+@c radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+@c radcan((%e^x-1)/(1+%e^(x/2)));
+@c ===end===
+@example
+(%i1) radcan((log(x+x^2)-log(x))^a/log(1+x)^(a/2));
+                                           a/2
+(%o1)                            log(x + 1)
+
+(%i2) radcan((log(1+2*a^x+a^(2*x))/log(1+a^x)));
+(%o2)                                  2
+
+(%i3) radcan((%e^x-1)/(1+%e^(x/2)));
+                                     x/2
+(%o3)                              %e    - 1
+@end example
+
+@c @opencatbox
+@c @category{Simplification functions}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{radexpand}
+@defvr {Optionsvariable} radexpand
+Standardwert: @code{true}
+
+@c @code{radexpand} controls some simplifications of radicals.
+
+@code{radexpand} kontrolliert die Vereinfachung von Wurzeln.
+
+@c When @code{radexpand} is @code{all}, causes nth roots of factors of a product
+@c which are powers of n to be pulled outside of the radical.  E.g. if 
+@c @code{radexpand} is @code{all}, @code{sqrt (16*x^2)} simplifies to @code{4*x}.
+
+Hat @code{radexpand} den Wert @code{all}, werden die nten-Wurzeln der Faktoren
+eines Produktes, die eine n-te Potenz sind, aus der Wurzel herausgezogen. Zum 
+Beispiel vereinfacht @code{sqrt(16*x^2} zu @code{4*x}.
+
+@c EXPRESS SIMPLIFICATON RULES IN GENERAL CASE, NOT SPECIAL CASE
+@c More particularly, consider @code{sqrt (x^2)}.
+
+Inbesondere vereinfacht der Ausdruck @code{sqrt(x^2)} folgenderma@ss{}en:
+
+@itemize @bullet
+
+@c If @code{radexpand} is @code{all} or @code{assume (x > 0)} has been executed, 
+@c @code{sqrt(x^2)} simplifies to @code{x}.
+
+@item
+Hat @code{radexpand} den Wert @code{all} oder wurde @code{assume(x>0)} 
+ausgef@"uhrt, dann vereinfacht @code{sqrt(x^2)} zu @code{x}.
+
+@c If @code{radexpand} is @code{true} and @code{domain} is @code{real} (its 
+@c default), @code{sqrt(x^2)} simplifies to @code{abs(x)}.
+
+@item
+Hat @code{radexpand} den Wert @code{true} und @code{domain} ist @code{real},
+dann vereinfacht @code{sqrt(x^2)} zu @code{abs(x)}.
+
+@c If @code{radexpand} is @code{false}, or @code{radexpand} is @code{true} and 
+@c @code{domain} is @code{complex}, @code{sqrt(x^2)} is not simplified.
+
+@item
+Hat @code{radexpand} den Wert @code{false} oder hat @code{radexpand} den Wert
+@code{true} und @code{domain} ist @code{complex}, dann wird @code{sqrt(x^2)}
+nicht vereinfacht.
+
+@end itemize
+
+@c CORRECT STATEMENT HERE ???
+@c Note that @code{domain} only matters when @code{radexpand} is @code{true}.
+
+@c @opencatbox
+@c @category{Simplification flags and variables}
+@c @closecatbox
+@end defvr
+
 @c --- 18.10.2010 DK -----------------------------------------------------------
 @anchor{rassociative}
 @defvr {Deklaration} rassociative
@@ -896,6 +1012,108 @@ rechts-assioziativ. Zum Beispiel wird @code{f(f(a, b), f(c, d))} zu
 
 @c @opencatbox
 @c @category{Deklarationen und Inferenzen} @category{Operatoren}
+@c @closecatbox
+@end defvr
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{scsimp}
+@deffn {Funktion} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+
+Sequential Comparative Simplification (Methode nach Stoute).
+
+@c @code{scsimp} attempts to simplify @var{expr} according to the rules 
+@c @var{rule_1}, ..., @var{rule_n}. If a smaller expression is obtained, the 
+@c process repeats. Otherwise after all simplifications are tried, it returns
+@c the original answer.
+
+@code{scsimp} versucht den Ausdruck @var{expr} mit Hilfe der Regeln 
+@var{rule_1}, ..., @var{rule_n} zu vereinfachen. Die Regeln werden nacheinander
+solange angewendet, bis sich der Ausdruck nicht weiter vereinfacht. F@"uhrt 
+keine der Regeln zu einem Erfolg, wird der urspr@"ungliche Ausdruck 
+zur@"uckgegeben.
+
+   @c MERGE EXAMPLES INTO THIS FILE
+@code{example(scsimp)} zeigt einige Beispiele.
+
+@c @opencatbox
+@c @category{Vereinfachungsfunktionen}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} simp
+Standardwert: @code{true}
+
+@c @code{simp} enables simplification. This is the standard. @code{simp} is also 
+@c an @code{evflag}, which is recognized by the function @code{ev}. See 
+@c @code{ev}.
+
+@code{simp} kontrolliert die Vereinfachung von Ausdr@"ucken. Der Standardwert 
+von @code{simp} ist @code{true} und Ausdr@"ucke werden vereinfacht. @code{simp}
+ist auch ein Auswertungsschalter f@"ur die Funktion @code{ev}. Siehe 
+@mrefdot{ev}
+
+@c When @code{simp} is used as an @code{evflag} with a value @code{false}, the 
+@c simplification is suppressed only during the evaluation phase of an 
+@c expression. The flag can not suppress the simplification which follows the
+@c evaluation phase.
+
+Wird @code{simp} als ein Auswertungschalter mit dem Wert @code{false} genutzt,
+dann wird die Vereinfachung nur w@"ahrend der Auswertungsphase unterdr@"uckt. 
+@code{simp} kann nicht die Vereinfachung unterdr@"ucken, die sich der Auswertung
+anschlie@ss{}t.
+
+Beispiele:
+
+@c The simplification is switched off globally. The expression @code{sin(1.0)} 
+@c is not simplified to its numerical value. The @code{simp}-flag switches the
+@c simplification on.
+
+Die Vereinfachung wird ausgeschaltet. Der Ausdruck @code{sin(1.0)} wird nicht 
+zu einem numerischen Wert vereinfacht. Der Auswertungsschalter @code{simp}
+schaltet die Vereinfachung ein.
+
+@c ===beg===
+@c simp:false;
+@c sin(1.0);
+@c sin(1.0),simp;
+@c ===end===
+@example
+(%i1) simp:false;
+(%o1)                                false
+(%i2) sin(1.0);
+(%o2)                              sin(1.0)
+(%i3) sin(1.0),simp;
+(%o3)                          .8414709848078965
+@end example
+
+@c The simplification is switched on again. The @code{simp}-flag cannot suppress
+@c the simplification completely. The output shows a simplified expression, but 
+@c the variable @code{x} has an unsimplified expression as a value, because the 
+@c assignment has occurred during the evaluation phase of the expression.
+
+Die Vereinfachung wird wieder eingeschaltet. Der Auswertungsschalter @code{simp}
+kann die Vereinfachung nicht vollst@"andig unterdr@"ucken. In der Ausgabe ist 
+der Ausdruck vereinfacht, aber die Variable @code{x} enth@"alt einen nicht 
+vereinfachten Ausdruck, da die Zuweisung noch w@"ahrend der Auswertungsphase des
+Ausdrucks vorgenommen wurde.
+
+@c ===beg===
+@c simp:true;
+@c x:sin(1.0),simp:false;
+@c :lisp $x
+@c ===end===
+@example
+(%i4) simp:true;
+(%o4)                                true
+(%i5) x:sin(1.0),simp:false;
+(%o5)                          .8414709848078965
+(%i6) :lisp $X
+((%SIN) 1.0)
+@end example
+
+@c @opencatbox
+@c @category{Evaluation flags}
 @c @closecatbox
 @end defvr
 
