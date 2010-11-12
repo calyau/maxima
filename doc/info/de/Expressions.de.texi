@@ -18,7 +18,7 @@
 @c  optimize            optimprefix         ordergreat          orderless
 @c  ordergreatp         orderlessp          part                partition
 @c  partswitch          pickapart           piece               psubst
-@c  rembox              reveal              sublis              
+@c  rembox              reveal              symbolp             sublis              
 @c  sublis_apply_lambda subst               substinpart         substpart
 @c  unorder             verbify
 @c 
@@ -2666,6 +2666,27 @@ Funktion @code{substpart} wie @code{substinpart}.
 
 @c @opencatbox
 @c @category{Ausdr@"ucke}
+@c @closecatbox
+@end deffn
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{symbolp}
+@deffn {Funktion} symbolp (@var{expr})
+
+@c Returns @code{true} if @var{expr} is a symbol, else @code{false}. In effect, 
+@c @code{symbolp(x)} is equivalent to the predicate @code{atom(x) and not
+@c numberp(x)}.
+
+Gibt @code{true} zur@"uck, wenn @var{expr} ein Symbol ist, ansonsten 
+@code{false}. @code{symbolp(x)} ist @"aquivalent zu 
+@code{atom(x) and not numberp(x)}.
+
+@c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
+@c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
+Siehe auch @nrefdot{Bezeichner}
+
+@c @opencatbox
+@c @category{Aussagefunktionen}
 @c @closecatbox
 @end deffn
 
