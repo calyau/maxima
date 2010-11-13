@@ -1,4 +1,4 @@
-@c english version 1.37
+@c english version 1.39
 @menu
 * Introducci@'on a las matrices y el @'algebra lineal::
 * Funciones y variables para las matrices y el @'algebra lineal::
@@ -115,6 +115,49 @@ ecuaci@'on, es decir, aquellos t@'erminos que no dependen de las variables
 @end example
 
 @end deffn
+
+
+
+@deffn  {Funci@'on} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_m}], [@var{y_1},@var{y_2}, ..., @var{y_n}])
+@deffnx {Funci@'on} cauchy_matrix ([@var{x_1},@var{x_2}, ..., @var{x_n}])
+
+Devuelve una matriz de Cauchy @var{n} by @var{m} de elementos
+@var{a[i,j]} = 1/(@var{x_i}+@var{y_i}).
+El segundo elemento de @code{cauchy_matrix} es opcional, y en caso
+de no estar presente, los elementos ser@'an de la forma
+@var{a[i,j]} = 1/(@var{x_i}+@var{x_j}).
+
+Observaci@'on: en la literatura, la matriz de Cauchy se define a veces
+con sus elementos de la forma @var{a[i,j]} = 1/(@var{x_i}-@var{y_i}).
+
+Ejemplos:
+
+@c === beg ===
+@c cauchy_matrix([x1,x2],[y1,y2]);
+@c cauchy_matrix([x1,x2]);
+@c === end ===
+@example
+(%i1) cauchy_matrix([x1,x2],[y1,y2]);
+                      [    1        1    ]
+                      [ -------  ------- ]
+                      [ y1 + x1  y2 + x1 ]
+(%o1)                 [                  ]
+                      [    1        1    ]
+                      [ -------  ------- ]
+                      [ y1 + x2  y2 + x2 ]
+
+(%i2) cauchy_matrix([x1,x2]);
+                      [   1         1    ]
+                      [  ----    ------- ]
+                      [  2 x1    x2 + x1 ]
+(%o2)                 [                  ]
+                      [    1       1     ]
+                      [ -------   ----   ]
+                      [ x2 + x1   2 x2   ]
+@end example
+@end deffn
+
+
 
 @deffn {Funci@'on} charpoly (@var{M}, @var{x})
 Calcula el polinomio caracter@'{@dotless{i}}stico de la matriz @var{M}
@@ -898,18 +941,36 @@ El nombre @code{inprod} es sin@'onimo de @code{innerproduct}.
 @deffn {Funci@'on} invert (@var{M})
 Devuelve la inversa de la matriz @var{M}, calculada por el m@'etodo del adjunto.
 
-@c FALTAN DOS PARRAFOS AQUI
-
 La implementaci@'on actual no es eficiente para matrices de orden grande.
 
-Cuando @code{detout} vale @code{true}, el determinante queda fuera de la inversa a modo de factor escalar.
+Cuando @code{detout} vale @code{true}, el determinante se deja
+ fuera de la inversa a modo de factor escalar.
 
-Los elementos de la matriz inversa no se expanden. Si @var{M} tiene elementos polin@'omicos, se puede mejorar el aspecto del resultado haciendo @code{expand (invert (m)), detout}. @c FALTA COMPLETAR PARRAFO
+Los elementos de la matriz inversa no se expanden. Si @var{M} tiene elementos
+polin@'omicos, se puede mejorar el aspecto del resultado haciendo 
+@code{expand (invert (m)), detout}.
 
-V@'ease la descripci@'on de @code{^^} (exponente no conmutativo) para informaci@'on sobre otro m@'etodo para invertir matrices.
+V@'ease la descripci@'on de @code{^^} (exponente no conmutativo) para 
+informaci@'on sobre otro m@'etodo para invertir matrices.
 
-@c NEED EXAMPLE HERE
 @end deffn
+
+
+@deffn {Funci@'on} list_matrix_entries (@var{M})
+Devuelve una lista con todos los elementos de la matriz @var{M}.
+
+Ejemplo:
+
+@c ===beg===
+@c list_matrix_entries(matrix([a,b],[c,d]));
+@c ===end===
+@example
+(%i1) list_matrix_entries(matrix([a,b],[c,d]));
+(%o1)                     [a, b, c, d]
+@end example
+
+@end deffn
+
 
 @defvr {Variable opcional} lmxchar
 Valor por defecto: @code{[}

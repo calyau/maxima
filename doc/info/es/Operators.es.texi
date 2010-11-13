@@ -1,4 +1,4 @@
-@c english version 1.59
+@c english version 1.61
 @menu
 * n-arios::
 * no-fijos::
@@ -2198,14 +2198,24 @@ o @code{pnz} (positivo, negativo o cero, lo que significa que el signo es descon
 
 @end deffn
 
-@deffn {Funci@'on} signum (@var{x})
-Para @var{x} num@'erico, devuelve 0 si @var{x} es 0, en caso contrario devuelve -1 o +1, seg@'un que @var{x} sea menor o mayor que 0, respectivamente.
 
-Si @var{x} no es num@'erico, entonces se devuelve una forma simplificada equivalente.
-Por ejemplo, @code{signum(-x)} devuelve @code{-signum(x)}.
-@c UMM, THIS ISN'T THE WHOLE STORY, AS IT APPEARS signum CONSULTS THE assume DATABASE FOR SYMBOLIC ARGUMENT
+@deffn {Funci@'on} signum (@var{x})
+Tanto sea @var{x} real o complejo, la funci@'on @code{signum} devuelve 0 si @var{x}
+es cero. Para un valor no nulo de @var{x}, la funci@'on devuelve @code{abs(x)/x}.
+
+Para valores no num@'ericos de @var{x}, Maxima intenta determinar el
+signo del argumento. Cuando es negativo, cero o positivo, @code{signum}
+devuelve -1, 0 o 1, respectivamente. En caso de no poder determinarse,
+@code{signum} devuelve una forma simplificada equivalente. Estas 
+simplificaciones incluyen la transformaci@'on de @code{signum(-x)}
+en @code{-signum(x)} y la de @code{signum(x*y)} en
+@code{signum(x) * signum(y)}.
+
+La funci@'on @code{signum} es distributiva respecto de listas,
+matrices o ecuaciones. V@'ease @code{distribute_over}.
 
 @end deffn
+
 
 @deffn {Funci@'on} sort (@var{L}, @var{P})
 @deffnx {Funci@'on} sort (@var{L})
@@ -2354,6 +2364,32 @@ Valor por defecto: @code{true}
 Controla si los @code{lambda} sustituidos son aplicados en la simplificaci@'on despu@'es de invocar a @code{sublis}, o si se tiene que hacer un @code{ev} para hacerlo. Si @code{sublis_apply_lambda} vale @code{true}, significa que se ejecute la aplicaci@'on.
 
 @end defvr
+
+
+
+@defvr {Variable opcional} subnumsimp
+Valor por defecto: @code{false}
+
+Si vale @code{true}, entonces las funciones @code{subst} y @code{psubst}
+pueden sustituir una variable con sub@'{@dotless{i}}ndice @code{f[x]} por
+un n@'umero, solo con dar el s@'{@dotless{i}}mbolo @code{f}.
+
+V@'ease tambi@'en @code{subst}.
+
+@example
+(%i1) subst(100,g,g[x]+2);
+
+subst: cannot substitute 100 for operator g in expression g
+                                                           x
+ -- an error. To debug this try: debugmode(true);
+
+(%i2) subst(100,g,g[x]+2),subnumsimp:true;
+(%o2)                          102
+@end example
+
+@end defvr
+
+
 
 @deffn {Funci@'on} subst (@var{a}, @var{b}, @var{c})
 Sustituye @var{a} por @var{b} en @var{c}. El argumento  @var{b} debe ser un @'atomo o una subexpresi@'on completa de @var{c}.  Por ejemplo, @code{x+y+z} es una subexpresi@'on completa de  @code{2*(x+y+z)/w} mientras que @code{x+y} no lo es. Cuando @var{b} no cumple esta caracter@'{@dotless{i}}stica, se puede utilizar en algunos casos @code{substpart} o @code{ratsubst}
