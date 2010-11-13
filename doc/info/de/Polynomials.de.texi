@@ -13,7 +13,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Polynomials, Functions and Variables for Polynomials, Polynomials, Polynomials
+@node Introduction to Polynomials, Functions and Variables for Polynomials, Polynome, Polynome
 @section Introduction to Polynomials
 
 Polynomials are stored in Maxima either in General Form or as
@@ -65,7 +65,7 @@ symbol /T/ follows the line label of such expressions.
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynomials
+@node Functions and Variables for Polynomials,  , Introduction to Polynomials, Polynome
 @section Functions and Variables for Polynomials
 
 @c -----------------------------------------------------------------------------
@@ -352,12 +352,14 @@ Simplifies the sum @var{expr} by combining terms with the same
 denominator into a single term.
 
 @c NEED EXAMPLE HERE
-@opencatbox
-@category{Expressions}
-@closecatbox
+@c @opencatbox
+@c @category{Expressions}
+@c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
+
 Returns a list whose first element is
 the greatest common divisor of the coefficients of the terms of the
 polynomial @var{p_1} in the variable @var{x_n} (this is the content) and whose
