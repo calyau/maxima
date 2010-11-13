@@ -143,9 +143,8 @@ Spezifische Gebiete der Mathematik
                                 Differentialgleichungen.
 * Polynome::                    Standard forms for polynomials, and
                                 functions operating on them.
+* Spezielle Funktionen::        Spezielle Mathematische Funktionen.
 
-* Special Functions::           Special functions
-* Elliptic Functions::          Elliptic Functions and Integrals
 * Equations::                   Defining and solving equations.
 * Numerical::                   Numerical integration, Fourier
                                 transforms, etc.
@@ -328,17 +327,17 @@ Polynome
 * Introduction to Polynomials::  
 * Functions and Variables for Polynomials::  
 
-Special Functions
-* Introduction to Special Functions:: 
-* Bessel Functions::
-* Airy Functions::
-* Gamma and factorial Functions::
-* Exponential Integrals::
-* Error Function::
-* Struve Functions::
-* Hypergeometric Functions::
-* Parabolic Cylinder Functions::
-* Functions and Variables for Special Functions::  
+Spezielle Funktionen
+* Einf@"uhrung f@"ur spezielle Funktionen:: 
+* Besselfunktionen::
+* Airyfunktionen::
+* Struvefunktionen::
+* Gammafunktionen und verwandte Funktionen::
+* Exponentielle Integrale::
+* Fehlerfunktionen::
+* Elliptische Funktionen und Integrale::
+* Hyergeometrische Funktionen::
+* Funktionen und Variablen f@"ur spezielle Funktionen::  
 
 Elliptic Functions
 * Introduction to Elliptic Functions and Integrals::
@@ -655,17 +654,13 @@ Glossar
 @chapter Analysis
 @include Calculus.de.texi
 
-@node Polynome, Glossar, Analysis, Top
+@node Polynome, Spezielle Funktionen, Analysis, Top
 @chapter Polynome
 @include Polynomials.de.texi
 
-@c @node Special Functions, Elliptic Functions, Trigonometric, Top
-@c @chapter Special Functions
-@c @include Special.texi
-
-@c @node Elliptic Functions, Limits, Special Functions, Top
-@c @chapter Elliptic Functions
-@c @include Elliptic.texi
+@node Spezielle Funktionen, Glossar, Polynome, Top
+@chapter Spezielle Funktionen
+@include Special.de.texi
 
 @c @node Equations, Differential Equations, Integration, Top
 @c @chapter Equations
@@ -903,7 +898,7 @@ Glossar
 @c @chapter zeilberger
 @c @include zeilberger.de.texi
 
-@node Glossar, Index der Variablen und Funktionen, Analysis, Top
+@node Glossar, Index der Variablen und Funktionen, Spezielle Funktionen, Top
 @chapter Glossar
 @include Glossary.de.texi
 

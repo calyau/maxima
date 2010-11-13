@@ -10,6 +10,7 @@ Introduction.de.texi Bugs.de.texi Help.de.texi Command.de.texi \
 DataTypes.de.texi Expressions.de.texi Operators.de.texi Evaluation.de.texi \
 Simplification.de.texi MathFunctions.de.texi Database.de.texi Plotting.de.texi \
 Input.de.texi Series.de.texi Calculus.de.texi Polynomials.de.texi \
+Special.de.texi \
 Glossary.de.texi
 
 
