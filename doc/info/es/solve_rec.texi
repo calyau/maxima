@@ -1,4 +1,4 @@
-@c english version 1.11
+@c english version 1.13
 @menu
 * Introducci@'on a solve_rec::
 * Funciones y variables para solve_rec::
@@ -104,23 +104,31 @@ ejecutando la instrucci@'on @code{load(simplify_sum)}.
 
 Ejemplo:
 
+@c ===beg===
+@c load("simplify_sum")$
+@c sum(binomial(n+k,k)/2^k, k, 1, n) + sum(binomial(2*n, 2*k), k, 1,n);
+@c simplify_sum(%);
+@c ===end===
 @example
 (%i1) load("simplify_sum")$
-(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + 
-          sum(binom(2*n, 2*k), k, 0, n);
-         n                            n
-        ====                         ====
-        \      binomial(n + k, k)    \
-(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
-        /               k            /
-        ====           2             ====
-        k = 0                        k = 0
+@group
+(%i2) sum(binomial(n+k,k)/2^k,k,1,n)+sum(binomial(2*n,2*k),k,1,n);
+        n                          n
+       ====                       ====
+       \     binomial(n + k, k)   \
+(%o2)   >    ------------------ +  >    binomial(2 n, 2 k)
+       /              k           /
+       ====          2            ====
+       k = 1                      k = 1
+@end group
+@group
 (%i3) simplify_sum(%);
-                               n
-                              4     n
-(%o3)                         -- + 2
-                              2
+
+                         2 n - 1    n
+(%o3)                   2        + 2  - 2
+@end group
 @end example
+
 
 @end deffn
 
