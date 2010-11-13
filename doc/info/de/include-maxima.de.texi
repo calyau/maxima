@@ -183,7 +183,7 @@ Additional packages
 * contrib_ode::                 Additional routines for ODEs
 * descriptive::                 Descriptive statistics.
 * diag::                        Jordan matrices.
-* distrib::                     Probability distributions.
+* Package distrib::             Probability distributions.
 * draw::                        A Maxima-Gnuplot interface.
 * dynamics::                    Graphics for dynamical systems and fractals.
 * ezunits::                     Dimensional quantities.
@@ -457,7 +457,7 @@ descriptive
 diag
 * Functions and Variables for diag::
 
-distrib
+Package distrib
 * Introduction to distrib::
 * Functions and Variables for continuous distributions::
 * Functions and Variables for discrete distributions::
