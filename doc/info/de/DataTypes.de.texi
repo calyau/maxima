@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : DataTypes.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 15.10.2010
+@c File        : DataTypes.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 15.10.2010
 @c 
 @c This file contains documentation for the following symbols:
 @c 
@@ -1022,7 +1022,7 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen f@"ur Konstante,  Funktionen und Variable f@"ur Arrays, Funktionen und Variablen f@"ur Zeichenketten, Datentypen
+@node Funktionen und Variablen f@"ur Konstante,  Funktionen und Variablen f@"ur Arrays, Funktionen und Variablen f@"ur Zeichenketten, Datentypen
 @section Funktionen und Variablen f@"ur Konstante
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1423,85 +1423,141 @@ Siehe auch @code{zeroa} und @code{limit}.
 @deffnx {Funktion} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Funktion} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
 
-Creates an @math{n}-dimensional array.  
-@math{n} may be less than or equal to 5.
-The subscripts for
-the @math{i}'th dimension are the integers running from 0 to @var{dim_i}.  
+@c Creates an @math{n}-dimensional array. @math{n} may be less than or equal to 
+@c 5. The subscripts for the @math{i}'th dimension are the integers running from
+@c 0 to @var{dim_i}.  
 
-@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} creates a general array.
+Erzeugt ein @math{n}-dimensionales Array. @math{n} kann kleiner oder gleich 5 
+Dimensionen sein. Die Indizes der @math{i}-ten Dimension sind ganze Zahlen
+in einem Bereich von 0 bis @var{dim_i}.
 
-@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} creates
-an array, with elements of a specified type.
-@var{type} can be @code{fixnum} for
-integers of limited size or @code{flonum} for floating-point numbers.
+@c @code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} creates a general 
+@c array.
 
-@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
-creates @math{m} arrays, all of the same dimensions.
+@code{array(@var{name}, @var{dim_1}, ... @var{dim_n})} erzeugt ein allgemeines
+Array.
+
+@c @code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} creates
+@c an array, with elements of a specified type. @var{type} can be @code{fixnum}
+@c for integers of limited size or @code{flonum} for floating-point numbers.
+
+@code{array(@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} erzeugt ein
+Array mit Elementen, die vom Typ @var{type} sind. @var{type} kann @code{fixnum}
+f@"ur ganze Zahlen oder @code{flonum} f@"ur Gleitkommazahlen sein.
+
+@c @code{array([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., 
+@c @var{dim_n})} creates @math{m} arrays, all of the same dimensions.
 @c SAME TYPE AS WELL ??
 
+@code{array([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+erzeugt @math{m} Arrays, die alle die gleiche Dimension haben.
+
 @c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
-If the user assigns to a subscripted variable before declaring the
-corresponding array, an undeclared array is created.
-Undeclared arrays, otherwise known as hashed arrays (because hash
-coding is done on the subscripts), are more general than declared
-arrays.  The user does not declare their maximum size, and they grow
-dynamically by hashing as more elements are assigned values.  The
-subscripts of undeclared arrays need not even be numbers.  However,
-unless an array is rather sparse, it is probably more efficient to
-declare it when possible than to leave it undeclared.  The @code{array}
-function can be used to transform an undeclared array into a declared
-array.
+@c If the user assigns to a subscripted variable before declaring the
+@c corresponding array, an undeclared array is created.
+@c Undeclared arrays, otherwise known as hashed arrays (because hash
+@c coding is done on the subscripts), are more general than declared
+@c arrays.  The user does not declare their maximum size, and they grow
+@c dynamically by hashing as more elements are assigned values.  The
+@c subscripts of undeclared arrays need not even be numbers.  However,
+@c unless an array is rather sparse, it is probably more efficient to
+@c declare it when possible than to leave it undeclared.  The @code{array}
+@c function can be used to transform an undeclared array into a declared array.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
+
+Wird einer indizierten Variablen ein Wert zugewiesen, bevor das entsprechende
+Array definiert wird, so wird ein undeklariertes Array erzeugt. Undeklarierte
+Arrays, auch Hashed-Arrays genannt, sind allgemeiner als deklarierte Arrays.
+Diese Arrays haben keine feste Gr@"o@ss{}e und wachsen dynamisch mit der 
+Zuweisung von Werten. Der Indizes eines undeklarierten Arrays m@"ussen keine 
+ganze Zahlen sein. Jedoch sind deklarierte Arrays im Allgemeinen effizienter, 
+so dass Arrays falls m@"oglich deklariert werden sollten. Die Funktion 
+@code{array} kann genutzt werden, um ein undeklariertes Array in ein 
+deklariertes Array umzuwandeln.
 
 @c @opencatbox
 @c @category{Arrays}
 @c @closecatbox
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{arrayapply}
-@deffn {Function} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Funktion} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
 
-Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
-where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
+@c Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
+@c where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
 
-This is reminiscent of @code{apply}, except the first argument is an array instead of a function.
+Wertet @code{@var{A} [@var{i_1}, ..., @var{i_n}]} aus, wobei @var{A} ein Array
+ist und @var{i_1}, ..., @var{i_n} sind ganze Zahlen.
+
+@c This is reminiscent of @code{apply}, except the first argument is an array
+@c instead of a function.
+
+@code{arrayapply} entspricht der Funktion @code{apply}, wobei in diesem Fall
+das Argument ein Array und keine Funktion ist.
 
 @c @opencatbox
 @c @category{Expressions} @category{Arrays}
 @c @closecatbox
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{arrayinfo}
-@deffn {Function} arrayinfo (@var{A})
+@deffn {Funktion} arrayinfo (@var{A})
 
-Returns information about the array @var{A}.
-The argument @var{A} may be a declared array, an undeclared (hashed) array,
-an array function, or a subscripted function.
+@c Returns information about the array @var{A}. The argument @var{A} may be a
+@c declared array, an undeclared (hashed) array, an array function, or a 
+@c subscripted function.
 
-For declared arrays, @code{arrayinfo} returns a list
-comprising the atom @code{declared}, the number of dimensions, and the size of each dimension.
-The elements of the array, both bound and unbound, are returned by @code{listarray}.
+Gibt Information @"uber das Array @var{A} zur@"uck. Das Argument @var{A} kann
+ein deklariertes oder ein undeklariertes Array sowie eine Array-Funktion oder
+eine indizierte Funktion sein.
 
-For undeclared arrays (hashed arrays),
-@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
-and the subscripts of every element which has a value.
-The values are returned by @code{listarray}.
+@c For declared arrays, @code{arrayinfo} returns a list comprising the atom 
+@c @code{declared}, the number of dimensions, and the size of each dimension.
+@c The elements of the array, both bound and unbound, are returned by 
+@c @code{listarray}.
 
-For array functions,
-@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
-and any subscript values for which there are stored function values.
-The stored function values are returned by @code{listarray}.
+F@"ur ein deklarierte Array gibt @code{arryinfo} eine Liste zur@"uck, die 
+@code{declared}, die Zahl der Dimensionen und die Gr@"o@ss{}e der Dimensionen 
+enh@"alt. Die Elemente des Arrays werden von der Funktion @code{listarray}
+zur@"uckgegeben.
 
-For subscripted functions,
-@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
-and any subscript values for which there are lambda expressions.
-The lambda expressions are returned by @code{listarray}.
+@c For undeclared arrays (hashed arrays), @code{arrayinfo} returns a list 
+@c comprising the atom @code{hashed}, the number of subscripts, and the 
+@c subscripts of every element which has a value. The values are returned by 
+@c @code{listarray}.
 
-Examples:
+F@"ur ein undeklariertes Array (Hashed-Array) gibt @code{arrayinfo} eine Liste
+zur@"uck, die @code{hashed}, die Zahl der Indizes und die Indizes enth@"alt,
+deren Elemente einen Wert haben. Die Werte der Elemente werden mit der Funktion 
+@code{listarray} zur@"uckgegeben.
 
-@code{arrayinfo} and @code{listarray} applied to a declared array.
+@c For array functions, @code{arrayinfo} returns a list comprising the atom 
+@c @code{hashed}, the number of subscripts, and any subscript values for which 
+@c there are stored function values. The stored function values are returned by 
+@c @code{listarray}.
+
+F@"ur Array-Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
+@code{hashed} die Zahl der Indizes und die Indizes enth@"alt, f@"ur die 
+Funktionen im Array enthalten sind. Die Funktionen werden mit der Funktion 
+@code{listarray} angezeigt.
+
+@c For subscripted functions, @code{arrayinfo} returns a list comprising the 
+@c atom @code{hashed}, the number of subscripts, and any subscript values for 
+@c which there are lambda expressions. The lambda expressions are returned by 
+@c @code{listarray}.
+
+F@"ur indizierte Funktionen gibt @code{arrayinfo} eine Liste zur@"uck, die 
+@code{hashed}, die Zahl der Indizes und die Indizies enth@"alt, f@"ur die 
+Lambda-Ausdr@"ucke vorhanden sind. Die Lambda-Ausdr@"ucke werden von der 
+Funktion @code{listarray} angezeigt.
+
+Beispiele:
+
+@c @code{arrayinfo} and @code{listarray} applied to a declared array.
+
+@code{arrayinfo} und @code{listarray} angewendet auf ein deklariertes Array.
 
 @c ===beg===
 @c array (aa, 2, 3);
@@ -1534,7 +1590,10 @@ Examples:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to an undeclared (hashed) array.
+@c @code{arrayinfo} and @code{listarray} applied to an undeclared (hashed) 
+@c array.
+
+@code{arrayinfo} und @code{listarray} angewendet auf ein undeklariertes Array.
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -1564,7 +1623,9 @@ Examples:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to an array function.
+@c @code{arrayinfo} and @code{listarray} applied to an array function.
+
+@code{arrayinfo} und @code{listarray} angewendet auf eine Array-Funktion.
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -1604,7 +1665,9 @@ Examples:
 @end group
 @end example
 
-@code{arrayinfo} and @code{listarray} applied to a subscripted function.
+@c @code{arrayinfo} and @code{listarray} applied to a subscripted function.
+
+@code{arrayinfo} und @code{listarray} angewendet auf eine indizierte Funktion. 
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -1646,18 +1709,25 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{arraymake}
-@deffn {Function} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Funktion} arraymake (@var{A}, [@var{i_1}, ..., @var{i_n}])
 
-Returns the expression @code{@var{A}[@var{i_1}, ..., @var{i_n}]}.
-The result is an unevaluated array reference.
+@c Returns the expression @code{@var{A}[@var{i_1}, ..., @var{i_n}]}. The result
+@c is an unevaluated array reference.
 
-@code{arraymake} is reminiscent of @code{funmake},
-except the return value is an unevaluated array reference
-instead of an unevaluated function call.
+Gibt eine nicht ausgewertete Referenz @code{@var{A}[@var{i_1}, ..., @var{i_n}]}
+auf das Array @var{A} zur@"uck.
 
-Examples:
+@c @code{arraymake} is reminiscent of @code{funmake}, except the return value 
+@c is an unevaluated array reference instead of an unevaluated function call.
+
+@code{arraymake} entspricht der Funktion @code{funmake}, wobei in diesem Fall
+das Argument eine nicht ausgewerte Referenz auf ein Array und kein nicht 
+ausgewerteter Funktionsaufruf ist.
+
+Beispiele:
+
 @c ===beg===
 @c arraymake (A, [1]);
 @c arraymake (A, [k]);
@@ -1746,21 +1816,30 @@ Examples:
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{arrays}
-@defvr {System variable} arrays
-Default value: @code{[]}
+@defvr {Systemvariable} arrays
+Standardwert: @code{[]}
 
-@code{arrays} is a list of arrays that have been allocated.
-These comprise arrays declared by @code{array},
-hashed arrays constructed by implicit definition (assigning something to an array element),
-and array functions defined by @code{:=} and @code{define}.
-Arrays defined by @code{make_array} are not included.
+@c @code{arrays} is a list of arrays that have been allocated. These comprise 
+@c arrays declared by @code{array}, hashed arrays constructed by implicit 
+@c definition (assigning something to an array element), and array functions 
+@c defined by @code{:=} and @code{define}. Arrays defined by @code{make_array} 
+@c are not included.
 
-See also
-@code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
-@code{fillarray}, @code{listarray}, and @code{rearray}.
+@code{arrays} ist eine Informationsliste @code{infolists} der Arrays, die 
+definiert sind. Die Liste enth@"altdeklarierte Arrays, undedeklarierte Arrays 
+und Array-Funktionen, die mit @code{:=} oder @code{define} definiert sind. 
+Arrays die mit @code{make_array} definiert sind, sind nicht in der Liste 
+enthalten.
+
+@c See also @code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake},
+@c @code{fillarray}, @code{listarray}, and @code{rearray}.
 @c IS THIS AN EXHAUSTIVE LIST ??
 
-Examples:
+Siehe auch @mrefcomma{array} @mrefcomma{arrayapply} @mrefcomma{arrayinfo} @
+@mrefcomma{arraymake} @mrefcomma{fillarray} @mref{listarray} und 
+@mrefdot{rearray}
+
+Beispiele:
 
 @c ===beg===
 @c array (aa, 5, 7);
@@ -1800,42 +1879,42 @@ Examples:
 @c @closecatbox
 @end defvr
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
-@anchor{bashindices}
-@deffn {Function} bashindices (@var{expr})
-
-Transforms the expression @var{expr} by giving each
-summation and product a unique index. This gives @code{changevar} greater
-precision when it is working with summations or products.  The form of
-the unique index is @code{j@var{number}}. The quantity @var{number} is determined by
-referring to @code{gensumnum}, which can be changed by the user.  For
-example, @code{gensumnum:0$} resets it.
-
-@c @opencatbox
-@c @category{Sums and products}
-@c @closecatbox
-@end deffn
-
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{fillarray}
 @deffn {Function} fillarray (@var{A}, @var{B})
 
-Fills array @var{A} from @var{B}, which is a list or an array.
+@c Fills array @var{A} from @var{B}, which is a list or an array.
 
-If a specific type was declared for @var{A} when it was created,
-it can only be filled with elements of that same type;
-it is an error if an attempt is made to copy an element of a different type.
+F@"ullt das Array @var{A} mit den Werten aus @var{B}. Das Argument @var{B} ist 
+eine Liste oder ein Array.
 
-If the dimensions of the arrays @var{A} and @var{B} are
-different, @var{A} is filled in row-major order.  If there are not enough
-elements in @var{B} the last element is used to fill out the
-rest of @var{A}.  If there are too many, the remaining ones are ignored.
+@c If a specific type was declared for @var{A} when it was created, it can only 
+@c be filled with elements of that same type; it is an error if an attempt is 
+@c made to copy an element of a different type.
 
-@code{fillarray} returns its first argument.
+Ist das Array @var{A} mit einem Typ deklariert, dann kann es nur mit Elementen
+gef@"ullt werden, die den gleichen Typ haben.
 
-Examples:
+@c If the dimensions of the arrays @var{A} and @var{B} are different, @var{A} 
+@c is filled in row-major order.  If there are not enough elements in @var{B} 
+@c the last element is used to fill out the rest of @var{A}.  If there are too 
+@c many, the remaining ones are ignored.
 
-Create an array of 9 elements and fill it from a list.
+Sind die Dimensionen von @var{A} und @var{B} verschieden, werden in @var{A}
+zun@"achst die Zeilen aufgef@"ullt. Hat @var{B} nicht gen@"ugend Elemente um das
+Array @var{A} aufzuf@"ullen, werden die restlichen Elemente mit dem letzten Wert
+von @var{B} aufgef@"ullt. @"Uberz@"ahlige Elemente in @var{B} werden ignoriert.
+
+@c @code{fillarray} returns its first argument.
+
+@code{fillarray} gibt sein erstes Argument zur@"uck.
+
+Beispiele:
+
+@c Create an array of 9 elements and fill it from a list.
+
+Erzeuge ein Array mit 9 Elementen und f@"ulle es mit den Elementen einer Liste.
+
 @c ===beg===
 @c array (a1, fixnum, 8);
 @c listarray (a1);
@@ -1861,10 +1940,12 @@ Create an array of 9 elements and fill it from a list.
 @end group
 @end example
 
-When there are too few elements to fill the array,
-the last element is repeated.
-When there are too many elements,
-the extra elements are ignored.
+@c When there are too few elements to fill the array, the last element is 
+@c repeated. When there are too many elements, the extra elements are ignored.
+
+Sind zu wenige Elemente vorhanden, um das Array aufzuf@"ullen, wird das Array
+mit dem letzten Element aufgef@"ullt. @"Uberz@"ahlige Elemente werden ignoriert.
+
 @c ===beg===
 @c a2 : make_array (fixnum, 8);
 @c fillarray (a2, [1, 2, 3, 4, 5]);
@@ -1890,7 +1971,10 @@ the extra elements are ignored.
 @end group
 @end example
 
-Multple-dimension arrays are filled in row-major order.
+@c Multple-dimension arrays are filled in row-major order.
+
+Arrays werden zeilenweise aufgef@"ulllt.
+
 @c ===beg===
 @c a3 : make_array (fixnum, 2, 5);
 @c fillarray (a3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -1921,31 +2005,51 @@ Multple-dimension arrays are filled in row-major order.
 @c @closecatbox
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{listarray}
 @deffn {Function} listarray (@var{A})
 
-Returns a list of the elements of the array @var{A}.
-The argument @var{A} may be a declared array, an undeclared (hashed) array,
-an array function, or a subscripted function.
+@c Returns a list of the elements of the array @var{A}. The argument @var{A} 
+@c may be a declared array, an undeclared (hashed) array, an array function, or 
+@c a subscripted function.
 
-Elements are listed in row-major order.
-That is, elements are sorted according to the first index, then according to the second index, and so on.
-The sorting order of index values is the same as the order established by @code{orderless}.
+Gibt eine Liste mit den Elementen des Arrays @var{A} zur@"uck. Das Argument 
+@var{A} kann ein deklariertes, undeklariertes, eine Array-Funktion oder eine
+indizierte Funktion sein.
 
-For undeclared arrays, array functions, and subscripted functions,
-the elements correspond to the index values returned by @code{arrayinfo}.
+@c Elements are listed in row-major order. That is, elements are sorted 
+@c according to the first index, then according to the second index, and so on.
+@c The sorting order of index values is the same as the order established by 
+@c @code{orderless}.
 
-Unbound elements of declared general arrays (that is, not @code{fixnum} and not @code{flonum})
-are returned as @code{#####}.
-Unbound elements of declared @code{fixnum} or @code{flonum} arrays
-are returned as 0 or 0.0, respectively.
-Unbound elements of undeclared arrays, array functions,
-and subscripted functions are not returned.
+Die Elemente werden zeilenweise ausgegeben. F@"ur Hashed-Arrays mit Indizes, die
+keine ganze Zahlen sind, wird die Sortierung von der Funktion @code{orderless}
+bestimmt.
 
-Examples:
+@c For undeclared arrays, array functions, and subscripted functions, the 
+@c elements correspond to the index values returned by @code{arrayinfo}.
 
-@code{listarray} and @code{arrayinfo} applied to a declared array.
+F@"ur undeklarierte Arrays, Array-Funktionen und indizierte Funktionen werden
+die Elemente in der Reihenfolge wie von der Funktion @code{arrayinfo} 
+zur@"uckgegeben.
+
+@c Unbound elements of declared general arrays (that is, not @code{fixnum} and 
+@c not @code{flonum}) are returned as @code{#####}. Unbound elements of declared
+@c @code{fixnum} or @code{flonum} arrays are returned as 0 or 0.0, respectively.
+@c Unbound elements of undeclared arrays, array functions, and subscripted 
+@c functions are not returned.
+
+Elemente von deklarierten Arrays, denen noch kein Wert zugewiesen wurde und die
+keinen Typ haben, werden als @code{#####} zur@"uckgegeben. Elemente von
+deklarierten Arrays mit einem Typ, geben den Wert 0 f@"ur den Typ @code{fixnum}
+und 0.0 f@"ur den Typ @code{flonum} zur@"uck.
+
+Beispiele:
+
+@c @code{listarray} and @code{arrayinfo} applied to a declared array.
+
+Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur ein
+deklariertes Array.
 
 @c ===beg===
 @c array (aa, 2, 3);
@@ -1978,7 +2082,11 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to an undeclared (hashed) array.
+@c @code{listarray} and @code{arrayinfo} applied to an undeclared (hashed) 
+@c array.
+
+Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur ein
+undeklariertes Array.
 
 @c ===beg===
 @c bb [FOO] : (a + b)^2;
@@ -2008,7 +2116,10 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to an array function.
+@c @code{listarray} and @code{arrayinfo} applied to an array function.
+
+Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur eine
+Array-Funktion.
 
 @c ===beg===
 @c cc [x, y] := y / x;
@@ -2048,7 +2159,10 @@ Examples:
 @end group
 @end example
 
-@code{listarray} and @code{arrayinfo} applied to a subscripted function.
+@c @code{listarray} and @code{arrayinfo} applied to a subscripted function.
+
+Anwendung der Funktionen @code{listarray} und @code{arryinfo} f@"ur ein
+indizierte Funktion.
 
 @c ===beg===
 @c dd [x] (y) := y ^ x;
@@ -2090,34 +2204,39 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c NEEDS CLARIFICATION
-
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{make_array}
-@deffn {Function} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffn {Funktion} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
 
-Creates and returns a Lisp array.  @var{type} may
-be @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} or 
-@code{functional}.
-There are @math{n} indices,
-and the @math{i}'th index runs from 0 to @math{@var{dim_i} - 1}.
+@c Creates and returns a Lisp array.  @var{type} may be @code{any}, 
+@c @code{flonum}, @code{fixnum}, @code{hashed} or @code{functional}. There are 
+@c @math{n} indices, and the @math{i}'th index runs from 0 to 
+@c @math{@var{dim_i} - 1}.
 
-The advantage of @code{make_array} over @code{array} is that the return value doesn't have a
-name, and once a pointer to it goes away, it will also go away.
-For example, if @code{y: make_array (...)} then @code{y} points to an object 
-which takes up space, but after @code{y: false}, @code{y} no longer
-points to that object, so the object can be garbage collected.  
+Erzeugt ein Lisp-Array. Das Argument @var{type} kann die Werte @code{any},
+@code{flonum}, @code{fixnum}, @code{hashed} oder @code{functional} haben.
+Das Array hat @math{i} Dimensionionen und der Index @math{i} l@"auft von 0 bis
+@math{@var{dim_i}-1}.
+
+@c The advantage of @code{make_array} over @code{array} is that the return value
+@c doesn't have a name, and once a pointer to it goes away, it will also go 
+@c away. For example, if @code{y: make_array (...)} then @code{y} points to an 
+@c object which takes up space, but after @code{y: false}, @code{y} no longer
+@c points to that object, so the object can be garbage collected.  
+
+@c TODO: ES FEHLT EINE UEBERSETZUNG, DIE WENIGER TECHNISCH SEIN SOLLTE.
 
 @c 'FUNCTIONAL ARGUMENT IN MAKE_ARRAY APPEARS TO BE BROKEN
-@c EVEN AFTER READING THE CODE (SRC/AR.LISP) I CAN'T TELL HOW THIS IS SUPPOSED TO WORK
-@c COMMENTING OUT THIS STUFF TO PREVENT CONFUSION AND HEARTBREAK
+@c EVEN AFTER READING THE CODE (SRC/AR.LISP) I CAN'T TELL HOW THIS IS SUPPOSED 
+@c TO WORK COMMENTING OUT THIS STUFF TO PREVENT CONFUSION AND HEARTBREAK
 @c RESTORE IT WHEN MAKE_ARRAY ('FUNCTIONAL, ...) IS FIXED
 @c @code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
 @c @code{make_array} in this case is the function to call to calculate array
 @c elements, and the rest of the arguments are passed recursively to
 @c @code{make_array} to generate the "memory" for the array function object.
 
-Examples:
+Beispiele:
+
 @c ===beg===
 @c A1 : make_array (fixnum, 10);
 @c A1 [8] : 1729;
@@ -2193,59 +2312,76 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
-
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{rearray}
-@deffn {Function} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+@deffn {Funktion} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
 
-Changes the dimensions of an array.  
-The new array will be filled with the elements of the old one in
-row-major order.  If the old array was too small, 
-the remaining elements are filled with
-@code{false}, @code{0.0} or @code{0},
-depending on the type of the array.  The type of the array cannot be
-changed.
+@c Changes the dimensions of an array. The new array will be filled with the
+@c elements of the old one in row-major order.  If the old array was too small,
+@c the remaining elements are filled with @code{false}, @code{0.0} or @code{0},
+@c depending on the type of the array.  The type of the array cannot be changed.
+
+@"Andert die Dimension eines Arrays. Das neue Array wird zeilenweise mit den 
+Werten des alten Arrays aufgef@"ullt. Hat das alte nicht gen@"ugend Elemente 
+werden die restlichen Elemente entsprechend dem Typ des Arrays mit @code{false}, 
+@code{0.0} oder @code{0} aufgef@"ullt. Der Typ des Arrays kann nicht ge@"andert 
+werden.
 
 @c @opencatbox
 @c @category{Arrays}
 @c @closecatbox
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{remarray}
-@deffn {Function} remarray (@var{A_1}, ..., @var{A_n})
-@deffnx {Function} remarray (all)
+@deffn  {Funktion} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {Funktion} remarray (all)
 
-Removes arrays and array associated
-functions and frees the storage occupied.
-The arguments may be declared arrays, undeclared (hashed) arrays, array functions, and subscripted functions.
+@c Removes arrays and array associated functions and frees the storage occupied.
+@c The arguments may be declared arrays, undeclared (hashed) arrays, array
+@c functions, and subscripted functions.
 
-@code{remarray (all)} removes all items in the global list @code{arrays}.
+Entfernt Arrays und Array-Funktionen. Der vom Array belegte Speicher wird
+freigegeben. Die Argumente k@"onnen deklarierte, undeklarierte, Array-Funktionen
+und indizierte Funktionen sein.
+
+@c @code{remarray (all)} removes all items in the global list @code{arrays}.
+
+@code{remarry(all)} entfernt alle Arrays, die in der Informationsliste
+@code{arrays} enthalten sind.
 
 @c WHAT DOES THIS MEAN EXACTLY ??
-It may be necessary to use this function if it is
-desired to redefine the values in a hashed array.
+@c It may be necessary to use this function if it is
+@c desired to redefine the values in a hashed array.
 
-@code{remarray} returns the list of arrays removed.
+@c TODO: KLARSTELLUNG UND UEBERSETZUNG
+
+@c @code{remarray} returns the list of arrays removed.
+
+@code{remarry} gibt eine Liste der Arrays zur@"uck, die entfernt wurden.
 
 @c @opencatbox
 @c @category{Arrays}
 @c @closecatbox
 @end deffn
 
-@c --- 12.11.2010 DK -----------------------------------------------------------
+@c --- 13.11.2010 DK -----------------------------------------------------------
 @anchor{subvar}
-@deffn {Function} subvar (@var{x}, @var{i})
+@deffn {Funktion} subvar (@var{x}, @var{i})
 
-Evaluates the subscripted expression @code{@var{x}[@var{i}]}.
+@c Evaluates the subscripted expression @code{@var{x}[@var{i}]}.
+@c @code{subvar} evaluates its arguments.
 
-@code{subvar} evaluates its arguments.
+Wertet den indizierten Ausdruck @code{@var{x}[@var{i}]} aus. @code{subvar}
+wertet seine Argumente aus.
 
-@code{arraymake (@var{x}, [@var{i}]} constructs the expression @code{@var{x}[@var{i}]},
-but does not evaluate it.
+@c @code{arraymake (@var{x}, [@var{i}]} constructs the expression 
+@c @code{@var{x}[@var{i}]}, but does not evaluate it.
 
-Examples:
+@code{arraymake (@var{x}, [@var{i}]} generiert den Ausdruck 
+@code{@var{x}[@var{i}]}, ohne diesen auszuwerten.
+
+Beispiele:
 
 @c ===beg===
 @c x : foo $
@@ -2286,6 +2422,7 @@ Examples:
 @end deffn
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{subvarp}
 @deffn {Funktion} subvarp (@var{expr})
 
 @c Returns @code{true} if @var{expr} is a subscripted variable, for example
@@ -2303,32 +2440,55 @@ Beispiel @code{a[i]} ist.
 
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{use_fast_arrays}
-@defvr {Option variable} use_fast_arrays
+@defvr {Optionsvariable} use_fast_arrays
 
-- if @code{true} then only two types of arrays are recognized.  
+@c - if @code{true} then only two types of arrays are recognized.
 
-1) The art-q array (t in Common Lisp) which may have several dimensions
-indexed by integers, and may hold any Lisp or Maxima object as an
-entry.  To construct such an array, enter @code{a:make_array(any,3,4);} 
-then @code{a} will have as value, an array with twelve slots, and the 
-indexing is zero based.
+Hat die Optionsvariable @code{use_fast_arrays} den Wert @code{true}, werden nur
+die folgenden zwei Typen von Arrays erkannt:
 
-2) The Hash_table array which is the default type of array created if one
-does @code{b[x+1]:y^2} (and @code{b} is not already an array, a list, or a
-matrix -- if it were one of these an error would be caused since
-@code{x+1} would not be a valid subscript for an art-q array, a list or
-a matrix). Its indices (also known as keys) may be any object.  
-It only takes one key at a time (@code{b[x+1,u]:y} would ignore the @code{u}). 
-Referencing is done by @code{b[x+1] ==> y^2}.  Of course the key may be
-a list, e.g. @code{b[[x+1,u]]:y} would be valid.  This is incompatible 
-with the old Maxima hash arrays, but saves consing.
+@enumerate
 
-An advantage of storing the arrays as values of the symbol is that the
-usual conventions about local variables of a function apply to arrays as
-well.  The Hash_table type also uses less consing and is more efficient
-than the old type of Maxima hashar.  To obtain consistent behaviour in
-translated and compiled code set @code{translate_fast_arrays} to be
-@code{true}.
+@c 1) The art-q array (t in Common Lisp) which may have several dimensions
+@c indexed by integers, and may hold any Lisp or Maxima object as an
+@c entry.  To construct such an array, enter @code{a:make_array(any,3,4);} 
+@c then @code{a} will have as value, an array with twelve slots, and the 
+@c indexing is zero based.
+
+@item
+Ein Array, das mehrere Dimensionen haben kann und ganzzahligen Indizes. Den
+Elementen kann jedes Lisp oder Maxima-Objekt zugewiesen werden. Zum Beispiel
+weist das Kommando @code{a:make_array(any,3,4)} der Variablen @var{a} ein
+Array zu, das 12 Elemente hat.
+
+@c 2) The Hash_table array which is the default type of array created if one
+@c does @code{b[x+1]:y^2} (and @code{b} is not already an array, a list, or a
+@c matrix -- if it were one of these an error would be caused since
+@c @code{x+1} would not be a valid subscript for an art-q array, a list or
+@c a matrix). Its indices (also known as keys) may be any object.  
+@c It only takes one key at a time (@code{b[x+1,u]:y} would ignore the @code{u}). 
+@c Referencing is done by @code{b[x+1] ==> y^2}.  Of course the key may be
+@c a list, e.g. @code{b[[x+1,u]]:y} would be valid.  This is incompatible 
+@c with the old Maxima hash arrays, but saves consing.
+
+@item
+Ein undeklariertes Array, welches standardm@"a@ss{}ig erzeugt wird, wenn zum 
+Beispiel einer indizierten Variablen @code{b[x+1]:y^2} ein Wert zugewiesen wird 
+und @code{b} nicht bereits ein deklariertes Array oder eine Liste ist. Ist 
+@var{b} bereits deklariert, wird eine Fehlermeldung ausgeben, da der Index 
+@var{x+1} keine ganze Zahl ist. Der Index eines undeklarierten Arrays kann ein 
+beliebiger Ausdruck sein.
+
+@end enumerate
+
+@c An advantage of storing the arrays as values of the symbol is that the
+@c usual conventions about local variables of a function apply to arrays as
+@c well.  The Hash_table type also uses less consing and is more efficient
+@c than the old type of Maxima hashar.  To obtain consistent behaviour in
+@c translated and compiled code set @code{translate_fast_arrays} to be 
+@c @code{true}.
+
+@c TODO: VEREINFACHE DIE TECHNISCHE BESCHREIBUNG.
 
 @c @opencatbox
 @c @category{Arrays} @category{Global flags}
