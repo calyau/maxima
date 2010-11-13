@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Help.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 15.10.2010
+@c File        : Help.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 15.10.2010
 @c 
 @c This file contains documentation for the following Maxima symbols:
 @c 
@@ -20,23 +20,6 @@
 * Dokumentation::               
 * Funktionen und Variablen der Hilfe::
 @end menu
-
-@c -----------------------------------------------------------------------------
-@c @node Garbage Collection, Documentation, Lisp and Maxima, Help
-@c @section Garbage Collection
-@c Symbolic computation tends to create a good deal
-@c of garbage, and effective handling of this can be crucial to successful
-@c completion of some programs.
-
-@c @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
-@c @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
-@c @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
-@c Under GCL, on UNIX systems where the mprotect system call is available
-@c (including SUN OS 4.0 and some variants of BSD) a stratified garbage collection
-@c is available.   This limits the collection to pages which have been recently
-@c written to.    See the GCL documentation under ALLOCATE and GBC.   At the
-@c Lisp level doing (setq si::*notify-gbc* t) will help you determine which
-@c areas might need more space.
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @node Dokumentation, Funktionen und Variablen der Hilfe, , Hilfe
