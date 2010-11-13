@@ -1106,7 +1106,7 @@ Examples:
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration, Analysis
+@node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration
 @subsection Einf@"uhrung in die Integration
 
 Maxima has several routines for handling integration.
@@ -2840,7 +2840,7 @@ representations in phase space, see the additional package
 
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Differentialgleichungen,  , Einf@"urhrung in Differentialgleichungen, Differentialgleichungen
+@node Funktionen und Variablen f@"ur Differentialgleichungen,  , Einf@"uhrung in Differentialgleichungen, Differentialgleichungen
 @subsection Funktionen und Variablen f@"ur Differentialgleichungen
 
 @c -----------------------------------------------------------------------------
