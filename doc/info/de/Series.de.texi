@@ -19,6 +19,53 @@
 @node Summen und Produkte, Einf@"uhrung in Reihen, Summen Produkte und Reihen
 @section Summen und Produkte
 
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{bashindices}
+@deffn {Funktion} bashindices (@var{expr})
+
+@c Transforms the expression @var{expr} by giving each summation and product a
+@c unique index. This gives @code{changevar} greater precision when it is 
+@c working with summations or products.  The form of the unique index is 
+@c @code{j@var{number}}. The quantity @var{number} is determined by referring to 
+@c @code{gensumnum}, which can be changed by the user. For example, 
+@c @code{gensumnum:0$} resets it.
+
+Transformiert einen Ausdruck @var{expr} der mehrere Summen oder Produkte
+enth@"alt so, dass alle Summen und Produkte einen unterschiedlichen Index haben.
+Dies erleichtert Substitutionen wie zum Beispiel mit @code{changevar}.
+Die neuen Indizes lauten @code{j@var{nummer}}. Die Zahl @var{nummer} ist der
+Wert der Optionsvariablen @code{gensumnum}. Siehe @mrefdot{gensumnum}
+
+Beispiel:
+
+@c ===beg===
+@c sum(1/k^2,k,0,inf)+sum(1/k,k,0,inf);
+@c bashindices(%);
+@c ===end===
+@example
+(%i1) sum(1/k^2,k,0,inf)+sum(1/k,k,0,inf);
+                       inf       inf
+                       ====      ====
+                       \     1   \     1
+(%o1)                   >    - +  >    --
+                       /     k   /      2
+                       ====      ====  k
+                       k = 0     k = 0
+(%i2) bashindices(%);
+                     inf         inf
+                     ====        ====
+                     \      1    \       1
+(%o2)                 >     -- +  >     ---
+                     /      j2   /        2
+                     ====        ====   j1
+                     j2 = 0      j1 = 0
+@end example
+
+@c @opencatbox
+@c @category{Sums and products}
+@c @closecatbox
+@end deffn
+
 @c --- 07.11.2010 DK -----------------------------------------------------------
 @anchor{cauchysum}
 @defvr {Optionsvariable} cauchysum
@@ -66,6 +113,41 @@ Beispiele:
                  ====   ====
                  i1 = 0 i2 = 0
 @end example
+
+@c @opencatbox
+@c @category{Sums and products}
+@c @closecatbox
+@end defvr
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{genindex}
+@defvr {Optionsvariable} genindex
+Standardwert: @code{i}
+
+@c @code{genindex} is the alphabetic prefix used to generate the next variable 
+@c of summation when necessary.
+
+@code{genindex} enth@"alt das Zeichen f@"ur den Pr@"afix, um einen neuen Index
+f@"ur eine Summe oder ein Produkt zu generieren.
+
+@c @opencatbox
+@c @category{Sums and products}
+@c @closecatbox
+@end defvr
+
+@c --- 12.11.2010 DK -----------------------------------------------------------
+@anchor{gensumnum}
+@defvr {Optionsvariable} gensumnum
+Standardwert: 0
+
+@c @code{gensumnum} is the numeric suffix used to generate the next variable
+@c of summation.  If it is set to @code{false} then the index will consist only
+@c of @code{genindex} with no numeric suffix.
+
+@code{gensumnum} enth@"alt die Nummer, die an den Pr@"afix angeh@"angt wird, um 
+den n@"achsten Index f@"ur eine Summe oder ein Produkt zu generieren. Hat 
+@code{gensumnum} den Wert @code{false}, wird der Index nur aus dem Zeichen
+@code{genindex} gebildet.
 
 @c @opencatbox
 @c @category{Sums and products}
@@ -327,6 +409,7 @@ Dependent equations eliminated:  (1)
                              n  4
 (%o3)                   ----------------
                         binomial(2 n, n)
+@group
 (%i4) unsum (prod (i^2, i, 1, n), n);
                     n - 1
                     /===\
@@ -334,6 +417,7 @@ Dependent equations eliminated:  (1)
 (%o4)              ( ! !  i ) (n - 1) (n + 1)
                      ! !
                     i = 1
+@end group
 (%i5) nusum (%, n, 1, n);
 
 Dependent equations eliminated:  (2 3)
@@ -606,6 +690,7 @@ Beispiele:
                    n + 1   2 n  + 3 n  + n
 (%o6)             2      + --------------- - 1
                                   6
+@group
 (%i7) sum (1/3^i, i, 1, inf);
                             inf
                             ====
@@ -614,6 +699,7 @@ Beispiele:
                             /      i
                             ====  3
                             i = 1
+@end group
 (%i8) sum (1/3^i, i, 1, inf), simpsum;
                                 1
 (%o8)                           -
