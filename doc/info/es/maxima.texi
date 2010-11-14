@@ -145,6 +145,7 @@ Paquetes adicionales
 
 * augmented_lagrangian::        Paquete augmented_lagrangian.
 * bode::                        Gr@'aficos de Bode.
+* cobyla::                      Optimizaci@'on no lineal con restricciones en desigualdades.
 * contrib_ode::                 Procedimientos adicionales para EDOs.
 * descriptive::                 Estad@'{@dotless{i}}stica descriptiva.
 * diag::                        Matrices de Jordan.
@@ -414,6 +415,12 @@ augmented_lagrangian
 bode
 
 * Funciones y variables para bode::
+
+cobyla
+
+* Introducci@'on a cobyla::
+* Funciones y variables para cobyla::
+* Ejemplos para cobyla::
 
 contrib_ode
 
@@ -763,11 +770,15 @@ zeilberger
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
-@node bode, contrib_ode, augmented_lagrangian, Top
+@node bode, cobyla, augmented_lagrangian, Top
 @chapter bode
 @include bode.texi
 
-@node contrib_ode, descriptive, bode, Top
+@node cobyla, contrib_ode, bode, Top
+@chapter cobyla
+@include cobyla.texi
+
+@node contrib_ode, descriptive, cobyla, Top
 @chapter contrib_ode
 @include contrib_ode.texi
 
