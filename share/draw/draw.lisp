@@ -3877,7 +3877,7 @@
         (otherwise ; default screen output
           (cond
             (*windows-OS*  ; running on windows operating system
-              (format cmdstorage "set terminal windows ~a~%"
+              (format cmdstorage "set terminal windows enhanced ~a~%"
                           (write-font-type)))
             (t  ; other platforms
               (format cmdstorage "set terminal x11 enhanced ~a ~a~%"
