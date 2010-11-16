@@ -3818,7 +3818,7 @@
     ; when one multiplot window is active, change of terminal is not allowed
     (if (not *multiplot-is-active*)
     (case (gethash '$terminal *gr-options*)
-        ($png (format cmdstorage "set terminal png truecolor ~a size ~a, ~a ~a~%set out '~a.png'"
+        ($png (format cmdstorage "set terminal png enhanced truecolor ~a size ~a, ~a ~a~%set out '~a.png'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
@@ -3844,13 +3844,13 @@
                            (get-option '$pdf_width)
                            (get-option '$pdf_height)
                            (get-option '$file_name)))
-        ($jpg (format cmdstorage "set terminal jpeg ~a size ~a, ~a ~a~%set out '~a.jpg'"
+        ($jpg (format cmdstorage "set terminal jpeg enhanced ~a size ~a, ~a ~a~%set out '~a.jpg'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_bgcolor)
                            (get-option '$file_name)))
-        ($gif (format cmdstorage "set terminal gif ~a size ~a, ~a ~a~%set out '~a.gif'"
+        ($gif (format cmdstorage "set terminal gif enhanced ~a size ~a, ~a ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
@@ -3861,17 +3861,17 @@
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$file_name)))
-        ($animated_gif (format cmdstorage "set terminal gif animate ~a size ~a, ~a delay ~a ~a~%set out '~a.gif'"
+        ($animated_gif (format cmdstorage "set terminal gif enhanced animate ~a size ~a, ~a delay ~a ~a~%set out '~a.gif'"
                            (write-font-type)
                            (get-option '$pic_width)
                            (get-option '$pic_height)
                            (get-option '$delay)
                            (get-option '$file_bgcolor)
                            (get-option '$file_name)))
-        ($aquaterm (format cmdstorage "set terminal aqua ~a ~a~%"
+        ($aquaterm (format cmdstorage "set terminal aqua enhanced ~a ~a~%"
                            *draw-terminal-number*
                            (write-font-type)))
-        ($wxt (format cmdstorage "set terminal wxt ~a ~a~%"
+        ($wxt (format cmdstorage "set terminal wxt enhanced ~a ~a~%"
                            *draw-terminal-number*
                            (write-font-type)))
         (otherwise ; default screen output
@@ -3880,7 +3880,7 @@
               (format cmdstorage "set terminal windows ~a~%"
                           (write-font-type)))
             (t  ; other platforms
-              (format cmdstorage "set terminal x11 ~a ~a~%"
+              (format cmdstorage "set terminal x11 enhanced ~a ~a~%"
                            *draw-terminal-number*
                            (write-font-type))))) ))
 
