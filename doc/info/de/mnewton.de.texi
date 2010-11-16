@@ -1,0 +1,88 @@
+@c -----------------------------------------------------------------------------
+@c File     : mnewton.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 08.11.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to mnewton::
+* Functions and Variables for mnewton::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to mnewton, Functions and Variables for mnewton, mnewton, mnewton
+@section Introduction to mnewton
+
+@code{mnewton} is an implementation of Newton's method for solving nonlinear 
+equations in one or more variables.
+
+@c @opencatbox
+@c @category{Numerical methods} @category{Share packages} @category{Package mnewton}
+@c @closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for mnewton,  , Introduction to mnewton, mnewton
+@section Functions and Variables for mnewton
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} newtonepsilon
+Default value: @code{10.0^(-fpprec/2)}
+
+Precision to determine when the @code{mnewton} function has converged towards 
+the solution. See also @code{mnewton}.
+
+@c @opencatbox
+@c @category{Package mnewton}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} newtonmaxiter
+Default value: @code{50}
+
+Maximum number of iterations to stop the @code{mnewton} function if it does not
+converge or if it converges too slowly. See also @code{mnewton}.
+
+@c @opencatbox
+@c @category{Package mnewton}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+
+Multiple nonlinear functions solution using the Newton method. @var{FuncList} 
+is the list of functions to solve, @var{VarList} is the list of variable names, 
+and @var{GuessList} is the list of initial approximations.
+
+The solution is returned in the same format that @code{solve()} returns.
+If the solution isn't found, @code{[]} is returned.
+
+This function is controlled by global variables @code{newtonepsilon} and 
+@code{newtonmaxiter}.
+
+@example
+(%i1) load("mnewton")$
+
+(%i2) mnewton([x1+3*log(x1)-x2^2, 2*x1^2-x1*x2-5*x1+1],
+              [x1, x2], [5, 5]);
+(%o2) [[x1 = 3.756834008012769, x2 = 2.779849592817897]]
+(%i3) mnewton([2*a^a-5],[a],[1]);
+(%o3)             [[a = 1.70927556786144]]
+(%i4) mnewton([2*3^u-v/u-5, u+2^v-4], [u, v], [2, 2]);
+(%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
+@end example
+
+To use this function write first @code{load("mnewton")}. See also 
+@code{newtonepsilon} and @code{newtonmaxiter}.
+
+@c @opencatbox
+@c @category{Package mnewton}
+@c @closecatbox
+@end deffn
+
+@c --- End of file mnewton.de.texi ---------------------------------------------
+

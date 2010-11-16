@@ -1,0 +1,266 @@
+@c -----------------------------------------------------------------------------
+@c File     : lapack.de.texi
+@c License  : GNU General Public License (GPL)
+@c Language : German
+@c Date     : 08.11.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
+
+@menu
+* Introduction to lapack::
+* Functions and Variables for lapack::
+@end menu
+
+@c -----------------------------------------------------------------------------
+@node Introduction to lapack, Functions and Variables for lapack, lapack, lapack
+@section Introduction to lapack
+
+@code{lapack} is a Common Lisp translation (via the program @code{f2c}) of the 
+Fortran library LAPACK, as obtained from the SLATEC project.
+
+@c @opencatbox
+@c @category{Numerical methods} @category{Share packages} @category{Package lapack}
+@c @closecatbox
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for lapack, , Introduction to lapack, lapack
+@section Functions and Variables for lapack
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} dgeev (@var{A})
+@deffnx {Function} dgeev (@var{A}, @var{right_p}, @var{left_p})
+
+Computes the eigenvalues and, optionally, the eigenvectors of a matrix @var{A}.
+All elements of @var{A} must be integer or floating point numbers.
+@var{A} must be square (same number of rows and columns).
+@var{A} might or might not be symmetric.
+
+@code{dgeev(@var{A})} computes only the eigenvalues of @var{A}.
+@code{dgeev(@var{A}, @var{right_p}, @var{left_p})} computes the eigenvalues of @var{A}
+and the right eigenvectors when @math{@var{right_p} = @code{true}}
+and the left eigenvectors when @math{@var{left_p} = @code{true}}.
+
+A list of three items is returned.
+The first item is a list of the eigenvalues.
+The second item is @code{false} or the matrix of right eigenvectors.
+The third item is @code{false} or the matrix of left eigenvectors.
+
+The right eigenvector @math{v(j)} (the @math{j}-th column of the right eigenvector matrix) satisfies
+
+@math{A . v(j) = lambda(j) . v(j)}
+
+where @math{lambda(j)} is the corresponding eigenvalue.
+The left eigenvector @math{u(j)} (the @math{j}-th column of the left eigenvector matrix) satisfies
+
+@math{u(j)**H . A = lambda(j) . u(j)**H}
+
+where @math{u(j)**H} denotes the conjugate transpose of @math{u(j)}.
+The Maxima function @code{ctranspose} computes the conjugate transpose.
+
+The computed eigenvectors are normalized to have Euclidean norm
+equal to 1, and largest component has imaginary part equal to zero.
+
+Example:
+
+@c ===beg===
+@c load (lapack)$
+@c fpprintprec : 6;
+@c M : matrix ([9.5, 1.75], [3.25, 10.45]);
+@c dgeev (M);
+@c [L, v, u] : dgeev (M, true, true);
+@c D : apply (diag_matrix, L);
+@c M . v - v . D;
+@c transpose (u) . M - D . transpose (u);
+@c ===end===
+@example
+(%i1) load (lapack)$
+(%i2) fpprintprec : 6;
+(%o2)                           6
+(%i3) M : matrix ([9.5, 1.75], [3.25, 10.45]);
+                         [ 9.5   1.75  ]
+(%o3)                    [             ]
+                         [ 3.25  10.45 ]
+(%i4) dgeev (M);
+(%o4)          [[7.54331, 12.4067], false, false]
+(%i5) [L, v, u] : dgeev (M, true, true);
+                           [ - .666642  - .515792 ]
+(%o5) [[7.54331, 12.4067], [                      ], 
+                           [  .745378   - .856714 ]
+                                        [ - .856714  - .745378 ]
+                                        [                      ]]
+                                        [  .515792   - .666642 ]
+(%i6) D : apply (diag_matrix, L);
+                      [ 7.54331     0    ]
+(%o6)                 [                  ]
+                      [    0     12.4067 ]
+(%i7) M . v - v . D;
+                [      0.0       - 8.88178E-16 ]
+(%o7)           [                              ]
+                [ - 8.88178E-16       0.0      ]
+(%i8) transpose (u) . M - D . transpose (u);
+                     [ 0.0  - 4.44089E-16 ]
+(%o8)                [                    ]
+                     [ 0.0       0.0      ]
+@end example
+
+@c @opencatbox
+@c @category{Package lapack}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} dgesvd (@var{A})
+@deffnx {Function} dgesvd (@var{A}, @var{left_p}, @var{right_p})
+
+Computes the singular value decomposition (SVD) of a matrix @var{A},
+comprising the singular values and, optionally, the left and right singular 
+vectors. All elements of @var{A} must be integer or floating point numbers.
+@var{A} might or might not be square (same number of rows and columns).
+
+Let @math{m} be the number of rows, and @math{n} the number of columns of 
+@var{A}. The singular value decomposition of @var{A} comprises three matrices,
+@var{U}, @var{Sigma}, and @var{V^T}, such that
+
+@c this code breaks texi2pdf: @math{@var{A} = @var{U} . @var{Sigma} . @var{V^T}}
+@math{@var{A} = @var{U} . @var{Sigma} . @var{V}^T}
+
+where @var{U} is an @math{m}-by-@math{m} unitary matrix,
+@var{Sigma} is an @math{m}-by-@math{n} diagonal matrix,
+and @var{V^T} is an @math{n}-by-@math{n} unitary matrix.
+
+Let @math{sigma[i]} be a diagonal element of @math{Sigma},
+that is, @math{@var{Sigma}[i, i] = @var{sigma}[i]}.
+The elements @math{sigma[i]} are the so-called singular values of @var{A};
+these are real and nonnegative, and returned in descending order.
+The first @math{min(m, n)} columns of @var{U} and @var{V} are
+the left and right singular vectors of @var{A}.
+Note that @code{dgesvd} returns the transpose of @var{V}, not @var{V} itself.
+
+@code{dgesvd(@var{A})} computes only the singular values of @var{A}.
+@code{dgesvd(@var{A}, @var{left_p}, @var{right_p})} computes the singular values
+of @var{A} and the left singular vectors when @math{@var{left_p} = @code{true}}
+and the right singular vectors when @math{@var{right_p} = @code{true}}.
+
+A list of three items is returned.
+The first item is a list of the singular values.
+The second item is @code{false} or the matrix of left singular vectors.
+The third item is @code{false} or the matrix of right singular vectors.
+
+Example:
+
+@c ===beg===
+@c load (lapack)$
+@c fpprintprec : 6;
+@c M: matrix([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
+@c dgesvd (M);
+@c [sigma, U, VT] : dgesvd (M, true, true);
+@c m : length (U);
+@c n : length (VT);
+@c Sigma:
+@c   genmatrix(lambda ([i, j], if i=j then sigma[i] else 0),
+@c             m, n);
+@c U . Sigma . VT - M;
+@c transpose (U) . U;
+@c VT . transpose (VT);
+@c ===end===
+@example
+(%i1) load (lapack)$
+(%i2) fpprintprec : 6;
+(%o2)                           6
+(%i3) M: matrix([1, 2, 3], [3.5, 0.5, 8], [-1, 2, -3], [4, 9, 7]);
+                        [  1    2    3  ]
+                        [               ]
+                        [ 3.5  0.5   8  ]
+(%o3)                   [               ]
+                        [ - 1   2   - 3 ]
+                        [               ]
+                        [  4    9    7  ]
+(%i4) dgesvd (M);
+(%o4)      [[14.4744, 6.38637, .452547], false, false]
+(%i5) [sigma, U, VT] : dgesvd (M, true, true);
+(%o5) [[14.4744, 6.38637, .452547], 
+[ - .256731  .00816168   .959029    - .119523 ]
+[                                             ]
+[ - .526456   .672116   - .206236   - .478091 ]
+[                                             ], 
+[  .107997   - .532278  - .0708315  - 0.83666 ]
+[                                             ]
+[ - .803287  - .514659  - .180867    .239046  ]
+[ - .374486  - .538209  - .755044 ]
+[                                 ]
+[  .130623   - .836799   0.5317   ]]
+[                                 ]
+[ - .917986   .100488    .383672  ]
+(%i6) m : length (U);
+(%o6)                           4
+(%i7) n : length (VT);
+(%o7)                           3
+(%i8) Sigma:
+        genmatrix(lambda ([i, j], if i=j then sigma[i] else 0),
+                  m, n);
+                  [ 14.4744     0        0    ]
+                  [                           ]
+                  [    0     6.38637     0    ]
+(%o8)             [                           ]
+                  [    0        0     .452547 ]
+                  [                           ]
+                  [    0        0        0    ]
+(%i9) U . Sigma . VT - M;
+          [  1.11022E-15        0.0       1.77636E-15 ]
+          [                                           ]
+          [  1.33227E-15    1.66533E-15       0.0     ]
+(%o9)     [                                           ]
+          [ - 4.44089E-16  - 8.88178E-16  4.44089E-16 ]
+          [                                           ]
+          [  8.88178E-16    1.77636E-15   8.88178E-16 ]
+(%i10) transpose (U) . U;
+       [     1.0      5.55112E-17    2.498E-16     2.77556E-17  ]
+       [                                                        ]
+       [ 5.55112E-17      1.0       5.55112E-17    4.16334E-17  ]
+(%o10) [                                                        ]
+       [  2.498E-16   5.55112E-17       1.0       - 2.08167E-16 ]
+       [                                                        ]
+       [ 2.77556E-17  4.16334E-17  - 2.08167E-16       1.0      ]
+(%i11) VT . transpose (VT);
+          [      1.0           0.0      - 5.55112E-17 ]
+          [                                           ]
+(%o11)    [      0.0           1.0       5.55112E-17  ]
+          [                                           ]
+          [ - 5.55112E-17  5.55112E-17       1.0      ]
+@end example
+
+@c @opencatbox
+@c @category{Package lapack}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn  {Function} dlange (@var{norm}, @var{A})
+@deffnx {Function} zlange (@var{norm}, @var{A})
+
+Computes a norm or norm-like function of the matrix @var{A}.
+
+@table @code
+@item max
+Compute @math{max(abs(A(i, j)))} where @math{i} and @math{j} range over
+the rows and columns, respectively, of @var{A}.
+Note that this function is not a proper matrix norm.
+@item one_norm
+Compute the @math{L[1]} norm of @var{A},
+that is, the maximum of the sum of the absolute value of elements in each column.
+@item inf_norm
+Compute the @math{L[inf]} norm of @var{A},
+that is, the maximum of the sum of the absolute value of elements in each row.
+@item frobenius
+Compute the Frobenius norm of @var{A},
+that is, the square root of the sum of squares of the matrix elements.
+@end table
+
+@c @opencatbox
+@c @category{Package lapack}
+@c @closecatbox
+@end deffn
+
+@c --- End of file lapack.de.texi ----------------------------------------------
+
