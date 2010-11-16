@@ -1978,8 +1978,11 @@ Several functions depending on the two variables v1 and v2:
   (when (or (null (getf features :box)) (first (getf features :box)))
     (if (and (getf features :xvar) (getf features :yvar) (null tem))
 	(progn
-	  (setf (getf features :xlabel) (ensure-string (getf features :xvar)))
-	  (setf (getf features :ylabel) (ensure-string (getf features :yvar))))
+	  ;; Don't set xlabel (ylabel) if the user specified one.
+	  (unless (getf features :xlabel)
+	    (setf (getf features :xlabel) (ensure-string (getf features :xvar))))
+	  (unless (getf features :ylabel)
+	    (setf (getf features :ylabel) (ensure-string (getf features :yvar)))))
 	(progn
 	  (setf (getf features :xlabel) "x")
 	  (setf (getf features :ylabel) "y")))
