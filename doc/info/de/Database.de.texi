@@ -934,7 +934,7 @@ nicht-kommutativen Rechenoperationen.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Fakten, Aussagefunktionen, Funktionen und Variablen f@"ur Eigenschaften
+@node Funktionen und Variablen f@"ur Fakten, Aussagefunktionen, Funktionen und Variablen f@"ur Eigenschaften, Maximas Datenbank
 @section Funktionen und Variablen f@"ur Fakten
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
@@ -1816,8 +1816,8 @@ Wird @var{context} nicht spezifiziert, wird der aktuelle Kontext zum Subkontext.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Aussagefunktionen, , Funktionen und Variablen f@"ur Fakten
-@section Aussagefunktionen
+@node Funktionen und Variablen f@"ur Aussagen, , Funktionen und Variablen f@"ur Fakten, Maximas Datenbank
+@section Funktionen und Variablen f@"ur Aussagen
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
 @anchor{charfun}

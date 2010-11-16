@@ -195,6 +195,7 @@ Weitere Funktionen und Variablen:
 @end verbatim
 
 @c --- 13.10.2010 DK -----------------------------------------------------------
+@anchor{verb}
 @node Substantive und Verben, Bezeichner, Einf@"uhrung in Ausdr@"ucke, Ausdr@"ucke
 @section Substantive und Verben
 
