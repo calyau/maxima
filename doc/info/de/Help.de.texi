@@ -114,7 +114,7 @@ Pause und wartet auf eine Eingabe.
 @code{demo} sucht in den Ordnern, die in der Optionsvariablen 
 @code{file_search_demo} enthalten sind, nach der Datei @var{filename}. Die
 Dateiendung @var{.dem} mu@ss{} nicht angegeben werden. Siehe auch die Funktion
-@code{file_search} und die Optionsvariable @code{file_search_demo}.
+@mref{file_search} und die Optionsvariable @mrefdot{file_search_demo}
 
 @c @code{demo} evaluates its argument.
 @c @code{demo} returns the name of the demonstration file.
@@ -223,31 +223,32 @@ abgek@"urzt werden.
 (%i1) ?? integrat
  0: Functions and Variables for Integration
  1: Introduction to Integration
- 2: integrate  (Functions and Variables for Integration)
- 3: integrate_use_rootsof  (Functions and Variables for Integration)
- 4: integration_constant  (Functions and Variables for Integration)
- 5: integration_constant_counter  (Functions and Variables for Integration)
+ 2: integrate (Functions and Variables for Integration)
+ 3: integrate_use_rootsof (Functions and Variables for Integration)
+ 4: integration_constant (Functions and Variables for Integration)
+ 5: integration_constant_counter (Functions and Variables for 
+    Integration)
 Enter space-separated numbers, `all' or `none': 2 3
 
  -- Function: integrate (<expr>, <x>)
  -- Function: integrate (<expr>, <x>, <a>, <b>)
      Attempts to symbolically compute the integral of <expr> with
      respect to <x>.  `integrate (<expr>, <x>)' is an indefinite
-     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a definite
-     integral, with limits of integration <a> and <b>.  The limits
-     should not contain <x>, although `integrate' does not enforce this
-     restriction.  <a> need not be less than <b>.  If <b> is equal to
-     <a>, `integrate' returns zero. 
+     integral, while `integrate (<expr>, <x>, <a>, <b>)' is a 
+     definite integral, with limits of integration <a> and <b>.  
+     The limits should not contain <x>, although `integrate' does 
+     not enforce this restriction.  <a> need not be less than <b>.  
+     If <b> is equal to <a>, `integrate' returns zero. 
 
      [...]
 
  -- Option variable: integrate_use_rootsof
      Default value: `false'
 
-     When `integrate_use_rootsof' is `true' and the denominator of a
-     rational function cannot be factored, `integrate' returns the
-     integral in a form which is a sum over the roots (not yet known)
-     of the denominator. 
+     When `integrate_use_rootsof' is `true' and the denominator of
+     a rational function cannot be factored, `integrate' returns
+     the integral in a form which is a sum over the roots (not yet 
+     known) of the denominator. 
 
      [...]
 @end example
@@ -282,7 +283,7 @@ vorhanden sind.
 @c The name of the file containing the examples is given by the global option 
 @c variable @code{manual_demo}, which defaults to @code{"manual.demo"}.
 
-Die Optionsvariable @code{manual_demo} enth@"alt den Namen der Datei, die die 
+Die Optionsvariable @mref{manual_demo} enth@"alt den Namen der Datei, die die 
 Beispiele enth@"alt. Der Standardwert ist @code{"manual.demo"}.
 
 @c @code{example} quotes its argument. @code{example} returns @code{done} unless
@@ -316,8 +317,8 @@ Beispiele:
 (%i6) a+2+1
 (%o6)                                a + 3
 (%o6)                                done
-(%i7) example("allROOTS");
 @group
+(%i7) example("allROOTS");
 (%i8) (1+2*x)^3 = 13.5*(1+x^5)
                                    3          5
 (%o8)                     (2 x + 1)  = 13.5 (x  + 1)
@@ -343,7 +344,7 @@ Standardwert: @code{"manual.demo"}
 @c the function @code{example}. See @code{example}.
 
 Die Optionsvariable @code{manual_demo} enth@"alt den Namen der Datei, die die 
-Beispiele f@"ur die Funktion @code{example} enth@"alt. Siehe @code{example}.
+Beispiele f@"ur die Funktion @code{example} enth@"alt. Siehe @mrefdot{example}
 
 @c @opencatbox
 @c @category{Hilfe} @category{Optionsvariablen}

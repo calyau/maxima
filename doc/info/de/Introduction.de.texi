@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Introduction.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 15.10.2010
+@c File        : Introduction.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 15.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -60,7 +60,8 @@ Suche) sind abk@"urzende Schreibweisen f@"ur @code{describe}:
  2: integrate (Functions and Variables for Integration)
  3: integrate_use_rootsof (Functions and Variables for Integration)
  4: integration_constant (Functions and Variables for Integration)
- 5: integration_constant_counter (Functions and Variables for Integration)
+ 5: integration_constant_counter (Functions and Variables for 
+    Integration)
 Enter space-separated numbers, `all' or `none': 4
 
  -- System variable: integration_constant

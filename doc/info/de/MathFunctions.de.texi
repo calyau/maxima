@@ -678,6 +678,84 @@ allgemeiner definiert ist. Siehe @code{double_factorial}.
 @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
+@deffn {Function} bern (@var{n})
+Returns the @var{n}'th Bernoulli number for integer @var{n}.
+@c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
+@c OR JUST PRETEND IT'S "RETURNED" ???
+Bernoulli numbers equal to zero are suppressed if @code{zerobern} is @code{false}.
+
+See also @code{burn}.
+
+@example
+(%i1) zerobern: true$
+(%i2) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+                  1  1       1      1        1
+(%o2)       [1, - -, -, 0, - --, 0, --, 0, - --]
+                  2  6       30     42       30
+(%i3) zerobern: false$
+(%i4) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+            1  1    1   5     691   7    3617  43867
+(%o4) [1, - -, -, - --, --, - ----, -, - ----, -----]
+            2  6    30  66    2730  6    510    798
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} bernpoly (@var{x}, @var{n})
+Returns the @var{n}'th Bernoulli polynomial in the
+variable @var{x}.
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} bfzeta (@var{s}, @var{n})
+Returns the Riemann zeta function for the argument @var{s}.
+The return value is a big float (bfloat);
+@var{n} is the number of digits in the return value.
+
+@c @opencatbox
+@c @category{Number theory} @category{Numerical evaluation}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} bfhzeta (@var{s}, @var{h}, @var{n})
+Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
+The return value is a big float (bfloat);
+@var{n} is the number of digits in the return value.
+
+The Hurwitz zeta function is defined as
+
+@tex
+$$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
+@end tex
+@ifnottex
+@example
+                        inf
+                        ====
+                        \        1
+         zeta (s,h)  =   >    --------
+                        /            s
+                        ====  (k + h)
+                        k = 0
+@end example
+@end ifnottex
+
+@code{load ("bffac")} loads this function.
+
+@c @opencatbox
+@c @category{Number theory} @category{Numerical evaluation}
+@c @closecatbox
+@end deffn
+
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @anchor{binomial}
 @deffn {Funktion} binomial (@var{x}, @var{y})
@@ -716,6 +794,49 @@ Beispiele:
                                5040
 (%i5) binomial (11, y);
 (%o5)                    binomial(11, y)
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} burn (@var{n})
+Returns the @var{n}'th Bernoulli number for integer @var{n}.
+@code{burn} may be more efficient than @code{bern} for large, isolated @var{n}
+(perhaps @var{n} greater than 105 or so), @c CLAIM MADE IN bffac.usg !!!
+as @code{bern} computes all the Bernoulli numbers up to index @var{n} before returning.
+
+@c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
+@c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
+@c (BERN(402) takes about 645 secs vs 13.5 secs for BURN(402).
+@c The time to compute @code{bern} is approximately exponential,
+@c while the time to compute @code{burn} is approximately cubic.
+@c But if next you do BERN(404), it only takes 12 secs,
+@c since BERN remembers all in an array, whereas BURN(404) will take
+@c maybe 14 secs or maybe 25, depending on whether Maxima needs to
+@c BFLOAT a better value of %PI.)
+
+@code{burn} exploits the observation that (rational) Bernoulli numbers can be
+approximated by (transcendental) zetas with tolerable efficiency.
+
+@code{load ("bffac")} loads this function.
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} euler (@var{n})
+Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
+
+For the Euler-Mascheroni constant, see @code{%gamma}.
+
+@example
+(%i1) map (euler, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
 @end example
 
 @c @opencatbox
@@ -983,6 +1104,66 @@ Ausdr@"ucken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist. Siehe
 @c @category{Gamma and factorial functions}
 @c @closecatbox
 @end defvr
+
+@c --- 20.10.2010 DK -----------------------------------------------------------
+@deffn {Function} fib (@var{n})
+Returns the @var{n}'th Fibonacci number.
+@code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
+and
+@code{fib (-@var{n})} equal to @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+
+After calling @code{fib},
+@code{prevfib} is equal to @code{fib (@var{x} - 1)},
+the Fibonacci number preceding the last one computed.
+
+@example
+(%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} fibtophi (@var{expr})
+Expresses Fibonacci numbers in @var{expr} in terms of the constant @code{%phi},
+which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
+
+Examples:
+
+@c ===beg===
+@c fibtophi (fib (n));
+@c fib (n-1) + fib (n) - fib (n+1);
+@c fibtophi (%);
+@c ratsimp (%);
+@c ===end===
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) fibtophi (%);
+            n + 1             n + 1       n             n
+        %phi      - (1 - %phi)        %phi  - (1 - %phi)
+(%o3) - --------------------------- + -------------------
+                2 %phi - 1                2 %phi - 1
+                                          n - 1             n - 1
+                                      %phi      - (1 - %phi)
+                                    + ---------------------------
+                                              2 %phi - 1
+(%i4) ratsimp (%);
+(%o4)                           0
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @anchor{genfact}

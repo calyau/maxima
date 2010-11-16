@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Bugs.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 15.10.2010
+@c File        : Bugs.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 15.10.2010
 @c 
 @c This file contains documentation for the following Maxima symbols:
 @c 
@@ -26,10 +26,8 @@
 
 Maxima wird st@"andig weiterentwickelt. Der Funktionsumfang wird erweitert und 
 Fehler, die bei einem Programm dieser Komplexit@"at kaum zu vermeiden sind, 
-werden korrigiert. Vermutet der Nutzer einen Fehler, kann dieser berichtet 
-werden. Werden ausreichend Informationen mitgeteilt, k@"onnen die Entwickler 
-Maxima weiter verbessern.
-
+werden korrigiert. Fehler k@"onnen berichtet werden. Werden ausreichend
+Informationen mitgeteilt, k@"onnen die Entwickler Maxima weiter verbessern.
 Ein aktueller Link zur Website zum Berichten von Fehlern sowie die notwendigen 
 Informationen @"uber die Maxima-Installation werden mit dem Befehl 
 @code{bug_report()} angezeigt. Um die Installation auf dem Rechner zu testen, 
@@ -51,52 +49,45 @@ die Maxima-Kommandos f@"ur das Berichten von Fehlern:
 @c Run the Maxima test suite. Tests producing the desired answer are
 @c considered ``passes,'' as are tests that do not produce the desired
 @c answer, but are marked as known bugs.
+@c @code{run_testsuite} takes the following optional keyword arguments
 
 Das Kommando @code{run_testsuite} f@"uhrt die Maxima-Testsuite aus. Erfolgreiche 
 Tests und Tests, die zwar nicht erfolgreich, aber als ein bekannter Fehler 
-gekennzeichnet sind, geben die Meldung "passed".
-
-@c @code{run_testsuite} takes the following optional keyword arguments
-
-@code{run_testsuite} akzeptiert die folgenden optionalen Schl@"usselworte als 
-Argumente:
-
-@table @var
-@item display_all
+gekennzeichnet sind, geben die Meldung "passed". @code{run_testsuite} akzeptiert
+die folgenden optionalen Schl@"usselworte als Argumente:
 
 @c Display all tests.  Normally, the tests are not displayed, unless the test 
 @c fails. (Defaults to @code{false}).
 
+@table @code
+@item display_all
 Erh@"alt das Schl@"usselwort @code{display_all} den Wert @code{true}, werden 
 alle Tests angezeigt. Der Standardwert ist @code{false}. In diesem Fall werden 
 nur die Tests angezeigt, die fehlschlagen.
 
-@item display_known_bugs
-
 @c Displays tests that are marked as known bugs.  (Default is @code{false}).
 
+@item display_known_bugs
 Erh@"alt das Schl@"usselwort @code{display_known_bugs} den Wert @code{true}, 
 werden alle Tests angezeigt, die als fehlerhaft gekennzeichnet sind. Der 
 Standardwert ist @code{false}.
-
-@item tests
 
 @c This is a list of tests that should be run.  Each test can be
 @c specified by either a string or a symbol.  By default, all tests are
 @c run.  The complete set of tests is specified by @code{testsuite_files}.
 
+@item tests
 Das Schl@"usselwort @code{tests} erh@"alt eine Liste mit den Testdateien, die 
 ausgef@"uhrt werden sollen. Eine Testdatei kann durch eine Zeichenkette oder ein 
 Symbol angegeben werden. Der Standard ist, dass alle Testdateien ausgef@"uhrt
 werden, die in der Optionsvariablen @mref{testsuite_files} enthalten sind.
-
-@item time
 
 @c Display time information.  If @code{true}, the time taken for each
 @c test file is displayed.  If @code{all}, the time for each individual
 @c test is shown if @code{display_all} is @code{true}.  The default is
 @c @code{false}, so no timing information is shown.
 
+@item time
 Hat das Schl@"usselwort @code{time} den Wert @code{true}, werden die Laufzeiten 
 der einzelnen Testdateien angezeigt. Hat @code{time} den Wert @code{all} und
 @code{display_all} den Wert @code{true}, wird die Laufzeit jedes einzelnen 
@@ -106,14 +97,12 @@ Tests angezeigt. Der Standardwert ist @code{false}.
 @c For example @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
 @c runs just test @code{rtest5} and displays the test that are marked as
 @c known bugs.
-
-Zum Beispiel f@"uhrt @code{run_testsuite(display_known_bugs = true, tests = 
-[rtest5])} die Testdatei @code{rtest5} aus und zeigt die Tests an, die als 
-fehlerhaft gekennzeichnet sind.
-
 @c @code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])} will
 @c run tests @code{rtest1} and @code{rtest2}, and displays each test.
 
+Zum Beispiel f@"uhrt @code{run_testsuite(display_known_bugs = true, tests = 
+[rtest5])} die Testdatei @code{rtest5} aus und zeigt die Tests an, die als 
+fehlerhaft gekennzeichnet sind. 
 @code{run_testsuite(display_all = true, tests = ["rtest1", rtest2])} f@"uhrt die 
 Testdateien @code{rtest1} und @code{rtest2} aus und zeigt jeden einzelnen Test 
 an.
@@ -181,33 +170,28 @@ und 63 der Testdatei "rtest14" fehlschlagen werden.
 @c The version information is the same as reported by @code{build_info}.
 @c When a bug is reported, it is helpful to copy the Maxima
 @c and Lisp version information into the bug report.
+@c @code{bug_report} returns an empty string @code{""}.
 
 Zeigt die Maxima- und Lisp-Version sowie einen Link zur Maxima-Projekt 
 Webseite. Die Informationen zur Version werden auch von @mref{build_info}@
 angezeigt. Wenn ein Programmfehler berichtet wird, ist es hilfreich, die Maxima-
 und Lisp-Version in den Fehlerbericht aufzunehmen.
-
-@c @code{bug_report} returns an empty string @code{""}.
-
 @code{bug_report} gibt eine leere Zeichenkette @code{""} zur@"uck.
 
 Beispiel:
 
 @example
 (%i1) bug_report();
-
 The Maxima bug database is available at
     http://sourceforge.net/tracker/?atid=104933&group_id=4933
 Submit bug reports by following the 'Add new' link on that page.
 Please include the following information with your bug report:
 -------------------------------------------------------------
-
 Maxima version: 5.20post
 Maxima build date: 19:59 5/10/2010
 Host type: i686-pc-linux-gnu
 Lisp implementation type: SBCL
 Lisp implementation version: 1.0.29.11.debian
-
 -------------------------------------------------------------
 The above information is also reported by the function 'build_info'
 @end example
@@ -231,7 +215,6 @@ Beispiel:
 
 @example
 (%i1) build_info();
-
 Maxima version: 5.20post
 Maxima build date: 19:59 5/10/2010
 Host type: i686-pc-linux-gnu
