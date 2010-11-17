@@ -1730,7 +1730,42 @@ Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @subsection Einf@"uhrung in Winkelfunktionen
 @c -----------------------------------------------------------------------------
 
+@c Maxima has many trigonometric functions defined.  Not all trigonometric
+@c identities are programmed, but it is possible for the user to add many of 
+@c them using the pattern matching capabilities of the system. The trigonometric
+@c functions defined in Maxima are: 
+@c @code{acos}, @code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
+@c @code{acsch}, @code{asec}, @code{asech}, @code{asin},
+@c @code{asinh}, @code{atan}, @code{atanh}, @code{cos},
+@c @code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch},
+@c @code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan},
+@c and @code{tanh}.  
+@c There are a number of commands especially for handling trigonometric 
+@c functions, see @code{trigexpand}, @code{trigreduce}, and the switch 
+@c @code{trigsign}.  Two share packages extend the simplification rules built 
+@c into Maxima, @code{ntrig} and @code{atrig1}. 
+@c Do @code{describe(@var{command})} for details.
 
+Maxima kennt viele Winkel- und Hyperbelfunktionen. Nicht alle Identitäten für
+Winkel- und Hyperbelfunktionen sind programmiert, aber es ist möglich weitere
+Identitäten mit der Fähigkeit der Erkennung von Mustern hinzuzufügen.
+
+Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
+
+@multitable @columnfractions .15 .15 .15
+@item @code{sin}   @tab @code{cos}       @tab @code{tan}
+@item @code{sec}   @tab @code{csc}       @tab @code{cot}
+@item @code{asin}  @tab @code{acos}      @tab @code{atan}
+@item @code{asec}  @tab @code{acsc}      @tab @code{acot}
+@item @code{sinh}  @tab @code{cosh}      @tab @code{tanh}
+@item @code{sech}  @tab @code{csch}      @tab @code{coth}
+@item @code{asinh} @tab @code{acosh}     @tab @code{atanh}
+@item @code{asech} @tab @code{acsch}     @tab @code{acoth}
+@end multitable
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
 
 @c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Winkelfunktionen, , Einf@"uhrung in Winkelfunktionen
@@ -1856,6 +1891,617 @@ bis @code{%pi} zurück.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} %piargs
+Standardwert: @code{true}
+
+@c When @code{%piargs} is @code{true}, trigonometric functions are simplified to
+@c algebraic constants when the argument is an integer multiple of
+@c @iftex
+@c @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
+@c @end iftex
+@c @ifnottex
+@c @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
+@c @end ifnottex
+
+Hat @code{%piargs} den Wert @code{true}, werden Winkel- und 
+Hyperbelfunktionen sowie deren Inverse wenn möglich zu algebraischen Konstanten
+vereinfacht. 
+
+Die Winkelfunktionen werden zum Beispiel für ganzahlige Vielfache der folgenden
+Konstanten vereinfacht
+@iftex
+@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
+@end iftex
+@ifnottex
+@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
+@end ifnottex
+
+@c Maxima knows some identities which can be applied when 
+
+Maxima kennt einige Identitäten, wenn
+@iftex 
+@math{\pi} 
+@end iftex 
+@ifnottex 
+@math{%pi} 
+@end ifnottex
+
+@c are multiplied by an integer variable (that is, a symbol declared to be 
+@c integer).
+
+u.s.w. mit einer ganzzahligen Variable (ein Symbol, welches als ganze Zahl)
+deklariert wurde, multipliziert wird.
+
+Beispiele:
+
+@c ===beg===
+@c %piargs : false$
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c %piargs : true$
+@c [sin (%pi), sin (%pi/2), sin (%pi/3)];
+@c [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+@c [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+@c        cos (sqrt(2)*%pi/3)];
+@c ===end===
+@example
+(%i1) %piargs : false$
+@group
+(%i2) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                %pi       %pi
+(%o2)            [sin(%pi), sin(---), sin(---)]
+                                 2         3
+@end group
+@group
+(%i3) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                      %pi       %pi       %pi
+(%o3)            [sin(---), sin(---), sin(---)]
+                       4         5         6
+@end group
+(%i4) %piargs : true$
+@group
+(%i5) [sin (%pi), sin (%pi/2), sin (%pi/3)];
+                                sqrt(3)
+(%o5)                    [0, 1, -------]
+                                   2
+@end group
+@group
+(%i6) [sin (%pi/4), sin (%pi/5), sin (%pi/6)];
+                         1         %pi   1
+(%o6)                [-------, sin(---), -]
+                      sqrt(2)       5    2
+@end group
+@group
+(%i7) [cos (%pi/3), cos (10*%pi/3), tan (10*%pi/3),
+       cos (sqrt(2)*%pi/3)];
+                1    1               sqrt(2) %pi
+(%o7)          [-, - -, sqrt(3), cos(-----------)]
+                2    2                    3
+@end group
+@end example
+
+@c @iftex
+@c Some identities are applied when @math{\pi} and @math{\pi/2} are multiplied 
+@c by an integer variable.
+@c @end iftex
+@c @ifnottex
+@c Some identities are applied when @math{%pi} and @math{%pi/2} are multiplied 
+@c by an integer variable.
+@c @end ifnottex
+
+Einige Identitäten werden angewendet, wenn
+@iftex 
+@math{\pi} und @math{\pi/2}
+@end iftex 
+@ifnottex 
+@math{%pi} and @math{%pi/2}
+@end ifnottex
+mit einer ganzzahligen Variable multipliziert werden.
+
+@c ===beg===
+@c declare (n, integer, m, even)$
+@c [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+@c        cos (%pi/2 * m)];
+@c ===end===
+@example
+(%i1) declare (n, integer, m, even)$
+@group
+(%i2) [sin (%pi * n), cos (%pi * m), sin (%pi/2 * m),
+       cos (%pi/2 * m)];
+                                      m/2
+(%o2)                  [0, 1, 0, (- 1)   ]
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungschalter und -variable}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} %iargs
+Standardwert: @code{true}
+
+@c When @code{%iargs} is @code{true}, trigonometric functions are simplified to
+@c hyperbolic functions
+@c @iftex
+@c when the argument is apparently a multiple of the imaginary unit @math{i}.
+@c @end iftex
+@c @ifnottex
+@c when the argument is apparently a multiple of the imaginary unit @math{%i}.
+@c @end ifnottex
+
+Hat @code{%iargs} den Wert @code{true}, werden Winkelfunktionen zu 
+Hyperlfunktionen vereinfacht, wenn das Argument ein Vielfaches der imaginären
+Einheit
+@iftex
+@math{i}
+@end iftex
+@ifnottex
+@math{%i}
+@end ifnottex
+ist.
+
+@c Even when the argument is demonstrably real, the simplification is applied;
+@c @iftex
+@c Maxima considers only whether the argument is a literal multiple of @math{i}.
+@c @end iftex
+@c @ifnottex
+@c Maxima considers only whether the argument is a literal multiple of @math{%i}.
+@c @end ifnottex
+
+Die Vereinfachung zu Hyperbelfunktionen wird auch dann ausgeführt, wenn das
+Argument offensichtlich Reel ist.
+
+Beispiele:
+
+@c ===beg===
+@c %iargs : false$
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c %iargs : true$
+@c [sin (%i * x), cos (%i * x), tan (%i * x)];
+@c ===end===
+@example
+(%i1) %iargs : false$
+@group
+(%i2) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o2)           [sin(%i x), cos(%i x), tan(%i x)]
+@end group
+(%i3) %iargs : true$
+@group
+(%i4) [sin (%i * x), cos (%i * x), tan (%i * x)];
+(%o4)           [%i sinh(x), cosh(x), %i tanh(x)]
+@end group
+@end example
+
+@c Even when the argument is demonstrably real, the simplification is applied.
+
+Auch wenn das Argument offensichtlich reel ist, wird zu einer Hyperbelfunktion
+vereinfacht.
+
+@c ===beg===
+@c declare (x, imaginary)$
+@c [featurep (x, imaginary), featurep (x, real)];
+@c sin (%i * x);
+@c ===end===
+@example
+(%i1) declare (x, imaginary)$
+@group
+(%i2) [featurep (x, imaginary), featurep (x, real)];
+(%o2)                     [true, false]
+@end group
+@group
+(%i3) sin (%i * x);
+(%o3)                      %i sinh(x)
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungschalter und -variable}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} halfangles
+Standardwert: @code{false}
+
+@c When @code{halfangles} is @code{true}, trigonometric functions of arguments 
+@c @code{@var{expr}/2} are simplified to functions of @var{expr}.
+
+Hat @code{halfangles} den Wert @code{true}, werden Winkel- und 
+Hyperbelfunktionen mit halbzahligen Argumenten @code{@var{expr}/2} vereinfacht.
+
+@c For a real argument @var{x} in the interval @code{0 < x < 2*%pi} the sine of 
+@c the half-angle simplifies to a simple formula:
+
+Für ein reelles Argument @var{x} im Intervall @code{0 < x < 2*%pi} vereinfacht
+der Sinus für ein halbzahliges Argument zu eine einfache Formel: 
+
+@example
+                         sqrt(1 - cos(x))
+                         ----------------
+                             sqrt(2)
+@end example
+
+@c A complicated factor is needed to make this formula correct for all complex 
+@c arguments @var{z}:
+
+Ein komplizierter Faktor wird gebraucht, damit die Formel korrekt ist für ein
+komplexes Argument @var{z}:
+
+@example
+           realpart(z)
+     floor(-----------)
+              2 %pi
+(- 1)                   (1 - unit_step(- imagpart(z))
+
+                            realpart(z)            realpart(z)
+                      floor(-----------) - ceiling(-----------)
+                               2 %pi                  2 %pi
+                ((- 1)                                          + 1))
+@end example
+
+@c Maxima knows this factor and similar factors for the functions @code{sin}, 
+@c @code{cos}, @code{sinh}, and @code{cosh}. For special values of the argument 
+@c @math{z} these factors simplify accordingly.
+
+Maxima kennt diesen Faktor und ähnliche Faktoren für die Sinus, Cosinus, Sinus
+Hyperbolicus und Cosinus Hyperbolicus Funktionen. Für spezielle Argumente 
+@math{z} dieser Funktionen vereinfachen diese Funktionen entsprechend.
+
+Beispiele:
+
+@c ===beg===
+@c halfangles : false$
+@c sin (x / 2);
+@c halfangles : true$
+@c sin (x / 2);
+@c assume(x>0, x<2*%pi)$
+@c sin(x / 2);
+@c ===end===
+@example
+(%i1) halfangles:false;
+(%o1)                                false
+(%i2) sin(x/2);
+                                        x
+(%o2)                               sin(-)
+                                        2
+(%i3) halfangles:true;
+(%o3)                                true
+(%i4) sin(x/2);
+                                                    x
+                                            floor(-----)
+                                                  2 %pi
+                      sqrt(1 - cos(x)) (- 1)
+(%o4)                 ----------------------------------
+                                   sqrt(2)
+(%i5) assume(x>0, x<2*%pi)$
+(%i6) sin(x/2);
+                               sqrt(1 - cos(x))
+(%o6)                          ----------------
+                                   sqrt(2)
+@end example
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Packet} ntrig
+
+@c The @code{ntrig} package contains a set of simplification rules that are
+@c used to simplify trigonometric function whose arguments are of the form
+@c @code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
+@c @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
+
+Das Packet @code{ntrig} enthält Regeln, um Winkelfunktionen zu vereinfachen, die
+Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben. @var{f} ist eine der
+Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
+@code{cot}. 
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Packete}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {Funktion} trigexpand (@var{expr})
+
+@c Expands trigonometric and hyperbolic functions of sums of angles and of 
+@c multiple angles occurring in @var{expr}. For best results, @var{expr} should
+@c be expanded. To enhance user control of simplification, this function expands
+@c only one level at a time, expanding sums of angles or multiple angles.  To 
+@c obtain full expansion into sines and cosines immediately, set the switch 
+@c @code{trigexpand: true}.
+
+Die Funktion @code{trigexpand} expandiert Winkel- und Hyperbelfunktionen im 
+Ausdruck @var{expr}, die Summen und Vielfache von Winkeln als Argument haben.
+Die besten Ergebnisse werden erzielt, wenn der Ausdruck @var{expr} zunächst
+expandiert wird.
+
+@code{trigexpand} is governed by the following global flags:
+
+@table @code
+@item trigexpand
+If @code{true} causes expansion of all
+expressions containing sin's and cos's occurring subsequently.
+@item halfangles
+If @code{true} causes half-angles to be simplified
+away.
+@item trigexpandplus
+Controls the "sum" rule for @code{trigexpand},
+expansion of sums (e.g. @code{sin(x + y)}) will take place only if
+@code{trigexpandplus} is @code{true}.
+@item trigexpandtimes
+Controls the "product" rule for @code{trigexpand},
+expansion of products (e.g. @code{sin(2 x)}) will take place only if
+@code{trigexpandtimes} is @code{true}.
+@end table
+
+Examples:
+
+@c ===beg===
+@c x+sin(3*x)/sin(x),trigexpand=true,expand;
+@c trigexpand(sin(10*x+y));
+@c ===end===
+@example
+@group
+(%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
+                         2           2
+(%o1)               - sin (x) + 3 cos (x) + x
+@end group
+@group
+(%i2) trigexpand(sin(10*x+y));
+(%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen für die Vereinfachung}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} trigexpandplus
+Standardwert: @code{true}
+
+@code{trigexpandplus} controls the "sum" rule for
+@code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
+@code{trigexpand} switch set to @code{true}, expansion of sums
+(e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is
+@code{true}.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} trigexpandtimes
+Standardwert: @code{true}
+
+@code{trigexpandtimes} controls the "product" rule for
+@code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
+@code{trigexpand} switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
+will take place only if @code{trigexpandtimes} is @code{true}.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} triginverses
+Standardwert: @code{true}
+
+@code{triginverses} controls the simplification of the
+composition of trigonometric and hyperbolic functions with their inverse
+functions.
+
+If @code{all}, both e.g. @code{atan(tan(@var{x}))}
+and @code{tan(atan(@var{x}))} simplify to @var{x}.
+
+If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))}
+simplification is turned off.
+
+If @code{false}, both the
+@code{@var{arcfun}(@var{fun}(@var{x}))} and
+@code{@var{fun}(@var{arcfun}(@var{x}))}
+simplifications are turned off.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn  {Function} trigreduce (@var{expr}, @var{x})
+@deffnx {Function} trigreduce (@var{expr})
+
+Combines products and powers of trigonometric
+and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
+It also tries to eliminate these functions when they occur in
+denominators.  If @var{x} is omitted then all variables in @var{expr} are used.
+
+See also @code{poissimp}.
+
+@c ===beg===
+@c trigreduce(-sin(x)^2+3*cos(x)^2+x);
+@c ===end===
+@example
+@group
+(%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
+               cos(2 x)      cos(2 x)   1        1
+(%o1)          -------- + 3 (-------- + -) + x - -
+                  2             2       2        2
+@end group
+@end example
+
+@c
+@c     OBSOLETE
+@c     The behavior was changed in order to avoid calling expand in the core
+@c     simplifier (trigi.lisp rev 1.31)
+@c     See http://www.math.utexas.edu/pipermail/maxima/2008/010919.html.
+@c
+@c The trigonometric simplification routines will use declared
+@c information in some simple cases.  Declarations about variables are
+@c used as follows, e.g.
+@c
+@c ---beg---
+@c declare(j, integer, e, even, o, odd)$
+@c sin(x + (e + 1/2)*%pi);
+@c sin(x + (o + 1/2)*%pi);
+@c ---end---
+@c @example
+@c (%i1) declare(j, integer, e, even, o, odd)$
+@c (%i2) sin(x + (e + 1/2)*%pi);
+@c (%o2)                        cos(x)
+@c (%i3) sin(x + (o + 1/2)*%pi);
+@c (%o3)                       - cos(x)
+@c @end example
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktion für die Vereinfachung}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Optionsvariable} trigsign
+Standardwert: @code{true}
+
+When @code{trigsign} is @code{true}, it permits simplification of negative
+arguments to trigonometric functions. E.g., @code{sin(-x)} will become
+@code{-sin(x)} only if @code{trigsign} is @code{true}.
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
+@c @closecatbox
+@end defvr
+
+@c -----------------------------------------------------------------------------
+@deffn {Funktion} trigsimp (@var{expr})
+
+@iftex
+Employs the identities
+@tex
+$\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
+@end tex
+and
+@tex
+$\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
+@end tex
+to simplify expressions containing @code{tan}, @code{sec},
+etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@end iftex
+@ifnottex
+Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
+@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
+etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@end ifnottex
+
+@code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
+able to further simplify the result.
+
+@code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
+@c MERGE EXAMPLES INTO THIS ITEM
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen für die Vereinfachung}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Funktion} trigrat (@var{expr})
+
+Gives a canonical simplifyed quasilinear form of a
+trigonometrical expression; @var{expr} is a rational fraction of several @code{sin},
+@code{cos} or @code{tan}, the arguments of them are linear forms in some variables (or
+kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients. The result is a
+simplified fraction with numerator and denominator linear in @code{sin} and @code{cos}.
+Thus @code{trigrat} linearize always when it is possible.
+
+@c ===beg===
+@c trigrat(sin(3*a)/sin(a+%pi/3));
+@c ===end===
+@example
+@group
+(%i1) trigrat(sin(3*a)/sin(a+%pi/3));
+(%o1)            sqrt(3) sin(2 a) + cos(2 a) - 1
+@end group
+@end example
+
+The following example is taken from
+Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (or in English,
+Addison-Wesley), section 1.5.5, Morley theorem.
+
+@c ===beg===
+@c c : %pi/3 - a - b$
+@c bc : sin(a)*sin(3*c)/sin(a+b);
+@c ba : bc, c=a, a=c;
+@c ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
+@c trigrat (ac2);
+@c ===end===
+@example
+(%i1) c : %pi/3 - a - b$
+@group
+(%i2) bc : sin(a)*sin(3*c)/sin(a+b);
+                                          %pi
+                  sin(a) sin(3 (- b - a + ---))
+                                           3
+(%o2)             -----------------------------
+                           sin(b + a)
+@end group
+@group
+(%i3) ba : bc, c=a, a=c;
+                                         %pi
+                    sin(3 a) sin(b + a - ---)
+                                          3
+(%o3)               -------------------------
+                                  %pi
+                          sin(a - ---)
+                                   3
+@end group
+@group
+(%i4) ac2 : ba^2 + bc^2 - 2*bc*ba*cos(b);
+         2         2         %pi
+      sin (3 a) sin (b + a - ---)
+                              3
+(%o4) ---------------------------
+                2     %pi
+             sin (a - ---)
+                       3
+                                       %pi
+ - (2 sin(a) sin(3 a) sin(3 (- b - a + ---)) cos(b)
+                                        3
+             %pi            %pi
+ sin(b + a - ---))/(sin(a - ---) sin(b + a))
+              3              3
+      2       2              %pi
+   sin (a) sin (3 (- b - a + ---))
+                              3
+ + -------------------------------
+                2
+             sin (b + a)
+@end group
+@group
+(%i5) trigrat (ac2);
+(%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
+ - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
+ - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
+ + 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
+ + sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
+ + sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
+ - 9)/4
+@end group
+@end example
+
+@c @opencatbox
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen für die Vereinfachung}
 @c @closecatbox
 @end deffn
 
