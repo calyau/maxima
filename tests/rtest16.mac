@@ -1827,4 +1827,13 @@ cos(x)/2-cos(3*x)/6;
 integrate(sin(x)*cos(2*x),x);
 cos(x)/2-cos(3*x)/6;
 
-
+/* Bug ID: 3111568 - subsequent calls to gradef hide variable dependencies
+ */
+gradef(f,x,g);
+f;
+gradef(f,y,h);
+f;
+dependencies;
+[f(y,x)];
+kill(f);
+done;
