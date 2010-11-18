@@ -353,7 +353,10 @@
 		     (cons (cons (cadr l) (meval (caddr l)))
 			   (mget z '$atomgrad))
 		     '$atomgrad)
-	   (i-$dependencies (cons (list (ncons z) (cadr l)) nil))
+	   (i-$dependencies (cons (cons (ncons z)
+	                                ;; Append existing dependencies
+	                                (cons (cadr l) (mget z 'depends)))
+	                          nil))
 	   (add2lnc z $props)
 	   z)
 	  ((or (mopp1 (caar z)) (member 'array (cdar z) :test #'eq))
