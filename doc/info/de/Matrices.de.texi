@@ -14,7 +14,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Matrices and Linear Algebra, Functions and Variables for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
+@node Introduction to Matrices and Linear Algebra, Functions and Variables for Matrices and Linear Algebra, Lineare Algebra, Lineare Algebra
 @section Introduction to Matrices and Linear Algebra
 
 @menu
@@ -112,7 +112,7 @@ and @code{similaritytransform}.
 @c end concepts Matrices and Linear Algebra
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
+@node Functions and Variables for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Lineare Algebra
 @section Functions and Variables for Matrices and Linear Algebra
 
 @c -----------------------------------------------------------------------------

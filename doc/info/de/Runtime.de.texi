@@ -15,8 +15,9 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction for Runtime Environment, Interrupts, Runtime Environment, Runtime Environment
+@node Introduction for Runtime Environment, Interrupts, Laufzeitumgebung, Laufzeitumgebung
 @section Introduction for Runtime Environment
+
 @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
 @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
 @code{maxima-init.mac} is a file which is loaded automatically when Maxima starts.
@@ -46,7 +47,8 @@ other Maxima statements.
 @c @category{Session management}
 @c @closecatbox
 
-@node Interrupts, Functions and Variables for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
+@c -----------------------------------------------------------------------------
+@node Interrupts, Functions and Variables for Runtime Environment, Introduction for Runtime Environment, Laufzeitumgebung
 @section Interrupts
 
 The user can stop a time-consuming computation with the
@@ -82,7 +84,7 @@ to resume from the point at which it was stopped.
 @c end concepts Runtime Environment
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Runtime Environment,  , Interrupts, Runtime Environment
+@node Functions and Variables for Runtime Environment, , Interrupts, Laufzeitumgebung
 @section Functions and Variables for Runtime Environment
 
 @c -----------------------------------------------------------------------------

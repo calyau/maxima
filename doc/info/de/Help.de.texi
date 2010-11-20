@@ -22,23 +22,16 @@
 @end menu
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Dokumentation, Funktionen und Variablen der Hilfe, , Hilfe
+@node Dokumentation, Funktionen und Variablen der Hilfe, Hilfe, Hilfe
 @section Dokumentation
 
-   @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
-
-@c The Maxima on-line user's manual can be viewed in different forms.
-@c From the Maxima interactive prompt, the user's manual
-@c is viewed as plain text by the @code{?} command (i.e., the @code{describe} 
-@c function). The user's manual is viewed as @code{info} hypertext by the 
-@c @code{info} viewer program and as a web page by any ordinary web browser.
-
-Die Maxima online-Dokumentation kann auf verschiedene Art gelesen werden. Von 
-der Maxima-Kommandozeile kann die Dokumentation mit den Kommandos @code{?}, 
-@code{??} oder @code{describe} aufgerufen werden. Weiterhin kann die 
-Dokumentation als GNU Infotext mit dem GNU Programm @code{info} oder in einem 
-Browser gelesen werden. Sowohl unter Windows als auch unter Linux kann die 
-Dokumentation als Hilfedatei gelesen werden.
+Die Maxima-Dokumentation ist in Texinfo geschrieben und wird in verschiedenen 
+Formaten zur Verf@"ugung gestellt. Von der Maxima-Kommandozeile kann die
+Dokumentation mit den Kommandos @code{?}, @code{??} oder @code{describe} 
+aufgerufen werden. Weiterhin kann die Dokumentation als GNU Infotext mit dem 
+GNU Programm @code{info}, in einem Browser oder als PDF-Datei gelesen werden. 
+Sowohl unter Windows als auch unter Linux kann die Dokumentation als Hilfedatei 
+gelesen werden.
 
 @c @opencatbox
 @c @category{Hilfe} @category{Konsole Ein- und Ausgabe}
@@ -52,27 +45,13 @@ Dokumentation als Hilfedatei gelesen werden.
 @anchor{apropos}
 @deffn {Funktion} apropos (@var{string})
 
-@c Searches for Maxima names which have @var{string} appearing anywhere within
-@c them.  Thus, @code{apropos (exp)} returns a list of all the flags and functions
-@c which have @code{exp} as part of their names, such as @code{expand}, @code{exp},
-@c and @code{exponentialize}.  Thus if you can only remember part of the name of
-@c something you can use this command to find the rest of the name. Similarly, you
-@c could say @code{apropos (tr_)} to find a list of many of the switches relating
-@c to the translator, most of which begin with @code{tr_}.
-
 Gibt eine Liste der Maxima-Symbole zur@"uck, die @var{string} im Namen
-enthalten. @var{string} ist eine Zeichenkette.
-
-@c @code{apropos("")} returns a list with all Maxima names.
-@c @code{apropos} returns the empty list @code{[]}, if no name is found.
-
-@code{apropos("")} gibt eine Liste mit allen Maxima-Symbolen zur@"uck. 
-@code{apropos} gibt zudem eine leere Liste @code{[]} zur@"uck, wenn kein 
-Maxima-Symbol gefunden wurde, das @var{string} im Namen enth@"alt.
+enthalten. @var{string} ist eine Zeichenkette. @code{apropos("")} gibt eine 
+Liste mit allen Maxima-Symbolen zur@"uck. @code{apropos} gibt eine leere Liste 
+@code{[]} zur@"uck, wenn kein Maxima-Symbol gefunden wurde, das @var{string} im 
+Namen enth@"alt.
 
 Beispiel:
-
-@c Show all Maxima symbols wich have @code{"gamma"} in the name:
 
 Zeige alle Maxima-Symbole, die @code{"gamma"} im Namen enthalten:
 
@@ -97,36 +76,20 @@ gamma_incomplete_generalized_regularized]
 @anchor{demo}
 @deffn {Funktion} demo (@var{filename})
 
-@c Evaluates Maxima expressions in @var{filename} and displays the results.
-@c @code{demo} pauses after evaluating each expression
-@c and continues after the user enters a carriage return.
-@c (If running in Xmaxima, @code{demo} may need to see a semicolon @code{;}
-@c followed by a carriage return.)
-
 F@"uhrt die Beispiele der Demo-Datei @var{filename} aus. @var{filename} kann ein 
 Symbol oder eine Zeichenkette sein. @code{demo} macht nach jeder Ausgabe eine 
-Pause und wartet auf eine Eingabe.
+Pause und wartet auf eine Eingabe. @code{demo} sucht in den Ordnern, die in der Optionsvariablen @code{file_search_demo} enthalten sind, nach der Datei 
+@var{filename}. Die Dateiendung @var{.dem} mu@ss{} nicht angegeben werden.
+Siehe auch die Funktion @mref{file_search} und die Optionsvariable 
+@mrefdot{file_search_demo}
 
-@c @code{demo} searches the list of directories @code{file_search_demo} to find 
-@c @code{filename}. If the file has the suffix @code{dem}, the suffix may be 
-@c omitted. See also @code{file_search}.
-
-@code{demo} sucht in den Ordnern, die in der Optionsvariablen 
-@code{file_search_demo} enthalten sind, nach der Datei @var{filename}. Die
-Dateiendung @var{.dem} mu@ss{} nicht angegeben werden. Siehe auch die Funktion
-@mref{file_search} und die Optionsvariable @mrefdot{file_search_demo}
-
-@c @code{demo} evaluates its argument.
-@c @code{demo} returns the name of the demonstration file.
-
-@code{demo} wertet sein Argument aus. @code{demo} gibt den Namen der Demo-Datei 
+@code{demo} wertet das Argument aus. @code{demo} gibt den Namen der Demo-Datei 
 zur@"uck, die ausgef@"uhrt wird.
 
 Beispiel:
 
 @example
 (%i1) demo ("disol");
-
 batching /home/wfs/maxima/share/simplification/disol.dem
  At the _ prompt, type ';' followed by enter to get next demo
 (%i2)                      load(disol)
@@ -157,66 +120,35 @@ _
 @fnindex Hilfe
 @end ifinfo
 
-@c @code{describe(@var{string})} is equivalent to 
-@c @code{describe(@var{string}, exact)}.
-
-@code{describe(@var{topic})} entspricht dem Befehl 
-@code{describe(@var{topic}, exact)}. @var{topic} ist eine Zeichenkette oder ein
+@code{describe(@var{topic})} entspricht dem Kommando @code{describe(@var{topic},
+exact)}. @var{topic} ist eine Zeichenkette oder ein
 Symbol. Wenn @var{topic} ein Operator wie zum Beispiel @code{+}, @code{*}, 
 @code{do} oder @code{if} ist, muss der Name des Operators als eine Zeichenkette 
 angegeben werden.
 
-@c @code{describe(@var{string}, exact)} finds an item with title equal
-@c (case-insensitive) to @var{string}, if there is any such item.
-
 @code{describe(@var{topic}, exact)} findet Eintr@"age, die mit @var{topic} 
-@"ubereinstimmen. Zu beachten ist, dass bei der Suche Klein- und 
-Gro@ss{}schreibung unterschieden werden.
-
-@c @code{describe(@var{string}, inexact)} finds all documented items which 
-@c contain @var{string} in their titles.
-@c If there is more than one such item, Maxima asks the user to select
-@c an item or items to display.
-
+@"ubereinstimmen. Bei der Suche nach einer @"Ubereinstimmung werden Klein- und
+Gro@ss{}schreibung nicht voneinander unterschieden. 
 @code{describe(@var{topic}, inexact)} findet Eintr@"age, die @var{topic}
 enthalten. Sind mehrere Eintr@"age vorhanden, fragt Maxima, welcher der 
 Eintr@"age angezeigt werden soll.
-
-@c At the interactive prompt,
-@c @code{? foo} (with a space between @code{?} and @code{foo})
-@c is equivalent to @code{describe("foo", exact)},
-@c and @code{?? foo} is equivalent to @code{describe("foo", inexact)}.
 
 @code{? foo} (mit einem Leerzeichen zwischen @code{?} und @code{foo}) entspricht
 @code{describe("foo", exact)} und @code{?? foo} entspricht 
 @code{describe("foo", inexact)}. In der Kurzschreibweise muss das Argument ein
 Symbol sein.
 
-@c @code{describe("", inexact)} yields a list of all topics documented in the 
-@c on-line manual.
-
 @code{describe("", inexact)} gibt alle Themen aus, die in der Dokumentation
 enthalten sind.
-
-@c @code{describe} quotes its argument.
-@c @code{describe} returns @code{true} if some documentation is found, otherwise
-@c @code{false}.
 
 @code{describe} wertet das Argument nicht aus. @code{describe} gibt @code{true} 
 zur@"uck, wenn Eintr@"age gefunden wurden, ansonsten @code{false}.
 
-@c See also @ref{Documentation}.
-
 Beispiel:
 
-@c In this example, items 7 and 8 were selected (output is shortened as 
-@c indicated by @code{[...]}. All or none of the items could have been selected
-@c by entering @code{all} or @code{none}, which can be abbreviated @code{a} or 
-@c @code{n}, respectively.
-
-In diesem Beispiel werden die Eintr@"age 2 und 3 ausgew@"ahlt (Die Ausgabe ist
+Im folgenden Beispiel werden die Eintr@"age 2 und 3 ausgew@"ahlt (Die Ausgabe ist
 verk@"urzt wiedergeben). Alle oder keiner der Eintr@"age werden mit @code{all} 
-und @code{none} ausgew@"ahlt. Die Eingabe kann mit @code{a} und @code{n}
+oder @code{none} ausgew@"ahlt. Die Eingabe kann mit @code{a} oder @code{n}
 abgek@"urzt werden.
 
 @example
@@ -238,8 +170,7 @@ Enter space-separated numbers, `all' or `none': 2 3
      definite integral, with limits of integration <a> and <b>.  
      The limits should not contain <x>, although `integrate' does 
      not enforce this restriction.  <a> need not be less than <b>.  
-     If <b> is equal to <a>, `integrate' returns zero. 
-
+     If <b> is equal to <a>, `integrate' returns zero.
      [...]
 
  -- Option variable: integrate_use_rootsof
@@ -248,8 +179,7 @@ Enter space-separated numbers, `all' or `none': 2 3
      When `integrate_use_rootsof' is `true' and the denominator of
      a rational function cannot be factored, `integrate' returns
      the integral in a form which is a sum over the roots (not yet 
-     known) of the denominator. 
-
+     known) of the denominator.
      [...]
 @end example
 
@@ -263,34 +193,19 @@ Enter space-separated numbers, `all' or `none': 2 3
 @deffn  {Funktion} example (@var{topic})
 @deffnx {Funktion} example ()
 
-@c @code{example (@var{topic})} displays some examples of @var{topic}, which is
-@c a symbol or a string. To get examples for operators like @code{if}, #
-@c @code{do}, or @code{lambda} the argument must be a string, e.g. 
-@c @code{example ("do")}. @code{example} is not case sensitive. Most topics are 
-@c function names.
-
 @code{example(@var{topic})} zeigt Beispiele f@"ur das Argument @var{topic}. 
 @var{topic} ist ein Symbol oder eine Zeichenkette. Ist das Argument ein 
 Operator, wie zum Beispiel @code{+}, @code{*} oder @code{do}, muss das Argument
 @var{topic} eine Zeichenkette sein. Gro@ss{}- und Kleinschreibung werden nicht 
 unterschieden.
 
-@c @code{example ()} returns the list of all recognized topics.
-
 @code{example()} zeigt eine Liste aller Themen, f@"ur die Beispiele 
 vorhanden sind.
-
-@c The name of the file containing the examples is given by the global option 
-@c variable @code{manual_demo}, which defaults to @code{"manual.demo"}.
 
 Die Optionsvariable @mref{manual_demo} enth@"alt den Namen der Datei, die die 
 Beispiele enth@"alt. Der Standardwert ist @code{"manual.demo"}.
 
-@c @code{example} quotes its argument. @code{example} returns @code{done} unless
-@c no examples are found or there is no argument, in which case @code{example}
-@c returns the list of all recognized topics.
-
-@code{example} wertet sein Argument nicht aus. @code{example} gibt @code{done}
+@code{example} wertet das Argument nicht aus. @code{example} gibt @code{done}
 zur@"uck, au@ss{}er wenn kein Argument angeben ist oder wenn kein Beispiel 
 gefunden wurde. In diesen F@"allen wird eine Liste mit allen Themen ausgegeben, 
 zu denen Beispiele vorhanden sind.
@@ -300,7 +215,6 @@ Beispiele:
 @c ===beg===
 @c example(append);
 @c example("lambda");
-@c example("allROOTS");
 @c ===end===
 @example
 (%i1) example(append);
@@ -317,17 +231,6 @@ Beispiele:
 (%i6) a+2+1
 (%o6)                                a + 3
 (%o6)                                done
-@group
-(%i7) example("allROOTS");
-(%i8) (1+2*x)^3 = 13.5*(1+x^5)
-                                   3          5
-(%o8)                     (2 x + 1)  = 13.5 (x  + 1)
-@end group
-(%i9) allroots(%)
-(%o9) [x = .8296749902129361, x = - 1.015755543828121, 
-x = .9659625152196369 %i - .4069597231924075, 
-x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
-(%o9)                                done
 @end example
 
 @c @opencatbox
@@ -339,9 +242,6 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 @anchor{manual_demo}
 @defvr {Optionsvariable} manual_demo
 Standardwert: @code{"manual.demo"}
-
-@c @code{manual_demo} specifies the name of the file containing the examples for 
-@c the function @code{example}. See @code{example}.
 
 Die Optionsvariable @code{manual_demo} enth@"alt den Namen der Datei, die die 
 Beispiele f@"ur die Funktion @code{example} enth@"alt. Siehe @mrefdot{example}

@@ -1561,7 +1561,7 @@ for positive integers in terms of Ei
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Fehlerfunktionen, Elliptische Funktionen und Integrale, Exponentielle Funktionen und Integrale, Spezielle Funktionen
+@node Fehlerfunktionen, Elliptische Funktionen und Integrale, Exponentielle Integrale, Spezielle Funktionen
 @section Fehlerfunktionen
 
 The Error function and related funtions are defined in 
@@ -1680,7 +1680,7 @@ representation for fresnel_s and fresnel_c
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Elliptische Funktionen und Integrale, Funktionen und Variable f@"ur Elliptische Funktionen und Integrale, Elliptische Funktionen und Integrale, Spezielle Funktionen
+@node Einf@"uhrung in Elliptische Funktionen und Integrale, Funktionen und Variablen f@"ur Elliptische Funktionen, Elliptische Funktionen und Integrale
 @subsection Einf@"uhrung in Elliptische Funktionen und Integrale
 
 Maxima includes support for Jacobian elliptic functions and for
@@ -2026,6 +2026,7 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @c -----------------------------------------------------------------------------
 @anchor{elliptic_f}
 @deffn {Function} elliptic_f (@var{phi}, @var{m})
+
 The incomplete elliptic integral of the first kind, defined as
 
 @ifhtml
@@ -2049,6 +2050,7 @@ See also @ref{elliptic_e} and @ref{elliptic_kc}.
 @c -----------------------------------------------------------------------------
 @anchor{elliptic_e}
 @deffn {Function} elliptic_e (@var{phi}, @var{m})
+
 The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml
@@ -2071,6 +2073,7 @@ See also @ref{elliptic_e} and @ref{elliptic_ec}.
 @c -----------------------------------------------------------------------------
 @anchor{elliptic_eu}
 @deffn {Function} elliptic_eu (@var{u}, @var{m})
+
 The incomplete elliptic integral of the second kind, defined as
 
 @ifhtml

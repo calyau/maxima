@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Calculus.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 06.11.2010
+@c File        : Calculus.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 06.11.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -16,16 +16,22 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Grenzwerte, Funktionen und Variablen der Differentiation, Analysis, Analysis
+@node Funktionen und Variablen f@"ur Grenzwerte, Funktionen und Variablen der Differentiation, Analysis
 @section Funktionen und Variablen f@"ur Grenzwerte
 
 @c -----------------------------------------------------------------------------
-@defvr {Option variable} lhospitallim
-Default: 4
+@anchor{lhospitallim}
+@defvr {Optionsvariable} lhospitallim
+Standardwert: 4
 
-@code{lhospitallim} is the maximum number of times L'Hospital's
-rule is used in @code{limit}.  This prevents infinite looping in cases like
-@code{limit (cot(x)/csc(x), x, 0)}.
+@c @code{lhospitallim} is the maximum number of times L'Hospital's rule is used 
+@c in @code{limit}.  This prevents infinite looping in cases like
+@c @code{limit (cot(x)/csc(x), x, 0)}.
+
+@code{lhospitallim} enthält die maximale Zahl an Iterationen für die 
+L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird. Damit
+wird verhindert, dass @code{limit} in eine unendliche Schleife für Grenzwerte
+wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 
 @c @opencatbox
 @c @category{Limits}
@@ -33,19 +39,31 @@ rule is used in @code{limit}.  This prevents infinite looping in cases like
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{limit}
 @deffn  {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
 @deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
 @deffnx {Function} limit (@var{expr})
 
-Computes the limit of @var{expr} as the real variable
-@var{x} approaches the value @var{val} from the direction @var{dir}.  @var{dir} may have the
-value @code{plus} for a limit from above, @code{minus} for a limit from below, or
-may be omitted (implying a two-sided limit is to be computed).
+@c Computes the limit of @var{expr} as the real variable @var{x} approaches the 
+@c value @var{val} from the direction @var{dir}.  @var{dir} may have the value 
+@c @code{plus} for a limit from above, @code{minus} for a limit from below, or
+@c may be omitted (implying a two-sided limit is to be computed).
 
-@code{limit} uses the
-following special symbols: @code{inf} (positive infinity) and @code{minf} (negative
-infinity).  On output it may also use @code{und} (undefined), @code{ind} (indefinite
-but bounded) and @code{infinity} (complex infinity).
+Berechnet den Grenzwert des Ausdrucks @var{expr}, wenn die reelle Variable
+@var{x} gegen den Wert @var{val} in Richtung @var{dir} geht. Die Richtung
+@var{dir} kann die Werte @var{plus} für einen Grenzwert von oben und @var{minus}
+für einen Grenzwert von unten haben. Für einen zweiseitigen Grenzwert braucht
+die Richtung nicht angegeben werden.
+
+@c @code{limit} uses the following special symbols: @code{inf} (positive 
+@c infinity) and @code{minf} (negative infinity).  On output it may also use 
+@c @code{und} (undefined), @code{ind} (indefinite but bounded) and 
+@c @code{infinity} (complex infinity).
+
+@code{limit} nutzt die folgenden speziellen Symbole: @code{inf} (positiv 
+unendlich) und @code{minf} (negativ unendlich). In der Ausgabe können die
+Symbole @code{und} (nicht definiert), @code{ind} (unbestimmt) und 
+@code{infinity} (komplex unendlich) auftreten.
 
 @code{infinity} (complex infinity) is returned when the limit of
 the absolute value of the expression is positive infinity, but
@@ -69,8 +87,8 @@ unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
 giving 1.  Setting @code{limsubst} to @code{true} will allow such
 substitutions.
 
-@code{limit} with one argument is often called upon to simplify constant expressions,
-for example, @code{limit (inf-1)}.
+@code{limit} with one argument is often called upon to simplify constant 
+expressions, for example, @code{limit (inf-1)}.
 
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (limit)} displays some examples.
@@ -85,11 +103,11 @@ Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 
 @c -----------------------------------------------------------------------------
 @defvr {Option variable} limsubst
+Default value: @code{false}
 
-default value: @code{false} - prevents @code{limit} from attempting substitutions on
-unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
-giving 1.  Setting @code{limsubst} to @code{true} will allow such
-substitutions.
+Prevents @code{limit} from attempting substitutions on unknown forms.  This is 
+to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting 
+@code{limsubst} to @code{true} will allow such substitutions.
 
 @c @opencatbox
 @c @category{Limits}
@@ -516,16 +534,19 @@ p;
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {System variable} dependencies
-Default value: @code{[]}
+@c --- 19.11.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} dependencies
+Standardwert: @code{[]}
 
-@code{dependencies} is the list of atoms which have functional
-dependencies, assigned by @code{depends} or @code{gradef}.
-The @code{dependencies} list is cumulative:
-each call to @code{depends} or @code{gradef} appends additional items.
+@c @code{dependencies} is the list of atoms which have functional dependencies, 
+@c assigned by @code{depends} or @code{gradef}. The @code{dependencies} list is 
+@c cumulative: each call to @code{depends} or @code{gradef} appends additional 
+@c items.
+@c See @code{depends} and @code{gradef}.
 
-See @code{depends} and @code{gradef}.
+@code{dependencies} ist eine Liste der Symbole, für die eine Abhängigkeit mit
+den Funktionen @code{depends} oder @code{gradef} definiert wurde. Siehe
+@mref{depends} und @mrefdot{gradef}
 
 @c @opencatbox
 @c @category{Declarations and inferences} @category{Global variables}
@@ -533,6 +554,7 @@ See @code{depends} and @code{gradef}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{depends}
 @deffn {Function} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
 
 Declares functional dependencies among variables for the purpose of computing derivatives.
@@ -815,6 +837,7 @@ Applies the scalar d'Alembertian to the scalar function @var{f}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{express}
 @deffn {Function} express (@var{expr})
 
 @c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? I'M NOT GETTING IT
@@ -929,6 +952,7 @@ Examples:
 @c @end defun
 
 @c -----------------------------------------------------------------------------
+@anchor{gradef}
 @deffn {Function}  gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
 @deffnx {Function} gradef (@var{a}, @var{x}, @var{expr})
 
@@ -976,14 +1000,17 @@ higher order derivatives.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {System variable} gradefs
-Default value: @code{[]}
+@c --- 19.11.2010 DK -----------------------------------------------------------
+@anchor{gradefs}
+@defvr {Systemvariable} gradefs
+Standardwert: @code{[]}
 
-@code{gradefs} is the list of the functions
-for which partial derivatives have been defined by @code{gradef}.
-@code{gradefs} does not include any variables
-for which partial derivatives have been defined by @code{gradef}.
+@c @code{gradefs} is the list of the functions for which partial derivatives 
+@c have been defined by @code{gradef}. @code{gradefs} does not include any 
+@c variables for which partial derivatives have been defined by @code{gradef}.
+
+@code{gradefs} ist eine Liste der Funktionen, f@"ur die eine Ableitung definiert
+wurde.
 
 @c @opencatbox
 @c @category{Differential calculus} @category{Declarations and inferences}
@@ -2828,7 +2855,7 @@ pos;
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Differentialgleichungen, Funktionen und Variablen f@"ur Differentialgleichungen, Differentialgleichungen, Analysis
+@node Einf@"uhrung in Differentialgleichungen, Funktionen und Variablen f@"ur Differentialgleichungen, Differentialgleichungen
 @subsection Einf@"uhrung in Differentialgleichungen
 
 This section describes the functions available in Maxima to obtain
@@ -2845,6 +2872,7 @@ representations in phase space, see the additional package
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+
 Solves a boundary value problem for a second order differential equation.
 Here: @var{solution} is a general solution to the equation, as found by
 @code{ode2}; @var{xval1} specifies the value of the independent variable
@@ -2862,8 +2890,9 @@ See @code{ode2} for an example of its usage.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} desolve (@var{eqn}, @var{x})
+@deffn  {Function} desolve (@var{eqn}, @var{x})
 @deffnx {Function} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+
 The function @code{desolve} solves systems of linear ordinary
 differential equations using Laplace transform.  Here the @var{eqn}'s
 are differential equations in the dependent variables @var{x_1}, ...,

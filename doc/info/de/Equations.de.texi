@@ -1205,7 +1205,7 @@ zu.
 @end defvr
 
 @c --- 13.11.2010 DK -----------------------------------------------------------
-@anchor{programmode}
+@anchor{realonly}
 @defvr {Optionsvariable} realonly
 Standardwert: @code{false}
 

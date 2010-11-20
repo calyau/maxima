@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : include-maxima.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 15.10.2010
+@c File        : include-maxima.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 15.10.2010
 @c 
 @c This file contains the contents, a detailed node listing and inclucdes
 @c all files for the documentation.
@@ -158,7 +158,7 @@ Fortgeschrittene M@"oglichkeiten und Programmierung
 * Funktionsdefinitionen::       Defining functions.
 * Laufzeitumgebung::            Customization of the Maxima environment.
 * Programmierung::              Defining Maxima programs.
-* Debugging::                   Debugging Maxima programs.
+* Fehlersuche::                 Fehlersuche in Programmen.
 * Verschiedene Optionen::       Options with a global effect on Maxima.
 @sp 1
  
@@ -236,8 +236,7 @@ Kommandozeile
 * Funktionen und Variablen der Eingabe::
 * Funktionen und Variablen der Ausgabe::
 
-Datentypen
-* Datentypen::
+Datentypen und -strukturen
 * Einf@"uhrung in Maxima Zahlen::
 * Zeichenketten::
 * Funktionen und Variablen f@"ur Zahlen::
@@ -289,7 +288,7 @@ Maximas Datenbank
 * Einf@"uhrung in Maximas Datenbank::
 * Funktionen und Variablen f@"ur Eigenschaften::
 * Funktionen und Variablen f@"ur Fakten::
-* Aussagefunktionen::
+* Funktionen und Variablen f@"ur Aussagen::
 
 Grafische Darstellung
 * Einf@"uhrung in die grafische Darstellung::
@@ -314,6 +313,7 @@ Summen, Produkte und Reihen
 * Einf@"uhrung in Reihen::
 * Funktionen und Variablen f@"ur Reihen::
 * Poisson Reihen::
+* Kettenbr@"uche::
 
 Analysis
 * Funktionen und Variablen f@"ur Grenzwerte::
@@ -381,8 +381,10 @@ Programmierung
 * Introduction to Program Flow::  
 * Functions and Variables for Program Flow::  
 
-Debugging
-* Functions and Variables for Debugging::   
+Fehlersuche
+* Source Level Debugging::
+* Keyword Commands::
+* Functions and Variables for Debugging::
 
 Verschiedene Optionen
 * Introduction to Miscellaneous Options::  
@@ -582,16 +584,16 @@ Glossar
 @chapter Hilfe
 @include Help.de.texi
 
-@node Kommandozeile, Datentypen, Hilfe, Top
+@node Kommandozeile, Datentypen und -strukturen, Hilfe, Top
 @chapter Kommandozeile
 @include Command.de.texi
 
-@node Datentypen, Ausdr@"ucke, Kommandozeile, Top
-@chapter Datentypen
+@node Datentypen und -strukturen, Ausdr@"ucke, Kommandozeile, Top
+@chapter Datentypen und -strukturen
 @include DataTypes.de.texi
 @include Lists.de.texi
 
-@node Ausdr@"ucke, Operatoren, Datentypen, Top
+@node Ausdr@"ucke, Operatoren, Datentypen und -strukturen, Top
 @chapter Ausdr@"ucke
 @include Expressions.de.texi
 
@@ -681,15 +683,15 @@ Glossar
 @chapter Funktionsdefinitionen
 @include Function.de.texi
 
-@node Programmierung, Debugging, Funktionsdefinitionen, Top
+@node Programmierung, Fehlersuche, Funktionsdefinitionen, Top
 @chapter Programmierung
 @include Program.de.texi
 
-@node Debugging, Verschiedene Optionen, Programmierung, Top
-@chapter Debugging
+@node Fehlersuche, Verschiedene Optionen, Programmierung, Top
+@chapter Fehlersuche
 @include Debugging.de.texi
 
-@node Verschiedene Optionen, affine, Debugging, Top
+@node Verschiedene Optionen, affine, Fehlersuche, Top
 @chapter Verschiedene Optionen
 @include Miscellaneous.de.texi
 
@@ -723,7 +725,7 @@ Glossar
 @chapter Package descriptive
 @include descriptive.de.texi
 
-@node diag, Package distrib, descriptive, Top
+@node diag, Package distrib, Package descriptive, Top
 @chapter diag
 @include diag.de.texi
 

@@ -41,7 +41,7 @@
 
 @c This Chapter is moved from Help.texi
 @c -----------------------------------------------------------------------------
-@node Lisp und Maxima, Introduction to Program Flow, Program Flow, Program Flow
+@node Lisp und Maxima, Introduction to Program Flow, Programmierung, Programmierung
 @section Lisp und Maxima
 
 Maxima is written in Lisp, and it is easy to access Lisp functions and variables
@@ -174,14 +174,16 @@ and @code{gcd}.
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Program Flow, Functions and Variables for Program Flow, Lisp und Maxima, Program Flow
+@node Introduction to Program Flow, Functions and Variables for Program Flow, Lisp und Maxima, Programmierung
 @section Introduction to Program Flow
 
 Maxima provides a @code{do} loop for iteration, as well as more primitive
 constructs such as @code{go}.
 
 @c end concepts Program Flow
-@node Functions and Variables for Program Flow,  , Introduction to Program Flow, Program Flow
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Program Flow,  , Introduction to Program Flow, Programmierung
 @section Functions and Variables for Program Flow
 
 @deffn {Function} backtrace ()
@@ -247,7 +249,9 @@ functions, including the currently active function.
 @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Special operator} do
+
 The @code{do} statement is used for performing iteration.  Due to its
 great generality the @code{do} statement will be described in two parts.
 First the usual form will be given which is analogous to that used in
@@ -465,7 +469,9 @@ non-atomic expression, and successive parts are taken.)
 @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} errcatch (@var{expr_1}, ..., @var{expr_n})
+
 Evaluates @var{expr_1}, ..., @var{expr_n} one by one and
 returns @code{[@var{expr_n}]} (a list) if no error occurs.  If an
 error occurs in the evaluation of any argument, @code{errcatch} 

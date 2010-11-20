@@ -13,7 +13,8 @@
 * Functions and Variables for Rules and Patterns::  
 @end menu
 
-@node Introduction to Rules and Patterns, Functions and Variables for Rules and Patterns, Rules and Patterns, Rules and Patterns
+@c -----------------------------------------------------------------------------
+@node Introduction to Rules and Patterns, Functions and Variables for Rules and Patterns, Regeln und Muster, Regeln und Muster
 @section Introduction to Rules and Patterns
 
 This section describes user-defined pattern matching and
@@ -37,11 +38,16 @@ and for commutative and noncommutative algebra in @code{affine} package.
 @c @closecatbox
 
 @c end concepts Rules and Patterns
-@node Functions and Variables for Rules and Patterns,  , Introduction to Rules and Patterns, Rules and Patterns
+
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Rules and Patterns,  , Introduction to Rules and Patterns, Regeln und Muster
 @section Functions and Variables for Rules and Patterns
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+
 Repeatedly applies @var{rule_1} to
 @var{expr} until it fails, then repeatedly applies the same rule to all
 subexpressions of @var{expr}, left to right, until @var{rule_1} has failed
@@ -61,7 +67,10 @@ See also @code{applyb1}, @code{apply2}, and @code{let}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+
 If @var{rule_1} fails on a given subexpression, then @var{rule_2} is
 repeatedly applied, etc.  Only if all rules fail on a given
 subexpression is the whole set of rules repeatedly applied to the next
@@ -79,7 +88,10 @@ See also @code{apply1} and @code{let}.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+
 Repeatedly applies @var{rule_1} to the deepest subexpression of @var{expr} until it fails,
 then repeatedly applies the same rule one level higher (i.e., larger subexpressions),
 until @var{rule_1} has failed on the top-level expression.
@@ -100,14 +112,15 @@ See also @code{apply1}, @code{apply2}, and @code{let}.
 @c @closecatbox
 @end deffn
 
-@defvr {Option variable} current_let_rule_package
-Default value: @code{default_let_rule_package}
+@c --- 19.11.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} current_let_rule_package
+Standardwert: @code{default_let_rule_package}
 
-@code{current_let_rule_package} is the name of the rule package that is used by
-functions in the @code{let} package (@code{letsimp}, etc.) @c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
-if no other rule package is specified.
-This variable may be assigned the name of any rule package defined
-via the @code{let} command.
+@code{current_let_rule_package} is the name of the rule package that is used 
+by functions in the @code{let} package (@code{letsimp}, etc.) 
+@c NEED TO GIVE AN EXPLICIT LIST HERE (NOT "ETC")
+if no other rule package is specified. This variable may be assigned the name
+of any rule package defined via the @code{let} command.
 
 If a call such as @code{letsimp (expr, rule_pkg_name)} is made,
 the rule package @code{rule_pkg_name} is used for that function call only,
@@ -116,10 +129,11 @@ and the value of @code{current_let_rule_package} is not changed.
 @c @opencatbox
 @c @category{Rules and patterns}
 @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} default_let_rule_package
+
 @c DEFAULT BINDING OF default_let_rule_package IS default_let_rule_package (BOUND TO ITSELF)
 Default value: @code{default_let_rule_package}
 
@@ -503,19 +517,24 @@ followed by @code{letsimp (%, @var{package_name_2})}, and so on.
 @c @closecatbox
 @end deffn
 
-@defvr {Option variable} let_rule_packages
-Default value: @code{[default_let_rule_package]}
+@c --- 19.11.2010 DK -----------------------------------------------------------
+@defvr {Optionsvariable} let_rule_packages
+Standardwert: @code{[default_let_rule_package]}
 
-@code{let_rule_packages} is a list of all user-defined let rule packages
-plus the default package @code{default_let_rule_package}.
+@c @code{let_rule_packages} is a list of all user-defined let rule packages 
+@c plus the default package @code{default_let_rule_package}.
+
+@code{let_rule_packages} ist eine Informationsliste mit den vom Benutzer 
+definierten @code{let}-Regeln.
 
 @c @opencatbox
 @c @category{Rules and patterns}
 @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+
 Associates a predicate @var{pred_k} 
 with a variable or list of variables @var{a_k}
 so that @var{a_k} matches expressions
@@ -788,8 +807,10 @@ See also @code{remrule}, which removes a rule defined by @code{tellsimp} or @cod
 @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} remrule (@var{op}, @var{rulename})
 @deffnx {Function} remrule (@var{op}, all)
+
 Removes rules defined by @code{tellsimp} or @code{tellsimpafter}.
 
 @code{remrule (@var{op}, @var{rulename})}
@@ -857,8 +878,22 @@ Examples:
 @c @closecatbox
 @end deffn
 
+@c --- 19.11.2010 DK -----------------------------------------------------------
+@anchor{rules}
+@defvr {Systemvariable} rules
+Standardwert: @code{[]}
+
+Enth@"alt die vom Benutzer mit den Funktionen @code{tellsimp}, 
+@code{tellsimpafter}, @code{defmatch} oder @code{defrule} definierten Regeln.
+Siehe auch @mrefdot{infolists}
+
+@end defvr
+
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} tellsimp (@var{pattern}, @var{replacement})
+
 is similar to @code{tellsimpafter} but places
 new information before old so that it is applied before the built-in
 simplification rules.

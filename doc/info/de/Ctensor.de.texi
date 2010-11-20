@@ -8,13 +8,13 @@
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@menu
-* Introduction to ctensor::
-* Functions and Variables for ctensor::
-@end menu
+@c @menu
+@c * Introduction to ctensor::
+@c * Functions and Variables for ctensor::
+@c @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to ctensor, Functions and Variables for ctensor, ctensor, ctensor
+@node Introduction to ctensor, Functions and Variables for ctensor, Tensoren, Tensoren
 @section Introduction to ctensor
 
 @code{ctensor} is a component tensor manipulation package.  To use the @code{ctensor}
@@ -134,13 +134,15 @@ y;
 @c @c @closecatbox
 
 @c end concepts ctensor
-@node Functions and Variables for ctensor,  , Introduction to ctensor, ctensor
 
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for ctensor,  , Introduction to ctensor, Tensoren
 @section Functions and Variables for ctensor
-
 @subsection Initialization and setup
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} csetup ()
+
 A function in the @code{ctensor} (component tensor) package
 which initializes the package and allows the user to enter a metric
 interactively. See @code{ctensor} for more details.

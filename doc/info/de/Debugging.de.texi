@@ -11,11 +11,11 @@
 @menu
 * Source Level Debugging::
 * Keyword Commands::
-* Functions and Variables for Debugging::   
+* Functions and Variables for Debugging::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Source Level Debugging, Keyword Commands, , Debugging
+@node Source Level Debugging, Keyword Commands, , Fehlersuche
 @section Source Level Debugging
 
 Maxima has a built-in source level debugger.  
@@ -135,7 +135,7 @@ evaluating the function into the Maxima, by typing @code{Alt-Control-x}.
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Keyword Commands, Functions and Variables for Debugging, Source Level Debugging, Debugging
+@node Keyword Commands, Functions and Variables for Debugging, Source Level Debugging, Fehlersuche
 @section Keyword Commands
 
 Keyword commands are special keywords which are not interpreted as Maxima expressions.
@@ -207,7 +207,7 @@ completing the computation
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Debugging, , Keyword Commands, Debugging
+@node Functions and Variables for Debugging, , Keyword Commands, Fehlersuche
 @section Functions and Variables for Debugging
 
 @c -----------------------------------------------------------------------------
@@ -312,19 +312,20 @@ See also @code{setcheck} and @code{setcheckbreak}.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} timer (@var{f_1}, ..., @var{f_n})
+@anchor{timer}
+@deffn  {Function} timer (@var{f_1}, ..., @var{f_n})
 @deffnx {Function} timer (all)
 @deffnx {Function} timer ()
-Given functions @var{f_1}, ..., @var{f_n},
-@code{timer} puts each one on the list of functions for which timing statistics are collected.
-@code{timer(f)$ timer(g)$} puts @code{f} and then @code{g} onto the list;
-the list accumulates from one call to the next.
 
-@code{timer(all)} puts all user-defined functions (as named by the global variable @code{functions})
-on the list of timed functions.
+Given functions @var{f_1}, ..., @var{f_n}, @code{timer} puts each one on the 
+list of functions for which timing statistics are collected.
+@code{timer(f)$ timer(g)$} puts @code{f} and then @code{g} onto the list; the 
+list accumulates from one call to the next.
 
-With no arguments, 
-@code{timer} returns the list of timed functions.
+@code{timer(all)} puts all user-defined functions (as named by the global 
+variable @code{functions}) on the list of timed functions.
+
+With no arguments, @code{timer} returns the list of timed functions.
 
 Maxima records how much time is spent executing each function
 on the list of timed functions.
@@ -336,8 +337,8 @@ total time elapsed.
 @code{timer} quotes its arguments. 
 @code{f(x) := x^2$ g:f$ timer(g)$} does not put @code{f} on the timer list.
 
-If @code{trace(f)} is in effect, then @code{timer(f)} has no effect; @code{trace} and
-@code{timer} cannot both be in effect at the same time.
+If @code{trace(f)} is in effect, then @code{timer(f)} has no effect; 
+@code{trace} and @code{timer} cannot both be in effect at the same time.
 
 See also @code{timer_devalue}.
 

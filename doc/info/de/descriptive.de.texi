@@ -16,7 +16,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to descriptive, Functions and Variables for data manipulation, descriptive, descriptive
+@node Introduction to descriptive, Functions and Variables for data manipulation, Package descriptive, Package descriptive
 @section Introduction to descriptive
 
 Package @code{descriptive} contains a set of functions for 
@@ -209,7 +209,7 @@ One must take care when working with categorical data. In the next example, symb
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for data manipulation, Functions and Variables for descriptive statistics, Introduction to descriptive, descriptive
+@node Functions and Variables for data manipulation, Functions and Variables for descriptive statistics, Introduction to descriptive, Package descriptive
 @section Functions and Variables for data manipulation
 
 @c -----------------------------------------------------------------------------
@@ -442,7 +442,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for descriptive statistics, Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for data manipulation, descriptive
+@node Functions and Variables for descriptive statistics, Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for data manipulation, Package descriptive
 @section Functions and Variables for descriptive statistics
 
 @c -----------------------------------------------------------------------------
@@ -1451,7 +1451,7 @@ See also function @code{quantile}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for descriptive statistics, descriptive
+@node Functions and Variables for specific multivariate descriptive statistics, Functions and Variables for statistical graphs, Functions and Variables for descriptive statistics, Package descriptive
 @section Functions and Variables for specific multivariate descriptive statistics
 
 @c -----------------------------------------------------------------------------
@@ -1812,7 +1812,7 @@ See also @code{cov} and @code{cov1}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for statistical graphs,  , Functions and Variables for specific multivariate descriptive statistics, descriptive
+@node Functions and Variables for statistical graphs,  , Functions and Variables for specific multivariate descriptive statistics, Package descriptive
 @section Functions and Variables for statistical graphs
 
 @c -----------------------------------------------------------------------------

@@ -62,13 +62,22 @@ gegen@"uber und erl@"autert die Begriffe.
        @code{%t} f@"ur Zwischenergebnisse abgelegt. Die Marken werden 
        fortlaufend numeriert.
 
+@item  Kommandozeile - command line
+       @sp 1
+       
 @item  Optionsvariable - option variable
        @sp 1
+       
+@item  Pipe - pipe
+       Eine Pipe (englisch für Rohr, Röhre) bezeichnet einen gepufferten uni- 
+       oder bidirektionalen Datenstrom zwischen zwei Prozessen nach dem „FIFO“ 
+       (First In - First Out)-Prinzip.
 
-@item Pipe - pipe
-      Eine Pipe (englisch für Rohr, Röhre) bezeichnet einen gepufferten uni- 
-      oder bidirektionalen Datenstrom zwischen zwei Prozessen nach dem „FIFO“ 
-      (First In - First Out)-Prinzip.
+@item  Programmfehler - bug
+       @sp 1
+       
+@item  Prompt - prompt
+       Kann auch als Eingabeaufforderung @"ubersetzt werden.
 
 @item  Schl@"usselwort - keyword
        @sp 1

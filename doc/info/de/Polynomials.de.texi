@@ -1222,6 +1222,36 @@ If @var{expr} is not a ratio, @var{expr} is returned.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@deffn {Function} partfrac (@var{expr}, @var{var})
+
+Expands the expression @var{expr} in partial fractions
+with respect to the main variable @var{var}.  @code{partfrac} does a complete
+partial fraction decomposition.  The algorithm employed is based on
+the fact that the denominators of the partial fraction expansion (the
+factors of the original denominator) are relatively prime.  The
+numerators can be written as linear combinations of denominators, and
+the expansion falls out.
+
+@example
+(%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
+                      2       2        1
+(%o1)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+(%i2) ratsimp (%);
+                                 x
+(%o2)                 - -------------------
+                         3      2
+                        x  + 4 x  + 5 x + 2
+(%i3) partfrac (%, x);
+                      2       2        1
+(%o3)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+@end example
+@end deffn
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} polydecomp (@var{p}, @var{x})
 
 Decomposes the polynomial @var{p} in the variable @var{x}

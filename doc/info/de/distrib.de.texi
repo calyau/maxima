@@ -14,9 +14,8 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to distrib, Functions and Variables for continuous distributions, distrib, distrib
+@node Introduction to distrib, Functions and Variables for continuous distributions, distrib, Package distrib
 @section Introduction to distrib
-
 
 Package @code{distrib} contains a set of functions for making probability computations on both discrete and continuous univariate models. 
 
@@ -257,7 +256,7 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 @c @closecatbox
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, distrib
+@node Functions and Variables for continuous distributions, Functions and Variables for discrete distributions, Introduction to distrib, Package distrib
 @section Functions and Variables for continuous distributions
 
 @c -----------------------------------------------------------------------------
@@ -2645,11 +2644,11 @@ To make use of this function, write first @code{load(distrib)}.
 
 @end deffn
 
-
-@node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions, distrib
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for discrete distributions,  , Functions and Variables for continuous distributions, Package distrib
 @section Functions and Variables for discrete distributions
 
-
+@c -----------------------------------------------------------------------------
 @deffn {Function} pdf_binomial (@var{x},@var{n},@var{p})
 Returns the value at @var{x} of the probability function of a @math{Binomial(n,p)} random variable, with @math{0<p<1} and @math{n} a positive integer. To make use of this function, write first @code{load(distrib)}.
 

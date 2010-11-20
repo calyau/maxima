@@ -8,13 +8,13 @@
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@menu
-* Introduction to atensor::
-* Functions and Variables for atensor::
-@end menu
+@c @menu
+@c * Introduction to atensor::
+@c * Functions and Variables for atensor::
+@c @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to atensor, Functions and Variables for atensor, atensor, atensor
+@node Introduction to atensor, Functions and Variables for atensor, Functions and Variables for ctensor, Tensoren
 @section Introduction to atensor
 
 @code{atensor} is an algebraic tensor manipulation package. To use @code{atensor},
@@ -112,11 +112,13 @@ simplifications.
 @c @c @closecatbox
 
 @c end concepts atensor
-@node Functions and Variables for atensor,  , Introduction to atensor, atensor
 
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for atensor,  , Introduction to atensor, Tensoren
 @section Functions and Variables for atensor
 
-@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
+@c -----------------------------------------------------------------------------
+@deffn  {Function} init_atensor (@var{alg_type}, @var{opt_dims})
 @deffnx {Function} init_atensor (@var{alg_type})
 
 Initializes the @code{atensor} package with the specified algebra type. @var{alg_type}

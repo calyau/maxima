@@ -20,8 +20,8 @@
 * Funktionen und Variablen f@"ur Programmfehler::
 @end menu
 
-@c --- 19.10.2010 DK -----------------------------------------------------------
-@node Einf@"uhrung in Programmfehler, Funktionen und Variablen f@"ur Programmfehler, Programmfehler, Top
+@c -----------------------------------------------------------------------------
+@node Einf@"uhrung in Programmfehler, Funktionen und Variablen f@"ur Programmfehler, Programmfehler, Programmfehler
 @section Einf@"uhrung in Programmfehler
 
 Maxima wird st@"andig weiterentwickelt. Der Funktionsumfang wird erweitert und 
@@ -32,13 +32,14 @@ Ein aktueller Link zur Website zum Berichten von Fehlern sowie die notwendigen
 Informationen @"uber die Maxima-Installation werden mit dem Befehl 
 @code{bug_report()} angezeigt. Um die Installation auf dem Rechner zu testen, 
 kann die Maxima-Testsuite ausgef@"uhrt werden. Die folgende @"Ubersicht zeigt 
-die Maxima-Kommandos f@"ur das Berichten von Fehlern:
+die Funktionen und Variablen f@"ur das Testen der Installation und das Berichten
+von Fehlern:
 
 @verbatim
      run_testsuite     testsuite_files     bug_report     build_info
 @end verbatim
 
-@c --- 15.10.2010 DK -----------------------------------------------------------
+@c -----------------------------------------------------------------------------
 @node Funktionen und Variablen f@"ur Programmfehler, , Einf@"uhrung in Programmfehler, Programmfehler
 @section Funktionen und Variablen f@"ur Programmfehler
 
@@ -46,46 +47,27 @@ die Maxima-Kommandos f@"ur das Berichten von Fehlern:
 @anchor{run_testsuite}
 @deffn {Funktion} run_testsuite ([@var{options}])
 
-@c Run the Maxima test suite. Tests producing the desired answer are
-@c considered ``passes,'' as are tests that do not produce the desired
-@c answer, but are marked as known bugs.
-@c @code{run_testsuite} takes the following optional keyword arguments
-
-Das Kommando @code{run_testsuite} f@"uhrt die Maxima-Testsuite aus. Erfolgreiche 
+Die Funktion @code{run_testsuite} f@"uhrt die Maxima-Testsuite aus. Erfolgreiche 
 Tests und Tests, die zwar nicht erfolgreich, aber als ein bekannter Fehler 
 gekennzeichnet sind, geben die Meldung "passed". @code{run_testsuite} akzeptiert
 die folgenden optionalen Schl@"usselworte als Argumente:
 
-@c Display all tests.  Normally, the tests are not displayed, unless the test 
-@c fails. (Defaults to @code{false}).
-
 @table @code
 @item display_all
-Erh@"alt das Schl@"usselwort @code{display_all} den Wert @code{true}, werden 
-alle Tests angezeigt. Der Standardwert ist @code{false}. In diesem Fall werden 
-nur die Tests angezeigt, die fehlschlagen.
-
-@c Displays tests that are marked as known bugs.  (Default is @code{false}).
+Hat das Schl@"usselwort @code{display_all} den Wert @code{true}, werden alle 
+Tests angezeigt. Der Standardwert ist @code{false}. In diesem Fall werden nur 
+die Tests angezeigt, die fehlschlagen.
 
 @item display_known_bugs
-Erh@"alt das Schl@"usselwort @code{display_known_bugs} den Wert @code{true}, 
-werden alle Tests angezeigt, die als fehlerhaft gekennzeichnet sind. Der 
-Standardwert ist @code{false}.
-
-@c This is a list of tests that should be run.  Each test can be
-@c specified by either a string or a symbol.  By default, all tests are
-@c run.  The complete set of tests is specified by @code{testsuite_files}.
+Hat das Schl@"usselwort @code{display_known_bugs} den Wert @code{true},  werden 
+alle Tests angezeigt, die als fehlerhaft gekennzeichnet sind. Der Standardwert 
+ist @code{false}.
 
 @item tests
 Das Schl@"usselwort @code{tests} erh@"alt eine Liste mit den Testdateien, die 
 ausgef@"uhrt werden sollen. Eine Testdatei kann durch eine Zeichenkette oder ein 
 Symbol angegeben werden. Der Standard ist, dass alle Testdateien ausgef@"uhrt
 werden, die in der Optionsvariablen @mref{testsuite_files} enthalten sind.
-
-@c Display time information.  If @code{true}, the time taken for each
-@c test file is displayed.  If @code{all}, the time for each individual
-@c test is shown if @code{display_all} is @code{true}.  The default is
-@c @code{false}, so no timing information is shown.
 
 @item time
 Hat das Schl@"usselwort @code{time} den Wert @code{true}, werden die Laufzeiten 
@@ -94,12 +76,6 @@ der einzelnen Testdateien angezeigt. Hat @code{time} den Wert @code{all} und
 Tests angezeigt. Der Standardwert ist @code{false}.
 @end table
 
-@c For example @code{run_testsuite(display_known_bugs = true, tests=[rtest5])}
-@c runs just test @code{rtest5} and displays the test that are marked as
-@c known bugs.
-@c @code{run_testsuite(display_all = true, tests=["rtest1", rtest1a])} will
-@c run tests @code{rtest1} and @code{rtest2}, and displays each test.
-
 Zum Beispiel f@"uhrt @code{run_testsuite(display_known_bugs = true, tests = 
 [rtest5])} die Testdatei @code{rtest5} aus und zeigt die Tests an, die als 
 fehlerhaft gekennzeichnet sind. 
@@ -107,17 +83,10 @@ fehlerhaft gekennzeichnet sind.
 Testdateien @code{rtest1} und @code{rtest2} aus und zeigt jeden einzelnen Test 
 an.
 
-@c @code{run_testsuite} changes the Maxima environment.
-@c Typically a test script executes @code{kill} to establish a known environment
-@c (namely one without user-defined functions and variables)
-@c and then defines functions and variables appropriate to the test.
-
-Es ist zu beachten, dass das Ausf@"uhren einer Testdatei die Maxima-Umgebung 
-@"andern kann. Typischerweise f@"uhrt eine Testdatei zuerst das Kommando 
-@code{kill} aus, um eine definierte Umgebung herzustellen, in der keine 
-benutzerdefinierten Funktionen und Variablen vorhanden sind.
-
-@c @code{run_testsuite} returns @code{done}.
+Das Ausf@"uhren einer Testdatei kann die Maxima-Umgebung @"andern. 
+Typischerweise f@"uhrt eine Testdatei zuerst das Kommando @code{kill(all)} aus, 
+um eine definierte Umgebung herzustellen, in der keine benutzerdefinierten 
+Funktionen und Variablen vorhanden sind.
 
 @code{run_testsuite} hat den R@"uckgabewert @code{done}.
 
@@ -130,13 +99,6 @@ benutzerdefinierten Funktionen und Variablen vorhanden sind.
 @anchor{testsuite_files}
 @defvr {Optionsvariable} testsuite_files
 
-@c @code{testsuite_files} is the set of tests to be run by
-@c @code{run_testsuite}.  It is a list of names of the files containing
-@c the tests to run.  If some of the tests in a file are known to fail,
-@c then instead of listing the name of the file, a list containing the
-@c file name and the test numbers that fail is used.
-@c For example, this is a part of the default set of tests:
-
 Die Optionsvariable @code{testsuite_files} enth@"alt die Liste der Testdateien, 
 die von @mref{run_testsuite} standardm@"a@ss{}ig ausgef@"uhrt werden. Wenn 
 bekannt ist, dass einzelne Tests einer Testdatei fehlschlagen werden, dann wird 
@@ -148,13 +110,9 @@ fehlerhafte Tests gekennzeichnet werden:
  ["rtest13s", ["rtest14", 57, 63]]
 @end example
 
-@c This specifies the testsuite consists of the files "rtest13s" and
-@c "rtest14", but "rtest14" contains two tests that are known to fail: 57
-@c and 63.
-
 Die Eintr@"age der Liste bedeuten, dass die Dateien "rtest13s" und "rtest14" 
-ausgef@"uhrt werden sollen und dass bekannt ist, dass die Tests mit den Nummern 57
-und 63 der Testdatei "rtest14" fehlschlagen werden.
+ausgef@"uhrt werden sollen und das bekannt ist, dass die Tests mit den Nummern 
+57 und 63 der Testdatei "rtest14" fehlschlagen werden.
 
 @c @opencatbox
 @c @category{Fehlersuche} @category{Optionsvariablen}
@@ -165,18 +123,11 @@ und 63 der Testdatei "rtest14" fehlschlagen werden.
 @anchor{bug_report}
 @deffn {Funktion} bug_report ()
 
-@c Prints out Maxima and Lisp version numbers, and gives a link
-@c to the Maxima project bug report web page.
-@c The version information is the same as reported by @code{build_info}.
-@c When a bug is reported, it is helpful to copy the Maxima
-@c and Lisp version information into the bug report.
-@c @code{bug_report} returns an empty string @code{""}.
-
-Zeigt die Maxima- und Lisp-Version sowie einen Link zur Maxima-Projekt 
-Webseite. Die Informationen zur Version werden auch von @mref{build_info}@
-angezeigt. Wenn ein Programmfehler berichtet wird, ist es hilfreich, die Maxima-
-und Lisp-Version in den Fehlerbericht aufzunehmen.
-@code{bug_report} gibt eine leere Zeichenkette @code{""} zur@"uck.
+Zeigt die Maxima- und Lisp-Version sowie einen Link zur Maxima-Projekt-Webseite.
+Die Informationen zur Version werden auch von @mref{build_info} angezeigt. Wenn 
+ein Programmfehler berichtet wird, ist es hilfreich, die Maxima- und 
+Lisp-Version in den Fehlerbericht aufzunehmen. @code{bug_report} gibt eine 
+leere Zeichenkette @code{""} zur@"uck.
 
 Beispiel:
 
@@ -204,9 +155,6 @@ The above information is also reported by the function 'build_info'
 @c --- 15.10.2010 DK -----------------------------------------------------------
 @anchor{build_info}
 @deffn {Funktion} build_info ()
-
-@c Prints out a summary of the parameters of the Maxima build.
-@c @code{build_info} returns an empty string @code{""}.
 
 Zeigt eine @"ubersicht mit Angaben zur installierten Version von Maxima.
 @code{build_info} gibt eine leere Zeichenkette @code{""} zur@"uck.

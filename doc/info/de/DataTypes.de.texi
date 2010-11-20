@@ -28,10 +28,12 @@
 * Funktionen und Variablen f@"ur Zeichenketten::
 * Funktionen und Variablen f@"ur Konstante::
 * Funktionen und Variablen f@"ur Arrays::
+* Einf@"uhrung in Listen::
+* Funktionen und Variablen f@"ur Listen::
 @end menu
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Einf@"uhrung in Maxima Zahlen, Zeichenketten, Datentypen, Top
+@node Einf@"uhrung in Maxima Zahlen, Zeichenketten, Datentypen und -strukturen, Datentypen und -strukturen
 @section Einf@"uhrung in Maxima Zahlen
 
 @subheading Ganze und rationale Zahlen
@@ -153,7 +155,7 @@ Funktionen f@"ur komplexe Zahlen:
 @c @closecatbox
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Zeichenketten, Funktionen und Variablen f@"ur Zahlen, Einf@"uhrung in Maxima Zahlen, Datentypen
+@node Zeichenketten, Funktionen und Variablen f@"ur Zahlen, Einf@"uhrung in Maxima Zahlen, Datentypen und -strukturen
 @section Zeichenketten
 
 @c Strings (quoted character sequences) are enclosed in double quote marks 
@@ -248,7 +250,7 @@ this string.";
 @c @closecatbox
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen f@"ur Zahlen, Funktionen und Variablen f@"ur Zeichenketten, Zeichenketten, Datentypen
+@node Funktionen und Variablen f@"ur Zahlen, Funktionen und Variablen f@"ur Zeichenketten, Zeichenketten, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Zahlen
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -838,7 +840,7 @@ Beispiele:
 @end deffn
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen f@"ur Zeichenketten, Funktionen und Variablen f@"ur Konstante, Funktionen und Variablen f@"ur Zahlen, Datentypen
+@node Funktionen und Variablen f@"ur Zeichenketten, Funktionen und Variablen f@"ur Konstante, Funktionen und Variablen f@"ur Zahlen, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Zeichenketten
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1019,7 +1021,7 @@ Beispiele:
 @end defvr
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
-@node Funktionen und Variablen f@"ur Konstante,  Funktionen und Variablen f@"ur Arrays, Funktionen und Variablen f@"ur Zeichenketten, Datentypen
+@node Funktionen und Variablen f@"ur Konstante,  Funktionen und Variablen f@"ur Arrays, Funktionen und Variablen f@"ur Zeichenketten, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Konstante
 
 @c --- 15.10.2010 DK -----------------------------------------------------------
@@ -1405,7 +1407,7 @@ Siehe auch @mref{zeroa} und @mrefdot{limit}
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Arrays, , Funktionen und Variablen f@"ur Konstante, Datentypen
+@node Funktionen und Variablen f@"ur Arrays, , Funktionen und Variablen f@"ur Konstante, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Arrays
 
 @c --- 12.11.2010 DK -----------------------------------------------------------

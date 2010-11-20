@@ -13,7 +13,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Groups,  , Groups, Groups
+@node Functions and Variables for Groups,  , groups
 @section Functions and Variables for Groups
 
 @c -----------------------------------------------------------------------------

@@ -16,7 +16,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform, Numerical, Numerical
+@node Introduction to fast Fourier transform, Functions and Variables for fast Fourier transform, Fouriertransformationen, Fouriertransformationen
 @section Introduction to fast Fourier transform
 
 The @code{fft} package comprises functions for the numerical (not symbolic) computation
@@ -29,9 +29,11 @@ of the fast Fourier transform.
 
 @c end concepts Numerical
 
-@node Functions and Variables for fast Fourier transform, Introduction to Fourier series, Introduction to fast Fourier transform, Numerical
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for fast Fourier transform, Introduction to Fourier series, Introduction to fast Fourier transform, Fouriertransformationen
 @section Functions and Variables for fast Fourier transform
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} polartorect (@var{r}, @var{t})
 
 Translates complex values of the form @code{r %e^(%i t)} to the form @code{a + b %i},
@@ -57,6 +59,7 @@ b = r sin(t)
 @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} recttopolar (@var{a}, @var{b})
 
 Translates complex values of the form @code{a + b %i} to the form @code{r %e^(%i t)},
@@ -84,6 +87,7 @@ The computed angle is in the range @code{-%pi} to @code{%pi}.
 @c @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} inverse_fft (@var{y})
 
 Computes the inverse complex fast Fourier transform.
@@ -167,9 +171,9 @@ Complex data.
 @c @opencatbox
 @c @category{Package fft}
 @c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} fft (@var{x})
 
 Computes the complex fast Fourier transform.
@@ -332,9 +336,9 @@ Computation of sine and cosine coefficients.
 @c @opencatbox
 @c @category{Package fft}
 @c @closecatbox
-
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @defvr {Option variable} fortindent
 Default value: 0
 
@@ -346,10 +350,11 @@ expressions to be printed farther to the right.
 @c @opencatbox
 @c @category{Translation and compilation}
 @c @closecatbox
-
 @end defvr
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} fortran (@var{expr})
+
 Prints @var{expr} as a Fortran statement.
 The output line is indented with spaces.
 If the line is too long, @code{fortran} prints continuation lines.
@@ -593,8 +598,8 @@ Examples:
 
 @end deffn
 
-
-@node Introduction to Fourier series, Functions and Variables for Fourier series, Functions and Variables for fast Fourier transform, Numerical
+@c -----------------------------------------------------------------------------
+@node Introduction to Fourier series, Functions and Variables for Fourier series, Functions and Variables for fast Fourier transform, Fouriertransformationen
 @section Introduction to Fourier series
 
 The @code{fourie} package comprises functions for the symbolic computation
@@ -606,11 +611,13 @@ coefficients and some functions for manipulation of expressions.
 @c @category{Fourier transform} @category{Share packages} @category{Package fourie}
 @c @closecatbox
 
-
-@node Functions and Variables for Fourier series, , Introduction to Fourier series, Numerical
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Fourier series, , Introduction to Fourier series, Fouriertransformationen
 @section Functions and Variables for Fourier series
 
 @c REPHRASE
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} equalp (@var{x}, @var{y})
 Returns @code{true} if @code{equal (@var{x}, @var{y})} otherwise @code{false} (doesn't give an
 error message like @code{equal (x, y)} would do in this case).
@@ -621,8 +628,10 @@ error message like @code{equal (x, y)} would do in this case).
 @c @closecatbox
 @end deffn
 
-@deffn {Function} remfun (@var{f}, @var{expr})
+@c -----------------------------------------------------------------------------
+@deffn  {Function} remfun (@var{f}, @var{expr})
 @deffnx {Function} remfun (@var{f}, @var{expr}, @var{x})
+
 @code{remfun (@var{f}, @var{expr})}
 replaces all occurrences of @code{@var{f} (@var{arg})} by @var{arg} in @var{expr}.
 
@@ -651,9 +660,11 @@ returns @code{true} if @var{expr} contains the function @var{f} and the variable
 @c @closecatbox
 @end deffn
 
-@deffn {Function} absint (@var{f}, @var{x}, @var{halfplane})
+@c -----------------------------------------------------------------------------
+@deffn  {Function} absint (@var{f}, @var{x}, @var{halfplane})
 @deffnx {Function} absint (@var{f}, @var{x})
 @deffnx {Function} absint (@var{f}, @var{x}, @var{a}, @var{b})
+
 @code{absint (@var{f}, @var{x}, @var{halfplane})}
 returns the indefinite integral of @var{f} with respect to
 @var{x} in the given halfplane (@code{pos}, @code{neg}, or @code{both}).
@@ -674,7 +685,10 @@ returns the definite integral of @var{f} with respect to @var{x} from @var{a} to
 @end deffn
 
 @c NEEDS EXPANSION
+
+@c -----------------------------------------------------------------------------
 @deffn {Function} fourier (@var{f}, @var{x}, @var{p})
+
 Returns a list of the Fourier coefficients of @code{@var{f}(@var{x})} defined
 on the interval @code{[-p, p]}.
 

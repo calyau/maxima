@@ -8,13 +8,8 @@
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@menu
-* Einf@"uhrung in Listen::
-* Funktionen und Variablen f@"ur Listen::
-@end menu
-
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Listen, Funktionen und Variablen f@"ur Listen, Listen, Listen
+@node Einf@"uhrung in Listen, Funktionen und Variablen f@"ur Listen, Funktionen und Variablen f@"ur Arrays, Datentypen und -strukturen
 @section Einf@"uhrung in Listen
 
 @c Lists are the basic building block for Maxima and Lisp.   All data types
@@ -63,7 +58,7 @@ ersten Element ein @code{simp}-Schalter hinzugef@"ugt:
 @end example
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Listen,  , Einf@"uhrung in Listen, Listen
+@node Funktionen und Variablen f@"ur Listen,  , Einf@"uhrung in Listen, Datentypen und -strukturen
 @section Funktionen und Variablen f@"ur Listen
 
 @c NEED ANOTHER deffn FOR GENERAL EXPREssIONS ARGUMENTS

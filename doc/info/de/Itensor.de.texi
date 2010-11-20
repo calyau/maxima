@@ -1,15 +1,24 @@
-@c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
-@c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
-
-@c RERUN EXAMPLES WITH ADDT'L WHITESPACE IN INPUT TO AID LEGIBILITY
+@c -----------------------------------------------------------------------------
+@c File        : Itensor.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 20.11.2010
+@c 
+@c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
+@c -----------------------------------------------------------------------------
 
 @menu
 * Introduction to itensor::
 * Functions and Variables for itensor::
+* Introduction to ctensor::
+* Functions and Variables for ctensor::
+* Introduction to atensor::
+* Functions and Variables for atensor::
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to itensor, Functions and Variables for itensor, itensor, itensor
+@node Introduction to itensor, Functions and Variables for itensor, Tensoren, Tensoren
 @section Introduction to itensor
 
 Maxima implements symbolic tensor manipulation of two distinct types:
@@ -265,7 +274,7 @@ specify the name of the metric, and perform some simple calculations.
 @c end concepts itensor
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for itensor,  , Introduction to itensor, itensor
+@node Functions and Variables for itensor,  , Introduction to itensor, Tensoren
 @section Functions and Variables for itensor
 @subsection Managing indexed objects
 

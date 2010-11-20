@@ -8,10 +8,6 @@
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
 
-@c Start Maxima with the command "maxima".  Maxima will display version
-@c information and a prompt.  End each Maxima command with a semicolon.
-@c End the session with the command "quit();".  Here's a sample session:
-
 Von einer Kommandozeile wird Maxima mit dem Kommando @code{maxima} gestartet. 
 Maxima zeigt die aktuelle Version an und gibt einen Prompt f@"ur die Eingabe 
 aus. Ein Maxima-Kommando wird mit einem Semikolon abgeschlossen. Eine 
@@ -39,20 +35,13 @@ provides bug reporting information.
 [wfs@@chromium]$
 @end example
 
-@c Maxima can search the info pages.  Use the @kbd{describe} command to show
-@c information about the command or all the commands and variables containing 
-@c a string. 
-@c The question mark @code{?} (exact search) and double question mark @code{??} 
-@c (inexact search) are abbreviations for @code{describe}:
-
 @noindent
-Maxima kann GNU Infotext anzeigen. Das Kommando @code{describe(text)} 
-zeigt alle Inhalte an, die die Zeichenkette @code{text} enthalten. Das 
-Fragezeichen @code{?} (exakte Suche) und zwei Fragezeichen @code{??} (ungenaue 
-Suche) sind abk@"urzende Schreibweisen f@"ur @code{describe}:
+Maxima kann GNU Infotext anzeigen. Das Kommando @code{describe(text)} zeigt 
+alle Inhalte an, die die Zeichenkette @code{text} enthalten. Das Fragezeichen
+@code{?} (exakte Suche) und zwei Fragezeichen @code{??} (ungenaue Suche) sind 
+abk@"urzende Schreibweisen f@"ur @code{describe}:
 
 @example
-@c Maxima 5.20post
 (%i1) ?? integrat
 
  0: Functions and Variables for Integration
@@ -93,10 +82,6 @@ Enter space-separated numbers, `all' or `none': 4
 (%o1)                                true
 @end example
 
-@c To use a result in later calculations, you can assign it to a variable or
-@c refer to it by its automatically supplied label.  In addition, @kbd{%}
-@c refers to the most recent calculated result:
-
 @noindent
 Das Ergebnis einer Rechnung wird mit dem Operator @code{:} einer Variablen 
 zugewiesen. Weiterhin speichert Maxima die Eingaben unter den Marken 
@@ -126,8 +111,6 @@ Eingaben und Ausgaben zur@"uckgegriffen werden. Auf die letzte Ausgabe kann mit
 (%o4)                              (y + x)
 @end example
 
-@c Maxima knows about complex numbers and numerical constants:
-
 @noindent
 Maxima kennt numerische Konstanten und kann mit komplexen Zahlen rechnen:
 
@@ -141,8 +124,6 @@ Maxima kennt numerische Konstanten und kann mit komplexen Zahlen rechnen:
 (%i2) exp(%i*%pi);
 (%o2)                          - 1
 @end example
-
-@c Maxima can do differential and integral calculus:
 
 @noindent
 Maxima kann differenzieren und integrieren:
@@ -167,8 +148,6 @@ Maxima kann differenzieren und integrieren:
                   6             sqrt(3)          3
 @end example
 
-@c Maxima can solve linear systems and cubic equations:
-
 @noindent
 Maxima kann lineare Gleichungssysteme und kubische Gleichungen l@"osen:
 
@@ -184,10 +163,6 @@ Maxima kann lineare Gleichungssysteme und kubische Gleichungen l@"osen:
 (%i2) solve (x^3 - 3*x^2 + 5*x = 15, x);
 (%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
 @end example
-
-@c Maxima can solve nonlinear sets of equations.  Note that if you don't
-@c want a result printed, you can finish your command with @kbd{$} instead
-@c of @kbd{;}.
 
 @noindent
 Maxima kann nichtlineare Gleichungssysteme l@"osen. Wird eine Eingabe mit 
@@ -210,8 +185,6 @@ Maxima kann nichtlineare Gleichungssysteme l@"osen. Wird eine Eingabe mit
                           [y = -------------, x = - -----------]]
                                      2                   2
 @end example
-
-@c Maxima can generate plots of one or more functions:
 
 @noindent
 Maxima kann Funktionsgraphen mit einer oder mehreren Funktionen zeichnen:

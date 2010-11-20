@@ -80,6 +80,9 @@
 @iftex
 @hyphenation{aus-ge-wer-tet
              Dol-lar-zei-chen
+             Ei-gen-schafts-lis-te
+             ent-hal-ten
+             ge-ne-riert
              ge-spei-chert
              Glei-chung
              Gnuplot
@@ -92,6 +95,7 @@
              un-ge-ra-de
              ver-ein-fach-en
              wei-te-ren
+             wei-ter-hin
              wxMaxima
              Xmaxima
              Zei-chen-ket-ten

@@ -77,8 +77,8 @@ Beispiele:
 @c or text. Files on the disks are figuratively grouped into "directories".
 @c A directory is just a list of files. Commands which deal with files are:
 
-@c TODO: HIER FEHLEN AUSF@"UHRUNGEN DIE MAXIMA BETREFFEN.
-@c       DIE OBIGEN AUSF@"UHRUNGEN SIND ZU ALLGEMEIN.
+@c TODO: HIER FEHLEN AUSFUEHRUNGEN DIE MAXIMA BETREFFEN.
+@c       DIE OBIGEN AUSFUEHRUNGEN SIND ZU ALLGEMEIN.
 
 Folgende Funktionen und Variable arbeiten mit Dateien:
 

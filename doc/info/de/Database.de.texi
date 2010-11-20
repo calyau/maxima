@@ -1,9 +1,9 @@
 @c -----------------------------------------------------------------------------
-@c File     : Declarations.de.texi
-@c License  : GNU General Public License (GPL)
-@c Language : German
-@c Author   : Dr. Dieter Kaiser
-@c Date     : 22.10.2010
+@c File        : Declarations.de.texi
+@c License     : GNU General Public License (GPL)
+@c Language    : German
+@c Translation : Dr. Dieter Kaiser
+@c Date        : 22.10.2010
 @c 
 @c This file is part of Maxima -- GPL CAS based on DOE-MACSYMA
 @c -----------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Einf@"uhrung in Maximas Datenbank, Funktionen und Variablen f@"ur Eigenschaften, Maximas Datenbank
+@node Einf@"uhrung in Maximas Datenbank, Funktionen und Variablen f@"ur Eigenschaften, Maximas Datenbank, Maximas Datenbank
 @section Einf@"uhrung in Maximas Datenbank
 
 @subheading Eigenschaften
@@ -156,7 +156,7 @@ Ein Ausdruck wird von Maxima als ein konstanter Ausdruck erkannt, wenn seine
 Argumente Zahlen sind (einschlie@ss{}lich von Zahlen in einer CRE-Darstellung), 
 symbolische Konstanten wie @code{%pi}, @code{%e} und @code{%i}, 
 Variablen, die einen konstanten Wert haben oder die mit @code{declare} als 
-konstant deklariert sind, oder Funktionen, dessen Argumente konstant sind.
+konstant deklariert sind, oder Funktionen, deren Argumente konstant sind.
 
 @c @code{constantp} evaluates its arguments.
 
@@ -219,31 +219,30 @@ stets @code{done} zur@"uck.
 @c @var{object} has been declared to have @var{feature}. However, 
 @c @code{featurep} does not recognize some flags; this is a bug.
 
-Wie in der Beschreibung zu den Deklarationen aufgef@"uhrt, gibt 
-@code{featurep(@var{object}, @var{feature})} f@"ur einige Flags @code{true} 
-zur@"uck, wenn zuvor @var{object} die Eigenschaft @var{feature} haben soll.
+Wie in den folgenden Beschreibungen ausgef@"uhrt, gibt
+@code{featurep(@var{object}, @var{feature})} f@"ur einige Schalter @code{true}
+zur@"uck, wenn @var{object} die Eigenschaft @var{feature} erhalten hat.
 
 @c @code{declare} recognizes the following properties:
 
 Die Funktion @code{declare} kennt die folgenden Eigenschaften:
 
 @table @asis
-@item @code{evfun}
 
 @c Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
 @c is applied when @var{a_i} appears as a flag argument of @code{ev}. 
 @c See @code{evfun}.
 
+@item @code{evfun}
 Deklariert @var{a_i} als eine Auswertungsfunktion. Tritt die Funktion @var{a_i} 
 als Argument der Funktion @code{ev} auf, so wird die Funktion angewendet. Siehe
 @code{evfun}.
-
-@item @code{evflag}
 
 @c Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to
 @c @code{true} during the execution of @code{ev} when @var{a_i} appears as a 
 @c flag argument of @code{ev}. See @code{evflag}.
 
+@item @code{evflag}
 Deklariert @code{a_i} als ein Auswertungsflag. W@"ahrend der Auswertung von
 @code{ev} erh@"alt das Auswertungsflag @code{a_i} den Wert @code{true}. Siehe 
 @code{evflag}.
@@ -251,208 +250,178 @@ Deklariert @code{a_i} als ein Auswertungsflag. W@"ahrend der Auswertung von
 @c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 @c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
-@item @code{bindtest}
-
 @c Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
 
+@item @code{bindtest}
 Wird das Symbol @var{a_i} ausgewertet, ohne das dem Symbol bisher ein Wert
 zugewiesen wurde, signalisiert Maxima einen Fehler.  
-
-@item @code{noun}
 
 @c Tells Maxima to parse @var{a_i} as a noun. 
 @c The effect of this is to replace instances of @var{a_i} with 
 @c @code{'@var{a_i}} or @code{nounify(@var{a_i})}, depending on the context.
 
+@item @code{noun}
 @var{a_i} wird als Substantivform interpretiert. Abh@"angig vom Kontext wird 
 @var{a_i} durch @code{'@var{a_i}} oder @code{nounify(@var{a_i})} ersetzt.
-
-@item @code{constant}
 
 @c Tells Maxima to consider @var{a_i} a symbolic constant.
    @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
    @c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
    @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
+@item @code{constant}
 @var{a_i} wird als eine symbolische Konstante interpretiert.
-
-@item @code{scalar}
 
 @c Tells Maxima to consider @var{a_i} a scalar variable.
 
+@item @code{scalar}
 @var{a_i} wird als skalare Variable interpretiert.
-
-@item @code{nonscalar}
 
 @c Tells Maxima to consider @var{a_i} a nonscalar variable. The usual 
 @c application is to declare a variable as a symbolic vector or matrix.
 
+@item @code{nonscalar}
 @var{a_i} wird als eine nicht-skalare Variable interpretiert. @"Uberlicherweise
 wird damit ein symbolischer Vektor oder eine Matrix deklariert.
-
-@item @code{mainvar}
 
 @c Tells Maxima to consider @var{a_i} a "main variable". A main variable 
 @c succeeds all other constants and variables in the canonical ordering of 
 @c Maxima expressions, as determined by @code{ordergreatp}.
 
+@item @code{mainvar}
 @var{mainvar} wird als eine "Hauptvariable" interpretiert. Eine Hauptvariable
 wird vor allen Konstanten und Variablen in einer kanonischen Ordnung eines
 Maxima-Ausdr@"uckes angeordnet. Die Anordnung wird durch die Funktion 
 @code{ordergreatp} bestimmt.
 
-@item @code{alphabetic}
-
 @c Tells Maxima to recognize all characters in @var{a_i} (which must be a 
 @c string) as alphabetic characters.
 
+@item @code{alphabetic}
 @var{a_i} is ein String, dessen Zeichen von Maxima als alphabetische Zeichen 
 interpretiert werden.
-
-@item @code{feature}
 
 @c Tells Maxima to recognize @var{a_i} as the name of a feature. Other atoms 
 @c may then be declared to have the @var{a_i} property.
 
+@item @code{feature}
 @var{a_i} wird als eine Eigenschaft @code{feature} interpretiert. Andere 
 Symbole k@"onnen dann diese Eigenschaft erhalten.
-
-@item @code{rassociative}, @code{lassociative}
 
 @c Tells Maxima to recognize @var{a_i} as a right-associative or 
 @c left-associative function.
 
+@item @code{rassociative}, @code{lassociative}
 @var{a_i} wird als eine rechts- oder links-assoziative Funktion interpretiert.
 
-@item @code{nary}
-
 @c Tells Maxima to recognize @var{a_i} as an n-ary function.
-
-@var{a_i} wird als eine Nary-Funktion interpretiert.
 
 @c The @code{nary} declaration is not the same as calling the @code{nary} 
 @c function. The sole effect of @code{declare(foo, nary)} is to instruct the 
 @c Maxima simplifier to flatten nested expressions, for example, to simplify 
 @c @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
 
-Die Deklaration @code{nary} unterscheidet sich von der Funktion @code{nary}. 
-W@"ahrend der Funktionsaufruf einen neuen Operator definiert, wirkt sich die
-Deklaration nur auf die Vereinfachung aus. Verschachtelte Ausdr@"ucke wie
-@code{foo(x, foo(y,z))} werden zu @code{foo(x, y, z)} vereinfacht.
-
-@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
+@item @code{nary}
+@var{a_i} wird als eine Nary-Funktion interpretiert.
+Verschachtelte Ausdr@"ucke wie @code{foo(x, foo(y,z))} werden zu 
+@code{foo(x, y, z)} vereinfacht. Die Deklaration @code{nary} unterscheidet sich
+von der Funktion @code{nary}. W@"ahrend der Funktionsaufruf einen neuen Operator definiert, wirkt sich die Deklaration nur auf die Vereinfachung aus.
 
 @c Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
 @c @code{commutative} is the same as @code{symmetric}.
 
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
 @var{a_i} wird als eine symmetrische, antisymmetrische oder kommutative Funktion
 interpretiert. @code{commutative} und @code{symmtric} sind @"aquivalent.
 
-@item @code{oddfun}, @code{evenfun}
-
 @c Tells Maxima to recognize @var{a_i} as an odd or even function.
 
+@item @code{oddfun}, @code{evenfun}
 @var{a_i} wird als eine ungerade oder gerade Funktion interpretiert.
-
-@item @code{outative}
 
 @c Tells Maxima to simplify @var{a_i} expressions by pulling constant factors 
 @c out of the first argument.
-
-Ausdr@"ucke mit der Funktion @var{a_i} werden so vereinfacht, dass konstante 
-Faktoren aus dem Argument herausgezogen werden. 
-
 @c When @var{a_i} has one argument, a factor is considered constant if it is a
 @c literal or declared constant.
-
-Hat die Funktion @var{a_i} ein Argument, wird ein Faktor dann als konstant 
-angesehen, wenn er ein Symbol oder eine deklarierte Konstante ist.
-
 @c When @var{a_i} has two or more arguments, a factor is considered constant
 @c if the second argument is a symbol and the factor is free of the second 
 @c argument.
 
-Hat die Funktion @var{a_i} zwei oder mehr Argumente, wird ein Faktor dann als 
-konstant angesehen, wenn das zweite Argument ein Symbol und der Faktor 
-unabh@"angig vom zweiten Argument ist.
-
-@item @code{multiplicative}
+@item @code{outative}
+Ausdr@"ucke mit der Funktion @var{a_i} werden so vereinfacht, dass konstante 
+Faktoren aus dem Argument herausgezogen werden. Hat die Funktion @var{a_i} ein 
+Argument, wird ein Faktor dann als konstant angesehen, wenn er ein Symbol oder 
+eine deklarierte Konstante ist. Hat die Funktion @var{a_i} zwei oder mehr 
+Argumente, wird ein Faktor dann als konstant angesehen, wenn das zweite Argument
+ein Symbol und der Faktor unabh@"angig vom zweiten Argument ist.
 
 @c Tells Maxima to simplify @var{a_i} expressions by the substitution 
 @c @code{@var{a_i}(x * y * z * ...)} @code{-->} @code{@var{a_i}(x) * 
 @c @var{a_i}(y) * @var{a_i}(z) * ...}. The substitution is carried out on the 
 @c first argument only.
 
+@item @code{multiplicative}
 Ausdr@"ucke @code{@var{a_i}(x * y * z * ...)} werden durch @code{@var{a_i}(x) * 
 @var{a_i}(y) * @var{a_i}(z) * ...} ersetzt. Die Ersetzung wird nur f@"ur das
 Argument der Funktion @var{a_i} ausgef@"uhrt.
-
-@item @code{additive}
 
 @c Tells Maxima to simplify @var{a_i} expressions by the substitution 
 @c @code{@var{a_i}(x + y + z + ...)} @code{-->} @code{@var{a_i}(x) + 
 @c @var{a_i}(y) + @var{a_i}(z) + ...}. The substitution is carried out on the 
 @c first argument only.
 
+@item @code{additive}
 Ausdr@"ucke @code{@var{a_i}(x + y + z + ...)} werden  durch @code{@var{a_i}(x) + 
 @var{a_i}(y) + @var{a_i}(z) + ...} ersetzt. Die Ersetzung wird nur f@"ur das 
 Argument ausgef@"uhrt. 
 
-@item @code{linear}
-
 @c Equivalent to declaring @var{a_i} both @code{outative} and @code{additive}.
 
+@item @code{linear}
 Entspricht der Deklaration einer Funktion als @code{outative} und 
 @code{additive}.
 
 @c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
-@item @code{integer}, @code{noninteger}
-
 @c Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
 
+@item @code{integer}, @code{noninteger}
 @var{a_i} wird als eine ganzzahlige oder nichtganzzahlige Variable 
 interpretiert.
 
-@item @code{even}, @code{odd}
-
 @c Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
 
+@item @code{even}, @code{odd}
 @var{a_i} wird als eine gerade oder ungerade ganze Zahl interpretiert.
-
-@item @code{rational}, @code{irrational}
 
 @c Tells Maxima to recognize @var{a_i} as a rational or irrational real 
 @c variable.
 
+@item @code{rational}, @code{irrational}
 @var{a_i} wird als eine rationale oder irrationale Zahl interpretiert.
-
-@item @code{real}, @code{imaginary}, @code{complex}
 
 @c Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex 
 @c variable.
 
+@item @code{real}, @code{imaginary}, @code{complex}
 @var{a_i} wird als eine reelle, imagin@"are oder komplexe Zahl interpretiert.
-
-@item @code{increasing}, @code{decreasing}
 
 @c Tells Maxima to recognize @var{a_i} as an increasing or decreasing function.
    @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
    @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
    @c REPORTED AS SF BUG # 1483194
 
+@item @code{increasing}, @code{decreasing}
 @var{a_i} wird als eine steigende oder fallende Funktion interpretiert.
-
-@item @code{posfun}
 
 @c Tells Maxima to recognize @var{a_i} as a positive function.
 
+@item @code{posfun}
 @var{a_i} wird als eine positive Funktion interpretiert.
-
-@item @code{integervalued}
 
 @c Tells Maxima to recognize @var{a_i} as an integer-valued function.
 
+@item @code{integervalued}
 @var{a_i} wird als Funktion mit ganzzahligen Werten interpretiert.
 
 @end table
@@ -737,7 +706,7 @@ aa unbound variable
 
 Maxima kennt Systemeigenschaften und mathematische Eigenschaften, die Symbole 
 und Ausdr@"ucke haben k@"onnen. F@"ur Systemeigenschaften siehe die Funktion 
-@mrefdot{status}. F@"ur mathematische Eigenschaften siehe die Funktionen
+@mrefdot{status} F@"ur mathematische Eigenschaften siehe die Funktionen
 @mref{declare} und @mrefdot{featurep}
 
 @c PROPERTIES, DECLARATIONS FALL UNDER THIS HEADING AS WELL
@@ -767,10 +736,10 @@ Eigenschaften f@"ur Symbole und Funktionen.
 @c Note that @code{featurep} returns @code{false} when neither @var{f} nor the 
 @c negation of @var{f} can be established.
 
-Es muss beachtet werden, dass @code{featurep} sowohl f@"ur den Fall @code{false}
-zur@"uckgibt, dass das Argument @var{a} nicht die Eigenschaft @var{f} hat, als
-auch f@"ur den Fall, dass Maxima dies nicht anhand der bekannten Fakten und
-Eigenschaften entscheiden kann.
+@code{featurep} gibt sowohl f@"ur den Fall @code{false} zur@"uck, dass das 
+Argument @var{a} nicht die Eigenschaft @var{f} hat, als auch f@"ur den Fall, 
+dass Maxima dies nicht anhand der bekannten Fakten und Eigenschaften entscheiden
+kann.
 
 @c @code{featurep} evaluates its argument.
 
@@ -843,8 +812,8 @@ Hinzu kommen die vom Nutzer definierten Eigenschaften.
 @c @code{features} is a list of mathematical features. There is also a list of 
 @c non-mathematical, system-dependent features. See @code{status}.
 
-@code{features} ist eine liste der mathematischen Eigenschaften. Es gibt noch 
-weitere Eigenschaften. Siehe @mref{declare} und @mref{status}.
+@code{features} ist eine Liste der mathematischen Eigenschaften. Es gibt 
+weitere Eigenschaften. Siehe @mref{declare} und @mrefdot{status}
 
 @c @opencatbox
 @c @category{Deklarationen und Inferenzen}
@@ -872,8 +841,8 @@ Matrix oder Liste bei nicht-kommutativen Rechenoperationen.
 @c Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains atoms 
 @c declared as non-scalars, lists, or matrices.
 
-Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} nicht ein Skalar ist. Der
-Ausdruck enth@"alt dann Matrizen, Listen oder Symbole, die als ein nicht-Skalar
+Gibt @code{true} zur@"uck, wenn der Ausdruck @var{expr} kein Skalar ist. Der
+Ausdruck enth@"alt dann Matrizen, Listen oder Symbole, die als @code{nonscalar}
 deklariert wurden.
 
 @c @opencatbox
@@ -889,7 +858,7 @@ deklariert wurden.
 @c @code{is (f(x) > 0)} yields @code{true}.
 
 @code{declare(f, posfun)} deklariert die Funktion @code{f} als positive
-Funktion. @code{is (f(x) > 0)} gibt dann @code{true}.
+Funktion. @code{is (f(x) > 0)} gibt dann @code{true} zur@"uck.
 
 @c @opencatbox
 @c @category{Deklarationen und Inferenzen} @category{Operatoren}
@@ -934,7 +903,7 @@ nicht-kommutativen Rechenoperationen.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Funktionen und Variablen f@"ur Fakten, Aussagefunktionen, Funktionen und Variablen f@"ur Eigenschaften, Maximas Datenbank
+@node Funktionen und Variablen f@"ur Fakten, Funktionen und Variablen f@"ur Aussagen, Funktionen und Variablen f@"ur Eigenschaften, Maximas Datenbank
 @section Funktionen und Variablen f@"ur Fakten
 
 @c --- 27.08.2010 DK -----------------------------------------------------------
@@ -945,19 +914,19 @@ nicht-kommutativen Rechenoperationen.
 @c these contexts are then available to make deductions and retrieve 
 @c information. The facts in these contexts are not listed by @code{facts ()}.
 
-Die Funktion @code{activate(@var{context}} aktiviert den Kontext @var{context}.
+Die Funktion @code{activate(@var{context})} aktiviert den Kontext @var{context}.
 Der Funktion @code{activate} k@"onnen auch mehrere Kontexte @var{context_1}, ..., 
 @var{context_n} @"ubergeben werden. Nur die Fakten eines aktiven Kontextes stehen 
 f@"ur die Auswertung von Aussagen zur Verf@"ugung.
 
 Maxima gibt @code{done} zur@"uck, wenn der Kontext erfolgreich aktiviert werden
-konnte oder wenn der Kontext bereits aktiv war. Wird versucht, einen nicht 
+konnte oder wenn der Kontext bereits aktiv ist. Wird versucht, einen nicht 
 existierenden Kontext zu aktivieren, gibt Maxima eine Fehlermeldung aus. 
 
-Es ist zu beachten, dass das Kommando @code{facts()} immer die Fakten des 
-aktuellen Kontextes ausgibt. Die Fakten anderer Kontexte k@"onnen zwar aktiv
-sein, sind aber in der R@"uckgabe von @code{facts} nicht enthalten. Um die Fakten 
-eines anderen Kontextes @var{context} auszugeben, kann das Kommando 
+Das Kommando @code{facts()} gibt immer die Fakten des aktuellen Kontextes aus. 
+Die Fakten anderer Kontexte k@"onnen zwar aktiv sein, sind aber in der 
+R@"uckgabe von @code{facts} nicht enthalten. Um die Fakten eines anderen 
+Kontextes @var{context} auszugeben, kann das Kommando 
 @code{facts(@var{context})} ausgef@"uhrt werden.
 
 @c The variable @code{activecontexts} is the list of contexts which are active 
@@ -1077,17 +1046,17 @@ eingetragen. Der R@"uckgabewert von @code{asksign} ist @code{pos}, @code{neg} od
 
 @c --- 26.08.2010 DK -----------------------------------------------------------
 @anchor{assume}
-@deffn {Function} assume (@var{pred_1}, ..., @var{pred_n})
+@deffn {Funktion} assume (@var{pred_1}, ..., @var{pred_n})
 
 @c Adds predicates @var{pred_1}, ..., @var{pred_n} to the current context. If a 
 @c predicate is inconsistent or redundant with the predicates in the current 
 @c context, it is not added to the context. The context accumulates predicates 
 @c from each call to @code{assume}.
 
-f@"ugt die Aussagen @var{pred_1}, ..., @var{pred_n} dem gegenw@"artigen Kontext
+F@"ugt die Aussagen @var{pred_1}, ..., @var{pred_n} dem gegenw@"artigen Kontext
 hinzu. Eine inkonsistente oder redunante Aussage wird dem Kontext nicht 
-hinzugef@"ugt. Jeder Aufruf von @code{assume} f@"ugt dem Kontext weitere Aussagen 
-hinzu.
+hinzugef@"ugt. Jeder Aufruf von @code{assume} f@"ugt dem Kontext weitere 
+Aussagen hinzu.
 
 @c @code{assume} returns a list whose elements are the predicates added to the 
 @c context or the atoms @code{redundant} or @code{inconsistent} where 

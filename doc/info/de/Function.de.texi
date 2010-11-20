@@ -16,11 +16,11 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Function Definition, Function, Function Definition, Function Definition
+@node Introduction to Function Definition, Function, Funktionsdefinitionen, Funktionsdefinitionen
 @section Introduction to Function Definition
 
 @c -----------------------------------------------------------------------------
-@node Function, Macros, Introduction to Function Definition, Function Definition
+@node Function, Macros, Introduction to Function Definition, Funktionsdefinitionen
 @section Function
 
 @c @opencatbox
@@ -30,25 +30,22 @@
 @c -----------------------------------------------------------------------------
 @subsection Ordinary functions
 
-To define a function in Maxima you use the @code{:=} operator.
-E.g.
+To define a function in Maxima you use the @code{:=} operator. E.g.
 
 @example
 f(x) := sin(x)
 @end example
 
 @noindent
-defines a function @code{f}.
-Anonmyous functions may also be created using @code{lambda}.
-For example
+defines a function @code{f}. Anonmyous functions may also be created using 
+@code{lambda}. For example
 
 @example
 lambda ([i, j], ...)
 @end example
 
 @noindent
-can be used instead of @code{f}
-where
+can be used instead of @code{f} where
 
 @example
 f(i,j) := block ([], ...);
@@ -58,9 +55,8 @@ map (lambda ([i], i+1), l)
 @noindent
 would return a list with 1 added to each term.
 
-You may also define a function with a variable number of arguments,
-by having a final argument which is assigned to a list of the extra
-arguments:
+You may also define a function with a variable number of arguments, by having a 
+final argument which is assigned to a list of the extra arguments:
 
 @example
 (%i1) f ([u]) := u;
@@ -180,11 +176,12 @@ except for @code{kill(@var{a})} or @code{remarray(@var{a})},
 which also remove the function definition.
 
 @c -----------------------------------------------------------------------------
-@node Macros, Functions and Variables for Function Definition, Function, Function Definition
+@node Macros, Functions and Variables for Function Definition, Function, Funktionsdefinitionen
 @section Macros
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} buildq (@var{L}, @var{expr})
+
 Substitutes variables named by the list @var{L} into the expression @var{expr},
 in parallel,
 without evaluating @var{expr}.
@@ -328,6 +325,7 @@ create another function for which some of the arguments are fixed.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} macroexpand (@var{expr})
+
 Returns the macro expansion of @var{expr} without evaluating it,
 when @code{expr} is a macro function call.
 Otherwise, @code{macroexpand} returns @var{expr}.
@@ -376,6 +374,7 @@ Examples
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} macroexpand1 (@var{expr})
+
 Returns the macro expansion of @var{expr} without evaluating it,
 when @code{expr} is a macro function call.
 Otherwise, @code{macroexpand1} returns @var{expr}.
@@ -420,15 +419,20 @@ Examples
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Global variable} macros
-Default value: @code{[]}
+@c --- 19.11.2010 DK -----------------------------------------------------------
+@defvr {Systemvariable} macros
+Standardwert: @code{[]}
 
-@code{macros} is the list of user-defined macro functions.
-The macro function definition operator @code{::=} puts a new macro function onto this list,
-and @code{kill}, @code{remove}, and @code{remfunction} remove macro functions from the list.
+@c @code{macros} is the list of user-defined macro functions. The macro function
+@c definition operator @code{::=} puts a new macro function onto this list, and 
+@c @code{kill}, @code{remove}, and @code{remfunction} remove macro functions 
+@c from the list. See also @code{infolists}.
 
-See also @code{infolists}.
+@code{macros} ist eine Informationsliste, die die vom Nutzer mit dem Operator
+@code{::=} definierten Makro-Funktionen enth@"alt. Wird die Makro-Funktion mit 
+einer der Funktionen @code{kill}, @code{remove} oder @code{remfunction} 
+gel@"oscht, wird der Eintrag aus der Informationsliste entfernt. Siehe auch 
+@mrefdot{infolists}
 
 @c @opencatbox
 @c @category{Function definition} @category{Global variables}
@@ -525,7 +529,7 @@ Examples
 @c end concepts Function Definition
 
 @c -----------------------------------------------------------------------------
-@node Functions and Variables for Function Definition, Funktionen und Variable für Funktionsanwendungen, Macros, Function Definition
+@node Functions and Variables for Function Definition, , Macros, Funktionsdefinitionen
 @section Functions and Variables for Function Definition
 
 @c -----------------------------------------------------------------------------
@@ -618,6 +622,7 @@ Improper name or value in functional position.
 @c -----------------------------------------------------------------------------
 @deffn {Function} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
 @deffnx {Function} block (@var{expr_1}, ..., @var{expr_n})
+
 @code{block} evaluates @var{expr_1}, ..., @var{expr_n} in sequence
 and returns the value of the last expression evaluated.
 The sequence can be modified by the @code{go}, @code{throw}, and @code{return} functions.
@@ -676,6 +681,7 @@ but can be used in other places as well.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} break (@var{expr_1}, ..., @var{expr_n})
+
 Evaluates and prints @var{expr_1}, ..., @var{expr_n} and then
 causes a Maxima break at which point the user can examine and change
 his environment.  Upon typing @code{exit;} the computation resumes.
@@ -690,6 +696,7 @@ his environment.  Upon typing @code{exit;} the computation resumes.
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} catch (@var{expr_1}, ..., @var{expr_n})
+
 Evaluates @var{expr_1}, ..., @var{expr_n} one by one; if any
 leads to the evaluation of an expression of the
 form @code{throw (arg)}, then the value of the @code{catch} is the value of
@@ -775,7 +782,7 @@ the quote-quote operator @code{'@w{}'} defeats quotation.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffn  {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
 @deffnx {Function} define (@var{f}[@var{x_1}, ..., @var{x_n}], @var{expr})
 @deffnx {Function} define (funmake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
 @deffnx {Function} define (arraymake (@var{f}, [@var{x_1}, ..., @var{x_n}]), @var{expr})
@@ -1044,8 +1051,9 @@ Cannot assign to `baz_quux'.
 @end deffn
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} dispfun (@var{f_1}, ..., @var{f_n})
+@deffn  {Function} dispfun (@var{f_1}, ..., @var{f_n})
 @deffnx {Function} dispfun (all)
+
 Displays the definition of the user-defined functions @var{f_1}, ..., @var{f_n}.
 Each argument may be the name of a macro (defined with @code{::=}),
 an ordinary function (defined with @code{:=} or @code{define}),
@@ -1144,24 +1152,32 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {System variable} functions
-Default value: @code{[]}
+@c --- 19.11.2010 DK -----------------------------------------------------------
+@anchor{functions}
+@defvr {Systemvariable} functions
+Standardwert: @code{[]}
 
-@code{functions} is the list of ordinary Maxima functions
-in the current session.
-An ordinary function is a function constructed by
-@code{define} or @code{:=} and called with parentheses @code{()}.
-A function may be defined at the Maxima prompt
-or in a Maxima file loaded by @code{load} or @code{batch}.
+@c @code{functions} is the list of ordinary Maxima functions in the current 
+@c session. An ordinary function is a function constructed by @code{define} or 
+@c @code{:=} and called with parentheses @code{()}. A function may be defined at
+@c the Maxima prompt or in a Maxima file loaded by @code{load} or @code{batch}.
 
-Array functions (called with square brackets, e.g., @code{F[x]})
-and subscripted functions (called with square brackets and parentheses, e.g., @code{F[x](y)})
-are listed by the global variable @code{arrays}, and not by @code{functions}.
+@code{functions} ist eine Informationsliste, die die vom Benutzer mit dem
+Operator @var{:=} oder der Funktion @code{define} definierten Funktionen 
+enth@"alt. Siehe @mrefdot{infolists}
 
-Lisp functions are not kept on any list.
+@c Array functions (called with square brackets, e.g., @code{F[x]}) and 
+@c subscripted functions (called with square brackets and parentheses, e.g., 
+@c @code{F[x](y)}) are listed by the global variable @code{arrays}, and not by 
+@c @code{functions}.
 
-Examples:
+Array-Funktionen und indizierte Funktionen werden nicht in die Informationsliste
+@code{functions}, sondern in die Informationsliste @code{arrays} eingetragen.
+Siehe @mrefdot{arrays}
+
+@c Lisp functions are not kept on any list.
+
+Beispiele:
 
 @c ===beg===
 @c F_1 (x) := x - 100;
@@ -2442,6 +2458,7 @@ assignments to the translation flags (@code{tr_numer}, etc.) have no effect on t
 
 @c -----------------------------------------------------------------------------
 @deffn {Function} declare_translated (@var{f_1}, @var{f_2}, ...)
+
 When translating a file of Maxima code
 to Lisp, it is important for the translator to know which functions it
 sees in the file are to be called as translated or compiled functions,

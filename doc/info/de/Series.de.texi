@@ -13,6 +13,7 @@
 * Einf@"uhrung in Reihen::
 * Funktionen und Variablen f@"ur Reihen::
 * Poisson Reihen::
+* Kettenbr@"uche::
 @end menu
 
 @c -----------------------------------------------------------------------------
@@ -1536,7 +1537,7 @@ When @code{verbose} is @code{true}, @code{powerseries} prints progress messages.
 @end defvr
 
 @c -----------------------------------------------------------------------------
-@node Poisson Reihen, , Funktionen und Variablen f@"ur Reihen, Summen Produkte und Reihen
+@node Poisson Reihen, Kettenbr@"uche, Funktionen und Variablen f@"ur Reihen, Summen Produkte und Reihen
 @section Poisson Reihen
 
 @c NEED EXAMPLES HERE
@@ -1750,6 +1751,170 @@ it will convert @var{a} into a Poisson encoding first, if necessary.
 @c @category{Poisson series} @category{Display functions}
 @c @closecatbox
 @end deffn
+
+@c -----------------------------------------------------------------------------
+@node Kettenbr@"uche, , Poisson Reihen, Summen Produkte und Reihen
+@section Kettenbr@"uche
+
+@c -----------------------------------------------------------------------------
+@anchor{cf}
+@deffn {Function} cf (@var{expr})
+
+Converts @var{expr} into a continued fraction. @var{expr} is an expression
+comprising continued fractions and square roots of integers. Operands in the 
+expression may be combined with arithmetic operators. Aside from continued 
+fractions and square roots, factors in the expression must be integer or 
+rational numbers. Maxima does not know about operations on continued fractions 
+outside of @code{cf}.
+
+@code{cf} evaluates its arguments after binding @code{listarith} to 
+@code{false}. @code{cf} returns a continued fraction, represented as a list.
+
+A continued fraction @code{a + 1/(b + 1/(c + ...))} is represented by the list 
+@code{[a, b, c, ...]}. The list elements @code{a}, @code{b}, @code{c}, ... must 
+evaluate to integers. @var{expr} may also contain @code{sqrt (n)} where @code{n} 
+is an integer. In this case @code{cf} will give as many terms of the continued 
+fraction as the value of the variable @code{cflength} times the period.
+
+A continued fraction can be evaluated to a number by evaluating the arithmetic 
+representation returned by @code{cfdisrep}. See also @code{cfexpand} for another 
+way to evaluate a continued fraction.
+
+See also @code{cfdisrep}, @code{cfexpand}, and @code{cflength}.
+
+Examples:
+
+@itemize @bullet
+@item
+@var{expr} is an expression comprising continued fractions and square roots of integers.
+
+@example
+(%i1) cf ([5, 3, 1]*[11, 9, 7] + [3, 7]/[4, 3, 2]);
+(%o1)               [59, 17, 2, 1, 1, 1, 27]
+(%i2) cf ((3/17)*[1, -2, 5]/sqrt(11) + (8/13));
+(%o2)        [0, 1, 1, 1, 3, 2, 1, 4, 1, 9, 1, 9, 2]
+@end example
+
+@item
+@code{cflength} controls how many periods of the continued fraction
+are computed for algebraic, irrational numbers.
+
+@example
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+@end example
+
+@item
+A continued fraction can be evaluated by evaluating the arithmetic representation
+returned by @code{cfdisrep}.
+
+@example
+(%i1) cflength: 3$
+(%i2) cfdisrep (cf (sqrt (3)))$
+(%i3) ev (%, numer);
+(%o3)                   1.731707317073171
+@end example
+
+@item
+Maxima does not know about operations on continued fractions outside of @code{cf}.
+
+@example
+(%i1) cf ([1,1,1,1,1,2] * 3);
+(%o1)                     [4, 1, 5, 2]
+(%i2) cf ([1,1,1,1,1,2]) * 3;
+(%o2)                  [3, 3, 3, 3, 3, 6]
+@end example
+
+@end itemize
+
+@c @opencatbox
+@c @category{Continued fractions}
+@c @closecatbox
+@end deffn
+
+@c NEEDS CLARIFICATION -- MAKE EXPLICIT HOW list IS RELATED TO a, b, c, ...
+@c ALSO, CAN list CONTAIN ANYTHING OTHER THAN LITERAL INTEGERS ??
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} cfdisrep (@var{list})
+
+Constructs and returns an ordinary arithmetic expression
+of the form @code{a + 1/(b + 1/(c + ...))}
+from the list representation of a continued fraction @code{[a, b, c, ...]}.
+
+@example
+(%i1) cf ([1, 2, -3] + [1, -2, 1]);
+(%o1)                     [1, 1, 1, 2]
+(%i2) cfdisrep (%);
+                                  1
+(%o2)                     1 + ---------
+                                    1
+                              1 + -----
+                                      1
+                                  1 + -
+                                      2
+@end example
+
+@c @opencatbox
+@c @category{Continued fractions}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Function} cfexpand (@var{x})
+
+Returns a matrix of the numerators and denominators of the
+last (column 1) and next-to-last (column 2) convergents of the continued fraction @var{x}.
+
+@example
+(%i1) cf (rat (ev (%pi, numer)));
+
+`rat' replaced 3.141592653589793 by 103993/33102 =3.141592653011902
+(%o1)                  [3, 7, 15, 1, 292]
+(%i2) cfexpand (%); 
+                         [ 103993  355 ]
+(%o2)                    [             ]
+                         [ 33102   113 ]
+(%i3) %[1,1]/%[2,1], numer;
+(%o3)                   3.141592653011902
+@end example
+
+@c @opencatbox
+@c @category{Continued fractions}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@defvr {Option variable} cflength
+Default value: 1
+
+@code{cflength} controls the number of terms of the continued
+fraction the function @code{cf} will give, as the value @code{cflength} times the
+period.  Thus the default is to give one period.
+
+@example
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+@end example
+
+@c @opencatbox
+@c @category{Continued fractions}
+@c @closecatbox
+@end defvr
 
 @c --- End of file Series.de.texi ----------------------------------------------
 

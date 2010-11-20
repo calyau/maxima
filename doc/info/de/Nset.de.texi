@@ -14,7 +14,7 @@
 @end menu
 
 @c -----------------------------------------------------------------------------
-@node Introduction to Sets, Functions and Variables for Sets, Sets, Sets
+@node Introduction to Sets, Functions and Variables for Sets, Mengen, Mengen
 @section Introduction to Sets
 
 Maxima provides set functions, such as intersection and 
@@ -427,7 +427,8 @@ Stavros Macrakis of Cambridge, Massachusetts and Barton Willis of the
 University of Nebraska at Kearney (UNK) wrote the Maxima set functions and their
 documentation. 
 
-@node Functions and Variables for Sets,  , Introduction to Sets, Sets
+@c -----------------------------------------------------------------------------
+@node Functions and Variables for Sets,  , Introduction to Sets, Mengen
 @section Functions and Variables for Sets
 
 @anchor{adjoin}
