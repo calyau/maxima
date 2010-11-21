@@ -19,7 +19,7 @@
 @node Funktionen und Variablen f@"ur Grenzwerte, Funktionen und Variablen der Differentiation, Analysis
 @section Funktionen und Variablen f@"ur Grenzwerte
 
-@c -----------------------------------------------------------------------------
+@c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{lhospitallim}
 @defvr {Optionsvariable} lhospitallim
 Standardwert: 4
@@ -28,9 +28,9 @@ Standardwert: 4
 @c in @code{limit}.  This prevents infinite looping in cases like
 @c @code{limit (cot(x)/csc(x), x, 0)}.
 
-@code{lhospitallim} enthält die maximale Zahl an Iterationen für die 
+@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen f@"ur die die 
 L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird. Damit
-wird verhindert, dass @code{limit} in eine unendliche Schleife für Grenzwerte
+wird verhindert, dass @code{limit} in eine unendliche Schleife f@"ur Grenzwerte
 wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 
 @c @opencatbox
@@ -38,11 +38,11 @@ wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{limit}
-@deffn  {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} limit (@var{expr})
+@deffn  {Funktion} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Funktion} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Funktion} limit (@var{expr})
 
 @c Computes the limit of @var{expr} as the real variable @var{x} approaches the 
 @c value @var{val} from the direction @var{dir}.  @var{dir} may have the value 
@@ -51,9 +51,9 @@ wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 
 Berechnet den Grenzwert des Ausdrucks @var{expr}, wenn die reelle Variable
 @var{x} gegen den Wert @var{val} in Richtung @var{dir} geht. Die Richtung
-@var{dir} kann die Werte @var{plus} für einen Grenzwert von oben und @var{minus}
-für einen Grenzwert von unten haben. Für einen zweiseitigen Grenzwert braucht
-die Richtung nicht angegeben werden.
+@var{dir} kann die Werte @var{plus} f@"ur einen Grenzwert von oben und 
+@var{minus} f@"ur einen Grenzwert von unten haben. F@"ur einen zweiseitigen 
+Grenzwert braucht die Richtung nicht angegeben werden.
 
 @c @code{limit} uses the following special symbols: @code{inf} (positive 
 @c infinity) and @code{minf} (negative infinity).  On output it may also use 
@@ -61,81 +61,133 @@ die Richtung nicht angegeben werden.
 @c @code{infinity} (complex infinity).
 
 @code{limit} nutzt die folgenden speziellen Symbole: @code{inf} (positiv 
-unendlich) und @code{minf} (negativ unendlich). In der Ausgabe können die
+unendlich) und @code{minf} (negativ unendlich). In der Ausgabe k@"onnen die
 Symbole @code{und} (nicht definiert), @code{ind} (unbestimmt) und 
 @code{infinity} (komplex unendlich) auftreten.
 
-@code{infinity} (complex infinity) is returned when the limit of
-the absolute value of the expression is positive infinity, but
-the limit of the expression itself is not positive infinity or
-negative infinity.  This includes cases where the limit of the
-complex argument is a constant, as in @code{limit(log(x), x, minf)}, 
-cases where the complex argument oscillates, as in
-@code{limit((-2)^x, x, inf)}, and cases where the complex
-argument is different for either side of a two-sided limit, as in
-@code{limit(1/x, x, 0)} and @code{limit(log(x), x, 0)}.
+@c @code{infinity} (complex infinity) is returned when the limit of
+@c the absolute value of the expression is positive infinity, but
+@c the limit of the expression itself is not positive infinity or
+@c negative infinity.  This includes cases where the limit of the
+@c complex argument is a constant, as in @code{limit(log(x), x, minf)}, 
+@c cases where the complex argument oscillates, as in
+@c @code{limit((-2)^x, x, inf)}, and cases where the complex
+@c argument is different for either side of a two-sided limit, as in
+@c @code{limit(1/x, x, 0)} and @code{limit(log(x), x, 0)}.
 
-@code{lhospitallim} is the maximum number of times L'Hospital's rule
-is used in @code{limit}.  This prevents infinite looping in cases like
-@code{limit (cot(x)/csc(x), x, 0)}.
+@code{infinity} (komplex unendlich) wird zur@"uckgegeben, wenn der Grenzwert
+des Betrags des Ausdrucks positiv unendlich ist, aber der Grenzwert des
+Ausdrucks selbst weder positive noch negativ unendlich ist. Dies schlie@ss{}t 
+F@"alle ein, wo der Grenzwert eines komplexen Arguments eine Konstante ist, wie
+zum Beispiel in @code{limit(log(x),x, minf)}, F@"alle in denen das komplexe
+Argument oszilliert, wie zum Beispiel in @code{limit((-2)^x, x, inf)} und 
+F@"alle, wo das komlexe Argument f@"ur die beiden Seiten des Grenzwertes 
+verschieden ist, wie zum Beispiel in @code{limit(1/x, x, 0)} und 
+@code{limit(log(x), x, 0)}.
 
-@code{tlimswitch} when true will allow the @code{limit} command to use
-Taylor series expansion when necessary.
+@c @code{lhospitallim} is the maximum number of times L'Hospital's rule
+@c is used in @code{limit}.  This prevents infinite looping in cases like
+@c @code{limit (cot(x)/csc(x), x, 0)}.
 
-@code{limsubst} prevents @code{limit} from attempting substitutions on
-unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
-giving 1.  Setting @code{limsubst} to @code{true} will allow such
-substitutions.
+@code{lhospitallim} enth@"alt die maximale Zahl an Iterationen f@"ur die die 
+L'Hospitalsche Regel von der Funktion @code{limit} angewendet wird. Damit
+wird verhindert, dass @code{limit} in eine unendliche Schleife f@"ur Grenzwerte
+wie @code{limit(cot(x)/csc(x), x, 0)} ger@"at.
 
-@code{limit} with one argument is often called upon to simplify constant 
-expressions, for example, @code{limit (inf-1)}.
+@c @code{tlimswitch} when true will allow the @code{limit} command to use
+@c Taylor series expansion when necessary.
+
+Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
+Taylor-Reihenentwicklung, wenn der Grenzwert nicht mit anderen Methoden bestimmt
+werden kann.
+
+@c @code{limsubst} prevents @code{limit} from attempting substitutions on
+@c unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
+@c giving 1.  Setting @code{limsubst} to @code{true} will allow such
+@c substitutions.
+
+Die Optionsvariable @code{limsubst} verhindet Substitution der Funktion 
+@code{limit} f@"ur unbekannte Ausdr@"ucke. Dies vermeidet Fehler wie zum 
+Beispiel ein Ergebnis von 1 f@"ur den Grenzwert 
+@code{limit (f(n)/f(n+1), n, inf)}. Erh@"alt @code{limsubst} den Wert 
+@code{true}, sind solche Substitution gestattet.
+
+@c @code{limit} with one argument is often called upon to simplify constant 
+@c expressions, for example, @code{limit (inf-1)}.
+
+@code{limit} kann mit einem Argument aufgerufen werden, um konstante Ausdr@"ucke
+zu vereinfachen. Zum Beispiel @code{limit (inf-1)}.
 
 @c MERGE EXAMPLES INTO THIS FILE
-@code{example (limit)} displays some examples.
+@c @code{example (limit)} displays some examples.
 
-For the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
-Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
+Das Kommando @code{example(limit)} zeigt einige Beispiele.
+
+@c For the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
+@c Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
+
+Der Algorithmus ist in der folgenden Arbeit beschrieben: Wang, P., "Evaluation 
+of Definite Integrals by Symbolic Manipulation", Ph.D. thesis, MAC TR-92, 
+October 1971.
 
 @c @opencatbox
 @c @category{Limits}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} limsubst
-Default value: @code{false}
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{limsubst}
+@defvr {Optionsvariable} limsubst
+Standardwert: @code{false}
 
-Prevents @code{limit} from attempting substitutions on unknown forms.  This is 
-to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting 
-@code{limsubst} to @code{true} will allow such substitutions.
+@c Prevents @code{limit} from attempting substitutions on unknown forms.  This
+@c is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)} giving 1.  Setting
+@c @code{limsubst} to @code{true} will allow such substitutions.
+
+Die Optionsvariable @code{limsubst} verhindet Substitution der Funktion 
+@code{limit} f@"ur unbekannte Ausdr@"ucke. Dies vermeidet Fehler wie zum 
+Beispiel ein Ergebnis von 1 f@"ur den Grenzwert 
+@code{limit (f(n)/f(n+1), n, inf)}. Erh@"alt @code{limsubst} den Wert 
+@code{true}, sind solche Substitution gestattet.
 
 @c @opencatbox
 @c @category{Limits}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@deffn  {Function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} tlimit (@var{expr})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{tlimit}
+@deffn  {Funktion} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Funktion} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Funktion} tlimit (@var{expr})
 
-Take the limit of the Taylor series expansion of @code{expr} in @code{x}
-at @code{val} from direction @code{dir}.
+@c Take the limit of the Taylor series expansion of @code{expr} in @code{x}
+@c at @code{val} from direction @code{dir}.
+
+Nimmt den Grenzwert der Taylor-Reihenwicklung des Ausdrucks @code{expr}, wenn
+die Variable @var{x} gegen den Wert @code{val} aus der Richtung @var{dir} geht.
 
 @c @opencatbox
 @c @category{Limits}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} tlimswitch
-Default value: @code{true}
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{tlimswitch}
+@defvr {Optionsvariable} tlimswitch
+Standardwert: @code{true}
 
-When @code{tlimswitch} is @code{true}, the @code{limit} command will
-use a Taylor series expansion if the limit of the input expression cannot be computed directly.
-This allows evaluation of limits such as @code{limit(x/(x-1)-1/log(x),x,1,plus)}.
-When @code{tlimswitch} is @code{false} and the limit of input expression 
-cannot be computed directly, @code{limit} will return an unevaluated limit expression.
+@c When @code{tlimswitch} is @code{true}, the @code{limit} command will use a 
+@c Taylor series expansion if the limit of the input expression cannot be 
+@c computed directly. This allows evaluation of limits such as 
+@c @code{limit(x/(x-1)-1/log(x),x,1,plus)}. When @code{tlimswitch} is 
+@c @code{false} and the limit of input expression cannot be computed directly, 
+@c @code{limit} will return an unevaluated limit expression.
+
+Hat @code{tlimswitch} den Wert @code{true}, nutzt die Funktion @code{limit} eine
+Taylor-Reihenentwicklung, wenn der Grenzwert nicht mit anderen Methoden bestimmt
+werden kann. Dies erlaubt die Bestimmung von Grenzwerten wie
+@code{limit(x/(x-1)-1/log(x),x,1,plus)}.
 
 @c @opencatbox
 @c @category{Limits}
@@ -146,7 +198,8 @@ cannot be computed directly, @code{limit} will return an unevaluated limit expre
 @node Funktionen und Variablen der Differentiation, Integration, Funktionen und Variablen f@"ur Grenzwerte, Analysis
 @section Funktionen und Variablen der Differentiation
 
-@c -----------------------------------------------------------------------------
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{at}
 @deffn  {Funktion} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
 @deffnx {Funktion} at (@var{expr}, @var{eqn})
 
@@ -163,21 +216,21 @@ oder in der einzelnen Gleichung @var{eqn} angegeben sind.
 @c evaluated, then a noun form of the @code{at} is returned which displays in a 
 @c two-dimensional form.
 
-Wenn ein Teilausdruck von einer Variablen abhängt, für die ein Wert angegeben 
-ist, aber kein @code{atvalue}, und er auch sonst nicht ausgewertet werden kann, 
-dann wird von @code{at} eine Substantivform zurückgegeben, dargestellt in einer 
-zweidimensionalen Form.
+Wenn ein Teilausdruck von einer Variablen abh@"angt, f@"ur die ein Wert 
+angegeben ist, aber kein @code{atvalue}, und er auch sonst nicht ausgewertet 
+werden kann, dann wird von @code{at} eine Substantivform zur@"uckgegeben, 
+dargestellt in einer zweidimensionalen Form.
 
 @c @code{at} carries out multiple substitutions in series, not parallel.
 
-@code{at} führt mehrfache Ersetzungen nacheinander und nicht nicht parallel 
+@code{at} f@"uhrt mehrfache Ersetzungen nacheinander und nicht nicht parallel 
 durch.
 
 @c See also @code{atvalue}. For other functions which carry out substitutions,
 @c see also @code{subst} and @code{ev}.
 
-Siehe auch @code{atvalue}. Für andere Funktionen, die Ersetzungen durchführen,
-siehe weiterhin @code{subst} und @code{ev}.
+Siehe auch @code{atvalue}. F@"ur andere Funktionen, die Ersetzungen 
+durchf@"uhren, siehe weiterhin @code{subst} und @code{ev}.
 
 Beispiele:
 
@@ -222,35 +275,56 @@ Beispiele:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} antid (@var{expr}, @var{x}, @var{u(x)}) 
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{antid}
+@deffn {Funktion} antid (@var{expr}, @var{x}, @var{u(x)})
 
-Returns a two-element list,
-such that an antiderivative of @var{expr} with respect to @var{x}
-can be constructed from the list.
-The expression @var{expr} may contain an unknown function @var{u} and its derivatives.
+@c Returns a two-element list, such that an antiderivative of @var{expr} with 
+@c respect to @var{x} can be constructed from the list. The expression 
+@c @var{expr} may contain an unknown function @var{u} and its derivatives.
 
-Let @var{L}, a list of two elements, be the return value of @code{antid}.
-Then @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
-is an antiderivative of @var{expr} with respect to @var{x}.
+Gibt eine Liste mit zwei Elementen zur@"uck aus denen die Stammfunktion des 
+Ausdrucks @var{expr} mit der Variablen @var{x} konstruiert werden kann. Der
+Ausdruck @var{expr} kann eine unbekannte Funktion @var{u} und deren Ableitungen
+enthalten.
 
-When @code{antid} succeeds entirely,
-the second element of the return value is zero.
-Otherwise, the second element is nonzero,
-and the first element is nonzero or zero.
-If @code{antid} cannot make any progress,
-the first element is zero and the second nonzero.
+@c Let @var{L}, a list of two elements, be the return value of @code{antid}.
+@c Then @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})} is an 
+@c antiderivative of @var{expr} with respect to @var{x}.
 
-@code{load ("antid")} loads this function.
-The @code{antid} package also defines the functions @code{nonzeroandfreeof} and @code{linear}.
+Ist @var{L} das Ergebnis der Funktion @code{antid}, dann ist der Ausdruck
+@code{@var{L}[1]+ 'integrate(@var{L}[2], @var{x})} der gesuchte Stammfunktion
+des Ausdrucks @var{expr} mit der Variablen @var{x}.
 
-@code{antid} is related to @code{antidiff} as follows.
-Let @var{L}, a list of two elements, be the return value of @code{antid}.
-Then the return value of @code{antidiff} is equal to @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
-where @var{x} is the variable of integration.
+@c When @code{antid} succeeds entirely, the second element of the return value 
+@c is zero. Otherwise, the second element is nonzero, and the first element is 
+@c nonzero or zero. If @code{antid} cannot make any progress, the first element 
+@c is zero and the second nonzero.
 
-Examples:
-@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
+Kann @code{antid} die Stammfunktion vollst@"andig bestimmen, ist das zweite
+Element der Liste Null. Hat @code{antid} keinerlei Erfolg, ist das erste 
+Element der Liste Null. In anderen F@"allen enth@"alt das erste Elemente den
+integrierbaren Anteil des Ausdrucks @var{expr} und das zweite Element den nicht
+integrierbaren Anteil des Ausdrucks.
+
+@c @code{load ("antid")} loads this function. The @code{antid} package also 
+@c defines the functions @code{nonzeroandfreeof} and @code{linear}.
+
+Mit dem Kommando @code{load(antid)} wird die Funktion geladen.
+
+@c @code{antid} is related to @code{antidiff} as follows. Let @var{L}, a list of
+@c two elements, be the return value of @code{antid}. Then the return value of 
+@c @code{antidiff} is equal to @code{@var{L}[1]+'integrate(@var{L}[2], @var{x})}
+@c where @var{x} is the variable of integration.
+
+@code{antid} steht in folgender Beziehung zur Funktion @code{antidiff}: Ist 
+@var{L} die Liste mit den Ergebnissen der Funktion @code{antid}, dann hat die
+Funktion @code{antidiff} das Ergebnis @code{@var{L}[1] + 'integrate(@var{L}[2], 
+@var{x})} mit @var{x} als der Variablen des Ausdrucks @var{expr}.
+
+Beispiele:
+
+@c ===beg===
 @c load ("antid")$
 @c expr: exp (z(x)) * diff (z(x), x) * y(x);
 @c a1: antid (expr, x, z(x));
@@ -258,10 +332,7 @@ Examples:
 @c a2 - (first (a1) + 'integrate (second (a1), x));
 @c antid (expr, x, y(x));
 @c antidiff (expr, x, y(x));
-@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
-@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
-@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
-
+@c ===end===
 @example
 (%i1) load ("antid")$
 (%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
@@ -297,69 +368,43 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{antidiff}
+@deffn {Funktion} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
 
-Returns an antiderivative of @var{expr} with respect to @var{x}.
-The expression @var{expr} may contain an unknown function @var{u} and its derivatives.
+@c Returns an antiderivative of @var{expr} with respect to @var{x}. The 
+@c expression @var{expr} may contain an unknown function @var{u} and its 
+@c derivatives.
 
-When @code{antidiff} succeeds entirely,
-the resulting expression is free of integral signs (that is, free of the @code{integrate} noun).
-Otherwise, @code{antidiff} returns an expression
-which is partly or entirely within an integral sign.
-If @code{antidiff} cannot make any progress,
-the return value is entirely within an integral sign.
+Gibt die Stammfunktion des Ausdrucks @var{expr} mit der Variablen @var{x} 
+zur@"uck. Der Ausdruck @var{expr} kann eine unbekannte Funktion @var{u} und 
+deren Ableitungen enthalten.
 
-@code{load ("antid")} loads this function.
-The @code{antid} package also defines the functions @code{nonzeroandfreeof} and @code{linear}.
+@c When @code{antidiff} succeeds entirely, the resulting expression is free of 
+@c integral signs (that is, free of the @code{integrate} noun). Otherwise, 
+@c @code{antidiff} returns an expression which is partly or entirely within an 
+@c integral sign. If @code{antidiff} cannot make any progress, the return value 
+@c is entirely within an integral sign.
 
-@code{antidiff} is related to @code{antid} as follows.
-Let @var{L}, a list of two elements, be the return value of @code{antid}.
-Then the return value of @code{antidiff} is equal to @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
-where @var{x} is the variable of integration.
+Kann @code{antidiff} die Stammfunktion nicht oder nur teilweise bestimmen,
+enth@"alt das Ergebnis das Integral des nicht bestimmbaren Anteils.
 
-Examples:
-@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
-@c load ("antid")$
-@c expr: exp (z(x)) * diff (z(x), x) * y(x);
-@c a1: antid (expr, x, z(x));
-@c a2: antidiff (expr, x, z(x));
-@c a2 - (first (a1) + 'integrate (second (a1), x));
-@c antid (expr, x, y(x));
-@c antidiff (expr, x, y(x));
-@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
-@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
-@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
+@c @code{load ("antid")} loads this function. The @code{antid} package also 
+@c defines the functions @code{nonzeroandfreeof} and @code{linear}.
 
-@example
-(%i1) load ("antid")$
-(%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
-                            z(x)  d
-(%o2)                y(x) %e     (-- (z(x)))
-                                  dx
-(%i3) a1: antid (expr, x, z(x));
-                       z(x)      z(x)  d
-(%o3)          [y(x) %e    , - %e     (-- (y(x)))]
-                                       dx
-(%i4) a2: antidiff (expr, x, z(x));
-                            /
-                     z(x)   [   z(x)  d
-(%o4)         y(x) %e     - I %e     (-- (y(x))) dx
-                            ]         dx
-                            /
-(%i5) a2 - (first (a1) + 'integrate (second (a1), x));
-(%o5)                           0
-(%i6) antid (expr, x, y(x));
-                             z(x)  d
-(%o6)             [0, y(x) %e     (-- (z(x)))]
-                                   dx
-(%i7) antidiff (expr, x, y(x));
-                  /
-                  [        z(x)  d
-(%o7)             I y(x) %e     (-- (z(x))) dx
-                  ]              dx
-                  /
-@end example
+Mit dem Kommando @code{load(antid)} wird die Funktion geladen.
+
+@c @code{antidiff} is related to @code{antid} as follows. Let @var{L}, a list of
+@c two elements, be the return value of @code{antid}. Then the return value of 
+@c @code{antidiff} is equal to @code{@var{L}[1] + 'integrate (@var{L}[2], 
+@c @var{x})} where @var{x} is the variable of integration.
+
+@code{antidiff} steht in folgender Beziehung zur Funktion @code{antid}: Ist 
+@var{L} die Liste mit den Ergebnissen der Funktion @code{antid}, dann hat die
+Funktion @code{antidiff} das Ergebnis @code{@var{L}[1] + 'integrate(@var{L}[2], 
+@var{x})} mit @var{x} als der Variablen des Ausdrucks @var{expr}.
+
+F@"ur Beispiele und weitere Ausf@"uhrungen siehe die Funktion @mrefdot{antid}
 
 @c @opencatbox
 @c @category{Integral calculus}
@@ -368,11 +413,15 @@ Examples:
 
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
 
-@c -----------------------------------------------------------------------------
-@defvr {Property} atomgrad
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{atomgrad}
+@defvr {Eigenschaft} atomgrad
 
-@code{atomgrad} is the atomic gradient property of an expression.
-This property is assigned by @code{gradef}.
+@c @code{atomgrad} is the atomic gradient property of an expression.
+@c This property is assigned by @code{gradef}.
+
+Wird f@"ur ein Symbol eine Ableitung mit der Funktion @code{gradef} definiert,
+dann erh@"alt das Symbol die Eigenschaft @code{atomgrad}.
 
 @c NEED EXAMPLE HERE
 @c @opencatbox
@@ -380,47 +429,74 @@ This property is assigned by @code{gradef}.
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
-@deffnx {Function} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{atvalue}
+@deffn  {Funktion} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@deffnx {Funktion} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
 
-Assigns the value @var{c} to @var{expr} at the point @code{@var{x} = @var{a}}.
-Typically boundary values are established by this mechanism.
+@c Assigns the value @var{c} to @var{expr} at the point @code{@var{x}=@var{a}}.
+@c Typically boundary values are established by this mechanism.
 
-@var{expr} is a function evaluation,
-@code{@var{f}(@var{x_1}, ..., @var{x_m})},
-or a derivative,
-@code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}
+Dem Ausdruck @var{expr} wird der Wert @var{c} am Punkt @code{@var{x} = @var{a}}
+zugewiesen. Typischerweise werden Randwerte mit der Funktion @code{atvalue}
+definiert.
+
+@c @var{expr} is a function evaluation, @code{@var{f}(@var{x_1},...,@var{x_m})},
+@c or a derivative, @code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, 
+@c @var{n_1}, ..., @var{x_n}, @var{n_m})}
 @c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
 @c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
-in which the function arguments explicitly appear.
-@var{n_i} is the order of differentiation with respect to @var{x_i}.
+@c in which the function arguments explicitly appear. @var{n_i} is the order of
+@c differentiation with respect to @var{x_i}.
 
-The point at which the atvalue is established is given by the list of equations
-@code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}.
-If there is a single variable @var{x_1},
-the sole equation may be given without enclosing it in a list.
+Der Ausdruck @var{expr} ist entweder eine Funktion @code{@var{f}(@var{x_1}, ..., 
+@var{x_m})} oder die Ableitung einer Funktion @code{diff(@var{f}(@var{x_1}, ...,
+@var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}. Die Argumente
+m@"ussen explizit auftreten. @var{n_i} ist die Ordnung der Ableitung bez@"uglich
+der Variablen @var{x_i}.
 
-@code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} displays the atvalues of
-the functions @code{@var{f_1}, @var{f_2}, ...}
-as specified by calls to @code{atvalue}.
-@code{printprops (@var{f}, atvalue)} displays the atvalues of one function @var{f}.
-@code{printprops (all, atvalue)} displays the atvalues of all functions for which atvalues are defined.
+@c The point at which the atvalue is established is given by the list of 
+@c equations @code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}. If 
+@c there is a single variable @var{x_1}, the sole equation may be given without 
+@c enclosing it in a list.
 
-The symbols @code{@@1}, @code{@@2}, ... represent the 
-variables @var{x_1}, @var{x_2}, ... when atvalues are displayed.
+Die Randwerte werden durch die Liste @code{[@var{x_1} = @var{a_1}, ..., 
+@var{x_m} = @var{a_m}]} definiert. Eine einzelne Gleichung muss nicht als Liste 
+angegeben werden.
 
-@code{atvalue} evaluates its arguments.
-@code{atvalue} returns @var{c}, the atvalue.
+@c @code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} displays the 
+@c atvalues of the functions @code{@var{f_1}, @var{f_2}, ...} as specified by 
+@c calls to @code{atvalue}. @code{printprops (@var{f}, atvalue)} displays the 
+@c atvalues of one function @var{f}. @code{printprops (all, atvalue)} displays 
+@c the atvalues of all functions for which atvalues are defined.
 
-Examples:
-@c FOLLOWING ADAPTED FROM example (atvalue)
+@code{printprops([@var{f_1}, @var{f_2}, ...], atvalue)} zeigt die Randwerte der
+Funktionen @code{@var{f_1}, @var{f_2}, ...} wie sie mit der Funktion 
+@code{atvalue} definiert wurden. @code{printprops (@var{f}, atvalue)} zeigt
+nur die Randwerte f@"ur die Funktion @var{f}. @code{printprops (all, atvalue)}
+zeigt die Randwerte aller Funktionen.
+
+@c The symbols @code{@@1}, @code{@@2}, ... represent the variables @var{x_1}, 
+@c @var{x_2}, ... when atvalues are displayed.
+
+Die Symbole @code{@@1}, @code{@@2}, ... repr@"asentieren die Variablen 
+@var{x_1}, @var{x_2}, ..., wenn die Randwerte angezeigt werden.
+
+@c @code{atvalue} evaluates its arguments. @code{atvalue} returns @var{c}, the 
+@c atvalue.
+
+@code{atvalue} wertet die Argumente aus. @code{atvalue} gibt den Randwert
+@var{c} zur@"uck.
+
+Beispiele:
+
+@c ===beg===
 @c atvalue (f(x,y), [x = 0, y = 1], a^2);
 @c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
 @c printprops (all, atvalue);
 @c diff (4*f(x,y)^2 - u(x,y)^2, x);
 @c at (%, [x = 0, y = 1]);
-
+@c ===end===
 @example
 (%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
                                 2
@@ -460,17 +536,15 @@ Examples:
 @c ext_diff AND lie_diff NOT DOCUMENTED (OTHER THAN HERE)
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} cartan  -
+@deffn {Packet} cartan
 
-The exterior calculus of differential forms is a basic tool
-of differential geometry developed by Elie Cartan and has important
-applications in the theory of partial differential equations.
-The @code{cartan} package
-implements the functions @code{ext_diff} and @code{lie_diff},
-along with the operators @code{~} (wedge product) and @code{|} (contraction
-of a form with a vector.)
-Type @code{demo (tensor)} to see a brief
-description of these commands along with examples.
+The exterior calculus of differential forms is a basic tool of differential 
+geometry developed by Elie Cartan and has important applications in the theory 
+of partial differential equations. The @code{cartan} package implements the 
+functions @code{ext_diff} and @code{lie_diff}, along with the operators 
+@code{~} (wedge product) and @code{|} (contraction of a form with a vector.)
+Type @code{demo (tensor)} to see a brief description of these commands along 
+with examples.
 
 @code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
 
@@ -479,21 +553,29 @@ description of these commands along with examples.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} del (@var{x})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{del}
+@deffn {Funktion} del (@var{x})
 
-@code{del (@var{x})} represents the differential of the variable @math{x}.
+@c @code{del(@var{x})} represents the differential of the variable @math{x}.
 
-@code{diff} returns an expression containing @code{del}
-if an independent variable is not specified.
-In this case, the return value is the so-called "total differential".
+@code{del(@var{x})} repr@"asentiert das Differential der Variablen @var{x}.
 
-Examples:
-@c GENERATED FROM THE FOLLOWING
+@c @code{diff} returns an expression containing @code{del} if an independent 
+@c variable is not specified. In this case, the return value is the so-called 
+@c "total differential".
+
+@code{diff} gibt Ausdr@"ucke zur@"uck, die Differentiale enthalten, wenn keine 
+Variablen angegeben sind, nach denen abgeleitet werden soll. In diesem Fall
+gibt @code{diff} das totale Differential zur@"uck. 
+
+Beispiele:
+
+@c ===beg===
 @c diff (log (x));
 @c diff (exp (x*y));
 @c diff (x*y*z);
-
+@c ===end===
 @example
 (%i1) diff (log (x));
                              del(x)
@@ -511,14 +593,22 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} delta (@var{t})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{delta}
+@deffn {Funktion} delta (@var{t})
 
-The Dirac Delta function.
+@c The Dirac Delta function.
 
-Currently only @code{laplace} knows about the @code{delta} function.
+Die Diracsche Delta-Funktion.
 
-Example:
+@c Currently only @code{laplace} knows about the @code{delta} function.
+
+Maxima kennt die Delta-Funktion nur im Zusammenhang mit 
+Laplace-Transformationen. Siehe @mrefdot{laplace}
+
+Beispiel:
+
+@c TODO: DAS FOLGENDE BEISPIEL GIBT EIN ANDERES ERGEBNIS. WARUM? EIN BUG?
 
 @example
 (%i1) laplace (delta (t - a) * sin(b*t), t, s);
@@ -535,6 +625,7 @@ p;
 @end deffn
 
 @c --- 19.11.2010 DK -----------------------------------------------------------
+@anchor{dependencies}
 @defvr {Systemvariable} dependencies
 Standardwert: @code{[]}
 
@@ -544,8 +635,8 @@ Standardwert: @code{[]}
 @c items.
 @c See @code{depends} and @code{gradef}.
 
-@code{dependencies} ist eine Liste der Symbole, für die eine Abhängigkeit mit
-den Funktionen @code{depends} oder @code{gradef} definiert wurde. Siehe
+@code{dependencies} ist eine Liste der Symbole, f@"ur die eine Abh@"angigkeit 
+mit den Funktionen @code{depends} oder @code{gradef} definiert wurde. Siehe
 @mref{depends} und @mrefdot{gradef}
 
 @c @opencatbox
@@ -555,43 +646,73 @@ den Funktionen @code{depends} oder @code{gradef} definiert wurde. Siehe
 
 @c -----------------------------------------------------------------------------
 @anchor{depends}
-@deffn {Function} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+@deffn {Funktion} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
 
-Declares functional dependencies among variables for the purpose of computing derivatives.
-In the absence of declared dependence,
-@code{diff (f, x)} yields zero.
-If @code{depends (f, x)} is declared,
-@code{diff (f, x)} yields a symbolic derivative (that is, a @code{diff} noun).
+@c Declares functional dependencies among variables for the purpose of computing 
+@c derivatives. In the absence of declared dependence, @code{diff(f, x)} yields 
+@c zero. If @code{depends (f, x)} is declared, @code{diff(f, x)} yields a 
+@c symbolic derivative (that is, a @code{diff} noun).
 
-Each argument @var{f_1}, @var{x_1}, etc., can be the name of a variable or array,
-or a list of names.
-Every element of @var{f_i} (perhaps just a single element)
-is declared to depend
-on every element of @var{x_i} (perhaps just a single element).
-If some @var{f_i} is the name of an array or contains the name of an array,
-all elements of the array depend on @var{x_i}.
+Definiert die Abh@"angigkeit einer Funktion @var{f} von einer Variablen @var{x}. 
+Ist keine Abh@"angigkeit definiert, dann hat die Ableitung @code{diff(f, x)} das 
+Ergebnis Null. Wird mit dem Kommando @code{depends(f, x)} definiert, dass die
+Funktion @var{f} von der Variablen @var{x} abh@"angt, dann ist das Ergebnis der
+Ableitung die Substantivform @code{'diff(f,x,1)}.
 
-@code{diff} recognizes indirect dependencies established by @code{depends}
-and applies the chain rule in these cases.
+@c Each argument @var{f_1}, @var{x_1}, etc., can be the name of a variable or 
+@c array, or a list of names. Every element of @var{f_i} (perhaps just a single 
+@c element) is declared to depend on every element of @var{x_i} (perhaps just a 
+@c single element). If some @var{f_i} is the name of an array or contains the 
+@c name of an array, all elements of the array depend on @var{x_i}.
 
-@code{remove (@var{f}, dependency)} removes all dependencies declared for @var{f}.
+Jedes Argument @var{f_1}, @var{x_1}, ... kann der Name einer Variablen, eines
+Arrays oder eine Liste mit Namen sein. Jedes Symbol @var{f_i} h@"angt ab von
+den Symbolen der Liste @var{x_i}. Ist eines der Symbole @var{f_i} der Name
+eines Arrays, dann h@"angen alle Elemente des Arrays von @var{x_i} ab.
 
-@code{depends} returns a list of the dependencies established.
-The dependencies are appended to the global variable @code{dependencies}.
-@code{depends} evaluates its arguments.
+@c @code{diff} recognizes indirect dependencies established by @code{depends}
+@c and applies the chain rule in these cases.
 
-@code{diff} is the only Maxima command which recognizes dependencies established by @code{depends}.
-Other functions (@code{integrate}, @code{laplace}, etc.)
-only recognize dependencies explicitly represented by their arguments.
-For example, @code{integrate} does not recognize the dependence of @code{f} on @code{x}
-unless explicitly represented as @code{integrate (f(x), x)}.
+@code{diff} erkennt indirekte Abh@"angigkeiten und wendet f@"ur diesen Fall
+die Kettenregel an.
 
-@c GENERATED BY THE FOLLOWING
+@c @code{remove(@var{f}, dependency)} removes all dependencies declared for 
+@c @var{f}.
+
+@code{remove(@var{f}, dependency)} entfernt alle Abh@"angigkeiten, die f@"ur
+@var{f} definiert wurden.
+
+@c @code{depends} returns a list of the dependencies established. The 
+@c dependencies are appended to the global variable @code{dependencies}. 
+@c @code{depends} evaluates its arguments.
+
+@code{depends} gibt eine Liste der Abh@"angigkeiten zur@"uck. Die 
+Abh@"angigkeiten werden in die Informationsliste @code{dependencies} 
+eingetragen. @code{depends} wertet die Argumente aus.
+
+@c @code{diff} is the only Maxima command which recognizes dependencies 
+@c established by @code{depends}. Other functions (@code{integrate}, 
+@c @code{laplace}, etc.) only recognize dependencies explicitly represented by 
+@c their arguments. For example, @code{integrate} does not recognize the 
+@c dependence of @code{f} on @code{x} unless explicitly represented as 
+@c @code{integrate (f(x), x)}.
+
+Die Funktion @code{diff} ist die einzige Maxima-Funktion, die Abh@"angigkeiten
+erkennt, die mit @code{depends} definiert wurden. Andere Funktionen wie
+@code{integrate} oder @code{laplace} erkennen eine Abh@"angigkeiten die mit der
+@code{depends} definiert wurden. F@"ur diese Funktionen m@"ussen die 
+Abh@"angigkeiten explizit angegeben werden, zum Beispiel 
+@code{integrate(f(x), x)}.
+
+Beispiele:
+
+@c ===beg===
 @c depends ([f, g], x);
 @c depends ([r, s], [u, v, w]);
 @c depends (u, t);
 @c dependencies;
 @c diff (r.s, u);
+@c ===end===
 @example
 (%i1) depends ([f, g], x);
 (%o1)                     [f(x), g(x)]
@@ -607,8 +728,9 @@ unless explicitly represented as @code{integrate (f(x), x)}.
                          du           du
 @end example
 
-@c GENERATED BY THE FOLLOWING
+@c ===beg==
 @c diff (r.s, t);
+@c ===end===
 @example
 (%i6) diff (r.s, t);
                       dr du           ds du
@@ -616,9 +738,10 @@ unless explicitly represented as @code{integrate (f(x), x)}.
                       du dt           du dt
 @end example
 
-@c GENERATED BY THE FOLLOWING
+@c ===beg===
 @c remove (r, dependency);
 @c diff (r.s, t);
+@c ===end===
 @example
 (%i7) remove (r, dependency);
 (%o7)                         done
@@ -633,13 +756,18 @@ unless explicitly represented as @code{integrate (f(x), x)}.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} derivabbrev
-Default value: @code{false}
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{derivabbrev}
+@defvr {Optionsvariable} derivabbrev
+Standardwert: @code{false}
 
-When @code{derivabbrev} is @code{true},
-symbolic derivatives (that is, @code{diff} nouns) are displayed as subscripts.
-Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
+@c When @code{derivabbrev} is @code{true}, symbolic derivatives (that is, 
+@c @code{diff} nouns) are displayed as subscripts. Otherwise, derivatives are 
+@c displayed in the Leibniz notation @code{dy/dx}.
+
+Hat @code{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
+mit einem tiefgestelltem Index angezeigt. Ansonsten werden Ableitungen als
+@code{dy/dy} angezeigt.
 
 @c NEED EXAMPLES HERE
 @c @opencatbox
@@ -649,17 +777,23 @@ Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
 
 @c SEEMS LIKE THIS STATEMENT COULD BE LESS CLUMSY
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} derivdegree (@var{expr}, @var{y}, @var{x})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{derivdegree}
+@deffn {Funktion} derivdegree (@var{expr}, @var{y}, @var{x})
 
-Returns the highest degree of the derivative
-of the dependent variable @var{y} with respect to the independent variable
-@var{x} occuring in @var{expr}.
+@c Returns the highest degree of the derivative of the dependent variable 
+@c @var{y} with respect to the independent variable @var{x} occuring in 
+@c @var{expr}.
 
-Example:
-@c GENERATED FROM THE FOLLOWING
+Gibt die h@"ochste Ableitung des Arguments @var{y} in Bezug auf die Variable
+@var{x} zur@"uck, die in dem Ausdruck @var{expr} enthalten ist.
+
+Beispiel:
+
+@c ===beg===
 @c 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
 @c derivdegree (%, y, x);
+@c ===end===
 @example
 (%i1) 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
                          3     2
@@ -676,71 +810,106 @@ Example:
 @c @closecatbox
 @end deffn
 
-@c I HAVE NO IDEA WHAT THIS DOES
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@deffn {Auswertungsschalter} derivlist (@var{var_1}, ..., @var{var_k})
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} derivlist (@var{var_1}, ..., @var{var_k})
+@c Causes only differentiations with respect to the indicated variables, within
+@c the @code{ev} command.
 
-Causes only differentiations with respect to
-the indicated variables, within the @code{ev} command.
+@code{derivlist} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}. 
+@code{ev} f@"uhrt nur die Ableitungen in Bezug auf die angegebenen Variablen
+@var{var_1}, ..., @var{var_k} aus.
 
 @c @opencatbox
 @c @category{Differential calculus} @category{Evaluation}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} derivsubst
-Default value: @code{false}
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{derivsubst}
+@defvr {Optionsvariable} derivsubst
+Standardwert: @code{false}
 
-When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
-@code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
+@c When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
+@c @code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
+
+Hat @code{derivsubst} den Wert @code{true}, werden Substitutionen auch in 
+Ausdr@"ucke mit Ableitungen ausgef@"uhrt. Zum Beispiel hat dann
+@code{subst(x, 'diff(y, t), 'diff(y, t, 2))} das Ergebnis @code{'diff(x, t)}.
 
 @c @opencatbox
 @c @category{Differential calculus} @category{Expressions}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@deffn  {Function} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
-@deffnx {Function} diff (@var{expr}, @var{x}, @var{n})
-@deffnx {Function} diff (@var{expr}, @var{x})
-@deffnx {Function} diff (@var{expr})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{diff}
+@deffn  {Funktion} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
+@deffnx {Funktion} diff (@var{expr}, @var{x}, @var{n})
+@deffnx {Funktion} diff (@var{expr}, @var{x})
+@deffnx {Funktion} diff (@var{expr})
 
-Returns the derivative or differential of @var{expr} with respect to some or all variables in @var{expr}.
+@c Returns the derivative or differential of @var{expr} with respect to some or 
+@c all variables in @var{expr}.
 
-@code{diff (@var{expr}, @var{x}, @var{n})} returns the @var{n}'th derivative of @var{expr}
-with respect to @var{x}.
+Gibt die Ableitungen oder Differentiale des Ausdrucks @var{expr} in Bezug auf
+alle oder einige der Variablen des Ausdrucks zur@"uck.
 
-@code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}
-returns the mixed partial derivative of @var{expr} with respect to @var{x_1}, ..., @var{x_m}.
-It is equivalent to @code{diff (... (diff (@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
+@c @code{diff (@var{expr}, @var{x}, @var{n})} returns the @var{n}'th derivative 
+@c of @var{expr} with respect to @var{x}.
 
-@code{diff (@var{expr}, @var{x})}
-returns the first derivative of @var{expr} with respect to
-the variable @var{x}.
+@code{diff(@var{expr}, @var{x}, @var{n})} gibt die n-te Ableitung des Ausdrucks
+@var{expr} in Bezug auf die Variable @var{x} zur@"uck.
 
-@code{diff (@var{expr})} returns the total differential of @var{expr},
-that is, the sum of the derivatives of @var{expr} with respect to each its variables
-times the differential @code{del} of each variable.
+@c @code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}
+@c returns the mixed partial derivative of @var{expr} with respect to @var{x_1},
+@c ..., @var{x_m}. It is equivalent to @code{diff (... (diff (@var{expr}, 
+@c @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
+
+@code{diff(@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})} gibt
+die partielle Ableitung des Ausdrucks @var{expr} in Bezug auf die Variablen
+@var{x_1}, ..., @var{x_m} zur@"uck. Dies ist @"aquivalent zu @code{diff(... 
+(diff(@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
+
+@c @code{diff (@var{expr}, @var{x})} returns the first derivative of @var{expr} 
+@c with respect to the variable @var{x}.
+
+@code{diff(@var{expr}, @var{x})} gibt die erste Ableitung des Ausdrucks 
+@var{expr} in Bezug auf die Variable @var{x} zur@"uck.
+
+@c @code{diff (@var{expr})} returns the total differential of @var{expr}, that 
+@c is, the sum of the derivatives of @var{expr} with respect to each its 
+@c variables times the differential @code{del} of each variable.
 @c WHAT DOES THIS NEXT STATEMENT MEAN, EXACTLY ??
-No further simplification of @code{del} is offered.
+@c No further simplification of @code{del} is offered.
 
-The noun form of @code{diff} is required in some contexts,
-such as stating a differential equation.
-In these cases, @code{diff} may be quoted (as @code{'diff}) to yield the noun form
-instead of carrying out the differentiation.
+@code{diff(@var{expr})} gibt das totale Differential des Ausdrucks @var{expr}
+zur@"uck. Siehe auch @mrefdot{del}
 
-When @code{derivabbrev} is @code{true}, derivatives are displayed as subscripts.
-Otherwise, derivatives are displayed in the Leibniz notation, @code{dy/dx}.
+@c The noun form of @code{diff} is required in some contexts, such as stating a
+@c differential equation. In these cases, @code{diff} may be quoted (as 
+@c @code{'diff}) to yield the noun form instead of carrying out the 
+@c differentiation.
 
-Examples:
-@c GENERATED FROM THE FOLLOWING
+Wenn die Ableitungen nicht ausgef@"uhrt werden sollen, kann der Quote-Operator
+verwendet werden, um eine Substantivform der Ableitung zu erhalten.
+
+@c When @code{derivabbrev} is @code{true}, derivatives are displayed as 
+@c subscripts. Otherwise, derivatives are displayed in the Leibniz notation, 
+@c @code{dy/dx}.
+
+Hat @code{derivabbrev} den Wert @code{true}, werden symbolische Ableitungen
+mit einem tiefgestelltem Index angezeigt. Ansonsten werden Ableitungen als
+@code{dy/dy} angezeigt.
+
+Beispiele:
+
+@c ===beg===
 @c diff (exp (f(x)), x, 2);
 @c derivabbrev: true$
 @c 'integrate (f(x, y), y, g(x), h(x));
 @c diff (%, x);
-
+@c ===end===
 @example
 (%i1) diff (exp (f(x)), x, 2);
                      2
@@ -767,23 +936,29 @@ Examples:
        g(x)
 @end example
 
-For the tensor package, the following modifications have been
-incorporated:
+@c TODO: DAS FOLGENDE BETRIFFT TENSOREN UND SOLLTE IN DAS ENTSPRECHENDE
+@c       KAPITEL VERSCHOBEN WERDEN!? DIE UEBERSETZUNG FEHLT.
 
-(1) The derivatives of any indexed objects in @var{expr} will have the
-variables @var{x_i} appended as additional arguments.  Then all the
+For the tensor package, the following modifications have been incorporated:
+
+@enumerate
+@item
+The derivatives of any indexed objects in @var{expr} will have the 
+variables @var{x_i} appended as additional arguments.  Then all the 
 derivative indices will be sorted.
 
-(2) The @var{x_i} may be integers from 1 up to the value of the variable
+@item
+The @var{x_i} may be integers from 1 up to the value of the variable
 @code{dimension} [default value: 4].  This will cause the differentiation to
-be carried out with respect to the @var{x_i}'th member of the list @code{coordinates} which
-should be set to a list of the names of the coordinates, e.g.,
-@code{[x, y, z, t]}. If @code{coordinates} is bound to an atomic variable, then that
-variable subscripted by @var{x_i} will be used for the variable of
-differentiation.  This permits an array of coordinate names or
-subscripted names like @code{X[1]}, @code{X[2]}, ... to be used.  If @code{coordinates} has
-not been assigned a value, then the variables will be treated as in (1)
-above.
+be carried out with respect to the @var{x_i}'th member of the list 
+@code{coordinates} which should be set to a list of the names of the 
+coordinates, e.g., @code{[x, y, z, t]}. If @code{coordinates} is bound to an 
+atomic variable, then that variable subscripted by @var{x_i} will be used for
+the variable of differentiation.  This permits an array of coordinate names 
+or subscripted names like @code{X[1]}, @code{X[2]}, ... to be used.  If 
+@code{coordinates} has not been assigned a value, then the variables will be 
+treated as in (1) above.
+@end enumerate
 
 @c NEED EXAMPLES FOR TENSOR STUFF
 @c @opencatbox
@@ -793,25 +968,37 @@ above.
 
 @c MERGE THIS INTO @defun diff
 
-@c -----------------------------------------------------------------------------
-@defvr {Special symbol} diff
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{flag_diff}
+@defvr {Auswertungsschalter} diff
 
-When @code{diff} is present as an @code{evflag} in call to @code{ev},
-all differentiations indicated in @code{expr} are carried out.
+@c When @code{diff} is present as an @code{evflag} in call to @code{ev},
+@c all differentiations indicated in @code{expr} are carried out.
 
-@c NEED EXAMPLE HERE
+@code{diff} ist ein Auswertungsschalter f@"ur die Funktion @code{ev}. Das 
+Kommando @code{ev(expr), diff} bewirkt, dass alle Ableitungen ausgef@"uhrt 
+werden, die im Ausdruck @var{expr} enhalten sind. Siehe auch die Funktion 
+@mrefdot{ev}
+
 @end defvr
 
-@c NOT SURE HOW THIS IS SUPPOSED TO WORK
+@c TODO: IN DAS KAPITEL TENSOREN VERSCHIEBEN?!
+@c       WIE UNTEN AUSGEFUEHRT FUNKTIONIERT DAS BEISPIEL NICHT. 
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} dscalar (@var{f})
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{dscalar}
+@deffn {Funktion} dscalar (@var{f})
 
-Applies the scalar d'Alembertian to the scalar function @var{f}.
-
+@c Applies the scalar d'Alembertian to the scalar function @var{f}.
 @c APPARENTLY dscalar DOESN'T EXIST IN THE CORE FILES ANYMORE
 @c ctensor HAS THE ONLY DEFN I FOUND (OUTSIDE OF archive/)
-@code{load ("ctensor")} loads this function.
+@c @code{load ("ctensor")} loads this function.
+
+Wendet den d'Alembert-Operator auf eine skalare Funktion @var{f} an. Der
+d'Alembert-Operator ist die Verallgemeinerung des Gradienten auf den
+vierdimensionalen Minkowski-Raum.
+
+Das Kommando @code{load(ctensor)} l@"adt die Funktion.
 
 @c FOLLOWING EXAMPLE DOESN'T WORK; I GET dscalar (field) ==> 0
 @c (I GET 0 FOR THE ctensor VERSION OF dscalar, AND SAME FOR
@@ -836,31 +1023,36 @@ Applies the scalar d'Alembertian to the scalar function @var{f}.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@anchor{express}
-@deffn {Function} express (@var{expr})
+@c TODO: FOLGENDE FUNKTION IST IM PACKET VECT DEFINIERT. VERSCHIEBEN?!
 
-@c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? I'M NOT GETTING IT
+@c --- 20.11.2010 DK -----------------------------------------------------------
+@anchor{express}
+@deffn {Funktion} express (@var{expr})
+
+@c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? 
+@c I'M NOT GETTING IT
 @c The result uses the noun form of any
 @c derivatives arising from expansion of the vector differential
 @c operators.  To force evaluation of these derivatives, the built-in @code{ev}
 @c function can be used together with the @code{diff} evflag, after using the
 @c built-in @code{depends} function to establish any new implicit dependencies.
 
-Expands differential operator nouns into expressions in terms of partial derivatives.
-@code{express} recognizes the operators @code{grad}, @code{div}, @code{curl}, @code{laplacian}.
-@code{express} also expands the cross product @code{~}.
+Expands differential operator nouns into expressions in terms of partial 
+derivatives. @code{express} recognizes the operators @code{grad}, @code{div}, 
+@code{curl}, @code{laplacian}. @code{express} also expands the cross product 
+@code{~}.
 
-Symbolic derivatives (that is, @code{diff} nouns)
-in the return value of express may be evaluated by including @code{diff}
-in the @code{ev} function call or command line.
-In this context, @code{diff} acts as an @code{evfun}.
+Symbolic derivatives (that is, @code{diff} nouns) in the return value of express
+may be evaluated by including @code{diff} in the @code{ev} function call or 
+command line. In this context, @code{diff} acts as an @code{evfun}.
 
 @code{load ("vect")} loads this function.
-@c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN WHICH DOES ALL THE WORK
+@c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN 
+@c WHICH DOES ALL THE WORK
 
-Examples:
-@c GENERATED FROM THE FOLLOWING
+Beispiele:
+
+@c ===beg===
 @c load ("vect")$
 @c grad (x^2 + y^2 + z^2);
 @c express (%);
@@ -876,7 +1068,7 @@ Examples:
 @c ev (%, diff);
 @c [a, b, c] ~ [x, y, z];
 @c express (%);
-
+@c ===end===
 @example
 (%i1) load ("vect")$
 (%i2) grad (x^2 + y^2 + z^2);
@@ -951,48 +1143,89 @@ Examples:
 @c 
 @c @end defun
 
-@c -----------------------------------------------------------------------------
+@c --- 20.11.2010 DK -----------------------------------------------------------
 @anchor{gradef}
-@deffn {Function}  gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
-@deffnx {Function} gradef (@var{a}, @var{x}, @var{expr})
+@deffn  {Funktion} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
+@deffnx {Funktion} gradef (@var{a}, @var{x}, @var{expr})
 
-Defines the partial derivatives (i.e., the components of the gradient) of the function @var{f}
-or variable @var{a}.
+@c Defines the partial derivatives (i.e., the components of the gradient) of the 
+@c function @var{f} or variable @var{a}.
 
-@code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
-defines @code{d@var{f}/d@var{x_i}} as @var{g_i}, 
-where @var{g_i} is an expression; @var{g_i} may be a function call, but not the name of a function.
-The number of partial derivatives @var{m} may be less than the number of arguments @var{n},
-in which case derivatives are defined with respect to @var{x_1} through @var{x_m} only.
+Definiert eine partielle Ableitung der Funktion @var{f} oder Variablen @var{a}.
 
-@code{gradef (@var{a}, @var{x}, @var{expr})} defines the derivative of variable @var{a}
-with respect to @var{x} as @var{expr}.
-This also establishes the dependence of @var{a} on @var{x} (via @code{depends (@var{a}, @var{x})}).
+@c @code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
+@c defines @code{d@var{f}/d@var{x_i}} as @var{g_i}, where @var{g_i} is an 
+@c expression; @var{g_i} may be a function call, but not the name of a function.
+@c The number of partial derivatives @var{m} may be less than the number of 
+@c arguments @var{n}, in which case derivatives are defined with respect to 
+@c @var{x_1} through @var{x_m} only.
 
-The first argument @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @var{a} is quoted,
-but the remaining arguments @var{g_1}, ..., @var{g_m} are evaluated.
-@code{gradef} returns the function or variable for which the partial derivatives are defined.
+@code{gradef(@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
+definiert die partielle Ableitung @code{d@var{f}/d@var{x_i}} als @var{g_i}.
+@var{g_i} ist ein Ausdruck. @var{g_i} kann ein Funktionsaufruf sein, aber nicht
+der Name einer Funktion. Die Anzahl der partiellen Ableitungen @var{m} kann
+kleiner sein als die Anzahl der Argumente @var{n}.
 
-@code{gradef} can redefine the derivatives of Maxima's built-in functions.
-For example, @code{gradef (sin(x), sqrt (1 - sin(x)^2))} redefines the derivative of @code{sin}.
+@c @code{gradef (@var{a}, @var{x}, @var{expr})} defines the derivative of 
+@c variable @var{a} with respect to @var{x} as @var{expr}. This also establishes
+@c the dependence of @var{a} on @var{x} (via @code{depends (@var{a}, @var{x})}).
 
-@code{gradef} cannot define partial derivatives for a subscripted function.
+@code{gradef(@var{a}, @var{x}, @var{expr})} definierte die Ableitung der
+Variablen @var{a} in Bezug auf die Variable @var{x} als @var{expr}. Wie mit der
+Funktion @code{depends} wird @var{a} als abh@"angig von @var{x} deklariert. Die
+Abh@"angigkeit wird in die Liste @code{dependencies} eingetragen. Siehe auch
+@mrefdot{depends}
 
-@code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} displays the partial derivatives
-of the functions @var{f_1}, ..., @var{f_n}, as defined by @code{gradef}.
+@c The first argument @code{@var{f}(@var{x_1}, ..., @var{x_n})} or @var{a} is 
+@c quoted, but the remaining arguments @var{g_1}, ..., @var{g_m} are evaluated.
+@c @code{gradef} returns the function or variable for which the partial 
+@c derivatives are defined.
 
-@code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)} displays the partial derivatives
-of the variables @var{a_n}, ..., @var{a_n}, as defined by @code{gradef}.
+Bis auf erste Argument werden die Argumente der Funktion @code{gradef} 
+ausgewertet. @code{gradef} gibt die Funktion oder Variable zur@"uck, f@"ur die eine
+partielle Ableitung definiert wurde.
 
-@code{gradefs} is the list of the functions
-for which partial derivatives have been defined by @code{gradef}.
-@code{gradefs} does not include any variables
-for which partial derivatives have been defined by @code{gradef}.
+@c @code{gradef} can redefine the derivatives of Maxima's built-in functions.
+@c For example, @code{gradef (sin(x), sqrt (1 - sin(x)^2))} redefines the 
+@c derivative of @code{sin}.
+
+@code{gradef} kann die Ableitungen von vorhandenen Maxima-Funktionen neu 
+definieren. Zum Beispiel definiert @code{gradef(sin(x), sqrt (1 - sin(x)^2))}
+eine neue Ableitung der Sinusfunktion.
+
+@c @code{gradef} cannot define partial derivatives for a subscripted function.
+
+@code{gradef} kann keine partiellen Ableitungen f@"ur indizierte Funktionen
+definieren.
+
+@c @code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} displays the partial
+@c derivatives of the functions @var{f_1}, ..., @var{f_n}, as defined by 
+@c @code{gradef}.
+
+@code{printprops([@var{f_1}, ..., @var{f_n}], gradef)} zeigt die mit 
+@code{gradef} definierten partiellen Ableitungen der Funktionen @var{f_1}, ...,
+@var{f_n} an.
+
+@c @code{printprops([@var{a_n}, ..., @var{a_n}], atomgrad)} displays the partial 
+@c derivatives of the variables @var{a_n}, ..., @var{a_n}, as defined by 
+@c @code{gradef}.
+
+@code{printprops([@var{a_n}, ..., @var{a_n}], atomgrad)} zeigt die mit 
+@code{gradef} definierten partiellen Ableitungen der Variablen @var{a_n}, ..., 
+@var{a_n} an.
+
+@c @code{gradefs} is the list of the functions for which partial derivatives 
+@c have been defined by @code{gradef}. @code{gradefs} does not include any 
+@c variables for which partial derivatives have been defined by @code{gradef}.
+
+@code{gradefs} ist eine Informationsliste, die die Funktionen enth@"alt, f@"ur die
+mit @code{gradef} eine Ableitung definierte wurde. Die Liste enth@"alt keine
+Variablen, f@"ur die Ableitungen definiert wurden.
 
 @c REPHRASE THIS NEXT BIT
-Gradients are needed when, for example, a function is not known
-explicitly but its first derivatives are and it is desired to obtain
-higher order derivatives.
+@c Gradients are needed when, for example, a function is not known explicitly 
+@c but its first derivatives are and it is desired to obtain higher order 
+@c derivatives.
 
 @c NEED EXAMPLES HERE
 @c @opencatbox
@@ -1016,109 +1249,6 @@ wurde.
 @c @category{Differential calculus} @category{Declarations and inferences}
 @c @closecatbox
 @end defvr
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
-
-Attempts to compute the Laplace transform of @var{expr} with respect to the 
-variable @var{t} and transform parameter @var{s}.
-
-@code{laplace} recognizes in @var{expr} the functions @code{delta}, @code{exp},
-@code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
-as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}. If
-laplace fails to find a transform the function @code{specint} is called.
-@code{specint} can find the laplace transform for expressions with special
-functions like the bessel functions @code{bessel_j}, @code{bessel_i}, ... and
-can handle the @code{unit_step} function. See also @code{specint}.
-
-If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
-
-@c REPHRASE THIS
-@var{expr} may also be a linear, constant coefficient differential equation in
-which case @code{atvalue} of the dependent variable is used.
-@c "used" -- USED HOW ??
-The required atvalue may be supplied either before or after the transform is computed.
-Since the initial conditions must be specified at zero, if one has boundary
-conditions imposed elsewhere he can impose these on the general
-solution and eliminate the constants by solving the general solution
-for them and substituting their values back.
-
-@code{laplace} recognizes convolution integrals of the form
-@code{integrate (f(x) * g(t - x), x, 0, t)};
-other kinds of convolutions are not recognized.
-
-Functional relations must be explicitly represented in @var{expr};
-implicit relations, established by @code{depends}, are not recognized.
-That is, if @var{f} depends on @var{x} and @var{y},
-@code{f (x, y)} must appear in @var{expr}.
-
-See also @code{ilt}, the inverse Laplace transform.
-
-Examples:
-@c GENERATED FROM THE FOLLOWING:
-@c laplace (exp (2*t + a) * sin(t) * t, t, s);
-@c laplace ('diff (f (x), x), x, s);
-@c diff (diff (delta (t), t), t);
-@c laplace (%, t, s);
-
-@example
-(%i1) laplace (exp (2*t + a) * sin(t) * t, t, s);
-                            a
-                          %e  (2 s - 4)
-(%o1)                    ---------------
-                           2           2
-                         (s  - 4 s + 5)
-(%i2) laplace ('diff (f (x), x), x, s);
-(%o2)             s laplace(f(x), x, s) - f(0)
-(%i3) diff (diff (delta (t), t), t);
-                          2
-                         d
-(%o3)                    --- (delta(t))
-                           2
-                         dt
-(%i4) laplace (%, t, s);
-                            !
-               d            !         2
-(%o4)        - -- (delta(t))!      + s  - delta(0) s
-               dt           !
-                            !t = 0
-(%i5) assume(a>0)$
-(%i6) laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
-                                              - a - 1
-                         gamma(a)   gamma(a) s
-(%o6)                    -------- - -----------------
-                            s            1     a
-                                        (- + 1)
-                                         s
-(%i7) factor(laplace(gamma_incomplete(1/2,t),t,s));
-                                              s + 1
-                      sqrt(%pi) (sqrt(s) sqrt(-----) - 1)
-                                                s
-(%o7)                 -----------------------------------
-                                3/2      s + 1
-                               s    sqrt(-----)
-                                           s
-(%i8) assume(exp(%pi*s)>1)$
-(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),simpsum;
-                         %i                         %i
-              ------------------------ - ------------------------
-                              - %pi s                    - %pi s
-              (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
-(%o9)         ---------------------------------------------------
-                                       2
-(%i9) factor(%);
-                                      %pi s
-                                    %e
-(%o9)                   -------------------------------
-                                             %pi s
-                        (s - %i) (s + %i) (%e      - 1)
-
-@end example
-
-@c @opencatbox
-@c @category{Laplace transform} @category{Differential equations}
-@c @closecatbox
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Integration, Einf@"uhrung in die Integration, Funktionen und Variablen der Differentiation, Analysis
@@ -1824,6 +1954,110 @@ Sometimes this will help Maxima obtain a more useful result.
 @c @category{Integral calculus}
 @c @closecatbox
 @end defvr
+
+@c -----------------------------------------------------------------------------
+@anchor{laplace}
+@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
+
+Attempts to compute the Laplace transform of @var{expr} with respect to the 
+variable @var{t} and transform parameter @var{s}.
+
+@code{laplace} recognizes in @var{expr} the functions @code{delta}, @code{exp},
+@code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
+as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}. If
+laplace fails to find a transform the function @code{specint} is called.
+@code{specint} can find the laplace transform for expressions with special
+functions like the bessel functions @code{bessel_j}, @code{bessel_i}, ... and
+can handle the @code{unit_step} function. See also @code{specint}.
+
+If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
+
+@c REPHRASE THIS
+@var{expr} may also be a linear, constant coefficient differential equation in
+which case @code{atvalue} of the dependent variable is used.
+@c "used" -- USED HOW ??
+The required atvalue may be supplied either before or after the transform is computed.
+Since the initial conditions must be specified at zero, if one has boundary
+conditions imposed elsewhere he can impose these on the general
+solution and eliminate the constants by solving the general solution
+for them and substituting their values back.
+
+@code{laplace} recognizes convolution integrals of the form
+@code{integrate (f(x) * g(t - x), x, 0, t)};
+other kinds of convolutions are not recognized.
+
+Functional relations must be explicitly represented in @var{expr};
+implicit relations, established by @code{depends}, are not recognized.
+That is, if @var{f} depends on @var{x} and @var{y},
+@code{f (x, y)} must appear in @var{expr}.
+
+See also @code{ilt}, the inverse Laplace transform.
+
+Examples:
+@c GENERATED FROM THE FOLLOWING:
+@c laplace (exp (2*t + a) * sin(t) * t, t, s);
+@c laplace ('diff (f (x), x), x, s);
+@c diff (diff (delta (t), t), t);
+@c laplace (%, t, s);
+
+@example
+(%i1) laplace (exp (2*t + a) * sin(t) * t, t, s);
+                            a
+                          %e  (2 s - 4)
+(%o1)                    ---------------
+                           2           2
+                         (s  - 4 s + 5)
+(%i2) laplace ('diff (f (x), x), x, s);
+(%o2)             s laplace(f(x), x, s) - f(0)
+(%i3) diff (diff (delta (t), t), t);
+                          2
+                         d
+(%o3)                    --- (delta(t))
+                           2
+                         dt
+(%i4) laplace (%, t, s);
+                            !
+               d            !         2
+(%o4)        - -- (delta(t))!      + s  - delta(0) s
+               dt           !
+                            !t = 0
+(%i5) assume(a>0)$
+(%i6) laplace(gamma_incomplete(a,t),t,s),gamma_expand:true;
+                                              - a - 1
+                         gamma(a)   gamma(a) s
+(%o6)                    -------- - -----------------
+                            s            1     a
+                                        (- + 1)
+                                         s
+(%i7) factor(laplace(gamma_incomplete(1/2,t),t,s));
+                                              s + 1
+                      sqrt(%pi) (sqrt(s) sqrt(-----) - 1)
+                                                s
+(%o7)                 -----------------------------------
+                                3/2      s + 1
+                               s    sqrt(-----)
+                                           s
+(%i8) assume(exp(%pi*s)>1)$
+(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),simpsum;
+                         %i                         %i
+              ------------------------ - ------------------------
+                              - %pi s                    - %pi s
+              (s + %i) (1 - %e       )   (s - %i) (1 - %e       )
+(%o9)         ---------------------------------------------------
+                                       2
+(%i9) factor(%);
+                                      %pi s
+                                    %e
+(%o9)                   -------------------------------
+                                             %pi s
+                        (s - %i) (s + %i) (%e      - 1)
+
+@end example
+
+@c @opencatbox
+@c @category{Laplace transform} @category{Differential equations}
+@c @closecatbox
+@end deffn
 
 @c NEEDS EXAMPLES
 

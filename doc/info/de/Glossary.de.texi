@@ -85,6 +85,9 @@ gegen@"uber und erl@"autert die Begriffe.
 @item  Sitzungsverwaltung - session management
        @sp 1
 
+@item  Stammfunktion - antiderivative
+       @sp 1
+
 @item  Standardwert - default value
        @sp 1
 
