@@ -1816,21 +1816,14 @@ which is in a comment which begins on a previous line."
     (info-other-window (concat "(Maxima)" node))))
 
 (defun maxima-get-info-on-subject (subject &optional same-window)
-  (if (or
-       maxima-running-xemacs
-       same-window)
-      (progn
-        (info "Maxima")
-        (Info-menu "Function and Variable Index"))
-    (info-other-window "(Maxima)Function and Variable Index"))
-  (search-forward subject)
-  (if maxima-running-xemacs
-      (Info-follow-nearest-node (point))
-    (Info-follow-nearest-node))
-  (re-search-forward (concat "-.*: *" subject "\\( \\|$\\)"))
-  (if (looking-at "^")
-      (forward-line -1)
-    (beginning-of-line)))
+  (info "Maxima")
+  (Info-menu "Function and Variable Index")
+  (cond (maxima-running-xemacs
+	 (or (and (search-forward subject nil t)
+		  (Info-follow-nearest-node (point)))
+	     (message (concat "Unable to locate " subject))))
+	(t
+	 (Info-menu subject))))
 
 (defun maxima-get-help ()
   "Get help on a given subject"
@@ -1859,9 +1852,9 @@ which is in a comment which begins on a previous line."
                    cw
                  (completing-read (concat "Maxima help (" cw "): ") 
                                           maxima-symbols nil nil nil nil cw))))
-    (if (member (list subj) maxima-symbols)
-        (maxima-get-info-on-subject subj)
-      (message (concat "No help for \"" subj "\"")))))
+    (condition-case nil
+      (maxima-get-info-on-subject subj)
+      (error nil))))
 
 (defun maxima-help-at-point ()
   (interactive)
