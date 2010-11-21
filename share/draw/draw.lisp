@@ -3382,15 +3382,16 @@
 
 ;; transforms arguments to make-scene-2d, make-scene-3d
 ;; and draw to a unique list. With this piece of code,
-;; gr2d, gr3d and draw admit as arguments lists of options
-;; and graphic objects.
+;; gr2d, gr3d and draw admit as arguments nested lists
+;; of options and graphic objects
 (defmacro make-list-of-arguments ()
-   '(setf largs (rest ($tree_reduce 
-                        '$append
-                        (cons '(mlist)
-                              (map 
-                                'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
-                                args))))))
+   '(setf largs (rest ($flatten
+                        ($tree_reduce 
+                          '$append
+                          (cons '(mlist)
+                                (map 
+                                  'list #'(lambda (z) (if ($listp z) z (list '(mlist) z)))
+                                  args)))))))
 
 (defvar *2d-graphic-objects* (make-hash-table))
 
