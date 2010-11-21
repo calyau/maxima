@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.20 $
-;; $Date: 2010-04-15 14:23:58 $
+;; $Revision: 1.21 $
+;; $Date: 2010-11-21 21:42:45 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -863,10 +863,12 @@
    "polarform"
    "polartorect"
    "polynome2ele"
+   "postfix"
    "potential"
    "powers"
    "powerseries"
    "pred"
+   "prefix"
    "prime"
    "primep"
    "print"
@@ -1387,14 +1389,47 @@
   "Medium level highlighting for Maxima mode.")
 
 (defvar maxima-font-lock-keywords-3
-  (append maxima-font-lock-keywords-2
-    (list 
-     (list "^[[:space:]]*\\([%_[:alnum:]]+\\)[[(]\\([[:space:],%_[:alnum:]]+\\(?:\\[[%_[:alnum:]]+\\]\\)*\\)[:space:]*[])][[:space:]]*:*:="
-           '(1 font-lock-function-name-face))
-     (list "^[[:space:]]*\\(?:[%_[:alnum:]]+\\)[[(]\\([[:space:],%_[:alnum:]]+\\(?:\\[[%_[:alnum:]]+\\]\\)*\\)[:space:]*[])][[:space:]]*:*:="
-           '(1 font-lock-variable-name-face))))
+  (let* ((spc                 "[[:space:]]*")
+	 (lspc                (concat "^" spc))
+	 (name                "[%_[:alnum:]]+")
+	 (fname               (concat "\\(" name "\\)"))
+	 (arg                 (concat spc name spc))
+	 (marg                (concat "\\(?:\\(?:" arg "," spc "\\)+" arg "\\)"))
+	 (optarg              (concat spc "\\[" spc name spc "\\]" spc))
+	 (1-arg               (concat spc name spc))
+	 (1-arg-optarg        (concat spc name spc "," spc "\\[" spc name spc "\\]" spc)) 
+	 (marg-optarg         (concat marg spc "," spc optarg))
+	 (zarg                spc)
+	 (fopen               (concat spc "(" spc))
+	 (fclose              (concat spc ")" spc))
+	 (defn                ":*:=")
+	 (fbegin              (concat lspc fname fopen))
+	 (fend                (concat fclose defn))
+	 (alt                 "\\|")
+	 ;; functions: f(...) :=
+	 (fn                  (concat fbegin "\\(" zarg alt optarg alt 1-arg alt marg alt optarg alt 1-arg-optarg alt marg-optarg "\\)" fend))
+	 ;; pure hash functions: f[...] :=
+	 (afopen              (concat spc "\\[" spc))
+	 (afclose             (concat spc "\\]" spc))
+	 (afbegin             (concat lspc fname afopen))
+	 (afend               (concat afclose defn))
+	 (afn                 (concat afbegin "\\(" zarg alt 1-arg alt marg "\\)" afend))
+	 ;; hash/ordinary functions: f[...](...) :=
+	 (hfopen              (concat spc "\\[" spc))
+	 (hfclose             (concat spc "\\]" spc))
+	 (hfbegin             (concat lspc fname hfopen))
+	 (hfend               (concat hfclose defn))
+	 (hfn                 (concat hfbegin "\\(" 1-arg alt marg "\\)" hfclose fopen "\\(" zarg alt 1-arg alt marg alt optarg alt 1-arg-optarg alt marg-optarg "\\)" fend)))
+    (append maxima-font-lock-keywords-2
+	    (list
+	     (list fn  '(1 font-lock-function-name-face))
+	     (list afn '(1 font-lock-function-name-face))
+	     (list hfn '(1 font-lock-function-name-face))
+	     (list fn  '(2 font-lock-variable-name-face))
+	     (list afn '(2 font-lock-variable-name-face))
+	     (list hfn '(2 font-lock-variable-name-face))
+	     (list hfn '(3 font-lock-variable-name-face)))))
   "Gaudy level highlighting for Maxima mode.")
-;;"^.*[[(]\\([^])]*\\)[])][ \t\n\f\r]*:*:="
 
 (defvar maxima-font-lock-keywords maxima-font-lock-keywords-3
   "Default expressions to highlight in Maxima mode.")
