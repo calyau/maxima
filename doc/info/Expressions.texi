@@ -779,6 +779,10 @@ Tells Maxima to consider @var{a_i} a scalar variable.
 Tells Maxima to consider @var{a_i} a nonscalar variable.
 The usual application is to declare a variable as a symbolic vector or matrix.
 
+@item @code{nonarray}
+Tells Maxima to consider @var{a_i} not an array. This declaration prevents
+multiple evaluation of a subscripted variable name.
+
 @item @code{mainvar}
 Tells Maxima to consider @var{a_i} a "main variable".
 A main variable succeeds all other constants and variables in the
@@ -1902,6 +1906,39 @@ form is equivalent to @code{multthru (@var{expr_1}*@var{expr_2})}.
 (%o6)            a . f + a . c . (e + d) + a . b
 (%i7) expand (a.(b+c.(d+e)+f));
 (%o7)         a . f + a . c . e + a . c . d + a . b
+@end example
+
+@opencatbox
+@category{Expressions}
+@closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@deffn {Property} nonarray
+
+The command @code{declare(a, nonarray)} tells Maxima to consider @var{a} not an 
+array. This declaration prevents multiple evaluation, if @var{a} is a 
+subscripted variable.
+
+Example:
+
+@c ===beg===
+@c a:'b$ b:'c$ c:'d$
+@c a[x];
+@c declare(a, nonarray);
+@c a[x];
+@c ===end===
+@example
+(%i1) a:'b$ b:'c$ c:'d$
+
+(%i4) a[x];
+(%o4)                          d
+                                x
+(%i5) declare(a, nonarray);
+(%o5)                         done
+(%i6) a[x];
+(%o6)                          a
+                                x
 @end example
 
 @opencatbox
