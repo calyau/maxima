@@ -7,6 +7,7 @@
 @section Functions and Variables for Equations
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
+@anchor{%rnum_list}
 @defvr {System variable} %rnum_list
 Default value: @code{[]}
 
@@ -88,6 +89,7 @@ exact solutions, and only yield approximations when all else fails.
 
 @end defvr
 
+@anchor{algsys}
 @deffn {Function} algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 @deffnx {Function} algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Solves the simultaneous polynomials @var{expr_1}, ..., @var{expr_m}
@@ -1296,6 +1298,19 @@ y = - .1535675710019696]]
 (%i12) ev (%th(2), %[1]);
 (%o12)                          0
 @end example
+
+The symbols @code{%r} are used to denote arbitrary constants in a
+solution.
+
+@example
+(%i1) solve([x+y=1,2*x+2*y=2],[x,y]);
+
+solve: dependent equations eliminated: (2)
+(%o1)                      [[x = 1 - %r1, y = %r1]]
+@end example
+
+@xref{algsys}, and
+@xref{%rnum_list}, for more information.
 
 @opencatbox
 @category{Algebraic equations}
