@@ -119,26 +119,28 @@ Examples:
 @closecatbox
 @end deffn
 
+@c -----------------------------------------------------------------------------
 @deffn {Function} burn (@var{n})
-Returns the @var{n}'th Bernoulli number for integer @var{n}.
+
+Returns a rational number, which is an approximation of the @var{n}'th Bernoulli
+number for integer @var{n}. @code{burn} exploits the observation that (rational)
+Bernoulli numbers can be approximated by (transcendental) zetas with tolerable 
+efficiency:
+
+@example
+                   n - 1  1 - 2 n
+              (- 1)      2        zeta(2 n) (2 n)!
+     B(2 n) = ------------------------------------
+                                2 n
+                             %pi
+@end example
+
 @code{burn} may be more efficient than @code{bern} for large, isolated @var{n}
-(perhaps @var{n} greater than 105 or so), @c CLAIM MADE IN bffac.usg !!!
-as @code{bern} computes all the Bernoulli numbers up to index @var{n} before returning.
+as @code{bern} computes all the Bernoulli numbers up to index @var{n} before 
+returning. @code{burn} invokes the approximation for even integers @var{n} > 
+255. For odd integers and @var{n} <= 255 the function @code{bern} is called.
 
-@c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
-@c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
-@c (BERN(402) takes about 645 secs vs 13.5 secs for BURN(402).
-@c The time to compute @code{bern} is approximately exponential,
-@c while the time to compute @code{burn} is approximately cubic.
-@c But if next you do BERN(404), it only takes 12 secs,
-@c since BERN remembers all in an array, whereas BURN(404) will take
-@c maybe 14 secs or maybe 25, depending on whether Maxima needs to
-@c BFLOAT a better value of %PI.)
-
-@code{burn} exploits the observation that (rational) Bernoulli numbers can be
-approximated by (transcendental) zetas with tolerable efficiency.
-
-@code{load ("bffac")} loads this function.
+@code{load ("bffac")} loads this function. See also @code{bern}.
 
 @opencatbox
 @category{Number theory}
