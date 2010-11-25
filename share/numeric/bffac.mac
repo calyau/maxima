@@ -38,17 +38,52 @@ azetb(s,fpp):=block([fpprec:15],
 				   *bzeta(1-s,fpprec)
 			   /%pi,bfloat(%\%))));
 
+/* -----------------------------------------------------------------------------
+ * Function burn:
+ *
+ * Calculate an approximation of Bernoulli numbers for even integers using 
+ * the formula:
+ *  
+ *
+ *                          n - 1  1 - 2 n
+ *                     (- 1)      2        zeta(2 n) (2 n)!
+ *    bernoulli(2 n) = ------------------------------------
+ *                                       2 n
+ *                                    %pi
+ *
+ * burn(n) calculates a rational number, which is a very good approximation of
+ * the Bernoulli number for big integers n. With bern the time to calculate a 
+ * bernoulli number grows very fast for the first call.
+ * The function burn is much faster. The following table shows the computation
+ * time in seconds for bern (first call) and burn. Furthermore, the relative
+ * error (bern(n)-burn(n))/bern(n) is shown:
+ *
+ *     n     bern(n)     burn(n)     relative Error
+ *    256     0,1200 s    0,0040 s      3.41b-302
+ *    512     0,7800 s    0,0120 s      1.94b-758
+ *   1024     6,2320 s    0,0320 s      6.38b-1822
+ *   2048    59,5040 s    0,1360 s      2.50b-4258
+ *   4096     -           0,9720 s
+ *   8192     -           7,3680 s
+ * 
+ * Burn invokes the approximation for even integers n > 255. For odd integers 
+ * and n <= 255 the function bern is called.
+ *
+ * The functions vonschtoonk and divrlst are helper functions for burn.
+ * -------------------------------------------------------------------------- */
+
 vonschtoonk(p):=apply("*",
 	    subst(["*" = lambda([[l]],1),"^" = lambda([[l]],1)],
 		  factor(1+divrlst(p))));
 
-divrlst(p):=(
-	args(expand(ratsimp(subst("^" = lambda([a,b],
+divrlst(p):=(block([temp:0],
+	temp: expand(ratsimp(subst("^" = lambda([a,b],
 					       (1-part(a)^(b/2+1))
-						/(1-part(a))),factor(p^2))))),
-	ev(%\%,part));
+						/(1-part(a))),factor(p^2)))),
+    if atom(temp) then cons(temp,[]) else args(temp),
+	ev(%\%,part)));
 
-burn(p):=if evenp(p)
+burn(p):=if evenp(p) and p>255
       then block([d:vonschtoonk(p)],
 		 block([fpprec:entier(ev(
 				       (log(8*%pi*p)/2+p*(log(p/(2*%pi))-1)
