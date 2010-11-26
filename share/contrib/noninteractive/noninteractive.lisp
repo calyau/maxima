@@ -25,8 +25,9 @@
 ;; when it is defined. Just a thought.
 
 (defun $delete_noninteractive_stuff_from_infolists ()
-  (delete '|$within_MEVAL1| $values)
-  (delete '((|$meval1|)) $functions :test #'equal)
-  (delete '(($ENUMERATE_CASES) |$l%|) $functions :test #'equal)
-  (delete '(($INTERLEAVE) |$l1| |$l2|) $functions :test #'equal)
+  (declare (special $values $functions))
+  (setq $values (delete '|$within_MEVAL1| $values))
+  (setq $functions (delete '((|$meval1|)) $functions :test #'equal))
+  (setq $functions (delete '(($ENUMERATE_CASES) |$l%|) $functions :test #'equal))
+  (setq $functions (delete '(($INTERLEAVE) |$l1| |$l2|) $functions :test #'equal))
   '$done)
