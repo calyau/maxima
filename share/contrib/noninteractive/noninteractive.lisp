@@ -16,3 +16,17 @@
     (unwind-protect
       (first (last (mapcar #'meval (rest args))))
       (meval `(($forget) ,@assumptions)))))
+
+;; Remove functions and variables defined at Maxima level
+;; so that kill does not affect noninteractive.
+;; Unfortunately, this function has to revised if any more
+;; functions or variables are defined. 
+;; Maybe there should be a way to mark a function as unkillable
+;; when it is defined. Just a thought.
+
+(defun $delete_noninteractive_stuff_from_infolists ()
+  (delete '|$within_MEVAL1| $values)
+  (delete '((|$meval1|)) $functions :test #'equal)
+  (delete '(($ENUMERATE_CASES) |$l%|) $functions :test #'equal)
+  (delete '(($INTERLEAVE) |$l1| |$l2|) $functions :test #'equal)
+  '$done)

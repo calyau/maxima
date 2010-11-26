@@ -174,3 +174,8 @@ simp: true;
 
 /* Load revised toplevel loop AFTER defining the Maxima function it calls */
 load ("asksign1.lisp");
+
+/* Remove functions and variables defined at Maxima level
+ * so that kill does not affect noninteractive.
+ */
+delete_noninteractive_stuff_from_infolists ();
