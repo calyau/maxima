@@ -22,38 +22,37 @@
 @deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy})
 @deffnx {Function} augmented_lagrangian_method ([@var{FOM}, @var{grad}], @var{xx}, @var{C}, @var{yy}, optional_args)
 
-Returns an approximate minimum of the expression @var{FOM}
-with respect to the variables @var{xx},
-holding the constraints @var{C} equal to zero.
-@var{yy} is a list of initial guesses for @var{xx}.
-The method employed is the augmented Lagrangian method (see Refs [1] and [2]).
+Returns an approximate minimum of the expression @var{FOM} with respect to the 
+variables @var{xx}, holding the constraints @var{C} equal to zero. @var{yy} is 
+a list of initial guesses for @var{xx}. The method employed is the augmented 
+Lagrangian method (see Refs [1] and [2]).
 
 @var{grad}, if present, is the gradient of @var{FOM} with respect to @var{xx},
-represented as a list of expressions,
-one for each variable in @var{xx}.
+represented as a list of expressions, one for each variable in @var{xx}.
 If not present, the gradient is constructed automatically.
 
-@var{FOM} and each element of @var{grad}, if present,
-must be ordinary expressions, not names of functions or lambda expressions.
+@var{FOM} and each element of @var{grad}, if present, must be ordinary 
+expressions, not names of functions or lambda expressions.
 
-@code{optional_args} represents additional arguments,
-specified as @code{@var{symbol} = @var{value}}.
-The optional arguments recognized are:
+@code{optional_args} represents additional arguments, specified as 
+@code{@var{symbol} = @var{value}}. The optional arguments recognized are:
 
 @table @code
 @item niter
 Number of iterations of the augmented Lagrangian algorithm
+
 @item lbfgs_tolerance
 Tolerance supplied to LBFGS
+
 @item iprint
 IPRINT parameter (a list of two integers which controls verbosity) supplied to LBFGS
+
 @item %lambda
 Initial value of @code{%lambda} to be used for calculating the augmented Lagrangian
 @end table
 
-This implementation minimizes the augmented Lagrangian by
-applying the limited-memory BFGS (LBFGS) algorithm,
-which is a quasi-Newton algorithm.
+This implementation minimizes the augmented Lagrangian by applying the 
+limited-memory BFGS (LBFGS) algorithm, which is a quasi-Newton algorithm.
 
 @code{load(augmented_lagrangian)} loads this function.
 
@@ -140,7 +139,6 @@ Same example as before, but this time the gradient is supplied as an argument.
 @c @opencatbox
 @c @category{Numerical methods} @category{Share packages} @category{Package augmented_lagrangian}
 @c @closecatbox
-
 @end deffn
 
 @c --- End of file augmented_langrangian.de.texi -------------------------------

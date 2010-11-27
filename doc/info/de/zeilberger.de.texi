@@ -305,9 +305,9 @@ $$\left[R\left(n, k\right), \left[a_0, a_1, \ldots, a_d\right]\right].$$
 
 Attempts to compute the indefinite hypergeometric summation of @math{F_(n,k)}.
 
-@code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a solution, then invokes
-@code{parGosper} with order 1, 2, 3, ..., up to @code{MAX_ORD}.
-If Zeilberger finds a solution before reaching @code{MAX_ORD},
+@code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a 
+solution, then invokes @code{parGosper} with order 1, 2, 3, ..., up to 
+@code{MAX_ORD}. If Zeilberger finds a solution before reaching @code{MAX_ORD},
 it stops and returns the solution.
 
 The algorithms yields a sequence @math{[s_1, s_2, ..., s_m]} of solutions.
@@ -317,7 +317,8 @@ Each solution has the form
 
 @code{Zeilberger} returns @code{[]} if it fails to find a solution.
 
-@code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is @code{true}.
+@code{Zeilberger} invokes @code{Gosper} only if @code{Gosper_in_Zeilberger} is 
+@code{true}.
 
 @c @opencatbox
 @c @category{Package zeilberger}
@@ -381,9 +382,9 @@ warning messages during execution.
 @defvr {Global variable} Gosper_in_Zeilberger
 Default value: @code{true}
 
-When @code{Gosper_in_Zeilberger} is @code{true},
-the @code{Zeilberger} function calls @code{Gosper} before calling @code{parGosper}.
-Otherwise, @code{Zeilberger} goes immediately to @code{parGosper}.
+When @code{Gosper_in_Zeilberger} is @code{true}, the @code{Zeilberger} function 
+calls @code{Gosper} before calling @code{parGosper}. Otherwise, 
+@code{Zeilberger} goes immediately to @code{parGosper}.
 
 @c @opencatbox
 @c @category{Package zeilberger}
@@ -423,7 +424,8 @@ modular test for discarding systems with no solutions.
 @defvr {Global variable} modular_linear_solver
 Default value: @code{linsolve}
 
-@code{modular_linear_solver} names the linear solver used by the modular test in @code{parGosper}.
+@code{modular_linear_solver} names the linear solver used by the modular test 
+in @code{parGosper}.
 
 @c @opencatbox
 @c @category{Package zeilberger}
@@ -446,7 +448,8 @@ when executing the modular test in @code{parGosper}.
 @defvr {Global variable} mod_big_prime
 Default value: @code{big_primes[1]}
 
-@code{mod_big_prime} is the modulus used by the modular test in @code{parGosper}.
+@code{mod_big_prime} is the modulus used by the modular test in 
+@code{parGosper}.
 
 @c @opencatbox
 @c @category{Package zeilberger}

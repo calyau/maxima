@@ -55,11 +55,10 @@ a tranformation into another ODE in variable @code{%u}.
 
 @end itemize
 
-@code{%c} is used to represent the constant of integration for first order equations.
-@code{%k1} and @code{%k2} are the constants for second order equations.  
-If @code{contrib_ode}
-cannot obtain a solution for whatever reason, it returns @code{false}, after
-perhaps printing out an error message.
+@code{%c} is used to represent the constant of integration for first order 
+equations. @code{%k1} and @code{%k2} are the constants for second order 
+equations. If @code{contrib_ode} cannot obtain a solution for whatever reason, 
+it returns @code{false}, after perhaps printing out an error message.
 
 It is necessary to return a list of solutions, as even first order
 non-linear ODEs can have multiple solutions.  For example:
@@ -175,6 +174,7 @@ The following example (Kamke 1.112) demonstrates an implicit solution.
 The following Riccati equation is transformed into a linear
 second order ODE in the variable @code{%u}.  Maxima is unable to
 solve the new ODE, so it is returned unevaluated.
+
 @c ===beg===
 @c load('contrib_ode)$
 @c eqn:x^2*'diff(y,x)=a+b*x^n+c*x^2*y^2;
@@ -222,6 +222,7 @@ Extensive debugging traces and messages are displayed if the command
 @section Functions and Variables for contrib_ode
 
 @c -----------------------------------------------------------------------------
+@anchor{function_contrib_ode}
 @deffn {Function} contrib_ode (@var{eqn}, @var{y}, @var{x})
 
 Returns a list of solutions of the ODE @var{eqn} with 
@@ -233,6 +234,7 @@ independent variable @var{x} and dependent variable @var{y}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{odelin}
 @deffn {Function} odelin (@var{eqn}, @var{y}, @var{x})
 
 @code{odelin} solves linear homogeneous ODEs of first and 
@@ -268,7 +270,6 @@ special functions.
 (%o2) @{---------------------------, ---------------------------@}
                     4                            4
                    x                            x
-
 @end example
 
 @c @opencatbox
@@ -277,6 +278,7 @@ special functions.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{ode_check}
 @deffn {Function} ode_check (@var{eqn}, @var{soln})
 
 Returns the value of ODE @var{eqn} after substituting a
@@ -322,6 +324,7 @@ zero if @var{soln} is a solution of @var{eqn}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{method}
 @defvr {System variable} method
 
 The variable @code{method} is set to the successful solution
@@ -333,6 +336,7 @@ method.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{%c}
 @defvr {Variable} %c
 
 @code{%c} is the integration constant for first order ODEs.
@@ -343,6 +347,7 @@ method.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{%k1}
 @defvr {Variable} %k1
 
 @code{%k1} is the first integration constant for second order ODEs.
@@ -353,6 +358,7 @@ method.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{%k2}
 @defvr {Variable} %k2
 
 @code{%k2} is the second integration constant for second order ODEs.
@@ -363,6 +369,7 @@ method.
 @end defvr
 
 @c -----------------------------------------------------------------------------
+@anchor{gauss_a}
 @deffn {Function} gauss_a (@var{a}, @var{b}, @var{c}, @var{x})
 
 @code{gauss_a(a,b,c,x)} and @code{gauss_b(a,b,c,x)} are 2F1 
@@ -382,7 +389,9 @@ See also @code{gauss_b}, @code{dgauss_a} and @code{gauss_b}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{gauss_b}
 @deffn {Function} gauss_b (@var{a}, @var{b}, @var{c}, @var{x})
+
 See @code{gauss_a}.
 
 @c @opencatbox
@@ -391,8 +400,11 @@ See @code{gauss_a}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{dgauss_a}
 @deffn {Function} dgauss_a (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
+
+The derivative with respect to @var{x} of 
+@code{gauss_a(@var{a}, @var{b}, @var{c}, @var{x})}.
 
 @c @opencatbox
 @c @category{Package contrib_ode}
@@ -400,8 +412,11 @@ The derivative with respect to @var{x} of @code{gauss_a(@var{a}, @var{b}, @var{c
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{dgauss_b}
 @deffn {Function} dgauss_b (@var{a}, @var{b}, @var{c}, @var{x})
-The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
+
+The derivative with respect to @var{x} of 
+@code{gauss_b(@var{a}, @var{b}, @var{c}, @var{x})}.
 
 @c @opencatbox
 @c @category{Package contrib_ode}
@@ -409,6 +424,7 @@ The derivative with respect to @var{x} of @code{gauss_b(@var{a}, @var{b}, @var{c
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{kummer_m}
 @deffn {Function} kummer_m (@var{a}, @var{b}, @var{x})
 
 Kummer's M function, as defined in Abramowitz and Stegun,
@@ -426,6 +442,7 @@ See also @code{kummer_u}, @code{dkummer_m} and @code{dkummer_u}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{kummer_u}
 @deffn {Function} kummer_u (@var{a}, @var{b}, @var{x})
 
 Kummer's U function, as defined in Abramowitz and Stegun,
@@ -439,8 +456,11 @@ See @code{kummer_m}.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{dkummer_m}
 @deffn {Function} dkummer_m (@var{a}, @var{b}, @var{x})
-The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{x})}.
+
+The derivative with respect to @var{x} of 
+@code{kummer_m(@var{a}, @var{b}, @var{x})}.
 
 @c @opencatbox
 @c @category{Package contrib_ode}
@@ -448,8 +468,11 @@ The derivative with respect to @var{x} of @code{kummer_m(@var{a}, @var{b}, @var{
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{dkummer_u}
 @deffn {Function} dkummer_u (@var{a}, @var{b}, @var{x})
-The derivative with respect to @var{x} of @code{kummer_u(@var{a}, @var{b}, @var{x})}.
+
+The derivative with respect to @var{x} of 
+@code{kummer_u(@var{a}, @var{b}, @var{x})}.
 
 @c @opencatbox
 @c @category{Package contrib_ode}
