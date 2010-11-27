@@ -1542,8 +1542,8 @@ als 1/4. Mit dem Standardwert 25 f@"ur die Optionsvariable
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@anchor{anchor}
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{primep_number_of_tests}
 @defvr {Optionsvariable} primep_number_of_tests
 Standardwert: 25
 
@@ -1686,11 +1686,11 @@ F@"ur negative ganze Zahlen @var{n}, Null und postive gerade ganze Zahlen
 vereinfacht @code{zeta} zu einem exakten Ergebnis. Damit diese Vereinfachung
 f@"ur positive ganze Zahlen ausgef@"uhrt wird, muss die Optionsvariable
 @code{zeta%pi} den Wert @code{true} haben. Siehe @mrefdot{zeta%pi} F@"ur 
-einfache und gro@ss{}e Gleitkommazahlen hat @code{zeta} ein numerisches Ergebnis.
-F@"ur alle anderen Argumente einschlie@ss{}lich komplexe Zahlen und rationale 
-Zahlen gibt @code{zeta} eine Substantivform zur@"uck. Hat die Optionsvariable
-@code{zeta%pi} den Wert @code{false}, gibt @code{zeta} auch f@"ur gerade ganze
-Zahlen eine Substantivform zur@"uck.
+einfache und gro@ss{}e Gleitkommazahlen hat @code{zeta} ein numerisches 
+Ergebnis. F@"ur alle anderen Argumente einschlie@ss{}lich komplexe Zahlen und 
+rationale Zahlen gibt @code{zeta} eine Substantivform zur@"uck. Hat die 
+Optionsvariable @code{zeta%pi} den Wert @code{false}, gibt @code{zeta} auch 
+f@"ur gerade ganze Zahlen eine Substantivform zur@"uck.
 
 @c @code{zeta(1)} is undefined, but Maxima knows the limit 
 @c @code{limit(zeta(x), x, 1)} from above and below.
@@ -2433,7 +2433,8 @@ bis @code{%pi} zur@"uck.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{%piargs}
 @defvr {Optionsvariable} %piargs
 Standardwert: @code{true}
 
@@ -2447,32 +2448,27 @@ Standardwert: @code{true}
 @c @end ifnottex
 
 Hat @code{%piargs} den Wert @code{true}, werden Winkel- und Hyperbelfunktionen 
-sowie deren Inverse wenn m@"oglich zu algebraischen Konstanten vereinfacht. 
-
-Die Winkelfunktionen werden zum Beispiel f@"ur ganzahlige Vielfache der 
-folgenden Konstanten vereinfacht
+sowie deren Inverse zu algebraischen Konstanten vereinfacht, wenn das Argument
+ein ganzzahliges Vielfaches der folgenden Konstanten ist:
 @iftex
-@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
+@math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4} oder @math{\pi/6}.
 @end iftex
 @ifnottex
-@math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
+@code{%pi}, @code{%pi/2}, @code{%pi/3}, @code{%pi/4} oder @code{%pi/6}.
 @end ifnottex
 
 @c Maxima knows some identities which can be applied when 
-
-Maxima kennt einige Identit@"aten, wenn
-@iftex 
-@math{\pi} 
-@end iftex 
-@ifnottex 
-@math{%pi} 
-@end ifnottex
-
 @c are multiplied by an integer variable (that is, a symbol declared to be 
 @c integer).
 
-u.s.w. mit einer ganzzahligen Variable (ein Symbol, welches als ganze Zahl)
-deklariert wurde, multipliziert wird.
+Maxima kennt weiterhin einige Identit@"aten, wenn die Konstante
+@iftex 
+@math{\pi}
+@end iftex
+@ifnottex 
+@code{%pi}
+@end ifnottex
+mit einer Variablen multipliziert wird, die als ganzzahlig deklariert wurde.
 
 Beispiele:
 
@@ -2531,12 +2527,12 @@ Beispiele:
 @c by an integer variable.
 @c @end ifnottex
 
-Einige Identit@"aten werden angewendet, wenn
+Weitere Identit@"aten werden angewendet, wenn
 @iftex 
 @math{\pi} und @math{\pi/2}
 @end iftex 
 @ifnottex 
-@math{%pi} and @math{%pi/2}
+@code{%pi} und @code{%pi/2}
 @end ifnottex
 mit einer ganzzahligen Variable multipliziert werden.
 
@@ -2560,7 +2556,8 @@ mit einer ganzzahligen Variable multipliziert werden.
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{%iargs}
 @defvr {Optionsvariable} %iargs
 Standardwert: @code{true}
 
@@ -2574,13 +2571,13 @@ Standardwert: @code{true}
 @c @end ifnottex
 
 Hat @code{%iargs} den Wert @code{true}, werden Winkelfunktionen zu 
-Hyperlfunktionen vereinfacht, wenn das Argument ein Vielfaches der imagin@"aren
-Einheit
+Hyperbelfunktionen vereinfacht, wenn das Argument ein Vielfaches der 
+imagin@"aren Einheit
 @iftex
 @math{i}
 @end iftex
 @ifnottex
-@math{%i}
+@code{%i}
 @end ifnottex
 ist.
 
@@ -2593,7 +2590,7 @@ ist.
 @c @end ifnottex
 
 Die Vereinfachung zu Hyperbelfunktionen wird auch dann ausgef@"uhrt, wenn das
-Argument offensichtlich Reel ist.
+Argument offensichtlich reel ist.
 
 Beispiele:
 
@@ -2643,7 +2640,8 @@ vereinfacht.
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{halfangles}
 @defvr {Optionsvariable} halfangles
 Standardwert: @code{false}
 
@@ -2657,7 +2655,7 @@ Hyperbelfunktionen mit halbzahligen Argumenten @code{@var{expr}/2} vereinfacht.
 @c the half-angle simplifies to a simple formula:
 
 F@"ur ein reelles Argument @var{x} im Intervall @code{0 < x < 2*%pi} vereinfacht
-der Sinus f@"ur ein halbzahliges Argument zu eine einfache Formel: 
+der Sinus f@"ur ein halbzahliges Argument zu einer einfachen Formel: 
 
 @example
                          sqrt(1 - cos(x))
@@ -2729,7 +2727,8 @@ Beispiele:
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{ntrig}
 @defvr {Packet} ntrig
 
 @c The @code{ntrig} package contains a set of simplification rules that are
@@ -2740,14 +2739,18 @@ Beispiele:
 Das Packet @code{ntrig} enth@"alt Regeln, um Winkelfunktionen zu vereinfachen, 
 die Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben. @var{f} ist eine 
 der Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
-@code{cot}. 
+@code{cot}.
+
+Das Kommando @code{load(ntrig)} l@"adt das Paket. Die Vereinfachungen werden
+dann von Maxima automatisch ausgef@"uhrt.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen} @category{Packete}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{trigexpand}
 @deffn {Funktion} trigexpand (@var{expr})
 
 @c Expands trigonometric and hyperbolic functions of sums of angles and of 
@@ -2762,26 +2765,45 @@ Ausdruck @var{expr}, die Summen und Vielfache von Winkeln als Argument haben.
 Die besten Ergebnisse werden erzielt, wenn der Ausdruck @var{expr} zun@"achst
 expandiert wird.
 
-@code{trigexpand} is governed by the following global flags:
+@c @code{trigexpand} is governed by the following global flags:
+
+Folgende Schalter kontrollieren @code{trigexpand}:
 
 @table @code
+@c @item trigexpand
+@c If @code{true} causes expansion of all expressions containing sin's and 
+@c cos's occurring subsequently.
+
 @item trigexpand
-If @code{true} causes expansion of all
-expressions containing sin's and cos's occurring subsequently.
+Wenn @code{true}, werden Sinus- und Cosinus-Funktionen expandiert.
+
+@c @item halfangles
+@c If @code{true} causes half-angles to be simplified away.
+
 @item halfangles
-If @code{true} causes half-angles to be simplified
-away.
+Wenn @code{true}, werden Vereinfachungen f@"ur halbzahlige Argumente angewendet.
+
+@c @item trigexpandplus
+@c Controls the "sum" rule for @code{trigexpand}, expansion of sums (e.g. 
+@c @code{sin(x + y)}) will take place only if @code{trigexpandplus} is 
+@c @code{true}.
+
 @item trigexpandplus
-Controls the "sum" rule for @code{trigexpand},
-expansion of sums (e.g. @code{sin(x + y)}) will take place only if
-@code{trigexpandplus} is @code{true}.
+Wenn @code{true}, werden Winkelfunktionen, die eine Summe als Argument haben,
+wie zum Beispiel @code{sin(x+y)}, vereinfacht.
+
+@c @item trigexpandtimes
+@c Controls the "product" rule for @code{trigexpand}, expansion of products 
+@c (e.g. @code{sin(2 x)}) will take place only if @code{trigexpandtimes} is 
+@c @code{true}.
+
 @item trigexpandtimes
-Controls the "product" rule for @code{trigexpand},
-expansion of products (e.g. @code{sin(2 x)}) will take place only if
-@code{trigexpandtimes} is @code{true}.
+Wenn @code{true},  werden Winkelfunktionen, die ein Produkt als Argument haben,
+wie zum Beispiel @code{sin(2 x)}, vereinfacht.
+
 @end table
 
-Examples:
+Beispiele:
 
 @c ===beg===
 @c x+sin(3*x)/sin(x),trigexpand=true,expand;
@@ -2804,69 +2826,99 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{trigexpandplus}
 @defvr {Optionsvariable} trigexpandplus
 Standardwert: @code{true}
 
-@code{trigexpandplus} controls the "sum" rule for
-@code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
-@code{trigexpand} switch set to @code{true}, expansion of sums
-(e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is
-@code{true}.
+@c @code{trigexpandplus} controls the "sum" rule for @code{trigexpand}.  Thus, 
+@c when the @code{trigexpand} command is used or the @code{trigexpand} switch 
+@c set to @code{true}, expansion of sums (e.g. @code{sin(x+y))} will take place 
+@c only if @code{trigexpandplus} is @code{true}.
+
+@code{trigexpandplus} kontrolliert die Vereinfachung von Winkelfunktionen mit
+der Funktion @code{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit Summen
+als Argumente auftreten. Hat @code{trigexpandplus} den Wert @code{true},
+werden zum Beispiel Winkelfunktionen wie @code{sin(x+y)} vereinfacht.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{trigexpandtimes}
 @defvr {Optionsvariable} trigexpandtimes
 Standardwert: @code{true}
 
-@code{trigexpandtimes} controls the "product" rule for @code{trigexpand}.  
-Thus, when the @code{trigexpand} command is used or the @code{trigexpand} 
-switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)}) will 
-take place only if @code{trigexpandtimes} is @code{true}.
+@c @code{trigexpandtimes} controls the "product" rule for @code{trigexpand}.  
+@c Thus, when the @code{trigexpand} command is used or the @code{trigexpand} 
+@c switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)}) will 
+@c take place only if @code{trigexpandtimes} is @code{true}.
+
+@code{trigexpandtimes} kontrolliert die Vereinfachung von Winkelfunktionen mit
+der Funktion @code{trigexpand} f@"ur den Fall, dass Winkelfunktionen mit 
+Produkten als Argumente auftreten. Hat @code{trigexpandtimes} den Wert 
+@code{true}, werden zum Beispiel Winkelfunktionen wie @code{sin(2 x)} 
+vereinfacht.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{triginverses}
 @defvr {Optionsvariable} triginverses
 Standardwert: @code{true}
 
-@code{triginverses} controls the simplification of the
-composition of trigonometric and hyperbolic functions with their inverse
-functions.
+@c @code{triginverses} controls the simplification of the composition of 
+@c trigonometric and hyperbolic functions with their inverse functions.
 
-If @code{all}, both e.g. @code{atan(tan(@var{x}))}
-and @code{tan(atan(@var{x}))} simplify to @var{x}.
+Kontrolliert die Vereinfachung, wenn das Argument einer Trigonometrischen oder
+Hyperbolischen Funktion eine der inversen Funktion ist.
 
-If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))}
-simplification is turned off.
+@c If @code{all}, both e.g. @code{atan(tan(@var{x}))} and 
+@c @code{tan(atan(@var{x}))} simplify to @var{x}.
 
-If @code{false}, both the
-@code{@var{arcfun}(@var{fun}(@var{x}))} and
-@code{@var{fun}(@var{arcfun}(@var{x}))}
-simplifications are turned off.
+Hat @code{triginverses} den Wert @code{all}, vereinfachen beide Ausdr@"ucke
+@code{atan(tan(@var{x}))} und @code{tan(atan(@var{x}))} zum Wert @var{x}.
+
+@c If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))} simplification 
+@c is turned off.
+
+Hat @code{triginverses} den Wert @code{all}, wird
+@code{@var{arcfun}(@var{fun}(@var{x}))} nicht vereinfacht.
+
+@c If @code{false}, both the @code{@var{arcfun}(@var{fun}(@var{x}))} and
+@c @code{@var{fun}(@var{arcfun}(@var{x}))} simplifications are turned off.
+
+Hat @code{triginverses} den Wert @code{false}, werden
+@code{@var{arcfun}(@var{fun}(@var{x}))} und 
+@code{@var{fun}(@var{arcfun}(@var{x}))} nicht vereinfacht.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@deffn  {Function} trigreduce (@var{expr}, @var{x})
-@deffnx {Function} trigreduce (@var{expr})
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{trigreduce}
+@deffn  {Funktion} trigreduce (@var{expr}, @var{x})
+@deffnx {Funktion} trigreduce (@var{expr})
 
-Combines products and powers of trigonometric
-and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
-It also tries to eliminate these functions when they occur in
-denominators.  If @var{x} is omitted then all variables in @var{expr} are used.
+@c Combines products and powers of trigonometric and hyperbolic sin's and cos's 
+@c of @var{x} into those of multiples of @var{x}. It also tries to eliminate 
+@c these functions when they occur in denominators.  If @var{x} is omitted then 
+@c all variables in @var{expr} are used.
 
-See also @code{poissimp}.
+Produkte und Potenzen von Trigonometrischen und Hyperbolischen Sinus und Cosinus
+Funktionen mit dem Argument @var{x} werden zu Funktionen vereinfacht, die
+Vielfache von @var{x} enthalten. @code{trigreduce} versucht auch, Sinus und
+Cosinus Funktionen in einem Nenner zu eleminieren. Wird keine Variable @var{x}
+angegeben, werden alle Variablen im Ausdruck @code{expr} betrachtet.
+
+Siehe auch @mrefdot{poissimp}
 
 @c ===beg===
 @c trigreduce(-sin(x)^2+3*cos(x)^2+x);
@@ -2880,16 +2932,16 @@ See also @code{poissimp}.
 @end group
 @end example
 
-@c
+@c 
 @c     OBSOLETE
 @c     The behavior was changed in order to avoid calling expand in the core
 @c     simplifier (trigi.lisp rev 1.31)
 @c     See http://www.math.utexas.edu/pipermail/maxima/2008/010919.html.
-@c
+@c 
 @c The trigonometric simplification routines will use declared
 @c information in some simple cases.  Declarations about variables are
 @c used as follows, e.g.
-@c
+@c 
 @c ---beg---
 @c declare(j, integer, e, even, o, odd)$
 @c sin(x + (e + 1/2)*%pi);
@@ -2908,44 +2960,79 @@ See also @code{poissimp}.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{trigsign}
 @defvr {Optionsvariable} trigsign
 Standardwert: @code{true}
 
-When @code{trigsign} is @code{true}, it permits simplification of negative
-arguments to trigonometric functions. E.g., @code{sin(-x)} will become
-@code{-sin(x)} only if @code{trigsign} is @code{true}.
+@c When @code{trigsign} is @code{true}, it permits simplification of negative
+@c arguments to trigonometric functions. E.g., @code{sin(-x)} will become
+@c @code{-sin(x)} only if @code{trigsign} is @code{true}.
+
+Hat @code{trigsign} den Wert @code{true}, werden Trigonometrische Funktionen
+mit einem negativem Argument vereinfacht. Zum Beispiel vereinfacht in diesem
+Fall @code{sin(-x)} zu @code{-sin(x)}.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{trigsimp}
 @deffn {Funktion} trigsimp (@var{expr})
 
+@c @iftex
+@c Employs the identities
+@c @tex
+@c $\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
+@c @end tex
+@c and
+@c @tex
+@c $\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
+@c @end tex
+@c to simplify expressions containing @code{tan}, @code{sec},
+@c etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@c @end iftex
+@c @ifnottex
+@c Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
+@c @math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing 
+@c @code{tan}, @code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, 
+@c @code{cosh}.
+@c @end ifnottex
+
+Wendet die Identit@"aten
 @iftex
-Employs the identities
 @tex
 $\sin\left(x\right)^2 + \cos\left(x\right)^2 = 1$
 @end tex
-and
+@end iftex
+@ifnottex
+@code{sin(x)^2 + cos(x)^2 = 1}
+@end ifnottex
+und
+@iftex
 @tex
 $\cosh\left(x\right)^2 - \sinh\left(x\right)^2 = 1$
 @end tex
-to simplify expressions containing @code{tan}, @code{sec},
-etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @end iftex
 @ifnottex
-Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
-@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, 
-@code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@code{cosh(x)^2 - sinh(x)^2 = 1}
 @end ifnottex
+an, um Ausdr@"ucke, die Funktionen wie @code{tan}, @code{sec}, usw. enthalten, 
+zu Ausdr@"ucken mit den Funktionen @code{sin}, @code{cos}, @code{sinh}, 
+@code{cosh} zu vereinfachen.
 
-@code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
-able to further simplify the result.
+@c @code{trigreduce}, @code{ratsimp}, and @code{radcan} may be able to further 
+@c simplify the result.
 
-@code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
+Die Anwendung von Funktionen wie @code{trigreduce}, @code{ratsimp} und 
+@code{radcan} kann den Ausdruck weiter vereinfachen.
+
+@c @code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
+
+Das Kommando @code{demo(trgsmp)} zeigt einige Beispiele.
+
 @c MERGE EXAMPLES INTO THIS ITEM
 
 @c @opencatbox
@@ -2954,6 +3041,7 @@ able to further simplify the result.
 @end deffn
 
 @c -----------------------------------------------------------------------------
+@anchor{trigrat}
 @deffn {Funktion} trigrat (@var{expr})
 
 Gives a canonical simplifyed quasilinear form of a trigonometrical expression; 
