@@ -109,7 +109,24 @@ figures/graphs11.gif\
 figures/graphs12.gif\
 figures/graphs13.gif\
 figures/graphs14.gif\
-figures/graphs15.gif
+figures/graphs15.gif\
+figures/bodegain1.gif\
+figures/bodegain2.gif\
+figures/bodegain3.gif\
+figures/bodegain4.gif\
+figures/bodegain5.gif\
+figures/bodegain6.gif\
+figures/bodegain7.gif\
+figures/bodegain8.gif\
+figures/bodephase1.gif\
+figures/bodephase2.gif\
+figures/bodephase3.gif\
+figures/bodephase4.gif\
+figures/bodephase5.gif\
+figures/bodephase6.gif\
+figures/bodephase7.gif\
+figures/bodephase8.gif\
+figures/bodephase9.gif
 
 pdffigures = \
 figures/introduction1.pdf\
@@ -160,7 +177,24 @@ figures/plotting22.pdf\
 figures/plotting23.pdf\
 figures/plotting24.pdf\
 figures/plotting25.pdf\
-figures/orthopoly1.pdf
+figures/orthopoly1.pdf\
+figures/bodegain1.pdf\
+figures/bodegain2.pdf\
+figures/bodegain3.pdf\
+figures/bodegain4.pdf\
+figures/bodegain5.pdf\
+figures/bodegain6.pdf\
+figures/bodegain7.pdf\
+figures/bodegain8.pdf\
+figures/bodephase1.pdf\
+figures/bodephase2.pdf\
+figures/bodephase3.pdf\
+figures/bodephase4.pdf\
+figures/bodephase5.pdf\
+figures/bodephase6.pdf\
+figures/bodephase7.pdf\
+figures/bodephase8.pdf\
+figures/bodephase9.pdf
 
 all-local: maxima.info maxima-index.lisp
 
