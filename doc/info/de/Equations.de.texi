@@ -1739,6 +1739,19 @@ y = - .1535675710019696]]
 (%o12)                          0
 @end example
 
+@c The symbols @code{%r} are used to denote arbitrary constants in a solution.
+
+Die Symbole @code{%r} bezeichnen freie Konstanten einer Lösung.
+
+@example
+(%i1) solve([x+y=1,2*x+2*y=2],[x,y]);
+
+solve: dependent equations eliminated: (2)
+(%o1)                      [[x = 1 - %r1, y = %r1]]
+@end example
+
+Siehe @mref{algsys} and @mref{%rnum_list} f@"ur mehr Informationen.
+
 @c @opencatbox
 @c @category{Algebraic equations}
 @c @closecatbox

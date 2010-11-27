@@ -35,7 +35,7 @@ Gibt den Betrag des Argumentes @var{expr} zur@"uck. Ist @var{expr} eine komplexe
 Zahl wird das Argument zum komplexen Betrag vereinfacht. Allgemeine komplexe
 Ausdr@"ucke oder komplexe Funktionen werden von @code{abs} nicht vereinfacht. 
 F@"ur komplexe Ausdr@"ucke kann die Funktion @code{cabs} genutzt werden. Siehe 
-@code{cabs}.
+@mrefdot{cabs}
 
 @c @opencatbox
 @c @category{Mathematische Funktionen}
@@ -103,8 +103,8 @@ $$\left \lceil a \right \rceil$$
 @c matrices. Finally, for all inputs that are manifestly complex, @code{ceiling}
 @c returns a noun form.
 
-Ist das Argument der Funktion offenbar ein komplexer Ausdruck,
-wird die Substantiv-Form zur@"uck gegeben.
+Ist das Argument der Funktion offenbar ein komplexer Ausdruck, wird die 
+Substantivform zur@"uck gegeben.
 
 @c If the range of a function is a subset of the integers, it can be declared 
 @c to be @code{integervalued}. Both the @code{ceiling} and @code{floor} 
@@ -141,7 +141,7 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @c @code{fix(@var{x})} is precisely the same.
 
 @code{entier} ist eine andere Bezeichnung f@"ur die Funktion @code{floor}. Siehe
-@code{floor}.
+@mrefdot{floor}
 
 @c @opencatbox
 @c @category{Mathematische Funktionen}
@@ -210,7 +210,7 @@ $$\left \lfloor a \right \rfloor$$
 @c a noun form.
 
 Ist das Argument der Funktion offenbar ein komplexer Ausdruck, wird eine
-Substantiv-Form zur@"uck gegeben.
+Substantivform zur@"uck gegeben.
 
 @c If the range of a function is a subset of the integers, it can be declared to
 @c be @code{integervalued}. Both the @code{ceiling} and @code{floor} functions
@@ -245,7 +245,7 @@ Sind die Werte einer Funktion eine Teilmenge der ganzen Zahlen, kann diese als
 @c A synonym for @code{entier (@var{x})}.
 
 @code{fix} ist eine andere Bezeichnung f@"ur die Funktion @code{floor}. Siehe
-@code{floor}.
+@mrefdot{floor}
 
 @c @opencatbox
 @c @category{Mathematische Funktionen}
@@ -297,8 +297,8 @@ keine Liste oder Menge, wird ein Maxima-Fehler signalisiert.
 @c @code{trylevel} to 2, use @code{put (trylevel, 2, maxmin)}.
 
 Gibt einen vereinfachten Wert f@"ur das Maximum der Ausdr@"ucke @var{x_1} bis 
-@var{x_n}. Ist @code{get(trylevel, maxmin)} gleich 2 oder gr@"o@ss{}er, nutzt
-@code{max} die Vereinfachung @code{max(e,-e) --> |e|}. Ist 
+@var{x_n} zur@"uck. Ist @code{get(trylevel, maxmin)} gleich 2 oder gr@"o@ss{}er,
+nutzt @code{max} die Vereinfachung @code{max(e,-e) --> |e|}. Ist 
 @code{get(trylevel, maxmin)} gleich 3 oder gr@"o@ss{}er, versucht @code{max} 
 Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen. So wird
 zum Beispiel @code{max(x,2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht. 
@@ -322,8 +322,8 @@ zum Beispiel @code{max(x,2*x, 3*x)} zu @code{max(x, 3*x)} vereinfacht.
 @c @code{trylevel} to 2, use @code{put (trylevel, 2, maxmin)}.
 
 Gibt einen vereinfachten Wert f@"ur das Minimum der Ausdr@"ucke @var{x_1} bis 
-@var{x_n}. Ist @code{get(trylevel, maxmin)} gleich 2 oder gr@"o@ss{}er, nutzt
-@code{min} die Vereinfachung @code{min(e,-e) --> |e|}. Ist 
+@var{x_n} zur@"uck. Ist @code{get(trylevel, maxmin)} gleich 2 oder gr@"o@ss{}er,
+nutzt @code{min} die Vereinfachung @code{min(e,-e) --> |e|}. Ist 
 @code{get(trylevel, maxmin)} gleich 3 oder gr@"o@ss{}er, versucht @code{min} 
 Ausdr@"ucke zu eleminieren, die zwischen zwei anderen Argumenten liegen. So wird
 zum Beispiel @code{min(x,2*x, 3*x)} zu @code{min(x, 3*x)} vereinfacht. 
@@ -358,24 +358,24 @@ mit @code{mod(1, 1) = 0} und @code{mod (0, 1) = 0}.
 @c of a complex number, use the function @code{@var{x} |-> %pi - mod (%pi - 
 @c @var{x}, 2*%pi)}, where @var{x} is an argument.
 
-Um den Hauptwert (eine Zahl im Interval @code{(-%pi, %pi)}) einer komplexen Zahl
-zu finden, kann @code{@var{x} |-> %pi - mod(%pi - @var{x}, 2*%pi)} genutzt 
-werden, wobei @var{x} das Argument ist.
+Der Hauptwert einer komplexen Zahl, die im Intervall @code{(-%pi, %pi)} liegt,
+kann mit @code{%pi - mod(%pi - @var{x}, 2*%pi)} bestimmt werden, wobei @var{x}
+die komplexe Zahl ist.
 
 @c When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for 
 @c example), @code{mod} uses the same big float evaluation scheme that 
 @c @code{floor} and @code{ceiling} uses. Again, it's possible, although 
 @c unlikely, that @code{mod} could return an erroneous value in such cases.
 
-Sind @var{x} und @var{y} konstante Ausdr@"ucke (zum Beispiel @code{10 * %pi}), 
-nutzt @code{mod} denselben Algorithmus f@"ur gro@ss{}e Gleitkommazahlen wie 
-@code{floor} und @code{ceiling}. Wieder ist es m@"oglich, das @code{mod} in 
-diesen F@"allen ein fehlerhaftes Ergebnis berechnet.
+Wie f@"ur die Funktionen @code{floor} oder @code{ceiling} werden konstante 
+Ausdr@"ucke, wie zum Beispiel @code{10 * %pi}, in gro@ss{}e Gleitkommazahlen 
+umgewandelt, um @code{mode} zu berechnen. Diese Umwandlung kann zu Fehlern
+f@"uhren.
 
 @c For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several 
 @c simplification rules:
 
-F@"ur nicht nummerische Argumente @var{x} oder @var{y} kennt @code{mode} 
+F@"ur nicht nummerische Argumente @var{x} oder @var{y} kennt @code{mod}
 verschiedene Vereinfachungen:
 
 @c ===beg===
@@ -407,10 +407,10 @@ verschiedene Vereinfachungen:
 
 Ist @var{x} eine reelle Zahl, gibt @code{round} die am n@"achsten liegende ganze
 Zahl zur@"uck. Vielfache von 1/2 werden auf die n@"achste gerade ganze Zahl 
-gerundet. Die Methode zur Berechnung von @var{x} ist vergleichbar mit den
-Methoden der Funktionen @code{floor} und @code{ceiling}.
+gerundet. Die Berechnung von @var{x} ist vergleichbar mit den Methoden der 
+Funktionen @code{floor} und @code{ceiling}.
 
-Siehe auch @code{floor} und @code{ceiling}.
+Siehe auch @mref{floor} und @mrefdot{ceiling}
 
 @c @opencatbox
 @c @category{Mathematische Funktionen} @category{Funktionen f@"ur ganze Zahlen}
@@ -451,10 +451,9 @@ zum Beispiel @code{signum(-x)} zu @code{-signum(x)} vereinfacht.
 @c Returns the complex absolute value (the complex modulus) of @var{expr}.
 
 Gibt den Betrag eines komplexen Ausdrucks @var{expr} zur@"uck. Im Unterschied
-zu der Funktion @code{abs}, die komplexe Ausdr@"ucke und Funktionen nicht
-vereinfacht, zerlegt die Funktion @code{cabs} einen komplexen Ausdruck
-immer in einen Realteil und einen Imagin@"arteil, um den komplexen Betrag
-zu berechnen.
+zu der Funktion @code{abs}, zerlegt die Funktion @code{cabs} einen komplexen 
+Ausdruck immer in einen Realteil und einen Imagin@"arteil, um den komplexen 
+Betrag zu berechnen.
 
 @c @opencatbox
 @c @category{Komplexe Zahlen}
@@ -479,8 +478,8 @@ Winkel @code{theta} im Intervall @code{(-%pi, %pi)} derart, das @var{z} =
 @c See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
 @c @code{realpart}, and @code{imagpart}.
 
-Siehe auch @code{cabs}, @code{polarform}, @code{rectform}, @code{realpart} und 
-@code{imagpart}.
+Siehe auch @mrefcomma{cabs} @mrefcomma{polarform} @mrefcomma{rectform}@
+@mref{realpart} und @mrefdot{imagpart}
 
 Beispiele:
 
@@ -587,7 +586,7 @@ und @code{realpart}.
 
 Gibt einen zu @var{expr} @"aquivalenten Ausdruck @code{r %e^(%i theta)} 
 zur@"uck. @code{r} ist der Betrag der komplexen Ausdrucks @var{expr} und 
-@code{theta} sein das Argument.
+@code{theta} das Argument des komplexen Ausdrucks.
 
 @c @opencatbox
 @c @category{Komplexe Zahlen} @category{Exponentialfunktionen}
@@ -629,7 +628,7 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 @section Funktionen der Kombinatorik
 @c -----------------------------------------------------------------------------
 
-@c TODO: DOKUMENTATION FÜR DOUBLE_FACTORIAL FEHLT
+@c TODO: DOKUMENTATION F@"UR DOUBLE_FACTORIAL FEHLT
 
 @c --- 20.10.2010 DK -----------------------------------------------------------
 @anchor{!!}
@@ -640,7 +639,7 @@ und gibt den komplexen Ausdruck @code{a + b %i} zur@"uck.
 
 @c The double factorial operator.
 
-Ist der Operator der doppelten Fakult@"at. 
+Ist der Operator der doppelten Fakult@"at.
 
 @c For an integer, float, or rational number @code{n}, @code{n!!} evaluates to 
 @c the product @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))} where @code{k} is 
@@ -679,21 +678,30 @@ allgemeiner definiert ist. Siehe @code{double_factorial}.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} bern (@var{n})
-Returns the @var{n}'th Bernoulli number for integer @var{n}.
-@c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
-@c OR JUST PRETEND IT'S "RETURNED" ???
-Bernoulli numbers equal to zero are suppressed if @code{zerobern} is @code{false}.
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bern}
+@deffn {Funktion} bern (@var{n})
 
-See also @code{burn}.
+@c Returns the @var{n}'th Bernoulli number for integer @var{n}.
+@c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT
+@c OR JUST PRETEND IT'S "RETURNED" ???
+@c Bernoulli numbers equal to zero are suppressed if @code{zerobern} is 
+@c @code{false}.
+
+Gibt die @var{n}-te Bernoulli-Zahl der ganzen Zahl @var{n} zur@"uck. Hat die
+Optionsvariable @code{zerobern} den Wert @code{false}, werden Bernoulli-Zahlen
+unterdr@"uckt, die Null sind.
+
+Siehe auch @mrefdot{burn}
 
 @example
 (%i1) zerobern: true$
+@group
 (%i2) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
                   1  1       1      1        1
 (%o2)       [1, - -, -, 0, - --, 0, --, 0, - --]
                   2  6       30     42       30
+@end group
 (%i3) zerobern: false$
 (%i4) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
             1  1    1   5     691   7    3617  43867
@@ -706,34 +714,70 @@ See also @code{burn}.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} bernpoly (@var{x}, @var{n})
-Returns the @var{n}'th Bernoulli polynomial in the
-variable @var{x}.
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bernpoly}
+@deffn {Funktion} bernpoly (@var{x}, @var{n})
+
+@c Returns the @var{n}'th Bernoulli polynomial in the variable @var{x}.
+
+Gibt das @var{n}-te Bernoulli-Polynom in der Variablen @var{x} zur@"uck.
 
 @c @opencatbox
 @c @category{Number theory}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c TODO: DIE FUNKTION ZETA KANN INZWISCHEN IN BELIEBIGER GENAUIGKEIT RECHNEN.
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bfzeta}
 @deffn {Function} bfzeta (@var{s}, @var{n})
-Returns the Riemann zeta function for the argument @var{s}.
-The return value is a big float (bfloat);
-@var{n} is the number of digits in the return value.
+
+@c Returns the Riemann zeta function for the argument @var{s}. The return value 
+@c is a big float (bfloat); @var{n} is the number of digits in the return value.
+
+Die Riemannsche Zeta-Funktion f@"ur das Argument @var{s}, die wie folgt 
+definiert ist:
+
+@tex
+$$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
+@end tex
+@ifnottex
+@example
+                 inf
+                 ====
+                 \     1
+     zeta(s) =    >    --
+                 /      s
+                 ====  k
+                 k = 1
+@end example
+@end ifnottex
+
+@code{bfzeta} gibt einen Wert als gro@ss{}e Gleitkommazahl zur@"uck. Die Anzahl 
+der Stellen wird durch das Argument @var{n} angegeben.
+
+Anstatt der Funktion @code{bfzeta} ist die Funktion @mref{zeta} zu bevorzugen,
+die sowohl f@"ur reelle und komplexe Gleitkommazahlen und Gleitkommazahlen mit
+eine beliebigen Genauigkeit die Riemannsche Zeta-Funktion berechnen kann.
 
 @c @opencatbox
 @c @category{Number theory} @category{Numerical evaluation}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} bfhzeta (@var{s}, @var{h}, @var{n})
-Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
-The return value is a big float (bfloat);
-@var{n} is the number of digits in the return value.
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{bfhzeta}
+@deffn {Funktion} bfhzeta (@var{s}, @var{h}, @var{n})
 
-The Hurwitz zeta function is defined as
+@c Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
+@c The return value is a big float (bfloat); @var{n} is the number of digits in 
+@c the return value.
+
+@c The Hurwitz zeta function is defined as
+
+Die Hurwitzsche Zeta-Funktion f@"ur die Argumente @var{s} und @var{h}, die wie
+folgt definiert ist:
 
 @tex
 $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
@@ -750,7 +794,10 @@ $$\zeta \left(s,h\right) = \sum_{k=0}^\infty {1 \over \left(k+h\right)^{s}}$$
 @end example
 @end ifnottex
 
-@code{load ("bffac")} loads this function.
+@code{bfhzeta} gibt einen Wert als gro@ss{}e Gleitkommazahl zur@"uck. Die Anzahl
+der Stellen wird durch das Argument @var{n} angegeben.
+
+@c @code{load ("bffac")} loads this function.
 
 @c @opencatbox
 @c @category{Number theory} @category{Numerical evaluation}
@@ -802,38 +849,92 @@ Beispiele:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} burn (@var{n})
-Returns the @var{n}'th Bernoulli number for integer @var{n}.
-@code{burn} may be more efficient than @code{bern} for large, isolated @var{n}
-(perhaps @var{n} greater than 105 or so), @c CLAIM MADE IN bffac.usg !!!
-as @code{bern} computes all the Bernoulli numbers up to index @var{n} before returning.
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{burn}
+@deffn {Funktion} burn (@var{n})
 
-@c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
-@c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
-@c (BERN(402) takes about 645 secs vs 13.5 secs for BURN(402).
-@c The time to compute @code{bern} is approximately exponential,
-@c while the time to compute @code{burn} is approximately cubic.
-@c But if next you do BERN(404), it only takes 12 secs,
-@c since BERN remembers all in an array, whereas BURN(404) will take
-@c maybe 14 secs or maybe 25, depending on whether Maxima needs to
-@c BFLOAT a better value of %PI.)
+@c Returns a rational number, which is an approximation of the @var{n}'th 
+@c Bernoulli number for integer @var{n}. @code{burn} exploits the observation 
+@c that (rational) Bernoulli numbers can be approximated by (transcendental) 
+@c zetas with tolerable efficiency:
 
-@code{burn} exploits the observation that (rational) Bernoulli numbers can be
-approximated by (transcendental) zetas with tolerable efficiency.
+Gibt eine rational Zahl zur@"uck, die eine N@"aherung f@"ur die @var{n}-te 
+Bernoulli Zahl f@"ur die ganze Zahl @var{n} ist. @code{burn} berechnet eine 
+N@"aherung als gro@ss{}e Gleitkommatzahl mit der folgenden Beziehung:
 
-@code{load ("bffac")} loads this function.
+@example
+                   n - 1  1 - 2 n
+              (- 1)      2        zeta(2 n) (2 n)!
+     B(2 n) = ------------------------------------
+                                2 n
+                             %pi
+@end example
+
+@c @code{burn} may be more efficient than @code{bern} for large, isolated 
+@c @var{n} as @code{bern} computes all the Bernoulli numbers up to index @var{n}
+@c before returning. @code{burn} invokes the approximation for even integers 
+@c @var{n} > 255. For odd integers and @var{n} <= 255 the function @code{bern} 
+@c is called.
+
+@code{burn} kann effizienter als die Funktion @code{bern} f@"ur gro@ss{}e, 
+einzelne ganze Zahlen @var{n} sein, da @code{bern} zun@"achst alle Bernoulli 
+Zahlen bis @var{n} berechnet. @code{burn} ruft f@"ur ungerade ganze Zahlen und 
+Zahlen die kleiner oder gleich 255 die Funktion @code{bern} auf.
+
+@c @code{load ("bffac")} loads this function. See also @code{bern}.
+
+Das Kommando @code{load(bffac)} l@"adt die Funktion. Siehe auch @mrefdot{bern}
 
 @c @opencatbox
 @c @category{Number theory}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} euler (@var{n})
-Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{divsum}
+@deffn  {Funktion} divsum (@var{n}, @var{k})
+@deffnx {Funktion} divsum (@var{n})
 
-For the Euler-Mascheroni constant, see @code{%gamma}.
+@c @code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
+@c raised to the @var{k}'th power.
+
+@code{divsum(@var{n}, @var{k})} potenziert die Teiler des Argumentes @var{n} 
+mit dem Argument @var{k} und gibt die Summe als Ergebnis zur@"uck.
+
+@c @code{divsum (@var{n})} returns the sum of the divisors of @var{n}.
+
+@code{divsum(@var{n})} gibt die Summe der Teiler der Zahl @var{n} zur@"uck.
+
+@example
+(%i1) divsum (12);
+(%o1)                          28
+(%i2) 1 + 2 + 3 + 4 + 6 + 12;
+(%o2)                          28
+(%i3) divsum (12, 2);
+(%o3)                          210
+(%i4) 1^2 + 2^2 + 3^2 + 4^2 + 6^2 + 12^2;
+(%o4)                          210
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{euler}
+@deffn {Funktion} euler (@var{n})
+
+@c Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
+
+Gibt die @var{n}-te Eulersche Zahl f@"ur eine nichtnegative ganze Zahl @var{n}
+zur@"uck.
+
+@c For the Euler-Mascheroni constant, see @code{%gamma}.
+
+F@"ur die Euler-Mascheroni Konstante siehe @mrefdot{%gamma}
+
+Beispiele:
 
 @example
 (%i1) map (euler, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -853,8 +954,8 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 @c factorials themselves by converting, for example, @code{(n + 1)*n!} into 
 @c @code{(n + 1)!}.
 
-Versucht Faktoren in Ausdr@"ucken mit Fakult@"aten zusammenzufassen. Zum 
-Beispiel wird @code{(n+1)*n!} zu @code{(n+1)!} zusammengefasst.
+Fasst Faktoren in Ausdr@"ucken mit Fakult@"aten zusammen. Zum Beispiel wird 
+@code{(n+1)*n!} zu @code{(n+1)!} zusammengefasst.
 
 @c @code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to
 @c be applied after a @code{factcomb}.
@@ -1080,8 +1181,8 @@ Die Optionsvariable @code{factlim} spezifiziert die gr@"o@ss{}te ganze Zahl,
 f@"ur die die Fakult@"at einer ganzen Zahl berechnet wird. Wenn @code{factlim} 
 den Wert -1 hat, wird die Fakult@"at f@"ur jede ganze Zahl berechnet.
 
-@c TODO: IN ABHÄNIGKEIT VON DER LISP IMPLEMENTATION GIBT ES GRENZEN FÜR DIE
-@c       GRÖẞTE ZAHL. 
+@c TODO: IN ABHAENIGKEIT VON DER LISP IMPLEMENTATION GIBT ES GRENZEN FUER DIE
+@c       GROESSTE ZAHL.
 
 @c @opencatbox
 @c @category{Gamma Funktion und Fakult@"at}
@@ -1106,16 +1207,37 @@ Ausdr@"ucken wie @code{(n+1)!}, wobei @code{n} eine ganze Zahl ist. Siehe
 @c @closecatbox
 @end defvr
 
-@c --- 20.10.2010 DK -----------------------------------------------------------
-@deffn {Function} fib (@var{n})
-Returns the @var{n}'th Fibonacci number.
-@code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
-and
-@code{fib (-@var{n})} equal to @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{fib}
+@deffn {Funktion} fib (@var{n})
 
-After calling @code{fib},
-@code{prevfib} is equal to @code{fib (@var{x} - 1)},
-the Fibonacci number preceding the last one computed.
+@c Returns the @var{n}'th Fibonacci number. @code{fib(0)} equal to 0 and 
+@c @code{fib(1)} equal to 1, and @code{fib (-@var{n})} equal to 
+@c @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+
+Gibt die @var{n-te} Fibonacci-Zahl zur@"uck. Die Fibonacci-Folge ist rekursiv 
+definiert:
+
+@example
+   fib(0) = 0
+   fib(1) = 1
+   fib(n) = fib(n-1) + fib(n-2)
+@end example
+
+F@"ur negative ganze Zahlen kann die Fibonacci-Folge erweitert wird mit:
+
+@example
+                   n + 1
+   fib(- n) = (- 1)      f(n)
+@end example 
+
+@c After calling @code{fib}, @code{prevfib} is equal to @code{fib(@var{x} - 1)},
+@c the Fibonacci number preceding the last one computed.
+
+@c TODO: PREVFIB HAT KEINEN EINTRAG.
+
+Nach einem Aufruf der Funktion @code{fib(n)}, enth@"alt die Systemvariable 
+@code{prevfib} die zur Zahl @code{n} vorhergehende Fibonacci-Zahl.
 
 @example
 (%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -1127,12 +1249,17 @@ the Fibonacci number preceding the last one computed.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} fibtophi (@var{expr})
-Expresses Fibonacci numbers in @var{expr} in terms of the constant @code{%phi},
-which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{fibtophi}
+@deffn {Funktion} fibtophi (@var{expr})
 
-Examples:
+@c Expresses Fibonacci numbers in @var{expr} in terms of the constant 
+@c @code{%phi}, which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
+
+Fibonacci-Zahlen im Ausdruck @var{expr} werden durch die Goldene Zahl 
+@code{%phi} ausgedr@"uckt. Siehe @mrefdot{%phi}
+
+Beispiele:
 
 @c ===beg===
 @c fibtophi (fib (n));
@@ -1183,6 +1310,118 @@ Gibt die verallgemeinerte Fakult@"at zur@"uck, die als @code{x (x-z) (x - 2 z)
 @c @closecatbox
 @end deffn
 
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{ifactors}
+@deffn {Function} ifactors (@var{n})
+
+@c For a positive integer @var{n} returns the factorization of @var{n}. If
+@c @code{n=p1^e1..pk^nk} is the decomposition of @var{n} into prime
+@c factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
+
+Faktorisiert eine positive ganze Zahl @var{n}. Sind @code{n = p1^e1..pk^nk} die
+Faktoren der ganzen Zahl @var{n}, dann gibt @code{ifactor} das Ergebnis
+@code{[[p1, e1], ... , [pk, ek]]} zur@"uck.
+
+@c Factorization methods used are trial divisions by primes up to 9973,
+@c Pollard's rho method and elliptic curve method.
+
+F@"ur die Faktorisierung kommen eine einfache Primfaktorzerlegung mit Primzahlen
+bis zu 9973, das Z@"ahlk@"orpersieb nach Pollard oder die Methode der 
+Elliptischen Kurven zum Einsatz.
+
+@example
+(%i1) ifactors(51575319651600);
+(%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
+(%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
+(%o2)                        51575319651600
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 23.11.2010 DK -----------------------------------------------------------
+@anchor{inrt}
+@deffn {Funktion} inrt (@var{x}, @var{n})
+
+@c Returns the integer @var{n}'th root of the absolute value of @var{x}.
+
+Gibt die ganzzahlige @var{n}-te Wurzel des Betrags von @var{x} zur@"uck.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], inrt (10^a, 3)), l);
+(%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{inv_mod}
+@deffn {Function} inv_mod (@var{n}, @var{m})
+
+@c Computes the inverse of @var{n} modulo @var{m}. @code{inv_mod (n,m)} returns 
+@c @code{false}, if @var{n} is a zero divisor modulo @var{m}.
+
+Berechnet die Inverse zu @var{n} Modulo @var{m}. @code{inv_mod(n,m)} gibt 
+@code{false} zur@"uck, wenn @code{n,m} Null ist.
+
+@example
+(%i1) inv_mod(3, 41);
+(%o1)                           14
+(%i2) ratsimp(3^-1), modulus=41;
+(%o2)                           14
+(%i3) inv_mod(3, 42);
+(%o3)                          false
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{jacobi}
+@deffn {Funktion} jacobi (@var{p}, @var{q})
+
+@c Returns the Jacobi symbol of @var{p} and @var{q}.
+
+Berechnet das Jacobi-Symbol f@"ur die Argumente @var{p} und @var{q}.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], jacobi (a, 9)), l);
+(%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{lcm}
+@deffn {Funktion} lcm (@var{expr_1}, ..., @var{expr_n})
+
+@c Returns the least common multiple of its arguments. The arguments may be 
+@c general expressions as well as integers.
+
+Gibt den kleinsten gemeinsamen Teiler der Argumente zur@"uck. Die Argumente 
+k@"onnen ganze Zahlen und allgemeine Ausdr@"ucke sein.
+
+@c @code{load ("functs")} loads this function.
+
+Mit dem Kommando @code{load(functs)} wird die Funktion geladen.
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{minfactorial}
 @deffn {Funktion} minfactorial (@var{expr})
@@ -1216,6 +1455,150 @@ ganze Zahlen voneinander unterscheiden, werden diese vereinfacht.
 @c @closecatbox
 @end deffn
 
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{next_prime}
+@deffn {Funktion} next_prime (@var{n})
+
+@c Returns the smallest prime bigger than @var{n}.
+
+Gibt die kleinste Primzahl zur@"uck, die der Zahl @var{n} folgt.
+
+@example
+(%i1) next_prime(27);
+(%o1)                       29
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{power_mod}
+@deffn {Funktion} power_mod (@var{a}, @var{n}, @var{m})
+
+@c Uses a modular algorithm to compute @code{a^n mod m} where @var{a} and 
+@c @var{n} are integers and @var{m} is a positive integer. If @var{n} is 
+@c negative, @code{inv_mod} is used to find the modular inverse.
+
+Berechnet @code{a^n mod m}, wobei @var{a} und @var{n} ganze Zahlen sind und
+@var{m} eine positive ganze Zahl ist. Ist @var{n} negativ, wird die Funktion
+@code{inv_mod} aufgerufen, um die Inverse zu berechnen. 
+
+@example
+(%i1) power_mod(3, 15, 5);
+(%o1)                          2
+(%i2) mod(3^15,5);
+(%o2)                          2
+(%i3) power_mod(2, -1, 5);
+(%o3)                          3
+(%i4) inv_mod(2,5);
+(%o4)                          3
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{primep}
+@deffn {Funktion} primep (@var{n})
+
+@c Primality test. If @code{primep (@var{n})} returns @code{false}, @var{n} is a
+@c composite number and if it returns @code{true}, @var{n} is a prime number
+@c with very high probability.
+
+F@"uhrt einen Test auf eine Primzahl f@"ur das Argument @var{n} durch. Hat
+@code{primep} das Ergebnis @code{false}, ist @var{n} keine Primzahl. Ist das
+Ergebnis @code{true}, ist @var{n} mit gro@ss{}er Wahrscheinlichkeit eine 
+Primzahl.
+
+@c For @var{n} less than 10^16 a deterministic version of Miller-Rabin's
+@c test is used. If @code{primep (@var{n})} returns @code{true}, then @var{n} 
+@c is a prime number.
+
+F@"ur ganze Zahlen @var{n} die kleiner als 10^16 sind wird eine probalistisches
+Miller-Rabin-Verfahren. Hat in diesem Fall @code{primep} das Ergebnis
+@code{true}, dann ist @var{n} eine Primzahl.
+
+@c For @var{n} bigger than 10^16 @code{primep} uses 
+@c @code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests and one 
+@c Lucas pseudo-primality test. The probability that @var{n} will pass one 
+@c Miller-Rabin test is less than 1/4. Using the default value 25 for 
+@c @code{primep_number_of_tests}, the probability of @var{n} beeing composite is 
+@c much smaller that 10^-15.
+
+F@"ur ganze Zahlen @var{n} gr@"o@ss{}er als 10^16 nutzt @code{primep} den
+Pseudo-Primzahlentest nach Miller-Rabin mit @mref{primep_number_of_tests} Tests
+und den Pseudo_Primzahlentest nach Lucas. Die Wahrscheinlichkeit, dass eine
+Zahl @var{n} den Pseudo-Primzahlentest nach Miller-Rabin passiert, ist kleiner
+als 1/4. Mit dem Standardwert 25 f@"ur die Optionsvariable 
+@code{primpe_number_of_tests} ist die Wahrscheinlichkeit viel kleiner als 
+10^-15.
+
+@c @opencatbox
+@c @category{Predicate functions} @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c -----------------------------------------------------------------------------
+@anchor{anchor}
+@defvr {Optionsvariable} primep_number_of_tests
+Standardwert: 25
+
+@c Number of Miller-Rabin's tests used in @code{primep}.
+
+Die Anzal der Pseudo-Primzahlentests nach Miller-Rabin der Funktion 
+@mrefdot{primep}
+
+@c @opencatbox
+@c @category{Predicate functions} @category{Number theory}
+@c @closecatbox
+@end defvr
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{prev_prime}
+@deffn {Funktion} prev_prime (@var{n})
+
+@c Returns the greatest prime smaller than @var{n}.
+
+Gibt die gr@"o@ss{}te Primzahl zur@"uck, die kleiner als die Zahl @var{n} ist.
+
+@example
+(%i1) prev_prime(27);
+(%o1)                       23
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{qunit}
+@deffn {Funktion} qunit (@var{n})
+
+@c Returns the principal unit of the real quadratic number field 
+@c @code{sqrt (@var{n})} where @var{n} is an integer, i.e., the element whose 
+@c norm is unity. This amounts to solving Pell's equation 
+@c @code{a^2 - @var{n} b^2 = 1}.
+
+Findet f@"ur das Argument @var{n} L@"osungen der Pellschen Gleichung 
+@code{a^2 - @var{n} b^2 = 1}.
+
+@example
+(%i1) qunit (17);
+(%o1)                     sqrt(17) + 4
+(%i2) expand (% * (sqrt(17) - 4));
+(%o2)                           1
+@end example
+
+@c @opencatbox
+@c @category{Number theory}
+@c @closecatbox
+@end deffn
+
 @c --- 12.11.2010 DK -----------------------------------------------------------
 @anchor{sumsplitfact}
 @defvr {Optionsvariable} sumsplitfact
@@ -1236,150 +1619,97 @@ Vereinfachung mit der Funktion @code{minfactorial} nach der Funktion
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} next_prime (@var{n})
-Returns the smallest prime bigger than @var{n}.
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{totient}
+@deffn {Funktion} totient (@var{n})
 
-@example
-(%i1) next_prime(27);
-(%o1)                       29
-@end example
+@c Returns the number of integers less than or equal to @var{n} which are 
+@c relatively prime to @var{n}.
 
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} power_mod (@var{a}, @var{n}, @var{m})
-Uses a modular algorithm to compute @code{a^n mod m} 
-where @var{a} and @var{n} are integers and @var{m} is a positive integer. 
-If @var{n} is negative, @code{inv_mod} is used to find the modular inverse.
-
-@example
-(%i1) power_mod(3, 15, 5);
-(%o1)                          2
-(%i2) mod(3^15,5);
-(%o2)                          2
-(%i3) power_mod(2, -1, 5);
-(%o3)                          3
-(%i4) inv_mod(2,5);
-(%o4)                          3
-@end example
+Gibt die Anzahl der ganzen Zahlen zur@"uck, die kleiner oder gleich @var{n}
+sind und die kein Teiler von @var{n} sind.
 
 @c @opencatbox
 @c @category{Number theory}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} primep (@var{n})
-Primality test. If @code{primep (@var{n})} returns @code{false}, @var{n} is a
-composite number and if it returns @code{true}, @var{n} is a prime number
-with very high probability.
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{zerobern}
+@defvr {Optionsvariable} zerobern
+Standardwert: @code{true}
 
-For @var{n} less than 10^16 a deterministic version of Miller-Rabin's
-test is used. If @code{primep (@var{n})} returns @code{true}, then @var{n} is a
-prime number.
+@c When @code{zerobern} is @code{false}, @code{bern} excludes the Bernoulli 
+@c numbers and @code{euler} excludes the Euler numbers which are equal to zero.
+@c See @code{bern} and @code{euler}.
 
-For @var{n} bigger than 10^16 @code{primep} uses
-@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests
-and one Lucas pseudo-primality test. The probability that @var{n} will
-pass one Miller-Rabin test is less than 1/4. Using the default value 25 for
-@code{primep_number_of_tests}, the probability of @var{n} beeing
-composite is much smaller that 10^-15.
-
-@c @opencatbox
-@c @category{Predicate functions} @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} primep_number_of_tests
-Default value: 25
-
-Number of Miller-Rabin's tests used in @code{primep}.
-
-@c @opencatbox
-@c @category{Predicate functions} @category{Number theory}
-@c @closecatbox
-@end defvr
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} prev_prime (@var{n})
-Returns the greatest prime smaller than @var{n}.
-
-@example
-(%i1) prev_prime(27);
-(%o1)                       23
-@end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} qunit (@var{n})
-Returns the principal unit of the real quadratic number field
-@code{sqrt (@var{n})} where @var{n} is an integer,
-i.e., the element whose norm is unity.
-This amounts to solving Pell's equation @code{a^2 - @var{n} b^2 = 1}.
-
-@example
-(%i1) qunit (17);
-(%o1)                     sqrt(17) + 4
-(%i2) expand (% * (sqrt(17) - 4));
-(%o2)                           1
-@end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} totient (@var{n})
-Returns the number of integers less than or equal to @var{n} which
-are relatively prime to @var{n}.
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} zerobern
-Default value: @code{true}
-
-When @code{zerobern} is @code{false}, @code{bern} excludes the Bernoulli numbers
-and @code{euler} excludes the Euler numbers which are equal to zero. 
-See @code{bern} and @code{euler}.
+Hat @code{zerobern} den Wert @code{false}, werden von den Funktionen @code{bern}
+die Bernoulli Zahlen und von @code{euler} die Euler Zahlen ausgeschlossen,
+die als Ergenis Null haben. Siehe @mref{bern} und @mrefdot{euler}
 
 @c @opencatbox
 @c @category{Number theory}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} zeta (@var{n})
-Returns the Riemann zeta function. If @var{n} is a negative integer, 0, or a 
-positive even integer, the Riemann zeta function simplifies to an exact value.
-For a positive even integer the option variable @code{zeta%pi} has to be
-@code{true} in addition (See @code{zeta%pi}). For a floating point or bigfloat 
-number the Riemann zeta function is evaluated numerically. Maxima returns a noun
-form @code{zeta (@var{n})} for all other arguments, including rational 
-noninteger, and complex arguments, or for even integers, if @code{zeta%pi} has 
-the value @code{false}.
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{zeta}
+@deffn {Funktion} zeta (@var{n})
 
-@code{zeta(1)} is undefined, but Maxima knows the limit 
-@code{limit(zeta(x), x, 1)} from above and below.
+@c Returns the Riemann zeta function. If @var{n} is a negative integer, 0, or a 
+@c positive even integer, the Riemann zeta function simplifies to an exact 
+@c value. For a positive even integer the option variable @code{zeta%pi} has to 
+@c be @code{true} in addition (See @code{zeta%pi}). For a floating point or 
+@c bigfloat number the Riemann zeta function is evaluated numerically. Maxima 
+@c returns a noun form @code{zeta (@var{n})} for all other arguments, including 
+@c rational noninteger, and complex arguments, or for even integers, if 
+@c @code{zeta%pi} has the value @code{false}.
 
-The Riemann zeta function distributes over lists, matrices, and equations.
+Die Riemannsche Zeta-Funktion f@"ur @var{s}, die wie folgt definiert ist:
 
-See also @code{bfzeta} and @code{zeta%pi}.
+@tex
+$$\zeta\left(s\right)=\sum_{k=1}^{\infty }{{{1}\over{k^{s}}}}$$
+@end tex
+@ifnottex
+@example
+                 inf
+                 ====
+                 \     1
+     zeta(s) =    >    --
+                 /      s
+                 ====  k
+                 k = 1
+@end example
+@end ifnottex
 
-Examples:
+F@"ur negative ganze Zahlen @var{n}, Null und postive gerade ganze Zahlen 
+vereinfacht @code{zeta} zu einem exakten Ergebnis. Damit diese Vereinfachung
+f@"ur positive ganze Zahlen ausgef@"uhrt wird, muss die Optionsvariable
+@code{zeta%pi} den Wert @code{true} haben. Siehe @mrefdot{zeta%pi} F@"ur 
+einfache und gro@ss{}e Gleitkommazahlen hat @code{zeta} ein numerisches Ergebnis.
+F@"ur alle anderen Argumente einschlie@ss{}lich komplexe Zahlen und rationale 
+Zahlen gibt @code{zeta} eine Substantivform zur@"uck. Hat die Optionsvariable
+@code{zeta%pi} den Wert @code{false}, gibt @code{zeta} auch f@"ur gerade ganze
+Zahlen eine Substantivform zur@"uck.
+
+@c @code{zeta(1)} is undefined, but Maxima knows the limit 
+@c @code{limit(zeta(x), x, 1)} from above and below.
+
+@code{zeta(1)} ist nicht definiert. Maxima kennt jedoch die einseitigen
+Grenzwerte @code{limit(zeta(x), x, 1, plus} und 
+@code{limit(zeta(x), x, 1, minus}.
+
+@c The Riemann zeta function distributes over lists, matrices, and equations.
+
+Die Riemannsche Zeta-Funktion wird auf die Argumente von Listen, Matrizen und 
+Gleichungen angewendendet, wenn die Optionsvariable @code{distribute_over}
+den Wert @code{true} hat.
+
+@c See also @code{bfzeta} and @code{zeta%pi}.
+
+Siehe auch @mref{bfzeta} und @mrefdot{zeta%pi}
+
+Beispiele:
 
 @c ===beg===
 @c zeta([-2,-1,0,0.5,2,3,1+%i]);
@@ -1388,15 +1718,15 @@ Examples:
 @c ===end===
 @example
 (%i1) zeta([-2,-1,0,0.5,2,3,1+%i]);
-                                              2
-             1     1                       %pi
-(%o1)  [0, - --, - -, - 1.460354508809587, ----, zeta(3), zeta(%i + 1)]
-             12    2                        6 
-
+                                             2
+            1     1                       %pi
+(%o1) [0, - --, - -, - 1.460354508809586, ----, zeta(3), 
+            12    2                        6
+                                                    zeta(%i + 1)]
 (%i2) limit(zeta(x),x,1,plus);
-(%o2)                                 inf
+(%o2)                          inf
 (%i3) limit(zeta(x),x,1,minus);
-(%o3)                                minf
+(%o3)                         minf
 @end example
 
 @c @opencatbox
@@ -1404,15 +1734,21 @@ Examples:
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} zeta%pi
-Default value: @code{true}
+@c --- 27.11.2010 DK -----------------------------------------------------------
+@anchor{zeta%pi}
+@defvr {Optionsvariable} zeta%pi
+Standardwert: @code{true}
 
-When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression 
-proportional to @code{%pi^n} for even integer @code{n}. Otherwise, @code{zeta} 
-returns a noun form @code{zeta (n)} for even integer @code{n}.
+@c When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression 
+@c proportional to @code{%pi^n} for even integer @code{n}. Otherwise, 
+@c @code{zeta} returns a noun form @code{zeta (n)} for even integer @code{n}.
 
-Examples:
+Hat @code{zeta%pi} den Wert @code{true}, vereinfacht die Funktion @code{zeta(n)}
+f@"ur gerade ganzen Zahlen @var{n} zu einem Ergebnis, das proportional zu 
+@code{%pi^n} ist. Ansonsten ist das Ergebnis von @code{zeta} eine Substantivform
+f@"ur gerade ganze Zahlen.
+
+Beispiele:
 
 @c ===beg===
 @c zeta%pi: true$
@@ -1436,118 +1772,6 @@ Examples:
 @c @category{Number theory}
 @c @closecatbox
 @end defvr
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} divsum (@var{n}, @var{k})
-@deffnx {Function} divsum (@var{n})
-
-@code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
-raised to the @var{k}'th power.
-
-@code{divsum (@var{n})} returns the sum of the divisors of @var{n}.
-
-@example
-(%i1) divsum (12);
-(%o1)                          28
-(%i2) 1 + 2 + 3 + 4 + 6 + 12;
-(%o2)                          28
-(%i3) divsum (12, 2);
-(%o3)                          210
-(%i4) 1^2 + 2^2 + 3^2 + 4^2 + 6^2 + 12^2;
-(%o4)                          210
-@end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} ifactors (@var{n})
-
-For a positive integer @var{n} returns the factorization of @var{n}. If
-@code{n=p1^e1..pk^nk} is the decomposition of @var{n} into prime
-factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
-
-Factorization methods used are trial divisions by primes up to 9973,
-Pollard's rho method and elliptic curve method.
-
-@example
-(%i1) ifactors(51575319651600);
-(%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
-(%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
-(%o2)                        51575319651600
-@end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} inrt (@var{x}, @var{n})
-
-Returns the integer @var{n}'th root of the absolute value of @var{x}.
-
-@example
-(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
-(%i2) map (lambda ([a], inrt (10^a, 3)), l);
-(%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
-@end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} inv_mod (@var{n}, @var{m})
-
-Computes the inverse of @var{n} modulo @var{m}. 
-@code{inv_mod (n,m)} returns @code{false}, 
-if @var{n} is a zero divisor modulo @var{m}.
-
-@example
-(%i1) inv_mod(3, 41);
-(%o1)                           14
-(%i2) ratsimp(3^-1), modulus=41;
-(%o2)                           14
-(%i3) inv_mod(3, 42);
-(%o3)                          false
-@end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} jacobi (@var{p}, @var{q})
-
-Returns the Jacobi symbol of @var{p} and @var{q}.
-
-@example
-(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
-(%i2) map (lambda ([a], jacobi (a, 9)), l);
-(%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
-@end example
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} lcm (@var{expr_1}, ..., @var{expr_n})
-Returns the least common multiple of its arguments.
-The arguments may be general expressions as well as integers.
-
-@code{load ("functs")} loads this function.
-
-@c @opencatbox
-@c @category{Number theory}
-@c @closecatbox
-@end deffn
 
 @c -----------------------------------------------------------------------------
 @node Algebraische Funktionen, Exponential- und Logarithmusfunktion, Funktionen der Kombinatorik
@@ -2060,9 +2284,10 @@ Gibt den Hauptwert des komplexen nat@"urlichen Logarithmus im Intervall
 @c into Maxima, @code{ntrig} and @code{atrig1}. 
 @c Do @code{describe(@var{command})} for details.
 
-Maxima kennt viele Winkel- und Hyperbelfunktionen. Nicht alle Identitäten für
-Winkel- und Hyperbelfunktionen sind programmiert, aber es ist möglich weitere
-Identitäten mit der Fähigkeit der Erkennung von Mustern hinzuzufügen.
+Maxima kennt viele Winkel- und Hyperbelfunktionen. Nicht alle Identit@"aten 
+f@"ur Winkel- und Hyperbelfunktionen sind programmiert, aber es ist m@"oglich 
+weitere Identit@"aten mit der F@"ahigkeit der Erkennung von Mustern 
+hinzuzuf@"ugen.
 
 Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 
@@ -2147,7 +2372,7 @@ Maxima kennt die folgenden Winkel- und Hypelfunktionen sowie deren Inverse:
 @c @code{-%pi} to @code{%pi}.
 
 -- Gibt den Wert von @code{atan(@var{y}/@var{x})} im Intervall @code{-%pi}
-bis @code{%pi} zurück.
+bis @code{%pi} zur@"uck.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen}
@@ -2221,12 +2446,11 @@ Standardwert: @code{true}
 @c @math{%pi}, @math{%pi/2}, @math{%pi/3}, @math{%pi/4}, or @math{%pi/6}.
 @c @end ifnottex
 
-Hat @code{%piargs} den Wert @code{true}, werden Winkel- und 
-Hyperbelfunktionen sowie deren Inverse wenn möglich zu algebraischen Konstanten
-vereinfacht. 
+Hat @code{%piargs} den Wert @code{true}, werden Winkel- und Hyperbelfunktionen 
+sowie deren Inverse wenn m@"oglich zu algebraischen Konstanten vereinfacht. 
 
-Die Winkelfunktionen werden zum Beispiel für ganzahlige Vielfache der folgenden
-Konstanten vereinfacht
+Die Winkelfunktionen werden zum Beispiel f@"ur ganzahlige Vielfache der 
+folgenden Konstanten vereinfacht
 @iftex
 @math{\pi}, @math{\pi/2}, @math{\pi/3}, @math{\pi/4}, or @math{\pi/6}.
 @end iftex
@@ -2236,7 +2460,7 @@ Konstanten vereinfacht
 
 @c Maxima knows some identities which can be applied when 
 
-Maxima kennt einige Identitäten, wenn
+Maxima kennt einige Identit@"aten, wenn
 @iftex 
 @math{\pi} 
 @end iftex 
@@ -2307,7 +2531,7 @@ Beispiele:
 @c by an integer variable.
 @c @end ifnottex
 
-Einige Identitäten werden angewendet, wenn
+Einige Identit@"aten werden angewendet, wenn
 @iftex 
 @math{\pi} und @math{\pi/2}
 @end iftex 
@@ -2350,7 +2574,7 @@ Standardwert: @code{true}
 @c @end ifnottex
 
 Hat @code{%iargs} den Wert @code{true}, werden Winkelfunktionen zu 
-Hyperlfunktionen vereinfacht, wenn das Argument ein Vielfaches der imaginären
+Hyperlfunktionen vereinfacht, wenn das Argument ein Vielfaches der imagin@"aren
 Einheit
 @iftex
 @math{i}
@@ -2368,7 +2592,7 @@ ist.
 @c Maxima considers only whether the argument is a literal multiple of @math{%i}.
 @c @end ifnottex
 
-Die Vereinfachung zu Hyperbelfunktionen wird auch dann ausgeführt, wenn das
+Die Vereinfachung zu Hyperbelfunktionen wird auch dann ausgef@"uhrt, wenn das
 Argument offensichtlich Reel ist.
 
 Beispiele:
@@ -2432,8 +2656,8 @@ Hyperbelfunktionen mit halbzahligen Argumenten @code{@var{expr}/2} vereinfacht.
 @c For a real argument @var{x} in the interval @code{0 < x < 2*%pi} the sine of 
 @c the half-angle simplifies to a simple formula:
 
-Für ein reelles Argument @var{x} im Intervall @code{0 < x < 2*%pi} vereinfacht
-der Sinus für ein halbzahliges Argument zu eine einfache Formel: 
+F@"ur ein reelles Argument @var{x} im Intervall @code{0 < x < 2*%pi} vereinfacht
+der Sinus f@"ur ein halbzahliges Argument zu eine einfache Formel: 
 
 @example
                          sqrt(1 - cos(x))
@@ -2444,7 +2668,7 @@ der Sinus für ein halbzahliges Argument zu eine einfache Formel:
 @c A complicated factor is needed to make this formula correct for all complex 
 @c arguments @var{z}:
 
-Ein komplizierter Faktor wird gebraucht, damit die Formel korrekt ist für ein
+Ein komplizierter Faktor wird gebraucht, damit die Formel korrekt ist f@"ur ein
 komplexes Argument @var{z}:
 
 @example
@@ -2463,9 +2687,9 @@ komplexes Argument @var{z}:
 @c @code{cos}, @code{sinh}, and @code{cosh}. For special values of the argument 
 @c @math{z} these factors simplify accordingly.
 
-Maxima kennt diesen Faktor und ähnliche Faktoren für die Sinus, Cosinus, Sinus
-Hyperbolicus und Cosinus Hyperbolicus Funktionen. Für spezielle Argumente 
-@math{z} dieser Funktionen vereinfachen diese Funktionen entsprechend.
+Maxima kennt diesen Faktor und @"ahnliche Faktoren f@"ur die Sinus, Cosinus, 
+Sinus Hyperbolicus und Cosinus Hyperbolicus Funktionen. F@"ur spezielle 
+Argumente @math{z} dieser Funktionen vereinfachen diese Funktionen entsprechend.
 
 Beispiele:
 
@@ -2513,9 +2737,9 @@ Beispiele:
 @c @code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions
 @c @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
 
-Das Packet @code{ntrig} enthält Regeln, um Winkelfunktionen zu vereinfachen, die
-Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben. @var{f} ist eine der
-Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
+Das Packet @code{ntrig} enth@"alt Regeln, um Winkelfunktionen zu vereinfachen, 
+die Argumente der Form @code{@var{f}(@var{n} %pi/10)} haben. @var{f} ist eine 
+der Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder 
 @code{cot}. 
 
 @c @opencatbox
@@ -2535,7 +2759,7 @@ Funktionen @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} oder
 
 Die Funktion @code{trigexpand} expandiert Winkel- und Hyperbelfunktionen im 
 Ausdruck @var{expr}, die Summen und Vielfache von Winkeln als Argument haben.
-Die besten Ergebnisse werden erzielt, wenn der Ausdruck @var{expr} zunächst
+Die besten Ergebnisse werden erzielt, wenn der Ausdruck @var{expr} zun@"achst
 expandiert wird.
 
 @code{trigexpand} is governed by the following global flags:
@@ -2576,7 +2800,7 @@ Examples:
 @end example
 
 @c @opencatbox
-@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen für die Vereinfachung}
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen f@"ur die Vereinfachung}
 @c @closecatbox
 @end deffn
 
@@ -2599,10 +2823,10 @@ Standardwert: @code{true}
 @defvr {Optionsvariable} trigexpandtimes
 Standardwert: @code{true}
 
-@code{trigexpandtimes} controls the "product" rule for
-@code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
-@code{trigexpand} switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
-will take place only if @code{trigexpandtimes} is @code{true}.
+@code{trigexpandtimes} controls the "product" rule for @code{trigexpand}.  
+Thus, when the @code{trigexpand} command is used or the @code{trigexpand} 
+switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)}) will 
+take place only if @code{trigexpandtimes} is @code{true}.
 
 @c @opencatbox
 @c @category{Winkel- und Hyperbelfunktionen} @category{Vereinfachungsschalter und -variable}
@@ -2680,7 +2904,7 @@ See also @code{poissimp}.
 @c @end example
 
 @c @opencatbox
-@c @category{Winkel- und Hyperbelfunktionen} @category{Funktion für die Vereinfachung}
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktion f@"ur die Vereinfachung}
 @c @closecatbox
 @end deffn
 
@@ -2714,8 +2938,8 @@ etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @end iftex
 @ifnottex
 Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
-@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
-etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, 
+@code{sec}, etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
 @end ifnottex
 
 @code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
@@ -2725,19 +2949,20 @@ able to further simplify the result.
 @c MERGE EXAMPLES INTO THIS ITEM
 
 @c @opencatbox
-@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen für die Vereinfachung}
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen f@"ur die Vereinfachung}
 @c @closecatbox
 @end deffn
 
 @c -----------------------------------------------------------------------------
 @deffn {Funktion} trigrat (@var{expr})
 
-Gives a canonical simplifyed quasilinear form of a
-trigonometrical expression; @var{expr} is a rational fraction of several @code{sin},
-@code{cos} or @code{tan}, the arguments of them are linear forms in some variables (or
-kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients. The result is a
-simplified fraction with numerator and denominator linear in @code{sin} and @code{cos}.
-Thus @code{trigrat} linearize always when it is possible.
+Gives a canonical simplifyed quasilinear form of a trigonometrical expression; 
+@var{expr} is a rational fraction of several @code{sin}, @code{cos} or 
+@code{tan}, the arguments of them are linear forms in some variables (or 
+kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients. 
+The result is a simplified fraction with numerator and denominator linear in 
+@code{sin} and @code{cos}. Thus @code{trigrat} linearize always when it is 
+possible.
 
 @c ===beg===
 @c trigrat(sin(3*a)/sin(a+%pi/3));
@@ -2815,7 +3040,7 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @end example
 
 @c @opencatbox
-@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen für die Vereinfachung}
+@c @category{Winkel- und Hyperbelfunktionen} @category{Funktionen f@"ur die Vereinfachung}
 @c @closecatbox
 @end deffn
 
@@ -2963,38 +3188,39 @@ Addison-Wesley), section 1.5.5, Morley theorem.
 @c A random state object represents the state of the random number generator.
 @c The state comprises 627 32-bit words.
 
-Ein Zufallszustand repräsentiert den Zustand des Zufallszahlengenerators. Der
-Zustand enthält 627 32-Bit Worte.
+Ein Zufallszustand repr@"asentiert den Zustand des Zufallszahlengenerators. Der
+Zustand enth@"alt 627 32-Bit Worte.
 
 @c @code{make_random_state (@var{n})} returns a new random state object created 
 @c from an integer seed value equal to @var{n} modulo 2^32. @var{n} may be 
 @c negative.
 
-@code{make_random_state(@var{n})} gibt einen neuen Zufallszustand zurück, der 
+@code{make_random_state(@var{n})} gibt einen neuen Zufallszustand zur@"uck, der 
 aus einer ganzen Zahl @var{n} modulo 2^32 erzeugt wird. @var{n} kann eine 
 negative Zahl sein.
 
-  @c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
-  @c @code{make_random_state (@var{a})} returns a new random state object
-  @c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
+ @c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
+ @c @code{make_random_state (@var{a})} returns a new random state object
+ @c created from an array @var{a}, which must be a Lisp array of 32 unsigned
+ @c bytes.
 
 @c @code{make_random_state (@var{s})} returns a copy of the random state 
 @c @var{s}.
 
 @code{make_random_state(@var{s})} gibt eine Kopie des Zufallszutandes @var{s}
-zurück.
+zur@"uck.
 
 @c @code{make_random_state (true)} returns a new random state object, using the
 @c current computer clock time as the seed.
 
-@code{make_random_state(true)} gibt einen neuen Zufallszustand zurück, der aus
+@code{make_random_state(true)} gibt einen neuen Zufallszustand zur@"uck, der aus
 der aktuellen Systemzeit des Computers erzeugt wird.
 
 @c @code{make_random_state (false)} returns a copy of the current state of the 
 @c random number generator.
 
 @code{make_random_state(false)} gibt eine Kopie des aktuellen Zustands des
-Zufallszahlengenerators zurück.
+Zufallszahlengenerators zur@"uck.
 
 @c @opencatbox
 @c @category{Zufallszahlen}
@@ -3010,7 +3236,7 @@ Kopiert @var{s} in den Zufallszustand des Zufallszahlengenerators.
 
 @c @code{set_random_state} always returns @code{done}.
 
-@code{set_random_state} gibt immer @code{done} zurück.
+@code{set_random_state} gibt immer @code{done} zur@"uck.
 
 @c @opencatbox
 @c @category{Zufallszahlen}
@@ -3028,9 +3254,9 @@ Kopiert @var{s} in den Zufallszustand des Zufallszahlengenerators.
 @c not positive.
 
 Erzeugt eine Pseudo-Zufallszahl. Ist @var{x} eine ganze Zahl, gibt 
-@code{random(@var{x})} eine ganze Zahl im Intervall 0 bis einschließlich
-@code{@var{x}-1} zurück. Ist @var{x} eine Gleitkommazahl, gibt
-@code{random(@var{x})} eine positive Gleitkommazahl zurück, die kleiner als
+@code{random(@var{x})} eine ganze Zahl im Intervall 0 bis einschlie@ss{}lich
+@code{@var{x}-1} zur@"uck. Ist @var{x} eine Gleitkommazahl, gibt
+@code{random(@var{x})} eine positive Gleitkommazahl zur@"uck, die kleiner als
 @var{x} ist. @code{random} gibt eine Fehlermeldung, wenn @var{x} weder eine
 ganze Zahl noch eine Gleitkommazahl ist oder wenn @var{x} eine negative Zahl 
 ist.

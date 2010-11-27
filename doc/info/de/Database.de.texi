@@ -284,6 +284,13 @@ zugewiesen wurde, signalisiert Maxima einen Fehler.
 @var{a_i} wird als eine nicht-skalare Variable interpretiert. @"Uberlicherweise
 wird damit ein symbolischer Vektor oder eine Matrix deklariert.
 
+@c Tells Maxima to consider @var{a_i} not an array. This declaration prevents
+@c multiple evaluation of a subscripted variable name.
+
+@item @code{nonarray}
+@var{a_i} wird nicht als ein Array interpretiert. Diese Deklaration verhindert
+die mehrfache Auswertung, wenn @var{a_i} als indizierte Variable genutzt wird.
+
 @c Tells Maxima to consider @var{a_i} a "main variable". A main variable 
 @c succeeds all other constants and variables in the canonical ordering of 
 @c Maxima expressions, as determined by @code{ordergreatp}.
@@ -819,6 +826,44 @@ weitere Eigenschaften. Siehe @mref{declare} und @mrefdot{status}
 @c @category{Deklarationen und Inferenzen}
 @c @closecatbox
 @end defvr
+
+@c --- 22.11.2010 DK -----------------------------------------------------------
+@anchor{nonarray}
+@deffn {Eigenschaft} nonarray
+
+@c The command @code{declare(a, nonarray)} tells Maxima to consider @var{a} not 
+@c an array. This declaration prevents multiple evaluation, if @var{a} is a
+@c subscripted variable.
+
+@code{declare(a, nonarray)} gibt dem Symbol @var{a} die Eigenschaft nicht ein
+Array zu sein. Dies verhindert die mehrfache Auswertung, wenn das Symbol
+@var{a} als indizierte Variable genutzt wird.
+
+Beispiel:
+
+@c ===beg===
+@c a:'b$ b:'c$ c:'d$
+@c a[x];
+@c declare(a, nonarray);
+@c a[x];
+@c ===end===
+@example
+(%i1) a:'b$ b:'c$ c:'d$
+
+(%i4) a[x];
+(%o4)                          d
+                                x
+(%i5) declare(a, nonarray);
+(%o5)                         done
+(%i6) a[x];
+(%o6)                          a
+                                x
+@end example
+
+@c @opencatbox
+@c @category{Expressions}
+@c @closecatbox
+@end deffn
 
 @c --- 22.10.2010 DK -----------------------------------------------------------
 @anchor{nonscalar}
