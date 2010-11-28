@@ -1023,104 +1023,6 @@ Das Kommando @code{load(ctensor)} l@"adt die Funktion.
 @c @closecatbox
 @end deffn
 
-@c TODO: FOLGENDE FUNKTION IST IM PACKET VECT DEFINIERT. VERSCHIEBEN?!
-
-@c --- 20.11.2010 DK -----------------------------------------------------------
-@anchor{express}
-@deffn {Funktion} express (@var{expr})
-
-@c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? 
-@c I'M NOT GETTING IT
-@c The result uses the noun form of any
-@c derivatives arising from expansion of the vector differential
-@c operators.  To force evaluation of these derivatives, the built-in @code{ev}
-@c function can be used together with the @code{diff} evflag, after using the
-@c built-in @code{depends} function to establish any new implicit dependencies.
-
-Expands differential operator nouns into expressions in terms of partial 
-derivatives. @code{express} recognizes the operators @code{grad}, @code{div}, 
-@code{curl}, @code{laplacian}. @code{express} also expands the cross product 
-@code{~}.
-
-Symbolic derivatives (that is, @code{diff} nouns) in the return value of express
-may be evaluated by including @code{diff} in the @code{ev} function call or 
-command line. In this context, @code{diff} acts as an @code{evfun}.
-
-@code{load ("vect")} loads this function.
-@c IN POINT OF FACT, express IS A SIMPLIFICATION RULE, AND express1 IS THE FCN 
-@c WHICH DOES ALL THE WORK
-
-Beispiele:
-
-@c ===beg===
-@c load ("vect")$
-@c grad (x^2 + y^2 + z^2);
-@c express (%);
-@c ev (%, diff);
-@c div ([x^2, y^2, z^2]);
-@c express (%);
-@c ev (%, diff);
-@c curl ([x^2, y^2, z^2]);
-@c express (%);
-@c ev (%, diff);
-@c laplacian (x^2 * y^2 * z^2);
-@c express (%);
-@c ev (%, diff);
-@c [a, b, c] ~ [x, y, z];
-@c express (%);
-@c ===end===
-@example
-(%i1) load ("vect")$
-(%i2) grad (x^2 + y^2 + z^2);
-                              2    2    2
-(%o2)                  grad (z  + y  + x )
-(%i3) express (%);
-       d    2    2    2   d    2    2    2   d    2    2    2
-(%o3) [-- (z  + y  + x ), -- (z  + y  + x ), -- (z  + y  + x )]
-       dx                 dy                 dz
-(%i4) ev (%, diff);
-(%o4)                    [2 x, 2 y, 2 z]
-(%i5) div ([x^2, y^2, z^2]);
-                              2   2   2
-(%o5)                   div [x , y , z ]
-(%i6) express (%);
-                   d    2    d    2    d    2
-(%o6)              -- (z ) + -- (y ) + -- (x )
-                   dz        dy        dx
-(%i7) ev (%, diff);
-(%o7)                    2 z + 2 y + 2 x
-(%i8) curl ([x^2, y^2, z^2]);
-                               2   2   2
-(%o8)                   curl [x , y , z ]
-(%i9) express (%);
-       d    2    d    2   d    2    d    2   d    2    d    2
-(%o9) [-- (z ) - -- (y ), -- (x ) - -- (z ), -- (y ) - -- (x )]
-       dy        dz       dz        dx       dx        dy
-(%i10) ev (%, diff);
-(%o10)                      [0, 0, 0]
-(%i11) laplacian (x^2 * y^2 * z^2);
-                                  2  2  2
-(%o11)                laplacian (x  y  z )
-(%i12) express (%);
-         2                2                2
-        d     2  2  2    d     2  2  2    d     2  2  2
-(%o12)  --- (x  y  z ) + --- (x  y  z ) + --- (x  y  z )
-          2                2                2
-        dz               dy               dx
-(%i13) ev (%, diff);
-                      2  2      2  2      2  2
-(%o13)             2 y  z  + 2 x  z  + 2 x  y
-(%i14) [a, b, c] ~ [x, y, z];
-(%o14)                [a, b, c] ~ [x, y, z]
-(%i15) express (%);
-(%o15)          [b z - c y, c x - a z, a y - b x]
-@end example
-
-@c @opencatbox
-@c @category{Differential calculus} @category{Vectors} @category{Operators}
-@c @closecatbox
-@end deffn
-
 @c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
 @c "gendiff is all bugs: should be deprecated"
 @c @defun gendiff
@@ -1182,8 +1084,8 @@ Abh@"angigkeit wird in die Liste @code{dependencies} eingetragen. Siehe auch
 @c derivatives are defined.
 
 Bis auf erste Argument werden die Argumente der Funktion @code{gradef} 
-ausgewertet. @code{gradef} gibt die Funktion oder Variable zur@"uck, f@"ur die eine
-partielle Ableitung definiert wurde.
+ausgewertet. @code{gradef} gibt die Funktion oder Variable zur@"uck, f@"ur die 
+eine partielle Ableitung definiert wurde.
 
 @c @code{gradef} can redefine the derivatives of Maxima's built-in functions.
 @c For example, @code{gradef (sin(x), sqrt (1 - sin(x)^2))} redefines the 
@@ -1218,9 +1120,9 @@ definieren.
 @c have been defined by @code{gradef}. @code{gradefs} does not include any 
 @c variables for which partial derivatives have been defined by @code{gradef}.
 
-@code{gradefs} ist eine Informationsliste, die die Funktionen enth@"alt, f@"ur die
-mit @code{gradef} eine Ableitung definierte wurde. Die Liste enth@"alt keine
-Variablen, f@"ur die Ableitungen definiert wurden.
+@code{gradefs} ist eine Informationsliste, die die Funktionen enth@"alt, f@"ur 
+die mit @code{gradef} eine Ableitung definierte wurde. Die Liste enth@"alt 
+keine Variablen, f@"ur die Ableitungen definiert wurden.
 
 @c REPHRASE THIS NEXT BIT
 @c Gradients are needed when, for example, a function is not known explicitly 
@@ -1266,19 +1168,25 @@ wurde.
 @node Einf@"uhrung in die Integration, Funktionen und Variablen der Integration, Integration
 @subsection Einf@"uhrung in die Integration
 
-Maxima has several routines for handling integration.
-The @code{integrate} function makes use of most of them.  There is also the
-@code{antid} package, which handles an unspecified function (and its
-derivatives, of course).  For numerical uses,
-there is a set of adaptive integrators from QUADPACK,
-named @code{quad_qag}, @code{quad_qags}, etc., which are described under the heading @code{QUADPACK}.
-Hypergeometric functions are being worked on,
-see @code{specint} for details.
-Generally speaking, Maxima only handles integrals which are
-integrable in terms of the "elementary functions" (rational functions,
-trigonometrics, logs, exponentials, radicals, etc.) and a few
-extensions (error function, dilogarithm).  It does not handle
-integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
+@c Maxima has several routines for handling integration. The @code{integrate}
+@c function makes use of most of them.  There is also the @code{antid} package,
+@c which handles an unspecified function (and its derivatives, of course).  For
+@c numerical uses, there is a set of adaptive integrators from QUADPACK, named
+@c @code{quad_qag}, @code{quad_qags}, etc., which are described under the
+@c heading @code{QUADPACK}. Hypergeometric functions are being worked on,
+@c see @code{specint} for details. Generally speaking, Maxima only handles
+@c integrals which are integrable in terms of the "elementary functions"
+@c (rational functions, trigonometrics, logs, exponentials, radicals, etc.) and
+@c a few extensions (error function, dilogarithm).  It does not handle
+@c integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
+
+Maxima hat verschiedene Routinen um Integrale zu behandeln. Die Funktion
+@code{integrate} nutzt diese. Maxima hat ein Packet @code{antid}, welches
+Integrale mit einer unbekannten Funktion, deren Ableitung bekannt ist, 
+integrieren kann. F@"ur die numerische Berechnung von Integralen hat Maxima
+das Packet @code{QUADPACK} mit Funktionen wie @code{quad_qag} oder 
+@code{quad_qags}. Die Funktionen @code{laplace} und @code{specint} finden die
+Laplacetransformation.
 
 @c end concepts Integration
 
@@ -1288,12 +1196,17 @@ integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
 
 @c NEEDS WORK
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
-Makes the change of variable given by
-@code{@var{f(x,y)} = 0} in all integrals occurring in @var{expr} with integration with
-respect to @var{x}.
-The new variable is @var{y}.
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{changevar}
+@deffn {Funktion} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
+
+@c Makes the change of variable given by @code{@var{f(x,y)} = 0} in all 
+@c integrals occurring in @var{expr} with integration with respect to @var{x}.
+@c The new variable is @var{y}.
+
+F@"uhrt eine Substitution der Integrationsvariablen, die als @var{f(x,y)=0} 
+angegeben wird, f@"ur die Variable @var{x} in allen Integralen durch, die in 
+@var{expr} enthalten sind. Die neue Variable ist @var{y}.
 
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
@@ -1322,15 +1235,25 @@ The new variable is @var{y}.
 @end group
 @end example
 
-An expression containing a noun form, such as the instances of @code{'integrate} above,
-may be evaluated by @code{ev} with the @code{nouns} flag.
-For example, the expression returned by @code{changevar} above may be evaluated
-by @code{ev (%o3, nouns)}.
+@c An expression containing a noun form, such as the instances of 
+@c @code{'integrate} above, may be evaluated by @code{ev} with the @code{nouns} 
+@c flag. For example, the expression returned by @code{changevar} above may be 
+@c evaluated by @code{ev (%o3, nouns)}.
 
-@code{changevar} may also be used to changes in the indices of a sum or
-product.  However, it must be realized that when a change is made in a
-sum or product, this change must be a shift, i.e., @code{i = j+ ...}, not a
-higher degree function.  E.g.,
+Ein Ausdruck mit einem Integral in einer Substantivform @code{'integrate} wie
+im obigen Beispiel kann mit der Funktion @code{ev} und dem Auswertungsschalter
+@code{nouns} ausgewertet werden. Das Beispiel von oben kann zum Beispiel mit
+@code{ev(%o3, nouns)} ausgewertet werden.
+
+@c @code{changevar} may also be used to changes in the indices of a sum or
+@c product.  However, it must be realized that when a change is made in a
+@c sum or product, this change must be a shift, i.e., @code{i = j+ ...}, not a
+@c higher degree function.  E.g.,
+
+Mit @code{changevar} k@"onnen auch die Indizes einer Summe oder eines Produktes
+substituiert werden. Dabei muss beachtet werden, dass nur lineare 
+Verschiebungen, wie zum Beispiel @code{i = j + ...}, eine korrekte Substitution 
+f@"ur Summen und Produkte sind.
 
 @example
 @group
@@ -1364,12 +1287,16 @@ higher degree function.  E.g.,
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
 
 @c -----------------------------------------------------------------------------
-@deffn {Function} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
+@anchor{dblint}
+@deffn {Funktion} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 
-A double-integral routine which was written in
-top-level Maxima and then translated and compiled to machine code.
-Use @code{load (dblint)} to access this package.  It uses the Simpson's rule
-method in both the x and y directions to calculate
+@c A double-integral routine which was written in top-level Maxima and then 
+@c translated and compiled to machine code. Use @code{load (dblint)} to access 
+@c this package.  It uses the Simpson's rule method in both the x and y 
+@c directions to calculate
+
+Eine Routine, um ein bestimmtes doppeltes Integral mit der Simpsonschen Regel 
+numerisch zu berechnen.
 
 @tex
 $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, dx.$$
@@ -1386,68 +1313,98 @@ $$\int_a^b \int_{r\left(x\right)}^{s\left(x\right)} f\left(x,y\right) \, dy \, d
 @end example
 @end ifnottex
 
-The function @var{f} must be a translated or compiled function of two
-variables, and @var{r} and @var{s} must each be a translated or compiled
-function of one variable, while @var{a} and @var{b} must be floating point
-numbers. The routine has two global variables which determine the
-number of divisions of the x and y intervals: @code{dblint_x} and @code{dblint_y},
-both of which are initially 10, and can be changed independently to
-other integer values (there are @code{2*dblint_x+1} points computed in the x
-direction, and @code{2*dblint_y+1} in the y direction).
-The routine subdivides the X axis and then for each value of X it
-first computes @code{@var{r}(x)} and @code{@var{s}(x)}; then the Y axis between @code{@var{r}(x)} and @code{@var{s}(x)} is
-subdivided and the integral along the Y axis is performed using
-Simpson's rule; then the integral along the X axis is done using
-Simpson's rule with the function values being the Y-integrals. This
-procedure may be numerically unstable for a great variety of reasons,
-but is reasonably fast: avoid using it on highly oscillatory functions
-and functions with singularities (poles or branch points in the
-region).  The Y integrals depend on how far apart @code{@var{r}(x)} and @code{@var{s}(x)} are,
-so if the distance @code{@var{s}(x) - @var{r}(x)} varies rapidly with X, there may be
-substantial errors arising from truncation with different step-sizes
-in the various Y integrals. One can increase @code{dblint_x} and @code{dblint_y} in
-an effort to improve the coverage of the region, at the expense of
-computation time. The function values are not saved, so if the
-function is very time-consuming, you will have to wait for
-re-computation if you change anything (sorry).
-It is required that the functions @var{f}, @var{r}, and @var{s} be either translated or
-compiled prior to calling @code{dblint}. This will result in orders of
-magnitude speed improvement over interpreted code in many cases!
+@c The function @var{f} must be a translated or compiled function of two 
+@c variables, and @var{r} and @var{s} must each be a translated or compiled
+@c function of one variable, while @var{a} and @var{b} must be floating point
+@c numbers. The routine has two global variables which determine the number of 
+@c divisions of the x and y intervals: @code{dblint_x} and @code{dblint_y}, 
+@c both of which are initially 10, and can be changed independently to other 
+@c integer values (there are @code{2*dblint_x+1} points computed in the x
+@c direction, and @code{2*dblint_y+1} in the y direction). The routine 
+@c subdivides the X axis and then for each value of X it first computes 
+@c @code{@var{r}(x)} and @code{@var{s}(x)}; then the Y axis between 
+@c @code{@var{r}(x)} and @code{@var{s}(x)} is subdivided and the integral along 
+@c the Y axis is performed using Simpson's rule; then the integral along the X 
+@c axis is done using Simpson's rule with the function values being the 
+@c Y-integrals. This procedure may be numerically unstable for a great variety 
+@c of reasons, but is reasonably fast: avoid using it on highly oscillatory 
+@c functions and functions with singularities (poles or branch points in the
+@c region).  The Y integrals depend on how far apart @code{@var{r}(x)} and 
+@c @code{@var{s}(x)} are, so if the distance @code{@var{s}(x) - @var{r}(x)} 
+@c varies rapidly with X, there may be substantial errors arising from 
+@c truncation with different step-sizes in the various Y integrals. One can 
+@c increase @code{dblint_x} and @code{dblint_y} in an effort to improve the 
+@c coverage of the region, at the expense of computation time. The function 
+@c values are not saved, so if the function is very time-consuming, you will 
+@c have to wait for re-computation if you change anything (sorry). It is 
+@c required that the functions @var{f}, @var{r}, and @var{s} be either 
+@c translated or compiled prior to calling @code{dblint}. This will result in 
+@c orders of magnitude speed improvement over interpreted code in many cases!
 
-@code{demo (dblint)} executes a demonstration of @code{dblint} applied to an example problem.
-@c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT. !!!
+Die Funktion @var{f} muss eine Funktion von zwei Variablen sein. @var{r} und 
+@var{s} m@"ussen Funktionen einer Variablen sein. @var{a} und @var{b} sind 
+Gleitkommazahlen. Die Optionsvariablen @code{dblint_x} und @code{dblint_y} 
+kontrollieren die Anzahl der Unterteilungen des Integrationsintervalls f@"ur
+den Simpsonschen Algorithmus. Der Standardwert ist jeweils 10.
+
+
+@c @code{demo (dblint)} executes a demonstration of @code{dblint} applied to an 
+@c example problem.
+@c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- 
+@c DON'T BOTHER TO MENTION IT. !!!
 @c @code{demo (dblint_1)} executes another demonstration.
 
-@c @opencatbox
-@c @category{Integral calculus}
-@c @closecatbox
-@end deffn
+Das Kommando @code{demo(dblint)} zeigt ein Beispiel.
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} defint (@var{expr}, @var{x}, @var{a}, @var{b})
-
-Attempts to compute a definite integral.
-@code{defint} is called by @code{integrate} when limits of integration are specified,
-i.e., when @code{integrate} is called as @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
-Thus from the user's point of view, it is sufficient to call @code{integrate}.
-@c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT ALREADY PRESENT IN integrate !!!
-
-@code{defint} returns a symbolic expression,
-either the computed integral or the noun form of the integral.
-See @code{quad_qag} and related functions for numerical approximation of definite integrals.
+Die numerischen Funktionen des Packets @code{QUADPACK} sind gegen@"uber 
+@code{dblint} zu bevorzugen.
 
 @c @opencatbox
 @c @category{Integral calculus}
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{defint}
+@deffn {Funktion} defint (@var{expr}, @var{x}, @var{a}, @var{b})
+
+@c Attempts to compute a definite integral. @code{defint} is called by 
+@c @code{integrate} when limits of integration are specified, i.e., when 
+@c @code{integrate} is called as @code{integrate (@var{expr}, @var{x}, @var{a}, 
+@c @var{b})}. Thus from the user's point of view, it is sufficient to call 
+@c @code{integrate}.
+@c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT 
+@c ALREADY PRESENT IN integrate !!!
+
+Sucht das bestimmte Integral eines Ausdrucks @var{expr} f@"ur die 
+Integrationsvariable @var{x} in den Grenzen @var{a} und @var{b}. Diese Funktion
+wird ausgef@"uhrt, wenn ein bestimmtes Integral mit der Funktion 
+@code{integrate} gesucht wird.
+
+@c @code{defint} returns a symbolic expression, either the computed integral or 
+@c the noun form of the integral. See @code{quad_qag} and related functions for 
+@c numerical approximation of definite integrals.
+
+@code{defint} gibt einen symbolischen Ausdruck als Ergebnis zur@"uck. Ist das 
+Integral divergent generiert Maxima eine Fehlermeldung. Kann @code{defint} 
+keine L@"osung finden, wird eine Substantivform zur@"uckgegeben.
+
+@c @opencatbox
+@c @category{Integral calculus}
+@c @closecatbox
+@end deffn
+
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{erfflag}
 @defvr {Option variable} erfflag
-Default value: @code{true}
+Standardwert: @code{true}
 
-When @code{erfflag} is @code{false}, prevents @code{risch} from introducing the
-@code{erf} function in the answer if there were none in the integrand to
-begin with.
+@c When @code{erfflag} is @code{false}, prevents @code{risch} from introducing 
+@c the @code{erf} function in the answer if there were none in the integrand to
+@c begin with.
+
+Hat @code{erfflag} den Wert @code{false}, werden von der Funktion @code{risch}
+keine Fehlerfunktion @code{erf} in die L@"osung eingef@"uhrt.
 
 @c @opencatbox
 @c @category{Integral calculus}
@@ -1456,15 +1413,23 @@ begin with.
 
 @c NEEDS WORK
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} ilt (@var{expr}, @var{s}, @var{t})
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{ilt}
+@deffn {Funktion} ilt (@var{expr}, @var{s}, @var{t})
 
-Computes the inverse Laplace transform of @var{expr} with
-respect to @var{s} and parameter @var{t}.  @var{expr} must be a ratio of
-polynomials whose denominator has only linear and quadratic factors.
-By using the functions @code{laplace} and @code{ilt} together with the @code{solve} or
-@code{linsolve} functions the user can solve a single differential or
-convolution integral equation or a set of them.
+@c Computes the inverse Laplace transform of @var{expr} with respect to @var{s} 
+@c and parameter @var{t}.  @var{expr} must be a ratio of polynomials whose 
+@c denominator has only linear and quadratic factors. By using the functions 
+@c @code{laplace} and @code{ilt} together with the @code{solve} or 
+@c @code{linsolve} functions the user can solve a single differential or
+@c convolution integral equation or a set of them.
+
+Berechnet die Inverse Laplace-Transformation des Ausdrucks @var{expr} f@"ur die
+Variable @var{s} und den Parameter @var{t}. @var{expr} muss eine rationale
+Funktion sein, in deren Nenner nur lineare und quadratische Faktoren auftreten.
+Mit den Funktionen @code{laplace} und @code{ilt} sowie den Funktionen 
+@code{solve} oder @code{linsolve} k@"onnen lineare Differentialgleichungen oder
+Systeme von linearen Differentialgleichungen gel@"ost werden.
 
 @example
 @group
@@ -1516,21 +1481,34 @@ pos;
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} intanalysis
-Default value: @code{true}
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{intanalysis}
+@defvr {Optionsvariable} intanalysis
+Standardwert: @code{true}
 
-When @code{true}, definite integration tries to find poles in the integrand in 
-the interval of integration. If there are, then the integral is evaluated
-appropriately as a principal value integral. If intanalysis is @code{false}, 
-this check is not performed and integration is done assuming there are no poles.
+@c When @code{true}, definite integration tries to find poles in the integrand 
+@c in the interval of integration. If there are, then the integral is evaluated
+@c appropriately as a principal value integral. If intanalysis is @code{false}, 
+@c this check is not performed and integration is done assuming there are no 
+@c poles.
 
-See also @code{ldefint}.
+Hat @code{intanalysis} den Wert @code{true}, sucht Maxima nach Polen in einem 
+Integranden. Existieren solche, wird der Cauchysche Hauptwert des Integrals
+bestimmt. Hat @code{intanalysis} den Wert @code{false}, wird die Integration
+unter der Annahme ausgef@"uhrt, dass das Integral keine Pole im 
+Integrationsbereich hat.
 
-Examples:
+@c See also @code{ldefint}.
 
-Maxima can solve the following integrals, when @code{intanalysis} is set to
-@code{false}:
+Siehe auch @mrefdot{ldefint}
+
+Beispiele:
+
+@c Maxima can solve the following integrals, when @code{intanalysis} is set to
+@c @code{false}:
+
+Maxima kann die folgende Integral l@"osen, wenn @code{intanalysis} den Wert
+@code{false} hat.
 
 @c ===beg===
 @c integrate(1/(sqrt(x+1)+1),x,0,1);
@@ -1568,90 +1546,132 @@ The number 1 isn't in the domain of atanh
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@deffn  {Function} integrate (@var{expr}, @var{x})
-@deffnx {Function} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{integrate}
+@deffn  {Funktion} integrate (@var{expr}, @var{x})
+@deffnx {Funktion} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
 
-Attempts to symbolically compute the integral of @var{expr} with respect to @var{x}.
-@code{integrate (@var{expr}, @var{x})} is an indefinite integral,
-while @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} is a definite integral,
-with limits of integration @var{a} and @var{b}.
-The limits should not contain @var{x}, although @code{integrate} does not enforce this restriction.
-@var{a} need not be less than @var{b}.
-If @var{b} is equal to @var{a}, @code{integrate} returns zero.
+@c Attempts to symbolically compute the integral of @var{expr} with respect to 
+@c @var{x}. @code{integrate (@var{expr}, @var{x})} is an indefinite integral,
+@c while @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} is a definite 
+@c integral, with limits of integration @var{a} and @var{b}. The limits should 
+@c not contain @var{x}, although @code{integrate} does not enforce this 
+@c restriction. @var{a} need not be less than @var{b}. If @var{b} is equal to 
+@c @var{a}, @code{integrate} returns zero.
 
-See @code{quad_qag} and related functions for numerical approximation of definite integrals.
-See @code{residue} for computation of residues (complex integration).
-See @code{antid} for an alternative means of computing indefinite integrals.
+Sucht die symbolische L@"osung des Integrals f@"ur den Ausdruck @var{expr} f@"ur
+die Integrationsvariable @var{x}. @code{integrate(@var{expr}, @var{x}} ist das
+unbestimmte Integral. @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}
+sucht die L@"osung des bestimmten Integrals in den Integrationsgrenzen @var{a} 
+und @var{b}. Die Integrationsgrenzen sollten die Integrationsvariable @var{x}
+nicht enthalten. F@"ur die Integrationsgrenzen muss nicht gelten 
+@var{a} < @var{b}. Sind die Integrationsgrenzen gleich, dann ist das Ergebnis
+der Integration Null.
 
-The integral (an expression free of @code{integrate}) is returned if @code{integrate} succeeds.
-Otherwise the return value is
-the noun form of the integral (the quoted operator @code{'integrate})
-or an expression containing one or more noun forms.
-The noun form of @code{integrate} is displayed with an integral sign.
+@c See @code{quad_qag} and related functions for numerical approximation of 
+@c definite integrals. See @code{residue} for computation of residues (complex 
+@c integration). See @code{antid} for an alternative means of computing  
+@c indefinite integrals.
 
-In some circumstances it is useful to construct a noun form by hand,
-by quoting @code{integrate} with a single quote, e.g., @code{'integrate (@var{expr}, @var{x})}.
-For example, the integral may depend on some parameters which are not yet computed.
-The noun may be applied to its arguments by @code{ev (@var{i}, nouns)}
-where @var{i} is the noun form of interest.
+F@"ur die numerische L@"osung von Integrale siehe die Funktion @code{quad_gag} 
+und verwandte Funktionen. Residuen eines Integranden k@"onnen mit der Funktion
+@code{residue} berechnet werden. Einen alternativen Algorithmus f@"ur das 
+Berechnen von Integralen mit einer unbekannten Funktion bietet die Funktion 
+@code{antid}.
+
+@c The integral (an expression free of @code{integrate}) is returned if 
+@c @code{integrate} succeeds. Otherwise the return value is the noun form of 
+@c the integral (the quoted operator @code{'integrate}) or an expression 
+@c containing one or more noun forms. The noun form of @code{integrate} is 
+@c displayed with an integral sign.
+
+Findet @code{integrate} keine L@"osung wird eine Substantivform oder ein
+Ausdruck mit einer oder mehreren Substantivformen zur@"uckgegeben.
+
+@c In some circumstances it is useful to construct a noun form by hand, by 
+@c quoting @code{integrate} with a single quote, e.g., @code{'integrate 
+@c (@var{expr}, @var{x})}. For example, the integral may depend on some 
+@c parameters which are not yet computed. The noun may be applied to its 
+@c arguments by @code{ev (@var{i}, nouns)} where @var{i} is the noun form of 
+@c interest.
+
+Soll das Integral nicht sofort berechnet werden, kann die Substantivform des
+Integrals angegeben werden, zum Beispiel @code{'integrate(@var{expr}, @var{x})}.
+Die Berechnung des Integrals ist dann mit Funktion @code{ev} und dem 
+Auswertungsschalter @code{nouns} m@"oglich.
+
+@c TODO: DER FOLGENDE TEXT IST NICHT MEHR GANZ AKTUELL. UEBERSETZUNG FEHLT.
 
 @c BEGIN EXPOSITION ON HEURISTICS
-@code{integrate} handles definite integrals separately from indefinite,
-and employs a range of heuristics to handle each case.
-Special cases of definite integrals include limits of integration equal to
-zero or infinity (@code{inf} or @code{minf}),
-trigonometric functions with limits of integration equal to zero and @code{%pi} or @code{2 %pi},
-rational functions,
-integrals related to the definitions of the @code{beta} and @code{psi} functions,
-and some logarithmic and trigonometric integrals.
-Processing rational functions may include computation of residues.
-If an applicable special case is not found,
-an attempt will be made to compute the indefinite integral and evaluate it at the limits of integration.
-This may include taking a limit as a limit of integration goes to infinity or negative infinity;
-see also @code{ldefint}.
+@c @code{integrate} handles definite integrals separately from indefinite, and 
+@c employs a range of heuristics to handle each case. Special cases of definite 
+@c integrals include limits of integration equal to zero or infinity 
+@c (@code{inf} or @code{minf}), trigonometric functions with limits of 
+@c integration equal to zero and @code{%pi} or @code{2 %pi}, rational functions,
+@c integrals related to the definitions of the @code{beta} and @code{psi} 
+@c functions, and some logarithmic and trigonometric integrals. Processing 
+@c rational functions may include computation of residues. If an applicable 
+@c special case is not found, an attempt will be made to compute the indefinite 
+@c integral and evaluate it at the limits of integration. This may include 
+@c taking a limit as a limit of integration goes to infinity or negative 
+@c infinity; see also @code{ldefint}.
 
-Special cases of indefinite integrals include trigonometric functions,
-exponential and logarithmic functions,
-and rational functions.
-@code{integrate} may also make use of a short table of elementary integrals.
+@c Special cases of indefinite integrals include trigonometric functions, 
+@c exponential and logarithmic functions, and rational functions. 
+@c @code{integrate} may also make use of a short table of elementary integrals.
 
-@code{integrate} may carry out a change of variable
-if the integrand has the form @code{f(g(x)) * diff(g(x), x)}.
-@code{integrate} attempts to find a subexpression @code{g(x)} such that
-the derivative of @code{g(x)} divides the integrand.
-This search may make use of derivatives defined by the @code{gradef} function.
-See also @code{changevar} and @code{antid}.
+@c @code{integrate} may carry out a change of variable if the integrand has the 
+@c form @code{f(g(x)) * diff(g(x), x)}. @code{integrate} attempts to find a 
+@c subexpression @code{g(x)} such that the derivative of @code{g(x)} divides 
+@c the integrand. This search may make use of derivatives defined by the 
+@c @code{gradef} function. See also @code{changevar} and @code{antid}.
 
-If none of the preceding heuristics find the indefinite integral,
-the Risch algorithm is executed.
-The flag @code{risch} may be set as an @code{evflag},
-in a call to @code{ev} or on the command line,
-e.g., @code{ev (integrate (@var{expr}, @var{x}), risch)} or @code{integrate (@var{expr}, @var{x}), risch}.
-If @code{risch} is present, @code{integrate} calls the @code{risch} function
-without attempting heuristics first. See also @code{risch}.
+@c If none of the preceding heuristics find the indefinite integral, the Risch 
+@c algorithm is executed. The flag @code{risch} may be set as an @code{evflag},
+@c in a call to @code{ev} or on the command line, e.g., @code{ev (integrate 
+@c (@var{expr}, @var{x}), risch)} or @code{integrate(@var{expr},@var{x}),risch}.
+@c If @code{risch} is present, @code{integrate} calls the @code{risch} function
+@c without attempting heuristics first. See also @code{risch}.
 @c END EXPOSITION ON HEURISTICS
 
-@code{integrate} works only with functional relations represented explicitly with the @code{f(x)} notation.
-@code{integrate} does not respect implicit dependencies established by the @code{depends} function.
+@c @code{integrate} works only with functional relations represented explicitly 
+@c with the @code{f(x)} notation. @code{integrate} does not respect implicit 
+@c dependencies established by the @code{depends} function.
 
-@code{integrate} may need to know some property of a parameter in the integrand.
-@code{integrate} will first consult the @code{assume} database,
-and, if the variable of interest is not there,
-@code{integrate} will ask the user.
-Depending on the question,
-suitable responses are @code{yes;} or @code{no;},
-or @code{pos;}, @code{zero;}, or @code{neg;}.
+Die Abh@"angigkeit der Funktionen im Integranden von Parametern im Integranden 
+muss explizit zum Beispiel mit @code{f(x)} angegeben werden. @code{integrate}
+beachtet keine Abh@"angigkeit der mit den Funktion @code{depends} definiert 
+werden.
 
-@code{integrate} is not, by default, declared to be linear. See @code{declare} and @code{linear}.
+@c @code{integrate} may need to know some property of a parameter in the 
+@c integrand. @code{integrate} will first consult the @code{assume} database,
+@c and, if the variable of interest is not there, @code{integrate} will ask the 
+@c user. Depending on the question, suitable responses are @code{yes;} or 
+@c @code{no;}, or @code{pos;}, @code{zero;}, or @code{neg;}.
 
-@code{integrate} attempts integration by parts only in a few special cases.
+Ben@"otigt @code{integrate} Informationen zu einem Parameter, die nicht aus 
+Maximas Datenbank abgeleitet werden k@"onnen, wird der Nutzer nach den fehlenden
+Informationen gefragt.
 
-Examples:
+@c @code{integrate} is not, by default, declared to be linear. See 
+@c @code{declare} and @code{linear}.
+
+@code{integrate} ist standardm@"a@ss{}ig nicht als linear deklariert. Siehe
+@mref{declare} und @mrefdot{linear}
+
+@c @code{integrate} attempts integration by parts only in a few special cases.
+
+Nur in einigen speziellen F@"allen versucht @code{integrate} eine partielle
+Integration anzuwenden.
+
+Beispiele:
 
 @itemize @bullet
+@c @item
+@c Elementary indefinite and definite integrals.
+
 @item
-Elementary indefinite and definite integrals.
+Elementare unbestimmte und bestimme Integrale.
 
 @example
 @group
@@ -1681,8 +1701,11 @@ Elementary indefinite and definite integrals.
 @end group
 @end example
 
+@c @item
+@c Use of @code{assume} and interactive query.
+
 @item
-Use of @code{assume} and interactive query.
+Gebrauch von @code{assume} und interaktive Fragen.
 
 @example
 (%i1) assume (a > 1)$
@@ -1702,10 +1725,16 @@ neg;
 @end group
 @end example
 
+@c @item
+@c Change of variable. There are two changes of variable in this example: one 
+@c using a derivative established by @code{gradef}, and one using the derivation
+@c @code{diff(r(x))} of an unspecified function @code{r(x)}.
+
 @item
-Change of variable. There are two changes of variable in this example:
-one using a derivative established by @code{gradef},
-and one using the derivation @code{diff(r(x))} of an unspecified function @code{r(x)}.
+Substitution der Integrationsvariable. In diesem Beispiel werden zwei 
+verschiedene Substitutionen vorgenommen. Zuerst wird eine Ableitung der Funktion
+mit der Funktion @code{gradef} definiert. Die andere nutzt die Ableitung
+@code{diff(r(x))} einer unbekannten Funktion @code{r(x)}.
 
 @example
 @group
@@ -1726,12 +1755,17 @@ and one using the derivation @code{diff(r(x))} of an unspecified function @code{
 @end group
 @end example
 
+@c @item
+@c Return value contains the @code{'integrate} noun form. In this example, 
+@c Maxima can extract one factor of the denominator of a rational function, but 
+@c cannot factor the remainder or otherwise find its integral. @code{grind} 
+@c shows the noun form @code{'integrate} in the result. See also 
+@c @code{integrate_use_rootsof} for more on integrals of rational functions.
+
 @item
-Return value contains the @code{'integrate} noun form.
-In this example, Maxima can extract one factor of the denominator
-of a rational function, but cannot factor the remainder or otherwise find its integral.
-@code{grind} shows the noun form @code{'integrate} in the result.
-See also @code{integrate_use_rootsof} for more on integrals of rational functions.
+Die L@"osung enth@"alt eine Substantivform f@"ur das Integral einer rationalen 
+Funktion. Siehe auch @code{integrate_use_rootsof} f@"ur Informationen zu
+Integralen von rationalen Funktionen.
 
 @example
 @group
@@ -1755,12 +1789,18 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 @end group
 @end example
 
+@c @item
+@c Defining a function in terms of an integral. The body of a function is not 
+@c evaluated when the function is defined. Thus the body of @code{f_1} in this 
+@c example contains the noun form of @code{integrate}. The quote-quote operator 
+@c @code{'@w{}'} causes the integral to be evaluated, and the result becomes 
+@c the body of @code{f_2}.
+
 @item
-Defining a function in terms of an integral.
-The body of a function is not evaluated when the function is defined.
-Thus the body of @code{f_1} in this example contains the noun form of @code{integrate}.
-The quote-quote operator @code{'@w{}'} causes the integral to be evaluated,
-and the result becomes the body of @code{f_2}.
+Definition einer Funktion als ein Integral. Die rechte Seite einer
+Funktionsdefinition wird nicht ausgewertet. Daher enth@"alt die 
+Funktionsdefinition das Integral in einer Substantivform. Der 
+Quote-Quote-Operator @code{'@w{}'} erzwingt die Auswertung der Substantivform.
 
 @example
 @group
@@ -1792,17 +1832,26 @@ and the result becomes the body of @code{f_2}.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
-@defvr {System variable} integration_constant
-Default value: @code{%c}
+@c --- 28.11.2010 DK------------------------------------------------------------
+@anchor{integration_constant}
+@defvr {Optionsvariable} integration_constant
+Standardwert: @code{%c}
 
-When a constant of integration is introduced by indefinite integration of an equation,
-the name of the constant is constructed by concatenating @code{integration_constant}
-and @code{integration_constant_counter}.
+@c When a constant of integration is introduced by indefinite integration of an 
+@c equation, the name of the constant is constructed by concatenating 
+@c @code{integration_constant} and @code{integration_constant_counter}.
 
-@code{integration_constant} may be assigned any symbol.
+Wird eine symbolische Integrationskonstante f@"ur die L@"osung eines Integrals
+ben@"otigt, erzeugt Maxima diese durch Verkettung des Symbols 
+@code{integration_constant} mit einer laufenden Nummer, die der Wert der
+Optionsvariablen @code{integration_counter} ist.
 
-Examples:
+@c @code{integration_constant} may be assigned any symbol.
+
+Der Optionsvariablen @code{integration_constant} kann ein beliebiges Symbol
+zugewiesen werden.
+
+Beispiele:
 
 @c ===beg===
 @c integrate (x^2 = 1, x);
@@ -1835,17 +1884,27 @@ Examples:
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@defvr {System variable} integration_constant_counter
-Default value: 0
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{integration_constant_counter}
+@defvr {Systemvariable} integration_constant_counter
+Standardwert: 0
 
-When a constant of integration is introduced by indefinite integration of an equation,
-the name of the constant is constructed by concatenating @code{integration_constant}
-and @code{integration_constant_counter}.
+@c When a constant of integration is introduced by indefinite integration of an 
+@c equation, the name of the constant is constructed by concatenating 
+@c @code{integration_constant} and @code{integration_constant_counter}.
 
-@code{integration_constant_counter} is incremented before constructing the next integration constant.
+Wird eine symbolische Integrationskonstante f@"ur die L@"osung eines Integrals
+ben@"otigt, erzeugt Maxima diese durch Verkettung des Symbols 
+@code{integration_constant} mit einer laufenden Nummer, die der Wert der
+Optionsvariablen @code{integration_counter} ist.
 
-Examples:
+@c @code{integration_constant_counter} is incremented before constructing the 
+@c next integration constant.
+
+Der Wert der Systemvariablen @code{integration_constant_counter} wird vor der
+Erzeugung der Integrationskonstanten erh@"oht.
+
+Beispiele:
 
 @c ===beg===
 @c integrate (x^2 = 1, x);
@@ -1894,16 +1953,27 @@ Examples:
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
-@defvr {Option variable} integrate_use_rootsof
-Default value: @code{false}
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{integrate_use_rootsof}
+@defvr {Optionsvariable} integrate_use_rootsof
+Standardwert: @code{false}
 
-When @code{integrate_use_rootsof} is @code{true} and the denominator of
-a rational function cannot be factored, @code{integrate} returns the integral
-in a form which is a sum over the roots (not yet known) of the denominator.
+@c When @code{integrate_use_rootsof} is @code{true} and the denominator of
+@c a rational function cannot be factored, @code{integrate} returns the integral
+@c in a form which is a sum over the roots (not yet known) of the denominator.
 
-For example, with @code{integrate_use_rootsof} set to @code{false},
-@code{integrate} returns an unsolved integral of a rational function in noun form:
+Hat @code{integrate_use_rootsof} den Wert @code{true} und der Nenner einer
+rationalen Funktion kann nicht faktorisiert werden, dann gibt @code{integrate}
+ein Integral zur@"uck, das eine Summe @"uber die unbekannten Wurzeln des Nenners
+enth@"alt. 
+
+@c For example, with @code{integrate_use_rootsof} set to @code{false},
+@c @code{integrate} returns an unsolved integral of a rational function in 
+@c noun form:
+
+Hat zum Beispiel @code{integrate_use_rootsof} den Wert @code{false}, gibt
+@code{integrate} im Folgenden ein L@"osung zur@"uck, die eine Substantivform
+enth@"alt.
 
 @example
 (%i1) integrate_use_rootsof: false$
@@ -1919,8 +1989,13 @@ For example, with @code{integrate_use_rootsof} set to @code{false},
 @end group
 @end example
 
-Now we set the flag to be true and the unsolved part of the
-integral will be expressed as a summation over the roots of the denominator of the rational function:
+@c Now we set the flag to be true and the unsolved part of the integral will be 
+@c expressed as a summation over the roots of the denominator of the rational 
+@c function:
+
+Mit dem Wert @code{true} f@"ur die Optionsvariable @code{integrate_use_rootsof}
+wird das ungel@"oste Integral als eine Summe @"uber die Wurzeln des Nenners der
+rationalen Funktion zur@"uckgegeben.
 
 @example
 (%i3) integrate_use_rootsof: true$
@@ -1944,56 +2019,91 @@ integral will be expressed as a summation over the roots of the denominator of t
 @end group
 @end example
 
-Alternatively the user may compute the roots of the denominator separately,
-and then express the integrand in terms of these roots,
-e.g., @code{1/((x - a)*(x - b)*(x - c))} or @code{1/((x^2 - (a+b)*x + a*b)*(x - c))}
-if the denominator is a cubic polynomial.
-Sometimes this will help Maxima obtain a more useful result.
+@c Alternatively the user may compute the roots of the denominator separately,
+@c and then express the integrand in terms of these roots, e.g., 
+@c @code{1/((x - a)*(x - b)*(x - c))} or @code{1/((x^2-(a+b)*x + a*b)*(x - c))}
+@c if the denominator is a cubic polynomial. Sometimes this will help Maxima 
+@c obtain a more useful result.
+
+Alternativ kann der Nutzer die Wurzeln des Nenners separat berechnen und den
+Integranden mit Hilfe der Wurzeln ausdr@"ucken. Zum Beispiel als 
+@code{1/((x - a)*(x - b)*(x - c))} oder @code{1/((x^2-(a+b)*x + a*b)*(x - c))}
+ein kubisches Polynom mit drei Nullstellen im Nenner. Auf diese Weise kann
+Maxima in einigen F@"allen eine L@"osung f@"ur ein Integral finden.
 
 @c @opencatbox
 @c @category{Integral calculus}
 @c @closecatbox
 @end defvr
 
-@c -----------------------------------------------------------------------------
+@c --- 28.11.2010 DK -----------------------------------------------------------
 @anchor{laplace}
-@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
+@deffn {Funktion} laplace (@var{expr}, @var{t}, @var{s})
 
-Attempts to compute the Laplace transform of @var{expr} with respect to the 
-variable @var{t} and transform parameter @var{s}.
+@c Attempts to compute the Laplace transform of @var{expr} with respect to the 
+@c variable @var{t} and transform parameter @var{s}.
 
-@code{laplace} recognizes in @var{expr} the functions @code{delta}, @code{exp},
-@code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, and @code{erf},
-as well as @code{derivative}, @code{integrate}, @code{sum}, and @code{ilt}. If
-laplace fails to find a transform the function @code{specint} is called.
-@code{specint} can find the laplace transform for expressions with special
-functions like the bessel functions @code{bessel_j}, @code{bessel_i}, ... and
-can handle the @code{unit_step} function. See also @code{specint}.
+Sucht die Laplace-Transformation des Ausdrucks @var{expr} f@"ur die 
+Integrationsvariable @var{x} und den Parameter @var{s}.
 
-If @code{specint} cannot find a solution too, a noun @code{laplace} is returned.
+@c @code{laplace} recognizes in @var{expr} the functions @code{delta}, 
+@c @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh}, 
+@c and @code{erf}, as well as @code{derivative}, @code{integrate}, @code{sum}, 
+@c and @code{ilt}. If laplace fails to find a transform the function 
+@c @code{specint} is called. @code{specint} can find the laplace transform for 
+@c expressions with special functions like the bessel functions @code{bessel_j}, 
+@c @code{bessel_i}, ... and can handle the @code{unit_step} function. See also 
+@c @code{specint}.
+
+@code{laplace} findet die Laplace-Transformation f@"ur Ausdr@"ucke, die die
+Funktionen @code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, 
+@code{sinh}, @code{cosh} und @code{erf} enthalten. Weiterhin k@"onnen auch
+@code{derivative}, @code{integrate}, @code{sum} und @code{ilt} enthalten sein.
+Kann @code{laplace} die Laplace-Transformation nicht finden, wird die Funktion
+@code{specint} aufgerufen. @code{specint} kann die Laplace-Transformation f@"ur
+eine Vielzahl von speziellen Funktion berechnen.
+
+@c If @code{specint} cannot find a solution too, a noun @code{laplace} is 
+@c returned.
+
+Findet auch @code{specint} keine L@"osung ist das Ergebnis eine Substantivform.
+
+@c TODO: WELCHE MATHEMATIK WIRD HIER BESCHRIEBEN. UEBERSETZUNG FEHLT.
 
 @c REPHRASE THIS
-@var{expr} may also be a linear, constant coefficient differential equation in
-which case @code{atvalue} of the dependent variable is used.
+@c @var{expr} may also be a linear, constant coefficient differential equation 
+@c in which case @code{atvalue} of the dependent variable is used.
 @c "used" -- USED HOW ??
-The required atvalue may be supplied either before or after the transform is computed.
-Since the initial conditions must be specified at zero, if one has boundary
-conditions imposed elsewhere he can impose these on the general
-solution and eliminate the constants by solving the general solution
-for them and substituting their values back.
+@c The required atvalue may be supplied either before or after the transform is 
+@c computed. Since the initial conditions must be specified at zero, if one has 
+@c boundary conditions imposed elsewhere he can impose these on the general
+@c solution and eliminate the constants by solving the general solution for them
+@c and substituting their values back.
 
-@code{laplace} recognizes convolution integrals of the form
-@code{integrate (f(x) * g(t - x), x, 0, t)};
-other kinds of convolutions are not recognized.
+@c @code{laplace} recognizes convolution integrals of the form
+@c @code{integrate (f(x) * g(t - x), x, 0, t)};
+@c other kinds of convolutions are not recognized.
 
-Functional relations must be explicitly represented in @var{expr};
-implicit relations, established by @code{depends}, are not recognized.
-That is, if @var{f} depends on @var{x} and @var{y},
-@code{f (x, y)} must appear in @var{expr}.
+@code{laplace} erkennt die Faltung von Funktionen der Form
+@code{integrate (f(x) * g(t - x), x, 0, t)}. Andere Faltungen werden nicht
+erkannt.
 
-See also @code{ilt}, the inverse Laplace transform.
+@c Functional relations must be explicitly represented in @var{expr};
+@c implicit relations, established by @code{depends}, are not recognized.
+@c That is, if @var{f} depends on @var{x} and @var{y}, @code{f (x, y)} must 
+@c appear in @var{expr}.
 
-Examples:
+Funktionale Abh@"angigkeiten von Variablen m@"ussen explizit angegeben werden. 
+@code{laplace} erkennt keine Abh@"angigkeiten die mit der Funktion 
+@code{depends} definiert wurden. Eine Funktion, die von den Variablen @var{x} 
+abh@"angt, muss als @code{f(x)} im Ausdruck @var{expr} auftreten.
+
+@c See also @code{ilt}, the inverse Laplace transform.
+
+Siehe auch @mrefcomma{ilt} f@"ur die Inverse Laplace-Transformation.
+
+Beispiele:
+
 @c GENERATED FROM THE FOLLOWING:
 @c laplace (exp (2*t + a) * sin(t) * t, t, s);
 @c laplace ('diff (f (x), x), x, s);
@@ -2038,7 +2148,8 @@ Examples:
                                s    sqrt(-----)
                                            s
 (%i8) assume(exp(%pi*s)>1)$
-(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s),simpsum;
+(%i9) laplace(sum((-1)^n*unit_step(t-n*%pi)*sin(t),n,0,inf),t,s)
+        ,simpsum;
                          %i                         %i
               ------------------------ - ------------------------
                               - %pi s                    - %pi s
@@ -2061,55 +2172,51 @@ Examples:
 
 @c NEEDS EXAMPLES
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{ldefint}
+@deffn {Funktion} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
-Attempts to compute the definite integral of @var{expr} by using
-@code{limit} to evaluate the indefinite integral of @var{expr} with respect to @var{x}
-at the upper limit @var{b} and at the lower limit @var{a}.
-If it fails to compute the definite integral,
-@code{ldefint} returns an expression containing limits as noun forms.
+@c Attempts to compute the definite integral of @var{expr} by using @code{limit}
+@c to evaluate the indefinite integral of @var{expr} with respect to @var{x} at 
+@c the upper limit @var{b} and at the lower limit @var{a}. If it fails to 
+@c compute the definite integral, @code{ldefint} returns an expression 
+@c containing limits as noun forms.
 
-@code{ldefint} is not called from @code{integrate},
-so executing @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a different result than
-@code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
-@code{ldefint} always uses the same method to evaluate the definite integral,
-while @code{integrate} may employ various heuristics and may recognize some special cases.
+Sucht die L@"osung des bestimmten Integrals f@"ur den Integranden @var{expr}. 
+@code{ldefinit} bestimmt die Stammfunktion und sucht die Grenzwerte mit der
+Funktion @code{limit} an den Integrationsgrenzen @var{a} und @var{b}. Kann ein
+Grenzwert nicht ermittelt werden, enth@"alt das Ergebnis die Substantivform
+des Grenzwertes.
+
+@c @code{ldefint} is not called from @code{integrate}, so executing 
+@c @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a different 
+@c result than @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
+@c @code{ldefint} always uses the same method to evaluate the definite integral,
+@c while @code{integrate} may employ various heuristics and may recognize some 
+@c special cases.
+
+@code{ldefint} wird nicht von der Funktion @code{integrate} aufgerufen. Daher
+kann @code{ldefint} ein von @code{integrate} verschiedenes Ergebnis haben.
+@code{ldefint} verwendet immer denselben Algorithmus um eine L@"osung zu finden. 
+Dagegen wendet @code{integrate} verschiedene Algorithmen an, um nach einer
+L@"osung zu suchen.
 
 @c @opencatbox
 @c @category{Integral calculus}
 @c @closecatbox
 @end deffn
 
-@c UMM, IS THERE SOME TEXT MISSING HERE ???
-@c WHAT IS THIS ABOUT EXACTLY ??
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{residue}
+@deffn {Funktion} residue (@var{expr}, @var{z}, @var{z_0})
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} potential (@var{givengradient})
+@c Computes the residue in the complex plane of the expression @var{expr} when 
+@c the variable @var{z} assumes the value @var{z_0}.  The residue is the 
+@c coefficient of @code{(@var{z} - @var{z_0})^(-1)} in the Laurent series
+@c for @var{expr}.
 
-The calculation makes use of the global variable @code{potentialzeroloc[0]}
-which must be @code{nonlist} or of the form
-
-@example
-[indeterminatej=expressionj, indeterminatek=expressionk, ...]
-@end example
-
-the
-former being equivalent to the nonlist expression for all right-hand
-sides in the latter.  The indicated right-hand sides are used as the
-lower limit of integration.  The success of the integrations may
-depend upon their values and order. @code{potentialzeroloc} is initially set
-to 0.
-
-@end deffn
-
-@c -----------------------------------------------------------------------------
-@deffn {Function} residue (@var{expr}, @var{z}, @var{z_0})
-
-Computes the residue in the complex plane of
-the expression @var{expr} when the variable @var{z} assumes the value @var{z_0}.  The
-residue is the coefficient of @code{(@var{z} - @var{z_0})^(-1)} in the Laurent series
-for @var{expr}.
+Berechnet das Residuum f@"ur den Ausdruck @var{expr}, wenn die Variable @var{z}
+gegen den Wert @var{z_0} geht.
 
 @example
 @group
@@ -2132,19 +2239,29 @@ for @var{expr}.
 @c @closecatbox
 @end deffn
 
-@c -----------------------------------------------------------------------------
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{risch}
 @deffn {Function} risch (@var{expr}, @var{x})
 
-Integrates @var{expr} with respect to @var{x} using the
-transcendental case of the Risch algorithm.  (The algebraic case of
-the Risch algorithm has not been implemented.)  This currently
-handles the cases of nested exponentials and logarithms which the main
-part of @code{integrate} can't do.  @code{integrate} will automatically apply @code{risch}
-if given these cases.
+@c Integrates @var{expr} with respect to @var{x} using the transcendental case 
+@c of the Risch algorithm.  (The algebraic case of the Risch algorithm has not 
+@c been implemented.)  This currently handles the cases of nested exponentials 
+@c and logarithms which the main part of @code{integrate} can't do.  
+@c @code{integrate} will automatically apply @code{risch} if given these cases.
 
-@code{erfflag}, if @code{false}, prevents @code{risch} from introducing the @code{erf}
-function in the answer if there were none in the integrand to begin
-with.
+Nutzt den transzendenten Risch-Algorithmus f@"ur die Integration des
+Ausdruck @var{expr} und der Integrationsvariable @var{x}. Der algebraische
+Risch-Algorithmus ist nicht implementiert. Der transzendente Risch-Algorithmus
+behandelt Integranden mit Exponential- und Logarithmusfunktionen. Der 
+Risch-Algorithmus wird von @code{integrate} aufgerufen, wenn @code{integrate}
+keine Stammfunktion finden kann.
+
+@c @code{erfflag}, if @code{false}, prevents @code{risch} from introducing the 
+@c @code{erf} function in the answer if there were none in the integrand to 
+@c begin with.
+
+Hat @code{erfflag} den Wert @code{false}, werden von der Funktion @code{risch}
+keine Fehlerfunktionen @code{erf} in die L@"osung eingef@"uhrt.
 
 @example
 @group
@@ -2169,10 +2286,14 @@ with.
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 
-@c -----------------------------------------------------------------------------
-@deffn {Function} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@c --- 28.11.2010 DK -----------------------------------------------------------
+@anchor{tldefint}
+@deffn {Funktion} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 
-Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
+@c Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
+
+Entspricht der Funktion @code{ldefint} mit dem Wert @code{true} f@"ur die 
+Optionsvariable @code{tlimswitch}.
 
 @c @opencatbox
 @c @category{Integral calculus}
@@ -2185,7 +2306,8 @@ Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 @node Einf@"uhrung in QUADPACK, Funktionen und Variablen f@"ur QUADPACK, Funktionen und Variablen der Integration, Integration
 @subsection Einf@"uhrung in QUADPACK
 
-@c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM http://www.netlib.org/slatec/src/qpdoc.f
+@c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM 
+@c http://www.netlib.org/slatec/src/qpdoc.f
 
 QUADPACK is a collection of functions for the numerical
 computation of one-dimensional definite integrals.
